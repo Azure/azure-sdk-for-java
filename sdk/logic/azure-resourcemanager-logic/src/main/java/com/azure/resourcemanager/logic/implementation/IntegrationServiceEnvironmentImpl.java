@@ -15,10 +15,8 @@ import com.azure.resourcemanager.logic.models.ManagedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
 
-public final class IntegrationServiceEnvironmentImpl
-    implements IntegrationServiceEnvironment,
-        IntegrationServiceEnvironment.Definition,
-        IntegrationServiceEnvironment.Update {
+public final class IntegrationServiceEnvironmentImpl implements IntegrationServiceEnvironment,
+    IntegrationServiceEnvironment.Definition, IntegrationServiceEnvironment.Update {
     private IntegrationServiceEnvironmentInner innerObject;
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
@@ -90,20 +88,16 @@ public final class IntegrationServiceEnvironmentImpl
     }
 
     public IntegrationServiceEnvironment create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironments()
-                .createOrUpdate(resourceGroup, integrationServiceEnvironmentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironments()
+            .createOrUpdate(resourceGroup, integrationServiceEnvironmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IntegrationServiceEnvironment create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironments()
-                .createOrUpdate(resourceGroup, integrationServiceEnvironmentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironments()
+            .createOrUpdate(resourceGroup, integrationServiceEnvironmentName, this.innerModel(), context);
         return this;
     }
 
@@ -118,55 +112,46 @@ public final class IntegrationServiceEnvironmentImpl
     }
 
     public IntegrationServiceEnvironment apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironments()
-                .update(resourceGroup, integrationServiceEnvironmentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironments()
+            .update(resourceGroup, integrationServiceEnvironmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IntegrationServiceEnvironment apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironments()
-                .update(resourceGroup, integrationServiceEnvironmentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironments()
+            .update(resourceGroup, integrationServiceEnvironmentName, this.innerModel(), context);
         return this;
     }
 
-    IntegrationServiceEnvironmentImpl(
-        IntegrationServiceEnvironmentInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    IntegrationServiceEnvironmentImpl(IntegrationServiceEnvironmentInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroup = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.integrationServiceEnvironmentName =
-            Utils.getValueFromIdByName(innerObject.id(), "integrationServiceEnvironments");
+        this.resourceGroup = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.integrationServiceEnvironmentName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationServiceEnvironments");
     }
 
     public IntegrationServiceEnvironment refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironments()
-                .getByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironments()
+            .getByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationServiceEnvironment refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironments()
-                .getByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironments()
+            .getByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, context)
+            .getValue();
         return this;
     }
 
     public Response<Void> restartWithResponse(Context context) {
-        return serviceManager
-            .integrationServiceEnvironments()
+        return serviceManager.integrationServiceEnvironments()
             .restartWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
     }
 

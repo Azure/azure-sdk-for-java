@@ -13,8 +13,8 @@ public final class DownloadUrlImpl implements DownloadUrl {
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    DownloadUrlImpl(
-        DownloadUrlInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
+    DownloadUrlImpl(DownloadUrlInner innerObject,
+        com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

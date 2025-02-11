@@ -96,6 +96,17 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
+     * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
+     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.innerProperties() == null ? null : this.innerProperties().etag();
+    }
+
+    /**
      * Get the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
      * 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default
      * value is 1.

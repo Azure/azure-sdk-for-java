@@ -13,23 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DelegatedSubnetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DelegatedSubnetProperties model =
-            BinaryData
-                .fromString(
-                    "{\"resourceGuid\":\"lefgugnxk\",\"provisioningState\":\"Succeeded\",\"subnetDetails\":{\"id\":\"i\"},\"controllerDetails\":{\"id\":\"hzrvqd\"}}")
-                .toObject(DelegatedSubnetProperties.class);
-        Assertions.assertEquals("i", model.subnetDetails().id());
-        Assertions.assertEquals("hzrvqd", model.controllerDetails().id());
+        DelegatedSubnetProperties model = BinaryData.fromString(
+            "{\"resourceGuid\":\"hm\",\"provisioningState\":\"Deleting\",\"subnetDetails\":{\"id\":\"a\"},\"controllerDetails\":{\"id\":\"z\"}}")
+            .toObject(DelegatedSubnetProperties.class);
+        Assertions.assertEquals("a", model.subnetDetails().id());
+        Assertions.assertEquals("z", model.controllerDetails().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelegatedSubnetProperties model =
-            new DelegatedSubnetProperties()
-                .withSubnetDetails(new SubnetDetails().withId("i"))
-                .withControllerDetails(new ControllerDetails().withId("hzrvqd"));
+        DelegatedSubnetProperties model
+            = new DelegatedSubnetProperties().withSubnetDetails(new SubnetDetails().withId("a"))
+                .withControllerDetails(new ControllerDetails().withId("z"));
         model = BinaryData.fromObject(model).toObject(DelegatedSubnetProperties.class);
-        Assertions.assertEquals("i", model.subnetDetails().id());
-        Assertions.assertEquals("hzrvqd", model.controllerDetails().id());
+        Assertions.assertEquals("a", model.subnetDetails().id());
+        Assertions.assertEquals("z", model.controllerDetails().id());
     }
 }

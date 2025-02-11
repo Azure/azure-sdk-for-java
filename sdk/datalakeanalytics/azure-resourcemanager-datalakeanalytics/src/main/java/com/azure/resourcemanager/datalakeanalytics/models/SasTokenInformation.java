@@ -6,18 +6,20 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.SasTokenInformationInner;
 
-/** An immutable client-side representation of SasTokenInformation. */
+/**
+ * An immutable client-side representation of SasTokenInformation.
+ */
 public interface SasTokenInformation {
     /**
      * Gets the accessToken property: The access token for the associated Azure Storage Container.
-     *
+     * 
      * @return the accessToken value.
      */
     String accessToken();
 
     /**
      * Gets the inner com.azure.resourcemanager.datalakeanalytics.fluent.models.SasTokenInformationInner object.
-     *
+     * 
      * @return the inner object.
      */
     SasTokenInformationInner innerModel();

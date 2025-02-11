@@ -175,6 +175,10 @@ private case class ChangeFeedPartitionReader
       case ChangeFeedModes.FullFidelity | ChangeFeedModes.AllVersionsAndDeletes =>
         changeFeedItemDeserializerV1
     }
+    if (this.partition.endLsn.isDefined) {
+      ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor
+        .setEndLSN(options, this.partition.endLsn.get)
+    }
 
     options.setCustomItemSerializer(itemDeserializer)
   }
@@ -224,28 +228,12 @@ private case class ChangeFeedPartitionReader
       },
       readConfig.maxItemCount,
       readConfig.prefetchBufferSize,
-      operationContextAndListenerTuple
+      operationContextAndListenerTuple,
+      this.partition.endLsn
     )
 
   override def next(): Boolean = {
-    this.iterator.hasNext && this.validateNextLsn
-  }
-
-  private[this] def validateNextLsn: Boolean = {
-    this.partition.endLsn match {
-      case None =>
-        // In batch mode endLsn is cleared - we will always continue reading until the change feed is
-        // completely drained so all partitions return 304
-        true
-      case Some(endLsn) =>
-        // In streaming mode we only continue until we hit the endOffset's continuation Lsn
-        val node = this.iterator.head()
-        assert(node.lsn != null, "Change feed responses must have _lsn property.")
-        assert(node.lsn != "", "Change feed responses must have non empty _lsn.")
-        val nextLsn = SparkBridgeImplementationInternal.toLsn(node.lsn)
-
-        nextLsn <= endLsn
-    }
+    this.iterator.hasNext
   }
 
   override def get(): InternalRow = {

@@ -71,7 +71,7 @@ public interface StorageTasks {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StorageTask> list();
 
@@ -82,7 +82,7 @@ public interface StorageTasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StorageTask> list(Context context);
 
@@ -93,7 +93,7 @@ public interface StorageTasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StorageTask> listByResourceGroup(String resourceGroupName);
 
@@ -105,7 +105,7 @@ public interface StorageTasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StorageTask> listByResourceGroup(String resourceGroupName, Context context);
 

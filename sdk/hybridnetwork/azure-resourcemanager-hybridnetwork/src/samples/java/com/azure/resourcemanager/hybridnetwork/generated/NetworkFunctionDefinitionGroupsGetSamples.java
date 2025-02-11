@@ -20,7 +20,8 @@ public final class NetworkFunctionDefinitionGroupsGetSamples {
      */
     public static void getANetworkFunctionDefinitionGroupResource(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkFunctionDefinitionGroups().getWithResponse("rg", "TestPublisher",
-            "TestNetworkFunctionDefinitionGroupName", com.azure.core.util.Context.NONE);
+        manager.networkFunctionDefinitionGroups()
+            .getWithResponse("rg", "TestPublisher", "TestNetworkFunctionDefinitionGroupName",
+                com.azure.core.util.Context.NONE);
     }
 }

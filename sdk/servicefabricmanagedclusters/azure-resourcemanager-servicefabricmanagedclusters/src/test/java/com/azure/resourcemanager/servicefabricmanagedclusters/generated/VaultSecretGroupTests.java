@@ -15,24 +15,21 @@ public final class VaultSecretGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VaultSecretGroup model = BinaryData.fromString(
-            "{\"sourceVault\":{\"id\":\"yuhqlbjbsybbqwrv\"},\"vaultCertificates\":[{\"certificateUrl\":\"dgmfpgvmpipasl\",\"certificateStore\":\"haq\"},{\"certificateUrl\":\"x\",\"certificateStore\":\"smwutwbdsrezpd\"},{\"certificateUrl\":\"hneuyowqkd\",\"certificateStore\":\"ytisibir\"}]}")
+            "{\"sourceVault\":{\"id\":\"mfpgv\"},\"vaultCertificates\":[{\"certificateUrl\":\"ipaslthaqfxssmwu\",\"certificateStore\":\"wbdsr\"}]}")
             .toObject(VaultSecretGroup.class);
-        Assertions.assertEquals("yuhqlbjbsybbqwrv", model.sourceVault().id());
-        Assertions.assertEquals("dgmfpgvmpipasl", model.vaultCertificates().get(0).certificateUrl());
-        Assertions.assertEquals("haq", model.vaultCertificates().get(0).certificateStore());
+        Assertions.assertEquals("mfpgv", model.sourceVault().id());
+        Assertions.assertEquals("ipaslthaqfxssmwu", model.vaultCertificates().get(0).certificateUrl());
+        Assertions.assertEquals("wbdsr", model.vaultCertificates().get(0).certificateStore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VaultSecretGroup model
-            = new VaultSecretGroup().withSourceVault(new SubResource().withId("yuhqlbjbsybbqwrv"))
-                .withVaultCertificates(Arrays.asList(
-                    new VaultCertificate().withCertificateUrl("dgmfpgvmpipasl").withCertificateStore("haq"),
-                    new VaultCertificate().withCertificateUrl("x").withCertificateStore("smwutwbdsrezpd"),
-                    new VaultCertificate().withCertificateUrl("hneuyowqkd").withCertificateStore("ytisibir")));
+        VaultSecretGroup model = new VaultSecretGroup().withSourceVault(new SubResource().withId("mfpgv"))
+            .withVaultCertificates(Arrays
+                .asList(new VaultCertificate().withCertificateUrl("ipaslthaqfxssmwu").withCertificateStore("wbdsr")));
         model = BinaryData.fromObject(model).toObject(VaultSecretGroup.class);
-        Assertions.assertEquals("yuhqlbjbsybbqwrv", model.sourceVault().id());
-        Assertions.assertEquals("dgmfpgvmpipasl", model.vaultCertificates().get(0).certificateUrl());
-        Assertions.assertEquals("haq", model.vaultCertificates().get(0).certificateStore());
+        Assertions.assertEquals("mfpgv", model.sourceVault().id());
+        Assertions.assertEquals("ipaslthaqfxssmwu", model.vaultCertificates().get(0).certificateUrl());
+        Assertions.assertEquals("wbdsr", model.vaultCertificates().get(0).certificateStore());
     }
 }

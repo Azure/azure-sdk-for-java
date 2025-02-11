@@ -6,36 +6,46 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.JobNavigation;
 import com.azure.resourcemanager.automation.models.UpdateConfigurationNavigation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** Software update configuration machine run model. */
+/**
+ * Software update configuration machine run model.
+ */
 @Fluent
-public final class SoftwareUpdateConfigurationMachineRunInner {
+public final class SoftwareUpdateConfigurationMachineRunInner
+    implements JsonSerializable<SoftwareUpdateConfigurationMachineRunInner> {
     /*
      * Name of the software update configuration machine run
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource Id of the software update configuration machine run
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Software update configuration machine run properties.
      */
-    @JsonProperty(value = "properties")
     private UpdateConfigurationMachineRunProperties innerProperties;
 
     /**
+     * Creates an instance of SoftwareUpdateConfigurationMachineRunInner class.
+     */
+    public SoftwareUpdateConfigurationMachineRunInner() {
+    }
+
+    /**
      * Get the name property: Name of the software update configuration machine run.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +54,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the id property: Resource Id of the software update configuration machine run.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -53,7 +63,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the innerProperties property: Software update configuration machine run properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateConfigurationMachineRunProperties innerProperties() {
@@ -62,7 +72,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the targetComputer property: name of the updated computer.
-     *
+     * 
      * @return the targetComputer value.
      */
     public String targetComputer() {
@@ -71,7 +81,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the targetComputerType property: type of the updated computer.
-     *
+     * 
      * @return the targetComputerType value.
      */
     public String targetComputerType() {
@@ -80,7 +90,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the softwareUpdateConfiguration property: software update configuration triggered this run.
-     *
+     * 
      * @return the softwareUpdateConfiguration value.
      */
     public UpdateConfigurationNavigation softwareUpdateConfiguration() {
@@ -89,12 +99,12 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Set the softwareUpdateConfiguration property: software update configuration triggered this run.
-     *
+     * 
      * @param softwareUpdateConfiguration the softwareUpdateConfiguration value to set.
      * @return the SoftwareUpdateConfigurationMachineRunInner object itself.
      */
-    public SoftwareUpdateConfigurationMachineRunInner withSoftwareUpdateConfiguration(
-        UpdateConfigurationNavigation softwareUpdateConfiguration) {
+    public SoftwareUpdateConfigurationMachineRunInner
+        withSoftwareUpdateConfiguration(UpdateConfigurationNavigation softwareUpdateConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new UpdateConfigurationMachineRunProperties();
         }
@@ -104,7 +114,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the status property: Status of the software update configuration machine run.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -113,7 +123,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the osType property: Operating system target of the software update configuration triggered this run.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -122,7 +132,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the correlationId property: correlation id of the software update configuration machine run.
-     *
+     * 
      * @return the correlationId value.
      */
     public UUID correlationId() {
@@ -131,7 +141,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the sourceComputerId property: source computer id of the software update configuration machine run.
-     *
+     * 
      * @return the sourceComputerId value.
      */
     public UUID sourceComputerId() {
@@ -140,7 +150,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the startTime property: Start time of the software update configuration machine run.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -149,7 +159,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the endTime property: End time of the software update configuration machine run.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -158,7 +168,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the configuredDuration property: configured duration for the software update configuration run.
-     *
+     * 
      * @return the configuredDuration value.
      */
     public String configuredDuration() {
@@ -167,7 +177,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the job property: Job associated with the software update configuration machine run.
-     *
+     * 
      * @return the job value.
      */
     public JobNavigation job() {
@@ -176,7 +186,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Set the job property: Job associated with the software update configuration machine run.
-     *
+     * 
      * @param job the job value to set.
      * @return the SoftwareUpdateConfigurationMachineRunInner object itself.
      */
@@ -190,7 +200,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the creationTime property: Creation time of the resource, which only appears in the response.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -199,7 +209,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the createdBy property: createdBy property, which only appears in the response.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -208,7 +218,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the lastModifiedTime property: Last time resource was modified, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -217,7 +227,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the lastModifiedBy property: lastModifiedBy property, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -226,7 +236,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Get the error property: Details of provisioning error.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -235,7 +245,7 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Set the error property: Details of provisioning error.
-     *
+     * 
      * @param error the error value to set.
      * @return the SoftwareUpdateConfigurationMachineRunInner object itself.
      */
@@ -249,12 +259,54 @@ public final class SoftwareUpdateConfigurationMachineRunInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftwareUpdateConfigurationMachineRunInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftwareUpdateConfigurationMachineRunInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SoftwareUpdateConfigurationMachineRunInner.
+     */
+    public static SoftwareUpdateConfigurationMachineRunInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftwareUpdateConfigurationMachineRunInner deserializedSoftwareUpdateConfigurationMachineRunInner
+                = new SoftwareUpdateConfigurationMachineRunInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationMachineRunInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationMachineRunInner.id = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationMachineRunInner.innerProperties
+                        = UpdateConfigurationMachineRunProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftwareUpdateConfigurationMachineRunInner;
+        });
     }
 }

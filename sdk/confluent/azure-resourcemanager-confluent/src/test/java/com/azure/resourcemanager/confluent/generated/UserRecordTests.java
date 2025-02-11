@@ -29,10 +29,16 @@ public final class UserRecordTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserRecord model = new UserRecord().withKind("rvqdra").withId("jybige")
-            .withMetadata(new MetadataEntity().withSelf("fbowskanyk").withResourceName("lcuiywgqywgndr")
-                .withCreatedAt("nhzgpphrcgyn").withUpdatedAt("cpecfvmmcoofs").withDeletedAt("zevgb"))
-            .withEmail("jqabcypmivkwlzuv").withFullName("fwnfnb").withAuthType("fionl");
+        UserRecord model = new UserRecord().withKind("rvqdra")
+            .withId("jybige")
+            .withMetadata(new MetadataEntity().withSelf("fbowskanyk")
+                .withResourceName("lcuiywgqywgndr")
+                .withCreatedAt("nhzgpphrcgyn")
+                .withUpdatedAt("cpecfvmmcoofs")
+                .withDeletedAt("zevgb"))
+            .withEmail("jqabcypmivkwlzuv")
+            .withFullName("fwnfnb")
+            .withAuthType("fionl");
         model = BinaryData.fromObject(model).toObject(UserRecord.class);
         Assertions.assertEquals("rvqdra", model.kind());
         Assertions.assertEquals("jybige", model.id());

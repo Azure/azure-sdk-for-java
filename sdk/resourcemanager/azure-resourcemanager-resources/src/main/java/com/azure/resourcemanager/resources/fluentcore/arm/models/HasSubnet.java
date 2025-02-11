@@ -10,11 +10,15 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public interface HasSubnet {
     /**
+     * Gets the resource ID of the virtual network whose subnet is associated with this resource.
+     *
      * @return the resource ID of the virtual network whose subnet is associated with this resource
      */
     String networkId();
 
     /**
+     * Gets the name of the subnet associated with this resource.
+     *
      * @return the name of the subnet associated with this resource
      */
     String subnetName();

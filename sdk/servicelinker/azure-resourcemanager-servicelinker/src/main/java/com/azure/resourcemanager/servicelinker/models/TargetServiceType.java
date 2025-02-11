@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TargetServiceType. */
+/**
+ * The target service type.
+ */
 public final class TargetServiceType extends ExpandableStringEnum<TargetServiceType> {
-    /** Static value AzureResource for TargetServiceType. */
+    /**
+     * Static value AzureResource for TargetServiceType.
+     */
     public static final TargetServiceType AZURE_RESOURCE = fromString("AzureResource");
 
-    /** Static value ConfluentBootstrapServer for TargetServiceType. */
+    /**
+     * Static value ConfluentBootstrapServer for TargetServiceType.
+     */
     public static final TargetServiceType CONFLUENT_BOOTSTRAP_SERVER = fromString("ConfluentBootstrapServer");
 
-    /** Static value ConfluentSchemaRegistry for TargetServiceType. */
+    /**
+     * Static value ConfluentSchemaRegistry for TargetServiceType.
+     */
     public static final TargetServiceType CONFLUENT_SCHEMA_REGISTRY = fromString("ConfluentSchemaRegistry");
 
     /**
+     * Creates a new instance of TargetServiceType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TargetServiceType() {
+    }
+
+    /**
      * Creates or finds a TargetServiceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TargetServiceType.
      */
-    @JsonCreator
     public static TargetServiceType fromString(String name) {
         return fromString(name, TargetServiceType.class);
     }
 
     /**
      * Gets known TargetServiceType values.
-     *
+     * 
      * @return known TargetServiceType values.
      */
     public static Collection<TargetServiceType> values() {

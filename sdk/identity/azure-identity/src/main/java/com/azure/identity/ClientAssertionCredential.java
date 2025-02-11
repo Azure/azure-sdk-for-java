@@ -83,6 +83,7 @@ public class ClientAssertionCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ClientAssertionCredential.class);
     private final IdentityClient identityClient;
     private final IdentitySyncClient identitySyncClient;
+
     /**
      * Creates an instance of ClientAssertionCredential.
      *
@@ -92,9 +93,8 @@ public class ClientAssertionCredential implements TokenCredential {
      * @param identityClientOptions the options to configure the identity client
      */
     ClientAssertionCredential(String clientId, String tenantId, Supplier<String> clientAssertion,
-                              IdentityClientOptions identityClientOptions) {
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
+        IdentityClientOptions identityClientOptions) {
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .clientAssertionSupplier(clientAssertion)
             .identityClientOptions(identityClientOptions);
@@ -109,8 +109,8 @@ public class ClientAssertionCredential implements TokenCredential {
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error));
     }
 
     @Override
@@ -121,7 +121,8 @@ public class ClientAssertionCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);

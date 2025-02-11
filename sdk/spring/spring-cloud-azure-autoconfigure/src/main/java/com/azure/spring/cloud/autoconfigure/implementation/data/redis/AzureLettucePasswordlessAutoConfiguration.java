@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.implementation.data.redis;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureRedisPasswordlessProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.data.redis.lettuce.AzureRedisCredentials;
+import com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureRedisPasswordlessProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisCredentials;
@@ -54,8 +54,8 @@ public class AzureLettucePasswordlessAutoConfiguration {
     AzureRedisCredentials azureRedisCredentials(RedisProperties redisProperties,
                                                 AzureRedisPasswordlessProperties azureRedisPasswordlessProperties,
                                                 AzureGlobalProperties azureGlobalProperties) {
-        return new AzureRedisCredentials(redisProperties.getUsername(),
-            mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties));
+        AzureRedisPasswordlessProperties redisPasswordlessProperties = mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties);
+        return new AzureRedisCredentials(redisProperties.getUsername(), redisPasswordlessProperties);
     }
 
     @Bean(name = "azureLettuceClientConfigurationBuilderCustomizer")
@@ -81,5 +81,4 @@ public class AzureLettucePasswordlessAutoConfiguration {
         AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties, mergedProperties);
         return mergedProperties;
     }
-
 }

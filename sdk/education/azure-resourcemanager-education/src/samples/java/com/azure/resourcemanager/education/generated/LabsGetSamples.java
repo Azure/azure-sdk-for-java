@@ -4,37 +4,38 @@
 
 package com.azure.resourcemanager.education.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Labs Get. */
+/**
+ * Samples for Labs Get.
+ */
 public final class LabsGetSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabIncludeBudget.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabIncludeBudget
+     * .json
      */
     /**
      * Sample code: LabIncludeBudget.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void labIncludeBudget(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .labs()
-            .getWithResponse(
-                "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true, Context.NONE);
+        manager.labs()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", true,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Lab.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Lab.json
      */
     /**
      * Sample code: Lab.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void lab(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .labs()
-            .getWithResponse(
-                "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", false, Context.NONE);
+        manager.labs()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", false,
+                com.azure.core.util.Context.NONE);
     }
 }

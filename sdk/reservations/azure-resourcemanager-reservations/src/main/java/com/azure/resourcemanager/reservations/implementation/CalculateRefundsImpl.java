@@ -21,21 +21,18 @@ public final class CalculateRefundsImpl implements CalculateRefunds {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    public CalculateRefundsImpl(
-        CalculateRefundsClient innerClient, com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
+    public CalculateRefundsImpl(CalculateRefundsClient innerClient,
+        com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CalculateRefundResponse> postWithResponse(
-        String reservationOrderId, CalculateRefundRequest body, Context context) {
-        Response<CalculateRefundResponseInner> inner =
-            this.serviceClient().postWithResponse(reservationOrderId, body, context);
+    public Response<CalculateRefundResponse> postWithResponse(String reservationOrderId, CalculateRefundRequest body,
+        Context context) {
+        Response<CalculateRefundResponseInner> inner
+            = this.serviceClient().postWithResponse(reservationOrderId, body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CalculateRefundResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of the workspace. */
+/**
+ * The provisioning state of the workspace.
+ */
 public final class WorkspaceEntityStatus extends ExpandableStringEnum<WorkspaceEntityStatus> {
-    /** Static value Creating for WorkspaceEntityStatus. */
+    /**
+     * Static value Creating for WorkspaceEntityStatus.
+     */
     public static final WorkspaceEntityStatus CREATING = fromString("Creating");
 
-    /** Static value Succeeded for WorkspaceEntityStatus. */
+    /**
+     * Static value Succeeded for WorkspaceEntityStatus.
+     */
     public static final WorkspaceEntityStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for WorkspaceEntityStatus. */
+    /**
+     * Static value Failed for WorkspaceEntityStatus.
+     */
     public static final WorkspaceEntityStatus FAILED = fromString("Failed");
 
-    /** Static value Canceled for WorkspaceEntityStatus. */
+    /**
+     * Static value Canceled for WorkspaceEntityStatus.
+     */
     public static final WorkspaceEntityStatus CANCELED = fromString("Canceled");
 
-    /** Static value Deleting for WorkspaceEntityStatus. */
+    /**
+     * Static value Deleting for WorkspaceEntityStatus.
+     */
     public static final WorkspaceEntityStatus DELETING = fromString("Deleting");
 
-    /** Static value ProvisioningAccount for WorkspaceEntityStatus. */
+    /**
+     * Static value ProvisioningAccount for WorkspaceEntityStatus.
+     */
     public static final WorkspaceEntityStatus PROVISIONING_ACCOUNT = fromString("ProvisioningAccount");
 
-    /** Static value Updating for WorkspaceEntityStatus. */
+    /**
+     * Static value Updating for WorkspaceEntityStatus.
+     */
     public static final WorkspaceEntityStatus UPDATING = fromString("Updating");
 
     /**
      * Creates a new instance of WorkspaceEntityStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class WorkspaceEntityStatus extends ExpandableStringEnum<WorkspaceE
 
     /**
      * Creates or finds a WorkspaceEntityStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkspaceEntityStatus.
      */
-    @JsonCreator
     public static WorkspaceEntityStatus fromString(String name) {
         return fromString(name, WorkspaceEntityStatus.class);
     }
 
     /**
      * Gets known WorkspaceEntityStatus values.
-     *
+     * 
      * @return known WorkspaceEntityStatus values.
      */
     public static Collection<WorkspaceEntityStatus> values() {

@@ -23,10 +23,10 @@ public final class ProxyArtifactUpdateStateSamples {
      * @param manager Entry point to HybridNetworkManager.
      */
     public static void updateAnArtifactState(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.proxyArtifacts().updateState("TestResourceGroup", "TestPublisher", "TestArtifactStoreName", "fedrbac",
-            "1.0.0",
-            new ArtifactChangeState()
-                .withProperties(new ArtifactChangeStateProperties().withArtifactState(ArtifactState.DEPRECATED)),
-            com.azure.core.util.Context.NONE);
+        manager.proxyArtifacts()
+            .updateState("TestResourceGroup", "TestPublisher", "TestArtifactStoreName", "fedrbac", "1.0.0",
+                new ArtifactChangeState()
+                    .withProperties(new ArtifactChangeStateProperties().withArtifactState(ArtifactState.DEPRECATED)),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CommitmentPlanAssociationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommitmentPlanAssociation model =
-            BinaryData
-                .fromString("{\"commitmentPlanId\":\"l\",\"commitmentPlanLocation\":\"uvfqawrlyxwj\"}")
+        CommitmentPlanAssociation model
+            = BinaryData.fromString("{\"commitmentPlanId\":\"l\",\"commitmentPlanLocation\":\"uvfqawrlyxwj\"}")
                 .toObject(CommitmentPlanAssociation.class);
         Assertions.assertEquals("l", model.commitmentPlanId());
         Assertions.assertEquals("uvfqawrlyxwj", model.commitmentPlanLocation());
@@ -21,8 +20,8 @@ public final class CommitmentPlanAssociationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentPlanAssociation model =
-            new CommitmentPlanAssociation().withCommitmentPlanId("l").withCommitmentPlanLocation("uvfqawrlyxwj");
+        CommitmentPlanAssociation model
+            = new CommitmentPlanAssociation().withCommitmentPlanId("l").withCommitmentPlanLocation("uvfqawrlyxwj");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanAssociation.class);
         Assertions.assertEquals("l", model.commitmentPlanId());
         Assertions.assertEquals("uvfqawrlyxwj", model.commitmentPlanLocation());

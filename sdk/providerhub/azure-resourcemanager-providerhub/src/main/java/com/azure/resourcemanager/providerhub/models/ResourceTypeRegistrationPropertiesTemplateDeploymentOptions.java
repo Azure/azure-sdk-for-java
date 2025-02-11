@@ -5,38 +5,96 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ResourceTypeRegistrationPropertiesTemplateDeploymentOptions model. */
+/**
+ * The ResourceTypeRegistrationPropertiesTemplateDeploymentOptions model.
+ */
 @Fluent
 public final class ResourceTypeRegistrationPropertiesTemplateDeploymentOptions extends TemplateDeploymentOptions {
-    /** Creates an instance of ResourceTypeRegistrationPropertiesTemplateDeploymentOptions class. */
+    /**
+     * Creates an instance of ResourceTypeRegistrationPropertiesTemplateDeploymentOptions class.
+     */
     public ResourceTypeRegistrationPropertiesTemplateDeploymentOptions() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ResourceTypeRegistrationPropertiesTemplateDeploymentOptions withPreflightSupported(
-        Boolean preflightSupported) {
+    public ResourceTypeRegistrationPropertiesTemplateDeploymentOptions
+        withPreflightSupported(Boolean preflightSupported) {
         super.withPreflightSupported(preflightSupported);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ResourceTypeRegistrationPropertiesTemplateDeploymentOptions withPreflightOptions(
-        List<PreflightOption> preflightOptions) {
+    public ResourceTypeRegistrationPropertiesTemplateDeploymentOptions
+        withPreflightOptions(List<PreflightOption> preflightOptions) {
         super.withPreflightOptions(preflightOptions);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("preflightSupported", preflightSupported());
+        jsonWriter.writeArrayField("preflightOptions", preflightOptions(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceTypeRegistrationPropertiesTemplateDeploymentOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceTypeRegistrationPropertiesTemplateDeploymentOptions if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ResourceTypeRegistrationPropertiesTemplateDeploymentOptions.
+     */
+    public static ResourceTypeRegistrationPropertiesTemplateDeploymentOptions fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceTypeRegistrationPropertiesTemplateDeploymentOptions deserializedResourceTypeRegistrationPropertiesTemplateDeploymentOptions
+                = new ResourceTypeRegistrationPropertiesTemplateDeploymentOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("preflightSupported".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationPropertiesTemplateDeploymentOptions
+                        .withPreflightSupported(reader.getNullable(JsonReader::getBoolean));
+                } else if ("preflightOptions".equals(fieldName)) {
+                    List<PreflightOption> preflightOptions
+                        = reader.readArray(reader1 -> PreflightOption.fromString(reader1.getString()));
+                    deserializedResourceTypeRegistrationPropertiesTemplateDeploymentOptions
+                        .withPreflightOptions(preflightOptions);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceTypeRegistrationPropertiesTemplateDeploymentOptions;
+        });
     }
 }

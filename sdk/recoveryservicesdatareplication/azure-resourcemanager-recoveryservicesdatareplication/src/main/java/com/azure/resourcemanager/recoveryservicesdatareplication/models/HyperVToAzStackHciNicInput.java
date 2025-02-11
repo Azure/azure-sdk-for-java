@@ -6,48 +6,51 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** HyperVToAzStackHCI NIC properties. */
+/**
+ * HyperVToAzStackHCI NIC properties.
+ */
 @Fluent
-public final class HyperVToAzStackHciNicInput {
+public final class HyperVToAzStackHciNicInput implements JsonSerializable<HyperVToAzStackHciNicInput> {
     /*
      * Gets or sets the NIC Id.
      */
-    @JsonProperty(value = "nicId", required = true)
     private String nicId;
 
     /*
      * Gets or sets the network name.
      */
-    @JsonProperty(value = "networkName", access = JsonProperty.Access.WRITE_ONLY)
     private String networkName;
 
     /*
      * Gets or sets the target network Id within AzStackHCI Cluster.
      */
-    @JsonProperty(value = "targetNetworkId", required = true)
     private String targetNetworkId;
 
     /*
      * Gets or sets the target test network Id within AzStackHCI Cluster.
      */
-    @JsonProperty(value = "testNetworkId", required = true)
     private String testNetworkId;
 
     /*
      * Gets or sets the selection type of the NIC.
      */
-    @JsonProperty(value = "selectionTypeForFailover", required = true)
     private VMNicSelection selectionTypeForFailover;
 
-    /** Creates an instance of HyperVToAzStackHciNicInput class. */
+    /**
+     * Creates an instance of HyperVToAzStackHciNicInput class.
+     */
     public HyperVToAzStackHciNicInput() {
     }
 
     /**
      * Get the nicId property: Gets or sets the NIC Id.
-     *
+     * 
      * @return the nicId value.
      */
     public String nicId() {
@@ -56,7 +59,7 @@ public final class HyperVToAzStackHciNicInput {
 
     /**
      * Set the nicId property: Gets or sets the NIC Id.
-     *
+     * 
      * @param nicId the nicId value to set.
      * @return the HyperVToAzStackHciNicInput object itself.
      */
@@ -67,7 +70,7 @@ public final class HyperVToAzStackHciNicInput {
 
     /**
      * Get the networkName property: Gets or sets the network name.
-     *
+     * 
      * @return the networkName value.
      */
     public String networkName() {
@@ -76,7 +79,7 @@ public final class HyperVToAzStackHciNicInput {
 
     /**
      * Get the targetNetworkId property: Gets or sets the target network Id within AzStackHCI Cluster.
-     *
+     * 
      * @return the targetNetworkId value.
      */
     public String targetNetworkId() {
@@ -85,7 +88,7 @@ public final class HyperVToAzStackHciNicInput {
 
     /**
      * Set the targetNetworkId property: Gets or sets the target network Id within AzStackHCI Cluster.
-     *
+     * 
      * @param targetNetworkId the targetNetworkId value to set.
      * @return the HyperVToAzStackHciNicInput object itself.
      */
@@ -96,7 +99,7 @@ public final class HyperVToAzStackHciNicInput {
 
     /**
      * Get the testNetworkId property: Gets or sets the target test network Id within AzStackHCI Cluster.
-     *
+     * 
      * @return the testNetworkId value.
      */
     public String testNetworkId() {
@@ -105,7 +108,7 @@ public final class HyperVToAzStackHciNicInput {
 
     /**
      * Set the testNetworkId property: Gets or sets the target test network Id within AzStackHCI Cluster.
-     *
+     * 
      * @param testNetworkId the testNetworkId value to set.
      * @return the HyperVToAzStackHciNicInput object itself.
      */
@@ -116,7 +119,7 @@ public final class HyperVToAzStackHciNicInput {
 
     /**
      * Get the selectionTypeForFailover property: Gets or sets the selection type of the NIC.
-     *
+     * 
      * @return the selectionTypeForFailover value.
      */
     public VMNicSelection selectionTypeForFailover() {
@@ -125,7 +128,7 @@ public final class HyperVToAzStackHciNicInput {
 
     /**
      * Set the selectionTypeForFailover property: Gets or sets the selection type of the NIC.
-     *
+     * 
      * @param selectionTypeForFailover the selectionTypeForFailover value to set.
      * @return the HyperVToAzStackHciNicInput object itself.
      */
@@ -136,35 +139,81 @@ public final class HyperVToAzStackHciNicInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (nicId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property nicId in model HyperVToAzStackHciNicInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property nicId in model HyperVToAzStackHciNicInput"));
         }
         if (targetNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetNetworkId in model HyperVToAzStackHciNicInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetNetworkId in model HyperVToAzStackHciNicInput"));
         }
         if (testNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property testNetworkId in model HyperVToAzStackHciNicInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property testNetworkId in model HyperVToAzStackHciNicInput"));
         }
         if (selectionTypeForFailover() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectionTypeForFailover in model HyperVToAzStackHciNicInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectionTypeForFailover in model HyperVToAzStackHciNicInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HyperVToAzStackHciNicInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nicId", this.nicId);
+        jsonWriter.writeStringField("targetNetworkId", this.targetNetworkId);
+        jsonWriter.writeStringField("testNetworkId", this.testNetworkId);
+        jsonWriter.writeStringField("selectionTypeForFailover",
+            this.selectionTypeForFailover == null ? null : this.selectionTypeForFailover.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVToAzStackHciNicInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVToAzStackHciNicInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HyperVToAzStackHciNicInput.
+     */
+    public static HyperVToAzStackHciNicInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVToAzStackHciNicInput deserializedHyperVToAzStackHciNicInput = new HyperVToAzStackHciNicInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nicId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciNicInput.nicId = reader.getString();
+                } else if ("targetNetworkId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciNicInput.targetNetworkId = reader.getString();
+                } else if ("testNetworkId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciNicInput.testNetworkId = reader.getString();
+                } else if ("selectionTypeForFailover".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciNicInput.selectionTypeForFailover
+                        = VMNicSelection.fromString(reader.getString());
+                } else if ("networkName".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciNicInput.networkName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVToAzStackHciNicInput;
+        });
+    }
 }

@@ -20,8 +20,11 @@ public final class SenderUsernamesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateSenderUsernamesResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.senderUsernames().define("contosoNewsAlerts")
+        manager.senderUsernames()
+            .define("contosoNewsAlerts")
             .withExistingDomain("contosoResourceGroup", "contosoEmailService", "contoso.com")
-            .withUsername("contosoNewsAlerts").withDisplayName("Contoso News Alerts").create();
+            .withUsername("contosoNewsAlerts")
+            .withDisplayName("Contoso News Alerts")
+            .create();
     }
 }

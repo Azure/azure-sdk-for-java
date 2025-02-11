@@ -6,6 +6,7 @@ package com.azure.resourcemanager.timeseriesinsights.implementation;
 
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.EnvironmentResourceInner;
 import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentResource;
+import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentResourceKind;
 import com.azure.resourcemanager.timeseriesinsights.models.Sku;
 import java.util.Collections;
 import java.util.Map;
@@ -15,8 +16,7 @@ public final class EnvironmentResourceImpl implements EnvironmentResource {
 
     private final com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager;
 
-    EnvironmentResourceImpl(
-        EnvironmentResourceInner innerObject,
+    EnvironmentResourceImpl(EnvironmentResourceInner innerObject,
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -45,6 +45,10 @@ public final class EnvironmentResourceImpl implements EnvironmentResource {
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public EnvironmentResourceKind kind() {
+        return this.innerModel().kind();
     }
 
     public Sku sku() {

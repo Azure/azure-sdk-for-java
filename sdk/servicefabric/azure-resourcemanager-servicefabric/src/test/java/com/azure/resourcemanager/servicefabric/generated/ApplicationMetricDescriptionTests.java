@@ -22,9 +22,10 @@ public final class ApplicationMetricDescriptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationMetricDescription model
-            = new ApplicationMetricDescription().withName("qig").withMaximumCapacity(1427620858530935166L)
-                .withReservationCapacity(8642059696861181136L).withTotalApplicationCapacity(5173080348817508321L);
+        ApplicationMetricDescription model = new ApplicationMetricDescription().withName("qig")
+            .withMaximumCapacity(1427620858530935166L)
+            .withReservationCapacity(8642059696861181136L)
+            .withTotalApplicationCapacity(5173080348817508321L);
         model = BinaryData.fromObject(model).toObject(ApplicationMetricDescription.class);
         Assertions.assertEquals("qig", model.name());
         Assertions.assertEquals(1427620858530935166L, model.maximumCapacity());

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.ConnectToSourceSqlServerTa
 public final class ConnectToSourceSqlServerTaskOutputTaskLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectToSourceSqlServerTaskOutputTaskLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"TaskLevelOutput\",\"databases\":\"nbmpowuwprzq\",\"logins\":\"eualupjmkhf\",\"agentJobs\":\"bbcswsrtjri\",\"sourceServerVersion\":\"rbpbewtghfgblcg\",\"sourceServerBrandVersion\":\"zvlvqhjkbegib\",\"validationErrors\":[{\"message\":\"iebwwaloayqcgwrt\",\"actionableMessage\":\"uzgwyzmhtx\",\"filePath\":\"gmtsavjcbpwxqpsr\",\"lineNumber\":\"ftguv\",\"hResult\":987025721,\"stackTrace\":\"prwmdyvxqt\"},{\"message\":\"riwwroy\",\"actionableMessage\":\"exrmcqibycnojvk\",\"filePath\":\"e\",\"lineNumber\":\"sgzvahapjyzhpv\",\"hResult\":1600165537,\"stackTrace\":\"j\"}],\"id\":\"xdjzlmwlxk\"}")
-                .toObject(ConnectToSourceSqlServerTaskOutputTaskLevel.class);
+        ConnectToSourceSqlServerTaskOutputTaskLevel model = BinaryData.fromString(
+            "{\"resultType\":\"TaskLevelOutput\",\"databases\":\"xbzpfzab\",\"logins\":\"cuh\",\"agentJobs\":\"tcty\",\"sourceServerVersion\":\"klbb\",\"sourceServerBrandVersion\":\"plwzbhvgyugu\",\"validationErrors\":[{\"message\":\"kfssxqukkf\",\"actionableMessage\":\"gmgsxnkjzkde\",\"filePath\":\"pvlopwiyighxpkd\",\"lineNumber\":\"baiuebbaumny\",\"hResult\":624396177,\"stackTrace\":\"deoj\"},{\"message\":\"bckhsmtxpsi\",\"actionableMessage\":\"tfhvpesapskrdqmh\",\"filePath\":\"dhtldwkyz\",\"lineNumber\":\"utknc\",\"hResult\":355088461,\"stackTrace\":\"svlxotogtwrup\"},{\"message\":\"xvnmicykvceov\",\"actionableMessage\":\"lo\",\"filePath\":\"oty\",\"lineNumber\":\"fcnj\",\"hResult\":534363981,\"stackTrace\":\"x\"}],\"id\":\"bttk\"}")
+            .toObject(ConnectToSourceSqlServerTaskOutputTaskLevel.class);
     }
 
     @org.junit.jupiter.api.Test

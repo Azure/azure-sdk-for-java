@@ -6,87 +6,84 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.PredictionModelLifeCycle;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.math.BigDecimal;
 
-/** The prediction model status. */
+/**
+ * The prediction model status.
+ */
 @Fluent
-public final class PredictionModelStatusInner {
+public final class PredictionModelStatusInner implements JsonSerializable<PredictionModelStatusInner> {
     /*
      * The hub name.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * The prediction name.
      */
-    @JsonProperty(value = "predictionName", access = JsonProperty.Access.WRITE_ONLY)
     private String predictionName;
 
     /*
      * The prediction GUID ID.
      */
-    @JsonProperty(value = "predictionGuidId", access = JsonProperty.Access.WRITE_ONLY)
     private String predictionGuidId;
 
     /*
-     * Prediction model life cycle.  When prediction is in PendingModelConfirmation status, it is allowed to update the
+     * Prediction model life cycle. When prediction is in PendingModelConfirmation status, it is allowed to update the
      * status to PendingFeaturing or Active through API.
      */
-    @JsonProperty(value = "status", required = true)
     private PredictionModelLifeCycle status;
 
     /*
      * The model status message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Count of the training set.
      */
-    @JsonProperty(value = "trainingSetCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer trainingSetCount;
 
     /*
      * Count of the test set.
      */
-    @JsonProperty(value = "testSetCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer testSetCount;
 
     /*
      * Count of the validation set.
      */
-    @JsonProperty(value = "validationSetCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer validationSetCount;
 
     /*
      * The training accuracy.
      */
-    @JsonProperty(value = "trainingAccuracy", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal trainingAccuracy;
 
     /*
      * The signals used.
      */
-    @JsonProperty(value = "signalsUsed", access = JsonProperty.Access.WRITE_ONLY)
     private Integer signalsUsed;
 
     /*
      * Version of the model.
      */
-    @JsonProperty(value = "modelVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String modelVersion;
 
-    /** Creates an instance of PredictionModelStatusInner class. */
+    /**
+     * Creates an instance of PredictionModelStatusInner class.
+     */
     public PredictionModelStatusInner() {
     }
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -95,7 +92,7 @@ public final class PredictionModelStatusInner {
 
     /**
      * Get the predictionName property: The prediction name.
-     *
+     * 
      * @return the predictionName value.
      */
     public String predictionName() {
@@ -104,7 +101,7 @@ public final class PredictionModelStatusInner {
 
     /**
      * Get the predictionGuidId property: The prediction GUID ID.
-     *
+     * 
      * @return the predictionGuidId value.
      */
     public String predictionGuidId() {
@@ -114,7 +111,7 @@ public final class PredictionModelStatusInner {
     /**
      * Get the status property: Prediction model life cycle. When prediction is in PendingModelConfirmation status, it
      * is allowed to update the status to PendingFeaturing or Active through API.
-     *
+     * 
      * @return the status value.
      */
     public PredictionModelLifeCycle status() {
@@ -124,7 +121,7 @@ public final class PredictionModelStatusInner {
     /**
      * Set the status property: Prediction model life cycle. When prediction is in PendingModelConfirmation status, it
      * is allowed to update the status to PendingFeaturing or Active through API.
-     *
+     * 
      * @param status the status value to set.
      * @return the PredictionModelStatusInner object itself.
      */
@@ -135,7 +132,7 @@ public final class PredictionModelStatusInner {
 
     /**
      * Get the message property: The model status message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -144,7 +141,7 @@ public final class PredictionModelStatusInner {
 
     /**
      * Get the trainingSetCount property: Count of the training set.
-     *
+     * 
      * @return the trainingSetCount value.
      */
     public Integer trainingSetCount() {
@@ -153,7 +150,7 @@ public final class PredictionModelStatusInner {
 
     /**
      * Get the testSetCount property: Count of the test set.
-     *
+     * 
      * @return the testSetCount value.
      */
     public Integer testSetCount() {
@@ -162,7 +159,7 @@ public final class PredictionModelStatusInner {
 
     /**
      * Get the validationSetCount property: Count of the validation set.
-     *
+     * 
      * @return the validationSetCount value.
      */
     public Integer validationSetCount() {
@@ -171,7 +168,7 @@ public final class PredictionModelStatusInner {
 
     /**
      * Get the trainingAccuracy property: The training accuracy.
-     *
+     * 
      * @return the trainingAccuracy value.
      */
     public BigDecimal trainingAccuracy() {
@@ -180,7 +177,7 @@ public final class PredictionModelStatusInner {
 
     /**
      * Get the signalsUsed property: The signals used.
-     *
+     * 
      * @return the signalsUsed value.
      */
     public Integer signalsUsed() {
@@ -189,7 +186,7 @@ public final class PredictionModelStatusInner {
 
     /**
      * Get the modelVersion property: Version of the model.
-     *
+     * 
      * @return the modelVersion value.
      */
     public String modelVersion() {
@@ -198,17 +195,75 @@ public final class PredictionModelStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model PredictionModelStatusInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model PredictionModelStatusInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PredictionModelStatusInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredictionModelStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredictionModelStatusInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PredictionModelStatusInner.
+     */
+    public static PredictionModelStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredictionModelStatusInner deserializedPredictionModelStatusInner = new PredictionModelStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedPredictionModelStatusInner.status
+                        = PredictionModelLifeCycle.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedPredictionModelStatusInner.tenantId = reader.getString();
+                } else if ("predictionName".equals(fieldName)) {
+                    deserializedPredictionModelStatusInner.predictionName = reader.getString();
+                } else if ("predictionGuidId".equals(fieldName)) {
+                    deserializedPredictionModelStatusInner.predictionGuidId = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedPredictionModelStatusInner.message = reader.getString();
+                } else if ("trainingSetCount".equals(fieldName)) {
+                    deserializedPredictionModelStatusInner.trainingSetCount = reader.getNullable(JsonReader::getInt);
+                } else if ("testSetCount".equals(fieldName)) {
+                    deserializedPredictionModelStatusInner.testSetCount = reader.getNullable(JsonReader::getInt);
+                } else if ("validationSetCount".equals(fieldName)) {
+                    deserializedPredictionModelStatusInner.validationSetCount = reader.getNullable(JsonReader::getInt);
+                } else if ("trainingAccuracy".equals(fieldName)) {
+                    deserializedPredictionModelStatusInner.trainingAccuracy
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("signalsUsed".equals(fieldName)) {
+                    deserializedPredictionModelStatusInner.signalsUsed = reader.getNullable(JsonReader::getInt);
+                } else if ("modelVersion".equals(fieldName)) {
+                    deserializedPredictionModelStatusInner.modelVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredictionModelStatusInner;
+        });
+    }
 }

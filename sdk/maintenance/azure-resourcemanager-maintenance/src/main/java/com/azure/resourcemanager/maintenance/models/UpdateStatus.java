@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class UpdateStatus extends ExpandableStringEnum<UpdateStatus> {
      * @param name a name to look for.
      * @return the corresponding UpdateStatus.
      */
-    @JsonCreator
     public static UpdateStatus fromString(String name) {
         return fromString(name, UpdateStatus.class);
     }

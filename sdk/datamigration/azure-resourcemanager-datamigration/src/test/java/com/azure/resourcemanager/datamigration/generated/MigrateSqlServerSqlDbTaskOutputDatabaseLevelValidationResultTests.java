@@ -10,18 +10,16 @@ import com.azure.resourcemanager.datamigration.models.MigrateSqlServerSqlDbTaskO
 public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"MigrationDatabaseLevelValidationOutput\",\"migrationId\":\"qolj\",\"sourceDatabaseName\":\"cgxxlxs\",\"targetDatabaseName\":\"gcvizqzdwlvwlyou\",\"startedOn\":\"2021-11-27T21:02:31Z\",\"endedOn\":\"2021-07-15T15:51:01Z\",\"dataIntegrityValidationResult\":{\"failedObjects\":{\"ttsttktlahbqact\":\"bdyhgkfminsgowz\",\"qqqxhrnxrx\":\"tgzukxitmmqt\"},\"validationErrors\":{\"text\":\"uisavokq\",\"severity\":\"Error\"}},\"schemaValidationResult\":{\"schemaDifferences\":{\"objectName\":\"ivjlfrqttbajlka\",\"objectType\":\"User\",\"updateAction\":\"DeletedOnTarget\"},\"validationErrors\":{\"text\":\"pidkqqfkuvscxkdm\",\"severity\":\"Error\"},\"sourceDatabaseObjectCount\":{\"rxkpmloazuruoc\":6134949836405409864,\"orbteoy\":8517542743150127284,\"jxakv\":2399230129113256962,\"slordilmyww\":5431753904297748094},\"targetDatabaseObjectCount\":{\"nye\":2397311129400397153,\"gyvudtjuewbc\":9040461916743042317,\"uuwhcjyxcc\":9033865557502512110}},\"queryAnalysisValidationResult\":{\"queryResults\":{\"queryText\":\"ayakkudzpx\",\"statementsInBatch\":1853682069039855587},\"validationErrors\":{\"text\":\"stcyohpfkyrkdbd\",\"severity\":\"Warning\"}},\"status\":\"InProgress\",\"id\":\"kmnwqjnobaiyhddv\"}")
-                .toObject(MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.class);
+        MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult model = BinaryData.fromString(
+            "{\"resultType\":\"MigrationDatabaseLevelValidationOutput\",\"migrationId\":\"jtqedcgzulwmm\",\"sourceDatabaseName\":\"z\",\"targetDatabaseName\":\"rjvpglydzgkrvqee\",\"startedOn\":\"2021-04-21T12:17:49Z\",\"endedOn\":\"2021-06-13T13:06:44Z\",\"dataIntegrityValidationResult\":{\"failedObjects\":{\"wytpzdmovz\":\"t\",\"f\":\"fvaawzqa\",\"cokpv\":\"gzuriglaecxndt\",\"irclnpk\":\"mlqtmldgxob\"},\"validationErrors\":{\"text\":\"yzriykhy\",\"severity\":\"Warning\"}},\"schemaValidationResult\":{\"schemaDifferences\":{\"objectName\":\"b\",\"objectType\":\"Table\",\"updateAction\":\"ChangedOnTarget\"},\"validationErrors\":{\"text\":\"mxho\",\"severity\":\"Message\"},\"sourceDatabaseObjectCount\":{\"digumbnr\":8975628624340233031,\"zzp\":4054203991023073101},\"targetDatabaseObjectCount\":{\"sdzhezww\":6520171368318103183}},\"queryAnalysisValidationResult\":{\"queryResults\":{\"queryText\":\"yuvvfonkp\",\"statementsInBatch\":6342791013289994721,\"sourceResult\":{\"executionCount\":2954343681916155162,\"cpuTimeMs\":12.87508,\"elapsedTimeMs\":71.17668,\"waitStats\":{\"bvpoekrsgsgbdhu\":{\"waitType\":\"uwmncs\",\"waitTimeMs\":17.136473,\"waitCount\":9105800928046481710},\"mtk\":{\"waitType\":\"gnjdgkynscliqhz\",\"waitTimeMs\":57.665108,\"waitCount\":4338361443790117129},\"hfrbbc\":{\"waitType\":\"otppnv\",\"waitTimeMs\":19.275677,\"waitCount\":8293741546882547786}},\"hasErrors\":false,\"sqlErrors\":[\"tltdhlfkqojpy\",\"vgtrdcnifmzzs\"]},\"targetResult\":{\"executionCount\":2575726098394881595,\"cpuTimeMs\":78.772026,\"elapsedTimeMs\":1.0285735,\"waitStats\":{\"roud\":{\"waitType\":\"rafwgckhocxvdf\",\"waitTimeMs\":49.184036,\"waitCount\":9128214856149263586}},\"hasErrors\":false,\"sqlErrors\":[\"ehhr\",\"kbunzoz\",\"dhcxgkmoy\",\"cdyuibhmfdnbzyd\"]}},\"validationErrors\":{\"text\":\"fcjnaeoisrvhmgor\",\"severity\":\"Warning\"}},\"status\":\"Default\",\"id\":\"cvwmzhwplefa\"}")
+            .toObject(MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult model =
-            new MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult();
-        model =
-            BinaryData.fromObject(model).toObject(MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.class);
+        MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult model
+            = new MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult();
+        model
+            = BinaryData.fromObject(model).toObject(MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.class);
     }
 }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.WorkloadClassifierListResult;
 public final class WorkloadClassifierListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadClassifierListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"memberName\":\"d\",\"label\":\"acegfnmntf\",\"context\":\"vm\",\"startTime\":\"fnczdwvvbalx\",\"endTime\":\"lchpodbzevwrdn\",\"importance\":\"ukuv\"},\"id\":\"jcswsmys\",\"name\":\"uluqypfc\",\"type\":\"lerchpq\"}],\"nextLink\":\"f\"}")
-                .toObject(WorkloadClassifierListResult.class);
+        WorkloadClassifierListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"memberName\":\"kpak\",\"label\":\"ifmjnn\",\"context\":\"tqabpxuckpgg\",\"startTime\":\"wey\",\"endTime\":\"dhlisngwflqqmpi\",\"importance\":\"uwnpqxpxiwfcng\"},\"id\":\"saasiixtmkzj\",\"name\":\"kv\",\"type\":\"irhgfgrwsdp\"},{\"properties\":{\"memberName\":\"atzv\",\"label\":\"glbyvi\",\"context\":\"ctbrxkjzwrgxffm\",\"startTime\":\"kwfbkgo\",\"endTime\":\"wopdbydpiz\",\"importance\":\"clnapxbiygnugjkn\"},\"id\":\"smfcttuxuuyilfl\",\"name\":\"oiquvrehmrnjhvs\",\"type\":\"jztczytqj\"}],\"nextLink\":\"h\"}")
+            .toObject(WorkloadClassifierListResult.class);
     }
 
     @org.junit.jupiter.api.Test

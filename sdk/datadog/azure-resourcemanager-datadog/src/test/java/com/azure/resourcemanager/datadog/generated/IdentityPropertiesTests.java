@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityProperties model =
-            BinaryData
-                .fromString("{\"principalId\":\"mcoo\",\"tenantId\":\"xlzevgbmqjqabcy\",\"type\":\"UserAssigned\"}")
-                .toObject(IdentityProperties.class);
+        IdentityProperties model = BinaryData
+            .fromString("{\"principalId\":\"mcoo\",\"tenantId\":\"xlzevgbmqjqabcy\",\"type\":\"UserAssigned\"}")
+            .toObject(IdentityProperties.class);
         Assertions.assertEquals(ManagedIdentityTypes.USER_ASSIGNED, model.type());
     }
 

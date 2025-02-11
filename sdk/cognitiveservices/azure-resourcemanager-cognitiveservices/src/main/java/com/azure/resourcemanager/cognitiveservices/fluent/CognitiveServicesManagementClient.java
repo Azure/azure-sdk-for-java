@@ -7,124 +7,189 @@ package com.azure.resourcemanager.cognitiveservices.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for CognitiveServicesManagementClient class. */
+/**
+ * The interface for CognitiveServicesManagementClient class.
+ */
 public interface CognitiveServicesManagementClient {
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the AccountsClient object to access its operations.
-     *
+     * 
      * @return the AccountsClient object.
      */
     AccountsClient getAccounts();
 
     /**
      * Gets the DeletedAccountsClient object to access its operations.
-     *
+     * 
      * @return the DeletedAccountsClient object.
      */
     DeletedAccountsClient getDeletedAccounts();
 
     /**
      * Gets the ResourceSkusClient object to access its operations.
-     *
+     * 
      * @return the ResourceSkusClient object.
      */
     ResourceSkusClient getResourceSkus();
 
     /**
      * Gets the UsagesClient object to access its operations.
-     *
+     * 
      * @return the UsagesClient object.
      */
     UsagesClient getUsages();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     ResourceProvidersClient getResourceProviders();
 
     /**
      * Gets the CommitmentTiersClient object to access its operations.
-     *
+     * 
      * @return the CommitmentTiersClient object.
      */
     CommitmentTiersClient getCommitmentTiers();
 
     /**
      * Gets the ModelsClient object to access its operations.
-     *
+     * 
      * @return the ModelsClient object.
      */
     ModelsClient getModels();
 
     /**
+     * Gets the LocationBasedModelCapacitiesClient object to access its operations.
+     * 
+     * @return the LocationBasedModelCapacitiesClient object.
+     */
+    LocationBasedModelCapacitiesClient getLocationBasedModelCapacities();
+
+    /**
+     * Gets the ModelCapacitiesClient object to access its operations.
+     * 
+     * @return the ModelCapacitiesClient object.
+     */
+    ModelCapacitiesClient getModelCapacities();
+
+    /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
      * Gets the DeploymentsClient object to access its operations.
-     *
+     * 
      * @return the DeploymentsClient object.
      */
     DeploymentsClient getDeployments();
 
     /**
      * Gets the CommitmentPlansClient object to access its operations.
-     *
+     * 
      * @return the CommitmentPlansClient object.
      */
     CommitmentPlansClient getCommitmentPlans();
+
+    /**
+     * Gets the EncryptionScopesClient object to access its operations.
+     * 
+     * @return the EncryptionScopesClient object.
+     */
+    EncryptionScopesClient getEncryptionScopes();
+
+    /**
+     * Gets the RaiPoliciesClient object to access its operations.
+     * 
+     * @return the RaiPoliciesClient object.
+     */
+    RaiPoliciesClient getRaiPolicies();
+
+    /**
+     * Gets the RaiBlocklistsClient object to access its operations.
+     * 
+     * @return the RaiBlocklistsClient object.
+     */
+    RaiBlocklistsClient getRaiBlocklists();
+
+    /**
+     * Gets the RaiBlocklistItemsClient object to access its operations.
+     * 
+     * @return the RaiBlocklistItemsClient object.
+     */
+    RaiBlocklistItemsClient getRaiBlocklistItems();
+
+    /**
+     * Gets the RaiContentFiltersClient object to access its operations.
+     * 
+     * @return the RaiContentFiltersClient object.
+     */
+    RaiContentFiltersClient getRaiContentFilters();
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
+
+    /**
+     * Gets the DefenderForAISettingsClient object to access its operations.
+     * 
+     * @return the DefenderForAISettingsClient object.
+     */
+    DefenderForAISettingsClient getDefenderForAISettings();
 }

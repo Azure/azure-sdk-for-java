@@ -7,6 +7,7 @@ package com.azure.resourcemanager.reservations.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.reservations.fluent.models.QuotaRequestDetailsInner;
 import com.azure.resourcemanager.reservations.models.QuotaRequestState;
+import com.azure.resourcemanager.reservations.models.ResourceName;
 import com.azure.resourcemanager.reservations.models.SubRequest;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -14,33 +15,33 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaRequestDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaRequestDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"InProgress\",\"message\":\"jmoadsuv\",\"requestSubmitTime\":\"2021-09-26T15:36:35Z\",\"value\":[{\"limit\":1450729079,\"resourceType\":\"jqbjhhy\",\"unit\":\"rw\",\"provisioningState\":\"Accepted\",\"message\":\"duhpk\",\"subRequestId\":\"gymare\"},{\"limit\":999279087,\"resourceType\":\"qugjhkycube\",\"unit\":\"gssofwq\",\"provisioningState\":\"Accepted\",\"message\":\"lkrm\",\"subRequestId\":\"i\"},{\"limit\":988494266,\"resourceType\":\"q\",\"unit\":\"dfnbyxbaaabjyv\",\"provisioningState\":\"Succeeded\",\"message\":\"imrzrtuzqog\",\"subRequestId\":\"xnevfdnwn\"},{\"limit\":1417389324,\"resourceType\":\"syyceuzsoibjud\",\"unit\":\"rx\",\"provisioningState\":\"Succeeded\",\"message\":\"zvaytdwkqbr\",\"subRequestId\":\"bpaxhexiilivpdt\"}]},\"id\":\"irqtdqoa\",\"name\":\"oruzfgsquyfxrxx\",\"type\":\"eptra\"}")
-                .toObject(QuotaRequestDetailsInner.class);
-        Assertions.assertEquals(QuotaRequestState.IN_PROGRESS, model.provisioningState());
-        Assertions.assertEquals("rw", model.value().get(0).unit());
-        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.value().get(0).provisioningState());
+        QuotaRequestDetailsInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"message\":\"ekkezzikhlyfjh\",\"requestSubmitTime\":\"2021-02-19T20:13:34Z\",\"value\":[{\"limit\":558583308,\"name\":{\"value\":\"nyga\",\"localizedValue\":\"idb\"},\"resourceType\":\"atpxl\",\"unit\":\"xcyjmoadsuvarmy\",\"provisioningState\":\"InProgress\",\"message\":\"sjqbjhhyxxrw\",\"subRequestId\":\"co\"},{\"limit\":381030924,\"name\":{\"value\":\"xkgymareqnajxqu\",\"localizedValue\":\"hky\"},\"resourceType\":\"beddgssofw\",\"unit\":\"zqalkrmnjijpx\",\"provisioningState\":\"Failed\",\"message\":\"udfnbyxba\",\"subRequestId\":\"bjyvay\"},{\"limit\":662894219,\"name\":{\"value\":\"zrtuzq\",\"localizedValue\":\"sexnevfdnw\"},\"resourceType\":\"mewzsyyc\",\"unit\":\"zsoibjudpfrxtr\",\"provisioningState\":\"Accepted\",\"message\":\"aytdwkqbrq\",\"subRequestId\":\"paxh\"}]},\"id\":\"xiilivpdtiirqt\",\"name\":\"qoaxoruzfgs\",\"type\":\"uyfxrxxleptramxj\"}")
+            .toObject(QuotaRequestDetailsInner.class);
+        Assertions.assertEquals(QuotaRequestState.SUCCEEDED, model.provisioningState());
+        Assertions.assertEquals("nyga", model.value().get(0).name().value());
+        Assertions.assertEquals("xcyjmoadsuvarmy", model.value().get(0).unit());
+        Assertions.assertEquals(QuotaRequestState.IN_PROGRESS, model.value().get(0).provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaRequestDetailsInner model =
-            new QuotaRequestDetailsInner()
-                .withProvisioningState(QuotaRequestState.IN_PROGRESS)
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SubRequest().withUnit("rw").withProvisioningState(QuotaRequestState.ACCEPTED),
-                            new SubRequest().withUnit("gssofwq").withProvisioningState(QuotaRequestState.ACCEPTED),
-                            new SubRequest()
-                                .withUnit("dfnbyxbaaabjyv")
-                                .withProvisioningState(QuotaRequestState.SUCCEEDED),
-                            new SubRequest().withUnit("rx").withProvisioningState(QuotaRequestState.SUCCEEDED)));
+        QuotaRequestDetailsInner model
+            = new QuotaRequestDetailsInner().withProvisioningState(QuotaRequestState.SUCCEEDED)
+                .withValue(Arrays.asList(
+                    new SubRequest().withName(new ResourceName().withValue("nyga"))
+                        .withUnit("xcyjmoadsuvarmy")
+                        .withProvisioningState(QuotaRequestState.IN_PROGRESS),
+                    new SubRequest().withName(new ResourceName().withValue("xkgymareqnajxqu"))
+                        .withUnit("zqalkrmnjijpx")
+                        .withProvisioningState(QuotaRequestState.FAILED),
+                    new SubRequest().withName(new ResourceName().withValue("zrtuzq"))
+                        .withUnit("zsoibjudpfrxtr")
+                        .withProvisioningState(QuotaRequestState.ACCEPTED)));
         model = BinaryData.fromObject(model).toObject(QuotaRequestDetailsInner.class);
-        Assertions.assertEquals(QuotaRequestState.IN_PROGRESS, model.provisioningState());
-        Assertions.assertEquals("rw", model.value().get(0).unit());
-        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.value().get(0).provisioningState());
+        Assertions.assertEquals(QuotaRequestState.SUCCEEDED, model.provisioningState());
+        Assertions.assertEquals("nyga", model.value().get(0).name().value());
+        Assertions.assertEquals("xcyjmoadsuvarmy", model.value().get(0).unit());
+        Assertions.assertEquals(QuotaRequestState.IN_PROGRESS, model.value().get(0).provisioningState());
     }
 }

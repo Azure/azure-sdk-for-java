@@ -5,68 +5,69 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.GalleryImageReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of a gallery image. */
+/**
+ * Properties of a gallery image.
+ */
 @Fluent
-public final class GalleryImageProperties {
+public final class GalleryImageProperties implements JsonSerializable<GalleryImageProperties> {
     /*
      * The author of the gallery image.
      */
-    @JsonProperty(value = "author")
     private String author;
 
     /*
      * The creation date of the gallery image.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
      * The description of the gallery image.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The image reference of the gallery image.
      */
-    @JsonProperty(value = "imageReference")
     private GalleryImageReference imageReference;
 
     /*
      * The icon of the gallery image.
      */
-    @JsonProperty(value = "icon")
     private String icon;
 
     /*
      * Indicates whether this gallery image is enabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The third party plan that applies to this image
      */
-    @JsonProperty(value = "planId")
     private String planId;
 
     /*
      * Indicates if the plan has been authorized for programmatic deployment.
      */
-    @JsonProperty(value = "isPlanAuthorized")
     private Boolean isPlanAuthorized;
 
-    /** Creates an instance of GalleryImageProperties class. */
+    /**
+     * Creates an instance of GalleryImageProperties class.
+     */
     public GalleryImageProperties() {
     }
 
     /**
      * Get the author property: The author of the gallery image.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -75,7 +76,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the author property: The author of the gallery image.
-     *
+     * 
      * @param author the author value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -86,7 +87,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the createdDate property: The creation date of the gallery image.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -95,7 +96,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the description property: The description of the gallery image.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -104,7 +105,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the description property: The description of the gallery image.
-     *
+     * 
      * @param description the description value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -115,7 +116,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the imageReference property: The image reference of the gallery image.
-     *
+     * 
      * @return the imageReference value.
      */
     public GalleryImageReference imageReference() {
@@ -124,7 +125,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the imageReference property: The image reference of the gallery image.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -135,7 +136,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the icon property: The icon of the gallery image.
-     *
+     * 
      * @return the icon value.
      */
     public String icon() {
@@ -144,7 +145,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the icon property: The icon of the gallery image.
-     *
+     * 
      * @param icon the icon value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -155,7 +156,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the enabled property: Indicates whether this gallery image is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -164,7 +165,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the enabled property: Indicates whether this gallery image is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -175,7 +176,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the planId property: The third party plan that applies to this image.
-     *
+     * 
      * @return the planId value.
      */
     public String planId() {
@@ -184,7 +185,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the planId property: The third party plan that applies to this image.
-     *
+     * 
      * @param planId the planId value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -195,7 +196,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the isPlanAuthorized property: Indicates if the plan has been authorized for programmatic deployment.
-     *
+     * 
      * @return the isPlanAuthorized value.
      */
     public Boolean isPlanAuthorized() {
@@ -204,7 +205,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the isPlanAuthorized property: Indicates if the plan has been authorized for programmatic deployment.
-     *
+     * 
      * @param isPlanAuthorized the isPlanAuthorized value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -215,12 +216,69 @@ public final class GalleryImageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (imageReference() != null) {
             imageReference().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("author", this.author);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("imageReference", this.imageReference);
+        jsonWriter.writeStringField("icon", this.icon);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("planId", this.planId);
+        jsonWriter.writeBooleanField("isPlanAuthorized", this.isPlanAuthorized);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryImageProperties.
+     */
+    public static GalleryImageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageProperties deserializedGalleryImageProperties = new GalleryImageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("author".equals(fieldName)) {
+                    deserializedGalleryImageProperties.author = reader.getString();
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedGalleryImageProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedGalleryImageProperties.description = reader.getString();
+                } else if ("imageReference".equals(fieldName)) {
+                    deserializedGalleryImageProperties.imageReference = GalleryImageReference.fromJson(reader);
+                } else if ("icon".equals(fieldName)) {
+                    deserializedGalleryImageProperties.icon = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedGalleryImageProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("planId".equals(fieldName)) {
+                    deserializedGalleryImageProperties.planId = reader.getString();
+                } else if ("isPlanAuthorized".equals(fieldName)) {
+                    deserializedGalleryImageProperties.isPlanAuthorized = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageProperties;
+        });
     }
 }

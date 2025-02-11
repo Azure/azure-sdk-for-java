@@ -6,48 +6,51 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Virtual disk model. */
+/**
+ * Virtual disk model.
+ */
 @Fluent
-public final class VirtualDisk {
+public final class VirtualDisk implements JsonSerializable<VirtualDisk> {
     /*
      * Disk's Controller id
      */
-    @JsonProperty(value = "controllerId", required = true)
     private String controllerId;
 
     /*
      * Disk's independence mode type
      */
-    @JsonProperty(value = "independenceMode", required = true)
     private DiskIndependenceMode independenceMode;
 
     /*
      * Disk's total size
      */
-    @JsonProperty(value = "totalSize", required = true)
     private int totalSize;
 
     /*
      * Disk's id
      */
-    @JsonProperty(value = "virtualDiskId")
     private String virtualDiskId;
 
     /*
      * Disk's display name
      */
-    @JsonProperty(value = "virtualDiskName", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualDiskName;
 
-    /** Creates an instance of VirtualDisk class. */
+    /**
+     * Creates an instance of VirtualDisk class.
+     */
     public VirtualDisk() {
     }
 
     /**
      * Get the controllerId property: Disk's Controller id.
-     *
+     * 
      * @return the controllerId value.
      */
     public String controllerId() {
@@ -56,7 +59,7 @@ public final class VirtualDisk {
 
     /**
      * Set the controllerId property: Disk's Controller id.
-     *
+     * 
      * @param controllerId the controllerId value to set.
      * @return the VirtualDisk object itself.
      */
@@ -67,7 +70,7 @@ public final class VirtualDisk {
 
     /**
      * Get the independenceMode property: Disk's independence mode type.
-     *
+     * 
      * @return the independenceMode value.
      */
     public DiskIndependenceMode independenceMode() {
@@ -76,7 +79,7 @@ public final class VirtualDisk {
 
     /**
      * Set the independenceMode property: Disk's independence mode type.
-     *
+     * 
      * @param independenceMode the independenceMode value to set.
      * @return the VirtualDisk object itself.
      */
@@ -87,7 +90,7 @@ public final class VirtualDisk {
 
     /**
      * Get the totalSize property: Disk's total size.
-     *
+     * 
      * @return the totalSize value.
      */
     public int totalSize() {
@@ -96,7 +99,7 @@ public final class VirtualDisk {
 
     /**
      * Set the totalSize property: Disk's total size.
-     *
+     * 
      * @param totalSize the totalSize value to set.
      * @return the VirtualDisk object itself.
      */
@@ -107,7 +110,7 @@ public final class VirtualDisk {
 
     /**
      * Get the virtualDiskId property: Disk's id.
-     *
+     * 
      * @return the virtualDiskId value.
      */
     public String virtualDiskId() {
@@ -116,7 +119,7 @@ public final class VirtualDisk {
 
     /**
      * Set the virtualDiskId property: Disk's id.
-     *
+     * 
      * @param virtualDiskId the virtualDiskId value to set.
      * @return the VirtualDisk object itself.
      */
@@ -127,7 +130,7 @@ public final class VirtualDisk {
 
     /**
      * Get the virtualDiskName property: Disk's display name.
-     *
+     * 
      * @return the virtualDiskName value.
      */
     public String virtualDiskName() {
@@ -136,21 +139,68 @@ public final class VirtualDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (controllerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property controllerId in model VirtualDisk"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property controllerId in model VirtualDisk"));
         }
         if (independenceMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property independenceMode in model VirtualDisk"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property independenceMode in model VirtualDisk"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualDisk.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("controllerId", this.controllerId);
+        jsonWriter.writeStringField("independenceMode",
+            this.independenceMode == null ? null : this.independenceMode.toString());
+        jsonWriter.writeIntField("totalSize", this.totalSize);
+        jsonWriter.writeStringField("virtualDiskId", this.virtualDiskId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualDisk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualDisk if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualDisk.
+     */
+    public static VirtualDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualDisk deserializedVirtualDisk = new VirtualDisk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("controllerId".equals(fieldName)) {
+                    deserializedVirtualDisk.controllerId = reader.getString();
+                } else if ("independenceMode".equals(fieldName)) {
+                    deserializedVirtualDisk.independenceMode = DiskIndependenceMode.fromString(reader.getString());
+                } else if ("totalSize".equals(fieldName)) {
+                    deserializedVirtualDisk.totalSize = reader.getInt();
+                } else if ("virtualDiskId".equals(fieldName)) {
+                    deserializedVirtualDisk.virtualDiskId = reader.getString();
+                } else if ("virtualDiskName".equals(fieldName)) {
+                    deserializedVirtualDisk.virtualDiskName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualDisk;
+        });
+    }
 }

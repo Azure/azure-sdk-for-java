@@ -13,24 +13,24 @@ public final class DirectMethodInvokesNotInAllowedRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DirectMethodInvokesNotInAllowedRange model = BinaryData.fromString(
-            "{\"ruleType\":\"DirectMethodInvokesNotInAllowedRange\",\"timeWindowSize\":\"PT62H48M43S\",\"minThreshold\":1862685940,\"maxThreshold\":1297191670,\"displayName\":\"zf\",\"description\":\"il\",\"isEnabled\":true}")
+            "{\"ruleType\":\"DirectMethodInvokesNotInAllowedRange\",\"timeWindowSize\":\"PT85H37M19S\",\"minThreshold\":339595762,\"maxThreshold\":1849396334,\"displayName\":\"nt\",\"description\":\"atzviqsowsaael\",\"isEnabled\":false}")
             .toObject(DirectMethodInvokesNotInAllowedRange.class);
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(1862685940, model.minThreshold());
-        Assertions.assertEquals(1297191670, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT62H48M43S"), model.timeWindowSize());
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(339595762, model.minThreshold());
+        Assertions.assertEquals(1849396334, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT85H37M19S"), model.timeWindowSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DirectMethodInvokesNotInAllowedRange model = new DirectMethodInvokesNotInAllowedRange().withIsEnabled(true)
-            .withMinThreshold(1862685940)
-            .withMaxThreshold(1297191670)
-            .withTimeWindowSize(Duration.parse("PT62H48M43S"));
+        DirectMethodInvokesNotInAllowedRange model = new DirectMethodInvokesNotInAllowedRange().withIsEnabled(false)
+            .withMinThreshold(339595762)
+            .withMaxThreshold(1849396334)
+            .withTimeWindowSize(Duration.parse("PT85H37M19S"));
         model = BinaryData.fromObject(model).toObject(DirectMethodInvokesNotInAllowedRange.class);
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(1862685940, model.minThreshold());
-        Assertions.assertEquals(1297191670, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT62H48M43S"), model.timeWindowSize());
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(339595762, model.minThreshold());
+        Assertions.assertEquals(1849396334, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT85H37M19S"), model.timeWindowSize());
     }
 }

@@ -17,7 +17,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
@@ -69,7 +69,7 @@ import java.util.Objects;
  * 2. AZURE_TENANT_ID environment variable is set.
  * 3. AZURE_SUBSCRIPTION_ID environment variable is set.
  */
-public abstract class ResourceManagerTestBase extends TestBase {
+public abstract class ResourceManagerTestBase extends TestProxyTestBase {
     private static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
     private static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";

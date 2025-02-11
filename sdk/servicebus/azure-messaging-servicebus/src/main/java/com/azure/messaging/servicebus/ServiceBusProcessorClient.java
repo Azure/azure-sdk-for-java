@@ -220,11 +220,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder,
         String queueName, String topicName, String subscriptionName,
-        Consumer<ServiceBusReceivedMessageContext> processMessage,
-        Consumer<ServiceBusErrorContext> processError,
+        Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
         ServiceBusProcessorClientOptions processorOptions) {
-        this.sessionReceiverBuilder = Objects.requireNonNull(sessionReceiverBuilder,
-            "'sessionReceiverBuilder' cannot be null");
+        this.sessionReceiverBuilder
+            = Objects.requireNonNull(sessionReceiverBuilder, "'sessionReceiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
@@ -235,7 +234,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.subscriptionName = subscriptionName;
         if (processorOptions.isV2()) {
             final int concurrencyPerSession = this.processorOptions.getMaxConcurrentCalls();
-            this.processorV2 = new ServiceBusProcessor(sessionReceiverBuilder, processMessage, processError, concurrencyPerSession);
+            this.processorV2
+                = new ServiceBusProcessor(sessionReceiverBuilder, processMessage, processError, concurrencyPerSession);
             this.tracer = null;
         } else {
             this.processorV2 = null;
@@ -256,9 +256,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @param processError The error handler.
      * @param processorOptions Options to configure this instance of the processor.
      */
-    ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder,
-        String queueName, String topicName, String subscriptionName,
-        Consumer<ServiceBusReceivedMessageContext> processMessage,
+    ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder, String queueName,
+        String topicName, String subscriptionName, Consumer<ServiceBusReceivedMessageContext> processMessage,
         Consumer<ServiceBusErrorContext> processError, ServiceBusProcessorClientOptions processorOptions) {
         this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
@@ -272,7 +271,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         if (this.processorOptions.isV2()) {
             final int concurrency = this.processorOptions.getMaxConcurrentCalls();
             final boolean enableAutoDisposition = !this.processorOptions.isDisableAutoComplete();
-            this.processorV2 = new ServiceBusProcessor(receiverBuilder, processMessage, processError, concurrency, enableAutoDisposition);
+            this.processorV2 = new ServiceBusProcessor(receiverBuilder, processMessage, processError, concurrency,
+                enableAutoDisposition);
             this.tracer = null;
         } else {
             this.processorV2 = null;
@@ -306,9 +306,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
         if (wasStopped) {
             wasStopped = false;
-            LOGGER.warning("Starting Processor that was stopped before is not recommended, and this feature may be deprecated in the future. "
-                + "Please close this processor instance and create a new one to restart processing. "
-                + "Refer to the GitHub issue https://github.com/Azure/azure-sdk-for-java/issues/34464 for more details");
+            LOGGER.warning(
+                "Starting Processor that was stopped before is not recommended, and this feature may be deprecated in the future. "
+                    + "Please close this processor instance and create a new one to restart processing. "
+                    + "Refer to the GitHub issue https://github.com/Azure/azure-sdk-for-java/issues/34464 for more details");
         }
 
         if (asyncClient.get() == null) {
@@ -433,8 +434,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         }
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
 
-        @SuppressWarnings({"unchecked", "rawtypes"})
-        CoreSubscriber<ServiceBusMessageContext>[] subscribers = new CoreSubscriber[processorOptions.getMaxConcurrentCalls()];
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        CoreSubscriber<ServiceBusMessageContext>[] subscribers
+            = new CoreSubscriber[processorOptions.getMaxConcurrentCalls()];
 
         for (int i = 0; i < processorOptions.getMaxConcurrentCalls(); i++) {
             subscribers[i] = new CoreSubscriber<ServiceBusMessageContext>() {
@@ -450,15 +452,17 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 @SuppressWarnings("try")
                 @Override
                 public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
-                    Context span = serviceBusMessageContext.getMessage() != null ? serviceBusMessageContext.getMessage().getContext() : Context.NONE;
+                    Context span = serviceBusMessageContext.getMessage() != null
+                        ? serviceBusMessageContext.getMessage().getContext()
+                        : Context.NONE;
                     Exception exception = null;
                     AutoCloseable scope = tracer.makeSpanCurrent(span);
                     try {
                         if (serviceBusMessageContext.hasError()) {
                             handleError(serviceBusMessageContext.getThrowable());
                         } else {
-                            ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
-                                new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
+                            ServiceBusReceivedMessageContext serviceBusReceivedMessageContext
+                                = new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
 
                             try {
                                 processMessage.accept(serviceBusReceivedMessageContext);
@@ -510,8 +514,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             // the same Bounded-Elastic thread that the Low-Level Receiver obtained. This way, we can avoid
             // the unnecessary thread hopping and allocation that otherwise would have been introduced by the parallel
             // and runOn operators for this code path.
-            receiverClient.receiveMessagesWithContext()
-                .subscribe(subscribers[0]);
+            receiverClient.receiveMessagesWithContext().subscribe(subscribers[0]);
         }
     }
 

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.ResourcePoolInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of resource pools response model. */
+/**
+ * List of resource pools response model.
+ */
 @Fluent
-public final class ResourcePoolsListResponse {
+public final class ResourcePoolsListResponse implements JsonSerializable<ResourcePoolsListResponse> {
     /*
      * Link for next list of ResourcePoolsList
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Results of the Resource pools list
      */
-    @JsonProperty(value = "value")
     private List<ResourcePoolInner> value;
 
-    /** Creates an instance of ResourcePoolsListResponse class. */
+    /**
+     * Creates an instance of ResourcePoolsListResponse class.
+     */
     public ResourcePoolsListResponse() {
     }
 
     /**
      * Get the nextLink property: Link for next list of ResourcePoolsList.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class ResourcePoolsListResponse {
 
     /**
      * Set the nextLink property: Link for next list of ResourcePoolsList.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ResourcePoolsListResponse object itself.
      */
@@ -50,7 +56,7 @@ public final class ResourcePoolsListResponse {
 
     /**
      * Get the value property: Results of the Resource pools list.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourcePoolInner> value() {
@@ -59,7 +65,7 @@ public final class ResourcePoolsListResponse {
 
     /**
      * Set the value property: Results of the Resource pools list.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourcePoolsListResponse object itself.
      */
@@ -70,12 +76,52 @@ public final class ResourcePoolsListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourcePoolsListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourcePoolsListResponse if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourcePoolsListResponse.
+     */
+    public static ResourcePoolsListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourcePoolsListResponse deserializedResourcePoolsListResponse = new ResourcePoolsListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedResourcePoolsListResponse.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<ResourcePoolInner> value = reader.readArray(reader1 -> ResourcePoolInner.fromJson(reader1));
+                    deserializedResourcePoolsListResponse.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourcePoolsListResponse;
+        });
     }
 }

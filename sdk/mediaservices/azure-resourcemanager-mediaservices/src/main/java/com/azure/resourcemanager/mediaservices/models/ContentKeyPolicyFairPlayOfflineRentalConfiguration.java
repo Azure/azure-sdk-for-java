@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ContentKeyPolicyFairPlayOfflineRentalConfiguration model. */
+/**
+ * The ContentKeyPolicyFairPlayOfflineRentalConfiguration model.
+ */
 @Fluent
-public final class ContentKeyPolicyFairPlayOfflineRentalConfiguration {
+public final class ContentKeyPolicyFairPlayOfflineRentalConfiguration
+    implements JsonSerializable<ContentKeyPolicyFairPlayOfflineRentalConfiguration> {
     /*
      * Playback duration
      */
-    @JsonProperty(value = "playbackDurationSeconds", required = true)
     private long playbackDurationSeconds;
 
     /*
      * Storage duration
      */
-    @JsonProperty(value = "storageDurationSeconds", required = true)
     private long storageDurationSeconds;
 
-    /** Creates an instance of ContentKeyPolicyFairPlayOfflineRentalConfiguration class. */
+    /**
+     * Creates an instance of ContentKeyPolicyFairPlayOfflineRentalConfiguration class.
+     */
     public ContentKeyPolicyFairPlayOfflineRentalConfiguration() {
     }
 
     /**
      * Get the playbackDurationSeconds property: Playback duration.
-     *
+     * 
      * @return the playbackDurationSeconds value.
      */
     public long playbackDurationSeconds() {
@@ -37,19 +44,19 @@ public final class ContentKeyPolicyFairPlayOfflineRentalConfiguration {
 
     /**
      * Set the playbackDurationSeconds property: Playback duration.
-     *
+     * 
      * @param playbackDurationSeconds the playbackDurationSeconds value to set.
      * @return the ContentKeyPolicyFairPlayOfflineRentalConfiguration object itself.
      */
-    public ContentKeyPolicyFairPlayOfflineRentalConfiguration withPlaybackDurationSeconds(
-        long playbackDurationSeconds) {
+    public ContentKeyPolicyFairPlayOfflineRentalConfiguration
+        withPlaybackDurationSeconds(long playbackDurationSeconds) {
         this.playbackDurationSeconds = playbackDurationSeconds;
         return this;
     }
 
     /**
      * Get the storageDurationSeconds property: Storage duration.
-     *
+     * 
      * @return the storageDurationSeconds value.
      */
     public long storageDurationSeconds() {
@@ -58,7 +65,7 @@ public final class ContentKeyPolicyFairPlayOfflineRentalConfiguration {
 
     /**
      * Set the storageDurationSeconds property: Storage duration.
-     *
+     * 
      * @param storageDurationSeconds the storageDurationSeconds value to set.
      * @return the ContentKeyPolicyFairPlayOfflineRentalConfiguration object itself.
      */
@@ -69,9 +76,53 @@ public final class ContentKeyPolicyFairPlayOfflineRentalConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("playbackDurationSeconds", this.playbackDurationSeconds);
+        jsonWriter.writeLongField("storageDurationSeconds", this.storageDurationSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicyFairPlayOfflineRentalConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicyFairPlayOfflineRentalConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContentKeyPolicyFairPlayOfflineRentalConfiguration.
+     */
+    public static ContentKeyPolicyFairPlayOfflineRentalConfiguration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicyFairPlayOfflineRentalConfiguration deserializedContentKeyPolicyFairPlayOfflineRentalConfiguration
+                = new ContentKeyPolicyFairPlayOfflineRentalConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("playbackDurationSeconds".equals(fieldName)) {
+                    deserializedContentKeyPolicyFairPlayOfflineRentalConfiguration.playbackDurationSeconds
+                        = reader.getLong();
+                } else if ("storageDurationSeconds".equals(fieldName)) {
+                    deserializedContentKeyPolicyFairPlayOfflineRentalConfiguration.storageDurationSeconds
+                        = reader.getLong();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicyFairPlayOfflineRentalConfiguration;
+        });
     }
 }

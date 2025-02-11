@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The resources of the network function component.
  */
 @Fluent
-public final class Resources {
+public final class Resources implements JsonSerializable<Resources> {
     /*
      * Deployments that are related to component resource.
      */
-    @JsonProperty(value = "deployments")
     private List<Deployment> deployments;
 
     /*
      * Pods related to component resource.
      */
-    @JsonProperty(value = "pods")
     private List<Pod> pods;
 
     /*
      * Replica sets related to component resource.
      */
-    @JsonProperty(value = "replicaSets")
     private List<ReplicaSet> replicaSets;
 
     /*
      * Stateful sets related to component resource.
      */
-    @JsonProperty(value = "statefulSets")
     private List<StatefulSet> statefulSets;
 
     /*
      * Daemonsets related to component resource.
      */
-    @JsonProperty(value = "daemonSets")
     private List<DaemonSet> daemonSets;
 
     /**
@@ -170,5 +169,58 @@ public final class Resources {
         if (daemonSets() != null) {
             daemonSets().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("deployments", this.deployments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("pods", this.pods, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("replicaSets", this.replicaSets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("statefulSets", this.statefulSets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("daemonSets", this.daemonSets, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Resources from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Resources if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Resources.
+     */
+    public static Resources fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Resources deserializedResources = new Resources();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deployments".equals(fieldName)) {
+                    List<Deployment> deployments = reader.readArray(reader1 -> Deployment.fromJson(reader1));
+                    deserializedResources.deployments = deployments;
+                } else if ("pods".equals(fieldName)) {
+                    List<Pod> pods = reader.readArray(reader1 -> Pod.fromJson(reader1));
+                    deserializedResources.pods = pods;
+                } else if ("replicaSets".equals(fieldName)) {
+                    List<ReplicaSet> replicaSets = reader.readArray(reader1 -> ReplicaSet.fromJson(reader1));
+                    deserializedResources.replicaSets = replicaSets;
+                } else if ("statefulSets".equals(fieldName)) {
+                    List<StatefulSet> statefulSets = reader.readArray(reader1 -> StatefulSet.fromJson(reader1));
+                    deserializedResources.statefulSets = statefulSets;
+                } else if ("daemonSets".equals(fieldName)) {
+                    List<DaemonSet> daemonSets = reader.readArray(reader1 -> DaemonSet.fromJson(reader1));
+                    deserializedResources.daemonSets = daemonSets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResources;
+        });
     }
 }

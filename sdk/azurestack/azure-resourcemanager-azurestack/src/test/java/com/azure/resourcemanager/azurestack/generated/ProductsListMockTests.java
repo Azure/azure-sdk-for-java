@@ -6,86 +6,61 @@ package com.azure.resourcemanager.azurestack.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.azurestack.AzureStackManager;
+import com.azure.resourcemanager.azurestack.models.CompatibilityIssue;
 import com.azure.resourcemanager.azurestack.models.Product;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ProductsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"displayName\":\"btn\",\"description\":\"iebwwaloayqcgwrt\",\"publisherDisplayName\":\"uzgwyzmhtx\",\"publisherIdentifier\":\"gmtsavjcbpwxqpsr\",\"offer\":\"ftguv\",\"offerVersion\":\"uhprwmdyvxqt\",\"sku\":\"riwwroy\",\"billingPartNumber\":\"exrmcqibycnojvk\",\"vmExtensionType\":\"e\",\"galleryItemIdentity\":\"sgzvahapjyzhpv\",\"iconUris\":{\"large\":\"cjrvxdjzlmwlxkv\",\"wide\":\"fhzovawjvzunluth\",\"medium\":\"prnxipeil\",\"small\":\"zuaejxd\",\"hero\":\"tskzbbtdzumveek\"},\"links\":[{\"displayName\":\"zuhkfpbsjyof\",\"uri\":\"luu\"},{\"displayName\":\"ttouwaboekqvkel\",\"uri\":\"mvb\"}],\"legalTerms\":\"yjsflhhcaalnji\",\"privacyPolicy\":\"sxyawjoyaqcs\",\"payloadLength\":9075398800966169751,\"productKind\":\"iidzyexzne\",\"productProperties\":{\"version\":\"hnrztfol\"},\"compatibility\":{\"isCompatible\":true,\"message\":\"nalaulppg\",\"description\":\"tpnapnyiropuhpig\",\"issues\":[\"CapacityBillingModelRequired\",\"DevelopmentBillingModelRequired\",\"DisconnectedEnvironmentRequired\",\"DevelopmentBillingModelRequired\"]}},\"etag\":\"itxmedjvcslynqww\",\"id\":\"cwzzhxgktr\",\"name\":\"gucnapkte\",\"type\":\"ellwptfdy\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"cmgyud\",\"description\":\"tlmoyrx\",\"publisherDisplayName\":\"fudwpznt\",\"publisherIdentifier\":\"dzhlrq\",\"offer\":\"hckfrlhrx\",\"offerVersion\":\"kyv\",\"sku\":\"ca\",\"billingPartNumber\":\"z\",\"vmExtensionType\":\"zka\",\"galleryItemIdentity\":\"uwbc\",\"iconUris\":{\"large\":\"bmehh\",\"wide\":\"yvjusrtslhsp\",\"medium\":\"eemaofmxagkvtme\",\"small\":\"qkrhahvljua\",\"hero\":\"quhcdhmduala\"},\"links\":[],\"legalTerms\":\"vfadmws\",\"privacyPolicy\":\"r\",\"payloadLength\":5411587900664634399,\"productKind\":\"gomz\",\"productProperties\":{\"version\":\"isgwbnbbeldawkz\"},\"compatibility\":{\"isCompatible\":false,\"message\":\"urqhaka\",\"description\":\"ashsfwxos\",\"issues\":[]}},\"etag\":\"xcug\",\"id\":\"cjooxdjebwpucwwf\",\"name\":\"ovbvmeueciv\",\"type\":\"hzceuojgjrwjue\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AzureStackManager manager = AzureStackManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Product> response = manager.products().list("c", "wxzvlvqhjkb", com.azure.core.util.Context.NONE);
 
-        AzureStackManager manager =
-            AzureStackManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Product> response =
-            manager.products().list("dsuyonobgla", "cq", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("xcug", response.iterator().next().etag());
-        Assertions.assertEquals("cmgyud", response.iterator().next().displayName());
-        Assertions.assertEquals("tlmoyrx", response.iterator().next().description());
-        Assertions.assertEquals("fudwpznt", response.iterator().next().publisherDisplayName());
-        Assertions.assertEquals("dzhlrq", response.iterator().next().publisherIdentifier());
-        Assertions.assertEquals("hckfrlhrx", response.iterator().next().offer());
-        Assertions.assertEquals("kyv", response.iterator().next().offerVersion());
-        Assertions.assertEquals("ca", response.iterator().next().sku());
-        Assertions.assertEquals("z", response.iterator().next().billingPartNumber());
-        Assertions.assertEquals("zka", response.iterator().next().vmExtensionType());
-        Assertions.assertEquals("uwbc", response.iterator().next().galleryItemIdentity());
-        Assertions.assertEquals("bmehh", response.iterator().next().iconUris().large());
-        Assertions.assertEquals("yvjusrtslhsp", response.iterator().next().iconUris().wide());
-        Assertions.assertEquals("eemaofmxagkvtme", response.iterator().next().iconUris().medium());
-        Assertions.assertEquals("qkrhahvljua", response.iterator().next().iconUris().small());
-        Assertions.assertEquals("quhcdhmduala", response.iterator().next().iconUris().hero());
-        Assertions.assertEquals("vfadmws", response.iterator().next().legalTerms());
-        Assertions.assertEquals("r", response.iterator().next().privacyPolicy());
-        Assertions.assertEquals(5411587900664634399L, response.iterator().next().payloadLength());
-        Assertions.assertEquals("gomz", response.iterator().next().productKind());
-        Assertions.assertEquals("isgwbnbbeldawkz", response.iterator().next().productProperties().version());
-        Assertions.assertEquals(false, response.iterator().next().compatibility().isCompatible());
-        Assertions.assertEquals("urqhaka", response.iterator().next().compatibility().message());
-        Assertions.assertEquals("ashsfwxos", response.iterator().next().compatibility().description());
+        Assertions.assertEquals("itxmedjvcslynqww", response.iterator().next().etag());
+        Assertions.assertEquals("btn", response.iterator().next().displayName());
+        Assertions.assertEquals("iebwwaloayqcgwrt", response.iterator().next().description());
+        Assertions.assertEquals("uzgwyzmhtx", response.iterator().next().publisherDisplayName());
+        Assertions.assertEquals("gmtsavjcbpwxqpsr", response.iterator().next().publisherIdentifier());
+        Assertions.assertEquals("ftguv", response.iterator().next().offer());
+        Assertions.assertEquals("uhprwmdyvxqt", response.iterator().next().offerVersion());
+        Assertions.assertEquals("riwwroy", response.iterator().next().sku());
+        Assertions.assertEquals("exrmcqibycnojvk", response.iterator().next().billingPartNumber());
+        Assertions.assertEquals("e", response.iterator().next().vmExtensionType());
+        Assertions.assertEquals("sgzvahapjyzhpv", response.iterator().next().galleryItemIdentity());
+        Assertions.assertEquals("cjrvxdjzlmwlxkv", response.iterator().next().iconUris().large());
+        Assertions.assertEquals("fhzovawjvzunluth", response.iterator().next().iconUris().wide());
+        Assertions.assertEquals("prnxipeil", response.iterator().next().iconUris().medium());
+        Assertions.assertEquals("zuaejxd", response.iterator().next().iconUris().small());
+        Assertions.assertEquals("tskzbbtdzumveek", response.iterator().next().iconUris().hero());
+        Assertions.assertEquals("zuhkfpbsjyof", response.iterator().next().links().get(0).displayName());
+        Assertions.assertEquals("luu", response.iterator().next().links().get(0).uri());
+        Assertions.assertEquals("yjsflhhcaalnji", response.iterator().next().legalTerms());
+        Assertions.assertEquals("sxyawjoyaqcs", response.iterator().next().privacyPolicy());
+        Assertions.assertEquals(9075398800966169751L, response.iterator().next().payloadLength());
+        Assertions.assertEquals("iidzyexzne", response.iterator().next().productKind());
+        Assertions.assertEquals("hnrztfol", response.iterator().next().productProperties().version());
+        Assertions.assertEquals(true, response.iterator().next().compatibility().isCompatible());
+        Assertions.assertEquals("nalaulppg", response.iterator().next().compatibility().message());
+        Assertions.assertEquals("tpnapnyiropuhpig", response.iterator().next().compatibility().description());
+        Assertions.assertEquals(CompatibilityIssue.CAPACITY_BILLING_MODEL_REQUIRED,
+            response.iterator().next().compatibility().issues().get(0));
     }
 }

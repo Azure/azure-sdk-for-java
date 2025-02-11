@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimPolicyInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response for SIM policies API service call.
  */
 @Fluent
-public final class SimPolicyListResult {
+public final class SimPolicyListResult implements JsonSerializable<SimPolicyListResult> {
     /*
      * A list of SIM policies.
      */
-    @JsonProperty(value = "value")
     private List<SimPolicyInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,44 @@ public final class SimPolicyListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimPolicyListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimPolicyListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SimPolicyListResult.
+     */
+    public static SimPolicyListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimPolicyListResult deserializedSimPolicyListResult = new SimPolicyListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SimPolicyInner> value = reader.readArray(reader1 -> SimPolicyInner.fromJson(reader1));
+                    deserializedSimPolicyListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSimPolicyListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimPolicyListResult;
+        });
     }
 }

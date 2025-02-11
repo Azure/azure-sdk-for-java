@@ -16,8 +16,7 @@ public final class ReservationResponseImpl implements ReservationResponse {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    ReservationResponseImpl(
-        ReservationResponseInner innerObject,
+    ReservationResponseImpl(ReservationResponseInner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

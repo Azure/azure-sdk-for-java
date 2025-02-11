@@ -11,13 +11,15 @@ import com.azure.ai.textanalytics.models.EntityDataSource;
 public final class EntityDataSourcePropertiesHelper {
     private static EntityDataSourceAccessor accessor;
 
-    private EntityDataSourcePropertiesHelper() { }
+    private EntityDataSourcePropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link EntityDataSource} instance.
      */
     public interface EntityDataSourceAccessor {
         void setName(EntityDataSource entityDataSource, String name);
+
         void setEntityId(EntityDataSource entityDataSource, String entityId);
     }
 

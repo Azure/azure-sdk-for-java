@@ -21,8 +21,7 @@ public final class NetworkFabricSkusImpl implements NetworkFabricSkus {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    public NetworkFabricSkusImpl(
-        NetworkFabricSkusClient innerClient,
+    public NetworkFabricSkusImpl(NetworkFabricSkusClient innerClient,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,10 +30,7 @@ public final class NetworkFabricSkusImpl implements NetworkFabricSkus {
     public Response<NetworkFabricSku> getWithResponse(String networkFabricSkuName, Context context) {
         Response<NetworkFabricSkuInner> inner = this.serviceClient().getWithResponse(networkFabricSkuName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkFabricSkuImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,12 +48,12 @@ public final class NetworkFabricSkusImpl implements NetworkFabricSkus {
 
     public PagedIterable<NetworkFabricSku> list() {
         PagedIterable<NetworkFabricSkuInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new NetworkFabricSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkFabricSku> list(Context context) {
         PagedIterable<NetworkFabricSkuInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new NetworkFabricSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricSkuImpl(inner1, this.manager()));
     }
 
     private NetworkFabricSkusClient serviceClient() {

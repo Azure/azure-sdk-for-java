@@ -5,181 +5,157 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A2A protected managed disk details.
  */
 @Fluent
-public final class A2AProtectedManagedDiskDetails {
+public final class A2AProtectedManagedDiskDetails implements JsonSerializable<A2AProtectedManagedDiskDetails> {
     /*
      * The managed disk Arm id.
      */
-    @JsonProperty(value = "diskId")
     private String diskId;
 
     /*
      * The recovery disk resource group Arm Id.
      */
-    @JsonProperty(value = "recoveryResourceGroupId")
     private String recoveryResourceGroupId;
 
     /*
      * Recovery target disk Arm Id.
      */
-    @JsonProperty(value = "recoveryTargetDiskId")
     private String recoveryTargetDiskId;
 
     /*
      * Recovery replica disk Arm Id.
      */
-    @JsonProperty(value = "recoveryReplicaDiskId")
     private String recoveryReplicaDiskId;
 
     /*
      * Recovery original target disk Arm Id.
      */
-    @JsonProperty(value = "recoveryOrignalTargetDiskId")
     private String recoveryOrignalTargetDiskId;
 
     /*
      * The replica disk type. Its an optional value and will be same as source disk type if not user provided.
      */
-    @JsonProperty(value = "recoveryReplicaDiskAccountType")
     private String recoveryReplicaDiskAccountType;
 
     /*
      * The target disk type after failover. Its an optional value and will be same as source disk type if not user
      * provided.
      */
-    @JsonProperty(value = "recoveryTargetDiskAccountType")
     private String recoveryTargetDiskAccountType;
 
     /*
      * The recovery disk encryption set Id.
      */
-    @JsonProperty(value = "recoveryDiskEncryptionSetId")
     private String recoveryDiskEncryptionSetId;
 
     /*
      * The primary disk encryption set Id.
      */
-    @JsonProperty(value = "primaryDiskEncryptionSetId")
     private String primaryDiskEncryptionSetId;
 
     /*
      * The disk name.
      */
-    @JsonProperty(value = "diskName")
     private String diskName;
 
     /*
      * The disk capacity in bytes.
      */
-    @JsonProperty(value = "diskCapacityInBytes")
     private Long diskCapacityInBytes;
 
     /*
      * The primary staging storage account.
      */
-    @JsonProperty(value = "primaryStagingAzureStorageAccountId")
     private String primaryStagingAzureStorageAccountId;
 
     /*
      * The type of disk.
      */
-    @JsonProperty(value = "diskType")
     private String diskType;
 
     /*
      * A value indicating whether resync is required for this disk.
      */
-    @JsonProperty(value = "resyncRequired")
     private Boolean resyncRequired;
 
     /*
      * The percentage of the monitoring job. The type of the monitoring job is defined by MonitoringJobType property.
      */
-    @JsonProperty(value = "monitoringPercentageCompletion")
     private Integer monitoringPercentageCompletion;
 
     /*
      * The type of the monitoring job. The progress is contained in MonitoringPercentageCompletion property.
      */
-    @JsonProperty(value = "monitoringJobType")
     private String monitoringJobType;
 
     /*
      * The data pending for replication in MB at staging account.
      */
-    @JsonProperty(value = "dataPendingInStagingStorageAccountInMB")
     private Double dataPendingInStagingStorageAccountInMB;
 
     /*
      * The data pending at source virtual machine in MB.
      */
-    @JsonProperty(value = "dataPendingAtSourceAgentInMB")
     private Double dataPendingAtSourceAgentInMB;
 
     /*
      * The disk state.
      */
-    @JsonProperty(value = "diskState")
     private String diskState;
 
     /*
      * The disk level operations list.
      */
-    @JsonProperty(value = "allowedDiskLevelOperation")
     private List<String> allowedDiskLevelOperation;
 
     /*
      * A value indicating whether vm has encrypted os disk or not.
      */
-    @JsonProperty(value = "isDiskEncrypted")
     private Boolean isDiskEncrypted;
 
     /*
      * The secret URL / identifier (BEK).
      */
-    @JsonProperty(value = "secretIdentifier")
     private String secretIdentifier;
 
     /*
      * The KeyVault resource id for secret (BEK).
      */
-    @JsonProperty(value = "dekKeyVaultArmId")
     private String dekKeyVaultArmId;
 
     /*
      * A value indicating whether disk key got encrypted or not.
      */
-    @JsonProperty(value = "isDiskKeyEncrypted")
     private Boolean isDiskKeyEncrypted;
 
     /*
      * The key URL / identifier (KEK).
      */
-    @JsonProperty(value = "keyIdentifier")
     private String keyIdentifier;
 
     /*
      * The KeyVault resource id for key (KEK).
      */
-    @JsonProperty(value = "kekKeyVaultArmId")
     private String kekKeyVaultArmId;
 
     /*
      * The failover name for the managed disk.
      */
-    @JsonProperty(value = "failoverDiskName")
     private String failoverDiskName;
 
     /*
      * The test failover name for the managed disk.
      */
-    @JsonProperty(value = "tfoDiskName")
     private String tfoDiskName;
 
     /**
@@ -289,8 +265,8 @@ public final class A2AProtectedManagedDiskDetails {
     }
 
     /**
-     * Get the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same
-     * as source disk type if not user provided.
+     * Get the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same as
+     * source disk type if not user provided.
      * 
      * @return the recoveryReplicaDiskAccountType value.
      */
@@ -299,8 +275,8 @@ public final class A2AProtectedManagedDiskDetails {
     }
 
     /**
-     * Set the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same
-     * as source disk type if not user provided.
+     * Set the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same as
+     * source disk type if not user provided.
      * 
      * @param recoveryReplicaDiskAccountType the recoveryReplicaDiskAccountType value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
@@ -474,8 +450,8 @@ public final class A2AProtectedManagedDiskDetails {
     }
 
     /**
-     * Get the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the
-     * monitoring job is defined by MonitoringJobType property.
+     * Get the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the monitoring
+     * job is defined by MonitoringJobType property.
      * 
      * @return the monitoringPercentageCompletion value.
      */
@@ -484,8 +460,8 @@ public final class A2AProtectedManagedDiskDetails {
     }
 
     /**
-     * Set the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the
-     * monitoring job is defined by MonitoringJobType property.
+     * Set the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the monitoring
+     * job is defined by MonitoringJobType property.
      * 
      * @param monitoringPercentageCompletion the monitoringPercentageCompletion value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
@@ -766,5 +742,133 @@ public final class A2AProtectedManagedDiskDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("recoveryResourceGroupId", this.recoveryResourceGroupId);
+        jsonWriter.writeStringField("recoveryTargetDiskId", this.recoveryTargetDiskId);
+        jsonWriter.writeStringField("recoveryReplicaDiskId", this.recoveryReplicaDiskId);
+        jsonWriter.writeStringField("recoveryOrignalTargetDiskId", this.recoveryOrignalTargetDiskId);
+        jsonWriter.writeStringField("recoveryReplicaDiskAccountType", this.recoveryReplicaDiskAccountType);
+        jsonWriter.writeStringField("recoveryTargetDiskAccountType", this.recoveryTargetDiskAccountType);
+        jsonWriter.writeStringField("recoveryDiskEncryptionSetId", this.recoveryDiskEncryptionSetId);
+        jsonWriter.writeStringField("primaryDiskEncryptionSetId", this.primaryDiskEncryptionSetId);
+        jsonWriter.writeStringField("diskName", this.diskName);
+        jsonWriter.writeNumberField("diskCapacityInBytes", this.diskCapacityInBytes);
+        jsonWriter.writeStringField("primaryStagingAzureStorageAccountId", this.primaryStagingAzureStorageAccountId);
+        jsonWriter.writeStringField("diskType", this.diskType);
+        jsonWriter.writeBooleanField("resyncRequired", this.resyncRequired);
+        jsonWriter.writeNumberField("monitoringPercentageCompletion", this.monitoringPercentageCompletion);
+        jsonWriter.writeStringField("monitoringJobType", this.monitoringJobType);
+        jsonWriter.writeNumberField("dataPendingInStagingStorageAccountInMB",
+            this.dataPendingInStagingStorageAccountInMB);
+        jsonWriter.writeNumberField("dataPendingAtSourceAgentInMB", this.dataPendingAtSourceAgentInMB);
+        jsonWriter.writeStringField("diskState", this.diskState);
+        jsonWriter.writeArrayField("allowedDiskLevelOperation", this.allowedDiskLevelOperation,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isDiskEncrypted", this.isDiskEncrypted);
+        jsonWriter.writeStringField("secretIdentifier", this.secretIdentifier);
+        jsonWriter.writeStringField("dekKeyVaultArmId", this.dekKeyVaultArmId);
+        jsonWriter.writeBooleanField("isDiskKeyEncrypted", this.isDiskKeyEncrypted);
+        jsonWriter.writeStringField("keyIdentifier", this.keyIdentifier);
+        jsonWriter.writeStringField("kekKeyVaultArmId", this.kekKeyVaultArmId);
+        jsonWriter.writeStringField("failoverDiskName", this.failoverDiskName);
+        jsonWriter.writeStringField("tfoDiskName", this.tfoDiskName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AProtectedManagedDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AProtectedManagedDiskDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AProtectedManagedDiskDetails.
+     */
+    public static A2AProtectedManagedDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AProtectedManagedDiskDetails deserializedA2AProtectedManagedDiskDetails
+                = new A2AProtectedManagedDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.diskId = reader.getString();
+                } else if ("recoveryResourceGroupId".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.recoveryResourceGroupId = reader.getString();
+                } else if ("recoveryTargetDiskId".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.recoveryTargetDiskId = reader.getString();
+                } else if ("recoveryReplicaDiskId".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.recoveryReplicaDiskId = reader.getString();
+                } else if ("recoveryOrignalTargetDiskId".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.recoveryOrignalTargetDiskId = reader.getString();
+                } else if ("recoveryReplicaDiskAccountType".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.recoveryReplicaDiskAccountType = reader.getString();
+                } else if ("recoveryTargetDiskAccountType".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.recoveryTargetDiskAccountType = reader.getString();
+                } else if ("recoveryDiskEncryptionSetId".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.recoveryDiskEncryptionSetId = reader.getString();
+                } else if ("primaryDiskEncryptionSetId".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.primaryDiskEncryptionSetId = reader.getString();
+                } else if ("diskName".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.diskName = reader.getString();
+                } else if ("diskCapacityInBytes".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.diskCapacityInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("primaryStagingAzureStorageAccountId".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.primaryStagingAzureStorageAccountId = reader.getString();
+                } else if ("diskType".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.diskType = reader.getString();
+                } else if ("resyncRequired".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.resyncRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("monitoringPercentageCompletion".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.monitoringPercentageCompletion
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("monitoringJobType".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.monitoringJobType = reader.getString();
+                } else if ("dataPendingInStagingStorageAccountInMB".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.dataPendingInStagingStorageAccountInMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("dataPendingAtSourceAgentInMB".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.dataPendingAtSourceAgentInMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("diskState".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.diskState = reader.getString();
+                } else if ("allowedDiskLevelOperation".equals(fieldName)) {
+                    List<String> allowedDiskLevelOperation = reader.readArray(reader1 -> reader1.getString());
+                    deserializedA2AProtectedManagedDiskDetails.allowedDiskLevelOperation = allowedDiskLevelOperation;
+                } else if ("isDiskEncrypted".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.isDiskEncrypted
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("secretIdentifier".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.secretIdentifier = reader.getString();
+                } else if ("dekKeyVaultArmId".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.dekKeyVaultArmId = reader.getString();
+                } else if ("isDiskKeyEncrypted".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.isDiskKeyEncrypted
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("keyIdentifier".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.keyIdentifier = reader.getString();
+                } else if ("kekKeyVaultArmId".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.kekKeyVaultArmId = reader.getString();
+                } else if ("failoverDiskName".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.failoverDiskName = reader.getString();
+                } else if ("tfoDiskName".equals(fieldName)) {
+                    deserializedA2AProtectedManagedDiskDetails.tfoDiskName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AProtectedManagedDiskDetails;
+        });
     }
 }

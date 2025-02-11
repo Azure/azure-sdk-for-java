@@ -17,14 +17,17 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the synchronous PurviewWorkflowClient type. */
+/**
+ * Initializes a new instance of the synchronous PurviewWorkflowClient type.
+ */
 @ServiceClient(builder = WorkflowRunClientBuilder.class)
 public final class WorkflowRunClient {
-    @Generated private final WorkflowRunsOperationsImpl serviceClient;
+    @Generated
+    private final WorkflowRunsOperationsImpl serviceClient;
 
     /**
      * Initializes an instance of WorkflowRunClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -34,10 +37,10 @@ public final class WorkflowRunClient {
 
     /**
      * Get a workflow run.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     workflowId: String (Optional)
@@ -59,8 +62,9 @@ public final class WorkflowRunClient {
      *         actions: Object (Required)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowRunId The workflow run id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -77,15 +81,16 @@ public final class WorkflowRunClient {
 
     /**
      * Cancel a workflow run.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowRunId The workflow run id.
      * @param runCancelReply Reply of canceling a workflow run.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -97,8 +102,8 @@ public final class WorkflowRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelWithResponse(
-            String workflowRunId, BinaryData runCancelReply, RequestOptions requestOptions) {
+    public Response<Void> cancelWithResponse(String workflowRunId, BinaryData runCancelReply,
+        RequestOptions requestOptions) {
         return this.serviceClient.cancelWithResponse(workflowRunId, runCancelReply, requestOptions);
     }
 }

@@ -18,47 +18,35 @@ public final class BlobTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobTrigger model = BinaryData.fromString(
-            "{\"type\":\"BlobTrigger\",\"typeProperties\":{\"folderPath\":\"ym\",\"maxConcurrency\":1812804884,\"linkedService\":{\"referenceName\":\"ztorvwgpjxdii\",\"parameters\":{\"txzvyd\":\"datadzhkbcouavotfm\",\"bjcznx\":\"dataqmlkrxjqp\",\"yu\":\"datahiwaau\",\"onrrarznlr\":\"datajirtiubvyudk\"}}},\"pipelines\":[{\"pipelineReference\":{\"referenceName\":\"xaejbmtou\",\"name\":\"udfhclssedxiigw\"},\"parameters\":{\"vsjaaeds\":\"dataqjpudupish\"}},{\"pipelineReference\":{\"referenceName\":\"dulndywghnptfvol\",\"name\":\"romhsias\"},\"parameters\":{\"kwc\":\"datapelq\",\"xhoqfvuqimdgk\":\"datapmsyhrvifurg\",\"iipnszrrmq\":\"datafghc\"}},{\"pipelineReference\":{\"referenceName\":\"xyawtdsnvxhx\",\"name\":\"decryoffglwmkmb\"},\"parameters\":{\"qicehx\":\"datanxlqnzxsdbfb\",\"ducozdz\":\"dataztffng\",\"bj\":\"datahtfmgpioxzh\"}}],\"description\":\"u\",\"runtimeState\":\"Disabled\",\"annotations\":[\"dataohaeeuotfavmdpep\",\"dataycvwew\",\"datagnpu\",\"datapaqj\"],\"\":{\"xuxregfb\":\"datavjwlrit\",\"mjgtjckf\":\"datafkzpf\",\"xmmpuksvoimdg\":\"dataljrlrkvhgnm\"}}")
+            "{\"type\":\"BlobTrigger\",\"typeProperties\":{\"folderPath\":\"axcbfrnttlrumv\",\"maxConcurrency\":1631960216,\"linkedService\":{\"referenceName\":\"byedcavv\",\"parameters\":{\"mqxbauzvxe\":\"datannhafed\"}}},\"pipelines\":[{\"pipelineReference\":{\"referenceName\":\"mg\",\"name\":\"vmuqxsoc\"},\"parameters\":{\"jpu\":\"datartcifxle\",\"cvsjcdmnvtpb\":\"dataai\",\"wcbnm\":\"datahzcaaqvsdaqfvplf\",\"bbvqsqw\":\"datashmqn\"}}],\"description\":\"xtqdtvejilq\",\"runtimeState\":\"Stopped\",\"annotations\":[\"datarokfyddrsa\"],\"\":{\"vbc\":\"datanweiytkeqjviaws\",\"lmiuprfqyrwtdnr\":\"dataahe\"}}")
             .toObject(BlobTrigger.class);
-        Assertions.assertEquals("u", model.description());
-        Assertions.assertEquals("xaejbmtou", model.pipelines().get(0).pipelineReference().referenceName());
-        Assertions.assertEquals("udfhclssedxiigw", model.pipelines().get(0).pipelineReference().name());
-        Assertions.assertEquals("ym", model.folderPath());
-        Assertions.assertEquals(1812804884, model.maxConcurrency());
-        Assertions.assertEquals("ztorvwgpjxdii", model.linkedService().referenceName());
+        Assertions.assertEquals("xtqdtvejilq", model.description());
+        Assertions.assertEquals("mg", model.pipelines().get(0).pipelineReference().referenceName());
+        Assertions.assertEquals("vmuqxsoc", model.pipelines().get(0).pipelineReference().name());
+        Assertions.assertEquals("axcbfrnttlrumv", model.folderPath());
+        Assertions.assertEquals(1631960216, model.maxConcurrency());
+        Assertions.assertEquals("byedcavv", model.linkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobTrigger model = new BlobTrigger().withDescription("u")
-            .withAnnotations(Arrays.asList("dataohaeeuotfavmdpep", "dataycvwew", "datagnpu", "datapaqj"))
-            .withPipelines(Arrays.asList(
-                new TriggerPipelineReference()
-                    .withPipelineReference(
-                        new PipelineReference().withReferenceName("xaejbmtou").withName("udfhclssedxiigw"))
-                    .withParameters(mapOf("vsjaaeds", "dataqjpudupish")),
-                new TriggerPipelineReference()
-                    .withPipelineReference(
-                        new PipelineReference().withReferenceName("dulndywghnptfvol").withName("romhsias"))
-                    .withParameters(
-                        mapOf("kwc", "datapelq", "xhoqfvuqimdgk", "datapmsyhrvifurg", "iipnszrrmq", "datafghc")),
-                new TriggerPipelineReference()
-                    .withPipelineReference(
-                        new PipelineReference().withReferenceName("xyawtdsnvxhx").withName("decryoffglwmkmb"))
-                    .withParameters(
-                        mapOf("qicehx", "datanxlqnzxsdbfb", "ducozdz", "dataztffng", "bj", "datahtfmgpioxzh"))))
-            .withFolderPath("ym")
-            .withMaxConcurrency(1812804884)
-            .withLinkedService(new LinkedServiceReference().withReferenceName("ztorvwgpjxdii")
-                .withParameters(mapOf("txzvyd", "datadzhkbcouavotfm", "bjcznx", "dataqmlkrxjqp", "yu", "datahiwaau",
-                    "onrrarznlr", "datajirtiubvyudk")));
+        BlobTrigger model = new BlobTrigger().withDescription("xtqdtvejilq")
+            .withAnnotations(Arrays.asList("datarokfyddrsa"))
+            .withPipelines(Arrays.asList(new TriggerPipelineReference()
+                .withPipelineReference(new PipelineReference().withReferenceName("mg").withName("vmuqxsoc"))
+                .withParameters(mapOf("jpu", "datartcifxle", "cvsjcdmnvtpb", "dataai", "wcbnm", "datahzcaaqvsdaqfvplf",
+                    "bbvqsqw", "datashmqn"))))
+            .withFolderPath("axcbfrnttlrumv")
+            .withMaxConcurrency(1631960216)
+            .withLinkedService(new LinkedServiceReference().withReferenceName("byedcavv")
+                .withParameters(mapOf("mqxbauzvxe", "datannhafed")));
         model = BinaryData.fromObject(model).toObject(BlobTrigger.class);
-        Assertions.assertEquals("u", model.description());
-        Assertions.assertEquals("xaejbmtou", model.pipelines().get(0).pipelineReference().referenceName());
-        Assertions.assertEquals("udfhclssedxiigw", model.pipelines().get(0).pipelineReference().name());
-        Assertions.assertEquals("ym", model.folderPath());
-        Assertions.assertEquals(1812804884, model.maxConcurrency());
-        Assertions.assertEquals("ztorvwgpjxdii", model.linkedService().referenceName());
+        Assertions.assertEquals("xtqdtvejilq", model.description());
+        Assertions.assertEquals("mg", model.pipelines().get(0).pipelineReference().referenceName());
+        Assertions.assertEquals("vmuqxsoc", model.pipelines().get(0).pipelineReference().name());
+        Assertions.assertEquals("axcbfrnttlrumv", model.folderPath());
+        Assertions.assertEquals(1631960216, model.maxConcurrency());
+        Assertions.assertEquals("byedcavv", model.linkedService().referenceName());
     }
 
     // Use "Map.of" if available

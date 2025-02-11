@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.edgeorder.fluent.models.OrderResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of orders. */
+/**
+ * List of orders.
+ */
 @Fluent
-public final class OrderResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrderResourceList.class);
-
+public final class OrderResourceList implements JsonSerializable<OrderResourceList> {
     /*
      * List of order resources.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OrderResourceInner> value;
 
     /*
      * Link for the next set of order resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of OrderResourceList class.
+     */
+    public OrderResourceList() {
+    }
+
+    /**
      * Get the value property: List of order resources.
-     *
+     * 
      * @return the value value.
      */
     public List<OrderResourceInner> value() {
@@ -39,7 +45,7 @@ public final class OrderResourceList {
 
     /**
      * Get the nextLink property: Link for the next set of order resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +54,7 @@ public final class OrderResourceList {
 
     /**
      * Set the nextLink property: Link for the next set of order resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OrderResourceList object itself.
      */
@@ -59,12 +65,51 @@ public final class OrderResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrderResourceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrderResourceList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OrderResourceList.
+     */
+    public static OrderResourceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrderResourceList deserializedOrderResourceList = new OrderResourceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<OrderResourceInner> value = reader.readArray(reader1 -> OrderResourceInner.fromJson(reader1));
+                    deserializedOrderResourceList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOrderResourceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrderResourceList;
+        });
     }
 }

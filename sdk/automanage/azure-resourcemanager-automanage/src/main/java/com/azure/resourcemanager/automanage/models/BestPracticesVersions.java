@@ -8,23 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BestPracticesVersions. */
+/**
+ * Resource collection API of BestPracticesVersions.
+ */
 public interface BestPracticesVersions {
     /**
      * Get information about a Automanage best practice version.
-     *
-     * @param bestPracticeName The Automanage best practice name.
-     * @param versionName The Automanage best practice version name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a Automanage best practice version.
-     */
-    BestPractice get(String bestPracticeName, String versionName);
-
-    /**
-     * Get information about a Automanage best practice version.
-     *
+     * 
      * @param bestPracticeName The Automanage best practice name.
      * @param versionName The Automanage best practice version name.
      * @param context The context to associate with this operation.
@@ -36,8 +26,20 @@ public interface BestPracticesVersions {
     Response<BestPractice> getWithResponse(String bestPracticeName, String versionName, Context context);
 
     /**
+     * Get information about a Automanage best practice version.
+     * 
+     * @param bestPracticeName The Automanage best practice name.
+     * @param versionName The Automanage best practice version name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a Automanage best practice version.
+     */
+    BestPractice get(String bestPracticeName, String versionName);
+
+    /**
      * Retrieve a list of Automanage best practices versions.
-     *
+     * 
      * @param bestPracticeName The Automanage best practice name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -48,7 +50,7 @@ public interface BestPracticesVersions {
 
     /**
      * Retrieve a list of Automanage best practices versions.
-     *
+     * 
      * @param bestPracticeName The Automanage best practice name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

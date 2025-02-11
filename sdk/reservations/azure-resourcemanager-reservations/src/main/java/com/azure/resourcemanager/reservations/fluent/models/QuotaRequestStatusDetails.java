@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.reservations.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.models.QuotaRequestState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Quota request status details. */
+/**
+ * Quota request status details.
+ */
 @Immutable
-public final class QuotaRequestStatusDetails {
+public final class QuotaRequestStatusDetails implements JsonSerializable<QuotaRequestStatusDetails> {
     /*
      * The details of the quota request status.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaRequestState provisioningState;
 
     /*
      * A user friendly message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of QuotaRequestStatusDetails class. */
+    /**
+     * Creates an instance of QuotaRequestStatusDetails class.
+     */
     public QuotaRequestStatusDetails() {
     }
 
     /**
      * Get the provisioningState property: The details of the quota request status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public QuotaRequestState provisioningState() {
@@ -38,7 +44,7 @@ public final class QuotaRequestStatusDetails {
 
     /**
      * Get the message property: A user friendly message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -47,9 +53,47 @@ public final class QuotaRequestStatusDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaRequestStatusDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaRequestStatusDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaRequestStatusDetails.
+     */
+    public static QuotaRequestStatusDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaRequestStatusDetails deserializedQuotaRequestStatusDetails = new QuotaRequestStatusDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedQuotaRequestStatusDetails.provisioningState
+                        = QuotaRequestState.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedQuotaRequestStatusDetails.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaRequestStatusDetails;
+        });
     }
 }

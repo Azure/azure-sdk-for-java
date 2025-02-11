@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class SapHanaPartitionSettings implements JsonSerializable<SapHanaPartitionSettings> {
     /*
-     * The name of the column that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The name of the column that will be used for proceeding range partitioning. Type: string (or Expression with
+     * resultType string).
      */
     private Object partitionColumnName;
 

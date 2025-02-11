@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resourcegraph;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -20,20 +20,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class ResourceGraphTests extends TestBase {
+public class ResourceGraphTests extends TestProxyTestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void queryTest() {
         // requires a Azure Subscription
-        String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
+        String subscriptionId
+            = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
 
-        ResourceGraphManager manager = ResourceGraphManager
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+        ResourceGraphManager manager = ResourceGraphManager.authenticate(new DefaultAzureCredentialBuilder().build(),
+            new AzureProfile(AzureEnvironment.AZURE));
 
         // @embedmeStart
-        QueryRequest queryRequest = new QueryRequest()
-            .withSubscriptions(Collections.singletonList(subscriptionId))
+        QueryRequest queryRequest = new QueryRequest().withSubscriptions(Collections.singletonList(subscriptionId))
             .withQuery("Resources | project name, type | limit 5 | order by name asc");
         // table format
         queryRequest.withOptions(new QueryRequestOptions().withResultFormat(ResultFormat.TABLE));

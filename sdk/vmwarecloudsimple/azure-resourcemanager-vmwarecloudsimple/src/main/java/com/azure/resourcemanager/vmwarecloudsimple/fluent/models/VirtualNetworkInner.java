@@ -6,54 +6,56 @@ package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Virtual network model. */
+/**
+ * Virtual network model.
+ */
 @Fluent
-public final class VirtualNetworkInner {
+public final class VirtualNetworkInner implements JsonSerializable<VirtualNetworkInner> {
     /*
      * can be used in vm creation/deletion
      */
-    @JsonProperty(value = "assignable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean assignable;
 
     /*
      * virtual network id (privateCloudId:vsphereId)
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Azure region
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * {VirtualNetworkName}
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Virtual Network properties
      */
-    @JsonProperty(value = "properties")
     private VirtualNetworkProperties innerProperties;
 
     /*
      * {resourceProviderNamespace}/{resourceType}
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of VirtualNetworkInner class. */
+    /**
+     * Creates an instance of VirtualNetworkInner class.
+     */
     public VirtualNetworkInner() {
     }
 
     /**
      * Get the assignable property: can be used in vm creation/deletion.
-     *
+     * 
      * @return the assignable value.
      */
     public Boolean assignable() {
@@ -62,7 +64,7 @@ public final class VirtualNetworkInner {
 
     /**
      * Get the id property: virtual network id (privateCloudId:vsphereId).
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -71,7 +73,7 @@ public final class VirtualNetworkInner {
 
     /**
      * Set the id property: virtual network id (privateCloudId:vsphereId).
-     *
+     * 
      * @param id the id value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -82,7 +84,7 @@ public final class VirtualNetworkInner {
 
     /**
      * Get the location property: Azure region.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -91,7 +93,7 @@ public final class VirtualNetworkInner {
 
     /**
      * Get the name property: {VirtualNetworkName}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -100,7 +102,7 @@ public final class VirtualNetworkInner {
 
     /**
      * Get the innerProperties property: Virtual Network properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualNetworkProperties innerProperties() {
@@ -109,7 +111,7 @@ public final class VirtualNetworkInner {
 
     /**
      * Get the type property: {resourceProviderNamespace}/{resourceType}.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -118,7 +120,7 @@ public final class VirtualNetworkInner {
 
     /**
      * Get the privateCloudId property: The Private Cloud id.
-     *
+     * 
      * @return the privateCloudId value.
      */
     public String privateCloudId() {
@@ -127,14 +129,13 @@ public final class VirtualNetworkInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model VirtualNetworkInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model VirtualNetworkInner"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -142,4 +143,52 @@ public final class VirtualNetworkInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkInner.
+     */
+    public static VirtualNetworkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkInner deserializedVirtualNetworkInner = new VirtualNetworkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.id = reader.getString();
+                } else if ("assignable".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.assignable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.location = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.innerProperties = VirtualNetworkProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkInner;
+        });
+    }
 }

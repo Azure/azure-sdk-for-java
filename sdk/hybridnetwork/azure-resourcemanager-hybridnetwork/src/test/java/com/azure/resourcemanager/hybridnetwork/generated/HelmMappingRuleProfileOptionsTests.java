@@ -26,12 +26,12 @@ public final class HelmMappingRuleProfileOptionsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HelmMappingRuleProfileOptions model
-            = new HelmMappingRuleProfileOptions()
-                .withInstallOptions(new HelmInstallOptions().withAtomic("nsrmffeycx").withWaitOption("tpiymerteea")
-                    .withTimeout("xqiekkkzddrtk"))
-                .withUpgradeOptions(
-                    new HelmUpgradeOptions().withAtomic("jbmxvavre").withWaitOption("eesvecu").withTimeout("pxtxsuwp"));
+        HelmMappingRuleProfileOptions model = new HelmMappingRuleProfileOptions()
+            .withInstallOptions(new HelmInstallOptions().withAtomic("nsrmffeycx")
+                .withWaitOption("tpiymerteea")
+                .withTimeout("xqiekkkzddrtk"))
+            .withUpgradeOptions(
+                new HelmUpgradeOptions().withAtomic("jbmxvavre").withWaitOption("eesvecu").withTimeout("pxtxsuwp"));
         model = BinaryData.fromObject(model).toObject(HelmMappingRuleProfileOptions.class);
         Assertions.assertEquals("nsrmffeycx", model.installOptions().atomic());
         Assertions.assertEquals("tpiymerteea", model.installOptions().waitOption());

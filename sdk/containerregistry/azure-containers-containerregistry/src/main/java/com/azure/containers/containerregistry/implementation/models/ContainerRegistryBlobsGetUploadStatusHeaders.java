@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The ContainerRegistryBlobsGetUploadStatusHeaders model. */
+/**
+ * The ContainerRegistryBlobsGetUploadStatusHeaders model.
+ */
 @Fluent
 public final class ContainerRegistryBlobsGetUploadStatusHeaders {
     /*
@@ -26,7 +28,7 @@ public final class ContainerRegistryBlobsGetUploadStatusHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ContainerRegistryBlobsGetUploadStatusHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsGetUploadStatusHeaders(HttpHeaders rawHeaders) {
@@ -36,7 +38,7 @@ public final class ContainerRegistryBlobsGetUploadStatusHeaders {
 
     /**
      * Get the dockerUploadUUID property: The Docker-Upload-UUID property.
-     *
+     * 
      * @return the dockerUploadUUID value.
      */
     public String getDockerUploadUUID() {
@@ -45,7 +47,7 @@ public final class ContainerRegistryBlobsGetUploadStatusHeaders {
 
     /**
      * Set the dockerUploadUUID property: The Docker-Upload-UUID property.
-     *
+     * 
      * @param dockerUploadUUID the dockerUploadUUID value to set.
      * @return the ContainerRegistryBlobsGetUploadStatusHeaders object itself.
      */
@@ -56,7 +58,7 @@ public final class ContainerRegistryBlobsGetUploadStatusHeaders {
 
     /**
      * Get the range property: The Range property.
-     *
+     * 
      * @return the range value.
      */
     public String getRange() {
@@ -65,7 +67,7 @@ public final class ContainerRegistryBlobsGetUploadStatusHeaders {
 
     /**
      * Set the range property: The Range property.
-     *
+     * 
      * @param range the range value to set.
      * @return the ContainerRegistryBlobsGetUploadStatusHeaders object itself.
      */

@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner;
 import com.azure.resourcemanager.resourcemover.fluent.models.OperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in MoveResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MoveResourcesClient.
+ */
 public interface MoveResourcesClient {
     /**
      * Lists the Move Resources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,11 +33,11 @@ public interface MoveResourcesClient {
 
     /**
      * Lists the Move Resources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param filter The filter to apply on the operation. For example, you can use $filter=Properties/ProvisioningState
-     *     eq 'Succeeded'.
+     * eq 'Succeeded'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,12 +45,12 @@ public interface MoveResourcesClient {
      * @return defines the collection of move resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MoveResourceInner> list(
-        String resourceGroupName, String moveCollectionName, String filter, Context context);
+    PagedIterable<MoveResourceInner> list(String resourceGroupName, String moveCollectionName, String filter,
+        Context context);
 
     /**
      * Creates or updates a Move Resource in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -58,16 +60,16 @@ public interface MoveResourcesClient {
      * @return the {@link SyncPoller} for polling of defines the move resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(
-        String resourceGroupName, String moveCollectionName, String moveResourceName);
+    SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(String resourceGroupName,
+        String moveCollectionName, String moveResourceName);
 
     /**
      * Creates or updates a Move Resource in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
-     * @param body Defines the move resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -75,16 +77,12 @@ public interface MoveResourcesClient {
      * @return the {@link SyncPoller} for polling of defines the move resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(
-        String resourceGroupName,
-        String moveCollectionName,
-        String moveResourceName,
-        MoveResourceInner body,
-        Context context);
+    SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(String resourceGroupName,
+        String moveCollectionName, String moveResourceName, MoveResourceInner body, Context context);
 
     /**
      * Creates or updates a Move Resource in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -98,11 +96,11 @@ public interface MoveResourcesClient {
 
     /**
      * Creates or updates a Move Resource in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
-     * @param body Defines the move resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -110,16 +108,12 @@ public interface MoveResourcesClient {
      * @return defines the move resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MoveResourceInner create(
-        String resourceGroupName,
-        String moveCollectionName,
-        String moveResourceName,
-        MoveResourceInner body,
-        Context context);
+    MoveResourceInner create(String resourceGroupName, String moveCollectionName, String moveResourceName,
+        MoveResourceInner body, Context context);
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -129,12 +123,12 @@ public interface MoveResourcesClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
-        String resourceGroupName, String moveCollectionName, String moveResourceName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(String resourceGroupName,
+        String moveCollectionName, String moveResourceName);
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -145,12 +139,12 @@ public interface MoveResourcesClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(String resourceGroupName,
+        String moveCollectionName, String moveResourceName, Context context);
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -164,7 +158,7 @@ public interface MoveResourcesClient {
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -175,12 +169,12 @@ public interface MoveResourcesClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner delete(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
+    OperationStatusInner delete(String resourceGroupName, String moveCollectionName, String moveResourceName,
+        Context context);
 
     /**
      * Gets the Move Resource.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -191,12 +185,12 @@ public interface MoveResourcesClient {
      * @return the Move Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MoveResourceInner> getWithResponse(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
+    Response<MoveResourceInner> getWithResponse(String resourceGroupName, String moveCollectionName,
+        String moveResourceName, Context context);
 
     /**
      * Gets the Move Resource.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.

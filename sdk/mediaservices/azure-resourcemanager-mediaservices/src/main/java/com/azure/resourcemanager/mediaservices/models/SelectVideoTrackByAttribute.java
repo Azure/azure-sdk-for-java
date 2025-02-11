@@ -6,42 +6,57 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Select video tracks from the input by specifying an attribute and an attribute filter. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.SelectVideoTrackByAttribute")
+/**
+ * Select video tracks from the input by specifying an attribute and an attribute filter.
+ */
 @Fluent
 public final class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.SelectVideoTrackByAttribute";
+
+    /*
      * The TrackAttribute to filter the tracks by.
      */
-    @JsonProperty(value = "attribute", required = true)
     private TrackAttribute attribute;
 
     /*
      * The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks.
      */
-    @JsonProperty(value = "filter", required = true)
     private AttributeFilter filter;
 
     /*
-     * The value to filter the tracks by.  Only used when AttributeFilter.ValueEquals is specified for the Filter
-     * property. For TrackAttribute.Bitrate, this should be an integer value in bits per second (e.g: '1500000').  The
+     * The value to filter the tracks by. Only used when AttributeFilter.ValueEquals is specified for the Filter
+     * property. For TrackAttribute.Bitrate, this should be an integer value in bits per second (e.g: '1500000'). The
      * TrackAttribute.Language is not supported for video tracks.
      */
-    @JsonProperty(value = "filterValue")
     private String filterValue;
 
-    /** Creates an instance of SelectVideoTrackByAttribute class. */
+    /**
+     * Creates an instance of SelectVideoTrackByAttribute class.
+     */
     public SelectVideoTrackByAttribute() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the attribute property: The TrackAttribute to filter the tracks by.
-     *
+     * 
      * @return the attribute value.
      */
     public TrackAttribute attribute() {
@@ -50,7 +65,7 @@ public final class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
 
     /**
      * Set the attribute property: The TrackAttribute to filter the tracks by.
-     *
+     * 
      * @param attribute the attribute value to set.
      * @return the SelectVideoTrackByAttribute object itself.
      */
@@ -62,7 +77,7 @@ public final class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
     /**
      * Get the filter property: The type of AttributeFilter to apply to the TrackAttribute in order to select the
      * tracks.
-     *
+     * 
      * @return the filter value.
      */
     public AttributeFilter filter() {
@@ -72,7 +87,7 @@ public final class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
     /**
      * Set the filter property: The type of AttributeFilter to apply to the TrackAttribute in order to select the
      * tracks.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the SelectVideoTrackByAttribute object itself.
      */
@@ -85,7 +100,7 @@ public final class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
      * Get the filterValue property: The value to filter the tracks by. Only used when AttributeFilter.ValueEquals is
      * specified for the Filter property. For TrackAttribute.Bitrate, this should be an integer value in bits per second
      * (e.g: '1500000'). The TrackAttribute.Language is not supported for video tracks.
-     *
+     * 
      * @return the filterValue value.
      */
     public String filterValue() {
@@ -96,7 +111,7 @@ public final class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
      * Set the filterValue property: The value to filter the tracks by. Only used when AttributeFilter.ValueEquals is
      * specified for the Filter property. For TrackAttribute.Bitrate, this should be an integer value in bits per second
      * (e.g: '1500000'). The TrackAttribute.Language is not supported for video tracks.
-     *
+     * 
      * @param filterValue the filterValue value to set.
      * @return the SelectVideoTrackByAttribute object itself.
      */
@@ -107,25 +122,68 @@ public final class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (attribute() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property attribute in model SelectVideoTrackByAttribute"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property attribute in model SelectVideoTrackByAttribute"));
         }
         if (filter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property filter in model SelectVideoTrackByAttribute"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property filter in model SelectVideoTrackByAttribute"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SelectVideoTrackByAttribute.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("attribute", this.attribute == null ? null : this.attribute.toString());
+        jsonWriter.writeStringField("filter", this.filter == null ? null : this.filter.toString());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("filterValue", this.filterValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SelectVideoTrackByAttribute from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SelectVideoTrackByAttribute if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SelectVideoTrackByAttribute.
+     */
+    public static SelectVideoTrackByAttribute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SelectVideoTrackByAttribute deserializedSelectVideoTrackByAttribute = new SelectVideoTrackByAttribute();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("attribute".equals(fieldName)) {
+                    deserializedSelectVideoTrackByAttribute.attribute = TrackAttribute.fromString(reader.getString());
+                } else if ("filter".equals(fieldName)) {
+                    deserializedSelectVideoTrackByAttribute.filter = AttributeFilter.fromString(reader.getString());
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedSelectVideoTrackByAttribute.odataType = reader.getString();
+                } else if ("filterValue".equals(fieldName)) {
+                    deserializedSelectVideoTrackByAttribute.filterValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSelectVideoTrackByAttribute;
+        });
+    }
 }

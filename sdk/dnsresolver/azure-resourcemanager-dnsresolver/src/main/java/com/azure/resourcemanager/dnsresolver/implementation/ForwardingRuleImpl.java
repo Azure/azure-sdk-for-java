@@ -97,44 +97,28 @@ public final class ForwardingRuleImpl implements ForwardingRule, ForwardingRule.
 
     private ForwardingRulePatch updateParameters;
 
-    public ForwardingRuleImpl withExistingDnsForwardingRuleset(
-        String resourceGroupName, String dnsForwardingRulesetName) {
+    public ForwardingRuleImpl withExistingDnsForwardingRuleset(String resourceGroupName,
+        String dnsForwardingRulesetName) {
         this.resourceGroupName = resourceGroupName;
         this.dnsForwardingRulesetName = dnsForwardingRulesetName;
         return this;
     }
 
     public ForwardingRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getForwardingRules()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    dnsForwardingRulesetName,
-                    forwardingRuleName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getForwardingRules()
+            .createOrUpdateWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName,
+                this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ForwardingRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getForwardingRules()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    dnsForwardingRulesetName,
-                    forwardingRuleName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getForwardingRules()
+            .createOrUpdateWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName,
+                this.innerModel(), createIfMatch, createIfNoneMatch, context)
+            .getValue();
         return this;
     }
 
@@ -153,63 +137,46 @@ public final class ForwardingRuleImpl implements ForwardingRule, ForwardingRule.
     }
 
     public ForwardingRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getForwardingRules()
-                .updateWithResponse(
-                    resourceGroupName,
-                    dnsForwardingRulesetName,
-                    forwardingRuleName,
-                    updateParameters,
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getForwardingRules()
+            .updateWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, updateParameters,
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ForwardingRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getForwardingRules()
-                .updateWithResponse(
-                    resourceGroupName,
-                    dnsForwardingRulesetName,
-                    forwardingRuleName,
-                    updateParameters,
-                    updateIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getForwardingRules()
+            .updateWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, updateParameters,
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    ForwardingRuleImpl(
-        ForwardingRuleInner innerObject, com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
+    ForwardingRuleImpl(ForwardingRuleInner innerObject,
+        com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsForwardingRulesetName = Utils.getValueFromIdByName(innerObject.id(), "dnsForwardingRulesets");
-        this.forwardingRuleName = Utils.getValueFromIdByName(innerObject.id(), "forwardingRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dnsForwardingRulesetName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsForwardingRulesets");
+        this.forwardingRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "forwardingRules");
     }
 
     public ForwardingRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getForwardingRules()
-                .getWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getForwardingRules()
+            .getWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ForwardingRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getForwardingRules()
-                .getWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getForwardingRules()
+            .getWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, context)
+            .getValue();
         return this;
     }
 

@@ -26,7 +26,7 @@ public class ProcessorProperties extends ConsumerProperties implements ServiceBu
 
     /**
      * Set the max concurrent call number.
-     * @param maxConcurrentCalls the max concurrent call number.
+     * @param maxConcurrentCalls the max concurrent call number. When session enabled, it applies to each session.
      */
     public void setMaxConcurrentCalls(Integer maxConcurrentCalls) {
         this.maxConcurrentCalls = maxConcurrentCalls;

@@ -31,23 +31,21 @@ public class ActionGroupsTests extends MonitorManagementTest {
     @Test
     public void canCRUDActionGroups() throws Exception {
 
-        ActionGroup ag =
-            monitorManager
-                .actionGroups()
-                .define("simpleActionGroup")
-                .withNewResourceGroup(rgName, Region.AUSTRALIA_SOUTHEAST)
-                .defineReceiver("first")
-                .withPushNotification("azurepush@outlook.com")
-                .withEmail("justemail@outlook.com")
-                .withSms("1", "4255655665")
-                .withVoice("1", "2062066050")
-                .withWebhook("https://www.rate.am")
-                .attach()
-                .defineReceiver("second")
-                .withEmail("secondemail@outlook.com")
-                .withWebhook("https://www.spyur.am")
-                .attach()
-                .create();
+        ActionGroup ag = monitorManager.actionGroups()
+            .define("simpleActionGroup")
+            .withNewResourceGroup(rgName, Region.AUSTRALIA_SOUTHEAST)
+            .defineReceiver("first")
+            .withPushNotification("azurepush@outlook.com")
+            .withEmail("justemail@outlook.com")
+            .withSms("1", "4255655665")
+            .withVoice("1", "2062066050")
+            .withWebhook("https://www.rate.am")
+            .attach()
+            .defineReceiver("second")
+            .withEmail("secondemail@outlook.com")
+            .withWebhook("https://www.spyur.am")
+            .attach()
+            .create();
         Assertions.assertNotNull(ag);
         Assertions.assertEquals("simpleAction", ag.shortName());
         Assertions.assertNotNull(ag.pushNotificationReceivers());
@@ -63,8 +61,7 @@ public class ActionGroupsTests extends MonitorManagementTest {
         Assertions.assertTrue(ag.emailReceivers().get(0).name().startsWith("first"));
         Assertions.assertTrue(ag.emailReceivers().get(1).name().startsWith("second"));
 
-        ag
-            .update()
+        ag.update()
             .defineReceiver("third")
             .withWebhook("https://www.news.am")
             .attach()
@@ -85,8 +82,7 @@ public class ActionGroupsTests extends MonitorManagementTest {
         Assertions.assertEquals(0, agGet.smsReceivers().size());
 
         if (agGet.emailReceivers().get(0).status() != ReceiverStatus.ENABLED) {
-            monitorManager
-                .actionGroups()
+            monitorManager.actionGroups()
                 .enableReceiver(agGet.resourceGroupName(), agGet.name(), agGet.emailReceivers().get(0).name());
         }
 

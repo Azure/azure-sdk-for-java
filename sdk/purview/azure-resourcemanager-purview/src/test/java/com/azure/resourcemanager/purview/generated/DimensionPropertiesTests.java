@@ -11,26 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class DimensionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DimensionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"edckzywbiexzfey\",\"name\":\"axibxujw\",\"toBeExportedForCustomer\":true}")
-                .toObject(DimensionProperties.class);
-        Assertions.assertEquals("edckzywbiexzfey", model.displayName());
-        Assertions.assertEquals("axibxujw", model.name());
+        DimensionProperties model = BinaryData
+            .fromString("{\"displayName\":\"r\",\"name\":\"ccymvaolpsslql\",\"toBeExportedForCustomer\":true}")
+            .toObject(DimensionProperties.class);
+        Assertions.assertEquals("r", model.displayName());
+        Assertions.assertEquals("ccymvaolpsslql", model.name());
         Assertions.assertEquals(true, model.toBeExportedForCustomer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DimensionProperties model =
-            new DimensionProperties()
-                .withDisplayName("edckzywbiexzfey")
-                .withName("axibxujw")
-                .withToBeExportedForCustomer(true);
+        DimensionProperties model = new DimensionProperties().withDisplayName("r")
+            .withName("ccymvaolpsslql")
+            .withToBeExportedForCustomer(true);
         model = BinaryData.fromObject(model).toObject(DimensionProperties.class);
-        Assertions.assertEquals("edckzywbiexzfey", model.displayName());
-        Assertions.assertEquals("axibxujw", model.name());
+        Assertions.assertEquals("r", model.displayName());
+        Assertions.assertEquals("ccymvaolpsslql", model.name());
         Assertions.assertEquals(true, model.toBeExportedForCustomer());
     }
 }

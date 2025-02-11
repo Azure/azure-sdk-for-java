@@ -13,22 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationNotificationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationNotificationPolicy model =
-            BinaryData
-                .fromString("{\"notificationEndpoints\":[{\"uri\":\"exxppofmxaxcfjp\"},{\"uri\":\"ddtocjjxhvp\"}]}")
-                .toObject(ApplicationNotificationPolicy.class);
+        ApplicationNotificationPolicy model = BinaryData
+            .fromString("{\"notificationEndpoints\":[{\"uri\":\"exxppofmxaxcfjp\"},{\"uri\":\"ddtocjjxhvp\"}]}")
+            .toObject(ApplicationNotificationPolicy.class);
         Assertions.assertEquals("exxppofmxaxcfjp", model.notificationEndpoints().get(0).uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationNotificationPolicy model =
-            new ApplicationNotificationPolicy()
-                .withNotificationEndpoints(
-                    Arrays
-                        .asList(
-                            new ApplicationNotificationEndpoint().withUri("exxppofmxaxcfjp"),
-                            new ApplicationNotificationEndpoint().withUri("ddtocjjxhvp")));
+        ApplicationNotificationPolicy model = new ApplicationNotificationPolicy()
+            .withNotificationEndpoints(Arrays.asList(new ApplicationNotificationEndpoint().withUri("exxppofmxaxcfjp"),
+                new ApplicationNotificationEndpoint().withUri("ddtocjjxhvp")));
         model = BinaryData.fromObject(model).toObject(ApplicationNotificationPolicy.class);
         Assertions.assertEquals("exxppofmxaxcfjp", model.notificationEndpoints().get(0).uri());
     }

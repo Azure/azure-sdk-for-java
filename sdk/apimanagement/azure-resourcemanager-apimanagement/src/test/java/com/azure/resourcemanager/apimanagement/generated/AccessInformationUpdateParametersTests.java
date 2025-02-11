@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessInformationUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessInformationUpdateParameters model =
-            BinaryData
-                .fromString("{\"properties\":{\"enabled\":false}}")
-                .toObject(AccessInformationUpdateParameters.class);
+        AccessInformationUpdateParameters model = BinaryData.fromString("{\"properties\":{\"enabled\":false}}")
+            .toObject(AccessInformationUpdateParameters.class);
         Assertions.assertEquals(false, model.enabled());
     }
 

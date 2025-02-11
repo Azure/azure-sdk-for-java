@@ -91,7 +91,7 @@ class AbstractiveSummaryUtilClient {
     }
 
     PollerFlux<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux> abstractiveSummaryAsync(
-            Iterable<TextDocumentInput> documents, AbstractiveSummaryOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, AbstractiveSummaryOptions options, Context context) {
         try {
             checkUnsupportedServiceVersionForAbstractiveSummary();
             inputDocumentsValidation(documents);
@@ -99,47 +99,34 @@ class AbstractiveSummaryUtilClient {
             final Context finalContext = getNotNullContext(context);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
-            return new PollerFlux<>(
-                DEFAULT_POLL_INTERVAL,
-                activationOperation(
-                    service.submitJobWithResponseAsync(
-                        new AnalyzeTextJobsInput()
-                            .setDisplayName(options.getDisplayName())
-                            .setAnalysisInput(
-                                new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
-                            .setTasks(Arrays.asList(
-                                new AbstractiveSummarizationLROTask().setParameters(
-                                    new AbstractiveSummarizationTaskParameters()
-                                        .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                                        .setSentenceCount(options.getSentenceCount())
-                                        .setModelVersion(options.getModelVersion())
-                                        .setLoggingOptOut(options.isServiceLogsDisabled())
-                                ))),
-                        finalContext)
-                        .map(responseBase -> {
-                            final AbstractiveSummaryOperationDetail operationDetail =
-                                new AbstractiveSummaryOperationDetail();
-                            AbstractiveSummaryOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                                parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
-                            return operationDetail;
-                        })
-                ),
-                pollingOperation(
-                    operationId -> service.jobStatusWithResponseAsync(operationId,
-                        finalIncludeStatistics, null, null, finalContext)),
-                cancelOperation(
-                    operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperation(
-                    operationId -> Mono.just(getAbstractiveSummaryPagedFlux(operationId, null, null,
-                        finalIncludeStatistics, finalContext)))
-            );
+            return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
+                activationOperation(service.submitJobWithResponseAsync(new AnalyzeTextJobsInput()
+                    .setDisplayName(options.getDisplayName())
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(Arrays.asList(new AbstractiveSummarizationLROTask().setParameters(
+                        new AbstractiveSummarizationTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                            .setSentenceCount(options.getSentenceCount())
+                            .setModelVersion(options.getModelVersion())
+                            .setLoggingOptOut(options.isServiceLogsDisabled())))),
+                    finalContext).map(responseBase -> {
+                        final AbstractiveSummaryOperationDetail operationDetail
+                            = new AbstractiveSummaryOperationDetail();
+                        AbstractiveSummaryOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                            parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
+                        return operationDetail;
+                    })),
+                pollingOperation(operationId -> service.jobStatusWithResponseAsync(operationId, finalIncludeStatistics,
+                    null, null, finalContext)),
+                cancelOperation(operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
+                fetchingOperation(operationId -> Mono.just(
+                    getAbstractiveSummaryPagedFlux(operationId, null, null, finalIncludeStatistics, finalContext))));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
     }
 
     SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable> abstractiveSummaryPagedIterable(
-            Iterable<TextDocumentInput> documents, AbstractiveSummaryOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, AbstractiveSummaryOptions options, Context context) {
         try {
             checkUnsupportedServiceVersionForAbstractiveSummary();
             inputDocumentsValidation(documents);
@@ -149,42 +136,37 @@ class AbstractiveSummaryUtilClient {
             final String displayName = options.getDisplayName();
 
             final AbstractiveSummarizationLROTask task = new AbstractiveSummarizationLROTask().setParameters(
-                new AbstractiveSummarizationTaskParameters()
-                    .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                new AbstractiveSummarizationTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                     .setSentenceCount(options.getSentenceCount())
                     .setModelVersion(options.getModelVersion())
                     .setLoggingOptOut(options.isServiceLogsDisabled()));
-            return SyncPoller.createPoller(
-                DEFAULT_POLL_INTERVAL,
+            return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
                 cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     activationOperationSync(documents, task, displayName, finalContext).apply(cxt)),
-                pollingOperationSync(operationId -> service.jobStatusWithResponse(operationId,
-                    finalIncludeStatistics, null, null, finalContext)),
+                pollingOperationSync(operationId -> service.jobStatusWithResponse(operationId, finalIncludeStatistics,
+                    null, null, finalContext)),
                 cancelOperationSync(operationId -> service.cancelJobWithResponse(operationId, finalContext)),
-                fetchingOperationIterable(
-                    operationId -> getAbstractiveSummaryPagedIterable(operationId, null, null,
-                        finalIncludeStatistics, finalContext)));
+                fetchingOperationIterable(operationId -> getAbstractiveSummaryPagedIterable(operationId, null, null,
+                    finalIncludeStatistics, finalContext)));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
-    AbstractiveSummaryPagedFlux getAbstractiveSummaryPagedFlux(
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new AbstractiveSummaryPagedFlux(
-            () -> (continuationToken, pageSize) ->
-                getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
+    AbstractiveSummaryPagedFlux getAbstractiveSummaryPagedFlux(UUID operationId, Integer top, Integer skip,
+        boolean showStats, Context context) {
+        return new AbstractiveSummaryPagedFlux(() -> (continuationToken,
+            pageSize) -> getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
     }
 
-    AbstractiveSummaryPagedIterable getAbstractiveSummaryPagedIterable(
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new AbstractiveSummaryPagedIterable(
-            () -> (continuationToken, pageSize) ->
-                getPagedResultSync(continuationToken, operationId, top, skip, showStats, context));
+    AbstractiveSummaryPagedIterable getAbstractiveSummaryPagedIterable(UUID operationId, Integer top, Integer skip,
+        boolean showStats, Context context) {
+        return new AbstractiveSummaryPagedIterable(() -> (continuationToken,
+            pageSize) -> getPagedResultSync(continuationToken, operationId, top, skip, showStats, context));
     }
 
-    Mono<PagedResponse<AbstractiveSummaryResultCollection>> getPagedResult(String continuationToken,
-                                                                           UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
+    Mono<PagedResponse<AbstractiveSummaryResultCollection>> getPagedResult(String continuationToken, UUID operationId,
+        Integer top, Integer skip, boolean showStats, Context context) {
         try {
             if (continuationToken != null) {
                 final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
@@ -200,8 +182,8 @@ class AbstractiveSummaryUtilClient {
         }
     }
 
-    PagedResponse<AbstractiveSummaryResultCollection> getPagedResultSync(String continuationToken,
-                                                                         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
+    PagedResponse<AbstractiveSummaryResultCollection> getPagedResultSync(String continuationToken, UUID operationId,
+        Integer top, Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
             top = getTopContinuesToken(continuationTokenMap);
@@ -212,8 +194,8 @@ class AbstractiveSummaryUtilClient {
             service.jobStatusWithResponse(operationId, showStats, top, skip, context));
     }
 
-    private PagedResponse<AbstractiveSummaryResultCollection> toAbstractiveSummaryResultCollectionPagedResponse(
-        Response<AnalyzeTextJobState> response) {
+    private PagedResponse<AbstractiveSummaryResultCollection>
+        toAbstractiveSummaryResultCollectionPagedResponse(Response<AnalyzeTextJobState> response) {
 
         final AnalyzeTextJobState jobState = response.getValue();
         final List<AnalyzeTextLROResult> lroResults = jobState.getTasks().getItems();
@@ -221,49 +203,44 @@ class AbstractiveSummaryUtilClient {
         final AbstractiveSummarizationResult abstractiveSummarizationResult;
         final AnalyzeTextLROResult lroResult = lroResults.get(0);
         if (lroResult instanceof AbstractiveSummarizationLROResult) {
-            AbstractiveSummarizationLROResult abstractiveSummarizationLROResult =
-                (AbstractiveSummarizationLROResult) lroResults.get(0);
+            AbstractiveSummarizationLROResult abstractiveSummarizationLROResult
+                = (AbstractiveSummarizationLROResult) lroResults.get(0);
             abstractiveSummarizationResult = abstractiveSummarizationLROResult.getResults();
         } else {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("Invalid class type returned: " + lroResult.getClass().getName()));
         }
 
-        final AbstractiveSummaryResultCollection abstractiveSummaryResultCollection =
-            toAbstractiveSummaryResultCollection(abstractiveSummarizationResult);
+        final AbstractiveSummaryResultCollection abstractiveSummaryResultCollection
+            = toAbstractiveSummaryResultCollection(abstractiveSummarizationResult);
         final RequestStatistics requestStatistics = abstractiveSummarizationResult.getStatistics();
         if (requestStatistics != null) {
             final TextDocumentBatchStatistics batchStatistic = new TextDocumentBatchStatistics(
                 requestStatistics.getDocumentsCount(), requestStatistics.getValidDocumentsCount(),
                 requestStatistics.getErroneousDocumentsCount(), requestStatistics.getTransactionsCount());
-            AbstractiveSummaryResultCollectionPropertiesHelper.setStatistics(
-                abstractiveSummaryResultCollection, batchStatistic);
+            AbstractiveSummaryResultCollectionPropertiesHelper.setStatistics(abstractiveSummaryResultCollection,
+                batchStatistic);
         }
 
         final List<Error> errors = jobState.getErrors();
 
         if (!CoreUtils.isNullOrEmpty(errors)) {
-            final TextAnalyticsException textAnalyticsException = new TextAnalyticsException(
-                "Abstractive summary operation failed", null, null);
-            final IterableStream<TextAnalyticsError> textAnalyticsErrors =
-                IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
+            final TextAnalyticsException textAnalyticsException
+                = new TextAnalyticsException("Abstractive summary operation failed", null, null);
+            final IterableStream<TextAnalyticsError> textAnalyticsErrors
+                = IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
             TextAnalyticsExceptionPropertiesHelper.setErrors(textAnalyticsException, textAnalyticsErrors);
             throw LOGGER.logExceptionAsError(textAnalyticsException);
         }
 
-        return new PagedResponseBase<Void, AbstractiveSummaryResultCollection>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            Arrays.asList(abstractiveSummaryResultCollection),
-            jobState.getNextLink(),
-            null);
+        return new PagedResponseBase<Void, AbstractiveSummaryResultCollection>(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(), Arrays.asList(abstractiveSummaryResultCollection),
+            jobState.getNextLink(), null);
     }
 
     // Activation operation
-    private Function<PollingContext<AbstractiveSummaryOperationDetail>,
-        Mono<AbstractiveSummaryOperationDetail>> activationOperation(
-        Mono<AbstractiveSummaryOperationDetail> operationResult) {
+    private Function<PollingContext<AbstractiveSummaryOperationDetail>, Mono<AbstractiveSummaryOperationDetail>>
+        activationOperation(Mono<AbstractiveSummaryOperationDetail> operationResult) {
         return pollingContext -> {
             try {
                 return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -275,16 +252,12 @@ class AbstractiveSummaryUtilClient {
 
     private Function<PollingContext<AbstractiveSummaryOperationDetail>, AbstractiveSummaryOperationDetail>
         activationOperationSync(Iterable<TextDocumentInput> documents, AnalyzeTextLROTask task, String displayName,
-        Context context) {
+            Context context) {
         return pollingContext -> {
-            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
-                service.submitJobWithResponse(
-                    new AnalyzeTextJobsInput()
-                        .setDisplayName(displayName)
-                        .setAnalysisInput(new MultiLanguageAnalysisInput()
-                            .setDocuments(toMultiLanguageInput(documents)))
-                        .setTasks(Arrays.asList(task)),
-                    context);
+            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse
+                = service.submitJobWithResponse(new AnalyzeTextJobsInput().setDisplayName(displayName)
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(Arrays.asList(task)), context);
             final AbstractiveSummaryOperationDetail operationDetail = new AbstractiveSummaryOperationDetail();
             AbstractiveSummaryOperationDetailPropertiesHelper.setOperationId(operationDetail,
                 parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
@@ -293,17 +266,17 @@ class AbstractiveSummaryUtilClient {
     }
 
     // Polling operation
-    private Function<PollingContext<AbstractiveSummaryOperationDetail>,
-        Mono<PollResponse<AbstractiveSummaryOperationDetail>>> pollingOperation(
-        Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
+    private
+        Function<PollingContext<AbstractiveSummaryOperationDetail>, Mono<PollResponse<AbstractiveSummaryOperationDetail>>>
+        pollingOperation(Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<AbstractiveSummaryOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                final PollResponse<AbstractiveSummaryOperationDetail> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(operationId)
-                    .flatMap(modelResponse ->
-                        Mono.just(processAnalyzeTextModelResponse(modelResponse, operationResultPollResponse)))
+                    .flatMap(modelResponse -> Mono
+                        .just(processAnalyzeTextModelResponse(modelResponse, operationResultPollResponse)))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
@@ -311,12 +284,11 @@ class AbstractiveSummaryUtilClient {
         };
     }
 
-    private Function<PollingContext<AbstractiveSummaryOperationDetail>,
-        PollResponse<AbstractiveSummaryOperationDetail>> pollingOperationSync(
-        Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
+    private Function<PollingContext<AbstractiveSummaryOperationDetail>, PollResponse<AbstractiveSummaryOperationDetail>>
+        pollingOperationSync(Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
         return pollingContext -> {
-            final PollResponse<AbstractiveSummaryOperationDetail> operationResultPollResponse =
-                pollingContext.getLatestResponse();
+            final PollResponse<AbstractiveSummaryOperationDetail> operationResultPollResponse
+                = pollingContext.getLatestResponse();
             final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
             return processAnalyzeTextModelResponse(pollingFunction.apply(operationId), operationResultPollResponse);
         };
@@ -344,30 +316,27 @@ class AbstractiveSummaryUtilClient {
     }
 
     // Cancel operation
-    private BiFunction<PollingContext<AbstractiveSummaryOperationDetail>,
-        PollResponse<AbstractiveSummaryOperationDetail>,
-        Mono<AbstractiveSummaryOperationDetail>> cancelOperation(
-        Function<UUID, Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>>> cancelFunction) {
+    private
+        BiFunction<PollingContext<AbstractiveSummaryOperationDetail>, PollResponse<AbstractiveSummaryOperationDetail>, Mono<AbstractiveSummaryOperationDetail>>
+        cancelOperation(Function<UUID, Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             try {
-                return cancelFunction.apply(resultUuid)
-                    .map(cancelJobResponse -> {
-                        final AbstractiveSummaryOperationDetail operationResult = new AbstractiveSummaryOperationDetail();
-                        AbstractiveSummaryOperationDetailPropertiesHelper.setOperationId(operationResult,
-                            parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
-                        return operationResult;
-                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                return cancelFunction.apply(resultUuid).map(cancelJobResponse -> {
+                    final AbstractiveSummaryOperationDetail operationResult = new AbstractiveSummaryOperationDetail();
+                    AbstractiveSummaryOperationDetailPropertiesHelper.setOperationId(operationResult,
+                        parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
+                    return operationResult;
+                }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
             }
         };
     }
 
-    private BiFunction<PollingContext<AbstractiveSummaryOperationDetail>,
-        PollResponse<AbstractiveSummaryOperationDetail>,
-        AbstractiveSummaryOperationDetail> cancelOperationSync(
-        Function<UUID, ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelFunction) {
+    private
+        BiFunction<PollingContext<AbstractiveSummaryOperationDetail>, PollResponse<AbstractiveSummaryOperationDetail>, AbstractiveSummaryOperationDetail>
+        cancelOperationSync(Function<UUID, ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobResponse = cancelFunction.apply(resultUuid);
@@ -390,15 +359,15 @@ class AbstractiveSummaryUtilClient {
         } else if (CANCELLED.equals(state)) {
             status = LongRunningOperationStatus.USER_CANCELLED;
         } else {
-            status = LongRunningOperationStatus.fromString(
-                analyzeOperationResultResponse.getValue().getStatus().toString(), true);
+            status = LongRunningOperationStatus
+                .fromString(analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
         AbstractiveSummaryOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getDisplayName());
         AbstractiveSummaryOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getCreatedDateTime());
-        AbstractiveSummaryOperationDetailPropertiesHelper.setLastModifiedAt(
-            operationResultPollResponse.getValue(), analyzeOperationResultResponse.getValue().getLastUpdatedDateTime());
+        AbstractiveSummaryOperationDetailPropertiesHelper.setLastModifiedAt(operationResultPollResponse.getValue(),
+            analyzeOperationResultResponse.getValue().getLastUpdatedDateTime());
         AbstractiveSummaryOperationDetailPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getExpirationDateTime());
         return new PollResponse<>(status, operationResultPollResponse.getValue());

@@ -119,7 +119,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        jsonWriter.writeJsonField("display", this.display);
         return jsonWriter.writeEndObject();
     }
 

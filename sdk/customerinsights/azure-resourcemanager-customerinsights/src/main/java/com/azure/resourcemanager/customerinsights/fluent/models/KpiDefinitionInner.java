@@ -6,6 +6,10 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.CalculationWindowTypes;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
 import com.azure.resourcemanager.customerinsights.models.KpiAlias;
@@ -15,137 +19,119 @@ import com.azure.resourcemanager.customerinsights.models.KpiGroupByMetadata;
 import com.azure.resourcemanager.customerinsights.models.KpiParticipantProfilesMetadata;
 import com.azure.resourcemanager.customerinsights.models.KpiThresholds;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Defines the KPI Threshold limits. */
+/**
+ * Defines the KPI Threshold limits.
+ */
 @Fluent
-public class KpiDefinitionInner {
+public class KpiDefinitionInner implements JsonSerializable<KpiDefinitionInner> {
     /*
      * The mapping entity type.
      */
-    @JsonProperty(value = "entityType", required = true)
     private EntityTypes entityType;
 
     /*
      * The mapping entity name.
      */
-    @JsonProperty(value = "entityTypeName", required = true)
     private String entityTypeName;
 
     /*
      * The hub name.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * The KPI name.
      */
-    @JsonProperty(value = "kpiName", access = JsonProperty.Access.WRITE_ONLY)
     private String kpiName;
 
     /*
      * Localized display name for the KPI.
      */
-    @JsonProperty(value = "displayName")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Localized description for the KPI.
      */
-    @JsonProperty(value = "description")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
 
     /*
      * The calculation window.
      */
-    @JsonProperty(value = "calculationWindow", required = true)
     private CalculationWindowTypes calculationWindow;
 
     /*
      * Name of calculation window field.
      */
-    @JsonProperty(value = "calculationWindowFieldName")
     private String calculationWindowFieldName;
 
     /*
      * The computation function for the KPI.
      */
-    @JsonProperty(value = "function", required = true)
     private KpiFunctions function;
 
     /*
      * The computation expression for the KPI.
      */
-    @JsonProperty(value = "expression", required = true)
     private String expression;
 
     /*
      * The unit of measurement for the KPI.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * The filter expression for the KPI.
      */
-    @JsonProperty(value = "filter")
     private String filter;
 
     /*
      * the group by properties for the KPI.
      */
-    @JsonProperty(value = "groupBy")
     private List<String> groupBy;
 
     /*
      * The KPI GroupByMetadata.
      */
-    @JsonProperty(value = "groupByMetadata", access = JsonProperty.Access.WRITE_ONLY)
     private List<KpiGroupByMetadata> groupByMetadata;
 
     /*
      * The participant profiles.
      */
-    @JsonProperty(value = "participantProfilesMetadata", access = JsonProperty.Access.WRITE_ONLY)
     private List<KpiParticipantProfilesMetadata> participantProfilesMetadata;
 
     /*
      * Provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /*
      * The KPI thresholds.
      */
-    @JsonProperty(value = "thresHolds")
     private KpiThresholds thresHolds;
 
     /*
      * The aliases.
      */
-    @JsonProperty(value = "aliases")
     private List<KpiAlias> aliases;
 
     /*
      * The KPI extracts.
      */
-    @JsonProperty(value = "extracts")
     private List<KpiExtract> extracts;
 
-    /** Creates an instance of KpiDefinitionInner class. */
+    /**
+     * Creates an instance of KpiDefinitionInner class.
+     */
     public KpiDefinitionInner() {
     }
 
     /**
      * Get the entityType property: The mapping entity type.
-     *
+     * 
      * @return the entityType value.
      */
     public EntityTypes entityType() {
@@ -154,7 +140,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the entityType property: The mapping entity type.
-     *
+     * 
      * @param entityType the entityType value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -165,7 +151,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the entityTypeName property: The mapping entity name.
-     *
+     * 
      * @return the entityTypeName value.
      */
     public String entityTypeName() {
@@ -174,7 +160,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the entityTypeName property: The mapping entity name.
-     *
+     * 
      * @param entityTypeName the entityTypeName value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -185,7 +171,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -193,8 +179,19 @@ public class KpiDefinitionInner {
     }
 
     /**
+     * Set the tenantId property: The hub name.
+     * 
+     * @param tenantId the tenantId value to set.
+     * @return the KpiDefinitionInner object itself.
+     */
+    KpiDefinitionInner withTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
      * Get the kpiName property: The KPI name.
-     *
+     * 
      * @return the kpiName value.
      */
     public String kpiName() {
@@ -202,8 +199,19 @@ public class KpiDefinitionInner {
     }
 
     /**
+     * Set the kpiName property: The KPI name.
+     * 
+     * @param kpiName the kpiName value to set.
+     * @return the KpiDefinitionInner object itself.
+     */
+    KpiDefinitionInner withKpiName(String kpiName) {
+        this.kpiName = kpiName;
+        return this;
+    }
+
+    /**
      * Get the displayName property: Localized display name for the KPI.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -212,7 +220,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the displayName property: Localized display name for the KPI.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -223,7 +231,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the description property: Localized description for the KPI.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -232,7 +240,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the description property: Localized description for the KPI.
-     *
+     * 
      * @param description the description value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -243,7 +251,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the calculationWindow property: The calculation window.
-     *
+     * 
      * @return the calculationWindow value.
      */
     public CalculationWindowTypes calculationWindow() {
@@ -252,7 +260,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the calculationWindow property: The calculation window.
-     *
+     * 
      * @param calculationWindow the calculationWindow value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -263,7 +271,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the calculationWindowFieldName property: Name of calculation window field.
-     *
+     * 
      * @return the calculationWindowFieldName value.
      */
     public String calculationWindowFieldName() {
@@ -272,7 +280,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the calculationWindowFieldName property: Name of calculation window field.
-     *
+     * 
      * @param calculationWindowFieldName the calculationWindowFieldName value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -283,7 +291,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the function property: The computation function for the KPI.
-     *
+     * 
      * @return the function value.
      */
     public KpiFunctions function() {
@@ -292,7 +300,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the function property: The computation function for the KPI.
-     *
+     * 
      * @param function the function value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -303,7 +311,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the expression property: The computation expression for the KPI.
-     *
+     * 
      * @return the expression value.
      */
     public String expression() {
@@ -312,7 +320,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the expression property: The computation expression for the KPI.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -323,7 +331,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the unit property: The unit of measurement for the KPI.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -332,7 +340,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the unit property: The unit of measurement for the KPI.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -343,7 +351,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the filter property: The filter expression for the KPI.
-     *
+     * 
      * @return the filter value.
      */
     public String filter() {
@@ -352,7 +360,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the filter property: The filter expression for the KPI.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -363,7 +371,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the groupBy property: the group by properties for the KPI.
-     *
+     * 
      * @return the groupBy value.
      */
     public List<String> groupBy() {
@@ -372,7 +380,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the groupBy property: the group by properties for the KPI.
-     *
+     * 
      * @param groupBy the groupBy value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -383,7 +391,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the groupByMetadata property: The KPI GroupByMetadata.
-     *
+     * 
      * @return the groupByMetadata value.
      */
     public List<KpiGroupByMetadata> groupByMetadata() {
@@ -391,8 +399,19 @@ public class KpiDefinitionInner {
     }
 
     /**
+     * Set the groupByMetadata property: The KPI GroupByMetadata.
+     * 
+     * @param groupByMetadata the groupByMetadata value to set.
+     * @return the KpiDefinitionInner object itself.
+     */
+    KpiDefinitionInner withGroupByMetadata(List<KpiGroupByMetadata> groupByMetadata) {
+        this.groupByMetadata = groupByMetadata;
+        return this;
+    }
+
+    /**
      * Get the participantProfilesMetadata property: The participant profiles.
-     *
+     * 
      * @return the participantProfilesMetadata value.
      */
     public List<KpiParticipantProfilesMetadata> participantProfilesMetadata() {
@@ -400,8 +419,20 @@ public class KpiDefinitionInner {
     }
 
     /**
+     * Set the participantProfilesMetadata property: The participant profiles.
+     * 
+     * @param participantProfilesMetadata the participantProfilesMetadata value to set.
+     * @return the KpiDefinitionInner object itself.
+     */
+    KpiDefinitionInner
+        withParticipantProfilesMetadata(List<KpiParticipantProfilesMetadata> participantProfilesMetadata) {
+        this.participantProfilesMetadata = participantProfilesMetadata;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -409,8 +440,19 @@ public class KpiDefinitionInner {
     }
 
     /**
+     * Set the provisioningState property: Provisioning state.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the KpiDefinitionInner object itself.
+     */
+    KpiDefinitionInner withProvisioningState(ProvisioningStates provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the thresHolds property: The KPI thresholds.
-     *
+     * 
      * @return the thresHolds value.
      */
     public KpiThresholds thresHolds() {
@@ -419,7 +461,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the thresHolds property: The KPI thresholds.
-     *
+     * 
      * @param thresHolds the thresHolds value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -430,7 +472,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the aliases property: The aliases.
-     *
+     * 
      * @return the aliases value.
      */
     public List<KpiAlias> aliases() {
@@ -439,7 +481,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the aliases property: The aliases.
-     *
+     * 
      * @param aliases the aliases value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -450,7 +492,7 @@ public class KpiDefinitionInner {
 
     /**
      * Get the extracts property: The KPI extracts.
-     *
+     * 
      * @return the extracts value.
      */
     public List<KpiExtract> extracts() {
@@ -459,7 +501,7 @@ public class KpiDefinitionInner {
 
     /**
      * Set the extracts property: The KPI extracts.
-     *
+     * 
      * @param extracts the extracts value to set.
      * @return the KpiDefinitionInner object itself.
      */
@@ -470,36 +512,31 @@ public class KpiDefinitionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (entityType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property entityType in model KpiDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property entityType in model KpiDefinitionInner"));
         }
         if (entityTypeName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property entityTypeName in model KpiDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property entityTypeName in model KpiDefinitionInner"));
         }
         if (calculationWindow() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property calculationWindow in model KpiDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property calculationWindow in model KpiDefinitionInner"));
         }
         if (function() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property function in model KpiDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property function in model KpiDefinitionInner"));
         }
         if (expression() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property expression in model KpiDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property expression in model KpiDefinitionInner"));
         }
         if (groupByMetadata() != null) {
             groupByMetadata().forEach(e -> e.validate());
@@ -519,4 +556,102 @@ public class KpiDefinitionInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KpiDefinitionInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entityType", this.entityType == null ? null : this.entityType.toString());
+        jsonWriter.writeStringField("entityTypeName", this.entityTypeName);
+        jsonWriter.writeStringField("calculationWindow",
+            this.calculationWindow == null ? null : this.calculationWindow.toString());
+        jsonWriter.writeStringField("function", this.function == null ? null : this.function.toString());
+        jsonWriter.writeStringField("expression", this.expression);
+        jsonWriter.writeMapField("displayName", this.displayName, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("description", this.description, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("calculationWindowFieldName", this.calculationWindowFieldName);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("filter", this.filter);
+        jsonWriter.writeArrayField("groupBy", this.groupBy, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("thresHolds", this.thresHolds);
+        jsonWriter.writeArrayField("aliases", this.aliases, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extracts", this.extracts, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KpiDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KpiDefinitionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KpiDefinitionInner.
+     */
+    public static KpiDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KpiDefinitionInner deserializedKpiDefinitionInner = new KpiDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityType".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.entityType = EntityTypes.fromString(reader.getString());
+                } else if ("entityTypeName".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.entityTypeName = reader.getString();
+                } else if ("calculationWindow".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.calculationWindow
+                        = CalculationWindowTypes.fromString(reader.getString());
+                } else if ("function".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.function = KpiFunctions.fromString(reader.getString());
+                } else if ("expression".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.expression = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.tenantId = reader.getString();
+                } else if ("kpiName".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.kpiName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKpiDefinitionInner.displayName = displayName;
+                } else if ("description".equals(fieldName)) {
+                    Map<String, String> description = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKpiDefinitionInner.description = description;
+                } else if ("calculationWindowFieldName".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.calculationWindowFieldName = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.unit = reader.getString();
+                } else if ("filter".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.filter = reader.getString();
+                } else if ("groupBy".equals(fieldName)) {
+                    List<String> groupBy = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKpiDefinitionInner.groupBy = groupBy;
+                } else if ("groupByMetadata".equals(fieldName)) {
+                    List<KpiGroupByMetadata> groupByMetadata
+                        = reader.readArray(reader1 -> KpiGroupByMetadata.fromJson(reader1));
+                    deserializedKpiDefinitionInner.groupByMetadata = groupByMetadata;
+                } else if ("participantProfilesMetadata".equals(fieldName)) {
+                    List<KpiParticipantProfilesMetadata> participantProfilesMetadata
+                        = reader.readArray(reader1 -> KpiParticipantProfilesMetadata.fromJson(reader1));
+                    deserializedKpiDefinitionInner.participantProfilesMetadata = participantProfilesMetadata;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.provisioningState
+                        = ProvisioningStates.fromString(reader.getString());
+                } else if ("thresHolds".equals(fieldName)) {
+                    deserializedKpiDefinitionInner.thresHolds = KpiThresholds.fromJson(reader);
+                } else if ("aliases".equals(fieldName)) {
+                    List<KpiAlias> aliases = reader.readArray(reader1 -> KpiAlias.fromJson(reader1));
+                    deserializedKpiDefinitionInner.aliases = aliases;
+                } else if ("extracts".equals(fieldName)) {
+                    List<KpiExtract> extracts = reader.readArray(reader1 -> KpiExtract.fromJson(reader1));
+                    deserializedKpiDefinitionInner.extracts = extracts;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKpiDefinitionInner;
+        });
+    }
 }

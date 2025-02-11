@@ -18,7 +18,8 @@ public final class DevicesListByDeviceGroupSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void devicesListByDeviceGroup(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.devices().listByDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1",
-            com.azure.core.util.Context.NONE);
+        manager.devices()
+            .listByDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1",
+                com.azure.core.util.Context.NONE);
     }
 }

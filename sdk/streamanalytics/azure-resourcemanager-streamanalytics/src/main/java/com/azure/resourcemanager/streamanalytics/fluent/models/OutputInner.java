@@ -6,13 +6,13 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.Diagnostics;
-import com.azure.resourcemanager.streamanalytics.models.LastOutputEventTimestamp;
 import com.azure.resourcemanager.streamanalytics.models.OutputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.OutputWatermarkProperties;
 import com.azure.resourcemanager.streamanalytics.models.Serialization;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import java.io.IOException;
 
 /**
  * An output object, containing all information associated with the named output. All outputs are contained under a
@@ -23,19 +23,16 @@ public final class OutputInner extends SubResource {
     /*
      * The properties that are associated with an output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private OutputProperties innerProperties;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -210,39 +207,6 @@ public final class OutputInner extends SubResource {
     }
 
     /**
-     * Get the lastOutputEventTimestamps property: A list of the last output event times for each output partition. The
-     * index of the array corresponds to the partition number.
-     * 
-     * @return the lastOutputEventTimestamps value.
-     */
-    public List<LastOutputEventTimestamp> lastOutputEventTimestamps() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastOutputEventTimestamps();
-    }
-
-    /**
-     * Get the watermarkSettings property: Settings which determine whether to send watermarks to downstream.
-     * 
-     * @return the watermarkSettings value.
-     */
-    public OutputWatermarkProperties watermarkSettings() {
-        return this.innerProperties() == null ? null : this.innerProperties().watermarkSettings();
-    }
-
-    /**
-     * Set the watermarkSettings property: Settings which determine whether to send watermarks to downstream.
-     * 
-     * @param watermarkSettings the watermarkSettings value to set.
-     * @return the OutputInner object itself.
-     */
-    public OutputInner withWatermarkSettings(OutputWatermarkProperties watermarkSettings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new OutputProperties();
-        }
-        this.innerProperties().withWatermarkSettings(watermarkSettings);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -251,5 +215,49 @@ public final class OutputInner extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutputInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutputInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OutputInner.
+     */
+    public static OutputInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutputInner deserializedOutputInner = new OutputInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOutputInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOutputInner.innerProperties = OutputProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedOutputInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOutputInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutputInner;
+        });
     }
 }

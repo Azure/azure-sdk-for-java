@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Frequently asked question for the service health event. */
+/**
+ * Frequently asked question for the service health event.
+ */
 @Fluent
-public final class Faq {
+public final class Faq implements JsonSerializable<Faq> {
     /*
      * FAQ question for the service health event.
      */
-    @JsonProperty(value = "question")
     private String question;
 
     /*
      * FAQ answer for the service health event.
      */
-    @JsonProperty(value = "answer")
     private String answer;
 
     /*
      * FAQ locale for the service health event.
      */
-    @JsonProperty(value = "localeCode")
     private String localeCode;
 
-    /** Creates an instance of Faq class. */
+    /**
+     * Creates an instance of Faq class.
+     */
     public Faq() {
     }
 
     /**
      * Get the question property: FAQ question for the service health event.
-     *
+     * 
      * @return the question value.
      */
     public String question() {
@@ -43,7 +48,7 @@ public final class Faq {
 
     /**
      * Set the question property: FAQ question for the service health event.
-     *
+     * 
      * @param question the question value to set.
      * @return the Faq object itself.
      */
@@ -54,7 +59,7 @@ public final class Faq {
 
     /**
      * Get the answer property: FAQ answer for the service health event.
-     *
+     * 
      * @return the answer value.
      */
     public String answer() {
@@ -63,7 +68,7 @@ public final class Faq {
 
     /**
      * Set the answer property: FAQ answer for the service health event.
-     *
+     * 
      * @param answer the answer value to set.
      * @return the Faq object itself.
      */
@@ -74,7 +79,7 @@ public final class Faq {
 
     /**
      * Get the localeCode property: FAQ locale for the service health event.
-     *
+     * 
      * @return the localeCode value.
      */
     public String localeCode() {
@@ -83,7 +88,7 @@ public final class Faq {
 
     /**
      * Set the localeCode property: FAQ locale for the service health event.
-     *
+     * 
      * @param localeCode the localeCode value to set.
      * @return the Faq object itself.
      */
@@ -94,9 +99,51 @@ public final class Faq {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("question", this.question);
+        jsonWriter.writeStringField("answer", this.answer);
+        jsonWriter.writeStringField("localeCode", this.localeCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Faq from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Faq if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Faq.
+     */
+    public static Faq fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Faq deserializedFaq = new Faq();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("question".equals(fieldName)) {
+                    deserializedFaq.question = reader.getString();
+                } else if ("answer".equals(fieldName)) {
+                    deserializedFaq.answer = reader.getString();
+                } else if ("localeCode".equals(fieldName)) {
+                    deserializedFaq.localeCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFaq;
+        });
     }
 }

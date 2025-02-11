@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** A private link resource. */
 @Immutable
 public final class PrivateLinkResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);
 
     /*
      * The private link resource group id.

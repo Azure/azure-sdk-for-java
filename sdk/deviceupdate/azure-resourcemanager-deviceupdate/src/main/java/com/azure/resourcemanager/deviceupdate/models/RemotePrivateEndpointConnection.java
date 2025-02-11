@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Remote private endpoint connection details.
  */
 @Immutable
-public class RemotePrivateEndpointConnection {
+public class RemotePrivateEndpointConnection implements JsonSerializable<RemotePrivateEndpointConnection> {
     /*
      * Remote private endpoint connection ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
@@ -34,10 +37,57 @@ public class RemotePrivateEndpointConnection {
     }
 
     /**
+     * Set the id property: Remote private endpoint connection ID.
+     * 
+     * @param id the id value to set.
+     * @return the RemotePrivateEndpointConnection object itself.
+     */
+    RemotePrivateEndpointConnection withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemotePrivateEndpointConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemotePrivateEndpointConnection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemotePrivateEndpointConnection.
+     */
+    public static RemotePrivateEndpointConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemotePrivateEndpointConnection deserializedRemotePrivateEndpointConnection
+                = new RemotePrivateEndpointConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnection.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemotePrivateEndpointConnection;
+        });
     }
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.fluent.models.OperationResponseInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paginated list of operations. */
+/**
+ * Paginated list of operations.
+ */
 @Fluent
-public final class OperationList {
+public final class OperationList implements JsonSerializable<OperationList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<OperationResponseInner> value;
 
     /*
      * Url to get the next page of items.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OperationList class. */
+    /**
+     * Creates an instance of OperationList class.
+     */
     public OperationList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationResponseInner> value() {
@@ -39,7 +45,7 @@ public final class OperationList {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationList object itself.
      */
@@ -50,7 +56,7 @@ public final class OperationList {
 
     /**
      * Get the nextLink property: Url to get the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class OperationList {
 
     /**
      * Set the nextLink property: Url to get the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationList object itself.
      */
@@ -70,12 +76,53 @@ public final class OperationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationList.
+     */
+    public static OperationList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationList deserializedOperationList = new OperationList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<OperationResponseInner> value
+                        = reader.readArray(reader1 -> OperationResponseInner.fromJson(reader1));
+                    deserializedOperationList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOperationList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationList;
+        });
     }
 }

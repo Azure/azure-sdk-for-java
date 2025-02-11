@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Service configuration details. */
+/**
+ * Service configuration details.
+ */
 @Fluent
-public final class ServiceConfigurationPropertiesPatch {
+public final class ServiceConfigurationPropertiesPatch
+    implements JsonSerializable<ServiceConfigurationPropertiesPatch> {
     /*
      * The port on which service is enabled.
      */
-    @JsonProperty(value = "port")
     private Long port;
 
-    /** Creates an instance of ServiceConfigurationPropertiesPatch class. */
+    /**
+     * Creates an instance of ServiceConfigurationPropertiesPatch class.
+     */
     public ServiceConfigurationPropertiesPatch() {
     }
 
     /**
      * Get the port property: The port on which service is enabled.
-     *
+     * 
      * @return the port value.
      */
     public Long port() {
@@ -31,7 +39,7 @@ public final class ServiceConfigurationPropertiesPatch {
 
     /**
      * Set the port property: The port on which service is enabled.
-     *
+     * 
      * @param port the port value to set.
      * @return the ServiceConfigurationPropertiesPatch object itself.
      */
@@ -42,9 +50,46 @@ public final class ServiceConfigurationPropertiesPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("port", this.port);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceConfigurationPropertiesPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceConfigurationPropertiesPatch if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceConfigurationPropertiesPatch.
+     */
+    public static ServiceConfigurationPropertiesPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceConfigurationPropertiesPatch deserializedServiceConfigurationPropertiesPatch
+                = new ServiceConfigurationPropertiesPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("port".equals(fieldName)) {
+                    deserializedServiceConfigurationPropertiesPatch.port = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceConfigurationPropertiesPatch;
+        });
     }
 }

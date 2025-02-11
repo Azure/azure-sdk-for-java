@@ -24,8 +24,10 @@ public final class MarketplaceSaaSInfoTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MarketplaceSaaSInfo model = new MarketplaceSaaSInfo().withMarketplaceSubscriptionId("wlbjnpgacftade")
-            .withMarketplaceSubscriptionName("nltyfsoppusuesnz").withMarketplaceResourceId("ej")
-            .withMarketplaceStatus("vorxzdmohct").withBilledAzureSubscriptionId("vudwx");
+            .withMarketplaceSubscriptionName("nltyfsoppusuesnz")
+            .withMarketplaceResourceId("ej")
+            .withMarketplaceStatus("vorxzdmohct")
+            .withBilledAzureSubscriptionId("vudwx");
         model = BinaryData.fromObject(model).toObject(MarketplaceSaaSInfo.class);
         Assertions.assertEquals("wlbjnpgacftade", model.marketplaceSubscriptionId());
         Assertions.assertEquals("nltyfsoppusuesnz", model.marketplaceSubscriptionName());

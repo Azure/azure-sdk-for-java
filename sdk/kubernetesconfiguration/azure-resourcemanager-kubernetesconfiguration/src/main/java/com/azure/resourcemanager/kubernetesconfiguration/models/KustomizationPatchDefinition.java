@@ -5,76 +5,74 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The Kustomization defining how to reconcile the artifact pulled by the source type on the cluster. */
+/**
+ * The Kustomization defining how to reconcile the artifact pulled by the source type on the cluster.
+ */
 @Fluent
-public final class KustomizationPatchDefinition {
+public final class KustomizationPatchDefinition implements JsonSerializable<KustomizationPatchDefinition> {
     /*
      * The path in the source reference to reconcile on the cluster.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until
      * all dependencies have completed their reconciliation.
      */
-    @JsonProperty(value = "dependsOn")
     private List<String> dependsOn;
 
     /*
      * The maximum time to attempt to reconcile the Kustomization on the cluster.
      */
-    @JsonProperty(value = "timeoutInSeconds")
     private Long timeoutInSeconds;
 
     /*
      * The interval at which to re-reconcile the Kustomization on the cluster.
      */
-    @JsonProperty(value = "syncIntervalInSeconds")
     private Long syncIntervalInSeconds;
 
     /*
-     * The interval at which to re-reconcile the Kustomization on the cluster in the event of failure on
-     * reconciliation.
+     * The interval at which to re-reconcile the Kustomization on the cluster in the event of failure on reconciliation.
      */
-    @JsonProperty(value = "retryIntervalInSeconds")
     private Long retryIntervalInSeconds;
 
     /*
      * Enable/disable garbage collections of Kubernetes objects created by this Kustomization.
      */
-    @JsonProperty(value = "prune")
     private Boolean prune;
 
     /*
      * Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to an immutable field
      * change.
      */
-    @JsonProperty(value = "force")
     private Boolean force;
 
     /*
      * Enable/disable health check for all Kubernetes objects created by this Kustomization.
      */
-    @JsonProperty(value = "wait")
     private Boolean enableWait;
 
     /*
      * Used for variable substitution for this Kustomization after kustomize build.
      */
-    @JsonProperty(value = "postBuild")
     private PostBuildDefinition postBuild;
 
-    /** Creates an instance of KustomizationPatchDefinition class. */
+    /**
+     * Creates an instance of KustomizationPatchDefinition class.
+     */
     public KustomizationPatchDefinition() {
     }
 
     /**
      * Get the path property: The path in the source reference to reconcile on the cluster.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -83,7 +81,7 @@ public final class KustomizationPatchDefinition {
 
     /**
      * Set the path property: The path in the source reference to reconcile on the cluster.
-     *
+     * 
      * @param path the path value to set.
      * @return the KustomizationPatchDefinition object itself.
      */
@@ -95,7 +93,7 @@ public final class KustomizationPatchDefinition {
     /**
      * Get the dependsOn property: Specifies other Kustomizations that this Kustomization depends on. This Kustomization
      * will not reconcile until all dependencies have completed their reconciliation.
-     *
+     * 
      * @return the dependsOn value.
      */
     public List<String> dependsOn() {
@@ -105,7 +103,7 @@ public final class KustomizationPatchDefinition {
     /**
      * Set the dependsOn property: Specifies other Kustomizations that this Kustomization depends on. This Kustomization
      * will not reconcile until all dependencies have completed their reconciliation.
-     *
+     * 
      * @param dependsOn the dependsOn value to set.
      * @return the KustomizationPatchDefinition object itself.
      */
@@ -116,7 +114,7 @@ public final class KustomizationPatchDefinition {
 
     /**
      * Get the timeoutInSeconds property: The maximum time to attempt to reconcile the Kustomization on the cluster.
-     *
+     * 
      * @return the timeoutInSeconds value.
      */
     public Long timeoutInSeconds() {
@@ -125,7 +123,7 @@ public final class KustomizationPatchDefinition {
 
     /**
      * Set the timeoutInSeconds property: The maximum time to attempt to reconcile the Kustomization on the cluster.
-     *
+     * 
      * @param timeoutInSeconds the timeoutInSeconds value to set.
      * @return the KustomizationPatchDefinition object itself.
      */
@@ -136,7 +134,7 @@ public final class KustomizationPatchDefinition {
 
     /**
      * Get the syncIntervalInSeconds property: The interval at which to re-reconcile the Kustomization on the cluster.
-     *
+     * 
      * @return the syncIntervalInSeconds value.
      */
     public Long syncIntervalInSeconds() {
@@ -145,7 +143,7 @@ public final class KustomizationPatchDefinition {
 
     /**
      * Set the syncIntervalInSeconds property: The interval at which to re-reconcile the Kustomization on the cluster.
-     *
+     * 
      * @param syncIntervalInSeconds the syncIntervalInSeconds value to set.
      * @return the KustomizationPatchDefinition object itself.
      */
@@ -157,7 +155,7 @@ public final class KustomizationPatchDefinition {
     /**
      * Get the retryIntervalInSeconds property: The interval at which to re-reconcile the Kustomization on the cluster
      * in the event of failure on reconciliation.
-     *
+     * 
      * @return the retryIntervalInSeconds value.
      */
     public Long retryIntervalInSeconds() {
@@ -167,7 +165,7 @@ public final class KustomizationPatchDefinition {
     /**
      * Set the retryIntervalInSeconds property: The interval at which to re-reconcile the Kustomization on the cluster
      * in the event of failure on reconciliation.
-     *
+     * 
      * @param retryIntervalInSeconds the retryIntervalInSeconds value to set.
      * @return the KustomizationPatchDefinition object itself.
      */
@@ -178,7 +176,7 @@ public final class KustomizationPatchDefinition {
 
     /**
      * Get the prune property: Enable/disable garbage collections of Kubernetes objects created by this Kustomization.
-     *
+     * 
      * @return the prune value.
      */
     public Boolean prune() {
@@ -187,7 +185,7 @@ public final class KustomizationPatchDefinition {
 
     /**
      * Set the prune property: Enable/disable garbage collections of Kubernetes objects created by this Kustomization.
-     *
+     * 
      * @param prune the prune value to set.
      * @return the KustomizationPatchDefinition object itself.
      */
@@ -199,7 +197,7 @@ public final class KustomizationPatchDefinition {
     /**
      * Get the force property: Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to
      * an immutable field change.
-     *
+     * 
      * @return the force value.
      */
     public Boolean force() {
@@ -209,7 +207,7 @@ public final class KustomizationPatchDefinition {
     /**
      * Set the force property: Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to
      * an immutable field change.
-     *
+     * 
      * @param force the force value to set.
      * @return the KustomizationPatchDefinition object itself.
      */
@@ -221,7 +219,7 @@ public final class KustomizationPatchDefinition {
     /**
      * Get the enableWait property: Enable/disable health check for all Kubernetes objects created by this
      * Kustomization.
-     *
+     * 
      * @return the enableWait value.
      */
     public Boolean enableWait() {
@@ -231,7 +229,7 @@ public final class KustomizationPatchDefinition {
     /**
      * Set the enableWait property: Enable/disable health check for all Kubernetes objects created by this
      * Kustomization.
-     *
+     * 
      * @param enableWait the enableWait value to set.
      * @return the KustomizationPatchDefinition object itself.
      */
@@ -242,7 +240,7 @@ public final class KustomizationPatchDefinition {
 
     /**
      * Get the postBuild property: Used for variable substitution for this Kustomization after kustomize build.
-     *
+     * 
      * @return the postBuild value.
      */
     public PostBuildDefinition postBuild() {
@@ -251,7 +249,7 @@ public final class KustomizationPatchDefinition {
 
     /**
      * Set the postBuild property: Used for variable substitution for this Kustomization after kustomize build.
-     *
+     * 
      * @param postBuild the postBuild value to set.
      * @return the KustomizationPatchDefinition object itself.
      */
@@ -262,12 +260,75 @@ public final class KustomizationPatchDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (postBuild() != null) {
             postBuild().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeArrayField("dependsOn", this.dependsOn, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("timeoutInSeconds", this.timeoutInSeconds);
+        jsonWriter.writeNumberField("syncIntervalInSeconds", this.syncIntervalInSeconds);
+        jsonWriter.writeNumberField("retryIntervalInSeconds", this.retryIntervalInSeconds);
+        jsonWriter.writeBooleanField("prune", this.prune);
+        jsonWriter.writeBooleanField("force", this.force);
+        jsonWriter.writeBooleanField("wait", this.enableWait);
+        jsonWriter.writeJsonField("postBuild", this.postBuild);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KustomizationPatchDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KustomizationPatchDefinition if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KustomizationPatchDefinition.
+     */
+    public static KustomizationPatchDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KustomizationPatchDefinition deserializedKustomizationPatchDefinition = new KustomizationPatchDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedKustomizationPatchDefinition.path = reader.getString();
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<String> dependsOn = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKustomizationPatchDefinition.dependsOn = dependsOn;
+                } else if ("timeoutInSeconds".equals(fieldName)) {
+                    deserializedKustomizationPatchDefinition.timeoutInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("syncIntervalInSeconds".equals(fieldName)) {
+                    deserializedKustomizationPatchDefinition.syncIntervalInSeconds
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("retryIntervalInSeconds".equals(fieldName)) {
+                    deserializedKustomizationPatchDefinition.retryIntervalInSeconds
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("prune".equals(fieldName)) {
+                    deserializedKustomizationPatchDefinition.prune = reader.getNullable(JsonReader::getBoolean);
+                } else if ("force".equals(fieldName)) {
+                    deserializedKustomizationPatchDefinition.force = reader.getNullable(JsonReader::getBoolean);
+                } else if ("wait".equals(fieldName)) {
+                    deserializedKustomizationPatchDefinition.enableWait = reader.getNullable(JsonReader::getBoolean);
+                } else if ("postBuild".equals(fieldName)) {
+                    deserializedKustomizationPatchDefinition.postBuild = PostBuildDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKustomizationPatchDefinition;
+        });
     }
 }

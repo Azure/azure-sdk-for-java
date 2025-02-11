@@ -5,27 +5,40 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The AzureArcK8sCluster NFVI detail.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "nfviType")
-@JsonTypeName("AzureArcKubernetes")
 @Fluent
 public final class AzureArcK8SClusterNfviDetails extends NfvIs {
     /*
+     * The NFVI type.
+     */
+    private NfviType nfviType = NfviType.AZURE_ARC_KUBERNETES;
+
+    /*
      * The reference to the custom location.
      */
-    @JsonProperty(value = "customLocationReference")
     private ReferencedResource customLocationReference;
 
     /**
      * Creates an instance of AzureArcK8SClusterNfviDetails class.
      */
     public AzureArcK8SClusterNfviDetails() {
+    }
+
+    /**
+     * Get the nfviType property: The NFVI type.
+     * 
+     * @return the nfviType value.
+     */
+    @Override
+    public NfviType nfviType() {
+        return this.nfviType;
     }
 
     /**
@@ -64,9 +77,52 @@ public final class AzureArcK8SClusterNfviDetails extends NfvIs {
      */
     @Override
     public void validate() {
-        super.validate();
         if (customLocationReference() != null) {
             customLocationReference().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("nfviType", this.nfviType == null ? null : this.nfviType.toString());
+        jsonWriter.writeJsonField("customLocationReference", this.customLocationReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureArcK8SClusterNfviDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureArcK8SClusterNfviDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureArcK8SClusterNfviDetails.
+     */
+    public static AzureArcK8SClusterNfviDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureArcK8SClusterNfviDetails deserializedAzureArcK8SClusterNfviDetails
+                = new AzureArcK8SClusterNfviDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureArcK8SClusterNfviDetails.withName(reader.getString());
+                } else if ("nfviType".equals(fieldName)) {
+                    deserializedAzureArcK8SClusterNfviDetails.nfviType = NfviType.fromString(reader.getString());
+                } else if ("customLocationReference".equals(fieldName)) {
+                    deserializedAzureArcK8SClusterNfviDetails.customLocationReference
+                        = ReferencedResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureArcK8SClusterNfviDetails;
+        });
     }
 }

@@ -45,7 +45,8 @@ public final class DialogTransfer extends CallAutomationEventBase {
     private Object ivrContext;
 
     /** Creates an instance of DialogTransfer class. */
-    public DialogTransfer() {}
+    public DialogTransfer() {
+    }
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.

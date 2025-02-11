@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input for testing all routes. */
+/**
+ * Input for testing all routes.
+ */
 @Fluent
-public final class TestAllRoutesInput {
+public final class TestAllRoutesInput implements JsonSerializable<TestAllRoutesInput> {
     /*
      * Routing source
      */
-    @JsonProperty(value = "routingSource")
     private RoutingSource routingSource;
 
     /*
      * Routing message
      */
-    @JsonProperty(value = "message")
     private RoutingMessage message;
 
     /*
      * Routing Twin Reference
      */
-    @JsonProperty(value = "twin")
     private RoutingTwin twin;
 
-    /** Creates an instance of TestAllRoutesInput class. */
+    /**
+     * Creates an instance of TestAllRoutesInput class.
+     */
     public TestAllRoutesInput() {
     }
 
     /**
      * Get the routingSource property: Routing source.
-     *
+     * 
      * @return the routingSource value.
      */
     public RoutingSource routingSource() {
@@ -43,7 +48,7 @@ public final class TestAllRoutesInput {
 
     /**
      * Set the routingSource property: Routing source.
-     *
+     * 
      * @param routingSource the routingSource value to set.
      * @return the TestAllRoutesInput object itself.
      */
@@ -54,7 +59,7 @@ public final class TestAllRoutesInput {
 
     /**
      * Get the message property: Routing message.
-     *
+     * 
      * @return the message value.
      */
     public RoutingMessage message() {
@@ -63,7 +68,7 @@ public final class TestAllRoutesInput {
 
     /**
      * Set the message property: Routing message.
-     *
+     * 
      * @param message the message value to set.
      * @return the TestAllRoutesInput object itself.
      */
@@ -74,7 +79,7 @@ public final class TestAllRoutesInput {
 
     /**
      * Get the twin property: Routing Twin Reference.
-     *
+     * 
      * @return the twin value.
      */
     public RoutingTwin twin() {
@@ -83,7 +88,7 @@ public final class TestAllRoutesInput {
 
     /**
      * Set the twin property: Routing Twin Reference.
-     *
+     * 
      * @param twin the twin value to set.
      * @return the TestAllRoutesInput object itself.
      */
@@ -94,7 +99,7 @@ public final class TestAllRoutesInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -104,5 +109,47 @@ public final class TestAllRoutesInput {
         if (twin() != null) {
             twin().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("routingSource", this.routingSource == null ? null : this.routingSource.toString());
+        jsonWriter.writeJsonField("message", this.message);
+        jsonWriter.writeJsonField("twin", this.twin);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestAllRoutesInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestAllRoutesInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TestAllRoutesInput.
+     */
+    public static TestAllRoutesInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestAllRoutesInput deserializedTestAllRoutesInput = new TestAllRoutesInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("routingSource".equals(fieldName)) {
+                    deserializedTestAllRoutesInput.routingSource = RoutingSource.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedTestAllRoutesInput.message = RoutingMessage.fromJson(reader);
+                } else if ("twin".equals(fieldName)) {
+                    deserializedTestAllRoutesInput.twin = RoutingTwin.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestAllRoutesInput;
+        });
     }
 }

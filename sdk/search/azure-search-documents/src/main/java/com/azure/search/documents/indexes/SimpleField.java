@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * An annotation that directs {@link SearchIndexAsyncClient#buildSearchFields(Class, FieldBuilderOptions)} to turn the
  * field or method into a non-searchable {@link SearchField field}.
  */
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SimpleField {
     /**

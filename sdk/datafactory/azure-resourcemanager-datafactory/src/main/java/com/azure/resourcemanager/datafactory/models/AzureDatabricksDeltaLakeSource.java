@@ -133,7 +133,6 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (exportSettings() != null) {
             exportSettings().validate();
         }

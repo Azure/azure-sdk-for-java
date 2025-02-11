@@ -60,14 +60,16 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace create() {
-        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
             .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public Workspace create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
             .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, this.innerModel(), context)
             .getValue();
         return this;
@@ -84,14 +86,16 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace apply() {
-        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
             .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public Workspace apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
             .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, this.innerModel(), context)
             .getValue();
         return this;
@@ -106,14 +110,18 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace refresh() {
-        this.innerObject = serviceManager.serviceClient().getWorkspaces()
-            .getWithResponse(resourceGroupName, serviceName, workspaceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .getWithResponse(resourceGroupName, serviceName, workspaceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Workspace refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getWorkspaces()
-            .getWithResponse(resourceGroupName, serviceName, workspaceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .getWithResponse(resourceGroupName, serviceName, workspaceName, context)
+            .getValue();
         return this;
     }
 

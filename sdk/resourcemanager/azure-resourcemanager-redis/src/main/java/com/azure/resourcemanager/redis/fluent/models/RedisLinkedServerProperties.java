@@ -23,16 +23,16 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
     private String provisioningState;
 
     /*
-     * The unchanging DNS name which will always point to current geo-primary cache among the linked redis caches for
-     * seamless Geo Failover experience.
-     */
-    private String geoReplicatedPrimaryHostname;
-
-    /*
      * The changing DNS name that resolves to the current geo-primary cache among the linked redis caches before or
      * after the Geo Failover.
      */
     private String primaryHostname;
+
+    /*
+     * The unchanging DNS name which will always point to current geo-primary cache among the linked redis caches for
+     * seamless Geo Failover experience.
+     */
+    private String geoReplicatedPrimaryHostname;
 
     /**
      * Creates an instance of RedisLinkedServerProperties class.
@@ -50,17 +50,6 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
     }
 
     /**
-     * Get the geoReplicatedPrimaryHostname property: The unchanging DNS name which will always point to current
-     * geo-primary cache among the linked redis caches for seamless Geo Failover experience.
-     * 
-     * @return the geoReplicatedPrimaryHostname value.
-     */
-    @Override
-    public String geoReplicatedPrimaryHostname() {
-        return this.geoReplicatedPrimaryHostname;
-    }
-
-    /**
      * Get the primaryHostname property: The changing DNS name that resolves to the current geo-primary cache among the
      * linked redis caches before or after the Geo Failover.
      * 
@@ -69,6 +58,17 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
     @Override
     public String primaryHostname() {
         return this.primaryHostname;
+    }
+
+    /**
+     * Get the geoReplicatedPrimaryHostname property: The unchanging DNS name which will always point to current
+     * geo-primary cache among the linked redis caches for seamless Geo Failover experience.
+     * 
+     * @return the geoReplicatedPrimaryHostname value.
+     */
+    @Override
+    public String geoReplicatedPrimaryHostname() {
+        return this.geoReplicatedPrimaryHostname;
     }
 
     /**
@@ -103,6 +103,7 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (linkedRedisCacheId() == null) {
             throw LOGGER.atError()

@@ -14,9 +14,7 @@ public class ReadCache extends ServiceTest<PerfStressOptions> {
 
     public ReadCache(PerfStressOptions options) {
         super(options);
-        credential = new SharedTokenCacheCredentialBuilder()
-                .clientId(CLI_CLIENT_ID)
-                .build();
+        credential = new SharedTokenCacheCredentialBuilder().clientId(CLI_CLIENT_ID).build();
     }
 
     // Perform the API call to be tested here

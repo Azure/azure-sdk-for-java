@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class SendActivityLogsStatus extends ExpandableStringEnum<SendActiv
      * @param name a name to look for.
      * @return the corresponding SendActivityLogsStatus.
      */
-    @JsonCreator
     public static SendActivityLogsStatus fromString(String name) {
         return fromString(name, SendActivityLogsStatus.class);
     }

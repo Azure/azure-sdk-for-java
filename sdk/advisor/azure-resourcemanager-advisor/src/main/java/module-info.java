@@ -10,10 +10,6 @@ module com.azure.resourcemanager.advisor {
     exports com.azure.resourcemanager.advisor.fluent.models;
     exports com.azure.resourcemanager.advisor.models;
 
-    opens com.azure.resourcemanager.advisor.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.advisor.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.advisor.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.advisor.models to com.azure.core;
 }

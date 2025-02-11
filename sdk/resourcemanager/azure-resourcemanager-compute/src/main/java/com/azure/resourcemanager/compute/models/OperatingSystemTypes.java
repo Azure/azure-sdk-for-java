@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 /**
- * This property allows you to specify the supported type of the OS that application is built for. Possible values are:
- * **Windows,** **Linux.**.
+ * The Operating System type.
  */
 public enum OperatingSystemTypes {
     /**

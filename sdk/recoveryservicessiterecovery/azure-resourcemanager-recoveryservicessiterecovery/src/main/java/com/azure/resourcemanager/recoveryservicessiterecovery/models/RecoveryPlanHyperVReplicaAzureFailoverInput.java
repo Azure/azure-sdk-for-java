@@ -5,39 +5,50 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Recovery plan HVR Azure failover input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVReplicaAzure")
 @Fluent
 public final class RecoveryPlanHyperVReplicaAzureFailoverInput extends RecoveryPlanProviderSpecificFailoverInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "HyperVReplicaAzure";
+
+    /*
      * The primary KEK certificate PFX.
      */
-    @JsonProperty(value = "primaryKekCertificatePfx")
     private String primaryKekCertificatePfx;
 
     /*
      * The secondary KEK certificate PFX.
      */
-    @JsonProperty(value = "secondaryKekCertificatePfx")
     private String secondaryKekCertificatePfx;
 
     /*
      * The recovery point type.
      */
-    @JsonProperty(value = "recoveryPointType")
     private HyperVReplicaAzureRpRecoveryPointType recoveryPointType;
 
     /**
      * Creates an instance of RecoveryPlanHyperVReplicaAzureFailoverInput class.
      */
     public RecoveryPlanHyperVReplicaAzureFailoverInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -109,6 +120,55 @@ public final class RecoveryPlanHyperVReplicaAzureFailoverInput extends RecoveryP
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("primaryKekCertificatePfx", this.primaryKekCertificatePfx);
+        jsonWriter.writeStringField("secondaryKekCertificatePfx", this.secondaryKekCertificatePfx);
+        jsonWriter.writeStringField("recoveryPointType",
+            this.recoveryPointType == null ? null : this.recoveryPointType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanHyperVReplicaAzureFailoverInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanHyperVReplicaAzureFailoverInput if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPlanHyperVReplicaAzureFailoverInput.
+     */
+    public static RecoveryPlanHyperVReplicaAzureFailoverInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanHyperVReplicaAzureFailoverInput deserializedRecoveryPlanHyperVReplicaAzureFailoverInput
+                = new RecoveryPlanHyperVReplicaAzureFailoverInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedRecoveryPlanHyperVReplicaAzureFailoverInput.instanceType = reader.getString();
+                } else if ("primaryKekCertificatePfx".equals(fieldName)) {
+                    deserializedRecoveryPlanHyperVReplicaAzureFailoverInput.primaryKekCertificatePfx
+                        = reader.getString();
+                } else if ("secondaryKekCertificatePfx".equals(fieldName)) {
+                    deserializedRecoveryPlanHyperVReplicaAzureFailoverInput.secondaryKekCertificatePfx
+                        = reader.getString();
+                } else if ("recoveryPointType".equals(fieldName)) {
+                    deserializedRecoveryPlanHyperVReplicaAzureFailoverInput.recoveryPointType
+                        = HyperVReplicaAzureRpRecoveryPointType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanHyperVReplicaAzureFailoverInput;
+        });
     }
 }

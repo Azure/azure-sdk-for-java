@@ -4,30 +4,32 @@
 
 package com.azure.resourcemanager.dnsresolver.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dnsresolver.models.DnsForwardingRuleset;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DnsForwardingRulesets Update. */
+/**
+ * Samples for DnsForwardingRulesets Update.
+ */
 public final class DnsForwardingRulesetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Patch.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/
+     * DnsForwardingRuleset_Patch.json
      */
     /**
      * Sample code: Update DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void updateDNSForwardingRuleset(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        DnsForwardingRuleset resource =
-            manager
-                .dnsForwardingRulesets()
-                .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key1", "value1")).apply();
+        DnsForwardingRuleset resource = manager.dnsForwardingRulesets()
+            .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -23,28 +23,36 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.CalculateModelCapacityResultInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.DomainAvailabilityInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.SkuAvailabilityListResultInner;
+import com.azure.resourcemanager.cognitiveservices.models.CalculateModelCapacityParameter;
 import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilityParameter;
 import com.azure.resourcemanager.cognitiveservices.models.CheckSkuAvailabilityParameter;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CognitiveServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(CognitiveServicesManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,36 +63,38 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "CognitiveServicesMan")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/checkSkuAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/checkSkuAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuAvailabilityListResultInner>> checkSkuAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<SkuAvailabilityListResultInner>> checkSkuAvailability(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("location") String location,
             @BodyParam("application/json") CheckSkuAvailabilityParameter parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/checkDomainAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainAvailabilityInner>> checkDomainAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<DomainAvailabilityInner>> checkDomainAvailability(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckDomainAvailabilityParameter parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/calculateModelCapacity")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CalculateModelCapacityResultInner>> calculateModelCapacity(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CalculateModelCapacityParameter parameters,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Check available SKUs.
-     *
+     * 
      * @param location Resource location.
      * @param parameters Check SKU Availability POST body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,19 +103,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return check SKU availability result list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuAvailabilityListResultInner>> checkSkuAvailabilityWithResponseAsync(
-        String location, CheckSkuAvailabilityParameter parameters) {
+    private Mono<Response<SkuAvailabilityListResultInner>> checkSkuAvailabilityWithResponseAsync(String location,
+        CheckSkuAvailabilityParameter parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -117,23 +123,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkSkuAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            location,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkSkuAvailability(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), location, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check available SKUs.
-     *
+     * 
      * @param location Resource location.
      * @param parameters Check SKU Availability POST body.
      * @param context The context to associate with this operation.
@@ -143,19 +140,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return check SKU availability result list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SkuAvailabilityListResultInner>> checkSkuAvailabilityWithResponseAsync(
-        String location, CheckSkuAvailabilityParameter parameters, Context context) {
+    private Mono<Response<SkuAvailabilityListResultInner>> checkSkuAvailabilityWithResponseAsync(String location,
+        CheckSkuAvailabilityParameter parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -167,20 +160,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkSkuAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                location,
-                parameters,
-                accept,
-                context);
+        return service.checkSkuAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), location, parameters, accept, context);
     }
 
     /**
      * Check available SKUs.
-     *
+     * 
      * @param location Resource location.
      * @param parameters Check SKU Availability POST body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,15 +175,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return check SKU availability result list on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SkuAvailabilityListResultInner> checkSkuAvailabilityAsync(
-        String location, CheckSkuAvailabilityParameter parameters) {
+    private Mono<SkuAvailabilityListResultInner> checkSkuAvailabilityAsync(String location,
+        CheckSkuAvailabilityParameter parameters) {
         return checkSkuAvailabilityWithResponseAsync(location, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Check available SKUs.
-     *
+     * 
      * @param location Resource location.
      * @param parameters Check SKU Availability POST body.
      * @param context The context to associate with this operation.
@@ -207,14 +193,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return check SKU availability result list along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(
-        String location, CheckSkuAvailabilityParameter parameters, Context context) {
+    public Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(String location,
+        CheckSkuAvailabilityParameter parameters, Context context) {
         return checkSkuAvailabilityWithResponseAsync(location, parameters, context).block();
     }
 
     /**
      * Check available SKUs.
-     *
+     * 
      * @param location Resource location.
      * @param parameters Check SKU Availability POST body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,14 +209,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return check SKU availability result list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuAvailabilityListResultInner checkSkuAvailability(
-        String location, CheckSkuAvailabilityParameter parameters) {
+    public SkuAvailabilityListResultInner checkSkuAvailability(String location,
+        CheckSkuAvailabilityParameter parameters) {
         return checkSkuAvailabilityWithResponse(location, parameters, Context.NONE).getValue();
     }
 
     /**
      * Check whether a domain is available.
-     *
+     * 
      * @param parameters Check Domain Availability parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -238,19 +224,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return domain availability along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainAvailabilityInner>> checkDomainAvailabilityWithResponseAsync(
-        CheckDomainAvailabilityParameter parameters) {
+    private Mono<Response<DomainAvailabilityInner>>
+        checkDomainAvailabilityWithResponseAsync(CheckDomainAvailabilityParameter parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -259,22 +241,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkDomainAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkDomainAvailability(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check whether a domain is available.
-     *
+     * 
      * @param parameters Check Domain Availability parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,19 +257,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return domain availability along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainAvailabilityInner>> checkDomainAvailabilityWithResponseAsync(
-        CheckDomainAvailabilityParameter parameters, Context context) {
+    private Mono<Response<DomainAvailabilityInner>>
+        checkDomainAvailabilityWithResponseAsync(CheckDomainAvailabilityParameter parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -304,19 +274,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkDomainAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.checkDomainAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Check whether a domain is available.
-     *
+     * 
      * @param parameters Check Domain Availability parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -330,7 +294,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Check whether a domain is available.
-     *
+     * 
      * @param parameters Check Domain Availability parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -339,14 +303,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return domain availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(
-        CheckDomainAvailabilityParameter parameters, Context context) {
+    public Response<DomainAvailabilityInner>
+        checkDomainAvailabilityWithResponse(CheckDomainAvailabilityParameter parameters, Context context) {
         return checkDomainAvailabilityWithResponseAsync(parameters, context).block();
     }
 
     /**
      * Check whether a domain is available.
-     *
+     * 
      * @param parameters Check Domain Availability parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -356,5 +320,114 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainAvailabilityInner checkDomainAvailability(CheckDomainAvailabilityParameter parameters) {
         return checkDomainAvailabilityWithResponse(parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CalculateModelCapacityResultInner>>
+        calculateModelCapacityWithResponseAsync(CalculateModelCapacityParameter parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.calculateModelCapacity(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CalculateModelCapacityResultInner>>
+        calculateModelCapacityWithResponseAsync(CalculateModelCapacityParameter parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.calculateModelCapacity(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), parameters, accept, context);
+    }
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CalculateModelCapacityResultInner>
+        calculateModelCapacityAsync(CalculateModelCapacityParameter parameters) {
+        return calculateModelCapacityWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CalculateModelCapacityResultInner>
+        calculateModelCapacityWithResponse(CalculateModelCapacityParameter parameters, Context context) {
+        return calculateModelCapacityWithResponseAsync(parameters, context).block();
+    }
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CalculateModelCapacityResultInner calculateModelCapacity(CalculateModelCapacityParameter parameters) {
+        return calculateModelCapacityWithResponse(parameters, Context.NONE).getValue();
     }
 }

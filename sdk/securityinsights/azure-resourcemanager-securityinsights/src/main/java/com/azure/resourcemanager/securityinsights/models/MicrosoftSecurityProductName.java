@@ -5,52 +5,63 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The alerts' productName on which the cases will be generated. */
+/**
+ * The alerts' productName on which the cases will be generated.
+ */
 public final class MicrosoftSecurityProductName extends ExpandableStringEnum<MicrosoftSecurityProductName> {
-    /** Static value Microsoft Cloud App Security for MicrosoftSecurityProductName. */
-    public static final MicrosoftSecurityProductName MICROSOFT_CLOUD_APP_SECURITY =
-        fromString("Microsoft Cloud App Security");
+    /**
+     * Static value Microsoft Cloud App Security for MicrosoftSecurityProductName.
+     */
+    public static final MicrosoftSecurityProductName MICROSOFT_CLOUD_APP_SECURITY
+        = fromString("Microsoft Cloud App Security");
 
-    /** Static value Azure Security Center for MicrosoftSecurityProductName. */
+    /**
+     * Static value Azure Security Center for MicrosoftSecurityProductName.
+     */
     public static final MicrosoftSecurityProductName AZURE_SECURITY_CENTER = fromString("Azure Security Center");
 
-    /** Static value Azure Advanced Threat Protection for MicrosoftSecurityProductName. */
-    public static final MicrosoftSecurityProductName AZURE_ADVANCED_THREAT_PROTECTION =
-        fromString("Azure Advanced Threat Protection");
+    /**
+     * Static value Azure Advanced Threat Protection for MicrosoftSecurityProductName.
+     */
+    public static final MicrosoftSecurityProductName AZURE_ADVANCED_THREAT_PROTECTION
+        = fromString("Azure Advanced Threat Protection");
 
-    /** Static value Azure Active Directory Identity Protection for MicrosoftSecurityProductName. */
-    public static final MicrosoftSecurityProductName AZURE_ACTIVE_DIRECTORY_IDENTITY_PROTECTION =
-        fromString("Azure Active Directory Identity Protection");
+    /**
+     * Static value Azure Active Directory Identity Protection for MicrosoftSecurityProductName.
+     */
+    public static final MicrosoftSecurityProductName AZURE_ACTIVE_DIRECTORY_IDENTITY_PROTECTION
+        = fromString("Azure Active Directory Identity Protection");
 
-    /** Static value Azure Security Center for IoT for MicrosoftSecurityProductName. */
-    public static final MicrosoftSecurityProductName AZURE_SECURITY_CENTER_FOR_IOT =
-        fromString("Azure Security Center for IoT");
+    /**
+     * Static value Azure Security Center for IoT for MicrosoftSecurityProductName.
+     */
+    public static final MicrosoftSecurityProductName AZURE_SECURITY_CENTER_FOR_IOT
+        = fromString("Azure Security Center for IoT");
 
-    /** Static value Office 365 Advanced Threat Protection for MicrosoftSecurityProductName. */
-    public static final MicrosoftSecurityProductName OFFICE_365_ADVANCED_THREAT_PROTECTION =
-        fromString("Office 365 Advanced Threat Protection");
-
-    /** Static value Microsoft Defender Advanced Threat Protection for MicrosoftSecurityProductName. */
-    public static final MicrosoftSecurityProductName MICROSOFT_DEFENDER_ADVANCED_THREAT_PROTECTION =
-        fromString("Microsoft Defender Advanced Threat Protection");
+    /**
+     * Creates a new instance of MicrosoftSecurityProductName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftSecurityProductName() {
+    }
 
     /**
      * Creates or finds a MicrosoftSecurityProductName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftSecurityProductName.
      */
-    @JsonCreator
     public static MicrosoftSecurityProductName fromString(String name) {
         return fromString(name, MicrosoftSecurityProductName.class);
     }
 
     /**
      * Gets known MicrosoftSecurityProductName values.
-     *
+     * 
      * @return known MicrosoftSecurityProductName values.
      */
     public static Collection<MicrosoftSecurityProductName> values() {

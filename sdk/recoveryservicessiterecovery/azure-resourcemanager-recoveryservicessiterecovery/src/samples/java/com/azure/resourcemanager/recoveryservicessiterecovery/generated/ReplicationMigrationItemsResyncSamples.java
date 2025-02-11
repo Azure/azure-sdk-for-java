@@ -24,10 +24,10 @@ public final class ReplicationMigrationItemsResyncSamples {
      */
     public static void
         resynchronizesReplication(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationMigrationItems().resync("migrationvault", "resourcegroup1", "vmwarefabric1",
-            "vmwareContainer1", "virtualmachine1",
-            new ResyncInput().withProperties(new ResyncInputProperties()
-                .withProviderSpecificDetails(new VMwareCbtResyncInput().withSkipCbtReset("true"))),
-            com.azure.core.util.Context.NONE);
+        manager.replicationMigrationItems()
+            .resync("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1",
+                new ResyncInput().withProperties(new ResyncInputProperties()
+                    .withProviderSpecificDetails(new VMwareCbtResyncInput().withSkipCbtReset("true"))),
+                com.azure.core.util.Context.NONE);
     }
 }

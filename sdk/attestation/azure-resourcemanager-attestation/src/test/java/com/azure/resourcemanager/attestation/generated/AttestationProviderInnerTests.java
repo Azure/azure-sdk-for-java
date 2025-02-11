@@ -14,13 +14,11 @@ import org.junit.jupiter.api.Assertions;
 public final class AttestationProviderInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttestationProviderInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"trustModel\":\"siznto\",\"status\":\"Error\",\"attestUri\":\"ouajpsqucmpoyf\",\"privateEndpointConnections\":[{\"id\":\"gknygjofjddeqs\",\"name\":\"deupewnwrei\",\"type\":\"jzyflu\"},{\"id\":\"rh\",\"name\":\"ofcqhsm\",\"type\":\"urkdtmlx\"},{\"id\":\"kuksjtxukcdm\",\"name\":\"arcryuanzwuxzdxt\",\"type\":\"yrlhmwhfpmrqobm\"},{\"id\":\"kknryrtihf\",\"name\":\"tijbpzvgnwzsymgl\",\"type\":\"uf\"}]},\"location\":\"yzkohdbihanuf\",\"tags\":{\"s\":\"bj\"},\"id\":\"git\",\"name\":\"xqhabi\",\"type\":\"pikxwczbyscnpqxu\"}")
-                .toObject(AttestationProviderInner.class);
-        Assertions.assertEquals("yzkohdbihanuf", model.location());
-        Assertions.assertEquals("bj", model.tags().get("s"));
+        AttestationProviderInner model = BinaryData.fromString(
+            "{\"properties\":{\"trustModel\":\"siznto\",\"status\":\"Error\",\"attestUri\":\"ouajpsqucmpoyf\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"nygj\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"deqsrdeupewn\",\"actionsRequired\":\"eitjz\"},\"provisioningState\":\"Creating\"},\"id\":\"usarhmofc\",\"name\":\"hs\",\"type\":\"yurkdtmlxhekuksj\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"cdm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ryuanzwuxzdxtay\",\"actionsRequired\":\"hmwhfpmrqo\"},\"provisioningState\":\"Succeeded\"},\"id\":\"u\",\"name\":\"knryrtihfxtij\",\"type\":\"pzvgnwzsymglzufc\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"hdbihan\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"cbjy\",\"actionsRequired\":\"git\"},\"provisioningState\":\"Failed\"},\"id\":\"hab\",\"name\":\"fpikxwczb\",\"type\":\"scnpqxuhivy\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"b\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"xvd\",\"actionsRequired\":\"jgrtfwvukxga\"},\"provisioningState\":\"Creating\"},\"id\":\"cs\",\"name\":\"h\",\"type\":\"jcny\"}]},\"location\":\"j\",\"tags\":{\"kkvnipjox\":\"yhtnapczwlokjye\",\"podmailzydehojwy\":\"jnchgej\",\"qwixjspro\":\"huxinpmqnj\",\"wmfdatscmdvpjhul\":\"vcputegj\"},\"id\":\"uuvmkjozkrwfnd\",\"name\":\"odjpslwejd\",\"type\":\"vwryoqpso\"}")
+            .toObject(AttestationProviderInner.class);
+        Assertions.assertEquals("j", model.location());
+        Assertions.assertEquals("yhtnapczwlokjye", model.tags().get("kkvnipjox"));
         Assertions.assertEquals("siznto", model.trustModel());
         Assertions.assertEquals(AttestationServiceStatus.ERROR, model.status());
         Assertions.assertEquals("ouajpsqucmpoyf", model.attestUri());
@@ -28,21 +26,21 @@ public final class AttestationProviderInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttestationProviderInner model =
-            new AttestationProviderInner()
-                .withLocation("yzkohdbihanuf")
-                .withTags(mapOf("s", "bj"))
-                .withTrustModel("siznto")
-                .withStatus(AttestationServiceStatus.ERROR)
-                .withAttestUri("ouajpsqucmpoyf");
+        AttestationProviderInner model = new AttestationProviderInner().withLocation("j")
+            .withTags(mapOf("kkvnipjox", "yhtnapczwlokjye", "podmailzydehojwy", "jnchgej", "qwixjspro", "huxinpmqnj",
+                "wmfdatscmdvpjhul", "vcputegj"))
+            .withTrustModel("siznto")
+            .withStatus(AttestationServiceStatus.ERROR)
+            .withAttestUri("ouajpsqucmpoyf");
         model = BinaryData.fromObject(model).toObject(AttestationProviderInner.class);
-        Assertions.assertEquals("yzkohdbihanuf", model.location());
-        Assertions.assertEquals("bj", model.tags().get("s"));
+        Assertions.assertEquals("j", model.location());
+        Assertions.assertEquals("yhtnapczwlokjye", model.tags().get("kkvnipjox"));
         Assertions.assertEquals("siznto", model.trustModel());
         Assertions.assertEquals(AttestationServiceStatus.ERROR, model.status());
         Assertions.assertEquals("ouajpsqucmpoyf", model.attestUri());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

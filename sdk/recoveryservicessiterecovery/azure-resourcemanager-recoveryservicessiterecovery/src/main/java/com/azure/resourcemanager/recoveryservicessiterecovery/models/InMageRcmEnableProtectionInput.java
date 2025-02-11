@@ -6,130 +6,126 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * InMageRcm specific enable protection input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcm")
 @Fluent
 public final class InMageRcmEnableProtectionInput extends EnableProtectionProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMageRcm";
+
+    /*
      * The ARM Id of discovered machine.
      */
-    @JsonProperty(value = "fabricDiscoveryMachineId", required = true)
     private String fabricDiscoveryMachineId;
 
     /*
      * The disks to include list.
      */
-    @JsonProperty(value = "disksToInclude")
     private List<InMageRcmDiskInput> disksToInclude;
 
     /*
      * The default disk input.
      */
-    @JsonProperty(value = "disksDefault")
     private InMageRcmDisksDefaultInput disksDefault;
 
     /*
      * The target resource group ARM Id.
      */
-    @JsonProperty(value = "targetResourceGroupId", required = true)
     private String targetResourceGroupId;
 
     /*
      * The selected target network ARM Id.
      */
-    @JsonProperty(value = "targetNetworkId")
     private String targetNetworkId;
 
     /*
      * The selected test network ARM Id.
      */
-    @JsonProperty(value = "testNetworkId")
     private String testNetworkId;
 
     /*
      * The selected target subnet name.
      */
-    @JsonProperty(value = "targetSubnetName")
     private String targetSubnetName;
 
     /*
      * The selected test subnet name.
      */
-    @JsonProperty(value = "testSubnetName")
     private String testSubnetName;
 
     /*
      * The target VM name.
      */
-    @JsonProperty(value = "targetVmName")
     private String targetVmName;
 
     /*
      * The target VM size.
      */
-    @JsonProperty(value = "targetVmSize")
     private String targetVmSize;
 
     /*
      * The license type.
      */
-    @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
 
     /*
      * The target availability set ARM Id.
      */
-    @JsonProperty(value = "targetAvailabilitySetId")
     private String targetAvailabilitySetId;
 
     /*
      * The target availability zone.
      */
-    @JsonProperty(value = "targetAvailabilityZone")
     private String targetAvailabilityZone;
 
     /*
      * The target proximity placement group Id.
      */
-    @JsonProperty(value = "targetProximityPlacementGroupId")
     private String targetProximityPlacementGroupId;
 
     /*
      * The target boot diagnostics storage account ARM Id.
      */
-    @JsonProperty(value = "targetBootDiagnosticsStorageAccountId")
     private String targetBootDiagnosticsStorageAccountId;
 
     /*
      * The run-as account Id.
      */
-    @JsonProperty(value = "runAsAccountId")
     private String runAsAccountId;
 
     /*
      * The process server Id.
      */
-    @JsonProperty(value = "processServerId", required = true)
     private String processServerId;
 
     /*
      * The multi VM group name.
      */
-    @JsonProperty(value = "multiVmGroupName")
     private String multiVmGroupName;
 
     /**
      * Creates an instance of InMageRcmEnableProtectionInput class.
      */
     public InMageRcmEnableProtectionInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -500,10 +496,10 @@ public final class InMageRcmEnableProtectionInput extends EnableProtectionProvid
      */
     @Override
     public void validate() {
-        super.validate();
         if (fabricDiscoveryMachineId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property fabricDiscoveryMachineId in model InMageRcmEnableProtectionInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fabricDiscoveryMachineId in model InMageRcmEnableProtectionInput"));
         }
         if (disksToInclude() != null) {
             disksToInclude().forEach(e -> e.validate());
@@ -512,14 +508,114 @@ public final class InMageRcmEnableProtectionInput extends EnableProtectionProvid
             disksDefault().validate();
         }
         if (targetResourceGroupId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetResourceGroupId in model InMageRcmEnableProtectionInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceGroupId in model InMageRcmEnableProtectionInput"));
         }
         if (processServerId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property processServerId in model InMageRcmEnableProtectionInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property processServerId in model InMageRcmEnableProtectionInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InMageRcmEnableProtectionInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fabricDiscoveryMachineId", this.fabricDiscoveryMachineId);
+        jsonWriter.writeStringField("targetResourceGroupId", this.targetResourceGroupId);
+        jsonWriter.writeStringField("processServerId", this.processServerId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeArrayField("disksToInclude", this.disksToInclude,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("disksDefault", this.disksDefault);
+        jsonWriter.writeStringField("targetNetworkId", this.targetNetworkId);
+        jsonWriter.writeStringField("testNetworkId", this.testNetworkId);
+        jsonWriter.writeStringField("targetSubnetName", this.targetSubnetName);
+        jsonWriter.writeStringField("testSubnetName", this.testSubnetName);
+        jsonWriter.writeStringField("targetVmName", this.targetVmName);
+        jsonWriter.writeStringField("targetVmSize", this.targetVmSize);
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("targetAvailabilitySetId", this.targetAvailabilitySetId);
+        jsonWriter.writeStringField("targetAvailabilityZone", this.targetAvailabilityZone);
+        jsonWriter.writeStringField("targetProximityPlacementGroupId", this.targetProximityPlacementGroupId);
+        jsonWriter.writeStringField("targetBootDiagnosticsStorageAccountId",
+            this.targetBootDiagnosticsStorageAccountId);
+        jsonWriter.writeStringField("runAsAccountId", this.runAsAccountId);
+        jsonWriter.writeStringField("multiVmGroupName", this.multiVmGroupName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmEnableProtectionInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmEnableProtectionInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InMageRcmEnableProtectionInput.
+     */
+    public static InMageRcmEnableProtectionInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmEnableProtectionInput deserializedInMageRcmEnableProtectionInput
+                = new InMageRcmEnableProtectionInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fabricDiscoveryMachineId".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.fabricDiscoveryMachineId = reader.getString();
+                } else if ("targetResourceGroupId".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.targetResourceGroupId = reader.getString();
+                } else if ("processServerId".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.processServerId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.instanceType = reader.getString();
+                } else if ("disksToInclude".equals(fieldName)) {
+                    List<InMageRcmDiskInput> disksToInclude
+                        = reader.readArray(reader1 -> InMageRcmDiskInput.fromJson(reader1));
+                    deserializedInMageRcmEnableProtectionInput.disksToInclude = disksToInclude;
+                } else if ("disksDefault".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.disksDefault
+                        = InMageRcmDisksDefaultInput.fromJson(reader);
+                } else if ("targetNetworkId".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.targetNetworkId = reader.getString();
+                } else if ("testNetworkId".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.testNetworkId = reader.getString();
+                } else if ("targetSubnetName".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.targetSubnetName = reader.getString();
+                } else if ("testSubnetName".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.testSubnetName = reader.getString();
+                } else if ("targetVmName".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.targetVmName = reader.getString();
+                } else if ("targetVmSize".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.targetVmSize = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.licenseType = LicenseType.fromString(reader.getString());
+                } else if ("targetAvailabilitySetId".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.targetAvailabilitySetId = reader.getString();
+                } else if ("targetAvailabilityZone".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.targetAvailabilityZone = reader.getString();
+                } else if ("targetProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.targetProximityPlacementGroupId = reader.getString();
+                } else if ("targetBootDiagnosticsStorageAccountId".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.targetBootDiagnosticsStorageAccountId
+                        = reader.getString();
+                } else if ("runAsAccountId".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.runAsAccountId = reader.getString();
+                } else if ("multiVmGroupName".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.multiVmGroupName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmEnableProtectionInput;
+        });
+    }
 }

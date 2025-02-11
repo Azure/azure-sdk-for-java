@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Class to specify which protocols are enabled. */
+/**
+ * Class to specify which protocols are enabled.
+ */
 @Fluent
-public final class EnabledProtocols {
+public final class EnabledProtocols implements JsonSerializable<EnabledProtocols> {
     /*
      * Enable Download protocol or not
      */
-    @JsonProperty(value = "download", required = true)
     private boolean download;
 
     /*
      * Enable DASH protocol or not
      */
-    @JsonProperty(value = "dash", required = true)
     private boolean dash;
 
     /*
      * Enable HLS protocol or not
      */
-    @JsonProperty(value = "hls", required = true)
     private boolean hls;
 
     /*
      * Enable SmoothStreaming protocol or not
      */
-    @JsonProperty(value = "smoothStreaming", required = true)
     private boolean smoothStreaming;
 
-    /** Creates an instance of EnabledProtocols class. */
+    /**
+     * Creates an instance of EnabledProtocols class.
+     */
     public EnabledProtocols() {
     }
 
     /**
      * Get the download property: Enable Download protocol or not.
-     *
+     * 
      * @return the download value.
      */
     public boolean download() {
@@ -49,7 +53,7 @@ public final class EnabledProtocols {
 
     /**
      * Set the download property: Enable Download protocol or not.
-     *
+     * 
      * @param download the download value to set.
      * @return the EnabledProtocols object itself.
      */
@@ -60,7 +64,7 @@ public final class EnabledProtocols {
 
     /**
      * Get the dash property: Enable DASH protocol or not.
-     *
+     * 
      * @return the dash value.
      */
     public boolean dash() {
@@ -69,7 +73,7 @@ public final class EnabledProtocols {
 
     /**
      * Set the dash property: Enable DASH protocol or not.
-     *
+     * 
      * @param dash the dash value to set.
      * @return the EnabledProtocols object itself.
      */
@@ -80,7 +84,7 @@ public final class EnabledProtocols {
 
     /**
      * Get the hls property: Enable HLS protocol or not.
-     *
+     * 
      * @return the hls value.
      */
     public boolean hls() {
@@ -89,7 +93,7 @@ public final class EnabledProtocols {
 
     /**
      * Set the hls property: Enable HLS protocol or not.
-     *
+     * 
      * @param hls the hls value to set.
      * @return the EnabledProtocols object itself.
      */
@@ -100,7 +104,7 @@ public final class EnabledProtocols {
 
     /**
      * Get the smoothStreaming property: Enable SmoothStreaming protocol or not.
-     *
+     * 
      * @return the smoothStreaming value.
      */
     public boolean smoothStreaming() {
@@ -109,7 +113,7 @@ public final class EnabledProtocols {
 
     /**
      * Set the smoothStreaming property: Enable SmoothStreaming protocol or not.
-     *
+     * 
      * @param smoothStreaming the smoothStreaming value to set.
      * @return the EnabledProtocols object itself.
      */
@@ -120,9 +124,55 @@ public final class EnabledProtocols {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("download", this.download);
+        jsonWriter.writeBooleanField("dash", this.dash);
+        jsonWriter.writeBooleanField("hls", this.hls);
+        jsonWriter.writeBooleanField("smoothStreaming", this.smoothStreaming);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnabledProtocols from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnabledProtocols if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnabledProtocols.
+     */
+    public static EnabledProtocols fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnabledProtocols deserializedEnabledProtocols = new EnabledProtocols();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("download".equals(fieldName)) {
+                    deserializedEnabledProtocols.download = reader.getBoolean();
+                } else if ("dash".equals(fieldName)) {
+                    deserializedEnabledProtocols.dash = reader.getBoolean();
+                } else if ("hls".equals(fieldName)) {
+                    deserializedEnabledProtocols.hls = reader.getBoolean();
+                } else if ("smoothStreaming".equals(fieldName)) {
+                    deserializedEnabledProtocols.smoothStreaming = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnabledProtocols;
+        });
     }
 }

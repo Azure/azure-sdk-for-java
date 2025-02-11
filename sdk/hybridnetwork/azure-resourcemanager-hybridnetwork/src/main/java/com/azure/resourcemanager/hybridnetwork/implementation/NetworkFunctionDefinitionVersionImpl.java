@@ -94,16 +94,18 @@ public final class NetworkFunctionDefinitionVersionImpl implements NetworkFuncti
     }
 
     public NetworkFunctionDefinitionVersion create() {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctionDefinitionVersions().createOrUpdate(
-            resourceGroupName, publisherName, networkFunctionDefinitionGroupName, networkFunctionDefinitionVersionName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionVersions()
+            .createOrUpdate(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetworkFunctionDefinitionVersion create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctionDefinitionVersions().createOrUpdate(
-            resourceGroupName, publisherName, networkFunctionDefinitionGroupName, networkFunctionDefinitionVersionName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionVersions()
+            .createOrUpdate(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, this.innerModel(), context);
         return this;
     }
 
@@ -120,7 +122,8 @@ public final class NetworkFunctionDefinitionVersionImpl implements NetworkFuncti
     }
 
     public NetworkFunctionDefinitionVersion apply() {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctionDefinitionVersions()
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionVersions()
             .updateWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
                 networkFunctionDefinitionVersionName, updateParameters, Context.NONE)
             .getValue();
@@ -128,9 +131,10 @@ public final class NetworkFunctionDefinitionVersionImpl implements NetworkFuncti
     }
 
     public NetworkFunctionDefinitionVersion apply(Context context) {
-        this.innerObject = serviceManager
-            .serviceClient().getNetworkFunctionDefinitionVersions().updateWithResponse(resourceGroupName, publisherName,
-                networkFunctionDefinitionGroupName, networkFunctionDefinitionVersionName, updateParameters, context)
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionVersions()
+            .updateWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, updateParameters, context)
             .getValue();
         return this;
     }
@@ -139,16 +143,17 @@ public final class NetworkFunctionDefinitionVersionImpl implements NetworkFuncti
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.publisherName = Utils.getValueFromIdByName(innerObject.id(), "publishers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.publisherName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "publishers");
         this.networkFunctionDefinitionGroupName
-            = Utils.getValueFromIdByName(innerObject.id(), "networkFunctionDefinitionGroups");
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkFunctionDefinitionGroups");
         this.networkFunctionDefinitionVersionName
-            = Utils.getValueFromIdByName(innerObject.id(), "networkFunctionDefinitionVersions");
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkFunctionDefinitionVersions");
     }
 
     public NetworkFunctionDefinitionVersion refresh() {
-        this.innerObject = serviceManager.serviceClient().getNetworkFunctionDefinitionVersions()
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionVersions()
             .getWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
                 networkFunctionDefinitionVersionName, Context.NONE)
             .getValue();
@@ -156,24 +161,26 @@ public final class NetworkFunctionDefinitionVersionImpl implements NetworkFuncti
     }
 
     public NetworkFunctionDefinitionVersion refresh(Context context) {
-        this.innerObject
-            = serviceManager
-                .serviceClient().getNetworkFunctionDefinitionVersions().getWithResponse(resourceGroupName,
-                    publisherName, networkFunctionDefinitionGroupName, networkFunctionDefinitionVersionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFunctionDefinitionVersions()
+            .getWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, context)
+            .getValue();
         return this;
     }
 
     public NetworkFunctionDefinitionVersionUpdateState
         updateState(NetworkFunctionDefinitionVersionUpdateStateInner parameters) {
-        return serviceManager.networkFunctionDefinitionVersions().updateState(resourceGroupName, publisherName,
-            networkFunctionDefinitionGroupName, networkFunctionDefinitionVersionName, parameters);
+        return serviceManager.networkFunctionDefinitionVersions()
+            .updateState(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, parameters);
     }
 
     public NetworkFunctionDefinitionVersionUpdateState
         updateState(NetworkFunctionDefinitionVersionUpdateStateInner parameters, Context context) {
-        return serviceManager.networkFunctionDefinitionVersions().updateState(resourceGroupName, publisherName,
-            networkFunctionDefinitionGroupName, networkFunctionDefinitionVersionName, parameters, context);
+        return serviceManager.networkFunctionDefinitionVersions()
+            .updateState(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, parameters, context);
     }
 
     public NetworkFunctionDefinitionVersionImpl withRegion(Region location) {

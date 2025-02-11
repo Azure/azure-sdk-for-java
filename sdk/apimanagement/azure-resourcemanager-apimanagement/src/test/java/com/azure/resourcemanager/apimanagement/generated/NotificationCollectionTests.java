@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"title\":\"aqpqifdbm\",\"description\":\"rwtx\",\"recipients\":{\"emails\":[\"amonatnizex\",\"oqsqjghr\"],\"users\":[\"splwsttxs\",\"gxfqpan\",\"ceov\",\"gzwhsxyrujmtik\"]}},\"id\":\"s\",\"name\":\"ik\",\"type\":\"ohzixyqhfnkvycqq\"},{\"properties\":{\"title\":\"seip\",\"description\":\"uwzxhr\",\"recipients\":{\"emails\":[\"dl\",\"kfktltdds\",\"bjop\"],\"users\":[\"hbq\"]}},\"id\":\"zkqxsalu\",\"name\":\"yigfcvcew\",\"type\":\"wqhdgsjsa\"},{\"properties\":{\"title\":\"rncmazdfsqxh\",\"description\":\"mrejparnpvgr\",\"recipients\":{\"emails\":[\"wtdrcwg\",\"w\"],\"users\":[\"zlhhfix\"]}},\"id\":\"cfculzj\",\"name\":\"mhpfywvy\",\"type\":\"dqpz\"},{\"properties\":{\"title\":\"xsoxi\",\"description\":\"nj\",\"recipients\":{\"emails\":[\"rocqsxy\",\"qqt\",\"miwdwisvnme\"],\"users\":[\"jamca\",\"yh\"]}},\"id\":\"tpzcr\",\"name\":\"yklleynqanhkiggl\",\"type\":\"lwalhvu\"}],\"count\":8543644785764880489,\"nextLink\":\"hetxdqcmyctajqz\"}")
-                .toObject(NotificationCollection.class);
+        NotificationCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"title\":\"aqpqifdbm\",\"description\":\"rwtx\",\"recipients\":{\"emails\":[\"amonatnizex\",\"oqsqjghr\"],\"users\":[\"splwsttxs\",\"gxfqpan\",\"ceov\",\"gzwhsxyrujmtik\"]}},\"id\":\"s\",\"name\":\"ik\",\"type\":\"ohzixyqhfnkvycqq\"},{\"properties\":{\"title\":\"seip\",\"description\":\"uwzxhr\",\"recipients\":{\"emails\":[\"dl\",\"kfktltdds\",\"bjop\"],\"users\":[\"hbq\"]}},\"id\":\"zkqxsalu\",\"name\":\"yigfcvcew\",\"type\":\"wqhdgsjsa\"},{\"properties\":{\"title\":\"rncmazdfsqxh\",\"description\":\"mrejparnpvgr\",\"recipients\":{\"emails\":[\"wtdrcwg\",\"w\"],\"users\":[\"zlhhfix\"]}},\"id\":\"cfculzj\",\"name\":\"mhpfywvy\",\"type\":\"dqpz\"},{\"properties\":{\"title\":\"xsoxi\",\"description\":\"nj\",\"recipients\":{\"emails\":[\"rocqsxy\",\"qqt\",\"miwdwisvnme\"],\"users\":[\"jamca\",\"yh\"]}},\"id\":\"tpzcr\",\"name\":\"yklleynqanhkiggl\",\"type\":\"lwalhvu\"}],\"count\":8543644785764880489,\"nextLink\":\"hetxdqcmyctajqz\"}")
+            .toObject(NotificationCollection.class);
         Assertions.assertEquals("aqpqifdbm", model.value().get(0).title());
         Assertions.assertEquals("rwtx", model.value().get(0).description());
         Assertions.assertEquals("amonatnizex", model.value().get(0).recipients().emails().get(0));
@@ -29,41 +27,29 @@ public final class NotificationCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationCollection model =
-            new NotificationCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new NotificationContractInner()
-                                .withTitle("aqpqifdbm")
-                                .withDescription("rwtx")
-                                .withRecipients(
-                                    new RecipientsContractProperties()
-                                        .withEmails(Arrays.asList("amonatnizex", "oqsqjghr"))
-                                        .withUsers(Arrays.asList("splwsttxs", "gxfqpan", "ceov", "gzwhsxyrujmtik"))),
-                            new NotificationContractInner()
-                                .withTitle("seip")
-                                .withDescription("uwzxhr")
-                                .withRecipients(
-                                    new RecipientsContractProperties()
-                                        .withEmails(Arrays.asList("dl", "kfktltdds", "bjop"))
-                                        .withUsers(Arrays.asList("hbq"))),
-                            new NotificationContractInner()
-                                .withTitle("rncmazdfsqxh")
-                                .withDescription("mrejparnpvgr")
-                                .withRecipients(
-                                    new RecipientsContractProperties()
-                                        .withEmails(Arrays.asList("wtdrcwg", "w"))
-                                        .withUsers(Arrays.asList("zlhhfix"))),
-                            new NotificationContractInner()
-                                .withTitle("xsoxi")
-                                .withDescription("nj")
-                                .withRecipients(
-                                    new RecipientsContractProperties()
-                                        .withEmails(Arrays.asList("rocqsxy", "qqt", "miwdwisvnme"))
-                                        .withUsers(Arrays.asList("jamca", "yh")))))
-                .withCount(8543644785764880489L)
-                .withNextLink("hetxdqcmyctajqz");
+        NotificationCollection model = new NotificationCollection()
+            .withValue(Arrays.asList(
+                new NotificationContractInner().withTitle("aqpqifdbm")
+                    .withDescription("rwtx")
+                    .withRecipients(new RecipientsContractProperties()
+                        .withEmails(Arrays.asList("amonatnizex", "oqsqjghr"))
+                        .withUsers(Arrays.asList("splwsttxs", "gxfqpan", "ceov", "gzwhsxyrujmtik"))),
+                new NotificationContractInner().withTitle("seip")
+                    .withDescription("uwzxhr")
+                    .withRecipients(
+                        new RecipientsContractProperties().withEmails(Arrays.asList("dl", "kfktltdds", "bjop"))
+                            .withUsers(Arrays.asList("hbq"))),
+                new NotificationContractInner().withTitle("rncmazdfsqxh")
+                    .withDescription("mrejparnpvgr")
+                    .withRecipients(new RecipientsContractProperties().withEmails(Arrays.asList("wtdrcwg", "w"))
+                        .withUsers(Arrays.asList("zlhhfix"))),
+                new NotificationContractInner().withTitle("xsoxi")
+                    .withDescription("nj")
+                    .withRecipients(
+                        new RecipientsContractProperties().withEmails(Arrays.asList("rocqsxy", "qqt", "miwdwisvnme"))
+                            .withUsers(Arrays.asList("jamca", "yh")))))
+            .withCount(8543644785764880489L)
+            .withNextLink("hetxdqcmyctajqz");
         model = BinaryData.fromObject(model).toObject(NotificationCollection.class);
         Assertions.assertEquals("aqpqifdbm", model.value().get(0).title());
         Assertions.assertEquals("rwtx", model.value().get(0).description());

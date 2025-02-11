@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.models.ServiceNameUnavailabilityReason;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties indicating whether a given service name is available.
  */
 @Fluent
-public final class ServicesNameAvailabilityInfoInner {
+public final class ServicesNameAvailabilityInfoInner implements JsonSerializable<ServicesNameAvailabilityInfoInner> {
     /*
      * The value which indicates whether the provided name is available.
      */
-    @JsonProperty(value = "nameAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;
 
     /*
      * The reason for unavailability.
      */
-    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private ServiceNameUnavailabilityReason reason;
 
     /*
      * The detailed reason message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -81,5 +82,48 @@ public final class ServicesNameAvailabilityInfoInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicesNameAvailabilityInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicesNameAvailabilityInfoInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServicesNameAvailabilityInfoInner.
+     */
+    public static ServicesNameAvailabilityInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicesNameAvailabilityInfoInner deserializedServicesNameAvailabilityInfoInner
+                = new ServicesNameAvailabilityInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedServicesNameAvailabilityInfoInner.nameAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedServicesNameAvailabilityInfoInner.reason
+                        = ServiceNameUnavailabilityReason.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedServicesNameAvailabilityInfoInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicesNameAvailabilityInfoInner;
+        });
     }
 }

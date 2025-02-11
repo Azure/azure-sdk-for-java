@@ -7,46 +7,64 @@ package com.azure.resourcemanager.storagepool.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.fluent.models.DiskPoolCreateProperties;
 import com.azure.resourcemanager.storagepool.fluent.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Request payload for create or update Disk Pool request. */
+/**
+ * Request payload for create or update Disk Pool request.
+ */
 @Fluent
 public final class DiskPoolCreate extends Resource {
     /*
      * Determines the SKU of the Disk Pool
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * Properties for Disk Pool create request.
      */
-    @JsonProperty(value = "properties", required = true)
     private DiskPoolCreateProperties innerProperties = new DiskPoolCreateProperties();
 
     /*
      * Azure resource id. Indicates if this resource is managed by another Azure resource.
      */
-    @JsonProperty(value = "managedBy")
     private String managedBy;
 
     /*
      * List of Azure resource ids that manage this resource.
      */
-    @JsonProperty(value = "managedByExtended")
     private List<String> managedByExtended;
 
-    /** Creates an instance of DiskPoolCreate class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DiskPoolCreate class.
+     */
     public DiskPoolCreate() {
     }
 
     /**
      * Get the sku property: Determines the SKU of the Disk Pool.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -55,7 +73,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Set the sku property: Determines the SKU of the Disk Pool.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DiskPoolCreate object itself.
      */
@@ -66,7 +84,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Get the innerProperties property: Properties for Disk Pool create request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiskPoolCreateProperties innerProperties() {
@@ -75,7 +93,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Get the managedBy property: Azure resource id. Indicates if this resource is managed by another Azure resource.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -84,7 +102,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Set the managedBy property: Azure resource id. Indicates if this resource is managed by another Azure resource.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the DiskPoolCreate object itself.
      */
@@ -95,7 +113,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Get the managedByExtended property: List of Azure resource ids that manage this resource.
-     *
+     * 
      * @return the managedByExtended value.
      */
     public List<String> managedByExtended() {
@@ -104,7 +122,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Set the managedByExtended property: List of Azure resource ids that manage this resource.
-     *
+     * 
      * @param managedByExtended the managedByExtended value to set.
      * @return the DiskPoolCreate object itself.
      */
@@ -113,14 +131,48 @@ public final class DiskPoolCreate extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DiskPoolCreate withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DiskPoolCreate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -129,7 +181,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Get the availabilityZones property: Logical zone for Disk Pool resource; example: ["1"].
-     *
+     * 
      * @return the availabilityZones value.
      */
     public List<String> availabilityZones() {
@@ -138,7 +190,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Set the availabilityZones property: Logical zone for Disk Pool resource; example: ["1"].
-     *
+     * 
      * @param availabilityZones the availabilityZones value to set.
      * @return the DiskPoolCreate object itself.
      */
@@ -152,7 +204,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Get the disks property: List of Azure Managed Disks to attach to a Disk Pool.
-     *
+     * 
      * @return the disks value.
      */
     public List<Disk> disks() {
@@ -161,7 +213,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Set the disks property: List of Azure Managed Disks to attach to a Disk Pool.
-     *
+     * 
      * @param disks the disks value to set.
      * @return the DiskPoolCreate object itself.
      */
@@ -175,7 +227,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Get the subnetId property: Azure Resource ID of a Subnet for the Disk Pool.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -184,7 +236,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Set the subnetId property: Azure Resource ID of a Subnet for the Disk Pool.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the DiskPoolCreate object itself.
      */
@@ -198,7 +250,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Get the additionalCapabilities property: List of additional capabilities for a Disk Pool.
-     *
+     * 
      * @return the additionalCapabilities value.
      */
     public List<String> additionalCapabilities() {
@@ -207,7 +259,7 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Set the additionalCapabilities property: List of additional capabilities for a Disk Pool.
-     *
+     * 
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the DiskPoolCreate object itself.
      */
@@ -221,25 +273,84 @@ public final class DiskPoolCreate extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model DiskPoolCreate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model DiskPoolCreate"));
         } else {
             sku().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model DiskPoolCreate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model DiskPoolCreate"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DiskPoolCreate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("managedBy", this.managedBy);
+        jsonWriter.writeArrayField("managedByExtended", this.managedByExtended,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskPoolCreate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskPoolCreate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiskPoolCreate.
+     */
+    public static DiskPoolCreate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskPoolCreate deserializedDiskPoolCreate = new DiskPoolCreate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDiskPoolCreate.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDiskPoolCreate.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDiskPoolCreate.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDiskPoolCreate.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDiskPoolCreate.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDiskPoolCreate.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDiskPoolCreate.innerProperties = DiskPoolCreateProperties.fromJson(reader);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedDiskPoolCreate.managedBy = reader.getString();
+                } else if ("managedByExtended".equals(fieldName)) {
+                    List<String> managedByExtended = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiskPoolCreate.managedByExtended = managedByExtended;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskPoolCreate;
+        });
+    }
 }

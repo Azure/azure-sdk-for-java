@@ -15,41 +15,31 @@ import org.junit.jupiter.api.Assertions;
 public final class LogzSingleSignOnResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogzSingleSignOnResourceListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"singleSignOnState\":\"Existing\",\"enterpriseAppId\":\"mqc\",\"singleSignOnUrl\":\"q\",\"provisioningState\":\"Deleted\"},\"id\":\"hix\",\"name\":\"igdtopbob\",\"type\":\"og\"},{\"properties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"m\",\"singleSignOnUrl\":\"hrzayvvtpgvdf\",\"provisioningState\":\"Deleted\"},\"id\":\"tkftutqxlngx\",\"name\":\"efgugnxk\",\"type\":\"xdqmidtthzrvqdra\"}],\"nextLink\":\"jybige\"}")
-                .toObject(LogzSingleSignOnResourceListResponse.class);
-        Assertions.assertEquals(SingleSignOnStates.EXISTING, model.value().get(0).properties().singleSignOnState());
-        Assertions.assertEquals("mqc", model.value().get(0).properties().enterpriseAppId());
-        Assertions.assertEquals("q", model.value().get(0).properties().singleSignOnUrl());
-        Assertions.assertEquals("jybige", model.nextLink());
+        LogzSingleSignOnResourceListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"yk\",\"singleSignOnUrl\":\"enevfyexfwhybci\",\"provisioningState\":\"Failed\"},\"id\":\"vdcsitynn\",\"name\":\"amdecte\",\"type\":\"f\"},{\"properties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"ypvhezrkg\",\"singleSignOnUrl\":\"c\",\"provisioningState\":\"Creating\"},\"id\":\"fovgmkqsleyyvxy\",\"name\":\"jpkcattpng\",\"type\":\"cr\"}],\"nextLink\":\"zsqpjhvmdajvny\"}")
+            .toObject(LogzSingleSignOnResourceListResponse.class);
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.value().get(0).properties().singleSignOnState());
+        Assertions.assertEquals("yk", model.value().get(0).properties().enterpriseAppId());
+        Assertions.assertEquals("enevfyexfwhybci", model.value().get(0).properties().singleSignOnUrl());
+        Assertions.assertEquals("zsqpjhvmdajvny", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogzSingleSignOnResourceListResponse model =
-            new LogzSingleSignOnResourceListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LogzSingleSignOnResourceInner()
-                                .withProperties(
-                                    new LogzSingleSignOnProperties()
-                                        .withSingleSignOnState(SingleSignOnStates.EXISTING)
-                                        .withEnterpriseAppId("mqc")
-                                        .withSingleSignOnUrl("q")),
-                            new LogzSingleSignOnResourceInner()
-                                .withProperties(
-                                    new LogzSingleSignOnProperties()
-                                        .withSingleSignOnState(SingleSignOnStates.INITIAL)
-                                        .withEnterpriseAppId("m")
-                                        .withSingleSignOnUrl("hrzayvvtpgvdf"))))
-                .withNextLink("jybige");
+        LogzSingleSignOnResourceListResponse model = new LogzSingleSignOnResourceListResponse().withValue(Arrays.asList(
+            new LogzSingleSignOnResourceInner()
+                .withProperties(new LogzSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                    .withEnterpriseAppId("yk")
+                    .withSingleSignOnUrl("enevfyexfwhybci")),
+            new LogzSingleSignOnResourceInner()
+                .withProperties(new LogzSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                    .withEnterpriseAppId("ypvhezrkg")
+                    .withSingleSignOnUrl("c"))))
+            .withNextLink("zsqpjhvmdajvny");
         model = BinaryData.fromObject(model).toObject(LogzSingleSignOnResourceListResponse.class);
-        Assertions.assertEquals(SingleSignOnStates.EXISTING, model.value().get(0).properties().singleSignOnState());
-        Assertions.assertEquals("mqc", model.value().get(0).properties().enterpriseAppId());
-        Assertions.assertEquals("q", model.value().get(0).properties().singleSignOnUrl());
-        Assertions.assertEquals("jybige", model.nextLink());
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.value().get(0).properties().singleSignOnState());
+        Assertions.assertEquals("yk", model.value().get(0).properties().enterpriseAppId());
+        Assertions.assertEquals("enevfyexfwhybci", model.value().get(0).properties().singleSignOnUrl());
+        Assertions.assertEquals("zsqpjhvmdajvny", model.nextLink());
     }
 }

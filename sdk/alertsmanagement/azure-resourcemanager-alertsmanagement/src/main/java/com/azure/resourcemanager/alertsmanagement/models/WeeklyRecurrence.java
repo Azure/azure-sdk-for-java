@@ -6,25 +6,46 @@ package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Weekly recurrence object. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "recurrenceType")
-@JsonTypeName("Weekly")
+/**
+ * Weekly recurrence object.
+ */
 @Fluent
 public final class WeeklyRecurrence extends Recurrence {
     /*
+     * Specifies when the recurrence should be applied.
+     */
+    private RecurrenceType recurrenceType = RecurrenceType.WEEKLY;
+
+    /*
      * Specifies the values for weekly recurrence pattern.
      */
-    @JsonProperty(value = "daysOfWeek", required = true)
     private List<DaysOfWeek> daysOfWeek;
 
     /**
+     * Creates an instance of WeeklyRecurrence class.
+     */
+    public WeeklyRecurrence() {
+    }
+
+    /**
+     * Get the recurrenceType property: Specifies when the recurrence should be applied.
+     * 
+     * @return the recurrenceType value.
+     */
+    @Override
+    public RecurrenceType recurrenceType() {
+        return this.recurrenceType;
+    }
+
+    /**
      * Get the daysOfWeek property: Specifies the values for weekly recurrence pattern.
-     *
+     * 
      * @return the daysOfWeek value.
      */
     public List<DaysOfWeek> daysOfWeek() {
@@ -33,7 +54,7 @@ public final class WeeklyRecurrence extends Recurrence {
 
     /**
      * Set the daysOfWeek property: Specifies the values for weekly recurrence pattern.
-     *
+     * 
      * @param daysOfWeek the daysOfWeek value to set.
      * @return the WeeklyRecurrence object itself.
      */
@@ -42,14 +63,18 @@ public final class WeeklyRecurrence extends Recurrence {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WeeklyRecurrence withStartTime(String startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WeeklyRecurrence withEndTime(String endTime) {
         super.withEndTime(endTime);
@@ -58,18 +83,66 @@ public final class WeeklyRecurrence extends Recurrence {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (daysOfWeek() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property daysOfWeek in model WeeklyRecurrence"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property daysOfWeek in model WeeklyRecurrence"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WeeklyRecurrence.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime", startTime());
+        jsonWriter.writeStringField("endTime", endTime());
+        jsonWriter.writeArrayField("daysOfWeek", this.daysOfWeek,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("recurrenceType",
+            this.recurrenceType == null ? null : this.recurrenceType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WeeklyRecurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WeeklyRecurrence if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WeeklyRecurrence.
+     */
+    public static WeeklyRecurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WeeklyRecurrence deserializedWeeklyRecurrence = new WeeklyRecurrence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedWeeklyRecurrence.withStartTime(reader.getString());
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedWeeklyRecurrence.withEndTime(reader.getString());
+                } else if ("daysOfWeek".equals(fieldName)) {
+                    List<DaysOfWeek> daysOfWeek
+                        = reader.readArray(reader1 -> DaysOfWeek.fromString(reader1.getString()));
+                    deserializedWeeklyRecurrence.daysOfWeek = daysOfWeek;
+                } else if ("recurrenceType".equals(fieldName)) {
+                    deserializedWeeklyRecurrence.recurrenceType = RecurrenceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWeeklyRecurrence;
+        });
+    }
 }

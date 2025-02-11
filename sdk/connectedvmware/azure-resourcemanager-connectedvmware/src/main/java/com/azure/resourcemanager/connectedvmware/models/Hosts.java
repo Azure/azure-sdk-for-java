@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Hosts. */
+/**
+ * Resource collection API of Hosts.
+ */
 public interface Hosts {
     /**
      * Gets a host.
-     *
-     * <p>Implements host GET method.
-     *
+     * 
+     * Implements host GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @param context The context to associate with this operation.
@@ -27,9 +29,9 @@ public interface Hosts {
 
     /**
      * Gets a host.
-     *
-     * <p>Implements host GET method.
-     *
+     * 
+     * Implements host GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,9 +43,9 @@ public interface Hosts {
 
     /**
      * Deletes an host.
-     *
-     * <p>Implements host DELETE method.
-     *
+     * 
+     * Implements host DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,9 +56,9 @@ public interface Hosts {
 
     /**
      * Deletes an host.
-     *
-     * <p>Implements host DELETE method.
-     *
+     * 
+     * Implements host DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @param force Whether force delete was specified.
@@ -69,9 +71,9 @@ public interface Hosts {
 
     /**
      * Implements GET hosts in a subscription.
-     *
-     * <p>List of hosts in a subscription.
-     *
+     * 
+     * List of hosts in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Hosts as paginated response with {@link PagedIterable}.
@@ -80,9 +82,9 @@ public interface Hosts {
 
     /**
      * Implements GET hosts in a subscription.
-     *
-     * <p>List of hosts in a subscription.
-     *
+     * 
+     * List of hosts in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -93,9 +95,9 @@ public interface Hosts {
 
     /**
      * Implements GET hosts in a resource group.
-     *
-     * <p>List of hosts in a resource group.
-     *
+     * 
+     * List of hosts in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -106,9 +108,9 @@ public interface Hosts {
 
     /**
      * Implements GET hosts in a resource group.
-     *
-     * <p>List of hosts in a resource group.
-     *
+     * 
+     * List of hosts in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,9 +122,9 @@ public interface Hosts {
 
     /**
      * Gets a host.
-     *
-     * <p>Implements host GET method.
-     *
+     * 
+     * Implements host GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +135,9 @@ public interface Hosts {
 
     /**
      * Gets a host.
-     *
-     * <p>Implements host GET method.
-     *
+     * 
+     * Implements host GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +149,9 @@ public interface Hosts {
 
     /**
      * Deletes an host.
-     *
-     * <p>Implements host DELETE method.
-     *
+     * 
+     * Implements host DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,9 +161,9 @@ public interface Hosts {
 
     /**
      * Deletes an host.
-     *
-     * <p>Implements host DELETE method.
-     *
+     * 
+     * Implements host DELETE method.
+     * 
      * @param id the resource ID.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -173,7 +175,7 @@ public interface Hosts {
 
     /**
      * Begins definition for a new HostModel resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new HostModel definition.
      */

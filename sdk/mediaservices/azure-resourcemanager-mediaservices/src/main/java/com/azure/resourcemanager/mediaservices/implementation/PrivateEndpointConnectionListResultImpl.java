@@ -17,8 +17,7 @@ public final class PrivateEndpointConnectionListResultImpl implements PrivateEnd
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    PrivateEndpointConnectionListResultImpl(
-        PrivateEndpointConnectionListResultInner innerObject,
+    PrivateEndpointConnectionListResultImpl(PrivateEndpointConnectionListResultInner innerObject,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class PrivateEndpointConnectionListResultImpl implements PrivateEnd
     public List<PrivateEndpointConnection> value() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

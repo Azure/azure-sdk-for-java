@@ -8,26 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VirtualNetworkLinks. */
+/**
+ * Resource collection API of VirtualNetworkLinks.
+ */
 public interface VirtualNetworkLinks {
     /**
      * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName, String ifMatch);
-
-    /**
-     * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -39,27 +26,38 @@ public interface VirtualNetworkLinks {
 
     /**
      * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        String ifMatch,
-        Context context);
+    void delete(String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        String ifMatch, Context context);
 
     /**
      * Gets properties of a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param virtualNetworkLinkName The name of the virtual network link.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a virtual network link to a DNS forwarding ruleset along with {@link Response}.
+     */
+    Response<VirtualNetworkLink> getWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, Context context);
+
+    /**
+     * Gets properties of a virtual network link to a DNS forwarding ruleset.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -71,36 +69,21 @@ public interface VirtualNetworkLinks {
     VirtualNetworkLink get(String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName);
 
     /**
-     * Gets properties of a virtual network link to a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param virtualNetworkLinkName The name of the virtual network link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a virtual network link to a DNS forwarding ruleset along with {@link Response}.
-     */
-    Response<VirtualNetworkLink> getWithResponse(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName, Context context);
-
-    /**
      * Lists virtual network links to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on virtual network links as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on virtual network links as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<VirtualNetworkLink> list(String resourceGroupName, String dnsForwardingRulesetName);
 
     /**
      * Lists virtual network links to a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -108,15 +91,15 @@ public interface VirtualNetworkLinks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on virtual network links as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on virtual network links as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<VirtualNetworkLink> list(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top, Context context);
+    PagedIterable<VirtualNetworkLink> list(String resourceGroupName, String dnsForwardingRulesetName, Integer top,
+        Context context);
 
     /**
      * Gets properties of a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -127,7 +110,7 @@ public interface VirtualNetworkLinks {
 
     /**
      * Gets properties of a virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +122,7 @@ public interface VirtualNetworkLinks {
 
     /**
      * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -149,10 +132,10 @@ public interface VirtualNetworkLinks {
 
     /**
      * Deletes a virtual network link to a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -162,7 +145,7 @@ public interface VirtualNetworkLinks {
 
     /**
      * Begins definition for a new VirtualNetworkLink resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new VirtualNetworkLink definition.
      */

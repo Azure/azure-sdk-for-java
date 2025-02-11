@@ -22,8 +22,9 @@ public class AzureSpringBootVersionVerifier {
     static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_1 = "org.springframework.boot.autoconfigure.validation.ValidationConfigurationCustomizer.ValidationConfigurationCustomizer,setIgnoreRegistrationFailure,";
     static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_2 = "org.springframework.boot.autoconfigure.web.client.RestClientSsl";
     static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_3 = "org.springframework.boot.autoconfigure.ldap.PropertiesLdapConnectionDetails";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_4 = "org.springframework.boot.autoconfigure.http.client.HttpClientProperties";
     /**
-     * Versions supported by Spring Cloud Azure, for present is [3.0, 3.1, 3.2, 3.3]. Update this value if needed.
+     * Versions supported by Spring Cloud Azure, for present is [3.0, 3.1, 3.2, 3.3, 3.4]. Update this value if needed.
      */
     private final Map<String, String> supportedVersions = new HashMap<>();
 
@@ -49,6 +50,7 @@ public class AzureSpringBootVersionVerifier {
         supportedVersions.put("3.1", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_1);
         supportedVersions.put("3.2", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_2);
         supportedVersions.put("3.3", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_3);
+        supportedVersions.put("3.4", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_4);
     }
 
     /**

@@ -21,94 +21,118 @@ public final class NetworkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkConfiguration model = BinaryData.fromString(
-            "{\"subnetId\":\"mwmbes\",\"dynamicVnetAssignmentScope\":\"none\",\"endpointConfiguration\":{\"inboundNatPools\":[{\"name\":\"wtppjflcxogaoko\",\"protocol\":\"TCP\",\"backendPort\":21704487,\"frontendPortRangeStart\":1640463449,\"frontendPortRangeEnd\":1813308851,\"networkSecurityGroupRules\":[{\"priority\":1995245792,\"access\":\"Deny\",\"sourceAddressPrefix\":\"kqze\",\"sourcePortRanges\":[\"dltfz\",\"mhhv\",\"gureodkwobdag\",\"tibqdxbxwakb\"]},{\"priority\":2040328424,\"access\":\"Allow\",\"sourceAddressPrefix\":\"xndlkzgxhu\",\"sourcePortRanges\":[\"lbpodxunk\",\"ebxmubyynt\",\"lrb\"]},{\"priority\":837429381,\"access\":\"Allow\",\"sourceAddressPrefix\":\"oievseotgqrlltm\",\"sourcePortRanges\":[\"auwzizxbmpgc\",\"efuzmuvpbttd\",\"morppxebmnzbtbh\",\"pglkf\"]}]},{\"name\":\"ohdneuel\",\"protocol\":\"TCP\",\"backendPort\":571890155,\"frontendPortRangeStart\":1777092191,\"frontendPortRangeEnd\":2019789161,\"networkSecurityGroupRules\":[{\"priority\":58245942,\"access\":\"Deny\",\"sourceAddressPrefix\":\"zfikd\",\"sourcePortRanges\":[\"quuvxzxcl\"]},{\"priority\":2116821034,\"access\":\"Deny\",\"sourceAddressPrefix\":\"hhqzonosgg\",\"sourcePortRanges\":[\"ohfwds\"]},{\"priority\":201409851,\"access\":\"Allow\",\"sourceAddressPrefix\":\"aljutiiswac\",\"sourcePortRanges\":[\"dkzzewkfvhqcrail\"]}]}]},\"publicIPAddressConfiguration\":{\"provision\":\"NoPublicIPAddresses\",\"ipAddressIds\":[\"uflrwd\",\"hdlxyjrxsagafcn\",\"hgw\"]},\"enableAcceleratedNetworking\":false}")
+            "{\"subnetId\":\"sdqrhzoymibmrq\",\"dynamicVnetAssignmentScope\":\"none\",\"endpointConfiguration\":{\"inboundNatPools\":[{\"name\":\"wfluszdt\",\"protocol\":\"TCP\",\"backendPort\":569809127,\"frontendPortRangeStart\":24536782,\"frontendPortRangeEnd\":1802230973,\"networkSecurityGroupRules\":[{\"priority\":695674314,\"access\":\"Allow\",\"sourceAddressPrefix\":\"voqacpiexpbt\",\"sourcePortRanges\":[\"bwoenwashrt\"]},{\"priority\":2130378751,\"access\":\"Deny\",\"sourceAddressPrefix\":\"cnqxwbpokulpi\",\"sourcePortRanges\":[\"aasipqi\",\"obyu\"]}]},{\"name\":\"erpqlpqwcciuqg\",\"protocol\":\"UDP\",\"backendPort\":1924773766,\"frontendPortRangeStart\":1287443771,\"frontendPortRangeEnd\":164113652,\"networkSecurityGroupRules\":[{\"priority\":2060302961,\"access\":\"Deny\",\"sourceAddressPrefix\":\"btkuwhh\",\"sourcePortRanges\":[\"k\",\"joxafnndlpi\",\"hkoymkcdyhbp\",\"kpw\"]},{\"priority\":722591670,\"access\":\"Deny\",\"sourceAddressPrefix\":\"q\",\"sourcePortRanges\":[\"vq\",\"ovljxywsu\",\"syrsndsytgadgvra\"]},{\"priority\":890415173,\"access\":\"Allow\",\"sourceAddressPrefix\":\"neqn\",\"sourcePortRanges\":[\"rwlqu\",\"ijfqkacewiipfp\",\"bjibwwiftohq\",\"vpuvks\"]}]}]},\"publicIPAddressConfiguration\":{\"provision\":\"UserManaged\",\"ipAddressIds\":[\"nynfsynljphuo\"]},\"enableAcceleratedNetworking\":true}")
             .toObject(NetworkConfiguration.class);
-        Assertions.assertEquals("mwmbes", model.subnetId());
+        Assertions.assertEquals("sdqrhzoymibmrq", model.subnetId());
         Assertions.assertEquals(DynamicVNetAssignmentScope.NONE, model.dynamicVnetAssignmentScope());
-        Assertions.assertEquals("wtppjflcxogaoko", model.endpointConfiguration().inboundNatPools().get(0).name());
+        Assertions.assertEquals("wfluszdt", model.endpointConfiguration().inboundNatPools().get(0).name());
         Assertions.assertEquals(InboundEndpointProtocol.TCP,
             model.endpointConfiguration().inboundNatPools().get(0).protocol());
-        Assertions.assertEquals(21704487, model.endpointConfiguration().inboundNatPools().get(0).backendPort());
-        Assertions.assertEquals(1640463449,
+        Assertions.assertEquals(569809127, model.endpointConfiguration().inboundNatPools().get(0).backendPort());
+        Assertions.assertEquals(24536782,
             model.endpointConfiguration().inboundNatPools().get(0).frontendPortRangeStart());
-        Assertions.assertEquals(1813308851,
+        Assertions.assertEquals(1802230973,
             model.endpointConfiguration().inboundNatPools().get(0).frontendPortRangeEnd());
-        Assertions.assertEquals(1995245792,
+        Assertions.assertEquals(695674314,
             model.endpointConfiguration().inboundNatPools().get(0).networkSecurityGroupRules().get(0).priority());
-        Assertions.assertEquals(NetworkSecurityGroupRuleAccess.DENY,
+        Assertions.assertEquals(NetworkSecurityGroupRuleAccess.ALLOW,
             model.endpointConfiguration().inboundNatPools().get(0).networkSecurityGroupRules().get(0).access());
-        Assertions.assertEquals("kqze", model.endpointConfiguration().inboundNatPools().get(0)
-            .networkSecurityGroupRules().get(0).sourceAddressPrefix());
-        Assertions.assertEquals("dltfz", model.endpointConfiguration().inboundNatPools().get(0)
-            .networkSecurityGroupRules().get(0).sourcePortRanges().get(0));
-        Assertions.assertEquals(IpAddressProvisioningType.NO_PUBLIC_IPADDRESSES,
+        Assertions.assertEquals("voqacpiexpbt",
+            model.endpointConfiguration()
+                .inboundNatPools()
+                .get(0)
+                .networkSecurityGroupRules()
+                .get(0)
+                .sourceAddressPrefix());
+        Assertions.assertEquals("bwoenwashrt",
+            model.endpointConfiguration()
+                .inboundNatPools()
+                .get(0)
+                .networkSecurityGroupRules()
+                .get(0)
+                .sourcePortRanges()
+                .get(0));
+        Assertions.assertEquals(IpAddressProvisioningType.USER_MANAGED,
             model.publicIpAddressConfiguration().provision());
-        Assertions.assertEquals("uflrwd", model.publicIpAddressConfiguration().ipAddressIds().get(0));
-        Assertions.assertEquals(false, model.enableAcceleratedNetworking());
+        Assertions.assertEquals("nynfsynljphuo", model.publicIpAddressConfiguration().ipAddressIds().get(0));
+        Assertions.assertEquals(true, model.enableAcceleratedNetworking());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkConfiguration model
-            = new NetworkConfiguration()
-                .withSubnetId(
-                    "mwmbes")
-                .withDynamicVnetAssignmentScope(
-                    DynamicVNetAssignmentScope.NONE)
-                .withEndpointConfiguration(new PoolEndpointConfiguration().withInboundNatPools(Arrays.asList(
-                    new InboundNatPool().withName("wtppjflcxogaoko").withProtocol(InboundEndpointProtocol.TCP)
-                        .withBackendPort(21704487).withFrontendPortRangeStart(1640463449)
-                        .withFrontendPortRangeEnd(1813308851)
-                        .withNetworkSecurityGroupRules(Arrays.asList(
-                            new NetworkSecurityGroupRule().withPriority(1995245792)
-                                .withAccess(NetworkSecurityGroupRuleAccess.DENY).withSourceAddressPrefix("kqze")
-                                .withSourcePortRanges(Arrays.asList("dltfz", "mhhv", "gureodkwobdag", "tibqdxbxwakb")),
-                            new NetworkSecurityGroupRule().withPriority(2040328424)
-                                .withAccess(NetworkSecurityGroupRuleAccess.ALLOW).withSourceAddressPrefix("xndlkzgxhu")
-                                .withSourcePortRanges(Arrays.asList("lbpodxunk", "ebxmubyynt", "lrb")),
-                            new NetworkSecurityGroupRule().withPriority(837429381)
-                                .withAccess(NetworkSecurityGroupRuleAccess.ALLOW)
-                                .withSourceAddressPrefix("oievseotgqrlltm").withSourcePortRanges(
-                                    Arrays.asList("auwzizxbmpgc", "efuzmuvpbttd", "morppxebmnzbtbh", "pglkf")))),
-                    new InboundNatPool().withName("ohdneuel").withProtocol(InboundEndpointProtocol.TCP)
-                        .withBackendPort(571890155).withFrontendPortRangeStart(1777092191)
-                        .withFrontendPortRangeEnd(2019789161)
-                        .withNetworkSecurityGroupRules(Arrays.asList(
-                            new NetworkSecurityGroupRule().withPriority(58245942)
-                                .withAccess(NetworkSecurityGroupRuleAccess.DENY).withSourceAddressPrefix("zfikd")
-                                .withSourcePortRanges(Arrays.asList("quuvxzxcl")),
-                            new NetworkSecurityGroupRule().withPriority(2116821034)
-                                .withAccess(NetworkSecurityGroupRuleAccess.DENY).withSourceAddressPrefix("hhqzonosgg")
-                                .withSourcePortRanges(Arrays.asList("ohfwds")),
-                            new NetworkSecurityGroupRule().withPriority(201409851)
-                                .withAccess(NetworkSecurityGroupRuleAccess.ALLOW).withSourceAddressPrefix("aljutiiswac")
-                                .withSourcePortRanges(Arrays.asList("dkzzewkfvhqcrail")))))))
-                .withPublicIpAddressConfiguration(
-                    new PublicIpAddressConfiguration().withProvision(IpAddressProvisioningType.NO_PUBLIC_IPADDRESSES)
-                        .withIpAddressIds(Arrays.asList("uflrwd", "hdlxyjrxsagafcn", "hgw")))
-                .withEnableAcceleratedNetworking(false);
+        NetworkConfiguration model = new NetworkConfiguration().withSubnetId("sdqrhzoymibmrq")
+            .withDynamicVnetAssignmentScope(DynamicVNetAssignmentScope.NONE)
+            .withEndpointConfiguration(new PoolEndpointConfiguration().withInboundNatPools(Arrays.asList(
+                new InboundNatPool().withName("wfluszdt")
+                    .withProtocol(InboundEndpointProtocol.TCP)
+                    .withBackendPort(569809127)
+                    .withFrontendPortRangeStart(24536782)
+                    .withFrontendPortRangeEnd(1802230973)
+                    .withNetworkSecurityGroupRules(Arrays.asList(
+                        new NetworkSecurityGroupRule().withPriority(695674314)
+                            .withAccess(NetworkSecurityGroupRuleAccess.ALLOW)
+                            .withSourceAddressPrefix("voqacpiexpbt")
+                            .withSourcePortRanges(Arrays.asList("bwoenwashrt")),
+                        new NetworkSecurityGroupRule().withPriority(2130378751)
+                            .withAccess(NetworkSecurityGroupRuleAccess.DENY)
+                            .withSourceAddressPrefix("cnqxwbpokulpi")
+                            .withSourcePortRanges(Arrays.asList("aasipqi", "obyu")))),
+                new InboundNatPool().withName("erpqlpqwcciuqg")
+                    .withProtocol(InboundEndpointProtocol.UDP)
+                    .withBackendPort(1924773766)
+                    .withFrontendPortRangeStart(1287443771)
+                    .withFrontendPortRangeEnd(164113652)
+                    .withNetworkSecurityGroupRules(Arrays.asList(
+                        new NetworkSecurityGroupRule().withPriority(2060302961)
+                            .withAccess(NetworkSecurityGroupRuleAccess.DENY)
+                            .withSourceAddressPrefix("btkuwhh")
+                            .withSourcePortRanges(Arrays.asList("k", "joxafnndlpi", "hkoymkcdyhbp", "kpw")),
+                        new NetworkSecurityGroupRule().withPriority(722591670)
+                            .withAccess(NetworkSecurityGroupRuleAccess.DENY)
+                            .withSourceAddressPrefix("q")
+                            .withSourcePortRanges(Arrays.asList("vq", "ovljxywsu", "syrsndsytgadgvra")),
+                        new NetworkSecurityGroupRule().withPriority(890415173)
+                            .withAccess(NetworkSecurityGroupRuleAccess.ALLOW)
+                            .withSourceAddressPrefix("neqn")
+                            .withSourcePortRanges(
+                                Arrays.asList("rwlqu", "ijfqkacewiipfp", "bjibwwiftohq", "vpuvks")))))))
+            .withPublicIpAddressConfiguration(
+                new PublicIpAddressConfiguration().withProvision(IpAddressProvisioningType.USER_MANAGED)
+                    .withIpAddressIds(Arrays.asList("nynfsynljphuo")))
+            .withEnableAcceleratedNetworking(true);
         model = BinaryData.fromObject(model).toObject(NetworkConfiguration.class);
-        Assertions.assertEquals("mwmbes", model.subnetId());
+        Assertions.assertEquals("sdqrhzoymibmrq", model.subnetId());
         Assertions.assertEquals(DynamicVNetAssignmentScope.NONE, model.dynamicVnetAssignmentScope());
-        Assertions.assertEquals("wtppjflcxogaoko", model.endpointConfiguration().inboundNatPools().get(0).name());
+        Assertions.assertEquals("wfluszdt", model.endpointConfiguration().inboundNatPools().get(0).name());
         Assertions.assertEquals(InboundEndpointProtocol.TCP,
             model.endpointConfiguration().inboundNatPools().get(0).protocol());
-        Assertions.assertEquals(21704487, model.endpointConfiguration().inboundNatPools().get(0).backendPort());
-        Assertions.assertEquals(1640463449,
+        Assertions.assertEquals(569809127, model.endpointConfiguration().inboundNatPools().get(0).backendPort());
+        Assertions.assertEquals(24536782,
             model.endpointConfiguration().inboundNatPools().get(0).frontendPortRangeStart());
-        Assertions.assertEquals(1813308851,
+        Assertions.assertEquals(1802230973,
             model.endpointConfiguration().inboundNatPools().get(0).frontendPortRangeEnd());
-        Assertions.assertEquals(1995245792,
+        Assertions.assertEquals(695674314,
             model.endpointConfiguration().inboundNatPools().get(0).networkSecurityGroupRules().get(0).priority());
-        Assertions.assertEquals(NetworkSecurityGroupRuleAccess.DENY,
+        Assertions.assertEquals(NetworkSecurityGroupRuleAccess.ALLOW,
             model.endpointConfiguration().inboundNatPools().get(0).networkSecurityGroupRules().get(0).access());
-        Assertions.assertEquals("kqze", model.endpointConfiguration().inboundNatPools().get(0)
-            .networkSecurityGroupRules().get(0).sourceAddressPrefix());
-        Assertions.assertEquals("dltfz", model.endpointConfiguration().inboundNatPools().get(0)
-            .networkSecurityGroupRules().get(0).sourcePortRanges().get(0));
-        Assertions.assertEquals(IpAddressProvisioningType.NO_PUBLIC_IPADDRESSES,
+        Assertions.assertEquals("voqacpiexpbt",
+            model.endpointConfiguration()
+                .inboundNatPools()
+                .get(0)
+                .networkSecurityGroupRules()
+                .get(0)
+                .sourceAddressPrefix());
+        Assertions.assertEquals("bwoenwashrt",
+            model.endpointConfiguration()
+                .inboundNatPools()
+                .get(0)
+                .networkSecurityGroupRules()
+                .get(0)
+                .sourcePortRanges()
+                .get(0));
+        Assertions.assertEquals(IpAddressProvisioningType.USER_MANAGED,
             model.publicIpAddressConfiguration().provision());
-        Assertions.assertEquals("uflrwd", model.publicIpAddressConfiguration().ipAddressIds().get(0));
-        Assertions.assertEquals(false, model.enableAcceleratedNetworking());
+        Assertions.assertEquals("nynfsynljphuo", model.publicIpAddressConfiguration().ipAddressIds().get(0));
+        Assertions.assertEquals(true, model.enableAcceleratedNetworking());
     }
 }

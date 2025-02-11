@@ -14,8 +14,7 @@ public final class BenefitRecommendationModelImpl implements BenefitRecommendati
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    BenefitRecommendationModelImpl(
-        BenefitRecommendationModelInner innerObject,
+    BenefitRecommendationModelImpl(BenefitRecommendationModelInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

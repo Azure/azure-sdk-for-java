@@ -11,32 +11,32 @@ public final class SqlServerBaseLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlServerBaseLinkedServiceTypeProperties model = BinaryData.fromString(
-            "{\"server\":\"datamadkbxuip\",\"database\":\"dataawxugpubeqk\",\"encrypt\":\"datazmuzgueuyg\",\"trustServerCertificate\":\"datahauhe\",\"hostNameInCertificate\":\"dataswe\",\"applicationIntent\":\"datagxxzxwrnqwdjvl\",\"connectTimeout\":\"datazxyylwsfxqcmej\",\"connectRetryCount\":\"datajcbciuagakmxg\",\"connectRetryInterval\":\"datamavllp\",\"loadBalanceTimeout\":\"dataguzsyfwamhm\",\"commandTimeout\":\"dataxxb\",\"integratedSecurity\":\"datagwnompvy\",\"failoverPartner\":\"datacnzcu\",\"maxPoolSize\":\"datasalbjf\",\"minPoolSize\":\"dataexqfzmhkridipwc\",\"multipleActiveResultSets\":\"datannmpifjqhjenb\",\"multiSubnetFailover\":\"datapfpllosadjffllr\",\"packetSize\":\"datag\",\"pooling\":\"datayeok\"}")
+            "{\"server\":\"dataerlbcetrvirdfsd\",\"database\":\"datap\",\"encrypt\":\"dataloopz\",\"trustServerCertificate\":\"dataegchtabhacjlf\",\"hostNameInCertificate\":\"datacklvvwvpfq\",\"applicationIntent\":\"datavzhmlnfvyhdhff\",\"connectTimeout\":\"datadmhawbxnlkmazhle\",\"connectRetryCount\":\"dataroksay\",\"connectRetryInterval\":\"datafzzipyqtmdhb\",\"loadBalanceTimeout\":\"datakgmwxzlphzu\",\"commandTimeout\":\"dataq\",\"integratedSecurity\":\"databejhxopehel\",\"failoverPartner\":\"dataykhdapxdiibj\",\"maxPoolSize\":\"datauekhh\",\"minPoolSize\":\"datahxhuhhnrmmfzfkh\",\"multipleActiveResultSets\":\"datazjf\",\"multiSubnetFailover\":\"datajhtvbskgciedlqv\",\"packetSize\":\"datatrlsmsr\",\"pooling\":\"datafgb\"}")
             .toObject(SqlServerBaseLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlServerBaseLinkedServiceTypeProperties model
-            = new SqlServerBaseLinkedServiceTypeProperties().withServer("datamadkbxuip")
-                .withDatabase("dataawxugpubeqk")
-                .withEncrypt("datazmuzgueuyg")
-                .withTrustServerCertificate("datahauhe")
-                .withHostnameInCertificate("dataswe")
-                .withApplicationIntent("datagxxzxwrnqwdjvl")
-                .withConnectTimeout("datazxyylwsfxqcmej")
-                .withConnectRetryCount("datajcbciuagakmxg")
-                .withConnectRetryInterval("datamavllp")
-                .withLoadBalanceTimeout("dataguzsyfwamhm")
-                .withCommandTimeout("dataxxb")
-                .withIntegratedSecurity("datagwnompvy")
-                .withFailoverPartner("datacnzcu")
-                .withMaxPoolSize("datasalbjf")
-                .withMinPoolSize("dataexqfzmhkridipwc")
-                .withMultipleActiveResultSets("datannmpifjqhjenb")
-                .withMultiSubnetFailover("datapfpllosadjffllr")
-                .withPacketSize("datag")
-                .withPooling("datayeok");
+            = new SqlServerBaseLinkedServiceTypeProperties().withServer("dataerlbcetrvirdfsd")
+                .withDatabase("datap")
+                .withEncrypt("dataloopz")
+                .withTrustServerCertificate("dataegchtabhacjlf")
+                .withHostnameInCertificate("datacklvvwvpfq")
+                .withApplicationIntent("datavzhmlnfvyhdhff")
+                .withConnectTimeout("datadmhawbxnlkmazhle")
+                .withConnectRetryCount("dataroksay")
+                .withConnectRetryInterval("datafzzipyqtmdhb")
+                .withLoadBalanceTimeout("datakgmwxzlphzu")
+                .withCommandTimeout("dataq")
+                .withIntegratedSecurity("databejhxopehel")
+                .withFailoverPartner("dataykhdapxdiibj")
+                .withMaxPoolSize("datauekhh")
+                .withMinPoolSize("datahxhuhhnrmmfzfkh")
+                .withMultipleActiveResultSets("datazjf")
+                .withMultiSubnetFailover("datajhtvbskgciedlqv")
+                .withPacketSize("datatrlsmsr")
+                .withPooling("datafgb");
         model = BinaryData.fromObject(model).toObject(SqlServerBaseLinkedServiceTypeProperties.class);
     }
 }

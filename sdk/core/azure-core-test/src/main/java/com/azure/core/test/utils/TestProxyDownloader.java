@@ -76,7 +76,7 @@ public final class TestProxyDownloader {
                 }
             } else {
                 try (ZipInputStream zip = new ZipInputStream(new BufferedInputStream(Files.newInputStream(zipFile)))) {
-                    decompress(zip::getNextEntry, TestProxyDownloader::getZipOuptutFile, ZipEntry::isDirectory, zip);
+                    decompress(zip::getNextEntry, TestProxyDownloader::getZipOutputFile, ZipEntry::isDirectory, zip);
                 }
             }
         } catch (Exception e) {
@@ -110,7 +110,7 @@ public final class TestProxyDownloader {
         }
     }
 
-    private static File getZipOuptutFile(ZipEntry entry) {
+    private static File getZipOutputFile(ZipEntry entry) {
         return new File(PROXY_PATH.toFile(), entry.getName());
     }
 

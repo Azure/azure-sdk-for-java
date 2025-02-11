@@ -13,8 +13,7 @@ public final class UploadCertificateResponseImpl implements UploadCertificateRes
 
     private final com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager;
 
-    UploadCertificateResponseImpl(
-        UploadCertificateResponseInner innerObject,
+    UploadCertificateResponseImpl(UploadCertificateResponseInner innerObject,
         com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

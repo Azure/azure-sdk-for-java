@@ -5,105 +5,99 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the properties of a Cluster. */
+/**
+ * Describes the properties of a Cluster.
+ */
 @Fluent
-public final class ClusterProperties {
+public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
     /*
      * Gets or sets a unique identifier for this resource.
      */
-    @JsonProperty(value = "uuid", access = JsonProperty.Access.WRITE_ONLY)
     private String uuid;
 
     /*
      * Gets or sets the ARM Id of the vCenter resource in which this cluster resides.
      */
-    @JsonProperty(value = "vCenterId")
     private String vCenterId;
 
     /*
      * Gets or sets the vCenter MoRef (Managed Object Reference) ID for the cluster.
      */
-    @JsonProperty(value = "moRefId")
     private String moRefId;
 
     /*
      * Gets or sets the inventory Item ID for the cluster.
      */
-    @JsonProperty(value = "inventoryItemId")
     private String inventoryItemId;
 
     /*
      * Gets or sets the vCenter Managed Object name for the cluster.
      */
-    @JsonProperty(value = "moName", access = JsonProperty.Access.WRITE_ONLY)
     private String moName;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceStatus> statuses;
 
     /*
      * Gets the name of the corresponding resource in Kubernetes.
      */
-    @JsonProperty(value = "customResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String customResourceName;
 
     /*
      * Gets the used physical memory on the cluster in GB.
      */
-    @JsonProperty(value = "usedMemoryGB", access = JsonProperty.Access.WRITE_ONLY)
     private Long usedMemoryGB;
 
     /*
      * Gets the total amount of physical memory on the cluster in GB.
      */
-    @JsonProperty(value = "totalMemoryGB", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalMemoryGB;
 
     /*
      * Gets the used CPU usage across all cores on the cluster in MHz.
      */
-    @JsonProperty(value = "usedCpuMHz", access = JsonProperty.Access.WRITE_ONLY)
     private Long usedCpuMHz;
 
     /*
      * Gets the max CPU usage across all cores on the cluster in MHz.
      */
-    @JsonProperty(value = "totalCpuMHz", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalCpuMHz;
 
     /*
      * Gets the datastore ARM ids.
      */
-    @JsonProperty(value = "datastoreIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> datastoreIds;
 
     /*
      * Gets the network ARM ids.
      */
-    @JsonProperty(value = "networkIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> networkIds;
 
     /*
      * Gets the provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ClusterProperties class. */
+    /**
+     * Creates an instance of ClusterProperties class.
+     */
     public ClusterProperties() {
     }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
-     *
+     * 
      * @return the uuid value.
      */
     public String uuid() {
@@ -112,7 +106,7 @@ public final class ClusterProperties {
 
     /**
      * Get the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this cluster resides.
-     *
+     * 
      * @return the vCenterId value.
      */
     public String vCenterId() {
@@ -121,7 +115,7 @@ public final class ClusterProperties {
 
     /**
      * Set the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this cluster resides.
-     *
+     * 
      * @param vCenterId the vCenterId value to set.
      * @return the ClusterProperties object itself.
      */
@@ -132,7 +126,7 @@ public final class ClusterProperties {
 
     /**
      * Get the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the cluster.
-     *
+     * 
      * @return the moRefId value.
      */
     public String moRefId() {
@@ -141,7 +135,7 @@ public final class ClusterProperties {
 
     /**
      * Set the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the cluster.
-     *
+     * 
      * @param moRefId the moRefId value to set.
      * @return the ClusterProperties object itself.
      */
@@ -152,7 +146,7 @@ public final class ClusterProperties {
 
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the cluster.
-     *
+     * 
      * @return the inventoryItemId value.
      */
     public String inventoryItemId() {
@@ -161,7 +155,7 @@ public final class ClusterProperties {
 
     /**
      * Set the inventoryItemId property: Gets or sets the inventory Item ID for the cluster.
-     *
+     * 
      * @param inventoryItemId the inventoryItemId value to set.
      * @return the ClusterProperties object itself.
      */
@@ -172,7 +166,7 @@ public final class ClusterProperties {
 
     /**
      * Get the moName property: Gets or sets the vCenter Managed Object name for the cluster.
-     *
+     * 
      * @return the moName value.
      */
     public String moName() {
@@ -181,7 +175,7 @@ public final class ClusterProperties {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceStatus> statuses() {
@@ -190,7 +184,7 @@ public final class ClusterProperties {
 
     /**
      * Get the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
-     *
+     * 
      * @return the customResourceName value.
      */
     public String customResourceName() {
@@ -199,7 +193,7 @@ public final class ClusterProperties {
 
     /**
      * Get the usedMemoryGB property: Gets the used physical memory on the cluster in GB.
-     *
+     * 
      * @return the usedMemoryGB value.
      */
     public Long usedMemoryGB() {
@@ -208,7 +202,7 @@ public final class ClusterProperties {
 
     /**
      * Get the totalMemoryGB property: Gets the total amount of physical memory on the cluster in GB.
-     *
+     * 
      * @return the totalMemoryGB value.
      */
     public Long totalMemoryGB() {
@@ -217,7 +211,7 @@ public final class ClusterProperties {
 
     /**
      * Get the usedCpuMHz property: Gets the used CPU usage across all cores on the cluster in MHz.
-     *
+     * 
      * @return the usedCpuMHz value.
      */
     public Long usedCpuMHz() {
@@ -226,7 +220,7 @@ public final class ClusterProperties {
 
     /**
      * Get the totalCpuMHz property: Gets the max CPU usage across all cores on the cluster in MHz.
-     *
+     * 
      * @return the totalCpuMHz value.
      */
     public Long totalCpuMHz() {
@@ -235,7 +229,7 @@ public final class ClusterProperties {
 
     /**
      * Get the datastoreIds property: Gets the datastore ARM ids.
-     *
+     * 
      * @return the datastoreIds value.
      */
     public List<String> datastoreIds() {
@@ -244,7 +238,7 @@ public final class ClusterProperties {
 
     /**
      * Get the networkIds property: Gets the network ARM ids.
-     *
+     * 
      * @return the networkIds value.
      */
     public List<String> networkIds() {
@@ -253,7 +247,7 @@ public final class ClusterProperties {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -262,12 +256,79 @@ public final class ClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vCenterId", this.vCenterId);
+        jsonWriter.writeStringField("moRefId", this.moRefId);
+        jsonWriter.writeStringField("inventoryItemId", this.inventoryItemId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
+     */
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uuid".equals(fieldName)) {
+                    deserializedClusterProperties.uuid = reader.getString();
+                } else if ("vCenterId".equals(fieldName)) {
+                    deserializedClusterProperties.vCenterId = reader.getString();
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedClusterProperties.moRefId = reader.getString();
+                } else if ("inventoryItemId".equals(fieldName)) {
+                    deserializedClusterProperties.inventoryItemId = reader.getString();
+                } else if ("moName".equals(fieldName)) {
+                    deserializedClusterProperties.moName = reader.getString();
+                } else if ("statuses".equals(fieldName)) {
+                    List<ResourceStatus> statuses = reader.readArray(reader1 -> ResourceStatus.fromJson(reader1));
+                    deserializedClusterProperties.statuses = statuses;
+                } else if ("customResourceName".equals(fieldName)) {
+                    deserializedClusterProperties.customResourceName = reader.getString();
+                } else if ("usedMemoryGB".equals(fieldName)) {
+                    deserializedClusterProperties.usedMemoryGB = reader.getNullable(JsonReader::getLong);
+                } else if ("totalMemoryGB".equals(fieldName)) {
+                    deserializedClusterProperties.totalMemoryGB = reader.getNullable(JsonReader::getLong);
+                } else if ("usedCpuMHz".equals(fieldName)) {
+                    deserializedClusterProperties.usedCpuMHz = reader.getNullable(JsonReader::getLong);
+                } else if ("totalCpuMHz".equals(fieldName)) {
+                    deserializedClusterProperties.totalCpuMHz = reader.getNullable(JsonReader::getLong);
+                } else if ("datastoreIds".equals(fieldName)) {
+                    List<String> datastoreIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterProperties.datastoreIds = datastoreIds;
+                } else if ("networkIds".equals(fieldName)) {
+                    List<String> networkIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterProperties.networkIds = networkIds;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProperties;
+        });
     }
 }

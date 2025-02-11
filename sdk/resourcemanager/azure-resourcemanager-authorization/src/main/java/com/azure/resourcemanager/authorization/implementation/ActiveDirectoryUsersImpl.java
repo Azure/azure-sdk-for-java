@@ -45,8 +45,7 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     public Mono<ActiveDirectoryUser> getByIdAsync(String id) {
-        return inner().getUserAsync(id)
-            .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
+        return inner().getUserAsync(id).map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
     }
 
     @Override
@@ -58,19 +57,15 @@ public class ActiveDirectoryUsersImpl
     public Mono<ActiveDirectoryUser> getByNameAsync(final String name) {
         return inner().getUserAsync(name)
             .map(userInner -> (ActiveDirectoryUser) new ActiveDirectoryUserImpl(userInner, manager()))
-            .onErrorResume(
-                ManagementException.class,
-                e -> {
-                    if (name.contains("@")) {
-                        return listByFilterAsync(
-                                String
-                                    .format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")))
+            .onErrorResume(ManagementException.class, e -> {
+                if (name.contains("@")) {
+                    return listByFilterAsync(
+                        String.format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")))
                             .singleOrEmpty();
-                    } else {
-                        return listByFilterAsync(String.format("displayName eq '%s'", name))
-                            .singleOrEmpty();
-                    }
-                });
+                } else {
+                    return listByFilterAsync(String.format("displayName eq '%s'", name)).singleOrEmpty();
+                }
+            });
     }
 
     @Override

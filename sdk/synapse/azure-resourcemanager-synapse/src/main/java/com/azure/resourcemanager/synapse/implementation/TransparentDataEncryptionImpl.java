@@ -65,8 +65,8 @@ public final class TransparentDataEncryptionImpl
 
     private TransparentDataEncryptionName transparentDataEncryptionName;
 
-    public TransparentDataEncryptionImpl withExistingSqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public TransparentDataEncryptionImpl withExistingSqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         this.resourceGroupName = resourceGroupName;
         this.workspaceName = workspaceName;
         this.sqlPoolName = sqlPoolName;
@@ -74,39 +74,25 @@ public final class TransparentDataEncryptionImpl
     }
 
     public TransparentDataEncryption create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolTransparentDataEncryptions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    transparentDataEncryptionName,
-                    this.innerModel(),
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolTransparentDataEncryptions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public TransparentDataEncryption create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolTransparentDataEncryptions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    transparentDataEncryptionName,
-                    this.innerModel(),
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolTransparentDataEncryptions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    TransparentDataEncryptionImpl(
-        TransparentDataEncryptionName name, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    TransparentDataEncryptionImpl(TransparentDataEncryptionName name,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = new TransparentDataEncryptionInner();
         this.serviceManager = serviceManager;
         this.transparentDataEncryptionName = name;
@@ -117,67 +103,47 @@ public final class TransparentDataEncryptionImpl
     }
 
     public TransparentDataEncryption apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolTransparentDataEncryptions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    transparentDataEncryptionName,
-                    this.innerModel(),
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolTransparentDataEncryptions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public TransparentDataEncryption apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolTransparentDataEncryptions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    transparentDataEncryptionName,
-                    this.innerModel(),
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolTransparentDataEncryptions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    TransparentDataEncryptionImpl(
-        TransparentDataEncryptionInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    TransparentDataEncryptionImpl(TransparentDataEncryptionInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.sqlPoolName = Utils.getValueFromIdByName(innerObject.id(), "sqlPools");
-        this.transparentDataEncryptionName =
-            TransparentDataEncryptionName
-                .fromString(Utils.getValueFromIdByName(innerObject.id(), "transparentDataEncryption"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.sqlPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlPools");
+        this.transparentDataEncryptionName = TransparentDataEncryptionName
+            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "transparentDataEncryption"));
     }
 
     public TransparentDataEncryption refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolTransparentDataEncryptions()
-                .getWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolTransparentDataEncryptions()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TransparentDataEncryption refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolTransparentDataEncryptions()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolTransparentDataEncryptions()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, context)
+            .getValue();
         return this;
     }
 

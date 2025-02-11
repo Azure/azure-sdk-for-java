@@ -19,7 +19,7 @@ import java.util.List;
 
 /** The PageListCollection model. */
 @Fluent
-public final class PageListCollection  implements XmlSerializable<PageRange> {
+public final class PageListCollection implements XmlSerializable<PageRange> {
     /*
      * The value property.
      */
@@ -70,7 +70,6 @@ public final class PageListCollection  implements XmlSerializable<PageRange> {
         return this;
     }
 
-
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
@@ -81,7 +80,7 @@ public final class PageListCollection  implements XmlSerializable<PageRange> {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageList" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.value != null) {
-            for (PageRange element: this.value) {
+            for (PageRange element : this.value) {
                 xmlWriter.writeXml(element, "PageRange");
             }
         }

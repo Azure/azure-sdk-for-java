@@ -49,17 +49,15 @@ class TroubleshootingImpl extends ExecutableImpl<Troubleshooting>
 
     @Override
     public Mono<Troubleshooting> executeWorkAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getNetworkWatchers()
             .getTroubleshootingAsync(parent.resourceGroupName(), parent.name(), parameters)
-            .map(
-                troubleshootingResultInner -> {
-                    TroubleshootingImpl.this.result = troubleshootingResultInner;
-                    return TroubleshootingImpl.this;
-                });
+            .map(troubleshootingResultInner -> {
+                TroubleshootingImpl.this.result = troubleshootingResultInner;
+                return TroubleshootingImpl.this;
+            });
     }
 
     // Getters

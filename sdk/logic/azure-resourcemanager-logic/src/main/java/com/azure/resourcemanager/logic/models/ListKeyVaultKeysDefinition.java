@@ -6,30 +6,36 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The list key vault keys definition. */
+/**
+ * The list key vault keys definition.
+ */
 @Fluent
-public final class ListKeyVaultKeysDefinition {
+public final class ListKeyVaultKeysDefinition implements JsonSerializable<ListKeyVaultKeysDefinition> {
     /*
      * The key vault reference.
      */
-    @JsonProperty(value = "keyVault", required = true)
     private KeyVaultReference keyVault;
 
     /*
      * The skip token.
      */
-    @JsonProperty(value = "skipToken")
     private String skipToken;
 
-    /** Creates an instance of ListKeyVaultKeysDefinition class. */
+    /**
+     * Creates an instance of ListKeyVaultKeysDefinition class.
+     */
     public ListKeyVaultKeysDefinition() {
     }
 
     /**
      * Get the keyVault property: The key vault reference.
-     *
+     * 
      * @return the keyVault value.
      */
     public KeyVaultReference keyVault() {
@@ -38,7 +44,7 @@ public final class ListKeyVaultKeysDefinition {
 
     /**
      * Set the keyVault property: The key vault reference.
-     *
+     * 
      * @param keyVault the keyVault value to set.
      * @return the ListKeyVaultKeysDefinition object itself.
      */
@@ -49,7 +55,7 @@ public final class ListKeyVaultKeysDefinition {
 
     /**
      * Get the skipToken property: The skip token.
-     *
+     * 
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -58,7 +64,7 @@ public final class ListKeyVaultKeysDefinition {
 
     /**
      * Set the skipToken property: The skip token.
-     *
+     * 
      * @param skipToken the skipToken value to set.
      * @return the ListKeyVaultKeysDefinition object itself.
      */
@@ -69,19 +75,58 @@ public final class ListKeyVaultKeysDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyVault() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVault in model ListKeyVaultKeysDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVault in model ListKeyVaultKeysDefinition"));
         } else {
             keyVault().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ListKeyVaultKeysDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("keyVault", this.keyVault);
+        jsonWriter.writeStringField("skipToken", this.skipToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListKeyVaultKeysDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListKeyVaultKeysDefinition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ListKeyVaultKeysDefinition.
+     */
+    public static ListKeyVaultKeysDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListKeyVaultKeysDefinition deserializedListKeyVaultKeysDefinition = new ListKeyVaultKeysDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVault".equals(fieldName)) {
+                    deserializedListKeyVaultKeysDefinition.keyVault = KeyVaultReference.fromJson(reader);
+                } else if ("skipToken".equals(fieldName)) {
+                    deserializedListKeyVaultKeysDefinition.skipToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListKeyVaultKeysDefinition;
+        });
+    }
 }

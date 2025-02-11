@@ -12,7 +12,6 @@ import com.azure.communication.messages.MessageTemplateClient;
 import com.azure.communication.messages.MessageTemplateClientBuilder;
 import com.azure.communication.messages.NotificationMessagesClient;
 import com.azure.communication.messages.NotificationMessagesClientBuilder;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -30,11 +29,10 @@ class NotificationMessagesClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         NotificationMessagesClientBuilder notificationMessagesClientbuilder = new NotificationMessagesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            notificationMessagesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            notificationMessagesClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             notificationMessagesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -45,11 +43,10 @@ class NotificationMessagesClientTestBase extends TestProxyTestBase {
 
         MessageTemplateClientBuilder messageTemplateClientbuilder = new MessageTemplateClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            messageTemplateClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            messageTemplateClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             messageTemplateClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.education {
     exports com.azure.resourcemanager.education.fluent.models;
     exports com.azure.resourcemanager.education.models;
 
-    opens com.azure.resourcemanager.education.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.education.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.education.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.education.models to com.azure.core;
 }

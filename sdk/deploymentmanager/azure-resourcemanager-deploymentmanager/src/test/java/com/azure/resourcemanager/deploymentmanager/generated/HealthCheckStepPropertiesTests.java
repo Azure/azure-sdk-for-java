@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HealthCheckStepPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HealthCheckStepProperties model =
-            BinaryData
-                .fromString(
-                    "{\"stepType\":\"HealthCheck\",\"attributes\":{\"type\":\"HealthCheckStepAttributes\",\"waitDuration\":\"kgshwa\",\"maxElasticDuration\":\"ixzbinjeputtmryw\",\"healthyStateDuration\":\"uzoqft\"}}")
-                .toObject(HealthCheckStepProperties.class);
+        HealthCheckStepProperties model = BinaryData.fromString(
+            "{\"stepType\":\"HealthCheck\",\"attributes\":{\"type\":\"HealthCheckStepAttributes\",\"waitDuration\":\"kgshwa\",\"maxElasticDuration\":\"ixzbinjeputtmryw\",\"healthyStateDuration\":\"uzoqft\"}}")
+            .toObject(HealthCheckStepProperties.class);
         Assertions.assertEquals("kgshwa", model.attributes().waitDuration());
         Assertions.assertEquals("ixzbinjeputtmryw", model.attributes().maxElasticDuration());
         Assertions.assertEquals("uzoqft", model.attributes().healthyStateDuration());
@@ -24,13 +22,10 @@ public final class HealthCheckStepPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HealthCheckStepProperties model =
-            new HealthCheckStepProperties()
-                .withAttributes(
-                    new HealthCheckStepAttributes()
-                        .withWaitDuration("kgshwa")
-                        .withMaxElasticDuration("ixzbinjeputtmryw")
-                        .withHealthyStateDuration("uzoqft"));
+        HealthCheckStepProperties model
+            = new HealthCheckStepProperties().withAttributes(new HealthCheckStepAttributes().withWaitDuration("kgshwa")
+                .withMaxElasticDuration("ixzbinjeputtmryw")
+                .withHealthyStateDuration("uzoqft"));
         model = BinaryData.fromObject(model).toObject(HealthCheckStepProperties.class);
         Assertions.assertEquals("kgshwa", model.attributes().waitDuration());
         Assertions.assertEquals("ixzbinjeputtmryw", model.attributes().maxElasticDuration());

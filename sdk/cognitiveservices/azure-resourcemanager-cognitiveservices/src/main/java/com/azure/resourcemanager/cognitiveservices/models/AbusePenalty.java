@@ -5,37 +5,44 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The abuse penalty. */
+/**
+ * The abuse penalty.
+ */
 @Fluent
-public final class AbusePenalty {
+public final class AbusePenalty implements JsonSerializable<AbusePenalty> {
     /*
      * The action of AbusePenalty.
      */
-    @JsonProperty(value = "action")
     private AbusePenaltyAction action;
 
     /*
      * The percentage of rate limit.
      */
-    @JsonProperty(value = "rateLimitPercentage")
     private Float rateLimitPercentage;
 
     /*
      * The datetime of expiration of the AbusePenalty.
      */
-    @JsonProperty(value = "expiration")
     private OffsetDateTime expiration;
 
-    /** Creates an instance of AbusePenalty class. */
+    /**
+     * Creates an instance of AbusePenalty class.
+     */
     public AbusePenalty() {
     }
 
     /**
      * Get the action property: The action of AbusePenalty.
-     *
+     * 
      * @return the action value.
      */
     public AbusePenaltyAction action() {
@@ -44,7 +51,7 @@ public final class AbusePenalty {
 
     /**
      * Set the action property: The action of AbusePenalty.
-     *
+     * 
      * @param action the action value to set.
      * @return the AbusePenalty object itself.
      */
@@ -55,7 +62,7 @@ public final class AbusePenalty {
 
     /**
      * Get the rateLimitPercentage property: The percentage of rate limit.
-     *
+     * 
      * @return the rateLimitPercentage value.
      */
     public Float rateLimitPercentage() {
@@ -64,7 +71,7 @@ public final class AbusePenalty {
 
     /**
      * Set the rateLimitPercentage property: The percentage of rate limit.
-     *
+     * 
      * @param rateLimitPercentage the rateLimitPercentage value to set.
      * @return the AbusePenalty object itself.
      */
@@ -75,7 +82,7 @@ public final class AbusePenalty {
 
     /**
      * Get the expiration property: The datetime of expiration of the AbusePenalty.
-     *
+     * 
      * @return the expiration value.
      */
     public OffsetDateTime expiration() {
@@ -84,7 +91,7 @@ public final class AbusePenalty {
 
     /**
      * Set the expiration property: The datetime of expiration of the AbusePenalty.
-     *
+     * 
      * @param expiration the expiration value to set.
      * @return the AbusePenalty object itself.
      */
@@ -95,9 +102,53 @@ public final class AbusePenalty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeNumberField("rateLimitPercentage", this.rateLimitPercentage);
+        jsonWriter.writeStringField("expiration",
+            this.expiration == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiration));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AbusePenalty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AbusePenalty if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AbusePenalty.
+     */
+    public static AbusePenalty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AbusePenalty deserializedAbusePenalty = new AbusePenalty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedAbusePenalty.action = AbusePenaltyAction.fromString(reader.getString());
+                } else if ("rateLimitPercentage".equals(fieldName)) {
+                    deserializedAbusePenalty.rateLimitPercentage = reader.getNullable(JsonReader::getFloat);
+                } else if ("expiration".equals(fieldName)) {
+                    deserializedAbusePenalty.expiration = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAbusePenalty;
+        });
     }
 }

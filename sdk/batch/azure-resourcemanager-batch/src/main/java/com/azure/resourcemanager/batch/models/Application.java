@@ -6,6 +6,7 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationInner;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of Application.
@@ -38,6 +39,13 @@ public interface Application {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the tags property: The tags of the resource.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
 
     /**
      * Gets the displayName property: The display name for the application.
@@ -111,8 +119,8 @@ public interface Application {
          * The stage of the Application definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithDisplayName, DefinitionStages.WithAllowUpdates,
-            DefinitionStages.WithDefaultVersion {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithDisplayName,
+            DefinitionStages.WithAllowUpdates, DefinitionStages.WithDefaultVersion {
             /**
              * Executes the create request.
              * 
@@ -127,6 +135,19 @@ public interface Application {
              * @return the created resource.
              */
             Application create(Context context);
+        }
+
+        /**
+         * The stage of the Application definition allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: The tags of the resource..
+             * 
+             * @param tags The tags of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
         }
 
         /**
@@ -183,8 +204,8 @@ public interface Application {
     /**
      * The template for Application update.
      */
-    interface Update
-        extends UpdateStages.WithDisplayName, UpdateStages.WithAllowUpdates, UpdateStages.WithDefaultVersion {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithDisplayName, UpdateStages.WithAllowUpdates,
+        UpdateStages.WithDefaultVersion {
         /**
          * Executes the update request.
          * 
@@ -205,6 +226,19 @@ public interface Application {
      * The Application update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the Application update allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: The tags of the resource..
+             * 
+             * @param tags The tags of the resource.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
         /**
          * The stage of the Application update allowing to specify displayName.
          */

@@ -54,7 +54,7 @@ public final class TrainingDocumentInfo {
      * @param errors the list of errors.
      */
     public TrainingDocumentInfo(final String name, final TrainingStatus status, final int pageCount,
-                                final List<FormRecognizerError> errors) {
+        final List<FormRecognizerError> errors) {
         this.name = name;
         this.status = status;
         this.pageCount = pageCount;

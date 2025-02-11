@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.customerinsights.generated;
 
-/** Samples for Kpi ListByHub. */
+/**
+ * Samples for Kpi ListByHub.
+ */
 public final class KpiListByHubSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/KpiListByHub.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/
+     * KpiListByHub.json
      */
     /**
      * Sample code: Kpi_ListByHub.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
     public static void kpiListByHub(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {

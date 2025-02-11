@@ -25,14 +25,8 @@ import java.util.TreeMap;
  * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
  */
-public abstract class ResourceImpl<
-        FluentModelT extends Resource,
-        InnerModelT extends com.azure.core.management.Resource,
-        FluentModelImplT extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
-        extends
-        CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
-        implements
-        Resource {
+public abstract class ResourceImpl<FluentModelT extends Resource, InnerModelT extends com.azure.core.management.Resource, FluentModelImplT extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
+    extends CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT> implements Resource {
     protected ResourceImpl(String name, InnerModelT innerObject) {
         super(name, innerObject);
         if (innerObject.tags() == null) {
@@ -167,7 +161,7 @@ public abstract class ResourceImpl<
     }
 
     protected <InnerT> List<InnerT> innersFromWrappers(Collection<? extends HasInnerModel<InnerT>> wrappers,
-                                                       List<InnerT> inners) {
+        List<InnerT> inners) {
         if (wrappers == null || wrappers.size() == 0) {
             return inners;
         } else {

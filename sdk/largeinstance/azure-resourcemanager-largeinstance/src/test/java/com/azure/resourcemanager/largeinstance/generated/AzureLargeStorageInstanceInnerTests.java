@@ -41,9 +41,12 @@ public final class AzureLargeStorageInstanceInnerTests {
                 "clwhijcoejctbz", "djwzrlov"))
             .withProperties(new AzureLargeStorageInstanceProperties()
                 .withAzureLargeStorageInstanceUniqueIdentifier("norcjxvsnbyxqab")
-                .withStorageProperties(new StorageProperties().withOfferingType("cyshurzafbljjgp").withStorageType("oq")
-                    .withGeneration("mkljavb").withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.CISCO_UCS)
-                    .withWorkloadType("qajzyulpkudjkr").withStorageBillingProperties(
+                .withStorageProperties(new StorageProperties().withOfferingType("cyshurzafbljjgp")
+                    .withStorageType("oq")
+                    .withGeneration("mkljavb")
+                    .withHardwareType(AzureLargeInstanceHardwareTypeNamesEnum.CISCO_UCS)
+                    .withWorkloadType("qajzyulpkudjkr")
+                    .withStorageBillingProperties(
                         new StorageBillingProperties().withBillingMode("bzhfepgzgqexz").withSku("c"))));
         model = BinaryData.fromObject(model).toObject(AzureLargeStorageInstanceInner.class);
         Assertions.assertEquals("c", model.location());

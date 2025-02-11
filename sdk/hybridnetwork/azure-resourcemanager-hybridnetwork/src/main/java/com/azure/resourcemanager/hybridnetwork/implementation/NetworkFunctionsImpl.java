@@ -59,23 +59,23 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
 
     public PagedIterable<NetworkFunction> list() {
         PagedIterable<NetworkFunctionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new NetworkFunctionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFunctionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkFunction> list(Context context) {
         PagedIterable<NetworkFunctionInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new NetworkFunctionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFunctionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkFunction> listByResourceGroup(String resourceGroupName) {
         PagedIterable<NetworkFunctionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new NetworkFunctionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFunctionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkFunction> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<NetworkFunctionInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new NetworkFunctionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFunctionImpl(inner1, this.manager()));
     }
 
     public void executeRequest(String resourceGroupName, String networkFunctionName,
@@ -89,12 +89,12 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
     }
 
     public NetworkFunction getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFunctionName = Utils.getValueFromIdByName(id, "networkFunctions");
+        String networkFunctionName = ResourceManagerUtils.getValueFromIdByName(id, "networkFunctions");
         if (networkFunctionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFunctions'.", id)));
@@ -103,12 +103,12 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
     }
 
     public Response<NetworkFunction> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFunctionName = Utils.getValueFromIdByName(id, "networkFunctions");
+        String networkFunctionName = ResourceManagerUtils.getValueFromIdByName(id, "networkFunctions");
         if (networkFunctionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFunctions'.", id)));
@@ -117,12 +117,12 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFunctionName = Utils.getValueFromIdByName(id, "networkFunctions");
+        String networkFunctionName = ResourceManagerUtils.getValueFromIdByName(id, "networkFunctions");
         if (networkFunctionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFunctions'.", id)));
@@ -131,12 +131,12 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFunctionName = Utils.getValueFromIdByName(id, "networkFunctions");
+        String networkFunctionName = ResourceManagerUtils.getValueFromIdByName(id, "networkFunctions");
         if (networkFunctionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFunctions'.", id)));

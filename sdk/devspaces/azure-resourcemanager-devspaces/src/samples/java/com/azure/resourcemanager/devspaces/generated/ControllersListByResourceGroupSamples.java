@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.devspaces.generated;
 
-/** Samples for Controllers ListByResourceGroup. */
+/**
+ * Samples for Controllers ListByResourceGroup.
+ */
 public final class ControllersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devspaces/resource-manager/Microsoft.DevSpaces/stable/2019-04-01/examples/ControllersListByResourceGroup_example.json
+     * x-ms-original-file: specification/devspaces/resource-manager/Microsoft.DevSpaces/stable/2019-04-01/examples/
+     * ControllersListByResourceGroup_example.json
      */
     /**
      * Sample code: ControllersListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to DevSpacesManager.
      */
     public static void controllersListByResourceGroup(com.azure.resourcemanager.devspaces.DevSpacesManager manager) {

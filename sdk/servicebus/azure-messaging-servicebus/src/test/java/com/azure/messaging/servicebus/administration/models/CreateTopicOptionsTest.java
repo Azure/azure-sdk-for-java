@@ -47,8 +47,7 @@ public class CreateTopicOptionsTest {
     @Test
     void constructorWithOptions() {
         // Arrange
-        final TopicDescriptionImpl description = new TopicDescriptionImpl()
-            .setAutoDeleteOnIdle(Duration.ofSeconds(15))
+        final TopicDescriptionImpl description = new TopicDescriptionImpl().setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofSeconds(13))
             .setEnableBatchedOperations(false)

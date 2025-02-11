@@ -22,8 +22,6 @@ public class App {
      * @param args Performance test configuration arguments.
      */
     public static void main(String[] args) {
-        PerfStressProgram.run(new Class<?>[]{
-            GetMessageTest.class,
-        }, args);
+        PerfStressProgram.run(new Class<?>[] { GetMessageTest.class, }, args);
     }
 }

@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 public class CredentialsTests {
     @Test
     public void testKeyUpdate() {
-        final MetricsAdvisorKeyCredential credential
-            = new MetricsAdvisorKeyCredential("sub-id-1", "key-1");
+        final MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("sub-id-1", "key-1");
 
         Assertions.assertEquals("sub-id-1", credential.getKeys().getSubscriptionKey());
         Assertions.assertEquals("key-1", credential.getKeys().getApiKey());

@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.UpdateComputePolicyProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** The parameters used to update a compute policy. */
+/**
+ * The parameters used to update a compute policy.
+ */
 @Fluent
-public final class UpdateComputePolicyParameters {
+public final class UpdateComputePolicyParameters implements JsonSerializable<UpdateComputePolicyParameters> {
     /*
      * The compute policy properties to use when updating a compute policy.
      */
-    @JsonProperty(value = "properties")
     private UpdateComputePolicyProperties innerProperties;
 
-    /** Creates an instance of UpdateComputePolicyParameters class. */
+    /**
+     * Creates an instance of UpdateComputePolicyParameters class.
+     */
     public UpdateComputePolicyParameters() {
     }
 
     /**
      * Get the innerProperties property: The compute policy properties to use when updating a compute policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateComputePolicyProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class UpdateComputePolicyParameters {
 
     /**
      * Get the objectId property: The AAD object identifier for the entity to create a policy for.
-     *
+     * 
      * @return the objectId value.
      */
     public UUID objectId() {
@@ -42,7 +49,7 @@ public final class UpdateComputePolicyParameters {
 
     /**
      * Set the objectId property: The AAD object identifier for the entity to create a policy for.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the UpdateComputePolicyParameters object itself.
      */
@@ -56,7 +63,7 @@ public final class UpdateComputePolicyParameters {
 
     /**
      * Get the objectType property: The type of AAD object the object identifier refers to.
-     *
+     * 
      * @return the objectType value.
      */
     public AadObjectType objectType() {
@@ -65,7 +72,7 @@ public final class UpdateComputePolicyParameters {
 
     /**
      * Set the objectType property: The type of AAD object the object identifier refers to.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the UpdateComputePolicyParameters object itself.
      */
@@ -80,7 +87,7 @@ public final class UpdateComputePolicyParameters {
     /**
      * Get the maxDegreeOfParallelismPerJob property: The maximum degree of parallelism per job this user can use to
      * submit jobs. This property, the min priority per job property, or both must be passed.
-     *
+     * 
      * @return the maxDegreeOfParallelismPerJob value.
      */
     public Integer maxDegreeOfParallelismPerJob() {
@@ -90,7 +97,7 @@ public final class UpdateComputePolicyParameters {
     /**
      * Set the maxDegreeOfParallelismPerJob property: The maximum degree of parallelism per job this user can use to
      * submit jobs. This property, the min priority per job property, or both must be passed.
-     *
+     * 
      * @param maxDegreeOfParallelismPerJob the maxDegreeOfParallelismPerJob value to set.
      * @return the UpdateComputePolicyParameters object itself.
      */
@@ -105,7 +112,7 @@ public final class UpdateComputePolicyParameters {
     /**
      * Get the minPriorityPerJob property: The minimum priority per job this user can use to submit jobs. This property,
      * the max degree of parallelism per job property, or both must be passed.
-     *
+     * 
      * @return the minPriorityPerJob value.
      */
     public Integer minPriorityPerJob() {
@@ -115,7 +122,7 @@ public final class UpdateComputePolicyParameters {
     /**
      * Set the minPriorityPerJob property: The minimum priority per job this user can use to submit jobs. This property,
      * the max degree of parallelism per job property, or both must be passed.
-     *
+     * 
      * @param minPriorityPerJob the minPriorityPerJob value to set.
      * @return the UpdateComputePolicyParameters object itself.
      */
@@ -129,12 +136,50 @@ public final class UpdateComputePolicyParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateComputePolicyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateComputePolicyParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateComputePolicyParameters.
+     */
+    public static UpdateComputePolicyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateComputePolicyParameters deserializedUpdateComputePolicyParameters
+                = new UpdateComputePolicyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUpdateComputePolicyParameters.innerProperties
+                        = UpdateComputePolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateComputePolicyParameters;
+        });
     }
 }

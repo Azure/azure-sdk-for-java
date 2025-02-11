@@ -14,6 +14,15 @@ public class AccessKeyType extends ExpandableStringEnum<AccessKeyType> {
     public static final AccessKeyType SECONDARY = fromString(PasswordName.PASSWORD2.toString());
 
     /**
+     * Creates a new instance of AccessKeyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessKeyType() {
+    }
+
+    /**
      * Finds or creates an access key name based on the provided name.
      *
      * @param name a name
@@ -23,7 +32,11 @@ public class AccessKeyType extends ExpandableStringEnum<AccessKeyType> {
         return fromString(name, AccessKeyType.class);
     }
 
-    /** @return known admin user access key names */
+    /**
+     * Gets known admin user access key names.
+     *
+     * @return known admin user access key names
+     */
     public static Collection<AccessKeyType> values() {
         return values(AccessKeyType.class);
     }

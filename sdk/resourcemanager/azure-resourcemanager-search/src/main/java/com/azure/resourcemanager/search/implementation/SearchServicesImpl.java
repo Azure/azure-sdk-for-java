@@ -23,13 +23,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 /**
  * Implementation for SearchServices.
  */
-public class SearchServicesImpl
-    extends GroupableResourcesImpl<
-        SearchService,
-        SearchServiceImpl,
-        SearchServiceInner,
-        SearchManagementClient,
-        SearchServiceManager>
+public class SearchServicesImpl extends
+    GroupableResourcesImpl<SearchService, SearchServiceImpl, SearchServiceInner, SearchManagementClient, SearchServiceManager>
     implements SearchServices {
 
     public SearchServicesImpl(final SearchServiceManager searchManager) {
@@ -77,8 +72,7 @@ public class SearchServicesImpl
 
     @Override
     public Mono<AdminKeys> getAdminKeysAsync(String resourceGroupName, String searchServiceName) {
-        return this.inner().getAdminKeys().getAsync(resourceGroupName, searchServiceName)
-            .map(AdminKeysImpl::new);
+        return this.inner().getAdminKeys().getAsync(resourceGroupName, searchServiceName).map(AdminKeysImpl::new);
     }
 
     @Override
@@ -88,7 +82,8 @@ public class SearchServicesImpl
 
     @Override
     public PagedFlux<QueryKey> listQueryKeysAsync(String resourceGroupName, String searchServiceName) {
-        return PagedConverter.mapPage(this.inner().getQueryKeys().listBySearchServiceAsync(resourceGroupName, searchServiceName),
+        return PagedConverter.mapPage(
+            this.inner().getQueryKeys().listBySearchServiceAsync(resourceGroupName, searchServiceName),
             QueryKeyImpl::new);
     }
 
@@ -98,10 +93,11 @@ public class SearchServicesImpl
     }
 
     @Override
-    public Mono<AdminKeys> regenerateAdminKeysAsync(String resourceGroupName,
-                                                    String searchServiceName,
-                                                    AdminKeyKind keyKind) {
-        return this.inner().getAdminKeys().regenerateAsync(resourceGroupName, searchServiceName, keyKind)
+    public Mono<AdminKeys> regenerateAdminKeysAsync(String resourceGroupName, String searchServiceName,
+        AdminKeyKind keyKind) {
+        return this.inner()
+            .getAdminKeys()
+            .regenerateAsync(resourceGroupName, searchServiceName, keyKind)
             .map(AdminKeysImpl::new);
     }
 
@@ -112,7 +108,9 @@ public class SearchServicesImpl
 
     @Override
     public Mono<QueryKey> createQueryKeyAsync(String resourceGroupName, String searchServiceName, String name) {
-        return this.inner().getQueryKeys().createAsync(resourceGroupName, searchServiceName, name)
+        return this.inner()
+            .getQueryKeys()
+            .createAsync(resourceGroupName, searchServiceName, name)
             .map(QueryKeyImpl::new);
     }
 
@@ -134,8 +132,8 @@ public class SearchServicesImpl
     @Override
     public PagedFlux<SearchService> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return PagedConverter.mapPage(this.inner().getServices().listByResourceGroupAsync(resourceGroupName),
             this::wrapModel);
@@ -153,7 +151,6 @@ public class SearchServicesImpl
 
     @Override
     public PagedFlux<SearchService> listAsync() {
-        return PagedConverter.mapPage(this.inner().getServices().listAsync(),
-            this::wrapModel);
+        return PagedConverter.mapPage(this.inner().getServices().listAsync(), this::wrapModel);
     }
 }

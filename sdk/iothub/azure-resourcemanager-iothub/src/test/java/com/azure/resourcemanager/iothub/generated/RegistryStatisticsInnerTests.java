@@ -10,11 +10,9 @@ import com.azure.resourcemanager.iothub.fluent.models.RegistryStatisticsInner;
 public final class RegistryStatisticsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegistryStatisticsInner model =
-            BinaryData
-                .fromString(
-                    "{\"totalDeviceCount\":6450730438848589350,\"enabledDeviceCount\":5798583815536033606,\"disabledDeviceCount\":7014692184557191333}")
-                .toObject(RegistryStatisticsInner.class);
+        RegistryStatisticsInner model = BinaryData.fromString(
+            "{\"totalDeviceCount\":6450730438848589350,\"enabledDeviceCount\":5798583815536033606,\"disabledDeviceCount\":7014692184557191333}")
+            .toObject(RegistryStatisticsInner.class);
     }
 
     @org.junit.jupiter.api.Test

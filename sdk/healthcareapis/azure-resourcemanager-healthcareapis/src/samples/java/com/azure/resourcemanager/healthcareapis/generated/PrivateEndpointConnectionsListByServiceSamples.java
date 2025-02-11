@@ -9,7 +9,9 @@ package com.azure.resourcemanager.healthcareapis.generated;
  */
 public final class PrivateEndpointConnectionsListByServiceSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/ServiceListPrivateEndpointConnections.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/
+     * ServiceListPrivateEndpointConnections.json
      */
     /**
      * Sample code: PrivateEndpointConnection_List.

@@ -5,32 +5,31 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Kubernetes version profile for given major.minor release.
  */
 @Immutable
-public final class KubernetesVersionProperties {
+public final class KubernetesVersionProperties implements JsonSerializable<KubernetesVersionProperties> {
     /*
      * major.minor version of Kubernetes release
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * Whether this version is in preview mode.
      */
-    @JsonProperty(value = "isPreview", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPreview;
 
     /*
      * Patch versions of a Kubernetes release
      */
-    @JsonProperty(value = "patchVersions", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, KubernetesPatchVersions> patchVersions;
 
     /**
@@ -79,5 +78,46 @@ public final class KubernetesVersionProperties {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesVersionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesVersionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesVersionProperties.
+     */
+    public static KubernetesVersionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesVersionProperties deserializedKubernetesVersionProperties = new KubernetesVersionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedKubernetesVersionProperties.version = reader.getString();
+                } else if ("isPreview".equals(fieldName)) {
+                    deserializedKubernetesVersionProperties.isPreview = reader.getNullable(JsonReader::getBoolean);
+                } else if ("patchVersions".equals(fieldName)) {
+                    Map<String, KubernetesPatchVersions> patchVersions
+                        = reader.readMap(reader1 -> KubernetesPatchVersions.fromJson(reader1));
+                    deserializedKubernetesVersionProperties.patchVersions = patchVersions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesVersionProperties;
+        });
     }
 }

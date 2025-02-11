@@ -1,0 +1,17 @@
+{
+  "name": "cosmosdb-sink-connector-v2",
+  "config": {
+    "connector.class": "com.azure.cosmos.kafka.connect.CosmosSinkConnector",
+    "tasks.max": "5",
+	  "topics": "{topic}",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "azure.cosmos.account.endpoint":"{endpoint}",
+    "azure.cosmos.account.key":"{masterKey}",
+    "azure.cosmos.applicationName": "{applicationName}",
+    "azure.cosmos.sink.database.name":"{databaseName}",
+    "azure.cosmos.sink.containers.topicMap":"{topic}#{container}"
+  }
+}

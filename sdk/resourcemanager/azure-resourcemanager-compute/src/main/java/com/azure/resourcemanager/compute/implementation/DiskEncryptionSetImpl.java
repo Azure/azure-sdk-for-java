@@ -19,9 +19,7 @@ import reactor.core.publisher.Mono;
 
 public class DiskEncryptionSetImpl
     extends GroupableResourceImpl<DiskEncryptionSet, DiskEncryptionSetInner, DiskEncryptionSetImpl, ComputeManager>
-    implements DiskEncryptionSet,
-        DiskEncryptionSet.Definition,
-        DiskEncryptionSet.Update {
+    implements DiskEncryptionSet, DiskEncryptionSet.Definition, DiskEncryptionSet.Update {
     private DiskEncryptionSetUpdate patchToUpdate = new DiskEncryptionSetUpdate();
     private boolean updated;
     private final DiskEncryptionSetMsiHandler msiHandler;
@@ -132,12 +130,13 @@ public class DiskEncryptionSetImpl
 
     @Override
     public Mono<DiskEncryptionSet> createResourceAsync() {
-        return manager().serviceClient().getDiskEncryptionSets().createOrUpdateAsync(
-            resourceGroupName(), name(), innerModel()
-        ).map(inner -> {
-            setInner(inner);
-            return this;
-        });
+        return manager().serviceClient()
+            .getDiskEncryptionSets()
+            .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
+            .map(inner -> {
+                setInner(inner);
+                return this;
+            });
     }
 
     @Override
@@ -151,23 +150,25 @@ public class DiskEncryptionSetImpl
         if (!updated) {
             return Mono.just(this);
         }
-        return manager().serviceClient().getDiskEncryptionSets().updateAsync(
-            resourceGroupName(), name(), patchToUpdate
-        ).map(inner -> {
-            setInner(inner);
-            this.updated = false;
-            return this;
-        });
+        return manager().serviceClient()
+            .getDiskEncryptionSets()
+            .updateAsync(resourceGroupName(), name(), patchToUpdate)
+            .map(inner -> {
+                setInner(inner);
+                this.updated = false;
+                return this;
+            });
     }
 
     @Override
     protected Mono<DiskEncryptionSetInner> getInnerAsync() {
-        return manager().serviceClient().getDiskEncryptionSets().getByResourceGroupAsync(
-            resourceGroupName(), name()
-        ).map(inner -> {
-            this.updated = false;
-            return inner;
-        });
+        return manager().serviceClient()
+            .getDiskEncryptionSets()
+            .getByResourceGroupAsync(resourceGroupName(), name())
+            .map(inner -> {
+                this.updated = false;
+                return inner;
+            });
     }
 
     @Override

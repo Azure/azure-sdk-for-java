@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the create variable operation. */
+/**
+ * The properties of the create variable operation.
+ */
 @Fluent
-public final class VariableCreateOrUpdateProperties {
+public final class VariableCreateOrUpdateProperties implements JsonSerializable<VariableCreateOrUpdateProperties> {
     /*
      * Gets or sets the value of the variable.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Gets or sets the description of the variable.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Gets or sets the encrypted flag of the variable.
      */
-    @JsonProperty(value = "isEncrypted")
     private Boolean isEncrypted;
 
     /**
+     * Creates an instance of VariableCreateOrUpdateProperties class.
+     */
+    public VariableCreateOrUpdateProperties() {
+    }
+
+    /**
      * Get the value property: Gets or sets the value of the variable.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -39,7 +48,7 @@ public final class VariableCreateOrUpdateProperties {
 
     /**
      * Set the value property: Gets or sets the value of the variable.
-     *
+     * 
      * @param value the value value to set.
      * @return the VariableCreateOrUpdateProperties object itself.
      */
@@ -50,7 +59,7 @@ public final class VariableCreateOrUpdateProperties {
 
     /**
      * Get the description property: Gets or sets the description of the variable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -59,7 +68,7 @@ public final class VariableCreateOrUpdateProperties {
 
     /**
      * Set the description property: Gets or sets the description of the variable.
-     *
+     * 
      * @param description the description value to set.
      * @return the VariableCreateOrUpdateProperties object itself.
      */
@@ -70,7 +79,7 @@ public final class VariableCreateOrUpdateProperties {
 
     /**
      * Get the isEncrypted property: Gets or sets the encrypted flag of the variable.
-     *
+     * 
      * @return the isEncrypted value.
      */
     public Boolean isEncrypted() {
@@ -79,7 +88,7 @@ public final class VariableCreateOrUpdateProperties {
 
     /**
      * Set the isEncrypted property: Gets or sets the encrypted flag of the variable.
-     *
+     * 
      * @param isEncrypted the isEncrypted value to set.
      * @return the VariableCreateOrUpdateProperties object itself.
      */
@@ -90,9 +99,53 @@ public final class VariableCreateOrUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("isEncrypted", this.isEncrypted);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VariableCreateOrUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VariableCreateOrUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VariableCreateOrUpdateProperties.
+     */
+    public static VariableCreateOrUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VariableCreateOrUpdateProperties deserializedVariableCreateOrUpdateProperties
+                = new VariableCreateOrUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedVariableCreateOrUpdateProperties.value = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedVariableCreateOrUpdateProperties.description = reader.getString();
+                } else if ("isEncrypted".equals(fieldName)) {
+                    deserializedVariableCreateOrUpdateProperties.isEncrypted
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVariableCreateOrUpdateProperties;
+        });
     }
 }

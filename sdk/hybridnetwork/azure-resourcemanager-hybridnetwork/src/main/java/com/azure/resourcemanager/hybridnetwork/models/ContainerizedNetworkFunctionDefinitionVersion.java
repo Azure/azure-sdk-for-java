@@ -5,28 +5,41 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Containerized network function network function definition version properties.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "networkFunctionType")
-@JsonTypeName("ContainerizedNetworkFunction")
 @Fluent
 public final class ContainerizedNetworkFunctionDefinitionVersion
     extends NetworkFunctionDefinitionVersionPropertiesFormat {
     /*
+     * The network function type.
+     */
+    private NetworkFunctionType networkFunctionType = NetworkFunctionType.CONTAINERIZED_NETWORK_FUNCTION;
+
+    /*
      * Containerized network function template.
      */
-    @JsonProperty(value = "networkFunctionTemplate")
     private ContainerizedNetworkFunctionTemplate networkFunctionTemplate;
 
     /**
      * Creates an instance of ContainerizedNetworkFunctionDefinitionVersion class.
      */
     public ContainerizedNetworkFunctionDefinitionVersion() {
+    }
+
+    /**
+     * Get the networkFunctionType property: The network function type.
+     * 
+     * @return the networkFunctionType value.
+     */
+    @Override
+    public NetworkFunctionType networkFunctionType() {
+        return this.networkFunctionType;
     }
 
     /**
@@ -75,9 +88,63 @@ public final class ContainerizedNetworkFunctionDefinitionVersion
      */
     @Override
     public void validate() {
-        super.validate();
         if (networkFunctionTemplate() != null) {
             networkFunctionTemplate().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("deployParameters", deployParameters());
+        jsonWriter.writeStringField("networkFunctionType",
+            this.networkFunctionType == null ? null : this.networkFunctionType.toString());
+        jsonWriter.writeJsonField("networkFunctionTemplate", this.networkFunctionTemplate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerizedNetworkFunctionDefinitionVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerizedNetworkFunctionDefinitionVersion if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerizedNetworkFunctionDefinitionVersion.
+     */
+    public static ContainerizedNetworkFunctionDefinitionVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerizedNetworkFunctionDefinitionVersion deserializedContainerizedNetworkFunctionDefinitionVersion
+                = new ContainerizedNetworkFunctionDefinitionVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedContainerizedNetworkFunctionDefinitionVersion
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("versionState".equals(fieldName)) {
+                    deserializedContainerizedNetworkFunctionDefinitionVersion
+                        .withVersionState(VersionState.fromString(reader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedContainerizedNetworkFunctionDefinitionVersion.withDescription(reader.getString());
+                } else if ("deployParameters".equals(fieldName)) {
+                    deserializedContainerizedNetworkFunctionDefinitionVersion.withDeployParameters(reader.getString());
+                } else if ("networkFunctionType".equals(fieldName)) {
+                    deserializedContainerizedNetworkFunctionDefinitionVersion.networkFunctionType
+                        = NetworkFunctionType.fromString(reader.getString());
+                } else if ("networkFunctionTemplate".equals(fieldName)) {
+                    deserializedContainerizedNetworkFunctionDefinitionVersion.networkFunctionTemplate
+                        = ContainerizedNetworkFunctionTemplate.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerizedNetworkFunctionDefinitionVersion;
+        });
     }
 }

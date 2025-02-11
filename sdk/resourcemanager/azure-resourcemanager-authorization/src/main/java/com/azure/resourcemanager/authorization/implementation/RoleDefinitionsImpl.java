@@ -38,8 +38,7 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
 
     @Override
     public Mono<RoleDefinition> getByIdAsync(String id) {
-        return inner()
-            .getByIdAsync(id)
+        return inner().getByIdAsync(id)
             .map(roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
     }
 
@@ -50,8 +49,7 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
 
     @Override
     public Mono<RoleDefinition> getByScopeAsync(String scope, String name) {
-        return inner()
-            .getAsync(scope, name)
+        return inner().getAsync(scope, name)
             .map(roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
     }
 
@@ -62,8 +60,7 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
 
     @Override
     public PagedFlux<RoleDefinition> listByScopeAsync(String scope) {
-        return PagedConverter.mapPage(inner()
-            .listAsync(scope, null),
+        return PagedConverter.mapPage(inner().listAsync(scope, null),
             roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
     }
 
@@ -74,8 +71,7 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
 
     @Override
     public Mono<RoleDefinition> getByScopeAndRoleNameAsync(String scope, String roleName) {
-        return inner()
-            .listAsync(scope, String.format("roleName eq '%s'", roleName))
+        return inner().listAsync(scope, String.format("roleName eq '%s'", roleName))
             .singleOrEmpty()
             .map(roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
     }

@@ -5,26 +5,31 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** TLS settings for the resource. */
+/**
+ * TLS settings for the resource.
+ */
 @Fluent
-public final class SignalRTlsSettings {
+public final class SignalRTlsSettings implements JsonSerializable<SignalRTlsSettings> {
     /*
-     * Request client certificate during TLS handshake if enabled. Not supported for free tier. Any input will be
-     * ignored for free tier.
+     * Request client certificate during TLS handshake if enabled
      */
-    @JsonProperty(value = "clientCertEnabled")
     private Boolean clientCertEnabled;
 
-    /** Creates an instance of SignalRTlsSettings class. */
+    /**
+     * Creates an instance of SignalRTlsSettings class.
+     */
     public SignalRTlsSettings() {
     }
 
     /**
-     * Get the clientCertEnabled property: Request client certificate during TLS handshake if enabled. Not supported for
-     * free tier. Any input will be ignored for free tier.
-     *
+     * Get the clientCertEnabled property: Request client certificate during TLS handshake if enabled.
+     * 
      * @return the clientCertEnabled value.
      */
     public Boolean clientCertEnabled() {
@@ -32,9 +37,8 @@ public final class SignalRTlsSettings {
     }
 
     /**
-     * Set the clientCertEnabled property: Request client certificate during TLS handshake if enabled. Not supported for
-     * free tier. Any input will be ignored for free tier.
-     *
+     * Set the clientCertEnabled property: Request client certificate during TLS handshake if enabled.
+     * 
      * @param clientCertEnabled the clientCertEnabled value to set.
      * @return the SignalRTlsSettings object itself.
      */
@@ -45,9 +49,45 @@ public final class SignalRTlsSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("clientCertEnabled", this.clientCertEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SignalRTlsSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SignalRTlsSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SignalRTlsSettings.
+     */
+    public static SignalRTlsSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SignalRTlsSettings deserializedSignalRTlsSettings = new SignalRTlsSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientCertEnabled".equals(fieldName)) {
+                    deserializedSignalRTlsSettings.clientCertEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSignalRTlsSettings;
+        });
     }
 }

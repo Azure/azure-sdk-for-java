@@ -5,33 +5,37 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * (Optional) Discouraged to include in resource definition. Only needed where it is possible to disable platform (AKA
  * infrastructure) encryption. Azure SQL TDE is an example of this. Values are enabled and disabled.
  */
 @Fluent
-public final class Encryption {
+public final class Encryption implements JsonSerializable<Encryption> {
     /*
      * Values are enabled and disabled.
      */
-    @JsonProperty(value = "infrastructureEncryption")
     private InfrastructureEncryption infrastructureEncryption;
 
     /*
      * All Customer-managed key encryption properties for the resource.
      */
-    @JsonProperty(value = "customerManagedKeyEncryption")
     private CustomerManagedKeyEncryption customerManagedKeyEncryption;
 
-    /** Creates an instance of Encryption class. */
+    /**
+     * Creates an instance of Encryption class.
+     */
     public Encryption() {
     }
 
     /**
      * Get the infrastructureEncryption property: Values are enabled and disabled.
-     *
+     * 
      * @return the infrastructureEncryption value.
      */
     public InfrastructureEncryption infrastructureEncryption() {
@@ -40,7 +44,7 @@ public final class Encryption {
 
     /**
      * Set the infrastructureEncryption property: Values are enabled and disabled.
-     *
+     * 
      * @param infrastructureEncryption the infrastructureEncryption value to set.
      * @return the Encryption object itself.
      */
@@ -51,7 +55,7 @@ public final class Encryption {
 
     /**
      * Get the customerManagedKeyEncryption property: All Customer-managed key encryption properties for the resource.
-     *
+     * 
      * @return the customerManagedKeyEncryption value.
      */
     public CustomerManagedKeyEncryption customerManagedKeyEncryption() {
@@ -60,7 +64,7 @@ public final class Encryption {
 
     /**
      * Set the customerManagedKeyEncryption property: All Customer-managed key encryption properties for the resource.
-     *
+     * 
      * @param customerManagedKeyEncryption the customerManagedKeyEncryption value to set.
      * @return the Encryption object itself.
      */
@@ -71,12 +75,53 @@ public final class Encryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (customerManagedKeyEncryption() != null) {
             customerManagedKeyEncryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("infrastructureEncryption",
+            this.infrastructureEncryption == null ? null : this.infrastructureEncryption.toString());
+        jsonWriter.writeJsonField("customerManagedKeyEncryption", this.customerManagedKeyEncryption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Encryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Encryption if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Encryption.
+     */
+    public static Encryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Encryption deserializedEncryption = new Encryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("infrastructureEncryption".equals(fieldName)) {
+                    deserializedEncryption.infrastructureEncryption
+                        = InfrastructureEncryption.fromString(reader.getString());
+                } else if ("customerManagedKeyEncryption".equals(fieldName)) {
+                    deserializedEncryption.customerManagedKeyEncryption = CustomerManagedKeyEncryption.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryption;
+        });
     }
 }

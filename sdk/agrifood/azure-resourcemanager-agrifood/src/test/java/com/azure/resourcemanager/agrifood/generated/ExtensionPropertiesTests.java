@@ -6,20 +6,17 @@ package com.azure.resourcemanager.agrifood.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.agrifood.fluent.models.ExtensionProperties;
-import org.junit.jupiter.api.Test;
 
 public final class ExtensionPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ExtensionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"extensionId\":\"qsoqijgkd\",\"extensionCategory\":\"pazlobcufpdz\",\"installedExtensionVersion\":\"btcqq\",\"extensionAuthLink\":\"qglhq\",\"extensionApiDocsLink\":\"ufo\"}")
-                .toObject(ExtensionProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ExtensionProperties model = BinaryData.fromString(
+            "{\"extensionId\":\"ifkwmrvktsizntoc\",\"extensionCategory\":\"a\",\"installedExtensionVersion\":\"ajpsquc\",\"extensionAuthLink\":\"o\",\"extensionApiDocsLink\":\"dkfo\",\"additionalApiProperties\":{\"jofjd\":{\"apiFreshnessTimeInMinutes\":1562879445}}}")
+            .toObject(ExtensionProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ExtensionProperties model = new ExtensionProperties();
         model = BinaryData.fromObject(model).toObject(ExtensionProperties.class);
     }

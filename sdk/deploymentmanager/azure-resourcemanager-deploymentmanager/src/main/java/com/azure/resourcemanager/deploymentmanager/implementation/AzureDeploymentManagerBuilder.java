@@ -15,7 +15,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the AzureDeploymentManagerImpl type. */
-@ServiceClientBuilder(serviceClients = {AzureDeploymentManagerImpl.class})
+@ServiceClientBuilder(serviceClients = { AzureDeploymentManagerImpl.class })
 public final class AzureDeploymentManagerBuilder {
     /*
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
@@ -123,24 +123,16 @@ public final class AzureDeploymentManagerBuilder {
     public AzureDeploymentManagerImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AzureDeploymentManagerImpl client =
-            new AzureDeploymentManagerImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        AzureDeploymentManagerImpl client = new AzureDeploymentManagerImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, subscriptionId, localEndpoint);
         return client;
     }
 }

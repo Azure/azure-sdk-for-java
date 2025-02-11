@@ -9,6 +9,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to virtual machine extension image management. */
 @Fluent
 public interface VirtualMachineExtensionImages extends SupportsListingByRegion<VirtualMachineExtensionImage> {
-    /** @return entry point to virtual machine extension image publishers */
+    /**
+     * Gets entry point to virtual machine extension image publishers.
+     *
+     * @return entry point to virtual machine extension image publishers
+     */
     VirtualMachinePublishers publishers();
 }

@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Policy description properties. */
+/**
+ * Policy description properties.
+ */
 @Immutable
-public final class PolicyDescriptionContractProperties {
+public final class PolicyDescriptionContractProperties
+    implements JsonSerializable<PolicyDescriptionContractProperties> {
     /*
      * Policy description.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Binary OR value of the Snippet scope.
      */
-    @JsonProperty(value = "scope", access = JsonProperty.Access.WRITE_ONLY)
     private Long scope;
 
-    /** Creates an instance of PolicyDescriptionContractProperties class. */
+    /**
+     * Creates an instance of PolicyDescriptionContractProperties class.
+     */
     public PolicyDescriptionContractProperties() {
     }
 
     /**
      * Get the description property: Policy description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -37,7 +44,7 @@ public final class PolicyDescriptionContractProperties {
 
     /**
      * Get the scope property: Binary OR value of the Snippet scope.
-     *
+     * 
      * @return the scope value.
      */
     public Long scope() {
@@ -46,9 +53,47 @@ public final class PolicyDescriptionContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyDescriptionContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyDescriptionContractProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyDescriptionContractProperties.
+     */
+    public static PolicyDescriptionContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyDescriptionContractProperties deserializedPolicyDescriptionContractProperties
+                = new PolicyDescriptionContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedPolicyDescriptionContractProperties.description = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedPolicyDescriptionContractProperties.scope = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyDescriptionContractProperties;
+        });
     }
 }

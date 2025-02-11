@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.ai.translation.text;
+
 import java.util.Arrays;
 
 public class TestHelper {
@@ -24,7 +25,9 @@ public class TestHelper {
             return distance(s1, s2, n1 - 1, n2 - 1);
         }
 
-        int[] nums = new int[] { distance(s1, s2, n1, n2 - 1), distance(s1, s2, n1 - 1, n2),
+        int[] nums = new int[] {
+            distance(s1, s2, n1, n2 - 1),
+            distance(s1, s2, n1 - 1, n2),
             distance(s1, s2, n1 - 1, n2 - 1) };
         return 1 + Arrays.stream(nums).min().getAsInt();
     }

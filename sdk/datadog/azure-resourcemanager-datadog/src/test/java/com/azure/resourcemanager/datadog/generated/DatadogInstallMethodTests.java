@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatadogInstallMethodTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatadogInstallMethod model =
-            BinaryData
-                .fromString("{\"tool\":\"eju\",\"toolVersion\":\"qawrlyxwj\",\"installerVersion\":\"prbnwbxgjvtbv\"}")
-                .toObject(DatadogInstallMethod.class);
+        DatadogInstallMethod model = BinaryData
+            .fromString("{\"tool\":\"eju\",\"toolVersion\":\"qawrlyxwj\",\"installerVersion\":\"prbnwbxgjvtbv\"}")
+            .toObject(DatadogInstallMethod.class);
         Assertions.assertEquals("eju", model.tool());
         Assertions.assertEquals("qawrlyxwj", model.toolVersion());
         Assertions.assertEquals("prbnwbxgjvtbv", model.installerVersion());
@@ -22,11 +21,9 @@ public final class DatadogInstallMethodTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatadogInstallMethod model =
-            new DatadogInstallMethod()
-                .withTool("eju")
-                .withToolVersion("qawrlyxwj")
-                .withInstallerVersion("prbnwbxgjvtbv");
+        DatadogInstallMethod model = new DatadogInstallMethod().withTool("eju")
+            .withToolVersion("qawrlyxwj")
+            .withInstallerVersion("prbnwbxgjvtbv");
         model = BinaryData.fromObject(model).toObject(DatadogInstallMethod.class);
         Assertions.assertEquals("eju", model.tool());
         Assertions.assertEquals("qawrlyxwj", model.toolVersion());

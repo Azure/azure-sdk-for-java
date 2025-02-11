@@ -49,45 +49,37 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         final String vmName = "javavm1";
 
         // Creates a storage account
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(storageAccountName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(storageAccountName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .create();
 
         // Create a Linux VM
         //
-        VirtualMachine vm =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                .withRootUsername("Foo12")
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .withExistingStorageAccount(storageAccount)
-                .create();
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withExistingStorageAccount(storageAccount)
+            .create();
 
-        final InputStream embeddedJsonConfig =
-            VirtualMachineExtensionOperationsTests.class.getResourceAsStream("/linux_diagnostics_public_config.json");
+        final InputStream embeddedJsonConfig
+            = VirtualMachineExtensionOperationsTests.class.getResourceAsStream("/linux_diagnostics_public_config.json");
         String jsonConfig = SerializerFactory.createDefaultManagementSerializerAdapter()
-            .serialize(
-                SerializerFactory.createDefaultManagementSerializerAdapter()
-                    .deserialize(embeddedJsonConfig, Object.class, SerializerEncoding.JSON),
-                SerializerEncoding.JSON
-            );
+            .serialize(SerializerFactory.createDefaultManagementSerializerAdapter()
+                .deserialize(embeddedJsonConfig, Object.class, SerializerEncoding.JSON), SerializerEncoding.JSON);
         jsonConfig = jsonConfig.replace("%VirtualMachineResourceId%", vm.id());
 
         // Update Linux VM to enable Diagnostics
-        vm
-            .update()
+        vm.update()
             .defineNewExtension("LinuxDiagnostic")
             .withPublisher("Microsoft.OSTCExtensions")
             .withType("LinuxDiagnostic")
@@ -124,26 +116,23 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
         // Create a Linux VM
         //
-        VirtualMachine vm =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("Foo12")
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .create();
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .create();
 
         // Using VMAccess Linux extension to reset the password for the existing user 'Foo12'
         // https://github.com/Azure/azure-linux-extensions/blob/master/VMAccess/README.md
         //
-        vm
-            .update()
+        vm.update()
             .defineNewExtension("VMAccessForLinux")
             .withPublisher("Microsoft.OSTCExtensions")
             .withType("VMAccessForLinux")
@@ -159,8 +148,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
         // Update the VMAccess Linux extension to reset password again for the user 'Foo12'
         //
-        vm
-            .update()
+        vm.update()
             .updateExtension("VMAccessForLinux")
             .withProtectedSetting("username", "Foo12")
             .withProtectedSetting("password", "muy!234OR")
@@ -177,27 +165,25 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
         // Create Linux VM with a custom extension to install MySQL
         //
-        VirtualMachine vm =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                .withRootUsername("Foo12")
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_A1_v2"))
-                .defineNewExtension("CustomScriptForLinux")
-                .withPublisher("Microsoft.OSTCExtensions")
-                .withType("CustomScriptForLinux")
-                .withVersion("1.4")
-                .withMinorVersionAutoUpgrade()
-                .withPublicSetting("commandToExecute", installCommand)
-                .attach()
-                .create();
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_A1_v2"))
+            .defineNewExtension("CustomScriptForLinux")
+            .withPublisher("Microsoft.OSTCExtensions")
+            .withType("CustomScriptForLinux")
+            .withVersion("1.4")
+            .withMinorVersionAutoUpgrade()
+            .withPublicSetting("commandToExecute", installCommand)
+            .attach()
+            .create();
 
         Assertions.assertTrue(vm.listExtensions().size() > 0);
         Assertions.assertTrue(vm.listExtensions().containsKey("CustomScriptForLinux"));
@@ -222,28 +208,26 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
         // Create a Linux VM
         //
-        VirtualMachine vm =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                .withRootUsername("Foo12")
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .defineNewExtension("VMAccessForLinux")
-                .withPublisher("Microsoft.OSTCExtensions")
-                .withType("VMAccessForLinux")
-                .withVersion("1.4")
-                .withProtectedSetting("username", "Foo12")
-                .withProtectedSetting("password", "B12a6@12xyz!")
-                .withProtectedSetting("reset_ssh", "true")
-                .attach()
-                .create();
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .defineNewExtension("VMAccessForLinux")
+            .withPublisher("Microsoft.OSTCExtensions")
+            .withType("VMAccessForLinux")
+            .withVersion("1.4")
+            .withProtectedSetting("username", "Foo12")
+            .withProtectedSetting("password", "B12a6@12xyz!")
+            .withProtectedSetting("reset_ssh", "true")
+            .attach()
+            .create();
 
         Assertions.assertTrue(vm.listExtensions().size() > 0);
 
@@ -260,15 +244,13 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         Assertions.assertNotNull(vmWithExtensionReference);
 
         // Update the extension
-        VirtualMachine vmWithExtensionUpdated =
-            vmWithExtensionReference
-                .update()
-                .updateExtension("VMAccessForLinux")
-                .withProtectedSetting("username", "Foo12")
-                .withProtectedSetting("password", "muy!234OR")
-                .withProtectedSetting("reset_ssh", "true")
-                .parent()
-                .apply();
+        VirtualMachine vmWithExtensionUpdated = vmWithExtensionReference.update()
+            .updateExtension("VMAccessForLinux")
+            .withProtectedSetting("username", "Foo12")
+            .withProtectedSetting("password", "muy!234OR")
+            .withProtectedSetting("reset_ssh", "true")
+            .parent()
+            .apply();
 
         // Again getting VM with extension reference
         virtualMachines = computeManager.virtualMachines().listByResourceGroup(rgName);
@@ -297,37 +279,37 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
     public void canGetInstanceViewInDeallocatedState() {
         // Create a Linux VM
         String vmName = generateRandomResourceName("javavm", 15);
-        VirtualMachine vm =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                .withRootUsername("Foo12")
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .defineNewExtension("VMAccessForLinux")
-                .withPublisher("Microsoft.OSTCExtensions")
-                .withType("VMAccessForLinux")
-                .withVersion("1.4")
-                .withProtectedSetting("username", "Foo12")
-                .withProtectedSetting("password", "B12a6@12xyz!")
-                .withProtectedSetting("reset_ssh", "true")
-                .attach()
-                .create();
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .defineNewExtension("VMAccessForLinux")
+            .withPublisher("Microsoft.OSTCExtensions")
+            .withType("VMAccessForLinux")
+            .withVersion("1.4")
+            .withProtectedSetting("username", "Foo12")
+            .withProtectedSetting("password", "B12a6@12xyz!")
+            .withProtectedSetting("reset_ssh", "true")
+            .attach()
+            .create();
 
         Assertions.assertTrue(vm.listExtensions().size() > 0);
-        Assertions.assertTrue(vm.listExtensions().values().stream().noneMatch(extension -> extension.getInstanceView() == null));
+        Assertions.assertTrue(
+            vm.listExtensions().values().stream().noneMatch(extension -> extension.getInstanceView() == null));
 
         vm.deallocate();
 
         // In deallocated state, we can get VM's extensions but not their instance views.
         Assertions.assertTrue(vm.listExtensions().size() > 0);
-        Assertions.assertTrue(vm.listExtensions().values().stream().allMatch(extension -> extension.getInstanceView() == null));
+        Assertions.assertTrue(
+            vm.listExtensions().values().stream().allMatch(extension -> extension.getInstanceView() == null));
     }
 
     @Test
@@ -336,21 +318,17 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         String vaultName = generateRandomResourceName("javavt", 15);
         final String secretName = generateRandomResourceName("srt", 10);
 
-        Vault vault =
-            this
-                .keyVaultManager
-                .vaults()
-                .define(vaultName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .defineAccessPolicy()
-                .forUser(azureCliSignedInUser().userPrincipalName())
-                .allowSecretAllPermissions()
-                .attach()
-                .withDeploymentEnabled()
-                .create();
-        final InputStream embeddedJsonConfig =
-            this.getClass().getResourceAsStream("/myTest.txt");
+        Vault vault = this.keyVaultManager.vaults()
+            .define(vaultName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .defineAccessPolicy()
+            .forUser(azureCliSignedInUser().userPrincipalName())
+            .allowSecretAllPermissions()
+            .attach()
+            .withDeploymentEnabled()
+            .create();
+        final InputStream embeddedJsonConfig = this.getClass().getResourceAsStream("/myTest.txt");
         String secretValue = IOUtils.toString(embeddedJsonConfig, StandardCharsets.UTF_8);
         Secret secret = vault.secrets().define(secretName).withValue(secretValue).create();
 
@@ -358,26 +336,24 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         extensionSecretSettings.put("pollingIntervalInS", "3600");
         extensionSecretSettings.put("observedCertificates", Collections.singletonList(secret.id()));
 
-        VirtualMachine vm =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                .withRootUsername("Foo12")
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .defineNewExtension("KeyVaultForLinux")
-                .withPublisher("Microsoft.Azure.KeyVault")
-                .withType("KeyVaultForLinux")
-                .withVersion("1.0")
-                .withPublicSetting("secretsManagementSettings", extensionSecretSettings)
-                .attach()
-                .create();
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .defineNewExtension("KeyVaultForLinux")
+            .withPublisher("Microsoft.Azure.KeyVault")
+            .withType("KeyVaultForLinux")
+            .withVersion("1.0")
+            .withPublicSetting("secretsManagementSettings", extensionSecretSettings)
+            .attach()
+            .create();
         VirtualMachineExtension extension = vm.listExtensions().get("KeyVaultForLinux");
         Assertions.assertNotNull(extension);
         Assertions.assertNotNull(extension.publicSettingsAsJsonString());

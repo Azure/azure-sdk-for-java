@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class GitHubOAuthCallRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GitHubOAuthCallRequest model =
-            BinaryData.fromString("{\"redirectUrl\":\"a\"}").toObject(GitHubOAuthCallRequest.class);
+        GitHubOAuthCallRequest model
+            = BinaryData.fromString("{\"redirectUrl\":\"a\"}").toObject(GitHubOAuthCallRequest.class);
         Assertions.assertEquals("a", model.redirectUrl());
     }
 

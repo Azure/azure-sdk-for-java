@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TagRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagRuleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"logRules\":{\"sendAadLogs\":\"Disabled\",\"sendSubscriptionLogs\":\"Disabled\",\"sendActivityLogs\":\"Enabled\",\"filteringTags\":[{\"name\":\"tynqgoul\",\"value\":\"dlikwyqkgfgibma\",\"action\":\"Include\"}]},\"metricRules\":{\"sendingMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"yb\",\"value\":\"qedqytbciqfoufl\",\"action\":\"Exclude\"},{\"name\":\"zsm\",\"value\":\"mglougpbkw\",\"action\":\"Exclude\"}]},\"provisioningState\":\"Updating\"},\"id\":\"qktapspwgcuert\",\"name\":\"mkdo\",\"type\":\"vqwhbmdgbbjfd\"}")
-                .toObject(TagRuleInner.class);
+        TagRuleInner model = BinaryData.fromString(
+            "{\"properties\":{\"logRules\":{\"sendAadLogs\":\"Disabled\",\"sendSubscriptionLogs\":\"Disabled\",\"sendActivityLogs\":\"Enabled\",\"filteringTags\":[{\"name\":\"tynqgoul\",\"value\":\"dlikwyqkgfgibma\",\"action\":\"Include\"}]},\"metricRules\":{\"sendingMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"yb\",\"value\":\"qedqytbciqfoufl\",\"action\":\"Exclude\"},{\"name\":\"zsm\",\"value\":\"mglougpbkw\",\"action\":\"Exclude\"}]},\"provisioningState\":\"Updating\"},\"id\":\"qktapspwgcuert\",\"name\":\"mkdo\",\"type\":\"vqwhbmdgbbjfd\"}")
+            .toObject(TagRuleInner.class);
         Assertions.assertEquals(SendAadLogsStatus.DISABLED, model.logRules().sendAadLogs());
         Assertions.assertEquals(SendSubscriptionLogsStatus.DISABLED, model.logRules().sendSubscriptionLogs());
         Assertions.assertEquals(SendActivityLogsStatus.ENABLED, model.logRules().sendActivityLogs());
@@ -39,34 +37,15 @@ public final class TagRuleInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagRuleInner model =
-            new TagRuleInner()
-                .withLogRules(
-                    new LogRules()
-                        .withSendAadLogs(SendAadLogsStatus.DISABLED)
-                        .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
-                        .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
-                        .withFilteringTags(
-                            Arrays
-                                .asList(
-                                    new FilteringTag()
-                                        .withName("tynqgoul")
-                                        .withValue("dlikwyqkgfgibma")
-                                        .withAction(TagAction.INCLUDE))))
-                .withMetricRules(
-                    new MetricRules()
-                        .withSendingMetrics(SendingMetricsStatus.DISABLED)
-                        .withFilteringTags(
-                            Arrays
-                                .asList(
-                                    new FilteringTag()
-                                        .withName("yb")
-                                        .withValue("qedqytbciqfoufl")
-                                        .withAction(TagAction.EXCLUDE),
-                                    new FilteringTag()
-                                        .withName("zsm")
-                                        .withValue("mglougpbkw")
-                                        .withAction(TagAction.EXCLUDE))));
+        TagRuleInner model = new TagRuleInner().withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
+            .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
+            .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
+            .withFilteringTags(Arrays.asList(
+                new FilteringTag().withName("tynqgoul").withValue("dlikwyqkgfgibma").withAction(TagAction.INCLUDE))))
+            .withMetricRules(new MetricRules().withSendingMetrics(SendingMetricsStatus.DISABLED)
+                .withFilteringTags(Arrays.asList(
+                    new FilteringTag().withName("yb").withValue("qedqytbciqfoufl").withAction(TagAction.EXCLUDE),
+                    new FilteringTag().withName("zsm").withValue("mglougpbkw").withAction(TagAction.EXCLUDE))));
         model = BinaryData.fromObject(model).toObject(TagRuleInner.class);
         Assertions.assertEquals(SendAadLogsStatus.DISABLED, model.logRules().sendAadLogs());
         Assertions.assertEquals(SendSubscriptionLogsStatus.DISABLED, model.logRules().sendSubscriptionLogs());

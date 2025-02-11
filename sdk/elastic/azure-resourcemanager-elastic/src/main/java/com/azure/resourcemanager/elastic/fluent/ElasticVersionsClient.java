@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.fluent.models.ElasticVersionListFormatInner;
 
-/** An instance of this class provides access to all the operations defined in ElasticVersionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ElasticVersionsClient.
+ */
 public interface ElasticVersionsClient {
     /**
      * Get a list of available versions for a region.
-     *
+     * 
      * @param region Region where elastic deployment will take place.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,7 +28,7 @@ public interface ElasticVersionsClient {
 
     /**
      * Get a list of available versions for a region.
-     *
+     * 
      * @param region Region where elastic deployment will take place.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

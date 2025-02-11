@@ -1,8 +1,0 @@
-[
-  {
-    "name": "com.azure.data.appconfiguration.perf.ListConfigurationSettingsTest",
-    "allDeclaredConstructors": true,
-    "allDeclaredMethods": true,
-    "allDeclaredFields": true
-  }
-]

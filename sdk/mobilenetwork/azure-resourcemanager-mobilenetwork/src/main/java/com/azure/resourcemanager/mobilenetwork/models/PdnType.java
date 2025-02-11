@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class PdnType extends ExpandableStringEnum<PdnType> {
      * @param name a name to look for.
      * @return the corresponding PdnType.
      */
-    @JsonCreator
     public static PdnType fromString(String name) {
         return fromString(name, PdnType.class);
     }

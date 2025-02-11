@@ -22,7 +22,8 @@ public final class WorkspacesUpdateSamples {
     public static void
         workspacesUpdateMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
         Workspace resource = manager.workspaces()
-            .getByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 
@@ -38,7 +39,8 @@ public final class WorkspacesUpdateSamples {
     public static void
         workspacesUpdateMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
         Workspace resource = manager.workspaces()
-            .getByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

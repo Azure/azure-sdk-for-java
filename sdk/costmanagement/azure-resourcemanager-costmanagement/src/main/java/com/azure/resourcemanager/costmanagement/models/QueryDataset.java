@@ -5,55 +5,56 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The definition of data present in the query. */
+/**
+ * The definition of data present in the query.
+ */
 @Fluent
-public final class QueryDataset {
+public final class QueryDataset implements JsonSerializable<QueryDataset> {
     /*
      * The granularity of rows in the query.
      */
-    @JsonProperty(value = "granularity")
     private GranularityType granularity;
 
     /*
      * Has configuration information for the data in the export. The configuration will be ignored if aggregation and
      * grouping are provided.
      */
-    @JsonProperty(value = "configuration")
     private QueryDatasetConfiguration configuration;
 
     /*
-     * Dictionary of aggregation expression to use in the query. The key of each item in the dictionary is the alias
-     * for the aggregated column. Query can have up to 2 aggregation clauses.
+     * Dictionary of aggregation expression to use in the query. The key of each item in the dictionary is the alias for
+     * the aggregated column. Query can have up to 2 aggregation clauses.
      */
-    @JsonProperty(value = "aggregation")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, QueryAggregation> aggregation;
 
     /*
      * Array of group by expression to use in the query. Query can have up to 2 group by clauses.
      */
-    @JsonProperty(value = "grouping")
     private List<QueryGrouping> grouping;
 
     /*
      * The filter expression to use in the query. Please reference our Query API REST documentation for how to properly
      * format the filter.
      */
-    @JsonProperty(value = "filter")
     private QueryFilter filter;
 
-    /** Creates an instance of QueryDataset class. */
+    /**
+     * Creates an instance of QueryDataset class.
+     */
     public QueryDataset() {
     }
 
     /**
      * Get the granularity property: The granularity of rows in the query.
-     *
+     * 
      * @return the granularity value.
      */
     public GranularityType granularity() {
@@ -62,7 +63,7 @@ public final class QueryDataset {
 
     /**
      * Set the granularity property: The granularity of rows in the query.
-     *
+     * 
      * @param granularity the granularity value to set.
      * @return the QueryDataset object itself.
      */
@@ -74,7 +75,7 @@ public final class QueryDataset {
     /**
      * Get the configuration property: Has configuration information for the data in the export. The configuration will
      * be ignored if aggregation and grouping are provided.
-     *
+     * 
      * @return the configuration value.
      */
     public QueryDatasetConfiguration configuration() {
@@ -84,7 +85,7 @@ public final class QueryDataset {
     /**
      * Set the configuration property: Has configuration information for the data in the export. The configuration will
      * be ignored if aggregation and grouping are provided.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the QueryDataset object itself.
      */
@@ -96,7 +97,7 @@ public final class QueryDataset {
     /**
      * Get the aggregation property: Dictionary of aggregation expression to use in the query. The key of each item in
      * the dictionary is the alias for the aggregated column. Query can have up to 2 aggregation clauses.
-     *
+     * 
      * @return the aggregation value.
      */
     public Map<String, QueryAggregation> aggregation() {
@@ -106,7 +107,7 @@ public final class QueryDataset {
     /**
      * Set the aggregation property: Dictionary of aggregation expression to use in the query. The key of each item in
      * the dictionary is the alias for the aggregated column. Query can have up to 2 aggregation clauses.
-     *
+     * 
      * @param aggregation the aggregation value to set.
      * @return the QueryDataset object itself.
      */
@@ -118,7 +119,7 @@ public final class QueryDataset {
     /**
      * Get the grouping property: Array of group by expression to use in the query. Query can have up to 2 group by
      * clauses.
-     *
+     * 
      * @return the grouping value.
      */
     public List<QueryGrouping> grouping() {
@@ -128,7 +129,7 @@ public final class QueryDataset {
     /**
      * Set the grouping property: Array of group by expression to use in the query. Query can have up to 2 group by
      * clauses.
-     *
+     * 
      * @param grouping the grouping value to set.
      * @return the QueryDataset object itself.
      */
@@ -140,7 +141,7 @@ public final class QueryDataset {
     /**
      * Get the filter property: The filter expression to use in the query. Please reference our Query API REST
      * documentation for how to properly format the filter.
-     *
+     * 
      * @return the filter value.
      */
     public QueryFilter filter() {
@@ -150,7 +151,7 @@ public final class QueryDataset {
     /**
      * Set the filter property: The filter expression to use in the query. Please reference our Query API REST
      * documentation for how to properly format the filter.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the QueryDataset object itself.
      */
@@ -161,7 +162,7 @@ public final class QueryDataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -169,14 +170,11 @@ public final class QueryDataset {
             configuration().validate();
         }
         if (aggregation() != null) {
-            aggregation()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            aggregation().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (grouping() != null) {
             grouping().forEach(e -> e.validate());
@@ -184,5 +182,56 @@ public final class QueryDataset {
         if (filter() != null) {
             filter().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("granularity", this.granularity == null ? null : this.granularity.toString());
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        jsonWriter.writeMapField("aggregation", this.aggregation, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("grouping", this.grouping, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("filter", this.filter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryDataset if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryDataset.
+     */
+    public static QueryDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryDataset deserializedQueryDataset = new QueryDataset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("granularity".equals(fieldName)) {
+                    deserializedQueryDataset.granularity = GranularityType.fromString(reader.getString());
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedQueryDataset.configuration = QueryDatasetConfiguration.fromJson(reader);
+                } else if ("aggregation".equals(fieldName)) {
+                    Map<String, QueryAggregation> aggregation
+                        = reader.readMap(reader1 -> QueryAggregation.fromJson(reader1));
+                    deserializedQueryDataset.aggregation = aggregation;
+                } else if ("grouping".equals(fieldName)) {
+                    List<QueryGrouping> grouping = reader.readArray(reader1 -> QueryGrouping.fromJson(reader1));
+                    deserializedQueryDataset.grouping = grouping;
+                } else if ("filter".equals(fieldName)) {
+                    deserializedQueryDataset.filter = QueryFilter.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryDataset;
+        });
     }
 }

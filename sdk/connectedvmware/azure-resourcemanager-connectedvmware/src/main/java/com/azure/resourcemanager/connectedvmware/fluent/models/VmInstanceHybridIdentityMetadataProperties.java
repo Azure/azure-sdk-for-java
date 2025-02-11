@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the properties of Hybrid Identity Metadata for a Virtual Machine. */
+/**
+ * Describes the properties of Hybrid Identity Metadata for a Virtual Machine.
+ */
 @Fluent
-public final class VmInstanceHybridIdentityMetadataProperties {
+public final class VmInstanceHybridIdentityMetadataProperties
+    implements JsonSerializable<VmInstanceHybridIdentityMetadataProperties> {
     /*
      * The unique identifier for the resource.
      */
-    @JsonProperty(value = "resourceUid")
     private String resourceUid;
 
     /*
      * Gets or sets the Public Key.
      */
-    @JsonProperty(value = "publicKey")
     private String publicKey;
 
     /*
      * Gets the provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VmInstanceHybridIdentityMetadataProperties class. */
+    /**
+     * Creates an instance of VmInstanceHybridIdentityMetadataProperties class.
+     */
     public VmInstanceHybridIdentityMetadataProperties() {
     }
 
     /**
      * Get the resourceUid property: The unique identifier for the resource.
-     *
+     * 
      * @return the resourceUid value.
      */
     public String resourceUid() {
@@ -44,7 +50,7 @@ public final class VmInstanceHybridIdentityMetadataProperties {
 
     /**
      * Set the resourceUid property: The unique identifier for the resource.
-     *
+     * 
      * @param resourceUid the resourceUid value to set.
      * @return the VmInstanceHybridIdentityMetadataProperties object itself.
      */
@@ -55,7 +61,7 @@ public final class VmInstanceHybridIdentityMetadataProperties {
 
     /**
      * Get the publicKey property: Gets or sets the Public Key.
-     *
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -64,7 +70,7 @@ public final class VmInstanceHybridIdentityMetadataProperties {
 
     /**
      * Set the publicKey property: Gets or sets the Public Key.
-     *
+     * 
      * @param publicKey the publicKey value to set.
      * @return the VmInstanceHybridIdentityMetadataProperties object itself.
      */
@@ -75,7 +81,7 @@ public final class VmInstanceHybridIdentityMetadataProperties {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -84,9 +90,52 @@ public final class VmInstanceHybridIdentityMetadataProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceUid", this.resourceUid);
+        jsonWriter.writeStringField("publicKey", this.publicKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VmInstanceHybridIdentityMetadataProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VmInstanceHybridIdentityMetadataProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VmInstanceHybridIdentityMetadataProperties.
+     */
+    public static VmInstanceHybridIdentityMetadataProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VmInstanceHybridIdentityMetadataProperties deserializedVmInstanceHybridIdentityMetadataProperties
+                = new VmInstanceHybridIdentityMetadataProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceUid".equals(fieldName)) {
+                    deserializedVmInstanceHybridIdentityMetadataProperties.resourceUid = reader.getString();
+                } else if ("publicKey".equals(fieldName)) {
+                    deserializedVmInstanceHybridIdentityMetadataProperties.publicKey = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVmInstanceHybridIdentityMetadataProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVmInstanceHybridIdentityMetadataProperties;
+        });
     }
 }

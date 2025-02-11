@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Response of the GetDomainOwnershipIdentifier operation. */
+/**
+ * Response of the GetDomainOwnershipIdentifier operation.
+ */
 @Immutable
-public final class ApiManagementServiceGetDomainOwnershipIdentifierResultInner {
+public final class ApiManagementServiceGetDomainOwnershipIdentifierResultInner
+    implements JsonSerializable<ApiManagementServiceGetDomainOwnershipIdentifierResultInner> {
     /*
      * The domain ownership identifier value.
      */
-    @JsonProperty(value = "domainOwnershipIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String domainOwnershipIdentifier;
 
-    /** Creates an instance of ApiManagementServiceGetDomainOwnershipIdentifierResultInner class. */
+    /**
+     * Creates an instance of ApiManagementServiceGetDomainOwnershipIdentifierResultInner class.
+     */
     public ApiManagementServiceGetDomainOwnershipIdentifierResultInner() {
     }
 
     /**
      * Get the domainOwnershipIdentifier property: The domain ownership identifier value.
-     *
+     * 
      * @return the domainOwnershipIdentifier value.
      */
     public String domainOwnershipIdentifier() {
@@ -31,9 +39,48 @@ public final class ApiManagementServiceGetDomainOwnershipIdentifierResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementServiceGetDomainOwnershipIdentifierResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementServiceGetDomainOwnershipIdentifierResultInner if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ApiManagementServiceGetDomainOwnershipIdentifierResultInner.
+     */
+    public static ApiManagementServiceGetDomainOwnershipIdentifierResultInner fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementServiceGetDomainOwnershipIdentifierResultInner deserializedApiManagementServiceGetDomainOwnershipIdentifierResultInner
+                = new ApiManagementServiceGetDomainOwnershipIdentifierResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domainOwnershipIdentifier".equals(fieldName)) {
+                    deserializedApiManagementServiceGetDomainOwnershipIdentifierResultInner.domainOwnershipIdentifier
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementServiceGetDomainOwnershipIdentifierResultInner;
+        });
     }
 }

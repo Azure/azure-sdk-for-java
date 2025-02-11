@@ -19,13 +19,12 @@ public class DependencyReference implements JsonSerializable<DependencyReference
     /*
      * The type of dependency reference.
      */
-    private String type;
+    private String type = "DependencyReference";
 
     /**
      * Creates an instance of DependencyReference class.
      */
     public DependencyReference() {
-        this.type = "DependencyReference";
     }
 
     /**

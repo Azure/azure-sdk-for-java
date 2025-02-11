@@ -10,11 +10,10 @@ import com.azure.resourcemanager.billingbenefits.models.UtilizationAggregates;
 public final class UtilizationAggregatesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UtilizationAggregates model =
-            BinaryData
-                .fromString(
-                    "{\"grain\":22.663057,\"grainUnit\":\"alhbx\",\"value\":0.35515428,\"valueUnit\":\"jzzvdud\"}")
-                .toObject(UtilizationAggregates.class);
+        UtilizationAggregates model = BinaryData
+            .fromString(
+                "{\"grain\":86.88021,\"grainUnit\":\"aqsqsycbkbfk\",\"value\":37.7001,\"valueUnit\":\"kexxppof\"}")
+            .toObject(UtilizationAggregates.class);
     }
 
     @org.junit.jupiter.api.Test

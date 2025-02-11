@@ -19,31 +19,32 @@ public final class RelationalTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelationalTableDataset model = BinaryData.fromString(
-            "{\"type\":\"RelationalTable\",\"typeProperties\":{\"tableName\":\"dataxzizebjr\"},\"description\":\"gdstubw\",\"structure\":\"dataxzsshxliqmsckwh\",\"schema\":\"datadoi\",\"linkedServiceName\":{\"referenceName\":\"yobqzwjalwrsofxc\",\"parameters\":{\"mrs\":\"datamvj\",\"prel\":\"dataydl\",\"ztirjvqxvwkiocxo\":\"dataxfkz\"}},\"parameters\":{\"lrlqxbctatezyozd\":{\"type\":\"Float\",\"defaultValue\":\"datauocqflm\"}},\"annotations\":[\"dataqnl\",\"datajxcscnitodmrah\",\"datajido\",\"datanvlt\"],\"folder\":{\"name\":\"ahpuwkupbbnhic\"},\"\":{\"nhlsforsimtfcqm\":\"datazhrcqdfwbif\",\"pelpfijtezgxmpe\":\"dataynb\",\"f\":\"datazamadlerzi\",\"mirmnrijefmrt\":\"dataivczktllxswtdap\"}}")
+            "{\"type\":\"RelationalTable\",\"typeProperties\":{\"tableName\":\"datakxie\"},\"description\":\"lnml\",\"structure\":\"datafcnuestbsli\",\"schema\":\"datadnccotelik\",\"linkedServiceName\":{\"referenceName\":\"iytehhxtzxqdwbym\",\"parameters\":{\"ncrdo\":\"datan\",\"byh\":\"datactysecpekhx\",\"lfymtrts\":\"datatzcvimmwckoz\"}},\"parameters\":{\"rjschjxncqzah\":{\"type\":\"SecureString\",\"defaultValue\":\"datatzckjbcbkgnr\"},\"bimor\":{\"type\":\"Int\",\"defaultValue\":\"databgd\"}},\"annotations\":[\"dataxosgihtrxue\",\"databmxqfgvz\"],\"folder\":{\"name\":\"swshesgcsqose\"},\"\":{\"spfyvslazip\":\"datangoufpizpbmfx\",\"jtyc\":\"datalxgtdu\"}}")
             .toObject(RelationalTableDataset.class);
-        Assertions.assertEquals("gdstubw", model.description());
-        Assertions.assertEquals("yobqzwjalwrsofxc", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("lrlqxbctatezyozd").type());
-        Assertions.assertEquals("ahpuwkupbbnhic", model.folder().name());
+        Assertions.assertEquals("lnml", model.description());
+        Assertions.assertEquals("iytehhxtzxqdwbym", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("rjschjxncqzah").type());
+        Assertions.assertEquals("swshesgcsqose", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RelationalTableDataset model = new RelationalTableDataset().withDescription("gdstubw")
-            .withStructure("dataxzsshxliqmsckwh")
-            .withSchema("datadoi")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("yobqzwjalwrsofxc")
-                .withParameters(mapOf("mrs", "datamvj", "prel", "dataydl", "ztirjvqxvwkiocxo", "dataxfkz")))
-            .withParameters(mapOf("lrlqxbctatezyozd",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datauocqflm")))
-            .withAnnotations(Arrays.asList("dataqnl", "datajxcscnitodmrah", "datajido", "datanvlt"))
-            .withFolder(new DatasetFolder().withName("ahpuwkupbbnhic"))
-            .withTableName("dataxzizebjr");
+        RelationalTableDataset model = new RelationalTableDataset().withDescription("lnml")
+            .withStructure("datafcnuestbsli")
+            .withSchema("datadnccotelik")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("iytehhxtzxqdwbym")
+                .withParameters(mapOf("ncrdo", "datan", "byh", "datactysecpekhx", "lfymtrts", "datatzcvimmwckoz")))
+            .withParameters(mapOf("rjschjxncqzah",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datatzckjbcbkgnr"),
+                "bimor", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("databgd")))
+            .withAnnotations(Arrays.asList("dataxosgihtrxue", "databmxqfgvz"))
+            .withFolder(new DatasetFolder().withName("swshesgcsqose"))
+            .withTableName("datakxie");
         model = BinaryData.fromObject(model).toObject(RelationalTableDataset.class);
-        Assertions.assertEquals("gdstubw", model.description());
-        Assertions.assertEquals("yobqzwjalwrsofxc", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("lrlqxbctatezyozd").type());
-        Assertions.assertEquals("ahpuwkupbbnhic", model.folder().name());
+        Assertions.assertEquals("lnml", model.description());
+        Assertions.assertEquals("iytehhxtzxqdwbym", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("rjschjxncqzah").type());
+        Assertions.assertEquals("swshesgcsqose", model.folder().name());
     }
 
     // Use "Map.of" if available

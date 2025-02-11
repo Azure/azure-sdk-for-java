@@ -9,20 +9,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.FabricMo
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Fabric Create. */
+/**
+ * Samples for Fabric Create.
+ */
 public final class FabricCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Fabric_Create.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Fabric_Create.json
      */
     /**
      * Sample code: Fabric_Create.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricCreate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .fabrics()
+        manager.fabrics()
             .define("wPR")
             .withRegion("tqygutlpob")
             .withExistingResourceGroup("rgrecoveryservicesdatareplication")

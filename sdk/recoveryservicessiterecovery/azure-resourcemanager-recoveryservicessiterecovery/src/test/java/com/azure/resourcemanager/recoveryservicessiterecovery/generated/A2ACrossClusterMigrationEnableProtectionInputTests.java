@@ -20,8 +20,9 @@ public final class A2ACrossClusterMigrationEnableProtectionInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2ACrossClusterMigrationEnableProtectionInput model = new A2ACrossClusterMigrationEnableProtectionInput()
-            .withFabricObjectId("lickduoi").withRecoveryContainerId("amt");
+        A2ACrossClusterMigrationEnableProtectionInput model
+            = new A2ACrossClusterMigrationEnableProtectionInput().withFabricObjectId("lickduoi")
+                .withRecoveryContainerId("amt");
         model = BinaryData.fromObject(model).toObject(A2ACrossClusterMigrationEnableProtectionInput.class);
         Assertions.assertEquals("lickduoi", model.fabricObjectId());
         Assertions.assertEquals("amt", model.recoveryContainerId());

@@ -45,22 +45,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApplicationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationsClient.
+ */
 public final class ApplicationsClientImpl implements ApplicationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApplicationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationClientImpl client;
 
     /**
      * Initializes an instance of ApplicationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationsClientImpl(ApplicationClientImpl client) {
-        this.service =
-            RestProxy.create(ApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,216 +77,162 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationClientApp")
     public interface ApplicationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ApplicationInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("applicationName") String applicationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("applicationName") String applicationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("applicationName") String applicationName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ApplicationInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("applicationName") String applicationName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ApplicationPatchableInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ApplicationListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("applicationName") String applicationName,
-            @BodyParam("application/json") ApplicationInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("applicationName") String applicationName,
-            @BodyParam("application/json") ApplicationPatchableInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Solutions/applications")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{applicationId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInner>> getById(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ApplicationInner>> getById(@HostParam("$host") String endpoint,
             @PathParam(value = "applicationId", encoded = true) String applicationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/{applicationId}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deleteById(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> deleteById(@HostParam("$host") String endpoint,
             @PathParam(value = "applicationId", encoded = true) String applicationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/{applicationId}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdateById(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdateById(@HostParam("$host") String endpoint,
             @PathParam(value = "applicationId", encoded = true) String applicationId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ApplicationInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ApplicationInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{applicationId}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateById(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> updateById(@HostParam("$host") String endpoint,
             @PathParam(value = "applicationId", encoded = true) String applicationId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ApplicationPatchableInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ApplicationPatchableInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}/refreshPermissions")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}/refreshPermissions")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> refreshPermissions(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> refreshPermissions(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("applicationName") String applicationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}/listAllowedUpgradePlans")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AllowedUpgradePlansResultInner>> listAllowedUpgradePlans(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("applicationName") String applicationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}/updateAccess")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> updateAccess(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("applicationName") String applicationName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("applicationName") String applicationName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") UpdateAccessDefinitionInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}/listAllowedUpgradePlans")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}/listTokens")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AllowedUpgradePlansResultInner>> listAllowedUpgradePlans(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagedIdentityTokenResultInner>> listTokens(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("applicationName") String applicationName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("applicationName") String applicationName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ListTokenRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}/updateAccess")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateAccess(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("applicationName") String applicationName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") UpdateAccessDefinitionInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}/listTokens")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedIdentityTokenResultInner>> listTokens(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("applicationName") String applicationName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ListTokenRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,19 +241,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the managed application along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String applicationName) {
+    private Mono<Response<ApplicationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String applicationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -314,22 +262,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            applicationName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), applicationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -339,19 +279,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the managed application along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String applicationName, Context context) {
+    private Mono<Response<ApplicationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String applicationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -363,20 +299,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                applicationName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), applicationName, accept, context);
     }
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -392,7 +321,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -402,14 +331,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the managed application along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String applicationName, Context context) {
+    public Response<ApplicationInner> getByResourceGroupWithResponse(String resourceGroupName, String applicationName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, applicationName, context).block();
     }
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,7 +353,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,16 +364,12 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String applicationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -456,23 +381,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            applicationName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), applicationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -482,19 +398,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String applicationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String applicationName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -506,20 +418,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                applicationName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), applicationName, accept, context);
     }
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -530,15 +435,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String applicationName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, applicationName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -548,18 +451,17 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String applicationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String applicationName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, applicationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -574,7 +476,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -584,14 +486,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String applicationName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, applicationName, context).getSyncPoller();
     }
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -601,14 +503,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String applicationName) {
-        return beginDeleteAsync(resourceGroupName, applicationName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, applicationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -619,14 +520,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String applicationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, applicationName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, applicationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -640,7 +540,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -655,30 +555,26 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String applicationName, ApplicationInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String applicationName, ApplicationInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -695,24 +591,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            applicationName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), applicationName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -720,23 +606,19 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String applicationName, ApplicationInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String applicationName, ApplicationInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -753,21 +635,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                applicationName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), applicationName, parameters, accept, context);
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -777,23 +651,17 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link PollerFlux} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String applicationName, ApplicationInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, applicationName, parameters);
-        return this
-            .client
-            .<ApplicationInner, ApplicationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationInner.class,
-                ApplicationInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ApplicationInner>, ApplicationInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String applicationName, ApplicationInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, applicationName, parameters);
+        return this.client.<ApplicationInner, ApplicationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ApplicationInner.class, ApplicationInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -807,17 +675,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     private PollerFlux<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String applicationName, ApplicationInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, applicationName, parameters, context);
-        return this
-            .client
-            .<ApplicationInner, ApplicationInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ApplicationInner.class, ApplicationInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, applicationName, parameters, context);
+        return this.client.<ApplicationInner, ApplicationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ApplicationInner.class, ApplicationInner.class, context);
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -827,14 +693,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdate(
-        String resourceGroupName, String applicationName, ApplicationInner parameters) {
+    public SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdate(String resourceGroupName,
+        String applicationName, ApplicationInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, applicationName, parameters).getSyncPoller();
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -845,14 +711,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdate(
-        String resourceGroupName, String applicationName, ApplicationInner parameters, Context context) {
+    public SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdate(String resourceGroupName,
+        String applicationName, ApplicationInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, applicationName, parameters, context).getSyncPoller();
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -862,16 +728,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return information about managed application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInner> createOrUpdateAsync(
-        String resourceGroupName, String applicationName, ApplicationInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, applicationName, parameters)
-            .last()
+    private Mono<ApplicationInner> createOrUpdateAsync(String resourceGroupName, String applicationName,
+        ApplicationInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, applicationName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -882,16 +747,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return information about managed application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInner> createOrUpdateAsync(
-        String resourceGroupName, String applicationName, ApplicationInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, applicationName, parameters, context)
-            .last()
+    private Mono<ApplicationInner> createOrUpdateAsync(String resourceGroupName, String applicationName,
+        ApplicationInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, applicationName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -901,14 +765,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return information about managed application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner createOrUpdate(
-        String resourceGroupName, String applicationName, ApplicationInner parameters) {
+    public ApplicationInner createOrUpdate(String resourceGroupName, String applicationName,
+        ApplicationInner parameters) {
         return createOrUpdateAsync(resourceGroupName, applicationName, parameters).block();
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -919,37 +783,33 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return information about managed application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner createOrUpdate(
-        String resourceGroupName, String applicationName, ApplicationInner parameters, Context context) {
+    public ApplicationInner createOrUpdate(String resourceGroupName, String applicationName,
+        ApplicationInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, applicationName, parameters, context).block();
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String applicationName, ApplicationPatchableInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String applicationName,
+        ApplicationPatchableInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -964,24 +824,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            applicationName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), applicationName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -989,23 +839,19 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String applicationName, ApplicationPatchableInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String applicationName,
+        ApplicationPatchableInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1020,21 +866,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                applicationName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), applicationName, parameters, accept, context);
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -1044,22 +882,17 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link PollerFlux} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdateAsync(
-        String resourceGroupName, String applicationName, ApplicationPatchableInner parameters) {
+    private PollerFlux<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner>
+        beginUpdateAsync(String resourceGroupName, String applicationName, ApplicationPatchableInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, applicationName, parameters);
-        return this
-            .client
-            .<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationPatchableInner.class,
-                ApplicationPatchableInner.class,
-                this.client.getContext());
+        return this.client.<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApplicationPatchableInner.class, ApplicationPatchableInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1068,23 +901,18 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link PollerFlux} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdateAsync(
-        String resourceGroupName, String applicationName) {
+    private PollerFlux<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner>
+        beginUpdateAsync(String resourceGroupName, String applicationName) {
         final ApplicationPatchableInner parameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, applicationName, parameters);
-        return this
-            .client
-            .<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationPatchableInner.class,
-                ApplicationPatchableInner.class,
-                this.client.getContext());
+        return this.client.<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApplicationPatchableInner.class, ApplicationPatchableInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -1098,21 +926,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     private PollerFlux<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdateAsync(
         String resourceGroupName, String applicationName, ApplicationPatchableInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, applicationName, parameters, context);
-        return this
-            .client
-            .<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationPatchableInner.class,
-                ApplicationPatchableInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, applicationName, parameters, context);
+        return this.client.<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApplicationPatchableInner.class, ApplicationPatchableInner.class, context);
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1121,15 +943,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdate(
-        String resourceGroupName, String applicationName) {
+    public SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner>
+        beginUpdate(String resourceGroupName, String applicationName) {
         final ApplicationPatchableInner parameters = null;
         return this.beginUpdateAsync(resourceGroupName, applicationName, parameters).getSyncPoller();
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -1147,7 +969,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -1157,16 +979,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return information about managed application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationPatchableInner> updateAsync(
-        String resourceGroupName, String applicationName, ApplicationPatchableInner parameters) {
-        return beginUpdateAsync(resourceGroupName, applicationName, parameters)
-            .last()
+    private Mono<ApplicationPatchableInner> updateAsync(String resourceGroupName, String applicationName,
+        ApplicationPatchableInner parameters) {
+        return beginUpdateAsync(resourceGroupName, applicationName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1177,14 +998,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationPatchableInner> updateAsync(String resourceGroupName, String applicationName) {
         final ApplicationPatchableInner parameters = null;
-        return beginUpdateAsync(resourceGroupName, applicationName, parameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, applicationName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -1195,16 +1015,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return information about managed application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationPatchableInner> updateAsync(
-        String resourceGroupName, String applicationName, ApplicationPatchableInner parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, applicationName, parameters, context)
-            .last()
+    private Mono<ApplicationPatchableInner> updateAsync(String resourceGroupName, String applicationName,
+        ApplicationPatchableInner parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, applicationName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1220,7 +1039,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -1231,14 +1050,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return information about managed application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationPatchableInner update(
-        String resourceGroupName, String applicationName, ApplicationPatchableInner parameters, Context context) {
+    public ApplicationPatchableInner update(String resourceGroupName, String applicationName,
+        ApplicationPatchableInner parameters, Context context) {
         return updateAsync(resourceGroupName, applicationName, parameters, context).block();
     }
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1248,16 +1067,12 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1265,31 +1080,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ApplicationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1298,19 +1098,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return list of managed applications along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ApplicationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1319,27 +1115,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1348,14 +1132,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1365,14 +1148,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1386,7 +1168,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1401,7 +1183,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed applications along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1409,43 +1191,25 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ApplicationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1455,53 +1219,38 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1510,13 +1259,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed applications as paginated response with {@link PagedIterable}.
@@ -1528,7 +1277,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1542,10 +1291,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1554,30 +1303,25 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInner>> getByIdWithResponseAsync(String applicationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getById(
-                            this.client.getEndpoint(), applicationId, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.getById(this.client.getEndpoint(), applicationId,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1587,10 +1331,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInner>> getByIdWithResponseAsync(String applicationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
@@ -1602,10 +1344,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1618,10 +1360,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1635,10 +1377,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1651,10 +1393,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1663,30 +1405,25 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(String applicationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteById(
-                            this.client.getEndpoint(), applicationId, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.deleteById(this.client.getEndpoint(), applicationId,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1696,26 +1433,24 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(String applicationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deleteById(this.client.getEndpoint(), applicationId, this.client.getApiVersion(), accept, context);
+        return service.deleteById(this.client.getEndpoint(), applicationId, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1724,18 +1459,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(String applicationId) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(applicationId);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1746,17 +1479,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     private PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(String applicationId, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(applicationId, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1769,10 +1501,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1786,10 +1518,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1802,10 +1534,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1819,10 +1551,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1834,10 +1566,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1850,25 +1582,23 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
-        String applicationId, ApplicationInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(String applicationId,
+        ApplicationInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
@@ -1880,41 +1610,31 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateById(
-                            this.client.getEndpoint(),
-                            applicationId,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdateById(this.client.getEndpoint(), applicationId,
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
-        String applicationId, ApplicationInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(String applicationId,
+        ApplicationInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
@@ -1926,17 +1646,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateById(
-                this.client.getEndpoint(), applicationId, this.client.getApiVersion(), parameters, accept, context);
+        return service.createOrUpdateById(this.client.getEndpoint(), applicationId, this.client.getApiVersion(),
+            parameters, accept, context);
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1944,25 +1663,19 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link PollerFlux} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateByIdAsync(
-        String applicationId, ApplicationInner parameters) {
+    private PollerFlux<PollResult<ApplicationInner>, ApplicationInner>
+        beginCreateOrUpdateByIdAsync(String applicationId, ApplicationInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateByIdWithResponseAsync(applicationId, parameters);
-        return this
-            .client
-            .<ApplicationInner, ApplicationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationInner.class,
-                ApplicationInner.class,
-                this.client.getContext());
+        return this.client.<ApplicationInner, ApplicationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ApplicationInner.class, ApplicationInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1971,22 +1684,20 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link PollerFlux} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateByIdAsync(
-        String applicationId, ApplicationInner parameters, Context context) {
+    private PollerFlux<PollResult<ApplicationInner>, ApplicationInner>
+        beginCreateOrUpdateByIdAsync(String applicationId, ApplicationInner parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateByIdWithResponseAsync(applicationId, parameters, context);
-        return this
-            .client
-            .<ApplicationInner, ApplicationInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ApplicationInner.class, ApplicationInner.class, context);
+        return this.client.<ApplicationInner, ApplicationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ApplicationInner.class, ApplicationInner.class, context);
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1994,17 +1705,17 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateById(
-        String applicationId, ApplicationInner parameters) {
+    public SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateById(String applicationId,
+        ApplicationInner parameters) {
         return this.beginCreateOrUpdateByIdAsync(applicationId, parameters).getSyncPoller();
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2013,17 +1724,17 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateById(
-        String applicationId, ApplicationInner parameters, Context context) {
+    public SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateById(String applicationId,
+        ApplicationInner parameters, Context context) {
         return this.beginCreateOrUpdateByIdAsync(applicationId, parameters, context).getSyncPoller();
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2032,17 +1743,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInner> createOrUpdateByIdAsync(String applicationId, ApplicationInner parameters) {
-        return beginCreateOrUpdateByIdAsync(applicationId, parameters)
-            .last()
+        return beginCreateOrUpdateByIdAsync(applicationId, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2051,19 +1761,18 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return information about managed application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInner> createOrUpdateByIdAsync(
-        String applicationId, ApplicationInner parameters, Context context) {
-        return beginCreateOrUpdateByIdAsync(applicationId, parameters, context)
-            .last()
+    private Mono<ApplicationInner> createOrUpdateByIdAsync(String applicationId, ApplicationInner parameters,
+        Context context) {
+        return beginCreateOrUpdateByIdAsync(applicationId, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2077,10 +1786,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2095,25 +1804,23 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(
-        String applicationId, ApplicationPatchableInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(String applicationId,
+        ApplicationPatchableInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
@@ -2123,41 +1830,31 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateById(
-                            this.client.getEndpoint(),
-                            applicationId,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateById(this.client.getEndpoint(), applicationId,
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(
-        String applicationId, ApplicationPatchableInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(String applicationId,
+        ApplicationPatchableInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
@@ -2167,17 +1864,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateById(
-                this.client.getEndpoint(), applicationId, this.client.getApiVersion(), parameters, accept, context);
+        return service.updateById(this.client.getEndpoint(), applicationId, this.client.getApiVersion(), parameters,
+            accept, context);
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2185,51 +1881,41 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link PollerFlux} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdateByIdAsync(
-        String applicationId, ApplicationPatchableInner parameters) {
+    private PollerFlux<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner>
+        beginUpdateByIdAsync(String applicationId, ApplicationPatchableInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateByIdWithResponseAsync(applicationId, parameters);
-        return this
-            .client
-            .<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationPatchableInner.class,
-                ApplicationPatchableInner.class,
-                this.client.getContext());
+        return this.client.<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApplicationPatchableInner.class, ApplicationPatchableInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdateByIdAsync(
-        String applicationId) {
+    private PollerFlux<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner>
+        beginUpdateByIdAsync(String applicationId) {
         final ApplicationPatchableInner parameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono = updateByIdWithResponseAsync(applicationId, parameters);
-        return this
-            .client
-            .<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationPatchableInner.class,
-                ApplicationPatchableInner.class,
-                this.client.getContext());
+        return this.client.<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApplicationPatchableInner.class, ApplicationPatchableInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2238,44 +1924,38 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link PollerFlux} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdateByIdAsync(
-        String applicationId, ApplicationPatchableInner parameters, Context context) {
+    private PollerFlux<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner>
+        beginUpdateByIdAsync(String applicationId, ApplicationPatchableInner parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = updateByIdWithResponseAsync(applicationId, parameters, context);
-        return this
-            .client
-            .<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationPatchableInner.class,
-                ApplicationPatchableInner.class,
-                context);
+        return this.client.<ApplicationPatchableInner, ApplicationPatchableInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApplicationPatchableInner.class, ApplicationPatchableInner.class, context);
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdateById(
-        String applicationId) {
+    public SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner>
+        beginUpdateById(String applicationId) {
         final ApplicationPatchableInner parameters = null;
         return this.beginUpdateByIdAsync(applicationId, parameters).getSyncPoller();
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2284,17 +1964,17 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdateById(
-        String applicationId, ApplicationPatchableInner parameters, Context context) {
+    public SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner>
+        beginUpdateById(String applicationId, ApplicationPatchableInner parameters, Context context) {
         return this.beginUpdateByIdAsync(applicationId, parameters, context).getSyncPoller();
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2302,17 +1982,17 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return information about managed application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationPatchableInner> updateByIdAsync(
-        String applicationId, ApplicationPatchableInner parameters) {
+    private Mono<ApplicationPatchableInner> updateByIdAsync(String applicationId,
+        ApplicationPatchableInner parameters) {
         return beginUpdateByIdAsync(applicationId, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2326,10 +2006,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2338,19 +2018,18 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return information about managed application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationPatchableInner> updateByIdAsync(
-        String applicationId, ApplicationPatchableInner parameters, Context context) {
-        return beginUpdateByIdAsync(applicationId, parameters, context)
-            .last()
+    private Mono<ApplicationPatchableInner> updateByIdAsync(String applicationId, ApplicationPatchableInner parameters,
+        Context context) {
+        return beginUpdateByIdAsync(applicationId, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2364,10 +2043,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2376,14 +2055,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return information about managed application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationPatchableInner updateById(
-        String applicationId, ApplicationPatchableInner parameters, Context context) {
+    public ApplicationPatchableInner updateById(String applicationId, ApplicationPatchableInner parameters,
+        Context context) {
         return updateByIdAsync(applicationId, parameters, context).block();
     }
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2392,19 +2071,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshPermissionsWithResponseAsync(
-        String resourceGroupName, String applicationName) {
+    private Mono<Response<Flux<ByteBuffer>>> refreshPermissionsWithResponseAsync(String resourceGroupName,
+        String applicationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2417,22 +2092,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .refreshPermissions(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            applicationName,
-                            accept,
-                            context))
+                context -> service.refreshPermissions(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), applicationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2442,19 +2109,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshPermissionsWithResponseAsync(
-        String resourceGroupName, String applicationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> refreshPermissionsWithResponseAsync(String resourceGroupName,
+        String applicationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2466,20 +2129,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .refreshPermissions(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                applicationName,
-                accept,
-                context);
+        return service.refreshPermissions(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), applicationName, accept, context);
     }
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2488,18 +2144,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRefreshPermissionsAsync(
-        String resourceGroupName, String applicationName) {
+    private PollerFlux<PollResult<Void>, Void> beginRefreshPermissionsAsync(String resourceGroupName,
+        String applicationName) {
         Mono<Response<Flux<ByteBuffer>>> mono = refreshPermissionsWithResponseAsync(resourceGroupName, applicationName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2509,19 +2163,18 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRefreshPermissionsAsync(
-        String resourceGroupName, String applicationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRefreshPermissionsAsync(String resourceGroupName,
+        String applicationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            refreshPermissionsWithResponseAsync(resourceGroupName, applicationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = refreshPermissionsWithResponseAsync(resourceGroupName, applicationName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2530,14 +2183,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRefreshPermissions(
-        String resourceGroupName, String applicationName) {
+    public SyncPoller<PollResult<Void>, Void> beginRefreshPermissions(String resourceGroupName,
+        String applicationName) {
         return this.beginRefreshPermissionsAsync(resourceGroupName, applicationName).getSyncPoller();
     }
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2547,14 +2200,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRefreshPermissions(
-        String resourceGroupName, String applicationName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRefreshPermissions(String resourceGroupName, String applicationName,
+        Context context) {
         return this.beginRefreshPermissionsAsync(resourceGroupName, applicationName, context).getSyncPoller();
     }
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2564,14 +2217,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> refreshPermissionsAsync(String resourceGroupName, String applicationName) {
-        return beginRefreshPermissionsAsync(resourceGroupName, applicationName)
-            .last()
+        return beginRefreshPermissionsAsync(resourceGroupName, applicationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2582,14 +2234,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> refreshPermissionsAsync(String resourceGroupName, String applicationName, Context context) {
-        return beginRefreshPermissionsAsync(resourceGroupName, applicationName, context)
-            .last()
+        return beginRefreshPermissionsAsync(resourceGroupName, applicationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2603,7 +2254,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2618,7 +2269,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2627,19 +2278,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the array of plan along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AllowedUpgradePlansResultInner>> listAllowedUpgradePlansWithResponseAsync(
-        String resourceGroupName, String applicationName) {
+    private Mono<Response<AllowedUpgradePlansResultInner>>
+        listAllowedUpgradePlansWithResponseAsync(String resourceGroupName, String applicationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2652,22 +2299,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listAllowedUpgradePlans(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            applicationName,
-                            accept,
-                            context))
+                context -> service.listAllowedUpgradePlans(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), applicationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2677,19 +2316,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the array of plan along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AllowedUpgradePlansResultInner>> listAllowedUpgradePlansWithResponseAsync(
-        String resourceGroupName, String applicationName, Context context) {
+    private Mono<Response<AllowedUpgradePlansResultInner>>
+        listAllowedUpgradePlansWithResponseAsync(String resourceGroupName, String applicationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2701,20 +2336,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAllowedUpgradePlans(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                applicationName,
-                accept,
-                context);
+        return service.listAllowedUpgradePlans(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), applicationName, accept, context);
     }
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2723,15 +2351,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the array of plan on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AllowedUpgradePlansResultInner> listAllowedUpgradePlansAsync(
-        String resourceGroupName, String applicationName) {
+    private Mono<AllowedUpgradePlansResultInner> listAllowedUpgradePlansAsync(String resourceGroupName,
+        String applicationName) {
         return listAllowedUpgradePlansWithResponseAsync(resourceGroupName, applicationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2741,14 +2369,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the array of plan along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AllowedUpgradePlansResultInner> listAllowedUpgradePlansWithResponse(
-        String resourceGroupName, String applicationName, Context context) {
+    public Response<AllowedUpgradePlansResultInner> listAllowedUpgradePlansWithResponse(String resourceGroupName,
+        String applicationName, Context context) {
         return listAllowedUpgradePlansWithResponseAsync(resourceGroupName, applicationName, context).block();
     }
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2763,7 +2391,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2773,19 +2401,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAccessWithResponseAsync(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAccessWithResponseAsync(String resourceGroupName,
+        String applicationName, UpdateAccessDefinitionInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2802,24 +2426,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateAccess(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            applicationName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateAccess(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, applicationName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2830,19 +2444,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAccessWithResponseAsync(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAccessWithResponseAsync(String resourceGroupName,
+        String applicationName, UpdateAccessDefinitionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2859,21 +2469,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateAccess(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                applicationName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.updateAccess(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            applicationName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2885,21 +2487,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateAccessDefinitionInner>, UpdateAccessDefinitionInner> beginUpdateAccessAsync(
         String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAccessWithResponseAsync(resourceGroupName, applicationName, parameters);
-        return this
-            .client
-            .<UpdateAccessDefinitionInner, UpdateAccessDefinitionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                UpdateAccessDefinitionInner.class,
-                UpdateAccessDefinitionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateAccessWithResponseAsync(resourceGroupName, applicationName, parameters);
+        return this.client.<UpdateAccessDefinitionInner, UpdateAccessDefinitionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), UpdateAccessDefinitionInner.class, UpdateAccessDefinitionInner.class,
+            this.client.getContext());
     }
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2913,21 +2510,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     private PollerFlux<PollResult<UpdateAccessDefinitionInner>, UpdateAccessDefinitionInner> beginUpdateAccessAsync(
         String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAccessWithResponseAsync(resourceGroupName, applicationName, parameters, context);
-        return this
-            .client
-            .<UpdateAccessDefinitionInner, UpdateAccessDefinitionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                UpdateAccessDefinitionInner.class,
-                UpdateAccessDefinitionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateAccessWithResponseAsync(resourceGroupName, applicationName, parameters, context);
+        return this.client.<UpdateAccessDefinitionInner, UpdateAccessDefinitionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), UpdateAccessDefinitionInner.class, UpdateAccessDefinitionInner.class,
+            context);
     }
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2937,14 +2529,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<UpdateAccessDefinitionInner>, UpdateAccessDefinitionInner> beginUpdateAccess(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters) {
+    public SyncPoller<PollResult<UpdateAccessDefinitionInner>, UpdateAccessDefinitionInner>
+        beginUpdateAccess(String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters) {
         return this.beginUpdateAccessAsync(resourceGroupName, applicationName, parameters).getSyncPoller();
     }
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2962,7 +2554,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2972,16 +2564,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UpdateAccessDefinitionInner> updateAccessAsync(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters) {
-        return beginUpdateAccessAsync(resourceGroupName, applicationName, parameters)
-            .last()
+    private Mono<UpdateAccessDefinitionInner> updateAccessAsync(String resourceGroupName, String applicationName,
+        UpdateAccessDefinitionInner parameters) {
+        return beginUpdateAccessAsync(resourceGroupName, applicationName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2992,16 +2583,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UpdateAccessDefinitionInner> updateAccessAsync(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters, Context context) {
-        return beginUpdateAccessAsync(resourceGroupName, applicationName, parameters, context)
-            .last()
+    private Mono<UpdateAccessDefinitionInner> updateAccessAsync(String resourceGroupName, String applicationName,
+        UpdateAccessDefinitionInner parameters, Context context) {
+        return beginUpdateAccessAsync(resourceGroupName, applicationName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -3011,14 +2601,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UpdateAccessDefinitionInner updateAccess(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters) {
+    public UpdateAccessDefinitionInner updateAccess(String resourceGroupName, String applicationName,
+        UpdateAccessDefinitionInner parameters) {
         return updateAccessAsync(resourceGroupName, applicationName, parameters).block();
     }
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -3029,37 +2619,33 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UpdateAccessDefinitionInner updateAccess(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters, Context context) {
+    public UpdateAccessDefinitionInner updateAccess(String resourceGroupName, String applicationName,
+        UpdateAccessDefinitionInner parameters, Context context) {
         return updateAccessAsync(resourceGroupName, applicationName, parameters, context).block();
     }
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the array of managed identity tokens along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the array of managed identity tokens along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedIdentityTokenResultInner>> listTokensWithResponseAsync(
-        String resourceGroupName, String applicationName, ListTokenRequest parameters) {
+    private Mono<Response<ManagedIdentityTokenResultInner>> listTokensWithResponseAsync(String resourceGroupName,
+        String applicationName, ListTokenRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3076,24 +2662,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listTokens(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            applicationName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.listTokens(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, applicationName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -3101,23 +2677,19 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the array of managed identity tokens along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the array of managed identity tokens along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedIdentityTokenResultInner>> listTokensWithResponseAsync(
-        String resourceGroupName, String applicationName, ListTokenRequest parameters, Context context) {
+    private Mono<Response<ManagedIdentityTokenResultInner>> listTokensWithResponseAsync(String resourceGroupName,
+        String applicationName, ListTokenRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3134,21 +2706,13 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listTokens(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                applicationName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.listTokens(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            applicationName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -3158,15 +2722,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the array of managed identity tokens on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedIdentityTokenResultInner> listTokensAsync(
-        String resourceGroupName, String applicationName, ListTokenRequest parameters) {
+    private Mono<ManagedIdentityTokenResultInner> listTokensAsync(String resourceGroupName, String applicationName,
+        ListTokenRequest parameters) {
         return listTokensWithResponseAsync(resourceGroupName, applicationName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -3177,14 +2741,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the array of managed identity tokens along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedIdentityTokenResultInner> listTokensWithResponse(
-        String resourceGroupName, String applicationName, ListTokenRequest parameters, Context context) {
+    public Response<ManagedIdentityTokenResultInner> listTokensWithResponse(String resourceGroupName,
+        String applicationName, ListTokenRequest parameters, Context context) {
         return listTokensWithResponseAsync(resourceGroupName, applicationName, parameters, context).block();
     }
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -3194,16 +2758,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the array of managed identity tokens.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedIdentityTokenResultInner listTokens(
-        String resourceGroupName, String applicationName, ListTokenRequest parameters) {
+    public ManagedIdentityTokenResultInner listTokens(String resourceGroupName, String applicationName,
+        ListTokenRequest parameters) {
         return listTokensWithResponse(resourceGroupName, applicationName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3215,32 +2778,22 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ApplicationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3248,37 +2801,26 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return list of managed applications along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ApplicationInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3290,32 +2832,22 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ApplicationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3323,29 +2855,19 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return list of managed applications along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ApplicationInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

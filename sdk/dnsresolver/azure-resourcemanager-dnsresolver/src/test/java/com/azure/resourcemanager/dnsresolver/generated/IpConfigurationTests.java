@@ -9,31 +9,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.models.IpAllocationMethod;
 import com.azure.resourcemanager.dnsresolver.models.IpConfiguration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IpConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        IpConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"subnet\":{\"id\":\"czwlokjyem\"},\"privateIpAddress\":\"vnipjox\",\"privateIpAllocationMethod\":\"Static\"}")
-                .toObject(IpConfiguration.class);
-        Assertions.assertEquals("czwlokjyem", model.subnet().id());
-        Assertions.assertEquals("vnipjox", model.privateIpAddress());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        IpConfiguration model = BinaryData.fromString(
+            "{\"subnet\":{\"id\":\"nchgej\"},\"privateIpAddress\":\"odmailzyd\",\"privateIpAllocationMethod\":\"Static\"}")
+            .toObject(IpConfiguration.class);
+        Assertions.assertEquals("nchgej", model.subnet().id());
+        Assertions.assertEquals("odmailzyd", model.privateIpAddress());
         Assertions.assertEquals(IpAllocationMethod.STATIC, model.privateIpAllocationMethod());
     }
 
-    @Test
-    public void testSerialize() {
-        IpConfiguration model =
-            new IpConfiguration()
-                .withSubnet(new SubResource().withId("czwlokjyem"))
-                .withPrivateIpAddress("vnipjox")
-                .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        IpConfiguration model = new IpConfiguration().withSubnet(new SubResource().withId("nchgej"))
+            .withPrivateIpAddress("odmailzyd")
+            .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC);
         model = BinaryData.fromObject(model).toObject(IpConfiguration.class);
-        Assertions.assertEquals("czwlokjyem", model.subnet().id());
-        Assertions.assertEquals("vnipjox", model.privateIpAddress());
+        Assertions.assertEquals("nchgej", model.subnet().id());
+        Assertions.assertEquals("odmailzyd", model.privateIpAddress());
         Assertions.assertEquals(IpAllocationMethod.STATIC, model.privateIpAllocationMethod());
     }
 }

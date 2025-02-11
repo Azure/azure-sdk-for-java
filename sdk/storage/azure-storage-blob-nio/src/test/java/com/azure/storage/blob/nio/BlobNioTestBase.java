@@ -71,7 +71,6 @@ public class BlobNioTestBase extends TestProxyTestBase {
     protected String containerName;
     protected String prefix;
 
-
     // The values below are used to create data-driven tests for access conditions.
     protected static final OffsetDateTime OLD_DATE = OffsetDateTime.now().minusDays(1);
     protected static final OffsetDateTime NEW_DATE = OffsetDateTime.now().plusDays(1);
@@ -98,8 +97,7 @@ public class BlobNioTestBase extends TestProxyTestBase {
                 Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
             // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
             // in SAS tokens.
-            interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-                .setComparingBodies(false)
+            interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
                 .setExcludedHeaders(Arrays.asList("x-ms-copy-source", "If-Match", "x-ms-range", "If-Modified-Since",
                     "If-Unmodified-Since"))
                 .setQueryOrderingIgnored(true)
@@ -125,8 +123,7 @@ public class BlobNioTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getNonRecordingServiceClient() {
-        return new BlobServiceClientBuilder()
-            .httpClient(getHttpClient())
+        return new BlobServiceClientBuilder().httpClient(getHttpClient())
             .credential(ENV.getPrimaryAccount().getCredential())
             .endpoint(ENV.getPrimaryAccount().getBlobEndpoint())
             .buildClient();
@@ -142,14 +139,12 @@ public class BlobNioTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceAsyncClient getServiceAsyncClient(TestAccount account) {
-        return getServiceClientBuilder(account.getCredential(), account.getBlobEndpoint())
-            .buildAsyncClient();
+        return getServiceClientBuilder(account.getCredential(), account.getBlobEndpoint()).buildAsyncClient();
     }
 
     protected BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(endpoint);
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -198,8 +193,7 @@ public class BlobNioTestBase extends TestProxyTestBase {
 
     protected AzureFileSystem createFS(Map<String, Object> config) {
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName() + "," + generateContainerName());
-        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
-            ENV.getPrimaryAccount().getCredential());
+        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, ENV.getPrimaryAccount().getCredential());
 
         try {
             return new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(),
@@ -315,7 +309,9 @@ public class BlobNioTestBase extends TestProxyTestBase {
 
     protected void checkBlobIsDir(BlobClient blobClient) {
         assertTrue(Boolean.parseBoolean(blobClient.getPropertiesWithResponse(null, null, null)
-            .getValue().getMetadata().get(AzureResource.DIR_METADATA_MARKER)));
+            .getValue()
+            .getMetadata()
+            .get(AzureResource.DIR_METADATA_MARKER)));
     }
 
     static class TestFileAttribute<T> implements FileAttribute<T> {

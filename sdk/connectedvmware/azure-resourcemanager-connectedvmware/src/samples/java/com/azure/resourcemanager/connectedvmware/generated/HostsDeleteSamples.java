@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-/** Samples for Hosts Delete. */
+/**
+ * Samples for Hosts Delete.
+ */
 public final class HostsDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteHost.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteHost.json
      */
     /**
      * Sample code: DeleteHost.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteHost(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {

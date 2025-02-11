@@ -8,25 +8,26 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachine;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for BareMetalMachines Update. */
+/**
+ * Samples for BareMetalMachines Update.
+ */
 public final class BareMetalMachinesUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachines_Patch.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * BareMetalMachines_Patch.json
      */
     /**
      * Sample code: Patch bare metal machine.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void patchBareMetalMachine(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        BareMetalMachine resource =
-            manager
-                .bareMetalMachines()
-                .getByResourceGroupWithResponse(
-                    "resourceGroupName", "bareMetalMachineName", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        BareMetalMachine resource = manager.bareMetalMachines()
+            .getByResourceGroupWithResponse("resourceGroupName", "bareMetalMachineName",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withMachineDetails("machinedetails")
             .apply();

@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A class that describes the properties that can be updated for CommunicationService resource.
  */
 @Fluent
-public final class CommunicationServiceUpdateProperties {
+public final class CommunicationServiceUpdateProperties
+    implements JsonSerializable<CommunicationServiceUpdateProperties> {
     /*
      * List of email Domain resource Ids.
      */
-    @JsonProperty(value = "linkedDomains")
     private List<String> linkedDomains;
 
     /**
@@ -51,5 +55,44 @@ public final class CommunicationServiceUpdateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("linkedDomains", this.linkedDomains,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunicationServiceUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunicationServiceUpdateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommunicationServiceUpdateProperties.
+     */
+    public static CommunicationServiceUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunicationServiceUpdateProperties deserializedCommunicationServiceUpdateProperties
+                = new CommunicationServiceUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedDomains".equals(fieldName)) {
+                    List<String> linkedDomains = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCommunicationServiceUpdateProperties.linkedDomains = linkedDomains;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunicationServiceUpdateProperties;
+        });
     }
 }

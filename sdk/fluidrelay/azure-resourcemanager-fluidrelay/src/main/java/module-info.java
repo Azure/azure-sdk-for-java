@@ -10,10 +10,6 @@ module com.azure.resourcemanager.fluidrelay {
     exports com.azure.resourcemanager.fluidrelay.fluent.models;
     exports com.azure.resourcemanager.fluidrelay.models;
 
-    opens com.azure.resourcemanager.fluidrelay.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.fluidrelay.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.fluidrelay.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.fluidrelay.models to com.azure.core;
 }

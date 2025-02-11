@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -15,15 +14,19 @@ import java.util.Collection;
  * PurgeOldData.
  */
 public final class StorageLimitExceededBehavior extends ExpandableStringEnum<StorageLimitExceededBehavior> {
-    /** Static value PurgeOldData for StorageLimitExceededBehavior. */
+    /**
+     * Static value PurgeOldData for StorageLimitExceededBehavior.
+     */
     public static final StorageLimitExceededBehavior PURGE_OLD_DATA = fromString("PurgeOldData");
 
-    /** Static value PauseIngress for StorageLimitExceededBehavior. */
+    /**
+     * Static value PauseIngress for StorageLimitExceededBehavior.
+     */
     public static final StorageLimitExceededBehavior PAUSE_INGRESS = fromString("PauseIngress");
 
     /**
      * Creates a new instance of StorageLimitExceededBehavior value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,18 +35,17 @@ public final class StorageLimitExceededBehavior extends ExpandableStringEnum<Sto
 
     /**
      * Creates or finds a StorageLimitExceededBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageLimitExceededBehavior.
      */
-    @JsonCreator
     public static StorageLimitExceededBehavior fromString(String name) {
         return fromString(name, StorageLimitExceededBehavior.class);
     }
 
     /**
      * Gets known StorageLimitExceededBehavior values.
-     *
+     * 
      * @return known StorageLimitExceededBehavior values.
      */
     public static Collection<StorageLimitExceededBehavior> values() {

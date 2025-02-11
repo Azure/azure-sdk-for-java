@@ -5,30 +5,33 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Encryption details for the fabric.
  */
 @Fluent
-public final class EncryptionDetails {
+public final class EncryptionDetails implements JsonSerializable<EncryptionDetails> {
     /*
      * The key encryption key state for the Vmm.
      */
-    @JsonProperty(value = "kekState")
     private String kekState;
 
     /*
      * The key encryption key certificate thumbprint.
      */
-    @JsonProperty(value = "kekCertThumbprint")
     private String kekCertThumbprint;
 
     /*
      * The key encryption key certificate expiry date.
      */
-    @JsonProperty(value = "kekCertExpiryDate")
     private OffsetDateTime kekCertExpiryDate;
 
     /**
@@ -103,5 +106,51 @@ public final class EncryptionDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kekState", this.kekState);
+        jsonWriter.writeStringField("kekCertThumbprint", this.kekCertThumbprint);
+        jsonWriter.writeStringField("kekCertExpiryDate",
+            this.kekCertExpiryDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.kekCertExpiryDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionDetails.
+     */
+    public static EncryptionDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionDetails deserializedEncryptionDetails = new EncryptionDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kekState".equals(fieldName)) {
+                    deserializedEncryptionDetails.kekState = reader.getString();
+                } else if ("kekCertThumbprint".equals(fieldName)) {
+                    deserializedEncryptionDetails.kekCertThumbprint = reader.getString();
+                } else if ("kekCertExpiryDate".equals(fieldName)) {
+                    deserializedEncryptionDetails.kekCertExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionDetails;
+        });
     }
 }

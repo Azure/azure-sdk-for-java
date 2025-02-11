@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The IdentityManagementProperties model. */
+/**
+ * The IdentityManagementProperties model.
+ */
 @Fluent
-public class IdentityManagementProperties {
+public class IdentityManagementProperties implements JsonSerializable<IdentityManagementProperties> {
     /*
      * The type property.
      */
-    @JsonProperty(value = "type")
     private IdentityManagementTypes type;
 
     /*
      * The applicationId property.
      */
-    @JsonProperty(value = "applicationId")
     private String applicationId;
 
-    /** Creates an instance of IdentityManagementProperties class. */
+    /**
+     * Creates an instance of IdentityManagementProperties class.
+     */
     public IdentityManagementProperties() {
     }
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public IdentityManagementTypes type() {
@@ -37,7 +43,7 @@ public class IdentityManagementProperties {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the IdentityManagementProperties object itself.
      */
@@ -48,7 +54,7 @@ public class IdentityManagementProperties {
 
     /**
      * Get the applicationId property: The applicationId property.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -57,7 +63,7 @@ public class IdentityManagementProperties {
 
     /**
      * Set the applicationId property: The applicationId property.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the IdentityManagementProperties object itself.
      */
@@ -68,9 +74,49 @@ public class IdentityManagementProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("applicationId", this.applicationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityManagementProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityManagementProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentityManagementProperties.
+     */
+    public static IdentityManagementProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityManagementProperties deserializedIdentityManagementProperties = new IdentityManagementProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedIdentityManagementProperties.type
+                        = IdentityManagementTypes.fromString(reader.getString());
+                } else if ("applicationId".equals(fieldName)) {
+                    deserializedIdentityManagementProperties.applicationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityManagementProperties;
+        });
     }
 }

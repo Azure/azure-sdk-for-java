@@ -12,8 +12,7 @@ public final class DataLakeStoreAccountInformationImpl implements DataLakeStoreA
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    DataLakeStoreAccountInformationImpl(
-        DataLakeStoreAccountInformationInner innerObject,
+    DataLakeStoreAccountInformationImpl(DataLakeStoreAccountInformationInner innerObject,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

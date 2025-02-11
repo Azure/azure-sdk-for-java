@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The prefix validation state. */
+/**
+ * The prefix validation state.
+ */
 public final class PrefixValidationState extends ExpandableStringEnum<PrefixValidationState> {
-    /** Static value None for PrefixValidationState. */
+    /**
+     * Static value None for PrefixValidationState.
+     */
     public static final PrefixValidationState NONE = fromString("None");
 
-    /** Static value Invalid for PrefixValidationState. */
+    /**
+     * Static value Invalid for PrefixValidationState.
+     */
     public static final PrefixValidationState INVALID = fromString("Invalid");
 
-    /** Static value Verified for PrefixValidationState. */
+    /**
+     * Static value Verified for PrefixValidationState.
+     */
     public static final PrefixValidationState VERIFIED = fromString("Verified");
 
-    /** Static value Failed for PrefixValidationState. */
+    /**
+     * Static value Failed for PrefixValidationState.
+     */
     public static final PrefixValidationState FAILED = fromString("Failed");
 
-    /** Static value Pending for PrefixValidationState. */
+    /**
+     * Static value Pending for PrefixValidationState.
+     */
     public static final PrefixValidationState PENDING = fromString("Pending");
 
-    /** Static value Warning for PrefixValidationState. */
+    /**
+     * Static value Warning for PrefixValidationState.
+     */
     public static final PrefixValidationState WARNING = fromString("Warning");
 
-    /** Static value Unknown for PrefixValidationState. */
+    /**
+     * Static value Unknown for PrefixValidationState.
+     */
     public static final PrefixValidationState UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of PrefixValidationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class PrefixValidationState extends ExpandableStringEnum<PrefixVali
 
     /**
      * Creates or finds a PrefixValidationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrefixValidationState.
      */
-    @JsonCreator
     public static PrefixValidationState fromString(String name) {
         return fromString(name, PrefixValidationState.class);
     }
 
     /**
      * Gets known PrefixValidationState values.
-     *
+     * 
      * @return known PrefixValidationState values.
      */
     public static Collection<PrefixValidationState> values() {

@@ -50,9 +50,9 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [samples_message]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue/MessageSamples.java
 [samples_queue_exception]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue/QueueExceptionSamples.java
 [samples_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue/AsyncSamples.java
-[storage_queue_rest]: https://docs.microsoft.com/rest/api/storageservices/queue-service-rest-api
-[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[storage_queue_rest]: https://learn.microsoft.com/rest/api/storageservices/queue-service-rest-api
+[error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [queue_key_concept]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-queue/README.md#key-concepts
 [samples]: java/samples/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-queue%2Fsrc%2Fsamples%2FREADME.png)
+

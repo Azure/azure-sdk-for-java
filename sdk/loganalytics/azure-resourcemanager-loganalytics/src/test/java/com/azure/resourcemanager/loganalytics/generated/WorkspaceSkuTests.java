@@ -13,22 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceSku model =
-            BinaryData
-                .fromString("{\"name\":\"Premium\",\"capacityReservationLevel\":400,\"lastSkuUpdate\":\"oi\"}")
-                .toObject(WorkspaceSku.class);
-        Assertions.assertEquals(WorkspaceSkuNameEnum.PREMIUM, model.name());
-        Assertions.assertEquals(CapacityReservationLevel.FOUR_ZERO_ZERO, model.capacityReservationLevel());
+        WorkspaceSku model = BinaryData
+            .fromString("{\"name\":\"Standalone\",\"capacityReservationLevel\":5000,\"lastSkuUpdate\":\"sj\"}")
+            .toObject(WorkspaceSku.class);
+        Assertions.assertEquals(WorkspaceSkuNameEnum.STANDALONE, model.name());
+        Assertions.assertEquals(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO, model.capacityReservationLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceSku model =
-            new WorkspaceSku()
-                .withName(WorkspaceSkuNameEnum.PREMIUM)
-                .withCapacityReservationLevel(CapacityReservationLevel.FOUR_ZERO_ZERO);
+        WorkspaceSku model = new WorkspaceSku().withName(WorkspaceSkuNameEnum.STANDALONE)
+            .withCapacityReservationLevel(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO);
         model = BinaryData.fromObject(model).toObject(WorkspaceSku.class);
-        Assertions.assertEquals(WorkspaceSkuNameEnum.PREMIUM, model.name());
-        Assertions.assertEquals(CapacityReservationLevel.FOUR_ZERO_ZERO, model.capacityReservationLevel());
+        Assertions.assertEquals(WorkspaceSkuNameEnum.STANDALONE, model.name());
+        Assertions.assertEquals(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO, model.capacityReservationLevel());
     }
 }

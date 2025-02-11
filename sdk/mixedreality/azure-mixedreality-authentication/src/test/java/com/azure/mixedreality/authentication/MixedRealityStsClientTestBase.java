@@ -50,8 +50,8 @@ public class MixedRealityStsClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
             List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-            customSanitizers.add(new TestProxySanitizer("$..AccessToken", null, INVALID_DUMMY_TOKEN,
-                TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(
+                new TestProxySanitizer("$..AccessToken", null, INVALID_DUMMY_TOKEN, TestProxySanitizerType.BODY_KEY));
             interceptorManager.addSanitizers(customSanitizers);
         }
 
@@ -66,10 +66,7 @@ public class MixedRealityStsClientTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
-
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
 
@@ -77,23 +74,17 @@ public class MixedRealityStsClientTestBase extends TestProxyTestBase {
     }
 
     String getAccountDomain() {
-        return interceptorManager.isPlaybackMode()
-            ? this.playbackAccountDomain
-            : this.accountDomain;
+        return interceptorManager.isPlaybackMode() ? this.playbackAccountDomain : this.accountDomain;
     }
 
     String getAccountId() {
-        String accountIdValue = interceptorManager.isPlaybackMode()
-            ? this.playbackAccountId
-            : this.accountId;
+        String accountIdValue = interceptorManager.isPlaybackMode() ? this.playbackAccountId : this.accountId;
 
         return accountIdValue;
     }
 
     AzureKeyCredential getAccountKey() {
-        String accountKeyValue = interceptorManager.isPlaybackMode()
-            ? this.playbackAccountKey
-            : this.accountKey;
+        String accountKeyValue = interceptorManager.isPlaybackMode() ? this.playbackAccountKey : this.accountKey;
 
         return new AzureKeyCredential(accountKeyValue);
     }

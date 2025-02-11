@@ -6,43 +6,47 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A class that contains virtual network definition. */
+/**
+ * A class that contains virtual network definition.
+ */
 @Fluent
-public final class VirtualNetworkConfiguration {
+public final class VirtualNetworkConfiguration implements JsonSerializable<VirtualNetworkConfiguration> {
     /*
      * The subnet resource id.
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
      * Engine service's public IP address resource id.
      */
-    @JsonProperty(value = "enginePublicIpId", required = true)
     private String enginePublicIpId;
 
     /*
      * Data management's service public IP address resource id.
      */
-    @JsonProperty(value = "dataManagementPublicIpId", required = true)
     private String dataManagementPublicIpId;
 
     /*
      * When enabled, the cluster is deployed into the configured subnet, when disabled it will be removed from the
      * subnet.
      */
-    @JsonProperty(value = "state")
     private VnetState state;
 
-    /** Creates an instance of VirtualNetworkConfiguration class. */
+    /**
+     * Creates an instance of VirtualNetworkConfiguration class.
+     */
     public VirtualNetworkConfiguration() {
     }
 
     /**
      * Get the subnetId property: The subnet resource id.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -51,7 +55,7 @@ public final class VirtualNetworkConfiguration {
 
     /**
      * Set the subnetId property: The subnet resource id.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the VirtualNetworkConfiguration object itself.
      */
@@ -62,7 +66,7 @@ public final class VirtualNetworkConfiguration {
 
     /**
      * Get the enginePublicIpId property: Engine service's public IP address resource id.
-     *
+     * 
      * @return the enginePublicIpId value.
      */
     public String enginePublicIpId() {
@@ -71,7 +75,7 @@ public final class VirtualNetworkConfiguration {
 
     /**
      * Set the enginePublicIpId property: Engine service's public IP address resource id.
-     *
+     * 
      * @param enginePublicIpId the enginePublicIpId value to set.
      * @return the VirtualNetworkConfiguration object itself.
      */
@@ -82,7 +86,7 @@ public final class VirtualNetworkConfiguration {
 
     /**
      * Get the dataManagementPublicIpId property: Data management's service public IP address resource id.
-     *
+     * 
      * @return the dataManagementPublicIpId value.
      */
     public String dataManagementPublicIpId() {
@@ -91,7 +95,7 @@ public final class VirtualNetworkConfiguration {
 
     /**
      * Set the dataManagementPublicIpId property: Data management's service public IP address resource id.
-     *
+     * 
      * @param dataManagementPublicIpId the dataManagementPublicIpId value to set.
      * @return the VirtualNetworkConfiguration object itself.
      */
@@ -103,7 +107,7 @@ public final class VirtualNetworkConfiguration {
     /**
      * Get the state property: When enabled, the cluster is deployed into the configured subnet, when disabled it will
      * be removed from the subnet.
-     *
+     * 
      * @return the state value.
      */
     public VnetState state() {
@@ -113,7 +117,7 @@ public final class VirtualNetworkConfiguration {
     /**
      * Set the state property: When enabled, the cluster is deployed into the configured subnet, when disabled it will
      * be removed from the subnet.
-     *
+     * 
      * @param state the state value to set.
      * @return the VirtualNetworkConfiguration object itself.
      */
@@ -124,29 +128,72 @@ public final class VirtualNetworkConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnetId in model VirtualNetworkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnetId in model VirtualNetworkConfiguration"));
         }
         if (enginePublicIpId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property enginePublicIpId in model VirtualNetworkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property enginePublicIpId in model VirtualNetworkConfiguration"));
         }
         if (dataManagementPublicIpId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataManagementPublicIpId in model VirtualNetworkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataManagementPublicIpId in model VirtualNetworkConfiguration"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("enginePublicIpId", this.enginePublicIpId);
+        jsonWriter.writeStringField("dataManagementPublicIpId", this.dataManagementPublicIpId);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkConfiguration.
+     */
+    public static VirtualNetworkConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkConfiguration deserializedVirtualNetworkConfiguration = new VirtualNetworkConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedVirtualNetworkConfiguration.subnetId = reader.getString();
+                } else if ("enginePublicIpId".equals(fieldName)) {
+                    deserializedVirtualNetworkConfiguration.enginePublicIpId = reader.getString();
+                } else if ("dataManagementPublicIpId".equals(fieldName)) {
+                    deserializedVirtualNetworkConfiguration.dataManagementPublicIpId = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedVirtualNetworkConfiguration.state = VnetState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkConfiguration;
+        });
+    }
 }

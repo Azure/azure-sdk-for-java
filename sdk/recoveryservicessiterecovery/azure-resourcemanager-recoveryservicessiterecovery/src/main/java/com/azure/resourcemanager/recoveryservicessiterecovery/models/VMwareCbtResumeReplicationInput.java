@@ -5,27 +5,40 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * VMwareCbt specific resume replication input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareCbt")
 @Fluent
 public final class VMwareCbtResumeReplicationInput extends ResumeReplicationProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "VMwareCbt";
+
+    /*
      * A value indicating whether Migration resources to be deleted.
      */
-    @JsonProperty(value = "deleteMigrationResources")
     private String deleteMigrationResources;
 
     /**
      * Creates an instance of VMwareCbtResumeReplicationInput class.
      */
     public VMwareCbtResumeReplicationInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -55,6 +68,45 @@ public final class VMwareCbtResumeReplicationInput extends ResumeReplicationProv
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("deleteMigrationResources", this.deleteMigrationResources);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtResumeReplicationInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtResumeReplicationInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMwareCbtResumeReplicationInput.
+     */
+    public static VMwareCbtResumeReplicationInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtResumeReplicationInput deserializedVMwareCbtResumeReplicationInput
+                = new VMwareCbtResumeReplicationInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareCbtResumeReplicationInput.instanceType = reader.getString();
+                } else if ("deleteMigrationResources".equals(fieldName)) {
+                    deserializedVMwareCbtResumeReplicationInput.deleteMigrationResources = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtResumeReplicationInput;
+        });
     }
 }

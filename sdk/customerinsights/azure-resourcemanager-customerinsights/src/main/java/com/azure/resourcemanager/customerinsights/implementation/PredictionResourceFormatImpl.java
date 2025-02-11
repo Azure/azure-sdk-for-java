@@ -160,25 +160,21 @@ public final class PredictionResourceFormatImpl
     }
 
     public PredictionResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPredictions()
-                .createOrUpdate(resourceGroupName, hubName, predictionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPredictions()
+            .createOrUpdate(resourceGroupName, hubName, predictionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PredictionResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPredictions()
-                .createOrUpdate(resourceGroupName, hubName, predictionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPredictions()
+            .createOrUpdate(resourceGroupName, hubName, predictionName, this.innerModel(), context);
         return this;
     }
 
-    PredictionResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    PredictionResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new PredictionResourceFormatInner();
         this.serviceManager = serviceManager;
         this.predictionName = name;
@@ -189,56 +185,46 @@ public final class PredictionResourceFormatImpl
     }
 
     public PredictionResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPredictions()
-                .createOrUpdate(resourceGroupName, hubName, predictionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPredictions()
+            .createOrUpdate(resourceGroupName, hubName, predictionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PredictionResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPredictions()
-                .createOrUpdate(resourceGroupName, hubName, predictionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPredictions()
+            .createOrUpdate(resourceGroupName, hubName, predictionName, this.innerModel(), context);
         return this;
     }
 
-    PredictionResourceFormatImpl(
-        PredictionResourceFormatInner innerObject,
+    PredictionResourceFormatImpl(PredictionResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.predictionName = Utils.getValueFromIdByName(innerObject.id(), "predictions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.predictionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "predictions");
     }
 
     public PredictionResourceFormat refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPredictions()
-                .getWithResponse(resourceGroupName, hubName, predictionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPredictions()
+            .getWithResponse(resourceGroupName, hubName, predictionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PredictionResourceFormat refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPredictions()
-                .getWithResponse(resourceGroupName, hubName, predictionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPredictions()
+            .getWithResponse(resourceGroupName, hubName, predictionName, context)
+            .getValue();
         return this;
     }
 
     public Response<PredictionTrainingResults> getTrainingResultsWithResponse(Context context) {
-        return serviceManager
-            .predictions()
+        return serviceManager.predictions()
             .getTrainingResultsWithResponse(resourceGroupName, hubName, predictionName, context);
     }
 
@@ -247,8 +233,7 @@ public final class PredictionResourceFormatImpl
     }
 
     public Response<PredictionModelStatus> getModelStatusWithResponse(Context context) {
-        return serviceManager
-            .predictions()
+        return serviceManager.predictions()
             .getModelStatusWithResponse(resourceGroupName, hubName, predictionName, context);
     }
 
@@ -257,8 +242,7 @@ public final class PredictionResourceFormatImpl
     }
 
     public Response<Void> modelStatusWithResponse(PredictionModelStatusInner parameters, Context context) {
-        return serviceManager
-            .predictions()
+        return serviceManager.predictions()
             .modelStatusWithResponse(resourceGroupName, hubName, predictionName, parameters, context);
     }
 

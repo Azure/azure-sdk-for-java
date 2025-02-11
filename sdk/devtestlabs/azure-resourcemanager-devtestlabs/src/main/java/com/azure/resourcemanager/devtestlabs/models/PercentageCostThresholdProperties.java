@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a percentage cost threshold. */
+/**
+ * Properties of a percentage cost threshold.
+ */
 @Fluent
-public final class PercentageCostThresholdProperties {
+public final class PercentageCostThresholdProperties implements JsonSerializable<PercentageCostThresholdProperties> {
     /*
      * The cost threshold value.
      */
-    @JsonProperty(value = "thresholdValue")
     private Double thresholdValue;
 
-    /** Creates an instance of PercentageCostThresholdProperties class. */
+    /**
+     * Creates an instance of PercentageCostThresholdProperties class.
+     */
     public PercentageCostThresholdProperties() {
     }
 
     /**
      * Get the thresholdValue property: The cost threshold value.
-     *
+     * 
      * @return the thresholdValue value.
      */
     public Double thresholdValue() {
@@ -31,7 +38,7 @@ public final class PercentageCostThresholdProperties {
 
     /**
      * Set the thresholdValue property: The cost threshold value.
-     *
+     * 
      * @param thresholdValue the thresholdValue value to set.
      * @return the PercentageCostThresholdProperties object itself.
      */
@@ -42,9 +49,47 @@ public final class PercentageCostThresholdProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("thresholdValue", this.thresholdValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PercentageCostThresholdProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PercentageCostThresholdProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PercentageCostThresholdProperties.
+     */
+    public static PercentageCostThresholdProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PercentageCostThresholdProperties deserializedPercentageCostThresholdProperties
+                = new PercentageCostThresholdProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("thresholdValue".equals(fieldName)) {
+                    deserializedPercentageCostThresholdProperties.thresholdValue
+                        = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPercentageCostThresholdProperties;
+        });
     }
 }

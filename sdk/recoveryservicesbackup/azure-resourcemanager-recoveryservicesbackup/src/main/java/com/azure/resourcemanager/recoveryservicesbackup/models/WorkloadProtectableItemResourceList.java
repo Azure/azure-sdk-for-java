@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.WorkloadProtectableItemResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,7 +20,6 @@ public final class WorkloadProtectableItemResourceList extends ResourceList {
     /*
      * List of resources.
      */
-    @JsonProperty(value = "value")
     private List<WorkloadProtectableItemResourceInner> value;
 
     /**
@@ -62,9 +64,50 @@ public final class WorkloadProtectableItemResourceList extends ResourceList {
      */
     @Override
     public void validate() {
-        super.validate();
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", nextLink());
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadProtectableItemResourceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadProtectableItemResourceList if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkloadProtectableItemResourceList.
+     */
+    public static WorkloadProtectableItemResourceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadProtectableItemResourceList deserializedWorkloadProtectableItemResourceList
+                = new WorkloadProtectableItemResourceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedWorkloadProtectableItemResourceList.withNextLink(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    List<WorkloadProtectableItemResourceInner> value
+                        = reader.readArray(reader1 -> WorkloadProtectableItemResourceInner.fromJson(reader1));
+                    deserializedWorkloadProtectableItemResourceList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadProtectableItemResourceList;
+        });
     }
 }

@@ -5,50 +5,54 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Tenant access information contract of the API Management service. */
+/**
+ * Tenant access information contract of the API Management service.
+ */
 @Fluent
-public final class AccessInformationSecretsContractInner {
+public final class AccessInformationSecretsContractInner
+    implements JsonSerializable<AccessInformationSecretsContractInner> {
     /*
      * Access Information type ('access' or 'gitAccess')
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Principal (User) Identifier.
      */
-    @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
      * Primary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
      * the value.
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
      * Secondary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to
      * get the value.
      */
-    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /*
      * Determines whether direct access is enabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of AccessInformationSecretsContractInner class. */
+    /**
+     * Creates an instance of AccessInformationSecretsContractInner class.
+     */
     public AccessInformationSecretsContractInner() {
     }
 
     /**
      * Get the id property: Access Information type ('access' or 'gitAccess').
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -57,7 +61,7 @@ public final class AccessInformationSecretsContractInner {
 
     /**
      * Set the id property: Access Information type ('access' or 'gitAccess').
-     *
+     * 
      * @param id the id value to set.
      * @return the AccessInformationSecretsContractInner object itself.
      */
@@ -68,7 +72,7 @@ public final class AccessInformationSecretsContractInner {
 
     /**
      * Get the principalId property: Principal (User) Identifier.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -77,7 +81,7 @@ public final class AccessInformationSecretsContractInner {
 
     /**
      * Set the principalId property: Principal (User) Identifier.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the AccessInformationSecretsContractInner object itself.
      */
@@ -89,7 +93,7 @@ public final class AccessInformationSecretsContractInner {
     /**
      * Get the primaryKey property: Primary access key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -99,7 +103,7 @@ public final class AccessInformationSecretsContractInner {
     /**
      * Set the primaryKey property: Primary access key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the AccessInformationSecretsContractInner object itself.
      */
@@ -111,7 +115,7 @@ public final class AccessInformationSecretsContractInner {
     /**
      * Get the secondaryKey property: Secondary access key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -121,7 +125,7 @@ public final class AccessInformationSecretsContractInner {
     /**
      * Set the secondaryKey property: Secondary access key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the AccessInformationSecretsContractInner object itself.
      */
@@ -132,7 +136,7 @@ public final class AccessInformationSecretsContractInner {
 
     /**
      * Get the enabled property: Determines whether direct access is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -141,7 +145,7 @@ public final class AccessInformationSecretsContractInner {
 
     /**
      * Set the enabled property: Determines whether direct access is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AccessInformationSecretsContractInner object itself.
      */
@@ -152,9 +156,59 @@ public final class AccessInformationSecretsContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessInformationSecretsContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessInformationSecretsContractInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessInformationSecretsContractInner.
+     */
+    public static AccessInformationSecretsContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessInformationSecretsContractInner deserializedAccessInformationSecretsContractInner
+                = new AccessInformationSecretsContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAccessInformationSecretsContractInner.id = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedAccessInformationSecretsContractInner.principalId = reader.getString();
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedAccessInformationSecretsContractInner.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedAccessInformationSecretsContractInner.secondaryKey = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedAccessInformationSecretsContractInner.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessInformationSecretsContractInner;
+        });
     }
 }

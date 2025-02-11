@@ -19,34 +19,41 @@ public final class SalesforceMarketingCloudObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceMarketingCloudObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"SalesforceMarketingCloudObject\",\"typeProperties\":{\"tableName\":\"dataktwomlpczlqboomz\"},\"description\":\"rolhsfddk\",\"structure\":\"datavevwxmnbw\",\"schema\":\"dataa\",\"linkedServiceName\":{\"referenceName\":\"xgnpyhtu\",\"parameters\":{\"aokex\":\"datapqild\"}},\"parameters\":{\"gtz\":{\"type\":\"String\",\"defaultValue\":\"datatkqjarlazb\"},\"oujfgtgxuupczegq\":{\"type\":\"Object\",\"defaultValue\":\"datatrm\"}},\"annotations\":[\"datadvssvg\",\"dataoggkztzttjnknpb\",\"datagzkuobclobn\",\"dataqe\"],\"folder\":{\"name\":\"liqlyugp\"},\"\":{\"yiqywlpxmli\":\"datazjmkffeonmnvmu\",\"ekbirhyvsyuv\":\"datatdegcrunbkilxs\",\"gio\":\"dataiemorszffiukltr\"}}")
+            "{\"type\":\"SalesforceMarketingCloudObject\",\"typeProperties\":{\"tableName\":\"dataesywywnvgy\"},\"description\":\"c\",\"structure\":\"datarzcw\",\"schema\":\"datajmxlfzl\",\"linkedServiceName\":{\"referenceName\":\"zyrgrlh\",\"parameters\":{\"vm\":\"dataaunjovlxq\",\"rgmnkgtlhzkrazk\":\"datazpniqwx\",\"eqzhehgvmm\":\"dataoiyecznvzmsvzng\"}},\"parameters\":{\"ypkfcdfuxi\":{\"type\":\"String\",\"defaultValue\":\"datanbnyplu\"},\"cdvhyefqhxyts\":{\"type\":\"String\",\"defaultValue\":\"dataxotnoil\"},\"ratqlreqbrc\":{\"type\":\"Int\",\"defaultValue\":\"datawcacwaaqakvokyax\"},\"babowrcyrnmj\":{\"type\":\"String\",\"defaultValue\":\"datatshzumxucz\"}},\"annotations\":[\"datawxqzkkagve\",\"datahmnaphrskmpeajz\"],\"folder\":{\"name\":\"avamzmzfntte\"},\"\":{\"pjdr\":\"datatxytja\",\"vbfaehjji\":\"datalijk\"}}")
             .toObject(SalesforceMarketingCloudObjectDataset.class);
-        Assertions.assertEquals("rolhsfddk", model.description());
-        Assertions.assertEquals("xgnpyhtu", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("gtz").type());
-        Assertions.assertEquals("liqlyugp", model.folder().name());
+        Assertions.assertEquals("c", model.description());
+        Assertions.assertEquals("zyrgrlh", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("ypkfcdfuxi").type());
+        Assertions.assertEquals("avamzmzfntte", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceMarketingCloudObjectDataset model = new SalesforceMarketingCloudObjectDataset()
-            .withDescription("rolhsfddk")
-            .withStructure("datavevwxmnbw")
-            .withSchema("dataa")
-            .withLinkedServiceName(
-                new LinkedServiceReference().withReferenceName("xgnpyhtu").withParameters(mapOf("aokex", "datapqild")))
-            .withParameters(mapOf("gtz",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datatkqjarlazb"),
-                "oujfgtgxuupczegq",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datatrm")))
-            .withAnnotations(Arrays.asList("datadvssvg", "dataoggkztzttjnknpb", "datagzkuobclobn", "dataqe"))
-            .withFolder(new DatasetFolder().withName("liqlyugp"))
-            .withTableName("dataktwomlpczlqboomz");
+        SalesforceMarketingCloudObjectDataset model
+            = new SalesforceMarketingCloudObjectDataset().withDescription("c")
+                .withStructure("datarzcw")
+                .withSchema("datajmxlfzl")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("zyrgrlh")
+                    .withParameters(mapOf("vm", "dataaunjovlxq", "rgmnkgtlhzkrazk", "datazpniqwx", "eqzhehgvmm",
+                        "dataoiyecznvzmsvzng")))
+                .withParameters(
+                    mapOf("ypkfcdfuxi",
+                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datanbnyplu"),
+                        "cdvhyefqhxyts",
+                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataxotnoil"),
+                        "ratqlreqbrc",
+                        new ParameterSpecification().withType(ParameterType.INT)
+                            .withDefaultValue("datawcacwaaqakvokyax"),
+                        "babowrcyrnmj",
+                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datatshzumxucz")))
+                .withAnnotations(Arrays.asList("datawxqzkkagve", "datahmnaphrskmpeajz"))
+                .withFolder(new DatasetFolder().withName("avamzmzfntte"))
+                .withTableName("dataesywywnvgy");
         model = BinaryData.fromObject(model).toObject(SalesforceMarketingCloudObjectDataset.class);
-        Assertions.assertEquals("rolhsfddk", model.description());
-        Assertions.assertEquals("xgnpyhtu", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("gtz").type());
-        Assertions.assertEquals("liqlyugp", model.folder().name());
+        Assertions.assertEquals("c", model.description());
+        Assertions.assertEquals("zyrgrlh", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("ypkfcdfuxi").type());
+        Assertions.assertEquals("avamzmzfntte", model.folder().name());
     }
 
     // Use "Map.of" if available

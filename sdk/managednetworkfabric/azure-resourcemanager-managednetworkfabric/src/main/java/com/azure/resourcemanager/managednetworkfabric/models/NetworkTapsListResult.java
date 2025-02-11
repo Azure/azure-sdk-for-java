@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkTapInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of NetworkTaps. */
+/**
+ * List of NetworkTaps.
+ */
 @Fluent
-public final class NetworkTapsListResult {
+public final class NetworkTapsListResult implements JsonSerializable<NetworkTapsListResult> {
     /*
      * List of NetworkTap resources.
      */
-    @JsonProperty(value = "value")
     private List<NetworkTapInner> value;
 
     /*
      * Url to follow for getting next page of resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkTapsListResult class. */
+    /**
+     * Creates an instance of NetworkTapsListResult class.
+     */
     public NetworkTapsListResult() {
     }
 
     /**
      * Get the value property: List of NetworkTap resources.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkTapInner> value() {
@@ -39,7 +45,7 @@ public final class NetworkTapsListResult {
 
     /**
      * Set the value property: List of NetworkTap resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkTapsListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class NetworkTapsListResult {
 
     /**
      * Get the nextLink property: Url to follow for getting next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class NetworkTapsListResult {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkTapsListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class NetworkTapsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkTapsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkTapsListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkTapsListResult.
+     */
+    public static NetworkTapsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkTapsListResult deserializedNetworkTapsListResult = new NetworkTapsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NetworkTapInner> value = reader.readArray(reader1 -> NetworkTapInner.fromJson(reader1));
+                    deserializedNetworkTapsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedNetworkTapsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkTapsListResult;
+        });
     }
 }

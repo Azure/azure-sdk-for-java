@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.fluent.models.GcmCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Description of a NotificationHub GcmCredential.
  */
 @Fluent
-public final class GcmCredential {
+public final class GcmCredential implements JsonSerializable<GcmCredential> {
     /*
-     * Description of a NotificationHub GcmCredential.
+     * Properties of NotificationHub GcmCredential.
      */
-    @JsonProperty(value = "properties", required = true)
-    private GcmCredentialProperties innerProperties = new GcmCredentialProperties();
+    private GcmCredentialProperties innerProperties;
 
     /**
      * Creates an instance of GcmCredential class.
@@ -27,7 +29,7 @@ public final class GcmCredential {
     }
 
     /**
-     * Get the innerProperties property: Description of a NotificationHub GcmCredential.
+     * Get the innerProperties property: Properties of NotificationHub GcmCredential.
      * 
      * @return the innerProperties value.
      */
@@ -36,7 +38,7 @@ public final class GcmCredential {
     }
 
     /**
-     * Get the gcmEndpoint property: Gets or sets the GCM endpoint.
+     * Get the gcmEndpoint property: The FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'.
      * 
      * @return the gcmEndpoint value.
      */
@@ -45,7 +47,7 @@ public final class GcmCredential {
     }
 
     /**
-     * Set the gcmEndpoint property: Gets or sets the GCM endpoint.
+     * Set the gcmEndpoint property: The FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'.
      * 
      * @param gcmEndpoint the gcmEndpoint value to set.
      * @return the GcmCredential object itself.
@@ -59,7 +61,7 @@ public final class GcmCredential {
     }
 
     /**
-     * Get the googleApiKey property: Gets or sets the Google API key.
+     * Get the googleApiKey property: The Google API key.
      * 
      * @return the googleApiKey value.
      */
@@ -68,7 +70,7 @@ public final class GcmCredential {
     }
 
     /**
-     * Set the googleApiKey property: Gets or sets the Google API key.
+     * Set the googleApiKey property: The Google API key.
      * 
      * @param googleApiKey the googleApiKey value to set.
      * @return the GcmCredential object itself.
@@ -87,13 +89,44 @@ public final class GcmCredential {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model GcmCredential"));
-        } else {
+        if (innerProperties() != null) {
             innerProperties().validate();
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(GcmCredential.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GcmCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GcmCredential if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GcmCredential.
+     */
+    public static GcmCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GcmCredential deserializedGcmCredential = new GcmCredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedGcmCredential.innerProperties = GcmCredentialProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGcmCredential;
+        });
+    }
 }

@@ -5,80 +5,82 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.LabServicesSkuCapabilities;
 import com.azure.resourcemanager.labservices.models.LabServicesSkuCapacity;
 import com.azure.resourcemanager.labservices.models.LabServicesSkuCost;
 import com.azure.resourcemanager.labservices.models.LabServicesSkuRestrictions;
 import com.azure.resourcemanager.labservices.models.LabServicesSkuTier;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Azure Lab Services resource SKUs. */
+/**
+ * Azure Lab Services resource SKUs.
+ */
 @Fluent
-public final class LabServicesSkuInner {
+public final class LabServicesSkuInner implements JsonSerializable<LabServicesSkuInner> {
     /*
      * The lab services resource type.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * The name of the SKU.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The tier of the SKU.
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private LabServicesSkuTier tier;
 
     /*
      * The SKU size.
      */
-    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private String size;
 
     /*
      * The family of the SKU.
      */
-    @JsonProperty(value = "family", access = JsonProperty.Access.WRITE_ONLY)
     private String family;
 
     /*
      * The scale out/in options of the SKU.
      */
-    @JsonProperty(value = "capacity")
     private LabServicesSkuCapacity capacity;
 
     /*
      * The capabilities of the SKU.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<LabServicesSkuCapabilities> capabilities;
 
     /*
      * List of locations that are available for a size.
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
 
     /*
      * Metadata for retrieving price info of a lab services SKUs.
      */
-    @JsonProperty(value = "costs", access = JsonProperty.Access.WRITE_ONLY)
     private List<LabServicesSkuCost> costs;
 
     /*
      * Restrictions of a lab services SKUs.
      */
-    @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<LabServicesSkuRestrictions> restrictions;
 
     /**
+     * Creates an instance of LabServicesSkuInner class.
+     */
+    public LabServicesSkuInner() {
+    }
+
+    /**
      * Get the resourceType property: The lab services resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -87,7 +89,7 @@ public final class LabServicesSkuInner {
 
     /**
      * Get the name property: The name of the SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -96,7 +98,7 @@ public final class LabServicesSkuInner {
 
     /**
      * Get the tier property: The tier of the SKU.
-     *
+     * 
      * @return the tier value.
      */
     public LabServicesSkuTier tier() {
@@ -105,7 +107,7 @@ public final class LabServicesSkuInner {
 
     /**
      * Get the size property: The SKU size.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -114,7 +116,7 @@ public final class LabServicesSkuInner {
 
     /**
      * Get the family property: The family of the SKU.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -123,7 +125,7 @@ public final class LabServicesSkuInner {
 
     /**
      * Get the capacity property: The scale out/in options of the SKU.
-     *
+     * 
      * @return the capacity value.
      */
     public LabServicesSkuCapacity capacity() {
@@ -132,7 +134,7 @@ public final class LabServicesSkuInner {
 
     /**
      * Set the capacity property: The scale out/in options of the SKU.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the LabServicesSkuInner object itself.
      */
@@ -143,7 +145,7 @@ public final class LabServicesSkuInner {
 
     /**
      * Get the capabilities property: The capabilities of the SKU.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<LabServicesSkuCapabilities> capabilities() {
@@ -152,7 +154,7 @@ public final class LabServicesSkuInner {
 
     /**
      * Get the locations property: List of locations that are available for a size.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -161,7 +163,7 @@ public final class LabServicesSkuInner {
 
     /**
      * Get the costs property: Metadata for retrieving price info of a lab services SKUs.
-     *
+     * 
      * @return the costs value.
      */
     public List<LabServicesSkuCost> costs() {
@@ -170,7 +172,7 @@ public final class LabServicesSkuInner {
 
     /**
      * Get the restrictions property: Restrictions of a lab services SKUs.
-     *
+     * 
      * @return the restrictions value.
      */
     public List<LabServicesSkuRestrictions> restrictions() {
@@ -179,7 +181,7 @@ public final class LabServicesSkuInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -195,5 +197,65 @@ public final class LabServicesSkuInner {
         if (restrictions() != null) {
             restrictions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabServicesSkuInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabServicesSkuInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabServicesSkuInner.
+     */
+    public static LabServicesSkuInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabServicesSkuInner deserializedLabServicesSkuInner = new LabServicesSkuInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedLabServicesSkuInner.resourceType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLabServicesSkuInner.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedLabServicesSkuInner.tier = LabServicesSkuTier.fromString(reader.getString());
+                } else if ("size".equals(fieldName)) {
+                    deserializedLabServicesSkuInner.size = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedLabServicesSkuInner.family = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedLabServicesSkuInner.capacity = LabServicesSkuCapacity.fromJson(reader);
+                } else if ("capabilities".equals(fieldName)) {
+                    List<LabServicesSkuCapabilities> capabilities
+                        = reader.readArray(reader1 -> LabServicesSkuCapabilities.fromJson(reader1));
+                    deserializedLabServicesSkuInner.capabilities = capabilities;
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLabServicesSkuInner.locations = locations;
+                } else if ("costs".equals(fieldName)) {
+                    List<LabServicesSkuCost> costs = reader.readArray(reader1 -> LabServicesSkuCost.fromJson(reader1));
+                    deserializedLabServicesSkuInner.costs = costs;
+                } else if ("restrictions".equals(fieldName)) {
+                    List<LabServicesSkuRestrictions> restrictions
+                        = reader.readArray(reader1 -> LabServicesSkuRestrictions.fromJson(reader1));
+                    deserializedLabServicesSkuInner.restrictions = restrictions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabServicesSkuInner;
+        });
     }
 }

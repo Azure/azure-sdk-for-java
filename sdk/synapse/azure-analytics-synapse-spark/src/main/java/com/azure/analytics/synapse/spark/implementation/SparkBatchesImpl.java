@@ -111,9 +111,7 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJobCollection>> getSparkBatchJobsWithResponseAsync(Integer from, Integer size,
         Boolean detailed) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSparkBatchJobs(this.client.getEndpoint(),
-            this.client.getLivyApiVersion(), this.client.getSparkPoolName(), from, size, detailed, accept, context));
+        return FluxUtil.withContext(context -> getSparkBatchJobsWithResponseAsync(from, size, detailed, context));
     }
 
     /**
@@ -255,10 +253,8 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>> createSparkBatchJobWithResponseAsync(SparkBatchJobOptions sparkBatchJobOptions,
         Boolean detailed) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createSparkBatchJob(this.client.getEndpoint(), this.client.getLivyApiVersion(),
-                this.client.getSparkPoolName(), detailed, sparkBatchJobOptions, accept, context));
+        return FluxUtil
+            .withContext(context -> createSparkBatchJobWithResponseAsync(sparkBatchJobOptions, detailed, context));
     }
 
     /**
@@ -389,9 +385,7 @@ public final class SparkBatchesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>> getSparkBatchJobWithResponseAsync(int batchId, Boolean detailed) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSparkBatchJob(this.client.getEndpoint(),
-            this.client.getLivyApiVersion(), this.client.getSparkPoolName(), batchId, detailed, accept, context));
+        return FluxUtil.withContext(context -> getSparkBatchJobWithResponseAsync(batchId, detailed, context));
     }
 
     /**
@@ -517,8 +511,7 @@ public final class SparkBatchesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelSparkBatchJobWithResponseAsync(int batchId) {
-        return FluxUtil.withContext(context -> service.cancelSparkBatchJob(this.client.getEndpoint(),
-            this.client.getLivyApiVersion(), this.client.getSparkPoolName(), batchId, context));
+        return FluxUtil.withContext(context -> cancelSparkBatchJobWithResponseAsync(batchId, context));
     }
 
     /**

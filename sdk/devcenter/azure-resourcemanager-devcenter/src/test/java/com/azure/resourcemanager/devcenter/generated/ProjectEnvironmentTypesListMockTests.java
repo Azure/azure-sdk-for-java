@@ -24,7 +24,7 @@ public final class ProjectEnvironmentTypesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"TransientFailure\",\"environmentCount\":936817677,\"deploymentTargetId\":\"elyetndnbf\",\"displayName\":\"ggagfln\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"u\":{\"roleName\":\"hzjmucftbyrp\",\"description\":\"ohkpigqfu\"},\"h\":{\"roleName\":\"zmkw\",\"description\":\"snoxaxmqeqa\"},\"qtanarfdlpuk\":{\"roleName\":\"nhg\",\"description\":\"dyynfsvkhgb\"},\"dbhfhp\":{\"roleName\":\"yrneizjcpeo\",\"description\":\"hnmgbroux\"}}},\"userRoleAssignments\":{\"ogwxhnsduugwb\":{\"roles\":{\"zoyw\":{},\"xhpdulontacnpqwt\":{},\"htuevrhrljy\":{}}},\"lvhhtklnvn\":{\"roles\":{\"urfqkfuare\":{}}}}},\"tags\":{\"qxypokkhminq\":\"vkyfedevjbosl\",\"ngnbdxxew\":\"ymc\",\"qecrqctmxx\":\"ninvudbchaqdt\",\"huytxzvtzn\":\"tddmf\"},\"identity\":{\"principalId\":\"f58e5cca-ac68-42fd-9fa0-7c79f7566608\",\"tenantId\":\"474d540a-38e2-42ec-a925-e34aa698d569\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"voxczytpr\":{\"principalId\":\"2c0a99da-8206-4762-ae9a-95e7a77d1078\",\"clientId\":\"2eef9162-bbf5-4e5f-82e2-69496c90023d\"}}},\"location\":\"wvroevytlyokrrr\",\"id\":\"uxvnsasbcrymodi\",\"name\":\"rxklobdxnazpmk\",\"type\":\"lmv\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"environmentCount\":979398617,\"deploymentTargetId\":\"jibuzphdug\",\"displayName\":\"iknp\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"x\":{\"roleName\":\"qhibtozipqwjedm\",\"description\":\"r\"},\"gcl\":{\"roleName\":\"wpktvqylkmqpzoyh\",\"description\":\"bcg\"},\"hpzpo\":{\"roleName\":\"oebqinjipn\",\"description\":\"fujqlafcba\"},\"uartvti\":{\"roleName\":\"iyjwpfilkmkkho\",\"description\":\"dndviauogp\"}}},\"userRoleAssignments\":{\"xffi\":{\"roles\":{\"chnmna\":{},\"mnxhkxjqirwrweo\":{}}},\"ttaboidvmfqh\":{\"roles\":{\"wrsnewmozqvbu\":{},\"qmamhsycxhxzga\":{}}}}},\"tags\":{\"g\":\"bowsepd\",\"c\":\"mtdherngb\",\"obkauxofsh\":\"uahokq\"},\"identity\":{\"principalId\":\"4c58b0cf-10ee-4e52-8e14-95b155b9bb5d\",\"tenantId\":\"11cfb244-b80e-4c69-a491-cea4bbdefabb\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"iywzejy\":{\"principalId\":\"817851ec-78de-4826-b4b2-ec7dae60ada1\",\"clientId\":\"83713492-1d29-4dbc-9170-f5013ee2ef9c\"},\"lwkojpllndnpdw\":{\"principalId\":\"b8fcac5f-62f2-4819-a9ed-ab4c251b29bd\",\"clientId\":\"0f75c803-2535-4bec-9757-b3b159690ce3\"},\"afgfugsnn\":{\"principalId\":\"32090794-adca-4920-a9ac-b11223be4759\",\"clientId\":\"f8fe44b7-6977-4a49-ac1c-434307620cf8\"},\"et\":{\"principalId\":\"61db8b70-8713-4401-8563-d386722e616d\",\"clientId\":\"70324f99-665d-49e1-9a05-c64a542f0fe2\"}}},\"location\":\"ypococtfjgtixr\",\"id\":\"zuyt\",\"name\":\"rmlmuowo\",\"type\":\"bauiropi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,14 @@ public final class ProjectEnvironmentTypesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ProjectEnvironmentType> response
-            = manager.projectEnvironmentTypes().list("y", "ruuuybnch", 2064836238, com.azure.core.util.Context.NONE);
+        PagedIterable<ProjectEnvironmentType> response = manager.projectEnvironmentTypes()
+            .list("vtxnjmxmcuqud", "cvclxynpdk", 1887329670, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vkyfedevjbosl", response.iterator().next().tags().get("qxypokkhminq"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
-            response.iterator().next().identity().type());
-        Assertions.assertEquals("wvroevytlyokrrr", response.iterator().next().location());
-        Assertions.assertEquals("elyetndnbf", response.iterator().next().deploymentTargetId());
-        Assertions.assertEquals("ggagfln", response.iterator().next().displayName());
+        Assertions.assertEquals("bowsepd", response.iterator().next().tags().get("g"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("ypococtfjgtixr", response.iterator().next().location());
+        Assertions.assertEquals("jibuzphdug", response.iterator().next().deploymentTargetId());
+        Assertions.assertEquals("iknp", response.iterator().next().displayName());
         Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, response.iterator().next().status());
     }
 }

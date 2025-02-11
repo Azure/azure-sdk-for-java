@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.LogSpecification;
 public final class LogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogSpecification model =
-            BinaryData
-                .fromString("{\"name\":\"ol\",\"displayName\":\"fpsalgbqu\",\"blobDuration\":\"gjyjgzjaoyfhrtxi\"}")
+        LogSpecification model
+            = BinaryData.fromString("{\"name\":\"xc\",\"displayName\":\"npc\",\"blobDuration\":\"ocohslkevleg\"}")
                 .toObject(LogSpecification.class);
     }
 

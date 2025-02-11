@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The lifecycle status of the alert. */
+/**
+ * The lifecycle status of the alert.
+ */
 public final class AlertStatus extends ExpandableStringEnum<AlertStatus> {
-    /** Static value Unknown for AlertStatus. */
+    /**
+     * Static value Unknown for AlertStatus.
+     */
     public static final AlertStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value New for AlertStatus. */
+    /**
+     * Static value New for AlertStatus.
+     */
     public static final AlertStatus NEW = fromString("New");
 
-    /** Static value Resolved for AlertStatus. */
+    /**
+     * Static value Resolved for AlertStatus.
+     */
     public static final AlertStatus RESOLVED = fromString("Resolved");
 
-    /** Static value Dismissed for AlertStatus. */
+    /**
+     * Static value Dismissed for AlertStatus.
+     */
     public static final AlertStatus DISMISSED = fromString("Dismissed");
 
-    /** Static value InProgress for AlertStatus. */
+    /**
+     * Static value InProgress for AlertStatus.
+     */
     public static final AlertStatus IN_PROGRESS = fromString("InProgress");
 
     /**
+     * Creates a new instance of AlertStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertStatus() {
+    }
+
+    /**
      * Creates or finds a AlertStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlertStatus.
      */
-    @JsonCreator
     public static AlertStatus fromString(String name) {
         return fromString(name, AlertStatus.class);
     }
 
     /**
      * Gets known AlertStatus values.
-     *
+     * 
      * @return known AlertStatus values.
      */
     public static Collection<AlertStatus> values() {

@@ -17,6 +17,15 @@ public final class ChatAttachmentType extends ExpandableStringEnum<ChatAttachmen
     public static final ChatAttachmentType FILE = fromString("file");
 
     /**
+     * Creates an instance of {@link ChatAttachmentType} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of ChatAttachmentType.
+     */
+    @Deprecated
+    public ChatAttachmentType() {
+    }
+
+    /**
      * Creates or finds a ChatAttachmentType from its string representation.
      *
      * @param name a name to look for.
@@ -26,7 +35,10 @@ public final class ChatAttachmentType extends ExpandableStringEnum<ChatAttachmen
         return fromString(name, ChatAttachmentType.class);
     }
 
-    /** @return known ChatAttachmentType values. */
+    /**
+     * Get the collection of ChatAttachmentType values.
+     * @return known ChatAttachmentType values.
+     */
     public static Collection<ChatAttachmentType> values() {
         return values(ChatAttachmentType.class);
     }

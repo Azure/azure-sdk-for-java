@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * used. [Learn More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
  */
 public final class Mode extends ExpandableStringEnum<Mode> {
-    /** Static value Gen1 for Mode. */
+    /**
+     * Static value Gen1 for Mode.
+     */
     public static final Mode GEN1 = fromString("Gen1");
 
-    /** Static value Gen2 for Mode. */
+    /**
+     * Static value Gen2 for Mode.
+     */
     public static final Mode GEN2 = fromString("Gen2");
 
     /**
      * Creates a new instance of Mode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class Mode extends ExpandableStringEnum<Mode> {
 
     /**
      * Creates or finds a Mode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Mode.
      */
-    @JsonCreator
     public static Mode fromString(String name) {
         return fromString(name, Mode.class);
     }
 
     /**
      * Gets known Mode values.
-     *
+     * 
      * @return known Mode values.
      */
     public static Collection<Mode> values() {

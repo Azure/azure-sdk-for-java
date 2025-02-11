@@ -20,92 +20,71 @@ public final class PolicyTrackedResourcesImpl implements PolicyTrackedResources 
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    public PolicyTrackedResourcesImpl(
-        PolicyTrackedResourcesClient innerClient,
+    public PolicyTrackedResourcesImpl(PolicyTrackedResourcesClient innerClient,
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<PolicyTrackedResource> listQueryResultsForManagementGroup(
-        String managementGroupName, PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
-        PagedIterable<PolicyTrackedResourceInner> inner =
-            this
-                .serviceClient()
-                .listQueryResultsForManagementGroup(managementGroupName, policyTrackedResourcesResource);
-        return Utils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<PolicyTrackedResource> listQueryResultsForManagementGroup(
-        String managementGroupName,
-        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
-        Integer top,
-        String filter,
-        Context context) {
-        PagedIterable<PolicyTrackedResourceInner> inner =
-            this
-                .serviceClient()
-                .listQueryResultsForManagementGroup(
-                    managementGroupName, policyTrackedResourcesResource, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<PolicyTrackedResource> listQueryResultsForSubscription(
+    public PagedIterable<PolicyTrackedResource> listQueryResultsForManagementGroup(String managementGroupName,
         PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
-        PagedIterable<PolicyTrackedResourceInner> inner =
-            this.serviceClient().listQueryResultsForSubscription(policyTrackedResourcesResource);
-        return Utils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
+        PagedIterable<PolicyTrackedResourceInner> inner = this.serviceClient()
+            .listQueryResultsForManagementGroup(managementGroupName, policyTrackedResourcesResource);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<PolicyTrackedResource> listQueryResultsForManagementGroup(String managementGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource, Integer top, String filter,
+        Context context) {
+        PagedIterable<PolicyTrackedResourceInner> inner = this.serviceClient()
+            .listQueryResultsForManagementGroup(managementGroupName, policyTrackedResourcesResource, top, filter,
+                context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<PolicyTrackedResource>
+        listQueryResultsForSubscription(PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
+        PagedIterable<PolicyTrackedResourceInner> inner
+            = this.serviceClient().listQueryResultsForSubscription(policyTrackedResourcesResource);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PolicyTrackedResource> listQueryResultsForSubscription(
-        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
-        Integer top,
-        String filter,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource, Integer top, String filter,
         Context context) {
-        PagedIterable<PolicyTrackedResourceInner> inner =
-            this.serviceClient().listQueryResultsForSubscription(policyTrackedResourcesResource, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
+        PagedIterable<PolicyTrackedResourceInner> inner = this.serviceClient()
+            .listQueryResultsForSubscription(policyTrackedResourcesResource, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PolicyTrackedResource> listQueryResultsForResourceGroup(
-        String resourceGroupName, PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
-        PagedIterable<PolicyTrackedResourceInner> inner =
-            this.serviceClient().listQueryResultsForResourceGroup(resourceGroupName, policyTrackedResourcesResource);
-        return Utils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
+    public PagedIterable<PolicyTrackedResource> listQueryResultsForResourceGroup(String resourceGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
+        PagedIterable<PolicyTrackedResourceInner> inner
+            = this.serviceClient().listQueryResultsForResourceGroup(resourceGroupName, policyTrackedResourcesResource);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PolicyTrackedResource> listQueryResultsForResourceGroup(
-        String resourceGroupName,
-        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
-        Integer top,
-        String filter,
+    public PagedIterable<PolicyTrackedResource> listQueryResultsForResourceGroup(String resourceGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource, Integer top, String filter,
         Context context) {
-        PagedIterable<PolicyTrackedResourceInner> inner =
-            this
-                .serviceClient()
-                .listQueryResultsForResourceGroup(
-                    resourceGroupName, policyTrackedResourcesResource, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
+        PagedIterable<PolicyTrackedResourceInner> inner = this.serviceClient()
+            .listQueryResultsForResourceGroup(resourceGroupName, policyTrackedResourcesResource, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PolicyTrackedResource> listQueryResultsForResource(
-        String resourceId, PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
-        PagedIterable<PolicyTrackedResourceInner> inner =
-            this.serviceClient().listQueryResultsForResource(resourceId, policyTrackedResourcesResource);
-        return Utils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
+    public PagedIterable<PolicyTrackedResource> listQueryResultsForResource(String resourceId,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource) {
+        PagedIterable<PolicyTrackedResourceInner> inner
+            = this.serviceClient().listQueryResultsForResource(resourceId, policyTrackedResourcesResource);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PolicyTrackedResource> listQueryResultsForResource(
-        String resourceId,
-        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
-        Integer top,
-        String filter,
+    public PagedIterable<PolicyTrackedResource> listQueryResultsForResource(String resourceId,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource, Integer top, String filter,
         Context context) {
-        PagedIterable<PolicyTrackedResourceInner> inner =
-            this
-                .serviceClient()
-                .listQueryResultsForResource(resourceId, policyTrackedResourcesResource, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
+        PagedIterable<PolicyTrackedResourceInner> inner = this.serviceClient()
+            .listQueryResultsForResource(resourceId, policyTrackedResourcesResource, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyTrackedResourceImpl(inner1, this.manager()));
     }
 
     private PolicyTrackedResourcesClient serviceClient() {

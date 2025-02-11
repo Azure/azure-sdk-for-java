@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.SCMetadataEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Details about environment name, metadata and environment id of an environment.
  */
 @Fluent
-public final class SCEnvironmentRecordInner {
+public final class SCEnvironmentRecordInner implements JsonSerializable<SCEnvironmentRecordInner> {
     /*
      * Type of environment
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * Id of the environment
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Environment properties
      */
-    @JsonProperty(value = "properties")
     private EnvironmentProperties innerProperties;
 
     /*
      * Display name of the environment
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -144,5 +144,50 @@ public final class SCEnvironmentRecordInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SCEnvironmentRecordInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SCEnvironmentRecordInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SCEnvironmentRecordInner.
+     */
+    public static SCEnvironmentRecordInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SCEnvironmentRecordInner deserializedSCEnvironmentRecordInner = new SCEnvironmentRecordInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedSCEnvironmentRecordInner.kind = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSCEnvironmentRecordInner.id = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSCEnvironmentRecordInner.innerProperties = EnvironmentProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSCEnvironmentRecordInner.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSCEnvironmentRecordInner;
+        });
     }
 }

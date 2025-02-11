@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class BareMetalMachinePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BareMetalMachinePatchProperties model =
-            BinaryData.fromString("{\"machineDetails\":\"waz\"}").toObject(BareMetalMachinePatchProperties.class);
-        Assertions.assertEquals("waz", model.machineDetails());
+        BareMetalMachinePatchProperties model
+            = BinaryData.fromString("{\"machineDetails\":\"ahgx\"}").toObject(BareMetalMachinePatchProperties.class);
+        Assertions.assertEquals("ahgx", model.machineDetails());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BareMetalMachinePatchProperties model = new BareMetalMachinePatchProperties().withMachineDetails("waz");
+        BareMetalMachinePatchProperties model = new BareMetalMachinePatchProperties().withMachineDetails("ahgx");
         model = BinaryData.fromObject(model).toObject(BareMetalMachinePatchProperties.class);
-        Assertions.assertEquals("waz", model.machineDetails());
+        Assertions.assertEquals("ahgx", model.machineDetails());
     }
 }

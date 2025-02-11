@@ -24,8 +24,10 @@ public final class NetworkServiceDesignVersionsUpdateSamples {
      */
     public static void
         updateTheNetworkServiceDesignVersionTags(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        NetworkServiceDesignVersion resource = manager.networkServiceDesignVersions().getWithResponse("rg",
-            "TestPublisher", "TestNetworkServiceDesignGroupName", "1.0.0", com.azure.core.util.Context.NONE).getValue();
+        NetworkServiceDesignVersion resource = manager.networkServiceDesignVersions()
+            .getWithResponse("rg", "TestPublisher", "TestNetworkServiceDesignGroupName", "1.0.0",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

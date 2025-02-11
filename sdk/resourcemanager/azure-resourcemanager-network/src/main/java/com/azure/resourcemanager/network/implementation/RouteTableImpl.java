@@ -31,8 +31,7 @@ class RouteTableImpl
 
     @Override
     protected Mono<RouteTableInner> applyTagsToInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getRouteTables()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
@@ -56,20 +55,16 @@ class RouteTableImpl
 
     @Override
     public Mono<RouteTable> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                routeTable -> {
-                    RouteTableImpl impl = (RouteTableImpl) routeTable;
-                    impl.initializeChildrenFromInner();
-                    return impl;
-                });
+        return super.refreshAsync().map(routeTable -> {
+            RouteTableImpl impl = (RouteTableImpl) routeTable;
+            impl.initializeChildrenFromInner();
+            return impl;
+        });
     }
 
     @Override
     protected Mono<RouteTableInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getRouteTables()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -77,13 +72,8 @@ class RouteTableImpl
 
     @Override
     public List<Subnet> listAssociatedSubnets() {
-        return com
-            .azure
-            .resourcemanager
-            .network
-            .implementation
-            .Utils
-            .listAssociatedSubnets(this.myManager, this.innerModel().subnets());
+        return com.azure.resourcemanager.network.implementation.Utils.listAssociatedSubnets(this.myManager,
+            this.innerModel().subnets());
     }
 
     // Setters (fluent)
@@ -107,8 +97,7 @@ class RouteTableImpl
 
     @Override
     public RouteTableImpl withRoute(String destinationAddressPrefix, RouteNextHopType nextHop) {
-        return this
-            .defineRoute("route_" + this.name() + System.currentTimeMillis())
+        return this.defineRoute("route_" + this.name() + System.currentTimeMillis())
             .withDestinationAddressPrefix(destinationAddressPrefix)
             .withNextHop(nextHop)
             .attach();
@@ -116,8 +105,7 @@ class RouteTableImpl
 
     @Override
     public RouteTableImpl withRouteViaVirtualAppliance(String destinationAddressPrefix, String ipAddress) {
-        return this
-            .defineRoute("route_" + this.name() + System.currentTimeMillis())
+        return this.defineRoute("route_" + this.name() + System.currentTimeMillis())
             .withDestinationAddressPrefix(destinationAddressPrefix)
             .withNextHopToVirtualAppliance(ipAddress)
             .attach();
@@ -138,8 +126,7 @@ class RouteTableImpl
 
     @Override
     protected Mono<RouteTableInner> createInner() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getRouteTables()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());

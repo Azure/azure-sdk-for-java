@@ -12,7 +12,8 @@ import com.azure.storage.blob.models.BlobItem;
 public final class BlobItemConstructorProxy {
     private static BlobItemConstructorAccessor accessor;
 
-    private BlobItemConstructorProxy() { }
+    private BlobItemConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link BlobItem} instance.

@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = FarmOperationsClientBuilder.class, isAsync = true)
 public final class FarmOperationsAsyncClient {
-    @Generated private final FarmOperationsImpl serviceClient;
+    @Generated
+    private final FarmOperationsImpl serviceClient;
 
     /**
      * Initializes an instance of FarmOperationsAsyncClient class.
@@ -108,8 +109,8 @@ public final class FarmOperationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateDataIngestionJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateDataIngestionJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCreateDataIngestionJobAsync(jobId, job, requestOptions);
     }
 
@@ -156,8 +157,8 @@ public final class FarmOperationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDataIngestionJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDataIngestionJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getDataIngestionJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 }

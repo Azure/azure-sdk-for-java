@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface AzureHsmResourceProvider {
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets The ID of the target subscription.
      * 
      * @return the subscriptionId value.
      */
@@ -24,6 +24,13 @@ public interface AzureHsmResourceProvider {
      * @return the endpoint value.
      */
     String getEndpoint();
+
+    /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -38,34 +45,6 @@ public interface AzureHsmResourceProvider {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
-
-    /**
-     * Gets the CloudHsmClustersClient object to access its operations.
-     * 
-     * @return the CloudHsmClustersClient object.
-     */
-    CloudHsmClustersClient getCloudHsmClusters();
-
-    /**
-     * Gets the CloudHsmClusterPrivateLinkResourcesClient object to access its operations.
-     * 
-     * @return the CloudHsmClusterPrivateLinkResourcesClient object.
-     */
-    CloudHsmClusterPrivateLinkResourcesClient getCloudHsmClusterPrivateLinkResources();
-
-    /**
-     * Gets the CloudHsmClusterPrivateEndpointConnectionsClient object to access its operations.
-     * 
-     * @return the CloudHsmClusterPrivateEndpointConnectionsClient object.
-     */
-    CloudHsmClusterPrivateEndpointConnectionsClient getCloudHsmClusterPrivateEndpointConnections();
-
-    /**
-     * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     * 
-     * @return the PrivateEndpointConnectionsClient object.
-     */
-    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
      * Gets the OperationsClient object to access its operations.

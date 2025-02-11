@@ -28,18 +28,12 @@ public final class PhoneNumberErrorConverter {
         List<PhoneNumberError> details = new ArrayList<PhoneNumberError>();
 
         if (communicationError.getDetails() != null) {
-            details = communicationError.getDetails()
-                .stream()
-                .map(detail -> convert(detail))
-                .collect(Collectors.toList());
+            details
+                = communicationError.getDetails().stream().map(detail -> convert(detail)).collect(Collectors.toList());
         }
 
-        PhoneNumberError phoneNumberError = new PhoneNumberError(
-            communicationError.getMessage(),
-            communicationError.getCode(),
-            communicationError.getTarget(),
-            details
-        );
+        PhoneNumberError phoneNumberError = new PhoneNumberError(communicationError.getMessage(),
+            communicationError.getCode(), communicationError.getTarget(), details);
 
         return phoneNumberError;
     }

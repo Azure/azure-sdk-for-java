@@ -6,64 +6,37 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpointSkuInfoListResult;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class StreamingEndpointsSkusWithResponseMockTests {
     @Test
     public void testSkusWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"resourceType\":\"moaiancz\",\"capacity\":{\"scaleType\":\"drrslblxydk\",\"default\":561812195,\"minimum\":1048854110,\"maximum\":170329358},\"sku\":{\"name\":\"kgfbqljnqkhy\"}}]}";
 
-        String responseStr = "{\"value\":[{\"resourceType\":\"bta\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        StreamingEndpointSkuInfoListResult response = manager.streamingEndpoints()
+            .skusWithResponse("ejdtxptl", "h", "zhomewjjstliu", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        StreamingEndpointSkuInfoListResult response =
-            manager
-                .streamingEndpoints()
-                .skusWithResponse("dlrgms", "lzgaufcshhvnew", "nxkympqanxrjk", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("bta", response.value().get(0).resourceType());
+        Assertions.assertEquals("moaiancz", response.value().get(0).resourceType());
+        Assertions.assertEquals(561812195, response.value().get(0).capacity().defaultProperty());
+        Assertions.assertEquals(1048854110, response.value().get(0).capacity().minimum());
+        Assertions.assertEquals(170329358, response.value().get(0).capacity().maximum());
     }
 }

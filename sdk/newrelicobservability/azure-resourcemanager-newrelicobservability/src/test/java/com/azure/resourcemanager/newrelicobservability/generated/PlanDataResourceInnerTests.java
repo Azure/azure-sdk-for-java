@@ -31,9 +31,12 @@ public final class PlanDataResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PlanDataResourceInner model = new PlanDataResourceInner()
-            .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.MONTHLY)
-                .withPlanDetails("l").withEffectiveDate(OffsetDateTime.parse("2020-12-23T01:20:43Z")))
-            .withOrgCreationSource(OrgCreationSource.NEWRELIC).withAccountCreationSource(AccountCreationSource.LIFTR);
+            .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
+                .withBillingCycle(BillingCycle.MONTHLY)
+                .withPlanDetails("l")
+                .withEffectiveDate(OffsetDateTime.parse("2020-12-23T01:20:43Z")))
+            .withOrgCreationSource(OrgCreationSource.NEWRELIC)
+            .withAccountCreationSource(AccountCreationSource.LIFTR);
         model = BinaryData.fromObject(model).toObject(PlanDataResourceInner.class);
         Assertions.assertEquals(UsageType.PAYG, model.planData().usageType());
         Assertions.assertEquals(BillingCycle.MONTHLY, model.planData().billingCycle());

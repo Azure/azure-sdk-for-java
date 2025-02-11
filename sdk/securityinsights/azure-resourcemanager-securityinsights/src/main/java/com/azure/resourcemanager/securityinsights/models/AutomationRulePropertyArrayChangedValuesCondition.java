@@ -5,26 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AutomationRulePropertyArrayChangedValuesCondition model. */
+/**
+ * The AutomationRulePropertyArrayChangedValuesCondition model.
+ */
 @Fluent
-public final class AutomationRulePropertyArrayChangedValuesCondition {
+public final class AutomationRulePropertyArrayChangedValuesCondition
+    implements JsonSerializable<AutomationRulePropertyArrayChangedValuesCondition> {
     /*
      * The arrayType property.
      */
-    @JsonProperty(value = "arrayType")
     private AutomationRulePropertyArrayChangedConditionSupportedArrayType arrayType;
 
     /*
      * The changeType property.
      */
-    @JsonProperty(value = "changeType")
     private AutomationRulePropertyArrayChangedConditionSupportedChangeType changeType;
 
     /**
+     * Creates an instance of AutomationRulePropertyArrayChangedValuesCondition class.
+     */
+    public AutomationRulePropertyArrayChangedValuesCondition() {
+    }
+
+    /**
      * Get the arrayType property: The arrayType property.
-     *
+     * 
      * @return the arrayType value.
      */
     public AutomationRulePropertyArrayChangedConditionSupportedArrayType arrayType() {
@@ -33,19 +44,19 @@ public final class AutomationRulePropertyArrayChangedValuesCondition {
 
     /**
      * Set the arrayType property: The arrayType property.
-     *
+     * 
      * @param arrayType the arrayType value to set.
      * @return the AutomationRulePropertyArrayChangedValuesCondition object itself.
      */
-    public AutomationRulePropertyArrayChangedValuesCondition withArrayType(
-        AutomationRulePropertyArrayChangedConditionSupportedArrayType arrayType) {
+    public AutomationRulePropertyArrayChangedValuesCondition
+        withArrayType(AutomationRulePropertyArrayChangedConditionSupportedArrayType arrayType) {
         this.arrayType = arrayType;
         return this;
     }
 
     /**
      * Get the changeType property: The changeType property.
-     *
+     * 
      * @return the changeType value.
      */
     public AutomationRulePropertyArrayChangedConditionSupportedChangeType changeType() {
@@ -54,21 +65,63 @@ public final class AutomationRulePropertyArrayChangedValuesCondition {
 
     /**
      * Set the changeType property: The changeType property.
-     *
+     * 
      * @param changeType the changeType value to set.
      * @return the AutomationRulePropertyArrayChangedValuesCondition object itself.
      */
-    public AutomationRulePropertyArrayChangedValuesCondition withChangeType(
-        AutomationRulePropertyArrayChangedConditionSupportedChangeType changeType) {
+    public AutomationRulePropertyArrayChangedValuesCondition
+        withChangeType(AutomationRulePropertyArrayChangedConditionSupportedChangeType changeType) {
         this.changeType = changeType;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("arrayType", this.arrayType == null ? null : this.arrayType.toString());
+        jsonWriter.writeStringField("changeType", this.changeType == null ? null : this.changeType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationRulePropertyArrayChangedValuesCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationRulePropertyArrayChangedValuesCondition if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationRulePropertyArrayChangedValuesCondition.
+     */
+    public static AutomationRulePropertyArrayChangedValuesCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationRulePropertyArrayChangedValuesCondition deserializedAutomationRulePropertyArrayChangedValuesCondition
+                = new AutomationRulePropertyArrayChangedValuesCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("arrayType".equals(fieldName)) {
+                    deserializedAutomationRulePropertyArrayChangedValuesCondition.arrayType
+                        = AutomationRulePropertyArrayChangedConditionSupportedArrayType.fromString(reader.getString());
+                } else if ("changeType".equals(fieldName)) {
+                    deserializedAutomationRulePropertyArrayChangedValuesCondition.changeType
+                        = AutomationRulePropertyArrayChangedConditionSupportedChangeType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationRulePropertyArrayChangedValuesCondition;
+        });
     }
 }

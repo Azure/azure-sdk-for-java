@@ -124,7 +124,6 @@ public final class AzureSearchIndexSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

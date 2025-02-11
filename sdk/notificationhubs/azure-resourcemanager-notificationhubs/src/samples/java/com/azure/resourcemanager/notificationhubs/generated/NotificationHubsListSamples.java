@@ -10,16 +10,16 @@ package com.azure.resourcemanager.notificationhubs.generated;
 public final class NotificationHubsListSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * NotificationHubs/List.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/
+     * NotificationHubs/NotificationHubListByNameSpace.json
      */
     /**
-     * Sample code: NotificationHubs_List.
+     * Sample code: NotificationHubListByNameSpace.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void
-        notificationHubsList(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().list("5ktrial", "nh-sdk-ns", null, null, com.azure.core.util.Context.NONE);
+        notificationHubListByNameSpace(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        manager.notificationHubs().list("5ktrial", "nh-sdk-ns", com.azure.core.util.Context.NONE);
     }
 }

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EmergingIssueImpactTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EmergingIssueImpact model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"yrqufegxuvwz\",\"name\":\"nhlmctlpdng\",\"regions\":[{\"id\":\"bmhrixkwmyijejv\",\"name\":\"rh\"},{\"id\":\"nai\",\"name\":\"xccbdreaxhcex\"}]}")
-                .toObject(EmergingIssueImpact.class);
+        EmergingIssueImpact model = BinaryData.fromString(
+            "{\"id\":\"yrqufegxuvwz\",\"name\":\"nhlmctlpdng\",\"regions\":[{\"id\":\"bmhrixkwmyijejv\",\"name\":\"rh\"},{\"id\":\"nai\",\"name\":\"xccbdreaxhcex\"}]}")
+            .toObject(EmergingIssueImpact.class);
         Assertions.assertEquals("yrqufegxuvwz", model.id());
         Assertions.assertEquals("nhlmctlpdng", model.name());
         Assertions.assertEquals("bmhrixkwmyijejv", model.regions().get(0).id());
@@ -26,15 +24,10 @@ public final class EmergingIssueImpactTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EmergingIssueImpact model =
-            new EmergingIssueImpact()
-                .withId("yrqufegxuvwz")
-                .withName("nhlmctlpdng")
-                .withRegions(
-                    Arrays
-                        .asList(
-                            new ImpactedRegion().withId("bmhrixkwmyijejv").withName("rh"),
-                            new ImpactedRegion().withId("nai").withName("xccbdreaxhcex")));
+        EmergingIssueImpact model = new EmergingIssueImpact().withId("yrqufegxuvwz")
+            .withName("nhlmctlpdng")
+            .withRegions(Arrays.asList(new ImpactedRegion().withId("bmhrixkwmyijejv").withName("rh"),
+                new ImpactedRegion().withId("nai").withName("xccbdreaxhcex")));
         model = BinaryData.fromObject(model).toObject(EmergingIssueImpact.class);
         Assertions.assertEquals("yrqufegxuvwz", model.id());
         Assertions.assertEquals("nhlmctlpdng", model.name());

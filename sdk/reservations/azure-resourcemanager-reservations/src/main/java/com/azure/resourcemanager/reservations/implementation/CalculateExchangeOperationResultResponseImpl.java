@@ -15,8 +15,7 @@ public final class CalculateExchangeOperationResultResponseImpl implements Calcu
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    CalculateExchangeOperationResultResponseImpl(
-        CalculateExchangeOperationResultResponseInner innerObject,
+    CalculateExchangeOperationResultResponseImpl(CalculateExchangeOperationResultResponseInner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

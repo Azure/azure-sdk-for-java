@@ -40,6 +40,12 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     private OffsetDateTime shareHistoryTime;
 
     /**
+     * Creates a new instance of {@link ChatParticipant}.
+     */
+    public ChatParticipant() {
+    }
+
+    /**
      * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart
      * from rawId, at most one further property may be set.
@@ -111,7 +117,8 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        final CommunicationIdentifierModel identifier = CommunicationIdentifierConverter.convert(communicationIdentifier);
+        final CommunicationIdentifierModel identifier
+            = CommunicationIdentifierConverter.convert(communicationIdentifier);
         jsonWriter.writeJsonField("communicationIdentifier", identifier);
         jsonWriter.writeStringField("displayName", displayName);
         jsonWriter.writeStringField("startDateTime", shareHistoryTime.toString());
@@ -133,7 +140,8 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("communicationIdentifier".equals(fieldName)) {
-                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    final CommunicationIdentifierModel identifier
+                        = reader.readObject(CommunicationIdentifierModel::fromJson);
                     participant.communicationIdentifier = CommunicationIdentifierConverter.convert(identifier);
                 } else if ("displayName".equals(fieldName)) {
                     participant.displayName = reader.getString();

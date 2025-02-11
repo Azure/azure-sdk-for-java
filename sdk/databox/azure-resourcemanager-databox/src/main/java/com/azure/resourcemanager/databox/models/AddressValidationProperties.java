@@ -5,35 +5,51 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The address validation output. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "validationType")
-@JsonTypeName("ValidateAddress")
+/**
+ * The address validation output.
+ */
 @Immutable
 public final class AddressValidationProperties extends ValidationInputResponse {
     /*
+     * Identifies the type of validation response.
+     */
+    private ValidationInputDiscriminator validationType = ValidationInputDiscriminator.VALIDATE_ADDRESS;
+
+    /*
      * The address validation status.
      */
-    @JsonProperty(value = "validationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private AddressValidationStatus validationStatus;
 
     /*
      * List of alternate addresses.
      */
-    @JsonProperty(value = "alternateAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ShippingAddress> alternateAddresses;
 
-    /** Creates an instance of AddressValidationProperties class. */
+    /**
+     * Creates an instance of AddressValidationProperties class.
+     */
     public AddressValidationProperties() {
     }
 
     /**
+     * Get the validationType property: Identifies the type of validation response.
+     * 
+     * @return the validationType value.
+     */
+    @Override
+    public ValidationInputDiscriminator validationType() {
+        return this.validationType;
+    }
+
+    /**
      * Get the validationStatus property: The address validation status.
-     *
+     * 
      * @return the validationStatus value.
      */
     public AddressValidationStatus validationStatus() {
@@ -42,7 +58,7 @@ public final class AddressValidationProperties extends ValidationInputResponse {
 
     /**
      * Get the alternateAddresses property: List of alternate addresses.
-     *
+     * 
      * @return the alternateAddresses value.
      */
     public List<ShippingAddress> alternateAddresses() {
@@ -51,14 +67,63 @@ public final class AddressValidationProperties extends ValidationInputResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (alternateAddresses() != null) {
             alternateAddresses().forEach(e -> e.validate());
         }
+        if (error() != null) {
+            error().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validationType",
+            this.validationType == null ? null : this.validationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddressValidationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddressValidationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddressValidationProperties.
+     */
+    public static AddressValidationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddressValidationProperties deserializedAddressValidationProperties = new AddressValidationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    deserializedAddressValidationProperties.withError(CloudError.fromJson(reader));
+                } else if ("validationType".equals(fieldName)) {
+                    deserializedAddressValidationProperties.validationType
+                        = ValidationInputDiscriminator.fromString(reader.getString());
+                } else if ("validationStatus".equals(fieldName)) {
+                    deserializedAddressValidationProperties.validationStatus
+                        = AddressValidationStatus.fromString(reader.getString());
+                } else if ("alternateAddresses".equals(fieldName)) {
+                    List<ShippingAddress> alternateAddresses
+                        = reader.readArray(reader1 -> ShippingAddress.fromJson(reader1));
+                    deserializedAddressValidationProperties.alternateAddresses = alternateAddresses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddressValidationProperties;
+        });
     }
 }

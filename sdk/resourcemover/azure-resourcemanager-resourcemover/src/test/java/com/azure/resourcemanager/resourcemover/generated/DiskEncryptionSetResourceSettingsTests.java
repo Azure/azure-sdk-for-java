@@ -11,20 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskEncryptionSetResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskEncryptionSetResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"Microsoft.Compute/diskEncryptionSets\",\"targetResourceName\":\"zpswiydmc\",\"targetResourceGroupName\":\"hzdxssadbzm\"}")
-                .toObject(DiskEncryptionSetResourceSettings.class);
+        DiskEncryptionSetResourceSettings model = BinaryData.fromString(
+            "{\"resourceType\":\"Microsoft.Compute/diskEncryptionSets\",\"targetResourceName\":\"zpswiydmc\",\"targetResourceGroupName\":\"hzdxssadbzm\"}")
+            .toObject(DiskEncryptionSetResourceSettings.class);
         Assertions.assertEquals("zpswiydmc", model.targetResourceName());
         Assertions.assertEquals("hzdxssadbzm", model.targetResourceGroupName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskEncryptionSetResourceSettings model =
-            new DiskEncryptionSetResourceSettings()
-                .withTargetResourceName("zpswiydmc")
+        DiskEncryptionSetResourceSettings model
+            = new DiskEncryptionSetResourceSettings().withTargetResourceName("zpswiydmc")
                 .withTargetResourceGroupName("hzdxssadbzm");
         model = BinaryData.fromObject(model).toObject(DiskEncryptionSetResourceSettings.class);
         Assertions.assertEquals("zpswiydmc", model.targetResourceName());

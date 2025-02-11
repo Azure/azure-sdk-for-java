@@ -5,29 +5,80 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ResourceTypeRegistrationPropertiesExtensionOptions model. */
+/**
+ * The ResourceTypeRegistrationPropertiesExtensionOptions model.
+ */
 @Fluent
 public final class ResourceTypeRegistrationPropertiesExtensionOptions extends ResourceTypeExtensionOptions {
-    /** Creates an instance of ResourceTypeRegistrationPropertiesExtensionOptions class. */
+    /**
+     * Creates an instance of ResourceTypeRegistrationPropertiesExtensionOptions class.
+     */
     public ResourceTypeRegistrationPropertiesExtensionOptions() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ResourceTypeRegistrationPropertiesExtensionOptions withResourceCreationBegin(
-        ResourceTypeExtensionOptionsResourceCreationBegin resourceCreationBegin) {
+    public ResourceTypeRegistrationPropertiesExtensionOptions
+        withResourceCreationBegin(ResourceTypeExtensionOptionsResourceCreationBegin resourceCreationBegin) {
         super.withResourceCreationBegin(resourceCreationBegin);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (resourceCreationBegin() != null) {
+            resourceCreationBegin().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resourceCreationBegin", resourceCreationBegin());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceTypeRegistrationPropertiesExtensionOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceTypeRegistrationPropertiesExtensionOptions if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceTypeRegistrationPropertiesExtensionOptions.
+     */
+    public static ResourceTypeRegistrationPropertiesExtensionOptions fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceTypeRegistrationPropertiesExtensionOptions deserializedResourceTypeRegistrationPropertiesExtensionOptions
+                = new ResourceTypeRegistrationPropertiesExtensionOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceCreationBegin".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationPropertiesExtensionOptions
+                        .withResourceCreationBegin(ResourceTypeExtensionOptionsResourceCreationBegin.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceTypeRegistrationPropertiesExtensionOptions;
+        });
     }
 }

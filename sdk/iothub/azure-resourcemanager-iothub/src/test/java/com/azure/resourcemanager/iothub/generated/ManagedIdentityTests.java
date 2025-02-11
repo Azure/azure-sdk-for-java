@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentity model =
-            BinaryData.fromString("{\"userAssignedIdentity\":\"deyeamdphagalpbu\"}").toObject(ManagedIdentity.class);
+        ManagedIdentity model
+            = BinaryData.fromString("{\"userAssignedIdentity\":\"deyeamdphagalpbu\"}").toObject(ManagedIdentity.class);
         Assertions.assertEquals("deyeamdphagalpbu", model.userAssignedIdentity());
     }
 

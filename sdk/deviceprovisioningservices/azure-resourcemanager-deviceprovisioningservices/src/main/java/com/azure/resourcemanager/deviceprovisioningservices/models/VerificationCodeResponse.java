@@ -6,39 +6,41 @@ package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.VerificationCodeResponseInner;
 
-/** An immutable client-side representation of VerificationCodeResponse. */
+/**
+ * An immutable client-side representation of VerificationCodeResponse.
+ */
 public interface VerificationCodeResponse {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the etag property: Request etag.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     VerificationCodeResponseProperties properties();
@@ -46,7 +48,7 @@ public interface VerificationCodeResponse {
     /**
      * Gets the inner com.azure.resourcemanager.deviceprovisioningservices.fluent.models.VerificationCodeResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     VerificationCodeResponseInner innerModel();

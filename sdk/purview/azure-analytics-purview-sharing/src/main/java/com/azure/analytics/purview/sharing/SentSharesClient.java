@@ -18,14 +18,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
-/** Initializes a new instance of the synchronous PurviewShareClient type. */
+/**
+ * Initializes a new instance of the synchronous PurviewShareClient type.
+ */
 @ServiceClient(builder = SentSharesClientBuilder.class)
 public final class SentSharesClient {
-    @Generated private final SentSharesAsyncClient client;
+    @Generated
+    private final SentSharesAsyncClient client;
 
     /**
      * Initializes an instance of SentSharesClient class.
-     *
+     * 
      * @param client the async client.
      */
     @Generated
@@ -35,29 +38,28 @@ public final class SentSharesClient {
 
     /**
      * Get a list of sent shares.
-     *
-     * <p>List sent shares.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * 
+     * List sent shares.
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     shareKind: String(InPlace) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param referenceName A name that references a data store.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -74,18 +76,20 @@ public final class SentSharesClient {
 
     /**
      * Get a sent share by guid.
-     *
-     * <p>Get a sent share.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Get a sent share.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     shareKind: String(InPlace) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param sentShareId Id of the sent share.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -102,27 +106,32 @@ public final class SentSharesClient {
 
     /**
      * Create or replace a sent share.
-     *
-     * <p>Create or replace a sent share.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Create or replace a sent share.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     shareKind: String(InPlace) (Required)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     shareKind: String(InPlace) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param sentShareId Id of the sent share.
      * @param sentShare The sent share to create or replace.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -134,19 +143,19 @@ public final class SentSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceSentShare(
-            String sentShareId, BinaryData sentShare, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceSentShare(String sentShareId, BinaryData sentShare,
+        RequestOptions requestOptions) {
         return this.client.beginCreateOrReplaceSentShare(sentShareId, sentShare, requestOptions).getSyncPoller();
     }
 
     /**
      * Deletes a sent share.
-     *
-     * <p>Delete a sent share.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Delete a sent share.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     endTime: OffsetDateTime (Optional)
      *     error (Optional): {
@@ -161,8 +170,9 @@ public final class SentSharesClient {
      *     startTime: OffsetDateTime (Optional)
      *     status: String(Running/TransientFailure/Succeeded/Failed/NotStarted) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param sentShareId Id of the sent share.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -179,29 +189,28 @@ public final class SentSharesClient {
 
     /**
      * List all sent share invitations in a sent share
-     *
-     * <p>List sent share recipients.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * 
+     * List sent share recipients.
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     invitationKind: String(User/Service) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param sentShareId Id of the sent share.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -218,18 +227,20 @@ public final class SentSharesClient {
 
     /**
      * Get sent share invitation for a given sent share
-     *
-     * <p>Get recipient for a given sent share.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Get recipient for a given sent share.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     invitationKind: String(User/Service) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param sentShareId Id of the sent share.
      * @param sentShareInvitationId Id of the sent share invitation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -241,36 +252,40 @@ public final class SentSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSentShareInvitationWithResponse(
-            String sentShareId, String sentShareInvitationId, RequestOptions requestOptions) {
-        return this.client
-                .getSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, requestOptions)
-                .block();
+    public Response<BinaryData> getSentShareInvitationWithResponse(String sentShareId, String sentShareInvitationId,
+        RequestOptions requestOptions) {
+        return this.client.getSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, requestOptions)
+            .block();
     }
 
     /**
      * Create a sent share invitation.
-     *
-     * <p>Create a recipient for a given sent share.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Create a recipient for a given sent share.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     invitationKind: String(User/Service) (Required)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     invitationKind: String(User/Service) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param sentShareId Id of the sent share.
      * @param sentShareInvitationId Id of the sent share invitation.
      * @param sentShareInvitation The sent share invitation to create.
@@ -283,25 +298,22 @@ public final class SentSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSentShareInvitationWithResponse(
-            String sentShareId,
-            String sentShareInvitationId,
-            BinaryData sentShareInvitation,
-            RequestOptions requestOptions) {
+    public Response<BinaryData> createSentShareInvitationWithResponse(String sentShareId, String sentShareInvitationId,
+        BinaryData sentShareInvitation, RequestOptions requestOptions) {
         return this.client
-                .createSentShareInvitationWithResponse(
-                        sentShareId, sentShareInvitationId, sentShareInvitation, requestOptions)
-                .block();
+            .createSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, sentShareInvitation,
+                requestOptions)
+            .block();
     }
 
     /**
      * Delete Invitation in a share.
-     *
-     * <p>Delete a sent share invitation.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Delete a sent share invitation.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     endTime: OffsetDateTime (Optional)
      *     error (Optional): {
@@ -316,8 +328,9 @@ public final class SentSharesClient {
      *     startTime: OffsetDateTime (Optional)
      *     status: String(Running/TransientFailure/Succeeded/Failed/NotStarted) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param sentShareId Id of the sent share.
      * @param sentShareInvitationId Id of the sent share invitation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -329,27 +342,35 @@ public final class SentSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, Void> beginDeleteSentShareInvitation(
-            String sentShareId, String sentShareInvitationId, RequestOptions requestOptions) {
-        return this.client
-                .beginDeleteSentShareInvitation(sentShareId, sentShareInvitationId, requestOptions)
-                .getSyncPoller();
+    public SyncPoller<BinaryData, Void> beginDeleteSentShareInvitation(String sentShareId, String sentShareInvitationId,
+        RequestOptions requestOptions) {
+        return this.client.beginDeleteSentShareInvitation(sentShareId, sentShareInvitationId, requestOptions)
+            .getSyncPoller();
     }
 
     /**
      * Notifies the recipient of the sent share invitation.
-     *
-     * <p>Notifies the user recipient of the sent share invitation, does not apply to service invitations.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Notifies the user recipient of the sent share invitation, does not apply to service invitations.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     invitationKind: String(User/Service) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param sentShareId Id of the sent share.
      * @param sentShareInvitationId Id of the sent share invitation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -361,10 +382,9 @@ public final class SentSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> notifyUserSentShareInvitationWithResponse(
-            String sentShareId, String sentShareInvitationId, RequestOptions requestOptions) {
-        return this.client
-                .notifyUserSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, requestOptions)
-                .block();
+    public Response<BinaryData> notifyUserSentShareInvitationWithResponse(String sentShareId,
+        String sentShareInvitationId, RequestOptions requestOptions) {
+        return this.client.notifyUserSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, requestOptions)
+            .block();
     }
 }

@@ -6,13 +6,9 @@ extends:
     stages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
-          UseFederatedAuth: false
           CloudConfig:
-            Cosmos_Public:
-              SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
-                - $(sub-config-cosmos-azure-cloud-test-resources)
-          Clouds: 'Cosmos_Public_Integration'
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
           MatrixConfigs:
             - Name: Cosmos_live_test
               Path: sdk/cosmos/live-platform-matrix.json
@@ -43,13 +39,44 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
-          UseFederatedAuth: false
+          TestName: 'Cosmos_Live_Test_Http2'
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
+          MatrixConfigs:
+            - Name: Cosmos_live_test_http2
+              Path: sdk/cosmos/live-http2-platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          MatrixReplace:
+            - .*Version=1.21/1.17
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-tests
+              groupId: com.azure
+            - name: azure-cosmos-benchmark
+              groupId: com.azure
+          TimeoutInMinutes: 210
+          MaxParallel: 20
+          PreSteps:
+            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+          TestGoals: 'verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          AdditionalVariables:
+            - name: AdditionalArgs
+              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DCOSMOS.HTTP2_ENABLED=true'
+
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
           TestName: 'Spring_Data_Cosmos_Integration'
           CloudConfig:
             Public:
-              SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
-                - $(sub-config-cosmos-azure-cloud-test-resources)
+              ServiceConnection: azure-sdk-tests-cosmos
           MatrixConfigs:
             - Name: Cosmos_live_test_integration
               Path: sdk/spring/pipeline/cosmos-integration-matrix.json
@@ -73,13 +100,10 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
-          UseFederatedAuth: false
           TestName: 'Kafka_Cosmos_Integration'
           CloudConfig:
             Public:
-              SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
-                - $(sub-config-cosmos-azure-cloud-test-resources)
+              ServiceConnection: azure-sdk-tests-cosmos
           MatrixConfigs:
             - Name: Kafka_Cosmos_Integration_Test
               Path: sdk/cosmos/kafka-cosmos-matrix.json

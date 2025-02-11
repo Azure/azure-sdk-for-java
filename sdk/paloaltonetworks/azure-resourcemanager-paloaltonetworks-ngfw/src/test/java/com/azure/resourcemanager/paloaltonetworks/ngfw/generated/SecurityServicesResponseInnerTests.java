@@ -25,10 +25,12 @@ public final class SecurityServicesResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityServicesResponseInner model = new SecurityServicesResponseInner()
-            .withValue(new SecurityServicesTypeList().withType("civfsnkymuctq").withEntry(
-                Arrays.asList(new NameDescriptionObject().withName("fbebrjcxer").withDescription("wutttxfvjrbi"))))
-            .withNextLink("hxepcyvahfnlj");
+        SecurityServicesResponseInner model
+            = new SecurityServicesResponseInner()
+                .withValue(new SecurityServicesTypeList().withType("civfsnkymuctq")
+                    .withEntry(Arrays
+                        .asList(new NameDescriptionObject().withName("fbebrjcxer").withDescription("wutttxfvjrbi"))))
+                .withNextLink("hxepcyvahfnlj");
         model = BinaryData.fromObject(model).toObject(SecurityServicesResponseInner.class);
         Assertions.assertEquals("civfsnkymuctq", model.value().type());
         Assertions.assertEquals("fbebrjcxer", model.value().entry().get(0).name());

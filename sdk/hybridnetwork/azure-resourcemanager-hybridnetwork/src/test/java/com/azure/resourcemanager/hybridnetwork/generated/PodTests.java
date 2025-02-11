@@ -33,11 +33,16 @@ public final class PodTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Pod model
-            = new Pod().withName("hqjohxcrsbfova").withNamespace("ruvw").withDesired(1393923794).withReady(1495438524)
-                .withStatus(PodStatus.NOT_READY).withCreationTime(OffsetDateTime.parse("2021-05-02T16:44:33Z"))
-                .withEvents(Arrays.asList(new PodEvent().withType(PodEventType.NORMAL).withReason("xb")
-                    .withMessage("bsrfbj").withLastSeenTime(OffsetDateTime.parse("2021-07-26T21:20:39Z"))));
+        Pod model = new Pod().withName("hqjohxcrsbfova")
+            .withNamespace("ruvw")
+            .withDesired(1393923794)
+            .withReady(1495438524)
+            .withStatus(PodStatus.NOT_READY)
+            .withCreationTime(OffsetDateTime.parse("2021-05-02T16:44:33Z"))
+            .withEvents(Arrays.asList(new PodEvent().withType(PodEventType.NORMAL)
+                .withReason("xb")
+                .withMessage("bsrfbj")
+                .withLastSeenTime(OffsetDateTime.parse("2021-07-26T21:20:39Z"))));
         model = BinaryData.fromObject(model).toObject(Pod.class);
         Assertions.assertEquals("hqjohxcrsbfova", model.name());
         Assertions.assertEquals("ruvw", model.namespace());

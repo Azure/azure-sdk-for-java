@@ -9,9 +9,17 @@ import java.util.List;
 /** An immutable client-side representation of an Azure RegistryTaskStep registry task. */
 @Fluent()
 public interface RegistryTaskStep {
-    /** @return the base image dependencies of this RegistryTaskStep */
+    /**
+     * Gets the base image dependencies.
+     *
+     * @return the base image dependencies of this RegistryTaskStep
+     */
     List<BaseImageDependency> baseImageDependencies();
 
-    /** @return the context path of this RegistryTaskStep */
+    /**
+     * Gets the context path.
+     *
+     * @return the context path of this RegistryTaskStep
+     */
     String contextPath();
 }

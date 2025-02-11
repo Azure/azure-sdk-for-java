@@ -53,6 +53,11 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsPr
      */
     private boolean managedIdentityEnabled;
 
+    /**
+     * The bean name of type 'com.azure.core.credential.TokenCredential' to use when performing authentication with Azure.
+     */
+    private String tokenCredentialBeanName;
+
     @Override
     public String getClientId() {
         return clientId;
@@ -142,5 +147,18 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsPr
      */
     public void setManagedIdentityEnabled(boolean managedIdentityEnabled) {
         this.managedIdentityEnabled = managedIdentityEnabled;
+    }
+
+    @Override
+    public String getTokenCredentialBeanName() {
+        return tokenCredentialBeanName;
+    }
+
+    /**
+     * Set the token credential bean name.
+     * @param tokenCredentialBeanName the bean name.
+     */
+    public void setTokenCredentialBeanName(String tokenCredentialBeanName) {
+        this.tokenCredentialBeanName = tokenCredentialBeanName;
     }
 }

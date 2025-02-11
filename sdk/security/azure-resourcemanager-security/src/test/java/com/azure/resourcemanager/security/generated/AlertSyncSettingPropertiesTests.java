@@ -12,14 +12,14 @@ public final class AlertSyncSettingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertSyncSettingProperties model
-            = BinaryData.fromString("{\"enabled\":true}").toObject(AlertSyncSettingProperties.class);
-        Assertions.assertEquals(true, model.enabled());
+            = BinaryData.fromString("{\"enabled\":false}").toObject(AlertSyncSettingProperties.class);
+        Assertions.assertEquals(false, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertSyncSettingProperties model = new AlertSyncSettingProperties().withEnabled(true);
+        AlertSyncSettingProperties model = new AlertSyncSettingProperties().withEnabled(false);
         model = BinaryData.fromObject(model).toObject(AlertSyncSettingProperties.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(false, model.enabled());
     }
 }

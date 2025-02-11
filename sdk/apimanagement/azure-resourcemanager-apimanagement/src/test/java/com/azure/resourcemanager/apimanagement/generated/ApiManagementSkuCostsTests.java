@@ -10,9 +10,8 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementSkuCosts;
 public final class ApiManagementSkuCostsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiManagementSkuCosts model =
-            BinaryData
-                .fromString("{\"meterID\":\"apmumm\",\"quantity\":6091055050807816766,\"extendedUnit\":\"uc\"}")
+        ApiManagementSkuCosts model
+            = BinaryData.fromString("{\"meterID\":\"apmumm\",\"quantity\":6091055050807816766,\"extendedUnit\":\"uc\"}")
                 .toObject(ApiManagementSkuCosts.class);
     }
 

@@ -25,7 +25,9 @@ public final class EnvironmentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnvironmentProperties model = new EnvironmentProperties().withMetadata(new SCMetadataEntity().withSelf("jhxbld")
-            .withResourceName("wwrlkdmtncv").withCreatedTimestamp("otllxdyhgsyo").withUpdatedTimestamp("gjltdtbnnhado")
+            .withResourceName("wwrlkdmtncv")
+            .withCreatedTimestamp("otllxdyhgsyo")
+            .withUpdatedTimestamp("gjltdtbnnhado")
             .withDeletedTimestamp("rkvcikhnvpa"));
         model = BinaryData.fromObject(model).toObject(EnvironmentProperties.class);
         Assertions.assertEquals("jhxbld", model.metadata().self());

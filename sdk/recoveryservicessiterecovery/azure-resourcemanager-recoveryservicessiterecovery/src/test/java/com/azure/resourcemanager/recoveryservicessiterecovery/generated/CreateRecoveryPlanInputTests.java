@@ -48,40 +48,39 @@ public final class CreateRecoveryPlanInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateRecoveryPlanInput model
-            = new CreateRecoveryPlanInput()
-                .withProperties(new CreateRecoveryPlanInputProperties().withPrimaryFabricId("gvoavyunssxlgh")
-                    .withRecoveryFabricId("ee").withFailoverDeploymentModel(FailoverDeploymentModel.NOT_APPLICABLE)
-                    .withGroups(Arrays.asList(
+        CreateRecoveryPlanInput model = new CreateRecoveryPlanInput()
+            .withProperties(new CreateRecoveryPlanInputProperties().withPrimaryFabricId("gvoavyunssxlgh")
+                .withRecoveryFabricId("ee")
+                .withFailoverDeploymentModel(FailoverDeploymentModel.NOT_APPLICABLE)
+                .withGroups(
+                    Arrays.asList(
                         new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.SHUTDOWN)
                             .withReplicationProtectedItems(Arrays.asList(
                                 new RecoveryPlanProtectedItem().withId("seksgbux").withVirtualMachineId("tu"),
                                 new RecoveryPlanProtectedItem().withId("dhga").withVirtualMachineId("pirpiwrqof")))
-                            .withStartGroupActions(Arrays.asList(new RecoveryPlanAction().withActionName("pmjnlexwhcb")
+                            .withStartGroupActions(Arrays.asList(new RecoveryPlanAction()
+                                .withActionName("pmjnlexwhcb")
                                 .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.CANCEL_FAILOVER,
                                     ReplicationProtectedItemOperation.CHANGE_PIT,
                                     ReplicationProtectedItemOperation.CANCEL_FAILOVER))
                                 .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
                                 .withCustomDetails(new RecoveryPlanActionDetails())))
-                            .withEndGroupActions(
-                                Arrays.asList(
-                                    new RecoveryPlanAction()
-                                        .withActionName("uuerctatoyi")
-                                        .withFailoverTypes(
-                                            Arrays.asList(ReplicationProtectedItemOperation.UNPLANNED_FAILOVER,
-                                                ReplicationProtectedItemOperation.DISABLE_PROTECTION))
-                                        .withFailoverDirections(
-                                            Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
-                                        .withCustomDetails(new RecoveryPlanActionDetails()),
-                                    new RecoveryPlanAction().withActionName("lc")
-                                        .withFailoverTypes(
-                                            Arrays.asList(ReplicationProtectedItemOperation.UNPLANNED_FAILOVER,
-                                                ReplicationProtectedItemOperation.COMMIT,
-                                                ReplicationProtectedItemOperation.TEST_FAILOVER_CLEANUP,
-                                                ReplicationProtectedItemOperation.CHANGE_PIT))
-                                        .withFailoverDirections(Arrays.asList(
-                                            PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
-                                        .withCustomDetails(new RecoveryPlanActionDetails()))),
+                            .withEndGroupActions(Arrays.asList(new RecoveryPlanAction()
+                                .withActionName("uuerctatoyi")
+                                .withFailoverTypes(
+                                    Arrays.asList(ReplicationProtectedItemOperation.UNPLANNED_FAILOVER,
+                                        ReplicationProtectedItemOperation.DISABLE_PROTECTION))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                                new RecoveryPlanAction().withActionName("lc")
+                                    .withFailoverTypes(
+                                        Arrays.asList(ReplicationProtectedItemOperation.UNPLANNED_FAILOVER,
+                                            ReplicationProtectedItemOperation.COMMIT,
+                                            ReplicationProtectedItemOperation.TEST_FAILOVER_CLEANUP,
+                                            ReplicationProtectedItemOperation.CHANGE_PIT))
+                                    .withFailoverDirections(
+                                        Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                    .withCustomDetails(new RecoveryPlanActionDetails()))),
                         new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
                             .withReplicationProtectedItems(Arrays
                                 .asList(new RecoveryPlanProtectedItem().withId("fsrucv")
@@ -89,10 +88,11 @@ public final class CreateRecoveryPlanInputTests {
                             .withStartGroupActions(Arrays.asList(new RecoveryPlanAction()
                                 .withActionName("fkoxmlghktuidvr")
                                 .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.PLANNED_FAILOVER))
-                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
-                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
-                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
-                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withFailoverDirections(
+                                    Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                        PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+                                        PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                        PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
                                 .withCustomDetails(new RecoveryPlanActionDetails()),
                                 new RecoveryPlanAction().withActionName("exymzvla")
                                     .withFailoverTypes(
@@ -112,8 +112,8 @@ public final class CreateRecoveryPlanInputTests {
                                     PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
                                     PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
                                 .withCustomDetails(new RecoveryPlanActionDetails())))))
-                    .withProviderSpecificInput(Arrays.asList(new RecoveryPlanProviderSpecificInput(),
-                        new RecoveryPlanProviderSpecificInput(), new RecoveryPlanProviderSpecificInput())));
+                .withProviderSpecificInput(Arrays.asList(new RecoveryPlanProviderSpecificInput(),
+                    new RecoveryPlanProviderSpecificInput(), new RecoveryPlanProviderSpecificInput())));
         model = BinaryData.fromObject(model).toObject(CreateRecoveryPlanInput.class);
         Assertions.assertEquals("gvoavyunssxlgh", model.properties().primaryFabricId());
         Assertions.assertEquals("ee", model.properties().recoveryFabricId());

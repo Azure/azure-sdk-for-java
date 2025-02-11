@@ -5,89 +5,85 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRole;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Network Device Properties defines the properties of the resource. */
+/**
+ * Network Device Properties defines the properties of the resource.
+ */
 @Fluent
 public final class NetworkDeviceProperties extends AnnotationResource {
     /*
      * Current version of the device as defined in SKU.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * Network Device SKU name.
      */
-    @JsonProperty(value = "networkDeviceSku")
     private String networkDeviceSku;
 
     /*
      * NetworkDeviceRole is the device role: Example: CE | ToR.
      */
-    @JsonProperty(value = "networkDeviceRole", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkDeviceRole networkDeviceRole;
 
     /*
      * Reference to network rack resource id.
      */
-    @JsonProperty(value = "networkRackId", access = JsonProperty.Access.WRITE_ONLY)
     private String networkRackId;
 
     /*
      * Management IPv4 Address.
      */
-    @JsonProperty(value = "managementIpv4Address", access = JsonProperty.Access.WRITE_ONLY)
     private String managementIpv4Address;
 
     /*
      * Management IPv6 Address.
      */
-    @JsonProperty(value = "managementIpv6Address", access = JsonProperty.Access.WRITE_ONLY)
     private String managementIpv6Address;
 
     /*
      * Configuration state of the resource.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Administrative state of the resource.
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private AdministrativeState administrativeState;
 
     /*
      * The host name of the device.
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
      * Serial number of the device. Format of serial Number - Make;Model;HardwareRevisionId;SerialNumber.
      */
-    @JsonProperty(value = "serialNumber")
     private String serialNumber;
 
-    /** Creates an instance of NetworkDeviceProperties class. */
+    /**
+     * Creates an instance of NetworkDeviceProperties class.
+     */
     public NetworkDeviceProperties() {
     }
 
     /**
      * Get the version property: Current version of the device as defined in SKU.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -96,7 +92,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Get the networkDeviceSku property: Network Device SKU name.
-     *
+     * 
      * @return the networkDeviceSku value.
      */
     public String networkDeviceSku() {
@@ -105,7 +101,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Set the networkDeviceSku property: Network Device SKU name.
-     *
+     * 
      * @param networkDeviceSku the networkDeviceSku value to set.
      * @return the NetworkDeviceProperties object itself.
      */
@@ -116,7 +112,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Get the networkDeviceRole property: NetworkDeviceRole is the device role: Example: CE | ToR.
-     *
+     * 
      * @return the networkDeviceRole value.
      */
     public NetworkDeviceRole networkDeviceRole() {
@@ -125,7 +121,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Get the networkRackId property: Reference to network rack resource id.
-     *
+     * 
      * @return the networkRackId value.
      */
     public String networkRackId() {
@@ -134,7 +130,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Get the managementIpv4Address property: Management IPv4 Address.
-     *
+     * 
      * @return the managementIpv4Address value.
      */
     public String managementIpv4Address() {
@@ -143,7 +139,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Get the managementIpv6Address property: Management IPv6 Address.
-     *
+     * 
      * @return the managementIpv6Address value.
      */
     public String managementIpv6Address() {
@@ -152,7 +148,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Get the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -161,7 +157,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -170,7 +166,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -179,7 +175,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Get the hostname property: The host name of the device.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -188,7 +184,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Set the hostname property: The host name of the device.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the NetworkDeviceProperties object itself.
      */
@@ -200,7 +196,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
     /**
      * Get the serialNumber property: Serial number of the device. Format of serial Number -
      * Make;Model;HardwareRevisionId;SerialNumber.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -210,7 +206,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
     /**
      * Set the serialNumber property: Serial number of the device. Format of serial Number -
      * Make;Model;HardwareRevisionId;SerialNumber.
-     *
+     * 
      * @param serialNumber the serialNumber value to set.
      * @return the NetworkDeviceProperties object itself.
      */
@@ -219,7 +215,9 @@ public final class NetworkDeviceProperties extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkDeviceProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -228,11 +226,75 @@ public final class NetworkDeviceProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("networkDeviceSku", this.networkDeviceSku);
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkDeviceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkDeviceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkDeviceProperties.
+     */
+    public static NetworkDeviceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkDeviceProperties deserializedNetworkDeviceProperties = new NetworkDeviceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.withAnnotation(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.version = reader.getString();
+                } else if ("networkDeviceSku".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.networkDeviceSku = reader.getString();
+                } else if ("networkDeviceRole".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.networkDeviceRole
+                        = NetworkDeviceRole.fromString(reader.getString());
+                } else if ("networkRackId".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.networkRackId = reader.getString();
+                } else if ("managementIpv4Address".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.managementIpv4Address = reader.getString();
+                } else if ("managementIpv6Address".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.managementIpv6Address = reader.getString();
+                } else if ("configurationState".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.hostname = reader.getString();
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.serialNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkDeviceProperties;
+        });
     }
 }

@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoScaleVCorePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoScaleVCoreProperties model =
-            BinaryData
-                .fromString(
-                    "{\"capacityObjectId\":\"wiqzbqjvsovmyo\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":1421441668}")
-                .toObject(AutoScaleVCoreProperties.class);
-        Assertions.assertEquals(1421441668, model.capacityLimit());
-        Assertions.assertEquals("wiqzbqjvsovmyo", model.capacityObjectId());
+        AutoScaleVCoreProperties model = BinaryData.fromString(
+            "{\"capacityObjectId\":\"deyeamdphagalpbu\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":9013568}")
+            .toObject(AutoScaleVCoreProperties.class);
+        Assertions.assertEquals(9013568, model.capacityLimit());
+        Assertions.assertEquals("deyeamdphagalpbu", model.capacityObjectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoScaleVCoreProperties model =
-            new AutoScaleVCoreProperties().withCapacityLimit(1421441668).withCapacityObjectId("wiqzbqjvsovmyo");
+        AutoScaleVCoreProperties model
+            = new AutoScaleVCoreProperties().withCapacityLimit(9013568).withCapacityObjectId("deyeamdphagalpbu");
         model = BinaryData.fromObject(model).toObject(AutoScaleVCoreProperties.class);
-        Assertions.assertEquals(1421441668, model.capacityLimit());
-        Assertions.assertEquals("wiqzbqjvsovmyo", model.capacityObjectId());
+        Assertions.assertEquals(9013568, model.capacityLimit());
+        Assertions.assertEquals("deyeamdphagalpbu", model.capacityObjectId());
     }
 }

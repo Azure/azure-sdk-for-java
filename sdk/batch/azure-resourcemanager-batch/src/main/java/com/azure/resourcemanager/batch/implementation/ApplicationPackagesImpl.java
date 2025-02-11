@@ -30,8 +30,8 @@ public final class ApplicationPackagesImpl implements ApplicationPackages {
 
     public Response<ApplicationPackage> activateWithResponse(String resourceGroupName, String accountName,
         String applicationName, String versionName, ActivateApplicationPackageParameters parameters, Context context) {
-        Response<ApplicationPackageInner> inner = this.serviceClient().activateWithResponse(resourceGroupName,
-            accountName, applicationName, versionName, parameters, context);
+        Response<ApplicationPackageInner> inner = this.serviceClient()
+            .activateWithResponse(resourceGroupName, accountName, applicationName, versionName, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationPackageImpl(inner.getValue(), this.manager()));
@@ -53,8 +53,8 @@ public final class ApplicationPackagesImpl implements ApplicationPackages {
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String applicationName,
         String versionName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, applicationName, versionName,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, accountName, applicationName, versionName, context);
     }
 
     public void delete(String resourceGroupName, String accountName, String applicationName, String versionName) {
@@ -63,8 +63,8 @@ public final class ApplicationPackagesImpl implements ApplicationPackages {
 
     public Response<ApplicationPackage> getWithResponse(String resourceGroupName, String accountName,
         String applicationName, String versionName, Context context) {
-        Response<ApplicationPackageInner> inner = this.serviceClient().getWithResponse(resourceGroupName, accountName,
-            applicationName, versionName, context);
+        Response<ApplicationPackageInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, accountName, applicationName, versionName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationPackageImpl(inner.getValue(), this.manager()));

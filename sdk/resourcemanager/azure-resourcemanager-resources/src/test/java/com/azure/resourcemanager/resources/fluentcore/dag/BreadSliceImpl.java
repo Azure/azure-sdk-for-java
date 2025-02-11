@@ -28,9 +28,7 @@ public class BreadSliceImpl extends ExecutableImpl<IBreadSlice> implements IBrea
     @Override
     public Mono<IBreadSlice> executeWorkAsync() {
         LOGGER.log(LogLevel.VERBOSE, () -> "Bread(" + this.name + ")::executeWorkAsync() [Getting slice from store]");
-        return Mono.just(this)
-                .delayElement(Duration.ofMillis(250))
-                .map(breadSlice -> breadSlice);
+        return Mono.just(this).delayElement(Duration.ofMillis(250)).map(breadSlice -> breadSlice);
     }
 
     @Override

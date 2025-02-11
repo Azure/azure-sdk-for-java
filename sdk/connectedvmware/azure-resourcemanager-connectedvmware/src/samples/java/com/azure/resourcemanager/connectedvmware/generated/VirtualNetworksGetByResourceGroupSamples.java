@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-/** Samples for VirtualNetworks GetByResourceGroup. */
+/**
+ * Samples for VirtualNetworks GetByResourceGroup.
+ */
 public final class VirtualNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetVirtualNetwork.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetVirtualNetwork.json
      */
     /**
      * Sample code: GetVirtualNetwork.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getVirtualNetwork(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualNetworks()
+        manager.virtualNetworks()
             .getByResourceGroupWithResponse("testrg", "ProdNetwork", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,15 +9,31 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 /** Represents a virtual machine image SKU. */
 @Fluent
 public interface VirtualMachineSku extends HasName {
-    /** @return the region where this virtual machine image offer SKU is available */
+    /**
+     * Gets the region where this virtual machine image offer SKU is available.
+     *
+     * @return the region where this virtual machine image offer SKU is available
+     */
     Region region();
 
-    /** @return the publisher of this virtual machine image offer SKU */
+    /**
+     * Gets the publisher of this virtual machine image offer SKU.
+     *
+     * @return the publisher of this virtual machine image offer SKU
+     */
     VirtualMachinePublisher publisher();
 
-    /** @return the virtual machine offer name that this SKU belongs to */
+    /**
+     * Gets the virtual machine offer name that this SKU belongs to.
+     *
+     * @return the virtual machine offer name that this SKU belongs to
+     */
     VirtualMachineOffer offer();
 
-    /** @return virtual machine images in the SKU */
+    /**
+     * Gets virtual machine images in the SKU.
+     *
+     * @return virtual machine images in the SKU
+     */
     VirtualMachineImagesInSku images();
 }

@@ -10,10 +10,8 @@ import com.azure.resourcemanager.managedapplications.models.UserAssignedResource
 public final class UserAssignedResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedResourceIdentity model =
-            BinaryData
-                .fromString("{\"principalId\":\"ot\",\"tenantId\":\"qgoulznd\"}")
-                .toObject(UserAssignedResourceIdentity.class);
+        UserAssignedResourceIdentity model = BinaryData.fromString("{\"principalId\":\"ot\",\"tenantId\":\"qgoulznd\"}")
+            .toObject(UserAssignedResourceIdentity.class);
     }
 
     @org.junit.jupiter.api.Test

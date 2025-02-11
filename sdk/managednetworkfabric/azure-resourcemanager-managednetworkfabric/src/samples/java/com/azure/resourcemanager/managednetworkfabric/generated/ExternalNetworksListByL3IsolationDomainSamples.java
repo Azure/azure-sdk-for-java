@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for ExternalNetworks ListByL3IsolationDomain. */
+/**
+ * Samples for ExternalNetworks ListByL3IsolationDomain.
+ */
 public final class ExternalNetworksListByL3IsolationDomainSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/ExternalNetworks_ListByL3IsolationDomain_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * ExternalNetworks_ListByL3IsolationDomain_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExternalNetworks_ListByL3IsolationDomain_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void externalNetworksListByL3IsolationDomainMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .externalNetworks()
+        manager.externalNetworks()
             .listByL3IsolationDomain("example-rg", "example-l3domain", com.azure.core.util.Context.NONE);
     }
 }

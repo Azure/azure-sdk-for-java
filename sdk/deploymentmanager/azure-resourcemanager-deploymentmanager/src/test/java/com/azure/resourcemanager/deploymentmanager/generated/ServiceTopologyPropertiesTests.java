@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceTopologyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceTopologyProperties model =
-            BinaryData.fromString("{\"artifactSourceId\":\"ifsqesaagdfmg\"}").toObject(ServiceTopologyProperties.class);
+        ServiceTopologyProperties model = BinaryData.fromString("{\"artifactSourceId\":\"ifsqesaagdfmg\"}")
+            .toObject(ServiceTopologyProperties.class);
         Assertions.assertEquals("ifsqesaagdfmg", model.artifactSourceId());
     }
 

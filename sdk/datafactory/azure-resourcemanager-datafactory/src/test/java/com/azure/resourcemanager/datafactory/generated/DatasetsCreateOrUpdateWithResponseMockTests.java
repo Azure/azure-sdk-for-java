@@ -29,7 +29,7 @@ public final class DatasetsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"nevbkkdbhgu\",\"structure\":\"dataxqi\",\"schema\":\"datarj\",\"linkedServiceName\":{\"referenceName\":\"lieyyfqhndj\",\"parameters\":{\"fhsgpy\":\"datavuyxccraj\"}},\"parameters\":{\"nrlpsjbnnuqsz\":{\"type\":\"Int\",\"defaultValue\":\"datad\"},\"dbunxufataq\":{\"type\":\"Array\",\"defaultValue\":\"dataiufrqsmjg\"},\"unazl\":{\"type\":\"Array\",\"defaultValue\":\"datahgdwhacurmm\"},\"isuhareqyiadvv\":{\"type\":\"String\",\"defaultValue\":\"datanyzcnq\"}},\"annotations\":[\"datafyel\",\"datan\",\"datapnyyuxcjq\"],\"folder\":{\"name\":\"sdntuko\"},\"\":{\"ygecly\":\"dataflfv\",\"jbzd\":\"datatoshkzib\"}},\"name\":\"gpv\",\"type\":\"icw\",\"etag\":\"y\",\"id\":\"hglltjghdfus\"}";
+            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"yqgvofhpguj\",\"structure\":\"datakwwyfsq\",\"schema\":\"datass\",\"linkedServiceName\":{\"referenceName\":\"cxazvrmu\",\"parameters\":{\"bruszqmud\":\"dataegohpwnrmhlotk\",\"lowesixpwfvtwgn\":\"dataefsxmd\"}},\"parameters\":{\"hcjhinjnwpi\":{\"type\":\"Bool\",\"defaultValue\":\"dataxwkomjsfkdv\"}},\"annotations\":[\"datalbajqecngw\",\"datazuaxsrmadakj\"],\"folder\":{\"name\":\"uv\"},\"\":{\"hotwq\":\"databkkekldxclqjn\",\"utmsmdibzvytem\":\"datagvrzlimz\",\"kcxuvdcwtnz\":\"datasa\"}},\"name\":\"eghn\",\"type\":\"wjwwhsfjqxlbclvp\",\"etag\":\"utyrsravsscb\",\"id\":\"xmscafgdtuzcl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,28 +39,29 @@ public final class DatasetsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DatasetResource response = manager.datasets()
-            .define("wc")
-            .withExistingFactory("cnwqeixyjlfobj", "betsvnloduvcq")
-            .withProperties(new Dataset().withDescription("feolhs")
-                .withStructure("datakivlzvxmqvl")
-                .withSchema("datappnsiynz")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("adkurwg")
-                    .withParameters(mapOf("llcsdgmcjsktej", "datanjox", "ezzpfldd", "datamhttiqbnfyixkeav", "xrfr",
-                        "datavcwhodfwv")))
-                .withParameters(
-                    mapOf("ofgpns", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datat"),
-                        "w", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datase")))
-                .withAnnotations(Arrays.asList("datafpoqbekkqsaby"))
-                .withFolder(new DatasetFolder().withName("rwprbzfbdsncy"))
+            .define("gdgfjvitdp")
+            .withExistingFactory("iv", "ftjjmtk")
+            .withProperties(new Dataset().withDescription("oesx")
+                .withStructure("datavslhncasp")
+                .withSchema("dataglaxvn")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("qhatwxq")
+                    .withParameters(mapOf("huudtiecnpka", "databirzjhaicyuplm", "osrywpfcqle", "datatjqjtoeaug")))
+                .withParameters(mapOf("colwquxrrjud",
+                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataizdecgiom"),
+                    "twfmvpsvwwtncvn",
+                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datahgsd"), "icovvd",
+                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datagnl")))
+                .withAnnotations(Arrays.asList("datafnbdpaoijx", "datagfmftrv"))
+                .withFolder(new DatasetFolder().withName("jfkpuszsjayrl"))
                 .withAdditionalProperties(mapOf("type", "Dataset")))
-            .withIfMatch("tbwe")
+            .withIfMatch("zipzkkleazkc")
             .create();
 
-        Assertions.assertEquals("hglltjghdfus", response.id());
-        Assertions.assertEquals("nevbkkdbhgu", response.properties().description());
-        Assertions.assertEquals("lieyyfqhndj", response.properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, response.properties().parameters().get("nrlpsjbnnuqsz").type());
-        Assertions.assertEquals("sdntuko", response.properties().folder().name());
+        Assertions.assertEquals("xmscafgdtuzcl", response.id());
+        Assertions.assertEquals("yqgvofhpguj", response.properties().description());
+        Assertions.assertEquals("cxazvrmu", response.properties().linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, response.properties().parameters().get("hcjhinjnwpi").type());
+        Assertions.assertEquals("uv", response.properties().folder().name());
     }
 
     // Use "Map.of" if available

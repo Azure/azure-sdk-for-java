@@ -8,12 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.costmanagement.fluent.models.ViewProperties;
 import com.azure.resourcemanager.costmanagement.models.AccumulatedType;
 import com.azure.resourcemanager.costmanagement.models.ChartType;
+import com.azure.resourcemanager.costmanagement.models.FunctionType;
 import com.azure.resourcemanager.costmanagement.models.KpiProperties;
 import com.azure.resourcemanager.costmanagement.models.KpiType;
 import com.azure.resourcemanager.costmanagement.models.MetricType;
+import com.azure.resourcemanager.costmanagement.models.OperatorType;
 import com.azure.resourcemanager.costmanagement.models.PivotProperties;
 import com.azure.resourcemanager.costmanagement.models.PivotType;
+import com.azure.resourcemanager.costmanagement.models.QueryColumnType;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigAggregation;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigComparisonExpression;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigDatasetConfiguration;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigFilter;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigGrouping;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigSorting;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigSortingType;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.ReportGranularityType;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
@@ -27,84 +37,172 @@ import org.junit.jupiter.api.Assertions;
 public final class ViewPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ViewProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"mrldhu\",\"scope\":\"zzd\",\"createdOn\":\"2021-02-05T21:48:33Z\",\"modifiedOn\":\"2021-07-06T17:21:07Z\",\"dateRange\":\"cdgea\",\"currency\":\"gphuticndvka\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"YearToDate\",\"timePeriod\":{\"from\":\"2021-02-22T11:39:16Z\",\"to\":\"2021-02-09T20:02:29Z\"},\"dataSet\":{\"granularity\":\"Daily\",\"aggregation\":{},\"grouping\":[],\"sorting\":[]},\"includeMonetaryCommitment\":true},\"chart\":\"Area\",\"accumulated\":\"false\",\"metric\":\"ActualCost\",\"kpis\":[{\"type\":\"Budget\",\"id\":\"kgiawxklryplwck\",\"enabled\":false},{\"type\":\"Budget\",\"id\":\"nddhsgcbacph\",\"enabled\":false},{\"type\":\"Forecast\",\"id\":\"nqgoulzndli\",\"enabled\":false},{\"type\":\"Forecast\",\"id\":\"fgibmadgakeq\",\"enabled\":false}],\"pivots\":[{\"type\":\"TagKey\",\"name\":\"e\"},{\"type\":\"Dimension\",\"name\":\"bciqfouflm\"},{\"type\":\"Dimension\",\"name\":\"smodmgloug\"},{\"type\":\"TagKey\",\"name\":\"tmut\"}]}")
-                .toObject(ViewProperties.class);
-        Assertions.assertEquals("mrldhu", model.displayName());
-        Assertions.assertEquals("zzd", model.scope());
-        Assertions.assertEquals(ChartType.AREA, model.chart());
+        ViewProperties model = BinaryData.fromString(
+            "{\"displayName\":\"zvddntwndeicbtwn\",\"scope\":\"aoqvuh\",\"createdOn\":\"2021-02-17T19:22:59Z\",\"modifiedOn\":\"2021-07-03T16:36:07Z\",\"dateRange\":\"yd\",\"currency\":\"lmjthjq\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"Custom\",\"timePeriod\":{\"from\":\"2021-11-30T09:09:34Z\",\"to\":\"2021-07-04T22:32:14Z\"},\"dataSet\":{\"granularity\":\"Monthly\",\"configuration\":{\"columns\":[\"q\",\"hkh\",\"xuigdtopbobj\",\"ghmewuam\"]},\"aggregation\":{\"pgvdf\":{\"name\":\"rzayv\",\"function\":\"Sum\"},\"xlefgugnxkrx\":{\"name\":\"iotkftutqxl\",\"function\":\"Sum\"},\"thz\":{\"name\":\"qmi\",\"function\":\"Sum\"},\"jybige\":{\"name\":\"vqdra\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"bowsk\"},{\"type\":\"Dimension\",\"name\":\"yktz\"}],\"sorting\":[{\"direction\":\"Ascending\",\"name\":\"wgqyw\"}],\"filter\":{\"and\":[{\"and\":[{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"gpphrcgyn\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"pec\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{}],\"or\":[{}],\"dimensions\":{\"name\":\"fsxlzevgbmqjqa\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"pmivkwlzu\",\"operator\":\"Contains\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"nbacfi\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"ebxetqgtzxdp\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[{},{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"feallnwsu\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"njampm\",\"operator\":\"Contains\",\"values\":[]}}],\"dimensions\":{\"name\":\"zscxaqwo\",\"operator\":\"Contains\",\"values\":[\"cbonqvpk\",\"lrxnjeaseiphe\",\"f\"]},\"tags\":{\"name\":\"keyyi\",\"operator\":\"In\",\"values\":[\"bdlwtgrhpdjpj\",\"masxazjpqyegu\",\"lhbxxhejjzzvdud\",\"wdslfhotwmcy\"]}}},\"includeMonetaryCommitment\":true},\"chart\":\"Table\",\"accumulated\":\"false\",\"metric\":\"AHUB\",\"kpis\":[{\"type\":\"Budget\",\"id\":\"dehxnltyfsoppu\",\"enabled\":false},{\"type\":\"Forecast\",\"id\":\"wd\",\"enabled\":false}],\"pivots\":[{\"type\":\"TagKey\",\"name\":\"zdmohctbqvu\"},{\"type\":\"Dimension\",\"name\":\"ndnvo\"},{\"type\":\"TagKey\",\"name\":\"jugwdkcglhsl\"}]}")
+            .toObject(ViewProperties.class);
+        Assertions.assertEquals("zvddntwndeicbtwn", model.displayName());
+        Assertions.assertEquals("aoqvuh", model.scope());
+        Assertions.assertEquals("yd", model.dateRange());
+        Assertions.assertEquals(ChartType.TABLE, model.chart());
         Assertions.assertEquals(AccumulatedType.FALSE, model.accumulated());
-        Assertions.assertEquals(MetricType.ACTUAL_COST, model.metric());
+        Assertions.assertEquals(MetricType.AHUB, model.metric());
         Assertions.assertEquals(KpiType.BUDGET, model.kpis().get(0).type());
-        Assertions.assertEquals("kgiawxklryplwck", model.kpis().get(0).id());
+        Assertions.assertEquals("dehxnltyfsoppu", model.kpis().get(0).id());
         Assertions.assertEquals(false, model.kpis().get(0).enabled());
         Assertions.assertEquals(PivotType.TAG_KEY, model.pivots().get(0).type());
-        Assertions.assertEquals("e", model.pivots().get(0).name());
+        Assertions.assertEquals("zdmohctbqvu", model.pivots().get(0).name());
         Assertions.assertEquals(ReportType.USAGE, model.type());
-        Assertions.assertEquals(ReportTimeframeType.YEAR_TO_DATE, model.timeframe());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T11:39:16Z"), model.timePeriod().from());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-09T20:02:29Z"), model.timePeriod().to());
-        Assertions.assertEquals(ReportGranularityType.DAILY, model.dataSet().granularity());
+        Assertions.assertEquals(ReportTimeframeType.CUSTOM, model.timeframe());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T09:09:34Z"), model.timePeriod().from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T22:32:14Z"), model.timePeriod().to());
+        Assertions.assertEquals(ReportGranularityType.MONTHLY, model.dataSet().granularity());
+        Assertions.assertEquals("q", model.dataSet().configuration().columns().get(0));
+        Assertions.assertEquals("rzayv", model.dataSet().aggregation().get("pgvdf").name());
+        Assertions.assertEquals(FunctionType.SUM, model.dataSet().aggregation().get("pgvdf").function());
+        Assertions.assertEquals(QueryColumnType.DIMENSION, model.dataSet().grouping().get(0).type());
+        Assertions.assertEquals("bowsk", model.dataSet().grouping().get(0).name());
+        Assertions.assertEquals(ReportConfigSortingType.ASCENDING, model.dataSet().sorting().get(0).direction());
+        Assertions.assertEquals("wgqyw", model.dataSet().sorting().get(0).name());
+        Assertions.assertEquals("gpphrcgyn", model.dataSet().filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("pec", model.dataSet().filter().and().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.dataSet().filter().and().get(0).tags().operator());
+        Assertions.assertEquals("feallnwsu", model.dataSet().filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("njampm", model.dataSet().filter().or().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().or().get(0).tags().operator());
+        Assertions.assertEquals("zscxaqwo", model.dataSet().filter().dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().dimensions().operator());
+        Assertions.assertEquals("cbonqvpk", model.dataSet().filter().dimensions().values().get(0));
+        Assertions.assertEquals("keyyi", model.dataSet().filter().tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.dataSet().filter().tags().operator());
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.dataSet().filter().tags().values().get(0));
         Assertions.assertEquals(true, model.includeMonetaryCommitment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ViewProperties model =
-            new ViewProperties()
-                .withDisplayName("mrldhu")
-                .withScope("zzd")
-                .withChart(ChartType.AREA)
+        ViewProperties model
+            = new ViewProperties().withDisplayName("zvddntwndeicbtwn")
+                .withScope("aoqvuh")
+                .withDateRange("yd")
+                .withChart(ChartType.TABLE)
                 .withAccumulated(AccumulatedType.FALSE)
-                .withMetric(MetricType.ACTUAL_COST)
-                .withKpis(
-                    Arrays
-                        .asList(
-                            new KpiProperties().withType(KpiType.BUDGET).withId("kgiawxklryplwck").withEnabled(false),
-                            new KpiProperties().withType(KpiType.BUDGET).withId("nddhsgcbacph").withEnabled(false),
-                            new KpiProperties().withType(KpiType.FORECAST).withId("nqgoulzndli").withEnabled(false),
-                            new KpiProperties().withType(KpiType.FORECAST).withId("fgibmadgakeq").withEnabled(false)))
-                .withPivots(
-                    Arrays
-                        .asList(
-                            new PivotProperties().withType(PivotType.TAG_KEY).withName("e"),
-                            new PivotProperties().withType(PivotType.DIMENSION).withName("bciqfouflm"),
-                            new PivotProperties().withType(PivotType.DIMENSION).withName("smodmgloug"),
-                            new PivotProperties().withType(PivotType.TAG_KEY).withName("tmut")))
+                .withMetric(MetricType.AHUB)
+                .withKpis(Arrays.asList(
+                    new KpiProperties().withType(KpiType.BUDGET).withId("dehxnltyfsoppu").withEnabled(false),
+                    new KpiProperties().withType(KpiType.FORECAST).withId("wd").withEnabled(false)))
+                .withPivots(Arrays.asList(new PivotProperties().withType(PivotType.TAG_KEY).withName("zdmohctbqvu"),
+                    new PivotProperties().withType(PivotType.DIMENSION).withName("ndnvo"),
+                    new PivotProperties().withType(PivotType.TAG_KEY).withName("jugwdkcglhsl")))
                 .withType(ReportType.USAGE)
-                .withTimeframe(ReportTimeframeType.YEAR_TO_DATE)
-                .withTimePeriod(
-                    new ReportConfigTimePeriod()
-                        .withFrom(OffsetDateTime.parse("2021-02-22T11:39:16Z"))
-                        .withTo(OffsetDateTime.parse("2021-02-09T20:02:29Z")))
-                .withDataSet(
-                    new ReportConfigDataset()
-                        .withGranularity(ReportGranularityType.DAILY)
-                        .withAggregation(mapOf())
-                        .withGrouping(Arrays.asList())
-                        .withSorting(Arrays.asList()))
+                .withTimeframe(ReportTimeframeType.CUSTOM)
+                .withTimePeriod(new ReportConfigTimePeriod().withFrom(OffsetDateTime.parse("2021-11-30T09:09:34Z"))
+                    .withTo(OffsetDateTime.parse("2021-07-04T22:32:14Z")))
+                .withDataSet(new ReportConfigDataset().withGranularity(ReportGranularityType.MONTHLY)
+                    .withConfiguration(new ReportConfigDatasetConfiguration()
+                        .withColumns(Arrays.asList("q", "hkh", "xuigdtopbobj", "ghmewuam")))
+                    .withAggregation(mapOf("pgvdf",
+                        new ReportConfigAggregation().withName("rzayv").withFunction(FunctionType.SUM), "xlefgugnxkrx",
+                        new ReportConfigAggregation().withName("iotkftutqxl").withFunction(FunctionType.SUM), "thz",
+                        new ReportConfigAggregation().withName("qmi").withFunction(FunctionType.SUM), "jybige",
+                        new ReportConfigAggregation().withName("vqdra").withFunction(FunctionType.SUM)))
+                    .withGrouping(
+                        Arrays.asList(new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("bowsk"),
+                            new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("yktz")))
+                    .withSorting(Arrays.asList(
+                        new ReportConfigSorting().withDirection(ReportConfigSortingType.ASCENDING).withName("wgqyw")))
+                    .withFilter(new ReportConfigFilter()
+                        .withAnd(Arrays.asList(
+                            new ReportConfigFilter().withAnd(Arrays.asList(new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("gpphrcgyn")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("pec")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList())),
+                            new ReportConfigFilter().withAnd(Arrays.asList(new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("fsxlzevgbmqjqa")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("pmivkwlzu")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList())),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("nbacfi")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("ebxetqgtzxdp")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))))
+                        .withOr(Arrays.asList(new ReportConfigFilter()
+                            .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                new ReportConfigFilter(), new ReportConfigFilter()))
+                            .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                new ReportConfigFilter(), new ReportConfigFilter()))
+                            .withDimensions(new ReportConfigComparisonExpression().withName("feallnwsu")
+                                .withOperator(OperatorType.CONTAINS)
+                                .withValues(Arrays.asList()))
+                            .withTags(new ReportConfigComparisonExpression().withName("njampm")
+                                .withOperator(OperatorType.CONTAINS)
+                                .withValues(Arrays.asList()))))
+                        .withDimensions(new ReportConfigComparisonExpression().withName("zscxaqwo")
+                            .withOperator(OperatorType.CONTAINS)
+                            .withValues(Arrays.asList("cbonqvpk", "lrxnjeaseiphe", "f")))
+                        .withTags(
+                            new ReportConfigComparisonExpression().withName("keyyi")
+                                .withOperator(OperatorType.IN)
+                                .withValues(Arrays.asList("bdlwtgrhpdjpj", "masxazjpqyegu", "lhbxxhejjzzvdud",
+                                    "wdslfhotwmcy")))))
                 .withIncludeMonetaryCommitment(true);
         model = BinaryData.fromObject(model).toObject(ViewProperties.class);
-        Assertions.assertEquals("mrldhu", model.displayName());
-        Assertions.assertEquals("zzd", model.scope());
-        Assertions.assertEquals(ChartType.AREA, model.chart());
+        Assertions.assertEquals("zvddntwndeicbtwn", model.displayName());
+        Assertions.assertEquals("aoqvuh", model.scope());
+        Assertions.assertEquals("yd", model.dateRange());
+        Assertions.assertEquals(ChartType.TABLE, model.chart());
         Assertions.assertEquals(AccumulatedType.FALSE, model.accumulated());
-        Assertions.assertEquals(MetricType.ACTUAL_COST, model.metric());
+        Assertions.assertEquals(MetricType.AHUB, model.metric());
         Assertions.assertEquals(KpiType.BUDGET, model.kpis().get(0).type());
-        Assertions.assertEquals("kgiawxklryplwck", model.kpis().get(0).id());
+        Assertions.assertEquals("dehxnltyfsoppu", model.kpis().get(0).id());
         Assertions.assertEquals(false, model.kpis().get(0).enabled());
         Assertions.assertEquals(PivotType.TAG_KEY, model.pivots().get(0).type());
-        Assertions.assertEquals("e", model.pivots().get(0).name());
+        Assertions.assertEquals("zdmohctbqvu", model.pivots().get(0).name());
         Assertions.assertEquals(ReportType.USAGE, model.type());
-        Assertions.assertEquals(ReportTimeframeType.YEAR_TO_DATE, model.timeframe());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T11:39:16Z"), model.timePeriod().from());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-09T20:02:29Z"), model.timePeriod().to());
-        Assertions.assertEquals(ReportGranularityType.DAILY, model.dataSet().granularity());
+        Assertions.assertEquals(ReportTimeframeType.CUSTOM, model.timeframe());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T09:09:34Z"), model.timePeriod().from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T22:32:14Z"), model.timePeriod().to());
+        Assertions.assertEquals(ReportGranularityType.MONTHLY, model.dataSet().granularity());
+        Assertions.assertEquals("q", model.dataSet().configuration().columns().get(0));
+        Assertions.assertEquals("rzayv", model.dataSet().aggregation().get("pgvdf").name());
+        Assertions.assertEquals(FunctionType.SUM, model.dataSet().aggregation().get("pgvdf").function());
+        Assertions.assertEquals(QueryColumnType.DIMENSION, model.dataSet().grouping().get(0).type());
+        Assertions.assertEquals("bowsk", model.dataSet().grouping().get(0).name());
+        Assertions.assertEquals(ReportConfigSortingType.ASCENDING, model.dataSet().sorting().get(0).direction());
+        Assertions.assertEquals("wgqyw", model.dataSet().sorting().get(0).name());
+        Assertions.assertEquals("gpphrcgyn", model.dataSet().filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("pec", model.dataSet().filter().and().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.dataSet().filter().and().get(0).tags().operator());
+        Assertions.assertEquals("feallnwsu", model.dataSet().filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("njampm", model.dataSet().filter().or().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().or().get(0).tags().operator());
+        Assertions.assertEquals("zscxaqwo", model.dataSet().filter().dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().dimensions().operator());
+        Assertions.assertEquals("cbonqvpk", model.dataSet().filter().dimensions().values().get(0));
+        Assertions.assertEquals("keyyi", model.dataSet().filter().tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.dataSet().filter().tags().operator());
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.dataSet().filter().tags().values().get(0));
         Assertions.assertEquals(true, model.includeMonetaryCommitment());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

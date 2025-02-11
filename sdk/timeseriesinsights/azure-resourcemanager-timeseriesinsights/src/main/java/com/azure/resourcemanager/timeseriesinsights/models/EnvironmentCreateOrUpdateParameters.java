@@ -6,40 +6,47 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters supplied to the CreateOrUpdate Environment operation. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = EnvironmentCreateOrUpdateParameters.class)
-@JsonTypeName("EnvironmentCreateOrUpdateParameters")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Gen1", value = Gen1EnvironmentCreateOrUpdateParameters.class),
-    @JsonSubTypes.Type(name = "Gen2", value = Gen2EnvironmentCreateOrUpdateParameters.class)
-})
+/**
+ * Parameters supplied to the CreateOrUpdate Environment operation.
+ */
 @Fluent
 public class EnvironmentCreateOrUpdateParameters extends CreateOrUpdateTrackedResourceProperties {
+    /*
+     * The kind of the environment.
+     */
+    private EnvironmentKind kind = EnvironmentKind.fromString("EnvironmentCreateOrUpdateParameters");
+
     /*
      * The sku determines the type of environment, either Gen1 (S1 or S2) or Gen2 (L1). For Gen1 environments the sku
      * determines the capacity of the environment, the ingress rate, and the billing rate.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
-    /** Creates an instance of EnvironmentCreateOrUpdateParameters class. */
+    /**
+     * Creates an instance of EnvironmentCreateOrUpdateParameters class.
+     */
     public EnvironmentCreateOrUpdateParameters() {
+    }
+
+    /**
+     * Get the kind property: The kind of the environment.
+     * 
+     * @return the kind value.
+     */
+    public EnvironmentKind kind() {
+        return this.kind;
     }
 
     /**
      * Get the sku property: The sku determines the type of environment, either Gen1 (S1 or S2) or Gen2 (L1). For Gen1
      * environments the sku determines the capacity of the environment, the ingress rate, and the billing rate.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -49,7 +56,7 @@ public class EnvironmentCreateOrUpdateParameters extends CreateOrUpdateTrackedRe
     /**
      * Set the sku property: The sku determines the type of environment, either Gen1 (S1 or S2) or Gen2 (L1). For Gen1
      * environments the sku determines the capacity of the environment, the ingress rate, and the billing rate.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the EnvironmentCreateOrUpdateParameters object itself.
      */
@@ -58,14 +65,18 @@ public class EnvironmentCreateOrUpdateParameters extends CreateOrUpdateTrackedRe
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnvironmentCreateOrUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnvironmentCreateOrUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -74,21 +85,100 @@ public class EnvironmentCreateOrUpdateParameters extends CreateOrUpdateTrackedRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sku in model EnvironmentCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sku in model EnvironmentCreateOrUpdateParameters"));
         } else {
             sku().validate();
+        }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model EnvironmentCreateOrUpdateParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EnvironmentCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentCreateOrUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnvironmentCreateOrUpdateParameters.
+     */
+    public static EnvironmentCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Gen1".equals(discriminatorValue)) {
+                    return Gen1EnvironmentCreateOrUpdateParameters.fromJson(readerToUse.reset());
+                } else if ("Gen2".equals(discriminatorValue)) {
+                    return Gen2EnvironmentCreateOrUpdateParameters.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EnvironmentCreateOrUpdateParameters fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentCreateOrUpdateParameters deserializedEnvironmentCreateOrUpdateParameters
+                = new EnvironmentCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedEnvironmentCreateOrUpdateParameters.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEnvironmentCreateOrUpdateParameters.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedEnvironmentCreateOrUpdateParameters.sku = Sku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEnvironmentCreateOrUpdateParameters.kind
+                        = EnvironmentKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentCreateOrUpdateParameters;
+        });
+    }
 }

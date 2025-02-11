@@ -6,26 +6,36 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of the runbook property type. */
+/**
+ * Definition of the runbook property type.
+ */
 @Fluent
-public final class ContentHash {
+public final class ContentHash implements JsonSerializable<ContentHash> {
     /*
      * Gets or sets the content hash algorithm used to hash the content.
      */
-    @JsonProperty(value = "algorithm", required = true)
     private String algorithm;
 
     /*
      * Gets or sets expected hash value of the content.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
+     * Creates an instance of ContentHash class.
+     */
+    public ContentHash() {
+    }
+
+    /**
      * Get the algorithm property: Gets or sets the content hash algorithm used to hash the content.
-     *
+     * 
      * @return the algorithm value.
      */
     public String algorithm() {
@@ -34,7 +44,7 @@ public final class ContentHash {
 
     /**
      * Set the algorithm property: Gets or sets the content hash algorithm used to hash the content.
-     *
+     * 
      * @param algorithm the algorithm value to set.
      * @return the ContentHash object itself.
      */
@@ -45,7 +55,7 @@ public final class ContentHash {
 
     /**
      * Get the value property: Gets or sets expected hash value of the content.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -54,7 +64,7 @@ public final class ContentHash {
 
     /**
      * Set the value property: Gets or sets expected hash value of the content.
-     *
+     * 
      * @param value the value value to set.
      * @return the ContentHash object itself.
      */
@@ -65,21 +75,59 @@ public final class ContentHash {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (algorithm() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property algorithm in model ContentHash"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property algorithm in model ContentHash"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ContentHash"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ContentHash"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContentHash.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("algorithm", this.algorithm);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentHash from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentHash if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContentHash.
+     */
+    public static ContentHash fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentHash deserializedContentHash = new ContentHash();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("algorithm".equals(fieldName)) {
+                    deserializedContentHash.algorithm = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedContentHash.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentHash;
+        });
+    }
 }

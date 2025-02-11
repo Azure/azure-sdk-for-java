@@ -23,8 +23,11 @@ public final class DataStoreTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataStore model = new DataStore().withSymbolicName("ogfuyzwvbhlim").withUuid("qecroodl")
-            .withCapacity("cdrdaasaxxo").withFreeSpace("mfkwiyjvzuk").withType("r");
+        DataStore model = new DataStore().withSymbolicName("ogfuyzwvbhlim")
+            .withUuid("qecroodl")
+            .withCapacity("cdrdaasaxxo")
+            .withFreeSpace("mfkwiyjvzuk")
+            .withType("r");
         model = BinaryData.fromObject(model).toObject(DataStore.class);
         Assertions.assertEquals("ogfuyzwvbhlim", model.symbolicName());
         Assertions.assertEquals("qecroodl", model.uuid());

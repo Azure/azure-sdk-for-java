@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,21 +12,29 @@ import java.util.Collection;
  * will go in Suspended state.
  */
 public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<MarketplaceSubscriptionStatus> {
-    /** Static value Provisioning for MarketplaceSubscriptionStatus. */
+    /**
+     * Static value Provisioning for MarketplaceSubscriptionStatus.
+     */
     public static final MarketplaceSubscriptionStatus PROVISIONING = fromString("Provisioning");
 
-    /** Static value Active for MarketplaceSubscriptionStatus. */
+    /**
+     * Static value Active for MarketplaceSubscriptionStatus.
+     */
     public static final MarketplaceSubscriptionStatus ACTIVE = fromString("Active");
 
-    /** Static value Suspended for MarketplaceSubscriptionStatus. */
+    /**
+     * Static value Suspended for MarketplaceSubscriptionStatus.
+     */
     public static final MarketplaceSubscriptionStatus SUSPENDED = fromString("Suspended");
 
-    /** Static value Unsubscribed for MarketplaceSubscriptionStatus. */
+    /**
+     * Static value Unsubscribed for MarketplaceSubscriptionStatus.
+     */
     public static final MarketplaceSubscriptionStatus UNSUBSCRIBED = fromString("Unsubscribed");
 
     /**
      * Creates a new instance of MarketplaceSubscriptionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +43,17 @@ public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<Ma
 
     /**
      * Creates or finds a MarketplaceSubscriptionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MarketplaceSubscriptionStatus.
      */
-    @JsonCreator
     public static MarketplaceSubscriptionStatus fromString(String name) {
         return fromString(name, MarketplaceSubscriptionStatus.class);
     }
 
     /**
      * Gets known MarketplaceSubscriptionStatus values.
-     *
+     * 
      * @return known MarketplaceSubscriptionStatus values.
      */
     public static Collection<MarketplaceSubscriptionStatus> values() {

@@ -11,6 +11,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
  */
 interface IPizza extends Indexable, Creatable<IPizza> {
     IPizza withInstantPizza(Creatable<IPizza> anotherPizza);
+
     IPizza withDelayedPizza(Creatable<IPizza> anotherPizza);
 }
-

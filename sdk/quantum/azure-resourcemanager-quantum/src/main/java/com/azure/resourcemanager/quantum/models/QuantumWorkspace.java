@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.quantum.fluent.models.QuantumWorkspaceInner;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,6 +50,13 @@ public interface QuantumWorkspace {
     Map<String, String> tags();
 
     /**
+     * Gets the properties property: Gets or sets the properties. Define quantum workspace's specific properties.
+     * 
+     * @return the properties value.
+     */
+    WorkspaceResourceProperties properties();
+
+    /**
      * Gets the identity property: Managed Identity information.
      * 
      * @return the identity value.
@@ -63,48 +69,6 @@ public interface QuantumWorkspace {
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the providers property: List of Providers selected for this Workspace.
-     * 
-     * @return the providers value.
-     */
-    List<Provider> providers();
-
-    /**
-     * Gets the usable property: Whether the current workspace is ready to accept Jobs.
-     * 
-     * @return the usable value.
-     */
-    UsableStatus usable();
-
-    /**
-     * Gets the provisioningState property: Provisioning status field.
-     * 
-     * @return the provisioningState value.
-     */
-    ProvisioningStatus provisioningState();
-
-    /**
-     * Gets the storageAccount property: ARM Resource Id of the storage account associated with this workspace.
-     * 
-     * @return the storageAccount value.
-     */
-    String storageAccount();
-
-    /**
-     * Gets the endpointUri property: The URI of the workspace endpoint.
-     * 
-     * @return the endpointUri value.
-     */
-    String endpointUri();
-
-    /**
-     * Gets the apiKeyEnabled property: Indicator of enablement of the Quantum workspace Api keys.
-     * 
-     * @return the apiKeyEnabled value.
-     */
-    Boolean apiKeyEnabled();
 
     /**
      * Gets the region of the resource.
@@ -189,8 +153,8 @@ public interface QuantumWorkspace {
          * The stage of the QuantumWorkspace definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithProviders, DefinitionStages.WithStorageAccount, DefinitionStages.WithApiKeyEnabled {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
              * 
@@ -221,6 +185,20 @@ public interface QuantumWorkspace {
         }
 
         /**
+         * The stage of the QuantumWorkspace definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Gets or sets the properties. Define quantum workspace's specific
+             * properties..
+             * 
+             * @param properties Gets or sets the properties. Define quantum workspace's specific properties.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(WorkspaceResourceProperties properties);
+        }
+
+        /**
          * The stage of the QuantumWorkspace definition allowing to specify identity.
          */
         interface WithIdentity {
@@ -231,46 +209,6 @@ public interface QuantumWorkspace {
              * @return the next definition stage.
              */
             WithCreate withIdentity(QuantumWorkspaceIdentity identity);
-        }
-
-        /**
-         * The stage of the QuantumWorkspace definition allowing to specify providers.
-         */
-        interface WithProviders {
-            /**
-             * Specifies the providers property: List of Providers selected for this Workspace.
-             * 
-             * @param providers List of Providers selected for this Workspace.
-             * @return the next definition stage.
-             */
-            WithCreate withProviders(List<Provider> providers);
-        }
-
-        /**
-         * The stage of the QuantumWorkspace definition allowing to specify storageAccount.
-         */
-        interface WithStorageAccount {
-            /**
-             * Specifies the storageAccount property: ARM Resource Id of the storage account associated with this
-             * workspace..
-             * 
-             * @param storageAccount ARM Resource Id of the storage account associated with this workspace.
-             * @return the next definition stage.
-             */
-            WithCreate withStorageAccount(String storageAccount);
-        }
-
-        /**
-         * The stage of the QuantumWorkspace definition allowing to specify apiKeyEnabled.
-         */
-        interface WithApiKeyEnabled {
-            /**
-             * Specifies the apiKeyEnabled property: Indicator of enablement of the Quantum workspace Api keys..
-             * 
-             * @param apiKeyEnabled Indicator of enablement of the Quantum workspace Api keys.
-             * @return the next definition stage.
-             */
-            WithCreate withApiKeyEnabled(Boolean apiKeyEnabled);
         }
     }
 

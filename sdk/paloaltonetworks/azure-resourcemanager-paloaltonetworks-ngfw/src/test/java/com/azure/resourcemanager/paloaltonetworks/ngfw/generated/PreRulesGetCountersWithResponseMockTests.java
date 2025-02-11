@@ -6,50 +6,33 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.RuleCounter;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PreRulesGetCountersWithResponseMockTests {
     @Test
     public void testGetCountersWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"priority\":\"jenkyh\",\"ruleStackName\":\"zv\",\"ruleListName\":\"xfxjelgcmpzqj\",\"firewallName\":\"hqxu\",\"ruleName\":\"yvca\",\"hitCount\":422708965,\"appSeen\":{\"count\":154545602,\"appSeenList\":[{\"title\":\"bsizus\",\"category\":\"szlbscm\",\"subCategory\":\"lzijiufehgmvflnw\",\"risk\":\"v\",\"tag\":\"kxrerlniylylyfwx\",\"technology\":\"utgqztwh\",\"standardPorts\":\"hmupgxyjtcdxabbu\"},{\"title\":\"ftabenbbklqp\",\"category\":\"zucafeddww\",\"subCategory\":\"lzafwxu\",\"risk\":\"gnhgook\",\"tag\":\"talvnbwgp\",\"technology\":\"emeluclv\",\"standardPorts\":\"jjukyrdnqodxah\"},{\"title\":\"xhqf\",\"category\":\"qnvzoqgyipemch\",\"subCategory\":\"avsczuejdtxp\",\"risk\":\"lghwzhome\",\"tag\":\"jjstliuhqawmo\",\"technology\":\"ia\",\"standardPorts\":\"cz\"},{\"title\":\"vodrrslblxydkxr\",\"category\":\"vvbxiwkgfbqljnq\",\"subCategory\":\"hychocokuleh\",\"risk\":\"rqlrqffawe\",\"tag\":\"urkphyjdxravju\",\"technology\":\"dbrxmrgc\",\"standardPorts\":\"bapxkiyfjjkb\"}]},\"timestamp\":\"2021-06-24T10:14:07Z\",\"requestTimestamp\":\"2021-04-28T23:33:04Z\",\"lastUpdatedTimestamp\":\"2021-07-08T05:49:52Z\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RuleCounter response = manager.preRules()
-            .getCountersWithResponse("yglqdhmrjzral", "xpjb", "ypsjoq", com.azure.core.util.Context.NONE).getValue();
+            .getCountersWithResponse("yglqdhmrjzral", "xpjb", "ypsjoq", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("jenkyh", response.priority());
         Assertions.assertEquals("zv", response.ruleStackName());

@@ -31,8 +31,9 @@ public final class GlobalRulestackCreateOrUpdateSamples {
      */
     public static void globalRulestackCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.globalRulestacks().createOrUpdate("praval", new GlobalRulestackResourceInner().withLocation("eastus"),
-            com.azure.core.util.Context.NONE);
+        manager.globalRulestacks()
+            .createOrUpdate("praval", new GlobalRulestackResourceInner().withLocation("eastus"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -47,19 +48,29 @@ public final class GlobalRulestackCreateOrUpdateSamples {
      */
     public static void globalRulestackCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.globalRulestacks().createOrUpdate("praval", new GlobalRulestackResourceInner().withLocation("eastus")
-            .withIdentity(new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("key16",
-                    new AzureResourceManagerUserAssignedIdentity().withClientId("aaaa")
-                        .withPrincipalId("aaaaaaaaaaaaaaa"))))
-            .withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12").withPanLocation("eastus").withScope(ScopeType.GLOBAL)
-            .withAssociatedSubscriptions(Arrays.asList("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"))
-            .withDescription("global rulestacks").withDefaultMode(DefaultMode.IPS).withMinAppIdVersion("8.5.3")
-            .withSecurityServices(new SecurityServices().withVulnerabilityProfile("default")
-                .withAntiSpywareProfile("default").withAntiVirusProfile("default").withUrlFilteringProfile("default")
-                .withFileBlockingProfile("default").withDnsSubscription("default")
-                .withOutboundUnTrustCertificate("default").withOutboundTrustCertificate("default")),
-            com.azure.core.util.Context.NONE);
+        manager.globalRulestacks()
+            .createOrUpdate("praval",
+                new GlobalRulestackResourceInner().withLocation("eastus")
+                    .withIdentity(new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.NONE)
+                        .withUserAssignedIdentities(mapOf("key16",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("aaaa")
+                                .withPrincipalId("aaaaaaaaaaaaaaa"))))
+                    .withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12")
+                    .withPanLocation("eastus")
+                    .withScope(ScopeType.GLOBAL)
+                    .withAssociatedSubscriptions(Arrays.asList("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"))
+                    .withDescription("global rulestacks")
+                    .withDefaultMode(DefaultMode.IPS)
+                    .withMinAppIdVersion("8.5.3")
+                    .withSecurityServices(new SecurityServices().withVulnerabilityProfile("default")
+                        .withAntiSpywareProfile("default")
+                        .withAntiVirusProfile("default")
+                        .withUrlFilteringProfile("default")
+                        .withFileBlockingProfile("default")
+                        .withDnsSubscription("default")
+                        .withOutboundUnTrustCertificate("default")
+                        .withOutboundTrustCertificate("default")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

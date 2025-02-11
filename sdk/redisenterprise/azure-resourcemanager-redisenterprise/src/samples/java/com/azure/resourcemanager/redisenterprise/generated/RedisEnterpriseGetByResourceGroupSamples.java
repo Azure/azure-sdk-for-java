@@ -9,7 +9,9 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class RedisEnterpriseGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-03-01-preview/examples/RedisEnterpriseGet.json
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
+     * RedisEnterpriseGet.json
      */
     /**
      * Sample code: RedisEnterpriseGet.

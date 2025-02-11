@@ -7,6 +7,9 @@ package com.azure.resourcemanager.purview.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.purview.models.AccountPropertiesEndpoints;
 import com.azure.resourcemanager.purview.models.AccountPropertiesManagedResources;
 import com.azure.resourcemanager.purview.models.AccountSku;
@@ -14,45 +17,60 @@ import com.azure.resourcemanager.purview.models.CloudConnectors;
 import com.azure.resourcemanager.purview.models.Identity;
 import com.azure.resourcemanager.purview.models.ProvisioningState;
 import com.azure.resourcemanager.purview.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Account resource. */
+/**
+ * Account resource.
+ */
 @Fluent
 public final class AccountInner extends Resource {
     /*
      * Gets or sets the properties.
      */
-    @JsonProperty(value = "properties")
     private AccountProperties innerProperties;
 
     /*
      * Gets or sets the Sku.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private AccountSku sku;
 
     /*
      * Identity Info on the tracked resource
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AccountInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AccountInner class.
+     */
     public AccountInner() {
     }
 
     /**
      * Get the innerProperties property: Gets or sets the properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AccountProperties innerProperties() {
@@ -61,7 +79,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the sku property: Gets or sets the Sku.
-     *
+     * 
      * @return the sku value.
      */
     public AccountSku sku() {
@@ -70,7 +88,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the identity property: Identity Info on the tracked resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -79,7 +97,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Set the identity property: Identity Info on the tracked resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the AccountInner object itself.
      */
@@ -90,21 +108,55 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccountInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccountInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -112,9 +164,9 @@ public final class AccountInner extends Resource {
     }
 
     /**
-     * Get the cloudConnectors property: Cloud connectors. External cloud identifier used as part of scanning
-     * configuration.
-     *
+     * Get the cloudConnectors property: Cloud connectors.
+     * External cloud identifier used as part of scanning configuration.
+     * 
      * @return the cloudConnectors value.
      */
     public CloudConnectors cloudConnectors() {
@@ -122,9 +174,9 @@ public final class AccountInner extends Resource {
     }
 
     /**
-     * Set the cloudConnectors property: Cloud connectors. External cloud identifier used as part of scanning
-     * configuration.
-     *
+     * Set the cloudConnectors property: Cloud connectors.
+     * External cloud identifier used as part of scanning configuration.
+     * 
      * @param cloudConnectors the cloudConnectors value to set.
      * @return the AccountInner object itself.
      */
@@ -138,7 +190,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the createdAt property: Gets the time at which the entity was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -147,7 +199,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the createdBy property: Gets the creator of the entity.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -156,7 +208,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the createdByObjectId property: Gets the creators of the entity's object id.
-     *
+     * 
      * @return the createdByObjectId value.
      */
     public String createdByObjectId() {
@@ -165,7 +217,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the endpoints property: The URIs that are the public endpoints of the account.
-     *
+     * 
      * @return the endpoints value.
      */
     public AccountPropertiesEndpoints endpoints() {
@@ -174,7 +226,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the friendlyName property: Gets or sets the friendly name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -183,7 +235,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the managedResourceGroupName property: Gets or sets the managed resource group name.
-     *
+     * 
      * @return the managedResourceGroupName value.
      */
     public String managedResourceGroupName() {
@@ -192,7 +244,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Set the managedResourceGroupName property: Gets or sets the managed resource group name.
-     *
+     * 
      * @param managedResourceGroupName the managedResourceGroupName value to set.
      * @return the AccountInner object itself.
      */
@@ -206,7 +258,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the managedResources property: Gets the resource identifiers of the managed resources.
-     *
+     * 
      * @return the managedResources value.
      */
     public AccountPropertiesManagedResources managedResources() {
@@ -215,7 +267,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: Gets the private endpoint connections information.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -224,7 +276,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the provisioningState property: Gets or sets the state of the provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -233,7 +285,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: Gets or sets the public network access.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -242,7 +294,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Set the publicNetworkAccess property: Gets or sets the public network access.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the AccountInner object itself.
      */
@@ -256,7 +308,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -269,5 +321,62 @@ public final class AccountInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccountInner.
+     */
+    public static AccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountInner deserializedAccountInner = new AccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAccountInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAccountInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAccountInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAccountInner.innerProperties = AccountProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAccountInner.sku = AccountSku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAccountInner.identity = Identity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAccountInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountInner;
+        });
     }
 }

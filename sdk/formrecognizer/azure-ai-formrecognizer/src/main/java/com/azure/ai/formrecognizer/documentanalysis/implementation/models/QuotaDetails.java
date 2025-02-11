@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -75,13 +76,18 @@ public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
         return this.quotaResetDateTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("used", this.used);
         jsonWriter.writeIntField("quota", this.quota);
-        jsonWriter.writeStringField("quotaResetDateTime", this.quotaResetDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.quotaResetDateTime));
+        jsonWriter.writeStringField("quotaResetDateTime",
+            this.quotaResetDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.quotaResetDateTime));
         return jsonWriter.writeEndObject();
     }
 
@@ -113,8 +119,8 @@ public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
                     quota = reader.getInt();
                     quotaFound = true;
                 } else if ("quotaResetDateTime".equals(fieldName)) {
-                    quotaResetDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    quotaResetDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                     quotaResetDateTimeFound = true;
                 } else {
                     reader.skipChildren();

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class Ossku extends ExpandableStringEnum<Ossku> {
      * @param name a name to look for.
      * @return the corresponding Ossku.
      */
-    @JsonCreator
     public static Ossku fromString(String name) {
         return fromString(name, Ossku.class);
     }

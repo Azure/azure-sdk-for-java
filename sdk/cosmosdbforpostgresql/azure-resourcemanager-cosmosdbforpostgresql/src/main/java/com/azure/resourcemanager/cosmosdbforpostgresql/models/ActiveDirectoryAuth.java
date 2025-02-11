@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ActiveDirectoryAuth extends ExpandableStringEnum<ActiveDirect
      * @param name a name to look for.
      * @return the corresponding ActiveDirectoryAuth.
      */
-    @JsonCreator
     public static ActiveDirectoryAuth fromString(String name) {
         return fromString(name, ActiveDirectoryAuth.class);
     }

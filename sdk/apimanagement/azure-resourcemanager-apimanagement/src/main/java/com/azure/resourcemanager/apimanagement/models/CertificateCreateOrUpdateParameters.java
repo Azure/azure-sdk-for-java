@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.CertificateCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Certificate create or update details. */
+/**
+ * Certificate create or update details.
+ */
 @Fluent
-public final class CertificateCreateOrUpdateParameters {
+public final class CertificateCreateOrUpdateParameters
+    implements JsonSerializable<CertificateCreateOrUpdateParameters> {
     /*
      * Certificate create or update properties details.
      */
-    @JsonProperty(value = "properties")
     private CertificateCreateOrUpdateProperties innerProperties;
 
-    /** Creates an instance of CertificateCreateOrUpdateParameters class. */
+    /**
+     * Creates an instance of CertificateCreateOrUpdateParameters class.
+     */
     public CertificateCreateOrUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Certificate create or update properties details.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CertificateCreateOrUpdateProperties innerProperties() {
@@ -32,7 +40,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Get the data property: Base 64 encoded certificate using the application/x-pkcs12 representation.
-     *
+     * 
      * @return the data value.
      */
     public String data() {
@@ -41,7 +49,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Set the data property: Base 64 encoded certificate using the application/x-pkcs12 representation.
-     *
+     * 
      * @param data the data value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -55,7 +63,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Get the password property: Password for the Certificate.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -64,7 +72,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Set the password property: Password for the Certificate.
-     *
+     * 
      * @param password the password value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -78,7 +86,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Get the keyVault property: KeyVault location details of the certificate.
-     *
+     * 
      * @return the keyVault value.
      */
     public KeyVaultContractCreateProperties keyVault() {
@@ -87,7 +95,7 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Set the keyVault property: KeyVault location details of the certificate.
-     *
+     * 
      * @param keyVault the keyVault value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -101,12 +109,50 @@ public final class CertificateCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateCreateOrUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateCreateOrUpdateParameters.
+     */
+    public static CertificateCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateCreateOrUpdateParameters deserializedCertificateCreateOrUpdateParameters
+                = new CertificateCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateParameters.innerProperties
+                        = CertificateCreateOrUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateCreateOrUpdateParameters;
+        });
     }
 }

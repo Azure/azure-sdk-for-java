@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.costmanagement.implementation;
 
 import com.azure.resourcemanager.costmanagement.fluent.models.BenefitUtilizationSummaryInner;
+import com.azure.resourcemanager.costmanagement.models.BenefitKind;
 import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummary;
 
 public final class BenefitUtilizationSummaryImpl implements BenefitUtilizationSummary {
@@ -12,8 +13,7 @@ public final class BenefitUtilizationSummaryImpl implements BenefitUtilizationSu
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    BenefitUtilizationSummaryImpl(
-        BenefitUtilizationSummaryInner innerObject,
+    BenefitUtilizationSummaryImpl(BenefitUtilizationSummaryInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -29,6 +29,10 @@ public final class BenefitUtilizationSummaryImpl implements BenefitUtilizationSu
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public BenefitKind kind() {
+        return this.innerModel().kind();
     }
 
     public BenefitUtilizationSummaryInner innerModel() {

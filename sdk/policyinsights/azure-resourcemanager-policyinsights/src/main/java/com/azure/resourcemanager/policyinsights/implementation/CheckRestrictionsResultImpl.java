@@ -16,8 +16,7 @@ public final class CheckRestrictionsResultImpl implements CheckRestrictionsResul
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    CheckRestrictionsResultImpl(
-        CheckRestrictionsResultInner innerObject,
+    CheckRestrictionsResultImpl(CheckRestrictionsResultInner innerObject,
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

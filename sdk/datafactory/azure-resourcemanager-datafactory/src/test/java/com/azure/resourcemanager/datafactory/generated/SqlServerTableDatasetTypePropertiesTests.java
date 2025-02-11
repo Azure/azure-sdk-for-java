@@ -10,16 +10,17 @@ import com.azure.resourcemanager.datafactory.fluent.models.SqlServerTableDataset
 public final class SqlServerTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlServerTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"datakde\",\"schema\":\"datasuaz\",\"table\":\"datafcnxc\"}")
-                .toObject(SqlServerTableDatasetTypeProperties.class);
+        SqlServerTableDatasetTypeProperties model = BinaryData
+            .fromString("{\"tableName\":\"dataizdnuehx\",\"schema\":\"datatssjd\",\"table\":\"databnklgerxac\"}")
+            .toObject(SqlServerTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerTableDatasetTypeProperties model = new SqlServerTableDatasetTypeProperties().withTableName("datakde")
-            .withSchema("datasuaz")
-            .withTable("datafcnxc");
+        SqlServerTableDatasetTypeProperties model
+            = new SqlServerTableDatasetTypeProperties().withTableName("dataizdnuehx")
+                .withSchema("datatssjd")
+                .withTable("databnklgerxac");
         model = BinaryData.fromObject(model).toObject(SqlServerTableDatasetTypeProperties.class);
     }
 }

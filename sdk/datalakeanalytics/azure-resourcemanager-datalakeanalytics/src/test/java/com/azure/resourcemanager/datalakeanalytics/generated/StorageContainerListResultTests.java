@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakeanalytics.models.StorageContainerListRe
 public final class StorageContainerListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageContainerListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"lastModifiedTime\":\"2021-01-04T19:51:15Z\"},\"name\":\"gy\",\"type\":\"uosvmkfssxqukk\",\"id\":\"l\"},{\"properties\":{\"lastModifiedTime\":\"2021-02-10T04:43:50Z\"},\"name\":\"nkjzkdeslpvlop\",\"type\":\"yighxpk\",\"id\":\"zb\"},{\"properties\":{\"lastModifiedTime\":\"2021-08-18T18:32:22Z\"},\"name\":\"baumnyqupedeoj\",\"type\":\"bckhsmtxpsi\",\"id\":\"tfhvpesapskrdqmh\"}],\"nextLink\":\"dhtldwkyz\"}")
-                .toObject(StorageContainerListResult.class);
+        StorageContainerListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"lastModifiedTime\":\"2021-07-28T11:26:39Z\"},\"name\":\"noc\",\"type\":\"oklyaxuconuq\",\"id\":\"fkbey\"}],\"nextLink\":\"wrmjmwvvjektc\"}")
+            .toObject(StorageContainerListResult.class);
     }
 
     @org.junit.jupiter.api.Test

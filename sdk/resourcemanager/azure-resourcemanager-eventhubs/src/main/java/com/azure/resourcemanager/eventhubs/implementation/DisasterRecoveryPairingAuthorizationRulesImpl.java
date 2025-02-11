@@ -18,10 +18,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 /**
  * Implementation for {@link DisasterRecoveryPairingAuthorizationRules}.
  */
-public final class DisasterRecoveryPairingAuthorizationRulesImpl
-    extends ReadableWrappersImpl<DisasterRecoveryPairingAuthorizationRule,
-        DisasterRecoveryPairingAuthorizationRuleImpl,
-        AuthorizationRuleInner>
+public final class DisasterRecoveryPairingAuthorizationRulesImpl extends
+    ReadableWrappersImpl<DisasterRecoveryPairingAuthorizationRule, DisasterRecoveryPairingAuthorizationRuleImpl, AuthorizationRuleInner>
     implements DisasterRecoveryPairingAuthorizationRules {
 
     private final EventHubsManager manager;
@@ -31,34 +29,31 @@ public final class DisasterRecoveryPairingAuthorizationRulesImpl
     }
 
     @Override
-    public PagedIterable<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairing(
-        String resourceGroupName, String namespaceName, String pairingName) {
-        return PagedConverter.mapPage(inner()
-            .listAuthorizationRules(resourceGroupName, namespaceName, pairingName),
+    public PagedIterable<DisasterRecoveryPairingAuthorizationRule>
+        listByDisasterRecoveryPairing(String resourceGroupName, String namespaceName, String pairingName) {
+        return PagedConverter.mapPage(inner().listAuthorizationRules(resourceGroupName, namespaceName, pairingName),
             this::wrapModel);
     }
 
     @Override
-    public PagedFlux<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairingAsync(
-        String resourceGroupName, String namespaceName, String pairingName) {
-        return PagedConverter.mapPage(inner()
-             .listAuthorizationRulesAsync(resourceGroupName, namespaceName, pairingName),
-             this::wrapModel);
+    public PagedFlux<DisasterRecoveryPairingAuthorizationRule>
+        listByDisasterRecoveryPairingAsync(String resourceGroupName, String namespaceName, String pairingName) {
+        return PagedConverter.mapPage(
+            inner().listAuthorizationRulesAsync(resourceGroupName, namespaceName, pairingName), this::wrapModel);
     }
 
     @Override
-    public Mono<DisasterRecoveryPairingAuthorizationRule> getByNameAsync(
-        String resourceGroupName, String namespaceName, String pairingName, String name) {
-        return this.manager.serviceClient().getDisasterRecoveryConfigs().getAuthorizationRuleAsync(resourceGroupName,
-            namespaceName,
-            pairingName,
-            name)
+    public Mono<DisasterRecoveryPairingAuthorizationRule> getByNameAsync(String resourceGroupName, String namespaceName,
+        String pairingName, String name) {
+        return this.manager.serviceClient()
+            .getDisasterRecoveryConfigs()
+            .getAuthorizationRuleAsync(resourceGroupName, namespaceName, pairingName, name)
             .map(this::wrapModel);
     }
 
     @Override
-    public DisasterRecoveryPairingAuthorizationRule getByName(
-        String resourceGroupName, String namespaceName, String pairingName, String name) {
+    public DisasterRecoveryPairingAuthorizationRule getByName(String resourceGroupName, String namespaceName,
+        String pairingName, String name) {
         return getByNameAsync(resourceGroupName, namespaceName, pairingName, name).block();
     }
 
@@ -70,10 +65,8 @@ public final class DisasterRecoveryPairingAuthorizationRulesImpl
     @Override
     public Mono<DisasterRecoveryPairingAuthorizationRule> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
-        return this.getByNameAsync(resourceId.resourceGroupName(),
-            resourceId.parent().name(),
-            resourceId.parent().parent().name(),
-            resourceId.name());
+        return this.getByNameAsync(resourceId.resourceGroupName(), resourceId.parent().name(),
+            resourceId.parent().parent().name(), resourceId.name());
     }
 
     @Override

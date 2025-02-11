@@ -31,20 +31,19 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
     @Test
     @PlaybackOnly
     public void setAccessPolicyMinAccess() {
-        StepVerifier.create(setAccessPolicySleepAsync(ccAsync, PublicAccessType.CONTAINER, null)
-            .then(ccAsync.getProperties()))
+        StepVerifier
+            .create(setAccessPolicySleepAsync(ccAsync, PublicAccessType.CONTAINER, null).then(ccAsync.getProperties()))
             .assertNext(r -> assertEquals(PublicAccessType.CONTAINER, r.getBlobPublicAccess()))
             .verifyComplete();
     }
 
     @Test
     public void setAccessPolicyMinIds() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier().setId("0000")
             .setAccessPolicy(new BlobAccessPolicy()
                 .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                    .plusDays(1))
+                .setExpiresOn(
+                    testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime().plusDays(1))
                 .setPermissions("r"));
 
         List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
@@ -58,24 +57,20 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
     public void setAccessPolicyError() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
-        StepVerifier.create(ccAsync.setAccessPolicy(null, null))
-            .verifyError(BlobStorageException.class);
+        StepVerifier.create(ccAsync.setAccessPolicy(null, null)).verifyError(BlobStorageException.class);
     }
 
     @Test
     @PlaybackOnly
     public void getAccessPolicy() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(testResourceNamer.now())
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier().setId("0000")
+            .setAccessPolicy(new BlobAccessPolicy().setStartsOn(testResourceNamer.now())
                 .setExpiresOn(testResourceNamer.now().plusDays(1))
                 .setPermissions("r"));
         List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
 
         StepVerifier.create(setAccessPolicySleepAsync(ccAsync, PublicAccessType.BLOB, ids)
-            .then(ccAsync.getAccessPolicyWithResponse(null)))
-            .assertNext(r -> {
+            .then(ccAsync.getAccessPolicyWithResponse(null))).assertNext(r -> {
                 assertResponseStatusCode(r, 200);
                 assertEquals(PublicAccessType.BLOB, r.getValue().getBlobAccessType());
                 assertTrue(validateBasicHeaders(r.getHeaders()));
@@ -85,20 +80,17 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
                     r.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn());
                 assertEquals(identifier.getAccessPolicy().getPermissions(),
                     r.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions());
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     @Test
     public void containerSasIdentifierAndPermissions() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy().setPermissions("racwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1)));
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier().setId("0000")
+            .setAccessPolicy(
+                new BlobAccessPolicy().setPermissions("racwdl").setExpiresOn(testResourceNamer.now().plusDays(1)));
 
         // Check containerSASPermissions
-        BlobContainerSasPermission permissions = new BlobContainerSasPermission()
-            .setReadPermission(true)
+        BlobContainerSasPermission permissions = new BlobContainerSasPermission().setReadPermission(true)
             .setWritePermission(true)
             .setListPermission(true)
             .setCreatePermission(true)
@@ -117,31 +109,27 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
         BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(identifier.getId());
         String sasWithId = ccAsync.generateSas(sasValues);
         BlobContainerAsyncClient client1 = getContainerAsyncClient(sasWithId, ccAsync.getBlobContainerUrl());
-        StepVerifier.create(setAccessPolicySleepAsync(ccAsync, null, Arrays.asList(identifier))
-            .thenMany(client1.listBlobs()))
+        StepVerifier
+            .create(setAccessPolicySleepAsync(ccAsync, null, Arrays.asList(identifier)).thenMany(client1.listBlobs()))
             .thenConsumeWhile(r -> true)
             .verifyComplete();
 
         sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions);
         String sasWithPermissions = ccAsync.generateSas(sasValues);
         BlobContainerAsyncClient client2 = getContainerAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl());
-        StepVerifier.create(client2.listBlobs())
-            .thenConsumeWhile(r -> true)
-            .verifyComplete();
+        StepVerifier.create(client2.listBlobs()).thenConsumeWhile(r -> true).verifyComplete();
     }
 
     //service async
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void sasSanitization(boolean unsanitize) {
         String identifier = "id with spaces";
         String blobName = generateBlobName();
 
-        List<BlobSignedIdentifier> ids = Collections.singletonList(new BlobSignedIdentifier()
-            .setId(identifier)
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setPermissions("racwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1))));
+        List<BlobSignedIdentifier> ids = Collections.singletonList(new BlobSignedIdentifier().setId(identifier)
+            .setAccessPolicy(
+                new BlobAccessPolicy().setPermissions("racwdl").setExpiresOn(testResourceNamer.now().plusDays(1))));
 
         String sas = ccAsync.generateSas(new BlobServiceSasSignatureValues(identifier));
         if (unsanitize) {
@@ -152,24 +140,19 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
         Mono<BinaryData> response = setAccessPolicySleepAsync(ccAsync, null, ids)
             .then(ccAsync.getBlobAsyncClient(blobName).upload(BinaryData.fromBytes("test".getBytes())))
             .flatMap(r -> {
-                BlobContainerAsyncClient client1 = instrument(new BlobContainerClientBuilder()
-                    .endpoint(ccAsync.getBlobContainerUrl() + "?" + finalSas))
-                    .buildAsyncClient();
+                BlobContainerAsyncClient client1 = instrument(
+                    new BlobContainerClientBuilder().endpoint(ccAsync.getBlobContainerUrl() + "?" + finalSas))
+                        .buildAsyncClient();
                 return client1.getBlobAsyncClient(blobName).downloadContent();
             });
 
-        StepVerifier.create(response)
-            .expectNextCount(1)
-            .verifyComplete();
+        StepVerifier.create(response).expectNextCount(1).verifyComplete();
 
         String connectionString = "AccountName=" + BlobUrlParts.parse(ccAsync.getAccountUrl()).getAccountName()
             + ";SharedAccessSignature=" + sas;
-        BlobContainerAsyncClient client2 = instrument(new BlobContainerClientBuilder()
-            .connectionString(connectionString)
-            .containerName(ccAsync.getBlobContainerName()))
-            .buildAsyncClient();
-        StepVerifier.create(client2.getBlobAsyncClient(blobName).downloadContent())
-            .expectNextCount(1)
-            .verifyComplete();
+        BlobContainerAsyncClient client2
+            = instrument(new BlobContainerClientBuilder().connectionString(connectionString)
+                .containerName(ccAsync.getBlobContainerName())).buildAsyncClient();
+        StepVerifier.create(client2.getBlobAsyncClient(blobName).downloadContent()).expectNextCount(1).verifyComplete();
     }
 }

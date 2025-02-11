@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters describes the request to regenerate access keys. */
+/**
+ * Parameters describes the request to regenerate access keys.
+ */
 @Fluent
-public final class RegenerateKeyParameters {
+public final class RegenerateKeyParameters implements JsonSerializable<RegenerateKeyParameters> {
     /*
      * The type of access key.
      */
-    @JsonProperty(value = "keyType")
     private KeyType keyType;
 
-    /** Creates an instance of RegenerateKeyParameters class. */
+    /**
+     * Creates an instance of RegenerateKeyParameters class.
+     */
     public RegenerateKeyParameters() {
     }
 
     /**
      * Get the keyType property: The type of access key.
-     *
+     * 
      * @return the keyType value.
      */
     public KeyType keyType() {
@@ -31,7 +38,7 @@ public final class RegenerateKeyParameters {
 
     /**
      * Set the keyType property: The type of access key.
-     *
+     * 
      * @param keyType the keyType value to set.
      * @return the RegenerateKeyParameters object itself.
      */
@@ -42,9 +49,45 @@ public final class RegenerateKeyParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyType", this.keyType == null ? null : this.keyType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegenerateKeyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegenerateKeyParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegenerateKeyParameters.
+     */
+    public static RegenerateKeyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegenerateKeyParameters deserializedRegenerateKeyParameters = new RegenerateKeyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyType".equals(fieldName)) {
+                    deserializedRegenerateKeyParameters.keyType = KeyType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegenerateKeyParameters;
+        });
     }
 }

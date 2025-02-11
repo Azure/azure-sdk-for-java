@@ -22,7 +22,10 @@ import javax.xml.stream.XMLStreamException;
 @Fluent
 public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
     /*
-     * The origin domains that are permitted to make a request against the storage service via CORS. The origin domain is the domain from which the request originates. Note that the origin must be an exact case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all origin domains to make requests via CORS.
+     * The origin domains that are permitted to make a request against the storage service via CORS. The origin domain
+     * is the domain from which the request originates. Note that the origin must be an exact case-sensitive match with
+     * the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all
+     * origin domains to make requests via CORS.
      */
     private String allowedOrigins;
 
@@ -37,7 +40,8 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
     private String allowedHeaders;
 
     /*
-     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer
+     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
+     * request issuer
      */
     private String exposedHeaders;
 
@@ -187,7 +191,6 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobCorsRule if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobCorsRule.
      */
     public static BlobCorsRule fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -202,7 +205,6 @@ public final class BlobCorsRule implements XmlSerializable<BlobCorsRule> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of BlobCorsRule if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobCorsRule.
      */
     public static BlobCorsRule fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

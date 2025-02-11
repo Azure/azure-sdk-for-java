@@ -7,14 +7,15 @@ package com.azure.resourcemanager.securityinsights.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.securityinsights.fluent.models.AlertRuleInner;
 import com.azure.resourcemanager.securityinsights.models.AlertRule;
+import com.azure.resourcemanager.securityinsights.models.AlertRuleKind;
 
 public final class AlertRuleImpl implements AlertRule {
     private AlertRuleInner innerObject;
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    AlertRuleImpl(
-        AlertRuleInner innerObject, com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
+    AlertRuleImpl(AlertRuleInner innerObject,
+        com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -37,6 +38,10 @@ public final class AlertRuleImpl implements AlertRule {
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public AlertRuleKind kind() {
+        return this.innerModel().kind();
     }
 
     public AlertRuleInner innerModel() {

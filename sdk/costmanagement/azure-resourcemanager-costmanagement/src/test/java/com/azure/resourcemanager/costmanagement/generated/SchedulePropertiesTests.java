@@ -16,39 +16,34 @@ import org.junit.jupiter.api.Assertions;
 public final class SchedulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleProperties model =
-            BinaryData
-                .fromString(
-                    "{\"frequency\":\"Weekly\",\"hourOfDay\":1629743975,\"daysOfWeek\":[\"Saturday\"],\"weeksOfMonth\":[\"Second\",\"Fourth\",\"First\",\"Second\"],\"dayOfMonth\":401545193,\"startDate\":\"2021-10-26T10:22:19Z\",\"endDate\":\"2021-05-04T23:51:10Z\"}")
-                .toObject(ScheduleProperties.class);
+        ScheduleProperties model = BinaryData.fromString(
+            "{\"frequency\":\"Weekly\",\"hourOfDay\":1596412285,\"daysOfWeek\":[\"Thursday\",\"Thursday\",\"Monday\"],\"weeksOfMonth\":[\"Second\",\"Fourth\",\"First\"],\"dayOfMonth\":175605936,\"startDate\":\"2021-03-27T04:25:16Z\",\"endDate\":\"2021-09-10T17:22:19Z\"}")
+            .toObject(ScheduleProperties.class);
         Assertions.assertEquals(ScheduleFrequency.WEEKLY, model.frequency());
-        Assertions.assertEquals(1629743975, model.hourOfDay());
-        Assertions.assertEquals(DaysOfWeek.SATURDAY, model.daysOfWeek().get(0));
+        Assertions.assertEquals(1596412285, model.hourOfDay());
+        Assertions.assertEquals(DaysOfWeek.THURSDAY, model.daysOfWeek().get(0));
         Assertions.assertEquals(WeeksOfMonth.SECOND, model.weeksOfMonth().get(0));
-        Assertions.assertEquals(401545193, model.dayOfMonth());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T10:22:19Z"), model.startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T23:51:10Z"), model.endDate());
+        Assertions.assertEquals(175605936, model.dayOfMonth());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T04:25:16Z"), model.startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T17:22:19Z"), model.endDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleProperties model =
-            new ScheduleProperties()
-                .withFrequency(ScheduleFrequency.WEEKLY)
-                .withHourOfDay(1629743975)
-                .withDaysOfWeek(Arrays.asList(DaysOfWeek.SATURDAY))
-                .withWeeksOfMonth(
-                    Arrays.asList(WeeksOfMonth.SECOND, WeeksOfMonth.FOURTH, WeeksOfMonth.FIRST, WeeksOfMonth.SECOND))
-                .withDayOfMonth(401545193)
-                .withStartDate(OffsetDateTime.parse("2021-10-26T10:22:19Z"))
-                .withEndDate(OffsetDateTime.parse("2021-05-04T23:51:10Z"));
+        ScheduleProperties model = new ScheduleProperties().withFrequency(ScheduleFrequency.WEEKLY)
+            .withHourOfDay(1596412285)
+            .withDaysOfWeek(Arrays.asList(DaysOfWeek.THURSDAY, DaysOfWeek.THURSDAY, DaysOfWeek.MONDAY))
+            .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.SECOND, WeeksOfMonth.FOURTH, WeeksOfMonth.FIRST))
+            .withDayOfMonth(175605936)
+            .withStartDate(OffsetDateTime.parse("2021-03-27T04:25:16Z"))
+            .withEndDate(OffsetDateTime.parse("2021-09-10T17:22:19Z"));
         model = BinaryData.fromObject(model).toObject(ScheduleProperties.class);
         Assertions.assertEquals(ScheduleFrequency.WEEKLY, model.frequency());
-        Assertions.assertEquals(1629743975, model.hourOfDay());
-        Assertions.assertEquals(DaysOfWeek.SATURDAY, model.daysOfWeek().get(0));
+        Assertions.assertEquals(1596412285, model.hourOfDay());
+        Assertions.assertEquals(DaysOfWeek.THURSDAY, model.daysOfWeek().get(0));
         Assertions.assertEquals(WeeksOfMonth.SECOND, model.weeksOfMonth().get(0));
-        Assertions.assertEquals(401545193, model.dayOfMonth());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T10:22:19Z"), model.startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T23:51:10Z"), model.endDate());
+        Assertions.assertEquals(175605936, model.dayOfMonth());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T04:25:16Z"), model.startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T17:22:19Z"), model.endDate());
     }
 }

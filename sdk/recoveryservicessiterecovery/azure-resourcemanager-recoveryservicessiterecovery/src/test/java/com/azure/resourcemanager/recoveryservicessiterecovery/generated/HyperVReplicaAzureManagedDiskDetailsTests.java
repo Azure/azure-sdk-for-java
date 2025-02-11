@@ -23,7 +23,9 @@ public final class HyperVReplicaAzureManagedDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaAzureManagedDiskDetails model = new HyperVReplicaAzureManagedDiskDetails().withDiskId("edrympmlqo")
-            .withSeedManagedDiskId("hzdue").withReplicaDiskType("hapfjiik").withDiskEncryptionSetId("diqfliejhpclbi");
+            .withSeedManagedDiskId("hzdue")
+            .withReplicaDiskType("hapfjiik")
+            .withDiskEncryptionSetId("diqfliejhpclbi");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureManagedDiskDetails.class);
         Assertions.assertEquals("edrympmlqo", model.diskId());
         Assertions.assertEquals("hzdue", model.seedManagedDiskId());

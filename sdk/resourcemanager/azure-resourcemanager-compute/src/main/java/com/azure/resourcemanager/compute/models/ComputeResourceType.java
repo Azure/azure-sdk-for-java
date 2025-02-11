@@ -21,6 +21,15 @@ public class ComputeResourceType extends ExpandableStringEnum<ComputeResourceTyp
     public static final ComputeResourceType VIRTUALMACHINES = fromString("virtualMachines");
 
     /**
+     * Creates a new instance of ComputeResourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComputeResourceType() {
+    }
+
+    /**
      * Finds or creates compute resource type based on the specified string.
      *
      * @param str the compute resource type in string format
@@ -30,7 +39,11 @@ public class ComputeResourceType extends ExpandableStringEnum<ComputeResourceTyp
         return fromString(str, ComputeResourceType.class);
     }
 
-    /** @return known compute resource types */
+    /**
+     * Gets known compute resource types.
+     *
+     * @return known compute resource types
+     */
     public static Collection<ComputeResourceType> values() {
         return values(ComputeResourceType.class);
     }

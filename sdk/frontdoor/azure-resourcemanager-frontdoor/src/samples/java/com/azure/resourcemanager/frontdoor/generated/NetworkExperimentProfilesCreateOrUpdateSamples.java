@@ -11,7 +11,8 @@ import com.azure.resourcemanager.frontdoor.models.State;
  */
 public final class NetworkExperimentProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentCreateProfile.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
+     * NetworkExperimentCreateProfile.json
      */
     /**
      * Sample code: Creates an NetworkExperiment Profile in a Resource Group.

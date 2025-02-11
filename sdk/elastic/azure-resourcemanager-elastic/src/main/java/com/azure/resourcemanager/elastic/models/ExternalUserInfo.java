@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of the request required for creating user on elastic side. */
+/**
+ * The properties of the request required for creating user on elastic side.
+ */
 @Fluent
-public final class ExternalUserInfo {
+public final class ExternalUserInfo implements JsonSerializable<ExternalUserInfo> {
     /*
      * Username of the user to be created or updated
      */
-    @JsonProperty(value = "userName")
     private String username;
 
     /*
      * Full name of the user to be created or updated
      */
-    @JsonProperty(value = "fullName")
     private String fullName;
 
     /*
      * Password of the user to be created or updated
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Email id of the user to be created or updated
      */
-    @JsonProperty(value = "emailId")
     private String emailId;
 
     /*
-     * Roles to be assigned for  created or updated user
+     * Roles to be assigned for created or updated user
      */
-    @JsonProperty(value = "roles")
     private List<String> roles;
 
-    /** Creates an instance of ExternalUserInfo class. */
+    /**
+     * Creates an instance of ExternalUserInfo class.
+     */
     public ExternalUserInfo() {
     }
 
     /**
      * Get the username property: Username of the user to be created or updated.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -56,7 +59,7 @@ public final class ExternalUserInfo {
 
     /**
      * Set the username property: Username of the user to be created or updated.
-     *
+     * 
      * @param username the username value to set.
      * @return the ExternalUserInfo object itself.
      */
@@ -67,7 +70,7 @@ public final class ExternalUserInfo {
 
     /**
      * Get the fullName property: Full name of the user to be created or updated.
-     *
+     * 
      * @return the fullName value.
      */
     public String fullName() {
@@ -76,7 +79,7 @@ public final class ExternalUserInfo {
 
     /**
      * Set the fullName property: Full name of the user to be created or updated.
-     *
+     * 
      * @param fullName the fullName value to set.
      * @return the ExternalUserInfo object itself.
      */
@@ -87,7 +90,7 @@ public final class ExternalUserInfo {
 
     /**
      * Get the password property: Password of the user to be created or updated.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -96,7 +99,7 @@ public final class ExternalUserInfo {
 
     /**
      * Set the password property: Password of the user to be created or updated.
-     *
+     * 
      * @param password the password value to set.
      * @return the ExternalUserInfo object itself.
      */
@@ -107,7 +110,7 @@ public final class ExternalUserInfo {
 
     /**
      * Get the emailId property: Email id of the user to be created or updated.
-     *
+     * 
      * @return the emailId value.
      */
     public String emailId() {
@@ -116,7 +119,7 @@ public final class ExternalUserInfo {
 
     /**
      * Set the emailId property: Email id of the user to be created or updated.
-     *
+     * 
      * @param emailId the emailId value to set.
      * @return the ExternalUserInfo object itself.
      */
@@ -127,7 +130,7 @@ public final class ExternalUserInfo {
 
     /**
      * Get the roles property: Roles to be assigned for created or updated user.
-     *
+     * 
      * @return the roles value.
      */
     public List<String> roles() {
@@ -136,7 +139,7 @@ public final class ExternalUserInfo {
 
     /**
      * Set the roles property: Roles to be assigned for created or updated user.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the ExternalUserInfo object itself.
      */
@@ -147,9 +150,58 @@ public final class ExternalUserInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeStringField("fullName", this.fullName);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("emailId", this.emailId);
+        jsonWriter.writeArrayField("roles", this.roles, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExternalUserInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExternalUserInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExternalUserInfo.
+     */
+    public static ExternalUserInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExternalUserInfo deserializedExternalUserInfo = new ExternalUserInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userName".equals(fieldName)) {
+                    deserializedExternalUserInfo.username = reader.getString();
+                } else if ("fullName".equals(fieldName)) {
+                    deserializedExternalUserInfo.fullName = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedExternalUserInfo.password = reader.getString();
+                } else if ("emailId".equals(fieldName)) {
+                    deserializedExternalUserInfo.emailId = reader.getString();
+                } else if ("roles".equals(fieldName)) {
+                    List<String> roles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExternalUserInfo.roles = roles;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExternalUserInfo;
+        });
     }
 }

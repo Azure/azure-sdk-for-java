@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class BandwidthSchedulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BandwidthScheduleProperties model =
-            BinaryData
-                .fromString(
-                    "{\"start\":\"dxwzywqsmbsurexi\",\"stop\":\"o\",\"rateInMbps\":998039935,\"days\":[\"Saturday\"]}")
-                .toObject(BandwidthScheduleProperties.class);
-        Assertions.assertEquals("dxwzywqsmbsurexi", model.start());
-        Assertions.assertEquals("o", model.stop());
-        Assertions.assertEquals(998039935, model.rateInMbps());
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.days().get(0));
+        BandwidthScheduleProperties model = BinaryData
+            .fromString("{\"start\":\"czvyifq\",\"stop\":\"vkd\",\"rateInMbps\":1867018963,\"days\":[\"Sunday\"]}")
+            .toObject(BandwidthScheduleProperties.class);
+        Assertions.assertEquals("czvyifq", model.start());
+        Assertions.assertEquals("vkd", model.stop());
+        Assertions.assertEquals(1867018963, model.rateInMbps());
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.days().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BandwidthScheduleProperties model =
-            new BandwidthScheduleProperties()
-                .withStart("dxwzywqsmbsurexi")
-                .withStop("o")
-                .withRateInMbps(998039935)
-                .withDays(Arrays.asList(DayOfWeek.SATURDAY));
+        BandwidthScheduleProperties model = new BandwidthScheduleProperties().withStart("czvyifq")
+            .withStop("vkd")
+            .withRateInMbps(1867018963)
+            .withDays(Arrays.asList(DayOfWeek.SUNDAY));
         model = BinaryData.fromObject(model).toObject(BandwidthScheduleProperties.class);
-        Assertions.assertEquals("dxwzywqsmbsurexi", model.start());
-        Assertions.assertEquals("o", model.stop());
-        Assertions.assertEquals(998039935, model.rateInMbps());
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.days().get(0));
+        Assertions.assertEquals("czvyifq", model.start());
+        Assertions.assertEquals("vkd", model.stop());
+        Assertions.assertEquals(1867018963, model.rateInMbps());
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.days().get(0));
     }
 }

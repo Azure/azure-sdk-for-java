@@ -23,8 +23,11 @@ public final class DocumentTypeDetailsHelper {
      */
     public interface DocumentTypeDetailsAccessor {
         void setDescription(DocumentTypeDetails documentTypeDetails, String description);
+
         void setFieldSchema(DocumentTypeDetails documentTypeDetails, Map<String, DocumentFieldSchema> fieldSchema);
+
         void setFieldConfidence(DocumentTypeDetails documentTypeDetails, Map<String, Float> fieldConfidence);
+
         void setBuildMode(DocumentTypeDetails documentTypeDetails, DocumentModelBuildMode buildMode);
     }
 

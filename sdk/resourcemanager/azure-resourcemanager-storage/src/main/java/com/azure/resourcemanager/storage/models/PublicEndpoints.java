@@ -23,6 +23,8 @@ public class PublicEndpoints {
     }
 
     /**
+     * Gets the URLs that are used to perform a retrieval of a public blob, queue or table object.
+     *
      * @return the URLs that are used to perform a retrieval of a public blob, queue or table object.Note that
      *     StandardZRS and PremiumLRS accounts only return the blob endpoint.
      */
@@ -31,6 +33,9 @@ public class PublicEndpoints {
     }
 
     /**
+     * Gets the URLs that are used to perform a retrieval of a public blob, queue or table object from the secondary
+     *     location of the storage account.
+     *
      * @return the URLs that are used to perform a retrieval of a public blob, queue or table object from the secondary
      *     location of the storage account. Only available if the accountType is StandardRAGRS.
      */

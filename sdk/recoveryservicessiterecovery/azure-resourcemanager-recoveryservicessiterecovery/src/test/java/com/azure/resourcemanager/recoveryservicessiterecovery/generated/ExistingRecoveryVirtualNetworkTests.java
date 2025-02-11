@@ -20,8 +20,9 @@ public final class ExistingRecoveryVirtualNetworkTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExistingRecoveryVirtualNetwork model = new ExistingRecoveryVirtualNetwork()
-            .withRecoveryVirtualNetworkId("xsyaowuzowpuoh").withRecoverySubnetName("cprgukxrztiochl");
+        ExistingRecoveryVirtualNetwork model
+            = new ExistingRecoveryVirtualNetwork().withRecoveryVirtualNetworkId("xsyaowuzowpuoh")
+                .withRecoverySubnetName("cprgukxrztiochl");
         model = BinaryData.fromObject(model).toObject(ExistingRecoveryVirtualNetwork.class);
         Assertions.assertEquals("xsyaowuzowpuoh", model.recoveryVirtualNetworkId());
         Assertions.assertEquals("cprgukxrztiochl", model.recoverySubnetName());

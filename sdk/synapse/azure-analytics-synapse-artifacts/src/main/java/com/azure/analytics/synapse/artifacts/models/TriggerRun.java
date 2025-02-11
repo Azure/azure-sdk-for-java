@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -200,8 +201,8 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
                 } else if ("triggerType".equals(fieldName)) {
                     deserializedTriggerRun.triggerType = reader.getString();
                 } else if ("triggerRunTimestamp".equals(fieldName)) {
-                    deserializedTriggerRun.triggerRunTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedTriggerRun.triggerRunTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
                     deserializedTriggerRun.status = TriggerRunStatus.fromString(reader.getString());
                 } else if ("message".equals(fieldName)) {

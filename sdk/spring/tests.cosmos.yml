@@ -1,0 +1,53 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/spring/tests.cosmos.yml
+      - sdk/spring/azure-spring-data-cosmos/
+      - eng/pipelines/templates/stages/cosmos-emulator-matrix.json
+      - eng/pipelines/templates/stages/cosmos-sdk-client.yml
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/spring/tests.cosmos.yml
+      - sdk/spring/azure-spring-data-cosmos/
+      - eng/pipelines/templates/stages/cosmos-emulator-matrix.json
+      - eng/pipelines/templates/stages/cosmos-sdk-client.yml
+
+extends:
+  # NOTE: This is for running spring data cosmos emulator tests
+  # Note: skipPublishDevFeed needs to be done for this library because this
+  # pipeline also runs scheduled, nightly builds but because azure-spring-data-cosmos
+  # is published to the dev feed in spring's ci.yml file and shouln't be published here.
+  # Ditto with the skipPublishDocMs. That'll be taken care of in spring's pipeline as well.
+  template: /eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
+  parameters:
+    ServiceDirectory: spring
+    SDKType: client
+    Artifacts:
+      - name: azure-spring-data-cosmos
+        groupId: com.azure
+        safeName: azurespringdatacosmos
+        releaseInBatch: true
+        skipPublishDevFeed: true
+        skipPublishDocMs: true
+    MatrixFilters:
+      - JavaTestVersion=^(?!1.8|1.11).*
+    LanguageFilter:
+      - Language=.*(Spring).*
+    AdditionalModules:
+      - name: azure-spring-data-cosmos
+        groupId: com.azure

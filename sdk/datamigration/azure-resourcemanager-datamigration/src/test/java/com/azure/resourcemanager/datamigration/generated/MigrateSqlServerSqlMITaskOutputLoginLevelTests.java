@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.MigrateSqlServerSqlMITaskO
 public final class MigrateSqlServerSqlMITaskOutputLoginLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSqlServerSqlMITaskOutputLoginLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"LoginLevelOutput\",\"loginName\":\"javftjuhdqa\",\"state\":\"Stopped\",\"stage\":\"Initialize\",\"startedOn\":\"2021-05-14T01:20Z\",\"endedOn\":\"2021-09-07T22:10:16Z\",\"message\":\"jrajcivm\",\"exceptionsAndWarnings\":[{\"message\":\"cf\",\"actionableMessage\":\"rxgkne\",\"filePath\":\"yinzqodfvpgs\",\"lineNumber\":\"xgsg\",\"hResult\":58598702,\"stackTrace\":\"zdjtxvzflbqv\"}],\"id\":\"qvlgafcqusrdvetn\"}")
-                .toObject(MigrateSqlServerSqlMITaskOutputLoginLevel.class);
+        MigrateSqlServerSqlMITaskOutputLoginLevel model = BinaryData.fromString(
+            "{\"resultType\":\"LoginLevelOutput\",\"loginName\":\"ls\",\"state\":\"Stopped\",\"stage\":\"EstablishObjectPermissions\",\"startedOn\":\"2021-09-18T17:37:15Z\",\"endedOn\":\"2021-11-18T22:21:07Z\",\"message\":\"aumweoohguufu\",\"exceptionsAndWarnings\":[{\"message\":\"jathwtzo\",\"actionableMessage\":\"a\",\"filePath\":\"wm\",\"lineNumber\":\"mebwjscjpah\",\"hResult\":1860405842,\"stackTrace\":\"a\"},{\"message\":\"qxnmwmqt\",\"actionableMessage\":\"xyi\",\"filePath\":\"dt\",\"lineNumber\":\"cttadi\",\"hResult\":1122809689,\"stackTrace\":\"kmr\"},{\"message\":\"eekpndz\",\"actionableMessage\":\"pmudqmeqwig\",\"filePath\":\"bu\",\"lineNumber\":\"wyxebeybpmzz\",\"hResult\":1945693134,\"stackTrace\":\"fyaqitm\"}],\"id\":\"eioqaqhvse\"}")
+            .toObject(MigrateSqlServerSqlMITaskOutputLoginLevel.class);
     }
 
     @org.junit.jupiter.api.Test

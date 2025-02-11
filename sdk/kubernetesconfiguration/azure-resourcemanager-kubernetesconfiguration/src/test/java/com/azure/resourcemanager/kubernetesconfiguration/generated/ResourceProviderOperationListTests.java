@@ -14,46 +14,34 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderOperationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderOperationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"xrmcqibycnojvk\",\"display\":{\"provider\":\"fqsgzvahapjy\",\"resource\":\"pvgqzcjrvxdjzlm\",\"operation\":\"xkvugfhzov\",\"description\":\"jvzunluthnnp\"},\"isDataAction\":true,\"origin\":\"peilpjzuaejxdu\"},{\"name\":\"skzbb\",\"display\":{\"provider\":\"umveekgpwozuhkf\",\"resource\":\"sjyofdx\",\"operation\":\"us\",\"description\":\"touwaboekqv\"},\"isDataAction\":false,\"origin\":\"smv\"}],\"nextLink\":\"wyjsflhhcaalnjix\"}")
-                .toObject(ResourceProviderOperationList.class);
-        Assertions.assertEquals("xrmcqibycnojvk", model.value().get(0).name());
-        Assertions.assertEquals("fqsgzvahapjy", model.value().get(0).display().provider());
-        Assertions.assertEquals("pvgqzcjrvxdjzlm", model.value().get(0).display().resource());
-        Assertions.assertEquals("xkvugfhzov", model.value().get(0).display().operation());
-        Assertions.assertEquals("jvzunluthnnp", model.value().get(0).display().description());
+        ResourceProviderOperationList model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"py\",\"display\":{\"provider\":\"lwn\",\"resource\":\"hjdauwhvylwz\",\"operation\":\"dhxujznbmpo\",\"description\":\"wpr\"},\"isDataAction\":false,\"origin\":\"eualupjmkhf\"},{\"name\":\"bbcswsrtjri\",\"display\":{\"provider\":\"bpbewtghfgb\",\"resource\":\"gw\",\"operation\":\"vlvqhjkbegi\",\"description\":\"nmxiebwwaloayqc\"},\"isDataAction\":false,\"origin\":\"zjuzgwyz\"}],\"nextLink\":\"txon\"}")
+            .toObject(ResourceProviderOperationList.class);
+        Assertions.assertEquals("py", model.value().get(0).name());
+        Assertions.assertEquals("lwn", model.value().get(0).display().provider());
+        Assertions.assertEquals("hjdauwhvylwz", model.value().get(0).display().resource());
+        Assertions.assertEquals("dhxujznbmpo", model.value().get(0).display().operation());
+        Assertions.assertEquals("wpr", model.value().get(0).display().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderOperationList model =
-            new ResourceProviderOperationList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ResourceProviderOperationInner()
-                                .withName("xrmcqibycnojvk")
-                                .withDisplay(
-                                    new ResourceProviderOperationDisplay()
-                                        .withProvider("fqsgzvahapjy")
-                                        .withResource("pvgqzcjrvxdjzlm")
-                                        .withOperation("xkvugfhzov")
-                                        .withDescription("jvzunluthnnp")),
-                            new ResourceProviderOperationInner()
-                                .withName("skzbb")
-                                .withDisplay(
-                                    new ResourceProviderOperationDisplay()
-                                        .withProvider("umveekgpwozuhkf")
-                                        .withResource("sjyofdx")
-                                        .withOperation("us")
-                                        .withDescription("touwaboekqv"))));
+        ResourceProviderOperationList model = new ResourceProviderOperationList().withValue(Arrays.asList(
+            new ResourceProviderOperationInner().withName("py")
+                .withDisplay(new ResourceProviderOperationDisplay().withProvider("lwn")
+                    .withResource("hjdauwhvylwz")
+                    .withOperation("dhxujznbmpo")
+                    .withDescription("wpr")),
+            new ResourceProviderOperationInner().withName("bbcswsrtjri")
+                .withDisplay(new ResourceProviderOperationDisplay().withProvider("bpbewtghfgb")
+                    .withResource("gw")
+                    .withOperation("vlvqhjkbegi")
+                    .withDescription("nmxiebwwaloayqc"))));
         model = BinaryData.fromObject(model).toObject(ResourceProviderOperationList.class);
-        Assertions.assertEquals("xrmcqibycnojvk", model.value().get(0).name());
-        Assertions.assertEquals("fqsgzvahapjy", model.value().get(0).display().provider());
-        Assertions.assertEquals("pvgqzcjrvxdjzlm", model.value().get(0).display().resource());
-        Assertions.assertEquals("xkvugfhzov", model.value().get(0).display().operation());
-        Assertions.assertEquals("jvzunluthnnp", model.value().get(0).display().description());
+        Assertions.assertEquals("py", model.value().get(0).name());
+        Assertions.assertEquals("lwn", model.value().get(0).display().provider());
+        Assertions.assertEquals("hjdauwhvylwz", model.value().get(0).display().resource());
+        Assertions.assertEquals("dhxujznbmpo", model.value().get(0).display().operation());
+        Assertions.assertEquals("wpr", model.value().get(0).display().description());
     }
 }

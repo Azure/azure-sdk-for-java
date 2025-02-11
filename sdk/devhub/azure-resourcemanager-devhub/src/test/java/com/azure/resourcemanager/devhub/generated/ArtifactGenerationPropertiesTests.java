@@ -15,56 +15,53 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactGenerationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactGenerationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"generationLanguage\":\"python\",\"languageVersion\":\"wpyeicxmqciwqvh\",\"builderVersion\":\"ixuigdtopbobj\",\"port\":\"hm\",\"appName\":\"u\",\"dockerfileOutputDirectory\":\"a\",\"manifestOutputDirectory\":\"rzayv\",\"dockerfileGenerationMode\":\"enabled\",\"manifestGenerationMode\":\"enabled\",\"manifestType\":\"helm\",\"imageName\":\"iotkftutqxl\",\"namespace\":\"xlefgugnxkrx\",\"imageTag\":\"mi\"}")
-                .toObject(ArtifactGenerationProperties.class);
-        Assertions.assertEquals(GenerationLanguage.PYTHON, model.generationLanguage());
-        Assertions.assertEquals("wpyeicxmqciwqvh", model.languageVersion());
-        Assertions.assertEquals("ixuigdtopbobj", model.builderVersion());
-        Assertions.assertEquals("hm", model.port());
-        Assertions.assertEquals("u", model.appName());
-        Assertions.assertEquals("a", model.dockerfileOutputDirectory());
-        Assertions.assertEquals("rzayv", model.manifestOutputDirectory());
-        Assertions.assertEquals(DockerfileGenerationMode.ENABLED, model.dockerfileGenerationMode());
+        ArtifactGenerationProperties model = BinaryData.fromString(
+            "{\"generationLanguage\":\"javascript\",\"languageVersion\":\"sglumma\",\"builderVersion\":\"j\",\"port\":\"dxob\",\"appName\":\"dxkqpx\",\"dockerfileOutputDirectory\":\"ajionpimexgstxg\",\"manifestOutputDirectory\":\"odgmaajrmvdjwz\",\"dockerfileGenerationMode\":\"disabled\",\"manifestGenerationMode\":\"enabled\",\"manifestType\":\"kube\",\"imageName\":\"hijco\",\"namespace\":\"ctbzaq\",\"imageTag\":\"sycbkbfk\"}")
+            .toObject(ArtifactGenerationProperties.class);
+        Assertions.assertEquals(GenerationLanguage.JAVASCRIPT, model.generationLanguage());
+        Assertions.assertEquals("sglumma", model.languageVersion());
+        Assertions.assertEquals("j", model.builderVersion());
+        Assertions.assertEquals("dxob", model.port());
+        Assertions.assertEquals("dxkqpx", model.appName());
+        Assertions.assertEquals("ajionpimexgstxg", model.dockerfileOutputDirectory());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.manifestOutputDirectory());
+        Assertions.assertEquals(DockerfileGenerationMode.DISABLED, model.dockerfileGenerationMode());
         Assertions.assertEquals(ManifestGenerationMode.ENABLED, model.manifestGenerationMode());
-        Assertions.assertEquals(GenerationManifestType.HELM, model.manifestType());
-        Assertions.assertEquals("iotkftutqxl", model.imageName());
-        Assertions.assertEquals("xlefgugnxkrx", model.namespace());
-        Assertions.assertEquals("mi", model.imageTag());
+        Assertions.assertEquals(GenerationManifestType.KUBE, model.manifestType());
+        Assertions.assertEquals("hijco", model.imageName());
+        Assertions.assertEquals("ctbzaq", model.namespace());
+        Assertions.assertEquals("sycbkbfk", model.imageTag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactGenerationProperties model =
-            new ArtifactGenerationProperties()
-                .withGenerationLanguage(GenerationLanguage.PYTHON)
-                .withLanguageVersion("wpyeicxmqciwqvh")
-                .withBuilderVersion("ixuigdtopbobj")
-                .withPort("hm")
-                .withAppName("u")
-                .withDockerfileOutputDirectory("a")
-                .withManifestOutputDirectory("rzayv")
-                .withDockerfileGenerationMode(DockerfileGenerationMode.ENABLED)
+        ArtifactGenerationProperties model
+            = new ArtifactGenerationProperties().withGenerationLanguage(GenerationLanguage.JAVASCRIPT)
+                .withLanguageVersion("sglumma")
+                .withBuilderVersion("j")
+                .withPort("dxob")
+                .withAppName("dxkqpx")
+                .withDockerfileOutputDirectory("ajionpimexgstxg")
+                .withManifestOutputDirectory("odgmaajrmvdjwz")
+                .withDockerfileGenerationMode(DockerfileGenerationMode.DISABLED)
                 .withManifestGenerationMode(ManifestGenerationMode.ENABLED)
-                .withManifestType(GenerationManifestType.HELM)
-                .withImageName("iotkftutqxl")
-                .withNamespace("xlefgugnxkrx")
-                .withImageTag("mi");
+                .withManifestType(GenerationManifestType.KUBE)
+                .withImageName("hijco")
+                .withNamespace("ctbzaq")
+                .withImageTag("sycbkbfk");
         model = BinaryData.fromObject(model).toObject(ArtifactGenerationProperties.class);
-        Assertions.assertEquals(GenerationLanguage.PYTHON, model.generationLanguage());
-        Assertions.assertEquals("wpyeicxmqciwqvh", model.languageVersion());
-        Assertions.assertEquals("ixuigdtopbobj", model.builderVersion());
-        Assertions.assertEquals("hm", model.port());
-        Assertions.assertEquals("u", model.appName());
-        Assertions.assertEquals("a", model.dockerfileOutputDirectory());
-        Assertions.assertEquals("rzayv", model.manifestOutputDirectory());
-        Assertions.assertEquals(DockerfileGenerationMode.ENABLED, model.dockerfileGenerationMode());
+        Assertions.assertEquals(GenerationLanguage.JAVASCRIPT, model.generationLanguage());
+        Assertions.assertEquals("sglumma", model.languageVersion());
+        Assertions.assertEquals("j", model.builderVersion());
+        Assertions.assertEquals("dxob", model.port());
+        Assertions.assertEquals("dxkqpx", model.appName());
+        Assertions.assertEquals("ajionpimexgstxg", model.dockerfileOutputDirectory());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.manifestOutputDirectory());
+        Assertions.assertEquals(DockerfileGenerationMode.DISABLED, model.dockerfileGenerationMode());
         Assertions.assertEquals(ManifestGenerationMode.ENABLED, model.manifestGenerationMode());
-        Assertions.assertEquals(GenerationManifestType.HELM, model.manifestType());
-        Assertions.assertEquals("iotkftutqxl", model.imageName());
-        Assertions.assertEquals("xlefgugnxkrx", model.namespace());
-        Assertions.assertEquals("mi", model.imageTag());
+        Assertions.assertEquals(GenerationManifestType.KUBE, model.manifestType());
+        Assertions.assertEquals("hijco", model.imageName());
+        Assertions.assertEquals("ctbzaq", model.namespace());
+        Assertions.assertEquals("sycbkbfk", model.imageTag());
     }
 }

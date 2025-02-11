@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Set of rules for sending metrics for the Monitor resource. */
+/**
+ * Set of rules for sending metrics for the Monitor resource.
+ */
 @Fluent
-public final class MetricRules {
+public final class MetricRules implements JsonSerializable<MetricRules> {
     /*
      * Flag specifying if metrics from Azure resources should be sent for the Monitor resource.
      */
-    @JsonProperty(value = "sendingMetrics")
     private SendingMetricsStatus sendingMetrics;
 
     /*
@@ -22,17 +27,18 @@ public final class MetricRules {
      * Exclude action is specified, the rules will apply to the list of all available resources. If Include actions are
      * specified, the rules will only include resources with the associated tags.
      */
-    @JsonProperty(value = "filteringTags")
     private List<FilteringTag> filteringTags;
 
-    /** Creates an instance of MetricRules class. */
+    /**
+     * Creates an instance of MetricRules class.
+     */
     public MetricRules() {
     }
 
     /**
      * Get the sendingMetrics property: Flag specifying if metrics from Azure resources should be sent for the Monitor
      * resource.
-     *
+     * 
      * @return the sendingMetrics value.
      */
     public SendingMetricsStatus sendingMetrics() {
@@ -42,7 +48,7 @@ public final class MetricRules {
     /**
      * Set the sendingMetrics property: Flag specifying if metrics from Azure resources should be sent for the Monitor
      * resource.
-     *
+     * 
      * @param sendingMetrics the sendingMetrics value to set.
      * @return the MetricRules object itself.
      */
@@ -55,7 +61,7 @@ public final class MetricRules {
      * Get the filteringTags property: List of filtering tags to be used for capturing metrics. If empty, all resources
      * will be captured. If only Exclude action is specified, the rules will apply to the list of all available
      * resources. If Include actions are specified, the rules will only include resources with the associated tags.
-     *
+     * 
      * @return the filteringTags value.
      */
     public List<FilteringTag> filteringTags() {
@@ -66,7 +72,7 @@ public final class MetricRules {
      * Set the filteringTags property: List of filtering tags to be used for capturing metrics. If empty, all resources
      * will be captured. If only Exclude action is specified, the rules will apply to the list of all available
      * resources. If Include actions are specified, the rules will only include resources with the associated tags.
-     *
+     * 
      * @param filteringTags the filteringTags value to set.
      * @return the MetricRules object itself.
      */
@@ -77,12 +83,53 @@ public final class MetricRules {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filteringTags() != null) {
             filteringTags().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sendingMetrics",
+            this.sendingMetrics == null ? null : this.sendingMetrics.toString());
+        jsonWriter.writeArrayField("filteringTags", this.filteringTags, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricRules from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricRules if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricRules.
+     */
+    public static MetricRules fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricRules deserializedMetricRules = new MetricRules();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sendingMetrics".equals(fieldName)) {
+                    deserializedMetricRules.sendingMetrics = SendingMetricsStatus.fromString(reader.getString());
+                } else if ("filteringTags".equals(fieldName)) {
+                    List<FilteringTag> filteringTags = reader.readArray(reader1 -> FilteringTag.fromJson(reader1));
+                    deserializedMetricRules.filteringTags = filteringTags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricRules;
+        });
     }
 }

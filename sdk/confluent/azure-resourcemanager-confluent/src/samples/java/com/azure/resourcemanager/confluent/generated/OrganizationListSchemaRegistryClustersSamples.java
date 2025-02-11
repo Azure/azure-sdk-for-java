@@ -19,7 +19,8 @@ public final class OrganizationListSchemaRegistryClustersSamples {
      */
     public static void
         organizationListSchemaRegistryClusters(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().listSchemaRegistryClusters("myResourceGroup", "myOrganization", "env-stgcczjp2j3", null,
-            null, com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .listSchemaRegistryClusters("myResourceGroup", "myOrganization", "env-stgcczjp2j3", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

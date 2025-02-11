@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.education.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of this lab. */
+/**
+ * The status of this lab.
+ */
 public final class LabStatus extends ExpandableStringEnum<LabStatus> {
-    /** Static value Active for LabStatus. */
+    /**
+     * Static value Active for LabStatus.
+     */
     public static final LabStatus ACTIVE = fromString("Active");
 
-    /** Static value Deleted for LabStatus. */
+    /**
+     * Static value Deleted for LabStatus.
+     */
     public static final LabStatus DELETED = fromString("Deleted");
 
-    /** Static value Pending for LabStatus. */
+    /**
+     * Static value Pending for LabStatus.
+     */
     public static final LabStatus PENDING = fromString("Pending");
 
     /**
+     * Creates a new instance of LabStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LabStatus() {
+    }
+
+    /**
      * Creates or finds a LabStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LabStatus.
      */
-    @JsonCreator
     public static LabStatus fromString(String name) {
         return fromString(name, LabStatus.class);
     }
 
     /**
      * Gets known LabStatus values.
-     *
+     * 
      * @return known LabStatus values.
      */
     public static Collection<LabStatus> values() {

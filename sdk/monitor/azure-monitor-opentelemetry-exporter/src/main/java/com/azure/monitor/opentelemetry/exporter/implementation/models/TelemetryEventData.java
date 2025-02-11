@@ -41,7 +41,7 @@ public final class TelemetryEventData extends MonitorDomain {
 
     /**
      * Get the name property: Event name. Keep it low cardinality to allow proper grouping and useful metrics.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -50,7 +50,7 @@ public final class TelemetryEventData extends MonitorDomain {
 
     /**
      * Set the name property: Event name. Keep it low cardinality to allow proper grouping and useful metrics.
-     *
+     * 
      * @param name the name value to set.
      * @return the TelemetryEventData object itself.
      */
@@ -61,7 +61,7 @@ public final class TelemetryEventData extends MonitorDomain {
 
     /**
      * Get the properties property: Collection of custom properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> getProperties() {
@@ -70,7 +70,7 @@ public final class TelemetryEventData extends MonitorDomain {
 
     /**
      * Set the properties property: Collection of custom properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the TelemetryEventData object itself.
      */
@@ -81,7 +81,7 @@ public final class TelemetryEventData extends MonitorDomain {
 
     /**
      * Get the measurements property: Collection of custom measurements.
-     *
+     * 
      * @return the measurements value.
      */
     public Map<String, Double> getMeasurements() {
@@ -90,7 +90,7 @@ public final class TelemetryEventData extends MonitorDomain {
 
     /**
      * Set the measurements property: Collection of custom measurements.
-     *
+     * 
      * @param measurements the measurements value to set.
      * @return the TelemetryEventData object itself.
      */
@@ -116,8 +116,8 @@ public final class TelemetryEventData extends MonitorDomain {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("ver", getVersion());
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
-        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("measurements", this.measurements, (writer, element) -> writer.writeDouble(element));
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -128,7 +128,7 @@ public final class TelemetryEventData extends MonitorDomain {
 
     /**
      * Reads an instance of TelemetryEventData from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TelemetryEventData if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -148,9 +148,11 @@ public final class TelemetryEventData extends MonitorDomain {
                 } else if ("name".equals(fieldName)) {
                     deserializedTelemetryEventData.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedTelemetryEventData.properties = reader.readMap(JsonReader::getString);
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTelemetryEventData.properties = properties;
                 } else if ("measurements".equals(fieldName)) {
-                    deserializedTelemetryEventData.measurements = reader.readMap(JsonReader::getDouble);
+                    Map<String, Double> measurements = reader.readMap(reader1 -> reader1.getDouble());
+                    deserializedTelemetryEventData.measurements = measurements;
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

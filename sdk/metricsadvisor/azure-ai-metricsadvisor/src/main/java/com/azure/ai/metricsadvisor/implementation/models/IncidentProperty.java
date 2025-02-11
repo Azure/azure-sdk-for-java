@@ -93,6 +93,9 @@ public final class IncidentProperty implements JsonSerializable<IncidentProperty
         return this.expectedValueOfRootNode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

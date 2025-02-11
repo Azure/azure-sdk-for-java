@@ -20,6 +20,7 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.LongLiteralExpr;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
@@ -282,6 +283,13 @@ public class SearchIndexCustomizations extends Customization {
     }
 
     private void customizeVectorizableTextQuery(ClassCustomization classCustomization) {
+        customizeAst(classCustomization, clazz -> {
+            clazz.getFieldByName("queryRewrites").get().getVariable(0).setType("QueryRewrites");
+            clazz.getMethodsByName("getQueryRewrites").getFirst().setType("QueryRewrites");
+            clazz.getMethodsByName("setQueryRewrites").getFirst().setParameters(new NodeList<>(new Parameter().setType("QueryRewrites").setName("queryRewrites")));
+            String newBodyFromJson = clazz.getMethodsByName("fromJson").getFirst().getBody().get().toString().replaceAll("QueryRewritesType", "QueryRewrites");
+            clazz.getMethodsByName("fromJson").getFirst().setBody(StaticJavaParser.parseBlock(newBodyFromJson));
+        });
         customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields")
             .get(0)
             .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true))));

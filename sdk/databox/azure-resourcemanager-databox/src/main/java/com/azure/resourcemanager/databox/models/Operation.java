@@ -6,47 +6,49 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.resourcemanager.databox.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
      * Gets the name property: Name of the operation. Format:
      * {resourceProviderNamespace}/{resourceType}/{read|write|delete|action}.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the display property: Operation display values.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
      * Gets the properties property: Operation properties.
-     *
+     * 
      * @return the properties value.
      */
     Object properties();
 
     /**
      * Gets the origin property: Origin of the operation. Can be : user|system|user,system.
-     *
+     * 
      * @return the origin value.
      */
     String origin();
 
     /**
      * Gets the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
      * Gets the inner com.azure.resourcemanager.databox.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

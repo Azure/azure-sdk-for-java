@@ -5,6 +5,7 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.storage.blob.implementation.models.PageListHelper;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import com.azure.storage.blob.implementation.models.PageListHelper;
 
 /**
  * the list of pages.

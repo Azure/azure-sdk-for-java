@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** HardwareValidationStatus represents the latest hardware validation details performed for this bare metal machine. */
+/**
+ * HardwareValidationStatus represents the latest hardware validation details performed for this bare metal machine.
+ */
 @Immutable
-public final class HardwareValidationStatus {
+public final class HardwareValidationStatus implements JsonSerializable<HardwareValidationStatus> {
     /*
      * The timestamp of the hardware validation execution.
      */
-    @JsonProperty(value = "lastValidationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastValidationTime;
 
     /*
      * The outcome of the hardware validation.
      */
-    @JsonProperty(value = "result", access = JsonProperty.Access.WRITE_ONLY)
     private BareMetalMachineHardwareValidationResult result;
 
-    /** Creates an instance of HardwareValidationStatus class. */
+    /**
+     * Creates an instance of HardwareValidationStatus class.
+     */
     public HardwareValidationStatus() {
     }
 
     /**
      * Get the lastValidationTime property: The timestamp of the hardware validation execution.
-     *
+     * 
      * @return the lastValidationTime value.
      */
     public OffsetDateTime lastValidationTime() {
@@ -38,7 +45,7 @@ public final class HardwareValidationStatus {
 
     /**
      * Get the result property: The outcome of the hardware validation.
-     *
+     * 
      * @return the result value.
      */
     public BareMetalMachineHardwareValidationResult result() {
@@ -47,9 +54,48 @@ public final class HardwareValidationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HardwareValidationStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HardwareValidationStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HardwareValidationStatus.
+     */
+    public static HardwareValidationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HardwareValidationStatus deserializedHardwareValidationStatus = new HardwareValidationStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastValidationTime".equals(fieldName)) {
+                    deserializedHardwareValidationStatus.lastValidationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("result".equals(fieldName)) {
+                    deserializedHardwareValidationStatus.result
+                        = BareMetalMachineHardwareValidationResult.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHardwareValidationStatus;
+        });
     }
 }

@@ -26,10 +26,13 @@ public final class ArmResourceDefinitionResourceElementTemplateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmResourceDefinitionResourceElementTemplate model = new ArmResourceDefinitionResourceElementTemplate()
-            .withTemplateType(TemplateType.ARM_TEMPLATE).withParameterValues("iuubwefqsf").withArtifactProfile(
-                new NsdArtifactProfile().withArtifactStoreReference(new ReferencedResource().withId("tf"))
-                    .withArtifactName("rqwexjkmfxapjwog").withArtifactVersion("nobpudcdabtqwpw"));
+        ArmResourceDefinitionResourceElementTemplate model
+            = new ArmResourceDefinitionResourceElementTemplate().withTemplateType(TemplateType.ARM_TEMPLATE)
+                .withParameterValues("iuubwefqsf")
+                .withArtifactProfile(
+                    new NsdArtifactProfile().withArtifactStoreReference(new ReferencedResource().withId("tf"))
+                        .withArtifactName("rqwexjkmfxapjwog")
+                        .withArtifactVersion("nobpudcdabtqwpw"));
         model = BinaryData.fromObject(model).toObject(ArmResourceDefinitionResourceElementTemplate.class);
         Assertions.assertEquals(TemplateType.ARM_TEMPLATE, model.templateType());
         Assertions.assertEquals("iuubwefqsf", model.parameterValues());

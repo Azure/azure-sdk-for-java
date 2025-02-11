@@ -52,4 +52,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [simple_chat_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/SimpleChatClient.java
 [advanced_samples]: https://github.com/Azure/azure-webpubsub/tree/main/samples/java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fwebpubsub%2Fazure-messaging-webpubsub%2FREADME.png)
+

@@ -72,21 +72,16 @@ public final class GlobalSchemaContractImpl
     }
 
     public GlobalSchemaContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchemas()
-                .createOrUpdate(
-                    resourceGroupName, serviceName, schemaId, this.innerModel(), createIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchemas()
+            .createOrUpdate(resourceGroupName, serviceName, schemaId, this.innerModel(), createIfMatch, Context.NONE);
         return this;
     }
 
     public GlobalSchemaContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchemas()
-                .createOrUpdate(resourceGroupName, serviceName, schemaId, this.innerModel(), createIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchemas()
+            .createOrUpdate(resourceGroupName, serviceName, schemaId, this.innerModel(), createIfMatch, context);
         return this;
     }
 
@@ -103,51 +98,41 @@ public final class GlobalSchemaContractImpl
     }
 
     public GlobalSchemaContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchemas()
-                .createOrUpdate(
-                    resourceGroupName, serviceName, schemaId, this.innerModel(), updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchemas()
+            .createOrUpdate(resourceGroupName, serviceName, schemaId, this.innerModel(), updateIfMatch, Context.NONE);
         return this;
     }
 
     public GlobalSchemaContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchemas()
-                .createOrUpdate(resourceGroupName, serviceName, schemaId, this.innerModel(), updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchemas()
+            .createOrUpdate(resourceGroupName, serviceName, schemaId, this.innerModel(), updateIfMatch, context);
         return this;
     }
 
-    GlobalSchemaContractImpl(
-        GlobalSchemaContractInner innerObject,
+    GlobalSchemaContractImpl(GlobalSchemaContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.schemaId = Utils.getValueFromIdByName(innerObject.id(), "schemas");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.schemaId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schemas");
     }
 
     public GlobalSchemaContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchemas()
-                .getWithResponse(resourceGroupName, serviceName, schemaId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchemas()
+            .getWithResponse(resourceGroupName, serviceName, schemaId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GlobalSchemaContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalSchemas()
-                .getWithResponse(resourceGroupName, serviceName, schemaId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGlobalSchemas()
+            .getWithResponse(resourceGroupName, serviceName, schemaId, context)
+            .getValue();
         return this;
     }
 

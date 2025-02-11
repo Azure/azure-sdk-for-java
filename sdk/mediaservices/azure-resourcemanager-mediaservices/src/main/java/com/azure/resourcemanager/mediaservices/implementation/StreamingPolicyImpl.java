@@ -19,8 +19,8 @@ public final class StreamingPolicyImpl implements StreamingPolicy, StreamingPoli
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    StreamingPolicyImpl(
-        StreamingPolicyInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
+    StreamingPolicyImpl(StreamingPolicyInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -86,23 +86,18 @@ public final class StreamingPolicyImpl implements StreamingPolicy, StreamingPoli
     }
 
     public StreamingPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStreamingPolicies()
-                .createWithResponse(
-                    resourceGroupName, accountName, streamingPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStreamingPolicies()
+            .createWithResponse(resourceGroupName, accountName, streamingPolicyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public StreamingPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStreamingPolicies()
-                .createWithResponse(resourceGroupName, accountName, streamingPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStreamingPolicies()
+            .createWithResponse(resourceGroupName, accountName, streamingPolicyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -113,22 +108,18 @@ public final class StreamingPolicyImpl implements StreamingPolicy, StreamingPoli
     }
 
     public StreamingPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStreamingPolicies()
-                .getWithResponse(resourceGroupName, accountName, streamingPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStreamingPolicies()
+            .getWithResponse(resourceGroupName, accountName, streamingPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public StreamingPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStreamingPolicies()
-                .getWithResponse(resourceGroupName, accountName, streamingPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStreamingPolicies()
+            .getWithResponse(resourceGroupName, accountName, streamingPolicyName, context)
+            .getValue();
         return this;
     }
 

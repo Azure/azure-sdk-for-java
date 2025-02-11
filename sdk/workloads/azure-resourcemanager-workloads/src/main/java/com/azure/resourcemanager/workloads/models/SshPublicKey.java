@@ -5,22 +5,27 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contains information about SSH certificate public key and the path on the Linux VM where the public key is placed.
  */
 @Fluent
-public final class SshPublicKey {
+public final class SshPublicKey implements JsonSerializable<SshPublicKey> {
     /*
      * SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit
      * and in ssh-rsa format. <br><br> For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
      */
-    @JsonProperty(value = "keyData")
     private String keyData;
 
-    /** Creates an instance of SshPublicKey class. */
+    /**
+     * Creates an instance of SshPublicKey class.
+     */
     public SshPublicKey() {
     }
 
@@ -29,7 +34,7 @@ public final class SshPublicKey {
      * to be at least 2048-bit and in ssh-rsa format. &lt;br&gt;&lt;br&gt; For creating ssh keys, see [Create SSH keys
      * on Linux and Mac for Linux VMs in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
-     *
+     * 
      * @return the keyData value.
      */
     public String keyData() {
@@ -41,7 +46,7 @@ public final class SshPublicKey {
      * to be at least 2048-bit and in ssh-rsa format. &lt;br&gt;&lt;br&gt; For creating ssh keys, see [Create SSH keys
      * on Linux and Mac for Linux VMs in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
-     *
+     * 
      * @param keyData the keyData value to set.
      * @return the SshPublicKey object itself.
      */
@@ -52,9 +57,45 @@ public final class SshPublicKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyData", this.keyData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SshPublicKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SshPublicKey if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SshPublicKey.
+     */
+    public static SshPublicKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SshPublicKey deserializedSshPublicKey = new SshPublicKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyData".equals(fieldName)) {
+                    deserializedSshPublicKey.keyData = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSshPublicKey;
+        });
     }
 }

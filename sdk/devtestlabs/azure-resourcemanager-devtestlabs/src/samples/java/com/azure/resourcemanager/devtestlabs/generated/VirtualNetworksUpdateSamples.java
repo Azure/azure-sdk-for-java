@@ -8,23 +8,25 @@ import com.azure.resourcemanager.devtestlabs.models.VirtualNetwork;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworks Update. */
+/**
+ * Samples for VirtualNetworks Update.
+ */
 public final class VirtualNetworksUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_Update
+     * .json
      */
     /**
      * Sample code: VirtualNetworks_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualNetworksUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        VirtualNetwork resource =
-            manager
-                .virtualNetworks()
-                .getWithResponse(
-                    "resourceGroupName", "{labName}", "{virtualNetworkName}", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        VirtualNetwork resource = manager.virtualNetworks()
+            .getWithResponse("resourceGroupName", "{labName}", "{virtualNetworkName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 

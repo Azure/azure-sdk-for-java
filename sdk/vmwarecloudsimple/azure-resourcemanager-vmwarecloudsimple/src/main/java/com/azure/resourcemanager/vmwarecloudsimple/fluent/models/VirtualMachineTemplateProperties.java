@@ -6,105 +6,99 @@ package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDisk;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDiskController;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of virtual machine template. */
+/**
+ * Properties of virtual machine template.
+ */
 @Fluent
-public final class VirtualMachineTemplateProperties {
+public final class VirtualMachineTemplateProperties implements JsonSerializable<VirtualMachineTemplateProperties> {
     /*
      * The amount of memory
      */
-    @JsonProperty(value = "amountOfRam")
     private Integer amountOfRam;
 
     /*
      * The list of Virtual Disk Controllers
      */
-    @JsonProperty(value = "controllers")
     private List<VirtualDiskController> controllers;
 
     /*
      * The description of Virtual Machine Template
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The list of Virtual Disks
      */
-    @JsonProperty(value = "disks")
     private List<VirtualDisk> disks;
 
     /*
      * Expose Guest OS or not
      */
-    @JsonProperty(value = "exposeToGuestVM")
     private Boolean exposeToGuestVM;
 
     /*
      * The Guest OS
      */
-    @JsonProperty(value = "guestOS", access = JsonProperty.Access.WRITE_ONLY)
     private String guestOS;
 
     /*
      * The Guest OS types
      */
-    @JsonProperty(value = "guestOSType", access = JsonProperty.Access.WRITE_ONLY)
     private String guestOSType;
 
     /*
      * The list of Virtual NICs
      */
-    @JsonProperty(value = "nics")
     private List<VirtualNicInner> nics;
 
     /*
      * The number of CPU cores
      */
-    @JsonProperty(value = "numberOfCores")
     private Integer numberOfCores;
 
     /*
      * path to folder
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * The Private Cloud Id
      */
-    @JsonProperty(value = "privateCloudId", required = true)
     private String privateCloudId;
 
     /*
      * The list of VSphere networks
      */
-    @JsonProperty(value = "vSphereNetworks")
     private List<String> vSphereNetworks;
 
     /*
      * The tags from VSphere
      */
-    @JsonProperty(value = "vSphereTags")
     private List<String> vSphereTags;
 
     /*
      * The VMware tools version
      */
-    @JsonProperty(value = "vmwaretools", access = JsonProperty.Access.WRITE_ONLY)
     private String vmwaretools;
 
-    /** Creates an instance of VirtualMachineTemplateProperties class. */
+    /**
+     * Creates an instance of VirtualMachineTemplateProperties class.
+     */
     public VirtualMachineTemplateProperties() {
     }
 
     /**
      * Get the amountOfRam property: The amount of memory.
-     *
+     * 
      * @return the amountOfRam value.
      */
     public Integer amountOfRam() {
@@ -113,7 +107,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the amountOfRam property: The amount of memory.
-     *
+     * 
      * @param amountOfRam the amountOfRam value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -124,7 +118,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the controllers property: The list of Virtual Disk Controllers.
-     *
+     * 
      * @return the controllers value.
      */
     public List<VirtualDiskController> controllers() {
@@ -133,7 +127,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the controllers property: The list of Virtual Disk Controllers.
-     *
+     * 
      * @param controllers the controllers value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -144,7 +138,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the description property: The description of Virtual Machine Template.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -153,7 +147,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the description property: The description of Virtual Machine Template.
-     *
+     * 
      * @param description the description value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -164,7 +158,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the disks property: The list of Virtual Disks.
-     *
+     * 
      * @return the disks value.
      */
     public List<VirtualDisk> disks() {
@@ -173,7 +167,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the disks property: The list of Virtual Disks.
-     *
+     * 
      * @param disks the disks value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -184,7 +178,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the exposeToGuestVM property: Expose Guest OS or not.
-     *
+     * 
      * @return the exposeToGuestVM value.
      */
     public Boolean exposeToGuestVM() {
@@ -193,7 +187,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the exposeToGuestVM property: Expose Guest OS or not.
-     *
+     * 
      * @param exposeToGuestVM the exposeToGuestVM value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -204,7 +198,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the guestOS property: The Guest OS.
-     *
+     * 
      * @return the guestOS value.
      */
     public String guestOS() {
@@ -213,7 +207,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the guestOSType property: The Guest OS types.
-     *
+     * 
      * @return the guestOSType value.
      */
     public String guestOSType() {
@@ -222,7 +216,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the nics property: The list of Virtual NICs.
-     *
+     * 
      * @return the nics value.
      */
     public List<VirtualNicInner> nics() {
@@ -231,7 +225,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the nics property: The list of Virtual NICs.
-     *
+     * 
      * @param nics the nics value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -242,7 +236,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the numberOfCores property: The number of CPU cores.
-     *
+     * 
      * @return the numberOfCores value.
      */
     public Integer numberOfCores() {
@@ -251,7 +245,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the numberOfCores property: The number of CPU cores.
-     *
+     * 
      * @param numberOfCores the numberOfCores value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -262,7 +256,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the path property: path to folder.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -271,7 +265,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the path property: path to folder.
-     *
+     * 
      * @param path the path value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -282,7 +276,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the privateCloudId property: The Private Cloud Id.
-     *
+     * 
      * @return the privateCloudId value.
      */
     public String privateCloudId() {
@@ -291,7 +285,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the privateCloudId property: The Private Cloud Id.
-     *
+     * 
      * @param privateCloudId the privateCloudId value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -302,7 +296,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the vSphereNetworks property: The list of VSphere networks.
-     *
+     * 
      * @return the vSphereNetworks value.
      */
     public List<String> vSphereNetworks() {
@@ -311,7 +305,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the vSphereNetworks property: The list of VSphere networks.
-     *
+     * 
      * @param vSphereNetworks the vSphereNetworks value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -322,7 +316,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the vSphereTags property: The tags from VSphere.
-     *
+     * 
      * @return the vSphereTags value.
      */
     public List<String> vSphereTags() {
@@ -331,7 +325,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the vSphereTags property: The tags from VSphere.
-     *
+     * 
      * @param vSphereTags the vSphereTags value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -342,7 +336,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the vmwaretools property: The VMware tools version.
-     *
+     * 
      * @return the vmwaretools value.
      */
     public String vmwaretools() {
@@ -351,7 +345,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -365,12 +359,93 @@ public final class VirtualMachineTemplateProperties {
             nics().forEach(e -> e.validate());
         }
         if (privateCloudId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateCloudId in model VirtualMachineTemplateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property privateCloudId in model VirtualMachineTemplateProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineTemplateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("privateCloudId", this.privateCloudId);
+        jsonWriter.writeNumberField("amountOfRam", this.amountOfRam);
+        jsonWriter.writeArrayField("controllers", this.controllers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("disks", this.disks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("exposeToGuestVM", this.exposeToGuestVM);
+        jsonWriter.writeArrayField("nics", this.nics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("numberOfCores", this.numberOfCores);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeArrayField("vSphereNetworks", this.vSphereNetworks,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("vSphereTags", this.vSphereTags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineTemplateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineTemplateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineTemplateProperties.
+     */
+    public static VirtualMachineTemplateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineTemplateProperties deserializedVirtualMachineTemplateProperties
+                = new VirtualMachineTemplateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateCloudId".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.privateCloudId = reader.getString();
+                } else if ("amountOfRam".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.amountOfRam = reader.getNullable(JsonReader::getInt);
+                } else if ("controllers".equals(fieldName)) {
+                    List<VirtualDiskController> controllers
+                        = reader.readArray(reader1 -> VirtualDiskController.fromJson(reader1));
+                    deserializedVirtualMachineTemplateProperties.controllers = controllers;
+                } else if ("description".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.description = reader.getString();
+                } else if ("disks".equals(fieldName)) {
+                    List<VirtualDisk> disks = reader.readArray(reader1 -> VirtualDisk.fromJson(reader1));
+                    deserializedVirtualMachineTemplateProperties.disks = disks;
+                } else if ("exposeToGuestVM".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.exposeToGuestVM
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("guestOS".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.guestOS = reader.getString();
+                } else if ("guestOSType".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.guestOSType = reader.getString();
+                } else if ("nics".equals(fieldName)) {
+                    List<VirtualNicInner> nics = reader.readArray(reader1 -> VirtualNicInner.fromJson(reader1));
+                    deserializedVirtualMachineTemplateProperties.nics = nics;
+                } else if ("numberOfCores".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.numberOfCores = reader.getNullable(JsonReader::getInt);
+                } else if ("path".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.path = reader.getString();
+                } else if ("vSphereNetworks".equals(fieldName)) {
+                    List<String> vSphereNetworks = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineTemplateProperties.vSphereNetworks = vSphereNetworks;
+                } else if ("vSphereTags".equals(fieldName)) {
+                    List<String> vSphereTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineTemplateProperties.vSphereTags = vSphereTags;
+                } else if ("vmwaretools".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.vmwaretools = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineTemplateProperties;
+        });
+    }
 }

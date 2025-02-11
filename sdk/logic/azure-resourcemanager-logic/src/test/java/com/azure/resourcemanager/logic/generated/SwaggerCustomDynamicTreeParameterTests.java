@@ -11,27 +11,24 @@ import org.junit.jupiter.api.Assertions;
 public final class SwaggerCustomDynamicTreeParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwaggerCustomDynamicTreeParameter model =
-            BinaryData
-                .fromString(
-                    "{\"selectedItemValuePath\":\"jn\",\"value\":\"dataljdjuskbrreqy\",\"parameterReference\":\"ceysfaqeg\",\"required\":false}")
-                .toObject(SwaggerCustomDynamicTreeParameter.class);
-        Assertions.assertEquals("jn", model.selectedItemValuePath());
-        Assertions.assertEquals("ceysfaqeg", model.parameterReference());
-        Assertions.assertEquals(false, model.required());
+        SwaggerCustomDynamicTreeParameter model = BinaryData.fromString(
+            "{\"selectedItemValuePath\":\"tjsnjbahxyfd\",\"value\":\"databtksrdjhqcrmptj\",\"parameterReference\":\"xa\",\"required\":true}")
+            .toObject(SwaggerCustomDynamicTreeParameter.class);
+        Assertions.assertEquals("tjsnjbahxyfd", model.selectedItemValuePath());
+        Assertions.assertEquals("xa", model.parameterReference());
+        Assertions.assertEquals(true, model.required());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwaggerCustomDynamicTreeParameter model =
-            new SwaggerCustomDynamicTreeParameter()
-                .withSelectedItemValuePath("jn")
-                .withValue("dataljdjuskbrreqy")
-                .withParameterReference("ceysfaqeg")
-                .withRequired(false);
+        SwaggerCustomDynamicTreeParameter model
+            = new SwaggerCustomDynamicTreeParameter().withSelectedItemValuePath("tjsnjbahxyfd")
+                .withValue("databtksrdjhqcrmptj")
+                .withParameterReference("xa")
+                .withRequired(true);
         model = BinaryData.fromObject(model).toObject(SwaggerCustomDynamicTreeParameter.class);
-        Assertions.assertEquals("jn", model.selectedItemValuePath());
-        Assertions.assertEquals("ceysfaqeg", model.parameterReference());
-        Assertions.assertEquals(false, model.required());
+        Assertions.assertEquals("tjsnjbahxyfd", model.selectedItemValuePath());
+        Assertions.assertEquals("xa", model.parameterReference());
+        Assertions.assertEquals(true, model.required());
     }
 }

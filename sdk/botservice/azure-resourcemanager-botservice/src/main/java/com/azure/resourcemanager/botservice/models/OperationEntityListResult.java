@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.botservice.fluent.models.OperationEntityInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of bot service operation response. */
+/**
+ * The list of bot service operation response.
+ */
 @Fluent
-public final class OperationEntityListResult {
+public final class OperationEntityListResult implements JsonSerializable<OperationEntityListResult> {
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of operations.
      */
-    @JsonProperty(value = "value")
     private List<OperationEntityInner> value;
 
     /**
+     * Creates an instance of OperationEntityListResult class.
+     */
+    public OperationEntityListResult() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +45,7 @@ public final class OperationEntityListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationEntityListResult object itself.
      */
@@ -46,7 +56,7 @@ public final class OperationEntityListResult {
 
     /**
      * Get the value property: The list of operations.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationEntityInner> value() {
@@ -55,7 +65,7 @@ public final class OperationEntityListResult {
 
     /**
      * Set the value property: The list of operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationEntityListResult object itself.
      */
@@ -66,12 +76,53 @@ public final class OperationEntityListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationEntityListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationEntityListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationEntityListResult.
+     */
+    public static OperationEntityListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationEntityListResult deserializedOperationEntityListResult = new OperationEntityListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedOperationEntityListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<OperationEntityInner> value
+                        = reader.readArray(reader1 -> OperationEntityInner.fromJson(reader1));
+                    deserializedOperationEntityListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationEntityListResult;
+        });
     }
 }

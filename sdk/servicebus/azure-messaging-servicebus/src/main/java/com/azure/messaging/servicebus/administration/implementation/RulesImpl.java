@@ -126,9 +126,8 @@ public final class RulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RuleDescriptionEntryImpl>> getWithResponseAsync(String topicName, String subscriptionName,
         String ruleName, Boolean enrich) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), topicName, subscriptionName,
-            ruleName, enrich, this.client.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> getWithResponseAsync(topicName, subscriptionName, ruleName, enrich, context));
     }
 
     /**
@@ -260,9 +259,8 @@ public final class RulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RuleDescriptionEntryImpl>> putWithResponseAsync(String topicName, String subscriptionName,
         String ruleName, Object requestBody, String ifMatch) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.put(this.client.getEndpoint(), topicName, subscriptionName,
-            ruleName, this.client.getApiVersion(), ifMatch, requestBody, accept, context));
+        return FluxUtil.withContext(
+            context -> putWithResponseAsync(topicName, subscriptionName, ruleName, requestBody, ifMatch, context));
     }
 
     /**
@@ -402,9 +400,7 @@ public final class RulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RuleDescriptionEntryImpl>> deleteWithResponseAsync(String topicName, String subscriptionName,
         String ruleName) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), topicName, subscriptionName,
-            ruleName, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(topicName, subscriptionName, ruleName, context));
     }
 
     /**

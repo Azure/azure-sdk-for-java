@@ -17,16 +17,18 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabri
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabricProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
 
-/** An instance of this class provides access to all the operations defined in NetworkFabricsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkFabricsClient.
+ */
 public interface NetworkFabricsClient {
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -36,14 +38,14 @@ public interface NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body);
+    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(String resourceGroupName,
+        String networkFabricName, NetworkFabricInner body);
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -54,14 +56,14 @@ public interface NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body, Context context);
+    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(String resourceGroupName,
+        String networkFabricName, NetworkFabricInner body, Context context);
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -75,9 +77,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -88,14 +90,14 @@ public interface NetworkFabricsClient {
      * @return the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkFabricInner create(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body, Context context);
+    NetworkFabricInner create(String resourceGroupName, String networkFabricName, NetworkFabricInner body,
+        Context context);
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -105,14 +107,14 @@ public interface NetworkFabricsClient {
      * @return network Fabric resource details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkFabricInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkFabricName, Context context);
+    Response<NetworkFabricInner> getByResourceGroupWithResponse(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,9 +127,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -137,14 +139,14 @@ public interface NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body);
+    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(String resourceGroupName,
+        String networkFabricName, NetworkFabricPatch body);
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -155,14 +157,14 @@ public interface NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body, Context context);
+    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(String resourceGroupName,
+        String networkFabricName, NetworkFabricPatch body, Context context);
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -176,9 +178,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -189,14 +191,14 @@ public interface NetworkFabricsClient {
      * @return the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkFabricInner update(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body, Context context);
+    NetworkFabricInner update(String resourceGroupName, String networkFabricName, NetworkFabricPatch body,
+        Context context);
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,9 +211,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -225,9 +227,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -239,9 +241,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -254,9 +256,9 @@ public interface NetworkFabricsClient {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -268,9 +270,9 @@ public interface NetworkFabricsClient {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,9 +285,9 @@ public interface NetworkFabricsClient {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
@@ -295,9 +297,9 @@ public interface NetworkFabricsClient {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -309,9 +311,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,9 +327,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -342,9 +344,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -357,9 +359,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -369,14 +371,14 @@ public interface NetworkFabricsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner provision(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForDeviceUpdateInner provision(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,9 +392,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -407,9 +409,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -422,9 +424,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -434,14 +436,14 @@ public interface NetworkFabricsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner deprovision(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForDeviceUpdateInner deprovision(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -452,13 +454,13 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpgrade(String resourceGroupName, String networkFabricName, UpdateVersion body);
+        beginUpgrade(String resourceGroupName, String networkFabricName, UpgradeNetworkFabricProperties body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -470,13 +472,14 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpgrade(String resourceGroupName, String networkFabricName, UpdateVersion body, Context context);
+        beginUpgrade(String resourceGroupName, String networkFabricName, UpgradeNetworkFabricProperties body,
+            Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -486,14 +489,14 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner upgrade(
-        String resourceGroupName, String networkFabricName, UpdateVersion body);
+    CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkFabricName,
+        UpgradeNetworkFabricProperties body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -504,14 +507,14 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner upgrade(
-        String resourceGroupName, String networkFabricName, UpdateVersion body, Context context);
+    CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkFabricName,
+        UpgradeNetworkFabricProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -525,9 +528,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -542,9 +545,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -553,14 +556,14 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
-        String resourceGroupName, String networkFabricName);
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(String resourceGroupName,
+        String networkFabricName);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -570,15 +573,15 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -589,91 +592,15 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateWorkloadManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+        beginUpdateWorkloadManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateWorkloadManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateWorkloadManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateWorkloadManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the Network Fabric.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateInfraManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -685,15 +612,15 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateInfraManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+        beginUpdateWorkloadManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -703,15 +630,15 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateWorkloadManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -722,14 +649,86 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdateInner updateWorkloadManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateInfraManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateInfraManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -740,14 +739,14 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
-        beginValidateConfiguration(
-            String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body);
+        beginValidateConfiguration(String resourceGroupName, String networkFabricName,
+            ValidateConfigurationProperties body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -759,14 +758,14 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
-        beginValidateConfiguration(
-            String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context);
+        beginValidateConfiguration(String resourceGroupName, String networkFabricName,
+            ValidateConfigurationProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -776,14 +775,14 @@ public interface NetworkFabricsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body);
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkFabricName,
+        ValidateConfigurationProperties body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -794,31 +793,31 @@ public interface NetworkFabricsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context);
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkFabricName,
+        ValidateConfigurationProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of topology of the underlying resources in the given Network Fabric
-     *     instance.
+     * instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner> beginGetTopology(
-        String resourceGroupName, String networkFabricName);
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginGetTopology(String resourceGroupName, String networkFabricName);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -826,17 +825,17 @@ public interface NetworkFabricsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of topology of the underlying resources in the given Network Fabric
-     *     instance.
+     * instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner> beginGetTopology(
-        String resourceGroupName, String networkFabricName, Context context);
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginGetTopology(String resourceGroupName, String networkFabricName, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -849,9 +848,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -865,9 +864,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -881,9 +880,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -898,9 +897,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -913,9 +912,9 @@ public interface NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -925,6 +924,6 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName, String networkFabricName,
+        Context context);
 }

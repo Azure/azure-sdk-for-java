@@ -6,29 +6,30 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * UE Location Info properties.
  */
 @Fluent
-public final class UeLocationInfo {
+public final class UeLocationInfo implements JsonSerializable<UeLocationInfo> {
     /*
      * Location Type
      */
-    @JsonProperty(value = "locationType", required = true)
     private String locationType;
 
     /*
      * Type Allocation Code of UE
      */
-    @JsonProperty(value = "tac", required = true)
     private String tac;
 
     /*
      * PLMN Identifier
      */
-    @JsonProperty(value = "plmn", required = true)
     private PlmnId plmn;
 
     /**
@@ -120,4 +121,47 @@ public final class UeLocationInfo {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UeLocationInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("locationType", this.locationType);
+        jsonWriter.writeStringField("tac", this.tac);
+        jsonWriter.writeJsonField("plmn", this.plmn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UeLocationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UeLocationInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UeLocationInfo.
+     */
+    public static UeLocationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UeLocationInfo deserializedUeLocationInfo = new UeLocationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("locationType".equals(fieldName)) {
+                    deserializedUeLocationInfo.locationType = reader.getString();
+                } else if ("tac".equals(fieldName)) {
+                    deserializedUeLocationInfo.tac = reader.getString();
+                } else if ("plmn".equals(fieldName)) {
+                    deserializedUeLocationInfo.plmn = PlmnId.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUeLocationInfo;
+        });
+    }
 }

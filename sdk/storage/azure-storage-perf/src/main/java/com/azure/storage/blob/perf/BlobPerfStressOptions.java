@@ -11,6 +11,10 @@ public class BlobPerfStressOptions extends StoragePerfStressOptions {
     @Parameter(names = { "--client-encryption" })
     private String clientEncryption = null;
 
+    // Does nothing, is just a sentinel value for the perf pipeline to run get-properties without being hacky.
+    @Parameter(names = { "--get-properties" })
+    private boolean getProperties = false;
+
     public String getClientEncryption() {
         return clientEncryption;
     }

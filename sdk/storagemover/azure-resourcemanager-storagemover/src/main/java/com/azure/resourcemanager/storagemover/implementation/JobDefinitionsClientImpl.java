@@ -54,25 +54,25 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
     /**
      * The service client containing this operation class.
      */
-    private final StorageMoverClientImpl client;
+    private final StorageMoverManagementClientImpl client;
 
     /**
      * Initializes an instance of JobDefinitionsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    JobDefinitionsClientImpl(StorageMoverClientImpl client) {
+    JobDefinitionsClientImpl(StorageMoverManagementClientImpl client) {
         this.service
             = RestProxy.create(JobDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StorageMoverClientJobDefinitions to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for StorageMoverManagementClientJobDefinitions to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageMoverClientJo")
+    @ServiceInterface(name = "StorageMoverManageme")
     public interface JobDefinitionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions")

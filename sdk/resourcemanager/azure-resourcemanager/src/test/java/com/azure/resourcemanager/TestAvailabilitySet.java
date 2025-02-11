@@ -13,16 +13,15 @@ import org.junit.jupiter.api.Assertions;
 public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, AvailabilitySets> {
     @Override
     public AvailabilitySet createResource(AvailabilitySets availabilitySets) throws Exception {
-        final String newName = availabilitySets.manager().resourceManager().internalContext().randomResourceName("as", 10);
-        AvailabilitySet aset =
-            availabilitySets
-                .define(newName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup()
-                .withFaultDomainCount(2)
-                .withUpdateDomainCount(4)
-                .withTag("tag1", "value1")
-                .create();
+        final String newName
+            = availabilitySets.manager().resourceManager().internalContext().randomResourceName("as", 10);
+        AvailabilitySet aset = availabilitySets.define(newName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup()
+            .withFaultDomainCount(2)
+            .withUpdateDomainCount(4)
+            .withTag("tag1", "value1")
+            .create();
         PagedIterable<VirtualMachineSize> vmSizes = aset.listVirtualMachineSizes();
         Assertions.assertTrue(TestUtilities.getSize(vmSizes) > 0);
         for (VirtualMachineSize vmSize : vmSizes) {
@@ -43,24 +42,20 @@ public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, Availabil
 
     @Override
     public void print(AvailabilitySet resource) {
-        System
-            .out
-            .println(
-                new StringBuilder()
-                    .append("Availability Set: ")
-                    .append(resource.id())
-                    .append("Name: ")
-                    .append(resource.name())
-                    .append("\n\tResource group: ")
-                    .append(resource.resourceGroupName())
-                    .append("\n\tRegion: ")
-                    .append(resource.region())
-                    .append("\n\tTags: ")
-                    .append(resource.tags())
-                    .append("\n\tFault domain count: ")
-                    .append(resource.faultDomainCount())
-                    .append("\n\tUpdate domain count: ")
-                    .append(resource.updateDomainCount())
-                    .toString());
+        System.out.println(new StringBuilder().append("Availability Set: ")
+            .append(resource.id())
+            .append("Name: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .append("\n\tFault domain count: ")
+            .append(resource.faultDomainCount())
+            .append("\n\tUpdate domain count: ")
+            .append(resource.updateDomainCount())
+            .toString());
     }
 }

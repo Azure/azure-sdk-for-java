@@ -31,11 +31,18 @@ public final class SupportInfoInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportInfoInner model = new SupportInfoInner().withProductSku("h").withProductSerial("uj")
-            .withAccountRegistered(BooleanEnum.TRUE).withAccountId("kozzwculkb")
-            .withUserDomainSupported(BooleanEnum.FALSE).withUserRegistered(BooleanEnum.FALSE)
-            .withFreeTrial(BooleanEnum.FALSE).withFreeTrialDaysLeft(1824615307).withFreeTrialCreditLeft(1819890486)
-            .withHelpUrl("wtjjguktalhsnv").withSupportUrl("dmxzr").withRegisterUrl("aimlnwiaaom");
+        SupportInfoInner model = new SupportInfoInner().withProductSku("h")
+            .withProductSerial("uj")
+            .withAccountRegistered(BooleanEnum.TRUE)
+            .withAccountId("kozzwculkb")
+            .withUserDomainSupported(BooleanEnum.FALSE)
+            .withUserRegistered(BooleanEnum.FALSE)
+            .withFreeTrial(BooleanEnum.FALSE)
+            .withFreeTrialDaysLeft(1824615307)
+            .withFreeTrialCreditLeft(1819890486)
+            .withHelpUrl("wtjjguktalhsnv")
+            .withSupportUrl("dmxzr")
+            .withRegisterUrl("aimlnwiaaom");
         model = BinaryData.fromObject(model).toObject(SupportInfoInner.class);
         Assertions.assertEquals("h", model.productSku());
         Assertions.assertEquals("uj", model.productSerial());

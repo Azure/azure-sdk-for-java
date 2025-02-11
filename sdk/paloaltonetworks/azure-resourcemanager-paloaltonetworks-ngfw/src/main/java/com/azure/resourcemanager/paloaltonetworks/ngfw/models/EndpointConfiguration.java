@@ -6,23 +6,25 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Endpoint Configuration for frontend and backend.
  */
 @Fluent
-public final class EndpointConfiguration {
+public final class EndpointConfiguration implements JsonSerializable<EndpointConfiguration> {
     /*
      * port ID
      */
-    @JsonProperty(value = "port", required = true)
     private String port;
 
     /*
      * Address Space
      */
-    @JsonProperty(value = "address", required = true)
     private IpAddress address;
 
     /**
@@ -78,16 +80,56 @@ public final class EndpointConfiguration {
      */
     public void validate() {
         if (port() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property port in model EndpointConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property port in model EndpointConfiguration"));
         }
         if (address() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property address in model EndpointConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property address in model EndpointConfiguration"));
         } else {
             address().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EndpointConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("port", this.port);
+        jsonWriter.writeJsonField("address", this.address);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EndpointConfiguration.
+     */
+    public static EndpointConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointConfiguration deserializedEndpointConfiguration = new EndpointConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("port".equals(fieldName)) {
+                    deserializedEndpointConfiguration.port = reader.getString();
+                } else if ("address".equals(fieldName)) {
+                    deserializedEndpointConfiguration.address = IpAddress.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointConfiguration;
+        });
+    }
 }

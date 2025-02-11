@@ -31,13 +31,16 @@ public final class NetworkServiceDesignVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateANetworkServiceDesignVersionResource(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkServiceDesignVersions().define("1.0.0").withRegion("eastus")
+        manager.networkServiceDesignVersions()
+            .define("1.0.0")
+            .withRegion("eastus")
             .withExistingNetworkServiceDesignGroup("rg", "TestPublisher", "TestNetworkServiceDesignGroupName")
             .withProperties(new NetworkServiceDesignVersionPropertiesFormat()
                 .withConfigurationGroupSchemaReferences(mapOf("MyVM_Configuration", new ReferencedResource().withId(
                     "/subscriptions/subid/resourcegroups/contosorg1/providers/microsoft.hybridnetwork/publishers/contosoGroup/networkServiceDesignGroups/NSD_contoso/configurationGroupSchemas/MyVM_Configuration_Schema")))
                 .withResourceElementTemplates(Arrays.asList(new ArmResourceDefinitionResourceElementTemplateDetails()
-                    .withName("MyVM").withDependsOnProfile(new DependsOnProfile().withInstallDependsOn(Arrays.asList()))
+                    .withName("MyVM")
+                    .withDependsOnProfile(new DependsOnProfile().withInstallDependsOn(Arrays.asList()))
                     .withConfiguration(new ArmResourceDefinitionResourceElementTemplate()
                         .withTemplateType(TemplateType.ARM_TEMPLATE)
                         .withParameterValues(
@@ -45,7 +48,8 @@ public final class NetworkServiceDesignVersionsCreateOrUpdateSamples {
                         .withArtifactProfile(new NsdArtifactProfile()
                             .withArtifactStoreReference(new ReferencedResource().withId(
                                 "/subscriptions/subid/providers/Microsoft.HybridNetwork/publishers/contosoGroup/artifactStoreReference/store1"))
-                            .withArtifactName("MyVMArmTemplate").withArtifactVersion("1.0.0"))))))
+                            .withArtifactName("MyVMArmTemplate")
+                            .withArtifactVersion("1.0.0"))))))
             .create();
     }
 

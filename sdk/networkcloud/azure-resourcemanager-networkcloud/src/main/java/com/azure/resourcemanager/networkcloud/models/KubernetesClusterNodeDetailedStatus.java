@@ -5,39 +5,56 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The detailed state of this node. */
+/**
+ * The detailed state of this node.
+ */
 public final class KubernetesClusterNodeDetailedStatus
     extends ExpandableStringEnum<KubernetesClusterNodeDetailedStatus> {
-    /** Static value Available for KubernetesClusterNodeDetailedStatus. */
+    /**
+     * Static value Available for KubernetesClusterNodeDetailedStatus.
+     */
     public static final KubernetesClusterNodeDetailedStatus AVAILABLE = fromString("Available");
 
-    /** Static value Error for KubernetesClusterNodeDetailedStatus. */
+    /**
+     * Static value Error for KubernetesClusterNodeDetailedStatus.
+     */
     public static final KubernetesClusterNodeDetailedStatus ERROR = fromString("Error");
 
-    /** Static value Provisioning for KubernetesClusterNodeDetailedStatus. */
+    /**
+     * Static value Provisioning for KubernetesClusterNodeDetailedStatus.
+     */
     public static final KubernetesClusterNodeDetailedStatus PROVISIONING = fromString("Provisioning");
 
-    /** Static value Running for KubernetesClusterNodeDetailedStatus. */
+    /**
+     * Static value Running for KubernetesClusterNodeDetailedStatus.
+     */
     public static final KubernetesClusterNodeDetailedStatus RUNNING = fromString("Running");
 
-    /** Static value Scheduling for KubernetesClusterNodeDetailedStatus. */
+    /**
+     * Static value Scheduling for KubernetesClusterNodeDetailedStatus.
+     */
     public static final KubernetesClusterNodeDetailedStatus SCHEDULING = fromString("Scheduling");
 
-    /** Static value Stopped for KubernetesClusterNodeDetailedStatus. */
+    /**
+     * Static value Stopped for KubernetesClusterNodeDetailedStatus.
+     */
     public static final KubernetesClusterNodeDetailedStatus STOPPED = fromString("Stopped");
 
-    /** Static value Terminating for KubernetesClusterNodeDetailedStatus. */
+    /**
+     * Static value Terminating for KubernetesClusterNodeDetailedStatus.
+     */
     public static final KubernetesClusterNodeDetailedStatus TERMINATING = fromString("Terminating");
 
-    /** Static value Unknown for KubernetesClusterNodeDetailedStatus. */
+    /**
+     * Static value Unknown for KubernetesClusterNodeDetailedStatus.
+     */
     public static final KubernetesClusterNodeDetailedStatus UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of KubernetesClusterNodeDetailedStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -46,18 +63,17 @@ public final class KubernetesClusterNodeDetailedStatus
 
     /**
      * Creates or finds a KubernetesClusterNodeDetailedStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KubernetesClusterNodeDetailedStatus.
      */
-    @JsonCreator
     public static KubernetesClusterNodeDetailedStatus fromString(String name) {
         return fromString(name, KubernetesClusterNodeDetailedStatus.class);
     }
 
     /**
      * Gets known KubernetesClusterNodeDetailedStatus values.
-     *
+     * 
      * @return known KubernetesClusterNodeDetailedStatus values.
      */
     public static Collection<KubernetesClusterNodeDetailedStatus> values() {

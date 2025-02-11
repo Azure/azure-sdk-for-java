@@ -10,10 +10,6 @@ module com.azure.resourcemanager.purview {
     exports com.azure.resourcemanager.purview.fluent.models;
     exports com.azure.resourcemanager.purview.models;
 
-    opens com.azure.resourcemanager.purview.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.purview.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.purview.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.purview.models to com.azure.core;
 }

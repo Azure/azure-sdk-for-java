@@ -8,48 +8,50 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ServicePrincipals. */
+/**
+ * Resource collection API of ServicePrincipals.
+ */
 public interface ServicePrincipals {
     /**
      * Get the Automanage AAD first party Application Service Principal details for the subscription id.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Automanage AAD first party Application Service Principal details for the subscription id as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     PagedIterable<ServicePrincipal> list();
 
     /**
      * Get the Automanage AAD first party Application Service Principal details for the subscription id.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Automanage AAD first party Application Service Principal details for the subscription id as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     PagedIterable<ServicePrincipal> list(Context context);
 
     /**
      * Get the Automanage AAD first party Application Service Principal details for the subscription id.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Automanage AAD first party Application Service Principal details for the subscription id.
-     */
-    ServicePrincipal get();
-
-    /**
-     * Get the Automanage AAD first party Application Service Principal details for the subscription id.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Automanage AAD first party Application Service Principal details for the subscription id along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     Response<ServicePrincipal> getWithResponse(Context context);
+
+    /**
+     * Get the Automanage AAD first party Application Service Principal details for the subscription id.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Automanage AAD first party Application Service Principal details for the subscription id.
+     */
+    ServicePrincipal get();
 }

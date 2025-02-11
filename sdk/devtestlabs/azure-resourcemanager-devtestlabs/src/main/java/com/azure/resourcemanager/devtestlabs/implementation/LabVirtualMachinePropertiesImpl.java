@@ -25,8 +25,7 @@ public final class LabVirtualMachinePropertiesImpl implements LabVirtualMachineP
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    LabVirtualMachinePropertiesImpl(
-        LabVirtualMachinePropertiesInner innerObject,
+    LabVirtualMachinePropertiesImpl(LabVirtualMachinePropertiesInner innerObject,
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

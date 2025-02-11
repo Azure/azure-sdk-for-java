@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.resources.fluentcore.arm.models;
 
-
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -11,6 +10,8 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public interface HasName {
     /**
+     * Gets the name of the resource.
+     *
      * @return the name of the resource
      */
     String name();

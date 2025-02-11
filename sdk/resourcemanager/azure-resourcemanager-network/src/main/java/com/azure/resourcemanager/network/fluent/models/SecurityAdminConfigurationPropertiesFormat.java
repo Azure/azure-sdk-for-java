@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.AddressSpaceAggregationOption;
 import com.azure.resourcemanager.network.models.NetworkIntentPolicyBasedService;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
@@ -29,6 +30,11 @@ public final class SecurityAdminConfigurationPropertiesFormat
      * Enum list of network intent policy based services.
      */
     private List<NetworkIntentPolicyBasedService> applyOnNetworkIntentPolicyBasedServices;
+
+    /*
+     * Determine update behavior for changes to network groups referenced within the rules in this configuration.
+     */
+    private AddressSpaceAggregationOption networkGroupAddressSpaceAggregationOption;
 
     /*
      * The provisioning state of the resource.
@@ -88,6 +94,29 @@ public final class SecurityAdminConfigurationPropertiesFormat
     }
 
     /**
+     * Get the networkGroupAddressSpaceAggregationOption property: Determine update behavior for changes to network
+     * groups referenced within the rules in this configuration.
+     * 
+     * @return the networkGroupAddressSpaceAggregationOption value.
+     */
+    public AddressSpaceAggregationOption networkGroupAddressSpaceAggregationOption() {
+        return this.networkGroupAddressSpaceAggregationOption;
+    }
+
+    /**
+     * Set the networkGroupAddressSpaceAggregationOption property: Determine update behavior for changes to network
+     * groups referenced within the rules in this configuration.
+     * 
+     * @param networkGroupAddressSpaceAggregationOption the networkGroupAddressSpaceAggregationOption value to set.
+     * @return the SecurityAdminConfigurationPropertiesFormat object itself.
+     */
+    public SecurityAdminConfigurationPropertiesFormat withNetworkGroupAddressSpaceAggregationOption(
+        AddressSpaceAggregationOption networkGroupAddressSpaceAggregationOption) {
+        this.networkGroupAddressSpaceAggregationOption = networkGroupAddressSpaceAggregationOption;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the resource.
      * 
      * @return the provisioningState value.
@@ -123,6 +152,10 @@ public final class SecurityAdminConfigurationPropertiesFormat
         jsonWriter.writeArrayField("applyOnNetworkIntentPolicyBasedServices",
             this.applyOnNetworkIntentPolicyBasedServices,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("networkGroupAddressSpaceAggregationOption",
+            this.networkGroupAddressSpaceAggregationOption == null
+                ? null
+                : this.networkGroupAddressSpaceAggregationOption.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +182,9 @@ public final class SecurityAdminConfigurationPropertiesFormat
                         = reader.readArray(reader1 -> NetworkIntentPolicyBasedService.fromString(reader1.getString()));
                     deserializedSecurityAdminConfigurationPropertiesFormat.applyOnNetworkIntentPolicyBasedServices
                         = applyOnNetworkIntentPolicyBasedServices;
+                } else if ("networkGroupAddressSpaceAggregationOption".equals(fieldName)) {
+                    deserializedSecurityAdminConfigurationPropertiesFormat.networkGroupAddressSpaceAggregationOption
+                        = AddressSpaceAggregationOption.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSecurityAdminConfigurationPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());

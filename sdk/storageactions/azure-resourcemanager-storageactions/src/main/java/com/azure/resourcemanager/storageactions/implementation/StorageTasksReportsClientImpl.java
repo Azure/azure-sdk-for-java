@@ -68,7 +68,7 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageTaskReportSummary>> list(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageTaskName") String storageTaskName, @QueryParam("$maxpagesize") String maxpagesize,
+            @PathParam("storageTaskName") String storageTaskName, @QueryParam("$maxpagesize") Integer maxpagesize,
             @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
@@ -87,8 +87,8 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
      * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
+     * in the list response.
      * @param filter Optional. When specified, it can be used to query using reporting properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -98,7 +98,7 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTaskReportInstanceInner>> listSinglePageAsync(String resourceGroupName,
-        String storageTaskName, String maxpagesize, String filter) {
+        String storageTaskName, Integer maxpagesize, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -130,8 +130,8 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
      * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
+     * in the list response.
      * @param filter Optional. When specified, it can be used to query using reporting properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +142,7 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTaskReportInstanceInner>> listSinglePageAsync(String resourceGroupName,
-        String storageTaskName, String maxpagesize, String filter, Context context) {
+        String storageTaskName, Integer maxpagesize, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -174,8 +174,8 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
      * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
+     * in the list response.
      * @param filter Optional. When specified, it can be used to query using reporting properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -184,7 +184,7 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String storageTaskName,
-        String maxpagesize, String filter) {
+        Integer maxpagesize, String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, storageTaskName, maxpagesize, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
@@ -202,7 +202,7 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String storageTaskName) {
-        final String maxpagesize = null;
+        final Integer maxpagesize = null;
         final String filter = null;
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, storageTaskName, maxpagesize, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -214,8 +214,8 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
      * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
+     * in the list response.
      * @param filter Optional. When specified, it can be used to query using reporting properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -225,7 +225,7 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String storageTaskName,
-        String maxpagesize, String filter, Context context) {
+        Integer maxpagesize, String filter, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, storageTaskName, maxpagesize, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -244,7 +244,7 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskReportInstanceInner> list(String resourceGroupName, String storageTaskName) {
-        final String maxpagesize = null;
+        final Integer maxpagesize = null;
         final String filter = null;
         return new PagedIterable<>(listAsync(resourceGroupName, storageTaskName, maxpagesize, filter));
     }
@@ -255,8 +255,8 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
      * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
+     * in the list response.
      * @param filter Optional. When specified, it can be used to query using reporting properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -266,16 +266,14 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskReportInstanceInner> list(String resourceGroupName, String storageTaskName,
-        String maxpagesize, String filter, Context context) {
+        Integer maxpagesize, String filter, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, storageTaskName, maxpagesize, filter, context));
     }
 
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -301,9 +299,7 @@ public final class StorageTasksReportsClientImpl implements StorageTasksReportsC
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

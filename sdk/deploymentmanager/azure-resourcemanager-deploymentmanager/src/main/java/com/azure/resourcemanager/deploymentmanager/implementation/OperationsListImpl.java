@@ -13,8 +13,8 @@ public final class OperationsListImpl implements OperationsList {
 
     private final com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager;
 
-    OperationsListImpl(
-        OperationsListInner innerObject, com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
+    OperationsListImpl(OperationsListInner innerObject,
+        com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

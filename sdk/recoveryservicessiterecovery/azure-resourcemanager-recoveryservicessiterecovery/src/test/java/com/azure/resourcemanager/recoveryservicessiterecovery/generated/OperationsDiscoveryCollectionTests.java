@@ -28,21 +28,28 @@ public final class OperationsDiscoveryCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationsDiscoveryCollection model = new OperationsDiscoveryCollection()
-            .withValue(
-                Arrays.asList(
-                    new OperationsDiscoveryInner().withName("quvgjxpybczme")
-                        .withDisplay(new Display().withProvider("zopbsphrupidgs").withResource("bejhphoycmsxa")
-                            .withOperation("hdxbmtqio").withDescription("zehtbmu"))
-                        .withOrigin("ownoizhw").withProperties("dataxybqsoqij"),
-                    new OperationsDiscoveryInner().withName("dmbpazlobcufpdz")
-                        .withDisplay(new Display().withProvider("t").withResource("qjnqglhqgnufoooj")
-                            .withOperation("ifsqesaagdfmg").withDescription("lhjxr"))
-                        .withOrigin("kwm").withProperties("dataktsizntocipaou"),
-                    new OperationsDiscoveryInner().withName("psqucmpoyf")
-                        .withDisplay(new Display().withProvider("ogknygjofjdd").withResource("s")
-                            .withOperation("eupewnwreitjz").withDescription("lusarh"))
-                        .withOrigin("fcqhsmyurkd").withProperties("datalx")))
+        OperationsDiscoveryCollection model = new OperationsDiscoveryCollection().withValue(Arrays.asList(
+            new OperationsDiscoveryInner().withName("quvgjxpybczme")
+                .withDisplay(new Display().withProvider("zopbsphrupidgs")
+                    .withResource("bejhphoycmsxa")
+                    .withOperation("hdxbmtqio")
+                    .withDescription("zehtbmu"))
+                .withOrigin("ownoizhw")
+                .withProperties("dataxybqsoqij"),
+            new OperationsDiscoveryInner().withName("dmbpazlobcufpdz")
+                .withDisplay(new Display().withProvider("t")
+                    .withResource("qjnqglhqgnufoooj")
+                    .withOperation("ifsqesaagdfmg")
+                    .withDescription("lhjxr"))
+                .withOrigin("kwm")
+                .withProperties("dataktsizntocipaou"),
+            new OperationsDiscoveryInner().withName("psqucmpoyf")
+                .withDisplay(new Display().withProvider("ogknygjofjdd")
+                    .withResource("s")
+                    .withOperation("eupewnwreitjz")
+                    .withDescription("lusarh"))
+                .withOrigin("fcqhsmyurkd")
+                .withProperties("datalx")))
             .withNextLink("kuksjtxukcdm");
         model = BinaryData.fromObject(model).toObject(OperationsDiscoveryCollection.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());

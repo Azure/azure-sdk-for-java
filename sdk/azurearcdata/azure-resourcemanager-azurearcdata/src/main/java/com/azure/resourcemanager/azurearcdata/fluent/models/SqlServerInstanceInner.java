@@ -7,32 +7,52 @@ package com.azure.resourcemanager.azurearcdata.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** A SqlServerInstance. */
+/**
+ * A SqlServerInstance.
+ */
 @Fluent
 public final class SqlServerInstanceInner extends Resource {
     /*
      * null
      */
-    @JsonProperty(value = "properties")
     private SqlServerInstanceProperties properties;
 
     /*
      * Read only system data
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SqlServerInstanceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SqlServerInstanceInner class.
+     */
     public SqlServerInstanceInner() {
     }
 
     /**
      * Get the properties property: null.
-     *
+     * 
      * @return the properties value.
      */
     public SqlServerInstanceProperties properties() {
@@ -41,7 +61,7 @@ public final class SqlServerInstanceInner extends Resource {
 
     /**
      * Set the properties property: null.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SqlServerInstanceInner object itself.
      */
@@ -52,21 +72,55 @@ public final class SqlServerInstanceInner extends Resource {
 
     /**
      * Get the systemData property: Read only system data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerInstanceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerInstanceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,12 +129,64 @@ public final class SqlServerInstanceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlServerInstanceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlServerInstanceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlServerInstanceInner.
+     */
+    public static SqlServerInstanceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlServerInstanceInner deserializedSqlServerInstanceInner = new SqlServerInstanceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlServerInstanceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSqlServerInstanceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlServerInstanceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSqlServerInstanceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSqlServerInstanceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSqlServerInstanceInner.properties = SqlServerInstanceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSqlServerInstanceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlServerInstanceInner;
+        });
     }
 }

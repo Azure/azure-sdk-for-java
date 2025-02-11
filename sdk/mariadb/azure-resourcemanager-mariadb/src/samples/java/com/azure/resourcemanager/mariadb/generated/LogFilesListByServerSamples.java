@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for LogFiles ListByServer. */
+/**
+ * Samples for LogFiles ListByServer.
+ */
 public final class LogFilesListByServerSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/LogFileListByServer.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/LogFileListByServer.json
      */
     /**
      * Sample code: LogFileList.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void logFileList(com.azure.resourcemanager.mariadb.MariaDBManager manager) {

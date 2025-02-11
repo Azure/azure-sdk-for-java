@@ -19,6 +19,7 @@ import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.redis.models.UpdateChannel;
+import com.azure.resourcemanager.redis.models.ZonalAllocationPolicy;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +45,9 @@ public final class RedisResourceInner extends Resource {
     private ManagedServiceIdentity identity;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -54,9 +55,9 @@ public final class RedisResourceInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of RedisResourceInner class.
@@ -114,13 +115,13 @@ public final class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -134,13 +135,13 @@ public final class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -586,6 +587,39 @@ public final class RedisResourceInner extends Resource {
     }
 
     /**
+     * Get the zonalAllocationPolicy property: Optional: Specifies how availability zones are allocated to the Redis
+     * cache. 'Automatic' enables zone redundancy and Azure will automatically select zones based on regional
+     * availability and capacity. 'UserDefined' will select availability zones passed in by you using the 'zones'
+     * parameter. 'NoZones' will produce a non-zonal cache. If 'zonalAllocationPolicy' is not passed, it will be set to
+     * 'UserDefined' when zones are passed in, otherwise, it will be set to 'Automatic' in regions where zones are
+     * supported and 'NoZones' in regions where zones are not supported.
+     * 
+     * @return the zonalAllocationPolicy value.
+     */
+    public ZonalAllocationPolicy zonalAllocationPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().zonalAllocationPolicy();
+    }
+
+    /**
+     * Set the zonalAllocationPolicy property: Optional: Specifies how availability zones are allocated to the Redis
+     * cache. 'Automatic' enables zone redundancy and Azure will automatically select zones based on regional
+     * availability and capacity. 'UserDefined' will select availability zones passed in by you using the 'zones'
+     * parameter. 'NoZones' will produce a non-zonal cache. If 'zonalAllocationPolicy' is not passed, it will be set to
+     * 'UserDefined' when zones are passed in, otherwise, it will be set to 'Automatic' in regions where zones are
+     * supported and 'NoZones' in regions where zones are not supported.
+     * 
+     * @param zonalAllocationPolicy the zonalAllocationPolicy value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withZonalAllocationPolicy(ZonalAllocationPolicy zonalAllocationPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withZonalAllocationPolicy(zonalAllocationPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -600,10 +634,6 @@ public final class RedisResourceInner extends Resource {
         }
         if (identity() != null) {
             identity().validate();
-        }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property location in model RedisResourceInner"));
         }
     }
 

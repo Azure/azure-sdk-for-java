@@ -17,23 +17,23 @@ public final class StorageTaskOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTaskOperation model = BinaryData.fromString(
-            "{\"name\":\"SetBlobImmutabilityPolicy\",\"parameters\":{\"jjgpb\":\"urzafb\",\"jmkljavbqidtqajz\":\"oq\",\"hbzhfepg\":\"ulpkudjkrl\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}")
+            "{\"name\":\"SetBlobLegalHold\",\"parameters\":{\"hzzvypyq\":\"fqpte\",\"z\":\"i\",\"dqxhcrmnohjtckwh\":\"npvswjdkirso\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}")
             .toObject(StorageTaskOperation.class);
-        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_IMMUTABILITY_POLICY, model.name());
-        Assertions.assertEquals("urzafb", model.parameters().get("jjgpb"));
+        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_LEGAL_HOLD, model.name());
+        Assertions.assertEquals("fqpte", model.parameters().get("hzzvypyq"));
         Assertions.assertEquals(OnSuccess.CONTINUE, model.onSuccess());
         Assertions.assertEquals(OnFailure.BREAK, model.onFailure());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageTaskOperation model
-            = new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_IMMUTABILITY_POLICY)
-                .withParameters(mapOf("jjgpb", "urzafb", "jmkljavbqidtqajz", "oq", "hbzhfepg", "ulpkudjkrl"))
-                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK);
+        StorageTaskOperation model = new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_LEGAL_HOLD)
+            .withParameters(mapOf("hzzvypyq", "fqpte", "z", "i", "dqxhcrmnohjtckwh", "npvswjdkirso"))
+            .withOnSuccess(OnSuccess.CONTINUE)
+            .withOnFailure(OnFailure.BREAK);
         model = BinaryData.fromObject(model).toObject(StorageTaskOperation.class);
-        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_IMMUTABILITY_POLICY, model.name());
-        Assertions.assertEquals("urzafb", model.parameters().get("jjgpb"));
+        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_LEGAL_HOLD, model.name());
+        Assertions.assertEquals("fqpte", model.parameters().get("hzzvypyq"));
         Assertions.assertEquals(OnSuccess.CONTINUE, model.onSuccess());
         Assertions.assertEquals(OnFailure.BREAK, model.onFailure());
     }

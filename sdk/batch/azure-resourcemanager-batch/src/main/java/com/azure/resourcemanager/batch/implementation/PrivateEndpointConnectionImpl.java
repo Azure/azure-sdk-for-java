@@ -11,6 +11,7 @@ import com.azure.resourcemanager.batch.models.PrivateEndpointConnectionProvision
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionState;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
     private PrivateEndpointConnectionInner innerObject;
@@ -37,6 +38,15 @@ public final class PrivateEndpointConnectionImpl implements PrivateEndpointConne
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public PrivateEndpointConnectionProvisioningState provisioningState() {

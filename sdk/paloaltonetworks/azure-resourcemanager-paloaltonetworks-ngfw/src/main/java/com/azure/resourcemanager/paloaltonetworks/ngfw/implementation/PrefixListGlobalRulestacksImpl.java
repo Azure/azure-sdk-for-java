@@ -29,13 +29,15 @@ public final class PrefixListGlobalRulestacksImpl implements PrefixListGlobalRul
 
     public PagedIterable<PrefixListGlobalRulestackResource> list(String globalRulestackName) {
         PagedIterable<PrefixListGlobalRulestackResourceInner> inner = this.serviceClient().list(globalRulestackName);
-        return Utils.mapPage(inner, inner1 -> new PrefixListGlobalRulestackResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PrefixListGlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrefixListGlobalRulestackResource> list(String globalRulestackName, Context context) {
         PagedIterable<PrefixListGlobalRulestackResourceInner> inner
             = this.serviceClient().list(globalRulestackName, context);
-        return Utils.mapPage(inner, inner1 -> new PrefixListGlobalRulestackResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PrefixListGlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
     public Response<PrefixListGlobalRulestackResource> getWithResponse(String globalRulestackName, String name,

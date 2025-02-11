@@ -21,12 +21,11 @@ import com.azure.resourcemanager.perf.storage.CreateStorageAccountsTest;
  */
 public class App {
     public static void main(String[] args) {
-        PerfStressProgram.run(new Class<?>[]{
+        PerfStressProgram.run(new Class<?>[] {
             CreateDnsZonesTest.class,
             CreateStorageAccountsTest.class,
             ListResourceGroupsTest.class,
             ListSubscriptionsTest.class,
-            ListTenantsTest.class
-        }, args);
+            ListTenantsTest.class }, args);
     }
 }

@@ -4,23 +4,24 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for BenefitUtilizationSummaries ListByBillingAccountId. */
+/**
+ * Samples for BenefitUtilizationSummaries ListByBillingAccountId.
+ */
 public final class BenefitUtilizationSummariesListByBillingAccountIdSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BenefitUtilizationSummaries/SavingsPlan-BillingAccount.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * BenefitUtilizationSummaries/SavingsPlan-BillingAccount.json
      */
     /**
      * Sample code: SavingsPlanUtilizationSummaries-BillingAccount.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void savingsPlanUtilizationSummariesBillingAccount(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .benefitUtilizationSummaries()
-            .listByBillingAccountId(
-                "12345",
-                null,
+        manager.benefitUtilizationSummaries()
+            .listByBillingAccountId("12345", null,
                 "properties/usageDate ge 2022-10-15 and properties/usageDate le 2022-10-18",
                 com.azure.core.util.Context.NONE);
     }

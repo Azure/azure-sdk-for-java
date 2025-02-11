@@ -54,8 +54,8 @@ public interface GitHubConnectorsClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GitHubConnectorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String gitHubConnectorName, Context context);
+    Response<GitHubConnectorInner> getByResourceGroupWithResponse(String resourceGroupName, String gitHubConnectorName,
+        Context context);
 
     /**
      * Returns a monitored GitHub Connector resource for a given ID.
@@ -84,8 +84,8 @@ public interface GitHubConnectorsClient {
      *     /subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.SecurityDevOps/gitHubConnectors.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubConnectorInner>, GitHubConnectorInner> beginCreateOrUpdate(
-        String resourceGroupName, String gitHubConnectorName, GitHubConnectorInner gitHubConnector);
+    SyncPoller<PollResult<GitHubConnectorInner>, GitHubConnectorInner> beginCreateOrUpdate(String resourceGroupName,
+        String gitHubConnectorName, GitHubConnectorInner gitHubConnector);
 
     /**
      * Create or update a monitored GitHub Connector resource.
@@ -101,8 +101,8 @@ public interface GitHubConnectorsClient {
      *     /subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.SecurityDevOps/gitHubConnectors.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubConnectorInner>, GitHubConnectorInner> beginCreateOrUpdate(
-        String resourceGroupName, String gitHubConnectorName, GitHubConnectorInner gitHubConnector, Context context);
+    SyncPoller<PollResult<GitHubConnectorInner>, GitHubConnectorInner> beginCreateOrUpdate(String resourceGroupName,
+        String gitHubConnectorName, GitHubConnectorInner gitHubConnector, Context context);
 
     /**
      * Create or update a monitored GitHub Connector resource.
@@ -117,8 +117,8 @@ public interface GitHubConnectorsClient {
      *     /subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.SecurityDevOps/gitHubConnectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GitHubConnectorInner createOrUpdate(
-        String resourceGroupName, String gitHubConnectorName, GitHubConnectorInner gitHubConnector);
+    GitHubConnectorInner createOrUpdate(String resourceGroupName, String gitHubConnectorName,
+        GitHubConnectorInner gitHubConnector);
 
     /**
      * Create or update a monitored GitHub Connector resource.
@@ -134,8 +134,8 @@ public interface GitHubConnectorsClient {
      *     /subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.SecurityDevOps/gitHubConnectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GitHubConnectorInner createOrUpdate(
-        String resourceGroupName, String gitHubConnectorName, GitHubConnectorInner gitHubConnector, Context context);
+    GitHubConnectorInner createOrUpdate(String resourceGroupName, String gitHubConnectorName,
+        GitHubConnectorInner gitHubConnector, Context context);
 
     /**
      * Update monitored GitHub Connector details.
@@ -149,8 +149,8 @@ public interface GitHubConnectorsClient {
      *     /subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.SecurityDevOps/gitHubConnectors.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubConnectorInner>, GitHubConnectorInner> beginUpdate(
-        String resourceGroupName, String gitHubConnectorName);
+    SyncPoller<PollResult<GitHubConnectorInner>, GitHubConnectorInner> beginUpdate(String resourceGroupName,
+        String gitHubConnectorName);
 
     /**
      * Update monitored GitHub Connector details.
@@ -166,8 +166,8 @@ public interface GitHubConnectorsClient {
      *     /subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.SecurityDevOps/gitHubConnectors.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubConnectorInner>, GitHubConnectorInner> beginUpdate(
-        String resourceGroupName, String gitHubConnectorName, GitHubConnectorInner gitHubConnector, Context context);
+    SyncPoller<PollResult<GitHubConnectorInner>, GitHubConnectorInner> beginUpdate(String resourceGroupName,
+        String gitHubConnectorName, GitHubConnectorInner gitHubConnector, Context context);
 
     /**
      * Update monitored GitHub Connector details.
@@ -197,8 +197,8 @@ public interface GitHubConnectorsClient {
      *     /subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.SecurityDevOps/gitHubConnectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GitHubConnectorInner update(
-        String resourceGroupName, String gitHubConnectorName, GitHubConnectorInner gitHubConnector, Context context);
+    GitHubConnectorInner update(String resourceGroupName, String gitHubConnectorName,
+        GitHubConnectorInner gitHubConnector, Context context);
 
     /**
      * Delete monitored GitHub Connector details.
@@ -225,8 +225,8 @@ public interface GitHubConnectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String gitHubConnectorName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gitHubConnectorName,
+        Context context);
 
     /**
      * Delete monitored GitHub Connector details.

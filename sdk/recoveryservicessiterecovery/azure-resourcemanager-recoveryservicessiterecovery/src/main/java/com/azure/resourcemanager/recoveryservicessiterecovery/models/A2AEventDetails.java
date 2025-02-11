@@ -5,57 +5,65 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Model class for event details of a A2A event.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
 @Fluent
 public final class A2AEventDetails extends EventProviderSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * The protected item arm name.
      */
-    @JsonProperty(value = "protectedItemName")
     private String protectedItemName;
 
     /*
      * The azure vm arm id.
      */
-    @JsonProperty(value = "fabricObjectId")
     private String fabricObjectId;
 
     /*
      * Fabric arm name.
      */
-    @JsonProperty(value = "fabricName")
     private String fabricName;
 
     /*
      * The fabric location.
      */
-    @JsonProperty(value = "fabricLocation")
     private String fabricLocation;
 
     /*
      * Remote fabric arm name.
      */
-    @JsonProperty(value = "remoteFabricName")
     private String remoteFabricName;
 
     /*
      * Remote fabric location.
      */
-    @JsonProperty(value = "remoteFabricLocation")
     private String remoteFabricLocation;
 
     /**
      * Creates an instance of A2AEventDetails class.
      */
     public A2AEventDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -185,6 +193,59 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("protectedItemName", this.protectedItemName);
+        jsonWriter.writeStringField("fabricObjectId", this.fabricObjectId);
+        jsonWriter.writeStringField("fabricName", this.fabricName);
+        jsonWriter.writeStringField("fabricLocation", this.fabricLocation);
+        jsonWriter.writeStringField("remoteFabricName", this.remoteFabricName);
+        jsonWriter.writeStringField("remoteFabricLocation", this.remoteFabricLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AEventDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AEventDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AEventDetails.
+     */
+    public static A2AEventDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AEventDetails deserializedA2AEventDetails = new A2AEventDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedA2AEventDetails.instanceType = reader.getString();
+                } else if ("protectedItemName".equals(fieldName)) {
+                    deserializedA2AEventDetails.protectedItemName = reader.getString();
+                } else if ("fabricObjectId".equals(fieldName)) {
+                    deserializedA2AEventDetails.fabricObjectId = reader.getString();
+                } else if ("fabricName".equals(fieldName)) {
+                    deserializedA2AEventDetails.fabricName = reader.getString();
+                } else if ("fabricLocation".equals(fieldName)) {
+                    deserializedA2AEventDetails.fabricLocation = reader.getString();
+                } else if ("remoteFabricName".equals(fieldName)) {
+                    deserializedA2AEventDetails.remoteFabricName = reader.getString();
+                } else if ("remoteFabricLocation".equals(fieldName)) {
+                    deserializedA2AEventDetails.remoteFabricLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AEventDetails;
+        });
     }
 }

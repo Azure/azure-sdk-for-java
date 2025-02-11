@@ -79,25 +79,21 @@ public final class PortalRevisionContractImpl
     }
 
     public PortalRevisionContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalRevisions()
-                .createOrUpdate(resourceGroupName, serviceName, portalRevisionId, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalRevisions()
+            .createOrUpdate(resourceGroupName, serviceName, portalRevisionId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PortalRevisionContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalRevisions()
-                .createOrUpdate(resourceGroupName, serviceName, portalRevisionId, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalRevisions()
+            .createOrUpdate(resourceGroupName, serviceName, portalRevisionId, this.innerModel(), context);
         return this;
     }
 
-    PortalRevisionContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    PortalRevisionContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new PortalRevisionContractInner();
         this.serviceManager = serviceManager;
         this.portalRevisionId = name;
@@ -109,51 +105,41 @@ public final class PortalRevisionContractImpl
     }
 
     public PortalRevisionContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalRevisions()
-                .update(
-                    resourceGroupName, serviceName, portalRevisionId, updateIfMatch, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalRevisions()
+            .update(resourceGroupName, serviceName, portalRevisionId, updateIfMatch, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PortalRevisionContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalRevisions()
-                .update(resourceGroupName, serviceName, portalRevisionId, updateIfMatch, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalRevisions()
+            .update(resourceGroupName, serviceName, portalRevisionId, updateIfMatch, this.innerModel(), context);
         return this;
     }
 
-    PortalRevisionContractImpl(
-        PortalRevisionContractInner innerObject,
+    PortalRevisionContractImpl(PortalRevisionContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.portalRevisionId = Utils.getValueFromIdByName(innerObject.id(), "portalRevisions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.portalRevisionId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "portalRevisions");
     }
 
     public PortalRevisionContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalRevisions()
-                .getWithResponse(resourceGroupName, serviceName, portalRevisionId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalRevisions()
+            .getWithResponse(resourceGroupName, serviceName, portalRevisionId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PortalRevisionContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalRevisions()
-                .getWithResponse(resourceGroupName, serviceName, portalRevisionId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalRevisions()
+            .getWithResponse(resourceGroupName, serviceName, portalRevisionId, context)
+            .getValue();
         return this;
     }
 

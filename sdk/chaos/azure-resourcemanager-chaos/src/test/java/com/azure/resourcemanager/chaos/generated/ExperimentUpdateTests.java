@@ -17,7 +17,7 @@ public final class ExperimentUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExperimentUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"veual\":{\"principalId\":\"2ab296ac-e81e-4690-b2e9-e8ca33e2c7f3\",\"clientId\":\"e2c93b86-0c6b-4a76-b205-8abd8405e73c\"},\"mkh\":{\"principalId\":\"a488b418-a1eb-433c-a43f-5fae44a0b576\",\"clientId\":\"6b698d05-0238-4471-9218-dbbad59580b9\"},\"bbcswsrtjri\":{\"principalId\":\"8116ceee-1e63-4d79-ad88-a3b1cf189c9d\",\"clientId\":\"7893fbc9-a3b8-4f3d-9909-b5051e6de38e\"},\"bpbewtghfgb\":{\"principalId\":\"d1b6d058-d12a-45b2-b1f0-0a6e04a0d8ff\",\"clientId\":\"2cb9b1c9-46cf-4f32-b1c0-888374c5f9e6\"}},\"principalId\":\"gw\",\"tenantId\":\"vlvqhjkbegi\"},\"tags\":{\"aloayqcgwrtzju\":\"mxiebw\",\"txon\":\"gwyzm\",\"rknftguvriuhprwm\":\"mtsavjcbpwxqp\",\"bexrmcq\":\"yvxqtayriwwroy\"}}")
+            "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"veual\":{\"principalId\":\"117247fc-eaf3-474e-8848-1154b475989b\",\"clientId\":\"7d125f3b-6eaf-4db5-8b18-0d9528cb79d3\"},\"mkh\":{\"principalId\":\"d9cd11da-7cf8-4b79-a5dd-a55dd1b59aaa\",\"clientId\":\"4521f587-2320-497f-9696-3e8b9dd62318\"},\"bbcswsrtjri\":{\"principalId\":\"1326097e-0a1e-42ef-bee6-6e6eb3e533dc\",\"clientId\":\"5e5adf5f-53f4-47fb-af7f-312917eacb92\"},\"bpbewtghfgb\":{\"principalId\":\"194d2f05-0d3a-4288-9e57-34dfec4b18f1\",\"clientId\":\"5f7a5c17-8833-411f-8c88-dfe1b43a4ce3\"}},\"principalId\":\"gw\",\"tenantId\":\"vlvqhjkbegi\"},\"tags\":{\"aloayqcgwrtzju\":\"mxiebw\",\"txon\":\"gwyzm\",\"rknftguvriuhprwm\":\"mtsavjcbpwxqp\",\"bexrmcq\":\"yvxqtayriwwroy\"}}")
             .toObject(ExperimentUpdate.class);
         Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
         Assertions.assertEquals("mxiebw", model.tags().get("aloayqcgwrtzju"));
@@ -25,10 +25,10 @@ public final class ExperimentUpdateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentUpdate model = new ExperimentUpdate()
-            .withIdentity(new ResourceIdentity().withType(ResourceIdentityType.NONE).withUserAssignedIdentities(
-                mapOf("veual", new UserAssignedIdentity(), "mkh", new UserAssignedIdentity(), "bbcswsrtjri",
-                    new UserAssignedIdentity(), "bpbewtghfgb", new UserAssignedIdentity())))
+        ExperimentUpdate model = new ExperimentUpdate().withIdentity(new ResourceIdentity()
+            .withType(ResourceIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("veual", new UserAssignedIdentity(), "mkh", new UserAssignedIdentity(),
+                "bbcswsrtjri", new UserAssignedIdentity(), "bpbewtghfgb", new UserAssignedIdentity())))
             .withTags(mapOf("aloayqcgwrtzju", "mxiebw", "txon", "gwyzm", "rknftguvriuhprwm", "mtsavjcbpwxqp", "bexrmcq",
                 "yvxqtayriwwroy"));
         model = BinaryData.fromObject(model).toObject(ExperimentUpdate.class);

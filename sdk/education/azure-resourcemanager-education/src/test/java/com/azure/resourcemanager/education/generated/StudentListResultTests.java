@@ -6,20 +6,17 @@ package com.azure.resourcemanager.education.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.education.models.StudentListResult;
-import org.junit.jupiter.api.Test;
 
 public final class StudentListResultTests {
-    @Test
-    public void testDeserialize() {
-        StudentListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"firstName\":\"oulzndlikwyq\",\"lastName\":\"gfgibm\",\"email\":\"dgak\",\"role\":\"Admin\",\"subscriptionId\":\"rxybz\",\"expirationDate\":\"2021-03-26T22:16:08Z\",\"status\":\"Disabled\",\"effectiveDate\":\"2021-10-30T10:34:46Z\",\"subscriptionAlias\":\"bciqfouflm\",\"subscriptionInviteLastSentDate\":\"2021-09-02T23:31:13Z\"},\"id\":\"smodmgloug\",\"name\":\"b\",\"type\":\"wtmutduq\"},{\"properties\":{\"firstName\":\"ap\",\"lastName\":\"pwgcuertu\",\"email\":\"kdosvqw\",\"role\":\"Student\",\"subscriptionId\":\"dgbb\",\"expirationDate\":\"2020-12-24T00:21:41Z\",\"status\":\"Active\",\"effectiveDate\":\"2021-09-14T17:27:38Z\",\"subscriptionAlias\":\"mbe\",\"subscriptionInviteLastSentDate\":\"2021-10-01T04:14:33Z\"},\"id\":\"htqqrolfp\",\"name\":\"psalgbqux\",\"type\":\"gjyjgzjaoyfhrtxi\"}],\"nextLink\":\"erkujys\"}")
-                .toObject(StudentListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        StudentListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"firstName\":\"gphuticndvka\",\"lastName\":\"zwyiftyhxhur\",\"email\":\"k\",\"role\":\"Admin\",\"budget\":{\"currency\":\"xolniwpwcukjfk\",\"value\":36.07977},\"subscriptionId\":\"xklrypl\",\"expirationDate\":\"2021-09-09T09:42:48Z\",\"status\":\"Expired\",\"effectiveDate\":\"2021-09-03T01:46:22Z\",\"subscriptionAlias\":\"ypnddhsgcb\",\"subscriptionInviteLastSentDate\":\"2021-09-28T20:37:30Z\"},\"id\":\"ejk\",\"name\":\"tynqgoul\",\"type\":\"ndlik\"},{\"properties\":{\"firstName\":\"qkgfgibma\",\"lastName\":\"gakeqsr\",\"email\":\"yb\",\"role\":\"Admin\",\"budget\":{\"currency\":\"e\",\"value\":18.452686},\"subscriptionId\":\"bciqfouflm\",\"expirationDate\":\"2021-03-13T18:03:58Z\",\"status\":\"Disabled\",\"effectiveDate\":\"2021-02-23T09:34:26Z\",\"subscriptionAlias\":\"dmgloug\",\"subscriptionInviteLastSentDate\":\"2021-09-04T08:41:08Z\"},\"id\":\"mutduqktaps\",\"name\":\"wgcu\",\"type\":\"rtumkdosvq\"},{\"properties\":{\"firstName\":\"bmdg\",\"lastName\":\"bjf\",\"email\":\"dgmb\",\"role\":\"Student\",\"budget\":{\"currency\":\"xppbhtqqro\",\"value\":3.707689},\"subscriptionId\":\"psalgbqux\",\"expirationDate\":\"2021-05-23T17:35:12Z\",\"status\":\"Deleted\",\"effectiveDate\":\"2021-02-25T21:10:05Z\",\"subscriptionAlias\":\"jaoyfhrtx\",\"subscriptionInviteLastSentDate\":\"2021-10-31T08:55:11Z\"},\"id\":\"rkujy\",\"name\":\"vlejuvfqa\",\"type\":\"rlyxwjkcprbnw\"}],\"nextLink\":\"gjvtbv\"}")
+            .toObject(StudentListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         StudentListResult model = new StudentListResult();
         model = BinaryData.fromObject(model).toObject(StudentListResult.class);
     }

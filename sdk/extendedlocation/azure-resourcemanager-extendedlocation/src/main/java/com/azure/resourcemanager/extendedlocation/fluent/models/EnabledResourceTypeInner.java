@@ -7,29 +7,52 @@ package com.azure.resourcemanager.extendedlocation.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.extendedlocation.models.EnabledResourceTypePropertiesTypesMetadataItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** EnabledResourceType definition. */
+/**
+ * EnabledResourceType definition.
+ */
 @Fluent
 public final class EnabledResourceTypeInner extends ProxyResource {
     /*
-     * The set of properties for EnabledResourceType specific to a Custom
-     * Location
+     * The set of properties for EnabledResourceType specific to a Custom Location
      */
-    @JsonProperty(value = "properties")
     private EnabledResourceTypeProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EnabledResourceTypeInner class.
+     */
+    public EnabledResourceTypeInner() {
+    }
 
     /**
      * Get the innerProperties property: The set of properties for EnabledResourceType specific to a Custom Location.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EnabledResourceTypeProperties innerProperties() {
@@ -38,7 +61,7 @@ public final class EnabledResourceTypeInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -46,8 +69,38 @@ public final class EnabledResourceTypeInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the clusterExtensionId property: Cluster Extension ID.
-     *
+     * 
      * @return the clusterExtensionId value.
      */
     public String clusterExtensionId() {
@@ -56,7 +109,7 @@ public final class EnabledResourceTypeInner extends ProxyResource {
 
     /**
      * Set the clusterExtensionId property: Cluster Extension ID.
-     *
+     * 
      * @param clusterExtensionId the clusterExtensionId value to set.
      * @return the EnabledResourceTypeInner object itself.
      */
@@ -70,7 +123,7 @@ public final class EnabledResourceTypeInner extends ProxyResource {
 
     /**
      * Get the extensionType property: Cluster Extension Type.
-     *
+     * 
      * @return the extensionType value.
      */
     public String extensionType() {
@@ -79,7 +132,7 @@ public final class EnabledResourceTypeInner extends ProxyResource {
 
     /**
      * Set the extensionType property: Cluster Extension Type.
-     *
+     * 
      * @param extensionType the extensionType value to set.
      * @return the EnabledResourceTypeInner object itself.
      */
@@ -93,7 +146,7 @@ public final class EnabledResourceTypeInner extends ProxyResource {
 
     /**
      * Get the typesMetadata property: Metadata of the Resource Type.
-     *
+     * 
      * @return the typesMetadata value.
      */
     public List<EnabledResourceTypePropertiesTypesMetadataItem> typesMetadata() {
@@ -102,12 +155,12 @@ public final class EnabledResourceTypeInner extends ProxyResource {
 
     /**
      * Set the typesMetadata property: Metadata of the Resource Type.
-     *
+     * 
      * @param typesMetadata the typesMetadata value to set.
      * @return the EnabledResourceTypeInner object itself.
      */
-    public EnabledResourceTypeInner withTypesMetadata(
-        List<EnabledResourceTypePropertiesTypesMetadataItem> typesMetadata) {
+    public EnabledResourceTypeInner
+        withTypesMetadata(List<EnabledResourceTypePropertiesTypesMetadataItem> typesMetadata) {
         if (this.innerProperties() == null) {
             this.innerProperties = new EnabledResourceTypeProperties();
         }
@@ -117,12 +170,58 @@ public final class EnabledResourceTypeInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnabledResourceTypeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnabledResourceTypeInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnabledResourceTypeInner.
+     */
+    public static EnabledResourceTypeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnabledResourceTypeInner deserializedEnabledResourceTypeInner = new EnabledResourceTypeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEnabledResourceTypeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEnabledResourceTypeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEnabledResourceTypeInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEnabledResourceTypeInner.innerProperties
+                        = EnabledResourceTypeProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedEnabledResourceTypeInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnabledResourceTypeInner;
+        });
     }
 }

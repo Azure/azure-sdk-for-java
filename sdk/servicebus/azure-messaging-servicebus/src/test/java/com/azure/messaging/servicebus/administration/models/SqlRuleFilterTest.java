@@ -44,24 +44,22 @@ class SqlRuleFilterTest {
         assertEquals(someFilter, similarFilter);
         assertEquals(someFilter.hashCode(), similarFilter.hashCode());
 
-        final SqlRuleFilter filter = new SqlRuleFilter("some-expression",
-            "some-compatibility-level", true);
+        final SqlRuleFilter filter = new SqlRuleFilter("some-expression", "some-compatibility-level", true);
 
         assertNotEquals(filter, someFilter);
         assertEquals(filter.hashCode(), someFilter.hashCode());
 
-        final SqlRuleFilter differentCompatibilityFilter = new SqlRuleFilter("some-expression",
-            "other-compatibility-level", true);
+        final SqlRuleFilter differentCompatibilityFilter
+            = new SqlRuleFilter("some-expression", "other-compatibility-level", true);
         assertNotEquals(filter, differentCompatibilityFilter);
         assertEquals(filter.hashCode(), differentCompatibilityFilter.hashCode());
 
-        final SqlRuleFilter differentPreprocessingFilter = new SqlRuleFilter("some-expression",
-            "some-compatibility-level", false);
+        final SqlRuleFilter differentPreprocessingFilter
+            = new SqlRuleFilter("some-expression", "some-compatibility-level", false);
         assertNotEquals(filter, differentPreprocessingFilter);
         assertEquals(filter.hashCode(), differentPreprocessingFilter.hashCode());
 
-        final SqlRuleFilter allSameFilter = new SqlRuleFilter("some-expression",
-            "some-compatibility-level", true);
+        final SqlRuleFilter allSameFilter = new SqlRuleFilter("some-expression", "some-compatibility-level", true);
         assertEquals(filter, allSameFilter);
     }
 

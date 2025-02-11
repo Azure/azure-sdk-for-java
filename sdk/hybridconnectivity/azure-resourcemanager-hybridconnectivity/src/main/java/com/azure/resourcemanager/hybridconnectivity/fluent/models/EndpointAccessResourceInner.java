@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The endpoint access for the target resource. */
+/**
+ * The endpoint access for the target resource.
+ */
 @Fluent
-public final class EndpointAccessResourceInner {
+public final class EndpointAccessResourceInner implements JsonSerializable<EndpointAccessResourceInner> {
     /*
      * Azure relay hybrid connection access properties
      */
-    @JsonProperty(value = "relay")
     private RelayNamespaceAccessProperties innerRelay;
 
-    /** Creates an instance of EndpointAccessResourceInner class. */
+    /**
+     * Creates an instance of EndpointAccessResourceInner class.
+     */
     public EndpointAccessResourceInner() {
     }
 
     /**
      * Get the innerRelay property: Azure relay hybrid connection access properties.
-     *
+     * 
      * @return the innerRelay value.
      */
     private RelayNamespaceAccessProperties innerRelay() {
@@ -31,7 +38,7 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Get the namespaceName property: The namespace name.
-     *
+     * 
      * @return the namespaceName value.
      */
     public String namespaceName() {
@@ -40,7 +47,7 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Set the namespaceName property: The namespace name.
-     *
+     * 
      * @param namespaceName the namespaceName value to set.
      * @return the EndpointAccessResourceInner object itself.
      */
@@ -54,7 +61,7 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Get the namespaceNameSuffix property: The suffix domain name of relay namespace.
-     *
+     * 
      * @return the namespaceNameSuffix value.
      */
     public String namespaceNameSuffix() {
@@ -63,7 +70,7 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Set the namespaceNameSuffix property: The suffix domain name of relay namespace.
-     *
+     * 
      * @param namespaceNameSuffix the namespaceNameSuffix value to set.
      * @return the EndpointAccessResourceInner object itself.
      */
@@ -77,7 +84,7 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Get the hybridConnectionName property: Azure Relay hybrid connection name for the resource.
-     *
+     * 
      * @return the hybridConnectionName value.
      */
     public String hybridConnectionName() {
@@ -86,7 +93,7 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Set the hybridConnectionName property: Azure Relay hybrid connection name for the resource.
-     *
+     * 
      * @param hybridConnectionName the hybridConnectionName value to set.
      * @return the EndpointAccessResourceInner object itself.
      */
@@ -100,7 +107,7 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Get the accessKey property: Access key for hybrid connection.
-     *
+     * 
      * @return the accessKey value.
      */
     public String accessKey() {
@@ -109,7 +116,7 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Get the expiresOn property: The expiration of access key in unix time.
-     *
+     * 
      * @return the expiresOn value.
      */
     public Long expiresOn() {
@@ -118,7 +125,7 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Set the expiresOn property: The expiration of access key in unix time.
-     *
+     * 
      * @param expiresOn the expiresOn value to set.
      * @return the EndpointAccessResourceInner object itself.
      */
@@ -132,7 +139,7 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Get the serviceConfigurationToken property: The token to access the enabled service.
-     *
+     * 
      * @return the serviceConfigurationToken value.
      */
     public String serviceConfigurationToken() {
@@ -141,7 +148,7 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Set the serviceConfigurationToken property: The token to access the enabled service.
-     *
+     * 
      * @param serviceConfigurationToken the serviceConfigurationToken value to set.
      * @return the EndpointAccessResourceInner object itself.
      */
@@ -155,12 +162,49 @@ public final class EndpointAccessResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerRelay() != null) {
             innerRelay().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("relay", this.innerRelay);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointAccessResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointAccessResourceInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EndpointAccessResourceInner.
+     */
+    public static EndpointAccessResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointAccessResourceInner deserializedEndpointAccessResourceInner = new EndpointAccessResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("relay".equals(fieldName)) {
+                    deserializedEndpointAccessResourceInner.innerRelay
+                        = RelayNamespaceAccessProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointAccessResourceInner;
+        });
     }
 }

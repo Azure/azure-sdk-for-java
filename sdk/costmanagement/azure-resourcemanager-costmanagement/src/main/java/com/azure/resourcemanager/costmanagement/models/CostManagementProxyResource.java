@@ -6,26 +6,47 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Resource model definition. */
+/**
+ * The Resource model definition.
+ */
 @Fluent
 public class CostManagementProxyResource extends ProxyResource {
     /*
-     * eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the
-     * user is updating the latest version or not.
+     * eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user
+     * is updating the latest version or not.
      */
-    @JsonProperty(value = "eTag")
     private String etag;
 
-    /** Creates an instance of CostManagementProxyResource class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CostManagementProxyResource class.
+     */
     public CostManagementProxyResource() {
     }
 
     /**
      * Get the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
      * determine whether the user is updating the latest version or not.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -35,7 +56,7 @@ public class CostManagementProxyResource extends ProxyResource {
     /**
      * Set the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
      * determine whether the user is updating the latest version or not.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the CostManagementProxyResource object itself.
      */
@@ -45,10 +66,83 @@ public class CostManagementProxyResource extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eTag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CostManagementProxyResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CostManagementProxyResource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CostManagementProxyResource.
+     */
+    public static CostManagementProxyResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CostManagementProxyResource deserializedCostManagementProxyResource = new CostManagementProxyResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCostManagementProxyResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCostManagementProxyResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCostManagementProxyResource.type = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedCostManagementProxyResource.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCostManagementProxyResource;
+        });
     }
 }

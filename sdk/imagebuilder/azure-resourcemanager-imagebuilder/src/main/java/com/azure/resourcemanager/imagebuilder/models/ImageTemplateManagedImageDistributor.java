@@ -113,7 +113,6 @@ public final class ImageTemplateManagedImageDistributor extends ImageTemplateDis
      */
     @Override
     public void validate() {
-        super.validate();
         if (imageId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -123,6 +122,11 @@ public final class ImageTemplateManagedImageDistributor extends ImageTemplateDis
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property location in model ImageTemplateManagedImageDistributor"));
+        }
+        if (runOutputName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property runOutputName in model ImageTemplateManagedImageDistributor"));
         }
     }
 

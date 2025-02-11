@@ -10,34 +10,30 @@ import com.azure.resourcemanager.dnsresolver.fluent.models.OutboundEndpointInner
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OutboundEndpointInnerTests {
-    @Test
-    public void testDeserialize() {
-        OutboundEndpointInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"wjfeusnhutjel\",\"properties\":{\"subnet\":{\"id\":\"rl\"},\"provisioningState\":\"Updating\",\"resourceGuid\":\"jzzd\"},\"location\":\"qxhocdgeablgphut\",\"tags\":{\"i\":\"dvkaozw\"},\"id\":\"tyhxhurokft\",\"name\":\"xolniwpwcukjfk\",\"type\":\"iawxklry\"}")
-                .toObject(OutboundEndpointInner.class);
-        Assertions.assertEquals("qxhocdgeablgphut", model.location());
-        Assertions.assertEquals("dvkaozw", model.tags().get("i"));
-        Assertions.assertEquals("rl", model.subnet().id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OutboundEndpointInner model = BinaryData.fromString(
+            "{\"etag\":\"guhmuouqfpr\",\"properties\":{\"subnet\":{\"id\":\"wbnguitnwui\"},\"provisioningState\":\"Creating\",\"resourceGuid\":\"x\"},\"location\":\"izuckyfihrfidfvz\",\"tags\":{\"mwisdkfthwxmnt\":\"uht\",\"aop\":\"i\",\"jcmmxdcufufsrp\":\"km\",\"sgfyccsnew\":\"mzidnsezcxtb\"},\"id\":\"dwzjeiach\",\"name\":\"oosflnr\",\"type\":\"sfqpteehz\"}")
+            .toObject(OutboundEndpointInner.class);
+        Assertions.assertEquals("izuckyfihrfidfvz", model.location());
+        Assertions.assertEquals("uht", model.tags().get("mwisdkfthwxmnt"));
+        Assertions.assertEquals("wbnguitnwui", model.subnet().id());
     }
 
-    @Test
-    public void testSerialize() {
-        OutboundEndpointInner model =
-            new OutboundEndpointInner()
-                .withLocation("qxhocdgeablgphut")
-                .withTags(mapOf("i", "dvkaozw"))
-                .withSubnet(new SubResource().withId("rl"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OutboundEndpointInner model = new OutboundEndpointInner().withLocation("izuckyfihrfidfvz")
+            .withTags(mapOf("mwisdkfthwxmnt", "uht", "aop", "i", "jcmmxdcufufsrp", "km", "sgfyccsnew", "mzidnsezcxtb"))
+            .withSubnet(new SubResource().withId("wbnguitnwui"));
         model = BinaryData.fromObject(model).toObject(OutboundEndpointInner.class);
-        Assertions.assertEquals("qxhocdgeablgphut", model.location());
-        Assertions.assertEquals("dvkaozw", model.tags().get("i"));
-        Assertions.assertEquals("rl", model.subnet().id());
+        Assertions.assertEquals("izuckyfihrfidfvz", model.location());
+        Assertions.assertEquals("uht", model.tags().get("mwisdkfthwxmnt"));
+        Assertions.assertEquals("wbnguitnwui", model.subnet().id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

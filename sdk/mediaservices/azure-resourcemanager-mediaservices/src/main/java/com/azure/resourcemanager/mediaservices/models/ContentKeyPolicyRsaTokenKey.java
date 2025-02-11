@@ -7,34 +7,50 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies a RSA key for token validation. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.ContentKeyPolicyRsaTokenKey")
+/**
+ * Specifies a RSA key for token validation.
+ */
 @Fluent
 public final class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestrictionTokenKey {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.ContentKeyPolicyRsaTokenKey";
+
+    /*
      * The RSA Parameter exponent
      */
-    @JsonProperty(value = "exponent", required = true)
     private byte[] exponent;
 
     /*
      * The RSA Parameter modulus
      */
-    @JsonProperty(value = "modulus", required = true)
     private byte[] modulus;
 
-    /** Creates an instance of ContentKeyPolicyRsaTokenKey class. */
+    /**
+     * Creates an instance of ContentKeyPolicyRsaTokenKey class.
+     */
     public ContentKeyPolicyRsaTokenKey() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the exponent property: The RSA Parameter exponent.
-     *
+     * 
      * @return the exponent value.
      */
     public byte[] exponent() {
@@ -43,7 +59,7 @@ public final class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestricti
 
     /**
      * Set the exponent property: The RSA Parameter exponent.
-     *
+     * 
      * @param exponent the exponent value to set.
      * @return the ContentKeyPolicyRsaTokenKey object itself.
      */
@@ -54,7 +70,7 @@ public final class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestricti
 
     /**
      * Get the modulus property: The RSA Parameter modulus.
-     *
+     * 
      * @return the modulus value.
      */
     public byte[] modulus() {
@@ -63,7 +79,7 @@ public final class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestricti
 
     /**
      * Set the modulus property: The RSA Parameter modulus.
-     *
+     * 
      * @param modulus the modulus value to set.
      * @return the ContentKeyPolicyRsaTokenKey object itself.
      */
@@ -74,25 +90,65 @@ public final class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestricti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (exponent() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property exponent in model ContentKeyPolicyRsaTokenKey"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property exponent in model ContentKeyPolicyRsaTokenKey"));
         }
         if (modulus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property modulus in model ContentKeyPolicyRsaTokenKey"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property modulus in model ContentKeyPolicyRsaTokenKey"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContentKeyPolicyRsaTokenKey.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBinaryField("exponent", this.exponent);
+        jsonWriter.writeBinaryField("modulus", this.modulus);
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicyRsaTokenKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicyRsaTokenKey if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContentKeyPolicyRsaTokenKey.
+     */
+    public static ContentKeyPolicyRsaTokenKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicyRsaTokenKey deserializedContentKeyPolicyRsaTokenKey = new ContentKeyPolicyRsaTokenKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("exponent".equals(fieldName)) {
+                    deserializedContentKeyPolicyRsaTokenKey.exponent = reader.getBinary();
+                } else if ("modulus".equals(fieldName)) {
+                    deserializedContentKeyPolicyRsaTokenKey.modulus = reader.getBinary();
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedContentKeyPolicyRsaTokenKey.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicyRsaTokenKey;
+        });
+    }
 }

@@ -15,8 +15,7 @@ public final class PortalSettingsCollectionImpl implements PortalSettingsCollect
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    PortalSettingsCollectionImpl(
-        PortalSettingsCollectionInner innerObject,
+    PortalSettingsCollectionImpl(PortalSettingsCollectionInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

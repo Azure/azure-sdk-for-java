@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.ElasticSanInner;
 import com.azure.resourcemanager.elasticsan.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.elasticsan.models.AutoScaleProperties;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
 import com.azure.resourcemanager.elasticsan.models.ElasticSanUpdate;
 import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnection;
@@ -112,6 +113,10 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
 
     public PublicNetworkAccess publicNetworkAccess() {
         return this.innerModel().publicNetworkAccess();
+    }
+
+    public AutoScaleProperties autoScaleProperties() {
+        return this.innerModel().autoScaleProperties();
     }
 
     public Region region() {
@@ -253,6 +258,16 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
             return this;
         } else {
             this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
+    public ElasticSanImpl withAutoScaleProperties(AutoScaleProperties autoScaleProperties) {
+        if (isInCreateMode()) {
+            this.innerModel().withAutoScaleProperties(autoScaleProperties);
+            return this;
+        } else {
+            this.updateParameters.withAutoScaleProperties(autoScaleProperties);
             return this;
         }
     }

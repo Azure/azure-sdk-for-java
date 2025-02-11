@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactsPropertiesContactProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactsPropertiesContactProfile model =
-            BinaryData.fromString("{\"id\":\"kwh\"}").toObject(ContactsPropertiesContactProfile.class);
-        Assertions.assertEquals("kwh", model.id());
+        ContactsPropertiesContactProfile model
+            = BinaryData.fromString("{\"id\":\"ysszdnrujqguh\"}").toObject(ContactsPropertiesContactProfile.class);
+        Assertions.assertEquals("ysszdnrujqguh", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactsPropertiesContactProfile model = new ContactsPropertiesContactProfile().withId("kwh");
+        ContactsPropertiesContactProfile model = new ContactsPropertiesContactProfile().withId("ysszdnrujqguh");
         model = BinaryData.fromObject(model).toObject(ContactsPropertiesContactProfile.class);
-        Assertions.assertEquals("kwh", model.id());
+        Assertions.assertEquals("ysszdnrujqguh", model.id());
     }
 }

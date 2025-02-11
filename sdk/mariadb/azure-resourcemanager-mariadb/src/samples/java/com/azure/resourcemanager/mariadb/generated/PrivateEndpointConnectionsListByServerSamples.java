@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for PrivateEndpointConnections ListByServer. */
+/**
+ * Samples for PrivateEndpointConnections ListByServer.
+ */
 public final class PrivateEndpointConnectionsListByServerSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/PrivateEndpointConnectionList.json
+     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/
+     * PrivateEndpointConnectionList.json
      */
     /**
      * Sample code: Gets list of private endpoint connections on a server.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
-    public static void getsListOfPrivateEndpointConnectionsOnAServer(
-        com.azure.resourcemanager.mariadb.MariaDBManager manager) {
+    public static void
+        getsListOfPrivateEndpointConnectionsOnAServer(com.azure.resourcemanager.mariadb.MariaDBManager manager) {
         manager.privateEndpointConnections().listByServer("Default", "test-svr", com.azure.core.util.Context.NONE);
     }
 }

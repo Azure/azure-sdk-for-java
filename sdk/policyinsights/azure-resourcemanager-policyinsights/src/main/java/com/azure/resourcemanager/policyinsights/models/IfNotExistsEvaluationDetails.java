@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Evaluation details of IfNotExists effect. */
+/**
+ * Evaluation details of IfNotExists effect.
+ */
 @Fluent
-public final class IfNotExistsEvaluationDetails {
+public final class IfNotExistsEvaluationDetails implements JsonSerializable<IfNotExistsEvaluationDetails> {
     /*
      * ID of the last evaluated resource for IfNotExists effect.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Total number of resources to which the existence condition is applicable.
      */
-    @JsonProperty(value = "totalResources")
     private Integer totalResources;
 
-    /** Creates an instance of IfNotExistsEvaluationDetails class. */
+    /**
+     * Creates an instance of IfNotExistsEvaluationDetails class.
+     */
     public IfNotExistsEvaluationDetails() {
     }
 
     /**
      * Get the resourceId property: ID of the last evaluated resource for IfNotExists effect.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -37,7 +43,7 @@ public final class IfNotExistsEvaluationDetails {
 
     /**
      * Set the resourceId property: ID of the last evaluated resource for IfNotExists effect.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the IfNotExistsEvaluationDetails object itself.
      */
@@ -48,7 +54,7 @@ public final class IfNotExistsEvaluationDetails {
 
     /**
      * Get the totalResources property: Total number of resources to which the existence condition is applicable.
-     *
+     * 
      * @return the totalResources value.
      */
     public Integer totalResources() {
@@ -57,7 +63,7 @@ public final class IfNotExistsEvaluationDetails {
 
     /**
      * Set the totalResources property: Total number of resources to which the existence condition is applicable.
-     *
+     * 
      * @param totalResources the totalResources value to set.
      * @return the IfNotExistsEvaluationDetails object itself.
      */
@@ -68,9 +74,48 @@ public final class IfNotExistsEvaluationDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeNumberField("totalResources", this.totalResources);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IfNotExistsEvaluationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IfNotExistsEvaluationDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IfNotExistsEvaluationDetails.
+     */
+    public static IfNotExistsEvaluationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IfNotExistsEvaluationDetails deserializedIfNotExistsEvaluationDetails = new IfNotExistsEvaluationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedIfNotExistsEvaluationDetails.resourceId = reader.getString();
+                } else if ("totalResources".equals(fieldName)) {
+                    deserializedIfNotExistsEvaluationDetails.totalResources = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIfNotExistsEvaluationDetails;
+        });
     }
 }

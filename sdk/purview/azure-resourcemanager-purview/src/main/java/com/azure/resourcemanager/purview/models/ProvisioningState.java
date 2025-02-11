@@ -5,41 +5,60 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the state of the provisioning. */
+/**
+ * Gets or sets the state of the provisioning.
+ */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
-    /** Static value Unknown for ProvisioningState. */
+    /**
+     * Static value Unknown for ProvisioningState.
+     */
     public static final ProvisioningState UNKNOWN = fromString("Unknown");
 
-    /** Static value Creating for ProvisioningState. */
+    /**
+     * Static value Creating for ProvisioningState.
+     */
     public static final ProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Moving for ProvisioningState. */
+    /**
+     * Static value Moving for ProvisioningState.
+     */
     public static final ProvisioningState MOVING = fromString("Moving");
 
-    /** Static value Deleting for ProvisioningState. */
+    /**
+     * Static value Deleting for ProvisioningState.
+     */
     public static final ProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value SoftDeleting for ProvisioningState. */
+    /**
+     * Static value SoftDeleting for ProvisioningState.
+     */
     public static final ProvisioningState SOFT_DELETING = fromString("SoftDeleting");
 
-    /** Static value SoftDeleted for ProvisioningState. */
+    /**
+     * Static value SoftDeleted for ProvisioningState.
+     */
     public static final ProvisioningState SOFT_DELETED = fromString("SoftDeleted");
 
-    /** Static value Failed for ProvisioningState. */
+    /**
+     * Static value Failed for ProvisioningState.
+     */
     public static final ProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for ProvisioningState. */
+    /**
+     * Static value Succeeded for ProvisioningState.
+     */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for ProvisioningState. */
+    /**
+     * Static value Canceled for ProvisioningState.
+     */
     public static final ProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of ProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,18 +67,17 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
 
     /**
      * Creates or finds a ProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProvisioningState.
      */
-    @JsonCreator
     public static ProvisioningState fromString(String name) {
         return fromString(name, ProvisioningState.class);
     }
 
     /**
      * Gets known ProvisioningState values.
-     *
+     * 
      * @return known ProvisioningState values.
      */
     public static Collection<ProvisioningState> values() {

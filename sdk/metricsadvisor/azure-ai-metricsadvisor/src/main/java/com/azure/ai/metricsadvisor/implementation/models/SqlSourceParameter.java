@@ -72,6 +72,9 @@ public final class SqlSourceParameter implements JsonSerializable<SqlSourceParam
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

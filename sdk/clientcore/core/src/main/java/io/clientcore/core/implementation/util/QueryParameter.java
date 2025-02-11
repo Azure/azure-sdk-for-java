@@ -18,7 +18,7 @@ import static io.clientcore.core.implementation.util.ImplUtils.stringJoin;
  * If multiple values are added to a query string with the same name (case-insensitive), then the values will be
  * appended at the end of the same {@link QueryParameter} with commas separating them.
  */
-class QueryParameter {
+public final class QueryParameter {
     private static final String[] EMPTY_QUERY_PARAMETER_ARRAY = new String[0];
 
     private final String name;
@@ -44,7 +44,7 @@ class QueryParameter {
      *
      * @throws NullPointerException if {@code name} is null.
      */
-    QueryParameter(String name, String value) {
+    public QueryParameter(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
         this.value = value;
@@ -58,7 +58,7 @@ class QueryParameter {
      *
      * @throws NullPointerException if {@code name} or {@code values} are null.
      */
-    QueryParameter(String name, List<String> values) {
+    public QueryParameter(String name, List<String> values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(values, "'values' cannot be null");
         this.name = name;
@@ -104,7 +104,7 @@ class QueryParameter {
      */
     public String[] getValues() {
         if (value != null) {
-            return new String[]{value};
+            return new String[] { value };
         } else if (!isNullOrEmpty(values)) {
             return values.toArray(new String[0]);
         } else {

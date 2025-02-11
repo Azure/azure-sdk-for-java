@@ -6,39 +6,46 @@ package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The IP filter rules for a provisioning Service. */
+/**
+ * The IP filter rules for a provisioning Service.
+ */
 @Fluent
-public final class IpFilterRule {
+public final class IpFilterRule implements JsonSerializable<IpFilterRule> {
     /*
      * The name of the IP filter rule.
      */
-    @JsonProperty(value = "filterName", required = true)
     private String filterName;
 
     /*
      * The desired action for requests captured by this rule.
      */
-    @JsonProperty(value = "action", required = true)
     private IpFilterActionType action;
 
     /*
-     * A string that contains the IP address range in CIDR notation for the
-     * rule.
+     * A string that contains the IP address range in CIDR notation for the rule.
      */
-    @JsonProperty(value = "ipMask", required = true)
     private String ipMask;
 
     /*
      * Target for requests captured by this rule.
      */
-    @JsonProperty(value = "target")
     private IpFilterTargetType target;
 
     /**
+     * Creates an instance of IpFilterRule class.
+     */
+    public IpFilterRule() {
+    }
+
+    /**
      * Get the filterName property: The name of the IP filter rule.
-     *
+     * 
      * @return the filterName value.
      */
     public String filterName() {
@@ -47,7 +54,7 @@ public final class IpFilterRule {
 
     /**
      * Set the filterName property: The name of the IP filter rule.
-     *
+     * 
      * @param filterName the filterName value to set.
      * @return the IpFilterRule object itself.
      */
@@ -58,7 +65,7 @@ public final class IpFilterRule {
 
     /**
      * Get the action property: The desired action for requests captured by this rule.
-     *
+     * 
      * @return the action value.
      */
     public IpFilterActionType action() {
@@ -67,7 +74,7 @@ public final class IpFilterRule {
 
     /**
      * Set the action property: The desired action for requests captured by this rule.
-     *
+     * 
      * @param action the action value to set.
      * @return the IpFilterRule object itself.
      */
@@ -78,7 +85,7 @@ public final class IpFilterRule {
 
     /**
      * Get the ipMask property: A string that contains the IP address range in CIDR notation for the rule.
-     *
+     * 
      * @return the ipMask value.
      */
     public String ipMask() {
@@ -87,7 +94,7 @@ public final class IpFilterRule {
 
     /**
      * Set the ipMask property: A string that contains the IP address range in CIDR notation for the rule.
-     *
+     * 
      * @param ipMask the ipMask value to set.
      * @return the IpFilterRule object itself.
      */
@@ -98,7 +105,7 @@ public final class IpFilterRule {
 
     /**
      * Get the target property: Target for requests captured by this rule.
-     *
+     * 
      * @return the target value.
      */
     public IpFilterTargetType target() {
@@ -107,7 +114,7 @@ public final class IpFilterRule {
 
     /**
      * Set the target property: Target for requests captured by this rule.
-     *
+     * 
      * @param target the target value to set.
      * @return the IpFilterRule object itself.
      */
@@ -118,26 +125,69 @@ public final class IpFilterRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filterName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property filterName in model IpFilterRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property filterName in model IpFilterRule"));
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model IpFilterRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model IpFilterRule"));
         }
         if (ipMask() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ipMask in model IpFilterRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ipMask in model IpFilterRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IpFilterRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filterName", this.filterName);
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("ipMask", this.ipMask);
+        jsonWriter.writeStringField("target", this.target == null ? null : this.target.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpFilterRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpFilterRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IpFilterRule.
+     */
+    public static IpFilterRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpFilterRule deserializedIpFilterRule = new IpFilterRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filterName".equals(fieldName)) {
+                    deserializedIpFilterRule.filterName = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    deserializedIpFilterRule.action = IpFilterActionType.fromString(reader.getString());
+                } else if ("ipMask".equals(fieldName)) {
+                    deserializedIpFilterRule.ipMask = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedIpFilterRule.target = IpFilterTargetType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpFilterRule;
+        });
+    }
 }

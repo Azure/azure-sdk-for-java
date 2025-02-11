@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in ProtectedItemOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectedItemOperationStatusClient.
+ */
 public interface ProtectedItemOperationStatusClient {
     /**
      * Gets the protected item operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the protected item.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -28,14 +30,14 @@ public interface ProtectedItemOperationStatusClient {
      * @return defines the operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusInner> getWithResponse(
-        String resourceGroupName, String vaultName, String protectedItemName, String operationId, Context context);
+    Response<OperationStatusInner> getWithResponse(String resourceGroupName, String vaultName, String protectedItemName,
+        String operationId, Context context);
 
     /**
      * Gets the protected item operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the protected item.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.

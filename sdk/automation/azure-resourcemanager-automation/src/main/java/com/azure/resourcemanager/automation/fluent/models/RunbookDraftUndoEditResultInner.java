@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.HttpStatusCode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The response model for the undo edit runbook operation. */
+/**
+ * The response model for the undo edit runbook operation.
+ */
 @Fluent
-public final class RunbookDraftUndoEditResultInner {
+public final class RunbookDraftUndoEditResultInner implements JsonSerializable<RunbookDraftUndoEditResultInner> {
     /*
      * The statusCode property.
      */
-    @JsonProperty(value = "statusCode")
     private HttpStatusCode statusCode;
 
     /*
      * The requestId property.
      */
-    @JsonProperty(value = "requestId")
     private String requestId;
 
     /**
+     * Creates an instance of RunbookDraftUndoEditResultInner class.
+     */
+    public RunbookDraftUndoEditResultInner() {
+    }
+
+    /**
      * Get the statusCode property: The statusCode property.
-     *
+     * 
      * @return the statusCode value.
      */
     public HttpStatusCode statusCode() {
@@ -34,7 +44,7 @@ public final class RunbookDraftUndoEditResultInner {
 
     /**
      * Set the statusCode property: The statusCode property.
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the RunbookDraftUndoEditResultInner object itself.
      */
@@ -45,7 +55,7 @@ public final class RunbookDraftUndoEditResultInner {
 
     /**
      * Get the requestId property: The requestId property.
-     *
+     * 
      * @return the requestId value.
      */
     public String requestId() {
@@ -54,7 +64,7 @@ public final class RunbookDraftUndoEditResultInner {
 
     /**
      * Set the requestId property: The requestId property.
-     *
+     * 
      * @param requestId the requestId value to set.
      * @return the RunbookDraftUndoEditResultInner object itself.
      */
@@ -65,9 +75,50 @@ public final class RunbookDraftUndoEditResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("statusCode", this.statusCode == null ? null : this.statusCode.toString());
+        jsonWriter.writeStringField("requestId", this.requestId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunbookDraftUndoEditResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunbookDraftUndoEditResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunbookDraftUndoEditResultInner.
+     */
+    public static RunbookDraftUndoEditResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunbookDraftUndoEditResultInner deserializedRunbookDraftUndoEditResultInner
+                = new RunbookDraftUndoEditResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("statusCode".equals(fieldName)) {
+                    deserializedRunbookDraftUndoEditResultInner.statusCode
+                        = HttpStatusCode.fromString(reader.getString());
+                } else if ("requestId".equals(fieldName)) {
+                    deserializedRunbookDraftUndoEditResultInner.requestId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunbookDraftUndoEditResultInner;
+        });
     }
 }

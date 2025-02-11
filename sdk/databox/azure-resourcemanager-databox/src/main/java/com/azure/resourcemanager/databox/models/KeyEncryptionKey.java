@@ -6,42 +6,46 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Encryption key containing details about key to encrypt different keys. */
+/**
+ * Encryption key containing details about key to encrypt different keys.
+ */
 @Fluent
-public final class KeyEncryptionKey {
+public final class KeyEncryptionKey implements JsonSerializable<KeyEncryptionKey> {
     /*
      * Type of encryption key used for key encryption.
      */
-    @JsonProperty(value = "kekType", required = true)
     private KekType kekType;
 
     /*
      * Managed identity properties used for key encryption.
      */
-    @JsonProperty(value = "identityProperties")
     private IdentityProperties identityProperties;
 
     /*
      * Key encryption key. It is required in case of Customer managed KekType.
      */
-    @JsonProperty(value = "kekUrl")
     private String kekUrl;
 
     /*
      * Kek vault resource id. It is required in case of Customer managed KekType.
      */
-    @JsonProperty(value = "kekVaultResourceID")
     private String kekVaultResourceId;
 
-    /** Creates an instance of KeyEncryptionKey class. */
+    /**
+     * Creates an instance of KeyEncryptionKey class.
+     */
     public KeyEncryptionKey() {
     }
 
     /**
      * Get the kekType property: Type of encryption key used for key encryption.
-     *
+     * 
      * @return the kekType value.
      */
     public KekType kekType() {
@@ -50,7 +54,7 @@ public final class KeyEncryptionKey {
 
     /**
      * Set the kekType property: Type of encryption key used for key encryption.
-     *
+     * 
      * @param kekType the kekType value to set.
      * @return the KeyEncryptionKey object itself.
      */
@@ -61,7 +65,7 @@ public final class KeyEncryptionKey {
 
     /**
      * Get the identityProperties property: Managed identity properties used for key encryption.
-     *
+     * 
      * @return the identityProperties value.
      */
     public IdentityProperties identityProperties() {
@@ -70,7 +74,7 @@ public final class KeyEncryptionKey {
 
     /**
      * Set the identityProperties property: Managed identity properties used for key encryption.
-     *
+     * 
      * @param identityProperties the identityProperties value to set.
      * @return the KeyEncryptionKey object itself.
      */
@@ -81,7 +85,7 @@ public final class KeyEncryptionKey {
 
     /**
      * Get the kekUrl property: Key encryption key. It is required in case of Customer managed KekType.
-     *
+     * 
      * @return the kekUrl value.
      */
     public String kekUrl() {
@@ -90,7 +94,7 @@ public final class KeyEncryptionKey {
 
     /**
      * Set the kekUrl property: Key encryption key. It is required in case of Customer managed KekType.
-     *
+     * 
      * @param kekUrl the kekUrl value to set.
      * @return the KeyEncryptionKey object itself.
      */
@@ -101,7 +105,7 @@ public final class KeyEncryptionKey {
 
     /**
      * Get the kekVaultResourceId property: Kek vault resource id. It is required in case of Customer managed KekType.
-     *
+     * 
      * @return the kekVaultResourceId value.
      */
     public String kekVaultResourceId() {
@@ -110,7 +114,7 @@ public final class KeyEncryptionKey {
 
     /**
      * Set the kekVaultResourceId property: Kek vault resource id. It is required in case of Customer managed KekType.
-     *
+     * 
      * @param kekVaultResourceId the kekVaultResourceId value to set.
      * @return the KeyEncryptionKey object itself.
      */
@@ -121,14 +125,13 @@ public final class KeyEncryptionKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (kekType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property kekType in model KeyEncryptionKey"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kekType in model KeyEncryptionKey"));
         }
         if (identityProperties() != null) {
             identityProperties().validate();
@@ -136,4 +139,50 @@ public final class KeyEncryptionKey {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKey.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kekType", this.kekType == null ? null : this.kekType.toString());
+        jsonWriter.writeJsonField("identityProperties", this.identityProperties);
+        jsonWriter.writeStringField("kekUrl", this.kekUrl);
+        jsonWriter.writeStringField("kekVaultResourceID", this.kekVaultResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyEncryptionKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyEncryptionKey if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyEncryptionKey.
+     */
+    public static KeyEncryptionKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyEncryptionKey deserializedKeyEncryptionKey = new KeyEncryptionKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kekType".equals(fieldName)) {
+                    deserializedKeyEncryptionKey.kekType = KekType.fromString(reader.getString());
+                } else if ("identityProperties".equals(fieldName)) {
+                    deserializedKeyEncryptionKey.identityProperties = IdentityProperties.fromJson(reader);
+                } else if ("kekUrl".equals(fieldName)) {
+                    deserializedKeyEncryptionKey.kekUrl = reader.getString();
+                } else if ("kekVaultResourceID".equals(fieldName)) {
+                    deserializedKeyEncryptionKey.kekVaultResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyEncryptionKey;
+        });
+    }
 }

@@ -5,39 +5,45 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.models.HardwareProfile;
 import com.azure.resourcemanager.connectedvmware.models.NetworkProfileUpdate;
 import com.azure.resourcemanager.connectedvmware.models.StorageProfileUpdate;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the properties of a Virtual Machine. */
+/**
+ * Describes the properties of a Virtual Machine.
+ */
 @Fluent
-public final class VirtualMachineInstanceUpdateProperties {
+public final class VirtualMachineInstanceUpdateProperties
+    implements JsonSerializable<VirtualMachineInstanceUpdateProperties> {
     /*
      * Specifies the hardware settings for the virtual machine.
      */
-    @JsonProperty(value = "hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /*
      * Specifies the storage settings for the virtual machine disks.
      */
-    @JsonProperty(value = "storageProfile")
     private StorageProfileUpdate storageProfile;
 
     /*
      * Specifies the network interfaces of the virtual machine.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfileUpdate networkProfile;
 
-    /** Creates an instance of VirtualMachineInstanceUpdateProperties class. */
+    /**
+     * Creates an instance of VirtualMachineInstanceUpdateProperties class.
+     */
     public VirtualMachineInstanceUpdateProperties() {
     }
 
     /**
      * Get the hardwareProfile property: Specifies the hardware settings for the virtual machine.
-     *
+     * 
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -46,7 +52,7 @@ public final class VirtualMachineInstanceUpdateProperties {
 
     /**
      * Set the hardwareProfile property: Specifies the hardware settings for the virtual machine.
-     *
+     * 
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the VirtualMachineInstanceUpdateProperties object itself.
      */
@@ -57,7 +63,7 @@ public final class VirtualMachineInstanceUpdateProperties {
 
     /**
      * Get the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfileUpdate storageProfile() {
@@ -66,7 +72,7 @@ public final class VirtualMachineInstanceUpdateProperties {
 
     /**
      * Set the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the VirtualMachineInstanceUpdateProperties object itself.
      */
@@ -77,7 +83,7 @@ public final class VirtualMachineInstanceUpdateProperties {
 
     /**
      * Get the networkProfile property: Specifies the network interfaces of the virtual machine.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfileUpdate networkProfile() {
@@ -86,7 +92,7 @@ public final class VirtualMachineInstanceUpdateProperties {
 
     /**
      * Set the networkProfile property: Specifies the network interfaces of the virtual machine.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the VirtualMachineInstanceUpdateProperties object itself.
      */
@@ -97,7 +103,7 @@ public final class VirtualMachineInstanceUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -110,5 +116,51 @@ public final class VirtualMachineInstanceUpdateProperties {
         if (networkProfile() != null) {
             networkProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineInstanceUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineInstanceUpdateProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineInstanceUpdateProperties.
+     */
+    public static VirtualMachineInstanceUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineInstanceUpdateProperties deserializedVirtualMachineInstanceUpdateProperties
+                = new VirtualMachineInstanceUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hardwareProfile".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceUpdateProperties.hardwareProfile
+                        = HardwareProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceUpdateProperties.storageProfile
+                        = StorageProfileUpdate.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceUpdateProperties.networkProfile
+                        = NetworkProfileUpdate.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineInstanceUpdateProperties;
+        });
     }
 }

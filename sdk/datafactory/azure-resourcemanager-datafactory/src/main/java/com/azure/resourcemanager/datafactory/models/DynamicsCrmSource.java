@@ -137,7 +137,6 @@ public final class DynamicsCrmSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

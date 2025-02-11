@@ -16,11 +16,9 @@ import reactor.core.publisher.Mono;
  * Entry point to manage event hub namespace authorization rules.
  */
 @Fluent
-public interface EventHubNamespaceAuthorizationRules extends
-    SupportsCreating<EventHubNamespaceAuthorizationRule.DefinitionStages.Blank>,
-    SupportsDeletingById,
-    SupportsGettingById<EventHubNamespaceAuthorizationRule>,
-    HasManager<EventHubsManager> {
+public interface EventHubNamespaceAuthorizationRules
+    extends SupportsCreating<EventHubNamespaceAuthorizationRule.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsGettingById<EventHubNamespaceAuthorizationRule>, HasManager<EventHubsManager> {
     /**
      * Lists the authorization rules under a namespace in a resource group.
      *
@@ -47,8 +45,8 @@ public interface EventHubNamespaceAuthorizationRules extends
      * @param name authorization rule name
      * @return observable that emits the authorization rule
      */
-    Mono<EventHubNamespaceAuthorizationRule> getByNameAsync(
-        String resourceGroupName, String namespaceName, String name);
+    Mono<EventHubNamespaceAuthorizationRule> getByNameAsync(String resourceGroupName, String namespaceName,
+        String name);
 
     /**
      * Gets an authorization rule under a namespace in a resource group.

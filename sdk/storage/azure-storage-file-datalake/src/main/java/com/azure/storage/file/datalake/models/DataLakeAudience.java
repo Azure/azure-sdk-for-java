@@ -7,7 +7,6 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-
 /**
  * The audience to be used when requesting a token from Azure Active Directory (AAD).
  * Note: This audience only has an effect when authenticating a TokenCredential.
@@ -59,6 +58,8 @@ public class DataLakeAudience extends ExpandableStringEnum<DataLakeAudience> {
     }
 
     /**
+     * Gets known DataLakeAudience values.
+     *
      * @return known DataLakeAudience values.
      */
     public static Collection<DataLakeAudience> values() {

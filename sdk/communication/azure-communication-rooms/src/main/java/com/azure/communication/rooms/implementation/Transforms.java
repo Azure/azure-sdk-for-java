@@ -27,11 +27,7 @@ import java.util.Map;
  */
 public class Transforms {
     public static CommunicationRoom getCommunicationRoomFromResponse(RoomModel room) {
-        return new CommunicationRoom(
-            room.getId(),
-            room.getValidFrom(),
-            room.getValidUntil(),
-            room.getCreatedAt(),
+        return new CommunicationRoom(room.getId(), room.getValidFrom(), room.getValidUntil(), room.getCreatedAt(),
             room.isPstnDialOutEnabled());
     }
 
@@ -41,7 +37,7 @@ public class Transforms {
      * @return The create room request.
      */
     public static CreateRoomRequest toCreateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil,
-                                                        Boolean isPstnDialOutEnabled, Iterable<RoomParticipant> participants) {
+        Boolean isPstnDialOutEnabled, Iterable<RoomParticipant> participants) {
         CreateRoomRequest createRoomRequest = new CreateRoomRequest();
         if (validFrom != null) {
             createRoomRequest.setValidFrom(validFrom);
@@ -71,7 +67,8 @@ public class Transforms {
      *
      * @return The update room request.
      */
-    public static UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil, Boolean isPstnDialOutEnabled) {
+    public static UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil,
+        Boolean isPstnDialOutEnabled) {
         UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
 
         if (validFrom != null) {
@@ -94,8 +91,8 @@ public class Transforms {
      *
      * @return Map of participants.
      */
-    public static  Map<String, ParticipantProperties> convertRoomParticipantsToMapForAddOrUpdate(
-        Iterable<RoomParticipant> participants) {
+    public static Map<String, ParticipantProperties>
+        convertRoomParticipantsToMapForAddOrUpdate(Iterable<RoomParticipant> participants) {
         Map<String, ParticipantProperties> participantMap = new HashMap<>();
 
         if (participants != null) {
@@ -113,8 +110,8 @@ public class Transforms {
      *
      * @return Map of participants.
      */
-    public static Map<String, ParticipantProperties> convertRoomIdentifiersToMapForRemove(
-        Iterable<CommunicationIdentifier> identifiers) {
+    public static Map<String, ParticipantProperties>
+        convertRoomIdentifiersToMapForRemove(Iterable<CommunicationIdentifier> identifiers) {
         Map<String, ParticipantProperties> participantMap = new HashMap<>();
 
         if (identifiers != null) {

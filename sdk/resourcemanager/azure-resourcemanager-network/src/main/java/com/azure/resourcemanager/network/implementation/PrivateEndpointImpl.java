@@ -30,23 +30,17 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-class PrivateEndpointImpl extends
-    GroupableResourceImpl<PrivateEndpoint, PrivateEndpointInner, PrivateEndpointImpl, NetworkManager>
-    implements
-    PrivateEndpoint,
-    PrivateEndpoint.Definition,
-    PrivateEndpoint.Update {
+class PrivateEndpointImpl
+    extends GroupableResourceImpl<PrivateEndpoint, PrivateEndpointInner, PrivateEndpointImpl, NetworkManager>
+    implements PrivateEndpoint, PrivateEndpoint.Definition, PrivateEndpoint.Update {
 
     private final ClientLogger logger = new ClientLogger(PrivateEndpointImpl.class);
 
     private PrivateDnsZoneGroups privateDnsZoneGroups;
 
     static class PrivateEndpointConnectionImpl extends
-        ChildResourceImpl<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection,
-            PrivateEndpointImpl, PrivateEndpoint>
-        implements
-        PrivateLinkServiceConnection,
-        PrivateLinkServiceConnection.Definition<PrivateEndpointImpl>,
+        ChildResourceImpl<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection, PrivateEndpointImpl, PrivateEndpoint>
+        implements PrivateLinkServiceConnection, PrivateLinkServiceConnection.Definition<PrivateEndpointImpl>,
         PrivateLinkServiceConnection.Update {
 
         private boolean manualApproval = false;
@@ -56,8 +50,7 @@ class PrivateEndpointImpl extends
         }
 
         PrivateEndpointConnectionImpl(com.azure.resourcemanager.network.models.PrivateLinkServiceConnection innerModel,
-                                      PrivateEndpointImpl parent,
-                                      boolean manualApproval) {
+            PrivateEndpointImpl parent, boolean manualApproval) {
             super(innerModel, parent);
             this.manualApproval = manualApproval;
         }
@@ -82,7 +75,9 @@ class PrivateEndpointImpl extends
             if (this.innerModel().groupIds() == null) {
                 return Collections.emptyList();
             }
-            return this.innerModel().groupIds().stream()
+            return this.innerModel()
+                .groupIds()
+                .stream()
                 .map(PrivateLinkSubResourceName::fromString)
                 .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
         }
@@ -121,8 +116,8 @@ class PrivateEndpointImpl extends
 
         @Override
         public PrivateEndpointConnectionImpl withSubResource(PrivateLinkSubResourceName subResourceName) {
-            this.innerModel().withGroupIds(
-                Collections.singletonList(Objects.requireNonNull(subResourceName).toString()));
+            this.innerModel()
+                .withGroupIds(Collections.singletonList(Objects.requireNonNull(subResourceName).toString()));
             return this;
         }
 
@@ -168,7 +163,9 @@ class PrivateEndpointImpl extends
         if (this.innerModel().networkInterfaces() == null) {
             return Collections.emptyList();
         }
-        return this.innerModel().networkInterfaces().stream()
+        return this.innerModel()
+            .networkInterfaces()
+            .stream()
             .map(ni -> new SubResource().withId(ni.id()))
             .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
@@ -182,12 +179,16 @@ class PrivateEndpointImpl extends
     public Map<String, PrivateLinkServiceConnection> privateLinkServiceConnections() {
         Map<String, PrivateLinkServiceConnection> connections = new HashMap<>();
         if (this.innerModel().privateLinkServiceConnections() != null) {
-            connections.putAll(this.innerModel().privateLinkServiceConnections().stream()
+            connections.putAll(this.innerModel()
+                .privateLinkServiceConnections()
+                .stream()
                 .map(connection -> new PrivateEndpointConnectionImpl(connection, this, false))
                 .collect(Collectors.toMap(PrivateEndpointConnectionImpl::name, Function.identity())));
         }
         if (this.innerModel().manualPrivateLinkServiceConnections() != null) {
-            connections.putAll(this.innerModel().manualPrivateLinkServiceConnections().stream()
+            connections.putAll(this.innerModel()
+                .manualPrivateLinkServiceConnections()
+                .stream()
                 .map(connection -> new PrivateEndpointConnectionImpl(connection, this, true))
                 .collect(Collectors.toMap(PrivateEndpointConnectionImpl::name, Function.identity())));
         }
@@ -217,11 +218,11 @@ class PrivateEndpointImpl extends
     @Override
     public PrivateEndpointImpl withoutPrivateLinkServiceConnection(String name) {
         if (this.innerModel().privateLinkServiceConnections() != null) {
-            this.innerModel().privateLinkServiceConnections()
-                .removeIf(connection -> connection.name().equals(name));
+            this.innerModel().privateLinkServiceConnections().removeIf(connection -> connection.name().equals(name));
         }
         if (this.innerModel().manualPrivateLinkServiceConnections() != null) {
-            this.innerModel().manualPrivateLinkServiceConnections()
+            this.innerModel()
+                .manualPrivateLinkServiceConnections()
                 .removeIf(connection -> connection.name().equals(name));
         }
         return this;
@@ -235,8 +236,10 @@ class PrivateEndpointImpl extends
     @Override
     public PrivateLinkServiceConnection.Update updatePrivateLinkServiceConnection(String name) {
         if (this.innerModel().privateLinkServiceConnections() != null) {
-            Optional<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection> connection =
-                this.innerModel().privateLinkServiceConnections().stream()
+            Optional<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection> connection
+                = this.innerModel()
+                    .privateLinkServiceConnections()
+                    .stream()
                     .filter(c -> c.name().equals(name))
                     .findAny();
             if (connection.isPresent()) {
@@ -244,8 +247,10 @@ class PrivateEndpointImpl extends
             }
         }
         if (this.innerModel().manualPrivateLinkServiceConnections() != null) {
-            Optional<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection> connection =
-                this.innerModel().manualPrivateLinkServiceConnections().stream()
+            Optional<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection> connection
+                = this.innerModel()
+                    .manualPrivateLinkServiceConnections()
+                    .stream()
                     .filter(c -> c.name().equals(name))
                     .findAny();
             if (connection.isPresent()) {
@@ -273,14 +278,18 @@ class PrivateEndpointImpl extends
 
     @Override
     public Mono<PrivateEndpoint> createResourceAsync() {
-        return this.manager().serviceClient().getPrivateEndpoints()
+        return this.manager()
+            .serviceClient()
+            .getPrivateEndpoints()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<PrivateEndpointInner> getInnerAsync() {
-        return this.manager().serviceClient().getPrivateEndpoints()
+        return this.manager()
+            .serviceClient()
+            .getPrivateEndpoints()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 }

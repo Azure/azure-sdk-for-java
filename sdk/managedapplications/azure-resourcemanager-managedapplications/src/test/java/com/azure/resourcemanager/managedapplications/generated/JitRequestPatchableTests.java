@@ -13,10 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class JitRequestPatchableTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JitRequestPatchable model =
-            BinaryData
-                .fromString("{\"tags\":{\"hmenevfyexfwhybc\":\"gdtjixhbkuofqwey\"}}")
-                .toObject(JitRequestPatchable.class);
+        JitRequestPatchable model = BinaryData.fromString("{\"tags\":{\"hmenevfyexfwhybc\":\"gdtjixhbkuofqwey\"}}")
+            .toObject(JitRequestPatchable.class);
         Assertions.assertEquals("gdtjixhbkuofqwey", model.tags().get("hmenevfyexfwhybc"));
     }
 

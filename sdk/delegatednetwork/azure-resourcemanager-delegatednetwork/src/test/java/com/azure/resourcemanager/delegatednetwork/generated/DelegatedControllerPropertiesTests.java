@@ -10,11 +10,9 @@ import com.azure.resourcemanager.delegatednetwork.models.DelegatedControllerProp
 public final class DelegatedControllerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DelegatedControllerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"resourceGuid\":\"ooojywifsqe\",\"provisioningState\":\"Failed\",\"dncAppId\":\"dfmglzlhjx\",\"dncTenantId\":\"f\",\"dncEndpoint\":\"mrvktsizntoc\"}")
-                .toObject(DelegatedControllerProperties.class);
+        DelegatedControllerProperties model = BinaryData.fromString(
+            "{\"resourceGuid\":\"ooojywifsqe\",\"provisioningState\":\"Failed\",\"dncAppId\":\"dfmglzlhjx\",\"dncTenantId\":\"f\",\"dncEndpoint\":\"mrvktsizntoc\"}")
+            .toObject(DelegatedControllerProperties.class);
     }
 
     @org.junit.jupiter.api.Test

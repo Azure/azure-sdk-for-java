@@ -4,78 +4,37 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.time.OffsetDateTime;
-import java.util.UUID;
-
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * An service invitation kind.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "invitationKind")
-@JsonTypeName("Service")
-@JsonFlatten
 @Fluent
-public class ServiceInvitation extends SentShareInvitation {
+public final class ServiceInvitation extends SentShareInvitation {
     /*
-     * The time at which the invitation will expire. Represented in the standard date-time format as defined by [RFC
-     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
+     * The types of invitations.
      */
-    @JsonProperty(value = "properties.expirationDate")
-    private OffsetDateTime expirationDate;
+    private InvitationKind invitationKind = InvitationKind.SERVICE_INVITATION;
 
     /*
-     * Email address of the sender.
+     * Properties of the service invitation type.
      */
-    @JsonProperty(value = "properties.senderEmail", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderEmail;
+    private ServiceInvitationProperties properties;
 
     /*
-     * Name of the sender
+     * Type of the resource.
      */
-    @JsonProperty(value = "properties.senderName", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderName;
+    private String type;
 
     /*
-     * Tenant name of the sender
+     * The unique id of the resource.
      */
-    @JsonProperty(value = "properties.senderTenantName", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderTenantName;
-
-    /*
-     * Gets the time at which the invitation was sent. Represented in the standard date-time format as defined by [RFC
-     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
-     */
-    @JsonProperty(value = "properties.sentAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime sentAt;
-
-    /*
-     * Share status.
-     */
-    @JsonProperty(value = "properties.shareStatus")
-    private ShareStatus shareStatus;
-
-    /*
-     * State of the resource
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private State state;
-
-    /*
-     * The target azure active directory id the invitation is sent to.
-     */
-    @JsonProperty(value = "properties.targetActiveDirectoryId", required = true)
-    private UUID targetActiveDirectoryId;
-
-    /*
-     * The target object id in the azure active directory the invitation is sent to.
-     */
-    @JsonProperty(value = "properties.targetObjectId", required = true)
-    private UUID targetObjectId;
+    private String id;
 
     /**
      * Creates an instance of ServiceInvitation class.
@@ -84,130 +43,97 @@ public class ServiceInvitation extends SentShareInvitation {
     }
 
     /**
-     * Get the expirationDate property: The time at which the invitation will expire. Represented in the standard
-     * date-time format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
-     * 
-     * @return the expirationDate value.
+     * Get the invitationKind property: The types of invitations.
+     *
+     * @return the invitationKind value.
      */
-    public OffsetDateTime getExpirationDate() {
-        return this.expirationDate;
+    @Override
+    public InvitationKind getInvitationKind() {
+        return this.invitationKind;
     }
 
     /**
-     * Set the expirationDate property: The time at which the invitation will expire. Represented in the standard
-     * date-time format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
-     * 
-     * @param expirationDate the expirationDate value to set.
+     * Get the properties property: Properties of the service invitation type.
+     *
+     * @return the properties value.
+     */
+    public ServiceInvitationProperties getProperties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties of the service invitation type.
+     *
+     * @param properties the properties value to set.
      * @return the ServiceInvitation object itself.
      */
-    public ServiceInvitation setExpirationDate(OffsetDateTime expirationDate) {
-        this.expirationDate = expirationDate;
+    public ServiceInvitation setProperties(ServiceInvitationProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the senderEmail property: Email address of the sender.
-     * 
-     * @return the senderEmail value.
+     * Get the type property: Type of the resource.
+     *
+     * @return the type value.
      */
-    public String getSenderEmail() {
-        return this.senderEmail;
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
-     * Get the senderName property: Name of the sender.
-     * 
-     * @return the senderName value.
+     * Get the id property: The unique id of the resource.
+     *
+     * @return the id value.
      */
-    public String getSenderName() {
-        return this.senderName;
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     /**
-     * Get the senderTenantName property: Tenant name of the sender.
-     * 
-     * @return the senderTenantName value.
+     * {@inheritDoc}
      */
-    public String getSenderTenantName() {
-        return this.senderTenantName;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("invitationKind",
+            this.invitationKind == null ? null : this.invitationKind.toString());
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Get the sentAt property: Gets the time at which the invitation was sent. Represented in the standard date-time
-     * format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
-     * 
-     * @return the sentAt value.
+     * Reads an instance of ServiceInvitation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceInvitation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceInvitation.
      */
-    public OffsetDateTime getSentAt() {
-        return this.sentAt;
-    }
+    public static ServiceInvitation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceInvitation deserializedServiceInvitation = new ServiceInvitation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-    /**
-     * Get the shareStatus property: Share status.
-     * 
-     * @return the shareStatus value.
-     */
-    public ShareStatus getShareStatus() {
-        return this.shareStatus;
-    }
+                if ("id".equals(fieldName)) {
+                    deserializedServiceInvitation.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceInvitation.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceInvitation.properties = ServiceInvitationProperties.fromJson(reader);
+                } else if ("invitationKind".equals(fieldName)) {
+                    deserializedServiceInvitation.invitationKind = InvitationKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-    /**
-     * Set the shareStatus property: Share status.
-     * 
-     * @param shareStatus the shareStatus value to set.
-     * @return the ServiceInvitation object itself.
-     */
-    public ServiceInvitation setShareStatus(ShareStatus shareStatus) {
-        this.shareStatus = shareStatus;
-        return this;
-    }
-
-    /**
-     * Get the state property: State of the resource.
-     * 
-     * @return the state value.
-     */
-    public State getState() {
-        return this.state;
-    }
-
-    /**
-     * Get the targetActiveDirectoryId property: The target azure active directory id the invitation is sent to.
-     * 
-     * @return the targetActiveDirectoryId value.
-     */
-    public UUID getTargetActiveDirectoryId() {
-        return this.targetActiveDirectoryId;
-    }
-
-    /**
-     * Set the targetActiveDirectoryId property: The target azure active directory id the invitation is sent to.
-     * 
-     * @param targetActiveDirectoryId the targetActiveDirectoryId value to set.
-     * @return the ServiceInvitation object itself.
-     */
-    public ServiceInvitation setTargetActiveDirectoryId(UUID targetActiveDirectoryId) {
-        this.targetActiveDirectoryId = targetActiveDirectoryId;
-        return this;
-    }
-
-    /**
-     * Get the targetObjectId property: The target object id in the azure active directory the invitation is sent to.
-     * 
-     * @return the targetObjectId value.
-     */
-    public UUID getTargetObjectId() {
-        return this.targetObjectId;
-    }
-
-    /**
-     * Set the targetObjectId property: The target object id in the azure active directory the invitation is sent to.
-     * 
-     * @param targetObjectId the targetObjectId value to set.
-     * @return the ServiceInvitation object itself.
-     */
-    public ServiceInvitation setTargetObjectId(UUID targetObjectId) {
-        this.targetObjectId = targetObjectId;
-        return this;
+            return deserializedServiceInvitation;
+        });
     }
 }

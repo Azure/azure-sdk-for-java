@@ -6,30 +6,33 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Per-slice settings.
  */
 @Fluent
-public final class SliceConfiguration {
+public final class SliceConfiguration implements JsonSerializable<SliceConfiguration> {
     /*
      * A reference to the slice that these settings apply to. The slice must be in the same location as the SIM policy.
      */
-    @JsonProperty(value = "slice", required = true)
     private SliceResourceId slice;
 
     /*
-     * The default data network to use if the UE does not explicitly specify it. Configuration for this object must exist in the `dataNetworkConfigurations` map. The data network must be in the same location as the SIM policy.
+     * The default data network to use if the UE does not explicitly specify it. Configuration for this object must
+     * exist in the `dataNetworkConfigurations` map. The data network must be in the same location as the SIM policy.
      */
-    @JsonProperty(value = "defaultDataNetwork", required = true)
     private DataNetworkResourceId defaultDataNetwork;
 
     /*
-     * The allowed data networks and the settings to use for them. The list must not contain duplicate items and must contain at least one item.
+     * The allowed data networks and the settings to use for them. The list must not contain duplicate items and must
+     * contain at least one item.
      */
-    @JsonProperty(value = "dataNetworkConfigurations", required = true)
     private List<DataNetworkConfiguration> dataNetworkConfigurations;
 
     /**
@@ -135,4 +138,50 @@ public final class SliceConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SliceConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("slice", this.slice);
+        jsonWriter.writeJsonField("defaultDataNetwork", this.defaultDataNetwork);
+        jsonWriter.writeArrayField("dataNetworkConfigurations", this.dataNetworkConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SliceConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SliceConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SliceConfiguration.
+     */
+    public static SliceConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SliceConfiguration deserializedSliceConfiguration = new SliceConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("slice".equals(fieldName)) {
+                    deserializedSliceConfiguration.slice = SliceResourceId.fromJson(reader);
+                } else if ("defaultDataNetwork".equals(fieldName)) {
+                    deserializedSliceConfiguration.defaultDataNetwork = DataNetworkResourceId.fromJson(reader);
+                } else if ("dataNetworkConfigurations".equals(fieldName)) {
+                    List<DataNetworkConfiguration> dataNetworkConfigurations
+                        = reader.readArray(reader1 -> DataNetworkConfiguration.fromJson(reader1));
+                    deserializedSliceConfiguration.dataNetworkConfigurations = dataNetworkConfigurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSliceConfiguration;
+        });
+    }
 }

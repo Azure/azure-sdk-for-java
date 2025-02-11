@@ -42,25 +42,25 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final DocumentDBClientImpl client;
+    private final MongoClusterManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(DocumentDBClientImpl client) {
+    OperationsClientImpl(MongoClusterManagementClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DocumentDBClientOperations to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for MongoClusterManagementClientOperations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DocumentDBClientOper")
+    @ServiceInterface(name = "MongoClusterManageme")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.DocumentDB/operations")
@@ -181,8 +181,6 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * List the operations for the provider
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -209,8 +207,6 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * List the operations for the provider
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

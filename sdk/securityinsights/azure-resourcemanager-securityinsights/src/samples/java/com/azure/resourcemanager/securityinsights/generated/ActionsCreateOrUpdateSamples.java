@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-/** Samples for Actions CreateOrUpdate. */
+/**
+ * Samples for Actions CreateOrUpdate.
+ */
 public final class ActionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/actions/CreateActionOfAlertRule.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/actions/
+     * CreateActionOfAlertRule.json
      */
     /**
      * Sample code: Creates or updates an action of alert rule.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
     public static void createsOrUpdatesAnActionOfAlertRule(
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .actions()
+        manager.actions()
             .define("912bec42-cb66-4c03-ac63-1761b6898c3e")
             .withExistingAlertRule("myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5")
             .withEtag("\"0300bf09-0000-0000-0000-5c37296e0000\"")

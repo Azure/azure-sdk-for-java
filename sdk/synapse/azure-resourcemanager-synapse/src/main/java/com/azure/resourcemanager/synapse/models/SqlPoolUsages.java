@@ -7,13 +7,15 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlPoolUsages. */
+/**
+ * Resource collection API of SqlPoolUsages.
+ */
 public interface SqlPoolUsages {
     /**
      * Gets SQL pool usages
-     *
-     * <p>Gets SQL pool usages.
-     *
+     * 
+     * Gets SQL pool usages.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -26,9 +28,9 @@ public interface SqlPoolUsages {
 
     /**
      * Gets SQL pool usages
-     *
-     * <p>Gets SQL pool usages.
-     *
+     * 
+     * Gets SQL pool usages.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -38,6 +40,6 @@ public interface SqlPoolUsages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool usages as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SqlPoolUsage> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<SqlPoolUsage> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 }

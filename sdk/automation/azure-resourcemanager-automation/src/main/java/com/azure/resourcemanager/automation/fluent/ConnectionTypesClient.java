@@ -12,11 +12,29 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.ConnectionTypeInner;
 import com.azure.resourcemanager.automation.models.ConnectionTypeCreateOrUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in ConnectionTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConnectionTypesClient.
+ */
 public interface ConnectionTypesClient {
     /**
      * Delete the connection type.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param connectionTypeName The name of connection type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String connectionTypeName,
+        Context context);
+
+    /**
+     * Delete the connection type.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionTypeName The name of connection type.
@@ -28,8 +46,8 @@ public interface ConnectionTypesClient {
     void delete(String resourceGroupName, String automationAccountName, String connectionTypeName);
 
     /**
-     * Delete the connection type.
-     *
+     * Retrieve the connection type identified by connection type name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionTypeName The name of connection type.
@@ -37,15 +55,15 @@ public interface ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return definition of the connection type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String connectionTypeName, Context context);
+    Response<ConnectionTypeInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String connectionTypeName, Context context);
 
     /**
      * Retrieve the connection type identified by connection type name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionTypeName The name of connection type.
@@ -58,11 +76,12 @@ public interface ConnectionTypesClient {
     ConnectionTypeInner get(String resourceGroupName, String automationAccountName, String connectionTypeName);
 
     /**
-     * Retrieve the connection type identified by connection type name.
-     *
+     * Create a connection type.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param connectionTypeName The name of connection type.
+     * @param connectionTypeName The parameters supplied to the create or update connection type operation.
+     * @param parameters The parameters supplied to the create or update connection type operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -70,12 +89,12 @@ public interface ConnectionTypesClient {
      * @return definition of the connection type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectionTypeInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String connectionTypeName, Context context);
+    Response<ConnectionTypeInner> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        String connectionTypeName, ConnectionTypeCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create a connection type.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionTypeName The parameters supplied to the create or update connection type operation.
@@ -86,60 +105,36 @@ public interface ConnectionTypesClient {
      * @return definition of the connection type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionTypeInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String connectionTypeName,
-        ConnectionTypeCreateOrUpdateParameters parameters);
-
-    /**
-     * Create a connection type.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param connectionTypeName The parameters supplied to the create or update connection type operation.
-     * @param parameters The parameters supplied to the create or update connection type operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectionTypeInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String connectionTypeName,
-        ConnectionTypeCreateOrUpdateParameters parameters,
-        Context context);
+    ConnectionTypeInner createOrUpdate(String resourceGroupName, String automationAccountName,
+        String connectionTypeName, ConnectionTypeCreateOrUpdateParameters parameters);
 
     /**
      * Retrieve a list of connection types.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection type operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response model for the list connection type operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConnectionTypeInner> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
     /**
      * Retrieve a list of connection types.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection type operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response model for the list connection type operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConnectionTypeInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context);
+    PagedIterable<ConnectionTypeInner> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context);
 }

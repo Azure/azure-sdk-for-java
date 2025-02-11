@@ -10,9 +10,8 @@ import com.azure.resourcemanager.devspaces.models.OrchestratorSpecificConnection
 public final class OrchestratorSpecificConnectionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrchestratorSpecificConnectionDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"OrchestratorSpecificConnectionDetails\"}")
+        OrchestratorSpecificConnectionDetails model
+            = BinaryData.fromString("{\"instanceType\":\"OrchestratorSpecificConnectionDetails\"}")
                 .toObject(OrchestratorSpecificConnectionDetails.class);
     }
 

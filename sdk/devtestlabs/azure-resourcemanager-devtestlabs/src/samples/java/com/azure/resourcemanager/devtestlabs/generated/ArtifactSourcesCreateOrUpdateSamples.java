@@ -9,19 +9,21 @@ import com.azure.resourcemanager.devtestlabs.models.SourceControlType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ArtifactSources CreateOrUpdate. */
+/**
+ * Samples for ArtifactSources CreateOrUpdate.
+ */
 public final class ArtifactSourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArtifactSources_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ArtifactSources_CreateOrUpdate.json
      */
     /**
      * Sample code: ArtifactSources_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void artifactSourcesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .artifactSources()
+        manager.artifactSources()
             .define("{artifactSourceName}")
             .withRegion((String) null)
             .withExistingLab("resourceGroupName", "{labName}")

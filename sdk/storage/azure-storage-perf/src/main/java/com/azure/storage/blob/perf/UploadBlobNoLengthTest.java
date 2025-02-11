@@ -35,13 +35,10 @@ public class UploadBlobNoLengthTest extends AbstractUploadTest<BlobPerfStressOpt
     public void run() {
         inputStream.reset();
         // This one uses Core's stream->flux converter
-        BlobParallelUploadOptions uploadOptions = new BlobParallelUploadOptions(inputStream)
-            .setParallelTransferOptions(
-                new ParallelTransferOptions()
-                .setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
+        BlobParallelUploadOptions uploadOptions = new BlobParallelUploadOptions(inputStream).setParallelTransferOptions(
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
                 .setBlockSizeLong(options.getTransferBlockSize())
-                .setMaxConcurrency(options.getTransferConcurrency())
-            );
+                .setMaxConcurrency(options.getTransferConcurrency()));
         blobClient.uploadWithResponse(uploadOptions, null, null);
     }
 

@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The status of the capability.
  */
@@ -46,7 +43,6 @@ public enum CapabilityStatus {
      * @param value the serialized value to parse.
      * @return the parsed CapabilityStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static CapabilityStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -63,7 +59,6 @@ public enum CapabilityStatus {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

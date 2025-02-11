@@ -5,39 +5,43 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters for a PATCH request to a monitor resource. */
+/**
+ * The parameters for a PATCH request to a monitor resource.
+ */
 @Fluent
-public final class DatadogMonitorResourceUpdateParameters {
+public final class DatadogMonitorResourceUpdateParameters
+    implements JsonSerializable<DatadogMonitorResourceUpdateParameters> {
     /*
      * The set of properties that can be update in a PATCH request to a monitor resource.
      */
-    @JsonProperty(value = "properties")
     private MonitorUpdateProperties properties;
 
     /*
      * The new tags of the monitor resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The sku property.
      */
-    @JsonProperty(value = "sku")
     private ResourceSku sku;
 
-    /** Creates an instance of DatadogMonitorResourceUpdateParameters class. */
+    /**
+     * Creates an instance of DatadogMonitorResourceUpdateParameters class.
+     */
     public DatadogMonitorResourceUpdateParameters() {
     }
 
     /**
      * Get the properties property: The set of properties that can be update in a PATCH request to a monitor resource.
-     *
+     * 
      * @return the properties value.
      */
     public MonitorUpdateProperties properties() {
@@ -46,7 +50,7 @@ public final class DatadogMonitorResourceUpdateParameters {
 
     /**
      * Set the properties property: The set of properties that can be update in a PATCH request to a monitor resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DatadogMonitorResourceUpdateParameters object itself.
      */
@@ -57,7 +61,7 @@ public final class DatadogMonitorResourceUpdateParameters {
 
     /**
      * Get the tags property: The new tags of the monitor resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -66,7 +70,7 @@ public final class DatadogMonitorResourceUpdateParameters {
 
     /**
      * Set the tags property: The new tags of the monitor resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DatadogMonitorResourceUpdateParameters object itself.
      */
@@ -77,7 +81,7 @@ public final class DatadogMonitorResourceUpdateParameters {
 
     /**
      * Get the sku property: The sku property.
-     *
+     * 
      * @return the sku value.
      */
     public ResourceSku sku() {
@@ -86,7 +90,7 @@ public final class DatadogMonitorResourceUpdateParameters {
 
     /**
      * Set the sku property: The sku property.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DatadogMonitorResourceUpdateParameters object itself.
      */
@@ -97,7 +101,7 @@ public final class DatadogMonitorResourceUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,5 +111,50 @@ public final class DatadogMonitorResourceUpdateParameters {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatadogMonitorResourceUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatadogMonitorResourceUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatadogMonitorResourceUpdateParameters.
+     */
+    public static DatadogMonitorResourceUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatadogMonitorResourceUpdateParameters deserializedDatadogMonitorResourceUpdateParameters
+                = new DatadogMonitorResourceUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDatadogMonitorResourceUpdateParameters.properties
+                        = MonitorUpdateProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDatadogMonitorResourceUpdateParameters.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDatadogMonitorResourceUpdateParameters.sku = ResourceSku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatadogMonitorResourceUpdateParameters;
+        });
     }
 }

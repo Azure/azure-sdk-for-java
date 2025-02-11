@@ -13,11 +13,29 @@ import com.azure.resourcemanager.automation.fluent.models.JobScheduleInner;
 import com.azure.resourcemanager.automation.models.JobScheduleCreateParameters;
 import java.util.UUID;
 
-/** An instance of this class provides access to all the operations defined in JobSchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobSchedulesClient.
+ */
 public interface JobSchedulesClient {
     /**
      * Delete the job schedule identified by job schedule name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobScheduleId The job schedule name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, UUID jobScheduleId,
+        Context context);
+
+    /**
+     * Delete the job schedule identified by job schedule name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobScheduleId The job schedule name.
@@ -29,8 +47,8 @@ public interface JobSchedulesClient {
     void delete(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
 
     /**
-     * Delete the job schedule identified by job schedule name.
-     *
+     * Retrieve the job schedule identified by job schedule name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobScheduleId The job schedule name.
@@ -38,15 +56,15 @@ public interface JobSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return definition of the job schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, UUID jobScheduleId, Context context);
+    Response<JobScheduleInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        UUID jobScheduleId, Context context);
 
     /**
      * Retrieve the job schedule identified by job schedule name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobScheduleId The job schedule name.
@@ -59,11 +77,12 @@ public interface JobSchedulesClient {
     JobScheduleInner get(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
 
     /**
-     * Retrieve the job schedule identified by job schedule name.
-     *
+     * Create a job schedule.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobScheduleId The job schedule name.
+     * @param parameters The parameters supplied to the create job schedule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,12 +90,12 @@ public interface JobSchedulesClient {
      * @return definition of the job schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobScheduleInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, UUID jobScheduleId, Context context);
+    Response<JobScheduleInner> createWithResponse(String resourceGroupName, String automationAccountName,
+        UUID jobScheduleId, JobScheduleCreateParameters parameters, Context context);
 
     /**
      * Create a job schedule.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobScheduleId The job schedule name.
@@ -87,36 +106,12 @@ public interface JobSchedulesClient {
      * @return definition of the job schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobScheduleInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        UUID jobScheduleId,
+    JobScheduleInner create(String resourceGroupName, String automationAccountName, UUID jobScheduleId,
         JobScheduleCreateParameters parameters);
 
     /**
-     * Create a job schedule.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobScheduleId The job schedule name.
-     * @param parameters The parameters supplied to the create job schedule operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job schedule along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobScheduleInner> createWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        UUID jobScheduleId,
-        JobScheduleCreateParameters parameters,
-        Context context);
-
-    /**
      * Retrieve a list of job schedules.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +124,7 @@ public interface JobSchedulesClient {
 
     /**
      * Retrieve a list of job schedules.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -140,6 +135,6 @@ public interface JobSchedulesClient {
      * @return the response model for the list job schedule operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobScheduleInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context);
+    PagedIterable<JobScheduleInner> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Context context);
 }

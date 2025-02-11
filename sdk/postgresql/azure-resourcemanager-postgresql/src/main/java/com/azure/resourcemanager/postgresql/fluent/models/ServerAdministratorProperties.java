@@ -6,43 +6,49 @@ package com.azure.resourcemanager.postgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresql.models.AdministratorType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** The properties of an server Administrator. */
+/**
+ * The properties of an server Administrator.
+ */
 @Fluent
-public final class ServerAdministratorProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerAdministratorProperties.class);
-
+public final class ServerAdministratorProperties implements JsonSerializable<ServerAdministratorProperties> {
     /*
      * The type of administrator.
      */
-    @JsonProperty(value = "administratorType", required = true)
     private AdministratorType administratorType;
 
     /*
      * The server administrator login account name.
      */
-    @JsonProperty(value = "login", required = true)
     private String login;
 
     /*
      * The server administrator Sid (Secure ID).
      */
-    @JsonProperty(value = "sid", required = true)
     private UUID sid;
 
     /*
      * The server Active Directory Administrator tenant id.
      */
-    @JsonProperty(value = "tenantId", required = true)
     private UUID tenantId;
 
     /**
+     * Creates an instance of ServerAdministratorProperties class.
+     */
+    public ServerAdministratorProperties() {
+    }
+
+    /**
      * Get the administratorType property: The type of administrator.
-     *
+     * 
      * @return the administratorType value.
      */
     public AdministratorType administratorType() {
@@ -51,7 +57,7 @@ public final class ServerAdministratorProperties {
 
     /**
      * Set the administratorType property: The type of administrator.
-     *
+     * 
      * @param administratorType the administratorType value to set.
      * @return the ServerAdministratorProperties object itself.
      */
@@ -62,7 +68,7 @@ public final class ServerAdministratorProperties {
 
     /**
      * Get the login property: The server administrator login account name.
-     *
+     * 
      * @return the login value.
      */
     public String login() {
@@ -71,7 +77,7 @@ public final class ServerAdministratorProperties {
 
     /**
      * Set the login property: The server administrator login account name.
-     *
+     * 
      * @param login the login value to set.
      * @return the ServerAdministratorProperties object itself.
      */
@@ -82,7 +88,7 @@ public final class ServerAdministratorProperties {
 
     /**
      * Get the sid property: The server administrator Sid (Secure ID).
-     *
+     * 
      * @return the sid value.
      */
     public UUID sid() {
@@ -91,7 +97,7 @@ public final class ServerAdministratorProperties {
 
     /**
      * Set the sid property: The server administrator Sid (Secure ID).
-     *
+     * 
      * @param sid the sid value to set.
      * @return the ServerAdministratorProperties object itself.
      */
@@ -102,7 +108,7 @@ public final class ServerAdministratorProperties {
 
     /**
      * Get the tenantId property: The server Active Directory Administrator tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -111,7 +117,7 @@ public final class ServerAdministratorProperties {
 
     /**
      * Set the tenantId property: The server Active Directory Administrator tenant id.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ServerAdministratorProperties object itself.
      */
@@ -122,33 +128,82 @@ public final class ServerAdministratorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (administratorType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorType in model ServerAdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorType in model ServerAdministratorProperties"));
         }
         if (login() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property login in model ServerAdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property login in model ServerAdministratorProperties"));
         }
         if (sid() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sid in model ServerAdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sid in model ServerAdministratorProperties"));
         }
         if (tenantId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tenantId in model ServerAdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenantId in model ServerAdministratorProperties"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerAdministratorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("administratorType",
+            this.administratorType == null ? null : this.administratorType.toString());
+        jsonWriter.writeStringField("login", this.login);
+        jsonWriter.writeStringField("sid", Objects.toString(this.sid, null));
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerAdministratorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerAdministratorProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerAdministratorProperties.
+     */
+    public static ServerAdministratorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerAdministratorProperties deserializedServerAdministratorProperties
+                = new ServerAdministratorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administratorType".equals(fieldName)) {
+                    deserializedServerAdministratorProperties.administratorType
+                        = AdministratorType.fromString(reader.getString());
+                } else if ("login".equals(fieldName)) {
+                    deserializedServerAdministratorProperties.login = reader.getString();
+                } else if ("sid".equals(fieldName)) {
+                    deserializedServerAdministratorProperties.sid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedServerAdministratorProperties.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerAdministratorProperties;
+        });
     }
 }

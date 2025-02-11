@@ -12,18 +12,19 @@ import com.azure.resourcemanager.notificationhubs.models.CheckAvailabilityParame
 public final class NotificationHubsCheckNotificationHubAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * NotificationHubs/CheckAvailability.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/
+     * NotificationHubs/NotificationHubCheckNameAvailability.json
      */
     /**
-     * Sample code: NotificationHubs_CheckNotificationHubAvailability.
+     * Sample code: notificationHubCheckNameAvailability.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void notificationHubsCheckNotificationHubAvailability(
+    public static void notificationHubCheckNameAvailability(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().checkNotificationHubAvailabilityWithResponse("5ktrial", "locp-newns",
-            new CheckAvailabilityParameters().withName("sdktest").withLocation("West Europe"),
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .checkNotificationHubAvailabilityWithResponse("5ktrial", "locp-newns",
+                new CheckAvailabilityParameters().withName("sdktest").withLocation("West Europe"),
+                com.azure.core.util.Context.NONE);
     }
 }

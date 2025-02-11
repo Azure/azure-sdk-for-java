@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiVersionConstraintTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiVersionConstraint model =
-            BinaryData.fromString("{\"minApiVersion\":\"nbpvzlq\"}").toObject(ApiVersionConstraint.class);
+        ApiVersionConstraint model
+            = BinaryData.fromString("{\"minApiVersion\":\"nbpvzlq\"}").toObject(ApiVersionConstraint.class);
         Assertions.assertEquals("nbpvzlq", model.minApiVersion());
     }
 

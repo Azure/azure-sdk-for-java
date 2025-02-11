@@ -3,6 +3,9 @@
 
 package com.azure.xml;
 
+import com.azure.xml.implementation.aalto.stax.InputFactoryImpl;
+
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -22,7 +25,12 @@ public final class XmlReader implements AutoCloseable {
     private static final XMLInputFactory XML_INPUT_FACTORY;
 
     static {
-        XML_INPUT_FACTORY = XMLInputFactory.newInstance();
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        if ("com.sun.xml.internal.stream.XMLInputFactoryImpl".equals(xmlInputFactory.getClass().getName())) {
+            xmlInputFactory = new InputFactoryImpl();
+        }
+
+        XML_INPUT_FACTORY = xmlInputFactory;
         XML_INPUT_FACTORY.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
         XML_INPUT_FACTORY.setProperty(XMLInputFactory.SUPPORT_DTD, false);
     }
@@ -188,6 +196,71 @@ public final class XmlReader implements AutoCloseable {
      */
     public QName getElementName() {
         return reader.getName();
+    }
+
+    /**
+     * Gets the namespace URI for the current XML element.
+     * <p>
+     * If the current element doesn't have a namespace URI, {@link XMLConstants#NULL_NS_URI} will be returned.
+     *
+     * @return The namespace URI for the current XML element.
+     */
+    public String getElementNamespaceUri() {
+        String namespaceUri = reader.getNamespaceURI();
+        return namespaceUri == null ? XMLConstants.NULL_NS_URI : namespaceUri;
+    }
+
+    /**
+     * Gets the local name for the current XML element.
+     *
+     * @return The local name for the current XML element.
+     */
+    public String getElementLocalName() {
+        return reader.getLocalName();
+    }
+
+    /**
+     * Checks if the current element name matches the provided local name.
+     * <p>
+     * If the namespace of the current element also needs to be validated use
+     * {@link #elementNameMatches(String, String)}.
+     *
+     * @param localName The local name to match.
+     * @return Whether the current element name matches the provided local name.
+     */
+    public boolean elementNameMatches(String localName) {
+        return elementNameMatches(null, localName);
+    }
+
+    /**
+     * Checks if the current element namespace URI and name matches the provided namespace URI and local name.
+     * <p>
+     * Namespace URI validation replaces null values with {@link XMLConstants#NULL_NS_URI}.
+     *
+     * @param namespaceUri The namespace URI to match.
+     * @param localName The local name to match.
+     * @return Whether the current element namespace URI and name matches the provided namespace URI and local name.
+     */
+    public boolean elementNameMatches(String namespaceUri, String localName) {
+        return qNameEquals(reader.getNamespaceURI(), reader.getLocalName(), namespaceUri, localName);
+    }
+
+    /**
+     * Processes the next element in the XML stream.
+     * <p>
+     * The {@code callback} will be invoked with the current element's namespace URI, where null is replaced with
+     * {@link XMLConstants#NULL_NS_URI}, and local name and this {@link XmlReader}.
+     *
+     * @param callback The callback to process the next element.
+     * @throws XMLStreamException If the next element cannot be processed.
+     */
+    public void processNextElement(XmlElementConsumer callback) throws XMLStreamException {
+        String namespaceUri = reader.getNamespaceURI();
+        if (namespaceUri == null) {
+            namespaceUri = XMLConstants.NULL_NS_URI;
+        }
+        String localName = reader.getLocalName();
+        callback.consume(namespaceUri, localName, this);
     }
 
     /**
@@ -594,11 +667,6 @@ public final class XmlReader implements AutoCloseable {
      */
     public <T> T readObject(String namespaceUri, String localName, XmlReadValueCallback<XmlReader, T> converter)
         throws XMLStreamException {
-        return readObject(new QName(namespaceUri, localName), converter);
-    }
-
-    private <T> T readObject(QName startTagName, XmlReadValueCallback<XmlReader, T> converter)
-        throws XMLStreamException {
         if (currentToken() != XmlToken.START_ELEMENT) {
             nextElement();
         }
@@ -608,13 +676,33 @@ public final class XmlReader implements AutoCloseable {
                 + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + currentToken() + "'.");
         }
 
-        QName tagName = getElementName();
-        if (!Objects.equals(startTagName, tagName)) {
-            throw new IllegalStateException(
-                "Expected XML element to be '" + startTagName + "' but it was: " + tagName + "'.");
+        String currentLocalName = reader.getLocalName();
+        String currentNamespaceUri = reader.getNamespaceURI();
+        if (!qNameEquals(currentNamespaceUri, currentLocalName, namespaceUri, localName)) {
+            throw new IllegalStateException("Expected XML element to be '" + qNameToString(namespaceUri, localName)
+                + "' but it was: " + qNameToString(currentNamespaceUri, currentLocalName) + "'.");
         }
 
         return converter.read(this);
+    }
+
+    // Optimization to remove needing to instantiate QName.
+    private static boolean qNameEquals(String currentNamespaceUri, String currentLocalName, String namespaceUri,
+        String localName) {
+        if (namespaceUri == null) {
+            namespaceUri = XMLConstants.NULL_NS_URI;
+        }
+
+        if (currentNamespaceUri == null) {
+            currentNamespaceUri = XMLConstants.NULL_NS_URI;
+        }
+
+        return Objects.equals(currentLocalName, localName) && Objects.equals(currentNamespaceUri, namespaceUri);
+    }
+
+    // Optimization to remove needing to instantiate QName.
+    private static String qNameToString(String namespaceUri, String localName) {
+        return (namespaceUri == null) ? localName : "{" + namespaceUri + "}" + localName;
     }
 
     /**

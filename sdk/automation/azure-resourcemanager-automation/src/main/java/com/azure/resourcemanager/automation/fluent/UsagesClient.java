@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.UsageInner;
 
-/** An instance of this class provides access to all the operations defined in UsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UsagesClient.
+ */
 public interface UsagesClient {
     /**
      * Retrieve the usage for the account id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface UsagesClient {
 
     /**
      * Retrieve the usage for the account id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -37,6 +39,6 @@ public interface UsagesClient {
      * @return the response model for the get usage operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UsageInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context);
+    PagedIterable<UsageInner> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context);
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.WarmStoragePropertiesState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** An object that contains the status of warm storage properties usage. */
+/**
+ * An object that contains the status of warm storage properties usage.
+ */
 @Fluent
-public final class WarmStoragePropertiesUsage {
+public final class WarmStoragePropertiesUsage implements JsonSerializable<WarmStoragePropertiesUsage> {
     /*
      * This string represents the state of warm storage properties usage. It can be "Ok", "Error", "Unknown".
      */
-    @JsonProperty(value = "state")
     private WarmStoragePropertiesState state;
 
     /*
      * An object that contains the details about warm storage properties usage state.
      */
-    @JsonProperty(value = "stateDetails", access = JsonProperty.Access.WRITE_ONLY)
     private WarmStoragePropertiesUsageStateDetails innerStateDetails;
 
-    /** Creates an instance of WarmStoragePropertiesUsage class. */
+    /**
+     * Creates an instance of WarmStoragePropertiesUsage class.
+     */
     public WarmStoragePropertiesUsage() {
     }
 
     /**
      * Get the state property: This string represents the state of warm storage properties usage. It can be "Ok",
      * "Error", "Unknown".
-     *
+     * 
      * @return the state value.
      */
     public WarmStoragePropertiesState state() {
@@ -40,7 +46,7 @@ public final class WarmStoragePropertiesUsage {
     /**
      * Set the state property: This string represents the state of warm storage properties usage. It can be "Ok",
      * "Error", "Unknown".
-     *
+     * 
      * @param state the state value to set.
      * @return the WarmStoragePropertiesUsage object itself.
      */
@@ -52,7 +58,7 @@ public final class WarmStoragePropertiesUsage {
     /**
      * Get the innerStateDetails property: An object that contains the details about warm storage properties usage
      * state.
-     *
+     * 
      * @return the innerStateDetails value.
      */
     private WarmStoragePropertiesUsageStateDetails innerStateDetails() {
@@ -62,7 +68,7 @@ public final class WarmStoragePropertiesUsage {
     /**
      * Get the currentCount property: A value that represents the number of properties used by the environment for S1/S2
      * SKU and number of properties used by Warm Store for PAYG SKU.
-     *
+     * 
      * @return the currentCount value.
      */
     public Integer currentCount() {
@@ -72,7 +78,7 @@ public final class WarmStoragePropertiesUsage {
     /**
      * Set the currentCount property: A value that represents the number of properties used by the environment for S1/S2
      * SKU and number of properties used by Warm Store for PAYG SKU.
-     *
+     * 
      * @param currentCount the currentCount value to set.
      * @return the WarmStoragePropertiesUsage object itself.
      */
@@ -87,7 +93,7 @@ public final class WarmStoragePropertiesUsage {
     /**
      * Get the maxCount property: A value that represents the maximum number of properties used allowed by the
      * environment for S1/S2 SKU and maximum number of properties allowed by Warm Store for PAYG SKU.
-     *
+     * 
      * @return the maxCount value.
      */
     public Integer maxCount() {
@@ -97,7 +103,7 @@ public final class WarmStoragePropertiesUsage {
     /**
      * Set the maxCount property: A value that represents the maximum number of properties used allowed by the
      * environment for S1/S2 SKU and maximum number of properties allowed by Warm Store for PAYG SKU.
-     *
+     * 
      * @param maxCount the maxCount value to set.
      * @return the WarmStoragePropertiesUsage object itself.
      */
@@ -111,12 +117,52 @@ public final class WarmStoragePropertiesUsage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerStateDetails() != null) {
             innerStateDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WarmStoragePropertiesUsage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WarmStoragePropertiesUsage if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WarmStoragePropertiesUsage.
+     */
+    public static WarmStoragePropertiesUsage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WarmStoragePropertiesUsage deserializedWarmStoragePropertiesUsage = new WarmStoragePropertiesUsage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedWarmStoragePropertiesUsage.state
+                        = WarmStoragePropertiesState.fromString(reader.getString());
+                } else if ("stateDetails".equals(fieldName)) {
+                    deserializedWarmStoragePropertiesUsage.innerStateDetails
+                        = WarmStoragePropertiesUsageStateDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWarmStoragePropertiesUsage;
+        });
     }
 }

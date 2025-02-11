@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GlobalSchemaCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GlobalSchemaCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"schemaType\":\"json\",\"description\":\"hxsdplaumydmhwe\",\"value\":\"datafyxydgtokv\",\"document\":\"datavwglgwzpv\"},\"id\":\"akglhpsesrfga\",\"name\":\"qiy\",\"type\":\"vxcgdhyhgoqgs\"},{\"properties\":{\"schemaType\":\"xml\",\"description\":\"xyjrcbqpb\",\"value\":\"datapglqjo\",\"document\":\"datadahneaoovty\"},\"id\":\"ztivfwjl\",\"name\":\"fzekfsrm\",\"type\":\"uklajvcfoc\"},{\"properties\":{\"schemaType\":\"json\",\"description\":\"ejov\",\"value\":\"datawxn\",\"document\":\"datahhnoyrzaaoee\"},\"id\":\"pmjen\",\"name\":\"jeatea\",\"type\":\"xc\"}],\"count\":3516913214378637568,\"nextLink\":\"jxldnaryy\"}")
-                .toObject(GlobalSchemaCollection.class);
+        GlobalSchemaCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"schemaType\":\"json\",\"description\":\"hxsdplaumydmhwe\",\"value\":\"datafyxydgtokv\",\"document\":\"datavwglgwzpv\"},\"id\":\"akglhpsesrfga\",\"name\":\"qiy\",\"type\":\"vxcgdhyhgoqgs\"},{\"properties\":{\"schemaType\":\"xml\",\"description\":\"xyjrcbqpb\",\"value\":\"datapglqjo\",\"document\":\"datadahneaoovty\"},\"id\":\"ztivfwjl\",\"name\":\"fzekfsrm\",\"type\":\"uklajvcfoc\"},{\"properties\":{\"schemaType\":\"json\",\"description\":\"ejov\",\"value\":\"datawxn\",\"document\":\"datahhnoyrzaaoee\"},\"id\":\"pmjen\",\"name\":\"jeatea\",\"type\":\"xc\"}],\"count\":3516913214378637568,\"nextLink\":\"jxldnaryy\"}")
+            .toObject(GlobalSchemaCollection.class);
         Assertions.assertEquals(3516913214378637568L, model.count());
     }
 

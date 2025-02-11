@@ -37,6 +37,7 @@ public class ProcessorPropertiesParentMerger implements PropertiesMerger<Process
         propertyMapper.from(parent.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(parent.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(parent.getEntityType()).to(properties::setEntityType);
+        propertyMapper.from(parent.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
 
         // If a same property appears in both two objects, the value from the child will take precedence.
         ProcessorPropertiesMerger.copyProcessorPropertiesIfNotNull(child, properties);

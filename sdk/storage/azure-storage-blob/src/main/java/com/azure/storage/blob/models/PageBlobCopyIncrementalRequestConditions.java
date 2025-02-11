@@ -17,6 +17,12 @@ public class PageBlobCopyIncrementalRequestConditions extends RequestConditions 
     private String tagsConditions;
 
     /**
+     * Creates a new instance of {@link PageBlobCopyIncrementalRequestConditions}.
+     */
+    public PageBlobCopyIncrementalRequestConditions() {
+    }
+
+    /**
      * Optionally limit requests to resources that match the passed ETag.
      *
      * @param ifMatch ETag that resources must match.

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * AML file system encryption settings.
  */
 @Fluent
-public final class AmlFilesystemEncryptionSettings {
+public final class AmlFilesystemEncryptionSettings implements JsonSerializable<AmlFilesystemEncryptionSettings> {
     /*
      * Specifies the location of the encryption key in Key Vault.
      */
-    @JsonProperty(value = "keyEncryptionKey")
     private KeyVaultKeyReference keyEncryptionKey;
 
     /**
@@ -53,5 +56,43 @@ public final class AmlFilesystemEncryptionSettings {
         if (keyEncryptionKey() != null) {
             keyEncryptionKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("keyEncryptionKey", this.keyEncryptionKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemEncryptionSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemEncryptionSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemEncryptionSettings.
+     */
+    public static AmlFilesystemEncryptionSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemEncryptionSettings deserializedAmlFilesystemEncryptionSettings
+                = new AmlFilesystemEncryptionSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyEncryptionKey".equals(fieldName)) {
+                    deserializedAmlFilesystemEncryptionSettings.keyEncryptionKey
+                        = KeyVaultKeyReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemEncryptionSettings;
+        });
     }
 }

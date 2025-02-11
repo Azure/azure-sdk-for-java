@@ -8,26 +8,29 @@ import com.azure.resourcemanager.azurearcdata.models.SqlServerInstance;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SqlServerInstances Update. */
+/**
+ * Samples for SqlServerInstances Update.
+ */
 public final class SqlServerInstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/UpdateSqlServerInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * UpdateSqlServerInstance.json
      */
     /**
      * Sample code: Updates a SQL Server Instance tags.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void updatesASQLServerInstanceTags(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        SqlServerInstance resource =
-            manager
-                .sqlServerInstances()
-                .getByResourceGroupWithResponse("testrg", "testsqlServerInstance", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updatesASQLServerInstanceTags(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+        SqlServerInstance resource = manager.sqlServerInstances()
+            .getByResourceGroupWithResponse("testrg", "testsqlServerInstance", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

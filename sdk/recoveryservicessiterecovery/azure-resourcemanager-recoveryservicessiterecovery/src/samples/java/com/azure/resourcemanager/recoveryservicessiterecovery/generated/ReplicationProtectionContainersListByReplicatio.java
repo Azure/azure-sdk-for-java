@@ -20,7 +20,7 @@ public final class ReplicationProtectionContainersListByReplicatio {
      */
     public static void getsTheListOfProtectionContainerForAFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionContainers().listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationProtectionContainers()
+            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

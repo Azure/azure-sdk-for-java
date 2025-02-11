@@ -71,7 +71,6 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
         return (T) this;
     }
 
-
     /**
      * Specifies the options for proxy configuration.
      *
@@ -282,9 +281,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      */
     @SuppressWarnings("unchecked")
     public T enableAccountIdentifierLogging() {
-        identityClientOptions
-            .getIdentityLogOptionsImpl()
-            .setLoggingAccountIdentifiersAllowed(true);
+        identityClientOptions.getIdentityLogOptionsImpl().setLoggingAccountIdentifiersAllowed(true);
         return (T) this;
     }
 }

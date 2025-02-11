@@ -171,7 +171,6 @@ public final class SsisProject extends SsisObjectMetadata {
      */
     @Override
     public void validate() {
-        super.validate();
         if (environmentRefs() != null) {
             environmentRefs().forEach(e -> e.validate());
         }

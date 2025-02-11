@@ -25,10 +25,8 @@ import reactor.core.publisher.Mono;
 /** Implementation for ActionGroup. */
 class ActionGroupImpl
     extends GroupableResourceImpl<ActionGroup, ActionGroupResourceInner, ActionGroupImpl, MonitorManager>
-    implements ActionGroup,
-        ActionGroup.Definition<ActionGroupImpl>,
-        ActionGroup.Update,
-        ActionGroup.UpdateStages.WithActionUpdateDefinition {
+    implements ActionGroup, ActionGroup.Definition<ActionGroupImpl>, ActionGroup.Update,
+    ActionGroup.UpdateStages.WithActionUpdateDefinition {
     private static final String EMAIL_SUFFIX = "_-EmailAction-";
     private static final String SMS_SUFFIX = "_-SMSAction-";
     private static final String APP_ACTION_SUFFIX = "_-AzureAppAction-";
@@ -64,8 +62,7 @@ class ActionGroupImpl
         this.itsmReceivers = new TreeMap<>();
         if (isInCreateMode()) {
             this.innerModel().withEnabled(true);
-            this
-                .innerModel()
+            this.innerModel()
                 .withGroupShortName(this.name().substring(0, (this.name().length() > 12) ? 12 : this.name().length()));
         } else {
             this.withExistingResourceGroup(ResourceUtils.groupFromResourceId(this.id()));
@@ -221,8 +218,7 @@ class ActionGroupImpl
     @Override
     public Mono<ActionGroup> createResourceAsync() {
         this.innerModel().withLocation("global");
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getActionGroups()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
@@ -231,7 +227,9 @@ class ActionGroupImpl
 
     @Override
     protected Mono<ActionGroupResourceInner> getInnerAsync() {
-        return this.manager().serviceClient().getActionGroups()
+        return this.manager()
+            .serviceClient()
+            .getActionGroups()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -276,8 +274,8 @@ class ActionGroupImpl
     }
 
     @Override
-    public ActionGroupImpl withItsm(
-        String workspaceId, String connectionId, String ticketConfiguration, String region) {
+    public ActionGroupImpl withItsm(String workspaceId, String connectionId, String ticketConfiguration,
+        String region) {
         this.withoutItsm();
 
         String compositeKey = this.actionReceiverPrefix + ITSM_SUFFIX;
@@ -306,8 +304,8 @@ class ActionGroupImpl
     }
 
     @Override
-    public ActionGroupImpl withAutomationRunbook(
-        String automationAccountId, String runbookName, String webhookResourceId, boolean isGlobalRunbook) {
+    public ActionGroupImpl withAutomationRunbook(String automationAccountId, String runbookName,
+        String webhookResourceId, boolean isGlobalRunbook) {
         this.withoutAutomationRunbook();
 
         String compositeKey = this.actionReceiverPrefix + RUN_BOOK_SUFFIX;

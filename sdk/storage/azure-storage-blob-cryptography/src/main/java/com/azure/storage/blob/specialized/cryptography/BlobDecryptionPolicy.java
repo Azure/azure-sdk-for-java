@@ -52,7 +52,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      */
     private final boolean requiresEncryption;
 
-
     /**
      * Initializes a new instance of the {@link BlobDecryptionPolicy} class with the specified key and resolver.
      * <p>
@@ -124,11 +123,11 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             if (!isEncryptedBlob(context)) {
                 return validateEncryptionDataConsistency(next.process());
             }
-            EncryptionData encryptionData =
-                (EncryptionData) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get();
+            EncryptionData encryptionData
+                = (EncryptionData) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get();
 
-            EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
-                initialRangeHeader, encryptionData);
+            EncryptedBlobRange encryptedRange
+                = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(initialRangeHeader, encryptionData);
             if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null) {
                 requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
             }
@@ -151,9 +150,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                      */
                     boolean padding = hasPadding(httpResponse.getHeaders(), encryptionData, encryptedRange);
 
-                    Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(),
-                        encryptedRange, padding, encryptionData,
-                        httpResponse.getRequest().getUrl());
+                    Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRange, padding,
+                        encryptionData, httpResponse.getRequest().getUrl());
 
                     return new DecryptedResponse(httpResponse, plainTextData);
                 } else {
@@ -178,22 +176,21 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private Mono<HttpResponse> validateEncryptionDataConsistency(Mono<HttpResponse> responseMono) {
         return responseMono.map(response -> {
             if (response.getHeaderValue(ENCRYPTION_METADATA_HEADER) != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException("GetProperties did not find"
-                    + " encryption data, but download request returned encryption data."));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "GetProperties did not find" + " encryption data, but download request returned encryption data."));
             }
             return response;
         });
     }
 
     private boolean hasPadding(HttpHeaders responseHeaders, EncryptionData encryptionData,
-            EncryptedBlobRange encryptedRange) {
+        EncryptedBlobRange encryptedRange) {
         /*
          * We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
          * block size. Padding is only ever present in track 1.
          */
         return encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)
-                && (encryptedRange.toBlobRange().getOffset()
-                + encryptedRange.toBlobRange().getCount()
+            && (encryptedRange.toBlobRange().getOffset() + encryptedRange.toBlobRange().getCount()
                 > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
     }
 
@@ -223,14 +220,14 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
         Decryptor decryptor = Decryptor.getDecryptor(keyResolver, keyWrapper, encryptionData);
         Flux<ByteBuffer> dataToTrim = decryptor.getKeyEncryptionKey()
-                .flatMapMany(key -> decryptor.decrypt(encryptedFlux, encryptedBlobRange, padding, uriToLog,
-                        totalInputBytes, key));
+            .flatMapMany(
+                key -> decryptor.decrypt(encryptedFlux, encryptedBlobRange, padding, uriToLog, totalInputBytes, key));
 
         return trimData(encryptedBlobRange, totalOutputBytes, dataToTrim);
     }
 
-    Flux<ByteBuffer> trimData(EncryptedBlobRange encryptedBlobRange,
-            AtomicLong totalOutputBytes, Flux<ByteBuffer> dataToTrim) {
+    Flux<ByteBuffer> trimData(EncryptedBlobRange encryptedBlobRange, AtomicLong totalOutputBytes,
+        Flux<ByteBuffer> dataToTrim) {
         return dataToTrim.map(plaintextByteBuffer -> {
             int decryptedBytes = plaintextByteBuffer.limit();
 
@@ -250,8 +247,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * offsetAdjustment, so when we do reach customer-requested data, advancing the position by
                  * the whole offsetAdjustment would be too much.
                  */
-                int remainingAdjustment = encryptedBlobRange.getAmountPlaintextToSkip()
-                        - (int) totalOutputBytes.longValue();
+                int remainingAdjustment
+                    = encryptedBlobRange.getAmountPlaintextToSkip() - (int) totalOutputBytes.longValue();
 
                 /*
                  * Setting the position past the limit will throw. This is in the case of very small
@@ -278,8 +275,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 beginningOfEndAdjustment = Long.MAX_VALUE;
             } else {
                 // Calculate the end of the user-requested data so we can trim anything after.
-                beginningOfEndAdjustment = encryptedBlobRange.getAmountPlaintextToSkip()
-                        + encryptedBlobRange.getOriginalRange().getCount();
+                beginningOfEndAdjustment
+                    = encryptedBlobRange.getAmountPlaintextToSkip() + encryptedBlobRange.getOriginalRange().getCount();
             }
 
             /*
@@ -288,7 +285,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
              */
             if (decryptedBytes + totalOutputBytes.longValue() > beginningOfEndAdjustment) {
                 long amountPastEnd // past the end of user-requested data.
-                        = decryptedBytes + totalOutputBytes.longValue() - beginningOfEndAdjustment;
+                    = decryptedBytes + totalOutputBytes.longValue() - beginningOfEndAdjustment;
                 /*
                  * Note that amountPastEnd can only be up to 16 for v1 or 4mb for v2, so the cast is safe. We do not
                  * need to worry about limit() throwing because we allocated at least enough space for decryptedBytes
@@ -297,7 +294,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * the same as position.
                  */
                 int newLimit = totalOutputBytes.longValue() <= beginningOfEndAdjustment
-                        ? decryptedBytes - (int) amountPastEnd : plaintextByteBuffer.position();
+                    ? decryptedBytes - (int) amountPastEnd
+                    : plaintextByteBuffer.position();
                 plaintextByteBuffer.limit(newLimit);
             } else if (decryptedBytes + totalOutputBytes.longValue() > encryptedBlobRange.getAmountPlaintextToSkip()) {
                 /*

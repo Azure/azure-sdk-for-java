@@ -6,68 +6,64 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListener;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.sqlvirtualmachine.models.Commit;
+import com.azure.resourcemanager.sqlvirtualmachine.models.Failover;
+import com.azure.resourcemanager.sqlvirtualmachine.models.ReadableSecondary;
+import com.azure.resourcemanager.sqlvirtualmachine.models.Role;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AvailabilityGroupListenersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"koen\",\"availabilityGroupName\":\"uknvudwti\",\"loadBalancerConfigurations\":[{\"privateIpAddress\":{\"ipAddress\":\"ngkpocipazy\",\"subnetResourceId\":\"egukgjnpiucg\"},\"publicIpAddressResourceId\":\"evqzntypmrbp\",\"loadBalancerResourceId\":\"c\",\"probePort\":1616487247,\"sqlVirtualMachineInstances\":[\"dpydn\",\"yhxdeoejzicwi\",\"sjttgzfbish\",\"bkh\"]},{\"privateIpAddress\":{\"ipAddress\":\"eyeam\",\"subnetResourceId\":\"hagalpbuxwgipwh\"},\"publicIpAddressResourceId\":\"ow\",\"loadBalancerResourceId\":\"shwankixzbinje\",\"probePort\":895884461,\"sqlVirtualMachineInstances\":[\"rywn\"]},{\"privateIpAddress\":{\"ipAddress\":\"qftiy\",\"subnetResourceId\":\"rnkcqvyxlw\"},\"publicIpAddressResourceId\":\"lsicohoqqnwv\",\"loadBalancerResourceId\":\"yav\",\"probePort\":989865410,\"sqlVirtualMachineInstances\":[\"nmmqhgyxzkon\",\"cukoklyaxuconu\"]}],\"multiSubnetIpConfigurations\":[{\"privateIpAddress\":{\"ipAddress\":\"kbeype\",\"subnetResourceId\":\"mjmwvvjektcx\"},\"sqlVirtualMachineInstance\":\"enhwlrs\"}],\"createDefaultAvailabilityGroupIfNotExist\":true,\"port\":1611937755,\"availabilityGroupConfiguration\":{\"replicas\":[{\"sqlVirtualMachineInstanceId\":\"dqgbiqylihkaetc\",\"role\":\"SECONDARY\",\"commit\":\"ASYNCHRONOUS_COMMIT\",\"failover\":\"AUTOMATIC\",\"readableSecondary\":\"READ_ONLY\"},{\"sqlVirtualMachineInstanceId\":\"kymuctqhjfbebr\",\"role\":\"PRIMARY\",\"commit\":\"SYNCHRONOUS_COMMIT\",\"failover\":\"MANUAL\",\"readableSecondary\":\"NO\"},{\"sqlVirtualMachineInstanceId\":\"ttxfvjr\",\"role\":\"PRIMARY\",\"commit\":\"ASYNCHRONOUS_COMMIT\",\"failover\":\"MANUAL\",\"readableSecondary\":\"ALL\"},{\"sqlVirtualMachineInstanceId\":\"vahfn\",\"role\":\"SECONDARY\",\"commit\":\"SYNCHRONOUS_COMMIT\",\"failover\":\"AUTOMATIC\",\"readableSecondary\":\"NO\"}]}},\"id\":\"j\",\"name\":\"gidokgjljyoxgvcl\",\"type\":\"bgsncghkjeszzhb\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"jnspydp\",\"availabilityGroupName\":\"oenkouknvudwti\",\"loadBalancerConfigurations\":[],\"multiSubnetIpConfigurations\":[],\"createDefaultAvailabilityGroupIfNotExist\":true,\"port\":1223607421,\"availabilityGroupConfiguration\":{\"replicas\":[]}},\"id\":\"pazyxoegukg\",\"name\":\"npiucgygevqznty\",\"type\":\"mrbpizcdrqj\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SqlVirtualMachineManager manager = SqlVirtualMachineManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AvailabilityGroupListener response = manager.availabilityGroupListeners()
+            .getWithResponse("vfaxkffeiith", "vmezy", "shxmzsbbzoggigrx", "burvjxxjnspy",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SqlVirtualMachineManager manager =
-            SqlVirtualMachineManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AvailabilityGroupListener response =
-            manager
-                .availabilityGroupListeners()
-                .getWithResponse(
-                    "fmvfaxkffeiit", "lvmezyvshxmzsbbz", "ggi", "rxwburv", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("oenkouknvudwti", response.availabilityGroupName());
+        Assertions.assertEquals("uknvudwti", response.availabilityGroupName());
+        Assertions.assertEquals("ngkpocipazy",
+            response.loadBalancerConfigurations().get(0).privateIpAddress().ipAddress());
+        Assertions.assertEquals("egukgjnpiucg",
+            response.loadBalancerConfigurations().get(0).privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("evqzntypmrbp",
+            response.loadBalancerConfigurations().get(0).publicIpAddressResourceId());
+        Assertions.assertEquals("c", response.loadBalancerConfigurations().get(0).loadBalancerResourceId());
+        Assertions.assertEquals(1616487247, response.loadBalancerConfigurations().get(0).probePort());
+        Assertions.assertEquals("dpydn",
+            response.loadBalancerConfigurations().get(0).sqlVirtualMachineInstances().get(0));
+        Assertions.assertEquals("kbeype", response.multiSubnetIpConfigurations().get(0).privateIpAddress().ipAddress());
+        Assertions.assertEquals("mjmwvvjektcx",
+            response.multiSubnetIpConfigurations().get(0).privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("enhwlrs", response.multiSubnetIpConfigurations().get(0).sqlVirtualMachineInstance());
         Assertions.assertEquals(true, response.createDefaultAvailabilityGroupIfNotExist());
-        Assertions.assertEquals(1223607421, response.port());
+        Assertions.assertEquals(1611937755, response.port());
+        Assertions.assertEquals("dqgbiqylihkaetc",
+            response.availabilityGroupConfiguration().replicas().get(0).sqlVirtualMachineInstanceId());
+        Assertions.assertEquals(Role.SECONDARY, response.availabilityGroupConfiguration().replicas().get(0).role());
+        Assertions.assertEquals(Commit.ASYNCHRONOUS_COMMIT,
+            response.availabilityGroupConfiguration().replicas().get(0).commit());
+        Assertions.assertEquals(Failover.AUTOMATIC,
+            response.availabilityGroupConfiguration().replicas().get(0).failover());
+        Assertions.assertEquals(ReadableSecondary.READ_ONLY,
+            response.availabilityGroupConfiguration().replicas().get(0).readableSecondary());
     }
 }

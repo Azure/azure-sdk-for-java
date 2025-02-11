@@ -7,25 +7,27 @@ package com.azure.resourcemanager.oep.models;
 import com.azure.resourcemanager.oep.fluent.models.OperationListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of OperationListResult. */
+/**
+ * An immutable client-side representation of OperationListResult.
+ */
 public interface OperationListResult {
     /**
      * Gets the value property: List of operations supported by the resource provider.
-     *
+     * 
      * @return the value value.
      */
     List<Operation> value();
 
     /**
      * Gets the nextLink property: URL to get the next set of operation list results (if there are any).
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.oep.fluent.models.OperationListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationListResultInner innerModel();

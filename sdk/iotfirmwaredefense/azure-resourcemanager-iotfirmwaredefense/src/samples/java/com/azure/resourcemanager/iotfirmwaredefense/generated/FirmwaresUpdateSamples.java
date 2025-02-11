@@ -25,10 +25,18 @@ public final class FirmwaresUpdateSamples {
     public static void
         firmwaresUpdateMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
         Firmware resource = manager.firmwares()
-            .getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withFileName("wresexxulcdsdd").withVendor("vycmdhgtmepcptyoubztiuudpkcpd").withModel("f")
-            .withVersion("s").withDescription("uz").withFileSize(17L).withStatus(Status.PENDING)
-            .withStatusMessages(Arrays.asList(new StatusMessage().withMessage("ulvhmhokezathzzauiitu"))).apply();
+            .getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withFileName("wresexxulcdsdd")
+            .withVendor("vycmdhgtmepcptyoubztiuudpkcpd")
+            .withModel("f")
+            .withVersion("s")
+            .withDescription("uz")
+            .withFileSize(17L)
+            .withStatus(Status.PENDING)
+            .withStatusMessages(Arrays.asList(new StatusMessage().withMessage("ulvhmhokezathzzauiitu")))
+            .apply();
     }
 
     /*
@@ -43,7 +51,8 @@ public final class FirmwaresUpdateSamples {
     public static void
         firmwaresUpdateMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
         Firmware resource = manager.firmwares()
-            .getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

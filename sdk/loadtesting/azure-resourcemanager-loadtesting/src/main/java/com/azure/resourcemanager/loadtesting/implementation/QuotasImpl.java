@@ -31,21 +31,18 @@ public final class QuotasImpl implements Quotas {
 
     public PagedIterable<QuotaResource> list(String location) {
         PagedIterable<QuotaResourceInner> inner = this.serviceClient().list(location);
-        return Utils.mapPage(inner, inner1 -> new QuotaResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<QuotaResource> list(String location, Context context) {
         PagedIterable<QuotaResourceInner> inner = this.serviceClient().list(location, context);
-        return Utils.mapPage(inner, inner1 -> new QuotaResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaResourceImpl(inner1, this.manager()));
     }
 
     public Response<QuotaResource> getWithResponse(String location, String quotaBucketName, Context context) {
         Response<QuotaResourceInner> inner = this.serviceClient().getWithResponse(location, quotaBucketName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QuotaResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -61,25 +58,22 @@ public final class QuotasImpl implements Quotas {
         }
     }
 
-    public Response<CheckQuotaAvailabilityResponse> checkAvailabilityWithResponse(
-        String location, String quotaBucketName, QuotaBucketRequest quotaBucketRequest, Context context) {
-        Response<CheckQuotaAvailabilityResponseInner> inner =
-            this.serviceClient().checkAvailabilityWithResponse(location, quotaBucketName, quotaBucketRequest, context);
+    public Response<CheckQuotaAvailabilityResponse> checkAvailabilityWithResponse(String location,
+        String quotaBucketName, QuotaBucketRequest body, Context context) {
+        Response<CheckQuotaAvailabilityResponseInner> inner
+            = this.serviceClient().checkAvailabilityWithResponse(location, quotaBucketName, body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckQuotaAvailabilityResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckQuotaAvailabilityResponse checkAvailability(
-        String location, String quotaBucketName, QuotaBucketRequest quotaBucketRequest) {
-        CheckQuotaAvailabilityResponseInner inner =
-            this.serviceClient().checkAvailability(location, quotaBucketName, quotaBucketRequest);
+    public CheckQuotaAvailabilityResponse checkAvailability(String location, String quotaBucketName,
+        QuotaBucketRequest body) {
+        CheckQuotaAvailabilityResponseInner inner
+            = this.serviceClient().checkAvailability(location, quotaBucketName, body);
         if (inner != null) {
             return new CheckQuotaAvailabilityResponseImpl(inner, this.manager());
         } else {

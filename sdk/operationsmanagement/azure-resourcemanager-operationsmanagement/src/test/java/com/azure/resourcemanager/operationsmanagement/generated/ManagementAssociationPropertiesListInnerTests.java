@@ -14,29 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementAssociationPropertiesListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementAssociationPropertiesListInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"y\",\"properties\":{\"applicationId\":\"nzwuxzd\"},\"id\":\"t\",\"name\":\"yrlhmwhfpmrqobm\",\"type\":\"u\"},{\"location\":\"nryrtihf\",\"properties\":{\"applicationId\":\"ijbpzvgnwzsymgl\"},\"id\":\"uf\",\"name\":\"yzkohdbihanuf\",\"type\":\"fcbjysagithxqha\"}]}")
-                .toObject(ManagementAssociationPropertiesListInner.class);
+        ManagementAssociationPropertiesListInner model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"y\",\"properties\":{\"applicationId\":\"nzwuxzd\"},\"id\":\"t\",\"name\":\"yrlhmwhfpmrqobm\",\"type\":\"u\"},{\"location\":\"nryrtihf\",\"properties\":{\"applicationId\":\"ijbpzvgnwzsymgl\"},\"id\":\"uf\",\"name\":\"yzkohdbihanuf\",\"type\":\"fcbjysagithxqha\"}]}")
+            .toObject(ManagementAssociationPropertiesListInner.class);
         Assertions.assertEquals("y", model.value().get(0).location());
         Assertions.assertEquals("nzwuxzd", model.value().get(0).properties().applicationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementAssociationPropertiesListInner model =
-            new ManagementAssociationPropertiesListInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ManagementAssociationInner()
-                                .withLocation("y")
-                                .withProperties(new ManagementAssociationProperties().withApplicationId("nzwuxzd")),
-                            new ManagementAssociationInner()
-                                .withLocation("nryrtihf")
-                                .withProperties(
-                                    new ManagementAssociationProperties().withApplicationId("ijbpzvgnwzsymgl"))));
+        ManagementAssociationPropertiesListInner model
+            = new ManagementAssociationPropertiesListInner().withValue(Arrays.asList(
+                new ManagementAssociationInner().withLocation("y")
+                    .withProperties(new ManagementAssociationProperties().withApplicationId("nzwuxzd")),
+                new ManagementAssociationInner().withLocation("nryrtihf")
+                    .withProperties(new ManagementAssociationProperties().withApplicationId("ijbpzvgnwzsymgl"))));
         model = BinaryData.fromObject(model).toObject(ManagementAssociationPropertiesListInner.class);
         Assertions.assertEquals("y", model.value().get(0).location());
         Assertions.assertEquals("nzwuxzd", model.value().get(0).properties().applicationId());

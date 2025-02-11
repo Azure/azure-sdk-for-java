@@ -20,13 +20,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 @Fluent
 public interface WebApplicationFirewallPolicies
     extends SupportsCreating<WebApplicationFirewallPolicy.DefinitionStages.Blank>,
-    SupportsListing<WebApplicationFirewallPolicy>,
-    SupportsListingByResourceGroup<WebApplicationFirewallPolicy>,
-    SupportsGettingByResourceGroup<WebApplicationFirewallPolicy>,
-    SupportsGettingById<WebApplicationFirewallPolicy>,
-    SupportsDeletingById,
-    SupportsDeletingByResourceGroup,
-    SupportsBatchCreation<WebApplicationFirewallPolicy>,
-    SupportsBatchDeletion,
-    HasManager<NetworkManager> {
+    SupportsListing<WebApplicationFirewallPolicy>, SupportsListingByResourceGroup<WebApplicationFirewallPolicy>,
+    SupportsGettingByResourceGroup<WebApplicationFirewallPolicy>, SupportsGettingById<WebApplicationFirewallPolicy>,
+    SupportsDeletingById, SupportsDeletingByResourceGroup, SupportsBatchCreation<WebApplicationFirewallPolicy>,
+    SupportsBatchDeletion, HasManager<NetworkManager> {
 }

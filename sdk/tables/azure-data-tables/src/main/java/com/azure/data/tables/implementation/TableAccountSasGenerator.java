@@ -4,7 +4,6 @@ package com.azure.data.tables.implementation;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.sas.TableAccountSasPermission;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import com.azure.data.tables.sas.TableSasIpRange;
@@ -21,7 +20,6 @@ import static com.azure.data.tables.implementation.TableSasUtils.tryAppendQueryP
  * A class containing utility methods for generating SAS tokens for the Azure Storage accounts.
  */
 public class TableAccountSasGenerator {
-    private final ClientLogger logger = new ClientLogger(TableAccountSasGenerator.class);
     private final OffsetDateTime expiryTime;
     private final OffsetDateTime startTime;
     private final String permissions;
@@ -40,7 +38,7 @@ public class TableAccountSasGenerator {
      * @param azureNamedKeyCredential An {@link AzureNamedKeyCredential} whose key will be used to sign the SAS.
      */
     public TableAccountSasGenerator(TableAccountSasSignatureValues sasValues,
-                                    AzureNamedKeyCredential azureNamedKeyCredential) {
+        AzureNamedKeyCredential azureNamedKeyCredential) {
         Objects.requireNonNull(sasValues, "'sasValues' cannot be null.");
         Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
         Objects.requireNonNull(sasValues.getServices(), "'services' in 'sasValues' cannot be null.");
@@ -79,17 +77,13 @@ public class TableAccountSasGenerator {
     }
 
     private String stringToSign(final AzureNamedKeyCredential azureNamedKeyCredential) {
-        return String.join("\n",
-            azureNamedKeyCredential.getAzureNamedKey().getName(),
+        return String.join("\n", azureNamedKeyCredential.getAzureNamedKey().getName(),
             TableAccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
-            this.services,
-            resourceTypes,
+            this.services, resourceTypes,
             this.startTime == null ? "" : StorageConstants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             StorageConstants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : this.protocol.toString(),
-            this.version,
-            "" // Account SAS requires an additional newline character
+            this.protocol == null ? "" : this.protocol.toString(), this.version, "" // Account SAS requires an additional newline character
         );
     }
 

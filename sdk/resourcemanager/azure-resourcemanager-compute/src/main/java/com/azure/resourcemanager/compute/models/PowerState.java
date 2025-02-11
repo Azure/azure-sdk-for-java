@@ -31,6 +31,15 @@ public final class PowerState extends ExpandableStringEnum<PowerState> {
     public static final PowerState UNKNOWN = fromString("PowerState/unknown");
 
     /**
+     * Creates a new instance of PowerState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PowerState() {
+    }
+
+    /**
      * Creates an instance of PowerState from the virtual machine instance view status entry corresponding to the power
      * state.
      *
@@ -48,7 +57,11 @@ public final class PowerState extends ExpandableStringEnum<PowerState> {
         return null;
     }
 
-    /** @return all known power states */
+    /**
+     * Gets all known power states.
+     *
+     * @return all known power states
+     */
     public static Collection<PowerState> values() {
         return values(PowerState.class);
     }

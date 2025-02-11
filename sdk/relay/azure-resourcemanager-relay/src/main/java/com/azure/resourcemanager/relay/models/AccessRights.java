@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.relay.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for AccessRights. */
+/**
+ * Defines values for AccessRights.
+ */
 public enum AccessRights {
-    /** Enum value Manage. */
+    /**
+     * Enum value Manage.
+     */
     MANAGE("Manage"),
 
-    /** Enum value Send. */
+    /**
+     * Enum value Send.
+     */
     SEND("Send"),
 
-    /** Enum value Listen. */
+    /**
+     * Enum value Listen.
+     */
     LISTEN("Listen");
 
-    /** The actual serialized value for a AccessRights instance. */
+    /**
+     * The actual serialized value for a AccessRights instance.
+     */
     private final String value;
 
     AccessRights(String value) {
@@ -27,12 +34,14 @@ public enum AccessRights {
 
     /**
      * Parses a serialized value to a AccessRights instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AccessRights object, or null if unable to parse.
      */
-    @JsonCreator
     public static AccessRights fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AccessRights[] items = AccessRights.values();
         for (AccessRights item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum AccessRights {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

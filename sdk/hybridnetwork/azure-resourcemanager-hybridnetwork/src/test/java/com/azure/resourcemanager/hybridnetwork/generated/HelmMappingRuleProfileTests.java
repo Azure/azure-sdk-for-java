@@ -32,11 +32,14 @@ public final class HelmMappingRuleProfileTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HelmMappingRuleProfile model = new HelmMappingRuleProfile().withReleaseNamespace("dxasicddyvv")
-            .withReleaseName("kgfmocwahpq").withHelmPackageVersion("tjeaahhvjhh").withValues("kzyb")
+            .withReleaseName("kgfmocwahpq")
+            .withHelmPackageVersion("tjeaahhvjhh")
+            .withValues("kzyb")
             .withOptions(new HelmMappingRuleProfileOptions()
                 .withInstallOptions(
                     new HelmInstallOptions().withAtomic("dj").withWaitOption("yxkyxvx").withTimeout("blbjedn"))
-                .withUpgradeOptions(new HelmUpgradeOptions().withAtomic("age").withWaitOption("ulxunsmjbnkpp")
+                .withUpgradeOptions(new HelmUpgradeOptions().withAtomic("age")
+                    .withWaitOption("ulxunsmjbnkpp")
                     .withTimeout("nenlsvxeizzg")));
         model = BinaryData.fromObject(model).toObject(HelmMappingRuleProfile.class);
         Assertions.assertEquals("dxasicddyvv", model.releaseNamespace());

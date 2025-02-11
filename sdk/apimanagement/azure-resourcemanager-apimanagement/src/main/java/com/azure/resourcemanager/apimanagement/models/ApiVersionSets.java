@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ApiVersionSets. */
+/**
+ * Resource collection API of ApiVersionSets.
+ */
 public interface ApiVersionSets {
     /**
      * Lists a collection of API Version Sets in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,11 +26,11 @@ public interface ApiVersionSets {
 
     /**
      * Lists a collection of API Version Sets in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -37,12 +39,12 @@ public interface ApiVersionSets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged API Version Set list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ApiVersionSetContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<ApiVersionSetContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
@@ -52,12 +54,12 @@ public interface ApiVersionSets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Api Version Set specified by its identifier.
      */
-    ApiVersionSetsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String versionSetId, Context context);
+    ApiVersionSetsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String versionSetId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
@@ -69,7 +71,7 @@ public interface ApiVersionSets {
 
     /**
      * Gets the details of the Api Version Set specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
@@ -79,12 +81,12 @@ public interface ApiVersionSets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Api Version Set specified by its identifier.
      */
-    Response<ApiVersionSetContract> getWithResponse(
-        String resourceGroupName, String serviceName, String versionSetId, Context context);
+    Response<ApiVersionSetContract> getWithResponse(String resourceGroupName, String serviceName, String versionSetId,
+        Context context);
 
     /**
      * Gets the details of the Api Version Set specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
@@ -97,29 +99,29 @@ public interface ApiVersionSets {
 
     /**
      * Deletes specific Api Version Set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String versionSetId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String versionSetId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific Api Version Set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -128,7 +130,7 @@ public interface ApiVersionSets {
 
     /**
      * Gets the details of the Api Version Set specified by its identifier.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -139,7 +141,7 @@ public interface ApiVersionSets {
 
     /**
      * Gets the details of the Api Version Set specified by its identifier.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +153,7 @@ public interface ApiVersionSets {
 
     /**
      * Deletes specific Api Version Set.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -161,10 +163,10 @@ public interface ApiVersionSets {
 
     /**
      * Deletes specific Api Version Set.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -175,7 +177,7 @@ public interface ApiVersionSets {
 
     /**
      * Begins definition for a new ApiVersionSetContract resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ApiVersionSetContract definition.
      */

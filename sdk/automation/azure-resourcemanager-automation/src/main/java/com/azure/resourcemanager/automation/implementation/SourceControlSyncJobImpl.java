@@ -18,8 +18,8 @@ public final class SourceControlSyncJobImpl implements SourceControlSyncJob, Sou
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    SourceControlSyncJobImpl(
-        SourceControlSyncJobInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    SourceControlSyncJobImpl(SourceControlSyncJobInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -78,8 +78,8 @@ public final class SourceControlSyncJobImpl implements SourceControlSyncJob, Sou
 
     private SourceControlSyncJobCreateParameters createParameters;
 
-    public SourceControlSyncJobImpl withExistingSourceControl(
-        String resourceGroupName, String automationAccountName, String sourceControlName) {
+    public SourceControlSyncJobImpl withExistingSourceControl(String resourceGroupName, String automationAccountName,
+        String sourceControlName) {
         this.resourceGroupName = resourceGroupName;
         this.automationAccountName = automationAccountName;
         this.sourceControlName = sourceControlName;
@@ -87,34 +87,20 @@ public final class SourceControlSyncJobImpl implements SourceControlSyncJob, Sou
     }
 
     public SourceControlSyncJob create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControlSyncJobs()
-                .createWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    sourceControlName,
-                    sourceControlSyncJobId,
-                    createParameters,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControlSyncJobs()
+            .createWithResponse(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId,
+                createParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SourceControlSyncJob create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControlSyncJobs()
-                .createWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    sourceControlName,
-                    sourceControlSyncJobId,
-                    createParameters,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControlSyncJobs()
+            .createWithResponse(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId,
+                createParameters, context)
+            .getValue();
         return this;
     }
 

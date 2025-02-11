@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureAsyncOperationResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureAsyncOperationResultsInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"wpyeicxmqciwqvh\",\"type\":\"ixuigdtopbobj\",\"name\":\"hm\",\"status\":\"u\",\"properties\":{\"tenantId\":\"uhrzayvvt\",\"displayName\":\"vdfgiotk\"}}")
-                .toObject(AzureAsyncOperationResultsInner.class);
-        Assertions.assertEquals("uhrzayvvt", model.tenantId());
-        Assertions.assertEquals("vdfgiotk", model.displayName());
+        AzureAsyncOperationResultsInner model = BinaryData.fromString(
+            "{\"id\":\"yfjfcnjbkcn\",\"type\":\"hbttkphyw\",\"name\":\"vjtoqnermclfp\",\"status\":\"hoxus\",\"properties\":{\"tenantId\":\"abgy\",\"displayName\":\"sbj\"}}")
+            .toObject(AzureAsyncOperationResultsInner.class);
+        Assertions.assertEquals("abgy", model.tenantId());
+        Assertions.assertEquals("sbj", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureAsyncOperationResultsInner model =
-            new AzureAsyncOperationResultsInner().withTenantId("uhrzayvvt").withDisplayName("vdfgiotk");
+        AzureAsyncOperationResultsInner model
+            = new AzureAsyncOperationResultsInner().withTenantId("abgy").withDisplayName("sbj");
         model = BinaryData.fromObject(model).toObject(AzureAsyncOperationResultsInner.class);
-        Assertions.assertEquals("uhrzayvvt", model.tenantId());
-        Assertions.assertEquals("vdfgiotk", model.displayName());
+        Assertions.assertEquals("abgy", model.tenantId());
+        Assertions.assertEquals("sbj", model.displayName());
     }
 }

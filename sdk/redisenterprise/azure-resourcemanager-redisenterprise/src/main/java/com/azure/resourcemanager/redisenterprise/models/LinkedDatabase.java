@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Linked Database
@@ -13,17 +17,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Specifies details of a linked database resource.
  */
 @Fluent
-public final class LinkedDatabase {
+public final class LinkedDatabase implements JsonSerializable<LinkedDatabase> {
     /*
      * Resource ID of a database resource to link with this database.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * State of the link between the database resources.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private LinkState state;
 
     /**
@@ -67,5 +69,43 @@ public final class LinkedDatabase {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkedDatabase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkedDatabase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkedDatabase.
+     */
+    public static LinkedDatabase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkedDatabase deserializedLinkedDatabase = new LinkedDatabase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLinkedDatabase.id = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedLinkedDatabase.state = LinkState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkedDatabase;
+        });
     }
 }

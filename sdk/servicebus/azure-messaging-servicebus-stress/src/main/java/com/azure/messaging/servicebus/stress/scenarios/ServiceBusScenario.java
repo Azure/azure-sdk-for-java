@@ -56,17 +56,18 @@ public abstract class ServiceBusScenario implements AutoCloseable {
     public abstract void run() throws InterruptedException;
 
     public void beforeRun() {
-        adminClient = new ServiceBusAdministrationClientBuilder()
-            .connectionString(options.getServiceBusConnectionString())
-            .buildClient();
+        adminClient
+            = new ServiceBusAdministrationClientBuilder().connectionString(options.getServiceBusConnectionString())
+                .buildClient();
 
-        receiverClient = options.getServiceBusEntityType() == EntityType.QUEUE ? new ServiceBusClientBuilder()
-            .connectionString(options.getServiceBusConnectionString())
-            .clientOptions(new ClientOptions().setTracingOptions(new TracingOptions().setEnabled(false)))
-            .receiver()
-            .disableAutoComplete()
-            .queueName(options.getServiceBusQueueName())
-            .buildClient() : null;
+        receiverClient = options.getServiceBusEntityType() == EntityType.QUEUE
+            ? new ServiceBusClientBuilder().connectionString(options.getServiceBusConnectionString())
+                .clientOptions(new ClientOptions().setTracingOptions(new TracingOptions().setEnabled(false)))
+                .receiver()
+                .disableAutoComplete()
+                .queueName(options.getServiceBusQueueName())
+                .buildClient()
+            : null;
 
         blockingWait(options.getStartDelay());
     }
@@ -77,6 +78,7 @@ public abstract class ServiceBusScenario implements AutoCloseable {
     public void recordRunOptions(Span span) {
 
     }
+
     public void recordResults(Span span) {
 
     }
@@ -111,7 +113,8 @@ public abstract class ServiceBusScenario implements AutoCloseable {
         if (options.getServiceBusEntityType() == EntityType.QUEUE) {
             Span span = telemetryHelper.startSampledInSpan("getRemainingQueueMessages");
             try (Scope s = span.makeCurrent()) {
-                QueueRuntimeProperties properties = adminClient.getQueueRuntimeProperties(options.getServiceBusQueueName());
+                QueueRuntimeProperties properties
+                    = adminClient.getQueueRuntimeProperties(options.getServiceBusQueueName());
 
                 span.setAttribute(AttributeKey.longKey("activeCount"), properties.getActiveMessageCount());
                 span.setAttribute(AttributeKey.longKey("scheduledCount"), properties.getScheduledMessageCount());

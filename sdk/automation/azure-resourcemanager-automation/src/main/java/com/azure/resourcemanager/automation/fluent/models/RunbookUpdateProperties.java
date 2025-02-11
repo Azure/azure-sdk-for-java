@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters supplied to the update runbook properties. */
+/**
+ * The parameters supplied to the update runbook properties.
+ */
 @Fluent
-public final class RunbookUpdateProperties {
+public final class RunbookUpdateProperties implements JsonSerializable<RunbookUpdateProperties> {
     /*
      * Gets or sets the description of the runbook.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Gets or sets verbose log option.
      */
-    @JsonProperty(value = "logVerbose")
     private Boolean logVerbose;
 
     /*
      * Gets or sets progress log option.
      */
-    @JsonProperty(value = "logProgress")
     private Boolean logProgress;
 
     /*
      * Gets or sets the activity-level tracing options of the runbook.
      */
-    @JsonProperty(value = "logActivityTrace")
     private Integer logActivityTrace;
 
     /**
+     * Creates an instance of RunbookUpdateProperties class.
+     */
+    public RunbookUpdateProperties() {
+    }
+
+    /**
      * Get the description property: Gets or sets the description of the runbook.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -45,7 +53,7 @@ public final class RunbookUpdateProperties {
 
     /**
      * Set the description property: Gets or sets the description of the runbook.
-     *
+     * 
      * @param description the description value to set.
      * @return the RunbookUpdateProperties object itself.
      */
@@ -56,7 +64,7 @@ public final class RunbookUpdateProperties {
 
     /**
      * Get the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @return the logVerbose value.
      */
     public Boolean logVerbose() {
@@ -65,7 +73,7 @@ public final class RunbookUpdateProperties {
 
     /**
      * Set the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @param logVerbose the logVerbose value to set.
      * @return the RunbookUpdateProperties object itself.
      */
@@ -76,7 +84,7 @@ public final class RunbookUpdateProperties {
 
     /**
      * Get the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @return the logProgress value.
      */
     public Boolean logProgress() {
@@ -85,7 +93,7 @@ public final class RunbookUpdateProperties {
 
     /**
      * Set the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @param logProgress the logProgress value to set.
      * @return the RunbookUpdateProperties object itself.
      */
@@ -96,7 +104,7 @@ public final class RunbookUpdateProperties {
 
     /**
      * Get the logActivityTrace property: Gets or sets the activity-level tracing options of the runbook.
-     *
+     * 
      * @return the logActivityTrace value.
      */
     public Integer logActivityTrace() {
@@ -105,7 +113,7 @@ public final class RunbookUpdateProperties {
 
     /**
      * Set the logActivityTrace property: Gets or sets the activity-level tracing options of the runbook.
-     *
+     * 
      * @param logActivityTrace the logActivityTrace value to set.
      * @return the RunbookUpdateProperties object itself.
      */
@@ -116,9 +124,54 @@ public final class RunbookUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("logVerbose", this.logVerbose);
+        jsonWriter.writeBooleanField("logProgress", this.logProgress);
+        jsonWriter.writeNumberField("logActivityTrace", this.logActivityTrace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunbookUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunbookUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunbookUpdateProperties.
+     */
+    public static RunbookUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunbookUpdateProperties deserializedRunbookUpdateProperties = new RunbookUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedRunbookUpdateProperties.description = reader.getString();
+                } else if ("logVerbose".equals(fieldName)) {
+                    deserializedRunbookUpdateProperties.logVerbose = reader.getNullable(JsonReader::getBoolean);
+                } else if ("logProgress".equals(fieldName)) {
+                    deserializedRunbookUpdateProperties.logProgress = reader.getNullable(JsonReader::getBoolean);
+                } else if ("logActivityTrace".equals(fieldName)) {
+                    deserializedRunbookUpdateProperties.logActivityTrace = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunbookUpdateProperties;
+        });
     }
 }

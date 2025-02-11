@@ -98,18 +98,7 @@ public final class AttestationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponseAsync(AttestOpenEnclaveRequest request) {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
-        } else {
-            request.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.attestOpenEnclave(this.client.getInstanceUrl(),
-            this.client.getApiVersion(), request, accept, context));
+        return FluxUtil.withContext(context -> attestOpenEnclaveWithResponseAsync(request, context));
     }
 
     /**
@@ -193,18 +182,7 @@ public final class AttestationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponseAsync(AttestSgxEnclaveRequest request) {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
-        } else {
-            request.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.attestSgxEnclave(this.client.getInstanceUrl(),
-            this.client.getApiVersion(), request, accept, context));
+        return FluxUtil.withContext(context -> attestSgxEnclaveWithResponseAsync(request, context));
     }
 
     /**
@@ -288,18 +266,7 @@ public final class AttestationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TpmAttestationResponse>> attestTpmWithResponseAsync(TpmAttestationRequest request) {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
-        } else {
-            request.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.attestTpm(this.client.getInstanceUrl(),
-            this.client.getApiVersion(), request, accept, context));
+        return FluxUtil.withContext(context -> attestTpmWithResponseAsync(request, context));
     }
 
     /**

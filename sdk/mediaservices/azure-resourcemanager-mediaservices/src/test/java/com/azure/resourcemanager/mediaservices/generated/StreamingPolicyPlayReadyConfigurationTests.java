@@ -11,22 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class StreamingPolicyPlayReadyConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StreamingPolicyPlayReadyConfiguration model =
-            BinaryData
-                .fromString("{\"customLicenseAcquisitionUrlTemplate\":\"yhz\",\"playReadyCustomAttributes\":\"ss\"}")
-                .toObject(StreamingPolicyPlayReadyConfiguration.class);
-        Assertions.assertEquals("yhz", model.customLicenseAcquisitionUrlTemplate());
-        Assertions.assertEquals("ss", model.playReadyCustomAttributes());
+        StreamingPolicyPlayReadyConfiguration model = BinaryData
+            .fromString(
+                "{\"customLicenseAcquisitionUrlTemplate\":\"ao\",\"playReadyCustomAttributes\":\"ulpqblylsyxkqjn\"}")
+            .toObject(StreamingPolicyPlayReadyConfiguration.class);
+        Assertions.assertEquals("ao", model.customLicenseAcquisitionUrlTemplate());
+        Assertions.assertEquals("ulpqblylsyxkqjn", model.playReadyCustomAttributes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StreamingPolicyPlayReadyConfiguration model =
-            new StreamingPolicyPlayReadyConfiguration()
-                .withCustomLicenseAcquisitionUrlTemplate("yhz")
-                .withPlayReadyCustomAttributes("ss");
+        StreamingPolicyPlayReadyConfiguration model
+            = new StreamingPolicyPlayReadyConfiguration().withCustomLicenseAcquisitionUrlTemplate("ao")
+                .withPlayReadyCustomAttributes("ulpqblylsyxkqjn");
         model = BinaryData.fromObject(model).toObject(StreamingPolicyPlayReadyConfiguration.class);
-        Assertions.assertEquals("yhz", model.customLicenseAcquisitionUrlTemplate());
-        Assertions.assertEquals("ss", model.playReadyCustomAttributes());
+        Assertions.assertEquals("ao", model.customLicenseAcquisitionUrlTemplate());
+        Assertions.assertEquals("ulpqblylsyxkqjn", model.playReadyCustomAttributes());
     }
 }

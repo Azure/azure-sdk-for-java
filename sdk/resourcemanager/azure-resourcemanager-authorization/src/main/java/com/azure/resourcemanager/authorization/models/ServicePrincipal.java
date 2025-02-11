@@ -17,23 +17,41 @@ import java.util.Set;
 
 /** An immutable client-side representation of an Azure AD service principal. */
 @Fluent
-public interface ServicePrincipal
-    extends ActiveDirectoryObject,
-        HasInnerModel<MicrosoftGraphServicePrincipalInner>,
-        Updatable<ServicePrincipal.Update> {
-    /** @return app id. */
+public interface ServicePrincipal extends ActiveDirectoryObject, HasInnerModel<MicrosoftGraphServicePrincipalInner>,
+    Updatable<ServicePrincipal.Update> {
+    /**
+     * Gets app id.
+     *
+     * @return app id.
+     */
     String applicationId();
 
-    /** @return the list of names. */
+    /**
+     * Gets the list of names.
+     *
+     * @return the list of names.
+     */
     List<String> servicePrincipalNames();
 
-    /** @return the mapping of password credentials from their names */
+    /**
+     * Gets the mapping of password credentials from their names.
+     *
+     * @return the mapping of password credentials from their names
+     */
     Map<String, PasswordCredential> passwordCredentials();
 
-    /** @return the mapping of certificate credentials from their names */
+    /**
+     * Gets the mapping of certificate credentials from their names.
+     *
+     * @return the mapping of certificate credentials from their names
+     */
     Map<String, CertificateCredential> certificateCredentials();
 
-    /** @return the mapping from scopes to role assignments */
+    /**
+     * Gets the mapping from scopes to role assignments.
+     *
+     * @return the mapping from scopes to role assignments
+     */
     Set<RoleAssignment> roleAssignments();
 
     /**************************************************************
@@ -159,8 +177,7 @@ public interface ServicePrincipal
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential update
              */
-            CertificateCredential.DefinitionStages.Blank<? extends Update>
-                defineCertificateCredential(String name);
+            CertificateCredential.DefinitionStages.Blank<? extends Update> defineCertificateCredential(String name);
 
             /**
              * Starts the definition of a password credential.
@@ -219,9 +236,7 @@ public interface ServicePrincipal
     }
 
     /** The template for a service principal update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<ServicePrincipal>,
-            ServicePrincipal.UpdateStages.WithCredential,
-            ServicePrincipal.UpdateStages.WithRoleAssignment {
+    interface Update extends Appliable<ServicePrincipal>, ServicePrincipal.UpdateStages.WithCredential,
+        ServicePrincipal.UpdateStages.WithRoleAssignment {
     }
 }

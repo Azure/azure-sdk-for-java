@@ -12,8 +12,7 @@ public final class SlimPolicyMetadataImpl implements SlimPolicyMetadata {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    SlimPolicyMetadataImpl(
-        SlimPolicyMetadataInner innerObject,
+    SlimPolicyMetadataImpl(SlimPolicyMetadataInner innerObject,
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

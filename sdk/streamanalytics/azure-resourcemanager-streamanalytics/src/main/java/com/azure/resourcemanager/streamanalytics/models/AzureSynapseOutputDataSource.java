@@ -5,22 +5,25 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.AzureSynapseOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Describes an Azure Synapse output data source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.Sql/Server/DataWarehouse")
 @Fluent
 public final class AzureSynapseOutputDataSource extends OutputDataSource {
     /*
+     * Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+     */
+    private String type = "Microsoft.Sql/Server/DataWarehouse";
+
+    /*
      * The properties that are associated with an Azure Synapse output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private AzureSynapseOutputDataSourceProperties innerProperties;
 
     /**
@@ -30,12 +33,23 @@ public final class AzureSynapseOutputDataSource extends OutputDataSource {
     }
 
     /**
+     * Get the type property: Indicates the type of data source output will be written to. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerProperties property: The properties that are associated with an Azure Synapse output. Required on
      * PUT (CreateOrReplace) requests.
      * 
      * @return the innerProperties value.
      */
-    private AzureSynapseOutputDataSourceProperties innerProperties() {
+    AzureSynapseOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -163,38 +177,54 @@ public final class AzureSynapseOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the authenticationMode property: Authentication Mode.
-     * 
-     * @return the authenticationMode value.
-     */
-    public AuthenticationMode authenticationMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().authenticationMode();
-    }
-
-    /**
-     * Set the authenticationMode property: Authentication Mode.
-     * 
-     * @param authenticationMode the authenticationMode value to set.
-     * @return the AzureSynapseOutputDataSource object itself.
-     */
-    public AzureSynapseOutputDataSource withAuthenticationMode(AuthenticationMode authenticationMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureSynapseOutputDataSourceProperties();
-        }
-        this.innerProperties().withAuthenticationMode(authenticationMode);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSynapseOutputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSynapseOutputDataSource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSynapseOutputDataSource.
+     */
+    public static AzureSynapseOutputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSynapseOutputDataSource deserializedAzureSynapseOutputDataSource = new AzureSynapseOutputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureSynapseOutputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureSynapseOutputDataSource.innerProperties
+                        = AzureSynapseOutputDataSourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSynapseOutputDataSource;
+        });
     }
 }

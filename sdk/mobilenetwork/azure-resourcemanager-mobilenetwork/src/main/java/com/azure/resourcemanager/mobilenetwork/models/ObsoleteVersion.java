@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ObsoleteVersion extends ExpandableStringEnum<ObsoleteVersion>
      * @param name a name to look for.
      * @return the corresponding ObsoleteVersion.
      */
-    @JsonCreator
     public static ObsoleteVersion fromString(String name) {
         return fromString(name, ObsoleteVersion.class);
     }

@@ -9,7 +9,9 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class ApplyUpdatesGetSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ApplyUpdates_Get.json
+     * x-ms-original-file:
+     * specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/
+     * ApplyUpdates_Get.json
      */
     /**
      * Sample code: ApplyUpdates_Get.

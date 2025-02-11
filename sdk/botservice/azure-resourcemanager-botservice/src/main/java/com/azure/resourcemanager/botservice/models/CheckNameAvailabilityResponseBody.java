@@ -6,11 +6,13 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.resourcemanager.botservice.fluent.models.CheckNameAvailabilityResponseBodyInner;
 
-/** An immutable client-side representation of CheckNameAvailabilityResponseBody. */
+/**
+ * An immutable client-side representation of CheckNameAvailabilityResponseBody.
+ */
 public interface CheckNameAvailabilityResponseBody {
     /**
      * Gets the valid property: indicates if the bot name is valid.
-     *
+     * 
      * @return the valid value.
      */
     Boolean valid();
@@ -18,14 +20,21 @@ public interface CheckNameAvailabilityResponseBody {
     /**
      * Gets the message property: additional message from the bot management api showing why a bot name is not
      * available.
-     *
+     * 
      * @return the message value.
      */
     String message();
 
     /**
+     * Gets the absCode property: response code from ABS.
+     * 
+     * @return the absCode value.
+     */
+    String absCode();
+
+    /**
      * Gets the inner com.azure.resourcemanager.botservice.fluent.models.CheckNameAvailabilityResponseBodyInner object.
-     *
+     * 
      * @return the inner object.
      */
     CheckNameAvailabilityResponseBodyInner innerModel();

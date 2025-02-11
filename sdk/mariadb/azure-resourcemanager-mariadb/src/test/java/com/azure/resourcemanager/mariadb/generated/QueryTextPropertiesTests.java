@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryTextPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryTextProperties model =
-            BinaryData
-                .fromString("{\"queryId\":\"frzpwvlqdqgb\",\"queryText\":\"ylihkaetckt\"}")
-                .toObject(QueryTextProperties.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.queryId());
-        Assertions.assertEquals("ylihkaetckt", model.queryText());
+        QueryTextProperties model = BinaryData.fromString("{\"queryId\":\"tqhjfbebrjcx\",\"queryText\":\"fuwutttxf\"}")
+            .toObject(QueryTextProperties.class);
+        Assertions.assertEquals("tqhjfbebrjcx", model.queryId());
+        Assertions.assertEquals("fuwutttxf", model.queryText());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryTextProperties model = new QueryTextProperties().withQueryId("frzpwvlqdqgb").withQueryText("ylihkaetckt");
+        QueryTextProperties model = new QueryTextProperties().withQueryId("tqhjfbebrjcx").withQueryText("fuwutttxf");
         model = BinaryData.fromObject(model).toObject(QueryTextProperties.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.queryId());
-        Assertions.assertEquals("ylihkaetckt", model.queryText());
+        Assertions.assertEquals("tqhjfbebrjcx", model.queryId());
+        Assertions.assertEquals("fuwutttxf", model.queryText());
     }
 }

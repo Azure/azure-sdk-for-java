@@ -326,8 +326,13 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withAdministratorLogin(String administratorLogin) {
-        this.innerModel().withAdministratorLogin(administratorLogin);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withAdministratorLogin(administratorLogin);
+            return this;
+        } else {
+            this.updateParameters.withAdministratorLogin(administratorLogin);
+            return this;
+        }
     }
 
     public ServerImpl withAdministratorLoginPassword(String administratorLoginPassword) {

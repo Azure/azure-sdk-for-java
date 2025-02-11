@@ -6,7 +6,9 @@ package com.azure.resourcemanager.networkfunction.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkfunction.fluent.models.CollectorPolicyPropertiesFormat;
+import com.azure.resourcemanager.networkfunction.models.DestinationType;
 import com.azure.resourcemanager.networkfunction.models.EmissionPoliciesPropertiesFormat;
+import com.azure.resourcemanager.networkfunction.models.EmissionPolicyDestination;
 import com.azure.resourcemanager.networkfunction.models.EmissionType;
 import com.azure.resourcemanager.networkfunction.models.IngestionPolicyPropertiesFormat;
 import com.azure.resourcemanager.networkfunction.models.IngestionSourcesPropertiesFormat;
@@ -14,60 +16,54 @@ import com.azure.resourcemanager.networkfunction.models.IngestionType;
 import com.azure.resourcemanager.networkfunction.models.SourceType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CollectorPolicyPropertiesFormatTests {
-    @Test
-    public void testDeserialize() {
-        CollectorPolicyPropertiesFormat model =
-            BinaryData
-                .fromString(
-                    "{\"ingestionPolicy\":{\"ingestionType\":\"IPFIX\",\"ingestionSources\":[{\"sourceType\":\"Resource\",\"resourceId\":\"uflmm\"},{\"sourceType\":\"Resource\",\"resourceId\":\"modmglougpb\"},{\"sourceType\":\"Resource\",\"resourceId\":\"utduqktapspwgcu\"}]},\"emissionPolicies\":[{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[]}],\"provisioningState\":\"Succeeded\"}")
-                .toObject(CollectorPolicyPropertiesFormat.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CollectorPolicyPropertiesFormat model = BinaryData.fromString(
+            "{\"ingestionPolicy\":{\"ingestionType\":\"IPFIX\",\"ingestionSources\":[{\"sourceType\":\"Resource\",\"resourceId\":\"xg\"},{\"sourceType\":\"Resource\",\"resourceId\":\"cp\"},{\"sourceType\":\"Resource\",\"resourceId\":\"aajrm\"},{\"sourceType\":\"Resource\",\"resourceId\":\"zrlovmclwhijcoej\"}]},\"emissionPolicies\":[{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{\"destinationType\":\"AzureMonitor\"}]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{\"destinationType\":\"AzureMonitor\"},{\"destinationType\":\"AzureMonitor\"}]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{\"destinationType\":\"AzureMonitor\"},{\"destinationType\":\"AzureMonitor\"}]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{\"destinationType\":\"AzureMonitor\"},{\"destinationType\":\"AzureMonitor\"}]}],\"provisioningState\":\"Succeeded\"}")
+            .toObject(CollectorPolicyPropertiesFormat.class);
         Assertions.assertEquals(IngestionType.IPFIX, model.ingestionPolicy().ingestionType());
         Assertions.assertEquals(SourceType.RESOURCE, model.ingestionPolicy().ingestionSources().get(0).sourceType());
-        Assertions.assertEquals("uflmm", model.ingestionPolicy().ingestionSources().get(0).resourceId());
+        Assertions.assertEquals("xg", model.ingestionPolicy().ingestionSources().get(0).resourceId());
         Assertions.assertEquals(EmissionType.IPFIX, model.emissionPolicies().get(0).emissionType());
+        Assertions.assertEquals(DestinationType.AZURE_MONITOR,
+            model.emissionPolicies().get(0).emissionDestinations().get(0).destinationType());
     }
 
-    @Test
-    public void testSerialize() {
-        CollectorPolicyPropertiesFormat model =
-            new CollectorPolicyPropertiesFormat()
-                .withIngestionPolicy(
-                    new IngestionPolicyPropertiesFormat()
-                        .withIngestionType(IngestionType.IPFIX)
-                        .withIngestionSources(
-                            Arrays
-                                .asList(
-                                    new IngestionSourcesPropertiesFormat()
-                                        .withSourceType(SourceType.RESOURCE)
-                                        .withResourceId("uflmm"),
-                                    new IngestionSourcesPropertiesFormat()
-                                        .withSourceType(SourceType.RESOURCE)
-                                        .withResourceId("modmglougpb"),
-                                    new IngestionSourcesPropertiesFormat()
-                                        .withSourceType(SourceType.RESOURCE)
-                                        .withResourceId("utduqktapspwgcu"))))
-                .withEmissionPolicies(
-                    Arrays
-                        .asList(
-                            new EmissionPoliciesPropertiesFormat()
-                                .withEmissionType(EmissionType.IPFIX)
-                                .withEmissionDestinations(Arrays.asList()),
-                            new EmissionPoliciesPropertiesFormat()
-                                .withEmissionType(EmissionType.IPFIX)
-                                .withEmissionDestinations(Arrays.asList()),
-                            new EmissionPoliciesPropertiesFormat()
-                                .withEmissionType(EmissionType.IPFIX)
-                                .withEmissionDestinations(Arrays.asList()),
-                            new EmissionPoliciesPropertiesFormat()
-                                .withEmissionType(EmissionType.IPFIX)
-                                .withEmissionDestinations(Arrays.asList())));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CollectorPolicyPropertiesFormat model = new CollectorPolicyPropertiesFormat()
+            .withIngestionPolicy(new IngestionPolicyPropertiesFormat().withIngestionType(IngestionType.IPFIX)
+                .withIngestionSources(Arrays.asList(
+                    new IngestionSourcesPropertiesFormat().withSourceType(SourceType.RESOURCE).withResourceId("xg"),
+                    new IngestionSourcesPropertiesFormat().withSourceType(SourceType.RESOURCE).withResourceId("cp"),
+                    new IngestionSourcesPropertiesFormat().withSourceType(SourceType.RESOURCE).withResourceId("aajrm"),
+                    new IngestionSourcesPropertiesFormat().withSourceType(SourceType.RESOURCE)
+                        .withResourceId("zrlovmclwhijcoej"))))
+            .withEmissionPolicies(
+                Arrays.asList(
+                    new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                        .withEmissionDestinations(Arrays.asList(
+                            new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR))),
+                    new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                        .withEmissionDestinations(Arrays.asList(
+                            new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR),
+                            new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR))),
+                    new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                        .withEmissionDestinations(Arrays.asList(
+                            new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR),
+                            new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR))),
+                    new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                        .withEmissionDestinations(Arrays.asList(
+                            new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR),
+                            new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR)))));
         model = BinaryData.fromObject(model).toObject(CollectorPolicyPropertiesFormat.class);
         Assertions.assertEquals(IngestionType.IPFIX, model.ingestionPolicy().ingestionType());
         Assertions.assertEquals(SourceType.RESOURCE, model.ingestionPolicy().ingestionSources().get(0).sourceType());
-        Assertions.assertEquals("uflmm", model.ingestionPolicy().ingestionSources().get(0).resourceId());
+        Assertions.assertEquals("xg", model.ingestionPolicy().ingestionSources().get(0).resourceId());
         Assertions.assertEquals(EmissionType.IPFIX, model.emissionPolicies().get(0).emissionType());
+        Assertions.assertEquals(DestinationType.AZURE_MONITOR,
+            model.emissionPolicies().get(0).emissionDestinations().get(0).destinationType());
     }
 }

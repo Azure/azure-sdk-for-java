@@ -5,50 +5,56 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of the dsc node report error type. */
+/**
+ * Definition of the dsc node report error type.
+ */
 @Fluent
-public final class DscReportError {
+public final class DscReportError implements JsonSerializable<DscReportError> {
     /*
      * Gets or sets the source of the error.
      */
-    @JsonProperty(value = "errorSource")
     private String errorSource;
 
     /*
      * Gets or sets the resource ID which generated the error.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Gets or sets the error code.
      */
-    @JsonProperty(value = "errorCode")
     private String errorCode;
 
     /*
      * Gets or sets the error message.
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /*
      * Gets or sets the locale of the error.
      */
-    @JsonProperty(value = "locale")
     private String locale;
 
     /*
      * Gets or sets the error details.
      */
-    @JsonProperty(value = "errorDetails")
     private String errorDetails;
 
     /**
+     * Creates an instance of DscReportError class.
+     */
+    public DscReportError() {
+    }
+
+    /**
      * Get the errorSource property: Gets or sets the source of the error.
-     *
+     * 
      * @return the errorSource value.
      */
     public String errorSource() {
@@ -57,7 +63,7 @@ public final class DscReportError {
 
     /**
      * Set the errorSource property: Gets or sets the source of the error.
-     *
+     * 
      * @param errorSource the errorSource value to set.
      * @return the DscReportError object itself.
      */
@@ -68,7 +74,7 @@ public final class DscReportError {
 
     /**
      * Get the resourceId property: Gets or sets the resource ID which generated the error.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -77,7 +83,7 @@ public final class DscReportError {
 
     /**
      * Set the resourceId property: Gets or sets the resource ID which generated the error.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the DscReportError object itself.
      */
@@ -88,7 +94,7 @@ public final class DscReportError {
 
     /**
      * Get the errorCode property: Gets or sets the error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -97,7 +103,7 @@ public final class DscReportError {
 
     /**
      * Set the errorCode property: Gets or sets the error code.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the DscReportError object itself.
      */
@@ -108,7 +114,7 @@ public final class DscReportError {
 
     /**
      * Get the errorMessage property: Gets or sets the error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -117,7 +123,7 @@ public final class DscReportError {
 
     /**
      * Set the errorMessage property: Gets or sets the error message.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the DscReportError object itself.
      */
@@ -128,7 +134,7 @@ public final class DscReportError {
 
     /**
      * Get the locale property: Gets or sets the locale of the error.
-     *
+     * 
      * @return the locale value.
      */
     public String locale() {
@@ -137,7 +143,7 @@ public final class DscReportError {
 
     /**
      * Set the locale property: Gets or sets the locale of the error.
-     *
+     * 
      * @param locale the locale value to set.
      * @return the DscReportError object itself.
      */
@@ -148,7 +154,7 @@ public final class DscReportError {
 
     /**
      * Get the errorDetails property: Gets or sets the error details.
-     *
+     * 
      * @return the errorDetails value.
      */
     public String errorDetails() {
@@ -157,7 +163,7 @@ public final class DscReportError {
 
     /**
      * Set the errorDetails property: Gets or sets the error details.
-     *
+     * 
      * @param errorDetails the errorDetails value to set.
      * @return the DscReportError object itself.
      */
@@ -168,9 +174,60 @@ public final class DscReportError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("errorSource", this.errorSource);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeStringField("locale", this.locale);
+        jsonWriter.writeStringField("errorDetails", this.errorDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscReportError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscReportError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscReportError.
+     */
+    public static DscReportError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscReportError deserializedDscReportError = new DscReportError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorSource".equals(fieldName)) {
+                    deserializedDscReportError.errorSource = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedDscReportError.resourceId = reader.getString();
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedDscReportError.errorCode = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedDscReportError.errorMessage = reader.getString();
+                } else if ("locale".equals(fieldName)) {
+                    deserializedDscReportError.locale = reader.getString();
+                } else if ("errorDetails".equals(fieldName)) {
+                    deserializedDscReportError.errorDetails = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscReportError;
+        });
     }
 }

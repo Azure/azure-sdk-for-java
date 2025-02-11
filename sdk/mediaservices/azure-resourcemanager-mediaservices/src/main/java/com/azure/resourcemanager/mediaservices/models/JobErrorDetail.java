@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of JobOutput errors. */
+/**
+ * Details of JobOutput errors.
+ */
 @Immutable
-public final class JobErrorDetail {
+public final class JobErrorDetail implements JsonSerializable<JobErrorDetail> {
     /*
      * Code describing the error detail.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * A human-readable representation of the error.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of JobErrorDetail class. */
+    /**
+     * Creates an instance of JobErrorDetail class.
+     */
     public JobErrorDetail() {
     }
 
     /**
      * Get the code property: Code describing the error detail.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +43,7 @@ public final class JobErrorDetail {
 
     /**
      * Get the message property: A human-readable representation of the error.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -46,9 +52,46 @@ public final class JobErrorDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobErrorDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobErrorDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobErrorDetail.
+     */
+    public static JobErrorDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobErrorDetail deserializedJobErrorDetail = new JobErrorDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedJobErrorDetail.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedJobErrorDetail.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobErrorDetail;
+        });
     }
 }

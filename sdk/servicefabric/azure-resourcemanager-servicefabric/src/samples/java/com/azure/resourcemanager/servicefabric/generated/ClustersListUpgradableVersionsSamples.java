@@ -22,8 +22,8 @@ public final class ClustersListUpgradableVersionsSamples {
      */
     public static void
         getMinimumAndMaximumCodeVersions(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusters().listUpgradableVersionsWithResponse("resRg", "myCluster", null,
-            com.azure.core.util.Context.NONE);
+        manager.clusters()
+            .listUpgradableVersionsWithResponse("resRg", "myCluster", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -37,7 +37,9 @@ public final class ClustersListUpgradableVersionsSamples {
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void getUpgradePath(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusters().listUpgradableVersionsWithResponse("resRg", "myCluster",
-            new UpgradableVersionsDescription().withTargetVersion("7.2.432.9590"), com.azure.core.util.Context.NONE);
+        manager.clusters()
+            .listUpgradableVersionsWithResponse("resRg", "myCluster",
+                new UpgradableVersionsDescription().withTargetVersion("7.2.432.9590"),
+                com.azure.core.util.Context.NONE);
     }
 }

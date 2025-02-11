@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The integration account agreement content. */
+/**
+ * The integration account agreement content.
+ */
 @Fluent
-public final class AgreementContent {
+public final class AgreementContent implements JsonSerializable<AgreementContent> {
     /*
      * The AS2 agreement content.
      */
-    @JsonProperty(value = "aS2")
     private AS2AgreementContent aS2;
 
     /*
      * The X12 agreement content.
      */
-    @JsonProperty(value = "x12")
     private X12AgreementContent x12;
 
     /*
      * The EDIFACT agreement content.
      */
-    @JsonProperty(value = "edifact")
     private EdifactAgreementContent edifact;
 
-    /** Creates an instance of AgreementContent class. */
+    /**
+     * Creates an instance of AgreementContent class.
+     */
     public AgreementContent() {
     }
 
     /**
      * Get the aS2 property: The AS2 agreement content.
-     *
+     * 
      * @return the aS2 value.
      */
     public AS2AgreementContent aS2() {
@@ -43,7 +48,7 @@ public final class AgreementContent {
 
     /**
      * Set the aS2 property: The AS2 agreement content.
-     *
+     * 
      * @param aS2 the aS2 value to set.
      * @return the AgreementContent object itself.
      */
@@ -54,7 +59,7 @@ public final class AgreementContent {
 
     /**
      * Get the x12 property: The X12 agreement content.
-     *
+     * 
      * @return the x12 value.
      */
     public X12AgreementContent x12() {
@@ -63,7 +68,7 @@ public final class AgreementContent {
 
     /**
      * Set the x12 property: The X12 agreement content.
-     *
+     * 
      * @param x12 the x12 value to set.
      * @return the AgreementContent object itself.
      */
@@ -74,7 +79,7 @@ public final class AgreementContent {
 
     /**
      * Get the edifact property: The EDIFACT agreement content.
-     *
+     * 
      * @return the edifact value.
      */
     public EdifactAgreementContent edifact() {
@@ -83,7 +88,7 @@ public final class AgreementContent {
 
     /**
      * Set the edifact property: The EDIFACT agreement content.
-     *
+     * 
      * @param edifact the edifact value to set.
      * @return the AgreementContent object itself.
      */
@@ -94,7 +99,7 @@ public final class AgreementContent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,5 +112,47 @@ public final class AgreementContent {
         if (edifact() != null) {
             edifact().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("aS2", this.aS2);
+        jsonWriter.writeJsonField("x12", this.x12);
+        jsonWriter.writeJsonField("edifact", this.edifact);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgreementContent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgreementContent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgreementContent.
+     */
+    public static AgreementContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgreementContent deserializedAgreementContent = new AgreementContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aS2".equals(fieldName)) {
+                    deserializedAgreementContent.aS2 = AS2AgreementContent.fromJson(reader);
+                } else if ("x12".equals(fieldName)) {
+                    deserializedAgreementContent.x12 = X12AgreementContent.fromJson(reader);
+                } else if ("edifact".equals(fieldName)) {
+                    deserializedAgreementContent.edifact = EdifactAgreementContent.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgreementContent;
+        });
     }
 }

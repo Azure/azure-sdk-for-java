@@ -28,7 +28,8 @@ public class AssistantApiFormatSerializerTests {
     @Test
     public void assistantCreationOptionTextFormat() {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
-        assistantCreationOptions.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
+        assistantCreationOptions.setResponseFormat(
+            new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
         AssistantsApiResponseFormatOption responseFormat = assistantCreationOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(assistantCreationOptions);
@@ -43,7 +44,8 @@ public class AssistantApiFormatSerializerTests {
     @Test
     public void assistantCreationOptionJsonObjectFormat() {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
-        assistantCreationOptions.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
+        assistantCreationOptions.setResponseFormat(
+            new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
         AssistantsApiResponseFormatOption responseFormat = assistantCreationOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(assistantCreationOptions);
@@ -58,7 +60,8 @@ public class AssistantApiFormatSerializerTests {
     @Test
     public void assistantCreationOptionAutoMode() {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
-        assistantCreationOptions.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.AUTO));
+        assistantCreationOptions
+            .setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.AUTO));
         AssistantsApiResponseFormatOption responseFormat = assistantCreationOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(assistantCreationOptions);
@@ -72,7 +75,8 @@ public class AssistantApiFormatSerializerTests {
     @Test
     public void assistantCreationOptionNoneMode() {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
-        assistantCreationOptions.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.NONE));
+        assistantCreationOptions
+            .setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.NONE));
         AssistantsApiResponseFormatOption responseFormat = assistantCreationOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(assistantCreationOptions);
@@ -86,9 +90,9 @@ public class AssistantApiFormatSerializerTests {
     @Test
     public void createRunOptionTextFormat() {
         CreateRunOptions createRunOptions = new CreateRunOptions("abc123");
-        createRunOptions.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
+        createRunOptions.setResponseFormat(
+            new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
         AssistantsApiResponseFormatOption responseFormat = createRunOptions.getResponseFormat();
-
 
         BinaryData jsonBinaryData = BinaryData.fromObject(createRunOptions);
         String json = jsonBinaryData.toString();
@@ -101,7 +105,8 @@ public class AssistantApiFormatSerializerTests {
     @Test
     public void createRunOptionJsonObjectFormat() {
         CreateRunOptions createRunOptions = new CreateRunOptions("abc123");
-        createRunOptions.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
+        createRunOptions.setResponseFormat(
+            new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
         AssistantsApiResponseFormatOption responseFormat = createRunOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(createRunOptions);
@@ -143,7 +148,8 @@ public class AssistantApiFormatSerializerTests {
     @Test
     public void createAndRunThreadOptionTextFormat() {
         CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
-        options.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
+        options.setResponseFormat(
+            new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
         AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
@@ -157,7 +163,8 @@ public class AssistantApiFormatSerializerTests {
     @Test
     public void createAndRunThreadOptionJsonObjectFormat() {
         CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
-        options.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
+        options.setResponseFormat(
+            new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
         AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
@@ -199,7 +206,8 @@ public class AssistantApiFormatSerializerTests {
     @Test
     public void updateAssistantOptionTextFormat() {
         UpdateAssistantOptions options = new UpdateAssistantOptions();
-        options.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
+        options.setResponseFormat(
+            new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
         AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
@@ -212,7 +220,8 @@ public class AssistantApiFormatSerializerTests {
     @Test
     public void updateAssistantOptionJsonObjectFormat() {
         UpdateAssistantOptions options = new UpdateAssistantOptions();
-        options.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
+        options.setResponseFormat(
+            new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
         AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
@@ -250,7 +259,8 @@ public class AssistantApiFormatSerializerTests {
 
     @Test
     public void assistantTextFormat() {
-        Assistant assistant = BinaryData.fromString("{\"response_format\":{\"type\":\"text\"}}").toObject(Assistant.class);
+        Assistant assistant
+            = BinaryData.fromString("{\"response_format\":{\"type\":\"text\"}}").toObject(Assistant.class);
         AssistantsApiResponseFormatOption responseFormat = assistant.getResponseFormat();
 
         assertNull(responseFormat.getMode());
@@ -260,7 +270,8 @@ public class AssistantApiFormatSerializerTests {
 
     @Test
     public void assistantJsonObjectFormat() {
-        Assistant assistant = BinaryData.fromString("{\"response_format\":{\"type\":\"json_object\"}}").toObject(Assistant.class);
+        Assistant assistant
+            = BinaryData.fromString("{\"response_format\":{\"type\":\"json_object\"}}").toObject(Assistant.class);
         AssistantsApiResponseFormatOption responseFormat = assistant.getResponseFormat();
 
         assertNull(responseFormat.getMode());
@@ -298,7 +309,8 @@ public class AssistantApiFormatSerializerTests {
 
     @Test
     public void threadRunTextFormat() {
-        ThreadRun threadRun = BinaryData.fromString("{\"response_format\":{\"type\":\"text\"}}").toObject(ThreadRun.class);
+        ThreadRun threadRun
+            = BinaryData.fromString("{\"response_format\":{\"type\":\"text\"}}").toObject(ThreadRun.class);
         AssistantsApiResponseFormatOption responseFormat = threadRun.getResponseFormat();
 
         assertNull(responseFormat.getMode());
@@ -308,7 +320,8 @@ public class AssistantApiFormatSerializerTests {
 
     @Test
     public void threadRunJsonObjectFormat() {
-        ThreadRun threadRun = BinaryData.fromString("{\"response_format\":{\"type\":\"json_object\"}}").toObject(ThreadRun.class);
+        ThreadRun threadRun
+            = BinaryData.fromString("{\"response_format\":{\"type\":\"json_object\"}}").toObject(ThreadRun.class);
         AssistantsApiResponseFormatOption responseFormat = threadRun.getResponseFormat();
 
         assertNull(responseFormat.getMode());

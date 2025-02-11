@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Determines whether this link is supposed to create or delete instances if Link is NOT Reference Only. */
+/**
+ * Determines whether this link is supposed to create or delete instances if Link is NOT Reference Only.
+ */
 public enum InstanceOperationType {
-    /** Enum value Upsert. */
+    /**
+     * Enum value Upsert.
+     */
     UPSERT("Upsert"),
 
-    /** Enum value Delete. */
+    /**
+     * Enum value Delete.
+     */
     DELETE("Delete");
 
-    /** The actual serialized value for a InstanceOperationType instance. */
+    /**
+     * The actual serialized value for a InstanceOperationType instance.
+     */
     private final String value;
 
     InstanceOperationType(String value) {
@@ -24,11 +29,10 @@ public enum InstanceOperationType {
 
     /**
      * Parses a serialized value to a InstanceOperationType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed InstanceOperationType object, or null if unable to parse.
      */
-    @JsonCreator
     public static InstanceOperationType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum InstanceOperationType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

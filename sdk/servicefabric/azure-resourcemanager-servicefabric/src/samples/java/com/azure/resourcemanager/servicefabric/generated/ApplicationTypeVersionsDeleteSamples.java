@@ -20,7 +20,7 @@ public final class ApplicationTypeVersionsDeleteSamples {
      */
     public static void
         deleteAnApplicationTypeVersion(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applicationTypeVersions().delete("resRg", "myCluster", "myAppType", "1.0",
-            com.azure.core.util.Context.NONE);
+        manager.applicationTypeVersions()
+            .delete("resRg", "myCluster", "myAppType", "1.0", com.azure.core.util.Context.NONE);
     }
 }

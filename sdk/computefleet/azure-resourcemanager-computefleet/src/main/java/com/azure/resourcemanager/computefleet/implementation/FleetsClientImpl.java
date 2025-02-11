@@ -54,24 +54,24 @@ public final class FleetsClientImpl implements FleetsClient {
     /**
      * The service client containing this operation class.
      */
-    private final AzureFleetClientImpl client;
+    private final ComputeFleetManagementClientImpl client;
 
     /**
      * Initializes an instance of FleetsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    FleetsClientImpl(AzureFleetClientImpl client) {
+    FleetsClientImpl(ComputeFleetManagementClientImpl client) {
         this.service = RestProxy.create(FleetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureFleetClientFleets to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for ComputeFleetManagementClientFleets to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureFleetClientFlee")
+    @ServiceInterface(name = "ComputeFleetManageme")
     public interface FleetsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}")
@@ -1317,8 +1317,6 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List Fleet resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1347,8 +1345,6 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List Fleet resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1376,8 +1372,6 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List Fleet resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1406,8 +1400,6 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List Fleet resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1435,8 +1427,6 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List VirtualMachineScaleSet resources by Fleet
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1465,8 +1455,6 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List VirtualMachineScaleSet resources by Fleet
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

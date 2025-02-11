@@ -26,7 +26,9 @@ public class WebApplicationContextRunnerUtils {
             .withConfiguration(AutoConfigurations.of(
                     HttpMessageConvertersAutoConfiguration.class,
                     RestTemplateAutoConfiguration.class))
-            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class, AadAutoConfiguration.class)
+            .withUserConfiguration(
+                AzureGlobalPropertiesAutoConfiguration.class,
+                AadAutoConfiguration.class)
             .withInitializer(new ConditionEvaluationReportLoggingListener());
     }
 

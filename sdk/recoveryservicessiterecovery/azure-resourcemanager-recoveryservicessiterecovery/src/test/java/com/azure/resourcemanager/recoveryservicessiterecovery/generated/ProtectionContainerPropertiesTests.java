@@ -25,10 +25,13 @@ public final class ProtectionContainerPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionContainerProperties model
-            = new ProtectionContainerProperties().withFabricFriendlyName("pgn").withFriendlyName("txhp")
-                .withFabricType("bzpfzab").withProtectedItemCount(687811406).withPairingStatus("hxw").withRole("tyq")
-                .withFabricSpecificDetails(new ProtectionContainerFabricSpecificDetails());
+        ProtectionContainerProperties model = new ProtectionContainerProperties().withFabricFriendlyName("pgn")
+            .withFriendlyName("txhp")
+            .withFabricType("bzpfzab")
+            .withProtectedItemCount(687811406)
+            .withPairingStatus("hxw")
+            .withRole("tyq")
+            .withFabricSpecificDetails(new ProtectionContainerFabricSpecificDetails());
         model = BinaryData.fromObject(model).toObject(ProtectionContainerProperties.class);
         Assertions.assertEquals("pgn", model.fabricFriendlyName());
         Assertions.assertEquals("txhp", model.friendlyName());

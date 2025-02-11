@@ -5,6 +5,4 @@ extends:
   parameters:
     PackageName: azure-communication-callingserver
     SafeName: azurecommunicationcallingserver
-    UseFederatedAuth: true
-    Clouds: 'Public'
     TestMode: 'LIVE'

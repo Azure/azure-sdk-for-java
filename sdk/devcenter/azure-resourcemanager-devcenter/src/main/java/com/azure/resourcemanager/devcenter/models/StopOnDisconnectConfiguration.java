@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Stop on disconnect configuration settings for Dev Boxes created in this pool.
  */
 @Fluent
-public final class StopOnDisconnectConfiguration {
+public final class StopOnDisconnectConfiguration implements JsonSerializable<StopOnDisconnectConfiguration> {
     /*
      * Whether the feature to stop the Dev Box on disconnect once the grace period has lapsed is enabled.
      */
-    @JsonProperty(value = "status")
     private StopOnDisconnectEnableStatus status;
 
     /*
      * The specified time in minutes to wait before stopping a Dev Box once disconnect is detected.
      */
-    @JsonProperty(value = "gracePeriodMinutes")
     private Integer gracePeriodMinutes;
 
     /**
@@ -80,5 +82,47 @@ public final class StopOnDisconnectConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeNumberField("gracePeriodMinutes", this.gracePeriodMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StopOnDisconnectConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StopOnDisconnectConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StopOnDisconnectConfiguration.
+     */
+    public static StopOnDisconnectConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StopOnDisconnectConfiguration deserializedStopOnDisconnectConfiguration
+                = new StopOnDisconnectConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedStopOnDisconnectConfiguration.status
+                        = StopOnDisconnectEnableStatus.fromString(reader.getString());
+                } else if ("gracePeriodMinutes".equals(fieldName)) {
+                    deserializedStopOnDisconnectConfiguration.gracePeriodMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStopOnDisconnectConfiguration;
+        });
     }
 }

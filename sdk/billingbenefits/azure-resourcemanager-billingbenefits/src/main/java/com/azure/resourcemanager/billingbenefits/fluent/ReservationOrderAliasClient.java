@@ -13,11 +13,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.billingbenefits.fluent.models.ReservationOrderAliasResponseInner;
 import com.azure.resourcemanager.billingbenefits.models.ReservationOrderAliasRequest;
 
-/** An instance of this class provides access to all the operations defined in ReservationOrderAliasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReservationOrderAliasClient.
+ */
 public interface ReservationOrderAliasClient {
     /**
      * Create a reservation order alias.
-     *
+     * 
      * @param reservationOrderAliasName Name of the reservation order alias.
      * @param body Request body for creating a reservation order alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,12 +28,12 @@ public interface ReservationOrderAliasClient {
      * @return the {@link SyncPoller} for polling of reservation order alias.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationOrderAliasResponseInner>, ReservationOrderAliasResponseInner> beginCreate(
-        String reservationOrderAliasName, ReservationOrderAliasRequest body);
+    SyncPoller<PollResult<ReservationOrderAliasResponseInner>, ReservationOrderAliasResponseInner>
+        beginCreate(String reservationOrderAliasName, ReservationOrderAliasRequest body);
 
     /**
      * Create a reservation order alias.
-     *
+     * 
      * @param reservationOrderAliasName Name of the reservation order alias.
      * @param body Request body for creating a reservation order alias.
      * @param context The context to associate with this operation.
@@ -41,12 +43,12 @@ public interface ReservationOrderAliasClient {
      * @return the {@link SyncPoller} for polling of reservation order alias.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationOrderAliasResponseInner>, ReservationOrderAliasResponseInner> beginCreate(
-        String reservationOrderAliasName, ReservationOrderAliasRequest body, Context context);
+    SyncPoller<PollResult<ReservationOrderAliasResponseInner>, ReservationOrderAliasResponseInner>
+        beginCreate(String reservationOrderAliasName, ReservationOrderAliasRequest body, Context context);
 
     /**
      * Create a reservation order alias.
-     *
+     * 
      * @param reservationOrderAliasName Name of the reservation order alias.
      * @param body Request body for creating a reservation order alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,7 +61,7 @@ public interface ReservationOrderAliasClient {
 
     /**
      * Create a reservation order alias.
-     *
+     * 
      * @param reservationOrderAliasName Name of the reservation order alias.
      * @param body Request body for creating a reservation order alias.
      * @param context The context to associate with this operation.
@@ -69,12 +71,12 @@ public interface ReservationOrderAliasClient {
      * @return reservation order alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReservationOrderAliasResponseInner create(
-        String reservationOrderAliasName, ReservationOrderAliasRequest body, Context context);
+    ReservationOrderAliasResponseInner create(String reservationOrderAliasName, ReservationOrderAliasRequest body,
+        Context context);
 
     /**
      * Get a reservation order alias.
-     *
+     * 
      * @param reservationOrderAliasName Name of the reservation order alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,7 +89,7 @@ public interface ReservationOrderAliasClient {
 
     /**
      * Get a reservation order alias.
-     *
+     * 
      * @param reservationOrderAliasName Name of the reservation order alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

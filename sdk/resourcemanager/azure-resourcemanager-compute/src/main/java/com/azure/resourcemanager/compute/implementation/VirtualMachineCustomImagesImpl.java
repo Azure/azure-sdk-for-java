@@ -12,9 +12,8 @@ import com.azure.resourcemanager.compute.fluent.ImagesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** The implementation for VirtualMachineCustomImages. */
-public class VirtualMachineCustomImagesImpl
-    extends TopLevelModifiableResourcesImpl<
-        VirtualMachineCustomImage, VirtualMachineCustomImageImpl, ImageInner, ImagesClient, ComputeManager>
+public class VirtualMachineCustomImagesImpl extends
+    TopLevelModifiableResourcesImpl<VirtualMachineCustomImage, VirtualMachineCustomImageImpl, ImageInner, ImagesClient, ComputeManager>
     implements VirtualMachineCustomImages {
 
     public VirtualMachineCustomImagesImpl(final ComputeManager computeManager) {

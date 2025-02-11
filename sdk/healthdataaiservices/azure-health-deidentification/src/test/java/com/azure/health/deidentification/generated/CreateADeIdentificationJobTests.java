@@ -29,10 +29,9 @@ public final class CreateADeIdentificationJobTests extends DeidentificationClien
                     "/documents").setExtensions(Arrays.asList("*")),
                 new TargetStorageLocation(
                     "https://blobtest.blob.core.windows.net/container?sp=r&st=2024-01-24T18:11:10Z&se=2024-01-25T02:11:10Z&spr=https&sv=2022-11-02&sr=c&sig=signature%3D",
-                    "/documents"))
-                .setOperation(OperationType.REDACT)
-                .setDataType(DocumentDataType.PLAINTEXT)
-                .setRedactionFormat("[{type}]")));
+                    "/documents")).setOperation(OperationType.REDACT)
+                        .setDataType(DocumentDataType.PLAINTEXT)
+                        .setRedactionFormat("[{type}]")));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,

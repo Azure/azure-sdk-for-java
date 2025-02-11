@@ -5,80 +5,80 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The properties of a query statistic. */
+/**
+ * The properties of a query statistic.
+ */
 @Fluent
-public final class QueryStatisticProperties {
+public final class QueryStatisticProperties implements JsonSerializable<QueryStatisticProperties> {
     /*
      * Database query identifier.
      */
-    @JsonProperty(value = "queryId")
     private String queryId;
 
     /*
      * Observation start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Observation end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Aggregation function name.
      */
-    @JsonProperty(value = "aggregationFunction")
     private String aggregationFunction;
 
     /*
      * The list of database names.
      */
-    @JsonProperty(value = "databaseNames")
     private List<String> databaseNames;
 
     /*
      * Number of query executions in this time interval.
      */
-    @JsonProperty(value = "queryExecutionCount")
     private Long queryExecutionCount;
 
     /*
      * Metric name.
      */
-    @JsonProperty(value = "metricName")
     private String metricName;
 
     /*
      * Metric display name.
      */
-    @JsonProperty(value = "metricDisplayName")
     private String metricDisplayName;
 
     /*
      * Metric value.
      */
-    @JsonProperty(value = "metricValue")
     private Double metricValue;
 
     /*
      * Metric value unit.
      */
-    @JsonProperty(value = "metricValueUnit")
     private String metricValueUnit;
 
-    /** Creates an instance of QueryStatisticProperties class. */
+    /**
+     * Creates an instance of QueryStatisticProperties class.
+     */
     public QueryStatisticProperties() {
     }
 
     /**
      * Get the queryId property: Database query identifier.
-     *
+     * 
      * @return the queryId value.
      */
     public String queryId() {
@@ -87,7 +87,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Set the queryId property: Database query identifier.
-     *
+     * 
      * @param queryId the queryId value to set.
      * @return the QueryStatisticProperties object itself.
      */
@@ -98,7 +98,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Get the startTime property: Observation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -107,7 +107,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Set the startTime property: Observation start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the QueryStatisticProperties object itself.
      */
@@ -118,7 +118,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Get the endTime property: Observation end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -127,7 +127,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Set the endTime property: Observation end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the QueryStatisticProperties object itself.
      */
@@ -138,7 +138,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Get the aggregationFunction property: Aggregation function name.
-     *
+     * 
      * @return the aggregationFunction value.
      */
     public String aggregationFunction() {
@@ -147,7 +147,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Set the aggregationFunction property: Aggregation function name.
-     *
+     * 
      * @param aggregationFunction the aggregationFunction value to set.
      * @return the QueryStatisticProperties object itself.
      */
@@ -158,7 +158,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Get the databaseNames property: The list of database names.
-     *
+     * 
      * @return the databaseNames value.
      */
     public List<String> databaseNames() {
@@ -167,7 +167,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Set the databaseNames property: The list of database names.
-     *
+     * 
      * @param databaseNames the databaseNames value to set.
      * @return the QueryStatisticProperties object itself.
      */
@@ -178,7 +178,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Get the queryExecutionCount property: Number of query executions in this time interval.
-     *
+     * 
      * @return the queryExecutionCount value.
      */
     public Long queryExecutionCount() {
@@ -187,7 +187,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Set the queryExecutionCount property: Number of query executions in this time interval.
-     *
+     * 
      * @param queryExecutionCount the queryExecutionCount value to set.
      * @return the QueryStatisticProperties object itself.
      */
@@ -198,7 +198,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Get the metricName property: Metric name.
-     *
+     * 
      * @return the metricName value.
      */
     public String metricName() {
@@ -207,7 +207,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Set the metricName property: Metric name.
-     *
+     * 
      * @param metricName the metricName value to set.
      * @return the QueryStatisticProperties object itself.
      */
@@ -218,7 +218,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Get the metricDisplayName property: Metric display name.
-     *
+     * 
      * @return the metricDisplayName value.
      */
     public String metricDisplayName() {
@@ -227,7 +227,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Set the metricDisplayName property: Metric display name.
-     *
+     * 
      * @param metricDisplayName the metricDisplayName value to set.
      * @return the QueryStatisticProperties object itself.
      */
@@ -238,7 +238,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Get the metricValue property: Metric value.
-     *
+     * 
      * @return the metricValue value.
      */
     public Double metricValue() {
@@ -247,7 +247,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Set the metricValue property: Metric value.
-     *
+     * 
      * @param metricValue the metricValue value to set.
      * @return the QueryStatisticProperties object itself.
      */
@@ -258,7 +258,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Get the metricValueUnit property: Metric value unit.
-     *
+     * 
      * @return the metricValueUnit value.
      */
     public String metricValueUnit() {
@@ -267,7 +267,7 @@ public final class QueryStatisticProperties {
 
     /**
      * Set the metricValueUnit property: Metric value unit.
-     *
+     * 
      * @param metricValueUnit the metricValueUnit value to set.
      * @return the QueryStatisticProperties object itself.
      */
@@ -278,9 +278,78 @@ public final class QueryStatisticProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("queryId", this.queryId);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("aggregationFunction", this.aggregationFunction);
+        jsonWriter.writeArrayField("databaseNames", this.databaseNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("queryExecutionCount", this.queryExecutionCount);
+        jsonWriter.writeStringField("metricName", this.metricName);
+        jsonWriter.writeStringField("metricDisplayName", this.metricDisplayName);
+        jsonWriter.writeNumberField("metricValue", this.metricValue);
+        jsonWriter.writeStringField("metricValueUnit", this.metricValueUnit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryStatisticProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryStatisticProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryStatisticProperties.
+     */
+    public static QueryStatisticProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryStatisticProperties deserializedQueryStatisticProperties = new QueryStatisticProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("queryId".equals(fieldName)) {
+                    deserializedQueryStatisticProperties.queryId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedQueryStatisticProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedQueryStatisticProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("aggregationFunction".equals(fieldName)) {
+                    deserializedQueryStatisticProperties.aggregationFunction = reader.getString();
+                } else if ("databaseNames".equals(fieldName)) {
+                    List<String> databaseNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedQueryStatisticProperties.databaseNames = databaseNames;
+                } else if ("queryExecutionCount".equals(fieldName)) {
+                    deserializedQueryStatisticProperties.queryExecutionCount = reader.getNullable(JsonReader::getLong);
+                } else if ("metricName".equals(fieldName)) {
+                    deserializedQueryStatisticProperties.metricName = reader.getString();
+                } else if ("metricDisplayName".equals(fieldName)) {
+                    deserializedQueryStatisticProperties.metricDisplayName = reader.getString();
+                } else if ("metricValue".equals(fieldName)) {
+                    deserializedQueryStatisticProperties.metricValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("metricValueUnit".equals(fieldName)) {
+                    deserializedQueryStatisticProperties.metricValueUnit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryStatisticProperties;
+        });
     }
 }

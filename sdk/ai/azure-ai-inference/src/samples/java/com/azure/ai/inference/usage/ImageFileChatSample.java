@@ -6,7 +6,6 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.models.ChatMessageContentItem;
@@ -49,8 +48,6 @@ public final class ImageFileChatSample {
 
         ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
 
-        for (ChatChoice choice : completions.getChoices()) {
-            System.out.printf("%s.%n", choice.getMessage().getContent());
-        }
+        System.out.printf("%s.%n", completions.getChoice().getMessage().getContent());
     }
 }

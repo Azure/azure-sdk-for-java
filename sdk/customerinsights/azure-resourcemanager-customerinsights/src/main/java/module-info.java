@@ -10,10 +10,6 @@ module com.azure.resourcemanager.customerinsights {
     exports com.azure.resourcemanager.customerinsights.fluent.models;
     exports com.azure.resourcemanager.customerinsights.models;
 
-    opens com.azure.resourcemanager.customerinsights.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.customerinsights.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.customerinsights.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.customerinsights.models to com.azure.core;
 }

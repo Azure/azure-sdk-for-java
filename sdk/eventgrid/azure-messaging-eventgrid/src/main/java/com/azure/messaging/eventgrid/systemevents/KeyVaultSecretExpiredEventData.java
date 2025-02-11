@@ -197,6 +197,9 @@ public final class KeyVaultSecretExpiredEventData implements JsonSerializable<Ke
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

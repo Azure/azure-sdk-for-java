@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceCustomStringParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceCustomStringParameter model =
-            BinaryData
-                .fromString("{\"type\":\"Bool\",\"value\":\"dzevndhkrw\"}")
-                .toObject(WorkspaceCustomStringParameter.class);
-        Assertions.assertEquals("dzevndhkrw", model.value());
+        WorkspaceCustomStringParameter model = BinaryData.fromString("{\"type\":\"Bool\",\"value\":\"zb\"}")
+            .toObject(WorkspaceCustomStringParameter.class);
+        Assertions.assertEquals("zb", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceCustomStringParameter model = new WorkspaceCustomStringParameter().withValue("dzevndhkrw");
+        WorkspaceCustomStringParameter model = new WorkspaceCustomStringParameter().withValue("zb");
         model = BinaryData.fromObject(model).toObject(WorkspaceCustomStringParameter.class);
-        Assertions.assertEquals("dzevndhkrw", model.value());
+        Assertions.assertEquals("zb", model.value());
     }
 }

@@ -13,32 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class TagsObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagsObject model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"oqfbowskanyk\":\"drabhjybige\",\"nhzgpphrcgyn\":\"zlcuiywgqywgndrv\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\",\"pmivkwlzu\":\"c\"}}")
-                .toObject(TagsObject.class);
-        Assertions.assertEquals("drabhjybige", model.tags().get("oqfbowskanyk"));
+        TagsObject model = BinaryData.fromString("{\"tags\":{\"jpgd\":\"mxaxc\"}}").toObject(TagsObject.class);
+        Assertions.assertEquals("mxaxc", model.tags().get("jpgd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagsObject model =
-            new TagsObject()
-                .withTags(
-                    mapOf(
-                        "oqfbowskanyk",
-                        "drabhjybige",
-                        "nhzgpphrcgyn",
-                        "zlcuiywgqywgndrv",
-                        "fsxlzevgbmqjqa",
-                        "ocpecfvmmco",
-                        "pmivkwlzu",
-                        "c"));
+        TagsObject model = new TagsObject().withTags(mapOf("jpgd", "mxaxc"));
         model = BinaryData.fromObject(model).toObject(TagsObject.class);
-        Assertions.assertEquals("drabhjybige", model.tags().get("oqfbowskanyk"));
+        Assertions.assertEquals("mxaxc", model.tags().get("jpgd"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

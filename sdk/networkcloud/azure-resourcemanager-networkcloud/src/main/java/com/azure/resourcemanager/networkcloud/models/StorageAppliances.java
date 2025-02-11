@@ -8,68 +8,70 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of StorageAppliances. */
+/**
+ * Resource collection API of StorageAppliances.
+ */
 public interface StorageAppliances {
     /**
      * List storage appliances in the subscription.
-     *
-     * <p>Get a list of storage appliances in the provided subscription.
-     *
+     * 
+     * Get a list of storage appliances in the provided subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of storage appliances in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<StorageAppliance> list();
 
     /**
      * List storage appliances in the subscription.
-     *
-     * <p>Get a list of storage appliances in the provided subscription.
-     *
+     * 
+     * Get a list of storage appliances in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of storage appliances in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<StorageAppliance> list(Context context);
 
     /**
      * List storage appliances in the resource group.
-     *
-     * <p>Get a list of storage appliances in the provided resource group.
-     *
+     * 
+     * Get a list of storage appliances in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of storage appliances in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<StorageAppliance> listByResourceGroup(String resourceGroupName);
 
     /**
      * List storage appliances in the resource group.
-     *
-     * <p>Get a list of storage appliances in the provided resource group.
-     *
+     * 
+     * Get a list of storage appliances in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of storage appliances in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<StorageAppliance> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Retrieve the storage appliance.
-     *
-     * <p>Get properties of the provided storage appliance.
-     *
+     * 
+     * Get properties of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
@@ -78,14 +80,14 @@ public interface StorageAppliances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided storage appliance along with {@link Response}.
      */
-    Response<StorageAppliance> getByResourceGroupWithResponse(
-        String resourceGroupName, String storageApplianceName, Context context);
+    Response<StorageAppliance> getByResourceGroupWithResponse(String resourceGroupName, String storageApplianceName,
+        Context context);
 
     /**
      * Retrieve the storage appliance.
-     *
-     * <p>Get properties of the provided storage appliance.
-     *
+     * 
+     * Get properties of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,38 +99,40 @@ public interface StorageAppliances {
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByResourceGroup(String resourceGroupName, String storageApplianceName);
+    OperationStatusResult deleteByResourceGroup(String resourceGroupName, String storageApplianceName);
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void delete(String resourceGroupName, String storageApplianceName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String storageApplianceName, Context context);
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,9 +144,9 @@ public interface StorageAppliances {
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Disable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
@@ -151,14 +155,14 @@ public interface StorageAppliances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult disableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName, Context context);
+    OperationStatusResult disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
+        Context context);
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,9 +174,9 @@ public interface StorageAppliances {
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
-     *
-     * <p>Enable remote vendor management of the provided storage appliance.
-     *
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
@@ -182,17 +186,15 @@ public interface StorageAppliances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult enableRemoteVendorManagement(
-        String resourceGroupName,
-        String storageApplianceName,
+    OperationStatusResult enableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context);
 
     /**
      * Retrieve the storage appliance.
-     *
-     * <p>Get properties of the provided storage appliance.
-     *
+     * 
+     * Get properties of the provided storage appliance.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -203,9 +205,9 @@ public interface StorageAppliances {
 
     /**
      * Retrieve the storage appliance.
-     *
-     * <p>Get properties of the provided storage appliance.
-     *
+     * 
+     * Get properties of the provided storage appliance.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,34 +219,36 @@ public interface StorageAppliances {
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteById(String id);
+    OperationStatusResult deleteById(String id);
 
     /**
      * Delete the storage appliance.
-     *
-     * <p>Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided storage appliance.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    OperationStatusResult deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new StorageAppliance resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new StorageAppliance definition.
      */

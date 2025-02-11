@@ -17,7 +17,7 @@ public final class IdentityAndTagsObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IdentityAndTagsObject model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"nysounqe\":{\"principalId\":\"bef70479-23af-459e-8264-df53e79233bf\",\"clientId\":\"b30021b9-b4b4-46c0-90cc-adf0a022e26a\"},\"oaeupfhyhltrpmo\":{\"principalId\":\"661a74fc-5d69-4f85-babc-795d2c75ff87\",\"clientId\":\"24fb67b6-8554-4520-87b0-b653c5c68419\"},\"cma\":{\"principalId\":\"f3efc9fa-8274-4369-9467-280f33b2fc90\",\"clientId\":\"73273559-9bb9-4eef-af33-ef17417129cb\"}}},\"tags\":{\"aodsfcpkv\":\"kthfui\"}}")
+            "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"nysounqe\":{\"principalId\":\"370a8b57-c4ab-4819-aadd-1953be5e03d9\",\"clientId\":\"441c7a18-a4be-442d-b52e-5d073baf2412\"},\"oaeupfhyhltrpmo\":{\"principalId\":\"d5c2b391-aa80-42c4-92fe-8b5908fb4f25\",\"clientId\":\"c9177650-cfb6-4217-959f-6f85673e1447\"},\"cma\":{\"principalId\":\"9889f241-f016-4c42-a1cf-977ecda21828\",\"clientId\":\"e6e03fa5-926e-4ba8-910f-94a18b152d2a\"}}},\"tags\":{\"aodsfcpkv\":\"kthfui\"}}")
             .toObject(IdentityAndTagsObject.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
         Assertions.assertEquals("kthfui", model.tags().get("aodsfcpkv"));

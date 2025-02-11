@@ -24,7 +24,8 @@ public final class SourceAddrTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SourceAddr model = new SourceAddr().withCidrs(Arrays.asList("jhxxjyn"))
-            .withCountries(Arrays.asList("ivkrtsw", "xqzvszjfa")).withFeeds(Arrays.asList("fdxxivetvtcqaqtd"))
+            .withCountries(Arrays.asList("ivkrtsw", "xqzvszjfa"))
+            .withFeeds(Arrays.asList("fdxxivetvtcqaqtd"))
             .withPrefixLists(Arrays.asList("cbxvwvxyslqbh", "fxoblytkb", "mpew"));
         model = BinaryData.fromObject(model).toObject(SourceAddr.class);
         Assertions.assertEquals("jhxxjyn", model.cidrs().get(0));

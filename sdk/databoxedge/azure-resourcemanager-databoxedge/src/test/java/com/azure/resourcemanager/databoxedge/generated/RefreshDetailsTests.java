@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class RefreshDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RefreshDetails model =
-            BinaryData
-                .fromString(
-                    "{\"inProgressRefreshJobId\":\"enq\",\"lastCompletedRefreshJobTimeInUTC\":\"2021-01-20T04:38Z\",\"errorManifestFile\":\"ndoygmifthnzdnd\",\"lastJob\":\"gnayqigynduh\"}")
-                .toObject(RefreshDetails.class);
-        Assertions.assertEquals("enq", model.inProgressRefreshJobId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T04:38Z"), model.lastCompletedRefreshJobTimeInUtc());
-        Assertions.assertEquals("ndoygmifthnzdnd", model.errorManifestFile());
-        Assertions.assertEquals("gnayqigynduh", model.lastJob());
+        RefreshDetails model = BinaryData.fromString(
+            "{\"inProgressRefreshJobId\":\"eqdcv\",\"lastCompletedRefreshJobTimeInUTC\":\"2021-04-28T18:47:47Z\",\"errorManifestFile\":\"ood\",\"lastJob\":\"tbobz\"}")
+            .toObject(RefreshDetails.class);
+        Assertions.assertEquals("eqdcv", model.inProgressRefreshJobId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T18:47:47Z"), model.lastCompletedRefreshJobTimeInUtc());
+        Assertions.assertEquals("ood", model.errorManifestFile());
+        Assertions.assertEquals("tbobz", model.lastJob());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RefreshDetails model =
-            new RefreshDetails()
-                .withInProgressRefreshJobId("enq")
-                .withLastCompletedRefreshJobTimeInUtc(OffsetDateTime.parse("2021-01-20T04:38Z"))
-                .withErrorManifestFile("ndoygmifthnzdnd")
-                .withLastJob("gnayqigynduh");
+        RefreshDetails model = new RefreshDetails().withInProgressRefreshJobId("eqdcv")
+            .withLastCompletedRefreshJobTimeInUtc(OffsetDateTime.parse("2021-04-28T18:47:47Z"))
+            .withErrorManifestFile("ood")
+            .withLastJob("tbobz");
         model = BinaryData.fromObject(model).toObject(RefreshDetails.class);
-        Assertions.assertEquals("enq", model.inProgressRefreshJobId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T04:38Z"), model.lastCompletedRefreshJobTimeInUtc());
-        Assertions.assertEquals("ndoygmifthnzdnd", model.errorManifestFile());
-        Assertions.assertEquals("gnayqigynduh", model.lastJob());
+        Assertions.assertEquals("eqdcv", model.inProgressRefreshJobId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T18:47:47Z"), model.lastCompletedRefreshJobTimeInUtc());
+        Assertions.assertEquals("ood", model.errorManifestFile());
+        Assertions.assertEquals("tbobz", model.lastJob());
     }
 }

@@ -35,8 +35,7 @@ public class GetManifestPropertiesTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(importImageAsync(REPOSITORY_NAME, tags));
+        return super.globalSetupAsync().then(importImageAsync(REPOSITORY_NAME, tags));
     }
 
     @Override
@@ -46,7 +45,6 @@ public class GetManifestPropertiesTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return registryArtifactAsync.getManifestProperties()
-            .then();
+        return registryArtifactAsync.getManifestProperties().then();
     }
 }

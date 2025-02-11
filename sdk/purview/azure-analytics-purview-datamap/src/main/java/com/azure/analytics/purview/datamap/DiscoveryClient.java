@@ -45,15 +45,16 @@ public final class DiscoveryClient {
      * Get data using search.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
      *     continuationToken: String (Optional)
      *     orderby (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
-     *     filter: Object (Optional)
+     *     filter: BinaryData (Optional)
      *     facets (Optional): [
      *          (Optional){
      *             count: Integer (Optional)
@@ -71,7 +72,8 @@ public final class DiscoveryClient {
      *         facet (Optional): (recursive schema, see facet above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -119,7 +121,7 @@ public final class DiscoveryClient {
      *     value (Optional): [
      *          (Optional){
      *             &#64;search.score: Double (Optional)
-     *             @search.highlights (Optional): {
+     *             &#64;search.highlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
      *                 ]
@@ -200,13 +202,15 @@ public final class DiscoveryClient {
      * Get search suggestions by query criteria.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter: Object (Optional)
+     *     filter: BinaryData (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -216,7 +220,7 @@ public final class DiscoveryClient {
      *     value (Optional): [
      *          (Optional){
      *             &#64;search.score: Double (Optional)
-     *             @search.text: String (Optional)
+     *             &#64;search.text: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
      *             updateTime: Long (Optional)
@@ -281,17 +285,20 @@ public final class DiscoveryClient {
      * Get auto complete options.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter: Object (Optional)
+     *     filter: BinaryData (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -300,7 +307,8 @@ public final class DiscoveryClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

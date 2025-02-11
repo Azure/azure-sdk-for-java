@@ -34,6 +34,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+
 /**
  * Tests that {@link EventHubConsumerAsyncClient} can be created with various {@link EventPosition EventPositions}.
  */
@@ -64,17 +65,16 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         }
 
         logger.info("Receiving the events we sent.");
-        final EventHubConsumerClient testConsumer = toClose(createBuilder()
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumerClient());
+        final EventHubConsumerClient testConsumer
+            = toClose(createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME).buildConsumerClient());
         numberOfEvents = testData.getEvents().size() - 1;
 
-        final EventPosition startingPosition = EventPosition.fromSequenceNumber(
-            testData.getPartitionProperties().getLastEnqueuedSequenceNumber());
+        final EventPosition startingPosition
+            = EventPosition.fromSequenceNumber(testData.getPartitionProperties().getLastEnqueuedSequenceNumber());
         final List<EventData> received;
         try {
-            final IterableStream<PartitionEvent> partitionEvents = testConsumer.receiveFromPartition(
-                testData.getPartitionId(), numberOfEvents, startingPosition, TIMEOUT);
+            final IterableStream<PartitionEvent> partitionEvents = testConsumer
+                .receiveFromPartition(testData.getPartitionId(), numberOfEvents, startingPosition, TIMEOUT);
 
             Assertions.assertNotNull(partitionEvents, "'partitionEvents' should not be null.");
 
@@ -98,13 +98,10 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
 
         Assertions.assertNotNull(testData, "testData should not be null. Or we have set this up incorrectly.");
 
-        consumer = toClose(createBuilder()
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient());
+        consumer = toClose(createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME).buildAsyncConsumerClient());
 
-        enqueuedTimeConsumer = toClose(createBuilder()
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient());
+        enqueuedTimeConsumer
+            = toClose(createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME).buildAsyncConsumerClient());
     }
 
     /**
@@ -123,7 +120,8 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
             .map(PartitionEvent::getData)
             .collectList()
             .block(TIMEOUT);
-        enqueuedEvents = enqueuedTimeConsumer.receiveFromPartition(testData.getPartitionId(), EventPosition.fromEnqueuedTime(Instant.EPOCH))
+        enqueuedEvents = enqueuedTimeConsumer
+            .receiveFromPartition(testData.getPartitionId(), EventPosition.fromEnqueuedTime(Instant.EPOCH))
             .take(numberOfEvents)
             .map(PartitionEvent::getData)
             .collectList()
@@ -159,10 +157,8 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
     void receiveLatestMessagesNoneAdded() {
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), EventPosition.latest())
-                .filter(event -> isMatchingEvent(event, testData.getMessageId()))
-                .take(Duration.ofSeconds(3)))
-                .expectComplete()
-                .verify(TIMEOUT);
+            .filter(event -> isMatchingEvent(event, testData.getMessageId()))
+            .take(Duration.ofSeconds(3))).expectComplete().verify(TIMEOUT);
     }
 
     /**
@@ -188,9 +184,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         // so we'll try sending one event per sec and wait until something is received.
         for (int i = 0; i < 20; i++) {
             producer.send(getEvent("probing", "probing" + i, i), options);
-            logger.atInfo()
-                .addKeyValue("index", i)
-                .log("sent probing event");
+            logger.atInfo().addKeyValue("index", i).log("sent probing event");
             if (receivedFirst.await(1, TimeUnit.SECONDS)) {
                 break;
             }
@@ -223,9 +217,9 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         final EventPosition position = EventPosition.fromEnqueuedTime(enqueuedTime.minusMillis(1));
 
         // Act & Assert
-        StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)
-            .map(PartitionEvent::getData)
-            .take(1))
+        StepVerifier
+            .create(
+                consumer.receiveFromPartition(testData.getPartitionId(), position).map(PartitionEvent::getData).take(1))
             .assertNext(event -> {
                 logger.atInfo()
                     .addKeyValue("sequenceNo", event.getSequenceNumber())
@@ -253,9 +247,9 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         final EventData expectedEvent = receivedEvents[2];
 
         // Act & Assert
-        StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)
-            .map(PartitionEvent::getData)
-            .take(1))
+        StepVerifier
+            .create(
+                consumer.receiveFromPartition(testData.getPartitionId(), position).map(PartitionEvent::getData).take(1))
             .assertNext(event -> {
                 Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
                 Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
@@ -280,14 +274,11 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)
             .map(PartitionEvent::getData)
             .filter(event -> isMatchingEvent(event, testData.getMessageId()))
-            .take(1))
-            .assertNext(event -> {
+            .take(1)).assertNext(event -> {
                 Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
                 Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
                 Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+            }).expectComplete().verify(TIMEOUT);
     }
 
     /**
@@ -303,14 +294,11 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)
             .map(PartitionEvent::getData)
             .filter(event -> isMatchingEvent(event, testData.getMessageId()))
-            .take(1))
-            .assertNext(event -> {
+            .take(1)).assertNext(event -> {
                 Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
                 Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
                 Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+            }).expectComplete().verify(TIMEOUT);
     }
 
     /**
@@ -326,13 +314,10 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)
             .map(PartitionEvent::getData)
             .filter(event -> isMatchingEvent(event, testData.getMessageId()))
-            .take(1))
-            .assertNext(event -> {
+            .take(1)).assertNext(event -> {
                 Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
                 Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
                 Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+            }).expectComplete().verify(TIMEOUT);
     }
 }

@@ -24,11 +24,8 @@ import java.util.TreeMap;
 /**
  * Implementation for {@link PolicyAssignment}.
  */
-final class PolicyAssignmentImpl extends
-        CreatableImpl<PolicyAssignment, PolicyAssignmentInner, PolicyAssignmentImpl>
-        implements
-        PolicyAssignment,
-        PolicyAssignment.Definition {
+final class PolicyAssignmentImpl extends CreatableImpl<PolicyAssignment, PolicyAssignmentInner, PolicyAssignmentImpl>
+    implements PolicyAssignment, PolicyAssignment.Definition {
     private final PolicyAssignmentsClient innerCollection;
 
     private String scope;
@@ -121,7 +118,7 @@ final class PolicyAssignmentImpl extends
     @Override
     public Mono<PolicyAssignment> createResourceAsync() {
         return innerCollection.createAsync(ResourceUtils.encodeResourceId(this.scope), name(), innerModel())
-                .map(innerToFluentMap(this));
+            .map(innerToFluentMap(this));
     }
 
     @Override

@@ -336,7 +336,6 @@ public final class AmazonS3CompatibleReadSettings extends StoreReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

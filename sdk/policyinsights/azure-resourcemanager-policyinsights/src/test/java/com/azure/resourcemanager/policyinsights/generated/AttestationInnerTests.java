@@ -11,49 +11,47 @@ import com.azure.resourcemanager.policyinsights.models.ComplianceState;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AttestationInnerTests {
-    @Test
-    public void testDeserialize() {
-        AttestationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"policyAssignmentId\":\"ygqukyhejh\",\"policyDefinitionReferenceId\":\"sx\",\"complianceState\":\"Compliant\",\"expiresOn\":\"2021-09-01T11:17:58Z\",\"owner\":\"lppvksrpq\",\"comments\":\"jzraehtwdwrf\",\"evidence\":[{\"description\":\"byrcdlbhshfwp\",\"sourceUri\":\"cstwity\"}],\"provisioningState\":\"evxccedcp\",\"lastComplianceStateChangeAt\":\"2021-05-27T10:40:38Z\",\"assessmentDate\":\"2021-02-03T02:01:52Z\"},\"id\":\"wzxltjc\",\"name\":\"nhltiugcxn\",\"type\":\"vvwxqi\"}")
-                .toObject(AttestationInner.class);
-        Assertions.assertEquals("ygqukyhejh", model.policyAssignmentId());
-        Assertions.assertEquals("sx", model.policyDefinitionReferenceId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AttestationInner model = BinaryData.fromString(
+            "{\"properties\":{\"policyAssignmentId\":\"ja\",\"policyDefinitionReferenceId\":\"rnnqb\",\"complianceState\":\"Compliant\",\"expiresOn\":\"2021-08-20T17:43:41Z\",\"owner\":\"xqltgrd\",\"comments\":\"ypxrx\",\"evidence\":[{\"description\":\"hwuhvctaf\",\"sourceUri\":\"bxrblmliowxihspn\"},{\"description\":\"qagnepzwakl\",\"sourceUri\":\"sbq\"}],\"provisioningState\":\"agwwrxaom\",\"lastComplianceStateChangeAt\":\"2021-09-07T06:13:10Z\",\"assessmentDate\":\"2021-02-08T21:13:20Z\",\"metadata\":\"datarczezkhhlt\"},\"id\":\"adhqoa\",\"name\":\"jqoyueayfbpcm\",\"type\":\"plby\"}")
+            .toObject(AttestationInner.class);
+        Assertions.assertEquals("ja", model.policyAssignmentId());
+        Assertions.assertEquals("rnnqb", model.policyDefinitionReferenceId());
         Assertions.assertEquals(ComplianceState.COMPLIANT, model.complianceState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T11:17:58Z"), model.expiresOn());
-        Assertions.assertEquals("lppvksrpq", model.owner());
-        Assertions.assertEquals("jzraehtwdwrf", model.comments());
-        Assertions.assertEquals("byrcdlbhshfwp", model.evidence().get(0).description());
-        Assertions.assertEquals("cstwity", model.evidence().get(0).sourceUri());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T02:01:52Z"), model.assessmentDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T17:43:41Z"), model.expiresOn());
+        Assertions.assertEquals("xqltgrd", model.owner());
+        Assertions.assertEquals("ypxrx", model.comments());
+        Assertions.assertEquals("hwuhvctaf", model.evidence().get(0).description());
+        Assertions.assertEquals("bxrblmliowxihspn", model.evidence().get(0).sourceUri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T21:13:20Z"), model.assessmentDate());
     }
 
-    @Test
-    public void testSerialize() {
-        AttestationInner model =
-            new AttestationInner()
-                .withPolicyAssignmentId("ygqukyhejh")
-                .withPolicyDefinitionReferenceId("sx")
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AttestationInner model
+            = new AttestationInner().withPolicyAssignmentId("ja")
+                .withPolicyDefinitionReferenceId("rnnqb")
                 .withComplianceState(ComplianceState.COMPLIANT)
-                .withExpiresOn(OffsetDateTime.parse("2021-09-01T11:17:58Z"))
-                .withOwner("lppvksrpq")
-                .withComments("jzraehtwdwrf")
-                .withEvidence(
-                    Arrays.asList(new AttestationEvidence().withDescription("byrcdlbhshfwp").withSourceUri("cstwity")))
-                .withAssessmentDate(OffsetDateTime.parse("2021-02-03T02:01:52Z"));
+                .withExpiresOn(OffsetDateTime.parse("2021-08-20T17:43:41Z"))
+                .withOwner("xqltgrd")
+                .withComments("ypxrx")
+                .withEvidence(Arrays.asList(
+                    new AttestationEvidence().withDescription("hwuhvctaf").withSourceUri("bxrblmliowxihspn"),
+                    new AttestationEvidence().withDescription("qagnepzwakl").withSourceUri("sbq")))
+                .withAssessmentDate(OffsetDateTime.parse("2021-02-08T21:13:20Z"))
+                .withMetadata("datarczezkhhlt");
         model = BinaryData.fromObject(model).toObject(AttestationInner.class);
-        Assertions.assertEquals("ygqukyhejh", model.policyAssignmentId());
-        Assertions.assertEquals("sx", model.policyDefinitionReferenceId());
+        Assertions.assertEquals("ja", model.policyAssignmentId());
+        Assertions.assertEquals("rnnqb", model.policyDefinitionReferenceId());
         Assertions.assertEquals(ComplianceState.COMPLIANT, model.complianceState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T11:17:58Z"), model.expiresOn());
-        Assertions.assertEquals("lppvksrpq", model.owner());
-        Assertions.assertEquals("jzraehtwdwrf", model.comments());
-        Assertions.assertEquals("byrcdlbhshfwp", model.evidence().get(0).description());
-        Assertions.assertEquals("cstwity", model.evidence().get(0).sourceUri());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T02:01:52Z"), model.assessmentDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T17:43:41Z"), model.expiresOn());
+        Assertions.assertEquals("xqltgrd", model.owner());
+        Assertions.assertEquals("ypxrx", model.comments());
+        Assertions.assertEquals("hwuhvctaf", model.evidence().get(0).description());
+        Assertions.assertEquals("bxrblmliowxihspn", model.evidence().get(0).sourceUri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T21:13:20Z"), model.assessmentDate());
     }
 }

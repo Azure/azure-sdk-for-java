@@ -10,30 +10,66 @@ import java.util.Map;
 /** An immutable representation of function Information. */
 public interface FunctionEnvelope extends HasInnerModel<FunctionEnvelopeInner> {
 
-    /** @return the functionAppId value */
+    /**
+     * Gets the functionAppId value.
+     *
+     * @return the functionAppId value
+     */
     String functionAppId();
 
-    /** @return the scriptRootPathHref value */
+    /**
+     * Gets the scriptRootPathHref value.
+     *
+     * @return the scriptRootPathHref value
+     */
     String scriptRootPathHref();
 
-    /** @return the scriptHref value */
+    /**
+     * Gets the scriptHref value.
+     *
+     * @return the scriptHref value
+     */
     String scriptHref();
 
-    /** @return the configHref value */
+    /**
+     * Gets the configHref value.
+     *
+     * @return the configHref value
+     */
     String configHref();
 
-    /** @return the secretsFileHref value */
+    /**
+     * Gets the secretsFileHref value.
+     *
+     * @return the secretsFileHref value
+     */
     String secretsFileHref();
 
-    /** @return the href value */
+    /**
+     * Gets the href value.
+     *
+     * @return the href value
+     */
     String href();
 
-    /** @return the config value */
+    /**
+     * Gets the config value.
+     *
+     * @return the config value
+     */
     Object config();
 
-    /** @return the files value */
+    /**
+     * Gets the files value.
+     *
+     * @return the files value
+     */
     Map<String, String> files();
 
-    /** @return the testData value */
+    /**
+     * Gets the testData value.
+     *
+     * @return the testData value
+     */
     String testData();
 }

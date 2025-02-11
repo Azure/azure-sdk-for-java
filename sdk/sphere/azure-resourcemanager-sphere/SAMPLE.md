@@ -109,7 +109,10 @@ public final class CatalogsCreateOrUpdateSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsCreateOrUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().define("MyCatalog1").withRegion("global").withExistingResourceGroup("MyResourceGroup1")
+        manager.catalogs()
+            .define("MyCatalog1")
+            .withRegion("global")
+            .withExistingResourceGroup("MyResourceGroup1")
             .create();
     }
 }
@@ -154,8 +157,8 @@ public final class CatalogsGetByResourceGroupSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().getByResourceGroupWithResponse("MyResourceGroup1", "MyCatalog1",
-            com.azure.core.util.Context.NONE);
+        manager.catalogs()
+            .getByResourceGroupWithResponse("MyResourceGroup1", "MyCatalog1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -221,8 +224,9 @@ public final class CatalogsListDeploymentsSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsListDeployments(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().listDeployments("MyResourceGroup1", "MyCatalog1", null, null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.catalogs()
+            .listDeployments("MyResourceGroup1", "MyCatalog1", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -246,9 +250,10 @@ public final class CatalogsListDeviceGroupsSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsListDeviceGroups(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().listDeviceGroups("MyResourceGroup1", "MyCatalog1",
-            new ListDeviceGroupsRequest().withDeviceGroupName("MyDeviceGroup1"), null, null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.catalogs()
+            .listDeviceGroups("MyResourceGroup1", "MyCatalog1",
+                new ListDeviceGroupsRequest().withDeviceGroupName("MyDeviceGroup1"), null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -270,8 +275,9 @@ public final class CatalogsListDeviceInsightsSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsListDeviceInsights(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().listDeviceInsights("MyResourceGroup1", "MyCatalog1", null, 10, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.catalogs()
+            .listDeviceInsights("MyResourceGroup1", "MyCatalog1", null, 10, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -294,8 +300,8 @@ public final class CatalogsListDevicesSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsListDevices(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().listDevices("MyResourceGroup1", "MyCatalog1", null, null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.catalogs()
+            .listDevices("MyResourceGroup1", "MyCatalog1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -348,9 +354,10 @@ public final class CatalogsUploadImageSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsUploadImage(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().uploadImage("MyResourceGroup1", "MyCatalog1",
-            new ImageInner().withProperties(new ImageProperties().withImage("bXliYXNlNjRzdHJpbmc=")),
-            com.azure.core.util.Context.NONE);
+        manager.catalogs()
+            .uploadImage("MyResourceGroup1", "MyCatalog1",
+                new ImageInner().withProperties(new ImageProperties().withImage("bXliYXNlNjRzdHJpbmc=")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -372,8 +379,8 @@ public final class CertificatesGetSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void certificatesGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.certificates().getWithResponse("MyResourceGroup1", "MyCatalog1", "default",
-            com.azure.core.util.Context.NONE);
+        manager.certificates()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -395,8 +402,8 @@ public final class CertificatesListByCatalogSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void certificatesListByCatalog(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.certificates().listByCatalog("MyResourceGroup1", "MyCatalog1", null, null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.certificates()
+            .listByCatalog("MyResourceGroup1", "MyCatalog1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -418,8 +425,9 @@ public final class CertificatesRetrieveCertChainSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void certificatesRetrieveCertChain(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.certificates().retrieveCertChainWithResponse("MyResourceGroup1", "MyCatalog1", "active",
-            com.azure.core.util.Context.NONE);
+        manager.certificates()
+            .retrieveCertChainWithResponse("MyResourceGroup1", "MyCatalog1", "active",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -444,9 +452,10 @@ public final class CertificatesRetrieveProofOfPossessionNonceSamples {
      */
     public static void
         certificatesRetrieveProofOfPossessionNonce(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.certificates().retrieveProofOfPossessionNonceWithResponse("MyResourceGroup1", "MyCatalog1", "active",
-            new ProofOfPossessionNonceRequest().withProofOfPossessionNonce("proofOfPossessionNonce"),
-            com.azure.core.util.Context.NONE);
+        manager.certificates()
+            .retrieveProofOfPossessionNonceWithResponse("MyResourceGroup1", "MyCatalog1", "active",
+                new ProofOfPossessionNonceRequest().withProofOfPossessionNonce("proofOfPossessionNonce"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -468,8 +477,10 @@ public final class DeploymentsCreateOrUpdateSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deploymentsCreateOrUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deployments().define("MyDeployment1")
-            .withExistingDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1").create();
+        manager.deployments()
+            .define("MyDeployment1")
+            .withExistingDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1")
+            .create();
     }
 }
 ```
@@ -491,8 +502,9 @@ public final class DeploymentsDeleteSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deploymentsDelete(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deployments().delete("MyResourceGroup1", "MyCatalog1", "MyProductName1", "DeviceGroupName1",
-            "MyDeploymentName1", com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .delete("MyResourceGroup1", "MyCatalog1", "MyProductName1", "DeviceGroupName1", "MyDeploymentName1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -514,8 +526,9 @@ public final class DeploymentsGetSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deploymentsGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deployments().getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1",
-            "MyDeployment1", com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1", "MyDeployment1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -537,8 +550,9 @@ public final class DeploymentsListByDeviceGroupSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deploymentsListByDeviceGroup(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deployments().listByDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1", null,
-            null, null, null, com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .listByDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -563,10 +577,11 @@ public final class DeviceGroupsClaimDevicesSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deviceGroupsClaimDevices(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deviceGroups().claimDevices("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
-            new ClaimDevicesRequest().withDeviceIdentifiers(Arrays.asList(
-                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")),
-            com.azure.core.util.Context.NONE);
+        manager.deviceGroups()
+            .claimDevices("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
+                new ClaimDevicesRequest().withDeviceIdentifiers(Arrays.asList(
+                    "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -588,8 +603,9 @@ public final class DeviceGroupsCountDevicesSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deviceGroupsCountDevices(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deviceGroups().countDevicesWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1",
-            "MyDeviceGroup1", com.azure.core.util.Context.NONE);
+        manager.deviceGroups()
+            .countDevicesWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -615,10 +631,12 @@ public final class DeviceGroupsCreateOrUpdateSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deviceGroupsCreateOrUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deviceGroups().define("MyDeviceGroup1")
+        manager.deviceGroups()
+            .define("MyDeviceGroup1")
             .withExistingProduct("MyResourceGroup1", "MyCatalog1", "MyProduct1")
             .withProperties(new DeviceGroupProperties().withDescription("Description for MyDeviceGroup1")
-                .withOsFeedType(OSFeedType.RETAIL).withUpdatePolicy(UpdatePolicy.UPDATE_ALL))
+                .withOsFeedType(OSFeedType.RETAIL)
+                .withUpdatePolicy(UpdatePolicy.UPDATE_ALL))
             .create();
     }
 }
@@ -641,8 +659,8 @@ public final class DeviceGroupsDeleteSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deviceGroupsDelete(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deviceGroups().delete("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
-            com.azure.core.util.Context.NONE);
+        manager.deviceGroups()
+            .delete("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -664,8 +682,9 @@ public final class DeviceGroupsGetSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deviceGroupsGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deviceGroups().getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
-            com.azure.core.util.Context.NONE);
+        manager.deviceGroups()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -687,8 +706,9 @@ public final class DeviceGroupsListByProductSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deviceGroupsListByProduct(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deviceGroups().listByProduct("MyResourceGroup1", "MyCatalog1", "MyProduct1", null, null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.deviceGroups()
+            .listByProduct("MyResourceGroup1", "MyCatalog1", "MyProduct1", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -712,8 +732,10 @@ public final class DeviceGroupsUpdateSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deviceGroupsUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        DeviceGroup resource = manager.deviceGroups().getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1",
-            "MyDeviceGroup1", com.azure.core.util.Context.NONE).getValue();
+        DeviceGroup resource = manager.deviceGroups()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }
@@ -736,9 +758,11 @@ public final class DevicesCreateOrUpdateSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void devicesCreateOrUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.devices().define(
-            "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
-            .withExistingDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1").create();
+        manager.devices()
+            .define(
+                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
+            .withExistingDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1")
+            .create();
     }
 }
 ```
@@ -760,9 +784,10 @@ public final class DevicesDeleteSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void devicesDelete(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.devices().delete("MyResourceGroup1", "MyCatalog1", "MyProductName1", "DeviceGroupName1",
-            "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.devices()
+            .delete("MyResourceGroup1", "MyCatalog1", "MyProductName1", "DeviceGroupName1",
+                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -788,11 +813,12 @@ public final class DevicesGenerateCapabilityImageSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void devicesGenerateCapabilityImage(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.devices().generateCapabilityImage("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1",
-            "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            new GenerateCapabilityImageRequest().withCapabilities(
-                Arrays.asList(CapabilityType.APPLICATION_DEVELOPMENT)),
-            com.azure.core.util.Context.NONE);
+        manager.devices()
+            .generateCapabilityImage("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1",
+                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                new GenerateCapabilityImageRequest().withCapabilities(
+                    Arrays.asList(CapabilityType.APPLICATION_DEVELOPMENT)),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -814,9 +840,10 @@ public final class DevicesGetSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void devicesGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.devices().getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1",
-            "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.devices()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1",
+                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -838,8 +865,9 @@ public final class DevicesListByDeviceGroupSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void devicesListByDeviceGroup(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.devices().listByDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1",
-            com.azure.core.util.Context.NONE);
+        manager.devices()
+            .listByDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -863,10 +891,11 @@ public final class DevicesUpdateSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void devicesUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        Device resource = manager.devices().getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1",
-            "MyDeviceGroup1",
-            "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            com.azure.core.util.Context.NONE).getValue();
+        Device resource = manager.devices()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
+                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }
@@ -891,9 +920,11 @@ public final class ImagesCreateOrUpdateSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void imageCreateOrUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.images().define("00000000-0000-0000-0000-000000000000")
+        manager.images()
+            .define("00000000-0000-0000-0000-000000000000")
             .withExistingCatalog("MyResourceGroup1", "MyCatalog1")
-            .withProperties(new ImageProperties().withImage("bXliYXNlNjRzdHJpbmc=")).create();
+            .withProperties(new ImageProperties().withImage("bXliYXNlNjRzdHJpbmc="))
+            .create();
     }
 }
 ```
@@ -915,8 +946,9 @@ public final class ImagesDeleteSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void imagesDelete(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.images().delete("MyResourceGroup1", "MyCatalog1", "00000000-0000-0000-0000-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.images()
+            .delete("MyResourceGroup1", "MyCatalog1", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -938,8 +970,9 @@ public final class ImagesGetSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void imagesGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.images().getWithResponse("MyResourceGroup1", "MyCatalog1", "00000000-0000-0000-0000-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.images()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -961,8 +994,8 @@ public final class ImagesListByCatalogSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void imagesListByCatalog(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.images().listByCatalog("MyResourceGroup1", "MyCatalog1", null, null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.images()
+            .listByCatalog("MyResourceGroup1", "MyCatalog1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1007,8 +1040,8 @@ public final class ProductsCountDevicesSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void productsCountDevices(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.products().countDevicesWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1",
-            com.azure.core.util.Context.NONE);
+        manager.products()
+            .countDevicesWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1075,8 +1108,9 @@ public final class ProductsGenerateDefaultDeviceGroupsSamples {
      */
     public static void
         productsGenerateDefaultDeviceGroups(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.products().generateDefaultDeviceGroups("MyResourceGroup1", "MyCatalog1", "MyProduct1",
-            com.azure.core.util.Context.NONE);
+        manager.products()
+            .generateDefaultDeviceGroups("MyResourceGroup1", "MyCatalog1", "MyProduct1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1098,8 +1132,8 @@ public final class ProductsGetSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void productsGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.products().getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1",
-            com.azure.core.util.Context.NONE);
+        manager.products()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", com.azure.core.util.Context.NONE);
     }
 }
 ```

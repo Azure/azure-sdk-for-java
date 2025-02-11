@@ -70,6 +70,10 @@ public final class AddressResourceImpl implements AddressResource, AddressResour
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AddressResourceInner innerModel() {
         return this.innerObject;
     }
@@ -92,20 +96,16 @@ public final class AddressResourceImpl implements AddressResource, AddressResour
     }
 
     public AddressResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .createAddress(addressName, resourceGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .createAddress(addressName, resourceGroupName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AddressResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .createAddress(addressName, resourceGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .createAddress(addressName, resourceGroupName, this.innerModel(), context);
         return this;
     }
 
@@ -122,49 +122,40 @@ public final class AddressResourceImpl implements AddressResource, AddressResour
     }
 
     public AddressResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .updateAddress(
-                    addressName, resourceGroupName, updateAddressUpdateParameter, updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .updateAddress(addressName, resourceGroupName, updateAddressUpdateParameter, updateIfMatch, Context.NONE);
         return this;
     }
 
     public AddressResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .updateAddress(addressName, resourceGroupName, updateAddressUpdateParameter, updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .updateAddress(addressName, resourceGroupName, updateAddressUpdateParameter, updateIfMatch, context);
         return this;
     }
 
-    AddressResourceImpl(
-        AddressResourceInner innerObject, com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager) {
+    AddressResourceImpl(AddressResourceInner innerObject,
+        com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.addressName = Utils.getValueFromIdByName(innerObject.id(), "addresses");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.addressName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "addresses");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
     }
 
     public AddressResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .getByResourceGroupWithResponse(resourceGroupName, addressName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .getByResourceGroupWithResponse(resourceGroupName, addressName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AddressResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .getByResourceGroupWithResponse(resourceGroupName, addressName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .getByResourceGroupWithResponse(resourceGroupName, addressName, context)
+            .getValue();
         return this;
     }
 

@@ -12,11 +12,29 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.HybridRunbookWorkerGroupInner;
 import com.azure.resourcemanager.automation.models.HybridRunbookWorkerGroupCreateOrUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in HybridRunbookWorkerGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HybridRunbookWorkerGroupsClient.
+ */
 public interface HybridRunbookWorkerGroupsClient {
     /**
      * Delete a hybrid runbook worker group.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String hybridRunbookWorkerGroupName, Context context);
+
+    /**
+     * Delete a hybrid runbook worker group.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
@@ -28,39 +46,8 @@ public interface HybridRunbookWorkerGroupsClient {
     void delete(String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName);
 
     /**
-     * Delete a hybrid runbook worker group.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName, Context context);
-
-    /**
      * Retrieve a hybrid runbook worker group.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of hybrid runbook worker group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    HybridRunbookWorkerGroupInner get(
-        String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName);
-
-    /**
-     * Retrieve a hybrid runbook worker group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
@@ -71,37 +58,68 @@ public interface HybridRunbookWorkerGroupsClient {
      * @return definition of hybrid runbook worker group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HybridRunbookWorkerGroupInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName, Context context);
+    Response<HybridRunbookWorkerGroupInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String hybridRunbookWorkerGroupName, Context context);
 
     /**
-     * Create a hybrid runbook worker group.
-     *
+     * Retrieve a hybrid runbook worker group.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
-     * @param hybridRunbookWorkerGroupCreationParameters The create or update parameters for hybrid runbook worker
-     *     group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of hybrid runbook worker group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HybridRunbookWorkerGroupInner create(
-        String resourceGroupName,
-        String automationAccountName,
+    HybridRunbookWorkerGroupInner get(String resourceGroupName, String automationAccountName,
+        String hybridRunbookWorkerGroupName);
+
+    /**
+     * Create a hybrid runbook worker group.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
+     * @param hybridRunbookWorkerGroupCreationParameters The create or update parameters for hybrid runbook worker
+     * group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of hybrid runbook worker group along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<HybridRunbookWorkerGroupInner> createWithResponse(String resourceGroupName, String automationAccountName,
+        String hybridRunbookWorkerGroupName,
+        HybridRunbookWorkerGroupCreateOrUpdateParameters hybridRunbookWorkerGroupCreationParameters, Context context);
+
+    /**
+     * Create a hybrid runbook worker group.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
+     * @param hybridRunbookWorkerGroupCreationParameters The create or update parameters for hybrid runbook worker
+     * group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of hybrid runbook worker group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    HybridRunbookWorkerGroupInner create(String resourceGroupName, String automationAccountName,
         String hybridRunbookWorkerGroupName,
         HybridRunbookWorkerGroupCreateOrUpdateParameters hybridRunbookWorkerGroupCreationParameters);
 
     /**
-     * Create a hybrid runbook worker group.
-     *
+     * Update a hybrid runbook worker group.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
-     * @param hybridRunbookWorkerGroupCreationParameters The create or update parameters for hybrid runbook worker
-     *     group.
+     * @param hybridRunbookWorkerGroupUpdationParameters The hybrid runbook worker group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,16 +127,13 @@ public interface HybridRunbookWorkerGroupsClient {
      * @return definition of hybrid runbook worker group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HybridRunbookWorkerGroupInner> createWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
+    Response<HybridRunbookWorkerGroupInner> updateWithResponse(String resourceGroupName, String automationAccountName,
         String hybridRunbookWorkerGroupName,
-        HybridRunbookWorkerGroupCreateOrUpdateParameters hybridRunbookWorkerGroupCreationParameters,
-        Context context);
+        HybridRunbookWorkerGroupCreateOrUpdateParameters hybridRunbookWorkerGroupUpdationParameters, Context context);
 
     /**
      * Update a hybrid runbook worker group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
@@ -129,51 +144,28 @@ public interface HybridRunbookWorkerGroupsClient {
      * @return definition of hybrid runbook worker group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HybridRunbookWorkerGroupInner update(
-        String resourceGroupName,
-        String automationAccountName,
+    HybridRunbookWorkerGroupInner update(String resourceGroupName, String automationAccountName,
         String hybridRunbookWorkerGroupName,
         HybridRunbookWorkerGroupCreateOrUpdateParameters hybridRunbookWorkerGroupUpdationParameters);
 
     /**
-     * Update a hybrid runbook worker group.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
-     * @param hybridRunbookWorkerGroupUpdationParameters The hybrid runbook worker group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of hybrid runbook worker group along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HybridRunbookWorkerGroupInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String hybridRunbookWorkerGroupName,
-        HybridRunbookWorkerGroupCreateOrUpdateParameters hybridRunbookWorkerGroupUpdationParameters,
-        Context context);
-
-    /**
      * Retrieve a list of hybrid runbook worker groups.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list hybrid runbook worker groups as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response model for the list hybrid runbook worker groups as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<HybridRunbookWorkerGroupInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName);
+    PagedIterable<HybridRunbookWorkerGroupInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName);
 
     /**
      * Retrieve a list of hybrid runbook worker groups.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -181,10 +173,10 @@ public interface HybridRunbookWorkerGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list hybrid runbook worker groups as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response model for the list hybrid runbook worker groups as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<HybridRunbookWorkerGroupInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context);
+    PagedIterable<HybridRunbookWorkerGroupInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String filter, Context context);
 }

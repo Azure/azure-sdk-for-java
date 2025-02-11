@@ -5,35 +5,119 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.AlertRuleInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.FusionAlertRuleProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Represents Fusion alert rule. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Fusion")
+/**
+ * Represents Fusion alert rule.
+ */
 @Fluent
 public final class FusionAlertRule extends AlertRuleInner {
     /*
+     * The alert rule kind
+     */
+    private AlertRuleKind kind = AlertRuleKind.FUSION;
+
+    /*
      * Fusion alert rule properties
      */
-    @JsonProperty(value = "properties")
     private FusionAlertRuleProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FusionAlertRule class.
+     */
+    public FusionAlertRule() {
+    }
+
+    /**
+     * Get the kind property: The alert rule kind.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AlertRuleKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: Fusion alert rule properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FusionAlertRuleProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FusionAlertRule withEtag(String etag) {
         super.withEtag(etag);
@@ -42,7 +126,7 @@ public final class FusionAlertRule extends AlertRuleInner {
 
     /**
      * Get the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
-     *
+     * 
      * @return the alertRuleTemplateName value.
      */
     public String alertRuleTemplateName() {
@@ -51,7 +135,7 @@ public final class FusionAlertRule extends AlertRuleInner {
 
     /**
      * Set the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
-     *
+     * 
      * @param alertRuleTemplateName the alertRuleTemplateName value to set.
      * @return the FusionAlertRule object itself.
      */
@@ -65,7 +149,7 @@ public final class FusionAlertRule extends AlertRuleInner {
 
     /**
      * Get the description property: The description of the alert rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -74,7 +158,7 @@ public final class FusionAlertRule extends AlertRuleInner {
 
     /**
      * Get the displayName property: The display name for alerts created by this alert rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -83,7 +167,7 @@ public final class FusionAlertRule extends AlertRuleInner {
 
     /**
      * Get the enabled property: Determines whether this alert rule is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -92,7 +176,7 @@ public final class FusionAlertRule extends AlertRuleInner {
 
     /**
      * Set the enabled property: Determines whether this alert rule is enabled or disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the FusionAlertRule object itself.
      */
@@ -105,55 +189,8 @@ public final class FusionAlertRule extends AlertRuleInner {
     }
 
     /**
-     * Get the sourceSettings property: Configuration for all supported source signals in fusion detection.
-     *
-     * @return the sourceSettings value.
-     */
-    public List<FusionSourceSettings> sourceSettings() {
-        return this.innerProperties() == null ? null : this.innerProperties().sourceSettings();
-    }
-
-    /**
-     * Set the sourceSettings property: Configuration for all supported source signals in fusion detection.
-     *
-     * @param sourceSettings the sourceSettings value to set.
-     * @return the FusionAlertRule object itself.
-     */
-    public FusionAlertRule withSourceSettings(List<FusionSourceSettings> sourceSettings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FusionAlertRuleProperties();
-        }
-        this.innerProperties().withSourceSettings(sourceSettings);
-        return this;
-    }
-
-    /**
-     * Get the scenarioExclusionPatterns property: Configuration to exclude scenarios in fusion detection.
-     *
-     * @return the scenarioExclusionPatterns value.
-     */
-    public List<FusionScenarioExclusionPattern> scenarioExclusionPatterns() {
-        return this.innerProperties() == null ? null : this.innerProperties().scenarioExclusionPatterns();
-    }
-
-    /**
-     * Set the scenarioExclusionPatterns property: Configuration to exclude scenarios in fusion detection.
-     *
-     * @param scenarioExclusionPatterns the scenarioExclusionPatterns value to set.
-     * @return the FusionAlertRule object itself.
-     */
-    public FusionAlertRule withScenarioExclusionPatterns(
-        List<FusionScenarioExclusionPattern> scenarioExclusionPatterns) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FusionAlertRuleProperties();
-        }
-        this.innerProperties().withScenarioExclusionPatterns(scenarioExclusionPatterns);
-        return this;
-    }
-
-    /**
      * Get the lastModifiedUtc property: The last time that this alert has been modified.
-     *
+     * 
      * @return the lastModifiedUtc value.
      */
     public OffsetDateTime lastModifiedUtc() {
@@ -162,7 +199,7 @@ public final class FusionAlertRule extends AlertRuleInner {
 
     /**
      * Get the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -171,7 +208,7 @@ public final class FusionAlertRule extends AlertRuleInner {
 
     /**
      * Get the tactics property: The tactics of the alert rule.
-     *
+     * 
      * @return the tactics value.
      */
     public List<AttackTactic> tactics() {
@@ -180,7 +217,7 @@ public final class FusionAlertRule extends AlertRuleInner {
 
     /**
      * Get the techniques property: The techniques of the alert rule.
-     *
+     * 
      * @return the techniques value.
      */
     public List<String> techniques() {
@@ -189,14 +226,64 @@ public final class FusionAlertRule extends AlertRuleInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FusionAlertRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FusionAlertRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FusionAlertRule.
+     */
+    public static FusionAlertRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FusionAlertRule deserializedFusionAlertRule = new FusionAlertRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFusionAlertRule.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFusionAlertRule.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFusionAlertRule.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedFusionAlertRule.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFusionAlertRule.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedFusionAlertRule.kind = AlertRuleKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFusionAlertRule.innerProperties = FusionAlertRuleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFusionAlertRule;
+        });
     }
 }

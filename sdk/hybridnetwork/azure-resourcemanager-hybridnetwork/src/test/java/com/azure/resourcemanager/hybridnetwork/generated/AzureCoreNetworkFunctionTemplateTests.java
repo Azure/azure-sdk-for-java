@@ -30,28 +30,25 @@ public final class AzureCoreNetworkFunctionTemplateTests {
     public void testSerialize() throws Exception {
         AzureCoreNetworkFunctionTemplate model
             = new AzureCoreNetworkFunctionTemplate()
-                .withNetworkFunctionApplications(
-                    Arrays
-                        .asList(
-                            new AzureCoreNetworkFunctionApplication().withName("z")
-                                .withDependsOnProfile(new DependsOnProfile()
-                                    .withInstallDependsOn(Arrays.asList("ckdlpag", "rcxfailcfxwmdb"))
-                                    .withUninstallDependsOn(
-                                        Arrays.asList("fgsftufqob", "jln", "cgcckknhxkizvyt", "rzvul"))
-                                    .withUpdateDependsOn(
-                                        Arrays.asList("aeranokqgukkjqnv", "roylaxxu", "cdisd", "sfjbjsvg"))),
-                            new AzureCoreNetworkFunctionApplication().withName("whryvycytdcl")
-                                .withDependsOnProfile(new DependsOnProfile()
-                                    .withInstallDependsOn(
-                                        Arrays.asList("knfnwmbtmvpdv", "dhttzaefedxihchr", "hk", "crjdqnsdfzpbgtg"))
-                                    .withUninstallDependsOn(Arrays.asList("kdghrjeuutlwx", "z"))
-                                    .withUpdateDependsOn(Arrays.asList("okvbwnhhtqlgehg", "pipifh"))),
-                            new AzureCoreNetworkFunctionApplication().withName("e").withDependsOnProfile(
-                                new DependsOnProfile().withInstallDependsOn(Arrays.asList("gcxtxj", "sheafid"))
-                                    .withUninstallDependsOn(
-                                        Arrays.asList("gsresmkssj", "oiftxfkfwegprh", "tillucbiqtg", "q"))
-                                    .withUpdateDependsOn(
-                                        Arrays.asList("cwsldri", "etpwbralll", "bphbqzmizakakank", "p")))));
+                .withNetworkFunctionApplications(Arrays.asList(
+                    new AzureCoreNetworkFunctionApplication().withName("z")
+                        .withDependsOnProfile(new DependsOnProfile()
+                            .withInstallDependsOn(Arrays.asList("ckdlpag", "rcxfailcfxwmdb"))
+                            .withUninstallDependsOn(Arrays.asList("fgsftufqob", "jln", "cgcckknhxkizvyt", "rzvul"))
+                            .withUpdateDependsOn(Arrays.asList("aeranokqgukkjqnv", "roylaxxu", "cdisd", "sfjbjsvg"))),
+                    new AzureCoreNetworkFunctionApplication()
+                        .withName("whryvycytdcl")
+                        .withDependsOnProfile(
+                            new DependsOnProfile()
+                                .withInstallDependsOn(
+                                    Arrays.asList("knfnwmbtmvpdv", "dhttzaefedxihchr", "hk", "crjdqnsdfzpbgtg"))
+                                .withUninstallDependsOn(Arrays.asList("kdghrjeuutlwx", "z"))
+                                .withUpdateDependsOn(Arrays.asList("okvbwnhhtqlgehg", "pipifh"))),
+                    new AzureCoreNetworkFunctionApplication().withName("e")
+                        .withDependsOnProfile(new DependsOnProfile()
+                            .withInstallDependsOn(Arrays.asList("gcxtxj", "sheafid"))
+                            .withUninstallDependsOn(Arrays.asList("gsresmkssj", "oiftxfkfwegprh", "tillucbiqtg", "q"))
+                            .withUpdateDependsOn(Arrays.asList("cwsldri", "etpwbralll", "bphbqzmizakakank", "p")))));
         model = BinaryData.fromObject(model).toObject(AzureCoreNetworkFunctionTemplate.class);
         Assertions.assertEquals("z", model.networkFunctionApplications().get(0).name());
         Assertions.assertEquals("ckdlpag",

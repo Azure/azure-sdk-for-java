@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.networkfunction.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AzureTrafficCollectors GetByResourceGroup. */
+/**
+ * Samples for AzureTrafficCollectors GetByResourceGroup.
+ */
 public final class AzureTrafficCollectorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorGet.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * AzureTrafficCollectorGet.json
      */
     /**
      * Sample code: Get Traffic Collector.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void getTrafficCollector(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager.azureTrafficCollectors().getByResourceGroupWithResponse("rg1", "atc", Context.NONE);
+    public static void
+        getTrafficCollector(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        manager.azureTrafficCollectors().getByResourceGroupWithResponse("rg1", "atc", com.azure.core.util.Context.NONE);
     }
 }

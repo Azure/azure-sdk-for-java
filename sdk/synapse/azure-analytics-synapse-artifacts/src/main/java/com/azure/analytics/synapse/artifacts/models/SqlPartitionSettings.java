@@ -17,17 +17,23 @@ import java.io.IOException;
 @Fluent
 public final class SqlPartitionSettings implements JsonSerializable<SqlPartitionSettings> {
     /*
-     * The name of the column in integer or datetime type that will be used for proceeding partitioning. If not specified, the primary key of the table is auto-detected and used as the partition column. Type: string (or Expression with resultType string).
+     * The name of the column in integer or datetime type that will be used for proceeding partitioning. If not
+     * specified, the primary key of the table is auto-detected and used as the partition column. Type: string (or
+     * Expression with resultType string).
      */
     private Object partitionColumnName;
 
     /*
-     * The maximum value of the partition column for partition range splitting. This value is used to decide the partition stride, not for filtering the rows in table. All rows in the table or query result will be partitioned and copied. Type: string (or Expression with resultType string).
+     * The maximum value of the partition column for partition range splitting. This value is used to decide the
+     * partition stride, not for filtering the rows in table. All rows in the table or query result will be partitioned
+     * and copied. Type: string (or Expression with resultType string).
      */
     private Object partitionUpperBound;
 
     /*
-     * The minimum value of the partition column for partition range splitting. This value is used to decide the partition stride, not for filtering the rows in table. All rows in the table or query result will be partitioned and copied. Type: string (or Expression with resultType string).
+     * The minimum value of the partition column for partition range splitting. This value is used to decide the
+     * partition stride, not for filtering the rows in table. All rows in the table or query result will be partitioned
+     * and copied. Type: string (or Expression with resultType string).
      */
     private Object partitionLowerBound;
 

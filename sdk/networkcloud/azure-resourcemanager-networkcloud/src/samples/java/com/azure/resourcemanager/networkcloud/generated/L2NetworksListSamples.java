@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for L2Networks List. */
+/**
+ * Samples for L2Networks List.
+ */
 public final class L2NetworksListSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/L2Networks_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * L2Networks_ListBySubscription.json
      */
     /**
      * Sample code: List L2 networks for subscription.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void listL2NetworksForSubscription(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+    public static void
+        listL2NetworksForSubscription(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.l2Networks().list(com.azure.core.util.Context.NONE);
     }
 }

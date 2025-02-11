@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogHostInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response of a list operation. */
+/**
+ * Response of a list operation.
+ */
 @Fluent
-public final class DatadogHostListResponse {
+public final class DatadogHostListResponse implements JsonSerializable<DatadogHostListResponse> {
     /*
      * Results of a list operation.
      */
-    @JsonProperty(value = "value")
     private List<DatadogHostInner> value;
 
     /*
      * Link to the next set of results, if any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DatadogHostListResponse class. */
+    /**
+     * Creates an instance of DatadogHostListResponse class.
+     */
     public DatadogHostListResponse() {
     }
 
     /**
      * Get the value property: Results of a list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<DatadogHostInner> value() {
@@ -39,7 +45,7 @@ public final class DatadogHostListResponse {
 
     /**
      * Set the value property: Results of a list operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the DatadogHostListResponse object itself.
      */
@@ -50,7 +56,7 @@ public final class DatadogHostListResponse {
 
     /**
      * Get the nextLink property: Link to the next set of results, if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class DatadogHostListResponse {
 
     /**
      * Set the nextLink property: Link to the next set of results, if any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DatadogHostListResponse object itself.
      */
@@ -70,12 +76,52 @@ public final class DatadogHostListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatadogHostListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatadogHostListResponse if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatadogHostListResponse.
+     */
+    public static DatadogHostListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatadogHostListResponse deserializedDatadogHostListResponse = new DatadogHostListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DatadogHostInner> value = reader.readArray(reader1 -> DatadogHostInner.fromJson(reader1));
+                    deserializedDatadogHostListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDatadogHostListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatadogHostListResponse;
+        });
     }
 }

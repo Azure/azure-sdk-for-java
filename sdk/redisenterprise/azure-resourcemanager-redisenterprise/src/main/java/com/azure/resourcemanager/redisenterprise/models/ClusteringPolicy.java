@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Clustering policy - default is OSSCluster. Specified at create time.
+ * Clustering policy - default is OSSCluster. This property must be chosen at create time, and cannot be changed without
+ * deleting the database.
  */
 public final class ClusteringPolicy extends ExpandableStringEnum<ClusteringPolicy> {
     /**
@@ -37,7 +37,6 @@ public final class ClusteringPolicy extends ExpandableStringEnum<ClusteringPolic
      * @param name a name to look for.
      * @return the corresponding ClusteringPolicy.
      */
-    @JsonCreator
     public static ClusteringPolicy fromString(String name) {
         return fromString(name, ClusteringPolicy.class);
     }

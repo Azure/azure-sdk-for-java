@@ -6,39 +6,41 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.RecoveryPointModelInner;
 
-/** An immutable client-side representation of RecoveryPointModel. */
+/**
+ * An immutable client-side representation of RecoveryPointModel.
+ */
 public interface RecoveryPointModel {
     /**
      * Gets the properties property: Recovery point model properties.
-     *
+     * 
      * @return the properties value.
      */
     RecoveryPointModelProperties properties();
 
     /**
      * Gets the id property: Gets or sets the Id of the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Gets or sets the name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: Gets or sets the type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: The systemData property.
-     *
+     * 
      * @return the systemData value.
      */
     RecoveryPointModelSystemData systemData();
@@ -46,7 +48,7 @@ public interface RecoveryPointModel {
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.RecoveryPointModelInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     RecoveryPointModelInner innerModel();

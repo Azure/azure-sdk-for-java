@@ -6,25 +6,27 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.CheckNameAvailabilityResponseModelInner;
 
-/** An immutable client-side representation of CheckNameAvailabilityResponseModel. */
+/**
+ * An immutable client-side representation of CheckNameAvailabilityResponseModel.
+ */
 public interface CheckNameAvailabilityResponseModel {
     /**
      * Gets the nameAvailable property: Gets or sets a value indicating whether resource name is available or not.
-     *
+     * 
      * @return the nameAvailable value.
      */
     Boolean nameAvailable();
 
     /**
      * Gets the reason property: Gets or sets the reason for resource name unavailability.
-     *
+     * 
      * @return the reason value.
      */
     String reason();
 
     /**
      * Gets the message property: Gets or sets the message for resource name unavailability.
-     *
+     * 
      * @return the message value.
      */
     String message();
@@ -33,7 +35,7 @@ public interface CheckNameAvailabilityResponseModel {
      * Gets the inner
      * com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.CheckNameAvailabilityResponseModelInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     CheckNameAvailabilityResponseModelInner innerModel();

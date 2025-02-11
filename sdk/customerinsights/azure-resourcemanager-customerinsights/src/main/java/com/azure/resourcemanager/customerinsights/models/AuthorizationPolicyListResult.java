@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.fluent.models.AuthorizationPolicyResourceFormatInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of list authorization policy operation. */
+/**
+ * The response of list authorization policy operation.
+ */
 @Fluent
-public final class AuthorizationPolicyListResult {
+public final class AuthorizationPolicyListResult implements JsonSerializable<AuthorizationPolicyListResult> {
     /*
      * Results of the list operation.
      */
-    @JsonProperty(value = "value")
     private List<AuthorizationPolicyResourceFormatInner> value;
 
     /*
      * Link to the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AuthorizationPolicyListResult class. */
+    /**
+     * Creates an instance of AuthorizationPolicyListResult class.
+     */
     public AuthorizationPolicyListResult() {
     }
 
     /**
      * Get the value property: Results of the list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<AuthorizationPolicyResourceFormatInner> value() {
@@ -39,7 +45,7 @@ public final class AuthorizationPolicyListResult {
 
     /**
      * Set the value property: Results of the list operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the AuthorizationPolicyListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class AuthorizationPolicyListResult {
 
     /**
      * Get the nextLink property: Link to the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class AuthorizationPolicyListResult {
 
     /**
      * Set the nextLink property: Link to the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AuthorizationPolicyListResult object itself.
      */
@@ -70,12 +76,54 @@ public final class AuthorizationPolicyListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationPolicyListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationPolicyListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthorizationPolicyListResult.
+     */
+    public static AuthorizationPolicyListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationPolicyListResult deserializedAuthorizationPolicyListResult
+                = new AuthorizationPolicyListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AuthorizationPolicyResourceFormatInner> value
+                        = reader.readArray(reader1 -> AuthorizationPolicyResourceFormatInner.fromJson(reader1));
+                    deserializedAuthorizationPolicyListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAuthorizationPolicyListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationPolicyListResult;
+        });
     }
 }

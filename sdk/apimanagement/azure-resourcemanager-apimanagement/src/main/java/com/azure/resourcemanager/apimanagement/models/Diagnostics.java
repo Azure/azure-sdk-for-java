@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.DiagnosticContractInner;
 
-/** Resource collection API of Diagnostics. */
+/**
+ * Resource collection API of Diagnostics.
+ */
 public interface Diagnostics {
     /**
      * Lists all diagnostics of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,12 +27,12 @@ public interface Diagnostics {
 
     /**
      * Lists all diagnostics of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -39,12 +41,12 @@ public interface Diagnostics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Diagnostic list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DiagnosticContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<DiagnosticContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -54,12 +56,12 @@ public interface Diagnostics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Diagnostic specified by its identifier.
      */
-    DiagnosticsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String diagnosticId, Context context);
+    DiagnosticsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String diagnosticId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -71,7 +73,7 @@ public interface Diagnostics {
 
     /**
      * Gets the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -81,12 +83,12 @@ public interface Diagnostics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Diagnostic specified by its identifier.
      */
-    Response<DiagnosticContract> getWithResponse(
-        String resourceGroupName, String serviceName, String diagnosticId, Context context);
+    Response<DiagnosticContract> getWithResponse(String resourceGroupName, String serviceName, String diagnosticId,
+        Context context);
 
     /**
      * Gets the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -99,7 +101,7 @@ public interface Diagnostics {
 
     /**
      * Creates a new Diagnostic or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -111,17 +113,12 @@ public interface Diagnostics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return diagnostic details.
      */
-    Response<DiagnosticContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String diagnosticId,
-        DiagnosticContractInner parameters,
-        String ifMatch,
-        Context context);
+    Response<DiagnosticContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String diagnosticId, DiagnosticContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new Diagnostic or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -131,17 +128,17 @@ public interface Diagnostics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return diagnostic details.
      */
-    DiagnosticContract createOrUpdate(
-        String resourceGroupName, String serviceName, String diagnosticId, DiagnosticContractInner parameters);
+    DiagnosticContract createOrUpdate(String resourceGroupName, String serviceName, String diagnosticId,
+        DiagnosticContractInner parameters);
 
     /**
      * Updates the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Diagnostic Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,60 +146,51 @@ public interface Diagnostics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return diagnostic details.
      */
-    Response<DiagnosticContract> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String diagnosticId,
-        String ifMatch,
-        DiagnosticContractInner parameters,
-        Context context);
+    Response<DiagnosticContract> updateWithResponse(String resourceGroupName, String serviceName, String diagnosticId,
+        String ifMatch, DiagnosticContractInner parameters, Context context);
 
     /**
      * Updates the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Diagnostic Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return diagnostic details.
      */
-    DiagnosticContract update(
-        String resourceGroupName,
-        String serviceName,
-        String diagnosticId,
-        String ifMatch,
+    DiagnosticContract update(String resourceGroupName, String serviceName, String diagnosticId, String ifMatch,
         DiagnosticContractInner parameters);
 
     /**
      * Deletes the specified Diagnostic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String diagnosticId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String diagnosticId, String ifMatch,
+        Context context);
 
     /**
      * Deletes the specified Diagnostic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

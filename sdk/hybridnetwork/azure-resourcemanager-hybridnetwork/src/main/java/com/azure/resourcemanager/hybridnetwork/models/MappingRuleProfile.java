@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Mapping rule profile properties.
  */
 @Fluent
-public class MappingRuleProfile {
+public class MappingRuleProfile implements JsonSerializable<MappingRuleProfile> {
     /*
      * The application enablement.
      */
-    @JsonProperty(value = "applicationEnablement")
     private ApplicationEnablement applicationEnablement;
 
     /**
@@ -50,5 +53,43 @@ public class MappingRuleProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationEnablement",
+            this.applicationEnablement == null ? null : this.applicationEnablement.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MappingRuleProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MappingRuleProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MappingRuleProfile.
+     */
+    public static MappingRuleProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MappingRuleProfile deserializedMappingRuleProfile = new MappingRuleProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationEnablement".equals(fieldName)) {
+                    deserializedMappingRuleProfile.applicationEnablement
+                        = ApplicationEnablement.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMappingRuleProfile;
+        });
     }
 }

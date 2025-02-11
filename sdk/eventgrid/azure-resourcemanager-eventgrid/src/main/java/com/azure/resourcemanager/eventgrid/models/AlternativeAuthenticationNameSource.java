@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -55,7 +54,6 @@ public final class AlternativeAuthenticationNameSource
      * @param name a name to look for.
      * @return the corresponding AlternativeAuthenticationNameSource.
      */
-    @JsonCreator
     public static AlternativeAuthenticationNameSource fromString(String name) {
         return fromString(name, AlternativeAuthenticationNameSource.class);
     }

@@ -5,88 +5,87 @@
 package com.azure.resourcemanager.education.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.education.models.StudentLabStatus;
 import com.azure.resourcemanager.education.models.StudentRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Student detail properties. */
+/**
+ * Student detail properties.
+ */
 @Fluent
-public final class StudentProperties {
+public final class StudentProperties implements JsonSerializable<StudentProperties> {
     /*
      * First Name
      */
-    @JsonProperty(value = "firstName", required = true)
     private String firstName;
 
     /*
      * Last Name
      */
-    @JsonProperty(value = "lastName", required = true)
     private String lastName;
 
     /*
      * Student Email
      */
-    @JsonProperty(value = "email", required = true)
     private String email;
 
     /*
      * Student Role
      */
-    @JsonProperty(value = "role", required = true)
     private StudentRole role;
 
     /*
      * Student Budget
      */
-    @JsonProperty(value = "budget", required = true)
     private Amount budget;
 
     /*
      * Subscription Id
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * Date this student is set to expire from the lab.
      */
-    @JsonProperty(value = "expirationDate", required = true)
     private OffsetDateTime expirationDate;
 
     /*
      * Student Lab Status
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private StudentLabStatus status;
 
     /*
      * Date student was added to the lab
      */
-    @JsonProperty(value = "effectiveDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime effectiveDate;
 
     /*
      * Subscription alias
      */
-    @JsonProperty(value = "subscriptionAlias")
     private String subscriptionAlias;
 
     /*
      * subscription invite last sent date
      */
-    @JsonProperty(value = "subscriptionInviteLastSentDate")
     private OffsetDateTime subscriptionInviteLastSentDate;
 
-    /** Creates an instance of StudentProperties class. */
+    /**
+     * Creates an instance of StudentProperties class.
+     */
     public StudentProperties() {
     }
 
     /**
      * Get the firstName property: First Name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -95,7 +94,7 @@ public final class StudentProperties {
 
     /**
      * Set the firstName property: First Name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the StudentProperties object itself.
      */
@@ -106,7 +105,7 @@ public final class StudentProperties {
 
     /**
      * Get the lastName property: Last Name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -115,7 +114,7 @@ public final class StudentProperties {
 
     /**
      * Set the lastName property: Last Name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the StudentProperties object itself.
      */
@@ -126,7 +125,7 @@ public final class StudentProperties {
 
     /**
      * Get the email property: Student Email.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -135,7 +134,7 @@ public final class StudentProperties {
 
     /**
      * Set the email property: Student Email.
-     *
+     * 
      * @param email the email value to set.
      * @return the StudentProperties object itself.
      */
@@ -146,7 +145,7 @@ public final class StudentProperties {
 
     /**
      * Get the role property: Student Role.
-     *
+     * 
      * @return the role value.
      */
     public StudentRole role() {
@@ -155,7 +154,7 @@ public final class StudentProperties {
 
     /**
      * Set the role property: Student Role.
-     *
+     * 
      * @param role the role value to set.
      * @return the StudentProperties object itself.
      */
@@ -166,7 +165,7 @@ public final class StudentProperties {
 
     /**
      * Get the budget property: Student Budget.
-     *
+     * 
      * @return the budget value.
      */
     public Amount budget() {
@@ -175,7 +174,7 @@ public final class StudentProperties {
 
     /**
      * Set the budget property: Student Budget.
-     *
+     * 
      * @param budget the budget value to set.
      * @return the StudentProperties object itself.
      */
@@ -186,7 +185,7 @@ public final class StudentProperties {
 
     /**
      * Get the subscriptionId property: Subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -195,7 +194,7 @@ public final class StudentProperties {
 
     /**
      * Get the expirationDate property: Date this student is set to expire from the lab.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -204,7 +203,7 @@ public final class StudentProperties {
 
     /**
      * Set the expirationDate property: Date this student is set to expire from the lab.
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the StudentProperties object itself.
      */
@@ -215,7 +214,7 @@ public final class StudentProperties {
 
     /**
      * Get the status property: Student Lab Status.
-     *
+     * 
      * @return the status value.
      */
     public StudentLabStatus status() {
@@ -224,7 +223,7 @@ public final class StudentProperties {
 
     /**
      * Get the effectiveDate property: Date student was added to the lab.
-     *
+     * 
      * @return the effectiveDate value.
      */
     public OffsetDateTime effectiveDate() {
@@ -233,7 +232,7 @@ public final class StudentProperties {
 
     /**
      * Get the subscriptionAlias property: Subscription alias.
-     *
+     * 
      * @return the subscriptionAlias value.
      */
     public String subscriptionAlias() {
@@ -242,7 +241,7 @@ public final class StudentProperties {
 
     /**
      * Set the subscriptionAlias property: Subscription alias.
-     *
+     * 
      * @param subscriptionAlias the subscriptionAlias value to set.
      * @return the StudentProperties object itself.
      */
@@ -253,7 +252,7 @@ public final class StudentProperties {
 
     /**
      * Get the subscriptionInviteLastSentDate property: subscription invite last sent date.
-     *
+     * 
      * @return the subscriptionInviteLastSentDate value.
      */
     public OffsetDateTime subscriptionInviteLastSentDate() {
@@ -262,7 +261,7 @@ public final class StudentProperties {
 
     /**
      * Set the subscriptionInviteLastSentDate property: subscription invite last sent date.
-     *
+     * 
      * @param subscriptionInviteLastSentDate the subscriptionInviteLastSentDate value to set.
      * @return the StudentProperties object itself.
      */
@@ -273,44 +272,109 @@ public final class StudentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (firstName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property firstName in model StudentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property firstName in model StudentProperties"));
         }
         if (lastName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property lastName in model StudentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property lastName in model StudentProperties"));
         }
         if (email() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property email in model StudentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property email in model StudentProperties"));
         }
         if (role() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property role in model StudentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property role in model StudentProperties"));
         }
         if (budget() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property budget in model StudentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property budget in model StudentProperties"));
         } else {
             budget().validate();
         }
         if (expirationDate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expirationDate in model StudentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property expirationDate in model StudentProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StudentProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("firstName", this.firstName);
+        jsonWriter.writeStringField("lastName", this.lastName);
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeJsonField("budget", this.budget);
+        jsonWriter.writeStringField("expirationDate",
+            this.expirationDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDate));
+        jsonWriter.writeStringField("subscriptionAlias", this.subscriptionAlias);
+        jsonWriter.writeStringField("subscriptionInviteLastSentDate",
+            this.subscriptionInviteLastSentDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.subscriptionInviteLastSentDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StudentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StudentProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StudentProperties.
+     */
+    public static StudentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StudentProperties deserializedStudentProperties = new StudentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("firstName".equals(fieldName)) {
+                    deserializedStudentProperties.firstName = reader.getString();
+                } else if ("lastName".equals(fieldName)) {
+                    deserializedStudentProperties.lastName = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedStudentProperties.email = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    deserializedStudentProperties.role = StudentRole.fromString(reader.getString());
+                } else if ("budget".equals(fieldName)) {
+                    deserializedStudentProperties.budget = Amount.fromJson(reader);
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedStudentProperties.expirationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedStudentProperties.subscriptionId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedStudentProperties.status = StudentLabStatus.fromString(reader.getString());
+                } else if ("effectiveDate".equals(fieldName)) {
+                    deserializedStudentProperties.effectiveDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("subscriptionAlias".equals(fieldName)) {
+                    deserializedStudentProperties.subscriptionAlias = reader.getString();
+                } else if ("subscriptionInviteLastSentDate".equals(fieldName)) {
+                    deserializedStudentProperties.subscriptionInviteLastSentDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStudentProperties;
+        });
+    }
 }

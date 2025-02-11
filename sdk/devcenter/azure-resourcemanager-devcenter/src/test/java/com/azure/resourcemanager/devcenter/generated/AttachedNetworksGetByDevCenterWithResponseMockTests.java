@@ -21,7 +21,7 @@ public final class AttachedNetworksGetByDevCenterWithResponseMockTests {
     @Test
     public void testGetByDevCenterWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Deleted\",\"networkConnectionId\":\"dsmexiitdfux\",\"networkConnectionLocation\":\"asiibmiybnnust\",\"healthCheckStatus\":\"Passed\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"mgixhcmavmqfou\",\"name\":\"or\",\"type\":\"cgyypro\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleted\",\"networkConnectionId\":\"rhptilluc\",\"networkConnectionLocation\":\"qtgdqohmcwsl\",\"healthCheckStatus\":\"Pending\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"pwbralllibphbqz\",\"name\":\"izakak\",\"type\":\"nkjpdnjzha\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,10 @@ public final class AttachedNetworksGetByDevCenterWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AttachedNetworkConnection response = manager.attachedNetworks()
-            .getByDevCenterWithResponse("gv", "irpghriypoqeyh", "qhykprlpyzn", com.azure.core.util.Context.NONE)
+            .getByDevCenterWithResponse("oajvgcxtxjcs", "eafidltugsresm", "ssjhoiftxfkf",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dsmexiitdfux", response.networkConnectionId());
+        Assertions.assertEquals("rhptilluc", response.networkConnectionId());
     }
 }

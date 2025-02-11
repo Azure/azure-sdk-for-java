@@ -12,7 +12,9 @@ import java.util.UUID;
  */
 public final class PartnerTopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/PartnerTopics_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * PartnerTopics_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerTopics_CreateOrUpdate.

@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * The version of a server.
  */
 public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
+    /**
+     * Static value 16 for ServerVersion.
+     */
+    public static final ServerVersion ONE_SIX = fromString("16");
+
     /**
      * Static value 15 for ServerVersion.
      */
@@ -38,11 +42,6 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
     public static final ServerVersion ONE_ONE = fromString("11");
 
     /**
-     * Static value 16 for ServerVersion.
-     */
-    public static final ServerVersion ONE_SIX = fromString("16");
-
-    /**
      * Creates a new instance of ServerVersion value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -57,7 +56,6 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
      * @param name a name to look for.
      * @return the corresponding ServerVersion.
      */
-    @JsonCreator
     public static ServerVersion fromString(String name) {
         return fromString(name, ServerVersion.class);
     }

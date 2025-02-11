@@ -18,8 +18,7 @@ public final class ExportRunPropertiesImpl implements ExportRunProperties {
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    ExportRunPropertiesImpl(
-        ExportRunPropertiesInner innerObject,
+    ExportRunPropertiesImpl(ExportRunPropertiesInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

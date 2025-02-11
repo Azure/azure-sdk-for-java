@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyRsaTokenKe
 public final class ContentKeyPolicyRsaTokenKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicyRsaTokenKey model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyRsaTokenKey\"}")
+        ContentKeyPolicyRsaTokenKey model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyRsaTokenKey\"}")
                 .toObject(ContentKeyPolicyRsaTokenKey.class);
     }
 

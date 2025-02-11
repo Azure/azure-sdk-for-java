@@ -6,24 +6,45 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Issue Attachment Contract details. */
+/**
+ * Issue Attachment Contract details.
+ */
 @Fluent
 public final class IssueAttachmentContractInner extends ProxyResource {
     /*
      * Properties of the Issue Attachment.
      */
-    @JsonProperty(value = "properties")
     private IssueAttachmentContractProperties innerProperties;
 
-    /** Creates an instance of IssueAttachmentContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IssueAttachmentContractInner class.
+     */
     public IssueAttachmentContractInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Issue Attachment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IssueAttachmentContractProperties innerProperties() {
@@ -31,8 +52,38 @@ public final class IssueAttachmentContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the title property: Filename by which the binary data will be saved.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -41,7 +92,7 @@ public final class IssueAttachmentContractInner extends ProxyResource {
 
     /**
      * Set the title property: Filename by which the binary data will be saved.
-     *
+     * 
      * @param title the title value to set.
      * @return the IssueAttachmentContractInner object itself.
      */
@@ -56,7 +107,7 @@ public final class IssueAttachmentContractInner extends ProxyResource {
     /**
      * Get the contentFormat property: Either 'link' if content is provided via an HTTP link or the MIME type of the
      * Base64-encoded binary data provided in the 'content' property.
-     *
+     * 
      * @return the contentFormat value.
      */
     public String contentFormat() {
@@ -66,7 +117,7 @@ public final class IssueAttachmentContractInner extends ProxyResource {
     /**
      * Set the contentFormat property: Either 'link' if content is provided via an HTTP link or the MIME type of the
      * Base64-encoded binary data provided in the 'content' property.
-     *
+     * 
      * @param contentFormat the contentFormat value to set.
      * @return the IssueAttachmentContractInner object itself.
      */
@@ -80,7 +131,7 @@ public final class IssueAttachmentContractInner extends ProxyResource {
 
     /**
      * Get the content property: An HTTP link or Base64-encoded binary data.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -89,7 +140,7 @@ public final class IssueAttachmentContractInner extends ProxyResource {
 
     /**
      * Set the content property: An HTTP link or Base64-encoded binary data.
-     *
+     * 
      * @param content the content value to set.
      * @return the IssueAttachmentContractInner object itself.
      */
@@ -103,12 +154,56 @@ public final class IssueAttachmentContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IssueAttachmentContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IssueAttachmentContractInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IssueAttachmentContractInner.
+     */
+    public static IssueAttachmentContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IssueAttachmentContractInner deserializedIssueAttachmentContractInner = new IssueAttachmentContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIssueAttachmentContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIssueAttachmentContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIssueAttachmentContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIssueAttachmentContractInner.innerProperties
+                        = IssueAttachmentContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIssueAttachmentContractInner;
+        });
     }
 }

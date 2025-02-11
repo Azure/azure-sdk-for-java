@@ -21,10 +21,22 @@ public final class SchedulesImpl implements Schedules {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public SchedulesImpl(
-        SchedulesClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public SchedulesImpl(SchedulesClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Schedule> getWithResponse(String resourceGroupName, String automationAccountName,
+        String scheduleName, Context context) {
+        Response<ScheduleInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, scheduleName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ScheduleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Schedule get(String resourceGroupName, String automationAccountName, String scheduleName) {
@@ -36,151 +48,100 @@ public final class SchedulesImpl implements Schedules {
         }
     }
 
-    public Response<Schedule> getWithResponse(
-        String resourceGroupName, String automationAccountName, String scheduleName, Context context) {
-        Response<ScheduleInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, scheduleName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ScheduleImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String scheduleName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, scheduleName, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String scheduleName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, scheduleName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String scheduleName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, scheduleName, context);
-    }
-
     public PagedIterable<Schedule> listByAutomationAccount(String resourceGroupName, String automationAccountName) {
-        PagedIterable<ScheduleInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+        PagedIterable<ScheduleInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Schedule> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context) {
-        PagedIterable<ScheduleInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+    public PagedIterable<Schedule> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context) {
+        PagedIterable<ScheduleInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
     public Schedule getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String scheduleName = Utils.getValueFromIdByName(id, "schedules");
+        String scheduleName = ResourceManagerUtils.getValueFromIdByName(id, "schedules");
         if (scheduleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, scheduleName, Context.NONE).getValue();
     }
 
     public Response<Schedule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String scheduleName = Utils.getValueFromIdByName(id, "schedules");
+        String scheduleName = ResourceManagerUtils.getValueFromIdByName(id, "schedules");
         if (scheduleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, scheduleName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String scheduleName = Utils.getValueFromIdByName(id, "schedules");
+        String scheduleName = ResourceManagerUtils.getValueFromIdByName(id, "schedules");
         if (scheduleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, automationAccountName, scheduleName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String scheduleName = Utils.getValueFromIdByName(id, "schedules");
+        String scheduleName = ResourceManagerUtils.getValueFromIdByName(id, "schedules");
         if (scheduleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, automationAccountName, scheduleName, context);
     }

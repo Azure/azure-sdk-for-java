@@ -8,16 +8,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Images. */
+/**
+ * Resource collection API of Images.
+ */
 public interface Images {
     /**
      * Gets all images.
-     *
-     * <p>Gets all images from galleries attached to a lab plan.
-     *
+     * 
+     * Gets all images from galleries attached to a lab plan.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
-     *     resource URIs and in UI.
+     * resource URIs and in UI.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -27,12 +29,12 @@ public interface Images {
 
     /**
      * Gets all images.
-     *
-     * <p>Gets all images from galleries attached to a lab plan.
-     *
+     * 
+     * Gets all images from galleries attached to a lab plan.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
-     *     resource URIs and in UI.
+     * resource URIs and in UI.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,28 +46,12 @@ public interface Images {
 
     /**
      * Gets an image.
-     *
-     * <p>Gets an image resource.
-     *
+     * 
+     * Gets an image resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
-     *     resource URIs and in UI.
-     * @param imageName The image name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image resource.
-     */
-    Image get(String resourceGroupName, String labPlanName, String imageName);
-
-    /**
-     * Gets an image.
-     *
-     * <p>Gets an image resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
-     *     resource URIs and in UI.
+     * resource URIs and in UI.
      * @param imageName The image name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,9 +63,25 @@ public interface Images {
 
     /**
      * Gets an image.
-     *
-     * <p>Gets an image resource.
-     *
+     * 
+     * Gets an image resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
+     * resource URIs and in UI.
+     * @param imageName The image name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an image resource.
+     */
+    Image get(String resourceGroupName, String labPlanName, String imageName);
+
+    /**
+     * Gets an image.
+     * 
+     * Gets an image resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,9 +92,9 @@ public interface Images {
 
     /**
      * Gets an image.
-     *
-     * <p>Gets an image resource.
-     *
+     * 
+     * Gets an image resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +106,7 @@ public interface Images {
 
     /**
      * Begins definition for a new Image resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Image definition.
      */

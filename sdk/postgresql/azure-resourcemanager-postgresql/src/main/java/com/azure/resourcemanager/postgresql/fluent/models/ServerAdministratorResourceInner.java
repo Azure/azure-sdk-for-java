@@ -6,26 +6,47 @@ package com.azure.resourcemanager.postgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresql.models.AdministratorType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** Represents a and external administrator to be created. */
+/**
+ * Represents a and external administrator to be created.
+ */
 @Fluent
 public final class ServerAdministratorResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerAdministratorResourceInner.class);
-
     /*
      * Properties of the server AAD administrator.
      */
-    @JsonProperty(value = "properties")
     private ServerAdministratorProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ServerAdministratorResourceInner class.
+     */
+    public ServerAdministratorResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the server AAD administrator.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerAdministratorProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the administratorType property: The type of administrator.
-     *
+     * 
      * @return the administratorType value.
      */
     public AdministratorType administratorType() {
@@ -43,7 +94,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
 
     /**
      * Set the administratorType property: The type of administrator.
-     *
+     * 
      * @param administratorType the administratorType value to set.
      * @return the ServerAdministratorResourceInner object itself.
      */
@@ -57,7 +108,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
 
     /**
      * Get the login property: The server administrator login account name.
-     *
+     * 
      * @return the login value.
      */
     public String login() {
@@ -66,7 +117,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
 
     /**
      * Set the login property: The server administrator login account name.
-     *
+     * 
      * @param login the login value to set.
      * @return the ServerAdministratorResourceInner object itself.
      */
@@ -80,7 +131,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
 
     /**
      * Get the sid property: The server administrator Sid (Secure ID).
-     *
+     * 
      * @return the sid value.
      */
     public UUID sid() {
@@ -89,7 +140,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
 
     /**
      * Set the sid property: The server administrator Sid (Secure ID).
-     *
+     * 
      * @param sid the sid value to set.
      * @return the ServerAdministratorResourceInner object itself.
      */
@@ -103,7 +154,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The server Active Directory Administrator tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -112,7 +163,7 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
 
     /**
      * Set the tenantId property: The server Active Directory Administrator tenant id.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ServerAdministratorResourceInner object itself.
      */
@@ -126,12 +177,57 @@ public final class ServerAdministratorResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerAdministratorResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerAdministratorResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerAdministratorResourceInner.
+     */
+    public static ServerAdministratorResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerAdministratorResourceInner deserializedServerAdministratorResourceInner
+                = new ServerAdministratorResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServerAdministratorResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServerAdministratorResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServerAdministratorResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServerAdministratorResourceInner.innerProperties
+                        = ServerAdministratorProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerAdministratorResourceInner;
+        });
     }
 }

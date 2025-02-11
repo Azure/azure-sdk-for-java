@@ -19,21 +19,20 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<Enum0> checkServiceProviderAvailabilityWithResponse(
         CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput, Context context) {
-        return this
-            .serviceClient()
+        return this.serviceClient()
             .checkServiceProviderAvailabilityWithResponse(checkServiceProviderAvailabilityInput, context);
     }
 
-    public Enum0 checkServiceProviderAvailability(
-        CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput) {
+    public Enum0
+        checkServiceProviderAvailability(CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput) {
         return this.serviceClient().checkServiceProviderAvailability(checkServiceProviderAvailabilityInput);
     }
 

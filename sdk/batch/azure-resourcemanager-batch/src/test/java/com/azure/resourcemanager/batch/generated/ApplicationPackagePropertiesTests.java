@@ -11,7 +11,7 @@ public final class ApplicationPackagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationPackageProperties model = BinaryData.fromString(
-            "{\"state\":\"Pending\",\"format\":\"tyxolniwpwc\",\"storageUrl\":\"jfkgiawxk\",\"storageUrlExpiry\":\"2021-05-21T20:11:19Z\",\"lastActivationTime\":\"2021-02-17T21:17:55Z\"}")
+            "{\"state\":\"Pending\",\"format\":\"zdn\",\"storageUrl\":\"jq\",\"storageUrlExpiry\":\"2021-02-25T06:26:56Z\",\"lastActivationTime\":\"2021-02-09T18:19:16Z\"}")
             .toObject(ApplicationPackageProperties.class);
     }
 

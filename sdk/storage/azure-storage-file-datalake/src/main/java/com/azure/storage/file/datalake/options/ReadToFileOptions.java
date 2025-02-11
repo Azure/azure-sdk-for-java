@@ -14,7 +14,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.OpenOption;
 import java.util.Set;
 
-
 /**
  * Parameters when calling readToFile() on {@link DataLakeFileClient}
  */
@@ -32,6 +31,7 @@ public class ReadToFileOptions {
      * Constructs a {@link ReadToFileOptions}.
      *
      * @param filePath Path of the file to download to.
+     * @throws NullPointerException If {@code filePath} is null.
      */
     public ReadToFileOptions(String filePath) {
         StorageImplUtils.assertNotNull("filePath", filePath);
@@ -39,13 +39,17 @@ public class ReadToFileOptions {
     }
 
     /**
-     * @return A {@link String} representing the filePath where the downloaded data will be written.
+     * Gets the path of the file to download to.
+     *
+     * @return The path where the downloaded data will be written.
      */
     public String getFilePath() {
         return filePath;
     }
 
     /**
+     * Gets the {@link FileRange}.
+     *
      * @return {@link FileRange}
      */
     public FileRange getRange() {
@@ -53,6 +57,8 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Sets the {@link FileRange}.
+     *
      * @param range {@link FileRange}
      * @return The updated options.
      */
@@ -62,14 +68,20 @@ public class ReadToFileOptions {
     }
 
     /**
-     * @return {@link ParallelTransferOptions} to use to download to file. Number of parallel
-     * transfers parameter is ignored.
+     * Gets the {@link ParallelTransferOptions} to use to download to file. Number of parallel transfers parameter is
+     * ignored.
+     *
+     * @return {@link ParallelTransferOptions} to use to download to file. Number of parallel transfers parameter is
+     * ignored.
      */
     public ParallelTransferOptions getParallelTransferOptions() {
         return parallelTransferOptions;
     }
 
     /**
+     * Sets the {@link ParallelTransferOptions} to use to download to file. Number of parallel transfers parameter is
+     * ignored.
+     *
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
      * transfers parameter is ignored.
      * @return The updated options.
@@ -80,6 +92,8 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Gets the {@link DownloadRetryOptions}.
+     *
      * @return {@link DownloadRetryOptions}
      */
     public DownloadRetryOptions getDownloadRetryOptions() {
@@ -87,6 +101,8 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Sets the {@link DownloadRetryOptions}.
+     *
      * @param downloadRetryOptions {@link DownloadRetryOptions}
      * @return The updated options.
      */
@@ -96,6 +112,8 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Gets the {@link DataLakeRequestConditions}.
+     *
      * @return requestConditions {@link DataLakeRequestConditions}
      */
     public DataLakeRequestConditions getDataLakeRequestConditions() {
@@ -103,6 +121,8 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Sets the {@link DataLakeRequestConditions}.
+     *
      * @param dataLakeRequestConditions {@link DataLakeRequestConditions}
      * @return The updated options.
      * @throws UncheckedIOException If an I/O error occurs.
@@ -113,6 +133,8 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Gets whether the contentMD5 for the specified file range should be returned.
+     *
      * @return Whether the contentMD5 for the specified file range should be returned.
      */
     public Boolean isRangeGetContentMd5() {
@@ -120,6 +142,8 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Sets whether the contentMD5 for the specified file range should be returned.
+     *
      * @param rangeGetContentMd5 Whether the contentMD5 for the specified file range should be returned.
      * @return The updated options.
      */
@@ -129,6 +153,8 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Gets the {@link OpenOption OpenOptions} to use to configure how to open or create the file.
+     *
      * @return {@link OpenOption OpenOptions} to use to configure how to open or create the file.
      */
     public Set<OpenOption> getOpenOptions() {
@@ -136,6 +162,8 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Sets the {@link OpenOption OpenOptions} to use to configure how to open or create the file.
+     *
      * @param openOptions {@link OpenOption OpenOptions} to use to configure how to open or create the file.
      * @return The updated options.
      */
@@ -145,6 +173,8 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Gets the value for the x-ms-upn header.
+     *
      * @return The value for the x-ms-upn header.
      */
     public Boolean isUserPrincipalName() {
@@ -152,6 +182,8 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Sets the value for the x-ms-upn header.
+     *
      * @param userPrincipalName The value for the x-ms-upn header.
      * @return The updated options.
      */

@@ -23,7 +23,8 @@ public final class ConfigureAlertRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfigureAlertRequestProperties model = new ConfigureAlertRequestProperties().withSendToOwners("fziton")
-            .withCustomEmailAddresses(Arrays.asList("fpjkjlxofp", "vhpfxxypininmay")).withLocale("ybb");
+            .withCustomEmailAddresses(Arrays.asList("fpjkjlxofp", "vhpfxxypininmay"))
+            .withLocale("ybb");
         model = BinaryData.fromObject(model).toObject(ConfigureAlertRequestProperties.class);
         Assertions.assertEquals("fziton", model.sendToOwners());
         Assertions.assertEquals("fpjkjlxofp", model.customEmailAddresses().get(0));

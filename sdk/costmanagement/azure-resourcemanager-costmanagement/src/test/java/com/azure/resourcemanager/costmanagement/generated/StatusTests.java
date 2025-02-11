@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class StatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Status model = BinaryData.fromString("{\"status\":\"Completed\"}").toObject(Status.class);
-        Assertions.assertEquals(ReportOperationStatusType.COMPLETED, model.status());
+        Status model = BinaryData.fromString("{\"status\":\"NoDataFound\"}").toObject(Status.class);
+        Assertions.assertEquals(ReportOperationStatusType.NO_DATA_FOUND, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Status model = new Status().withStatus(ReportOperationStatusType.COMPLETED);
+        Status model = new Status().withStatus(ReportOperationStatusType.NO_DATA_FOUND);
         model = BinaryData.fromObject(model).toObject(Status.class);
-        Assertions.assertEquals(ReportOperationStatusType.COMPLETED, model.status());
+        Assertions.assertEquals(ReportOperationStatusType.NO_DATA_FOUND, model.status());
     }
 }

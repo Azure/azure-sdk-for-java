@@ -14,6 +14,7 @@ public final class DocumentBarcode {
      */
     public DocumentBarcode() {
     }
+
     /*
      * Barcode kind.
      */

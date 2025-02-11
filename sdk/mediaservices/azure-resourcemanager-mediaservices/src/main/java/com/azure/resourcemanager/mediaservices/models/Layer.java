@@ -5,43 +5,46 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The encoder can be configured to produce video and/or images (thumbnails) at different resolutions, by specifying a
  * layer for each desired resolution. A layer represents the properties for the video or image at a resolution.
  */
 @Fluent
-public class Layer {
+public class Layer implements JsonSerializable<Layer> {
     /*
      * The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage).
      * For example 50% means the output video has half as many pixels in width as the input.
      */
-    @JsonProperty(value = "width")
     private String width;
 
     /*
-     * The height of the output video for this layer. The value can be absolute (in pixels) or relative (in
-     * percentage). For example 50% means the output video has half as many pixels in height as the input.
+     * The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage).
+     * For example 50% means the output video has half as many pixels in height as the input.
      */
-    @JsonProperty(value = "height")
     private String height;
 
     /*
      * The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in
      * naming the output file.
      */
-    @JsonProperty(value = "label")
     private String label;
 
-    /** Creates an instance of Layer class. */
+    /**
+     * Creates an instance of Layer class.
+     */
     public Layer() {
     }
 
     /**
      * Get the width property: The width of the output video for this layer. The value can be absolute (in pixels) or
      * relative (in percentage). For example 50% means the output video has half as many pixels in width as the input.
-     *
+     * 
      * @return the width value.
      */
     public String width() {
@@ -51,7 +54,7 @@ public class Layer {
     /**
      * Set the width property: The width of the output video for this layer. The value can be absolute (in pixels) or
      * relative (in percentage). For example 50% means the output video has half as many pixels in width as the input.
-     *
+     * 
      * @param width the width value to set.
      * @return the Layer object itself.
      */
@@ -63,7 +66,7 @@ public class Layer {
     /**
      * Get the height property: The height of the output video for this layer. The value can be absolute (in pixels) or
      * relative (in percentage). For example 50% means the output video has half as many pixels in height as the input.
-     *
+     * 
      * @return the height value.
      */
     public String height() {
@@ -73,7 +76,7 @@ public class Layer {
     /**
      * Set the height property: The height of the output video for this layer. The value can be absolute (in pixels) or
      * relative (in percentage). For example 50% means the output video has half as many pixels in height as the input.
-     *
+     * 
      * @param height the height value to set.
      * @return the Layer object itself.
      */
@@ -85,7 +88,7 @@ public class Layer {
     /**
      * Get the label property: The alphanumeric label for this layer, which can be used in multiplexing different video
      * and audio layers, or in naming the output file.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -95,7 +98,7 @@ public class Layer {
     /**
      * Set the label property: The alphanumeric label for this layer, which can be used in multiplexing different video
      * and audio layers, or in naming the output file.
-     *
+     * 
      * @param label the label value to set.
      * @return the Layer object itself.
      */
@@ -106,9 +109,51 @@ public class Layer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("width", this.width);
+        jsonWriter.writeStringField("height", this.height);
+        jsonWriter.writeStringField("label", this.label);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Layer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Layer if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Layer.
+     */
+    public static Layer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Layer deserializedLayer = new Layer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("width".equals(fieldName)) {
+                    deserializedLayer.width = reader.getString();
+                } else if ("height".equals(fieldName)) {
+                    deserializedLayer.height = reader.getString();
+                } else if ("label".equals(fieldName)) {
+                    deserializedLayer.label = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLayer;
+        });
     }
 }

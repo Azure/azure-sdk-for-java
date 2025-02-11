@@ -79,9 +79,8 @@ public class Identity {
                 .logExceptionAsError(new IllegalArgumentException("Missing required property type in model Identity"));
         }
         if (identityIds() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property identityIds in model Identity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property identityIds in model Identity"));
         }
     }
 

@@ -201,9 +201,11 @@ public final class MappingDataFlow extends DataFlow {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
+        }
+        if (folder() != null) {
+            folder().validate();
         }
     }
 

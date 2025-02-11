@@ -6,24 +6,31 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The set trigger state action definition. */
+/**
+ * The set trigger state action definition.
+ */
 @Fluent
-public final class SetTriggerStateActionDefinition {
+public final class SetTriggerStateActionDefinition implements JsonSerializable<SetTriggerStateActionDefinition> {
     /*
      * The source.
      */
-    @JsonProperty(value = "source", required = true)
     private WorkflowTriggerReference source;
 
-    /** Creates an instance of SetTriggerStateActionDefinition class. */
+    /**
+     * Creates an instance of SetTriggerStateActionDefinition class.
+     */
     public SetTriggerStateActionDefinition() {
     }
 
     /**
      * Get the source property: The source.
-     *
+     * 
      * @return the source value.
      */
     public WorkflowTriggerReference source() {
@@ -32,7 +39,7 @@ public final class SetTriggerStateActionDefinition {
 
     /**
      * Set the source property: The source.
-     *
+     * 
      * @param source the source value to set.
      * @return the SetTriggerStateActionDefinition object itself.
      */
@@ -43,19 +50,56 @@ public final class SetTriggerStateActionDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property source in model SetTriggerStateActionDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property source in model SetTriggerStateActionDefinition"));
         } else {
             source().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SetTriggerStateActionDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SetTriggerStateActionDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SetTriggerStateActionDefinition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SetTriggerStateActionDefinition.
+     */
+    public static SetTriggerStateActionDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SetTriggerStateActionDefinition deserializedSetTriggerStateActionDefinition
+                = new SetTriggerStateActionDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedSetTriggerStateActionDefinition.source = WorkflowTriggerReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSetTriggerStateActionDefinition;
+        });
+    }
 }

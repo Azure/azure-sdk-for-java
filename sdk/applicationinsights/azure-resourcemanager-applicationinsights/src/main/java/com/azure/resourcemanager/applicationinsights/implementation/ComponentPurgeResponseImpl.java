@@ -12,8 +12,7 @@ public final class ComponentPurgeResponseImpl implements ComponentPurgeResponse 
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    ComponentPurgeResponseImpl(
-        ComponentPurgeResponseInner innerObject,
+    ComponentPurgeResponseImpl(ComponentPurgeResponseInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

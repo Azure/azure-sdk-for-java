@@ -23,16 +23,14 @@ class DetectFunctionWithUrlAndDetectOptionAsync extends DetectAsyncFunction {
     }
 
     @Override
-    public Mono<List<FaceDetectionResult>> executeAsync(
-        FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel, boolean returnFaceId,
-        List<FaceAttributeType> returnFaceAttributes, Boolean returnFaceLandmarks, Boolean returnRecognitionModel,
-        Integer faceIdTimeToLive) {
+    public Mono<List<FaceDetectionResult>> executeAsync(FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
+        Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
         return mFaceAsyncClient.detect(mUrl,
-                new DetectOptions(detectionModel, recognitionModel, returnFaceId)
-                        .setReturnFaceAttributes(returnFaceAttributes)
-                        .setReturnFaceLandmarks(returnFaceLandmarks)
-                        .setReturnRecognitionModel(returnRecognitionModel)
-                        .setFaceIdTimeToLive(faceIdTimeToLive));
+            new DetectOptions(detectionModel, recognitionModel, returnFaceId)
+                .setReturnFaceAttributes(returnFaceAttributes)
+                .setReturnFaceLandmarks(returnFaceLandmarks)
+                .setReturnRecognitionModel(returnRecognitionModel)
+                .setFaceIdTimeToLive(faceIdTimeToLive));
     }
 }
-

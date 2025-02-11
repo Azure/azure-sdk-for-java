@@ -13,8 +13,7 @@ public final class LinkableEnvironmentResponseImpl implements LinkableEnvironmen
 
     private final com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager;
 
-    LinkableEnvironmentResponseImpl(
-        LinkableEnvironmentResponseInner innerObject,
+    LinkableEnvironmentResponseImpl(LinkableEnvironmentResponseInner innerObject,
         com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

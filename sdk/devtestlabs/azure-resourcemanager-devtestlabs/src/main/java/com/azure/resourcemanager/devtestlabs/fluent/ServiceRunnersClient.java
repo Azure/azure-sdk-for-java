@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ServiceRunnerInner;
 
-/** An instance of this class provides access to all the operations defined in ServiceRunnersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServiceRunnersClient.
+ */
 public interface ServiceRunnersClient {
     /**
      * Get service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -25,12 +27,12 @@ public interface ServiceRunnersClient {
      * @return service runner along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceRunnerInner> getWithResponse(
-        String resourceGroupName, String labName, String name, Context context);
+    Response<ServiceRunnerInner> getWithResponse(String resourceGroupName, String labName, String name,
+        Context context);
 
     /**
      * Get service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -44,7 +46,7 @@ public interface ServiceRunnersClient {
 
     /**
      * Create or replace an existing service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -56,12 +58,12 @@ public interface ServiceRunnersClient {
      * @return a container for a managed identity to execute DevTest lab services along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceRunnerInner> createOrUpdateWithResponse(
-        String resourceGroupName, String labName, String name, ServiceRunnerInner serviceRunner, Context context);
+    Response<ServiceRunnerInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
+        ServiceRunnerInner serviceRunner, Context context);
 
     /**
      * Create or replace an existing service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -72,12 +74,12 @@ public interface ServiceRunnersClient {
      * @return a container for a managed identity to execute DevTest lab services.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceRunnerInner createOrUpdate(
-        String resourceGroupName, String labName, String name, ServiceRunnerInner serviceRunner);
+    ServiceRunnerInner createOrUpdate(String resourceGroupName, String labName, String name,
+        ServiceRunnerInner serviceRunner);
 
     /**
      * Delete service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -92,7 +94,7 @@ public interface ServiceRunnersClient {
 
     /**
      * Delete service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.

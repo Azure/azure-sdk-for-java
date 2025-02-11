@@ -21,8 +21,8 @@ public final class RecognizeEntitiesResult extends TextAnalyticsResult {
      * @param error The document error.
      * @param entities A {@link CategorizedEntityCollection} contains entities and warnings.
      */
-    public RecognizeEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
-                                   TextAnalyticsError error, CategorizedEntityCollection entities) {
+    public RecognizeEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
+        CategorizedEntityCollection entities) {
         super(id, textDocumentStatistics, error);
         this.entities = entities;
     }

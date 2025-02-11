@@ -12,10 +12,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public final class ExtendedSqlPoolBlobAuditingPolicyImpl
-    implements ExtendedSqlPoolBlobAuditingPolicy,
-        ExtendedSqlPoolBlobAuditingPolicy.Definition,
-        ExtendedSqlPoolBlobAuditingPolicy.Update {
+public final class ExtendedSqlPoolBlobAuditingPolicyImpl implements ExtendedSqlPoolBlobAuditingPolicy,
+    ExtendedSqlPoolBlobAuditingPolicy.Definition, ExtendedSqlPoolBlobAuditingPolicy.Update {
     private ExtendedSqlPoolBlobAuditingPolicyInner innerObject;
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
@@ -95,8 +93,8 @@ public final class ExtendedSqlPoolBlobAuditingPolicyImpl
 
     private String sqlPoolName;
 
-    public ExtendedSqlPoolBlobAuditingPolicyImpl withExistingSqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public ExtendedSqlPoolBlobAuditingPolicyImpl withExistingSqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         this.resourceGroupName = resourceGroupName;
         this.workspaceName = workspaceName;
         this.sqlPoolName = sqlPoolName;
@@ -104,23 +102,18 @@ public final class ExtendedSqlPoolBlobAuditingPolicyImpl
     }
 
     public ExtendedSqlPoolBlobAuditingPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExtendedSqlPoolBlobAuditingPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExtendedSqlPoolBlobAuditingPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ExtendedSqlPoolBlobAuditingPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExtendedSqlPoolBlobAuditingPolicies()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExtendedSqlPoolBlobAuditingPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -134,53 +127,43 @@ public final class ExtendedSqlPoolBlobAuditingPolicyImpl
     }
 
     public ExtendedSqlPoolBlobAuditingPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExtendedSqlPoolBlobAuditingPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExtendedSqlPoolBlobAuditingPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ExtendedSqlPoolBlobAuditingPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExtendedSqlPoolBlobAuditingPolicies()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExtendedSqlPoolBlobAuditingPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ExtendedSqlPoolBlobAuditingPolicyImpl(
-        ExtendedSqlPoolBlobAuditingPolicyInner innerObject,
+    ExtendedSqlPoolBlobAuditingPolicyImpl(ExtendedSqlPoolBlobAuditingPolicyInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.sqlPoolName = Utils.getValueFromIdByName(innerObject.id(), "sqlPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.sqlPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlPools");
     }
 
     public ExtendedSqlPoolBlobAuditingPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExtendedSqlPoolBlobAuditingPolicies()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExtendedSqlPoolBlobAuditingPolicies()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ExtendedSqlPoolBlobAuditingPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExtendedSqlPoolBlobAuditingPolicies()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExtendedSqlPoolBlobAuditingPolicies()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context)
+            .getValue();
         return this;
     }
 

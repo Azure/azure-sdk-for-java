@@ -5,37 +5,45 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Recommendation action session operation status. */
+/**
+ * Recommendation action session operation status.
+ */
 @Fluent
-public final class RecommendedActionSessionsOperationStatusInner {
+public final class RecommendedActionSessionsOperationStatusInner
+    implements JsonSerializable<RecommendedActionSessionsOperationStatusInner> {
     /*
      * Operation identifier.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Operation start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Operation status.
      */
-    @JsonProperty(value = "status")
     private String status;
 
-    /** Creates an instance of RecommendedActionSessionsOperationStatusInner class. */
+    /**
+     * Creates an instance of RecommendedActionSessionsOperationStatusInner class.
+     */
     public RecommendedActionSessionsOperationStatusInner() {
     }
 
     /**
      * Get the name property: Operation identifier.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +52,7 @@ public final class RecommendedActionSessionsOperationStatusInner {
 
     /**
      * Set the name property: Operation identifier.
-     *
+     * 
      * @param name the name value to set.
      * @return the RecommendedActionSessionsOperationStatusInner object itself.
      */
@@ -55,7 +63,7 @@ public final class RecommendedActionSessionsOperationStatusInner {
 
     /**
      * Get the startTime property: Operation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -64,7 +72,7 @@ public final class RecommendedActionSessionsOperationStatusInner {
 
     /**
      * Set the startTime property: Operation start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the RecommendedActionSessionsOperationStatusInner object itself.
      */
@@ -75,7 +83,7 @@ public final class RecommendedActionSessionsOperationStatusInner {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -84,7 +92,7 @@ public final class RecommendedActionSessionsOperationStatusInner {
 
     /**
      * Set the status property: Operation status.
-     *
+     * 
      * @param status the status value to set.
      * @return the RecommendedActionSessionsOperationStatusInner object itself.
      */
@@ -95,9 +103,54 @@ public final class RecommendedActionSessionsOperationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendedActionSessionsOperationStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendedActionSessionsOperationStatusInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecommendedActionSessionsOperationStatusInner.
+     */
+    public static RecommendedActionSessionsOperationStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendedActionSessionsOperationStatusInner deserializedRecommendedActionSessionsOperationStatusInner
+                = new RecommendedActionSessionsOperationStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRecommendedActionSessionsOperationStatusInner.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedRecommendedActionSessionsOperationStatusInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedRecommendedActionSessionsOperationStatusInner.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendedActionSessionsOperationStatusInner;
+        });
     }
 }

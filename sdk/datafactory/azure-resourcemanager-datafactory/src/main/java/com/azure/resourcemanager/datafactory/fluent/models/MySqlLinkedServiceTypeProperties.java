@@ -69,6 +69,44 @@ public final class MySqlLinkedServiceTypeProperties implements JsonSerializable<
      */
     private String encryptedCredential;
 
+    /*
+     * This allows the special “zero” date value 0000-00-00 to be retrieved from the database. Type: boolean.
+     */
+    private Object allowZeroDateTime;
+
+    /*
+     * The length of time (in seconds) to wait for a connection to the server before terminating the attempt and
+     * generating an error. Type: integer.
+     */
+    private Object connectionTimeout;
+
+    /*
+     * True to return DateTime.MinValue for date or datetime columns that have disallowed values. Type: boolean.
+     */
+    private Object convertZeroDateTime;
+
+    /*
+     * Determines which column type (if any) should be read as a GUID. Type: string. None: No column types are
+     * automatically read as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using lowercase hex with
+     * hyphens, which matches UUID.
+     */
+    private Object guidFormat;
+
+    /*
+     * The path to the client’s SSL certificate file in PEM format. SslKey must also be specified. Type: string.
+     */
+    private Object sslCert;
+
+    /*
+     * The path to the client’s SSL private key in PEM format. SslCert must also be specified. Type: string.
+     */
+    private Object sslKey;
+
+    /*
+     * When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+     */
+    private Object treatTinyAsBoolean;
+
     /**
      * Creates an instance of MySqlLinkedServiceTypeProperties class.
      */
@@ -286,6 +324,160 @@ public final class MySqlLinkedServiceTypeProperties implements JsonSerializable<
     }
 
     /**
+     * Get the allowZeroDateTime property: This allows the special “zero” date value 0000-00-00 to be retrieved from the
+     * database. Type: boolean.
+     * 
+     * @return the allowZeroDateTime value.
+     */
+    public Object allowZeroDateTime() {
+        return this.allowZeroDateTime;
+    }
+
+    /**
+     * Set the allowZeroDateTime property: This allows the special “zero” date value 0000-00-00 to be retrieved from the
+     * database. Type: boolean.
+     * 
+     * @param allowZeroDateTime the allowZeroDateTime value to set.
+     * @return the MySqlLinkedServiceTypeProperties object itself.
+     */
+    public MySqlLinkedServiceTypeProperties withAllowZeroDateTime(Object allowZeroDateTime) {
+        this.allowZeroDateTime = allowZeroDateTime;
+        return this;
+    }
+
+    /**
+     * Get the connectionTimeout property: The length of time (in seconds) to wait for a connection to the server before
+     * terminating the attempt and generating an error. Type: integer.
+     * 
+     * @return the connectionTimeout value.
+     */
+    public Object connectionTimeout() {
+        return this.connectionTimeout;
+    }
+
+    /**
+     * Set the connectionTimeout property: The length of time (in seconds) to wait for a connection to the server before
+     * terminating the attempt and generating an error. Type: integer.
+     * 
+     * @param connectionTimeout the connectionTimeout value to set.
+     * @return the MySqlLinkedServiceTypeProperties object itself.
+     */
+    public MySqlLinkedServiceTypeProperties withConnectionTimeout(Object connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+        return this;
+    }
+
+    /**
+     * Get the convertZeroDateTime property: True to return DateTime.MinValue for date or datetime columns that have
+     * disallowed values. Type: boolean.
+     * 
+     * @return the convertZeroDateTime value.
+     */
+    public Object convertZeroDateTime() {
+        return this.convertZeroDateTime;
+    }
+
+    /**
+     * Set the convertZeroDateTime property: True to return DateTime.MinValue for date or datetime columns that have
+     * disallowed values. Type: boolean.
+     * 
+     * @param convertZeroDateTime the convertZeroDateTime value to set.
+     * @return the MySqlLinkedServiceTypeProperties object itself.
+     */
+    public MySqlLinkedServiceTypeProperties withConvertZeroDateTime(Object convertZeroDateTime) {
+        this.convertZeroDateTime = convertZeroDateTime;
+        return this;
+    }
+
+    /**
+     * Get the guidFormat property: Determines which column type (if any) should be read as a GUID. Type: string. None:
+     * No column types are automatically read as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using
+     * lowercase hex with hyphens, which matches UUID.
+     * 
+     * @return the guidFormat value.
+     */
+    public Object guidFormat() {
+        return this.guidFormat;
+    }
+
+    /**
+     * Set the guidFormat property: Determines which column type (if any) should be read as a GUID. Type: string. None:
+     * No column types are automatically read as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using
+     * lowercase hex with hyphens, which matches UUID.
+     * 
+     * @param guidFormat the guidFormat value to set.
+     * @return the MySqlLinkedServiceTypeProperties object itself.
+     */
+    public MySqlLinkedServiceTypeProperties withGuidFormat(Object guidFormat) {
+        this.guidFormat = guidFormat;
+        return this;
+    }
+
+    /**
+     * Get the sslCert property: The path to the client’s SSL certificate file in PEM format. SslKey must also be
+     * specified. Type: string.
+     * 
+     * @return the sslCert value.
+     */
+    public Object sslCert() {
+        return this.sslCert;
+    }
+
+    /**
+     * Set the sslCert property: The path to the client’s SSL certificate file in PEM format. SslKey must also be
+     * specified. Type: string.
+     * 
+     * @param sslCert the sslCert value to set.
+     * @return the MySqlLinkedServiceTypeProperties object itself.
+     */
+    public MySqlLinkedServiceTypeProperties withSslCert(Object sslCert) {
+        this.sslCert = sslCert;
+        return this;
+    }
+
+    /**
+     * Get the sslKey property: The path to the client’s SSL private key in PEM format. SslCert must also be specified.
+     * Type: string.
+     * 
+     * @return the sslKey value.
+     */
+    public Object sslKey() {
+        return this.sslKey;
+    }
+
+    /**
+     * Set the sslKey property: The path to the client’s SSL private key in PEM format. SslCert must also be specified.
+     * Type: string.
+     * 
+     * @param sslKey the sslKey value to set.
+     * @return the MySqlLinkedServiceTypeProperties object itself.
+     */
+    public MySqlLinkedServiceTypeProperties withSslKey(Object sslKey) {
+        this.sslKey = sslKey;
+        return this;
+    }
+
+    /**
+     * Get the treatTinyAsBoolean property: When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+     * 
+     * @return the treatTinyAsBoolean value.
+     */
+    public Object treatTinyAsBoolean() {
+        return this.treatTinyAsBoolean;
+    }
+
+    /**
+     * Set the treatTinyAsBoolean property: When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+     * 
+     * @param treatTinyAsBoolean the treatTinyAsBoolean value to set.
+     * @return the MySqlLinkedServiceTypeProperties object itself.
+     */
+    public MySqlLinkedServiceTypeProperties withTreatTinyAsBoolean(Object treatTinyAsBoolean) {
+        this.treatTinyAsBoolean = treatTinyAsBoolean;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -312,6 +504,13 @@ public final class MySqlLinkedServiceTypeProperties implements JsonSerializable<
         jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeUntypedField("allowZeroDateTime", this.allowZeroDateTime);
+        jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
+        jsonWriter.writeUntypedField("convertZeroDateTime", this.convertZeroDateTime);
+        jsonWriter.writeUntypedField("guidFormat", this.guidFormat);
+        jsonWriter.writeUntypedField("sslCert", this.sslCert);
+        jsonWriter.writeUntypedField("sslKey", this.sslKey);
+        jsonWriter.writeUntypedField("treatTinyAsBoolean", this.treatTinyAsBoolean);
         return jsonWriter.writeEndObject();
     }
 
@@ -352,6 +551,20 @@ public final class MySqlLinkedServiceTypeProperties implements JsonSerializable<
                         = AzureKeyVaultSecretReference.fromJson(reader);
                 } else if ("encryptedCredential".equals(fieldName)) {
                     deserializedMySqlLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("allowZeroDateTime".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.allowZeroDateTime = reader.readUntyped();
+                } else if ("connectionTimeout".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.connectionTimeout = reader.readUntyped();
+                } else if ("convertZeroDateTime".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.convertZeroDateTime = reader.readUntyped();
+                } else if ("guidFormat".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.guidFormat = reader.readUntyped();
+                } else if ("sslCert".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.sslCert = reader.readUntyped();
+                } else if ("sslKey".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.sslKey = reader.readUntyped();
+                } else if ("treatTinyAsBoolean".equals(fieldName)) {
+                    deserializedMySqlLinkedServiceTypeProperties.treatTinyAsBoolean = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

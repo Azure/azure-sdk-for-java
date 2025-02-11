@@ -62,23 +62,20 @@ public class TestVirtualNetworkGateway {
 
         @Override
         public VirtualNetworkGateway createResource(VirtualNetworkGateways gateways) throws Exception {
-            VirtualNetworkGateway vngw =
-                gateways
-                    .define(gatewayName1)
-                    .withRegion(region)
-                    .withNewResourceGroup(groupName)
-                    .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
-                    .withRouteBasedVpn()
-                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                    .withTag("tag1", "value1")
-                    .create();
+            VirtualNetworkGateway vngw = gateways.define(gatewayName1)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
+                .withRouteBasedVpn()
+                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                .withTag("tag1", "value1")
+                .create();
             return vngw;
         }
 
         @Override
         public VirtualNetworkGateway updateResource(VirtualNetworkGateway resource) throws Exception {
-            resource
-                .update()
+            resource.update()
                 .withSku(VirtualNetworkGatewaySkuName.VPN_GW2)
                 .withTag("tag2", "value2")
                 .withoutTag("tag1")
@@ -113,36 +110,30 @@ public class TestVirtualNetworkGateway {
 
             // Create virtual network gateway
             initializeResourceNames(gateways.manager().resourceManager().internalContext());
-            VirtualNetworkGateway vngw =
-                gateways
-                    .define(gatewayName1)
-                    .withRegion(region)
-                    .withNewResourceGroup()
-                    .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
-                    .withRouteBasedVpn()
-                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                    .withBgp(65010, "10.12.255.30")
-                    .create();
-            LocalNetworkGateway lngw =
-                gateways
-                    .manager()
-                    .localNetworkGateways()
-                    .define("lngw" + testId)
-                    .withRegion(vngw.region())
-                    .withExistingResourceGroup(vngw.resourceGroupName())
-                    .withIPAddress("40.71.184.214")
-                    .withAddressSpace("192.168.3.0/24")
-                    .withBgp(65050, "10.51.255.254")
-                    .create();
-            VirtualNetworkGatewayConnection connection =
-                vngw
-                    .connections()
-                    .define(connectionName)
-                    .withSiteToSite()
-                    .withLocalNetworkGateway(lngw)
-                    .withSharedKey("MySecretKey")
-                    .withTag("tag1", "value1")
-                    .create();
+            VirtualNetworkGateway vngw = gateways.define(gatewayName1)
+                .withRegion(region)
+                .withNewResourceGroup()
+                .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
+                .withRouteBasedVpn()
+                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                .withBgp(65010, "10.12.255.30")
+                .create();
+            LocalNetworkGateway lngw = gateways.manager()
+                .localNetworkGateways()
+                .define("lngw" + testId)
+                .withRegion(vngw.region())
+                .withExistingResourceGroup(vngw.resourceGroupName())
+                .withIPAddress("40.71.184.214")
+                .withAddressSpace("192.168.3.0/24")
+                .withBgp(65050, "10.51.255.254")
+                .create();
+            VirtualNetworkGatewayConnection connection = vngw.connections()
+                .define(connectionName)
+                .withSiteToSite()
+                .withLocalNetworkGateway(lngw)
+                .withSharedKey("MySecretKey")
+                .withTag("tag1", "value1")
+                .create();
 
             Assertions.assertEquals(1, vngw.ipConfigurations().size());
             Subnet subnet = vngw.ipConfigurations().iterator().next().getSubnet();
@@ -202,49 +193,39 @@ public class TestVirtualNetworkGateway {
 
             // Create virtual network gateway
             final List<VirtualNetworkGateway> gws = new ArrayList<>();
-            Mono<VirtualNetworkGateway> vngwObservable =
-                gateways
-                    .define(gatewayName1)
-                    .withRegion(region)
-                    .withNewResourceGroup(groupName)
-                    .withNewNetwork(networkName, "10.11.0.0/16", "10.11.255.0/27")
-                    .withRouteBasedVpn()
-                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                    .createAsync();
+            Mono<VirtualNetworkGateway> vngwObservable = gateways.define(gatewayName1)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withNewNetwork(networkName, "10.11.0.0/16", "10.11.255.0/27")
+                .withRouteBasedVpn()
+                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                .createAsync();
 
-            Mono<VirtualNetworkGateway> vngw2Observable =
-                gateways
-                    .define(gatewayName2)
-                    .withRegion(region)
-                    .withNewResourceGroup(groupName)
-                    .withNewNetwork(networkName + "2", "10.41.0.0/16", "10.41.255.0/27")
-                    .withRouteBasedVpn()
-                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                    .createAsync();
+            Mono<VirtualNetworkGateway> vngw2Observable = gateways.define(gatewayName2)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withNewNetwork(networkName + "2", "10.41.0.0/16", "10.41.255.0/27")
+                .withRouteBasedVpn()
+                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                .createAsync();
 
             Flux<?> vngw2ObservableSleep = Mono.delay(Duration.ofSeconds(10)).thenMany(vngw2Observable);
 
-            Flux
-                .merge(vngwObservable, vngw2ObservableSleep)
-                .map(
-                    obj -> {
-                        if (obj instanceof VirtualNetworkGateway) {
-                            gws.add((VirtualNetworkGateway) obj);
-                        }
-                        return obj;
-                    })
-                .blockLast();
+            Flux.merge(vngwObservable, vngw2ObservableSleep).map(obj -> {
+                if (obj instanceof VirtualNetworkGateway) {
+                    gws.add((VirtualNetworkGateway) obj);
+                }
+                return obj;
+            }).blockLast();
             VirtualNetworkGateway vngw1 = gws.get(0);
             VirtualNetworkGateway vngw2 = gws.get(1);
-            vngw1
-                .connections()
+            vngw1.connections()
                 .define(connectionName)
                 .withVNetToVNet()
                 .withSecondVirtualNetworkGateway(vngw2)
                 .withSharedKey("MySecretKey")
                 .create();
-            vngw2
-                .connections()
+            vngw2.connections()
                 .define(connectionName + "2")
                 .withVNetToVNet()
                 .withSecondVirtualNetworkGateway(vngw1)
@@ -285,46 +266,39 @@ public class TestVirtualNetworkGateway {
             // Create virtual network gateway
             initializeResourceNames(gateways.manager().resourceManager().internalContext());
 
-            Network network =
-                gateways
-                    .manager()
-                    .networks()
-                    .define(networkName)
-                    .withRegion(region)
-                    .withNewResourceGroup(groupName)
-                    .withAddressSpace("192.168.0.0/16")
-                    .withAddressSpace("10.254.0.0/16")
-                    .withSubnet("GatewaySubnet", "192.168.200.0/24")
-                    .withSubnet("FrontEnd", "192.168.1.0/24")
-                    .withSubnet("BackEnd", "10.254.1.0/24")
-                    .create();
-            VirtualNetworkGateway vngw1 =
-                gateways
-                    .define(gatewayName1)
-                    .withRegion(region)
-                    .withExistingResourceGroup(groupName)
-                    .withExistingNetwork(network)
-                    .withRouteBasedVpn()
-                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                    .create();
+            Network network = gateways.manager()
+                .networks()
+                .define(networkName)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withAddressSpace("192.168.0.0/16")
+                .withAddressSpace("10.254.0.0/16")
+                .withSubnet("GatewaySubnet", "192.168.200.0/24")
+                .withSubnet("FrontEnd", "192.168.1.0/24")
+                .withSubnet("BackEnd", "10.254.1.0/24")
+                .create();
+            VirtualNetworkGateway vngw1 = gateways.define(gatewayName1)
+                .withRegion(region)
+                .withExistingResourceGroup(groupName)
+                .withExistingNetwork(network)
+                .withRouteBasedVpn()
+                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                .create();
 
-            vngw1
-                .update()
+            vngw1.update()
                 .definePointToSiteConfiguration()
                 .withAddressPool("172.16.201.0/24")
-                .withAzureCertificateFromFile(
-                    certificateName, new File(getClass().getClassLoader().getResource(certificateName).getFile()))
+                .withAzureCertificateFromFile(certificateName,
+                    new File(getClass().getClassLoader().getResource(certificateName).getFile()))
                 .attach()
                 .apply();
 
             Assertions.assertNotNull(vngw1.vpnClientConfiguration());
-            Assertions
-                .assertEquals(
-                    "172.16.201.0/24", vngw1.vpnClientConfiguration().vpnClientAddressPool().addressPrefixes().get(0));
+            Assertions.assertEquals("172.16.201.0/24",
+                vngw1.vpnClientConfiguration().vpnClientAddressPool().addressPrefixes().get(0));
             Assertions.assertEquals(1, vngw1.vpnClientConfiguration().vpnClientRootCertificates().size());
-            Assertions
-                .assertEquals(
-                    certificateName, vngw1.vpnClientConfiguration().vpnClientRootCertificates().get(0).name());
+            Assertions.assertEquals(certificateName,
+                vngw1.vpnClientConfiguration().vpnClientRootCertificates().get(0).name());
 
             // contains credential in the profile string
             String profile = vngw1.generateVpnProfile();
@@ -334,15 +308,13 @@ public class TestVirtualNetworkGateway {
 
         @Override
         public VirtualNetworkGateway updateResource(VirtualNetworkGateway vngw1) throws Exception {
-            vngw1
-                .update()
+            vngw1.update()
                 .updatePointToSiteConfiguration()
                 .withRevokedCertificate(certificateName, "bdf834528f0fff6eaae4c154e06b54322769276c")
                 .parent()
                 .apply();
-            Assertions
-                .assertEquals(
-                    certificateName, vngw1.vpnClientConfiguration().vpnClientRevokedCertificates().get(0).name());
+            Assertions.assertEquals(certificateName,
+                vngw1.vpnClientConfiguration().vpnClientRevokedCertificates().get(0).name());
 
             vngw1.update().updatePointToSiteConfiguration().withoutAzureCertificate(certificateName).parent().apply();
             Assertions.assertEquals(0, vngw1.vpnClientConfiguration().vpnClientRootCertificates().size());
@@ -352,8 +324,7 @@ public class TestVirtualNetworkGateway {
 
     static void printVirtualNetworkGateway(VirtualNetworkGateway gateway) {
         StringBuilder info = new StringBuilder();
-        info
-            .append("Virtual Network Gateway: ")
+        info.append("Virtual Network Gateway: ")
             .append(gateway.id())
             .append("\n\tName: ")
             .append(gateway.name())

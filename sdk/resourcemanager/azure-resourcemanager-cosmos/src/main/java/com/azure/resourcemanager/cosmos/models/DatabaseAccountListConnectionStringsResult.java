@@ -11,6 +11,10 @@ import java.util.List;
 @Fluent
 public interface DatabaseAccountListConnectionStringsResult
     extends HasInnerModel<DatabaseAccountListConnectionStringsResultInner> {
-    /** @return a list that contains the connection strings for the CosmosDB account. */
+    /**
+     * Gets a list that contains the connection strings for the CosmosDB account.
+     *
+     * @return a list that contains the connection strings for the CosmosDB account.
+     */
     List<DatabaseAccountConnectionString> connectionStrings();
 }

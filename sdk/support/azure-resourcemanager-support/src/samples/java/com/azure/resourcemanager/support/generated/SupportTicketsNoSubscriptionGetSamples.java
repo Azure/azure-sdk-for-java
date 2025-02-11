@@ -9,7 +9,8 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class SupportTicketsNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetSupportTicketDetails.json
+     * x-ms-original-file:
+     * specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetSupportTicketDetails.json
      */
     /**
      * Sample code: Get details of a ticket.

@@ -39,8 +39,8 @@ class DiagnosticSettingImpl
     private TreeMap<String, LogSettings> logCategoryGroupSet;
     private final MonitorManager myManager;
 
-    DiagnosticSettingImpl(
-        String name, DiagnosticSettingsResourceInner innerModel, final MonitorManager monitorManager) {
+    DiagnosticSettingImpl(String name, DiagnosticSettingsResourceInner innerModel,
+        final MonitorManager monitorManager) {
         super(name, innerModel);
         this.myManager = monitorManager;
         initializeSets();
@@ -126,16 +126,16 @@ class DiagnosticSettingImpl
     }
 
     @Override
-    public DiagnosticSettingImpl withLogsAndMetrics(
-        List<DiagnosticSettingsCategory> categories, Duration timeGrain, int retentionDays) {
+    public DiagnosticSettingImpl withLogsAndMetrics(List<DiagnosticSettingsCategory> categories, Duration timeGrain,
+        int retentionDays) {
         for (DiagnosticSettingsCategory dsc : categories) {
             if (dsc.type() == CategoryType.METRICS) {
                 this.withMetric(dsc.name(), timeGrain, retentionDays);
             } else if (dsc.type() == CategoryType.LOGS) {
                 this.withLog(dsc.name(), retentionDays);
             } else {
-                throw logger.logExceptionAsError(
-                    new UnsupportedOperationException(dsc.type().toString() + " is unsupported."));
+                throw logger
+                    .logExceptionAsError(new UnsupportedOperationException(dsc.type().toString() + " is unsupported."));
             }
         }
         return this;
@@ -224,12 +224,11 @@ class DiagnosticSettingImpl
     @Override
     public Mono<DiagnosticSetting> createResourceAsync() {
         this.innerModel()
-            .withLogs(new ArrayList<>(
-                Stream.concat(logSet.values().stream(),
-                logCategoryGroupSet.values().stream()).distinct().collect(Collectors.toList())));
+            .withLogs(new ArrayList<>(Stream.concat(logSet.values().stream(), logCategoryGroupSet.values().stream())
+                .distinct()
+                .collect(Collectors.toList())));
         this.innerModel().withMetrics(new ArrayList<>(metricSet.values()));
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getDiagnosticSettingsOperations()
             .createOrUpdateAsync(ResourceUtils.encodeResourceId(this.resourceId), this.name(), this.innerModel())
@@ -238,7 +237,9 @@ class DiagnosticSettingImpl
 
     @Override
     protected Mono<DiagnosticSettingsResourceInner> getInnerAsync() {
-        return this.manager().serviceClient().getDiagnosticSettingsOperations()
+        return this.manager()
+            .serviceClient()
+            .getDiagnosticSettingsOperations()
             .getAsync(ResourceUtils.encodeResourceId(this.resourceId), this.name());
     }
 
@@ -249,13 +250,9 @@ class DiagnosticSettingImpl
         this.metricSet.clear();
         this.logSet.clear();
         if (!isInCreateMode()) {
-            this.resourceId =
-                inner
-                    .id()
-                    .substring(
-                        0,
-                        this.innerModel().id().length()
-                            - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.innerModel().name()).length());
+            this.resourceId = inner.id()
+                .substring(0, this.innerModel().id().length()
+                    - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.innerModel().name()).length());
             for (MetricSettings ms : this.metrics()) {
                 if (ms.category() != null) {
                     this.metricSet.put(ms.category(), ms);

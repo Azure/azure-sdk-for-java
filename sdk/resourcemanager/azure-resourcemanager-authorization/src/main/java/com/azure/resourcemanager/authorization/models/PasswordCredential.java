@@ -26,10 +26,8 @@ public interface PasswordCredential extends Credential, HasInnerModel<MicrosoftG
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithSubscriptionInAuthFile<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>,
+        DefinitionStages.WithSubscriptionInAuthFile<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of credential definition stages applicable as part of a application or service principal creation. */
@@ -127,12 +125,8 @@ public interface PasswordCredential extends Credential, HasInnerModel<MicrosoftG
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                WithStartDate<ParentT>,
-                WithDuration<ParentT>,
-                WithConsumer<ParentT>,
-                WithAuthFile<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, WithStartDate<ParentT>,
+            WithDuration<ParentT>, WithConsumer<ParentT>, WithAuthFile<ParentT> {
         }
     }
 }

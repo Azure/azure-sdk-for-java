@@ -10,9 +10,8 @@ import com.azure.resourcemanager.loganalytics.models.ResultStatistics;
 public final class ResultStatisticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResultStatistics model =
-            BinaryData
-                .fromString("{\"progress\":16.926067,\"ingestedRecords\":584463560,\"scannedGb\":23.045176}")
+        ResultStatistics model
+            = BinaryData.fromString("{\"progress\":40.47698,\"ingestedRecords\":1226403170,\"scannedGb\":23.974842}")
                 .toObject(ResultStatistics.class);
     }
 

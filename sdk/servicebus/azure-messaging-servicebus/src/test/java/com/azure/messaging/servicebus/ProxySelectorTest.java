@@ -68,21 +68,19 @@ public class ProxySelectorTest extends IntegrationTestBase {
         });
 
         final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromString("Hello"));
-        final ServiceBusSenderAsyncClient sender = getAuthenticatedBuilder()
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .sender()
-            .queueName(queueName)
-            .buildAsyncClient();
+        final ServiceBusSenderAsyncClient sender
+            = getAuthenticatedBuilder().transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+                .sender()
+                .queueName(queueName)
+                .buildAsyncClient();
 
         toClose(sender);
-        StepVerifier.create(sender.sendMessage(message))
-            .expectErrorSatisfies(error -> {
-                // The message can vary because it is returned from proton-j, so we don't want to compare against that.
-                // This is a transient error from ExceptionUtil.java: line 67.
-                LOGGER.log(LogLevel.VERBOSE, () -> "Error", error);
-            })
-            .verify(TIMEOUT);
+        StepVerifier.create(sender.sendMessage(message)).expectErrorSatisfies(error -> {
+            // The message can vary because it is returned from proton-j, so we don't want to compare against that.
+            // This is a transient error from ExceptionUtil.java: line 67.
+            LOGGER.log(LogLevel.VERBOSE, () -> "Error", error);
+        }).verify(TIMEOUT);
 
         final boolean awaited = countDownLatch.await(2, TimeUnit.SECONDS);
         Assertions.assertTrue(awaited);

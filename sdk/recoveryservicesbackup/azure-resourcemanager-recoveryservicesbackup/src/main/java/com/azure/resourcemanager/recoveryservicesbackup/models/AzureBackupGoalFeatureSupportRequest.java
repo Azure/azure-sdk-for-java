@@ -5,27 +5,19 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure backup goal feature specific request.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "featureType",
-    defaultImpl = AzureBackupGoalFeatureSupportRequest.class,
-    visible = true)
-@JsonTypeName("AzureBackupGoals")
 @Immutable
 public final class AzureBackupGoalFeatureSupportRequest extends FeatureSupportRequest {
     /*
      * backup support feature type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "featureType", required = true)
     private String featureType = "AzureBackupGoals";
 
     /**
@@ -51,6 +43,42 @@ public final class AzureBackupGoalFeatureSupportRequest extends FeatureSupportRe
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("featureType", this.featureType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupGoalFeatureSupportRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupGoalFeatureSupportRequest if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBackupGoalFeatureSupportRequest.
+     */
+    public static AzureBackupGoalFeatureSupportRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupGoalFeatureSupportRequest deserializedAzureBackupGoalFeatureSupportRequest
+                = new AzureBackupGoalFeatureSupportRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("featureType".equals(fieldName)) {
+                    deserializedAzureBackupGoalFeatureSupportRequest.featureType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupGoalFeatureSupportRequest;
+        });
     }
 }

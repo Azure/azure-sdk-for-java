@@ -5,28 +5,41 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure virtual network function template.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "nfviType")
-@JsonTypeName("AzureCore")
 @Fluent
 public final class AzureCoreNetworkFunctionTemplate extends VirtualNetworkFunctionTemplate {
     /*
+     * The network function type.
+     */
+    private VirtualNetworkFunctionNfviType nfviType = VirtualNetworkFunctionNfviType.AZURE_CORE;
+
+    /*
      * Network function applications.
      */
-    @JsonProperty(value = "networkFunctionApplications")
     private List<AzureCoreNetworkFunctionApplication> networkFunctionApplications;
 
     /**
      * Creates an instance of AzureCoreNetworkFunctionTemplate class.
      */
     public AzureCoreNetworkFunctionTemplate() {
+    }
+
+    /**
+     * Get the nfviType property: The network function type.
+     * 
+     * @return the nfviType value.
+     */
+    @Override
+    public VirtualNetworkFunctionNfviType nfviType() {
+        return this.nfviType;
     }
 
     /**
@@ -57,9 +70,53 @@ public final class AzureCoreNetworkFunctionTemplate extends VirtualNetworkFuncti
      */
     @Override
     public void validate() {
-        super.validate();
         if (networkFunctionApplications() != null) {
             networkFunctionApplications().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nfviType", this.nfviType == null ? null : this.nfviType.toString());
+        jsonWriter.writeArrayField("networkFunctionApplications", this.networkFunctionApplications,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureCoreNetworkFunctionTemplate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureCoreNetworkFunctionTemplate if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureCoreNetworkFunctionTemplate.
+     */
+    public static AzureCoreNetworkFunctionTemplate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureCoreNetworkFunctionTemplate deserializedAzureCoreNetworkFunctionTemplate
+                = new AzureCoreNetworkFunctionTemplate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nfviType".equals(fieldName)) {
+                    deserializedAzureCoreNetworkFunctionTemplate.nfviType
+                        = VirtualNetworkFunctionNfviType.fromString(reader.getString());
+                } else if ("networkFunctionApplications".equals(fieldName)) {
+                    List<AzureCoreNetworkFunctionApplication> networkFunctionApplications
+                        = reader.readArray(reader1 -> AzureCoreNetworkFunctionApplication.fromJson(reader1));
+                    deserializedAzureCoreNetworkFunctionTemplate.networkFunctionApplications
+                        = networkFunctionApplications;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureCoreNetworkFunctionTemplate;
+        });
     }
 }

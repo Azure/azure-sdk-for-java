@@ -68,14 +68,16 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule create() {
-        this.innerObject = serviceManager.serviceClient().getFirewallRules().createOrUpdate(resourceGroupName,
-            clusterName, firewallRuleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .createOrUpdate(resourceGroupName, clusterName, firewallRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FirewallRule create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFirewallRules().createOrUpdate(resourceGroupName,
-            clusterName, firewallRuleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .createOrUpdate(resourceGroupName, clusterName, firewallRuleName, this.innerModel(), context);
         return this;
     }
 
@@ -91,14 +93,16 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule apply() {
-        this.innerObject = serviceManager.serviceClient().getFirewallRules().createOrUpdate(resourceGroupName,
-            clusterName, firewallRuleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .createOrUpdate(resourceGroupName, clusterName, firewallRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FirewallRule apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFirewallRules().createOrUpdate(resourceGroupName,
-            clusterName, firewallRuleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .createOrUpdate(resourceGroupName, clusterName, firewallRuleName, this.innerModel(), context);
         return this;
     }
 
@@ -112,14 +116,18 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule refresh() {
-        this.innerObject = serviceManager.serviceClient().getFirewallRules()
-            .getWithResponse(resourceGroupName, clusterName, firewallRuleName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .getWithResponse(resourceGroupName, clusterName, firewallRuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FirewallRule refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFirewallRules()
-            .getWithResponse(resourceGroupName, clusterName, firewallRuleName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .getWithResponse(resourceGroupName, clusterName, firewallRuleName, context)
+            .getValue();
         return this;
     }
 

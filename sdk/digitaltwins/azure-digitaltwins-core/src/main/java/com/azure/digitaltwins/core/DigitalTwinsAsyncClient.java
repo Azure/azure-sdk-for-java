@@ -95,9 +95,8 @@ public final class DigitalTwinsAsyncClient {
         // If null, then mapper will be used instead. See DeserializationHelpers for more details
         this.serializer = jsonSerializer;
 
-        this.protocolLayer = new AzureDigitalTwinsAPIImplBuilder().host(serviceEndpoint)
-            .pipeline(pipeline)
-            .buildClient();
+        this.protocolLayer
+            = new AzureDigitalTwinsAPIImplBuilder().host(serviceEndpoint).pipeline(pipeline).buildClient();
     }
 
     /**
@@ -152,8 +151,8 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> createOrReplaceDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz) {
-        return createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, null).flatMap(
-            FluxUtil::toMono);
+        return createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -479,8 +478,8 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> createOrReplaceRelationship(String digitalTwinId, String relationshipId, T relationship,
         Class<T> clazz) {
-        return createOrReplaceRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz,
-            null).flatMap(FluxUtil::toMono);
+        return createOrReplaceRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -533,9 +532,8 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<DigitalTwinsResponse<T>> createOrReplaceRelationshipWithResponse(String digitalTwinId,
         String relationshipId, T relationship, Class<T> clazz, CreateOrReplaceRelationshipOptions options) {
-        return withContext(
-            context -> createOrReplaceRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz,
-                options, context));
+        return withContext(context -> createOrReplaceRelationshipWithResponse(digitalTwinId, relationshipId,
+            relationship, clazz, options, context));
     }
 
     <T> Mono<DigitalTwinsResponse<T>> createOrReplaceRelationshipWithResponse(String digitalTwinId,
@@ -841,8 +839,9 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
-        return new PagedFlux<>(() -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz,
-            context != null ? context : Context.NONE),
+        return new PagedFlux<>(
+            () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz,
+                context != null ? context : Context.NONE),
             nextLink -> listRelationshipsNextPage(nextLink, clazz, context != null ? context : Context.NONE));
     }
 
@@ -855,8 +854,11 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwins()
             .listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, null, context)
             .map(objectPagedResponse -> {
-                List<T> list = objectPagedResponse.getValue().stream().map(object -> mapObject(object, clazz))
-                    .filter(Objects::nonNull).collect(Collectors.toList());
+                List<T> list = objectPagedResponse.getValue()
+                    .stream()
+                    .map(object -> mapObject(object, clazz))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
                 return new PagedResponseBase<>(objectPagedResponse.getRequest(), objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(), list, objectPagedResponse.getContinuationToken(),
                     ((PagedResponseBase<?, ?>) objectPagedResponse).getDeserializedHeaders());
@@ -871,8 +873,11 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwins()
             .listRelationshipsNextSinglePageAsync(nextLink, null, context)
             .map(objectPagedResponse -> {
-                List<T> stringList = objectPagedResponse.getValue().stream().map(object -> mapObject(object, clazz))
-                    .filter(Objects::nonNull).collect(Collectors.toList());
+                List<T> stringList = objectPagedResponse.getValue()
+                    .stream()
+                    .map(object -> mapObject(object, clazz))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
                 return new PagedResponseBase<>(objectPagedResponse.getRequest(), objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(), stringList, objectPagedResponse.getContinuationToken(),
                     ((PagedResponseBase<?, ?>) objectPagedResponse).getDeserializedHeaders());
@@ -1004,12 +1009,10 @@ public final class DigitalTwinsAsyncClient {
         List<Object> modelsPayload = new ArrayList<>();
         for (String model : dtdlModels) {
             try {
-                modelsPayload.add(protocolLayer.getSerializerAdapter().deserialize(model, Object.class,
-                    SerializerEncoding.JSON));
+                modelsPayload.add(
+                    protocolLayer.getSerializerAdapter().deserialize(model, Object.class, SerializerEncoding.JSON));
             } catch (IOException e) {
-                LOGGER.atError()
-                    .addKeyValue("model", model)
-                    .log(() -> "Could not parse the model payload", e);
+                LOGGER.atError().addKeyValue("model", model).log(() -> "Could not parse the model payload", e);
                 return Mono.error(e);
             }
         }
@@ -1136,8 +1139,7 @@ public final class DigitalTwinsAsyncClient {
 
         // default values for these options
         List<String> getDependenciesFor = null;
-        boolean includeModelDefinition
-            = true; //service default is false, but we expect customers to want the model definitions by default
+        boolean includeModelDefinition = true; //service default is false, but we expect customers to want the model definitions by default
         com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions protocolLayerOptions
             = OptionsConverter.toProtocolLayerOptions(options);
 
@@ -1168,8 +1170,7 @@ public final class DigitalTwinsAsyncClient {
 
         com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions protocolLayerOptions = null;
         if (options != null) {
-            protocolLayerOptions
-                = new com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions()
+            protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions()
                 .setMaxItemsPerPage(options.getMaxItemsPerPage());
         }
 
@@ -1414,9 +1415,8 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwins()
             .updateComponentNoCustomHeadersWithResponseAsync(digitalTwinId, componentName, jsonPatch,
                 OptionsConverter.toProtocolLayerOptions(options), context)
-            .flatMap(response -> Mono.just(
-                new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    null, createDTResponseHeadersFromResponse(response))));
+            .flatMap(response -> Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), null, createDTResponseHeadersFromResponse(response))));
     }
 
     //endregion Component APIs
@@ -1526,8 +1526,12 @@ public final class DigitalTwinsAsyncClient {
             .queryTwinsWithResponseAsync(querySpecification, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(objectPagedResponse -> new PagedResponseBase<>(objectPagedResponse.getRequest(),
                 objectPagedResponse.getStatusCode(), objectPagedResponse.getHeaders(),
-                objectPagedResponse.getValue().getValue().stream().map(object -> mapObject(object, clazz))
-                    .filter(Objects::nonNull).collect(Collectors.toList()),
+                objectPagedResponse.getValue()
+                    .getValue()
+                    .stream()
+                    .map(object -> mapObject(object, clazz))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()),
                 SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
@@ -1543,8 +1547,12 @@ public final class DigitalTwinsAsyncClient {
             .queryTwinsWithResponseAsync(querySpecification, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(objectPagedResponse -> new PagedResponseBase<>(objectPagedResponse.getRequest(),
                 objectPagedResponse.getStatusCode(), objectPagedResponse.getHeaders(),
-                objectPagedResponse.getValue().getValue().stream().map(object -> mapObject(object, clazz))
-                    .filter(Objects::nonNull).collect(Collectors.toList()),
+                objectPagedResponse.getValue()
+                    .getValue()
+                    .stream()
+                    .map(object -> mapObject(object, clazz))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()),
                 SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
@@ -1789,8 +1797,8 @@ public final class DigitalTwinsAsyncClient {
             .map(DigitalTwinsAsyncClient::mapEventRoute);
     }
 
-    private static PagedResponse<DigitalTwinsEventRoute> mapEventRoute(
-        PagedResponse<com.azure.digitaltwins.core.implementation.models.EventRoute> eventRoute) {
+    private static PagedResponse<DigitalTwinsEventRoute>
+        mapEventRoute(PagedResponse<com.azure.digitaltwins.core.implementation.models.EventRoute> eventRoute) {
         List<DigitalTwinsEventRoute> convertedList = eventRoute.getValue()
             .stream()
             .map(EventRouteConverter::map)
@@ -2017,9 +2025,8 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName,
         String messageId, Object payload, PublishComponentTelemetryOptions options) {
-        return withContext(
-            context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, messageId, payload, options,
-                context));
+        return withContext(context -> publishComponentTelemetryWithResponse(digitalTwinId, componentName, messageId,
+            payload, options, context));
     }
 
     Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName,

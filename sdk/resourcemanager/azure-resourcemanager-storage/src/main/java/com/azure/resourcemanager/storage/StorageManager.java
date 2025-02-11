@@ -39,7 +39,11 @@ public final class StorageManager extends Manager<StorageManagementClient> {
     private ManagementPolicies managementPolicies;
     private final AuthorizationManager authorizationManager;
 
-    /** @return the authorization manager */
+    /**
+     * Gets the authorization manager.
+     *
+     * @return the authorization manager
+     */
     public AuthorizationManager authorizationManager() {
         return authorizationManager;
     }
@@ -99,18 +103,19 @@ public final class StorageManager extends Manager<StorageManagementClient> {
     }
 
     private StorageManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new StorageManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new StorageManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
         authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
     }
 
-    /** @return the storage account management API entry point */
+    /**
+     * Gets the API entry point of the storage account.
+     *
+     * @return the storage account management API entry point
+     */
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
             storageAccounts = new StorageAccountsImpl(this, this.authorizationManager);
@@ -118,7 +123,11 @@ public final class StorageManager extends Manager<StorageManagementClient> {
         return storageAccounts;
     }
 
-    /** @return the storage service usage management API entry point */
+    /**
+     * Gets the API entry point of the storage service usage.
+     *
+     * @return the storage service usage management API entry point
+     */
     public Usages usages() {
         if (storageUsages == null) {
             storageUsages = new UsagesImpl(this);
@@ -126,7 +135,11 @@ public final class StorageManager extends Manager<StorageManagementClient> {
         return storageUsages;
     }
 
-    /** @return the storage service SKU management API entry point */
+    /**
+     * Gets the API entry point of the storage service SKU.
+     *
+     * @return the storage service SKU management API entry point
+     */
     public StorageSkus storageSkus() {
         if (storageSkus == null) {
             storageSkus = new StorageSkusImpl(this);
@@ -134,7 +147,11 @@ public final class StorageManager extends Manager<StorageManagementClient> {
         return storageSkus;
     }
 
-    /** @return the blob container management API entry point */
+    /**
+     * Gets the API entry point of the blob container.
+     *
+     * @return the blob container management API entry point
+     */
     public BlobContainers blobContainers() {
         if (blobContainers == null) {
             blobContainers = new BlobContainersImpl(this);
@@ -142,7 +159,11 @@ public final class StorageManager extends Manager<StorageManagementClient> {
         return blobContainers;
     }
 
-    /** @return the blob service management API entry point */
+    /**
+     * Gets the API entry point of the blob service.
+     *
+     * @return the blob service management API entry point
+     */
     public BlobServices blobServices() {
         if (blobServices == null) {
             blobServices = new BlobServicesImpl(this);
@@ -150,7 +171,11 @@ public final class StorageManager extends Manager<StorageManagementClient> {
         return blobServices;
     }
 
-    /** @return the management policy management API entry point */
+    /**
+     * Gets the API entry point of the management policy.
+     *
+     * @return the management policy API entry point
+     */
     public ManagementPolicies managementPolicies() {
         if (managementPolicies == null) {
             managementPolicies = new ManagementPoliciesImpl(this);

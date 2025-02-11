@@ -27,7 +27,7 @@ public final class PacketCoreControlPlanesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.packetCoreControlPlanes().delete("klbyulidwcw", "mzegjon", com.azure.core.util.Context.NONE);
+        manager.packetCoreControlPlanes().delete("cnjrohmbpyryxame", "l", com.azure.core.util.Context.NONE);
 
     }
 }

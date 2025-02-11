@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Status from the extension. */
+/**
+ * Status from the extension.
+ */
 @Fluent
-public final class ExtensionStatus {
+public final class ExtensionStatus implements JsonSerializable<ExtensionStatus> {
     /*
      * Status code provided by the Extension
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Short description of status of the extension.
      */
-    @JsonProperty(value = "displayStatus")
     private String displayStatus;
 
     /*
      * Level of the status.
      */
-    @JsonProperty(value = "level")
     private LevelType level;
 
     /*
      * Detailed message of the status from the Extension.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * DateLiteral (per ISO8601) noting the time of installation status.
      */
-    @JsonProperty(value = "time")
     private String time;
 
-    /** Creates an instance of ExtensionStatus class. */
+    /**
+     * Creates an instance of ExtensionStatus class.
+     */
     public ExtensionStatus() {
     }
 
     /**
      * Get the code property: Status code provided by the Extension.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -55,7 +58,7 @@ public final class ExtensionStatus {
 
     /**
      * Set the code property: Status code provided by the Extension.
-     *
+     * 
      * @param code the code value to set.
      * @return the ExtensionStatus object itself.
      */
@@ -66,7 +69,7 @@ public final class ExtensionStatus {
 
     /**
      * Get the displayStatus property: Short description of status of the extension.
-     *
+     * 
      * @return the displayStatus value.
      */
     public String displayStatus() {
@@ -75,7 +78,7 @@ public final class ExtensionStatus {
 
     /**
      * Set the displayStatus property: Short description of status of the extension.
-     *
+     * 
      * @param displayStatus the displayStatus value to set.
      * @return the ExtensionStatus object itself.
      */
@@ -86,7 +89,7 @@ public final class ExtensionStatus {
 
     /**
      * Get the level property: Level of the status.
-     *
+     * 
      * @return the level value.
      */
     public LevelType level() {
@@ -95,7 +98,7 @@ public final class ExtensionStatus {
 
     /**
      * Set the level property: Level of the status.
-     *
+     * 
      * @param level the level value to set.
      * @return the ExtensionStatus object itself.
      */
@@ -106,7 +109,7 @@ public final class ExtensionStatus {
 
     /**
      * Get the message property: Detailed message of the status from the Extension.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -115,7 +118,7 @@ public final class ExtensionStatus {
 
     /**
      * Set the message property: Detailed message of the status from the Extension.
-     *
+     * 
      * @param message the message value to set.
      * @return the ExtensionStatus object itself.
      */
@@ -126,7 +129,7 @@ public final class ExtensionStatus {
 
     /**
      * Get the time property: DateLiteral (per ISO8601) noting the time of installation status.
-     *
+     * 
      * @return the time value.
      */
     public String time() {
@@ -135,7 +138,7 @@ public final class ExtensionStatus {
 
     /**
      * Set the time property: DateLiteral (per ISO8601) noting the time of installation status.
-     *
+     * 
      * @param time the time value to set.
      * @return the ExtensionStatus object itself.
      */
@@ -146,9 +149,57 @@ public final class ExtensionStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("displayStatus", this.displayStatus);
+        jsonWriter.writeStringField("level", this.level == null ? null : this.level.toString());
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("time", this.time);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtensionStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtensionStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExtensionStatus.
+     */
+    public static ExtensionStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtensionStatus deserializedExtensionStatus = new ExtensionStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedExtensionStatus.code = reader.getString();
+                } else if ("displayStatus".equals(fieldName)) {
+                    deserializedExtensionStatus.displayStatus = reader.getString();
+                } else if ("level".equals(fieldName)) {
+                    deserializedExtensionStatus.level = LevelType.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedExtensionStatus.message = reader.getString();
+                } else if ("time".equals(fieldName)) {
+                    deserializedExtensionStatus.time = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtensionStatus;
+        });
     }
 }

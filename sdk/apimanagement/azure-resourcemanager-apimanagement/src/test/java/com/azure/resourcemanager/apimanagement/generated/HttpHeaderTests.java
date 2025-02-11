@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class HttpHeaderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HttpHeader model =
-            BinaryData.fromString("{\"name\":\"tibpv\",\"value\":\"kaehxsmzyg\"}").toObject(HttpHeader.class);
+        HttpHeader model
+            = BinaryData.fromString("{\"name\":\"tibpv\",\"value\":\"kaehxsmzyg\"}").toObject(HttpHeader.class);
         Assertions.assertEquals("tibpv", model.name());
         Assertions.assertEquals("kaehxsmzyg", model.value());
     }

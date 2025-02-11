@@ -7,11 +7,13 @@ package com.azure.resourcemanager.logic.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WorkflowVersionTriggers. */
+/**
+ * Resource collection API of WorkflowVersionTriggers.
+ */
 public interface WorkflowVersionTriggers {
     /**
      * Get the callback url for a trigger of a workflow version.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -23,17 +25,12 @@ public interface WorkflowVersionTriggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the callback url for a trigger of a workflow version along with {@link Response}.
      */
-    Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String versionId,
-        String triggerName,
-        GetCallbackUrlParameters parameters,
-        Context context);
+    Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(String resourceGroupName, String workflowName,
+        String versionId, String triggerName, GetCallbackUrlParameters parameters, Context context);
 
     /**
      * Get the callback url for a trigger of a workflow version.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -43,6 +40,6 @@ public interface WorkflowVersionTriggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the callback url for a trigger of a workflow version.
      */
-    WorkflowTriggerCallbackUrl listCallbackUrl(
-        String resourceGroupName, String workflowName, String versionId, String triggerName);
+    WorkflowTriggerCallbackUrl listCallbackUrl(String resourceGroupName, String workflowName, String versionId,
+        String triggerName);
 }

@@ -11,6 +11,13 @@ import com.azure.resourcemanager.hybridnetwork.fluent.models.ArtifactAccessCrede
  */
 public interface ArtifactAccessCredential {
     /**
+     * Gets the credentialType property: The credential type.
+     * 
+     * @return the credentialType value.
+     */
+    CredentialType credentialType();
+
+    /**
      * Gets the inner com.azure.resourcemanager.hybridnetwork.fluent.models.ArtifactAccessCredentialInner object.
      * 
      * @return the inner object.

@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.providerhub.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ResourceAccessPolicy. */
+/**
+ * Defines values for ResourceAccessPolicy.
+ */
 public enum ResourceAccessPolicy {
-    /** Enum value NotSpecified. */
+    /**
+     * Enum value NotSpecified.
+     */
     NOT_SPECIFIED("NotSpecified"),
 
-    /** Enum value AcisReadAllowed. */
+    /**
+     * Enum value AcisReadAllowed.
+     */
     ACIS_READ_ALLOWED("AcisReadAllowed"),
 
-    /** Enum value AcisActionAllowed. */
+    /**
+     * Enum value AcisActionAllowed.
+     */
     ACIS_ACTION_ALLOWED("AcisActionAllowed");
 
-    /** The actual serialized value for a ResourceAccessPolicy instance. */
+    /**
+     * The actual serialized value for a ResourceAccessPolicy instance.
+     */
     private final String value;
 
     ResourceAccessPolicy(String value) {
@@ -27,11 +34,10 @@ public enum ResourceAccessPolicy {
 
     /**
      * Parses a serialized value to a ResourceAccessPolicy instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ResourceAccessPolicy object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourceAccessPolicy fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum ResourceAccessPolicy {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

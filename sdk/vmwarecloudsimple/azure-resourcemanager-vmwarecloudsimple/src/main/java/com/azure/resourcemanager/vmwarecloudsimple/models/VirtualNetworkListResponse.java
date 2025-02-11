@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualNetworkInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of virtual networks. */
+/**
+ * List of virtual networks.
+ */
 @Fluent
-public final class VirtualNetworkListResponse {
+public final class VirtualNetworkListResponse implements JsonSerializable<VirtualNetworkListResponse> {
     /*
      * Link for next list of VirtualNetwork
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Results of the VirtualNetwork list
      */
-    @JsonProperty(value = "value")
     private List<VirtualNetworkInner> value;
 
-    /** Creates an instance of VirtualNetworkListResponse class. */
+    /**
+     * Creates an instance of VirtualNetworkListResponse class.
+     */
     public VirtualNetworkListResponse() {
     }
 
     /**
      * Get the nextLink property: Link for next list of VirtualNetwork.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class VirtualNetworkListResponse {
 
     /**
      * Set the nextLink property: Link for next list of VirtualNetwork.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualNetworkListResponse object itself.
      */
@@ -50,7 +56,7 @@ public final class VirtualNetworkListResponse {
 
     /**
      * Get the value property: Results of the VirtualNetwork list.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualNetworkInner> value() {
@@ -59,7 +65,7 @@ public final class VirtualNetworkListResponse {
 
     /**
      * Set the value property: Results of the VirtualNetwork list.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualNetworkListResponse object itself.
      */
@@ -70,12 +76,53 @@ public final class VirtualNetworkListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkListResponse if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkListResponse.
+     */
+    public static VirtualNetworkListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkListResponse deserializedVirtualNetworkListResponse = new VirtualNetworkListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualNetworkListResponse.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<VirtualNetworkInner> value
+                        = reader.readArray(reader1 -> VirtualNetworkInner.fromJson(reader1));
+                    deserializedVirtualNetworkListResponse.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkListResponse;
+        });
     }
 }

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.subscription.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The new name of the subscription. */
+/**
+ * The new name of the subscription.
+ */
 @Fluent
-public final class SubscriptionName {
+public final class SubscriptionName implements JsonSerializable<SubscriptionName> {
     /*
      * New subscription name
      */
-    @JsonProperty(value = "subscriptionName")
     private String subscriptionName;
 
-    /** Creates an instance of SubscriptionName class. */
+    /**
+     * Creates an instance of SubscriptionName class.
+     */
     public SubscriptionName() {
     }
 
     /**
      * Get the subscriptionName property: New subscription name.
-     *
+     * 
      * @return the subscriptionName value.
      */
     public String subscriptionName() {
@@ -31,7 +38,7 @@ public final class SubscriptionName {
 
     /**
      * Set the subscriptionName property: New subscription name.
-     *
+     * 
      * @param subscriptionName the subscriptionName value to set.
      * @return the SubscriptionName object itself.
      */
@@ -42,9 +49,45 @@ public final class SubscriptionName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subscriptionName", this.subscriptionName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionName if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionName.
+     */
+    public static SubscriptionName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionName deserializedSubscriptionName = new SubscriptionName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionName".equals(fieldName)) {
+                    deserializedSubscriptionName.subscriptionName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionName;
+        });
     }
 }

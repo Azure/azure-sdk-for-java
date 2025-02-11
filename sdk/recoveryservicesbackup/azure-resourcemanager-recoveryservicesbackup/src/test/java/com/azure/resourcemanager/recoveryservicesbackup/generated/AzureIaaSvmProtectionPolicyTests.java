@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureIaaSvmProtectionPolicy;
-import com.azure.resourcemanager.recoveryservicesbackup.models.IaasvmPolicyType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMSnapshotConsistencyType;
+import com.azure.resourcemanager.recoveryservicesbackup.models.IaasvmPolicyType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.InstantRPAdditionalDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDurationType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionPolicy;

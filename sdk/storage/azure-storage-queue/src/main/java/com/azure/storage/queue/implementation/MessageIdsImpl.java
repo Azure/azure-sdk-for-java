@@ -25,8 +25,8 @@ import com.azure.storage.queue.implementation.models.MessageIdsDeleteHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
-import reactor.core.publisher.Mono;
 import com.azure.storage.queue.implementation.util.ModelHelper;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in MessageIds.
@@ -170,10 +170,9 @@ public final class MessageIdsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<MessageIdsUpdateHeaders, Void>> updateWithResponseAsync(String queueName, String messageid,
         String popReceipt, int visibilitytimeout, Integer timeout, String requestId, QueueMessage queueMessage) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getUrl(), queueName, messageid, popReceipt,
-                visibilitytimeout, timeout, this.client.getVersion(), requestId, queueMessage, accept, context))
+            .withContext(context -> updateWithResponseAsync(queueName, messageid, popReceipt, visibilitytimeout,
+                timeout, requestId, queueMessage, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -244,7 +243,7 @@ public final class MessageIdsImpl {
         Integer timeout, String requestId, QueueMessage queueMessage) {
         return updateWithResponseAsync(queueName, messageid, popReceipt, visibilitytimeout, timeout, requestId,
             queueMessage).onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -278,8 +277,8 @@ public final class MessageIdsImpl {
         Integer timeout, String requestId, QueueMessage queueMessage, Context context) {
         return updateWithResponseAsync(queueName, messageid, popReceipt, visibilitytimeout, timeout, requestId,
             queueMessage, context)
-            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -310,11 +309,9 @@ public final class MessageIdsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateNoCustomHeadersWithResponseAsync(String queueName, String messageid,
         String popReceipt, int visibilitytimeout, Integer timeout, String requestId, QueueMessage queueMessage) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(
-                context -> service.updateNoCustomHeaders(this.client.getUrl(), queueName, messageid, popReceipt,
-                    visibilitytimeout, timeout, this.client.getVersion(), requestId, queueMessage, accept, context))
+            .withContext(context -> updateNoCustomHeadersWithResponseAsync(queueName, messageid, popReceipt,
+                visibilitytimeout, timeout, requestId, queueMessage, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -385,8 +382,8 @@ public final class MessageIdsImpl {
     public ResponseBase<MessageIdsUpdateHeaders, Void> updateWithResponse(String queueName, String messageid,
         String popReceipt, int visibilitytimeout, Integer timeout, String requestId, QueueMessage queueMessage,
         Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.updateSync(this.client.getUrl(), queueName, messageid, popReceipt, visibilitytimeout,
                 timeout, this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -454,8 +451,8 @@ public final class MessageIdsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateNoCustomHeadersWithResponse(String queueName, String messageid, String popReceipt,
         int visibilitytimeout, Integer timeout, String requestId, QueueMessage queueMessage, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.updateNoCustomHeadersSync(this.client.getUrl(), queueName, messageid, popReceipt,
                 visibilitytimeout, timeout, this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -483,10 +480,9 @@ public final class MessageIdsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<MessageIdsDeleteHeaders, Void>> deleteWithResponseAsync(String queueName, String messageid,
         String popReceipt, Integer timeout, String requestId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getUrl(), queueName, messageid, popReceipt, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(
+                context -> deleteWithResponseAsync(queueName, messageid, popReceipt, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -589,10 +585,9 @@ public final class MessageIdsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(String queueName, String messageid,
         String popReceipt, Integer timeout, String requestId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), queueName, messageid,
-                popReceipt, timeout, this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> deleteNoCustomHeadersWithResponseAsync(queueName, messageid, popReceipt, timeout,
+                requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -645,8 +640,8 @@ public final class MessageIdsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<MessageIdsDeleteHeaders, Void> deleteWithResponse(String queueName, String messageid,
         String popReceipt, Integer timeout, String requestId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.deleteSync(this.client.getUrl(), queueName, messageid, popReceipt, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -696,8 +691,8 @@ public final class MessageIdsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNoCustomHeadersWithResponse(String queueName, String messageid, String popReceipt,
         Integer timeout, String requestId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), queueName, messageid, popReceipt, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {

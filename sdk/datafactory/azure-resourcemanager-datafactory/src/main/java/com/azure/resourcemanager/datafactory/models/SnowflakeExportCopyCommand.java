@@ -135,7 +135,6 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

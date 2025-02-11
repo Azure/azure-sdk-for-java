@@ -15,7 +15,8 @@ import com.azure.resourcemanager.frontdoor.models.MinimumTlsVersion;
  */
 public final class FrontendEndpointsEnableHttpsSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorEnableHttps.json
+     * x-ms-original-file:
+     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorEnableHttps.json
      */
     /**
      * Sample code: FrontendEndpoints_EnableHttps.

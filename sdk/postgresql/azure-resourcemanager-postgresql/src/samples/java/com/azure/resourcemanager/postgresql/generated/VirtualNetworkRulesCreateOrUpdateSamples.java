@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.postgresql.generated;
 
-/** Samples for VirtualNetworkRules CreateOrUpdate. */
+/**
+ * Samples for VirtualNetworkRules CreateOrUpdate.
+ */
 public final class VirtualNetworkRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/VirtualNetworkRulesCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/
+     * VirtualNetworkRulesCreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a virtual network rule.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void createOrUpdateAVirtualNetworkRule(
-        com.azure.resourcemanager.postgresql.PostgreSqlManager manager) {
-        manager
-            .virtualNetworkRules()
+    public static void
+        createOrUpdateAVirtualNetworkRule(com.azure.resourcemanager.postgresql.PostgreSqlManager manager) {
+        manager.virtualNetworkRules()
             .define("vnet-firewall-rule")
             .withExistingServer("TestGroup", "vnet-test-svr")
             .withVirtualNetworkSubnetId(

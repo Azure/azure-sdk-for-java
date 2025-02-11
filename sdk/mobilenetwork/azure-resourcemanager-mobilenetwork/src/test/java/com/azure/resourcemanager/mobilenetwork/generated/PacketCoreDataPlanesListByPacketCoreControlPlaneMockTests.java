@@ -22,7 +22,7 @@ public final class PacketCoreDataPlanesListByPacketCoreControlPlaneMockTests {
     @Test
     public void testListByPacketCoreControlPlane() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"userPlaneAccessInterface\":{\"name\":\"fovwmbjlzqsczpg\",\"ipv4Address\":\"wnapfdq\",\"ipv4Subnet\":\"wf\",\"ipv4Gateway\":\"tnuwjtkschgc\",\"vlanId\":84178465,\"ipv4AddressList\":[\"eseyqr\",\"vyeldot\",\"v\",\"kwiswskukjtas\"],\"bfdIpv4Endpoints\":[\"ispkxkdtx\",\"kndlqvtwknvg\"]},\"userPlaneAccessVirtualIpv4Addresses\":[\"ugtywatmqaqkue\",\"tgroesh\",\"ygzc\"]},\"location\":\"fqxkfaoyteh\",\"tags\":{\"ejnndljdju\":\"vjmvqmtdwckygr\",\"req\":\"kb\"},\"id\":\"n\",\"name\":\"ceysfaqeg\",\"type\":\"lwryshwddkvbxgkq\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"userPlaneAccessInterface\":{\"name\":\"eqdurelyujlfyoum\",\"ipv4Address\":\"kyeclcdigpta\",\"ipv4Subnet\":\"rzmq\",\"ipv4Gateway\":\"cycijoclxiut\",\"vlanId\":1338234971,\"ipv4AddressList\":[\"yzjdnrqjbt\"],\"bfdIpv4Endpoints\":[\"aoqaqbzgyhfwwv\",\"atbwbqam\",\"e\"]},\"userPlaneAccessVirtualIpv4Addresses\":[\"yslpkcvmw\",\"auxxepmyw\",\"ormcqmic\",\"ijqpkzfbojxjmcs\"]},\"location\":\"qwixvcpwnk\",\"tags\":{\"uoiqt\":\"zwofalick\",\"vsknxrwzawnv\":\"mt\",\"ycvdimw\":\"bcfhzagxnv\",\"ryekzkd\":\"zregzgyufutrwpw\"},\"id\":\"meottawj\",\"name\":\"osxw\",\"type\":\"hnhjtfvpndpmi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,20 +32,19 @@ public final class PacketCoreDataPlanesListByPacketCoreControlPlaneMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PacketCoreDataPlane> response = manager.packetCoreDataPlanes()
-            .listByPacketCoreControlPlane("gkzz", "taf", com.azure.core.util.Context.NONE);
+            .listByPacketCoreControlPlane("tkrlgjmtbd", "vcqguefzh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fqxkfaoyteh", response.iterator().next().location());
-        Assertions.assertEquals("vjmvqmtdwckygr", response.iterator().next().tags().get("ejnndljdju"));
-        Assertions.assertEquals("fovwmbjlzqsczpg", response.iterator().next().userPlaneAccessInterface().name());
-        Assertions.assertEquals("wnapfdq", response.iterator().next().userPlaneAccessInterface().ipv4Address());
-        Assertions.assertEquals("wf", response.iterator().next().userPlaneAccessInterface().ipv4Subnet());
-        Assertions.assertEquals("tnuwjtkschgc", response.iterator().next().userPlaneAccessInterface().ipv4Gateway());
-        Assertions.assertEquals(84178465, response.iterator().next().userPlaneAccessInterface().vlanId());
-        Assertions.assertEquals("eseyqr",
+        Assertions.assertEquals("qwixvcpwnk", response.iterator().next().location());
+        Assertions.assertEquals("zwofalick", response.iterator().next().tags().get("uoiqt"));
+        Assertions.assertEquals("eqdurelyujlfyoum", response.iterator().next().userPlaneAccessInterface().name());
+        Assertions.assertEquals("kyeclcdigpta", response.iterator().next().userPlaneAccessInterface().ipv4Address());
+        Assertions.assertEquals("rzmq", response.iterator().next().userPlaneAccessInterface().ipv4Subnet());
+        Assertions.assertEquals("cycijoclxiut", response.iterator().next().userPlaneAccessInterface().ipv4Gateway());
+        Assertions.assertEquals(1338234971, response.iterator().next().userPlaneAccessInterface().vlanId());
+        Assertions.assertEquals("yzjdnrqjbt",
             response.iterator().next().userPlaneAccessInterface().ipv4AddressList().get(0));
-        Assertions.assertEquals("ispkxkdtx",
+        Assertions.assertEquals("aoqaqbzgyhfwwv",
             response.iterator().next().userPlaneAccessInterface().bfdIpv4Endpoints().get(0));
-        Assertions.assertEquals("ugtywatmqaqkue",
-            response.iterator().next().userPlaneAccessVirtualIpv4Addresses().get(0));
+        Assertions.assertEquals("yslpkcvmw", response.iterator().next().userPlaneAccessVirtualIpv4Addresses().get(0));
     }
 }

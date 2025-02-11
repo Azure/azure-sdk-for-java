@@ -11,6 +11,12 @@ public class ListBatchPoolNodeCountsOptions extends BatchBaseOptions {
     private String filter;
 
     /**
+     * Creates an instance of {@link ListBatchPoolNodeCountsOptions}.
+     */
+    public ListBatchPoolNodeCountsOptions() {
+    }
+
+    /**
      * Gets the OData $filter clause used for filtering results.
      *
      * @return The OData $filter clause.

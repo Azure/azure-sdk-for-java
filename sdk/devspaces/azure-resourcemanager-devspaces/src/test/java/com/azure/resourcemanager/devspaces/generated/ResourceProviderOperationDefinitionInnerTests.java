@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderOperationDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderOperationDefinitionInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"noi\",\"display\":{\"provider\":\"lrxybqsoq\",\"resource\":\"gkdmb\",\"operation\":\"zlobcufpd\",\"description\":\"rbt\"}}")
-                .toObject(ResourceProviderOperationDefinitionInner.class);
+        ResourceProviderOperationDefinitionInner model = BinaryData.fromString(
+            "{\"name\":\"noi\",\"display\":{\"provider\":\"lrxybqsoq\",\"resource\":\"gkdmb\",\"operation\":\"zlobcufpd\",\"description\":\"rbt\"}}")
+            .toObject(ResourceProviderOperationDefinitionInner.class);
         Assertions.assertEquals("noi", model.name());
         Assertions.assertEquals("lrxybqsoq", model.display().provider());
         Assertions.assertEquals("gkdmb", model.display().resource());
@@ -26,15 +24,11 @@ public final class ResourceProviderOperationDefinitionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderOperationDefinitionInner model =
-            new ResourceProviderOperationDefinitionInner()
-                .withName("noi")
-                .withDisplay(
-                    new ResourceProviderOperationDisplay()
-                        .withProvider("lrxybqsoq")
-                        .withResource("gkdmb")
-                        .withOperation("zlobcufpd")
-                        .withDescription("rbt"));
+        ResourceProviderOperationDefinitionInner model = new ResourceProviderOperationDefinitionInner().withName("noi")
+            .withDisplay(new ResourceProviderOperationDisplay().withProvider("lrxybqsoq")
+                .withResource("gkdmb")
+                .withOperation("zlobcufpd")
+                .withDescription("rbt"));
         model = BinaryData.fromObject(model).toObject(ResourceProviderOperationDefinitionInner.class);
         Assertions.assertEquals("noi", model.name());
         Assertions.assertEquals("lrxybqsoq", model.display().provider());

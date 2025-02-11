@@ -31,10 +31,17 @@ public final class InvitationRecordInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InvitationRecordInner model = new InvitationRecordInner().withKind("xxjnspydptk").withId("nkoukn")
-            .withMetadata(new MetadataEntity().withSelf("wtiukbldn").withResourceName("pocipazyxoegu")
-                .withCreatedAt("jnpiucgyg").withUpdatedAt("qzntypm").withDeletedAt("p"))
-            .withEmail("c").withAuthType("qjsdpydnfyhxdeo").withStatus("zi").withAcceptedAt("ifsjttgzfbishcb")
+        InvitationRecordInner model = new InvitationRecordInner().withKind("xxjnspydptk")
+            .withId("nkoukn")
+            .withMetadata(new MetadataEntity().withSelf("wtiukbldn")
+                .withResourceName("pocipazyxoegu")
+                .withCreatedAt("jnpiucgyg")
+                .withUpdatedAt("qzntypm")
+                .withDeletedAt("p"))
+            .withEmail("c")
+            .withAuthType("qjsdpydnfyhxdeo")
+            .withStatus("zi")
+            .withAcceptedAt("ifsjttgzfbishcb")
             .withExpiresAt("ajdeyeamdphaga");
         model = BinaryData.fromObject(model).toObject(InvitationRecordInner.class);
         Assertions.assertEquals("xxjnspydptk", model.kind());

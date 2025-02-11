@@ -6,122 +6,111 @@ package com.azure.resourcemanager.kubernetesconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ExtensionPropertiesAksAssignedIdentity;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ExtensionStatus;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ProvisioningState;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Scope;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of an Extension resource. */
+/**
+ * Properties of an Extension resource.
+ */
 @Fluent
-public final class ExtensionProperties {
+public final class ExtensionProperties implements JsonSerializable<ExtensionProperties> {
     /*
-     * Type of the Extension, of which this resource is an instance of.  It must be one of the Extension Types
-     * registered with Microsoft.KubernetesConfiguration by the Extension publisher.
+     * Type of the Extension, of which this resource is an instance of. It must be one of the Extension Types registered
+     * with Microsoft.KubernetesConfiguration by the Extension publisher.
      */
-    @JsonProperty(value = "extensionType")
     private String extensionType;
 
     /*
      * Flag to note if this extension participates in auto upgrade of minor version, or not.
      */
-    @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
      * ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if
      * autoUpgradeMinorVersion is 'true'.
      */
-    @JsonProperty(value = "releaseTrain")
     private String releaseTrain;
 
     /*
      * User-specified version of the extension for this extension to 'pin'. To use 'version', autoUpgradeMinorVersion
      * must be 'false'.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Scope at which the extension is installed.
      */
-    @JsonProperty(value = "scope")
     private Scope scope;
 
     /*
      * Configuration settings, as name-value pairs for configuring this extension.
      */
-    @JsonProperty(value = "configurationSettings")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> configurationSettings;
 
     /*
      * Configuration settings that are sensitive, as name-value pairs for configuring this extension.
      */
-    @JsonProperty(value = "configurationProtectedSettings")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> configurationProtectedSettings;
 
     /*
      * Currently installed version of the extension.
      */
-    @JsonProperty(value = "currentVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String currentVersion;
 
     /*
      * Status of installation of this extension.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Status from this extension.
      */
-    @JsonProperty(value = "statuses")
     private List<ExtensionStatus> statuses;
 
     /*
      * Error information from the Agent - e.g. errors during installation.
      */
-    @JsonProperty(value = "errorInfo", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError errorInfo;
 
     /*
      * Custom Location settings properties.
      */
-    @JsonProperty(value = "customLocationSettings", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customLocationSettings;
 
     /*
      * Uri of the Helm package
      */
-    @JsonProperty(value = "packageUri", access = JsonProperty.Access.WRITE_ONLY)
     private String packageUri;
 
     /*
      * Identity of the Extension resource in an AKS cluster
      */
-    @JsonProperty(value = "aksAssignedIdentity")
     private ExtensionPropertiesAksAssignedIdentity aksAssignedIdentity;
 
     /*
      * Flag to note if this extension is a system extension
      */
-    @JsonProperty(value = "isSystemExtension", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isSystemExtension;
 
-    /** Creates an instance of ExtensionProperties class. */
+    /**
+     * Creates an instance of ExtensionProperties class.
+     */
     public ExtensionProperties() {
     }
 
     /**
      * Get the extensionType property: Type of the Extension, of which this resource is an instance of. It must be one
      * of the Extension Types registered with Microsoft.KubernetesConfiguration by the Extension publisher.
-     *
+     * 
      * @return the extensionType value.
      */
     public String extensionType() {
@@ -131,7 +120,7 @@ public final class ExtensionProperties {
     /**
      * Set the extensionType property: Type of the Extension, of which this resource is an instance of. It must be one
      * of the Extension Types registered with Microsoft.KubernetesConfiguration by the Extension publisher.
-     *
+     * 
      * @param extensionType the extensionType value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -143,7 +132,7 @@ public final class ExtensionProperties {
     /**
      * Get the autoUpgradeMinorVersion property: Flag to note if this extension participates in auto upgrade of minor
      * version, or not.
-     *
+     * 
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
@@ -153,7 +142,7 @@ public final class ExtensionProperties {
     /**
      * Set the autoUpgradeMinorVersion property: Flag to note if this extension participates in auto upgrade of minor
      * version, or not.
-     *
+     * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -165,7 +154,7 @@ public final class ExtensionProperties {
     /**
      * Get the releaseTrain property: ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable,
      * Preview, etc.) - only if autoUpgradeMinorVersion is 'true'.
-     *
+     * 
      * @return the releaseTrain value.
      */
     public String releaseTrain() {
@@ -175,7 +164,7 @@ public final class ExtensionProperties {
     /**
      * Set the releaseTrain property: ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable,
      * Preview, etc.) - only if autoUpgradeMinorVersion is 'true'.
-     *
+     * 
      * @param releaseTrain the releaseTrain value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -187,7 +176,7 @@ public final class ExtensionProperties {
     /**
      * Get the version property: User-specified version of the extension for this extension to 'pin'. To use 'version',
      * autoUpgradeMinorVersion must be 'false'.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -197,7 +186,7 @@ public final class ExtensionProperties {
     /**
      * Set the version property: User-specified version of the extension for this extension to 'pin'. To use 'version',
      * autoUpgradeMinorVersion must be 'false'.
-     *
+     * 
      * @param version the version value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -208,7 +197,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the scope property: Scope at which the extension is installed.
-     *
+     * 
      * @return the scope value.
      */
     public Scope scope() {
@@ -217,7 +206,7 @@ public final class ExtensionProperties {
 
     /**
      * Set the scope property: Scope at which the extension is installed.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -229,7 +218,7 @@ public final class ExtensionProperties {
     /**
      * Get the configurationSettings property: Configuration settings, as name-value pairs for configuring this
      * extension.
-     *
+     * 
      * @return the configurationSettings value.
      */
     public Map<String, String> configurationSettings() {
@@ -239,7 +228,7 @@ public final class ExtensionProperties {
     /**
      * Set the configurationSettings property: Configuration settings, as name-value pairs for configuring this
      * extension.
-     *
+     * 
      * @param configurationSettings the configurationSettings value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -251,7 +240,7 @@ public final class ExtensionProperties {
     /**
      * Get the configurationProtectedSettings property: Configuration settings that are sensitive, as name-value pairs
      * for configuring this extension.
-     *
+     * 
      * @return the configurationProtectedSettings value.
      */
     public Map<String, String> configurationProtectedSettings() {
@@ -261,7 +250,7 @@ public final class ExtensionProperties {
     /**
      * Set the configurationProtectedSettings property: Configuration settings that are sensitive, as name-value pairs
      * for configuring this extension.
-     *
+     * 
      * @param configurationProtectedSettings the configurationProtectedSettings value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -272,7 +261,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the currentVersion property: Currently installed version of the extension.
-     *
+     * 
      * @return the currentVersion value.
      */
     public String currentVersion() {
@@ -281,7 +270,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the provisioningState property: Status of installation of this extension.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -290,7 +279,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the statuses property: Status from this extension.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ExtensionStatus> statuses() {
@@ -299,7 +288,7 @@ public final class ExtensionProperties {
 
     /**
      * Set the statuses property: Status from this extension.
-     *
+     * 
      * @param statuses the statuses value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -310,7 +299,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the errorInfo property: Error information from the Agent - e.g. errors during installation.
-     *
+     * 
      * @return the errorInfo value.
      */
     public ManagementError errorInfo() {
@@ -319,7 +308,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the customLocationSettings property: Custom Location settings properties.
-     *
+     * 
      * @return the customLocationSettings value.
      */
     public Map<String, String> customLocationSettings() {
@@ -328,7 +317,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the packageUri property: Uri of the Helm package.
-     *
+     * 
      * @return the packageUri value.
      */
     public String packageUri() {
@@ -337,7 +326,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the aksAssignedIdentity property: Identity of the Extension resource in an AKS cluster.
-     *
+     * 
      * @return the aksAssignedIdentity value.
      */
     public ExtensionPropertiesAksAssignedIdentity aksAssignedIdentity() {
@@ -346,7 +335,7 @@ public final class ExtensionProperties {
 
     /**
      * Set the aksAssignedIdentity property: Identity of the Extension resource in an AKS cluster.
-     *
+     * 
      * @param aksAssignedIdentity the aksAssignedIdentity value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -357,7 +346,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the isSystemExtension property: Flag to note if this extension is a system extension.
-     *
+     * 
      * @return the isSystemExtension value.
      */
     public Boolean isSystemExtension() {
@@ -366,7 +355,7 @@ public final class ExtensionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -379,5 +368,86 @@ public final class ExtensionProperties {
         if (aksAssignedIdentity() != null) {
             aksAssignedIdentity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("extensionType", this.extensionType);
+        jsonWriter.writeBooleanField("autoUpgradeMinorVersion", this.autoUpgradeMinorVersion);
+        jsonWriter.writeStringField("releaseTrain", this.releaseTrain);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeJsonField("scope", this.scope);
+        jsonWriter.writeMapField("configurationSettings", this.configurationSettings,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("configurationProtectedSettings", this.configurationProtectedSettings,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("aksAssignedIdentity", this.aksAssignedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtensionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtensionProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExtensionProperties.
+     */
+    public static ExtensionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtensionProperties deserializedExtensionProperties = new ExtensionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extensionType".equals(fieldName)) {
+                    deserializedExtensionProperties.extensionType = reader.getString();
+                } else if ("autoUpgradeMinorVersion".equals(fieldName)) {
+                    deserializedExtensionProperties.autoUpgradeMinorVersion
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("releaseTrain".equals(fieldName)) {
+                    deserializedExtensionProperties.releaseTrain = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedExtensionProperties.version = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedExtensionProperties.scope = Scope.fromJson(reader);
+                } else if ("configurationSettings".equals(fieldName)) {
+                    Map<String, String> configurationSettings = reader.readMap(reader1 -> reader1.getString());
+                    deserializedExtensionProperties.configurationSettings = configurationSettings;
+                } else if ("configurationProtectedSettings".equals(fieldName)) {
+                    Map<String, String> configurationProtectedSettings = reader.readMap(reader1 -> reader1.getString());
+                    deserializedExtensionProperties.configurationProtectedSettings = configurationProtectedSettings;
+                } else if ("currentVersion".equals(fieldName)) {
+                    deserializedExtensionProperties.currentVersion = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExtensionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("statuses".equals(fieldName)) {
+                    List<ExtensionStatus> statuses = reader.readArray(reader1 -> ExtensionStatus.fromJson(reader1));
+                    deserializedExtensionProperties.statuses = statuses;
+                } else if ("errorInfo".equals(fieldName)) {
+                    deserializedExtensionProperties.errorInfo = ManagementError.fromJson(reader);
+                } else if ("customLocationSettings".equals(fieldName)) {
+                    Map<String, String> customLocationSettings = reader.readMap(reader1 -> reader1.getString());
+                    deserializedExtensionProperties.customLocationSettings = customLocationSettings;
+                } else if ("packageUri".equals(fieldName)) {
+                    deserializedExtensionProperties.packageUri = reader.getString();
+                } else if ("aksAssignedIdentity".equals(fieldName)) {
+                    deserializedExtensionProperties.aksAssignedIdentity
+                        = ExtensionPropertiesAksAssignedIdentity.fromJson(reader);
+                } else if ("isSystemExtension".equals(fieldName)) {
+                    deserializedExtensionProperties.isSystemExtension = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtensionProperties;
+        });
     }
 }

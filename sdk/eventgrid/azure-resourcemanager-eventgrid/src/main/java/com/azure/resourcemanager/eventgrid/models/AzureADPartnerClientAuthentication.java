@@ -5,34 +5,25 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.AzureADPartnerClientAuthenticationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Azure Active Directory Partner Client Authentication.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "clientAuthenticationType",
-    defaultImpl = AzureADPartnerClientAuthentication.class,
-    visible = true)
-@JsonTypeName("AzureAD")
 @Fluent
 public final class AzureADPartnerClientAuthentication extends PartnerClientAuthentication {
     /*
      * Type of client authentication
      */
-    @JsonTypeId
-    @JsonProperty(value = "clientAuthenticationType", required = true)
     private PartnerClientAuthenticationType clientAuthenticationType = PartnerClientAuthenticationType.AZURE_AD;
 
     /*
      * AzureAD ClientAuthentication Properties
      */
-    @JsonProperty(value = "properties")
     private AzureADPartnerClientAuthenticationProperties innerProperties;
 
     /**
@@ -118,9 +109,51 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientAuthenticationType",
+            this.clientAuthenticationType == null ? null : this.clientAuthenticationType.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureADPartnerClientAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureADPartnerClientAuthentication if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureADPartnerClientAuthentication.
+     */
+    public static AzureADPartnerClientAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureADPartnerClientAuthentication deserializedAzureADPartnerClientAuthentication
+                = new AzureADPartnerClientAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientAuthenticationType".equals(fieldName)) {
+                    deserializedAzureADPartnerClientAuthentication.clientAuthenticationType
+                        = PartnerClientAuthenticationType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureADPartnerClientAuthentication.innerProperties
+                        = AzureADPartnerClientAuthenticationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureADPartnerClientAuthentication;
+        });
     }
 }

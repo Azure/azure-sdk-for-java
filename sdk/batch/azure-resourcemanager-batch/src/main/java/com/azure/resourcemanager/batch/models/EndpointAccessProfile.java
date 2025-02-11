@@ -6,26 +6,26 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network access profile for Batch endpoint.
  */
 @Fluent
-public final class EndpointAccessProfile {
+public final class EndpointAccessProfile implements JsonSerializable<EndpointAccessProfile> {
     /*
-     * The default action when there is no IPRule matched.
-     * 
      * Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
      */
-    @JsonProperty(value = "defaultAction", required = true)
     private EndpointAccessDefaultAction defaultAction;
 
     /*
      * Array of IP ranges to filter client IP address.
      */
-    @JsonProperty(value = "ipRules")
     private List<IpRule> ipRules;
 
     /**
@@ -35,9 +35,8 @@ public final class EndpointAccessProfile {
     }
 
     /**
-     * Get the defaultAction property: The default action when there is no IPRule matched.
-     * 
-     * Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
+     * Get the defaultAction property: Default action for endpoint access. It is only applicable when
+     * publicNetworkAccess is enabled.
      * 
      * @return the defaultAction value.
      */
@@ -46,9 +45,8 @@ public final class EndpointAccessProfile {
     }
 
     /**
-     * Set the defaultAction property: The default action when there is no IPRule matched.
-     * 
-     * Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
+     * Set the defaultAction property: Default action for endpoint access. It is only applicable when
+     * publicNetworkAccess is enabled.
      * 
      * @param defaultAction the defaultAction value to set.
      * @return the EndpointAccessProfile object itself.
@@ -85,8 +83,9 @@ public final class EndpointAccessProfile {
      */
     public void validate() {
         if (defaultAction() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property defaultAction in model EndpointAccessProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property defaultAction in model EndpointAccessProfile"));
         }
         if (ipRules() != null) {
             ipRules().forEach(e -> e.validate());
@@ -94,4 +93,46 @@ public final class EndpointAccessProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EndpointAccessProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("defaultAction", this.defaultAction == null ? null : this.defaultAction.toString());
+        jsonWriter.writeArrayField("ipRules", this.ipRules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointAccessProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointAccessProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EndpointAccessProfile.
+     */
+    public static EndpointAccessProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointAccessProfile deserializedEndpointAccessProfile = new EndpointAccessProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultAction".equals(fieldName)) {
+                    deserializedEndpointAccessProfile.defaultAction
+                        = EndpointAccessDefaultAction.fromString(reader.getString());
+                } else if ("ipRules".equals(fieldName)) {
+                    List<IpRule> ipRules = reader.readArray(reader1 -> IpRule.fromJson(reader1));
+                    deserializedEndpointAccessProfile.ipRules = ipRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointAccessProfile;
+        });
+    }
 }

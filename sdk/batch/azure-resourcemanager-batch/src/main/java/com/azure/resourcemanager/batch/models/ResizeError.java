@@ -6,30 +6,31 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * An error that occurred when resizing a pool.
  */
 @Fluent
-public final class ResizeError {
+public final class ResizeError implements JsonSerializable<ResizeError> {
     /*
      * An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
      */
-    @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
      * A message describing the error, intended to be suitable for display in a user interface.
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * Additional details about the error.
      */
-    @JsonProperty(value = "details")
     private List<ResizeError> details;
 
     /**
@@ -109,12 +110,12 @@ public final class ResizeError {
      */
     public void validate() {
         if (code() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property code in model ResizeError"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property code in model ResizeError"));
         }
         if (message() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property message in model ResizeError"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property message in model ResizeError"));
         }
         if (details() != null) {
             details().forEach(e -> e.validate());
@@ -122,4 +123,48 @@ public final class ResizeError {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResizeError.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResizeError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResizeError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResizeError.
+     */
+    public static ResizeError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResizeError deserializedResizeError = new ResizeError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedResizeError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedResizeError.message = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<ResizeError> details = reader.readArray(reader1 -> ResizeError.fromJson(reader1));
+                    deserializedResizeError.details = details;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResizeError;
+        });
+    }
 }

@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.communication.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive).
  */
@@ -36,7 +33,6 @@ public enum KeyType {
      * @param value the serialized value to parse.
      * @return the parsed KeyType object, or null if unable to parse.
      */
-    @JsonCreator
     public static KeyType fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum KeyType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

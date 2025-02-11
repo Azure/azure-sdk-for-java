@@ -19,7 +19,7 @@ public final class CatalogsListDevicesSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsListDevices(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().listDevices("MyResourceGroup1", "MyCatalog1", null, null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.catalogs()
+            .listDevices("MyResourceGroup1", "MyCatalog1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

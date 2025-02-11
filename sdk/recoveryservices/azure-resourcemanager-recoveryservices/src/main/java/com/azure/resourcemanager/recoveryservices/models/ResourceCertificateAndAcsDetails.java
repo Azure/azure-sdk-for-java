@@ -5,47 +5,39 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Certificate details representing the Vault credentials for ACS.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "authType",
-    defaultImpl = ResourceCertificateAndAcsDetails.class,
-    visible = true)
-@JsonTypeName("AccessControlService")
 @Fluent
 public final class ResourceCertificateAndAcsDetails extends ResourceCertificateDetails {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "authType", required = true)
     private String authType = "AccessControlService";
 
     /*
      * ACS namespace name - tenant for our service.
      */
-    @JsonProperty(value = "globalAcsNamespace", required = true)
     private String globalAcsNamespace;
 
     /*
      * Acs mgmt host name to connect to.
      */
-    @JsonProperty(value = "globalAcsHostName", required = true)
     private String globalAcsHostname;
 
     /*
      * Global ACS namespace RP realm.
      */
-    @JsonProperty(value = "globalAcsRPRealm", required = true)
     private String globalAcsRPRealm;
 
     /**
@@ -204,7 +196,6 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
      */
     @Override
     public void validate() {
-        super.validate();
         if (globalAcsNamespace() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -223,4 +214,80 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceCertificateAndAcsDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBinaryField("certificate", certificate());
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("issuer", issuer());
+        jsonWriter.writeNumberField("resourceId", resourceId());
+        jsonWriter.writeStringField("subject", subject());
+        jsonWriter.writeStringField("thumbprint", thumbprint());
+        jsonWriter.writeStringField("validFrom",
+            validFrom() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(validFrom()));
+        jsonWriter.writeStringField("validTo",
+            validTo() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(validTo()));
+        jsonWriter.writeStringField("globalAcsNamespace", this.globalAcsNamespace);
+        jsonWriter.writeStringField("globalAcsHostName", this.globalAcsHostname);
+        jsonWriter.writeStringField("globalAcsRPRealm", this.globalAcsRPRealm);
+        jsonWriter.writeStringField("authType", this.authType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceCertificateAndAcsDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceCertificateAndAcsDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceCertificateAndAcsDetails.
+     */
+    public static ResourceCertificateAndAcsDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceCertificateAndAcsDetails deserializedResourceCertificateAndAcsDetails
+                = new ResourceCertificateAndAcsDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificate".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails.withCertificate(reader.getBinary());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails.withFriendlyName(reader.getString());
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails.withIssuer(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails
+                        .withResourceId(reader.getNullable(JsonReader::getLong));
+                } else if ("subject".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails.withSubject(reader.getString());
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails.withThumbprint(reader.getString());
+                } else if ("validFrom".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails.withValidFrom(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("validTo".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails.withValidTo(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("globalAcsNamespace".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails.globalAcsNamespace = reader.getString();
+                } else if ("globalAcsHostName".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails.globalAcsHostname = reader.getString();
+                } else if ("globalAcsRPRealm".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails.globalAcsRPRealm = reader.getString();
+                } else if ("authType".equals(fieldName)) {
+                    deserializedResourceCertificateAndAcsDetails.authType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceCertificateAndAcsDetails;
+        });
+    }
 }

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementSkuRestrictio
 public final class ApiManagementSkuRestrictionInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiManagementSkuRestrictionInfo model =
-            BinaryData
-                .fromString("{\"locations\":[\"scotyx\",\"riifefn\"],\"zones\":[\"vrqoemwsi\",\"eailwdqmqf\"]}")
+        ApiManagementSkuRestrictionInfo model
+            = BinaryData.fromString("{\"locations\":[\"scotyx\",\"riifefn\"],\"zones\":[\"vrqoemwsi\",\"eailwdqmqf\"]}")
                 .toObject(ApiManagementSkuRestrictionInfo.class);
     }
 

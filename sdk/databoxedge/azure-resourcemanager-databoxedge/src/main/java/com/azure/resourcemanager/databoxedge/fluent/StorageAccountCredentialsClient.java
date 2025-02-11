@@ -13,25 +13,27 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databoxedge.fluent.models.StorageAccountCredentialInner;
 
-/** An instance of this class provides access to all the operations defined in StorageAccountCredentialsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StorageAccountCredentialsClient.
+ */
 public interface StorageAccountCredentialsClient {
     /**
      * Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StorageAccountCredentialInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
 
     /**
      * Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -39,15 +41,15 @@ public interface StorageAccountCredentialsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageAccountCredentialInner> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, Context context);
+    PagedIterable<StorageAccountCredentialInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName,
+        Context context);
 
     /**
      * Gets the properties of the specified storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -58,12 +60,12 @@ public interface StorageAccountCredentialsClient {
      * @return the properties of the specified storage account credential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageAccountCredentialInner> getWithResponse(
-        String deviceName, String name, String resourceGroupName, Context context);
+    Response<StorageAccountCredentialInner> getWithResponse(String deviceName, String name, String resourceGroupName,
+        Context context);
 
     /**
      * Gets the properties of the specified storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -77,7 +79,7 @@ public interface StorageAccountCredentialsClient {
 
     /**
      * Creates or updates the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -89,14 +91,12 @@ public interface StorageAccountCredentialsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageAccountCredentialInner>, StorageAccountCredentialInner> beginCreateOrUpdate(
-        String deviceName,
-        String name,
-        String resourceGroupName,
+        String deviceName, String name, String resourceGroupName,
         StorageAccountCredentialInner storageAccountCredential);
 
     /**
      * Creates or updates the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -109,15 +109,12 @@ public interface StorageAccountCredentialsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageAccountCredentialInner>, StorageAccountCredentialInner> beginCreateOrUpdate(
-        String deviceName,
-        String name,
-        String resourceGroupName,
-        StorageAccountCredentialInner storageAccountCredential,
-        Context context);
+        String deviceName, String name, String resourceGroupName,
+        StorageAccountCredentialInner storageAccountCredential, Context context);
 
     /**
      * Creates or updates the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -128,15 +125,12 @@ public interface StorageAccountCredentialsClient {
      * @return the storage account credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageAccountCredentialInner createOrUpdate(
-        String deviceName,
-        String name,
-        String resourceGroupName,
+    StorageAccountCredentialInner createOrUpdate(String deviceName, String name, String resourceGroupName,
         StorageAccountCredentialInner storageAccountCredential);
 
     /**
      * Creates or updates the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -148,16 +142,12 @@ public interface StorageAccountCredentialsClient {
      * @return the storage account credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageAccountCredentialInner createOrUpdate(
-        String deviceName,
-        String name,
-        String resourceGroupName,
-        StorageAccountCredentialInner storageAccountCredential,
-        Context context);
+    StorageAccountCredentialInner createOrUpdate(String deviceName, String name, String resourceGroupName,
+        StorageAccountCredentialInner storageAccountCredential, Context context);
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -171,7 +161,7 @@ public interface StorageAccountCredentialsClient {
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -182,12 +172,12 @@ public interface StorageAccountCredentialsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String name, String resourceGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName,
+        Context context);
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -200,7 +190,7 @@ public interface StorageAccountCredentialsClient {
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.

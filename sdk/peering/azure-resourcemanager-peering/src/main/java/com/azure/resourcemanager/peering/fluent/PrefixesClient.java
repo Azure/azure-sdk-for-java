@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServicePrefixInner;
 
-/** An instance of this class provides access to all the operations defined in PrefixesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrefixesClient.
+ */
 public interface PrefixesClient {
     /**
      * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
@@ -25,15 +27,15 @@ public interface PrefixesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service along with {@link Response}.
+     * service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PeeringServicePrefixInner> getWithResponse(
-        String resourceGroupName, String peeringServiceName, String prefixName, String expand, Context context);
+    Response<PeeringServicePrefixInner> getWithResponse(String resourceGroupName, String peeringServiceName,
+        String prefixName, String expand, Context context);
 
     /**
      * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
@@ -41,14 +43,14 @@ public interface PrefixesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
+     * service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PeeringServicePrefixInner get(String resourceGroupName, String peeringServiceName, String prefixName);
 
     /**
      * Creates a new prefix with the specified name under the given subscription, resource group and peering service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
@@ -60,16 +62,12 @@ public interface PrefixesClient {
      * @return the peering service prefix class along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PeeringServicePrefixInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String peeringServiceName,
-        String prefixName,
-        PeeringServicePrefixInner peeringServicePrefix,
-        Context context);
+    Response<PeeringServicePrefixInner> createOrUpdateWithResponse(String resourceGroupName, String peeringServiceName,
+        String prefixName, PeeringServicePrefixInner peeringServicePrefix, Context context);
 
     /**
      * Creates a new prefix with the specified name under the given subscription, resource group and peering service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
@@ -80,16 +78,13 @@ public interface PrefixesClient {
      * @return the peering service prefix class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PeeringServicePrefixInner createOrUpdate(
-        String resourceGroupName,
-        String peeringServiceName,
-        String prefixName,
+    PeeringServicePrefixInner createOrUpdate(String resourceGroupName, String peeringServiceName, String prefixName,
         PeeringServicePrefixInner peeringServicePrefix);
 
     /**
      * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
      * service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
@@ -100,13 +95,13 @@ public interface PrefixesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String peeringServiceName, String prefixName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String peeringServiceName, String prefixName,
+        Context context);
 
     /**
      * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
      * service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
@@ -119,7 +114,7 @@ public interface PrefixesClient {
 
     /**
      * Lists all prefixes under the given subscription, resource group and peering service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,7 +127,7 @@ public interface PrefixesClient {
 
     /**
      * Lists all prefixes under the given subscription, resource group and peering service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param expand The properties to be expanded.
@@ -143,6 +138,6 @@ public interface PrefixesClient {
      * @return the paginated list of peering service prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PeeringServicePrefixInner> listByPeeringService(
-        String resourceGroupName, String peeringServiceName, String expand, Context context);
+    PagedIterable<PeeringServicePrefixInner> listByPeeringService(String resourceGroupName, String peeringServiceName,
+        String expand, Context context);
 }

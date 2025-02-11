@@ -5,57 +5,63 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ContentLink;
 import com.azure.resourcemanager.automation.models.RunbookParameter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** The RunbookDraft model. */
+/**
+ * The RunbookDraft model.
+ */
 @Fluent
-public final class RunbookDraftInner {
+public final class RunbookDraftInner implements JsonSerializable<RunbookDraftInner> {
     /*
      * Gets or sets whether runbook is in edit mode.
      */
-    @JsonProperty(value = "inEdit")
     private Boolean inEdit;
 
     /*
      * Gets or sets the draft runbook content link.
      */
-    @JsonProperty(value = "draftContentLink")
     private ContentLink draftContentLink;
 
     /*
      * Gets or sets the creation time of the runbook draft.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the last modified time of the runbook draft.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the runbook draft parameters.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RunbookParameter> parameters;
 
     /*
      * Gets or sets the runbook output types.
      */
-    @JsonProperty(value = "outputTypes")
     private List<String> outputTypes;
 
     /**
+     * Creates an instance of RunbookDraftInner class.
+     */
+    public RunbookDraftInner() {
+    }
+
+    /**
      * Get the inEdit property: Gets or sets whether runbook is in edit mode.
-     *
+     * 
      * @return the inEdit value.
      */
     public Boolean inEdit() {
@@ -64,7 +70,7 @@ public final class RunbookDraftInner {
 
     /**
      * Set the inEdit property: Gets or sets whether runbook is in edit mode.
-     *
+     * 
      * @param inEdit the inEdit value to set.
      * @return the RunbookDraftInner object itself.
      */
@@ -75,7 +81,7 @@ public final class RunbookDraftInner {
 
     /**
      * Get the draftContentLink property: Gets or sets the draft runbook content link.
-     *
+     * 
      * @return the draftContentLink value.
      */
     public ContentLink draftContentLink() {
@@ -84,7 +90,7 @@ public final class RunbookDraftInner {
 
     /**
      * Set the draftContentLink property: Gets or sets the draft runbook content link.
-     *
+     * 
      * @param draftContentLink the draftContentLink value to set.
      * @return the RunbookDraftInner object itself.
      */
@@ -95,7 +101,7 @@ public final class RunbookDraftInner {
 
     /**
      * Get the creationTime property: Gets or sets the creation time of the runbook draft.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -104,7 +110,7 @@ public final class RunbookDraftInner {
 
     /**
      * Set the creationTime property: Gets or sets the creation time of the runbook draft.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the RunbookDraftInner object itself.
      */
@@ -115,7 +121,7 @@ public final class RunbookDraftInner {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time of the runbook draft.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -124,7 +130,7 @@ public final class RunbookDraftInner {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time of the runbook draft.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the RunbookDraftInner object itself.
      */
@@ -135,7 +141,7 @@ public final class RunbookDraftInner {
 
     /**
      * Get the parameters property: Gets or sets the runbook draft parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, RunbookParameter> parameters() {
@@ -144,7 +150,7 @@ public final class RunbookDraftInner {
 
     /**
      * Set the parameters property: Gets or sets the runbook draft parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the RunbookDraftInner object itself.
      */
@@ -155,7 +161,7 @@ public final class RunbookDraftInner {
 
     /**
      * Get the outputTypes property: Gets or sets the runbook output types.
-     *
+     * 
      * @return the outputTypes value.
      */
     public List<String> outputTypes() {
@@ -164,7 +170,7 @@ public final class RunbookDraftInner {
 
     /**
      * Set the outputTypes property: Gets or sets the runbook output types.
-     *
+     * 
      * @param outputTypes the outputTypes value to set.
      * @return the RunbookDraftInner object itself.
      */
@@ -175,7 +181,7 @@ public final class RunbookDraftInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -183,14 +189,71 @@ public final class RunbookDraftInner {
             draftContentLink().validate();
         }
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("inEdit", this.inEdit);
+        jsonWriter.writeJsonField("draftContentLink", this.draftContentLink);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputTypes", this.outputTypes, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunbookDraftInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunbookDraftInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunbookDraftInner.
+     */
+    public static RunbookDraftInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunbookDraftInner deserializedRunbookDraftInner = new RunbookDraftInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inEdit".equals(fieldName)) {
+                    deserializedRunbookDraftInner.inEdit = reader.getNullable(JsonReader::getBoolean);
+                } else if ("draftContentLink".equals(fieldName)) {
+                    deserializedRunbookDraftInner.draftContentLink = ContentLink.fromJson(reader);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedRunbookDraftInner.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedRunbookDraftInner.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, RunbookParameter> parameters
+                        = reader.readMap(reader1 -> RunbookParameter.fromJson(reader1));
+                    deserializedRunbookDraftInner.parameters = parameters;
+                } else if ("outputTypes".equals(fieldName)) {
+                    List<String> outputTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRunbookDraftInner.outputTypes = outputTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunbookDraftInner;
+        });
     }
 }

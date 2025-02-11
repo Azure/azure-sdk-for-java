@@ -14,43 +14,32 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateEndpointConnectionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionRequest model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"ueoqusvwluj\",\"properties\":{\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ittoztjdqumqvfmw\",\"actionsRequired\":\"ddtgctxegtvgwy\"}}}")
-                .toObject(PrivateEndpointConnectionRequest.class);
+        PrivateEndpointConnectionRequest model = BinaryData.fromString(
+            "{\"id\":\"ueoqusvwluj\",\"properties\":{\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ittoztjdqumqvfmw\",\"actionsRequired\":\"ddtgctxegtvgwy\"}}}")
+            .toObject(PrivateEndpointConnectionRequest.class);
         Assertions.assertEquals("ueoqusvwluj", model.id());
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.REJECTED,
-                model.properties().privateLinkServiceConnectionState().status());
-        Assertions
-            .assertEquals("ittoztjdqumqvfmw", model.properties().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals("ddtgctxegtvgwy", model.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+            model.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("ittoztjdqumqvfmw",
+            model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("ddtgctxegtvgwy",
+            model.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionRequest model =
-            new PrivateEndpointConnectionRequest()
-                .withId("ueoqusvwluj")
-                .withProperties(
-                    new PrivateEndpointConnectionRequestProperties()
-                        .withPrivateLinkServiceConnectionState(
-                            new PrivateLinkServiceConnectionState()
-                                .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                                .withDescription("ittoztjdqumqvfmw")
-                                .withActionsRequired("ddtgctxegtvgwy")));
+        PrivateEndpointConnectionRequest model = new PrivateEndpointConnectionRequest().withId("ueoqusvwluj")
+            .withProperties(new PrivateEndpointConnectionRequestProperties().withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                    .withDescription("ittoztjdqumqvfmw")
+                    .withActionsRequired("ddtgctxegtvgwy")));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionRequest.class);
         Assertions.assertEquals("ueoqusvwluj", model.id());
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.REJECTED,
-                model.properties().privateLinkServiceConnectionState().status());
-        Assertions
-            .assertEquals("ittoztjdqumqvfmw", model.properties().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals("ddtgctxegtvgwy", model.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+            model.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("ittoztjdqumqvfmw",
+            model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("ddtgctxegtvgwy",
+            model.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

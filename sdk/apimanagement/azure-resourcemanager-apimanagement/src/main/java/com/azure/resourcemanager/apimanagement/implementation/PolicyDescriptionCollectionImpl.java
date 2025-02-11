@@ -15,8 +15,7 @@ public final class PolicyDescriptionCollectionImpl implements PolicyDescriptionC
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    PolicyDescriptionCollectionImpl(
-        PolicyDescriptionCollectionInner innerObject,
+    PolicyDescriptionCollectionImpl(PolicyDescriptionCollectionInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

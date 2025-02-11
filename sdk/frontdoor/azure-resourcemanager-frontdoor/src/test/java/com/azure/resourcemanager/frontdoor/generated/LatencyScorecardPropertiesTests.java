@@ -13,14 +13,14 @@ public final class LatencyScorecardPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LatencyScorecardProperties model = BinaryData.fromString(
-            "{\"id\":\"dvjdhttza\",\"name\":\"edxihchrphkmcrj\",\"description\":\"nsdfzpbgtgky\",\"endpointA\":\"dgh\",\"endpointB\":\"euutlwxezwzh\",\"startDateTimeUTC\":\"2021-10-29T09:06Z\",\"endDateTimeUTC\":\"2021-09-18T08:14:23Z\",\"country\":\"hh\",\"latencyMetrics\":[{\"name\":\"ehgpp\",\"endDateTimeUTC\":\"ifhpf\",\"aValue\":93.903366,\"bValue\":36.54407,\"delta\":33.805878,\"deltaPercent\":81.09743,\"aCLower95CI\":54.42357,\"aHUpper95CI\":43.48775,\"bCLower95CI\":82.11186,\"bUpper95CI\":38.771828},{\"name\":\"dltug\",\"endDateTimeUTC\":\"esmkssjhoiftxfkf\",\"aValue\":17.55079,\"bValue\":54.436035,\"delta\":19.466824,\"deltaPercent\":18.691397,\"aCLower95CI\":80.17824,\"aHUpper95CI\":56.52645,\"bCLower95CI\":48.5814,\"bUpper95CI\":88.57164}]}")
+            "{\"id\":\"mgixhcmavmqfou\",\"name\":\"rhc\",\"description\":\"yprotwyp\",\"endpointA\":\"d\",\"endpointB\":\"xhugcm\",\"startDateTimeUTC\":\"2021-10-22T10:15:32Z\",\"endDateTimeUTC\":\"2021-05-28T01:58:35Z\",\"country\":\"or\",\"latencyMetrics\":[{\"name\":\"pmdtz\",\"endDateTimeUTC\":\"ltfvnz\",\"aValue\":71.58709,\"bValue\":13.321095,\"delta\":1.86252,\"deltaPercent\":14.7615795,\"aCLower95CI\":50.949852,\"aHUpper95CI\":17.070621,\"bCLower95CI\":43.74167,\"bUpper95CI\":98.802505},{\"name\":\"qqihedsvqwthmk\",\"endDateTimeUTC\":\"bcysih\",\"aValue\":39.957165,\"bValue\":86.52514,\"delta\":29.727798,\"deltaPercent\":34.064537,\"aCLower95CI\":26.138746,\"aHUpper95CI\":83.44366,\"bCLower95CI\":37.323578,\"bUpper95CI\":28.770208},{\"name\":\"fcohdxbzlmcmu\",\"endDateTimeUTC\":\"cvhd\",\"aValue\":1.3999999,\"bValue\":50.365185,\"delta\":95.75136,\"deltaPercent\":62.209137,\"aCLower95CI\":6.926763,\"aHUpper95CI\":22.552055,\"bCLower95CI\":94.57757,\"bUpper95CI\":54.89984},{\"name\":\"fkbg\",\"endDateTimeUTC\":\"bowxe\",\"aValue\":15.188962,\"bValue\":36.005825,\"delta\":55.835987,\"deltaPercent\":25.24032,\"aCLower95CI\":79.712364,\"aHUpper95CI\":45.767326,\"bCLower95CI\":93.26072,\"bUpper95CI\":33.499878}]}")
             .toObject(LatencyScorecardProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LatencyScorecardProperties model = new LatencyScorecardProperties()
-            .withLatencyMetrics(Arrays.asList(new LatencyMetric(), new LatencyMetric()));
+        LatencyScorecardProperties model = new LatencyScorecardProperties().withLatencyMetrics(
+            Arrays.asList(new LatencyMetric(), new LatencyMetric(), new LatencyMetric(), new LatencyMetric()));
         model = BinaryData.fromObject(model).toObject(LatencyScorecardProperties.class);
     }
 }

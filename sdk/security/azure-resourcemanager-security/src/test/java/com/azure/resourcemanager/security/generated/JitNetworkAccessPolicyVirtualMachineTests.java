@@ -15,39 +15,33 @@ public final class JitNetworkAccessPolicyVirtualMachineTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JitNetworkAccessPolicyVirtualMachine model = BinaryData.fromString(
-            "{\"id\":\"rbhmpfulubef\",\"ports\":[{\"number\":2083834764,\"protocol\":\"TCP\",\"allowedSourceAddressPrefix\":\"fbfunun\",\"allowedSourceAddressPrefixes\":[\"krvfyifkdschl\",\"vfictnkjjwgcwn\"],\"maxRequestAccessDuration\":\"hbkgfyrt\"},{\"number\":347654816,\"protocol\":\"*\",\"allowedSourceAddressPrefix\":\"mjpjscdfpdqwty\",\"allowedSourceAddressPrefixes\":[\"gwmseharxifv\",\"n\",\"x\",\"mbpjptnvwjh\"],\"maxRequestAccessDuration\":\"sidqpxlbtpakft\"}],\"publicIpAddress\":\"atw\"}")
+            "{\"id\":\"dfcea\",\"ports\":[{\"number\":532238686,\"protocol\":\"UDP\",\"allowedSourceAddressPrefix\":\"ygdyftumrtw\",\"allowedSourceAddressPrefixes\":[\"jslb\",\"wkojgcyztsfmzn\",\"aeqphchqnr\",\"rpxeh\"],\"maxRequestAccessDuration\":\"wrykqgai\"}],\"publicIpAddress\":\"viklb\"}")
             .toObject(JitNetworkAccessPolicyVirtualMachine.class);
-        Assertions.assertEquals("rbhmpfulubef", model.id());
-        Assertions.assertEquals(2083834764, model.ports().get(0).number());
-        Assertions.assertEquals(Protocol.TCP, model.ports().get(0).protocol());
-        Assertions.assertEquals("fbfunun", model.ports().get(0).allowedSourceAddressPrefix());
-        Assertions.assertEquals("krvfyifkdschl", model.ports().get(0).allowedSourceAddressPrefixes().get(0));
-        Assertions.assertEquals("hbkgfyrt", model.ports().get(0).maxRequestAccessDuration());
-        Assertions.assertEquals("atw", model.publicIpAddress());
+        Assertions.assertEquals("dfcea", model.id());
+        Assertions.assertEquals(532238686, model.ports().get(0).number());
+        Assertions.assertEquals(Protocol.UDP, model.ports().get(0).protocol());
+        Assertions.assertEquals("ygdyftumrtw", model.ports().get(0).allowedSourceAddressPrefix());
+        Assertions.assertEquals("jslb", model.ports().get(0).allowedSourceAddressPrefixes().get(0));
+        Assertions.assertEquals("wrykqgai", model.ports().get(0).maxRequestAccessDuration());
+        Assertions.assertEquals("viklb", model.publicIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JitNetworkAccessPolicyVirtualMachine model = new JitNetworkAccessPolicyVirtualMachine().withId("rbhmpfulubef")
-            .withPorts(Arrays.asList(
-                new JitNetworkAccessPortRule().withNumber(2083834764)
-                    .withProtocol(Protocol.TCP)
-                    .withAllowedSourceAddressPrefix("fbfunun")
-                    .withAllowedSourceAddressPrefixes(Arrays.asList("krvfyifkdschl", "vfictnkjjwgcwn"))
-                    .withMaxRequestAccessDuration("hbkgfyrt"),
-                new JitNetworkAccessPortRule().withNumber(347654816)
-                    .withProtocol(Protocol.ASTERISK)
-                    .withAllowedSourceAddressPrefix("mjpjscdfpdqwty")
-                    .withAllowedSourceAddressPrefixes(Arrays.asList("gwmseharxifv", "n", "x", "mbpjptnvwjh"))
-                    .withMaxRequestAccessDuration("sidqpxlbtpakft")))
-            .withPublicIpAddress("atw");
+        JitNetworkAccessPolicyVirtualMachine model = new JitNetworkAccessPolicyVirtualMachine().withId("dfcea")
+            .withPorts(Arrays.asList(new JitNetworkAccessPortRule().withNumber(532238686)
+                .withProtocol(Protocol.UDP)
+                .withAllowedSourceAddressPrefix("ygdyftumrtw")
+                .withAllowedSourceAddressPrefixes(Arrays.asList("jslb", "wkojgcyztsfmzn", "aeqphchqnr", "rpxeh"))
+                .withMaxRequestAccessDuration("wrykqgai")))
+            .withPublicIpAddress("viklb");
         model = BinaryData.fromObject(model).toObject(JitNetworkAccessPolicyVirtualMachine.class);
-        Assertions.assertEquals("rbhmpfulubef", model.id());
-        Assertions.assertEquals(2083834764, model.ports().get(0).number());
-        Assertions.assertEquals(Protocol.TCP, model.ports().get(0).protocol());
-        Assertions.assertEquals("fbfunun", model.ports().get(0).allowedSourceAddressPrefix());
-        Assertions.assertEquals("krvfyifkdschl", model.ports().get(0).allowedSourceAddressPrefixes().get(0));
-        Assertions.assertEquals("hbkgfyrt", model.ports().get(0).maxRequestAccessDuration());
-        Assertions.assertEquals("atw", model.publicIpAddress());
+        Assertions.assertEquals("dfcea", model.id());
+        Assertions.assertEquals(532238686, model.ports().get(0).number());
+        Assertions.assertEquals(Protocol.UDP, model.ports().get(0).protocol());
+        Assertions.assertEquals("ygdyftumrtw", model.ports().get(0).allowedSourceAddressPrefix());
+        Assertions.assertEquals("jslb", model.ports().get(0).allowedSourceAddressPrefixes().get(0));
+        Assertions.assertEquals("wrykqgai", model.ports().get(0).maxRequestAccessDuration());
+        Assertions.assertEquals("viklb", model.publicIpAddress());
     }
 }

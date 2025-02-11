@@ -9,7 +9,9 @@ package com.azure.resourcemanager.healthcareapis.generated;
  */
 public final class DicomServicesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/DicomServices_List.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/
+     * DicomServices_List.json
      */
     /**
      * Sample code: List dicomservices.

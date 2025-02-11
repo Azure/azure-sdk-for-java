@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.postgresql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The recoverable server's properties. */
+/**
+ * The recoverable server's properties.
+ */
 @Immutable
-public final class RecoverableServerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableServerProperties.class);
-
+public final class RecoverableServerProperties implements JsonSerializable<RecoverableServerProperties> {
     /*
      * The last available backup date time.
      */
-    @JsonProperty(value = "lastAvailableBackupDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private String lastAvailableBackupDateTime;
 
     /*
      * The service level objective
      */
-    @JsonProperty(value = "serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceLevelObjective;
 
     /*
      * Edition of the performance tier.
      */
-    @JsonProperty(value = "edition", access = JsonProperty.Access.WRITE_ONLY)
     private String edition;
 
     /*
      * vCore associated with the service level objective
      */
-    @JsonProperty(value = "vCore", access = JsonProperty.Access.WRITE_ONLY)
     private Integer vCore;
 
     /*
      * Hardware generation associated with the service level objective
      */
-    @JsonProperty(value = "hardwareGeneration", access = JsonProperty.Access.WRITE_ONLY)
     private String hardwareGeneration;
 
     /*
      * The PostgreSQL version
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /**
+     * Creates an instance of RecoverableServerProperties class.
+     */
+    public RecoverableServerProperties() {
+    }
+
+    /**
      * Get the lastAvailableBackupDateTime property: The last available backup date time.
-     *
+     * 
      * @return the lastAvailableBackupDateTime value.
      */
     public String lastAvailableBackupDateTime() {
@@ -61,7 +63,7 @@ public final class RecoverableServerProperties {
 
     /**
      * Get the serviceLevelObjective property: The service level objective.
-     *
+     * 
      * @return the serviceLevelObjective value.
      */
     public String serviceLevelObjective() {
@@ -70,7 +72,7 @@ public final class RecoverableServerProperties {
 
     /**
      * Get the edition property: Edition of the performance tier.
-     *
+     * 
      * @return the edition value.
      */
     public String edition() {
@@ -79,7 +81,7 @@ public final class RecoverableServerProperties {
 
     /**
      * Get the vCore property: vCore associated with the service level objective.
-     *
+     * 
      * @return the vCore value.
      */
     public Integer vCore() {
@@ -88,7 +90,7 @@ public final class RecoverableServerProperties {
 
     /**
      * Get the hardwareGeneration property: Hardware generation associated with the service level objective.
-     *
+     * 
      * @return the hardwareGeneration value.
      */
     public String hardwareGeneration() {
@@ -97,7 +99,7 @@ public final class RecoverableServerProperties {
 
     /**
      * Get the version property: The PostgreSQL version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -106,9 +108,54 @@ public final class RecoverableServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoverableServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoverableServerProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoverableServerProperties.
+     */
+    public static RecoverableServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoverableServerProperties deserializedRecoverableServerProperties = new RecoverableServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastAvailableBackupDateTime".equals(fieldName)) {
+                    deserializedRecoverableServerProperties.lastAvailableBackupDateTime = reader.getString();
+                } else if ("serviceLevelObjective".equals(fieldName)) {
+                    deserializedRecoverableServerProperties.serviceLevelObjective = reader.getString();
+                } else if ("edition".equals(fieldName)) {
+                    deserializedRecoverableServerProperties.edition = reader.getString();
+                } else if ("vCore".equals(fieldName)) {
+                    deserializedRecoverableServerProperties.vCore = reader.getNullable(JsonReader::getInt);
+                } else if ("hardwareGeneration".equals(fieldName)) {
+                    deserializedRecoverableServerProperties.hardwareGeneration = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedRecoverableServerProperties.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoverableServerProperties;
+        });
     }
 }

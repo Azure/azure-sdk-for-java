@@ -48,9 +48,8 @@ public final class PrePostStep {
      */
     public void validate() {
         if (stepId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property stepId in model PrePostStep"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property stepId in model PrePostStep"));
         }
     }
 

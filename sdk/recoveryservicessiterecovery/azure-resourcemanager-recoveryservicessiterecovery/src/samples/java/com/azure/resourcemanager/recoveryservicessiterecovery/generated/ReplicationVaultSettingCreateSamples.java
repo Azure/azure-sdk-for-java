@@ -23,7 +23,9 @@ public final class ReplicationVaultSettingCreateSamples {
      */
     public static void updatesVaultSettingAVaultSettingObjectIsASingletonPerVaultAndItIsAlwaysPresentByDefault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationVaultSettings().define("default").withExistingVault("vault1", "resourceGroupPS1")
+        manager.replicationVaultSettings()
+            .define("default")
+            .withExistingVault("vault1", "resourceGroupPS1")
             .withProperties(new VaultSettingCreationInputProperties().withMigrationSolutionId(
                 "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.Migrate/MigrateProjects/resourceGroupPS1-MigrateProject/Solutions/Servers-Migration-ServerMigration"))
             .create();

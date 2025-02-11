@@ -13,7 +13,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
-
 /** The CallTransferAccepted model. */
 @Immutable
 public final class CallTransferAccepted extends CallAutomationEventBase {
@@ -34,15 +33,6 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
 
     private CallTransferAccepted() {
 
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**
@@ -67,7 +57,6 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resultInformation", resultInformation);
         jsonWriter.writeJsonField("transferee", CommunicationIdentifierConverter.convert(transferee));
         jsonWriter.writeJsonField("transferTarget", CommunicationIdentifierConverter.convert(transferTarget));
         super.writeFields(jsonWriter);
@@ -88,9 +77,7 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("resultInformation".equals(fieldName)) {
-                    event.resultInformation = ResultInformation.fromJson(reader);
-                } else if ("transferee".equals(fieldName)) {
+                if ("transferee".equals(fieldName)) {
                     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.transferee = CommunicationIdentifierConverter.convert(inner);
                 } else if ("transferTarget".equals(fieldName)) {

@@ -64,11 +64,10 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
         return client
             .createOrUpdateAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT,
                 new ManagementPolicyInner().withPolicy(cpolicy))
-            .map(
-                resource -> {
-                    resetCreateUpdateParameters();
-                    return resource;
-                })
+            .map(resource -> {
+                resetCreateUpdateParameters();
+                return resource;
+            })
             .map(innerToFluentMap(this));
     }
 
@@ -78,11 +77,10 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
         return client
             .createOrUpdateAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT,
                 new ManagementPolicyInner().withPolicy(upolicy))
-            .map(
-                resource -> {
-                    resetCreateUpdateParameters();
-                    return resource;
-                })
+            .map(resource -> {
+                resetCreateUpdateParameters();
+                return resource;
+            })
             .map(innerToFluentMap(this));
     }
 
@@ -132,9 +130,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
         List<ManagementPolicyRule> originalRules = this.policy().rules();
         return originalRules == null
             ? Collections.emptyList()
-            : originalRules.stream()
-            .map(rule -> new PolicyRuleImpl(rule, this))
-            .collect(Collectors.toList());
+            : originalRules.stream().map(rule -> new PolicyRuleImpl(rule, this)).collect(Collectors.toList());
     }
 
     @Override
@@ -186,10 +182,9 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
             }
         }
         if (ruleToUpdate == null) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "There is no rule that exists with the name "
-                    + name
-                    + ". Please define a rule with this name before updating."));
+            throw logger
+                .logExceptionAsError(new UnsupportedOperationException("There is no rule that exists with the name "
+                    + name + ". Please define a rule with this name before updating."));
         }
         return new PolicyRuleImpl(ruleToUpdate, this);
     }

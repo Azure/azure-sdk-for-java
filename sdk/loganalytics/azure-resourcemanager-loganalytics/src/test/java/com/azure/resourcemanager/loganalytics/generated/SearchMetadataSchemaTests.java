@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SearchMetadataSchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SearchMetadataSchema model =
-            BinaryData
-                .fromString("{\"name\":\"aaabjyvayff\",\"version\":936751244}")
-                .toObject(SearchMetadataSchema.class);
-        Assertions.assertEquals("aaabjyvayff", model.name());
-        Assertions.assertEquals(936751244, model.version());
+        SearchMetadataSchema model = BinaryData.fromString("{\"name\":\"jhwuaanozjos\",\"version\":1082355314}")
+            .toObject(SearchMetadataSchema.class);
+        Assertions.assertEquals("jhwuaanozjos", model.name());
+        Assertions.assertEquals(1082355314, model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SearchMetadataSchema model = new SearchMetadataSchema().withName("aaabjyvayff").withVersion(936751244);
+        SearchMetadataSchema model = new SearchMetadataSchema().withName("jhwuaanozjos").withVersion(1082355314);
         model = BinaryData.fromObject(model).toObject(SearchMetadataSchema.class);
-        Assertions.assertEquals("aaabjyvayff", model.name());
-        Assertions.assertEquals(936751244, model.version());
+        Assertions.assertEquals("jhwuaanozjos", model.name());
+        Assertions.assertEquals(1082355314, model.version());
     }
 }

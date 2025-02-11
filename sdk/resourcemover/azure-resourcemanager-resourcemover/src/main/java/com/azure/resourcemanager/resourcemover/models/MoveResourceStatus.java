@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the move resource status. */
+/**
+ * Defines the move resource status.
+ */
 @Fluent
-public class MoveResourceStatus {
+public class MoveResourceStatus implements JsonSerializable<MoveResourceStatus> {
     /*
      * Defines the MoveResource states.
      */
-    @JsonProperty(value = "moveState", access = JsonProperty.Access.WRITE_ONLY)
     private MoveState moveState;
 
     /*
      * Defines the job status.
      */
-    @JsonProperty(value = "jobStatus")
     private JobStatus jobStatus;
 
     /*
      * An error response from the azure resource mover service.
      */
-    @JsonProperty(value = "errors")
     private MoveResourceError errors;
 
-    /** Creates an instance of MoveResourceStatus class. */
+    /**
+     * Creates an instance of MoveResourceStatus class.
+     */
     public MoveResourceStatus() {
     }
 
     /**
      * Get the moveState property: Defines the MoveResource states.
-     *
+     * 
      * @return the moveState value.
      */
     public MoveState moveState() {
@@ -42,8 +47,19 @@ public class MoveResourceStatus {
     }
 
     /**
+     * Set the moveState property: Defines the MoveResource states.
+     * 
+     * @param moveState the moveState value to set.
+     * @return the MoveResourceStatus object itself.
+     */
+    MoveResourceStatus withMoveState(MoveState moveState) {
+        this.moveState = moveState;
+        return this;
+    }
+
+    /**
      * Get the jobStatus property: Defines the job status.
-     *
+     * 
      * @return the jobStatus value.
      */
     public JobStatus jobStatus() {
@@ -52,7 +68,7 @@ public class MoveResourceStatus {
 
     /**
      * Set the jobStatus property: Defines the job status.
-     *
+     * 
      * @param jobStatus the jobStatus value to set.
      * @return the MoveResourceStatus object itself.
      */
@@ -63,7 +79,7 @@ public class MoveResourceStatus {
 
     /**
      * Get the errors property: An error response from the azure resource mover service.
-     *
+     * 
      * @return the errors value.
      */
     public MoveResourceError errors() {
@@ -72,7 +88,7 @@ public class MoveResourceStatus {
 
     /**
      * Set the errors property: An error response from the azure resource mover service.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the MoveResourceStatus object itself.
      */
@@ -83,7 +99,7 @@ public class MoveResourceStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -93,5 +109,46 @@ public class MoveResourceStatus {
         if (errors() != null) {
             errors().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("jobStatus", this.jobStatus);
+        jsonWriter.writeJsonField("errors", this.errors);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MoveResourceStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MoveResourceStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MoveResourceStatus.
+     */
+    public static MoveResourceStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MoveResourceStatus deserializedMoveResourceStatus = new MoveResourceStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("moveState".equals(fieldName)) {
+                    deserializedMoveResourceStatus.moveState = MoveState.fromString(reader.getString());
+                } else if ("jobStatus".equals(fieldName)) {
+                    deserializedMoveResourceStatus.jobStatus = JobStatus.fromJson(reader);
+                } else if ("errors".equals(fieldName)) {
+                    deserializedMoveResourceStatus.errors = MoveResourceError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMoveResourceStatus;
+        });
     }
 }

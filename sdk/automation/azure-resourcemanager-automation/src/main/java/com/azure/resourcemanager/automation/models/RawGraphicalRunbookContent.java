@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Raw Graphical Runbook content. */
+/**
+ * Raw Graphical Runbook content.
+ */
 @Fluent
-public final class RawGraphicalRunbookContent {
+public final class RawGraphicalRunbookContent implements JsonSerializable<RawGraphicalRunbookContent> {
     /*
      * Schema version of the serializer.
      */
-    @JsonProperty(value = "schemaVersion")
     private String schemaVersion;
 
     /*
      * Serialized Graphical runbook
      */
-    @JsonProperty(value = "runbookDefinition")
     private String runbookDefinition;
 
     /*
      * Runbook Type
      */
-    @JsonProperty(value = "runbookType")
     private GraphRunbookType runbookType;
 
     /**
+     * Creates an instance of RawGraphicalRunbookContent class.
+     */
+    public RawGraphicalRunbookContent() {
+    }
+
+    /**
      * Get the schemaVersion property: Schema version of the serializer.
-     *
+     * 
      * @return the schemaVersion value.
      */
     public String schemaVersion() {
@@ -39,7 +48,7 @@ public final class RawGraphicalRunbookContent {
 
     /**
      * Set the schemaVersion property: Schema version of the serializer.
-     *
+     * 
      * @param schemaVersion the schemaVersion value to set.
      * @return the RawGraphicalRunbookContent object itself.
      */
@@ -50,7 +59,7 @@ public final class RawGraphicalRunbookContent {
 
     /**
      * Get the runbookDefinition property: Serialized Graphical runbook.
-     *
+     * 
      * @return the runbookDefinition value.
      */
     public String runbookDefinition() {
@@ -59,7 +68,7 @@ public final class RawGraphicalRunbookContent {
 
     /**
      * Set the runbookDefinition property: Serialized Graphical runbook.
-     *
+     * 
      * @param runbookDefinition the runbookDefinition value to set.
      * @return the RawGraphicalRunbookContent object itself.
      */
@@ -70,7 +79,7 @@ public final class RawGraphicalRunbookContent {
 
     /**
      * Get the runbookType property: Runbook Type.
-     *
+     * 
      * @return the runbookType value.
      */
     public GraphRunbookType runbookType() {
@@ -79,7 +88,7 @@ public final class RawGraphicalRunbookContent {
 
     /**
      * Set the runbookType property: Runbook Type.
-     *
+     * 
      * @param runbookType the runbookType value to set.
      * @return the RawGraphicalRunbookContent object itself.
      */
@@ -90,9 +99,52 @@ public final class RawGraphicalRunbookContent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("schemaVersion", this.schemaVersion);
+        jsonWriter.writeStringField("runbookDefinition", this.runbookDefinition);
+        jsonWriter.writeStringField("runbookType", this.runbookType == null ? null : this.runbookType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RawGraphicalRunbookContent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RawGraphicalRunbookContent if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RawGraphicalRunbookContent.
+     */
+    public static RawGraphicalRunbookContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RawGraphicalRunbookContent deserializedRawGraphicalRunbookContent = new RawGraphicalRunbookContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schemaVersion".equals(fieldName)) {
+                    deserializedRawGraphicalRunbookContent.schemaVersion = reader.getString();
+                } else if ("runbookDefinition".equals(fieldName)) {
+                    deserializedRawGraphicalRunbookContent.runbookDefinition = reader.getString();
+                } else if ("runbookType".equals(fieldName)) {
+                    deserializedRawGraphicalRunbookContent.runbookType
+                        = GraphRunbookType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRawGraphicalRunbookContent;
+        });
     }
 }

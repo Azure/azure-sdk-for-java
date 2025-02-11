@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Tenant access information contract of the API Management service. */
+/**
+ * Tenant access information contract of the API Management service.
+ */
 @Fluent
-public final class AccessInformationContractProperties {
+public final class AccessInformationContractProperties
+    implements JsonSerializable<AccessInformationContractProperties> {
     /*
      * Access Information type ('access' or 'gitAccess')
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Principal (User) Identifier.
      */
-    @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
      * Determines whether direct access is enabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of AccessInformationContractProperties class. */
+    /**
+     * Creates an instance of AccessInformationContractProperties class.
+     */
     public AccessInformationContractProperties() {
     }
 
     /**
      * Get the id property: Access Information type ('access' or 'gitAccess').
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +49,7 @@ public final class AccessInformationContractProperties {
 
     /**
      * Set the id property: Access Information type ('access' or 'gitAccess').
-     *
+     * 
      * @param id the id value to set.
      * @return the AccessInformationContractProperties object itself.
      */
@@ -54,7 +60,7 @@ public final class AccessInformationContractProperties {
 
     /**
      * Get the principalId property: Principal (User) Identifier.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -63,7 +69,7 @@ public final class AccessInformationContractProperties {
 
     /**
      * Set the principalId property: Principal (User) Identifier.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the AccessInformationContractProperties object itself.
      */
@@ -74,7 +80,7 @@ public final class AccessInformationContractProperties {
 
     /**
      * Get the enabled property: Determines whether direct access is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -83,7 +89,7 @@ public final class AccessInformationContractProperties {
 
     /**
      * Set the enabled property: Determines whether direct access is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AccessInformationContractProperties object itself.
      */
@@ -94,9 +100,53 @@ public final class AccessInformationContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessInformationContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessInformationContractProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessInformationContractProperties.
+     */
+    public static AccessInformationContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessInformationContractProperties deserializedAccessInformationContractProperties
+                = new AccessInformationContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAccessInformationContractProperties.id = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedAccessInformationContractProperties.principalId = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedAccessInformationContractProperties.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessInformationContractProperties;
+        });
     }
 }

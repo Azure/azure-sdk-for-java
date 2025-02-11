@@ -13,22 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessControlTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessControl model =
-            BinaryData
-                .fromString("{\"defaultAction\":\"Deny\",\"ipAllowList\":[\"igdtopbob\",\"og\",\"m\",\"w\"]}")
-                .toObject(AccessControl.class);
-        Assertions.assertEquals(DefaultAction.DENY, model.defaultAction());
-        Assertions.assertEquals("igdtopbob", model.ipAllowList().get(0));
+        AccessControl model = BinaryData.fromString("{\"defaultAction\":\"Allow\",\"ipAllowList\":[\"w\"]}")
+            .toObject(AccessControl.class);
+        Assertions.assertEquals(DefaultAction.ALLOW, model.defaultAction());
+        Assertions.assertEquals("w", model.ipAllowList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessControl model =
-            new AccessControl()
-                .withDefaultAction(DefaultAction.DENY)
-                .withIpAllowList(Arrays.asList("igdtopbob", "og", "m", "w"));
+        AccessControl model
+            = new AccessControl().withDefaultAction(DefaultAction.ALLOW).withIpAllowList(Arrays.asList("w"));
         model = BinaryData.fromObject(model).toObject(AccessControl.class);
-        Assertions.assertEquals(DefaultAction.DENY, model.defaultAction());
-        Assertions.assertEquals("igdtopbob", model.ipAllowList().get(0));
+        Assertions.assertEquals(DefaultAction.ALLOW, model.defaultAction());
+        Assertions.assertEquals("w", model.ipAllowList().get(0));
     }
 }

@@ -24,6 +24,15 @@ public final class MetricAlertRuleTimeAggregation extends ExpandableStringEnum<M
     public static final MetricAlertRuleTimeAggregation TOTAL = fromString("Total");
 
     /**
+     * Creates a new instance of MetricAlertRuleTimeAggregation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricAlertRuleTimeAggregation() {
+    }
+
+    /**
      * Creates or finds a MetricAlertRuleTimeAggregation from its string representation.
      *
      * @param name a name to look for
@@ -33,7 +42,11 @@ public final class MetricAlertRuleTimeAggregation extends ExpandableStringEnum<M
         return fromString(name, MetricAlertRuleTimeAggregation.class);
     }
 
-    /** @return known MetricAlertRuleTimeAggregation values */
+    /**
+     * Gets known MetricAlertRuleTimeAggregation values.
+     *
+     * @return known MetricAlertRuleTimeAggregation values
+     */
     public static Collection<MetricAlertRuleTimeAggregation> values() {
         return values(MetricAlertRuleTimeAggregation.class);
     }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class FrontDoorCertificateType extends ExpandableStringEnum<FrontDo
      * @param name a name to look for.
      * @return the corresponding FrontDoorCertificateType.
      */
-    @JsonCreator
     public static FrontDoorCertificateType fromString(String name) {
         return fromString(name, FrontDoorCertificateType.class);
     }

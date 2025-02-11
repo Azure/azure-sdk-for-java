@@ -5,62 +5,63 @@
 package com.azure.resourcemanager.resourcemover.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourcemover.models.OperationStatusError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Operation status REST resource. */
+/**
+ * Operation status REST resource.
+ */
 @Immutable
-public final class OperationStatusInner {
+public final class OperationStatusInner implements JsonSerializable<OperationStatusInner> {
     /*
      * Resource Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Operation name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Status of the operation. ARM expects the terminal status to be one of Succeeded/ Failed/ Canceled. All other
      * values imply that the operation is still running.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Start time.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private String startTime;
 
     /*
      * End time.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private String endTime;
 
     /*
      * Error stating all error details for the operation.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private OperationStatusError error;
 
     /*
      * Custom data.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private Object properties;
 
-    /** Creates an instance of OperationStatusInner class. */
+    /**
+     * Creates an instance of OperationStatusInner class.
+     */
     public OperationStatusInner() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -69,7 +70,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the name property: Operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -79,7 +80,7 @@ public final class OperationStatusInner {
     /**
      * Get the status property: Status of the operation. ARM expects the terminal status to be one of Succeeded/ Failed/
      * Canceled. All other values imply that the operation is still running.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -88,7 +89,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the startTime property: Start time.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -97,7 +98,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the endTime property: End time.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -106,7 +107,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the error property: Error stating all error details for the operation.
-     *
+     * 
      * @return the error value.
      */
     public OperationStatusError error() {
@@ -115,7 +116,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the properties property: Custom data.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -124,12 +125,59 @@ public final class OperationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatusInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationStatusInner.
+     */
+    public static OperationStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatusInner deserializedOperationStatusInner = new OperationStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationStatusInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationStatusInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationStatusInner.status = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationStatusInner.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationStatusInner.endTime = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationStatusInner.error = OperationStatusError.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationStatusInner.properties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatusInner;
+        });
     }
 }

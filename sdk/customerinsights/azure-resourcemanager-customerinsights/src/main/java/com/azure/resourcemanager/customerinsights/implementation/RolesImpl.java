@@ -19,21 +19,21 @@ public final class RolesImpl implements Roles {
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    public RolesImpl(
-        RolesClient innerClient, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    public RolesImpl(RolesClient innerClient,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<RoleResourceFormat> listByHub(String resourceGroupName, String hubName) {
         PagedIterable<RoleResourceFormatInner> inner = this.serviceClient().listByHub(resourceGroupName, hubName);
-        return Utils.mapPage(inner, inner1 -> new RoleResourceFormatImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoleResourceFormatImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RoleResourceFormat> listByHub(String resourceGroupName, String hubName, Context context) {
-        PagedIterable<RoleResourceFormatInner> inner =
-            this.serviceClient().listByHub(resourceGroupName, hubName, context);
-        return Utils.mapPage(inner, inner1 -> new RoleResourceFormatImpl(inner1, this.manager()));
+        PagedIterable<RoleResourceFormatInner> inner
+            = this.serviceClient().listByHub(resourceGroupName, hubName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoleResourceFormatImpl(inner1, this.manager()));
     }
 
     private RolesClient serviceClient() {

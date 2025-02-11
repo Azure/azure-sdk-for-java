@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * This is used to express the source of an input schema mapping for a single target field in the Event Grid Event
@@ -13,11 +17,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * field in the input event schema.
  */
 @Fluent
-public final class JsonField {
+public final class JsonField implements JsonSerializable<JsonField> {
     /*
      * Name of a field in the input event schema that's to be used as the source of a mapping.
      */
-    @JsonProperty(value = "sourceField")
     private String sourceField;
 
     /**
@@ -54,5 +57,41 @@ public final class JsonField {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceField", this.sourceField);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JsonField from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JsonField if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the JsonField.
+     */
+    public static JsonField fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonField deserializedJsonField = new JsonField();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceField".equals(fieldName)) {
+                    deserializedJsonField.sourceField = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJsonField;
+        });
     }
 }

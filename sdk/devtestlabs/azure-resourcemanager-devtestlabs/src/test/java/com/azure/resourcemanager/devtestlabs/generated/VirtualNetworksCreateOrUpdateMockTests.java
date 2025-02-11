@@ -6,11 +6,9 @@ package com.azure.resourcemanager.devtestlabs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devtestlabs.DevTestLabsManager;
 import com.azure.resourcemanager.devtestlabs.models.Port;
 import com.azure.resourcemanager.devtestlabs.models.Subnet;
@@ -18,7 +16,6 @@ import com.azure.resourcemanager.devtestlabs.models.SubnetOverride;
 import com.azure.resourcemanager.devtestlabs.models.SubnetSharedPublicIpAddressConfiguration;
 import com.azure.resourcemanager.devtestlabs.models.UsagePermissionType;
 import com.azure.resourcemanager.devtestlabs.models.VirtualNetwork;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -26,85 +23,47 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class VirtualNetworksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"allowedSubnets\":[{\"resourceId\":\"yckyvne\",\"labSubnetName\":\"muffiwjbctvbpzu\",\"allowPublicIp\":\"Default\"}],\"description\":\"otdxpo\",\"externalProviderResourceId\":\"slhwuusieckty\",\"externalSubnets\":[{\"id\":\"xidhhxomil\",\"name\":\"xj\"}],\"subnetOverrides\":[{\"resourceId\":\"xwjwilm\",\"labSubnetName\":\"sl\",\"useInVmCreationPermission\":\"Allow\",\"usePublicIpAddressPermission\":\"Deny\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{}]},\"virtualNetworkPoolName\":\"jz\"},{\"resourceId\":\"qgq\",\"labSubnetName\":\"xr\",\"useInVmCreationPermission\":\"Deny\",\"usePublicIpAddressPermission\":\"Deny\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{}]},\"virtualNetworkPoolName\":\"ykbkkteozejogmk\"},{\"resourceId\":\"vvmvmcofn\",\"labSubnetName\":\"lbsnosnqliw\",\"useInVmCreationPermission\":\"Deny\",\"usePublicIpAddressPermission\":\"Allow\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{}]},\"virtualNetworkPoolName\":\"alhtgmknaz\"},{\"resourceId\":\"jbhrpgiqsttcu\",\"labSubnetName\":\"cmmaixpqjiw\",\"useInVmCreationPermission\":\"Deny\",\"usePublicIpAddressPermission\":\"Deny\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{}]},\"virtualNetworkPoolName\":\"tohqclna\"}],\"createdDate\":\"2021-01-30T09:04:29Z\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"glxkoikmtrawrqk\"},\"location\":\"awbunmpaklw\",\"tags\":{\"kaszfjsxscbdu\":\"eeprnejzl\"},\"id\":\"apgrcqe\",\"name\":\"mvrdjomlnwsbv\",\"type\":\"dls\"}";
 
-        String responseStr =
-            "{\"properties\":{\"allowedSubnets\":[{\"resourceId\":\"yckyvne\",\"labSubnetName\":\"muffiwjbctvbpzu\",\"allowPublicIp\":\"Default\"}],\"description\":\"otdxpo\",\"externalProviderResourceId\":\"slhwuusieckty\",\"externalSubnets\":[{\"id\":\"xidhhxomil\",\"name\":\"xj\"}],\"subnetOverrides\":[{\"resourceId\":\"xwjwilm\",\"labSubnetName\":\"sl\",\"useInVmCreationPermission\":\"Allow\",\"usePublicIpAddressPermission\":\"Deny\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{}]},\"virtualNetworkPoolName\":\"jz\"},{\"resourceId\":\"qgq\",\"labSubnetName\":\"xr\",\"useInVmCreationPermission\":\"Deny\",\"usePublicIpAddressPermission\":\"Deny\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{}]},\"virtualNetworkPoolName\":\"ykbkkteozejogmk\"},{\"resourceId\":\"vvmvmcofn\",\"labSubnetName\":\"lbsnosnqliw\",\"useInVmCreationPermission\":\"Deny\",\"usePublicIpAddressPermission\":\"Allow\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{}]},\"virtualNetworkPoolName\":\"alhtgmknaz\"},{\"resourceId\":\"jbhrpgiqsttcu\",\"labSubnetName\":\"cmmaixpqjiw\",\"useInVmCreationPermission\":\"Deny\",\"usePublicIpAddressPermission\":\"Deny\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{}]},\"virtualNetworkPoolName\":\"tohqclna\"}],\"createdDate\":\"2021-01-30T09:04:29Z\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"glxkoikmtrawrqk\"},\"location\":\"awbunmpaklw\",\"tags\":{\"kaszfjsxscbdu\":\"eeprnejzl\"},\"id\":\"apgrcqe\",\"name\":\"mvrdjomlnwsbv\",\"type\":\"dls\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        VirtualNetwork response =
-            manager
-                .virtualNetworks()
-                .define("hefr")
-                .withRegion("lxxzqfcwrriomxee")
-                .withExistingLab("ryldsxeb", "hsxrznmgsdaluyc")
-                .withTags(mapOf("egmxdbsohc", "hjmbji"))
-                .withAllowedSubnets(
-                    Arrays
-                        .asList(
-                            new Subnet()
-                                .withResourceId("erbgpxeb")
-                                .withLabSubnetName("udcaytujrax")
-                                .withAllowPublicIp(UsagePermissionType.DEFAULT)))
-                .withDescription("yjmgtnsewo")
-                .withExternalProviderResourceId("ly")
-                .withSubnetOverrides(
-                    Arrays
-                        .asList(
-                            new SubnetOverride()
-                                .withResourceId("wjopackyhydvik")
-                                .withLabSubnetName("ngpmillxgjsci")
-                                .withUseInVmCreationPermission(UsagePermissionType.DENY)
-                                .withUsePublicIpAddressPermission(UsagePermissionType.DEFAULT)
-                                .withSharedPublicIpAddressConfiguration(
-                                    new SubnetSharedPublicIpAddressConfiguration()
-                                        .withAllowedPorts(Arrays.asList(new Port(), new Port())))
-                                .withVirtualNetworkPoolName("ijeiyd"),
-                            new SubnetOverride()
-                                .withResourceId("uynhbokayrgwybr")
-                                .withLabSubnetName("pdweoft")
-                                .withUseInVmCreationPermission(UsagePermissionType.DENY)
-                                .withUsePublicIpAddressPermission(UsagePermissionType.ALLOW)
-                                .withSharedPublicIpAddressConfiguration(
-                                    new SubnetSharedPublicIpAddressConfiguration()
-                                        .withAllowedPorts(Arrays.asList(new Port())))
-                                .withVirtualNetworkPoolName("octqkmvjanxvzf")))
-                .create();
+        VirtualNetwork response = manager.virtualNetworks()
+            .define("hefr")
+            .withRegion("lxxzqfcwrriomxee")
+            .withExistingLab("ryldsxeb", "hsxrznmgsdaluyc")
+            .withTags(mapOf("egmxdbsohc", "hjmbji"))
+            .withAllowedSubnets(Arrays.asList(new Subnet().withResourceId("erbgpxeb")
+                .withLabSubnetName("udcaytujrax")
+                .withAllowPublicIp(UsagePermissionType.DEFAULT)))
+            .withDescription("yjmgtnsewo")
+            .withExternalProviderResourceId("ly")
+            .withSubnetOverrides(Arrays.asList(
+                new SubnetOverride().withResourceId("wjopackyhydvik")
+                    .withLabSubnetName("ngpmillxgjsci")
+                    .withUseInVmCreationPermission(UsagePermissionType.DENY)
+                    .withUsePublicIpAddressPermission(UsagePermissionType.DEFAULT)
+                    .withSharedPublicIpAddressConfiguration(new SubnetSharedPublicIpAddressConfiguration()
+                        .withAllowedPorts(Arrays.asList(new Port(), new Port())))
+                    .withVirtualNetworkPoolName("ijeiyd"),
+                new SubnetOverride().withResourceId("uynhbokayrgwybr")
+                    .withLabSubnetName("pdweoft")
+                    .withUseInVmCreationPermission(UsagePermissionType.DENY)
+                    .withUsePublicIpAddressPermission(UsagePermissionType.ALLOW)
+                    .withSharedPublicIpAddressConfiguration(
+                        new SubnetSharedPublicIpAddressConfiguration().withAllowedPorts(Arrays.asList(new Port())))
+                    .withVirtualNetworkPoolName("octqkmvjanxvzf")))
+            .create();
 
         Assertions.assertEquals("awbunmpaklw", response.location());
         Assertions.assertEquals("eeprnejzl", response.tags().get("kaszfjsxscbdu"));
@@ -115,10 +74,10 @@ public final class VirtualNetworksCreateOrUpdateMockTests {
         Assertions.assertEquals("slhwuusieckty", response.externalProviderResourceId());
         Assertions.assertEquals("xwjwilm", response.subnetOverrides().get(0).resourceId());
         Assertions.assertEquals("sl", response.subnetOverrides().get(0).labSubnetName());
-        Assertions
-            .assertEquals(UsagePermissionType.ALLOW, response.subnetOverrides().get(0).useInVmCreationPermission());
-        Assertions
-            .assertEquals(UsagePermissionType.DENY, response.subnetOverrides().get(0).usePublicIpAddressPermission());
+        Assertions.assertEquals(UsagePermissionType.ALLOW,
+            response.subnetOverrides().get(0).useInVmCreationPermission());
+        Assertions.assertEquals(UsagePermissionType.DENY,
+            response.subnetOverrides().get(0).usePublicIpAddressPermission());
         Assertions.assertEquals("jz", response.subnetOverrides().get(0).virtualNetworkPoolName());
     }
 

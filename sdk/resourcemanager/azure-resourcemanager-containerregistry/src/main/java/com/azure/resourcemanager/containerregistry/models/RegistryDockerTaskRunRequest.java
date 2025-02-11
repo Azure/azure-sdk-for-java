@@ -11,26 +11,44 @@ import java.util.Map;
 /** An immutable client-side representation of an Azure registry Docker task run request. */
 @Fluent()
 public interface RegistryDockerTaskRunRequest {
-    /** @return the length of the timeout. */
+    /**
+     * Gets the length of the timeout.
+     *
+     * @return the length of the timeout.
+     */
     int timeout();
 
-    /** @return the properties of the platform. */
+    /**
+     * Gets the properties of the platform.
+     *
+     * @return the properties of the platform.
+     */
     PlatformProperties platform();
 
-    /** @return the number of CPUs. */
+    /**
+     * Gets the number of CPUs.
+     *
+     * @return the number of CPUs.
+     */
     int cpuCount();
 
-    /** @return the location of the source control. */
+    /**
+     * Gets the location of the source control.
+     *
+     * @return the location of the source control.
+     */
     String sourceLocation();
 
-    /** @return whether archive is enabled. */
+    /**
+     * Checks whether archive is enabled.
+     *
+     * @return whether archive is enabled.
+     */
     boolean isArchiveEnabled();
 
     /** Container interface for all the definitions related to a registry Docker task run request. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.DockerFilePath,
-            DefinitionStages.DockerTaskRunRequestStepAttachable {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.DockerFilePath,
+        DefinitionStages.DockerTaskRunRequestStepAttachable {
     }
 
     /** Grouping of registry Docker task run request definition stages. */
@@ -93,8 +111,8 @@ public interface RegistryDockerTaskRunRequest {
              *     OverridingArgument specifying the content of the overriding argument.
              * @return the next stage of the container Docker task run request definition.
              */
-            DockerTaskRunRequestStepAttachable withOverridingArguments(
-                Map<String, OverridingArgument> overridingArguments);
+            DockerTaskRunRequestStepAttachable
+                withOverridingArguments(Map<String, OverridingArgument> overridingArguments);
 
             /**
              * The function that specifies the overriding argument and what it will override.
@@ -103,8 +121,8 @@ public interface RegistryDockerTaskRunRequest {
              * @param overridingArgument the content of the overriding argument.
              * @return the next stage of the container Docker task run request definition.
              */
-            DockerTaskRunRequestStepAttachable withOverridingArgument(
-                String name, OverridingArgument overridingArgument);
+            DockerTaskRunRequestStepAttachable withOverridingArgument(String name,
+                OverridingArgument overridingArgument);
         }
     }
 }

@@ -5,67 +5,63 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The Metadata definition base. */
+/**
+ * The Metadata definition base.
+ */
 @Fluent
-public class MetadataDefinitionBase {
+public class MetadataDefinitionBase implements JsonSerializable<MetadataDefinitionBase> {
     /*
      * The attributes for the Type.
      */
-    @JsonProperty(value = "attributes")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<String>> attributes;
 
     /*
      * Localized descriptions for the property.
      */
-    @JsonProperty(value = "description")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
 
     /*
      * Localized display names for the property.
      */
-    @JsonProperty(value = "displayName")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Any custom localized attributes for the Type.
      */
-    @JsonProperty(value = "localizedAttributes")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Map<String, String>> localizedAttributes;
 
     /*
      * Small Image associated with the Property or EntityType.
      */
-    @JsonProperty(value = "smallImage")
     private String smallImage;
 
     /*
      * Medium Image associated with the Property or EntityType.
      */
-    @JsonProperty(value = "mediumImage")
     private String mediumImage;
 
     /*
      * Large Image associated with the Property or EntityType.
      */
-    @JsonProperty(value = "largeImage")
     private String largeImage;
 
-    /** Creates an instance of MetadataDefinitionBase class. */
+    /**
+     * Creates an instance of MetadataDefinitionBase class.
+     */
     public MetadataDefinitionBase() {
     }
 
     /**
      * Get the attributes property: The attributes for the Type.
-     *
+     * 
      * @return the attributes value.
      */
     public Map<String, List<String>> attributes() {
@@ -74,7 +70,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Set the attributes property: The attributes for the Type.
-     *
+     * 
      * @param attributes the attributes value to set.
      * @return the MetadataDefinitionBase object itself.
      */
@@ -85,7 +81,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Get the description property: Localized descriptions for the property.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -94,7 +90,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Set the description property: Localized descriptions for the property.
-     *
+     * 
      * @param description the description value to set.
      * @return the MetadataDefinitionBase object itself.
      */
@@ -105,7 +101,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Get the displayName property: Localized display names for the property.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -114,7 +110,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Set the displayName property: Localized display names for the property.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetadataDefinitionBase object itself.
      */
@@ -125,7 +121,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Get the localizedAttributes property: Any custom localized attributes for the Type.
-     *
+     * 
      * @return the localizedAttributes value.
      */
     public Map<String, Map<String, String>> localizedAttributes() {
@@ -134,7 +130,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Set the localizedAttributes property: Any custom localized attributes for the Type.
-     *
+     * 
      * @param localizedAttributes the localizedAttributes value to set.
      * @return the MetadataDefinitionBase object itself.
      */
@@ -145,7 +141,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Get the smallImage property: Small Image associated with the Property or EntityType.
-     *
+     * 
      * @return the smallImage value.
      */
     public String smallImage() {
@@ -154,7 +150,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Set the smallImage property: Small Image associated with the Property or EntityType.
-     *
+     * 
      * @param smallImage the smallImage value to set.
      * @return the MetadataDefinitionBase object itself.
      */
@@ -165,7 +161,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Get the mediumImage property: Medium Image associated with the Property or EntityType.
-     *
+     * 
      * @return the mediumImage value.
      */
     public String mediumImage() {
@@ -174,7 +170,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Set the mediumImage property: Medium Image associated with the Property or EntityType.
-     *
+     * 
      * @param mediumImage the mediumImage value to set.
      * @return the MetadataDefinitionBase object itself.
      */
@@ -185,7 +181,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Get the largeImage property: Large Image associated with the Property or EntityType.
-     *
+     * 
      * @return the largeImage value.
      */
     public String largeImage() {
@@ -194,7 +190,7 @@ public class MetadataDefinitionBase {
 
     /**
      * Set the largeImage property: Large Image associated with the Property or EntityType.
-     *
+     * 
      * @param largeImage the largeImage value to set.
      * @return the MetadataDefinitionBase object itself.
      */
@@ -205,9 +201,71 @@ public class MetadataDefinitionBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("attributes", this.attributes,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeMapField("description", this.description, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("displayName", this.displayName, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("localizedAttributes", this.localizedAttributes,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeStringField("smallImage", this.smallImage);
+        jsonWriter.writeStringField("mediumImage", this.mediumImage);
+        jsonWriter.writeStringField("largeImage", this.largeImage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataDefinitionBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataDefinitionBase if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetadataDefinitionBase.
+     */
+    public static MetadataDefinitionBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataDefinitionBase deserializedMetadataDefinitionBase = new MetadataDefinitionBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("attributes".equals(fieldName)) {
+                    Map<String, List<String>> attributes
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedMetadataDefinitionBase.attributes = attributes;
+                } else if ("description".equals(fieldName)) {
+                    Map<String, String> description = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMetadataDefinitionBase.description = description;
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMetadataDefinitionBase.displayName = displayName;
+                } else if ("localizedAttributes".equals(fieldName)) {
+                    Map<String, Map<String, String>> localizedAttributes
+                        = reader.readMap(reader1 -> reader1.readMap(reader2 -> reader2.getString()));
+                    deserializedMetadataDefinitionBase.localizedAttributes = localizedAttributes;
+                } else if ("smallImage".equals(fieldName)) {
+                    deserializedMetadataDefinitionBase.smallImage = reader.getString();
+                } else if ("mediumImage".equals(fieldName)) {
+                    deserializedMetadataDefinitionBase.mediumImage = reader.getString();
+                } else if ("largeImage".equals(fieldName)) {
+                    deserializedMetadataDefinitionBase.largeImage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataDefinitionBase;
+        });
     }
 }

@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.labservices.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Labs ListByResourceGroup. */
+/**
+ * Samples for Labs ListByResourceGroup.
+ */
 public final class LabsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Labs/listResourceGroupLabs.json
+     * x-ms-original-file:
+     * specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Labs/
+     * listResourceGroupLabs.json
      */
     /**
      * Sample code: listResourceGroupLabs.
-     *
+     * 
      * @param manager Entry point to LabServicesManager.
      */
     public static void listResourceGroupLabs(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.labs().listByResourceGroup("testrg123", Context.NONE);
+        manager.labs().listByResourceGroup("testrg123", com.azure.core.util.Context.NONE);
     }
 }

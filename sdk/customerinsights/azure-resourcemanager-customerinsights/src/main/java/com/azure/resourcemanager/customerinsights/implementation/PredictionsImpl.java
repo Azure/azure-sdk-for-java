@@ -25,22 +25,18 @@ public final class PredictionsImpl implements Predictions {
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    public PredictionsImpl(
-        PredictionsClient innerClient,
+    public PredictionsImpl(PredictionsClient innerClient,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PredictionResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context) {
-        Response<PredictionResourceFormatInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, hubName, predictionName, context);
+    public Response<PredictionResourceFormat> getWithResponse(String resourceGroupName, String hubName,
+        String predictionName, Context context) {
+        Response<PredictionResourceFormatInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, hubName, predictionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PredictionResourceFormatImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -64,25 +60,22 @@ public final class PredictionsImpl implements Predictions {
         this.serviceClient().delete(resourceGroupName, hubName, predictionName, context);
     }
 
-    public Response<PredictionTrainingResults> getTrainingResultsWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context) {
-        Response<PredictionTrainingResultsInner> inner =
-            this.serviceClient().getTrainingResultsWithResponse(resourceGroupName, hubName, predictionName, context);
+    public Response<PredictionTrainingResults> getTrainingResultsWithResponse(String resourceGroupName, String hubName,
+        String predictionName, Context context) {
+        Response<PredictionTrainingResultsInner> inner
+            = this.serviceClient().getTrainingResultsWithResponse(resourceGroupName, hubName, predictionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PredictionTrainingResultsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PredictionTrainingResults getTrainingResults(
-        String resourceGroupName, String hubName, String predictionName) {
-        PredictionTrainingResultsInner inner =
-            this.serviceClient().getTrainingResults(resourceGroupName, hubName, predictionName);
+    public PredictionTrainingResults getTrainingResults(String resourceGroupName, String hubName,
+        String predictionName) {
+        PredictionTrainingResultsInner inner
+            = this.serviceClient().getTrainingResults(resourceGroupName, hubName, predictionName);
         if (inner != null) {
             return new PredictionTrainingResultsImpl(inner, this.manager());
         } else {
@@ -90,15 +83,12 @@ public final class PredictionsImpl implements Predictions {
         }
     }
 
-    public Response<PredictionModelStatus> getModelStatusWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context) {
-        Response<PredictionModelStatusInner> inner =
-            this.serviceClient().getModelStatusWithResponse(resourceGroupName, hubName, predictionName, context);
+    public Response<PredictionModelStatus> getModelStatusWithResponse(String resourceGroupName, String hubName,
+        String predictionName, Context context) {
+        Response<PredictionModelStatusInner> inner
+            = this.serviceClient().getModelStatusWithResponse(resourceGroupName, hubName, predictionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PredictionModelStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -106,8 +96,8 @@ public final class PredictionsImpl implements Predictions {
     }
 
     public PredictionModelStatus getModelStatus(String resourceGroupName, String hubName, String predictionName) {
-        PredictionModelStatusInner inner =
-            this.serviceClient().getModelStatus(resourceGroupName, hubName, predictionName);
+        PredictionModelStatusInner inner
+            = this.serviceClient().getModelStatus(resourceGroupName, hubName, predictionName);
         if (inner != null) {
             return new PredictionModelStatusImpl(inner, this.manager());
         } else {
@@ -115,134 +105,101 @@ public final class PredictionsImpl implements Predictions {
         }
     }
 
-    public Response<Void> modelStatusWithResponse(
-        String resourceGroupName,
-        String hubName,
-        String predictionName,
-        PredictionModelStatusInner parameters,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> modelStatusWithResponse(String resourceGroupName, String hubName, String predictionName,
+        PredictionModelStatusInner parameters, Context context) {
+        return this.serviceClient()
             .modelStatusWithResponse(resourceGroupName, hubName, predictionName, parameters, context);
     }
 
-    public void modelStatus(
-        String resourceGroupName, String hubName, String predictionName, PredictionModelStatusInner parameters) {
+    public void modelStatus(String resourceGroupName, String hubName, String predictionName,
+        PredictionModelStatusInner parameters) {
         this.serviceClient().modelStatus(resourceGroupName, hubName, predictionName, parameters);
     }
 
     public PagedIterable<PredictionResourceFormat> listByHub(String resourceGroupName, String hubName) {
         PagedIterable<PredictionResourceFormatInner> inner = this.serviceClient().listByHub(resourceGroupName, hubName);
-        return Utils.mapPage(inner, inner1 -> new PredictionResourceFormatImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PredictionResourceFormatImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PredictionResourceFormat> listByHub(
-        String resourceGroupName, String hubName, Context context) {
-        PagedIterable<PredictionResourceFormatInner> inner =
-            this.serviceClient().listByHub(resourceGroupName, hubName, context);
-        return Utils.mapPage(inner, inner1 -> new PredictionResourceFormatImpl(inner1, this.manager()));
+    public PagedIterable<PredictionResourceFormat> listByHub(String resourceGroupName, String hubName,
+        Context context) {
+        PagedIterable<PredictionResourceFormatInner> inner
+            = this.serviceClient().listByHub(resourceGroupName, hubName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PredictionResourceFormatImpl(inner1, this.manager()));
     }
 
     public PredictionResourceFormat getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String predictionName = Utils.getValueFromIdByName(id, "predictions");
+        String predictionName = ResourceManagerUtils.getValueFromIdByName(id, "predictions");
         if (predictionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, hubName, predictionName, Context.NONE).getValue();
     }
 
     public Response<PredictionResourceFormat> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String predictionName = Utils.getValueFromIdByName(id, "predictions");
+        String predictionName = ResourceManagerUtils.getValueFromIdByName(id, "predictions");
         if (predictionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, hubName, predictionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String predictionName = Utils.getValueFromIdByName(id, "predictions");
+        String predictionName = ResourceManagerUtils.getValueFromIdByName(id, "predictions");
         if (predictionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));
         }
         this.delete(resourceGroupName, hubName, predictionName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String predictionName = Utils.getValueFromIdByName(id, "predictions");
+        String predictionName = ResourceManagerUtils.getValueFromIdByName(id, "predictions");
         if (predictionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));
         }
         this.delete(resourceGroupName, hubName, predictionName, context);
     }

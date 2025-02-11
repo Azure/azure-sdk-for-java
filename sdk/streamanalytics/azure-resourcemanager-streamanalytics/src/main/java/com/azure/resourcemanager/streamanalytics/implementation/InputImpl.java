@@ -62,14 +62,20 @@ public final class InputImpl implements Input, Input.Definition, Input.Update {
     }
 
     public Input create() {
-        this.innerObject = serviceManager.serviceClient().getInputs().createOrReplaceWithResponse(resourceGroupName,
-            jobName, inputName, this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInputs()
+            .createOrReplaceWithResponse(resourceGroupName, jobName, inputName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Input create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getInputs().createOrReplaceWithResponse(resourceGroupName,
-            jobName, inputName, this.innerModel(), createIfMatch, createIfNoneMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInputs()
+            .createOrReplaceWithResponse(resourceGroupName, jobName, inputName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context)
+            .getValue();
         return this;
     }
 
@@ -87,14 +93,16 @@ public final class InputImpl implements Input, Input.Definition, Input.Update {
     }
 
     public Input apply() {
-        this.innerObject = serviceManager.serviceClient().getInputs()
+        this.innerObject = serviceManager.serviceClient()
+            .getInputs()
             .updateWithResponse(resourceGroupName, jobName, inputName, this.innerModel(), updateIfMatch, Context.NONE)
             .getValue();
         return this;
     }
 
     public Input apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getInputs()
+        this.innerObject = serviceManager.serviceClient()
+            .getInputs()
             .updateWithResponse(resourceGroupName, jobName, inputName, this.innerModel(), updateIfMatch, context)
             .getValue();
         return this;
@@ -109,14 +117,18 @@ public final class InputImpl implements Input, Input.Definition, Input.Update {
     }
 
     public Input refresh() {
-        this.innerObject = serviceManager.serviceClient().getInputs()
-            .getWithResponse(resourceGroupName, jobName, inputName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInputs()
+            .getWithResponse(resourceGroupName, jobName, inputName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Input refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getInputs()
-            .getWithResponse(resourceGroupName, jobName, inputName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInputs()
+            .getWithResponse(resourceGroupName, jobName, inputName, context)
+            .getValue();
         return this;
     }
 

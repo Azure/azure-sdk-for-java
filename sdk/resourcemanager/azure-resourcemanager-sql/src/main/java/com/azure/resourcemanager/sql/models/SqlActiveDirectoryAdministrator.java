@@ -7,15 +7,31 @@ import com.azure.core.annotation.Fluent;
 /** Response containing the Azure SQL Active Directory administrator. */
 @Fluent
 public interface SqlActiveDirectoryAdministrator {
-    /** @return the type of administrator. */
+    /**
+     * Gets the type of administrator.
+     *
+     * @return the type of administrator.
+     */
     AdministratorType administratorType();
 
-    /** @return the server administrator login value. */
+    /**
+     * Gets the server administrator login value.
+     *
+     * @return the server administrator login value.
+     */
     String signInName();
 
-    /** @return the server administrator ID. */
+    /**
+     * Gets the server administrator ID.
+     *
+     * @return the server administrator ID.
+     */
     String id();
 
-    /** @return the server Active Directory Administrator tenant ID. */
+    /**
+     * Gets the server Active Directory Administrator tenant ID.
+     *
+     * @return the server Active Directory Administrator tenant ID.
+     */
     String tenantId();
 }

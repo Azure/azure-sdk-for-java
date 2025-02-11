@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for AvailableServiceTiers ListByWorkspace. */
+/**
+ * Samples for AvailableServiceTiers ListByWorkspace.
+ */
 public final class AvailableServiceTiersListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesAvailableServiceTiers.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesAvailableServiceTiers.json
      */
     /**
      * Sample code: AvailableServiceTiers.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void availableServiceTiers(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .availableServiceTiers()
+        manager.availableServiceTiers()
             .listByWorkspaceWithResponse("rg1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }

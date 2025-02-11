@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for DataExports Delete. */
+/**
+ * Samples for DataExports Delete.
+ */
 public final class DataExportsDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataExportDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataExportDelete.json
      */
     /**
      * Sample code: DataExportDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataExportDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .dataExports()
+        manager.dataExports()
             .deleteWithResponse("RgTest1", "DeWnTest1234", "export1", com.azure.core.util.Context.NONE);
     }
 }

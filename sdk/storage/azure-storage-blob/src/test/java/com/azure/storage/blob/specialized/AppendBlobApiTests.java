@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
@@ -46,6 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.azure.storage.blob.specialized.AppendBlobClient.MAX_APPEND_BLOCKS;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -82,8 +84,8 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     @Test
     public void createError() {
-        assertThrows(BlobStorageException.class, () -> bc.createWithResponse(null, null, new BlobRequestConditions()
-            .setIfMatch("garbage"), null, Context.NONE));
+        assertThrows(BlobStorageException.class, () -> bc.createWithResponse(null, null,
+            new BlobRequestConditions().setIfMatch("garbage"), null, Context.NONE));
     }
 
     @ParameterizedTest
@@ -109,12 +111,10 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> createHeadersSupplier() throws NoSuchAlgorithmException {
-        return Stream.of(
-            Arguments.of(null, null, null, null, null, null),
+        return Stream.of(Arguments.of(null, null, null, null, null, null),
             Arguments.of("control", "disposition", "encoding", "language",
                 Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultText().getBytes())),
-                "type")
-        );
+                "type"));
     }
 
     @ParameterizedTest
@@ -138,9 +138,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> createMetadataSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
-            Arguments.of("foo", "bar", "fizz", "buzz"));
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of("foo", "bar", "fizz", "buzz"));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -164,9 +162,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> createTagsSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
-            Arguments.of("foo", "bar", "fizz", "buzz"));
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of("foo", "bar", "fizz", "buzz"));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -179,8 +175,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
         leaseID = setupBlobLeaseCondition(bc, leaseID);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -191,15 +186,12 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     private Stream<Arguments> createACSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null, null),
+        return Stream.of(Arguments.of(null, null, null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null, null, null), Arguments.of(null, NEW_DATE, null, null, null, null),
             Arguments.of(null, null, RECEIVED_ETAG, null, null, null),
             Arguments.of(null, null, null, GARBAGE_ETAG, null, null),
             Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null),
-            Arguments.of(null, null, null, null, null, "\"foo\" = 'bar'")
-        );
+            Arguments.of(null, null, null, null, null, "\"foo\" = 'bar'"));
     }
 
     @ParameterizedTest
@@ -208,8 +200,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         String leaseID, String tags) {
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         setupBlobLeaseCondition(bc, leaseID);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -220,14 +211,12 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     private Stream<Arguments> createACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null, null),
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null, null),
             Arguments.of(null, OLD_DATE, null, null, null, null),
             Arguments.of(null, null, GARBAGE_ETAG, null, null, null),
             Arguments.of(null, null, null, RECEIVED_ETAG, null, null),
             Arguments.of(null, null, null, null, GARBAGE_LEASE_ID, null),
-            Arguments.of(null, null, null, null, null, "\"notfoo\" = 'notbar'")
-        );
+            Arguments.of(null, null, null, null, null, "\"notfoo\" = 'notbar'"));
     }
 
     @Test
@@ -235,13 +224,21 @@ public class AppendBlobApiTests extends BlobTestBase {
         String blobName = cc.getBlobClient(generateBlobName()).getBlobName();
         bc = cc.getBlobClient(blobName).getAppendBlobClient();
 
-        Response<AppendBlobItem> createResponse = bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null,
-            null);
+        Response<AppendBlobItem> createResponse
+            = bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null);
 
         assertResponseStatusCode(createResponse, 201);
         validateBasicHeaders(createResponse.getHeaders());
         assertNull(createResponse.getValue().getContentMd5());
         assertTrue(createResponse.getValue().isServerEncrypted());
+    }
+
+    @Test
+    public void createIfNotExistsSimple() {
+        bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+
+        bc.createIfNotExists();
+        assertTrue(bc.exists());
     }
 
     @Test
@@ -256,10 +253,10 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void createIfNotExistsOnABlobThatAlreadyExists() {
         String blobName = cc.getBlobClient(generateBlobName()).getBlobName();
         bc = cc.getBlobClient(blobName).getAppendBlobClient();
-        Response<AppendBlobItem> initialResponse =
-            bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null);
-        Response<AppendBlobItem> secondResponse =
-            bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null);
+        Response<AppendBlobItem> initialResponse
+            = bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null);
+        Response<AppendBlobItem> secondResponse
+            = bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null);
 
         assertResponseStatusCode(initialResponse, 201);
         assertResponseStatusCode(secondResponse, 409);
@@ -335,9 +332,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     private Stream<Arguments> createIfNotExistsTagsSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
-            Arguments.of("foo", "bar", "fizz", "buzz"),
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of("foo", "bar", "fizz", "buzz"),
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
     }
 
@@ -359,8 +354,9 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     @Test
     public void appendBlockMin() {
-        assertResponseStatusCode(bc.appendBlockWithResponse(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize(), null, null, null, null), 201);
+        assertResponseStatusCode(
+            bc.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null, null),
+            201);
     }
 
     @ParameterizedTest
@@ -370,11 +366,9 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> appendBlockIASupplier() {
-        return Stream.of(
-            Arguments.of(null, DATA.getDefaultDataSize(), NullPointerException.class),
+        return Stream.of(Arguments.of(null, DATA.getDefaultDataSize(), NullPointerException.class),
             Arguments.of(DATA.getDefaultInputStream(), DATA.getDefaultDataSize() + 1, UnexpectedLengthException.class),
-            Arguments.of(DATA.getDefaultInputStream(), DATA.getDefaultDataSize() - 1, UnexpectedLengthException.class)
-        );
+            Arguments.of(DATA.getDefaultInputStream(), DATA.getDefaultDataSize() - 1, UnexpectedLengthException.class));
     }
 
     @Test
@@ -391,15 +385,16 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void appendBlockTransactionalMD5() throws NoSuchAlgorithmException {
         byte[] md5 = MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes());
 
-        assertResponseStatusCode(bc.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(),
-            md5, null, null, null), 201);
+        assertResponseStatusCode(
+            bc.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), md5, null, null, null),
+            201);
     }
 
     @Test
     public void appendBlockTransactionalMD5Fail() {
         BlobStorageException e = assertThrows(BlobStorageException.class,
             () -> bc.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(),
-            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null));
+                MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null));
 
         assertExceptionStatusCodeAndMessage(e, 400, BlobErrorCode.MD5MISMATCH);
     }
@@ -414,8 +409,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
         leaseID = setupBlobLeaseCondition(bc, leaseID);
-        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-            .setLeaseId(leaseID)
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -424,13 +418,13 @@ public class AppendBlobApiTests extends BlobTestBase {
             .setMaxSize(maxSizeLTE)
             .setTagsConditions(tags);
 
-        assertResponseStatusCode(bc.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(),
-            null, bac, null, null), 201);
+        assertResponseStatusCode(
+            bc.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, bac, null, null),
+            201);
     }
 
     private static Stream<Arguments> appendBlockSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null, null, null, null, null),
+        return Stream.of(Arguments.of(null, null, null, null, null, null, null, null),
             Arguments.of(OLD_DATE, null, null, null, null, null, null, null),
             Arguments.of(null, NEW_DATE, null, null, null, null, null, null),
             Arguments.of(null, null, RECEIVED_ETAG, null, null, null, null, null),
@@ -438,8 +432,7 @@ public class AppendBlobApiTests extends BlobTestBase {
             Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null, null, null),
             Arguments.of(null, null, null, null, null, 0L, null, null),
             Arguments.of(null, null, null, null, null, null, 100L, null),
-            Arguments.of(null, null, null, null, null, null, null, "\"foo\" = 'bar'")
-        );
+            Arguments.of(null, null, null, null, null, null, null, "\"foo\" = 'bar'"));
     }
 
     @ParameterizedTest
@@ -449,8 +442,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         setupBlobLeaseCondition(bc, leaseID);
 
-        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-            .setLeaseId(leaseID)
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -459,30 +451,28 @@ public class AppendBlobApiTests extends BlobTestBase {
             .setMaxSize(maxSizeLTE)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () ->
-            bc.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, bac, null, null));
+        assertThrows(BlobStorageException.class, () -> bc.appendBlockWithResponse(DATA.getDefaultInputStream(),
+            DATA.getDefaultDataSize(), null, bac, null, null));
 
         DATA.getDefaultInputStream().reset();
     }
 
     private static Stream<Arguments> appendBlockFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null, null, null, null),
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null, null, null, null),
             Arguments.of(null, OLD_DATE, null, null, null, null, null, null),
             Arguments.of(null, null, GARBAGE_ETAG, null, null, null, null, null),
             Arguments.of(null, null, null, RECEIVED_ETAG, null, null, null, null),
             Arguments.of(null, null, null, null, GARBAGE_LEASE_ID, null, null, null),
             Arguments.of(null, null, null, null, null, 1L, null, null),
             Arguments.of(null, null, null, null, null, null, 1L, null),
-            Arguments.of(null, null, null, null, null, null, null, "\"notfoo\" = 'notbar'")
-        );
+            Arguments.of(null, null, null, null, null, null, null, "\"notfoo\" = 'notbar'"));
     }
 
     @Test
     public void appendBlockError() {
         bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
-        assertThrows(BlobStorageException.class, () ->
-            bc.appendBlock(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()));
+        assertThrows(BlobStorageException.class,
+            () -> bc.appendBlock(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()));
     }
 
     @Test
@@ -523,8 +513,8 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        Response<AppendBlobItem> response = destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, blobRange, null,
-            null, null, null, null);
+        Response<AppendBlobItem> response = destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas,
+            blobRange, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         validateBasicHeaders(response.getHeaders());
@@ -535,9 +525,9 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void appendBlockFromURLSourceErrorAndStatusCodeNewTest() {
         AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         destBlob.createIfNotExists();
-
+    
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
-
+    
         assertTrue(e.getStatusCode() == 409);
         assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
         assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
@@ -585,22 +575,22 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertThrows(BlobStorageException.class, () -> destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
-            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null, Context.NONE));
+        assertThrows(BlobStorageException.class,
+            () -> destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
+                MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null, Context.NONE));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("appendBlockSupplier")
     public void appendBlockFromURLDestinationAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-                                                String noneMatch, String leaseID, Long appendPosE, Long maxSizeLTE, String tags) {
+        String noneMatch, String leaseID, Long appendPosE, Long maxSizeLTE, String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
         leaseID = setupBlobLeaseCondition(bc, leaseID);
-        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-            .setLeaseId(leaseID)
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -611,25 +601,26 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         sourceURL.create();
-        sourceURL.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null,
-            null).getStatusCode();
+        sourceURL
+            .appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null, null)
+            .getStatusCode();
 
         String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null, null, bac, null, null,
-            null), 201);
+        assertResponseStatusCode(
+            bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null, null, bac, null, null, null),
+            201);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("appendBlockFailSupplier")
     public void appendBlockFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-                                                    String noneMatch, String leaseID, Long maxSizeLTE, Long appendPosE, String tags) {
+        String noneMatch, String leaseID, Long maxSizeLTE, Long appendPosE, String tags) {
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         setupBlobLeaseCondition(bc, leaseID);
 
-        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-            .setLeaseId(leaseID)
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -645,71 +636,64 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertThrows(BlobStorageException.class, () -> bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
-            null, bac, null, null, Context.NONE));
+        assertThrows(BlobStorageException.class,
+            () -> bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null, null, bac, null, null,
+                Context.NONE));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("appendBlockFromURLSupplier")
     public void appendBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
-                                           String sourceIfMatch, String sourceIfNoneMatch) {
+        String sourceIfMatch, String sourceIfNoneMatch) {
         AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         sourceURL.create();
         sourceURL.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null,
             null);
 
-        BlobRequestConditions smac = new BlobRequestConditions()
-            .setIfModifiedSince(sourceIfModifiedSince)
+        BlobRequestConditions smac = new BlobRequestConditions().setIfModifiedSince(sourceIfModifiedSince)
             .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
             .setIfMatch(setupBlobMatchCondition(sourceURL, sourceIfMatch))
             .setIfNoneMatch(sourceIfNoneMatch);
 
         String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null, null, null, smac, null,
-            null), 201);
+        assertResponseStatusCode(
+            bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null, null, null, smac, null, null),
+            201);
     }
 
     private static Stream<Arguments> appendBlockFromURLSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null),
-            Arguments.of(null, null, null, GARBAGE_ETAG)
-        );
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of(OLD_DATE, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null), Arguments.of(null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, GARBAGE_ETAG));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("appendBlockFromURLFailSupplier")
     public void appendBlockFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
-                                               OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
+        OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
         AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         sourceURL.create();
         sourceURL.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null,
             null);
 
-        BlobRequestConditions smac = new BlobRequestConditions()
-            .setIfModifiedSince(sourceIfModifiedSince)
+        BlobRequestConditions smac = new BlobRequestConditions().setIfModifiedSince(sourceIfModifiedSince)
             .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
             .setIfMatch(sourceIfMatch)
             .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
 
         String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertThrows(BlobStorageException.class, () -> bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
-            null, null, smac, null, Context.NONE));
+        assertThrows(BlobStorageException.class,
+            () -> bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null, null, null, smac, null,
+                Context.NONE));
     }
 
     private static Stream<Arguments> appendBlockFromURLFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG)
-        );
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null), Arguments.of(null, OLD_DATE, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null), Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
     @Test
@@ -738,7 +722,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void sealDefaults() {
         Response<Void> sealResponse = bc.sealWithResponse(null, null, null);
         assertResponseStatusCode(sealResponse, 200);
-        assertEquals("true", sealResponse.getHeaders().getValue("x-ms-blob-sealed"));
+        assertEquals("true", sealResponse.getHeaders().getValue(X_MS_BLOB_SEALED));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -748,7 +732,8 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         assertTrue(bc.getProperties().isSealed());
         assertTrue(bc.downloadStreamWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, null)
-            .getDeserializedHeaders().isSealed());
+            .getDeserializedHeaders()
+            .isSealed());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -765,8 +750,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         String leaseID, Long appendPosE) {
         match = setupBlobMatchCondition(bc, match);
         leaseID = setupBlobLeaseCondition(bc, leaseID);
-        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-            .setLeaseId(leaseID)
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -779,15 +763,12 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> sealACSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null, null),
+        return Stream.of(Arguments.of(null, null, null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null, null, null), Arguments.of(null, NEW_DATE, null, null, null, null),
             Arguments.of(null, null, RECEIVED_ETAG, null, null, null),
             Arguments.of(null, null, null, GARBAGE_ETAG, null, null),
             Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null),
-            Arguments.of(null, null, null, null, null, 0L)
-        );
+            Arguments.of(null, null, null, null, null, 0L));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -798,36 +779,32 @@ public class AppendBlobApiTests extends BlobTestBase {
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         setupBlobLeaseCondition(bc, leaseID);
 
-        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-            .setLeaseId(leaseID)
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE);
 
-        assertThrows(BlobStorageException.class, () ->
-            bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac), null, null));
+        assertThrows(BlobStorageException.class,
+            () -> bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac), null, null));
     }
 
     private static Stream<Arguments> sealACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null, null),
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null, null),
             Arguments.of(null, OLD_DATE, null, null, null, null),
             Arguments.of(null, null, GARBAGE_ETAG, null, null, null),
             Arguments.of(null, null, null, RECEIVED_ETAG, null, null),
             Arguments.of(null, null, null, null, GARBAGE_LEASE_ID, null),
-            Arguments.of(null, null, null, null, null, 1L)
-        );
+            Arguments.of(null, null, null, null, null, 1L));
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     @Test
     public void perCallPolicy() {
-        AppendBlobClient specialBlob = getSpecializedBuilder(bc.getBlobUrl())
-            .addPolicy(getPerCallVersionPolicy())
-            .buildAppendBlobClient();
+        AppendBlobClient specialBlob
+            = getSpecializedBuilder(bc.getBlobUrl()).addPolicy(getPerCallVersionPolicy()).buildAppendBlobClient();
 
         Response<BlobProperties> response = specialBlob.getPropertiesWithResponse(null, null, null);
         assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
@@ -835,9 +812,8 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     @Test
     public void defaultAudience() {
-        AppendBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .audience(null)
-            .buildAppendBlobClient();
+        AppendBlobClient aadBlob
+            = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl()).audience(null).buildAppendBlobClient();
 
         assertTrue(aadBlob.exists());
     }
@@ -870,10 +846,42 @@ public class AppendBlobApiTests extends BlobTestBase {
         String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
         BlobAudience audience = BlobAudience.fromString(url);
 
-        AppendBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .audience(audience)
-            .buildAppendBlobClient();
+        AppendBlobClient aadBlob
+            = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl()).audience(audience).buildAppendBlobClient();
 
         assertTrue(aadBlob.exists());
+    }
+
+    @Test
+    public void getSnapshotClient() {
+        String fakeVersion = "2020-04-17T20:37:16.5129130Z";
+        BlobClientBase fakeSnapshotClient = bc.getSnapshotClient(fakeVersion);
+        assertEquals(fakeVersion, fakeSnapshotClient.getSnapshotId());
+    }
+
+    @Test
+    public void getVersionClient() {
+        String fakeVersion = "2020-04-17T20:37:16.5129130Z";
+        BlobClientBase fakeVersionClient = bc.getVersionClient(fakeVersion);
+        assertEquals(fakeVersion, fakeVersionClient.getVersionId());
+    }
+
+    @Test
+    public void getEncryptionScopeClient() {
+        String fakeScope = "fakeScope";
+        BlobClientBase fakeEncryptionScopeClient = bc.getEncryptionScopeClient(fakeScope);
+        assertEquals(fakeScope, fakeEncryptionScopeClient.getEncryptionScope());
+    }
+
+    @Test
+    public void getCPKClient() {
+        CustomerProvidedKey fakeCPK = new CustomerProvidedKey(getRandomKey());
+        BlobClientBase fakeCPKClient = bc.getCustomerProvidedKeyClient(fakeCPK);
+        assertEquals(fakeCPK.getKey(), fakeCPKClient.getCustomerProvidedKey().getEncryptionKey());
+    }
+
+    @Test
+    public void getMaxBlocks() {
+        assertEquals(MAX_APPEND_BLOCKS, bc.getMaxBlocks());
     }
 }

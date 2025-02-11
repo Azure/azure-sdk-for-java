@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.managednetworkfabric.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDeviceSkuInner;
 import com.azure.resourcemanager.managednetworkfabric.models.DeviceInterfaceProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleName;
@@ -18,8 +19,7 @@ public final class NetworkDeviceSkuImpl implements NetworkDeviceSku {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    NetworkDeviceSkuImpl(
-        NetworkDeviceSkuInner innerObject,
+    NetworkDeviceSkuImpl(NetworkDeviceSkuInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -35,6 +35,10 @@ public final class NetworkDeviceSkuImpl implements NetworkDeviceSku {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String model() {

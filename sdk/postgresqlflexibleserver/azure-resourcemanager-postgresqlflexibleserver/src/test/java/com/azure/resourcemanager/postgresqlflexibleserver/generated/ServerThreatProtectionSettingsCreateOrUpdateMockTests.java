@@ -23,7 +23,7 @@ public final class ServerThreatProtectionSettingsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-11-12T13:22:26Z\"},\"id\":\"rrrouuxvnsa\",\"name\":\"bcrymodizrx\",\"type\":\"lobdxna\"}";
+            = "{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-08-26T01:20:28Z\"},\"id\":\"p\",\"name\":\"ilkmk\",\"type\":\"holvdn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,7 +34,7 @@ public final class ServerThreatProtectionSettingsCreateOrUpdateMockTests {
 
         ServerThreatProtectionSettingsModel response = manager.serverThreatProtectionSettings()
             .define(ThreatProtectionName.DEFAULT)
-            .withExistingFlexibleServer("ninvudbchaqdt", "qecrqctmxx")
+            .withExistingFlexibleServer("vqylkmqpzoyhl", "bcg")
             .withState(ThreatProtectionState.DISABLED)
             .create();
 

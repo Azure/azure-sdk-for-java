@@ -7,7 +7,6 @@ package com.azure.resourcemanager.dashboard.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The GrafanasUpdateHeaders model.
@@ -17,10 +16,7 @@ public final class GrafanasUpdateHeaders {
     /*
      * The Azure-AsyncOperation property.
      */
-    @JsonProperty(value = "Azure-AsyncOperation")
     private String azureAsyncOperation;
-
-    private static final HttpHeaderName AZURE_ASYNC_OPERATION = HttpHeaderName.fromString("Azure-AsyncOperation");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -29,7 +25,7 @@ public final class GrafanasUpdateHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public GrafanasUpdateHeaders(HttpHeaders rawHeaders) {
-        this.azureAsyncOperation = rawHeaders.getValue(AZURE_ASYNC_OPERATION);
+        this.azureAsyncOperation = rawHeaders.getValue(HttpHeaderName.AZURE_ASYNCOPERATION);
     }
 
     /**

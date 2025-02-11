@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The indicator of whether to evacuate the node workload when the bare metal machine is cordoned. */
+/**
+ * The indicator of whether to evacuate the node workload when the bare metal machine is cordoned.
+ */
 public final class BareMetalMachineEvacuate extends ExpandableStringEnum<BareMetalMachineEvacuate> {
-    /** Static value True for BareMetalMachineEvacuate. */
+    /**
+     * Static value True for BareMetalMachineEvacuate.
+     */
     public static final BareMetalMachineEvacuate TRUE = fromString("True");
 
-    /** Static value False for BareMetalMachineEvacuate. */
+    /**
+     * Static value False for BareMetalMachineEvacuate.
+     */
     public static final BareMetalMachineEvacuate FALSE = fromString("False");
 
     /**
      * Creates a new instance of BareMetalMachineEvacuate value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class BareMetalMachineEvacuate extends ExpandableStringEnum<BareMet
 
     /**
      * Creates or finds a BareMetalMachineEvacuate from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BareMetalMachineEvacuate.
      */
-    @JsonCreator
     public static BareMetalMachineEvacuate fromString(String name) {
         return fromString(name, BareMetalMachineEvacuate.class);
     }
 
     /**
      * Gets known BareMetalMachineEvacuate values.
-     *
+     * 
      * @return known BareMetalMachineEvacuate values.
      */
     public static Collection<BareMetalMachineEvacuate> values() {

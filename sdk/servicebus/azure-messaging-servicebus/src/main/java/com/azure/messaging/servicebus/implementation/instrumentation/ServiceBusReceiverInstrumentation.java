@@ -31,7 +31,8 @@ public final class ServiceBusReceiverInstrumentation {
     private final ServiceBusTracer tracer;
     private final ReceiverKind receiverKind;
 
-    public ServiceBusReceiverInstrumentation(Tracer tracer, Meter meter, String fullyQualifiedName, String entityPath, String subscriptionName, ReceiverKind receiverKind) {
+    public ServiceBusReceiverInstrumentation(Tracer tracer, Meter meter, String fullyQualifiedName, String entityPath,
+        String subscriptionName, ReceiverKind receiverKind) {
         this.tracer = new ServiceBusTracer(tracer, fullyQualifiedName, entityPath);
         this.meter = new ServiceBusMeter(meter, fullyQualifiedName, entityPath, subscriptionName);
         this.receiverKind = receiverKind;
@@ -92,7 +93,8 @@ public final class ServiceBusReceiverInstrumentation {
         return span;
     }
 
-    public void instrumentProcess(ServiceBusReceivedMessage message, ReceiverKind caller, Function<ServiceBusReceivedMessage, Throwable> handleMessage) {
+    public void instrumentProcess(ServiceBusReceivedMessage message, ReceiverKind caller,
+        Function<ServiceBusReceivedMessage, Throwable> handleMessage) {
         if (receiverKind != caller || message == null) {
             handleMessage.apply(message);
             return;
@@ -119,22 +121,22 @@ public final class ServiceBusReceiverInstrumentation {
     /**
      * Instruments settlement calls. Creates a span for settlement call and reports settlement metrics.
      */
-    public <T> Mono<T> instrumentSettlement(Mono<T> publisher, ServiceBusReceivedMessage message, Context messageContext, DispositionStatus status) {
+    public <T> Mono<T> instrumentSettlement(Mono<T> publisher, ServiceBusReceivedMessage message,
+        Context messageContext, DispositionStatus status) {
         if (tracer.isEnabled() || meter.isSettlementEnabled()) {
             return Mono.defer(() -> {
                 long startTime = Instant.now().toEpochMilli();
-                Context span = tracer.startSpanWithLink(getSettlementSpanName(status), ServiceBusTracer.OperationName.SETTLE,
-                    message, messageContext);
-                return publisher
-                    .doOnEach(signal -> {
-                        meter.reportSettlement(startTime, message.getSequenceNumber(), status, signal.getThrowable(), false, span);
-                        tracer.endSpan(signal.getThrowable(), span, null);
-                    })
-                    .doOnCancel(() -> {
-                        meter.reportSettlement(startTime, message.getSequenceNumber(), status, null, true, span);
-                        tracer.cancelSpan(span);
+                Context span = tracer.startSpanWithLink(getSettlementSpanName(status),
+                    ServiceBusTracer.OperationName.SETTLE, message, messageContext);
+                return publisher.doOnEach(signal -> {
+                    meter.reportSettlement(startTime, message.getSequenceNumber(), status, signal.getThrowable(), false,
+                        span);
+                    tracer.endSpan(signal.getThrowable(), span, null);
+                }).doOnCancel(() -> {
+                    meter.reportSettlement(startTime, message.getSequenceNumber(), status, null, true, span);
+                    tracer.cancelSpan(span);
 
-                    });
+                });
             });
         }
 
@@ -149,14 +151,19 @@ public final class ServiceBusReceiverInstrumentation {
         switch (status) {
             case COMPLETED:
                 return "ServiceBus.complete";
+
             case ABANDONED:
                 return "ServiceBus.abandon";
+
             case DEFERRED:
                 return "ServiceBus.defer";
+
             case SUSPENDED:
                 return "ServiceBus.deadLetter";
+
             case RELEASED:
                 return "ServiceBus.release";
+
             default:
                 return "ServiceBus.unknown";
         }

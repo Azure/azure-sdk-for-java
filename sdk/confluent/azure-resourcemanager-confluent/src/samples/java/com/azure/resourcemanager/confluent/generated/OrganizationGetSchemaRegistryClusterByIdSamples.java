@@ -19,7 +19,8 @@ public final class OrganizationGetSchemaRegistryClusterByIdSamples {
      */
     public static void
         organizationGetSchemaRegistryClusterById(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().getSchemaRegistryClusterByIdWithResponse("myResourceGroup", "myOrganization",
-            "env-stgcczjp2j3", "lsrc-stgczkq22z", com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .getSchemaRegistryClusterByIdWithResponse("myResourceGroup", "myOrganization", "env-stgcczjp2j3",
+                "lsrc-stgczkq22z", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,31 +5,29 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The public IP Address configuration of the networking configuration of a Pool.
  */
 @Fluent
-public final class PublicIpAddressConfiguration {
+public final class PublicIpAddressConfiguration implements JsonSerializable<PublicIpAddressConfiguration> {
     /*
-     * The provisioning type for Public IP Addresses for the Batch Pool.
-     * 
      * The default value is BatchManaged
      */
-    @JsonProperty(value = "provision")
     private IpAddressProvisioningType provision;
 
     /*
-     * The list of public IPs which the Batch service will use when provisioning Compute Nodes.
-     * 
      * The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100
      * Spot/low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would
      * need at least 3 public IPs specified. Each element of this collection is of the form:
      * /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
      */
-    @JsonProperty(value = "ipAddressIds")
     private List<String> ipAddressIds;
 
     /**
@@ -39,9 +37,7 @@ public final class PublicIpAddressConfiguration {
     }
 
     /**
-     * Get the provision property: The provisioning type for Public IP Addresses for the Batch Pool.
-     * 
-     * The default value is BatchManaged.
+     * Get the provision property: The default value is BatchManaged.
      * 
      * @return the provision value.
      */
@@ -50,9 +46,7 @@ public final class PublicIpAddressConfiguration {
     }
 
     /**
-     * Set the provision property: The provisioning type for Public IP Addresses for the Batch Pool.
-     * 
-     * The default value is BatchManaged.
+     * Set the provision property: The default value is BatchManaged.
      * 
      * @param provision the provision value to set.
      * @return the PublicIpAddressConfiguration object itself.
@@ -63,12 +57,9 @@ public final class PublicIpAddressConfiguration {
     }
 
     /**
-     * Get the ipAddressIds property: The list of public IPs which the Batch service will use when provisioning Compute
-     * Nodes.
-     * 
-     * The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100
-     * Spot/low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would
-     * need at least 3 public IPs specified. Each element of this collection is of the form:
+     * Get the ipAddressIds property: The number of IPs specified here limits the maximum size of the Pool - 100
+     * dedicated nodes or 100 Spot/low-priority nodes can be allocated for each public IP. For example, a pool needing
+     * 250 dedicated VMs would need at least 3 public IPs specified. Each element of this collection is of the form:
      * /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
      * 
      * @return the ipAddressIds value.
@@ -78,12 +69,9 @@ public final class PublicIpAddressConfiguration {
     }
 
     /**
-     * Set the ipAddressIds property: The list of public IPs which the Batch service will use when provisioning Compute
-     * Nodes.
-     * 
-     * The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100
-     * Spot/low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would
-     * need at least 3 public IPs specified. Each element of this collection is of the form:
+     * Set the ipAddressIds property: The number of IPs specified here limits the maximum size of the Pool - 100
+     * dedicated nodes or 100 Spot/low-priority nodes can be allocated for each public IP. For example, a pool needing
+     * 250 dedicated VMs would need at least 3 public IPs specified. Each element of this collection is of the form:
      * /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
      * 
      * @param ipAddressIds the ipAddressIds value to set.
@@ -100,5 +88,46 @@ public final class PublicIpAddressConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provision", this.provision == null ? null : this.provision.toString());
+        jsonWriter.writeArrayField("ipAddressIds", this.ipAddressIds, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PublicIpAddressConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PublicIpAddressConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PublicIpAddressConfiguration.
+     */
+    public static PublicIpAddressConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PublicIpAddressConfiguration deserializedPublicIpAddressConfiguration = new PublicIpAddressConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provision".equals(fieldName)) {
+                    deserializedPublicIpAddressConfiguration.provision
+                        = IpAddressProvisioningType.fromString(reader.getString());
+                } else if ("ipAddressIds".equals(fieldName)) {
+                    List<String> ipAddressIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPublicIpAddressConfiguration.ipAddressIds = ipAddressIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPublicIpAddressConfiguration;
+        });
     }
 }

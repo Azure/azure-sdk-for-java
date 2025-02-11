@@ -21,21 +21,18 @@ public final class SuppressionsImpl implements Suppressions {
 
     private final com.azure.resourcemanager.advisor.AdvisorManager serviceManager;
 
-    public SuppressionsImpl(
-        SuppressionsClient innerClient, com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
+    public SuppressionsImpl(SuppressionsClient innerClient,
+        com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<SuppressionContract> getWithResponse(
-        String resourceUri, String recommendationId, String name, Context context) {
-        Response<SuppressionContractInner> inner =
-            this.serviceClient().getWithResponse(resourceUri, recommendationId, name, context);
+    public Response<SuppressionContract> getWithResponse(String resourceUri, String recommendationId, String name,
+        Context context) {
+        Response<SuppressionContractInner> inner
+            = this.serviceClient().getWithResponse(resourceUri, recommendationId, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SuppressionContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -51,8 +48,8 @@ public final class SuppressionsImpl implements Suppressions {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceUri, String recommendationId, String name, Context context) {
+    public Response<Void> deleteWithResponse(String resourceUri, String recommendationId, String name,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceUri, recommendationId, name, context);
     }
 
@@ -62,174 +59,110 @@ public final class SuppressionsImpl implements Suppressions {
 
     public PagedIterable<SuppressionContract> list() {
         PagedIterable<SuppressionContractInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SuppressionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SuppressionContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SuppressionContract> list(Integer top, String skipToken, Context context) {
         PagedIterable<SuppressionContractInner> inner = this.serviceClient().list(top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new SuppressionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SuppressionContractImpl(inner1, this.manager()));
     }
 
     public SuppressionContract getById(String id) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "resourceUri");
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String recommendationId =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "recommendationId");
+        String recommendationId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "recommendationId");
         if (recommendationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'recommendations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'recommendations'.", id)));
         }
-        String name =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "name");
+        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "name");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'suppressions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'suppressions'.", id)));
         }
         return this.getWithResponse(resourceUri, recommendationId, name, Context.NONE).getValue();
     }
 
     public Response<SuppressionContract> getByIdWithResponse(String id, Context context) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "resourceUri");
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String recommendationId =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "recommendationId");
+        String recommendationId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "recommendationId");
         if (recommendationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'recommendations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'recommendations'.", id)));
         }
-        String name =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "name");
+        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "name");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'suppressions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'suppressions'.", id)));
         }
         return this.getWithResponse(resourceUri, recommendationId, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "resourceUri");
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String recommendationId =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "recommendationId");
+        String recommendationId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "recommendationId");
         if (recommendationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'recommendations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'recommendations'.", id)));
         }
-        String name =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "name");
+        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "name");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'suppressions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'suppressions'.", id)));
         }
         this.deleteWithResponse(resourceUri, recommendationId, name, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "resourceUri");
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String recommendationId =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "recommendationId");
+        String recommendationId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "recommendationId");
         if (recommendationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'recommendations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'recommendations'.", id)));
         }
-        String name =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
-                    "name");
+        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}/suppressions/{name}",
+            "name");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'suppressions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'suppressions'.", id)));
         }
         return this.deleteWithResponse(resourceUri, recommendationId, name, context);
     }

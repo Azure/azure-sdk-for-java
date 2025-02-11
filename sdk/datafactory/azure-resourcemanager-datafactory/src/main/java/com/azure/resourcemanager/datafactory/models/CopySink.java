@@ -308,6 +308,8 @@ public class CopySink implements JsonSerializable<CopySink> {
                     return ParquetSink.fromJson(readerToUse.reset());
                 } else if ("BinarySink".equals(discriminatorValue)) {
                     return BinarySink.fromJson(readerToUse.reset());
+                } else if ("IcebergSink".equals(discriminatorValue)) {
+                    return IcebergSink.fromJson(readerToUse.reset());
                 } else if ("BlobSink".equals(discriminatorValue)) {
                     return BlobSink.fromJson(readerToUse.reset());
                 } else if ("FileSystemSink".equals(discriminatorValue)) {

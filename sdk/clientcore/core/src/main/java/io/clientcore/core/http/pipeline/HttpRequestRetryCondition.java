@@ -22,15 +22,16 @@ public final class HttpRequestRetryCondition {
      *
      * @param response The HTTP response of the request that failed.
      * @param exception The exception of the request that failed.
-     * @param tryCount The number of tries that have been attempted.
+     * @param tryCount The number of tries that have been already attempted.
      * @param retriedExceptions The list of exceptions that have been encountered during retries.
      */
-    HttpRequestRetryCondition(Response<?> response, Exception exception, int tryCount, List<Exception> retriedExceptions) {
+    HttpRequestRetryCondition(Response<?> response, Exception exception, int tryCount,
+        List<Exception> retriedExceptions) {
         this.response = response;
         this.exception = exception;
         this.tryCount = tryCount;
-        this.retriedExceptions = retriedExceptions == null
-            ? Collections.emptyList() : Collections.unmodifiableList(retriedExceptions);
+        this.retriedExceptions
+            = retriedExceptions == null ? Collections.emptyList() : Collections.unmodifiableList(retriedExceptions);
     }
 
     /**

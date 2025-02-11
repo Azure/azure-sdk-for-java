@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
+import com.azure.spring.cloud.integration.tests.eventhubs.TestEventHubsClientConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -28,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "produceerror" })
+@Import(TestEventHubsClientConfiguration.class)
 class EventHubsBinderProduceErrorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderProduceErrorIT.class);
@@ -73,10 +76,11 @@ class EventHubsBinderProduceErrorIT {
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubsBinderProduceErrorIT begin.");
-        EventHubsBinderProduceErrorIT.LATCH.await(15, TimeUnit.SECONDS);
+        // Wait for eventhub initialization to complete
+        Thread.sleep(20000);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubsBinderProduceErrorIT.LATCH.await(300, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubsBinderProduceErrorIT.LATCH.await(60, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubsBinderProduceErrorIT end.");
     }
 }

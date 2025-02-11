@@ -124,6 +124,9 @@ public final class Document implements JsonSerializable<Document> {
         return this.confidence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

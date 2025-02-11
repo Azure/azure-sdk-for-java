@@ -39,23 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DscNodeConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DscNodeConfigurationsClient.
+ */
 public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DscNodeConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of DscNodeConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DscNodeConfigurationsClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy
-                .create(DscNodeConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DscNodeConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,89 +70,64 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientDscN")
-    private interface DscNodeConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodeConfigurations/{nodeConfigurationName}")
-        @ExpectedResponses({200})
+    public interface DscNodeConfigurationsService {
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodeConfigurations/{nodeConfigurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
             @PathParam("nodeConfigurationName") String nodeConfigurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodeConfigurations/{nodeConfigurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodeConfigurations/{nodeConfigurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DscNodeConfigurationInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DscNodeConfigurationInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
             @PathParam("nodeConfigurationName") String nodeConfigurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodeConfigurations/{nodeConfigurationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodeConfigurations/{nodeConfigurationName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
             @PathParam("nodeConfigurationName") String nodeConfigurationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DscNodeConfigurationCreateOrUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodeConfigurations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodeConfigurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DscNodeConfigurationListResult>> listByAutomationAccount(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DscNodeConfigurationListResult>> listByAutomationAccount(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$inlinecount") String inlinecount,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top,
+            @QueryParam("$inlinecount") String inlinecount, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DscNodeConfigurationListResult>> listByAutomationAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Delete the Dsc node configurations by node configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -157,19 +137,15 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -186,24 +162,14 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            automationAccountName,
-                            nodeConfigurationName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, automationAccountName, nodeConfigurationName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the Dsc node configurations by node configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -214,19 +180,15 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -243,21 +205,13 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                automationAccountName,
-                nodeConfigurationName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            automationAccountName, nodeConfigurationName, apiVersion, accept, context);
     }
 
     /**
      * Delete the Dsc node configurations by node configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -267,30 +221,15 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, nodeConfigurationName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Delete the Dsc node configurations by node configuration.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeConfigurationName The Dsc node configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
-        deleteAsync(resourceGroupName, automationAccountName, nodeConfigurationName).block();
-    }
-
-    /**
-     * Delete the Dsc node configurations by node configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -301,38 +240,49 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, nodeConfigurationName, context)
             .block();
     }
 
     /**
-     * Retrieve the Dsc node configurations by node configuration.
-     *
+     * Delete the Dsc node configurations by node configuration.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node configuration along with {@link Response} on successful completion of {@link
-     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscNodeConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
+    public void delete(String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, Context.NONE);
+    }
+
+    /**
+     * Retrieve the Dsc node configurations by node configuration.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeConfigurationName The Dsc node configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the dsc node configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DscNodeConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String nodeConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -349,24 +299,14 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            automationAccountName,
-                            nodeConfigurationName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, automationAccountName, nodeConfigurationName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the Dsc node configurations by node configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -374,23 +314,19 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node configuration along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of the dsc node configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscNodeConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context) {
+    private Mono<Response<DscNodeConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String nodeConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -407,21 +343,13 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                automationAccountName,
-                nodeConfigurationName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            automationAccountName, nodeConfigurationName, apiVersion, accept, context);
     }
 
     /**
      * Retrieve the Dsc node configurations by node configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -431,32 +359,15 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return definition of the dsc node configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscNodeConfigurationInner> getAsync(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
+    private Mono<DscNodeConfigurationInner> getAsync(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, nodeConfigurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve the Dsc node configurations by node configuration.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeConfigurationName The Dsc node configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscNodeConfigurationInner get(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
-        return getAsync(resourceGroupName, automationAccountName, nodeConfigurationName).block();
-    }
-
-    /**
-     * Retrieve the Dsc node configurations by node configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -467,14 +378,32 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return definition of the dsc node configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DscNodeConfigurationInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context) {
+    public Response<DscNodeConfigurationInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, nodeConfigurationName, context).block();
     }
 
     /**
+     * Retrieve the Dsc node configurations by node configuration.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeConfigurationName The Dsc node configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the dsc node configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscNodeConfigurationInner get(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName) {
+        return getWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -485,16 +414,12 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String nodeConfigurationName,
         DscNodeConfigurationCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -509,10 +434,8 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
                 .error(new IllegalArgumentException("Parameter nodeConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -523,24 +446,14 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            nodeConfigurationName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                    nodeConfigurationName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -552,17 +465,12 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
-        DscNodeConfigurationCreateOrUpdateParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String nodeConfigurationName,
+        DscNodeConfigurationCreateOrUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -577,10 +485,8 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
                 .error(new IllegalArgumentException("Parameter nodeConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -590,22 +496,13 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                nodeConfigurationName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+            nodeConfigurationName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -617,26 +514,18 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DscNodeConfigurationInner>, DscNodeConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
+        String resourceGroupName, String automationAccountName, String nodeConfigurationName,
         DscNodeConfigurationCreateOrUpdateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, automationAccountName, nodeConfigurationName, parameters);
-        return this
-            .client
-            .<DscNodeConfigurationInner, DscNodeConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DscNodeConfigurationInner.class,
-                DscNodeConfigurationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            automationAccountName, nodeConfigurationName, parameters);
+        return this.client.<DscNodeConfigurationInner, DscNodeConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DscNodeConfigurationInner.class, DscNodeConfigurationInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -649,50 +538,39 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DscNodeConfigurationInner>, DscNodeConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
-        DscNodeConfigurationCreateOrUpdateParameters parameters,
-        Context context) {
+        String resourceGroupName, String automationAccountName, String nodeConfigurationName,
+        DscNodeConfigurationCreateOrUpdateParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, automationAccountName, nodeConfigurationName, parameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            automationAccountName, nodeConfigurationName, parameters, context);
+        return this.client.<DscNodeConfigurationInner, DscNodeConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DscNodeConfigurationInner.class, DscNodeConfigurationInner.class, context);
+    }
+
+    /**
+     * Create the node configuration identified by node configuration name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeConfigurationName The Dsc node configuration name.
+     * @param parameters The create or update parameters for configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DscNodeConfigurationInner>, DscNodeConfigurationInner> beginCreateOrUpdate(
+        String resourceGroupName, String automationAccountName, String nodeConfigurationName,
+        DscNodeConfigurationCreateOrUpdateParameters parameters) {
         return this
-            .client
-            .<DscNodeConfigurationInner, DscNodeConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DscNodeConfigurationInner.class,
-                DscNodeConfigurationInner.class,
-                context);
-    }
-
-    /**
-     * Create the node configuration identified by node configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeConfigurationName The Dsc node configuration name.
-     * @param parameters The create or update parameters for configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DscNodeConfigurationInner>, DscNodeConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
-        DscNodeConfigurationCreateOrUpdateParameters parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, automationAccountName, nodeConfigurationName, parameters)
+            .beginCreateOrUpdateAsync(resourceGroupName, automationAccountName, nodeConfigurationName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -705,19 +583,17 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DscNodeConfigurationInner>, DscNodeConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
-        DscNodeConfigurationCreateOrUpdateParameters parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, automationAccountName, nodeConfigurationName, parameters, context)
+        String resourceGroupName, String automationAccountName, String nodeConfigurationName,
+        DscNodeConfigurationCreateOrUpdateParameters parameters, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, automationAccountName, nodeConfigurationName, parameters,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -728,11 +604,8 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscNodeConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
-        DscNodeConfigurationCreateOrUpdateParameters parameters) {
+    private Mono<DscNodeConfigurationInner> createOrUpdateAsync(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, DscNodeConfigurationCreateOrUpdateParameters parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, automationAccountName, nodeConfigurationName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -740,7 +613,7 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
 
     /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -752,21 +625,15 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscNodeConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
-        DscNodeConfigurationCreateOrUpdateParameters parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, automationAccountName, nodeConfigurationName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<DscNodeConfigurationInner> createOrUpdateAsync(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, DscNodeConfigurationCreateOrUpdateParameters parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, automationAccountName, nodeConfigurationName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -777,17 +644,14 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscNodeConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
-        DscNodeConfigurationCreateOrUpdateParameters parameters) {
+    public DscNodeConfigurationInner createOrUpdate(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, DscNodeConfigurationCreateOrUpdateParameters parameters) {
         return createOrUpdateAsync(resourceGroupName, automationAccountName, nodeConfigurationName, parameters).block();
     }
 
     /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -799,19 +663,15 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscNodeConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
-        DscNodeConfigurationCreateOrUpdateParameters parameters,
-        Context context) {
+    public DscNodeConfigurationInner createOrUpdate(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, DscNodeConfigurationCreateOrUpdateParameters parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, automationAccountName, nodeConfigurationName, parameters, context)
             .block();
     }
 
     /**
      * Retrieve a list of dsc node configurations.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -822,21 +682,15 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscNodeConfigurationInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
+        String resourceGroupName, String automationAccountName, String filter, Integer skip, Integer top,
         String inlinecount) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -847,44 +701,23 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAutomationAccount(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            filter,
-                            skip,
-                            top,
-                            inlinecount,
-                            accept,
-                            context))
-            .<PagedResponse<DscNodeConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAutomationAccount(this.client.getEndpoint(), resourceGroupName,
+                automationAccountName, this.client.getSubscriptionId(), apiVersion, filter, skip, top, inlinecount,
+                accept, context))
+            .<PagedResponse<DscNodeConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve a list of dsc node configurations.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -896,22 +729,15 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscNodeConfigurationInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount,
-        Context context) {
+        String resourceGroupName, String automationAccountName, String filter, Integer skip, Integer top,
+        String inlinecount, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -922,41 +748,22 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAutomationAccount(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                filter,
-                skip,
-                top,
-                inlinecount,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAutomationAccount(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                this.client.getSubscriptionId(), apiVersion, filter, skip, top, inlinecount, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieve a list of dsc node configurations.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -969,23 +776,15 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the response model for the list job operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscNodeConfigurationInner> listByAutomationAccountAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount) {
-        return new PagedFlux<>(
-            () ->
-                listByAutomationAccountSinglePageAsync(
-                    resourceGroupName, automationAccountName, filter, skip, top, inlinecount),
-            nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
+    private PagedFlux<DscNodeConfigurationInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName, String filter, Integer skip, Integer top, String inlinecount) {
+        return new PagedFlux<>(() -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName,
+            filter, skip, top, inlinecount), nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieve a list of dsc node configurations.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -994,22 +793,19 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the response model for the list job operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscNodeConfigurationInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName) {
+    private PagedFlux<DscNodeConfigurationInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName) {
         final String filter = null;
         final Integer skip = null;
         final Integer top = null;
         final String inlinecount = null;
-        return new PagedFlux<>(
-            () ->
-                listByAutomationAccountSinglePageAsync(
-                    resourceGroupName, automationAccountName, filter, skip, top, inlinecount),
-            nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName,
+            filter, skip, top, inlinecount), nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieve a list of dsc node configurations.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -1023,24 +819,16 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the response model for the list job operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscNodeConfigurationInner> listByAutomationAccountAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByAutomationAccountSinglePageAsync(
-                    resourceGroupName, automationAccountName, filter, skip, top, inlinecount, context),
+    private PagedFlux<DscNodeConfigurationInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName, String filter, Integer skip, Integer top, String inlinecount, Context context) {
+        return new PagedFlux<>(() -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName,
+            filter, skip, top, inlinecount, context),
             nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieve a list of dsc node configurations.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1049,8 +837,8 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DscNodeConfigurationInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
+    public PagedIterable<DscNodeConfigurationInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
         final String filter = null;
         final Integer skip = null;
         final Integer top = null;
@@ -1061,7 +849,7 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
 
     /**
      * Retrieve a list of dsc node configurations.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -1075,29 +863,21 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
      * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DscNodeConfigurationInner> listByAutomationAccount(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount,
-        Context context) {
-        return new PagedIterable<>(
-            listByAutomationAccountAsync(
-                resourceGroupName, automationAccountName, filter, skip, top, inlinecount, context));
+    public PagedIterable<DscNodeConfigurationInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String filter, Integer skip, Integer top, String inlinecount, Context context) {
+        return new PagedIterable<>(listByAutomationAccountAsync(resourceGroupName, automationAccountName, filter, skip,
+            top, inlinecount, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscNodeConfigurationInner>> listByAutomationAccountNextSinglePageAsync(String nextLink) {
@@ -1105,63 +885,43 @@ public final class DscNodeConfigurationsClientImpl implements DscNodeConfigurati
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DscNodeConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DscNodeConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DscNodeConfigurationInner>> listByAutomationAccountNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DscNodeConfigurationInner>> listByAutomationAccountNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

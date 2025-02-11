@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.OperationMetadataDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The REST API operation supported by DevTestLab ResourceProvider. */
+/**
+ * The REST API operation supported by DevTestLab ResourceProvider.
+ */
 @Fluent
-public final class OperationMetadataInner {
+public final class OperationMetadataInner implements JsonSerializable<OperationMetadataInner> {
     /*
      * Operation name: {provider}/{resource}/{operation}
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The object that describes the operations
      */
-    @JsonProperty(value = "display")
     private OperationMetadataDisplay display;
 
-    /** Creates an instance of OperationMetadataInner class. */
+    /**
+     * Creates an instance of OperationMetadataInner class.
+     */
     public OperationMetadataInner() {
     }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class OperationMetadataInner {
 
     /**
      * Set the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationMetadataInner object itself.
      */
@@ -49,7 +55,7 @@ public final class OperationMetadataInner {
 
     /**
      * Get the display property: The object that describes the operations.
-     *
+     * 
      * @return the display value.
      */
     public OperationMetadataDisplay display() {
@@ -58,7 +64,7 @@ public final class OperationMetadataInner {
 
     /**
      * Set the display property: The object that describes the operations.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationMetadataInner object itself.
      */
@@ -69,12 +75,51 @@ public final class OperationMetadataInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationMetadataInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationMetadataInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationMetadataInner.
+     */
+    public static OperationMetadataInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationMetadataInner deserializedOperationMetadataInner = new OperationMetadataInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationMetadataInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationMetadataInner.display = OperationMetadataDisplay.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationMetadataInner;
+        });
     }
 }

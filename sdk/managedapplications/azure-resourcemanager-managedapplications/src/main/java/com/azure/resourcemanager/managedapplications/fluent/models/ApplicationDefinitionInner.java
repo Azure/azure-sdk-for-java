@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.managedapplications.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managedapplications.models.ApplicationAuthorization;
 import com.azure.resourcemanager.managedapplications.models.ApplicationDefinitionArtifact;
 import com.azure.resourcemanager.managedapplications.models.ApplicationDeploymentPolicy;
@@ -16,54 +20,125 @@ import com.azure.resourcemanager.managedapplications.models.ApplicationPackageLo
 import com.azure.resourcemanager.managedapplications.models.ApplicationPolicy;
 import com.azure.resourcemanager.managedapplications.models.GenericResource;
 import com.azure.resourcemanager.managedapplications.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Information about managed application definition. */
+/**
+ * Information about managed application definition.
+ */
 @Fluent
 public final class ApplicationDefinitionInner extends GenericResource {
     /*
      * The managed application definition properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private ApplicationDefinitionProperties innerProperties = new ApplicationDefinitionProperties();
 
-    /** Creates an instance of ApplicationDefinitionInner class. */
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ApplicationDefinitionInner class.
+     */
     public ApplicationDefinitionInner() {
     }
 
     /**
      * Get the innerProperties property: The managed application definition properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationDefinitionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationDefinitionInner withManagedBy(String managedBy) {
         super.withManagedBy(managedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationDefinitionInner withSku(Sku sku) {
         super.withSku(sku);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationDefinitionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationDefinitionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -72,7 +147,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Get the lockLevel property: The managed application lock level.
-     *
+     * 
      * @return the lockLevel value.
      */
     public ApplicationLockLevel lockLevel() {
@@ -81,7 +156,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Set the lockLevel property: The managed application lock level.
-     *
+     * 
      * @param lockLevel the lockLevel value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -95,7 +170,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Get the displayName property: The managed application definition display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -104,7 +179,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Set the displayName property: The managed application definition display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -118,7 +193,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Get the isEnabled property: A value indicating whether the package is enabled or not.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -127,7 +202,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Set the isEnabled property: A value indicating whether the package is enabled or not.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -141,7 +216,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Get the authorizations property: The managed application provider authorizations.
-     *
+     * 
      * @return the authorizations value.
      */
     public List<ApplicationAuthorization> authorizations() {
@@ -150,7 +225,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Set the authorizations property: The managed application provider authorizations.
-     *
+     * 
      * @param authorizations the authorizations value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -166,7 +241,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
      * Get the artifacts property: The collection of managed application artifacts. The portal will use the files
      * specified as artifacts to construct the user experience of creating a managed application from a managed
      * application definition.
-     *
+     * 
      * @return the artifacts value.
      */
     public List<ApplicationDefinitionArtifact> artifacts() {
@@ -177,7 +252,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
      * Set the artifacts property: The collection of managed application artifacts. The portal will use the files
      * specified as artifacts to construct the user experience of creating a managed application from a managed
      * application definition.
-     *
+     * 
      * @param artifacts the artifacts value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -191,7 +266,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Get the description property: The managed application definition description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -200,7 +275,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Set the description property: The managed application definition description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -214,7 +289,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Get the packageFileUri property: The managed application definition package file Uri. Use this element.
-     *
+     * 
      * @return the packageFileUri value.
      */
     public String packageFileUri() {
@@ -223,7 +298,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Set the packageFileUri property: The managed application definition package file Uri. Use this element.
-     *
+     * 
      * @param packageFileUri the packageFileUri value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -237,7 +312,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Get the storageAccountId property: The storage account id for bring your own storage scenario.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -246,7 +321,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Set the storageAccountId property: The storage account id for bring your own storage scenario.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -261,7 +336,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
     /**
      * Get the mainTemplate property: The inline main template json which has resources to be provisioned. It can be a
      * JObject or well-formed JSON string.
-     *
+     * 
      * @return the mainTemplate value.
      */
     public Object mainTemplate() {
@@ -271,7 +346,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
     /**
      * Set the mainTemplate property: The inline main template json which has resources to be provisioned. It can be a
      * JObject or well-formed JSON string.
-     *
+     * 
      * @param mainTemplate the mainTemplate value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -286,7 +361,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
     /**
      * Get the createUiDefinition property: The createUiDefinition json for the backing template with
      * Microsoft.Solutions/applications resource. It can be a JObject or well-formed JSON string.
-     *
+     * 
      * @return the createUiDefinition value.
      */
     public Object createUiDefinition() {
@@ -296,7 +371,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
     /**
      * Set the createUiDefinition property: The createUiDefinition json for the backing template with
      * Microsoft.Solutions/applications resource. It can be a JObject or well-formed JSON string.
-     *
+     * 
      * @param createUiDefinition the createUiDefinition value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -310,7 +385,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Get the notificationPolicy property: The managed application notification policy.
-     *
+     * 
      * @return the notificationPolicy value.
      */
     public ApplicationNotificationPolicy notificationPolicy() {
@@ -319,7 +394,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Set the notificationPolicy property: The managed application notification policy.
-     *
+     * 
      * @param notificationPolicy the notificationPolicy value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -333,7 +408,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Get the lockingPolicy property: The managed application locking policy.
-     *
+     * 
      * @return the lockingPolicy value.
      */
     public ApplicationPackageLockingPolicyDefinition lockingPolicy() {
@@ -342,7 +417,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Set the lockingPolicy property: The managed application locking policy.
-     *
+     * 
      * @param lockingPolicy the lockingPolicy value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -356,7 +431,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Get the deploymentPolicy property: The managed application deployment policy.
-     *
+     * 
      * @return the deploymentPolicy value.
      */
     public ApplicationDeploymentPolicy deploymentPolicy() {
@@ -365,7 +440,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Set the deploymentPolicy property: The managed application deployment policy.
-     *
+     * 
      * @param deploymentPolicy the deploymentPolicy value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -380,7 +455,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
     /**
      * Get the managementPolicy property: The managed application management policy that determines publisher's access
      * to the managed resource group.
-     *
+     * 
      * @return the managementPolicy value.
      */
     public ApplicationManagementPolicy managementPolicy() {
@@ -390,7 +465,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
     /**
      * Set the managementPolicy property: The managed application management policy that determines publisher's access
      * to the managed resource group.
-     *
+     * 
      * @param managementPolicy the managementPolicy value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -404,7 +479,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Get the policies property: The managed application provider policies.
-     *
+     * 
      * @return the policies value.
      */
     public List<ApplicationPolicy> policies() {
@@ -413,7 +488,7 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Set the policies property: The managed application provider policies.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the ApplicationDefinitionInner object itself.
      */
@@ -427,21 +502,81 @@ public final class ApplicationDefinitionInner extends GenericResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ApplicationDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ApplicationDefinitionInner"));
         } else {
             innerProperties().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationDefinitionInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("managedBy", managedBy());
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationDefinitionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationDefinitionInner.
+     */
+    public static ApplicationDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationDefinitionInner deserializedApplicationDefinitionInner = new ApplicationDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationDefinitionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationDefinitionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationDefinitionInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationDefinitionInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationDefinitionInner.withTags(tags);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedApplicationDefinitionInner.withManagedBy(reader.getString());
+                } else if ("sku".equals(fieldName)) {
+                    deserializedApplicationDefinitionInner.withSku(Sku.fromJson(reader));
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedApplicationDefinitionInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationDefinitionInner.innerProperties
+                        = ApplicationDefinitionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationDefinitionInner;
+        });
+    }
 }

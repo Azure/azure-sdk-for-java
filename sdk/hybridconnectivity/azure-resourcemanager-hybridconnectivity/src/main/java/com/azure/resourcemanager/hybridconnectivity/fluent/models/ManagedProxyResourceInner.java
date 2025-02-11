@@ -6,30 +6,36 @@ package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Managed Proxy. */
+/**
+ * Managed Proxy.
+ */
 @Fluent
-public final class ManagedProxyResourceInner {
+public final class ManagedProxyResourceInner implements JsonSerializable<ManagedProxyResourceInner> {
     /*
      * The short lived proxy name.
      */
-    @JsonProperty(value = "proxy", required = true)
     private String proxy;
 
     /*
      * The expiration time of short lived proxy name in unix epoch.
      */
-    @JsonProperty(value = "expiresOn", required = true)
     private long expiresOn;
 
-    /** Creates an instance of ManagedProxyResourceInner class. */
+    /**
+     * Creates an instance of ManagedProxyResourceInner class.
+     */
     public ManagedProxyResourceInner() {
     }
 
     /**
      * Get the proxy property: The short lived proxy name.
-     *
+     * 
      * @return the proxy value.
      */
     public String proxy() {
@@ -38,7 +44,7 @@ public final class ManagedProxyResourceInner {
 
     /**
      * Set the proxy property: The short lived proxy name.
-     *
+     * 
      * @param proxy the proxy value to set.
      * @return the ManagedProxyResourceInner object itself.
      */
@@ -49,7 +55,7 @@ public final class ManagedProxyResourceInner {
 
     /**
      * Get the expiresOn property: The expiration time of short lived proxy name in unix epoch.
-     *
+     * 
      * @return the expiresOn value.
      */
     public long expiresOn() {
@@ -58,7 +64,7 @@ public final class ManagedProxyResourceInner {
 
     /**
      * Set the expiresOn property: The expiration time of short lived proxy name in unix epoch.
-     *
+     * 
      * @param expiresOn the expiresOn value to set.
      * @return the ManagedProxyResourceInner object itself.
      */
@@ -69,16 +75,56 @@ public final class ManagedProxyResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (proxy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property proxy in model ManagedProxyResourceInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedProxyResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("proxy", this.proxy);
+        jsonWriter.writeLongField("expiresOn", this.expiresOn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedProxyResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedProxyResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedProxyResourceInner.
+     */
+    public static ManagedProxyResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedProxyResourceInner deserializedManagedProxyResourceInner = new ManagedProxyResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("proxy".equals(fieldName)) {
+                    deserializedManagedProxyResourceInner.proxy = reader.getString();
+                } else if ("expiresOn".equals(fieldName)) {
+                    deserializedManagedProxyResourceInner.expiresOn = reader.getLong();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedProxyResourceInner;
+        });
+    }
 }

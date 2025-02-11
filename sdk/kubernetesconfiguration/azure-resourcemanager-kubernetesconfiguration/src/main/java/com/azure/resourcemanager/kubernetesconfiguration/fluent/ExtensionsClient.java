@@ -14,16 +14,18 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.ExtensionInner;
 import com.azure.resourcemanager.kubernetesconfiguration.models.PatchExtension;
 
-/** An instance of this class provides access to all the operations defined in ExtensionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExtensionsClient.
+ */
 public interface ExtensionsClient {
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -33,22 +35,17 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of the Extension object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginCreate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        ExtensionInner extension);
+    SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginCreate(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, ExtensionInner extension);
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -59,23 +56,18 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of the Extension object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginCreate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        ExtensionInner extension,
+    SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginCreate(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, ExtensionInner extension,
         Context context);
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -85,22 +77,17 @@ public interface ExtensionsClient {
      * @return the Extension object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtensionInner create(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        ExtensionInner extension);
+    ExtensionInner create(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, ExtensionInner extension);
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -111,23 +98,17 @@ public interface ExtensionsClient {
      * @return the Extension object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtensionInner create(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context);
+    ExtensionInner create(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, ExtensionInner extension, Context context);
 
     /**
      * Gets Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param context The context to associate with this operation.
@@ -137,22 +118,17 @@ public interface ExtensionsClient {
      * @return kubernetes Cluster Extension along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtensionInner> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        Context context);
+    Response<ExtensionInner> getWithResponse(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String extensionName, Context context);
 
     /**
      * Gets Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,21 +137,17 @@ public interface ExtensionsClient {
      * @return kubernetes Cluster Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtensionInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
+    ExtensionInner get(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String extensionName);
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,21 +156,17 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName);
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
@@ -209,23 +177,17 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        Boolean forceDelete,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, Boolean forceDelete, Context context);
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,21 +195,17 @@ public interface ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
+    void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String extensionName);
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
@@ -257,23 +215,17 @@ public interface ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        Boolean forceDelete,
-        Context context);
+    void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, Boolean forceDelete, Context context);
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -283,22 +235,17 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of the Extension object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        PatchExtension patchExtension);
+    SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginUpdate(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, PatchExtension patchExtension);
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -309,23 +256,18 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of the Extension object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        PatchExtension patchExtension,
+    SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginUpdate(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, PatchExtension patchExtension,
         Context context);
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -335,22 +277,17 @@ public interface ExtensionsClient {
      * @return the Extension object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtensionInner update(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        PatchExtension patchExtension);
+    ExtensionInner update(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, PatchExtension patchExtension);
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -361,23 +298,17 @@ public interface ExtensionsClient {
      * @return the Extension object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtensionInner update(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        PatchExtension patchExtension,
-        Context context);
+    ExtensionInner update(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, PatchExtension patchExtension, Context context);
 
     /**
      * List all Extensions in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -385,17 +316,17 @@ public interface ExtensionsClient {
      * @return result of the request to list Extensions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExtensionInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName);
+    PagedIterable<ExtensionInner> list(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName);
 
     /**
      * List all Extensions in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -404,6 +335,6 @@ public interface ExtensionsClient {
      * @return result of the request to list Extensions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExtensionInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context);
+    PagedIterable<ExtensionInner> list(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, Context context);
 }

@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountKeyRegenerateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountKeyRegenerateRequest model =
-            BinaryData.fromString("{\"serial\":1}").toObject(AccountKeyRegenerateRequest.class);
-        Assertions.assertEquals(Serial.ONE, model.serial());
+        AccountKeyRegenerateRequest model
+            = BinaryData.fromString("{\"serial\":2}").toObject(AccountKeyRegenerateRequest.class);
+        Assertions.assertEquals(Serial.TWO, model.serial());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountKeyRegenerateRequest model = new AccountKeyRegenerateRequest().withSerial(Serial.ONE);
+        AccountKeyRegenerateRequest model = new AccountKeyRegenerateRequest().withSerial(Serial.TWO);
         model = BinaryData.fromObject(model).toObject(AccountKeyRegenerateRequest.class);
-        Assertions.assertEquals(Serial.ONE, model.serial());
+        Assertions.assertEquals(Serial.TWO, model.serial());
     }
 }

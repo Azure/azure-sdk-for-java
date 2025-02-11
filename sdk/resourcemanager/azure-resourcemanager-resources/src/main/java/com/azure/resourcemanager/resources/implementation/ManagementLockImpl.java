@@ -23,26 +23,22 @@ import java.util.List;
  */
 final class ManagementLockImpl
     extends CreatableUpdatableImpl<ManagementLock, ManagementLockObjectInner, ManagementLockImpl>
-    implements
-        ManagementLock,
-        ManagementLock.Definition,
-        ManagementLock.Update {
+    implements ManagementLock, ManagementLock.Definition, ManagementLock.Update {
 
     private final ResourceManager manager;
     private String lockedResourceId = null;
     private final ClientLogger logger = new ClientLogger(ManagementLockImpl.class);
 
-    ManagementLockImpl(
-            String name,
-            ManagementLockObjectInner innerModel,
-            final ResourceManager manager) {
+    ManagementLockImpl(String name, ManagementLockObjectInner innerModel, final ResourceManager manager) {
         super(name, innerModel);
         this.manager = manager;
     }
 
     @Override
     protected Mono<ManagementLockObjectInner> getInnerAsync() {
-        return this.manager().managementLockClient().getManagementLocks()
+        return this.manager()
+            .managementLockClient()
+            .getManagementLocks()
             .getByScopeAsync(this.lockedResourceId(), this.name());
     }
 
@@ -101,7 +97,8 @@ final class ManagementLockImpl
 
     @Override
     public Mono<ManagementLock> createResourceAsync() {
-        return this.manager().managementLockClient()
+        return this.manager()
+            .managementLockClient()
             .getManagementLocks()
             .createOrUpdateByScopeAsync(this.lockedResourceId(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));

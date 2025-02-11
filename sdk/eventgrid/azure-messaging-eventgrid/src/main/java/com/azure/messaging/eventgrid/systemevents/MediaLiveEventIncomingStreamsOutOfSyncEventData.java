@@ -108,6 +108,9 @@ public final class MediaLiveEventIncomingStreamsOutOfSyncEventData
         return this.timescaleOfMaxLastTimestamp;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

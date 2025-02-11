@@ -36,12 +36,12 @@ import com.azure.storage.file.datalake.implementation.models.ListBlobsIncludeIte
 import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathList;
+import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
-import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 
 /**
  * An instance of this class provides access to all the operations defined in FileSystems.
@@ -353,10 +353,7 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FileSystemsCreateHeaders, Void>> createWithResponseAsync(String requestId, Integer timeout,
         String properties) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.create(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getResource(), requestId, timeout, this.client.getVersion(), properties, accept, context))
+        return FluxUtil.withContext(context -> createWithResponseAsync(requestId, timeout, properties, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -477,10 +474,8 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String requestId, Integer timeout,
         String properties) {
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getResource(), requestId, timeout, this.client.getVersion(), properties, accept, context))
+            .withContext(context -> createNoCustomHeadersWithResponseAsync(requestId, timeout, properties, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -543,8 +538,8 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FileSystemsCreateHeaders, Void> createWithResponse(String requestId, Integer timeout,
         String properties, Context context) {
-        final String accept = "application/json";
         try {
+            final String accept = "application/json";
             return service.createSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), properties, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -604,8 +599,8 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createNoCustomHeadersWithResponse(String requestId, Integer timeout, String properties,
         Context context) {
-        final String accept = "application/json";
         try {
+            final String accept = "application/json";
             return service.createNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -640,25 +635,9 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FileSystemsSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String requestId,
         Integer timeout, String properties, ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.setProperties(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getResource(), requestId, timeout, this.client.getVersion(), properties,
-                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
+            .withContext(context -> setPropertiesWithResponseAsync(requestId, timeout, properties,
+                modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -804,25 +783,9 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String requestId, Integer timeout,
         String properties, ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(),
-                this.client.getFileSystem(), this.client.getResource(), requestId, timeout, this.client.getVersion(),
-                properties, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
+            .withContext(context -> setPropertiesNoCustomHeadersWithResponseAsync(requestId, timeout, properties,
+                modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -904,22 +867,22 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FileSystemsSetPropertiesHeaders, Void> setPropertiesWithResponse(String requestId,
         Integer timeout, String properties, ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String accept = "application/json";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.setPropertiesSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
@@ -985,22 +948,22 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesNoCustomHeadersWithResponse(String requestId, Integer timeout, String properties,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String accept = "application/json";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
@@ -1027,10 +990,7 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FileSystemsGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(String requestId,
         Integer timeout) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getProperties(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getResource(), requestId, timeout, this.client.getVersion(), accept, context))
+        return FluxUtil.withContext(context -> getPropertiesWithResponseAsync(requestId, timeout, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1122,11 +1082,8 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getPropertiesNoCustomHeadersWithResponseAsync(String requestId, Integer timeout) {
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                    this.client.getResource(), requestId, timeout, this.client.getVersion(), accept, context))
+            .withContext(context -> getPropertiesNoCustomHeadersWithResponseAsync(requestId, timeout, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1175,8 +1132,8 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FileSystemsGetPropertiesHeaders, Void> getPropertiesWithResponse(String requestId,
         Integer timeout, Context context) {
-        final String accept = "application/json";
         try {
+            final String accept = "application/json";
             return service.getPropertiesSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -1221,8 +1178,8 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesNoCustomHeadersWithResponse(String requestId, Integer timeout, Context context) {
-        final String accept = "application/json";
         try {
+            final String accept = "application/json";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -1256,25 +1213,8 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FileSystemsDeleteHeaders, Void>> deleteWithResponseAsync(String requestId, Integer timeout,
         ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted, accept, context))
+            .withContext(context -> deleteWithResponseAsync(requestId, timeout, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1415,25 +1355,8 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(String requestId, Integer timeout,
         ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil
-            .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted, accept, context))
+        return FluxUtil.withContext(
+            context -> deleteNoCustomHeadersWithResponseAsync(requestId, timeout, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1513,22 +1436,22 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FileSystemsDeleteHeaders, Void> deleteWithResponse(String requestId, Integer timeout,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String accept = "application/json";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.deleteSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 accept, context);
@@ -1591,22 +1514,22 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNoCustomHeadersWithResponse(String requestId, Integer timeout,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String accept = "application/json";
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, accept, context);
@@ -1647,11 +1570,9 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsWithResponseAsync(boolean recursive,
         String requestId, Integer timeout, String continuation, String path, Integer maxResults, Boolean upn) {
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listPaths(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getResource(), requestId, timeout, this.client.getVersion(), continuation, path, recursive,
-                maxResults, upn, accept, context))
+            .withContext(context -> listPathsWithResponseAsync(recursive, requestId, timeout, continuation, path,
+                maxResults, upn, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1803,11 +1724,9 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathList>> listPathsNoCustomHeadersWithResponseAsync(boolean recursive, String requestId,
         Integer timeout, String continuation, String path, Integer maxResults, Boolean upn) {
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listPathsNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getResource(), requestId, timeout, this.client.getVersion(), continuation, path, recursive,
-                maxResults, upn, accept, context))
+            .withContext(context -> listPathsNoCustomHeadersWithResponseAsync(recursive, requestId, timeout,
+                continuation, path, maxResults, upn, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1886,8 +1805,8 @@ public final class FileSystemsImpl {
     public ResponseBase<FileSystemsListPathsHeaders, PathList> listPathsWithResponse(boolean recursive,
         String requestId, Integer timeout, String continuation, String path, Integer maxResults, Boolean upn,
         Context context) {
-        final String accept = "application/json";
         try {
+            final String accept = "application/json";
             return service.listPathsSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), continuation, path, recursive, maxResults, upn, accept,
                 context);
@@ -1969,8 +1888,8 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathList> listPathsNoCustomHeadersWithResponse(boolean recursive, String requestId, Integer timeout,
         String continuation, String path, Integer maxResults, Boolean upn, Context context) {
-        final String accept = "application/json";
         try {
+            final String accept = "application/json";
             return service.listPathsNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), continuation, path, recursive,
                 maxResults, upn, accept, context);
@@ -2009,18 +1928,9 @@ public final class FileSystemsImpl {
     public Mono<ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
         listBlobHierarchySegmentWithResponseAsync(String prefix, String delimiter, String marker, Integer maxResults,
             List<ListBlobsIncludeItem> include, ListBlobsShowOnly showonly, Integer timeout, String requestId) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(context -> service.listBlobHierarchySegment(this.client.getUrl(), this.client.getFileSystem(),
-                restype, comp, prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> listBlobHierarchySegmentWithResponseAsync(prefix, delimiter, marker, maxResults,
+                include, showonly, timeout, requestId, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -2103,8 +2013,8 @@ public final class FileSystemsImpl {
         Integer timeout, String requestId) {
         return listBlobHierarchySegmentWithResponseAsync(prefix, delimiter, marker, maxResults, include, showonly,
             timeout, requestId)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2140,8 +2050,8 @@ public final class FileSystemsImpl {
         Integer timeout, String requestId, Context context) {
         return listBlobHierarchySegmentWithResponseAsync(prefix, delimiter, marker, maxResults, include, showonly,
             timeout, requestId, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2174,18 +2084,9 @@ public final class FileSystemsImpl {
     public Mono<Response<ListBlobsHierarchySegmentResponse>> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(
         String prefix, String delimiter, String marker, Integer maxResults, List<ListBlobsIncludeItem> include,
         ListBlobsShowOnly showonly, Integer timeout, String requestId) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(context -> service.listBlobHierarchySegmentNoCustomHeaders(this.client.getUrl(),
-                this.client.getFileSystem(), restype, comp, prefix, delimiter, marker, maxResults, includeConverted,
-                showonly, timeout, this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(prefix, delimiter, marker,
+                maxResults, include, showonly, timeout, requestId, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -2267,15 +2168,15 @@ public final class FileSystemsImpl {
         listBlobHierarchySegmentWithResponse(String prefix, String delimiter, String marker, Integer maxResults,
             List<ListBlobsIncludeItem> include, ListBlobsShowOnly showonly, Integer timeout, String requestId,
             Context context) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         try {
+            final String restype = "container";
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
             return service.listBlobHierarchySegmentSync(this.client.getUrl(), this.client.getFileSystem(), restype,
                 comp, prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout,
                 this.client.getVersion(), requestId, accept, context);
@@ -2353,15 +2254,15 @@ public final class FileSystemsImpl {
     public Response<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentNoCustomHeadersWithResponse(
         String prefix, String delimiter, String marker, Integer maxResults, List<ListBlobsIncludeItem> include,
         ListBlobsShowOnly showonly, Integer timeout, String requestId, Context context) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         try {
+            final String restype = "container";
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
             return service.listBlobHierarchySegmentNoCustomHeadersSync(this.client.getUrl(),
                 this.client.getFileSystem(), restype, comp, prefix, delimiter, marker, maxResults, includeConverted,
                 showonly, timeout, this.client.getVersion(), requestId, accept, context);

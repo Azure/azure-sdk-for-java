@@ -7,74 +7,76 @@ package com.azure.resourcemanager.managementgroups.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for ManagementGroupsApi class. */
+/**
+ * The interface for ManagementGroupsApi class.
+ */
 public interface ManagementGroupsApi {
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the ManagementGroupsClient object to access its operations.
-     *
+     * 
      * @return the ManagementGroupsClient object.
      */
     ManagementGroupsClient getManagementGroups();
 
     /**
      * Gets the ManagementGroupSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the ManagementGroupSubscriptionsClient object.
      */
     ManagementGroupSubscriptionsClient getManagementGroupSubscriptions();
 
     /**
      * Gets the HierarchySettingsOperationsClient object to access its operations.
-     *
+     * 
      * @return the HierarchySettingsOperationsClient object.
      */
     HierarchySettingsOperationsClient getHierarchySettingsOperations();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     ResourceProvidersClient getResourceProviders();
 
     /**
      * Gets the EntitiesClient object to access its operations.
-     *
+     * 
      * @return the EntitiesClient object.
      */
     EntitiesClient getEntities();

@@ -4,21 +4,22 @@
 
 package com.azure.resourcemanager.fluidrelay.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for FluidRelayServers GetByResourceGroup. */
+/**
+ * Samples for FluidRelayServers GetByResourceGroup.
+ */
 public final class FluidRelayServersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/fluidrelay/resource-manager/Microsoft.FluidRelay/stable/2022-06-01/examples/FluidRelayServers_Get.json
+     * x-ms-original-file:
+     * specification/fluidrelay/resource-manager/Microsoft.FluidRelay/stable/2022-06-01/examples/FluidRelayServers_Get.
+     * json
      */
     /**
      * Sample code: Get Fluid Relay server details.
-     *
+     * 
      * @param manager Entry point to FluidRelayManager.
      */
     public static void getFluidRelayServerDetails(com.azure.resourcemanager.fluidrelay.FluidRelayManager manager) {
-        manager
-            .fluidRelayServers()
-            .getByResourceGroupWithResponse("myResourceGroup", "myFluidRelayServer", Context.NONE);
+        manager.fluidRelayServers()
+            .getByResourceGroupWithResponse("myResourceGroup", "myFluidRelayServer", com.azure.core.util.Context.NONE);
     }
 }

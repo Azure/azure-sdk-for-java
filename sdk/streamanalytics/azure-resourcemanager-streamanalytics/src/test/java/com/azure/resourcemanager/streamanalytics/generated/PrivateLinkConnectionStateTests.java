@@ -11,8 +11,7 @@ public final class PrivateLinkConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkConnectionState model = BinaryData
-            .fromString(
-                "{\"status\":\"ilpjzuaejxdult\",\"description\":\"zbbtdzumveek\",\"actionsRequired\":\"wozuhkf\"}")
+            .fromString("{\"status\":\"rupqsxvnmicy\",\"description\":\"ceoveilovno\",\"actionsRequired\":\"fj\"}")
             .toObject(PrivateLinkConnectionState.class);
     }
 

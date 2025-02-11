@@ -32,11 +32,13 @@ public class MetricDefinitionsImpl implements MetricDefinitions {
 
     @Override
     public PagedIterable<MetricDefinition> listByResource(String resourceId) {
-        return PagedConverter.mapPage(this.inner().list(ResourceUtils.encodeResourceId(resourceId)), inner -> new MetricDefinitionImpl(inner, myManager));
+        return PagedConverter.mapPage(this.inner().list(ResourceUtils.encodeResourceId(resourceId)),
+            inner -> new MetricDefinitionImpl(inner, myManager));
     }
 
     @Override
     public PagedFlux<MetricDefinition> listByResourceAsync(String resourceId) {
-        return PagedConverter.mapPage(this.inner().listAsync(ResourceUtils.encodeResourceId(resourceId)), inner -> new MetricDefinitionImpl(inner, myManager));
+        return PagedConverter.mapPage(this.inner().listAsync(ResourceUtils.encodeResourceId(resourceId)),
+            inner -> new MetricDefinitionImpl(inner, myManager));
     }
 }

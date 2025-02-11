@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The calculation window. */
+/**
+ * The calculation window.
+ */
 public enum CalculationWindowTypes {
-    /** Enum value Lifetime. */
+    /**
+     * Enum value Lifetime.
+     */
     LIFETIME("Lifetime"),
 
-    /** Enum value Hour. */
+    /**
+     * Enum value Hour.
+     */
     HOUR("Hour"),
 
-    /** Enum value Day. */
+    /**
+     * Enum value Day.
+     */
     DAY("Day"),
 
-    /** Enum value Week. */
+    /**
+     * Enum value Week.
+     */
     WEEK("Week"),
 
-    /** Enum value Month. */
+    /**
+     * Enum value Month.
+     */
     MONTH("Month");
 
-    /** The actual serialized value for a CalculationWindowTypes instance. */
+    /**
+     * The actual serialized value for a CalculationWindowTypes instance.
+     */
     private final String value;
 
     CalculationWindowTypes(String value) {
@@ -33,11 +44,10 @@ public enum CalculationWindowTypes {
 
     /**
      * Parses a serialized value to a CalculationWindowTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CalculationWindowTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static CalculationWindowTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +61,9 @@ public enum CalculationWindowTypes {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

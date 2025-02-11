@@ -74,6 +74,17 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     private Boolean firstLineContainsHeaders;
 
     /*
+     * Specifies the submode that will determine whether a markdown file will be parsed into exactly one search document
+     * or multiple search documents. Default is `oneToMany`.
+     */
+    private MarkdownParsingSubmode markdownParsingSubmode;
+
+    /*
+     * Specifies the max header depth that will be considered while grouping markdown content. Default is `h6`.
+     */
+    private MarkdownHeaderDepth markdownHeaderDepth;
+
+    /*
      * For JSON arrays, given a structured or semi-structured document, you can specify a path to the array using this
      * property.
      */
@@ -334,6 +345,50 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     }
 
     /**
+     * Get the markdownParsingSubmode property: Specifies the submode that will determine whether a markdown file will
+     * be parsed into exactly one search document or multiple search documents. Default is `oneToMany`.
+     * 
+     * @return the markdownParsingSubmode value.
+     */
+    public MarkdownParsingSubmode getMarkdownParsingSubmode() {
+        return this.markdownParsingSubmode;
+    }
+
+    /**
+     * Set the markdownParsingSubmode property: Specifies the submode that will determine whether a markdown file will
+     * be parsed into exactly one search document or multiple search documents. Default is `oneToMany`.
+     * 
+     * @param markdownParsingSubmode the markdownParsingSubmode value to set.
+     * @return the IndexingParametersConfiguration object itself.
+     */
+    public IndexingParametersConfiguration setMarkdownParsingSubmode(MarkdownParsingSubmode markdownParsingSubmode) {
+        this.markdownParsingSubmode = markdownParsingSubmode;
+        return this;
+    }
+
+    /**
+     * Get the markdownHeaderDepth property: Specifies the max header depth that will be considered while grouping
+     * markdown content. Default is `h6`.
+     * 
+     * @return the markdownHeaderDepth value.
+     */
+    public MarkdownHeaderDepth getMarkdownHeaderDepth() {
+        return this.markdownHeaderDepth;
+    }
+
+    /**
+     * Set the markdownHeaderDepth property: Specifies the max header depth that will be considered while grouping
+     * markdown content. Default is `h6`.
+     * 
+     * @param markdownHeaderDepth the markdownHeaderDepth value to set.
+     * @return the IndexingParametersConfiguration object itself.
+     */
+    public IndexingParametersConfiguration setMarkdownHeaderDepth(MarkdownHeaderDepth markdownHeaderDepth) {
+        this.markdownHeaderDepth = markdownHeaderDepth;
+        return this;
+    }
+
+    /**
      * Get the documentRoot property: For JSON arrays, given a structured or semi-structured document, you can specify a
      * path to the array using this property.
      * 
@@ -530,6 +585,10 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
         jsonWriter.writeStringField("delimitedTextHeaders", this.delimitedTextHeaders);
         jsonWriter.writeStringField("delimitedTextDelimiter", this.delimitedTextDelimiter);
         jsonWriter.writeBooleanField("firstLineContainsHeaders", this.firstLineContainsHeaders);
+        jsonWriter.writeStringField("markdownParsingSubmode",
+            this.markdownParsingSubmode == null ? null : this.markdownParsingSubmode.toString());
+        jsonWriter.writeStringField("markdownHeaderDepth",
+            this.markdownHeaderDepth == null ? null : this.markdownHeaderDepth.toString());
         jsonWriter.writeStringField("documentRoot", this.documentRoot);
         jsonWriter.writeStringField("dataToExtract", this.dataToExtract == null ? null : this.dataToExtract.toString());
         jsonWriter.writeStringField("imageAction", this.imageAction == null ? null : this.imageAction.toString());
@@ -587,6 +646,12 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
                 } else if ("firstLineContainsHeaders".equals(fieldName)) {
                     deserializedIndexingParametersConfiguration.firstLineContainsHeaders
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("markdownParsingSubmode".equals(fieldName)) {
+                    deserializedIndexingParametersConfiguration.markdownParsingSubmode
+                        = MarkdownParsingSubmode.fromString(reader.getString());
+                } else if ("markdownHeaderDepth".equals(fieldName)) {
+                    deserializedIndexingParametersConfiguration.markdownHeaderDepth
+                        = MarkdownHeaderDepth.fromString(reader.getString());
                 } else if ("documentRoot".equals(fieldName)) {
                     deserializedIndexingParametersConfiguration.documentRoot = reader.getString();
                 } else if ("dataToExtract".equals(fieldName)) {

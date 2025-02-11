@@ -9,9 +9,8 @@ import com.azure.analytics.purview.datamap.models.QueryOptions;
 import com.azure.analytics.purview.datamap.models.QueryResult;
 import com.azure.analytics.purview.datamap.models.SearchResultValue;
 import com.azure.analytics.purview.datamap.models.TermSearchResultValue;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -21,14 +20,13 @@ import org.junit.jupiter.api.Test;
 public final class DiscoveryQueryTermAssignmentTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testDiscoveryQueryTermAssignmentTests() throws IOException {
+    public void testDiscoveryQueryTermAssignmentTests() {
         // method invocation
         QueryResult response = discoveryClient.query(new QueryOptions().setKeywords("fakeTokenPlaceholder")
             .setLimit(3)
-            .setFilter(JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(
-                    "{\"or\":[{\"term\":\"ExampleTerm\"},{\"term\":\"ExampleTerm\",\"glossary\":\"GlossaryName\"},{\"termGuid\":\"<term guid>\"}]}",
-                    Object.class, SerializerEncoding.JSON)));
+            .setFilter(BinaryData.fromBytes(
+                "{or=[{term=ExampleTerm}, {term=ExampleTerm, glossary=GlossaryName}, {termGuid=<term guid>}]}"
+                    .getBytes(StandardCharsets.UTF_8))));
 
         // response assertion
         Assertions.assertNotNull(response);

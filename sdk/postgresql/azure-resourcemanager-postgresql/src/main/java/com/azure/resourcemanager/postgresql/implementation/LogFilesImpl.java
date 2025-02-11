@@ -11,29 +11,28 @@ import com.azure.resourcemanager.postgresql.fluent.LogFilesClient;
 import com.azure.resourcemanager.postgresql.fluent.models.LogFileInner;
 import com.azure.resourcemanager.postgresql.models.LogFile;
 import com.azure.resourcemanager.postgresql.models.LogFiles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LogFilesImpl implements LogFiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogFilesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LogFilesImpl.class);
 
     private final LogFilesClient innerClient;
 
     private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public LogFilesImpl(
-        LogFilesClient innerClient, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
+    public LogFilesImpl(LogFilesClient innerClient,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<LogFile> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<LogFileInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LogFile> listByServer(String resourceGroupName, String serverName, Context context) {
         PagedIterable<LogFileInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
     }
 
     private LogFilesClient serviceClient() {

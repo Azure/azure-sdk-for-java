@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.mixedreality.generated;
 
-/** Samples for SpatialAnchorsAccounts Delete. */
+/**
+ * Samples for SpatialAnchorsAccounts Delete.
+ */
 public final class SpatialAnchorsAccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/Delete.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/
+     * Delete.json
      */
     /**
      * Sample code: Delete spatial anchors account.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
     public static void deleteSpatialAnchorsAccount(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .spatialAnchorsAccounts()
+        manager.spatialAnchorsAccounts()
             .deleteByResourceGroupWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE);
     }
 }

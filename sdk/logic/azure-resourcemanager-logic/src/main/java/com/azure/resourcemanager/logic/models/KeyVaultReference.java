@@ -5,15 +5,55 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The key vault reference. */
+/**
+ * The key vault reference.
+ */
 @Fluent
 public final class KeyVaultReference extends ResourceReference {
-    /** Creates an instance of KeyVaultReference class. */
+    /*
+     * Gets the resource type.
+     */
+    private String type;
+
+    /*
+     * Gets the resource name.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of KeyVaultReference class.
+     */
     public KeyVaultReference() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: Gets the resource type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: Gets the resource name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyVaultReference withId(String id) {
         super.withId(id);
@@ -22,11 +62,50 @@ public final class KeyVaultReference extends ResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultReference.
+     */
+    public static KeyVaultReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultReference deserializedKeyVaultReference = new KeyVaultReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedKeyVaultReference.withId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedKeyVaultReference.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedKeyVaultReference.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultReference;
+        });
     }
 }

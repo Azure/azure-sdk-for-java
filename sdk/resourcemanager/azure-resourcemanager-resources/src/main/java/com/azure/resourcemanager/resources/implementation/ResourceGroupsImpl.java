@@ -28,8 +28,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
  * The implementation for ResourceGroups.
  */
 public final class ResourceGroupsImpl
-        extends CreatableResourcesImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner>
-        implements ResourceGroups {
+    extends CreatableResourcesImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner> implements ResourceGroups {
 
     private final ClientLogger logger = new ClientLogger(ResourceGroupsImpl.class);
 
@@ -51,7 +50,8 @@ public final class ResourceGroupsImpl
 
     @Override
     public PagedFlux<ResourceGroup> listByTagAsync(String tagName, String tagValue) {
-        return wrapPageAsync(manager().serviceClient().getResourceGroups()
+        return wrapPageAsync(manager().serviceClient()
+            .getResourceGroups()
             .listAsync(ResourceManagerUtils.createOdataFilterForTags(tagName, tagValue), null));
     }
 
@@ -72,7 +72,8 @@ public final class ResourceGroupsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
-        return manager().serviceClient().getResourceGroups()
+        return manager().serviceClient()
+            .getResourceGroups()
             .deleteAsync(name, forceDeletionTypes(forceDeletionResourceTypes));
     }
 
@@ -114,25 +115,24 @@ public final class ResourceGroupsImpl
         return beginDeleteByName(name, null);
     }
 
-
     @Override
-    public Accepted<Void> beginDeleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
-        return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient().getHttpPipeline(),
+    public Accepted<Void> beginDeleteByName(String name,
+        Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
-            () -> this.manager().serviceClient().getResourceGroups()
-                .deleteWithResponseAsync(name, forceDeletionTypes(forceDeletionResourceTypes)).block(),
-            Function.identity(),
-            Void.class,
-            null,
-            Context.NONE);
+            () -> this.manager()
+                .serviceClient()
+                .getResourceGroups()
+                .deleteWithResponseAsync(name, forceDeletionTypes(forceDeletionResourceTypes))
+                .block(),
+            Function.identity(), Void.class, null, Context.NONE);
     }
 
-//    @Override
-//    public Mono<Void> beginDeleteByNameAsync(String name) {
-//        // DELETE
-//        return client.beginDeleteWithoutPollingAsync(name);
-//    }
+    //    @Override
+    //    public Mono<Void> beginDeleteByNameAsync(String name) {
+    //        // DELETE
+    //        return client.beginDeleteWithoutPollingAsync(name);
+    //    }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
@@ -141,7 +141,8 @@ public final class ResourceGroupsImpl
 
     @Override
     public PagedFlux<ResourceGroup> listAsync() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getResourceGroups().listAsync(), inner -> wrapModel(inner));
+        return PagedConverter.mapPage(this.manager().serviceClient().getResourceGroups().listAsync(),
+            inner -> wrapModel(inner));
     }
 
     @Override

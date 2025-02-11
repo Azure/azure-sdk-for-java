@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for getting the settings required for remote login to a Batch Compute Node.
  */
 public class GetBatchNodeRemoteLoginSettingsOptions extends BatchBaseOptions {
-
+    /**
+     * Creates an instance of {@link GetBatchNodeRemoteLoginSettingsOptions}.
+     */
+    public GetBatchNodeRemoteLoginSettingsOptions() {
+    }
 }

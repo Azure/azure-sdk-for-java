@@ -7,13 +7,15 @@ package com.azure.resourcemanager.datamigration.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourceSkus. */
+/**
+ * Resource collection API of ResourceSkus.
+ */
 public interface ResourceSkus {
     /**
      * Get supported SKUs
-     *
-     * <p>The skus action returns the list of SKUs that DMS supports.
-     *
+     * 
+     * The skus action returns the list of SKUs that DMS supports.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DMS List SKUs operation response as paginated response with {@link PagedIterable}.
@@ -22,9 +24,9 @@ public interface ResourceSkus {
 
     /**
      * Get supported SKUs
-     *
-     * <p>The skus action returns the list of SKUs that DMS supports.
-     *
+     * 
+     * The skus action returns the list of SKUs that DMS supports.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.providerhub.generated;
 
-/** Samples for ProviderRegistrations Delete. */
+/**
+ * Samples for ProviderRegistrations Delete.
+ */
 public final class ProviderRegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_Delete.json
+     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/
+     * ProviderRegistrations_Delete.json
      */
     /**
      * Sample code: ProviderRegistrations_Delete.
-     *
+     * 
      * @param manager Entry point to ProviderHubManager.
      */
     public static void providerRegistrationsDelete(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {

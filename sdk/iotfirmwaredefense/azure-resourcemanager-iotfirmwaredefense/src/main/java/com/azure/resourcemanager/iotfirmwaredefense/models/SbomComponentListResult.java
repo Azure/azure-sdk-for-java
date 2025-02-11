@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.SbomComponentResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of SBOM results.
  */
 @Fluent
-public final class SbomComponentListResult {
+public final class SbomComponentListResult implements JsonSerializable<SbomComponentListResult> {
     /*
      * The list of SBOM components.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SbomComponentResourceInner> value;
 
     /*
      * The uri to fetch the next page of resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -70,5 +72,45 @@ public final class SbomComponentListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SbomComponentListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SbomComponentListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SbomComponentListResult.
+     */
+    public static SbomComponentListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SbomComponentListResult deserializedSbomComponentListResult = new SbomComponentListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SbomComponentResourceInner> value
+                        = reader.readArray(reader1 -> SbomComponentResourceInner.fromJson(reader1));
+                    deserializedSbomComponentListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSbomComponentListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSbomComponentListResult;
+        });
     }
 }

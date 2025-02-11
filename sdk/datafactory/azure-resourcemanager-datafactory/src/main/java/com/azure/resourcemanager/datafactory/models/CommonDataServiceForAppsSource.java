@@ -137,7 +137,6 @@ public final class CommonDataServiceForAppsSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

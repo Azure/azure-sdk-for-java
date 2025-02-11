@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.CdnPeeringPrefixInner;
 
-/** An instance of this class provides access to all the operations defined in CdnPeeringPrefixesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CdnPeeringPrefixesClient.
+ */
 public interface CdnPeeringPrefixesClient {
     /**
      * Lists all of the advertised prefixes for the specified peering location.
-     *
+     * 
      * @param peeringLocation The peering location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,7 +28,7 @@ public interface CdnPeeringPrefixesClient {
 
     /**
      * Lists all of the advertised prefixes for the specified peering location.
-     *
+     * 
      * @param peeringLocation The peering location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

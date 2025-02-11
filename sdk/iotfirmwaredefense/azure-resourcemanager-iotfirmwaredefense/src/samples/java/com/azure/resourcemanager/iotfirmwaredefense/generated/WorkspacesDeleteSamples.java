@@ -19,8 +19,8 @@ public final class WorkspacesDeleteSamples {
      */
     public static void
         workspacesDeleteMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().deleteByResourceGroupWithResponse("rgworkspaces", "E___-3",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .deleteByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +34,7 @@ public final class WorkspacesDeleteSamples {
      */
     public static void
         workspacesDeleteMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().deleteByResourceGroupWithResponse("rgworkspaces", "E___-3",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .deleteByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE);
     }
 }

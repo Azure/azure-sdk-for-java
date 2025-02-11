@@ -4,35 +4,39 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for ScheduledActions List. */
+/**
+ * Samples for ScheduledActions List.
+ */
 public final class ScheduledActionsListSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledActions-listWithFilter-private.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * scheduledActions/scheduledActions-listWithFilter-private.json
      */
     /**
      * Sample code: PrivateScheduledActionsListFilterByViewId.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void privateScheduledActionsListFilterByViewId(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .scheduledActions()
-            .list(
-                "properties/viewId eq '/providers/Microsoft.CostManagement/views/swaggerExample'",
+        manager.scheduledActions()
+            .list("properties/viewId eq '/providers/Microsoft.CostManagement/views/swaggerExample'",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledActions-list-private.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * scheduledActions/scheduledActions-list-private.json
      */
     /**
      * Sample code: PrivateScheduledActionsList.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void privateScheduledActionsList(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+    public static void
+        privateScheduledActionsList(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.scheduledActions().list(null, com.azure.core.util.Context.NONE);
     }
 }

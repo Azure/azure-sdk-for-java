@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.postgresql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ServerSecurityAlertPolicyState. */
+/**
+ * Specifies the state of the policy, whether it is enabled or disabled.
+ */
 public enum ServerSecurityAlertPolicyState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a ServerSecurityAlertPolicyState instance. */
+    /**
+     * The actual serialized value for a ServerSecurityAlertPolicyState instance.
+     */
     private final String value;
 
     ServerSecurityAlertPolicyState(String value) {
@@ -24,12 +29,14 @@ public enum ServerSecurityAlertPolicyState {
 
     /**
      * Parses a serialized value to a ServerSecurityAlertPolicyState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ServerSecurityAlertPolicyState object, or null if unable to parse.
      */
-    @JsonCreator
     public static ServerSecurityAlertPolicyState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ServerSecurityAlertPolicyState[] items = ServerSecurityAlertPolicyState.values();
         for (ServerSecurityAlertPolicyState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum ServerSecurityAlertPolicyState {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

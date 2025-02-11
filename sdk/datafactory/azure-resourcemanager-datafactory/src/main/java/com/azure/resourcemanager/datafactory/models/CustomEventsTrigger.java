@@ -30,11 +30,6 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
      */
     private CustomEventsTriggerTypeProperties innerTypeProperties = new CustomEventsTriggerTypeProperties();
 
-    /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
-     */
-    private TriggerRuntimeState runtimeState;
-
     /**
      * Creates an instance of CustomEventsTrigger class.
      */
@@ -58,17 +53,6 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
      */
     private CustomEventsTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
-    }
-
-    /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
-     * the Trigger.
-     * 
-     * @return the runtimeState value.
-     */
-    @Override
-    public TriggerRuntimeState runtimeState() {
-        return this.runtimeState;
     }
 
     /**
@@ -201,13 +185,15 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model CustomEventsTrigger"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (pipelines() != null) {
+            pipelines().forEach(e -> e.validate());
         }
     }
 
@@ -252,7 +238,8 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
                 if ("description".equals(fieldName)) {
                     deserializedCustomEventsTrigger.withDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedCustomEventsTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
+                    deserializedCustomEventsTrigger
+                        .withRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedCustomEventsTrigger.withAnnotations(annotations);

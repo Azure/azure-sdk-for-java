@@ -110,7 +110,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"azc://path", "azb://path", "azb://?foo=bar", "azb://?account="})
+    @ValueSource(strings = { "azc://path", "azb://path", "azb://?foo=bar", "azb://?account=" })
     public void createFileSystemInvalidUri(String uri) {
         assertThrows(IllegalArgumentException.class, () -> provider.newFileSystem(new URI(uri), config));
     }
@@ -142,7 +142,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"azc://path", "azb://path", "azb://?foo=bar", "azb://?account="})
+    @ValueSource(strings = { "azc://path", "azb://path", "azb://?foo=bar", "azb://?account=" })
     public void getFileSystemIa(String uri) {
         assertThrows(IllegalArgumentException.class, () -> provider.getFileSystem(new URI(uri)));
     }
@@ -155,7 +155,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 1, 2})
+    @ValueSource(ints = { 0, 1, 2 })
     public void createDirParentExists(int depth) throws IOException {
         AzureFileSystem fs = createFS(config);
 
@@ -198,8 +198,8 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     public void createDirFileAlreadyExists() {
         AzureFileSystem fs = createFS(config);
         String fileName = generateBlobName();
-        BlockBlobClient blobClient = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(fileName)
-            .getBlockBlobClient();
+        BlockBlobClient blobClient
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(fileName).getBlockBlobClient();
         blobClient.commitBlockList(Collections.emptyList(), false);
 
         // Will go to default directory
@@ -210,8 +210,8 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     public void createDirConcreteDirAlreadyExists() {
         AzureFileSystem fs = createFS(config);
         String fileName = generateBlobName();
-        BlockBlobClient blobClient = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(fileName)
-            .getBlockBlobClient();
+        BlockBlobClient blobClient
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(fileName).getBlockBlobClient();
         putDirectoryBlob(blobClient);
 
         assertThrows(FileAlreadyExistsException.class, () -> fs.provider().createDirectory(fs.getPath(fileName)));
@@ -223,8 +223,8 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         String fileName = generateBlobName();
         BlobContainerClient containerClient = rootNameToContainerClient(getDefaultDir(fs));
         BlobClient blobClient = containerClient.getBlobClient(fileName);
-        AppendBlobClient blobClient2 = containerClient.getBlobClient(fileName + fs.getSeparator() + generateBlobName())
-            .getAppendBlobClient();
+        AppendBlobClient blobClient2
+            = containerClient.getBlobClient(fileName + fs.getSeparator() + generateBlobName()).getAppendBlobClient();
         blobClient2.create();
         fs.provider().createDirectory(fs.getPath(fileName));
 
@@ -260,10 +260,10 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     public void createDirAttributes() throws NoSuchAlgorithmException, IOException {
         AzureFileSystem fs = createFS(config);
         String fileName = generateBlobName();
-        AppendBlobClient blobClient = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(fileName)
-            .getAppendBlobClient();
+        AppendBlobClient blobClient
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(fileName).getAppendBlobClient();
         byte[] contentMd5 = MessageDigest.getInstance("MD5").digest(new byte[0]);
-        FileAttribute<?>[] attributes = new FileAttribute<?>[]{
+        FileAttribute<?>[] attributes = new FileAttribute<?>[] {
             new TestFileAttribute<>("fizz", "buzz"),
             new TestFileAttribute<>("foo", "bar"),
             new TestFileAttribute<>("Content-Type", "myType"),
@@ -271,8 +271,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
             new TestFileAttribute<>("Content-Language", "myLanguage"),
             new TestFileAttribute<>("Content-Encoding", "myEncoding"),
             new TestFileAttribute<>("Cache-Control", "myControl"),
-            new TestFileAttribute<>("Content-MD5", contentMd5)
-        };
+            new TestFileAttribute<>("Content-MD5", contentMd5) };
 
         fs.provider().createDirectory(fs.getPath(fileName), attributes);
         BlobProperties props = blobClient.getProperties();
@@ -303,7 +302,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"false,false,false", "true,true,false", "true,false,true", "true,false,false"})
+    @CsvSource(value = { "false,false,false", "true,true,false", "true,false,true", "true,false,false" })
     public void copySource(boolean sourceIsDir, boolean sourceIsVirtual, boolean sourceEmpty) throws IOException {
         AzureFileSystem fs = createFS(config);
         basicSetupForCopyTest(fs);
@@ -320,11 +319,10 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
             }
             if (!sourceEmpty) {
                 String sourceChildName = generateBlobName();
-                sourceChildClient = ((AzurePath) sourcePath.resolve(sourceChildName)).toBlobClient()
-                    .getAppendBlobClient();
+                sourceChildClient
+                    = ((AzurePath) sourcePath.resolve(sourceChildName)).toBlobClient().getAppendBlobClient();
                 sourceChildClient.create();
-                destChildClient = ((AzurePath) destPath.resolve(sourceChildName)).toBlobClient()
-                    .getAppendBlobClient();
+                destChildClient = ((AzurePath) destPath.resolve(sourceChildName)).toBlobClient().getAppendBlobClient();
             }
         } else { // source is file
             sourceClient.upload(DATA.getDefaultBinaryData());
@@ -357,7 +355,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"false,false", "true,false", "true,true"})
+    @CsvSource(value = { "false,false", "true,false", "true,true" })
     public void copyDestination(boolean destinationExists, boolean destinationIsDir) throws IOException {
         AzureFileSystem fs = createFS(config);
         basicSetupForCopyTest(fs);
@@ -371,8 +369,8 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
                 destinationClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20);
             }
         }
-        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES,
-            StandardCopyOption.REPLACE_EXISTING);
+        fs.provider()
+            .copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
 
         assertTrue(sourceClient.exists());
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -381,7 +379,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void copyNonEmptyDest(boolean destinationIsVirtual) throws IOException {
         AzureFileSystem fs = createFS(config);
         basicSetupForCopyTest(fs);
@@ -395,13 +393,13 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         destChildClient.upload(DATA.getDefaultBinaryData());
 
         // Ensure that even when trying to replace_existing, we still fail.
-        assertThrows(DirectoryNotEmptyException.class, () -> fs.provider().copy(sourcePath, destPath,
-            StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING));
+        assertThrows(DirectoryNotEmptyException.class, () -> fs.provider()
+            .copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING));
         assertTrue(new AzureResource(destPath).checkDirectoryExists());
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void copyReplaceExistingFail(boolean destinationIsDir) throws IOException {
         // The success case is tested by the "copy destination" test.
         // Testing replacing a virtual directory is in the "non empty dest" test as there can be no empty virtual dir.
@@ -433,12 +431,12 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         basicSetupForCopyTest(fs);
 
         assertThrows(UnsupportedOperationException.class, () -> fs.provider().copy(sourcePath, destPath));
-        assertThrows(UnsupportedOperationException.class, () -> fs.provider().copy(sourcePath, destPath,
-            StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.ATOMIC_MOVE));
+        assertThrows(UnsupportedOperationException.class, () -> fs.provider()
+            .copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.ATOMIC_MOVE));
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"1,1", "1,2", "1,3", "2,1", "2,2", "2,3", "3,1", "3,2", "3,3"})
+    @CsvSource(value = { "1,1", "1,2", "1,3", "2,1", "2,2", "2,3", "3,1", "3,2", "3,3" })
     public void copyDepth(int sourceDepth, int destDepth) throws IOException {
         AzureFileSystem fs = createFS(config);
 
@@ -482,8 +480,8 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         // Create resources as necessary
         sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20);
 
-        assertThrows(IOException.class, () -> fs.provider().copy(sourcePath, destPath,
-            StandardCopyOption.COPY_ATTRIBUTES));
+        assertThrows(IOException.class,
+            () -> fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES));
         assertFalse(destinationClient.exists());
     }
 
@@ -492,8 +490,8 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         AzureFileSystem fs = createFS(config);
         basicSetupForCopyTest(fs);
 
-        assertThrows(IOException.class, () -> fs.provider().copy(sourcePath, destPath,
-            StandardCopyOption.COPY_ATTRIBUTES));
+        assertThrows(IOException.class,
+            () -> fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES));
     }
 
     @Test
@@ -502,12 +500,12 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         basicSetupForCopyTest(fs);
 
         // Source root
-        assertThrows(IllegalArgumentException.class, () -> fs.provider().copy(sourcePath.getRoot(), destPath,
-            StandardCopyOption.COPY_ATTRIBUTES));
+        assertThrows(IllegalArgumentException.class,
+            () -> fs.provider().copy(sourcePath.getRoot(), destPath, StandardCopyOption.COPY_ATTRIBUTES));
 
         // Dest root
-        assertThrows(IllegalArgumentException.class, () -> fs.provider().copy(sourcePath, destPath.getRoot(),
-            StandardCopyOption.COPY_ATTRIBUTES));
+        assertThrows(IllegalArgumentException.class,
+            () -> fs.provider().copy(sourcePath, destPath.getRoot(), StandardCopyOption.COPY_ATTRIBUTES));
     }
 
     @Test
@@ -540,7 +538,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void copyClosedFS(boolean sourceClosed) throws IOException {
         AzureFileSystem fs = createFS(config);
         basicSetupForCopyTest(fs);
@@ -559,7 +557,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void delete(boolean isDir) throws IOException {
         AzureFileSystem fs = createFS(config);
         AzurePath path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()));
@@ -577,7 +575,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void deleteNonEmptyDir(boolean virtual) throws IOException {
         AzureFileSystem fs = createFS(config);
         AzurePath path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()));
@@ -633,8 +631,9 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         resource = new AzureResource(fs.getPath("b" + generateBlobName()));
         resource.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList());
 
-        Iterator<Path> iterator = fs.provider().newDirectoryStream(fs.getPath(getDefaultDir(fs)),
-            path -> path.getFileName().toString().startsWith("a")).iterator();
+        Iterator<Path> iterator = fs.provider()
+            .newDirectoryStream(fs.getPath(getDefaultDir(fs)), path -> path.getFileName().toString().startsWith("a"))
+            .iterator();
 
         assertTrue(iterator.hasNext());
         assertTrue(iterator.next().getFileName().toString().startsWith("a"));
@@ -669,8 +668,18 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @EnumSource(value = StandardOpenOption.class, names = {"APPEND", "CREATE", "CREATE_NEW", "DELETE_ON_CLOSE",
-        "DSYNC", "SPARSE", "SYNC", "TRUNCATE_EXISTING", "WRITE"})
+    @EnumSource(
+        value = StandardOpenOption.class,
+        names = {
+            "APPEND",
+            "CREATE",
+            "CREATE_NEW",
+            "DELETE_ON_CLOSE",
+            "DSYNC",
+            "SPARSE",
+            "SYNC",
+            "TRUNCATE_EXISTING",
+            "WRITE" })
     public void inputStreamOptionsFail(StandardOpenOption option) {
         AzureFileSystem fs = createFS(config);
 
@@ -689,8 +698,8 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     @Test
     public void inputStreamNonFileFailDir() {
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
         putDirectoryBlob(bc);
 
         assertThrows(IOException.class, () -> fs.provider().newInputStream(fs.getPath(bc.getBlobName())));
@@ -718,8 +727,8 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     @Test
     public void outputStreamOptionsDefault() throws IOException {
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
         OutputStream nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()));
 
         // Defaults should allow us to create a new file.
@@ -744,27 +753,32 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         AzureFileSystem fs = createFS(config);
 
         // Explicitly exclude a create option.
-        assertThrows(IOException.class, () -> fs.provider().newOutputStream(fs.getPath(generateBlobName()),
-            StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));
+        assertThrows(IOException.class,
+            () -> fs.provider()
+                .newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+                    StandardOpenOption.TRUNCATE_EXISTING));
     }
 
     @Test
     public void outputStreamOptionsCreateNew() throws IOException {
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
 
         // Succeed in creating a new file
-        OutputStream nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()),
-            StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+        OutputStream nioStream = fs.provider()
+            .newOutputStream(fs.getPath(bc.getBlobName()), StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING);
         nioStream.write(DATA.getDefaultBytes());
         nioStream.close();
 
         compareInputStreams(bc.openInputStream(), DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
         // Fail in overwriting an existing
-        assertThrows(IOException.class, () -> fs.provider().newOutputStream(fs.getPath(bc.getBlobName()),
-            StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));
+        assertThrows(IOException.class,
+            () -> fs.provider()
+                .newOutputStream(fs.getPath(bc.getBlobName()), StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE,
+                    StandardOpenOption.TRUNCATE_EXISTING));
     }
 
     @Test
@@ -772,41 +786,45 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         AzureFileSystem fs = createFS(config);
 
         // Missing WRITE
-        assertThrows(IllegalArgumentException.class, () -> fs.provider().newOutputStream(fs.getPath(generateBlobName()),
-            StandardOpenOption.TRUNCATE_EXISTING));
+        assertThrows(IllegalArgumentException.class,
+            () -> fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.TRUNCATE_EXISTING));
 
         // Missing TRUNCATE_EXISTING and CREATE_NEW
-        assertThrows(IllegalArgumentException.class, () -> fs.provider().newOutputStream(fs.getPath(generateBlobName()),
-            StandardOpenOption.WRITE));
+        assertThrows(IllegalArgumentException.class,
+            () -> fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE));
 
         // Missing only TRUNCATE_EXISTING
-        assertDoesNotThrow(() -> fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
-            StandardOpenOption.CREATE_NEW));
+        assertDoesNotThrow(() -> fs.provider()
+            .newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW));
 
         // Missing only CREATE_NEW
-        assertDoesNotThrow(() -> fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
-            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE));
+        assertDoesNotThrow(() -> fs.provider()
+            .newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE));
     }
 
     @ParameterizedTest
-    @EnumSource(value = StandardOpenOption.class, names = {"APPEND", "DELETE_ON_CLOSE", "DSYNC", "READ", "SPARSE",
-        "SYNC"})
+    @EnumSource(
+        value = StandardOpenOption.class,
+        names = { "APPEND", "DELETE_ON_CLOSE", "DSYNC", "READ", "SPARSE", "SYNC" })
     public void outputStreamOptionsInvalid(StandardOpenOption option) {
         AzureFileSystem fs = createFS(config);
 
-        assertThrows(UnsupportedOperationException.class, () -> fs.provider().newOutputStream(
-            fs.getPath(generateBlobName()), option, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));
+        assertThrows(UnsupportedOperationException.class,
+            () -> fs.provider()
+                .newOutputStream(fs.getPath(generateBlobName()), option, StandardOpenOption.WRITE,
+                    StandardOpenOption.TRUNCATE_EXISTING));
     }
 
     @LiveOnly
     @ParameterizedTest
-    @CsvSource(value = {"60,0", "150,3"})
+    @CsvSource(value = { "60,0", "150,3" })
     public void outputStreamFileSystemConfig(int dataSize, int blockCount) throws IOException {
         config.put(AzureFileSystem.AZURE_STORAGE_UPLOAD_BLOCK_SIZE, 50L);
         config.put(AzureFileSystem.AZURE_STORAGE_PUT_BLOB_THRESHOLD, 100L);
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
         OutputStream nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()));
         byte[] data = getRandomByteArray(dataSize);
 
@@ -819,8 +837,8 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     @Test
     public void outputSteamOpenDirectoryFail() {
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
         putDirectoryBlob(bc);
 
         assertThrows(IOException.class, () -> fs.provider().newOutputStream(fs.getPath(bc.getBlobName())));
@@ -849,7 +867,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @EnumSource(value = StandardOpenOption.class, names = {"APPEND", "DELETE_ON_CLOSE", "DSYNC", "SPARSE", "SYNC"})
+    @EnumSource(value = StandardOpenOption.class, names = { "APPEND", "DELETE_ON_CLOSE", "DSYNC", "SPARSE", "SYNC" })
     public void byteChannelOptionsFail(StandardOpenOption option) {
         AzureFileSystem fs = createFS(config);
 
@@ -869,8 +887,8 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     @Test
     public void byteChannelReadFileFailDir() {
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
         putDirectoryBlob(bc);
 
         assertThrows(IOException.class, () -> fs.provider().newByteChannel(fs.getPath(bc.getBlobName()), null));
@@ -897,13 +915,13 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     @Test
     public void byteChannelOptionsCreate() throws IOException {
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
 
         // There are no default options for write as read is the default for channel. We must specify all required.
-        SeekableByteChannel nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
-            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING)));
+        SeekableByteChannel nioChannel = fs.provider()
+            .newByteChannel(fs.getPath(bc.getBlobName()), new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)));
 
         // Create should allow us to create a new file.
         nioChannel.write(DATA.getDefaultData().duplicate());
@@ -912,38 +930,41 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         compareInputStreams(bc.openInputStream(), DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
         // Explicitly exclude a create option.
-        assertThrows(IOException.class, () -> fs.provider().newOutputStream(fs.getPath(generateBlobName()),
-            StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));
+        assertThrows(IOException.class,
+            () -> fs.provider()
+                .newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+                    StandardOpenOption.TRUNCATE_EXISTING));
     }
 
     @Test
     public void byteChannelOptionsCreateNew() throws IOException {
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
 
         // Succeed in creating a new file
-        SeekableByteChannel nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
-            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE,
-                StandardOpenOption.TRUNCATE_EXISTING)));
+        SeekableByteChannel nioChannel = fs.provider()
+            .newByteChannel(fs.getPath(bc.getBlobName()), new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)));
         nioChannel.write(DATA.getDefaultData().duplicate());
         nioChannel.close();
 
         compareInputStreams(bc.openInputStream(), DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
         // Fail in overwriting an existing file
-        assertThrows(IOException.class, () -> fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
-            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE,
-                StandardOpenOption.TRUNCATE_EXISTING))));
+        assertThrows(IOException.class,
+            () -> fs.provider()
+                .newByteChannel(fs.getPath(bc.getBlobName()), new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                    StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING))));
     }
 
     @Test
     public void byteChannelFileAttributes() throws NoSuchAlgorithmException, IOException {
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
         byte[] contentMd5 = MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes());
-        FileAttribute<?>[] attributes = new FileAttribute<?>[]{
+        FileAttribute<?>[] attributes = new FileAttribute<?>[] {
             new TestFileAttribute<>("fizz", "buzz"),
             new TestFileAttribute<>("foo", "bar"),
             new TestFileAttribute<>("Content-Type", "myType"),
@@ -951,11 +972,10 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
             new TestFileAttribute<>("Content-Language", "myLanguage"),
             new TestFileAttribute<>("Content-Encoding", "myEncoding"),
             new TestFileAttribute<>("Cache-Control", "myControl"),
-            new TestFileAttribute<>("Content-MD5", contentMd5)
-        };
+            new TestFileAttribute<>("Content-MD5", contentMd5) };
 
-        SeekableByteChannel nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
-            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+        SeekableByteChannel nioChannel = fs.provider()
+            .newByteChannel(fs.getPath(bc.getBlobName()), new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
                 StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)), attributes);
         nioChannel.write(DATA.getDefaultData().duplicate());
         nioChannel.close();
@@ -979,16 +999,18 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void byteChannelFileAttrNullEmpty(boolean isNull) throws IOException {
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
         ByteBuffer data = DATA.getDefaultData().duplicate();
 
-        SeekableByteChannel nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
-            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE,
-                StandardOpenOption.TRUNCATE_EXISTING)), isNull ? null : new FileAttribute<?>[0]);
+        SeekableByteChannel nioChannel = fs.provider()
+            .newByteChannel(
+                fs.getPath(bc.getBlobName()), new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                    StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)),
+                isNull ? null : new FileAttribute<?>[0]);
         assertDoesNotThrow(() -> nioChannel.write(data));
         assertDoesNotThrow(nioChannel::close);
     }
@@ -998,44 +1020,52 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         AzureFileSystem fs = createFS(config);
 
         // Missing WRITE
-        assertThrows(UnsupportedOperationException.class, () -> fs.provider().newByteChannel(
-            fs.getPath(generateBlobName()), new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
-                StandardOpenOption.TRUNCATE_EXISTING))));
+        assertThrows(UnsupportedOperationException.class,
+            () -> fs.provider()
+                .newByteChannel(fs.getPath(generateBlobName()),
+                    new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.TRUNCATE_EXISTING))));
 
         // Missing TRUNCATE_EXISTING and CREATE_NEW
-        assertThrows(IllegalArgumentException.class, () -> fs.provider().newByteChannel(fs.getPath(generateBlobName()),
-            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE))));
+        assertThrows(IllegalArgumentException.class,
+            () -> fs.provider()
+                .newByteChannel(fs.getPath(generateBlobName()),
+                    new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE))));
 
         // Missing TRUNCATE_EXISTING
-        assertDoesNotThrow(() -> fs.provider().newByteChannel(fs.getPath(generateBlobName()),
-            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW))));
+        assertDoesNotThrow(() -> fs.provider()
+            .newByteChannel(fs.getPath(generateBlobName()),
+                new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW))));
 
-        assertDoesNotThrow(() -> fs.provider().newByteChannel(fs.getPath(generateBlobName()), new HashSet<>(
-            Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE))));
+        assertDoesNotThrow(() -> fs.provider()
+            .newByteChannel(fs.getPath(generateBlobName()), new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE))));
     }
 
     @ParameterizedTest
-    @EnumSource(value = StandardOpenOption.class, names = {"APPEND", "DELETE_ON_CLOSE", "DSYNC", "READ", "SPARSE",
-        "SYNC"})
+    @EnumSource(
+        value = StandardOpenOption.class,
+        names = { "APPEND", "DELETE_ON_CLOSE", "DSYNC", "READ", "SPARSE", "SYNC" })
     public void byteChannelOptionsInvalid(StandardOpenOption option) {
         AzureFileSystem fs = createFS(config);
 
-        assertThrows(UnsupportedOperationException.class, () -> fs.provider().newOutputStream(
-            fs.getPath(generateBlobName()), option, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));
+        assertThrows(UnsupportedOperationException.class,
+            () -> fs.provider()
+                .newOutputStream(fs.getPath(generateBlobName()), option, StandardOpenOption.WRITE,
+                    StandardOpenOption.TRUNCATE_EXISTING));
     }
 
     @LiveOnly
     @ParameterizedTest
-    @CsvSource(value = {"60,0", "150,3"})
+    @CsvSource(value = { "60,0", "150,3" })
     public void byteChannelFileSystemConfig(int dataSize, int blockCount) throws IOException {
         config.put(AzureFileSystem.AZURE_STORAGE_UPLOAD_BLOCK_SIZE, 50L);
         config.put(AzureFileSystem.AZURE_STORAGE_PUT_BLOB_THRESHOLD, 100L);
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
-        SeekableByteChannel nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
-            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING)));
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
+        SeekableByteChannel nioChannel = fs.provider()
+            .newByteChannel(fs.getPath(bc.getBlobName()), new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)));
 
         nioChannel.write(getRandomData(dataSize));
         nioChannel.close();
@@ -1046,12 +1076,14 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     @Test
     public void byteChannelOpenDirectoryFail() {
         AzureFileSystem fs = createFS(config);
-        BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
-            .getBlockBlobClient();
+        BlockBlobClient bc
+            = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
         putDirectoryBlob(bc);
 
-        assertThrows(IOException.class, () -> fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
-            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW))));
+        assertThrows(IOException.class,
+            () -> fs.provider()
+                .newByteChannel(fs.getPath(bc.getBlobName()),
+                    new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW))));
     }
 
     @Test
@@ -1082,7 +1114,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @EnumSource(value = AccessMode.class, names = {"READ", "WRITE", "EXECUTE"})
+    @EnumSource(value = AccessMode.class, names = { "READ", "WRITE", "EXECUTE" })
     public void checkAccessAccessDenied(AccessMode mode) throws IOException {
         AzureFileSystem fs = createFS(config);
         Path path = fs.getPath(generateBlobName());
@@ -1115,8 +1147,8 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
             HttpRequest request = httpPipelineCallContext.getHttpRequest();
             // GetProperties call to blob
             if (request.getUrl().getPath().split("/").length == 3 && request.getHttpMethod() == (HttpMethod.HEAD)) {
-                return Mono.just(new MockHttpResponse(request, 403, new HttpHeaders()
-                    .set("x-ms-error-code", BlobErrorCode.AUTHORIZATION_FAILURE.toString())));
+                return Mono.just(new MockHttpResponse(request, 403,
+                    new HttpHeaders().set("x-ms-error-code", BlobErrorCode.AUTHORIZATION_FAILURE.toString())));
             } else {
                 return httpPipelineNextPolicy.process();
             }
@@ -1142,11 +1174,12 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(classes = {BasicFileAttributeView.class, AzureBasicFileAttributeView.class,
-        AzureBlobFileAttributeView.class})
+    @ValueSource(
+        classes = { BasicFileAttributeView.class, AzureBasicFileAttributeView.class, AzureBlobFileAttributeView.class })
     public void getAttributeView(Class<? extends BasicFileAttributeView> type) {
         Class<?> expected = type == AzureBlobFileAttributeView.class
-            ? AzureBlobFileAttributeView.class : BasicFileAttributeView.class;
+            ? AzureBlobFileAttributeView.class
+            : BasicFileAttributeView.class;
         AzureFileSystem fs = createFS(config);
 
         // No path validation is expected for getting the view
@@ -1162,14 +1195,15 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(classes = {BasicFileAttributes.class, AzureBasicFileAttributes.class, AzureBlobFileAttributes.class})
+    @ValueSource(classes = { BasicFileAttributes.class, AzureBasicFileAttributes.class, AzureBlobFileAttributes.class })
     public void readAttributes(Class<? extends BasicFileAttributes> type) throws IOException {
         AzureFileSystem fs = createFS(config);
         Path path = fs.getPath(generateBlobName());
         fs.provider().newOutputStream(path).close();
 
         Class<?> expected = type.equals(AzureBlobFileAttributes.class)
-            ? AzureBlobFileAttributes.class : AzureBasicFileAttributes.class;
+            ? AzureBlobFileAttributes.class
+            : AzureBasicFileAttributes.class;
 
         assertInstanceOf(expected, fs.provider().readAttributes(path, type));
     }
@@ -1231,22 +1265,19 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     private static Stream<Arguments> readAttributesStrParsingSupplier() {
         List<String> basic = Arrays.asList("lastModifiedTime", "creationTime", "isRegularFile", "isDirectory",
             "isVirtualDirectory", "isSymbolicLink", "isOther", "size");
-        return Stream.of(
-            Arguments.of("*", basic),
-            Arguments.of("basic:*", basic),
-            Arguments.of("azureBasic:*", basic),
-            Arguments.of("azureBlob:*", Arrays.asList("lastModifiedTime", "creationTime", "eTag", "blobHttpHeaders",
-                "blobType", "copyId", "copyStatus", "copySource", "copyProgress", "copyCompletionTime",
-                "copyStatusDescription", "isServerEncrypted", "accessTier", "isAccessTierInferred", "archiveStatus",
-                "accessTierChangeTime", "metadata", "isRegularFile", "isDirectory", "isVirtualDirectory",
-                "isSymbolicLink", "isOther", "size")),
+        return Stream.of(Arguments.of("*", basic), Arguments.of("basic:*", basic), Arguments.of("azureBasic:*", basic),
+            Arguments.of("azureBlob:*",
+                Arrays.asList("lastModifiedTime", "creationTime", "eTag", "blobHttpHeaders", "blobType", "copyId",
+                    "copyStatus", "copySource", "copyProgress", "copyCompletionTime", "copyStatusDescription",
+                    "isServerEncrypted", "accessTier", "isAccessTierInferred", "archiveStatus", "accessTierChangeTime",
+                    "metadata", "isRegularFile", "isDirectory", "isVirtualDirectory", "isSymbolicLink", "isOther",
+                    "size")),
             Arguments.of("lastModifiedTime,creationTime", Arrays.asList("lastModifiedTime", "creationTime")),
             Arguments.of("basic:isRegularFile,isDirectory,isVirtualDirectory",
                 Arrays.asList("isRegularFile", "isDirectory", "isVirtualDirectory")),
             Arguments.of("azureBasic:size", Collections.singletonList("size")),
             Arguments.of("azureBlob:eTag,blobHttpHeaders,blobType,copyId",
-                Arrays.asList("eTag", "blobHttpHeaders", "blobType", "copyId"))
-        );
+                Arrays.asList("eTag", "blobHttpHeaders", "blobType", "copyId")));
     }
 
     @Test
@@ -1259,7 +1290,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"azureBlob:size:foo", "", "azureBasic:foo"})
+    @ValueSource(strings = { "azureBlob:size:foo", "", "azureBasic:foo" })
     public void readAttributesStrIA(String attrStr) {
         AzureFileSystem fs = createFS(config);
         Path path = fs.getPath(generateBlobName());
@@ -1321,15 +1352,13 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     private static Stream<Arguments> setAttributesHeadersSupplier() throws NoSuchAlgorithmException {
-        return Stream.of(
-            Arguments.of(null, null, null, null, null, null),
+        return Stream.of(Arguments.of(null, null, null, null, null, null),
             Arguments.of("control", "disposition", "encoding", "language",
-                Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes())), "type")
-        );
+                Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes())), "type"));
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,200", "foo,bar,fizz,buzz,200", "i0,a,i_,a,200"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null,200", "foo,bar,fizz,buzz,200", "i0,a,i_,a,200" }, nullValues = "null")
     public void setAttributesMetadata(String key1, String value1, String key2, String value2) throws IOException {
         AzureFileSystem fs = createFS(config);
         Path path = fs.getPath(generateBlobName());
@@ -1376,11 +1405,12 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "azureBlob:metadata:foo", // Invalid format
-        "", // empty
-        "azureBasic:foo" // Invalid property
-    })
+    @ValueSource(
+        strings = {
+            "azureBlob:metadata:foo", // Invalid format
+            "", // empty
+            "azureBasic:foo" // Invalid property
+        })
     public void setAttribuesIA(String attrStr) {
         AzureFileSystem fs = createFS(config);
         Path path = fs.getPath(generateBlobName());

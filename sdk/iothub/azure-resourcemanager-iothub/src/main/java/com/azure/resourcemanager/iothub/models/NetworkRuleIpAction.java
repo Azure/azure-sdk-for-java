@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** IP Filter Action. */
+/**
+ * IP Filter Action.
+ */
 public final class NetworkRuleIpAction extends ExpandableStringEnum<NetworkRuleIpAction> {
-    /** Static value Allow for NetworkRuleIpAction. */
+    /**
+     * Static value Allow for NetworkRuleIpAction.
+     */
     public static final NetworkRuleIpAction ALLOW = fromString("Allow");
 
     /**
      * Creates a new instance of NetworkRuleIpAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class NetworkRuleIpAction extends ExpandableStringEnum<NetworkRuleI
 
     /**
      * Creates or finds a NetworkRuleIpAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkRuleIpAction.
      */
-    @JsonCreator
     public static NetworkRuleIpAction fromString(String name) {
         return fromString(name, NetworkRuleIpAction.class);
     }
 
     /**
      * Gets known NetworkRuleIpAction values.
-     *
+     * 
      * @return known NetworkRuleIpAction values.
      */
     public static Collection<NetworkRuleIpAction> values() {

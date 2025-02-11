@@ -30,7 +30,10 @@ public final class LocalRulesCreateOrUpdateSamples {
      */
     public static void localRulesCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRules().define("1").withExistingLocalRulestack("firewall-rg", "lrs1").withRuleName("localRule1")
+        manager.localRules()
+            .define("1")
+            .withExistingLocalRulestack("firewall-rg", "lrs1")
+            .withRuleName("localRule1")
             .create();
     }
 
@@ -46,21 +49,35 @@ public final class LocalRulesCreateOrUpdateSamples {
      */
     public static void localRulesCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRules().define("1").withExistingLocalRulestack("firewall-rg", "lrs1").withRuleName("localRule1")
+        manager.localRules()
+            .define("1")
+            .withExistingLocalRulestack("firewall-rg", "lrs1")
+            .withRuleName("localRule1")
             .withTags(Arrays.asList(new TagInfo().withKey("fakeTokenPlaceholder").withValue("value")))
-            .withEtag("c18e6eef-ba3e-49ee-8a85-2b36c863a9d0").withDescription("description of local rule")
+            .withEtag("c18e6eef-ba3e-49ee-8a85-2b36c863a9d0")
+            .withDescription("description of local rule")
             .withRuleState(StateEnum.DISABLED)
-            .withSource(new SourceAddr().withCidrs(Arrays.asList("1.0.0.1/10")).withCountries(Arrays.asList("India"))
-                .withFeeds(Arrays.asList("feed")).withPrefixLists(Arrays.asList("PL1")))
+            .withSource(new SourceAddr().withCidrs(Arrays.asList("1.0.0.1/10"))
+                .withCountries(Arrays.asList("India"))
+                .withFeeds(Arrays.asList("feed"))
+                .withPrefixLists(Arrays.asList("PL1")))
             .withNegateSource(BooleanEnum.TRUE)
             .withDestination(new DestinationAddr().withCidrs(Arrays.asList("1.0.0.1/10"))
-                .withCountries(Arrays.asList("India")).withFeeds(Arrays.asList("feed"))
-                .withPrefixLists(Arrays.asList("PL1")).withFqdnLists(Arrays.asList("FQDN1")))
-            .withNegateDestination(BooleanEnum.TRUE).withApplications(Arrays.asList("app1"))
+                .withCountries(Arrays.asList("India"))
+                .withFeeds(Arrays.asList("feed"))
+                .withPrefixLists(Arrays.asList("PL1"))
+                .withFqdnLists(Arrays.asList("FQDN1")))
+            .withNegateDestination(BooleanEnum.TRUE)
+            .withApplications(Arrays.asList("app1"))
             .withCategory(
                 new Category().withUrlCustom(Arrays.asList("https://microsoft.com")).withFeeds(Arrays.asList("feed")))
-            .withProtocol("HTTP").withProtocolPortList(Arrays.asList("80")).withInboundInspectionCertificate("cert1")
-            .withAuditComment("example comment").withActionType(ActionEnum.ALLOW).withEnableLogging(StateEnum.DISABLED)
-            .withDecryptionRuleType(DecryptionRuleTypeEnum.SSLOUTBOUND_INSPECTION).create();
+            .withProtocol("HTTP")
+            .withProtocolPortList(Arrays.asList("80"))
+            .withInboundInspectionCertificate("cert1")
+            .withAuditComment("example comment")
+            .withActionType(ActionEnum.ALLOW)
+            .withEnableLogging(StateEnum.DISABLED)
+            .withDecryptionRuleType(DecryptionRuleTypeEnum.SSLOUTBOUND_INSPECTION)
+            .create();
     }
 }

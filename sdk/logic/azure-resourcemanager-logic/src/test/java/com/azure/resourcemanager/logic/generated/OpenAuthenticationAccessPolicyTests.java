@@ -14,32 +14,25 @@ import org.junit.jupiter.api.Assertions;
 public final class OpenAuthenticationAccessPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OpenAuthenticationAccessPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AAD\",\"claims\":[{\"name\":\"sglumma\",\"value\":\"j\"},{\"name\":\"dxob\",\"value\":\"dxkqpx\"},{\"name\":\"ajionpimexgstxg\",\"value\":\"odgmaajrmvdjwz\"}]}")
-                .toObject(OpenAuthenticationAccessPolicy.class);
+        OpenAuthenticationAccessPolicy model = BinaryData.fromString(
+            "{\"type\":\"AAD\",\"claims\":[{\"name\":\"bbcswsrtjri\",\"value\":\"rbpbewtghfgblcg\"},{\"name\":\"zvlvqhjkbegib\",\"value\":\"mxiebw\"},{\"name\":\"loayqcgw\",\"value\":\"zjuzgwyz\"}]}")
+            .toObject(OpenAuthenticationAccessPolicy.class);
         Assertions.assertEquals(OpenAuthenticationProviderType.AAD, model.type());
-        Assertions.assertEquals("sglumma", model.claims().get(0).name());
-        Assertions.assertEquals("j", model.claims().get(0).value());
+        Assertions.assertEquals("bbcswsrtjri", model.claims().get(0).name());
+        Assertions.assertEquals("rbpbewtghfgblcg", model.claims().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OpenAuthenticationAccessPolicy model =
-            new OpenAuthenticationAccessPolicy()
-                .withType(OpenAuthenticationProviderType.AAD)
-                .withClaims(
-                    Arrays
-                        .asList(
-                            new OpenAuthenticationPolicyClaim().withName("sglumma").withValue("j"),
-                            new OpenAuthenticationPolicyClaim().withName("dxob").withValue("dxkqpx"),
-                            new OpenAuthenticationPolicyClaim()
-                                .withName("ajionpimexgstxg")
-                                .withValue("odgmaajrmvdjwz")));
+        OpenAuthenticationAccessPolicy model
+            = new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                .withClaims(Arrays.asList(
+                    new OpenAuthenticationPolicyClaim().withName("bbcswsrtjri").withValue("rbpbewtghfgblcg"),
+                    new OpenAuthenticationPolicyClaim().withName("zvlvqhjkbegib").withValue("mxiebw"),
+                    new OpenAuthenticationPolicyClaim().withName("loayqcgw").withValue("zjuzgwyz")));
         model = BinaryData.fromObject(model).toObject(OpenAuthenticationAccessPolicy.class);
         Assertions.assertEquals(OpenAuthenticationProviderType.AAD, model.type());
-        Assertions.assertEquals("sglumma", model.claims().get(0).name());
-        Assertions.assertEquals("j", model.claims().get(0).value());
+        Assertions.assertEquals("bbcswsrtjri", model.claims().get(0).name());
+        Assertions.assertEquals("rbpbewtghfgblcg", model.claims().get(0).value());
     }
 }

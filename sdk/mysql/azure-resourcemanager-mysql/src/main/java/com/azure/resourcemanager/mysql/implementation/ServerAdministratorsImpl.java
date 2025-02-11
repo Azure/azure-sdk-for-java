@@ -16,14 +16,15 @@ import com.azure.resourcemanager.mysql.models.ServerAdministrators;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServerAdministratorsImpl implements ServerAdministrators {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerAdministratorsImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerAdministratorsImpl.class);
 
     private final ServerAdministratorsClient innerClient;
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public ServerAdministratorsImpl(
-        ServerAdministratorsClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    public ServerAdministratorsImpl(ServerAdministratorsClient innerClient,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -37,25 +38,22 @@ public final class ServerAdministratorsImpl implements ServerAdministrators {
         }
     }
 
-    public Response<ServerAdministratorResource> getWithResponse(
-        String resourceGroupName, String serverName, Context context) {
-        Response<ServerAdministratorResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, context);
+    public Response<ServerAdministratorResource> getWithResponse(String resourceGroupName, String serverName,
+        Context context) {
+        Response<ServerAdministratorResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ServerAdministratorResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ServerAdministratorResource createOrUpdate(
-        String resourceGroupName, String serverName, ServerAdministratorResourceInner properties) {
-        ServerAdministratorResourceInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serverName, properties);
+    public ServerAdministratorResource createOrUpdate(String resourceGroupName, String serverName,
+        ServerAdministratorResourceInner properties) {
+        ServerAdministratorResourceInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, serverName, properties);
         if (inner != null) {
             return new ServerAdministratorResourceImpl(inner, this.manager());
         } else {
@@ -63,10 +61,10 @@ public final class ServerAdministratorsImpl implements ServerAdministrators {
         }
     }
 
-    public ServerAdministratorResource createOrUpdate(
-        String resourceGroupName, String serverName, ServerAdministratorResourceInner properties, Context context) {
-        ServerAdministratorResourceInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serverName, properties, context);
+    public ServerAdministratorResource createOrUpdate(String resourceGroupName, String serverName,
+        ServerAdministratorResourceInner properties, Context context) {
+        ServerAdministratorResourceInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, serverName, properties, context);
         if (inner != null) {
             return new ServerAdministratorResourceImpl(inner, this.manager());
         } else {
@@ -83,15 +81,15 @@ public final class ServerAdministratorsImpl implements ServerAdministrators {
     }
 
     public PagedIterable<ServerAdministratorResource> list(String resourceGroupName, String serverName) {
-        PagedIterable<ServerAdministratorResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, serverName);
+        PagedIterable<ServerAdministratorResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, serverName);
         return Utils.mapPage(inner, inner1 -> new ServerAdministratorResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ServerAdministratorResource> list(
-        String resourceGroupName, String serverName, Context context) {
-        PagedIterable<ServerAdministratorResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, serverName, context);
+    public PagedIterable<ServerAdministratorResource> list(String resourceGroupName, String serverName,
+        Context context) {
+        PagedIterable<ServerAdministratorResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, serverName, context);
         return Utils.mapPage(inner, inner1 -> new ServerAdministratorResourceImpl(inner1, this.manager()));
     }
 

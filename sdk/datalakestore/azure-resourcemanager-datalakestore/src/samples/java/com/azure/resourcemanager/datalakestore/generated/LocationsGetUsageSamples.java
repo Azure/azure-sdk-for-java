@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.datalakestore.generated;
 
-/** Samples for Locations GetUsage. */
+/**
+ * Samples for Locations GetUsage.
+ */
 public final class LocationsGetUsageSamples {
     /*
-     * x-ms-original-file: specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/Locations_GetUsage.json
+     * x-ms-original-file:
+     * specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/
+     * Locations_GetUsage.json
      */
     /**
      * Sample code: UsageList.
-     *
+     * 
      * @param manager Entry point to DataLakeStoreManager.
      */
     public static void usageList(com.azure.resourcemanager.datalakestore.DataLakeStoreManager manager) {

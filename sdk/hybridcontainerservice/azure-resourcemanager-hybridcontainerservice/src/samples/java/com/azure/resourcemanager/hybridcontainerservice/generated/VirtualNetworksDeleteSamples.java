@@ -20,7 +20,7 @@ public final class VirtualNetworksDeleteSamples {
      */
     public static void
         deleteVirtualNetwork(com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.virtualNetworks().delete("test-arcappliance-resgrp", "test-vnet-static",
-            com.azure.core.util.Context.NONE);
+        manager.virtualNetworks()
+            .delete("test-arcappliance-resgrp", "test-vnet-static", com.azure.core.util.Context.NONE);
     }
 }

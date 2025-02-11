@@ -56,7 +56,11 @@ public final class ClustersCreateOrUpdateSamples {
      */
     public static void
         putAClusterWithMaximumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusters().define("myCluster").withRegion("eastus").withExistingResourceGroup("resRg").withTags(mapOf())
+        manager.clusters()
+            .define("myCluster")
+            .withRegion("eastus")
+            .withExistingResourceGroup("resRg")
+            .withTags(mapOf())
             .withAddOnFeatures(Arrays.asList(AddOnFeatures.REPAIR_MANAGER, AddOnFeatures.DNS_SERVICE,
                 AddOnFeatures.BACKUP_RESTORE_SERVICE, AddOnFeatures.RESOURCE_MONITOR_SERVICE))
             .withAzureActiveDirectory(new AzureActiveDirectory().withTenantId("6abcc6a0-8666-43f1-87b8-172cf86a9f9c")
@@ -66,9 +70,9 @@ public final class ClustersCreateOrUpdateSamples {
                 .withCommonNames(Arrays.asList(new ServerCertificateCommonName().withCertificateCommonName("abc.com")
                     .withCertificateIssuerThumbprint("12599211F8F14C90AFA9532AD79A6F2CA1C00622")))
                 .withX509StoreName(StoreName.MY))
-            .withClientCertificateCommonNames(
-                Arrays.asList(new ClientCertificateCommonName().withIsAdmin(true).withCertificateCommonName("abc.com")
-                    .withCertificateIssuerThumbprint("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A")))
+            .withClientCertificateCommonNames(Arrays.asList(new ClientCertificateCommonName().withIsAdmin(true)
+                .withCertificateCommonName("abc.com")
+                .withCertificateIssuerThumbprint("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A")))
             .withClientCertificateThumbprints(Arrays.asList(new ClientCertificateThumbprint().withIsAdmin(true)
                 .withCertificateThumbprint("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A")))
             .withClusterCodeVersion("7.0.470.9590")
@@ -83,30 +87,38 @@ public final class ClustersCreateOrUpdateSamples {
                     .asList(new SettingsParameterDescription().withName("AppPollIntervalInSeconds").withValue("60")))))
             .withManagementEndpoint("https://myCluster.eastus.cloudapp.azure.com:19080")
             .withNodeTypes(Arrays.asList(new NodeTypeDescription().withName("nt1vm")
-                .withClientConnectionEndpointPort(19000).withHttpGatewayEndpointPort(19007)
+                .withClientConnectionEndpointPort(19000)
+                .withHttpGatewayEndpointPort(19007)
                 .withDurabilityLevel(DurabilityLevel.SILVER)
                 .withApplicationPorts(new EndpointRangeDescription().withStartPort(20000).withEndPort(30000))
                 .withEphemeralPorts(new EndpointRangeDescription().withStartPort(49000).withEndPort(64000))
-                .withIsPrimary(true).withVmInstanceCount(5).withIsStateless(false).withMultipleAvailabilityZones(true)))
+                .withIsPrimary(true)
+                .withVmInstanceCount(5)
+                .withIsStateless(false)
+                .withMultipleAvailabilityZones(true)))
             .withReliabilityLevel(ReliabilityLevel.PLATINUM)
             .withReverseProxyCertificateCommonNames(new ServerCertificateCommonNames()
                 .withCommonNames(Arrays.asList(new ServerCertificateCommonName().withCertificateCommonName("abc.com")
                     .withCertificateIssuerThumbprint("12599211F8F14C90AFA9532AD79A6F2CA1C00622")))
                 .withX509StoreName(StoreName.MY))
             .withUpgradeDescription(new ClusterUpgradePolicy().withForceRestart(false)
-                .withUpgradeReplicaSetCheckTimeout("00:10:00").withHealthCheckWaitDuration("00:00:30")
-                .withHealthCheckStableDuration("00:00:30").withHealthCheckRetryTimeout("00:05:00")
-                .withUpgradeTimeout("01:00:00").withUpgradeDomainTimeout("00:15:00")
-                .withHealthPolicy(
-                    new ClusterHealthPolicy().withMaxPercentUnhealthyNodes(0).withMaxPercentUnhealthyApplications(0)
-                        .withApplicationHealthPolicies(mapOf("fabric:/myApp1",
-                            new ApplicationHealthPolicy()
-                                .withDefaultServiceTypeHealthPolicy(
-                                    new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(0))
-                                .withServiceTypeHealthPolicies(mapOf("myServiceType1",
-                                    new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(100))))))
+                .withUpgradeReplicaSetCheckTimeout("00:10:00")
+                .withHealthCheckWaitDuration("00:00:30")
+                .withHealthCheckStableDuration("00:00:30")
+                .withHealthCheckRetryTimeout("00:05:00")
+                .withUpgradeTimeout("01:00:00")
+                .withUpgradeDomainTimeout("00:15:00")
+                .withHealthPolicy(new ClusterHealthPolicy().withMaxPercentUnhealthyNodes(0)
+                    .withMaxPercentUnhealthyApplications(0)
+                    .withApplicationHealthPolicies(mapOf("fabric:/myApp1",
+                        new ApplicationHealthPolicy()
+                            .withDefaultServiceTypeHealthPolicy(
+                                new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(0))
+                            .withServiceTypeHealthPolicies(mapOf("myServiceType1",
+                                new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(100))))))
                 .withDeltaHealthPolicy(new ClusterUpgradeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyNodes(0)
-                    .withMaxPercentUpgradeDomainDeltaUnhealthyNodes(0).withMaxPercentDeltaUnhealthyApplications(0)
+                    .withMaxPercentUpgradeDomainDeltaUnhealthyNodes(0)
+                    .withMaxPercentDeltaUnhealthyApplications(0)
                     .withApplicationDeltaHealthPolicies(mapOf("fabric:/myApp1",
                         new ApplicationDeltaHealthPolicy()
                             .withDefaultServiceTypeDeltaHealthPolicy(
@@ -116,20 +128,24 @@ public final class ClustersCreateOrUpdateSamples {
             .withUpgradeMode(UpgradeMode.MANUAL)
             .withApplicationTypeVersionsCleanupPolicy(
                 new ApplicationTypeVersionsCleanupPolicy().withMaxUnusedVersionsToKeep(2L))
-            .withVmImage("Windows").withSfZonalUpgradeMode(SfZonalUpgradeMode.HIERARCHICAL)
-            .withVmssZonalUpgradeMode(VmssZonalUpgradeMode.PARALLEL).withInfrastructureServiceManager(true)
+            .withVmImage("Windows")
+            .withSfZonalUpgradeMode(SfZonalUpgradeMode.HIERARCHICAL)
+            .withVmssZonalUpgradeMode(VmssZonalUpgradeMode.PARALLEL)
+            .withInfrastructureServiceManager(true)
             .withUpgradeWave(ClusterUpgradeCadence.WAVE1)
             .withUpgradePauseStartTimestampUtc(OffsetDateTime.parse("2021-06-21T22:00:00Z"))
             .withUpgradePauseEndTimestampUtc(OffsetDateTime.parse("2021-06-25T22:00:00Z"))
             .withNotifications(Arrays.asList(
-                new Notification().withIsEnabled(true).withNotificationCategory(NotificationCategory.WAVE_PROGRESS)
+                new Notification().withIsEnabled(true)
+                    .withNotificationCategory(NotificationCategory.WAVE_PROGRESS)
                     .withNotificationLevel(NotificationLevel.CRITICAL)
                     .withNotificationTargets(Arrays.asList(
                         new NotificationTarget().withNotificationChannel(NotificationChannel.EMAIL_USER)
                             .withReceivers(Arrays.asList("****@microsoft.com", "****@microsoft.com")),
                         new NotificationTarget().withNotificationChannel(NotificationChannel.EMAIL_SUBSCRIPTION)
                             .withReceivers(Arrays.asList("Owner", "AccountAdmin")))),
-                new Notification().withIsEnabled(true).withNotificationCategory(NotificationCategory.WAVE_PROGRESS)
+                new Notification().withIsEnabled(true)
+                    .withNotificationCategory(NotificationCategory.WAVE_PROGRESS)
                     .withNotificationLevel(NotificationLevel.ALL)
                     .withNotificationTargets(Arrays.asList(
                         new NotificationTarget().withNotificationChannel(NotificationChannel.EMAIL_USER)
@@ -151,7 +167,11 @@ public final class ClustersCreateOrUpdateSamples {
      */
     public static void
         putAClusterWithMinimumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusters().define("myCluster").withRegion("eastus").withExistingResourceGroup("resRg").withTags(mapOf())
+        manager.clusters()
+            .define("myCluster")
+            .withRegion("eastus")
+            .withExistingResourceGroup("resRg")
+            .withTags(mapOf())
             .withDiagnosticsStorageAccountConfig(new DiagnosticsStorageAccountConfig().withStorageAccountName("diag")
                 .withProtectedAccountKeyName("fakeTokenPlaceholder")
                 .withBlobEndpoint("https://diag.blob.core.windows.net/")
@@ -161,13 +181,17 @@ public final class ClustersCreateOrUpdateSamples {
                 .withParameters(Arrays
                     .asList(new SettingsParameterDescription().withName("AppPollIntervalInSeconds").withValue("60")))))
             .withManagementEndpoint("http://myCluster.eastus.cloudapp.azure.com:19080")
-            .withNodeTypes(
-                Arrays.asList(new NodeTypeDescription().withName("nt1vm").withClientConnectionEndpointPort(19000)
-                    .withHttpGatewayEndpointPort(19007).withDurabilityLevel(DurabilityLevel.BRONZE)
-                    .withApplicationPorts(new EndpointRangeDescription().withStartPort(20000).withEndPort(30000))
-                    .withEphemeralPorts(new EndpointRangeDescription().withStartPort(49000).withEndPort(64000))
-                    .withIsPrimary(true).withVmInstanceCount(5)))
-            .withReliabilityLevel(ReliabilityLevel.SILVER).withUpgradeMode(UpgradeMode.AUTOMATIC).create();
+            .withNodeTypes(Arrays.asList(new NodeTypeDescription().withName("nt1vm")
+                .withClientConnectionEndpointPort(19000)
+                .withHttpGatewayEndpointPort(19007)
+                .withDurabilityLevel(DurabilityLevel.BRONZE)
+                .withApplicationPorts(new EndpointRangeDescription().withStartPort(20000).withEndPort(30000))
+                .withEphemeralPorts(new EndpointRangeDescription().withStartPort(49000).withEndPort(64000))
+                .withIsPrimary(true)
+                .withVmInstanceCount(5)))
+            .withReliabilityLevel(ReliabilityLevel.SILVER)
+            .withUpgradeMode(UpgradeMode.AUTOMATIC)
+            .create();
     }
 
     // Use "Map.of" if available

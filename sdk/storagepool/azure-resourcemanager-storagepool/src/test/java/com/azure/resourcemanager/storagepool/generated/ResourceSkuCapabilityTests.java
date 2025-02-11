@@ -10,10 +10,8 @@ import com.azure.resourcemanager.storagepool.models.ResourceSkuCapability;
 public final class ResourceSkuCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuCapability model =
-            BinaryData
-                .fromString("{\"name\":\"acspkwl\",\"value\":\"dobpxjmflbvvn\"}")
-                .toObject(ResourceSkuCapability.class);
+        ResourceSkuCapability model = BinaryData.fromString("{\"name\":\"arbu\",\"value\":\"cvpnazzmhjrunmpx\"}")
+            .toObject(ResourceSkuCapability.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -38,24 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AvailabilityGroupListenersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AvailabilityGroupListenersClient.
+ */
 public final class AvailabilityGroupListenersClientImpl implements AvailabilityGroupListenersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AvailabilityGroupListenersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlVirtualMachineManagementClientImpl client;
 
     /**
      * Initializes an instance of AvailabilityGroupListenersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AvailabilityGroupListenersClientImpl(SqlVirtualMachineManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    AvailabilityGroupListenersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AvailabilityGroupListenersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,83 +70,64 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
     @Host("{$host}")
     @ServiceInterface(name = "SqlVirtualMachineMan")
     public interface AvailabilityGroupListenersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilityGroupListenerInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AvailabilityGroupListenerInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineGroupName") String sqlVirtualMachineGroupName,
             @PathParam("availabilityGroupListenerName") String availabilityGroupListenerName,
-            @QueryParam("$expand") String expand,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("$expand") String expand, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineGroupName") String sqlVirtualMachineGroupName,
             @PathParam("availabilityGroupListenerName") String availabilityGroupListenerName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AvailabilityGroupListenerInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineGroupName") String sqlVirtualMachineGroupName,
             @PathParam("availabilityGroupListenerName") String availabilityGroupListenerName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilityGroupListenerListResult>> listByGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AvailabilityGroupListenerListResult>> listByGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineGroupName") String sqlVirtualMachineGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AvailabilityGroupListenerListResult>> listByGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param expand The child resources to include in the response.
@@ -152,62 +137,41 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return an availability group listener along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AvailabilityGroupListenerInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        String expand) {
+    private Mono<Response<AvailabilityGroupListenerInner>> getWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlVirtualMachineGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sqlVirtualMachineGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlVirtualMachineGroupName is required and cannot be null."));
         }
         if (availabilityGroupListenerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter availabilityGroupListenerName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter availabilityGroupListenerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineGroupName,
-                            availabilityGroupListenerName,
-                            expand,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName,
+                sqlVirtualMachineGroupName, availabilityGroupListenerName, expand, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param expand The child resources to include in the response.
@@ -218,60 +182,40 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return an availability group listener along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AvailabilityGroupListenerInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        String expand,
-        Context context) {
+    private Mono<Response<AvailabilityGroupListenerInner>> getWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlVirtualMachineGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sqlVirtualMachineGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlVirtualMachineGroupName is required and cannot be null."));
         }
         if (availabilityGroupListenerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter availabilityGroupListenerName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter availabilityGroupListenerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineGroupName,
-                availabilityGroupListenerName,
-                expand,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineGroupName,
+            availabilityGroupListenerName, expand, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Gets an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,19 +224,18 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return an availability group listener on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AvailabilityGroupListenerInner> getAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
+    private Mono<AvailabilityGroupListenerInner> getAsync(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName) {
         final String expand = null;
-        return getWithResponseAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getWithResponseAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+            expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param expand The child resources to include in the response.
@@ -303,22 +246,17 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return an availability group listener along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AvailabilityGroupListenerInner> getWithResponse(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        String expand,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand, context)
-            .block();
+    public Response<AvailabilityGroupListenerInner> getWithResponse(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName, String expand, Context context) {
+        return getWithResponseAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+            expand, context).block();
     }
 
     /**
      * Gets an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -327,61 +265,50 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return an availability group listener.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailabilityGroupListenerInner get(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
+    public AvailabilityGroupListenerInner get(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName) {
         final String expand = null;
-        return getWithResponse(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand, Context.NONE)
-            .getValue();
+        return getWithResponse(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand,
+            Context.NONE).getValue();
     }
 
     /**
      * Creates or updates an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param parameters The availability group listener.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Server availability group listener along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a SQL Server availability group listener along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName,
         AvailabilityGroupListenerInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlVirtualMachineGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sqlVirtualMachineGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlVirtualMachineGroupName is required and cannot be null."));
         }
         if (availabilityGroupListenerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter availabilityGroupListenerName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter availabilityGroupListenerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -390,27 +317,17 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineGroupName,
-                            availabilityGroupListenerName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                sqlVirtualMachineGroupName, availabilityGroupListenerName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param parameters The availability group listener.
@@ -418,43 +335,32 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Server availability group listener along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a SQL Server availability group listener along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        AvailabilityGroupListenerInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName,
+        AvailabilityGroupListenerInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlVirtualMachineGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sqlVirtualMachineGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlVirtualMachineGroupName is required and cannot be null."));
         }
         if (availabilityGroupListenerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter availabilityGroupListenerName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter availabilityGroupListenerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -463,24 +369,16 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineGroupName,
-                availabilityGroupListenerName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineGroupName,
+            availabilityGroupListenerName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters,
+            accept, context);
     }
 
     /**
      * Creates or updates an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param parameters The availability group listener.
@@ -491,29 +389,20 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailabilityGroupListenerInner>, AvailabilityGroupListenerInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String sqlVirtualMachineGroupName,
-            String availabilityGroupListenerName,
-            AvailabilityGroupListenerInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters);
-        return this
-            .client
-            .<AvailabilityGroupListenerInner, AvailabilityGroupListenerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AvailabilityGroupListenerInner.class,
-                AvailabilityGroupListenerInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String sqlVirtualMachineGroupName,
+            String availabilityGroupListenerName, AvailabilityGroupListenerInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters);
+        return this.client.<AvailabilityGroupListenerInner, AvailabilityGroupListenerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AvailabilityGroupListenerInner.class, AvailabilityGroupListenerInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param parameters The availability group listener.
@@ -525,31 +414,21 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailabilityGroupListenerInner>, AvailabilityGroupListenerInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String sqlVirtualMachineGroupName,
-            String availabilityGroupListenerName,
-            AvailabilityGroupListenerInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String sqlVirtualMachineGroupName,
+            String availabilityGroupListenerName, AvailabilityGroupListenerInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters, context);
-        return this
-            .client
-            .<AvailabilityGroupListenerInner, AvailabilityGroupListenerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AvailabilityGroupListenerInner.class,
-                AvailabilityGroupListenerInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters, context);
+        return this.client.<AvailabilityGroupListenerInner, AvailabilityGroupListenerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AvailabilityGroupListenerInner.class, AvailabilityGroupListenerInner.class,
+            context);
     }
 
     /**
      * Creates or updates an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param parameters The availability group listener.
@@ -560,21 +439,19 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailabilityGroupListenerInner>, AvailabilityGroupListenerInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
+        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName,
         AvailabilityGroupListenerInner parameters) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters)
+            .beginCreateOrUpdateAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+                parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param parameters The availability group listener.
@@ -586,22 +463,19 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailabilityGroupListenerInner>, AvailabilityGroupListenerInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        AvailabilityGroupListenerInner parameters,
-        Context context) {
+        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName,
+        AvailabilityGroupListenerInner parameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters, context)
+            .beginCreateOrUpdateAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+                parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param parameters The availability group listener.
@@ -611,22 +485,18 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return a SQL Server availability group listener on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AvailabilityGroupListenerInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
+    private Mono<AvailabilityGroupListenerInner> createOrUpdateAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName,
         AvailabilityGroupListenerInner parameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+            parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param parameters The availability group listener.
@@ -637,23 +507,18 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return a SQL Server availability group listener on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AvailabilityGroupListenerInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        AvailabilityGroupListenerInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<AvailabilityGroupListenerInner> createOrUpdateAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName,
+        AvailabilityGroupListenerInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+            parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param parameters The availability group listener.
@@ -663,21 +528,17 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return a SQL Server availability group listener.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailabilityGroupListenerInner createOrUpdate(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        AvailabilityGroupListenerInner parameters) {
-        return createOrUpdateAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters)
-            .block();
+    public AvailabilityGroupListenerInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName, AvailabilityGroupListenerInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+            parameters).block();
     }
 
     /**
      * Creates or updates an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param parameters The availability group listener.
@@ -688,22 +549,17 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return a SQL Server availability group listener.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailabilityGroupListenerInner createOrUpdate(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        AvailabilityGroupListenerInner parameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters, context)
-            .block();
+    public AvailabilityGroupListenerInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName, AvailabilityGroupListenerInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+            parameters, context).block();
     }
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -712,58 +568,41 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlVirtualMachineGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sqlVirtualMachineGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlVirtualMachineGroupName is required and cannot be null."));
         }
         if (availabilityGroupListenerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter availabilityGroupListenerName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter availabilityGroupListenerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineGroupName,
-                            availabilityGroupListenerName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
+                sqlVirtualMachineGroupName, availabilityGroupListenerName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param context The context to associate with this operation.
@@ -773,58 +612,40 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlVirtualMachineGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sqlVirtualMachineGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlVirtualMachineGroupName is required and cannot be null."));
         }
         if (availabilityGroupListenerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter availabilityGroupListenerName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter availabilityGroupListenerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineGroupName,
-                availabilityGroupListenerName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineGroupName,
+            availabilityGroupListenerName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -833,21 +654,19 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param context The context to associate with this operation.
@@ -857,25 +676,20 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, sqlVirtualMachineGroupName,
+            availabilityGroupListenerName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -884,18 +698,17 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
-        return this
-            .beginDeleteAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName) {
+        return this.beginDeleteAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName)
             .getSyncPoller();
     }
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param context The context to associate with this operation.
@@ -905,11 +718,8 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName, Context context) {
         return this
             .beginDeleteAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, context)
             .getSyncPoller();
@@ -917,9 +727,9 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -928,18 +738,17 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
-        return beginDeleteAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName) {
+        return beginDeleteAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param context The context to associate with this operation.
@@ -949,11 +758,8 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName, Context context) {
         return beginDeleteAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -961,9 +767,9 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -971,16 +777,16 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
+    public void delete(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName) {
         deleteAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName).block();
     }
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param context The context to associate with this operation.
@@ -989,141 +795,98 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        Context context) {
+    public void delete(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName, Context context) {
         deleteAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, context).block();
     }
 
     /**
      * Lists all availability group listeners in a SQL virtual machine group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of availability group listeners along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityGroupListenerInner>> listByGroupSinglePageAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName) {
+    private Mono<PagedResponse<AvailabilityGroupListenerInner>> listByGroupSinglePageAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlVirtualMachineGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sqlVirtualMachineGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlVirtualMachineGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AvailabilityGroupListenerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByGroup(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineGroupName,
+                    this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AvailabilityGroupListenerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all availability group listeners in a SQL virtual machine group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of availability group listeners along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityGroupListenerInner>> listByGroupSinglePageAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context) {
+    private Mono<PagedResponse<AvailabilityGroupListenerInner>> listByGroupSinglePageAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlVirtualMachineGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sqlVirtualMachineGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlVirtualMachineGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByGroup(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all availability group listeners in a SQL virtual machine group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1131,18 +894,17 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return a list of availability group listeners as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AvailabilityGroupListenerInner> listByGroupAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName) {
-        return new PagedFlux<>(
-            () -> listByGroupSinglePageAsync(resourceGroupName, sqlVirtualMachineGroupName),
+    private PagedFlux<AvailabilityGroupListenerInner> listByGroupAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName) {
+        return new PagedFlux<>(() -> listByGroupSinglePageAsync(resourceGroupName, sqlVirtualMachineGroupName),
             nextLink -> listByGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all availability group listeners in a SQL virtual machine group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1151,18 +913,17 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return a list of availability group listeners as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AvailabilityGroupListenerInner> listByGroupAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByGroupSinglePageAsync(resourceGroupName, sqlVirtualMachineGroupName, context),
+    private PagedFlux<AvailabilityGroupListenerInner> listByGroupAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, Context context) {
+        return new PagedFlux<>(() -> listByGroupSinglePageAsync(resourceGroupName, sqlVirtualMachineGroupName, context),
             nextLink -> listByGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all availability group listeners in a SQL virtual machine group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1170,16 +931,16 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return a list of availability group listeners as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AvailabilityGroupListenerInner> listByGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName) {
+    public PagedIterable<AvailabilityGroupListenerInner> listByGroup(String resourceGroupName,
+        String sqlVirtualMachineGroupName) {
         return new PagedIterable<>(listByGroupAsync(resourceGroupName, sqlVirtualMachineGroupName));
     }
 
     /**
      * Lists all availability group listeners in a SQL virtual machine group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1188,21 +949,20 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @return a list of availability group listeners as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AvailabilityGroupListenerInner> listByGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context) {
+    public PagedIterable<AvailabilityGroupListenerInner> listByGroup(String resourceGroupName,
+        String sqlVirtualMachineGroupName, Context context) {
         return new PagedIterable<>(listByGroupAsync(resourceGroupName, sqlVirtualMachineGroupName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of availability group listeners along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityGroupListenerInner>> listByGroupNextSinglePageAsync(String nextLink) {
@@ -1210,62 +970,42 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AvailabilityGroupListenerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AvailabilityGroupListenerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of availability group listeners along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityGroupListenerInner>> listByGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AvailabilityGroupListenerInner>> listByGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

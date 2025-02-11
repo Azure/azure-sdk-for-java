@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.devtestlabs.generated;
 
-/** Samples for Users List. */
+/**
+ * Samples for Users List.
+ */
 public final class UsersListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_List.json
      */
     /**
      * Sample code: Users_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void usersList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .users()
+        manager.users()
             .list("resourceGroupName", "{devtestlabName}", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

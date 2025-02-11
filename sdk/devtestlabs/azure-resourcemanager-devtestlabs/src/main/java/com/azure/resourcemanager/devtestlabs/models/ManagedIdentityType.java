@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Managed identity. */
+/**
+ * Managed identity.
+ */
 public final class ManagedIdentityType extends ExpandableStringEnum<ManagedIdentityType> {
-    /** Static value None for ManagedIdentityType. */
+    /**
+     * Static value None for ManagedIdentityType.
+     */
     public static final ManagedIdentityType NONE = fromString("None");
 
-    /** Static value SystemAssigned for ManagedIdentityType. */
+    /**
+     * Static value SystemAssigned for ManagedIdentityType.
+     */
     public static final ManagedIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
-    /** Static value UserAssigned for ManagedIdentityType. */
+    /**
+     * Static value UserAssigned for ManagedIdentityType.
+     */
     public static final ManagedIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
-    /** Static value SystemAssigned,UserAssigned for ManagedIdentityType. */
+    /**
+     * Static value SystemAssigned,UserAssigned for ManagedIdentityType.
+     */
     public static final ManagedIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned,UserAssigned");
 
     /**
      * Creates a new instance of ManagedIdentityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ManagedIdentityType extends ExpandableStringEnum<ManagedIdent
 
     /**
      * Creates or finds a ManagedIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedIdentityType.
      */
-    @JsonCreator
     public static ManagedIdentityType fromString(String name) {
         return fromString(name, ManagedIdentityType.class);
     }
 
     /**
      * Gets known ManagedIdentityType values.
-     *
+     * 
      * @return known ManagedIdentityType values.
      */
     public static Collection<ManagedIdentityType> values() {

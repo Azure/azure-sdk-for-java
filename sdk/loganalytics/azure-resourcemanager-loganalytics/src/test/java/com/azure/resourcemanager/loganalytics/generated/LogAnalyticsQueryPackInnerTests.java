@@ -13,19 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class LogAnalyticsQueryPackInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogAnalyticsQueryPackInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"queryPackId\":\"ijbpzvgnwzsymgl\",\"timeCreated\":\"2021-09-05T16:59:27Z\",\"timeModified\":\"2021-02-27T08:20:44Z\",\"provisioningState\":\"ohdbihanufh\"},\"location\":\"cbjy\",\"tags\":{\"xwczbyscnp\":\"ithxqhabifpi\"},\"id\":\"x\",\"name\":\"hiv\",\"type\":\"qniwbybrkxvdumj\"}")
-                .toObject(LogAnalyticsQueryPackInner.class);
+        LogAnalyticsQueryPackInner model = BinaryData.fromString(
+            "{\"properties\":{\"queryPackId\":\"ijbpzvgnwzsymgl\",\"timeCreated\":\"2021-09-05T16:59:27Z\",\"timeModified\":\"2021-02-27T08:20:44Z\",\"provisioningState\":\"ohdbihanufh\"},\"location\":\"cbjy\",\"tags\":{\"xwczbyscnp\":\"ithxqhabifpi\"},\"id\":\"x\",\"name\":\"hiv\",\"type\":\"qniwbybrkxvdumj\"}")
+            .toObject(LogAnalyticsQueryPackInner.class);
         Assertions.assertEquals("cbjy", model.location());
         Assertions.assertEquals("ithxqhabifpi", model.tags().get("xwczbyscnp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogAnalyticsQueryPackInner model =
-            new LogAnalyticsQueryPackInner().withLocation("cbjy").withTags(mapOf("xwczbyscnp", "ithxqhabifpi"));
+        LogAnalyticsQueryPackInner model
+            = new LogAnalyticsQueryPackInner().withLocation("cbjy").withTags(mapOf("xwczbyscnp", "ithxqhabifpi"));
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQueryPackInner.class);
         Assertions.assertEquals("cbjy", model.location());
         Assertions.assertEquals("ithxqhabifpi", model.tags().get("xwczbyscnp"));

@@ -43,18 +43,14 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
         if (tokenCredentials == null || tokenCredentials.length == 0) {
             return next.process();
         }
-        return Flux.fromIterable(Arrays.asList(tokenCredentials))
-            .flatMap(credential -> {
-                String defaultScope = ResourceManagerUtils.getDefaultScopeFromRequest(
-                    context.getHttpRequest(), environment);
-                return credential.getToken(new TokenRequestContext().addScopes(defaultScope))
-                    .map(token -> String.format(SCHEMA_FORMAT, token.getToken()));
-            })
-            .collectList()
-            .flatMap(tokenList -> {
-                context.getHttpRequest()
-                    .setHeader(AUTHORIZATION_AUXILIARY_HEADER, String.join(",", tokenList));
-                return next.process();
-            });
+        return Flux.fromIterable(Arrays.asList(tokenCredentials)).flatMap(credential -> {
+            String defaultScope
+                = ResourceManagerUtils.getDefaultScopeFromRequest(context.getHttpRequest(), environment);
+            return credential.getToken(new TokenRequestContext().addScopes(defaultScope))
+                .map(token -> String.format(SCHEMA_FORMAT, token.getToken()));
+        }).collectList().flatMap(tokenList -> {
+            context.getHttpRequest().setHeader(AUTHORIZATION_AUXILIARY_HEADER, String.join(",", tokenList));
+            return next.process();
+        });
     }
 }

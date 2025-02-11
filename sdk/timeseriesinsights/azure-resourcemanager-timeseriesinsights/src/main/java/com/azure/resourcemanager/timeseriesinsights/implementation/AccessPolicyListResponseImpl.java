@@ -17,8 +17,7 @@ public final class AccessPolicyListResponseImpl implements AccessPolicyListRespo
 
     private final com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager;
 
-    AccessPolicyListResponseImpl(
-        AccessPolicyListResponseInner innerObject,
+    AccessPolicyListResponseImpl(AccessPolicyListResponseInner innerObject,
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class AccessPolicyListResponseImpl implements AccessPolicyListRespo
     public List<AccessPolicyResource> value() {
         List<AccessPolicyResourceInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new AccessPolicyResourceImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new AccessPolicyResourceImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

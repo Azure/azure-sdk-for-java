@@ -63,7 +63,7 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
      */
     private Filter conditionalAccessFilter;
 
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings("removal")
     @Override
     public void init(HttpSecurity builder)throws Exception {
         super.init(builder);
@@ -142,6 +142,7 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
      *
      * @return the access token response client
      */
+    @SuppressWarnings("deprecation")
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
         result.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));

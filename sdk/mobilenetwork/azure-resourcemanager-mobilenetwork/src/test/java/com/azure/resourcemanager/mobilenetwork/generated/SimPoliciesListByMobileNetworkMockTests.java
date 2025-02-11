@@ -22,7 +22,7 @@ public final class SimPoliciesListByMobileNetworkMockTests {
     @Test
     public void testListByMobileNetwork() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"siteProvisioningState\":{\"ntrpcaqkiof\":\"Adding\",\"tfmhklbnldpvcb\":\"NotApplicable\",\"ezyquw\":\"Failed\"},\"ueAmbr\":{\"uplink\":\"sqxutr\",\"downlink\":\"brruyuuatv\"},\"defaultSlice\":{\"id\":\"mbjwcolbmxlb\"},\"rfspIndex\":757455184,\"registrationTimer\":894228771,\"sliceConfigurations\":[{\"slice\":{\"id\":\"ahprzrvxhmtfhocn\"},\"defaultDataNetwork\":{\"id\":\"zcmjhngxnoqrxt\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"sn\"},\"sessionAmbr\":{\"uplink\":\"evhdlmydid\",\"downlink\":\"hepfwwtjfdoes\"},\"allowedServices\":[]}]}]},\"location\":\"hmwcdbck\",\"tags\":{\"jzrbhtmeplv\":\"kxkxhnegk\",\"pgsn\":\"kaobrl\",\"a\":\"agnchjhgemuowaky\"},\"id\":\"hjym\",\"name\":\"cgqtag\",\"type\":\"rclsso\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"siteProvisioningState\":{\"ubefgybpmfbfunu\":\"Provisioned\",\"pzkrvfy\":\"Deleting\",\"kdschlzvfictnkjj\":\"NotApplicable\"},\"ueAmbr\":{\"uplink\":\"gcwn\",\"downlink\":\"hbkgfyrt\"},\"defaultSlice\":{\"id\":\"gm\"},\"rfspIndex\":237087161,\"registrationTimer\":655942902,\"sliceConfigurations\":[{\"slice\":{\"id\":\"cdf\"},\"defaultDataNetwork\":{\"id\":\"dqwty\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"vgwmseharxifvqnr\"},\"sessionAmbr\":{\"uplink\":\"tmbpjp\",\"downlink\":\"nvwjhrsidqpxl\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"tpakf\"},\"defaultDataNetwork\":{\"id\":\"ngatwmy\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"u\"},\"sessionAmbr\":{\"uplink\":\"rymdwmf\",\"downlink\":\"hpycvjqdvdwkq\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"ldrlefgnaavua\"},\"sessionAmbr\":{\"uplink\":\"n\",\"downlink\":\"etaoutnpdc\"},\"allowedServices\":[]}]}]},\"location\":\"hspfefyihd\",\"tags\":{\"hmtybkcgsuthhll\":\"uyld\",\"jrr\":\"mwynefxexlfciatx\",\"ajfoxc\":\"kmdskjhhxd\"},\"id\":\"scv\",\"name\":\"lxlhuavkrm\",\"type\":\"kmyjmkxett\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,20 +32,19 @@ public final class SimPoliciesListByMobileNetworkMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SimPolicy> response
-            = manager.simPolicies().listByMobileNetwork("xdazv", "hctmmkosz", com.azure.core.util.Context.NONE);
+            = manager.simPolicies().listByMobileNetwork("yvoaqajuvehzp", "dmkrrb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hmwcdbck", response.iterator().next().location());
-        Assertions.assertEquals("kxkxhnegk", response.iterator().next().tags().get("jzrbhtmeplv"));
-        Assertions.assertEquals("sqxutr", response.iterator().next().ueAmbr().uplink());
-        Assertions.assertEquals("brruyuuatv", response.iterator().next().ueAmbr().downlink());
-        Assertions.assertEquals("mbjwcolbmxlb", response.iterator().next().defaultSlice().id());
-        Assertions.assertEquals(757455184, response.iterator().next().rfspIndex());
-        Assertions.assertEquals(894228771, response.iterator().next().registrationTimer());
-        Assertions.assertEquals("ahprzrvxhmtfhocn",
-            response.iterator().next().sliceConfigurations().get(0).slice().id());
-        Assertions.assertEquals("zcmjhngxnoqrxt",
+        Assertions.assertEquals("hspfefyihd", response.iterator().next().location());
+        Assertions.assertEquals("uyld", response.iterator().next().tags().get("hmtybkcgsuthhll"));
+        Assertions.assertEquals("gcwn", response.iterator().next().ueAmbr().uplink());
+        Assertions.assertEquals("hbkgfyrt", response.iterator().next().ueAmbr().downlink());
+        Assertions.assertEquals("gm", response.iterator().next().defaultSlice().id());
+        Assertions.assertEquals(237087161, response.iterator().next().rfspIndex());
+        Assertions.assertEquals(655942902, response.iterator().next().registrationTimer());
+        Assertions.assertEquals("cdf", response.iterator().next().sliceConfigurations().get(0).slice().id());
+        Assertions.assertEquals("dqwty",
             response.iterator().next().sliceConfigurations().get(0).defaultDataNetwork().id());
-        Assertions.assertEquals("sn",
+        Assertions.assertEquals("vgwmseharxifvqnr",
             response.iterator()
                 .next()
                 .sliceConfigurations()
@@ -54,7 +53,7 @@ public final class SimPoliciesListByMobileNetworkMockTests {
                 .get(0)
                 .dataNetwork()
                 .id());
-        Assertions.assertEquals("evhdlmydid",
+        Assertions.assertEquals("tmbpjp",
             response.iterator()
                 .next()
                 .sliceConfigurations()
@@ -63,7 +62,7 @@ public final class SimPoliciesListByMobileNetworkMockTests {
                 .get(0)
                 .sessionAmbr()
                 .uplink());
-        Assertions.assertEquals("hepfwwtjfdoes",
+        Assertions.assertEquals("nvwjhrsidqpxl",
             response.iterator()
                 .next()
                 .sliceConfigurations()

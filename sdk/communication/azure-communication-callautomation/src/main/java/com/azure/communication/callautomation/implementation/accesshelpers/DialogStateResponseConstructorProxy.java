@@ -12,7 +12,8 @@ import com.azure.communication.callautomation.models.DialogStateResult;
 public final class DialogStateResponseConstructorProxy {
     private static DialogStateResponseConstructorProxy.DialogStateResponseConstructorAccessor accessor;
 
-    private DialogStateResponseConstructorProxy() { }
+    private DialogStateResponseConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link DialogStateResponseConstructorProxy.DialogStateResponseConstructorAccessor}
@@ -34,7 +35,8 @@ public final class DialogStateResponseConstructorProxy {
      *
      * @param accessor The accessor.
      */
-    public static void setAccessor(final DialogStateResponseConstructorProxy.DialogStateResponseConstructorAccessor accessor) {
+    public static void
+        setAccessor(final DialogStateResponseConstructorProxy.DialogStateResponseConstructorAccessor accessor) {
         DialogStateResponseConstructorProxy.accessor = accessor;
     }
 

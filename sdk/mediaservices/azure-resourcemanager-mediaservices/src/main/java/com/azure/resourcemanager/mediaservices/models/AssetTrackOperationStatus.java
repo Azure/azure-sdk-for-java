@@ -8,53 +8,55 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackOperationStatusInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of AssetTrackOperationStatus. */
+/**
+ * An immutable client-side representation of AssetTrackOperationStatus.
+ */
 public interface AssetTrackOperationStatus {
     /**
      * Gets the name property: Operation identifier.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the id property: Operation resource ID.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the startTime property: Operation start time.
-     *
+     * 
      * @return the startTime value.
      */
     OffsetDateTime startTime();
 
     /**
      * Gets the endTime property: Operation end time.
-     *
+     * 
      * @return the endTime value.
      */
     OffsetDateTime endTime();
 
     /**
      * Gets the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the error property: The error detail.
-     *
+     * 
      * @return the error value.
      */
     ManagementError error();
 
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackOperationStatusInner object.
-     *
+     * 
      * @return the inner object.
      */
     AssetTrackOperationStatusInner innerModel();

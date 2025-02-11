@@ -67,7 +67,6 @@ public final class DataDiskImageEncryption extends DiskImageEncryption {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

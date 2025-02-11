@@ -49,20 +49,35 @@ public final class InMageRcmEnableProtectionInputTests {
         InMageRcmEnableProtectionInput model
             = new InMageRcmEnableProtectionInput().withFabricDiscoveryMachineId("llukkreh")
                 .withDisksToInclude(Arrays.asList(
-                    new InMageRcmDiskInput().withDiskId("mjodu").withLogStorageAccountId("fvulxfaryr")
-                        .withDiskType(DiskAccountType.STANDARD_LRS).withDiskEncryptionSetId("gdezvjqwahoy"),
-                    new InMageRcmDiskInput().withDiskId("yaxqvjweiwtczkd").withLogStorageAccountId("nvovbooqbmdqrxy")
-                        .withDiskType(DiskAccountType.STANDARD_SSD_LRS).withDiskEncryptionSetId("et"),
-                    new InMageRcmDiskInput().withDiskId("cflwtjdtlr").withLogStorageAccountId("e")
-                        .withDiskType(DiskAccountType.PREMIUM_LRS).withDiskEncryptionSetId("y")))
+                    new InMageRcmDiskInput().withDiskId("mjodu")
+                        .withLogStorageAccountId("fvulxfaryr")
+                        .withDiskType(DiskAccountType.STANDARD_LRS)
+                        .withDiskEncryptionSetId("gdezvjqwahoy"),
+                    new InMageRcmDiskInput().withDiskId("yaxqvjweiwtczkd")
+                        .withLogStorageAccountId("nvovbooqbmdqrxy")
+                        .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
+                        .withDiskEncryptionSetId("et"),
+                    new InMageRcmDiskInput().withDiskId("cflwtjdtlr")
+                        .withLogStorageAccountId("e")
+                        .withDiskType(DiskAccountType.PREMIUM_LRS)
+                        .withDiskEncryptionSetId("y")))
                 .withDisksDefault(new InMageRcmDisksDefaultInput().withLogStorageAccountId("uxdtzcq")
-                    .withDiskType(DiskAccountType.STANDARD_LRS).withDiskEncryptionSetId("dudgcozzomeh"))
-                .withTargetResourceGroupId("lantolamlb").withTargetNetworkId("uxkqllczipvwdt")
-                .withTestNetworkId("kzdqiqdlratrkwxo").withTargetSubnetName("wxsuy").withTestSubnetName("nhrfgslgl")
-                .withTargetVmName("ry").withTargetVmSize("zihuioaeo").withLicenseType(LicenseType.NO_LICENSE_TYPE)
-                .withTargetAvailabilitySetId("tfeyvk").withTargetAvailabilityZone("gdd")
-                .withTargetProximityPlacementGroupId("hdccxb").withTargetBootDiagnosticsStorageAccountId("uqutkzwtjww")
-                .withRunAsAccountId("zytijcx").withProcessServerId("nondegjdyd")
+                    .withDiskType(DiskAccountType.STANDARD_LRS)
+                    .withDiskEncryptionSetId("dudgcozzomeh"))
+                .withTargetResourceGroupId("lantolamlb")
+                .withTargetNetworkId("uxkqllczipvwdt")
+                .withTestNetworkId("kzdqiqdlratrkwxo")
+                .withTargetSubnetName("wxsuy")
+                .withTestSubnetName("nhrfgslgl")
+                .withTargetVmName("ry")
+                .withTargetVmSize("zihuioaeo")
+                .withLicenseType(LicenseType.NO_LICENSE_TYPE)
+                .withTargetAvailabilitySetId("tfeyvk")
+                .withTargetAvailabilityZone("gdd")
+                .withTargetProximityPlacementGroupId("hdccxb")
+                .withTargetBootDiagnosticsStorageAccountId("uqutkzwtjww")
+                .withRunAsAccountId("zytijcx")
+                .withProcessServerId("nondegjdyd")
                 .withMultiVmGroupName("kkkbjuckcatuqbh");
         model = BinaryData.fromObject(model).toObject(InMageRcmEnableProtectionInput.class);
         Assertions.assertEquals("llukkreh", model.fabricDiscoveryMachineId());

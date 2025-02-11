@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"tags\":{\"phxepcyvahf\":\"wutttxfvjrbi\",\"gidokgjljyoxgvcl\":\"ljkyqxjvuuj\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\",\"rbmpukgri\":\"mpvecxgodebfqk\"},\"enableDdosProtection\":true,\"addressSpace\":[\"fbxzpuzycisp\",\"qzahmgkbrp\",\"y\",\"hibnuqqkpika\"],\"dnsServers\":[\"vtq\",\"gnbuy\",\"hijggme\"],\"subnets\":[{\"name\":\"arbu\",\"addressPrefix\":\"cvpnazzmhjrunmpx\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"dbhrbnlankxm\"}},{\"name\":\"k\",\"addressPrefix\":\"henbtkcxywnytn\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"yn\"}},{\"name\":\"idybyxczf\",\"addressPrefix\":\"haaxdbabphl\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"qlfktsths\"}}],\"targetResourceName\":\"ocmnyyazttbtwwrq\",\"targetResourceGroupName\":\"edckzywbiexzfey\"}")
-                .toObject(VirtualNetworkResourceSettings.class);
+        VirtualNetworkResourceSettings model = BinaryData.fromString(
+            "{\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"tags\":{\"phxepcyvahf\":\"wutttxfvjrbi\",\"gidokgjljyoxgvcl\":\"ljkyqxjvuuj\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\",\"rbmpukgri\":\"mpvecxgodebfqk\"},\"enableDdosProtection\":true,\"addressSpace\":[\"fbxzpuzycisp\",\"qzahmgkbrp\",\"y\",\"hibnuqqkpika\"],\"dnsServers\":[\"vtq\",\"gnbuy\",\"hijggme\"],\"subnets\":[{\"name\":\"arbu\",\"addressPrefix\":\"cvpnazzmhjrunmpx\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"dbhrbnlankxm\"}},{\"name\":\"k\",\"addressPrefix\":\"henbtkcxywnytn\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"yn\"}},{\"name\":\"idybyxczf\",\"addressPrefix\":\"haaxdbabphl\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"qlfktsths\"}}],\"targetResourceName\":\"ocmnyyazttbtwwrq\",\"targetResourceGroupName\":\"edckzywbiexzfey\"}")
+            .toObject(VirtualNetworkResourceSettings.class);
         Assertions.assertEquals("ocmnyyazttbtwwrq", model.targetResourceName());
         Assertions.assertEquals("edckzywbiexzfey", model.targetResourceGroupName());
         Assertions.assertEquals("wutttxfvjrbi", model.tags().get("phxepcyvahf"));
@@ -34,38 +32,24 @@ public final class VirtualNetworkResourceSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkResourceSettings model =
-            new VirtualNetworkResourceSettings()
-                .withTargetResourceName("ocmnyyazttbtwwrq")
+        VirtualNetworkResourceSettings model
+            = new VirtualNetworkResourceSettings().withTargetResourceName("ocmnyyazttbtwwrq")
                 .withTargetResourceGroupName("edckzywbiexzfey")
-                .withTags(
-                    mapOf(
-                        "phxepcyvahf",
-                        "wutttxfvjrbi",
-                        "gidokgjljyoxgvcl",
-                        "ljkyqxjvuuj",
-                        "jhtxfvgxbfsmxne",
-                        "bgsncghkjeszzhb",
-                        "rbmpukgri",
-                        "mpvecxgodebfqk"))
+                .withTags(mapOf("phxepcyvahf", "wutttxfvjrbi", "gidokgjljyoxgvcl", "ljkyqxjvuuj", "jhtxfvgxbfsmxne",
+                    "bgsncghkjeszzhb", "rbmpukgri", "mpvecxgodebfqk"))
                 .withEnableDdosProtection(true)
                 .withAddressSpace(Arrays.asList("fbxzpuzycisp", "qzahmgkbrp", "y", "hibnuqqkpika"))
                 .withDnsServers(Arrays.asList("vtq", "gnbuy", "hijggme"))
-                .withSubnets(
-                    Arrays
-                        .asList(
-                            new SubnetResourceSettings()
-                                .withName("arbu")
-                                .withAddressPrefix("cvpnazzmhjrunmpx")
-                                .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("dbhrbnlankxm")),
-                            new SubnetResourceSettings()
-                                .withName("k")
-                                .withAddressPrefix("henbtkcxywnytn")
-                                .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("yn")),
-                            new SubnetResourceSettings()
-                                .withName("idybyxczf")
-                                .withAddressPrefix("haaxdbabphl")
-                                .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("qlfktsths"))));
+                .withSubnets(Arrays.asList(
+                    new SubnetResourceSettings().withName("arbu")
+                        .withAddressPrefix("cvpnazzmhjrunmpx")
+                        .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("dbhrbnlankxm")),
+                    new SubnetResourceSettings().withName("k")
+                        .withAddressPrefix("henbtkcxywnytn")
+                        .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("yn")),
+                    new SubnetResourceSettings().withName("idybyxczf")
+                        .withAddressPrefix("haaxdbabphl")
+                        .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("qlfktsths"))));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkResourceSettings.class);
         Assertions.assertEquals("ocmnyyazttbtwwrq", model.targetResourceName());
         Assertions.assertEquals("edckzywbiexzfey", model.targetResourceGroupName());

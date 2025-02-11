@@ -25,8 +25,7 @@ class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryIm
 
     @Override
     public Mono<Gallery> createResourceAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getGalleries()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
@@ -39,8 +38,7 @@ class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryIm
             updateParameters.withTags(this.innerModel().tags());
         }
 
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getGalleries()
             .updateAsync(this.resourceGroupName(), this.name(), updateParameters)
             .map(innerToFluentMap(this));

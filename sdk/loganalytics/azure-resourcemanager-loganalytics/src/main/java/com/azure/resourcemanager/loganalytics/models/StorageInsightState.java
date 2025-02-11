@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the storage insight connection to the workspace. */
+/**
+ * The state of the storage insight connection to the workspace.
+ */
 public final class StorageInsightState extends ExpandableStringEnum<StorageInsightState> {
-    /** Static value OK for StorageInsightState. */
+    /**
+     * Static value OK for StorageInsightState.
+     */
     public static final StorageInsightState OK = fromString("OK");
 
-    /** Static value ERROR for StorageInsightState. */
+    /**
+     * Static value ERROR for StorageInsightState.
+     */
     public static final StorageInsightState ERROR = fromString("ERROR");
 
     /**
      * Creates a new instance of StorageInsightState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class StorageInsightState extends ExpandableStringEnum<StorageInsig
 
     /**
      * Creates or finds a StorageInsightState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageInsightState.
      */
-    @JsonCreator
     public static StorageInsightState fromString(String name) {
         return fromString(name, StorageInsightState.class);
     }
 
     /**
      * Gets known StorageInsightState values.
-     *
+     * 
      * @return known StorageInsightState values.
      */
     public static Collection<StorageInsightState> values() {

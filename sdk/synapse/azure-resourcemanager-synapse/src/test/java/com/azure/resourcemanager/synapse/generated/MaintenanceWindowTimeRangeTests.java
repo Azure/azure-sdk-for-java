@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class MaintenanceWindowTimeRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MaintenanceWindowTimeRange model =
-            BinaryData
-                .fromString("{\"dayOfWeek\":\"Thursday\",\"startTime\":\"o\",\"duration\":\"sg\"}")
-                .toObject(MaintenanceWindowTimeRange.class);
-        Assertions.assertEquals(DayOfWeek.THURSDAY, model.dayOfWeek());
-        Assertions.assertEquals("o", model.startTime());
-        Assertions.assertEquals("sg", model.duration());
+        MaintenanceWindowTimeRange model = BinaryData
+            .fromString("{\"dayOfWeek\":\"Friday\",\"startTime\":\"eewchpxlktw\",\"duration\":\"ziycslevufuztck\"}")
+            .toObject(MaintenanceWindowTimeRange.class);
+        Assertions.assertEquals(DayOfWeek.FRIDAY, model.dayOfWeek());
+        Assertions.assertEquals("eewchpxlktw", model.startTime());
+        Assertions.assertEquals("ziycslevufuztck", model.duration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MaintenanceWindowTimeRange model =
-            new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.THURSDAY).withStartTime("o").withDuration("sg");
+        MaintenanceWindowTimeRange model = new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.FRIDAY)
+            .withStartTime("eewchpxlktw")
+            .withDuration("ziycslevufuztck");
         model = BinaryData.fromObject(model).toObject(MaintenanceWindowTimeRange.class);
-        Assertions.assertEquals(DayOfWeek.THURSDAY, model.dayOfWeek());
-        Assertions.assertEquals("o", model.startTime());
-        Assertions.assertEquals("sg", model.duration());
+        Assertions.assertEquals(DayOfWeek.FRIDAY, model.dayOfWeek());
+        Assertions.assertEquals("eewchpxlktw", model.startTime());
+        Assertions.assertEquals("ziycslevufuztck", model.duration());
     }
 }

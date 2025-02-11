@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SkuCapacity model. */
+/**
+ * The SkuCapacity model.
+ */
 @Fluent
-public class SkuCapacity {
+public class SkuCapacity implements JsonSerializable<SkuCapacity> {
     /*
      * The minimum property.
      */
-    @JsonProperty(value = "minimum", required = true)
     private int minimum;
 
     /*
      * The maximum property.
      */
-    @JsonProperty(value = "maximum")
     private Integer maximum;
 
     /*
      * The default property.
      */
-    @JsonProperty(value = "default")
     private Integer defaultProperty;
 
     /*
      * The scaleType property.
      */
-    @JsonProperty(value = "scaleType")
     private SkuScaleType scaleType;
 
-    /** Creates an instance of SkuCapacity class. */
+    /**
+     * Creates an instance of SkuCapacity class.
+     */
     public SkuCapacity() {
     }
 
     /**
      * Get the minimum property: The minimum property.
-     *
+     * 
      * @return the minimum value.
      */
     public int minimum() {
@@ -49,7 +53,7 @@ public class SkuCapacity {
 
     /**
      * Set the minimum property: The minimum property.
-     *
+     * 
      * @param minimum the minimum value to set.
      * @return the SkuCapacity object itself.
      */
@@ -60,7 +64,7 @@ public class SkuCapacity {
 
     /**
      * Get the maximum property: The maximum property.
-     *
+     * 
      * @return the maximum value.
      */
     public Integer maximum() {
@@ -69,7 +73,7 @@ public class SkuCapacity {
 
     /**
      * Set the maximum property: The maximum property.
-     *
+     * 
      * @param maximum the maximum value to set.
      * @return the SkuCapacity object itself.
      */
@@ -80,7 +84,7 @@ public class SkuCapacity {
 
     /**
      * Get the defaultProperty property: The default property.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Integer defaultProperty() {
@@ -89,7 +93,7 @@ public class SkuCapacity {
 
     /**
      * Set the defaultProperty property: The default property.
-     *
+     * 
      * @param defaultProperty the defaultProperty value to set.
      * @return the SkuCapacity object itself.
      */
@@ -100,7 +104,7 @@ public class SkuCapacity {
 
     /**
      * Get the scaleType property: The scaleType property.
-     *
+     * 
      * @return the scaleType value.
      */
     public SkuScaleType scaleType() {
@@ -109,7 +113,7 @@ public class SkuCapacity {
 
     /**
      * Set the scaleType property: The scaleType property.
-     *
+     * 
      * @param scaleType the scaleType value to set.
      * @return the SkuCapacity object itself.
      */
@@ -120,9 +124,55 @@ public class SkuCapacity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("minimum", this.minimum);
+        jsonWriter.writeNumberField("maximum", this.maximum);
+        jsonWriter.writeNumberField("default", this.defaultProperty);
+        jsonWriter.writeStringField("scaleType", this.scaleType == null ? null : this.scaleType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuCapacity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuCapacity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuCapacity.
+     */
+    public static SkuCapacity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuCapacity deserializedSkuCapacity = new SkuCapacity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minimum".equals(fieldName)) {
+                    deserializedSkuCapacity.minimum = reader.getInt();
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedSkuCapacity.maximum = reader.getNullable(JsonReader::getInt);
+                } else if ("default".equals(fieldName)) {
+                    deserializedSkuCapacity.defaultProperty = reader.getNullable(JsonReader::getInt);
+                } else if ("scaleType".equals(fieldName)) {
+                    deserializedSkuCapacity.scaleType = SkuScaleType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuCapacity;
+        });
     }
 }

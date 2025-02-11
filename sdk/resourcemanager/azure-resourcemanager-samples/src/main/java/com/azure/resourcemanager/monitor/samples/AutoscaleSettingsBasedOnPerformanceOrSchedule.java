@@ -5,7 +5,7 @@ package com.azure.resourcemanager.monitor.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.PricingTier;
@@ -49,53 +49,57 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
             // Create a Web App and App Service Plan
             System.out.println("Creating a web app and service plan");
 
-            WebApp webapp = azureResourceManager.webApps().define(webappName)
-                    .withRegion(Region.US_SOUTH_CENTRAL)
-                    .withNewResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.PREMIUM_P1)
-                    .create();
+            WebApp webapp = azureResourceManager.webApps()
+                .define(webappName)
+                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withNewWindowsPlan(PricingTier.PREMIUM_P1)
+                .create();
 
             System.out.println("Created a web app:");
             Utils.print(webapp);
 
             // ============================================================
             // Configure autoscale rules for scale-in and scale out based on the number of requests a Web App receives
-            AutoscaleSetting scaleSettings = azureResourceManager.autoscaleSettings().define(autoscaleSettingsName)
-                    .withRegion(Region.US_SOUTH_CENTRAL)
-                    .withExistingResourceGroup(rgName)
-                    .withTargetResource(webapp.appServicePlanId())
-                    // defining Default profile. Note: first created profile is always the default one.
-                    .defineAutoscaleProfile("Default profile")
-                        .withFixedInstanceCount(1)
-                        .attach()
-                    // defining Monday to Friday profile
-                    .defineAutoscaleProfile("Monday to Friday")
-                        .withMetricBasedScale(1, 2, 1)
-                        // Create a scale-out rule
-                        .defineScaleRule()
-                            .withMetricSource(webapp.id())
-                            .withMetricName("Requests")
-                            .withStatistic(Duration.ofMinutes(5), MetricStatisticType.SUM)
-                            .withCondition(TimeAggregationType.TOTAL, ComparisonOperationType.GREATER_THAN, 10)
-                            .withScaleAction(ScaleDirection.INCREASE, ScaleType.CHANGE_COUNT, 1, Duration.ofMinutes(5))
-                            .attach()
-                        // Create a scale-in rule
-                        .defineScaleRule()
-                            .withMetricSource(webapp.id())
-                            .withMetricName("Requests")
-                            .withStatistic(Duration.ofMinutes(10), MetricStatisticType.AVERAGE)
-                            .withCondition(TimeAggregationType.TOTAL, ComparisonOperationType.LESS_THAN, 5)
-                            .withScaleAction(ScaleDirection.DECREASE, ScaleType.CHANGE_COUNT, 1, Duration.ofMinutes(5))
-                            .attach()
-                        // Create profile schedule
-                        .withRecurrentSchedule("Pacific Standard Time", "09:00", DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)
-                        .attach()
-                    // define end time for the "Monday to Friday" profile specified above
-                    .defineAutoscaleProfile("{\"name\":\"Default\",\"for\":\"Monday to Friday\"}")
-                        .withScheduleBasedScale(1)
-                        .withRecurrentSchedule("Pacific Standard Time", "18:30", DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)
-                        .attach()
-                    .create();
+            AutoscaleSetting scaleSettings = azureResourceManager.autoscaleSettings()
+                .define(autoscaleSettingsName)
+                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withExistingResourceGroup(rgName)
+                .withTargetResource(webapp.appServicePlanId())
+                // defining Default profile. Note: first created profile is always the default one.
+                .defineAutoscaleProfile("Default profile")
+                .withFixedInstanceCount(1)
+                .attach()
+                // defining Monday to Friday profile
+                .defineAutoscaleProfile("Monday to Friday")
+                .withMetricBasedScale(1, 2, 1)
+                // Create a scale-out rule
+                .defineScaleRule()
+                .withMetricSource(webapp.id())
+                .withMetricName("Requests")
+                .withStatistic(Duration.ofMinutes(5), MetricStatisticType.SUM)
+                .withCondition(TimeAggregationType.TOTAL, ComparisonOperationType.GREATER_THAN, 10)
+                .withScaleAction(ScaleDirection.INCREASE, ScaleType.CHANGE_COUNT, 1, Duration.ofMinutes(5))
+                .attach()
+                // Create a scale-in rule
+                .defineScaleRule()
+                .withMetricSource(webapp.id())
+                .withMetricName("Requests")
+                .withStatistic(Duration.ofMinutes(10), MetricStatisticType.AVERAGE)
+                .withCondition(TimeAggregationType.TOTAL, ComparisonOperationType.LESS_THAN, 5)
+                .withScaleAction(ScaleDirection.DECREASE, ScaleType.CHANGE_COUNT, 1, Duration.ofMinutes(5))
+                .attach()
+                // Create profile schedule
+                .withRecurrentSchedule("Pacific Standard Time", "09:00", DayOfWeek.MONDAY, DayOfWeek.TUESDAY,
+                    DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)
+                .attach()
+                // define end time for the "Monday to Friday" profile specified above
+                .defineAutoscaleProfile("{\"name\":\"Default\",\"for\":\"Monday to Friday\"}")
+                .withScheduleBasedScale(1)
+                .withRecurrentSchedule("Pacific Standard Time", "18:30", DayOfWeek.MONDAY, DayOfWeek.TUESDAY,
+                    DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)
+                .attach()
+                .create();
 
             System.out.println("Auto-scale Setting: " + scaleSettings.id());
 
@@ -135,13 +139,12 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
     public static void main(String[] args) {
         try {
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

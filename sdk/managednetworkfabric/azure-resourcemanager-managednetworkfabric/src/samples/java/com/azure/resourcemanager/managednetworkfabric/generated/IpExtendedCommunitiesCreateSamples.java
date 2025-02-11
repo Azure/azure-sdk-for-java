@@ -10,35 +10,36 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IpExtendedCommunities Create. */
+/**
+ * Samples for IpExtendedCommunities Create.
+ */
 public final class IpExtendedCommunitiesCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpExtendedCommunities_Create_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * IpExtendedCommunities_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpExtendedCommunities_Create_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void ipExtendedCommunitiesCreateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .ipExtendedCommunities()
+        manager.ipExtendedCommunities()
             .define("example-ipExtendedCommunity")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
             .withIpExtendedCommunityRules(
-                Arrays
-                    .asList(
-                        new IpExtendedCommunityRule()
-                            .withAction(CommunityActionTypes.PERMIT)
-                            .withSequenceNumber(4155123341L)
-                            .withRouteTargets(Arrays.asList("1234:2345"))))
+                Arrays.asList(new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(4155123341L)
+                    .withRouteTargets(Arrays.asList("1234:2345"))))
             .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
             .withAnnotation("annotation")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

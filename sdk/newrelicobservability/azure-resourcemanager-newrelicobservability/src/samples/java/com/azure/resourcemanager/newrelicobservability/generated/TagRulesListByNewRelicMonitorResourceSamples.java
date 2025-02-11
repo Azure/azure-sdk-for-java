@@ -19,8 +19,9 @@ public final class TagRulesListByNewRelicMonitorResourceSamples {
      */
     public static void tagRulesListByNewRelicMonitorResourceMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().listByNewRelicMonitorResource("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.tagRules()
+            .listByNewRelicMonitorResource("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +35,8 @@ public final class TagRulesListByNewRelicMonitorResourceSamples {
      */
     public static void tagRulesListByNewRelicMonitorResourceMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().listByNewRelicMonitorResource("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.tagRules()
+            .listByNewRelicMonitorResource("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -11,11 +11,7 @@ import java.util.Collection;
 import java.util.Deque;
 
 /**
- * Fluent credential builder for instantiating a {@link ChainedTokenCredential}.
- *
- * The {@link ChainedTokenCredential} is a convenience credential that allows users to chain together a set of
- * TokenCredential together. The credential executes each credential in the chain sequentially and returns the token
- * from the first credential in the chain that successfully authenticates.
+ * <p>Fluent credential builder for instantiating {@link ChainedTokenCredential}.</p>
  *
  * <p><strong>Sample: Construct a ChainedTokenCredential.</strong></p>
  *

@@ -43,8 +43,8 @@ public final class EnvironmentsImpl implements Environments {
 
     public Response<Environment> getWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String environmentName, Context context) {
-        EnvironmentsGetResponse inner = this.serviceClient().getWithResponse(resourceGroupName, serviceName,
-            workspaceName, environmentName, context);
+        EnvironmentsGetResponse inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, serviceName, workspaceName, environmentName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EnvironmentImpl(inner.getValue(), this.manager()));
@@ -65,8 +65,8 @@ public final class EnvironmentsImpl implements Environments {
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String environmentName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, workspaceName, environmentName,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, serviceName, workspaceName, environmentName, context);
     }
 
     public void delete(String resourceGroupName, String serviceName, String workspaceName, String environmentName) {
@@ -75,8 +75,8 @@ public final class EnvironmentsImpl implements Environments {
 
     public Response<Void> headWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String environmentName, Context context) {
-        return this.serviceClient().headWithResponse(resourceGroupName, serviceName, workspaceName, environmentName,
-            context);
+        return this.serviceClient()
+            .headWithResponse(resourceGroupName, serviceName, workspaceName, environmentName, context);
     }
 
     public void head(String resourceGroupName, String serviceName, String workspaceName, String environmentName) {

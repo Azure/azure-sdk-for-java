@@ -9,46 +9,48 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/** An immutable client-side representation of ContentKeyPolicyProperties. */
+/**
+ * An immutable client-side representation of ContentKeyPolicyProperties.
+ */
 public interface ContentKeyPolicyProperties {
     /**
      * Gets the policyId property: The legacy Policy ID.
-     *
+     * 
      * @return the policyId value.
      */
     UUID policyId();
 
     /**
      * Gets the created property: The creation date of the Policy.
-     *
+     * 
      * @return the created value.
      */
     OffsetDateTime created();
 
     /**
      * Gets the lastModified property: The last modified date of the Policy.
-     *
+     * 
      * @return the lastModified value.
      */
     OffsetDateTime lastModified();
 
     /**
      * Gets the description property: A description for the Policy.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the options property: The Key Policy options.
-     *
+     * 
      * @return the options value.
      */
     List<ContentKeyPolicyOption> options();
 
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyPropertiesInner object.
-     *
+     * 
      * @return the inner object.
      */
     ContentKeyPolicyPropertiesInner innerModel();

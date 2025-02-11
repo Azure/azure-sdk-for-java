@@ -14,8 +14,8 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager) {
+    OperationImpl(OperationInner innerObject,
+        com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

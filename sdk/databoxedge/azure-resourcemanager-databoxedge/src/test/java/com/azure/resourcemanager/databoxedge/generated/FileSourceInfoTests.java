@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class FileSourceInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileSourceInfo model = BinaryData.fromString("{\"shareId\":\"wabm\"}").toObject(FileSourceInfo.class);
-        Assertions.assertEquals("wabm", model.shareId());
+        FileSourceInfo model = BinaryData.fromString("{\"shareId\":\"wxqibyq\"}").toObject(FileSourceInfo.class);
+        Assertions.assertEquals("wxqibyq", model.shareId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileSourceInfo model = new FileSourceInfo().withShareId("wabm");
+        FileSourceInfo model = new FileSourceInfo().withShareId("wxqibyq");
         model = BinaryData.fromObject(model).toObject(FileSourceInfo.class);
-        Assertions.assertEquals("wabm", model.shareId());
+        Assertions.assertEquals("wxqibyq", model.shareId());
     }
 }

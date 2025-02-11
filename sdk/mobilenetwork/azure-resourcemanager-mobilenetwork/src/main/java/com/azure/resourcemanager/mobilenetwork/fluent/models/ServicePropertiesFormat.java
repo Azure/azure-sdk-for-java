@@ -6,39 +6,43 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.PccRuleConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.QosPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Service properties.
  */
 @Fluent
-public final class ServicePropertiesFormat {
+public final class ServicePropertiesFormat implements JsonSerializable<ServicePropertiesFormat> {
     /*
      * The provisioning state of the service resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * A precedence value that is used to decide between services when identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique among all services configured in the mobile network.
+     * A precedence value that is used to decide between services when identifying the QoS values to use for a
+     * particular SIM. A lower value means a higher priority. This value should be unique among all services configured
+     * in the mobile network.
      */
-    @JsonProperty(value = "servicePrecedence", required = true)
     private int servicePrecedence;
 
     /*
-     * The QoS policy to use for packets matching this service. This can be overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null then the UE's SIM policy will define the QoS settings.
+     * The QoS policy to use for packets matching this service. This can be overridden for particular flows using the
+     * ruleQosPolicy field in a PccRuleConfiguration. If this field is null then the UE's SIM policy will define the QoS
+     * settings.
      */
-    @JsonProperty(value = "serviceQosPolicy")
     private QosPolicy serviceQosPolicy;
 
     /*
      * The set of data flow policy rules that make up this service.
      */
-    @JsonProperty(value = "pccRules", required = true)
     private List<PccRuleConfiguration> pccRules;
 
     /**
@@ -143,4 +147,52 @@ public final class ServicePropertiesFormat {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServicePropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("servicePrecedence", this.servicePrecedence);
+        jsonWriter.writeArrayField("pccRules", this.pccRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("serviceQosPolicy", this.serviceQosPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicePropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServicePropertiesFormat.
+     */
+    public static ServicePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicePropertiesFormat deserializedServicePropertiesFormat = new ServicePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("servicePrecedence".equals(fieldName)) {
+                    deserializedServicePropertiesFormat.servicePrecedence = reader.getInt();
+                } else if ("pccRules".equals(fieldName)) {
+                    List<PccRuleConfiguration> pccRules
+                        = reader.readArray(reader1 -> PccRuleConfiguration.fromJson(reader1));
+                    deserializedServicePropertiesFormat.pccRules = pccRules;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedServicePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("serviceQosPolicy".equals(fieldName)) {
+                    deserializedServicePropertiesFormat.serviceQosPolicy = QosPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicePropertiesFormat;
+        });
+    }
 }

@@ -24,10 +24,12 @@ public final class ManagedPrivateEndpointModelPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedPrivateEndpointModelProperties model = new ManagedPrivateEndpointModelProperties()
-            .withPrivateLinkResourceId("tehfiqscjeypvh").withPrivateLinkResourceRegion("rkgqhcjrefo")
-            .withGroupIds(Arrays.asList("kqsleyyvxy", "jpkcattpng", "cr")).withRequestMessage("zsqpjhvmdajvny")
-            .withPrivateLinkServiceUrl("noae");
+        ManagedPrivateEndpointModelProperties model
+            = new ManagedPrivateEndpointModelProperties().withPrivateLinkResourceId("tehfiqscjeypvh")
+                .withPrivateLinkResourceRegion("rkgqhcjrefo")
+                .withGroupIds(Arrays.asList("kqsleyyvxy", "jpkcattpng", "cr"))
+                .withRequestMessage("zsqpjhvmdajvny")
+                .withPrivateLinkServiceUrl("noae");
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointModelProperties.class);
         Assertions.assertEquals("tehfiqscjeypvh", model.privateLinkResourceId());
         Assertions.assertEquals("rkgqhcjrefo", model.privateLinkResourceRegion());

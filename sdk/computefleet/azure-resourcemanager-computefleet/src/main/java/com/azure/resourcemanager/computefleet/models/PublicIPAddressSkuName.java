@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class PublicIPAddressSkuName extends ExpandableStringEnum<PublicIPAddressSkuName> {
     /**
-     * Static value Basic for PublicIPAddressSkuName.
+     * Basic sku name.
      */
     public static final PublicIPAddressSkuName BASIC = fromString("Basic");
 
     /**
-     * Static value Standard for PublicIPAddressSkuName.
+     * Standard sku name.
      */
     public static final PublicIPAddressSkuName STANDARD = fromString("Standard");
 

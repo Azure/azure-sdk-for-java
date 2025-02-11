@@ -23,8 +23,7 @@ public class KeyVaultKeylessRsaSsaPssSignature extends KeyVaultKeylessRsaSignatu
     }
 
     @Override
-    protected void engineSetParameter(AlgorithmParameterSpec params)
-        throws InvalidAlgorithmParameterException {
+    protected void engineSetParameter(AlgorithmParameterSpec params) throws InvalidAlgorithmParameterException {
         if (params == null) {
             throw new InvalidAlgorithmParameterException("Parameters cannot be null");
         }

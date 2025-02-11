@@ -902,8 +902,10 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
     public SyncPoller<PollResult<PrivateEndpointConnectionProxyInner>, PrivateEndpointConnectionProxyInner>
         beginCreateOrUpdate(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
             PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
-            privateEndpointConnectionProxy).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+                privateEndpointConnectionProxy)
+            .getSyncPoller();
     }
 
     /**
@@ -924,8 +926,10 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
     public SyncPoller<PollResult<PrivateEndpointConnectionProxyInner>, PrivateEndpointConnectionProxyInner>
         beginCreateOrUpdate(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
             PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
-            privateEndpointConnectionProxy, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+                privateEndpointConnectionProxy, context)
+            .getSyncPoller();
     }
 
     /**

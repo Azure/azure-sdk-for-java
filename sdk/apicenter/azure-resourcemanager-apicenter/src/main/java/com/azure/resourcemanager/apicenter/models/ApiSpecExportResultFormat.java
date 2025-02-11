@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ApiSpecExportResultFormat extends ExpandableStringEnum<ApiSpe
      * @param name a name to look for.
      * @return the corresponding ApiSpecExportResultFormat.
      */
-    @JsonCreator
     public static ApiSpecExportResultFormat fromString(String name) {
         return fromString(name, ApiSpecExportResultFormat.class);
     }

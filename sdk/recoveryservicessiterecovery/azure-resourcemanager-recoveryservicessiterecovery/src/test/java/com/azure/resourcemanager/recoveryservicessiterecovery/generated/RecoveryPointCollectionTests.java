@@ -28,24 +28,28 @@ public final class RecoveryPointCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointCollection model = new RecoveryPointCollection()
-            .withValue(Arrays.asList(
-                new RecoveryPointInner()
-                    .withProperties(new RecoveryPointProperties()
-                        .withRecoveryPointTime(OffsetDateTime.parse("2021-08-08T17:45:14Z"))
-                        .withRecoveryPointType("zhonnxkrlgnyhmo")
-                        .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails()))
-                    .withLocation("kkgthr"),
-                new RecoveryPointInner()
-                    .withProperties(new RecoveryPointProperties()
-                        .withRecoveryPointTime(OffsetDateTime.parse("2021-05-21T09:29:43Z"))
-                        .withRecoveryPointType("fbshrnsvbuswd")
-                        .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails()))
-                    .withLocation("ybycnunvj"),
-                new RecoveryPointInner().withProperties(new RecoveryPointProperties()
-                    .withRecoveryPointTime(OffsetDateTime.parse("2021-06-25T00:23:13Z")).withRecoveryPointType("psew")
-                    .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails())).withLocation("ilqu")))
-            .withNextLink("vjzhpjbib");
+        RecoveryPointCollection model
+            = new RecoveryPointCollection()
+                .withValue(Arrays.asList(
+                    new RecoveryPointInner()
+                        .withProperties(new RecoveryPointProperties()
+                            .withRecoveryPointTime(OffsetDateTime.parse("2021-08-08T17:45:14Z"))
+                            .withRecoveryPointType("zhonnxkrlgnyhmo")
+                            .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails()))
+                        .withLocation("kkgthr"),
+                    new RecoveryPointInner()
+                        .withProperties(new RecoveryPointProperties()
+                            .withRecoveryPointTime(OffsetDateTime.parse("2021-05-21T09:29:43Z"))
+                            .withRecoveryPointType("fbshrnsvbuswd")
+                            .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails()))
+                        .withLocation("ybycnunvj"),
+                    new RecoveryPointInner()
+                        .withProperties(new RecoveryPointProperties()
+                            .withRecoveryPointTime(OffsetDateTime.parse("2021-06-25T00:23:13Z"))
+                            .withRecoveryPointType("psew")
+                            .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails()))
+                        .withLocation("ilqu")))
+                .withNextLink("vjzhpjbib");
         model = BinaryData.fromObject(model).toObject(RecoveryPointCollection.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T17:45:14Z"),
             model.value().get(0).properties().recoveryPointTime());

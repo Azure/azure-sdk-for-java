@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DtlEnvironmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DtlEnvironmentInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"smjqfrddgam\",\"parameters\":[{\"name\":\"os\",\"value\":\"ju\"},{\"name\":\"fcdis\",\"value\":\"rnxzh\"},{\"name\":\"exrxzbujrtrhq\",\"value\":\"revkhgnlnzo\"}]},\"armTemplateDisplayName\":\"lrpiqywnc\",\"resourceGroupId\":\"tszcofizehtdhgb\",\"createdByUser\":\"vreljea\",\"provisioningState\":\"rvzmlovuana\",\"uniqueIdentifier\":\"cxlpmjerb\"},\"location\":\"kelvidizozsdb\",\"tags\":{\"n\":\"jmonfdgn\",\"keifzzhmkdasv\":\"ypuuwwltvuqjctze\"},\"id\":\"lyhb\",\"name\":\"cu\",\"type\":\"chxgs\"}")
-                .toObject(DtlEnvironmentInner.class);
+        DtlEnvironmentInner model = BinaryData.fromString(
+            "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"smjqfrddgam\",\"parameters\":[{\"name\":\"os\",\"value\":\"ju\"},{\"name\":\"fcdis\",\"value\":\"rnxzh\"},{\"name\":\"exrxzbujrtrhq\",\"value\":\"revkhgnlnzo\"}]},\"armTemplateDisplayName\":\"lrpiqywnc\",\"resourceGroupId\":\"tszcofizehtdhgb\",\"createdByUser\":\"vreljea\",\"provisioningState\":\"rvzmlovuana\",\"uniqueIdentifier\":\"cxlpmjerb\"},\"location\":\"kelvidizozsdb\",\"tags\":{\"n\":\"jmonfdgn\",\"keifzzhmkdasv\":\"ypuuwwltvuqjctze\"},\"id\":\"lyhb\",\"name\":\"cu\",\"type\":\"chxgs\"}")
+            .toObject(DtlEnvironmentInner.class);
         Assertions.assertEquals("kelvidizozsdb", model.location());
         Assertions.assertEquals("jmonfdgn", model.tags().get("n"));
         Assertions.assertEquals("smjqfrddgam", model.deploymentProperties().armTemplateId());
@@ -31,22 +29,13 @@ public final class DtlEnvironmentInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DtlEnvironmentInner model =
-            new DtlEnvironmentInner()
-                .withLocation("kelvidizozsdb")
-                .withTags(mapOf("n", "jmonfdgn", "keifzzhmkdasv", "ypuuwwltvuqjctze"))
-                .withDeploymentProperties(
-                    new EnvironmentDeploymentProperties()
-                        .withArmTemplateId("smjqfrddgam")
-                        .withParameters(
-                            Arrays
-                                .asList(
-                                    new ArmTemplateParameterProperties().withName("os").withValue("ju"),
-                                    new ArmTemplateParameterProperties().withName("fcdis").withValue("rnxzh"),
-                                    new ArmTemplateParameterProperties()
-                                        .withName("exrxzbujrtrhq")
-                                        .withValue("revkhgnlnzo"))))
-                .withArmTemplateDisplayName("lrpiqywnc");
+        DtlEnvironmentInner model = new DtlEnvironmentInner().withLocation("kelvidizozsdb")
+            .withTags(mapOf("n", "jmonfdgn", "keifzzhmkdasv", "ypuuwwltvuqjctze"))
+            .withDeploymentProperties(new EnvironmentDeploymentProperties().withArmTemplateId("smjqfrddgam")
+                .withParameters(Arrays.asList(new ArmTemplateParameterProperties().withName("os").withValue("ju"),
+                    new ArmTemplateParameterProperties().withName("fcdis").withValue("rnxzh"),
+                    new ArmTemplateParameterProperties().withName("exrxzbujrtrhq").withValue("revkhgnlnzo"))))
+            .withArmTemplateDisplayName("lrpiqywnc");
         model = BinaryData.fromObject(model).toObject(DtlEnvironmentInner.class);
         Assertions.assertEquals("kelvidizozsdb", model.location());
         Assertions.assertEquals("jmonfdgn", model.tags().get("n"));

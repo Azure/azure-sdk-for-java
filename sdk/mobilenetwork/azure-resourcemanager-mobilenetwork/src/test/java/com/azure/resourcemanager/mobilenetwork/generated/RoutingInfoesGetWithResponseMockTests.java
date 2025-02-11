@@ -21,7 +21,7 @@ public final class RoutingInfoesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"controlPlaneAccessRoutes\":[{\"destination\":\"bztjhqtfbovnynkb\",\"nextHops\":[{},{},{},{}]}],\"userPlaneAccessRoutes\":[{\"destination\":\"hpsprkzyaupiac\",\"nextHops\":[{}]},{\"destination\":\"fbwqrooht\",\"nextHops\":[{},{},{}]},{\"destination\":\"aonurjtumg\",\"nextHops\":[{}]}],\"userPlaneDataRoutes\":[{\"attachedDataNetwork\":{\"id\":\"cmslclblyjxltbs\"},\"routes\":[{},{},{}]}]},\"id\":\"vsfxigctmgxuupbe\",\"name\":\"qccydrtceukdq\",\"type\":\"ky\"}";
+            = "{\"properties\":{\"controlPlaneAccessRoutes\":[{\"destination\":\"uxwigsyeipqdsm\",\"nextHops\":[{}]}],\"userPlaneAccessRoutes\":[{\"destination\":\"dgkkile\",\"nextHops\":[{},{}]},{\"destination\":\"smk\",\"nextHops\":[{},{},{},{}]},{\"destination\":\"bbaedorvvm\",\"nextHops\":[{}]}],\"userPlaneDataRoutes\":[{\"attachedDataNetwork\":{\"id\":\"bdgwumgxdgd\"},\"routes\":[{},{}]},{\"attachedDataNetwork\":{\"id\":\"gdexjd\"},\"routes\":[{},{},{},{}]},{\"attachedDataNetwork\":{\"id\":\"aqwotmmwl\"},\"routes\":[{},{},{}]},{\"attachedDataNetwork\":{\"id\":\"srsxaptefh\"},\"routes\":[{},{},{},{}]}]},\"id\":\"jokjl\",\"name\":\"nhvlqjbekp\",\"type\":\"eksnbksdqhjvyk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class RoutingInfoesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RoutingInfoModel response = manager.routingInfoes()
-            .getWithResponse("jjjavfqnvhnq", "ewdogiyetesy", com.azure.core.util.Context.NONE)
+            .getWithResponse("ivzrrryveimipsk", "yzatvfuzkaft", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bztjhqtfbovnynkb", response.controlPlaneAccessRoutes().get(0).destination());
-        Assertions.assertEquals("hpsprkzyaupiac", response.userPlaneAccessRoutes().get(0).destination());
-        Assertions.assertEquals("cmslclblyjxltbs", response.userPlaneDataRoutes().get(0).attachedDataNetwork().id());
+        Assertions.assertEquals("uxwigsyeipqdsm", response.controlPlaneAccessRoutes().get(0).destination());
+        Assertions.assertEquals("dgkkile", response.userPlaneAccessRoutes().get(0).destination());
+        Assertions.assertEquals("bdgwumgxdgd", response.userPlaneDataRoutes().get(0).attachedDataNetwork().id());
     }
 }

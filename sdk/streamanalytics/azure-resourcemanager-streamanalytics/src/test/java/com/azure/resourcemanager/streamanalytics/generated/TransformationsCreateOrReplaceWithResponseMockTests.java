@@ -6,59 +6,46 @@ package com.azure.resourcemanager.streamanalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager;
 import com.azure.resourcemanager.streamanalytics.models.Transformation;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TransformationsCreateOrReplaceWithResponseMockTests {
     @Test
     public void testCreateOrReplaceWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"streamingUnits\":1700872320,\"validStreamingUnits\":[640278837,1078649712],\"query\":\"srvhmgorffuki\",\"etag\":\"vwmzhwplefaxvxil\"},\"name\":\"tg\",\"type\":\"nzeyqxtjj\",\"id\":\"qlqhycavodg\"}";
+            = "{\"properties\":{\"streamingUnits\":1920410421,\"validStreamingUnits\":[601869733],\"query\":\"xwlmdjr\",\"etag\":\"fgbvfvpdbo\"},\"name\":\"cizsjqlhkrribdei\",\"type\":\"ipqkghvxndzwm\",\"id\":\"efajpj\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        Transformation response = manager.transformations()
+            .define("qvujzraehtwdwrf")
+            .withExistingStreamingjob("vk", "r")
+            .withName("khevxccedc")
+            .withStreamingUnits(767551661)
+            .withValidStreamingUnits(Arrays.asList(1010479001, 670463751, 403427600, 66676019))
+            .withQuery("h")
+            .withIfMatch("cxnavv")
+            .withIfNoneMatch("xqi")
+            .create();
 
-        Transformation response = manager.transformations().define("vgtrdcnifmzzs")
-            .withExistingStreamingjob("hihfrbbcevqagtlt", "hlfkqojpy").withName("fwafqrouda")
-            .withStreamingUnits(599707965)
-            .withValidStreamingUnits(Arrays.asList(1235749271, 1977061992, 44176896, 1995074524))
-            .withQuery("prafwgckhoc").withIfMatch("cdyuibhmfdnbzyd").withIfNoneMatch("f").create();
-
-        Assertions.assertEquals("qlqhycavodg", response.id());
-        Assertions.assertEquals("tg", response.name());
-        Assertions.assertEquals(1700872320, response.streamingUnits());
-        Assertions.assertEquals(640278837, response.validStreamingUnits().get(0));
-        Assertions.assertEquals("srvhmgorffuki", response.query());
+        Assertions.assertEquals("efajpj", response.id());
+        Assertions.assertEquals("cizsjqlhkrribdei", response.name());
+        Assertions.assertEquals(1920410421, response.streamingUnits());
+        Assertions.assertEquals(601869733, response.validStreamingUnits().get(0));
+        Assertions.assertEquals("xwlmdjr", response.query());
     }
 }

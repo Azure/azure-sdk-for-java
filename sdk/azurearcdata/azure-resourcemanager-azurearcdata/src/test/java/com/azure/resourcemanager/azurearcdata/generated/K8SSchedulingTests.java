@@ -15,34 +15,29 @@ import org.junit.jupiter.api.Assertions;
 public final class K8SSchedulingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        K8SScheduling model =
-            BinaryData
-                .fromString(
-                    "{\"default\":{\"resources\":{\"requests\":{\"qjqabcypmivkwl\":\"zevgb\",\"wnfnbacf\":\"uvcc\",\"bqqwxrj\":\"onlebxetqgtzxdpn\"},\"limits\":{\"njampm\":\"llnwsubi\"},\"\":{\"chcbonqvpkvlrxnj\":\"datazscxaqwo\",\"pheoflokeyy\":\"dataase\"}},\"\":{\"asxazjpqyegualhb\":\"datajbdlwtgrhpdjpju\"}},\"\":{\"jzzvdud\":\"datae\",\"pwlbjnpg\":\"datawdslfhotwmcy\"}}")
-                .toObject(K8SScheduling.class);
-        Assertions.assertEquals("zevgb", model.defaultProperty().resources().requests().get("qjqabcypmivkwl"));
-        Assertions.assertEquals("llnwsubi", model.defaultProperty().resources().limits().get("njampm"));
+        K8SScheduling model = BinaryData.fromString(
+            "{\"default\":{\"resources\":{\"requests\":{\"xzdmohctb\":\"avo\"},\"limits\":{\"w\":\"dwxdndnv\",\"lazjdyggdtjixhbk\":\"ujjugwdkcglh\",\"fwhybcibvy\":\"ofqweykhmenevfye\",\"ynnaam\":\"dcsi\"},\"\":{\"zrkgqhcjrefovg\":\"datatehfiqscjeypvh\",\"jpkcattpng\":\"datakqsleyyvxy\",\"czsqpjhvm\":\"datacr\"}},\"\":{\"ysou\":\"datav\",\"canoaeupf\":\"dataq\",\"tuo\":\"datayhltrpmopjmcm\"}},\"\":{\"uaodsfcpk\":\"datafu\",\"xbezyiuokktwh\":\"dataxodpuozmyzydagfu\",\"o\":\"datadxwzywqsmbsurexi\"}}")
+            .toObject(K8SScheduling.class);
+        Assertions.assertEquals("avo", model.defaultProperty().resources().requests().get("xzdmohctb"));
+        Assertions.assertEquals("dwxdndnv", model.defaultProperty().resources().limits().get("w"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        K8SScheduling model =
-            new K8SScheduling()
-                .withDefaultProperty(
-                    new K8SSchedulingOptions()
-                        .withResources(
-                            new K8SResourceRequirements()
-                                .withRequests(
-                                    mapOf("qjqabcypmivkwl", "zevgb", "wnfnbacf", "uvcc", "bqqwxrj", "onlebxetqgtzxdpn"))
-                                .withLimits(mapOf("njampm", "llnwsubi"))
-                                .withAdditionalProperties(mapOf()))
-                        .withAdditionalProperties(mapOf()))
-                .withAdditionalProperties(mapOf());
+        K8SScheduling model = new K8SScheduling()
+            .withDefaultProperty(new K8SSchedulingOptions()
+                .withResources(new K8SResourceRequirements().withRequests(mapOf("xzdmohctb", "avo"))
+                    .withLimits(mapOf("w", "dwxdndnv", "lazjdyggdtjixhbk", "ujjugwdkcglh", "fwhybcibvy",
+                        "ofqweykhmenevfye", "ynnaam", "dcsi"))
+                    .withAdditionalProperties(mapOf()))
+                .withAdditionalProperties(mapOf()))
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(K8SScheduling.class);
-        Assertions.assertEquals("zevgb", model.defaultProperty().resources().requests().get("qjqabcypmivkwl"));
-        Assertions.assertEquals("llnwsubi", model.defaultProperty().resources().limits().get("njampm"));
+        Assertions.assertEquals("avo", model.defaultProperty().resources().requests().get("xzdmohctb"));
+        Assertions.assertEquals("dwxdndnv", model.defaultProperty().resources().limits().get("w"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

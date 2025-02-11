@@ -21,8 +21,7 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    public CustomerSubscriptionsImpl(
-        CustomerSubscriptionsClient innerClient,
+    public CustomerSubscriptionsImpl(CustomerSubscriptionsClient innerClient,
         com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,24 +29,21 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
 
     public PagedIterable<CustomerSubscription> list(String resourceGroup, String registrationName) {
         PagedIterable<CustomerSubscriptionInner> inner = this.serviceClient().list(resourceGroup, registrationName);
-        return Utils.mapPage(inner, inner1 -> new CustomerSubscriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomerSubscriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CustomerSubscription> list(String resourceGroup, String registrationName, Context context) {
-        PagedIterable<CustomerSubscriptionInner> inner =
-            this.serviceClient().list(resourceGroup, registrationName, context);
-        return Utils.mapPage(inner, inner1 -> new CustomerSubscriptionImpl(inner1, this.manager()));
+        PagedIterable<CustomerSubscriptionInner> inner
+            = this.serviceClient().list(resourceGroup, registrationName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomerSubscriptionImpl(inner1, this.manager()));
     }
 
-    public Response<CustomerSubscription> getWithResponse(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context) {
-        Response<CustomerSubscriptionInner> inner =
-            this.serviceClient().getWithResponse(resourceGroup, registrationName, customerSubscriptionName, context);
+    public Response<CustomerSubscription> getWithResponse(String resourceGroup, String registrationName,
+        String customerSubscriptionName, Context context) {
+        Response<CustomerSubscriptionInner> inner
+            = this.serviceClient().getWithResponse(resourceGroup, registrationName, customerSubscriptionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CustomerSubscriptionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -55,8 +51,8 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
     }
 
     public CustomerSubscription get(String resourceGroup, String registrationName, String customerSubscriptionName) {
-        CustomerSubscriptionInner inner =
-            this.serviceClient().get(resourceGroup, registrationName, customerSubscriptionName);
+        CustomerSubscriptionInner inner
+            = this.serviceClient().get(resourceGroup, registrationName, customerSubscriptionName);
         if (inner != null) {
             return new CustomerSubscriptionImpl(inner, this.manager());
         } else {
@@ -64,10 +60,9 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroup, String registrationName,
+        String customerSubscriptionName, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroup, registrationName, customerSubscriptionName, context);
     }
 
@@ -76,117 +71,77 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
     }
 
     public CustomerSubscription getById(String id) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String registrationName = Utils.getValueFromIdByName(id, "registrations");
+        String registrationName = ResourceManagerUtils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
-        String customerSubscriptionName = Utils.getValueFromIdByName(id, "customerSubscriptions");
+        String customerSubscriptionName = ResourceManagerUtils.getValueFromIdByName(id, "customerSubscriptions");
         if (customerSubscriptionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'customerSubscriptions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customerSubscriptions'.", id)));
         }
         return this.getWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE).getValue();
     }
 
     public Response<CustomerSubscription> getByIdWithResponse(String id, Context context) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String registrationName = Utils.getValueFromIdByName(id, "registrations");
+        String registrationName = ResourceManagerUtils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
-        String customerSubscriptionName = Utils.getValueFromIdByName(id, "customerSubscriptions");
+        String customerSubscriptionName = ResourceManagerUtils.getValueFromIdByName(id, "customerSubscriptions");
         if (customerSubscriptionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'customerSubscriptions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customerSubscriptions'.", id)));
         }
         return this.getWithResponse(resourceGroup, registrationName, customerSubscriptionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String registrationName = Utils.getValueFromIdByName(id, "registrations");
+        String registrationName = ResourceManagerUtils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
-        String customerSubscriptionName = Utils.getValueFromIdByName(id, "customerSubscriptions");
+        String customerSubscriptionName = ResourceManagerUtils.getValueFromIdByName(id, "customerSubscriptions");
         if (customerSubscriptionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'customerSubscriptions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customerSubscriptions'.", id)));
         }
         this.deleteWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String registrationName = Utils.getValueFromIdByName(id, "registrations");
+        String registrationName = ResourceManagerUtils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
-        String customerSubscriptionName = Utils.getValueFromIdByName(id, "customerSubscriptions");
+        String customerSubscriptionName = ResourceManagerUtils.getValueFromIdByName(id, "customerSubscriptions");
         if (customerSubscriptionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'customerSubscriptions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customerSubscriptions'.", id)));
         }
         return this.deleteWithResponse(resourceGroup, registrationName, customerSubscriptionName, context);
     }

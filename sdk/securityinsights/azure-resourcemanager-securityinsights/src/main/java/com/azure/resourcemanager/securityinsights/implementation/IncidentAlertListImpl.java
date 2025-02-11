@@ -15,8 +15,7 @@ public final class IncidentAlertListImpl implements IncidentAlertList {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    IncidentAlertListImpl(
-        IncidentAlertListInner innerObject,
+    IncidentAlertListImpl(IncidentAlertListInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameAvailabilityRequest model =
-            BinaryData
-                .fromString("{\"name\":\"fbebrjcxer\",\"type\":\"Microsoft.Management/managementGroups\"}")
+        CheckNameAvailabilityRequest model
+            = BinaryData.fromString("{\"name\":\"fovasr\",\"type\":\"Microsoft.Management/managementGroups\"}")
                 .toObject(CheckNameAvailabilityRequest.class);
-        Assertions.assertEquals("fbebrjcxer", model.name());
+        Assertions.assertEquals("fovasr", model.name());
         Assertions.assertEquals(Type.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameAvailabilityRequest model =
-            new CheckNameAvailabilityRequest()
-                .withName("fbebrjcxer")
-                .withType(Type.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS);
+        CheckNameAvailabilityRequest model = new CheckNameAvailabilityRequest().withName("fovasr")
+            .withType(Type.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS);
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityRequest.class);
-        Assertions.assertEquals("fbebrjcxer", model.name());
+        Assertions.assertEquals("fovasr", model.name());
         Assertions.assertEquals(Type.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS, model.type());
     }
 }

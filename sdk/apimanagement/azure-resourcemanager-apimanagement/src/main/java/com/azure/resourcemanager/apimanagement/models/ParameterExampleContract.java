@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameter example. */
+/**
+ * Parameter example.
+ */
 @Fluent
-public final class ParameterExampleContract {
+public final class ParameterExampleContract implements JsonSerializable<ParameterExampleContract> {
     /*
      * Short description for the example
      */
-    @JsonProperty(value = "summary")
     private String summary;
 
     /*
      * Long description for the example
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Example value. May be a primitive value, or an object.
      */
-    @JsonProperty(value = "value")
     private Object value;
 
     /*
      * A URL that points to the literal example
      */
-    @JsonProperty(value = "externalValue")
     private String externalValue;
 
-    /** Creates an instance of ParameterExampleContract class. */
+    /**
+     * Creates an instance of ParameterExampleContract class.
+     */
     public ParameterExampleContract() {
     }
 
     /**
      * Get the summary property: Short description for the example.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -49,7 +53,7 @@ public final class ParameterExampleContract {
 
     /**
      * Set the summary property: Short description for the example.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the ParameterExampleContract object itself.
      */
@@ -60,7 +64,7 @@ public final class ParameterExampleContract {
 
     /**
      * Get the description property: Long description for the example.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -69,7 +73,7 @@ public final class ParameterExampleContract {
 
     /**
      * Set the description property: Long description for the example.
-     *
+     * 
      * @param description the description value to set.
      * @return the ParameterExampleContract object itself.
      */
@@ -80,7 +84,7 @@ public final class ParameterExampleContract {
 
     /**
      * Get the value property: Example value. May be a primitive value, or an object.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -89,7 +93,7 @@ public final class ParameterExampleContract {
 
     /**
      * Set the value property: Example value. May be a primitive value, or an object.
-     *
+     * 
      * @param value the value value to set.
      * @return the ParameterExampleContract object itself.
      */
@@ -100,7 +104,7 @@ public final class ParameterExampleContract {
 
     /**
      * Get the externalValue property: A URL that points to the literal example.
-     *
+     * 
      * @return the externalValue value.
      */
     public String externalValue() {
@@ -109,7 +113,7 @@ public final class ParameterExampleContract {
 
     /**
      * Set the externalValue property: A URL that points to the literal example.
-     *
+     * 
      * @param externalValue the externalValue value to set.
      * @return the ParameterExampleContract object itself.
      */
@@ -120,9 +124,54 @@ public final class ParameterExampleContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("summary", this.summary);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeStringField("externalValue", this.externalValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParameterExampleContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParameterExampleContract if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ParameterExampleContract.
+     */
+    public static ParameterExampleContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParameterExampleContract deserializedParameterExampleContract = new ParameterExampleContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("summary".equals(fieldName)) {
+                    deserializedParameterExampleContract.summary = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedParameterExampleContract.description = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedParameterExampleContract.value = reader.readUntyped();
+                } else if ("externalValue".equals(fieldName)) {
+                    deserializedParameterExampleContract.externalValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedParameterExampleContract;
+        });
     }
 }

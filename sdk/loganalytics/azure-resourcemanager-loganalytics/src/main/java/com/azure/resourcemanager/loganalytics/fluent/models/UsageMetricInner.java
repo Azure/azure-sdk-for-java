@@ -5,56 +5,60 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.MetricName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** A metric describing the usage of a resource. */
+/**
+ * A metric describing the usage of a resource.
+ */
 @Fluent
-public final class UsageMetricInner {
+public final class UsageMetricInner implements JsonSerializable<UsageMetricInner> {
     /*
      * The name of the metric.
      */
-    @JsonProperty(value = "name")
     private MetricName name;
 
     /*
      * The units used for the metric.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * The current value of the metric.
      */
-    @JsonProperty(value = "currentValue")
     private Double currentValue;
 
     /*
      * The quota limit for the metric.
      */
-    @JsonProperty(value = "limit")
     private Double limit;
 
     /*
      * The time that the metric's value will reset.
      */
-    @JsonProperty(value = "nextResetTime")
     private OffsetDateTime nextResetTime;
 
     /*
      * The quota period that determines the length of time between value resets.
      */
-    @JsonProperty(value = "quotaPeriod")
     private String quotaPeriod;
 
-    /** Creates an instance of UsageMetricInner class. */
+    /**
+     * Creates an instance of UsageMetricInner class.
+     */
     public UsageMetricInner() {
     }
 
     /**
      * Get the name property: The name of the metric.
-     *
+     * 
      * @return the name value.
      */
     public MetricName name() {
@@ -63,7 +67,7 @@ public final class UsageMetricInner {
 
     /**
      * Set the name property: The name of the metric.
-     *
+     * 
      * @param name the name value to set.
      * @return the UsageMetricInner object itself.
      */
@@ -74,7 +78,7 @@ public final class UsageMetricInner {
 
     /**
      * Get the unit property: The units used for the metric.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -83,7 +87,7 @@ public final class UsageMetricInner {
 
     /**
      * Set the unit property: The units used for the metric.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the UsageMetricInner object itself.
      */
@@ -94,7 +98,7 @@ public final class UsageMetricInner {
 
     /**
      * Get the currentValue property: The current value of the metric.
-     *
+     * 
      * @return the currentValue value.
      */
     public Double currentValue() {
@@ -103,7 +107,7 @@ public final class UsageMetricInner {
 
     /**
      * Set the currentValue property: The current value of the metric.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the UsageMetricInner object itself.
      */
@@ -114,7 +118,7 @@ public final class UsageMetricInner {
 
     /**
      * Get the limit property: The quota limit for the metric.
-     *
+     * 
      * @return the limit value.
      */
     public Double limit() {
@@ -123,7 +127,7 @@ public final class UsageMetricInner {
 
     /**
      * Set the limit property: The quota limit for the metric.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the UsageMetricInner object itself.
      */
@@ -134,7 +138,7 @@ public final class UsageMetricInner {
 
     /**
      * Get the nextResetTime property: The time that the metric's value will reset.
-     *
+     * 
      * @return the nextResetTime value.
      */
     public OffsetDateTime nextResetTime() {
@@ -143,7 +147,7 @@ public final class UsageMetricInner {
 
     /**
      * Set the nextResetTime property: The time that the metric's value will reset.
-     *
+     * 
      * @param nextResetTime the nextResetTime value to set.
      * @return the UsageMetricInner object itself.
      */
@@ -154,7 +158,7 @@ public final class UsageMetricInner {
 
     /**
      * Get the quotaPeriod property: The quota period that determines the length of time between value resets.
-     *
+     * 
      * @return the quotaPeriod value.
      */
     public String quotaPeriod() {
@@ -163,7 +167,7 @@ public final class UsageMetricInner {
 
     /**
      * Set the quotaPeriod property: The quota period that determines the length of time between value resets.
-     *
+     * 
      * @param quotaPeriod the quotaPeriod value to set.
      * @return the UsageMetricInner object itself.
      */
@@ -174,12 +178,65 @@ public final class UsageMetricInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeStringField("nextResetTime",
+            this.nextResetTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.nextResetTime));
+        jsonWriter.writeStringField("quotaPeriod", this.quotaPeriod);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageMetricInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageMetricInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UsageMetricInner.
+     */
+    public static UsageMetricInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageMetricInner deserializedUsageMetricInner = new UsageMetricInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedUsageMetricInner.name = MetricName.fromJson(reader);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedUsageMetricInner.unit = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedUsageMetricInner.currentValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedUsageMetricInner.limit = reader.getNullable(JsonReader::getDouble);
+                } else if ("nextResetTime".equals(fieldName)) {
+                    deserializedUsageMetricInner.nextResetTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("quotaPeriod".equals(fieldName)) {
+                    deserializedUsageMetricInner.quotaPeriod = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageMetricInner;
+        });
     }
 }

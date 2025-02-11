@@ -18,7 +18,7 @@ public final class WorkspaceOperationListKeysSamples {
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void listKeys(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        manager.workspaceOperations().listKeysWithResponse("quantumResourcegroup", "quantumworkspace1",
-            com.azure.core.util.Context.NONE);
+        manager.workspaceOperations()
+            .listKeysWithResponse("quantumResourcegroup", "quantumworkspace1", com.azure.core.util.Context.NONE);
     }
 }

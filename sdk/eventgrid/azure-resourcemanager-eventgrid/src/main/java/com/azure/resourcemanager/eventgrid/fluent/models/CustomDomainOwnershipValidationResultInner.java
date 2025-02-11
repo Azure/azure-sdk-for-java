@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.CustomDomainConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Namespace custom domain ownership validation result.
  */
 @Fluent
-public final class CustomDomainOwnershipValidationResultInner {
+public final class CustomDomainOwnershipValidationResultInner
+    implements JsonSerializable<CustomDomainOwnershipValidationResultInner> {
     /*
      * List of custom domain configurations for the namespace under topics configuration.
      */
-    @JsonProperty(value = "customDomainsForTopicsConfiguration")
     private List<CustomDomainConfiguration> customDomainsForTopicsConfiguration;
 
     /*
      * List of custom domain configurations for the namespace under topic spaces configuration.
      */
-    @JsonProperty(value = "customDomainsForTopicSpacesConfiguration")
     private List<CustomDomainConfiguration> customDomainsForTopicSpacesConfiguration;
 
     /**
@@ -90,5 +93,53 @@ public final class CustomDomainOwnershipValidationResultInner {
         if (customDomainsForTopicSpacesConfiguration() != null) {
             customDomainsForTopicSpacesConfiguration().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("customDomainsForTopicsConfiguration", this.customDomainsForTopicsConfiguration,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customDomainsForTopicSpacesConfiguration",
+            this.customDomainsForTopicSpacesConfiguration, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDomainOwnershipValidationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDomainOwnershipValidationResultInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomDomainOwnershipValidationResultInner.
+     */
+    public static CustomDomainOwnershipValidationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDomainOwnershipValidationResultInner deserializedCustomDomainOwnershipValidationResultInner
+                = new CustomDomainOwnershipValidationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customDomainsForTopicsConfiguration".equals(fieldName)) {
+                    List<CustomDomainConfiguration> customDomainsForTopicsConfiguration
+                        = reader.readArray(reader1 -> CustomDomainConfiguration.fromJson(reader1));
+                    deserializedCustomDomainOwnershipValidationResultInner.customDomainsForTopicsConfiguration
+                        = customDomainsForTopicsConfiguration;
+                } else if ("customDomainsForTopicSpacesConfiguration".equals(fieldName)) {
+                    List<CustomDomainConfiguration> customDomainsForTopicSpacesConfiguration
+                        = reader.readArray(reader1 -> CustomDomainConfiguration.fromJson(reader1));
+                    deserializedCustomDomainOwnershipValidationResultInner.customDomainsForTopicSpacesConfiguration
+                        = customDomainsForTopicSpacesConfiguration;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDomainOwnershipValidationResultInner;
+        });
     }
 }

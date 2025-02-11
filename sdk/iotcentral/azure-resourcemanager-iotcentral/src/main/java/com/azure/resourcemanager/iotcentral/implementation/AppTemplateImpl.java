@@ -15,8 +15,8 @@ public final class AppTemplateImpl implements AppTemplate {
 
     private final com.azure.resourcemanager.iotcentral.IotCentralManager serviceManager;
 
-    AppTemplateImpl(
-        AppTemplateInner innerObject, com.azure.resourcemanager.iotcentral.IotCentralManager serviceManager) {
+    AppTemplateImpl(AppTemplateInner innerObject,
+        com.azure.resourcemanager.iotcentral.IotCentralManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

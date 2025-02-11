@@ -41,23 +41,28 @@ import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProviderRegistrationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProviderRegistrationsClient.
+ */
 public final class ProviderRegistrationsClientImpl implements ProviderRegistrationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProviderRegistrationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ProviderHubImpl client;
 
     /**
      * Initializes an instance of ProviderRegistrationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProviderRegistrationsClientImpl(ProviderHubImpl client) {
-        this.service =
-            RestProxy
-                .create(ProviderRegistrationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ProviderRegistrationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,85 +73,63 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
     @Host("{$host}")
     @ServiceInterface(name = "ProviderHubProviderR")
     public interface ProviderRegistrationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderRegistrationInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ProviderRegistrationInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ProviderRegistrationInner properties, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ProviderRegistrationInner properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderRegistrationArrayResponseWithContinuation>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ProviderRegistrationArrayResponseWithContinuation>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/generateOperations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/generateOperations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<OperationsDefinitionInner>>> generateOperations(
-            @HostParam("$host") String endpoint,
+        Mono<Response<List<OperationsDefinitionInner>>> generateOperations(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProviderRegistrationArrayResponseWithContinuation>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -156,16 +139,12 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProviderRegistrationInner>> getWithResponseAsync(String providerNamespace) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -173,22 +152,14 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,16 +170,12 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProviderRegistrationInner>> getWithResponseAsync(String providerNamespace, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -216,19 +183,13 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -242,7 +203,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +218,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -271,7 +232,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,19 +241,15 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String providerNamespace, ProviderRegistrationInner properties) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String providerNamespace,
+        ProviderRegistrationInner properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -305,23 +262,14 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            this.client.getApiVersion(),
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, this.client.getApiVersion(), properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -331,19 +279,15 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String providerNamespace, ProviderRegistrationInner properties, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String providerNamespace,
+        ProviderRegistrationInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -356,20 +300,13 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                this.client.getApiVersion(),
-                properties,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            this.client.getApiVersion(), properties, accept, context);
     }
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -378,22 +315,17 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner> beginCreateOrUpdateAsync(
-        String providerNamespace, ProviderRegistrationInner properties) {
+    private PollerFlux<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner>
+        beginCreateOrUpdateAsync(String providerNamespace, ProviderRegistrationInner properties) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(providerNamespace, properties);
-        return this
-            .client
-            .<ProviderRegistrationInner, ProviderRegistrationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ProviderRegistrationInner.class,
-                ProviderRegistrationInner.class,
-                this.client.getContext());
+        return this.client.<ProviderRegistrationInner, ProviderRegistrationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ProviderRegistrationInner.class, ProviderRegistrationInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -403,23 +335,17 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner> beginCreateOrUpdateAsync(
-        String providerNamespace, ProviderRegistrationInner properties, Context context) {
+    private PollerFlux<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner>
+        beginCreateOrUpdateAsync(String providerNamespace, ProviderRegistrationInner properties, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(providerNamespace, properties, context);
-        return this
-            .client
-            .<ProviderRegistrationInner, ProviderRegistrationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ProviderRegistrationInner.class,
-                ProviderRegistrationInner.class,
-                context);
+        return this.client.<ProviderRegistrationInner, ProviderRegistrationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ProviderRegistrationInner.class, ProviderRegistrationInner.class, context);
     }
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -428,14 +354,14 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner> beginCreateOrUpdate(
-        String providerNamespace, ProviderRegistrationInner properties) {
+    public SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner>
+        beginCreateOrUpdate(String providerNamespace, ProviderRegistrationInner properties) {
         return this.beginCreateOrUpdateAsync(providerNamespace, properties).getSyncPoller();
     }
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -445,14 +371,14 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner> beginCreateOrUpdate(
-        String providerNamespace, ProviderRegistrationInner properties, Context context) {
+    public SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner>
+        beginCreateOrUpdate(String providerNamespace, ProviderRegistrationInner properties, Context context) {
         return this.beginCreateOrUpdateAsync(providerNamespace, properties, context).getSyncPoller();
     }
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -461,16 +387,15 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProviderRegistrationInner> createOrUpdateAsync(
-        String providerNamespace, ProviderRegistrationInner properties) {
-        return beginCreateOrUpdateAsync(providerNamespace, properties)
-            .last()
+    private Mono<ProviderRegistrationInner> createOrUpdateAsync(String providerNamespace,
+        ProviderRegistrationInner properties) {
+        return beginCreateOrUpdateAsync(providerNamespace, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -480,16 +405,15 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProviderRegistrationInner> createOrUpdateAsync(
-        String providerNamespace, ProviderRegistrationInner properties, Context context) {
-        return beginCreateOrUpdateAsync(providerNamespace, properties, context)
-            .last()
+    private Mono<ProviderRegistrationInner> createOrUpdateAsync(String providerNamespace,
+        ProviderRegistrationInner properties, Context context) {
+        return beginCreateOrUpdateAsync(providerNamespace, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -504,7 +428,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -514,14 +438,14 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderRegistrationInner createOrUpdate(
-        String providerNamespace, ProviderRegistrationInner properties, Context context) {
+    public ProviderRegistrationInner createOrUpdate(String providerNamespace, ProviderRegistrationInner properties,
+        Context context) {
         return createOrUpdateAsync(providerNamespace, properties, context).block();
     }
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -531,16 +455,12 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -548,22 +468,14 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -574,16 +486,12 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -591,19 +499,13 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -617,7 +519,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -632,7 +534,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -645,96 +547,63 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the provider registrations in the subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderRegistrationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ProviderRegistrationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ProviderRegistrationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the provider registrations in the subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderRegistrationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the provider registrations in the subscription as paginated response with {@link PagedFlux}.
@@ -746,7 +615,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -755,17 +624,17 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProviderRegistrationInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider registrations in the subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the provider registrations in the subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderRegistrationInner> list() {
@@ -774,13 +643,13 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider registrations in the subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the provider registrations in the subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderRegistrationInner> list(Context context) {
@@ -789,7 +658,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -797,19 +666,15 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return array of OperationsDefinition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<OperationsDefinitionInner>>> generateOperationsWithResponseAsync(
-        String providerNamespace) {
+    private Mono<Response<List<OperationsDefinitionInner>>>
+        generateOperationsWithResponseAsync(String providerNamespace) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -817,22 +682,14 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generateOperations(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.generateOperations(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -841,19 +698,15 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return array of OperationsDefinition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<OperationsDefinitionInner>>> generateOperationsWithResponseAsync(
-        String providerNamespace, Context context) {
+    private Mono<Response<List<OperationsDefinitionInner>>>
+        generateOperationsWithResponseAsync(String providerNamespace, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -861,19 +714,13 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .generateOperations(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.generateOperations(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -887,7 +734,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -896,14 +743,14 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
      * @return array of OperationsDefinition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<OperationsDefinitionInner>> generateOperationsWithResponse(
-        String providerNamespace, Context context) {
+    public Response<List<OperationsDefinitionInner>> generateOperationsWithResponse(String providerNamespace,
+        Context context) {
         return generateOperationsWithResponseAsync(providerNamespace, context).block();
     }
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -917,9 +764,8 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -931,31 +777,20 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProviderRegistrationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ProviderRegistrationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -968,23 +803,13 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

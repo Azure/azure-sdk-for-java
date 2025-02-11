@@ -34,22 +34,28 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FarmBeatsExtensionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FarmBeatsExtensionsClient.
+ */
 public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FarmBeatsExtensionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AgriFoodManagementClientImpl client;
 
     /**
      * Initializes an instance of FarmBeatsExtensionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FarmBeatsExtensionsClientImpl(AgriFoodManagementClientImpl client) {
-        this.service =
-            RestProxy.create(FarmBeatsExtensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(FarmBeatsExtensionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,122 +65,91 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "AgriFoodManagementCl")
-    private interface FarmBeatsExtensionsService {
-        @Headers({"Content-Type: application/json"})
+    public interface FarmBeatsExtensionsService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.AgFoodPlatform/farmBeatsExtensionDefinitions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FarmBeatsExtensionListResponse>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FarmBeatsExtensionListResponse>> list(@HostParam("$host") String endpoint,
             @QueryParam(value = "farmBeatsExtensionIds", multipleQueryParams = true) List<String> farmBeatsExtensionIds,
-            @QueryParam(value = "farmBeatsExtensionNames", multipleQueryParams = true)
-                List<String> farmBeatsExtensionNames,
+            @QueryParam(
+                value = "farmBeatsExtensionNames",
+                multipleQueryParams = true) List<String> farmBeatsExtensionNames,
             @QueryParam(value = "extensionCategories", multipleQueryParams = true) List<String> extensionCategories,
             @QueryParam(value = "publisherIds", multipleQueryParams = true) List<String> publisherIds,
-            @QueryParam("$maxPageSize") Integer maxPageSize,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("$maxPageSize") Integer maxPageSize, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.AgFoodPlatform/farmBeatsExtensionDefinitions/{farmBeatsExtensionId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FarmBeatsExtensionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FarmBeatsExtensionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("farmBeatsExtensionId") String farmBeatsExtensionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FarmBeatsExtensionListResponse>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionIds FarmBeatsExtension ids.
      * @param farmBeatsExtensionNames FarmBeats extension names.
      * @param extensionCategories Extension categories.
      * @param publisherIds Publisher ids.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of farmBeats extension along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FarmBeatsExtensionInner>> listSinglePageAsync(
-        List<String> farmBeatsExtensionIds,
-        List<String> farmBeatsExtensionNames,
-        List<String> extensionCategories,
-        List<String> publisherIds,
+    private Mono<PagedResponse<FarmBeatsExtensionInner>> listSinglePageAsync(List<String> farmBeatsExtensionIds,
+        List<String> farmBeatsExtensionNames, List<String> extensionCategories, List<String> publisherIds,
         Integer maxPageSize) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> farmBeatsExtensionIdsConverted =
-            (farmBeatsExtensionIds == null)
-                ? new ArrayList<>()
-                : farmBeatsExtensionIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> farmBeatsExtensionNamesConverted =
-            (farmBeatsExtensionNames == null)
-                ? new ArrayList<>()
-                : farmBeatsExtensionNames.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> extensionCategoriesConverted =
-            (extensionCategories == null)
-                ? new ArrayList<>()
-                : extensionCategories.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> publisherIdsConverted =
-            (publisherIds == null)
-                ? new ArrayList<>()
-                : publisherIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> farmBeatsExtensionIdsConverted = (farmBeatsExtensionIds == null)
+            ? new ArrayList<>()
+            : farmBeatsExtensionIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> farmBeatsExtensionNamesConverted = (farmBeatsExtensionNames == null)
+            ? new ArrayList<>()
+            : farmBeatsExtensionNames.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> extensionCategoriesConverted = (extensionCategories == null)
+            ? new ArrayList<>()
+            : extensionCategories.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> publisherIdsConverted = (publisherIds == null)
+            ? new ArrayList<>()
+            : publisherIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            farmBeatsExtensionIdsConverted,
-                            farmBeatsExtensionNamesConverted,
-                            extensionCategoriesConverted,
-                            publisherIdsConverted,
-                            maxPageSize,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<FarmBeatsExtensionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), farmBeatsExtensionIdsConverted,
+                farmBeatsExtensionNamesConverted, extensionCategoriesConverted, publisherIdsConverted, maxPageSize,
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<FarmBeatsExtensionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionIds FarmBeatsExtension ids.
      * @param farmBeatsExtensionNames FarmBeats extension names.
      * @param extensionCategories Extension categories.
      * @param publisherIds Publisher ids.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -182,89 +157,60 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
      * @return list of farmBeats extension along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FarmBeatsExtensionInner>> listSinglePageAsync(
-        List<String> farmBeatsExtensionIds,
-        List<String> farmBeatsExtensionNames,
-        List<String> extensionCategories,
-        List<String> publisherIds,
-        Integer maxPageSize,
-        Context context) {
+    private Mono<PagedResponse<FarmBeatsExtensionInner>> listSinglePageAsync(List<String> farmBeatsExtensionIds,
+        List<String> farmBeatsExtensionNames, List<String> extensionCategories, List<String> publisherIds,
+        Integer maxPageSize, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> farmBeatsExtensionIdsConverted =
-            (farmBeatsExtensionIds == null)
-                ? new ArrayList<>()
-                : farmBeatsExtensionIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> farmBeatsExtensionNamesConverted =
-            (farmBeatsExtensionNames == null)
-                ? new ArrayList<>()
-                : farmBeatsExtensionNames.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> extensionCategoriesConverted =
-            (extensionCategories == null)
-                ? new ArrayList<>()
-                : extensionCategories.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> publisherIdsConverted =
-            (publisherIds == null)
-                ? new ArrayList<>()
-                : publisherIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> farmBeatsExtensionIdsConverted = (farmBeatsExtensionIds == null)
+            ? new ArrayList<>()
+            : farmBeatsExtensionIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> farmBeatsExtensionNamesConverted = (farmBeatsExtensionNames == null)
+            ? new ArrayList<>()
+            : farmBeatsExtensionNames.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> extensionCategoriesConverted = (extensionCategories == null)
+            ? new ArrayList<>()
+            : extensionCategories.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> publisherIdsConverted = (publisherIds == null)
+            ? new ArrayList<>()
+            : publisherIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                farmBeatsExtensionIdsConverted,
-                farmBeatsExtensionNamesConverted,
-                extensionCategoriesConverted,
-                publisherIdsConverted,
-                maxPageSize,
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), farmBeatsExtensionIdsConverted, farmBeatsExtensionNamesConverted,
+                extensionCategoriesConverted, publisherIdsConverted, maxPageSize, this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionIds FarmBeatsExtension ids.
      * @param farmBeatsExtensionNames FarmBeats extension names.
      * @param extensionCategories Extension categories.
      * @param publisherIds Publisher ids.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of farmBeats extension as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FarmBeatsExtensionInner> listAsync(
-        List<String> farmBeatsExtensionIds,
-        List<String> farmBeatsExtensionNames,
-        List<String> extensionCategories,
-        List<String> publisherIds,
+    private PagedFlux<FarmBeatsExtensionInner> listAsync(List<String> farmBeatsExtensionIds,
+        List<String> farmBeatsExtensionNames, List<String> extensionCategories, List<String> publisherIds,
         Integer maxPageSize) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    farmBeatsExtensionIds, farmBeatsExtensionNames, extensionCategories, publisherIds, maxPageSize),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(farmBeatsExtensionIds, farmBeatsExtensionNames,
+            extensionCategories, publisherIds, maxPageSize), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of farmBeats extension as paginated response with {@link PagedFlux}.
@@ -276,21 +222,19 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
         final List<String> extensionCategories = null;
         final List<String> publisherIds = null;
         final Integer maxPageSize = null;
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    farmBeatsExtensionIds, farmBeatsExtensionNames, extensionCategories, publisherIds, maxPageSize),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(farmBeatsExtensionIds, farmBeatsExtensionNames,
+            extensionCategories, publisherIds, maxPageSize), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionIds FarmBeatsExtension ids.
      * @param farmBeatsExtensionNames FarmBeats extension names.
      * @param extensionCategories Extension categories.
      * @param publisherIds Publisher ids.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -298,28 +242,17 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
      * @return list of farmBeats extension as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FarmBeatsExtensionInner> listAsync(
-        List<String> farmBeatsExtensionIds,
-        List<String> farmBeatsExtensionNames,
-        List<String> extensionCategories,
-        List<String> publisherIds,
-        Integer maxPageSize,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    farmBeatsExtensionIds,
-                    farmBeatsExtensionNames,
-                    extensionCategories,
-                    publisherIds,
-                    maxPageSize,
-                    context),
+    private PagedFlux<FarmBeatsExtensionInner> listAsync(List<String> farmBeatsExtensionIds,
+        List<String> farmBeatsExtensionNames, List<String> extensionCategories, List<String> publisherIds,
+        Integer maxPageSize, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(farmBeatsExtensionIds, farmBeatsExtensionNames,
+            extensionCategories, publisherIds, maxPageSize, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of farmBeats extension as paginated response with {@link PagedIterable}.
@@ -337,12 +270,13 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionIds FarmBeatsExtension ids.
      * @param farmBeatsExtensionNames FarmBeats extension names.
      * @param extensionCategories Extension categories.
      * @param publisherIds Publisher ids.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -350,26 +284,16 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
      * @return list of farmBeats extension as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FarmBeatsExtensionInner> list(
-        List<String> farmBeatsExtensionIds,
-        List<String> farmBeatsExtensionNames,
-        List<String> extensionCategories,
-        List<String> publisherIds,
-        Integer maxPageSize,
-        Context context) {
-        return new PagedIterable<>(
-            listAsync(
-                farmBeatsExtensionIds,
-                farmBeatsExtensionNames,
-                extensionCategories,
-                publisherIds,
-                maxPageSize,
-                context));
+    public PagedIterable<FarmBeatsExtensionInner> list(List<String> farmBeatsExtensionIds,
+        List<String> farmBeatsExtensionNames, List<String> extensionCategories, List<String> publisherIds,
+        Integer maxPageSize, Context context) {
+        return new PagedIterable<>(listAsync(farmBeatsExtensionIds, farmBeatsExtensionNames, extensionCategories,
+            publisherIds, maxPageSize, context));
     }
 
     /**
      * Get farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -379,10 +303,8 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FarmBeatsExtensionInner>> getWithResponseAsync(String farmBeatsExtensionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (farmBeatsExtensionId == null) {
             return Mono
@@ -390,21 +312,14 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            farmBeatsExtensionId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), farmBeatsExtensionId,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -415,10 +330,8 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FarmBeatsExtensionInner>> getWithResponseAsync(String farmBeatsExtensionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (farmBeatsExtensionId == null) {
             return Mono
@@ -426,13 +339,13 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), farmBeatsExtensionId, this.client.getApiVersion(), accept, context);
+        return service.get(this.client.getEndpoint(), farmBeatsExtensionId, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Get farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -446,21 +359,7 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get farmBeats extension.
-     *
-     * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return farmBeats extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FarmBeatsExtensionInner get(String farmBeatsExtensionId) {
-        return getAsync(farmBeatsExtensionId).block();
-    }
-
-    /**
-     * Get farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -474,15 +373,28 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
     }
 
     /**
+     * Get farmBeats extension.
+     * 
+     * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return farmBeats extension.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FarmBeatsExtensionInner get(String farmBeatsExtensionId) {
+        return getWithResponse(farmBeatsExtensionId, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsExtensionInner>> listNextSinglePageAsync(String nextLink) {
@@ -490,37 +402,26 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FarmBeatsExtensionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<FarmBeatsExtensionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsExtensionInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -528,23 +429,13 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

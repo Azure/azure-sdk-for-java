@@ -10,11 +10,10 @@ import com.azure.resourcemanager.iothub.fluent.models.IotHubQuotaMetricInfoInner
 public final class IotHubQuotaMetricInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IotHubQuotaMetricInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"pvgqzcjrvxdjzlm\",\"currentValue\":1682281437917731463,\"maxValue\":1775729051253109920}")
-                .toObject(IotHubQuotaMetricInfoInner.class);
+        IotHubQuotaMetricInfoInner model = BinaryData
+            .fromString(
+                "{\"name\":\"pvgqzcjrvxdjzlm\",\"currentValue\":1682281437917731463,\"maxValue\":1775729051253109920}")
+            .toObject(IotHubQuotaMetricInfoInner.class);
     }
 
     @org.junit.jupiter.api.Test

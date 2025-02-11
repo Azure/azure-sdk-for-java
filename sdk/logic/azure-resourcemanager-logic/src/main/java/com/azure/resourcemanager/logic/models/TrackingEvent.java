@@ -5,50 +5,55 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The tracking event. */
+/**
+ * The tracking event.
+ */
 @Fluent
-public final class TrackingEvent {
+public final class TrackingEvent implements JsonSerializable<TrackingEvent> {
     /*
      * The event level.
      */
-    @JsonProperty(value = "eventLevel", required = true)
     private EventLevel eventLevel;
 
     /*
      * The event time.
      */
-    @JsonProperty(value = "eventTime", required = true)
     private OffsetDateTime eventTime;
 
     /*
      * The record type.
      */
-    @JsonProperty(value = "recordType", required = true)
     private TrackingRecordType recordType;
 
     /*
      * The record.
      */
-    @JsonProperty(value = "record")
     private Object record;
 
     /*
      * The error.
      */
-    @JsonProperty(value = "error")
     private TrackingEventErrorInfo error;
 
-    /** Creates an instance of TrackingEvent class. */
+    /**
+     * Creates an instance of TrackingEvent class.
+     */
     public TrackingEvent() {
     }
 
     /**
      * Get the eventLevel property: The event level.
-     *
+     * 
      * @return the eventLevel value.
      */
     public EventLevel eventLevel() {
@@ -57,7 +62,7 @@ public final class TrackingEvent {
 
     /**
      * Set the eventLevel property: The event level.
-     *
+     * 
      * @param eventLevel the eventLevel value to set.
      * @return the TrackingEvent object itself.
      */
@@ -68,7 +73,7 @@ public final class TrackingEvent {
 
     /**
      * Get the eventTime property: The event time.
-     *
+     * 
      * @return the eventTime value.
      */
     public OffsetDateTime eventTime() {
@@ -77,7 +82,7 @@ public final class TrackingEvent {
 
     /**
      * Set the eventTime property: The event time.
-     *
+     * 
      * @param eventTime the eventTime value to set.
      * @return the TrackingEvent object itself.
      */
@@ -88,7 +93,7 @@ public final class TrackingEvent {
 
     /**
      * Get the recordType property: The record type.
-     *
+     * 
      * @return the recordType value.
      */
     public TrackingRecordType recordType() {
@@ -97,7 +102,7 @@ public final class TrackingEvent {
 
     /**
      * Set the recordType property: The record type.
-     *
+     * 
      * @param recordType the recordType value to set.
      * @return the TrackingEvent object itself.
      */
@@ -108,7 +113,7 @@ public final class TrackingEvent {
 
     /**
      * Get the record property: The record.
-     *
+     * 
      * @return the record value.
      */
     public Object record() {
@@ -117,7 +122,7 @@ public final class TrackingEvent {
 
     /**
      * Set the record property: The record.
-     *
+     * 
      * @param record the record value to set.
      * @return the TrackingEvent object itself.
      */
@@ -128,7 +133,7 @@ public final class TrackingEvent {
 
     /**
      * Get the error property: The error.
-     *
+     * 
      * @return the error value.
      */
     public TrackingEventErrorInfo error() {
@@ -137,7 +142,7 @@ public final class TrackingEvent {
 
     /**
      * Set the error property: The error.
-     *
+     * 
      * @param error the error value to set.
      * @return the TrackingEvent object itself.
      */
@@ -148,24 +153,21 @@ public final class TrackingEvent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (eventLevel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property eventLevel in model TrackingEvent"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property eventLevel in model TrackingEvent"));
         }
         if (eventTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property eventTime in model TrackingEvent"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property eventTime in model TrackingEvent"));
         }
         if (recordType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property recordType in model TrackingEvent"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property recordType in model TrackingEvent"));
         }
         if (error() != null) {
             error().validate();
@@ -173,4 +175,55 @@ public final class TrackingEvent {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TrackingEvent.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eventLevel", this.eventLevel == null ? null : this.eventLevel.toString());
+        jsonWriter.writeStringField("eventTime",
+            this.eventTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.eventTime));
+        jsonWriter.writeStringField("recordType", this.recordType == null ? null : this.recordType.toString());
+        jsonWriter.writeUntypedField("record", this.record);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrackingEvent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrackingEvent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrackingEvent.
+     */
+    public static TrackingEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrackingEvent deserializedTrackingEvent = new TrackingEvent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventLevel".equals(fieldName)) {
+                    deserializedTrackingEvent.eventLevel = EventLevel.fromString(reader.getString());
+                } else if ("eventTime".equals(fieldName)) {
+                    deserializedTrackingEvent.eventTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recordType".equals(fieldName)) {
+                    deserializedTrackingEvent.recordType = TrackingRecordType.fromString(reader.getString());
+                } else if ("record".equals(fieldName)) {
+                    deserializedTrackingEvent.record = reader.readUntyped();
+                } else if ("error".equals(fieldName)) {
+                    deserializedTrackingEvent.error = TrackingEventErrorInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrackingEvent;
+        });
+    }
 }

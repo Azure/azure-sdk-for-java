@@ -11,9 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
  *
  * @param <T> the fluent type of the resource
  */
-public abstract class IndexableRefreshableImpl<T>
-        extends IndexableImpl
-        implements Refreshable<T> {
+public abstract class IndexableRefreshableImpl<T> extends IndexableImpl implements Refreshable<T> {
 
     protected IndexableRefreshableImpl() {
     }

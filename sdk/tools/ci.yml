@@ -6,10 +6,12 @@ trigger:
     include:
       - /sdk/tools/azure-sdk-archetype/
       - /sdk/tools/azure-sdk-build-tool/
+      - /sdk/tools/azure-openrewrite/
     exclude:
       - sdk/tools/pom.xml
       - sdk/tools/azure-sdk-build-tool/pom.xml
       - sdk/tools/azure-sdk-archetype/pom.xml
+      - /sdk/tools/azure-openrewrite/pom.xml
 
 pr:
   branches:
@@ -22,10 +24,12 @@ pr:
     include:
       - /sdk/tools/azure-sdk-archetype/
       - /sdk/tools/azure-sdk-build-tool/
+      - /sdk/tools/azure-openrewrite/
     exclude:
       - sdk/tools/pom.xml
       - sdk/tools/azure-sdk-build-tool/pom.xml
       - sdk/tools/azure-sdk-archetype/pom.xml
+      - /sdk/tools/azure-openrewrite/pom.xml
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml

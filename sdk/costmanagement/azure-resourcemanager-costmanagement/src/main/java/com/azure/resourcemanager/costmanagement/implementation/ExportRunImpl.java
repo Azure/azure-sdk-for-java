@@ -18,8 +18,8 @@ public final class ExportRunImpl implements ExportRun {
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    ExportRunImpl(
-        ExportRunInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
+    ExportRunImpl(ExportRunInner innerObject,
+        com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

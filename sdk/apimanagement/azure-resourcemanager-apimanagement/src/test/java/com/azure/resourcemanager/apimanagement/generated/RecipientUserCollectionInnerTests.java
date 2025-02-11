@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RecipientUserCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecipientUserCollectionInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"userId\":\"nwplrr\"},\"id\":\"phctsbbibticu\",\"name\":\"qvumspbfsfeqbbe\",\"type\":\"f\"},{\"properties\":{\"userId\":\"fpyyxmzrmtm\"},\"id\":\"wi\",\"name\":\"uweyyjshcyb\",\"type\":\"fuppoxprc\"},{\"properties\":{\"userId\":\"uujxdii\"},\"id\":\"moxrezsvavlrxi\",\"name\":\"jmoywlunpipcwybs\",\"type\":\"fncn\"},{\"properties\":{\"userId\":\"pftsaebwf\"},\"id\":\"hxorpwaltzwu\",\"name\":\"exojfccy\",\"type\":\"h\"}],\"count\":2329073673274706463,\"nextLink\":\"vazjpwexcd\"}")
-                .toObject(RecipientUserCollectionInner.class);
+        RecipientUserCollectionInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"userId\":\"nwplrr\"},\"id\":\"phctsbbibticu\",\"name\":\"qvumspbfsfeqbbe\",\"type\":\"f\"},{\"properties\":{\"userId\":\"fpyyxmzrmtm\"},\"id\":\"wi\",\"name\":\"uweyyjshcyb\",\"type\":\"fuppoxprc\"},{\"properties\":{\"userId\":\"uujxdii\"},\"id\":\"moxrezsvavlrxi\",\"name\":\"jmoywlunpipcwybs\",\"type\":\"fncn\"},{\"properties\":{\"userId\":\"pftsaebwf\"},\"id\":\"hxorpwaltzwu\",\"name\":\"exojfccy\",\"type\":\"h\"}],\"count\":2329073673274706463,\"nextLink\":\"vazjpwexcd\"}")
+            .toObject(RecipientUserCollectionInner.class);
         Assertions.assertEquals("nwplrr", model.value().get(0).userId());
         Assertions.assertEquals(2329073673274706463L, model.count());
         Assertions.assertEquals("vazjpwexcd", model.nextLink());
@@ -25,17 +23,13 @@ public final class RecipientUserCollectionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecipientUserCollectionInner model =
-            new RecipientUserCollectionInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new RecipientUserContractInner().withUserId("nwplrr"),
-                            new RecipientUserContractInner().withUserId("fpyyxmzrmtm"),
-                            new RecipientUserContractInner().withUserId("uujxdii"),
-                            new RecipientUserContractInner().withUserId("pftsaebwf")))
-                .withCount(2329073673274706463L)
-                .withNextLink("vazjpwexcd");
+        RecipientUserCollectionInner model = new RecipientUserCollectionInner()
+            .withValue(Arrays.asList(new RecipientUserContractInner().withUserId("nwplrr"),
+                new RecipientUserContractInner().withUserId("fpyyxmzrmtm"),
+                new RecipientUserContractInner().withUserId("uujxdii"),
+                new RecipientUserContractInner().withUserId("pftsaebwf")))
+            .withCount(2329073673274706463L)
+            .withNextLink("vazjpwexcd");
         model = BinaryData.fromObject(model).toObject(RecipientUserCollectionInner.class);
         Assertions.assertEquals("nwplrr", model.value().get(0).userId());
         Assertions.assertEquals(2329073673274706463L, model.count());

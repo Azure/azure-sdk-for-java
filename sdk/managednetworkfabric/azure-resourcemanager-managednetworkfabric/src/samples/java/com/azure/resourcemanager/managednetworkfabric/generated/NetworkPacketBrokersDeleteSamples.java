@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for NetworkPacketBrokers Delete. */
+/**
+ * Samples for NetworkPacketBrokers Delete.
+ */
 public final class NetworkPacketBrokersDeleteSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkPacketBrokers_Delete_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkPacketBrokers_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkPacketBrokers_Delete_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkPacketBrokersDeleteMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .networkPacketBrokers()
+        manager.networkPacketBrokers()
             .delete("example-rg", "example-networkPacketBroker", com.azure.core.util.Context.NONE);
     }
 }

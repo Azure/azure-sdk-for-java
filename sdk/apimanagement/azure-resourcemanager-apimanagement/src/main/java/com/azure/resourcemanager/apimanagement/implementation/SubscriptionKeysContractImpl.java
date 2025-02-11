@@ -12,8 +12,7 @@ public final class SubscriptionKeysContractImpl implements SubscriptionKeysContr
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    SubscriptionKeysContractImpl(
-        SubscriptionKeysContractInner innerObject,
+    SubscriptionKeysContractImpl(SubscriptionKeysContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

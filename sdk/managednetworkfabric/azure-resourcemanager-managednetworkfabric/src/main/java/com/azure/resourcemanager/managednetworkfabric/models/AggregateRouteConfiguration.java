@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** List of IPv4 and IPv6 aggregate routes. */
+/**
+ * List of IPv4 and IPv6 aggregate routes.
+ */
 @Fluent
-public final class AggregateRouteConfiguration {
+public final class AggregateRouteConfiguration implements JsonSerializable<AggregateRouteConfiguration> {
     /*
      * List of IPv4 Route prefixes.
      */
-    @JsonProperty(value = "ipv4Routes")
     private List<AggregateRoute> ipv4Routes;
 
     /*
      * List of Ipv6Routes prefixes.
      */
-    @JsonProperty(value = "ipv6Routes")
     private List<AggregateRoute> ipv6Routes;
 
-    /** Creates an instance of AggregateRouteConfiguration class. */
+    /**
+     * Creates an instance of AggregateRouteConfiguration class.
+     */
     public AggregateRouteConfiguration() {
     }
 
     /**
      * Get the ipv4Routes property: List of IPv4 Route prefixes.
-     *
+     * 
      * @return the ipv4Routes value.
      */
     public List<AggregateRoute> ipv4Routes() {
@@ -38,7 +44,7 @@ public final class AggregateRouteConfiguration {
 
     /**
      * Set the ipv4Routes property: List of IPv4 Route prefixes.
-     *
+     * 
      * @param ipv4Routes the ipv4Routes value to set.
      * @return the AggregateRouteConfiguration object itself.
      */
@@ -49,7 +55,7 @@ public final class AggregateRouteConfiguration {
 
     /**
      * Get the ipv6Routes property: List of Ipv6Routes prefixes.
-     *
+     * 
      * @return the ipv6Routes value.
      */
     public List<AggregateRoute> ipv6Routes() {
@@ -58,7 +64,7 @@ public final class AggregateRouteConfiguration {
 
     /**
      * Set the ipv6Routes property: List of Ipv6Routes prefixes.
-     *
+     * 
      * @param ipv6Routes the ipv6Routes value to set.
      * @return the AggregateRouteConfiguration object itself.
      */
@@ -69,7 +75,7 @@ public final class AggregateRouteConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,5 +85,46 @@ public final class AggregateRouteConfiguration {
         if (ipv6Routes() != null) {
             ipv6Routes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipv4Routes", this.ipv4Routes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipv6Routes", this.ipv6Routes, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AggregateRouteConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AggregateRouteConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AggregateRouteConfiguration.
+     */
+    public static AggregateRouteConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AggregateRouteConfiguration deserializedAggregateRouteConfiguration = new AggregateRouteConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipv4Routes".equals(fieldName)) {
+                    List<AggregateRoute> ipv4Routes = reader.readArray(reader1 -> AggregateRoute.fromJson(reader1));
+                    deserializedAggregateRouteConfiguration.ipv4Routes = ipv4Routes;
+                } else if ("ipv6Routes".equals(fieldName)) {
+                    List<AggregateRoute> ipv6Routes = reader.readArray(reader1 -> AggregateRoute.fromJson(reader1));
+                    deserializedAggregateRouteConfiguration.ipv6Routes = ipv6Routes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAggregateRouteConfiguration;
+        });
     }
 }

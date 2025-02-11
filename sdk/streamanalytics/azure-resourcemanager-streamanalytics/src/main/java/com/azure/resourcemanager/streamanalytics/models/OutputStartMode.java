@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -44,7 +43,6 @@ public final class OutputStartMode extends ExpandableStringEnum<OutputStartMode>
      * @param name a name to look for.
      * @return the corresponding OutputStartMode.
      */
-    @JsonCreator
     public static OutputStartMode fromString(String name) {
         return fromString(name, OutputStartMode.class);
     }

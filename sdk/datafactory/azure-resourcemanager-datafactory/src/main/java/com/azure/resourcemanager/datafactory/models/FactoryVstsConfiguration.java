@@ -148,11 +148,30 @@ public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
      */
     @Override
     public void validate() {
-        super.validate();
         if (projectName() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property projectName in model FactoryVstsConfiguration"));
+        }
+        if (accountName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountName in model FactoryVstsConfiguration"));
+        }
+        if (repositoryName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property repositoryName in model FactoryVstsConfiguration"));
+        }
+        if (collaborationBranch() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property collaborationBranch in model FactoryVstsConfiguration"));
+        }
+        if (rootFolder() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rootFolder in model FactoryVstsConfiguration"));
         }
     }
 

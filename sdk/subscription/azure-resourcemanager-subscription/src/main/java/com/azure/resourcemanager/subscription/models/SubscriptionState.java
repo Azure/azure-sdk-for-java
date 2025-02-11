@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.subscription.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted. */
+/**
+ * The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
+ */
 public enum SubscriptionState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Warned. */
+    /**
+     * Enum value Warned.
+     */
     WARNED("Warned"),
 
-    /** Enum value PastDue. */
+    /**
+     * Enum value PastDue.
+     */
     PAST_DUE("PastDue"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled"),
 
-    /** Enum value Deleted. */
+    /**
+     * Enum value Deleted.
+     */
     DELETED("Deleted");
 
-    /** The actual serialized value for a SubscriptionState instance. */
+    /**
+     * The actual serialized value for a SubscriptionState instance.
+     */
     private final String value;
 
     SubscriptionState(String value) {
@@ -33,11 +44,10 @@ public enum SubscriptionState {
 
     /**
      * Parses a serialized value to a SubscriptionState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SubscriptionState object, or null if unable to parse.
      */
-    @JsonCreator
     public static SubscriptionState fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +61,9 @@ public enum SubscriptionState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

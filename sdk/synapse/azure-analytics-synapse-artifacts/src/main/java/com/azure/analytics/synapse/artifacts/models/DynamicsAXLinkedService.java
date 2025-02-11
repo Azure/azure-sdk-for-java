@@ -34,12 +34,15 @@ public class DynamicsAXLinkedService extends LinkedService {
     private Object servicePrincipalId;
 
     /*
-     * Specify the application's key. Mark this field as a SecureString to store it securely in Data Factory, or reference a secret stored in Azure Key Vault. Type: string (or Expression with resultType string).
+     * Specify the application's key. Mark this field as a SecureString to store it securely in Data Factory, or
+     * reference a secret stored in Azure Key Vault. Type: string (or Expression with resultType string).
      */
     private SecretBase servicePrincipalKey;
 
     /*
-     * Specify the tenant information (domain name or tenant ID) under which your application resides. Retrieve it by hovering the mouse in the top-right corner of the Azure portal. Type: string (or Expression with resultType string).
+     * Specify the tenant information (domain name or tenant ID) under which your application resides. Retrieve it by
+     * hovering the mouse in the top-right corner of the Azure portal. Type: string (or Expression with resultType
+     * string).
      */
     private Object tenant;
 
@@ -49,7 +52,8 @@ public class DynamicsAXLinkedService extends LinkedService {
     private Object aadResourceId;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

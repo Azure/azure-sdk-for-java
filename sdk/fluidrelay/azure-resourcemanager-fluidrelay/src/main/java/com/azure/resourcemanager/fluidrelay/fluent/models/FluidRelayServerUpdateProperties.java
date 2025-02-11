@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.fluidrelay.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.fluidrelay.models.EncryptionProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties that can be provided when updating FluidRelayServer resource. */
+/**
+ * The properties that can be provided when updating FluidRelayServer resource.
+ */
 @Fluent
-public final class FluidRelayServerUpdateProperties {
+public final class FluidRelayServerUpdateProperties implements JsonSerializable<FluidRelayServerUpdateProperties> {
     /*
      * All encryption configuration for a resource.
      */
-    @JsonProperty(value = "encryption")
     private EncryptionProperties encryption;
 
     /**
+     * Creates an instance of FluidRelayServerUpdateProperties class.
+     */
+    public FluidRelayServerUpdateProperties() {
+    }
+
+    /**
      * Get the encryption property: All encryption configuration for a resource.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -28,7 +39,7 @@ public final class FluidRelayServerUpdateProperties {
 
     /**
      * Set the encryption property: All encryption configuration for a resource.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the FluidRelayServerUpdateProperties object itself.
      */
@@ -39,12 +50,49 @@ public final class FluidRelayServerUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (encryption() != null) {
             encryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluidRelayServerUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluidRelayServerUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FluidRelayServerUpdateProperties.
+     */
+    public static FluidRelayServerUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluidRelayServerUpdateProperties deserializedFluidRelayServerUpdateProperties
+                = new FluidRelayServerUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encryption".equals(fieldName)) {
+                    deserializedFluidRelayServerUpdateProperties.encryption = EncryptionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluidRelayServerUpdateProperties;
+        });
     }
 }

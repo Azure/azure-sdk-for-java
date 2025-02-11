@@ -5,26 +5,37 @@
 package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This is optional input that contains the authentication that should be used to generate the namespace. */
+/**
+ * This is optional input that contains the authentication that should be used to generate the namespace.
+ */
 @Fluent
-public final class CustomLocationPropertiesAuthentication {
+public final class CustomLocationPropertiesAuthentication
+    implements JsonSerializable<CustomLocationPropertiesAuthentication> {
     /*
      * The type of the Custom Locations authentication
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The kubeconfig value.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
+     * Creates an instance of CustomLocationPropertiesAuthentication class.
+     */
+    public CustomLocationPropertiesAuthentication() {
+    }
+
+    /**
      * Get the type property: The type of the Custom Locations authentication.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -33,7 +44,7 @@ public final class CustomLocationPropertiesAuthentication {
 
     /**
      * Set the type property: The type of the Custom Locations authentication.
-     *
+     * 
      * @param type the type value to set.
      * @return the CustomLocationPropertiesAuthentication object itself.
      */
@@ -44,7 +55,7 @@ public final class CustomLocationPropertiesAuthentication {
 
     /**
      * Get the value property: The kubeconfig value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -53,7 +64,7 @@ public final class CustomLocationPropertiesAuthentication {
 
     /**
      * Set the value property: The kubeconfig value.
-     *
+     * 
      * @param value the value value to set.
      * @return the CustomLocationPropertiesAuthentication object itself.
      */
@@ -64,9 +75,49 @@ public final class CustomLocationPropertiesAuthentication {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomLocationPropertiesAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomLocationPropertiesAuthentication if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomLocationPropertiesAuthentication.
+     */
+    public static CustomLocationPropertiesAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomLocationPropertiesAuthentication deserializedCustomLocationPropertiesAuthentication
+                = new CustomLocationPropertiesAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedCustomLocationPropertiesAuthentication.type = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedCustomLocationPropertiesAuthentication.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomLocationPropertiesAuthentication;
+        });
     }
 }

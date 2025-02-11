@@ -24,7 +24,8 @@ public final class AccountsUpdateSamples {
      */
     public static void updatesAccount(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
         Account resource = manager.accounts()
-            .getByResourceGroupWithResponse("test-rg", "contoso", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("test-rg", "contoso", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagKey", "fakeTokenPlaceholder")).apply();
     }
 

@@ -81,6 +81,7 @@ public class ListPathsOptions {
         this.recursive = recursive;
         return this;
     }
+
     /**
      * Valid only when Hierarchical Namespace is enabled for the account.
      * If "true", the user identity values returned by the x-ms-owner, x-ms-group, and x-ms-acl response headers will

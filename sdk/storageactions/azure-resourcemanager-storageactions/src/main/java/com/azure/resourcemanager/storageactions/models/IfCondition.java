@@ -6,24 +6,27 @@ package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The if block of storage task operation.
  */
 @Fluent
-public final class IfCondition {
+public final class IfCondition implements JsonSerializable<IfCondition> {
     /*
-     * The condition predicate which is composed of object properties, eg: blob and container properties.
+     * Condition predicate to evaluate each object. See https://aka.ms/storagetaskconditions for valid properties and
+     * operators.
      */
-    @JsonProperty(value = "condition", required = true)
     private String condition;
 
     /*
      * List of operations to execute when the condition predicate satisfies.
      */
-    @JsonProperty(value = "operations", required = true)
     private List<StorageTaskOperation> operations;
 
     /**
@@ -33,8 +36,8 @@ public final class IfCondition {
     }
 
     /**
-     * Get the condition property: The condition predicate which is composed of object properties, eg: blob and
-     * container properties.
+     * Get the condition property: Condition predicate to evaluate each object. See https://aka.ms/storagetaskconditions
+     * for valid properties and operators.
      * 
      * @return the condition value.
      */
@@ -43,8 +46,8 @@ public final class IfCondition {
     }
 
     /**
-     * Set the condition property: The condition predicate which is composed of object properties, eg: blob and
-     * container properties.
+     * Set the condition property: Condition predicate to evaluate each object. See https://aka.ms/storagetaskconditions
+     * for valid properties and operators.
      * 
      * @param condition the condition value to set.
      * @return the IfCondition object itself.
@@ -81,16 +84,58 @@ public final class IfCondition {
      */
     public void validate() {
         if (condition() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property condition in model IfCondition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property condition in model IfCondition"));
         }
         if (operations() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property operations in model IfCondition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property operations in model IfCondition"));
         } else {
             operations().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IfCondition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("condition", this.condition);
+        jsonWriter.writeArrayField("operations", this.operations, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IfCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IfCondition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IfCondition.
+     */
+    public static IfCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IfCondition deserializedIfCondition = new IfCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("condition".equals(fieldName)) {
+                    deserializedIfCondition.condition = reader.getString();
+                } else if ("operations".equals(fieldName)) {
+                    List<StorageTaskOperation> operations
+                        = reader.readArray(reader1 -> StorageTaskOperation.fromJson(reader1));
+                    deserializedIfCondition.operations = operations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIfCondition;
+        });
+    }
 }

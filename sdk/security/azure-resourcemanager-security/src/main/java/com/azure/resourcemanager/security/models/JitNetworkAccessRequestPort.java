@@ -5,56 +5,56 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The JitNetworkAccessRequestPort model.
  */
 @Fluent
-public final class JitNetworkAccessRequestPort {
+public final class JitNetworkAccessRequestPort implements JsonSerializable<JitNetworkAccessRequestPort> {
     /*
      * The number property.
      */
-    @JsonProperty(value = "number", required = true)
     private int number;
 
     /*
-     * Mutually exclusive with the "allowedSourceAddressPrefixes" parameter. Should be an IP address or CIDR, for example "192.168.0.3" or "192.168.0.0/16".
+     * Mutually exclusive with the "allowedSourceAddressPrefixes" parameter. Should be an IP address or CIDR, for
+     * example "192.168.0.3" or "192.168.0.0/16".
      */
-    @JsonProperty(value = "allowedSourceAddressPrefix")
     private String allowedSourceAddressPrefix;
 
     /*
      * Mutually exclusive with the "allowedSourceAddressPrefix" parameter.
      */
-    @JsonProperty(value = "allowedSourceAddressPrefixes")
     private List<String> allowedSourceAddressPrefixes;
 
     /*
      * The date & time at which the request ends in UTC
      */
-    @JsonProperty(value = "endTimeUtc", required = true)
     private OffsetDateTime endTimeUtc;
 
     /*
      * The status of the port
      */
-    @JsonProperty(value = "status", required = true)
     private Status status;
 
     /*
      * A description of why the `status` has its value
      */
-    @JsonProperty(value = "statusReason", required = true)
     private StatusReason statusReason;
 
     /*
      * The port which is mapped to this port's `number` in the Azure Firewall, if applicable
      */
-    @JsonProperty(value = "mappedPort")
     private Integer mappedPort;
 
     /**
@@ -233,4 +233,63 @@ public final class JitNetworkAccessRequestPort {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessRequestPort.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("number", this.number);
+        jsonWriter.writeStringField("endTimeUtc",
+            this.endTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTimeUtc));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("statusReason", this.statusReason == null ? null : this.statusReason.toString());
+        jsonWriter.writeStringField("allowedSourceAddressPrefix", this.allowedSourceAddressPrefix);
+        jsonWriter.writeArrayField("allowedSourceAddressPrefixes", this.allowedSourceAddressPrefixes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("mappedPort", this.mappedPort);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JitNetworkAccessRequestPort from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JitNetworkAccessRequestPort if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JitNetworkAccessRequestPort.
+     */
+    public static JitNetworkAccessRequestPort fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JitNetworkAccessRequestPort deserializedJitNetworkAccessRequestPort = new JitNetworkAccessRequestPort();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("number".equals(fieldName)) {
+                    deserializedJitNetworkAccessRequestPort.number = reader.getInt();
+                } else if ("endTimeUtc".equals(fieldName)) {
+                    deserializedJitNetworkAccessRequestPort.endTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedJitNetworkAccessRequestPort.status = Status.fromString(reader.getString());
+                } else if ("statusReason".equals(fieldName)) {
+                    deserializedJitNetworkAccessRequestPort.statusReason = StatusReason.fromString(reader.getString());
+                } else if ("allowedSourceAddressPrefix".equals(fieldName)) {
+                    deserializedJitNetworkAccessRequestPort.allowedSourceAddressPrefix = reader.getString();
+                } else if ("allowedSourceAddressPrefixes".equals(fieldName)) {
+                    List<String> allowedSourceAddressPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedJitNetworkAccessRequestPort.allowedSourceAddressPrefixes = allowedSourceAddressPrefixes;
+                } else if ("mappedPort".equals(fieldName)) {
+                    deserializedJitNetworkAccessRequestPort.mappedPort = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJitNetworkAccessRequestPort;
+        });
+    }
 }

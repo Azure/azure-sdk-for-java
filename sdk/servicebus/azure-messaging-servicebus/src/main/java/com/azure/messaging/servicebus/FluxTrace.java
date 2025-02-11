@@ -37,7 +37,9 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
         private final CoreSubscriber<? super ServiceBusMessageContext> downstream;
         private final ServiceBusReceiverInstrumentation instrumentation;
         private final ServiceBusTracer tracer;
-        TracingSubscriber(CoreSubscriber<? super ServiceBusMessageContext> downstream, ServiceBusReceiverInstrumentation instrumentation) {
+
+        TracingSubscriber(CoreSubscriber<? super ServiceBusMessageContext> downstream,
+            ServiceBusReceiverInstrumentation instrumentation) {
             this.downstream = downstream;
             this.instrumentation = instrumentation;
             this.tracer = instrumentation.getTracer();
@@ -55,15 +57,13 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
 
         @Override
         protected void hookOnNext(ServiceBusMessageContext message) {
-            if (message == null || message.getMessage() == null)  {
+            if (message == null || message.getMessage() == null) {
                 downstream.onNext(message);
                 return;
             }
 
             Context span = instrumentation.startProcessInstrumentation("ServiceBus.process",
-                message.getMessage().getApplicationProperties(),
-                message.getMessage().getEnqueuedTime(),
-                Context.NONE);
+                message.getMessage().getApplicationProperties(), message.getMessage().getEnqueuedTime(), Context.NONE);
             message.getMessage().setContext(span);
             AutoCloseable scope = tracer.makeSpanCurrent(span);
             try {

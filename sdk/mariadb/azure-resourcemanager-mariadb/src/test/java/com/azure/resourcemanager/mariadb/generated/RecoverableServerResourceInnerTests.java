@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mariadb.fluent.models.RecoverableServerResource
 public final class RecoverableServerResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoverableServerResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"lastAvailableBackupDateTime\":\"exfwhy\",\"serviceLevelObjective\":\"i\",\"edition\":\"yvdcsitynnaa\",\"vCore\":1553066482,\"hardwareGeneration\":\"tehfiqscjeypvh\",\"version\":\"rkgqhcjrefo\"},\"id\":\"gm\",\"name\":\"qsl\",\"type\":\"yyvxyqjpkcattpn\"}")
-                .toObject(RecoverableServerResourceInner.class);
+        RecoverableServerResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"lastAvailableBackupDateTime\":\"dyggdtjixhbku\",\"serviceLevelObjective\":\"qweykhmenev\",\"edition\":\"exfwhy\",\"vCore\":148650220,\"hardwareGeneration\":\"vyvdcs\",\"version\":\"ynnaam\"},\"id\":\"ectehf\",\"name\":\"qsc\",\"type\":\"eypvhezrkg\"}")
+            .toObject(RecoverableServerResourceInner.class);
     }
 
     @org.junit.jupiter.api.Test

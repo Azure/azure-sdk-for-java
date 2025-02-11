@@ -18,14 +18,8 @@ import reactor.core.publisher.Mono;
 /**
  * Implementation for Subscriptions.
  */
-class ServiceBusSubscriptionsImpl
-    extends ServiceBusChildResourcesImpl<
-        ServiceBusSubscription,
-        ServiceBusSubscriptionImpl,
-        SBSubscriptionInner,
-        SubscriptionsClient,
-        ServiceBusManager,
-        Topic>
+class ServiceBusSubscriptionsImpl extends
+    ServiceBusChildResourcesImpl<ServiceBusSubscription, ServiceBusSubscriptionImpl, SBSubscriptionInner, SubscriptionsClient, ServiceBusManager, Topic>
     implements ServiceBusSubscriptions {
     private final String resourceGroupName;
     private final String namespaceName;
@@ -34,11 +28,8 @@ class ServiceBusSubscriptionsImpl
 
     private final ClientLogger logger = new ClientLogger(ServiceBusSubscriptionsImpl.class);
 
-    protected ServiceBusSubscriptionsImpl(String resourceGroupName,
-                                String namespaceName,
-                                String topicName,
-                                Region region,
-                                ServiceBusManager manager) {
+    protected ServiceBusSubscriptionsImpl(String resourceGroupName, String namespaceName, String topicName,
+        Region region, ServiceBusManager manager) {
         super(manager.serviceClient().getSubscriptions(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
@@ -53,10 +44,7 @@ class ServiceBusSubscriptionsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.innerModel().deleteAsync(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName,
-                name);
+        return this.innerModel().deleteAsync(this.resourceGroupName, this.namespaceName, this.topicName, name);
     }
 
     @Override
@@ -76,22 +64,14 @@ class ServiceBusSubscriptionsImpl
 
     @Override
     protected ServiceBusSubscriptionImpl wrapModel(String name) {
-        return new ServiceBusSubscriptionImpl(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName,
-                name,
-                new SBSubscriptionInner(),
-                this.manager());
+        return new ServiceBusSubscriptionImpl(this.resourceGroupName, this.namespaceName, this.topicName, name,
+            new SBSubscriptionInner(), this.manager());
     }
 
     @Override
     protected ServiceBusSubscriptionImpl wrapModel(SBSubscriptionInner inner) {
-        return new ServiceBusSubscriptionImpl(this.resourceGroupName,
-                this.namespaceName,
-                this.topicName,
-                inner.name(),
-                inner,
-                this.manager());
+        return new ServiceBusSubscriptionImpl(this.resourceGroupName, this.namespaceName, this.topicName, inner.name(),
+            inner, this.manager());
     }
 
     @Override

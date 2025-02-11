@@ -22,7 +22,8 @@ public final class ControlPlaneProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ControlPlaneProfile model = new ControlPlaneProfile().withCount(1819090851).withVmSize("htbmuf")
+        ControlPlaneProfile model = new ControlPlaneProfile().withCount(1819090851)
+            .withVmSize("htbmuf")
             .withControlPlaneEndpoint(new ControlPlaneProfileControlPlaneEndpoint().withHostIp("noi"));
         model = BinaryData.fromObject(model).toObject(ControlPlaneProfile.class);
         Assertions.assertEquals(1819090851, model.count());

@@ -6,31 +6,38 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters supplied to the Save Tenant Configuration operation. */
+/**
+ * Parameters supplied to the Save Tenant Configuration operation.
+ */
 @Fluent
-public final class SaveConfigurationParameterProperties {
+public final class SaveConfigurationParameterProperties
+    implements JsonSerializable<SaveConfigurationParameterProperties> {
     /*
      * The name of the Git branch in which to commit the current configuration snapshot.
      */
-    @JsonProperty(value = "branch", required = true)
     private String branch;
 
     /*
      * The value if true, the current configuration database is committed to the Git repository, even if the Git
      * repository has newer changes that would be overwritten.
      */
-    @JsonProperty(value = "force")
     private Boolean force;
 
-    /** Creates an instance of SaveConfigurationParameterProperties class. */
+    /**
+     * Creates an instance of SaveConfigurationParameterProperties class.
+     */
     public SaveConfigurationParameterProperties() {
     }
 
     /**
      * Get the branch property: The name of the Git branch in which to commit the current configuration snapshot.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -39,7 +46,7 @@ public final class SaveConfigurationParameterProperties {
 
     /**
      * Set the branch property: The name of the Git branch in which to commit the current configuration snapshot.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SaveConfigurationParameterProperties object itself.
      */
@@ -51,7 +58,7 @@ public final class SaveConfigurationParameterProperties {
     /**
      * Get the force property: The value if true, the current configuration database is committed to the Git repository,
      * even if the Git repository has newer changes that would be overwritten.
-     *
+     * 
      * @return the force value.
      */
     public Boolean force() {
@@ -61,7 +68,7 @@ public final class SaveConfigurationParameterProperties {
     /**
      * Set the force property: The value if true, the current configuration database is committed to the Git repository,
      * even if the Git repository has newer changes that would be overwritten.
-     *
+     * 
      * @param force the force value to set.
      * @return the SaveConfigurationParameterProperties object itself.
      */
@@ -72,17 +79,57 @@ public final class SaveConfigurationParameterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (branch() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property branch in model SaveConfigurationParameterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property branch in model SaveConfigurationParameterProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SaveConfigurationParameterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeBooleanField("force", this.force);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SaveConfigurationParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SaveConfigurationParameterProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SaveConfigurationParameterProperties.
+     */
+    public static SaveConfigurationParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SaveConfigurationParameterProperties deserializedSaveConfigurationParameterProperties
+                = new SaveConfigurationParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("branch".equals(fieldName)) {
+                    deserializedSaveConfigurationParameterProperties.branch = reader.getString();
+                } else if ("force".equals(fieldName)) {
+                    deserializedSaveConfigurationParameterProperties.force = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSaveConfigurationParameterProperties;
+        });
+    }
 }

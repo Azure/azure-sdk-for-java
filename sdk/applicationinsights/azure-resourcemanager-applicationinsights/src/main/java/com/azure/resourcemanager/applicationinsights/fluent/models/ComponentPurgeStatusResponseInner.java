@@ -6,25 +6,32 @@ package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.applicationinsights.models.PurgeState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Response containing status for a specific purge operation. */
+/**
+ * Response containing status for a specific purge operation.
+ */
 @Fluent
-public final class ComponentPurgeStatusResponseInner {
+public final class ComponentPurgeStatusResponseInner implements JsonSerializable<ComponentPurgeStatusResponseInner> {
     /*
      * Status of the operation represented by the requested Id.
      */
-    @JsonProperty(value = "status", required = true)
     private PurgeState status;
 
-    /** Creates an instance of ComponentPurgeStatusResponseInner class. */
+    /**
+     * Creates an instance of ComponentPurgeStatusResponseInner class.
+     */
     public ComponentPurgeStatusResponseInner() {
     }
 
     /**
      * Get the status property: Status of the operation represented by the requested Id.
-     *
+     * 
      * @return the status value.
      */
     public PurgeState status() {
@@ -33,7 +40,7 @@ public final class ComponentPurgeStatusResponseInner {
 
     /**
      * Set the status property: Status of the operation represented by the requested Id.
-     *
+     * 
      * @param status the status value to set.
      * @return the ComponentPurgeStatusResponseInner object itself.
      */
@@ -44,17 +51,54 @@ public final class ComponentPurgeStatusResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model ComponentPurgeStatusResponseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model ComponentPurgeStatusResponseInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ComponentPurgeStatusResponseInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComponentPurgeStatusResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComponentPurgeStatusResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ComponentPurgeStatusResponseInner.
+     */
+    public static ComponentPurgeStatusResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComponentPurgeStatusResponseInner deserializedComponentPurgeStatusResponseInner
+                = new ComponentPurgeStatusResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedComponentPurgeStatusResponseInner.status = PurgeState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComponentPurgeStatusResponseInner;
+        });
+    }
 }

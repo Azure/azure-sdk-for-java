@@ -13,23 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateOrUpdateTrackedResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateOrUpdateTrackedResourceProperties model =
-            BinaryData
-                .fromString("{\"location\":\"b\",\"tags\":{\"wgcu\":\"mutduqktaps\"}}")
-                .toObject(CreateOrUpdateTrackedResourceProperties.class);
-        Assertions.assertEquals("b", model.location());
-        Assertions.assertEquals("mutduqktaps", model.tags().get("wgcu"));
+        CreateOrUpdateTrackedResourceProperties model = BinaryData.fromString(
+            "{\"location\":\"qqwx\",\"tags\":{\"mpmngnzscxaqwoo\":\"eallnwsubisnj\",\"njeaseipheofloke\":\"hcbonqvpkvlr\",\"enjbdlwtgrhp\":\"y\"}}")
+            .toObject(CreateOrUpdateTrackedResourceProperties.class);
+        Assertions.assertEquals("qqwx", model.location());
+        Assertions.assertEquals("eallnwsubisnj", model.tags().get("mpmngnzscxaqwoo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateOrUpdateTrackedResourceProperties model =
-            new CreateOrUpdateTrackedResourceProperties().withLocation("b").withTags(mapOf("wgcu", "mutduqktaps"));
+        CreateOrUpdateTrackedResourceProperties model
+            = new CreateOrUpdateTrackedResourceProperties().withLocation("qqwx")
+                .withTags(
+                    mapOf("mpmngnzscxaqwoo", "eallnwsubisnj", "njeaseipheofloke", "hcbonqvpkvlr", "enjbdlwtgrhp", "y"));
         model = BinaryData.fromObject(model).toObject(CreateOrUpdateTrackedResourceProperties.class);
-        Assertions.assertEquals("b", model.location());
-        Assertions.assertEquals("mutduqktaps", model.tags().get("wgcu"));
+        Assertions.assertEquals("qqwx", model.location());
+        Assertions.assertEquals("eallnwsubisnj", model.tags().get("mpmngnzscxaqwoo"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

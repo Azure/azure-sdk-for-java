@@ -62,7 +62,6 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
         return this.message;
     }
 
-
     /**
      * {@inheritDoc}
      */

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse. */
+/**
+ * An immutable client-side representation of IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse.
+ */
 public interface IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse {
     /**
      * Gets the value property: The list of outbound network dependency endpoints.
-     *
+     * 
      * @return the value value.
      */
     List<IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint> value();
@@ -20,7 +22,7 @@ public interface IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse 
      * Gets the inner
      * com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner innerModel();

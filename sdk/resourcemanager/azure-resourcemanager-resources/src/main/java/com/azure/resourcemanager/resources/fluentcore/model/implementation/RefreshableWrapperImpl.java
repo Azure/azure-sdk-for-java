@@ -12,9 +12,7 @@ import reactor.core.publisher.Mono;
  * @param <InnerT> wrapped type
  * @param <Impl> impl type
  */
-public abstract class RefreshableWrapperImpl<InnerT, Impl>
-        extends WrapperImpl<InnerT>
-        implements Refreshable<Impl> {
+public abstract class RefreshableWrapperImpl<InnerT, Impl> extends WrapperImpl<InnerT> implements Refreshable<Impl> {
 
     protected RefreshableWrapperImpl(InnerT innerObject) {
         super(innerObject);
@@ -30,11 +28,10 @@ public abstract class RefreshableWrapperImpl<InnerT, Impl>
     public Mono<Impl> refreshAsync() {
         final RefreshableWrapperImpl<InnerT, Impl> self = this;
 
-        return this.getInnerAsync()
-                .map(innerT -> {
-                    self.setInner(innerT);
-                    return (Impl) self;
-                });
+        return this.getInnerAsync().map(innerT -> {
+            self.setInner(innerT);
+            return (Impl) self;
+        });
     }
 
     protected abstract Mono<InnerT> getInnerAsync();

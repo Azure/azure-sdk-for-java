@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DataSyncStatus extends ExpandableStringEnum<DataSyncStatus> {
      * @param name a name to look for.
      * @return the corresponding DataSyncStatus.
      */
-    @JsonCreator
     public static DataSyncStatus fromString(String name) {
         return fromString(name, DataSyncStatus.class);
     }

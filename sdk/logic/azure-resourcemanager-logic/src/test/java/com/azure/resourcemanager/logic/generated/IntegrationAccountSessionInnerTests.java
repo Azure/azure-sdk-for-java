@@ -13,34 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountSessionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountSessionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"createdTime\":\"2021-10-22T16:19:35Z\",\"changedTime\":\"2020-12-25T00:01:02Z\",\"content\":\"datajtxvzflbqvgaq\"},\"location\":\"lgafcqusrdve\",\"tags\":{\"uzhyrmewipmvekdx\":\"sdtutnwlduyc\",\"zhhzjhfjmhvvmu\":\"kuqgsjjxundxgket\",\"yihsasbhudypohyu\":\"gpmuneqsxvmhfbuz\"},\"id\":\"ms\",\"name\":\"ynsqyrpfoobr\",\"type\":\"ttymsjny\"}")
-                .toObject(IntegrationAccountSessionInner.class);
-        Assertions.assertEquals("lgafcqusrdve", model.location());
-        Assertions.assertEquals("sdtutnwlduyc", model.tags().get("uzhyrmewipmvekdx"));
+        IntegrationAccountSessionInner model = BinaryData.fromString(
+            "{\"properties\":{\"createdTime\":\"2021-01-30T00:23:26Z\",\"changedTime\":\"2021-08-04T23:09:48Z\",\"content\":\"datalrjvmtyg\"},\"location\":\"bmzyospsps\",\"tags\":{\"ogtieyujtvczkcny\":\"fkyjpmspbpssdfpp\",\"vxlx\":\"rxmunjdxvgln\"},\"id\":\"aglqivbgkcvkh\",\"name\":\"zvuqdflvon\",\"type\":\"yp\"}")
+            .toObject(IntegrationAccountSessionInner.class);
+        Assertions.assertEquals("bmzyospsps", model.location());
+        Assertions.assertEquals("fkyjpmspbpssdfpp", model.tags().get("ogtieyujtvczkcny"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountSessionInner model =
-            new IntegrationAccountSessionInner()
-                .withLocation("lgafcqusrdve")
-                .withTags(
-                    mapOf(
-                        "uzhyrmewipmvekdx",
-                        "sdtutnwlduyc",
-                        "zhhzjhfjmhvvmu",
-                        "kuqgsjjxundxgket",
-                        "yihsasbhudypohyu",
-                        "gpmuneqsxvmhfbuz"))
-                .withContent("datajtxvzflbqvgaq");
+        IntegrationAccountSessionInner model = new IntegrationAccountSessionInner().withLocation("bmzyospsps")
+            .withTags(mapOf("ogtieyujtvczkcny", "fkyjpmspbpssdfpp", "vxlx", "rxmunjdxvgln"))
+            .withContent("datalrjvmtyg");
         model = BinaryData.fromObject(model).toObject(IntegrationAccountSessionInner.class);
-        Assertions.assertEquals("lgafcqusrdve", model.location());
-        Assertions.assertEquals("sdtutnwlduyc", model.tags().get("uzhyrmewipmvekdx"));
+        Assertions.assertEquals("bmzyospsps", model.location());
+        Assertions.assertEquals("fkyjpmspbpssdfpp", model.tags().get("ogtieyujtvczkcny"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

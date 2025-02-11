@@ -6,18 +6,20 @@ package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentWebTestLocationInner;
 
-/** An immutable client-side representation of ApplicationInsightsComponentWebTestLocation. */
+/**
+ * An immutable client-side representation of ApplicationInsightsComponentWebTestLocation.
+ */
 public interface ApplicationInsightsComponentWebTestLocation {
     /**
      * Gets the displayName property: The display name of the web test location.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the tag property: Internally defined geographic location tag.
-     *
+     * 
      * @return the tag value.
      */
     String tag();
@@ -26,7 +28,7 @@ public interface ApplicationInsightsComponentWebTestLocation {
      * Gets the inner
      * com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentWebTestLocationInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ApplicationInsightsComponentWebTestLocationInner innerModel();

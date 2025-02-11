@@ -26,6 +26,11 @@ public final class GalleryImageFeature implements JsonSerializable<GalleryImageF
      */
     private String value;
 
+    /*
+     * The minimum gallery image version which supports this feature.
+     */
+    private String startsAtVersion;
+
     /**
      * Creates an instance of GalleryImageFeature class.
      */
@@ -73,6 +78,26 @@ public final class GalleryImageFeature implements JsonSerializable<GalleryImageF
     }
 
     /**
+     * Get the startsAtVersion property: The minimum gallery image version which supports this feature.
+     * 
+     * @return the startsAtVersion value.
+     */
+    public String startsAtVersion() {
+        return this.startsAtVersion;
+    }
+
+    /**
+     * Set the startsAtVersion property: The minimum gallery image version which supports this feature.
+     * 
+     * @param startsAtVersion the startsAtVersion value to set.
+     * @return the GalleryImageFeature object itself.
+     */
+    public GalleryImageFeature withStartsAtVersion(String startsAtVersion) {
+        this.startsAtVersion = startsAtVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -88,6 +113,7 @@ public final class GalleryImageFeature implements JsonSerializable<GalleryImageF
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("startsAtVersion", this.startsAtVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -110,6 +136,8 @@ public final class GalleryImageFeature implements JsonSerializable<GalleryImageF
                     deserializedGalleryImageFeature.name = reader.getString();
                 } else if ("value".equals(fieldName)) {
                     deserializedGalleryImageFeature.value = reader.getString();
+                } else if ("startsAtVersion".equals(fieldName)) {
+                    deserializedGalleryImageFeature.startsAtVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

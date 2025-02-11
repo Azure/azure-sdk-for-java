@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateVersion model = BinaryData.fromString("{\"version\":\"olbuauktwieope\"}").toObject(UpdateVersion.class);
-        Assertions.assertEquals("olbuauktwieope", model.version());
+        UpdateVersion model = BinaryData.fromString("{\"version\":\"xmcvprstvkitbfjt\"}").toObject(UpdateVersion.class);
+        Assertions.assertEquals("xmcvprstvkitbfjt", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateVersion model = new UpdateVersion().withVersion("olbuauktwieope");
+        UpdateVersion model = new UpdateVersion().withVersion("xmcvprstvkitbfjt");
         model = BinaryData.fromObject(model).toObject(UpdateVersion.class);
-        Assertions.assertEquals("olbuauktwieope", model.version());
+        Assertions.assertEquals("xmcvprstvkitbfjt", model.version());
     }
 }

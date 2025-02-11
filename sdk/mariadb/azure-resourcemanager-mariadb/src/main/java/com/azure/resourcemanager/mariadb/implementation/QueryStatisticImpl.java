@@ -15,8 +15,8 @@ public final class QueryStatisticImpl implements QueryStatistic {
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    QueryStatisticImpl(
-        QueryStatisticInner innerObject, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    QueryStatisticImpl(QueryStatisticInner innerObject,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

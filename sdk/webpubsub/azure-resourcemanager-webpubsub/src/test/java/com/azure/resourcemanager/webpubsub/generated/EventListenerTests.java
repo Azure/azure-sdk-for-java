@@ -12,17 +12,16 @@ import com.azure.resourcemanager.webpubsub.models.EventListenerFilter;
 public final class EventListenerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventListener model =
-            BinaryData
-                .fromString(
-                    "{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}")
-                .toObject(EventListener.class);
+        EventListener model = BinaryData
+            .fromString(
+                "{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}")
+            .toObject(EventListener.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventListener model =
-            new EventListener().withFilter(new EventListenerFilter()).withEndpoint(new EventListenerEndpoint());
+        EventListener model
+            = new EventListener().withFilter(new EventListenerFilter()).withEndpoint(new EventListenerEndpoint());
         model = BinaryData.fromObject(model).toObject(EventListener.class);
     }
 }

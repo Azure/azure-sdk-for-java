@@ -27,7 +27,6 @@ public abstract class BatchPerfTest<TOptions extends PerfStressOptions> extends 
         super(options);
     }
 
-
     /**
      * Run batch operation API perf test.
      * @return the number of operations successfully completed.

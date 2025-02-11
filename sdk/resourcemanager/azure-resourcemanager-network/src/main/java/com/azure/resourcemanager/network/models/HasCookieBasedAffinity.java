@@ -7,7 +7,11 @@ import com.azure.core.annotation.Fluent;
 /** An interface representing a model's ability to support cookie based affinity. */
 @Fluent
 public interface HasCookieBasedAffinity {
-    /** @return the backend port number the network traffic is sent to */
+    /**
+     * Gets the backend port number the network traffic is sent to.
+     *
+     * @return the backend port number the network traffic is sent to
+     */
     boolean cookieBasedAffinity();
 
     /** Grouping of definition stages involving enabling cookie based affinity. */

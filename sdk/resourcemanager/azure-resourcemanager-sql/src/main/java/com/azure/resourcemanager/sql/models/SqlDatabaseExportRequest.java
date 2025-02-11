@@ -11,15 +11,13 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 
 /** An immutable client-side representation of an Azure SQL Database export operation request. */
 @Fluent
-public interface SqlDatabaseExportRequest
-    extends HasInnerModel<ExportDatabaseDefinition>, Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
+public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDefinition>,
+    Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
 
     /** The entirety of database export operation definition. */
-    interface SqlDatabaseExportRequestDefinition
-        extends SqlDatabaseExportRequest.DefinitionStages.ExportTo,
-            SqlDatabaseExportRequest.DefinitionStages.WithStorageTypeAndKey,
-            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword,
-            DefinitionStages.WithExecute {
+    interface SqlDatabaseExportRequestDefinition extends SqlDatabaseExportRequest.DefinitionStages.ExportTo,
+        SqlDatabaseExportRequest.DefinitionStages.WithStorageTypeAndKey,
+        SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword, DefinitionStages.WithExecute {
     }
 
     /** Grouping of database export definition stages. */
@@ -27,64 +25,78 @@ public interface SqlDatabaseExportRequest
         /** Sets the storage URI to use. */
         interface ExportTo {
             /**
+             * Sets the storage URI to use.
+             *
              * @param storageUri the storage URI to use
              * @return next definition stage
              */
             SqlDatabaseExportRequest.DefinitionStages.WithStorageTypeAndKey exportTo(String storageUri);
 
             /**
+             * Export database file to the container of storage.
+             *
              * @param storageAccount an existing storage account to be used
              * @param containerName the container name within the storage account to use
              * @param fileName the exported database file name
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword exportTo(
-                StorageAccount storageAccount, String containerName, String fileName);
+            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+                exportTo(StorageAccount storageAccount, String containerName, String fileName);
 
             /**
+             * Export database file to the container of storage.
+             *
              * @param storageAccountCreatable a storage account to be created as part of this execution flow
              * @param containerName the container name within the storage account to use
              * @param fileName the exported database file name
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword exportTo(
-                Creatable<StorageAccount> storageAccountCreatable, String containerName, String fileName);
+            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+                exportTo(Creatable<StorageAccount> storageAccountCreatable, String containerName, String fileName);
         }
 
         /** Sets the storage key type and value to use. */
         interface WithStorageTypeAndKey {
             /**
+             * Specifies storage access key.
+             *
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword withStorageAccessKey(
-                String storageAccessKey);
+            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+                withStorageAccessKey(String storageAccessKey);
 
             /**
+             * Specifies share access key.
+             *
              * @param sharedAccessKey the shared access key to use; it must be preceded with a "?."
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword withSharedAccessKey(
-                String sharedAccessKey);
+            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+                withSharedAccessKey(String sharedAccessKey);
         }
 
         /** Sets the authentication type and SQL or Active Directory administrator login and password. */
         interface WithAuthenticationTypeAndLoginPassword {
             /**
+             * Sets the SQL login administrator and login password.
+             *
              * @param administratorLogin the SQL administrator login
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithExecute withSqlAdministratorLoginAndPassword(
-                String administratorLogin, String administratorPassword);
+            SqlDatabaseExportRequest.DefinitionStages.WithExecute
+                withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
+             * Sets the login Active Directory and login password.
+             *
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithExecute withActiveDirectoryLoginAndPassword(
-                String administratorLogin, String administratorPassword);
+            SqlDatabaseExportRequest.DefinitionStages.WithExecute
+                withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
         }
 
         /**

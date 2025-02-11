@@ -76,6 +76,15 @@ public final class JavaVersion extends ExpandableStringEnum<JavaVersion> {
     public static final JavaVersion JAVA_ZULU_11_0_2 = fromString("11.0.2_ZULU");
 
     /**
+     * Creates a new instance of JavaVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JavaVersion() {
+    }
+
+    /**
      * Finds or creates a Java version value based on the provided name.
      *
      * @param name a name
@@ -85,7 +94,10 @@ public final class JavaVersion extends ExpandableStringEnum<JavaVersion> {
         return fromString(name, JavaVersion.class);
     }
 
-    /** @return known Java versions */
+    /**
+     * Gets known Java versions.
+     *
+     * @return known Java versions */
     public static Collection<JavaVersion> values() {
         return values(JavaVersion.class);
     }

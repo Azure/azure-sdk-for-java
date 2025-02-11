@@ -34,14 +34,18 @@
 ### DataControllers_Delete
 
 ```java
-/** Samples for DataControllers Delete. */
+/**
+ * Samples for DataControllers Delete.
+ */
 public final class DataControllersDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/DeleteDataController.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * DeleteDataController.json
      */
     /**
      * Sample code: Delete a dataController.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void deleteADataController(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
@@ -53,19 +57,22 @@ public final class DataControllersDeleteSamples {
 ### DataControllers_GetByResourceGroup
 
 ```java
-/** Samples for DataControllers GetByResourceGroup. */
+/**
+ * Samples for DataControllers GetByResourceGroup.
+ */
 public final class DataControllersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/GetDataController.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/GetDataController.
+     * json
      */
     /**
      * Sample code: Get a data controller.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void getADataController(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager
-            .dataControllers()
+        manager.dataControllers()
             .getByResourceGroupWithResponse("testrg", "testdataController", com.azure.core.util.Context.NONE);
     }
 }
@@ -74,18 +81,22 @@ public final class DataControllersGetByResourceGroupSamples {
 ### DataControllers_List
 
 ```java
-/** Samples for DataControllers List. */
+/**
+ * Samples for DataControllers List.
+ */
 public final class DataControllersListSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/ListSubscriptionDataController.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * ListSubscriptionDataController.json
      */
     /**
      * Sample code: Gets all dataControllers in a subscription.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void getsAllDataControllersInASubscription(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+    public static void
+        getsAllDataControllersInASubscription(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
         manager.dataControllers().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -94,18 +105,22 @@ public final class DataControllersListSamples {
 ### DataControllers_ListByResourceGroup
 
 ```java
-/** Samples for DataControllers ListByResourceGroup. */
+/**
+ * Samples for DataControllers ListByResourceGroup.
+ */
 public final class DataControllersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/ListByResourceGroupDataController.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * ListByResourceGroupDataController.json
      */
     /**
      * Sample code: Gets all dataControllers in a resource group.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void getsAllDataControllersInAResourceGroup(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+    public static void
+        getsAllDataControllersInAResourceGroup(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
         manager.dataControllers().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -118,25 +133,28 @@ import com.azure.resourcemanager.azurearcdata.models.DataControllerResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DataControllers PatchDataController. */
+/**
+ * Samples for DataControllers PatchDataController.
+ */
 public final class DataControllersPatchDataControllerSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/UpdateDataController.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * UpdateDataController.json
      */
     /**
      * Sample code: Updates a dataController tags.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void updatesADataControllerTags(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        DataControllerResource resource =
-            manager
-                .dataControllers()
-                .getByResourceGroupWithResponse("testrg", "testdataController1", com.azure.core.util.Context.NONE)
-                .getValue();
+        DataControllerResource resource = manager.dataControllers()
+            .getByResourceGroupWithResponse("testrg", "testdataController1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -167,60 +185,56 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** Samples for DataControllers PutDataController. */
+/**
+ * Samples for DataControllers PutDataController.
+ */
 public final class DataControllersPutDataControllerSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/CreateOrUpdateDataController.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * CreateOrUpdateDataController.json
      */
     /**
      * Sample code: Create or update a Data Controller.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void createOrUpdateADataController(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager
-            .dataControllers()
+    public static void
+        createOrUpdateADataController(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+        manager.dataControllers()
             .define("testdataController")
             .withRegion("northeurope")
             .withExistingResourceGroup("testrg")
-            .withProperties(
-                new DataControllerProperties()
-                    .withInfrastructure(Infrastructure.ONPREMISES)
-                    .withOnPremiseProperty(
-                        new OnPremiseProperty()
-                            .withId(UUID.fromString("12345678-1234-1234-ab12-1a2b3c4d5e6f"))
-                            .withPublicSigningKey("fakeTokenPlaceholder"))
-                    .withUploadWatermark(
-                        new UploadWatermark()
-                            .withMetrics(OffsetDateTime.parse("2020-01-01T17:18:19.1234567Z"))
-                            .withLogs(OffsetDateTime.parse("2020-01-01T17:18:19.1234567Z"))
-                            .withUsages(OffsetDateTime.parse("2020-01-01T17:18:19.1234567Z")))
-                    .withBasicLoginInformation(
-                        new BasicLoginInformation().withUsername("username").withPassword("fakeTokenPlaceholder"))
-                    .withLogAnalyticsWorkspaceConfig(
-                        new LogAnalyticsWorkspaceConfig()
-                            .withWorkspaceId(UUID.fromString("00000000-1111-2222-3333-444444444444"))
-                            .withPrimaryKey("fakeTokenPlaceholder"))
-                    .withUploadServicePrincipal(
-                        new UploadServicePrincipal()
-                            .withClientId(UUID.fromString("00000000-1111-2222-3333-444444444444"))
-                            .withTenantId(UUID.fromString("00000000-1111-2222-3333-444444444444"))
-                            .withAuthority("https://login.microsoftonline.com/")
-                            .withClientSecret("fakeTokenPlaceholder"))
-                    .withClusterId(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s")
-                    .withExtensionId(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s/providers/Microsoft.KubernetesConfiguration/extensions/extension"))
+            .withProperties(new DataControllerProperties().withInfrastructure(Infrastructure.ONPREMISES)
+                .withOnPremiseProperty(
+                    new OnPremiseProperty().withId(UUID.fromString("12345678-1234-1234-ab12-1a2b3c4d5e6f"))
+                        .withPublicSigningKey("fakeTokenPlaceholder"))
+                .withUploadWatermark(
+                    new UploadWatermark().withMetrics(OffsetDateTime.parse("2020-01-01T17:18:19.1234567Z"))
+                        .withLogs(OffsetDateTime.parse("2020-01-01T17:18:19.1234567Z"))
+                        .withUsages(OffsetDateTime.parse("2020-01-01T17:18:19.1234567Z")))
+                .withBasicLoginInformation(
+                    new BasicLoginInformation().withUsername("username").withPassword("fakeTokenPlaceholder"))
+                .withLogAnalyticsWorkspaceConfig(new LogAnalyticsWorkspaceConfig()
+                    .withWorkspaceId(UUID.fromString("00000000-1111-2222-3333-444444444444"))
+                    .withPrimaryKey("fakeTokenPlaceholder"))
+                .withUploadServicePrincipal(
+                    new UploadServicePrincipal().withClientId(UUID.fromString("00000000-1111-2222-3333-444444444444"))
+                        .withTenantId(UUID.fromString("00000000-1111-2222-3333-444444444444"))
+                        .withAuthority("https://login.microsoftonline.com/")
+                        .withClientSecret("fakeTokenPlaceholder"))
+                .withClusterId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s")
+                .withExtensionId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s/providers/Microsoft.KubernetesConfiguration/extensions/extension"))
             .withTags(mapOf("mytag", "myval"))
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withName(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.ExtendedLocation/customLocations/arclocation")
-                    .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.ExtendedLocation/customLocations/arclocation")
+                .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -237,14 +251,17 @@ public final class DataControllersPutDataControllerSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/ListOperation.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/ListOperation.json
      */
     /**
      * Sample code: Lists all of the available Azure Data Services on Azure Arc API operations.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void listsAllOfTheAvailableAzureDataServicesOnAzureArcAPIOperations(
@@ -272,59 +289,47 @@ import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceSkuTier;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SqlManagedInstances Create. */
+/**
+ * Samples for SqlManagedInstances Create.
+ */
 public final class SqlManagedInstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/CreateOrUpdateSqlManagedInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * CreateOrUpdateSqlManagedInstance.json
      */
     /**
      * Sample code: Create or update a SQL Managed Instance.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void createOrUpdateASQLManagedInstance(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager
-            .sqlManagedInstances()
+    public static void
+        createOrUpdateASQLManagedInstance(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+        manager.sqlManagedInstances()
             .define("testsqlManagedInstance")
             .withRegion("northeurope")
             .withExistingResourceGroup("testrg")
             .withProperties(
-                new SqlManagedInstanceProperties()
-                    .withAdmin("Admin user")
+                new SqlManagedInstanceProperties().withAdmin("Admin user")
                     .withStartTime("Instance start time")
                     .withEndTime("Instance end time")
                     .withK8SRaw(
                         new SqlManagedInstanceK8SRaw()
-                            .withSpec(
-                                new SqlManagedInstanceK8SSpec()
-                                    .withScheduling(
-                                        new K8SScheduling()
-                                            .withDefaultProperty(
-                                                new K8SSchedulingOptions()
-                                                    .withResources(
-                                                        new K8SResourceRequirements()
-                                                            .withRequests(
-                                                                mapOf(
-                                                                    "additionalProperty",
-                                                                    "additionalValue",
-                                                                    "cpu",
-                                                                    "1",
-                                                                    "memory",
-                                                                    "8Gi"))
-                                                            .withLimits(
-                                                                mapOf(
-                                                                    "additionalProperty",
-                                                                    "additionalValue",
-                                                                    "cpu",
-                                                                    "1",
-                                                                    "memory",
-                                                                    "8Gi"))
-                                                            .withAdditionalProperties(mapOf()))
+                            .withSpec(new SqlManagedInstanceK8SSpec()
+                                .withScheduling(
+                                    new K8SScheduling()
+                                        .withDefaultProperty(
+                                            new K8SSchedulingOptions()
+                                                .withResources(new K8SResourceRequirements()
+                                                    .withRequests(mapOf("additionalProperty", "additionalValue", "cpu",
+                                                        "1", "memory", "8Gi"))
+                                                    .withLimits(mapOf("additionalProperty", "additionalValue", "cpu",
+                                                        "1", "memory", "8Gi"))
                                                     .withAdditionalProperties(mapOf()))
-                                            .withAdditionalProperties(mapOf()))
-                                    .withReplicas(1)
-                                    .withAdditionalProperties(mapOf()))
+                                                .withAdditionalProperties(mapOf()))
+                                        .withAdditionalProperties(mapOf()))
+                                .withReplicas(1)
+                                .withAdditionalProperties(mapOf()))
                             .withAdditionalProperties(mapOf("additionalProperty", 1234)))
                     .withBasicLoginInformation(
                         new BasicLoginInformation().withUsername("username").withPassword("fakeTokenPlaceholder"))
@@ -334,15 +339,14 @@ public final class SqlManagedInstancesCreateSamples {
                     .withExtensionId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s/providers/Microsoft.KubernetesConfiguration/extensions/extension"))
             .withTags(mapOf("mytag", "myval"))
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withName(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.ExtendedLocation/customLocations/arclocation")
-                    .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.ExtendedLocation/customLocations/arclocation")
+                .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
             .withSku(new SqlManagedInstanceSku().withTier(SqlManagedInstanceSkuTier.GENERAL_PURPOSE).withDev(true))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -359,14 +363,18 @@ public final class SqlManagedInstancesCreateSamples {
 ### SqlManagedInstances_Delete
 
 ```java
-/** Samples for SqlManagedInstances Delete. */
+/**
+ * Samples for SqlManagedInstances Delete.
+ */
 public final class SqlManagedInstancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/DeleteSqlManagedInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * DeleteSqlManagedInstance.json
      */
     /**
      * Sample code: Delete a SQL Instance.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void deleteASQLInstance(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
@@ -378,19 +386,22 @@ public final class SqlManagedInstancesDeleteSamples {
 ### SqlManagedInstances_GetByResourceGroup
 
 ```java
-/** Samples for SqlManagedInstances GetByResourceGroup. */
+/**
+ * Samples for SqlManagedInstances GetByResourceGroup.
+ */
 public final class SqlManagedInstancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/GetSqlManagedInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * GetSqlManagedInstance.json
      */
     /**
      * Sample code: Updates a SQL Instance tags.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void updatesASQLInstanceTags(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager
-            .sqlManagedInstances()
+        manager.sqlManagedInstances()
             .getByResourceGroupWithResponse("testrg", "testsqlManagedInstance", com.azure.core.util.Context.NONE);
     }
 }
@@ -399,18 +410,22 @@ public final class SqlManagedInstancesGetByResourceGroupSamples {
 ### SqlManagedInstances_List
 
 ```java
-/** Samples for SqlManagedInstances List. */
+/**
+ * Samples for SqlManagedInstances List.
+ */
 public final class SqlManagedInstancesListSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/ListSubscriptionSqlManagedInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * ListSubscriptionSqlManagedInstance.json
      */
     /**
      * Sample code: Gets all SQL Instance in a subscription.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void getsAllSQLInstanceInASubscription(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+    public static void
+        getsAllSQLInstanceInASubscription(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
         manager.sqlManagedInstances().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -419,18 +434,22 @@ public final class SqlManagedInstancesListSamples {
 ### SqlManagedInstances_ListByResourceGroup
 
 ```java
-/** Samples for SqlManagedInstances ListByResourceGroup. */
+/**
+ * Samples for SqlManagedInstances ListByResourceGroup.
+ */
 public final class SqlManagedInstancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/ListByResourceGroupSqlManagedInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * ListByResourceGroupSqlManagedInstance.json
      */
     /**
      * Sample code: Gets all SQL Instance in a resource group.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void getsAllSQLInstanceInAResourceGroup(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+    public static void
+        getsAllSQLInstanceInAResourceGroup(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
         manager.sqlManagedInstances().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -443,25 +462,28 @@ import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstance;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SqlManagedInstances Update. */
+/**
+ * Samples for SqlManagedInstances Update.
+ */
 public final class SqlManagedInstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/UpdateSqlManagedInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * UpdateSqlManagedInstance.json
      */
     /**
      * Sample code: Updates a sql Instance tags.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void updatesASqlInstanceTags(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        SqlManagedInstance resource =
-            manager
-                .sqlManagedInstances()
-                .getByResourceGroupWithResponse("testrg", "testsqlManagedInstance", com.azure.core.util.Context.NONE)
-                .getValue();
+        SqlManagedInstance resource = manager.sqlManagedInstances()
+            .getByResourceGroupWithResponse("testrg", "testsqlManagedInstance", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -488,44 +510,46 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SqlServerInstances Create. */
+/**
+ * Samples for SqlServerInstances Create.
+ */
 public final class SqlServerInstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/CreateOrUpdateSqlServerInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * CreateOrUpdateSqlServerInstance.json
      */
     /**
      * Sample code: Updates a SQL Server Instance tags.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void updatesASQLServerInstanceTags(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager
-            .sqlServerInstances()
+    public static void
+        updatesASQLServerInstanceTags(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+        manager.sqlServerInstances()
             .define("testsqlServerInstance")
             .withRegion("northeurope")
             .withExistingResourceGroup("testrg")
             .withTags(mapOf("mytag", "myval"))
-            .withProperties(
-                new SqlServerInstanceProperties()
-                    .withVersion(SqlVersion.SQL_SERVER_2017)
-                    .withEdition(EditionType.DEVELOPER)
-                    .withContainerResourceId("Arc Machine Name")
-                    .withVCore("4")
-                    .withStatus(ConnectionStatus.CONNECTED)
-                    .withPatchLevel("patchlevel")
-                    .withCollation("collation")
-                    .withCurrentVersion("2008 R2")
-                    .withInstanceName("name of instance")
-                    .withTcpDynamicPorts("1433")
-                    .withTcpStaticPorts("1433")
-                    .withProductId("sql id")
-                    .withLicenseType(ArcSqlServerLicenseType.FREE)
-                    .withAzureDefenderStatusLastUpdated(OffsetDateTime.parse("2020-01-02T17:18:19.1234567Z"))
-                    .withAzureDefenderStatus(DefenderStatus.PROTECTED))
+            .withProperties(new SqlServerInstanceProperties().withVersion(SqlVersion.SQL_SERVER_2017)
+                .withEdition(EditionType.DEVELOPER)
+                .withContainerResourceId("Arc Machine Name")
+                .withVCore("4")
+                .withStatus(ConnectionStatus.CONNECTED)
+                .withPatchLevel("patchlevel")
+                .withCollation("collation")
+                .withCurrentVersion("2008 R2")
+                .withInstanceName("name of instance")
+                .withTcpDynamicPorts("1433")
+                .withTcpStaticPorts("1433")
+                .withProductId("sql id")
+                .withLicenseType(ArcSqlServerLicenseType.FREE)
+                .withAzureDefenderStatusLastUpdated(OffsetDateTime.parse("2020-01-02T17:18:19.1234567Z"))
+                .withAzureDefenderStatus(DefenderStatus.PROTECTED))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -542,14 +566,18 @@ public final class SqlServerInstancesCreateSamples {
 ### SqlServerInstances_Delete
 
 ```java
-/** Samples for SqlServerInstances Delete. */
+/**
+ * Samples for SqlServerInstances Delete.
+ */
 public final class SqlServerInstancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/DeleteSqlServerInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * DeleteSqlServerInstance.json
      */
     /**
      * Sample code: Delete a SQL Server Instance.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void deleteASQLServerInstance(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
@@ -561,20 +589,23 @@ public final class SqlServerInstancesDeleteSamples {
 ### SqlServerInstances_GetByResourceGroup
 
 ```java
-/** Samples for SqlServerInstances GetByResourceGroup. */
+/**
+ * Samples for SqlServerInstances GetByResourceGroup.
+ */
 public final class SqlServerInstancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/GetSqlServerInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * GetSqlServerInstance.json
      */
     /**
      * Sample code: Updates a SQL Server Instance tags.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void updatesASQLServerInstanceTags(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager
-            .sqlServerInstances()
+    public static void
+        updatesASQLServerInstanceTags(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+        manager.sqlServerInstances()
             .getByResourceGroupWithResponse("testrg", "testsqlServerInstance", com.azure.core.util.Context.NONE);
     }
 }
@@ -583,18 +614,22 @@ public final class SqlServerInstancesGetByResourceGroupSamples {
 ### SqlServerInstances_List
 
 ```java
-/** Samples for SqlServerInstances List. */
+/**
+ * Samples for SqlServerInstances List.
+ */
 public final class SqlServerInstancesListSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/ListSubscriptionSqlServerInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * ListSubscriptionSqlServerInstance.json
      */
     /**
      * Sample code: Gets all SQL Server Instance in a subscription.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void getsAllSQLServerInstanceInASubscription(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+    public static void
+        getsAllSQLServerInstanceInASubscription(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
         manager.sqlServerInstances().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -603,18 +638,22 @@ public final class SqlServerInstancesListSamples {
 ### SqlServerInstances_ListByResourceGroup
 
 ```java
-/** Samples for SqlServerInstances ListByResourceGroup. */
+/**
+ * Samples for SqlServerInstances ListByResourceGroup.
+ */
 public final class SqlServerInstancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/ListByResourceGroupSqlServerInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * ListByResourceGroupSqlServerInstance.json
      */
     /**
      * Sample code: Gets all SQL Server Instance in a resource group.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void getsAllSQLServerInstanceInAResourceGroup(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+    public static void
+        getsAllSQLServerInstanceInAResourceGroup(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
         manager.sqlServerInstances().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -627,26 +666,29 @@ import com.azure.resourcemanager.azurearcdata.models.SqlServerInstance;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SqlServerInstances Update. */
+/**
+ * Samples for SqlServerInstances Update.
+ */
 public final class SqlServerInstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/UpdateSqlServerInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * UpdateSqlServerInstance.json
      */
     /**
      * Sample code: Updates a SQL Server Instance tags.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void updatesASQLServerInstanceTags(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        SqlServerInstance resource =
-            manager
-                .sqlServerInstances()
-                .getByResourceGroupWithResponse("testrg", "testsqlServerInstance", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updatesASQLServerInstanceTags(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+        SqlServerInstance resource = manager.sqlServerInstances()
+            .getByResourceGroupWithResponse("testrg", "testsqlServerInstance", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

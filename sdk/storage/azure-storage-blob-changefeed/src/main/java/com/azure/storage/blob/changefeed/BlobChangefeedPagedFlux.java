@@ -23,8 +23,8 @@ import java.util.List;
  * Implementation of {@link ContinuablePagedFlux} for Changefeed where the continuation token type is {@link String},
  * the element type is {@link BlobChangefeedEvent}, and the page type is {@link BlobChangefeedPagedResponse}.
  */
-public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, BlobChangefeedEvent,
-    BlobChangefeedPagedResponse> {
+public final class BlobChangefeedPagedFlux
+    extends ContinuablePagedFlux<String, BlobChangefeedEvent, BlobChangefeedPagedResponse> {
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobChangefeedPagedFlux.class);
 
@@ -39,7 +39,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
      */
     BlobChangefeedPagedFlux(ChangefeedFactory changefeedFactory, OffsetDateTime startTime, OffsetDateTime endTime) {
         StorageImplUtils.assertNotNull("changefeedFactory", changefeedFactory);
-        this.changefeed = changefeedFactory.getChangefeed(startTime, endTime); 
+        this.changefeed = changefeedFactory.getChangefeed(startTime, endTime);
     }
 
     /**
@@ -97,12 +97,12 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
     public Flux<BlobChangefeedPagedResponse> byPage(String continuationToken, int preferredPageSize) {
 
         if (continuationToken != null) {
-            return FluxUtil.pagedFluxError(LOGGER, new UnsupportedOperationException("continuationToken not "
-                + "supported. Use client.getEvents(String) to pass in a cursor."));
+            return FluxUtil.pagedFluxError(LOGGER, new UnsupportedOperationException(
+                "continuationToken not " + "supported. Use client.getEvents(String) to pass in a cursor."));
         }
         if (preferredPageSize <= 0) {
-            return FluxUtil.pagedFluxError(LOGGER, new IllegalArgumentException("preferredPageSize > 0 required but "
-                + "provided: " + preferredPageSize));
+            return FluxUtil.pagedFluxError(LOGGER,
+                new IllegalArgumentException("preferredPageSize > 0 required but " + "provided: " + preferredPageSize));
         }
         preferredPageSize = Integer.min(preferredPageSize, DEFAULT_PAGE_SIZE);
 
@@ -118,13 +118,11 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
                 Flux<BlobChangefeedEventWrapper> cachedEventWrappers = eventWrappers.cache();
                 /* 2. Get the last element in the flux and grab it's cursor. This will be the continuationToken
                       returned to the user if they want to get the next page. */
-                Mono<ChangefeedCursor> c = cachedEventWrappers.last()
-                    .map(BlobChangefeedEventWrapper::getCursor);
+                Mono<ChangefeedCursor> c = cachedEventWrappers.last().map(BlobChangefeedEventWrapper::getCursor);
                 /* 3. Map all the BlobChangefeedEventWrapper to just the BlobChangefeedEvents, and turn them into
                       a list. */
-                Mono<List<BlobChangefeedEvent>> e = cachedEventWrappers
-                    .map(BlobChangefeedEventWrapper::getEvent)
-                    .collectList();
+                Mono<List<BlobChangefeedEvent>> e
+                    = cachedEventWrappers.map(BlobChangefeedEventWrapper::getEvent).collectList();
                 /* Zip them together into a tuple to construct a BlobChangefeedPagedResponse. */
                 return Mono.zip(e, c);
             })
@@ -135,7 +133,6 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
 
     @Override
     public void subscribe(CoreSubscriber<? super BlobChangefeedEvent> coreSubscriber) {
-        changefeed.getEvents().map(BlobChangefeedEventWrapper::getEvent)
-            .subscribe(coreSubscriber);
+        changefeed.getEvents().map(BlobChangefeedEventWrapper::getEvent).subscribe(coreSubscriber);
     }
 }

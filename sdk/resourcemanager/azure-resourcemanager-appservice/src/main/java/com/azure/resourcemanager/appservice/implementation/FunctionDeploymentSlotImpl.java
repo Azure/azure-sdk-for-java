@@ -28,25 +28,16 @@ import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import reactor.core.publisher.Mono;
 
 /** The implementation for FunctionDeploymentSlot. */
-class FunctionDeploymentSlotImpl
-    extends DeploymentSlotBaseImpl<
-        FunctionDeploymentSlot,
-        FunctionDeploymentSlotImpl,
-        FunctionAppImpl,
-        FunctionDeploymentSlot.DefinitionStages.WithCreate,
-        DeploymentSlotBase<FunctionDeploymentSlot>>
+class FunctionDeploymentSlotImpl extends
+    DeploymentSlotBaseImpl<FunctionDeploymentSlot, FunctionDeploymentSlotImpl, FunctionAppImpl, FunctionDeploymentSlot.DefinitionStages.WithCreate, DeploymentSlotBase<FunctionDeploymentSlot>>
     implements FunctionDeploymentSlot, FunctionDeploymentSlot.Definition {
 
     private static final ClientLogger LOGGER = new ClientLogger(FunctionDeploymentSlotImpl.class);
 
     private Boolean appServicePlanIsFlexConsumption;
 
-    FunctionDeploymentSlotImpl(
-        String name,
-        SiteInner innerObject,
-        SiteConfigResourceInner siteConfig,
-        SiteLogsConfigInner logConfig,
-        FunctionAppImpl parent) {
+    FunctionDeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig, FunctionAppImpl parent) {
         super(name, innerObject, siteConfig, logConfig, parent);
     }
 
@@ -104,8 +95,11 @@ class FunctionDeploymentSlotImpl
 
     @Override
     public Mono<String> getMasterKeyAsync() {
-        return this.manager().serviceClient().getWebApps().listHostKeysSlotAsync(
-            this.resourceGroupName(), this.parent().name(), this.name()).map(HostKeysInner::masterKey);
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
+            .listHostKeysSlotAsync(this.resourceGroupName(), this.parent().name(), this.name())
+            .map(HostKeysInner::masterKey);
     }
 
     @Override
@@ -126,7 +120,8 @@ class FunctionDeploymentSlotImpl
     @Override
     public Mono<Void> deployAsync(DeployType type, File file, DeployOptions deployOptions) {
         return this.pushDeployAsync(type, file, null)
-            .flatMap(result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
+            .flatMap(
+                result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
     }
 
     @Override
@@ -147,7 +142,8 @@ class FunctionDeploymentSlotImpl
     @Override
     public Mono<Void> deployAsync(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
         return this.pushDeployAsync(type, file, length, null)
-            .flatMap(result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
+            .flatMap(
+                result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
     }
 
     @Override
@@ -168,8 +164,7 @@ class FunctionDeploymentSlotImpl
                 if (appServiceIsFlexConsumptionPlan) {
                     return kuduClient.pushDeployFlexConsumptionAsync(file);
                 } else {
-                    return kuduClient.pushZipDeployAsync(file)
-                        .then(Mono.just(new KuduDeploymentResult("latest")));
+                    return kuduClient.pushZipDeployAsync(file).then(Mono.just(new KuduDeploymentResult("latest")));
                 }
             } catch (IOException e) {
                 return Mono.error(e);
@@ -178,7 +173,7 @@ class FunctionDeploymentSlotImpl
     }
 
     private Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, InputStream file, long length,
-                                                       DeployOptions deployOptions) {
+        DeployOptions deployOptions) {
         // deployOptions is ignored
         if (type != DeployType.ZIP) {
             return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
@@ -200,13 +195,12 @@ class FunctionDeploymentSlotImpl
     private Mono<Boolean> getAppServicePlanIsFlexConsumptionMono() {
         Mono<Boolean> updateAppServicePlan = Mono.justOrEmpty(appServicePlanIsFlexConsumption);
         if (appServicePlanIsFlexConsumption == null) {
-            updateAppServicePlan = Mono.defer(
-                () -> manager().appServicePlans()
-                    .getByIdAsync(this.appServicePlanId())
-                    .map(appServicePlan -> {
-                        appServicePlanIsFlexConsumption = "FlexConsumption".equals(appServicePlan.pricingTier().toSkuDescription().tier());
-                        return appServicePlanIsFlexConsumption;
-                    }));
+            updateAppServicePlan = Mono
+                .defer(() -> manager().appServicePlans().getByIdAsync(this.appServicePlanId()).map(appServicePlan -> {
+                    appServicePlanIsFlexConsumption
+                        = "FlexConsumption".equals(appServicePlan.pricingTier().toSkuDescription().tier());
+                    return appServicePlanIsFlexConsumption;
+                }));
         }
         return updateAppServicePlan;
     }
@@ -220,20 +214,23 @@ class FunctionDeploymentSlotImpl
     public Mono<CsmDeploymentStatus> getDeploymentStatusAsync(String deploymentId) {
         // "GET" LRO is not supported in azure-core
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        return this.manager().serviceClient().getWebApps()
-            .getSlotSiteDeploymentStatusSlotWithResponseAsync(this.resourceGroupName(), this.parent().name(), this.name(), deploymentId)
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
+            .getSlotSiteDeploymentStatusSlotWithResponseAsync(this.resourceGroupName(), this.parent().name(),
+                this.name(), deploymentId)
             .flatMap(fluxResponse -> {
                 HttpResponse response = new HttpFluxBBResponse(fluxResponse);
-                return response.getBodyAsString()
-                    .flatMap(bodyString -> {
-                        CsmDeploymentStatus status;
-                        try {
-                            status = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class, SerializerEncoding.JSON);
-                        } catch (IOException e) {
-                            return Mono.error(new ManagementException("Deserialize failed for response body.", response));
-                        }
-                        return Mono.justOrEmpty(status);
-                    }).doFinally(ignored -> response.close());
+                return response.getBodyAsString().flatMap(bodyString -> {
+                    CsmDeploymentStatus status;
+                    try {
+                        status = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class,
+                            SerializerEncoding.JSON);
+                    } catch (IOException e) {
+                        return Mono.error(new ManagementException("Deserialize failed for response body.", response));
+                    }
+                    return Mono.justOrEmpty(status);
+                }).doFinally(ignored -> response.close());
             });
     }
 }

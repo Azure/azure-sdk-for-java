@@ -29,8 +29,8 @@ public class MessageSessionProcessor extends ServiceBusScenario {
 
     @Override
     public void run() {
-        ServiceBusProcessorClient processor = toClose(getSessionProcessorBuilder(options)
-                .maxConcurrentSessions(maxConcurrentSessions)
+        ServiceBusProcessorClient processor
+            = toClose(getSessionProcessorBuilder(options).maxConcurrentSessions(maxConcurrentSessions)
                 .maxConcurrentCalls(maxConcurrentCalls)
                 .prefetchCount(prefetchCount)
                 .processMessage(messageContext -> messageContext.complete())

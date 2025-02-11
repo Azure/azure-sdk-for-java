@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Jit approval mode. */
+/**
+ * The Jit approval mode.
+ */
 public final class JitApprovalMode extends ExpandableStringEnum<JitApprovalMode> {
-    /** Static value NotSpecified for JitApprovalMode. */
+    /**
+     * Static value NotSpecified for JitApprovalMode.
+     */
     public static final JitApprovalMode NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value AutoApprove for JitApprovalMode. */
+    /**
+     * Static value AutoApprove for JitApprovalMode.
+     */
     public static final JitApprovalMode AUTO_APPROVE = fromString("AutoApprove");
 
-    /** Static value ManualApprove for JitApprovalMode. */
+    /**
+     * Static value ManualApprove for JitApprovalMode.
+     */
     public static final JitApprovalMode MANUAL_APPROVE = fromString("ManualApprove");
 
     /**
      * Creates a new instance of JitApprovalMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class JitApprovalMode extends ExpandableStringEnum<JitApprovalMode>
 
     /**
      * Creates or finds a JitApprovalMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JitApprovalMode.
      */
-    @JsonCreator
     public static JitApprovalMode fromString(String name) {
         return fromString(name, JitApprovalMode.class);
     }
 
     /**
      * Gets known JitApprovalMode values.
-     *
+     * 
      * @return known JitApprovalMode values.
      */
     public static Collection<JitApprovalMode> values() {

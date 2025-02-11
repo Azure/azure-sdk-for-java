@@ -20,7 +20,11 @@ public final class EmailServicesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateEmailServiceResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.emailServices().define("MyEmailServiceResource").withRegion("Global")
-            .withExistingResourceGroup("MyResourceGroup").withDataLocation("United States").create();
+        manager.emailServices()
+            .define("MyEmailServiceResource")
+            .withRegion("Global")
+            .withExistingResourceGroup("MyResourceGroup")
+            .withDataLocation("United States")
+            .create();
     }
 }

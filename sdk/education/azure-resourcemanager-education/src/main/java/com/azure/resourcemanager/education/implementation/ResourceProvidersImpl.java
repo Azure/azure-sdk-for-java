@@ -18,8 +18,8 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.education.EducationManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient, com.azure.resourcemanager.education.EducationManager serviceManager) {
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
+        com.azure.resourcemanager.education.EducationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

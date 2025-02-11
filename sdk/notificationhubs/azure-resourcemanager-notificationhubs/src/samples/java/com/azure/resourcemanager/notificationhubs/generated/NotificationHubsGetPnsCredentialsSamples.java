@@ -10,17 +10,17 @@ package com.azure.resourcemanager.notificationhubs.generated;
 public final class NotificationHubsGetPnsCredentialsSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * NotificationHubs/PnsCredentialsGet.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/
+     * NotificationHubs/NotificationHubPnsCredentials.json
      */
     /**
-     * Sample code: NotificationHubs_GetPnsCredentials.
+     * Sample code: notificationHubPnsCredentials.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void
-        notificationHubsGetPnsCredentials(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().getPnsCredentialsWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            com.azure.core.util.Context.NONE);
+        notificationHubPnsCredentials(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        manager.notificationHubs()
+            .getPnsCredentialsWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", com.azure.core.util.Context.NONE);
     }
 }

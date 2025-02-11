@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.devtestlabs.generated;
 
-/** Samples for Labs ListVhds. */
+/**
+ * Samples for Labs ListVhds.
+ */
 public final class LabsListVhdsSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ListVhds.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ListVhds.json
      */
     /**
      * Sample code: Labs_ListVhds.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsListVhds(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {

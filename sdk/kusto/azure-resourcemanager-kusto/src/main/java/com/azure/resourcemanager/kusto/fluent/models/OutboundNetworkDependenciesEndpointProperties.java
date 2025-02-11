@@ -5,41 +5,47 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.EndpointDependency;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Endpoints accessed for a common purpose that the Kusto Service Environment requires outbound network access to. */
+/**
+ * Endpoints accessed for a common purpose that the Kusto Service Environment requires outbound network access to.
+ */
 @Fluent
-public final class OutboundNetworkDependenciesEndpointProperties {
+public final class OutboundNetworkDependenciesEndpointProperties
+    implements JsonSerializable<OutboundNetworkDependenciesEndpointProperties> {
     /*
-     * The type of service accessed by the Kusto Service Environment, e.g., Azure Storage, Azure SQL Database, and
-     * Azure Active Directory.
+     * The type of service accessed by the Kusto Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure
+     * Active Directory.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * The endpoints that the Kusto Service Environment reaches the service at.
      */
-    @JsonProperty(value = "endpoints")
     private List<EndpointDependency> endpoints;
 
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of OutboundNetworkDependenciesEndpointProperties class. */
+    /**
+     * Creates an instance of OutboundNetworkDependenciesEndpointProperties class.
+     */
     public OutboundNetworkDependenciesEndpointProperties() {
     }
 
     /**
      * Get the category property: The type of service accessed by the Kusto Service Environment, e.g., Azure Storage,
      * Azure SQL Database, and Azure Active Directory.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -49,7 +55,7 @@ public final class OutboundNetworkDependenciesEndpointProperties {
     /**
      * Set the category property: The type of service accessed by the Kusto Service Environment, e.g., Azure Storage,
      * Azure SQL Database, and Azure Active Directory.
-     *
+     * 
      * @param category the category value to set.
      * @return the OutboundNetworkDependenciesEndpointProperties object itself.
      */
@@ -60,7 +66,7 @@ public final class OutboundNetworkDependenciesEndpointProperties {
 
     /**
      * Get the endpoints property: The endpoints that the Kusto Service Environment reaches the service at.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<EndpointDependency> endpoints() {
@@ -69,7 +75,7 @@ public final class OutboundNetworkDependenciesEndpointProperties {
 
     /**
      * Set the endpoints property: The endpoints that the Kusto Service Environment reaches the service at.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the OutboundNetworkDependenciesEndpointProperties object itself.
      */
@@ -80,7 +86,7 @@ public final class OutboundNetworkDependenciesEndpointProperties {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -89,12 +95,57 @@ public final class OutboundNetworkDependenciesEndpointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (endpoints() != null) {
             endpoints().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutboundNetworkDependenciesEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutboundNetworkDependenciesEndpointProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OutboundNetworkDependenciesEndpointProperties.
+     */
+    public static OutboundNetworkDependenciesEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutboundNetworkDependenciesEndpointProperties deserializedOutboundNetworkDependenciesEndpointProperties
+                = new OutboundNetworkDependenciesEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedOutboundNetworkDependenciesEndpointProperties.category = reader.getString();
+                } else if ("endpoints".equals(fieldName)) {
+                    List<EndpointDependency> endpoints
+                        = reader.readArray(reader1 -> EndpointDependency.fromJson(reader1));
+                    deserializedOutboundNetworkDependenciesEndpointProperties.endpoints = endpoints;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedOutboundNetworkDependenciesEndpointProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutboundNetworkDependenciesEndpointProperties;
+        });
     }
 }

@@ -19,49 +19,43 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerPropertiesForRestoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerPropertiesForRestore model =
-            BinaryData
-                .fromString(
-                    "{\"createMode\":\"PointInTimeRestore\",\"sourceServerId\":\"voqacpiexpbt\",\"restorePointInTime\":\"2021-03-18T02:09Z\",\"version\":\"10.3\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLS1_1\",\"publicNetworkAccess\":\"Enabled\",\"storageProfile\":{\"backupRetentionDays\":514824118,\"geoRedundantBackup\":\"Disabled\",\"storageMB\":268126054,\"storageAutogrow\":\"Enabled\"}}")
-                .toObject(ServerPropertiesForRestore.class);
-        Assertions.assertEquals(ServerVersion.ONE_ZERO_THREE, model.version());
-        Assertions.assertEquals(SslEnforcementEnum.ENABLED, model.sslEnforcement());
-        Assertions.assertEquals(MinimalTlsVersionEnum.TLS1_1, model.minimalTlsVersion());
-        Assertions.assertEquals(PublicNetworkAccessEnum.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(514824118, model.storageProfile().backupRetentionDays());
-        Assertions.assertEquals(GeoRedundantBackup.DISABLED, model.storageProfile().geoRedundantBackup());
-        Assertions.assertEquals(268126054, model.storageProfile().storageMB());
+        ServerPropertiesForRestore model = BinaryData.fromString(
+            "{\"createMode\":\"PointInTimeRestore\",\"sourceServerId\":\"mueedndrdvstk\",\"restorePointInTime\":\"2021-06-15T19:49:02Z\",\"version\":\"10.2\",\"sslEnforcement\":\"Disabled\",\"minimalTlsVersion\":\"TLS1_0\",\"publicNetworkAccess\":\"Disabled\",\"storageProfile\":{\"backupRetentionDays\":669500000,\"geoRedundantBackup\":\"Enabled\",\"storageMB\":1434664141,\"storageAutogrow\":\"Enabled\"}}")
+            .toObject(ServerPropertiesForRestore.class);
+        Assertions.assertEquals(ServerVersion.ONE_ZERO_TWO, model.version());
+        Assertions.assertEquals(SslEnforcementEnum.DISABLED, model.sslEnforcement());
+        Assertions.assertEquals(MinimalTlsVersionEnum.TLS1_0, model.minimalTlsVersion());
+        Assertions.assertEquals(PublicNetworkAccessEnum.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(669500000, model.storageProfile().backupRetentionDays());
+        Assertions.assertEquals(GeoRedundantBackup.ENABLED, model.storageProfile().geoRedundantBackup());
+        Assertions.assertEquals(1434664141, model.storageProfile().storageMB());
         Assertions.assertEquals(StorageAutogrow.ENABLED, model.storageProfile().storageAutogrow());
-        Assertions.assertEquals("voqacpiexpbt", model.sourceServerId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T02:09Z"), model.restorePointInTime());
+        Assertions.assertEquals("mueedndrdvstk", model.sourceServerId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T19:49:02Z"), model.restorePointInTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerPropertiesForRestore model =
-            new ServerPropertiesForRestore()
-                .withVersion(ServerVersion.ONE_ZERO_THREE)
-                .withSslEnforcement(SslEnforcementEnum.ENABLED)
-                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_1)
-                .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED)
-                .withStorageProfile(
-                    new StorageProfile()
-                        .withBackupRetentionDays(514824118)
-                        .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
-                        .withStorageMB(268126054)
-                        .withStorageAutogrow(StorageAutogrow.ENABLED))
-                .withSourceServerId("voqacpiexpbt")
-                .withRestorePointInTime(OffsetDateTime.parse("2021-03-18T02:09Z"));
+        ServerPropertiesForRestore model = new ServerPropertiesForRestore().withVersion(ServerVersion.ONE_ZERO_TWO)
+            .withSslEnforcement(SslEnforcementEnum.DISABLED)
+            .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_0)
+            .withPublicNetworkAccess(PublicNetworkAccessEnum.DISABLED)
+            .withStorageProfile(new StorageProfile().withBackupRetentionDays(669500000)
+                .withGeoRedundantBackup(GeoRedundantBackup.ENABLED)
+                .withStorageMB(1434664141)
+                .withStorageAutogrow(StorageAutogrow.ENABLED))
+            .withSourceServerId("mueedndrdvstk")
+            .withRestorePointInTime(OffsetDateTime.parse("2021-06-15T19:49:02Z"));
         model = BinaryData.fromObject(model).toObject(ServerPropertiesForRestore.class);
-        Assertions.assertEquals(ServerVersion.ONE_ZERO_THREE, model.version());
-        Assertions.assertEquals(SslEnforcementEnum.ENABLED, model.sslEnforcement());
-        Assertions.assertEquals(MinimalTlsVersionEnum.TLS1_1, model.minimalTlsVersion());
-        Assertions.assertEquals(PublicNetworkAccessEnum.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(514824118, model.storageProfile().backupRetentionDays());
-        Assertions.assertEquals(GeoRedundantBackup.DISABLED, model.storageProfile().geoRedundantBackup());
-        Assertions.assertEquals(268126054, model.storageProfile().storageMB());
+        Assertions.assertEquals(ServerVersion.ONE_ZERO_TWO, model.version());
+        Assertions.assertEquals(SslEnforcementEnum.DISABLED, model.sslEnforcement());
+        Assertions.assertEquals(MinimalTlsVersionEnum.TLS1_0, model.minimalTlsVersion());
+        Assertions.assertEquals(PublicNetworkAccessEnum.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(669500000, model.storageProfile().backupRetentionDays());
+        Assertions.assertEquals(GeoRedundantBackup.ENABLED, model.storageProfile().geoRedundantBackup());
+        Assertions.assertEquals(1434664141, model.storageProfile().storageMB());
         Assertions.assertEquals(StorageAutogrow.ENABLED, model.storageProfile().storageAutogrow());
-        Assertions.assertEquals("voqacpiexpbt", model.sourceServerId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T02:09Z"), model.restorePointInTime());
+        Assertions.assertEquals("mueedndrdvstk", model.sourceServerId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T19:49:02Z"), model.restorePointInTime());
     }
 }

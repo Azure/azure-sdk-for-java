@@ -6,48 +6,52 @@ package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents product details. */
+/**
+ * Represents product details.
+ */
 @Fluent
-public final class ProductDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductDetails.class);
-
+public final class ProductDetails implements JsonSerializable<ProductDetails> {
     /*
      * Display details of the product
      */
-    @JsonProperty(value = "displayInfo")
     private DisplayInfo displayInfo;
 
     /*
      * Hierarchy of the product which uniquely identifies the product
      */
-    @JsonProperty(value = "hierarchyInformation", required = true)
     private HierarchyInformation hierarchyInformation;
 
     /*
      * Quantity of the product
      */
-    @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
 
     /*
      * Double encryption status of the configuration. Read-only field.
      */
-    @JsonProperty(value = "productDoubleEncryptionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DoubleEncryptionStatus productDoubleEncryptionStatus;
 
     /*
      * list of device details
      */
-    @JsonProperty(value = "deviceDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<DeviceDetails> deviceDetails;
 
     /**
+     * Creates an instance of ProductDetails class.
+     */
+    public ProductDetails() {
+    }
+
+    /**
      * Get the displayInfo property: Display details of the product.
-     *
+     * 
      * @return the displayInfo value.
      */
     public DisplayInfo displayInfo() {
@@ -56,7 +60,7 @@ public final class ProductDetails {
 
     /**
      * Set the displayInfo property: Display details of the product.
-     *
+     * 
      * @param displayInfo the displayInfo value to set.
      * @return the ProductDetails object itself.
      */
@@ -67,7 +71,7 @@ public final class ProductDetails {
 
     /**
      * Get the hierarchyInformation property: Hierarchy of the product which uniquely identifies the product.
-     *
+     * 
      * @return the hierarchyInformation value.
      */
     public HierarchyInformation hierarchyInformation() {
@@ -76,7 +80,7 @@ public final class ProductDetails {
 
     /**
      * Set the hierarchyInformation property: Hierarchy of the product which uniquely identifies the product.
-     *
+     * 
      * @param hierarchyInformation the hierarchyInformation value to set.
      * @return the ProductDetails object itself.
      */
@@ -87,7 +91,7 @@ public final class ProductDetails {
 
     /**
      * Get the count property: Quantity of the product.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -96,7 +100,7 @@ public final class ProductDetails {
 
     /**
      * Get the productDoubleEncryptionStatus property: Double encryption status of the configuration. Read-only field.
-     *
+     * 
      * @return the productDoubleEncryptionStatus value.
      */
     public DoubleEncryptionStatus productDoubleEncryptionStatus() {
@@ -105,7 +109,7 @@ public final class ProductDetails {
 
     /**
      * Get the deviceDetails property: list of device details.
-     *
+     * 
      * @return the deviceDetails value.
      */
     public List<DeviceDetails> deviceDetails() {
@@ -114,7 +118,7 @@ public final class ProductDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -122,15 +126,64 @@ public final class ProductDetails {
             displayInfo().validate();
         }
         if (hierarchyInformation() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hierarchyInformation in model ProductDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hierarchyInformation in model ProductDetails"));
         } else {
             hierarchyInformation().validate();
         }
         if (deviceDetails() != null) {
             deviceDetails().forEach(e -> e.validate());
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ProductDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hierarchyInformation", this.hierarchyInformation);
+        jsonWriter.writeJsonField("displayInfo", this.displayInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProductDetails.
+     */
+    public static ProductDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductDetails deserializedProductDetails = new ProductDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hierarchyInformation".equals(fieldName)) {
+                    deserializedProductDetails.hierarchyInformation = HierarchyInformation.fromJson(reader);
+                } else if ("displayInfo".equals(fieldName)) {
+                    deserializedProductDetails.displayInfo = DisplayInfo.fromJson(reader);
+                } else if ("count".equals(fieldName)) {
+                    deserializedProductDetails.count = reader.getNullable(JsonReader::getInt);
+                } else if ("productDoubleEncryptionStatus".equals(fieldName)) {
+                    deserializedProductDetails.productDoubleEncryptionStatus
+                        = DoubleEncryptionStatus.fromString(reader.getString());
+                } else if ("deviceDetails".equals(fieldName)) {
+                    List<DeviceDetails> deviceDetails = reader.readArray(reader1 -> DeviceDetails.fromJson(reader1));
+                    deserializedProductDetails.deviceDetails = deviceDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductDetails;
+        });
     }
 }

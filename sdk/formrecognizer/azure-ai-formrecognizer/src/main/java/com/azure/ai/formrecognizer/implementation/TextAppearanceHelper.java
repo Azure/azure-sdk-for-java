@@ -12,13 +12,15 @@ import com.azure.ai.formrecognizer.models.TextStyleName;
 public final class TextAppearanceHelper {
     private static TextAppearanceAccessor accessor;
 
-    private TextAppearanceHelper() { }
+    private TextAppearanceHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link TextAppearance} instance.
      */
     public interface TextAppearanceAccessor {
         void setStyleName(TextAppearance textAppearance, TextStyleName styleName);
+
         void setStyleConfidence(TextAppearance textAppearance, float styleConfidence);
     }
 

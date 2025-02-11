@@ -5,33 +5,110 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.costmanagement.models.ActionType;
 import com.azure.resourcemanager.costmanagement.models.Operation;
 import com.azure.resourcemanager.costmanagement.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.costmanagement.models.Origin;
+import java.io.IOException;
 
-/** A Cost management REST API operation. */
+/**
+ * A Cost management REST API operation.
+ */
 @Fluent
 public final class CostManagementOperationInner extends Operation {
     /*
      * Operation id: {provider}/{resource}/{operation}.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of CostManagementOperationInner class. */
+    /*
+     * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+     */
+    private ActionType actionType;
+
+    /*
+     * The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+     * value is "user,system"
+     */
+    private Origin origin;
+
+    /*
+     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for
+     * ARM/control-plane operations.
+     */
+    private Boolean isDataAction;
+
+    /*
+     * The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+     */
+    private String name;
+
+    /**
+     * Creates an instance of CostManagementOperationInner class.
+     */
     public CostManagementOperationInner() {
     }
 
     /**
      * Get the id property: Operation id: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
         return this.id;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
+     * only APIs.
+     * 
+     * @return the actionType value.
+     */
+    @Override
+    public ActionType actionType() {
+        return this.actionType;
+    }
+
+    /**
+     * Get the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
+     * audit logs UX. Default value is "user,system".
+     * 
+     * @return the origin value.
+     */
+    @Override
+    public Origin origin() {
+        return this.origin;
+    }
+
+    /**
+     * Get the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
+     * operations and "false" for ARM/control-plane operations.
+     * 
+     * @return the isDataAction value.
+     */
+    @Override
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Get the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CostManagementOperationInner withDisplay(OperationDisplay display) {
         super.withDisplay(display);
@@ -40,11 +117,59 @@ public final class CostManagementOperationInner extends Operation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (display() != null) {
+            display().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", display());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CostManagementOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CostManagementOperationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CostManagementOperationInner.
+     */
+    public static CostManagementOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CostManagementOperationInner deserializedCostManagementOperationInner = new CostManagementOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCostManagementOperationInner.name = reader.getString();
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedCostManagementOperationInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("display".equals(fieldName)) {
+                    deserializedCostManagementOperationInner.withDisplay(OperationDisplay.fromJson(reader));
+                } else if ("origin".equals(fieldName)) {
+                    deserializedCostManagementOperationInner.origin = Origin.fromString(reader.getString());
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedCostManagementOperationInner.actionType = ActionType.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedCostManagementOperationInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCostManagementOperationInner;
+        });
     }
 }

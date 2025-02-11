@@ -45,42 +45,47 @@ public final class SubscriptionListTests {
     public void testSerialize() throws Exception {
         SubscriptionList model
             = new SubscriptionList().withPatchOperation(PatchOperation.DELETE_COMPLETE)
-                .withMonitoredSubscriptionList(Arrays
-                    .asList(
-                        new MonitoredSubscriptionInner().withSubscriptionId("dhmdua").withStatus(Status.IN_PROGRESS)
-                            .withError("qpv").withTagRules(
-                                new MonitoringTagRulesPropertiesInner()
+                .withMonitoredSubscriptionList(
+                    Arrays
+                        .asList(
+                            new MonitoredSubscriptionInner().withSubscriptionId("dhmdua")
+                                .withStatus(Status.IN_PROGRESS)
+                                .withError("qpv")
+                                .withTagRules(new MonitoringTagRulesPropertiesInner()
                                     .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
                                         .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
                                         .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
                                         .withFilteringTags(Arrays.asList(new FilteringTag())))
-                                    .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.ENABLED)
-                                        .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag(),
-                                            new FilteringTag(), new FilteringTag()))
-                                        .withUserEmail("fmisg"))),
-                        new MonitoredSubscriptionInner().withSubscriptionId("nbbelda").withStatus(Status.FAILED)
-                            .withError(
-                                "ali")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner()
-                                .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
-                                    .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
-                                    .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
-                                    .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag(),
-                                        new FilteringTag(), new FilteringTag())))
-                                .withMetricRules(new MetricRulesInner()
-                                    .withSendMetrics(SendMetricsStatus.DISABLED).withFilteringTags(
-                                        Arrays.asList(new FilteringTag()))
-                                    .withUserEmail("owzxcu"))),
-                        new MonitoredSubscriptionInner().withSubscriptionId("cjooxdjebwpucwwf")
-                            .withStatus(Status.ACTIVE).withError("vmeueci")
-                            .withTagRules(new MonitoringTagRulesPropertiesInner()
-                                .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
-                                    .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
-                                    .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
-                                    .withFilteringTags(Arrays.asList(new FilteringTag())))
-                                .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
-                                    .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag()))
-                                    .withUserEmail("wmcdytdxwi")))));
+                                    .withMetricRules(
+                                        new MetricRulesInner().withSendMetrics(SendMetricsStatus.ENABLED)
+                                            .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag(),
+                                                new FilteringTag(), new FilteringTag()))
+                                            .withUserEmail("fmisg"))),
+                            new MonitoredSubscriptionInner().withSubscriptionId("nbbelda")
+                                .withStatus(Status.FAILED)
+                                .withError("ali")
+                                .withTagRules(
+                                    new MonitoringTagRulesPropertiesInner()
+                                        .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
+                                            .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
+                                            .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
+                                            .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag(),
+                                                new FilteringTag(), new FilteringTag())))
+                                        .withMetricRules(
+                                            new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
+                                                .withFilteringTags(Arrays.asList(new FilteringTag()))
+                                                .withUserEmail("owzxcu"))),
+                            new MonitoredSubscriptionInner().withSubscriptionId("cjooxdjebwpucwwf")
+                                .withStatus(Status.ACTIVE)
+                                .withError("vmeueci")
+                                .withTagRules(new MonitoringTagRulesPropertiesInner()
+                                    .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
+                                        .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
+                                        .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
+                                        .withFilteringTags(Arrays.asList(new FilteringTag())))
+                                    .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
+                                        .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag()))
+                                        .withUserEmail("wmcdytdxwi")))));
         model = BinaryData.fromObject(model).toObject(SubscriptionList.class);
         Assertions.assertEquals(PatchOperation.DELETE_COMPLETE, model.patchOperation());
         Assertions.assertEquals("dhmdua", model.monitoredSubscriptionList().get(0).subscriptionId());

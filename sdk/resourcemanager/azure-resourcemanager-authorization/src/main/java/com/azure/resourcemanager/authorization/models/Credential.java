@@ -12,12 +12,24 @@ import java.time.OffsetDateTime;
 /** An immutable client-side representation of an Azure AD credential. */
 @Fluent
 public interface Credential extends Indexable, HasId, HasName {
-    /** @return start date. */
+    /**
+     * Gets start date.
+     *
+     * @return start date.
+     */
     OffsetDateTime startDate();
 
-    /** @return end date. */
+    /**
+     * Gets end date.
+     *
+     * @return end date.
+     */
     OffsetDateTime endDate();
 
-    /** @return key value. */
+    /**
+     * Gets key value.
+     *
+     * @return key value.
+     */
     String value();
 }

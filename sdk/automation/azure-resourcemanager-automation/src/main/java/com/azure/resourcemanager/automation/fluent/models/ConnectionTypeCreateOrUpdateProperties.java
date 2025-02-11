@@ -6,30 +6,39 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.FieldDefinition;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The properties of the create connection type. */
+/**
+ * The properties of the create connection type.
+ */
 @Fluent
-public final class ConnectionTypeCreateOrUpdateProperties {
+public final class ConnectionTypeCreateOrUpdateProperties
+    implements JsonSerializable<ConnectionTypeCreateOrUpdateProperties> {
     /*
      * Gets or sets a Boolean value to indicate if the connection type is global.
      */
-    @JsonProperty(value = "isGlobal")
     private Boolean isGlobal;
 
     /*
      * Gets or sets the field definitions of the connection type.
      */
-    @JsonProperty(value = "fieldDefinitions", required = true)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, FieldDefinition> fieldDefinitions;
 
     /**
+     * Creates an instance of ConnectionTypeCreateOrUpdateProperties class.
+     */
+    public ConnectionTypeCreateOrUpdateProperties() {
+    }
+
+    /**
      * Get the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
-     *
+     * 
      * @return the isGlobal value.
      */
     public Boolean isGlobal() {
@@ -38,7 +47,7 @@ public final class ConnectionTypeCreateOrUpdateProperties {
 
     /**
      * Set the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
-     *
+     * 
      * @param isGlobal the isGlobal value to set.
      * @return the ConnectionTypeCreateOrUpdateProperties object itself.
      */
@@ -49,7 +58,7 @@ public final class ConnectionTypeCreateOrUpdateProperties {
 
     /**
      * Get the fieldDefinitions property: Gets or sets the field definitions of the connection type.
-     *
+     * 
      * @return the fieldDefinitions value.
      */
     public Map<String, FieldDefinition> fieldDefinitions() {
@@ -58,7 +67,7 @@ public final class ConnectionTypeCreateOrUpdateProperties {
 
     /**
      * Set the fieldDefinitions property: Gets or sets the field definitions of the connection type.
-     *
+     * 
      * @param fieldDefinitions the fieldDefinitions value to set.
      * @return the ConnectionTypeCreateOrUpdateProperties object itself.
      */
@@ -69,26 +78,67 @@ public final class ConnectionTypeCreateOrUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fieldDefinitions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fieldDefinitions in model ConnectionTypeCreateOrUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fieldDefinitions in model ConnectionTypeCreateOrUpdateProperties"));
         } else {
-            fieldDefinitions()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            fieldDefinitions().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionTypeCreateOrUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("fieldDefinitions", this.fieldDefinitions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isGlobal", this.isGlobal);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionTypeCreateOrUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionTypeCreateOrUpdateProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionTypeCreateOrUpdateProperties.
+     */
+    public static ConnectionTypeCreateOrUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionTypeCreateOrUpdateProperties deserializedConnectionTypeCreateOrUpdateProperties
+                = new ConnectionTypeCreateOrUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fieldDefinitions".equals(fieldName)) {
+                    Map<String, FieldDefinition> fieldDefinitions
+                        = reader.readMap(reader1 -> FieldDefinition.fromJson(reader1));
+                    deserializedConnectionTypeCreateOrUpdateProperties.fieldDefinitions = fieldDefinitions;
+                } else if ("isGlobal".equals(fieldName)) {
+                    deserializedConnectionTypeCreateOrUpdateProperties.isGlobal
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionTypeCreateOrUpdateProperties;
+        });
+    }
 }

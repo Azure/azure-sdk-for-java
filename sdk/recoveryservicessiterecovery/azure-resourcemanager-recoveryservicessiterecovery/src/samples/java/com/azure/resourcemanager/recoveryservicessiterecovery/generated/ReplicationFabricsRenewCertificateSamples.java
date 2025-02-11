@@ -23,9 +23,10 @@ public final class ReplicationFabricsRenewCertificateSamples {
      */
     public static void renewsCertificateForTheFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().renewCertificate("vault1", "resourceGroupPS1", "cloud1",
-            new RenewCertificateInput()
-                .withProperties(new RenewCertificateInputProperties().withRenewCertificateType("Cloud")),
-            com.azure.core.util.Context.NONE);
+        manager.replicationFabrics()
+            .renewCertificate("vault1", "resourceGroupPS1", "cloud1",
+                new RenewCertificateInput()
+                    .withProperties(new RenewCertificateInputProperties().withRenewCertificateType("Cloud")),
+                com.azure.core.util.Context.NONE);
     }
 }

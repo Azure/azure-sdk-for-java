@@ -29,8 +29,8 @@ public interface ServerSecurityAlertPoliciesClient {
      * @return a server's security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerSecurityAlertPolicyInner get(
-        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName);
+    ServerSecurityAlertPolicyInner get(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName);
 
     /**
      * Get a server's security alert policy.
@@ -45,8 +45,8 @@ public interface ServerSecurityAlertPoliciesClient {
      * @return a server's security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerSecurityAlertPolicyInner> getWithResponse(
-        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName, Context context);
+    Response<ServerSecurityAlertPolicyInner> getWithResponse(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName, Context context);
 
     /**
      * Creates or updates a threat detection policy.
@@ -62,9 +62,7 @@ public interface ServerSecurityAlertPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
+        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName,
         ServerSecurityAlertPolicyInner parameters);
 
     /**
@@ -82,11 +80,8 @@ public interface ServerSecurityAlertPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ServerSecurityAlertPolicyInner parameters,
-        Context context);
+        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName,
+        ServerSecurityAlertPolicyInner parameters, Context context);
 
     /**
      * Creates or updates a threat detection policy.
@@ -101,11 +96,8 @@ public interface ServerSecurityAlertPoliciesClient {
      * @return a server security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerSecurityAlertPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ServerSecurityAlertPolicyInner parameters);
+    ServerSecurityAlertPolicyInner createOrUpdate(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters);
 
     /**
      * Creates or updates a threat detection policy.
@@ -121,12 +113,8 @@ public interface ServerSecurityAlertPoliciesClient {
      * @return a server security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerSecurityAlertPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ServerSecurityAlertPolicyInner parameters,
-        Context context);
+    ServerSecurityAlertPolicyInner createOrUpdate(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters, Context context);
 
     /**
      * Get the server's threat detection policies.
@@ -153,6 +141,6 @@ public interface ServerSecurityAlertPoliciesClient {
      * @return the server's threat detection policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerSecurityAlertPolicyInner> listByServer(
-        String resourceGroupName, String serverName, Context context);
+    PagedIterable<ServerSecurityAlertPolicyInner> listByServer(String resourceGroupName, String serverName,
+        Context context);
 }

@@ -8,11 +8,18 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
+import com.github.javaparser.javadoc.description.JavadocSnippet;
 import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MessagesSdkCustomization extends Customization {
 
@@ -25,26 +32,38 @@ public class MessagesSdkCustomization extends Customization {
         updateBuilderClass(packageCustomization, "MessageTemplateClientBuilder");
 
         PackageCustomization modelsPackage = libraryCustomization.getPackage("com.azure.communication.messages.models");
+        updateModelClassModifierToAbstract(modelsPackage, "NotificationContent");
+        updateModelClassModifierToAbstract(modelsPackage, "MessageTemplateValue");
+        updateModelClassModifierToAbstract(modelsPackage, "MessageTemplateItem");
         customizeMessageTemplateLocation(modelsPackage);
-        customizeNotificationContentModel(modelsPackage);
-        customizeMessageTemplateValueModel(modelsPackage);
         customizeMessageTemplateItemModel(modelsPackage);
+
+        //Handle Interactive message content models
+        updateModelClassModifierToAbstract(modelsPackage, "MessageContent");
+        updateModelClassModifierToAbstract(modelsPackage, "ActionBindings");
+        updateJavaDocForMethodFromJson(modelsPackage, "ActionBindings");
+        updateJavaDocForMethodFromJson(modelsPackage, "MessageContent");
+        customizeInteractiveMessage(modelsPackage);
 
         PackageCustomization channelsModelsPackage = libraryCustomization.getPackage(
             "com.azure.communication.messages.models.channels");
         updateWhatsAppMessageTemplateItemWithBinaryDataContent(channelsModelsPackage);
+
+        addDeprecateAnnotationToMediaNotificationContent(modelsPackage);
+
+        addDeprecateAnnotationForImageV0CommunicationKind(modelsPackage);
+
+        customizeActionGroup(modelsPackage);
+        customizeActionGroupContent(modelsPackage);
+        customizeButtonSetContent(modelsPackage);
     }
 
-    private void customizeNotificationContentModel(PackageCustomization modelsPackage) {
-        modelsPackage.getClass("NotificationContent")
-            .customizeAst(ast -> ast.getPrimaryType()
-                .ifPresent(clazz -> clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PROTECTED)));
-    }
-
-    private void customizeMessageTemplateValueModel(PackageCustomization modelsPackage) {
-        modelsPackage.getClass("MessageTemplateValue")
-            .customizeAst(ast -> ast.getPrimaryType()
-                .ifPresent(clazz -> clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PROTECTED)));
+    private void updateModelClassModifierToAbstract(PackageCustomization modelsPackage, String className) {
+        modelsPackage.getClass(className)
+            .customizeAst(ast ->  ast.getClassByName(className)
+                .ifPresent(clazz -> clazz.setModifiers(Modifier.Keyword.PUBLIC, Modifier.Keyword.ABSTRACT)
+                    .getConstructors().get(0).setModifiers(Modifier.Keyword.PROTECTED)));
+        removeJsonKnownDiscriminatorMethod(modelsPackage, className);
     }
 
     private void customizeMessageTemplateItemModel(PackageCustomization modelsPackage) {
@@ -172,21 +191,176 @@ public class MessagesSdkCustomization extends Customization {
         });
     }
 
+    private void customizeInteractiveMessage(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("InteractiveMessage").customizeAst(ast -> {
+            ast.getClassByName("InteractiveMessage").ifPresent(clazz -> {
+                clazz.addMethod("getHeader", Modifier.Keyword.PUBLIC)
+                    .setType(clazz.getMethodsByName("getHeaderProperty").get(0).getType())
+                    .setBody(clazz.getMethodsByName("getHeaderProperty").get(0).getBody().get())
+                    .setJavadocComment(clazz.getMethodsByName("getHeaderProperty").get(0).getJavadocComment().get());
+
+                clazz.getMethodsByName("getHeaderProperty").forEach(Node::remove);
+
+                MethodDeclaration setHeaderMethodDeclaration = clazz.getMethodsByName("setHeaderProperty").get(0);
+                List<Parameter> parameters = setHeaderMethodDeclaration
+                    .getParameters()
+                    .stream()
+                    .map(p -> p.setName("header"))
+                    .collect(Collectors.toList());
+                String methodBodyContent = setHeaderMethodDeclaration
+                    .getBody()
+                    .get()
+                    .toString()
+                    .replace("headerProperty;", "header;");
+
+                String docComment = setHeaderMethodDeclaration
+                    .getJavadocComment()
+                    .get()
+                    .getContent()
+                    .replace("headerProperty", "header");
+
+                clazz.addMethod("setHeader", Modifier.Keyword.PUBLIC)
+                    .setParameters(new NodeList<Parameter>(parameters))
+                    .setType(setHeaderMethodDeclaration.getType())
+                    .setBody(StaticJavaParser.parseBlock(methodBodyContent))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(docComment)));
+
+                clazz.getMethodsByName("setHeaderProperty").forEach(Node::remove);
+            });
+        });
+    }
+
     private void updateWhatsAppMessageTemplateItemWithBinaryDataContent(PackageCustomization channelsModelsPackage) {
         channelsModelsPackage.getClass("WhatsAppMessageTemplateItem").customizeAst(ast -> {
-            ast.addImport("com.azure.core.util.BinaryData");
+            // ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport(
                 "com.azure.communication.messages.implementation.accesshelpers.MessageTemplateItemAccessHelper");
             ast.getClassByName("WhatsAppMessageTemplateItem").ifPresent(clazz -> {
-                clazz.getMethodsByName("getContent")
-                    .get(0)
-                    .setType("BinaryData")
-                    .setBody(StaticJavaParser.parseBlock("{return BinaryData.fromObject(this.content);}"));
+                // clazz.getMethodsByName("getContent")
+                //     .get(0)
+                //     .setType("BinaryData")
+                //     .setBody(StaticJavaParser.parseBlock("{return BinaryData.fromObject(this.content);}"));
 
                 String fromJson = clazz.getMethodsByName("fromJson").get(0).getBody().get().toString()
                     .replace("deserializedWhatsAppMessageTemplateItem.setName(name);",
                         "MessageTemplateItemAccessHelper.setName(deserializedWhatsAppMessageTemplateItem, name);");
                 clazz.getMethodsByName("fromJson").get(0).setBody(StaticJavaParser.parseBlock(fromJson));
+            });
+        });
+    }
+
+    private void removeJsonKnownDiscriminatorMethod(PackageCustomization modelPackage, String className) {
+        modelPackage.getClass(className).customizeAst(ast -> {
+            ast.getClassByName(className).ifPresent( clazz -> {
+                String fromJson = clazz.getMethodsByName("fromJson")
+                    .get(0).getBody().get().toString()
+                    .replace("return fromJsonKnownDiscriminator(readerToUse.reset());",
+                        "throw new IllegalStateException(\"Invalid Kind value - \"+discriminatorValue); ");
+                clazz.getMethodsByName("fromJson").get(0).setBody(StaticJavaParser.parseBlock(fromJson));
+                clazz.getMethodsByName("fromJsonKnownDiscriminator").get(0).remove();
+            });
+        });
+    }
+
+    private void addDeprecateAnnotationToMediaNotificationContent(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("MediaNotificationContent").customizeAst(ast -> {
+            ast.getClassByName("MediaNotificationContent").ifPresent(clazz -> {
+                clazz.addAnnotation(Deprecated.class);
+
+                // Remove the @deprecated comment as it cause special character and fails in style check
+                clazz.getJavadoc().ifPresent(doc -> {
+                    String description = doc.getDescription().getElements().get(0).toText()
+                        .replace("&#064;deprecated", "@deprecated");
+                    doc.getDescription().getElements().set(0, new JavadocSnippet(description));
+                    clazz.setJavadocComment(doc.toComment());
+                });
+            });
+        });
+    }
+
+    private  void addDeprecateAnnotationForImageV0CommunicationKind(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("CommunicationMessageKind").customizeAst(ast -> {
+            ast.getClassByName("CommunicationMessageKind")
+                .flatMap(clazz -> clazz.getFieldByName("IMAGE_V0"))
+                .ifPresent(f -> {
+                    f.addAnnotation(Deprecated.class);
+                    f.getJavadocComment().ifPresent(comment -> {
+                        /*
+                            Reducing size comment by replacing with @deprecated since it doesn't fit single line
+                             and fails in style check
+                         */
+                        String content = comment.getContent()
+                            .replace("Image message type.", "@deprecated");
+                        f.setJavadocComment(content);
+                    });
+                });
+        });
+    }
+
+    private void updateJavaDocForMethodFromJson(PackageCustomization modelPackage, String className) {
+        String originalDocText = String.format("@throws IOException If an error occurs while reading the %s.", className);
+        modelPackage.getClass(className).customizeAst(ast -> {
+            ast.getClassByName(className).ifPresent( clazz -> {
+                String fromJsonDoc = clazz.getMethodsByName("fromJson")
+                    .get(0).getJavadoc().get().toText()
+                    .replace(originalDocText,
+                        "@throws IllegalStateException If the deserialized JSON object was missing any required properties.\n" +
+                            originalDocText);
+                clazz.getMethodsByName("fromJson").get(0).setJavadocComment(fromJsonDoc);
+            });
+        });
+    }
+
+    private void customizeActionGroup(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("ActionGroup").customizeAst(ast -> {
+            ast.getClassByName("ActionGroup")
+                .flatMap(clazz -> clazz.getConstructorByParameterTypes(String.class, List.class))
+                .ifPresent(c -> {
+                    String body = c.getBody().toString().replace("this.items = items;",
+                        "this.items = new ArrayList<>(items);");
+                    c.setBody(StaticJavaParser.parseBlock(body));
+            });
+
+            ast.getClassByName("ActionGroup").ifPresent(clazz -> {
+                String getItemsBody = clazz.getMethodsByName("getItems").get(0).getBody().get().toString()
+                    .replace("return this.items;", "return new ArrayList<>(this.items);");
+                clazz.getMethodsByName("getItems").get(0).setBody(StaticJavaParser.parseBlock(getItemsBody));
+            });
+        });
+    }
+
+    private void customizeActionGroupContent(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("ActionGroupContent").customizeAst(ast -> {
+            ast.getClassByName("ActionGroupContent")
+                .flatMap(clazz -> clazz.getConstructorByParameterTypes(String.class, List.class))
+                .ifPresent(c -> {
+                    String body = c.getBody().toString().replace("this.groups = groups;",
+                        "this.groups = new ArrayList<>(groups);");
+                    c.setBody(StaticJavaParser.parseBlock(body));
+                });
+
+            ast.getClassByName("ActionGroupContent").ifPresent(clazz -> {
+                String getItemsBody = clazz.getMethodsByName("getGroups").get(0).getBody().get().toString()
+                    .replace("return this.groups;", "return new ArrayList<>(this.groups);");
+                clazz.getMethodsByName("getGroups").get(0).setBody(StaticJavaParser.parseBlock(getItemsBody));
+            });
+        });
+    }
+
+    private void customizeButtonSetContent(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("ButtonSetContent").customizeAst(ast -> {
+            ast.getClassByName("ButtonSetContent")
+                .flatMap(clazz -> clazz.getConstructorByParameterTypes(List.class))
+                .ifPresent(c -> {
+                    String body = c.getBody().toString().replace("this.buttons = buttons;",
+                        "this.buttons = new ArrayList<>(buttons);");
+                    c.setBody(StaticJavaParser.parseBlock(body));
+                });
+
+            ast.getClassByName("ButtonSetContent").ifPresent(clazz -> {
+                String getItemsBody = clazz.getMethodsByName("getButtons").get(0).getBody().get().toString()
+                    .replace("return this.buttons;", "return new ArrayList<>(this.buttons);");
+                clazz.getMethodsByName("getButtons").get(0).setBody(StaticJavaParser.parseBlock(getItemsBody));
             });
         });
     }

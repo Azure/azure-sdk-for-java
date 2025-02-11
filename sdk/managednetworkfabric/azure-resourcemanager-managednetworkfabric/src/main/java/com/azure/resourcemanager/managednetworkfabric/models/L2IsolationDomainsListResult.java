@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L2IsolationDomainInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of L2 Isolation Domains. */
+/**
+ * List of L2 Isolation Domains.
+ */
 @Fluent
-public final class L2IsolationDomainsListResult {
+public final class L2IsolationDomainsListResult implements JsonSerializable<L2IsolationDomainsListResult> {
     /*
      * Displays list of L2 Isolation Domain resources.
      */
-    @JsonProperty(value = "value")
     private List<L2IsolationDomainInner> value;
 
     /*
      * Url to follow for getting next page of resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of L2IsolationDomainsListResult class. */
+    /**
+     * Creates an instance of L2IsolationDomainsListResult class.
+     */
     public L2IsolationDomainsListResult() {
     }
 
     /**
      * Get the value property: Displays list of L2 Isolation Domain resources.
-     *
+     * 
      * @return the value value.
      */
     public List<L2IsolationDomainInner> value() {
@@ -39,7 +45,7 @@ public final class L2IsolationDomainsListResult {
 
     /**
      * Set the value property: Displays list of L2 Isolation Domain resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the L2IsolationDomainsListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class L2IsolationDomainsListResult {
 
     /**
      * Get the nextLink property: Url to follow for getting next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class L2IsolationDomainsListResult {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the L2IsolationDomainsListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class L2IsolationDomainsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of L2IsolationDomainsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of L2IsolationDomainsListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the L2IsolationDomainsListResult.
+     */
+    public static L2IsolationDomainsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            L2IsolationDomainsListResult deserializedL2IsolationDomainsListResult = new L2IsolationDomainsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<L2IsolationDomainInner> value
+                        = reader.readArray(reader1 -> L2IsolationDomainInner.fromJson(reader1));
+                    deserializedL2IsolationDomainsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedL2IsolationDomainsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedL2IsolationDomainsListResult;
+        });
     }
 }

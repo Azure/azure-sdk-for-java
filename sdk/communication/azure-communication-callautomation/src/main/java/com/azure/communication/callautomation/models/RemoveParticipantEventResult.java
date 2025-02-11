@@ -26,7 +26,8 @@ public final class RemoveParticipantEventResult {
      * @param failureResult the remove participant failed event.
      * @param participant the participant.
      */
-    RemoveParticipantEventResult(boolean isSuccess, RemoveParticipantSucceeded successResult, RemoveParticipantFailed failureResult, CommunicationIdentifier participant) {
+    RemoveParticipantEventResult(boolean isSuccess, RemoveParticipantSucceeded successResult,
+        RemoveParticipantFailed failureResult, CommunicationIdentifier participant) {
         this.isSuccess = isSuccess;
         this.successResult = successResult;
         this.failureResult = failureResult;

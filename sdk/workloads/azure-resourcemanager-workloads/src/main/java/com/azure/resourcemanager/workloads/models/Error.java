@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Standard error object. */
+/**
+ * Standard error object.
+ */
 @Immutable
-public class Error {
+public class Error implements JsonSerializable<Error> {
     /*
      * Server-defined set of error codes.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Human-readable representation of the error.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Target of the error.
      */
-    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /*
      * Array of details about specific errors that led to this reported error.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<Error> details;
 
     /*
-     * Object containing more specific information than  the current object about the error.
+     * Object containing more specific information than the current object about the error.
      */
-    @JsonProperty(value = "innerError", access = JsonProperty.Access.WRITE_ONLY)
     private ErrorInnerError innerError;
 
-    /** Creates an instance of Error class. */
+    /**
+     * Creates an instance of Error class.
+     */
     public Error() {
     }
 
     /**
      * Get the code property: Server-defined set of error codes.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -55,8 +58,19 @@ public class Error {
     }
 
     /**
+     * Set the code property: Server-defined set of error codes.
+     * 
+     * @param code the code value to set.
+     * @return the Error object itself.
+     */
+    Error withCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    /**
      * Get the message property: Human-readable representation of the error.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -64,8 +78,19 @@ public class Error {
     }
 
     /**
+     * Set the message property: Human-readable representation of the error.
+     * 
+     * @param message the message value to set.
+     * @return the Error object itself.
+     */
+    Error withMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    /**
      * Get the target property: Target of the error.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -73,8 +98,19 @@ public class Error {
     }
 
     /**
+     * Set the target property: Target of the error.
+     * 
+     * @param target the target value to set.
+     * @return the Error object itself.
+     */
+    Error withTarget(String target) {
+        this.target = target;
+        return this;
+    }
+
+    /**
      * Get the details property: Array of details about specific errors that led to this reported error.
-     *
+     * 
      * @return the details value.
      */
     public List<Error> details() {
@@ -82,8 +118,19 @@ public class Error {
     }
 
     /**
+     * Set the details property: Array of details about specific errors that led to this reported error.
+     * 
+     * @param details the details value to set.
+     * @return the Error object itself.
+     */
+    Error withDetails(List<Error> details) {
+        this.details = details;
+        return this;
+    }
+
+    /**
      * Get the innerError property: Object containing more specific information than the current object about the error.
-     *
+     * 
      * @return the innerError value.
      */
     public ErrorInnerError innerError() {
@@ -91,8 +138,19 @@ public class Error {
     }
 
     /**
+     * Set the innerError property: Object containing more specific information than the current object about the error.
+     * 
+     * @param innerError the innerError value to set.
+     * @return the Error object itself.
+     */
+    Error withInnerError(ErrorInnerError innerError) {
+        this.innerError = innerError;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -102,5 +160,49 @@ public class Error {
         if (innerError() != null) {
             innerError().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Error from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Error.
+     */
+    public static Error fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Error deserializedError = new Error();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedError.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedError.target = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<Error> details = reader.readArray(reader1 -> Error.fromJson(reader1));
+                    deserializedError.details = details;
+                } else if ("innerError".equals(fieldName)) {
+                    deserializedError.innerError = ErrorInnerError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedError;
+        });
     }
 }

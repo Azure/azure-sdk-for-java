@@ -15,15 +15,19 @@ import java.util.List;
 public final class MetricSeriesDataHelper {
     private static MetricSeriesDataAccessor accessor;
 
-    private MetricSeriesDataHelper() { }
+    private MetricSeriesDataHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link MetricSeriesData} instance.
      */
     public interface MetricSeriesDataAccessor {
         void setMetricId(MetricSeriesData seriesData, String metricId);
+
         void setSeriesKey(MetricSeriesData seriesData, DimensionKey seriesKey);
+
         void setTimestampList(MetricSeriesData seriesData, List<OffsetDateTime> timestampList);
+
         void setValueList(MetricSeriesData seriesData, List<Double> valueList);
     }
 

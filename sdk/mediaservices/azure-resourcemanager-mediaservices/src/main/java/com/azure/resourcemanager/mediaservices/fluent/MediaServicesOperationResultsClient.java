@@ -10,13 +10,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
 import com.azure.resourcemanager.mediaservices.models.MediaServicesOperationResultsGetResponse;
 
-/** An instance of this class provides access to all the operations defined in MediaServicesOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MediaServicesOperationResultsClient.
+ */
 public interface MediaServicesOperationResultsClient {
     /**
      * Get operation result.
-     *
-     * <p>Get media service operation result.
-     *
+     * 
+     * Get media service operation result.
+     * 
      * @param locationName Location name.
      * @param operationId Operation Id.
      * @param context The context to associate with this operation.
@@ -30,9 +32,9 @@ public interface MediaServicesOperationResultsClient {
 
     /**
      * Get operation result.
-     *
-     * <p>Get media service operation result.
-     *
+     * 
+     * Get media service operation result.
+     * 
      * @param locationName Location name.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

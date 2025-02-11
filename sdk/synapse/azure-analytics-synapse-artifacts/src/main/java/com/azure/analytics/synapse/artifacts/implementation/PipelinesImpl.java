@@ -252,10 +252,8 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineResource>> createOrUpdatePipelineWithResponseAsync(String pipelineName,
         PipelineResource pipeline, String ifMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdatePipeline(this.client.getEndpoint(), pipelineName,
-            apiVersion, ifMatch, pipeline, accept, context));
+        return FluxUtil
+            .withContext(context -> createOrUpdatePipelineWithResponseAsync(pipelineName, pipeline, ifMatch, context));
     }
 
     /**
@@ -401,10 +399,7 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineResource>> getPipelineWithResponseAsync(String pipelineName, String ifNoneMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getPipeline(this.client.getEndpoint(), pipelineName, apiVersion,
-            ifNoneMatch, accept, context));
+        return FluxUtil.withContext(context -> getPipelineWithResponseAsync(pipelineName, ifNoneMatch, context));
     }
 
     /**
@@ -536,10 +531,7 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deletePipelineWithResponseAsync(String pipelineName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deletePipeline(this.client.getEndpoint(), pipelineName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> deletePipelineWithResponseAsync(pipelineName, context));
     }
 
     /**
@@ -628,10 +620,7 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renamePipelineWithResponseAsync(String pipelineName, ArtifactRenameRequest request) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.renamePipeline(this.client.getEndpoint(), pipelineName,
-            apiVersion, request, accept, context));
+        return FluxUtil.withContext(context -> renamePipelineWithResponseAsync(pipelineName, request, context));
     }
 
     /**
@@ -735,10 +724,8 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateRunResponse>> createPipelineRunWithResponseAsync(String pipelineName,
         String referencePipelineRunId, Boolean isRecovery, String startActivityName, Map<String, Object> parameters) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createPipelineRun(this.client.getEndpoint(), pipelineName,
-            apiVersion, referencePipelineRunId, isRecovery, startActivityName, parameters, accept, context));
+        return FluxUtil.withContext(context -> createPipelineRunWithResponseAsync(pipelineName, referencePipelineRunId,
+            isRecovery, startActivityName, parameters, context));
     }
 
     /**
@@ -908,9 +895,7 @@ public final class PipelinesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -929,9 +914,7 @@ public final class PipelinesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -950,9 +933,7 @@ public final class PipelinesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -966,9 +947,7 @@ public final class PipelinesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

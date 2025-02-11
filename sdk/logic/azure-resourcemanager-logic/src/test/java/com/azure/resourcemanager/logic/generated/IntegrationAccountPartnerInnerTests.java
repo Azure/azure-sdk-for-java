@@ -6,8 +6,11 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountPartnerInner;
+import com.azure.resourcemanager.logic.models.B2BPartnerContent;
+import com.azure.resourcemanager.logic.models.BusinessIdentity;
 import com.azure.resourcemanager.logic.models.PartnerContent;
 import com.azure.resourcemanager.logic.models.PartnerType;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -15,31 +18,34 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountPartnerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountPartnerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"partnerType\":\"B2B\",\"createdTime\":\"2021-06-14T15:38:54Z\",\"changedTime\":\"2021-03-22T22:49:04Z\",\"metadata\":\"dataxnbkfezzxscyhwzd\",\"content\":{}},\"location\":\"rujbzbomvzzbtdc\",\"tags\":{\"ylwdshfssn\":\"niyujv\",\"rymsgaojfmw\":\"bgye\",\"hirctymoxoftpipi\":\"cotmr\"},\"id\":\"yczuhxacpq\",\"name\":\"lihhyuspskasdvlm\",\"type\":\"wdgzxulucv\"}")
-                .toObject(IntegrationAccountPartnerInner.class);
-        Assertions.assertEquals("rujbzbomvzzbtdc", model.location());
-        Assertions.assertEquals("niyujv", model.tags().get("ylwdshfssn"));
+        IntegrationAccountPartnerInner model = BinaryData.fromString(
+            "{\"properties\":{\"partnerType\":\"B2B\",\"createdTime\":\"2020-12-22T10:55:39Z\",\"changedTime\":\"2021-05-18T17:24:34Z\",\"metadata\":\"datak\",\"content\":{\"b2b\":{\"businessIdentities\":[{\"qualifier\":\"jeamurv\",\"value\":\"mlovuanashcxl\"},{\"qualifier\":\"mjerbdk\",\"value\":\"lvidizozs\"}]}}},\"location\":\"bccxjmonfdgn\",\"tags\":{\"keifzzhmkdasv\":\"ypuuwwltvuqjctze\",\"cu\":\"lyhb\",\"boldforobwj\":\"chxgs\"},\"id\":\"vizbfhfo\",\"name\":\"vacqpbtuodxesz\",\"type\":\"bbelawumuaslzk\"}")
+            .toObject(IntegrationAccountPartnerInner.class);
+        Assertions.assertEquals("bccxjmonfdgn", model.location());
+        Assertions.assertEquals("ypuuwwltvuqjctze", model.tags().get("keifzzhmkdasv"));
         Assertions.assertEquals(PartnerType.B2B, model.partnerType());
+        Assertions.assertEquals("jeamurv", model.content().b2B().businessIdentities().get(0).qualifier());
+        Assertions.assertEquals("mlovuanashcxl", model.content().b2B().businessIdentities().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountPartnerInner model =
-            new IntegrationAccountPartnerInner()
-                .withLocation("rujbzbomvzzbtdc")
-                .withTags(mapOf("ylwdshfssn", "niyujv", "rymsgaojfmw", "bgye", "hirctymoxoftpipi", "cotmr"))
-                .withPartnerType(PartnerType.B2B)
-                .withMetadata("dataxnbkfezzxscyhwzd")
-                .withContent(new PartnerContent());
+        IntegrationAccountPartnerInner model = new IntegrationAccountPartnerInner().withLocation("bccxjmonfdgn")
+            .withTags(mapOf("keifzzhmkdasv", "ypuuwwltvuqjctze", "cu", "lyhb", "boldforobwj", "chxgs"))
+            .withPartnerType(PartnerType.B2B)
+            .withMetadata("datak")
+            .withContent(new PartnerContent().withB2B(new B2BPartnerContent().withBusinessIdentities(
+                Arrays.asList(new BusinessIdentity().withQualifier("jeamurv").withValue("mlovuanashcxl"),
+                    new BusinessIdentity().withQualifier("mjerbdk").withValue("lvidizozs")))));
         model = BinaryData.fromObject(model).toObject(IntegrationAccountPartnerInner.class);
-        Assertions.assertEquals("rujbzbomvzzbtdc", model.location());
-        Assertions.assertEquals("niyujv", model.tags().get("ylwdshfssn"));
+        Assertions.assertEquals("bccxjmonfdgn", model.location());
+        Assertions.assertEquals("ypuuwwltvuqjctze", model.tags().get("keifzzhmkdasv"));
         Assertions.assertEquals(PartnerType.B2B, model.partnerType());
+        Assertions.assertEquals("jeamurv", model.content().b2B().businessIdentities().get(0).qualifier());
+        Assertions.assertEquals("mlovuanashcxl", model.content().b2B().businessIdentities().get(0).value());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

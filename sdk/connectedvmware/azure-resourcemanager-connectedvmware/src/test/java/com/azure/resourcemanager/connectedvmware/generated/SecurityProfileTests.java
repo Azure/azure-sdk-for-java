@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityProfile model =
-            BinaryData.fromString("{\"uefiSettings\":{\"secureBootEnabled\":true}}").toObject(SecurityProfile.class);
+        SecurityProfile model
+            = BinaryData.fromString("{\"uefiSettings\":{\"secureBootEnabled\":true}}").toObject(SecurityProfile.class);
         Assertions.assertEquals(true, model.uefiSettings().secureBootEnabled());
     }
 

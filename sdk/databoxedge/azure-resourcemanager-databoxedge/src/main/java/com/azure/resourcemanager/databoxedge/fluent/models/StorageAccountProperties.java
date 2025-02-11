@@ -5,56 +5,58 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.DataPolicy;
 import com.azure.resourcemanager.databoxedge.models.StorageAccountStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The storage account properties. */
+/**
+ * The storage account properties.
+ */
 @Fluent
-public final class StorageAccountProperties {
+public final class StorageAccountProperties implements JsonSerializable<StorageAccountProperties> {
     /*
      * Description for the storage Account.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Current status of the storage account
      */
-    @JsonProperty(value = "storageAccountStatus")
     private StorageAccountStatus storageAccountStatus;
 
     /*
      * Data policy of the storage Account.
      */
-    @JsonProperty(value = "dataPolicy")
     private DataPolicy dataPolicy;
 
     /*
      * Storage Account Credential Id
      */
-    @JsonProperty(value = "storageAccountCredentialId")
     private String storageAccountCredentialId;
 
     /*
      * BlobEndpoint of Storage Account
      */
-    @JsonProperty(value = "blobEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String blobEndpoint;
 
     /*
      * The Container Count. Present only for Storage Accounts with DataPolicy set to Cloud.
      */
-    @JsonProperty(value = "containerCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer containerCount;
 
-    /** Creates an instance of StorageAccountProperties class. */
+    /**
+     * Creates an instance of StorageAccountProperties class.
+     */
     public StorageAccountProperties() {
     }
 
     /**
      * Get the description property: Description for the storage Account.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -63,7 +65,7 @@ public final class StorageAccountProperties {
 
     /**
      * Set the description property: Description for the storage Account.
-     *
+     * 
      * @param description the description value to set.
      * @return the StorageAccountProperties object itself.
      */
@@ -74,7 +76,7 @@ public final class StorageAccountProperties {
 
     /**
      * Get the storageAccountStatus property: Current status of the storage account.
-     *
+     * 
      * @return the storageAccountStatus value.
      */
     public StorageAccountStatus storageAccountStatus() {
@@ -83,7 +85,7 @@ public final class StorageAccountProperties {
 
     /**
      * Set the storageAccountStatus property: Current status of the storage account.
-     *
+     * 
      * @param storageAccountStatus the storageAccountStatus value to set.
      * @return the StorageAccountProperties object itself.
      */
@@ -94,7 +96,7 @@ public final class StorageAccountProperties {
 
     /**
      * Get the dataPolicy property: Data policy of the storage Account.
-     *
+     * 
      * @return the dataPolicy value.
      */
     public DataPolicy dataPolicy() {
@@ -103,7 +105,7 @@ public final class StorageAccountProperties {
 
     /**
      * Set the dataPolicy property: Data policy of the storage Account.
-     *
+     * 
      * @param dataPolicy the dataPolicy value to set.
      * @return the StorageAccountProperties object itself.
      */
@@ -114,7 +116,7 @@ public final class StorageAccountProperties {
 
     /**
      * Get the storageAccountCredentialId property: Storage Account Credential Id.
-     *
+     * 
      * @return the storageAccountCredentialId value.
      */
     public String storageAccountCredentialId() {
@@ -123,7 +125,7 @@ public final class StorageAccountProperties {
 
     /**
      * Set the storageAccountCredentialId property: Storage Account Credential Id.
-     *
+     * 
      * @param storageAccountCredentialId the storageAccountCredentialId value to set.
      * @return the StorageAccountProperties object itself.
      */
@@ -134,7 +136,7 @@ public final class StorageAccountProperties {
 
     /**
      * Get the blobEndpoint property: BlobEndpoint of Storage Account.
-     *
+     * 
      * @return the blobEndpoint value.
      */
     public String blobEndpoint() {
@@ -144,7 +146,7 @@ public final class StorageAccountProperties {
     /**
      * Get the containerCount property: The Container Count. Present only for Storage Accounts with DataPolicy set to
      * Cloud.
-     *
+     * 
      * @return the containerCount value.
      */
     public Integer containerCount() {
@@ -153,9 +155,60 @@ public final class StorageAccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("storageAccountStatus",
+            this.storageAccountStatus == null ? null : this.storageAccountStatus.toString());
+        jsonWriter.writeStringField("dataPolicy", this.dataPolicy == null ? null : this.dataPolicy.toString());
+        jsonWriter.writeStringField("storageAccountCredentialId", this.storageAccountCredentialId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageAccountProperties.
+     */
+    public static StorageAccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountProperties deserializedStorageAccountProperties = new StorageAccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedStorageAccountProperties.description = reader.getString();
+                } else if ("storageAccountStatus".equals(fieldName)) {
+                    deserializedStorageAccountProperties.storageAccountStatus
+                        = StorageAccountStatus.fromString(reader.getString());
+                } else if ("dataPolicy".equals(fieldName)) {
+                    deserializedStorageAccountProperties.dataPolicy = DataPolicy.fromString(reader.getString());
+                } else if ("storageAccountCredentialId".equals(fieldName)) {
+                    deserializedStorageAccountProperties.storageAccountCredentialId = reader.getString();
+                } else if ("blobEndpoint".equals(fieldName)) {
+                    deserializedStorageAccountProperties.blobEndpoint = reader.getString();
+                } else if ("containerCount".equals(fieldName)) {
+                    deserializedStorageAccountProperties.containerCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountProperties;
+        });
     }
 }

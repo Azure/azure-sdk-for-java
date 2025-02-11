@@ -21,15 +21,15 @@ public class ApplicationGatewayBackendHttpConfigurationHealthImpl
     private final ApplicationGatewayBackendHealthImpl backendHealth;
     private final Map<String, ApplicationGatewayBackendServerHealth> serverHealths = new TreeMap<>();
 
-    ApplicationGatewayBackendHttpConfigurationHealthImpl(
-        ApplicationGatewayBackendHealthHttpSettings inner, ApplicationGatewayBackendHealthImpl backendHealth) {
+    ApplicationGatewayBackendHttpConfigurationHealthImpl(ApplicationGatewayBackendHealthHttpSettings inner,
+        ApplicationGatewayBackendHealthImpl backendHealth) {
         this.inner = inner;
         this.backendHealth = backendHealth;
 
         if (inner.servers() != null) {
             for (ApplicationGatewayBackendHealthServerInner serverHealthInner : this.innerModel().servers()) {
-                ApplicationGatewayBackendServerHealth serverHealth =
-                    new ApplicationGatewayBackendServerHealthImpl(serverHealthInner, this);
+                ApplicationGatewayBackendServerHealth serverHealth
+                    = new ApplicationGatewayBackendServerHealthImpl(serverHealthInner, this);
                 this.serverHealths.put(serverHealth.ipAddress(), serverHealth);
             }
         }

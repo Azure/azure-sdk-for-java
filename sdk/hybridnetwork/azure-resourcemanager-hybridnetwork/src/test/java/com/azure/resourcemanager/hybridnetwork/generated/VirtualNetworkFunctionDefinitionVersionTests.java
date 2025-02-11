@@ -23,7 +23,8 @@ public final class VirtualNetworkFunctionDefinitionVersionTests {
     public void testSerialize() throws Exception {
         VirtualNetworkFunctionDefinitionVersion model
             = new VirtualNetworkFunctionDefinitionVersion().withDescription("xvxcjzhq")
-                .withDeployParameters("xfpxtgqscja").withNetworkFunctionTemplate(new VirtualNetworkFunctionTemplate());
+                .withDeployParameters("xfpxtgqscja")
+                .withNetworkFunctionTemplate(new VirtualNetworkFunctionTemplate());
         model = BinaryData.fromObject(model).toObject(VirtualNetworkFunctionDefinitionVersion.class);
         Assertions.assertEquals("xvxcjzhq", model.description());
         Assertions.assertEquals("xfpxtgqscja", model.deployParameters());

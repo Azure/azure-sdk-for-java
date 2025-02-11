@@ -6,11 +6,9 @@ package com.azure.resourcemanager.hybridnetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridnetwork.HybridNetworkManager;
 import com.azure.resourcemanager.hybridnetwork.models.DependsOnProfile;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkServiceDesignVersion;
@@ -18,7 +16,6 @@ import com.azure.resourcemanager.hybridnetwork.models.NetworkServiceDesignVersio
 import com.azure.resourcemanager.hybridnetwork.models.NfviDetails;
 import com.azure.resourcemanager.hybridnetwork.models.ReferencedResource;
 import com.azure.resourcemanager.hybridnetwork.models.ResourceElementTemplate;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -26,56 +23,42 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkServiceDesignVersionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"versionState\":\"Deprecated\",\"description\":\"ygbpvnwswmt\",\"configurationGroupSchemaReferences\":{\"l\":{\"id\":\"twwgzwx\"},\"zaifghtmoqqtlff\":{\"id\":\"cvogygzyvne\"}},\"nfvisFromSite\":{\"idbz\":{\"name\":\"rkjjjavfqnvhnq\",\"type\":\"wdogiyetesyp\"},\"hpsprkzyaupiac\":{\"name\":\"hqtfbovn\",\"type\":\"kbwetnj\"}},\"resourceElementTemplates\":[{\"type\":\"ResourceElementTemplate\",\"name\":\"fbwqrooht\",\"dependsOnProfile\":{\"installDependsOn\":[\"aonurjtumg\",\"ihpvecmslclblyj\"],\"uninstallDependsOn\":[\"bsjuscvsfx\",\"gctmgxuupbezq\",\"cydrtceukdqkk\"],\"updateDependsOn\":[\"ztgeqmgqzgwld\",\"ychillcecfe\",\"uwaoaguhicqlli\",\"stacsjvhrweftkwq\"]}}]},\"location\":\"pmvssehaep\",\"tags\":{\"jduyyespydjfb\":\"cxtczhupeukn\",\"v\":\"c\"},\"id\":\"hulrtywikdmhla\",\"name\":\"uflgbhgauacdixm\",\"type\":\"ufr\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        NetworkServiceDesignVersion response
-            = manager.networkServiceDesignVersions().define("gdzbenr").withRegion("yuuzivens")
-                .withExistingNetworkServiceDesignGroup("ojpslsvjgpliufi", "woyxqvapcohhou", "qpqojxcxzrzd")
-                .withTags(mapOf("ijp", "eyyvpkpatl", "olmk", "gsksrfhf", "ommpvfqaw", "bnxwc"))
-                .withProperties(new NetworkServiceDesignVersionPropertiesFormat().withDescription("zqddtjwfljhzn")
-                    .withConfigurationGroupSchemaReferences(mapOf("jj", new ReferencedResource().withId("atmzw"),
-                        "tzuuvb", new ReferencedResource().withId("qtjzmizvgbg"), "ajqfutlx",
-                        new ReferencedResource().withId("grebwggahttzlsw")))
-                    .withNfvisFromSite(
-                        mapOf("cnjrohmbpyryxame", new NfviDetails().withName("asunwqrjzfrgq").withType("ohcmbu"),
-                            "dlfp", new NfviDetails().withName("ydyvkfkmro").withType("nehvsmt"), "jlgvvpase",
-                            new NfviDetails().withName("pucygvoavyunss").withType("ghiee"), "iwrqofulopmjnl",
-                            new NfviDetails().withName("gbuxantuygdh").withType("qipir")))
-                    .withResourceElementTemplates(Arrays.asList(new ResourceElementTemplate().withName("cbjpibkephuu")
-                        .withDependsOnProfile(new DependsOnProfile()
-                            .withInstallDependsOn(Arrays.asList("t", "toyint", "pbrlcyrduczkgofx", "fsrucv"))
-                            .withUninstallDependsOn(
-                                Arrays.asList("pcjttbstvjeaqn", "mvvfko", "mlghktuidvrmazlp", "wwexymzvlazipbh"))
-                            .withUpdateDependsOn(Arrays.asList("qsg"))))))
-                .create();
+        NetworkServiceDesignVersion response = manager.networkServiceDesignVersions()
+            .define("gdzbenr")
+            .withRegion("yuuzivens")
+            .withExistingNetworkServiceDesignGroup("ojpslsvjgpliufi", "woyxqvapcohhou", "qpqojxcxzrzd")
+            .withTags(mapOf("ijp", "eyyvpkpatl", "olmk", "gsksrfhf", "ommpvfqaw", "bnxwc"))
+            .withProperties(new NetworkServiceDesignVersionPropertiesFormat().withDescription("zqddtjwfljhzn")
+                .withConfigurationGroupSchemaReferences(mapOf("jj", new ReferencedResource().withId("atmzw"), "tzuuvb",
+                    new ReferencedResource().withId("qtjzmizvgbg"), "ajqfutlx",
+                    new ReferencedResource().withId("grebwggahttzlsw")))
+                .withNfvisFromSite(
+                    mapOf("cnjrohmbpyryxame", new NfviDetails().withName("asunwqrjzfrgq").withType("ohcmbu"), "dlfp",
+                        new NfviDetails().withName("ydyvkfkmro").withType("nehvsmt"), "jlgvvpase",
+                        new NfviDetails().withName("pucygvoavyunss").withType("ghiee"), "iwrqofulopmjnl",
+                        new NfviDetails().withName("gbuxantuygdh").withType("qipir")))
+                .withResourceElementTemplates(Arrays.asList(new ResourceElementTemplate().withName("cbjpibkephuu")
+                    .withDependsOnProfile(new DependsOnProfile()
+                        .withInstallDependsOn(Arrays.asList("t", "toyint", "pbrlcyrduczkgofx", "fsrucv"))
+                        .withUninstallDependsOn(
+                            Arrays.asList("pcjttbstvjeaqn", "mvvfko", "mlghktuidvrmazlp", "wwexymzvlazipbh"))
+                        .withUpdateDependsOn(Arrays.asList("qsg"))))))
+            .create();
 
         Assertions.assertEquals("pmvssehaep", response.location());
         Assertions.assertEquals("cxtczhupeukn", response.tags().get("jduyyespydjfb"));

@@ -5,23 +5,35 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The DefaultRolloutSpecificationCanary model. */
+/**
+ * The DefaultRolloutSpecificationCanary model.
+ */
 @Fluent
 public final class DefaultRolloutSpecificationCanary extends CanaryTrafficRegionRolloutConfiguration {
-    /** Creates an instance of DefaultRolloutSpecificationCanary class. */
+    /**
+     * Creates an instance of DefaultRolloutSpecificationCanary class.
+     */
     public DefaultRolloutSpecificationCanary() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultRolloutSpecificationCanary withSkipRegions(List<String> skipRegions) {
         super.withSkipRegions(skipRegions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultRolloutSpecificationCanary withRegions(List<String> regions) {
         super.withRegions(regions);
@@ -30,11 +42,52 @@ public final class DefaultRolloutSpecificationCanary extends CanaryTrafficRegion
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("skipRegions", skipRegions(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("regions", regions(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefaultRolloutSpecificationCanary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultRolloutSpecificationCanary if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefaultRolloutSpecificationCanary.
+     */
+    public static DefaultRolloutSpecificationCanary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefaultRolloutSpecificationCanary deserializedDefaultRolloutSpecificationCanary
+                = new DefaultRolloutSpecificationCanary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("skipRegions".equals(fieldName)) {
+                    List<String> skipRegions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDefaultRolloutSpecificationCanary.withSkipRegions(skipRegions);
+                } else if ("regions".equals(fieldName)) {
+                    List<String> regions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDefaultRolloutSpecificationCanary.withRegions(regions);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefaultRolloutSpecificationCanary;
+        });
     }
 }

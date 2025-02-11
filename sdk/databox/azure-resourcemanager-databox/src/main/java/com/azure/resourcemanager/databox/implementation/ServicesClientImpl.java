@@ -39,17 +39,23 @@ import com.azure.resourcemanager.databox.models.ValidateAddress;
 import com.azure.resourcemanager.databox.models.ValidationRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServicesClient.
+ */
 public final class ServicesClientImpl implements ServicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataBoxManagementClientImpl client;
 
     /**
      * Initializes an instance of ServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServicesClientImpl(DataBoxManagementClientImpl client) {
@@ -64,127 +70,100 @@ public final class ServicesClientImpl implements ServicesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxManagementCli")
     public interface ServicesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/availableSkus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/availableSkus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailableSkusResult>> listAvailableSkusByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AvailableSkusResult>> listAvailableSkusByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("location") String location,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AvailableSkuRequest availableSkuRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/validateAddress")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AddressValidationOutputInner>> validateAddress(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
+        Mono<Response<AddressValidationOutputInner>> validateAddress(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ValidateAddress validateAddress,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ValidateAddress validateAddress, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/validateInputs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/validateInputs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ValidationResponseInner>> validateInputsByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ValidationResponseInner>> validateInputsByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("location") String location,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ValidationRequest validationRequest,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ValidationRequest validationRequest, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/validateInputs")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ValidationResponseInner>> validateInputs(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
+        Mono<Response<ValidationResponseInner>> validateInputs(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ValidationRequest validationRequest,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ValidationRequest validationRequest, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/regionConfiguration")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegionConfigurationResponseInner>> regionConfiguration(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
+        Mono<Response<RegionConfigurationResponseInner>> regionConfiguration(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RegionConfigurationRequest regionConfigurationRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/regionConfiguration")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/regionConfiguration")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RegionConfigurationResponseInner>> regionConfigurationByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("location") String location,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RegionConfigurationRequest regionConfigurationRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AvailableSkusResult>> listAvailableSkusByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>> listAvailableSkusByResourceGroupSinglePageAsync(
         String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -201,33 +180,17 @@ public final class ServicesClientImpl implements ServicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAvailableSkusByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            location,
-                            this.client.getApiVersion(),
-                            availableSkuRequest,
-                            accept,
-                            context))
-            .<PagedResponse<SkuInformationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listAvailableSkusByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, location, this.client.getApiVersion(),
+                availableSkuRequest, accept, context))
+            .<PagedResponse<SkuInformationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -235,23 +198,19 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>> listAvailableSkusByResourceGroupSinglePageAsync(
         String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -269,29 +228,15 @@ public final class ServicesClientImpl implements ServicesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAvailableSkusByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                location,
-                this.client.getApiVersion(),
-                availableSkuRequest,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listAvailableSkusByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, location, this.client.getApiVersion(), availableSkuRequest, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -301,8 +246,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return the available skus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SkuInformationInner> listAvailableSkusByResourceGroupAsync(
-        String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest) {
+    private PagedFlux<SkuInformationInner> listAvailableSkusByResourceGroupAsync(String resourceGroupName,
+        String location, AvailableSkuRequest availableSkuRequest) {
         return new PagedFlux<>(
             () -> listAvailableSkusByResourceGroupSinglePageAsync(resourceGroupName, location, availableSkuRequest),
             nextLink -> listAvailableSkusByResourceGroupNextSinglePageAsync(nextLink));
@@ -310,7 +255,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -321,18 +266,16 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return the available skus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SkuInformationInner> listAvailableSkusByResourceGroupAsync(
-        String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listAvailableSkusByResourceGroupSinglePageAsync(
-                    resourceGroupName, location, availableSkuRequest, context),
+    private PagedFlux<SkuInformationInner> listAvailableSkusByResourceGroupAsync(String resourceGroupName,
+        String location, AvailableSkuRequest availableSkuRequest, Context context) {
+        return new PagedFlux<>(() -> listAvailableSkusByResourceGroupSinglePageAsync(resourceGroupName, location,
+            availableSkuRequest, context),
             nextLink -> listAvailableSkusByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -342,15 +285,15 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return the available skus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(
-        String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest) {
+    public PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(String resourceGroupName,
+        String location, AvailableSkuRequest availableSkuRequest) {
         return new PagedIterable<>(
             listAvailableSkusByResourceGroupAsync(resourceGroupName, location, availableSkuRequest));
     }
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -361,8 +304,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return the available skus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(
-        String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest, Context context) {
+    public PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(String resourceGroupName,
+        String location, AvailableSkuRequest availableSkuRequest, Context context) {
         return new PagedIterable<>(
             listAvailableSkusByResourceGroupAsync(resourceGroupName, location, availableSkuRequest, context));
     }
@@ -370,29 +313,25 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the address validation api along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of the address validation api along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AddressValidationOutputInner>> validateAddressWithResponseAsync(
-        String location, ValidateAddress validateAddress) {
+    private Mono<Response<AddressValidationOutputInner>> validateAddressWithResponseAsync(String location,
+        ValidateAddress validateAddress) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -405,47 +344,34 @@ public final class ServicesClientImpl implements ServicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validateAddress(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            this.client.getApiVersion(),
-                            validateAddress,
-                            accept,
-                            context))
+            .withContext(context -> service.validateAddress(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                location, this.client.getApiVersion(), validateAddress, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the address validation api along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of the address validation api along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AddressValidationOutputInner>> validateAddressWithResponseAsync(
-        String location, ValidateAddress validateAddress, Context context) {
+    private Mono<Response<AddressValidationOutputInner>> validateAddressWithResponseAsync(String location,
+        ValidateAddress validateAddress, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -458,21 +384,14 @@ public final class ServicesClientImpl implements ServicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validateAddress(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                this.client.getApiVersion(),
-                validateAddress,
-                accept,
-                context);
+        return service.validateAddress(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), validateAddress, accept, context);
     }
 
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -489,7 +408,7 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @param context The context to associate with this operation.
@@ -499,15 +418,15 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return output of the address validation api along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddressValidationOutputInner> validateAddressWithResponse(
-        String location, ValidateAddress validateAddress, Context context) {
+    public Response<AddressValidationOutputInner> validateAddressWithResponse(String location,
+        ValidateAddress validateAddress, Context context) {
         return validateAddressWithResponseAsync(location, validateAddress, context).block();
     }
 
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -522,30 +441,26 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidationResponseInner>> validateInputsByResourceGroupWithResponseAsync(
         String resourceGroupName, String location, ValidationRequest validationRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -562,24 +477,15 @@ public final class ServicesClientImpl implements ServicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validateInputsByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            location,
-                            this.client.getApiVersion(),
-                            validationRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.validateInputsByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, location, this.client.getApiVersion(),
+                validationRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -587,23 +493,19 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidationResponseInner>> validateInputsByResourceGroupWithResponseAsync(
         String resourceGroupName, String location, ValidationRequest validationRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -620,21 +522,13 @@ public final class ServicesClientImpl implements ServicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validateInputsByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                location,
-                this.client.getApiVersion(),
-                validationRequest,
-                accept,
-                context);
+        return service.validateInputsByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, location, this.client.getApiVersion(), validationRequest, accept, context);
     }
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -644,15 +538,15 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return response of pre job creation validations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidationResponseInner> validateInputsByResourceGroupAsync(
-        String resourceGroupName, String location, ValidationRequest validationRequest) {
+    private Mono<ValidationResponseInner> validateInputsByResourceGroupAsync(String resourceGroupName, String location,
+        ValidationRequest validationRequest) {
         return validateInputsByResourceGroupWithResponseAsync(resourceGroupName, location, validationRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -663,15 +557,15 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return response of pre job creation validations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ValidationResponseInner> validateInputsByResourceGroupWithResponse(
-        String resourceGroupName, String location, ValidationRequest validationRequest, Context context) {
+    public Response<ValidationResponseInner> validateInputsByResourceGroupWithResponse(String resourceGroupName,
+        String location, ValidationRequest validationRequest, Context context) {
         return validateInputsByResourceGroupWithResponseAsync(resourceGroupName, location, validationRequest, context)
             .block();
     }
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -681,37 +575,33 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return response of pre job creation validations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidationResponseInner validateInputsByResourceGroup(
-        String resourceGroupName, String location, ValidationRequest validationRequest) {
+    public ValidationResponseInner validateInputsByResourceGroup(String resourceGroupName, String location,
+        ValidationRequest validationRequest) {
         return validateInputsByResourceGroupWithResponse(resourceGroupName, location, validationRequest, Context.NONE)
             .getValue();
     }
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ValidationResponseInner>> validateInputsWithResponseAsync(
-        String location, ValidationRequest validationRequest) {
+    private Mono<Response<ValidationResponseInner>> validateInputsWithResponseAsync(String location,
+        ValidationRequest validationRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -724,46 +614,33 @@ public final class ServicesClientImpl implements ServicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validateInputs(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            this.client.getApiVersion(),
-                            validationRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.validateInputs(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                location, this.client.getApiVersion(), validationRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ValidationResponseInner>> validateInputsWithResponseAsync(
-        String location, ValidationRequest validationRequest, Context context) {
+    private Mono<Response<ValidationResponseInner>> validateInputsWithResponseAsync(String location,
+        ValidationRequest validationRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -776,20 +653,13 @@ public final class ServicesClientImpl implements ServicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validateInputs(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                this.client.getApiVersion(),
-                validationRequest,
-                accept,
-                context);
+        return service.validateInputs(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), validationRequest, accept, context);
     }
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -805,7 +675,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @param context The context to associate with this operation.
@@ -815,14 +685,14 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return response of pre job creation validations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ValidationResponseInner> validateInputsWithResponse(
-        String location, ValidationRequest validationRequest, Context context) {
+    public Response<ValidationResponseInner> validateInputsWithResponse(String location,
+        ValidationRequest validationRequest, Context context) {
         return validateInputsWithResponseAsync(location, validationRequest, context).block();
     }
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -837,60 +707,46 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationWithResponseAsync(
-        String location, RegionConfigurationRequest regionConfigurationRequest) {
+    private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationWithResponseAsync(String location,
+        RegionConfigurationRequest regionConfigurationRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (regionConfigurationRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regionConfigurationRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter regionConfigurationRequest is required and cannot be null."));
         } else {
             regionConfigurationRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .regionConfiguration(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            this.client.getApiVersion(),
-                            regionConfigurationRequest,
-                            accept,
-                            context))
+                context -> service.regionConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    location, this.client.getApiVersion(), regionConfigurationRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @param context The context to associate with this operation.
@@ -898,50 +754,37 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationWithResponseAsync(
-        String location, RegionConfigurationRequest regionConfigurationRequest, Context context) {
+    private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationWithResponseAsync(String location,
+        RegionConfigurationRequest regionConfigurationRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (regionConfigurationRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regionConfigurationRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter regionConfigurationRequest is required and cannot be null."));
         } else {
             regionConfigurationRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regionConfiguration(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                this.client.getApiVersion(),
-                regionConfigurationRequest,
-                accept,
-                context);
+        return service.regionConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), regionConfigurationRequest, accept, context);
     }
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -950,15 +793,15 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return configuration response specific to a region on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RegionConfigurationResponseInner> regionConfigurationAsync(
-        String location, RegionConfigurationRequest regionConfigurationRequest) {
+    private Mono<RegionConfigurationResponseInner> regionConfigurationAsync(String location,
+        RegionConfigurationRequest regionConfigurationRequest) {
         return regionConfigurationWithResponseAsync(location, regionConfigurationRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @param context The context to associate with this operation.
@@ -968,14 +811,14 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return configuration response specific to a region along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RegionConfigurationResponseInner> regionConfigurationWithResponse(
-        String location, RegionConfigurationRequest regionConfigurationRequest, Context context) {
+    public Response<RegionConfigurationResponseInner> regionConfigurationWithResponse(String location,
+        RegionConfigurationRequest regionConfigurationRequest, Context context) {
         return regionConfigurationWithResponseAsync(location, regionConfigurationRequest, context).block();
     }
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -984,14 +827,14 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return configuration response specific to a region.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegionConfigurationResponseInner regionConfiguration(
-        String location, RegionConfigurationRequest regionConfigurationRequest) {
+    public RegionConfigurationResponseInner regionConfiguration(String location,
+        RegionConfigurationRequest regionConfigurationRequest) {
         return regionConfigurationWithResponse(location, regionConfigurationRequest, Context.NONE).getValue();
     }
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -999,22 +842,18 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationByResourceGroupWithResponseAsync(
         String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1024,33 +863,22 @@ public final class ServicesClientImpl implements ServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (regionConfigurationRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regionConfigurationRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter regionConfigurationRequest is required and cannot be null."));
         } else {
             regionConfigurationRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regionConfigurationByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            location,
-                            this.client.getApiVersion(),
-                            regionConfigurationRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.regionConfigurationByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, location, this.client.getApiVersion(),
+                regionConfigurationRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -1059,25 +887,19 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationByResourceGroupWithResponseAsync(
-        String resourceGroupName,
-        String location,
-        RegionConfigurationRequest regionConfigurationRequest,
+        String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1087,30 +909,20 @@ public final class ServicesClientImpl implements ServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (regionConfigurationRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regionConfigurationRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter regionConfigurationRequest is required and cannot be null."));
         } else {
             regionConfigurationRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regionConfigurationByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                location,
-                this.client.getApiVersion(),
-                regionConfigurationRequest,
-                accept,
-                context);
+        return service.regionConfigurationByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, location, this.client.getApiVersion(), regionConfigurationRequest, accept, context);
     }
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -1120,16 +932,15 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return configuration response specific to a region on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RegionConfigurationResponseInner> regionConfigurationByResourceGroupAsync(
-        String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest) {
-        return regionConfigurationByResourceGroupWithResponseAsync(
-                resourceGroupName, location, regionConfigurationRequest)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<RegionConfigurationResponseInner> regionConfigurationByResourceGroupAsync(String resourceGroupName,
+        String location, RegionConfigurationRequest regionConfigurationRequest) {
+        return regionConfigurationByResourceGroupWithResponseAsync(resourceGroupName, location,
+            regionConfigurationRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -1141,18 +952,15 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegionConfigurationResponseInner> regionConfigurationByResourceGroupWithResponse(
-        String resourceGroupName,
-        String location,
-        RegionConfigurationRequest regionConfigurationRequest,
+        String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest,
         Context context) {
-        return regionConfigurationByResourceGroupWithResponseAsync(
-                resourceGroupName, location, regionConfigurationRequest, context)
-            .block();
+        return regionConfigurationByResourceGroupWithResponseAsync(resourceGroupName, location,
+            regionConfigurationRequest, context).block();
     }
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -1162,89 +970,66 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return configuration response specific to a region.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegionConfigurationResponseInner regionConfigurationByResourceGroup(
-        String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest) {
-        return regionConfigurationByResourceGroupWithResponse(
-                resourceGroupName, location, regionConfigurationRequest, Context.NONE)
-            .getValue();
+    public RegionConfigurationResponseInner regionConfigurationByResourceGroup(String resourceGroupName,
+        String location, RegionConfigurationRequest regionConfigurationRequest) {
+        return regionConfigurationByResourceGroupWithResponse(resourceGroupName, location, regionConfigurationRequest,
+            Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SkuInformationInner>> listAvailableSkusByResourceGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<SkuInformationInner>>
+        listAvailableSkusByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.listAvailableSkusByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SkuInformationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listAvailableSkusByResourceGroupNext(nextLink, this.client.getEndpoint(),
+                accept, context))
+            .<PagedResponse<SkuInformationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SkuInformationInner>> listAvailableSkusByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SkuInformationInner>>
+        listAvailableSkusByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAvailableSkusByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAvailableSkusByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

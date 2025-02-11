@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Storage Profile properties of a server. */
 @Fluent
 public final class StorageProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(StorageProfile.class);
 
     /*
      * Backup retention days for the server.

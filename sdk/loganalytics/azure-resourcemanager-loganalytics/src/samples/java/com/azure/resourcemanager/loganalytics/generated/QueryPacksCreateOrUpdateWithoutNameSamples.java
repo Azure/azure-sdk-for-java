@@ -8,38 +8,39 @@ import com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPac
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for QueryPacks CreateOrUpdateWithoutName. */
+/**
+ * Samples for QueryPacks CreateOrUpdateWithoutName.
+ */
 public final class QueryPacksCreateOrUpdateWithoutNameSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPacksCreateNoName.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPacksCreateNoName.json
      */
     /**
      * Sample code: QueryPackCreateNoName.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryPackCreateNoName(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .queryPacks()
-            .createOrUpdateWithoutNameWithResponse(
-                "my-resource-group",
-                new LogAnalyticsQueryPackInner().withLocation("South Central US"),
-                com.azure.core.util.Context.NONE);
+        manager.queryPacks()
+            .createOrUpdateWithoutNameWithResponse("my-resource-group",
+                new LogAnalyticsQueryPackInner().withLocation("South Central US"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackUpdateNoName.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPackUpdateNoName.json
      */
     /**
      * Sample code: QueryPackUpdateNoName.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryPackUpdateNoName(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .queryPacks()
-            .createOrUpdateWithoutNameWithResponse(
-                "my-resource-group",
+        manager.queryPacks()
+            .createOrUpdateWithoutNameWithResponse("my-resource-group",
                 new LogAnalyticsQueryPackInner().withLocation("South Central US").withTags(mapOf("Tag1", "Value1")),
                 com.azure.core.util.Context.NONE);
     }

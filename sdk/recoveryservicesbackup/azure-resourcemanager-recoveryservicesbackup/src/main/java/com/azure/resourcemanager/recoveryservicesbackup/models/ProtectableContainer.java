@@ -5,64 +5,48 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Protectable Container Class.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "protectableContainerType",
-    defaultImpl = ProtectableContainer.class,
-    visible = true)
-@JsonTypeName("ProtectableContainer")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "StorageContainer", value = AzureStorageProtectableContainer.class),
-    @JsonSubTypes.Type(name = "VMAppContainer", value = AzureVMAppContainerProtectableContainer.class) })
 @Fluent
-public class ProtectableContainer {
+public class ProtectableContainer implements JsonSerializable<ProtectableContainer> {
     /*
      * Type of the container. The value of this property for
      * 1. Compute Azure VM is Microsoft.Compute/virtualMachines
      * 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
      */
-    @JsonTypeId
-    @JsonProperty(value = "protectableContainerType", required = true)
     private ProtectableContainerType protectableContainerType;
 
     /*
      * Friendly name of the container.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Type of backup management for the container.
      */
-    @JsonProperty(value = "backupManagementType")
     private BackupManagementType backupManagementType;
 
     /*
      * Status of health of the container.
      */
-    @JsonProperty(value = "healthStatus")
     private String healthStatus;
 
     /*
      * Fabric Id of the container such as ARM Id.
      */
-    @JsonProperty(value = "containerId")
     private String containerId;
 
     /**
      * Creates an instance of ProtectableContainer class.
      */
     public ProtectableContainer() {
-        this.protectableContainerType = ProtectableContainerType.fromString("ProtectableContainer");
     }
 
     /**
@@ -162,5 +146,84 @@ public class ProtectableContainer {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protectableContainerType",
+            this.protectableContainerType == null ? null : this.protectableContainerType.toString());
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("backupManagementType",
+            this.backupManagementType == null ? null : this.backupManagementType.toString());
+        jsonWriter.writeStringField("healthStatus", this.healthStatus);
+        jsonWriter.writeStringField("containerId", this.containerId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectableContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectableContainer if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtectableContainer.
+     */
+    public static ProtectableContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("protectableContainerType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("StorageContainer".equals(discriminatorValue)) {
+                    return AzureStorageProtectableContainer.fromJson(readerToUse.reset());
+                } else if ("VMAppContainer".equals(discriminatorValue)) {
+                    return AzureVMAppContainerProtectableContainer.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ProtectableContainer fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectableContainer deserializedProtectableContainer = new ProtectableContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectableContainerType".equals(fieldName)) {
+                    deserializedProtectableContainer.protectableContainerType
+                        = ProtectableContainerType.fromString(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedProtectableContainer.friendlyName = reader.getString();
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedProtectableContainer.backupManagementType
+                        = BackupManagementType.fromString(reader.getString());
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedProtectableContainer.healthStatus = reader.getString();
+                } else if ("containerId".equals(fieldName)) {
+                    deserializedProtectableContainer.containerId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectableContainer;
+        });
     }
 }

@@ -6,162 +6,146 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The X12 agreement envelope settings. */
+/**
+ * The X12 agreement envelope settings.
+ */
 @Fluent
-public final class X12EnvelopeSettings {
+public final class X12EnvelopeSettings implements JsonSerializable<X12EnvelopeSettings> {
     /*
      * The controls standards id.
      */
-    @JsonProperty(value = "controlStandardsId", required = true)
     private int controlStandardsId;
 
     /*
      * The value indicating whether to use control standards id as repetition character.
      */
-    @JsonProperty(value = "useControlStandardsIdAsRepetitionCharacter", required = true)
     private boolean useControlStandardsIdAsRepetitionCharacter;
 
     /*
      * The sender application id.
      */
-    @JsonProperty(value = "senderApplicationId", required = true)
     private String senderApplicationId;
 
     /*
      * The receiver application id.
      */
-    @JsonProperty(value = "receiverApplicationId", required = true)
     private String receiverApplicationId;
 
     /*
      * The control version number.
      */
-    @JsonProperty(value = "controlVersionNumber", required = true)
     private String controlVersionNumber;
 
     /*
-     * The interchange  control number lower bound.
+     * The interchange control number lower bound.
      */
-    @JsonProperty(value = "interchangeControlNumberLowerBound", required = true)
     private int interchangeControlNumberLowerBound;
 
     /*
-     * The interchange  control number upper bound.
+     * The interchange control number upper bound.
      */
-    @JsonProperty(value = "interchangeControlNumberUpperBound", required = true)
     private int interchangeControlNumberUpperBound;
 
     /*
      * The value indicating whether to rollover interchange control number.
      */
-    @JsonProperty(value = "rolloverInterchangeControlNumber", required = true)
     private boolean rolloverInterchangeControlNumber;
 
     /*
      * The value indicating whether to enable default group headers.
      */
-    @JsonProperty(value = "enableDefaultGroupHeaders", required = true)
     private boolean enableDefaultGroupHeaders;
 
     /*
      * The functional group id.
      */
-    @JsonProperty(value = "functionalGroupId")
     private String functionalGroupId;
 
     /*
      * The group control number lower bound.
      */
-    @JsonProperty(value = "groupControlNumberLowerBound", required = true)
     private int groupControlNumberLowerBound;
 
     /*
      * The group control number upper bound.
      */
-    @JsonProperty(value = "groupControlNumberUpperBound", required = true)
     private int groupControlNumberUpperBound;
 
     /*
      * The value indicating whether to rollover group control number.
      */
-    @JsonProperty(value = "rolloverGroupControlNumber", required = true)
     private boolean rolloverGroupControlNumber;
 
     /*
      * The group header agency code.
      */
-    @JsonProperty(value = "groupHeaderAgencyCode", required = true)
     private String groupHeaderAgencyCode;
 
     /*
      * The group header version.
      */
-    @JsonProperty(value = "groupHeaderVersion", required = true)
     private String groupHeaderVersion;
 
     /*
      * The transaction set control number lower bound.
      */
-    @JsonProperty(value = "transactionSetControlNumberLowerBound", required = true)
     private int transactionSetControlNumberLowerBound;
 
     /*
      * The transaction set control number upper bound.
      */
-    @JsonProperty(value = "transactionSetControlNumberUpperBound", required = true)
     private int transactionSetControlNumberUpperBound;
 
     /*
      * The value indicating whether to rollover transaction set control number.
      */
-    @JsonProperty(value = "rolloverTransactionSetControlNumber", required = true)
     private boolean rolloverTransactionSetControlNumber;
 
     /*
      * The transaction set control number prefix.
      */
-    @JsonProperty(value = "transactionSetControlNumberPrefix")
     private String transactionSetControlNumberPrefix;
 
     /*
      * The transaction set control number suffix.
      */
-    @JsonProperty(value = "transactionSetControlNumberSuffix")
     private String transactionSetControlNumberSuffix;
 
     /*
      * The value indicating whether to overwrite existing transaction set control number.
      */
-    @JsonProperty(value = "overwriteExistingTransactionSetControlNumber", required = true)
     private boolean overwriteExistingTransactionSetControlNumber;
 
     /*
      * The group header date format.
      */
-    @JsonProperty(value = "groupHeaderDateFormat", required = true)
     private X12DateFormat groupHeaderDateFormat;
 
     /*
      * The group header time format.
      */
-    @JsonProperty(value = "groupHeaderTimeFormat", required = true)
     private X12TimeFormat groupHeaderTimeFormat;
 
     /*
      * The usage indicator.
      */
-    @JsonProperty(value = "usageIndicator", required = true)
     private UsageIndicator usageIndicator;
 
-    /** Creates an instance of X12EnvelopeSettings class. */
+    /**
+     * Creates an instance of X12EnvelopeSettings class.
+     */
     public X12EnvelopeSettings() {
     }
 
     /**
      * Get the controlStandardsId property: The controls standards id.
-     *
+     * 
      * @return the controlStandardsId value.
      */
     public int controlStandardsId() {
@@ -170,7 +154,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the controlStandardsId property: The controls standards id.
-     *
+     * 
      * @param controlStandardsId the controlStandardsId value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -182,7 +166,7 @@ public final class X12EnvelopeSettings {
     /**
      * Get the useControlStandardsIdAsRepetitionCharacter property: The value indicating whether to use control
      * standards id as repetition character.
-     *
+     * 
      * @return the useControlStandardsIdAsRepetitionCharacter value.
      */
     public boolean useControlStandardsIdAsRepetitionCharacter() {
@@ -192,19 +176,19 @@ public final class X12EnvelopeSettings {
     /**
      * Set the useControlStandardsIdAsRepetitionCharacter property: The value indicating whether to use control
      * standards id as repetition character.
-     *
+     * 
      * @param useControlStandardsIdAsRepetitionCharacter the useControlStandardsIdAsRepetitionCharacter value to set.
      * @return the X12EnvelopeSettings object itself.
      */
-    public X12EnvelopeSettings withUseControlStandardsIdAsRepetitionCharacter(
-        boolean useControlStandardsIdAsRepetitionCharacter) {
+    public X12EnvelopeSettings
+        withUseControlStandardsIdAsRepetitionCharacter(boolean useControlStandardsIdAsRepetitionCharacter) {
         this.useControlStandardsIdAsRepetitionCharacter = useControlStandardsIdAsRepetitionCharacter;
         return this;
     }
 
     /**
      * Get the senderApplicationId property: The sender application id.
-     *
+     * 
      * @return the senderApplicationId value.
      */
     public String senderApplicationId() {
@@ -213,7 +197,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the senderApplicationId property: The sender application id.
-     *
+     * 
      * @param senderApplicationId the senderApplicationId value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -224,7 +208,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the receiverApplicationId property: The receiver application id.
-     *
+     * 
      * @return the receiverApplicationId value.
      */
     public String receiverApplicationId() {
@@ -233,7 +217,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the receiverApplicationId property: The receiver application id.
-     *
+     * 
      * @param receiverApplicationId the receiverApplicationId value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -244,7 +228,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the controlVersionNumber property: The control version number.
-     *
+     * 
      * @return the controlVersionNumber value.
      */
     public String controlVersionNumber() {
@@ -253,7 +237,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the controlVersionNumber property: The control version number.
-     *
+     * 
      * @param controlVersionNumber the controlVersionNumber value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -264,7 +248,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the interchangeControlNumberLowerBound property: The interchange control number lower bound.
-     *
+     * 
      * @return the interchangeControlNumberLowerBound value.
      */
     public int interchangeControlNumberLowerBound() {
@@ -273,7 +257,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the interchangeControlNumberLowerBound property: The interchange control number lower bound.
-     *
+     * 
      * @param interchangeControlNumberLowerBound the interchangeControlNumberLowerBound value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -284,7 +268,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the interchangeControlNumberUpperBound property: The interchange control number upper bound.
-     *
+     * 
      * @return the interchangeControlNumberUpperBound value.
      */
     public int interchangeControlNumberUpperBound() {
@@ -293,7 +277,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the interchangeControlNumberUpperBound property: The interchange control number upper bound.
-     *
+     * 
      * @param interchangeControlNumberUpperBound the interchangeControlNumberUpperBound value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -305,7 +289,7 @@ public final class X12EnvelopeSettings {
     /**
      * Get the rolloverInterchangeControlNumber property: The value indicating whether to rollover interchange control
      * number.
-     *
+     * 
      * @return the rolloverInterchangeControlNumber value.
      */
     public boolean rolloverInterchangeControlNumber() {
@@ -315,7 +299,7 @@ public final class X12EnvelopeSettings {
     /**
      * Set the rolloverInterchangeControlNumber property: The value indicating whether to rollover interchange control
      * number.
-     *
+     * 
      * @param rolloverInterchangeControlNumber the rolloverInterchangeControlNumber value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -326,7 +310,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the enableDefaultGroupHeaders property: The value indicating whether to enable default group headers.
-     *
+     * 
      * @return the enableDefaultGroupHeaders value.
      */
     public boolean enableDefaultGroupHeaders() {
@@ -335,7 +319,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the enableDefaultGroupHeaders property: The value indicating whether to enable default group headers.
-     *
+     * 
      * @param enableDefaultGroupHeaders the enableDefaultGroupHeaders value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -346,7 +330,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the functionalGroupId property: The functional group id.
-     *
+     * 
      * @return the functionalGroupId value.
      */
     public String functionalGroupId() {
@@ -355,7 +339,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the functionalGroupId property: The functional group id.
-     *
+     * 
      * @param functionalGroupId the functionalGroupId value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -366,7 +350,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the groupControlNumberLowerBound property: The group control number lower bound.
-     *
+     * 
      * @return the groupControlNumberLowerBound value.
      */
     public int groupControlNumberLowerBound() {
@@ -375,7 +359,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the groupControlNumberLowerBound property: The group control number lower bound.
-     *
+     * 
      * @param groupControlNumberLowerBound the groupControlNumberLowerBound value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -386,7 +370,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the groupControlNumberUpperBound property: The group control number upper bound.
-     *
+     * 
      * @return the groupControlNumberUpperBound value.
      */
     public int groupControlNumberUpperBound() {
@@ -395,7 +379,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the groupControlNumberUpperBound property: The group control number upper bound.
-     *
+     * 
      * @param groupControlNumberUpperBound the groupControlNumberUpperBound value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -406,7 +390,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the rolloverGroupControlNumber property: The value indicating whether to rollover group control number.
-     *
+     * 
      * @return the rolloverGroupControlNumber value.
      */
     public boolean rolloverGroupControlNumber() {
@@ -415,7 +399,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the rolloverGroupControlNumber property: The value indicating whether to rollover group control number.
-     *
+     * 
      * @param rolloverGroupControlNumber the rolloverGroupControlNumber value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -426,7 +410,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the groupHeaderAgencyCode property: The group header agency code.
-     *
+     * 
      * @return the groupHeaderAgencyCode value.
      */
     public String groupHeaderAgencyCode() {
@@ -435,7 +419,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the groupHeaderAgencyCode property: The group header agency code.
-     *
+     * 
      * @param groupHeaderAgencyCode the groupHeaderAgencyCode value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -446,7 +430,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the groupHeaderVersion property: The group header version.
-     *
+     * 
      * @return the groupHeaderVersion value.
      */
     public String groupHeaderVersion() {
@@ -455,7 +439,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the groupHeaderVersion property: The group header version.
-     *
+     * 
      * @param groupHeaderVersion the groupHeaderVersion value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -466,7 +450,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the transactionSetControlNumberLowerBound property: The transaction set control number lower bound.
-     *
+     * 
      * @return the transactionSetControlNumberLowerBound value.
      */
     public int transactionSetControlNumberLowerBound() {
@@ -475,7 +459,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the transactionSetControlNumberLowerBound property: The transaction set control number lower bound.
-     *
+     * 
      * @param transactionSetControlNumberLowerBound the transactionSetControlNumberLowerBound value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -486,7 +470,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the transactionSetControlNumberUpperBound property: The transaction set control number upper bound.
-     *
+     * 
      * @return the transactionSetControlNumberUpperBound value.
      */
     public int transactionSetControlNumberUpperBound() {
@@ -495,7 +479,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the transactionSetControlNumberUpperBound property: The transaction set control number upper bound.
-     *
+     * 
      * @param transactionSetControlNumberUpperBound the transactionSetControlNumberUpperBound value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -507,7 +491,7 @@ public final class X12EnvelopeSettings {
     /**
      * Get the rolloverTransactionSetControlNumber property: The value indicating whether to rollover transaction set
      * control number.
-     *
+     * 
      * @return the rolloverTransactionSetControlNumber value.
      */
     public boolean rolloverTransactionSetControlNumber() {
@@ -517,7 +501,7 @@ public final class X12EnvelopeSettings {
     /**
      * Set the rolloverTransactionSetControlNumber property: The value indicating whether to rollover transaction set
      * control number.
-     *
+     * 
      * @param rolloverTransactionSetControlNumber the rolloverTransactionSetControlNumber value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -528,7 +512,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the transactionSetControlNumberPrefix property: The transaction set control number prefix.
-     *
+     * 
      * @return the transactionSetControlNumberPrefix value.
      */
     public String transactionSetControlNumberPrefix() {
@@ -537,7 +521,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the transactionSetControlNumberPrefix property: The transaction set control number prefix.
-     *
+     * 
      * @param transactionSetControlNumberPrefix the transactionSetControlNumberPrefix value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -548,7 +532,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the transactionSetControlNumberSuffix property: The transaction set control number suffix.
-     *
+     * 
      * @return the transactionSetControlNumberSuffix value.
      */
     public String transactionSetControlNumberSuffix() {
@@ -557,7 +541,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the transactionSetControlNumberSuffix property: The transaction set control number suffix.
-     *
+     * 
      * @param transactionSetControlNumberSuffix the transactionSetControlNumberSuffix value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -569,7 +553,7 @@ public final class X12EnvelopeSettings {
     /**
      * Get the overwriteExistingTransactionSetControlNumber property: The value indicating whether to overwrite existing
      * transaction set control number.
-     *
+     * 
      * @return the overwriteExistingTransactionSetControlNumber value.
      */
     public boolean overwriteExistingTransactionSetControlNumber() {
@@ -579,20 +563,20 @@ public final class X12EnvelopeSettings {
     /**
      * Set the overwriteExistingTransactionSetControlNumber property: The value indicating whether to overwrite existing
      * transaction set control number.
-     *
+     * 
      * @param overwriteExistingTransactionSetControlNumber the overwriteExistingTransactionSetControlNumber value to
-     *     set.
+     * set.
      * @return the X12EnvelopeSettings object itself.
      */
-    public X12EnvelopeSettings withOverwriteExistingTransactionSetControlNumber(
-        boolean overwriteExistingTransactionSetControlNumber) {
+    public X12EnvelopeSettings
+        withOverwriteExistingTransactionSetControlNumber(boolean overwriteExistingTransactionSetControlNumber) {
         this.overwriteExistingTransactionSetControlNumber = overwriteExistingTransactionSetControlNumber;
         return this;
     }
 
     /**
      * Get the groupHeaderDateFormat property: The group header date format.
-     *
+     * 
      * @return the groupHeaderDateFormat value.
      */
     public X12DateFormat groupHeaderDateFormat() {
@@ -601,7 +585,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the groupHeaderDateFormat property: The group header date format.
-     *
+     * 
      * @param groupHeaderDateFormat the groupHeaderDateFormat value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -612,7 +596,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the groupHeaderTimeFormat property: The group header time format.
-     *
+     * 
      * @return the groupHeaderTimeFormat value.
      */
     public X12TimeFormat groupHeaderTimeFormat() {
@@ -621,7 +605,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the groupHeaderTimeFormat property: The group header time format.
-     *
+     * 
      * @param groupHeaderTimeFormat the groupHeaderTimeFormat value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -632,7 +616,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Get the usageIndicator property: The usage indicator.
-     *
+     * 
      * @return the usageIndicator value.
      */
     public UsageIndicator usageIndicator() {
@@ -641,7 +625,7 @@ public final class X12EnvelopeSettings {
 
     /**
      * Set the usageIndicator property: The usage indicator.
-     *
+     * 
      * @param usageIndicator the usageIndicator value to set.
      * @return the X12EnvelopeSettings object itself.
      */
@@ -652,59 +636,164 @@ public final class X12EnvelopeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (senderApplicationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property senderApplicationId in model X12EnvelopeSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property senderApplicationId in model X12EnvelopeSettings"));
         }
         if (receiverApplicationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property receiverApplicationId in model X12EnvelopeSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property receiverApplicationId in model X12EnvelopeSettings"));
         }
         if (controlVersionNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property controlVersionNumber in model X12EnvelopeSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property controlVersionNumber in model X12EnvelopeSettings"));
         }
         if (groupHeaderAgencyCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groupHeaderAgencyCode in model X12EnvelopeSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property groupHeaderAgencyCode in model X12EnvelopeSettings"));
         }
         if (groupHeaderVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groupHeaderVersion in model X12EnvelopeSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property groupHeaderVersion in model X12EnvelopeSettings"));
         }
         if (groupHeaderDateFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groupHeaderDateFormat in model X12EnvelopeSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property groupHeaderDateFormat in model X12EnvelopeSettings"));
         }
         if (groupHeaderTimeFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groupHeaderTimeFormat in model X12EnvelopeSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property groupHeaderTimeFormat in model X12EnvelopeSettings"));
         }
         if (usageIndicator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property usageIndicator in model X12EnvelopeSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property usageIndicator in model X12EnvelopeSettings"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(X12EnvelopeSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("controlStandardsId", this.controlStandardsId);
+        jsonWriter.writeBooleanField("useControlStandardsIdAsRepetitionCharacter",
+            this.useControlStandardsIdAsRepetitionCharacter);
+        jsonWriter.writeStringField("senderApplicationId", this.senderApplicationId);
+        jsonWriter.writeStringField("receiverApplicationId", this.receiverApplicationId);
+        jsonWriter.writeStringField("controlVersionNumber", this.controlVersionNumber);
+        jsonWriter.writeIntField("interchangeControlNumberLowerBound", this.interchangeControlNumberLowerBound);
+        jsonWriter.writeIntField("interchangeControlNumberUpperBound", this.interchangeControlNumberUpperBound);
+        jsonWriter.writeBooleanField("rolloverInterchangeControlNumber", this.rolloverInterchangeControlNumber);
+        jsonWriter.writeBooleanField("enableDefaultGroupHeaders", this.enableDefaultGroupHeaders);
+        jsonWriter.writeIntField("groupControlNumberLowerBound", this.groupControlNumberLowerBound);
+        jsonWriter.writeIntField("groupControlNumberUpperBound", this.groupControlNumberUpperBound);
+        jsonWriter.writeBooleanField("rolloverGroupControlNumber", this.rolloverGroupControlNumber);
+        jsonWriter.writeStringField("groupHeaderAgencyCode", this.groupHeaderAgencyCode);
+        jsonWriter.writeStringField("groupHeaderVersion", this.groupHeaderVersion);
+        jsonWriter.writeIntField("transactionSetControlNumberLowerBound", this.transactionSetControlNumberLowerBound);
+        jsonWriter.writeIntField("transactionSetControlNumberUpperBound", this.transactionSetControlNumberUpperBound);
+        jsonWriter.writeBooleanField("rolloverTransactionSetControlNumber", this.rolloverTransactionSetControlNumber);
+        jsonWriter.writeBooleanField("overwriteExistingTransactionSetControlNumber",
+            this.overwriteExistingTransactionSetControlNumber);
+        jsonWriter.writeStringField("groupHeaderDateFormat",
+            this.groupHeaderDateFormat == null ? null : this.groupHeaderDateFormat.toString());
+        jsonWriter.writeStringField("groupHeaderTimeFormat",
+            this.groupHeaderTimeFormat == null ? null : this.groupHeaderTimeFormat.toString());
+        jsonWriter.writeStringField("usageIndicator",
+            this.usageIndicator == null ? null : this.usageIndicator.toString());
+        jsonWriter.writeStringField("functionalGroupId", this.functionalGroupId);
+        jsonWriter.writeStringField("transactionSetControlNumberPrefix", this.transactionSetControlNumberPrefix);
+        jsonWriter.writeStringField("transactionSetControlNumberSuffix", this.transactionSetControlNumberSuffix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of X12EnvelopeSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of X12EnvelopeSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the X12EnvelopeSettings.
+     */
+    public static X12EnvelopeSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            X12EnvelopeSettings deserializedX12EnvelopeSettings = new X12EnvelopeSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("controlStandardsId".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.controlStandardsId = reader.getInt();
+                } else if ("useControlStandardsIdAsRepetitionCharacter".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.useControlStandardsIdAsRepetitionCharacter = reader.getBoolean();
+                } else if ("senderApplicationId".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.senderApplicationId = reader.getString();
+                } else if ("receiverApplicationId".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.receiverApplicationId = reader.getString();
+                } else if ("controlVersionNumber".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.controlVersionNumber = reader.getString();
+                } else if ("interchangeControlNumberLowerBound".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.interchangeControlNumberLowerBound = reader.getInt();
+                } else if ("interchangeControlNumberUpperBound".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.interchangeControlNumberUpperBound = reader.getInt();
+                } else if ("rolloverInterchangeControlNumber".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.rolloverInterchangeControlNumber = reader.getBoolean();
+                } else if ("enableDefaultGroupHeaders".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.enableDefaultGroupHeaders = reader.getBoolean();
+                } else if ("groupControlNumberLowerBound".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.groupControlNumberLowerBound = reader.getInt();
+                } else if ("groupControlNumberUpperBound".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.groupControlNumberUpperBound = reader.getInt();
+                } else if ("rolloverGroupControlNumber".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.rolloverGroupControlNumber = reader.getBoolean();
+                } else if ("groupHeaderAgencyCode".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.groupHeaderAgencyCode = reader.getString();
+                } else if ("groupHeaderVersion".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.groupHeaderVersion = reader.getString();
+                } else if ("transactionSetControlNumberLowerBound".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.transactionSetControlNumberLowerBound = reader.getInt();
+                } else if ("transactionSetControlNumberUpperBound".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.transactionSetControlNumberUpperBound = reader.getInt();
+                } else if ("rolloverTransactionSetControlNumber".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.rolloverTransactionSetControlNumber = reader.getBoolean();
+                } else if ("overwriteExistingTransactionSetControlNumber".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.overwriteExistingTransactionSetControlNumber = reader.getBoolean();
+                } else if ("groupHeaderDateFormat".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.groupHeaderDateFormat
+                        = X12DateFormat.fromString(reader.getString());
+                } else if ("groupHeaderTimeFormat".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.groupHeaderTimeFormat
+                        = X12TimeFormat.fromString(reader.getString());
+                } else if ("usageIndicator".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.usageIndicator = UsageIndicator.fromString(reader.getString());
+                } else if ("functionalGroupId".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.functionalGroupId = reader.getString();
+                } else if ("transactionSetControlNumberPrefix".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.transactionSetControlNumberPrefix = reader.getString();
+                } else if ("transactionSetControlNumberSuffix".equals(fieldName)) {
+                    deserializedX12EnvelopeSettings.transactionSetControlNumberSuffix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedX12EnvelopeSettings;
+        });
+    }
 }

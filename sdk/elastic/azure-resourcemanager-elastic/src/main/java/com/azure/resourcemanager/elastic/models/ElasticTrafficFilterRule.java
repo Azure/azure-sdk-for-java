@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Elastic traffic filter rule object. */
+/**
+ * Elastic traffic filter rule object.
+ */
 @Fluent
-public final class ElasticTrafficFilterRule {
+public final class ElasticTrafficFilterRule implements JsonSerializable<ElasticTrafficFilterRule> {
     /*
      * IP of the elastic filter rule
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * Description of the elastic filter rule
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Guid of Private Endpoint in the elastic filter rule
      */
-    @JsonProperty(value = "azureEndpointGuid")
     private String azureEndpointGuid;
 
     /*
      * Name of the Private Endpoint in the elastic filter rule
      */
-    @JsonProperty(value = "azureEndpointName")
     private String azureEndpointName;
 
     /*
      * Id of the elastic filter rule
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ElasticTrafficFilterRule class. */
+    /**
+     * Creates an instance of ElasticTrafficFilterRule class.
+     */
     public ElasticTrafficFilterRule() {
     }
 
     /**
      * Get the source property: IP of the elastic filter rule.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -55,7 +58,7 @@ public final class ElasticTrafficFilterRule {
 
     /**
      * Set the source property: IP of the elastic filter rule.
-     *
+     * 
      * @param source the source value to set.
      * @return the ElasticTrafficFilterRule object itself.
      */
@@ -66,7 +69,7 @@ public final class ElasticTrafficFilterRule {
 
     /**
      * Get the description property: Description of the elastic filter rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -75,7 +78,7 @@ public final class ElasticTrafficFilterRule {
 
     /**
      * Set the description property: Description of the elastic filter rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the ElasticTrafficFilterRule object itself.
      */
@@ -86,7 +89,7 @@ public final class ElasticTrafficFilterRule {
 
     /**
      * Get the azureEndpointGuid property: Guid of Private Endpoint in the elastic filter rule.
-     *
+     * 
      * @return the azureEndpointGuid value.
      */
     public String azureEndpointGuid() {
@@ -95,7 +98,7 @@ public final class ElasticTrafficFilterRule {
 
     /**
      * Set the azureEndpointGuid property: Guid of Private Endpoint in the elastic filter rule.
-     *
+     * 
      * @param azureEndpointGuid the azureEndpointGuid value to set.
      * @return the ElasticTrafficFilterRule object itself.
      */
@@ -106,7 +109,7 @@ public final class ElasticTrafficFilterRule {
 
     /**
      * Get the azureEndpointName property: Name of the Private Endpoint in the elastic filter rule.
-     *
+     * 
      * @return the azureEndpointName value.
      */
     public String azureEndpointName() {
@@ -115,7 +118,7 @@ public final class ElasticTrafficFilterRule {
 
     /**
      * Set the azureEndpointName property: Name of the Private Endpoint in the elastic filter rule.
-     *
+     * 
      * @param azureEndpointName the azureEndpointName value to set.
      * @return the ElasticTrafficFilterRule object itself.
      */
@@ -126,7 +129,7 @@ public final class ElasticTrafficFilterRule {
 
     /**
      * Get the id property: Id of the elastic filter rule.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -135,7 +138,7 @@ public final class ElasticTrafficFilterRule {
 
     /**
      * Set the id property: Id of the elastic filter rule.
-     *
+     * 
      * @param id the id value to set.
      * @return the ElasticTrafficFilterRule object itself.
      */
@@ -146,9 +149,57 @@ public final class ElasticTrafficFilterRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("azureEndpointGuid", this.azureEndpointGuid);
+        jsonWriter.writeStringField("azureEndpointName", this.azureEndpointName);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticTrafficFilterRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticTrafficFilterRule if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticTrafficFilterRule.
+     */
+    public static ElasticTrafficFilterRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticTrafficFilterRule deserializedElasticTrafficFilterRule = new ElasticTrafficFilterRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedElasticTrafficFilterRule.source = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedElasticTrafficFilterRule.description = reader.getString();
+                } else if ("azureEndpointGuid".equals(fieldName)) {
+                    deserializedElasticTrafficFilterRule.azureEndpointGuid = reader.getString();
+                } else if ("azureEndpointName".equals(fieldName)) {
+                    deserializedElasticTrafficFilterRule.azureEndpointName = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedElasticTrafficFilterRule.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticTrafficFilterRule;
+        });
     }
 }

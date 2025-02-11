@@ -17,8 +17,7 @@ public final class ReferenceDataSetListResponseImpl implements ReferenceDataSetL
 
     private final com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager;
 
-    ReferenceDataSetListResponseImpl(
-        ReferenceDataSetListResponseInner innerObject,
+    ReferenceDataSetListResponseImpl(ReferenceDataSetListResponseInner innerObject,
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class ReferenceDataSetListResponseImpl implements ReferenceDataSetL
     public List<ReferenceDataSetResource> value() {
         List<ReferenceDataSetResourceInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ReferenceDataSetResourceImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ReferenceDataSetResourceImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

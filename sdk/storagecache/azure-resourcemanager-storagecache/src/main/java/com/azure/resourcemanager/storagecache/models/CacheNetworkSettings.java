@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Cache network settings.
  */
 @Fluent
-public final class CacheNetworkSettings {
+public final class CacheNetworkSettings implements JsonSerializable<CacheNetworkSettings> {
     /*
      * The IPv4 maximum transmission unit configured for the subnet.
      */
-    @JsonProperty(value = "mtu")
     private Integer mtu;
 
     /*
      * Array of additional IP addresses used by this cache.
      */
-    @JsonProperty(value = "utilityAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> utilityAddresses;
 
     /*
-     * DNS servers for the cache to use.  It will be set from the network configuration if no value is provided.
+     * DNS servers for the cache to use. It will be set from the network configuration if no value is provided.
      */
-    @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /*
      * DNS search domain
      */
-    @JsonProperty(value = "dnsSearchDomain")
     private String dnsSearchDomain;
 
     /*
      * NTP server IP Address or FQDN for the cache to use. The default is time.windows.com.
      */
-    @JsonProperty(value = "ntpServer")
     private String ntpServer;
 
     /**
@@ -146,5 +145,54 @@ public final class CacheNetworkSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("mtu", this.mtu);
+        jsonWriter.writeArrayField("dnsServers", this.dnsServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("dnsSearchDomain", this.dnsSearchDomain);
+        jsonWriter.writeStringField("ntpServer", this.ntpServer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheNetworkSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheNetworkSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CacheNetworkSettings.
+     */
+    public static CacheNetworkSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheNetworkSettings deserializedCacheNetworkSettings = new CacheNetworkSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mtu".equals(fieldName)) {
+                    deserializedCacheNetworkSettings.mtu = reader.getNullable(JsonReader::getInt);
+                } else if ("utilityAddresses".equals(fieldName)) {
+                    List<String> utilityAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCacheNetworkSettings.utilityAddresses = utilityAddresses;
+                } else if ("dnsServers".equals(fieldName)) {
+                    List<String> dnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCacheNetworkSettings.dnsServers = dnsServers;
+                } else if ("dnsSearchDomain".equals(fieldName)) {
+                    deserializedCacheNetworkSettings.dnsSearchDomain = reader.getString();
+                } else if ("ntpServer".equals(fieldName)) {
+                    deserializedCacheNetworkSettings.ntpServer = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheNetworkSettings;
+        });
     }
 }

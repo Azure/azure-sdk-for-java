@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class GetPrivateDnsZoneSuffixesExecuteWithResponseMockTests {
     @Test
     public void testExecuteWithResponse() throws Exception {
-        String responseStr = "\"phdu\"";
+        String responseStr = "\"ghgshejjtbxqmu\"";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,6 +31,6 @@ public final class GetPrivateDnsZoneSuffixesExecuteWithResponseMockTests {
         String response
             = manager.getPrivateDnsZoneSuffixes().executeWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("phdu", response);
+        Assertions.assertEquals("ghgshejjtbxqmu", response);
     }
 }

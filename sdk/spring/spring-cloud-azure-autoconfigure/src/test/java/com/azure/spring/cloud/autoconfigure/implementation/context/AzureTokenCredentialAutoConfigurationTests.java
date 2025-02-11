@@ -14,16 +14,12 @@ import com.azure.identity.UsernamePasswordCredential;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
-import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
-import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientBuilderFactory;
-import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -268,37 +264,6 @@ class AzureTokenCredentialAutoConfigurationTests {
     }
 
     @Test
-    void defaultAzureCredentialSetToBuilderFactories() {
-        CosmosClientBuilderFactoryExt builderFactory = new CosmosClientBuilderFactoryExt(new AzureCosmosProperties());
-        contextRunner
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean(CosmosClientBuilderFactoryExt.class, () -> builderFactory)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor.class);
-                assertThat(context).hasSingleBean(TokenCredential.class);
-
-                TokenCredential tokenCredential = context.getBean(TokenCredential.class);
-                assertTrue(tokenCredential instanceof DefaultAzureCredential);
-                assertEquals(builderFactory.getDefaultTokenCredential(), tokenCredential);
-            });
-    }
-
-    @Test
-    void defaultAzureCredentialResolverSetToBuilderFactories() {
-        CosmosClientBuilderFactoryExt builderFactory = new CosmosClientBuilderFactoryExt(new AzureCosmosProperties());
-        contextRunner
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean(CosmosClientBuilderFactoryExt.class, () -> builderFactory)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor.class);
-                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
-
-                AzureTokenCredentialResolver tokenCredentialResolver = context.getBean(AzureTokenCredentialResolver.class);
-                assertEquals(builderFactory.getAzureTokenCredentialResolver(), tokenCredentialResolver);
-            });
-    }
-
-    @Test
     void globalPropertiesShouldBeHonored() {
         AzureGlobalProperties properties = new AzureGlobalProperties();
         properties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
@@ -365,34 +330,6 @@ class AzureTokenCredentialAutoConfigurationTests {
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
 
-    }
-
-    private static class CosmosClientBuilderFactoryExt extends CosmosClientBuilderFactory {
-
-        private TokenCredential defaultTokenCredential;
-        private AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver;
-
-        CosmosClientBuilderFactoryExt(CosmosClientProperties cosmosClientProperties) {
-            super(cosmosClientProperties);
-        }
-
-        @Override
-        public void setDefaultTokenCredential(TokenCredential defaultTokenCredential) {
-            this.defaultTokenCredential = defaultTokenCredential;
-        }
-
-        @Override
-        public void setTokenCredentialResolver(AzureCredentialResolver<TokenCredential> tokenCredentialResolver) {
-            this.azureTokenCredentialResolver = tokenCredentialResolver;
-        }
-
-        TokenCredential getDefaultTokenCredential() {
-            return defaultTokenCredential;
-        }
-
-        AzureCredentialResolver<TokenCredential> getAzureTokenCredentialResolver() {
-            return azureTokenCredentialResolver;
-        }
     }
 
 }

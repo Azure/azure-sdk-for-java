@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RecipientEmailContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecipientEmailContractProperties model =
-            BinaryData.fromString("{\"email\":\"ibmg\"}").toObject(RecipientEmailContractProperties.class);
+        RecipientEmailContractProperties model
+            = BinaryData.fromString("{\"email\":\"ibmg\"}").toObject(RecipientEmailContractProperties.class);
         Assertions.assertEquals("ibmg", model.email());
     }
 

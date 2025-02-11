@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Reservation refund details. */
+/**
+ * Reservation refund details.
+ */
 @Fluent
-public final class ReservationToReturnForExchange {
+public final class ReservationToReturnForExchange implements JsonSerializable<ReservationToReturnForExchange> {
     /*
      * Fully qualified id of the reservation being returned.
      */
-    @JsonProperty(value = "reservationId")
     private String reservationId;
 
     /*
      * Quantity to be returned
      */
-    @JsonProperty(value = "quantity")
     private Integer quantity;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "billingRefundAmount")
     private Price billingRefundAmount;
 
     /*
      * billing information
      */
-    @JsonProperty(value = "billingInformation")
     private BillingInformation billingInformation;
 
     /*
      * Status of the individual operation.
      */
-    @JsonProperty(value = "status")
     private OperationStatus status;
 
-    /** Creates an instance of ReservationToReturnForExchange class. */
+    /**
+     * Creates an instance of ReservationToReturnForExchange class.
+     */
     public ReservationToReturnForExchange() {
     }
 
     /**
      * Get the reservationId property: Fully qualified id of the reservation being returned.
-     *
+     * 
      * @return the reservationId value.
      */
     public String reservationId() {
@@ -55,7 +58,7 @@ public final class ReservationToReturnForExchange {
 
     /**
      * Set the reservationId property: Fully qualified id of the reservation being returned.
-     *
+     * 
      * @param reservationId the reservationId value to set.
      * @return the ReservationToReturnForExchange object itself.
      */
@@ -66,7 +69,7 @@ public final class ReservationToReturnForExchange {
 
     /**
      * Get the quantity property: Quantity to be returned.
-     *
+     * 
      * @return the quantity value.
      */
     public Integer quantity() {
@@ -75,7 +78,7 @@ public final class ReservationToReturnForExchange {
 
     /**
      * Set the quantity property: Quantity to be returned.
-     *
+     * 
      * @param quantity the quantity value to set.
      * @return the ReservationToReturnForExchange object itself.
      */
@@ -86,7 +89,7 @@ public final class ReservationToReturnForExchange {
 
     /**
      * Get the billingRefundAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the billingRefundAmount value.
      */
     public Price billingRefundAmount() {
@@ -95,7 +98,7 @@ public final class ReservationToReturnForExchange {
 
     /**
      * Set the billingRefundAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param billingRefundAmount the billingRefundAmount value to set.
      * @return the ReservationToReturnForExchange object itself.
      */
@@ -106,7 +109,7 @@ public final class ReservationToReturnForExchange {
 
     /**
      * Get the billingInformation property: billing information.
-     *
+     * 
      * @return the billingInformation value.
      */
     public BillingInformation billingInformation() {
@@ -115,7 +118,7 @@ public final class ReservationToReturnForExchange {
 
     /**
      * Set the billingInformation property: billing information.
-     *
+     * 
      * @param billingInformation the billingInformation value to set.
      * @return the ReservationToReturnForExchange object itself.
      */
@@ -126,7 +129,7 @@ public final class ReservationToReturnForExchange {
 
     /**
      * Get the status property: Status of the individual operation.
-     *
+     * 
      * @return the status value.
      */
     public OperationStatus status() {
@@ -135,7 +138,7 @@ public final class ReservationToReturnForExchange {
 
     /**
      * Set the status property: Status of the individual operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the ReservationToReturnForExchange object itself.
      */
@@ -146,7 +149,7 @@ public final class ReservationToReturnForExchange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -156,5 +159,54 @@ public final class ReservationToReturnForExchange {
         if (billingInformation() != null) {
             billingInformation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reservationId", this.reservationId);
+        jsonWriter.writeNumberField("quantity", this.quantity);
+        jsonWriter.writeJsonField("billingRefundAmount", this.billingRefundAmount);
+        jsonWriter.writeJsonField("billingInformation", this.billingInformation);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationToReturnForExchange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationToReturnForExchange if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationToReturnForExchange.
+     */
+    public static ReservationToReturnForExchange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationToReturnForExchange deserializedReservationToReturnForExchange
+                = new ReservationToReturnForExchange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reservationId".equals(fieldName)) {
+                    deserializedReservationToReturnForExchange.reservationId = reader.getString();
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedReservationToReturnForExchange.quantity = reader.getNullable(JsonReader::getInt);
+                } else if ("billingRefundAmount".equals(fieldName)) {
+                    deserializedReservationToReturnForExchange.billingRefundAmount = Price.fromJson(reader);
+                } else if ("billingInformation".equals(fieldName)) {
+                    deserializedReservationToReturnForExchange.billingInformation = BillingInformation.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedReservationToReturnForExchange.status = OperationStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationToReturnForExchange;
+        });
     }
 }

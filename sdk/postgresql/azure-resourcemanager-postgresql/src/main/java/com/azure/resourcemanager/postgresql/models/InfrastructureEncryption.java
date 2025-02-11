@@ -5,29 +5,47 @@
 package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InfrastructureEncryption. */
+/**
+ * Add a second layer of encryption for your data using new encryption algorithm which gives additional data protection.
+ * Value is optional but if passed in, must be 'Disabled' or 'Enabled'.
+ */
 public final class InfrastructureEncryption extends ExpandableStringEnum<InfrastructureEncryption> {
-    /** Static value Enabled for InfrastructureEncryption. */
+    /**
+     * Static value Enabled for InfrastructureEncryption.
+     */
     public static final InfrastructureEncryption ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for InfrastructureEncryption. */
+    /**
+     * Static value Disabled for InfrastructureEncryption.
+     */
     public static final InfrastructureEncryption DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of InfrastructureEncryption value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InfrastructureEncryption() {
+    }
+
+    /**
      * Creates or finds a InfrastructureEncryption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InfrastructureEncryption.
      */
-    @JsonCreator
     public static InfrastructureEncryption fromString(String name) {
         return fromString(name, InfrastructureEncryption.class);
     }
 
-    /** @return known InfrastructureEncryption values. */
+    /**
+     * Gets known InfrastructureEncryption values.
+     * 
+     * @return known InfrastructureEncryption values.
+     */
     public static Collection<InfrastructureEncryption> values() {
         return values(InfrastructureEncryption.class);
     }

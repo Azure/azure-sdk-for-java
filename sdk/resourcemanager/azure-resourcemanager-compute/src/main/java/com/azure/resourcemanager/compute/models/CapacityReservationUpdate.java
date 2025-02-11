@@ -158,7 +158,6 @@ public final class CapacityReservationUpdate extends UpdateResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

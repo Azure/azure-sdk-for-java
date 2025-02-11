@@ -5,11 +5,25 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SharePoint data type connection. */
+/**
+ * SharePoint data type connection.
+ */
 @Fluent
 public final class OfficeDataConnectorDataTypesSharePoint extends DataConnectorDataTypeCommon {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of OfficeDataConnectorDataTypesSharePoint class.
+     */
+    public OfficeDataConnectorDataTypesSharePoint() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OfficeDataConnectorDataTypesSharePoint withState(DataTypeState state) {
         super.withState(state);
@@ -18,11 +32,48 @@ public final class OfficeDataConnectorDataTypesSharePoint extends DataConnectorD
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OfficeDataConnectorDataTypesSharePoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OfficeDataConnectorDataTypesSharePoint if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OfficeDataConnectorDataTypesSharePoint.
+     */
+    public static OfficeDataConnectorDataTypesSharePoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OfficeDataConnectorDataTypesSharePoint deserializedOfficeDataConnectorDataTypesSharePoint
+                = new OfficeDataConnectorDataTypesSharePoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedOfficeDataConnectorDataTypesSharePoint
+                        .withState(DataTypeState.fromString(reader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOfficeDataConnectorDataTypesSharePoint;
+        });
     }
 }

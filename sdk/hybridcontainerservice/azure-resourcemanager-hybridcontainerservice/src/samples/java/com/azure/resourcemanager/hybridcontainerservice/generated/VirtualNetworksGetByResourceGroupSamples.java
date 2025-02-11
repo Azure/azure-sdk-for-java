@@ -20,7 +20,8 @@ public final class VirtualNetworksGetByResourceGroupSamples {
      */
     public static void
         getVirtualNetwork(com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.virtualNetworks().getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-vnet-static",
-            com.azure.core.util.Context.NONE);
+        manager.virtualNetworks()
+            .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-vnet-static",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.DatabaseSummaryResult;
 public final class DatabaseSummaryResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseSummaryResult model =
-            BinaryData
-                .fromString(
-                    "{\"sizeMB\":18.283288377861208,\"name\":\"duvwpklvxwmygd\",\"startedOn\":\"2021-04-18T03:22:57Z\",\"endedOn\":\"2021-01-04T00:18:57Z\",\"state\":\"Stopped\",\"statusMessage\":\"sze\",\"itemsCount\":2196732173372776914,\"itemsCompletedCount\":7411307117167855340,\"errorPrefix\":\"gibbdaxc\",\"resultPrefix\":\"fozauorsuk\"}")
-                .toObject(DatabaseSummaryResult.class);
+        DatabaseSummaryResult model = BinaryData.fromString(
+            "{\"sizeMB\":7.652588154665596,\"name\":\"mfnczd\",\"startedOn\":\"2021-06-14T22:03:09Z\",\"endedOn\":\"2021-05-11T22:31:41Z\",\"state\":\"Warning\",\"statusMessage\":\"l\",\"itemsCount\":8856612047832221194,\"itemsCompletedCount\":1186256809003482579,\"errorPrefix\":\"evwrdnhfuk\",\"resultPrefix\":\"sjcswsmystuluqyp\"}")
+            .toObject(DatabaseSummaryResult.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.fluent.models.ReservationOrderResponseInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of `ReservationOrder`s. */
+/**
+ * List of `ReservationOrder`s.
+ */
 @Fluent
-public final class ReservationOrderList {
+public final class ReservationOrderList implements JsonSerializable<ReservationOrderList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<ReservationOrderResponseInner> value;
 
     /*
      * Url to get the next page of reservationOrders.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ReservationOrderList class. */
+    /**
+     * Creates an instance of ReservationOrderList class.
+     */
     public ReservationOrderList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<ReservationOrderResponseInner> value() {
@@ -39,7 +45,7 @@ public final class ReservationOrderList {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the ReservationOrderList object itself.
      */
@@ -50,7 +56,7 @@ public final class ReservationOrderList {
 
     /**
      * Get the nextLink property: Url to get the next page of reservationOrders.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ReservationOrderList {
 
     /**
      * Set the nextLink property: Url to get the next page of reservationOrders.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ReservationOrderList object itself.
      */
@@ -70,12 +76,53 @@ public final class ReservationOrderList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationOrderList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationOrderList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationOrderList.
+     */
+    public static ReservationOrderList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationOrderList deserializedReservationOrderList = new ReservationOrderList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ReservationOrderResponseInner> value
+                        = reader.readArray(reader1 -> ReservationOrderResponseInner.fromJson(reader1));
+                    deserializedReservationOrderList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedReservationOrderList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationOrderList;
+        });
     }
 }

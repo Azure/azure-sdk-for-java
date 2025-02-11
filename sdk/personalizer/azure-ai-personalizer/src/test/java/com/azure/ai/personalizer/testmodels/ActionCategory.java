@@ -3,22 +3,38 @@
 
 package com.azure.ai.personalizer.testmodels;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
-public class ActionCategory {
-    @JsonGetter
+import java.io.IOException;
+
+import static com.azure.ai.personalizer.TestUtils.deserializationHelper;
+
+public class ActionCategory implements JsonSerializable<ActionCategory> {
+    String mostWatchedByAge;
+
     public String getMostWatchedByAge() {
         return mostWatchedByAge;
     }
 
-    @JsonSetter
     public ActionCategory setMostWatchedByAge(String mostWatchedByAge) {
         this.mostWatchedByAge = mostWatchedByAge;
         return this;
     }
 
-    @JsonProperty
-    String mostWatchedByAge;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject().writeStringField("mostWatchedByAge", mostWatchedByAge).writeEndObject();
+    }
+
+    public static ActionCategory fromJson(JsonReader jsonReader) throws IOException {
+        return deserializationHelper(jsonReader, ActionCategory::new, (reader, fieldName, actionCategory) -> {
+            if ("mostWatchedByAge".equals(fieldName)) {
+                actionCategory.mostWatchedByAge = reader.getString();
+            } else {
+                reader.skipChildren();
+            }
+        });
+    }
 }

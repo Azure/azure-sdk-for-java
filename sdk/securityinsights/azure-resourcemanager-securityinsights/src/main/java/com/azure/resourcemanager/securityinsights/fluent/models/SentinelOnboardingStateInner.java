@@ -5,28 +5,101 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Sentinel onboarding state. */
+/**
+ * Sentinel onboarding state.
+ */
 @Fluent
 public final class SentinelOnboardingStateInner extends ResourceWithEtag {
     /*
      * The Sentinel onboarding state object
      */
-    @JsonProperty(value = "properties")
     private SentinelOnboardingStateProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SentinelOnboardingStateInner class.
+     */
+    public SentinelOnboardingStateInner() {
+    }
 
     /**
      * Get the innerProperties property: The Sentinel onboarding state object.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SentinelOnboardingStateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SentinelOnboardingStateInner withEtag(String etag) {
         super.withEtag(etag);
@@ -35,7 +108,7 @@ public final class SentinelOnboardingStateInner extends ResourceWithEtag {
 
     /**
      * Get the customerManagedKey property: Flag that indicates the status of the CMK setting.
-     *
+     * 
      * @return the customerManagedKey value.
      */
     public Boolean customerManagedKey() {
@@ -44,7 +117,7 @@ public final class SentinelOnboardingStateInner extends ResourceWithEtag {
 
     /**
      * Set the customerManagedKey property: Flag that indicates the status of the CMK setting.
-     *
+     * 
      * @param customerManagedKey the customerManagedKey value to set.
      * @return the SentinelOnboardingStateInner object itself.
      */
@@ -58,14 +131,62 @@ public final class SentinelOnboardingStateInner extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SentinelOnboardingStateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SentinelOnboardingStateInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SentinelOnboardingStateInner.
+     */
+    public static SentinelOnboardingStateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SentinelOnboardingStateInner deserializedSentinelOnboardingStateInner = new SentinelOnboardingStateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSentinelOnboardingStateInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSentinelOnboardingStateInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSentinelOnboardingStateInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedSentinelOnboardingStateInner.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSentinelOnboardingStateInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSentinelOnboardingStateInner.innerProperties
+                        = SentinelOnboardingStateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSentinelOnboardingStateInner;
+        });
     }
 }

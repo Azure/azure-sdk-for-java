@@ -5,51 +5,50 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.support.models.CommunicationDirection;
 import com.azure.resourcemanager.support.models.CommunicationType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Describes the properties of a communication resource.
  */
 @Fluent
-public final class CommunicationDetailsProperties {
+public final class CommunicationDetailsProperties implements JsonSerializable<CommunicationDetailsProperties> {
     /*
      * Communication type.
      */
-    @JsonProperty(value = "communicationType", access = JsonProperty.Access.WRITE_ONLY)
     private CommunicationType communicationType;
 
     /*
      * Direction of communication.
      */
-    @JsonProperty(value = "communicationDirection", access = JsonProperty.Access.WRITE_ONLY)
     private CommunicationDirection communicationDirection;
 
     /*
      * Email address of the sender. This property is required if called by a service principal.
      */
-    @JsonProperty(value = "sender")
     private String sender;
 
     /*
      * Subject of the communication.
      */
-    @JsonProperty(value = "subject", required = true)
     private String subject;
 
     /*
      * Body of the communication.
      */
-    @JsonProperty(value = "body", required = true)
     private String body;
 
     /*
      * Time in UTC (ISO 8601 format) when the communication was created.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /**
@@ -164,4 +163,57 @@ public final class CommunicationDetailsProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CommunicationDetailsProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("body", this.body);
+        jsonWriter.writeStringField("sender", this.sender);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunicationDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunicationDetailsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommunicationDetailsProperties.
+     */
+    public static CommunicationDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunicationDetailsProperties deserializedCommunicationDetailsProperties
+                = new CommunicationDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subject".equals(fieldName)) {
+                    deserializedCommunicationDetailsProperties.subject = reader.getString();
+                } else if ("body".equals(fieldName)) {
+                    deserializedCommunicationDetailsProperties.body = reader.getString();
+                } else if ("communicationType".equals(fieldName)) {
+                    deserializedCommunicationDetailsProperties.communicationType
+                        = CommunicationType.fromString(reader.getString());
+                } else if ("communicationDirection".equals(fieldName)) {
+                    deserializedCommunicationDetailsProperties.communicationDirection
+                        = CommunicationDirection.fromString(reader.getString());
+                } else if ("sender".equals(fieldName)) {
+                    deserializedCommunicationDetailsProperties.sender = reader.getString();
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedCommunicationDetailsProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunicationDetailsProperties;
+        });
+    }
 }

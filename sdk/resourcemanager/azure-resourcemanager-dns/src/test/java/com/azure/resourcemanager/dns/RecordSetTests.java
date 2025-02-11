@@ -18,16 +18,14 @@ public class RecordSetTests extends DnsTestBase {
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + rgName + ".com";
 
-        DnsZone dnsZone =
-            zoneManager
-                .zones()
-                .define(topLevelDomain)
-                .withNewResourceGroup(rgName, region)
-                .defineCNameRecordSet("www")
-                .withAlias("cname.contoso.com")
-                .withTimeToLive(7200)
-                .attach()
-                .create();
+        DnsZone dnsZone = zoneManager.zones()
+            .define(topLevelDomain)
+            .withNewResourceGroup(rgName, region)
+            .defineCNameRecordSet("www")
+            .withAlias("cname.contoso.com")
+            .withTimeToLive(7200)
+            .attach()
+            .create();
 
         // Check CNAME records
         dnsZone.refresh();
@@ -39,13 +37,7 @@ public class RecordSetTests extends DnsTestBase {
         Assertions.assertEquals("cname.contoso.com", cnameRecordSet.canonicalName());
 
         // Update alias and ttl:
-        dnsZone
-            .update()
-            .updateCNameRecordSet("www")
-            .withAlias("new.contoso.com")
-            .withTimeToLive(3600)
-            .parent()
-            .apply();
+        dnsZone.update().updateCNameRecordSet("www").withAlias("new.contoso.com").withTimeToLive(3600).parent().apply();
 
         // Check CNAME records
         dnsZone.refresh();

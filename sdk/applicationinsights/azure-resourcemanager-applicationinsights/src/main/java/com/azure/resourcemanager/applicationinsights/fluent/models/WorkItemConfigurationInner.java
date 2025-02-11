@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Work item configuration associated with an application insights resource. */
+/**
+ * Work item configuration associated with an application insights resource.
+ */
 @Fluent
-public final class WorkItemConfigurationInner {
+public final class WorkItemConfigurationInner implements JsonSerializable<WorkItemConfigurationInner> {
     /*
      * Connector identifier where work item is created
      */
-    @JsonProperty(value = "ConnectorId")
     private String connectorId;
 
     /*
      * Configuration friendly name
      */
-    @JsonProperty(value = "ConfigDisplayName")
     private String configDisplayName;
 
     /*
      * Boolean value indicating whether configuration is default
      */
-    @JsonProperty(value = "IsDefault")
     private Boolean isDefault;
 
     /*
      * Unique Id for work item
      */
-    @JsonProperty(value = "Id")
     private String id;
 
     /*
      * Serialized JSON object for detailed properties
      */
-    @JsonProperty(value = "ConfigProperties")
     private String configProperties;
 
-    /** Creates an instance of WorkItemConfigurationInner class. */
+    /**
+     * Creates an instance of WorkItemConfigurationInner class.
+     */
     public WorkItemConfigurationInner() {
     }
 
     /**
      * Get the connectorId property: Connector identifier where work item is created.
-     *
+     * 
      * @return the connectorId value.
      */
     public String connectorId() {
@@ -55,7 +58,7 @@ public final class WorkItemConfigurationInner {
 
     /**
      * Set the connectorId property: Connector identifier where work item is created.
-     *
+     * 
      * @param connectorId the connectorId value to set.
      * @return the WorkItemConfigurationInner object itself.
      */
@@ -66,7 +69,7 @@ public final class WorkItemConfigurationInner {
 
     /**
      * Get the configDisplayName property: Configuration friendly name.
-     *
+     * 
      * @return the configDisplayName value.
      */
     public String configDisplayName() {
@@ -75,7 +78,7 @@ public final class WorkItemConfigurationInner {
 
     /**
      * Set the configDisplayName property: Configuration friendly name.
-     *
+     * 
      * @param configDisplayName the configDisplayName value to set.
      * @return the WorkItemConfigurationInner object itself.
      */
@@ -86,7 +89,7 @@ public final class WorkItemConfigurationInner {
 
     /**
      * Get the isDefault property: Boolean value indicating whether configuration is default.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -95,7 +98,7 @@ public final class WorkItemConfigurationInner {
 
     /**
      * Set the isDefault property: Boolean value indicating whether configuration is default.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the WorkItemConfigurationInner object itself.
      */
@@ -106,7 +109,7 @@ public final class WorkItemConfigurationInner {
 
     /**
      * Get the id property: Unique Id for work item.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -115,7 +118,7 @@ public final class WorkItemConfigurationInner {
 
     /**
      * Set the id property: Unique Id for work item.
-     *
+     * 
      * @param id the id value to set.
      * @return the WorkItemConfigurationInner object itself.
      */
@@ -126,7 +129,7 @@ public final class WorkItemConfigurationInner {
 
     /**
      * Get the configProperties property: Serialized JSON object for detailed properties.
-     *
+     * 
      * @return the configProperties value.
      */
     public String configProperties() {
@@ -135,7 +138,7 @@ public final class WorkItemConfigurationInner {
 
     /**
      * Set the configProperties property: Serialized JSON object for detailed properties.
-     *
+     * 
      * @param configProperties the configProperties value to set.
      * @return the WorkItemConfigurationInner object itself.
      */
@@ -146,9 +149,57 @@ public final class WorkItemConfigurationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ConnectorId", this.connectorId);
+        jsonWriter.writeStringField("ConfigDisplayName", this.configDisplayName);
+        jsonWriter.writeBooleanField("IsDefault", this.isDefault);
+        jsonWriter.writeStringField("Id", this.id);
+        jsonWriter.writeStringField("ConfigProperties", this.configProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkItemConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkItemConfigurationInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkItemConfigurationInner.
+     */
+    public static WorkItemConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkItemConfigurationInner deserializedWorkItemConfigurationInner = new WorkItemConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ConnectorId".equals(fieldName)) {
+                    deserializedWorkItemConfigurationInner.connectorId = reader.getString();
+                } else if ("ConfigDisplayName".equals(fieldName)) {
+                    deserializedWorkItemConfigurationInner.configDisplayName = reader.getString();
+                } else if ("IsDefault".equals(fieldName)) {
+                    deserializedWorkItemConfigurationInner.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("Id".equals(fieldName)) {
+                    deserializedWorkItemConfigurationInner.id = reader.getString();
+                } else if ("ConfigProperties".equals(fieldName)) {
+                    deserializedWorkItemConfigurationInner.configProperties = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkItemConfigurationInner;
+        });
     }
 }

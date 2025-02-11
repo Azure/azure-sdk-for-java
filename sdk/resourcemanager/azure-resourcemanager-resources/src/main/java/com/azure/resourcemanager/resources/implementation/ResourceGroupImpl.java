@@ -22,17 +22,13 @@ import java.util.Map;
 /**
  * The implementation for {@link ResourceGroup} and its create and update interfaces.
  */
-class ResourceGroupImpl extends
-        CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl>
-        implements
-        ResourceGroup,
-        ResourceGroup.Definition,
-        ResourceGroup.Update {
+class ResourceGroupImpl extends CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl>
+    implements ResourceGroup, ResourceGroup.Definition, ResourceGroup.Update {
 
     private final ResourceGroupsClient client;
 
     protected ResourceGroupImpl(final ResourceGroupInner innerModel, String name,
-            final ResourceManagementClient serviceClient) {
+        final ResourceManagementClient serviceClient) {
         super(name, innerModel);
         this.client = serviceClient.getResourceGroups();
     }
@@ -78,11 +74,10 @@ class ResourceGroupImpl extends
 
     @Override
     public Mono<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options) {
-        ExportTemplateRequest inner = new ExportTemplateRequest()
-                .withResources(Arrays.asList("*"))
-                .withOptions(options.toString());
-        return client.exportTemplateAsync(name(), inner).map(resourceGroupExportResultInner ->
-            new ResourceGroupExportResultImpl(resourceGroupExportResultInner));
+        ExportTemplateRequest inner
+            = new ExportTemplateRequest().withResources(Arrays.asList("*")).withOptions(options.toString());
+        return client.exportTemplateAsync(name(), inner)
+            .map(resourceGroupExportResultInner -> new ResourceGroupExportResultImpl(resourceGroupExportResultInner));
     }
 
     @Override
@@ -122,8 +117,7 @@ class ResourceGroupImpl extends
         ResourceGroupInner params = new ResourceGroupInner();
         params.withLocation(this.innerModel().location());
         params.withTags(this.innerModel().tags());
-        return client.createOrUpdateAsync(this.name(), params)
-                .map(innerToFluentMap(this));
+        return client.createOrUpdateAsync(this.name(), params).map(innerToFluentMap(this));
     }
 
     @Override

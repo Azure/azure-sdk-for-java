@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.Disk;
@@ -51,20 +51,20 @@ public final class ManageZonalVirtualMachine {
             System.out.println("Creating a zonal VM with implicitly zoned related resources (PublicIP, Disk)");
 
             VirtualMachine virtualMachine1 = azureResourceManager.virtualMachines()
-                    .define(vmName1)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(pipName1)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    // Optional
-                    .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    // Create VM
-                    .create();
+                .define(vmName1)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(pipName1)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                // Optional
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                // Create VM
+                .create();
 
             System.out.println("Created a zoned virtual machine: " + virtualMachine1.id());
             Utils.print(virtualMachine1);
@@ -75,15 +75,15 @@ public final class ManageZonalVirtualMachine {
             System.out.println("Creating a zonal public ip address");
 
             PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses()
-                    .define(pipName2)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    // Optional
-                    .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
-                    .withStaticIP()
-                    .withSku(PublicIPSkuType.STANDARD)
-                    // Create PIP
-                    .create();
+                .define(pipName2)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                // Optional
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+                .withStaticIP()
+                .withSku(PublicIPSkuType.STANDARD)
+                // Create PIP
+                .create();
 
             System.out.println("Created a zoned public ip address: " + publicIPAddress.id());
             Utils.print(publicIPAddress);
@@ -94,40 +94,39 @@ public final class ManageZonalVirtualMachine {
             System.out.println("Creating a zonal data disk");
 
             Disk dataDisk = azureResourceManager.disks()
-                    .define(diskName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withData()
-                    .withSizeInGB(100)
-                    // Optional
-                    .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
-                    // Create Disk
-                    .create();
+                .define(diskName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(100)
+                // Optional
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+                // Create Disk
+                .create();
 
             System.out.println("Created a zoned managed data disk: " + dataDisk.id());
 
             //=============================================================
             // Create a zonal virtual machine with zonal public ip and data disk
 
-
             System.out.println("Creating a zonal VM with implicitly zoned related resources (PublicIP, Disk)");
 
             VirtualMachine virtualMachine2 = azureResourceManager.virtualMachines()
-                    .define(vmName2)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withExistingPrimaryPublicIPAddress(publicIPAddress)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    // Optional
-                    .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
-                    .withExistingDataDisk(dataDisk)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    // Create VM
-                    .create();
+                .define(vmName2)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withExistingPrimaryPublicIPAddress(publicIPAddress)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                // Optional
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+                .withExistingDataDisk(dataDisk)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                // Create VM
+                .create();
 
             System.out.println("Created a zoned virtual machine: " + virtualMachine2.id());
             Utils.print(virtualMachine2);
@@ -157,13 +156,12 @@ public final class ManageZonalVirtualMachine {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

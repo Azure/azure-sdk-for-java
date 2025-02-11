@@ -10,6 +10,5 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
  * Entry point to tenant management API.
  */
 @Fluent
-public interface Tenants extends
-        SupportsListing<Tenant> {
+public interface Tenants extends SupportsListing<Tenant> {
 }

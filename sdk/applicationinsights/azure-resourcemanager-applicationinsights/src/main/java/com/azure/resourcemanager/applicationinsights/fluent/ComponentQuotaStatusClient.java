@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentQuotaStatusInner;
 
-/** An instance of this class provides access to all the operations defined in ComponentQuotaStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ComponentQuotaStatusClient.
+ */
 public interface ComponentQuotaStatusClient {
     /**
      * Returns daily data volume cap (quota) status for an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -24,12 +26,12 @@ public interface ComponentQuotaStatusClient {
      * @return an Application Insights component daily data volume cap status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentQuotaStatusInner> getWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplicationInsightsComponentQuotaStatusInner> getWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Returns daily data volume cap (quota) status for an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

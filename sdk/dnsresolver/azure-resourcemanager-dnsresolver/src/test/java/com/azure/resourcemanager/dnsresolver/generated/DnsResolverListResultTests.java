@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.dnsresolver.generated;
 
+import com.azure.core.management.SubResource;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.fluent.models.DnsResolverInner;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolverListResult;
@@ -11,35 +12,31 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DnsResolverListResultTests {
-    @Test
-    public void testDeserialize() {
-        DnsResolverListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"etag\":\"lhjxr\",\"properties\":{\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Creating\",\"resourceGuid\":\"vktsizntocipao\"},\"location\":\"jpsq\",\"tags\":{\"gjofjd\":\"poyfdkfogkn\",\"zyf\":\"eqsrdeupewnwreit\"},\"id\":\"usarhmofc\",\"name\":\"hs\",\"type\":\"yurkdtmlxhekuksj\"}],\"nextLink\":\"ukcdmparcryuanzw\"}")
-                .toObject(DnsResolverListResult.class);
-        Assertions.assertEquals("jpsq", model.value().get(0).location());
-        Assertions.assertEquals("poyfdkfogkn", model.value().get(0).tags().get("gjofjd"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DnsResolverListResult model = BinaryData.fromString(
+            "{\"value\":[{\"etag\":\"lhjxr\",\"properties\":{\"virtualNetwork\":{\"id\":\"kwm\"},\"dnsResolverState\":\"Disconnected\",\"provisioningState\":\"Canceled\",\"resourceGuid\":\"zntocipaouajps\"},\"location\":\"cmpoyfdkfogkny\",\"tags\":{\"deupewnwrei\":\"fjddeqs\",\"arhmofcqhsmy\":\"jzyflu\"},\"id\":\"rkdtmlxh\",\"name\":\"kuksjtxukcdm\",\"type\":\"arcryuanzwuxzdxt\"}],\"nextLink\":\"rlhm\"}")
+            .toObject(DnsResolverListResult.class);
+        Assertions.assertEquals("cmpoyfdkfogkny", model.value().get(0).location());
+        Assertions.assertEquals("fjddeqs", model.value().get(0).tags().get("deupewnwrei"));
+        Assertions.assertEquals("kwm", model.value().get(0).virtualNetwork().id());
     }
 
-    @Test
-    public void testSerialize() {
-        DnsResolverListResult model =
-            new DnsResolverListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DnsResolverInner()
-                                .withLocation("jpsq")
-                                .withTags(mapOf("gjofjd", "poyfdkfogkn", "zyf", "eqsrdeupewnwreit"))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DnsResolverListResult model
+            = new DnsResolverListResult().withValue(Arrays.asList(new DnsResolverInner().withLocation("cmpoyfdkfogkny")
+                .withTags(mapOf("deupewnwrei", "fjddeqs", "arhmofcqhsmy", "jzyflu"))
+                .withVirtualNetwork(new SubResource().withId("kwm"))));
         model = BinaryData.fromObject(model).toObject(DnsResolverListResult.class);
-        Assertions.assertEquals("jpsq", model.value().get(0).location());
-        Assertions.assertEquals("poyfdkfogkn", model.value().get(0).tags().get("gjofjd"));
+        Assertions.assertEquals("cmpoyfdkfogkny", model.value().get(0).location());
+        Assertions.assertEquals("fjddeqs", model.value().get(0).tags().get("deupewnwrei"));
+        Assertions.assertEquals("kwm", model.value().get(0).virtualNetwork().id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

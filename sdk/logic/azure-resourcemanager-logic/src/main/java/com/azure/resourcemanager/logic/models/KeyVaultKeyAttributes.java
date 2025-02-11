@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The key attributes. */
+/**
+ * The key attributes.
+ */
 @Fluent
-public final class KeyVaultKeyAttributes {
+public final class KeyVaultKeyAttributes implements JsonSerializable<KeyVaultKeyAttributes> {
     /*
      * Whether the key is enabled or not.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * When the key was created.
      */
-    @JsonProperty(value = "created")
     private Long created;
 
     /*
      * When the key was updated.
      */
-    @JsonProperty(value = "updated")
     private Long updated;
 
-    /** Creates an instance of KeyVaultKeyAttributes class. */
+    /**
+     * Creates an instance of KeyVaultKeyAttributes class.
+     */
     public KeyVaultKeyAttributes() {
     }
 
     /**
      * Get the enabled property: Whether the key is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -43,7 +48,7 @@ public final class KeyVaultKeyAttributes {
 
     /**
      * Set the enabled property: Whether the key is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the KeyVaultKeyAttributes object itself.
      */
@@ -54,7 +59,7 @@ public final class KeyVaultKeyAttributes {
 
     /**
      * Get the created property: When the key was created.
-     *
+     * 
      * @return the created value.
      */
     public Long created() {
@@ -63,7 +68,7 @@ public final class KeyVaultKeyAttributes {
 
     /**
      * Set the created property: When the key was created.
-     *
+     * 
      * @param created the created value to set.
      * @return the KeyVaultKeyAttributes object itself.
      */
@@ -74,7 +79,7 @@ public final class KeyVaultKeyAttributes {
 
     /**
      * Get the updated property: When the key was updated.
-     *
+     * 
      * @return the updated value.
      */
     public Long updated() {
@@ -83,7 +88,7 @@ public final class KeyVaultKeyAttributes {
 
     /**
      * Set the updated property: When the key was updated.
-     *
+     * 
      * @param updated the updated value to set.
      * @return the KeyVaultKeyAttributes object itself.
      */
@@ -94,9 +99,51 @@ public final class KeyVaultKeyAttributes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeNumberField("created", this.created);
+        jsonWriter.writeNumberField("updated", this.updated);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultKeyAttributes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultKeyAttributes if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultKeyAttributes.
+     */
+    public static KeyVaultKeyAttributes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultKeyAttributes deserializedKeyVaultKeyAttributes = new KeyVaultKeyAttributes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedKeyVaultKeyAttributes.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("created".equals(fieldName)) {
+                    deserializedKeyVaultKeyAttributes.created = reader.getNullable(JsonReader::getLong);
+                } else if ("updated".equals(fieldName)) {
+                    deserializedKeyVaultKeyAttributes.updated = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultKeyAttributes;
+        });
     }
 }

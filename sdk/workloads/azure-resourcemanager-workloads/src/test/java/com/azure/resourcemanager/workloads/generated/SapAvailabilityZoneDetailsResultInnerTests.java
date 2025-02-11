@@ -13,30 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class SapAvailabilityZoneDetailsResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapAvailabilityZoneDetailsResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"availabilityZonePairs\":[{\"zoneA\":7195819484478334007,\"zoneB\":9096749627848902766},{\"zoneA\":743485313874926492,\"zoneB\":1877152669215165811}]}")
-                .toObject(SapAvailabilityZoneDetailsResultInner.class);
-        Assertions.assertEquals(7195819484478334007L, model.availabilityZonePairs().get(0).zoneA());
-        Assertions.assertEquals(9096749627848902766L, model.availabilityZonePairs().get(0).zoneB());
+        SapAvailabilityZoneDetailsResultInner model = BinaryData
+            .fromString("{\"availabilityZonePairs\":[{\"zoneA\":4271098057601003204,\"zoneB\":8422628266390850283}]}")
+            .toObject(SapAvailabilityZoneDetailsResultInner.class);
+        Assertions.assertEquals(4271098057601003204L, model.availabilityZonePairs().get(0).zoneA());
+        Assertions.assertEquals(8422628266390850283L, model.availabilityZonePairs().get(0).zoneB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapAvailabilityZoneDetailsResultInner model =
-            new SapAvailabilityZoneDetailsResultInner()
-                .withAvailabilityZonePairs(
-                    Arrays
-                        .asList(
-                            new SapAvailabilityZonePair()
-                                .withZoneA(7195819484478334007L)
-                                .withZoneB(9096749627848902766L),
-                            new SapAvailabilityZonePair()
-                                .withZoneA(743485313874926492L)
-                                .withZoneB(1877152669215165811L)));
+        SapAvailabilityZoneDetailsResultInner model
+            = new SapAvailabilityZoneDetailsResultInner().withAvailabilityZonePairs(Arrays
+                .asList(new SapAvailabilityZonePair().withZoneA(4271098057601003204L).withZoneB(8422628266390850283L)));
         model = BinaryData.fromObject(model).toObject(SapAvailabilityZoneDetailsResultInner.class);
-        Assertions.assertEquals(7195819484478334007L, model.availabilityZonePairs().get(0).zoneA());
-        Assertions.assertEquals(9096749627848902766L, model.availabilityZonePairs().get(0).zoneB());
+        Assertions.assertEquals(4271098057601003204L, model.availabilityZonePairs().get(0).zoneA());
+        Assertions.assertEquals(8422628266390850283L, model.availabilityZonePairs().get(0).zoneB());
     }
 }

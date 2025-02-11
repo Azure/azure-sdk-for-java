@@ -15,45 +15,48 @@ public final class UpgradePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpgradePolicy model = BinaryData.fromString(
-            "{\"mode\":\"manual\",\"automaticOSUpgradePolicy\":{\"disableAutomaticRollback\":false,\"enableAutomaticOSUpgrade\":false,\"useRollingUpgradePolicy\":true,\"osRollingUpgradeDeferral\":true},\"rollingUpgradePolicy\":{\"enableCrossZoneUpgrade\":true,\"maxBatchInstancePercent\":881779477,\"maxUnhealthyInstancePercent\":1460158080,\"maxUnhealthyUpgradedInstancePercent\":1973822753,\"pauseTimeBetweenBatches\":\"kjj\",\"prioritizeUnhealthyInstances\":true,\"rollbackFailedInstancesOnPolicyBreach\":true}}")
+            "{\"mode\":\"rolling\",\"automaticOSUpgradePolicy\":{\"disableAutomaticRollback\":false,\"enableAutomaticOSUpgrade\":true,\"useRollingUpgradePolicy\":false,\"osRollingUpgradeDeferral\":true},\"rollingUpgradePolicy\":{\"enableCrossZoneUpgrade\":false,\"maxBatchInstancePercent\":438426140,\"maxUnhealthyInstancePercent\":1665023575,\"maxUnhealthyUpgradedInstancePercent\":42464085,\"pauseTimeBetweenBatches\":\"rfdwoyu\",\"prioritizeUnhealthyInstances\":true,\"rollbackFailedInstancesOnPolicyBreach\":false}}")
             .toObject(UpgradePolicy.class);
-        Assertions.assertEquals(UpgradeMode.MANUAL, model.mode());
+        Assertions.assertEquals(UpgradeMode.ROLLING, model.mode());
         Assertions.assertEquals(false, model.automaticOSUpgradePolicy().disableAutomaticRollback());
-        Assertions.assertEquals(false, model.automaticOSUpgradePolicy().enableAutomaticOSUpgrade());
-        Assertions.assertEquals(true, model.automaticOSUpgradePolicy().useRollingUpgradePolicy());
+        Assertions.assertEquals(true, model.automaticOSUpgradePolicy().enableAutomaticOSUpgrade());
+        Assertions.assertEquals(false, model.automaticOSUpgradePolicy().useRollingUpgradePolicy());
         Assertions.assertEquals(true, model.automaticOSUpgradePolicy().osRollingUpgradeDeferral());
-        Assertions.assertEquals(true, model.rollingUpgradePolicy().enableCrossZoneUpgrade());
-        Assertions.assertEquals(881779477, model.rollingUpgradePolicy().maxBatchInstancePercent());
-        Assertions.assertEquals(1460158080, model.rollingUpgradePolicy().maxUnhealthyInstancePercent());
-        Assertions.assertEquals(1973822753, model.rollingUpgradePolicy().maxUnhealthyUpgradedInstancePercent());
-        Assertions.assertEquals("kjj", model.rollingUpgradePolicy().pauseTimeBetweenBatches());
+        Assertions.assertEquals(false, model.rollingUpgradePolicy().enableCrossZoneUpgrade());
+        Assertions.assertEquals(438426140, model.rollingUpgradePolicy().maxBatchInstancePercent());
+        Assertions.assertEquals(1665023575, model.rollingUpgradePolicy().maxUnhealthyInstancePercent());
+        Assertions.assertEquals(42464085, model.rollingUpgradePolicy().maxUnhealthyUpgradedInstancePercent());
+        Assertions.assertEquals("rfdwoyu", model.rollingUpgradePolicy().pauseTimeBetweenBatches());
         Assertions.assertEquals(true, model.rollingUpgradePolicy().prioritizeUnhealthyInstances());
-        Assertions.assertEquals(true, model.rollingUpgradePolicy().rollbackFailedInstancesOnPolicyBreach());
+        Assertions.assertEquals(false, model.rollingUpgradePolicy().rollbackFailedInstancesOnPolicyBreach());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpgradePolicy model
-            = new UpgradePolicy().withMode(UpgradeMode.MANUAL)
-                .withAutomaticOSUpgradePolicy(new AutomaticOSUpgradePolicy().withDisableAutomaticRollback(false)
-                    .withEnableAutomaticOSUpgrade(false).withUseRollingUpgradePolicy(true)
-                    .withOsRollingUpgradeDeferral(true))
-                .withRollingUpgradePolicy(new RollingUpgradePolicy().withEnableCrossZoneUpgrade(true)
-                    .withMaxBatchInstancePercent(881779477).withMaxUnhealthyInstancePercent(1460158080)
-                    .withMaxUnhealthyUpgradedInstancePercent(1973822753).withPauseTimeBetweenBatches("kjj")
-                    .withPrioritizeUnhealthyInstances(true).withRollbackFailedInstancesOnPolicyBreach(true));
+        UpgradePolicy model = new UpgradePolicy().withMode(UpgradeMode.ROLLING)
+            .withAutomaticOSUpgradePolicy(new AutomaticOSUpgradePolicy().withDisableAutomaticRollback(false)
+                .withEnableAutomaticOSUpgrade(true)
+                .withUseRollingUpgradePolicy(false)
+                .withOsRollingUpgradeDeferral(true))
+            .withRollingUpgradePolicy(new RollingUpgradePolicy().withEnableCrossZoneUpgrade(false)
+                .withMaxBatchInstancePercent(438426140)
+                .withMaxUnhealthyInstancePercent(1665023575)
+                .withMaxUnhealthyUpgradedInstancePercent(42464085)
+                .withPauseTimeBetweenBatches("rfdwoyu")
+                .withPrioritizeUnhealthyInstances(true)
+                .withRollbackFailedInstancesOnPolicyBreach(false));
         model = BinaryData.fromObject(model).toObject(UpgradePolicy.class);
-        Assertions.assertEquals(UpgradeMode.MANUAL, model.mode());
+        Assertions.assertEquals(UpgradeMode.ROLLING, model.mode());
         Assertions.assertEquals(false, model.automaticOSUpgradePolicy().disableAutomaticRollback());
-        Assertions.assertEquals(false, model.automaticOSUpgradePolicy().enableAutomaticOSUpgrade());
-        Assertions.assertEquals(true, model.automaticOSUpgradePolicy().useRollingUpgradePolicy());
+        Assertions.assertEquals(true, model.automaticOSUpgradePolicy().enableAutomaticOSUpgrade());
+        Assertions.assertEquals(false, model.automaticOSUpgradePolicy().useRollingUpgradePolicy());
         Assertions.assertEquals(true, model.automaticOSUpgradePolicy().osRollingUpgradeDeferral());
-        Assertions.assertEquals(true, model.rollingUpgradePolicy().enableCrossZoneUpgrade());
-        Assertions.assertEquals(881779477, model.rollingUpgradePolicy().maxBatchInstancePercent());
-        Assertions.assertEquals(1460158080, model.rollingUpgradePolicy().maxUnhealthyInstancePercent());
-        Assertions.assertEquals(1973822753, model.rollingUpgradePolicy().maxUnhealthyUpgradedInstancePercent());
-        Assertions.assertEquals("kjj", model.rollingUpgradePolicy().pauseTimeBetweenBatches());
+        Assertions.assertEquals(false, model.rollingUpgradePolicy().enableCrossZoneUpgrade());
+        Assertions.assertEquals(438426140, model.rollingUpgradePolicy().maxBatchInstancePercent());
+        Assertions.assertEquals(1665023575, model.rollingUpgradePolicy().maxUnhealthyInstancePercent());
+        Assertions.assertEquals(42464085, model.rollingUpgradePolicy().maxUnhealthyUpgradedInstancePercent());
+        Assertions.assertEquals("rfdwoyu", model.rollingUpgradePolicy().pauseTimeBetweenBatches());
         Assertions.assertEquals(true, model.rollingUpgradePolicy().prioritizeUnhealthyInstances());
-        Assertions.assertEquals(true, model.rollingUpgradePolicy().rollbackFailedInstancesOnPolicyBreach());
+        Assertions.assertEquals(false, model.rollingUpgradePolicy().rollbackFailedInstancesOnPolicyBreach());
     }
 }

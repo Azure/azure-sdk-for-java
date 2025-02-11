@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourcePoolInventoryItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourcePoolInventoryItem model =
-            BinaryData
-                .fromString(
-                    "{\"inventoryType\":\"ResourcePool\",\"parent\":{\"inventoryItemId\":\"nljlageuaulx\",\"moName\":\"smjbnkppxyn\",\"inventoryType\":\"Datastore\"},\"managedResourceId\":\"vxei\",\"moRefId\":\"gwklnsr\",\"moName\":\"feycxcktp\",\"provisioningState\":\"Accepted\"}")
-                .toObject(ResourcePoolInventoryItem.class);
+        ResourcePoolInventoryItem model = BinaryData.fromString(
+            "{\"inventoryType\":\"ResourcePool\",\"parent\":{\"inventoryItemId\":\"nljlageuaulx\",\"moName\":\"smjbnkppxyn\",\"inventoryType\":\"Datastore\"},\"managedResourceId\":\"vxei\",\"moRefId\":\"gwklnsr\",\"moName\":\"feycxcktp\",\"provisioningState\":\"Accepted\"}")
+            .toObject(ResourcePoolInventoryItem.class);
         Assertions.assertEquals("vxei", model.managedResourceId());
         Assertions.assertEquals("gwklnsr", model.moRefId());
         Assertions.assertEquals("feycxcktp", model.moName());
@@ -28,16 +26,12 @@ public final class ResourcePoolInventoryItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourcePoolInventoryItem model =
-            new ResourcePoolInventoryItem()
-                .withManagedResourceId("vxei")
-                .withMoRefId("gwklnsr")
-                .withMoName("feycxcktp")
-                .withParent(
-                    new InventoryItemDetails()
-                        .withInventoryItemId("nljlageuaulx")
-                        .withMoName("smjbnkppxyn")
-                        .withInventoryType(InventoryType.DATASTORE));
+        ResourcePoolInventoryItem model = new ResourcePoolInventoryItem().withManagedResourceId("vxei")
+            .withMoRefId("gwklnsr")
+            .withMoName("feycxcktp")
+            .withParent(new InventoryItemDetails().withInventoryItemId("nljlageuaulx")
+                .withMoName("smjbnkppxyn")
+                .withInventoryType(InventoryType.DATASTORE));
         model = BinaryData.fromObject(model).toObject(ResourcePoolInventoryItem.class);
         Assertions.assertEquals("vxei", model.managedResourceId());
         Assertions.assertEquals("gwklnsr", model.moRefId());

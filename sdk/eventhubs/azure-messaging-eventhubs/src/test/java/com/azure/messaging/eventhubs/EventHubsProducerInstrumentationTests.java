@@ -55,15 +55,11 @@ public class EventHubsProducerInstrumentationTests {
     public void setup(TestInfo testInfo) {
         spanProcessor = new TestSpanProcessor(FQDN, ENTITY_NAME, testInfo.getDisplayName());
         OpenTelemetry otel = OpenTelemetrySdk.builder()
-                .setTracerProvider(
-                        SdkTracerProvider.builder()
-                                .addSpanProcessor(spanProcessor)
-                                .build())
-                .build();
+            .setTracerProvider(SdkTracerProvider.builder().addSpanProcessor(spanProcessor).build())
+            .build();
 
         TracingOptions tracingOptions = new OpenTelemetryTracingOptions().setOpenTelemetry(otel);
-        tracer = TracerProvider.getDefaultProvider()
-                .createTracer("test", null, "Microsoft.EventHub", tracingOptions);
+        tracer = TracerProvider.getDefaultProvider().createTracer("test", null, "Microsoft.EventHub", tracingOptions);
         meter = new TestMeter();
     }
 
@@ -77,38 +73,32 @@ public class EventHubsProducerInstrumentationTests {
     @Test
     @SuppressWarnings("try")
     public void sendBatchDisabledInstrumentation() {
-        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(null, null,
-                FQDN, ENTITY_NAME);
+        EventHubsProducerInstrumentation instrumentation
+            = new EventHubsProducerInstrumentation(null, null, FQDN, ENTITY_NAME);
 
-        EventDataBatch batch = new EventDataBatch(1024, null, null,
-                () -> null, instrumentation);
+        EventDataBatch batch = new EventDataBatch(1024, null, null, () -> null, instrumentation);
         batch.tryAdd(new EventData("test"));
         Mono<Void> inner = Mono.empty();
         assertSame(inner, instrumentation.sendBatch(inner, batch));
     }
 
     public static Stream<Arguments> sendBatchErrors() {
-        return Stream.of(
-                Arguments.of(false, null, null, null),
-                Arguments.of(true, null, "cancelled", "cancelled"),
-                Arguments.of(false, new RuntimeException("test"), RuntimeException.class.getName(), "test"),
-                Arguments.of(false, Exceptions.propagate(new RuntimeException("test")), RuntimeException.class.getName(), "test")
-        );
+        return Stream.of(Arguments.of(false, null, null, null), Arguments.of(true, null, "cancelled", "cancelled"),
+            Arguments.of(false, new RuntimeException("test"), RuntimeException.class.getName(), "test"), Arguments.of(
+                false, Exceptions.propagate(new RuntimeException("test")), RuntimeException.class.getName(), "test"));
     }
 
     @ParameterizedTest
     @MethodSource("sendBatchErrors")
     @SuppressWarnings("try")
     public void sendBatchOneEvent(boolean cancel, Throwable error, String expectedErrorType, String spanDescription) {
-        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer, meter,
-                FQDN, ENTITY_NAME);
-        EventDataBatch batch = new EventDataBatch(1024, null, null,
-                () -> null, instrumentation);
+        EventHubsProducerInstrumentation instrumentation
+            = new EventHubsProducerInstrumentation(tracer, meter, FQDN, ENTITY_NAME);
+        EventDataBatch batch = new EventDataBatch(1024, null, null, () -> null, instrumentation);
         batch.tryAdd(new EventData("test"));
         Mono<Void> inner = Mono.defer(() -> error == null ? Mono.empty() : Mono.error(error));
 
-        StepVerifier.FirstStep<Void> stepVerifier =
-                StepVerifier.create(instrumentation.sendBatch(inner, batch));
+        StepVerifier.FirstStep<Void> stepVerifier = StepVerifier.create(instrumentation.sendBatch(inner, batch));
 
         if (cancel) {
             stepVerifier.thenCancel().verify();
@@ -126,13 +116,13 @@ public class EventHubsProducerInstrumentationTests {
     @ParameterizedTest
     @MethodSource("sendBatchErrors")
     @SuppressWarnings("try")
-    public void sendBatchMultipleEvents(boolean cancel, Throwable error, String expectedErrorType, String spanDescription) {
-        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer, meter,
-                FQDN, ENTITY_NAME);
+    public void sendBatchMultipleEvents(boolean cancel, Throwable error, String expectedErrorType,
+        String spanDescription) {
+        EventHubsProducerInstrumentation instrumentation
+            = new EventHubsProducerInstrumentation(tracer, meter, FQDN, ENTITY_NAME);
 
         String partitionId = "1";
-        EventDataBatch batch = new EventDataBatch(1024, partitionId, null,
-                () -> null, instrumentation);
+        EventDataBatch batch = new EventDataBatch(1024, partitionId, null, () -> null, instrumentation);
 
         int count = 3;
         for (int i = 0; i < count; i++) {
@@ -141,8 +131,7 @@ public class EventHubsProducerInstrumentationTests {
 
         Mono<Void> inner = Mono.defer(() -> error == null ? Mono.empty() : Mono.error(error));
 
-        StepVerifier.FirstStep<Void> stepVerifier =
-                StepVerifier.create(instrumentation.sendBatch(inner, batch));
+        StepVerifier.FirstStep<Void> stepVerifier = StepVerifier.create(instrumentation.sendBatch(inner, batch));
 
         if (cancel) {
             stepVerifier.thenCancel().verify();
@@ -161,28 +150,29 @@ public class EventHubsProducerInstrumentationTests {
         TestHistogram publishDuration = meter.getHistograms().get("messaging.client.operation.duration");
         assertNotNull(publishDuration);
         assertEquals(1, publishDuration.getMeasurements().size());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, null, expectedErrorType,
-                SEND, publishDuration.getMeasurements().get(0).getAttributes());
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, null, expectedErrorType, SEND,
+            publishDuration.getMeasurements().get(0).getAttributes());
     }
 
     private void assertSpans(int batchSize, String partitionId, String expectedErrorType, String spanDescription) {
         assertEquals(batchSize + 1, spanProcessor.getEndedSpans().size());
-        List<SpanData> eventSpans = spanProcessor.getEndedSpans().stream()
-                .filter(s -> s.getKind().equals(PRODUCER))
-                .map(s -> s.toSpanData())
-                .collect(Collectors.toList());
+        List<SpanData> eventSpans = spanProcessor.getEndedSpans()
+            .stream()
+            .filter(s -> s.getKind().equals(PRODUCER))
+            .map(s -> s.toSpanData())
+            .collect(Collectors.toList());
         assertEquals(batchSize, eventSpans.size());
 
-        List<SpanData> publishSpans = spanProcessor.getEndedSpans().stream()
-                .filter(s -> s.getKind().equals(CLIENT))
-                .map(s -> s.toSpanData())
-                .collect(Collectors.toList());
+        List<SpanData> publishSpans = spanProcessor.getEndedSpans()
+            .stream()
+            .filter(s -> s.getKind().equals(CLIENT))
+            .map(s -> s.toSpanData())
+            .collect(Collectors.toList());
         assertEquals(1, publishSpans.size());
 
         assertEquals(getSpanName(SEND, ENTITY_NAME), publishSpans.get(0).getName());
         Map<String, Object> publishAttributes = attributesToMap(publishSpans.get(0).getAttributes());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, null, expectedErrorType,
-            SEND, publishAttributes);
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, null, expectedErrorType, SEND, publishAttributes);
         assertEquals(Long.valueOf(batchSize), publishAttributes.get("messaging.batch.message_count"));
         assertSpanStatus(spanDescription, publishSpans.get(0));
 
@@ -190,23 +180,23 @@ public class EventHubsProducerInstrumentationTests {
         for (int i = 0; i < batchSize; i++) {
             assertEquals(getSpanName(EVENT, ENTITY_NAME), eventSpans.get(i).getName());
             Map<String, Object> eventAttributes = attributesToMap(eventSpans.get(i).getAttributes());
-            assertAllAttributes(FQDN, ENTITY_NAME, null, null, null,
-                EVENT, eventAttributes);
+            assertAllAttributes(FQDN, ENTITY_NAME, null, null, null, EVENT, eventAttributes);
             assertSpanStatus(null, eventSpans.get(i));
 
             SpanContext createContext = eventSpans.get(i).getSpanContext();
             links.stream()
-                    .filter(l -> spanContextEquals(l.getSpanContext(), createContext))
-                    .findFirst().orElseThrow(() -> new AssertionError("Link not found"));
+                .filter(l -> spanContextEquals(l.getSpanContext(), createContext))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Link not found"));
         }
     }
 
     private static boolean spanContextEquals(SpanContext c1, SpanContext c2) {
         // we don't take remote into account, so can't use equals implementation on SpanContext
         return c1.getTraceId().equals(c2.getTraceId())
-                && c1.getSpanId().equals(c2.getSpanId())
-                && c1.getTraceFlags().equals(c2.getTraceFlags())
-                && c1.getTraceState().equals(c2.getTraceState());
+            && c1.getSpanId().equals(c2.getSpanId())
+            && c1.getTraceFlags().equals(c2.getTraceFlags())
+            && c1.getTraceState().equals(c2.getTraceState());
     }
 
     private void assertBatchCount(int count, String partitionId, String expectedErrorType) {
@@ -214,7 +204,7 @@ public class EventHubsProducerInstrumentationTests {
         assertNotNull(batchCounter);
         assertEquals(1, batchCounter.getMeasurements().size());
         assertEquals(Long.valueOf(count), batchCounter.getMeasurements().get(0).getValue());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, null, expectedErrorType,
-                SEND, batchCounter.getMeasurements().get(0).getAttributes());
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, null, expectedErrorType, SEND,
+            batchCounter.getMeasurements().get(0).getAttributes());
     }
 }

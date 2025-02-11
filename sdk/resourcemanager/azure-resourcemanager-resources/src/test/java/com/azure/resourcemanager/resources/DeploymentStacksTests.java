@@ -27,8 +27,10 @@ public class DeploymentStacksTests extends ResourceManagementTest {
     private String rgName;
 
     private static final Region REGION = Region.US_WEST3;
-    private static final String TEMPLATE_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json";
-    private static final String PARAMETERS_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json";
+    private static final String TEMPLATE_URI
+        = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json";
+    private static final String PARAMETERS_URI
+        = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json";
     private static final String CONTENT_VERSION = "1.0.0.0";
 
     @Override
@@ -37,9 +39,7 @@ public class DeploymentStacksTests extends ResourceManagementTest {
         testId = generateRandomResourceName("", 9);
         resourceGroups = resourceClient.resourceGroups();
         rgName = "rg" + testId;
-        resourceGroups.define(rgName)
-            .withRegion(REGION)
-            .create();
+        resourceGroups.define(rgName).withRegion(REGION).create();
     }
 
     @Override
@@ -51,32 +51,27 @@ public class DeploymentStacksTests extends ResourceManagementTest {
     public void testDeploymentStacks() {
         final String dpName = "dpA" + testId;
 
-        DeploymentStackInner deploymentStack = resourceClient.deploymentStackClient().getDeploymentStacks()
-            .createOrUpdateAtResourceGroup(rgName, dpName,
-                new DeploymentStackInner()
-                    .withTags(Collections.singletonMap("usage", "test"))
-                    .withTemplateLink(
-                        new DeploymentStacksTemplateLink()
-                            .withUri(TEMPLATE_URI)
-                            .withContentVersion(CONTENT_VERSION))
-                    .withParametersLink(
-                        new DeploymentStacksParametersLink()
-                            .withUri(PARAMETERS_URI)
-                            .withContentVersion(CONTENT_VERSION))
-                    .withActionOnUnmanage(
-                        new ActionOnUnmanage()
-                            .withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                            .withResourceGroups(DeploymentStacksDeleteDetachEnum.DETACH)
-                            .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
-                    .withDenySettings(new DenySettings()
-                        .withMode(DenySettingsMode.NONE)));
+        DeploymentStackInner deploymentStack = resourceClient.deploymentStackClient()
+            .getDeploymentStacks()
+            .createOrUpdateAtResourceGroup(rgName, dpName, new DeploymentStackInner()
+                .withTags(Collections.singletonMap("usage", "test"))
+                .withTemplateLink(
+                    new DeploymentStacksTemplateLink().withUri(TEMPLATE_URI).withContentVersion(CONTENT_VERSION))
+                .withParametersLink(
+                    new DeploymentStacksParametersLink().withUri(PARAMETERS_URI).withContentVersion(CONTENT_VERSION))
+                .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
+                    .withResourceGroups(DeploymentStacksDeleteDetachEnum.DETACH)
+                    .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE)));
 
         Assertions.assertEquals(dpName, deploymentStack.name());
-        Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DELETE, deploymentStack.actionOnUnmanage().resources());
+        Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DELETE,
+            deploymentStack.actionOnUnmanage().resources());
 
-        deploymentStack = resourceClient.deploymentStackClient().getDeploymentStacks()
-            .getByResourceGroup(rgName, dpName);
+        deploymentStack
+            = resourceClient.deploymentStackClient().getDeploymentStacks().getByResourceGroup(rgName, dpName);
         Assertions.assertEquals(dpName, deploymentStack.name());
-        Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DELETE, deploymentStack.actionOnUnmanage().resources());
+        Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DELETE,
+            deploymentStack.actionOnUnmanage().resources());
     }
 }

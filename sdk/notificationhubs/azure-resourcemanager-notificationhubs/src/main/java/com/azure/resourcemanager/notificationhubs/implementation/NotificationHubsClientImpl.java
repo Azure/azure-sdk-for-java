@@ -38,9 +38,11 @@ import com.azure.resourcemanager.notificationhubs.fluent.models.PnsCredentialsRe
 import com.azure.resourcemanager.notificationhubs.fluent.models.ResourceListKeysInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.notificationhubs.models.CheckAvailabilityParameters;
+import com.azure.resourcemanager.notificationhubs.models.NotificationHubCreateOrUpdateParameters;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubListResult;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubPatchParameters;
-import com.azure.resourcemanager.notificationhubs.models.PolicyKeyResource;
+import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
+import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleListResult;
 import reactor.core.publisher.Mono;
 
@@ -56,77 +58,121 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * The service client containing this operation class.
      */
-    private final NotificationHubsRPClientImpl client;
+    private final NotificationHubsManagementClientImpl client;
 
     /**
      * Initializes an instance of NotificationHubsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    NotificationHubsClientImpl(NotificationHubsRPClientImpl client) {
+    NotificationHubsClientImpl(NotificationHubsManagementClientImpl client) {
         this.service
             = RestProxy.create(NotificationHubsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NotificationHubsRPClientNotificationHubs to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for NotificationHubsManagementClientNotificationHubs to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NotificationHubsRPCl")
+    @ServiceInterface(name = "NotificationHubsMana")
     public interface NotificationHubsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/checkNotificationHubAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckAvailabilityResultInner>> checkNotificationHubAvailability(
-            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("namespaceName") String namespaceName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CheckAvailabilityParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NotificationHubResourceInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
-            @PathParam("notificationHubName") String notificationHubName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationHubResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("notificationHubName") String notificationHubName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") NotificationHubResourceInner parameters,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") NotificationHubCreateOrUpdateParameters parameters,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NotificationHubResourceInner>> update(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<NotificationHubResourceInner>> patch(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("notificationHubName") String notificationHubName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") NotificationHubPatchParameters parameters,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("notificationHubName") String notificationHubName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NotificationHubResourceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("notificationHubName") String notificationHubName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/debugsend")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DebugSendResponseInner>> debugSend(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("notificationHubName") String notificationHubName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") Object parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/AuthorizationRules/{authorizationRuleName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SharedAccessAuthorizationRuleResourceInner>> createOrUpdateAuthorizationRule(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("namespaceName") String namespaceName,
+            @PathParam("notificationHubName") String notificationHubName,
+            @PathParam("authorizationRuleName") String authorizationRuleName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/AuthorizationRules/{authorizationRuleName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> deleteAuthorizationRule(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("notificationHubName") String notificationHubName,
+            @PathParam("authorizationRuleName") String authorizationRuleName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/AuthorizationRules/{authorizationRuleName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SharedAccessAuthorizationRuleResourceInner>> getAuthorizationRule(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("namespaceName") String namespaceName,
+            @PathParam("notificationHubName") String notificationHubName,
+            @PathParam("authorizationRuleName") String authorizationRuleName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -134,98 +180,51 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationHubListResult>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
-            @QueryParam("$skipToken") String skipToken, @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/debugsend")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DebugSendResponseInner>> debugSend(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
-            @PathParam("notificationHubName") String notificationHubName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/authorizationRules/{authorizationRuleName}")
-        @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleResourceInner>> createOrUpdateAuthorizationRule(
-            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
-            @PathParam("notificationHubName") String notificationHubName,
-            @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SharedAccessAuthorizationRuleResourceInner parameters,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/authorizationRules/{authorizationRuleName}")
-        @ExpectedResponses({ 200, 204 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteAuthorizationRule(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
-            @PathParam("notificationHubName") String notificationHubName,
-            @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/authorizationRules/{authorizationRuleName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleResourceInner>> getAuthorizationRule(
-            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
-            @PathParam("notificationHubName") String notificationHubName,
-            @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/authorizationRules")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/AuthorizationRules")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SharedAccessAuthorizationRuleListResult>> listAuthorizationRules(
-            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("namespaceName") String namespaceName,
             @PathParam("notificationHubName") String notificationHubName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/authorizationRules/{authorizationRuleName}/listKeys")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/AuthorizationRules/{authorizationRuleName}/listKeys")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceListKeysInner>> listKeys(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("notificationHubName") String notificationHubName,
             @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/authorizationRules/{authorizationRuleName}/regenerateKeys")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/AuthorizationRules/{authorizationRuleName}/regenerateKeys")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceListKeysInner>> regenerateKeys(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("notificationHubName") String notificationHubName,
             @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") PolicyKeyResource parameters,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") PolicykeyResource parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/pnsCredentials")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PnsCredentialsResourceInner>> getPnsCredentials(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("notificationHubName") String notificationHubName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -247,9 +246,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Checks the availability of the given notificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param parameters The notificationHub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -263,16 +262,16 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (namespaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -282,7 +281,7 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkNotificationHubAvailability(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, this.client.getApiVersion(),
+                resourceGroupName, namespaceName, this.client.getApiVersion(), this.client.getSubscriptionId(),
                 parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -290,9 +289,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Checks the availability of the given notificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param parameters The notificationHub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -307,16 +306,16 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (namespaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -325,16 +324,16 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.checkNotificationHubAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, namespaceName, this.client.getApiVersion(), parameters, accept, context);
+        return service.checkNotificationHubAvailability(this.client.getEndpoint(), resourceGroupName, namespaceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Checks the availability of the given notificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param parameters The notificationHub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -350,9 +349,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Checks the availability of the given notificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param parameters The notificationHub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -369,9 +368,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Checks the availability of the given notificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param parameters The notificationHub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -385,160 +384,24 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     }
 
     /**
-     * Gets the notification hub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification hub along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NotificationHubResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String namespaceName, String notificationHubName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (notificationHubName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, namespaceName, notificationHubName, this.client.getApiVersion(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the notification hub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification hub along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NotificationHubResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String namespaceName, String notificationHubName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (notificationHubName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, namespaceName,
-            notificationHubName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the notification hub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification hub on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NotificationHubResourceInner> getAsync(String resourceGroupName, String namespaceName,
-        String notificationHubName) {
-        return getWithResponseAsync(resourceGroupName, namespaceName, notificationHubName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the notification hub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification hub along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NotificationHubResourceInner> getWithResponse(String resourceGroupName, String namespaceName,
-        String notificationHubName, Context context) {
-        return getWithResponseAsync(resourceGroupName, namespaceName, notificationHubName, context).block();
-    }
-
-    /**
-     * Gets the notification hub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotificationHubResourceInner get(String resourceGroupName, String namespaceName,
-        String notificationHubName) {
-        return getWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE).getValue();
-    }
-
-    /**
      * Creates/Update a NotificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param parameters Parameters supplied to the create/update a NotificationHub Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification Hub Resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return description of a NotificationHub Resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NotificationHubResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String namespaceName, String notificationHubName, NotificationHubResourceInner parameters) {
+        String namespaceName, String notificationHubName, NotificationHubCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -550,6 +413,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         if (notificationHubName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -558,8 +425,8 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, namespaceName, notificationHubName, this.client.getApiVersion(), parameters, accept,
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                notificationHubName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
                 context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -567,26 +434,24 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Creates/Update a NotificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param parameters Parameters supplied to the create/update a NotificationHub Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification Hub Resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return description of a NotificationHub Resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NotificationHubResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String namespaceName, String notificationHubName, NotificationHubResourceInner parameters, Context context) {
+        String namespaceName, String notificationHubName, NotificationHubCreateOrUpdateParameters parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -599,6 +464,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
@@ -606,25 +475,25 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            namespaceName, notificationHubName, this.client.getApiVersion(), parameters, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, namespaceName, notificationHubName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates/Update a NotificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param parameters Parameters supplied to the create/update a NotificationHub Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification Hub Resource on successful completion of {@link Mono}.
+     * @return description of a NotificationHub Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NotificationHubResourceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
-        String notificationHubName, NotificationHubResourceInner parameters) {
+        String notificationHubName, NotificationHubCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, notificationHubName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -632,19 +501,20 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Creates/Update a NotificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param parameters Parameters supplied to the create/update a NotificationHub Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification Hub Resource along with {@link Response}.
+     * @return description of a NotificationHub Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotificationHubResourceInner> createOrUpdateWithResponse(String resourceGroupName,
-        String namespaceName, String notificationHubName, NotificationHubResourceInner parameters, Context context) {
+        String namespaceName, String notificationHubName, NotificationHubCreateOrUpdateParameters parameters,
+        Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, notificationHubName, parameters,
             context).block();
     }
@@ -652,18 +522,18 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Creates/Update a NotificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param parameters Parameters supplied to the create/update a NotificationHub Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification Hub Resource.
+     * @return description of a NotificationHub Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotificationHubResourceInner createOrUpdate(String resourceGroupName, String namespaceName,
-        String notificationHubName, NotificationHubResourceInner parameters) {
+        String notificationHubName, NotificationHubCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponse(resourceGroupName, namespaceName, notificationHubName, parameters,
             Context.NONE).getValue();
     }
@@ -671,25 +541,22 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Patch a NotificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param parameters Parameters supplied to patch a NotificationHub Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification Hub Resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return description of a NotificationHub Resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NotificationHubResourceInner>> updateWithResponseAsync(String resourceGroupName,
+    private Mono<Response<NotificationHubResourceInner>> patchWithResponseAsync(String resourceGroupName,
         String namespaceName, String notificationHubName, NotificationHubPatchParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -702,42 +569,41 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
         }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters != null) {
             parameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    namespaceName, notificationHubName, this.client.getApiVersion(), parameters, accept, context))
+            .withContext(context -> service.patch(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                notificationHubName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch a NotificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param parameters Parameters supplied to patch a NotificationHub Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification Hub Resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return description of a NotificationHub Resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NotificationHubResourceInner>> updateWithResponseAsync(String resourceGroupName,
+    private Mono<Response<NotificationHubResourceInner>> patchWithResponseAsync(String resourceGroupName,
         String namespaceName, String notificationHubName, NotificationHubPatchParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -750,81 +616,83 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
         }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters != null) {
             parameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            namespaceName, notificationHubName, this.client.getApiVersion(), parameters, accept, context);
+        return service.patch(this.client.getEndpoint(), resourceGroupName, namespaceName, notificationHubName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Patch a NotificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification Hub Resource on successful completion of {@link Mono}.
+     * @return description of a NotificationHub Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NotificationHubResourceInner> updateAsync(String resourceGroupName, String namespaceName,
-        String notificationHubName, NotificationHubPatchParameters parameters) {
-        return updateWithResponseAsync(resourceGroupName, namespaceName, notificationHubName, parameters)
+    private Mono<NotificationHubResourceInner> patchAsync(String resourceGroupName, String namespaceName,
+        String notificationHubName) {
+        final NotificationHubPatchParameters parameters = null;
+        return patchWithResponseAsync(resourceGroupName, namespaceName, notificationHubName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Patch a NotificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param parameters Parameters supplied to patch a NotificationHub Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification Hub Resource along with {@link Response}.
+     * @return description of a NotificationHub Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NotificationHubResourceInner> updateWithResponse(String resourceGroupName, String namespaceName,
+    public Response<NotificationHubResourceInner> patchWithResponse(String resourceGroupName, String namespaceName,
         String notificationHubName, NotificationHubPatchParameters parameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, namespaceName, notificationHubName, parameters, context)
+        return patchWithResponseAsync(resourceGroupName, namespaceName, notificationHubName, parameters, context)
             .block();
     }
 
     /**
      * Patch a NotificationHub in a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification Hub Resource.
+     * @return description of a NotificationHub Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotificationHubResourceInner update(String resourceGroupName, String namespaceName,
-        String notificationHubName, NotificationHubPatchParameters parameters) {
-        return updateWithResponse(resourceGroupName, namespaceName, notificationHubName, parameters, Context.NONE)
+    public NotificationHubResourceInner patch(String resourceGroupName, String namespaceName,
+        String notificationHubName) {
+        final NotificationHubPatchParameters parameters = null;
+        return patchWithResponse(resourceGroupName, namespaceName, notificationHubName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Deletes a notification hub associated with a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -837,10 +705,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -852,19 +716,22 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
         }
-        final String accept = "application/json";
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, namespaceName, notificationHubName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                notificationHubName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a notification hub associated with a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -878,10 +745,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -893,18 +756,21 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
         }
-        final String accept = "application/json";
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            namespaceName, notificationHubName, this.client.getApiVersion(), accept, context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, namespaceName, notificationHubName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), context);
     }
 
     /**
      * Deletes a notification hub associated with a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -919,9 +785,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Deletes a notification hub associated with a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -937,9 +803,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Deletes a notification hub associated with a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -952,183 +818,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Lists the notification hubs associated with a namespace.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param skipToken Continuation token.
-     * @param top Page size.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List NotificationHub operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NotificationHubResourceInner>> listSinglePageAsync(String resourceGroupName,
-        String namespaceName, String skipToken, Integer top) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, namespaceName, skipToken, top, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<NotificationHubResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists the notification hubs associated with a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param skipToken Continuation token.
-     * @param top Page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List NotificationHub operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NotificationHubResourceInner>> listSinglePageAsync(String resourceGroupName,
-        String namespaceName, String skipToken, Integer top, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, namespaceName,
-                skipToken, top, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists the notification hubs associated with a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param skipToken Continuation token.
-     * @param top Page size.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List NotificationHub operation as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NotificationHubResourceInner> listAsync(String resourceGroupName, String namespaceName,
-        String skipToken, Integer top) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, namespaceName, skipToken, top),
-            nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists the notification hubs associated with a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List NotificationHub operation as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NotificationHubResourceInner> listAsync(String resourceGroupName, String namespaceName) {
-        final String skipToken = null;
-        final Integer top = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, namespaceName, skipToken, top),
-            nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists the notification hubs associated with a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param skipToken Continuation token.
-     * @param top Page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List NotificationHub operation as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NotificationHubResourceInner> listAsync(String resourceGroupName, String namespaceName,
-        String skipToken, Integer top, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, namespaceName, skipToken, top, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists the notification hubs associated with a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List NotificationHub operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NotificationHubResourceInner> list(String resourceGroupName, String namespaceName) {
-        final String skipToken = null;
-        final Integer top = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, namespaceName, skipToken, top));
-    }
-
-    /**
-     * Lists the notification hubs associated with a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param skipToken Continuation token.
-     * @param top Page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List NotificationHub operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NotificationHubResourceInner> list(String resourceGroupName, String namespaceName,
-        String skipToken, Integer top, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, namespaceName, skipToken, top, context));
-    }
-
-    /**
-     * Test send a push notification.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1136,15 +828,53 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DebugSendResponseInner>> debugSendWithResponseAsync(String resourceGroupName,
+    private Mono<Response<NotificationHubResourceInner>> getWithResponseAsync(String resourceGroupName,
         String namespaceName, String notificationHubName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (notificationHubName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                notificationHubName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a NotificationHub Resource along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<NotificationHubResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String namespaceName, String notificationHubName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1157,19 +887,119 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, namespaceName, notificationHubName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a NotificationHub Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<NotificationHubResourceInner> getAsync(String resourceGroupName, String namespaceName,
+        String notificationHubName) {
+        return getWithResponseAsync(resourceGroupName, namespaceName, notificationHubName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a NotificationHub Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NotificationHubResourceInner> getWithResponse(String resourceGroupName, String namespaceName,
+        String notificationHubName, Context context) {
+        return getWithResponseAsync(resourceGroupName, namespaceName, notificationHubName, context).block();
+    }
+
+    /**
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a NotificationHub Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NotificationHubResourceInner get(String resourceGroupName, String namespaceName,
+        String notificationHubName) {
+        return getWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE).getValue();
+    }
+
+    /**
+     * test send a push notification.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param parameters Debug send parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a NotificationHub Resource along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DebugSendResponseInner>> debugSendWithResponseAsync(String resourceGroupName,
+        String namespaceName, String notificationHubName, Object parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (notificationHubName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.debugSend(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, namespaceName, notificationHubName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.debugSend(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                notificationHubName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Test send a push notification.
+     * test send a push notification.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param parameters Debug send parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1179,14 +1009,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DebugSendResponseInner>> debugSendWithResponseAsync(String resourceGroupName,
-        String namespaceName, String notificationHubName, Context context) {
+        String namespaceName, String notificationHubName, Object parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1199,18 +1025,22 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.debugSend(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            namespaceName, notificationHubName, this.client.getApiVersion(), accept, context);
+        return service.debugSend(this.client.getEndpoint(), resourceGroupName, namespaceName, notificationHubName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
-     * Test send a push notification.
+     * test send a push notification.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1219,16 +1049,18 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DebugSendResponseInner> debugSendAsync(String resourceGroupName, String namespaceName,
         String notificationHubName) {
-        return debugSendWithResponseAsync(resourceGroupName, namespaceName, notificationHubName)
+        final Object parameters = null;
+        return debugSendWithResponseAsync(resourceGroupName, namespaceName, notificationHubName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Test send a push notification.
+     * test send a push notification.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param parameters Debug send parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1237,16 +1069,17 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DebugSendResponseInner> debugSendWithResponse(String resourceGroupName, String namespaceName,
-        String notificationHubName, Context context) {
-        return debugSendWithResponseAsync(resourceGroupName, namespaceName, notificationHubName, context).block();
+        String notificationHubName, Object parameters, Context context) {
+        return debugSendWithResponseAsync(resourceGroupName, namespaceName, notificationHubName, parameters, context)
+            .block();
     }
 
     /**
-     * Test send a push notification.
+     * test send a push notification.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1255,34 +1088,32 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DebugSendResponseInner debugSend(String resourceGroupName, String namespaceName,
         String notificationHubName) {
-        return debugSendWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE).getValue();
+        final Object parameters = null;
+        return debugSendWithResponse(resourceGroupName, namespaceName, notificationHubName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
      * Creates/Updates an authorization rule for a NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters Request content.
+     * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for POST requests that return single SharedAccessAuthorizationRule along with {@link Response}
-     * on successful completion of {@link Mono}.
+     * @return description of a Namespace AuthorizationRules along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedAccessAuthorizationRuleResourceInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
         String resourceGroupName, String namespaceName, String notificationHubName, String authorizationRuleName,
-        SharedAccessAuthorizationRuleResourceInner parameters) {
+        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1298,6 +1129,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         if (authorizationRuleName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1307,37 +1142,33 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateAuthorizationRule(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, notificationHubName,
-                authorizationRuleName, this.client.getApiVersion(), parameters, accept, context))
+                resourceGroupName, namespaceName, notificationHubName, authorizationRuleName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates/Updates an authorization rule for a NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters Request content.
+     * @param parameters The shared access authorization rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for POST requests that return single SharedAccessAuthorizationRule along with {@link Response}
-     * on successful completion of {@link Mono}.
+     * @return description of a Namespace AuthorizationRules along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedAccessAuthorizationRuleResourceInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
         String resourceGroupName, String namespaceName, String notificationHubName, String authorizationRuleName,
-        SharedAccessAuthorizationRuleResourceInner parameters, Context context) {
+        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1354,6 +1185,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
@@ -1361,29 +1196,28 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdateAuthorizationRule(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, this.client.getApiVersion(),
+        return service.createOrUpdateAuthorizationRule(this.client.getEndpoint(), resourceGroupName, namespaceName,
+            notificationHubName, authorizationRuleName, this.client.getApiVersion(), this.client.getSubscriptionId(),
             parameters, accept, context);
     }
 
     /**
      * Creates/Updates an authorization rule for a NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters Request content.
+     * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for POST requests that return single SharedAccessAuthorizationRule on successful completion of
-     * {@link Mono}.
+     * @return description of a Namespace AuthorizationRules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleAsync(
         String resourceGroupName, String namespaceName, String notificationHubName, String authorizationRuleName,
-        SharedAccessAuthorizationRuleResourceInner parameters) {
+        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters) {
         return createOrUpdateAuthorizationRuleWithResponseAsync(resourceGroupName, namespaceName, notificationHubName,
             authorizationRuleName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1391,21 +1225,21 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Creates/Updates an authorization rule for a NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters Request content.
+     * @param parameters The shared access authorization rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for POST requests that return single SharedAccessAuthorizationRule along with {@link Response}.
+     * @return description of a Namespace AuthorizationRules along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleWithResponse(
         String resourceGroupName, String namespaceName, String notificationHubName, String authorizationRuleName,
-        SharedAccessAuthorizationRuleResourceInner parameters, Context context) {
+        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters, Context context) {
         return createOrUpdateAuthorizationRuleWithResponseAsync(resourceGroupName, namespaceName, notificationHubName,
             authorizationRuleName, parameters, context).block();
     }
@@ -1413,20 +1247,20 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Creates/Updates an authorization rule for a NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters Request content.
+     * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for POST requests that return single SharedAccessAuthorizationRule.
+     * @return description of a Namespace AuthorizationRules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedAccessAuthorizationRuleResourceInner createOrUpdateAuthorizationRule(String resourceGroupName,
         String namespaceName, String notificationHubName, String authorizationRuleName,
-        SharedAccessAuthorizationRuleResourceInner parameters) {
+        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters) {
         return createOrUpdateAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
             authorizationRuleName, parameters, Context.NONE).getValue();
     }
@@ -1434,9 +1268,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Deletes a notificationHub authorization rule.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param authorizationRuleName Authorization Rule Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1450,10 +1284,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1469,20 +1299,23 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
-        final String accept = "application/json";
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
-            .withContext(context -> service.deleteAuthorizationRule(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, notificationHubName,
-                authorizationRuleName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.deleteAuthorizationRule(this.client.getEndpoint(), resourceGroupName,
+                namespaceName, notificationHubName, authorizationRuleName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a notificationHub authorization rule.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param authorizationRuleName Authorization Rule Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1497,10 +1330,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1516,19 +1345,22 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
-        final String accept = "application/json";
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         context = this.client.mergeContext(context);
-        return service.deleteAuthorizationRule(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, this.client.getApiVersion(),
-            accept, context);
+        return service.deleteAuthorizationRule(this.client.getEndpoint(), resourceGroupName, namespaceName,
+            notificationHubName, authorizationRuleName, this.client.getApiVersion(), this.client.getSubscriptionId(),
+            context);
     }
 
     /**
      * Deletes a notificationHub authorization rule.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param authorizationRuleName Authorization Rule Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1545,9 +1377,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Deletes a notificationHub authorization rule.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param authorizationRuleName Authorization Rule Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1565,9 +1397,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Deletes a notificationHub authorization rule.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param authorizationRuleName Authorization Rule Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1583,10 +1415,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Gets an authorization rule for a NotificationHub by name.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1599,10 +1431,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1619,21 +1447,25 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getAuthorizationRule(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, notificationHubName,
-                authorizationRuleName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.getAuthorizationRule(this.client.getEndpoint(), resourceGroupName,
+                namespaceName, notificationHubName, authorizationRuleName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an authorization rule for a NotificationHub by name.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName authorization rule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1649,10 +1481,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1668,20 +1496,24 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getAuthorizationRule(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, this.client.getApiVersion(),
+        return service.getAuthorizationRule(this.client.getEndpoint(), resourceGroupName, namespaceName,
+            notificationHubName, authorizationRuleName, this.client.getApiVersion(), this.client.getSubscriptionId(),
             accept, context);
     }
 
     /**
      * Gets an authorization rule for a NotificationHub by name.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1697,10 +1529,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Gets an authorization rule for a NotificationHub by name.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName authorization rule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1718,10 +1550,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Gets an authorization rule for a NotificationHub by name.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1735,11 +1567,154 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     }
 
     /**
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List NotificationHub operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NotificationHubResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String namespaceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<NotificationHubResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List NotificationHub operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NotificationHubResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String namespaceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .list(this.client.getEndpoint(), resourceGroupName, namespaceName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List NotificationHub operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<NotificationHubResourceInner> listAsync(String resourceGroupName, String namespaceName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, namespaceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List NotificationHub operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<NotificationHubResourceInner> listAsync(String resourceGroupName, String namespaceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, namespaceName, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List NotificationHub operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NotificationHubResourceInner> list(String resourceGroupName, String namespaceName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, namespaceName));
+    }
+
+    /**
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List NotificationHub operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NotificationHubResourceInner> list(String resourceGroupName, String namespaceName,
+        Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, namespaceName, context));
+    }
+
+    /**
      * Gets the authorization rules for a NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1753,10 +1728,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1768,11 +1739,15 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listAuthorizationRules(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, notificationHubName,
-                this.client.getApiVersion(), accept, context))
+            .withContext(
+                context -> service.listAuthorizationRules(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                    notificationHubName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<SharedAccessAuthorizationRuleResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -1782,9 +1757,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Gets the authorization rules for a NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1799,10 +1774,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1814,11 +1785,15 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAuthorizationRules(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                namespaceName, notificationHubName, this.client.getApiVersion(), accept, context)
+            .listAuthorizationRules(this.client.getEndpoint(), resourceGroupName, namespaceName, notificationHubName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1826,9 +1801,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Gets the authorization rules for a NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1845,9 +1820,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Gets the authorization rules for a NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1865,9 +1840,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Gets the authorization rules for a NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1882,9 +1857,9 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Gets the authorization rules for a NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1901,10 +1876,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1917,10 +1892,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1937,21 +1908,25 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listKeys(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, namespaceName, notificationHubName, authorizationRuleName,
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.listKeys(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                notificationHubName, authorizationRuleName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1966,10 +1941,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1985,19 +1956,23 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listKeys(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            namespaceName, notificationHubName, authorizationRuleName, this.client.getApiVersion(), accept, context);
+        return service.listKeys(this.client.getEndpoint(), resourceGroupName, namespaceName, notificationHubName,
+            authorizationRuleName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2014,10 +1989,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2034,10 +2009,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2053,27 +2028,23 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
+     * @param parameters Parameters supplied to regenerate the NotificationHub Authorization Rule Key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the POST request that returns Namespace or NotificationHub access keys (connection strings)
-     * along with {@link Response} on successful completion of {@link Mono}.
+     * @return namespace/NotificationHub Connection String along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceListKeysInner>> regenerateKeysWithResponseAsync(String resourceGroupName,
-        String namespaceName, String notificationHubName, String authorizationRuleName, PolicyKeyResource parameters) {
+        String namespaceName, String notificationHubName, String authorizationRuleName, PolicykeyResource parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2089,6 +2060,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         if (authorizationRuleName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2097,38 +2072,34 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.regenerateKeys(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, namespaceName, notificationHubName, authorizationRuleName,
-                this.client.getApiVersion(), parameters, accept, context))
+            .withContext(context -> service.regenerateKeys(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                notificationHubName, authorizationRuleName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
+     * @param parameters Parameters supplied to regenerate the NotificationHub Authorization Rule Key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the POST request that returns Namespace or NotificationHub access keys (connection strings)
-     * along with {@link Response} on successful completion of {@link Mono}.
+     * @return namespace/NotificationHub Connection String along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceListKeysInner>> regenerateKeysWithResponseAsync(String resourceGroupName,
-        String namespaceName, String notificationHubName, String authorizationRuleName, PolicyKeyResource parameters,
+        String namespaceName, String notificationHubName, String authorizationRuleName, PolicykeyResource parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2145,6 +2116,10 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
@@ -2152,28 +2127,27 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.regenerateKeys(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            namespaceName, notificationHubName, authorizationRuleName, this.client.getApiVersion(), parameters, accept,
+        return service.regenerateKeys(this.client.getEndpoint(), resourceGroupName, namespaceName, notificationHubName,
+            authorizationRuleName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
             context);
     }
 
     /**
      * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
+     * @param parameters Parameters supplied to regenerate the NotificationHub Authorization Rule Key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the POST request that returns Namespace or NotificationHub access keys (connection strings)
-     * on successful completion of {@link Mono}.
+     * @return namespace/NotificationHub Connection String on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName,
-        String notificationHubName, String authorizationRuleName, PolicyKeyResource parameters) {
+        String notificationHubName, String authorizationRuleName, PolicykeyResource parameters) {
         return regenerateKeysWithResponseAsync(resourceGroupName, namespaceName, notificationHubName,
             authorizationRuleName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2181,21 +2155,20 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
+     * @param parameters Parameters supplied to regenerate the NotificationHub Authorization Rule Key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the POST request that returns Namespace or NotificationHub access keys (connection strings)
-     * along with {@link Response}.
+     * @return namespace/NotificationHub Connection String along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceListKeysInner> regenerateKeysWithResponse(String resourceGroupName, String namespaceName,
-        String notificationHubName, String authorizationRuleName, PolicyKeyResource parameters, Context context) {
+        String notificationHubName, String authorizationRuleName, PolicykeyResource parameters, Context context) {
         return regenerateKeysWithResponseAsync(resourceGroupName, namespaceName, notificationHubName,
             authorizationRuleName, parameters, context).block();
     }
@@ -2203,29 +2176,29 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
-     * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters Request content.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
+     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
+     * @param parameters Parameters supplied to regenerate the NotificationHub Authorization Rule Key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
+     * @return namespace/NotificationHub Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceListKeysInner regenerateKeys(String resourceGroupName, String namespaceName,
-        String notificationHubName, String authorizationRuleName, PolicyKeyResource parameters) {
+        String notificationHubName, String authorizationRuleName, PolicykeyResource parameters) {
         return regenerateKeysWithResponse(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName,
             parameters, Context.NONE).getValue();
     }
 
     /**
-     * Lists the PNS Credentials associated with a notification hub.
+     * Lists the PNS Credentials associated with a notification hub .
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2239,10 +2212,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2254,20 +2223,24 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getPnsCredentials(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, notificationHubName,
-                this.client.getApiVersion(), accept, context))
+            .withContext(
+                context -> service.getPnsCredentials(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                    notificationHubName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists the PNS Credentials associated with a notification hub.
+     * Lists the PNS Credentials associated with a notification hub .
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2282,10 +2255,6 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -2297,18 +2266,22 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter notificationHubName is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getPnsCredentials(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            namespaceName, notificationHubName, this.client.getApiVersion(), accept, context);
+        return service.getPnsCredentials(this.client.getEndpoint(), resourceGroupName, namespaceName,
+            notificationHubName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
-     * Lists the PNS Credentials associated with a notification hub.
+     * Lists the PNS Credentials associated with a notification hub .
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2322,11 +2295,11 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     }
 
     /**
-     * Lists the PNS Credentials associated with a notification hub.
+     * Lists the PNS Credentials associated with a notification hub .
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2341,11 +2314,11 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     }
 
     /**
-     * Lists the PNS Credentials associated with a notification hub.
+     * Lists the PNS Credentials associated with a notification hub .
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName Namespace name.
-     * @param notificationHubName Notification Hub name.
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param notificationHubName The notification hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2361,9 +2334,7 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2389,9 +2360,7 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2419,9 +2388,7 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2451,9 +2418,7 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

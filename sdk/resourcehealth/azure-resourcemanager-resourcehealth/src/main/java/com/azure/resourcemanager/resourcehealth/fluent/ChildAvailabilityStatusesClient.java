@@ -11,16 +11,18 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcehealth.fluent.models.AvailabilityStatusInner;
 
-/** An instance of this class provides access to all the operations defined in ChildAvailabilityStatusesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ChildAvailabilityStatusesClient.
+ */
 public interface ChildAvailabilityStatusesClient {
     /**
      * Gets current availability status for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API only support one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API only support one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,15 +31,15 @@ public interface ChildAvailabilityStatusesClient {
      * @return current availability status for a single resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AvailabilityStatusInner> getByResourceWithResponse(
-        String resourceUri, String filter, String expand, Context context);
+    Response<AvailabilityStatusInner> getByResourceWithResponse(String resourceUri, String filter, String expand,
+        Context context);
 
     /**
      * Gets current availability status for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API only support one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API only support one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -49,10 +51,10 @@ public interface ChildAvailabilityStatusesClient {
     /**
      * Lists the historical availability statuses for a single child resource. Use the nextLink property in the response
      * to get the next page of availability status.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API only support one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API only support one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -64,12 +66,12 @@ public interface ChildAvailabilityStatusesClient {
     /**
      * Lists the historical availability statuses for a single child resource. Use the nextLink property in the response
      * to get the next page of availability status.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API only support one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API only support one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

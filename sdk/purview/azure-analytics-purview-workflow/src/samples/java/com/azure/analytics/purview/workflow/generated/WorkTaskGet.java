@@ -14,15 +14,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class WorkTaskGet {
     public static void main(String[] args) {
-        WorkflowTaskClient workflowTaskClient =
-                new WorkflowTaskClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                        .buildClient();
+        WorkflowTaskClient workflowTaskClient
+            = new WorkflowTaskClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.workflow.generated.workflowtaskget.worktaskget
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                workflowTaskClient.getWithResponse("98d98e2c-23fa-4157-a3f8-ff8ce5cc095c", requestOptions);
+        Response<BinaryData> response
+            = workflowTaskClient.getWithResponse("98d98e2c-23fa-4157-a3f8-ff8ce5cc095c", requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.workflowtaskget.worktaskget
     }
 }

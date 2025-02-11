@@ -109,7 +109,10 @@ public class ContainerThroughputControlGroupProperties {
 
         String requestGroupName = request.getThroughputControlGroupName();
         if (StringUtils.isEmpty(requestGroupName)) {
-            requestGroupName = this.defaultGroup.get().getGroupName();
+            if (defaultGroup.get() == null) {
+                return true;
+            }
+            requestGroupName = defaultGroup.get().getGroupName();
         }
 
         return this.supressInitErrorGroupSet.contains(requestGroupName);

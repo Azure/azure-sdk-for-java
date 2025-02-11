@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.databoxedge.generated;
 
-/** Samples for Shares ListByDataBoxEdgeDevice. */
+/**
+ * Samples for Shares ListByDataBoxEdgeDevice.
+ */
 public final class SharesListByDataBoxEdgeDeviceSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ShareGetAllInDevice.json
+     * x-ms-original-file:
+     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ShareGetAllInDevice.
+     * json
      */
     /**
      * Sample code: ShareGetAllInDevice.
-     *
+     * 
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void shareGetAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
-        manager
-            .shares()
+        manager.shares()
             .listByDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
     }
 }

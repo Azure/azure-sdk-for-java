@@ -7,53 +7,48 @@ package com.azure.resourcemanager.automanage.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.automanage.fluent.models.ServicePrincipalInner;
 
-/** An immutable client-side representation of ServicePrincipal. */
+/**
+ * An immutable client-side representation of ServicePrincipal.
+ */
 public interface ServicePrincipal {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the properties property: The Service Principal properties for the subscription.
+     * 
+     * @return the properties value.
+     */
+    ServicePrincipalProperties properties();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the servicePrincipalId property: The Service Principal Id for the subscription.
-     *
-     * @return the servicePrincipalId value.
-     */
-    String servicePrincipalId();
-
-    /**
-     * Gets the authorizationSet property: Returns the contributor RBAC Role exist or not for the Service Principal Id.
-     *
-     * @return the authorizationSet value.
-     */
-    Boolean authorizationSet();
-
-    /**
      * Gets the inner com.azure.resourcemanager.automanage.fluent.models.ServicePrincipalInner object.
-     *
+     * 
      * @return the inner object.
      */
     ServicePrincipalInner innerModel();

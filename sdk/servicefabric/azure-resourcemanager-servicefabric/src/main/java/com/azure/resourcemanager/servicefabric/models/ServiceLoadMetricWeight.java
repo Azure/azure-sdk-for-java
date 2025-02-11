@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class ServiceLoadMetricWeight extends ExpandableStringEnum<ServiceL
      * @param name a name to look for.
      * @return the corresponding ServiceLoadMetricWeight.
      */
-    @JsonCreator
     public static ServiceLoadMetricWeight fromString(String name) {
         return fromString(name, ServiceLoadMetricWeight.class);
     }

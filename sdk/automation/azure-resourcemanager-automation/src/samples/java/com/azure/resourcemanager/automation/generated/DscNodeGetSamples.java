@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DscNode Get. */
+/**
+ * Samples for DscNode Get.
+ */
 public final class DscNodeGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNode.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNode.
+     * json
      */
     /**
      * Sample code: Get a node.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getANode(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.dscNodes().getWithResponse("rg", "myAutomationAccount33", "nodeId", Context.NONE);
+        manager.dscNodes().getWithResponse("rg", "myAutomationAccount33", "nodeId", com.azure.core.util.Context.NONE);
     }
 }

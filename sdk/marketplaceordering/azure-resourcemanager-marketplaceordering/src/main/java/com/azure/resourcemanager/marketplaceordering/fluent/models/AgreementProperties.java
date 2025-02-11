@@ -5,70 +5,74 @@
 package com.azure.resourcemanager.marketplaceordering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Agreement Terms definition. */
+/**
+ * Agreement Terms definition.
+ */
 @Fluent
-public final class AgreementProperties {
+public final class AgreementProperties implements JsonSerializable<AgreementProperties> {
     /*
      * Publisher identifier string of image being deployed.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * Offer identifier string of image being deployed.
      */
-    @JsonProperty(value = "product")
     private String product;
 
     /*
      * Plan identifier string of image being deployed.
      */
-    @JsonProperty(value = "plan")
     private String plan;
 
     /*
      * Link to HTML with Microsoft and Publisher terms.
      */
-    @JsonProperty(value = "licenseTextLink")
     private String licenseTextLink;
 
     /*
      * Link to the privacy policy of the publisher.
      */
-    @JsonProperty(value = "privacyPolicyLink")
     private String privacyPolicyLink;
 
     /*
      * Link to HTML with Azure Marketplace terms.
      */
-    @JsonProperty(value = "marketplaceTermsLink")
     private String marketplaceTermsLink;
 
     /*
-     * Date and time in UTC of when the terms were accepted. This is empty if
-     * Accepted is false.
+     * Date and time in UTC of when the terms were accepted. This is empty if Accepted is false.
      */
-    @JsonProperty(value = "retrieveDatetime")
     private OffsetDateTime retrieveDatetime;
 
     /*
      * Terms signature.
      */
-    @JsonProperty(value = "signature")
     private String signature;
 
     /*
      * If any version of the terms have been accepted, otherwise false.
      */
-    @JsonProperty(value = "accepted")
     private Boolean accepted;
 
     /**
+     * Creates an instance of AgreementProperties class.
+     */
+    public AgreementProperties() {
+    }
+
+    /**
      * Get the publisher property: Publisher identifier string of image being deployed.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -77,7 +81,7 @@ public final class AgreementProperties {
 
     /**
      * Set the publisher property: Publisher identifier string of image being deployed.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the AgreementProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class AgreementProperties {
 
     /**
      * Get the product property: Offer identifier string of image being deployed.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -97,7 +101,7 @@ public final class AgreementProperties {
 
     /**
      * Set the product property: Offer identifier string of image being deployed.
-     *
+     * 
      * @param product the product value to set.
      * @return the AgreementProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class AgreementProperties {
 
     /**
      * Get the plan property: Plan identifier string of image being deployed.
-     *
+     * 
      * @return the plan value.
      */
     public String plan() {
@@ -117,7 +121,7 @@ public final class AgreementProperties {
 
     /**
      * Set the plan property: Plan identifier string of image being deployed.
-     *
+     * 
      * @param plan the plan value to set.
      * @return the AgreementProperties object itself.
      */
@@ -128,7 +132,7 @@ public final class AgreementProperties {
 
     /**
      * Get the licenseTextLink property: Link to HTML with Microsoft and Publisher terms.
-     *
+     * 
      * @return the licenseTextLink value.
      */
     public String licenseTextLink() {
@@ -137,7 +141,7 @@ public final class AgreementProperties {
 
     /**
      * Set the licenseTextLink property: Link to HTML with Microsoft and Publisher terms.
-     *
+     * 
      * @param licenseTextLink the licenseTextLink value to set.
      * @return the AgreementProperties object itself.
      */
@@ -148,7 +152,7 @@ public final class AgreementProperties {
 
     /**
      * Get the privacyPolicyLink property: Link to the privacy policy of the publisher.
-     *
+     * 
      * @return the privacyPolicyLink value.
      */
     public String privacyPolicyLink() {
@@ -157,7 +161,7 @@ public final class AgreementProperties {
 
     /**
      * Set the privacyPolicyLink property: Link to the privacy policy of the publisher.
-     *
+     * 
      * @param privacyPolicyLink the privacyPolicyLink value to set.
      * @return the AgreementProperties object itself.
      */
@@ -168,7 +172,7 @@ public final class AgreementProperties {
 
     /**
      * Get the marketplaceTermsLink property: Link to HTML with Azure Marketplace terms.
-     *
+     * 
      * @return the marketplaceTermsLink value.
      */
     public String marketplaceTermsLink() {
@@ -177,7 +181,7 @@ public final class AgreementProperties {
 
     /**
      * Set the marketplaceTermsLink property: Link to HTML with Azure Marketplace terms.
-     *
+     * 
      * @param marketplaceTermsLink the marketplaceTermsLink value to set.
      * @return the AgreementProperties object itself.
      */
@@ -189,7 +193,7 @@ public final class AgreementProperties {
     /**
      * Get the retrieveDatetime property: Date and time in UTC of when the terms were accepted. This is empty if
      * Accepted is false.
-     *
+     * 
      * @return the retrieveDatetime value.
      */
     public OffsetDateTime retrieveDatetime() {
@@ -199,7 +203,7 @@ public final class AgreementProperties {
     /**
      * Set the retrieveDatetime property: Date and time in UTC of when the terms were accepted. This is empty if
      * Accepted is false.
-     *
+     * 
      * @param retrieveDatetime the retrieveDatetime value to set.
      * @return the AgreementProperties object itself.
      */
@@ -210,7 +214,7 @@ public final class AgreementProperties {
 
     /**
      * Get the signature property: Terms signature.
-     *
+     * 
      * @return the signature value.
      */
     public String signature() {
@@ -219,7 +223,7 @@ public final class AgreementProperties {
 
     /**
      * Set the signature property: Terms signature.
-     *
+     * 
      * @param signature the signature value to set.
      * @return the AgreementProperties object itself.
      */
@@ -230,7 +234,7 @@ public final class AgreementProperties {
 
     /**
      * Get the accepted property: If any version of the terms have been accepted, otherwise false.
-     *
+     * 
      * @return the accepted value.
      */
     public Boolean accepted() {
@@ -239,7 +243,7 @@ public final class AgreementProperties {
 
     /**
      * Set the accepted property: If any version of the terms have been accepted, otherwise false.
-     *
+     * 
      * @param accepted the accepted value to set.
      * @return the AgreementProperties object itself.
      */
@@ -250,9 +254,73 @@ public final class AgreementProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("plan", this.plan);
+        jsonWriter.writeStringField("licenseTextLink", this.licenseTextLink);
+        jsonWriter.writeStringField("privacyPolicyLink", this.privacyPolicyLink);
+        jsonWriter.writeStringField("marketplaceTermsLink", this.marketplaceTermsLink);
+        jsonWriter.writeStringField("retrieveDatetime",
+            this.retrieveDatetime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.retrieveDatetime));
+        jsonWriter.writeStringField("signature", this.signature);
+        jsonWriter.writeBooleanField("accepted", this.accepted);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgreementProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgreementProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgreementProperties.
+     */
+    public static AgreementProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgreementProperties deserializedAgreementProperties = new AgreementProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publisher".equals(fieldName)) {
+                    deserializedAgreementProperties.publisher = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedAgreementProperties.product = reader.getString();
+                } else if ("plan".equals(fieldName)) {
+                    deserializedAgreementProperties.plan = reader.getString();
+                } else if ("licenseTextLink".equals(fieldName)) {
+                    deserializedAgreementProperties.licenseTextLink = reader.getString();
+                } else if ("privacyPolicyLink".equals(fieldName)) {
+                    deserializedAgreementProperties.privacyPolicyLink = reader.getString();
+                } else if ("marketplaceTermsLink".equals(fieldName)) {
+                    deserializedAgreementProperties.marketplaceTermsLink = reader.getString();
+                } else if ("retrieveDatetime".equals(fieldName)) {
+                    deserializedAgreementProperties.retrieveDatetime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("signature".equals(fieldName)) {
+                    deserializedAgreementProperties.signature = reader.getString();
+                } else if ("accepted".equals(fieldName)) {
+                    deserializedAgreementProperties.accepted = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgreementProperties;
+        });
     }
 }

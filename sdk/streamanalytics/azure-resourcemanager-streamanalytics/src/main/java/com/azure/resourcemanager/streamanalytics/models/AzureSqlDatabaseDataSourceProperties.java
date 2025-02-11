@@ -5,61 +5,56 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties that are associated with an Azure SQL database data source.
  */
 @Fluent
-public class AzureSqlDatabaseDataSourceProperties {
+public class AzureSqlDatabaseDataSourceProperties implements JsonSerializable<AzureSqlDatabaseDataSourceProperties> {
     /*
      * The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "server")
     private String server;
 
     /*
      * The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "database")
     private String database;
 
     /*
-     * The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace)
-     * requests.
+     * The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "user")
     private String user;
 
     /*
      * The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "table")
     private String table;
 
     /*
      * Max Batch count for write to Sql database, the default value is 10,000. Optional on PUT requests.
      */
-    @JsonProperty(value = "maxBatchCount")
     private Float maxBatchCount;
 
     /*
      * Max Writer count, currently only 1(single writer) and 0(based on query partition) are available. Optional on PUT
      * requests.
      */
-    @JsonProperty(value = "maxWriterCount")
     private Float maxWriterCount;
 
     /*
      * Authentication Mode.
      */
-    @JsonProperty(value = "authenticationMode")
     private AuthenticationMode authenticationMode;
 
     /**
@@ -246,5 +241,67 @@ public class AzureSqlDatabaseDataSourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("database", this.database);
+        jsonWriter.writeStringField("user", this.user);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("table", this.table);
+        jsonWriter.writeNumberField("maxBatchCount", this.maxBatchCount);
+        jsonWriter.writeNumberField("maxWriterCount", this.maxWriterCount);
+        jsonWriter.writeStringField("authenticationMode",
+            this.authenticationMode == null ? null : this.authenticationMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlDatabaseDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlDatabaseDataSourceProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlDatabaseDataSourceProperties.
+     */
+    public static AzureSqlDatabaseDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlDatabaseDataSourceProperties deserializedAzureSqlDatabaseDataSourceProperties
+                = new AzureSqlDatabaseDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.server = reader.getString();
+                } else if ("database".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.database = reader.getString();
+                } else if ("user".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.user = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.password = reader.getString();
+                } else if ("table".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.table = reader.getString();
+                } else if ("maxBatchCount".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.maxBatchCount
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("maxWriterCount".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.maxWriterCount
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.authenticationMode
+                        = AuthenticationMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlDatabaseDataSourceProperties;
+        });
     }
 }

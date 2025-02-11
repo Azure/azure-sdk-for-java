@@ -6,39 +6,41 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.SsisObjectMetadataStatusResponseInner;
 
-/** An immutable client-side representation of SsisObjectMetadataStatusResponse. */
+/**
+ * An immutable client-side representation of SsisObjectMetadataStatusResponse.
+ */
 public interface SsisObjectMetadataStatusResponse {
     /**
      * Gets the status property: The status of the operation.
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the name property: The operation name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the properties property: The operation properties.
-     *
+     * 
      * @return the properties value.
      */
     String properties();
 
     /**
      * Gets the error property: The operation error message.
-     *
+     * 
      * @return the error value.
      */
     String error();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.SsisObjectMetadataStatusResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     SsisObjectMetadataStatusResponseInner innerModel();

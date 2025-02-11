@@ -10,15 +10,31 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 /** An immutable client-side representation of an Azure Cosmos DB DatabaseAccountListKeysResult. */
 @Fluent
 public interface DatabaseAccountListKeysResult extends HasInnerModel<DatabaseAccountListKeysResultInner> {
-    /** @return Base 64 encoded value of the primary read-write key. */
+    /**
+     * Gets Base 64 encoded value of the primary read-write key..
+     *
+     * @return Base 64 encoded value of the primary read-write key.
+     */
     String primaryMasterKey();
 
-    /** @return Base 64 encoded value of the secondary read-write key. */
+    /**
+     * Gets Base 64 encoded value of the secondary read-write key.
+     *
+     * @return Base 64 encoded value of the secondary read-write key.
+     */
     String secondaryMasterKey();
 
-    /** @return Base 64 encoded value of the primary read-only key. */
+    /**
+     * Gets Base 64 encoded value of the primary read-only key.
+     *
+     * @return Base 64 encoded value of the primary read-only key.
+     */
     String primaryReadonlyMasterKey();
 
-    /** @return Base 64 encoded value of the secondary read-only key. */
+    /**
+     * Gets Base 64 encoded value of the secondary read-only key.
+     *
+     * @return Base 64 encoded value of the secondary read-only key.
+     */
     String secondaryReadonlyMasterKey();
 }

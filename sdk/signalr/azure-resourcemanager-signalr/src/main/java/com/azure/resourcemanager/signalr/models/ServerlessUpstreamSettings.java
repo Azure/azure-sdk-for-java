@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The settings for the Upstream when the service is in server-less mode. */
+/**
+ * The settings for the Upstream when the service is in server-less mode.
+ */
 @Fluent
-public final class ServerlessUpstreamSettings {
+public final class ServerlessUpstreamSettings implements JsonSerializable<ServerlessUpstreamSettings> {
     /*
      * Gets or sets the list of Upstream URL templates. Order matters, and the first matching template takes effects.
      */
-    @JsonProperty(value = "templates")
     private List<UpstreamTemplate> templates;
 
-    /** Creates an instance of ServerlessUpstreamSettings class. */
+    /**
+     * Creates an instance of ServerlessUpstreamSettings class.
+     */
     public ServerlessUpstreamSettings() {
     }
 
     /**
      * Get the templates property: Gets or sets the list of Upstream URL templates. Order matters, and the first
      * matching template takes effects.
-     *
+     * 
      * @return the templates value.
      */
     public List<UpstreamTemplate> templates() {
@@ -34,7 +41,7 @@ public final class ServerlessUpstreamSettings {
     /**
      * Set the templates property: Gets or sets the list of Upstream URL templates. Order matters, and the first
      * matching template takes effects.
-     *
+     * 
      * @param templates the templates value to set.
      * @return the ServerlessUpstreamSettings object itself.
      */
@@ -45,12 +52,49 @@ public final class ServerlessUpstreamSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (templates() != null) {
             templates().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("templates", this.templates, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerlessUpstreamSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerlessUpstreamSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerlessUpstreamSettings.
+     */
+    public static ServerlessUpstreamSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerlessUpstreamSettings deserializedServerlessUpstreamSettings = new ServerlessUpstreamSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("templates".equals(fieldName)) {
+                    List<UpstreamTemplate> templates = reader.readArray(reader1 -> UpstreamTemplate.fromJson(reader1));
+                    deserializedServerlessUpstreamSettings.templates = templates;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerlessUpstreamSettings;
+        });
     }
 }

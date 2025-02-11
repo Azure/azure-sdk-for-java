@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagDescriptionBaseProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters supplied to the Create TagDescription operation. */
+/**
+ * Parameters supplied to the Create TagDescription operation.
+ */
 @Fluent
-public final class TagDescriptionCreateParameters {
+public final class TagDescriptionCreateParameters implements JsonSerializable<TagDescriptionCreateParameters> {
     /*
      * Properties supplied to Create TagDescription operation.
      */
-    @JsonProperty(value = "properties")
     private TagDescriptionBaseProperties innerProperties;
 
-    /** Creates an instance of TagDescriptionCreateParameters class. */
+    /**
+     * Creates an instance of TagDescriptionCreateParameters class.
+     */
     public TagDescriptionCreateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties supplied to Create TagDescription operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TagDescriptionBaseProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class TagDescriptionCreateParameters {
 
     /**
      * Get the description property: Description of the Tag.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -41,7 +48,7 @@ public final class TagDescriptionCreateParameters {
 
     /**
      * Set the description property: Description of the Tag.
-     *
+     * 
      * @param description the description value to set.
      * @return the TagDescriptionCreateParameters object itself.
      */
@@ -55,7 +62,7 @@ public final class TagDescriptionCreateParameters {
 
     /**
      * Get the externalDocsUrl property: Absolute URL of external resources describing the tag.
-     *
+     * 
      * @return the externalDocsUrl value.
      */
     public String externalDocsUrl() {
@@ -64,7 +71,7 @@ public final class TagDescriptionCreateParameters {
 
     /**
      * Set the externalDocsUrl property: Absolute URL of external resources describing the tag.
-     *
+     * 
      * @param externalDocsUrl the externalDocsUrl value to set.
      * @return the TagDescriptionCreateParameters object itself.
      */
@@ -78,7 +85,7 @@ public final class TagDescriptionCreateParameters {
 
     /**
      * Get the externalDocsDescription property: Description of the external resources describing the tag.
-     *
+     * 
      * @return the externalDocsDescription value.
      */
     public String externalDocsDescription() {
@@ -87,7 +94,7 @@ public final class TagDescriptionCreateParameters {
 
     /**
      * Set the externalDocsDescription property: Description of the external resources describing the tag.
-     *
+     * 
      * @param externalDocsDescription the externalDocsDescription value to set.
      * @return the TagDescriptionCreateParameters object itself.
      */
@@ -101,12 +108,50 @@ public final class TagDescriptionCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagDescriptionCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagDescriptionCreateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagDescriptionCreateParameters.
+     */
+    public static TagDescriptionCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagDescriptionCreateParameters deserializedTagDescriptionCreateParameters
+                = new TagDescriptionCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedTagDescriptionCreateParameters.innerProperties
+                        = TagDescriptionBaseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagDescriptionCreateParameters;
+        });
     }
 }

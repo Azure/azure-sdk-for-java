@@ -20,6 +20,8 @@ trait AccountDataResolver {
    * be used when the config `spark.cosmos.auth.type` is set to `AccessToken` - and in this case
    * the implementation of this trait will need to provide a function that can be used to produce
    * access tokens or None in the case that for the specified configuration no auth can be provided.
+   * The `List[String]` passed as input into the access token retrieval function is the list of
+   * audiences from the token request context.
    * NOTE: It is important that implementations of this trait return singleton functions in
    * getAccessTokenProvider when applicable based on the configs passed in. Each new function instance
    * will result in a new CosmosClient being created in the cache - intentionally because the

@@ -336,7 +336,6 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -6,42 +6,46 @@ package com.azure.resourcemanager.mixedreality.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The object that represents the operation. */
+/**
+ * The object that represents the operation.
+ */
 @Fluent
-public final class OperationDisplay {
+public final class OperationDisplay implements JsonSerializable<OperationDisplay> {
     /*
      * Service provider: Microsoft.ResourceProvider
      */
-    @JsonProperty(value = "provider", required = true)
     private String provider;
 
     /*
      * Resource on which the operation is performed: Profile, endpoint, etc.
      */
-    @JsonProperty(value = "resource", required = true)
     private String resource;
 
     /*
      * Operation type: Read, write, delete, etc.
      */
-    @JsonProperty(value = "operation", required = true)
     private String operation;
 
     /*
      * Description of operation
      */
-    @JsonProperty(value = "description", required = true)
     private String description;
 
-    /** Creates an instance of OperationDisplay class. */
+    /**
+     * Creates an instance of OperationDisplay class.
+     */
     public OperationDisplay() {
     }
 
     /**
      * Get the provider property: Service provider: Microsoft.ResourceProvider.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -50,7 +54,7 @@ public final class OperationDisplay {
 
     /**
      * Set the provider property: Service provider: Microsoft.ResourceProvider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.
      */
@@ -61,7 +65,7 @@ public final class OperationDisplay {
 
     /**
      * Get the resource property: Resource on which the operation is performed: Profile, endpoint, etc.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -70,7 +74,7 @@ public final class OperationDisplay {
 
     /**
      * Set the resource property: Resource on which the operation is performed: Profile, endpoint, etc.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the OperationDisplay object itself.
      */
@@ -81,7 +85,7 @@ public final class OperationDisplay {
 
     /**
      * Get the operation property: Operation type: Read, write, delete, etc.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -90,7 +94,7 @@ public final class OperationDisplay {
 
     /**
      * Set the operation property: Operation type: Read, write, delete, etc.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the OperationDisplay object itself.
      */
@@ -101,7 +105,7 @@ public final class OperationDisplay {
 
     /**
      * Get the description property: Description of operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -110,7 +114,7 @@ public final class OperationDisplay {
 
     /**
      * Set the description property: Description of operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the OperationDisplay object itself.
      */
@@ -121,31 +125,73 @@ public final class OperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (provider() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property provider in model OperationDisplay"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property provider in model OperationDisplay"));
         }
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resource in model OperationDisplay"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resource in model OperationDisplay"));
         }
         if (operation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operation in model OperationDisplay"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property operation in model OperationDisplay"));
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property description in model OperationDisplay"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property description in model OperationDisplay"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationDisplay.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("resource", this.resource);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDisplay if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationDisplay.
+     */
+    public static OperationDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationDisplay deserializedOperationDisplay = new OperationDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedOperationDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedOperationDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedOperationDisplay.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedOperationDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationDisplay;
+        });
+    }
 }

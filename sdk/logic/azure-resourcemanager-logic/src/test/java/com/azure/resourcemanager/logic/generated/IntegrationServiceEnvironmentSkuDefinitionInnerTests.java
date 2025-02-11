@@ -15,42 +15,36 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationServiceEnvironmentSkuDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationServiceEnvironmentSkuDefinitionInner model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"oyxprimr\",\"sku\":{\"name\":\"Developer\",\"tier\":\"ecj\"},\"capacity\":{\"minimum\":1909529560,\"maximum\":1625342003,\"default\":749085962,\"scaleType\":\"Manual\"}}")
-                .toObject(IntegrationServiceEnvironmentSkuDefinitionInner.class);
-        Assertions.assertEquals("oyxprimr", model.resourceType());
-        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.DEVELOPER, model.sku().name());
-        Assertions.assertEquals("ecj", model.sku().tier());
-        Assertions.assertEquals(1909529560, model.capacity().minimum());
-        Assertions.assertEquals(1625342003, model.capacity().maximum());
-        Assertions.assertEquals(749085962, model.capacity().defaultProperty());
-        Assertions.assertEquals(IntegrationServiceEnvironmentSkuScaleType.MANUAL, model.capacity().scaleType());
+        IntegrationServiceEnvironmentSkuDefinitionInner model = BinaryData.fromString(
+            "{\"resourceType\":\"gmditgueiookjbs\",\"sku\":{\"name\":\"NotSpecified\",\"tier\":\"tpdelqa\"},\"capacity\":{\"minimum\":18436259,\"maximum\":1596109972,\"default\":148028664,\"scaleType\":\"None\"}}")
+            .toObject(IntegrationServiceEnvironmentSkuDefinitionInner.class);
+        Assertions.assertEquals("gmditgueiookjbs", model.resourceType());
+        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.NOT_SPECIFIED, model.sku().name());
+        Assertions.assertEquals("tpdelqa", model.sku().tier());
+        Assertions.assertEquals(18436259, model.capacity().minimum());
+        Assertions.assertEquals(1596109972, model.capacity().maximum());
+        Assertions.assertEquals(148028664, model.capacity().defaultProperty());
+        Assertions.assertEquals(IntegrationServiceEnvironmentSkuScaleType.NONE, model.capacity().scaleType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationServiceEnvironmentSkuDefinitionInner model =
-            new IntegrationServiceEnvironmentSkuDefinitionInner()
-                .withResourceType("oyxprimr")
-                .withSku(
-                    new IntegrationServiceEnvironmentSkuDefinitionSku()
-                        .withName(IntegrationServiceEnvironmentSkuName.DEVELOPER)
-                        .withTier("ecj"))
-                .withCapacity(
-                    new IntegrationServiceEnvironmentSkuCapacity()
-                        .withMinimum(1909529560)
-                        .withMaximum(1625342003)
-                        .withDefaultProperty(749085962)
-                        .withScaleType(IntegrationServiceEnvironmentSkuScaleType.MANUAL));
+        IntegrationServiceEnvironmentSkuDefinitionInner model
+            = new IntegrationServiceEnvironmentSkuDefinitionInner().withResourceType("gmditgueiookjbs")
+                .withSku(new IntegrationServiceEnvironmentSkuDefinitionSku()
+                    .withName(IntegrationServiceEnvironmentSkuName.NOT_SPECIFIED)
+                    .withTier("tpdelqa"))
+                .withCapacity(new IntegrationServiceEnvironmentSkuCapacity().withMinimum(18436259)
+                    .withMaximum(1596109972)
+                    .withDefaultProperty(148028664)
+                    .withScaleType(IntegrationServiceEnvironmentSkuScaleType.NONE));
         model = BinaryData.fromObject(model).toObject(IntegrationServiceEnvironmentSkuDefinitionInner.class);
-        Assertions.assertEquals("oyxprimr", model.resourceType());
-        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.DEVELOPER, model.sku().name());
-        Assertions.assertEquals("ecj", model.sku().tier());
-        Assertions.assertEquals(1909529560, model.capacity().minimum());
-        Assertions.assertEquals(1625342003, model.capacity().maximum());
-        Assertions.assertEquals(749085962, model.capacity().defaultProperty());
-        Assertions.assertEquals(IntegrationServiceEnvironmentSkuScaleType.MANUAL, model.capacity().scaleType());
+        Assertions.assertEquals("gmditgueiookjbs", model.resourceType());
+        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.NOT_SPECIFIED, model.sku().name());
+        Assertions.assertEquals("tpdelqa", model.sku().tier());
+        Assertions.assertEquals(18436259, model.capacity().minimum());
+        Assertions.assertEquals(1596109972, model.capacity().maximum());
+        Assertions.assertEquals(148028664, model.capacity().defaultProperty());
+        Assertions.assertEquals(IntegrationServiceEnvironmentSkuScaleType.NONE, model.capacity().scaleType());
     }
 }

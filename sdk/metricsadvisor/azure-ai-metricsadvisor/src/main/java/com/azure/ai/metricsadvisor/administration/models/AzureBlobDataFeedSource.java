@@ -32,13 +32,12 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
     private final DataSourceAuthenticationType authType;
 
     static {
-        AzureBlobDataFeedSourceAccessor.setAccessor(
-            new AzureBlobDataFeedSourceAccessor.Accessor() {
-                @Override
-                public String getConnectionString(AzureBlobDataFeedSource feedSource) {
-                    return feedSource.getConnectionString();
-                }
-            });
+        AzureBlobDataFeedSourceAccessor.setAccessor(new AzureBlobDataFeedSourceAccessor.Accessor() {
+            @Override
+            public String getConnectionString(AzureBlobDataFeedSource feedSource) {
+                return feedSource.getConnectionString();
+            }
+        });
     }
 
     /**
@@ -48,10 +47,8 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
      * @param container the container name
      * @param blobTemplate the blob template name
      */
-    private AzureBlobDataFeedSource(final String connectionString,
-                                    final String container,
-                                    final String blobTemplate,
-                                    final DataSourceAuthenticationType authType) {
+    private AzureBlobDataFeedSource(final String connectionString, final String container, final String blobTemplate,
+        final DataSourceAuthenticationType authType) {
         this.connectionString = connectionString;
         this.container = container;
         this.blobTemplate = blobTemplate;
@@ -67,10 +64,10 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
      *
      * @return The AzureBlobDataFeedSource.
      */
-    public static AzureBlobDataFeedSource fromBasicCredential(final String connectionString,
-                                                              final String container,
-                                                              final String blobTemplate) {
-        return new AzureBlobDataFeedSource(connectionString, container, blobTemplate, DataSourceAuthenticationType.BASIC);
+    public static AzureBlobDataFeedSource fromBasicCredential(final String connectionString, final String container,
+        final String blobTemplate) {
+        return new AzureBlobDataFeedSource(connectionString, container, blobTemplate,
+            DataSourceAuthenticationType.BASIC);
     }
 
     /**
@@ -84,11 +81,8 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
      * @return The AzureBlobDataFeedSource.
      */
     public static AzureBlobDataFeedSource fromManagedIdentityCredential(final String connectionString,
-                                                                        final String container,
-                                                                        final String blobTemplate) {
-        return new AzureBlobDataFeedSource(connectionString,
-            container,
-            blobTemplate,
+        final String container, final String blobTemplate) {
+        return new AzureBlobDataFeedSource(connectionString, container, blobTemplate,
             DataSourceAuthenticationType.MANAGED_IDENTITY);
     }
 

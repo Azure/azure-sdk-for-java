@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.PartnerAuthorization;
 import com.azure.resourcemanager.eventgrid.models.PartnerConfigurationProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of the partner configuration.
  */
 @Fluent
-public final class PartnerConfigurationProperties {
+public final class PartnerConfigurationProperties implements JsonSerializable<PartnerConfigurationProperties> {
     /*
      * The details of authorized partners.
      */
-    @JsonProperty(value = "partnerAuthorization")
     private PartnerAuthorization partnerAuthorization;
 
     /*
      * Provisioning state of the partner configuration.
      */
-    @JsonProperty(value = "provisioningState")
     private PartnerConfigurationProvisioningState provisioningState;
 
     /**
@@ -82,5 +84,48 @@ public final class PartnerConfigurationProperties {
         if (partnerAuthorization() != null) {
             partnerAuthorization().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("partnerAuthorization", this.partnerAuthorization);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerConfigurationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerConfigurationProperties.
+     */
+    public static PartnerConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerConfigurationProperties deserializedPartnerConfigurationProperties
+                = new PartnerConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partnerAuthorization".equals(fieldName)) {
+                    deserializedPartnerConfigurationProperties.partnerAuthorization
+                        = PartnerAuthorization.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPartnerConfigurationProperties.provisioningState
+                        = PartnerConfigurationProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerConfigurationProperties;
+        });
     }
 }

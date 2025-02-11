@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Protocol either UDP or TCP. */
+/**
+ * Protocol either UDP or TCP.
+ */
 public final class Protocol extends ExpandableStringEnum<Protocol> {
-    /** Static value TCP for Protocol. */
+    /**
+     * Static value TCP for Protocol.
+     */
     public static final Protocol TCP = fromString("TCP");
 
-    /** Static value UDP for Protocol. */
+    /**
+     * Static value UDP for Protocol.
+     */
     public static final Protocol UDP = fromString("UDP");
 
     /**
      * Creates a new instance of Protocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
 
     /**
      * Creates or finds a Protocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Protocol.
      */
-    @JsonCreator
     public static Protocol fromString(String name) {
         return fromString(name, Protocol.class);
     }
 
     /**
      * Gets known Protocol values.
-     *
+     * 
      * @return known Protocol values.
      */
     public static Collection<Protocol> values() {

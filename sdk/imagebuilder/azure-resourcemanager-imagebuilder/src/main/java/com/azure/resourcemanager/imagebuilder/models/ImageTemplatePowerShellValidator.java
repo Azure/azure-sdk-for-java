@@ -210,7 +210,6 @@ public final class ImageTemplatePowerShellValidator extends ImageTemplateInVMVal
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

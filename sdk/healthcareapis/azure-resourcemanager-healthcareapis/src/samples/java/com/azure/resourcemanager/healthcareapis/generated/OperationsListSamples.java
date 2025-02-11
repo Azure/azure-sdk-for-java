@@ -9,7 +9,9 @@ package com.azure.resourcemanager.healthcareapis.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/OperationsList.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/OperationsList.
+     * json
      */
     /**
      * Sample code: List operations.

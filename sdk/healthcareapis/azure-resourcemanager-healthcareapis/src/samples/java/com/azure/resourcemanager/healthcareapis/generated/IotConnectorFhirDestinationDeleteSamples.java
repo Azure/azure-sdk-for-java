@@ -9,7 +9,9 @@ package com.azure.resourcemanager.healthcareapis.generated;
  */
 public final class IotConnectorFhirDestinationDeleteSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/iotconnector_fhirdestination_Delete.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/
+     * iotconnector_fhirdestination_Delete.json
      */
     /**
      * Sample code: Delete an IoT Connector destination.

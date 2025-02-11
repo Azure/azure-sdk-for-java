@@ -59,35 +59,31 @@ public final class PrivateEndpointConnectionImpl
 
     private String privateEndpointConnectionName;
 
-    public PrivateEndpointConnectionImpl withExistingConfigurationStore(
-        String resourceGroupName, String configStoreName) {
+    public PrivateEndpointConnectionImpl withExistingConfigurationStore(String resourceGroupName,
+        String configStoreName) {
         this.resourceGroupName = resourceGroupName;
         this.configStoreName = configStoreName;
         return this;
     }
 
     public PrivateEndpointConnection create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .createOrUpdate(
-                    resourceGroupName, configStoreName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnection create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .createOrUpdate(
-                    resourceGroupName, configStoreName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName, this.innerModel(),
+                context);
         return this;
     }
 
-    PrivateEndpointConnectionImpl(
-        String name, com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
+    PrivateEndpointConnectionImpl(String name,
+        com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = new PrivateEndpointConnectionInner();
         this.serviceManager = serviceManager;
         this.privateEndpointConnectionName = name;
@@ -98,52 +94,44 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .createOrUpdate(
-                    resourceGroupName, configStoreName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnection apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .createOrUpdate(
-                    resourceGroupName, configStoreName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName, this.innerModel(),
+                context);
         return this;
     }
 
-    PrivateEndpointConnectionImpl(
-        PrivateEndpointConnectionInner innerObject,
+    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject,
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.configStoreName = Utils.getValueFromIdByName(innerObject.id(), "configurationStores");
-        this.privateEndpointConnectionName = Utils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.configStoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurationStores");
+        this.privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
     }
 
     public PrivateEndpointConnection refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .getWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpointConnection refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .getWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName, context)
+            .getValue();
         return this;
     }
 
@@ -152,8 +140,8 @@ public final class PrivateEndpointConnectionImpl
         return this;
     }
 
-    public PrivateEndpointConnectionImpl withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionImpl
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.innerModel().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }

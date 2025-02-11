@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties for HelmRelease objects. */
+/**
+ * Properties for HelmRelease objects.
+ */
 @Fluent
-public final class HelmReleasePropertiesDefinition {
+public final class HelmReleasePropertiesDefinition implements JsonSerializable<HelmReleasePropertiesDefinition> {
     /*
      * The revision number of the last released object change
      */
-    @JsonProperty(value = "lastRevisionApplied")
     private Long lastRevisionApplied;
 
     /*
      * The reference to the HelmChart object used as the source to this HelmRelease
      */
-    @JsonProperty(value = "helmChartRef")
     private ObjectReferenceDefinition helmChartRef;
 
     /*
      * Total number of times that the HelmRelease failed to install or upgrade
      */
-    @JsonProperty(value = "failureCount")
     private Long failureCount;
 
     /*
      * Number of times that the HelmRelease failed to install
      */
-    @JsonProperty(value = "installFailureCount")
     private Long installFailureCount;
 
     /*
      * Number of times that the HelmRelease failed to upgrade
      */
-    @JsonProperty(value = "upgradeFailureCount")
     private Long upgradeFailureCount;
 
-    /** Creates an instance of HelmReleasePropertiesDefinition class. */
+    /**
+     * Creates an instance of HelmReleasePropertiesDefinition class.
+     */
     public HelmReleasePropertiesDefinition() {
     }
 
     /**
      * Get the lastRevisionApplied property: The revision number of the last released object change.
-     *
+     * 
      * @return the lastRevisionApplied value.
      */
     public Long lastRevisionApplied() {
@@ -55,7 +58,7 @@ public final class HelmReleasePropertiesDefinition {
 
     /**
      * Set the lastRevisionApplied property: The revision number of the last released object change.
-     *
+     * 
      * @param lastRevisionApplied the lastRevisionApplied value to set.
      * @return the HelmReleasePropertiesDefinition object itself.
      */
@@ -66,7 +69,7 @@ public final class HelmReleasePropertiesDefinition {
 
     /**
      * Get the helmChartRef property: The reference to the HelmChart object used as the source to this HelmRelease.
-     *
+     * 
      * @return the helmChartRef value.
      */
     public ObjectReferenceDefinition helmChartRef() {
@@ -75,7 +78,7 @@ public final class HelmReleasePropertiesDefinition {
 
     /**
      * Set the helmChartRef property: The reference to the HelmChart object used as the source to this HelmRelease.
-     *
+     * 
      * @param helmChartRef the helmChartRef value to set.
      * @return the HelmReleasePropertiesDefinition object itself.
      */
@@ -86,7 +89,7 @@ public final class HelmReleasePropertiesDefinition {
 
     /**
      * Get the failureCount property: Total number of times that the HelmRelease failed to install or upgrade.
-     *
+     * 
      * @return the failureCount value.
      */
     public Long failureCount() {
@@ -95,7 +98,7 @@ public final class HelmReleasePropertiesDefinition {
 
     /**
      * Set the failureCount property: Total number of times that the HelmRelease failed to install or upgrade.
-     *
+     * 
      * @param failureCount the failureCount value to set.
      * @return the HelmReleasePropertiesDefinition object itself.
      */
@@ -106,7 +109,7 @@ public final class HelmReleasePropertiesDefinition {
 
     /**
      * Get the installFailureCount property: Number of times that the HelmRelease failed to install.
-     *
+     * 
      * @return the installFailureCount value.
      */
     public Long installFailureCount() {
@@ -115,7 +118,7 @@ public final class HelmReleasePropertiesDefinition {
 
     /**
      * Set the installFailureCount property: Number of times that the HelmRelease failed to install.
-     *
+     * 
      * @param installFailureCount the installFailureCount value to set.
      * @return the HelmReleasePropertiesDefinition object itself.
      */
@@ -126,7 +129,7 @@ public final class HelmReleasePropertiesDefinition {
 
     /**
      * Get the upgradeFailureCount property: Number of times that the HelmRelease failed to upgrade.
-     *
+     * 
      * @return the upgradeFailureCount value.
      */
     public Long upgradeFailureCount() {
@@ -135,7 +138,7 @@ public final class HelmReleasePropertiesDefinition {
 
     /**
      * Set the upgradeFailureCount property: Number of times that the HelmRelease failed to upgrade.
-     *
+     * 
      * @param upgradeFailureCount the upgradeFailureCount value to set.
      * @return the HelmReleasePropertiesDefinition object itself.
      */
@@ -146,12 +149,65 @@ public final class HelmReleasePropertiesDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (helmChartRef() != null) {
             helmChartRef().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("lastRevisionApplied", this.lastRevisionApplied);
+        jsonWriter.writeJsonField("helmChartRef", this.helmChartRef);
+        jsonWriter.writeNumberField("failureCount", this.failureCount);
+        jsonWriter.writeNumberField("installFailureCount", this.installFailureCount);
+        jsonWriter.writeNumberField("upgradeFailureCount", this.upgradeFailureCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HelmReleasePropertiesDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HelmReleasePropertiesDefinition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HelmReleasePropertiesDefinition.
+     */
+    public static HelmReleasePropertiesDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HelmReleasePropertiesDefinition deserializedHelmReleasePropertiesDefinition
+                = new HelmReleasePropertiesDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastRevisionApplied".equals(fieldName)) {
+                    deserializedHelmReleasePropertiesDefinition.lastRevisionApplied
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("helmChartRef".equals(fieldName)) {
+                    deserializedHelmReleasePropertiesDefinition.helmChartRef
+                        = ObjectReferenceDefinition.fromJson(reader);
+                } else if ("failureCount".equals(fieldName)) {
+                    deserializedHelmReleasePropertiesDefinition.failureCount = reader.getNullable(JsonReader::getLong);
+                } else if ("installFailureCount".equals(fieldName)) {
+                    deserializedHelmReleasePropertiesDefinition.installFailureCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("upgradeFailureCount".equals(fieldName)) {
+                    deserializedHelmReleasePropertiesDefinition.upgradeFailureCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHelmReleasePropertiesDefinition;
+        });
     }
 }

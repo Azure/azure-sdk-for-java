@@ -30,22 +30,18 @@ public final class ApplicationsImpl implements Applications {
 
     private final com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager;
 
-    public ApplicationsImpl(
-        ApplicationsClient innerClient,
+    public ApplicationsImpl(ApplicationsClient innerClient,
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Application> getByResourceGroupWithResponse(
-        String resourceGroupName, String applicationName, Context context) {
-        Response<ApplicationInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, applicationName, context);
+    public Response<Application> getByResourceGroupWithResponse(String resourceGroupName, String applicationName,
+        Context context) {
+        Response<ApplicationInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, applicationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -78,10 +74,10 @@ public final class ApplicationsImpl implements Applications {
         }
     }
 
-    public ApplicationPatchable update(
-        String resourceGroupName, String applicationName, ApplicationPatchableInner parameters, Context context) {
-        ApplicationPatchableInner inner =
-            this.serviceClient().update(resourceGroupName, applicationName, parameters, context);
+    public ApplicationPatchable update(String resourceGroupName, String applicationName,
+        ApplicationPatchableInner parameters, Context context) {
+        ApplicationPatchableInner inner
+            = this.serviceClient().update(resourceGroupName, applicationName, parameters, context);
         if (inner != null) {
             return new ApplicationPatchableImpl(inner, this.manager());
         } else {
@@ -91,31 +87,28 @@ public final class ApplicationsImpl implements Applications {
 
     public PagedIterable<Application> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ApplicationInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Application> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ApplicationInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Application> list() {
         PagedIterable<ApplicationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Application> list(Context context) {
         PagedIterable<ApplicationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public Response<Application> getByIdWithResponse(String applicationId, Context context) {
         Response<ApplicationInner> inner = this.serviceClient().getByIdWithResponse(applicationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -166,8 +159,8 @@ public final class ApplicationsImpl implements Applications {
         }
     }
 
-    public ApplicationPatchable updateById(
-        String applicationId, ApplicationPatchableInner parameters, Context context) {
+    public ApplicationPatchable updateById(String applicationId, ApplicationPatchableInner parameters,
+        Context context) {
         ApplicationPatchableInner inner = this.serviceClient().updateById(applicationId, parameters, context);
         if (inner != null) {
             return new ApplicationPatchableImpl(inner, this.manager());
@@ -184,15 +177,12 @@ public final class ApplicationsImpl implements Applications {
         this.serviceClient().refreshPermissions(resourceGroupName, applicationName, context);
     }
 
-    public Response<AllowedUpgradePlansResult> listAllowedUpgradePlansWithResponse(
-        String resourceGroupName, String applicationName, Context context) {
-        Response<AllowedUpgradePlansResultInner> inner =
-            this.serviceClient().listAllowedUpgradePlansWithResponse(resourceGroupName, applicationName, context);
+    public Response<AllowedUpgradePlansResult> listAllowedUpgradePlansWithResponse(String resourceGroupName,
+        String applicationName, Context context) {
+        Response<AllowedUpgradePlansResultInner> inner
+            = this.serviceClient().listAllowedUpgradePlansWithResponse(resourceGroupName, applicationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AllowedUpgradePlansResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -200,8 +190,8 @@ public final class ApplicationsImpl implements Applications {
     }
 
     public AllowedUpgradePlansResult listAllowedUpgradePlans(String resourceGroupName, String applicationName) {
-        AllowedUpgradePlansResultInner inner =
-            this.serviceClient().listAllowedUpgradePlans(resourceGroupName, applicationName);
+        AllowedUpgradePlansResultInner inner
+            = this.serviceClient().listAllowedUpgradePlans(resourceGroupName, applicationName);
         if (inner != null) {
             return new AllowedUpgradePlansResultImpl(inner, this.manager());
         } else {
@@ -209,10 +199,10 @@ public final class ApplicationsImpl implements Applications {
         }
     }
 
-    public UpdateAccessDefinition updateAccess(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters) {
-        UpdateAccessDefinitionInner inner =
-            this.serviceClient().updateAccess(resourceGroupName, applicationName, parameters);
+    public UpdateAccessDefinition updateAccess(String resourceGroupName, String applicationName,
+        UpdateAccessDefinitionInner parameters) {
+        UpdateAccessDefinitionInner inner
+            = this.serviceClient().updateAccess(resourceGroupName, applicationName, parameters);
         if (inner != null) {
             return new UpdateAccessDefinitionImpl(inner, this.manager());
         } else {
@@ -220,10 +210,10 @@ public final class ApplicationsImpl implements Applications {
         }
     }
 
-    public UpdateAccessDefinition updateAccess(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters, Context context) {
-        UpdateAccessDefinitionInner inner =
-            this.serviceClient().updateAccess(resourceGroupName, applicationName, parameters, context);
+    public UpdateAccessDefinition updateAccess(String resourceGroupName, String applicationName,
+        UpdateAccessDefinitionInner parameters, Context context) {
+        UpdateAccessDefinitionInner inner
+            = this.serviceClient().updateAccess(resourceGroupName, applicationName, parameters, context);
         if (inner != null) {
             return new UpdateAccessDefinitionImpl(inner, this.manager());
         } else {
@@ -231,25 +221,22 @@ public final class ApplicationsImpl implements Applications {
         }
     }
 
-    public Response<ManagedIdentityTokenResult> listTokensWithResponse(
-        String resourceGroupName, String applicationName, ListTokenRequest parameters, Context context) {
-        Response<ManagedIdentityTokenResultInner> inner =
-            this.serviceClient().listTokensWithResponse(resourceGroupName, applicationName, parameters, context);
+    public Response<ManagedIdentityTokenResult> listTokensWithResponse(String resourceGroupName, String applicationName,
+        ListTokenRequest parameters, Context context) {
+        Response<ManagedIdentityTokenResultInner> inner
+            = this.serviceClient().listTokensWithResponse(resourceGroupName, applicationName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ManagedIdentityTokenResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ManagedIdentityTokenResult listTokens(
-        String resourceGroupName, String applicationName, ListTokenRequest parameters) {
-        ManagedIdentityTokenResultInner inner =
-            this.serviceClient().listTokens(resourceGroupName, applicationName, parameters);
+    public ManagedIdentityTokenResult listTokens(String resourceGroupName, String applicationName,
+        ListTokenRequest parameters) {
+        ManagedIdentityTokenResultInner inner
+            = this.serviceClient().listTokens(resourceGroupName, applicationName, parameters);
         if (inner != null) {
             return new ManagedIdentityTokenResultImpl(inner, this.manager());
         } else {

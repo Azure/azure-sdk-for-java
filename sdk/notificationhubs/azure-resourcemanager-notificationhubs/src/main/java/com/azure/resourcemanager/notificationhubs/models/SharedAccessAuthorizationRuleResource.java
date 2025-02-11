@@ -6,10 +6,9 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -39,86 +38,84 @@ public interface SharedAccessAuthorizationRuleResource {
     String type();
 
     /**
-     * Gets the location property: Deprecated - only for compatibility.
+     * Gets the location property: The geo-location where the resource lives.
      * 
      * @return the location value.
      */
     String location();
 
     /**
-     * Gets the tags property: Deprecated - only for compatibility.
+     * Gets the tags property: Resource tags.
      * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Gets the sku property: The sku of the created namespace.
      * 
-     * @return the systemData value.
+     * @return the sku value.
      */
-    SystemData systemData();
+    Sku sku();
 
     /**
-     * Gets the rights property: Gets or sets the rights associated with the rule.
+     * Gets the rights property: The rights associated with the rule.
      * 
      * @return the rights value.
      */
     List<AccessRights> rights();
 
     /**
-     * Gets the primaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
+     * Gets the primaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
      * 
      * @return the primaryKey value.
      */
     String primaryKey();
 
     /**
-     * Gets the secondaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
+     * Gets the secondaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
      * 
      * @return the secondaryKey value.
      */
     String secondaryKey();
 
     /**
-     * Gets the keyName property: Gets a string that describes the authorization rule.
+     * Gets the keyName property: A string that describes the authorization rule.
      * 
      * @return the keyName value.
      */
     String keyName();
 
     /**
-     * Gets the modifiedTime property: Gets the last modified time for this rule.
-     * 
-     * @return the modifiedTime value.
-     */
-    OffsetDateTime modifiedTime();
-
-    /**
-     * Gets the createdTime property: Gets the created time for this rule.
-     * 
-     * @return the createdTime value.
-     */
-    OffsetDateTime createdTime();
-
-    /**
-     * Gets the claimType property: Gets a string that describes the claim type.
+     * Gets the claimType property: A string that describes the claim type.
      * 
      * @return the claimType value.
      */
     String claimType();
 
     /**
-     * Gets the claimValue property: Gets a string that describes the claim value.
+     * Gets the claimValue property: A string that describes the claim value.
      * 
      * @return the claimValue value.
      */
     String claimValue();
 
     /**
-     * Gets the revision property: Gets the revision number for the rule.
+     * Gets the modifiedTime property: The last modified time for this rule.
+     * 
+     * @return the modifiedTime value.
+     */
+    String modifiedTime();
+
+    /**
+     * Gets the createdTime property: The created time for this rule.
+     * 
+     * @return the createdTime value.
+     */
+    String createdTime();
+
+    /**
+     * Gets the revision property: The revision number for the rule.
      * 
      * @return the revision value.
      */
@@ -156,8 +153,8 @@ public interface SharedAccessAuthorizationRuleResource {
     /**
      * The entirety of the SharedAccessAuthorizationRuleResource definition.
      */
-    interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /**
@@ -175,23 +172,33 @@ public interface SharedAccessAuthorizationRuleResource {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceGroupName, namespaceName, notificationHubName.
+             * Specifies resourceGroupName, namespaceName.
              * 
-             * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param namespaceName Namespace name.
-             * @param notificationHubName Notification Hub name.
+             * @param resourceGroupName The name of the resource group.
+             * @param namespaceName The namespace name.
              * @return the next definition stage.
              */
-            WithCreate withExistingNotificationHub(String resourceGroupName, String namespaceName,
-                String notificationHubName);
+            WithProperties withExistingNamespace(String resourceGroupName, String namespaceName);
+        }
+
+        /**
+         * The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Properties of the Namespace AuthorizationRules..
+             * 
+             * @param properties Properties of the Namespace AuthorizationRules.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(SharedAccessAuthorizationRuleProperties properties);
         }
 
         /**
          * The stage of the SharedAccessAuthorizationRuleResource definition which contains all the minimum required
          * properties for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
-            DefinitionStages.WithRights, DefinitionStages.WithPrimaryKey, DefinitionStages.WithSecondaryKey {
+        interface WithCreate {
             /**
              * Executes the create request.
              * 
@@ -207,83 +214,6 @@ public interface SharedAccessAuthorizationRuleResource {
              */
             SharedAccessAuthorizationRuleResource create(Context context);
         }
-
-        /**
-         * The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify location.
-         */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location Deprecated - only for compatibility.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location Deprecated - only for compatibility.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(String location);
-        }
-
-        /**
-         * The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Deprecated - only for compatibility..
-             * 
-             * @param tags Deprecated - only for compatibility.
-             * @return the next definition stage.
-             */
-            WithCreate withTags(Map<String, String> tags);
-        }
-
-        /**
-         * The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify rights.
-         */
-        interface WithRights {
-            /**
-             * Specifies the rights property: Gets or sets the rights associated with the rule..
-             * 
-             * @param rights Gets or sets the rights associated with the rule.
-             * @return the next definition stage.
-             */
-            WithCreate withRights(List<AccessRights> rights);
-        }
-
-        /**
-         * The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify primaryKey.
-         */
-        interface WithPrimaryKey {
-            /**
-             * Specifies the primaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-             * validating the SAS token..
-             * 
-             * @param primaryKey Gets a base64-encoded 256-bit primary key for signing and
-             * validating the SAS token.
-             * @return the next definition stage.
-             */
-            WithCreate withPrimaryKey(String primaryKey);
-        }
-
-        /**
-         * The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify secondaryKey.
-         */
-        interface WithSecondaryKey {
-            /**
-             * Specifies the secondaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-             * validating the SAS token..
-             * 
-             * @param secondaryKey Gets a base64-encoded 256-bit primary key for signing and
-             * validating the SAS token.
-             * @return the next definition stage.
-             */
-            WithCreate withSecondaryKey(String secondaryKey);
-        }
     }
 
     /**
@@ -296,8 +226,7 @@ public interface SharedAccessAuthorizationRuleResource {
     /**
      * The template for SharedAccessAuthorizationRuleResource update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithRights, UpdateStages.WithPrimaryKey,
-        UpdateStages.WithSecondaryKey {
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -319,59 +248,16 @@ public interface SharedAccessAuthorizationRuleResource {
      */
     interface UpdateStages {
         /**
-         * The stage of the SharedAccessAuthorizationRuleResource update allowing to specify tags.
+         * The stage of the SharedAccessAuthorizationRuleResource update allowing to specify properties.
          */
-        interface WithTags {
+        interface WithProperties {
             /**
-             * Specifies the tags property: Deprecated - only for compatibility..
+             * Specifies the properties property: Properties of the Namespace AuthorizationRules..
              * 
-             * @param tags Deprecated - only for compatibility.
+             * @param properties Properties of the Namespace AuthorizationRules.
              * @return the next definition stage.
              */
-            Update withTags(Map<String, String> tags);
-        }
-
-        /**
-         * The stage of the SharedAccessAuthorizationRuleResource update allowing to specify rights.
-         */
-        interface WithRights {
-            /**
-             * Specifies the rights property: Gets or sets the rights associated with the rule..
-             * 
-             * @param rights Gets or sets the rights associated with the rule.
-             * @return the next definition stage.
-             */
-            Update withRights(List<AccessRights> rights);
-        }
-
-        /**
-         * The stage of the SharedAccessAuthorizationRuleResource update allowing to specify primaryKey.
-         */
-        interface WithPrimaryKey {
-            /**
-             * Specifies the primaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-             * validating the SAS token..
-             * 
-             * @param primaryKey Gets a base64-encoded 256-bit primary key for signing and
-             * validating the SAS token.
-             * @return the next definition stage.
-             */
-            Update withPrimaryKey(String primaryKey);
-        }
-
-        /**
-         * The stage of the SharedAccessAuthorizationRuleResource update allowing to specify secondaryKey.
-         */
-        interface WithSecondaryKey {
-            /**
-             * Specifies the secondaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-             * validating the SAS token..
-             * 
-             * @param secondaryKey Gets a base64-encoded 256-bit primary key for signing and
-             * validating the SAS token.
-             * @return the next definition stage.
-             */
-            Update withSecondaryKey(String secondaryKey);
+            Update withProperties(SharedAccessAuthorizationRuleProperties properties);
         }
     }
 
@@ -391,46 +277,45 @@ public interface SharedAccessAuthorizationRuleResource {
     SharedAccessAuthorizationRuleResource refresh(Context context);
 
     /**
-     * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
+     * Gets the Primary and Secondary ConnectionStrings to the namespace.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Primary and Secondary ConnectionStrings to the NotificationHub along with {@link Response}.
+     * @return the Primary and Secondary ConnectionStrings to the namespace along with {@link Response}.
      */
     Response<ResourceListKeys> listKeysWithResponse(Context context);
 
     /**
-     * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
+     * Gets the Primary and Secondary ConnectionStrings to the namespace.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Primary and Secondary ConnectionStrings to the NotificationHub.
+     * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
     ResourceListKeys listKeys();
 
     /**
-     * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
+     * Regenerates the Primary/Secondary Keys to the Namespace Authorization Rule.
      * 
-     * @param parameters Request content.
+     * @param parameters Parameters supplied to regenerate the Namespace Authorization Rule Key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the POST request that returns Namespace or NotificationHub access keys (connection strings)
-     * along with {@link Response}.
+     * @return namespace/NotificationHub Connection String along with {@link Response}.
      */
-    Response<ResourceListKeys> regenerateKeysWithResponse(PolicyKeyResource parameters, Context context);
+    Response<ResourceListKeys> regenerateKeysWithResponse(PolicykeyResource parameters, Context context);
 
     /**
-     * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
+     * Regenerates the Primary/Secondary Keys to the Namespace Authorization Rule.
      * 
-     * @param parameters Request content.
+     * @param parameters Parameters supplied to regenerate the Namespace Authorization Rule Key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
+     * @return namespace/NotificationHub Connection String.
      */
-    ResourceListKeys regenerateKeys(PolicyKeyResource parameters);
+    ResourceListKeys regenerateKeys(PolicykeyResource parameters);
 }

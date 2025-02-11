@@ -13,40 +13,34 @@ import org.junit.jupiter.api.Assertions;
 public final class AssessmentSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssessmentSettings model =
-            BinaryData
-                .fromString(
-                    "{\"enable\":true,\"runImmediately\":true,\"schedule\":{\"enable\":false,\"weeklyInterval\":972559338,\"monthlyOccurrence\":364064517,\"dayOfWeek\":\"Saturday\",\"startTime\":\"auu\"}}")
-                .toObject(AssessmentSettings.class);
-        Assertions.assertEquals(true, model.enable());
+        AssessmentSettings model = BinaryData.fromString(
+            "{\"enable\":false,\"runImmediately\":true,\"schedule\":{\"enable\":false,\"weeklyInterval\":825397815,\"monthlyOccurrence\":2143826704,\"dayOfWeek\":\"Monday\",\"startTime\":\"uwiqzb\"}}")
+            .toObject(AssessmentSettings.class);
+        Assertions.assertEquals(false, model.enable());
         Assertions.assertEquals(true, model.runImmediately());
         Assertions.assertEquals(false, model.schedule().enable());
-        Assertions.assertEquals(972559338, model.schedule().weeklyInterval());
-        Assertions.assertEquals(364064517, model.schedule().monthlyOccurrence());
-        Assertions.assertEquals(AssessmentDayOfWeek.SATURDAY, model.schedule().dayOfWeek());
-        Assertions.assertEquals("auu", model.schedule().startTime());
+        Assertions.assertEquals(825397815, model.schedule().weeklyInterval());
+        Assertions.assertEquals(2143826704, model.schedule().monthlyOccurrence());
+        Assertions.assertEquals(AssessmentDayOfWeek.MONDAY, model.schedule().dayOfWeek());
+        Assertions.assertEquals("uwiqzb", model.schedule().startTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssessmentSettings model =
-            new AssessmentSettings()
-                .withEnable(true)
-                .withRunImmediately(true)
-                .withSchedule(
-                    new Schedule()
-                        .withEnable(false)
-                        .withWeeklyInterval(972559338)
-                        .withMonthlyOccurrence(364064517)
-                        .withDayOfWeek(AssessmentDayOfWeek.SATURDAY)
-                        .withStartTime("auu"));
+        AssessmentSettings model = new AssessmentSettings().withEnable(false)
+            .withRunImmediately(true)
+            .withSchedule(new Schedule().withEnable(false)
+                .withWeeklyInterval(825397815)
+                .withMonthlyOccurrence(2143826704)
+                .withDayOfWeek(AssessmentDayOfWeek.MONDAY)
+                .withStartTime("uwiqzb"));
         model = BinaryData.fromObject(model).toObject(AssessmentSettings.class);
-        Assertions.assertEquals(true, model.enable());
+        Assertions.assertEquals(false, model.enable());
         Assertions.assertEquals(true, model.runImmediately());
         Assertions.assertEquals(false, model.schedule().enable());
-        Assertions.assertEquals(972559338, model.schedule().weeklyInterval());
-        Assertions.assertEquals(364064517, model.schedule().monthlyOccurrence());
-        Assertions.assertEquals(AssessmentDayOfWeek.SATURDAY, model.schedule().dayOfWeek());
-        Assertions.assertEquals("auu", model.schedule().startTime());
+        Assertions.assertEquals(825397815, model.schedule().weeklyInterval());
+        Assertions.assertEquals(2143826704, model.schedule().monthlyOccurrence());
+        Assertions.assertEquals(AssessmentDayOfWeek.MONDAY, model.schedule().dayOfWeek());
+        Assertions.assertEquals("uwiqzb", model.schedule().startTime());
     }
 }

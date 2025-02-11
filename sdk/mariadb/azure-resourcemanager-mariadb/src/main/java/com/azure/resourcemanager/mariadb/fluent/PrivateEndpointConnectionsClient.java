@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mariadb.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.mariadb.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public interface PrivateEndpointConnectionsClient {
     /**
      * Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -29,12 +31,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String serverName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -44,16 +46,16 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String serverName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner get(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -61,18 +63,16 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
+        String resourceGroupName, String serverName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,38 +81,32 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+        String resourceGroupName, String serverName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,16 +114,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -139,12 +129,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -155,12 +145,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -173,7 +163,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -187,9 +177,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Updates tags on private endpoint connection.
-     *
-     * <p>Updates private endpoint connection with the specified tags.
-     *
+     * 
+     * Updates private endpoint connection with the specified tags.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -205,9 +195,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Updates tags on private endpoint connection.
-     *
-     * <p>Updates private endpoint connection with the specified tags.
-     *
+     * 
+     * Updates private endpoint connection with the specified tags.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -220,17 +210,14 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdateTags(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        TagsObject parameters,
+        String resourceGroupName, String serverName, String privateEndpointConnectionName, TagsObject parameters,
         Context context);
 
     /**
      * Updates tags on private endpoint connection.
-     *
-     * <p>Updates private endpoint connection with the specified tags.
-     *
+     * 
+     * Updates private endpoint connection with the specified tags.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -241,14 +228,14 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner updateTags(
-        String resourceGroupName, String serverName, String privateEndpointConnectionName, TagsObject parameters);
+    PrivateEndpointConnectionInner updateTags(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, TagsObject parameters);
 
     /**
      * Updates tags on private endpoint connection.
-     *
-     * <p>Updates private endpoint connection with the specified tags.
-     *
+     * 
+     * Updates private endpoint connection with the specified tags.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -260,16 +247,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner updateTags(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        TagsObject parameters,
-        Context context);
+    PrivateEndpointConnectionInner updateTags(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, TagsObject parameters, Context context);
 
     /**
      * Gets all private endpoint connections on a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,7 +265,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets all private endpoint connections on a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -292,6 +275,6 @@ public interface PrivateEndpointConnectionsClient {
      * @return all private endpoint connections on a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> listByServer(
-        String resourceGroupName, String serverName, Context context);
+    PagedIterable<PrivateEndpointConnectionInner> listByServer(String resourceGroupName, String serverName,
+        Context context);
 }

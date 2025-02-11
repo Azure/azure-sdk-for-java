@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.redhatopenshift {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.redhatopenshift;
     exports com.azure.resourcemanager.redhatopenshift.fluent;
     exports com.azure.resourcemanager.redhatopenshift.fluent.models;
     exports com.azure.resourcemanager.redhatopenshift.models;
+
     opens com.azure.resourcemanager.redhatopenshift.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.redhatopenshift.models to com.azure.core;
 }

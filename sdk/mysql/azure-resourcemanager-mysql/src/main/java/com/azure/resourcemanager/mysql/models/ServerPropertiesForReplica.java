@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Replica")
 @Fluent
 public final class ServerPropertiesForReplica extends ServerPropertiesForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPropertiesForReplica.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerPropertiesForReplica.class);
 
     /*
      * The master server id to create replica from.
@@ -95,10 +96,8 @@ public final class ServerPropertiesForReplica extends ServerPropertiesForCreate 
     public void validate() {
         super.validate();
         if (sourceServerId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceServerId in model ServerPropertiesForReplica"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceServerId in model ServerPropertiesForReplica"));
         }
     }
 }

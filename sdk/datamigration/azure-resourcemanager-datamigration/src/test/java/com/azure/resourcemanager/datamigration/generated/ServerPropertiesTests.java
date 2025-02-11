@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.ServerProperties;
 public final class ServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"serverPlatform\":\"jidsuyonobglaoc\",\"serverName\":\"tcc\",\"serverVersion\":\"yudxytlmoy\",\"serverEdition\":\"vwfudwpzntxhd\",\"serverOperatingSystemVersion\":\"lrqjbhckfr\",\"serverDatabaseCount\":2044526914}")
-                .toObject(ServerProperties.class);
+        ServerProperties model = BinaryData.fromString(
+            "{\"serverPlatform\":\"tcxsenhwlrs\",\"serverName\":\"rzpwvlqdqgbiq\",\"serverVersion\":\"ihkaetcktvfc\",\"serverEdition\":\"fsnkymuctq\",\"serverOperatingSystemVersion\":\"fbebrjcxer\",\"serverDatabaseCount\":1002767653}")
+            .toObject(ServerProperties.class);
     }
 
     @org.junit.jupiter.api.Test

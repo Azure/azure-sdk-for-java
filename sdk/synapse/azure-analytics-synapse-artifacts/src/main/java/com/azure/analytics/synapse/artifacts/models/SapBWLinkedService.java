@@ -29,12 +29,14 @@ public class SapBWLinkedService extends LinkedService {
     private Object server;
 
     /*
-     * System number of the BW system. (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
+     * System number of the BW system. (Usually a two-digit decimal number represented as a string.) Type: string (or
+     * Expression with resultType string).
      */
     private Object systemNumber;
 
     /*
-     * Client ID of the client on the BW system. (Usually a three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
+     * Client ID of the client on the BW system. (Usually a three-digit decimal number represented as a string) Type:
+     * string (or Expression with resultType string).
      */
     private Object clientId;
 
@@ -49,7 +51,8 @@ public class SapBWLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

@@ -11,13 +11,14 @@ import com.azure.storage.common.implementation.StorageImplUtils;
  */
 @Fluent
 public class FileQueryArrowField {
-
     private String name;
     private Integer precision;
     private Integer scale;
     private final FileQueryArrowFieldType type;
 
     /**
+     * Creates a new instance of {@link FileQueryArrowField}.
+     *
      * @param type {@link FileQueryArrowFieldType}
      */
     public FileQueryArrowField(FileQueryArrowFieldType type) {
@@ -26,6 +27,8 @@ public class FileQueryArrowField {
     }
 
     /**
+     * Sets the name of the field.
+     *
      * @param name The name of the field.
      * @return The updated options.
      */
@@ -35,6 +38,8 @@ public class FileQueryArrowField {
     }
 
     /**
+     * Sets the precision of the field. Required if type is {@link FileQueryArrowFieldType#DECIMAL}.
+     *
      * @param precision The precision of the field. Required if type is {@link FileQueryArrowFieldType#DECIMAL}
      * @return The updated options.
      */
@@ -44,6 +49,8 @@ public class FileQueryArrowField {
     }
 
     /**
+     * Sets the scale of the field. Required if type is {@link FileQueryArrowFieldType#DECIMAL}.
+     *
      * @param scale The scale of the field. Required if type is {@link FileQueryArrowFieldType#DECIMAL}
      * @return The updated options.
      */
@@ -53,6 +60,8 @@ public class FileQueryArrowField {
     }
 
     /**
+     * Gets the name of the field.
+     *
      * @return The name.
      */
     public String getName() {
@@ -60,6 +69,8 @@ public class FileQueryArrowField {
     }
 
     /**
+     * Gets the precision of the field.
+     *
      * @return The precision.
      */
     public Integer getPrecision() {
@@ -67,6 +78,8 @@ public class FileQueryArrowField {
     }
 
     /**
+     * Gets the scale of the field.
+     *
      * @return The scale.
      */
     public Integer getScale() {
@@ -74,6 +87,8 @@ public class FileQueryArrowField {
     }
 
     /**
+     * Gets the {@link FileQueryArrowFieldType} of the field.
+     *
      * @return {@link FileQueryArrowFieldType}
      */
     public FileQueryArrowFieldType getType() {

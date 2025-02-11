@@ -41,8 +41,8 @@ public final class WeatherDatasImpl {
      * @param client the instance of the service client containing this operation class.
      */
     WeatherDatasImpl(FarmBeatsClientImpl client) {
-        this.service =
-                RestProxy.create(WeatherDatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WeatherDatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,24 +54,15 @@ public final class WeatherDatasImpl {
     @ServiceInterface(name = "FarmBeatsClientWeath")
     public interface WeatherDatasService {
         @Post("/weather-data/:fetch")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData weatherDataProviderRequest,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData weatherDataProviderRequest, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -215,18 +206,11 @@ public final class WeatherDatasImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(
-            BinaryData weatherDataProviderRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponseAsync(BinaryData weatherDataProviderRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                weatherDataProviderRequest,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), weatherDataProviderRequest, accept, requestOptions, context));
     }
 
     /**

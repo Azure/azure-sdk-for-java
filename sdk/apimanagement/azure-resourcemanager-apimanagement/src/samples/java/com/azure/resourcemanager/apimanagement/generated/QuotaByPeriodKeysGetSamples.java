@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for QuotaByPeriodKeys Get. */
+/**
+ * Samples for QuotaByPeriodKeys Get.
+ */
 public final class QuotaByPeriodKeysGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetQuotaCounterKeysByQuotaPeriod.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetQuotaCounterKeysByQuotaPeriod.json
      */
     /**
      * Sample code: ApiManagementGetQuotaCounterKeysByQuotaPeriod.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementGetQuotaCounterKeysByQuotaPeriod(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .quotaByPeriodKeys()
+        manager.quotaByPeriodKeys()
             .getWithResponse("rg1", "apimService1", "ba", "0_P3Y6M4DT12H30M5S", com.azure.core.util.Context.NONE);
     }
 }

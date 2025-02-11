@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-servicefabricmanagedclusters</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -70,6 +70,19 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+managedCluster = serviceFabricManagedClustersManager.managedClusters()
+    .define(clusterName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withSku(new Sku().withName(SkuName.STANDARD))
+    .withAdminUsername(adminUser)
+    .withAdminPassword(adminPassWord)
+    .withDnsName(clusterName)
+    .withClientConnectionPort(19000)
+    .withHttpGatewayConnectionPort(19080)
+    .create();
+```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicefabricmanagedclusters/azure-resourcemanager-servicefabricmanagedclusters/SAMPLE.md)
 
 
@@ -101,4 +114,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicefabricmanagedclusters%2Fazure-resourcemanager-servicefabricmanagedclusters%2FREADME.png)
+

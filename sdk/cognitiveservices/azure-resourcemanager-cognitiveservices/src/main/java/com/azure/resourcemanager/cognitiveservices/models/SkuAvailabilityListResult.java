@@ -7,18 +7,20 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.SkuAvailabilityListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of SkuAvailabilityListResult. */
+/**
+ * An immutable client-side representation of SkuAvailabilityListResult.
+ */
 public interface SkuAvailabilityListResult {
     /**
      * Gets the value property: Check SKU availability result list.
-     *
+     * 
      * @return the value value.
      */
     List<SkuAvailability> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.SkuAvailabilityListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     SkuAvailabilityListResultInner innerModel();

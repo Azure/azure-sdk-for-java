@@ -149,10 +149,10 @@ public final class BlobAccessPolicy implements XmlSerializable<BlobAccessPolicy>
 
                 if ("Start".equals(elementName.getLocalPart())) {
                     deserializedBlobAccessPolicy.startsOn
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("Expiry".equals(elementName.getLocalPart())) {
                     deserializedBlobAccessPolicy.expiresOn
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("Permission".equals(elementName.getLocalPart())) {
                     deserializedBlobAccessPolicy.permissions = reader.getStringElement();
                 } else {

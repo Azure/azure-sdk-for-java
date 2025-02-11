@@ -12,7 +12,6 @@ import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
  * new object. Null may be passed if none of the options are desirable.
  */
 public final class FileSystemListDetails {
-
     private boolean retrieveMetadata;
     private boolean retrieveDeleted;
     private boolean retrieveSystemFileSystems;
@@ -21,7 +20,6 @@ public final class FileSystemListDetails {
      * Creates a new instance of {@link FileSystemListDetails}.
      */
     public FileSystemListDetails() {
-
     }
 
     /**
@@ -85,6 +83,8 @@ public final class FileSystemListDetails {
     }
 
     /**
+     * Gets the listing flags.
+     *
      * @return the listing flags
      */
     public ListFileSystemsIncludeType toIncludeType() {

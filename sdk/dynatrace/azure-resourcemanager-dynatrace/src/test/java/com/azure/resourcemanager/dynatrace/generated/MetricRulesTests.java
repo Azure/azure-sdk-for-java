@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricRulesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricRules model =
-            BinaryData
-                .fromString(
-                    "{\"sendingMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"ufufsrp\",\"value\":\"zidnsezcxtbzsgfy\",\"action\":\"Include\"}]}")
-                .toObject(MetricRules.class);
+        MetricRules model = BinaryData.fromString(
+            "{\"sendingMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"ufufsrp\",\"value\":\"zidnsezcxtbzsgfy\",\"action\":\"Include\"}]}")
+            .toObject(MetricRules.class);
         Assertions.assertEquals(SendingMetricsStatus.DISABLED, model.sendingMetrics());
         Assertions.assertEquals("ufufsrp", model.filteringTags().get(0).name());
         Assertions.assertEquals("zidnsezcxtbzsgfy", model.filteringTags().get(0).value());
@@ -28,16 +26,9 @@ public final class MetricRulesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricRules model =
-            new MetricRules()
-                .withSendingMetrics(SendingMetricsStatus.DISABLED)
-                .withFilteringTags(
-                    Arrays
-                        .asList(
-                            new FilteringTag()
-                                .withName("ufufsrp")
-                                .withValue("zidnsezcxtbzsgfy")
-                                .withAction(TagAction.INCLUDE)));
+        MetricRules model = new MetricRules().withSendingMetrics(SendingMetricsStatus.DISABLED)
+            .withFilteringTags(Arrays.asList(
+                new FilteringTag().withName("ufufsrp").withValue("zidnsezcxtbzsgfy").withAction(TagAction.INCLUDE)));
         model = BinaryData.fromObject(model).toObject(MetricRules.class);
         Assertions.assertEquals(SendingMetricsStatus.DISABLED, model.sendingMetrics());
         Assertions.assertEquals("ufufsrp", model.filteringTags().get(0).name());

@@ -9,7 +9,9 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class ScheduledEventAcknowledgeSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ScheduledEvents_Acknowledge.json
+     * x-ms-original-file:
+     * specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/
+     * ScheduledEvents_Acknowledge.json
      */
     /**
      * Sample code: ScheduledEvents_Acknowledge.

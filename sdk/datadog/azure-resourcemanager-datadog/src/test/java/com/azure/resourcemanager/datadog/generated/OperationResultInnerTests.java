@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"npime\",\"display\":{\"provider\":\"txgcpodgmaajr\",\"resource\":\"djwzrlov\",\"operation\":\"lwhijcoejctbzaq\",\"description\":\"sycbkbfk\"},\"isDataAction\":false}")
-                .toObject(OperationResultInner.class);
+        OperationResultInner model = BinaryData.fromString(
+            "{\"name\":\"npime\",\"display\":{\"provider\":\"txgcpodgmaajr\",\"resource\":\"djwzrlov\",\"operation\":\"lwhijcoejctbzaq\",\"description\":\"sycbkbfk\"},\"isDataAction\":false}")
+            .toObject(OperationResultInner.class);
         Assertions.assertEquals("npime", model.name());
         Assertions.assertEquals("txgcpodgmaajr", model.display().provider());
         Assertions.assertEquals("djwzrlov", model.display().resource());
@@ -27,16 +25,12 @@ public final class OperationResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationResultInner model =
-            new OperationResultInner()
-                .withName("npime")
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("txgcpodgmaajr")
-                        .withResource("djwzrlov")
-                        .withOperation("lwhijcoejctbzaq")
-                        .withDescription("sycbkbfk"))
-                .withIsDataAction(false);
+        OperationResultInner model = new OperationResultInner().withName("npime")
+            .withDisplay(new OperationDisplay().withProvider("txgcpodgmaajr")
+                .withResource("djwzrlov")
+                .withOperation("lwhijcoejctbzaq")
+                .withDescription("sycbkbfk"))
+            .withIsDataAction(false);
         model = BinaryData.fromObject(model).toObject(OperationResultInner.class);
         Assertions.assertEquals("npime", model.name());
         Assertions.assertEquals("txgcpodgmaajr", model.display().provider());

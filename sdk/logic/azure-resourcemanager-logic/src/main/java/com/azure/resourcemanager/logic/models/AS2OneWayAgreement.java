@@ -6,36 +6,41 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The integration account AS2 one-way agreement. */
+/**
+ * The integration account AS2 one-way agreement.
+ */
 @Fluent
-public final class AS2OneWayAgreement {
+public final class AS2OneWayAgreement implements JsonSerializable<AS2OneWayAgreement> {
     /*
      * The sender business identity
      */
-    @JsonProperty(value = "senderBusinessIdentity", required = true)
     private BusinessIdentity senderBusinessIdentity;
 
     /*
      * The receiver business identity
      */
-    @JsonProperty(value = "receiverBusinessIdentity", required = true)
     private BusinessIdentity receiverBusinessIdentity;
 
     /*
      * The AS2 protocol settings.
      */
-    @JsonProperty(value = "protocolSettings", required = true)
     private AS2ProtocolSettings protocolSettings;
 
-    /** Creates an instance of AS2OneWayAgreement class. */
+    /**
+     * Creates an instance of AS2OneWayAgreement class.
+     */
     public AS2OneWayAgreement() {
     }
 
     /**
      * Get the senderBusinessIdentity property: The sender business identity.
-     *
+     * 
      * @return the senderBusinessIdentity value.
      */
     public BusinessIdentity senderBusinessIdentity() {
@@ -44,7 +49,7 @@ public final class AS2OneWayAgreement {
 
     /**
      * Set the senderBusinessIdentity property: The sender business identity.
-     *
+     * 
      * @param senderBusinessIdentity the senderBusinessIdentity value to set.
      * @return the AS2OneWayAgreement object itself.
      */
@@ -55,7 +60,7 @@ public final class AS2OneWayAgreement {
 
     /**
      * Get the receiverBusinessIdentity property: The receiver business identity.
-     *
+     * 
      * @return the receiverBusinessIdentity value.
      */
     public BusinessIdentity receiverBusinessIdentity() {
@@ -64,7 +69,7 @@ public final class AS2OneWayAgreement {
 
     /**
      * Set the receiverBusinessIdentity property: The receiver business identity.
-     *
+     * 
      * @param receiverBusinessIdentity the receiverBusinessIdentity value to set.
      * @return the AS2OneWayAgreement object itself.
      */
@@ -75,7 +80,7 @@ public final class AS2OneWayAgreement {
 
     /**
      * Get the protocolSettings property: The AS2 protocol settings.
-     *
+     * 
      * @return the protocolSettings value.
      */
     public AS2ProtocolSettings protocolSettings() {
@@ -84,7 +89,7 @@ public final class AS2OneWayAgreement {
 
     /**
      * Set the protocolSettings property: The AS2 protocol settings.
-     *
+     * 
      * @param protocolSettings the protocolSettings value to set.
      * @return the AS2OneWayAgreement object itself.
      */
@@ -95,35 +100,75 @@ public final class AS2OneWayAgreement {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (senderBusinessIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property senderBusinessIdentity in model AS2OneWayAgreement"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property senderBusinessIdentity in model AS2OneWayAgreement"));
         } else {
             senderBusinessIdentity().validate();
         }
         if (receiverBusinessIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property receiverBusinessIdentity in model AS2OneWayAgreement"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property receiverBusinessIdentity in model AS2OneWayAgreement"));
         } else {
             receiverBusinessIdentity().validate();
         }
         if (protocolSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocolSettings in model AS2OneWayAgreement"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocolSettings in model AS2OneWayAgreement"));
         } else {
             protocolSettings().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AS2OneWayAgreement.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("senderBusinessIdentity", this.senderBusinessIdentity);
+        jsonWriter.writeJsonField("receiverBusinessIdentity", this.receiverBusinessIdentity);
+        jsonWriter.writeJsonField("protocolSettings", this.protocolSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AS2OneWayAgreement from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AS2OneWayAgreement if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AS2OneWayAgreement.
+     */
+    public static AS2OneWayAgreement fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AS2OneWayAgreement deserializedAS2OneWayAgreement = new AS2OneWayAgreement();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("senderBusinessIdentity".equals(fieldName)) {
+                    deserializedAS2OneWayAgreement.senderBusinessIdentity = BusinessIdentity.fromJson(reader);
+                } else if ("receiverBusinessIdentity".equals(fieldName)) {
+                    deserializedAS2OneWayAgreement.receiverBusinessIdentity = BusinessIdentity.fromJson(reader);
+                } else if ("protocolSettings".equals(fieldName)) {
+                    deserializedAS2OneWayAgreement.protocolSettings = AS2ProtocolSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAS2OneWayAgreement;
+        });
+    }
 }

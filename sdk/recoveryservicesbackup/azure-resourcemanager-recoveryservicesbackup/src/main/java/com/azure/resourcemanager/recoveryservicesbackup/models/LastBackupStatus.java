@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class LastBackupStatus extends ExpandableStringEnum<LastBackupStatu
      * @param name a name to look for.
      * @return the corresponding LastBackupStatus.
      */
-    @JsonCreator
     public static LastBackupStatus fromString(String name) {
         return fromString(name, LastBackupStatus.class);
     }

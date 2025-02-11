@@ -118,31 +118,21 @@ class AppServiceCertificateImpl
     public Mono<AppServiceCertificate> createResourceAsync() {
         Mono<Void> pfxBytes = Mono.empty();
         if (pfxFileUrl != null) {
-            pfxBytes =
-                Utils
-                    .downloadFileAsync(pfxFileUrl, this.manager().httpPipeline())
-                    .map(
-                        bytes -> {
-                            innerModel().withPfxBlob(bytes);
-                            return null;
-                        });
+            pfxBytes = Utils.downloadFileAsync(pfxFileUrl, this.manager().httpPipeline()).map(bytes -> {
+                innerModel().withPfxBlob(bytes);
+                return null;
+            });
         }
         Mono<Void> keyVaultBinding = Mono.empty();
         if (certificateOrder != null) {
-            keyVaultBinding =
-                certificateOrder
-                    .getKeyVaultBindingAsync()
-                    .map(
-                        keyVaultBinding1 -> {
-                            innerModel()
-                                .withKeyVaultId(keyVaultBinding1.keyVaultId())
-                                .withKeyVaultSecretName(keyVaultBinding1.keyVaultSecretName());
-                            return null;
-                        });
+            keyVaultBinding = certificateOrder.getKeyVaultBindingAsync().map(keyVaultBinding1 -> {
+                innerModel().withKeyVaultId(keyVaultBinding1.keyVaultId())
+                    .withKeyVaultSecretName(keyVaultBinding1.keyVaultSecretName());
+                return null;
+            });
         }
         final CertificatesClient client = this.manager().serviceClient().getCertificates();
-        return pfxBytes
-            .then(keyVaultBinding)
+        return pfxBytes.then(keyVaultBinding)
             .then(client.createOrUpdateAsync(resourceGroupName(), name(), innerModel()))
             .map(innerToFluentMap(this));
     }

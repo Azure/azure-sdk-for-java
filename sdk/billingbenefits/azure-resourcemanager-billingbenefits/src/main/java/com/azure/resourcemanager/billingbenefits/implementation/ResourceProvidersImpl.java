@@ -21,22 +21,18 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<SavingsPlanValidateResponse> validatePurchaseWithResponse(
-        SavingsPlanPurchaseValidateRequest body, Context context) {
-        Response<SavingsPlanValidateResponseInner> inner =
-            this.serviceClient().validatePurchaseWithResponse(body, context);
+    public Response<SavingsPlanValidateResponse> validatePurchaseWithResponse(SavingsPlanPurchaseValidateRequest body,
+        Context context) {
+        Response<SavingsPlanValidateResponseInner> inner
+            = this.serviceClient().validatePurchaseWithResponse(body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SavingsPlanValidateResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

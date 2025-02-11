@@ -9,7 +9,9 @@ package com.azure.resourcemanager.quota.generated;
  */
 public final class GroupQuotaSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/GroupQuotasSubscriptions/PatchGroupQuotasSubscription.json
+     * x-ms-original-file:
+     * specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/GroupQuotasSubscriptions
+     * /PatchGroupQuotasSubscription.json
      */
     /**
      * Sample code: GroupQuotaSubscriptions_Patch_Subscriptions.

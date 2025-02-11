@@ -5,59 +5,61 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigCorsProperties;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigCspProperties;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigDelegationProperties;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigPropertiesSignin;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigPropertiesSignup;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The developer portal configuration contract properties. */
+/**
+ * The developer portal configuration contract properties.
+ */
 @Fluent
-public final class PortalConfigProperties {
+public final class PortalConfigProperties implements JsonSerializable<PortalConfigProperties> {
     /*
      * Enable or disable Basic authentication method.
      */
-    @JsonProperty(value = "enableBasicAuth")
     private Boolean enableBasicAuth;
 
     /*
      * The signin property.
      */
-    @JsonProperty(value = "signin")
     private PortalConfigPropertiesSignin signin;
 
     /*
      * The signup property.
      */
-    @JsonProperty(value = "signup")
     private PortalConfigPropertiesSignup signup;
 
     /*
      * The developer portal delegation settings.
      */
-    @JsonProperty(value = "delegation")
     private PortalConfigDelegationProperties delegation;
 
     /*
      * The developer portal Cross-Origin Resource Sharing (CORS) settings.
      */
-    @JsonProperty(value = "cors")
     private PortalConfigCorsProperties cors;
 
     /*
      * The developer portal Content Security Policy (CSP) settings.
      */
-    @JsonProperty(value = "csp")
     private PortalConfigCspProperties csp;
 
-    /** Creates an instance of PortalConfigProperties class. */
+    /**
+     * Creates an instance of PortalConfigProperties class.
+     */
     public PortalConfigProperties() {
     }
 
     /**
      * Get the enableBasicAuth property: Enable or disable Basic authentication method.
-     *
+     * 
      * @return the enableBasicAuth value.
      */
     public Boolean enableBasicAuth() {
@@ -66,7 +68,7 @@ public final class PortalConfigProperties {
 
     /**
      * Set the enableBasicAuth property: Enable or disable Basic authentication method.
-     *
+     * 
      * @param enableBasicAuth the enableBasicAuth value to set.
      * @return the PortalConfigProperties object itself.
      */
@@ -77,7 +79,7 @@ public final class PortalConfigProperties {
 
     /**
      * Get the signin property: The signin property.
-     *
+     * 
      * @return the signin value.
      */
     public PortalConfigPropertiesSignin signin() {
@@ -86,7 +88,7 @@ public final class PortalConfigProperties {
 
     /**
      * Set the signin property: The signin property.
-     *
+     * 
      * @param signin the signin value to set.
      * @return the PortalConfigProperties object itself.
      */
@@ -97,7 +99,7 @@ public final class PortalConfigProperties {
 
     /**
      * Get the signup property: The signup property.
-     *
+     * 
      * @return the signup value.
      */
     public PortalConfigPropertiesSignup signup() {
@@ -106,7 +108,7 @@ public final class PortalConfigProperties {
 
     /**
      * Set the signup property: The signup property.
-     *
+     * 
      * @param signup the signup value to set.
      * @return the PortalConfigProperties object itself.
      */
@@ -117,7 +119,7 @@ public final class PortalConfigProperties {
 
     /**
      * Get the delegation property: The developer portal delegation settings.
-     *
+     * 
      * @return the delegation value.
      */
     public PortalConfigDelegationProperties delegation() {
@@ -126,7 +128,7 @@ public final class PortalConfigProperties {
 
     /**
      * Set the delegation property: The developer portal delegation settings.
-     *
+     * 
      * @param delegation the delegation value to set.
      * @return the PortalConfigProperties object itself.
      */
@@ -137,7 +139,7 @@ public final class PortalConfigProperties {
 
     /**
      * Get the cors property: The developer portal Cross-Origin Resource Sharing (CORS) settings.
-     *
+     * 
      * @return the cors value.
      */
     public PortalConfigCorsProperties cors() {
@@ -146,7 +148,7 @@ public final class PortalConfigProperties {
 
     /**
      * Set the cors property: The developer portal Cross-Origin Resource Sharing (CORS) settings.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the PortalConfigProperties object itself.
      */
@@ -157,7 +159,7 @@ public final class PortalConfigProperties {
 
     /**
      * Get the csp property: The developer portal Content Security Policy (CSP) settings.
-     *
+     * 
      * @return the csp value.
      */
     public PortalConfigCspProperties csp() {
@@ -166,7 +168,7 @@ public final class PortalConfigProperties {
 
     /**
      * Set the csp property: The developer portal Content Security Policy (CSP) settings.
-     *
+     * 
      * @param csp the csp value to set.
      * @return the PortalConfigProperties object itself.
      */
@@ -177,7 +179,7 @@ public final class PortalConfigProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -196,5 +198,56 @@ public final class PortalConfigProperties {
         if (csp() != null) {
             csp().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enableBasicAuth", this.enableBasicAuth);
+        jsonWriter.writeJsonField("signin", this.signin);
+        jsonWriter.writeJsonField("signup", this.signup);
+        jsonWriter.writeJsonField("delegation", this.delegation);
+        jsonWriter.writeJsonField("cors", this.cors);
+        jsonWriter.writeJsonField("csp", this.csp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalConfigProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalConfigProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortalConfigProperties.
+     */
+    public static PortalConfigProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalConfigProperties deserializedPortalConfigProperties = new PortalConfigProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enableBasicAuth".equals(fieldName)) {
+                    deserializedPortalConfigProperties.enableBasicAuth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("signin".equals(fieldName)) {
+                    deserializedPortalConfigProperties.signin = PortalConfigPropertiesSignin.fromJson(reader);
+                } else if ("signup".equals(fieldName)) {
+                    deserializedPortalConfigProperties.signup = PortalConfigPropertiesSignup.fromJson(reader);
+                } else if ("delegation".equals(fieldName)) {
+                    deserializedPortalConfigProperties.delegation = PortalConfigDelegationProperties.fromJson(reader);
+                } else if ("cors".equals(fieldName)) {
+                    deserializedPortalConfigProperties.cors = PortalConfigCorsProperties.fromJson(reader);
+                } else if ("csp".equals(fieldName)) {
+                    deserializedPortalConfigProperties.csp = PortalConfigCspProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalConfigProperties;
+        });
     }
 }

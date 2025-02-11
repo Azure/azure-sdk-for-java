@@ -6,37 +6,41 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.HiveMetastoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The HiveMetastore model. */
+/**
+ * The HiveMetastore model.
+ */
 @Fluent
 public final class HiveMetastore extends SubResource {
     /*
-     * The  HiveMetastoreProperties rule properties.
+     * The HiveMetastoreProperties rule properties.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private HiveMetastoreProperties innerProperties;
 
     /*
      * The resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of HiveMetastore class. */
+    /**
+     * Creates an instance of HiveMetastore class.
+     */
     public HiveMetastore() {
     }
 
     /**
      * Get the innerProperties property: The HiveMetastoreProperties rule properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HiveMetastoreProperties innerProperties() {
@@ -45,7 +49,7 @@ public final class HiveMetastore extends SubResource {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -54,14 +58,16 @@ public final class HiveMetastore extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HiveMetastore withId(String id) {
         super.withId(id);
@@ -70,7 +76,7 @@ public final class HiveMetastore extends SubResource {
 
     /**
      * Get the serverUri property: The serverUri for the Hive MetaStore.
-     *
+     * 
      * @return the serverUri value.
      */
     public String serverUri() {
@@ -79,7 +85,7 @@ public final class HiveMetastore extends SubResource {
 
     /**
      * Get the databaseName property: The databaseName for the Hive MetaStore.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -88,7 +94,7 @@ public final class HiveMetastore extends SubResource {
 
     /**
      * Get the runtimeVersion property: The runtimeVersion for the Hive MetaStore.
-     *
+     * 
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -97,7 +103,7 @@ public final class HiveMetastore extends SubResource {
 
     /**
      * Get the username property: The userName for the Hive MetaStore.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -106,7 +112,7 @@ public final class HiveMetastore extends SubResource {
 
     /**
      * Get the password property: The password for the Hive MetaStore.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -115,7 +121,7 @@ public final class HiveMetastore extends SubResource {
 
     /**
      * Get the nestedResourceProvisioningState property: The current state of the NestedResource.
-     *
+     * 
      * @return the nestedResourceProvisioningState value.
      */
     public NestedResourceProvisioningState nestedResourceProvisioningState() {
@@ -124,12 +130,54 @@ public final class HiveMetastore extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HiveMetastore from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HiveMetastore if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HiveMetastore.
+     */
+    public static HiveMetastore fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HiveMetastore deserializedHiveMetastore = new HiveMetastore();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHiveMetastore.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHiveMetastore.innerProperties = HiveMetastoreProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedHiveMetastore.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHiveMetastore.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHiveMetastore;
+        });
     }
 }

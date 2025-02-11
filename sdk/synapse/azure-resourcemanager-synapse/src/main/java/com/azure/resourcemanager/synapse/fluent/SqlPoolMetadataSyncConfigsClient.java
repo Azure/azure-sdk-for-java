@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.MetadataSyncConfigInner;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolMetadataSyncConfigsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolMetadataSyncConfigsClient.
+ */
 public interface SqlPoolMetadataSyncConfigsClient {
     /**
      * Get SQL pool metadata sync config
-     *
-     * <p>Get the metadata sync configuration for a SQL pool.
-     *
+     * 
+     * Get the metadata sync configuration for a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -27,14 +29,14 @@ public interface SqlPoolMetadataSyncConfigsClient {
      * @return the metadata sync configuration for a SQL pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MetadataSyncConfigInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<MetadataSyncConfigInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 
     /**
      * Get SQL pool metadata sync config
-     *
-     * <p>Get the metadata sync configuration for a SQL pool.
-     *
+     * 
+     * Get the metadata sync configuration for a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -48,9 +50,9 @@ public interface SqlPoolMetadataSyncConfigsClient {
 
     /**
      * Set SQL pool metadata sync config
-     *
-     * <p>Set the metadata sync configuration for a SQL pool.
-     *
+     * 
+     * Set the metadata sync configuration for a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -62,18 +64,14 @@ public interface SqlPoolMetadataSyncConfigsClient {
      * @return metadata sync configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MetadataSyncConfigInner> createWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        MetadataSyncConfigInner metadataSyncConfiguration,
-        Context context);
+    Response<MetadataSyncConfigInner> createWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration, Context context);
 
     /**
      * Set SQL pool metadata sync config
-     *
-     * <p>Set the metadata sync configuration for a SQL pool.
-     *
+     * 
+     * Set the metadata sync configuration for a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -84,9 +82,6 @@ public interface SqlPoolMetadataSyncConfigsClient {
      * @return metadata sync configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MetadataSyncConfigInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    MetadataSyncConfigInner create(String resourceGroupName, String workspaceName, String sqlPoolName,
         MetadataSyncConfigInner metadataSyncConfiguration);
 }

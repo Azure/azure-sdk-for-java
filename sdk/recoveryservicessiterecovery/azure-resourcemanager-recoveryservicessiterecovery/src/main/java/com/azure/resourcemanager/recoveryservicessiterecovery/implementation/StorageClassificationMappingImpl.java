@@ -82,16 +82,18 @@ public final class StorageClassificationMappingImpl
     }
 
     public StorageClassificationMapping create() {
-        this.innerObject = serviceManager.serviceClient().getStorageClassificationMappings().create(resourceName,
-            resourceGroupName, fabricName, storageClassificationName, storageClassificationMappingName,
-            createPairingInput, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageClassificationMappings()
+            .create(resourceName, resourceGroupName, fabricName, storageClassificationName,
+                storageClassificationMappingName, createPairingInput, Context.NONE);
         return this;
     }
 
     public StorageClassificationMapping create(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getStorageClassificationMappings().create(resourceName, resourceGroupName,
-                fabricName, storageClassificationName, storageClassificationMappingName, createPairingInput, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageClassificationMappings()
+            .create(resourceName, resourceGroupName, fabricName, storageClassificationName,
+                storageClassificationMappingName, createPairingInput, context);
         return this;
     }
 
@@ -104,7 +106,8 @@ public final class StorageClassificationMappingImpl
     }
 
     public StorageClassificationMapping refresh() {
-        this.innerObject = serviceManager.serviceClient().getStorageClassificationMappings()
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageClassificationMappings()
             .getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName,
                 storageClassificationMappingName, Context.NONE)
             .getValue();
@@ -112,7 +115,8 @@ public final class StorageClassificationMappingImpl
     }
 
     public StorageClassificationMapping refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getStorageClassificationMappings()
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageClassificationMappings()
             .getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName,
                 storageClassificationMappingName, context)
             .getValue();

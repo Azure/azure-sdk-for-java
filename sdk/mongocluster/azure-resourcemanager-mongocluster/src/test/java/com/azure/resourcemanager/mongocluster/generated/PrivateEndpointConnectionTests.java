@@ -13,13 +13,12 @@ public final class PrivateEndpointConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnection model = BinaryData.fromString(
-            "{\"properties\":{\"groupIds\":[\"apcz\",\"lokjyemkk\",\"ni\"],\"privateEndpoint\":{\"id\":\"xzjnchgejs\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ailzydehojwyahu\",\"actionsRequired\":\"npmqnjaqwixjspro\"},\"provisioningState\":\"Failed\"},\"id\":\"utegjvwmfdats\",\"name\":\"mdvpjhulsu\",\"type\":\"vmkjozkrwfndiodj\"}")
+            "{\"properties\":{\"groupIds\":[\"cmdv\",\"jhulsuuvmkjo\",\"k\",\"wfndiodjpsl\"],\"privateEndpoint\":{\"id\":\"dpvwryoqpsoaccta\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"j\",\"actionsRequired\":\"hbcryffdfdosyge\"},\"provisioningState\":\"Failed\"},\"id\":\"jakhmsbzjh\",\"name\":\"rzevdphlxaol\",\"type\":\"hqtrgqjbpf\"}")
             .toObject(PrivateEndpointConnection.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ailzydehojwyahu",
-            model.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("npmqnjaqwixjspro",
+        Assertions.assertEquals("j", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("hbcryffdfdosyge",
             model.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

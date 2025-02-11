@@ -6,8 +6,11 @@ package com.azure.resourcemanager.astro.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.astro.models.LiftrBaseDataPartnerOrganizationPropertiesUpdate;
+import com.azure.resourcemanager.astro.models.LiftrBaseMarketplaceDetailsUpdate;
+import com.azure.resourcemanager.astro.models.LiftrBaseOfferDetailsUpdate;
 import com.azure.resourcemanager.astro.models.LiftrBaseSingleSignOnProperties;
 import com.azure.resourcemanager.astro.models.LiftrBaseUserDetailsUpdate;
+import com.azure.resourcemanager.astro.models.MarketplaceSubscriptionStatus;
 import com.azure.resourcemanager.astro.models.OrganizationResourceUpdateProperties;
 import com.azure.resourcemanager.astro.models.SingleSignOnStates;
 import java.util.Arrays;
@@ -17,54 +20,86 @@ public final class OrganizationResourceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OrganizationResourceUpdateProperties model = BinaryData.fromString(
-            "{\"user\":{\"firstName\":\"pphrcgynco\",\"lastName\":\"ecfvmm\",\"emailAddress\":\"ofsx\",\"upn\":\"evgbmqjq\",\"phoneNumber\":\"c\"},\"partnerOrganizationProperties\":{\"organizationId\":\"ivkwlzuvccfwnfnb\",\"workspaceId\":\"fionl\",\"organizationName\":\"x\",\"workspaceName\":\"qgtz\",\"singleSignOnProperties\":{\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"bqqwxrj\",\"singleSignOnUrl\":\"al\",\"aadDomains\":[\"sub\",\"snjampmng\",\"zscxaqwo\"],\"provisioningState\":\"Succeeded\"}}}")
+            "{\"marketplace\":{\"subscriptionId\":\"ase\",\"subscriptionStatus\":\"Unsubscribed\",\"offerDetails\":{\"publisherId\":\"f\",\"offerId\":\"keyyi\",\"planId\":\"jbdlwtgrhpdjpju\",\"planName\":\"sxazjpq\",\"termUnit\":\"gual\",\"termId\":\"xxhejjzzvd\"}},\"user\":{\"firstName\":\"wdslfhotwmcy\",\"lastName\":\"wlbjnpgacftade\",\"emailAddress\":\"nltyfsoppusuesnz\",\"upn\":\"ej\",\"phoneNumber\":\"vorxzdmohct\"},\"partnerOrganizationProperties\":{\"organizationId\":\"udwxdndnvowguj\",\"workspaceId\":\"gwdkcglhsl\",\"organizationName\":\"jdyggdtji\",\"workspaceName\":\"b\",\"singleSignOnProperties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"wey\",\"singleSignOnUrl\":\"menevfyexfwh\",\"aadDomains\":[\"i\",\"vyvdcs\",\"tynnaamdectehfi\",\"scjeypv\"],\"provisioningState\":\"Canceled\"}}}")
             .toObject(OrganizationResourceUpdateProperties.class);
-        Assertions.assertEquals("pphrcgynco", model.user().firstName());
-        Assertions.assertEquals("ecfvmm", model.user().lastName());
-        Assertions.assertEquals("ofsx", model.user().emailAddress());
-        Assertions.assertEquals("evgbmqjq", model.user().upn());
-        Assertions.assertEquals("c", model.user().phoneNumber());
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.partnerOrganizationProperties().organizationId());
-        Assertions.assertEquals("fionl", model.partnerOrganizationProperties().workspaceId());
-        Assertions.assertEquals("x", model.partnerOrganizationProperties().organizationName());
-        Assertions.assertEquals("qgtz", model.partnerOrganizationProperties().workspaceName());
-        Assertions.assertEquals(SingleSignOnStates.DISABLE,
+        Assertions.assertEquals("ase", model.marketplace().subscriptionId());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.UNSUBSCRIBED, model.marketplace().subscriptionStatus());
+        Assertions.assertEquals("f", model.marketplace().offerDetails().publisherId());
+        Assertions.assertEquals("keyyi", model.marketplace().offerDetails().offerId());
+        Assertions.assertEquals("jbdlwtgrhpdjpju", model.marketplace().offerDetails().planId());
+        Assertions.assertEquals("sxazjpq", model.marketplace().offerDetails().planName());
+        Assertions.assertEquals("gual", model.marketplace().offerDetails().termUnit());
+        Assertions.assertEquals("xxhejjzzvd", model.marketplace().offerDetails().termId());
+        Assertions.assertEquals("wdslfhotwmcy", model.user().firstName());
+        Assertions.assertEquals("wlbjnpgacftade", model.user().lastName());
+        Assertions.assertEquals("nltyfsoppusuesnz", model.user().emailAddress());
+        Assertions.assertEquals("ej", model.user().upn());
+        Assertions.assertEquals("vorxzdmohct", model.user().phoneNumber());
+        Assertions.assertEquals("udwxdndnvowguj", model.partnerOrganizationProperties().organizationId());
+        Assertions.assertEquals("gwdkcglhsl", model.partnerOrganizationProperties().workspaceId());
+        Assertions.assertEquals("jdyggdtji", model.partnerOrganizationProperties().organizationName());
+        Assertions.assertEquals("b", model.partnerOrganizationProperties().workspaceName());
+        Assertions.assertEquals(SingleSignOnStates.INITIAL,
             model.partnerOrganizationProperties().singleSignOnProperties().singleSignOnState());
-        Assertions.assertEquals("bqqwxrj",
+        Assertions.assertEquals("wey",
             model.partnerOrganizationProperties().singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("al", model.partnerOrganizationProperties().singleSignOnProperties().singleSignOnUrl());
-        Assertions.assertEquals("sub",
+        Assertions.assertEquals("menevfyexfwh",
+            model.partnerOrganizationProperties().singleSignOnProperties().singleSignOnUrl());
+        Assertions.assertEquals("i",
             model.partnerOrganizationProperties().singleSignOnProperties().aadDomains().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrganizationResourceUpdateProperties model
-            = new OrganizationResourceUpdateProperties()
-                .withUser(new LiftrBaseUserDetailsUpdate().withFirstName("pphrcgynco").withLastName("ecfvmm")
-                    .withEmailAddress("ofsx").withUpn("evgbmqjq").withPhoneNumber("c"))
-                .withPartnerOrganizationProperties(
-                    new LiftrBaseDataPartnerOrganizationPropertiesUpdate().withOrganizationId("ivkwlzuvccfwnfnb")
-                        .withWorkspaceId("fionl").withOrganizationName("x").withWorkspaceName("qgtz")
-                        .withSingleSignOnProperties(new LiftrBaseSingleSignOnProperties()
-                            .withSingleSignOnState(SingleSignOnStates.DISABLE).withEnterpriseAppId("bqqwxrj")
-                            .withSingleSignOnUrl("al").withAadDomains(Arrays.asList("sub", "snjampmng", "zscxaqwo"))));
+        OrganizationResourceUpdateProperties model = new OrganizationResourceUpdateProperties()
+            .withMarketplace(new LiftrBaseMarketplaceDetailsUpdate().withSubscriptionId("ase")
+                .withSubscriptionStatus(MarketplaceSubscriptionStatus.UNSUBSCRIBED)
+                .withOfferDetails(new LiftrBaseOfferDetailsUpdate().withPublisherId("f")
+                    .withOfferId("keyyi")
+                    .withPlanId("jbdlwtgrhpdjpju")
+                    .withPlanName("sxazjpq")
+                    .withTermUnit("gual")
+                    .withTermId("xxhejjzzvd")))
+            .withUser(new LiftrBaseUserDetailsUpdate().withFirstName("wdslfhotwmcy")
+                .withLastName("wlbjnpgacftade")
+                .withEmailAddress("nltyfsoppusuesnz")
+                .withUpn("ej")
+                .withPhoneNumber("vorxzdmohct"))
+            .withPartnerOrganizationProperties(
+                new LiftrBaseDataPartnerOrganizationPropertiesUpdate().withOrganizationId("udwxdndnvowguj")
+                    .withWorkspaceId("gwdkcglhsl")
+                    .withOrganizationName("jdyggdtji")
+                    .withWorkspaceName("b")
+                    .withSingleSignOnProperties(
+                        new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                            .withEnterpriseAppId("wey")
+                            .withSingleSignOnUrl("menevfyexfwh")
+                            .withAadDomains(Arrays.asList("i", "vyvdcs", "tynnaamdectehfi", "scjeypv"))));
         model = BinaryData.fromObject(model).toObject(OrganizationResourceUpdateProperties.class);
-        Assertions.assertEquals("pphrcgynco", model.user().firstName());
-        Assertions.assertEquals("ecfvmm", model.user().lastName());
-        Assertions.assertEquals("ofsx", model.user().emailAddress());
-        Assertions.assertEquals("evgbmqjq", model.user().upn());
-        Assertions.assertEquals("c", model.user().phoneNumber());
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.partnerOrganizationProperties().organizationId());
-        Assertions.assertEquals("fionl", model.partnerOrganizationProperties().workspaceId());
-        Assertions.assertEquals("x", model.partnerOrganizationProperties().organizationName());
-        Assertions.assertEquals("qgtz", model.partnerOrganizationProperties().workspaceName());
-        Assertions.assertEquals(SingleSignOnStates.DISABLE,
+        Assertions.assertEquals("ase", model.marketplace().subscriptionId());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.UNSUBSCRIBED, model.marketplace().subscriptionStatus());
+        Assertions.assertEquals("f", model.marketplace().offerDetails().publisherId());
+        Assertions.assertEquals("keyyi", model.marketplace().offerDetails().offerId());
+        Assertions.assertEquals("jbdlwtgrhpdjpju", model.marketplace().offerDetails().planId());
+        Assertions.assertEquals("sxazjpq", model.marketplace().offerDetails().planName());
+        Assertions.assertEquals("gual", model.marketplace().offerDetails().termUnit());
+        Assertions.assertEquals("xxhejjzzvd", model.marketplace().offerDetails().termId());
+        Assertions.assertEquals("wdslfhotwmcy", model.user().firstName());
+        Assertions.assertEquals("wlbjnpgacftade", model.user().lastName());
+        Assertions.assertEquals("nltyfsoppusuesnz", model.user().emailAddress());
+        Assertions.assertEquals("ej", model.user().upn());
+        Assertions.assertEquals("vorxzdmohct", model.user().phoneNumber());
+        Assertions.assertEquals("udwxdndnvowguj", model.partnerOrganizationProperties().organizationId());
+        Assertions.assertEquals("gwdkcglhsl", model.partnerOrganizationProperties().workspaceId());
+        Assertions.assertEquals("jdyggdtji", model.partnerOrganizationProperties().organizationName());
+        Assertions.assertEquals("b", model.partnerOrganizationProperties().workspaceName());
+        Assertions.assertEquals(SingleSignOnStates.INITIAL,
             model.partnerOrganizationProperties().singleSignOnProperties().singleSignOnState());
-        Assertions.assertEquals("bqqwxrj",
+        Assertions.assertEquals("wey",
             model.partnerOrganizationProperties().singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("al", model.partnerOrganizationProperties().singleSignOnProperties().singleSignOnUrl());
-        Assertions.assertEquals("sub",
+        Assertions.assertEquals("menevfyexfwh",
+            model.partnerOrganizationProperties().singleSignOnProperties().singleSignOnUrl());
+        Assertions.assertEquals("i",
             model.partnerOrganizationProperties().singleSignOnProperties().aadDomains().get(0));
     }
 }

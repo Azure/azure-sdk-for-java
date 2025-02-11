@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.largeinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specifies the network settings for the Azure Large Instance disks.
  */
 @Fluent
-public final class NetworkProfile {
+public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
     /*
      * Specifies the network interfaces for the Azure Large Instance.
      */
-    @JsonProperty(value = "networkInterfaces")
     private List<IpAddress> networkInterfaces;
 
     /*
      * Specifies the circuit id for connecting to express route.
      */
-    @JsonProperty(value = "circuitId", access = JsonProperty.Access.WRITE_ONLY)
     private String circuitId;
 
     /**
@@ -69,5 +71,45 @@ public final class NetworkProfile {
         if (networkInterfaces() != null) {
             networkInterfaces().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("networkInterfaces", this.networkInterfaces,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkProfile.
+     */
+    public static NetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProfile deserializedNetworkProfile = new NetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkInterfaces".equals(fieldName)) {
+                    List<IpAddress> networkInterfaces = reader.readArray(reader1 -> IpAddress.fromJson(reader1));
+                    deserializedNetworkProfile.networkInterfaces = networkInterfaces;
+                } else if ("circuitId".equals(fieldName)) {
+                    deserializedNetworkProfile.circuitId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProfile;
+        });
     }
 }

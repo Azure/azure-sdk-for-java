@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class DestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Destination model =
-            BinaryData
-                .fromString(
-                    "{\"resourceId\":\"xwburvjxxjns\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"koen\"}}")
-                .toObject(Destination.class);
+        Destination model = BinaryData
+            .fromString(
+                "{\"resourceId\":\"xwburvjxxjns\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"koen\"}}")
+            .toObject(Destination.class);
         Assertions.assertEquals("xwburvjxxjns", model.resourceId());
         Assertions.assertEquals("koen", model.eventHubName());
     }

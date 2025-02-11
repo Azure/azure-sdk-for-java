@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for RecommendedActions Get. */
+/**
+ * Samples for RecommendedActions Get.
+ */
 public final class RecommendedActionsGetSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/RecommendedActionsGet.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/RecommendedActionsGet.
+     * json
      */
     /**
      * Sample code: RecommendedActionsGet.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void recommendedActionsGet(com.azure.resourcemanager.mariadb.MariaDBManager manager) {
-        manager
-            .recommendedActions()
-            .getWithResponse(
-                "testResourceGroupName", "testServerName", "Index", "Index-1", com.azure.core.util.Context.NONE);
+        manager.recommendedActions()
+            .getWithResponse("testResourceGroupName", "testServerName", "Index", "Index-1",
+                com.azure.core.util.Context.NONE);
     }
 }

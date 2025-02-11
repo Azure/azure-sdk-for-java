@@ -6,7 +6,6 @@ package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.OutputInner;
-import java.util.List;
 
 /**
  * An immutable client-side representation of Output.
@@ -81,21 +80,6 @@ public interface Output {
     String etag();
 
     /**
-     * Gets the lastOutputEventTimestamps property: A list of the last output event times for each output partition. The
-     * index of the array corresponds to the partition number.
-     * 
-     * @return the lastOutputEventTimestamps value.
-     */
-    List<LastOutputEventTimestamp> lastOutputEventTimestamps();
-
-    /**
-     * Gets the watermarkSettings property: Settings which determine whether to send watermarks to downstream.
-     * 
-     * @return the watermarkSettings value.
-     */
-    OutputWatermarkProperties watermarkSettings();
-
-    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -146,7 +130,7 @@ public interface Output {
          */
         interface WithCreate extends DefinitionStages.WithName, DefinitionStages.WithDatasource,
             DefinitionStages.WithTimeWindow, DefinitionStages.WithSizeWindow, DefinitionStages.WithSerialization,
-            DefinitionStages.WithWatermarkSettings, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -233,20 +217,6 @@ public interface Output {
         }
 
         /**
-         * The stage of the Output definition allowing to specify watermarkSettings.
-         */
-        interface WithWatermarkSettings {
-            /**
-             * Specifies the watermarkSettings property: Settings which determine whether to send watermarks to
-             * downstream..
-             * 
-             * @param watermarkSettings Settings which determine whether to send watermarks to downstream.
-             * @return the next definition stage.
-             */
-            WithCreate withWatermarkSettings(OutputWatermarkProperties watermarkSettings);
-        }
-
-        /**
          * The stage of the Output definition allowing to specify ifMatch.
          */
         interface WithIfMatch {
@@ -288,8 +258,7 @@ public interface Output {
      * The template for Output update.
      */
     interface Update extends UpdateStages.WithName, UpdateStages.WithDatasource, UpdateStages.WithTimeWindow,
-        UpdateStages.WithSizeWindow, UpdateStages.WithSerialization, UpdateStages.WithWatermarkSettings,
-        UpdateStages.WithIfMatch {
+        UpdateStages.WithSizeWindow, UpdateStages.WithSerialization, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          * 
@@ -377,20 +346,6 @@ public interface Output {
              * @return the next definition stage.
              */
             Update withSerialization(Serialization serialization);
-        }
-
-        /**
-         * The stage of the Output update allowing to specify watermarkSettings.
-         */
-        interface WithWatermarkSettings {
-            /**
-             * Specifies the watermarkSettings property: Settings which determine whether to send watermarks to
-             * downstream..
-             * 
-             * @param watermarkSettings Settings which determine whether to send watermarks to downstream.
-             * @return the next definition stage.
-             */
-            Update withWatermarkSettings(OutputWatermarkProperties watermarkSettings);
         }
 
         /**

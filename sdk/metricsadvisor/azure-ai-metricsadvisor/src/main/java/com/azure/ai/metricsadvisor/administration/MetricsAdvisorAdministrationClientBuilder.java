@@ -108,12 +108,11 @@ import java.util.Objects;
  * @see MetricsAdvisorAdministrationAsyncClient
  * @see MetricsAdvisorAdministrationClient
  */
-@ServiceClientBuilder(serviceClients = {MetricsAdvisorAdministrationAsyncClient.class,
-    MetricsAdvisorAdministrationClient.class})
-public final class MetricsAdvisorAdministrationClientBuilder implements
-    ConfigurationTrait<MetricsAdvisorAdministrationClientBuilder>,
-    EndpointTrait<MetricsAdvisorAdministrationClientBuilder>,
-    HttpTrait<MetricsAdvisorAdministrationClientBuilder>,
+@ServiceClientBuilder(
+    serviceClients = { MetricsAdvisorAdministrationAsyncClient.class, MetricsAdvisorAdministrationClient.class })
+public final class MetricsAdvisorAdministrationClientBuilder
+    implements ConfigurationTrait<MetricsAdvisorAdministrationClientBuilder>,
+    EndpointTrait<MetricsAdvisorAdministrationClientBuilder>, HttpTrait<MetricsAdvisorAdministrationClientBuilder>,
     TokenCredentialTrait<MetricsAdvisorAdministrationClientBuilder> {
 
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
@@ -123,8 +122,7 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final String METRICS_ADVISOR_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms",
-        ChronoUnit.MILLIS);
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
@@ -161,9 +159,7 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         clientName = properties.getOrDefault(NAME, "UnknownName");
         clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
-        headers = new HttpHeaders()
-            .set(ECHO_REQUEST_ID_HEADER, "true")
-            .set(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
+        headers = new HttpHeaders().set(ECHO_REQUEST_ID_HEADER, "true").set(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -184,12 +180,12 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public MetricsAdvisorAdministrationClient buildClient() {
-// Endpoint cannot be null, which is required in request authentication
+        // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
 
         // Global Env configuration store
-        final Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
@@ -197,11 +193,8 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
             pipeline = getDefaultHttpPipeline(buildConfiguration);
         }
 
-        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2 =
-            new MetricsAdvisorImplBuilder()
-                .endpoint(endpoint)
-                .pipeline(pipeline)
-                .buildClient();
+        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2
+            = new MetricsAdvisorImplBuilder().endpoint(endpoint).pipeline(pipeline).buildClient();
 
         return new MetricsAdvisorAdministrationClient(advisorRestAPIOpenAPIV2);
     }
@@ -229,12 +222,12 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
 
         // Global Env configuration store
-        final Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Service Version
-        final MetricsAdvisorServiceVersion serviceVersion =
-            version != null ? version : MetricsAdvisorServiceVersion.getLatest();
+        final MetricsAdvisorServiceVersion serviceVersion
+            = version != null ? version : MetricsAdvisorServiceVersion.getLatest();
 
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
@@ -242,11 +235,8 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
             pipeline = getDefaultHttpPipeline(buildConfiguration);
         }
 
-        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2 =
-            new MetricsAdvisorImplBuilder()
-                .endpoint(endpoint)
-                .pipeline(pipeline)
-                .buildClient();
+        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2
+            = new MetricsAdvisorImplBuilder().endpoint(endpoint).pipeline(pipeline).buildClient();
 
         return new MetricsAdvisorAdministrationAsyncClient(advisorRestAPIOpenAPIV2, serviceVersion);
     }
@@ -272,8 +262,7 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         HttpLogOptions buildLogOptions = this.httpLogOptions == null ? DEFAULT_LOG_OPTIONS : this.httpLogOptions;
         final String applicationId = CoreUtils.getApplicationId(buildClientOptions, buildLogOptions);
 
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
-            buildConfiguration));
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
 
@@ -293,8 +282,7 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .build();
@@ -352,10 +340,10 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
      * @return The updated MetricsAdvisorAdministrationClientBuilder object.
      * @throws NullPointerException If {@code metricsAdvisorKeyCredential} is null.
      */
-    public MetricsAdvisorAdministrationClientBuilder credential(
-        MetricsAdvisorKeyCredential metricsAdvisorKeyCredential) {
-        this.metricsAdvisorKeyCredential = Objects.requireNonNull(metricsAdvisorKeyCredential,
-            "'metricsAdvisorKeyCredential' cannot be null.");
+    public MetricsAdvisorAdministrationClientBuilder
+        credential(MetricsAdvisorKeyCredential metricsAdvisorKeyCredential) {
+        this.metricsAdvisorKeyCredential
+            = Objects.requireNonNull(metricsAdvisorKeyCredential, "'metricsAdvisorKeyCredential' cannot be null.");
         return this;
     }
 
@@ -404,7 +392,6 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         this.clientOptions = clientOptions;
         return this;
     }
-
 
     /**
      * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.

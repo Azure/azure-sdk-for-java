@@ -5,58 +5,58 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The swagger custom dynamic list. */
+/**
+ * The swagger custom dynamic list.
+ */
 @Fluent
-public final class SwaggerCustomDynamicList {
+public final class SwaggerCustomDynamicList implements JsonSerializable<SwaggerCustomDynamicList> {
     /*
      * The operation id to fetch dynamic schema.
      */
-    @JsonProperty(value = "operationId")
     private String operationId;
 
     /*
      * The built in operation.
      */
-    @JsonProperty(value = "builtInOperation")
     private String builtInOperation;
 
     /*
      * The path to a response property (relative to the response object, not the response body) which contains an array
      * of dynamic value items.
      */
-    @JsonProperty(value = "itemsPath")
     private String itemsPath;
 
     /*
      * The path to a property which defines the value which should be used.
      */
-    @JsonProperty(value = "itemValuePath")
     private String itemValuePath;
 
     /*
      * The path to an item property which defines the display name of the item.
      */
-    @JsonProperty(value = "itemTitlePath")
     private String itemTitlePath;
 
     /*
      * The parameters.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SwaggerCustomDynamicProperties> parameters;
 
-    /** Creates an instance of SwaggerCustomDynamicList class. */
+    /**
+     * Creates an instance of SwaggerCustomDynamicList class.
+     */
     public SwaggerCustomDynamicList() {
     }
 
     /**
      * Get the operationId property: The operation id to fetch dynamic schema.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -65,7 +65,7 @@ public final class SwaggerCustomDynamicList {
 
     /**
      * Set the operationId property: The operation id to fetch dynamic schema.
-     *
+     * 
      * @param operationId the operationId value to set.
      * @return the SwaggerCustomDynamicList object itself.
      */
@@ -76,7 +76,7 @@ public final class SwaggerCustomDynamicList {
 
     /**
      * Get the builtInOperation property: The built in operation.
-     *
+     * 
      * @return the builtInOperation value.
      */
     public String builtInOperation() {
@@ -85,7 +85,7 @@ public final class SwaggerCustomDynamicList {
 
     /**
      * Set the builtInOperation property: The built in operation.
-     *
+     * 
      * @param builtInOperation the builtInOperation value to set.
      * @return the SwaggerCustomDynamicList object itself.
      */
@@ -97,7 +97,7 @@ public final class SwaggerCustomDynamicList {
     /**
      * Get the itemsPath property: The path to a response property (relative to the response object, not the response
      * body) which contains an array of dynamic value items.
-     *
+     * 
      * @return the itemsPath value.
      */
     public String itemsPath() {
@@ -107,7 +107,7 @@ public final class SwaggerCustomDynamicList {
     /**
      * Set the itemsPath property: The path to a response property (relative to the response object, not the response
      * body) which contains an array of dynamic value items.
-     *
+     * 
      * @param itemsPath the itemsPath value to set.
      * @return the SwaggerCustomDynamicList object itself.
      */
@@ -118,7 +118,7 @@ public final class SwaggerCustomDynamicList {
 
     /**
      * Get the itemValuePath property: The path to a property which defines the value which should be used.
-     *
+     * 
      * @return the itemValuePath value.
      */
     public String itemValuePath() {
@@ -127,7 +127,7 @@ public final class SwaggerCustomDynamicList {
 
     /**
      * Set the itemValuePath property: The path to a property which defines the value which should be used.
-     *
+     * 
      * @param itemValuePath the itemValuePath value to set.
      * @return the SwaggerCustomDynamicList object itself.
      */
@@ -138,7 +138,7 @@ public final class SwaggerCustomDynamicList {
 
     /**
      * Get the itemTitlePath property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @return the itemTitlePath value.
      */
     public String itemTitlePath() {
@@ -147,7 +147,7 @@ public final class SwaggerCustomDynamicList {
 
     /**
      * Set the itemTitlePath property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @param itemTitlePath the itemTitlePath value to set.
      * @return the SwaggerCustomDynamicList object itself.
      */
@@ -158,7 +158,7 @@ public final class SwaggerCustomDynamicList {
 
     /**
      * Get the parameters property: The parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, SwaggerCustomDynamicProperties> parameters() {
@@ -167,7 +167,7 @@ public final class SwaggerCustomDynamicList {
 
     /**
      * Set the parameters property: The parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SwaggerCustomDynamicList object itself.
      */
@@ -178,19 +178,69 @@ public final class SwaggerCustomDynamicList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", this.operationId);
+        jsonWriter.writeStringField("builtInOperation", this.builtInOperation);
+        jsonWriter.writeStringField("itemsPath", this.itemsPath);
+        jsonWriter.writeStringField("itemValuePath", this.itemValuePath);
+        jsonWriter.writeStringField("itemTitlePath", this.itemTitlePath);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwaggerCustomDynamicList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwaggerCustomDynamicList if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwaggerCustomDynamicList.
+     */
+    public static SwaggerCustomDynamicList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwaggerCustomDynamicList deserializedSwaggerCustomDynamicList = new SwaggerCustomDynamicList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationId".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicList.operationId = reader.getString();
+                } else if ("builtInOperation".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicList.builtInOperation = reader.getString();
+                } else if ("itemsPath".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicList.itemsPath = reader.getString();
+                } else if ("itemValuePath".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicList.itemValuePath = reader.getString();
+                } else if ("itemTitlePath".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicList.itemTitlePath = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, SwaggerCustomDynamicProperties> parameters
+                        = reader.readMap(reader1 -> SwaggerCustomDynamicProperties.fromJson(reader1));
+                    deserializedSwaggerCustomDynamicList.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwaggerCustomDynamicList;
+        });
     }
 }

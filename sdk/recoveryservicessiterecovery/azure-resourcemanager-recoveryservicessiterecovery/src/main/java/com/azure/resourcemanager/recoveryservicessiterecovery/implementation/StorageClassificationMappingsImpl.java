@@ -29,8 +29,8 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
 
     public PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceName,
         String resourceGroupName, String fabricName, String storageClassificationName) {
-        PagedIterable<StorageClassificationMappingInner> inner
-            = this.serviceClient().listByReplicationStorageClassifications(resourceName, resourceGroupName, fabricName,
+        PagedIterable<StorageClassificationMappingInner> inner = this.serviceClient()
+            .listByReplicationStorageClassifications(resourceName, resourceGroupName, fabricName,
                 storageClassificationName);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new StorageClassificationMappingImpl(inner1, this.manager()));
@@ -38,8 +38,8 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
 
     public PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceName,
         String resourceGroupName, String fabricName, String storageClassificationName, Context context) {
-        PagedIterable<StorageClassificationMappingInner> inner
-            = this.serviceClient().listByReplicationStorageClassifications(resourceName, resourceGroupName, fabricName,
+        PagedIterable<StorageClassificationMappingInner> inner = this.serviceClient()
+            .listByReplicationStorageClassifications(resourceName, resourceGroupName, fabricName,
                 storageClassificationName, context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new StorageClassificationMappingImpl(inner1, this.manager()));
@@ -47,8 +47,9 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
 
     public Response<StorageClassificationMapping> getWithResponse(String resourceName, String resourceGroupName,
         String fabricName, String storageClassificationName, String storageClassificationMappingName, Context context) {
-        Response<StorageClassificationMappingInner> inner = this.serviceClient().getWithResponse(resourceName,
-            resourceGroupName, fabricName, storageClassificationName, storageClassificationMappingName, context);
+        Response<StorageClassificationMappingInner> inner = this.serviceClient()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName,
+                storageClassificationMappingName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StorageClassificationMappingImpl(inner.getValue(), this.manager()));
@@ -59,8 +60,9 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
 
     public StorageClassificationMapping get(String resourceName, String resourceGroupName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName) {
-        StorageClassificationMappingInner inner = this.serviceClient().get(resourceName, resourceGroupName, fabricName,
-            storageClassificationName, storageClassificationMappingName);
+        StorageClassificationMappingInner inner = this.serviceClient()
+            .get(resourceName, resourceGroupName, fabricName, storageClassificationName,
+                storageClassificationMappingName);
         if (inner != null) {
             return new StorageClassificationMappingImpl(inner, this.manager());
         } else {
@@ -70,14 +72,16 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
 
     public void delete(String resourceName, String resourceGroupName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName) {
-        this.serviceClient().delete(resourceName, resourceGroupName, fabricName, storageClassificationName,
-            storageClassificationMappingName);
+        this.serviceClient()
+            .delete(resourceName, resourceGroupName, fabricName, storageClassificationName,
+                storageClassificationMappingName);
     }
 
     public void delete(String resourceName, String resourceGroupName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName, Context context) {
-        this.serviceClient().delete(resourceName, resourceGroupName, fabricName, storageClassificationName,
-            storageClassificationMappingName, context);
+        this.serviceClient()
+            .delete(resourceName, resourceGroupName, fabricName, storageClassificationName,
+                storageClassificationMappingName, context);
     }
 
     public PagedIterable<StorageClassificationMapping> list(String resourceName, String resourceGroupName) {
@@ -124,8 +128,10 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
                 "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassificationMappings'.",
                 id)));
         }
-        return this.getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName,
-            storageClassificationMappingName, Context.NONE).getValue();
+        return this
+            .getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName,
+                storageClassificationMappingName, Context.NONE)
+            .getValue();
     }
 
     public Response<StorageClassificationMapping> getByIdWithResponse(String id, Context context) {

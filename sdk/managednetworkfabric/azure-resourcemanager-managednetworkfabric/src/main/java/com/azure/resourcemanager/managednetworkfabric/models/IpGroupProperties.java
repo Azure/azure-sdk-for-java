@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** IP Group properties. */
+/**
+ * IP Group properties.
+ */
 @Fluent
-public final class IpGroupProperties {
+public final class IpGroupProperties implements JsonSerializable<IpGroupProperties> {
     /*
      * IP Group name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * IP Address type.
      */
-    @JsonProperty(value = "ipAddressType")
     private IpAddressType ipAddressType;
 
     /*
      * List of IP Prefixes.
      */
-    @JsonProperty(value = "ipPrefixes")
     private List<String> ipPrefixes;
 
-    /** Creates an instance of IpGroupProperties class. */
+    /**
+     * Creates an instance of IpGroupProperties class.
+     */
     public IpGroupProperties() {
     }
 
     /**
      * Get the name property: IP Group name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +49,7 @@ public final class IpGroupProperties {
 
     /**
      * Set the name property: IP Group name.
-     *
+     * 
      * @param name the name value to set.
      * @return the IpGroupProperties object itself.
      */
@@ -55,7 +60,7 @@ public final class IpGroupProperties {
 
     /**
      * Get the ipAddressType property: IP Address type.
-     *
+     * 
      * @return the ipAddressType value.
      */
     public IpAddressType ipAddressType() {
@@ -64,7 +69,7 @@ public final class IpGroupProperties {
 
     /**
      * Set the ipAddressType property: IP Address type.
-     *
+     * 
      * @param ipAddressType the ipAddressType value to set.
      * @return the IpGroupProperties object itself.
      */
@@ -75,7 +80,7 @@ public final class IpGroupProperties {
 
     /**
      * Get the ipPrefixes property: List of IP Prefixes.
-     *
+     * 
      * @return the ipPrefixes value.
      */
     public List<String> ipPrefixes() {
@@ -84,7 +89,7 @@ public final class IpGroupProperties {
 
     /**
      * Set the ipPrefixes property: List of IP Prefixes.
-     *
+     * 
      * @param ipPrefixes the ipPrefixes value to set.
      * @return the IpGroupProperties object itself.
      */
@@ -95,9 +100,52 @@ public final class IpGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("ipAddressType", this.ipAddressType == null ? null : this.ipAddressType.toString());
+        jsonWriter.writeArrayField("ipPrefixes", this.ipPrefixes, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpGroupProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpGroupProperties.
+     */
+    public static IpGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpGroupProperties deserializedIpGroupProperties = new IpGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIpGroupProperties.name = reader.getString();
+                } else if ("ipAddressType".equals(fieldName)) {
+                    deserializedIpGroupProperties.ipAddressType = IpAddressType.fromString(reader.getString());
+                } else if ("ipPrefixes".equals(fieldName)) {
+                    List<String> ipPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpGroupProperties.ipPrefixes = ipPrefixes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpGroupProperties;
+        });
     }
 }

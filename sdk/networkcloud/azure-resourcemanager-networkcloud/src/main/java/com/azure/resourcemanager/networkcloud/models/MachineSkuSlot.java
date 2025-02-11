@@ -5,36 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.MachineSkuProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** MachineSkuSlot represents a single SKU and rack slot associated with the machine. */
+/**
+ * MachineSkuSlot represents a single SKU and rack slot associated with the machine.
+ */
 @Immutable
-public final class MachineSkuSlot {
+public final class MachineSkuSlot implements JsonSerializable<MachineSkuSlot> {
     /*
-     * MachineSkuProperties represents the properties of the machine SKU.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties")
     private MachineSkuProperties innerProperties;
 
     /*
      * The position in the rack for the machine.
      */
-    @JsonProperty(value = "rackSlot", access = JsonProperty.Access.WRITE_ONLY)
     private Long rackSlot;
 
-    /** Creates an instance of MachineSkuSlot class. */
+    /**
+     * Creates an instance of MachineSkuSlot class.
+     */
     public MachineSkuSlot() {
     }
 
     /**
-     * Get the innerProperties property: MachineSkuProperties represents the properties of the machine SKU.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private MachineSkuProperties innerProperties() {
@@ -43,7 +45,7 @@ public final class MachineSkuSlot {
 
     /**
      * Get the rackSlot property: The position in the rack for the machine.
-     *
+     * 
      * @return the rackSlot value.
      */
     public Long rackSlot() {
@@ -52,7 +54,7 @@ public final class MachineSkuSlot {
 
     /**
      * Get the bootstrapProtocol property: The type of bootstrap protocol used.
-     *
+     * 
      * @return the bootstrapProtocol value.
      */
     public BootstrapProtocol bootstrapProtocol() {
@@ -61,7 +63,7 @@ public final class MachineSkuSlot {
 
     /**
      * Get the cpuCores property: The count of CPU cores for this machine.
-     *
+     * 
      * @return the cpuCores value.
      */
     public Long cpuCores() {
@@ -70,7 +72,7 @@ public final class MachineSkuSlot {
 
     /**
      * Get the cpuSockets property: The count of CPU sockets for this machine.
-     *
+     * 
      * @return the cpuSockets value.
      */
     public Long cpuSockets() {
@@ -79,7 +81,7 @@ public final class MachineSkuSlot {
 
     /**
      * Get the disks property: The list of disks.
-     *
+     * 
      * @return the disks value.
      */
     public List<MachineDisk> disks() {
@@ -88,7 +90,7 @@ public final class MachineSkuSlot {
 
     /**
      * Get the generation property: The generation of the architecture.
-     *
+     * 
      * @return the generation value.
      */
     public String generation() {
@@ -97,7 +99,7 @@ public final class MachineSkuSlot {
 
     /**
      * Get the hardwareVersion property: The hardware version of the machine.
-     *
+     * 
      * @return the hardwareVersion value.
      */
     public String hardwareVersion() {
@@ -105,8 +107,8 @@ public final class MachineSkuSlot {
     }
 
     /**
-     * Get the memoryCapacityGB property: The maximum amount of memory in GB.
-     *
+     * Get the memoryCapacityGB property: The maximum amount of memory. Measured in gibibytes.
+     * 
      * @return the memoryCapacityGB value.
      */
     public Long memoryCapacityGB() {
@@ -115,7 +117,7 @@ public final class MachineSkuSlot {
 
     /**
      * Get the model property: The model of the machine.
-     *
+     * 
      * @return the model value.
      */
     public String model() {
@@ -124,7 +126,7 @@ public final class MachineSkuSlot {
 
     /**
      * Get the networkInterfaces property: The list of network interfaces.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterface> networkInterfaces() {
@@ -133,7 +135,7 @@ public final class MachineSkuSlot {
 
     /**
      * Get the totalThreads property: The count of SMT and physical core threads for this machine.
-     *
+     * 
      * @return the totalThreads value.
      */
     public Long totalThreads() {
@@ -142,7 +144,7 @@ public final class MachineSkuSlot {
 
     /**
      * Get the vendor property: The make of the machine.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -151,12 +153,50 @@ public final class MachineSkuSlot {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineSkuSlot from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineSkuSlot if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineSkuSlot.
+     */
+    public static MachineSkuSlot fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineSkuSlot deserializedMachineSkuSlot = new MachineSkuSlot();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedMachineSkuSlot.innerProperties = MachineSkuProperties.fromJson(reader);
+                } else if ("rackSlot".equals(fieldName)) {
+                    deserializedMachineSkuSlot.rackSlot = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineSkuSlot;
+        });
     }
 }

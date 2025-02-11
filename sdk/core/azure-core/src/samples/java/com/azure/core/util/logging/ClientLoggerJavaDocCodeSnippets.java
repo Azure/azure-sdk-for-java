@@ -99,7 +99,7 @@ public class ClientLoggerJavaDocCodeSnippets {
             .log("A formattable message. Hello, {}", name, exception);
         // END: com.azure.core.util.logging.clientlogger.atWarning
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.atError#deffered-value
+        // BEGIN: com.azure.core.util.logging.clientlogger.atError#deferred-value
         try {
             upload(resource);
         } catch (IOException ex) {
@@ -107,7 +107,7 @@ public class ClientLoggerJavaDocCodeSnippets {
                 .addKeyValue("key", () -> "Expensive to calculate value")
                 .log("A formattable message. Hello, {}", name, ex);
         }
-        // END: com.azure.core.util.logging.clientlogger.atError#deffered-value
+        // END: com.azure.core.util.logging.clientlogger.atError#deferred-value
 
         Response<Void> response = getResponse();
         // BEGIN: com.azure.core.util.logging.clientlogger.atLevel
@@ -117,11 +117,11 @@ public class ClientLoggerJavaDocCodeSnippets {
             .log("message");
         // END: com.azure.core.util.logging.clientlogger.atLevel
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive
+        // BEGIN: com.azure.core.util.logging.ClientLogger.atVerbose.addKeyValue#primitive
         logger.atVerbose()
             .addKeyValue("key", 1L)
             .log(() -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"));
-        // END: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive
+        // END: com.azure.core.util.logging.ClientLogger.atVerbose.addKeyValue#primitive
 
         // BEGIN: com.azure.core.util.logging.loggingeventbuilder
         logger.atInfo()
@@ -131,12 +131,12 @@ public class ClientLoggerJavaDocCodeSnippets {
             .log("A formattable message. Hello, {}", name);
         // END: com.azure.core.util.logging.loggingeventbuilder
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object
+        // BEGIN: com.azure.core.util.logging.ClientLogger.atVerbose.addKeyValue#object
         logger.atVerbose()
             // equivalent to addKeyValue("key", () -> new LoggableObject("string representation").toString()
             .addKeyValue("key", new LoggableObject("string representation"))
             .log("Param 1: {}, Param 2: {}, Param 3: {}", "param1", "param2", "param3");
-        // END: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object
+        // END: com.azure.core.util.logging.ClientLogger.atVerbose.addKeyValue#object
     }
 
     private Response<Void> getResponse() {

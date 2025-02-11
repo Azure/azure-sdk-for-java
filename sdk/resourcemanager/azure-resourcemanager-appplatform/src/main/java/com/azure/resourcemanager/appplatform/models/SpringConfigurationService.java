@@ -15,22 +15,37 @@ import java.util.List;
  * An immutable client-side representation of an Azure Spring Cloud Configuration Service.
  */
 @Fluent
-public interface SpringConfigurationService
-    extends ExternalChildResource<SpringConfigurationService, SpringService>,
-        HasInnerModel<ConfigurationServiceResourceInner> {
-    /** @return cpu for the Configuration Service */
+public interface SpringConfigurationService extends ExternalChildResource<SpringConfigurationService, SpringService>,
+    HasInnerModel<ConfigurationServiceResourceInner> {
+    /**
+     * Gets the CPU for the Configuration Service.
+     *
+     * @return CPU for the Configuration Service
+     */
     Double cpu();
 
-    /** @return memory for the Configuration Service, 1 GB can be represented by 1Gi or 1024Mi */
+    /**
+     * Gets the memory for the Configuration Service.
+     *
+     * @return memory for the Configuration Service, 1 GB can be represented by 1Gi or 1024Mi */
     Double memory();
 
-    /** @return default git URI in the Configuration Service */
+    /**
+     * Gets default git URI in the Configuration Service.
+     *
+     * @return default git URI in the Configuration Service */
     String gitUri();
 
-    /** @return default file patterns in the Configuration Service */
+    /**
+     * Gets default file patterns in the Configuration Service.
+     *
+     * @return default file patterns in the Configuration Service */
     List<String> filePatterns();
 
-    /** @return default branch in the Configuration Service */
+    /**
+     * Gets default branch in the Configuration Service.
+     *
+     * @return default branch in the Configuration Service */
     String branch();
 
     /**
@@ -40,6 +55,9 @@ public interface SpringConfigurationService
      */
     ConfigurationServiceGitRepository getGitRepository(String name);
 
-    /** @return apps that have bindings to this Configuration Service */
+    /**
+     * Gets the apps that have bindings to this Configuration Service.
+     *
+     * @return apps that have bindings to this Configuration Service */
     List<SpringApp> getAppBindings();
 }

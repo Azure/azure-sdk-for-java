@@ -13,27 +13,27 @@ public final class MachineRunCommandScriptSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineRunCommandScriptSource model = BinaryData.fromString(
-            "{\"script\":\"fbtkuwhhmhyk\",\"scriptUri\":\"oxafn\",\"commandId\":\"lpichk\",\"scriptUriManagedIdentity\":{\"clientId\":\"kcdyhbpk\",\"objectId\":\"wdreqnovvqfovl\"}}")
+            "{\"script\":\"obqwcsdbnwdcfh\",\"scriptUri\":\"qdpfuvglsbjjca\",\"commandId\":\"xbvtvudu\",\"scriptUriManagedIdentity\":{\"clientId\":\"ormrlxqtvcofudfl\",\"objectId\":\"gj\"}}")
             .toObject(MachineRunCommandScriptSource.class);
-        Assertions.assertEquals("fbtkuwhhmhyk", model.script());
-        Assertions.assertEquals("oxafn", model.scriptUri());
-        Assertions.assertEquals("lpichk", model.commandId());
-        Assertions.assertEquals("kcdyhbpk", model.scriptUriManagedIdentity().clientId());
-        Assertions.assertEquals("wdreqnovvqfovl", model.scriptUriManagedIdentity().objectId());
+        Assertions.assertEquals("obqwcsdbnwdcfh", model.script());
+        Assertions.assertEquals("qdpfuvglsbjjca", model.scriptUri());
+        Assertions.assertEquals("xbvtvudu", model.commandId());
+        Assertions.assertEquals("ormrlxqtvcofudfl", model.scriptUriManagedIdentity().clientId());
+        Assertions.assertEquals("gj", model.scriptUriManagedIdentity().objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MachineRunCommandScriptSource model = new MachineRunCommandScriptSource().withScript("fbtkuwhhmhyk")
-            .withScriptUri("oxafn")
-            .withCommandId("lpichk")
+        MachineRunCommandScriptSource model = new MachineRunCommandScriptSource().withScript("obqwcsdbnwdcfh")
+            .withScriptUri("qdpfuvglsbjjca")
+            .withCommandId("xbvtvudu")
             .withScriptUriManagedIdentity(
-                new RunCommandManagedIdentity().withClientId("kcdyhbpk").withObjectId("wdreqnovvqfovl"));
+                new RunCommandManagedIdentity().withClientId("ormrlxqtvcofudfl").withObjectId("gj"));
         model = BinaryData.fromObject(model).toObject(MachineRunCommandScriptSource.class);
-        Assertions.assertEquals("fbtkuwhhmhyk", model.script());
-        Assertions.assertEquals("oxafn", model.scriptUri());
-        Assertions.assertEquals("lpichk", model.commandId());
-        Assertions.assertEquals("kcdyhbpk", model.scriptUriManagedIdentity().clientId());
-        Assertions.assertEquals("wdreqnovvqfovl", model.scriptUriManagedIdentity().objectId());
+        Assertions.assertEquals("obqwcsdbnwdcfh", model.script());
+        Assertions.assertEquals("qdpfuvglsbjjca", model.scriptUri());
+        Assertions.assertEquals("xbvtvudu", model.commandId());
+        Assertions.assertEquals("ormrlxqtvcofudfl", model.scriptUriManagedIdentity().clientId());
+        Assertions.assertEquals("gj", model.scriptUriManagedIdentity().objectId());
     }
 }

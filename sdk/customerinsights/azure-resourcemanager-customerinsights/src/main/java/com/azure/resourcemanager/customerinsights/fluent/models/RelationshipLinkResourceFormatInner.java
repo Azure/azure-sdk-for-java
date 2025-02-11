@@ -6,29 +6,50 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.ParticipantProfilePropertyReference;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.RelationshipLinkFieldMapping;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The relationship link resource format. */
+/**
+ * The relationship link resource format.
+ */
 @Fluent
 public final class RelationshipLinkResourceFormatInner extends ProxyResource {
     /*
      * The definition of relationship link.
      */
-    @JsonProperty(value = "properties")
     private RelationshipLinkDefinition innerProperties;
 
-    /** Creates an instance of RelationshipLinkResourceFormatInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RelationshipLinkResourceFormatInner class.
+     */
     public RelationshipLinkResourceFormatInner() {
     }
 
     /**
      * Get the innerProperties property: The definition of relationship link.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RelationshipLinkDefinition innerProperties() {
@@ -36,8 +57,38 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: Localized display name for the Relationship Link.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -46,7 +97,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the displayName property: Localized display name for the Relationship Link.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
@@ -60,7 +111,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the description property: Localized descriptions for the Relationship Link.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -69,7 +120,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the description property: Localized descriptions for the Relationship Link.
-     *
+     * 
      * @param description the description value to set.
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
@@ -83,7 +134,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the interactionType property: The InteractionType associated with the Relationship Link.
-     *
+     * 
      * @return the interactionType value.
      */
     public String interactionType() {
@@ -92,7 +143,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the interactionType property: The InteractionType associated with the Relationship Link.
-     *
+     * 
      * @param interactionType the interactionType value to set.
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
@@ -106,7 +157,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the linkName property: The name of the Relationship Link.
-     *
+     * 
      * @return the linkName value.
      */
     public String linkName() {
@@ -115,7 +166,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the mappings property: The mappings between Interaction and Relationship fields.
-     *
+     * 
      * @return the mappings value.
      */
     public List<RelationshipLinkFieldMapping> mappings() {
@@ -124,7 +175,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the mappings property: The mappings between Interaction and Relationship fields.
-     *
+     * 
      * @param mappings the mappings value to set.
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
@@ -138,7 +189,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the profilePropertyReferences property: The property references for the Profile of the Relationship.
-     *
+     * 
      * @return the profilePropertyReferences value.
      */
     public List<ParticipantProfilePropertyReference> profilePropertyReferences() {
@@ -147,12 +198,12 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the profilePropertyReferences property: The property references for the Profile of the Relationship.
-     *
+     * 
      * @param profilePropertyReferences the profilePropertyReferences value to set.
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
-    public RelationshipLinkResourceFormatInner withProfilePropertyReferences(
-        List<ParticipantProfilePropertyReference> profilePropertyReferences) {
+    public RelationshipLinkResourceFormatInner
+        withProfilePropertyReferences(List<ParticipantProfilePropertyReference> profilePropertyReferences) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RelationshipLinkDefinition();
         }
@@ -162,7 +213,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -172,7 +223,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
     /**
      * Get the relatedProfilePropertyReferences property: The property references for the Related Profile of the
      * Relationship.
-     *
+     * 
      * @return the relatedProfilePropertyReferences value.
      */
     public List<ParticipantProfilePropertyReference> relatedProfilePropertyReferences() {
@@ -182,7 +233,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
     /**
      * Set the relatedProfilePropertyReferences property: The property references for the Related Profile of the
      * Relationship.
-     *
+     * 
      * @param relatedProfilePropertyReferences the relatedProfilePropertyReferences value to set.
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
@@ -197,7 +248,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the relationshipName property: The Relationship associated with the Link.
-     *
+     * 
      * @return the relationshipName value.
      */
     public String relationshipName() {
@@ -206,7 +257,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the relationshipName property: The Relationship associated with the Link.
-     *
+     * 
      * @param relationshipName the relationshipName value to set.
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
@@ -220,7 +271,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the relationshipGuidId property: The relationship guid id.
-     *
+     * 
      * @return the relationshipGuidId value.
      */
     public String relationshipGuidId() {
@@ -229,7 +280,7 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -238,12 +289,57 @@ public final class RelationshipLinkResourceFormatInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelationshipLinkResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelationshipLinkResourceFormatInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelationshipLinkResourceFormatInner.
+     */
+    public static RelationshipLinkResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelationshipLinkResourceFormatInner deserializedRelationshipLinkResourceFormatInner
+                = new RelationshipLinkResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRelationshipLinkResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRelationshipLinkResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRelationshipLinkResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRelationshipLinkResourceFormatInner.innerProperties
+                        = RelationshipLinkDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelationshipLinkResourceFormatInner;
+        });
     }
 }

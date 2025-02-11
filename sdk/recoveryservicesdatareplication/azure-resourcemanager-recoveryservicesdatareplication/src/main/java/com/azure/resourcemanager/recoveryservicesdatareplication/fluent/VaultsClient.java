@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.VaultModelInner;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.VaultModelUpdate;
 
-/** An instance of this class provides access to all the operations defined in VaultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VaultsClient.
+ */
 public interface VaultsClient {
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -30,14 +32,14 @@ public interface VaultsClient {
      * @return the details of the vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultModelInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vaultName, Context context);
+    Response<VaultModelInner> getByResourceGroupWithResponse(String resourceGroupName, String vaultName,
+        Context context);
 
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,9 +52,9 @@ public interface VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,9 +67,9 @@ public interface VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -78,14 +80,14 @@ public interface VaultsClient {
      * @return the {@link SyncPoller} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginCreate(
-        String resourceGroupName, String vaultName, VaultModelInner body, Context context);
+    SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginCreate(String resourceGroupName, String vaultName,
+        VaultModelInner body, Context context);
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,9 +100,9 @@ public interface VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -115,9 +117,9 @@ public interface VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,9 +132,9 @@ public interface VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -143,14 +145,14 @@ public interface VaultsClient {
      * @return the {@link SyncPoller} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginUpdate(
-        String resourceGroupName, String vaultName, VaultModelUpdate body, Context context);
+    SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginUpdate(String resourceGroupName, String vaultName,
+        VaultModelUpdate body, Context context);
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -163,9 +165,9 @@ public interface VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -180,9 +182,9 @@ public interface VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,9 +197,9 @@ public interface VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -211,9 +213,9 @@ public interface VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -225,9 +227,9 @@ public interface VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -240,9 +242,9 @@ public interface VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription as paginated response with {@link PagedIterable}.
@@ -252,9 +254,9 @@ public interface VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -267,34 +269,34 @@ public interface VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VaultModelInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VaultModelInner> listByResourceGroup(
-        String resourceGroupName, String continuationToken, Context context);
+    PagedIterable<VaultModelInner> listByResourceGroup(String resourceGroupName, String continuationToken,
+        Context context);
 }

@@ -126,7 +126,6 @@ public final class OdbcSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

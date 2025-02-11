@@ -12,23 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class SplitRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SplitRequest model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"quantities\":[389510865,1054713689,996084293,1344764188],\"reservationId\":\"hy\"}}")
-                .toObject(SplitRequest.class);
-        Assertions.assertEquals(389510865, model.quantities().get(0));
-        Assertions.assertEquals("hy", model.reservationId());
+        SplitRequest model = BinaryData.fromString(
+            "{\"properties\":{\"quantities\":[1725264760,920917148,1516038621,1222275240],\"reservationId\":\"qciwqvhkhixuigdt\"}}")
+            .toObject(SplitRequest.class);
+        Assertions.assertEquals(1725264760, model.quantities().get(0));
+        Assertions.assertEquals("qciwqvhkhixuigdt", model.reservationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SplitRequest model =
-            new SplitRequest()
-                .withQuantities(Arrays.asList(389510865, 1054713689, 996084293, 1344764188))
-                .withReservationId("hy");
+        SplitRequest model
+            = new SplitRequest().withQuantities(Arrays.asList(1725264760, 920917148, 1516038621, 1222275240))
+                .withReservationId("qciwqvhkhixuigdt");
         model = BinaryData.fromObject(model).toObject(SplitRequest.class);
-        Assertions.assertEquals(389510865, model.quantities().get(0));
-        Assertions.assertEquals("hy", model.reservationId());
+        Assertions.assertEquals(1725264760, model.quantities().get(0));
+        Assertions.assertEquals("qciwqvhkhixuigdt", model.reservationId());
     }
 }

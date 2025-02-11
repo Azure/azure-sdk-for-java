@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.dashboard.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dashboard.models.MarketplaceTrialQuota;
 import com.azure.resourcemanager.dashboard.models.SaasSubscriptionDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Enterprise details of a Grafana instance.
  */
 @Fluent
-public final class EnterpriseDetailsInner {
+public final class EnterpriseDetailsInner implements JsonSerializable<EnterpriseDetailsInner> {
     /*
      * SaaS subscription details of a Grafana instance
      */
-    @JsonProperty(value = "saasSubscriptionDetails")
     private SaasSubscriptionDetails saasSubscriptionDetails;
 
     /*
      * The allocation details of the per subscription free trial slot of the subscription.
      */
-    @JsonProperty(value = "marketplaceTrialQuota")
     private MarketplaceTrialQuota marketplaceTrialQuota;
 
     /**
@@ -86,5 +88,45 @@ public final class EnterpriseDetailsInner {
         if (marketplaceTrialQuota() != null) {
             marketplaceTrialQuota().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("saasSubscriptionDetails", this.saasSubscriptionDetails);
+        jsonWriter.writeJsonField("marketplaceTrialQuota", this.marketplaceTrialQuota);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnterpriseDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnterpriseDetailsInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnterpriseDetailsInner.
+     */
+    public static EnterpriseDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnterpriseDetailsInner deserializedEnterpriseDetailsInner = new EnterpriseDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("saasSubscriptionDetails".equals(fieldName)) {
+                    deserializedEnterpriseDetailsInner.saasSubscriptionDetails
+                        = SaasSubscriptionDetails.fromJson(reader);
+                } else if ("marketplaceTrialQuota".equals(fieldName)) {
+                    deserializedEnterpriseDetailsInner.marketplaceTrialQuota = MarketplaceTrialQuota.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnterpriseDetailsInner;
+        });
     }
 }

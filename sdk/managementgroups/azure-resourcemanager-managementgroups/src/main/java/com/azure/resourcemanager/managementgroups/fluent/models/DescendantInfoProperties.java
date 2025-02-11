@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.managementgroups.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managementgroups.models.DescendantParentGroupInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The generic properties of an descendant. */
+/**
+ * The generic properties of an descendant.
+ */
 @Fluent
-public final class DescendantInfoProperties {
+public final class DescendantInfoProperties implements JsonSerializable<DescendantInfoProperties> {
     /*
      * The friendly name of the management group.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The ID of the parent management group.
      */
-    @JsonProperty(value = "parent")
     private DescendantParentGroupInfo parent;
 
-    /** Creates an instance of DescendantInfoProperties class. */
+    /**
+     * Creates an instance of DescendantInfoProperties class.
+     */
     public DescendantInfoProperties() {
     }
 
     /**
      * Get the displayName property: The friendly name of the management group.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -38,7 +44,7 @@ public final class DescendantInfoProperties {
 
     /**
      * Set the displayName property: The friendly name of the management group.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the DescendantInfoProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class DescendantInfoProperties {
 
     /**
      * Get the parent property: The ID of the parent management group.
-     *
+     * 
      * @return the parent value.
      */
     public DescendantParentGroupInfo parent() {
@@ -58,7 +64,7 @@ public final class DescendantInfoProperties {
 
     /**
      * Set the parent property: The ID of the parent management group.
-     *
+     * 
      * @param parent the parent value to set.
      * @return the DescendantInfoProperties object itself.
      */
@@ -69,12 +75,51 @@ public final class DescendantInfoProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parent() != null) {
             parent().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("parent", this.parent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DescendantInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DescendantInfoProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DescendantInfoProperties.
+     */
+    public static DescendantInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DescendantInfoProperties deserializedDescendantInfoProperties = new DescendantInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedDescendantInfoProperties.displayName = reader.getString();
+                } else if ("parent".equals(fieldName)) {
+                    deserializedDescendantInfoProperties.parent = DescendantParentGroupInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDescendantInfoProperties;
+        });
     }
 }

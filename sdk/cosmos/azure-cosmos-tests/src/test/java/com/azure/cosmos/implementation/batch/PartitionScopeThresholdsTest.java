@@ -41,7 +41,7 @@ public class PartitionScopeThresholdsTest {
     }
 
     @Test(groups = { "unit" })
-    public void alwaysThrottledShouldResultInBatSizeOfOne() {
+    public void alwaysThrottledShouldResultInBatchSizeOfOne() {
         String pkRangeId = UUID.randomUUID().toString();
         PartitionScopeThresholds thresholds =
             new PartitionScopeThresholds(pkRangeId, new CosmosBulkExecutionOptionsImpl());
@@ -71,5 +71,13 @@ public class PartitionScopeThresholdsTest {
         bulkOperations.setMaxMicroBatchSize(maxBatchSize);
         thresholds = new PartitionScopeThresholds(pkRangeId, bulkOperations);
         assertThat(thresholds.getTargetMicroBatchSizeSnapshot()).isEqualTo(maxBatchSize);
+
+        // initial targetBatchSize should be at least by minTargetBatchSize
+        int minTargetBatchSize = 5;
+        bulkOperations = new CosmosBulkExecutionOptionsImpl();
+        bulkOperations.setInitialMicroBatchSize(1);
+        bulkOperations.setMinTargetMicroBatchSize(minTargetBatchSize);
+        thresholds = new PartitionScopeThresholds(pkRangeId, bulkOperations);
+        assertThat(thresholds.getTargetMicroBatchSizeSnapshot()).isEqualTo(minTargetBatchSize);
     }
 }

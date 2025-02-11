@@ -22,7 +22,7 @@ public final class ReportsGetLatencyScorecardsWithResponseMockTests {
     @Test
     public void testGetLatencyScorecardsWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"id\":\"infsz\",\"name\":\"glqdhm\",\"description\":\"zralcxpjbyyps\",\"endpointA\":\"qcjenkyhf\",\"endpointB\":\"vsqxfxjelgcmpzqj\",\"startDateTimeUTC\":\"2021-11-04T06:03:59Z\",\"endDateTimeUTC\":\"2021-02-22T05:17:56Z\",\"country\":\"w\",\"latencyMetrics\":[{\"name\":\"co\",\"endDateTimeUTC\":\"i\",\"aValue\":5.781335,\"bValue\":37.078613,\"delta\":22.760654,\"deltaPercent\":40.390663,\"aCLower95CI\":45.28454,\"aHUpper95CI\":50.03874,\"bCLower95CI\":92.06426,\"bUpper95CI\":97.761154},{\"name\":\"ijiufehgmvfln\",\"endDateTimeUTC\":\"v\",\"aValue\":78.07501,\"bValue\":71.5515,\"delta\":68.94412,\"deltaPercent\":49.01049,\"aCLower95CI\":77.75446,\"aHUpper95CI\":52.201344,\"bCLower95CI\":43.301346,\"bUpper95CI\":95.77263},{\"name\":\"utgqztwh\",\"endDateTimeUTC\":\"mupgxy\",\"aValue\":20.35476,\"bValue\":24.07775,\"delta\":8.802265,\"deltaPercent\":4.5686665,\"aCLower95CI\":74.17705,\"aHUpper95CI\":18.091225,\"bCLower95CI\":95.478,\"bUpper95CI\":67.505226}]},\"location\":\"bklqpxz\",\"tags\":{\"wxudgn\":\"feddwwnlza\",\"gpbemeluclvdjju\":\"gookrtalvnb\",\"ahhxhqfaqnvzoqg\":\"yrdnqod\"},\"id\":\"ipemchgavscz\",\"name\":\"ejdtxptl\",\"type\":\"h\"}";
+            = "{\"properties\":{\"id\":\"shtuwgm\",\"name\":\"uafpwzyifrk\",\"description\":\"ltxeqip\",\"endpointA\":\"zdyi\",\"endpointB\":\"fayorpravkjoges\",\"startDateTimeUTC\":\"2021-02-22T21:03:14Z\",\"endDateTimeUTC\":\"2021-11-12T14:16:13Z\",\"country\":\"jkwynqxaekqsykv\",\"latencyMetrics\":[{\"name\":\"pkevmylt\",\"endDateTimeUTC\":\"rspxklur\",\"aValue\":14.385528,\"bValue\":95.610214,\"delta\":84.517,\"deltaPercent\":3.5500765,\"aCLower95CI\":46.879883,\"aHUpper95CI\":5.04877,\"bCLower95CI\":30.904234,\"bUpper95CI\":72.015144},{\"name\":\"wxigpxv\",\"endDateTimeUTC\":\"maupxvpi\",\"aValue\":2.3832917,\"bValue\":12.627816,\"delta\":46.58986,\"deltaPercent\":61.054115,\"aCLower95CI\":38.121216,\"aHUpper95CI\":31.361979,\"bCLower95CI\":35.442387,\"bUpper95CI\":28.172707}]},\"location\":\"ds\",\"tags\":{\"gvdihoynkrxwetwk\":\"ytoithgygvfl\",\"dqumoenodnai\":\"rcyrucpcunnu\"},\"id\":\"nhq\",\"name\":\"skndnelqkaadlknw\",\"type\":\"oanniyopetxi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class ReportsGetLatencyScorecardsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         LatencyScorecard response = manager.reports()
-            .getLatencyScorecardsWithResponse("pyc", "hcoeocnhzq", "ot", LatencyScorecardAggregationInterval.DAILY,
-                "zcfyjzptwrl", "h", com.azure.core.util.Context.NONE)
+            .getLatencyScorecardsWithResponse("udqll", "sauzpjlx", "ehuxiqhzlraym",
+                LatencyScorecardAggregationInterval.DAILY, "xls", "ihmxrfdsajredn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bklqpxz", response.location());
-        Assertions.assertEquals("feddwwnlza", response.tags().get("wxudgn"));
+        Assertions.assertEquals("ds", response.location());
+        Assertions.assertEquals("ytoithgygvfl", response.tags().get("gvdihoynkrxwetwk"));
     }
 }

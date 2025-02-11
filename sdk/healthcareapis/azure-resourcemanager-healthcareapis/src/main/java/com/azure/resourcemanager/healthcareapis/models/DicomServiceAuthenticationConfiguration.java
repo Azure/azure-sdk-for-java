@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Authentication configuration information.
  */
 @Immutable
-public final class DicomServiceAuthenticationConfiguration {
+public final class DicomServiceAuthenticationConfiguration
+    implements JsonSerializable<DicomServiceAuthenticationConfiguration> {
     /*
      * The authority url for the service
      */
-    @JsonProperty(value = "authority", access = JsonProperty.Access.WRITE_ONLY)
     private String authority;
 
     /*
      * The audiences for the service
      */
-    @JsonProperty(value = "audiences", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> audiences;
 
     /**
@@ -55,5 +58,44 @@ public final class DicomServiceAuthenticationConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DicomServiceAuthenticationConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DicomServiceAuthenticationConfiguration if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DicomServiceAuthenticationConfiguration.
+     */
+    public static DicomServiceAuthenticationConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DicomServiceAuthenticationConfiguration deserializedDicomServiceAuthenticationConfiguration
+                = new DicomServiceAuthenticationConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authority".equals(fieldName)) {
+                    deserializedDicomServiceAuthenticationConfiguration.authority = reader.getString();
+                } else if ("audiences".equals(fieldName)) {
+                    List<String> audiences = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDicomServiceAuthenticationConfiguration.audiences = audiences;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDicomServiceAuthenticationConfiguration;
+        });
     }
 }

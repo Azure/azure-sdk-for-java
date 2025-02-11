@@ -5,45 +5,51 @@
 package com.azure.resourcemanager.edgeorder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.edgeorder.models.AddressDetails;
 import com.azure.resourcemanager.edgeorder.models.OrderItemDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Represents order item details. */
+/**
+ * Represents order item details.
+ */
 @Fluent
-public final class OrderItemProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrderItemProperties.class);
-
+public final class OrderItemProperties implements JsonSerializable<OrderItemProperties> {
     /*
      * Represents order item details.
      */
-    @JsonProperty(value = "orderItemDetails", required = true)
     private OrderItemDetails orderItemDetails;
 
     /*
      * Represents shipping and return address for order item
      */
-    @JsonProperty(value = "addressDetails", required = true)
     private AddressDetails addressDetails;
 
     /*
      * Start time of order item
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Id of the order to which order item belongs to
      */
-    @JsonProperty(value = "orderId", required = true)
     private String orderId;
 
     /**
+     * Creates an instance of OrderItemProperties class.
+     */
+    public OrderItemProperties() {
+    }
+
+    /**
      * Get the orderItemDetails property: Represents order item details.
-     *
+     * 
      * @return the orderItemDetails value.
      */
     public OrderItemDetails orderItemDetails() {
@@ -52,7 +58,7 @@ public final class OrderItemProperties {
 
     /**
      * Set the orderItemDetails property: Represents order item details.
-     *
+     * 
      * @param orderItemDetails the orderItemDetails value to set.
      * @return the OrderItemProperties object itself.
      */
@@ -63,7 +69,7 @@ public final class OrderItemProperties {
 
     /**
      * Get the addressDetails property: Represents shipping and return address for order item.
-     *
+     * 
      * @return the addressDetails value.
      */
     public AddressDetails addressDetails() {
@@ -72,7 +78,7 @@ public final class OrderItemProperties {
 
     /**
      * Set the addressDetails property: Represents shipping and return address for order item.
-     *
+     * 
      * @param addressDetails the addressDetails value to set.
      * @return the OrderItemProperties object itself.
      */
@@ -83,7 +89,7 @@ public final class OrderItemProperties {
 
     /**
      * Get the startTime property: Start time of order item.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -92,7 +98,7 @@ public final class OrderItemProperties {
 
     /**
      * Get the orderId property: Id of the order to which order item belongs to.
-     *
+     * 
      * @return the orderId value.
      */
     public String orderId() {
@@ -101,7 +107,7 @@ public final class OrderItemProperties {
 
     /**
      * Set the orderId property: Id of the order to which order item belongs to.
-     *
+     * 
      * @param orderId the orderId value to set.
      * @return the OrderItemProperties object itself.
      */
@@ -112,30 +118,75 @@ public final class OrderItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (orderItemDetails() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property orderItemDetails in model OrderItemProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property orderItemDetails in model OrderItemProperties"));
         } else {
             orderItemDetails().validate();
         }
         if (addressDetails() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property addressDetails in model OrderItemProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property addressDetails in model OrderItemProperties"));
         } else {
             addressDetails().validate();
         }
         if (orderId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property orderId in model OrderItemProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property orderId in model OrderItemProperties"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrderItemProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("orderItemDetails", this.orderItemDetails);
+        jsonWriter.writeJsonField("addressDetails", this.addressDetails);
+        jsonWriter.writeStringField("orderId", this.orderId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrderItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrderItemProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrderItemProperties.
+     */
+    public static OrderItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrderItemProperties deserializedOrderItemProperties = new OrderItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("orderItemDetails".equals(fieldName)) {
+                    deserializedOrderItemProperties.orderItemDetails = OrderItemDetails.fromJson(reader);
+                } else if ("addressDetails".equals(fieldName)) {
+                    deserializedOrderItemProperties.addressDetails = AddressDetails.fromJson(reader);
+                } else if ("orderId".equals(fieldName)) {
+                    deserializedOrderItemProperties.orderId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOrderItemProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrderItemProperties;
+        });
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -150,6 +151,9 @@ public final class StorageTaskAssignmentCompletedEventData
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -182,8 +186,8 @@ public final class StorageTaskAssignmentCompletedEventData
                     deserializedStorageTaskAssignmentCompletedEventData.status
                         = StorageTaskAssignmentCompletedStatus.fromString(reader.getString());
                 } else if ("completedDateTime".equals(fieldName)) {
-                    deserializedStorageTaskAssignmentCompletedEventData.completedOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedStorageTaskAssignmentCompletedEventData.completedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("taskExecutionId".equals(fieldName)) {
                     deserializedStorageTaskAssignmentCompletedEventData.taskExecutionId = reader.getString();
                 } else if ("taskName".equals(fieldName)) {

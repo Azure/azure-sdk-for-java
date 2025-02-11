@@ -16,21 +16,25 @@ import com.azure.communication.callingserver.models.events.PlayFailed;
 import com.azure.communication.callingserver.models.events.RecordingStateChangedEvent;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 
 /**
  * Event handler for taking care of event related tasks.
  */
 public final class EventHandler {
     private static final ClientLogger LOGGER = new ClientLogger(EventHandler.class);
+
+    /**
+     * Initializes a new instance of EventHandler.
+     */
+    public EventHandler() {
+    }
 
     /***
      * Returns a list of events from request's body.
@@ -70,7 +74,8 @@ public final class EventHandler {
             }
 
             for (CloudEvent cloudEvent : cloudEvents) {
-                CallAutomationEventBase temp = parseSingleCloudEvent(cloudEvent.getData().toString(), cloudEvent.getType());
+                CallAutomationEventBase temp
+                    = parseSingleCloudEvent(cloudEvent.getData().toString(), cloudEvent.getType());
                 if (temp != null) {
                     callAutomationBaseEvents.add(temp);
                 }
@@ -82,39 +87,33 @@ public final class EventHandler {
     }
 
     private static CallAutomationEventBase parseSingleCloudEvent(String data, String eventType) {
-        try {
-            CallAutomationEventBase ret = null;
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
-            JsonNode eventData = mapper.readTree(data);
-
+        try (JsonReader jsonReader = JsonProviders.createReader(data)) {
             if (Objects.equals(eventType, "Microsoft.Communication.CallConnected")) {
-                ret = mapper.convertValue(eventData, CallConnectedEvent.class);
+                return CallConnectedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallDisconnected")) {
-                ret = mapper.convertValue(eventData, CallDisconnectedEvent.class);
+                return CallDisconnectedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsFailed")) {
-                ret = mapper.convertValue(eventData, AddParticipantsFailedEvent.class);
+                return AddParticipantsFailedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsSucceeded")) {
-                ret = mapper.convertValue(eventData, AddParticipantsSucceededEvent.class);
+                return AddParticipantsSucceededEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferAccepted")) {
-                ret = mapper.convertValue(eventData, CallTransferAcceptedEvent.class);
+                return CallTransferAcceptedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferFailed")) {
-                ret = mapper.convertValue(eventData, CallTransferFailedEvent.class);
+                return CallTransferFailedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.ParticipantsUpdated")) {
-                ret = mapper.convertValue(eventData, ParticipantsUpdatedEvent.class);
+                return ParticipantsUpdatedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallRecordingStateChanged")) {
-                ret = mapper.convertValue(eventData, RecordingStateChangedEvent.class);
+                return RecordingStateChangedEvent.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompleted")) {
-                ret = mapper.convertValue(eventData, PlayCompleted.class);
+                return PlayCompleted.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {
-                ret = mapper.convertValue(eventData, PlayFailed.class);
+                return PlayFailed.fromJson(jsonReader);
             }
 
-            return ret;
+            return null;
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
-        } catch (JsonProcessingException e) {
+        } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }

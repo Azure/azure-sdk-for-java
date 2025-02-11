@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The helm deployment install options.
  */
 @Fluent
-public final class HelmInstallOptions {
+public final class HelmInstallOptions implements JsonSerializable<HelmInstallOptions> {
     /*
      * The helm deployment atomic options
      */
-    @JsonProperty(value = "atomic")
     private String atomic;
 
     /*
      * The helm deployment wait options
      */
-    @JsonProperty(value = "wait")
     private String waitOption;
 
     /*
      * The helm deployment timeout options
      */
-    @JsonProperty(value = "timeout")
     private String timeout;
 
     /**
@@ -102,5 +103,47 @@ public final class HelmInstallOptions {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("atomic", this.atomic);
+        jsonWriter.writeStringField("wait", this.waitOption);
+        jsonWriter.writeStringField("timeout", this.timeout);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HelmInstallOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HelmInstallOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HelmInstallOptions.
+     */
+    public static HelmInstallOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HelmInstallOptions deserializedHelmInstallOptions = new HelmInstallOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("atomic".equals(fieldName)) {
+                    deserializedHelmInstallOptions.atomic = reader.getString();
+                } else if ("wait".equals(fieldName)) {
+                    deserializedHelmInstallOptions.waitOption = reader.getString();
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedHelmInstallOptions.timeout = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHelmInstallOptions;
+        });
     }
 }

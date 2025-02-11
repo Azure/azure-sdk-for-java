@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,35 +17,34 @@ import java.util.List;
  * information acquired from the model/sku information and from the ironic inspector.
  */
 @Immutable
-public final class HardwareInventory {
+public final class HardwareInventory implements JsonSerializable<HardwareInventory> {
     /*
      * Freeform data extracted from the environment about this machine. This information varies depending on the
      * specific hardware and configuration.
      */
-    @JsonProperty(value = "additionalHostInformation", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalHostInformation;
 
     /*
      * The list of network interfaces and associated details for the bare metal machine.
      */
-    @JsonProperty(value = "interfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<HardwareInventoryNetworkInterface> interfaces;
 
     /*
      * Field Deprecated. Will be removed in an upcoming version. The list of network interface cards and associated
      * details for the bare metal machine.
      */
-    @JsonProperty(value = "nics", access = JsonProperty.Access.WRITE_ONLY)
     private List<Nic> nics;
 
-    /** Creates an instance of HardwareInventory class. */
+    /**
+     * Creates an instance of HardwareInventory class.
+     */
     public HardwareInventory() {
     }
 
     /**
      * Get the additionalHostInformation property: Freeform data extracted from the environment about this machine. This
      * information varies depending on the specific hardware and configuration.
-     *
+     * 
      * @return the additionalHostInformation value.
      */
     public String additionalHostInformation() {
@@ -50,7 +53,7 @@ public final class HardwareInventory {
 
     /**
      * Get the interfaces property: The list of network interfaces and associated details for the bare metal machine.
-     *
+     * 
      * @return the interfaces value.
      */
     public List<HardwareInventoryNetworkInterface> interfaces() {
@@ -60,7 +63,7 @@ public final class HardwareInventory {
     /**
      * Get the nics property: Field Deprecated. Will be removed in an upcoming version. The list of network interface
      * cards and associated details for the bare metal machine.
-     *
+     * 
      * @return the nics value.
      */
     public List<Nic> nics() {
@@ -69,7 +72,7 @@ public final class HardwareInventory {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,5 +82,47 @@ public final class HardwareInventory {
         if (nics() != null) {
             nics().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HardwareInventory from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HardwareInventory if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HardwareInventory.
+     */
+    public static HardwareInventory fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HardwareInventory deserializedHardwareInventory = new HardwareInventory();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalHostInformation".equals(fieldName)) {
+                    deserializedHardwareInventory.additionalHostInformation = reader.getString();
+                } else if ("interfaces".equals(fieldName)) {
+                    List<HardwareInventoryNetworkInterface> interfaces
+                        = reader.readArray(reader1 -> HardwareInventoryNetworkInterface.fromJson(reader1));
+                    deserializedHardwareInventory.interfaces = interfaces;
+                } else if ("nics".equals(fieldName)) {
+                    List<Nic> nics = reader.readArray(reader1 -> Nic.fromJson(reader1));
+                    deserializedHardwareInventory.nics = nics;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHardwareInventory;
+        });
     }
 }

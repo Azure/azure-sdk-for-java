@@ -159,7 +159,6 @@ public final class DelimitedTextWriteSettings extends FormatWriteSettings {
      */
     @Override
     public void validate() {
-        super.validate();
         if (fileExtension() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

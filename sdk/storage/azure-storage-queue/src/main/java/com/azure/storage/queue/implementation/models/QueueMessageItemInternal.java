@@ -37,7 +37,8 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
     private DateTimeRfc1123 expirationTime;
 
     /*
-     * This value is required to delete the Message. If deletion fails using this popreceipt then the message has been dequeued by another client.
+     * This value is required to delete the Message. If deletion fails using this popreceipt then the message has been
+     * dequeued by another client.
      */
     private String popReceipt;
 
@@ -250,7 +251,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * @param xmlReader The XmlReader being read.
      * @return An instance of QueueMessageItemInternal if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the QueueMessageItemInternal.
      */
     public static QueueMessageItemInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -265,7 +265,6 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
      * cases where the model can deserialize from different root element names.
      * @return An instance of QueueMessageItemInternal if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the QueueMessageItemInternal.
      */
     public static QueueMessageItemInternal fromXml(XmlReader xmlReader, String rootElementName)

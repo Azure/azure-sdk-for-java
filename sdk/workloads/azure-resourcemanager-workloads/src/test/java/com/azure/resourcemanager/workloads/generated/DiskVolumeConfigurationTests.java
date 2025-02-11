@@ -13,26 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskVolumeConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskVolumeConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"count\":2263722670392996598,\"sizeGB\":8352976901787855054,\"sku\":{\"name\":\"Premium_ZRS\"}}")
-                .toObject(DiskVolumeConfiguration.class);
-        Assertions.assertEquals(2263722670392996598L, model.count());
-        Assertions.assertEquals(8352976901787855054L, model.sizeGB());
-        Assertions.assertEquals(DiskSkuName.PREMIUM_ZRS, model.sku().name());
+        DiskVolumeConfiguration model = BinaryData
+            .fromString(
+                "{\"count\":1300765255490417767,\"sizeGB\":3937290489738694493,\"sku\":{\"name\":\"StandardSSD_ZRS\"}}")
+            .toObject(DiskVolumeConfiguration.class);
+        Assertions.assertEquals(1300765255490417767L, model.count());
+        Assertions.assertEquals(3937290489738694493L, model.sizeGB());
+        Assertions.assertEquals(DiskSkuName.STANDARD_SSD_ZRS, model.sku().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskVolumeConfiguration model =
-            new DiskVolumeConfiguration()
-                .withCount(2263722670392996598L)
-                .withSizeGB(8352976901787855054L)
-                .withSku(new DiskSku().withName(DiskSkuName.PREMIUM_ZRS));
+        DiskVolumeConfiguration model = new DiskVolumeConfiguration().withCount(1300765255490417767L)
+            .withSizeGB(3937290489738694493L)
+            .withSku(new DiskSku().withName(DiskSkuName.STANDARD_SSD_ZRS));
         model = BinaryData.fromObject(model).toObject(DiskVolumeConfiguration.class);
-        Assertions.assertEquals(2263722670392996598L, model.count());
-        Assertions.assertEquals(8352976901787855054L, model.sizeGB());
-        Assertions.assertEquals(DiskSkuName.PREMIUM_ZRS, model.sku().name());
+        Assertions.assertEquals(1300765255490417767L, model.count());
+        Assertions.assertEquals(3937290489738694493L, model.sizeGB());
+        Assertions.assertEquals(DiskSkuName.STANDARD_SSD_ZRS, model.sku().name());
     }
 }

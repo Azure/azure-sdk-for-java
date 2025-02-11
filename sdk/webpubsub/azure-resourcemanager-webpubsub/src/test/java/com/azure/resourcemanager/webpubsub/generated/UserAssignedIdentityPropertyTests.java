@@ -10,9 +10,8 @@ import com.azure.resourcemanager.webpubsub.models.UserAssignedIdentityProperty;
 public final class UserAssignedIdentityPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentityProperty model =
-            BinaryData
-                .fromString("{\"principalId\":\"yylhalnswhccsp\",\"clientId\":\"aivwitqscywu\"}")
+        UserAssignedIdentityProperty model
+            = BinaryData.fromString("{\"principalId\":\"kghv\",\"clientId\":\"dzwmkrefajpj\"}")
                 .toObject(UserAssignedIdentityProperty.class);
     }
 

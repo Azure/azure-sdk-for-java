@@ -5,33 +5,117 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.AatpDataConnectorProperties;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Represents AATP (Azure Advanced Threat Protection) data connector. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("AzureAdvancedThreatProtection")
+/**
+ * Represents AATP (Azure Advanced Threat Protection) data connector.
+ */
 @Fluent
 public final class AatpDataConnector extends DataConnectorInner {
     /*
+     * The data connector kind
+     */
+    private DataConnectorKind kind = DataConnectorKind.AZURE_ADVANCED_THREAT_PROTECTION;
+
+    /*
      * AATP (Azure Advanced Threat Protection) data connector properties.
      */
-    @JsonProperty(value = "properties")
     private AatpDataConnectorProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AatpDataConnector class.
+     */
+    public AatpDataConnector() {
+    }
+
+    /**
+     * Get the kind property: The data connector kind.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public DataConnectorKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: AATP (Azure Advanced Threat Protection) data connector properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AatpDataConnectorProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AatpDataConnector withEtag(String etag) {
         super.withEtag(etag);
@@ -39,31 +123,8 @@ public final class AatpDataConnector extends DataConnectorInner {
     }
 
     /**
-     * Get the dataTypes property: The available data types for the connector.
-     *
-     * @return the dataTypes value.
-     */
-    public AlertsDataTypeOfDataConnector dataTypes() {
-        return this.innerProperties() == null ? null : this.innerProperties().dataTypes();
-    }
-
-    /**
-     * Set the dataTypes property: The available data types for the connector.
-     *
-     * @param dataTypes the dataTypes value to set.
-     * @return the AatpDataConnector object itself.
-     */
-    public AatpDataConnector withDataTypes(AlertsDataTypeOfDataConnector dataTypes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AatpDataConnectorProperties();
-        }
-        this.innerProperties().withDataTypes(dataTypes);
-        return this;
-    }
-
-    /**
      * Get the tenantId property: The tenant id to connect to, and get the data from.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -72,7 +133,7 @@ public final class AatpDataConnector extends DataConnectorInner {
 
     /**
      * Set the tenantId property: The tenant id to connect to, and get the data from.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AatpDataConnector object itself.
      */
@@ -85,15 +146,88 @@ public final class AatpDataConnector extends DataConnectorInner {
     }
 
     /**
+     * Get the dataTypes property: The available data types for the connector.
+     * 
+     * @return the dataTypes value.
+     */
+    public AlertsDataTypeOfDataConnector dataTypes() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataTypes();
+    }
+
+    /**
+     * Set the dataTypes property: The available data types for the connector.
+     * 
+     * @param dataTypes the dataTypes value to set.
+     * @return the AatpDataConnector object itself.
+     */
+    public AatpDataConnector withDataTypes(AlertsDataTypeOfDataConnector dataTypes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AatpDataConnectorProperties();
+        }
+        this.innerProperties().withDataTypes(dataTypes);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AatpDataConnector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AatpDataConnector if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AatpDataConnector.
+     */
+    public static AatpDataConnector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AatpDataConnector deserializedAatpDataConnector = new AatpDataConnector();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAatpDataConnector.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAatpDataConnector.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAatpDataConnector.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAatpDataConnector.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAatpDataConnector.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAatpDataConnector.kind = DataConnectorKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAatpDataConnector.innerProperties = AatpDataConnectorProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAatpDataConnector;
+        });
     }
 }

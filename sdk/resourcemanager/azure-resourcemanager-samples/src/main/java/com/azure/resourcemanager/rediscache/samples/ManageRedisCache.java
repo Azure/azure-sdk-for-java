@@ -6,7 +6,7 @@ package com.azure.resourcemanager.rediscache.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
@@ -38,7 +38,6 @@ import com.azure.resourcemanager.samples.Utils;
 
 public final class ManageRedisCache {
 
-
     /**
      * Main function which runs the actual sample.
      * @param azureResourceManager instance of the azure client
@@ -55,25 +54,28 @@ public final class ManageRedisCache {
 
             System.out.println("Creating a Redis Cache");
 
-            Creatable<RedisCache> redisCache1Definition = azureResourceManager.redisCaches().define(redisCacheName1)
-                    .withRegion(Region.US_CENTRAL)
-                    .withNewResourceGroup(rgName)
-                    .withBasicSku();
+            Creatable<RedisCache> redisCache1Definition = azureResourceManager.redisCaches()
+                .define(redisCacheName1)
+                .withRegion(Region.US_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withBasicSku();
 
             // ============================================================
             // Define two more Redis caches
 
-            Creatable<RedisCache> redisCache2Definition = azureResourceManager.redisCaches().define(redisCacheName2)
-                    .withRegion(Region.US_CENTRAL)
-                    .withNewResourceGroup(rgName)
-                    .withPremiumSku()
-                    .withShardCount(3);
+            Creatable<RedisCache> redisCache2Definition = azureResourceManager.redisCaches()
+                .define(redisCacheName2)
+                .withRegion(Region.US_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withPremiumSku()
+                .withShardCount(3);
 
-            Creatable<RedisCache> redisCache3Definition = azureResourceManager.redisCaches().define(redisCacheName3)
-                    .withRegion(Region.US_CENTRAL)
-                    .withNewResourceGroup(rgName)
-                    .withPremiumSku(2)
-                    .withShardCount(3);
+            Creatable<RedisCache> redisCache3Definition = azureResourceManager.redisCaches()
+                .define(redisCacheName3)
+                .withRegion(Region.US_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withPremiumSku(2)
+                .withShardCount(3);
 
             // ============================================================
             // Create all the caches in parallel to save time
@@ -81,10 +83,8 @@ public final class ManageRedisCache {
             System.out.println("Creating three Redis Caches in parallel... (this will take several minutes)");
 
             @SuppressWarnings("unchecked")
-            CreatedResources<RedisCache> createdCaches = azureResourceManager.redisCaches().create(
-                    redisCache1Definition,
-                    redisCache2Definition,
-                    redisCache3Definition);
+            CreatedResources<RedisCache> createdCaches = azureResourceManager.redisCaches()
+                .create(redisCache1Definition, redisCache2Definition, redisCache3Definition);
 
             System.out.println("Created Redis caches:");
             RedisCache redisCache1 = createdCaches.get(redisCache1Definition.key());
@@ -121,12 +121,12 @@ public final class ManageRedisCache {
                     // Update each Premium Sku Redis Cache instance
                     System.out.println("Updating Premium Redis Cache");
                     premium.update()
-                            .withPatchSchedule(DayOfWeek.MONDAY, 5)
-                            .withShardCount(4)
-                            .withNonSslPort()
-                            .withRedisConfiguration("maxmemory-policy", "allkeys-random")
-                            .withRedisConfiguration("maxmemory-reserved", "20")
-                            .apply();
+                        .withPatchSchedule(DayOfWeek.MONDAY, 5)
+                        .withShardCount(4)
+                        .withNonSslPort()
+                        .withRedisConfiguration("maxmemory-policy", "allkeys-random")
+                        .withRedisConfiguration("maxmemory-reserved", "20")
+                        .apply();
 
                     System.out.println("Updated Redis Cache:");
                     Utils.print(premium);
@@ -168,13 +168,12 @@ public final class ManageRedisCache {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

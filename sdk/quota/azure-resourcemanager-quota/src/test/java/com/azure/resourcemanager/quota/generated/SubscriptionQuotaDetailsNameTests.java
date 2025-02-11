@@ -10,8 +10,9 @@ import com.azure.resourcemanager.quota.fluent.models.SubscriptionQuotaDetailsNam
 public final class SubscriptionQuotaDetailsNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubscriptionQuotaDetailsName model = BinaryData.fromString("{\"value\":\"nzscxa\",\"localizedValue\":\"ooch\"}")
-            .toObject(SubscriptionQuotaDetailsName.class);
+        SubscriptionQuotaDetailsName model
+            = BinaryData.fromString("{\"value\":\"pj\",\"localizedValue\":\"asxazjpqyegualhb\"}")
+                .toObject(SubscriptionQuotaDetailsName.class);
     }
 
     @org.junit.jupiter.api.Test

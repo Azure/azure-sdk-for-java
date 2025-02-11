@@ -20,7 +20,7 @@ public final class NetworkFunctionDefinitionGroupsListByPublisherSamples {
      */
     public static void getNetworkFunctionDefinitionGroupsUnderPublisherResource(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkFunctionDefinitionGroups().listByPublisher("rg", "TestPublisher",
-            com.azure.core.util.Context.NONE);
+        manager.networkFunctionDefinitionGroups()
+            .listByPublisher("rg", "TestPublisher", com.azure.core.util.Context.NONE);
     }
 }

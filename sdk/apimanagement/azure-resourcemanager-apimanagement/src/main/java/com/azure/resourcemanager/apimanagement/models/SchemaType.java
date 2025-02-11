@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Schema Type. Immutable. */
+/**
+ * Schema Type. Immutable.
+ */
 public final class SchemaType extends ExpandableStringEnum<SchemaType> {
-    /** Static value xml for SchemaType. */
+    /**
+     * Static value xml for SchemaType.
+     */
     public static final SchemaType XML = fromString("xml");
 
-    /** Static value json for SchemaType. */
+    /**
+     * Static value json for SchemaType.
+     */
     public static final SchemaType JSON = fromString("json");
 
     /**
      * Creates a new instance of SchemaType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class SchemaType extends ExpandableStringEnum<SchemaType> {
 
     /**
      * Creates or finds a SchemaType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SchemaType.
      */
-    @JsonCreator
     public static SchemaType fromString(String name) {
         return fromString(name, SchemaType.class);
     }
 
     /**
      * Gets known SchemaType values.
-     *
+     * 
      * @return known SchemaType values.
      */
     public static Collection<SchemaType> values() {

@@ -107,16 +107,14 @@ public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
 
     @Override
     public Mono<VerificationIPFlow> executeWorkAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getNetworkWatchers()
             .verifyIpFlowAsync(parent.resourceGroupName(), parent.name(), parameters)
-            .map(
-                verificationIPFlowResultInner -> {
-                    VerificationIPFlowImpl.this.result = verificationIPFlowResultInner;
-                    return VerificationIPFlowImpl.this;
-                });
+            .map(verificationIPFlowResultInner -> {
+                VerificationIPFlowImpl.this.result = verificationIPFlowResultInner;
+                return VerificationIPFlowImpl.this;
+            });
     }
 }

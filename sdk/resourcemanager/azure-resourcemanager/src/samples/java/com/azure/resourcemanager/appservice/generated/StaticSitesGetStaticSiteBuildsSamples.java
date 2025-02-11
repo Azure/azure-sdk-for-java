@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class StaticSitesGetStaticSiteBuildsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetStaticSiteBuilds.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetStaticSiteBuilds.json
      */
     /**
      * Sample code: Get all builds for a static site.

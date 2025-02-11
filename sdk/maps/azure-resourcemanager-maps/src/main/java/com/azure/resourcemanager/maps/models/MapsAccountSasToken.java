@@ -6,18 +6,20 @@ package com.azure.resourcemanager.maps.models;
 
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountSasTokenInner;
 
-/** An immutable client-side representation of MapsAccountSasToken. */
+/**
+ * An immutable client-side representation of MapsAccountSasToken.
+ */
 public interface MapsAccountSasToken {
     /**
      * Gets the accountSasToken property: The shared access signature access token.
-     *
+     * 
      * @return the accountSasToken value.
      */
     String accountSasToken();
 
     /**
      * Gets the inner com.azure.resourcemanager.maps.fluent.models.MapsAccountSasTokenInner object.
-     *
+     * 
      * @return the inner object.
      */
     MapsAccountSasTokenInner innerModel();

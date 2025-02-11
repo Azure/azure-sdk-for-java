@@ -17,6 +17,11 @@ import java.util.List;
 @Fluent
 public final class WebhookHookInfoPatch extends HookInfoPatch {
     /*
+     * hook type
+     */
+    private HookType hookType = HookType.WEBHOOK;
+
+    /*
      * The hookParameter property.
      */
     private WebhookHookParameterPatch hookParameter;
@@ -25,6 +30,16 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
      * Creates an instance of WebhookHookInfoPatch class.
      */
     public WebhookHookInfoPatch() {
+    }
+
+    /**
+     * Get the hookType property: hook type.
+     * 
+     * @return the hookType value.
+     */
+    @Override
+    public HookType getHookType() {
+        return this.hookType;
     }
 
     /**
@@ -83,14 +98,17 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("hookType", HookType.WEBHOOK == null ? null : HookType.WEBHOOK.toString());
         jsonWriter.writeStringField("hookName", getHookName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("externalLink", getExternalLink());
         jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("hookType", this.hookType == null ? null : this.hookType.toString());
         jsonWriter.writeJsonField("hookParameter", this.hookParameter);
         return jsonWriter.writeEndObject();
     }
@@ -101,7 +119,6 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebhookHookInfoPatch if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the WebhookHookInfoPatch.
      */
     public static WebhookHookInfoPatch fromJson(JsonReader jsonReader) throws IOException {
@@ -111,14 +128,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("hookType".equals(fieldName)) {
-                    String hookType = reader.getString();
-                    if (!"Webhook".equals(hookType)) {
-                        throw new IllegalStateException(
-                            "'hookType' was expected to be non-null and equal to 'Webhook'. The found 'hookType' was '"
-                                + hookType + "'.");
-                    }
-                } else if ("hookName".equals(fieldName)) {
+                if ("hookName".equals(fieldName)) {
                     deserializedWebhookHookInfoPatch.setHookName(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedWebhookHookInfoPatch.setDescription(reader.getString());
@@ -127,6 +137,8 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
                 } else if ("admins".equals(fieldName)) {
                     List<String> admins = reader.readArray(reader1 -> reader1.getString());
                     deserializedWebhookHookInfoPatch.setAdmins(admins);
+                } else if ("hookType".equals(fieldName)) {
+                    deserializedWebhookHookInfoPatch.hookType = HookType.fromString(reader.getString());
                 } else if ("hookParameter".equals(fieldName)) {
                     deserializedWebhookHookInfoPatch.hookParameter = WebhookHookParameterPatch.fromJson(reader);
                 } else {

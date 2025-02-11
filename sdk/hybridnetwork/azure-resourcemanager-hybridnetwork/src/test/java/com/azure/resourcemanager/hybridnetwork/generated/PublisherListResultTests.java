@@ -21,7 +21,7 @@ public final class PublisherListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublisherListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"scope\":\"Private\"},\"identity\":{\"principalId\":\"92405517-08c0-4f6a-b7ff-f810565b8b32\",\"tenantId\":\"662fe536-27a3-48d6-9bb4-2502ef3aad53\",\"type\":\"None\",\"userAssignedIdentities\":{\"gzrf\":{\"principalId\":\"e7470221-769c-4a76-941a-0d2cef4a407d\",\"clientId\":\"f44a8f8a-2395-46f6-b44f-d4483031220b\"},\"yebizikayuh\":{\"principalId\":\"7a2e263a-f556-4557-9c59-1c9b55ccbfdd\",\"clientId\":\"f7f4097e-4f0c-4e83-80c0-cb9cf0489c22\"}}},\"location\":\"bjbsybb\",\"tags\":{\"slthaq\":\"vtldgmfpgvmpip\"},\"id\":\"x\",\"name\":\"smwutwbdsrezpd\",\"type\":\"hneuyowqkd\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"scope\":\"Unknown\"},\"identity\":{\"principalId\":\"9369c588-548b-4d59-b352-b7cdac75d572\",\"tenantId\":\"193ec92d-7c10-496c-956e-7323efbb972e\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"pzimejzanlfzxi\":{\"principalId\":\"eaa372c3-71d4-4dac-8eae-e96ee26d0364\",\"clientId\":\"06d1419f-bff9-4b0f-b879-2d6d0b4a3e37\"},\"mbzonokix\":{\"principalId\":\"f5e57742-c4e5-46a9-8c2f-93bc5f58b81e\",\"clientId\":\"d68568fd-dcaf-484a-9361-1541d8f4ad87\"}}},\"location\":\"q\",\"tags\":{\"szrnwo\":\"gzpfrla\"},\"id\":\"indfpwpjyl\",\"name\":\"bt\",\"type\":\"h\"}],\"nextLink\":\"sj\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"scope\":\"Private\"},\"identity\":{\"principalId\":\"bd2ff1ad-c668-4b66-b31c-a0bb0279cd56\",\"tenantId\":\"e25d6c0e-7044-4f4a-a446-50e5c4396c56\",\"type\":\"None\",\"userAssignedIdentities\":{\"gzrf\":{\"principalId\":\"074de492-5e5a-47de-b8f0-b9c74f326cb3\",\"clientId\":\"3844497d-15a3-4554-bec2-293885441144\"},\"yebizikayuh\":{\"principalId\":\"6f2ca066-1413-4042-83fc-2dd2b17c3f62\",\"clientId\":\"0915e709-882d-4f90-bc1d-a9a6765721be\"}}},\"location\":\"bjbsybb\",\"tags\":{\"slthaq\":\"vtldgmfpgvmpip\"},\"id\":\"x\",\"name\":\"smwutwbdsrezpd\",\"type\":\"hneuyowqkd\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"scope\":\"Unknown\"},\"identity\":{\"principalId\":\"76310df3-4630-4ca9-9034-7e3af57b3aab\",\"tenantId\":\"13e44b44-0843-4eaa-9e74-559cc45c1632\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"pzimejzanlfzxi\":{\"principalId\":\"3e54362b-9160-4daa-b6ee-af47f81ed06c\",\"clientId\":\"482f9406-76c0-49cf-9019-fb1f33d3974b\"},\"mbzonokix\":{\"principalId\":\"e7b3d289-7221-43f0-b84c-d0c51c6689fe\",\"clientId\":\"c077b19d-aff0-49f5-99ad-e7524fb1b913\"}}},\"location\":\"q\",\"tags\":{\"szrnwo\":\"gzpfrla\"},\"id\":\"indfpwpjyl\",\"name\":\"bt\",\"type\":\"h\"}],\"nextLink\":\"sj\"}")
             .toObject(PublisherListResult.class);
         Assertions.assertEquals("bjbsybb", model.value().get(0).location());
         Assertions.assertEquals("vtldgmfpgvmpip", model.value().get(0).tags().get("slthaq"));
@@ -34,21 +34,21 @@ public final class PublisherListResultTests {
         PublisherListResult model
             = new PublisherListResult()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new PublisherInner()
-                                .withLocation("bjbsybb").withTags(mapOf("slthaq", "vtldgmfpgvmpip"))
-                                .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.PRIVATE))
-                                .withIdentity(new ManagedServiceIdentity()
-                                    .withType(ManagedServiceIdentityType.NONE)
-                                    .withUserAssignedIdentities(mapOf("gzrf", new UserAssignedIdentity(), "yebizikayuh",
-                                        new UserAssignedIdentity()))),
-                            new PublisherInner().withLocation("q").withTags(mapOf("szrnwo", "gzpfrla"))
-                                .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.UNKNOWN))
-                                .withIdentity(
-                                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf("pzimejzanlfzxi", new UserAssignedIdentity(),
-                                            "mbzonokix", new UserAssignedIdentity())))));
+                    Arrays.asList(
+                        new PublisherInner().withLocation("bjbsybb")
+                            .withTags(mapOf("slthaq", "vtldgmfpgvmpip"))
+                            .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.PRIVATE))
+                            .withIdentity(new ManagedServiceIdentity()
+                                .withType(ManagedServiceIdentityType.NONE)
+                                .withUserAssignedIdentities(mapOf("gzrf", new UserAssignedIdentity(), "yebizikayuh",
+                                    new UserAssignedIdentity()))),
+                        new PublisherInner().withLocation("q")
+                            .withTags(mapOf("szrnwo", "gzpfrla"))
+                            .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.UNKNOWN))
+                            .withIdentity(
+                                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                                    .withUserAssignedIdentities(mapOf("pzimejzanlfzxi", new UserAssignedIdentity(),
+                                        "mbzonokix", new UserAssignedIdentity())))));
         model = BinaryData.fromObject(model).toObject(PublisherListResult.class);
         Assertions.assertEquals("bjbsybb", model.value().get(0).location());
         Assertions.assertEquals("vtldgmfpgvmpip", model.value().get(0).tags().get("slthaq"));

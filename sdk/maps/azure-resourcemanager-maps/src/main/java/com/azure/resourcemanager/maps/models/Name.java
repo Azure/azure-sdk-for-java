@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The name of the SKU, in standard format (such as S0). */
+/**
+ * The name of the SKU, in standard format (such as S0).
+ */
 public final class Name extends ExpandableStringEnum<Name> {
-    /** Static value S0 for Name. */
+    /**
+     * Static value S0 for Name.
+     */
     public static final Name S0 = fromString("S0");
 
-    /** Static value S1 for Name. */
+    /**
+     * Static value S1 for Name.
+     */
     public static final Name S1 = fromString("S1");
 
-    /** Static value G2 for Name. */
+    /**
+     * Static value G2 for Name.
+     */
     public static final Name G2 = fromString("G2");
 
     /**
      * Creates a new instance of Name value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class Name extends ExpandableStringEnum<Name> {
 
     /**
      * Creates or finds a Name from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Name.
      */
-    @JsonCreator
     public static Name fromString(String name) {
         return fromString(name, Name.class);
     }
 
     /**
      * Gets known Name values.
-     *
+     * 
      * @return known Name values.
      */
     public static Collection<Name> values() {

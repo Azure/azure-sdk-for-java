@@ -22,8 +22,11 @@ public final class PrefixListLocalRulestackCreateOrUpdateSamples {
      */
     public static void prefixListLocalRulestackCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.prefixListLocalRulestacks().define("armid1").withExistingLocalRulestack("rgopenapi", "lrs1")
-            .withPrefixList(Arrays.asList("1.0.0.0/24")).create();
+        manager.prefixListLocalRulestacks()
+            .define("armid1")
+            .withExistingLocalRulestack("rgopenapi", "lrs1")
+            .withPrefixList(Arrays.asList("1.0.0.0/24"))
+            .create();
     }
 
     /*
@@ -38,8 +41,13 @@ public final class PrefixListLocalRulestackCreateOrUpdateSamples {
      */
     public static void prefixListLocalRulestackCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.prefixListLocalRulestacks().define("armid1").withExistingLocalRulestack("rgopenapi", "lrs1")
-            .withPrefixList(Arrays.asList("1.0.0.0/24")).withDescription("string")
-            .withEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c27").withAuditComment("comment").create();
+        manager.prefixListLocalRulestacks()
+            .define("armid1")
+            .withExistingLocalRulestack("rgopenapi", "lrs1")
+            .withPrefixList(Arrays.asList("1.0.0.0/24"))
+            .withDescription("string")
+            .withEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c27")
+            .withAuditComment("comment")
+            .create();
     }
 }

@@ -49,7 +49,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
 
     /**
      * Get the level property: The level property.
-     *
+     * 
      * @return the level value.
      */
     public int getLevel() {
@@ -58,7 +58,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
 
     /**
      * Set the level property: The level property.
-     *
+     * 
      * @param level the level value to set.
      * @return the StackFrame object itself.
      */
@@ -69,7 +69,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
 
     /**
      * Get the method property: Method name.
-     *
+     * 
      * @return the method value.
      */
     public String getMethod() {
@@ -78,7 +78,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
 
     /**
      * Set the method property: Method name.
-     *
+     * 
      * @param method the method value to set.
      * @return the StackFrame object itself.
      */
@@ -89,7 +89,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
 
     /**
      * Get the assembly property: Name of the assembly (dll, jar, etc.) containing this function.
-     *
+     * 
      * @return the assembly value.
      */
     public String getAssembly() {
@@ -98,7 +98,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
 
     /**
      * Set the assembly property: Name of the assembly (dll, jar, etc.) containing this function.
-     *
+     * 
      * @param assembly the assembly value to set.
      * @return the StackFrame object itself.
      */
@@ -109,7 +109,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
 
     /**
      * Get the fileName property: File name or URL of the method implementation.
-     *
+     * 
      * @return the fileName value.
      */
     public String getFileName() {
@@ -118,7 +118,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
 
     /**
      * Set the fileName property: File name or URL of the method implementation.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the StackFrame object itself.
      */
@@ -129,7 +129,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
 
     /**
      * Get the line property: Line number of the code implementation.
-     *
+     * 
      * @return the line value.
      */
     public Integer getLine() {
@@ -138,7 +138,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
 
     /**
      * Set the line property: Line number of the code implementation.
-     *
+     * 
      * @param line the line value to set.
      * @return the StackFrame object itself.
      */
@@ -163,7 +163,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
 
     /**
      * Reads an instance of StackFrame from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of StackFrame if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.

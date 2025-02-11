@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Selects the boot method for the virtual machine. */
+/**
+ * Selects the boot method for the virtual machine.
+ */
 public final class VirtualMachineBootMethod extends ExpandableStringEnum<VirtualMachineBootMethod> {
-    /** Static value UEFI for VirtualMachineBootMethod. */
+    /**
+     * Static value UEFI for VirtualMachineBootMethod.
+     */
     public static final VirtualMachineBootMethod UEFI = fromString("UEFI");
 
-    /** Static value BIOS for VirtualMachineBootMethod. */
+    /**
+     * Static value BIOS for VirtualMachineBootMethod.
+     */
     public static final VirtualMachineBootMethod BIOS = fromString("BIOS");
 
     /**
      * Creates a new instance of VirtualMachineBootMethod value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class VirtualMachineBootMethod extends ExpandableStringEnum<Virtual
 
     /**
      * Creates or finds a VirtualMachineBootMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VirtualMachineBootMethod.
      */
-    @JsonCreator
     public static VirtualMachineBootMethod fromString(String name) {
         return fromString(name, VirtualMachineBootMethod.class);
     }
 
     /**
      * Gets known VirtualMachineBootMethod values.
-     *
+     * 
      * @return known VirtualMachineBootMethod values.
      */
     public static Collection<VirtualMachineBootMethod> values() {

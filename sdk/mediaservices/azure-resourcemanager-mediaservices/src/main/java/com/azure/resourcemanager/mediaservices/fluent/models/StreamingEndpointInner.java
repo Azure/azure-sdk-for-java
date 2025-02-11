@@ -7,43 +7,62 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.ArmStreamingEndpointCurrentSku;
 import com.azure.resourcemanager.mediaservices.models.CrossSiteAccessPolicies;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpointAccessControl;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpointResourceState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The streaming endpoint. */
+/**
+ * The streaming endpoint.
+ */
 @Fluent
 public final class StreamingEndpointInner extends Resource {
     /*
      * The streaming endpoint properties.
      */
-    @JsonProperty(value = "properties")
     private StreamingEndpointProperties innerProperties;
 
     /*
      * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The streaming endpoint sku.
      */
-    @JsonProperty(value = "sku")
     private ArmStreamingEndpointCurrentSku sku;
 
-    /** Creates an instance of StreamingEndpointInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StreamingEndpointInner class.
+     */
     public StreamingEndpointInner() {
     }
 
     /**
      * Get the innerProperties property: The streaming endpoint properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StreamingEndpointProperties innerProperties() {
@@ -52,7 +71,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -61,7 +80,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the sku property: The streaming endpoint sku.
-     *
+     * 
      * @return the sku value.
      */
     public ArmStreamingEndpointCurrentSku sku() {
@@ -70,7 +89,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Set the sku property: The streaming endpoint sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the StreamingEndpointInner object itself.
      */
@@ -79,14 +98,48 @@ public final class StreamingEndpointInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StreamingEndpointInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StreamingEndpointInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -95,7 +148,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the description property: The streaming endpoint description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -104,7 +157,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Set the description property: The streaming endpoint description.
-     *
+     * 
      * @param description the description value to set.
      * @return the StreamingEndpointInner object itself.
      */
@@ -118,7 +171,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the scaleUnits property: The number of scale units. Use the Scale operation to adjust this value.
-     *
+     * 
      * @return the scaleUnits value.
      */
     public Integer scaleUnits() {
@@ -127,7 +180,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Set the scaleUnits property: The number of scale units. Use the Scale operation to adjust this value.
-     *
+     * 
      * @param scaleUnits the scaleUnits value to set.
      * @return the StreamingEndpointInner object itself.
      */
@@ -141,7 +194,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the availabilitySetName property: This feature is deprecated, do not set a value for this property.
-     *
+     * 
      * @return the availabilitySetName value.
      */
     public String availabilitySetName() {
@@ -150,7 +203,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Set the availabilitySetName property: This feature is deprecated, do not set a value for this property.
-     *
+     * 
      * @param availabilitySetName the availabilitySetName value to set.
      * @return the StreamingEndpointInner object itself.
      */
@@ -164,7 +217,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the accessControl property: The access control definition of the streaming endpoint.
-     *
+     * 
      * @return the accessControl value.
      */
     public StreamingEndpointAccessControl accessControl() {
@@ -173,7 +226,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Set the accessControl property: The access control definition of the streaming endpoint.
-     *
+     * 
      * @param accessControl the accessControl value to set.
      * @return the StreamingEndpointInner object itself.
      */
@@ -187,7 +240,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the maxCacheAge property: Max cache age.
-     *
+     * 
      * @return the maxCacheAge value.
      */
     public Long maxCacheAge() {
@@ -196,7 +249,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Set the maxCacheAge property: Max cache age.
-     *
+     * 
      * @param maxCacheAge the maxCacheAge value to set.
      * @return the StreamingEndpointInner object itself.
      */
@@ -210,7 +263,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the customHostNames property: The custom host names of the streaming endpoint.
-     *
+     * 
      * @return the customHostNames value.
      */
     public List<String> customHostNames() {
@@ -219,7 +272,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Set the customHostNames property: The custom host names of the streaming endpoint.
-     *
+     * 
      * @param customHostNames the customHostNames value to set.
      * @return the StreamingEndpointInner object itself.
      */
@@ -233,7 +286,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the hostname property: The streaming endpoint host name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -242,7 +295,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the cdnEnabled property: The CDN enabled flag.
-     *
+     * 
      * @return the cdnEnabled value.
      */
     public Boolean cdnEnabled() {
@@ -251,7 +304,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Set the cdnEnabled property: The CDN enabled flag.
-     *
+     * 
      * @param cdnEnabled the cdnEnabled value to set.
      * @return the StreamingEndpointInner object itself.
      */
@@ -265,7 +318,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the cdnProvider property: The CDN provider name.
-     *
+     * 
      * @return the cdnProvider value.
      */
     public String cdnProvider() {
@@ -274,7 +327,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Set the cdnProvider property: The CDN provider name.
-     *
+     * 
      * @param cdnProvider the cdnProvider value to set.
      * @return the StreamingEndpointInner object itself.
      */
@@ -288,7 +341,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the cdnProfile property: The CDN profile name.
-     *
+     * 
      * @return the cdnProfile value.
      */
     public String cdnProfile() {
@@ -297,7 +350,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Set the cdnProfile property: The CDN profile name.
-     *
+     * 
      * @param cdnProfile the cdnProfile value to set.
      * @return the StreamingEndpointInner object itself.
      */
@@ -311,7 +364,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the streaming endpoint.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -320,7 +373,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the resourceState property: The resource state of the streaming endpoint.
-     *
+     * 
      * @return the resourceState value.
      */
     public StreamingEndpointResourceState resourceState() {
@@ -329,7 +382,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the crossSiteAccessPolicies property: The streaming endpoint access policies.
-     *
+     * 
      * @return the crossSiteAccessPolicies value.
      */
     public CrossSiteAccessPolicies crossSiteAccessPolicies() {
@@ -338,7 +391,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Set the crossSiteAccessPolicies property: The streaming endpoint access policies.
-     *
+     * 
      * @param crossSiteAccessPolicies the crossSiteAccessPolicies value to set.
      * @return the StreamingEndpointInner object itself.
      */
@@ -352,7 +405,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the freeTrialEndTime property: The free trial expiration time.
-     *
+     * 
      * @return the freeTrialEndTime value.
      */
     public OffsetDateTime freeTrialEndTime() {
@@ -361,7 +414,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the created property: The exact time the streaming endpoint was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -370,7 +423,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Get the lastModified property: The exact time the streaming endpoint was last modified.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -379,7 +432,7 @@ public final class StreamingEndpointInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -389,5 +442,60 @@ public final class StreamingEndpointInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StreamingEndpointInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StreamingEndpointInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StreamingEndpointInner.
+     */
+    public static StreamingEndpointInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StreamingEndpointInner deserializedStreamingEndpointInner = new StreamingEndpointInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStreamingEndpointInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStreamingEndpointInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStreamingEndpointInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedStreamingEndpointInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStreamingEndpointInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStreamingEndpointInner.innerProperties = StreamingEndpointProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedStreamingEndpointInner.systemData = SystemData.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedStreamingEndpointInner.sku = ArmStreamingEndpointCurrentSku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStreamingEndpointInner;
+        });
     }
 }

@@ -13,8 +13,7 @@ public final class ComponentPurgeStatusResponseImpl implements ComponentPurgeSta
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    ComponentPurgeStatusResponseImpl(
-        ComponentPurgeStatusResponseInner innerObject,
+    ComponentPurgeStatusResponseImpl(ComponentPurgeStatusResponseInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

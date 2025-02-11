@@ -5,61 +5,64 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Migration Validation Database level summary result. */
+/**
+ * Migration Validation Database level summary result.
+ */
 @Immutable
-public final class MigrationValidationDatabaseSummaryResult {
+public final class MigrationValidationDatabaseSummaryResult
+    implements JsonSerializable<MigrationValidationDatabaseSummaryResult> {
     /*
      * Result identifier
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Migration Identifier
      */
-    @JsonProperty(value = "migrationId", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationId;
 
     /*
      * Name of the source database
      */
-    @JsonProperty(value = "sourceDatabaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceDatabaseName;
 
     /*
      * Name of the target database
      */
-    @JsonProperty(value = "targetDatabaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetDatabaseName;
 
     /*
      * Validation start time
      */
-    @JsonProperty(value = "startedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedOn;
 
     /*
      * Validation end time
      */
-    @JsonProperty(value = "endedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endedOn;
 
     /*
      * Current status of validation at the database level
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
 
-    /** Creates an instance of MigrationValidationDatabaseSummaryResult class. */
+    /**
+     * Creates an instance of MigrationValidationDatabaseSummaryResult class.
+     */
     public MigrationValidationDatabaseSummaryResult() {
     }
 
     /**
      * Get the id property: Result identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -68,7 +71,7 @@ public final class MigrationValidationDatabaseSummaryResult {
 
     /**
      * Get the migrationId property: Migration Identifier.
-     *
+     * 
      * @return the migrationId value.
      */
     public String migrationId() {
@@ -77,7 +80,7 @@ public final class MigrationValidationDatabaseSummaryResult {
 
     /**
      * Get the sourceDatabaseName property: Name of the source database.
-     *
+     * 
      * @return the sourceDatabaseName value.
      */
     public String sourceDatabaseName() {
@@ -86,7 +89,7 @@ public final class MigrationValidationDatabaseSummaryResult {
 
     /**
      * Get the targetDatabaseName property: Name of the target database.
-     *
+     * 
      * @return the targetDatabaseName value.
      */
     public String targetDatabaseName() {
@@ -95,7 +98,7 @@ public final class MigrationValidationDatabaseSummaryResult {
 
     /**
      * Get the startedOn property: Validation start time.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -104,7 +107,7 @@ public final class MigrationValidationDatabaseSummaryResult {
 
     /**
      * Get the endedOn property: Validation end time.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -113,7 +116,7 @@ public final class MigrationValidationDatabaseSummaryResult {
 
     /**
      * Get the status property: Current status of validation at the database level.
-     *
+     * 
      * @return the status value.
      */
     public ValidationStatus status() {
@@ -122,9 +125,60 @@ public final class MigrationValidationDatabaseSummaryResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationValidationDatabaseSummaryResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationValidationDatabaseSummaryResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrationValidationDatabaseSummaryResult.
+     */
+    public static MigrationValidationDatabaseSummaryResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationValidationDatabaseSummaryResult deserializedMigrationValidationDatabaseSummaryResult
+                = new MigrationValidationDatabaseSummaryResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrationValidationDatabaseSummaryResult.id = reader.getString();
+                } else if ("migrationId".equals(fieldName)) {
+                    deserializedMigrationValidationDatabaseSummaryResult.migrationId = reader.getString();
+                } else if ("sourceDatabaseName".equals(fieldName)) {
+                    deserializedMigrationValidationDatabaseSummaryResult.sourceDatabaseName = reader.getString();
+                } else if ("targetDatabaseName".equals(fieldName)) {
+                    deserializedMigrationValidationDatabaseSummaryResult.targetDatabaseName = reader.getString();
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedMigrationValidationDatabaseSummaryResult.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedMigrationValidationDatabaseSummaryResult.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedMigrationValidationDatabaseSummaryResult.status
+                        = ValidationStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationValidationDatabaseSummaryResult;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class CatalogConnectionState extends ExpandableStringEnum<CatalogCo
      * @param name a name to look for.
      * @return the corresponding CatalogConnectionState.
      */
-    @JsonCreator
     public static CatalogConnectionState fromString(String name) {
         return fromString(name, CatalogConnectionState.class);
     }

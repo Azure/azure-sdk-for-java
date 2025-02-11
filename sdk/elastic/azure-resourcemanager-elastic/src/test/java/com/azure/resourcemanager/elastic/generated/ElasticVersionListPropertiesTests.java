@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ElasticVersionListPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticVersionListProperties model =
-            BinaryData.fromString("{\"version\":\"ougpbkwt\"}").toObject(ElasticVersionListProperties.class);
-        Assertions.assertEquals("ougpbkwt", model.version());
+        ElasticVersionListProperties model
+            = BinaryData.fromString("{\"version\":\"oqvuhr\"}").toObject(ElasticVersionListProperties.class);
+        Assertions.assertEquals("oqvuhr", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticVersionListProperties model = new ElasticVersionListProperties().withVersion("ougpbkwt");
+        ElasticVersionListProperties model = new ElasticVersionListProperties().withVersion("oqvuhr");
         model = BinaryData.fromObject(model).toObject(ElasticVersionListProperties.class);
-        Assertions.assertEquals("ougpbkwt", model.version());
+        Assertions.assertEquals("oqvuhr", model.version());
     }
 }

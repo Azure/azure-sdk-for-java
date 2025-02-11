@@ -23,7 +23,7 @@ public final class PrivateLinkScopesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"ybmrqbrjbbmp\",\"privateLinkScopeId\":\"lvykfrex\",\"privateEndpointConnections\":[{\"id\":\"qwjksghudgz\",\"name\":\"ogjggsvoujkxibda\",\"type\":\"rkmdyom\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"vfb\",\"description\":\"dy\"},\"provisioningState\":\"hpwpgddeimawzovg\",\"groupIds\":[\"muikjcjcaztbws\"]}}]},\"location\":\"qowxwcom\",\"tags\":{\"yfdvlvhbwrnfxtgd\":\"ytwvczcswkacve\",\"kcoeqswank\":\"pqthehnmnaoya\"},\"id\":\"t\",\"name\":\"tmhdroznnhdr\",\"type\":\"ktgj\"}]}";
+            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"tywikd\",\"privateLinkScopeId\":\"lakuflgbhgauacd\",\"privateEndpointConnections\":[{\"id\":\"ufr\",\"name\":\"yjq\",\"type\":\"kfnozoeoqbvj\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"gwbmqj\",\"description\":\"hntasfaymx\"},\"provisioningState\":\"lpzealbmqkyojwyv\",\"groupIds\":[\"btsuahxs\",\"xjcmmzrrsc\",\"biwsd\"]}}]},\"location\":\"pxqwo\",\"tags\":{\"ogjo\":\"fjxcjrmmuabwibv\",\"in\":\"mcyefoyzbam\",\"boclzhzjknyuxgv\":\"ofvfkakpoldtve\",\"mrdixtreki\":\"txpnrupza\"},\"id\":\"swyskbruffg\",\"name\":\"lukkutvlxhrpqhvm\",\"type\":\"lcouqehbhbcdszir\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class PrivateLinkScopesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<HybridComputePrivateLinkScope> response
-            = manager.privateLinkScopes().listByResourceGroup("sinuqtljqobbpih", com.azure.core.util.Context.NONE);
+            = manager.privateLinkScopes().listByResourceGroup("v", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qowxwcom", response.iterator().next().location());
-        Assertions.assertEquals("ytwvczcswkacve", response.iterator().next().tags().get("yfdvlvhbwrnfxtgd"));
+        Assertions.assertEquals("pxqwo", response.iterator().next().location());
+        Assertions.assertEquals("fjxcjrmmuabwibv", response.iterator().next().tags().get("ogjo"));
         Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER,
             response.iterator().next().properties().publicNetworkAccess());
     }

@@ -7,6 +7,7 @@ import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -92,6 +93,13 @@ public final class ByteArrayContent extends BinaryDataContent {
         }
 
         return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
+    }
+
+    @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
+
+        jsonWriter.writeBinary(toBytes());
     }
 
     @Override

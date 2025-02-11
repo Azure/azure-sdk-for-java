@@ -12,7 +12,6 @@ import com.azure.core.annotation.Fluent;
  * @param <InnerT> the inner, auto-generated implementation logic object type
  */
 @Fluent
-public interface IndependentChildResource<ManagerT, InnerT> extends
-        GroupableResource<ManagerT, InnerT>,
-        IndependentChild<ManagerT> {
+public interface IndependentChildResource<ManagerT, InnerT>
+    extends GroupableResource<ManagerT, InnerT>, IndependentChild<ManagerT> {
 }

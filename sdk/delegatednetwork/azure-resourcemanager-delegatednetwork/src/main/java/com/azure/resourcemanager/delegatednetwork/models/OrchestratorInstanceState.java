@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current state of orchestratorInstance resource. */
+/**
+ * The current state of orchestratorInstance resource.
+ */
 public final class OrchestratorInstanceState extends ExpandableStringEnum<OrchestratorInstanceState> {
-    /** Static value Deleting for OrchestratorInstanceState. */
+    /**
+     * Static value Deleting for OrchestratorInstanceState.
+     */
     public static final OrchestratorInstanceState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for OrchestratorInstanceState. */
+    /**
+     * Static value Succeeded for OrchestratorInstanceState.
+     */
     public static final OrchestratorInstanceState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for OrchestratorInstanceState. */
+    /**
+     * Static value Failed for OrchestratorInstanceState.
+     */
     public static final OrchestratorInstanceState FAILED = fromString("Failed");
 
-    /** Static value Provisioning for OrchestratorInstanceState. */
+    /**
+     * Static value Provisioning for OrchestratorInstanceState.
+     */
     public static final OrchestratorInstanceState PROVISIONING = fromString("Provisioning");
 
     /**
      * Creates a new instance of OrchestratorInstanceState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class OrchestratorInstanceState extends ExpandableStringEnum<Orches
 
     /**
      * Creates or finds a OrchestratorInstanceState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OrchestratorInstanceState.
      */
-    @JsonCreator
     public static OrchestratorInstanceState fromString(String name) {
         return fromString(name, OrchestratorInstanceState.class);
     }
 
     /**
      * Gets known OrchestratorInstanceState values.
-     *
+     * 
      * @return known OrchestratorInstanceState values.
      */
     public static Collection<OrchestratorInstanceState> values() {

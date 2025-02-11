@@ -43,8 +43,8 @@ public final class IndexActionConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.IndexAction indexAction =
-            new com.azure.search.documents.implementation.models.IndexAction().setActionType(obj.getActionType());
+        com.azure.search.documents.implementation.models.IndexAction indexAction
+            = new com.azure.search.documents.implementation.models.IndexAction().setActionType(obj.getActionType());
 
         // Attempt to get the document as the Map<String, Object> properties.
         Object document = IndexActionHelper.getProperties(obj);

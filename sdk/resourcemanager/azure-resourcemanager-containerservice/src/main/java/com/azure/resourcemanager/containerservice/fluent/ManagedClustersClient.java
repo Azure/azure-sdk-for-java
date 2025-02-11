@@ -552,6 +552,8 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifNoneMatch The request should only proceed if no entity matches this string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -559,7 +561,24 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName,
-        ManagedClusterInner parameters);
+        ManagedClusterInner parameters, String ifMatch, String ifNoneMatch);
+
+    /**
+     * Creates or updates a managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters The managed cluster to create or update.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifNoneMatch The request should only proceed if no entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of managed cluster.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String resourceName, ManagedClusterInner parameters, String ifMatch, String ifNoneMatch);
 
     /**
      * Creates or updates a managed cluster.
@@ -597,6 +616,8 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifNoneMatch The request should only proceed if no entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -605,7 +626,24 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(String resourceGroupName,
-        String resourceName, ManagedClusterInner parameters, Context context);
+        String resourceName, ManagedClusterInner parameters, String ifMatch, String ifNoneMatch, Context context);
+
+    /**
+     * Creates or updates a managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters The managed cluster to create or update.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifNoneMatch The request should only proceed if no entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return managed cluster on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ManagedClusterInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        ManagedClusterInner parameters, String ifMatch, String ifNoneMatch);
 
     /**
      * Creates or updates a managed cluster.
@@ -642,6 +680,8 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifNoneMatch The request should only proceed if no entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -650,7 +690,7 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ManagedClusterInner createOrUpdate(String resourceGroupName, String resourceName, ManagedClusterInner parameters,
-        Context context);
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Updates tags on a managed cluster.
@@ -658,6 +698,7 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -665,7 +706,23 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String resourceName,
-        TagsObject parameters);
+        TagsObject parameters, String ifMatch);
+
+    /**
+     * Updates tags on a managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of managed cluster.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTagsAsync(String resourceGroupName,
+        String resourceName, TagsObject parameters, String ifMatch);
 
     /**
      * Updates tags on a managed cluster.
@@ -703,6 +760,7 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -711,7 +769,23 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(String resourceGroupName,
-        String resourceName, TagsObject parameters, Context context);
+        String resourceName, TagsObject parameters, String ifMatch, Context context);
+
+    /**
+     * Updates tags on a managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return managed cluster on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ManagedClusterInner> updateTagsAsync(String resourceGroupName, String resourceName, TagsObject parameters,
+        String ifMatch);
 
     /**
      * Updates tags on a managed cluster.
@@ -747,6 +821,7 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -754,7 +829,7 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedClusterInner updateTags(String resourceGroupName, String resourceName, TagsObject parameters,
+    ManagedClusterInner updateTags(String resourceGroupName, String resourceName, TagsObject parameters, String ifMatch,
         Context context);
 
     /**
@@ -762,13 +837,29 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String ifMatch);
+
+    /**
+     * Deletes a managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName, String ifMatch);
 
     /**
      * Deletes a managed cluster.
@@ -801,6 +892,7 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -808,7 +900,22 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String ifMatch,
+        Context context);
+
+    /**
+     * Deletes a managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String ifMatch);
 
     /**
      * Deletes a managed cluster.
@@ -840,13 +947,14 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName, Context context);
+    void delete(String resourceGroupName, String resourceName, String ifMatch, Context context);
 
     /**
      * Reset the Service Principal Profile of a managed cluster.

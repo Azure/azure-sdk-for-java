@@ -39,11 +39,8 @@ public final class ChangeThresholdCondition {
      *     suppressing the reporting of individual anomalies helps to avoid noises, especially if the metrics
      *     have fine granularity.
      */
-    public ChangeThresholdCondition(double changePercentage,
-                                    int shiftPoint,
-                                    boolean isWithinRage,
-                                    AnomalyDetectorDirection detectorDirection,
-                                    SuppressCondition suppressCondition) {
+    public ChangeThresholdCondition(double changePercentage, int shiftPoint, boolean isWithinRage,
+        AnomalyDetectorDirection detectorDirection, SuppressCondition suppressCondition) {
         this.changePercentage = changePercentage;
         this.shiftPoint = shiftPoint;
         this.isWithinRange = isWithinRage;

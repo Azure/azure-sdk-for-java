@@ -16,7 +16,7 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"attpngjcrcczsq\":{\"principalId\":\"83ba8a45-e88e-42eb-9bb5-92531893cd59\",\"clientId\":\"89f4e168-009b-4be5-ba63-1a484c447309\"}}}")
+            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"attpngjcrcczsq\":{\"principalId\":\"109f5479-4a65-4a59-93ab-f55c34942428\",\"clientId\":\"85556be5-7215-4c7b-b230-c0cdec721ccc\"}}}")
             .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }

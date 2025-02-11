@@ -69,6 +69,11 @@ public final class TablesConstants {
         Arrays.asList(ODATA_EDIT_LINK_KEY, ODATA_ETAG_KEY, ODATA_ID_KEY, ODATA_METADATA_KEY, ODATA_TYPE_KEY)));
 
     /**
+     * Scope for Cosmos endpoints.
+     */
+    public static final String COSMOS_SCOPE = "https://cosmos.azure.com/.default";
+
+    /**
      * Private constructor so this class cannot be instantiated.
      */
     private TablesConstants() {

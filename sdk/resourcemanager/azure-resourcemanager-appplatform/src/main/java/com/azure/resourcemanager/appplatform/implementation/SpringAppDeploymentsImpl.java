@@ -16,9 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
-public class SpringAppDeploymentsImpl
-    extends ExternalChildResourcesNonCachedImpl<
-        SpringAppDeploymentImpl, SpringAppDeployment, DeploymentResourceInner, SpringAppImpl, SpringApp>
+public class SpringAppDeploymentsImpl extends
+    ExternalChildResourcesNonCachedImpl<SpringAppDeploymentImpl, SpringAppDeployment, DeploymentResourceInner, SpringAppImpl, SpringApp>
     implements SpringAppDeployments<SpringAppDeploymentImpl> {
 
     SpringAppDeploymentsImpl(SpringAppImpl parent) {
@@ -78,8 +77,8 @@ public class SpringAppDeploymentsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return inner().deleteAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name);
+        return inner().deleteAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(),
+            name);
     }
 
     @Override
@@ -89,7 +88,8 @@ public class SpringAppDeploymentsImpl
 
     @Override
     public PagedFlux<SpringAppDeployment> listAsync() {
-        return PagedConverter.mapPage(inner().listAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name()),
+        return PagedConverter.mapPage(
+            inner().listAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name()),
             this::wrapModel);
     }
 

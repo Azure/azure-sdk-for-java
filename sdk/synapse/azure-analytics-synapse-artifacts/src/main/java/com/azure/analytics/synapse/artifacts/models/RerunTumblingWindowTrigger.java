@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -45,6 +46,11 @@ public class RerunTumblingWindowTrigger extends Trigger {
      * The max number of parallel time windows (ready for execution) for which a rerun is triggered.
      */
     private int rerunConcurrency;
+
+    /*
+     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
+     */
+    private TriggerRuntimeState runtimeState;
 
     /**
      * Creates an instance of RerunTumblingWindowTrigger class.
@@ -149,6 +155,17 @@ public class RerunTumblingWindowTrigger extends Trigger {
     }
 
     /**
+     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
+     * the Trigger.
+     * 
+     * @return the runtimeState value.
+     */
+    @Override
+    public TriggerRuntimeState getRuntimeState() {
+        return this.runtimeState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -215,8 +232,8 @@ public class RerunTumblingWindowTrigger extends Trigger {
                 if ("description".equals(fieldName)) {
                     deserializedRerunTumblingWindowTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedRerunTumblingWindowTrigger
-                        .setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                    deserializedRerunTumblingWindowTrigger.runtimeState
+                        = TriggerRuntimeState.fromString(reader.getString());
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedRerunTumblingWindowTrigger.setAnnotations(annotations);
@@ -230,11 +247,11 @@ public class RerunTumblingWindowTrigger extends Trigger {
                         if ("parentTrigger".equals(fieldName)) {
                             deserializedRerunTumblingWindowTrigger.parentTrigger = reader.readUntyped();
                         } else if ("requestedStartTime".equals(fieldName)) {
-                            deserializedRerunTumblingWindowTrigger.requestedStartTime
-                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            deserializedRerunTumblingWindowTrigger.requestedStartTime = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                         } else if ("requestedEndTime".equals(fieldName)) {
-                            deserializedRerunTumblingWindowTrigger.requestedEndTime
-                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            deserializedRerunTumblingWindowTrigger.requestedEndTime = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                         } else if ("rerunConcurrency".equals(fieldName)) {
                             deserializedRerunTumblingWindowTrigger.rerunConcurrency = reader.getInt();
                         } else {

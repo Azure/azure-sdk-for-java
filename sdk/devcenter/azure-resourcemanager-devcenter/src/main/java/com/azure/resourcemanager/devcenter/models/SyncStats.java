@@ -5,54 +5,51 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Stats of the synchronization.
  */
 @Fluent
-public final class SyncStats {
+public final class SyncStats implements JsonSerializable<SyncStats> {
     /*
      * Count of catalog items added during synchronization.
      */
-    @JsonProperty(value = "added", access = JsonProperty.Access.WRITE_ONLY)
     private Integer added;
 
     /*
      * Count of catalog items updated during synchronization.
      */
-    @JsonProperty(value = "updated", access = JsonProperty.Access.WRITE_ONLY)
     private Integer updated;
 
     /*
      * Count of catalog items that were unchanged during synchronization.
      */
-    @JsonProperty(value = "unchanged", access = JsonProperty.Access.WRITE_ONLY)
     private Integer unchanged;
 
     /*
      * Count of catalog items removed during synchronization.
      */
-    @JsonProperty(value = "removed", access = JsonProperty.Access.WRITE_ONLY)
     private Integer removed;
 
     /*
      * Count of catalog items that had validation errors during synchronization.
      */
-    @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private Integer validationErrors;
 
     /*
      * Count of synchronization errors that occured during synchronization.
      */
-    @JsonProperty(value = "synchronizationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private Integer synchronizationErrors;
 
     /*
      * Indicates catalog item types that were synced.
      */
-    @JsonProperty(value = "syncedCatalogItemTypes")
     private List<CatalogItemType> syncedCatalogItemTypes;
 
     /**
@@ -141,5 +138,56 @@ public final class SyncStats {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("syncedCatalogItemTypes", this.syncedCatalogItemTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncStats from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncStats if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SyncStats.
+     */
+    public static SyncStats fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncStats deserializedSyncStats = new SyncStats();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("added".equals(fieldName)) {
+                    deserializedSyncStats.added = reader.getNullable(JsonReader::getInt);
+                } else if ("updated".equals(fieldName)) {
+                    deserializedSyncStats.updated = reader.getNullable(JsonReader::getInt);
+                } else if ("unchanged".equals(fieldName)) {
+                    deserializedSyncStats.unchanged = reader.getNullable(JsonReader::getInt);
+                } else if ("removed".equals(fieldName)) {
+                    deserializedSyncStats.removed = reader.getNullable(JsonReader::getInt);
+                } else if ("validationErrors".equals(fieldName)) {
+                    deserializedSyncStats.validationErrors = reader.getNullable(JsonReader::getInt);
+                } else if ("synchronizationErrors".equals(fieldName)) {
+                    deserializedSyncStats.synchronizationErrors = reader.getNullable(JsonReader::getInt);
+                } else if ("syncedCatalogItemTypes".equals(fieldName)) {
+                    List<CatalogItemType> syncedCatalogItemTypes
+                        = reader.readArray(reader1 -> CatalogItemType.fromString(reader1.getString()));
+                    deserializedSyncStats.syncedCatalogItemTypes = syncedCatalogItemTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncStats;
+        });
     }
 }

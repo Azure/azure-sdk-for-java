@@ -11,19 +11,19 @@ public final class AzureBlobFSSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSSource model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobFSSource\",\"treatEmptyAsNull\":\"datadexnicq\",\"skipHeaderLineCount\":\"datafqttfqgdoowgqooi\",\"recursive\":\"datahsvsnedhkji\",\"sourceRetryCount\":\"datavetwf\",\"sourceRetryWait\":\"dataqvflrrtj\",\"maxConcurrentConnections\":\"dataikqzd\",\"disableMetricsCollection\":\"dataqalxpmiytpjis\",\"\":{\"pvlsljutawg\":\"dataolkw\",\"ehlopipvpeaeyj\":\"datalnodrfc\",\"vcbm\":\"datayxduxhopy\",\"qxjoazyxmum\":\"dataembvfa\"}}")
+            "{\"type\":\"AzureBlobFSSource\",\"treatEmptyAsNull\":\"databtuujcuavctxyrm\",\"skipHeaderLineCount\":\"datahrzmy\",\"recursive\":\"datan\",\"sourceRetryCount\":\"dataajxv\",\"sourceRetryWait\":\"dataidlwmewrgu\",\"maxConcurrentConnections\":\"dataugpkunvygupgnnvm\",\"disableMetricsCollection\":\"datazqmxwwmekms\",\"\":{\"x\":\"datajbefszfrxfywjy\",\"mykgrtwh\":\"dataqmdeecdhyjsizyhp\",\"hismw\":\"dataa\"}}")
             .toObject(AzureBlobFSSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSSource model = new AzureBlobFSSource().withSourceRetryCount("datavetwf")
-            .withSourceRetryWait("dataqvflrrtj")
-            .withMaxConcurrentConnections("dataikqzd")
-            .withDisableMetricsCollection("dataqalxpmiytpjis")
-            .withTreatEmptyAsNull("datadexnicq")
-            .withSkipHeaderLineCount("datafqttfqgdoowgqooi")
-            .withRecursive("datahsvsnedhkji");
+        AzureBlobFSSource model = new AzureBlobFSSource().withSourceRetryCount("dataajxv")
+            .withSourceRetryWait("dataidlwmewrgu")
+            .withMaxConcurrentConnections("dataugpkunvygupgnnvm")
+            .withDisableMetricsCollection("datazqmxwwmekms")
+            .withTreatEmptyAsNull("databtuujcuavctxyrm")
+            .withSkipHeaderLineCount("datahrzmy")
+            .withRecursive("datan");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSSource.class);
     }
 }

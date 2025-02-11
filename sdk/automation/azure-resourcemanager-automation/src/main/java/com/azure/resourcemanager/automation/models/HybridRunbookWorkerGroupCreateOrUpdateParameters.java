@@ -5,27 +5,38 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.HybridRunbookWorkerGroupCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters supplied to the create hybrid runbook worker group operation. */
+/**
+ * The parameters supplied to the create hybrid runbook worker group operation.
+ */
 @Fluent
-public final class HybridRunbookWorkerGroupCreateOrUpdateParameters {
+public final class HybridRunbookWorkerGroupCreateOrUpdateParameters
+    implements JsonSerializable<HybridRunbookWorkerGroupCreateOrUpdateParameters> {
     /*
      * Gets or sets hybrid runbook worker group create or update properties.
      */
-    @JsonProperty(value = "properties")
     private HybridRunbookWorkerGroupCreateOrUpdateProperties innerProperties;
 
     /*
      * Gets or sets the name of the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
+     * Creates an instance of HybridRunbookWorkerGroupCreateOrUpdateParameters class.
+     */
+    public HybridRunbookWorkerGroupCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Gets or sets hybrid runbook worker group create or update properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HybridRunbookWorkerGroupCreateOrUpdateProperties innerProperties() {
@@ -34,7 +45,7 @@ public final class HybridRunbookWorkerGroupCreateOrUpdateParameters {
 
     /**
      * Get the name property: Gets or sets the name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +54,7 @@ public final class HybridRunbookWorkerGroupCreateOrUpdateParameters {
 
     /**
      * Set the name property: Gets or sets the name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the HybridRunbookWorkerGroupCreateOrUpdateParameters object itself.
      */
@@ -54,7 +65,7 @@ public final class HybridRunbookWorkerGroupCreateOrUpdateParameters {
 
     /**
      * Get the credential property: Sets the credential of a worker group.
-     *
+     * 
      * @return the credential value.
      */
     public RunAsCredentialAssociationProperty credential() {
@@ -63,12 +74,12 @@ public final class HybridRunbookWorkerGroupCreateOrUpdateParameters {
 
     /**
      * Set the credential property: Sets the credential of a worker group.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the HybridRunbookWorkerGroupCreateOrUpdateParameters object itself.
      */
-    public HybridRunbookWorkerGroupCreateOrUpdateParameters withCredential(
-        RunAsCredentialAssociationProperty credential) {
+    public HybridRunbookWorkerGroupCreateOrUpdateParameters
+        withCredential(RunAsCredentialAssociationProperty credential) {
         if (this.innerProperties() == null) {
             this.innerProperties = new HybridRunbookWorkerGroupCreateOrUpdateProperties();
         }
@@ -78,12 +89,53 @@ public final class HybridRunbookWorkerGroupCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HybridRunbookWorkerGroupCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HybridRunbookWorkerGroupCreateOrUpdateParameters if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HybridRunbookWorkerGroupCreateOrUpdateParameters.
+     */
+    public static HybridRunbookWorkerGroupCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HybridRunbookWorkerGroupCreateOrUpdateParameters deserializedHybridRunbookWorkerGroupCreateOrUpdateParameters
+                = new HybridRunbookWorkerGroupCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedHybridRunbookWorkerGroupCreateOrUpdateParameters.innerProperties
+                        = HybridRunbookWorkerGroupCreateOrUpdateProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedHybridRunbookWorkerGroupCreateOrUpdateParameters.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHybridRunbookWorkerGroupCreateOrUpdateParameters;
+        });
     }
 }

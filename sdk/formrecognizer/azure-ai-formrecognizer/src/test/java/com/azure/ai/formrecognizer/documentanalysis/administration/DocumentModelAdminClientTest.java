@@ -48,19 +48,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DocumentModelAdminClientTest extends DocumentModelAdministrationClientTestBase {
     private DocumentModelAdministrationClient client;
+
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
+        return new AssertingHttpClientBuilder(httpClient).skipRequest((ignored1, ignored2) -> false)
             .assertSync()
             .build();
     }
+
     private DocumentModelAdministrationClient getDocumentModelAdministrationClient(HttpClient httpClient,
-                                                                                   DocumentAnalysisServiceVersion serviceVersion) {
+        DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentModelAdminClientBuilder(
-            buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
-            serviceVersion
-        )
-            .buildClient();
+            buildSyncAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
+            serviceVersion).buildClient();
     }
 
     /**
@@ -69,14 +69,13 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void getDocumentAnalysisClientAndValidate(HttpClient httpClient,
-                                                     DocumentAnalysisServiceVersion serviceVersion) {
-        DocumentAnalysisClient documentAnalysisClient = getDocumentModelAdministrationClient(httpClient, serviceVersion)
-            .getDocumentAnalysisClient();
+        DocumentAnalysisServiceVersion serviceVersion) {
+        DocumentAnalysisClient documentAnalysisClient
+            = getDocumentModelAdministrationClient(httpClient, serviceVersion).getDocumentAnalysisClient();
         blankPdfDataRunner((data, dataLength) -> {
-            SyncPoller<OperationResult, AnalyzeResult> syncPoller =
-                documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout",
-                    BinaryData.fromStream(data, dataLength))
-                        .setPollInterval(durationTestMode);
+            SyncPoller<OperationResult, AnalyzeResult> syncPoller = documentAnalysisClient
+                .beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data, dataLength))
+                .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             assertNotNull(syncPoller.getFinalResult());
         });
@@ -89,8 +88,8 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void getModelNonExistingModelID(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
-        HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-            client.getDocumentModel(NON_EXIST_MODEL_ID));
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> client.getDocumentModel(NON_EXIST_MODEL_ID));
         final ResponseError responseError = (ResponseError) exception.getValue();
         assertEquals("NotFound", responseError.getCode());
     }
@@ -103,12 +102,12 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     public void getModelWithResponse(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingDataSasUrl) -> {
-            DocumentModelDetails documentModelDetails =
-                client.beginBuildDocumentModel(trainingDataSasUrl, DocumentModelBuildMode.TEMPLATE)
-                    .setPollInterval(durationTestMode).getFinalResult();
-            Response<DocumentModelDetails> documentModelResponse =
-                client.getDocumentModelWithResponse(documentModelDetails.getModelId(),
-                    Context.NONE);
+            DocumentModelDetails documentModelDetails
+                = client.beginBuildDocumentModel(trainingDataSasUrl, DocumentModelBuildMode.TEMPLATE)
+                    .setPollInterval(durationTestMode)
+                    .getFinalResult();
+            Response<DocumentModelDetails> documentModelResponse
+                = client.getDocumentModelWithResponse(documentModelDetails.getModelId(), Context.NONE);
             client.deleteDocumentModel(documentModelDetails.getModelId());
 
             assertEquals(documentModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
@@ -132,7 +131,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void validGetResourceDetailsWithResponse(HttpClient httpClient,
-                                                    DocumentAnalysisServiceVersion serviceVersion) {
+        DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         Response<ResourceDetails> resourceDetailsResponse = client.getResourceDetailsWithResponse(Context.NONE);
         assertEquals(resourceDetailsResponse.getStatusCode(), HttpResponseStatus.OK.code());
@@ -146,8 +145,8 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void deleteModelNonExistingModelID(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
-        HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-            client.deleteDocumentModel(NON_EXIST_MODEL_ID));
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> client.deleteDocumentModel(NON_EXIST_MODEL_ID));
         final ResponseError responseError = (ResponseError) exception.getValue();
         assertEquals("NotFound", responseError.getCode());
     }
@@ -155,11 +154,11 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void deleteModelValidModelIDWithResponse(HttpClient httpClient,
-                                                    DocumentAnalysisServiceVersion serviceVersion) {
+        DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingDataSasUrl) -> {
-            SyncPoller<OperationResult, DocumentModelDetails> syncPoller =
-                client.beginBuildDocumentModel(trainingDataSasUrl, DocumentModelBuildMode.TEMPLATE)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller
+                = client.beginBuildDocumentModel(trainingDataSasUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             DocumentModelDetails createdModel = syncPoller.getFinalResult();
@@ -168,8 +167,8 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
                 = client.deleteDocumentModelWithResponse(createdModel.getModelId(), Context.NONE);
 
             assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
-            final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-                client.getDocumentModelWithResponse(createdModel.getModelId(), Context.NONE));
+            final HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () -> client.getDocumentModelWithResponse(createdModel.getModelId(), Context.NONE));
             final ResponseError responseError = (ResponseError) exception.getValue();
             assertEquals("NotFound", responseError.getCode());
         });
@@ -183,7 +182,8 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     public void listModels(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         int pageCount = 0;
-        for (PagedResponse<DocumentModelSummary> documentModelSummaryPagedResponse : client.listDocumentModels().iterableByPage()) {
+        for (PagedResponse<DocumentModelSummary> documentModelSummaryPagedResponse : client.listDocumentModels()
+            .iterableByPage()) {
             List<DocumentModelSummary> modelInfoList = documentModelSummaryPagedResponse.getValue();
             modelInfoList.forEach(documentModelSummary -> {
                 assertNotNull(documentModelSummary.getModelId());
@@ -205,8 +205,9 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     public void listModelsWithContext(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         int pageCount = 0;
-        for (PagedResponse<DocumentModelSummary> documentModelSummaryPagedResponse
-            : client.listDocumentModels(Context.NONE).iterableByPage()) {
+        for (PagedResponse<DocumentModelSummary> documentModelSummaryPagedResponse : client
+            .listDocumentModels(Context.NONE)
+            .iterableByPage()) {
             List<DocumentModelSummary> modelInfoList = documentModelSummaryPagedResponse.getValue();
             modelInfoList.forEach(documentModelSummary -> {
                 assertNotNull(documentModelSummary.getModelId());
@@ -228,17 +229,15 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     public void beginCopy(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<OperationResult, DocumentModelDetails> syncPoller =
-                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller
+                = client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             DocumentModelDetails actualModel = syncPoller.getFinalResult();
 
-            DocumentModelCopyAuthorization target =
-                client.getCopyAuthorization();
-            SyncPoller<OperationResult, DocumentModelDetails>
-                copyPoller = client.beginCopyDocumentModelTo(actualModel.getModelId(), target)
-                .setPollInterval(durationTestMode);
+            DocumentModelCopyAuthorization target = client.getCopyAuthorization();
+            SyncPoller<OperationResult, DocumentModelDetails> copyPoller
+                = client.beginCopyDocumentModelTo(actualModel.getModelId(), target).setPollInterval(durationTestMode);
             DocumentModelDetails copiedModel = copyPoller.getFinalResult();
 
             Assertions.assertEquals(target.getTargetModelId(), copiedModel.getModelId());
@@ -263,11 +262,11 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void beginBuildModelWithJPGTrainingSet(HttpClient httpClient,
-                                                  DocumentAnalysisServiceVersion serviceVersion) {
+        DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller =
-                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+            SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller
+                = client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
 
@@ -281,11 +280,11 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void beginBuildModelWithMultiPagePDFTrainingSet(HttpClient httpClient,
-                                                           DocumentAnalysisServiceVersion serviceVersion) {
+        DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         multipageTrainingRunner(trainingFilesUrl -> {
-            SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller =
-                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+            SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller
+                = client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
 
@@ -300,19 +299,17 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void beginBuildModelFailsWithInvalidPrefix(HttpClient httpClient,
-                                                      DocumentAnalysisServiceVersion serviceVersion) {
+        DocumentAnalysisServiceVersion serviceVersion) {
 
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-                client.beginBuildDocumentModel(trainingFilesUrl,
-                        DocumentModelBuildMode.TEMPLATE,
-                        "invalidPrefix",
-                        null,
+            HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () -> client
+                    .beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "invalidPrefix", null,
                         Context.NONE)
                     .setPollInterval(durationTestMode));
 
-            final ResponseError responseError  = (ResponseError) exception.getValue();
+            final ResponseError responseError = (ResponseError) exception.getValue();
             assertEquals("InvalidRequest", responseError.getCode());
         });
     }
@@ -324,11 +321,13 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void beginBuildModelIncludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
-                                                                      DocumentAnalysisServiceVersion serviceVersion) {
+        DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         multipageTrainingRunner(trainingFilesUrl -> {
-            HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "subfolders", null, Context.NONE)
+            HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () -> client
+                    .beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "subfolders", null,
+                        Context.NONE)
                     .setPollInterval(durationTestMode));
 
             final ResponseError responseError = (ResponseError) exception.getValue();
@@ -342,11 +341,12 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void beginBuildModelWithJsonLTrainingSet(HttpClient httpClient,
-                                                           DocumentAnalysisServiceVersion serviceVersion) {
+        DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         selectionMarkTrainingRunner(trainingFilesUrl -> {
-            SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller =
-                client.beginBuildDocumentModel(new BlobFileListContentSource(trainingFilesUrl, "filelist.jsonl"),
+            SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller
+                = client
+                    .beginBuildDocumentModel(new BlobFileListContentSource(trainingFilesUrl, "filelist.jsonl"),
                         DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
@@ -363,24 +363,29 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     public void beginCreateComposedModel(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
-                        new BuildDocumentModelOptions().setModelId("sync_component_model_1" + UUID.randomUUID()), Context.NONE)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1
+                = client
+                    .beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
+                        new BuildDocumentModelOptions().setModelId("sync_component_model_1" + UUID.randomUUID()),
+                        Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
 
-            SyncPoller<OperationResult, DocumentModelDetails> syncPoller2 =
-                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
-                        new BuildDocumentModelOptions().setModelId("sync_component_model_2" + UUID.randomUUID()), Context.NONE)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller2
+                = client
+                    .beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
+                        new BuildDocumentModelOptions().setModelId("sync_component_model_2" + UUID.randomUUID()),
+                        Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller2.waitForCompletion();
             DocumentModelDetails createdModel2 = syncPoller2.getFinalResult();
 
             final List<String> modelIDList = Arrays.asList(createdModel1.getModelId(), createdModel2.getModelId());
 
-            DocumentModelDetails composedModel =
-                client.beginComposeDocumentModel(modelIDList,
+            DocumentModelDetails composedModel
+                = client
+                    .beginComposeDocumentModel(modelIDList,
                         new ComposeDocumentModelOptions().setModelId("sync_java_composed_model" + UUID.randomUUID())
                             .setDescription("test desc"),
                         Context.NONE)
@@ -410,36 +415,29 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void beginBuildClassifier(HttpClient httpClient,
-                                                  DocumentAnalysisServiceVersion serviceVersion) {
+    public void beginBuildClassifier(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         beginClassifierRunner((trainingFilesUrl) -> {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
-            documentTypeDetailsMap.put("IRS-1040-A",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")
-                ));
-            documentTypeDetailsMap.put("IRS-1040-B",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")
-                ));
-            documentTypeDetailsMap.put("IRS-1040-C",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")
-                ));
-            documentTypeDetailsMap.put("IRS-1040-D",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")
-                ));
-            documentTypeDetailsMap.put("IRS-1040-E",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")
-                ));
-            SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
-                client.beginBuildDocumentClassifier(documentTypeDetailsMap)
-                    .setPollInterval(durationTestMode);
+            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails(
+                new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
+            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails(
+                new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
+            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails(
+                new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
+            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails(
+                new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
+            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails(
+                new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
+            SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller
+                = client.beginBuildDocumentClassifier(documentTypeDetailsMap).setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             validateClassifierModelData(documentClassifierDetails);
-            documentClassifierDetails.getDocumentTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertNotNull(((BlobContentSource) classifierDocumentTypeDetails.getContentSource())
-                .getContainerUrl()));
+            documentClassifierDetails.getDocumentTypes()
+                .forEach((s, classifierDocumentTypeDetails) -> assertNotNull(
+                    ((BlobContentSource) classifierDocumentTypeDetails.getContentSource()).getContainerUrl()));
         });
     }
 
@@ -449,37 +447,31 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void beginBuildClassifierWithJsonL(HttpClient httpClient,
-                                     DocumentAnalysisServiceVersion serviceVersion) {
+    public void beginBuildClassifierWithJsonL(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         beginClassifierRunner((trainingFilesUrl) -> {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
             documentTypeDetailsMap.put("IRS-1040-A",
-                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-A.jsonl")
-                ));
+                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-A.jsonl")));
             documentTypeDetailsMap.put("IRS-1040-B",
-                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-B.jsonl")
-                ));
+                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-B.jsonl")));
             documentTypeDetailsMap.put("IRS-1040-C",
-                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-C.jsonl")
-                ));
+                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-C.jsonl")));
             documentTypeDetailsMap.put("IRS-1040-D",
-                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-D.jsonl")
-                ));
+                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-D.jsonl")));
             documentTypeDetailsMap.put("IRS-1040-E",
-                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-E.jsonl")
-                ));
-            SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
-                client.beginBuildDocumentClassifier(documentTypeDetailsMap,
-                        new BuildDocumentClassifierOptions().setDescription("Json L classifier model"), Context.NONE)
-                    .setPollInterval(durationTestMode);
+                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-E.jsonl")));
+            SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller = client
+                .beginBuildDocumentClassifier(documentTypeDetailsMap,
+                    new BuildDocumentClassifierOptions().setDescription("Json L classifier model"), Context.NONE)
+                .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
 
-            documentClassifierDetails.getDocumentTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertNotNull(((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource())
-                .getContainerUrl()));
+            documentClassifierDetails.getDocumentTypes()
+                .forEach((s, classifierDocumentTypeDetails) -> assertNotNull(
+                    ((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource()).getContainerUrl()));
 
             validateClassifierModelData(documentClassifierDetails);
         });

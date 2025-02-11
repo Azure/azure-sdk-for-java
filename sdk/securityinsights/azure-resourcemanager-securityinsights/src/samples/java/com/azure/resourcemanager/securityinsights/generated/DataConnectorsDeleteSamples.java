@@ -4,82 +4,24 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DataConnectors Delete. */
+/**
+ * Samples for DataConnectors Delete.
+ */
 public final class DataConnectorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DeleteOffice365ProjectDataConnetor.json
-     */
-    /**
-     * Sample code: Delete an Office365 Project data connector.
-     *
-     * @param manager Entry point to SecurityInsightsManager.
-     */
-    public static void deleteAnOffice365ProjectDataConnector(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .dataConnectors()
-            .deleteWithResponse("myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DeleteGenericUI.json
-     */
-    /**
-     * Sample code: Delete a GenericUI data connector.
-     *
-     * @param manager Entry point to SecurityInsightsManager.
-     */
-    public static void deleteAGenericUIDataConnector(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .dataConnectors()
-            .deleteWithResponse("myRg", "myWorkspace", "316ec55e-7138-4d63-ab18-90c8a60fd1c8", Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DeleteOfficeDataConnetor.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/
+     * dataConnectors/DeleteOfficeDataConnetor.json
      */
     /**
      * Sample code: Delete an Office365 data connector.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
-    public static void deleteAnOffice365DataConnector(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .dataConnectors()
-            .deleteWithResponse("myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DeleteOfficePowerBIDataConnetor.json
-     */
-    /**
-     * Sample code: Delete an Office PowerBI data connector.
-     *
-     * @param manager Entry point to SecurityInsightsManager.
-     */
-    public static void deleteAnOfficePowerBIDataConnector(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .dataConnectors()
-            .deleteWithResponse("myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DeleteAPIPolling.json
-     */
-    /**
-     * Sample code: Delete a APIPolling data connector.
-     *
-     * @param manager Entry point to SecurityInsightsManager.
-     */
-    public static void deleteAAPIPollingDataConnector(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .dataConnectors()
-            .deleteWithResponse("myRg", "myWorkspace", "316ec55e-7138-4d63-ab18-90c8a60fd1c8", Context.NONE);
+    public static void
+        deleteAnOffice365DataConnector(com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
+        manager.dataConnectors()
+            .deleteWithResponse("myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5",
+                com.azure.core.util.Context.NONE);
     }
 }

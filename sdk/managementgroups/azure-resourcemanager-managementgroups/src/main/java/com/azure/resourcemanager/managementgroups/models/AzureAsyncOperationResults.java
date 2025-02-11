@@ -6,26 +6,28 @@ package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.resourcemanager.managementgroups.fluent.models.AzureAsyncOperationResultsInner;
 
-/** An immutable client-side representation of AzureAsyncOperationResults. */
+/**
+ * An immutable client-side representation of AzureAsyncOperationResults.
+ */
 public interface AzureAsyncOperationResults {
     /**
      * Gets the id property: The fully qualified ID for the management group. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the type property: The type of the resource. For example, Microsoft.Management/managementGroups.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the name property: The name of the management group. For example, 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the name value.
      */
     String name();
@@ -33,7 +35,7 @@ public interface AzureAsyncOperationResults {
     /**
      * Gets the status property: The current status of the asynchronous operation performed . For example, Running,
      * Succeeded, Failed.
-     *
+     * 
      * @return the status value.
      */
     String status();
@@ -41,21 +43,21 @@ public interface AzureAsyncOperationResults {
     /**
      * Gets the tenantId property: The AAD Tenant ID associated with the management group. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the tenantId value.
      */
     String tenantId();
 
     /**
      * Gets the displayName property: The friendly name of the management group.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the inner com.azure.resourcemanager.managementgroups.fluent.models.AzureAsyncOperationResultsInner object.
-     *
+     * 
      * @return the inner object.
      */
     AzureAsyncOperationResultsInner innerModel();

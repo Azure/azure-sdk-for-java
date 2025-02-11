@@ -12,11 +12,13 @@ import com.azure.resourcemanager.apimanagement.fluent.models.PortalSignupSetting
 import com.azure.resourcemanager.apimanagement.models.SignUpSettingsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.SignUpSettingsGetResponse;
 
-/** An instance of this class provides access to all the operations defined in SignUpSettingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SignUpSettingsClient.
+ */
 public interface SignUpSettingsClient {
     /**
      * Gets the entity state (Etag) version of the SignUpSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -26,12 +28,12 @@ public interface SignUpSettingsClient {
      * @return the entity state (Etag) version of the SignUpSettings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SignUpSettingsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    SignUpSettingsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the SignUpSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +45,7 @@ public interface SignUpSettingsClient {
 
     /**
      * Get Sign Up Settings for the Portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -57,7 +59,7 @@ public interface SignUpSettingsClient {
 
     /**
      * Get Sign Up Settings for the Portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -70,11 +72,11 @@ public interface SignUpSettingsClient {
 
     /**
      * Update Sign-Up settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update Sign-Up settings.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,20 +85,16 @@ public interface SignUpSettingsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String ifMatch,
-        PortalSignupSettingsInner parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String serviceName, String ifMatch,
+        PortalSignupSettingsInner parameters, Context context);
 
     /**
      * Update Sign-Up settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update Sign-Up settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,7 +105,7 @@ public interface SignUpSettingsClient {
 
     /**
      * Create or Update Sign-Up settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
@@ -119,16 +117,12 @@ public interface SignUpSettingsClient {
      * @return sign-Up settings for a developer portal along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalSignupSettingsInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PortalSignupSettingsInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PortalSignupSettingsInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PortalSignupSettingsInner parameters, String ifMatch, Context context);
 
     /**
      * Create or Update Sign-Up settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
@@ -138,6 +132,6 @@ public interface SignUpSettingsClient {
      * @return sign-Up settings for a developer portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalSignupSettingsInner createOrUpdate(
-        String resourceGroupName, String serviceName, PortalSignupSettingsInner parameters);
+    PortalSignupSettingsInner createOrUpdate(String resourceGroupName, String serviceName,
+        PortalSignupSettingsInner parameters);
 }

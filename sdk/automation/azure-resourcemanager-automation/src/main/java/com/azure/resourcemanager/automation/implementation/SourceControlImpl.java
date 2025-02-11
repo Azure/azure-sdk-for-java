@@ -95,24 +95,20 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     }
 
     public SourceControl create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControls()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, sourceControlName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControls()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, sourceControlName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public SourceControl create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControls()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, sourceControlName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControls()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, sourceControlName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -129,53 +125,44 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     }
 
     public SourceControl apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControls()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, sourceControlName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControls()
+            .updateWithResponse(resourceGroupName, automationAccountName, sourceControlName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public SourceControl apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControls()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, sourceControlName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControls()
+            .updateWithResponse(resourceGroupName, automationAccountName, sourceControlName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    SourceControlImpl(
-        SourceControlInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    SourceControlImpl(SourceControlInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.sourceControlName = Utils.getValueFromIdByName(innerObject.id(), "sourceControls");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.sourceControlName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sourceControls");
     }
 
     public SourceControl refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControls()
-                .getWithResponse(resourceGroupName, automationAccountName, sourceControlName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControls()
+            .getWithResponse(resourceGroupName, automationAccountName, sourceControlName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SourceControl refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControls()
-                .getWithResponse(resourceGroupName, automationAccountName, sourceControlName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControls()
+            .getWithResponse(resourceGroupName, automationAccountName, sourceControlName, context)
+            .getValue();
         return this;
     }
 

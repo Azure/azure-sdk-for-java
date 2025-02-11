@@ -9,19 +9,22 @@ import com.azure.resourcemanager.connectedvmware.models.GuestCredential;
 import com.azure.resourcemanager.connectedvmware.models.HttpProxyConfiguration;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningAction;
 
-/** Samples for VMInstanceGuestAgents Create. */
+/**
+ * Samples for VMInstanceGuestAgents Create.
+ */
 public final class VMInstanceGuestAgentsCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateVMInstanceGuestAgent.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateVMInstanceGuestAgent.json
      */
     /**
      * Sample code: CreateGuestAgent.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void createGuestAgent(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .vMInstanceGuestAgents()
+        manager.vMInstanceGuestAgents()
             .create(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
                 new GuestAgentInner()

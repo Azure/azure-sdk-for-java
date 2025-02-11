@@ -5,21 +5,31 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Alerts data type for data connectors. */
+/**
+ * Alerts data type for data connectors.
+ */
 @Fluent
-public class AlertsDataTypeOfDataConnector {
+public class AlertsDataTypeOfDataConnector implements JsonSerializable<AlertsDataTypeOfDataConnector> {
     /*
      * Alerts data type connection.
      */
-    @JsonProperty(value = "alerts", required = true)
     private DataConnectorDataTypeCommon alerts;
 
     /**
+     * Creates an instance of AlertsDataTypeOfDataConnector class.
+     */
+    public AlertsDataTypeOfDataConnector() {
+    }
+
+    /**
      * Get the alerts property: Alerts data type connection.
-     *
+     * 
      * @return the alerts value.
      */
     public DataConnectorDataTypeCommon alerts() {
@@ -28,7 +38,7 @@ public class AlertsDataTypeOfDataConnector {
 
     /**
      * Set the alerts property: Alerts data type connection.
-     *
+     * 
      * @param alerts the alerts value to set.
      * @return the AlertsDataTypeOfDataConnector object itself.
      */
@@ -39,19 +49,49 @@ public class AlertsDataTypeOfDataConnector {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (alerts() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alerts in model AlertsDataTypeOfDataConnector"));
-        } else {
+        if (alerts() != null) {
             alerts().validate();
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AlertsDataTypeOfDataConnector.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("alerts", this.alerts);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertsDataTypeOfDataConnector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertsDataTypeOfDataConnector if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertsDataTypeOfDataConnector.
+     */
+    public static AlertsDataTypeOfDataConnector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertsDataTypeOfDataConnector deserializedAlertsDataTypeOfDataConnector
+                = new AlertsDataTypeOfDataConnector();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alerts".equals(fieldName)) {
+                    deserializedAlertsDataTypeOfDataConnector.alerts = DataConnectorDataTypeCommon.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertsDataTypeOfDataConnector;
+        });
+    }
 }

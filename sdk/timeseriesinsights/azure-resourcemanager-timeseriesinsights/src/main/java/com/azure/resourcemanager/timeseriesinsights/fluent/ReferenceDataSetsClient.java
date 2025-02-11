@@ -13,14 +13,16 @@ import com.azure.resourcemanager.timeseriesinsights.fluent.models.ReferenceDataS
 import com.azure.resourcemanager.timeseriesinsights.models.ReferenceDataSetCreateOrUpdateParameters;
 import com.azure.resourcemanager.timeseriesinsights.models.ReferenceDataSetUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in ReferenceDataSetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReferenceDataSetsClient.
+ */
 public interface ReferenceDataSetsClient {
     /**
      * Create or update a reference data set in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName Name of the reference data set.
      * @param parameters Parameters for creating a reference data set.
      * @param context The context to associate with this operation.
@@ -30,19 +32,15 @@ public interface ReferenceDataSetsClient {
      * @return a reference data set provides metadata about the events in an environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReferenceDataSetResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters,
-        Context context);
+    Response<ReferenceDataSetResourceInner> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create or update a reference data set in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName Name of the reference data set.
      * @param parameters Parameters for creating a reference data set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,20 +49,17 @@ public interface ReferenceDataSetsClient {
      * @return a reference data set provides metadata about the events in an environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReferenceDataSetResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters);
+    ReferenceDataSetResourceInner createOrUpdate(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters);
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,17 +67,17 @@ public interface ReferenceDataSetsClient {
      * @return the reference data set with the specified name in the specified environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReferenceDataSetResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context);
+    Response<ReferenceDataSetResourceInner> getWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context);
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -94,14 +89,14 @@ public interface ReferenceDataSetsClient {
     /**
      * Updates the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
-     *     data set.
+     * data set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,45 +104,39 @@ public interface ReferenceDataSetsClient {
      * @return a reference data set provides metadata about the events in an environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReferenceDataSetResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
+    Response<ReferenceDataSetResourceInner> updateWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
         Context context);
 
     /**
      * Updates the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
-     *     data set.
+     * data set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a reference data set provides metadata about the events in an environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReferenceDataSetResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
+    ReferenceDataSetResourceInner update(String resourceGroupName, String environmentName, String referenceDataSetName,
         ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters);
 
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -155,18 +144,18 @@ public interface ReferenceDataSetsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String referenceDataSetName,
+        Context context);
 
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -177,10 +166,10 @@ public interface ReferenceDataSetsClient {
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource
      * group and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -188,16 +177,16 @@ public interface ReferenceDataSetsClient {
      * @return the response of the List Reference Data Sets operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReferenceDataSetListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
+    Response<ReferenceDataSetListResponseInner> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context);
 
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource
      * group and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

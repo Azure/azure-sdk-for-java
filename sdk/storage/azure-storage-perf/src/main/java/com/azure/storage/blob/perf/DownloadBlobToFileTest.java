@@ -43,25 +43,22 @@ public class DownloadBlobToFileTest extends AbstractDownloadTest<BlobPerfStressO
             // We don't use File.deleteOnExit.
             // This would cause memory accumulation in the java.io.DeleteOnExitHook with random file names
             // and eventually take whole heap in long-running benchmarks.
-            if (!file.delete()){
+            if (!file.delete()) {
                 throw new IllegalStateException("Unable to delete test file");
             }
         }
     }
 
-
     @Override
     public Mono<Void> runAsync() {
         File file = new File(tempDir, CoreUtils.randomUuid().toString());
-        return blobAsyncClient.downloadToFile(file.getAbsolutePath())
-            .doFinally(ignored -> {
-                // We don't use File.deleteOnExit.
-                // This would cause memory accumulation in the java.io.DeleteOnExitHook with random file names
-                // and eventually take whole heap in long-running benchmarks.
-                if (!file.delete()){
-                    throw new IllegalStateException("Unable to delete test file");
-                }
-            })
-            .then();
+        return blobAsyncClient.downloadToFile(file.getAbsolutePath()).doFinally(ignored -> {
+            // We don't use File.deleteOnExit.
+            // This would cause memory accumulation in the java.io.DeleteOnExitHook with random file names
+            // and eventually take whole heap in long-running benchmarks.
+            if (!file.delete()) {
+                throw new IllegalStateException("Unable to delete test file");
+            }
+        }).then();
     }
 }

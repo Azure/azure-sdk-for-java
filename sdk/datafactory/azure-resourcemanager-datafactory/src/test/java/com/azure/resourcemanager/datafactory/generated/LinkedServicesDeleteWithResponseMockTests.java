@@ -28,7 +28,7 @@ public final class LinkedServicesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.linkedServices()
-            .deleteWithResponse("wkphiqjegeafg", "qglljcblppn", "osnvcwj", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("vlttoplxbxf", "liyikcnlb", "hxo", com.azure.core.util.Context.NONE);
 
     }
 }

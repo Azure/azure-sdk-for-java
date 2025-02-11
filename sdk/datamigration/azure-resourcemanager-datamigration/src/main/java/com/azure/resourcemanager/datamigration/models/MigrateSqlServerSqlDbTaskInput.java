@@ -6,37 +6,42 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Input for the task that migrates on-prem SQL Server databases to Azure SQL Database. */
+/**
+ * Input for the task that migrates on-prem SQL Server databases to Azure SQL Database.
+ */
 @Fluent
 public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput {
     /*
      * Databases to migrate
      */
-    @JsonProperty(value = "selectedDatabases", required = true)
     private List<MigrateSqlServerSqlDbDatabaseInput> selectedDatabases;
 
     /*
      * Options for enabling various post migration validations. Available options,
-     * 1.) Data Integrity Check: Performs a checksum based comparison on source and target tables after the migration
-     * to ensure the correctness of the data.
+     * 1.) Data Integrity Check: Performs a checksum based comparison on source and target tables after the migration to
+     * ensure the correctness of the data.
      * 2.) Schema Validation: Performs a thorough schema comparison between the source and target tables and provides a
      * list of differences between the source and target database, 3.) Query Analysis: Executes a set of queries picked
-     * up automatically either from the Query Plan Cache or Query Store and execute them and compares the execution
-     * time between the source and target database.
+     * up automatically either from the Query Plan Cache or Query Store and execute them and compares the execution time
+     * between the source and target database.
      */
-    @JsonProperty(value = "validationOptions")
     private MigrationValidationOptions validationOptions;
 
-    /** Creates an instance of MigrateSqlServerSqlDbTaskInput class. */
+    /**
+     * Creates an instance of MigrateSqlServerSqlDbTaskInput class.
+     */
     public MigrateSqlServerSqlDbTaskInput() {
     }
 
     /**
      * Get the selectedDatabases property: Databases to migrate.
-     *
+     * 
      * @return the selectedDatabases value.
      */
     public List<MigrateSqlServerSqlDbDatabaseInput> selectedDatabases() {
@@ -45,12 +50,12 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
 
     /**
      * Set the selectedDatabases property: Databases to migrate.
-     *
+     * 
      * @param selectedDatabases the selectedDatabases value to set.
      * @return the MigrateSqlServerSqlDbTaskInput object itself.
      */
-    public MigrateSqlServerSqlDbTaskInput withSelectedDatabases(
-        List<MigrateSqlServerSqlDbDatabaseInput> selectedDatabases) {
+    public MigrateSqlServerSqlDbTaskInput
+        withSelectedDatabases(List<MigrateSqlServerSqlDbDatabaseInput> selectedDatabases) {
         this.selectedDatabases = selectedDatabases;
         return this;
     }
@@ -58,11 +63,12 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
     /**
      * Get the validationOptions property: Options for enabling various post migration validations. Available options,
      * 1.) Data Integrity Check: Performs a checksum based comparison on source and target tables after the migration to
-     * ensure the correctness of the data. 2.) Schema Validation: Performs a thorough schema comparison between the
-     * source and target tables and provides a list of differences between the source and target database, 3.) Query
-     * Analysis: Executes a set of queries picked up automatically either from the Query Plan Cache or Query Store and
-     * execute them and compares the execution time between the source and target database.
-     *
+     * ensure the correctness of the data.
+     * 2.) Schema Validation: Performs a thorough schema comparison between the source and target tables and provides a
+     * list of differences between the source and target database, 3.) Query Analysis: Executes a set of queries picked
+     * up automatically either from the Query Plan Cache or Query Store and execute them and compares the execution time
+     * between the source and target database.
+     * 
      * @return the validationOptions value.
      */
     public MigrationValidationOptions validationOptions() {
@@ -72,11 +78,12 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
     /**
      * Set the validationOptions property: Options for enabling various post migration validations. Available options,
      * 1.) Data Integrity Check: Performs a checksum based comparison on source and target tables after the migration to
-     * ensure the correctness of the data. 2.) Schema Validation: Performs a thorough schema comparison between the
-     * source and target tables and provides a list of differences between the source and target database, 3.) Query
-     * Analysis: Executes a set of queries picked up automatically either from the Query Plan Cache or Query Store and
-     * execute them and compares the execution time between the source and target database.
-     *
+     * ensure the correctness of the data.
+     * 2.) Schema Validation: Performs a thorough schema comparison between the source and target tables and provides a
+     * list of differences between the source and target database, 3.) Query Analysis: Executes a set of queries picked
+     * up automatically either from the Query Plan Cache or Query Store and execute them and compares the execution time
+     * between the source and target database.
+     * 
      * @param validationOptions the validationOptions value to set.
      * @return the MigrateSqlServerSqlDbTaskInput object itself.
      */
@@ -85,14 +92,18 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MigrateSqlServerSqlDbTaskInput withSourceConnectionInfo(SqlConnectionInfo sourceConnectionInfo) {
         super.withSourceConnectionInfo(sourceConnectionInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MigrateSqlServerSqlDbTaskInput withTargetConnectionInfo(SqlConnectionInfo targetConnectionInfo) {
         super.withTargetConnectionInfo(targetConnectionInfo);
@@ -101,24 +112,89 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (selectedDatabases() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectedDatabases in model MigrateSqlServerSqlDbTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectedDatabases in model MigrateSqlServerSqlDbTaskInput"));
         } else {
             selectedDatabases().forEach(e -> e.validate());
         }
         if (validationOptions() != null) {
             validationOptions().validate();
         }
+        if (sourceConnectionInfo() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceConnectionInfo in model MigrateSqlServerSqlDbTaskInput"));
+        } else {
+            sourceConnectionInfo().validate();
+        }
+        if (targetConnectionInfo() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetConnectionInfo in model MigrateSqlServerSqlDbTaskInput"));
+        } else {
+            targetConnectionInfo().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MigrateSqlServerSqlDbTaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceConnectionInfo", sourceConnectionInfo());
+        jsonWriter.writeJsonField("targetConnectionInfo", targetConnectionInfo());
+        jsonWriter.writeArrayField("selectedDatabases", this.selectedDatabases,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("validationOptions", this.validationOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlDbTaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlDbTaskInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlDbTaskInput.
+     */
+    public static MigrateSqlServerSqlDbTaskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlDbTaskInput deserializedMigrateSqlServerSqlDbTaskInput
+                = new MigrateSqlServerSqlDbTaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceConnectionInfo".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskInput
+                        .withSourceConnectionInfo(SqlConnectionInfo.fromJson(reader));
+                } else if ("targetConnectionInfo".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskInput
+                        .withTargetConnectionInfo(SqlConnectionInfo.fromJson(reader));
+                } else if ("selectedDatabases".equals(fieldName)) {
+                    List<MigrateSqlServerSqlDbDatabaseInput> selectedDatabases
+                        = reader.readArray(reader1 -> MigrateSqlServerSqlDbDatabaseInput.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlDbTaskInput.selectedDatabases = selectedDatabases;
+                } else if ("validationOptions".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskInput.validationOptions
+                        = MigrationValidationOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlDbTaskInput;
+        });
+    }
 }

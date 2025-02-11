@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.WaitStatistics;
 public final class WaitStatisticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WaitStatistics model =
-            BinaryData
-                .fromString(
-                    "{\"waitType\":\"rafwgckhocxvdf\",\"waitTimeMs\":49.184036,\"waitCount\":9128214856149263586}")
-                .toObject(WaitStatistics.class);
+        WaitStatistics model = BinaryData
+            .fromString("{\"waitType\":\"wsdtutnwl\",\"waitTimeMs\":91.60054,\"waitCount\":6613508255547335147}")
+            .toObject(WaitStatistics.class);
     }
 
     @org.junit.jupiter.api.Test

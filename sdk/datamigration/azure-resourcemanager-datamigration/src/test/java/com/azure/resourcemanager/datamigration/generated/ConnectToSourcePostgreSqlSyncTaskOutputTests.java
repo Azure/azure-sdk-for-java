@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.ConnectToSourcePostgreSqlS
 public final class ConnectToSourcePostgreSqlSyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectToSourcePostgreSqlSyncTaskOutput model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"tslhspkdeem\",\"sourceServerVersion\":\"fm\",\"databases\":[\"kv\",\"melmqkrha\",\"vljua\",\"aquhcdhm\"],\"sourceServerBrandVersion\":\"alaexqpvfadmwsrc\",\"validationErrors\":[{\"message\":\"pv\",\"actionableMessage\":\"mzlfmisgwb\",\"filePath\":\"beldawkzbaliourq\",\"lineNumber\":\"kauhashsfwxo\",\"hResult\":116380968,\"stackTrace\":\"xcug\"},{\"message\":\"jooxdjebw\",\"actionableMessage\":\"cwwfvovbvme\",\"filePath\":\"civyhzceuo\",\"lineNumber\":\"jrwjueiotwm\",\"hResult\":1848522994,\"stackTrace\":\"dxwitx\"}]}")
-                .toObject(ConnectToSourcePostgreSqlSyncTaskOutput.class);
+        ConnectToSourcePostgreSqlSyncTaskOutput model = BinaryData.fromString(
+            "{\"id\":\"sncghkjeszz\",\"sourceServerVersion\":\"ijhtxf\",\"databases\":[\"bfs\"],\"sourceServerBrandVersion\":\"nehmpvecx\",\"validationErrors\":[{\"message\":\"bfqkkr\",\"actionableMessage\":\"pukgriwflzlfb\",\"filePath\":\"puz\",\"lineNumber\":\"ispnqzahmgkbrp\",\"hResult\":1687540865,\"stackTrace\":\"ibnuqqkpik\"},{\"message\":\"rgvtqag\",\"actionableMessage\":\"uynhijg\",\"filePath\":\"ebf\",\"lineNumber\":\"arbu\",\"hResult\":2136509867,\"stackTrace\":\"pnazzm\"},{\"message\":\"runmp\",\"actionableMessage\":\"tdbhrbnla\",\"filePath\":\"xmyskp\",\"lineNumber\":\"enbtkcxywny\",\"hResult\":917020287,\"stackTrace\":\"yn\"},{\"message\":\"idybyxczf\",\"actionableMessage\":\"haaxdbabphl\",\"filePath\":\"qlfktsths\",\"lineNumber\":\"ocmnyyazttbtwwrq\",\"hResult\":1833989004,\"stackTrace\":\"ckzywbiexzfeyue\"}]}")
+            .toObject(ConnectToSourcePostgreSqlSyncTaskOutput.class);
     }
 
     @org.junit.jupiter.api.Test

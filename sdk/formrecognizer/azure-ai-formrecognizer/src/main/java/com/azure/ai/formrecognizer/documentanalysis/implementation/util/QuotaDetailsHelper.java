@@ -21,7 +21,9 @@ public final class QuotaDetailsHelper {
      */
     public interface QuotaDetailsAccessor {
         void setUsed(QuotaDetails quotaDetails, int used);
+
         void setQuota(QuotaDetails quotaDetails, int quota);
+
         void setQuotaResetDateTime(QuotaDetails quotaDetails, OffsetDateTime dateTime);
     }
 
@@ -37,6 +39,7 @@ public final class QuotaDetailsHelper {
     static void setUsed(QuotaDetails quotaDetails, int used) {
         accessor.setUsed(quotaDetails, used);
     }
+
     static void setQuota(QuotaDetails quotaDetails, int quota) {
         accessor.setQuota(quotaDetails, quota);
     }

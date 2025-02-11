@@ -5,67 +5,104 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Holds the alert intent stage(s) mapping for this alert. */
+/**
+ * Holds the alert intent stage(s) mapping for this alert.
+ */
 public final class KillChainIntent extends ExpandableStringEnum<KillChainIntent> {
-    /** Static value Unknown for KillChainIntent. */
+    /**
+     * Static value Unknown for KillChainIntent.
+     */
     public static final KillChainIntent UNKNOWN = fromString("Unknown");
 
-    /** Static value Probing for KillChainIntent. */
+    /**
+     * Static value Probing for KillChainIntent.
+     */
     public static final KillChainIntent PROBING = fromString("Probing");
 
-    /** Static value Exploitation for KillChainIntent. */
+    /**
+     * Static value Exploitation for KillChainIntent.
+     */
     public static final KillChainIntent EXPLOITATION = fromString("Exploitation");
 
-    /** Static value Persistence for KillChainIntent. */
+    /**
+     * Static value Persistence for KillChainIntent.
+     */
     public static final KillChainIntent PERSISTENCE = fromString("Persistence");
 
-    /** Static value PrivilegeEscalation for KillChainIntent. */
+    /**
+     * Static value PrivilegeEscalation for KillChainIntent.
+     */
     public static final KillChainIntent PRIVILEGE_ESCALATION = fromString("PrivilegeEscalation");
 
-    /** Static value DefenseEvasion for KillChainIntent. */
+    /**
+     * Static value DefenseEvasion for KillChainIntent.
+     */
     public static final KillChainIntent DEFENSE_EVASION = fromString("DefenseEvasion");
 
-    /** Static value CredentialAccess for KillChainIntent. */
+    /**
+     * Static value CredentialAccess for KillChainIntent.
+     */
     public static final KillChainIntent CREDENTIAL_ACCESS = fromString("CredentialAccess");
 
-    /** Static value Discovery for KillChainIntent. */
+    /**
+     * Static value Discovery for KillChainIntent.
+     */
     public static final KillChainIntent DISCOVERY = fromString("Discovery");
 
-    /** Static value LateralMovement for KillChainIntent. */
+    /**
+     * Static value LateralMovement for KillChainIntent.
+     */
     public static final KillChainIntent LATERAL_MOVEMENT = fromString("LateralMovement");
 
-    /** Static value Execution for KillChainIntent. */
+    /**
+     * Static value Execution for KillChainIntent.
+     */
     public static final KillChainIntent EXECUTION = fromString("Execution");
 
-    /** Static value Collection for KillChainIntent. */
+    /**
+     * Static value Collection for KillChainIntent.
+     */
     public static final KillChainIntent COLLECTION = fromString("Collection");
 
-    /** Static value Exfiltration for KillChainIntent. */
+    /**
+     * Static value Exfiltration for KillChainIntent.
+     */
     public static final KillChainIntent EXFILTRATION = fromString("Exfiltration");
 
-    /** Static value CommandAndControl for KillChainIntent. */
+    /**
+     * Static value CommandAndControl for KillChainIntent.
+     */
     public static final KillChainIntent COMMAND_AND_CONTROL = fromString("CommandAndControl");
 
-    /** Static value Impact for KillChainIntent. */
+    /**
+     * Static value Impact for KillChainIntent.
+     */
     public static final KillChainIntent IMPACT = fromString("Impact");
 
     /**
+     * Creates a new instance of KillChainIntent value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KillChainIntent() {
+    }
+
+    /**
      * Creates or finds a KillChainIntent from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KillChainIntent.
      */
-    @JsonCreator
     public static KillChainIntent fromString(String name) {
         return fromString(name, KillChainIntent.class);
     }
 
     /**
      * Gets known KillChainIntent values.
-     *
+     * 
      * @return known KillChainIntent values.
      */
     public static Collection<KillChainIntent> values() {

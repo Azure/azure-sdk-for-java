@@ -6,30 +6,37 @@ package com.azure.resourcemanager.hybridkubernetes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ListClusterUserCredentialProperties model. */
+/**
+ * The ListClusterUserCredentialProperties model.
+ */
 @Fluent
-public final class ListClusterUserCredentialProperties {
+public final class ListClusterUserCredentialProperties
+    implements JsonSerializable<ListClusterUserCredentialProperties> {
     /*
      * The mode of client authentication.
      */
-    @JsonProperty(value = "authenticationMethod", required = true)
     private AuthenticationMethod authenticationMethod;
 
     /*
      * Boolean value to indicate whether the request is for client side proxy or not
      */
-    @JsonProperty(value = "clientProxy", required = true)
     private boolean clientProxy;
 
-    /** Creates an instance of ListClusterUserCredentialProperties class. */
+    /**
+     * Creates an instance of ListClusterUserCredentialProperties class.
+     */
     public ListClusterUserCredentialProperties() {
     }
 
     /**
      * Get the authenticationMethod property: The mode of client authentication.
-     *
+     * 
      * @return the authenticationMethod value.
      */
     public AuthenticationMethod authenticationMethod() {
@@ -38,7 +45,7 @@ public final class ListClusterUserCredentialProperties {
 
     /**
      * Set the authenticationMethod property: The mode of client authentication.
-     *
+     * 
      * @param authenticationMethod the authenticationMethod value to set.
      * @return the ListClusterUserCredentialProperties object itself.
      */
@@ -49,7 +56,7 @@ public final class ListClusterUserCredentialProperties {
 
     /**
      * Get the clientProxy property: Boolean value to indicate whether the request is for client side proxy or not.
-     *
+     * 
      * @return the clientProxy value.
      */
     public boolean clientProxy() {
@@ -58,7 +65,7 @@ public final class ListClusterUserCredentialProperties {
 
     /**
      * Set the clientProxy property: Boolean value to indicate whether the request is for client side proxy or not.
-     *
+     * 
      * @param clientProxy the clientProxy value to set.
      * @return the ListClusterUserCredentialProperties object itself.
      */
@@ -69,17 +76,59 @@ public final class ListClusterUserCredentialProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (authenticationMethod() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authenticationMethod in model ListClusterUserCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationMethod in model ListClusterUserCredentialProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ListClusterUserCredentialProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authenticationMethod",
+            this.authenticationMethod == null ? null : this.authenticationMethod.toString());
+        jsonWriter.writeBooleanField("clientProxy", this.clientProxy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListClusterUserCredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListClusterUserCredentialProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ListClusterUserCredentialProperties.
+     */
+    public static ListClusterUserCredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListClusterUserCredentialProperties deserializedListClusterUserCredentialProperties
+                = new ListClusterUserCredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authenticationMethod".equals(fieldName)) {
+                    deserializedListClusterUserCredentialProperties.authenticationMethod
+                        = AuthenticationMethod.fromString(reader.getString());
+                } else if ("clientProxy".equals(fieldName)) {
+                    deserializedListClusterUserCredentialProperties.clientProxy = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListClusterUserCredentialProperties;
+        });
+    }
 }

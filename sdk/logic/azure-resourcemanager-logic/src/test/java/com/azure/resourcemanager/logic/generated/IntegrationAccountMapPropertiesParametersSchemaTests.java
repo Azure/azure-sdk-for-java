@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountMapPropertiesParametersSchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountMapPropertiesParametersSchema model =
-            BinaryData.fromString("{\"ref\":\"kvi\"}").toObject(IntegrationAccountMapPropertiesParametersSchema.class);
-        Assertions.assertEquals("kvi", model.ref());
+        IntegrationAccountMapPropertiesParametersSchema model = BinaryData.fromString("{\"ref\":\"nrzvuljraaer\"}")
+            .toObject(IntegrationAccountMapPropertiesParametersSchema.class);
+        Assertions.assertEquals("nrzvuljraaer", model.ref());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountMapPropertiesParametersSchema model =
-            new IntegrationAccountMapPropertiesParametersSchema().withRef("kvi");
+        IntegrationAccountMapPropertiesParametersSchema model
+            = new IntegrationAccountMapPropertiesParametersSchema().withRef("nrzvuljraaer");
         model = BinaryData.fromObject(model).toObject(IntegrationAccountMapPropertiesParametersSchema.class);
-        Assertions.assertEquals("kvi", model.ref());
+        Assertions.assertEquals("nrzvuljraaer", model.ref());
     }
 }

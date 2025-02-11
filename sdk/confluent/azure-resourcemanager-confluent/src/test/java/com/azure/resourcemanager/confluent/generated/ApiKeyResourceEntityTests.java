@@ -23,8 +23,11 @@ public final class ApiKeyResourceEntityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiKeyResourceEntity model = new ApiKeyResourceEntity().withId("jmsvpkjp").withEnvironment("kwcf")
-            .withRelated("ljyxgtczhe").withResourceName("bsdshmkxmaehvbbx").withKind("iplt");
+        ApiKeyResourceEntity model = new ApiKeyResourceEntity().withId("jmsvpkjp")
+            .withEnvironment("kwcf")
+            .withRelated("ljyxgtczhe")
+            .withResourceName("bsdshmkxmaehvbbx")
+            .withKind("iplt");
         model = BinaryData.fromObject(model).toObject(ApiKeyResourceEntity.class);
         Assertions.assertEquals("jmsvpkjp", model.id());
         Assertions.assertEquals("kwcf", model.environment());

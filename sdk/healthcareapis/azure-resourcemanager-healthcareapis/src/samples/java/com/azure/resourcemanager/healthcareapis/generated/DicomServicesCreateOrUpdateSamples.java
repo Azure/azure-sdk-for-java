@@ -11,7 +11,9 @@ import com.azure.resourcemanager.healthcareapis.models.StorageConfiguration;
  */
 public final class DicomServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/DicomServices_Create.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/
+     * DicomServices_Create.json
      */
     /**
      * Sample code: Create or update a Dicom Service.

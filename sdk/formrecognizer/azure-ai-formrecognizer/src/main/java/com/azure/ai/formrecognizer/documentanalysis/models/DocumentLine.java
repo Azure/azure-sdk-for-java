@@ -111,14 +111,13 @@ public final class DocumentLine {
      */
     public List<DocumentWord> getWords() {
         List<DocumentWord> containedWords = new ArrayList<>();
-        pageWords.forEach(documentWord ->
-            spans.forEach(documentSpan -> {
-                if ((documentWord.getSpan().getOffset() >= documentSpan.getOffset())
-                    && ((documentWord.getSpan().getOffset()
-                    + documentWord.getSpan().getLength()) <= (documentSpan.getOffset() + documentSpan.getLength()))) {
-                    containedWords.add(documentWord);
-                }
-            }));
+        pageWords.forEach(documentWord -> spans.forEach(documentSpan -> {
+            if ((documentWord.getSpan().getOffset() >= documentSpan.getOffset())
+                && ((documentWord.getSpan().getOffset() + documentWord.getSpan().getLength())
+                    <= (documentSpan.getOffset() + documentSpan.getLength()))) {
+                containedWords.add(documentWord);
+            }
+        }));
 
         return containedWords;
     }

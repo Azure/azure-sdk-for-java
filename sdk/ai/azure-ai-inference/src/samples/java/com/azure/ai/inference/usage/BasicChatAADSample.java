@@ -32,8 +32,7 @@ public final class BasicChatAADSample {
 
         ChatCompletions completions = client.complete(prompt);
 
-        for (ChatChoice choice : completions.getChoices()) {
-            System.out.printf("%s.%n", choice.getMessage().getContent());
-        }
+        ChatChoice choice = completions.getChoice();
+        System.out.printf("%s.%n", choice.getMessage().getContent());
     }
 }

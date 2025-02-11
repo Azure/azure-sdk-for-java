@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CostThresholdPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CostThresholdProperties model =
-            BinaryData
-                .fromString(
-                    "{\"thresholdId\":\"xw\",\"percentageThreshold\":{\"thresholdValue\":31.287428465157674},\"displayOnChart\":\"Disabled\",\"sendNotificationWhenExceeded\":\"Enabled\",\"notificationSent\":\"yfkzik\"}")
-                .toObject(CostThresholdProperties.class);
+        CostThresholdProperties model = BinaryData.fromString(
+            "{\"thresholdId\":\"xw\",\"percentageThreshold\":{\"thresholdValue\":31.287428465157674},\"displayOnChart\":\"Disabled\",\"sendNotificationWhenExceeded\":\"Enabled\",\"notificationSent\":\"yfkzik\"}")
+            .toObject(CostThresholdProperties.class);
         Assertions.assertEquals("xw", model.thresholdId());
         Assertions.assertEquals(31.287428465157674D, model.percentageThreshold().thresholdValue());
         Assertions.assertEquals(CostThresholdStatus.DISABLED, model.displayOnChart());
@@ -27,14 +25,11 @@ public final class CostThresholdPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CostThresholdProperties model =
-            new CostThresholdProperties()
-                .withThresholdId("xw")
-                .withPercentageThreshold(
-                    new PercentageCostThresholdProperties().withThresholdValue(31.287428465157674D))
-                .withDisplayOnChart(CostThresholdStatus.DISABLED)
-                .withSendNotificationWhenExceeded(CostThresholdStatus.ENABLED)
-                .withNotificationSent("yfkzik");
+        CostThresholdProperties model = new CostThresholdProperties().withThresholdId("xw")
+            .withPercentageThreshold(new PercentageCostThresholdProperties().withThresholdValue(31.287428465157674D))
+            .withDisplayOnChart(CostThresholdStatus.DISABLED)
+            .withSendNotificationWhenExceeded(CostThresholdStatus.ENABLED)
+            .withNotificationSent("yfkzik");
         model = BinaryData.fromObject(model).toObject(CostThresholdProperties.class);
         Assertions.assertEquals("xw", model.thresholdId());
         Assertions.assertEquals(31.287428465157674D, model.percentageThreshold().thresholdValue());

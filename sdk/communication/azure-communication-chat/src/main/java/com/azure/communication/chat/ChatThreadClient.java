@@ -130,8 +130,8 @@ public final class ChatThreadClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddChatParticipantsResult> addParticipantsWithResponse(
-        Iterable<ChatParticipant> participants, Context context) {
+    public Response<AddChatParticipantsResult> addParticipantsWithResponse(Iterable<ChatParticipant> participants,
+        Context context) {
         return this.client.addParticipants(participants, context).block();
     }
 
@@ -215,7 +215,7 @@ public final class ChatThreadClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatParticipant> listParticipants(ListParticipantsOptions listParticipantsOptions,
-                                                           Context context) {
+        Context context) {
         return new PagedIterable<>(this.client.listParticipants(listParticipantsOptions, context));
     }
 
@@ -335,8 +335,8 @@ public final class ChatThreadClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateMessageWithResponse(
-        String chatMessageId, UpdateChatMessageOptions options, Context context) {
+    public Response<Void> updateMessageWithResponse(String chatMessageId, UpdateChatMessageOptions options,
+        Context context) {
 
         return this.client.updateMessage(chatMessageId, options, context).block();
     }
@@ -474,7 +474,7 @@ public final class ChatThreadClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions,
-                                                                  Context context) {
+        Context context) {
         return new PagedIterable<>(this.client.listReadReceipts(listReadReceiptOptions, context));
     }
 

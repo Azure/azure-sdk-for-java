@@ -14,8 +14,8 @@ public final class PeeringServiceProviderImpl implements PeeringServiceProvider 
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    PeeringServiceProviderImpl(
-        PeeringServiceProviderInner innerObject, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    PeeringServiceProviderImpl(PeeringServiceProviderInner innerObject,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

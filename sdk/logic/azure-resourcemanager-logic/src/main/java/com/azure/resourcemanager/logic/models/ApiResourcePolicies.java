@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The API resource policies. */
+/**
+ * The API resource policies.
+ */
 @Fluent
-public final class ApiResourcePolicies {
+public final class ApiResourcePolicies implements JsonSerializable<ApiResourcePolicies> {
     /*
      * The API level only policies XML as embedded content.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * The content link to the policies.
      */
-    @JsonProperty(value = "contentLink")
     private String contentLink;
 
-    /** Creates an instance of ApiResourcePolicies class. */
+    /**
+     * Creates an instance of ApiResourcePolicies class.
+     */
     public ApiResourcePolicies() {
     }
 
     /**
      * Get the content property: The API level only policies XML as embedded content.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -37,7 +43,7 @@ public final class ApiResourcePolicies {
 
     /**
      * Set the content property: The API level only policies XML as embedded content.
-     *
+     * 
      * @param content the content value to set.
      * @return the ApiResourcePolicies object itself.
      */
@@ -48,7 +54,7 @@ public final class ApiResourcePolicies {
 
     /**
      * Get the contentLink property: The content link to the policies.
-     *
+     * 
      * @return the contentLink value.
      */
     public String contentLink() {
@@ -57,7 +63,7 @@ public final class ApiResourcePolicies {
 
     /**
      * Set the contentLink property: The content link to the policies.
-     *
+     * 
      * @param contentLink the contentLink value to set.
      * @return the ApiResourcePolicies object itself.
      */
@@ -68,9 +74,48 @@ public final class ApiResourcePolicies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("contentLink", this.contentLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiResourcePolicies from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiResourcePolicies if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiResourcePolicies.
+     */
+    public static ApiResourcePolicies fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiResourcePolicies deserializedApiResourcePolicies = new ApiResourcePolicies();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("content".equals(fieldName)) {
+                    deserializedApiResourcePolicies.content = reader.getString();
+                } else if ("contentLink".equals(fieldName)) {
+                    deserializedApiResourcePolicies.contentLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiResourcePolicies;
+        });
     }
 }

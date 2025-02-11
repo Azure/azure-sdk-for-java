@@ -5,36 +5,35 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Replication provider specific settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = ReplicationProviderSpecificSettings.class)
-@JsonTypeName("ReplicationProviderSpecificSettings")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "A2ACrossClusterMigration", value = A2ACrossClusterMigrationReplicationDetails.class),
-    @JsonSubTypes.Type(name = "A2A", value = A2AReplicationDetails.class),
-    @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzureReplicationDetails.class),
-    @JsonSubTypes.Type(name = "HyperVReplicaBaseReplicationDetails", value = HyperVReplicaBaseReplicationDetails.class),
-    @JsonSubTypes.Type(name = "HyperVReplica2012R2", value = HyperVReplicaBlueReplicationDetails.class),
-    @JsonSubTypes.Type(name = "HyperVReplica2012", value = HyperVReplicaReplicationDetails.class),
-    @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2ReplicationDetails.class),
-    @JsonSubTypes.Type(name = "InMageRcmFailback", value = InMageRcmFailbackReplicationDetails.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmReplicationDetails.class),
-    @JsonSubTypes.Type(name = "InMage", value = InMageReplicationDetails.class) })
 @Immutable
-public class ReplicationProviderSpecificSettings {
+public class ReplicationProviderSpecificSettings implements JsonSerializable<ReplicationProviderSpecificSettings> {
+    /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "ReplicationProviderSpecificSettings";
+
     /**
      * Creates an instance of ReplicationProviderSpecificSettings class.
      */
     public ReplicationProviderSpecificSettings() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -43,5 +42,85 @@ public class ReplicationProviderSpecificSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationProviderSpecificSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationProviderSpecificSettings if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationProviderSpecificSettings.
+     */
+    public static ReplicationProviderSpecificSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("A2ACrossClusterMigration".equals(discriminatorValue)) {
+                    return A2ACrossClusterMigrationReplicationDetails.fromJson(readerToUse.reset());
+                } else if ("A2A".equals(discriminatorValue)) {
+                    return A2AReplicationDetails.fromJson(readerToUse.reset());
+                } else if ("HyperVReplicaAzure".equals(discriminatorValue)) {
+                    return HyperVReplicaAzureReplicationDetails.fromJson(readerToUse.reset());
+                } else if ("HyperVReplicaBaseReplicationDetails".equals(discriminatorValue)) {
+                    return HyperVReplicaBaseReplicationDetails.fromJson(readerToUse.reset());
+                } else if ("HyperVReplica2012R2".equals(discriminatorValue)) {
+                    return HyperVReplicaBlueReplicationDetails.fromJson(readerToUse.reset());
+                } else if ("HyperVReplica2012".equals(discriminatorValue)) {
+                    return HyperVReplicaReplicationDetails.fromJson(readerToUse.reset());
+                } else if ("InMageAzureV2".equals(discriminatorValue)) {
+                    return InMageAzureV2ReplicationDetails.fromJson(readerToUse.reset());
+                } else if ("InMageRcmFailback".equals(discriminatorValue)) {
+                    return InMageRcmFailbackReplicationDetails.fromJson(readerToUse.reset());
+                } else if ("InMageRcm".equals(discriminatorValue)) {
+                    return InMageRcmReplicationDetails.fromJson(readerToUse.reset());
+                } else if ("InMage".equals(discriminatorValue)) {
+                    return InMageReplicationDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ReplicationProviderSpecificSettings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationProviderSpecificSettings deserializedReplicationProviderSpecificSettings
+                = new ReplicationProviderSpecificSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedReplicationProviderSpecificSettings.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationProviderSpecificSettings;
+        });
     }
 }

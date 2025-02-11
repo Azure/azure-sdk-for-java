@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Hub billing info. */
+/**
+ * Hub billing info.
+ */
 @Fluent
-public final class HubBillingInfoFormat {
+public final class HubBillingInfoFormat implements JsonSerializable<HubBillingInfoFormat> {
     /*
      * The sku name.
      */
-    @JsonProperty(value = "skuName")
     private String skuName;
 
     /*
      * The minimum number of units will be billed. One unit is 10,000 Profiles and 100,000 Interactions.
      */
-    @JsonProperty(value = "minUnits")
     private Integer minUnits;
 
     /*
-     * The maximum number of units can be used.  One unit is 10,000 Profiles and 100,000 Interactions.
+     * The maximum number of units can be used. One unit is 10,000 Profiles and 100,000 Interactions.
      */
-    @JsonProperty(value = "maxUnits")
     private Integer maxUnits;
 
-    /** Creates an instance of HubBillingInfoFormat class. */
+    /**
+     * Creates an instance of HubBillingInfoFormat class.
+     */
     public HubBillingInfoFormat() {
     }
 
     /**
      * Get the skuName property: The sku name.
-     *
+     * 
      * @return the skuName value.
      */
     public String skuName() {
@@ -43,7 +48,7 @@ public final class HubBillingInfoFormat {
 
     /**
      * Set the skuName property: The sku name.
-     *
+     * 
      * @param skuName the skuName value to set.
      * @return the HubBillingInfoFormat object itself.
      */
@@ -55,7 +60,7 @@ public final class HubBillingInfoFormat {
     /**
      * Get the minUnits property: The minimum number of units will be billed. One unit is 10,000 Profiles and 100,000
      * Interactions.
-     *
+     * 
      * @return the minUnits value.
      */
     public Integer minUnits() {
@@ -65,7 +70,7 @@ public final class HubBillingInfoFormat {
     /**
      * Set the minUnits property: The minimum number of units will be billed. One unit is 10,000 Profiles and 100,000
      * Interactions.
-     *
+     * 
      * @param minUnits the minUnits value to set.
      * @return the HubBillingInfoFormat object itself.
      */
@@ -77,7 +82,7 @@ public final class HubBillingInfoFormat {
     /**
      * Get the maxUnits property: The maximum number of units can be used. One unit is 10,000 Profiles and 100,000
      * Interactions.
-     *
+     * 
      * @return the maxUnits value.
      */
     public Integer maxUnits() {
@@ -87,7 +92,7 @@ public final class HubBillingInfoFormat {
     /**
      * Set the maxUnits property: The maximum number of units can be used. One unit is 10,000 Profiles and 100,000
      * Interactions.
-     *
+     * 
      * @param maxUnits the maxUnits value to set.
      * @return the HubBillingInfoFormat object itself.
      */
@@ -98,9 +103,51 @@ public final class HubBillingInfoFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("skuName", this.skuName);
+        jsonWriter.writeNumberField("minUnits", this.minUnits);
+        jsonWriter.writeNumberField("maxUnits", this.maxUnits);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HubBillingInfoFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HubBillingInfoFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HubBillingInfoFormat.
+     */
+    public static HubBillingInfoFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HubBillingInfoFormat deserializedHubBillingInfoFormat = new HubBillingInfoFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("skuName".equals(fieldName)) {
+                    deserializedHubBillingInfoFormat.skuName = reader.getString();
+                } else if ("minUnits".equals(fieldName)) {
+                    deserializedHubBillingInfoFormat.minUnits = reader.getNullable(JsonReader::getInt);
+                } else if ("maxUnits".equals(fieldName)) {
+                    deserializedHubBillingInfoFormat.maxUnits = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHubBillingInfoFormat;
+        });
     }
 }

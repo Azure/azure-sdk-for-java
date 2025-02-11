@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.maps.fluent.models.CreatorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of Creator resources. */
+/**
+ * A list of Creator resources.
+ */
 @Fluent
-public final class CreatorList {
+public final class CreatorList implements JsonSerializable<CreatorList> {
     /*
      * a Creator account.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CreatorInner> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CreatorList class. */
+    /**
+     * Creates an instance of CreatorList class.
+     */
     public CreatorList() {
     }
 
     /**
      * Get the value property: a Creator account.
-     *
+     * 
      * @return the value value.
      */
     public List<CreatorInner> value() {
@@ -39,9 +45,9 @@ public final class CreatorList {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -49,9 +55,9 @@ public final class CreatorList {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CreatorList object itself.
      */
@@ -62,12 +68,51 @@ public final class CreatorList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreatorList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreatorList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreatorList.
+     */
+    public static CreatorList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreatorList deserializedCreatorList = new CreatorList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CreatorInner> value = reader.readArray(reader1 -> CreatorInner.fromJson(reader1));
+                    deserializedCreatorList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCreatorList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreatorList;
+        });
     }
 }

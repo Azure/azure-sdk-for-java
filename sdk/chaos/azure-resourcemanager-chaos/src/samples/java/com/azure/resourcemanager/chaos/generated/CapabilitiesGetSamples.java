@@ -19,7 +19,8 @@ public final class CapabilitiesGetSamples {
      */
     public static void
         getACapabilityThatExtendsAVirtualMachineTargetResource(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.capabilities().getWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
-            "Microsoft-VirtualMachine", "Shutdown-1.0", com.azure.core.util.Context.NONE);
+        manager.capabilities()
+            .getWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
+                "Microsoft-VirtualMachine", "Shutdown-1.0", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The disk configuration required for the selected volume. */
+/**
+ * The disk configuration required for the selected volume.
+ */
 @Fluent
-public final class DiskVolumeConfiguration {
+public final class DiskVolumeConfiguration implements JsonSerializable<DiskVolumeConfiguration> {
     /*
      * The total number of disks required for the concerned volume.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The disk size in GB.
      */
-    @JsonProperty(value = "sizeGB")
     private Long sizeGB;
 
     /*
      * The disk SKU details.
      */
-    @JsonProperty(value = "sku")
     private DiskSku sku;
 
-    /** Creates an instance of DiskVolumeConfiguration class. */
+    /**
+     * Creates an instance of DiskVolumeConfiguration class.
+     */
     public DiskVolumeConfiguration() {
     }
 
     /**
      * Get the count property: The total number of disks required for the concerned volume.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -43,7 +48,7 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Set the count property: The total number of disks required for the concerned volume.
-     *
+     * 
      * @param count the count value to set.
      * @return the DiskVolumeConfiguration object itself.
      */
@@ -54,7 +59,7 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Get the sizeGB property: The disk size in GB.
-     *
+     * 
      * @return the sizeGB value.
      */
     public Long sizeGB() {
@@ -63,7 +68,7 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Set the sizeGB property: The disk size in GB.
-     *
+     * 
      * @param sizeGB the sizeGB value to set.
      * @return the DiskVolumeConfiguration object itself.
      */
@@ -74,7 +79,7 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Get the sku property: The disk SKU details.
-     *
+     * 
      * @return the sku value.
      */
     public DiskSku sku() {
@@ -83,7 +88,7 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Set the sku property: The disk SKU details.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DiskVolumeConfiguration object itself.
      */
@@ -94,12 +99,54 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeNumberField("sizeGB", this.sizeGB);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskVolumeConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskVolumeConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskVolumeConfiguration.
+     */
+    public static DiskVolumeConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskVolumeConfiguration deserializedDiskVolumeConfiguration = new DiskVolumeConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedDiskVolumeConfiguration.count = reader.getNullable(JsonReader::getLong);
+                } else if ("sizeGB".equals(fieldName)) {
+                    deserializedDiskVolumeConfiguration.sizeGB = reader.getNullable(JsonReader::getLong);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDiskVolumeConfiguration.sku = DiskSku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskVolumeConfiguration;
+        });
     }
 }

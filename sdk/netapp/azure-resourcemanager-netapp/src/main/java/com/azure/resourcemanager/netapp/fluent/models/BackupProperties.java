@@ -76,6 +76,11 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
      */
     private String backupPolicyResourceId;
 
+    /*
+     * Specifies if the backup is for a large volume.
+     */
+    private Boolean isLargeVolume;
+
     /**
      * Creates an instance of BackupProperties class.
      */
@@ -228,6 +233,15 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
     }
 
     /**
+     * Get the isLargeVolume property: Specifies if the backup is for a large volume.
+     * 
+     * @return the isLargeVolume value.
+     */
+    public Boolean isLargeVolume() {
+        return this.isLargeVolume;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -294,6 +308,8 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
                     deserializedBackupProperties.snapshotName = reader.getString();
                 } else if ("backupPolicyResourceId".equals(fieldName)) {
                     deserializedBackupProperties.backupPolicyResourceId = reader.getString();
+                } else if ("isLargeVolume".equals(fieldName)) {
+                    deserializedBackupProperties.isLargeVolume = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

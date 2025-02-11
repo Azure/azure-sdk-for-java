@@ -25,24 +25,28 @@ import com.azure.resourcemanager.automation.fluent.DeletedAutomationAccountsClie
 import com.azure.resourcemanager.automation.fluent.models.DeletedAutomationAccountListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeletedAutomationAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeletedAutomationAccountsClient.
+ */
 public final class DeletedAutomationAccountsClientImpl implements DeletedAutomationAccountsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DeletedAutomationAccountsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of DeletedAutomationAccountsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DeletedAutomationAccountsClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    DeletedAutomationAccountsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DeletedAutomationAccountsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,88 +56,73 @@ public final class DeletedAutomationAccountsClientImpl implements DeletedAutomat
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientDele")
-    private interface DeletedAutomationAccountsService {
-        @Headers({"Content-Type: application/json"})
+    public interface DeletedAutomationAccountsService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Automation/deletedAutomationAccounts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeletedAutomationAccountListResultInner>> listBySubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeletedAutomationAccountListResultInner>> listBySubscription(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieve deleted automation account.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list deleted automation account along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeletedAutomationAccountListResultInner>> listBySubscriptionWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-01-31";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscription(
-                            this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
+            .withContext(context -> service.listBySubscription(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve deleted automation account.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list deleted automation account along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeletedAutomationAccountListResultInner>> listBySubscriptionWithResponseAsync(
-        Context context) {
+    private Mono<Response<DeletedAutomationAccountListResultInner>>
+        listBySubscriptionWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-01-31";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscription(
-                this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context);
+        return service.listBySubscription(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+            accept, context);
     }
 
     /**
      * Retrieve deleted automation account.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list deleted automation account on successful completion of {@link Mono}.
@@ -145,19 +134,7 @@ public final class DeletedAutomationAccountsClientImpl implements DeletedAutomat
 
     /**
      * Retrieve deleted automation account.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list deleted automation account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedAutomationAccountListResultInner listBySubscription() {
-        return listBySubscriptionAsync().block();
-    }
-
-    /**
-     * Retrieve deleted automation account.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -167,5 +144,17 @@ public final class DeletedAutomationAccountsClientImpl implements DeletedAutomat
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedAutomationAccountListResultInner> listBySubscriptionWithResponse(Context context) {
         return listBySubscriptionWithResponseAsync(context).block();
+    }
+
+    /**
+     * Retrieve deleted automation account.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for the list deleted automation account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeletedAutomationAccountListResultInner listBySubscription() {
+        return listBySubscriptionWithResponse(Context.NONE).getValue();
     }
 }

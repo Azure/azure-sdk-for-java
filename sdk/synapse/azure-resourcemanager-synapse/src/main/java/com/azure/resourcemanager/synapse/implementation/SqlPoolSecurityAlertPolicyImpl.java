@@ -93,8 +93,8 @@ public final class SqlPoolSecurityAlertPolicyImpl
 
     private SecurityAlertPolicyName securityAlertPolicyName;
 
-    public SqlPoolSecurityAlertPolicyImpl withExistingSqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public SqlPoolSecurityAlertPolicyImpl withExistingSqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         this.resourceGroupName = resourceGroupName;
         this.workspaceName = workspaceName;
         this.sqlPoolName = sqlPoolName;
@@ -102,34 +102,25 @@ public final class SqlPoolSecurityAlertPolicyImpl
     }
 
     public SqlPoolSecurityAlertPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolSecurityAlertPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    securityAlertPolicyName,
-                    this.innerModel(),
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolSecurityAlertPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SqlPoolSecurityAlertPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolSecurityAlertPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolSecurityAlertPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    SqlPoolSecurityAlertPolicyImpl(
-        SecurityAlertPolicyName name, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    SqlPoolSecurityAlertPolicyImpl(SecurityAlertPolicyName name,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = new SqlPoolSecurityAlertPolicyInner();
         this.serviceManager = serviceManager;
         this.securityAlertPolicyName = name;
@@ -140,60 +131,47 @@ public final class SqlPoolSecurityAlertPolicyImpl
     }
 
     public SqlPoolSecurityAlertPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolSecurityAlertPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    securityAlertPolicyName,
-                    this.innerModel(),
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolSecurityAlertPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SqlPoolSecurityAlertPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolSecurityAlertPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolSecurityAlertPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    SqlPoolSecurityAlertPolicyImpl(
-        SqlPoolSecurityAlertPolicyInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    SqlPoolSecurityAlertPolicyImpl(SqlPoolSecurityAlertPolicyInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.sqlPoolName = Utils.getValueFromIdByName(innerObject.id(), "sqlPools");
-        this.securityAlertPolicyName =
-            SecurityAlertPolicyName.fromString(Utils.getValueFromIdByName(innerObject.id(), "securityAlertPolicies"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.sqlPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlPools");
+        this.securityAlertPolicyName = SecurityAlertPolicyName
+            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "securityAlertPolicies"));
     }
 
     public SqlPoolSecurityAlertPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolSecurityAlertPolicies()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolSecurityAlertPolicies()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SqlPoolSecurityAlertPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolSecurityAlertPolicies()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolSecurityAlertPolicies()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName, context)
+            .getValue();
         return this;
     }
 

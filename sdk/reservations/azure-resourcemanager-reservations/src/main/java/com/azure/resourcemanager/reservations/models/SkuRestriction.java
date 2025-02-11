@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Restriction of a sku. */
+/**
+ * Restriction of a sku.
+ */
 @Fluent
-public final class SkuRestriction {
+public final class SkuRestriction implements JsonSerializable<SkuRestriction> {
     /*
      * The type of restrictions.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The value of restrictions. If the restriction type is set to location. This would be different locations where
      * the sku is restricted.
      */
-    @JsonProperty(value = "values")
     private List<String> values;
 
     /*
      * The reason for restriction.
      */
-    @JsonProperty(value = "reasonCode")
     private String reasonCode;
 
-    /** Creates an instance of SkuRestriction class. */
+    /**
+     * Creates an instance of SkuRestriction class.
+     */
     public SkuRestriction() {
     }
 
     /**
      * Get the type property: The type of restrictions.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -45,7 +50,7 @@ public final class SkuRestriction {
 
     /**
      * Set the type property: The type of restrictions.
-     *
+     * 
      * @param type the type value to set.
      * @return the SkuRestriction object itself.
      */
@@ -57,7 +62,7 @@ public final class SkuRestriction {
     /**
      * Get the values property: The value of restrictions. If the restriction type is set to location. This would be
      * different locations where the sku is restricted.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -67,7 +72,7 @@ public final class SkuRestriction {
     /**
      * Set the values property: The value of restrictions. If the restriction type is set to location. This would be
      * different locations where the sku is restricted.
-     *
+     * 
      * @param values the values value to set.
      * @return the SkuRestriction object itself.
      */
@@ -78,7 +83,7 @@ public final class SkuRestriction {
 
     /**
      * Get the reasonCode property: The reason for restriction.
-     *
+     * 
      * @return the reasonCode value.
      */
     public String reasonCode() {
@@ -87,7 +92,7 @@ public final class SkuRestriction {
 
     /**
      * Set the reasonCode property: The reason for restriction.
-     *
+     * 
      * @param reasonCode the reasonCode value to set.
      * @return the SkuRestriction object itself.
      */
@@ -98,9 +103,52 @@ public final class SkuRestriction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("reasonCode", this.reasonCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuRestriction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuRestriction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuRestriction.
+     */
+    public static SkuRestriction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuRestriction deserializedSkuRestriction = new SkuRestriction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedSkuRestriction.type = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<String> values = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuRestriction.values = values;
+                } else if ("reasonCode".equals(fieldName)) {
+                    deserializedSkuRestriction.reasonCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuRestriction;
+        });
     }
 }

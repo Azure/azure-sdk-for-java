@@ -6,69 +6,69 @@ package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.AccountType;
 import com.azure.resourcemanager.databoxedge.models.AsymmetricEncryptedSecret;
 import com.azure.resourcemanager.databoxedge.models.SslStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The storage account credential properties. */
+/**
+ * The storage account credential properties.
+ */
 @Fluent
-public final class StorageAccountCredentialProperties {
+public final class StorageAccountCredentialProperties implements JsonSerializable<StorageAccountCredentialProperties> {
     /*
      * Alias for the storage account.
      */
-    @JsonProperty(value = "alias", required = true)
     private String alias;
 
     /*
      * Username for the storage account.
      */
-    @JsonProperty(value = "userName")
     private String username;
 
     /*
      * Encrypted storage key.
      */
-    @JsonProperty(value = "accountKey")
     private AsymmetricEncryptedSecret accountKey;
 
     /*
      * Connection string for the storage account. Use this string if username and account key are not specified.
      */
-    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * Signifies whether SSL needs to be enabled or not.
      */
-    @JsonProperty(value = "sslStatus", required = true)
     private SslStatus sslStatus;
 
     /*
      * Blob end point for private clouds.
      */
-    @JsonProperty(value = "blobDomainName")
     private String blobDomainName;
 
     /*
      * Type of storage accessed on the storage account.
      */
-    @JsonProperty(value = "accountType", required = true)
     private AccountType accountType;
 
     /*
      * Id of the storage account.
      */
-    @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
-    /** Creates an instance of StorageAccountCredentialProperties class. */
+    /**
+     * Creates an instance of StorageAccountCredentialProperties class.
+     */
     public StorageAccountCredentialProperties() {
     }
 
     /**
      * Get the alias property: Alias for the storage account.
-     *
+     * 
      * @return the alias value.
      */
     public String alias() {
@@ -77,7 +77,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Set the alias property: Alias for the storage account.
-     *
+     * 
      * @param alias the alias value to set.
      * @return the StorageAccountCredentialProperties object itself.
      */
@@ -88,7 +88,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Get the username property: Username for the storage account.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -97,7 +97,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Set the username property: Username for the storage account.
-     *
+     * 
      * @param username the username value to set.
      * @return the StorageAccountCredentialProperties object itself.
      */
@@ -108,7 +108,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Get the accountKey property: Encrypted storage key.
-     *
+     * 
      * @return the accountKey value.
      */
     public AsymmetricEncryptedSecret accountKey() {
@@ -117,7 +117,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Set the accountKey property: Encrypted storage key.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the StorageAccountCredentialProperties object itself.
      */
@@ -129,7 +129,7 @@ public final class StorageAccountCredentialProperties {
     /**
      * Get the connectionString property: Connection string for the storage account. Use this string if username and
      * account key are not specified.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -139,7 +139,7 @@ public final class StorageAccountCredentialProperties {
     /**
      * Set the connectionString property: Connection string for the storage account. Use this string if username and
      * account key are not specified.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the StorageAccountCredentialProperties object itself.
      */
@@ -150,7 +150,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Get the sslStatus property: Signifies whether SSL needs to be enabled or not.
-     *
+     * 
      * @return the sslStatus value.
      */
     public SslStatus sslStatus() {
@@ -159,7 +159,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Set the sslStatus property: Signifies whether SSL needs to be enabled or not.
-     *
+     * 
      * @param sslStatus the sslStatus value to set.
      * @return the StorageAccountCredentialProperties object itself.
      */
@@ -170,7 +170,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Get the blobDomainName property: Blob end point for private clouds.
-     *
+     * 
      * @return the blobDomainName value.
      */
     public String blobDomainName() {
@@ -179,7 +179,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Set the blobDomainName property: Blob end point for private clouds.
-     *
+     * 
      * @param blobDomainName the blobDomainName value to set.
      * @return the StorageAccountCredentialProperties object itself.
      */
@@ -190,7 +190,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Get the accountType property: Type of storage accessed on the storage account.
-     *
+     * 
      * @return the accountType value.
      */
     public AccountType accountType() {
@@ -199,7 +199,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Set the accountType property: Type of storage accessed on the storage account.
-     *
+     * 
      * @param accountType the accountType value to set.
      * @return the StorageAccountCredentialProperties object itself.
      */
@@ -210,7 +210,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Get the storageAccountId property: Id of the storage account.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -219,7 +219,7 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Set the storageAccountId property: Id of the storage account.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the StorageAccountCredentialProperties object itself.
      */
@@ -230,32 +230,90 @@ public final class StorageAccountCredentialProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (alias() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alias in model StorageAccountCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property alias in model StorageAccountCredentialProperties"));
         }
         if (accountKey() != null) {
             accountKey().validate();
         }
         if (sslStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sslStatus in model StorageAccountCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sslStatus in model StorageAccountCredentialProperties"));
         }
         if (accountType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accountType in model StorageAccountCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountType in model StorageAccountCredentialProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccountCredentialProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("alias", this.alias);
+        jsonWriter.writeStringField("sslStatus", this.sslStatus == null ? null : this.sslStatus.toString());
+        jsonWriter.writeStringField("accountType", this.accountType == null ? null : this.accountType.toString());
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeJsonField("accountKey", this.accountKey);
+        jsonWriter.writeStringField("connectionString", this.connectionString);
+        jsonWriter.writeStringField("blobDomainName", this.blobDomainName);
+        jsonWriter.writeStringField("storageAccountId", this.storageAccountId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountCredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountCredentialProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountCredentialProperties.
+     */
+    public static StorageAccountCredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountCredentialProperties deserializedStorageAccountCredentialProperties
+                = new StorageAccountCredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alias".equals(fieldName)) {
+                    deserializedStorageAccountCredentialProperties.alias = reader.getString();
+                } else if ("sslStatus".equals(fieldName)) {
+                    deserializedStorageAccountCredentialProperties.sslStatus = SslStatus.fromString(reader.getString());
+                } else if ("accountType".equals(fieldName)) {
+                    deserializedStorageAccountCredentialProperties.accountType
+                        = AccountType.fromString(reader.getString());
+                } else if ("userName".equals(fieldName)) {
+                    deserializedStorageAccountCredentialProperties.username = reader.getString();
+                } else if ("accountKey".equals(fieldName)) {
+                    deserializedStorageAccountCredentialProperties.accountKey
+                        = AsymmetricEncryptedSecret.fromJson(reader);
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedStorageAccountCredentialProperties.connectionString = reader.getString();
+                } else if ("blobDomainName".equals(fieldName)) {
+                    deserializedStorageAccountCredentialProperties.blobDomainName = reader.getString();
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedStorageAccountCredentialProperties.storageAccountId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountCredentialProperties;
+        });
+    }
 }

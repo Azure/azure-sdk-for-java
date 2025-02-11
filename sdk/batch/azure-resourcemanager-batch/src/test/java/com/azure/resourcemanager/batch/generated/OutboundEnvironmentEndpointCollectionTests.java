@@ -12,16 +12,16 @@ public final class OutboundEnvironmentEndpointCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundEnvironmentEndpointCollection model = BinaryData.fromString(
-            "{\"value\":[{\"category\":\"dsg\",\"endpoints\":[{\"domainName\":\"kycgrauwj\",\"description\":\"taeburuvdm\",\"endpointDetails\":[{}]}]},{\"category\":\"zlxwabmqoefkifr\",\"endpoints\":[{\"domainName\":\"qujmqlgkf\",\"description\":\"ndo\",\"endpointDetails\":[{}]},{\"domainName\":\"bjcntujitc\",\"description\":\"df\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"ezkojvdcp\",\"description\":\"oqouicybxarzgszu\",\"endpointDetails\":[{}]},{\"domainName\":\"iqopidoamciod\",\"description\":\"haz\",\"endpointDetails\":[{},{}]}]}],\"nextLink\":\"zbonlwnt\"}")
+            "{\"value\":[{\"category\":\"wuggwolu\",\"endpoints\":[{\"domainName\":\"wem\",\"description\":\"i\",\"endpointDetails\":[{}]},{\"domainName\":\"gzd\",\"description\":\"swe\",\"endpointDetails\":[{},{},{}]}]},{\"category\":\"dxggicccnxqhuexm\",\"endpoints\":[{\"domainName\":\"stvlzywemhzrnc\",\"description\":\"tclusiypbsfgy\",\"endpointDetails\":[{},{}]},{\"domainName\":\"lfeadcygq\",\"description\":\"yhejhzisxgfp\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"p\",\"description\":\"ksrpqv\",\"endpointDetails\":[{},{}]}]},{\"category\":\"aehtwd\",\"endpoints\":[{\"domainName\":\"swibyr\",\"description\":\"l\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"fwpracstwi\",\"description\":\"khevxccedc\",\"endpointDetails\":[{}]},{\"domainName\":\"yodnwzxltj\",\"description\":\"nhltiugcxn\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"xqi\",\"description\":\"qunyowxwlmdjr\",\"endpointDetails\":[{},{},{}]}]}],\"nextLink\":\"bvfvpdbod\"}")
             .toObject(OutboundEnvironmentEndpointCollection.class);
-        Assertions.assertEquals("zbonlwnt", model.nextLink());
+        Assertions.assertEquals("bvfvpdbod", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OutboundEnvironmentEndpointCollection model
-            = new OutboundEnvironmentEndpointCollection().withNextLink("zbonlwnt");
+            = new OutboundEnvironmentEndpointCollection().withNextLink("bvfvpdbod");
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointCollection.class);
-        Assertions.assertEquals("zbonlwnt", model.nextLink());
+        Assertions.assertEquals("bvfvpdbod", model.nextLink());
     }
 }

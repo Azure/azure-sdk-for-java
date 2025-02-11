@@ -12,7 +12,7 @@ import com.azure.resourcemanager.redis.models.RedisUpdateParameters;
 public final class RedisUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheUpdate.json
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheUpdate.json
      */
     /**
      * Sample code: RedisCacheUpdate.

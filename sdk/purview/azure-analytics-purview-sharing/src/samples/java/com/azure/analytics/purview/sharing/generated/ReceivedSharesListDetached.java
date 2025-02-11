@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReceivedSharesListDetached {
     public static void main(String[] args) {
-        ReceivedSharesClient receivedSharesClient =
-                new ReceivedSharesClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("accountName.purview.azure.com/share")
-                        .buildClient();
+        ReceivedSharesClient receivedSharesClient
+            = new ReceivedSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("accountName.purview.azure.com/share")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.sharing.generated.receivedshareslistdetachedreceivedshares.receivedshareslistdetached
         RequestOptions requestOptions = new RequestOptions().addQueryParam("filter", "Name eq 'testName'");
         PagedIterable<BinaryData> response = receivedSharesClient.listDetachedReceivedShares(requestOptions);

@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for VirtualMachines GetByResourceGroup. */
+/**
+ * Samples for VirtualMachines GetByResourceGroup.
+ */
 public final class VirtualMachinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/VirtualMachines_Get.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * VirtualMachines_Get.json
      */
     /**
      * Sample code: Get virtual machine.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void getVirtualMachine(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .virtualMachines()
-            .getByResourceGroupWithResponse(
-                "resourceGroupName", "virtualMachineName", com.azure.core.util.Context.NONE);
+        manager.virtualMachines()
+            .getByResourceGroupWithResponse("resourceGroupName", "virtualMachineName",
+                com.azure.core.util.Context.NONE);
     }
 }

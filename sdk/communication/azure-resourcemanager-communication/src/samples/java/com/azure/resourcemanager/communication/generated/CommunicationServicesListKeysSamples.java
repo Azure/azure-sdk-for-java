@@ -19,7 +19,7 @@ public final class CommunicationServicesListKeysSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void listKeys(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().listKeysWithResponse("MyResourceGroup", "MyCommunicationResource",
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .listKeysWithResponse("MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE);
     }
 }

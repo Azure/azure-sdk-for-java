@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details about the download progress of update. */
+/**
+ * Details about the download progress of update.
+ */
 @Immutable
-public final class UpdateDownloadProgress {
+public final class UpdateDownloadProgress implements JsonSerializable<UpdateDownloadProgress> {
     /*
      * The download phase.
      */
-    @JsonProperty(value = "downloadPhase", access = JsonProperty.Access.WRITE_ONLY)
     private DownloadPhase downloadPhase;
 
     /*
      * Percentage of completion.
      */
-    @JsonProperty(value = "percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Integer percentComplete;
 
     /*
      * Total bytes to download.
      */
-    @JsonProperty(value = "totalBytesToDownload", access = JsonProperty.Access.WRITE_ONLY)
     private Double totalBytesToDownload;
 
     /*
      * Total bytes downloaded.
      */
-    @JsonProperty(value = "totalBytesDownloaded", access = JsonProperty.Access.WRITE_ONLY)
     private Double totalBytesDownloaded;
 
     /*
      * Number of updates to download.
      */
-    @JsonProperty(value = "numberOfUpdatesToDownload", access = JsonProperty.Access.WRITE_ONLY)
     private Integer numberOfUpdatesToDownload;
 
     /*
      * Number of updates downloaded.
      */
-    @JsonProperty(value = "numberOfUpdatesDownloaded", access = JsonProperty.Access.WRITE_ONLY)
     private Integer numberOfUpdatesDownloaded;
 
-    /** Creates an instance of UpdateDownloadProgress class. */
+    /**
+     * Creates an instance of UpdateDownloadProgress class.
+     */
     public UpdateDownloadProgress() {
     }
 
     /**
      * Get the downloadPhase property: The download phase.
-     *
+     * 
      * @return the downloadPhase value.
      */
     public DownloadPhase downloadPhase() {
@@ -61,7 +63,7 @@ public final class UpdateDownloadProgress {
 
     /**
      * Get the percentComplete property: Percentage of completion.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -70,7 +72,7 @@ public final class UpdateDownloadProgress {
 
     /**
      * Get the totalBytesToDownload property: Total bytes to download.
-     *
+     * 
      * @return the totalBytesToDownload value.
      */
     public Double totalBytesToDownload() {
@@ -79,7 +81,7 @@ public final class UpdateDownloadProgress {
 
     /**
      * Get the totalBytesDownloaded property: Total bytes downloaded.
-     *
+     * 
      * @return the totalBytesDownloaded value.
      */
     public Double totalBytesDownloaded() {
@@ -88,7 +90,7 @@ public final class UpdateDownloadProgress {
 
     /**
      * Get the numberOfUpdatesToDownload property: Number of updates to download.
-     *
+     * 
      * @return the numberOfUpdatesToDownload value.
      */
     public Integer numberOfUpdatesToDownload() {
@@ -97,7 +99,7 @@ public final class UpdateDownloadProgress {
 
     /**
      * Get the numberOfUpdatesDownloaded property: Number of updates downloaded.
-     *
+     * 
      * @return the numberOfUpdatesDownloaded value.
      */
     public Integer numberOfUpdatesDownloaded() {
@@ -106,9 +108,56 @@ public final class UpdateDownloadProgress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateDownloadProgress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateDownloadProgress if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateDownloadProgress.
+     */
+    public static UpdateDownloadProgress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateDownloadProgress deserializedUpdateDownloadProgress = new UpdateDownloadProgress();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("downloadPhase".equals(fieldName)) {
+                    deserializedUpdateDownloadProgress.downloadPhase = DownloadPhase.fromString(reader.getString());
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedUpdateDownloadProgress.percentComplete = reader.getNullable(JsonReader::getInt);
+                } else if ("totalBytesToDownload".equals(fieldName)) {
+                    deserializedUpdateDownloadProgress.totalBytesToDownload = reader.getNullable(JsonReader::getDouble);
+                } else if ("totalBytesDownloaded".equals(fieldName)) {
+                    deserializedUpdateDownloadProgress.totalBytesDownloaded = reader.getNullable(JsonReader::getDouble);
+                } else if ("numberOfUpdatesToDownload".equals(fieldName)) {
+                    deserializedUpdateDownloadProgress.numberOfUpdatesToDownload
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfUpdatesDownloaded".equals(fieldName)) {
+                    deserializedUpdateDownloadProgress.numberOfUpdatesDownloaded
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateDownloadProgress;
+        });
     }
 }

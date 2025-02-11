@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iothub.fluent.models.EndpointHealthDataInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The JSON-serialized array of EndpointHealthData objects with a next link. */
+/**
+ * The JSON-serialized array of EndpointHealthData objects with a next link.
+ */
 @Fluent
-public final class EndpointHealthDataListResult {
+public final class EndpointHealthDataListResult implements JsonSerializable<EndpointHealthDataListResult> {
     /*
      * JSON-serialized array of Endpoint health data
      */
-    @JsonProperty(value = "value")
     private List<EndpointHealthDataInner> value;
 
     /*
      * Link to more results
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of EndpointHealthDataListResult class. */
+    /**
+     * Creates an instance of EndpointHealthDataListResult class.
+     */
     public EndpointHealthDataListResult() {
     }
 
     /**
      * Get the value property: JSON-serialized array of Endpoint health data.
-     *
+     * 
      * @return the value value.
      */
     public List<EndpointHealthDataInner> value() {
@@ -39,7 +45,7 @@ public final class EndpointHealthDataListResult {
 
     /**
      * Set the value property: JSON-serialized array of Endpoint health data.
-     *
+     * 
      * @param value the value value to set.
      * @return the EndpointHealthDataListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class EndpointHealthDataListResult {
 
     /**
      * Get the nextLink property: Link to more results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,52 @@ public final class EndpointHealthDataListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointHealthDataListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointHealthDataListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EndpointHealthDataListResult.
+     */
+    public static EndpointHealthDataListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointHealthDataListResult deserializedEndpointHealthDataListResult = new EndpointHealthDataListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<EndpointHealthDataInner> value
+                        = reader.readArray(reader1 -> EndpointHealthDataInner.fromJson(reader1));
+                    deserializedEndpointHealthDataListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedEndpointHealthDataListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointHealthDataListResult;
+        });
     }
 }

@@ -8,9 +8,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.RestProxyTestBase;
 import com.azure.core.perf.core.TestDataFactory;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.azure.xml.XmlWriter;
 import reactor.core.publisher.Mono;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.function.Function;
 
 public class XmlReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
@@ -43,6 +46,12 @@ public class XmlReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
     }
 
     private static byte[] generateBodyBytes(long size) {
-        return serializeData(TestDataFactory.generateUserDatabase(size), new XmlMapper());
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            XmlWriter xmlWriter = XmlWriter.toStream(outputStream)) {
+            TestDataFactory.generateUserDatabase(size).toXml(xmlWriter).flush();
+            return outputStream.toByteArray();
+        } catch (IOException | XMLStreamException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

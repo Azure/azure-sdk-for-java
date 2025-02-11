@@ -5,45 +5,47 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Msi identity details of the resource. */
+/**
+ * Msi identity details of the resource.
+ */
 @Fluent
-public final class ResourceIdentity {
+public final class ResourceIdentity implements JsonSerializable<ResourceIdentity> {
     /*
      * Identity type
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Service Principal Id backing the Msi
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * Home Tenant Id
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * User Assigned Identities
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
-    /** Creates an instance of ResourceIdentity class. */
+    /**
+     * Creates an instance of ResourceIdentity class.
+     */
     public ResourceIdentity() {
     }
 
     /**
      * Get the type property: Identity type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -52,7 +54,7 @@ public final class ResourceIdentity {
 
     /**
      * Set the type property: Identity type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ResourceIdentity object itself.
      */
@@ -63,7 +65,7 @@ public final class ResourceIdentity {
 
     /**
      * Get the principalId property: Service Principal Id backing the Msi.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -72,7 +74,7 @@ public final class ResourceIdentity {
 
     /**
      * Get the tenantId property: Home Tenant Id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -81,7 +83,7 @@ public final class ResourceIdentity {
 
     /**
      * Get the userAssignedIdentities property: User Assigned Identities.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserAssignedIdentity> userAssignedIdentities() {
@@ -90,7 +92,7 @@ public final class ResourceIdentity {
 
     /**
      * Set the userAssignedIdentities property: User Assigned Identities.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ResourceIdentity object itself.
      */
@@ -101,19 +103,62 @@ public final class ResourceIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceIdentity.
+     */
+    public static ResourceIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceIdentity deserializedResourceIdentity = new ResourceIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedResourceIdentity.type = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedResourceIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedResourceIdentity.tenantId = reader.getString();
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));
+                    deserializedResourceIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceIdentity;
+        });
     }
 }

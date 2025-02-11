@@ -13,47 +13,47 @@ import org.junit.jupiter.api.Assertions;
 public final class ChangeDirectoryResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChangeDirectoryResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"reservationOrder\":{\"id\":\"k\",\"name\":\"oxafn\",\"isSucceeded\":false,\"error\":\"ichkoymkcdyhb\"},\"reservations\":[{\"id\":\"wdreqnovvqfovl\",\"name\":\"ywsuwsy\",\"isSucceeded\":true,\"error\":\"sytgadgvraea\"}]}")
-                .toObject(ChangeDirectoryResponseInner.class);
-        Assertions.assertEquals("k", model.reservationOrder().id());
-        Assertions.assertEquals("oxafn", model.reservationOrder().name());
+        ChangeDirectoryResponseInner model = BinaryData.fromString(
+            "{\"reservationOrder\":{\"id\":\"enwash\",\"name\":\"dtkcnqxwbpokulp\",\"isSucceeded\":false,\"error\":\"aasipqi\"},\"reservations\":[{\"id\":\"uqerpqlpqwc\",\"name\":\"uqgbdbutauvfbt\",\"isSucceeded\":true,\"error\":\"h\"},{\"id\":\"ykojoxafnndlpic\",\"name\":\"o\",\"isSucceeded\":false,\"error\":\"dyh\"},{\"id\":\"kkpwdreqnovvq\",\"name\":\"vljxywsu\",\"isSucceeded\":false,\"error\":\"s\"}]}")
+            .toObject(ChangeDirectoryResponseInner.class);
+        Assertions.assertEquals("enwash", model.reservationOrder().id());
+        Assertions.assertEquals("dtkcnqxwbpokulp", model.reservationOrder().name());
         Assertions.assertEquals(false, model.reservationOrder().isSucceeded());
-        Assertions.assertEquals("ichkoymkcdyhb", model.reservationOrder().error());
-        Assertions.assertEquals("wdreqnovvqfovl", model.reservations().get(0).id());
-        Assertions.assertEquals("ywsuwsy", model.reservations().get(0).name());
+        Assertions.assertEquals("aasipqi", model.reservationOrder().error());
+        Assertions.assertEquals("uqerpqlpqwc", model.reservations().get(0).id());
+        Assertions.assertEquals("uqgbdbutauvfbt", model.reservations().get(0).name());
         Assertions.assertEquals(true, model.reservations().get(0).isSucceeded());
-        Assertions.assertEquals("sytgadgvraea", model.reservations().get(0).error());
+        Assertions.assertEquals("h", model.reservations().get(0).error());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChangeDirectoryResponseInner model =
-            new ChangeDirectoryResponseInner()
-                .withReservationOrder(
-                    new ChangeDirectoryResult()
-                        .withId("k")
-                        .withName("oxafn")
-                        .withIsSucceeded(false)
-                        .withError("ichkoymkcdyhb"))
-                .withReservations(
-                    Arrays
-                        .asList(
-                            new ChangeDirectoryResult()
-                                .withId("wdreqnovvqfovl")
-                                .withName("ywsuwsy")
-                                .withIsSucceeded(true)
-                                .withError("sytgadgvraea")));
+        ChangeDirectoryResponseInner model = new ChangeDirectoryResponseInner()
+            .withReservationOrder(new ChangeDirectoryResult().withId("enwash")
+                .withName("dtkcnqxwbpokulp")
+                .withIsSucceeded(false)
+                .withError("aasipqi"))
+            .withReservations(Arrays.asList(
+                new ChangeDirectoryResult().withId("uqerpqlpqwc")
+                    .withName("uqgbdbutauvfbt")
+                    .withIsSucceeded(true)
+                    .withError("h"),
+                new ChangeDirectoryResult().withId("ykojoxafnndlpic")
+                    .withName("o")
+                    .withIsSucceeded(false)
+                    .withError("dyh"),
+                new ChangeDirectoryResult().withId("kkpwdreqnovvq")
+                    .withName("vljxywsu")
+                    .withIsSucceeded(false)
+                    .withError("s")));
         model = BinaryData.fromObject(model).toObject(ChangeDirectoryResponseInner.class);
-        Assertions.assertEquals("k", model.reservationOrder().id());
-        Assertions.assertEquals("oxafn", model.reservationOrder().name());
+        Assertions.assertEquals("enwash", model.reservationOrder().id());
+        Assertions.assertEquals("dtkcnqxwbpokulp", model.reservationOrder().name());
         Assertions.assertEquals(false, model.reservationOrder().isSucceeded());
-        Assertions.assertEquals("ichkoymkcdyhb", model.reservationOrder().error());
-        Assertions.assertEquals("wdreqnovvqfovl", model.reservations().get(0).id());
-        Assertions.assertEquals("ywsuwsy", model.reservations().get(0).name());
+        Assertions.assertEquals("aasipqi", model.reservationOrder().error());
+        Assertions.assertEquals("uqerpqlpqwc", model.reservations().get(0).id());
+        Assertions.assertEquals("uqgbdbutauvfbt", model.reservations().get(0).name());
         Assertions.assertEquals(true, model.reservations().get(0).isSucceeded());
-        Assertions.assertEquals("sytgadgvraea", model.reservations().get(0).error());
+        Assertions.assertEquals("h", model.reservations().get(0).error());
     }
 }

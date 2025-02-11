@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.mixedreality.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request for account key regeneration. */
+/**
+ * Request for account key regeneration.
+ */
 @Fluent
-public final class AccountKeyRegenerateRequest {
+public final class AccountKeyRegenerateRequest implements JsonSerializable<AccountKeyRegenerateRequest> {
     /*
      * serial of key to be regenerated
      */
-    @JsonProperty(value = "serial")
     private Serial serial;
 
-    /** Creates an instance of AccountKeyRegenerateRequest class. */
+    /**
+     * Creates an instance of AccountKeyRegenerateRequest class.
+     */
     public AccountKeyRegenerateRequest() {
     }
 
     /**
      * Get the serial property: serial of key to be regenerated.
-     *
+     * 
      * @return the serial value.
      */
     public Serial serial() {
@@ -31,7 +38,7 @@ public final class AccountKeyRegenerateRequest {
 
     /**
      * Set the serial property: serial of key to be regenerated.
-     *
+     * 
      * @param serial the serial value to set.
      * @return the AccountKeyRegenerateRequest object itself.
      */
@@ -42,9 +49,45 @@ public final class AccountKeyRegenerateRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("serial", this.serial == null ? null : this.serial.toInt());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountKeyRegenerateRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountKeyRegenerateRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountKeyRegenerateRequest.
+     */
+    public static AccountKeyRegenerateRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountKeyRegenerateRequest deserializedAccountKeyRegenerateRequest = new AccountKeyRegenerateRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serial".equals(fieldName)) {
+                    deserializedAccountKeyRegenerateRequest.serial = Serial.fromInt(reader.getInt());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountKeyRegenerateRequest;
+        });
     }
 }

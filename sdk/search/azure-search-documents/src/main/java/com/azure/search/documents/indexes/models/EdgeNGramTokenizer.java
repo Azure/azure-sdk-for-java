@@ -10,8 +10,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Tokenizes the input from an edge into n-grams of the given size(s). This tokenizer is implemented using Apache

@@ -23,7 +23,7 @@ public class HotelAddress {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String stateProvince;
 
-    @SearchableField(synonymMapNames = {"fieldbuilder"})
+    @SearchableField(synonymMapNames = { "fieldbuilder" })
     @JsonProperty(value = "Country")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String country;
@@ -32,7 +32,6 @@ public class HotelAddress {
     @JsonProperty(value = "PostalCode")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String postalCode;
-
 
     public String streetAddress() {
         return this.streetAddress;

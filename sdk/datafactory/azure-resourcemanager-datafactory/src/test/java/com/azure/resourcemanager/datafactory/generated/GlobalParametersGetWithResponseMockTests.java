@@ -22,7 +22,7 @@ public final class GlobalParametersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"r\":{\"type\":\"Float\",\"value\":\"datarphdakwwiezeut\"}},\"name\":\"wmo\",\"type\":\"qlwzatvnejlocmql\",\"etag\":\"lpqlwtxshvozh\",\"id\":\"lmwvcehkvafcjekt\"}";
+            = "{\"properties\":{\"uzyyniv\":{\"type\":\"Int\",\"value\":\"datanlpjivtzs\"},\"mtxvnelw\":{\"type\":\"Array\",\"value\":\"dataqiijkvops\"},\"ytdborujflt\":{\"type\":\"String\",\"value\":\"datadm\"},\"gugvrwnweiwkbkh\":{\"type\":\"Bool\",\"value\":\"datawfwlfq\"}},\"name\":\"qacc\",\"type\":\"bdjott\",\"etag\":\"kqsxgaojwulat\",\"id\":\"jzv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,10 @@ public final class GlobalParametersGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GlobalParameterResource response = manager.globalParameters()
-            .getWithResponse("dpqkcbflzzd", "frewirrsuf", "tmseuqg", com.azure.core.util.Context.NONE)
-            .getValue();
+        GlobalParameterResource response
+            = manager.globalParameters().getWithResponse("lf", "ftz", "g", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("lmwvcehkvafcjekt", response.id());
-        Assertions.assertEquals(GlobalParameterType.FLOAT, response.properties().get("r").type());
+        Assertions.assertEquals("jzv", response.id());
+        Assertions.assertEquals(GlobalParameterType.INT, response.properties().get("uzyyniv").type());
     }
 }

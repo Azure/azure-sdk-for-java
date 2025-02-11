@@ -132,20 +132,16 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
     }
 
     public Lab create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLabs()
-                .createOrUpdate(resourceGroupName, labName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLabs()
+            .createOrUpdate(resourceGroupName, labName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Lab create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLabs()
-                .createOrUpdate(resourceGroupName, labName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLabs()
+            .createOrUpdate(resourceGroupName, labName, this.innerModel(), context);
         return this;
     }
 
@@ -161,41 +157,37 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
     }
 
     public Lab apply() {
-        this.innerObject =
-            serviceManager.serviceClient().getLabs().update(resourceGroupName, labName, updateBody, Context.NONE);
+        this.innerObject
+            = serviceManager.serviceClient().getLabs().update(resourceGroupName, labName, updateBody, Context.NONE);
         return this;
     }
 
     public Lab apply(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getLabs().update(resourceGroupName, labName, updateBody, context);
+        this.innerObject
+            = serviceManager.serviceClient().getLabs().update(resourceGroupName, labName, updateBody, context);
         return this;
     }
 
     LabImpl(LabInner innerObject, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
     }
 
     public Lab refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLabs()
-                .getByResourceGroupWithResponse(resourceGroupName, labName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLabs()
+            .getByResourceGroupWithResponse(resourceGroupName, labName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Lab refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLabs()
-                .getByResourceGroupWithResponse(resourceGroupName, labName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLabs()
+            .getByResourceGroupWithResponse(resourceGroupName, labName, context)
+            .getValue();
         return this;
     }
 

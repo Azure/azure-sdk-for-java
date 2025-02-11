@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunInner;
 
-/** An instance of this class provides access to all the operations defined in WorkflowRunOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowRunOperationsClient.
+ */
 public interface WorkflowRunOperationsClient {
     /**
      * Gets an operation for a run.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -26,12 +28,12 @@ public interface WorkflowRunOperationsClient {
      * @return an operation for a run along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowRunInner> getWithResponse(
-        String resourceGroupName, String workflowName, String runName, String operationId, Context context);
+    Response<WorkflowRunInner> getWithResponse(String resourceGroupName, String workflowName, String runName,
+        String operationId, Context context);
 
     /**
      * Gets an operation for a run.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.

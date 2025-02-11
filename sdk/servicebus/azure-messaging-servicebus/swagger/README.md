@@ -22,32 +22,24 @@ There is one swagger for Service Bus management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest --java --use=C:/work/autorest.java
+autorest
 ```
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.42'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1d5723dc330e9749d5ded6cb9db5a309b3705fa4/specification/servicebus/data-plane/Microsoft.ServiceBus/stable/2021-05/servicebus.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.messaging.servicebus.administration
-generate-client-interfaces: false
-service-interface-as-public: true
-sync-methods: essential
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
 models-subpackage: implementation.models
 custom-types: AccessRights,EntityStatus,NamespaceProperties,MessagingSku,NamespaceType
 custom-types-subpackage: models
-context-client-method-parameter: true
 customization-class: src/main/java/AdministrationClientCustomization.java
 enable-sync-stack: true
-generic-response-type: true
-custom-strongly-typed-header-deserialization: true
 disable-client-builder: true
-stream-style-serialization: true
 ```
 
 ### Change Return Types of Subscription REST Methods

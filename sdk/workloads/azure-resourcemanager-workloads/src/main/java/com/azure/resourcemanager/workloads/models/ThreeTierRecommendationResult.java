@@ -5,59 +5,71 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.fluent.models.SapSizingRecommendationResultInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** The recommended configuration for a three tier SAP system. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "deploymentType")
-@JsonTypeName("ThreeTier")
+/**
+ * The recommended configuration for a three tier SAP system.
+ */
 @Fluent
 public final class ThreeTierRecommendationResult extends SapSizingRecommendationResultInner {
     /*
+     * The type of SAP deployment, single server or Three tier.
+     */
+    private SapDeploymentType deploymentType = SapDeploymentType.THREE_TIER;
+
+    /*
      * The database VM SKU.
      */
-    @JsonProperty(value = "dbVmSku")
     private String dbVmSku;
 
     /*
      * The database server instance count.
      */
-    @JsonProperty(value = "databaseInstanceCount")
     private Long databaseInstanceCount;
 
     /*
      * The central server VM SKU.
      */
-    @JsonProperty(value = "centralServerVmSku")
     private String centralServerVmSku;
 
     /*
      * The central server instance count.
      */
-    @JsonProperty(value = "centralServerInstanceCount")
     private Long centralServerInstanceCount;
 
     /*
      * The application server VM SKU.
      */
-    @JsonProperty(value = "applicationServerVmSku")
     private String applicationServerVmSku;
 
     /*
      * The application server instance count.
      */
-    @JsonProperty(value = "applicationServerInstanceCount")
     private Long applicationServerInstanceCount;
 
-    /** Creates an instance of ThreeTierRecommendationResult class. */
+    /**
+     * Creates an instance of ThreeTierRecommendationResult class.
+     */
     public ThreeTierRecommendationResult() {
     }
 
     /**
+     * Get the deploymentType property: The type of SAP deployment, single server or Three tier.
+     * 
+     * @return the deploymentType value.
+     */
+    @Override
+    public SapDeploymentType deploymentType() {
+        return this.deploymentType;
+    }
+
+    /**
      * Get the dbVmSku property: The database VM SKU.
-     *
+     * 
      * @return the dbVmSku value.
      */
     public String dbVmSku() {
@@ -66,7 +78,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the dbVmSku property: The database VM SKU.
-     *
+     * 
      * @param dbVmSku the dbVmSku value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -77,7 +89,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Get the databaseInstanceCount property: The database server instance count.
-     *
+     * 
      * @return the databaseInstanceCount value.
      */
     public Long databaseInstanceCount() {
@@ -86,7 +98,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the databaseInstanceCount property: The database server instance count.
-     *
+     * 
      * @param databaseInstanceCount the databaseInstanceCount value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -97,7 +109,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Get the centralServerVmSku property: The central server VM SKU.
-     *
+     * 
      * @return the centralServerVmSku value.
      */
     public String centralServerVmSku() {
@@ -106,7 +118,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the centralServerVmSku property: The central server VM SKU.
-     *
+     * 
      * @param centralServerVmSku the centralServerVmSku value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -117,7 +129,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Get the centralServerInstanceCount property: The central server instance count.
-     *
+     * 
      * @return the centralServerInstanceCount value.
      */
     public Long centralServerInstanceCount() {
@@ -126,7 +138,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the centralServerInstanceCount property: The central server instance count.
-     *
+     * 
      * @param centralServerInstanceCount the centralServerInstanceCount value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -137,7 +149,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Get the applicationServerVmSku property: The application server VM SKU.
-     *
+     * 
      * @return the applicationServerVmSku value.
      */
     public String applicationServerVmSku() {
@@ -146,7 +158,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the applicationServerVmSku property: The application server VM SKU.
-     *
+     * 
      * @param applicationServerVmSku the applicationServerVmSku value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -157,7 +169,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Get the applicationServerInstanceCount property: The application server instance count.
-     *
+     * 
      * @return the applicationServerInstanceCount value.
      */
     public Long applicationServerInstanceCount() {
@@ -166,7 +178,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the applicationServerInstanceCount property: The application server instance count.
-     *
+     * 
      * @param applicationServerInstanceCount the applicationServerInstanceCount value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -177,11 +189,70 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deploymentType",
+            this.deploymentType == null ? null : this.deploymentType.toString());
+        jsonWriter.writeStringField("dbVmSku", this.dbVmSku);
+        jsonWriter.writeNumberField("databaseInstanceCount", this.databaseInstanceCount);
+        jsonWriter.writeStringField("centralServerVmSku", this.centralServerVmSku);
+        jsonWriter.writeNumberField("centralServerInstanceCount", this.centralServerInstanceCount);
+        jsonWriter.writeStringField("applicationServerVmSku", this.applicationServerVmSku);
+        jsonWriter.writeNumberField("applicationServerInstanceCount", this.applicationServerInstanceCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreeTierRecommendationResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreeTierRecommendationResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThreeTierRecommendationResult.
+     */
+    public static ThreeTierRecommendationResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThreeTierRecommendationResult deserializedThreeTierRecommendationResult
+                = new ThreeTierRecommendationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentType".equals(fieldName)) {
+                    deserializedThreeTierRecommendationResult.deploymentType
+                        = SapDeploymentType.fromString(reader.getString());
+                } else if ("dbVmSku".equals(fieldName)) {
+                    deserializedThreeTierRecommendationResult.dbVmSku = reader.getString();
+                } else if ("databaseInstanceCount".equals(fieldName)) {
+                    deserializedThreeTierRecommendationResult.databaseInstanceCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("centralServerVmSku".equals(fieldName)) {
+                    deserializedThreeTierRecommendationResult.centralServerVmSku = reader.getString();
+                } else if ("centralServerInstanceCount".equals(fieldName)) {
+                    deserializedThreeTierRecommendationResult.centralServerInstanceCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("applicationServerVmSku".equals(fieldName)) {
+                    deserializedThreeTierRecommendationResult.applicationServerVmSku = reader.getString();
+                } else if ("applicationServerInstanceCount".equals(fieldName)) {
+                    deserializedThreeTierRecommendationResult.applicationServerInstanceCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThreeTierRecommendationResult;
+        });
     }
 }

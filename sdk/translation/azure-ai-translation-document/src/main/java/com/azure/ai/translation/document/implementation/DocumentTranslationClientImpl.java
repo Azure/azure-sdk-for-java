@@ -5,7 +5,7 @@
 package com.azure.ai.translation.document.implementation;
 
 import com.azure.ai.translation.document.DocumentTranslationServiceVersion;
-import com.azure.ai.translation.document.models.TranslationStatus;
+import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -177,9 +177,9 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> startTranslation(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> translation(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData startTranslationDetails,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/document/batches")
@@ -188,9 +188,9 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> startTranslationSync(@HostParam("endpoint") String endpoint,
+        Response<Void> translationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData startTranslationDetails,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Get("/document/batches")
@@ -199,7 +199,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTranslationsStatus(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listTranslationStatuses(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -209,7 +209,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTranslationsStatusSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listTranslationStatusesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -220,7 +220,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDocumentStatus(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String translationId,
             @PathParam("documentId") String documentId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -231,7 +231,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDocumentStatusSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String translationId,
             @PathParam("documentId") String documentId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -242,7 +242,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTranslationStatus(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String translationId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/document/batches/{id}")
@@ -252,7 +252,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTranslationStatusSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String translationId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/document/batches/{id}")
@@ -262,7 +262,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelTranslation(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String translationId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/document/batches/{id}")
@@ -272,7 +272,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelTranslationSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String translationId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/document/batches/{id}/documents")
@@ -281,8 +281,8 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDocumentsStatus(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+        Mono<Response<BinaryData>> listDocumentStatuses(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String translationId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/document/batches/{id}/documents")
@@ -291,8 +291,8 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDocumentsStatusSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+        Response<BinaryData> listDocumentStatusesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String translationId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/document/formats")
@@ -321,7 +321,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTranslationsStatusNext(
+        Mono<Response<BinaryData>> listTranslationStatusesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -331,7 +331,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTranslationsStatusNextSync(
+        Response<BinaryData> listTranslationStatusesNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -341,7 +341,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDocumentsStatusNext(
+        Mono<Response<BinaryData>> listDocumentStatusesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -351,9 +351,9 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDocumentsStatusNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+        Response<BinaryData> listDocumentStatusesNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -380,7 +380,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -413,9 +414,10 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param startTranslationDetails Translation job submission batch request.
+     * @param body Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -424,13 +426,11 @@ public final class DocumentTranslationClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> startTranslationWithResponseAsync(BinaryData startTranslationDetails,
-        RequestOptions requestOptions) {
+    private Mono<Response<Void>> translationWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.startTranslation(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, accept, startTranslationDetails, requestOptions, context));
+        return FluxUtil.withContext(context -> service.translation(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -457,7 +457,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -490,9 +491,10 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param startTranslationDetails Translation job submission batch request.
+     * @param body Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -501,12 +503,11 @@ public final class DocumentTranslationClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<Void> startTranslationWithResponse(BinaryData startTranslationDetails,
-        RequestOptions requestOptions) {
+    private Response<Void> translationWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.startTranslationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            accept, startTranslationDetails, requestOptions, Context.NONE);
+        return service.translationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            body, requestOptions, Context.NONE);
     }
 
     /**
@@ -533,7 +534,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -566,9 +568,10 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param startTranslationDetails Translation job submission batch request.
+     * @param body Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -577,10 +580,8 @@ public final class DocumentTranslationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginStartTranslationAsync(BinaryData startTranslationDetails,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.startTranslationWithResponseAsync(startTranslationDetails, requestOptions),
+    public PollerFlux<BinaryData, BinaryData> beginTranslationAsync(BinaryData body, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1), () -> this.translationWithResponseAsync(body, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/translator".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -614,7 +615,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -647,9 +649,10 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param startTranslationDetails Translation job submission batch request.
+     * @param body Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -658,10 +661,8 @@ public final class DocumentTranslationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginStartTranslation(BinaryData startTranslationDetails,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.startTranslationWithResponse(startTranslationDetails, requestOptions),
+    public SyncPoller<BinaryData, BinaryData> beginTranslation(BinaryData body, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1), () -> this.translationWithResponse(body, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/translator".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -695,7 +696,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -728,9 +730,10 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param startTranslationDetails Translation job submission batch request.
+     * @param body Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -739,17 +742,17 @@ public final class DocumentTranslationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TranslationStatus, Void> beginStartTranslationWithModelAsync(BinaryData startTranslationDetails,
+    public PollerFlux<TranslationStatusResult, TranslationStatusResult> beginTranslationWithModelAsync(BinaryData body,
         RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.startTranslationWithResponseAsync(startTranslationDetails, requestOptions),
+        return PollerFlux.create(Duration.ofSeconds(1), () -> this.translationWithResponseAsync(body, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/translator".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(TranslationStatus.class), TypeReference.createInstance(Void.class));
+            TypeReference.createInstance(TranslationStatusResult.class),
+            TypeReference.createInstance(TranslationStatusResult.class));
     }
 
     /**
@@ -776,7 +779,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -809,9 +813,10 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param startTranslationDetails Translation job submission batch request.
+     * @param body Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -820,17 +825,17 @@ public final class DocumentTranslationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TranslationStatus, Void> beginStartTranslationWithModel(BinaryData startTranslationDetails,
+    public SyncPoller<TranslationStatusResult, TranslationStatusResult> beginTranslationWithModel(BinaryData body,
         RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.startTranslationWithResponse(startTranslationDetails, requestOptions),
+        return SyncPoller.createPoller(Duration.ofSeconds(1), () -> this.translationWithResponse(body, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/translator".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(TranslationStatus.class), TypeReference.createInstance(Void.class));
+            TypeReference.createInstance(TranslationStatusResult.class),
+            TypeReference.createInstance(TranslationStatusResult.class));
     }
 
     /**
@@ -942,7 +947,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -969,7 +975,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -980,10 +987,10 @@ public final class DocumentTranslationClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getTranslationsStatusSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listTranslationStatusesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getTranslationsStatus(this.getEndpoint(),
+            .withContext(context -> service.listTranslationStatuses(this.getEndpoint(),
                 this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
@@ -1098,7 +1105,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1125,7 +1133,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1135,7 +1144,7 @@ public final class DocumentTranslationClientImpl {
      * @return translation job Status Response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getTranslationsStatusAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listTranslationStatusesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -1148,7 +1157,7 @@ public final class DocumentTranslationClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return getTranslationsStatusSinglePageAsync(requestOptionsLocal);
+            return listTranslationStatusesSinglePageAsync(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -1159,7 +1168,7 @@ public final class DocumentTranslationClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return getTranslationsStatusNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listTranslationStatusesNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -1272,7 +1281,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1299,7 +1309,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1309,9 +1320,9 @@ public final class DocumentTranslationClientImpl {
      * @return translation job Status Response along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getTranslationsStatusSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listTranslationStatusesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.getTranslationsStatusSync(this.getEndpoint(),
+        Response<BinaryData> res = service.listTranslationStatusesSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
@@ -1426,7 +1437,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1453,7 +1465,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1463,7 +1476,7 @@ public final class DocumentTranslationClientImpl {
      * @return translation job Status Response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getTranslationsStatus(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listTranslationStatuses(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -1476,7 +1489,7 @@ public final class DocumentTranslationClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return getTranslationsStatusSinglePage(requestOptionsLocal);
+            return listTranslationStatusesSinglePage(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -1487,7 +1500,7 @@ public final class DocumentTranslationClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return getTranslationsStatusNextSinglePage(nextLink, requestOptionsLocal);
+            return listTranslationStatusesNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -1498,7 +1511,8 @@ public final class DocumentTranslationClientImpl {
      * and document Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -1521,9 +1535,10 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param id Format - uuid. The batch id.
+     * @param translationId Format - uuid. The batch id.
      * @param documentId Format - uuid. The document id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1533,11 +1548,11 @@ public final class DocumentTranslationClientImpl {
      * @return document Status Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDocumentStatusWithResponseAsync(String id, String documentId,
+    public Mono<Response<BinaryData>> getDocumentStatusWithResponseAsync(String translationId, String documentId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getDocumentStatus(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), id, documentId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), translationId, documentId, accept, requestOptions, context));
     }
 
     /**
@@ -1547,7 +1562,8 @@ public final class DocumentTranslationClientImpl {
      * and document Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -1570,9 +1586,10 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param id Format - uuid. The batch id.
+     * @param translationId Format - uuid. The batch id.
      * @param documentId Format - uuid. The document id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1582,11 +1599,11 @@ public final class DocumentTranslationClientImpl {
      * @return document Status Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDocumentStatusWithResponse(String id, String documentId,
+    public Response<BinaryData> getDocumentStatusWithResponse(String translationId, String documentId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDocumentStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), id, documentId,
-            accept, requestOptions, Context.NONE);
+        return service.getDocumentStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), translationId,
+            documentId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1598,7 +1615,8 @@ public final class DocumentTranslationClientImpl {
      * translated as part of that request.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1625,9 +1643,10 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1636,10 +1655,11 @@ public final class DocumentTranslationClientImpl {
      * @return translation job status response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTranslationStatusWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTranslationStatusWithResponseAsync(String translationId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getTranslationStatus(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), id, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), translationId, accept, requestOptions, context));
     }
 
     /**
@@ -1651,7 +1671,8 @@ public final class DocumentTranslationClientImpl {
      * translated as part of that request.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1678,9 +1699,10 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1689,10 +1711,10 @@ public final class DocumentTranslationClientImpl {
      * @return translation job status response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTranslationStatusWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> getTranslationStatusWithResponse(String translationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getTranslationStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept,
-            requestOptions, Context.NONE);
+        return service.getTranslationStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            translationId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1708,7 +1730,8 @@ public final class DocumentTranslationClientImpl {
      * possible.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1735,9 +1758,10 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param id Format - uuid. The operation-id.
+     * @param translationId Format - uuid. The operation-id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1746,10 +1770,11 @@ public final class DocumentTranslationClientImpl {
      * @return translation job status response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelTranslationWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> cancelTranslationWithResponseAsync(String translationId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.cancelTranslation(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), id, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), translationId, accept, requestOptions, context));
     }
 
     /**
@@ -1765,7 +1790,8 @@ public final class DocumentTranslationClientImpl {
      * possible.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1792,9 +1818,10 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param id Format - uuid. The operation-id.
+     * @param translationId Format - uuid. The operation-id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1803,10 +1830,10 @@ public final class DocumentTranslationClientImpl {
      * @return translation job status response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelTranslationWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> cancelTranslationWithResponse(String translationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelTranslationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept,
-            requestOptions, Context.NONE);
+        return service.cancelTranslationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), translationId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1912,7 +1939,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -1935,9 +1963,10 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1946,12 +1975,12 @@ public final class DocumentTranslationClientImpl {
      * @return documents Status Response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getDocumentsStatusSinglePageAsync(String id,
+    private Mono<PagedResponse<BinaryData>> listDocumentStatusesSinglePageAsync(String translationId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getDocumentsStatus(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), id, accept, requestOptions, context))
+            .withContext(context -> service.listDocumentStatuses(this.getEndpoint(),
+                this.getServiceVersion().getVersion(), translationId, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -2059,7 +2088,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2082,9 +2112,10 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2093,7 +2124,7 @@ public final class DocumentTranslationClientImpl {
      * @return documents Status Response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getDocumentsStatusAsync(String id, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listDocumentStatusesAsync(String translationId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -2106,7 +2137,7 @@ public final class DocumentTranslationClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return getDocumentsStatusSinglePageAsync(id, requestOptionsLocal);
+            return listDocumentStatusesSinglePageAsync(translationId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -2117,7 +2148,7 @@ public final class DocumentTranslationClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return getDocumentsStatusNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listDocumentStatusesNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -2224,7 +2255,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2247,9 +2279,10 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2258,10 +2291,11 @@ public final class DocumentTranslationClientImpl {
      * @return documents Status Response along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getDocumentsStatusSinglePage(String id, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDocumentStatusesSinglePage(String translationId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.getDocumentsStatusSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listDocumentStatusesSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), translationId, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -2369,7 +2403,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2392,9 +2427,10 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2403,7 +2439,7 @@ public final class DocumentTranslationClientImpl {
      * @return documents Status Response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getDocumentsStatus(String id, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listDocumentStatuses(String translationId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -2416,7 +2452,7 @@ public final class DocumentTranslationClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return getDocumentsStatusSinglePage(id, requestOptionsLocal);
+            return listDocumentStatusesSinglePage(translationId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -2427,7 +2463,7 @@ public final class DocumentTranslationClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return getDocumentsStatusNextSinglePage(nextLink, requestOptionsLocal);
+            return listDocumentStatusesNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -2448,7 +2484,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -2463,11 +2500,12 @@ public final class DocumentTranslationClientImpl {
      *             versions (Optional): [
      *                 String (Optional)
      *             ]
-     *             type: String (Optional)
+     *             type: String(document/glossary) (Optional)
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2500,7 +2538,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -2515,11 +2554,12 @@ public final class DocumentTranslationClientImpl {
      *             versions (Optional): [
      *                 String (Optional)
      *             ]
-     *             type: String (Optional)
+     *             type: String(document/glossary) (Optional)
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2541,7 +2581,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -2568,7 +2609,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2580,11 +2622,12 @@ public final class DocumentTranslationClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getTranslationsStatusNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listTranslationStatusesNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getTranslationsStatusNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+        return FluxUtil
+            .withContext(context -> service.listTranslationStatusesNext(nextLink, this.getEndpoint(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -2595,7 +2638,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -2622,7 +2666,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2633,11 +2678,11 @@ public final class DocumentTranslationClientImpl {
      * @return translation job Status Response along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getTranslationsStatusNextSinglePage(String nextLink,
+    private PagedResponse<BinaryData> listTranslationStatusesNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.getTranslationsStatusNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listTranslationStatusesNextSync(nextLink, this.getEndpoint(), accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -2648,7 +2693,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2671,7 +2717,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2682,11 +2729,11 @@ public final class DocumentTranslationClientImpl {
      * @return documents Status Response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getDocumentsStatusNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listDocumentStatusesNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.getDocumentsStatusNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+            context -> service.listDocumentStatusesNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -2697,7 +2744,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2720,7 +2768,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2731,10 +2780,11 @@ public final class DocumentTranslationClientImpl {
      * @return documents Status Response along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getDocumentsStatusNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDocumentStatusesNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.getDocumentsStatusNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listDocumentStatusesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

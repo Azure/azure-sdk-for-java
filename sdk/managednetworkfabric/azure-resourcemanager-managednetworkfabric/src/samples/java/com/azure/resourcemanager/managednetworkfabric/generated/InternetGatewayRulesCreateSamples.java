@@ -10,20 +10,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for InternetGatewayRules Create. */
+/**
+ * Samples for InternetGatewayRules Create.
+ */
 public final class InternetGatewayRulesCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/InternetGatewayRules_Create_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * InternetGatewayRules_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: InternetGatewayRules_Create_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void internetGatewayRulesCreateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .internetGatewayRules()
+        manager.internetGatewayRules()
             .define("example-internetGatewayRule")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
@@ -34,6 +37,7 @@ public final class InternetGatewayRulesCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

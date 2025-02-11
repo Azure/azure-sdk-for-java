@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class InnerErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InnerError model =
-            BinaryData
-                .fromString("{\"diagnosticcontext\":\"kljla\",\"time\":\"2021-06-15T07:28:27Z\"}")
-                .toObject(InnerError.class);
-        Assertions.assertEquals("kljla", model.diagnosticcontext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T07:28:27Z"), model.time());
+        InnerError model = BinaryData.fromString("{\"diagnosticcontext\":\"cr\",\"time\":\"2021-02-13T07:50:35Z\"}")
+            .toObject(InnerError.class);
+        Assertions.assertEquals("cr", model.diagnosticcontext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-13T07:50:35Z"), model.time());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InnerError model =
-            new InnerError().withDiagnosticcontext("kljla").withTime(OffsetDateTime.parse("2021-06-15T07:28:27Z"));
+        InnerError model
+            = new InnerError().withDiagnosticcontext("cr").withTime(OffsetDateTime.parse("2021-02-13T07:50:35Z"));
         model = BinaryData.fromObject(model).toObject(InnerError.class);
-        Assertions.assertEquals("kljla", model.diagnosticcontext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T07:28:27Z"), model.time());
+        Assertions.assertEquals("cr", model.diagnosticcontext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-13T07:50:35Z"), model.time());
     }
 }

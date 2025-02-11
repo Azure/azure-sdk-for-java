@@ -13,11 +13,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkfunction.fluent.models.AzureTrafficCollectorInner;
 import com.azure.resourcemanager.networkfunction.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in AzureTrafficCollectorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AzureTrafficCollectorsClient.
+ */
 public interface AzureTrafficCollectorsClient {
     /**
      * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -27,12 +29,12 @@ public interface AzureTrafficCollectorsClient {
      * @return the specified Azure Traffic Collector in a specified resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureTrafficCollectorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureTrafficCollectorName, Context context);
+    Response<AzureTrafficCollectorInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureTrafficCollectorName, Context context);
 
     /**
      * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface AzureTrafficCollectorsClient {
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -60,7 +62,7 @@ public interface AzureTrafficCollectorsClient {
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -72,14 +74,12 @@ public interface AzureTrafficCollectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureTrafficCollectorInner>, AzureTrafficCollectorInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        AzureTrafficCollectorInner parameters,
+        String resourceGroupName, String azureTrafficCollectorName, AzureTrafficCollectorInner parameters,
         Context context);
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -89,12 +89,12 @@ public interface AzureTrafficCollectorsClient {
      * @return azure Traffic Collector resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureTrafficCollectorInner createOrUpdate(
-        String resourceGroupName, String azureTrafficCollectorName, AzureTrafficCollectorInner parameters);
+    AzureTrafficCollectorInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
+        AzureTrafficCollectorInner parameters);
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -105,15 +105,12 @@ public interface AzureTrafficCollectorsClient {
      * @return azure Traffic Collector resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureTrafficCollectorInner createOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        AzureTrafficCollectorInner parameters,
-        Context context);
+    AzureTrafficCollectorInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
+        AzureTrafficCollectorInner parameters, Context context);
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,7 +123,7 @@ public interface AzureTrafficCollectorsClient {
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -136,12 +133,12 @@ public interface AzureTrafficCollectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String azureTrafficCollectorName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureTrafficCollectorName,
+        Context context);
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +150,7 @@ public interface AzureTrafficCollectorsClient {
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -166,7 +163,7 @@ public interface AzureTrafficCollectorsClient {
 
     /**
      * Updates the specified Azure Traffic Collector tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters Parameters supplied to update Azure Traffic Collector tags.
@@ -177,12 +174,12 @@ public interface AzureTrafficCollectorsClient {
      * @return azure Traffic Collector resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureTrafficCollectorInner> updateTagsWithResponse(
-        String resourceGroupName, String azureTrafficCollectorName, TagsObject parameters, Context context);
+    Response<AzureTrafficCollectorInner> updateTagsWithResponse(String resourceGroupName,
+        String azureTrafficCollectorName, TagsObject parameters, Context context);
 
     /**
      * Updates the specified Azure Traffic Collector tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters Parameters supplied to update Azure Traffic Collector tags.
@@ -192,6 +189,6 @@ public interface AzureTrafficCollectorsClient {
      * @return azure Traffic Collector resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureTrafficCollectorInner updateTags(
-        String resourceGroupName, String azureTrafficCollectorName, TagsObject parameters);
+    AzureTrafficCollectorInner updateTags(String resourceGroupName, String azureTrafficCollectorName,
+        TagsObject parameters);
 }

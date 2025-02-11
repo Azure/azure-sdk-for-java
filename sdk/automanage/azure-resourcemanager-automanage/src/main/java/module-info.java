@@ -10,10 +10,6 @@ module com.azure.resourcemanager.automanage {
     exports com.azure.resourcemanager.automanage.fluent.models;
     exports com.azure.resourcemanager.automanage.models;
 
-    opens com.azure.resourcemanager.automanage.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.automanage.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.automanage.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.automanage.models to com.azure.core;
 }

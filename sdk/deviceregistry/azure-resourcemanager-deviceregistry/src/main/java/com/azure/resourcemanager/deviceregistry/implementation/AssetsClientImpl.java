@@ -52,24 +52,24 @@ public final class AssetsClientImpl implements AssetsClient {
     /**
      * The service client containing this operation class.
      */
-    private final DeviceRegistryClientImpl client;
+    private final DeviceRegistryManagementClientImpl client;
 
     /**
      * Initializes an instance of AssetsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AssetsClientImpl(DeviceRegistryClientImpl client) {
+    AssetsClientImpl(DeviceRegistryManagementClientImpl client) {
         this.service = RestProxy.create(AssetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DeviceRegistryClientAssets to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for DeviceRegistryManagementClientAssets to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DeviceRegistryClient")
+    @ServiceInterface(name = "DeviceRegistryManage")
     public interface AssetsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assets/{assetName}")
@@ -1154,8 +1154,6 @@ public final class AssetsClientImpl implements AssetsClient {
     }
 
     /**
-     * List Asset resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1184,8 +1182,6 @@ public final class AssetsClientImpl implements AssetsClient {
     }
 
     /**
-     * List Asset resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1213,8 +1209,6 @@ public final class AssetsClientImpl implements AssetsClient {
     }
 
     /**
-     * List Asset resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1243,8 +1237,6 @@ public final class AssetsClientImpl implements AssetsClient {
     }
 
     /**
-     * List Asset resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

@@ -20,7 +20,7 @@ public final class ReplicationRecoveryPlansFailoverCommitSamples {
      */
     public static void executeCommitFailoverOfTheRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().failoverCommit("vault1", "resourceGroupPS1", "RPtest1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationRecoveryPlans()
+            .failoverCommit("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE);
     }
 }

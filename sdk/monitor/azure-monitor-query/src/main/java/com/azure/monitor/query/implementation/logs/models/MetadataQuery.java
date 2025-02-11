@@ -209,6 +209,9 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

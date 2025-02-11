@@ -5,28 +5,37 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Configures Unknown output handling settings of the license. */
+/**
+ * Configures Unknown output handling settings of the license.
+ */
 public final class ContentKeyPolicyPlayReadyUnknownOutputPassingOption
     extends ExpandableStringEnum<ContentKeyPolicyPlayReadyUnknownOutputPassingOption> {
-    /** Static value Unknown for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
+    /**
+     * Static value Unknown for ContentKeyPolicyPlayReadyUnknownOutputPassingOption.
+     */
     public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption UNKNOWN = fromString("Unknown");
 
-    /** Static value NotAllowed for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
+    /**
+     * Static value NotAllowed for ContentKeyPolicyPlayReadyUnknownOutputPassingOption.
+     */
     public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption NOT_ALLOWED = fromString("NotAllowed");
 
-    /** Static value Allowed for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
+    /**
+     * Static value Allowed for ContentKeyPolicyPlayReadyUnknownOutputPassingOption.
+     */
     public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption ALLOWED = fromString("Allowed");
 
-    /** Static value AllowedWithVideoConstriction for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
-    public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption ALLOWED_WITH_VIDEO_CONSTRICTION =
-        fromString("AllowedWithVideoConstriction");
+    /**
+     * Static value AllowedWithVideoConstriction for ContentKeyPolicyPlayReadyUnknownOutputPassingOption.
+     */
+    public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption ALLOWED_WITH_VIDEO_CONSTRICTION
+        = fromString("AllowedWithVideoConstriction");
 
     /**
      * Creates a new instance of ContentKeyPolicyPlayReadyUnknownOutputPassingOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,18 +44,17 @@ public final class ContentKeyPolicyPlayReadyUnknownOutputPassingOption
 
     /**
      * Creates or finds a ContentKeyPolicyPlayReadyUnknownOutputPassingOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContentKeyPolicyPlayReadyUnknownOutputPassingOption.
      */
-    @JsonCreator
     public static ContentKeyPolicyPlayReadyUnknownOutputPassingOption fromString(String name) {
         return fromString(name, ContentKeyPolicyPlayReadyUnknownOutputPassingOption.class);
     }
 
     /**
      * Gets known ContentKeyPolicyPlayReadyUnknownOutputPassingOption values.
-     *
+     * 
      * @return known ContentKeyPolicyPlayReadyUnknownOutputPassingOption values.
      */
     public static Collection<ContentKeyPolicyPlayReadyUnknownOutputPassingOption> values() {

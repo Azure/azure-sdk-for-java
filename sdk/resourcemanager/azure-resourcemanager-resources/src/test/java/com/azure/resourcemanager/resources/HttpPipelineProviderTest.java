@@ -35,7 +35,8 @@ public class HttpPipelineProviderTest {
     static class BeforeRetryPolicy implements HttpPipelinePolicy {
 
         @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext,
+            HttpPipelineNextPolicy httpPipelineNextPolicy) {
             return httpPipelineNextPolicy.process();
         }
 
@@ -48,7 +49,8 @@ public class HttpPipelineProviderTest {
     static class AfterRetryPolicy implements HttpPipelinePolicy {
 
         @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext,
+            HttpPipelineNextPolicy httpPipelineNextPolicy) {
             return httpPipelineNextPolicy.process();
         }
     }
@@ -56,18 +58,15 @@ public class HttpPipelineProviderTest {
     @Test
     public void addPolicyTest() {
         //provide before and after retry policy
-        HttpPipeline pipeline = HttpPipelineProvider.buildHttpPipeline(
-                Mockito.mock(TokenCredential.class),
-                new AzureProfile(new AzureEnvironment(new HashMap<>())),
-                new String[0], new HttpLogOptions(),
-                new Configuration(),
-                new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-                new ArrayList<HttpPipelinePolicy>() {{
-                        this.add(new AfterRetryPolicy());
-                        this.add(new BeforeRetryPolicy());
-                    }},
-                new MockHttpClient()
-        );
+        HttpPipeline pipeline = HttpPipelineProvider.buildHttpPipeline(Mockito.mock(TokenCredential.class),
+            new AzureProfile(new AzureEnvironment(new HashMap<>())), new String[0], new HttpLogOptions(),
+            new Configuration(), new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            new ArrayList<HttpPipelinePolicy>() {
+                {
+                    this.add(new AfterRetryPolicy());
+                    this.add(new BeforeRetryPolicy());
+                }
+            }, new MockHttpClient());
         int retryIndex = findRetryPolicyIndex(pipeline);
         int beforeRetryIndex = findBeforeRetryIndex(pipeline);
         int afterRetryIndex = findAfterRetryIndex(pipeline);
@@ -79,18 +78,14 @@ public class HttpPipelineProviderTest {
         Assertions.assertTrue(afterRetryIndex > retryIndex, "afterRetryIndex <= retryIndex");
 
         //only provide after
-        pipeline = HttpPipelineProvider.buildHttpPipeline(
-                Mockito.mock(TokenCredential.class),
-                new AzureProfile(new AzureEnvironment(new HashMap<>())),
-                new String[0],
-                new HttpLogOptions(),
-                new Configuration(),
-                new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-                new ArrayList<HttpPipelinePolicy>() {{
-                        this.add(new AfterRetryPolicy());
-                    }},
-                new MockHttpClient()
-        );
+        pipeline = HttpPipelineProvider.buildHttpPipeline(Mockito.mock(TokenCredential.class),
+            new AzureProfile(new AzureEnvironment(new HashMap<>())), new String[0], new HttpLogOptions(),
+            new Configuration(), new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            new ArrayList<HttpPipelinePolicy>() {
+                {
+                    this.add(new AfterRetryPolicy());
+                }
+            }, new MockHttpClient());
         retryIndex = findRetryPolicyIndex(pipeline);
         beforeRetryIndex = findBeforeRetryIndex(pipeline);
         afterRetryIndex = findAfterRetryIndex(pipeline);
@@ -101,18 +96,14 @@ public class HttpPipelineProviderTest {
         Assertions.assertTrue(afterRetryIndex > retryIndex, "afterRetryIndex <= retryIndex");
 
         //only provide before
-        pipeline = HttpPipelineProvider.buildHttpPipeline(
-                Mockito.mock(TokenCredential.class),
-                new AzureProfile(new AzureEnvironment(new HashMap<>())),
-                new String[0],
-                new HttpLogOptions(),
-                new Configuration(),
-                new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-                new ArrayList<HttpPipelinePolicy>() {{
-                        this.add(new BeforeRetryPolicy());
-                    }},
-                new MockHttpClient()
-        );
+        pipeline = HttpPipelineProvider.buildHttpPipeline(Mockito.mock(TokenCredential.class),
+            new AzureProfile(new AzureEnvironment(new HashMap<>())), new String[0], new HttpLogOptions(),
+            new Configuration(), new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            new ArrayList<HttpPipelinePolicy>() {
+                {
+                    this.add(new BeforeRetryPolicy());
+                }
+            }, new MockHttpClient());
         retryIndex = findRetryPolicyIndex(pipeline);
         beforeRetryIndex = findBeforeRetryIndex(pipeline);
         afterRetryIndex = findAfterRetryIndex(pipeline);
@@ -123,16 +114,9 @@ public class HttpPipelineProviderTest {
         Assertions.assertTrue(beforeRetryIndex < retryIndex, "beforeRetryIndex >= retryIndex");
 
         //provide none
-        pipeline = HttpPipelineProvider.buildHttpPipeline(
-                Mockito.mock(TokenCredential.class),
-                new AzureProfile(new AzureEnvironment(new HashMap<>())),
-                new String[0],
-                new HttpLogOptions(),
-                new Configuration(),
-                new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-                null,
-                new MockHttpClient()
-        );
+        pipeline = HttpPipelineProvider.buildHttpPipeline(Mockito.mock(TokenCredential.class),
+            new AzureProfile(new AzureEnvironment(new HashMap<>())), new String[0], new HttpLogOptions(),
+            new Configuration(), new RetryPolicy("Retry-After", ChronoUnit.SECONDS), null, new MockHttpClient());
     }
 
     private int findRetryPolicyIndex(HttpPipeline pipeline) {
@@ -146,7 +130,6 @@ public class HttpPipelineProviderTest {
     private int findAfterRetryIndex(HttpPipeline pipeline) {
         return findPolicyIndex(pipeline, AfterRetryPolicy.class);
     }
-
 
     private int findPolicyIndex(HttpPipeline pipeline, Class<? extends HttpPipelinePolicy> policyClazz) {
         int policyCount = pipeline.getPolicyCount();

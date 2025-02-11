@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** BFD configuration properties. */
+/**
+ * BFD configuration properties.
+ */
 @Fluent
-public final class BfdConfiguration {
+public final class BfdConfiguration implements JsonSerializable<BfdConfiguration> {
     /*
      * Administrative state of the BfdConfiguration. Example: Enabled | Disabled.
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private BfdAdministrativeState administrativeState;
 
     /*
      * Interval in milliseconds. Example: 300.
      */
-    @JsonProperty(value = "intervalInMilliSeconds")
     private Integer intervalInMilliSeconds;
 
     /*
      * Multiplier for the Bfd Configuration. Example: 5.
      */
-    @JsonProperty(value = "multiplier")
     private Integer multiplier;
 
-    /** Creates an instance of BfdConfiguration class. */
+    /**
+     * Creates an instance of BfdConfiguration class.
+     */
     public BfdConfiguration() {
     }
 
     /**
      * Get the administrativeState property: Administrative state of the BfdConfiguration. Example: Enabled | Disabled.
-     *
+     * 
      * @return the administrativeState value.
      */
     public BfdAdministrativeState administrativeState() {
@@ -43,7 +48,7 @@ public final class BfdConfiguration {
 
     /**
      * Get the intervalInMilliSeconds property: Interval in milliseconds. Example: 300.
-     *
+     * 
      * @return the intervalInMilliSeconds value.
      */
     public Integer intervalInMilliSeconds() {
@@ -52,7 +57,7 @@ public final class BfdConfiguration {
 
     /**
      * Set the intervalInMilliSeconds property: Interval in milliseconds. Example: 300.
-     *
+     * 
      * @param intervalInMilliSeconds the intervalInMilliSeconds value to set.
      * @return the BfdConfiguration object itself.
      */
@@ -63,7 +68,7 @@ public final class BfdConfiguration {
 
     /**
      * Get the multiplier property: Multiplier for the Bfd Configuration. Example: 5.
-     *
+     * 
      * @return the multiplier value.
      */
     public Integer multiplier() {
@@ -72,7 +77,7 @@ public final class BfdConfiguration {
 
     /**
      * Set the multiplier property: Multiplier for the Bfd Configuration. Example: 5.
-     *
+     * 
      * @param multiplier the multiplier value to set.
      * @return the BfdConfiguration object itself.
      */
@@ -83,9 +88,51 @@ public final class BfdConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("intervalInMilliSeconds", this.intervalInMilliSeconds);
+        jsonWriter.writeNumberField("multiplier", this.multiplier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BfdConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BfdConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BfdConfiguration.
+     */
+    public static BfdConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BfdConfiguration deserializedBfdConfiguration = new BfdConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administrativeState".equals(fieldName)) {
+                    deserializedBfdConfiguration.administrativeState
+                        = BfdAdministrativeState.fromString(reader.getString());
+                } else if ("intervalInMilliSeconds".equals(fieldName)) {
+                    deserializedBfdConfiguration.intervalInMilliSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("multiplier".equals(fieldName)) {
+                    deserializedBfdConfiguration.multiplier = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBfdConfiguration;
+        });
     }
 }

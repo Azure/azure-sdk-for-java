@@ -7,30 +7,25 @@ package com.azure.resourcemanager.networkfunction.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkfunction.models.OperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationDisplayTests {
-    @Test
-    public void testDeserialize() {
-        OperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"cryuan\",\"resource\":\"uxzdxtay\",\"operation\":\"hmwhfpmrqo\",\"description\":\"tu\"}")
-                .toObject(OperationDisplay.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"cryuan\",\"resource\":\"uxzdxtay\",\"operation\":\"hmwhfpmrqo\",\"description\":\"tu\"}")
+            .toObject(OperationDisplay.class);
         Assertions.assertEquals("cryuan", model.provider());
         Assertions.assertEquals("uxzdxtay", model.resource());
         Assertions.assertEquals("hmwhfpmrqo", model.operation());
         Assertions.assertEquals("tu", model.description());
     }
 
-    @Test
-    public void testSerialize() {
-        OperationDisplay model =
-            new OperationDisplay()
-                .withProvider("cryuan")
-                .withResource("uxzdxtay")
-                .withOperation("hmwhfpmrqo")
-                .withDescription("tu");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationDisplay model = new OperationDisplay().withProvider("cryuan")
+            .withResource("uxzdxtay")
+            .withOperation("hmwhfpmrqo")
+            .withDescription("tu");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
         Assertions.assertEquals("cryuan", model.provider());
         Assertions.assertEquals("uxzdxtay", model.resource());

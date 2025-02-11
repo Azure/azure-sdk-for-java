@@ -10,10 +10,8 @@ import com.azure.resourcemanager.databoxedge.models.NetworkAdapterPosition;
 public final class NetworkAdapterPositionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkAdapterPosition model =
-            BinaryData
-                .fromString("{\"networkGroup\":\"NonRDMA\",\"port\":611656940}")
-                .toObject(NetworkAdapterPosition.class);
+        NetworkAdapterPosition model = BinaryData.fromString("{\"networkGroup\":\"NonRDMA\",\"port\":706936275}")
+            .toObject(NetworkAdapterPosition.class);
     }
 
     @org.junit.jupiter.api.Test

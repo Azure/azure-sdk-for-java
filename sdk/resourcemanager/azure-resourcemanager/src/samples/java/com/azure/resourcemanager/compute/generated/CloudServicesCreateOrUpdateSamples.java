@@ -30,7 +30,7 @@ import java.util.Arrays;
 public final class CloudServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
      * CloudService_Create_WithSingleRole.json
      */
     /**
@@ -66,7 +66,7 @@ public final class CloudServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
      * CloudService_Create_WithSingleRoleAndCertificate.json
      */
     /**
@@ -97,7 +97,8 @@ public final class CloudServicesCreateOrUpdateSamples {
                                     "/subscriptions/{subscription-id}/resourceGroups/ConstosoRG/providers/Microsoft.KeyVault/vaults/{keyvault-name}"))
                                 .withVaultCertificates(
                                     Arrays.asList(new CloudServiceVaultCertificate().withCertificateUrl(
-                                        "https://{keyvault-name}.vault.azure.net:443/secrets/ContosoCertificate/{secret-id}"))))))
+                                        "https://{keyvault-name}.vault.azure.net:443/secrets/ContosoCertificate/{secret-id}")
+                                        .withIsBootstrapCertificate(true))))))
                         .withNetworkProfile(new CloudServiceNetworkProfile().withLoadBalancerConfigurations(
                             Arrays.asList(new LoadBalancerConfiguration().withName("contosolb")
                                 .withProperties(new LoadBalancerConfigurationProperties().withFrontendIpConfigurations(
@@ -110,7 +111,7 @@ public final class CloudServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
      * CloudService_Create_WithSingleRoleAndRDP.json
      */
     /**
@@ -159,7 +160,7 @@ public final class CloudServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
      * CloudService_Create_WithMultiRole.json
      */
     /**
@@ -197,7 +198,7 @@ public final class CloudServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
      * CloudService_Create_WithMultiRole_WithZones.json
      */
     /**

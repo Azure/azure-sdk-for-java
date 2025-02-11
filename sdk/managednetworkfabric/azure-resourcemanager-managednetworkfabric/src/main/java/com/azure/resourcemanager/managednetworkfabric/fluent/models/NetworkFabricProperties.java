@@ -6,16 +6,21 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Network Fabric Properties defines the properties of the resource. */
+/**
+ * Network Fabric Properties defines the properties of the resource.
+ */
 @Fluent
 public final class NetworkFabricProperties extends AnnotationResource {
     /*
@@ -23,108 +28,93 @@ public final class NetworkFabricProperties extends AnnotationResource {
      * supported racks can be added to the Network Fabric. The SKU determines whether it is a single / multi rack
      * Network Fabric.
      */
-    @JsonProperty(value = "networkFabricSku", required = true)
     private String networkFabricSku;
 
     /*
      * The version of Network Fabric.
      */
-    @JsonProperty(value = "fabricVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricVersion;
 
     /*
      * Array of router IDs.
      */
-    @JsonProperty(value = "routerIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> routerIds;
 
     /*
      * Azure resource ID for the NetworkFabricController the NetworkFabric belongs.
      */
-    @JsonProperty(value = "networkFabricControllerId", required = true)
     private String networkFabricControllerId;
 
     /*
      * Number of compute racks associated to Network Fabric.
      */
-    @JsonProperty(value = "rackCount")
     private Integer rackCount;
 
     /*
      * Number of servers.Possible values are from 1-16.
      */
-    @JsonProperty(value = "serverCountPerRack", required = true)
     private int serverCountPerRack;
 
     /*
      * IPv4Prefix for Management Network. Example: 10.1.0.0/19.
      */
-    @JsonProperty(value = "ipv4Prefix", required = true)
     private String ipv4Prefix;
 
     /*
      * IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59
      */
-    @JsonProperty(value = "ipv6Prefix")
     private String ipv6Prefix;
 
     /*
      * ASN of CE devices for CE/PE connectivity.
      */
-    @JsonProperty(value = "fabricASN", required = true)
     private long fabricAsn;
 
     /*
      * Network and credentials configuration currently applied to terminal server.
      */
-    @JsonProperty(value = "terminalServerConfiguration", required = true)
     private TerminalServerConfiguration terminalServerConfiguration;
 
     /*
      * Configuration to be used to setup the management network.
      */
-    @JsonProperty(value = "managementNetworkConfiguration", required = true)
     private ManagementNetworkConfigurationProperties managementNetworkConfiguration;
 
     /*
      * List of NetworkRack resource IDs under the Network Fabric. The number of racks allowed depends on the Network
      * Fabric SKU.
      */
-    @JsonProperty(value = "racks", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> racks;
 
     /*
      * List of L2 Isolation Domain resource IDs under the Network Fabric.
      */
-    @JsonProperty(value = "l2IsolationDomains", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> l2IsolationDomains;
 
     /*
      * List of L3 Isolation Domain resource IDs under the Network Fabric.
      */
-    @JsonProperty(value = "l3IsolationDomains", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> l3IsolationDomains;
 
     /*
      * Configuration state of the resource.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * Provides you the latest status of the NFC service, whether it is Accepted, updating, Succeeded or Failed. During
      * this process, the states keep changing based on the status of NFC provisioning.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Administrative state of the resource.
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private AdministrativeState administrativeState;
 
-    /** Creates an instance of NetworkFabricProperties class. */
+    /**
+     * Creates an instance of NetworkFabricProperties class.
+     */
     public NetworkFabricProperties() {
     }
 
@@ -132,7 +122,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
      * Get the networkFabricSku property: Supported Network Fabric SKU.Example: Compute / Aggregate racks. Once the user
      * chooses a particular SKU, only supported racks can be added to the Network Fabric. The SKU determines whether it
      * is a single / multi rack Network Fabric.
-     *
+     * 
      * @return the networkFabricSku value.
      */
     public String networkFabricSku() {
@@ -143,7 +133,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
      * Set the networkFabricSku property: Supported Network Fabric SKU.Example: Compute / Aggregate racks. Once the user
      * chooses a particular SKU, only supported racks can be added to the Network Fabric. The SKU determines whether it
      * is a single / multi rack Network Fabric.
-     *
+     * 
      * @param networkFabricSku the networkFabricSku value to set.
      * @return the NetworkFabricProperties object itself.
      */
@@ -154,7 +144,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Get the fabricVersion property: The version of Network Fabric.
-     *
+     * 
      * @return the fabricVersion value.
      */
     public String fabricVersion() {
@@ -162,8 +152,19 @@ public final class NetworkFabricProperties extends AnnotationResource {
     }
 
     /**
+     * Set the fabricVersion property: The version of Network Fabric.
+     * 
+     * @param fabricVersion the fabricVersion value to set.
+     * @return the NetworkFabricProperties object itself.
+     */
+    public NetworkFabricProperties withFabricVersion(String fabricVersion) {
+        this.fabricVersion = fabricVersion;
+        return this;
+    }
+
+    /**
      * Get the routerIds property: Array of router IDs.
-     *
+     * 
      * @return the routerIds value.
      */
     public List<String> routerIds() {
@@ -173,7 +174,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
     /**
      * Get the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
      * belongs.
-     *
+     * 
      * @return the networkFabricControllerId value.
      */
     public String networkFabricControllerId() {
@@ -183,7 +184,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
     /**
      * Set the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
      * belongs.
-     *
+     * 
      * @param networkFabricControllerId the networkFabricControllerId value to set.
      * @return the NetworkFabricProperties object itself.
      */
@@ -194,7 +195,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Get the rackCount property: Number of compute racks associated to Network Fabric.
-     *
+     * 
      * @return the rackCount value.
      */
     public Integer rackCount() {
@@ -203,7 +204,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Set the rackCount property: Number of compute racks associated to Network Fabric.
-     *
+     * 
      * @param rackCount the rackCount value to set.
      * @return the NetworkFabricProperties object itself.
      */
@@ -214,7 +215,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Get the serverCountPerRack property: Number of servers.Possible values are from 1-16.
-     *
+     * 
      * @return the serverCountPerRack value.
      */
     public int serverCountPerRack() {
@@ -223,7 +224,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Set the serverCountPerRack property: Number of servers.Possible values are from 1-16.
-     *
+     * 
      * @param serverCountPerRack the serverCountPerRack value to set.
      * @return the NetworkFabricProperties object itself.
      */
@@ -234,7 +235,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Get the ipv4Prefix property: IPv4Prefix for Management Network. Example: 10.1.0.0/19.
-     *
+     * 
      * @return the ipv4Prefix value.
      */
     public String ipv4Prefix() {
@@ -243,7 +244,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Set the ipv4Prefix property: IPv4Prefix for Management Network. Example: 10.1.0.0/19.
-     *
+     * 
      * @param ipv4Prefix the ipv4Prefix value to set.
      * @return the NetworkFabricProperties object itself.
      */
@@ -254,7 +255,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Get the ipv6Prefix property: IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
-     *
+     * 
      * @return the ipv6Prefix value.
      */
     public String ipv6Prefix() {
@@ -263,7 +264,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Set the ipv6Prefix property: IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
-     *
+     * 
      * @param ipv6Prefix the ipv6Prefix value to set.
      * @return the NetworkFabricProperties object itself.
      */
@@ -274,7 +275,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Get the fabricAsn property: ASN of CE devices for CE/PE connectivity.
-     *
+     * 
      * @return the fabricAsn value.
      */
     public long fabricAsn() {
@@ -283,7 +284,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Set the fabricAsn property: ASN of CE devices for CE/PE connectivity.
-     *
+     * 
      * @param fabricAsn the fabricAsn value to set.
      * @return the NetworkFabricProperties object itself.
      */
@@ -295,7 +296,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
     /**
      * Get the terminalServerConfiguration property: Network and credentials configuration currently applied to terminal
      * server.
-     *
+     * 
      * @return the terminalServerConfiguration value.
      */
     public TerminalServerConfiguration terminalServerConfiguration() {
@@ -305,19 +306,19 @@ public final class NetworkFabricProperties extends AnnotationResource {
     /**
      * Set the terminalServerConfiguration property: Network and credentials configuration currently applied to terminal
      * server.
-     *
+     * 
      * @param terminalServerConfiguration the terminalServerConfiguration value to set.
      * @return the NetworkFabricProperties object itself.
      */
-    public NetworkFabricProperties withTerminalServerConfiguration(
-        TerminalServerConfiguration terminalServerConfiguration) {
+    public NetworkFabricProperties
+        withTerminalServerConfiguration(TerminalServerConfiguration terminalServerConfiguration) {
         this.terminalServerConfiguration = terminalServerConfiguration;
         return this;
     }
 
     /**
      * Get the managementNetworkConfiguration property: Configuration to be used to setup the management network.
-     *
+     * 
      * @return the managementNetworkConfiguration value.
      */
     public ManagementNetworkConfigurationProperties managementNetworkConfiguration() {
@@ -326,12 +327,12 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Set the managementNetworkConfiguration property: Configuration to be used to setup the management network.
-     *
+     * 
      * @param managementNetworkConfiguration the managementNetworkConfiguration value to set.
      * @return the NetworkFabricProperties object itself.
      */
-    public NetworkFabricProperties withManagementNetworkConfiguration(
-        ManagementNetworkConfigurationProperties managementNetworkConfiguration) {
+    public NetworkFabricProperties
+        withManagementNetworkConfiguration(ManagementNetworkConfigurationProperties managementNetworkConfiguration) {
         this.managementNetworkConfiguration = managementNetworkConfiguration;
         return this;
     }
@@ -339,7 +340,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
     /**
      * Get the racks property: List of NetworkRack resource IDs under the Network Fabric. The number of racks allowed
      * depends on the Network Fabric SKU.
-     *
+     * 
      * @return the racks value.
      */
     public List<String> racks() {
@@ -348,7 +349,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Get the l2IsolationDomains property: List of L2 Isolation Domain resource IDs under the Network Fabric.
-     *
+     * 
      * @return the l2IsolationDomains value.
      */
     public List<String> l2IsolationDomains() {
@@ -357,7 +358,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Get the l3IsolationDomains property: List of L3 Isolation Domain resource IDs under the Network Fabric.
-     *
+     * 
      * @return the l3IsolationDomains value.
      */
     public List<String> l3IsolationDomains() {
@@ -366,7 +367,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Get the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -377,7 +378,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
      * Get the provisioningState property: Provides you the latest status of the NFC service, whether it is Accepted,
      * updating, Succeeded or Failed. During this process, the states keep changing based on the status of NFC
      * provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -386,14 +387,16 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
         return this.administrativeState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkFabricProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -402,47 +405,131 @@ public final class NetworkFabricProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (networkFabricSku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricSku in model NetworkFabricProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkFabricSku in model NetworkFabricProperties"));
         }
         if (networkFabricControllerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricControllerId in model NetworkFabricProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkFabricControllerId in model NetworkFabricProperties"));
         }
         if (ipv4Prefix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipv4Prefix in model NetworkFabricProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ipv4Prefix in model NetworkFabricProperties"));
         }
         if (terminalServerConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property terminalServerConfiguration in model NetworkFabricProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property terminalServerConfiguration in model NetworkFabricProperties"));
         } else {
             terminalServerConfiguration().validate();
         }
         if (managementNetworkConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managementNetworkConfiguration in model NetworkFabricProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property managementNetworkConfiguration in model NetworkFabricProperties"));
         } else {
             managementNetworkConfiguration().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkFabricProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("networkFabricSku", this.networkFabricSku);
+        jsonWriter.writeStringField("networkFabricControllerId", this.networkFabricControllerId);
+        jsonWriter.writeIntField("serverCountPerRack", this.serverCountPerRack);
+        jsonWriter.writeStringField("ipv4Prefix", this.ipv4Prefix);
+        jsonWriter.writeLongField("fabricASN", this.fabricAsn);
+        jsonWriter.writeJsonField("terminalServerConfiguration", this.terminalServerConfiguration);
+        jsonWriter.writeJsonField("managementNetworkConfiguration", this.managementNetworkConfiguration);
+        jsonWriter.writeStringField("fabricVersion", this.fabricVersion);
+        jsonWriter.writeNumberField("rackCount", this.rackCount);
+        jsonWriter.writeStringField("ipv6Prefix", this.ipv6Prefix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkFabricProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkFabricProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkFabricProperties.
+     */
+    public static NetworkFabricProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkFabricProperties deserializedNetworkFabricProperties = new NetworkFabricProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.withAnnotation(reader.getString());
+                } else if ("networkFabricSku".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.networkFabricSku = reader.getString();
+                } else if ("networkFabricControllerId".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.networkFabricControllerId = reader.getString();
+                } else if ("serverCountPerRack".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.serverCountPerRack = reader.getInt();
+                } else if ("ipv4Prefix".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.ipv4Prefix = reader.getString();
+                } else if ("fabricASN".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.fabricAsn = reader.getLong();
+                } else if ("terminalServerConfiguration".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.terminalServerConfiguration
+                        = TerminalServerConfiguration.fromJson(reader);
+                } else if ("managementNetworkConfiguration".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.managementNetworkConfiguration
+                        = ManagementNetworkConfigurationProperties.fromJson(reader);
+                } else if ("fabricVersion".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.fabricVersion = reader.getString();
+                } else if ("routerIds".equals(fieldName)) {
+                    List<String> routerIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkFabricProperties.routerIds = routerIds;
+                } else if ("rackCount".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.rackCount = reader.getNullable(JsonReader::getInt);
+                } else if ("ipv6Prefix".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.ipv6Prefix = reader.getString();
+                } else if ("racks".equals(fieldName)) {
+                    List<String> racks = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkFabricProperties.racks = racks;
+                } else if ("l2IsolationDomains".equals(fieldName)) {
+                    List<String> l2IsolationDomains = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkFabricProperties.l2IsolationDomains = l2IsolationDomains;
+                } else if ("l3IsolationDomains".equals(fieldName)) {
+                    List<String> l3IsolationDomains = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkFabricProperties.l3IsolationDomains = l3IsolationDomains;
+                } else if ("configurationState".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkFabricProperties;
+        });
+    }
 }

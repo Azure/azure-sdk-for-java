@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 public final class DataFlowDebugSessionsExecuteCommandMockTests {
     @Test
     public void testExecuteCommand() throws Exception {
-        String responseStr = "{\"status\":\"nvnxsa\",\"data\":\"couilbjccj\"}";
+        String responseStr = "{\"status\":\"lkflffo\",\"data\":\"skndwyw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class DataFlowDebugSessionsExecuteCommandMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataFlowDebugCommandResponse response = manager.dataFlowDebugSessions()
-            .executeCommand("fiomfkiopk", "hbfnhspogxuv",
-                new DataFlowDebugCommandRequest().withSessionId("my")
+            .executeCommand("wvbiryxsaxwu", "pnsesxwkhkcdt",
+                new DataFlowDebugCommandRequest().withSessionId("a")
                     .withCommand(DataFlowDebugCommandType.EXECUTE_PREVIEW_QUERY)
-                    .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("ayfkvw")
-                        .withRowLimits(1637727011)
-                        .withColumns(Arrays.asList("yh", "yn"))
-                        .withExpression("p")),
+                    .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("qfzvvtifcqsuem")
+                        .withRowLimits(271273488)
+                        .withColumns(Arrays.asList("ovbpn", "fucxtmhmzcnpsd", "fwjcwwbunf", "mbwinura"))
+                        .withExpression("bmjokttqgokhaj")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nvnxsa", response.status());
-        Assertions.assertEquals("couilbjccj", response.data());
+        Assertions.assertEquals("lkflffo", response.status());
+        Assertions.assertEquals("skndwyw", response.data());
     }
 }

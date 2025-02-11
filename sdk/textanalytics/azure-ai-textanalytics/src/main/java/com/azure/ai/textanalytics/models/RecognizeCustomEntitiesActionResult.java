@@ -15,8 +15,8 @@ public final class RecognizeCustomEntitiesActionResult extends TextAnalyticsActi
     private RecognizeCustomEntitiesResultCollection documentsResults;
 
     static {
-        RecognizeCustomEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        RecognizeCustomEntitiesActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**

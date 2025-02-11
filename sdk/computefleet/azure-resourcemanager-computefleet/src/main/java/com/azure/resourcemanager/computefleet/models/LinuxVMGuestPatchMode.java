@@ -14,12 +14,12 @@ import java.util.Collection;
  */
 public final class LinuxVMGuestPatchMode extends ExpandableStringEnum<LinuxVMGuestPatchMode> {
     /**
-     * Static value ImageDefault for LinuxVMGuestPatchMode.
+     * The virtual machine's default patching configuration is used.
      */
     public static final LinuxVMGuestPatchMode IMAGE_DEFAULT = fromString("ImageDefault");
 
     /**
-     * Static value AutomaticByPlatform for LinuxVMGuestPatchMode.
+     * The virtual machine will be automatically updated by the platform. The property provisionVMAgent must be true.
      */
     public static final LinuxVMGuestPatchMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 

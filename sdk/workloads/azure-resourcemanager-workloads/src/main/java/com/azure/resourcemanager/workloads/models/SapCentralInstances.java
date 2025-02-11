@@ -8,31 +8,33 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SapCentralInstances. */
+/**
+ * Resource collection API of SapCentralInstances.
+ */
 public interface SapCentralInstances {
     /**
      * Gets the SAP Central Services Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param centralInstanceName Central Services Instance resource name string modeled as parameter for auto
-     *     generation to work correctly.
+     * generation to work correctly.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAP Central Services Instance resource along with {@link Response}.
      */
-    Response<SapCentralServerInstance> getWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, Context context);
+    Response<SapCentralServerInstance> getWithResponse(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName, Context context);
 
     /**
      * Gets the SAP Central Services Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param centralInstanceName Central Services Instance resource name string modeled as parameter for auto
-     *     generation to work correctly.
+     * generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -44,11 +46,11 @@ public interface SapCentralInstances {
      * Deletes the SAP Central Services Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete
      * operation on this resource by end user will return a Bad Request error. You can delete the parent resource, which
      * is the Virtual Instance for SAP solutions resource, using the delete operation on it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param centralInstanceName Central Services Instance resource name string modeled as parameter for auto
-     *     generation to work correctly.
+     * generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -60,101 +62,101 @@ public interface SapCentralInstances {
      * Deletes the SAP Central Services Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete
      * operation on this resource by end user will return a Bad Request error. You can delete the parent resource, which
      * is the Virtual Instance for SAP solutions resource, using the delete operation on it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param centralInstanceName Central Services Instance resource name string modeled as parameter for auto
-     *     generation to work correctly.
+     * generation to work correctly.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult delete(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName,
+        Context context);
 
     /**
      * Lists the SAP Central Services Instance resource for the given Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Central Services Instance resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return defines the collection of SAP Central Services Instance resources as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<SapCentralServerInstance> list(String resourceGroupName, String sapVirtualInstanceName);
 
     /**
      * Lists the SAP Central Services Instance resource for the given Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Central Services Instance resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return defines the collection of SAP Central Services Instance resources as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<SapCentralServerInstance> list(
-        String resourceGroupName, String sapVirtualInstanceName, Context context);
+    PagedIterable<SapCentralServerInstance> list(String resourceGroupName, String sapVirtualInstanceName,
+        Context context);
 
     /**
      * Starts the SAP Central Services Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param centralInstanceName Central Services Instance resource name string modeled as parameter for auto
-     *     generation to work correctly.
+     * generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName);
+    OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName);
 
     /**
      * Starts the SAP Central Services Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param centralInstanceName Central Services Instance resource name string modeled as parameter for auto
-     *     generation to work correctly.
+     * generation to work correctly.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, Context context);
+    OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName, Context context);
 
     /**
      * Stops the SAP Central Services Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param centralInstanceName Central Services Instance resource name string modeled as parameter for auto
-     *     generation to work correctly.
+     * generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName);
+    OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName);
 
     /**
      * Stops the SAP Central Services Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param centralInstanceName Central Services Instance resource name string modeled as parameter for auto
-     *     generation to work correctly.
+     * generation to work correctly.
      * @param body SAP Central Services instance stop request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,16 +164,12 @@ public interface SapCentralInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance(
-        String resourceGroupName,
-        String sapVirtualInstanceName,
-        String centralInstanceName,
-        StopRequest body,
-        Context context);
+    OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName, StopRequest body, Context context);
 
     /**
      * Gets the SAP Central Services Instance resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -182,7 +180,7 @@ public interface SapCentralInstances {
 
     /**
      * Gets the SAP Central Services Instance resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,7 +194,7 @@ public interface SapCentralInstances {
      * Deletes the SAP Central Services Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete
      * operation on this resource by end user will return a Bad Request error. You can delete the parent resource, which
      * is the Virtual Instance for SAP solutions resource, using the delete operation on it.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -209,7 +207,7 @@ public interface SapCentralInstances {
      * Deletes the SAP Central Services Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete
      * operation on this resource by end user will return a Bad Request error. You can delete the parent resource, which
      * is the Virtual Instance for SAP solutions resource, using the delete operation on it.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +219,7 @@ public interface SapCentralInstances {
 
     /**
      * Begins definition for a new SapCentralServerInstance resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SapCentralServerInstance definition.
      */

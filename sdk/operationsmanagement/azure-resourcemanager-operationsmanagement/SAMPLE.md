@@ -33,32 +33,27 @@
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAssociationInner;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementAssociationProperties;
 
-/** Samples for ManagementAssociations CreateOrUpdate. */
+/**
+ * Samples for ManagementAssociations CreateOrUpdate.
+ */
 public final class ManagementAssociationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/ManagementAssociationCreate.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/ManagementAssociationCreate.json
      */
     /**
      * Sample code: SolutionCreate.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionCreate(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
-        manager
-            .managementAssociations()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "providerName",
-                "resourceType",
-                "resourceName",
-                "managementAssociation1",
-                new ManagementAssociationInner()
-                    .withLocation("East US")
-                    .withProperties(
-                        new ManagementAssociationProperties()
-                            .withApplicationId(
-                                "/subscriptions/sub1/resourcegroups/rg1/providers/Microsoft.Appliance/Appliances/appliance1")),
+    public static void
+        solutionCreate(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+        manager.managementAssociations()
+            .createOrUpdateWithResponse("rg1", "providerName", "resourceType", "resourceName", "managementAssociation1",
+                new ManagementAssociationInner().withLocation("East US")
+                    .withProperties(new ManagementAssociationProperties().withApplicationId(
+                        "/subscriptions/sub1/resourcegroups/rg1/providers/Microsoft.Appliance/Appliances/appliance1")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -67,26 +62,24 @@ public final class ManagementAssociationsCreateOrUpdateSamples {
 ### ManagementAssociations_Delete
 
 ```java
-/** Samples for ManagementAssociations Delete. */
+/**
+ * Samples for ManagementAssociations Delete.
+ */
 public final class ManagementAssociationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/ManagementAssociationDelete.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/ManagementAssociationDelete.json
      */
     /**
      * Sample code: SolutionDelete.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionDelete(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
-        manager
-            .managementAssociations()
-            .deleteWithResponse(
-                "rg1",
-                "providerName",
-                "resourceType",
-                "resourceName",
-                "managementAssociationName",
+    public static void
+        solutionDelete(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+        manager.managementAssociations()
+            .deleteWithResponse("rg1", "providerName", "resourceType", "resourceName", "managementAssociationName",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -95,25 +88,23 @@ public final class ManagementAssociationsDeleteSamples {
 ### ManagementAssociations_Get
 
 ```java
-/** Samples for ManagementAssociations Get. */
+/**
+ * Samples for ManagementAssociations Get.
+ */
 public final class ManagementAssociationsGetSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/ManagementAssociationGet.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/ManagementAssociationGet.json
      */
     /**
      * Sample code: SolutionGet.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
     public static void solutionGet(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
-        manager
-            .managementAssociations()
-            .getWithResponse(
-                "rg1",
-                "providerName",
-                "resourceType",
-                "resourceName",
-                "managementAssociation1",
+        manager.managementAssociations()
+            .getWithResponse("rg1", "providerName", "resourceType", "resourceName", "managementAssociation1",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -122,18 +113,22 @@ public final class ManagementAssociationsGetSamples {
 ### ManagementAssociations_ListBySubscription
 
 ```java
-/** Samples for ManagementAssociations ListBySubscription. */
+/**
+ * Samples for ManagementAssociations ListBySubscription.
+ */
 public final class ManagementAssociationsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/ManagementAssociationListForSubscription.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/ManagementAssociationListForSubscription.json
      */
     /**
      * Sample code: SolutionList.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionList(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+    public static void
+        solutionList(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
         manager.managementAssociations().listBySubscriptionWithResponse(com.azure.core.util.Context.NONE);
     }
 }
@@ -142,20 +137,23 @@ public final class ManagementAssociationsListBySubscriptionSamples {
 ### ManagementConfigurations_CreateOrUpdate
 
 ```java
-/** Samples for ManagementConfigurations CreateOrUpdate. */
+/**
+ * Samples for ManagementConfigurations CreateOrUpdate.
+ */
 public final class ManagementConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/ManagementConfigurationCreate.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/ManagementConfigurationCreate.json
      */
     /**
      * Sample code: ManagementConfigurationCreate.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
     public static void managementConfigurationCreate(
         com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
-        manager
-            .managementConfigurations()
+        manager.managementConfigurations()
             .define("managementConfiguration1")
             .withExistingResourceGroup("rg1")
             .withRegion("East US")
@@ -167,20 +165,23 @@ public final class ManagementConfigurationsCreateOrUpdateSamples {
 ### ManagementConfigurations_Delete
 
 ```java
-/** Samples for ManagementConfigurations Delete. */
+/**
+ * Samples for ManagementConfigurations Delete.
+ */
 public final class ManagementConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/ManagementConfigurationDelete.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/ManagementConfigurationDelete.json
      */
     /**
      * Sample code: ManagementConfigurationDelete.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
     public static void managementConfigurationDelete(
         com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
-        manager
-            .managementConfigurations()
+        manager.managementConfigurations()
             .deleteByResourceGroupWithResponse("rg1", "managementConfigurationName", com.azure.core.util.Context.NONE);
     }
 }
@@ -189,19 +190,22 @@ public final class ManagementConfigurationsDeleteSamples {
 ### ManagementConfigurations_GetByResourceGroup
 
 ```java
-/** Samples for ManagementConfigurations GetByResourceGroup. */
+/**
+ * Samples for ManagementConfigurations GetByResourceGroup.
+ */
 public final class ManagementConfigurationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/ManagementConfigurationGet.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/ManagementConfigurationGet.json
      */
     /**
      * Sample code: SolutionGet.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
     public static void solutionGet(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
-        manager
-            .managementConfigurations()
+        manager.managementConfigurations()
             .getByResourceGroupWithResponse("rg1", "managementConfigurationName", com.azure.core.util.Context.NONE);
     }
 }
@@ -210,18 +214,22 @@ public final class ManagementConfigurationsGetByResourceGroupSamples {
 ### ManagementConfigurations_ListBySubscription
 
 ```java
-/** Samples for ManagementConfigurations ListBySubscription. */
+/**
+ * Samples for ManagementConfigurations ListBySubscription.
+ */
 public final class ManagementConfigurationsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/ManagementConfigurationListForSubscription.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/ManagementConfigurationListForSubscription.json
      */
     /**
      * Sample code: SolutionList.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionList(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+    public static void
+        solutionList(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
         manager.managementConfigurations().listBySubscriptionWithResponse(com.azure.core.util.Context.NONE);
     }
 }
@@ -230,18 +238,22 @@ public final class ManagementConfigurationsListBySubscriptionSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/OperationsList.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/OperationsList.json
      */
     /**
      * Sample code: OperationsList.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void operationsList(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+    public static void
+        operationsList(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -254,43 +266,39 @@ import com.azure.resourcemanager.operationsmanagement.models.SolutionPlan;
 import com.azure.resourcemanager.operationsmanagement.models.SolutionProperties;
 import java.util.Arrays;
 
-/** Samples for Solutions CreateOrUpdate. */
+/**
+ * Samples for Solutions CreateOrUpdate.
+ */
 public final class SolutionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/SolutionCreate.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/SolutionCreate.json
      */
     /**
      * Sample code: SolutionCreate.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionCreate(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
-        manager
-            .solutions()
+    public static void
+        solutionCreate(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+        manager.solutions()
             .define("solution1")
             .withRegion("East US")
             .withExistingResourceGroup("rg1")
-            .withPlan(
-                new SolutionPlan()
-                    .withName("name1")
-                    .withPublisher("publisher1")
-                    .withPromotionCode("fakeTokenPlaceholder")
-                    .withProduct("product1"))
-            .withProperties(
-                new SolutionProperties()
-                    .withWorkspaceResourceId(
-                        "/subscriptions/sub2/resourceGroups/rg2/providers/Microsoft.OperationalInsights/workspaces/ws1")
-                    .withContainedResources(
-                        Arrays
-                            .asList(
-                                "/subscriptions/sub2/resourceGroups/rg2/providers/provider1/resources/resource1",
-                                "/subscriptions/sub2/resourceGroups/rg2/providers/provider2/resources/resource2"))
-                    .withReferencedResources(
-                        Arrays
-                            .asList(
-                                "/subscriptions/sub2/resourceGroups/rg2/providers/provider1/resources/resource2",
-                                "/subscriptions/sub2/resourceGroups/rg2/providers/provider2/resources/resource3")))
+            .withPlan(new SolutionPlan().withName("name1")
+                .withPublisher("publisher1")
+                .withPromotionCode("fakeTokenPlaceholder")
+                .withProduct("product1"))
+            .withProperties(new SolutionProperties()
+                .withWorkspaceResourceId(
+                    "/subscriptions/sub2/resourceGroups/rg2/providers/Microsoft.OperationalInsights/workspaces/ws1")
+                .withContainedResources(
+                    Arrays.asList("/subscriptions/sub2/resourceGroups/rg2/providers/provider1/resources/resource1",
+                        "/subscriptions/sub2/resourceGroups/rg2/providers/provider2/resources/resource2"))
+                .withReferencedResources(
+                    Arrays.asList("/subscriptions/sub2/resourceGroups/rg2/providers/provider1/resources/resource2",
+                        "/subscriptions/sub2/resourceGroups/rg2/providers/provider2/resources/resource3")))
             .create();
     }
 }
@@ -299,18 +307,22 @@ public final class SolutionsCreateOrUpdateSamples {
 ### Solutions_Delete
 
 ```java
-/** Samples for Solutions Delete. */
+/**
+ * Samples for Solutions Delete.
+ */
 public final class SolutionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/SolutionDelete.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/SolutionDelete.json
      */
     /**
      * Sample code: SolutionDelete.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionDelete(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+    public static void
+        solutionDelete(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
         manager.solutions().delete("rg1", "solution1", com.azure.core.util.Context.NONE);
     }
 }
@@ -319,14 +331,18 @@ public final class SolutionsDeleteSamples {
 ### Solutions_GetByResourceGroup
 
 ```java
-/** Samples for Solutions GetByResourceGroup. */
+/**
+ * Samples for Solutions GetByResourceGroup.
+ */
 public final class SolutionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/SolutionGet.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/SolutionGet.json
      */
     /**
      * Sample code: SolutionGet.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
     public static void solutionGet(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
@@ -338,18 +354,22 @@ public final class SolutionsGetByResourceGroupSamples {
 ### Solutions_ListByResourceGroup
 
 ```java
-/** Samples for Solutions ListByResourceGroup. */
+/**
+ * Samples for Solutions ListByResourceGroup.
+ */
 public final class SolutionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/SolutionList.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/SolutionList.json
      */
     /**
      * Sample code: SolutionList.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionList(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+    public static void
+        solutionList(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
         manager.solutions().listByResourceGroupWithResponse("rg1", com.azure.core.util.Context.NONE);
     }
 }
@@ -358,18 +378,22 @@ public final class SolutionsListByResourceGroupSamples {
 ### Solutions_ListBySubscription
 
 ```java
-/** Samples for Solutions ListBySubscription. */
+/**
+ * Samples for Solutions ListBySubscription.
+ */
 public final class SolutionsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/SolutionListForSubscription.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/SolutionListForSubscription.json
      */
     /**
      * Sample code: SolutionList.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionList(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+    public static void
+        solutionList(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
         manager.solutions().listBySubscriptionWithResponse(com.azure.core.util.Context.NONE);
     }
 }
@@ -382,26 +406,29 @@ import com.azure.resourcemanager.operationsmanagement.models.Solution;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Solutions Update. */
+/**
+ * Samples for Solutions Update.
+ */
 public final class SolutionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/SolutionUpdate.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/SolutionUpdate.json
      */
     /**
      * Sample code: SolutionUpdate.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionUpdate(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
-        Solution resource =
-            manager
-                .solutions()
-                .getByResourceGroupWithResponse("rg1", "solution1", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        solutionUpdate(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+        Solution resource = manager.solutions()
+            .getByResourceGroupWithResponse("rg1", "solution1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("Dept", "IT", "Environment", "Test")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

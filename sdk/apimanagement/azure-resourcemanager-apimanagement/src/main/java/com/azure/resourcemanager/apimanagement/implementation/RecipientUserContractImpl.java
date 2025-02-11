@@ -12,8 +12,7 @@ public final class RecipientUserContractImpl implements RecipientUserContract {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    RecipientUserContractImpl(
-        RecipientUserContractInner innerObject,
+    RecipientUserContractImpl(RecipientUserContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

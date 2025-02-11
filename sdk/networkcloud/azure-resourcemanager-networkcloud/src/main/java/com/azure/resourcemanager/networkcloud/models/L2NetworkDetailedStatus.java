@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The more detailed status of the L2 network. */
+/**
+ * The more detailed status of the L2 network.
+ */
 public final class L2NetworkDetailedStatus extends ExpandableStringEnum<L2NetworkDetailedStatus> {
-    /** Static value Error for L2NetworkDetailedStatus. */
+    /**
+     * Static value Error for L2NetworkDetailedStatus.
+     */
     public static final L2NetworkDetailedStatus ERROR = fromString("Error");
 
-    /** Static value Available for L2NetworkDetailedStatus. */
+    /**
+     * Static value Available for L2NetworkDetailedStatus.
+     */
     public static final L2NetworkDetailedStatus AVAILABLE = fromString("Available");
 
-    /** Static value Provisioning for L2NetworkDetailedStatus. */
+    /**
+     * Static value Provisioning for L2NetworkDetailedStatus.
+     */
     public static final L2NetworkDetailedStatus PROVISIONING = fromString("Provisioning");
 
     /**
      * Creates a new instance of L2NetworkDetailedStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class L2NetworkDetailedStatus extends ExpandableStringEnum<L2Networ
 
     /**
      * Creates or finds a L2NetworkDetailedStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding L2NetworkDetailedStatus.
      */
-    @JsonCreator
     public static L2NetworkDetailedStatus fromString(String name) {
         return fromString(name, L2NetworkDetailedStatus.class);
     }
 
     /**
      * Gets known L2NetworkDetailedStatus values.
-     *
+     * 
      * @return known L2NetworkDetailedStatus values.
      */
     public static Collection<L2NetworkDetailedStatus> values() {

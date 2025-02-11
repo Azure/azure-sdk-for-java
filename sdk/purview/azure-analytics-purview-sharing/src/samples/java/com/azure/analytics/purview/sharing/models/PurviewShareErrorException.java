@@ -13,7 +13,7 @@ import com.azure.core.http.HttpResponse;
 public final class PurviewShareErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the PurviewShareErrorException class.
-     * 
+     *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -23,7 +23,7 @@ public final class PurviewShareErrorException extends HttpResponseException {
 
     /**
      * Initializes a new instance of the PurviewShareErrorException class.
-     * 
+     *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.

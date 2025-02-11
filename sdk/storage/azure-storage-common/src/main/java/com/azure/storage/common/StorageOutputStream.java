@@ -57,7 +57,8 @@ public abstract class StorageOutputStream extends OutputStream {
      */
     protected void writeInternal(final byte[] data, int offset, int length) {
         int chunks = (int) (Math.ceil((double) length / (double) this.writeThreshold));
-        Flux.range(0, chunks).map(c -> offset + c * this.writeThreshold)
+        Flux.range(0, chunks)
+            .map(c -> offset + c * this.writeThreshold)
             .concatMap(pos -> processChunk(data, pos, offset, length))
             .then()
             .block();
@@ -71,14 +72,13 @@ public abstract class StorageOutputStream extends OutputStream {
         }
 
         // Flux<ByteBuffer> chunkData = new ByteBufferStreamFromByteArray(data, writeThreshold, position, chunkLength);
-        return dispatchWrite(data, chunkLength, position)
-            .doOnError(t -> {
-                if (t instanceof IOException) {
-                    lastError = (IOException) t;
-                } else {
-                    lastError = new IOException(t);
-                }
-            });
+        return dispatchWrite(data, chunkLength, position).doOnError(t -> {
+            if (t instanceof IOException) {
+                lastError = (IOException) t;
+            } else {
+                lastError = new IOException(t);
+            }
+        });
     }
 
     /**
@@ -87,7 +87,7 @@ public abstract class StorageOutputStream extends OutputStream {
      * @throws RuntimeException If an I/O error occurs. In particular, an IOException may be thrown
      * if the output stream has been closed.
      */
-    protected void checkStreamState()  {
+    protected void checkStreamState() {
         if (this.lastError != null) {
             throw LOGGER.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
         }
@@ -140,7 +140,7 @@ public abstract class StorageOutputStream extends OutputStream {
      */
     @Override
     public void write(final int byteVal) {
-        this.write(new byte[]{(byte) (byteVal & 0xFF)});
+        this.write(new byte[] { (byte) (byteVal & 0xFF) });
     }
 
     /**

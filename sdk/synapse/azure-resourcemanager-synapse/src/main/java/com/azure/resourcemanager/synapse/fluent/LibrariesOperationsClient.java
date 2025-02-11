@@ -10,13 +10,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.LibraryResourceInner;
 
-/** An instance of this class provides access to all the operations defined in LibrariesOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LibrariesOperationsClient.
+ */
 public interface LibrariesOperationsClient {
     /**
      * List the libraries in a workspace.
-     *
-     * <p>List libraries in a workspace.
-     *
+     * 
+     * List libraries in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,9 +31,9 @@ public interface LibrariesOperationsClient {
 
     /**
      * List the libraries in a workspace.
-     *
-     * <p>List libraries in a workspace.
-     *
+     * 
+     * List libraries in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -41,6 +43,6 @@ public interface LibrariesOperationsClient {
      * @return a list of Library resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LibraryResourceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<LibraryResourceInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

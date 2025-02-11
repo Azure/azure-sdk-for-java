@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A list of server configurations.
  */
 @Fluent
-public final class ConfigurationListResultInner {
+public final class ConfigurationListResultInner implements JsonSerializable<ConfigurationListResultInner> {
     /*
      * The list of server configurations.
      */
-    @JsonProperty(value = "value")
     private List<ConfigurationInner> value;
 
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -80,5 +82,45 @@ public final class ConfigurationListResultInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationListResultInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationListResultInner.
+     */
+    public static ConfigurationListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationListResultInner deserializedConfigurationListResultInner = new ConfigurationListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ConfigurationInner> value = reader.readArray(reader1 -> ConfigurationInner.fromJson(reader1));
+                    deserializedConfigurationListResultInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedConfigurationListResultInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationListResultInner;
+        });
     }
 }

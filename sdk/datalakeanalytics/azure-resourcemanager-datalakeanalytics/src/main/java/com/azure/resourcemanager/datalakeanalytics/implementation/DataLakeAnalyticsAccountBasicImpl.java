@@ -18,8 +18,7 @@ public final class DataLakeAnalyticsAccountBasicImpl implements DataLakeAnalytic
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    DataLakeAnalyticsAccountBasicImpl(
-        DataLakeAnalyticsAccountBasicInner innerObject,
+    DataLakeAnalyticsAccountBasicImpl(DataLakeAnalyticsAccountBasicInner innerObject,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

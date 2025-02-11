@@ -10,11 +10,9 @@ import com.azure.resourcemanager.peering.fluent.models.OperationInner;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"j\",\"display\":{\"provider\":\"toqcjmklja\",\"resource\":\"qidtqajzyu\",\"operation\":\"kudjkrlkhb\",\"description\":\"fepgzgq\"},\"isDataAction\":false}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"vbqid\",\"display\":{\"provider\":\"jzyulpk\",\"resource\":\"jkrlkhbzhfepg\",\"operation\":\"qex\",\"description\":\"ocxscpaierhhbcs\"},\"isDataAction\":true}")
+            .toObject(OperationInner.class);
     }
 
     @org.junit.jupiter.api.Test

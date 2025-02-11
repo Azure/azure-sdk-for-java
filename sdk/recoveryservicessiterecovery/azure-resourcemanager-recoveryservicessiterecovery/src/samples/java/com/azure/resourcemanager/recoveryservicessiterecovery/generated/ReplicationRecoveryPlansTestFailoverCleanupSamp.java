@@ -23,9 +23,10 @@ public final class ReplicationRecoveryPlansTestFailoverCleanupSamp {
      */
     public static void executeTestFailoverCleanupOfTheRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().testFailoverCleanup("vault1", "resourceGroupPS1", "RPtest1",
-            new RecoveryPlanTestFailoverCleanupInput().withProperties(
-                new RecoveryPlanTestFailoverCleanupInputProperties().withComments("Test Failover Cleanup")),
-            com.azure.core.util.Context.NONE);
+        manager.replicationRecoveryPlans()
+            .testFailoverCleanup("vault1", "resourceGroupPS1", "RPtest1",
+                new RecoveryPlanTestFailoverCleanupInput().withProperties(
+                    new RecoveryPlanTestFailoverCleanupInputProperties().withComments("Test Failover Cleanup")),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ComponentPurgeStatusResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComponentPurgeStatusResponseInner model =
-            BinaryData.fromString("{\"status\":\"pending\"}").toObject(ComponentPurgeStatusResponseInner.class);
+        ComponentPurgeStatusResponseInner model
+            = BinaryData.fromString("{\"status\":\"pending\"}").toObject(ComponentPurgeStatusResponseInner.class);
         Assertions.assertEquals(PurgeState.PENDING, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComponentPurgeStatusResponseInner model =
-            new ComponentPurgeStatusResponseInner().withStatus(PurgeState.PENDING);
+        ComponentPurgeStatusResponseInner model
+            = new ComponentPurgeStatusResponseInner().withStatus(PurgeState.PENDING);
         model = BinaryData.fromObject(model).toObject(ComponentPurgeStatusResponseInner.class);
         Assertions.assertEquals(PurgeState.PENDING, model.status());
     }

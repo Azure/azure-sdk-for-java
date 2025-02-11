@@ -27,22 +27,28 @@ import com.azure.resourcemanager.reservations.fluent.models.CalculateRefundRespo
 import com.azure.resourcemanager.reservations.models.CalculateRefundRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CalculateRefundsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CalculateRefundsClient.
+ */
 public final class CalculateRefundsClientImpl implements CalculateRefundsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CalculateRefundsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of CalculateRefundsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CalculateRefundsClientImpl(AzureReservationApiImpl client) {
-        this.service =
-            RestProxy.create(CalculateRefundsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CalculateRefundsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,40 +59,35 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiC")
     public interface CalculateRefundsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/calculateRefund")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CalculateRefundResponseInner>> post(
-            @HostParam("$host") String endpoint,
-            @PathParam("reservationOrderId") String reservationOrderId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CalculateRefundRequest body,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CalculateRefundResponseInner>> post(@HostParam("$host") String endpoint,
+            @PathParam("reservationOrderId") String reservationOrderId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CalculateRefundRequest body, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of calculate refund containing refund information of reservation along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CalculateRefundResponseInner>> postWithResponseAsync(
-        String reservationOrderId, CalculateRefundRequest body) {
+    private Mono<Response<CalculateRefundResponseInner>> postWithResponseAsync(String reservationOrderId,
+        CalculateRefundRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -99,18 +100,16 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
         }
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.post(this.client.getEndpoint(), reservationOrderId, apiVersion, body, accept, context))
+        return FluxUtil.withContext(
+            context -> service.post(this.client.getEndpoint(), reservationOrderId, apiVersion, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @param context The context to associate with this operation.
@@ -118,16 +117,14 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of calculate refund containing refund information of reservation along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CalculateRefundResponseInner>> postWithResponseAsync(
-        String reservationOrderId, CalculateRefundRequest body, Context context) {
+    private Mono<Response<CalculateRefundResponseInner>> postWithResponseAsync(String reservationOrderId,
+        CalculateRefundRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -146,16 +143,16 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
 
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of calculate refund containing refund information of reservation on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CalculateRefundResponseInner> postAsync(String reservationOrderId, CalculateRefundRequest body) {
@@ -164,29 +161,29 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
 
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of calculate refund containing refund information of reservation along with {@link
-     *     Response}.
+     * @return the response of calculate refund containing refund information of reservation along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CalculateRefundResponseInner> postWithResponse(
-        String reservationOrderId, CalculateRefundRequest body, Context context) {
+    public Response<CalculateRefundResponseInner> postWithResponse(String reservationOrderId,
+        CalculateRefundRequest body, Context context) {
         return postWithResponseAsync(reservationOrderId, body, context).block();
     }
 
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Display text of link. */
+/**
+ * Display text of link.
+ */
 @Fluent
-public final class LinkDisplayText {
+public final class LinkDisplayText implements JsonSerializable<LinkDisplayText> {
     /*
      * Display text of link.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Localized display text of link.
      */
-    @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of LinkDisplayText class. */
+    /**
+     * Creates an instance of LinkDisplayText class.
+     */
     public LinkDisplayText() {
     }
 
     /**
      * Get the value property: Display text of link.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +43,7 @@ public final class LinkDisplayText {
 
     /**
      * Set the value property: Display text of link.
-     *
+     * 
      * @param value the value value to set.
      * @return the LinkDisplayText object itself.
      */
@@ -48,7 +54,7 @@ public final class LinkDisplayText {
 
     /**
      * Get the localizedValue property: Localized display text of link.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -57,7 +63,7 @@ public final class LinkDisplayText {
 
     /**
      * Set the localizedValue property: Localized display text of link.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the LinkDisplayText object itself.
      */
@@ -68,9 +74,48 @@ public final class LinkDisplayText {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("localizedValue", this.localizedValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkDisplayText from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkDisplayText if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkDisplayText.
+     */
+    public static LinkDisplayText fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkDisplayText deserializedLinkDisplayText = new LinkDisplayText();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedLinkDisplayText.value = reader.getString();
+                } else if ("localizedValue".equals(fieldName)) {
+                    deserializedLinkDisplayText.localizedValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkDisplayText;
+        });
     }
 }

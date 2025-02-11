@@ -68,8 +68,8 @@ public class PageBlobItem {
      * @param versionId The version identifier of the page blob.
      */
     public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
-                        final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
-                        final Long blobSequenceNumber, final String versionId) {
+        final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
+        final Long blobSequenceNumber, final String versionId) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);
@@ -81,6 +81,8 @@ public class PageBlobItem {
     }
 
     /**
+     * Gets the eTag of the page blob.
+     *
      * @return the eTag of the page blob
      */
     public String getETag() {
@@ -88,6 +90,8 @@ public class PageBlobItem {
     }
 
     /**
+     * Gets the time this page blob was last modified.
+     *
      * @return the time this page blob was last modified
      */
     public OffsetDateTime getLastModified() {
@@ -95,6 +99,8 @@ public class PageBlobItem {
     }
 
     /**
+     * Gets the encryption status of the page blob on the server.
+     *
      * @return the encryption status of the page blob on the server
      */
     public Boolean isServerEncrypted() {
@@ -102,6 +108,8 @@ public class PageBlobItem {
     }
 
     /**
+     * Gets the key used to encrypt the page blob.
+     *
      * @return the key used to encrypt the page blob
      */
     public String getEncryptionKeySha256() {
@@ -109,6 +117,8 @@ public class PageBlobItem {
     }
 
     /**
+     * Gets the encryption scope used to encrypt the page blob.
+     *
      * @return the encryption scope used to encrypt the page blob
      */
     public String getEncryptionScope() {
@@ -116,6 +126,8 @@ public class PageBlobItem {
     }
 
     /**
+     * Gets the MD5 of the page blob's content.
+     *
      * @return the MD5 of the page blob's content
      */
     public byte[] getContentMd5() {
@@ -123,6 +135,8 @@ public class PageBlobItem {
     }
 
     /**
+     * Gets the current sequence number of the page blob.
+     *
      * @return the current sequence number of the page blob
      */
     public Long getBlobSequenceNumber() {
@@ -130,6 +144,8 @@ public class PageBlobItem {
     }
 
     /**
+     * Gets the version identifier of the page blob.
+     *
      * @return the version identifier of the page blob
      */
     public String getVersionId() {

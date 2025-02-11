@@ -13,8 +13,7 @@ public final class QueryPerformanceInsightResetDataResultImpl implements QueryPe
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    QueryPerformanceInsightResetDataResultImpl(
-        QueryPerformanceInsightResetDataResultInner innerObject,
+    QueryPerformanceInsightResetDataResultImpl(QueryPerformanceInsightResetDataResultInner innerObject,
         com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

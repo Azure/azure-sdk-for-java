@@ -10,10 +10,6 @@ module com.azure.resourcemanager.extendedlocation {
     exports com.azure.resourcemanager.extendedlocation.fluent.models;
     exports com.azure.resourcemanager.extendedlocation.models;
 
-    opens com.azure.resourcemanager.extendedlocation.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.extendedlocation.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.extendedlocation.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.extendedlocation.models to com.azure.core;
 }

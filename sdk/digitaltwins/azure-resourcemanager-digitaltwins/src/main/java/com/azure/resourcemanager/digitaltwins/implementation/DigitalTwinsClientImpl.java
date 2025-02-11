@@ -43,22 +43,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DigitalTwinsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DigitalTwinsClient.
+ */
 public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DigitalTwinsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureDigitalTwinsManagementClientImpl client;
 
     /**
      * Initializes an instance of DigitalTwinsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DigitalTwinsClientImpl(AzureDigitalTwinsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DigitalTwinsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DigitalTwinsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,126 +75,91 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureDigitalTwinsMan")
     public interface DigitalTwinsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DigitalTwinsDescriptionInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DigitalTwinsDescriptionInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @BodyParam("application/json") DigitalTwinsDescriptionInner digitalTwinsCreate,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @BodyParam("application/json") DigitalTwinsPatchDescription digitalTwinsPatchDescription,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DigitalTwins/digitalTwinsInstances")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DigitalTwinsDescriptionListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<DigitalTwinsDescriptionListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DigitalTwinsDescriptionListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DigitalTwins/locations/{location}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DigitalTwinsDescriptionListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DigitalTwins/locations/{location}/checkNameAvailability")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
             @BodyParam("application/json") CheckNameRequest digitalTwinsInstanceCheckName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DigitalTwinsDescriptionListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DigitalTwinsDescriptionListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -197,19 +168,15 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return digitalTwinsInstances resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DigitalTwinsDescriptionInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<Response<DigitalTwinsDescriptionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -220,23 +187,14 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -246,19 +204,15 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return digitalTwinsInstances resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DigitalTwinsDescriptionInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<DigitalTwinsDescriptionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -269,20 +223,13 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -298,7 +245,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -308,14 +255,14 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return digitalTwinsInstances resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DigitalTwinsDescriptionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<DigitalTwinsDescriptionInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,7 +279,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -340,22 +287,18 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -372,18 +315,8 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            digitalTwinsCreate,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, digitalTwinsCreate, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -391,7 +324,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -400,25 +333,18 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsDescriptionInner digitalTwinsCreate,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -435,23 +361,15 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                digitalTwinsCreate,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, digitalTwinsCreate, accept, context);
     }
 
     /**
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -463,23 +381,18 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, digitalTwinsCreate);
-        return this
-            .client
-            .<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DigitalTwinsDescriptionInner.class,
-                DigitalTwinsDescriptionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, digitalTwinsCreate);
+        return this.client.<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DigitalTwinsDescriptionInner.class, DigitalTwinsDescriptionInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -491,28 +404,21 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsDescriptionInner digitalTwinsCreate,
+        String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, digitalTwinsCreate, context);
-        return this
-            .client
-            .<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DigitalTwinsDescriptionInner.class,
-                DigitalTwinsDescriptionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, digitalTwinsCreate, context);
+        return this.client.<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DigitalTwinsDescriptionInner.class, DigitalTwinsDescriptionInner.class,
+            context);
     }
 
     /**
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -531,7 +437,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -543,12 +449,9 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsDescriptionInner digitalTwinsCreate,
+        String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate, context)
             .getSyncPoller();
     }
 
@@ -556,7 +459,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -566,10 +469,9 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the description of the DigitalTwins service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DigitalTwinsDescriptionInner> createOrUpdateAsync(
-        String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate)
-            .last()
+    private Mono<DigitalTwinsDescriptionInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        DigitalTwinsDescriptionInner digitalTwinsCreate) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -577,7 +479,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -588,13 +490,9 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the description of the DigitalTwins service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DigitalTwinsDescriptionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsDescriptionInner digitalTwinsCreate,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate, context)
-            .last()
+    private Mono<DigitalTwinsDescriptionInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        DigitalTwinsDescriptionInner digitalTwinsCreate, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -602,7 +500,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -612,8 +510,8 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsDescriptionInner createOrUpdate(
-        String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate) {
+    public DigitalTwinsDescriptionInner createOrUpdate(String resourceGroupName, String resourceName,
+        DigitalTwinsDescriptionInner digitalTwinsCreate) {
         return createOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate).block();
     }
 
@@ -621,7 +519,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -632,17 +530,14 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsDescriptionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsDescriptionInner digitalTwinsCreate,
-        Context context) {
+    public DigitalTwinsDescriptionInner createOrUpdate(String resourceGroupName, String resourceName,
+        DigitalTwinsDescriptionInner digitalTwinsCreate, Context context) {
         return createOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate, context).block();
     }
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -650,22 +545,18 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        DigitalTwinsPatchDescription digitalTwinsPatchDescription) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -675,33 +566,22 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (digitalTwinsPatchDescription == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter digitalTwinsPatchDescription is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter digitalTwinsPatchDescription is required and cannot be null."));
         } else {
             digitalTwinsPatchDescription.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            digitalTwinsPatchDescription,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, digitalTwinsPatchDescription, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -710,25 +590,18 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsPatchDescription digitalTwinsPatchDescription,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        DigitalTwinsPatchDescription digitalTwinsPatchDescription, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -738,30 +611,20 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (digitalTwinsPatchDescription == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter digitalTwinsPatchDescription is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter digitalTwinsPatchDescription is required and cannot be null."));
         } else {
             digitalTwinsPatchDescription.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                digitalTwinsPatchDescription,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, digitalTwinsPatchDescription, accept, context);
     }
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -773,21 +636,16 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdateAsync(
         String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription);
-        return this
-            .client
-            .<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DigitalTwinsDescriptionInner.class,
-                DigitalTwinsDescriptionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription);
+        return this.client.<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DigitalTwinsDescriptionInner.class, DigitalTwinsDescriptionInner.class,
+            this.client.getContext());
     }
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -799,26 +657,19 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsPatchDescription digitalTwinsPatchDescription,
+        String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription, context);
-        return this
-            .client
-            .<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DigitalTwinsDescriptionInner.class,
-                DigitalTwinsDescriptionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription, context);
+        return this.client.<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DigitalTwinsDescriptionInner.class, DigitalTwinsDescriptionInner.class,
+            context);
     }
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -835,7 +686,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -847,18 +698,15 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdate(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsPatchDescription digitalTwinsPatchDescription,
+        String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription,
         Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription, context)
+        return this.beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription, context)
             .getSyncPoller();
     }
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -868,16 +716,15 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the description of the DigitalTwins service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DigitalTwinsDescriptionInner> updateAsync(
-        String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription) {
-        return beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription)
-            .last()
+    private Mono<DigitalTwinsDescriptionInner> updateAsync(String resourceGroupName, String resourceName,
+        DigitalTwinsPatchDescription digitalTwinsPatchDescription) {
+        return beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -888,19 +735,15 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the description of the DigitalTwins service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DigitalTwinsDescriptionInner> updateAsync(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsPatchDescription digitalTwinsPatchDescription,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription, context)
-            .last()
+    private Mono<DigitalTwinsDescriptionInner> updateAsync(String resourceGroupName, String resourceName,
+        DigitalTwinsPatchDescription digitalTwinsPatchDescription, Context context) {
+        return beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -910,14 +753,14 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsDescriptionInner update(
-        String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription) {
+    public DigitalTwinsDescriptionInner update(String resourceGroupName, String resourceName,
+        DigitalTwinsPatchDescription digitalTwinsPatchDescription) {
         return updateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription).block();
     }
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -928,38 +771,31 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsDescriptionInner update(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsPatchDescription digitalTwinsPatchDescription,
-        Context context) {
+    public DigitalTwinsDescriptionInner update(String resourceGroupName, String resourceName,
+        DigitalTwinsPatchDescription digitalTwinsPatchDescription, Context context) {
         return updateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription, context).block();
     }
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -970,23 +806,14 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -994,22 +821,18 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1020,20 +843,13 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, accept, context);
     }
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1042,22 +858,17 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the {@link PollerFlux} for polling of the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDeleteAsync(
-        String resourceGroupName, String resourceName) {
+    private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner>
+        beginDeleteAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
-        return this
-            .client
-            .<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DigitalTwinsDescriptionInner.class,
-                DigitalTwinsDescriptionInner.class,
-                this.client.getContext());
+        return this.client.<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DigitalTwinsDescriptionInner.class, DigitalTwinsDescriptionInner.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -1067,23 +878,18 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the {@link PollerFlux} for polling of the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDeleteAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private PollerFlux<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner>
+        beginDeleteAsync(String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, context);
-        return this
-            .client
-            .<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DigitalTwinsDescriptionInner.class,
-                DigitalTwinsDescriptionInner.class,
-                context);
+        return this.client.<DigitalTwinsDescriptionInner, DigitalTwinsDescriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DigitalTwinsDescriptionInner.class, DigitalTwinsDescriptionInner.class,
+            context);
     }
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1092,14 +898,14 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the {@link SyncPoller} for polling of the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
-        String resourceGroupName, String resourceName) {
+    public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner>
+        beginDelete(String resourceGroupName, String resourceName) {
         return this.beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -1109,14 +915,14 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the {@link SyncPoller} for polling of the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
-        String resourceGroupName, String resourceName, Context context) {
+    public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner>
+        beginDelete(String resourceGroupName, String resourceName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1131,7 +937,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -1141,16 +947,15 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the description of the DigitalTwins service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DigitalTwinsDescriptionInner> deleteAsync(
-        String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context)
-            .last()
+    private Mono<DigitalTwinsDescriptionInner> deleteAsync(String resourceGroupName, String resourceName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1165,7 +970,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -1181,96 +986,63 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a subscription along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DigitalTwinsDescriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DigitalTwinsDescriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a subscription along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a subscription as paginated response with {@link PagedFlux}.
@@ -1282,7 +1054,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1291,13 +1063,13 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DigitalTwinsDescriptionInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a subscription as paginated response with {@link PagedIterable}.
@@ -1309,7 +1081,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1323,28 +1095,24 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<DigitalTwinsDescriptionInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1352,53 +1120,34 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<DigitalTwinsDescriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<DigitalTwinsDescriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<DigitalTwinsDescriptionInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1407,27 +1156,15 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1436,14 +1173,13 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DigitalTwinsDescriptionInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1452,16 +1188,15 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return all the DigitalTwinsInstances in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DigitalTwinsDescriptionInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+    private PagedFlux<DigitalTwinsDescriptionInner> listByResourceGroupAsync(String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1475,7 +1210,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1490,134 +1225,107 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String location, CheckNameRequest digitalTwinsInstanceCheckName) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String location,
+        CheckNameRequest digitalTwinsInstanceCheckName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (digitalTwinsInstanceCheckName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter digitalTwinsInstanceCheckName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter digitalTwinsInstanceCheckName is required and cannot be null."));
         } else {
             digitalTwinsInstanceCheckName.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            digitalTwinsInstanceCheckName,
-                            accept,
-                            context))
+                context -> service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), location, digitalTwinsInstanceCheckName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String location, CheckNameRequest digitalTwinsInstanceCheckName, Context context) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String location,
+        CheckNameRequest digitalTwinsInstanceCheckName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (digitalTwinsInstanceCheckName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter digitalTwinsInstanceCheckName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter digitalTwinsInstanceCheckName is required and cannot be null."));
         } else {
             digitalTwinsInstanceCheckName.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                digitalTwinsInstanceCheckName,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, digitalTwinsInstanceCheckName, accept, context);
     }
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
-        String location, CheckNameRequest digitalTwinsInstanceCheckName) {
+    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(String location,
+        CheckNameRequest digitalTwinsInstanceCheckName) {
         return checkNameAvailabilityWithResponseAsync(location, digitalTwinsInstanceCheckName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1625,17 +1333,17 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String location, CheckNameRequest digitalTwinsInstanceCheckName, Context context) {
+    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String location,
+        CheckNameRequest digitalTwinsInstanceCheckName, Context context) {
         return checkNameAvailabilityWithResponseAsync(location, digitalTwinsInstanceCheckName, context).block();
     }
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1648,14 +1356,13 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DigitalTwins description objects with a next link along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listNextSinglePageAsync(String nextLink) {
@@ -1663,75 +1370,53 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DigitalTwinsDescriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DigitalTwinsDescriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DigitalTwins description objects with a next link along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DigitalTwins description objects with a next link along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1739,63 +1424,43 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DigitalTwinsDescriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DigitalTwinsDescriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DigitalTwins description objects with a next link along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

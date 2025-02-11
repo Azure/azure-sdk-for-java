@@ -14,11 +14,10 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricRulesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricRules model =
-            BinaryData
-                .fromString(
-                    "{\"filteringTags\":[{\"name\":\"sfksy\",\"value\":\"dystkiiuxhqyud\",\"action\":\"Exclude\"}]}")
-                .toObject(MetricRules.class);
+        MetricRules model = BinaryData
+            .fromString(
+                "{\"filteringTags\":[{\"name\":\"sfksy\",\"value\":\"dystkiiuxhqyud\",\"action\":\"Exclude\"}]}")
+            .toObject(MetricRules.class);
         Assertions.assertEquals("sfksy", model.filteringTags().get(0).name());
         Assertions.assertEquals("dystkiiuxhqyud", model.filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.EXCLUDE, model.filteringTags().get(0).action());
@@ -26,15 +25,8 @@ public final class MetricRulesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricRules model =
-            new MetricRules()
-                .withFilteringTags(
-                    Arrays
-                        .asList(
-                            new FilteringTag()
-                                .withName("sfksy")
-                                .withValue("dystkiiuxhqyud")
-                                .withAction(TagAction.EXCLUDE)));
+        MetricRules model = new MetricRules().withFilteringTags(Arrays
+            .asList(new FilteringTag().withName("sfksy").withValue("dystkiiuxhqyud").withAction(TagAction.EXCLUDE)));
         model = BinaryData.fromObject(model).toObject(MetricRules.class);
         Assertions.assertEquals("sfksy", model.filteringTags().get(0).name());
         Assertions.assertEquals("dystkiiuxhqyud", model.filteringTags().get(0).value());

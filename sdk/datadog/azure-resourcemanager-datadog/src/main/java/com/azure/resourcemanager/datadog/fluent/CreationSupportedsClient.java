@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datadog.fluent.models.CreateResourceSupportedResponseInner;
 
-/** An instance of this class provides access to all the operations defined in CreationSupportedsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CreationSupportedsClient.
+ */
 public interface CreationSupportedsClient {
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,7 +29,7 @@ public interface CreationSupportedsClient {
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,7 +42,7 @@ public interface CreationSupportedsClient {
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +55,7 @@ public interface CreationSupportedsClient {
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.PolicyModelInner;
 
-/** An instance of this class provides access to all the operations defined in PoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoliciesClient.
+ */
 public interface PoliciesClient {
     /**
      * Gets the policy.
-     *
-     * <p>Gets the details of the policy.
-     *
+     * 
+     * Gets the details of the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -30,14 +32,14 @@ public interface PoliciesClient {
      * @return the details of the policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String policyName, Context context);
+    Response<PolicyModelInner> getWithResponse(String resourceGroupName, String vaultName, String policyName,
+        Context context);
 
     /**
      * Gets the policy.
-     *
-     * <p>Gets the details of the policy.
-     *
+     * 
+     * Gets the details of the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -51,9 +53,9 @@ public interface PoliciesClient {
 
     /**
      * Puts the policy.
-     *
-     * <p>Creates the policy.
-     *
+     * 
+     * Creates the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -63,14 +65,14 @@ public interface PoliciesClient {
      * @return the {@link SyncPoller} for polling of policy model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PolicyModelInner>, PolicyModelInner> beginCreate(
-        String resourceGroupName, String vaultName, String policyName);
+    SyncPoller<PollResult<PolicyModelInner>, PolicyModelInner> beginCreate(String resourceGroupName, String vaultName,
+        String policyName);
 
     /**
      * Puts the policy.
-     *
-     * <p>Creates the policy.
-     *
+     * 
+     * Creates the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -82,14 +84,14 @@ public interface PoliciesClient {
      * @return the {@link SyncPoller} for polling of policy model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PolicyModelInner>, PolicyModelInner> beginCreate(
-        String resourceGroupName, String vaultName, String policyName, PolicyModelInner body, Context context);
+    SyncPoller<PollResult<PolicyModelInner>, PolicyModelInner> beginCreate(String resourceGroupName, String vaultName,
+        String policyName, PolicyModelInner body, Context context);
 
     /**
      * Puts the policy.
-     *
-     * <p>Creates the policy.
-     *
+     * 
+     * Creates the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -103,9 +105,9 @@ public interface PoliciesClient {
 
     /**
      * Puts the policy.
-     *
-     * <p>Creates the policy.
-     *
+     * 
+     * Creates the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -117,14 +119,14 @@ public interface PoliciesClient {
      * @return policy model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyModelInner create(
-        String resourceGroupName, String vaultName, String policyName, PolicyModelInner body, Context context);
+    PolicyModelInner create(String resourceGroupName, String vaultName, String policyName, PolicyModelInner body,
+        Context context);
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -138,9 +140,9 @@ public interface PoliciesClient {
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -151,14 +153,14 @@ public interface PoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String policyName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName, String policyName,
+        Context context);
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -171,9 +173,9 @@ public interface PoliciesClient {
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -187,9 +189,9 @@ public interface PoliciesClient {
 
     /**
      * Lists the policies.
-     *
-     * <p>Gets the list of policies in the given vault.
-     *
+     * 
+     * Gets the list of policies in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,9 +204,9 @@ public interface PoliciesClient {
 
     /**
      * Lists the policies.
-     *
-     * <p>Gets the list of policies in the given vault.
-     *
+     * 
+     * Gets the list of policies in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.

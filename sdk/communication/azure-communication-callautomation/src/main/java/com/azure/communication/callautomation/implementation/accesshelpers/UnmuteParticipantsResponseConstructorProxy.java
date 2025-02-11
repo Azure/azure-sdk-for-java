@@ -12,7 +12,8 @@ import com.azure.communication.callautomation.models.UnmuteParticipantResult;
 public final class UnmuteParticipantsResponseConstructorProxy {
     private static UnmuteParticipantsResponseConstructorAccessor accessor;
 
-    private UnmuteParticipantsResponseConstructorProxy() { }
+    private UnmuteParticipantsResponseConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link UnmuteParticipantsResponseConstructorAccessor}

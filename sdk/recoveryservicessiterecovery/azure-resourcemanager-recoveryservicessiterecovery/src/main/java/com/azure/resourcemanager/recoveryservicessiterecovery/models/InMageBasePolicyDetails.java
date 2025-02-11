@@ -5,45 +5,55 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Base class for the policies of providers using InMage replication.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageBasePolicyDetails")
 @Fluent
 public final class InMageBasePolicyDetails extends PolicyProviderSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "InMageBasePolicyDetails";
+
+    /*
      * The recovery point threshold in minutes.
      */
-    @JsonProperty(value = "recoveryPointThresholdInMinutes")
     private Integer recoveryPointThresholdInMinutes;
 
     /*
      * The duration in minutes until which the recovery points need to be stored.
      */
-    @JsonProperty(value = "recoveryPointHistory")
     private Integer recoveryPointHistory;
 
     /*
      * The app consistent snapshot frequency in minutes.
      */
-    @JsonProperty(value = "appConsistentFrequencyInMinutes")
     private Integer appConsistentFrequencyInMinutes;
 
     /*
      * A value indicating whether multi-VM sync has to be enabled.
      */
-    @JsonProperty(value = "multiVmSyncStatus")
     private String multiVmSyncStatus;
 
     /**
      * Creates an instance of InMageBasePolicyDetails class.
      */
     public InMageBasePolicyDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -67,8 +77,7 @@ public final class InMageBasePolicyDetails extends PolicyProviderSpecificDetails
     }
 
     /**
-     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
-     * stored.
+     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
      * 
      * @return the recoveryPointHistory value.
      */
@@ -77,8 +86,7 @@ public final class InMageBasePolicyDetails extends PolicyProviderSpecificDetails
     }
 
     /**
-     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
-     * stored.
+     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
      * 
      * @param recoveryPointHistory the recoveryPointHistory value to set.
      * @return the InMageBasePolicyDetails object itself.
@@ -135,6 +143,55 @@ public final class InMageBasePolicyDetails extends PolicyProviderSpecificDetails
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeNumberField("recoveryPointThresholdInMinutes", this.recoveryPointThresholdInMinutes);
+        jsonWriter.writeNumberField("recoveryPointHistory", this.recoveryPointHistory);
+        jsonWriter.writeNumberField("appConsistentFrequencyInMinutes", this.appConsistentFrequencyInMinutes);
+        jsonWriter.writeStringField("multiVmSyncStatus", this.multiVmSyncStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageBasePolicyDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageBasePolicyDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageBasePolicyDetails.
+     */
+    public static InMageBasePolicyDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageBasePolicyDetails deserializedInMageBasePolicyDetails = new InMageBasePolicyDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageBasePolicyDetails.instanceType = reader.getString();
+                } else if ("recoveryPointThresholdInMinutes".equals(fieldName)) {
+                    deserializedInMageBasePolicyDetails.recoveryPointThresholdInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("recoveryPointHistory".equals(fieldName)) {
+                    deserializedInMageBasePolicyDetails.recoveryPointHistory = reader.getNullable(JsonReader::getInt);
+                } else if ("appConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedInMageBasePolicyDetails.appConsistentFrequencyInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("multiVmSyncStatus".equals(fieldName)) {
+                    deserializedInMageBasePolicyDetails.multiVmSyncStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageBasePolicyDetails;
+        });
     }
 }

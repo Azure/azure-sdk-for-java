@@ -28,7 +28,8 @@ public final class SqlMISource extends TabularSource {
     private Object sqlReaderQuery;
 
     /*
-     * Name of the stored procedure for a Azure SQL Managed Instance source. This cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType string).
+     * Name of the stored procedure for a Azure SQL Managed Instance source. This cannot be used at the same time as
+     * SqlReaderQuery. Type: string (or Expression with resultType string).
      */
     private Object sqlReaderStoredProcedureName;
 
@@ -38,7 +39,9 @@ public final class SqlMISource extends TabularSource {
     private Object storedProcedureParameters;
 
     /*
-     * Specifies the transaction locking behavior for the SQL source. Allowed values: ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type: string (or Expression with resultType string).
+     * Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
      */
     private Object isolationLevel;
 
@@ -48,7 +51,8 @@ public final class SqlMISource extends TabularSource {
     private Object produceAdditionalTypes;
 
     /*
-     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
+     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
+     * "PhysicalPartitionsOfTable", "DynamicRange".
      */
     private Object partitionOption;
 

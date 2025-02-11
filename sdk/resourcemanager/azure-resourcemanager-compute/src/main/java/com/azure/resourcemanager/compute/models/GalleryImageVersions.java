@@ -22,8 +22,8 @@ public interface GalleryImageVersions extends SupportsCreating<GalleryImageVersi
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<GalleryImageVersion> getByGalleryImageAsync(
-        String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName);
+    Mono<GalleryImageVersion> getByGalleryImageAsync(String resourceGroupName, String galleryName,
+        String galleryImageName, String galleryImageVersionName);
 
     /**
      * Retrieves information about a gallery image version.
@@ -35,8 +35,8 @@ public interface GalleryImageVersions extends SupportsCreating<GalleryImageVersi
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the gallery image version resource
      */
-    GalleryImageVersion getByGalleryImage(
-        String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName);
+    GalleryImageVersion getByGalleryImage(String resourceGroupName, String galleryName, String galleryImageName,
+        String galleryImageVersionName);
 
     /**
      * List gallery image versions under a gallery image.
@@ -47,8 +47,8 @@ public interface GalleryImageVersions extends SupportsCreating<GalleryImageVersi
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    PagedFlux<GalleryImageVersion> listByGalleryImageAsync(
-        String resourceGroupName, String galleryName, String galleryImageName);
+    PagedFlux<GalleryImageVersion> listByGalleryImageAsync(String resourceGroupName, String galleryName,
+        String galleryImageName);
 
     /**
      * List gallery image versions under a gallery image.
@@ -59,8 +59,8 @@ public interface GalleryImageVersions extends SupportsCreating<GalleryImageVersi
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return list of gallery image versions
      */
-    PagedIterable<GalleryImageVersion> listByGalleryImage(
-        String resourceGroupName, String galleryName, String galleryImageName);
+    PagedIterable<GalleryImageVersion> listByGalleryImage(String resourceGroupName, String galleryName,
+        String galleryImageName);
 
     /**
      * Delete a gallery image version.
@@ -72,8 +72,8 @@ public interface GalleryImageVersions extends SupportsCreating<GalleryImageVersi
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the completable for the request
      */
-    Mono<Void> deleteByGalleryImageAsync(
-        String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName);
+    Mono<Void> deleteByGalleryImageAsync(String resourceGroupName, String galleryName, String galleryImageName,
+        String galleryImageVersionName);
 
     /**
      * Delete a gallery image version.
@@ -84,6 +84,6 @@ public interface GalleryImageVersions extends SupportsCreating<GalleryImageVersi
      * @param galleryImageVersionName The name of the gallery image version.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      */
-    void deleteByGalleryImage(
-        String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName);
+    void deleteByGalleryImage(String resourceGroupName, String galleryName, String galleryImageName,
+        String galleryImageVersionName);
 }

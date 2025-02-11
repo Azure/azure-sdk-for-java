@@ -23,22 +23,26 @@ public final class AzureDataExplorerSource extends CopySource {
     private String type = "AzureDataExplorerSource";
 
     /*
-     * Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression with resultType string).
+     * Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression with resultType
+     * string).
      */
     private Object query;
 
     /*
-     * The name of the Boolean option that controls whether truncation is applied to result-sets that go beyond a certain row-count limit.
+     * The name of the Boolean option that controls whether truncation is applied to result-sets that go beyond a
+     * certain row-count limit.
      */
     private Object noTruncation;
 
     /*
-     * Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..
+     * Query timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..
      */
     private Object queryTimeout;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     private Object additionalColumns;
 

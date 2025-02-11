@@ -10,10 +10,9 @@ import com.azure.resourcemanager.datamigration.models.ResourceSkuCosts;
 public final class ResourceSkuCostsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuCosts model =
-            BinaryData
-                .fromString("{\"meterID\":\"jofxqe\",\"quantity\":4013102962507329010,\"extendedUnit\":\"qjhqjbas\"}")
-                .toObject(ResourceSkuCosts.class);
+        ResourceSkuCosts model = BinaryData
+            .fromString("{\"meterID\":\"t\",\"quantity\":1479872096701654032,\"extendedUnit\":\"pjhulsuuvmkj\"}")
+            .toObject(ResourceSkuCosts.class);
     }
 
     @org.junit.jupiter.api.Test

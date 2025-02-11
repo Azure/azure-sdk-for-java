@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactInfo model =
-            BinaryData
-                .fromString(
-                    "{\"contactName\":\"o\",\"phone\":\"rq\",\"phoneExtension\":\"poczvyifqrvkdvjs\",\"mobile\":\"rm\"}")
-                .toObject(ContactInfo.class);
-        Assertions.assertEquals("o", model.contactName());
-        Assertions.assertEquals("rq", model.phone());
-        Assertions.assertEquals("poczvyifqrvkdvjs", model.phoneExtension());
-        Assertions.assertEquals("rm", model.mobile());
+        ContactInfo model = BinaryData.fromString(
+            "{\"contactName\":\"dpuozmyz\",\"phone\":\"dagfuaxbezyiuok\",\"phoneExtension\":\"whrdxwzywqsmbsu\",\"mobile\":\"xim\"}")
+            .toObject(ContactInfo.class);
+        Assertions.assertEquals("dpuozmyz", model.contactName());
+        Assertions.assertEquals("dagfuaxbezyiuok", model.phone());
+        Assertions.assertEquals("whrdxwzywqsmbsu", model.phoneExtension());
+        Assertions.assertEquals("xim", model.mobile());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactInfo model =
-            new ContactInfo()
-                .withContactName("o")
-                .withPhone("rq")
-                .withPhoneExtension("poczvyifqrvkdvjs")
-                .withMobile("rm");
+        ContactInfo model = new ContactInfo().withContactName("dpuozmyz")
+            .withPhone("dagfuaxbezyiuok")
+            .withPhoneExtension("whrdxwzywqsmbsu")
+            .withMobile("xim");
         model = BinaryData.fromObject(model).toObject(ContactInfo.class);
-        Assertions.assertEquals("o", model.contactName());
-        Assertions.assertEquals("rq", model.phone());
-        Assertions.assertEquals("poczvyifqrvkdvjs", model.phoneExtension());
-        Assertions.assertEquals("rm", model.mobile());
+        Assertions.assertEquals("dpuozmyz", model.contactName());
+        Assertions.assertEquals("dagfuaxbezyiuok", model.phone());
+        Assertions.assertEquals("whrdxwzywqsmbsu", model.phoneExtension());
+        Assertions.assertEquals("xim", model.mobile());
     }
 }

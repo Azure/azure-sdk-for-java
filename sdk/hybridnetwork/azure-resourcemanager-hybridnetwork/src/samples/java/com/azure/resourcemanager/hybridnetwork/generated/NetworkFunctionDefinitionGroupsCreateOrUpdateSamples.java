@@ -20,7 +20,10 @@ public final class NetworkFunctionDefinitionGroupsCreateOrUpdateSamples {
      */
     public static void createOrUpdateTheNetworkFunctionDefinitionGroup(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkFunctionDefinitionGroups().define("TestNetworkFunctionDefinitionGroupName").withRegion("eastus")
-            .withExistingPublisher("rg", "TestPublisher").create();
+        manager.networkFunctionDefinitionGroups()
+            .define("TestNetworkFunctionDefinitionGroupName")
+            .withRegion("eastus")
+            .withExistingPublisher("rg", "TestPublisher")
+            .create();
     }
 }

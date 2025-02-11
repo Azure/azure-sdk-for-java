@@ -6,24 +6,26 @@ package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Request of get metrics status Operation.
  */
 @Fluent
-public final class MetricsStatusRequest {
+public final class MetricsStatusRequest implements JsonSerializable<MetricsStatusRequest> {
     /*
      * Azure resource IDs
      */
-    @JsonProperty(value = "azureResourceIds")
     private List<String> azureResourceIds;
 
     /*
      * User Email
      */
-    @JsonProperty(value = "userEmail", required = true)
     private String userEmail;
 
     /**
@@ -79,10 +81,52 @@ public final class MetricsStatusRequest {
      */
     public void validate() {
         if (userEmail() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property userEmail in model MetricsStatusRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property userEmail in model MetricsStatusRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MetricsStatusRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userEmail", this.userEmail);
+        jsonWriter.writeArrayField("azureResourceIds", this.azureResourceIds,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricsStatusRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricsStatusRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetricsStatusRequest.
+     */
+    public static MetricsStatusRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricsStatusRequest deserializedMetricsStatusRequest = new MetricsStatusRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userEmail".equals(fieldName)) {
+                    deserializedMetricsStatusRequest.userEmail = reader.getString();
+                } else if ("azureResourceIds".equals(fieldName)) {
+                    List<String> azureResourceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetricsStatusRequest.azureResourceIds = azureResourceIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricsStatusRequest;
+        });
+    }
 }

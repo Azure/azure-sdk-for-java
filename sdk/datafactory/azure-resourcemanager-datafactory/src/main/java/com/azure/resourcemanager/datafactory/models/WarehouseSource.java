@@ -270,7 +270,6 @@ public final class WarehouseSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (partitionSettings() != null) {
             partitionSettings().validate();
         }

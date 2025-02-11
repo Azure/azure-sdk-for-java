@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class UsagesUnit extends ExpandableStringEnum<UsagesUnit> {
      * @param name a name to look for.
      * @return the corresponding UsagesUnit.
      */
-    @JsonCreator
     public static UsagesUnit fromString(String name) {
         return fromString(name, UsagesUnit.class);
     }

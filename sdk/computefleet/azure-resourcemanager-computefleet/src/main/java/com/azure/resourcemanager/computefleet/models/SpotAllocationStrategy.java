@@ -12,17 +12,18 @@ import java.util.Collection;
  */
 public final class SpotAllocationStrategy extends ExpandableStringEnum<SpotAllocationStrategy> {
     /**
-     * Static value PriceCapacityOptimized for SpotAllocationStrategy.
+     * Default. VM sizes distribution will be determined to optimize for both price and capacity.
      */
     public static final SpotAllocationStrategy PRICE_CAPACITY_OPTIMIZED = fromString("PriceCapacityOptimized");
 
     /**
-     * Static value LowestPrice for SpotAllocationStrategy.
+     * VM sizes distribution will be determined to optimize for price. Note: Capacity will still be considered here but
+     * will be given much less weight.
      */
     public static final SpotAllocationStrategy LOWEST_PRICE = fromString("LowestPrice");
 
     /**
-     * Static value CapacityOptimized for SpotAllocationStrategy.
+     * VM sizes distribution will be determined to optimize for capacity.
      */
     public static final SpotAllocationStrategy CAPACITY_OPTIMIZED = fromString("CapacityOptimized");
 

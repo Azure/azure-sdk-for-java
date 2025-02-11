@@ -5,55 +5,52 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.AscOperationErrorResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The status of operation.
  */
 @Fluent
-public final class AscOperationInner {
+public final class AscOperationInner implements JsonSerializable<AscOperationInner> {
     /*
      * The operation Id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The operation name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The start time of the operation.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * The end time of the operation.
      */
-    @JsonProperty(value = "endTime")
     private String endTime;
 
     /*
      * The status of the operation.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The error detail of the operation if any.
      */
-    @JsonProperty(value = "error")
     private AscOperationErrorResponse error;
 
     /*
      * Additional operation-specific properties
      */
-    @JsonProperty(value = "properties")
     private AscOperationProperties innerProperties;
 
     /**
@@ -226,5 +223,59 @@ public final class AscOperationInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AscOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AscOperationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AscOperationInner.
+     */
+    public static AscOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AscOperationInner deserializedAscOperationInner = new AscOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAscOperationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAscOperationInner.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedAscOperationInner.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedAscOperationInner.endTime = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAscOperationInner.status = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedAscOperationInner.error = AscOperationErrorResponse.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAscOperationInner.innerProperties = AscOperationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAscOperationInner;
+        });
     }
 }

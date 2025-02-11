@@ -30,19 +30,31 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
     private String targetAddress;
 
     /*
+     * Defines the configuration for the connector type that is being used with the endpoint profile.
+     */
+    private String endpointProfileType;
+
+    /*
      * Defines the client authentication mechanism to the server.
      */
-    private UserAuthentication userAuthentication;
+    private Authentication authentication;
 
     /*
-     * Defines the authentication mechanism for the southbound connector connecting to the shop floor/OT device.
-     */
-    private TransportAuthentication transportAuthentication;
-
-    /*
-     * Contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
+     * Stringified JSON that contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
      */
     private String additionalConfiguration;
+
+    /*
+     * Reference to a discovered asset endpoint profile. Populated only if the asset endpoint profile has been created
+     * from discovery flow. Discovered asset endpoint profile name must be provided.
+     */
+    private String discoveredAssetEndpointProfileRef;
+
+    /*
+     * Read only object to reflect changes that have occurred on the Edge. Similar to Kubernetes status property for
+     * custom resources.
+     */
+    private AssetEndpointProfileStatus status;
 
     /*
      * Provisioning state of the resource.
@@ -89,50 +101,50 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
     }
 
     /**
-     * Get the userAuthentication property: Defines the client authentication mechanism to the server.
+     * Get the endpointProfileType property: Defines the configuration for the connector type that is being used with
+     * the endpoint profile.
      * 
-     * @return the userAuthentication value.
+     * @return the endpointProfileType value.
      */
-    public UserAuthentication userAuthentication() {
-        return this.userAuthentication;
+    public String endpointProfileType() {
+        return this.endpointProfileType;
     }
 
     /**
-     * Set the userAuthentication property: Defines the client authentication mechanism to the server.
+     * Set the endpointProfileType property: Defines the configuration for the connector type that is being used with
+     * the endpoint profile.
      * 
-     * @param userAuthentication the userAuthentication value to set.
+     * @param endpointProfileType the endpointProfileType value to set.
      * @return the AssetEndpointProfileProperties object itself.
      */
-    public AssetEndpointProfileProperties withUserAuthentication(UserAuthentication userAuthentication) {
-        this.userAuthentication = userAuthentication;
+    public AssetEndpointProfileProperties withEndpointProfileType(String endpointProfileType) {
+        this.endpointProfileType = endpointProfileType;
         return this;
     }
 
     /**
-     * Get the transportAuthentication property: Defines the authentication mechanism for the southbound connector
-     * connecting to the shop floor/OT device.
+     * Get the authentication property: Defines the client authentication mechanism to the server.
      * 
-     * @return the transportAuthentication value.
+     * @return the authentication value.
      */
-    public TransportAuthentication transportAuthentication() {
-        return this.transportAuthentication;
+    public Authentication authentication() {
+        return this.authentication;
     }
 
     /**
-     * Set the transportAuthentication property: Defines the authentication mechanism for the southbound connector
-     * connecting to the shop floor/OT device.
+     * Set the authentication property: Defines the client authentication mechanism to the server.
      * 
-     * @param transportAuthentication the transportAuthentication value to set.
+     * @param authentication the authentication value to set.
      * @return the AssetEndpointProfileProperties object itself.
      */
-    public AssetEndpointProfileProperties withTransportAuthentication(TransportAuthentication transportAuthentication) {
-        this.transportAuthentication = transportAuthentication;
+    public AssetEndpointProfileProperties withAuthentication(Authentication authentication) {
+        this.authentication = authentication;
         return this;
     }
 
     /**
-     * Get the additionalConfiguration property: Contains connectivity type specific further configuration (e.g. OPC UA,
-     * Modbus, ONVIF).
+     * Get the additionalConfiguration property: Stringified JSON that contains connectivity type specific further
+     * configuration (e.g. OPC UA, Modbus, ONVIF).
      * 
      * @return the additionalConfiguration value.
      */
@@ -141,8 +153,8 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
     }
 
     /**
-     * Set the additionalConfiguration property: Contains connectivity type specific further configuration (e.g. OPC UA,
-     * Modbus, ONVIF).
+     * Set the additionalConfiguration property: Stringified JSON that contains connectivity type specific further
+     * configuration (e.g. OPC UA, Modbus, ONVIF).
      * 
      * @param additionalConfiguration the additionalConfiguration value to set.
      * @return the AssetEndpointProfileProperties object itself.
@@ -150,6 +162,41 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
     public AssetEndpointProfileProperties withAdditionalConfiguration(String additionalConfiguration) {
         this.additionalConfiguration = additionalConfiguration;
         return this;
+    }
+
+    /**
+     * Get the discoveredAssetEndpointProfileRef property: Reference to a discovered asset endpoint profile. Populated
+     * only if the asset endpoint profile has been created from discovery flow. Discovered asset endpoint profile name
+     * must be provided.
+     * 
+     * @return the discoveredAssetEndpointProfileRef value.
+     */
+    public String discoveredAssetEndpointProfileRef() {
+        return this.discoveredAssetEndpointProfileRef;
+    }
+
+    /**
+     * Set the discoveredAssetEndpointProfileRef property: Reference to a discovered asset endpoint profile. Populated
+     * only if the asset endpoint profile has been created from discovery flow. Discovered asset endpoint profile name
+     * must be provided.
+     * 
+     * @param discoveredAssetEndpointProfileRef the discoveredAssetEndpointProfileRef value to set.
+     * @return the AssetEndpointProfileProperties object itself.
+     */
+    public AssetEndpointProfileProperties
+        withDiscoveredAssetEndpointProfileRef(String discoveredAssetEndpointProfileRef) {
+        this.discoveredAssetEndpointProfileRef = discoveredAssetEndpointProfileRef;
+        return this;
+    }
+
+    /**
+     * Get the status property: Read only object to reflect changes that have occurred on the Edge. Similar to
+     * Kubernetes status property for custom resources.
+     * 
+     * @return the status value.
+     */
+    public AssetEndpointProfileStatus status() {
+        return this.status;
     }
 
     /**
@@ -172,11 +219,16 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
                 .log(new IllegalArgumentException(
                     "Missing required property targetAddress in model AssetEndpointProfileProperties"));
         }
-        if (userAuthentication() != null) {
-            userAuthentication().validate();
+        if (endpointProfileType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endpointProfileType in model AssetEndpointProfileProperties"));
         }
-        if (transportAuthentication() != null) {
-            transportAuthentication().validate();
+        if (authentication() != null) {
+            authentication().validate();
+        }
+        if (status() != null) {
+            status().validate();
         }
     }
 
@@ -189,9 +241,10 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("targetAddress", this.targetAddress);
-        jsonWriter.writeJsonField("userAuthentication", this.userAuthentication);
-        jsonWriter.writeJsonField("transportAuthentication", this.transportAuthentication);
+        jsonWriter.writeStringField("endpointProfileType", this.endpointProfileType);
+        jsonWriter.writeJsonField("authentication", this.authentication);
         jsonWriter.writeStringField("additionalConfiguration", this.additionalConfiguration);
+        jsonWriter.writeStringField("discoveredAssetEndpointProfileRef", this.discoveredAssetEndpointProfileRef);
         return jsonWriter.writeEndObject();
     }
 
@@ -214,15 +267,18 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
 
                 if ("targetAddress".equals(fieldName)) {
                     deserializedAssetEndpointProfileProperties.targetAddress = reader.getString();
+                } else if ("endpointProfileType".equals(fieldName)) {
+                    deserializedAssetEndpointProfileProperties.endpointProfileType = reader.getString();
                 } else if ("uuid".equals(fieldName)) {
                     deserializedAssetEndpointProfileProperties.uuid = reader.getString();
-                } else if ("userAuthentication".equals(fieldName)) {
-                    deserializedAssetEndpointProfileProperties.userAuthentication = UserAuthentication.fromJson(reader);
-                } else if ("transportAuthentication".equals(fieldName)) {
-                    deserializedAssetEndpointProfileProperties.transportAuthentication
-                        = TransportAuthentication.fromJson(reader);
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedAssetEndpointProfileProperties.authentication = Authentication.fromJson(reader);
                 } else if ("additionalConfiguration".equals(fieldName)) {
                     deserializedAssetEndpointProfileProperties.additionalConfiguration = reader.getString();
+                } else if ("discoveredAssetEndpointProfileRef".equals(fieldName)) {
+                    deserializedAssetEndpointProfileProperties.discoveredAssetEndpointProfileRef = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAssetEndpointProfileProperties.status = AssetEndpointProfileStatus.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAssetEndpointProfileProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

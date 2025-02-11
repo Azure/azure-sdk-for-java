@@ -13,8 +13,7 @@ public final class RecommendedActionSessionsOperationStatusImpl implements Recom
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    RecommendedActionSessionsOperationStatusImpl(
-        RecommendedActionSessionsOperationStatusInner innerObject,
+    RecommendedActionSessionsOperationStatusImpl(RecommendedActionSessionsOperationStatusInner innerObject,
         com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

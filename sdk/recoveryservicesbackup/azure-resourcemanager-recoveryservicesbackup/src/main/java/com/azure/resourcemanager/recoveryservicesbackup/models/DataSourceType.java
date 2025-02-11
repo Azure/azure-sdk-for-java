@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -107,7 +106,6 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
      * @param name a name to look for.
      * @return the corresponding DataSourceType.
      */
-    @JsonCreator
     public static DataSourceType fromString(String name) {
         return fromString(name, DataSourceType.class);
     }

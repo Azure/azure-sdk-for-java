@@ -52,8 +52,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @param client the instance of the service client containing this operation class.
      */
     GitHubOwnersClientImpl(MicrosoftSecurityDevOpsImpl client) {
-        this.service =
-            RestProxy.create(GitHubOwnersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(GitHubOwnersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,80 +64,61 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftSecurityDev")
     private interface GitHubOwnersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
-                + "/gitHubConnectors/{gitHubConnectorName}/owners")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
+            + "/gitHubConnectors/{gitHubConnectorName}/owners")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GitHubOwnerListResponse>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<GitHubOwnerListResponse>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("gitHubConnectorName") String gitHubConnectorName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
+            + "/gitHubConnectors/{gitHubConnectorName}/owners/{gitHubOwnerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<GitHubOwnerInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("gitHubConnectorName") String gitHubConnectorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("gitHubOwnerName") String gitHubOwnerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
-                + "/gitHubConnectors/{gitHubConnectorName}/owners/{gitHubOwnerName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
+            + "/gitHubConnectors/{gitHubConnectorName}/owners/{gitHubOwnerName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GitHubOwnerInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("gitHubConnectorName") String gitHubConnectorName,
-            @PathParam("gitHubOwnerName") String gitHubOwnerName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("gitHubOwnerName") String gitHubOwnerName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GitHubOwnerInner gitHubOwner, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
-                + "/gitHubConnectors/{gitHubConnectorName}/owners/{gitHubOwnerName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
+            + "/gitHubConnectors/{gitHubConnectorName}/owners/{gitHubOwnerName}")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("gitHubConnectorName") String gitHubConnectorName,
-            @PathParam("gitHubOwnerName") String gitHubOwnerName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") GitHubOwnerInner gitHubOwner,
-            @HeaderParam("Accept") String accept,
+            @PathParam("gitHubOwnerName") String gitHubOwnerName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GitHubOwnerInner gitHubOwner, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecurityDevOps"
-                + "/gitHubConnectors/{gitHubConnectorName}/owners/{gitHubOwnerName}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("gitHubConnectorName") String gitHubConnectorName,
-            @PathParam("gitHubOwnerName") String gitHubOwnerName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") GitHubOwnerInner gitHubOwner,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GitHubOwnerListResponse>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GitHubOwnerListResponse>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -151,19 +132,15 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GitHubOwnerInner>> listSinglePageAsync(
-        String resourceGroupName, String gitHubConnectorName) {
+    private Mono<PagedResponse<GitHubOwnerInner>> listSinglePageAsync(String resourceGroupName,
+        String gitHubConnectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -175,26 +152,10 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            gitHubConnectorName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<GitHubOwnerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, gitHubConnectorName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<GitHubOwnerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -210,19 +171,15 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GitHubOwnerInner>> listSinglePageAsync(
-        String resourceGroupName, String gitHubConnectorName, Context context) {
+    private Mono<PagedResponse<GitHubOwnerInner>> listSinglePageAsync(String resourceGroupName,
+        String gitHubConnectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -235,23 +192,10 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                gitHubConnectorName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, gitHubConnectorName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -266,8 +210,7 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GitHubOwnerInner> listAsync(String resourceGroupName, String gitHubConnectorName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, gitHubConnectorName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, gitHubConnectorName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -283,10 +226,9 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GitHubOwnerInner> listAsync(
-        String resourceGroupName, String gitHubConnectorName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, gitHubConnectorName, context),
+    private PagedFlux<GitHubOwnerInner> listAsync(String resourceGroupName, String gitHubConnectorName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, gitHubConnectorName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -333,19 +275,15 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GitHubOwnerInner>> getWithResponseAsync(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName) {
+    private Mono<Response<GitHubOwnerInner>> getWithResponseAsync(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -361,18 +299,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            gitHubConnectorName,
-                            gitHubOwnerName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, gitHubConnectorName, gitHubOwnerName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -389,19 +317,15 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GitHubOwnerInner>> getWithResponseAsync(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, Context context) {
+    private Mono<Response<GitHubOwnerInner>> getWithResponseAsync(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -417,16 +341,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                gitHubConnectorName,
-                gitHubOwnerName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            gitHubConnectorName, gitHubOwnerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -441,8 +357,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GitHubOwnerInner> getAsync(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName) {
+    private Mono<GitHubOwnerInner> getAsync(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName) {
         return getWithResponseAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -460,8 +376,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GitHubOwnerInner> getWithResponse(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, Context context) {
+    public Response<GitHubOwnerInner> getWithResponse(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName, Context context) {
         return getWithResponseAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, context).block();
     }
 
@@ -494,19 +410,15 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -527,19 +439,9 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            gitHubConnectorName,
-                            gitHubOwnerName,
-                            this.client.getApiVersion(),
-                            gitHubOwner,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, gitHubConnectorName, gitHubOwnerName, this.client.getApiVersion(), gitHubOwner,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -557,23 +459,15 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -594,17 +488,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                gitHubConnectorName,
-                gitHubOwnerName,
-                this.client.getApiVersion(),
-                gitHubOwner,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            gitHubConnectorName, gitHubOwnerName, this.client.getApiVersion(), gitHubOwner, accept, context);
     }
 
     /**
@@ -622,16 +507,10 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner);
-        return this
-            .client
-            .<GitHubOwnerInner, GitHubOwnerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GitHubOwnerInner.class,
-                GitHubOwnerInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner);
+        return this.client.<GitHubOwnerInner, GitHubOwnerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GitHubOwnerInner.class, GitHubOwnerInner.class, this.client.getContext());
     }
 
     /**
@@ -649,19 +528,13 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
+        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, context);
-        return this
-            .client
-            .<GitHubOwnerInner, GitHubOwnerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), GitHubOwnerInner.class, GitHubOwnerInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, gitHubConnectorName,
+            gitHubOwnerName, gitHubOwner, context);
+        return this.client.<GitHubOwnerInner, GitHubOwnerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GitHubOwnerInner.class, GitHubOwnerInner.class, context);
     }
 
     /**
@@ -677,8 +550,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return the {@link SyncPoller} for polling of gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginCreateOrUpdate(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
+    public SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginCreateOrUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
         return beginCreateOrUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner)
             .getSyncPoller();
     }
@@ -697,12 +570,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return the {@link SyncPoller} for polling of gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context) {
+    public SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginCreateOrUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, context)
             .getSyncPoller();
     }
@@ -720,10 +589,9 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GitHubOwnerInner> createOrUpdateAsync(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
-        return beginCreateOrUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner)
-            .last()
+    private Mono<GitHubOwnerInner> createOrUpdateAsync(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
+        return beginCreateOrUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -741,12 +609,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GitHubOwnerInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context) {
+    private Mono<GitHubOwnerInner> createOrUpdateAsync(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName, GitHubOwnerInner gitHubOwner, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -765,8 +629,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GitHubOwnerInner createOrUpdate(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
+    public GitHubOwnerInner createOrUpdate(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        GitHubOwnerInner gitHubOwner) {
         return createOrUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner).block();
     }
 
@@ -784,12 +648,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GitHubOwnerInner createOrUpdate(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context) {
+    public GitHubOwnerInner createOrUpdate(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        GitHubOwnerInner gitHubOwner, Context context) {
         return createOrUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, context)
             .block();
     }
@@ -807,19 +667,15 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -839,18 +695,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            gitHubConnectorName,
-                            gitHubOwnerName,
-                            this.client.getApiVersion(),
-                            gitHubOwner,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    gitHubConnectorName, gitHubOwnerName, this.client.getApiVersion(), gitHubOwner, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -868,23 +714,15 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -903,17 +741,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                gitHubConnectorName,
-                gitHubOwnerName,
-                this.client.getApiVersion(),
-                gitHubOwner,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            gitHubConnectorName, gitHubOwnerName, this.client.getApiVersion(), gitHubOwner, accept, context);
     }
 
     /**
@@ -929,18 +758,12 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return the {@link PollerFlux} for polling of gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdateAsync(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner);
-        return this
-            .client
-            .<GitHubOwnerInner, GitHubOwnerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GitHubOwnerInner.class,
-                GitHubOwnerInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdateAsync(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner);
+        return this.client.<GitHubOwnerInner, GitHubOwnerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GitHubOwnerInner.class, GitHubOwnerInner.class, this.client.getContext());
     }
 
     /**
@@ -955,19 +778,13 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return the {@link PollerFlux} for polling of gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdateAsync(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName) {
+    private PollerFlux<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdateAsync(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName) {
         final GitHubOwnerInner gitHubOwner = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner);
-        return this
-            .client
-            .<GitHubOwnerInner, GitHubOwnerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GitHubOwnerInner.class,
-                GitHubOwnerInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner);
+        return this.client.<GitHubOwnerInner, GitHubOwnerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GitHubOwnerInner.class, GitHubOwnerInner.class, this.client.getContext());
     }
 
     /**
@@ -984,19 +801,13 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return the {@link PollerFlux} for polling of gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdateAsync(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context) {
+    private PollerFlux<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdateAsync(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, context);
-        return this
-            .client
-            .<GitHubOwnerInner, GitHubOwnerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), GitHubOwnerInner.class, GitHubOwnerInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, context);
+        return this.client.<GitHubOwnerInner, GitHubOwnerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GitHubOwnerInner.class, GitHubOwnerInner.class, context);
     }
 
     /**
@@ -1011,8 +822,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return the {@link SyncPoller} for polling of gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdate(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName) {
+    public SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName) {
         final GitHubOwnerInner gitHubOwner = null;
         return beginUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner).getSyncPoller();
     }
@@ -1031,12 +842,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return the {@link SyncPoller} for polling of gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdate(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context) {
+    public SyncPoller<PollResult<GitHubOwnerInner>, GitHubOwnerInner> beginUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner, Context context) {
         return beginUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, context)
             .getSyncPoller();
     }
@@ -1054,10 +861,9 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GitHubOwnerInner> updateAsync(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
-        return beginUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner)
-            .last()
+    private Mono<GitHubOwnerInner> updateAsync(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName, GitHubOwnerInner gitHubOwner) {
+        return beginUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1073,11 +879,10 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GitHubOwnerInner> updateAsync(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName) {
+    private Mono<GitHubOwnerInner> updateAsync(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName) {
         final GitHubOwnerInner gitHubOwner = null;
-        return beginUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner)
-            .last()
+        return beginUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1095,14 +900,9 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GitHubOwnerInner> updateAsync(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, context)
-            .last()
+    private Mono<GitHubOwnerInner> updateAsync(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName, GitHubOwnerInner gitHubOwner, Context context) {
+        return beginUpdateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1137,12 +937,8 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
      * @return gitHub repo owner Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GitHubOwnerInner update(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        GitHubOwnerInner gitHubOwner,
-        Context context) {
+    public GitHubOwnerInner update(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        GitHubOwnerInner gitHubOwner, Context context) {
         return updateAsync(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, context).block();
     }
 
@@ -1162,23 +958,13 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<GitHubOwnerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<GitHubOwnerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1199,23 +985,13 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

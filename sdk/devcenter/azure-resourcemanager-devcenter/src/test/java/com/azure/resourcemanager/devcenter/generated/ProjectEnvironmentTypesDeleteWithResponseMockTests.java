@@ -28,7 +28,7 @@ public final class ProjectEnvironmentTypesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.projectEnvironmentTypes()
-            .deleteWithResponse("uqibsxtkcu", "fbsfarfsiow", "kjxnqpvwgfstmhq", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ikczvvitacgxmf", "sserxhtvsoxhlwn", "sjgqrsxyp", com.azure.core.util.Context.NONE);
 
     }
 }

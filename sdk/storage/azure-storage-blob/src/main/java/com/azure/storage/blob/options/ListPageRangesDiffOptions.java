@@ -18,10 +18,12 @@ public class ListPageRangesDiffOptions {
     private BlobRequestConditions requestConditions;
     private Integer pageSize;
 
-
     /**
+     * Creates a new instance of {@link ListPageRangesDiffOptions}.
+     *
      * @param range The range to diff.
      * @param previousSnapshot The previous snapshot that will serve as the base of the diff.
+     * @throws NullPointerException If {@code range} or {@code previousSnapshot} is null.
      */
     public ListPageRangesDiffOptions(BlobRange range, String previousSnapshot) {
         Objects.requireNonNull(range);

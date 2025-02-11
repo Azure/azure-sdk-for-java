@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class PersistedConnectionStatus extends ExpandableStringEnum<Persis
      * @param name a name to look for.
      * @return the corresponding PersistedConnectionStatus.
      */
-    @JsonCreator
     public static PersistedConnectionStatus fromString(String name) {
         return fromString(name, PersistedConnectionStatus.class);
     }

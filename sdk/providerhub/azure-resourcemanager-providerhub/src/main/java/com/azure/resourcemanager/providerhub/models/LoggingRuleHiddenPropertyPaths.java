@@ -5,23 +5,35 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The LoggingRuleHiddenPropertyPaths model. */
+/**
+ * The LoggingRuleHiddenPropertyPaths model.
+ */
 @Fluent
 public final class LoggingRuleHiddenPropertyPaths extends LoggingHiddenPropertyPath {
-    /** Creates an instance of LoggingRuleHiddenPropertyPaths class. */
+    /**
+     * Creates an instance of LoggingRuleHiddenPropertyPaths class.
+     */
     public LoggingRuleHiddenPropertyPaths() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LoggingRuleHiddenPropertyPaths withHiddenPathsOnRequest(List<String> hiddenPathsOnRequest) {
         super.withHiddenPathsOnRequest(hiddenPathsOnRequest);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LoggingRuleHiddenPropertyPaths withHiddenPathsOnResponse(List<String> hiddenPathsOnResponse) {
         super.withHiddenPathsOnResponse(hiddenPathsOnResponse);
@@ -30,11 +42,54 @@ public final class LoggingRuleHiddenPropertyPaths extends LoggingHiddenPropertyP
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("hiddenPathsOnRequest", hiddenPathsOnRequest(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("hiddenPathsOnResponse", hiddenPathsOnResponse(),
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoggingRuleHiddenPropertyPaths from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoggingRuleHiddenPropertyPaths if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LoggingRuleHiddenPropertyPaths.
+     */
+    public static LoggingRuleHiddenPropertyPaths fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoggingRuleHiddenPropertyPaths deserializedLoggingRuleHiddenPropertyPaths
+                = new LoggingRuleHiddenPropertyPaths();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hiddenPathsOnRequest".equals(fieldName)) {
+                    List<String> hiddenPathsOnRequest = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLoggingRuleHiddenPropertyPaths.withHiddenPathsOnRequest(hiddenPathsOnRequest);
+                } else if ("hiddenPathsOnResponse".equals(fieldName)) {
+                    List<String> hiddenPathsOnResponse = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLoggingRuleHiddenPropertyPaths.withHiddenPathsOnResponse(hiddenPathsOnResponse);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoggingRuleHiddenPropertyPaths;
+        });
     }
 }

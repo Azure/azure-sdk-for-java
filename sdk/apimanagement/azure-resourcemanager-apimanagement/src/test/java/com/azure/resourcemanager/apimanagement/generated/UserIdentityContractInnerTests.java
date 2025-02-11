@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class UserIdentityContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserIdentityContractInner model =
-            BinaryData
-                .fromString("{\"provider\":\"xlxmwtygeqzusi\",\"id\":\"qcahfsgbjmlree\"}")
+        UserIdentityContractInner model
+            = BinaryData.fromString("{\"provider\":\"xlxmwtygeqzusi\",\"id\":\"qcahfsgbjmlree\"}")
                 .toObject(UserIdentityContractInner.class);
         Assertions.assertEquals("xlxmwtygeqzusi", model.provider());
         Assertions.assertEquals("qcahfsgbjmlree", model.id());
@@ -21,8 +20,8 @@ public final class UserIdentityContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserIdentityContractInner model =
-            new UserIdentityContractInner().withProvider("xlxmwtygeqzusi").withId("qcahfsgbjmlree");
+        UserIdentityContractInner model
+            = new UserIdentityContractInner().withProvider("xlxmwtygeqzusi").withId("qcahfsgbjmlree");
         model = BinaryData.fromObject(model).toObject(UserIdentityContractInner.class);
         Assertions.assertEquals("xlxmwtygeqzusi", model.provider());
         Assertions.assertEquals("qcahfsgbjmlree", model.id());

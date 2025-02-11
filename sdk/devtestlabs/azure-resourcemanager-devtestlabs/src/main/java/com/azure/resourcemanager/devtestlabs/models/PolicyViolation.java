@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Policy violation. */
+/**
+ * Policy violation.
+ */
 @Fluent
-public final class PolicyViolation {
+public final class PolicyViolation implements JsonSerializable<PolicyViolation> {
     /*
      * The code of the policy violation.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The message of the policy violation.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of PolicyViolation class. */
+    /**
+     * Creates an instance of PolicyViolation class.
+     */
     public PolicyViolation() {
     }
 
     /**
      * Get the code property: The code of the policy violation.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +43,7 @@ public final class PolicyViolation {
 
     /**
      * Set the code property: The code of the policy violation.
-     *
+     * 
      * @param code the code value to set.
      * @return the PolicyViolation object itself.
      */
@@ -48,7 +54,7 @@ public final class PolicyViolation {
 
     /**
      * Get the message property: The message of the policy violation.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +63,7 @@ public final class PolicyViolation {
 
     /**
      * Set the message property: The message of the policy violation.
-     *
+     * 
      * @param message the message value to set.
      * @return the PolicyViolation object itself.
      */
@@ -68,9 +74,48 @@ public final class PolicyViolation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyViolation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyViolation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyViolation.
+     */
+    public static PolicyViolation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyViolation deserializedPolicyViolation = new PolicyViolation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedPolicyViolation.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedPolicyViolation.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyViolation;
+        });
     }
 }

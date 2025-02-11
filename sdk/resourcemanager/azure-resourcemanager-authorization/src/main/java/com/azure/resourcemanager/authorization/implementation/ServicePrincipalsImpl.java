@@ -50,9 +50,7 @@ public class ServicePrincipalsImpl
 
     @Override
     public Mono<ServicePrincipal> getByIdAsync(String id) {
-        return inner()
-            .getServicePrincipalAsync(id)
-            .map(this::wrapModel);
+        return inner().getServicePrincipalAsync(id).map(this::wrapModel);
     }
 
     @Override
@@ -62,8 +60,7 @@ public class ServicePrincipalsImpl
 
     @Override
     public Mono<ServicePrincipal> getByNameAsync(final String name) {
-        return listByFilterAsync(String.format("displayName eq '%s'", name))
-            .singleOrEmpty()
+        return listByFilterAsync(String.format("displayName eq '%s'", name)).singleOrEmpty()
             .switchIfEmpty(
                 listByFilterAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", name)).singleOrEmpty());
     }
@@ -99,7 +96,7 @@ public class ServicePrincipalsImpl
 
     @Override
     public PagedFlux<ServicePrincipal> listByFilterAsync(String filter) {
-        return PagedConverter.mapPage(inner().listServicePrincipalAsync(null, null, null, null, filter, null, null, null, null),
-            this::wrapModel);
+        return PagedConverter.mapPage(
+            inner().listServicePrincipalAsync(null, null, null, null, filter, null, null, null, null), this::wrapModel);
     }
 }

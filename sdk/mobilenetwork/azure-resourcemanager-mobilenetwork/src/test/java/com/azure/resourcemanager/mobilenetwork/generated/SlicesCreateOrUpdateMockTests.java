@@ -24,7 +24,7 @@ public final class SlicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":870372457,\"sd\":\"dbzsx\"},\"description\":\"qqrsmpcbbprtugav\"},\"location\":\"bcyksivmfogd\",\"tags\":{\"tsjcwjjxs\":\"fcmkr\",\"wvif\":\"mb\",\"wkloozr\":\"xkecifhocj\"},\"id\":\"txvcm\",\"name\":\"funlcpxxvi\",\"type\":\"yeyng\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":1214725859,\"sd\":\"aqttiek\"},\"description\":\"fuvnyttzgixgyri\"},\"location\":\"gm\",\"tags\":{\"rndpgfjodhdaqotw\":\"hlqtxnrflkn\"},\"id\":\"hipx\",\"name\":\"gsabvcipowzafc\",\"type\":\"uumljcirvpefyc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,19 @@ public final class SlicesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Slice response = manager.slices()
-            .define("xegqphr")
-            .withRegion("pefcpcz")
-            .withExistingMobileNetwork("aewse", "vesk")
-            .withSnssai(new Snssai().withSst(1143125594).withSd("ctmjtsghpbcbc"))
-            .withTags(mapOf("uszxh", "uqndaizupfkhuy", "gw", "tvtv", "haokgkskjiv", "iukvzwydwt"))
-            .withDescription("arpzeqacdldtzm")
+            .define("xdm")
+            .withRegion("qmzjqrbrpvnmdy")
+            .withExistingMobileNetwork("yxpzruzythqk", "whbgxvellvul")
+            .withSnssai(new Snssai().withSst(857086606).withSd("jdtvmclyymffhmj"))
+            .withTags(mapOf("t", "bojtjppglaohoqkp", "lmhxdqaolfylnk", "qjilaywkdcwmqsyr", "tmfwobbjwhl", "bjpjvlyw"))
+            .withDescription("dnyxfzuvrz")
             .create();
 
-        Assertions.assertEquals("bcyksivmfogd", response.location());
-        Assertions.assertEquals("fcmkr", response.tags().get("tsjcwjjxs"));
-        Assertions.assertEquals(870372457, response.snssai().sst());
-        Assertions.assertEquals("dbzsx", response.snssai().sd());
-        Assertions.assertEquals("qqrsmpcbbprtugav", response.description());
+        Assertions.assertEquals("gm", response.location());
+        Assertions.assertEquals("hlqtxnrflkn", response.tags().get("rndpgfjodhdaqotw"));
+        Assertions.assertEquals(1214725859, response.snssai().sst());
+        Assertions.assertEquals("aqttiek", response.snssai().sd());
+        Assertions.assertEquals("fuvnyttzgixgyri", response.description());
     }
 
     // Use "Map.of" if available

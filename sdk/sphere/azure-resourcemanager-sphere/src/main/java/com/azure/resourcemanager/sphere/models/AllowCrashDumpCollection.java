@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class AllowCrashDumpCollection extends ExpandableStringEnum<AllowCr
      * @param name a name to look for.
      * @return the corresponding AllowCrashDumpCollection.
      */
-    @JsonCreator
     public static AllowCrashDumpCollection fromString(String name) {
         return fromString(name, AllowCrashDumpCollection.class);
     }

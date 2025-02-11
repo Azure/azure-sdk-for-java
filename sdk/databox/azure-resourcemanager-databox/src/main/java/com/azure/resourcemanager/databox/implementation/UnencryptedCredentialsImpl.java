@@ -13,8 +13,8 @@ public final class UnencryptedCredentialsImpl implements UnencryptedCredentials 
 
     private final com.azure.resourcemanager.databox.DataBoxManager serviceManager;
 
-    UnencryptedCredentialsImpl(
-        UnencryptedCredentialsInner innerObject, com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
+    UnencryptedCredentialsImpl(UnencryptedCredentialsInner innerObject,
+        com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

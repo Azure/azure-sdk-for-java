@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hybridnetwork.implementation;
 
 import com.azure.resourcemanager.hybridnetwork.fluent.models.ArtifactAccessCredentialInner;
 import com.azure.resourcemanager.hybridnetwork.models.ArtifactAccessCredential;
+import com.azure.resourcemanager.hybridnetwork.models.CredentialType;
 
 public final class ArtifactAccessCredentialImpl implements ArtifactAccessCredential {
     private ArtifactAccessCredentialInner innerObject;
@@ -16,6 +17,10 @@ public final class ArtifactAccessCredentialImpl implements ArtifactAccessCredent
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public CredentialType credentialType() {
+        return this.innerModel().credentialType();
     }
 
     public ArtifactAccessCredentialInner innerModel() {

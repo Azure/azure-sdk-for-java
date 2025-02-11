@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Describes the target region information.
@@ -42,6 +43,11 @@ public final class TargetRegion implements JsonSerializable<TargetRegion> {
      * Contains the flag setting to hide an image when users specify version='latest'
      */
     private Boolean excludeFromLatest;
+
+    /*
+     * List of storage sku with replica count to create direct drive replicas.
+     */
+    private List<AdditionalReplicaSet> additionalReplicaSets;
 
     /**
      * Creates an instance of TargetRegion class.
@@ -158,6 +164,26 @@ public final class TargetRegion implements JsonSerializable<TargetRegion> {
     }
 
     /**
+     * Get the additionalReplicaSets property: List of storage sku with replica count to create direct drive replicas.
+     * 
+     * @return the additionalReplicaSets value.
+     */
+    public List<AdditionalReplicaSet> additionalReplicaSets() {
+        return this.additionalReplicaSets;
+    }
+
+    /**
+     * Set the additionalReplicaSets property: List of storage sku with replica count to create direct drive replicas.
+     * 
+     * @param additionalReplicaSets the additionalReplicaSets value to set.
+     * @return the TargetRegion object itself.
+     */
+    public TargetRegion withAdditionalReplicaSets(List<AdditionalReplicaSet> additionalReplicaSets) {
+        this.additionalReplicaSets = additionalReplicaSets;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -169,6 +195,9 @@ public final class TargetRegion implements JsonSerializable<TargetRegion> {
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (additionalReplicaSets() != null) {
+            additionalReplicaSets().forEach(e -> e.validate());
         }
     }
 
@@ -186,6 +215,8 @@ public final class TargetRegion implements JsonSerializable<TargetRegion> {
             this.storageAccountType == null ? null : this.storageAccountType.toString());
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeBooleanField("excludeFromLatest", this.excludeFromLatest);
+        jsonWriter.writeArrayField("additionalReplicaSets", this.additionalReplicaSets,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -215,6 +246,10 @@ public final class TargetRegion implements JsonSerializable<TargetRegion> {
                     deserializedTargetRegion.encryption = EncryptionImages.fromJson(reader);
                 } else if ("excludeFromLatest".equals(fieldName)) {
                     deserializedTargetRegion.excludeFromLatest = reader.getNullable(JsonReader::getBoolean);
+                } else if ("additionalReplicaSets".equals(fieldName)) {
+                    List<AdditionalReplicaSet> additionalReplicaSets
+                        = reader.readArray(reader1 -> AdditionalReplicaSet.fromJson(reader1));
+                    deserializedTargetRegion.additionalReplicaSets = additionalReplicaSets;
                 } else {
                     reader.skipChildren();
                 }

@@ -13,23 +13,16 @@ import java.util.Arrays;
 public final class OperationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"quvgjxpybczme\",\"display\":{\"provider\":\"zopbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\",\"origin\":\"ownoizhw\"},\"isDataAction\":true},{\"name\":\"bqsoqijg\",\"display\":{\"provider\":\"bpazlobcufpdzn\",\"resource\":\"t\",\"operation\":\"qjnqglhqgnufoooj\",\"description\":\"ifsqesaagdfmg\",\"origin\":\"lhjxr\"},\"isDataAction\":false},{\"name\":\"mrvktsizntoc\",\"display\":{\"provider\":\"ouajpsqucmpoyf\",\"resource\":\"fogknygjofjdde\",\"operation\":\"rd\",\"description\":\"pewnw\",\"origin\":\"itjz\"},\"isDataAction\":false}]}")
-                .toObject(OperationList.class);
+        OperationList model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"quvgjxpybczme\",\"display\":{\"provider\":\"zopbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\",\"origin\":\"ownoizhw\"},\"isDataAction\":true},{\"name\":\"bqsoqijg\",\"display\":{\"provider\":\"bpazlobcufpdzn\",\"resource\":\"t\",\"operation\":\"qjnqglhqgnufoooj\",\"description\":\"ifsqesaagdfmg\",\"origin\":\"lhjxr\"},\"isDataAction\":false},{\"name\":\"mrvktsizntoc\",\"display\":{\"provider\":\"ouajpsqucmpoyf\",\"resource\":\"fogknygjofjdde\",\"operation\":\"rd\",\"description\":\"pewnw\",\"origin\":\"itjz\"},\"isDataAction\":false}]}")
+            .toObject(OperationList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationList model =
-            new OperationList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationInner().withDisplay(new Display()),
-                            new OperationInner().withDisplay(new Display()),
-                            new OperationInner().withDisplay(new Display())));
+        OperationList model
+            = new OperationList().withValue(Arrays.asList(new OperationInner().withDisplay(new Display()),
+                new OperationInner().withDisplay(new Display()), new OperationInner().withDisplay(new Display())));
         model = BinaryData.fromObject(model).toObject(OperationList.class);
     }
 }

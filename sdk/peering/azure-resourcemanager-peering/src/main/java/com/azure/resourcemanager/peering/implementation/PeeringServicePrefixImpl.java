@@ -90,24 +90,19 @@ public final class PeeringServicePrefixImpl
     }
 
     public PeeringServicePrefix create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringServiceName, prefixName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrefixes()
+            .createOrUpdateWithResponse(resourceGroupName, peeringServiceName, prefixName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PeeringServicePrefix create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringServiceName, prefixName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrefixes()
+            .createOrUpdateWithResponse(resourceGroupName, peeringServiceName, prefixName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -122,55 +117,46 @@ public final class PeeringServicePrefixImpl
     }
 
     public PeeringServicePrefix apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringServiceName, prefixName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrefixes()
+            .createOrUpdateWithResponse(resourceGroupName, peeringServiceName, prefixName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PeeringServicePrefix apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringServiceName, prefixName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrefixes()
+            .createOrUpdateWithResponse(resourceGroupName, peeringServiceName, prefixName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    PeeringServicePrefixImpl(
-        PeeringServicePrefixInner innerObject, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    PeeringServicePrefixImpl(PeeringServicePrefixInner innerObject,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.peeringServiceName = Utils.getValueFromIdByName(innerObject.id(), "peeringServices");
-        this.prefixName = Utils.getValueFromIdByName(innerObject.id(), "prefixes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.peeringServiceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "peeringServices");
+        this.prefixName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "prefixes");
     }
 
     public PeeringServicePrefix refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixes()
-                .getWithResponse(resourceGroupName, peeringServiceName, prefixName, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrefixes()
+            .getWithResponse(resourceGroupName, peeringServiceName, prefixName, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PeeringServicePrefix refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixes()
-                .getWithResponse(resourceGroupName, peeringServiceName, prefixName, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrefixes()
+            .getWithResponse(resourceGroupName, peeringServiceName, prefixName, localExpand, context)
+            .getValue();
         return this;
     }
 

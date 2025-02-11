@@ -20,8 +20,9 @@ public final class NetworkFunctionDefinitionVersionsDeleteSamples {
      */
     public static void
         deleteANetworkFunctionDefinitionVersion(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkFunctionDefinitionVersions().delete("rg", "TestPublisher",
-            "TestNetworkFunctionDefinitionGroupName", "1.0.0", com.azure.core.util.Context.NONE);
+        manager.networkFunctionDefinitionVersions()
+            .delete("rg", "TestPublisher", "TestNetworkFunctionDefinitionGroupName", "1.0.0",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,8 +37,9 @@ public final class NetworkFunctionDefinitionVersionsDeleteSamples {
      */
     public static void deleteANetworkFunctionDefinitionVersionForAzureOperatorNexusVNF(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkFunctionDefinitionVersions().delete("rg", "TestPublisher",
-            "TestNetworkFunctionDefinitionGroupName", "1.0.0", com.azure.core.util.Context.NONE);
+        manager.networkFunctionDefinitionVersions()
+            .delete("rg", "TestPublisher", "TestNetworkFunctionDefinitionGroupName", "1.0.0",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -52,7 +54,8 @@ public final class NetworkFunctionDefinitionVersionsDeleteSamples {
      */
     public static void deleteANetworkFunctionDefinitionVersionForAzureCoreVNF(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkFunctionDefinitionVersions().delete("rg", "TestPublisher",
-            "TestNetworkFunctionDefinitionGroupName", "1.0.0", com.azure.core.util.Context.NONE);
+        manager.networkFunctionDefinitionVersions()
+            .delete("rg", "TestPublisher", "TestNetworkFunctionDefinitionGroupName", "1.0.0",
+                com.azure.core.util.Context.NONE);
     }
 }

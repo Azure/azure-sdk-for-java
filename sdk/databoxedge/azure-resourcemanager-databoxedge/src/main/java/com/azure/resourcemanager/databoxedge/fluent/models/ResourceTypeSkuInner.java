@@ -5,84 +5,82 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.SkuCost;
 import com.azure.resourcemanager.databoxedge.models.SkuLocationInfo;
 import com.azure.resourcemanager.databoxedge.models.SkuName;
 import com.azure.resourcemanager.databoxedge.models.SkuRestriction;
 import com.azure.resourcemanager.databoxedge.models.SkuTier;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** SkuInformation object. */
+/**
+ * SkuInformation object.
+ */
 @Immutable
-public final class ResourceTypeSkuInner {
+public final class ResourceTypeSkuInner implements JsonSerializable<ResourceTypeSkuInner> {
     /*
      * The type of the resource
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * The Sku name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private SkuName name;
 
     /*
      * The Sku kind
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * The Sku tier
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuTier tier;
 
     /*
      * The Sku family
      */
-    @JsonProperty(value = "family", access = JsonProperty.Access.WRITE_ONLY)
     private String family;
 
     /*
      * Availability of the SKU for the region
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
 
     /*
      * The API versions in which SKU is available
      */
-    @JsonProperty(value = "apiVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> apiVersions;
 
     /*
      * Availability of the SKU for the location/zone
      */
-    @JsonProperty(value = "locationInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuLocationInfo> locationInfo;
 
     /*
      * The pricing info of the Sku.
      */
-    @JsonProperty(value = "costs", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCost> costs;
 
     /*
      * Restrictions of the SKU availability.
      */
-    @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuRestriction> restrictions;
 
-    /** Creates an instance of ResourceTypeSkuInner class. */
+    /**
+     * Creates an instance of ResourceTypeSkuInner class.
+     */
     public ResourceTypeSkuInner() {
     }
 
     /**
      * Get the resourceType property: The type of the resource.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -91,7 +89,7 @@ public final class ResourceTypeSkuInner {
 
     /**
      * Get the name property: The Sku name.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -100,7 +98,7 @@ public final class ResourceTypeSkuInner {
 
     /**
      * Get the kind property: The Sku kind.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -109,7 +107,7 @@ public final class ResourceTypeSkuInner {
 
     /**
      * Get the tier property: The Sku tier.
-     *
+     * 
      * @return the tier value.
      */
     public SkuTier tier() {
@@ -118,7 +116,7 @@ public final class ResourceTypeSkuInner {
 
     /**
      * Get the family property: The Sku family.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -127,7 +125,7 @@ public final class ResourceTypeSkuInner {
 
     /**
      * Get the locations property: Availability of the SKU for the region.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -136,7 +134,7 @@ public final class ResourceTypeSkuInner {
 
     /**
      * Get the apiVersions property: The API versions in which SKU is available.
-     *
+     * 
      * @return the apiVersions value.
      */
     public List<String> apiVersions() {
@@ -145,7 +143,7 @@ public final class ResourceTypeSkuInner {
 
     /**
      * Get the locationInfo property: Availability of the SKU for the location/zone.
-     *
+     * 
      * @return the locationInfo value.
      */
     public List<SkuLocationInfo> locationInfo() {
@@ -154,7 +152,7 @@ public final class ResourceTypeSkuInner {
 
     /**
      * Get the costs property: The pricing info of the Sku.
-     *
+     * 
      * @return the costs value.
      */
     public List<SkuCost> costs() {
@@ -163,7 +161,7 @@ public final class ResourceTypeSkuInner {
 
     /**
      * Get the restrictions property: Restrictions of the SKU availability.
-     *
+     * 
      * @return the restrictions value.
      */
     public List<SkuRestriction> restrictions() {
@@ -172,7 +170,7 @@ public final class ResourceTypeSkuInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -185,5 +183,63 @@ public final class ResourceTypeSkuInner {
         if (restrictions() != null) {
             restrictions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceTypeSkuInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceTypeSkuInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceTypeSkuInner.
+     */
+    public static ResourceTypeSkuInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceTypeSkuInner deserializedResourceTypeSkuInner = new ResourceTypeSkuInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedResourceTypeSkuInner.resourceType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceTypeSkuInner.name = SkuName.fromString(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedResourceTypeSkuInner.kind = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedResourceTypeSkuInner.tier = SkuTier.fromString(reader.getString());
+                } else if ("family".equals(fieldName)) {
+                    deserializedResourceTypeSkuInner.family = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceTypeSkuInner.locations = locations;
+                } else if ("apiVersions".equals(fieldName)) {
+                    List<String> apiVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceTypeSkuInner.apiVersions = apiVersions;
+                } else if ("locationInfo".equals(fieldName)) {
+                    List<SkuLocationInfo> locationInfo = reader.readArray(reader1 -> SkuLocationInfo.fromJson(reader1));
+                    deserializedResourceTypeSkuInner.locationInfo = locationInfo;
+                } else if ("costs".equals(fieldName)) {
+                    List<SkuCost> costs = reader.readArray(reader1 -> SkuCost.fromJson(reader1));
+                    deserializedResourceTypeSkuInner.costs = costs;
+                } else if ("restrictions".equals(fieldName)) {
+                    List<SkuRestriction> restrictions = reader.readArray(reader1 -> SkuRestriction.fromJson(reader1));
+                    deserializedResourceTypeSkuInner.restrictions = restrictions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceTypeSkuInner;
+        });
     }
 }

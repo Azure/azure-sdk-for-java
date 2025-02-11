@@ -6,18 +6,20 @@ package com.azure.resourcemanager.elastic.models;
 
 import com.azure.resourcemanager.elastic.fluent.models.VMResourcesInner;
 
-/** An immutable client-side representation of VMResources. */
+/**
+ * An immutable client-side representation of VMResources.
+ */
 public interface VMResources {
     /**
      * Gets the vmResourceId property: The ARM id of the VM resource.
-     *
+     * 
      * @return the vmResourceId value.
      */
     String vmResourceId();
 
     /**
      * Gets the inner com.azure.resourcemanager.elastic.fluent.models.VMResourcesInner object.
-     *
+     * 
      * @return the inner object.
      */
     VMResourcesInner innerModel();

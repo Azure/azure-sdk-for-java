@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "type",
     defaultImpl = HealthCheckStepAttributes.class)
 @JsonTypeName("HealthCheckStepAttributes")
-@JsonSubTypes({@JsonSubTypes.Type(name = "REST", value = RestHealthCheckStepAttributes.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "REST", value = RestHealthCheckStepAttributes.class) })
 @Fluent
 public class HealthCheckStepAttributes {
     /*
@@ -122,10 +122,8 @@ public class HealthCheckStepAttributes {
      */
     public void validate() {
         if (healthyStateDuration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property healthyStateDuration in model HealthCheckStepAttributes"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property healthyStateDuration in model HealthCheckStepAttributes"));
         }
     }
 

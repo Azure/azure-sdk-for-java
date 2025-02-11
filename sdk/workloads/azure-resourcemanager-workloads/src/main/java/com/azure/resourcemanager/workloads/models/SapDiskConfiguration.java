@@ -5,33 +5,37 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The SAP Disk Configuration contains 'recommended disk' details and list of supported disks detail for a volume type.
  */
 @Fluent
-public final class SapDiskConfiguration {
+public final class SapDiskConfiguration implements JsonSerializable<SapDiskConfiguration> {
     /*
      * The recommended disk details for a given VM Sku.
      */
-    @JsonProperty(value = "recommendedConfiguration")
     private DiskVolumeConfiguration recommendedConfiguration;
 
     /*
      * The list of supported disks for a given VM Sku.
      */
-    @JsonProperty(value = "supportedConfigurations")
     private List<DiskDetails> supportedConfigurations;
 
-    /** Creates an instance of SapDiskConfiguration class. */
+    /**
+     * Creates an instance of SapDiskConfiguration class.
+     */
     public SapDiskConfiguration() {
     }
 
     /**
      * Get the recommendedConfiguration property: The recommended disk details for a given VM Sku.
-     *
+     * 
      * @return the recommendedConfiguration value.
      */
     public DiskVolumeConfiguration recommendedConfiguration() {
@@ -40,7 +44,7 @@ public final class SapDiskConfiguration {
 
     /**
      * Set the recommendedConfiguration property: The recommended disk details for a given VM Sku.
-     *
+     * 
      * @param recommendedConfiguration the recommendedConfiguration value to set.
      * @return the SapDiskConfiguration object itself.
      */
@@ -51,7 +55,7 @@ public final class SapDiskConfiguration {
 
     /**
      * Get the supportedConfigurations property: The list of supported disks for a given VM Sku.
-     *
+     * 
      * @return the supportedConfigurations value.
      */
     public List<DiskDetails> supportedConfigurations() {
@@ -60,7 +64,7 @@ public final class SapDiskConfiguration {
 
     /**
      * Set the supportedConfigurations property: The list of supported disks for a given VM Sku.
-     *
+     * 
      * @param supportedConfigurations the supportedConfigurations value to set.
      * @return the SapDiskConfiguration object itself.
      */
@@ -71,7 +75,7 @@ public final class SapDiskConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -81,5 +85,48 @@ public final class SapDiskConfiguration {
         if (supportedConfigurations() != null) {
             supportedConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("recommendedConfiguration", this.recommendedConfiguration);
+        jsonWriter.writeArrayField("supportedConfigurations", this.supportedConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapDiskConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapDiskConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapDiskConfiguration.
+     */
+    public static SapDiskConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapDiskConfiguration deserializedSapDiskConfiguration = new SapDiskConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recommendedConfiguration".equals(fieldName)) {
+                    deserializedSapDiskConfiguration.recommendedConfiguration
+                        = DiskVolumeConfiguration.fromJson(reader);
+                } else if ("supportedConfigurations".equals(fieldName)) {
+                    List<DiskDetails> supportedConfigurations
+                        = reader.readArray(reader1 -> DiskDetails.fromJson(reader1));
+                    deserializedSapDiskConfiguration.supportedConfigurations = supportedConfigurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapDiskConfiguration;
+        });
     }
 }

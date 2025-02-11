@@ -24,13 +24,17 @@ public final class ReplicationProtectionIntentsCreateSamples {
      */
     public static void createProtectionIntentResource(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionIntents().define("vm1").withExistingVault("vault1", "resourceGroupPS1")
+        manager.replicationProtectionIntents()
+            .define("vm1")
+            .withExistingVault("vault1", "resourceGroupPS1")
             .withProperties(new CreateProtectionIntentProperties()
                 .withProviderSpecificDetails(new A2ACreateProtectionIntentInput().withFabricObjectId(
                     "/subscriptions/509099b2-9d2c-4636-b43e-bd5cafb6be69/resourceGroups/removeOne/providers/Microsoft.Compute/virtualMachines/vmPpgAv5")
-                    .withPrimaryLocation("eastUs2").withRecoveryLocation("westus2")
+                    .withPrimaryLocation("eastUs2")
+                    .withRecoveryLocation("westus2")
                     .withRecoverySubscriptionId("ed5bcdf6-d61e-47bd-8ea9-f2bd379a2640")
-                    .withRecoveryAvailabilityType(A2ARecoveryAvailabilityType.SINGLE).withRecoveryResourceGroupId(
+                    .withRecoveryAvailabilityType(A2ARecoveryAvailabilityType.SINGLE)
+                    .withRecoveryResourceGroupId(
                         "/subscriptions/509099b2-9d2c-4636-b43e-bd5cafb6be69/resourceGroups/removeOne-asr")))
             .create();
     }

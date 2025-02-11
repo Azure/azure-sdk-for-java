@@ -11,17 +11,15 @@ import com.azure.resourcemanager.postgresql.fluent.ServerBasedPerformanceTiersCl
 import com.azure.resourcemanager.postgresql.fluent.models.PerformanceTierPropertiesInner;
 import com.azure.resourcemanager.postgresql.models.PerformanceTierProperties;
 import com.azure.resourcemanager.postgresql.models.ServerBasedPerformanceTiers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServerBasedPerformanceTiersImpl implements ServerBasedPerformanceTiers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerBasedPerformanceTiersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServerBasedPerformanceTiersImpl.class);
 
     private final ServerBasedPerformanceTiersClient innerClient;
 
     private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public ServerBasedPerformanceTiersImpl(
-        ServerBasedPerformanceTiersClient innerClient,
+    public ServerBasedPerformanceTiersImpl(ServerBasedPerformanceTiersClient innerClient,
         com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -29,13 +27,13 @@ public final class ServerBasedPerformanceTiersImpl implements ServerBasedPerform
 
     public PagedIterable<PerformanceTierProperties> list(String resourceGroupName, String serverName) {
         PagedIterable<PerformanceTierPropertiesInner> inner = this.serviceClient().list(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PerformanceTierProperties> list(String resourceGroupName, String serverName, Context context) {
-        PagedIterable<PerformanceTierPropertiesInner> inner =
-            this.serviceClient().list(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
+        PagedIterable<PerformanceTierPropertiesInner> inner
+            = this.serviceClient().list(resourceGroupName, serverName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
     }
 
     private ServerBasedPerformanceTiersClient serviceClient() {

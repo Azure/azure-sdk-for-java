@@ -28,28 +28,30 @@ public final class ReplicationRecoveryPlansUpdateSamples {
     public static void updatesTheGivenRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         RecoveryPlan resource = manager.replicationRecoveryPlans()
-            .getWithResponse("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
-            .withProperties(new UpdateRecoveryPlanInputProperties().withGroups(
-                Arrays.asList(
-                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.SHUTDOWN)
-                        .withReplicationProtectedItems(Arrays.asList()).withStartGroupActions(
-                            Arrays.asList())
-                        .withEndGroupActions(Arrays.asList()),
-                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
-                        .withReplicationProtectedItems(
-                            Arrays.asList())
-                        .withStartGroupActions(Arrays.asList()).withEndGroupActions(Arrays.asList()),
-                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
-                        .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem().withId(
-                            "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b")
-                            .withVirtualMachineId("f8491e4f-817a-40dd-a90c-af773978c75b")))
-                        .withStartGroupActions(Arrays.asList()).withEndGroupActions(Arrays.asList()),
-                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
-                        .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem().withId(
-                            "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/c0c14913-3d7a-48ea-9531-cc99e0e686e6")
-                            .withVirtualMachineId("c0c14913-3d7a-48ea-9531-cc99e0e686e6")))
-                        .withStartGroupActions(Arrays.asList()).withEndGroupActions(Arrays.asList()))))
+            .withProperties(new UpdateRecoveryPlanInputProperties().withGroups(Arrays.asList(
+                new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.SHUTDOWN)
+                    .withReplicationProtectedItems(Arrays.asList())
+                    .withStartGroupActions(Arrays.asList())
+                    .withEndGroupActions(Arrays.asList()),
+                new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
+                    .withReplicationProtectedItems(Arrays.asList())
+                    .withStartGroupActions(Arrays.asList())
+                    .withEndGroupActions(Arrays.asList()),
+                new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
+                    .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem().withId(
+                        "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b")
+                        .withVirtualMachineId("f8491e4f-817a-40dd-a90c-af773978c75b")))
+                    .withStartGroupActions(Arrays.asList())
+                    .withEndGroupActions(Arrays.asList()),
+                new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
+                    .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem().withId(
+                        "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/c0c14913-3d7a-48ea-9531-cc99e0e686e6")
+                        .withVirtualMachineId("c0c14913-3d7a-48ea-9531-cc99e0e686e6")))
+                    .withStartGroupActions(Arrays.asList())
+                    .withEndGroupActions(Arrays.asList()))))
             .apply();
     }
 }

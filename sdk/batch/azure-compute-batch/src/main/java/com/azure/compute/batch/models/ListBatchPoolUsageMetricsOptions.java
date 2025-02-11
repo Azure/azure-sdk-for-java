@@ -14,6 +14,12 @@ public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
     private OffsetDateTime starttime;
 
     /**
+     * Creates an instance of {@link ListBatchPoolUsageMetricsOptions}.
+     */
+    public ListBatchPoolUsageMetricsOptions() {
+    }
+
+    /**
      * Gets the latest time from which to include metrics.
      *
      * <p>This property represents the end time for including metrics in an operation.

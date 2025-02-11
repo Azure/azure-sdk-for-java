@@ -32,7 +32,8 @@ class AzureServiceBusJmsPropertiesTests {
         Exception ex = assertThrows(IllegalArgumentException.class,
             prop::afterPropertiesSet);
 
-        String expectedMessage = "'spring.jms.servicebus.connection-string' should be provided.";
+        String expectedMessage = "'spring.jms.servicebus.connection-string' should be provided, "
+            + "otherwise you should provide a bean 'StaticConnectionStringProvider<AzureServiceType.ServiceBus>'.";
         String actualMessage = ex.getMessage();
         LOGGER.log(LogLevel.VERBOSE, () -> "message:" + actualMessage);
         assertTrue(actualMessage.contains(expectedMessage));

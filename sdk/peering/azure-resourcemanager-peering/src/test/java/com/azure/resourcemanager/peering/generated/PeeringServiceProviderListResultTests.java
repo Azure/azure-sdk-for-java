@@ -13,37 +13,29 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringServiceProviderListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceProviderListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"serviceProviderName\":\"isxyawjoyaqcslyj\",\"peeringLocations\":[]},\"id\":\"iidzyexzne\",\"name\":\"ixhnrztf\",\"type\":\"lhbnxkna\"},{\"properties\":{\"serviceProviderName\":\"lp\",\"peeringLocations\":[]},\"id\":\"gdtpnapnyiro\",\"name\":\"uhpigvp\",\"type\":\"ylgqgitxmedjvcsl\"},{\"properties\":{\"serviceProviderName\":\"wwncwzzhxgk\",\"peeringLocations\":[]},\"id\":\"mgucna\",\"name\":\"kteo\",\"type\":\"llwptfdy\"},{\"properties\":{\"serviceProviderName\":\"qbuaceopzfqr\",\"peeringLocations\":[]},\"id\":\"uaopppcqeq\",\"name\":\"ol\",\"type\":\"dahzxctobg\"}],\"nextLink\":\"dmoizpostmg\"}")
-                .toObject(PeeringServiceProviderListResult.class);
-        Assertions.assertEquals("isxyawjoyaqcslyj", model.value().get(0).serviceProviderName());
-        Assertions.assertEquals("dmoizpostmg", model.nextLink());
+        PeeringServiceProviderListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"serviceProviderName\":\"vseotgqrl\",\"peeringLocations\":[\"u\",\"lauwzizxbmpgcjef\",\"zmuvpbttdumorppx\",\"bmnzbtbhjpgl\"]},\"id\":\"fgohdneuelfphs\",\"name\":\"yhtozfikdowwqu\",\"type\":\"v\"},{\"properties\":{\"serviceProviderName\":\"clvit\",\"peeringLocations\":[\"zonosgg\",\"hcohfwdsjnk\",\"ljuti\",\"swacffgdkzz\"]},\"id\":\"wkfvhqcrailvp\",\"name\":\"ppfufl\",\"type\":\"wdmhdlxyjrxs\"},{\"properties\":{\"serviceProviderName\":\"fcnihgwq\",\"peeringLocations\":[\"edgfbcvkcvq\",\"pkeqdcvdrhvoo\"]},\"id\":\"sotbob\",\"name\":\"dopcjwvnh\",\"type\":\"ld\"},{\"properties\":{\"serviceProviderName\":\"xcxrsl\",\"peeringLocations\":[\"twuoegrpkhjwni\"]},\"id\":\"qsluicp\",\"name\":\"ggkzzlvmbmpa\",\"type\":\"modfvuefywsbpfvm\"}],\"nextLink\":\"hrfou\"}")
+            .toObject(PeeringServiceProviderListResult.class);
+        Assertions.assertEquals("vseotgqrl", model.value().get(0).serviceProviderName());
+        Assertions.assertEquals("u", model.value().get(0).peeringLocations().get(0));
+        Assertions.assertEquals("hrfou", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringServiceProviderListResult model =
-            new PeeringServiceProviderListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PeeringServiceProviderInner()
-                                .withServiceProviderName("isxyawjoyaqcslyj")
-                                .withPeeringLocations(Arrays.asList()),
-                            new PeeringServiceProviderInner()
-                                .withServiceProviderName("lp")
-                                .withPeeringLocations(Arrays.asList()),
-                            new PeeringServiceProviderInner()
-                                .withServiceProviderName("wwncwzzhxgk")
-                                .withPeeringLocations(Arrays.asList()),
-                            new PeeringServiceProviderInner()
-                                .withServiceProviderName("qbuaceopzfqr")
-                                .withPeeringLocations(Arrays.asList())))
-                .withNextLink("dmoizpostmg");
+        PeeringServiceProviderListResult model = new PeeringServiceProviderListResult().withValue(Arrays.asList(
+            new PeeringServiceProviderInner().withServiceProviderName("vseotgqrl")
+                .withPeeringLocations(Arrays.asList("u", "lauwzizxbmpgcjef", "zmuvpbttdumorppx", "bmnzbtbhjpgl")),
+            new PeeringServiceProviderInner().withServiceProviderName("clvit")
+                .withPeeringLocations(Arrays.asList("zonosgg", "hcohfwdsjnk", "ljuti", "swacffgdkzz")),
+            new PeeringServiceProviderInner().withServiceProviderName("fcnihgwq")
+                .withPeeringLocations(Arrays.asList("edgfbcvkcvq", "pkeqdcvdrhvoo")),
+            new PeeringServiceProviderInner().withServiceProviderName("xcxrsl")
+                .withPeeringLocations(Arrays.asList("twuoegrpkhjwni"))))
+            .withNextLink("hrfou");
         model = BinaryData.fromObject(model).toObject(PeeringServiceProviderListResult.class);
-        Assertions.assertEquals("isxyawjoyaqcslyj", model.value().get(0).serviceProviderName());
-        Assertions.assertEquals("dmoizpostmg", model.nextLink());
+        Assertions.assertEquals("vseotgqrl", model.value().get(0).serviceProviderName());
+        Assertions.assertEquals("u", model.value().get(0).peeringLocations().get(0));
+        Assertions.assertEquals("hrfou", model.nextLink());
     }
 }

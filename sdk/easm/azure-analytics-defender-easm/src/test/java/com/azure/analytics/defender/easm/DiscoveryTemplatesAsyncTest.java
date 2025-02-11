@@ -41,10 +41,9 @@ public class DiscoveryTemplatesAsyncTest extends EasmClientTestBase {
     @Test
     public void testDiscoveryTemplateGetAsync() {
         Mono<DiscoTemplate> discoTemplateMono = easmAsyncClient.getDiscoTemplate(templateId);
-        StepVerifier.create(discoTemplateMono)
-            .assertNext(discoTemplate -> {
-                assertNotNull(discoTemplate.getName());
-                assertNotNull(discoTemplate.getId());
-            });
+        StepVerifier.create(discoTemplateMono).assertNext(discoTemplate -> {
+            assertNotNull(discoTemplate.getName());
+            assertNotNull(discoTemplate.getId());
+        });
     }
 }

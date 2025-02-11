@@ -5,54 +5,57 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Quota counter details. */
+/**
+ * Quota counter details.
+ */
 @Fluent
-public final class QuotaCounterContractInner {
+public final class QuotaCounterContractInner implements JsonSerializable<QuotaCounterContractInner> {
     /*
      * The Key value of the Counter. Must not be empty.
      */
-    @JsonProperty(value = "counterKey", required = true)
     private String counterKey;
 
     /*
      * Identifier of the Period for which the counter was collected. Must not be empty.
      */
-    @JsonProperty(value = "periodKey", required = true)
     private String periodKey;
 
     /*
      * The date of the start of Counter Period. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
      * specified by the ISO 8601 standard.
-     *
      */
-    @JsonProperty(value = "periodStartTime", required = true)
     private OffsetDateTime periodStartTime;
 
     /*
      * The date of the end of Counter Period. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
      * specified by the ISO 8601 standard.
-     *
      */
-    @JsonProperty(value = "periodEndTime", required = true)
     private OffsetDateTime periodEndTime;
 
     /*
      * Quota Value Properties
      */
-    @JsonProperty(value = "value")
     private QuotaCounterValueContractProperties value;
 
-    /** Creates an instance of QuotaCounterContractInner class. */
+    /**
+     * Creates an instance of QuotaCounterContractInner class.
+     */
     public QuotaCounterContractInner() {
     }
 
     /**
      * Get the counterKey property: The Key value of the Counter. Must not be empty.
-     *
+     * 
      * @return the counterKey value.
      */
     public String counterKey() {
@@ -61,7 +64,7 @@ public final class QuotaCounterContractInner {
 
     /**
      * Set the counterKey property: The Key value of the Counter. Must not be empty.
-     *
+     * 
      * @param counterKey the counterKey value to set.
      * @return the QuotaCounterContractInner object itself.
      */
@@ -72,7 +75,7 @@ public final class QuotaCounterContractInner {
 
     /**
      * Get the periodKey property: Identifier of the Period for which the counter was collected. Must not be empty.
-     *
+     * 
      * @return the periodKey value.
      */
     public String periodKey() {
@@ -81,7 +84,7 @@ public final class QuotaCounterContractInner {
 
     /**
      * Set the periodKey property: Identifier of the Period for which the counter was collected. Must not be empty.
-     *
+     * 
      * @param periodKey the periodKey value to set.
      * @return the QuotaCounterContractInner object itself.
      */
@@ -93,7 +96,7 @@ public final class QuotaCounterContractInner {
     /**
      * Get the periodStartTime property: The date of the start of Counter Period. The date conforms to the following
      * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the periodStartTime value.
      */
     public OffsetDateTime periodStartTime() {
@@ -103,7 +106,7 @@ public final class QuotaCounterContractInner {
     /**
      * Set the periodStartTime property: The date of the start of Counter Period. The date conforms to the following
      * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param periodStartTime the periodStartTime value to set.
      * @return the QuotaCounterContractInner object itself.
      */
@@ -115,7 +118,7 @@ public final class QuotaCounterContractInner {
     /**
      * Get the periodEndTime property: The date of the end of Counter Period. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the periodEndTime value.
      */
     public OffsetDateTime periodEndTime() {
@@ -125,7 +128,7 @@ public final class QuotaCounterContractInner {
     /**
      * Set the periodEndTime property: The date of the end of Counter Period. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param periodEndTime the periodEndTime value to set.
      * @return the QuotaCounterContractInner object itself.
      */
@@ -136,7 +139,7 @@ public final class QuotaCounterContractInner {
 
     /**
      * Get the value property: Quota Value Properties.
-     *
+     * 
      * @return the value value.
      */
     public QuotaCounterValueContractProperties value() {
@@ -145,7 +148,7 @@ public final class QuotaCounterContractInner {
 
     /**
      * Set the value property: Quota Value Properties.
-     *
+     * 
      * @param value the value value to set.
      * @return the QuotaCounterContractInner object itself.
      */
@@ -156,33 +159,29 @@ public final class QuotaCounterContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (counterKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property counterKey in model QuotaCounterContractInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property counterKey in model QuotaCounterContractInner"));
         }
         if (periodKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property periodKey in model QuotaCounterContractInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property periodKey in model QuotaCounterContractInner"));
         }
         if (periodStartTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property periodStartTime in model QuotaCounterContractInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property periodStartTime in model QuotaCounterContractInner"));
         }
         if (periodEndTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property periodEndTime in model QuotaCounterContractInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property periodEndTime in model QuotaCounterContractInner"));
         }
         if (value() != null) {
             value().validate();
@@ -190,4 +189,57 @@ public final class QuotaCounterContractInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(QuotaCounterContractInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("counterKey", this.counterKey);
+        jsonWriter.writeStringField("periodKey", this.periodKey);
+        jsonWriter.writeStringField("periodStartTime",
+            this.periodStartTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.periodStartTime));
+        jsonWriter.writeStringField("periodEndTime",
+            this.periodEndTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.periodEndTime));
+        jsonWriter.writeJsonField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaCounterContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaCounterContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QuotaCounterContractInner.
+     */
+    public static QuotaCounterContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaCounterContractInner deserializedQuotaCounterContractInner = new QuotaCounterContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("counterKey".equals(fieldName)) {
+                    deserializedQuotaCounterContractInner.counterKey = reader.getString();
+                } else if ("periodKey".equals(fieldName)) {
+                    deserializedQuotaCounterContractInner.periodKey = reader.getString();
+                } else if ("periodStartTime".equals(fieldName)) {
+                    deserializedQuotaCounterContractInner.periodStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("periodEndTime".equals(fieldName)) {
+                    deserializedQuotaCounterContractInner.periodEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("value".equals(fieldName)) {
+                    deserializedQuotaCounterContractInner.value = QuotaCounterValueContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaCounterContractInner;
+        });
+    }
 }

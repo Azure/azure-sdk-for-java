@@ -5,48 +5,54 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Fields for tracking refresh job on the share or container. */
+/**
+ * Fields for tracking refresh job on the share or container.
+ */
 @Fluent
-public final class RefreshDetails {
+public final class RefreshDetails implements JsonSerializable<RefreshDetails> {
     /*
-     * If a refresh job is currently in progress on this share or container, this field indicates the ARM resource ID
-     * of that job. The field is empty if no job is in progress.
+     * If a refresh job is currently in progress on this share or container, this field indicates the ARM resource ID of
+     * that job. The field is empty if no job is in progress.
      */
-    @JsonProperty(value = "inProgressRefreshJobId")
     private String inProgressRefreshJobId;
 
     /*
-     * Indicates the completed time for the last refresh job on this particular share or container, if any.This could
-     * be a failed job or a successful job.
+     * Indicates the completed time for the last refresh job on this particular share or container, if any.This could be
+     * a failed job or a successful job.
      */
-    @JsonProperty(value = "lastCompletedRefreshJobTimeInUTC")
     private OffsetDateTime lastCompletedRefreshJobTimeInUtc;
 
     /*
      * Indicates the relative path of the error xml for the last refresh job on this particular share or container, if
      * any. This could be a failed job or a successful job.
      */
-    @JsonProperty(value = "errorManifestFile")
     private String errorManifestFile;
 
     /*
-     * Indicates the id of the last refresh job on this particular share or container,if any. This could be a failed
-     * job or a successful job.
+     * Indicates the id of the last refresh job on this particular share or container,if any. This could be a failed job
+     * or a successful job.
      */
-    @JsonProperty(value = "lastJob")
     private String lastJob;
 
-    /** Creates an instance of RefreshDetails class. */
+    /**
+     * Creates an instance of RefreshDetails class.
+     */
     public RefreshDetails() {
     }
 
     /**
      * Get the inProgressRefreshJobId property: If a refresh job is currently in progress on this share or container,
      * this field indicates the ARM resource ID of that job. The field is empty if no job is in progress.
-     *
+     * 
      * @return the inProgressRefreshJobId value.
      */
     public String inProgressRefreshJobId() {
@@ -56,7 +62,7 @@ public final class RefreshDetails {
     /**
      * Set the inProgressRefreshJobId property: If a refresh job is currently in progress on this share or container,
      * this field indicates the ARM resource ID of that job. The field is empty if no job is in progress.
-     *
+     * 
      * @param inProgressRefreshJobId the inProgressRefreshJobId value to set.
      * @return the RefreshDetails object itself.
      */
@@ -68,7 +74,7 @@ public final class RefreshDetails {
     /**
      * Get the lastCompletedRefreshJobTimeInUtc property: Indicates the completed time for the last refresh job on this
      * particular share or container, if any.This could be a failed job or a successful job.
-     *
+     * 
      * @return the lastCompletedRefreshJobTimeInUtc value.
      */
     public OffsetDateTime lastCompletedRefreshJobTimeInUtc() {
@@ -78,7 +84,7 @@ public final class RefreshDetails {
     /**
      * Set the lastCompletedRefreshJobTimeInUtc property: Indicates the completed time for the last refresh job on this
      * particular share or container, if any.This could be a failed job or a successful job.
-     *
+     * 
      * @param lastCompletedRefreshJobTimeInUtc the lastCompletedRefreshJobTimeInUtc value to set.
      * @return the RefreshDetails object itself.
      */
@@ -90,7 +96,7 @@ public final class RefreshDetails {
     /**
      * Get the errorManifestFile property: Indicates the relative path of the error xml for the last refresh job on this
      * particular share or container, if any. This could be a failed job or a successful job.
-     *
+     * 
      * @return the errorManifestFile value.
      */
     public String errorManifestFile() {
@@ -100,7 +106,7 @@ public final class RefreshDetails {
     /**
      * Set the errorManifestFile property: Indicates the relative path of the error xml for the last refresh job on this
      * particular share or container, if any. This could be a failed job or a successful job.
-     *
+     * 
      * @param errorManifestFile the errorManifestFile value to set.
      * @return the RefreshDetails object itself.
      */
@@ -112,7 +118,7 @@ public final class RefreshDetails {
     /**
      * Get the lastJob property: Indicates the id of the last refresh job on this particular share or container,if any.
      * This could be a failed job or a successful job.
-     *
+     * 
      * @return the lastJob value.
      */
     public String lastJob() {
@@ -122,7 +128,7 @@ public final class RefreshDetails {
     /**
      * Set the lastJob property: Indicates the id of the last refresh job on this particular share or container,if any.
      * This could be a failed job or a successful job.
-     *
+     * 
      * @param lastJob the lastJob value to set.
      * @return the RefreshDetails object itself.
      */
@@ -133,9 +139,58 @@ public final class RefreshDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("inProgressRefreshJobId", this.inProgressRefreshJobId);
+        jsonWriter.writeStringField("lastCompletedRefreshJobTimeInUTC",
+            this.lastCompletedRefreshJobTimeInUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastCompletedRefreshJobTimeInUtc));
+        jsonWriter.writeStringField("errorManifestFile", this.errorManifestFile);
+        jsonWriter.writeStringField("lastJob", this.lastJob);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RefreshDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RefreshDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RefreshDetails.
+     */
+    public static RefreshDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RefreshDetails deserializedRefreshDetails = new RefreshDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inProgressRefreshJobId".equals(fieldName)) {
+                    deserializedRefreshDetails.inProgressRefreshJobId = reader.getString();
+                } else if ("lastCompletedRefreshJobTimeInUTC".equals(fieldName)) {
+                    deserializedRefreshDetails.lastCompletedRefreshJobTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("errorManifestFile".equals(fieldName)) {
+                    deserializedRefreshDetails.errorManifestFile = reader.getString();
+                } else if ("lastJob".equals(fieldName)) {
+                    deserializedRefreshDetails.lastJob = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRefreshDetails;
+        });
     }
 }

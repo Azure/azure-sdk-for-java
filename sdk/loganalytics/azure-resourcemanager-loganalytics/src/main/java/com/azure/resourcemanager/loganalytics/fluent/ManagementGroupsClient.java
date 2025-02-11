@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.ManagementGroupInner;
 
-/** An instance of this class provides access to all the operations defined in ManagementGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementGroupsClient.
+ */
 public interface ManagementGroupsClient {
     /**
      * Gets a list of management groups connected to a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface ManagementGroupsClient {
 
     /**
      * Gets a list of management groups connected to a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.

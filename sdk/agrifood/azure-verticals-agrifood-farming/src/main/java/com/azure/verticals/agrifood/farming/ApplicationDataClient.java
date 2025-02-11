@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = ApplicationDataClientBuilder.class)
 public final class ApplicationDataClient {
-    @Generated private final ApplicationDataAsyncClient client;
+    @Generated
+    private final ApplicationDataAsyncClient client;
 
     /**
      * Initializes an instance of ApplicationDataClient class.
@@ -159,11 +160,10 @@ public final class ApplicationDataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String applicationDataId, RequestOptions requestOptions) {
-        return this.client
-                .beginCreateCascadeDeleteJob(jobId, partyId, applicationDataId, requestOptions)
-                .getSyncPoller();
+    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String applicationDataId, RequestOptions requestOptions) {
+        return this.client.beginCreateCascadeDeleteJob(jobId, partyId, applicationDataId, requestOptions)
+            .getSyncPoller();
     }
 
     /**
@@ -349,8 +349,8 @@ public final class ApplicationDataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String partyId, String applicationDataId, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String partyId, String applicationDataId,
+        RequestOptions requestOptions) {
         return this.client.getWithResponse(partyId, applicationDataId, requestOptions).block();
     }
 
@@ -449,11 +449,10 @@ public final class ApplicationDataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId, String applicationDataId, BinaryData applicationData, RequestOptions requestOptions) {
-        return this.client
-                .createOrUpdateWithResponse(partyId, applicationDataId, applicationData, requestOptions)
-                .block();
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String applicationDataId,
+        BinaryData applicationData, RequestOptions requestOptions) {
+        return this.client.createOrUpdateWithResponse(partyId, applicationDataId, applicationData, requestOptions)
+            .block();
     }
 
     /**

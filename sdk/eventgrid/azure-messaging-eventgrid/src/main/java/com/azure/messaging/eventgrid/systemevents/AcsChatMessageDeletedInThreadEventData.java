@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -121,6 +122,9 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -166,16 +170,16 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
                 } else if ("senderDisplayName".equals(fieldName)) {
                     deserializedAcsChatMessageDeletedInThreadEventData.setSenderDisplayName(reader.getString());
                 } else if ("composeTime".equals(fieldName)) {
-                    deserializedAcsChatMessageDeletedInThreadEventData.setComposeTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAcsChatMessageDeletedInThreadEventData.setComposeTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("type".equals(fieldName)) {
                     deserializedAcsChatMessageDeletedInThreadEventData.setType(reader.getString());
                 } else if ("version".equals(fieldName)) {
                     deserializedAcsChatMessageDeletedInThreadEventData
                         .setVersion(reader.getNullable(JsonReader::getLong));
                 } else if ("deleteTime".equals(fieldName)) {
-                    deserializedAcsChatMessageDeletedInThreadEventData.deleteTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsChatMessageDeletedInThreadEventData.deleteTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

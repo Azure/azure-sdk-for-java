@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether logs are being sent. */
+/**
+ * Indicates whether logs are being sent.
+ */
 public final class SendingLogsStatus extends ExpandableStringEnum<SendingLogsStatus> {
-    /** Static value Enabled for SendingLogsStatus. */
+    /**
+     * Static value Enabled for SendingLogsStatus.
+     */
     public static final SendingLogsStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for SendingLogsStatus. */
+    /**
+     * Static value Disabled for SendingLogsStatus.
+     */
     public static final SendingLogsStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of SendingLogsStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class SendingLogsStatus extends ExpandableStringEnum<SendingLogsSta
 
     /**
      * Creates or finds a SendingLogsStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SendingLogsStatus.
      */
-    @JsonCreator
     public static SendingLogsStatus fromString(String name) {
         return fromString(name, SendingLogsStatus.class);
     }
 
     /**
      * Gets known SendingLogsStatus values.
-     *
+     * 
      * @return known SendingLogsStatus values.
      */
     public static Collection<SendingLogsStatus> values() {

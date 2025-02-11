@@ -45,8 +45,8 @@ public final class ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEve
     private String topicName;
 
     /*
-     * The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this
-     * value will be null.
+     * The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value
+     * will be null.
      */
     private String subscriptionName;
 
@@ -185,6 +185,9 @@ public final class ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEve
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

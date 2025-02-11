@@ -13,8 +13,8 @@ public final class OperationDetailImpl implements OperationDetail {
 
     private final com.azure.resourcemanager.healthbot.HealthbotManager serviceManager;
 
-    OperationDetailImpl(
-        OperationDetailInner innerObject, com.azure.resourcemanager.healthbot.HealthbotManager serviceManager) {
+    OperationDetailImpl(OperationDetailInner innerObject,
+        com.azure.resourcemanager.healthbot.HealthbotManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

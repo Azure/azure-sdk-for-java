@@ -14,14 +14,17 @@ import java.util.List;
 public final class AnomalyAlertConfigurationHelper {
     private static AnomalyAlertConfigurationAccessor accessor;
 
-    private AnomalyAlertConfigurationHelper() { }
+    private AnomalyAlertConfigurationHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AnomalyAlertConfiguration} instance.
      */
     public interface AnomalyAlertConfigurationAccessor {
         void setId(AnomalyAlertConfiguration configuration, String id);
+
         List<String> getHookIdsToAlertRaw(AnomalyAlertConfiguration configuration);
+
         List<String> getDimensionsToSplitAlertRaw(AnomalyAlertConfiguration configuration);
     }
 

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.digitaltwins.models;
 import com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionsResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of PrivateEndpointConnectionsResponse. */
+/**
+ * An immutable client-side representation of PrivateEndpointConnectionsResponse.
+ */
 public interface PrivateEndpointConnectionsResponse {
     /**
      * Gets the value property: The list of available private link connections for a Digital Twin.
-     *
+     * 
      * @return the value value.
      */
     List<PrivateEndpointConnection> value();
@@ -19,7 +21,7 @@ public interface PrivateEndpointConnectionsResponse {
     /**
      * Gets the inner com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionsResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateEndpointConnectionsResponseInner innerModel();

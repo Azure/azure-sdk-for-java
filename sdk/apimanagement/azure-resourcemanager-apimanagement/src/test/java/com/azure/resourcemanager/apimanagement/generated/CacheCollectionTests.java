@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CacheCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CacheCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"ztx\",\"connectionString\":\"brfgdrwji\",\"useFromLocation\":\"ewhfjsrwqrxetf\",\"resourceId\":\"wvrrmdqn\"},\"id\":\"ycnawthvmaxgnuy\",\"name\":\"a\",\"type\":\"cmh\"}],\"count\":7145608410541121603,\"nextLink\":\"cehokw\"}")
-                .toObject(CacheCollection.class);
+        CacheCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"ztx\",\"connectionString\":\"brfgdrwji\",\"useFromLocation\":\"ewhfjsrwqrxetf\",\"resourceId\":\"wvrrmdqn\"},\"id\":\"ycnawthvmaxgnuy\",\"name\":\"a\",\"type\":\"cmh\"}],\"count\":7145608410541121603,\"nextLink\":\"cehokw\"}")
+            .toObject(CacheCollection.class);
         Assertions.assertEquals("ztx", model.value().get(0).description());
         Assertions.assertEquals("brfgdrwji", model.value().get(0).connectionString());
         Assertions.assertEquals("ewhfjsrwqrxetf", model.value().get(0).useFromLocation());
@@ -28,18 +26,11 @@ public final class CacheCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheCollection model =
-            new CacheCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CacheContractInner()
-                                .withDescription("ztx")
-                                .withConnectionString("brfgdrwji")
-                                .withUseFromLocation("ewhfjsrwqrxetf")
-                                .withResourceId("wvrrmdqn")))
-                .withCount(7145608410541121603L)
-                .withNextLink("cehokw");
+        CacheCollection model
+            = new CacheCollection().withValue(Arrays.asList(new CacheContractInner().withDescription("ztx")
+                .withConnectionString("brfgdrwji")
+                .withUseFromLocation("ewhfjsrwqrxetf")
+                .withResourceId("wvrrmdqn"))).withCount(7145608410541121603L).withNextLink("cehokw");
         model = BinaryData.fromObject(model).toObject(CacheCollection.class);
         Assertions.assertEquals("ztx", model.value().get(0).description());
         Assertions.assertEquals("brfgdrwji", model.value().get(0).connectionString());

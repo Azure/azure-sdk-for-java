@@ -5,25 +5,29 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Daily retention schedule.
  */
 @Fluent
-public final class DailyRetentionSchedule {
+public final class DailyRetentionSchedule implements JsonSerializable<DailyRetentionSchedule> {
     /*
      * Retention times of retention policy.
      */
-    @JsonProperty(value = "retentionTimes")
     private List<OffsetDateTime> retentionTimes;
 
     /*
      * Retention duration of retention Policy.
      */
-    @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
     /**
@@ -81,5 +85,47 @@ public final class DailyRetentionSchedule {
         if (retentionDuration() != null) {
             retentionDuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("retentionTimes", this.retentionTimes, (writer, element) -> writer
+            .writeString(element == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(element)));
+        jsonWriter.writeJsonField("retentionDuration", this.retentionDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DailyRetentionSchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DailyRetentionSchedule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DailyRetentionSchedule.
+     */
+    public static DailyRetentionSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DailyRetentionSchedule deserializedDailyRetentionSchedule = new DailyRetentionSchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("retentionTimes".equals(fieldName)) {
+                    List<OffsetDateTime> retentionTimes = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedDailyRetentionSchedule.retentionTimes = retentionTimes;
+                } else if ("retentionDuration".equals(fieldName)) {
+                    deserializedDailyRetentionSchedule.retentionDuration = RetentionDuration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDailyRetentionSchedule;
+        });
     }
 }

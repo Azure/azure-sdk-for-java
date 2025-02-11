@@ -4,18 +4,15 @@
 
 package com.azure.resourcemanager.notificationhubs.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.notificationhubs.fluent.models.PnsCredentialsResourceInner;
 import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
 import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
-import com.azure.resourcemanager.notificationhubs.models.BrowserCredential;
-import com.azure.resourcemanager.notificationhubs.models.FcmV1Credential;
 import com.azure.resourcemanager.notificationhubs.models.GcmCredential;
 import com.azure.resourcemanager.notificationhubs.models.MpnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.PnsCredentialsResource;
+import com.azure.resourcemanager.notificationhubs.models.Sku;
 import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
-import com.azure.resourcemanager.notificationhubs.models.XiaomiCredential;
 import java.util.Collections;
 import java.util.Map;
 
@@ -55,24 +52,16 @@ public final class PnsCredentialsResourceImpl implements PnsCredentialsResource 
         }
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
-    public AdmCredential admCredential() {
-        return this.innerModel().admCredential();
+    public Sku sku() {
+        return this.innerModel().sku();
     }
 
     public ApnsCredential apnsCredential() {
         return this.innerModel().apnsCredential();
     }
 
-    public BaiduCredential baiduCredential() {
-        return this.innerModel().baiduCredential();
-    }
-
-    public BrowserCredential browserCredential() {
-        return this.innerModel().browserCredential();
+    public WnsCredential wnsCredential() {
+        return this.innerModel().wnsCredential();
     }
 
     public GcmCredential gcmCredential() {
@@ -83,16 +72,12 @@ public final class PnsCredentialsResourceImpl implements PnsCredentialsResource 
         return this.innerModel().mpnsCredential();
     }
 
-    public WnsCredential wnsCredential() {
-        return this.innerModel().wnsCredential();
+    public AdmCredential admCredential() {
+        return this.innerModel().admCredential();
     }
 
-    public XiaomiCredential xiaomiCredential() {
-        return this.innerModel().xiaomiCredential();
-    }
-
-    public FcmV1Credential fcmV1Credential() {
-        return this.innerModel().fcmV1Credential();
+    public BaiduCredential baiduCredential() {
+        return this.innerModel().baiduCredential();
     }
 
     public PnsCredentialsResourceInner innerModel() {

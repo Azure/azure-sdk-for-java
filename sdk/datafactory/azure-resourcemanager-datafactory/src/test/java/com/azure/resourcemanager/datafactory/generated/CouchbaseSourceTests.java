@@ -11,19 +11,19 @@ public final class CouchbaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CouchbaseSource model = BinaryData.fromString(
-            "{\"type\":\"CouchbaseSource\",\"query\":\"datadhismwjkq\",\"queryTimeout\":\"datayuygybshch\",\"additionalColumns\":\"dataeaitzgewwqwibt\",\"sourceRetryCount\":\"datahcgbzrlf\",\"sourceRetryWait\":\"datawusqupk\",\"maxConcurrentConnections\":\"datappmwozwjinxyrtec\",\"disableMetricsCollection\":\"datazslttk\",\"\":{\"mahuw\":\"datakujceeczhsdpfoa\",\"ewrryt\":\"dataodddq\",\"s\":\"datasocqkdclbzqnao\",\"cbhezau\":\"datamp\"}}")
+            "{\"type\":\"CouchbaseSource\",\"query\":\"datahndfpf\",\"queryTimeout\":\"datafdgf\",\"additionalColumns\":\"dataoeh\",\"sourceRetryCount\":\"datapkssjbw\",\"sourceRetryWait\":\"dataxdgcfcfky\",\"maxConcurrentConnections\":\"datajwxhslrbwwk\",\"disableMetricsCollection\":\"datawodhsodofsxjiky\",\"\":{\"cxdmxhuwldfa\":\"datauhuixqwogg\",\"dkbgsg\":\"datakyft\",\"ayqkg\":\"datapyckmncrutoudjm\"}}")
             .toObject(CouchbaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CouchbaseSource model = new CouchbaseSource().withSourceRetryCount("datahcgbzrlf")
-            .withSourceRetryWait("datawusqupk")
-            .withMaxConcurrentConnections("datappmwozwjinxyrtec")
-            .withDisableMetricsCollection("datazslttk")
-            .withQueryTimeout("datayuygybshch")
-            .withAdditionalColumns("dataeaitzgewwqwibt")
-            .withQuery("datadhismwjkq");
+        CouchbaseSource model = new CouchbaseSource().withSourceRetryCount("datapkssjbw")
+            .withSourceRetryWait("dataxdgcfcfky")
+            .withMaxConcurrentConnections("datajwxhslrbwwk")
+            .withDisableMetricsCollection("datawodhsodofsxjiky")
+            .withQueryTimeout("datafdgf")
+            .withAdditionalColumns("dataoeh")
+            .withQuery("datahndfpf");
         model = BinaryData.fromObject(model).toObject(CouchbaseSource.class);
     }
 }

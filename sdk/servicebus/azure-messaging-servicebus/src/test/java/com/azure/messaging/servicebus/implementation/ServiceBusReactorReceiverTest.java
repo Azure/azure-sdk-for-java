@@ -26,9 +26,8 @@ import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -56,10 +55,10 @@ class ServiceBusReactorReceiverTest {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorReceiver.class);
-    private final EmitterProcessor<EndpointState> endpointStates = EmitterProcessor.create();
-    private final FluxSink<EndpointState> endpointStatesSink = endpointStates.sink();
+    private final Sinks.Many<EndpointState> endpointStates
+        = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
 
-    private final EmitterProcessor<Delivery> deliveryProcessor = EmitterProcessor.create();
+    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().onBackpressureBuffer();
 
     @Mock
     private Receiver receiver;
@@ -71,8 +70,6 @@ class ServiceBusReactorReceiverTest {
     private ReactorDispatcher reactorDispatcher;
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
     private final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(retryOptions);
-    @Mock
-    private ReceiveLinkHandler receiveLinkHandler;
     @Mock
     private AmqpConnection connection;
 
@@ -95,17 +92,24 @@ class ServiceBusReactorReceiverTest {
             return null;
         }).when(reactorDispatcher).invoke(any(), any());
 
-        when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor);
-        when(receiveLinkHandler.getLinkName()).thenReturn(LINK_NAME);
-        when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates);
+        ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(CONNECTION_ID, "", LINK_NAME, "", null) {
+            @Override
+            public Flux<Delivery> getDeliveredMessages() {
+                return deliveries.asFlux();
+            }
+
+            @Override
+            public Flux<EndpointState> getEndpointStates() {
+                return endpointStates.asFlux();
+            }
+        };
 
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
-        when(receiveLinkHandler.getConnectionId()).thenReturn(CONNECTION_ID);
 
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
 
-        reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, new ReceiveLinkHandlerWrapper(receiveLinkHandler),
-            tokenManager, reactorDispatcher, retryOptions);
+        reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver,
+            new ReceiveLinkHandlerWrapper(receiveLinkHandler), tokenManager, reactorDispatcher, retryOptions);
     }
 
     @AfterEach
@@ -132,7 +136,7 @@ class ServiceBusReactorReceiverTest {
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.getSessionId())
-            .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
+            .then(() -> endpointStates.emitNext(EndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST))
             .expectNext(actualSession)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -152,7 +156,7 @@ class ServiceBusReactorReceiverTest {
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.getSessionId())
-            .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
+            .then(() -> endpointStates.emitNext(EndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -175,7 +179,7 @@ class ServiceBusReactorReceiverTest {
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.getSessionLockedUntil())
-            .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
+            .then(() -> endpointStates.emitNext(EndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST))
             .expectNext(lockedUntil)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);

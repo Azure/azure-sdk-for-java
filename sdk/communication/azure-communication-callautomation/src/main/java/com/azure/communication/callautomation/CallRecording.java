@@ -184,10 +184,7 @@ public final class CallRecording {
      * @param context A {@link Context} representing the request context.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceUrl,
-                           OutputStream destinationStream,
-                           HttpRange httpRange,
-                           Context context) {
+    public void downloadTo(String sourceUrl, OutputStream destinationStream, HttpRange httpRange, Context context) {
         Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
         callRecordingAsync.downloadTo(sourceUrl, destinationStream, httpRange, context).block();
@@ -229,8 +226,7 @@ public final class CallRecording {
      * @param destinationPath - File location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceUrl,
-                           Path destinationPath) {
+    public void downloadTo(String sourceUrl, Path destinationPath) {
         DownloadToFileOptions options = new DownloadToFileOptions();
         downloadTo(sourceUrl, destinationPath, options, null);
     }
@@ -245,10 +241,8 @@ public final class CallRecording {
      * @param context A {@link Context} representing the request context.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceUrl,
-                                     Path destinationPath,
-                                     DownloadToFileOptions options,
-                                     final Context context) {
+    public void downloadTo(String sourceUrl, Path destinationPath, DownloadToFileOptions options,
+        final Context context) {
         Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
         callRecordingAsync.downloadToInternal(sourceUrl, destinationPath, options, context).block();

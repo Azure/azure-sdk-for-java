@@ -6,78 +6,45 @@ package com.azure.resourcemanager.purview.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.purview.PurviewManager;
 import com.azure.resourcemanager.purview.models.PrivateEndpoint;
 import com.azure.resourcemanager.purview.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.purview.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.purview.models.Status;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"rnsvbuswd\"},\"privateLinkServiceConnectionState\":{\"actionsRequired\":\"ybycnunvj\",\"description\":\"tkfa\",\"status\":\"Disconnected\"},\"provisioningState\":\"Succeeded\"},\"id\":\"kyzirtxdyux\",\"name\":\"ejnt\",\"type\":\"sewgioilqukr\"}";
 
-        String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"stkwqqtch\"},\"privateLinkServiceConnectionState\":{\"actionsRequired\":\"mfmtdaaygdvw\",\"description\":\"piohgwxrtfu\",\"status\":\"Approved\"},\"provisioningState\":\"Succeeded\"},\"id\":\"qagvrvm\",\"name\":\"pkukghi\",\"type\":\"dblx\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PurviewManager manager = PurviewManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PrivateEndpointConnection response = manager.privateEndpointConnections()
+            .define("tw")
+            .withExistingAccount("zq", "zh")
+            .withPrivateEndpoint(new PrivateEndpoint().withId("gc"))
+            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState().withActionsRequired("nnxk")
+                .withDescription("gnyhmossxkkg")
+                .withStatus(Status.APPROVED))
+            .create();
 
-        PurviewManager manager =
-            PurviewManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PrivateEndpointConnection response =
-            manager
-                .privateEndpointConnections()
-                .define("gsyocogj")
-                .withExistingAccount("tncvokot", "lxdy")
-                .withPrivateEndpoint(new PrivateEndpoint().withId("bnnhadoocrkvcik"))
-                .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withActionsRequired("p")
-                        .withDescription("qgxqquezikyw")
-                        .withStatus(Status.PENDING))
-                .create();
-
-        Assertions.assertEquals("stkwqqtch", response.privateEndpoint().id());
-        Assertions.assertEquals("mfmtdaaygdvw", response.privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("piohgwxrtfu", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals(Status.APPROVED, response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("rnsvbuswd", response.privateEndpoint().id());
+        Assertions.assertEquals("ybycnunvj", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("tkfa", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals(Status.DISCONNECTED, response.privateLinkServiceConnectionState().status());
     }
 }

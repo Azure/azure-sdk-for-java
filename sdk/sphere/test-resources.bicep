@@ -18,6 +18,5 @@ resource contributorRoleId_name 'Microsoft.Authorization/roleAssignments@2022-04
 }
 
 output AZURE_TENANT_ID string = tenantId
-output AZURE_CLIENT_ID string = testApplicationId
 output AZURE_SUBSCRIPTION_ID string = subscription().subscriptionId
 output AZURE_RESOURCE_GROUP_NAME string = resourceGroup().name

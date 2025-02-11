@@ -15,32 +15,42 @@ import java.util.Set;
 
 /** Entry point for Local Network Gateway management API in Azure. */
 @Fluent
-public interface LocalNetworkGateway
-    extends GroupableResource<NetworkManager, LocalNetworkGatewayInner>,
-        Refreshable<LocalNetworkGateway>,
-        Updatable<LocalNetworkGateway.Update>,
-        UpdatableWithTags<LocalNetworkGateway> {
+public interface LocalNetworkGateway extends GroupableResource<NetworkManager, LocalNetworkGatewayInner>,
+    Refreshable<LocalNetworkGateway>, Updatable<LocalNetworkGateway.Update>, UpdatableWithTags<LocalNetworkGateway> {
 
     // Getters
 
-    /** @return IP address of local network gateway */
+    /**
+     * Gets IP address of local network gateway.
+     *
+     * @return IP address of local network gateway
+     */
     String ipAddress();
 
-    /** @return local network gateway's BGP speaker settings */
+    /**
+     * Gets local network gateway's BGP speaker settings.
+     *
+     * @return local network gateway's BGP speaker settings
+     */
     BgpSettings bgpSettings();
 
-    /** @return local network site address spaces */
+    /**
+     * Gets local network site address spaces.
+     *
+     * @return local network site address spaces
+     */
     Set<String> addressSpaces();
 
-    /** @return the provisioning state of the LocalNetworkGateway resource */
+    /**
+     * Gets the provisioning state of the LocalNetworkGateway resource.
+     *
+     * @return the provisioning state of the LocalNetworkGateway resource
+     */
     String provisioningState();
 
     /** The entirety of the local network gateway definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithIPAddress,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithIPAddress,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of local network gateway definition stages. */
@@ -94,11 +104,8 @@ public interface LocalNetworkGateway
          * The stage of the local network gateway definition which contains all the minimum required inputs for the
          * resource to be created (via {@link WithCreate#create()}).
          */
-        interface WithCreate
-            extends Creatable<LocalNetworkGateway>,
-                Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithAddressSpace,
-                DefinitionStages.WithBgp {
+        interface WithCreate extends Creatable<LocalNetworkGateway>, Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithAddressSpace, DefinitionStages.WithBgp {
         }
     }
 
@@ -156,11 +163,7 @@ public interface LocalNetworkGateway
     }
 
     /** The template for a local network gateway update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<LocalNetworkGateway>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithIPAddress,
-            UpdateStages.WithAddressSpace,
-            UpdateStages.WithBgp {
+    interface Update extends Appliable<LocalNetworkGateway>, Resource.UpdateWithTags<Update>,
+        UpdateStages.WithIPAddress, UpdateStages.WithAddressSpace, UpdateStages.WithBgp {
     }
 }

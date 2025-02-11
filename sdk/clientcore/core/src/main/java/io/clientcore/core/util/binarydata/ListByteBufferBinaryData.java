@@ -5,7 +5,8 @@ package io.clientcore.core.util.binarydata;
 
 import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.implementation.util.IterableOfByteBuffersInputStream;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
@@ -43,6 +44,7 @@ public final class ListByteBufferBinaryData extends BinaryData {
     public ListByteBufferBinaryData(List<ByteBuffer> content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
+
     @Override
     public Long getLength() {
         if (cachedLength == null) {
@@ -95,6 +97,13 @@ public final class ListByteBufferBinaryData extends BinaryData {
                 channel.write(bb);
             }
         }
+    }
+
+    @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
+
+        jsonWriter.writeBinary(toBytes());
     }
 
     @Override

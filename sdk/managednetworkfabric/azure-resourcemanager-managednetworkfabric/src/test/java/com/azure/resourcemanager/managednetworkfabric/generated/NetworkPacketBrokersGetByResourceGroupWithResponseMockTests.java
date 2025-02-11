@@ -6,67 +6,36 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkPacketBroker;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkPacketBrokersGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"networkFabricId\":\"pgaxpydemccqdss\",\"networkDeviceIds\":[\"ersd\",\"dhnhs\"],\"sourceInterfaceIds\":[\"gzmxtxfuhxyksf\"],\"networkTapIds\":[\"vcknglffnozzf\"],\"neighborGroupIds\":[\"frpjfxsyxcdosyhh\",\"pu\",\"rspreyilqcskxkt\",\"o\"],\"provisioningState\":\"Updating\"},\"location\":\"qt\",\"tags\":{\"nacklyrbvmbd\":\"grddi\",\"psbcxqiy\":\"expnphtqwfp\",\"nrzowcgrzaf\":\"pifcjlfu\",\"agugwxdwtfmfj\":\"sozawqxnhl\"},\"id\":\"rzplhaljomg\",\"name\":\"orprrapt\",\"type\":\"bjenylgebrsnvof\"}";
 
-        String responseStr =
-            "{\"properties\":{\"networkFabricId\":\"xh\",\"networkDeviceIds\":[\"ehcdfdxthqnztu\",\"ir\"],\"sourceInterfaceIds\":[\"ijdhzkwvueweivaj\",\"lswlxdknxctglzb\",\"xdfsgwigyiwbwju\",\"xzfvnazc\"],\"networkTapIds\":[\"hnqiyevjehts\",\"aoxxsehf\",\"fmabpyzxc\",\"lphfstvurtkc\"],\"neighborGroupIds\":[\"vaxwzbwxx\",\"disxsrrhr\",\"rbbedrn\"],\"provisioningState\":\"Deleting\"},\"location\":\"uimpiybm\",\"tags\":{\"suv\":\"ihcgxmfbi\",\"q\":\"qorhtqtw\",\"ichhxqnlmjvpmsd\":\"jcemia\",\"ouhysrmkkzj\":\"ibwvh\"},\"id\":\"nxzljxaayxpd\",\"name\":\"vgyujkxjge\",\"type\":\"zdbigitra\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        NetworkPacketBroker response = manager.networkPacketBrokers()
+            .getByResourceGroupWithResponse("cu", "aicx", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        NetworkPacketBroker response =
-            manager
-                .networkPacketBrokers()
-                .getByResourceGroupWithResponse("tzbkeeohpf", "dxgdjudek", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("uimpiybm", response.location());
-        Assertions.assertEquals("ihcgxmfbi", response.tags().get("suv"));
-        Assertions.assertEquals("xh", response.networkFabricId());
+        Assertions.assertEquals("qt", response.location());
+        Assertions.assertEquals("grddi", response.tags().get("nacklyrbvmbd"));
+        Assertions.assertEquals("pgaxpydemccqdss", response.networkFabricId());
     }
 }

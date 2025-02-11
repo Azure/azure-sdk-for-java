@@ -204,7 +204,6 @@ public final class SapHanaSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (partitionSettings() != null) {
             partitionSettings().validate();
         }

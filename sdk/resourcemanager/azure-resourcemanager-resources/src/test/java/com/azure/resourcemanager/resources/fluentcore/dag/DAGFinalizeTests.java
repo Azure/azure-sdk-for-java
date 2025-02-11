@@ -67,8 +67,8 @@ public class DAGFinalizeTests {
         Assertions.assertEquals(nodeA.dependencyKeys().size(), 0);
         Assertions.assertEquals(nodeA.dependentKeys().size(), 2);
         for (String dependentKey : nodeA.dependentKeys()) {
-            Assertions.assertTrue(dependentKey.equalsIgnoreCase(pizzaB.key())
-                    || dependentKey.equalsIgnoreCase(pizzaC.key()));
+            Assertions
+                .assertTrue(dependentKey.equalsIgnoreCase(pizzaB.key()) || dependentKey.equalsIgnoreCase(pizzaC.key()));
         }
         // Level 0 - "I"
         Assertions.assertEquals(pizzaI.taskGroup().getNodes().size(), 1);
@@ -95,8 +95,8 @@ public class DAGFinalizeTests {
         }
         Assertions.assertEquals(nodeB.dependentKeys().size(), 2);
         for (String dependentKey : nodeB.dependentKeys()) {
-            Assertions.assertTrue(dependentKey.equalsIgnoreCase(pizzaD.key())
-                    || dependentKey.equalsIgnoreCase(pizzaE.key()));
+            Assertions
+                .assertTrue(dependentKey.equalsIgnoreCase(pizzaD.key()) || dependentKey.equalsIgnoreCase(pizzaE.key()));
         }
         // Level 1 - "C"
         Assertions.assertEquals(pizzaC.taskGroup().getNodes().size(), 2);
@@ -172,8 +172,8 @@ public class DAGFinalizeTests {
         Assertions.assertNotNull(nodeE);
         Assertions.assertEquals(nodeE.dependencyKeys().size(), 2);
         for (String dependentKey : nodeE.dependencyKeys()) {
-            Assertions.assertTrue(dependentKey.equalsIgnoreCase(pizzaB.key())
-                    || dependentKey.equalsIgnoreCase(pizzaG.key()));
+            Assertions
+                .assertTrue(dependentKey.equalsIgnoreCase(pizzaB.key()) || dependentKey.equalsIgnoreCase(pizzaG.key()));
         }
         Assertions.assertEquals(nodeE.dependentKeys().size(), 1);
         for (String dependentKey : nodeE.dependentKeys()) {
@@ -199,8 +199,8 @@ public class DAGFinalizeTests {
         Assertions.assertEquals(nodeF.dependencyKeys().size(), 3);
         for (String dependentKey : nodeF.dependencyKeys()) {
             Assertions.assertTrue(dependentKey.equalsIgnoreCase(pizzaD.key())
-                    || dependentKey.equalsIgnoreCase(pizzaE.key())
-                    || dependentKey.equalsIgnoreCase(pizzaH.key()));
+                || dependentKey.equalsIgnoreCase(pizzaE.key())
+                || dependentKey.equalsIgnoreCase(pizzaH.key()));
         }
         Assertions.assertEquals(nodeF.dependentKeys().size(), 0);
     }
@@ -363,8 +363,8 @@ public class DAGFinalizeTests {
         Assertions.assertNotNull(nodeJ);
         Assertions.assertEquals(nodeJ.dependencyKeys().size(), 2);
         for (String dependentKey : nodeJ.dependencyKeys()) {
-            Assertions.assertTrue(dependentKey.equalsIgnoreCase(pizzaM.key())
-                    || dependentKey.equalsIgnoreCase(pizzaN.key()));
+            Assertions
+                .assertTrue(dependentKey.equalsIgnoreCase(pizzaM.key()) || dependentKey.equalsIgnoreCase(pizzaN.key()));
         }
         Assertions.assertEquals(nodeJ.dependentKeys().size(), 1);
         for (String dependentKey : nodeJ.dependentKeys()) {
@@ -411,13 +411,13 @@ public class DAGFinalizeTests {
         Assertions.assertNotNull(nodeA);
         Assertions.assertEquals(nodeA.dependencyKeys().size(), 2);
         for (String dependentKey : nodeA.dependencyKeys()) {
-            Assertions.assertTrue(dependentKey.equalsIgnoreCase(pizzaJ.key())
-                    || dependentKey.equalsIgnoreCase(pizzaK.key()));
+            Assertions
+                .assertTrue(dependentKey.equalsIgnoreCase(pizzaJ.key()) || dependentKey.equalsIgnoreCase(pizzaK.key()));
         }
         Assertions.assertEquals(nodeA.dependentKeys().size(), 2);
         for (String dependentKey : nodeA.dependentKeys()) {
-            Assertions.assertTrue(dependentKey.equalsIgnoreCase(pizzaB.key())
-                    || dependentKey.equalsIgnoreCase(pizzaC.key()));
+            Assertions
+                .assertTrue(dependentKey.equalsIgnoreCase(pizzaB.key()) || dependentKey.equalsIgnoreCase(pizzaC.key()));
         }
         // ----------------------------------------------------------------------------------
         // LEVEL - 3
@@ -438,8 +438,8 @@ public class DAGFinalizeTests {
         }
         Assertions.assertEquals(nodeB.dependentKeys().size(), 2);
         for (String dependentKey : nodeB.dependentKeys()) {
-            Assertions.assertTrue(dependentKey.equalsIgnoreCase(pizzaD.key())
-                    || dependentKey.equalsIgnoreCase(pizzaE.key()));
+            Assertions
+                .assertTrue(dependentKey.equalsIgnoreCase(pizzaD.key()) || dependentKey.equalsIgnoreCase(pizzaE.key()));
         }
         // ----------------------------------------------------------------------------------
         // LEVEL - 4
@@ -479,8 +479,8 @@ public class DAGFinalizeTests {
         Assertions.assertNotNull(nodeG);
         Assertions.assertEquals(nodeG.dependencyKeys().size(), 2);
         for (String dependentKey : nodeG.dependencyKeys()) {
-            Assertions.assertTrue(dependentKey.equalsIgnoreCase(pizzaC.key())
-                    || dependentKey.equalsIgnoreCase(pizzaL.key()));
+            Assertions
+                .assertTrue(dependentKey.equalsIgnoreCase(pizzaC.key()) || dependentKey.equalsIgnoreCase(pizzaL.key()));
         }
         Assertions.assertEquals(nodeG.dependentKeys().size(), 1);
         for (String dependentKey : nodeG.dependentKeys()) {
@@ -507,8 +507,8 @@ public class DAGFinalizeTests {
         Assertions.assertNotNull(nodeE);
         Assertions.assertEquals(nodeE.dependencyKeys().size(), 2);
         for (String dependentKey : nodeE.dependencyKeys()) {
-            Assertions.assertTrue(dependentKey.equalsIgnoreCase(pizzaB.key())
-                    || dependentKey.equalsIgnoreCase(pizzaG.key()));
+            Assertions
+                .assertTrue(dependentKey.equalsIgnoreCase(pizzaB.key()) || dependentKey.equalsIgnoreCase(pizzaG.key()));
         }
         Assertions.assertEquals(nodeE.dependentKeys().size(), 1);
         for (String dependentKey : nodeE.dependentKeys()) {
@@ -540,8 +540,8 @@ public class DAGFinalizeTests {
         Assertions.assertEquals(nodeF.dependencyKeys().size(), 3);
         for (String dependentKey : nodeF.dependencyKeys()) {
             Assertions.assertTrue(dependentKey.equalsIgnoreCase(pizzaD.key())
-                    || dependentKey.equalsIgnoreCase(pizzaE.key())
-                    || dependentKey.equalsIgnoreCase(pizzaH.key()));
+                || dependentKey.equalsIgnoreCase(pizzaE.key())
+                || dependentKey.equalsIgnoreCase(pizzaH.key()));
         }
         Assertions.assertEquals(nodeF.dependentKeys().size(), 0);
     }

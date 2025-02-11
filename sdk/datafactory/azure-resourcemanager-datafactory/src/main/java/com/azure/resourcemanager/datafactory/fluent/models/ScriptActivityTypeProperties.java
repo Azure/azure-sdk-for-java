@@ -35,6 +35,12 @@ public final class ScriptActivityTypeProperties implements JsonSerializable<Scri
      */
     private ScriptActivityTypePropertiesLogSettings logSettings;
 
+    /*
+     * Enable to retrieve result sets from multiple SQL statements and the number of rows affected by the DML statement.
+     * Supported connector: SnowflakeV2. Type: boolean (or Expression with resultType boolean).
+     */
+    private Object returnMultistatementResult;
+
     /**
      * Creates an instance of ScriptActivityTypeProperties class.
      */
@@ -104,6 +110,30 @@ public final class ScriptActivityTypeProperties implements JsonSerializable<Scri
     }
 
     /**
+     * Get the returnMultistatementResult property: Enable to retrieve result sets from multiple SQL statements and the
+     * number of rows affected by the DML statement. Supported connector: SnowflakeV2. Type: boolean (or Expression with
+     * resultType boolean).
+     * 
+     * @return the returnMultistatementResult value.
+     */
+    public Object returnMultistatementResult() {
+        return this.returnMultistatementResult;
+    }
+
+    /**
+     * Set the returnMultistatementResult property: Enable to retrieve result sets from multiple SQL statements and the
+     * number of rows affected by the DML statement. Supported connector: SnowflakeV2. Type: boolean (or Expression with
+     * resultType boolean).
+     * 
+     * @param returnMultistatementResult the returnMultistatementResult value to set.
+     * @return the ScriptActivityTypeProperties object itself.
+     */
+    public ScriptActivityTypeProperties withReturnMultistatementResult(Object returnMultistatementResult) {
+        this.returnMultistatementResult = returnMultistatementResult;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -126,6 +156,7 @@ public final class ScriptActivityTypeProperties implements JsonSerializable<Scri
         jsonWriter.writeUntypedField("scriptBlockExecutionTimeout", this.scriptBlockExecutionTimeout);
         jsonWriter.writeArrayField("scripts", this.scripts, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("logSettings", this.logSettings);
+        jsonWriter.writeUntypedField("returnMultistatementResult", this.returnMultistatementResult);
         return jsonWriter.writeEndObject();
     }
 
@@ -153,6 +184,8 @@ public final class ScriptActivityTypeProperties implements JsonSerializable<Scri
                 } else if ("logSettings".equals(fieldName)) {
                     deserializedScriptActivityTypeProperties.logSettings
                         = ScriptActivityTypePropertiesLogSettings.fromJson(reader);
+                } else if ("returnMultistatementResult".equals(fieldName)) {
+                    deserializedScriptActivityTypeProperties.returnMultistatementResult = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

@@ -6,49 +6,31 @@ package com.azure.resourcemanager.apicenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apicenter.ApiCenterManager;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.apicenter.models.Service;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServicesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"d481c023-b233-413f-ad56-d23029ade334\",\"tenantId\":\"6aad6db2-9441-49e8-bbe6-307eaf343503\",\"type\":\"None\",\"userAssignedIdentities\":{\"hqjohxcrsbfova\":{\"principalId\":\"293424b1-9c21-4ae1-be27-cdff040e4af9\",\"clientId\":\"8964597e-639a-4113-8f66-de1c97a3af27\"},\"uvwbhsqfs\":{\"principalId\":\"6dbf2210-57a8-4821-9900-03dfafcb71fc\",\"clientId\":\"17d01f92-41a9-45c3-a619-02a012bf1cf5\"},\"gjb\":{\"principalId\":\"3913798a-e8f0-4219-88bd-aa366449402f\",\"clientId\":\"6026d520-08e7-4910-8a6c-ebcd8552e0d5\"}}},\"location\":\"xb\",\"tags\":{\"t\":\"srfbjfdtwss\",\"vwpm\":\"tpvjzbexilzznfqq\"},\"id\":\"taruoujmkcj\",\"name\":\"wqytjrybnwjewgdr\",\"type\":\"ervnaenqpehi\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"584c9885-f9c4-462d-8a39-f53aff98b1a6\",\"tenantId\":\"dcd1eabe-323b-423b-b72f-e87e25603b0e\",\"type\":\"None\",\"userAssignedIdentities\":{\"hqjohxcrsbfova\":{\"principalId\":\"129d7b68-7bc3-41da-aa94-92f1a997435e\",\"clientId\":\"18cc121e-5385-4a2e-a265-65b78c0ff658\"},\"uvwbhsqfs\":{\"principalId\":\"a4455b9b-d1ef-4c5b-8a83-f0affb30223d\",\"clientId\":\"a6fbcf9b-02f7-44d3-9c72-1ff001d1fab6\"},\"gjb\":{\"principalId\":\"6342df61-9701-45c2-a37e-9d18f6e9b885\",\"clientId\":\"d579f3d6-0cb7-4689-861c-6cd84596d2ab\"}}},\"location\":\"xb\",\"tags\":{\"t\":\"srfbjfdtwss\",\"vwpm\":\"tpvjzbexilzznfqq\"},\"id\":\"taruoujmkcj\",\"name\":\"wqytjrybnwjewgdr\",\"type\":\"ervnaenqpehi\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Service> response
             = manager.services().listByResourceGroup("ytkblmpew", com.azure.core.util.Context.NONE);

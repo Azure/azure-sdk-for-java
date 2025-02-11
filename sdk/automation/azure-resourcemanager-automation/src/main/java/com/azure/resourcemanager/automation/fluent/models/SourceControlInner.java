@@ -6,22 +6,47 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.SourceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Definition of the source control. */
+/**
+ * Definition of the source control.
+ */
 @Fluent
 public final class SourceControlInner extends ProxyResource {
     /*
      * The properties of the source control.
      */
-    @JsonProperty(value = "properties")
     private SourceControlProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SourceControlInner class.
+     */
+    public SourceControlInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the source control.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SourceControlProperties innerProperties() {
@@ -29,8 +54,38 @@ public final class SourceControlInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the repoUrl property: The repo url of the source control.
-     *
+     * 
      * @return the repoUrl value.
      */
     public String repoUrl() {
@@ -39,7 +94,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Set the repoUrl property: The repo url of the source control.
-     *
+     * 
      * @param repoUrl the repoUrl value to set.
      * @return the SourceControlInner object itself.
      */
@@ -53,7 +108,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Get the branch property: The repo branch of the source control. Include branch as empty string for VsoTfvc.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -62,7 +117,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Set the branch property: The repo branch of the source control. Include branch as empty string for VsoTfvc.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SourceControlInner object itself.
      */
@@ -76,7 +131,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Get the folderPath property: The folder path of the source control.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -85,7 +140,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Set the folderPath property: The folder path of the source control.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the SourceControlInner object itself.
      */
@@ -99,7 +154,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Get the autoSync property: The auto sync of the source control. Default is false.
-     *
+     * 
      * @return the autoSync value.
      */
     public Boolean autoSync() {
@@ -108,7 +163,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Set the autoSync property: The auto sync of the source control. Default is false.
-     *
+     * 
      * @param autoSync the autoSync value to set.
      * @return the SourceControlInner object itself.
      */
@@ -122,7 +177,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Get the publishRunbook property: The auto publish of the source control. Default is true.
-     *
+     * 
      * @return the publishRunbook value.
      */
     public Boolean publishRunbook() {
@@ -131,7 +186,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Set the publishRunbook property: The auto publish of the source control. Default is true.
-     *
+     * 
      * @param publishRunbook the publishRunbook value to set.
      * @return the SourceControlInner object itself.
      */
@@ -145,7 +200,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Get the sourceType property: The source type. Must be one of VsoGit, VsoTfvc, GitHub.
-     *
+     * 
      * @return the sourceType value.
      */
     public SourceType sourceType() {
@@ -154,7 +209,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Set the sourceType property: The source type. Must be one of VsoGit, VsoTfvc, GitHub.
-     *
+     * 
      * @param sourceType the sourceType value to set.
      * @return the SourceControlInner object itself.
      */
@@ -168,7 +223,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Get the description property: The description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -177,7 +232,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Set the description property: The description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SourceControlInner object itself.
      */
@@ -191,7 +246,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Get the creationTime property: The creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -200,7 +255,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Set the creationTime property: The creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the SourceControlInner object itself.
      */
@@ -214,7 +269,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Get the lastModifiedTime property: The last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -223,7 +278,7 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Set the lastModifiedTime property: The last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the SourceControlInner object itself.
      */
@@ -237,12 +292,55 @@ public final class SourceControlInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceControlInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceControlInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SourceControlInner.
+     */
+    public static SourceControlInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceControlInner deserializedSourceControlInner = new SourceControlInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSourceControlInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSourceControlInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSourceControlInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSourceControlInner.innerProperties = SourceControlProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceControlInner;
+        });
     }
 }

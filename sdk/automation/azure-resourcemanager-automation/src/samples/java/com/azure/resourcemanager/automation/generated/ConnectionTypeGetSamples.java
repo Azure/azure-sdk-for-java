@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ConnectionType Get. */
+/**
+ * Samples for ConnectionType Get.
+ */
 public final class ConnectionTypeGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getConnectionType.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getConnectionType.json
      */
     /**
      * Sample code: Get connection type.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getConnectionType(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.connectionTypes().getWithResponse("rg", "myAutomationAccount22", "myCT", Context.NONE);
+        manager.connectionTypes()
+            .getWithResponse("rg", "myAutomationAccount22", "myCT", com.azure.core.util.Context.NONE);
     }
 }

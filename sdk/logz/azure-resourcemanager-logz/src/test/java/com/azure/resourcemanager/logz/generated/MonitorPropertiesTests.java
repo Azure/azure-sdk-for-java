@@ -17,62 +17,52 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitorProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Succeeded\",\"monitoringStatus\":\"Enabled\",\"marketplaceSubscriptionStatus\":\"Active\",\"logzOrganizationProperties\":{\"companyName\":\"umkdosvqwhbmd\",\"id\":\"bjf\",\"enterpriseAppId\":\"gmbmbexppbh\",\"singleSignOnUrl\":\"qrolfpf\"},\"userInfo\":{\"firstName\":\"lgbquxig\",\"lastName\":\"jgzjaoyfhrtx\",\"emailAddress\":\"n\",\"phoneNumber\":\"kujysvlejuvfq\"},\"planData\":{\"usageType\":\"lyxwjkcprbnwbx\",\"billingCycle\":\"vtb\",\"planDetails\":\"ysszdnrujqguh\",\"effectiveDate\":\"2021-02-16T19:21:04Z\"},\"liftrResourceCategory\":\"MonitorLogs\",\"liftrResourcePreference\":1747028439}")
-                .toObject(MonitorProperties.class);
+        MonitorProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Canceled\",\"monitoringStatus\":\"Enabled\",\"marketplaceSubscriptionStatus\":\"Active\",\"logzOrganizationProperties\":{\"companyName\":\"krlkhbzhfepg\",\"id\":\"qex\",\"enterpriseAppId\":\"ocxscpaierhhbcs\",\"singleSignOnUrl\":\"ummajtjaod\"},\"userInfo\":{\"firstName\":\"nbdxk\",\"lastName\":\"xo\",\"emailAddress\":\"jionpimexgstxgc\",\"phoneNumber\":\"dg\"},\"planData\":{\"usageType\":\"jrmvdjwzrlo\",\"billingCycle\":\"clwhijcoejctbz\",\"planDetails\":\"s\",\"effectiveDate\":\"2021-09-16T11:00:54Z\"},\"liftrResourceCategory\":\"MonitorLogs\",\"liftrResourcePreference\":475549149}")
+            .toObject(MonitorProperties.class);
         Assertions.assertEquals(MonitoringStatus.ENABLED, model.monitoringStatus());
         Assertions.assertEquals(MarketplaceSubscriptionStatus.ACTIVE, model.marketplaceSubscriptionStatus());
-        Assertions.assertEquals("umkdosvqwhbmd", model.logzOrganizationProperties().companyName());
-        Assertions.assertEquals("gmbmbexppbh", model.logzOrganizationProperties().enterpriseAppId());
-        Assertions.assertEquals("qrolfpf", model.logzOrganizationProperties().singleSignOnUrl());
-        Assertions.assertEquals("lgbquxig", model.userInfo().firstName());
-        Assertions.assertEquals("jgzjaoyfhrtx", model.userInfo().lastName());
-        Assertions.assertEquals("n", model.userInfo().emailAddress());
-        Assertions.assertEquals("kujysvlejuvfq", model.userInfo().phoneNumber());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.planData().usageType());
-        Assertions.assertEquals("vtb", model.planData().billingCycle());
-        Assertions.assertEquals("ysszdnrujqguh", model.planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T19:21:04Z"), model.planData().effectiveDate());
+        Assertions.assertEquals("krlkhbzhfepg", model.logzOrganizationProperties().companyName());
+        Assertions.assertEquals("ocxscpaierhhbcs", model.logzOrganizationProperties().enterpriseAppId());
+        Assertions.assertEquals("ummajtjaod", model.logzOrganizationProperties().singleSignOnUrl());
+        Assertions.assertEquals("nbdxk", model.userInfo().firstName());
+        Assertions.assertEquals("xo", model.userInfo().lastName());
+        Assertions.assertEquals("jionpimexgstxgc", model.userInfo().emailAddress());
+        Assertions.assertEquals("dg", model.userInfo().phoneNumber());
+        Assertions.assertEquals("jrmvdjwzrlo", model.planData().usageType());
+        Assertions.assertEquals("clwhijcoejctbz", model.planData().billingCycle());
+        Assertions.assertEquals("s", model.planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T11:00:54Z"), model.planData().effectiveDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitorProperties model =
-            new MonitorProperties()
-                .withMonitoringStatus(MonitoringStatus.ENABLED)
-                .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.ACTIVE)
-                .withLogzOrganizationProperties(
-                    new LogzOrganizationProperties()
-                        .withCompanyName("umkdosvqwhbmd")
-                        .withEnterpriseAppId("gmbmbexppbh")
-                        .withSingleSignOnUrl("qrolfpf"))
-                .withUserInfo(
-                    new UserInfo()
-                        .withFirstName("lgbquxig")
-                        .withLastName("jgzjaoyfhrtx")
-                        .withEmailAddress("n")
-                        .withPhoneNumber("kujysvlejuvfq"))
-                .withPlanData(
-                    new PlanData()
-                        .withUsageType("lyxwjkcprbnwbx")
-                        .withBillingCycle("vtb")
-                        .withPlanDetails("ysszdnrujqguh")
-                        .withEffectiveDate(OffsetDateTime.parse("2021-02-16T19:21:04Z")));
+        MonitorProperties model = new MonitorProperties().withMonitoringStatus(MonitoringStatus.ENABLED)
+            .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.ACTIVE)
+            .withLogzOrganizationProperties(new LogzOrganizationProperties().withCompanyName("krlkhbzhfepg")
+                .withEnterpriseAppId("ocxscpaierhhbcs")
+                .withSingleSignOnUrl("ummajtjaod"))
+            .withUserInfo(new UserInfo().withFirstName("nbdxk")
+                .withLastName("xo")
+                .withEmailAddress("jionpimexgstxgc")
+                .withPhoneNumber("dg"))
+            .withPlanData(new PlanData().withUsageType("jrmvdjwzrlo")
+                .withBillingCycle("clwhijcoejctbz")
+                .withPlanDetails("s")
+                .withEffectiveDate(OffsetDateTime.parse("2021-09-16T11:00:54Z")));
         model = BinaryData.fromObject(model).toObject(MonitorProperties.class);
         Assertions.assertEquals(MonitoringStatus.ENABLED, model.monitoringStatus());
         Assertions.assertEquals(MarketplaceSubscriptionStatus.ACTIVE, model.marketplaceSubscriptionStatus());
-        Assertions.assertEquals("umkdosvqwhbmd", model.logzOrganizationProperties().companyName());
-        Assertions.assertEquals("gmbmbexppbh", model.logzOrganizationProperties().enterpriseAppId());
-        Assertions.assertEquals("qrolfpf", model.logzOrganizationProperties().singleSignOnUrl());
-        Assertions.assertEquals("lgbquxig", model.userInfo().firstName());
-        Assertions.assertEquals("jgzjaoyfhrtx", model.userInfo().lastName());
-        Assertions.assertEquals("n", model.userInfo().emailAddress());
-        Assertions.assertEquals("kujysvlejuvfq", model.userInfo().phoneNumber());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.planData().usageType());
-        Assertions.assertEquals("vtb", model.planData().billingCycle());
-        Assertions.assertEquals("ysszdnrujqguh", model.planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T19:21:04Z"), model.planData().effectiveDate());
+        Assertions.assertEquals("krlkhbzhfepg", model.logzOrganizationProperties().companyName());
+        Assertions.assertEquals("ocxscpaierhhbcs", model.logzOrganizationProperties().enterpriseAppId());
+        Assertions.assertEquals("ummajtjaod", model.logzOrganizationProperties().singleSignOnUrl());
+        Assertions.assertEquals("nbdxk", model.userInfo().firstName());
+        Assertions.assertEquals("xo", model.userInfo().lastName());
+        Assertions.assertEquals("jionpimexgstxgc", model.userInfo().emailAddress());
+        Assertions.assertEquals("dg", model.userInfo().phoneNumber());
+        Assertions.assertEquals("jrmvdjwzrlo", model.planData().usageType());
+        Assertions.assertEquals("clwhijcoejctbz", model.planData().billingCycle());
+        Assertions.assertEquals("s", model.planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T11:00:54Z"), model.planData().effectiveDate());
     }
 }

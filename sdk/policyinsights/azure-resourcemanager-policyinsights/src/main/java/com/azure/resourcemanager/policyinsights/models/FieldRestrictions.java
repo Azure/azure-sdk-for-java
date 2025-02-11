@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The restrictions that will be placed on a field in the resource by policy. */
+/**
+ * The restrictions that will be placed on a field in the resource by policy.
+ */
 @Fluent
-public final class FieldRestrictions {
+public final class FieldRestrictions implements JsonSerializable<FieldRestrictions> {
     /*
      * The name of the field. This can be a top-level property like 'name' or 'type' or an Azure Policy field alias.
      */
-    @JsonProperty(value = "field", access = JsonProperty.Access.WRITE_ONLY)
     private String field;
 
     /*
      * The restrictions placed on that field by policy.
      */
-    @JsonProperty(value = "restrictions")
     private List<FieldRestriction> restrictions;
 
-    /** Creates an instance of FieldRestrictions class. */
+    /**
+     * Creates an instance of FieldRestrictions class.
+     */
     public FieldRestrictions() {
     }
 
     /**
      * Get the field property: The name of the field. This can be a top-level property like 'name' or 'type' or an Azure
      * Policy field alias.
-     *
+     * 
      * @return the field value.
      */
     public String field() {
@@ -39,7 +45,7 @@ public final class FieldRestrictions {
 
     /**
      * Get the restrictions property: The restrictions placed on that field by policy.
-     *
+     * 
      * @return the restrictions value.
      */
     public List<FieldRestriction> restrictions() {
@@ -48,7 +54,7 @@ public final class FieldRestrictions {
 
     /**
      * Set the restrictions property: The restrictions placed on that field by policy.
-     *
+     * 
      * @param restrictions the restrictions value to set.
      * @return the FieldRestrictions object itself.
      */
@@ -59,12 +65,52 @@ public final class FieldRestrictions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (restrictions() != null) {
             restrictions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("restrictions", this.restrictions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FieldRestrictions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FieldRestrictions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FieldRestrictions.
+     */
+    public static FieldRestrictions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FieldRestrictions deserializedFieldRestrictions = new FieldRestrictions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("field".equals(fieldName)) {
+                    deserializedFieldRestrictions.field = reader.getString();
+                } else if ("restrictions".equals(fieldName)) {
+                    List<FieldRestriction> restrictions
+                        = reader.readArray(reader1 -> FieldRestriction.fromJson(reader1));
+                    deserializedFieldRestrictions.restrictions = restrictions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFieldRestrictions;
+        });
     }
 }

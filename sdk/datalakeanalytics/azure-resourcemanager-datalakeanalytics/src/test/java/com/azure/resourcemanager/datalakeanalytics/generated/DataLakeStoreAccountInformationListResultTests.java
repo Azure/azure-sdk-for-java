@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakeanalytics.models.DataLakeStoreAccountIn
 public final class DataLakeStoreAccountInformationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataLakeStoreAccountInformationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"suffix\":\"htxfvgxbfsmxnehm\"},\"name\":\"ec\",\"type\":\"odebfqkkrbmpu\",\"id\":\"riwflzlfb\"},{\"properties\":{\"suffix\":\"uzycispnqza\"},\"name\":\"gkbrpyyd\",\"type\":\"bnuqqkpik\",\"id\":\"rgvtqag\"},{\"properties\":{\"suffix\":\"ynhijggme\"},\"name\":\"siarbutrcvpn\",\"type\":\"zmhjrunmp\",\"id\":\"tdbhrbnla\"}],\"nextLink\":\"xmyskp\"}")
-                .toObject(DataLakeStoreAccountInformationListResult.class);
+        DataLakeStoreAccountInformationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"suffix\":\"xieduugidyjrr\"},\"name\":\"y\",\"type\":\"svexcsonpclhoco\",\"id\":\"lkevle\"},{\"properties\":{\"suffix\":\"fbuhfmvfaxkffe\"},\"name\":\"th\",\"type\":\"m\",\"id\":\"yvshxmz\"}],\"nextLink\":\"bzoggigrx\"}")
+            .toObject(DataLakeStoreAccountInformationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

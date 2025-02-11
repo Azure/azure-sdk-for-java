@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.FlowAccessControlConfiguration;
 import com.azure.resourcemanager.logic.models.FlowEndpointsConfiguration;
 import com.azure.resourcemanager.logic.models.ResourceReference;
@@ -12,94 +17,84 @@ import com.azure.resourcemanager.logic.models.Sku;
 import com.azure.resourcemanager.logic.models.WorkflowParameter;
 import com.azure.resourcemanager.logic.models.WorkflowProvisioningState;
 import com.azure.resourcemanager.logic.models.WorkflowState;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The workflow version properties. */
+/**
+ * The workflow version properties.
+ */
 @Fluent
-public final class WorkflowVersionProperties {
+public final class WorkflowVersionProperties implements JsonSerializable<WorkflowVersionProperties> {
     /*
      * The provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowProvisioningState provisioningState;
 
     /*
      * Gets the created time.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * Gets the changed time.
      */
-    @JsonProperty(value = "changedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime changedTime;
 
     /*
      * The state.
      */
-    @JsonProperty(value = "state")
     private WorkflowState state;
 
     /*
      * Gets the version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * Gets the access endpoint.
      */
-    @JsonProperty(value = "accessEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String accessEndpoint;
 
     /*
      * The endpoints configuration.
      */
-    @JsonProperty(value = "endpointsConfiguration")
     private FlowEndpointsConfiguration endpointsConfiguration;
 
     /*
      * The access control configuration.
      */
-    @JsonProperty(value = "accessControl")
     private FlowAccessControlConfiguration accessControl;
 
     /*
      * The sku.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
     /*
      * The integration account.
      */
-    @JsonProperty(value = "integrationAccount")
     private ResourceReference integrationAccount;
 
     /*
      * The definition.
      */
-    @JsonProperty(value = "definition")
     private Object definition;
 
     /*
      * The parameters.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, WorkflowParameter> parameters;
 
-    /** Creates an instance of WorkflowVersionProperties class. */
+    /**
+     * Creates an instance of WorkflowVersionProperties class.
+     */
     public WorkflowVersionProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkflowProvisioningState provisioningState() {
@@ -108,7 +103,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the createdTime property: Gets the created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -117,7 +112,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the changedTime property: Gets the changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -126,7 +121,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the state property: The state.
-     *
+     * 
      * @return the state value.
      */
     public WorkflowState state() {
@@ -135,7 +130,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the state property: The state.
-     *
+     * 
      * @param state the state value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -146,7 +141,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the version property: Gets the version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -155,7 +150,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the accessEndpoint property: Gets the access endpoint.
-     *
+     * 
      * @return the accessEndpoint value.
      */
     public String accessEndpoint() {
@@ -164,7 +159,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the endpointsConfiguration property: The endpoints configuration.
-     *
+     * 
      * @return the endpointsConfiguration value.
      */
     public FlowEndpointsConfiguration endpointsConfiguration() {
@@ -173,7 +168,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the endpointsConfiguration property: The endpoints configuration.
-     *
+     * 
      * @param endpointsConfiguration the endpointsConfiguration value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -184,7 +179,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the accessControl property: The access control configuration.
-     *
+     * 
      * @return the accessControl value.
      */
     public FlowAccessControlConfiguration accessControl() {
@@ -193,7 +188,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the accessControl property: The access control configuration.
-     *
+     * 
      * @param accessControl the accessControl value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -204,7 +199,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the sku property: The sku.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -213,7 +208,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the integrationAccount property: The integration account.
-     *
+     * 
      * @return the integrationAccount value.
      */
     public ResourceReference integrationAccount() {
@@ -222,7 +217,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the integrationAccount property: The integration account.
-     *
+     * 
      * @param integrationAccount the integrationAccount value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -233,7 +228,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the definition property: The definition.
-     *
+     * 
      * @return the definition value.
      */
     public Object definition() {
@@ -242,7 +237,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the definition property: The definition.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -253,7 +248,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Get the parameters property: The parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, WorkflowParameter> parameters() {
@@ -262,7 +257,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Set the parameters property: The parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the WorkflowVersionProperties object itself.
      */
@@ -273,7 +268,7 @@ public final class WorkflowVersionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -290,14 +285,81 @@ public final class WorkflowVersionProperties {
             integrationAccount().validate();
         }
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeJsonField("endpointsConfiguration", this.endpointsConfiguration);
+        jsonWriter.writeJsonField("accessControl", this.accessControl);
+        jsonWriter.writeJsonField("integrationAccount", this.integrationAccount);
+        jsonWriter.writeUntypedField("definition", this.definition);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowVersionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowVersionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowVersionProperties.
+     */
+    public static WorkflowVersionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowVersionProperties deserializedWorkflowVersionProperties = new WorkflowVersionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedWorkflowVersionProperties.provisioningState
+                        = WorkflowProvisioningState.fromString(reader.getString());
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedWorkflowVersionProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedWorkflowVersionProperties.changedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedWorkflowVersionProperties.state = WorkflowState.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedWorkflowVersionProperties.version = reader.getString();
+                } else if ("accessEndpoint".equals(fieldName)) {
+                    deserializedWorkflowVersionProperties.accessEndpoint = reader.getString();
+                } else if ("endpointsConfiguration".equals(fieldName)) {
+                    deserializedWorkflowVersionProperties.endpointsConfiguration
+                        = FlowEndpointsConfiguration.fromJson(reader);
+                } else if ("accessControl".equals(fieldName)) {
+                    deserializedWorkflowVersionProperties.accessControl
+                        = FlowAccessControlConfiguration.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedWorkflowVersionProperties.sku = Sku.fromJson(reader);
+                } else if ("integrationAccount".equals(fieldName)) {
+                    deserializedWorkflowVersionProperties.integrationAccount = ResourceReference.fromJson(reader);
+                } else if ("definition".equals(fieldName)) {
+                    deserializedWorkflowVersionProperties.definition = reader.readUntyped();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, WorkflowParameter> parameters
+                        = reader.readMap(reader1 -> WorkflowParameter.fromJson(reader1));
+                    deserializedWorkflowVersionProperties.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowVersionProperties;
+        });
     }
 }

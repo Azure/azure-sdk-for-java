@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeComputeProperties;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeSsisProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Managed integration runtime type properties. */
+/**
+ * Managed integration runtime type properties.
+ */
 @Fluent
-public final class ManagedIntegrationRuntimeTypeProperties {
+public final class ManagedIntegrationRuntimeTypeProperties
+    implements JsonSerializable<ManagedIntegrationRuntimeTypeProperties> {
     /*
      * The compute resource for managed integration runtime.
      */
-    @JsonProperty(value = "computeProperties")
     private IntegrationRuntimeComputeProperties computeProperties;
 
     /*
      * SSIS properties for managed integration runtime.
      */
-    @JsonProperty(value = "ssisProperties")
     private IntegrationRuntimeSsisProperties ssisProperties;
 
-    /** Creates an instance of ManagedIntegrationRuntimeTypeProperties class. */
+    /**
+     * Creates an instance of ManagedIntegrationRuntimeTypeProperties class.
+     */
     public ManagedIntegrationRuntimeTypeProperties() {
     }
 
     /**
      * Get the computeProperties property: The compute resource for managed integration runtime.
-     *
+     * 
      * @return the computeProperties value.
      */
     public IntegrationRuntimeComputeProperties computeProperties() {
@@ -39,19 +46,19 @@ public final class ManagedIntegrationRuntimeTypeProperties {
 
     /**
      * Set the computeProperties property: The compute resource for managed integration runtime.
-     *
+     * 
      * @param computeProperties the computeProperties value to set.
      * @return the ManagedIntegrationRuntimeTypeProperties object itself.
      */
-    public ManagedIntegrationRuntimeTypeProperties withComputeProperties(
-        IntegrationRuntimeComputeProperties computeProperties) {
+    public ManagedIntegrationRuntimeTypeProperties
+        withComputeProperties(IntegrationRuntimeComputeProperties computeProperties) {
         this.computeProperties = computeProperties;
         return this;
     }
 
     /**
      * Get the ssisProperties property: SSIS properties for managed integration runtime.
-     *
+     * 
      * @return the ssisProperties value.
      */
     public IntegrationRuntimeSsisProperties ssisProperties() {
@@ -60,7 +67,7 @@ public final class ManagedIntegrationRuntimeTypeProperties {
 
     /**
      * Set the ssisProperties property: SSIS properties for managed integration runtime.
-     *
+     * 
      * @param ssisProperties the ssisProperties value to set.
      * @return the ManagedIntegrationRuntimeTypeProperties object itself.
      */
@@ -71,7 +78,7 @@ public final class ManagedIntegrationRuntimeTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -81,5 +88,47 @@ public final class ManagedIntegrationRuntimeTypeProperties {
         if (ssisProperties() != null) {
             ssisProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("computeProperties", this.computeProperties);
+        jsonWriter.writeJsonField("ssisProperties", this.ssisProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIntegrationRuntimeTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIntegrationRuntimeTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIntegrationRuntimeTypeProperties.
+     */
+    public static ManagedIntegrationRuntimeTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIntegrationRuntimeTypeProperties deserializedManagedIntegrationRuntimeTypeProperties
+                = new ManagedIntegrationRuntimeTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeProperties".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeTypeProperties.computeProperties
+                        = IntegrationRuntimeComputeProperties.fromJson(reader);
+                } else if ("ssisProperties".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeTypeProperties.ssisProperties
+                        = IntegrationRuntimeSsisProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIntegrationRuntimeTypeProperties;
+        });
     }
 }

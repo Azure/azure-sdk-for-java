@@ -5,36 +5,38 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Pod Event properties.
  */
 @Fluent
-public final class PodEvent {
+public final class PodEvent implements JsonSerializable<PodEvent> {
     /*
      * The type of pod event.
      */
-    @JsonProperty(value = "type")
     private PodEventType type;
 
     /*
      * Event reason.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * Event message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Event Last seen.
      */
-    @JsonProperty(value = "lastSeenTime")
     private OffsetDateTime lastSeenTime;
 
     /**
@@ -129,5 +131,52 @@ public final class PodEvent {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("lastSeenTime",
+            this.lastSeenTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeenTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PodEvent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PodEvent if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the PodEvent.
+     */
+    public static PodEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PodEvent deserializedPodEvent = new PodEvent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedPodEvent.type = PodEventType.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedPodEvent.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedPodEvent.message = reader.getString();
+                } else if ("lastSeenTime".equals(fieldName)) {
+                    deserializedPodEvent.lastSeenTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPodEvent;
+        });
     }
 }

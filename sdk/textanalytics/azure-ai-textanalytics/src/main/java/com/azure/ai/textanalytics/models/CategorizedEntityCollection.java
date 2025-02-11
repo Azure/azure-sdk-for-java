@@ -20,7 +20,7 @@ public final class CategorizedEntityCollection extends IterableStream<Categorize
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
      */
     public CategorizedEntityCollection(IterableStream<CategorizedEntity> entities,
-                                       IterableStream<TextAnalyticsWarning> warnings) {
+        IterableStream<TextAnalyticsWarning> warnings) {
         super(entities);
         this.warnings = warnings;
     }

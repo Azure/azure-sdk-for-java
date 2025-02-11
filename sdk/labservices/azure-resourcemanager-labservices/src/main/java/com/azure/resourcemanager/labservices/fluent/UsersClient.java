@@ -15,13 +15,15 @@ import com.azure.resourcemanager.labservices.fluent.models.UserInner;
 import com.azure.resourcemanager.labservices.models.InviteBody;
 import com.azure.resourcemanager.labservices.models.UserUpdate;
 
-/** An instance of this class provides access to all the operations defined in UsersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UsersClient.
+ */
 public interface UsersClient {
     /**
      * Get all users for a lab.
-     *
-     * <p>Returns a list of all users for a lab.
-     *
+     * 
+     * Returns a list of all users for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,9 +36,9 @@ public interface UsersClient {
 
     /**
      * Get all users for a lab.
-     *
-     * <p>Returns a list of all users for a lab.
-     *
+     * 
+     * Returns a list of all users for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
@@ -51,25 +53,9 @@ public interface UsersClient {
 
     /**
      * Get a lab user.
-     *
-     * <p>Returns the properties of a lab user.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-     * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user of a lab that can register for and use virtual machines within the lab.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    UserInner get(String resourceGroupName, String labName, String username);
-
-    /**
-     * Get a lab user.
-     *
-     * <p>Returns the properties of a lab user.
-     *
+     * 
+     * Returns the properties of a lab user.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -83,10 +69,26 @@ public interface UsersClient {
     Response<UserInner> getWithResponse(String resourceGroupName, String labName, String username, Context context);
 
     /**
+     * Get a lab user.
+     * 
+     * Returns the properties of a lab user.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+     * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user of a lab that can register for and use virtual machines within the lab.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    UserInner get(String resourceGroupName, String labName, String username);
+
+    /**
      * Create or update a lab user.
-     *
-     * <p>Operation to create or update a lab user.
-     *
+     * 
+     * Operation to create or update a lab user.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -95,17 +97,17 @@ public interface UsersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of user of a lab that can register for and use virtual machines within
-     *     the lab.
+     * the lab.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String username, UserInner body);
+    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String username, UserInner body);
 
     /**
      * Create or update a lab user.
-     *
-     * <p>Operation to create or update a lab user.
-     *
+     * 
+     * Operation to create or update a lab user.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -115,17 +117,17 @@ public interface UsersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of user of a lab that can register for and use virtual machines within
-     *     the lab.
+     * the lab.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String username, UserInner body, Context context);
+    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String username, UserInner body, Context context);
 
     /**
      * Create or update a lab user.
-     *
-     * <p>Operation to create or update a lab user.
-     *
+     * 
+     * Operation to create or update a lab user.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -140,9 +142,9 @@ public interface UsersClient {
 
     /**
      * Create or update a lab user.
-     *
-     * <p>Operation to create or update a lab user.
-     *
+     * 
+     * Operation to create or update a lab user.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -154,14 +156,14 @@ public interface UsersClient {
      * @return user of a lab that can register for and use virtual machines within the lab.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UserInner createOrUpdate(
-        String resourceGroupName, String labName, String username, UserInner body, Context context);
+    UserInner createOrUpdate(String resourceGroupName, String labName, String username, UserInner body,
+        Context context);
 
     /**
      * Update a lab user.
-     *
-     * <p>Operation to update a lab user.
-     *
+     * 
+     * Operation to update a lab user.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -170,17 +172,17 @@ public interface UsersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of user of a lab that can register for and use virtual machines within
-     *     the lab.
+     * the lab.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UserInner>, UserInner> beginUpdate(
-        String resourceGroupName, String labName, String username, UserUpdate body);
+    SyncPoller<PollResult<UserInner>, UserInner> beginUpdate(String resourceGroupName, String labName, String username,
+        UserUpdate body);
 
     /**
      * Update a lab user.
-     *
-     * <p>Operation to update a lab user.
-     *
+     * 
+     * Operation to update a lab user.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -190,17 +192,17 @@ public interface UsersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of user of a lab that can register for and use virtual machines within
-     *     the lab.
+     * the lab.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UserInner>, UserInner> beginUpdate(
-        String resourceGroupName, String labName, String username, UserUpdate body, Context context);
+    SyncPoller<PollResult<UserInner>, UserInner> beginUpdate(String resourceGroupName, String labName, String username,
+        UserUpdate body, Context context);
 
     /**
      * Update a lab user.
-     *
-     * <p>Operation to update a lab user.
-     *
+     * 
+     * Operation to update a lab user.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -215,9 +217,9 @@ public interface UsersClient {
 
     /**
      * Update a lab user.
-     *
-     * <p>Operation to update a lab user.
-     *
+     * 
+     * Operation to update a lab user.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -233,9 +235,9 @@ public interface UsersClient {
 
     /**
      * Deletes a user resource.
-     *
-     * <p>Operation to delete a user resource.
-     *
+     * 
+     * Operation to delete a user resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -249,9 +251,9 @@ public interface UsersClient {
 
     /**
      * Deletes a user resource.
-     *
-     * <p>Operation to delete a user resource.
-     *
+     * 
+     * Operation to delete a user resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -262,14 +264,14 @@ public interface UsersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String username, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String username,
+        Context context);
 
     /**
      * Deletes a user resource.
-     *
-     * <p>Operation to delete a user resource.
-     *
+     * 
+     * Operation to delete a user resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -282,9 +284,9 @@ public interface UsersClient {
 
     /**
      * Deletes a user resource.
-     *
-     * <p>Operation to delete a user resource.
-     *
+     * 
+     * Operation to delete a user resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -298,9 +300,9 @@ public interface UsersClient {
 
     /**
      * Invite a user to a lab.
-     *
-     * <p>Operation to invite a user to a lab.
-     *
+     * 
+     * Operation to invite a user to a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -311,14 +313,14 @@ public interface UsersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginInvite(
-        String resourceGroupName, String labName, String username, InviteBody body);
+    SyncPoller<PollResult<Void>, Void> beginInvite(String resourceGroupName, String labName, String username,
+        InviteBody body);
 
     /**
      * Invite a user to a lab.
-     *
-     * <p>Operation to invite a user to a lab.
-     *
+     * 
+     * Operation to invite a user to a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -330,14 +332,14 @@ public interface UsersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginInvite(
-        String resourceGroupName, String labName, String username, InviteBody body, Context context);
+    SyncPoller<PollResult<Void>, Void> beginInvite(String resourceGroupName, String labName, String username,
+        InviteBody body, Context context);
 
     /**
      * Invite a user to a lab.
-     *
-     * <p>Operation to invite a user to a lab.
-     *
+     * 
+     * Operation to invite a user to a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -351,9 +353,9 @@ public interface UsersClient {
 
     /**
      * Invite a user to a lab.
-     *
-     * <p>Operation to invite a user to a lab.
-     *
+     * 
+     * Operation to invite a user to a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.

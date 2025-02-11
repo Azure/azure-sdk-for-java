@@ -387,7 +387,6 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      */
     @Override
     public void validate() {
-        super.validate();
         if (password() != null) {
             password().validate();
         }

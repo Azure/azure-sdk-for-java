@@ -500,7 +500,6 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (sku() != null) {
             sku().validate();
         }

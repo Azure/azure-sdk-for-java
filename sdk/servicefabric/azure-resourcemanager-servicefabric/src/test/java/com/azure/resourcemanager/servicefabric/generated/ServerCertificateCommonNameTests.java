@@ -21,8 +21,9 @@ public final class ServerCertificateCommonNameTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerCertificateCommonName model = new ServerCertificateCommonName()
-            .withCertificateCommonName("zlhjxrifkwmrvkt").withCertificateIssuerThumbprint("izntocipao");
+        ServerCertificateCommonName model
+            = new ServerCertificateCommonName().withCertificateCommonName("zlhjxrifkwmrvkt")
+                .withCertificateIssuerThumbprint("izntocipao");
         model = BinaryData.fromObject(model).toObject(ServerCertificateCommonName.class);
         Assertions.assertEquals("zlhjxrifkwmrvkt", model.certificateCommonName());
         Assertions.assertEquals("izntocipao", model.certificateIssuerThumbprint());

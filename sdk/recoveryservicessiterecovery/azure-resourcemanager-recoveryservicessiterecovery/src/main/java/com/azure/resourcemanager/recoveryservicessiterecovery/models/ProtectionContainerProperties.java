@@ -5,53 +5,50 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Protection profile custom data details.
  */
 @Fluent
-public final class ProtectionContainerProperties {
+public final class ProtectionContainerProperties implements JsonSerializable<ProtectionContainerProperties> {
     /*
      * Fabric friendly name.
      */
-    @JsonProperty(value = "fabricFriendlyName")
     private String fabricFriendlyName;
 
     /*
      * The name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The fabric type.
      */
-    @JsonProperty(value = "fabricType")
     private String fabricType;
 
     /*
      * Number of protected PEs.
      */
-    @JsonProperty(value = "protectedItemCount")
     private Integer protectedItemCount;
 
     /*
      * The pairing status of this cloud.
      */
-    @JsonProperty(value = "pairingStatus")
     private String pairingStatus;
 
     /*
      * The role of this cloud.
      */
-    @JsonProperty(value = "role")
     private String role;
 
     /*
      * Fabric specific details.
      */
-    @JsonProperty(value = "fabricSpecificDetails")
     private ProtectionContainerFabricSpecificDetails fabricSpecificDetails;
 
     /**
@@ -210,5 +207,62 @@ public final class ProtectionContainerProperties {
         if (fabricSpecificDetails() != null) {
             fabricSpecificDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fabricFriendlyName", this.fabricFriendlyName);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("fabricType", this.fabricType);
+        jsonWriter.writeNumberField("protectedItemCount", this.protectedItemCount);
+        jsonWriter.writeStringField("pairingStatus", this.pairingStatus);
+        jsonWriter.writeStringField("role", this.role);
+        jsonWriter.writeJsonField("fabricSpecificDetails", this.fabricSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectionContainerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectionContainerProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtectionContainerProperties.
+     */
+    public static ProtectionContainerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectionContainerProperties deserializedProtectionContainerProperties
+                = new ProtectionContainerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fabricFriendlyName".equals(fieldName)) {
+                    deserializedProtectionContainerProperties.fabricFriendlyName = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedProtectionContainerProperties.friendlyName = reader.getString();
+                } else if ("fabricType".equals(fieldName)) {
+                    deserializedProtectionContainerProperties.fabricType = reader.getString();
+                } else if ("protectedItemCount".equals(fieldName)) {
+                    deserializedProtectionContainerProperties.protectedItemCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("pairingStatus".equals(fieldName)) {
+                    deserializedProtectionContainerProperties.pairingStatus = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    deserializedProtectionContainerProperties.role = reader.getString();
+                } else if ("fabricSpecificDetails".equals(fieldName)) {
+                    deserializedProtectionContainerProperties.fabricSpecificDetails
+                        = ProtectionContainerFabricSpecificDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectionContainerProperties;
+        });
     }
 }

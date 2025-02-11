@@ -28,12 +28,14 @@ public final class LakeHouseTableSink extends CopySink {
     private Object tableActionOption;
 
     /*
-     * Create partitions in folder structure based on one or multiple columns. Each distinct column value (pair) will be a new partition. Possible values include: "None", "PartitionByKey".
+     * Create partitions in folder structure based on one or multiple columns. Each distinct column value (pair) will be
+     * a new partition. Possible values include: "None", "PartitionByKey".
      */
     private Object partitionOption;
 
     /*
-     * Specify the partition column names from sink columns. Type: array of objects (or Expression with resultType array of objects).
+     * Specify the partition column names from sink columns. Type: array of objects (or Expression with resultType array
+     * of objects).
      */
     private Object partitionNameList;
 

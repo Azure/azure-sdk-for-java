@@ -12,17 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidateConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateConfigurationProperties model =
-            BinaryData
-                .fromString("{\"validateAction\":\"Connectivity\"}")
-                .toObject(ValidateConfigurationProperties.class);
+        ValidateConfigurationProperties model = BinaryData.fromString("{\"validateAction\":\"Connectivity\"}")
+            .toObject(ValidateConfigurationProperties.class);
         Assertions.assertEquals(ValidateAction.CONNECTIVITY, model.validateAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidateConfigurationProperties model =
-            new ValidateConfigurationProperties().withValidateAction(ValidateAction.CONNECTIVITY);
+        ValidateConfigurationProperties model
+            = new ValidateConfigurationProperties().withValidateAction(ValidateAction.CONNECTIVITY);
         model = BinaryData.fromObject(model).toObject(ValidateConfigurationProperties.class);
         Assertions.assertEquals(ValidateAction.CONNECTIVITY, model.validateAction());
     }

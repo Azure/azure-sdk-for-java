@@ -13,14 +13,17 @@ import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition
 public final class MetricBoundaryConditionHelper {
     private static MetricBoundaryConditionAccessor accessor;
 
-    private MetricBoundaryConditionHelper() { }
+    private MetricBoundaryConditionHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link MetricBoundaryCondition} instance.
      */
     public interface MetricBoundaryConditionAccessor {
         void setLowerBoundary(MetricBoundaryCondition condition, Double lowerBoundary);
+
         void setUpperBoundary(MetricBoundaryCondition condition, Double upperBoundary);
+
         void setBoundaryDirection(MetricBoundaryCondition condition, BoundaryDirection boundaryDirection);
     }
 

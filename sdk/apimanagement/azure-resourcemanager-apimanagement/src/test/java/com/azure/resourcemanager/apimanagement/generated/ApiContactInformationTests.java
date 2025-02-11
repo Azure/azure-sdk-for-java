@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiContactInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiContactInformation model =
-            BinaryData
-                .fromString("{\"name\":\"pmqnja\",\"url\":\"ixjsprozvcputeg\",\"email\":\"wmfdatscmdvpjhul\"}")
+        ApiContactInformation model
+            = BinaryData.fromString("{\"name\":\"pmqnja\",\"url\":\"ixjsprozvcputeg\",\"email\":\"wmfdatscmdvpjhul\"}")
                 .toObject(ApiContactInformation.class);
         Assertions.assertEquals("pmqnja", model.name());
         Assertions.assertEquals("ixjsprozvcputeg", model.url());
@@ -22,8 +21,8 @@ public final class ApiContactInformationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiContactInformation model =
-            new ApiContactInformation().withName("pmqnja").withUrl("ixjsprozvcputeg").withEmail("wmfdatscmdvpjhul");
+        ApiContactInformation model
+            = new ApiContactInformation().withName("pmqnja").withUrl("ixjsprozvcputeg").withEmail("wmfdatscmdvpjhul");
         model = BinaryData.fromObject(model).toObject(ApiContactInformation.class);
         Assertions.assertEquals("pmqnja", model.name());
         Assertions.assertEquals("ixjsprozvcputeg", model.url());

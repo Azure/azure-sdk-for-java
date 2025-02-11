@@ -4,39 +4,58 @@
 
 package com.azure.resourcemanager.alertsmanagement.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Reason for the modification. */
+/**
+ * Reason for the modification.
+ */
 public enum AlertModificationEvent {
-    /** Enum value AlertCreated. */
+    /**
+     * Enum value AlertCreated.
+     */
     ALERT_CREATED("AlertCreated"),
 
-    /** Enum value StateChange. */
+    /**
+     * Enum value StateChange.
+     */
     STATE_CHANGE("StateChange"),
 
-    /** Enum value MonitorConditionChange. */
+    /**
+     * Enum value MonitorConditionChange.
+     */
     MONITOR_CONDITION_CHANGE("MonitorConditionChange"),
 
-    /** Enum value SeverityChange. */
+    /**
+     * Enum value SeverityChange.
+     */
     SEVERITY_CHANGE("SeverityChange"),
 
-    /** Enum value ActionRuleTriggered. */
+    /**
+     * Enum value ActionRuleTriggered.
+     */
     ACTION_RULE_TRIGGERED("ActionRuleTriggered"),
 
-    /** Enum value ActionRuleSuppressed. */
+    /**
+     * Enum value ActionRuleSuppressed.
+     */
     ACTION_RULE_SUPPRESSED("ActionRuleSuppressed"),
 
-    /** Enum value ActionsTriggered. */
+    /**
+     * Enum value ActionsTriggered.
+     */
     ACTIONS_TRIGGERED("ActionsTriggered"),
 
-    /** Enum value ActionsSuppressed. */
+    /**
+     * Enum value ActionsSuppressed.
+     */
     ACTIONS_SUPPRESSED("ActionsSuppressed"),
 
-    /** Enum value ActionsFailed. */
+    /**
+     * Enum value ActionsFailed.
+     */
     ACTIONS_FAILED("ActionsFailed");
 
-    /** The actual serialized value for a AlertModificationEvent instance. */
+    /**
+     * The actual serialized value for a AlertModificationEvent instance.
+     */
     private final String value;
 
     AlertModificationEvent(String value) {
@@ -45,11 +64,10 @@ public enum AlertModificationEvent {
 
     /**
      * Parses a serialized value to a AlertModificationEvent instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AlertModificationEvent object, or null if unable to parse.
      */
-    @JsonCreator
     public static AlertModificationEvent fromString(String value) {
         if (value == null) {
             return null;
@@ -63,8 +81,9 @@ public enum AlertModificationEvent {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

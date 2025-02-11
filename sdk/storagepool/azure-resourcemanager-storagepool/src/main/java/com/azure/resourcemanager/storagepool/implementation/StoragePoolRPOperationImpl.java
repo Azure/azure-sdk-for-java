@@ -13,8 +13,7 @@ public final class StoragePoolRPOperationImpl implements StoragePoolRPOperation 
 
     private final com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager;
 
-    StoragePoolRPOperationImpl(
-        StoragePoolRPOperationInner innerObject,
+    StoragePoolRPOperationImpl(StoragePoolRPOperationInner innerObject,
         com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

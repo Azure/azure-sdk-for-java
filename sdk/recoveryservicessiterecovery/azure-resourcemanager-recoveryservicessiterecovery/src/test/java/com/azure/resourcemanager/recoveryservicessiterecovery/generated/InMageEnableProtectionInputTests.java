@@ -35,22 +35,26 @@ public final class InMageEnableProtectionInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageEnableProtectionInput model
-            = new InMageEnableProtectionInput().withVmFriendlyName("lng").withMasterTargetId("gnhrkombcdtajdo")
-                .withProcessServerId("ggorwjoqt").withRetentionDrive("otpvclp").withRunAsAccountId("yrlmwkptsk")
-                .withMultiVmGroupId("xjgvh").withMultiVmGroupName("ccbmkakm").withDatastoreName("okbputm")
-                .withDiskExclusionInput(new InMageDiskExclusionInput()
-                    .withVolumeOptions(Arrays.asList(
-                        new InMageVolumeExclusionOptions().withVolumeLabel("akmlwktfowzkroyr")
-                            .withOnlyExcludeIfSingleVolume("r"),
-                        new InMageVolumeExclusionOptions().withVolumeLabel("lzqjimejtgzjxx")
-                            .withOnlyExcludeIfSingleVolume("e")))
-                    .withDiskSignatureOptions(
-                        Arrays.asList(new InMageDiskSignatureExclusionOptions().withDiskSignature("qloiwyayyziv"),
-                            new InMageDiskSignatureExclusionOptions().withDiskSignature("itcdqlhchwhrk"),
-                            new InMageDiskSignatureExclusionOptions().withDiskSignature("l"),
-                            new InMageDiskSignatureExclusionOptions().withDiskSignature("fibfiplhx"))))
-                .withDisksToInclude(Arrays.asList("mycjowlyey"));
+        InMageEnableProtectionInput model = new InMageEnableProtectionInput().withVmFriendlyName("lng")
+            .withMasterTargetId("gnhrkombcdtajdo")
+            .withProcessServerId("ggorwjoqt")
+            .withRetentionDrive("otpvclp")
+            .withRunAsAccountId("yrlmwkptsk")
+            .withMultiVmGroupId("xjgvh")
+            .withMultiVmGroupName("ccbmkakm")
+            .withDatastoreName("okbputm")
+            .withDiskExclusionInput(new InMageDiskExclusionInput()
+                .withVolumeOptions(Arrays.asList(
+                    new InMageVolumeExclusionOptions().withVolumeLabel("akmlwktfowzkroyr")
+                        .withOnlyExcludeIfSingleVolume("r"),
+                    new InMageVolumeExclusionOptions().withVolumeLabel("lzqjimejtgzjxx")
+                        .withOnlyExcludeIfSingleVolume("e")))
+                .withDiskSignatureOptions(
+                    Arrays.asList(new InMageDiskSignatureExclusionOptions().withDiskSignature("qloiwyayyziv"),
+                        new InMageDiskSignatureExclusionOptions().withDiskSignature("itcdqlhchwhrk"),
+                        new InMageDiskSignatureExclusionOptions().withDiskSignature("l"),
+                        new InMageDiskSignatureExclusionOptions().withDiskSignature("fibfiplhx"))))
+            .withDisksToInclude(Arrays.asList("mycjowlyey"));
         model = BinaryData.fromObject(model).toObject(InMageEnableProtectionInput.class);
         Assertions.assertEquals("lng", model.vmFriendlyName());
         Assertions.assertEquals("gnhrkombcdtajdo", model.masterTargetId());

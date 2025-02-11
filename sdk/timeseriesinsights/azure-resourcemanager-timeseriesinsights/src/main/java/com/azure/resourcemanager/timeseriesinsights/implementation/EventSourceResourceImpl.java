@@ -6,6 +6,7 @@ package com.azure.resourcemanager.timeseriesinsights.implementation;
 
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.EventSourceResourceInner;
 import com.azure.resourcemanager.timeseriesinsights.models.EventSourceResource;
+import com.azure.resourcemanager.timeseriesinsights.models.EventSourceResourceKind;
 import java.util.Collections;
 import java.util.Map;
 
@@ -14,8 +15,7 @@ public final class EventSourceResourceImpl implements EventSourceResource {
 
     private final com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager;
 
-    EventSourceResourceImpl(
-        EventSourceResourceInner innerObject,
+    EventSourceResourceImpl(EventSourceResourceInner innerObject,
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -44,6 +44,10 @@ public final class EventSourceResourceImpl implements EventSourceResource {
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public EventSourceResourceKind kind() {
+        return this.innerModel().kind();
     }
 
     public EventSourceResourceInner innerModel() {

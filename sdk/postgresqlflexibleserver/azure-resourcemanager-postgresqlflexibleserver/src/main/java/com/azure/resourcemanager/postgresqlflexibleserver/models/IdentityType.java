@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -23,6 +22,11 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
     public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");
 
     /**
+     * Static value SystemAssigned for IdentityType.
+     */
+    public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
+
+    /**
      * Creates a new instance of IdentityType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -37,7 +41,6 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
      * @param name a name to look for.
      * @return the corresponding IdentityType.
      */
-    @JsonCreator
     public static IdentityType fromString(String name) {
         return fromString(name, IdentityType.class);
     }

@@ -5,15 +5,55 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The workflow reference. */
+/**
+ * The workflow reference.
+ */
 @Fluent
 public final class WorkflowReference extends ResourceReference {
-    /** Creates an instance of WorkflowReference class. */
+    /*
+     * Gets the resource type.
+     */
+    private String type;
+
+    /*
+     * Gets the resource name.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of WorkflowReference class.
+     */
     public WorkflowReference() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: Gets the resource type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: Gets the resource name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowReference withId(String id) {
         super.withId(id);
@@ -22,11 +62,50 @@ public final class WorkflowReference extends ResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowReference.
+     */
+    public static WorkflowReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowReference deserializedWorkflowReference = new WorkflowReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkflowReference.withId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkflowReference.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkflowReference.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowReference;
+        });
     }
 }

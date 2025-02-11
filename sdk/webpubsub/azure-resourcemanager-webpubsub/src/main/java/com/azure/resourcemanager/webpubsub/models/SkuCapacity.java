@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes scaling information of a sku. */
+/**
+ * Describes scaling information of a sku.
+ */
 @Immutable
-public final class SkuCapacity {
+public final class SkuCapacity implements JsonSerializable<SkuCapacity> {
     /*
      * The lowest permitted capacity for this resource
      */
-    @JsonProperty(value = "minimum", access = JsonProperty.Access.WRITE_ONLY)
     private Integer minimum;
 
     /*
      * The highest permitted capacity for this resource
      */
-    @JsonProperty(value = "maximum", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maximum;
 
     /*
      * The default capacity.
      */
-    @JsonProperty(value = "default", access = JsonProperty.Access.WRITE_ONLY)
     private Integer defaultProperty;
 
     /*
      * Allows capacity value list.
      */
-    @JsonProperty(value = "allowedValues", access = JsonProperty.Access.WRITE_ONLY)
     private List<Integer> allowedValues;
 
     /*
      * The scale type applicable to the sku.
      */
-    @JsonProperty(value = "scaleType", access = JsonProperty.Access.WRITE_ONLY)
     private ScaleType scaleType;
 
-    /** Creates an instance of SkuCapacity class. */
+    /**
+     * Creates an instance of SkuCapacity class.
+     */
     public SkuCapacity() {
     }
 
     /**
      * Get the minimum property: The lowest permitted capacity for this resource.
-     *
+     * 
      * @return the minimum value.
      */
     public Integer minimum() {
@@ -56,7 +59,7 @@ public final class SkuCapacity {
 
     /**
      * Get the maximum property: The highest permitted capacity for this resource.
-     *
+     * 
      * @return the maximum value.
      */
     public Integer maximum() {
@@ -65,7 +68,7 @@ public final class SkuCapacity {
 
     /**
      * Get the defaultProperty property: The default capacity.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Integer defaultProperty() {
@@ -74,7 +77,7 @@ public final class SkuCapacity {
 
     /**
      * Get the allowedValues property: Allows capacity value list.
-     *
+     * 
      * @return the allowedValues value.
      */
     public List<Integer> allowedValues() {
@@ -83,7 +86,7 @@ public final class SkuCapacity {
 
     /**
      * Get the scaleType property: The scale type applicable to the sku.
-     *
+     * 
      * @return the scaleType value.
      */
     public ScaleType scaleType() {
@@ -92,9 +95,53 @@ public final class SkuCapacity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuCapacity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuCapacity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuCapacity.
+     */
+    public static SkuCapacity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuCapacity deserializedSkuCapacity = new SkuCapacity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minimum".equals(fieldName)) {
+                    deserializedSkuCapacity.minimum = reader.getNullable(JsonReader::getInt);
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedSkuCapacity.maximum = reader.getNullable(JsonReader::getInt);
+                } else if ("default".equals(fieldName)) {
+                    deserializedSkuCapacity.defaultProperty = reader.getNullable(JsonReader::getInt);
+                } else if ("allowedValues".equals(fieldName)) {
+                    List<Integer> allowedValues = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedSkuCapacity.allowedValues = allowedValues;
+                } else if ("scaleType".equals(fieldName)) {
+                    deserializedSkuCapacity.scaleType = ScaleType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuCapacity;
+        });
     }
 }

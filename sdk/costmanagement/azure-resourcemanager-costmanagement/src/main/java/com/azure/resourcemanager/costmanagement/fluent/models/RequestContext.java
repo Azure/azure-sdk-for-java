@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.GenerateCostDetailsReportRequestDefinition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The context of the Cost Details request. */
+/**
+ * The context of the Cost Details request.
+ */
 @Fluent
-public final class RequestContext {
+public final class RequestContext implements JsonSerializable<RequestContext> {
     /*
      * The request scope of the request.
      */
-    @JsonProperty(value = "requestScope")
     private String requestScope;
 
     /*
      * The request payload body provided in Cost Details call
      */
-    @JsonProperty(value = "requestBody")
     private GenerateCostDetailsReportRequestDefinition requestBody;
 
-    /** Creates an instance of RequestContext class. */
+    /**
+     * Creates an instance of RequestContext class.
+     */
     public RequestContext() {
     }
 
     /**
      * Get the requestScope property: The request scope of the request.
-     *
+     * 
      * @return the requestScope value.
      */
     public String requestScope() {
@@ -38,7 +44,7 @@ public final class RequestContext {
 
     /**
      * Set the requestScope property: The request scope of the request.
-     *
+     * 
      * @param requestScope the requestScope value to set.
      * @return the RequestContext object itself.
      */
@@ -49,7 +55,7 @@ public final class RequestContext {
 
     /**
      * Get the requestBody property: The request payload body provided in Cost Details call.
-     *
+     * 
      * @return the requestBody value.
      */
     public GenerateCostDetailsReportRequestDefinition requestBody() {
@@ -58,7 +64,7 @@ public final class RequestContext {
 
     /**
      * Set the requestBody property: The request payload body provided in Cost Details call.
-     *
+     * 
      * @param requestBody the requestBody value to set.
      * @return the RequestContext object itself.
      */
@@ -69,12 +75,52 @@ public final class RequestContext {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (requestBody() != null) {
             requestBody().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("requestScope", this.requestScope);
+        jsonWriter.writeJsonField("requestBody", this.requestBody);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RequestContext from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequestContext if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RequestContext.
+     */
+    public static RequestContext fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RequestContext deserializedRequestContext = new RequestContext();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requestScope".equals(fieldName)) {
+                    deserializedRequestContext.requestScope = reader.getString();
+                } else if ("requestBody".equals(fieldName)) {
+                    deserializedRequestContext.requestBody
+                        = GenerateCostDetailsReportRequestDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRequestContext;
+        });
     }
 }

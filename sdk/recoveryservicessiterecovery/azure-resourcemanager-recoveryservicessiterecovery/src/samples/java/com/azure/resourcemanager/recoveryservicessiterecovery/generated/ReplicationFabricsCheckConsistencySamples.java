@@ -20,7 +20,7 @@ public final class ReplicationFabricsCheckConsistencySamples {
      */
     public static void checksTheConsistencyOfTheASRFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().checkConsistency("vault1", "resourceGroupPS1", "cloud1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationFabrics()
+            .checkConsistency("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

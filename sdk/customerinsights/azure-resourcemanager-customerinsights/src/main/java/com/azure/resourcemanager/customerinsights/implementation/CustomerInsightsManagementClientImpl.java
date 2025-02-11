@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.customerinsights.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -49,7 +50,9 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the CustomerInsightsManagementClientImpl type. */
+/**
+ * Initializes a new instance of the CustomerInsightsManagementClientImpl type.
+ */
 @ServiceClient(builder = CustomerInsightsManagementClientBuilder.class)
 public final class CustomerInsightsManagementClientImpl implements CustomerInsightsManagementClient {
     /**
@@ -61,271 +64,315 @@ public final class CustomerInsightsManagementClientImpl implements CustomerInsig
     /**
      * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
      * forms part of the URI for every service call.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The HubsClient object to access its operations. */
+    /**
+     * The HubsClient object to access its operations.
+     */
     private final HubsClient hubs;
 
     /**
      * Gets the HubsClient object to access its operations.
-     *
+     * 
      * @return the HubsClient object.
      */
     public HubsClient getHubs() {
         return this.hubs;
     }
 
-    /** The ProfilesClient object to access its operations. */
+    /**
+     * The ProfilesClient object to access its operations.
+     */
     private final ProfilesClient profiles;
 
     /**
      * Gets the ProfilesClient object to access its operations.
-     *
+     * 
      * @return the ProfilesClient object.
      */
     public ProfilesClient getProfiles() {
         return this.profiles;
     }
 
-    /** The InteractionsClient object to access its operations. */
+    /**
+     * The InteractionsClient object to access its operations.
+     */
     private final InteractionsClient interactions;
 
     /**
      * Gets the InteractionsClient object to access its operations.
-     *
+     * 
      * @return the InteractionsClient object.
      */
     public InteractionsClient getInteractions() {
         return this.interactions;
     }
 
-    /** The RelationshipsClient object to access its operations. */
+    /**
+     * The RelationshipsClient object to access its operations.
+     */
     private final RelationshipsClient relationships;
 
     /**
      * Gets the RelationshipsClient object to access its operations.
-     *
+     * 
      * @return the RelationshipsClient object.
      */
     public RelationshipsClient getRelationships() {
         return this.relationships;
     }
 
-    /** The RelationshipLinksClient object to access its operations. */
+    /**
+     * The RelationshipLinksClient object to access its operations.
+     */
     private final RelationshipLinksClient relationshipLinks;
 
     /**
      * Gets the RelationshipLinksClient object to access its operations.
-     *
+     * 
      * @return the RelationshipLinksClient object.
      */
     public RelationshipLinksClient getRelationshipLinks() {
         return this.relationshipLinks;
     }
 
-    /** The AuthorizationPoliciesClient object to access its operations. */
+    /**
+     * The AuthorizationPoliciesClient object to access its operations.
+     */
     private final AuthorizationPoliciesClient authorizationPolicies;
 
     /**
      * Gets the AuthorizationPoliciesClient object to access its operations.
-     *
+     * 
      * @return the AuthorizationPoliciesClient object.
      */
     public AuthorizationPoliciesClient getAuthorizationPolicies() {
         return this.authorizationPolicies;
     }
 
-    /** The ConnectorsClient object to access its operations. */
+    /**
+     * The ConnectorsClient object to access its operations.
+     */
     private final ConnectorsClient connectors;
 
     /**
      * Gets the ConnectorsClient object to access its operations.
-     *
+     * 
      * @return the ConnectorsClient object.
      */
     public ConnectorsClient getConnectors() {
         return this.connectors;
     }
 
-    /** The ConnectorMappingsClient object to access its operations. */
+    /**
+     * The ConnectorMappingsClient object to access its operations.
+     */
     private final ConnectorMappingsClient connectorMappings;
 
     /**
      * Gets the ConnectorMappingsClient object to access its operations.
-     *
+     * 
      * @return the ConnectorMappingsClient object.
      */
     public ConnectorMappingsClient getConnectorMappings() {
         return this.connectorMappings;
     }
 
-    /** The KpisClient object to access its operations. */
+    /**
+     * The KpisClient object to access its operations.
+     */
     private final KpisClient kpis;
 
     /**
      * Gets the KpisClient object to access its operations.
-     *
+     * 
      * @return the KpisClient object.
      */
     public KpisClient getKpis() {
         return this.kpis;
     }
 
-    /** The WidgetTypesClient object to access its operations. */
+    /**
+     * The WidgetTypesClient object to access its operations.
+     */
     private final WidgetTypesClient widgetTypes;
 
     /**
      * Gets the WidgetTypesClient object to access its operations.
-     *
+     * 
      * @return the WidgetTypesClient object.
      */
     public WidgetTypesClient getWidgetTypes() {
         return this.widgetTypes;
     }
 
-    /** The ViewsClient object to access its operations. */
+    /**
+     * The ViewsClient object to access its operations.
+     */
     private final ViewsClient views;
 
     /**
      * Gets the ViewsClient object to access its operations.
-     *
+     * 
      * @return the ViewsClient object.
      */
     public ViewsClient getViews() {
         return this.views;
     }
 
-    /** The LinksClient object to access its operations. */
+    /**
+     * The LinksClient object to access its operations.
+     */
     private final LinksClient links;
 
     /**
      * Gets the LinksClient object to access its operations.
-     *
+     * 
      * @return the LinksClient object.
      */
     public LinksClient getLinks() {
         return this.links;
     }
 
-    /** The RolesClient object to access its operations. */
+    /**
+     * The RolesClient object to access its operations.
+     */
     private final RolesClient roles;
 
     /**
      * Gets the RolesClient object to access its operations.
-     *
+     * 
      * @return the RolesClient object.
      */
     public RolesClient getRoles() {
         return this.roles;
     }
 
-    /** The RoleAssignmentsClient object to access its operations. */
+    /**
+     * The RoleAssignmentsClient object to access its operations.
+     */
     private final RoleAssignmentsClient roleAssignments;
 
     /**
      * Gets the RoleAssignmentsClient object to access its operations.
-     *
+     * 
      * @return the RoleAssignmentsClient object.
      */
     public RoleAssignmentsClient getRoleAssignments() {
         return this.roleAssignments;
     }
 
-    /** The ImagesClient object to access its operations. */
+    /**
+     * The ImagesClient object to access its operations.
+     */
     private final ImagesClient images;
 
     /**
      * Gets the ImagesClient object to access its operations.
-     *
+     * 
      * @return the ImagesClient object.
      */
     public ImagesClient getImages() {
         return this.images;
     }
 
-    /** The PredictionsClient object to access its operations. */
+    /**
+     * The PredictionsClient object to access its operations.
+     */
     private final PredictionsClient predictions;
 
     /**
      * Gets the PredictionsClient object to access its operations.
-     *
+     * 
      * @return the PredictionsClient object.
      */
     public PredictionsClient getPredictions() {
@@ -334,22 +381,17 @@ public final class CustomerInsightsManagementClientImpl implements CustomerInsig
 
     /**
      * Initializes an instance of CustomerInsightsManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param subscriptionId Gets subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
-    CustomerInsightsManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    CustomerInsightsManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -377,7 +419,7 @@ public final class CustomerInsightsManagementClientImpl implements CustomerInsig
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -386,7 +428,7 @@ public final class CustomerInsightsManagementClientImpl implements CustomerInsig
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -396,7 +438,7 @@ public final class CustomerInsightsManagementClientImpl implements CustomerInsig
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -406,26 +448,15 @@ public final class CustomerInsightsManagementClientImpl implements CustomerInsig
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -438,19 +469,16 @@ public final class CustomerInsightsManagementClientImpl implements CustomerInsig
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -491,7 +519,7 @@ public final class CustomerInsightsManagementClientImpl implements CustomerInsig
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

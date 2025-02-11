@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class FormulaFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FormulaFragment model =
-            BinaryData.fromString("{\"tags\":{\"ronasxift\":\"atiz\",\"zh\":\"zq\"}}").toObject(FormulaFragment.class);
+        FormulaFragment model = BinaryData.fromString("{\"tags\":{\"ronasxift\":\"atiz\",\"zh\":\"zq\"}}")
+            .toObject(FormulaFragment.class);
         Assertions.assertEquals("atiz", model.tags().get("ronasxift"));
     }
 

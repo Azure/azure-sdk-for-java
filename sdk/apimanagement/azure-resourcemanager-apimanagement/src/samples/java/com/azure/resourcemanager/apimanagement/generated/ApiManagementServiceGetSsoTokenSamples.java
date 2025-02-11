@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for ApiManagementService GetSsoToken. */
+/**
+ * Samples for ApiManagementService GetSsoToken.
+ */
 public final class ApiManagementServiceGetSsoTokenSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceGetSsoToken.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementServiceGetSsoToken.json
      */
     /**
      * Sample code: ApiManagementServiceGetSsoToken.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementServiceGetSsoToken(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .apiManagementServices()
+    public static void
+        apiManagementServiceGetSsoToken(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
             .getSsoTokenWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }

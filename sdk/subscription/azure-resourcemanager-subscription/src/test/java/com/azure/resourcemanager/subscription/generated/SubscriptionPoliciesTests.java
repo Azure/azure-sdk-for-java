@@ -10,10 +10,9 @@ import com.azure.resourcemanager.subscription.models.SubscriptionPolicies;
 public final class SubscriptionPoliciesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubscriptionPolicies model =
-            BinaryData
-                .fromString("{\"locationPlacementId\":\"vd\",\"quotaId\":\"jgrtfwvukxga\",\"spendingLimit\":\"Off\"}")
-                .toObject(SubscriptionPolicies.class);
+        SubscriptionPolicies model = BinaryData
+            .fromString("{\"locationPlacementId\":\"vd\",\"quotaId\":\"jgrtfwvukxga\",\"spendingLimit\":\"Off\"}")
+            .toObject(SubscriptionPolicies.class);
     }
 
     @org.junit.jupiter.api.Test

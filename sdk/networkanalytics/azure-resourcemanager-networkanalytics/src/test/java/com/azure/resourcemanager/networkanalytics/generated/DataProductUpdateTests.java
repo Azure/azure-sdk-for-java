@@ -41,8 +41,10 @@ public final class DataProductUpdateTests {
                 "skanyk", "ocpecfvmmco", "nhzgpphrcgyn"))
             .withProperties(new DataProductUpdateProperties()
                 .withOwners(Arrays.asList("lzevgbmqjqab", "y", "mivkwlzuvcc", "wnfnbacf"))
-                .withPurviewAccount("nlebxetqgtzxd").withPurviewCollection("qbqqwxr")
-                .withPrivateLinksEnabled(ControlState.DISABLED).withCurrentMinorVersion("llnwsubi"));
+                .withPurviewAccount("nlebxetqgtzxd")
+                .withPurviewCollection("qbqqwxr")
+                .withPrivateLinksEnabled(ControlState.DISABLED)
+                .withCurrentMinorVersion("llnwsubi"));
         model = BinaryData.fromObject(model).toObject(DataProductUpdate.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("tkftutqxlngx", model.tags().get("efgugnxk"));

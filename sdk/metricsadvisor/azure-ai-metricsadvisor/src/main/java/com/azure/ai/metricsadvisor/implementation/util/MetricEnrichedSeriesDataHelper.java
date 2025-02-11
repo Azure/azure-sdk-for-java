@@ -15,19 +15,27 @@ import java.util.List;
 public final class MetricEnrichedSeriesDataHelper {
     private static MetricEnrichedSeriesDataAccessor accessor;
 
-    private MetricEnrichedSeriesDataHelper() { }
+    private MetricEnrichedSeriesDataHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link MetricEnrichedSeriesData} instance.
      */
     public interface MetricEnrichedSeriesDataAccessor {
         void setSeriesKey(MetricEnrichedSeriesData seriesData, DimensionKey seriesKey);
+
         void setTimestamps(MetricEnrichedSeriesData seriesData, List<OffsetDateTime> timestamps);
+
         void setMetricValues(MetricEnrichedSeriesData seriesData, List<Double> metricValues);
+
         void setIsAnomalyList(MetricEnrichedSeriesData seriesData, List<Boolean> isAnomaly);
+
         void setPeriods(MetricEnrichedSeriesData seriesData, List<Integer> periods);
+
         void setExpectedMetricValues(MetricEnrichedSeriesData seriesData, List<Double> expectedMetricValues);
+
         void setLowerBoundaryValues(MetricEnrichedSeriesData seriesData, List<Double> lowerBoundaryValues);
+
         void setUpperBoundaryValues(MetricEnrichedSeriesData seriesData, List<Double> upperBoundaryValues);
     }
 

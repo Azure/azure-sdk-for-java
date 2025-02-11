@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateManagementGroupDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateManagementGroupDetails model =
-            BinaryData
-                .fromString(
-                    "{\"version\":293333183,\"updatedTime\":\"2021-02-17T00:45:22Z\",\"updatedBy\":\"mkljavb\",\"parent\":{\"id\":\"tqajzyulpkudjkrl\",\"name\":\"bzhfepgzgqexz\",\"displayName\":\"c\"}}")
-                .toObject(CreateManagementGroupDetails.class);
-        Assertions.assertEquals("tqajzyulpkudjkrl", model.parent().id());
+        CreateManagementGroupDetails model = BinaryData.fromString(
+            "{\"version\":1161915494,\"updatedTime\":\"2020-12-30T14:20:48Z\",\"updatedBy\":\"snkymuctq\",\"parent\":{\"id\":\"bebrjcxerfuwuttt\",\"name\":\"vjrbirphxepcyvah\",\"displayName\":\"ljkyqxjvuuj\"}}")
+            .toObject(CreateManagementGroupDetails.class);
+        Assertions.assertEquals("bebrjcxerfuwuttt", model.parent().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateManagementGroupDetails model =
-            new CreateManagementGroupDetails().withParent(new CreateParentGroupInfo().withId("tqajzyulpkudjkrl"));
+        CreateManagementGroupDetails model
+            = new CreateManagementGroupDetails().withParent(new CreateParentGroupInfo().withId("bebrjcxerfuwuttt"));
         model = BinaryData.fromObject(model).toObject(CreateManagementGroupDetails.class);
-        Assertions.assertEquals("tqajzyulpkudjkrl", model.parent().id());
+        Assertions.assertEquals("bebrjcxerfuwuttt", model.parent().id());
     }
 }

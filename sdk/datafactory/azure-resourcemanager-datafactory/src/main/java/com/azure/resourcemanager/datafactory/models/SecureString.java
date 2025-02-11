@@ -70,7 +70,6 @@ public final class SecureString extends SecretBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (value() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property value in model SecureString"));

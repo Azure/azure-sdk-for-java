@@ -5,103 +5,98 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The workflow run trigger. */
+/**
+ * The workflow run trigger.
+ */
 @Fluent
-public final class WorkflowRunTrigger {
+public final class WorkflowRunTrigger implements JsonSerializable<WorkflowRunTrigger> {
     /*
      * Gets the name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Gets the inputs.
      */
-    @JsonProperty(value = "inputs", access = JsonProperty.Access.WRITE_ONLY)
     private Object inputs;
 
     /*
      * Gets the link to inputs.
      */
-    @JsonProperty(value = "inputsLink", access = JsonProperty.Access.WRITE_ONLY)
     private ContentLink inputsLink;
 
     /*
      * Gets the outputs.
      */
-    @JsonProperty(value = "outputs", access = JsonProperty.Access.WRITE_ONLY)
     private Object outputs;
 
     /*
      * Gets the link to outputs.
      */
-    @JsonProperty(value = "outputsLink", access = JsonProperty.Access.WRITE_ONLY)
     private ContentLink outputsLink;
 
     /*
      * Gets the scheduled time.
      */
-    @JsonProperty(value = "scheduledTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime scheduledTime;
 
     /*
      * Gets the start time.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Gets the end time.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Gets the tracking id.
      */
-    @JsonProperty(value = "trackingId", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingId;
 
     /*
      * The run correlation.
      */
-    @JsonProperty(value = "correlation")
     private Correlation correlation;
 
     /*
      * Gets the code.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Gets the status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowStatus status;
 
     /*
      * Gets the error.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Object error;
 
     /*
      * Gets the tracked properties.
      */
-    @JsonProperty(value = "trackedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Object trackedProperties;
 
-    /** Creates an instance of WorkflowRunTrigger class. */
+    /**
+     * Creates an instance of WorkflowRunTrigger class.
+     */
     public WorkflowRunTrigger() {
     }
 
     /**
      * Get the name property: Gets the name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -110,7 +105,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the inputs property: Gets the inputs.
-     *
+     * 
      * @return the inputs value.
      */
     public Object inputs() {
@@ -119,7 +114,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the inputsLink property: Gets the link to inputs.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -128,7 +123,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the outputs property: Gets the outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public Object outputs() {
@@ -137,7 +132,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the outputsLink property: Gets the link to outputs.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -146,7 +141,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the scheduledTime property: Gets the scheduled time.
-     *
+     * 
      * @return the scheduledTime value.
      */
     public OffsetDateTime scheduledTime() {
@@ -155,7 +150,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the startTime property: Gets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -164,7 +159,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the endTime property: Gets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -173,7 +168,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -182,7 +177,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the correlation property: The run correlation.
-     *
+     * 
      * @return the correlation value.
      */
     public Correlation correlation() {
@@ -191,7 +186,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Set the correlation property: The run correlation.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowRunTrigger object itself.
      */
@@ -202,7 +197,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the code property: Gets the code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -211,7 +206,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -220,7 +215,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -229,7 +224,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the trackedProperties property: Gets the tracked properties.
-     *
+     * 
      * @return the trackedProperties value.
      */
     public Object trackedProperties() {
@@ -238,7 +233,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -251,5 +246,70 @@ public final class WorkflowRunTrigger {
         if (correlation() != null) {
             correlation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("correlation", this.correlation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowRunTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowRunTrigger if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowRunTrigger.
+     */
+    public static WorkflowRunTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowRunTrigger deserializedWorkflowRunTrigger = new WorkflowRunTrigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.name = reader.getString();
+                } else if ("inputs".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.inputs = reader.readUntyped();
+                } else if ("inputsLink".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.inputsLink = ContentLink.fromJson(reader);
+                } else if ("outputs".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.outputs = reader.readUntyped();
+                } else if ("outputsLink".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.outputsLink = ContentLink.fromJson(reader);
+                } else if ("scheduledTime".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.scheduledTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("trackingId".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.trackingId = reader.getString();
+                } else if ("correlation".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.correlation = Correlation.fromJson(reader);
+                } else if ("code".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.code = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.status = WorkflowStatus.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.error = reader.readUntyped();
+                } else if ("trackedProperties".equals(fieldName)) {
+                    deserializedWorkflowRunTrigger.trackedProperties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowRunTrigger;
+        });
     }
 }

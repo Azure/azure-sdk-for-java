@@ -6,55 +6,58 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of the Service Fabric Type Backend. */
+/**
+ * Properties of the Service Fabric Type Backend.
+ */
 @Fluent
-public final class BackendServiceFabricClusterProperties {
+public final class BackendServiceFabricClusterProperties
+    implements JsonSerializable<BackendServiceFabricClusterProperties> {
     /*
      * The client certificate id for the management endpoint.
      */
-    @JsonProperty(value = "clientCertificateId")
     private String clientCertificateId;
 
     /*
      * The client certificate thumbprint for the management endpoint. Will be ignored if certificatesIds are provided
      */
-    @JsonProperty(value = "clientCertificatethumbprint")
     private String clientCertificatethumbprint;
 
     /*
      * Maximum number of retries while attempting resolve the partition.
      */
-    @JsonProperty(value = "maxPartitionResolutionRetries")
     private Integer maxPartitionResolutionRetries;
 
     /*
      * The cluster management endpoint.
      */
-    @JsonProperty(value = "managementEndpoints", required = true)
     private List<String> managementEndpoints;
 
     /*
      * Thumbprints of certificates cluster management service uses for tls communication
      */
-    @JsonProperty(value = "serverCertificateThumbprints")
     private List<String> serverCertificateThumbprints;
 
     /*
      * Server X509 Certificate Names Collection
      */
-    @JsonProperty(value = "serverX509Names")
     private List<X509CertificateName> serverX509Names;
 
-    /** Creates an instance of BackendServiceFabricClusterProperties class. */
+    /**
+     * Creates an instance of BackendServiceFabricClusterProperties class.
+     */
     public BackendServiceFabricClusterProperties() {
     }
 
     /**
      * Get the clientCertificateId property: The client certificate id for the management endpoint.
-     *
+     * 
      * @return the clientCertificateId value.
      */
     public String clientCertificateId() {
@@ -63,7 +66,7 @@ public final class BackendServiceFabricClusterProperties {
 
     /**
      * Set the clientCertificateId property: The client certificate id for the management endpoint.
-     *
+     * 
      * @param clientCertificateId the clientCertificateId value to set.
      * @return the BackendServiceFabricClusterProperties object itself.
      */
@@ -75,7 +78,7 @@ public final class BackendServiceFabricClusterProperties {
     /**
      * Get the clientCertificatethumbprint property: The client certificate thumbprint for the management endpoint. Will
      * be ignored if certificatesIds are provided.
-     *
+     * 
      * @return the clientCertificatethumbprint value.
      */
     public String clientCertificatethumbprint() {
@@ -85,7 +88,7 @@ public final class BackendServiceFabricClusterProperties {
     /**
      * Set the clientCertificatethumbprint property: The client certificate thumbprint for the management endpoint. Will
      * be ignored if certificatesIds are provided.
-     *
+     * 
      * @param clientCertificatethumbprint the clientCertificatethumbprint value to set.
      * @return the BackendServiceFabricClusterProperties object itself.
      */
@@ -96,7 +99,7 @@ public final class BackendServiceFabricClusterProperties {
 
     /**
      * Get the maxPartitionResolutionRetries property: Maximum number of retries while attempting resolve the partition.
-     *
+     * 
      * @return the maxPartitionResolutionRetries value.
      */
     public Integer maxPartitionResolutionRetries() {
@@ -105,19 +108,19 @@ public final class BackendServiceFabricClusterProperties {
 
     /**
      * Set the maxPartitionResolutionRetries property: Maximum number of retries while attempting resolve the partition.
-     *
+     * 
      * @param maxPartitionResolutionRetries the maxPartitionResolutionRetries value to set.
      * @return the BackendServiceFabricClusterProperties object itself.
      */
-    public BackendServiceFabricClusterProperties withMaxPartitionResolutionRetries(
-        Integer maxPartitionResolutionRetries) {
+    public BackendServiceFabricClusterProperties
+        withMaxPartitionResolutionRetries(Integer maxPartitionResolutionRetries) {
         this.maxPartitionResolutionRetries = maxPartitionResolutionRetries;
         return this;
     }
 
     /**
      * Get the managementEndpoints property: The cluster management endpoint.
-     *
+     * 
      * @return the managementEndpoints value.
      */
     public List<String> managementEndpoints() {
@@ -126,7 +129,7 @@ public final class BackendServiceFabricClusterProperties {
 
     /**
      * Set the managementEndpoints property: The cluster management endpoint.
-     *
+     * 
      * @param managementEndpoints the managementEndpoints value to set.
      * @return the BackendServiceFabricClusterProperties object itself.
      */
@@ -138,7 +141,7 @@ public final class BackendServiceFabricClusterProperties {
     /**
      * Get the serverCertificateThumbprints property: Thumbprints of certificates cluster management service uses for
      * tls communication.
-     *
+     * 
      * @return the serverCertificateThumbprints value.
      */
     public List<String> serverCertificateThumbprints() {
@@ -148,19 +151,19 @@ public final class BackendServiceFabricClusterProperties {
     /**
      * Set the serverCertificateThumbprints property: Thumbprints of certificates cluster management service uses for
      * tls communication.
-     *
+     * 
      * @param serverCertificateThumbprints the serverCertificateThumbprints value to set.
      * @return the BackendServiceFabricClusterProperties object itself.
      */
-    public BackendServiceFabricClusterProperties withServerCertificateThumbprints(
-        List<String> serverCertificateThumbprints) {
+    public BackendServiceFabricClusterProperties
+        withServerCertificateThumbprints(List<String> serverCertificateThumbprints) {
         this.serverCertificateThumbprints = serverCertificateThumbprints;
         return this;
     }
 
     /**
      * Get the serverX509Names property: Server X509 Certificate Names Collection.
-     *
+     * 
      * @return the serverX509Names value.
      */
     public List<X509CertificateName> serverX509Names() {
@@ -169,7 +172,7 @@ public final class BackendServiceFabricClusterProperties {
 
     /**
      * Set the serverX509Names property: Server X509 Certificate Names Collection.
-     *
+     * 
      * @param serverX509Names the serverX509Names value to set.
      * @return the BackendServiceFabricClusterProperties object itself.
      */
@@ -180,16 +183,14 @@ public final class BackendServiceFabricClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (managementEndpoints() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managementEndpoints in model"
-                            + " BackendServiceFabricClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property managementEndpoints in model BackendServiceFabricClusterProperties"));
         }
         if (serverX509Names() != null) {
             serverX509Names().forEach(e -> e.validate());
@@ -197,4 +198,66 @@ public final class BackendServiceFabricClusterProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackendServiceFabricClusterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("managementEndpoints", this.managementEndpoints,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("clientCertificateId", this.clientCertificateId);
+        jsonWriter.writeStringField("clientCertificatethumbprint", this.clientCertificatethumbprint);
+        jsonWriter.writeNumberField("maxPartitionResolutionRetries", this.maxPartitionResolutionRetries);
+        jsonWriter.writeArrayField("serverCertificateThumbprints", this.serverCertificateThumbprints,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("serverX509Names", this.serverX509Names,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendServiceFabricClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendServiceFabricClusterProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackendServiceFabricClusterProperties.
+     */
+    public static BackendServiceFabricClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendServiceFabricClusterProperties deserializedBackendServiceFabricClusterProperties
+                = new BackendServiceFabricClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managementEndpoints".equals(fieldName)) {
+                    List<String> managementEndpoints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBackendServiceFabricClusterProperties.managementEndpoints = managementEndpoints;
+                } else if ("clientCertificateId".equals(fieldName)) {
+                    deserializedBackendServiceFabricClusterProperties.clientCertificateId = reader.getString();
+                } else if ("clientCertificatethumbprint".equals(fieldName)) {
+                    deserializedBackendServiceFabricClusterProperties.clientCertificatethumbprint = reader.getString();
+                } else if ("maxPartitionResolutionRetries".equals(fieldName)) {
+                    deserializedBackendServiceFabricClusterProperties.maxPartitionResolutionRetries
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("serverCertificateThumbprints".equals(fieldName)) {
+                    List<String> serverCertificateThumbprints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBackendServiceFabricClusterProperties.serverCertificateThumbprints
+                        = serverCertificateThumbprints;
+                } else if ("serverX509Names".equals(fieldName)) {
+                    List<X509CertificateName> serverX509Names
+                        = reader.readArray(reader1 -> X509CertificateName.fromJson(reader1));
+                    deserializedBackendServiceFabricClusterProperties.serverX509Names = serverX509Names;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendServiceFabricClusterProperties;
+        });
+    }
 }

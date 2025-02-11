@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.PolicyDescriptionContract;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Descriptions of API Management policies. */
+/**
+ * Descriptions of API Management policies.
+ */
 @Fluent
-public final class PolicyDescriptionCollectionInner {
+public final class PolicyDescriptionCollectionInner implements JsonSerializable<PolicyDescriptionCollectionInner> {
     /*
      * Descriptions of API Management policies.
      */
-    @JsonProperty(value = "value")
     private List<PolicyDescriptionContract> value;
 
     /*
      * Total record count number.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
-    /** Creates an instance of PolicyDescriptionCollectionInner class. */
+    /**
+     * Creates an instance of PolicyDescriptionCollectionInner class.
+     */
     public PolicyDescriptionCollectionInner() {
     }
 
     /**
      * Get the value property: Descriptions of API Management policies.
-     *
+     * 
      * @return the value value.
      */
     public List<PolicyDescriptionContract> value() {
@@ -39,7 +45,7 @@ public final class PolicyDescriptionCollectionInner {
 
     /**
      * Set the value property: Descriptions of API Management policies.
-     *
+     * 
      * @param value the value value to set.
      * @return the PolicyDescriptionCollectionInner object itself.
      */
@@ -50,7 +56,7 @@ public final class PolicyDescriptionCollectionInner {
 
     /**
      * Get the count property: Total record count number.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -59,7 +65,7 @@ public final class PolicyDescriptionCollectionInner {
 
     /**
      * Set the count property: Total record count number.
-     *
+     * 
      * @param count the count value to set.
      * @return the PolicyDescriptionCollectionInner object itself.
      */
@@ -70,12 +76,54 @@ public final class PolicyDescriptionCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyDescriptionCollectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyDescriptionCollectionInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyDescriptionCollectionInner.
+     */
+    public static PolicyDescriptionCollectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyDescriptionCollectionInner deserializedPolicyDescriptionCollectionInner
+                = new PolicyDescriptionCollectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PolicyDescriptionContract> value
+                        = reader.readArray(reader1 -> PolicyDescriptionContract.fromJson(reader1));
+                    deserializedPolicyDescriptionCollectionInner.value = value;
+                } else if ("count".equals(fieldName)) {
+                    deserializedPolicyDescriptionCollectionInner.count = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyDescriptionCollectionInner;
+        });
     }
 }

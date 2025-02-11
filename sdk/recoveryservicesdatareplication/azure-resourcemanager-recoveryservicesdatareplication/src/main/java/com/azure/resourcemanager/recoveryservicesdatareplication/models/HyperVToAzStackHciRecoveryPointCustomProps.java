@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** HyperV to AzStackHCI recovery point model custom properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVToAzStackHCI")
+/**
+ * HyperV to AzStackHCI recovery point model custom properties.
+ */
 @Immutable
 public final class HyperVToAzStackHciRecoveryPointCustomProps extends RecoveryPointModelCustomProperties {
     /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "HyperVToAzStackHCI";
+
+    /*
      * Gets or sets the list of the disk Ids.
      */
-    @JsonProperty(value = "diskIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> diskIds;
 
-    /** Creates an instance of HyperVToAzStackHciRecoveryPointCustomProps class. */
+    /**
+     * Creates an instance of HyperVToAzStackHciRecoveryPointCustomProps class.
+     */
     public HyperVToAzStackHciRecoveryPointCustomProps() {
     }
 
     /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the diskIds property: Gets or sets the list of the disk Ids.
-     *
+     * 
      * @return the diskIds value.
      */
     public List<String> diskIds() {
@@ -36,11 +53,50 @@ public final class HyperVToAzStackHciRecoveryPointCustomProps extends RecoveryPo
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVToAzStackHciRecoveryPointCustomProps from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVToAzStackHciRecoveryPointCustomProps if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVToAzStackHciRecoveryPointCustomProps.
+     */
+    public static HyperVToAzStackHciRecoveryPointCustomProps fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVToAzStackHciRecoveryPointCustomProps deserializedHyperVToAzStackHciRecoveryPointCustomProps
+                = new HyperVToAzStackHciRecoveryPointCustomProps();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRecoveryPointCustomProps.instanceType = reader.getString();
+                } else if ("diskIds".equals(fieldName)) {
+                    List<String> diskIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHyperVToAzStackHciRecoveryPointCustomProps.diskIds = diskIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVToAzStackHciRecoveryPointCustomProps;
+        });
     }
 }

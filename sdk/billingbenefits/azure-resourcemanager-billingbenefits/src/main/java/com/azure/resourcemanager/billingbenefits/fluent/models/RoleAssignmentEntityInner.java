@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.billingbenefits.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Role assignment entity. */
+/**
+ * Role assignment entity.
+ */
 @Fluent
-public final class RoleAssignmentEntityInner {
+public final class RoleAssignmentEntityInner implements JsonSerializable<RoleAssignmentEntityInner> {
     /*
      * Role assignment entity id
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Role assignment entity name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Role assignment entity properties
      */
-    @JsonProperty(value = "properties")
     private RoleAssignmentEntityProperties innerProperties;
 
-    /** Creates an instance of RoleAssignmentEntityInner class. */
+    /**
+     * Creates an instance of RoleAssignmentEntityInner class.
+     */
     public RoleAssignmentEntityInner() {
     }
 
     /**
      * Get the id property: Role assignment entity id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +48,7 @@ public final class RoleAssignmentEntityInner {
 
     /**
      * Set the id property: Role assignment entity id.
-     *
+     * 
      * @param id the id value to set.
      * @return the RoleAssignmentEntityInner object itself.
      */
@@ -54,7 +59,7 @@ public final class RoleAssignmentEntityInner {
 
     /**
      * Get the name property: Role assignment entity name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +68,7 @@ public final class RoleAssignmentEntityInner {
 
     /**
      * Set the name property: Role assignment entity name.
-     *
+     * 
      * @param name the name value to set.
      * @return the RoleAssignmentEntityInner object itself.
      */
@@ -74,7 +79,7 @@ public final class RoleAssignmentEntityInner {
 
     /**
      * Get the innerProperties property: Role assignment entity properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoleAssignmentEntityProperties innerProperties() {
@@ -83,7 +88,7 @@ public final class RoleAssignmentEntityInner {
 
     /**
      * Get the principalId property: Principal Id.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -92,7 +97,7 @@ public final class RoleAssignmentEntityInner {
 
     /**
      * Set the principalId property: Principal Id.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentEntityInner object itself.
      */
@@ -106,7 +111,7 @@ public final class RoleAssignmentEntityInner {
 
     /**
      * Get the roleDefinitionId property: Role definition id.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -115,7 +120,7 @@ public final class RoleAssignmentEntityInner {
 
     /**
      * Set the roleDefinitionId property: Role definition id.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentEntityInner object itself.
      */
@@ -129,7 +134,7 @@ public final class RoleAssignmentEntityInner {
 
     /**
      * Get the scope property: Scope of the role assignment entity.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -138,7 +143,7 @@ public final class RoleAssignmentEntityInner {
 
     /**
      * Set the scope property: Scope of the role assignment entity.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the RoleAssignmentEntityInner object itself.
      */
@@ -152,12 +157,55 @@ public final class RoleAssignmentEntityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignmentEntityInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentEntityInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleAssignmentEntityInner.
+     */
+    public static RoleAssignmentEntityInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignmentEntityInner deserializedRoleAssignmentEntityInner = new RoleAssignmentEntityInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleAssignmentEntityInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRoleAssignmentEntityInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRoleAssignmentEntityInner.innerProperties
+                        = RoleAssignmentEntityProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignmentEntityInner;
+        });
     }
 }

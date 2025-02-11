@@ -24,7 +24,8 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     private String type = "GoogleCloudStorage";
 
     /*
-     * The access key identifier of the Google Cloud Storage Identity and Access Management (IAM) user. Type: string (or Expression with resultType string).
+     * The access key identifier of the Google Cloud Storage Identity and Access Management (IAM) user. Type: string (or
+     * Expression with resultType string).
      */
     private Object accessKeyId;
 
@@ -34,12 +35,15 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     private SecretBase secretAccessKey;
 
     /*
-     * This value specifies the endpoint to access with the Google Cloud Storage Connector. This is an optional property; change it only if you want to try a different service endpoint or want to switch between https and http. Type: string (or Expression with resultType string).
+     * This value specifies the endpoint to access with the Google Cloud Storage Connector. This is an optional
+     * property; change it only if you want to try a different service endpoint or want to switch between https and
+     * http. Type: string (or Expression with resultType string).
      */
     private Object serviceUrl;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

@@ -11,19 +11,19 @@ public final class MicrosoftAccessSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftAccessSink model = BinaryData.fromString(
-            "{\"type\":\"MicrosoftAccessSink\",\"preCopyScript\":\"datawimmmmgbynvoytd\",\"writeBatchSize\":\"datakfqznvahpxdg\",\"writeBatchTimeout\":\"dataowxcptxvxfwwv\",\"sinkRetryCount\":\"datagcfazt\",\"sinkRetryWait\":\"dataaszjrihca\",\"maxConcurrentConnections\":\"dataj\",\"disableMetricsCollection\":\"datavkttiteb\",\"\":{\"zlzzmygoutqe\":\"datapmoadjooer\",\"wp\":\"datapuoyc\",\"ufdxpwj\":\"dataxqx\",\"cecukzt\":\"dataajvskpbu\"}}")
+            "{\"type\":\"MicrosoftAccessSink\",\"preCopyScript\":\"datanpry\",\"writeBatchSize\":\"dataujqyeyzoivi\",\"writeBatchTimeout\":\"datanihmwvhc\",\"sinkRetryCount\":\"datamua\",\"sinkRetryWait\":\"datatd\",\"maxConcurrentConnections\":\"datai\",\"disableMetricsCollection\":\"datazytdj\",\"\":{\"bxm\":\"datansdadyrhmpokfxc\"}}")
             .toObject(MicrosoftAccessSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MicrosoftAccessSink model = new MicrosoftAccessSink().withWriteBatchSize("datakfqznvahpxdg")
-            .withWriteBatchTimeout("dataowxcptxvxfwwv")
-            .withSinkRetryCount("datagcfazt")
-            .withSinkRetryWait("dataaszjrihca")
-            .withMaxConcurrentConnections("dataj")
-            .withDisableMetricsCollection("datavkttiteb")
-            .withPreCopyScript("datawimmmmgbynvoytd");
+        MicrosoftAccessSink model = new MicrosoftAccessSink().withWriteBatchSize("dataujqyeyzoivi")
+            .withWriteBatchTimeout("datanihmwvhc")
+            .withSinkRetryCount("datamua")
+            .withSinkRetryWait("datatd")
+            .withMaxConcurrentConnections("datai")
+            .withDisableMetricsCollection("datazytdj")
+            .withPreCopyScript("datanpry");
         model = BinaryData.fromObject(model).toObject(MicrosoftAccessSink.class);
     }
 }

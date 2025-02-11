@@ -15,10 +15,7 @@ import com.azure.resourcemanager.servicebus.ServiceBusManager;
  * Entry point to service bus queue management API in Azure.
  */
 @Fluent
-public interface ServiceBusSubscriptions extends
-    SupportsCreating<ServiceBusSubscription.DefinitionStages.Blank>,
-    SupportsListing<ServiceBusSubscription>,
-    SupportsGettingByName<ServiceBusSubscription>,
-    SupportsDeletingByName,
-    HasManager<ServiceBusManager> {
+public interface ServiceBusSubscriptions
+    extends SupportsCreating<ServiceBusSubscription.DefinitionStages.Blank>, SupportsListing<ServiceBusSubscription>,
+    SupportsGettingByName<ServiceBusSubscription>, SupportsDeletingByName, HasManager<ServiceBusManager> {
 }

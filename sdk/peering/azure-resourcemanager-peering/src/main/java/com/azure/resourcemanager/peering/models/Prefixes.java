@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Prefixes. */
+/**
+ * Resource collection API of Prefixes.
+ */
 public interface Prefixes {
     /**
      * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
@@ -22,14 +24,14 @@ public interface Prefixes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service along with {@link Response}.
+     * service along with {@link Response}.
      */
-    Response<PeeringServicePrefix> getWithResponse(
-        String resourceGroupName, String peeringServiceName, String prefixName, String expand, Context context);
+    Response<PeeringServicePrefix> getWithResponse(String resourceGroupName, String peeringServiceName,
+        String prefixName, String expand, Context context);
 
     /**
      * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
@@ -37,14 +39,14 @@ public interface Prefixes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
+     * service.
      */
     PeeringServicePrefix get(String resourceGroupName, String peeringServiceName, String prefixName);
 
     /**
      * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
      * service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
@@ -54,13 +56,13 @@ public interface Prefixes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String peeringServiceName, String prefixName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String peeringServiceName, String prefixName,
+        Context context);
 
     /**
      * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
      * service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
@@ -72,7 +74,7 @@ public interface Prefixes {
 
     /**
      * Lists all prefixes under the given subscription, resource group and peering service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,7 +86,7 @@ public interface Prefixes {
 
     /**
      * Lists all prefixes under the given subscription, resource group and peering service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param expand The properties to be expanded.
@@ -94,24 +96,24 @@ public interface Prefixes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering service prefixes as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PeeringServicePrefix> listByPeeringService(
-        String resourceGroupName, String peeringServiceName, String expand, Context context);
+    PagedIterable<PeeringServicePrefix> listByPeeringService(String resourceGroupName, String peeringServiceName,
+        String expand, Context context);
 
     /**
      * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service along with {@link Response}.
+     * service along with {@link Response}.
      */
     PeeringServicePrefix getById(String id);
 
     /**
      * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
+     * 
      * @param id the resource ID.
      * @param expand The properties to be expanded.
      * @param context The context to associate with this operation.
@@ -119,14 +121,14 @@ public interface Prefixes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service along with {@link Response}.
+     * service along with {@link Response}.
      */
     Response<PeeringServicePrefix> getByIdWithResponse(String id, String expand, Context context);
 
     /**
      * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
      * service.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +139,7 @@ public interface Prefixes {
     /**
      * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
      * service.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,7 +151,7 @@ public interface Prefixes {
 
     /**
      * Begins definition for a new PeeringServicePrefix resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PeeringServicePrefix definition.
      */

@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PngFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PngFormat model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.PngFormat\",\"filenamePattern\":\"g\"}")
+        PngFormat model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.PngFormat\",\"filenamePattern\":\"ms\"}")
                 .toObject(PngFormat.class);
-        Assertions.assertEquals("g", model.filenamePattern());
+        Assertions.assertEquals("ms", model.filenamePattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PngFormat model = new PngFormat().withFilenamePattern("g");
+        PngFormat model = new PngFormat().withFilenamePattern("ms");
         model = BinaryData.fromObject(model).toObject(PngFormat.class);
-        Assertions.assertEquals("g", model.filenamePattern());
+        Assertions.assertEquals("ms", model.filenamePattern());
     }
 }

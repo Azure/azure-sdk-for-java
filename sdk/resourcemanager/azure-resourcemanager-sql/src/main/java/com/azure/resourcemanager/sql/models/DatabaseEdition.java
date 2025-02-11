@@ -51,6 +51,15 @@ public final class DatabaseEdition extends ExpandableStringEnum<DatabaseEdition>
     public static final DatabaseEdition HYPERSCALE = fromString("Hyperscale");
 
     /**
+     * Creates a new instance of DatabaseEdition value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseEdition() {
+    }
+
+    /**
      * Creates or finds a DatabaseEdition from its string representation.
      *
      * @param name a name to look for.

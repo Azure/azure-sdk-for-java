@@ -18,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("RestRequestAuthentication")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "RolloutIdentity", value = RolloutIdentityAuthentication.class),
-    @JsonSubTypes.Type(name = "ApiKey", value = ApiKeyAuthentication.class)
-})
+    @JsonSubTypes.Type(name = "ApiKey", value = ApiKeyAuthentication.class) })
 @Immutable
 public class RestRequestAuthentication {
     /** Creates an instance of RestRequestAuthentication class. */

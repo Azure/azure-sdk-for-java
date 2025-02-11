@@ -4,28 +4,60 @@
 
 package com.azure.resourcemanager.agrifood.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.agrifood.models.ApiProperties;
+import java.io.IOException;
+import java.util.Map;
 
-/** Extension resource. */
-@Fluent
+/**
+ * Extension resource.
+ */
+@Immutable
 public final class ExtensionInner extends ProxyResource {
     /*
      * Extension resource properties.
      */
-    @JsonProperty(value = "properties")
     private ExtensionProperties innerProperties;
 
     /*
      * The ETag value to implement optimistic concurrency.
      */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ExtensionInner class.
+     */
+    public ExtensionInner() {
+    }
 
     /**
      * Get the innerProperties property: Extension resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExtensionProperties innerProperties() {
@@ -34,7 +66,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Get the etag property: The ETag value to implement optimistic concurrency.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -42,8 +74,47 @@ public final class ExtensionInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the extensionId property: Extension Id.
-     *
+     * 
      * @return the extensionId value.
      */
     public String extensionId() {
@@ -52,7 +123,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Get the extensionCategory property: Extension category. e.g. weather/sensor/satellite.
-     *
+     * 
      * @return the extensionCategory value.
      */
     public String extensionCategory() {
@@ -61,7 +132,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Get the installedExtensionVersion property: Installed extension version.
-     *
+     * 
      * @return the installedExtensionVersion value.
      */
     public String installedExtensionVersion() {
@@ -70,7 +141,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Get the extensionAuthLink property: Extension auth link.
-     *
+     * 
      * @return the extensionAuthLink value.
      */
     public String extensionAuthLink() {
@@ -79,7 +150,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Get the extensionApiDocsLink property: Extension api docs link.
-     *
+     * 
      * @return the extensionApiDocsLink value.
      */
     public String extensionApiDocsLink() {
@@ -87,13 +158,69 @@ public final class ExtensionInner extends ProxyResource {
     }
 
     /**
+     * Get the additionalApiProperties property: Additional api properties.
+     * 
+     * @return the additionalApiProperties value.
+     */
+    public Map<String, ApiProperties> additionalApiProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalApiProperties();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtensionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtensionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExtensionInner.
+     */
+    public static ExtensionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtensionInner deserializedExtensionInner = new ExtensionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExtensionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedExtensionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedExtensionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExtensionInner.innerProperties = ExtensionProperties.fromJson(reader);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedExtensionInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedExtensionInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtensionInner;
+        });
     }
 }

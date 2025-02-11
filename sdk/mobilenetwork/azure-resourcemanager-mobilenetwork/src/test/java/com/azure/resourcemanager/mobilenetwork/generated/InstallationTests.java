@@ -13,15 +13,15 @@ public final class InstallationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Installation model = BinaryData.fromString(
-            "{\"desiredState\":\"Uninstalled\",\"state\":\"Updating\",\"reinstallRequired\":\"NotRequired\",\"reasons\":[\"ControlPlaneAccessVirtualIpv4AddressesHasChanged\"],\"operation\":{\"id\":\"ahvljuaha\"}}")
+            "{\"desiredState\":\"Installed\",\"state\":\"Upgrading\",\"reinstallRequired\":\"NotRequired\",\"reasons\":[\"ControlPlaneAccessInterfaceHasChanged\",\"NoAttachedDataNetworks\",\"NoPacketCoreDataPlane\",\"UserPlaneAccessInterfaceHasChanged\"],\"operation\":{\"id\":\"kv\"}}")
             .toObject(Installation.class);
-        Assertions.assertEquals(DesiredInstallationState.UNINSTALLED, model.desiredState());
+        Assertions.assertEquals(DesiredInstallationState.INSTALLED, model.desiredState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Installation model = new Installation().withDesiredState(DesiredInstallationState.UNINSTALLED);
+        Installation model = new Installation().withDesiredState(DesiredInstallationState.INSTALLED);
         model = BinaryData.fromObject(model).toObject(Installation.class);
-        Assertions.assertEquals(DesiredInstallationState.UNINSTALLED, model.desiredState());
+        Assertions.assertEquals(DesiredInstallationState.INSTALLED, model.desiredState());
     }
 }

@@ -6,69 +6,40 @@ package com.azure.resourcemanager.attestation.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.attestation.AttestationManager;
 import com.azure.resourcemanager.attestation.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.attestation.models.PrivateEndpointServiceConnectionStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateEndpointConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"xqtvcofu\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"kgjubgdknnqvsazn\",\"actionsRequired\":\"tor\"},\"provisioningState\":\"Deleting\"},\"id\":\"gsahmkycgrauw\",\"name\":\"uetae\",\"type\":\"uruv\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"qpv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ws\",\"actionsRequired\":\"r\"},\"provisioningState\":\"Creating\"},\"id\":\"pv\",\"name\":\"omzlfmi\",\"type\":\"gwb\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AttestationManager manager = AttestationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<PrivateEndpointConnection> response
+            = manager.privateEndpointConnections().list("t", "udutnco", com.azure.core.util.Context.NONE);
 
-        AttestationManager manager =
-            AttestationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<PrivateEndpointConnection> response =
-            manager.privateEndpointConnections().list("hvljuahaquh", "dhmdua", com.azure.core.util.Context.NONE);
-
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.REJECTED,
-                response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ws", response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("r", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            response.iterator().next().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("kgjubgdknnqvsazn",
+            response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("tor",
+            response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

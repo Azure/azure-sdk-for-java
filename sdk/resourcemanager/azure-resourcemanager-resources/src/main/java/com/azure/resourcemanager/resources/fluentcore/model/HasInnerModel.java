@@ -10,6 +10,8 @@ package com.azure.resourcemanager.resources.fluentcore.model;
  */
 public interface HasInnerModel<T> {
     /**
+     * Gets the wrapping internal models based on Azure REST API.
+     *
      * @return wrapped inner model providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API
      */

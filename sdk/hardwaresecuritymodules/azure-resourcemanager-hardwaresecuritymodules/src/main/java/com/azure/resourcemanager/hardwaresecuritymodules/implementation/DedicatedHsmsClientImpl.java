@@ -68,8 +68,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     }
 
     /**
-     * The interface defining all the services for AzureHsmResourceProviderDedicatedHsms to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AzureHsmResourceProviderDedicatedHsms to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureHsmResourceProv")
@@ -198,11 +198,10 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
-                apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -242,10 +241,9 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name, this.client.getApiVersion(),
             this.client.getSubscriptionId(), parameters, accept, context);
     }
 
@@ -431,11 +429,10 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
-                this.client.getSubscriptionId(), parameters, accept, context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -475,10 +472,9 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
+        return service.update(this.client.getEndpoint(), resourceGroupName, name, this.client.getApiVersion(),
             this.client.getSubscriptionId(), parameters, accept, context);
     }
 
@@ -655,11 +651,10 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
-                this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -692,10 +687,9 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
+        return service.delete(this.client.getEndpoint(), resourceGroupName, name, this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, context);
     }
 
@@ -855,11 +849,10 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
-                apiVersion, this.client.getSubscriptionId(), accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -892,11 +885,10 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
-            this.client.getSubscriptionId(), accept, context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -973,11 +965,10 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, top,
-                apiVersion, this.client.getSubscriptionId(), accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<DedicatedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1010,11 +1001,10 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, top, apiVersion,
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, top, this.client.getApiVersion(),
                 this.client.getSubscriptionId(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -1126,10 +1116,9 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), top, apiVersion,
+            .withContext(context -> service.list(this.client.getEndpoint(), top, this.client.getApiVersion(),
                 this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<DedicatedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -1156,11 +1145,11 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), top, apiVersion, this.client.getSubscriptionId(), accept, context)
+            .list(this.client.getEndpoint(), top, this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
+                context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1271,11 +1260,10 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
-                resourceGroupName, name, apiVersion, this.client.getSubscriptionId(), accept, context))
+                resourceGroupName, name, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1316,12 +1304,11 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
-                this.client.getSubscriptionId(), accept, context)
+            .listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1418,9 +1405,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1447,9 +1432,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1476,9 +1459,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1505,9 +1486,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1534,9 +1513,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1565,9 +1542,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.

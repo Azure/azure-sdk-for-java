@@ -5,85 +5,83 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Inner health error model. */
+/**
+ * Inner health error model.
+ */
 @Immutable
-public final class InnerHealthErrorModel {
+public final class InnerHealthErrorModel implements JsonSerializable<InnerHealthErrorModel> {
     /*
      * Gets or sets the error code.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Gets or sets the health category.
      */
-    @JsonProperty(value = "healthCategory", access = JsonProperty.Access.WRITE_ONLY)
     private String healthCategory;
 
     /*
      * Gets or sets the error category.
      */
-    @JsonProperty(value = "category", access = JsonProperty.Access.WRITE_ONLY)
     private String category;
 
     /*
      * Gets or sets the error severity.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private String severity;
 
     /*
      * Gets or sets the error source.
      */
-    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY)
     private String source;
 
     /*
      * Gets or sets the error creation time.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets a value indicating whether the error is customer resolvable.
      */
-    @JsonProperty(value = "isCustomerResolvable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCustomerResolvable;
 
     /*
      * Gets or sets the error summary.
      */
-    @JsonProperty(value = "summary", access = JsonProperty.Access.WRITE_ONLY)
     private String summary;
 
     /*
      * Gets or sets the error message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Gets or sets possible causes of the error.
      */
-    @JsonProperty(value = "causes", access = JsonProperty.Access.WRITE_ONLY)
     private String causes;
 
     /*
      * Gets or sets recommended action to resolve the error.
      */
-    @JsonProperty(value = "recommendation", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendation;
 
-    /** Creates an instance of InnerHealthErrorModel class. */
+    /**
+     * Creates an instance of InnerHealthErrorModel class.
+     */
     public InnerHealthErrorModel() {
     }
 
     /**
      * Get the code property: Gets or sets the error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -92,7 +90,7 @@ public final class InnerHealthErrorModel {
 
     /**
      * Get the healthCategory property: Gets or sets the health category.
-     *
+     * 
      * @return the healthCategory value.
      */
     public String healthCategory() {
@@ -101,7 +99,7 @@ public final class InnerHealthErrorModel {
 
     /**
      * Get the category property: Gets or sets the error category.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -110,7 +108,7 @@ public final class InnerHealthErrorModel {
 
     /**
      * Get the severity property: Gets or sets the error severity.
-     *
+     * 
      * @return the severity value.
      */
     public String severity() {
@@ -119,7 +117,7 @@ public final class InnerHealthErrorModel {
 
     /**
      * Get the source property: Gets or sets the error source.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -128,7 +126,7 @@ public final class InnerHealthErrorModel {
 
     /**
      * Get the creationTime property: Gets or sets the error creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -137,7 +135,7 @@ public final class InnerHealthErrorModel {
 
     /**
      * Get the isCustomerResolvable property: Gets or sets a value indicating whether the error is customer resolvable.
-     *
+     * 
      * @return the isCustomerResolvable value.
      */
     public Boolean isCustomerResolvable() {
@@ -146,7 +144,7 @@ public final class InnerHealthErrorModel {
 
     /**
      * Get the summary property: Gets or sets the error summary.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -155,7 +153,7 @@ public final class InnerHealthErrorModel {
 
     /**
      * Get the message property: Gets or sets the error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -164,7 +162,7 @@ public final class InnerHealthErrorModel {
 
     /**
      * Get the causes property: Gets or sets possible causes of the error.
-     *
+     * 
      * @return the causes value.
      */
     public String causes() {
@@ -173,7 +171,7 @@ public final class InnerHealthErrorModel {
 
     /**
      * Get the recommendation property: Gets or sets recommended action to resolve the error.
-     *
+     * 
      * @return the recommendation value.
      */
     public String recommendation() {
@@ -182,9 +180,65 @@ public final class InnerHealthErrorModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InnerHealthErrorModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InnerHealthErrorModel if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InnerHealthErrorModel.
+     */
+    public static InnerHealthErrorModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InnerHealthErrorModel deserializedInnerHealthErrorModel = new InnerHealthErrorModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedInnerHealthErrorModel.code = reader.getString();
+                } else if ("healthCategory".equals(fieldName)) {
+                    deserializedInnerHealthErrorModel.healthCategory = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedInnerHealthErrorModel.category = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedInnerHealthErrorModel.severity = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedInnerHealthErrorModel.source = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedInnerHealthErrorModel.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isCustomerResolvable".equals(fieldName)) {
+                    deserializedInnerHealthErrorModel.isCustomerResolvable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("summary".equals(fieldName)) {
+                    deserializedInnerHealthErrorModel.summary = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedInnerHealthErrorModel.message = reader.getString();
+                } else if ("causes".equals(fieldName)) {
+                    deserializedInnerHealthErrorModel.causes = reader.getString();
+                } else if ("recommendation".equals(fieldName)) {
+                    deserializedInnerHealthErrorModel.recommendation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInnerHealthErrorModel;
+        });
     }
 }

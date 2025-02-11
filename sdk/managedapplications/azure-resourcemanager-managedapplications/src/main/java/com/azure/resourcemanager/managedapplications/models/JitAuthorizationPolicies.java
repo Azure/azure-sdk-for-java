@@ -6,30 +6,36 @@ package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The JIT authorization policies. */
+/**
+ * The JIT authorization policies.
+ */
 @Fluent
-public final class JitAuthorizationPolicies {
+public final class JitAuthorizationPolicies implements JsonSerializable<JitAuthorizationPolicies> {
     /*
      * The the principal id that will be granted JIT access.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
      * The role definition id that will be granted to the Principal.
      */
-    @JsonProperty(value = "roleDefinitionId", required = true)
     private String roleDefinitionId;
 
-    /** Creates an instance of JitAuthorizationPolicies class. */
+    /**
+     * Creates an instance of JitAuthorizationPolicies class.
+     */
     public JitAuthorizationPolicies() {
     }
 
     /**
      * Get the principalId property: The the principal id that will be granted JIT access.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -38,7 +44,7 @@ public final class JitAuthorizationPolicies {
 
     /**
      * Set the principalId property: The the principal id that will be granted JIT access.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the JitAuthorizationPolicies object itself.
      */
@@ -49,7 +55,7 @@ public final class JitAuthorizationPolicies {
 
     /**
      * Get the roleDefinitionId property: The role definition id that will be granted to the Principal.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -58,7 +64,7 @@ public final class JitAuthorizationPolicies {
 
     /**
      * Set the roleDefinitionId property: The role definition id that will be granted to the Principal.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the JitAuthorizationPolicies object itself.
      */
@@ -69,23 +75,61 @@ public final class JitAuthorizationPolicies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model JitAuthorizationPolicies"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model JitAuthorizationPolicies"));
         }
         if (roleDefinitionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property roleDefinitionId in model JitAuthorizationPolicies"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roleDefinitionId in model JitAuthorizationPolicies"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JitAuthorizationPolicies.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JitAuthorizationPolicies from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JitAuthorizationPolicies if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JitAuthorizationPolicies.
+     */
+    public static JitAuthorizationPolicies fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JitAuthorizationPolicies deserializedJitAuthorizationPolicies = new JitAuthorizationPolicies();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedJitAuthorizationPolicies.principalId = reader.getString();
+                } else if ("roleDefinitionId".equals(fieldName)) {
+                    deserializedJitAuthorizationPolicies.roleDefinitionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJitAuthorizationPolicies;
+        });
+    }
 }

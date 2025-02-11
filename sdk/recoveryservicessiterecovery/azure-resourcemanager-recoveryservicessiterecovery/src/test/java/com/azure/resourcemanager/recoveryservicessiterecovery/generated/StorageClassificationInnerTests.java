@@ -22,7 +22,8 @@ public final class StorageClassificationInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageClassificationInner model = new StorageClassificationInner()
-            .withProperties(new StorageClassificationProperties().withFriendlyName("em")).withLocation("h");
+            .withProperties(new StorageClassificationProperties().withFriendlyName("em"))
+            .withLocation("h");
         model = BinaryData.fromObject(model).toObject(StorageClassificationInner.class);
         Assertions.assertEquals("em", model.properties().friendlyName());
         Assertions.assertEquals("h", model.location());

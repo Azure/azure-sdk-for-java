@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class LiftrResourceCategories extends ExpandableStringEnum<LiftrRes
      * @param name a name to look for.
      * @return the corresponding LiftrResourceCategories.
      */
-    @JsonCreator
     public static LiftrResourceCategories fromString(String name) {
         return fromString(name, LiftrResourceCategories.class);
     }

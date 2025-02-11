@@ -5,50 +5,49 @@
 package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.models.ActionType;
 import com.azure.resourcemanager.healthcareapis.models.OperationDisplay;
 import com.azure.resourcemanager.healthcareapis.models.OperationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Service REST API operation.
  */
 @Fluent
-public final class OperationDetailInner {
+public final class OperationDetailInner implements JsonSerializable<OperationDetailInner> {
     /*
      * Name of the operation
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for
+     * ARM/control-plane operations.
      */
-    @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDataAction;
 
     /*
      * Display of the operation
      */
-    @JsonProperty(value = "display")
     private OperationDisplay display;
 
     /*
      * Default value is 'user,system'.
      */
-    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private String origin;
 
     /*
      * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
      */
-    @JsonProperty(value = "actionType", access = JsonProperty.Access.WRITE_ONLY)
     private ActionType actionType;
 
     /*
      * Properties of the operation
      */
-    @JsonProperty(value = "properties")
     private OperationProperties properties;
 
     /**
@@ -147,5 +146,52 @@ public final class OperationDetailInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDetailInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDetailInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationDetailInner.
+     */
+    public static OperationDetailInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationDetailInner deserializedOperationDetailInner = new OperationDetailInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationDetailInner.name = reader.getString();
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperationDetailInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationDetailInner.display = OperationDisplay.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationDetailInner.origin = reader.getString();
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedOperationDetailInner.actionType = ActionType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationDetailInner.properties = OperationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationDetailInner;
+        });
     }
 }

@@ -23,7 +23,9 @@ public final class ReplicationPoliciesCreateSamples {
      */
     public static void
         createsThePolicy(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationPolicies().define("protectionprofile1").withExistingVault("vault1", "resourceGroupPS1")
+        manager.replicationPolicies()
+            .define("protectionprofile1")
+            .withExistingVault("vault1", "resourceGroupPS1")
             .withProperties(
                 new CreatePolicyInputProperties().withProviderSpecificInput(new HyperVReplicaAzurePolicyInput()))
             .create();

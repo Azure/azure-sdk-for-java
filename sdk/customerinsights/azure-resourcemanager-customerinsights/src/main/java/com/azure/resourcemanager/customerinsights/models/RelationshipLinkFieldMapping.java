@@ -6,36 +6,41 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The fields mapping for Relationships. */
+/**
+ * The fields mapping for Relationships.
+ */
 @Fluent
-public final class RelationshipLinkFieldMapping {
+public final class RelationshipLinkFieldMapping implements JsonSerializable<RelationshipLinkFieldMapping> {
     /*
      * The field name on the Interaction Type.
      */
-    @JsonProperty(value = "interactionFieldName", required = true)
     private String interactionFieldName;
 
     /*
      * Link type.
      */
-    @JsonProperty(value = "linkType")
     private LinkTypes linkType;
 
     /*
      * The field name on the Relationship metadata.
      */
-    @JsonProperty(value = "relationshipFieldName", required = true)
     private String relationshipFieldName;
 
-    /** Creates an instance of RelationshipLinkFieldMapping class. */
+    /**
+     * Creates an instance of RelationshipLinkFieldMapping class.
+     */
     public RelationshipLinkFieldMapping() {
     }
 
     /**
      * Get the interactionFieldName property: The field name on the Interaction Type.
-     *
+     * 
      * @return the interactionFieldName value.
      */
     public String interactionFieldName() {
@@ -44,7 +49,7 @@ public final class RelationshipLinkFieldMapping {
 
     /**
      * Set the interactionFieldName property: The field name on the Interaction Type.
-     *
+     * 
      * @param interactionFieldName the interactionFieldName value to set.
      * @return the RelationshipLinkFieldMapping object itself.
      */
@@ -55,7 +60,7 @@ public final class RelationshipLinkFieldMapping {
 
     /**
      * Get the linkType property: Link type.
-     *
+     * 
      * @return the linkType value.
      */
     public LinkTypes linkType() {
@@ -64,7 +69,7 @@ public final class RelationshipLinkFieldMapping {
 
     /**
      * Set the linkType property: Link type.
-     *
+     * 
      * @param linkType the linkType value to set.
      * @return the RelationshipLinkFieldMapping object itself.
      */
@@ -75,7 +80,7 @@ public final class RelationshipLinkFieldMapping {
 
     /**
      * Get the relationshipFieldName property: The field name on the Relationship metadata.
-     *
+     * 
      * @return the relationshipFieldName value.
      */
     public String relationshipFieldName() {
@@ -84,7 +89,7 @@ public final class RelationshipLinkFieldMapping {
 
     /**
      * Set the relationshipFieldName property: The field name on the Relationship metadata.
-     *
+     * 
      * @param relationshipFieldName the relationshipFieldName value to set.
      * @return the RelationshipLinkFieldMapping object itself.
      */
@@ -95,23 +100,64 @@ public final class RelationshipLinkFieldMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (interactionFieldName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property interactionFieldName in model RelationshipLinkFieldMapping"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property interactionFieldName in model RelationshipLinkFieldMapping"));
         }
         if (relationshipFieldName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property relationshipFieldName in model RelationshipLinkFieldMapping"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property relationshipFieldName in model RelationshipLinkFieldMapping"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RelationshipLinkFieldMapping.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("interactionFieldName", this.interactionFieldName);
+        jsonWriter.writeStringField("relationshipFieldName", this.relationshipFieldName);
+        jsonWriter.writeStringField("linkType", this.linkType == null ? null : this.linkType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelationshipLinkFieldMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelationshipLinkFieldMapping if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelationshipLinkFieldMapping.
+     */
+    public static RelationshipLinkFieldMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelationshipLinkFieldMapping deserializedRelationshipLinkFieldMapping = new RelationshipLinkFieldMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("interactionFieldName".equals(fieldName)) {
+                    deserializedRelationshipLinkFieldMapping.interactionFieldName = reader.getString();
+                } else if ("relationshipFieldName".equals(fieldName)) {
+                    deserializedRelationshipLinkFieldMapping.relationshipFieldName = reader.getString();
+                } else if ("linkType".equals(fieldName)) {
+                    deserializedRelationshipLinkFieldMapping.linkType = LinkTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelationshipLinkFieldMapping;
+        });
+    }
 }

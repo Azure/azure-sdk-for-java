@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class AmlFilesystemHealthStateType extends ExpandableStringEnum<Aml
      * @param name a name to look for.
      * @return the corresponding AmlFilesystemHealthStateType.
      */
-    @JsonCreator
     public static AmlFilesystemHealthStateType fromString(String name) {
         return fromString(name, AmlFilesystemHealthStateType.class);
     }

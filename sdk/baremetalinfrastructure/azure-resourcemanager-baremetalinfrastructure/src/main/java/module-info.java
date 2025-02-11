@@ -10,10 +10,6 @@ module com.azure.resourcemanager.baremetalinfrastructure {
     exports com.azure.resourcemanager.baremetalinfrastructure.fluent.models;
     exports com.azure.resourcemanager.baremetalinfrastructure.models;
 
-    opens com.azure.resourcemanager.baremetalinfrastructure.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.baremetalinfrastructure.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.baremetalinfrastructure.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.baremetalinfrastructure.models to com.azure.core;
 }

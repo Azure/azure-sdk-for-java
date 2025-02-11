@@ -10,9 +10,17 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 @Fluent
 public interface DatabaseAccountListReadOnlyKeysResult
     extends HasInnerModel<DatabaseAccountListReadOnlyKeysResultInner> {
-    /** @return Base 64 encoded value of the primary read-only key. */
+    /**
+     * Gets Base 64 encoded value of the primary read-only key.
+     *
+     * @return Base 64 encoded value of the primary read-only key.
+     */
     String primaryReadonlyMasterKey();
 
-    /** @return Base 64 encoded value of the secondary read-only key. */
+    /**
+     * Gets Base 64 encoded value of the secondary read-only key.
+     *
+     * @return Base 64 encoded value of the secondary read-only key.
+     */
     String secondaryReadonlyMasterKey();
 }

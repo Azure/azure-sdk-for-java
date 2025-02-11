@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class MarketplaceSaaSResourceDetailsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MarketplaceSaaSResourceDetailsRequest model =
-            BinaryData.fromString("{\"tenantId\":\"a\"}").toObject(MarketplaceSaaSResourceDetailsRequest.class);
+        MarketplaceSaaSResourceDetailsRequest model
+            = BinaryData.fromString("{\"tenantId\":\"a\"}").toObject(MarketplaceSaaSResourceDetailsRequest.class);
         Assertions.assertEquals("a", model.tenantId());
     }
 

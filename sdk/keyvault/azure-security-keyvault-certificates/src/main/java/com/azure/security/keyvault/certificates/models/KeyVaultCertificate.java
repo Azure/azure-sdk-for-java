@@ -109,9 +109,7 @@ public class KeyVaultCertificate implements JsonSerializable<KeyVaultCertificate
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeBinaryField("cer", cer)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeBinaryField("cer", cer).writeEndObject();
     }
 
     /**

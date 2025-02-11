@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The PrivateEndpointProperty model. */
 @Fluent
 public final class PrivateEndpointProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointProperty.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointProperty.class);
 
     /*
      * Resource id of the private endpoint.

@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = SolutionInferenceClientBuilder.class, isAsync = true)
 public final class SolutionInferenceAsyncClient {
-    @Generated private final SolutionInferencesImpl serviceClient;
+    @Generated
+    private final SolutionInferencesImpl serviceClient;
 
     /**
      * Initializes an instance of SolutionInferenceAsyncClient class.
@@ -67,8 +68,8 @@ public final class SolutionInferenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelWithResponse(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> cancelWithResponse(String solutionId, BinaryData solutionInferenceRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.cancelWithResponseAsync(solutionId, solutionInferenceRequest, requestOptions);
     }
 
@@ -105,8 +106,8 @@ public final class SolutionInferenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateOrUpdate(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateOrUpdate(String solutionId,
+        BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
         return this.serviceClient.beginCreateOrUpdateAsync(solutionId, solutionInferenceRequest, requestOptions);
     }
 
@@ -143,8 +144,8 @@ public final class SolutionInferenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> fetchWithResponse(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> fetchWithResponse(String solutionId, BinaryData solutionInferenceRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.fetchWithResponseAsync(solutionId, solutionInferenceRequest, requestOptions);
     }
 }

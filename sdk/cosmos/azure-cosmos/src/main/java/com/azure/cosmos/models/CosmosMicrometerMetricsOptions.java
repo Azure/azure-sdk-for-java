@@ -120,7 +120,7 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
             for (double p: percentiles) {
                 if (p < 0 || p > 1) {
                     throw new IllegalArgumentException(
-                        String.format("Percentile '%d' is outside of valid range.", p));
+                        String.format("Percentile '%f' is outside of valid range.", p));
                 }
             }
 

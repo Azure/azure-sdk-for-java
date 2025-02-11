@@ -24,17 +24,21 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
     private String type = "AzureSynapseArtifacts";
 
     /*
-     * https://<workspacename>.dev.azuresynapse.net, Azure Synapse Analytics workspace URL. Type: string (or Expression with resultType string).
+     * https://<workspacename>.dev.azuresynapse.net, Azure Synapse Analytics workspace URL. Type: string (or Expression
+     * with resultType string).
      */
     private Object endpoint;
 
     /*
-     * Required to specify MSI, if using system assigned managed identity as authentication method. Type: string (or Expression with resultType string).
+     * Required to specify MSI, if using system assigned managed identity as authentication method. Type: string (or
+     * Expression with resultType string).
      */
     private Object authentication;
 
     /*
-     * The resource ID of the Synapse workspace. The format should be: /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}. Type: string (or Expression with resultType string).
+     * The resource ID of the Synapse workspace. The format should be:
+     * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{
+     * workspaceName}. Type: string (or Expression with resultType string).
      */
     private Object workspaceResourceId;
 

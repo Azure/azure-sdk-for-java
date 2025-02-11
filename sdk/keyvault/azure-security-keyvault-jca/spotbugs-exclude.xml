@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <Match>
+    <Bug pattern="CT_CONSTRUCTOR_THROW" />
+    <Or>
+      <Class name="com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSignature" />
+      <Class name="com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsaSignature" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="DM_DEFAULT_ENCODING" />
+    <Class name="com.azure.security.keyvault.jca.implementation.utils.CertificateUtil" />
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.security.keyvault.jca.implementation.certificates.ClasspathCertificates" />
+      <Class name="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates" />
+      <Class name="com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates" />
+      <Class name="com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates" />
+      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificateBundle" />
+      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificateListResult" />
+      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificatePolicy" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="com.azure.security.keyvault.jca.KeyVaultKeyManager" />
+      <Class name="com.azure.security.keyvault.jca.KeyVaultTrustManager" />
+      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificateBundle" />
+      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificateListResult" />
+      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificatePolicy" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="MS_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory" />
+      <Class name="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="NP_DEREFERENCE_OF_READLINE_VALUE" />
+    <Class name="com.azure.security.keyvault.jca.implementation.utils.CertificateUtil" />
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_EXCEPTION" />
+    <Class name="com.azure.security.keyvault.jca.implementation.KeyVaultClient" />
+  </Match>
+  <Match>
+    <Bug pattern="SE_BAD_FIELD" />
+    <Class name="com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey" />
+  </Match>
+</FindBugsFilter>

@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,14 +21,54 @@ import java.util.UUID;
 @Fluent
 public final class AzureEventHubsDataFeed extends DataFeedDetail {
     /*
+     * data source type
+     */
+    private DataSourceType dataSourceType = DataSourceType.AZURE_EVENT_HUBS;
+
+    /*
      * The dataSourceParameter property.
      */
     private AzureEventHubsParameter dataSourceParameter;
+
+    /*
+     * data feed created time
+     */
+    private OffsetDateTime createdTime;
+
+    /*
+     * data feed status
+     */
+    private EntityStatus status;
+
+    /*
+     * data feed creator
+     */
+    private String creator;
+
+    /*
+     * the query user is one of data feed administrator or not
+     */
+    private Boolean isAdmin;
+
+    /*
+     * data feed unique id
+     */
+    private UUID dataFeedId;
 
     /**
      * Creates an instance of AzureEventHubsDataFeed class.
      */
     public AzureEventHubsDataFeed() {
+    }
+
+    /**
+     * Get the dataSourceType property: data source type.
+     * 
+     * @return the dataSourceType value.
+     */
+    @Override
+    public DataSourceType getDataSourceType() {
+        return this.dataSourceType;
     }
 
     /**
@@ -48,6 +89,56 @@ public final class AzureEventHubsDataFeed extends DataFeedDetail {
     public AzureEventHubsDataFeed setDataSourceParameter(AzureEventHubsParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
+    }
+
+    /**
+     * Get the createdTime property: data feed created time.
+     * 
+     * @return the createdTime value.
+     */
+    @Override
+    public OffsetDateTime getCreatedTime() {
+        return this.createdTime;
+    }
+
+    /**
+     * Get the status property: data feed status.
+     * 
+     * @return the status value.
+     */
+    @Override
+    public EntityStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Get the creator property: data feed creator.
+     * 
+     * @return the creator value.
+     */
+    @Override
+    public String getCreator() {
+        return this.creator;
+    }
+
+    /**
+     * Get the isAdmin property: the query user is one of data feed administrator or not.
+     * 
+     * @return the isAdmin value.
+     */
+    @Override
+    public Boolean isAdmin() {
+        return this.isAdmin;
+    }
+
+    /**
+     * Get the dataFeedId property: data feed unique id.
+     * 
+     * @return the dataFeedId value.
+     */
+    @Override
+    public UUID getDataFeedId() {
+        return this.dataFeedId;
     }
 
     /**
@@ -266,11 +357,12 @@ public final class AzureEventHubsDataFeed extends DataFeedDetail {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.AZURE_EVENT_HUBS == null ? null : DataSourceType.AZURE_EVENT_HUBS.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("granularityName",
             getGranularityName() == null ? null : getGranularityName().toString());
@@ -301,6 +393,8 @@ public final class AzureEventHubsDataFeed extends DataFeedDetail {
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
+        jsonWriter.writeStringField("dataSourceType",
+            this.dataSourceType == null ? null : this.dataSourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -310,8 +404,7 @@ public final class AzureEventHubsDataFeed extends DataFeedDetail {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureEventHubsDataFeed if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureEventHubsDataFeed.
      */
     public static AzureEventHubsDataFeed fromJson(JsonReader jsonReader) throws IOException {
@@ -321,14 +414,7 @@ public final class AzureEventHubsDataFeed extends DataFeedDetail {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceType".equals(fieldName)) {
-                    String dataSourceType = reader.getString();
-                    if (!"AzureEventHubs".equals(dataSourceType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceType' was expected to be non-null and equal to 'AzureEventHubs'. The found 'dataSourceType' was '"
-                                + dataSourceType + "'.");
-                    }
-                } else if ("dataFeedName".equals(fieldName)) {
+                if ("dataFeedName".equals(fieldName)) {
                     deserializedAzureEventHubsDataFeed.setDataFeedName(reader.getString());
                 } else if ("granularityName".equals(fieldName)) {
                     deserializedAzureEventHubsDataFeed.setGranularityName(Granularity.fromString(reader.getString()));
@@ -336,11 +422,11 @@ public final class AzureEventHubsDataFeed extends DataFeedDetail {
                     List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
                     deserializedAzureEventHubsDataFeed.setMetrics(metrics);
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setDataStartFrom(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAzureEventHubsDataFeed.setDataStartFrom(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("dataFeedId".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed
-                        .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedAzureEventHubsDataFeed.dataFeedId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedAzureEventHubsDataFeed.setDataFeedDescription(reader.getString());
                 } else if ("granularityAmount".equals(fieldName)) {
@@ -385,14 +471,14 @@ public final class AzureEventHubsDataFeed extends DataFeedDetail {
                     List<String> viewers = reader.readArray(reader1 -> reader1.getString());
                     deserializedAzureEventHubsDataFeed.setViewers(viewers);
                 } else if ("isAdmin".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setIsAdmin(reader.getNullable(JsonReader::getBoolean));
+                    deserializedAzureEventHubsDataFeed.isAdmin = reader.getNullable(JsonReader::getBoolean);
                 } else if ("creator".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setCreator(reader.getString());
+                    deserializedAzureEventHubsDataFeed.creator = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
+                    deserializedAzureEventHubsDataFeed.status = EntityStatus.fromString(reader.getString());
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setCreatedTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAzureEventHubsDataFeed.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedAzureEventHubsDataFeed.setActionLinkTemplate(reader.getString());
                 } else if ("authenticationType".equals(fieldName)) {
@@ -402,6 +488,8 @@ public final class AzureEventHubsDataFeed extends DataFeedDetail {
                     deserializedAzureEventHubsDataFeed.setCredentialId(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedAzureEventHubsDataFeed.dataSourceParameter = AzureEventHubsParameter.fromJson(reader);
+                } else if ("dataSourceType".equals(fieldName)) {
+                    deserializedAzureEventHubsDataFeed.dataSourceType = DataSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

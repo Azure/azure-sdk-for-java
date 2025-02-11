@@ -13,18 +13,17 @@ public class TestCosmosDB extends TestTemplate<CosmosDBAccount, CosmosDBAccounts
 
     @Override
     public CosmosDBAccount createResource(CosmosDBAccounts resources) throws Exception {
-        final String newName = "docDB" + resources.manager().resourceManager().internalContext().randomResourceName("", 8);
-        CosmosDBAccount databaseAccount =
-            resources
-                .define(newName)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup()
-                .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
-                .withSessionConsistency()
-                .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST3)
-                .withIpRangeFilter("")
-                .create();
+        final String newName
+            = "docDB" + resources.manager().resourceManager().internalContext().randomResourceName("", 8);
+        CosmosDBAccount databaseAccount = resources.define(newName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup()
+            .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
+            .withSessionConsistency()
+            .withWriteReplication(Region.US_EAST)
+            .withReadReplication(Region.US_WEST3)
+            .withIpRangeFilter("")
+            .create();
         Assertions.assertEquals(databaseAccount.name(), newName.toLowerCase());
         Assertions.assertEquals(databaseAccount.kind(), DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
         Assertions.assertEquals(databaseAccount.writableReplications().size(), 1);
@@ -36,22 +35,18 @@ public class TestCosmosDB extends TestTemplate<CosmosDBAccount, CosmosDBAccounts
     @Override
     public CosmosDBAccount updateResource(CosmosDBAccount resource) throws Exception {
         // Modify existing container service
-        resource =
-            resource
-                .update()
-                .withReadReplication(Region.ASIA_SOUTHEAST)
-                .withoutReadReplication(Region.US_EAST)
-                .withoutReadReplication(Region.US_CENTRAL)
-                .apply();
+        resource = resource.update()
+            .withReadReplication(Region.ASIA_SOUTHEAST)
+            .withoutReadReplication(Region.US_EAST)
+            .withoutReadReplication(Region.US_CENTRAL)
+            .apply();
 
-        resource =
-            resource
-                .update()
-                .withEventualConsistency()
-                .withTag("tag2", "value2")
-                .withTag("tag3", "value3")
-                .withoutTag("tag1")
-                .apply();
+        resource = resource.update()
+            .withEventualConsistency()
+            .withTag("tag2", "value2")
+            .withTag("tag3", "value3")
+            .withoutTag("tag1")
+            .apply();
         Assertions.assertEquals(resource.defaultConsistencyLevel(), DefaultConsistencyLevel.EVENTUAL);
         Assertions.assertTrue(resource.tags().containsKey("tag2"));
         Assertions.assertTrue(!resource.tags().containsKey("tag1"));
@@ -61,20 +56,16 @@ public class TestCosmosDB extends TestTemplate<CosmosDBAccount, CosmosDBAccounts
 
     @Override
     public void print(CosmosDBAccount resource) {
-        System
-            .out
-            .println(
-                new StringBuilder()
-                    .append("Regsitry: ")
-                    .append(resource.id())
-                    .append("Name: ")
-                    .append(resource.name())
-                    .append("\n\tResource group: ")
-                    .append(resource.resourceGroupName())
-                    .append("\n\tRegion: ")
-                    .append(resource.region())
-                    .append("\n\tTags: ")
-                    .append(resource.tags())
-                    .toString());
+        System.out.println(new StringBuilder().append("Regsitry: ")
+            .append(resource.id())
+            .append("Name: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .toString());
     }
 }

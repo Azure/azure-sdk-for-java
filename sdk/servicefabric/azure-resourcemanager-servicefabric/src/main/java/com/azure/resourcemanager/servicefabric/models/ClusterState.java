@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -94,7 +93,6 @@ public final class ClusterState extends ExpandableStringEnum<ClusterState> {
      * @param name a name to look for.
      * @return the corresponding ClusterState.
      */
-    @JsonCreator
     public static ClusterState fromString(String name) {
         return fromString(name, ClusterState.class);
     }

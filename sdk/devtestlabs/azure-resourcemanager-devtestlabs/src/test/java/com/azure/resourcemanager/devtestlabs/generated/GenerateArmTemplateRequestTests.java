@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateArmTemplateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateArmTemplateRequest model =
-            BinaryData
-                .fromString(
-                    "{\"virtualMachineName\":\"tdum\",\"parameters\":[{\"name\":\"xe\",\"value\":\"nzbtbhj\"}],\"location\":\"lkfg\",\"fileUploadOptions\":\"UploadFilesAndGenerateSasTokens\"}")
-                .toObject(GenerateArmTemplateRequest.class);
+        GenerateArmTemplateRequest model = BinaryData.fromString(
+            "{\"virtualMachineName\":\"tdum\",\"parameters\":[{\"name\":\"xe\",\"value\":\"nzbtbhj\"}],\"location\":\"lkfg\",\"fileUploadOptions\":\"UploadFilesAndGenerateSasTokens\"}")
+            .toObject(GenerateArmTemplateRequest.class);
         Assertions.assertEquals("tdum", model.virtualMachineName());
         Assertions.assertEquals("xe", model.parameters().get(0).name());
         Assertions.assertEquals("nzbtbhj", model.parameters().get(0).value());
@@ -28,12 +26,10 @@ public final class GenerateArmTemplateRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateArmTemplateRequest model =
-            new GenerateArmTemplateRequest()
-                .withVirtualMachineName("tdum")
-                .withParameters(Arrays.asList(new ParameterInfo().withName("xe").withValue("nzbtbhj")))
-                .withLocation("lkfg")
-                .withFileUploadOptions(FileUploadOptions.UPLOAD_FILES_AND_GENERATE_SAS_TOKENS);
+        GenerateArmTemplateRequest model = new GenerateArmTemplateRequest().withVirtualMachineName("tdum")
+            .withParameters(Arrays.asList(new ParameterInfo().withName("xe").withValue("nzbtbhj")))
+            .withLocation("lkfg")
+            .withFileUploadOptions(FileUploadOptions.UPLOAD_FILES_AND_GENERATE_SAS_TOKENS);
         model = BinaryData.fromObject(model).toObject(GenerateArmTemplateRequest.class);
         Assertions.assertEquals("tdum", model.virtualMachineName());
         Assertions.assertEquals("xe", model.parameters().get(0).name());

@@ -39,7 +39,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     /**
      * Stores a flag indicating if challenge resource verification shall be disabled.
      */
-    private boolean disableChallengeResourceVerification;
+    private boolean disableChallengeResourceVerification = false;
 
     /**
      * Constructor.
@@ -152,7 +152,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      *
      * @return A value indicating if challenge resource verification is disabled.
      */
-    public boolean isChallengeResourceVerificationDisabled() {
+    boolean isChallengeResourceVerificationDisabled() {
         return disableChallengeResourceVerification;
     }
 

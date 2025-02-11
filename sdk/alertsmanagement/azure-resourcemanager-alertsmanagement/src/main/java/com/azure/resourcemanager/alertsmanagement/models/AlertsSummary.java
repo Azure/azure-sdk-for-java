@@ -6,39 +6,41 @@ package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.resourcemanager.alertsmanagement.fluent.models.AlertsSummaryInner;
 
-/** An immutable client-side representation of AlertsSummary. */
+/**
+ * An immutable client-side representation of AlertsSummary.
+ */
 public interface AlertsSummary {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Group the result set.
-     *
+     * 
      * @return the properties value.
      */
     AlertsSummaryGroup properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.alertsmanagement.fluent.models.AlertsSummaryInner object.
-     *
+     * 
      * @return the inner object.
      */
     AlertsSummaryInner innerModel();

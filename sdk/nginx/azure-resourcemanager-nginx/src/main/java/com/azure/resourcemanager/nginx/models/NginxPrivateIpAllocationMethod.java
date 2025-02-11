@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class NginxPrivateIpAllocationMethod extends ExpandableStringEnum<N
      * @param name a name to look for.
      * @return the corresponding NginxPrivateIpAllocationMethod.
      */
-    @JsonCreator
     public static NginxPrivateIpAllocationMethod fromString(String name) {
         return fromString(name, NginxPrivateIpAllocationMethod.class);
     }

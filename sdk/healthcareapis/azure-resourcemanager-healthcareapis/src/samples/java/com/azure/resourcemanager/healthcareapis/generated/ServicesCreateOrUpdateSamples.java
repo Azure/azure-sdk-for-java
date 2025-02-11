@@ -23,7 +23,9 @@ import java.util.Map;
  */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/ServiceCreate.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/
+     * ServiceCreate.json
      */
     /**
      * Sample code: Create or Update a service with all parameters.
@@ -62,7 +64,9 @@ public final class ServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/ServiceCreateInDataSovereignRegionWithCmkEnabled.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/
+     * ServiceCreateInDataSovereignRegionWithCmkEnabled.json
      */
     /**
      * Sample code: Create or Update a service with all parameters and CMK enabled in a data sovereign region.
@@ -102,7 +106,9 @@ public final class ServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/ServiceCreateMinimum.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/
+     * ServiceCreateMinimum.json
      */
     /**
      * Sample code: Create or Update a service with minimum parameters.

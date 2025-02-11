@@ -6,78 +6,47 @@ package com.azure.resourcemanager.vmwarecloudsimple.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager;
 import com.azure.resourcemanager.vmwarecloudsimple.models.DedicatedCloudNode;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DedicatedCloudNodesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"availabilityZoneId\":\"guyaip\",\"availabilityZoneName\":\"sdaultxij\",\"cloudRackName\":\"mfqwa\",\"created\":\"2021-03-09T09:55:59Z\",\"nodesCount\":832970894,\"placementGroupId\":\"nm\",\"placementGroupName\":\"ngz\",\"privateCloudId\":\"qxtbjwgnyf\",\"privateCloudName\":\"fzsvtuikzh\",\"provisioningState\":\"qglcfhmlrqryxynq\",\"purchaseId\":\"1d149c46-e41e-4036-a329-840a36e68cf8\",\"skuDescription\":{\"id\":\"rd\",\"name\":\"sovwxznptgoeiyb\"},\"status\":\"unused\",\"vmwareClusterName\":\"fhvfsl\"},\"sku\":{\"capacity\":\"tjlrigjksky\",\"description\":\"oov\",\"family\":\"dsxwaab\",\"name\":\"mifrygznmma\",\"tier\":\"izkzobgo\"},\"location\":\"xlhslnel\",\"tags\":{\"slhcawjutifd\":\"ixynllxecwcrojp\",\"aglkafhon\":\"fmvigorqjbttzh\",\"ickpz\":\"juj\",\"wcltyjede\":\"cpopmxel\"},\"id\":\"xm\",\"name\":\"f\",\"type\":\"kqscazuawxtzx\"}";
 
-        String responseStr =
-            "{\"properties\":{\"availabilityZoneId\":\"scw\",\"availabilityZoneName\":\"upev\",\"cloudRackName\":\"f\",\"created\":\"2021-08-11T08:27:19Z\",\"nodesCount\":2019400372,\"placementGroupId\":\"xhojuj\",\"placementGroupName\":\"pelmcuvhixbjxyf\",\"privateCloudId\":\"yl\",\"privateCloudName\":\"ool\",\"provisioningState\":\"tpkiwkkbnujry\",\"purchaseId\":\"e4770b6d-f68e-4c76-98e4-670d584686f0\",\"skuDescription\":{\"id\":\"tylbfpncurdoiw\",\"name\":\"ithtywu\"},\"status\":\"unused\",\"vmwareClusterName\":\"ihwqknfdntwjchr\"},\"sku\":{\"capacity\":\"ihxumwctondzj\",\"description\":\"udfdlwgg\",\"family\":\"sb\",\"name\":\"tov\",\"tier\":\"gseinq\"},\"location\":\"iufxqknpir\",\"tags\":{\"ffcdmqnrojl\":\"pttwqmsn\",\"c\":\"ijnkrxfrdd\",\"ronasxift\":\"atiz\"},\"id\":\"zq\",\"name\":\"zh\",\"type\":\"tw\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        VMwareCloudSimpleManager manager = VMwareCloudSimpleManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        DedicatedCloudNode response = manager.dedicatedCloudNodes()
+            .getByResourceGroupWithResponse("yawbzasqbu", "ljgkyex", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        VMwareCloudSimpleManager manager =
-            VMwareCloudSimpleManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DedicatedCloudNode response =
-            manager
-                .dedicatedCloudNodes()
-                .getByResourceGroupWithResponse("auyqncygupkv", "p", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("iufxqknpir", response.location());
-        Assertions.assertEquals("pttwqmsn", response.tags().get("ffcdmqnrojl"));
-        Assertions.assertEquals("ihxumwctondzj", response.sku().capacity());
-        Assertions.assertEquals("udfdlwgg", response.sku().description());
-        Assertions.assertEquals("sb", response.sku().family());
-        Assertions.assertEquals("tov", response.sku().name());
-        Assertions.assertEquals("gseinq", response.sku().tier());
-        Assertions.assertEquals("scw", response.availabilityZoneId());
-        Assertions.assertEquals(2019400372, response.nodesCount());
-        Assertions.assertEquals("xhojuj", response.placementGroupId());
-        Assertions.assertEquals(UUID.fromString("e4770b6d-f68e-4c76-98e4-670d584686f0"), response.purchaseId());
-        Assertions.assertEquals("tylbfpncurdoiw", response.idPropertiesId());
-        Assertions.assertEquals("ithtywu", response.namePropertiesName());
+        Assertions.assertEquals("xlhslnel", response.location());
+        Assertions.assertEquals("ixynllxecwcrojp", response.tags().get("slhcawjutifd"));
+        Assertions.assertEquals("tjlrigjksky", response.sku().capacity());
+        Assertions.assertEquals("oov", response.sku().description());
+        Assertions.assertEquals("dsxwaab", response.sku().family());
+        Assertions.assertEquals("mifrygznmma", response.sku().name());
+        Assertions.assertEquals("izkzobgo", response.sku().tier());
+        Assertions.assertEquals("guyaip", response.availabilityZoneId());
+        Assertions.assertEquals(832970894, response.nodesCount());
+        Assertions.assertEquals("nm", response.placementGroupId());
+        Assertions.assertEquals(UUID.fromString("1d149c46-e41e-4036-a329-840a36e68cf8"), response.purchaseId());
+        Assertions.assertEquals("rd", response.idPropertiesId());
+        Assertions.assertEquals("sovwxznptgoeiyb", response.namePropertiesName());
     }
 }

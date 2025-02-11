@@ -20,7 +20,10 @@ public final class NetworkServiceDesignGroupsCreateOrUpdateSamples {
      */
     public static void createOrUpdateTheNetworkServiceDesignGroup(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkServiceDesignGroups().define("TestNetworkServiceDesignGroupName").withRegion("eastus")
-            .withExistingPublisher("rg", "TestPublisher").create();
+        manager.networkServiceDesignGroups()
+            .define("TestNetworkServiceDesignGroupName")
+            .withRegion("eastus")
+            .withExistingPublisher("rg", "TestPublisher")
+            .create();
     }
 }

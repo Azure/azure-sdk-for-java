@@ -14,11 +14,13 @@ import com.azure.resourcemanager.managedapplications.fluent.models.JitRequestDef
 import com.azure.resourcemanager.managedapplications.fluent.models.JitRequestDefinitionListResultInner;
 import com.azure.resourcemanager.managedapplications.models.JitRequestPatchable;
 
-/** An instance of this class provides access to all the operations defined in JitRequestsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JitRequestsClient.
+ */
 public interface JitRequestsClient {
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param context The context to associate with this operation.
@@ -28,12 +30,12 @@ public interface JitRequestsClient {
      * @return the JIT request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JitRequestDefinitionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String jitRequestName, Context context);
+    Response<JitRequestDefinitionInner> getByResourceGroupWithResponse(String resourceGroupName, String jitRequestName,
+        Context context);
 
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +48,7 @@ public interface JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -56,12 +58,12 @@ public interface JitRequestsClient {
      * @return the {@link SyncPoller} for polling of information about JIT request definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JitRequestDefinitionInner>, JitRequestDefinitionInner> beginCreateOrUpdate(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters);
+    SyncPoller<PollResult<JitRequestDefinitionInner>, JitRequestDefinitionInner>
+        beginCreateOrUpdate(String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters);
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -77,7 +79,7 @@ public interface JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -87,12 +89,12 @@ public interface JitRequestsClient {
      * @return information about JIT request definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JitRequestDefinitionInner createOrUpdate(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters);
+    JitRequestDefinitionInner createOrUpdate(String resourceGroupName, String jitRequestName,
+        JitRequestDefinitionInner parameters);
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -103,12 +105,12 @@ public interface JitRequestsClient {
      * @return information about JIT request definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JitRequestDefinitionInner createOrUpdate(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters, Context context);
+    JitRequestDefinitionInner createOrUpdate(String resourceGroupName, String jitRequestName,
+        JitRequestDefinitionInner parameters, Context context);
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -119,12 +121,12 @@ public interface JitRequestsClient {
      * @return information about JIT request definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JitRequestDefinitionInner> updateWithResponse(
-        String resourceGroupName, String jitRequestName, JitRequestPatchable parameters, Context context);
+    Response<JitRequestDefinitionInner> updateWithResponse(String resourceGroupName, String jitRequestName,
+        JitRequestPatchable parameters, Context context);
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -138,7 +140,7 @@ public interface JitRequestsClient {
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param context The context to associate with this operation.
@@ -152,7 +154,7 @@ public interface JitRequestsClient {
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,7 +166,7 @@ public interface JitRequestsClient {
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -176,7 +178,7 @@ public interface JitRequestsClient {
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of JIT requests.
@@ -186,7 +188,7 @@ public interface JitRequestsClient {
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,12 +197,12 @@ public interface JitRequestsClient {
      * @return list of JIT requests along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JitRequestDefinitionListResultInner> listByResourceGroupWithResponse(
-        String resourceGroupName, Context context);
+    Response<JitRequestDefinitionListResultInner> listByResourceGroupWithResponse(String resourceGroupName,
+        Context context);
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

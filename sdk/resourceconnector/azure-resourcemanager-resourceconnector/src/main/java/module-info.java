@@ -10,10 +10,6 @@ module com.azure.resourcemanager.resourceconnector {
     exports com.azure.resourcemanager.resourceconnector.fluent.models;
     exports com.azure.resourcemanager.resourceconnector.models;
 
-    opens com.azure.resourcemanager.resourceconnector.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.resourceconnector.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.resourceconnector.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.resourceconnector.models to com.azure.core;
 }

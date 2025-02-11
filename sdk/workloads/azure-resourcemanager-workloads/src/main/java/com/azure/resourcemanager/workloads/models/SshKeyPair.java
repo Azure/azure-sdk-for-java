@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The SSH Key-pair used to authenticate with the VM. The key needs to be at least 2048-bit and in ssh-rsa format.
@@ -13,26 +17,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Azure](https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
  */
 @Fluent
-public final class SshKeyPair {
+public final class SshKeyPair implements JsonSerializable<SshKeyPair> {
     /*
      * SSH public key
      */
-    @JsonProperty(value = "publicKey")
     private String publicKey;
 
     /*
      * SSH private key.
      */
-    @JsonProperty(value = "privateKey")
     private String privateKey;
 
-    /** Creates an instance of SshKeyPair class. */
+    /**
+     * Creates an instance of SshKeyPair class.
+     */
     public SshKeyPair() {
     }
 
     /**
      * Get the publicKey property: SSH public key.
-     *
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -41,7 +45,7 @@ public final class SshKeyPair {
 
     /**
      * Set the publicKey property: SSH public key.
-     *
+     * 
      * @param publicKey the publicKey value to set.
      * @return the SshKeyPair object itself.
      */
@@ -52,7 +56,7 @@ public final class SshKeyPair {
 
     /**
      * Get the privateKey property: SSH private key.
-     *
+     * 
      * @return the privateKey value.
      */
     public String privateKey() {
@@ -61,7 +65,7 @@ public final class SshKeyPair {
 
     /**
      * Set the privateKey property: SSH private key.
-     *
+     * 
      * @param privateKey the privateKey value to set.
      * @return the SshKeyPair object itself.
      */
@@ -72,9 +76,48 @@ public final class SshKeyPair {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publicKey", this.publicKey);
+        jsonWriter.writeStringField("privateKey", this.privateKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SshKeyPair from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SshKeyPair if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SshKeyPair.
+     */
+    public static SshKeyPair fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SshKeyPair deserializedSshKeyPair = new SshKeyPair();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicKey".equals(fieldName)) {
+                    deserializedSshKeyPair.publicKey = reader.getString();
+                } else if ("privateKey".equals(fieldName)) {
+                    deserializedSshKeyPair.privateKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSshKeyPair;
+        });
     }
 }

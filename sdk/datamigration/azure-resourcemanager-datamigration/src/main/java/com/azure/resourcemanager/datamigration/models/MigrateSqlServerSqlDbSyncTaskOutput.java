@@ -5,42 +5,45 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Output for the task that migrates on-prem SQL Server databases to Azure SQL Database for online migrations. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "resultType",
-    defaultImpl = MigrateSqlServerSqlDbSyncTaskOutput.class)
-@JsonTypeName("MigrateSqlServerSqlDbSyncTaskOutput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "MigrationLevelOutput", value = MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel.class),
-    @JsonSubTypes.Type(name = "DatabaseLevelOutput", value = MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel.class),
-    @JsonSubTypes.Type(name = "TableLevelOutput", value = MigrateSqlServerSqlDbSyncTaskOutputTableLevel.class),
-    @JsonSubTypes.Type(name = "ErrorOutput", value = MigrateSqlServerSqlDbSyncTaskOutputError.class),
-    @JsonSubTypes.Type(
-        name = "DatabaseLevelErrorOutput",
-        value = MigrateSqlServerSqlDbSyncTaskOutputDatabaseError.class)
-})
+/**
+ * Output for the task that migrates on-prem SQL Server databases to Azure SQL Database for online migrations.
+ */
 @Immutable
-public class MigrateSqlServerSqlDbSyncTaskOutput {
+public class MigrateSqlServerSqlDbSyncTaskOutput implements JsonSerializable<MigrateSqlServerSqlDbSyncTaskOutput> {
+    /*
+     * Result type
+     */
+    private String resultType = "MigrateSqlServerSqlDbSyncTaskOutput";
+
     /*
      * Result identifier
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of MigrateSqlServerSqlDbSyncTaskOutput class. */
+    /**
+     * Creates an instance of MigrateSqlServerSqlDbSyncTaskOutput class.
+     */
     public MigrateSqlServerSqlDbSyncTaskOutput() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the id property: Result identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -48,10 +51,93 @@ public class MigrateSqlServerSqlDbSyncTaskOutput {
     }
 
     /**
+     * Set the id property: Result identifier.
+     * 
+     * @param id the id value to set.
+     * @return the MigrateSqlServerSqlDbSyncTaskOutput object itself.
+     */
+    MigrateSqlServerSqlDbSyncTaskOutput withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlDbSyncTaskOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlDbSyncTaskOutput if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlDbSyncTaskOutput.
+     */
+    public static MigrateSqlServerSqlDbSyncTaskOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("resultType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("MigrationLevelOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel.fromJson(readerToUse.reset());
+                } else if ("DatabaseLevelOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel.fromJson(readerToUse.reset());
+                } else if ("TableLevelOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlDbSyncTaskOutputTableLevel.fromJson(readerToUse.reset());
+                } else if ("ErrorOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlDbSyncTaskOutputError.fromJson(readerToUse.reset());
+                } else if ("DatabaseLevelErrorOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlDbSyncTaskOutputDatabaseError.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static MigrateSqlServerSqlDbSyncTaskOutput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlDbSyncTaskOutput deserializedMigrateSqlServerSqlDbSyncTaskOutput
+                = new MigrateSqlServerSqlDbSyncTaskOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resultType".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbSyncTaskOutput.resultType = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbSyncTaskOutput.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlDbSyncTaskOutput;
+        });
     }
 }

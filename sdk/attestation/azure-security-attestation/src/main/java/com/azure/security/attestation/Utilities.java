@@ -82,12 +82,16 @@ class Utilities {
         switch (statusCode) {
             case 401:
                 return new ClientAuthenticationException(errorDetail, cloudErrorException.getResponse(), responseError);
+
             case 404:
                 return new ResourceNotFoundException(errorDetail, cloudErrorException.getResponse(), responseError);
+
             case 409:
                 return new ResourceExistsException(errorDetail, cloudErrorException.getResponse(), responseError);
+
             case 412:
                 return new ResourceModifiedException(errorDetail, cloudErrorException.getResponse(), responseError);
+
             default:
                 return new HttpResponseException(errorDetail, cloudErrorException.getResponse(), responseError);
         }

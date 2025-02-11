@@ -7,11 +7,13 @@ package com.azure.resourcemanager.defendereasm.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Tasks. */
+/**
+ * Resource collection API of Tasks.
+ */
 public interface Tasks {
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.
@@ -21,12 +23,12 @@ public interface Tasks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return task details along with {@link Response}.
      */
-    Response<TaskResource> getByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, String taskId, Context context);
+    Response<TaskResource> getByWorkspaceWithResponse(String resourceGroupName, String workspaceName, String taskId,
+        Context context);
 
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.

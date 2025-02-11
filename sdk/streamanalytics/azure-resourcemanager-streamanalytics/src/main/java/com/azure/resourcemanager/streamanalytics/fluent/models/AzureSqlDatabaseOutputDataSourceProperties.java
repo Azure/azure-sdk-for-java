@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.AzureSqlDatabaseDataSourceProperties;
+import java.io.IOException;
 
 /**
  * The properties that are associated with an Azure SQL database output.
@@ -98,6 +102,67 @@ public final class AzureSqlDatabaseOutputDataSourceProperties extends AzureSqlDa
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", server());
+        jsonWriter.writeStringField("database", database());
+        jsonWriter.writeStringField("user", user());
+        jsonWriter.writeStringField("password", password());
+        jsonWriter.writeStringField("table", table());
+        jsonWriter.writeNumberField("maxBatchCount", maxBatchCount());
+        jsonWriter.writeNumberField("maxWriterCount", maxWriterCount());
+        jsonWriter.writeStringField("authenticationMode",
+            authenticationMode() == null ? null : authenticationMode().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlDatabaseOutputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlDatabaseOutputDataSourceProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlDatabaseOutputDataSourceProperties.
+     */
+    public static AzureSqlDatabaseOutputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlDatabaseOutputDataSourceProperties deserializedAzureSqlDatabaseOutputDataSourceProperties
+                = new AzureSqlDatabaseOutputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties.withServer(reader.getString());
+                } else if ("database".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties.withDatabase(reader.getString());
+                } else if ("user".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties.withUser(reader.getString());
+                } else if ("password".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties.withPassword(reader.getString());
+                } else if ("table".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties.withTable(reader.getString());
+                } else if ("maxBatchCount".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties
+                        .withMaxBatchCount(reader.getNullable(JsonReader::getFloat));
+                } else if ("maxWriterCount".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties
+                        .withMaxWriterCount(reader.getNullable(JsonReader::getFloat));
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties
+                        .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlDatabaseOutputDataSourceProperties;
+        });
     }
 }

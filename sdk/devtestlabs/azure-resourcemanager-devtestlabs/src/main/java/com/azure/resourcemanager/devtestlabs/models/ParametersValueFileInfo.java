@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A file containing a set of parameter values for an ARM template. */
+/**
+ * A file containing a set of parameter values for an ARM template.
+ */
 @Fluent
-public final class ParametersValueFileInfo {
+public final class ParametersValueFileInfo implements JsonSerializable<ParametersValueFileInfo> {
     /*
      * File name.
      */
-    @JsonProperty(value = "fileName")
     private String fileName;
 
     /*
      * Contents of the file.
      */
-    @JsonProperty(value = "parametersValueInfo")
     private Object parametersValueInfo;
 
-    /** Creates an instance of ParametersValueFileInfo class. */
+    /**
+     * Creates an instance of ParametersValueFileInfo class.
+     */
     public ParametersValueFileInfo() {
     }
 
     /**
      * Get the fileName property: File name.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -37,7 +43,7 @@ public final class ParametersValueFileInfo {
 
     /**
      * Set the fileName property: File name.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the ParametersValueFileInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class ParametersValueFileInfo {
 
     /**
      * Get the parametersValueInfo property: Contents of the file.
-     *
+     * 
      * @return the parametersValueInfo value.
      */
     public Object parametersValueInfo() {
@@ -57,7 +63,7 @@ public final class ParametersValueFileInfo {
 
     /**
      * Set the parametersValueInfo property: Contents of the file.
-     *
+     * 
      * @param parametersValueInfo the parametersValueInfo value to set.
      * @return the ParametersValueFileInfo object itself.
      */
@@ -68,9 +74,48 @@ public final class ParametersValueFileInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fileName", this.fileName);
+        jsonWriter.writeUntypedField("parametersValueInfo", this.parametersValueInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParametersValueFileInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParametersValueFileInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ParametersValueFileInfo.
+     */
+    public static ParametersValueFileInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParametersValueFileInfo deserializedParametersValueFileInfo = new ParametersValueFileInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fileName".equals(fieldName)) {
+                    deserializedParametersValueFileInfo.fileName = reader.getString();
+                } else if ("parametersValueInfo".equals(fieldName)) {
+                    deserializedParametersValueFileInfo.parametersValueInfo = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedParametersValueFileInfo;
+        });
     }
 }

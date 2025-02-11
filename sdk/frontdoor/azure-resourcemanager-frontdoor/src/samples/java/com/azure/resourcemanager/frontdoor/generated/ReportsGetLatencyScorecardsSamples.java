@@ -11,7 +11,8 @@ import com.azure.resourcemanager.frontdoor.models.LatencyScorecardAggregationInt
  */
 public final class ReportsGetLatencyScorecardsSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentGetLatencyScorecard.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
+     * NetworkExperimentGetLatencyScorecard.json
      */
     /**
      * Sample code: Gets a Latency Scorecard for a given Experiment.

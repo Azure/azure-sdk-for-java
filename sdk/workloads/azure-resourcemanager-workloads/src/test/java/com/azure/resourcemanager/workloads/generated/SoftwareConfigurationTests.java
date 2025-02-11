@@ -10,10 +10,8 @@ import com.azure.resourcemanager.workloads.models.SoftwareConfiguration;
 public final class SoftwareConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SoftwareConfiguration model =
-            BinaryData
-                .fromString("{\"softwareInstallationType\":\"SoftwareConfiguration\"}")
-                .toObject(SoftwareConfiguration.class);
+        SoftwareConfiguration model = BinaryData.fromString("{\"softwareInstallationType\":\"SoftwareConfiguration\"}")
+            .toObject(SoftwareConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

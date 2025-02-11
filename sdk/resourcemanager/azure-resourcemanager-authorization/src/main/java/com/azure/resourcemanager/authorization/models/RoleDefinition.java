@@ -16,18 +16,38 @@ import java.util.Set;
 @Fluent
 public interface RoleDefinition
     extends HasInnerModel<RoleDefinitionInner>, HasId, HasName, HasManager<AuthorizationManager> {
-    /** @return the role name */
+    /**
+     * Gets the role name.
+     *
+     * @return the role name
+     */
     String roleName();
 
-    /** @return the role definition description */
+    /**
+     * Gets the role definition description.
+     *
+     * @return the role definition description
+     */
     String description();
 
-    /** @return the role type */
+    /**
+     * Gets the role type.
+     *
+     * @return the role type
+     */
     String type();
 
-    /** @return role definition permissions */
+    /**
+     * Gets role definition permissions
+     *
+     * @return role definition permissions
+     */
     Set<Permission> permissions();
 
-    /** @return role definition assignable scopes */
+    /**
+     * Gets role definition assignable scopes
+     *
+     * @return role definition assignable scopes
+     */
     Set<String> assignableScopes();
 }

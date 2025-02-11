@@ -5,64 +5,65 @@
 package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.models.ResourceSkuCapability;
 import com.azure.resourcemanager.storagepool.models.ResourceSkuLocationInfo;
 import com.azure.resourcemanager.storagepool.models.ResourceSkuRestrictions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Resource SKU Details. */
+/**
+ * Resource SKU Details.
+ */
 @Immutable
-public final class ResourceSkuInfoInner {
+public final class ResourceSkuInfoInner implements JsonSerializable<ResourceSkuInfoInner> {
     /*
      * StoragePool RP API version
      */
-    @JsonProperty(value = "apiVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String apiVersion;
 
     /*
      * StoragePool resource type
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * List of additional capabilities for StoragePool resource.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuCapability> capabilities;
 
     /*
      * Zones and zone capabilities in those locations where the SKU is available.
      */
-    @JsonProperty(value = "locationInfo", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceSkuLocationInfo locationInfo;
 
     /*
      * Sku name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Sku tier
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
     /*
      * The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      */
-    @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuRestrictions> restrictions;
 
-    /** Creates an instance of ResourceSkuInfoInner class. */
+    /**
+     * Creates an instance of ResourceSkuInfoInner class.
+     */
     public ResourceSkuInfoInner() {
     }
 
     /**
      * Get the apiVersion property: StoragePool RP API version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String apiVersion() {
@@ -71,7 +72,7 @@ public final class ResourceSkuInfoInner {
 
     /**
      * Get the resourceType property: StoragePool resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -80,7 +81,7 @@ public final class ResourceSkuInfoInner {
 
     /**
      * Get the capabilities property: List of additional capabilities for StoragePool resource.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<ResourceSkuCapability> capabilities() {
@@ -89,7 +90,7 @@ public final class ResourceSkuInfoInner {
 
     /**
      * Get the locationInfo property: Zones and zone capabilities in those locations where the SKU is available.
-     *
+     * 
      * @return the locationInfo value.
      */
     public ResourceSkuLocationInfo locationInfo() {
@@ -98,7 +99,7 @@ public final class ResourceSkuInfoInner {
 
     /**
      * Get the name property: Sku name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -107,7 +108,7 @@ public final class ResourceSkuInfoInner {
 
     /**
      * Get the tier property: Sku tier.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -117,7 +118,7 @@ public final class ResourceSkuInfoInner {
     /**
      * Get the restrictions property: The restrictions because of which SKU cannot be used. This is empty if there are
      * no restrictions.
-     *
+     * 
      * @return the restrictions value.
      */
     public List<ResourceSkuRestrictions> restrictions() {
@@ -126,7 +127,7 @@ public final class ResourceSkuInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -139,5 +140,56 @@ public final class ResourceSkuInfoInner {
         if (restrictions() != null) {
             restrictions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuInfoInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSkuInfoInner.
+     */
+    public static ResourceSkuInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuInfoInner deserializedResourceSkuInfoInner = new ResourceSkuInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiVersion".equals(fieldName)) {
+                    deserializedResourceSkuInfoInner.apiVersion = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedResourceSkuInfoInner.resourceType = reader.getString();
+                } else if ("capabilities".equals(fieldName)) {
+                    List<ResourceSkuCapability> capabilities
+                        = reader.readArray(reader1 -> ResourceSkuCapability.fromJson(reader1));
+                    deserializedResourceSkuInfoInner.capabilities = capabilities;
+                } else if ("locationInfo".equals(fieldName)) {
+                    deserializedResourceSkuInfoInner.locationInfo = ResourceSkuLocationInfo.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceSkuInfoInner.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedResourceSkuInfoInner.tier = reader.getString();
+                } else if ("restrictions".equals(fieldName)) {
+                    List<ResourceSkuRestrictions> restrictions
+                        = reader.readArray(reader1 -> ResourceSkuRestrictions.fromJson(reader1));
+                    deserializedResourceSkuInfoInner.restrictions = restrictions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuInfoInner;
+        });
     }
 }

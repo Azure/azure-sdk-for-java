@@ -59,7 +59,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     &#64;QueryParam&#40;value = &quot;query&quot;, encoded = true&#41; String query&#41;;
  *
  * &#47;&#47; In this case, if consumer pass &quot;a=b&quot; as the value for 'query' then the resolved url looks like:
- * &#47;&#47; &quot;http:&#47;&#47;wq.com&#47;foo&#47;paramblah&#47;values?connectionString=a=b&quot;
+ * &#47;&#47; &quot;http:&#47;&#47;wq.com&#47;foo&#47;subpath&#47;values?connectionString=a=b&quot;
  * </pre>
  * <!-- end com.azure.core.annotation.QueryParam.class3 -->
  *

@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 public final class TargetBranchConfigurationTests {
     @Test
     public void testDeserialize() {
-        TargetBranchConfiguration model =
-            BinaryData.fromString("{\"names\":[\"akeqs\",\"xybz\"]}").toObject(TargetBranchConfiguration.class);
+        TargetBranchConfiguration model
+            = BinaryData.fromString("{\"names\":[\"akeqs\",\"xybz\"]}").toObject(TargetBranchConfiguration.class);
         Assertions.assertEquals("akeqs", model.names().get(0));
     }
 

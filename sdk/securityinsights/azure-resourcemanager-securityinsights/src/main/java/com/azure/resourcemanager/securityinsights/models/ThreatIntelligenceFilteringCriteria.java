@@ -5,93 +5,93 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Filtering criteria for querying threat intelligence indicators. */
+/**
+ * Filtering criteria for querying threat intelligence indicators.
+ */
 @Fluent
-public final class ThreatIntelligenceFilteringCriteria {
+public final class ThreatIntelligenceFilteringCriteria
+    implements JsonSerializable<ThreatIntelligenceFilteringCriteria> {
     /*
      * Page size
      */
-    @JsonProperty(value = "pageSize")
     private Integer pageSize;
 
     /*
      * Minimum confidence.
      */
-    @JsonProperty(value = "minConfidence")
     private Integer minConfidence;
 
     /*
      * Maximum confidence.
      */
-    @JsonProperty(value = "maxConfidence")
     private Integer maxConfidence;
 
     /*
      * Start time for ValidUntil filter.
      */
-    @JsonProperty(value = "minValidUntil")
     private String minValidUntil;
 
     /*
      * End time for ValidUntil filter.
      */
-    @JsonProperty(value = "maxValidUntil")
     private String maxValidUntil;
 
     /*
      * Parameter to include/exclude disabled indicators.
      */
-    @JsonProperty(value = "includeDisabled")
     private Boolean includeDisabled;
 
     /*
      * Columns to sort by and sorting order
      */
-    @JsonProperty(value = "sortBy")
     private List<ThreatIntelligenceSortingCriteria> sortBy;
 
     /*
      * Sources of threat intelligence indicators
      */
-    @JsonProperty(value = "sources")
     private List<String> sources;
 
     /*
      * Pattern types
      */
-    @JsonProperty(value = "patternTypes")
     private List<String> patternTypes;
 
     /*
      * Threat types of threat intelligence indicators
      */
-    @JsonProperty(value = "threatTypes")
     private List<String> threatTypes;
 
     /*
      * Ids of threat intelligence indicators
      */
-    @JsonProperty(value = "ids")
     private List<String> ids;
 
     /*
      * Keywords for searching threat intelligence indicators
      */
-    @JsonProperty(value = "keywords")
     private List<String> keywords;
 
     /*
      * Skip token.
      */
-    @JsonProperty(value = "skipToken")
     private String skipToken;
 
     /**
+     * Creates an instance of ThreatIntelligenceFilteringCriteria class.
+     */
+    public ThreatIntelligenceFilteringCriteria() {
+    }
+
+    /**
      * Get the pageSize property: Page size.
-     *
+     * 
      * @return the pageSize value.
      */
     public Integer pageSize() {
@@ -100,7 +100,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the pageSize property: Page size.
-     *
+     * 
      * @param pageSize the pageSize value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -111,7 +111,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the minConfidence property: Minimum confidence.
-     *
+     * 
      * @return the minConfidence value.
      */
     public Integer minConfidence() {
@@ -120,7 +120,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the minConfidence property: Minimum confidence.
-     *
+     * 
      * @param minConfidence the minConfidence value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -131,7 +131,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the maxConfidence property: Maximum confidence.
-     *
+     * 
      * @return the maxConfidence value.
      */
     public Integer maxConfidence() {
@@ -140,7 +140,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the maxConfidence property: Maximum confidence.
-     *
+     * 
      * @param maxConfidence the maxConfidence value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -151,7 +151,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the minValidUntil property: Start time for ValidUntil filter.
-     *
+     * 
      * @return the minValidUntil value.
      */
     public String minValidUntil() {
@@ -160,7 +160,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the minValidUntil property: Start time for ValidUntil filter.
-     *
+     * 
      * @param minValidUntil the minValidUntil value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -171,7 +171,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the maxValidUntil property: End time for ValidUntil filter.
-     *
+     * 
      * @return the maxValidUntil value.
      */
     public String maxValidUntil() {
@@ -180,7 +180,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the maxValidUntil property: End time for ValidUntil filter.
-     *
+     * 
      * @param maxValidUntil the maxValidUntil value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -191,7 +191,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the includeDisabled property: Parameter to include/exclude disabled indicators.
-     *
+     * 
      * @return the includeDisabled value.
      */
     public Boolean includeDisabled() {
@@ -200,7 +200,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the includeDisabled property: Parameter to include/exclude disabled indicators.
-     *
+     * 
      * @param includeDisabled the includeDisabled value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -211,7 +211,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the sortBy property: Columns to sort by and sorting order.
-     *
+     * 
      * @return the sortBy value.
      */
     public List<ThreatIntelligenceSortingCriteria> sortBy() {
@@ -220,7 +220,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the sortBy property: Columns to sort by and sorting order.
-     *
+     * 
      * @param sortBy the sortBy value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -231,7 +231,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the sources property: Sources of threat intelligence indicators.
-     *
+     * 
      * @return the sources value.
      */
     public List<String> sources() {
@@ -240,7 +240,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the sources property: Sources of threat intelligence indicators.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -251,7 +251,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the patternTypes property: Pattern types.
-     *
+     * 
      * @return the patternTypes value.
      */
     public List<String> patternTypes() {
@@ -260,7 +260,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the patternTypes property: Pattern types.
-     *
+     * 
      * @param patternTypes the patternTypes value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -271,7 +271,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the threatTypes property: Threat types of threat intelligence indicators.
-     *
+     * 
      * @return the threatTypes value.
      */
     public List<String> threatTypes() {
@@ -280,7 +280,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the threatTypes property: Threat types of threat intelligence indicators.
-     *
+     * 
      * @param threatTypes the threatTypes value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -291,7 +291,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the ids property: Ids of threat intelligence indicators.
-     *
+     * 
      * @return the ids value.
      */
     public List<String> ids() {
@@ -300,7 +300,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the ids property: Ids of threat intelligence indicators.
-     *
+     * 
      * @param ids the ids value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -311,7 +311,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the keywords property: Keywords for searching threat intelligence indicators.
-     *
+     * 
      * @return the keywords value.
      */
     public List<String> keywords() {
@@ -320,7 +320,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the keywords property: Keywords for searching threat intelligence indicators.
-     *
+     * 
      * @param keywords the keywords value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -331,7 +331,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Get the skipToken property: Skip token.
-     *
+     * 
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -340,7 +340,7 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Set the skipToken property: Skip token.
-     *
+     * 
      * @param skipToken the skipToken value to set.
      * @return the ThreatIntelligenceFilteringCriteria object itself.
      */
@@ -351,12 +351,95 @@ public final class ThreatIntelligenceFilteringCriteria {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sortBy() != null) {
             sortBy().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("pageSize", this.pageSize);
+        jsonWriter.writeNumberField("minConfidence", this.minConfidence);
+        jsonWriter.writeNumberField("maxConfidence", this.maxConfidence);
+        jsonWriter.writeStringField("minValidUntil", this.minValidUntil);
+        jsonWriter.writeStringField("maxValidUntil", this.maxValidUntil);
+        jsonWriter.writeBooleanField("includeDisabled", this.includeDisabled);
+        jsonWriter.writeArrayField("sortBy", this.sortBy, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("patternTypes", this.patternTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("threatTypes", this.threatTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ids", this.ids, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("keywords", this.keywords, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("skipToken", this.skipToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreatIntelligenceFilteringCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreatIntelligenceFilteringCriteria if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThreatIntelligenceFilteringCriteria.
+     */
+    public static ThreatIntelligenceFilteringCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThreatIntelligenceFilteringCriteria deserializedThreatIntelligenceFilteringCriteria
+                = new ThreatIntelligenceFilteringCriteria();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pageSize".equals(fieldName)) {
+                    deserializedThreatIntelligenceFilteringCriteria.pageSize = reader.getNullable(JsonReader::getInt);
+                } else if ("minConfidence".equals(fieldName)) {
+                    deserializedThreatIntelligenceFilteringCriteria.minConfidence
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxConfidence".equals(fieldName)) {
+                    deserializedThreatIntelligenceFilteringCriteria.maxConfidence
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("minValidUntil".equals(fieldName)) {
+                    deserializedThreatIntelligenceFilteringCriteria.minValidUntil = reader.getString();
+                } else if ("maxValidUntil".equals(fieldName)) {
+                    deserializedThreatIntelligenceFilteringCriteria.maxValidUntil = reader.getString();
+                } else if ("includeDisabled".equals(fieldName)) {
+                    deserializedThreatIntelligenceFilteringCriteria.includeDisabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sortBy".equals(fieldName)) {
+                    List<ThreatIntelligenceSortingCriteria> sortBy
+                        = reader.readArray(reader1 -> ThreatIntelligenceSortingCriteria.fromJson(reader1));
+                    deserializedThreatIntelligenceFilteringCriteria.sortBy = sortBy;
+                } else if ("sources".equals(fieldName)) {
+                    List<String> sources = reader.readArray(reader1 -> reader1.getString());
+                    deserializedThreatIntelligenceFilteringCriteria.sources = sources;
+                } else if ("patternTypes".equals(fieldName)) {
+                    List<String> patternTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedThreatIntelligenceFilteringCriteria.patternTypes = patternTypes;
+                } else if ("threatTypes".equals(fieldName)) {
+                    List<String> threatTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedThreatIntelligenceFilteringCriteria.threatTypes = threatTypes;
+                } else if ("ids".equals(fieldName)) {
+                    List<String> ids = reader.readArray(reader1 -> reader1.getString());
+                    deserializedThreatIntelligenceFilteringCriteria.ids = ids;
+                } else if ("keywords".equals(fieldName)) {
+                    List<String> keywords = reader.readArray(reader1 -> reader1.getString());
+                    deserializedThreatIntelligenceFilteringCriteria.keywords = keywords;
+                } else if ("skipToken".equals(fieldName)) {
+                    deserializedThreatIntelligenceFilteringCriteria.skipToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThreatIntelligenceFilteringCriteria;
+        });
     }
 }

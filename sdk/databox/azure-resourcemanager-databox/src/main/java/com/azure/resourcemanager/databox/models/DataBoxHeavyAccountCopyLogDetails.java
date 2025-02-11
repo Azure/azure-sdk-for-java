@@ -5,41 +5,56 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Copy log details for a storage account for Databox heavy. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "copyLogDetailsType")
-@JsonTypeName("DataBoxHeavy")
+/**
+ * Copy log details for a storage account for Databox heavy.
+ */
 @Immutable
 public final class DataBoxHeavyAccountCopyLogDetails extends CopyLogDetails {
     /*
+     * Indicates the type of job details.
+     */
+    private ClassDiscriminator copyLogDetailsType = ClassDiscriminator.DATA_BOX_HEAVY;
+
+    /*
      * Account name.
      */
-    @JsonProperty(value = "accountName", access = JsonProperty.Access.WRITE_ONLY)
     private String accountName;
 
     /*
      * Link for copy logs.
      */
-    @JsonProperty(value = "copyLogLink", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> copyLogLink;
 
     /*
      * Link for copy verbose logs. This will be set only when the LogCollectionLevel is set to verbose.
      */
-    @JsonProperty(value = "copyVerboseLogLink", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> copyVerboseLogLink;
 
-    /** Creates an instance of DataBoxHeavyAccountCopyLogDetails class. */
+    /**
+     * Creates an instance of DataBoxHeavyAccountCopyLogDetails class.
+     */
     public DataBoxHeavyAccountCopyLogDetails() {
     }
 
     /**
+     * Get the copyLogDetailsType property: Indicates the type of job details.
+     * 
+     * @return the copyLogDetailsType value.
+     */
+    @Override
+    public ClassDiscriminator copyLogDetailsType() {
+        return this.copyLogDetailsType;
+    }
+
+    /**
      * Get the accountName property: Account name.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -48,7 +63,7 @@ public final class DataBoxHeavyAccountCopyLogDetails extends CopyLogDetails {
 
     /**
      * Get the copyLogLink property: Link for copy logs.
-     *
+     * 
      * @return the copyLogLink value.
      */
     public List<String> copyLogLink() {
@@ -58,7 +73,7 @@ public final class DataBoxHeavyAccountCopyLogDetails extends CopyLogDetails {
     /**
      * Get the copyVerboseLogLink property: Link for copy verbose logs. This will be set only when the
      * LogCollectionLevel is set to verbose.
-     *
+     * 
      * @return the copyVerboseLogLink value.
      */
     public List<String> copyVerboseLogLink() {
@@ -67,11 +82,57 @@ public final class DataBoxHeavyAccountCopyLogDetails extends CopyLogDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("copyLogDetailsType",
+            this.copyLogDetailsType == null ? null : this.copyLogDetailsType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxHeavyAccountCopyLogDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxHeavyAccountCopyLogDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataBoxHeavyAccountCopyLogDetails.
+     */
+    public static DataBoxHeavyAccountCopyLogDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxHeavyAccountCopyLogDetails deserializedDataBoxHeavyAccountCopyLogDetails
+                = new DataBoxHeavyAccountCopyLogDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("copyLogDetailsType".equals(fieldName)) {
+                    deserializedDataBoxHeavyAccountCopyLogDetails.copyLogDetailsType
+                        = ClassDiscriminator.fromString(reader.getString());
+                } else if ("accountName".equals(fieldName)) {
+                    deserializedDataBoxHeavyAccountCopyLogDetails.accountName = reader.getString();
+                } else if ("copyLogLink".equals(fieldName)) {
+                    List<String> copyLogLink = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataBoxHeavyAccountCopyLogDetails.copyLogLink = copyLogLink;
+                } else if ("copyVerboseLogLink".equals(fieldName)) {
+                    List<String> copyVerboseLogLink = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataBoxHeavyAccountCopyLogDetails.copyVerboseLogLink = copyVerboseLogLink;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxHeavyAccountCopyLogDetails;
+        });
     }
 }

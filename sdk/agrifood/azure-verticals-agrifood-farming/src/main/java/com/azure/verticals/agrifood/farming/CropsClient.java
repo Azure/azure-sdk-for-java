@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = CropsClientBuilder.class)
 public final class CropsClient {
-    @Generated private final CropsAsyncClient client;
+    @Generated
+    private final CropsAsyncClient client;
 
     /**
      * Initializes an instance of CropsClient class.
@@ -215,8 +216,8 @@ public final class CropsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String cropId, BinaryData crop, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String cropId, BinaryData crop,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateWithResponse(cropId, crop, requestOptions).block();
     }
 

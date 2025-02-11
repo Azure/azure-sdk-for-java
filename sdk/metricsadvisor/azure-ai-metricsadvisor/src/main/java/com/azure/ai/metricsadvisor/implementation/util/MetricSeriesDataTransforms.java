@@ -18,25 +18,15 @@ public class MetricSeriesDataTransforms {
     public static PagedResponse<MetricSeriesData> fromInnerResponse(Response<MetricDataList> innerResponse) {
         final MetricDataList innerMetricDataList = innerResponse.getValue();
         if (innerMetricDataList == null || innerMetricDataList.getValue() == null) {
-            return new PagedResponseBase<>(
-                innerResponse.getRequest(),
-                innerResponse.getStatusCode(),
-                innerResponse.getHeaders(),
-                new ArrayList<>(),
-                null,
-                null);
+            return new PagedResponseBase<>(innerResponse.getRequest(), innerResponse.getStatusCode(),
+                innerResponse.getHeaders(), new ArrayList<>(), null, null);
         } else {
             final List<MetricSeriesData> metricSeriesDataList = innerMetricDataList.getValue()
                 .stream()
                 .map(inner -> MetricSeriesDataTransforms.fromInner(inner))
                 .collect(Collectors.toList());
-            return new PagedResponseBase<>(
-                innerResponse.getRequest(),
-                innerResponse.getStatusCode(),
-                innerResponse.getHeaders(),
-                metricSeriesDataList,
-                null,
-                null);
+            return new PagedResponseBase<>(innerResponse.getRequest(), innerResponse.getStatusCode(),
+                innerResponse.getHeaders(), metricSeriesDataList, null, null);
         }
     }
 

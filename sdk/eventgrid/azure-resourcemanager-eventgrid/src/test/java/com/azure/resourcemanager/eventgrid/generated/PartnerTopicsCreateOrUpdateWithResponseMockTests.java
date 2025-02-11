@@ -31,7 +31,7 @@ public final class PartnerTopicsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"90bb0e6f-9db9-41c3-bcf2-fa1d78821a2f\",\"source\":\"gzxlermkmerghski\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"f\":{\"description\":\"cbkfukd\",\"displayName\":\"qnv\",\"documentationUrl\":\"dydshk\",\"dataSchemaUrl\":\"fyaloowwzizzny\"},\"qpfzlpejtznxlue\":{\"description\":\"zstifgufyj\",\"displayName\":\"kqiyvnd\",\"documentationUrl\":\"kgwesy\",\"dataSchemaUrl\":\"qh\"},\"cumecsaaqg\":{\"description\":\"jqbbgsimwejlw\",\"displayName\":\"bpjzobdwbcpraswk\",\"documentationUrl\":\"ydtnaczkfwfatgaw\",\"dataSchemaUrl\":\"nskivdwgt\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-09-11T10:28:46Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"sbskowkrbhz\",\"messageForActivation\":\"bkhtmqowiu\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"ucyhfaimq\",\"tenantId\":\"ruozkgyfp\",\"userAssignedIdentities\":{\"xvlzjxplhpevasyn\":{\"principalId\":\"gfmq\",\"clientId\":\"kk\"}}},\"location\":\"vzjyielb\",\"tags\":{\"nmpecqxgiqasifub\":\"vbqv\"},\"id\":\"snstl\",\"name\":\"wqpjnxjkhtupsvy\",\"type\":\"uweuiy\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"7e4d1d7e-db55-41e1-bf3e-c42a150a8584\",\"source\":\"gzxlermkmerghski\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"f\":{\"description\":\"cbkfukd\",\"displayName\":\"qnv\",\"documentationUrl\":\"dydshk\",\"dataSchemaUrl\":\"fyaloowwzizzny\"},\"qpfzlpejtznxlue\":{\"description\":\"zstifgufyj\",\"displayName\":\"kqiyvnd\",\"documentationUrl\":\"kgwesy\",\"dataSchemaUrl\":\"qh\"},\"cumecsaaqg\":{\"description\":\"jqbbgsimwejlw\",\"displayName\":\"bpjzobdwbcpraswk\",\"documentationUrl\":\"ydtnaczkfwfatgaw\",\"dataSchemaUrl\":\"nskivdwgt\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-09-11T10:28:46Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"sbskowkrbhz\",\"messageForActivation\":\"bkhtmqowiu\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"ucyhfaimq\",\"tenantId\":\"ruozkgyfp\",\"userAssignedIdentities\":{\"xvlzjxplhpevasyn\":{\"principalId\":\"gfmq\",\"clientId\":\"kk\"}}},\"location\":\"vzjyielb\",\"tags\":{\"nmpecqxgiqasifub\":\"vbqv\"},\"id\":\"snstl\",\"name\":\"wqpjnxjkhtupsvy\",\"type\":\"uweuiy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -50,7 +50,7 @@ public final class PartnerTopicsCreateOrUpdateWithResponseMockTests {
                 .withTenantId("qebmvrdjomlnwsb")
                 .withUserAssignedIdentities(mapOf("oinmphymcqidklt",
                     new UserIdentityProperties().withPrincipalId("sflxkqesd").withClientId("dsbgzan"))))
-            .withPartnerRegistrationImmutableId(UUID.fromString("231746ee-1140-4b42-9504-fe5bf76a39ab"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("a3f89bb7-7b6a-4d13-bdcc-53b5d97c6567"))
             .withSource("htgmknazgbj")
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
                 .withInlineEventTypes(mapOf("lna",
@@ -77,7 +77,7 @@ public final class PartnerTopicsCreateOrUpdateWithResponseMockTests {
         Assertions.assertEquals("gfmq",
             response.identity().userAssignedIdentities().get("xvlzjxplhpevasyn").principalId());
         Assertions.assertEquals("kk", response.identity().userAssignedIdentities().get("xvlzjxplhpevasyn").clientId());
-        Assertions.assertEquals(UUID.fromString("90bb0e6f-9db9-41c3-bcf2-fa1d78821a2f"),
+        Assertions.assertEquals(UUID.fromString("7e4d1d7e-db55-41e1-bf3e-c42a150a8584"),
             response.partnerRegistrationImmutableId());
         Assertions.assertEquals("gzxlermkmerghski", response.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, response.eventTypeInfo().kind());

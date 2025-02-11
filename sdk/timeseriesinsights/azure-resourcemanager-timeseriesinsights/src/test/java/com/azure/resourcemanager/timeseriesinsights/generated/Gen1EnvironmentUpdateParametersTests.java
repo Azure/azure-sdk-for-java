@@ -17,34 +17,32 @@ import org.junit.jupiter.api.Assertions;
 public final class Gen1EnvironmentUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Gen1EnvironmentUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"Gen1\",\"sku\":{\"name\":\"L1\",\"capacity\":891942589},\"properties\":{\"dataRetentionTime\":\"PT50H33M14S\",\"storageLimitExceededBehavior\":\"PurgeOldData\"},\"tags\":{\"vjektcxsenh\":\"beypewrmjmw\",\"rzpwvlqdqgbiq\":\"lrsf\"}}")
-                .toObject(Gen1EnvironmentUpdateParameters.class);
-        Assertions.assertEquals("beypewrmjmw", model.tags().get("vjektcxsenh"));
+        Gen1EnvironmentUpdateParameters model = BinaryData.fromString(
+            "{\"kind\":\"Gen1\",\"sku\":{\"name\":\"L1\",\"capacity\":1949820387},\"properties\":{\"dataRetentionTime\":\"PT33H49M39S\",\"storageLimitExceededBehavior\":\"PauseIngress\"},\"tags\":{\"kfrlhrxsbky\":\"bh\",\"afkuwb\":\"pycanuzbpz\",\"ehhseyvjusrts\":\"rnwb\"}}")
+            .toObject(Gen1EnvironmentUpdateParameters.class);
+        Assertions.assertEquals("bh", model.tags().get("kfrlhrxsbky"));
         Assertions.assertEquals(SkuName.L1, model.sku().name());
-        Assertions.assertEquals(891942589, model.sku().capacity());
-        Assertions.assertEquals(Duration.parse("PT50H33M14S"), model.dataRetentionTime());
-        Assertions.assertEquals(StorageLimitExceededBehavior.PURGE_OLD_DATA, model.storageLimitExceededBehavior());
+        Assertions.assertEquals(1949820387, model.sku().capacity());
+        Assertions.assertEquals(Duration.parse("PT33H49M39S"), model.dataRetentionTime());
+        Assertions.assertEquals(StorageLimitExceededBehavior.PAUSE_INGRESS, model.storageLimitExceededBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Gen1EnvironmentUpdateParameters model =
-            new Gen1EnvironmentUpdateParameters()
-                .withTags(mapOf("vjektcxsenh", "beypewrmjmw", "rzpwvlqdqgbiq", "lrsf"))
-                .withSku(new Sku().withName(SkuName.L1).withCapacity(891942589))
-                .withDataRetentionTime(Duration.parse("PT50H33M14S"))
-                .withStorageLimitExceededBehavior(StorageLimitExceededBehavior.PURGE_OLD_DATA);
+        Gen1EnvironmentUpdateParameters model = new Gen1EnvironmentUpdateParameters()
+            .withTags(mapOf("kfrlhrxsbky", "bh", "afkuwb", "pycanuzbpz", "ehhseyvjusrts", "rnwb"))
+            .withSku(new Sku().withName(SkuName.L1).withCapacity(1949820387))
+            .withDataRetentionTime(Duration.parse("PT33H49M39S"))
+            .withStorageLimitExceededBehavior(StorageLimitExceededBehavior.PAUSE_INGRESS);
         model = BinaryData.fromObject(model).toObject(Gen1EnvironmentUpdateParameters.class);
-        Assertions.assertEquals("beypewrmjmw", model.tags().get("vjektcxsenh"));
+        Assertions.assertEquals("bh", model.tags().get("kfrlhrxsbky"));
         Assertions.assertEquals(SkuName.L1, model.sku().name());
-        Assertions.assertEquals(891942589, model.sku().capacity());
-        Assertions.assertEquals(Duration.parse("PT50H33M14S"), model.dataRetentionTime());
-        Assertions.assertEquals(StorageLimitExceededBehavior.PURGE_OLD_DATA, model.storageLimitExceededBehavior());
+        Assertions.assertEquals(1949820387, model.sku().capacity());
+        Assertions.assertEquals(Duration.parse("PT33H49M39S"), model.dataRetentionTime());
+        Assertions.assertEquals(StorageLimitExceededBehavior.PAUSE_INGRESS, model.storageLimitExceededBehavior());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

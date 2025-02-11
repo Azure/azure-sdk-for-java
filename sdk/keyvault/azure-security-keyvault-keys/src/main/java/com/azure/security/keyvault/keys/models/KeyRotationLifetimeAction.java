@@ -20,23 +20,24 @@ import java.io.IOException;
 @Fluent
 public final class KeyRotationLifetimeAction implements JsonSerializable<KeyRotationLifetimeAction> {
     static {
-        KeyRotationLifetimeActionHelper.setAccessor(new KeyRotationLifetimeActionHelper.KeyRotationLifetimeActionAccessor() {
-            @Override
-            public KeyRotationLifetimeAction createLifetimeAction(LifetimeActionsTrigger trigger,
-                LifetimeActionsType actionsType) {
-                return new KeyRotationLifetimeAction(trigger, actionsType);
-            }
+        KeyRotationLifetimeActionHelper
+            .setAccessor(new KeyRotationLifetimeActionHelper.KeyRotationLifetimeActionAccessor() {
+                @Override
+                public KeyRotationLifetimeAction createLifetimeAction(LifetimeActionsTrigger trigger,
+                    LifetimeActionsType actionsType) {
+                    return new KeyRotationLifetimeAction(trigger, actionsType);
+                }
 
-            @Override
-            public LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction lifetimeAction) {
-                return lifetimeAction.trigger;
-            }
+                @Override
+                public LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction lifetimeAction) {
+                    return lifetimeAction.trigger;
+                }
 
-            @Override
-            public LifetimeActionsType getActionType(KeyRotationLifetimeAction lifetimeAction) {
-                return lifetimeAction.actionType;
-            }
-        });
+                @Override
+                public LifetimeActionsType getActionType(KeyRotationLifetimeAction lifetimeAction) {
+                    return lifetimeAction.actionType;
+                }
+            });
     }
 
     private final LifetimeActionsTrigger trigger;

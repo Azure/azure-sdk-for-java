@@ -13,6 +13,7 @@ public final class ContextAccessor {
 
     public interface ReceiveMessageContextAccessor {
         ServiceBusReceivedMessage setContext(ServiceBusReceivedMessage message, Context context);
+
         Context getContext(ServiceBusReceivedMessage message);
     }
 

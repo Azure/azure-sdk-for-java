@@ -5,73 +5,72 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Identity Provider Base Parameter Properties. */
+/**
+ * Identity Provider Base Parameter Properties.
+ */
 @Fluent
-public class IdentityProviderBaseParameters {
+public class IdentityProviderBaseParameters implements JsonSerializable<IdentityProviderBaseParameters> {
     /*
      * Identity Provider Type identifier.
      */
-    @JsonProperty(value = "type")
     private IdentityProviderType type;
 
     /*
      * The TenantId to use instead of Common when logging into Active Directory
      */
-    @JsonProperty(value = "signinTenant")
     private String signinTenant;
 
     /*
      * List of Allowed Tenants when configuring Azure Active Directory login.
      */
-    @JsonProperty(value = "allowedTenants")
     private List<String> allowedTenants;
 
     /*
      * OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
      */
-    @JsonProperty(value = "authority")
     private String authority;
 
     /*
      * Signup Policy Name. Only applies to AAD B2C Identity Provider.
      */
-    @JsonProperty(value = "signupPolicyName")
     private String signupPolicyName;
 
     /*
      * Signin Policy Name. Only applies to AAD B2C Identity Provider.
      */
-    @JsonProperty(value = "signinPolicyName")
     private String signinPolicyName;
 
     /*
      * Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
      */
-    @JsonProperty(value = "profileEditingPolicyName")
     private String profileEditingPolicyName;
 
     /*
      * Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
      */
-    @JsonProperty(value = "passwordResetPolicyName")
     private String passwordResetPolicyName;
 
     /*
      * The client library to be used in the developer portal. Only applies to AAD and AAD B2C Identity Provider.
      */
-    @JsonProperty(value = "clientLibrary")
     private String clientLibrary;
 
-    /** Creates an instance of IdentityProviderBaseParameters class. */
+    /**
+     * Creates an instance of IdentityProviderBaseParameters class.
+     */
     public IdentityProviderBaseParameters() {
     }
 
     /**
      * Get the type property: Identity Provider Type identifier.
-     *
+     * 
      * @return the type value.
      */
     public IdentityProviderType type() {
@@ -80,7 +79,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Set the type property: Identity Provider Type identifier.
-     *
+     * 
      * @param type the type value to set.
      * @return the IdentityProviderBaseParameters object itself.
      */
@@ -91,7 +90,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Get the signinTenant property: The TenantId to use instead of Common when logging into Active Directory.
-     *
+     * 
      * @return the signinTenant value.
      */
     public String signinTenant() {
@@ -100,7 +99,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Set the signinTenant property: The TenantId to use instead of Common when logging into Active Directory.
-     *
+     * 
      * @param signinTenant the signinTenant value to set.
      * @return the IdentityProviderBaseParameters object itself.
      */
@@ -111,7 +110,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Get the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
-     *
+     * 
      * @return the allowedTenants value.
      */
     public List<String> allowedTenants() {
@@ -120,7 +119,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Set the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
-     *
+     * 
      * @param allowedTenants the allowedTenants value to set.
      * @return the IdentityProviderBaseParameters object itself.
      */
@@ -131,7 +130,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Get the authority property: OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-     *
+     * 
      * @return the authority value.
      */
     public String authority() {
@@ -140,7 +139,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Set the authority property: OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-     *
+     * 
      * @param authority the authority value to set.
      * @return the IdentityProviderBaseParameters object itself.
      */
@@ -151,7 +150,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Get the signupPolicyName property: Signup Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @return the signupPolicyName value.
      */
     public String signupPolicyName() {
@@ -160,7 +159,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Set the signupPolicyName property: Signup Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @param signupPolicyName the signupPolicyName value to set.
      * @return the IdentityProviderBaseParameters object itself.
      */
@@ -171,7 +170,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Get the signinPolicyName property: Signin Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @return the signinPolicyName value.
      */
     public String signinPolicyName() {
@@ -180,7 +179,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Set the signinPolicyName property: Signin Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @param signinPolicyName the signinPolicyName value to set.
      * @return the IdentityProviderBaseParameters object itself.
      */
@@ -192,7 +191,7 @@ public class IdentityProviderBaseParameters {
     /**
      * Get the profileEditingPolicyName property: Profile Editing Policy Name. Only applies to AAD B2C Identity
      * Provider.
-     *
+     * 
      * @return the profileEditingPolicyName value.
      */
     public String profileEditingPolicyName() {
@@ -202,7 +201,7 @@ public class IdentityProviderBaseParameters {
     /**
      * Set the profileEditingPolicyName property: Profile Editing Policy Name. Only applies to AAD B2C Identity
      * Provider.
-     *
+     * 
      * @param profileEditingPolicyName the profileEditingPolicyName value to set.
      * @return the IdentityProviderBaseParameters object itself.
      */
@@ -213,7 +212,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Get the passwordResetPolicyName property: Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @return the passwordResetPolicyName value.
      */
     public String passwordResetPolicyName() {
@@ -222,7 +221,7 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Set the passwordResetPolicyName property: Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @param passwordResetPolicyName the passwordResetPolicyName value to set.
      * @return the IdentityProviderBaseParameters object itself.
      */
@@ -234,7 +233,7 @@ public class IdentityProviderBaseParameters {
     /**
      * Get the clientLibrary property: The client library to be used in the developer portal. Only applies to AAD and
      * AAD B2C Identity Provider.
-     *
+     * 
      * @return the clientLibrary value.
      */
     public String clientLibrary() {
@@ -244,7 +243,7 @@ public class IdentityProviderBaseParameters {
     /**
      * Set the clientLibrary property: The client library to be used in the developer portal. Only applies to AAD and
      * AAD B2C Identity Provider.
-     *
+     * 
      * @param clientLibrary the clientLibrary value to set.
      * @return the IdentityProviderBaseParameters object itself.
      */
@@ -255,9 +254,73 @@ public class IdentityProviderBaseParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("signinTenant", this.signinTenant);
+        jsonWriter.writeArrayField("allowedTenants", this.allowedTenants,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("authority", this.authority);
+        jsonWriter.writeStringField("signupPolicyName", this.signupPolicyName);
+        jsonWriter.writeStringField("signinPolicyName", this.signinPolicyName);
+        jsonWriter.writeStringField("profileEditingPolicyName", this.profileEditingPolicyName);
+        jsonWriter.writeStringField("passwordResetPolicyName", this.passwordResetPolicyName);
+        jsonWriter.writeStringField("clientLibrary", this.clientLibrary);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityProviderBaseParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityProviderBaseParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentityProviderBaseParameters.
+     */
+    public static IdentityProviderBaseParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityProviderBaseParameters deserializedIdentityProviderBaseParameters
+                = new IdentityProviderBaseParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedIdentityProviderBaseParameters.type
+                        = IdentityProviderType.fromString(reader.getString());
+                } else if ("signinTenant".equals(fieldName)) {
+                    deserializedIdentityProviderBaseParameters.signinTenant = reader.getString();
+                } else if ("allowedTenants".equals(fieldName)) {
+                    List<String> allowedTenants = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIdentityProviderBaseParameters.allowedTenants = allowedTenants;
+                } else if ("authority".equals(fieldName)) {
+                    deserializedIdentityProviderBaseParameters.authority = reader.getString();
+                } else if ("signupPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderBaseParameters.signupPolicyName = reader.getString();
+                } else if ("signinPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderBaseParameters.signinPolicyName = reader.getString();
+                } else if ("profileEditingPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderBaseParameters.profileEditingPolicyName = reader.getString();
+                } else if ("passwordResetPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderBaseParameters.passwordResetPolicyName = reader.getString();
+                } else if ("clientLibrary".equals(fieldName)) {
+                    deserializedIdentityProviderBaseParameters.clientLibrary = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityProviderBaseParameters;
+        });
     }
 }

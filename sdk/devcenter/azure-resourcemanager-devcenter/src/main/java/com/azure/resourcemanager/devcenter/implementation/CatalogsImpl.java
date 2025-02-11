@@ -13,8 +13,8 @@ import com.azure.resourcemanager.devcenter.fluent.CatalogsClient;
 import com.azure.resourcemanager.devcenter.fluent.models.CatalogInner;
 import com.azure.resourcemanager.devcenter.fluent.models.SyncErrorDetailsInner;
 import com.azure.resourcemanager.devcenter.models.Catalog;
-import com.azure.resourcemanager.devcenter.models.Catalogs;
 import com.azure.resourcemanager.devcenter.models.CatalogUpdate;
+import com.azure.resourcemanager.devcenter.models.Catalogs;
 import com.azure.resourcemanager.devcenter.models.SyncErrorDetails;
 
 public final class CatalogsImpl implements Catalogs {

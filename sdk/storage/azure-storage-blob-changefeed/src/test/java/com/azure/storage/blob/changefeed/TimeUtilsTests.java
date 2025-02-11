@@ -22,8 +22,7 @@ public class TimeUtilsTests {
 
     private static Stream<Arguments> convertPathToTimeSupplier() {
         // path || time
-        return Stream.of(
-            Arguments.of(null, null),
+        return Stream.of(Arguments.of(null, null),
             Arguments.of("idx/segments/2019", OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
             Arguments.of("idx/segments/2019/", OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
             Arguments.of("idx/segments/2019/11", OffsetDateTime.of(2019, 11, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
@@ -33,8 +32,7 @@ public class TimeUtilsTests {
             Arguments.of("idx/segments/2019/11/02/1700", OffsetDateTime.of(2019, 11, 2, 17, 0, 0, 0, ZoneOffset.UTC)),
             Arguments.of("idx/segments/2019/11/02/1700/", OffsetDateTime.of(2019, 11, 2, 17, 0, 0, 0, ZoneOffset.UTC)),
             Arguments.of("idx/segments/2019/11/02/1700/meta.json",
-                OffsetDateTime.of(2019, 11, 2, 17, 0, 0, 0, ZoneOffset.UTC))
-        );
+                OffsetDateTime.of(2019, 11, 2, 17, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @ParameterizedTest
@@ -45,13 +43,11 @@ public class TimeUtilsTests {
 
     private static Stream<Arguments> roundDownToNearestHourSupplier() {
         // time || roundedTime
-        return Stream.of(
-            Arguments.of(null, null),
+        return Stream.of(Arguments.of(null, null),
             Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
                 OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
             Arguments.of(OffsetDateTime.of(2020, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC),
-                OffsetDateTime.of(2020, 3, 17, 20, 0, 0, 0, ZoneOffset.UTC))
-        );
+                OffsetDateTime.of(2020, 3, 17, 20, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @ParameterizedTest
@@ -62,15 +58,13 @@ public class TimeUtilsTests {
 
     private static Stream<Arguments> roundUpToNearestHourSupplier() {
         // time || roundedTime
-        return Stream.of(
-            Arguments.of(null, null),
+        return Stream.of(Arguments.of(null, null),
             Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
                 OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
             Arguments.of(OffsetDateTime.of(2020, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC),
                 OffsetDateTime.of(2020, 3, 17, 21, 0, 0, 0, ZoneOffset.UTC)),
             Arguments.of(OffsetDateTime.of(2020, 3, 17, 23, 25, 30, 0, ZoneOffset.UTC),
-                OffsetDateTime.of(2020, 3, 18, 0, 0, 0, 0, ZoneOffset.UTC))
-        );
+                OffsetDateTime.of(2020, 3, 18, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @ParameterizedTest
@@ -81,13 +75,11 @@ public class TimeUtilsTests {
 
     private static Stream<Arguments> roundDownToNearestYearSupplier() {
         // time || roundedTime
-        return Stream.of(
-            Arguments.of(null, null),
+        return Stream.of(Arguments.of(null, null),
             Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
                 OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
             Arguments.of(OffsetDateTime.of(2020, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC),
-                OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-        );
+                OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @ParameterizedTest
@@ -124,8 +116,7 @@ public class TimeUtilsTests {
                 false),
             Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
                 "idx/segments/2020/01/01/0000/meta.json", OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                false)
-        );
+                false));
     }
 
     @ParameterizedTest
@@ -144,25 +135,19 @@ public class TimeUtilsTests {
             Arguments.of(null, null, OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), false),
 
             // All equal
-            Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                "idx/segments/2019", OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                true),
+            Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), "idx/segments/2019",
+                OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), true),
 
             // Increasing
-            Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                "idx/segments/2019", OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                true),
-            Arguments.of(OffsetDateTime.of(2019, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC),
-                "idx/segments/2019", OffsetDateTime.of(2019, 8, 10, 0, 0, 0, 0, ZoneOffset.UTC),
-                true),
+            Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), "idx/segments/2019",
+                OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), true),
+            Arguments.of(OffsetDateTime.of(2019, 3, 17, 20, 25, 30, 0, ZoneOffset.UTC), "idx/segments/2019",
+                OffsetDateTime.of(2019, 8, 10, 0, 0, 0, 0, ZoneOffset.UTC), true),
 
             // Decreasing
-            Arguments.of(OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                "idx/segments/2020", OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                false),
-            Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                "idx/segments/2020", OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                false)
-        );
+            Arguments.of(OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), "idx/segments/2020",
+                OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), false),
+            Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), "idx/segments/2020",
+                OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), false));
     }
 }

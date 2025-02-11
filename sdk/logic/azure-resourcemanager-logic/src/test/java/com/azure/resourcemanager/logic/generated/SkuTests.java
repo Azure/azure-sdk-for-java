@@ -13,20 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"NotSpecified\",\"plan\":{\"id\":\"kexxppof\",\"name\":\"axcfjpgddtocjjx\",\"type\":\"pmouexhdz\"}}")
-                .toObject(Sku.class);
-        Assertions.assertEquals(SkuName.NOT_SPECIFIED, model.name());
-        Assertions.assertEquals("kexxppof", model.plan().id());
+        Sku model = BinaryData
+            .fromString(
+                "{\"name\":\"Shared\",\"plan\":{\"id\":\"bp\",\"name\":\"qpsrknftguvri\",\"type\":\"prwmdyvxqt\"}}")
+            .toObject(Sku.class);
+        Assertions.assertEquals(SkuName.SHARED, model.name());
+        Assertions.assertEquals("bp", model.plan().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName(SkuName.NOT_SPECIFIED).withPlan(new ResourceReference().withId("kexxppof"));
+        Sku model = new Sku().withName(SkuName.SHARED).withPlan(new ResourceReference().withId("bp"));
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals(SkuName.NOT_SPECIFIED, model.name());
-        Assertions.assertEquals("kexxppof", model.plan().id());
+        Assertions.assertEquals(SkuName.SHARED, model.name());
+        Assertions.assertEquals("bp", model.plan().id());
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.storageactions.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Fetch the Storage task assignment ARM ids.
+ * Storage Task Assignment associated with this Storage Task.
  */
 @Immutable
-public final class StorageTaskAssignmentInner {
+public final class StorageTaskAssignmentInner implements JsonSerializable<StorageTaskAssignmentInner> {
     /*
-     * ARM Id of the storage task assignments, associated with the storage tasks.
+     * Resource ID of the Storage Task Assignment.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
@@ -25,7 +28,7 @@ public final class StorageTaskAssignmentInner {
     }
 
     /**
-     * Get the id property: ARM Id of the storage task assignments, associated with the storage tasks.
+     * Get the id property: Resource ID of the Storage Task Assignment.
      * 
      * @return the id value.
      */
@@ -39,5 +42,40 @@ public final class StorageTaskAssignmentInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskAssignmentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskAssignmentInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTaskAssignmentInner.
+     */
+    public static StorageTaskAssignmentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskAssignmentInner deserializedStorageTaskAssignmentInner = new StorageTaskAssignmentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskAssignmentInner;
+        });
     }
 }

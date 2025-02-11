@@ -5,28 +5,37 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The integration service environment network dependency health state. */
+/**
+ * The integration service environment network dependency health state.
+ */
 public final class IntegrationServiceEnvironmentNetworkDependencyHealthState
     extends ExpandableStringEnum<IntegrationServiceEnvironmentNetworkDependencyHealthState> {
-    /** Static value NotSpecified for IntegrationServiceEnvironmentNetworkDependencyHealthState. */
-    public static final IntegrationServiceEnvironmentNetworkDependencyHealthState NOT_SPECIFIED =
-        fromString("NotSpecified");
+    /**
+     * Static value NotSpecified for IntegrationServiceEnvironmentNetworkDependencyHealthState.
+     */
+    public static final IntegrationServiceEnvironmentNetworkDependencyHealthState NOT_SPECIFIED
+        = fromString("NotSpecified");
 
-    /** Static value Healthy for IntegrationServiceEnvironmentNetworkDependencyHealthState. */
+    /**
+     * Static value Healthy for IntegrationServiceEnvironmentNetworkDependencyHealthState.
+     */
     public static final IntegrationServiceEnvironmentNetworkDependencyHealthState HEALTHY = fromString("Healthy");
 
-    /** Static value Unhealthy for IntegrationServiceEnvironmentNetworkDependencyHealthState. */
+    /**
+     * Static value Unhealthy for IntegrationServiceEnvironmentNetworkDependencyHealthState.
+     */
     public static final IntegrationServiceEnvironmentNetworkDependencyHealthState UNHEALTHY = fromString("Unhealthy");
 
-    /** Static value Unknown for IntegrationServiceEnvironmentNetworkDependencyHealthState. */
+    /**
+     * Static value Unknown for IntegrationServiceEnvironmentNetworkDependencyHealthState.
+     */
     public static final IntegrationServiceEnvironmentNetworkDependencyHealthState UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of IntegrationServiceEnvironmentNetworkDependencyHealthState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,18 +44,17 @@ public final class IntegrationServiceEnvironmentNetworkDependencyHealthState
 
     /**
      * Creates or finds a IntegrationServiceEnvironmentNetworkDependencyHealthState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IntegrationServiceEnvironmentNetworkDependencyHealthState.
      */
-    @JsonCreator
     public static IntegrationServiceEnvironmentNetworkDependencyHealthState fromString(String name) {
         return fromString(name, IntegrationServiceEnvironmentNetworkDependencyHealthState.class);
     }
 
     /**
      * Gets known IntegrationServiceEnvironmentNetworkDependencyHealthState values.
-     *
+     * 
      * @return known IntegrationServiceEnvironmentNetworkDependencyHealthState values.
      */
     public static Collection<IntegrationServiceEnvironmentNetworkDependencyHealthState> values() {

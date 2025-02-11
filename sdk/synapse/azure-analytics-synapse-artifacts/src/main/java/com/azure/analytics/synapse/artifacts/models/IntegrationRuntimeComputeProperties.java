@@ -20,7 +20,8 @@ import java.util.Map;
 public final class IntegrationRuntimeComputeProperties
     implements JsonSerializable<IntegrationRuntimeComputeProperties> {
     /*
-     * The location for managed integration runtime. The supported regions could be found on https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities
+     * The location for managed integration runtime. The supported regions could be found on
+     * https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities
      */
     private String location;
 

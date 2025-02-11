@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.largeinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the properties of an AzureLargeStorageInstance.
  */
 @Fluent
-public final class AzureLargeStorageInstanceProperties {
+public final class AzureLargeStorageInstanceProperties
+    implements JsonSerializable<AzureLargeStorageInstanceProperties> {
     /*
      * Specifies the AzureLargeStorageInstance unique ID.
      */
-    @JsonProperty(value = "azureLargeStorageInstanceUniqueIdentifier")
     private String azureLargeStorageInstanceUniqueIdentifier;
 
     /*
      * Specifies the storage properties for the AzureLargeStorage instance.
      */
-    @JsonProperty(value = "storageProperties")
     private StorageProperties storageProperties;
 
     /**
@@ -80,5 +83,48 @@ public final class AzureLargeStorageInstanceProperties {
         if (storageProperties() != null) {
             storageProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azureLargeStorageInstanceUniqueIdentifier",
+            this.azureLargeStorageInstanceUniqueIdentifier);
+        jsonWriter.writeJsonField("storageProperties", this.storageProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureLargeStorageInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureLargeStorageInstanceProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureLargeStorageInstanceProperties.
+     */
+    public static AzureLargeStorageInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureLargeStorageInstanceProperties deserializedAzureLargeStorageInstanceProperties
+                = new AzureLargeStorageInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureLargeStorageInstanceUniqueIdentifier".equals(fieldName)) {
+                    deserializedAzureLargeStorageInstanceProperties.azureLargeStorageInstanceUniqueIdentifier
+                        = reader.getString();
+                } else if ("storageProperties".equals(fieldName)) {
+                    deserializedAzureLargeStorageInstanceProperties.storageProperties
+                        = StorageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureLargeStorageInstanceProperties;
+        });
     }
 }

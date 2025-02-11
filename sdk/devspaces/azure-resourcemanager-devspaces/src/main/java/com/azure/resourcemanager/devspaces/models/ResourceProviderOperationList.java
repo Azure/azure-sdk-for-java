@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.devspaces.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devspaces.fluent.models.ResourceProviderOperationDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The ResourceProviderOperationList model. */
+/**
+ * The ResourceProviderOperationList model.
+ */
 @Fluent
-public final class ResourceProviderOperationList {
+public final class ResourceProviderOperationList implements JsonSerializable<ResourceProviderOperationList> {
     /*
      * Resource provider operations list.
      */
-    @JsonProperty(value = "value")
     private List<ResourceProviderOperationDefinitionInner> value;
 
     /*
      * The URI that can be used to request the next page for list of Azure operations.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ResourceProviderOperationList class. */
+    /**
+     * Creates an instance of ResourceProviderOperationList class.
+     */
     public ResourceProviderOperationList() {
     }
 
     /**
      * Get the value property: Resource provider operations list.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceProviderOperationDefinitionInner> value() {
@@ -39,7 +45,7 @@ public final class ResourceProviderOperationList {
 
     /**
      * Set the value property: Resource provider operations list.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceProviderOperationList object itself.
      */
@@ -50,7 +56,7 @@ public final class ResourceProviderOperationList {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next page for list of Azure operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,53 @@ public final class ResourceProviderOperationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderOperationList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderOperationList if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProviderOperationList.
+     */
+    public static ResourceProviderOperationList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderOperationList deserializedResourceProviderOperationList
+                = new ResourceProviderOperationList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ResourceProviderOperationDefinitionInner> value
+                        = reader.readArray(reader1 -> ResourceProviderOperationDefinitionInner.fromJson(reader1));
+                    deserializedResourceProviderOperationList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedResourceProviderOperationList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderOperationList;
+        });
     }
 }

@@ -132,20 +132,16 @@ public final class SapVirtualInstanceImpl
     }
 
     public SapVirtualInstance create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapVirtualInstances()
-                .create(resourceGroupName, sapVirtualInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapVirtualInstances()
+            .create(resourceGroupName, sapVirtualInstanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SapVirtualInstance create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapVirtualInstances()
-                .create(resourceGroupName, sapVirtualInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapVirtualInstances()
+            .create(resourceGroupName, sapVirtualInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -161,50 +157,43 @@ public final class SapVirtualInstanceImpl
     }
 
     public SapVirtualInstance apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapVirtualInstances()
-                .updateWithResponse(resourceGroupName, sapVirtualInstanceName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapVirtualInstances()
+            .updateWithResponse(resourceGroupName, sapVirtualInstanceName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SapVirtualInstance apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapVirtualInstances()
-                .updateWithResponse(resourceGroupName, sapVirtualInstanceName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapVirtualInstances()
+            .updateWithResponse(resourceGroupName, sapVirtualInstanceName, updateBody, context)
+            .getValue();
         return this;
     }
 
-    SapVirtualInstanceImpl(
-        SapVirtualInstanceInner innerObject, com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
+    SapVirtualInstanceImpl(SapVirtualInstanceInner innerObject,
+        com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sapVirtualInstanceName = Utils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.sapVirtualInstanceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
     }
 
     public SapVirtualInstance refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapVirtualInstances()
-                .getByResourceGroupWithResponse(resourceGroupName, sapVirtualInstanceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapVirtualInstances()
+            .getByResourceGroupWithResponse(resourceGroupName, sapVirtualInstanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SapVirtualInstance refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapVirtualInstances()
-                .getByResourceGroupWithResponse(resourceGroupName, sapVirtualInstanceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapVirtualInstances()
+            .getByResourceGroupWithResponse(resourceGroupName, sapVirtualInstanceName, context)
+            .getValue();
         return this;
     }
 
@@ -269,8 +258,8 @@ public final class SapVirtualInstanceImpl
         }
     }
 
-    public SapVirtualInstanceImpl withManagedResourceGroupConfiguration(
-        ManagedRGConfiguration managedResourceGroupConfiguration) {
+    public SapVirtualInstanceImpl
+        withManagedResourceGroupConfiguration(ManagedRGConfiguration managedResourceGroupConfiguration) {
         this.innerModel().withManagedResourceGroupConfiguration(managedResourceGroupConfiguration);
         return this;
     }

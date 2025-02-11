@@ -12,16 +12,22 @@ import com.azure.resourcemanager.cosmos.models.ConflictResolutionPolicy;
 import com.azure.resourcemanager.cosmos.models.ContainerPartitionKey;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.DataType;
+import com.azure.resourcemanager.cosmos.models.DistanceFunction;
 import com.azure.resourcemanager.cosmos.models.IncludedPath;
+import com.azure.resourcemanager.cosmos.models.IndexKind;
 import com.azure.resourcemanager.cosmos.models.Indexes;
 import com.azure.resourcemanager.cosmos.models.IndexingMode;
 import com.azure.resourcemanager.cosmos.models.IndexingPolicy;
-import com.azure.resourcemanager.cosmos.models.IndexKind;
 import com.azure.resourcemanager.cosmos.models.PartitionKind;
 import com.azure.resourcemanager.cosmos.models.SqlContainerCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlContainerResource;
 import com.azure.resourcemanager.cosmos.models.UniqueKey;
 import com.azure.resourcemanager.cosmos.models.UniqueKeyPolicy;
+import com.azure.resourcemanager.cosmos.models.VectorDataType;
+import com.azure.resourcemanager.cosmos.models.VectorEmbedding;
+import com.azure.resourcemanager.cosmos.models.VectorEmbeddingPolicy;
+import com.azure.resourcemanager.cosmos.models.VectorIndex;
+import com.azure.resourcemanager.cosmos.models.VectorIndexType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +37,7 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBSqlContainerCreateUpdate.json
      */
     /**
@@ -59,7 +65,11 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
                                         new Indexes().withDataType(DataType.NUMBER)
                                             .withPrecision(-1)
                                             .withKind(IndexKind.RANGE)))))
-                                .withExcludedPaths(Arrays.asList()))
+                                .withExcludedPaths(Arrays.asList())
+                                .withVectorIndexes(Arrays.asList(
+                                    new VectorIndex().withPath("/vectorPath1").withType(VectorIndexType.FLAT),
+                                    new VectorIndex().withPath("/vectorPath2").withType(VectorIndexType.QUANTIZED_FLAT),
+                                    new VectorIndex().withPath("/vectorPath3").withType(VectorIndexType.DISK_ANN))))
                             .withPartitionKey(new ContainerPartitionKey().withPaths(Arrays.asList("/AccountNumber"))
                                 .withKind(PartitionKind.HASH))
                             .withDefaultTtl(100)
@@ -75,7 +85,20 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
                                     .withEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256")))
                                 .withPolicyFormatVersion(2))
                             .withComputedProperties(Arrays.asList(new ComputedProperty().withName("cp_lowerName")
-                                .withQuery("SELECT VALUE LOWER(c.name) FROM c"))))
+                                .withQuery("SELECT VALUE LOWER(c.name) FROM c")))
+                            .withVectorEmbeddingPolicy(new VectorEmbeddingPolicy().withVectorEmbeddings(Arrays.asList(
+                                new VectorEmbedding().withPath("/vectorPath1")
+                                    .withDataType(VectorDataType.FLOAT32)
+                                    .withDistanceFunction(DistanceFunction.EUCLIDEAN)
+                                    .withDimensions(400),
+                                new VectorEmbedding().withPath("/vectorPath2")
+                                    .withDataType(VectorDataType.UINT8)
+                                    .withDistanceFunction(DistanceFunction.COSINE)
+                                    .withDimensions(512),
+                                new VectorEmbedding().withPath("/vectorPath3")
+                                    .withDataType(VectorDataType.INT8)
+                                    .withDistanceFunction(DistanceFunction.DOTPRODUCT)
+                                    .withDimensions(512)))))
                     .withOptions(new CreateUpdateOptions()),
                 com.azure.core.util.Context.NONE);
     }

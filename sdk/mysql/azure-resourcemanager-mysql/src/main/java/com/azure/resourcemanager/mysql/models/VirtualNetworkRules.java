@@ -35,8 +35,8 @@ public interface VirtualNetworkRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a virtual network rule along with {@link Response}.
      */
-    Response<VirtualNetworkRule> getWithResponse(
-        String resourceGroupName, String serverName, String virtualNetworkRuleName, Context context);
+    Response<VirtualNetworkRule> getWithResponse(String resourceGroupName, String serverName,
+        String virtualNetworkRuleName, Context context);
 
     /**
      * Deletes the virtual network rule with the given name.

@@ -39,12 +39,17 @@ public final class NodeTypeDescriptionTests {
     public void testSerialize() throws Exception {
         NodeTypeDescription model = new NodeTypeDescription().withName("u")
             .withPlacementProperties(mapOf("nwzsymg", "ryrtihfxtijbpzv", "anufhfcbjysag", "zufcyzkohdbi"))
-            .withCapacities(mapOf("pikxwczbyscnpqxu", "xqhabi")).withClientConnectionEndpointPort(1646115006)
-            .withHttpGatewayEndpointPort(800348188).withDurabilityLevel(DurabilityLevel.SILVER)
+            .withCapacities(mapOf("pikxwczbyscnpqxu", "xqhabi"))
+            .withClientConnectionEndpointPort(1646115006)
+            .withHttpGatewayEndpointPort(800348188)
+            .withDurabilityLevel(DurabilityLevel.SILVER)
             .withApplicationPorts(new EndpointRangeDescription().withStartPort(1574574303).withEndPort(649847293))
             .withEphemeralPorts(new EndpointRangeDescription().withStartPort(992034682).withEndPort(355535904))
-            .withIsPrimary(false).withVmInstanceCount(143848779).withReverseProxyEndpointPort(519347031)
-            .withIsStateless(true).withMultipleAvailabilityZones(true);
+            .withIsPrimary(false)
+            .withVmInstanceCount(143848779)
+            .withReverseProxyEndpointPort(519347031)
+            .withIsStateless(true)
+            .withMultipleAvailabilityZones(true);
         model = BinaryData.fromObject(model).toObject(NodeTypeDescription.class);
         Assertions.assertEquals("u", model.name());
         Assertions.assertEquals("ryrtihfxtijbpzv", model.placementProperties().get("nwzsymg"));

@@ -39,17 +39,35 @@ public final class RuleCounterInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuleCounterInner model = new RuleCounterInner().withPriority("hqlkthumaqo").withRuleStackName("gycdu")
-            .withRuleListName("r").withFirewallName("ccymvaolpsslql").withRuleName("mmdnbbglzps")
+        RuleCounterInner model = new RuleCounterInner().withPriority("hqlkthumaqo")
+            .withRuleStackName("gycdu")
+            .withRuleListName("r")
+            .withFirewallName("ccymvaolpsslql")
+            .withRuleName("mmdnbbglzps")
             .withHitCount(1295617641)
-            .withAppSeen(new AppSeenData().withCount(1146893782).withAppSeenList(Arrays.asList(
-                new AppSeenInfo().withTitle("wyhzdx").withCategory("sadbz").withSubCategory("nvdfznuda")
-                    .withRisk("dvxzbncblylpst").withTag("bhhxsrzdzuc").withTechnology("rsc").withStandardPorts("ntnev"),
-                new AppSeenInfo().withTitle("iwjmygtdssls").withCategory("tmweriofzpyq").withSubCategory("emwabnet")
-                    .withRisk("hhszh").withTag("d").withTechnology("lvwiwubmwmbesl").withStandardPorts("nkww"),
-                new AppSeenInfo().withTitle("pp").withCategory("flcxoga").withSubCategory("konzmnsik")
-                    .withRisk("mkqzeqqkdltfzxmh").withTag("v").withTechnology("gureodkwobdag")
-                    .withStandardPorts("tibqdxbxwakb"))))
+            .withAppSeen(new AppSeenData().withCount(1146893782)
+                .withAppSeenList(Arrays.asList(
+                    new AppSeenInfo().withTitle("wyhzdx")
+                        .withCategory("sadbz")
+                        .withSubCategory("nvdfznuda")
+                        .withRisk("dvxzbncblylpst")
+                        .withTag("bhhxsrzdzuc")
+                        .withTechnology("rsc")
+                        .withStandardPorts("ntnev"),
+                    new AppSeenInfo().withTitle("iwjmygtdssls")
+                        .withCategory("tmweriofzpyq")
+                        .withSubCategory("emwabnet")
+                        .withRisk("hhszh")
+                        .withTag("d")
+                        .withTechnology("lvwiwubmwmbesl")
+                        .withStandardPorts("nkww"),
+                    new AppSeenInfo().withTitle("pp")
+                        .withCategory("flcxoga")
+                        .withSubCategory("konzmnsik")
+                        .withRisk("mkqzeqqkdltfzxmh")
+                        .withTag("v")
+                        .withTechnology("gureodkwobdag")
+                        .withStandardPorts("tibqdxbxwakb"))))
             .withTimestamp(OffsetDateTime.parse("2021-01-22T07:28:26Z"))
             .withRequestTimestamp(OffsetDateTime.parse("2021-06-17T07:32:41Z"))
             .withLastUpdatedTimestamp(OffsetDateTime.parse("2021-06-30T02:36:31Z"));

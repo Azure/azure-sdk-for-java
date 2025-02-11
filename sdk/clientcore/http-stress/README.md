@@ -211,7 +211,7 @@ In addition to `test.run_duration`, we're also collecting:
     - Class stats
     - See [JVM metrics semantic conventions for the details](https://github.com/open-telemetry/semantic-conventions/blob/main/docs/runtime/jvm-metrics.md)
 
-You can also enable [reactor schedulers metrics](https://github.com/reactor/reactor-core/blob/main/docs/asciidoc/metrics.adoc) collection by installing `micrometer-core` and
+You can also enable [reactor schedulers metrics](https://github.com/reactor/reactor-core/blob/962aeb77a09088fa2a7bac6d814c2b35220b1d35/docs/modules/ROOT/pages/metrics.adoc) collection by installing `micrometer-core` and
 [OpenTelemetry micrometer bridge](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/micrometer/micrometer-1.5/library).
 
 ### Stress test workbook
@@ -246,13 +246,13 @@ thread pool issues, or other performance issues in the code. So make sure to con
 
 <!-- links -->
 [azure_sdk_stress_test]: https://aka.ms/azsdk/stress
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [docker]: https://docs.docker.com/get-docker/
 [kubectl]: https://kubernetes.io/docs/tasks/tools/#kubectl
 [helm]: https://helm.sh/docs/intro/install/
-[azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli
-[powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
+[azure_cli]: https://learn.microsoft.com/cli/azure/install-azure-cli
+[powershell]: https://learn.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
 [enable_application_insights]: https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable?tabs=java#enable-azure-monitor-application-insights
 [logback_xml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus-stress/src/main/resources/logback.xml
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test

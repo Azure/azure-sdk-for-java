@@ -13,8 +13,8 @@ public final class OperationMetadataImpl implements OperationMetadata {
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    OperationMetadataImpl(
-        OperationMetadataInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    OperationMetadataImpl(OperationMetadataInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

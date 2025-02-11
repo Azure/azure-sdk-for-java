@@ -5,65 +5,67 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Hybrid configuration group value properties.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "configurationType",
-    defaultImpl = ConfigurationGroupValuePropertiesFormat.class)
-@JsonTypeName("ConfigurationGroupValuePropertiesFormat")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Secret", value = ConfigurationValueWithSecrets.class),
-    @JsonSubTypes.Type(name = "Open", value = ConfigurationValueWithoutSecrets.class) })
 @Fluent
-public class ConfigurationGroupValuePropertiesFormat {
+public class ConfigurationGroupValuePropertiesFormat
+    implements JsonSerializable<ConfigurationGroupValuePropertiesFormat> {
+    /*
+     * The value which indicates if configuration values are secrets
+     */
+    private ConfigurationGroupValueConfigurationType configurationType
+        = ConfigurationGroupValueConfigurationType.fromString("ConfigurationGroupValuePropertiesFormat");
+
     /*
      * The provisioning state of the site resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The publisher name for the configuration group schema.
      */
-    @JsonProperty(value = "publisherName", access = JsonProperty.Access.WRITE_ONLY)
     private String publisherName;
 
     /*
      * The scope of the publisher.
      */
-    @JsonProperty(value = "publisherScope", access = JsonProperty.Access.WRITE_ONLY)
     private PublisherScope publisherScope;
 
     /*
      * The configuration group schema name.
      */
-    @JsonProperty(value = "configurationGroupSchemaName", access = JsonProperty.Access.WRITE_ONLY)
     private String configurationGroupSchemaName;
 
     /*
      * The location of the configuration group schema offering.
      */
-    @JsonProperty(value = "configurationGroupSchemaOfferingLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String configurationGroupSchemaOfferingLocation;
 
     /*
      * The configuration group schema resource reference.
      */
-    @JsonProperty(value = "configurationGroupSchemaResourceReference")
     private DeploymentResourceIdReference configurationGroupSchemaResourceReference;
 
     /**
      * Creates an instance of ConfigurationGroupValuePropertiesFormat class.
      */
     public ConfigurationGroupValuePropertiesFormat() {
+    }
+
+    /**
+     * Get the configurationType property: The value which indicates if configuration values are secrets.
+     * 
+     * @return the configurationType value.
+     */
+    public ConfigurationGroupValueConfigurationType configurationType() {
+        return this.configurationType;
     }
 
     /**
@@ -76,12 +78,34 @@ public class ConfigurationGroupValuePropertiesFormat {
     }
 
     /**
+     * Set the provisioningState property: The provisioning state of the site resource.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ConfigurationGroupValuePropertiesFormat object itself.
+     */
+    ConfigurationGroupValuePropertiesFormat withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the publisherName property: The publisher name for the configuration group schema.
      * 
      * @return the publisherName value.
      */
     public String publisherName() {
         return this.publisherName;
+    }
+
+    /**
+     * Set the publisherName property: The publisher name for the configuration group schema.
+     * 
+     * @param publisherName the publisherName value to set.
+     * @return the ConfigurationGroupValuePropertiesFormat object itself.
+     */
+    ConfigurationGroupValuePropertiesFormat withPublisherName(String publisherName) {
+        this.publisherName = publisherName;
+        return this;
     }
 
     /**
@@ -94,12 +118,34 @@ public class ConfigurationGroupValuePropertiesFormat {
     }
 
     /**
+     * Set the publisherScope property: The scope of the publisher.
+     * 
+     * @param publisherScope the publisherScope value to set.
+     * @return the ConfigurationGroupValuePropertiesFormat object itself.
+     */
+    ConfigurationGroupValuePropertiesFormat withPublisherScope(PublisherScope publisherScope) {
+        this.publisherScope = publisherScope;
+        return this;
+    }
+
+    /**
      * Get the configurationGroupSchemaName property: The configuration group schema name.
      * 
      * @return the configurationGroupSchemaName value.
      */
     public String configurationGroupSchemaName() {
         return this.configurationGroupSchemaName;
+    }
+
+    /**
+     * Set the configurationGroupSchemaName property: The configuration group schema name.
+     * 
+     * @param configurationGroupSchemaName the configurationGroupSchemaName value to set.
+     * @return the ConfigurationGroupValuePropertiesFormat object itself.
+     */
+    ConfigurationGroupValuePropertiesFormat withConfigurationGroupSchemaName(String configurationGroupSchemaName) {
+        this.configurationGroupSchemaName = configurationGroupSchemaName;
+        return this;
     }
 
     /**
@@ -110,6 +156,19 @@ public class ConfigurationGroupValuePropertiesFormat {
      */
     public String configurationGroupSchemaOfferingLocation() {
         return this.configurationGroupSchemaOfferingLocation;
+    }
+
+    /**
+     * Set the configurationGroupSchemaOfferingLocation property: The location of the configuration group schema
+     * offering.
+     * 
+     * @param configurationGroupSchemaOfferingLocation the configurationGroupSchemaOfferingLocation value to set.
+     * @return the ConfigurationGroupValuePropertiesFormat object itself.
+     */
+    ConfigurationGroupValuePropertiesFormat
+        withConfigurationGroupSchemaOfferingLocation(String configurationGroupSchemaOfferingLocation) {
+        this.configurationGroupSchemaOfferingLocation = configurationGroupSchemaOfferingLocation;
+        return this;
     }
 
     /**
@@ -142,5 +201,91 @@ public class ConfigurationGroupValuePropertiesFormat {
         if (configurationGroupSchemaResourceReference() != null) {
             configurationGroupSchemaResourceReference().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("configurationType",
+            this.configurationType == null ? null : this.configurationType.toString());
+        jsonWriter.writeJsonField("configurationGroupSchemaResourceReference",
+            this.configurationGroupSchemaResourceReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationGroupValuePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationGroupValuePropertiesFormat if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationGroupValuePropertiesFormat.
+     */
+    public static ConfigurationGroupValuePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("configurationType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Secret".equals(discriminatorValue)) {
+                    return ConfigurationValueWithSecrets.fromJson(readerToUse.reset());
+                } else if ("Open".equals(discriminatorValue)) {
+                    return ConfigurationValueWithoutSecrets.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ConfigurationGroupValuePropertiesFormat fromJsonKnownDiscriminator(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationGroupValuePropertiesFormat deserializedConfigurationGroupValuePropertiesFormat
+                = new ConfigurationGroupValuePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationType".equals(fieldName)) {
+                    deserializedConfigurationGroupValuePropertiesFormat.configurationType
+                        = ConfigurationGroupValueConfigurationType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedConfigurationGroupValuePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("publisherName".equals(fieldName)) {
+                    deserializedConfigurationGroupValuePropertiesFormat.publisherName = reader.getString();
+                } else if ("publisherScope".equals(fieldName)) {
+                    deserializedConfigurationGroupValuePropertiesFormat.publisherScope
+                        = PublisherScope.fromString(reader.getString());
+                } else if ("configurationGroupSchemaName".equals(fieldName)) {
+                    deserializedConfigurationGroupValuePropertiesFormat.configurationGroupSchemaName
+                        = reader.getString();
+                } else if ("configurationGroupSchemaOfferingLocation".equals(fieldName)) {
+                    deserializedConfigurationGroupValuePropertiesFormat.configurationGroupSchemaOfferingLocation
+                        = reader.getString();
+                } else if ("configurationGroupSchemaResourceReference".equals(fieldName)) {
+                    deserializedConfigurationGroupValuePropertiesFormat.configurationGroupSchemaResourceReference
+                        = DeploymentResourceIdReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationGroupValuePropertiesFormat;
+        });
     }
 }

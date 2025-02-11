@@ -28,11 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BuilderTests {
-    private static final StorageSharedKeyCredential CREDENTIALS =
-        new StorageSharedKeyCredential("accountName", "accountKey");
+    private static final StorageSharedKeyCredential CREDENTIALS
+        = new StorageSharedKeyCredential("accountName", "accountKey");
     private static final String ENDPOINT = "https://account.blob.core.windows.net/";
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-storage-blob-changefeed.properties");
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-storage-blob-changefeed.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
@@ -46,11 +46,11 @@ public class BuilderTests {
 
     @Test
     public void constructFromServiceClientBlobUserAgentModificationPolicy() {
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
-                                               + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
+            .httpClient(
+                new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
+                    + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
             .buildClient();
 
         BlobChangefeedClient changefeedClient = new BlobChangefeedClientBuilder(serviceClient).buildClient();

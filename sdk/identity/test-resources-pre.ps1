@@ -1,3 +1,5 @@
+# cspell:ignore OIDC, oidc
+
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
 param (
     # Captures any arguments from eng/New-TestResources.ps1 not declared here (no parameter errors).
@@ -13,7 +15,15 @@ param (
 
     [Parameter(ParameterSetName = 'Provisioner', Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [string] $TenantId
+    [string] $TenantId,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string] $SubscriptionId,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string] $Environment
 )
 
 $az_version = az version
@@ -27,7 +37,9 @@ $sshKey = Get-Content $PSScriptRoot/sshKey.pub
 $templateFileParameters['sshPubKey'] = $sshKey
 
 # Get the max version that is not preview and then get the name of the patch version with the max value
-az login --service-principal -u $TestApplicationId -p $TestApplicationSecret --tenant $TenantId
+az cloud set --name $Environment
+az login --service-principal -u $TestApplicationId --tenant $TenantId --allow-no-subscriptions --federated-token $env:ARM_OIDC_TOKEN
+az account set --subscription $SubscriptionId
 $versions = az aks get-versions -l westus -o json | ConvertFrom-Json
 Write-Host "AKS versions: $($versions | ConvertTo-Json -Depth 100)"
 $patchVersions = $versions.values | Where-Object { $_.isPreview -eq $null } | Select-Object -ExpandProperty patchVersions

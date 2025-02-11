@@ -6,40 +6,46 @@ package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentNetworkDependency;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentNetworkDependencyHealth;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentNetworkEndPointAccessibilityState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The integration service environment subnet network health. */
+/**
+ * The integration service environment subnet network health.
+ */
 @Fluent
-public final class IntegrationServiceEnvironmentSubnetNetworkHealthInner {
+public final class IntegrationServiceEnvironmentSubnetNetworkHealthInner
+    implements JsonSerializable<IntegrationServiceEnvironmentSubnetNetworkHealthInner> {
     /*
      * The outbound network dependencies.
      */
-    @JsonProperty(value = "outboundNetworkDependencies")
     private List<IntegrationServiceEnvironmentNetworkDependency> outboundNetworkDependencies;
 
     /*
      * The integration service environment network health.
      */
-    @JsonProperty(value = "outboundNetworkHealth")
     private IntegrationServiceEnvironmentNetworkDependencyHealth outboundNetworkHealth;
 
     /*
      * The integration service environment network health state.
      */
-    @JsonProperty(value = "networkDependencyHealthState", required = true)
     private IntegrationServiceEnvironmentNetworkEndPointAccessibilityState networkDependencyHealthState;
 
-    /** Creates an instance of IntegrationServiceEnvironmentSubnetNetworkHealthInner class. */
+    /**
+     * Creates an instance of IntegrationServiceEnvironmentSubnetNetworkHealthInner class.
+     */
     public IntegrationServiceEnvironmentSubnetNetworkHealthInner() {
     }
 
     /**
      * Get the outboundNetworkDependencies property: The outbound network dependencies.
-     *
+     * 
      * @return the outboundNetworkDependencies value.
      */
     public List<IntegrationServiceEnvironmentNetworkDependency> outboundNetworkDependencies() {
@@ -48,7 +54,7 @@ public final class IntegrationServiceEnvironmentSubnetNetworkHealthInner {
 
     /**
      * Set the outboundNetworkDependencies property: The outbound network dependencies.
-     *
+     * 
      * @param outboundNetworkDependencies the outboundNetworkDependencies value to set.
      * @return the IntegrationServiceEnvironmentSubnetNetworkHealthInner object itself.
      */
@@ -60,7 +66,7 @@ public final class IntegrationServiceEnvironmentSubnetNetworkHealthInner {
 
     /**
      * Get the outboundNetworkHealth property: The integration service environment network health.
-     *
+     * 
      * @return the outboundNetworkHealth value.
      */
     public IntegrationServiceEnvironmentNetworkDependencyHealth outboundNetworkHealth() {
@@ -69,19 +75,19 @@ public final class IntegrationServiceEnvironmentSubnetNetworkHealthInner {
 
     /**
      * Set the outboundNetworkHealth property: The integration service environment network health.
-     *
+     * 
      * @param outboundNetworkHealth the outboundNetworkHealth value to set.
      * @return the IntegrationServiceEnvironmentSubnetNetworkHealthInner object itself.
      */
-    public IntegrationServiceEnvironmentSubnetNetworkHealthInner withOutboundNetworkHealth(
-        IntegrationServiceEnvironmentNetworkDependencyHealth outboundNetworkHealth) {
+    public IntegrationServiceEnvironmentSubnetNetworkHealthInner
+        withOutboundNetworkHealth(IntegrationServiceEnvironmentNetworkDependencyHealth outboundNetworkHealth) {
         this.outboundNetworkHealth = outboundNetworkHealth;
         return this;
     }
 
     /**
      * Get the networkDependencyHealthState property: The integration service environment network health state.
-     *
+     * 
      * @return the networkDependencyHealthState value.
      */
     public IntegrationServiceEnvironmentNetworkEndPointAccessibilityState networkDependencyHealthState() {
@@ -90,7 +96,7 @@ public final class IntegrationServiceEnvironmentSubnetNetworkHealthInner {
 
     /**
      * Set the networkDependencyHealthState property: The integration service environment network health state.
-     *
+     * 
      * @param networkDependencyHealthState the networkDependencyHealthState value to set.
      * @return the IntegrationServiceEnvironmentSubnetNetworkHealthInner object itself.
      */
@@ -102,7 +108,7 @@ public final class IntegrationServiceEnvironmentSubnetNetworkHealthInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -113,14 +119,64 @@ public final class IntegrationServiceEnvironmentSubnetNetworkHealthInner {
             outboundNetworkHealth().validate();
         }
         if (networkDependencyHealthState() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkDependencyHealthState in model"
-                            + " IntegrationServiceEnvironmentSubnetNetworkHealthInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkDependencyHealthState in model IntegrationServiceEnvironmentSubnetNetworkHealthInner"));
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(IntegrationServiceEnvironmentSubnetNetworkHealthInner.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(IntegrationServiceEnvironmentSubnetNetworkHealthInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkDependencyHealthState",
+            this.networkDependencyHealthState == null ? null : this.networkDependencyHealthState.toString());
+        jsonWriter.writeArrayField("outboundNetworkDependencies", this.outboundNetworkDependencies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("outboundNetworkHealth", this.outboundNetworkHealth);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationServiceEnvironmentSubnetNetworkHealthInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationServiceEnvironmentSubnetNetworkHealthInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationServiceEnvironmentSubnetNetworkHealthInner.
+     */
+    public static IntegrationServiceEnvironmentSubnetNetworkHealthInner fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationServiceEnvironmentSubnetNetworkHealthInner deserializedIntegrationServiceEnvironmentSubnetNetworkHealthInner
+                = new IntegrationServiceEnvironmentSubnetNetworkHealthInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkDependencyHealthState".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentSubnetNetworkHealthInner.networkDependencyHealthState
+                        = IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.fromString(reader.getString());
+                } else if ("outboundNetworkDependencies".equals(fieldName)) {
+                    List<IntegrationServiceEnvironmentNetworkDependency> outboundNetworkDependencies
+                        = reader.readArray(reader1 -> IntegrationServiceEnvironmentNetworkDependency.fromJson(reader1));
+                    deserializedIntegrationServiceEnvironmentSubnetNetworkHealthInner.outboundNetworkDependencies
+                        = outboundNetworkDependencies;
+                } else if ("outboundNetworkHealth".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentSubnetNetworkHealthInner.outboundNetworkHealth
+                        = IntegrationServiceEnvironmentNetworkDependencyHealth.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationServiceEnvironmentSubnetNetworkHealthInner;
+        });
+    }
 }

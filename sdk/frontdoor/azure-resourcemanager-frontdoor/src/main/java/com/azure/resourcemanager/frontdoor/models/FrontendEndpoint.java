@@ -32,9 +32,7 @@ public interface FrontendEndpoint {
     String type();
 
     /**
-     * Gets the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     * 
-     * Resource status.
+     * Gets the resourceState property: Resource status.
      * 
      * @return the resourceState value.
      */

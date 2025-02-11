@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.SummaryResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of analysis summaries.
  */
 @Fluent
-public final class SummaryListResult {
+public final class SummaryListResult implements JsonSerializable<SummaryListResult> {
     /*
      * The list of summaries.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SummaryResourceInner> value;
 
     /*
      * The uri to fetch the next page of resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -70,5 +72,45 @@ public final class SummaryListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SummaryListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SummaryListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SummaryListResult.
+     */
+    public static SummaryListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SummaryListResult deserializedSummaryListResult = new SummaryListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SummaryResourceInner> value
+                        = reader.readArray(reader1 -> SummaryResourceInner.fromJson(reader1));
+                    deserializedSummaryListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSummaryListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSummaryListResult;
+        });
     }
 }

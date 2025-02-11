@@ -423,7 +423,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.tenant-id",
       "type": "java.lang.String",
-      "description": "Tenant ID for Azure resources.",
+      "description": "Tenant ID for Azure resources. The values allowed for 'tenant-id' are: 'common', 'organizations', 'consumers', or the tenant ID.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties"
     },
     {
@@ -453,7 +453,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.type",
       "type": "java.lang.String",
-      "description": "Type of the proxy. For instance of http, 'http', 'socks4', 'socks5'. For instance of amqp, 'http', 'socks'.",
+      "description": "The type of the proxy. For instance of http, 'http', 'socks4', 'socks5'. For instance of amqp, 'http', 'socks'.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties"
     },
     {
@@ -587,7 +587,7 @@
     {
       "name": "spring.datasource.azure.profile.tenant-id",
       "type": "java.lang.String",
-      "description": "Tenant ID for Azure resources.",
+      "description": "Tenant ID for Azure resources. The values allowed for 'tenant-id' are: 'common', 'organizations', 'consumers', or the tenant ID.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureJdbcPasswordlessProperties"
     },
     {

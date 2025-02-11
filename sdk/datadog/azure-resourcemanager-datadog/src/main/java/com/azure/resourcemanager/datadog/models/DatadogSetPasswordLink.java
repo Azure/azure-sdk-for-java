@@ -6,18 +6,20 @@ package com.azure.resourcemanager.datadog.models;
 
 import com.azure.resourcemanager.datadog.fluent.models.DatadogSetPasswordLinkInner;
 
-/** An immutable client-side representation of DatadogSetPasswordLink. */
+/**
+ * An immutable client-side representation of DatadogSetPasswordLink.
+ */
 public interface DatadogSetPasswordLink {
     /**
      * Gets the setPasswordLink property: The setPasswordLink property.
-     *
+     * 
      * @return the setPasswordLink value.
      */
     String setPasswordLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.datadog.fluent.models.DatadogSetPasswordLinkInner object.
-     *
+     * 
      * @return the inner object.
      */
     DatadogSetPasswordLinkInner innerModel();

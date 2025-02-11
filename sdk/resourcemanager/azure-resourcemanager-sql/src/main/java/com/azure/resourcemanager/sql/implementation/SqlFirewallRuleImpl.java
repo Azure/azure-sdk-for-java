@@ -18,10 +18,8 @@ import java.util.Objects;
 /** Implementation for SqlFirewallRule. */
 public class SqlFirewallRuleImpl
     extends ExternalChildResourceImpl<SqlFirewallRule, FirewallRuleInner, SqlServerImpl, SqlServer>
-    implements SqlFirewallRule,
-        SqlFirewallRule.SqlFirewallRuleDefinition<SqlServerImpl>,
-        SqlFirewallRule.Update,
-        SqlFirewallRuleOperations.SqlFirewallRuleOperationsDefinition {
+    implements SqlFirewallRule, SqlFirewallRule.SqlFirewallRuleDefinition<SqlServerImpl>, SqlFirewallRule.Update,
+    SqlFirewallRuleOperations.SqlFirewallRuleOperationsDefinition {
 
     private SqlServerManager sqlServerManager;
     private String resourceGroupName;
@@ -35,8 +33,8 @@ public class SqlFirewallRuleImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlFirewallRuleImpl(
-        String name, SqlServerImpl parent, FirewallRuleInner innerObject, SqlServerManager sqlServerManager) {
+    SqlFirewallRuleImpl(String name, SqlServerImpl parent, FirewallRuleInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -55,11 +53,7 @@ public class SqlFirewallRuleImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlFirewallRuleImpl(
-        String resourceGroupName,
-        String sqlServerName,
-        String name,
-        FirewallRuleInner innerObject,
+    SqlFirewallRuleImpl(String resourceGroupName, String sqlServerName, String name, FirewallRuleInner innerObject,
         SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
@@ -83,9 +77,7 @@ public class SqlFirewallRuleImpl
 
     @Override
     protected Mono<FirewallRuleInner> getInnerAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getFirewallRules()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -158,38 +150,30 @@ public class SqlFirewallRuleImpl
     @Override
     public Mono<SqlFirewallRule> createResourceAsync() {
         final SqlFirewallRuleImpl self = this;
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getFirewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.innerModel())
-            .map(
-                inner -> {
-                    self.setInner(inner);
-                    return self;
-                });
+            .map(inner -> {
+                self.setInner(inner);
+                return self;
+            });
     }
 
     @Override
     public Mono<SqlFirewallRule> updateResourceAsync() {
         final SqlFirewallRuleImpl self = this;
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getFirewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.innerModel())
-            .map(
-                inner -> {
-                    self.setInner(inner);
-                    return self;
-                });
+            .map(inner -> {
+                self.setInner(inner);
+                return self;
+            });
     }
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getFirewallRules()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }

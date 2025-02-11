@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineAssessPatchesResultInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInstallPatchesResultInner;
+import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
 import com.azure.resourcemanager.hybridcompute.models.MachineInstallPatchesParameters;
 
 /**
@@ -59,8 +60,8 @@ public interface MachinesClient {
      * @return describes a hybrid machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MachineInner> getByResourceGroupWithResponse(String resourceGroupName, String machineName, String expand,
-        Context context);
+    Response<MachineInner> getByResourceGroupWithResponse(String resourceGroupName, String machineName,
+        InstanceViewTypes expand, Context context);
 
     /**
      * Retrieves information about the model view or the instance view of a hybrid machine.

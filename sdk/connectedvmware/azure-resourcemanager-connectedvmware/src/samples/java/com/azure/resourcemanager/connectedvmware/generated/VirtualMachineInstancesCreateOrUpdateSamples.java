@@ -10,38 +10,34 @@ import com.azure.resourcemanager.connectedvmware.models.HardwareProfile;
 import com.azure.resourcemanager.connectedvmware.models.InfrastructureProfile;
 import com.azure.resourcemanager.connectedvmware.models.PlacementProfile;
 
-/** Samples for VirtualMachineInstances CreateOrUpdate. */
+/**
+ * Samples for VirtualMachineInstances CreateOrUpdate.
+ */
 public final class VirtualMachineInstancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateVirtualMachineInstance.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateVirtualMachineInstance.json
      */
     /**
      * Sample code: CreateVirtualMachine.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void createVirtualMachine(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineInstances()
+        manager.virtualMachineInstances()
             .createOrUpdate(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
-                new VirtualMachineInstanceInner()
-                    .withExtendedLocation(
-                        new ExtendedLocation()
-                            .withType("customLocation")
-                            .withName(
-                                "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
-                    .withPlacementProfile(
-                        new PlacementProfile()
-                            .withResourcePoolId(
-                                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/ResourcePools/HRPool"))
+                new VirtualMachineInstanceInner().withExtendedLocation(new ExtendedLocation().withType("customLocation")
+                    .withName(
+                        "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
+                    .withPlacementProfile(new PlacementProfile().withResourcePoolId(
+                        "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/ResourcePools/HRPool"))
                     .withHardwareProfile(new HardwareProfile().withMemorySizeMB(4196).withNumCPUs(4))
-                    .withInfrastructureProfile(
-                        new InfrastructureProfile()
-                            .withTemplateId(
-                                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VirtualMachineTemplates/WebFrontEndTemplate")
-                            .withVCenterId(
-                                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VCenters/ContosoVCenter")),
+                    .withInfrastructureProfile(new InfrastructureProfile().withTemplateId(
+                        "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VirtualMachineTemplates/WebFrontEndTemplate")
+                        .withVCenterId(
+                            "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VCenters/ContosoVCenter")),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** ACL mode for iSCSI Target. */
+/**
+ * ACL mode for iSCSI Target.
+ */
 public final class IscsiTargetAclMode extends ExpandableStringEnum<IscsiTargetAclMode> {
-    /** Static value Dynamic for IscsiTargetAclMode. */
+    /**
+     * Static value Dynamic for IscsiTargetAclMode.
+     */
     public static final IscsiTargetAclMode DYNAMIC = fromString("Dynamic");
 
-    /** Static value Static for IscsiTargetAclMode. */
+    /**
+     * Static value Static for IscsiTargetAclMode.
+     */
     public static final IscsiTargetAclMode STATIC = fromString("Static");
 
     /**
      * Creates a new instance of IscsiTargetAclMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class IscsiTargetAclMode extends ExpandableStringEnum<IscsiTargetAc
 
     /**
      * Creates or finds a IscsiTargetAclMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IscsiTargetAclMode.
      */
-    @JsonCreator
     public static IscsiTargetAclMode fromString(String name) {
         return fromString(name, IscsiTargetAclMode.class);
     }
 
     /**
      * Gets known IscsiTargetAclMode values.
-     *
+     * 
      * @return known IscsiTargetAclMode values.
      */
     public static Collection<IscsiTargetAclMode> values() {

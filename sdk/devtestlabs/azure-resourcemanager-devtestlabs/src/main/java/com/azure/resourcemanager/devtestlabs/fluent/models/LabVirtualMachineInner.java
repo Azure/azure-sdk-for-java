@@ -7,6 +7,9 @@ package com.azure.resourcemanager.devtestlabs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.ArtifactDeploymentStatusProperties;
 import com.azure.resourcemanager.devtestlabs.models.ArtifactInstallProperties;
 import com.azure.resourcemanager.devtestlabs.models.ComputeVmProperties;
@@ -15,41 +18,93 @@ import com.azure.resourcemanager.devtestlabs.models.GalleryImageReference;
 import com.azure.resourcemanager.devtestlabs.models.NetworkInterfaceProperties;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleCreationParameter;
 import com.azure.resourcemanager.devtestlabs.models.VirtualMachineCreationSource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A virtual machine. */
+/**
+ * A virtual machine.
+ */
 @Fluent
 public final class LabVirtualMachineInner extends Resource {
     /*
      * The properties of the resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private LabVirtualMachinePropertiesInner innerProperties = new LabVirtualMachinePropertiesInner();
 
-    /** Creates an instance of LabVirtualMachineInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LabVirtualMachineInner class.
+     */
     public LabVirtualMachineInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LabVirtualMachinePropertiesInner innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabVirtualMachineInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabVirtualMachineInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -58,7 +113,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the notes property: The notes of the virtual machine.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -67,7 +122,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the notes property: The notes of the virtual machine.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -81,7 +136,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the ownerObjectId property: The object identifier of the owner of the virtual machine.
-     *
+     * 
      * @return the ownerObjectId value.
      */
     public String ownerObjectId() {
@@ -90,7 +145,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the ownerObjectId property: The object identifier of the owner of the virtual machine.
-     *
+     * 
      * @param ownerObjectId the ownerObjectId value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -104,7 +159,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the ownerUserPrincipalName property: The user principal name of the virtual machine owner.
-     *
+     * 
      * @return the ownerUserPrincipalName value.
      */
     public String ownerUserPrincipalName() {
@@ -113,7 +168,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the ownerUserPrincipalName property: The user principal name of the virtual machine owner.
-     *
+     * 
      * @param ownerUserPrincipalName the ownerUserPrincipalName value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -127,7 +182,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the createdByUserId property: The object identifier of the creator of the virtual machine.
-     *
+     * 
      * @return the createdByUserId value.
      */
     public String createdByUserId() {
@@ -136,7 +191,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the createdByUser property: The email address of creator of the virtual machine.
-     *
+     * 
      * @return the createdByUser value.
      */
     public String createdByUser() {
@@ -145,7 +200,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the createdDate property: The creation date of the virtual machine.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -154,7 +209,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the createdDate property: The creation date of the virtual machine.
-     *
+     * 
      * @param createdDate the createdDate value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -168,7 +223,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the computeId property: The resource identifier (Microsoft.Compute) of the virtual machine.
-     *
+     * 
      * @return the computeId value.
      */
     public String computeId() {
@@ -177,7 +232,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the customImageId property: The custom image identifier of the virtual machine.
-     *
+     * 
      * @return the customImageId value.
      */
     public String customImageId() {
@@ -186,7 +241,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the customImageId property: The custom image identifier of the virtual machine.
-     *
+     * 
      * @param customImageId the customImageId value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -200,7 +255,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the osType property: The OS type of the virtual machine.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -209,7 +264,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the size property: The size of the virtual machine.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -218,7 +273,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the size property: The size of the virtual machine.
-     *
+     * 
      * @param size the size value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -232,7 +287,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the username property: The user name of the virtual machine.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -241,7 +296,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the username property: The user name of the virtual machine.
-     *
+     * 
      * @param username the username value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -255,7 +310,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the password property: The password of the virtual machine administrator.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -264,7 +319,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the password property: The password of the virtual machine administrator.
-     *
+     * 
      * @param password the password value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -278,7 +333,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the sshKey property: The SSH key of the virtual machine administrator.
-     *
+     * 
      * @return the sshKey value.
      */
     public String sshKey() {
@@ -287,7 +342,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the sshKey property: The SSH key of the virtual machine administrator.
-     *
+     * 
      * @param sshKey the sshKey value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -302,7 +357,7 @@ public final class LabVirtualMachineInner extends Resource {
     /**
      * Get the isAuthenticationWithSshKey property: Indicates whether this virtual machine uses an SSH key for
      * authentication.
-     *
+     * 
      * @return the isAuthenticationWithSshKey value.
      */
     public Boolean isAuthenticationWithSshKey() {
@@ -312,7 +367,7 @@ public final class LabVirtualMachineInner extends Resource {
     /**
      * Set the isAuthenticationWithSshKey property: Indicates whether this virtual machine uses an SSH key for
      * authentication.
-     *
+     * 
      * @param isAuthenticationWithSshKey the isAuthenticationWithSshKey value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -326,7 +381,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the fqdn property: The fully-qualified domain name of the virtual machine.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -335,7 +390,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the labSubnetName property: The lab subnet name of the virtual machine.
-     *
+     * 
      * @return the labSubnetName value.
      */
     public String labSubnetName() {
@@ -344,7 +399,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the labSubnetName property: The lab subnet name of the virtual machine.
-     *
+     * 
      * @param labSubnetName the labSubnetName value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -358,7 +413,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the labVirtualNetworkId property: The lab virtual network identifier of the virtual machine.
-     *
+     * 
      * @return the labVirtualNetworkId value.
      */
     public String labVirtualNetworkId() {
@@ -367,7 +422,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the labVirtualNetworkId property: The lab virtual network identifier of the virtual machine.
-     *
+     * 
      * @param labVirtualNetworkId the labVirtualNetworkId value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -382,7 +437,7 @@ public final class LabVirtualMachineInner extends Resource {
     /**
      * Get the disallowPublicIpAddress property: Indicates whether the virtual machine is to be created without a public
      * IP address.
-     *
+     * 
      * @return the disallowPublicIpAddress value.
      */
     public Boolean disallowPublicIpAddress() {
@@ -392,7 +447,7 @@ public final class LabVirtualMachineInner extends Resource {
     /**
      * Set the disallowPublicIpAddress property: Indicates whether the virtual machine is to be created without a public
      * IP address.
-     *
+     * 
      * @param disallowPublicIpAddress the disallowPublicIpAddress value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -406,7 +461,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the artifacts property: The artifacts to be installed on the virtual machine.
-     *
+     * 
      * @return the artifacts value.
      */
     public List<ArtifactInstallProperties> artifacts() {
@@ -415,7 +470,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the artifacts property: The artifacts to be installed on the virtual machine.
-     *
+     * 
      * @param artifacts the artifacts value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -429,7 +484,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the artifactDeploymentStatus property: The artifact deployment status for the virtual machine.
-     *
+     * 
      * @return the artifactDeploymentStatus value.
      */
     public ArtifactDeploymentStatusProperties artifactDeploymentStatus() {
@@ -438,7 +493,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the galleryImageReference property: The Microsoft Azure Marketplace image reference of the virtual machine.
-     *
+     * 
      * @return the galleryImageReference value.
      */
     public GalleryImageReference galleryImageReference() {
@@ -447,7 +502,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the galleryImageReference property: The Microsoft Azure Marketplace image reference of the virtual machine.
-     *
+     * 
      * @param galleryImageReference the galleryImageReference value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -461,7 +516,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the planId property: The id of the plan associated with the virtual machine image.
-     *
+     * 
      * @return the planId value.
      */
     public String planId() {
@@ -470,7 +525,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the planId property: The id of the plan associated with the virtual machine image.
-     *
+     * 
      * @param planId the planId value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -484,7 +539,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the computeVm property: The compute virtual machine properties.
-     *
+     * 
      * @return the computeVm value.
      */
     public ComputeVmProperties computeVm() {
@@ -493,7 +548,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the networkInterface property: The network interface properties.
-     *
+     * 
      * @return the networkInterface value.
      */
     public NetworkInterfaceProperties networkInterface() {
@@ -502,7 +557,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the networkInterface property: The network interface properties.
-     *
+     * 
      * @param networkInterface the networkInterface value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -516,7 +571,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the applicableSchedule property: The applicable schedule for the virtual machine.
-     *
+     * 
      * @return the applicableSchedule value.
      */
     public ApplicableScheduleInner applicableSchedule() {
@@ -525,7 +580,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the expirationDate property: The expiration date for VM.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -534,7 +589,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the expirationDate property: The expiration date for VM.
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -548,7 +603,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the allowClaim property: Indicates whether another user can take ownership of the virtual machine.
-     *
+     * 
      * @return the allowClaim value.
      */
     public Boolean allowClaim() {
@@ -557,7 +612,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the allowClaim property: Indicates whether another user can take ownership of the virtual machine.
-     *
+     * 
      * @param allowClaim the allowClaim value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -571,7 +626,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the storageType property: Storage type to use for virtual machine (i.e. Standard, Premium).
-     *
+     * 
      * @return the storageType value.
      */
     public String storageType() {
@@ -580,7 +635,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the storageType property: Storage type to use for virtual machine (i.e. Standard, Premium).
-     *
+     * 
      * @param storageType the storageType value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -595,7 +650,7 @@ public final class LabVirtualMachineInner extends Resource {
     /**
      * Get the virtualMachineCreationSource property: Tells source of creation of lab virtual machine. Output property
      * only.
-     *
+     * 
      * @return the virtualMachineCreationSource value.
      */
     public VirtualMachineCreationSource virtualMachineCreationSource() {
@@ -604,7 +659,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the environmentId property: The resource ID of the environment that contains this virtual machine, if any.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -613,7 +668,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the environmentId property: The resource ID of the environment that contains this virtual machine, if any.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -627,7 +682,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the dataDiskParameters property: New or existing data disks to attach to the virtual machine after creation.
-     *
+     * 
      * @return the dataDiskParameters value.
      */
     public List<DataDiskProperties> dataDiskParameters() {
@@ -636,7 +691,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the dataDiskParameters property: New or existing data disks to attach to the virtual machine after creation.
-     *
+     * 
      * @param dataDiskParameters the dataDiskParameters value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -650,7 +705,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the scheduleParameters property: Virtual Machine schedules to be created.
-     *
+     * 
      * @return the scheduleParameters value.
      */
     public List<ScheduleCreationParameter> scheduleParameters() {
@@ -659,7 +714,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Set the scheduleParameters property: Virtual Machine schedules to be created.
-     *
+     * 
      * @param scheduleParameters the scheduleParameters value to set.
      * @return the LabVirtualMachineInner object itself.
      */
@@ -673,7 +728,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the lastKnownPowerState property: Last known compute power state captured in DTL.
-     *
+     * 
      * @return the lastKnownPowerState value.
      */
     public String lastKnownPowerState() {
@@ -682,7 +737,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -691,7 +746,7 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -700,19 +755,69 @@ public final class LabVirtualMachineInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LabVirtualMachineInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model LabVirtualMachineInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LabVirtualMachineInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabVirtualMachineInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabVirtualMachineInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LabVirtualMachineInner.
+     */
+    public static LabVirtualMachineInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabVirtualMachineInner deserializedLabVirtualMachineInner = new LabVirtualMachineInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLabVirtualMachineInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLabVirtualMachineInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLabVirtualMachineInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedLabVirtualMachineInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLabVirtualMachineInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLabVirtualMachineInner.innerProperties
+                        = LabVirtualMachinePropertiesInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabVirtualMachineInner;
+        });
+    }
 }

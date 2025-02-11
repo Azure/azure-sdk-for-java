@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Availability information of a product system. */
+/**
+ * Availability information of a product system.
+ */
 @Immutable
-public final class AvailabilityInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilityInformation.class);
-
+public final class AvailabilityInformation implements JsonSerializable<AvailabilityInformation> {
     /*
      * Current availability stage of the product. Availability stage
      */
-    @JsonProperty(value = "availabilityStage", access = JsonProperty.Access.WRITE_ONLY)
     private AvailabilityStage availabilityStage;
 
     /*
      * Reason why the product is disabled.
      */
-    @JsonProperty(value = "disabledReason", access = JsonProperty.Access.WRITE_ONLY)
     private DisabledReason disabledReason;
 
     /*
      * Message for why the product is disabled.
      */
-    @JsonProperty(value = "disabledReasonMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String disabledReasonMessage;
 
     /**
+     * Creates an instance of AvailabilityInformation class.
+     */
+    public AvailabilityInformation() {
+    }
+
+    /**
      * Get the availabilityStage property: Current availability stage of the product. Availability stage.
-     *
+     * 
      * @return the availabilityStage value.
      */
     public AvailabilityStage availabilityStage() {
@@ -43,7 +48,7 @@ public final class AvailabilityInformation {
 
     /**
      * Get the disabledReason property: Reason why the product is disabled.
-     *
+     * 
      * @return the disabledReason value.
      */
     public DisabledReason disabledReason() {
@@ -52,7 +57,7 @@ public final class AvailabilityInformation {
 
     /**
      * Get the disabledReasonMessage property: Message for why the product is disabled.
-     *
+     * 
      * @return the disabledReasonMessage value.
      */
     public String disabledReasonMessage() {
@@ -61,9 +66,49 @@ public final class AvailabilityInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailabilityInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailabilityInformation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailabilityInformation.
+     */
+    public static AvailabilityInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailabilityInformation deserializedAvailabilityInformation = new AvailabilityInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("availabilityStage".equals(fieldName)) {
+                    deserializedAvailabilityInformation.availabilityStage
+                        = AvailabilityStage.fromString(reader.getString());
+                } else if ("disabledReason".equals(fieldName)) {
+                    deserializedAvailabilityInformation.disabledReason = DisabledReason.fromString(reader.getString());
+                } else if ("disabledReasonMessage".equals(fieldName)) {
+                    deserializedAvailabilityInformation.disabledReasonMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailabilityInformation;
+        });
     }
 }

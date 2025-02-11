@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The integration service environment sku name. */
+/**
+ * The integration service environment sku name.
+ */
 public final class IntegrationServiceEnvironmentSkuName
     extends ExpandableStringEnum<IntegrationServiceEnvironmentSkuName> {
-    /** Static value NotSpecified for IntegrationServiceEnvironmentSkuName. */
+    /**
+     * Static value NotSpecified for IntegrationServiceEnvironmentSkuName.
+     */
     public static final IntegrationServiceEnvironmentSkuName NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Premium for IntegrationServiceEnvironmentSkuName. */
+    /**
+     * Static value Premium for IntegrationServiceEnvironmentSkuName.
+     */
     public static final IntegrationServiceEnvironmentSkuName PREMIUM = fromString("Premium");
 
-    /** Static value Developer for IntegrationServiceEnvironmentSkuName. */
+    /**
+     * Static value Developer for IntegrationServiceEnvironmentSkuName.
+     */
     public static final IntegrationServiceEnvironmentSkuName DEVELOPER = fromString("Developer");
 
     /**
      * Creates a new instance of IntegrationServiceEnvironmentSkuName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +38,17 @@ public final class IntegrationServiceEnvironmentSkuName
 
     /**
      * Creates or finds a IntegrationServiceEnvironmentSkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IntegrationServiceEnvironmentSkuName.
      */
-    @JsonCreator
     public static IntegrationServiceEnvironmentSkuName fromString(String name) {
         return fromString(name, IntegrationServiceEnvironmentSkuName.class);
     }
 
     /**
      * Gets known IntegrationServiceEnvironmentSkuName values.
-     *
+     * 
      * @return known IntegrationServiceEnvironmentSkuName values.
      */
     public static Collection<IntegrationServiceEnvironmentSkuName> values() {

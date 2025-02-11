@@ -16,42 +16,45 @@ import org.junit.jupiter.api.Assertions;
 public final class IpExtendedCommunityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpExtendedCommunityInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"configurationState\":\"Rejected\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":3106144557754641608,\"routeTargets\":[\"llizhce\",\"moqodka\",\"ppyi\"]}],\"annotation\":\"gqladywrxwhyd\"},\"location\":\"uvvadswzsnu\",\"tags\":{\"ouvblgmo\":\"lowuowhlxlnwyr\",\"ih\":\"zkltrfowtdvrfmv\",\"hdxlw\":\"vjdrqcrjidhftuk\"},\"id\":\"ojbf\",\"name\":\"zd\",\"type\":\"fnjyix\"}")
-                .toObject(IpExtendedCommunityInner.class);
-        Assertions.assertEquals("uvvadswzsnu", model.location());
-        Assertions.assertEquals("lowuowhlxlnwyr", model.tags().get("ouvblgmo"));
+        IpExtendedCommunityInner model = BinaryData.fromString(
+            "{\"properties\":{\"configurationState\":\"Failed\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"MAT\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":8508263172627219350,\"routeTargets\":[\"rqofulopmjnlexwh\"]},{\"action\":\"Permit\",\"sequenceNumber\":3625150454036060730,\"routeTargets\":[\"bke\",\"hu\"]},{\"action\":\"Permit\",\"sequenceNumber\":2124934229054015076,\"routeTargets\":[\"t\",\"toyint\",\"pbrlcyrduczkgofx\",\"fsrucv\"]},{\"action\":\"Permit\",\"sequenceNumber\":8080220027377198790,\"routeTargets\":[\"jttbstv\",\"eaqnrmvvfkoxm\",\"ghktuidvrm\",\"zlpdwwex\"]}],\"annotation\":\"zvlazipbhpwvqsgn\"},\"location\":\"uuzivensrpmeyyvp\",\"tags\":{\"ksrf\":\"tlbijpzg\"},\"id\":\"fvolmknbnxwcd\",\"name\":\"mmpvf\",\"type\":\"awz\"}")
+            .toObject(IpExtendedCommunityInner.class);
+        Assertions.assertEquals("uuzivensrpmeyyvp", model.location());
+        Assertions.assertEquals("tlbijpzg", model.tags().get("ksrf"));
         Assertions.assertEquals(CommunityActionTypes.DENY, model.ipExtendedCommunityRules().get(0).action());
-        Assertions.assertEquals(3106144557754641608L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals("llizhce", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
-        Assertions.assertEquals("gqladywrxwhyd", model.annotation());
+        Assertions.assertEquals(8508263172627219350L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("rqofulopmjnlexwh", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals("zvlazipbhpwvqsgn", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunityInner model =
-            new IpExtendedCommunityInner()
-                .withLocation("uvvadswzsnu")
-                .withTags(mapOf("ouvblgmo", "lowuowhlxlnwyr", "ih", "zkltrfowtdvrfmv", "hdxlw", "vjdrqcrjidhftuk"))
-                .withIpExtendedCommunityRules(
-                    Arrays
-                        .asList(
-                            new IpExtendedCommunityRule()
-                                .withAction(CommunityActionTypes.DENY)
-                                .withSequenceNumber(3106144557754641608L)
-                                .withRouteTargets(Arrays.asList("llizhce", "moqodka", "ppyi"))))
-                .withAnnotation("gqladywrxwhyd");
+        IpExtendedCommunityInner model = new IpExtendedCommunityInner().withLocation("uuzivensrpmeyyvp")
+            .withTags(mapOf("ksrf", "tlbijpzg"))
+            .withIpExtendedCommunityRules(Arrays.asList(
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(8508263172627219350L)
+                    .withRouteTargets(Arrays.asList("rqofulopmjnlexwh")),
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(3625150454036060730L)
+                    .withRouteTargets(Arrays.asList("bke", "hu")),
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(2124934229054015076L)
+                    .withRouteTargets(Arrays.asList("t", "toyint", "pbrlcyrduczkgofx", "fsrucv")),
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(8080220027377198790L)
+                    .withRouteTargets(Arrays.asList("jttbstv", "eaqnrmvvfkoxm", "ghktuidvrm", "zlpdwwex"))))
+            .withAnnotation("zvlazipbhpwvqsgn");
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityInner.class);
-        Assertions.assertEquals("uvvadswzsnu", model.location());
-        Assertions.assertEquals("lowuowhlxlnwyr", model.tags().get("ouvblgmo"));
+        Assertions.assertEquals("uuzivensrpmeyyvp", model.location());
+        Assertions.assertEquals("tlbijpzg", model.tags().get("ksrf"));
         Assertions.assertEquals(CommunityActionTypes.DENY, model.ipExtendedCommunityRules().get(0).action());
-        Assertions.assertEquals(3106144557754641608L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals("llizhce", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
-        Assertions.assertEquals("gqladywrxwhyd", model.annotation());
+        Assertions.assertEquals(8508263172627219350L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("rqofulopmjnlexwh", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals("zvlazipbhpwvqsgn", model.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -30,8 +30,8 @@ public final class SitesDeletePacketCoreMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.sites()
-            .deletePacketCore("ilkfbnrqqxv", "tpbnfnqtxjtoma", "swbnfddepldwqjns",
-                new SiteDeletePacketCore().withPacketCore(new PacketCoreControlPlaneResourceId().withId("ygleexa")),
+            .deletePacketCore("yqxzxaqzibmqim", "ymqruqguhfupet", "svvoqsbpkflanfk",
+                new SiteDeletePacketCore().withPacketCore(new PacketCoreControlPlaneResourceId().withId("syaowuzowp")),
                 com.azure.core.util.Context.NONE);
 
     }

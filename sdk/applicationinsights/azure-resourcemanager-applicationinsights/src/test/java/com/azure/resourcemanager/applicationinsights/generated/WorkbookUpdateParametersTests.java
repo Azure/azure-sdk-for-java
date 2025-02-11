@@ -15,42 +15,38 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"shared\",\"tags\":{\"aznqntoru\":\"bgdknnqv\"},\"properties\":{\"displayName\":\"sahmky\",\"serializedData\":\"rauwjuetaebu\",\"category\":\"vdmovsmzlxwabm\",\"tags\":[\"fkifr\",\"tpuqujmq\"],\"description\":\"kfbtndoaongbjc\",\"revision\":\"ujitcjedftww\"}}")
-                .toObject(WorkbookUpdateParameters.class);
+        WorkbookUpdateParameters model = BinaryData.fromString(
+            "{\"kind\":\"shared\",\"tags\":{\"hftwesgog\":\"izzronasxiftozqy\",\"sxkkg\":\"zhonnxkrlgnyhmo\",\"rghxjb\":\"h\"},\"properties\":{\"displayName\":\"xvcxgfrpdsofbshr\",\"serializedData\":\"vbuswd\",\"category\":\"yybyc\",\"tags\":[\"vj\",\"rtkfawnopq\",\"ikyzirtxdy\"],\"description\":\"zejntps\",\"revision\":\"gioilqu\"}}")
+            .toObject(WorkbookUpdateParameters.class);
         Assertions.assertEquals(WorkbookUpdateSharedTypeKind.SHARED, model.kind());
-        Assertions.assertEquals("bgdknnqv", model.tags().get("aznqntoru"));
-        Assertions.assertEquals("sahmky", model.displayName());
-        Assertions.assertEquals("rauwjuetaebu", model.serializedData());
-        Assertions.assertEquals("vdmovsmzlxwabm", model.category());
-        Assertions.assertEquals("fkifr", model.tagsPropertiesTags().get(0));
-        Assertions.assertEquals("kfbtndoaongbjc", model.description());
-        Assertions.assertEquals("ujitcjedftww", model.revision());
+        Assertions.assertEquals("izzronasxiftozqy", model.tags().get("hftwesgog"));
+        Assertions.assertEquals("xvcxgfrpdsofbshr", model.displayName());
+        Assertions.assertEquals("vbuswd", model.serializedData());
+        Assertions.assertEquals("yybyc", model.category());
+        Assertions.assertEquals("vj", model.tagsPropertiesTags().get(0));
+        Assertions.assertEquals("zejntps", model.description());
+        Assertions.assertEquals("gioilqu", model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookUpdateParameters model =
-            new WorkbookUpdateParameters()
-                .withKind(WorkbookUpdateSharedTypeKind.SHARED)
-                .withTags(mapOf("aznqntoru", "bgdknnqv"))
-                .withDisplayName("sahmky")
-                .withSerializedData("rauwjuetaebu")
-                .withCategory("vdmovsmzlxwabm")
-                .withTagsPropertiesTags(Arrays.asList("fkifr", "tpuqujmq"))
-                .withDescription("kfbtndoaongbjc")
-                .withRevision("ujitcjedftww");
+        WorkbookUpdateParameters model = new WorkbookUpdateParameters().withKind(WorkbookUpdateSharedTypeKind.SHARED)
+            .withTags(mapOf("hftwesgog", "izzronasxiftozqy", "sxkkg", "zhonnxkrlgnyhmo", "rghxjb", "h"))
+            .withDisplayName("xvcxgfrpdsofbshr")
+            .withSerializedData("vbuswd")
+            .withCategory("yybyc")
+            .withTagsPropertiesTags(Arrays.asList("vj", "rtkfawnopq", "ikyzirtxdy"))
+            .withDescription("zejntps")
+            .withRevision("gioilqu");
         model = BinaryData.fromObject(model).toObject(WorkbookUpdateParameters.class);
         Assertions.assertEquals(WorkbookUpdateSharedTypeKind.SHARED, model.kind());
-        Assertions.assertEquals("bgdknnqv", model.tags().get("aznqntoru"));
-        Assertions.assertEquals("sahmky", model.displayName());
-        Assertions.assertEquals("rauwjuetaebu", model.serializedData());
-        Assertions.assertEquals("vdmovsmzlxwabm", model.category());
-        Assertions.assertEquals("fkifr", model.tagsPropertiesTags().get(0));
-        Assertions.assertEquals("kfbtndoaongbjc", model.description());
-        Assertions.assertEquals("ujitcjedftww", model.revision());
+        Assertions.assertEquals("izzronasxiftozqy", model.tags().get("hftwesgog"));
+        Assertions.assertEquals("xvcxgfrpdsofbshr", model.displayName());
+        Assertions.assertEquals("vbuswd", model.serializedData());
+        Assertions.assertEquals("yybyc", model.category());
+        Assertions.assertEquals("vj", model.tagsPropertiesTags().get(0));
+        Assertions.assertEquals("zejntps", model.description());
+        Assertions.assertEquals("gioilqu", model.revision());
     }
 
     // Use "Map.of" if available

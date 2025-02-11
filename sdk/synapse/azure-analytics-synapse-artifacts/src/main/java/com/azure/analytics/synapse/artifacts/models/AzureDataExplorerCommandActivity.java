@@ -24,12 +24,14 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     private String type = "AzureDataExplorerCommand";
 
     /*
-     * A control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with resultType string).
+     * A control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with
+     * resultType string).
      */
     private Object command;
 
     /*
-     * Control command timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..)
+     * Control command timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..)
      */
     private Object commandTimeout;
 

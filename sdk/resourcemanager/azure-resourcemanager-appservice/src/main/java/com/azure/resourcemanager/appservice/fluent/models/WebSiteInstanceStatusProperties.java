@@ -49,6 +49,11 @@ public final class WebSiteInstanceStatusProperties implements JsonSerializable<W
      */
     private Map<String, ContainerInfo> containers;
 
+    /*
+     * The physical zone that the instance is in
+     */
+    private String physicalZone;
+
     /**
      * Creates an instance of WebSiteInstanceStatusProperties class.
      */
@@ -176,6 +181,26 @@ public final class WebSiteInstanceStatusProperties implements JsonSerializable<W
     }
 
     /**
+     * Get the physicalZone property: The physical zone that the instance is in.
+     * 
+     * @return the physicalZone value.
+     */
+    public String physicalZone() {
+        return this.physicalZone;
+    }
+
+    /**
+     * Set the physicalZone property: The physical zone that the instance is in.
+     * 
+     * @param physicalZone the physicalZone value to set.
+     * @return the WebSiteInstanceStatusProperties object itself.
+     */
+    public WebSiteInstanceStatusProperties withPhysicalZone(String physicalZone) {
+        this.physicalZone = physicalZone;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -202,6 +227,7 @@ public final class WebSiteInstanceStatusProperties implements JsonSerializable<W
         jsonWriter.writeStringField("consoleUrl", this.consoleUrl);
         jsonWriter.writeStringField("healthCheckUrl", this.healthCheckUrl);
         jsonWriter.writeMapField("containers", this.containers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("physicalZone", this.physicalZone);
         return jsonWriter.writeEndObject();
     }
 
@@ -234,6 +260,8 @@ public final class WebSiteInstanceStatusProperties implements JsonSerializable<W
                 } else if ("containers".equals(fieldName)) {
                     Map<String, ContainerInfo> containers = reader.readMap(reader1 -> ContainerInfo.fromJson(reader1));
                     deserializedWebSiteInstanceStatusProperties.containers = containers;
+                } else if ("physicalZone".equals(fieldName)) {
+                    deserializedWebSiteInstanceStatusProperties.physicalZone = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

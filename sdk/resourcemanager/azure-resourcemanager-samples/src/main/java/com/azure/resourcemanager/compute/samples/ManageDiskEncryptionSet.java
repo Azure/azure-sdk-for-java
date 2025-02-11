@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
@@ -68,17 +68,13 @@ public final class ManageDiskEncryptionSet {
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .defineAccessPolicy()
-                    .forServicePrincipal(clientId)
-                    .allowKeyPermissions(KeyPermissions.CREATE)
-                    .attach()
+                .forServicePrincipal(clientId)
+                .allowKeyPermissions(KeyPermissions.CREATE)
+                .attach()
                 .withPurgeProtectionEnabled()
                 .create();
 
-            Key k1 = kv1.keys()
-                .define(k1Name)
-                .withKeyTypeToCreate(KeyType.RSA)
-                .withKeySize(4096)
-                .create();
+            Key k1 = kv1.keys().define(k1Name).withKeyTypeToCreate(KeyType.RSA).withKeySize(4096).create();
 
             //=============================================================
             // Create a disk encryption set, des1, with key vault kv1, key k1 and encryption type
@@ -100,9 +96,9 @@ public final class ManageDiskEncryptionSet {
 
             kv1.update()
                 .defineAccessPolicy()
-                    .forObjectId(des1.systemAssignedManagedServiceIdentityPrincipalId())
-                    .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
-                    .attach()
+                .forObjectId(des1.systemAssignedManagedServiceIdentityPrincipalId())
+                .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
+                .attach()
                 .apply();
 
             //=============================================================
@@ -116,7 +112,9 @@ public final class ManageDiskEncryptionSet {
                 .withPurgeProtectionEnabled()
                 .create();
 
-            azureResourceManager.accessManagement().roleAssignments().define(rbacName)
+            azureResourceManager.accessManagement()
+                .roleAssignments()
+                .define(rbacName)
                 .forServicePrincipal(clientId)
                 .withBuiltInRole(BuiltInRole.KEY_VAULT_ADMINISTRATOR)
                 .withResourceScope(kv2)
@@ -124,11 +122,7 @@ public final class ManageDiskEncryptionSet {
             // wait for propagation time
             ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
-            Key k2 = kv2.keys()
-                .define(k2Name)
-                .withKeyTypeToCreate(KeyType.RSA)
-                .withKeySize(4096)
-                .create();
+            Key k2 = kv2.keys().define(k2Name).withKeyTypeToCreate(KeyType.RSA).withKeySize(4096).create();
 
             //=============================================================
             // Create a new disk encryption set des2 with key vault kv2, key k2, encryption type
@@ -189,13 +183,12 @@ public final class ManageDiskEncryptionSet {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

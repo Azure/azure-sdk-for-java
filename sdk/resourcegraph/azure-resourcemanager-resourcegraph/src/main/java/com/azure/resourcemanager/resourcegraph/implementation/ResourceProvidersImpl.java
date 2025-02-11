@@ -21,8 +21,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.resourcegraph.ResourceGraphManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.resourcegraph.ResourceGraphManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,10 +30,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     public Response<QueryResponse> resourcesWithResponse(QueryRequest query, Context context) {
         Response<QueryResponseInner> inner = this.serviceClient().resourcesWithResponse(query, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QueryResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

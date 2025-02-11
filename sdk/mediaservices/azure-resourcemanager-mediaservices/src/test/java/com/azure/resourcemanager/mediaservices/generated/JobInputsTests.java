@@ -12,16 +12,14 @@ import java.util.Arrays;
 public final class JobInputsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobInputs model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.JobInputs\",\"inputs\":[{\"@odata.type\":\"JobInput\"},{\"@odata.type\":\"JobInput\"}]}")
-                .toObject(JobInputs.class);
+        JobInputs model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.JobInputs\",\"inputs\":[{\"@odata.type\":\"JobInput\"},{\"@odata.type\":\"JobInput\"},{\"@odata.type\":\"JobInput\"}]}")
+            .toObject(JobInputs.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobInputs model = new JobInputs().withInputs(Arrays.asList(new JobInput(), new JobInput()));
+        JobInputs model = new JobInputs().withInputs(Arrays.asList(new JobInput(), new JobInput(), new JobInput()));
         model = BinaryData.fromObject(model).toObject(JobInputs.class);
     }
 }

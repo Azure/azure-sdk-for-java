@@ -25,7 +25,11 @@ public final class BinaryHardeningSummaryResourceTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BinaryHardeningSummaryResource model = new BinaryHardeningSummaryResource().withTotalFiles(1588366635739120038L)
-            .withNx(1840512089).withPie(903805755).withRelro(1405180794).withCanary(142305050).withStripped(1098465372);
+            .withNx(1840512089)
+            .withPie(903805755)
+            .withRelro(1405180794)
+            .withCanary(142305050)
+            .withStripped(1098465372);
         model = BinaryData.fromObject(model).toObject(BinaryHardeningSummaryResource.class);
         Assertions.assertEquals(1588366635739120038L, model.totalFiles());
         Assertions.assertEquals(1840512089, model.nx());

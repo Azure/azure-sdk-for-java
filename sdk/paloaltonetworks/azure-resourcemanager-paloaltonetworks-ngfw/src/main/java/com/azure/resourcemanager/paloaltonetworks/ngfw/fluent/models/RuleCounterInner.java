@@ -5,74 +5,70 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AppSeenData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Rule counter.
  */
 @Fluent
-public final class RuleCounterInner {
+public final class RuleCounterInner implements JsonSerializable<RuleCounterInner> {
     /*
      * priority number
      */
-    @JsonProperty(value = "priority", required = true)
     private String priority;
 
     /*
      * rule Stack Name
      */
-    @JsonProperty(value = "ruleStackName")
     private String ruleStackName;
 
     /*
      * rule list name
      */
-    @JsonProperty(value = "ruleListName")
     private String ruleListName;
 
     /*
      * firewall name
      */
-    @JsonProperty(value = "firewallName")
     private String firewallName;
 
     /*
      * rule name
      */
-    @JsonProperty(value = "ruleName", required = true)
     private String ruleName;
 
     /*
      * hit count
      */
-    @JsonProperty(value = "hitCount")
     private Integer hitCount;
 
     /*
      * apps seen
      */
-    @JsonProperty(value = "appSeen")
     private AppSeenData appSeen;
 
     /*
      * timestamp of response
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
      * timestamp of request
      */
-    @JsonProperty(value = "requestTimestamp")
     private OffsetDateTime requestTimestamp;
 
     /*
      * last updated timestamp
      */
-    @JsonProperty(value = "lastUpdatedTimestamp")
     private OffsetDateTime lastUpdatedTimestamp;
 
     /**
@@ -288,12 +284,12 @@ public final class RuleCounterInner {
      */
     public void validate() {
         if (priority() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property priority in model RuleCounterInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property priority in model RuleCounterInner"));
         }
         if (ruleName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ruleName in model RuleCounterInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ruleName in model RuleCounterInner"));
         }
         if (appSeen() != null) {
             appSeen().validate();
@@ -301,4 +297,78 @@ public final class RuleCounterInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RuleCounterInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("priority", this.priority);
+        jsonWriter.writeStringField("ruleName", this.ruleName);
+        jsonWriter.writeStringField("ruleStackName", this.ruleStackName);
+        jsonWriter.writeStringField("ruleListName", this.ruleListName);
+        jsonWriter.writeStringField("firewallName", this.firewallName);
+        jsonWriter.writeNumberField("hitCount", this.hitCount);
+        jsonWriter.writeJsonField("appSeen", this.appSeen);
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("requestTimestamp",
+            this.requestTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.requestTimestamp));
+        jsonWriter.writeStringField("lastUpdatedTimestamp",
+            this.lastUpdatedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedTimestamp));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuleCounterInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuleCounterInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RuleCounterInner.
+     */
+    public static RuleCounterInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuleCounterInner deserializedRuleCounterInner = new RuleCounterInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("priority".equals(fieldName)) {
+                    deserializedRuleCounterInner.priority = reader.getString();
+                } else if ("ruleName".equals(fieldName)) {
+                    deserializedRuleCounterInner.ruleName = reader.getString();
+                } else if ("ruleStackName".equals(fieldName)) {
+                    deserializedRuleCounterInner.ruleStackName = reader.getString();
+                } else if ("ruleListName".equals(fieldName)) {
+                    deserializedRuleCounterInner.ruleListName = reader.getString();
+                } else if ("firewallName".equals(fieldName)) {
+                    deserializedRuleCounterInner.firewallName = reader.getString();
+                } else if ("hitCount".equals(fieldName)) {
+                    deserializedRuleCounterInner.hitCount = reader.getNullable(JsonReader::getInt);
+                } else if ("appSeen".equals(fieldName)) {
+                    deserializedRuleCounterInner.appSeen = AppSeenData.fromJson(reader);
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedRuleCounterInner.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("requestTimestamp".equals(fieldName)) {
+                    deserializedRuleCounterInner.requestTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdatedTimestamp".equals(fieldName)) {
+                    deserializedRuleCounterInner.lastUpdatedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleCounterInner;
+        });
+    }
 }

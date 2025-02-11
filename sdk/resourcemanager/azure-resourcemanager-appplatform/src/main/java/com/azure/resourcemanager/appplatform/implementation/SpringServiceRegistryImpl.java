@@ -14,11 +14,12 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SpringServiceRegistryImpl
-    extends ExternalChildResourceImpl<SpringServiceRegistry, ServiceRegistryResourceInner, SpringServiceImpl, SpringService>
+public class SpringServiceRegistryImpl extends
+    ExternalChildResourceImpl<SpringServiceRegistry, ServiceRegistryResourceInner, SpringServiceImpl, SpringService>
     implements SpringServiceRegistry {
 
-    protected SpringServiceRegistryImpl(String name, SpringServiceImpl parent, ServiceRegistryResourceInner innerObject) {
+    protected SpringServiceRegistryImpl(String name, SpringServiceImpl parent,
+        ServiceRegistryResourceInner innerObject) {
         super(name, parent, innerObject);
     }
 
@@ -34,7 +35,8 @@ public class SpringServiceRegistryImpl
 
     @Override
     public List<SpringApp> getAppBindings() {
-        return parent().apps().list()
+        return parent().apps()
+            .list()
             .stream()
             .filter(SpringApp::hasServiceRegistryBinding)
             .collect(Collectors.toList());
@@ -47,7 +49,8 @@ public class SpringServiceRegistryImpl
 
     @Override
     public Mono<SpringServiceRegistry> createResourceAsync() {
-        return manager().serviceClient().getServiceRegistries()
+        return manager().serviceClient()
+            .getServiceRegistries()
             .createOrUpdateAsync(parent().resourceGroupName(), parent().name(), name())
             .map(inner -> {
                 setInner(inner);
@@ -62,12 +65,16 @@ public class SpringServiceRegistryImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().serviceClient().getServiceRegistries().deleteAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient()
+            .getServiceRegistries()
+            .deleteAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override
     protected Mono<ServiceRegistryResourceInner> getInnerAsync() {
-        return manager().serviceClient().getServiceRegistries().getAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient()
+            .getServiceRegistries()
+            .getAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     private AppPlatformManager manager() {

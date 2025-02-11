@@ -29,8 +29,8 @@ public interface ConfigurationsClient {
      * @return represents a Configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
+    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String configurationName, ConfigurationInner parameters);
 
     /**
      * Updates a configuration of a server.
@@ -46,12 +46,8 @@ public interface ConfigurationsClient {
      * @return represents a Configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String configurationName,
-        ConfigurationInner parameters,
-        Context context);
+    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String configurationName, ConfigurationInner parameters, Context context);
 
     /**
      * Updates a configuration of a server.
@@ -66,8 +62,8 @@ public interface ConfigurationsClient {
      * @return represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationInner createOrUpdate(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
+    ConfigurationInner createOrUpdate(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationInner parameters);
 
     /**
      * Updates a configuration of a server.
@@ -83,12 +79,8 @@ public interface ConfigurationsClient {
      * @return represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String configurationName,
-        ConfigurationInner parameters,
-        Context context);
+    ConfigurationInner createOrUpdate(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationInner parameters, Context context);
 
     /**
      * Gets information about a configuration of server.
@@ -117,8 +109,8 @@ public interface ConfigurationsClient {
      * @return information about a configuration of server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfigurationInner> getWithResponse(
-        String resourceGroupName, String serverName, String configurationName, Context context);
+    Response<ConfigurationInner> getWithResponse(String resourceGroupName, String serverName, String configurationName,
+        Context context);
 
     /**
      * List all the configurations in a given server.

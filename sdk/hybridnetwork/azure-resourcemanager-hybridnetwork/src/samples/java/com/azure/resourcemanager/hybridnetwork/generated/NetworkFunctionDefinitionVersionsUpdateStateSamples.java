@@ -23,8 +23,9 @@ public final class NetworkFunctionDefinitionVersionsUpdateStateSamples {
      */
     public static void updateNetworkFunctionDefinitionVersionState(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkFunctionDefinitionVersions().updateState("rg", "TestPublisher", "TestSkuGroup", "1.0.0",
-            new NetworkFunctionDefinitionVersionUpdateStateInner().withVersionState(VersionState.ACTIVE),
-            com.azure.core.util.Context.NONE);
+        manager.networkFunctionDefinitionVersions()
+            .updateState("rg", "TestPublisher", "TestSkuGroup", "1.0.0",
+                new NetworkFunctionDefinitionVersionUpdateStateInner().withVersionState(VersionState.ACTIVE),
+                com.azure.core.util.Context.NONE);
     }
 }

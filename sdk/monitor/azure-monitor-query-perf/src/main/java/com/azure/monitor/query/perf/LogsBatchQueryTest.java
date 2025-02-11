@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class LogsBatchQueryTest extends ServiceTest<PerfStressOptions> {
 
-    private static final List<String> LOGS_BATCH_QUERIES = Arrays
-            .asList("AppRequests | take 100", "AzureActivity | take 100", "AppPerformanceCounters | take 100");
+    private static final List<String> LOGS_BATCH_QUERIES
+        = Arrays.asList("AppRequests | take 100", "AzureActivity | take 100", "AppPerformanceCounters | take 100");
     private final String workspaceId;
 
     /**

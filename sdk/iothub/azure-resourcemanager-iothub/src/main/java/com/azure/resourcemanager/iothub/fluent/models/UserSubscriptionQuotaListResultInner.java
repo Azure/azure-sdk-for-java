@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iothub.models.UserSubscriptionQuota;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Json-serialized array of User subscription quota response. */
+/**
+ * Json-serialized array of User subscription quota response.
+ */
 @Fluent
-public final class UserSubscriptionQuotaListResultInner {
+public final class UserSubscriptionQuotaListResultInner
+    implements JsonSerializable<UserSubscriptionQuotaListResultInner> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<UserSubscriptionQuota> value;
 
     /*
      * The nextLink property.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of UserSubscriptionQuotaListResultInner class. */
+    /**
+     * Creates an instance of UserSubscriptionQuotaListResultInner class.
+     */
     public UserSubscriptionQuotaListResultInner() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<UserSubscriptionQuota> value() {
@@ -39,7 +46,7 @@ public final class UserSubscriptionQuotaListResultInner {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the UserSubscriptionQuotaListResultInner object itself.
      */
@@ -50,7 +57,7 @@ public final class UserSubscriptionQuotaListResultInner {
 
     /**
      * Get the nextLink property: The nextLink property.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +66,53 @@ public final class UserSubscriptionQuotaListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserSubscriptionQuotaListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserSubscriptionQuotaListResultInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserSubscriptionQuotaListResultInner.
+     */
+    public static UserSubscriptionQuotaListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserSubscriptionQuotaListResultInner deserializedUserSubscriptionQuotaListResultInner
+                = new UserSubscriptionQuotaListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<UserSubscriptionQuota> value
+                        = reader.readArray(reader1 -> UserSubscriptionQuota.fromJson(reader1));
+                    deserializedUserSubscriptionQuotaListResultInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedUserSubscriptionQuotaListResultInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserSubscriptionQuotaListResultInner;
+        });
     }
 }

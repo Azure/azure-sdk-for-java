@@ -15,34 +15,34 @@ public final class PccRuleQosPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PccRuleQosPolicy model = BinaryData.fromString(
-            "{\"guaranteedBitRate\":{\"uplink\":\"jw\",\"downlink\":\"w\"},\"5qi\":303130680,\"allocationAndRetentionPriorityLevel\":173191465,\"preemptionCapability\":\"NotPreempt\",\"preemptionVulnerability\":\"Preemptable\",\"maximumBitRate\":{\"uplink\":\"mojmsvpkjprvkw\",\"downlink\":\"fz\"}}")
+            "{\"guaranteedBitRate\":{\"uplink\":\"zxscyhwzdgirujb\",\"downlink\":\"bomvzzbtdcqv\"},\"5qi\":1569127875,\"allocationAndRetentionPriorityLevel\":850066644,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"Preemptable\",\"maximumBitRate\":{\"uplink\":\"l\",\"downlink\":\"dshf\"}}")
             .toObject(PccRuleQosPolicy.class);
-        Assertions.assertEquals(303130680, model.fiveQi());
-        Assertions.assertEquals(173191465, model.allocationAndRetentionPriorityLevel());
-        Assertions.assertEquals(PreemptionCapability.NOT_PREEMPT, model.preemptionCapability());
+        Assertions.assertEquals(1569127875, model.fiveQi());
+        Assertions.assertEquals(850066644, model.allocationAndRetentionPriorityLevel());
+        Assertions.assertEquals(PreemptionCapability.MAY_PREEMPT, model.preemptionCapability());
         Assertions.assertEquals(PreemptionVulnerability.PREEMPTABLE, model.preemptionVulnerability());
-        Assertions.assertEquals("mojmsvpkjprvkw", model.maximumBitRate().uplink());
-        Assertions.assertEquals("fz", model.maximumBitRate().downlink());
-        Assertions.assertEquals("jw", model.guaranteedBitRate().uplink());
-        Assertions.assertEquals("w", model.guaranteedBitRate().downlink());
+        Assertions.assertEquals("l", model.maximumBitRate().uplink());
+        Assertions.assertEquals("dshf", model.maximumBitRate().downlink());
+        Assertions.assertEquals("zxscyhwzdgirujb", model.guaranteedBitRate().uplink());
+        Assertions.assertEquals("bomvzzbtdcqv", model.guaranteedBitRate().downlink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PccRuleQosPolicy model = new PccRuleQosPolicy().withFiveQi(303130680)
-            .withAllocationAndRetentionPriorityLevel(173191465)
-            .withPreemptionCapability(PreemptionCapability.NOT_PREEMPT)
+        PccRuleQosPolicy model = new PccRuleQosPolicy().withFiveQi(1569127875)
+            .withAllocationAndRetentionPriorityLevel(850066644)
+            .withPreemptionCapability(PreemptionCapability.MAY_PREEMPT)
             .withPreemptionVulnerability(PreemptionVulnerability.PREEMPTABLE)
-            .withMaximumBitRate(new Ambr().withUplink("mojmsvpkjprvkw").withDownlink("fz"))
-            .withGuaranteedBitRate(new Ambr().withUplink("jw").withDownlink("w"));
+            .withMaximumBitRate(new Ambr().withUplink("l").withDownlink("dshf"))
+            .withGuaranteedBitRate(new Ambr().withUplink("zxscyhwzdgirujb").withDownlink("bomvzzbtdcqv"));
         model = BinaryData.fromObject(model).toObject(PccRuleQosPolicy.class);
-        Assertions.assertEquals(303130680, model.fiveQi());
-        Assertions.assertEquals(173191465, model.allocationAndRetentionPriorityLevel());
-        Assertions.assertEquals(PreemptionCapability.NOT_PREEMPT, model.preemptionCapability());
+        Assertions.assertEquals(1569127875, model.fiveQi());
+        Assertions.assertEquals(850066644, model.allocationAndRetentionPriorityLevel());
+        Assertions.assertEquals(PreemptionCapability.MAY_PREEMPT, model.preemptionCapability());
         Assertions.assertEquals(PreemptionVulnerability.PREEMPTABLE, model.preemptionVulnerability());
-        Assertions.assertEquals("mojmsvpkjprvkw", model.maximumBitRate().uplink());
-        Assertions.assertEquals("fz", model.maximumBitRate().downlink());
-        Assertions.assertEquals("jw", model.guaranteedBitRate().uplink());
-        Assertions.assertEquals("w", model.guaranteedBitRate().downlink());
+        Assertions.assertEquals("l", model.maximumBitRate().uplink());
+        Assertions.assertEquals("dshf", model.maximumBitRate().downlink());
+        Assertions.assertEquals("zxscyhwzdgirujb", model.guaranteedBitRate().uplink());
+        Assertions.assertEquals("bomvzzbtdcqv", model.guaranteedBitRate().downlink());
     }
 }

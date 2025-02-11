@@ -16,8 +16,7 @@ public final class TagResourceContractImpl implements TagResourceContract {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    TagResourceContractImpl(
-        TagResourceContractInner innerObject,
+    TagResourceContractImpl(TagResourceContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

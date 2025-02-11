@@ -5,73 +5,71 @@
 package com.azure.resourcemanager.subscription.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.subscription.models.SubscriptionPolicies;
 import com.azure.resourcemanager.subscription.models.SubscriptionState;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Subscription information. */
+/**
+ * Subscription information.
+ */
 @Fluent
-public final class SubscriptionInner {
+public final class SubscriptionInner implements JsonSerializable<SubscriptionInner> {
     /*
      * The fully qualified ID for the subscription. For example, /subscriptions/00000000-0000-0000-0000-000000000000.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The subscription ID.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * The subscription display name.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private SubscriptionState state;
 
     /*
      * The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * Tags for the subscription
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The subscription policies.
      */
-    @JsonProperty(value = "subscriptionPolicies")
     private SubscriptionPolicies subscriptionPolicies;
 
     /*
      * The authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased,
      * Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
      */
-    @JsonProperty(value = "authorizationSource")
     private String authorizationSource;
 
-    /** Creates an instance of SubscriptionInner class. */
+    /**
+     * Creates an instance of SubscriptionInner class.
+     */
     public SubscriptionInner() {
     }
 
     /**
      * Get the id property: The fully qualified ID for the subscription. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -80,7 +78,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the subscriptionId property: The subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -89,7 +87,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the displayName property: The subscription display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -99,7 +97,7 @@ public final class SubscriptionInner {
     /**
      * Get the state property: The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and
      * Deleted.
-     *
+     * 
      * @return the state value.
      */
     public SubscriptionState state() {
@@ -108,7 +106,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the tenantId property: The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -117,7 +115,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the tags property: Tags for the subscription.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -126,7 +124,7 @@ public final class SubscriptionInner {
 
     /**
      * Set the tags property: Tags for the subscription.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the SubscriptionInner object itself.
      */
@@ -137,7 +135,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the subscriptionPolicies property: The subscription policies.
-     *
+     * 
      * @return the subscriptionPolicies value.
      */
     public SubscriptionPolicies subscriptionPolicies() {
@@ -146,7 +144,7 @@ public final class SubscriptionInner {
 
     /**
      * Set the subscriptionPolicies property: The subscription policies.
-     *
+     * 
      * @param subscriptionPolicies the subscriptionPolicies value to set.
      * @return the SubscriptionInner object itself.
      */
@@ -158,7 +156,7 @@ public final class SubscriptionInner {
     /**
      * Get the authorizationSource property: The authorization source of the request. Valid values are one or more
      * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
-     *
+     * 
      * @return the authorizationSource value.
      */
     public String authorizationSource() {
@@ -168,7 +166,7 @@ public final class SubscriptionInner {
     /**
      * Set the authorizationSource property: The authorization source of the request. Valid values are one or more
      * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
-     *
+     * 
      * @param authorizationSource the authorizationSource value to set.
      * @return the SubscriptionInner object itself.
      */
@@ -179,12 +177,65 @@ public final class SubscriptionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subscriptionPolicies() != null) {
             subscriptionPolicies().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("subscriptionPolicies", this.subscriptionPolicies);
+        jsonWriter.writeStringField("authorizationSource", this.authorizationSource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionInner.
+     */
+    public static SubscriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionInner deserializedSubscriptionInner = new SubscriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSubscriptionInner.id = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedSubscriptionInner.subscriptionId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSubscriptionInner.displayName = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedSubscriptionInner.state = SubscriptionState.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedSubscriptionInner.tenantId = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSubscriptionInner.tags = tags;
+                } else if ("subscriptionPolicies".equals(fieldName)) {
+                    deserializedSubscriptionInner.subscriptionPolicies = SubscriptionPolicies.fromJson(reader);
+                } else if ("authorizationSource".equals(fieldName)) {
+                    deserializedSubscriptionInner.authorizationSource = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionInner;
+        });
     }
 }

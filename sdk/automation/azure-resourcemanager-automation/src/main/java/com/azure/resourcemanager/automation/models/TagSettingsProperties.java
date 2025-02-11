@@ -5,30 +5,38 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Tag filter information for the VM. */
+/**
+ * Tag filter information for the VM.
+ */
 @Fluent
-public final class TagSettingsProperties {
+public final class TagSettingsProperties implements JsonSerializable<TagSettingsProperties> {
     /*
      * Dictionary of tags with its list of values.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<String>> tags;
 
     /*
      * Filter VMs by Any or All specified tags.
      */
-    @JsonProperty(value = "filterOperator")
     private TagOperators filterOperator;
 
     /**
+     * Creates an instance of TagSettingsProperties class.
+     */
+    public TagSettingsProperties() {
+    }
+
+    /**
      * Get the tags property: Dictionary of tags with its list of values.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, List<String>> tags() {
@@ -37,7 +45,7 @@ public final class TagSettingsProperties {
 
     /**
      * Set the tags property: Dictionary of tags with its list of values.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TagSettingsProperties object itself.
      */
@@ -48,7 +56,7 @@ public final class TagSettingsProperties {
 
     /**
      * Get the filterOperator property: Filter VMs by Any or All specified tags.
-     *
+     * 
      * @return the filterOperator value.
      */
     public TagOperators filterOperator() {
@@ -57,7 +65,7 @@ public final class TagSettingsProperties {
 
     /**
      * Set the filterOperator property: Filter VMs by Any or All specified tags.
-     *
+     * 
      * @param filterOperator the filterOperator value to set.
      * @return the TagSettingsProperties object itself.
      */
@@ -68,9 +76,52 @@ public final class TagSettingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeStringField("filterOperator",
+            this.filterOperator == null ? null : this.filterOperator.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagSettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagSettingsProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagSettingsProperties.
+     */
+    public static TagSettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagSettingsProperties deserializedTagSettingsProperties = new TagSettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, List<String>> tags
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedTagSettingsProperties.tags = tags;
+                } else if ("filterOperator".equals(fieldName)) {
+                    deserializedTagSettingsProperties.filterOperator = TagOperators.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagSettingsProperties;
+        });
     }
 }

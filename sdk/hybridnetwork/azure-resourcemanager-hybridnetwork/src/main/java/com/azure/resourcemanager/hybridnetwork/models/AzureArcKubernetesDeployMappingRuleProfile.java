@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure arc kubernetes deploy mapping rule profile.
@@ -15,7 +18,6 @@ public final class AzureArcKubernetesDeployMappingRuleProfile extends MappingRul
     /*
      * The helm mapping rule profile.
      */
-    @JsonProperty(value = "helmMappingRuleProfile")
     private HelmMappingRuleProfile helmMappingRuleProfile;
 
     /**
@@ -62,9 +64,51 @@ public final class AzureArcKubernetesDeployMappingRuleProfile extends MappingRul
      */
     @Override
     public void validate() {
-        super.validate();
         if (helmMappingRuleProfile() != null) {
             helmMappingRuleProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationEnablement",
+            applicationEnablement() == null ? null : applicationEnablement().toString());
+        jsonWriter.writeJsonField("helmMappingRuleProfile", this.helmMappingRuleProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureArcKubernetesDeployMappingRuleProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureArcKubernetesDeployMappingRuleProfile if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureArcKubernetesDeployMappingRuleProfile.
+     */
+    public static AzureArcKubernetesDeployMappingRuleProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureArcKubernetesDeployMappingRuleProfile deserializedAzureArcKubernetesDeployMappingRuleProfile
+                = new AzureArcKubernetesDeployMappingRuleProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationEnablement".equals(fieldName)) {
+                    deserializedAzureArcKubernetesDeployMappingRuleProfile
+                        .withApplicationEnablement(ApplicationEnablement.fromString(reader.getString()));
+                } else if ("helmMappingRuleProfile".equals(fieldName)) {
+                    deserializedAzureArcKubernetesDeployMappingRuleProfile.helmMappingRuleProfile
+                        = HelmMappingRuleProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureArcKubernetesDeployMappingRuleProfile;
+        });
     }
 }

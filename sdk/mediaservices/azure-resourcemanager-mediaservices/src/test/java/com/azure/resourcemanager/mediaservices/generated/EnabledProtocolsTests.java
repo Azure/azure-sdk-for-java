@@ -11,24 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class EnabledProtocolsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnabledProtocols model =
-            BinaryData
-                .fromString("{\"download\":false,\"dash\":false,\"hls\":true,\"smoothStreaming\":true}")
+        EnabledProtocols model
+            = BinaryData.fromString("{\"download\":false,\"dash\":false,\"hls\":false,\"smoothStreaming\":true}")
                 .toObject(EnabledProtocols.class);
         Assertions.assertEquals(false, model.download());
         Assertions.assertEquals(false, model.dash());
-        Assertions.assertEquals(true, model.hls());
+        Assertions.assertEquals(false, model.hls());
         Assertions.assertEquals(true, model.smoothStreaming());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnabledProtocols model =
-            new EnabledProtocols().withDownload(false).withDash(false).withHls(true).withSmoothStreaming(true);
+        EnabledProtocols model
+            = new EnabledProtocols().withDownload(false).withDash(false).withHls(false).withSmoothStreaming(true);
         model = BinaryData.fromObject(model).toObject(EnabledProtocols.class);
         Assertions.assertEquals(false, model.download());
         Assertions.assertEquals(false, model.dash());
-        Assertions.assertEquals(true, model.hls());
+        Assertions.assertEquals(false, model.hls());
         Assertions.assertEquals(true, model.smoothStreaming());
     }
 }

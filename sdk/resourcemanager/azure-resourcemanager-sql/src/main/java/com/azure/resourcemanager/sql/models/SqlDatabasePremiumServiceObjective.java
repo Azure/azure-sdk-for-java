@@ -32,6 +32,15 @@ public class SqlDatabasePremiumServiceObjective extends ExpandableStringEnum<Sql
     public static final SqlDatabasePremiumServiceObjective P15 = fromString("P15");
 
     /**
+     * Creates a new instance of SqlDatabasePremiumServiceObjective value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlDatabasePremiumServiceObjective() {
+    }
+
+    /**
      * Creates or finds a ServiceObjectiveName from its string representation.
      *
      * @param name a name to look for
@@ -41,7 +50,11 @@ public class SqlDatabasePremiumServiceObjective extends ExpandableStringEnum<Sql
         return fromString(name, SqlDatabasePremiumServiceObjective.class);
     }
 
-    /** @return known ServiceObjectiveName values */
+    /**
+     * Gets known ServiceObjectiveName values.
+     *
+     * @return known ServiceObjectiveName values
+     */
     public static Collection<SqlDatabasePremiumServiceObjective> values() {
         return values(SqlDatabasePremiumServiceObjective.class);
     }

@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime", "CustomEnqueuedTime". */
+/**
+ * The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime", "CustomEnqueuedTime".
+ */
 public final class IngressStartAtType extends ExpandableStringEnum<IngressStartAtType> {
-    /** Static value EarliestAvailable for IngressStartAtType. */
+    /**
+     * Static value EarliestAvailable for IngressStartAtType.
+     */
     public static final IngressStartAtType EARLIEST_AVAILABLE = fromString("EarliestAvailable");
 
-    /** Static value EventSourceCreationTime for IngressStartAtType. */
+    /**
+     * Static value EventSourceCreationTime for IngressStartAtType.
+     */
     public static final IngressStartAtType EVENT_SOURCE_CREATION_TIME = fromString("EventSourceCreationTime");
 
-    /** Static value CustomEnqueuedTime for IngressStartAtType. */
+    /**
+     * Static value CustomEnqueuedTime for IngressStartAtType.
+     */
     public static final IngressStartAtType CUSTOM_ENQUEUED_TIME = fromString("CustomEnqueuedTime");
 
     /**
      * Creates a new instance of IngressStartAtType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class IngressStartAtType extends ExpandableStringEnum<IngressStartA
 
     /**
      * Creates or finds a IngressStartAtType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IngressStartAtType.
      */
-    @JsonCreator
     public static IngressStartAtType fromString(String name) {
         return fromString(name, IngressStartAtType.class);
     }
 
     /**
      * Gets known IngressStartAtType values.
-     *
+     * 
      * @return known IngressStartAtType values.
      */
     public static Collection<IngressStartAtType> values() {

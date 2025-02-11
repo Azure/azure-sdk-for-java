@@ -24,7 +24,8 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     private String type = "DatabricksSparkJar";
 
     /*
-     * The full name of the class containing the main method to be executed. This class must be contained in a JAR provided as a library. Type: string (or Expression with resultType string).
+     * The full name of the class containing the main method to be executed. This class must be contained in a JAR
+     * provided as a library. Type: string (or Expression with resultType string).
      */
     private Object mainClassName;
 

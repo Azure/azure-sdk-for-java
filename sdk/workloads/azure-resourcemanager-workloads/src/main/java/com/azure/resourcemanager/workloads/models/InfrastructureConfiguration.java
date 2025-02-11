@@ -6,37 +6,45 @@ package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Deploy SAP Infrastructure Details. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "deploymentType",
-    defaultImpl = InfrastructureConfiguration.class)
-@JsonTypeName("InfrastructureConfiguration")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "SingleServer", value = SingleServerConfiguration.class),
-    @JsonSubTypes.Type(name = "ThreeTier", value = ThreeTierConfiguration.class)
-})
+/**
+ * Deploy SAP Infrastructure Details.
+ */
 @Fluent
-public class InfrastructureConfiguration {
+public class InfrastructureConfiguration implements JsonSerializable<InfrastructureConfiguration> {
+    /*
+     * The type of SAP deployment, single server or Three tier.
+     */
+    private SapDeploymentType deploymentType = SapDeploymentType.fromString("InfrastructureConfiguration");
+
     /*
      * The application resource group where SAP system resources will be deployed.
      */
-    @JsonProperty(value = "appResourceGroup", required = true)
     private String appResourceGroup;
 
-    /** Creates an instance of InfrastructureConfiguration class. */
+    /**
+     * Creates an instance of InfrastructureConfiguration class.
+     */
     public InfrastructureConfiguration() {
     }
 
     /**
+     * Get the deploymentType property: The type of SAP deployment, single server or Three tier.
+     * 
+     * @return the deploymentType value.
+     */
+    public SapDeploymentType deploymentType() {
+        return this.deploymentType;
+    }
+
+    /**
      * Get the appResourceGroup property: The application resource group where SAP system resources will be deployed.
-     *
+     * 
      * @return the appResourceGroup value.
      */
     public String appResourceGroup() {
@@ -45,7 +53,7 @@ public class InfrastructureConfiguration {
 
     /**
      * Set the appResourceGroup property: The application resource group where SAP system resources will be deployed.
-     *
+     * 
      * @param appResourceGroup the appResourceGroup value to set.
      * @return the InfrastructureConfiguration object itself.
      */
@@ -56,17 +64,85 @@ public class InfrastructureConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (appResourceGroup() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property appResourceGroup in model InfrastructureConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property appResourceGroup in model InfrastructureConfiguration"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InfrastructureConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appResourceGroup", this.appResourceGroup);
+        jsonWriter.writeStringField("deploymentType",
+            this.deploymentType == null ? null : this.deploymentType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InfrastructureConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InfrastructureConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InfrastructureConfiguration.
+     */
+    public static InfrastructureConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("deploymentType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("SingleServer".equals(discriminatorValue)) {
+                    return SingleServerConfiguration.fromJson(readerToUse.reset());
+                } else if ("ThreeTier".equals(discriminatorValue)) {
+                    return ThreeTierConfiguration.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static InfrastructureConfiguration fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InfrastructureConfiguration deserializedInfrastructureConfiguration = new InfrastructureConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appResourceGroup".equals(fieldName)) {
+                    deserializedInfrastructureConfiguration.appResourceGroup = reader.getString();
+                } else if ("deploymentType".equals(fieldName)) {
+                    deserializedInfrastructureConfiguration.deploymentType
+                        = SapDeploymentType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInfrastructureConfiguration;
+        });
+    }
 }

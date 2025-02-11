@@ -22,7 +22,7 @@ public class Activity implements JsonSerializable<Activity> {
     /*
      * Type of activity.
      */
-    private String type;
+    private String type = "Activity";
 
     /*
      * Activity name.
@@ -40,7 +40,8 @@ public class Activity implements JsonSerializable<Activity> {
     private ActivityState state;
 
     /*
-     * Status result of the activity when the state is set to Inactive. This is an optional property and if not provided when the activity is inactive, the status will be Succeeded by default.
+     * Status result of the activity when the state is set to Inactive. This is an optional property and if not provided
+     * when the activity is inactive, the status will be Succeeded by default.
      */
     private ActivityOnInactiveMarkAs onInactiveMarkAs;
 
@@ -63,7 +64,6 @@ public class Activity implements JsonSerializable<Activity> {
      * Creates an instance of Activity class.
      */
     public Activity() {
-        this.type = "Activity";
     }
 
     /**

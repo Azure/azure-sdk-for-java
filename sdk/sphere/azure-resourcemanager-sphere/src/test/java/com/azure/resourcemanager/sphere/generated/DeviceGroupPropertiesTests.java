@@ -28,7 +28,8 @@ public final class DeviceGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeviceGroupProperties model = new DeviceGroupProperties().withDescription("hzdobpxjmflbvvnc")
-            .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
+            .withOsFeedType(OSFeedType.RETAIL_EVAL)
+            .withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
             .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
             .withRegionalDataBoundary(RegionalDataBoundary.EU);
         model = BinaryData.fromObject(model).toObject(DeviceGroupProperties.class);

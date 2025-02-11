@@ -11,6 +11,8 @@ import com.azure.resourcemanager.batch.models.ActivateApplicationPackageParamete
 import com.azure.resourcemanager.batch.models.ApplicationPackage;
 import com.azure.resourcemanager.batch.models.PackageState;
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.Map;
 
 public final class ApplicationPackageImpl implements ApplicationPackage, ApplicationPackage.Definition {
     private ApplicationPackageInner innerObject;
@@ -37,6 +39,15 @@ public final class ApplicationPackageImpl implements ApplicationPackage, Applica
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public PackageState state() {
@@ -84,14 +95,20 @@ public final class ApplicationPackageImpl implements ApplicationPackage, Applica
     }
 
     public ApplicationPackage create() {
-        this.innerObject = serviceManager.serviceClient().getApplicationPackages().createWithResponse(resourceGroupName,
-            accountName, applicationName, versionName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationPackages()
+            .createWithResponse(resourceGroupName, accountName, applicationName, versionName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationPackage create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplicationPackages().createWithResponse(resourceGroupName,
-            accountName, applicationName, versionName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationPackages()
+            .createWithResponse(resourceGroupName, accountName, applicationName, versionName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -102,25 +119,34 @@ public final class ApplicationPackageImpl implements ApplicationPackage, Applica
     }
 
     public ApplicationPackage refresh() {
-        this.innerObject = serviceManager.serviceClient().getApplicationPackages()
-            .getWithResponse(resourceGroupName, accountName, applicationName, versionName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationPackages()
+            .getWithResponse(resourceGroupName, accountName, applicationName, versionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationPackage refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplicationPackages()
-            .getWithResponse(resourceGroupName, accountName, applicationName, versionName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationPackages()
+            .getWithResponse(resourceGroupName, accountName, applicationName, versionName, context)
+            .getValue();
         return this;
     }
 
     public Response<ApplicationPackage> activateWithResponse(ActivateApplicationPackageParameters parameters,
         Context context) {
-        return serviceManager.applicationPackages().activateWithResponse(resourceGroupName, accountName,
-            applicationName, versionName, parameters, context);
+        return serviceManager.applicationPackages()
+            .activateWithResponse(resourceGroupName, accountName, applicationName, versionName, parameters, context);
     }
 
     public ApplicationPackage activate(ActivateApplicationPackageParameters parameters) {
-        return serviceManager.applicationPackages().activate(resourceGroupName, accountName, applicationName,
-            versionName, parameters);
+        return serviceManager.applicationPackages()
+            .activate(resourceGroupName, accountName, applicationName, versionName, parameters);
+    }
+
+    public ApplicationPackageImpl withTags(Map<String, String> tags) {
+        this.innerModel().withTags(tags);
+        return this;
     }
 }

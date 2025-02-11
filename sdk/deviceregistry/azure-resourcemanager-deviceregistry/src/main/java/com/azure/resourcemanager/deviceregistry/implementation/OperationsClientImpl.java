@@ -42,25 +42,25 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final DeviceRegistryClientImpl client;
+    private final DeviceRegistryManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(DeviceRegistryClientImpl client) {
+    OperationsClientImpl(DeviceRegistryManagementClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DeviceRegistryClientOperations to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DeviceRegistryManagementClientOperations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DeviceRegistryClient")
+    @ServiceInterface(name = "DeviceRegistryManage")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.DeviceRegistry/operations")
@@ -181,8 +181,6 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * List the operations for the provider
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -209,8 +207,6 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * List the operations for the provider
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Clusters. */
+/**
+ * Resource collection API of Clusters.
+ */
 public interface Clusters {
     /**
      * List clusters in the subscription.
-     *
-     * <p>Get a list of clusters in the provided subscription.
-     *
+     * 
+     * Get a list of clusters in the provided subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of clusters in the provided subscription as paginated response with {@link PagedIterable}.
@@ -23,9 +25,9 @@ public interface Clusters {
 
     /**
      * List clusters in the subscription.
-     *
-     * <p>Get a list of clusters in the provided subscription.
-     *
+     * 
+     * Get a list of clusters in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,9 +38,9 @@ public interface Clusters {
 
     /**
      * List clusters in the resource group.
-     *
-     * <p>Get a list of clusters in the provided resource group.
-     *
+     * 
+     * Get a list of clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -49,9 +51,9 @@ public interface Clusters {
 
     /**
      * List clusters in the resource group.
-     *
-     * <p>Get a list of clusters in the provided resource group.
-     *
+     * 
+     * Get a list of clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,9 +65,9 @@ public interface Clusters {
 
     /**
      * Retrieve the cluster.
-     *
-     * <p>Get properties of the provided cluster.
-     *
+     * 
+     * Get properties of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -78,9 +80,9 @@ public interface Clusters {
 
     /**
      * Retrieve the cluster.
-     *
-     * <p>Get properties of the provided cluster.
-     *
+     * 
+     * Get properties of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,36 +94,73 @@ public interface Clusters {
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByResourceGroup(String resourceGroupName, String clusterName);
+    OperationStatusResult deleteByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void delete(String resourceGroupName, String clusterName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String clusterName, Context context);
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult continueUpdateVersion(String resourceGroupName, String clusterName,
+        ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters);
+
+    /**
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult continueUpdateVersion(String resourceGroupName, String clusterName,
+        ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters, Context context);
+
+    /**
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,10 +171,10 @@ public interface Clusters {
     OperationStatusResult deploy(String resourceGroupName, String clusterName);
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterDeployParameters The request body.
@@ -145,14 +184,47 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult deploy(
-        String resourceGroupName, String clusterName, ClusterDeployParameters clusterDeployParameters, Context context);
+    OperationStatusResult deploy(String resourceGroupName, String clusterName,
+        ClusterDeployParameters clusterDeployParameters, Context context);
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult scanRuntime(String resourceGroupName, String clusterName);
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterScanRuntimeParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult scanRuntime(String resourceGroupName, String clusterName,
+        ClusterScanRuntimeParameters clusterScanRuntimeParameters, Context context);
 
     /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
@@ -161,14 +233,14 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult updateVersion(
-        String resourceGroupName, String clusterName, ClusterUpdateVersionParameters clusterUpdateVersionParameters);
+    OperationStatusResult updateVersion(String resourceGroupName, String clusterName,
+        ClusterUpdateVersionParameters clusterUpdateVersionParameters);
 
     /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
@@ -178,17 +250,14 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult updateVersion(
-        String resourceGroupName,
-        String clusterName,
-        ClusterUpdateVersionParameters clusterUpdateVersionParameters,
-        Context context);
+    OperationStatusResult updateVersion(String resourceGroupName, String clusterName,
+        ClusterUpdateVersionParameters clusterUpdateVersionParameters, Context context);
 
     /**
      * Retrieve the cluster.
-     *
-     * <p>Get properties of the provided cluster.
-     *
+     * 
+     * Get properties of the provided cluster.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -199,9 +268,9 @@ public interface Clusters {
 
     /**
      * Retrieve the cluster.
-     *
-     * <p>Get properties of the provided cluster.
-     *
+     * 
+     * Get properties of the provided cluster.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,32 +282,34 @@ public interface Clusters {
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteById(String id);
+    OperationStatusResult deleteById(String id);
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    OperationStatusResult deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new Cluster resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Cluster definition.
      */

@@ -8,32 +8,34 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner;
 import java.util.List;
 
-/** An immutable client-side representation of CommonPostActionResponseForDeviceUpdate. */
+/**
+ * An immutable client-side representation of CommonPostActionResponseForDeviceUpdate.
+ */
 public interface CommonPostActionResponseForDeviceUpdate {
     /**
      * Gets the configurationState property: Gets the configuration state.
-     *
+     * 
      * @return the configurationState value.
      */
     ConfigurationState configurationState();
 
     /**
      * Gets the successfulDevices property: List of ARM Resource IDs for which the given action applied successfully.
-     *
+     * 
      * @return the successfulDevices value.
      */
     List<String> successfulDevices();
 
     /**
      * Gets the failedDevices property: List of ARM Resource IDs for which the given action failed to apply.
-     *
+     * 
      * @return the failedDevices value.
      */
     List<String> failedDevices();
 
     /**
      * Gets the error property: The error object.
-     *
+     * 
      * @return the error value.
      */
     ManagementError error();
@@ -41,7 +43,7 @@ public interface CommonPostActionResponseForDeviceUpdate {
     /**
      * Gets the inner
      * com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner object.
-     *
+     * 
      * @return the inner object.
      */
     CommonPostActionResponseForDeviceUpdateInner innerModel();

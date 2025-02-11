@@ -7,25 +7,26 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.resourcemanager.apimanagement.models.GatewayContract;
 import com.azure.resourcemanager.apimanagement.models.ResourceLocationDataContract;
 
-/** Samples for Gateway Update. */
+/**
+ * Samples for Gateway Update.
+ */
 public final class GatewayUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateGateway.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementUpdateGateway.json
      */
     /**
      * Sample code: ApiManagementUpdateGateway.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementUpdateGateway(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        GatewayContract resource =
-            manager
-                .gateways()
-                .getWithResponse("rg1", "apimService1", "gw1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        apiManagementUpdateGateway(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        GatewayContract resource = manager.gateways()
+            .getWithResponse("rg1", "apimService1", "gw1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withLocationData(new ResourceLocationDataContract().withName("my location"))
             .withDescription("my gateway 1")
             .withIfMatch("*")

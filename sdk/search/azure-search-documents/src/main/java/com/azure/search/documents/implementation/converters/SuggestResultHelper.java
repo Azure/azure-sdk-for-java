@@ -13,13 +13,15 @@ import com.azure.search.documents.models.SuggestResult;
 public final class SuggestResultHelper {
     private static SuggestResultAccessor accessor;
 
-    private SuggestResultHelper() { }
+    private SuggestResultHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link SuggestResult} instance.
      */
     public interface SuggestResultAccessor {
         void setAdditionalProperties(SuggestResult suggestResult, SearchDocument additionalProperties);
+
         void setJsonSerializer(SuggestResult suggestResult, JsonSerializer jsonSerializer);
     }
 

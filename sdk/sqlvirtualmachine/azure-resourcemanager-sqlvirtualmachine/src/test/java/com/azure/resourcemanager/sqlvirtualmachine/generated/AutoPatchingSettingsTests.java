@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoPatchingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoPatchingSettings model =
-            BinaryData
-                .fromString(
-                    "{\"enable\":true,\"dayOfWeek\":\"Sunday\",\"maintenanceWindowStartingHour\":1833298254,\"maintenanceWindowDuration\":1813223927}")
-                .toObject(AutoPatchingSettings.class);
-        Assertions.assertEquals(true, model.enable());
-        Assertions.assertEquals(DayOfWeek.SUNDAY, model.dayOfWeek());
-        Assertions.assertEquals(1833298254, model.maintenanceWindowStartingHour());
-        Assertions.assertEquals(1813223927, model.maintenanceWindowDuration());
+        AutoPatchingSettings model = BinaryData.fromString(
+            "{\"enable\":false,\"dayOfWeek\":\"Everyday\",\"maintenanceWindowStartingHour\":202688177,\"maintenanceWindowDuration\":999513360}")
+            .toObject(AutoPatchingSettings.class);
+        Assertions.assertEquals(false, model.enable());
+        Assertions.assertEquals(DayOfWeek.EVERYDAY, model.dayOfWeek());
+        Assertions.assertEquals(202688177, model.maintenanceWindowStartingHour());
+        Assertions.assertEquals(999513360, model.maintenanceWindowDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoPatchingSettings model =
-            new AutoPatchingSettings()
-                .withEnable(true)
-                .withDayOfWeek(DayOfWeek.SUNDAY)
-                .withMaintenanceWindowStartingHour(1833298254)
-                .withMaintenanceWindowDuration(1813223927);
+        AutoPatchingSettings model = new AutoPatchingSettings().withEnable(false)
+            .withDayOfWeek(DayOfWeek.EVERYDAY)
+            .withMaintenanceWindowStartingHour(202688177)
+            .withMaintenanceWindowDuration(999513360);
         model = BinaryData.fromObject(model).toObject(AutoPatchingSettings.class);
-        Assertions.assertEquals(true, model.enable());
-        Assertions.assertEquals(DayOfWeek.SUNDAY, model.dayOfWeek());
-        Assertions.assertEquals(1833298254, model.maintenanceWindowStartingHour());
-        Assertions.assertEquals(1813223927, model.maintenanceWindowDuration());
+        Assertions.assertEquals(false, model.enable());
+        Assertions.assertEquals(DayOfWeek.EVERYDAY, model.dayOfWeek());
+        Assertions.assertEquals(202688177, model.maintenanceWindowStartingHour());
+        Assertions.assertEquals(999513360, model.maintenanceWindowDuration());
     }
 }

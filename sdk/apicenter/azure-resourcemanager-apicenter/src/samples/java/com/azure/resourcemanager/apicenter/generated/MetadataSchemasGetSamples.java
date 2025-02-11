@@ -18,7 +18,7 @@ public final class MetadataSchemasGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void metadataSchemasGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.metadataSchemas().getWithResponse("contoso-resources", "contoso", "lastName",
-            com.azure.core.util.Context.NONE);
+        manager.metadataSchemas()
+            .getWithResponse("contoso-resources", "contoso", "lastName", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ShareAccessRightTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ShareAccessRight model =
-            BinaryData
-                .fromString("{\"shareId\":\"zihleosjswsr\",\"accessType\":\"Read\"}")
-                .toObject(ShareAccessRight.class);
-        Assertions.assertEquals("zihleosjswsr", model.shareId());
+        ShareAccessRight model = BinaryData.fromString("{\"shareId\":\"vfdnwnwmewzsyyce\",\"accessType\":\"Read\"}")
+            .toObject(ShareAccessRight.class);
+        Assertions.assertEquals("vfdnwnwmewzsyyce", model.shareId());
         Assertions.assertEquals(ShareAccessType.READ, model.accessType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShareAccessRight model =
-            new ShareAccessRight().withShareId("zihleosjswsr").withAccessType(ShareAccessType.READ);
+        ShareAccessRight model
+            = new ShareAccessRight().withShareId("vfdnwnwmewzsyyce").withAccessType(ShareAccessType.READ);
         model = BinaryData.fromObject(model).toObject(ShareAccessRight.class);
-        Assertions.assertEquals("zihleosjswsr", model.shareId());
+        Assertions.assertEquals("vfdnwnwmewzsyyce", model.shareId());
         Assertions.assertEquals(ShareAccessType.READ, model.accessType());
     }
 }

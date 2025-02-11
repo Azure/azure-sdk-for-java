@@ -68,7 +68,4 @@ try {
 } catch {
     LogError "Failed to update dependencies in libraries and READMEs via version_client.txt"
     exit 1
-} finally {
-    Write-Host "git checkout $currentBranchName"
-    git checkout $currentBranchName
 }

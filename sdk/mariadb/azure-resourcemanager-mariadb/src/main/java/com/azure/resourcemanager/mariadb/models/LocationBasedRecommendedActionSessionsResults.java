@@ -7,11 +7,13 @@ package com.azure.resourcemanager.mariadb.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of LocationBasedRecommendedActionSessionsResults. */
+/**
+ * Resource collection API of LocationBasedRecommendedActionSessionsResults.
+ */
 public interface LocationBasedRecommendedActionSessionsResults {
     /**
      * Recommendation action session operation result.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface LocationBasedRecommendedActionSessionsResults {
 
     /**
      * Recommendation action session operation result.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @param context The context to associate with this operation.

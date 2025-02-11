@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class SyncStorageKeysInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SyncStorageKeysInput model = BinaryData.fromString("{\"id\":\"bjnpg\"}").toObject(SyncStorageKeysInput.class);
-        Assertions.assertEquals("bjnpg", model.id());
+        SyncStorageKeysInput model
+            = BinaryData.fromString("{\"id\":\"wsvlxotogtwrupqs\"}").toObject(SyncStorageKeysInput.class);
+        Assertions.assertEquals("wsvlxotogtwrupqs", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SyncStorageKeysInput model = new SyncStorageKeysInput().withId("bjnpg");
+        SyncStorageKeysInput model = new SyncStorageKeysInput().withId("wsvlxotogtwrupqs");
         model = BinaryData.fromObject(model).toObject(SyncStorageKeysInput.class);
-        Assertions.assertEquals("bjnpg", model.id());
+        Assertions.assertEquals("wsvlxotogtwrupqs", model.id());
     }
 }

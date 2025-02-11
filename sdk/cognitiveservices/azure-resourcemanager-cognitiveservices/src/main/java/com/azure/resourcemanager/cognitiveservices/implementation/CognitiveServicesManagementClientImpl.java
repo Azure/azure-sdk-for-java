@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -26,12 +27,21 @@ import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentPlansClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentTiersClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.DefenderForAISettingsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeploymentsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.EncryptionScopesClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.LocationBasedModelCapacitiesClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.ModelCapacitiesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ModelsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.OperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.RaiBlocklistItemsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.RaiBlocklistsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.RaiContentFiltersClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.RaiPoliciesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceSkusClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.UsagesClient;
@@ -44,219 +54,285 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the CognitiveServicesManagementClientImpl type. */
+/**
+ * Initializes a new instance of the CognitiveServicesManagementClientImpl type.
+ */
 @ServiceClient(builder = CognitiveServicesManagementClientBuilder.class)
 public final class CognitiveServicesManagementClientImpl implements CognitiveServicesManagementClient {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The AccountsClient object to access its operations. */
+    /**
+     * The AccountsClient object to access its operations.
+     */
     private final AccountsClient accounts;
 
     /**
      * Gets the AccountsClient object to access its operations.
-     *
+     * 
      * @return the AccountsClient object.
      */
     public AccountsClient getAccounts() {
         return this.accounts;
     }
 
-    /** The DeletedAccountsClient object to access its operations. */
+    /**
+     * The DeletedAccountsClient object to access its operations.
+     */
     private final DeletedAccountsClient deletedAccounts;
 
     /**
      * Gets the DeletedAccountsClient object to access its operations.
-     *
+     * 
      * @return the DeletedAccountsClient object.
      */
     public DeletedAccountsClient getDeletedAccounts() {
         return this.deletedAccounts;
     }
 
-    /** The ResourceSkusClient object to access its operations. */
+    /**
+     * The ResourceSkusClient object to access its operations.
+     */
     private final ResourceSkusClient resourceSkus;
 
     /**
      * Gets the ResourceSkusClient object to access its operations.
-     *
+     * 
      * @return the ResourceSkusClient object.
      */
     public ResourceSkusClient getResourceSkus() {
         return this.resourceSkus;
     }
 
-    /** The UsagesClient object to access its operations. */
+    /**
+     * The UsagesClient object to access its operations.
+     */
     private final UsagesClient usages;
 
     /**
      * Gets the UsagesClient object to access its operations.
-     *
+     * 
      * @return the UsagesClient object.
      */
     public UsagesClient getUsages() {
         return this.usages;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The ResourceProvidersClient object to access its operations. */
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
     private final ResourceProvidersClient resourceProviders;
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
     }
 
-    /** The CommitmentTiersClient object to access its operations. */
+    /**
+     * The CommitmentTiersClient object to access its operations.
+     */
     private final CommitmentTiersClient commitmentTiers;
 
     /**
      * Gets the CommitmentTiersClient object to access its operations.
-     *
+     * 
      * @return the CommitmentTiersClient object.
      */
     public CommitmentTiersClient getCommitmentTiers() {
         return this.commitmentTiers;
     }
 
-    /** The ModelsClient object to access its operations. */
+    /**
+     * The ModelsClient object to access its operations.
+     */
     private final ModelsClient models;
 
     /**
      * Gets the ModelsClient object to access its operations.
-     *
+     * 
      * @return the ModelsClient object.
      */
     public ModelsClient getModels() {
         return this.models;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The LocationBasedModelCapacitiesClient object to access its operations.
+     */
+    private final LocationBasedModelCapacitiesClient locationBasedModelCapacities;
+
+    /**
+     * Gets the LocationBasedModelCapacitiesClient object to access its operations.
+     * 
+     * @return the LocationBasedModelCapacitiesClient object.
+     */
+    public LocationBasedModelCapacitiesClient getLocationBasedModelCapacities() {
+        return this.locationBasedModelCapacities;
+    }
+
+    /**
+     * The ModelCapacitiesClient object to access its operations.
+     */
+    private final ModelCapacitiesClient modelCapacities;
+
+    /**
+     * Gets the ModelCapacitiesClient object to access its operations.
+     * 
+     * @return the ModelCapacitiesClient object.
+     */
+    public ModelCapacitiesClient getModelCapacities() {
+        return this.modelCapacities;
+    }
+
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** The PrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
     private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
     }
 
-    /** The DeploymentsClient object to access its operations. */
+    /**
+     * The DeploymentsClient object to access its operations.
+     */
     private final DeploymentsClient deployments;
 
     /**
      * Gets the DeploymentsClient object to access its operations.
-     *
+     * 
      * @return the DeploymentsClient object.
      */
     public DeploymentsClient getDeployments() {
         return this.deployments;
     }
 
-    /** The CommitmentPlansClient object to access its operations. */
+    /**
+     * The CommitmentPlansClient object to access its operations.
+     */
     private final CommitmentPlansClient commitmentPlans;
 
     /**
      * Gets the CommitmentPlansClient object to access its operations.
-     *
+     * 
      * @return the CommitmentPlansClient object.
      */
     public CommitmentPlansClient getCommitmentPlans() {
@@ -264,8 +340,106 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
+     * The EncryptionScopesClient object to access its operations.
+     */
+    private final EncryptionScopesClient encryptionScopes;
+
+    /**
+     * Gets the EncryptionScopesClient object to access its operations.
+     * 
+     * @return the EncryptionScopesClient object.
+     */
+    public EncryptionScopesClient getEncryptionScopes() {
+        return this.encryptionScopes;
+    }
+
+    /**
+     * The RaiPoliciesClient object to access its operations.
+     */
+    private final RaiPoliciesClient raiPolicies;
+
+    /**
+     * Gets the RaiPoliciesClient object to access its operations.
+     * 
+     * @return the RaiPoliciesClient object.
+     */
+    public RaiPoliciesClient getRaiPolicies() {
+        return this.raiPolicies;
+    }
+
+    /**
+     * The RaiBlocklistsClient object to access its operations.
+     */
+    private final RaiBlocklistsClient raiBlocklists;
+
+    /**
+     * Gets the RaiBlocklistsClient object to access its operations.
+     * 
+     * @return the RaiBlocklistsClient object.
+     */
+    public RaiBlocklistsClient getRaiBlocklists() {
+        return this.raiBlocklists;
+    }
+
+    /**
+     * The RaiBlocklistItemsClient object to access its operations.
+     */
+    private final RaiBlocklistItemsClient raiBlocklistItems;
+
+    /**
+     * Gets the RaiBlocklistItemsClient object to access its operations.
+     * 
+     * @return the RaiBlocklistItemsClient object.
+     */
+    public RaiBlocklistItemsClient getRaiBlocklistItems() {
+        return this.raiBlocklistItems;
+    }
+
+    /**
+     * The RaiContentFiltersClient object to access its operations.
+     */
+    private final RaiContentFiltersClient raiContentFilters;
+
+    /**
+     * Gets the RaiContentFiltersClient object to access its operations.
+     * 
+     * @return the RaiContentFiltersClient object.
+     */
+    public RaiContentFiltersClient getRaiContentFilters() {
+        return this.raiContentFilters;
+    }
+
+    /**
+     * The NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     */
+    private final NetworkSecurityPerimeterConfigurationsClient networkSecurityPerimeterConfigurations;
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
+        return this.networkSecurityPerimeterConfigurations;
+    }
+
+    /**
+     * The DefenderForAISettingsClient object to access its operations.
+     */
+    private final DefenderForAISettingsClient defenderForAISettings;
+
+    /**
+     * Gets the DefenderForAISettingsClient object to access its operations.
+     * 
+     * @return the DefenderForAISettingsClient object.
+     */
+    public DefenderForAISettingsClient getDefenderForAISettings() {
+        return this.defenderForAISettings;
+    }
+
+    /**
      * Initializes an instance of CognitiveServicesManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -273,19 +447,14 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    CognitiveServicesManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    CognitiveServicesManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-05-01";
+        this.apiVersion = "2024-10-01";
         this.accounts = new AccountsClientImpl(this);
         this.deletedAccounts = new DeletedAccountsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
@@ -294,15 +463,24 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.commitmentTiers = new CommitmentTiersClientImpl(this);
         this.models = new ModelsClientImpl(this);
+        this.locationBasedModelCapacities = new LocationBasedModelCapacitiesClientImpl(this);
+        this.modelCapacities = new ModelCapacitiesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);
         this.commitmentPlans = new CommitmentPlansClientImpl(this);
+        this.encryptionScopes = new EncryptionScopesClientImpl(this);
+        this.raiPolicies = new RaiPoliciesClientImpl(this);
+        this.raiBlocklists = new RaiBlocklistsClientImpl(this);
+        this.raiBlocklistItems = new RaiBlocklistItemsClientImpl(this);
+        this.raiContentFilters = new RaiContentFiltersClientImpl(this);
+        this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
+        this.defenderForAISettings = new DefenderForAISettingsClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -311,7 +489,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -321,7 +499,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -331,26 +509,15 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -363,19 +530,16 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -416,7 +580,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

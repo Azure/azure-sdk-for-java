@@ -5,28 +5,35 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.ExpressRouteConnectionInformation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Network Fabric Controller updatable properties. */
+/**
+ * Network Fabric Controller updatable properties.
+ */
 @Fluent
-public class NetworkFabricControllerPatchableProperties {
+public class NetworkFabricControllerPatchableProperties
+    implements JsonSerializable<NetworkFabricControllerPatchableProperties> {
     /*
-     * As part of an update, the Infrastructure ExpressRoute CircuitID should be provided to create and Provision a
-     * NFC. This Express route is dedicated for Infrastructure services. (This is a Mandatory attribute)
+     * As part of an update, the Infrastructure ExpressRoute CircuitID should be provided to create and Provision a NFC.
+     * This Express route is dedicated for Infrastructure services. (This is a Mandatory attribute)
      */
-    @JsonProperty(value = "infrastructureExpressRouteConnections")
     private List<ExpressRouteConnectionInformation> infrastructureExpressRouteConnections;
 
     /*
      * As part of an update, the workload ExpressRoute CircuitID should be provided to create and Provision a NFC. This
      * Express route is dedicated for Workload services. (This is a Mandatory attribute).
      */
-    @JsonProperty(value = "workloadExpressRouteConnections")
     private List<ExpressRouteConnectionInformation> workloadExpressRouteConnections;
 
-    /** Creates an instance of NetworkFabricControllerPatchableProperties class. */
+    /**
+     * Creates an instance of NetworkFabricControllerPatchableProperties class.
+     */
     public NetworkFabricControllerPatchableProperties() {
     }
 
@@ -34,7 +41,7 @@ public class NetworkFabricControllerPatchableProperties {
      * Get the infrastructureExpressRouteConnections property: As part of an update, the Infrastructure ExpressRoute
      * CircuitID should be provided to create and Provision a NFC. This Express route is dedicated for Infrastructure
      * services. (This is a Mandatory attribute).
-     *
+     * 
      * @return the infrastructureExpressRouteConnections value.
      */
     public List<ExpressRouteConnectionInformation> infrastructureExpressRouteConnections() {
@@ -45,7 +52,7 @@ public class NetworkFabricControllerPatchableProperties {
      * Set the infrastructureExpressRouteConnections property: As part of an update, the Infrastructure ExpressRoute
      * CircuitID should be provided to create and Provision a NFC. This Express route is dedicated for Infrastructure
      * services. (This is a Mandatory attribute).
-     *
+     * 
      * @param infrastructureExpressRouteConnections the infrastructureExpressRouteConnections value to set.
      * @return the NetworkFabricControllerPatchableProperties object itself.
      */
@@ -59,7 +66,7 @@ public class NetworkFabricControllerPatchableProperties {
      * Get the workloadExpressRouteConnections property: As part of an update, the workload ExpressRoute CircuitID
      * should be provided to create and Provision a NFC. This Express route is dedicated for Workload services. (This is
      * a Mandatory attribute).
-     *
+     * 
      * @return the workloadExpressRouteConnections value.
      */
     public List<ExpressRouteConnectionInformation> workloadExpressRouteConnections() {
@@ -70,19 +77,19 @@ public class NetworkFabricControllerPatchableProperties {
      * Set the workloadExpressRouteConnections property: As part of an update, the workload ExpressRoute CircuitID
      * should be provided to create and Provision a NFC. This Express route is dedicated for Workload services. (This is
      * a Mandatory attribute).
-     *
+     * 
      * @param workloadExpressRouteConnections the workloadExpressRouteConnections value to set.
      * @return the NetworkFabricControllerPatchableProperties object itself.
      */
-    public NetworkFabricControllerPatchableProperties withWorkloadExpressRouteConnections(
-        List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
+    public NetworkFabricControllerPatchableProperties
+        withWorkloadExpressRouteConnections(List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
         this.workloadExpressRouteConnections = workloadExpressRouteConnections;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -92,5 +99,53 @@ public class NetworkFabricControllerPatchableProperties {
         if (workloadExpressRouteConnections() != null) {
             workloadExpressRouteConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("infrastructureExpressRouteConnections", this.infrastructureExpressRouteConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("workloadExpressRouteConnections", this.workloadExpressRouteConnections,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkFabricControllerPatchableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkFabricControllerPatchableProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkFabricControllerPatchableProperties.
+     */
+    public static NetworkFabricControllerPatchableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkFabricControllerPatchableProperties deserializedNetworkFabricControllerPatchableProperties
+                = new NetworkFabricControllerPatchableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("infrastructureExpressRouteConnections".equals(fieldName)) {
+                    List<ExpressRouteConnectionInformation> infrastructureExpressRouteConnections
+                        = reader.readArray(reader1 -> ExpressRouteConnectionInformation.fromJson(reader1));
+                    deserializedNetworkFabricControllerPatchableProperties.infrastructureExpressRouteConnections
+                        = infrastructureExpressRouteConnections;
+                } else if ("workloadExpressRouteConnections".equals(fieldName)) {
+                    List<ExpressRouteConnectionInformation> workloadExpressRouteConnections
+                        = reader.readArray(reader1 -> ExpressRouteConnectionInformation.fromJson(reader1));
+                    deserializedNetworkFabricControllerPatchableProperties.workloadExpressRouteConnections
+                        = workloadExpressRouteConnections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkFabricControllerPatchableProperties;
+        });
     }
 }

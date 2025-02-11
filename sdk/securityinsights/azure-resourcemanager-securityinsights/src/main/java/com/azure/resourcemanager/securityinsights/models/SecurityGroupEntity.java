@@ -4,29 +4,70 @@
 
 package com.azure.resourcemanager.securityinsights.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.SecurityGroupEntityProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-/** Represents a security group entity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("SecurityGroup")
-@Fluent
-public final class SecurityGroupEntity extends EntityInner {
+/**
+ * Represents a security group entity.
+ */
+@Immutable
+public final class SecurityGroupEntity extends Entity {
+    /*
+     * The kind of the entity.
+     */
+    private EntityKindEnum kind = EntityKindEnum.SECURITY_GROUP;
+
     /*
      * SecurityGroup entity properties
      */
-    @JsonProperty(value = "properties")
     private SecurityGroupEntityProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SecurityGroupEntity class.
+     */
+    public SecurityGroupEntity() {
+    }
+
+    /**
+     * Get the kind property: The kind of the entity.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EntityKindEnum kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: SecurityGroup entity properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityGroupEntityProperties innerProperties() {
@@ -34,8 +75,48 @@ public final class SecurityGroupEntity extends EntityInner {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the distinguishedName property: The group distinguished name.
-     *
+     * 
      * @return the distinguishedName value.
      */
     public String distinguishedName() {
@@ -45,7 +126,7 @@ public final class SecurityGroupEntity extends EntityInner {
     /**
      * Get the objectGuid property: A single-value attribute that is the unique identifier for the object, assigned by
      * active directory.
-     *
+     * 
      * @return the objectGuid value.
      */
     public UUID objectGuid() {
@@ -55,7 +136,7 @@ public final class SecurityGroupEntity extends EntityInner {
     /**
      * Get the sid property: The SID attribute is a single-value attribute that specifies the security identifier (SID)
      * of the group.
-     *
+     * 
      * @return the sid value.
      */
     public String sid() {
@@ -65,7 +146,7 @@ public final class SecurityGroupEntity extends EntityInner {
     /**
      * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
      * to the user.
-     *
+     * 
      * @return the additionalData value.
      */
     public Map<String, Object> additionalData() {
@@ -75,7 +156,7 @@ public final class SecurityGroupEntity extends EntityInner {
     /**
      * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
      * graph item instance. This property is optional and might be system generated.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -84,14 +165,61 @@ public final class SecurityGroupEntity extends EntityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityGroupEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityGroupEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityGroupEntity.
+     */
+    public static SecurityGroupEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityGroupEntity deserializedSecurityGroupEntity = new SecurityGroupEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecurityGroupEntity.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSecurityGroupEntity.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSecurityGroupEntity.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSecurityGroupEntity.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSecurityGroupEntity.kind = EntityKindEnum.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSecurityGroupEntity.innerProperties = SecurityGroupEntityProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityGroupEntity;
+        });
     }
 }

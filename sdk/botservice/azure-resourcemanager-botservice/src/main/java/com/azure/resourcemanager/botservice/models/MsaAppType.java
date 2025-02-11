@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MsaAppType. */
+/**
+ * Microsoft App Type for the bot.
+ */
 public final class MsaAppType extends ExpandableStringEnum<MsaAppType> {
-    /** Static value UserAssignedMSI for MsaAppType. */
+    /**
+     * Static value UserAssignedMSI for MsaAppType.
+     */
     public static final MsaAppType USER_ASSIGNED_MSI = fromString("UserAssignedMSI");
 
-    /** Static value SingleTenant for MsaAppType. */
+    /**
+     * Static value SingleTenant for MsaAppType.
+     */
     public static final MsaAppType SINGLE_TENANT = fromString("SingleTenant");
 
-    /** Static value MultiTenant for MsaAppType. */
+    /**
+     * Static value MultiTenant for MsaAppType.
+     */
     public static final MsaAppType MULTI_TENANT = fromString("MultiTenant");
 
     /**
+     * Creates a new instance of MsaAppType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MsaAppType() {
+    }
+
+    /**
      * Creates or finds a MsaAppType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MsaAppType.
      */
-    @JsonCreator
     public static MsaAppType fromString(String name) {
         return fromString(name, MsaAppType.class);
     }
 
     /**
      * Gets known MsaAppType values.
-     *
+     * 
      * @return known MsaAppType values.
      */
     public static Collection<MsaAppType> values() {

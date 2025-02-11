@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AssetFilters. */
+/**
+ * Resource collection API of AssetFilters.
+ */
 public interface AssetFilters {
     /**
      * List Asset Filters
-     *
-     * <p>List Asset Filters associated with the specified Asset.
-     *
+     * 
+     * List Asset Filters associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -27,9 +29,9 @@ public interface AssetFilters {
 
     /**
      * List Asset Filters
-     *
-     * <p>List Asset Filters associated with the specified Asset.
-     *
+     * 
+     * List Asset Filters associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -43,9 +45,9 @@ public interface AssetFilters {
 
     /**
      * Get an Asset Filter.
-     *
-     * <p>Get the details of an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Get the details of an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -56,14 +58,14 @@ public interface AssetFilters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Asset Filter associated with the specified Asset along with {@link Response}.
      */
-    Response<AssetFilter> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String filterName, Context context);
+    Response<AssetFilter> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String filterName, Context context);
 
     /**
      * Get an Asset Filter.
-     *
-     * <p>Get the details of an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Get the details of an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -77,9 +79,9 @@ public interface AssetFilters {
 
     /**
      * Delete an Asset Filter.
-     *
-     * <p>Deletes an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Deletes an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -90,14 +92,14 @@ public interface AssetFilters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String assetName, String filterName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String assetName, String filterName,
+        Context context);
 
     /**
      * Delete an Asset Filter.
-     *
-     * <p>Deletes an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Deletes an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -110,9 +112,9 @@ public interface AssetFilters {
 
     /**
      * Get an Asset Filter.
-     *
-     * <p>Get the details of an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Get the details of an Asset Filter associated with the specified Asset.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,9 +125,9 @@ public interface AssetFilters {
 
     /**
      * Get an Asset Filter.
-     *
-     * <p>Get the details of an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Get the details of an Asset Filter associated with the specified Asset.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,9 +139,9 @@ public interface AssetFilters {
 
     /**
      * Delete an Asset Filter.
-     *
-     * <p>Deletes an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Deletes an Asset Filter associated with the specified Asset.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -149,9 +151,9 @@ public interface AssetFilters {
 
     /**
      * Delete an Asset Filter.
-     *
-     * <p>Deletes an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Deletes an Asset Filter associated with the specified Asset.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -163,7 +165,7 @@ public interface AssetFilters {
 
     /**
      * Begins definition for a new AssetFilter resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AssetFilter definition.
      */

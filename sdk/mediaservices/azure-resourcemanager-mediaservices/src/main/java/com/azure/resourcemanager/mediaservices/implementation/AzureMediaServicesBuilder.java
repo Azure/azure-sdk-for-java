@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AzureMediaServicesImpl type. */
-@ServiceClientBuilder(serviceClients = {AzureMediaServicesImpl.class})
+/**
+ * A builder for creating a new instance of the AzureMediaServicesImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { AzureMediaServicesImpl.class })
 public final class AzureMediaServicesBuilder {
     /*
      * The unique identifier for a Microsoft Azure subscription.
@@ -24,7 +26,7 @@ public final class AzureMediaServicesBuilder {
 
     /**
      * Sets The unique identifier for a Microsoft Azure subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the AzureMediaServicesBuilder.
      */
@@ -40,7 +42,7 @@ public final class AzureMediaServicesBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the AzureMediaServicesBuilder.
      */
@@ -56,7 +58,7 @@ public final class AzureMediaServicesBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the AzureMediaServicesBuilder.
      */
@@ -72,7 +74,7 @@ public final class AzureMediaServicesBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the AzureMediaServicesBuilder.
      */
@@ -88,7 +90,7 @@ public final class AzureMediaServicesBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AzureMediaServicesBuilder.
      */
@@ -104,7 +106,7 @@ public final class AzureMediaServicesBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureMediaServicesBuilder.
      */
@@ -115,30 +117,22 @@ public final class AzureMediaServicesBuilder {
 
     /**
      * Builds an instance of AzureMediaServicesImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AzureMediaServicesImpl.
      */
     public AzureMediaServicesImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AzureMediaServicesImpl client =
-            new AzureMediaServicesImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        AzureMediaServicesImpl client = new AzureMediaServicesImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

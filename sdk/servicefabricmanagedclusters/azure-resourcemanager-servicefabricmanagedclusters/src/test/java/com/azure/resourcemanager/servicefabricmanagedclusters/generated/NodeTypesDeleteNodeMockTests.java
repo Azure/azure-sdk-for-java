@@ -31,9 +31,10 @@ public final class NodeTypesDeleteNodeMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.nodeTypes()
-            .deleteNode("rxkjzwrgxffmshk", "fbkgozxwopdby", "p",
-                new NodeTypeActionParameters().withNodes(Arrays.asList("aclnapxbiygnugj", "nfsm", "cttuxuu"))
-                    .withForce(false)
+            .deleteNode("nnawtqabpxuckpgg", "oweyirdhlis", "gwflq",
+                new NodeTypeActionParameters()
+                    .withNodes(Arrays.asList("izruwnpqxpxiwfc", "gjsaasiixtm", "zjvkviirhgfgrws", "pgratzvzbglbyvi"))
+                    .withForce(true)
                     .withUpdateType(UpdateType.DEFAULT),
                 com.azure.core.util.Context.NONE);
 

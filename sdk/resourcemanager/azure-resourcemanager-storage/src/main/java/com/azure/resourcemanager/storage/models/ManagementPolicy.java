@@ -18,36 +18,53 @@ import java.util.List;
 
 /** Type representing ManagementPolicy. */
 @Fluent
-public interface ManagementPolicy
-    extends HasInnerModel<ManagementPolicyInner>,
-        Indexable,
-        Refreshable<ManagementPolicy>,
-        Updatable<ManagementPolicy.Update>,
-        HasManager<StorageManager> {
-    /** @return the id value. */
+public interface ManagementPolicy extends HasInnerModel<ManagementPolicyInner>, Indexable,
+    Refreshable<ManagementPolicy>, Updatable<ManagementPolicy.Update>, HasManager<StorageManager> {
+    /**
+     * Gets resource ID.
+     *
+     * @return the id value.
+     */
     String id();
 
-    /** @return the lastModifiedTime value. */
+    /**
+     * Gets the last modified time.
+     *
+     * @return the lastModifiedTime value.
+     */
     OffsetDateTime lastModifiedTime();
 
-    /** @return the name value. */
+    /**
+     * Gets resource name.
+     *
+     * @return the name value.
+     */
     String name();
 
-    /** @return the policy value. */
+    /**
+     * Gets the management policy schema.
+     *
+     * @return the policy value.
+     */
     ManagementPolicySchema policy();
 
-    /** @return the type value. */
+    /**
+     * Gets the type.
+     *
+     * @return the type value.
+     */
     String type();
 
-    /** @return the list of rules for this policy */
+    /**
+     * Gets the list of rules for this policy.
+     *
+     * @return the list of rules for this policy
+     */
     List<PolicyRule> rules();
 
     /** The entirety of the ManagementPolicy definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithStorageAccount,
-            DefinitionStages.WithRule,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithStorageAccount, DefinitionStages.WithRule,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of ManagementPolicy definition stages. */
@@ -88,6 +105,7 @@ public interface ManagementPolicy
         interface WithCreate extends Creatable<ManagementPolicy>, ManagementPolicy.DefinitionStages.WithRule {
         }
     }
+
     /** The template for a ManagementPolicy update operation, containing all the settings that can be modified. */
     interface Update extends Appliable<ManagementPolicy>, UpdateStages.WithPolicy, UpdateStages.Rule {
     }

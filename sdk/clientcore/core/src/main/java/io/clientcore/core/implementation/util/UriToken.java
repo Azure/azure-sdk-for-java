@@ -3,30 +3,56 @@
 
 package io.clientcore.core.implementation.util;
 
-class UriToken {
+import java.util.Objects;
+
+/**
+ * Represents a token during {@link java.net.URI} parsing.
+ */
+public final class UriToken {
     private final String text;
     private final UriTokenType type;
 
-    UriToken(String text, UriTokenType type) {
+    /**
+     * Creates a new UriToken object with the specified text and type.
+     *
+     * @param text The text of the token.
+     * @param type The type of the token.
+     */
+    public UriToken(String text, UriTokenType type) {
         this.text = text;
         this.type = type;
     }
 
-    String text() {
+    /**
+     * Gets the text of the token.
+     *
+     * @return The text of the token.
+     */
+    public String text() {
         return text;
     }
 
-    UriTokenType type() {
+    /**
+     * Gets the type of the token.
+     *
+     * @return The type of the token.
+     */
+    public UriTokenType type() {
         return type;
     }
 
     @Override
     public boolean equals(Object rhs) {
-        return rhs instanceof UriToken && equals((UriToken) rhs);
-    }
+        if (rhs == this) {
+            return true;
+        }
 
-    public boolean equals(UriToken rhs) {
-        return rhs != null && text.equals(rhs.text) && type == rhs.type;
+        if (!(rhs instanceof UriToken)) {
+            return false;
+        }
+
+        UriToken other = (UriToken) rhs;
+        return type == other.type && Objects.equals(text, other.text);
     }
 
     @Override

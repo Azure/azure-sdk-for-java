@@ -12,8 +12,8 @@ public final class FluidRelayServerKeysImpl implements FluidRelayServerKeys {
 
     private final com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager;
 
-    FluidRelayServerKeysImpl(
-        FluidRelayServerKeysInner innerObject, com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
+    FluidRelayServerKeysImpl(FluidRelayServerKeysInner innerObject,
+        com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

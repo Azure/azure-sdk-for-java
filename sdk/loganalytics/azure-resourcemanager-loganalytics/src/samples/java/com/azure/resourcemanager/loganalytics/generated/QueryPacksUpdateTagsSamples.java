@@ -8,22 +8,24 @@ import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPack;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for QueryPacks UpdateTags. */
+/**
+ * Samples for QueryPacks UpdateTags.
+ */
 public final class QueryPacksUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPacksUpdateTagsOnly.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPacksUpdateTagsOnly.json
      */
     /**
      * Sample code: QueryPackUpdateTagsOnly.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryPackUpdateTagsOnly(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        LogAnalyticsQueryPack resource =
-            manager
-                .queryPacks()
-                .getByResourceGroupWithResponse("my-resource-group", "my-querypack", com.azure.core.util.Context.NONE)
-                .getValue();
+        LogAnalyticsQueryPack resource = manager.queryPacks()
+            .getByResourceGroupWithResponse("my-resource-group", "my-querypack", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("Tag1", "Value1", "Tag2", "Value2")).apply();
     }
 

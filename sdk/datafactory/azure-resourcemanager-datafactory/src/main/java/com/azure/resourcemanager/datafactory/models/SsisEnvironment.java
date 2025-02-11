@@ -121,7 +121,6 @@ public final class SsisEnvironment extends SsisObjectMetadata {
      */
     @Override
     public void validate() {
-        super.validate();
         if (variables() != null) {
             variables().forEach(e -> e.validate());
         }

@@ -6,18 +6,36 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.PrivateLinkResourceInner;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 
 public final class PrivateLinkResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"groupId\":\"wankixzbi\",\"requiredMembers\":[\"pu\",\"tmryw\",\"uzoqft\",\"yqzrnkcqvyxlw\"],\"requiredZoneNames\":[\"sicohoqqnwvlry\",\"vwhheunmmqhgyx\",\"konocu\"]},\"etag\":\"klyaxuconu\",\"id\":\"szfkbe\",\"name\":\"pewr\",\"type\":\"jmwvvj\"}")
+            "{\"properties\":{\"groupId\":\"x\",\"requiredMembers\":[\"xbzpfzab\",\"lcuhxwtctyqiklb\",\"ovplw\"],\"requiredZoneNames\":[\"vgyuguos\",\"mkfssxqukkfplgm\",\"sxnkjzkdeslpvlo\"]},\"etag\":\"i\",\"tags\":{\"zb\":\"hxpkd\",\"upedeojnabckhs\":\"iuebbaumny\"},\"id\":\"txp\",\"name\":\"ie\",\"type\":\"tfhvpesapskrdqmh\"}")
             .toObject(PrivateLinkResourceInner.class);
+        Assertions.assertEquals("hxpkd", model.tags().get("zb"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResourceInner model = new PrivateLinkResourceInner();
+        PrivateLinkResourceInner model
+            = new PrivateLinkResourceInner().withTags(mapOf("zb", "hxpkd", "upedeojnabckhs", "iuebbaumny"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceInner.class);
+        Assertions.assertEquals("hxpkd", model.tags().get("zb"));
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -25,8 +25,13 @@ public final class AppSeenInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppSeenInfo model = new AppSeenInfo().withTitle("pglkf").withCategory("ohdneuel").withSubCategory("phsdyhto")
-            .withRisk("fikdowwqu").withTag("v").withTechnology("zx").withStandardPorts("lvithhqzonosgg");
+        AppSeenInfo model = new AppSeenInfo().withTitle("pglkf")
+            .withCategory("ohdneuel")
+            .withSubCategory("phsdyhto")
+            .withRisk("fikdowwqu")
+            .withTag("v")
+            .withTechnology("zx")
+            .withStandardPorts("lvithhqzonosgg");
         model = BinaryData.fromObject(model).toObject(AppSeenInfo.class);
         Assertions.assertEquals("pglkf", model.title());
         Assertions.assertEquals("ohdneuel", model.category());

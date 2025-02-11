@@ -26,10 +26,12 @@ public final class RoleAssignmentCommonPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoleAssignmentCommonProperties model
-            = new RoleAssignmentCommonProperties().withRoleId("masxazjpqyegu").withPrincipalId("lhbxxhejjzzvdud")
-                .withUsername("wdslfhotwmcy").withDataTypeScope(Arrays.asList("wlbjnpgacftade", "xnltyfsoppu"))
-                .withPrincipalType("uesnzwdejbavo").withRole(DataProductUserRole.SENSITIVE_READER);
+        RoleAssignmentCommonProperties model = new RoleAssignmentCommonProperties().withRoleId("masxazjpqyegu")
+            .withPrincipalId("lhbxxhejjzzvdud")
+            .withUsername("wdslfhotwmcy")
+            .withDataTypeScope(Arrays.asList("wlbjnpgacftade", "xnltyfsoppu"))
+            .withPrincipalType("uesnzwdejbavo")
+            .withRole(DataProductUserRole.SENSITIVE_READER);
         model = BinaryData.fromObject(model).toObject(RoleAssignmentCommonProperties.class);
         Assertions.assertEquals("masxazjpqyegu", model.roleId());
         Assertions.assertEquals("lhbxxhejjzzvdud", model.principalId());

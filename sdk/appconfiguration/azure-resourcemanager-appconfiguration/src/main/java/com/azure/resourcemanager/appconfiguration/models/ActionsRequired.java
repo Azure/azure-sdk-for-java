@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Any action that is required beyond basic workflow (approve/ reject/ disconnect). */
+/**
+ * Any action that is required beyond basic workflow (approve/ reject/ disconnect).
+ */
 public final class ActionsRequired extends ExpandableStringEnum<ActionsRequired> {
-    /** Static value None for ActionsRequired. */
+    /**
+     * Static value None for ActionsRequired.
+     */
     public static final ActionsRequired NONE = fromString("None");
 
-    /** Static value Recreate for ActionsRequired. */
+    /**
+     * Static value Recreate for ActionsRequired.
+     */
     public static final ActionsRequired RECREATE = fromString("Recreate");
 
     /**
      * Creates a new instance of ActionsRequired value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ActionsRequired extends ExpandableStringEnum<ActionsRequired>
 
     /**
      * Creates or finds a ActionsRequired from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActionsRequired.
      */
-    @JsonCreator
     public static ActionsRequired fromString(String name) {
         return fromString(name, ActionsRequired.class);
     }
 
     /**
      * Gets known ActionsRequired values.
-     *
+     * 
      * @return known ActionsRequired values.
      */
     public static Collection<ActionsRequired> values() {

@@ -132,8 +132,8 @@ public class TablesJacksonSerializer extends JacksonAdapter {
                 if ("odata.metadata".equals(fieldName)) {
                     deserializedTableEntityQueryResponse.setOdataMetadata(reader.getString());
                 } else if ("value".equals(fieldName)) {
-                    deserializedTableEntityQueryResponse.setValue(
-                        reader.readArray(TablesJacksonSerializer::getEntityFieldsAsMap));
+                    deserializedTableEntityQueryResponse
+                        .setValue(reader.readArray(TablesJacksonSerializer::getEntityFieldsAsMap));
                 } else {
                     // This is not a multiple-entity response.
                     // TODO (alzimmer): Should this just be ignored instead of an exception?
@@ -170,7 +170,8 @@ public class TablesJacksonSerializer extends JacksonAdapter {
         Map<String, Object> entityMap = new LinkedHashMap<>((int) (rawEntityMap.size() / 0.7f));
 
         // First process any @odata.type fields and their corresponding value fields.
-        List<String> odataTypeKeys = rawEntityMap.keySet().stream()
+        List<String> odataTypeKeys = rawEntityMap.keySet()
+            .stream()
             .filter(key -> key.endsWith(TablesConstants.ODATA_TYPE_KEY_SUFFIX))
             .collect(Collectors.toList());
 
@@ -181,16 +182,15 @@ public class TablesJacksonSerializer extends JacksonAdapter {
             entityMap.put(odataTypeKey, keyInformation.value);
 
             // Look for the corresponding value field for the @odata.type key.
-            String expectedValueField = odataTypeKey.substring(0,
-                odataTypeKey.length() - TablesConstants.ODATA_TYPE_KEY_SUFFIX.length());
+            String expectedValueField
+                = odataTypeKey.substring(0, odataTypeKey.length() - TablesConstants.ODATA_TYPE_KEY_SUFFIX.length());
 
             EntityInformation entityInformation = rawEntityMap.remove(expectedValueField);
             if (entityInformation != null) {
                 EntityDataModelType type = EntityDataModelType.fromString(String.valueOf(keyInformation.value));
                 Object value;
                 if (type == null) {
-                    LOGGER.warning("'{}' value has unknown OData type {}", expectedValueField,
-                        keyInformation.value);
+                    LOGGER.warning("'{}' value has unknown OData type {}", expectedValueField, keyInformation.value);
                     if (isJsonStruct(entityInformation.entityToken)) {
                         try (JsonReader structReader = JsonProviders.createReader(entityInformation.rawJson)) {
                             value = structReader.readUntyped();
@@ -202,8 +202,8 @@ public class TablesJacksonSerializer extends JacksonAdapter {
                     try {
                         value = type.deserialize(entityInformation.rawJson);
                     } catch (Exception e) {
-                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                            "'%s' value is not a valid %s.", expectedValueField, type.getEdmType()), e));
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                            String.format("'%s' value is not a valid %s.", expectedValueField, type.getEdmType()), e));
                     }
                 }
 

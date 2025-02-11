@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Peerings. */
+/**
+ * Resource collection API of Peerings.
+ */
 public interface Peerings {
     /**
      * Gets an existing peering with the specified name under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param context The context to associate with this operation.
@@ -20,13 +22,13 @@ public interface Peerings {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing peering with the specified name under the given subscription and resource group along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     Response<Peering> getByResourceGroupWithResponse(String resourceGroupName, String peeringName, Context context);
 
     /**
      * Gets an existing peering with the specified name under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +40,7 @@ public interface Peerings {
 
     /**
      * Deletes an existing peering with the specified name under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param context The context to associate with this operation.
@@ -51,7 +53,7 @@ public interface Peerings {
 
     /**
      * Deletes an existing peering with the specified name under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -62,7 +64,7 @@ public interface Peerings {
 
     /**
      * Lists all of the peerings under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -73,7 +75,7 @@ public interface Peerings {
 
     /**
      * Lists all of the peerings under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,7 +87,7 @@ public interface Peerings {
 
     /**
      * Lists all of the peerings under the given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
@@ -94,7 +96,7 @@ public interface Peerings {
 
     /**
      * Lists all of the peerings under the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -105,32 +107,32 @@ public interface Peerings {
 
     /**
      * Gets an existing peering with the specified name under the given subscription and resource group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing peering with the specified name under the given subscription and resource group along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     Peering getById(String id);
 
     /**
      * Gets an existing peering with the specified name under the given subscription and resource group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing peering with the specified name under the given subscription and resource group along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     Response<Peering> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes an existing peering with the specified name under the given subscription and resource group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,7 +142,7 @@ public interface Peerings {
 
     /**
      * Deletes an existing peering with the specified name under the given subscription and resource group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +154,7 @@ public interface Peerings {
 
     /**
      * Begins definition for a new Peering resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Peering definition.
      */

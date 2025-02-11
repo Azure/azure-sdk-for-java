@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of EmergingIssues. */
+/**
+ * Resource collection API of EmergingIssues.
+ */
 public interface EmergingIssues {
     /**
      * Lists Azure services' emerging issues.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of emerging issues as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface EmergingIssues {
 
     /**
      * Lists Azure services' emerging issues.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface EmergingIssues {
 
     /**
      * Gets Azure services' emerging issues.
-     *
+     * 
      * @param issueName The name of the emerging issue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +46,7 @@ public interface EmergingIssues {
 
     /**
      * Gets Azure services' emerging issues.
-     *
+     * 
      * @param issueName The name of the emerging issue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

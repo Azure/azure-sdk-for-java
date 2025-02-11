@@ -5,71 +5,81 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The VM Template inventory item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "inventoryType")
-@JsonTypeName("VirtualMachineTemplate")
+/**
+ * The VM Template inventory item.
+ */
 @Fluent
 public final class VirtualMachineTemplateInventoryItem extends InventoryItemProperties {
     /*
+     * They inventory type.
+     */
+    private InventoryType inventoryType = InventoryType.VIRTUAL_MACHINE_TEMPLATE;
+
+    /*
      * Gets or sets memory size in MBs for the template.
      */
-    @JsonProperty(value = "memorySizeMB")
     private Integer memorySizeMB;
 
     /*
      * Gets or sets the number of vCPUs for the template.
      */
-    @JsonProperty(value = "numCPUs")
     private Integer numCPUs;
 
     /*
      * Gets or sets the number of cores per socket for the template.
      * Defaults to 1 if unspecified.
      */
-    @JsonProperty(value = "numCoresPerSocket")
     private Integer numCoresPerSocket;
 
     /*
      * Gets or sets the type of the os.
      */
-    @JsonProperty(value = "osType")
     private OsType osType;
 
     /*
      * Gets or sets os name.
      */
-    @JsonProperty(value = "osName")
     private String osName;
 
     /*
      * Gets or sets the current version status of VMware Tools installed in the guest operating system.
      */
-    @JsonProperty(value = "toolsVersionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String toolsVersionStatus;
 
     /*
      * Gets or sets the current version of VMware Tools.
      */
-    @JsonProperty(value = "toolsVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String toolsVersion;
 
     /*
      * Gets or sets the folder path of the template.
      */
-    @JsonProperty(value = "folderPath")
     private String folderPath;
 
-    /** Creates an instance of VirtualMachineTemplateInventoryItem class. */
+    /**
+     * Creates an instance of VirtualMachineTemplateInventoryItem class.
+     */
     public VirtualMachineTemplateInventoryItem() {
     }
 
     /**
+     * Get the inventoryType property: They inventory type.
+     * 
+     * @return the inventoryType value.
+     */
+    @Override
+    public InventoryType inventoryType() {
+        return this.inventoryType;
+    }
+
+    /**
      * Get the memorySizeMB property: Gets or sets memory size in MBs for the template.
-     *
+     * 
      * @return the memorySizeMB value.
      */
     public Integer memorySizeMB() {
@@ -78,7 +88,7 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
 
     /**
      * Set the memorySizeMB property: Gets or sets memory size in MBs for the template.
-     *
+     * 
      * @param memorySizeMB the memorySizeMB value to set.
      * @return the VirtualMachineTemplateInventoryItem object itself.
      */
@@ -89,7 +99,7 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
 
     /**
      * Get the numCPUs property: Gets or sets the number of vCPUs for the template.
-     *
+     * 
      * @return the numCPUs value.
      */
     public Integer numCPUs() {
@@ -98,7 +108,7 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
 
     /**
      * Set the numCPUs property: Gets or sets the number of vCPUs for the template.
-     *
+     * 
      * @param numCPUs the numCPUs value to set.
      * @return the VirtualMachineTemplateInventoryItem object itself.
      */
@@ -108,9 +118,9 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
     }
 
     /**
-     * Get the numCoresPerSocket property: Gets or sets the number of cores per socket for the template. Defaults to 1
-     * if unspecified.
-     *
+     * Get the numCoresPerSocket property: Gets or sets the number of cores per socket for the template.
+     * Defaults to 1 if unspecified.
+     * 
      * @return the numCoresPerSocket value.
      */
     public Integer numCoresPerSocket() {
@@ -118,9 +128,9 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
     }
 
     /**
-     * Set the numCoresPerSocket property: Gets or sets the number of cores per socket for the template. Defaults to 1
-     * if unspecified.
-     *
+     * Set the numCoresPerSocket property: Gets or sets the number of cores per socket for the template.
+     * Defaults to 1 if unspecified.
+     * 
      * @param numCoresPerSocket the numCoresPerSocket value to set.
      * @return the VirtualMachineTemplateInventoryItem object itself.
      */
@@ -131,7 +141,7 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
 
     /**
      * Get the osType property: Gets or sets the type of the os.
-     *
+     * 
      * @return the osType value.
      */
     public OsType osType() {
@@ -140,7 +150,7 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
 
     /**
      * Set the osType property: Gets or sets the type of the os.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the VirtualMachineTemplateInventoryItem object itself.
      */
@@ -151,7 +161,7 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
 
     /**
      * Get the osName property: Gets or sets os name.
-     *
+     * 
      * @return the osName value.
      */
     public String osName() {
@@ -160,7 +170,7 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
 
     /**
      * Set the osName property: Gets or sets os name.
-     *
+     * 
      * @param osName the osName value to set.
      * @return the VirtualMachineTemplateInventoryItem object itself.
      */
@@ -172,7 +182,7 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
     /**
      * Get the toolsVersionStatus property: Gets or sets the current version status of VMware Tools installed in the
      * guest operating system.
-     *
+     * 
      * @return the toolsVersionStatus value.
      */
     public String toolsVersionStatus() {
@@ -181,7 +191,7 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
 
     /**
      * Get the toolsVersion property: Gets or sets the current version of VMware Tools.
-     *
+     * 
      * @return the toolsVersion value.
      */
     public String toolsVersion() {
@@ -190,7 +200,7 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
 
     /**
      * Get the folderPath property: Gets or sets the folder path of the template.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -199,7 +209,7 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
 
     /**
      * Set the folderPath property: Gets or sets the folder path of the template.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the VirtualMachineTemplateInventoryItem object itself.
      */
@@ -208,21 +218,27 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineTemplateInventoryItem withManagedResourceId(String managedResourceId) {
         super.withManagedResourceId(managedResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineTemplateInventoryItem withMoRefId(String moRefId) {
         super.withMoRefId(moRefId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineTemplateInventoryItem withMoName(String moName) {
         super.withMoName(moName);
@@ -231,11 +247,84 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("managedResourceId", managedResourceId());
+        jsonWriter.writeStringField("moRefId", moRefId());
+        jsonWriter.writeStringField("moName", moName());
+        jsonWriter.writeStringField("inventoryType", this.inventoryType == null ? null : this.inventoryType.toString());
+        jsonWriter.writeNumberField("memorySizeMB", this.memorySizeMB);
+        jsonWriter.writeNumberField("numCPUs", this.numCPUs);
+        jsonWriter.writeNumberField("numCoresPerSocket", this.numCoresPerSocket);
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeStringField("osName", this.osName);
+        jsonWriter.writeStringField("folderPath", this.folderPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineTemplateInventoryItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineTemplateInventoryItem if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineTemplateInventoryItem.
+     */
+    public static VirtualMachineTemplateInventoryItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineTemplateInventoryItem deserializedVirtualMachineTemplateInventoryItem
+                = new VirtualMachineTemplateInventoryItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedResourceId".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.withManagedResourceId(reader.getString());
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.withMoRefId(reader.getString());
+                } else if ("moName".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.withMoName(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("inventoryType".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.inventoryType
+                        = InventoryType.fromString(reader.getString());
+                } else if ("memorySizeMB".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.memorySizeMB
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numCPUs".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.numCPUs = reader.getNullable(JsonReader::getInt);
+                } else if ("numCoresPerSocket".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.numCoresPerSocket
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("osType".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.osType = OsType.fromString(reader.getString());
+                } else if ("osName".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.osName = reader.getString();
+                } else if ("toolsVersionStatus".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.toolsVersionStatus = reader.getString();
+                } else if ("toolsVersion".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.toolsVersion = reader.getString();
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInventoryItem.folderPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineTemplateInventoryItem;
+        });
     }
 }

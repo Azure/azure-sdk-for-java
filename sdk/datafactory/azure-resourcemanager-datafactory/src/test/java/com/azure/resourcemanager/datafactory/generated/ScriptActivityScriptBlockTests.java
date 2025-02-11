@@ -16,25 +16,36 @@ public final class ScriptActivityScriptBlockTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActivityScriptBlock model = BinaryData.fromString(
-            "{\"text\":\"datad\",\"type\":\"datasybn\",\"parameters\":[{\"name\":\"datak\",\"type\":\"DateTime\",\"value\":\"datavrqkmpqs\",\"direction\":\"Output\",\"size\":1973473232}]}")
+            "{\"text\":\"datagwwrclxhveso\",\"type\":\"datadxmmtyumejp\",\"parameters\":[{\"name\":\"dataodwblaujhox\",\"type\":\"Guid\",\"value\":\"dataeuywyamtzl\",\"direction\":\"InputOutput\",\"size\":1167066365},{\"name\":\"dataqjbjdyoc\",\"type\":\"Guid\",\"value\":\"datayhi\",\"direction\":\"Input\",\"size\":1743108327},{\"name\":\"datalsqymvihhgpe\",\"type\":\"Single\",\"value\":\"datakkhyfiuxda\",\"direction\":\"InputOutput\",\"size\":246649999}]}")
             .toObject(ScriptActivityScriptBlock.class);
-        Assertions.assertEquals(ScriptActivityParameterType.DATE_TIME, model.parameters().get(0).type());
-        Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.parameters().get(0).direction());
-        Assertions.assertEquals(1973473232, model.parameters().get(0).size());
+        Assertions.assertEquals(ScriptActivityParameterType.GUID, model.parameters().get(0).type());
+        Assertions.assertEquals(ScriptActivityParameterDirection.INPUT_OUTPUT, model.parameters().get(0).direction());
+        Assertions.assertEquals(1167066365, model.parameters().get(0).size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActivityScriptBlock model = new ScriptActivityScriptBlock().withText("datad")
-            .withType("datasybn")
-            .withParameters(Arrays.asList(new ScriptActivityParameter().withName("datak")
-                .withType(ScriptActivityParameterType.DATE_TIME)
-                .withValue("datavrqkmpqs")
-                .withDirection(ScriptActivityParameterDirection.OUTPUT)
-                .withSize(1973473232)));
+        ScriptActivityScriptBlock model = new ScriptActivityScriptBlock().withText("datagwwrclxhveso")
+            .withType("datadxmmtyumejp")
+            .withParameters(Arrays.asList(
+                new ScriptActivityParameter().withName("dataodwblaujhox")
+                    .withType(ScriptActivityParameterType.GUID)
+                    .withValue("dataeuywyamtzl")
+                    .withDirection(ScriptActivityParameterDirection.INPUT_OUTPUT)
+                    .withSize(1167066365),
+                new ScriptActivityParameter().withName("dataqjbjdyoc")
+                    .withType(ScriptActivityParameterType.GUID)
+                    .withValue("datayhi")
+                    .withDirection(ScriptActivityParameterDirection.INPUT)
+                    .withSize(1743108327),
+                new ScriptActivityParameter().withName("datalsqymvihhgpe")
+                    .withType(ScriptActivityParameterType.SINGLE)
+                    .withValue("datakkhyfiuxda")
+                    .withDirection(ScriptActivityParameterDirection.INPUT_OUTPUT)
+                    .withSize(246649999)));
         model = BinaryData.fromObject(model).toObject(ScriptActivityScriptBlock.class);
-        Assertions.assertEquals(ScriptActivityParameterType.DATE_TIME, model.parameters().get(0).type());
-        Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.parameters().get(0).direction());
-        Assertions.assertEquals(1973473232, model.parameters().get(0).size());
+        Assertions.assertEquals(ScriptActivityParameterType.GUID, model.parameters().get(0).type());
+        Assertions.assertEquals(ScriptActivityParameterDirection.INPUT_OUTPUT, model.parameters().get(0).direction());
+        Assertions.assertEquals(1167066365, model.parameters().get(0).size());
     }
 }

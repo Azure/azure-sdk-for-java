@@ -35,17 +35,23 @@ import com.azure.resourcemanager.devtestlabs.models.PolicyFragment;
 import com.azure.resourcemanager.devtestlabs.models.PolicyList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoliciesClient.
+ */
 public final class PoliciesClientImpl implements PoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of PoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PoliciesClientImpl(DevTestLabsClientImpl client) {
@@ -60,106 +66,72 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DevTestLabsClientPol")
     public interface PoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PolicyList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("policySetName") String policySetName,
-            @QueryParam("$expand") String expand,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("policySetName") String policySetName, @QueryParam("$expand") String expand,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$orderby") String orderby, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PolicyInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("policySetName") String policySetName,
-            @PathParam("name") String name,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("policySetName") String policySetName, @PathParam("name") String name,
+            @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PolicyInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("policySetName") String policySetName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PolicyInner policy,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("policySetName") String policySetName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") PolicyInner policy,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("policySetName") String policySetName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("policySetName") String policySetName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PolicyInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("policySetName") String policySetName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PolicyFragment policy,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("policySetName") String policySetName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") PolicyFragment policy,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PolicyList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List policies in a given policy set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -170,29 +142,19 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby) {
+    private Mono<PagedResponse<PolicyInner>> listSinglePageAsync(String resourceGroupName, String labName,
+        String policySetName, String expand, String filter, Integer top, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -207,36 +169,16 @@ public final class PoliciesClientImpl implements PoliciesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            policySetName,
-                            expand,
-                            filter,
-                            top,
-                            orderby,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<PolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    labName, policySetName, expand, filter, top, orderby, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<PolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List policies in a given policy set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -248,30 +190,19 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
+    private Mono<PagedResponse<PolicyInner>> listSinglePageAsync(String resourceGroupName, String labName,
+        String policySetName, String expand, String filter, Integer top, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -286,33 +217,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                policySetName,
-                expand,
-                filter,
-                top,
-                orderby,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName, policySetName,
+                expand, filter, top, orderby, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List policies in a given policy set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -326,14 +239,8 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyInner> listAsync(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby) {
+    private PagedFlux<PolicyInner> listAsync(String resourceGroupName, String labName, String policySetName,
+        String expand, String filter, Integer top, String orderby) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, labName, policySetName, expand, filter, top, orderby),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -341,7 +248,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * List policies in a given policy set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -363,7 +270,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * List policies in a given policy set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -378,15 +285,8 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyInner> listAsync(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
+    private PagedFlux<PolicyInner> listAsync(String resourceGroupName, String labName, String policySetName,
+        String expand, String filter, Integer top, String orderby, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, labName, policySetName, expand, filter, top, orderby, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -394,7 +294,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * List policies in a given policy set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -414,7 +314,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * List policies in a given policy set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -429,22 +329,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyInner> list(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
+    public PagedIterable<PolicyInner> list(String resourceGroupName, String labName, String policySetName,
+        String expand, String filter, Integer top, String orderby, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, labName, policySetName, expand, filter, top, orderby, context));
     }
 
     /**
      * Get policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -456,19 +349,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String labName, String policySetName, String name, String expand) {
+    private Mono<Response<PolicyInner>> getWithResponseAsync(String resourceGroupName, String labName,
+        String policySetName, String name, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -485,26 +374,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            policySetName,
-                            name,
-                            expand,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, policySetName, name, expand, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -517,19 +394,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String labName, String policySetName, String name, String expand, Context context) {
+    private Mono<Response<PolicyInner>> getWithResponseAsync(String resourceGroupName, String labName,
+        String policySetName, String name, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -546,23 +419,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                policySetName,
-                name,
-                expand,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            policySetName, name, expand, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -581,7 +444,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Get policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -594,14 +457,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyInner> getWithResponse(
-        String resourceGroupName, String labName, String policySetName, String name, String expand, Context context) {
+    public Response<PolicyInner> getWithResponse(String resourceGroupName, String labName, String policySetName,
+        String name, String expand, Context context) {
         return getWithResponseAsync(resourceGroupName, labName, policySetName, name, expand, context).block();
     }
 
     /**
      * Get policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -619,7 +482,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Create or replace an existing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -631,19 +494,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return a Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String labName, String policySetName, String name, PolicyInner policy) {
+    private Mono<Response<PolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
+        String policySetName, String name, PolicyInner policy) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -665,26 +524,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            policySetName,
-                            name,
-                            this.client.getApiVersion(),
-                            policy,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, policySetName, name, this.client.getApiVersion(), policy, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or replace an existing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -697,24 +544,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return a Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String name,
-        PolicyInner policy,
-        Context context) {
+    private Mono<Response<PolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
+        String policySetName, String name, PolicyInner policy, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -736,23 +574,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                policySetName,
-                name,
-                this.client.getApiVersion(),
-                policy,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            labName, policySetName, name, this.client.getApiVersion(), policy, accept, context);
     }
 
     /**
      * Create or replace an existing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -764,15 +592,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return a Policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String labName, String policySetName, String name, PolicyInner policy) {
+    private Mono<PolicyInner> createOrUpdateAsync(String resourceGroupName, String labName, String policySetName,
+        String name, PolicyInner policy) {
         return createOrUpdateWithResponseAsync(resourceGroupName, labName, policySetName, name, policy)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or replace an existing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -785,20 +613,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return a Policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String name,
-        PolicyInner policy,
-        Context context) {
+    public Response<PolicyInner> createOrUpdateWithResponse(String resourceGroupName, String labName,
+        String policySetName, String name, PolicyInner policy, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, labName, policySetName, name, policy, context)
             .block();
     }
 
     /**
      * Create or replace an existing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -810,15 +633,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return a Policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyInner createOrUpdate(
-        String resourceGroupName, String labName, String policySetName, String name, PolicyInner policy) {
+    public PolicyInner createOrUpdate(String resourceGroupName, String labName, String policySetName, String name,
+        PolicyInner policy) {
         return createOrUpdateWithResponse(resourceGroupName, labName, policySetName, name, policy, Context.NONE)
             .getValue();
     }
 
     /**
      * Delete policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -829,19 +652,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String labName, String policySetName, String name) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String labName, String policySetName,
+        String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -858,25 +677,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            policySetName,
-                            name,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, policySetName, name, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -888,19 +696,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String labName, String policySetName, String name, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String labName, String policySetName,
+        String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -917,22 +721,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                policySetName,
-                name,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            policySetName, name, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -950,7 +745,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Delete policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -962,14 +757,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String labName, String policySetName, String name, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String labName, String policySetName,
+        String name, Context context) {
         return deleteWithResponseAsync(resourceGroupName, labName, policySetName, name, context).block();
     }
 
     /**
      * Delete policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -985,7 +780,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Allows modifying tags of policies. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -997,19 +792,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return a Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyInner>> updateWithResponseAsync(
-        String resourceGroupName, String labName, String policySetName, String name, PolicyFragment policy) {
+    private Mono<Response<PolicyInner>> updateWithResponseAsync(String resourceGroupName, String labName,
+        String policySetName, String name, PolicyFragment policy) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1031,26 +822,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            policySetName,
-                            name,
-                            this.client.getApiVersion(),
-                            policy,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, policySetName, name, this.client.getApiVersion(), policy, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Allows modifying tags of policies. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -1063,24 +842,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return a Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String name,
-        PolicyFragment policy,
-        Context context) {
+    private Mono<Response<PolicyInner>> updateWithResponseAsync(String resourceGroupName, String labName,
+        String policySetName, String name, PolicyFragment policy, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1102,23 +872,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                policySetName,
-                name,
-                this.client.getApiVersion(),
-                policy,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            policySetName, name, this.client.getApiVersion(), policy, accept, context);
     }
 
     /**
      * Allows modifying tags of policies. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -1130,15 +890,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return a Policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyInner> updateAsync(
-        String resourceGroupName, String labName, String policySetName, String name, PolicyFragment policy) {
+    private Mono<PolicyInner> updateAsync(String resourceGroupName, String labName, String policySetName, String name,
+        PolicyFragment policy) {
         return updateWithResponseAsync(resourceGroupName, labName, policySetName, name, policy)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Allows modifying tags of policies. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -1151,19 +911,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return a Policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyInner> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String name,
-        PolicyFragment policy,
-        Context context) {
+    public Response<PolicyInner> updateWithResponse(String resourceGroupName, String labName, String policySetName,
+        String name, PolicyFragment policy, Context context) {
         return updateWithResponseAsync(resourceGroupName, labName, policySetName, name, policy, context).block();
     }
 
     /**
      * Allows modifying tags of policies. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -1175,21 +930,20 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return a Policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyInner update(
-        String resourceGroupName, String labName, String policySetName, String name, PolicyFragment policy) {
+    public PolicyInner update(String resourceGroupName, String labName, String policySetName, String name,
+        PolicyFragment policy) {
         return updateWithResponse(resourceGroupName, labName, policySetName, name, policy, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -1197,37 +951,26 @@ public final class PoliciesClientImpl implements PoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1235,23 +978,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

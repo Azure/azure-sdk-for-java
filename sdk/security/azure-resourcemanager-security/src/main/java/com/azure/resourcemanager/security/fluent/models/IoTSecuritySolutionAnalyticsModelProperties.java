@@ -5,53 +5,52 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.IoTSecurityAlertedDevice;
 import com.azure.resourcemanager.security.models.IoTSecurityDeviceAlert;
 import com.azure.resourcemanager.security.models.IoTSecurityDeviceRecommendation;
 import com.azure.resourcemanager.security.models.IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem;
 import com.azure.resourcemanager.security.models.IoTSeverityMetrics;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Security analytics properties of your IoT Security solution.
  */
 @Fluent
-public final class IoTSecuritySolutionAnalyticsModelProperties {
+public final class IoTSecuritySolutionAnalyticsModelProperties
+    implements JsonSerializable<IoTSecuritySolutionAnalyticsModelProperties> {
     /*
      * Security analytics of your IoT Security solution.
      */
-    @JsonProperty(value = "metrics", access = JsonProperty.Access.WRITE_ONLY)
     private IoTSeverityMetrics metrics;
 
     /*
      * Number of unhealthy devices within your IoT Security solution.
      */
-    @JsonProperty(value = "unhealthyDeviceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long unhealthyDeviceCount;
 
     /*
      * List of device metrics by the aggregation date.
      */
-    @JsonProperty(value = "devicesMetrics", access = JsonProperty.Access.WRITE_ONLY)
     private List<IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem> devicesMetrics;
 
     /*
      * List of the 3 devices with the most alerts.
      */
-    @JsonProperty(value = "topAlertedDevices")
     private List<IoTSecurityAlertedDevice> topAlertedDevices;
 
     /*
      * List of the 3 most prevalent device alerts.
      */
-    @JsonProperty(value = "mostPrevalentDeviceAlerts")
     private List<IoTSecurityDeviceAlert> mostPrevalentDeviceAlerts;
 
     /*
      * List of the 3 most prevalent device recommendations.
      */
-    @JsonProperty(value = "mostPrevalentDeviceRecommendations")
     private List<IoTSecurityDeviceRecommendation> mostPrevalentDeviceRecommendations;
 
     /**
@@ -171,5 +170,70 @@ public final class IoTSecuritySolutionAnalyticsModelProperties {
         if (mostPrevalentDeviceRecommendations() != null) {
             mostPrevalentDeviceRecommendations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("topAlertedDevices", this.topAlertedDevices,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("mostPrevalentDeviceAlerts", this.mostPrevalentDeviceAlerts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("mostPrevalentDeviceRecommendations", this.mostPrevalentDeviceRecommendations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTSecuritySolutionAnalyticsModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTSecuritySolutionAnalyticsModelProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IoTSecuritySolutionAnalyticsModelProperties.
+     */
+    public static IoTSecuritySolutionAnalyticsModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTSecuritySolutionAnalyticsModelProperties deserializedIoTSecuritySolutionAnalyticsModelProperties
+                = new IoTSecuritySolutionAnalyticsModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metrics".equals(fieldName)) {
+                    deserializedIoTSecuritySolutionAnalyticsModelProperties.metrics
+                        = IoTSeverityMetrics.fromJson(reader);
+                } else if ("unhealthyDeviceCount".equals(fieldName)) {
+                    deserializedIoTSecuritySolutionAnalyticsModelProperties.unhealthyDeviceCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("devicesMetrics".equals(fieldName)) {
+                    List<IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem> devicesMetrics
+                        = reader.readArray(
+                            reader1 -> IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem.fromJson(reader1));
+                    deserializedIoTSecuritySolutionAnalyticsModelProperties.devicesMetrics = devicesMetrics;
+                } else if ("topAlertedDevices".equals(fieldName)) {
+                    List<IoTSecurityAlertedDevice> topAlertedDevices
+                        = reader.readArray(reader1 -> IoTSecurityAlertedDevice.fromJson(reader1));
+                    deserializedIoTSecuritySolutionAnalyticsModelProperties.topAlertedDevices = topAlertedDevices;
+                } else if ("mostPrevalentDeviceAlerts".equals(fieldName)) {
+                    List<IoTSecurityDeviceAlert> mostPrevalentDeviceAlerts
+                        = reader.readArray(reader1 -> IoTSecurityDeviceAlert.fromJson(reader1));
+                    deserializedIoTSecuritySolutionAnalyticsModelProperties.mostPrevalentDeviceAlerts
+                        = mostPrevalentDeviceAlerts;
+                } else if ("mostPrevalentDeviceRecommendations".equals(fieldName)) {
+                    List<IoTSecurityDeviceRecommendation> mostPrevalentDeviceRecommendations
+                        = reader.readArray(reader1 -> IoTSecurityDeviceRecommendation.fromJson(reader1));
+                    deserializedIoTSecuritySolutionAnalyticsModelProperties.mostPrevalentDeviceRecommendations
+                        = mostPrevalentDeviceRecommendations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTSecuritySolutionAnalyticsModelProperties;
+        });
     }
 }

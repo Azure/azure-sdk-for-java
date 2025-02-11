@@ -25,17 +25,17 @@ public final class AssetEndpointProfileUpdateProperties
     private String targetAddress;
 
     /*
+     * Defines the configuration for the connector type that is being used with the endpoint profile.
+     */
+    private String endpointProfileType;
+
+    /*
      * Defines the client authentication mechanism to the server.
      */
-    private UserAuthentication userAuthentication;
+    private Authentication authentication;
 
     /*
-     * Defines the authentication mechanism for the southbound connector connecting to the shop floor/OT device.
-     */
-    private TransportAuthentication transportAuthentication;
-
-    /*
-     * Contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
+     * Stringified JSON that contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
      */
     private String additionalConfiguration;
 
@@ -70,51 +70,50 @@ public final class AssetEndpointProfileUpdateProperties
     }
 
     /**
-     * Get the userAuthentication property: Defines the client authentication mechanism to the server.
+     * Get the endpointProfileType property: Defines the configuration for the connector type that is being used with
+     * the endpoint profile.
      * 
-     * @return the userAuthentication value.
+     * @return the endpointProfileType value.
      */
-    public UserAuthentication userAuthentication() {
-        return this.userAuthentication;
+    public String endpointProfileType() {
+        return this.endpointProfileType;
     }
 
     /**
-     * Set the userAuthentication property: Defines the client authentication mechanism to the server.
+     * Set the endpointProfileType property: Defines the configuration for the connector type that is being used with
+     * the endpoint profile.
      * 
-     * @param userAuthentication the userAuthentication value to set.
+     * @param endpointProfileType the endpointProfileType value to set.
      * @return the AssetEndpointProfileUpdateProperties object itself.
      */
-    public AssetEndpointProfileUpdateProperties withUserAuthentication(UserAuthentication userAuthentication) {
-        this.userAuthentication = userAuthentication;
+    public AssetEndpointProfileUpdateProperties withEndpointProfileType(String endpointProfileType) {
+        this.endpointProfileType = endpointProfileType;
         return this;
     }
 
     /**
-     * Get the transportAuthentication property: Defines the authentication mechanism for the southbound connector
-     * connecting to the shop floor/OT device.
+     * Get the authentication property: Defines the client authentication mechanism to the server.
      * 
-     * @return the transportAuthentication value.
+     * @return the authentication value.
      */
-    public TransportAuthentication transportAuthentication() {
-        return this.transportAuthentication;
+    public Authentication authentication() {
+        return this.authentication;
     }
 
     /**
-     * Set the transportAuthentication property: Defines the authentication mechanism for the southbound connector
-     * connecting to the shop floor/OT device.
+     * Set the authentication property: Defines the client authentication mechanism to the server.
      * 
-     * @param transportAuthentication the transportAuthentication value to set.
+     * @param authentication the authentication value to set.
      * @return the AssetEndpointProfileUpdateProperties object itself.
      */
-    public AssetEndpointProfileUpdateProperties
-        withTransportAuthentication(TransportAuthentication transportAuthentication) {
-        this.transportAuthentication = transportAuthentication;
+    public AssetEndpointProfileUpdateProperties withAuthentication(Authentication authentication) {
+        this.authentication = authentication;
         return this;
     }
 
     /**
-     * Get the additionalConfiguration property: Contains connectivity type specific further configuration (e.g. OPC UA,
-     * Modbus, ONVIF).
+     * Get the additionalConfiguration property: Stringified JSON that contains connectivity type specific further
+     * configuration (e.g. OPC UA, Modbus, ONVIF).
      * 
      * @return the additionalConfiguration value.
      */
@@ -123,8 +122,8 @@ public final class AssetEndpointProfileUpdateProperties
     }
 
     /**
-     * Set the additionalConfiguration property: Contains connectivity type specific further configuration (e.g. OPC UA,
-     * Modbus, ONVIF).
+     * Set the additionalConfiguration property: Stringified JSON that contains connectivity type specific further
+     * configuration (e.g. OPC UA, Modbus, ONVIF).
      * 
      * @param additionalConfiguration the additionalConfiguration value to set.
      * @return the AssetEndpointProfileUpdateProperties object itself.
@@ -140,11 +139,8 @@ public final class AssetEndpointProfileUpdateProperties
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (userAuthentication() != null) {
-            userAuthentication().validate();
-        }
-        if (transportAuthentication() != null) {
-            transportAuthentication().validate();
+        if (authentication() != null) {
+            authentication().validate();
         }
     }
 
@@ -155,8 +151,8 @@ public final class AssetEndpointProfileUpdateProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("targetAddress", this.targetAddress);
-        jsonWriter.writeJsonField("userAuthentication", this.userAuthentication);
-        jsonWriter.writeJsonField("transportAuthentication", this.transportAuthentication);
+        jsonWriter.writeStringField("endpointProfileType", this.endpointProfileType);
+        jsonWriter.writeJsonField("authentication", this.authentication);
         jsonWriter.writeStringField("additionalConfiguration", this.additionalConfiguration);
         return jsonWriter.writeEndObject();
     }
@@ -179,12 +175,10 @@ public final class AssetEndpointProfileUpdateProperties
 
                 if ("targetAddress".equals(fieldName)) {
                     deserializedAssetEndpointProfileUpdateProperties.targetAddress = reader.getString();
-                } else if ("userAuthentication".equals(fieldName)) {
-                    deserializedAssetEndpointProfileUpdateProperties.userAuthentication
-                        = UserAuthentication.fromJson(reader);
-                } else if ("transportAuthentication".equals(fieldName)) {
-                    deserializedAssetEndpointProfileUpdateProperties.transportAuthentication
-                        = TransportAuthentication.fromJson(reader);
+                } else if ("endpointProfileType".equals(fieldName)) {
+                    deserializedAssetEndpointProfileUpdateProperties.endpointProfileType = reader.getString();
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedAssetEndpointProfileUpdateProperties.authentication = Authentication.fromJson(reader);
                 } else if ("additionalConfiguration".equals(fieldName)) {
                     deserializedAssetEndpointProfileUpdateProperties.additionalConfiguration = reader.getString();
                 } else {

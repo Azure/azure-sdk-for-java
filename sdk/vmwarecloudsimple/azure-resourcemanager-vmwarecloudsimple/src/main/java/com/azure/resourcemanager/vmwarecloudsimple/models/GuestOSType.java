@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The Guest OS type. */
+/**
+ * The Guest OS type.
+ */
 public enum GuestOSType {
-    /** Enum value linux. */
+    /**
+     * Enum value linux.
+     */
     LINUX("linux"),
 
-    /** Enum value windows. */
+    /**
+     * Enum value windows.
+     */
     WINDOWS("windows"),
 
-    /** Enum value other. */
+    /**
+     * Enum value other.
+     */
     OTHER("other");
 
-    /** The actual serialized value for a GuestOSType instance. */
+    /**
+     * The actual serialized value for a GuestOSType instance.
+     */
     private final String value;
 
     GuestOSType(String value) {
@@ -27,11 +34,10 @@ public enum GuestOSType {
 
     /**
      * Parses a serialized value to a GuestOSType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed GuestOSType object, or null if unable to parse.
      */
-    @JsonCreator
     public static GuestOSType fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum GuestOSType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -8,39 +8,35 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mediaservices.models.ClipTime;
 import com.azure.resourcemanager.mediaservices.models.InputDefinition;
 import com.azure.resourcemanager.mediaservices.models.JobInputAsset;
+import com.azure.resourcemanager.mediaservices.models.TrackDescriptor;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class JobInputAssetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobInputAsset model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.JobInputAsset\",\"assetName\":\"feycxcktp\",\"files\":[\"erteeammxqiekk\",\"zddrt\",\"g\",\"ojbmxv\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"fdeesvecuijpxtx\",\"inputDefinitions\":[{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]},{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]}]}")
-                .toObject(JobInputAsset.class);
-        Assertions.assertEquals("erteeammxqiekk", model.files().get(0));
-        Assertions.assertEquals("fdeesvecuijpxtx", model.label());
-        Assertions.assertEquals("feycxcktp", model.assetName());
+        JobInputAsset model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.JobInputAsset\",\"assetName\":\"bgomfgbegl\",\"files\":[\"eohibet\",\"luan\",\"rrfx\",\"eebtijvacvb\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"qqxlajr\",\"inputDefinitions\":[{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"}]},{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"}]}]}")
+            .toObject(JobInputAsset.class);
+        Assertions.assertEquals("eohibet", model.files().get(0));
+        Assertions.assertEquals("qqxlajr", model.label());
+        Assertions.assertEquals("bgomfgbegl", model.assetName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobInputAsset model =
-            new JobInputAsset()
-                .withFiles(Arrays.asList("erteeammxqiekk", "zddrt", "g", "ojbmxv"))
-                .withStart(new ClipTime())
-                .withEnd(new ClipTime())
-                .withLabel("fdeesvecuijpxtx")
-                .withInputDefinitions(
-                    Arrays
-                        .asList(
-                            new InputDefinition().withIncludedTracks(Arrays.asList()),
-                            new InputDefinition().withIncludedTracks(Arrays.asList())))
-                .withAssetName("feycxcktp");
+        JobInputAsset model = new JobInputAsset().withFiles(Arrays.asList("eohibet", "luan", "rrfx", "eebtijvacvb"))
+            .withStart(new ClipTime())
+            .withEnd(new ClipTime())
+            .withLabel("qqxlajr")
+            .withInputDefinitions(Arrays.asList(
+                new InputDefinition().withIncludedTracks(Arrays.asList(new TrackDescriptor(), new TrackDescriptor(),
+                    new TrackDescriptor(), new TrackDescriptor())),
+                new InputDefinition().withIncludedTracks(Arrays.asList(new TrackDescriptor()))))
+            .withAssetName("bgomfgbegl");
         model = BinaryData.fromObject(model).toObject(JobInputAsset.class);
-        Assertions.assertEquals("erteeammxqiekk", model.files().get(0));
-        Assertions.assertEquals("fdeesvecuijpxtx", model.label());
-        Assertions.assertEquals("feycxcktp", model.assetName());
+        Assertions.assertEquals("eohibet", model.files().get(0));
+        Assertions.assertEquals("qqxlajr", model.label());
+        Assertions.assertEquals("bgomfgbegl", model.assetName());
     }
 }

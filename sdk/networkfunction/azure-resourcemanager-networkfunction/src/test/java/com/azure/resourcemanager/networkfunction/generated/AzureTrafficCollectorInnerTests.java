@@ -10,32 +10,29 @@ import com.azure.resourcemanager.networkfunction.models.ResourceReference;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureTrafficCollectorInnerTests {
-    @Test
-    public void testDeserialize() {
-        AzureTrafficCollectorInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"collectorPolicies\":[{\"id\":\"prozvcputegjvwmf\"},{\"id\":\"t\"},{\"id\":\"mdvpjhulsu\"}],\"virtualHub\":{\"id\":\"kjozkrwfnd\"},\"provisioningState\":\"Updating\"},\"etag\":\"pslwejdpvw\",\"location\":\"oqpsoa\",\"tags\":{\"lahbcryff\":\"azakl\",\"xpaojakhmsbz\":\"fdosyg\"},\"id\":\"hcrzevd\",\"name\":\"hlxaolthqtr\",\"type\":\"qjbpfzfsin\"}")
-                .toObject(AzureTrafficCollectorInner.class);
-        Assertions.assertEquals("oqpsoa", model.location());
-        Assertions.assertEquals("azakl", model.tags().get("lahbcryff"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureTrafficCollectorInner model = BinaryData.fromString(
+            "{\"properties\":{\"collectorPolicies\":[{\"id\":\"lahbcryff\"},{\"id\":\"dosyg\"},{\"id\":\"paojakhmsbzjh\"}],\"virtualHub\":{\"id\":\"evdphlxaol\"},\"provisioningState\":\"Failed\"},\"etag\":\"rgqjbpfzfsinzg\",\"location\":\"cjrwzoxxjtfellu\",\"tags\":{\"np\":\"it\",\"lxofpdvhpfxxypin\":\"qfpjk\",\"podepoo\":\"nmayhuybb\",\"rxzxtheo\":\"inuvamiheogn\"},\"id\":\"usivye\",\"name\":\"cciqihnhungbwjz\",\"type\":\"nfygxgispemvtz\"}")
+            .toObject(AzureTrafficCollectorInner.class);
+        Assertions.assertEquals("cjrwzoxxjtfellu", model.location());
+        Assertions.assertEquals("it", model.tags().get("np"));
     }
 
-    @Test
-    public void testSerialize() {
-        AzureTrafficCollectorInner model =
-            new AzureTrafficCollectorInner()
-                .withLocation("oqpsoa")
-                .withTags(mapOf("lahbcryff", "azakl", "xpaojakhmsbz", "fdosyg"))
-                .withVirtualHub(new ResourceReference());
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureTrafficCollectorInner model = new AzureTrafficCollectorInner().withLocation("cjrwzoxxjtfellu")
+            .withTags(
+                mapOf("np", "it", "lxofpdvhpfxxypin", "qfpjk", "podepoo", "nmayhuybb", "rxzxtheo", "inuvamiheogn"))
+            .withVirtualHub(new ResourceReference());
         model = BinaryData.fromObject(model).toObject(AzureTrafficCollectorInner.class);
-        Assertions.assertEquals("oqpsoa", model.location());
-        Assertions.assertEquals("azakl", model.tags().get("lahbcryff"));
+        Assertions.assertEquals("cjrwzoxxjtfellu", model.location());
+        Assertions.assertEquals("it", model.tags().get("np"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

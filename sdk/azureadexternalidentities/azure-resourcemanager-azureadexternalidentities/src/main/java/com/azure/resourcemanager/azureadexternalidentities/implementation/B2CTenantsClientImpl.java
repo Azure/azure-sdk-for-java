@@ -58,8 +58,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @param client the instance of the service client containing this operation class.
      */
     B2CTenantsClientImpl(ExternalIdentitiesConfigurationClientImpl client) {
-        this.service =
-            RestProxy.create(B2CTenantsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(B2CTenantsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,104 +70,74 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ExternalIdentitiesCo")
     private interface B2CTenantsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AzureActiveDirectory/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NameAvailabilityResponseInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<NameAvailabilityResponseInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.AzureActiveDirectory/b2cDirectories")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.AzureActiveDirectory/b2cDirectories")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<B2CTenantResourceList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<B2CTenantResourceList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AzureActiveDirectory/b2cDirectories")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<B2CTenantResourceList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<B2CTenantResourceList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<B2CTenantResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<B2CTenantResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @BodyParam("application/json") CreateTenantRequestBody createTenantRequestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<B2CTenantResourceInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<B2CTenantResourceInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @BodyParam("application/json") B2CTenantUpdateRequest updateTenantRequestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -182,19 +152,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody) {
+    private Mono<Response<NameAvailabilityResponseInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityRequestBody != null) {
             checkNameAvailabilityRequestBody.validate();
@@ -202,15 +168,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            checkNameAvailabilityRequestBody,
-                            accept,
-                            context))
+                context -> service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), checkNameAvailabilityRequestBody, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -230,30 +189,20 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     private Mono<Response<NameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
         CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityRequestBody != null) {
             checkNameAvailabilityRequestBody.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                checkNameAvailabilityRequestBody,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), checkNameAvailabilityRequestBody, accept, context);
     }
 
     /**
@@ -267,17 +216,16 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return response of the CheckNameAvailability operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NameAvailabilityResponseInner> checkNameAvailabilityAsync(
-        CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody) {
+    private Mono<NameAvailabilityResponseInner>
+        checkNameAvailabilityAsync(CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityRequestBody)
-            .flatMap(
-                (Response<NameAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<NameAvailabilityResponseInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -291,14 +239,13 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     private Mono<NameAvailabilityResponseInner> checkNameAvailabilityAsync() {
         final CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody = null;
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityRequestBody)
-            .flatMap(
-                (Response<NameAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<NameAvailabilityResponseInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -344,16 +291,12 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<B2CTenantResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -361,20 +304,10 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<B2CTenantResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), resourceGroupName, accept, context))
+            .<PagedResponse<B2CTenantResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -390,19 +323,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<B2CTenantResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<B2CTenantResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -411,17 +340,10 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -495,32 +417,19 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<B2CTenantResourceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<B2CTenantResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<B2CTenantResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -537,30 +446,20 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<B2CTenantResourceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -626,19 +525,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the Azure AD B2C tenant resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<B2CTenantResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<Response<B2CTenantResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -650,16 +545,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), resourceGroupName, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -675,19 +562,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the Azure AD B2C tenant resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<B2CTenantResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<B2CTenantResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -698,15 +581,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), resourceGroupName, resourceName, accept, context);
     }
 
     /**
@@ -722,14 +598,13 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<B2CTenantResourceInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<B2CTenantResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<B2CTenantResourceInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -759,8 +634,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the Azure AD B2C tenant resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<B2CTenantResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<B2CTenantResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
@@ -778,19 +653,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -804,18 +675,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            resourceName,
-                            createTenantRequestBody,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, createTenantRequestBody, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -834,22 +695,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -863,16 +717,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                resourceName,
-                createTenantRequestBody,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, resourceName, createTenantRequestBody, accept, context);
     }
 
     /**
@@ -891,16 +737,11 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreateAsync(
         String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, resourceName, createTenantRequestBody);
-        return this
-            .client
-            .<B2CTenantResourceInner, B2CTenantResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                B2CTenantResourceInner.class,
-                B2CTenantResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, resourceName, createTenantRequestBody);
+        return this.client.<B2CTenantResourceInner, B2CTenantResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), B2CTenantResourceInner.class, B2CTenantResourceInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -919,21 +760,13 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreateAsync(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
+        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, resourceName, createTenantRequestBody, context);
-        return this
-            .client
-            .<B2CTenantResourceInner, B2CTenantResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                B2CTenantResourceInner.class,
-                B2CTenantResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, resourceName, createTenantRequestBody, context);
+        return this.client.<B2CTenantResourceInner, B2CTenantResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), B2CTenantResourceInner.class, B2CTenantResourceInner.class, context);
     }
 
     /**
@@ -950,8 +783,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody) {
+    public SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(String resourceGroupName,
+        String resourceName, CreateTenantRequestBody createTenantRequestBody) {
         return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody).getSyncPoller();
     }
 
@@ -970,11 +803,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context) {
+    public SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(String resourceGroupName,
+        String resourceName, CreateTenantRequestBody createTenantRequestBody, Context context) {
         return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody, context).getSyncPoller();
     }
 
@@ -992,10 +822,9 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<B2CTenantResourceInner> createAsync(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody) {
-        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody)
-            .last()
+    private Mono<B2CTenantResourceInner> createAsync(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody) {
+        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1013,8 +842,7 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<B2CTenantResourceInner> createAsync(String resourceGroupName, String resourceName) {
         final CreateTenantRequestBody createTenantRequestBody = null;
-        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody)
-            .last()
+        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1033,13 +861,9 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<B2CTenantResourceInner> createAsync(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody, context)
-            .last()
+    private Mono<B2CTenantResourceInner> createAsync(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody, Context context) {
+        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1057,8 +881,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public B2CTenantResourceInner create(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody) {
+    public B2CTenantResourceInner create(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody) {
         return createAsync(resourceGroupName, resourceName, createTenantRequestBody).block();
     }
 
@@ -1094,11 +918,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public B2CTenantResourceInner create(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context) {
+    public B2CTenantResourceInner create(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody, Context context) {
         return createAsync(resourceGroupName, resourceName, createTenantRequestBody, context).block();
     }
 
@@ -1114,19 +935,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<B2CTenantResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, B2CTenantUpdateRequest updateTenantRequestBody) {
+    private Mono<Response<B2CTenantResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String resourceName, B2CTenantUpdateRequest updateTenantRequestBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1140,18 +957,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            resourceName,
-                            updateTenantRequestBody,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, updateTenantRequestBody, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1168,22 +975,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<B2CTenantResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        B2CTenantUpdateRequest updateTenantRequestBody,
-        Context context) {
+    private Mono<Response<B2CTenantResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String resourceName, B2CTenantUpdateRequest updateTenantRequestBody, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1197,16 +997,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                resourceName,
-                updateTenantRequestBody,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, resourceName, updateTenantRequestBody, accept, context);
     }
 
     /**
@@ -1221,17 +1013,16 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<B2CTenantResourceInner> updateAsync(
-        String resourceGroupName, String resourceName, B2CTenantUpdateRequest updateTenantRequestBody) {
+    private Mono<B2CTenantResourceInner> updateAsync(String resourceGroupName, String resourceName,
+        B2CTenantUpdateRequest updateTenantRequestBody) {
         return updateWithResponseAsync(resourceGroupName, resourceName, updateTenantRequestBody)
-            .flatMap(
-                (Response<B2CTenantResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<B2CTenantResourceInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1248,14 +1039,13 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     private Mono<B2CTenantResourceInner> updateAsync(String resourceGroupName, String resourceName) {
         final B2CTenantUpdateRequest updateTenantRequestBody = null;
         return updateWithResponseAsync(resourceGroupName, resourceName, updateTenantRequestBody)
-            .flatMap(
-                (Response<B2CTenantResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<B2CTenantResourceInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1287,11 +1077,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<B2CTenantResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        B2CTenantUpdateRequest updateTenantRequestBody,
-        Context context) {
+    public Response<B2CTenantResourceInner> updateWithResponse(String resourceGroupName, String resourceName,
+        B2CTenantUpdateRequest updateTenantRequestBody, Context context) {
         return updateWithResponseAsync(resourceGroupName, resourceName, updateTenantRequestBody, context).block();
     }
 
@@ -1309,16 +1096,12 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1329,17 +1112,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1356,19 +1130,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1379,15 +1149,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, resourceName, accept, context);
     }
 
     /**
@@ -1404,10 +1167,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1423,13 +1184,12 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1461,8 +1221,8 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
+        Context context) {
         return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
@@ -1496,8 +1256,7 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, resourceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 

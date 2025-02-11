@@ -18,7 +18,8 @@ public final class ImagesGetSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void imagesGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.images().getWithResponse("MyResourceGroup1", "MyCatalog1", "00000000-0000-0000-0000-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.images()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -22,8 +22,10 @@ public final class WorkspacesUpdateTagsSamples {
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void quantumWorkspacesPatchTags(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        QuantumWorkspace resource = manager.workspaces().getByResourceGroupWithResponse("quantumResourcegroup",
-            "quantumworkspace1", com.azure.core.util.Context.NONE).getValue();
+        QuantumWorkspace resource = manager.workspaces()
+            .getByResourceGroupWithResponse("quantumResourcegroup", "quantumworkspace1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

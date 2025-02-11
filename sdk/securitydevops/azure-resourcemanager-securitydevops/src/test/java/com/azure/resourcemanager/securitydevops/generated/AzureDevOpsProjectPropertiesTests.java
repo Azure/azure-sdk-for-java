@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsProjectPropertiesTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsProjectProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Succeeded\",\"projectId\":\"jeiachboosfl\",\"orgName\":\"osfqpteehzzv\",\"autoDiscovery\":\"Disabled\"}")
-                .toObject(AzureDevOpsProjectProperties.class);
+        AzureDevOpsProjectProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Succeeded\",\"projectId\":\"jeiachboosfl\",\"orgName\":\"osfqpteehzzv\",\"autoDiscovery\":\"Disabled\"}")
+            .toObject(AzureDevOpsProjectProperties.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.provisioningState());
         Assertions.assertEquals("jeiachboosfl", model.projectId());
         Assertions.assertEquals("osfqpteehzzv", model.orgName());
@@ -27,9 +25,8 @@ public final class AzureDevOpsProjectPropertiesTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsProjectProperties model =
-            new AzureDevOpsProjectProperties()
-                .withProvisioningState(ProvisioningState.SUCCEEDED)
+        AzureDevOpsProjectProperties model
+            = new AzureDevOpsProjectProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
                 .withProjectId("jeiachboosfl")
                 .withOrgName("osfqpteehzzv")
                 .withAutoDiscovery(AutoDiscovery.DISABLED);

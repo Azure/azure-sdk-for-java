@@ -32,25 +32,22 @@ public final class AppsImpl implements Apps {
         this.serviceManager = serviceManager;
     }
 
-    public App getByResourceGroup(String resourceGroupName, String resourceName) {
-        AppInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
+    public Response<App> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<AppInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new AppImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AppImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<App> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<AppInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+    public App getByResourceGroup(String resourceGroupName, String resourceName) {
+        AppInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AppImpl(inner.getValue(), this.manager()));
+            return new AppImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -74,22 +71,34 @@ public final class AppsImpl implements Apps {
 
     public PagedIterable<App> list() {
         PagedIterable<AppInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AppImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AppImpl(inner1, this.manager()));
     }
 
     public PagedIterable<App> list(Context context) {
         PagedIterable<AppInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AppImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AppImpl(inner1, this.manager()));
     }
 
     public PagedIterable<App> listByResourceGroup(String resourceGroupName) {
         PagedIterable<AppInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AppImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AppImpl(inner1, this.manager()));
     }
 
     public PagedIterable<App> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<AppInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AppImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AppImpl(inner1, this.manager()));
+    }
+
+    public Response<AppAvailabilityInfo> checkNameAvailabilityWithResponse(OperationInputs operationInputs,
+        Context context) {
+        Response<AppAvailabilityInfoInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(operationInputs, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AppAvailabilityInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AppAvailabilityInfo checkNameAvailability(OperationInputs operationInputs) {
@@ -101,15 +110,12 @@ public final class AppsImpl implements Apps {
         }
     }
 
-    public Response<AppAvailabilityInfo> checkNameAvailabilityWithResponse(
-        OperationInputs operationInputs, Context context) {
-        Response<AppAvailabilityInfoInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(operationInputs, context);
+    public Response<AppAvailabilityInfo> checkSubdomainAvailabilityWithResponse(OperationInputs operationInputs,
+        Context context) {
+        Response<AppAvailabilityInfoInner> inner
+            = this.serviceClient().checkSubdomainAvailabilityWithResponse(operationInputs, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AppAvailabilityInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -125,103 +131,68 @@ public final class AppsImpl implements Apps {
         }
     }
 
-    public Response<AppAvailabilityInfo> checkSubdomainAvailabilityWithResponse(
-        OperationInputs operationInputs, Context context) {
-        Response<AppAvailabilityInfoInner> inner =
-            this.serviceClient().checkSubdomainAvailabilityWithResponse(operationInputs, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AppAvailabilityInfoImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<AppTemplate> listTemplates() {
         PagedIterable<AppTemplateInner> inner = this.serviceClient().listTemplates();
-        return Utils.mapPage(inner, inner1 -> new AppTemplateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AppTemplateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AppTemplate> listTemplates(Context context) {
         PagedIterable<AppTemplateInner> inner = this.serviceClient().listTemplates(context);
-        return Utils.mapPage(inner, inner1 -> new AppTemplateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AppTemplateImpl(inner1, this.manager()));
     }
 
     public App getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "iotApps");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "iotApps");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     public Response<App> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "iotApps");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "iotApps");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "iotApps");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "iotApps");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));
         }
         this.delete(resourceGroupName, resourceName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "iotApps");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "iotApps");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));
         }
         this.delete(resourceGroupName, resourceName, context);
     }

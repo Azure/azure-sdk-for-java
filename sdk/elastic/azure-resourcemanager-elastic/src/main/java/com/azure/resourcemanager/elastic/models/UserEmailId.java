@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Email Id of the User Organization, of which the API Key must be returned. */
+/**
+ * Email Id of the User Organization, of which the API Key must be returned.
+ */
 @Fluent
-public final class UserEmailId {
+public final class UserEmailId implements JsonSerializable<UserEmailId> {
     /*
      * The User email Id
      */
-    @JsonProperty(value = "emailId")
     private String emailId;
 
-    /** Creates an instance of UserEmailId class. */
+    /**
+     * Creates an instance of UserEmailId class.
+     */
     public UserEmailId() {
     }
 
     /**
      * Get the emailId property: The User email Id.
-     *
+     * 
      * @return the emailId value.
      */
     public String emailId() {
@@ -31,7 +38,7 @@ public final class UserEmailId {
 
     /**
      * Set the emailId property: The User email Id.
-     *
+     * 
      * @param emailId the emailId value to set.
      * @return the UserEmailId object itself.
      */
@@ -42,9 +49,45 @@ public final class UserEmailId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("emailId", this.emailId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserEmailId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserEmailId if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserEmailId.
+     */
+    public static UserEmailId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserEmailId deserializedUserEmailId = new UserEmailId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("emailId".equals(fieldName)) {
+                    deserializedUserEmailId.emailId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserEmailId;
+        });
     }
 }

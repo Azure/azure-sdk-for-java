@@ -34,7 +34,7 @@ public final class PreRestoreOperationParameters implements JsonSerializable<Pre
 
     /**
      * Get the sasTokenParameters property: The sasTokenParameters property.
-     *
+     * 
      * @return the sasTokenParameters value.
      */
     public SASTokenParameter getSasTokenParameters() {
@@ -43,7 +43,7 @@ public final class PreRestoreOperationParameters implements JsonSerializable<Pre
 
     /**
      * Set the sasTokenParameters property: The sasTokenParameters property.
-     *
+     * 
      * @param sasTokenParameters the sasTokenParameters value to set.
      * @return the PreRestoreOperationParameters object itself.
      */
@@ -55,7 +55,7 @@ public final class PreRestoreOperationParameters implements JsonSerializable<Pre
     /**
      * Get the folderToRestore property: The Folder name of the blob where the previous successful full backup was
      * stored.
-     *
+     * 
      * @return the folderToRestore value.
      */
     public String getFolderToRestore() {
@@ -65,7 +65,7 @@ public final class PreRestoreOperationParameters implements JsonSerializable<Pre
     /**
      * Set the folderToRestore property: The Folder name of the blob where the previous successful full backup was
      * stored.
-     *
+     * 
      * @param folderToRestore the folderToRestore value to set.
      * @return the PreRestoreOperationParameters object itself.
      */
@@ -74,6 +74,9 @@ public final class PreRestoreOperationParameters implements JsonSerializable<Pre
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,7 +87,7 @@ public final class PreRestoreOperationParameters implements JsonSerializable<Pre
 
     /**
      * Reads an instance of PreRestoreOperationParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PreRestoreOperationParameters if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

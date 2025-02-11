@@ -29,19 +29,23 @@ public final class SupportedOSPropertyTests {
         SupportedOSProperty model
             = new SupportedOSProperty().withInstanceType("vzrrryveimi")
                 .withSupportedOs(Arrays.asList(
-                    new SupportedOSDetails().withOsName("yzatvfuzkaft").withOsType("vru")
+                    new SupportedOSDetails().withOsName("yzatvfuzkaft")
+                        .withOsType("vru")
                         .withOsVersions(Arrays.asList(
                             new OSVersionWrapper().withVersion("syeipqd").withServicePack("jtgrqgdgkkileplk"),
                             new OSVersionWrapper().withVersion("mknhwtbbaedor").withServicePack("mqfl"),
                             new OSVersionWrapper().withVersion("gbdg").withServicePack("mgxdgdhpabgd"),
                             new OSVersionWrapper().withVersion("jddvjsaqw").withServicePack("mmwllc"))),
-                    new SupportedOSDetails().withOsName("srsxaptefh").withOsType("cgjokjljnhvlq")
+                    new SupportedOSDetails().withOsName("srsxaptefh")
+                        .withOsType("cgjokjljnhvlq")
                         .withOsVersions(Arrays
                             .asList(new OSVersionWrapper().withVersion("peeksnbksdqhjv").withServicePack("lxeslkhh"))),
-                    new SupportedOSDetails().withOsName("tcpoqma").withOsType("wqjwgok").withOsVersions(
-                        Arrays.asList(new OSVersionWrapper().withVersion("jj").withServicePack("ybwfdbkjb"),
-                            new OSVersionWrapper().withVersion("ensvkzykjtj").withServicePack("sxfwushcdp"),
-                            new OSVersionWrapper().withVersion("pn").withServicePack("mgjfbpkuwxeoio")))));
+                    new SupportedOSDetails().withOsName("tcpoqma")
+                        .withOsType("wqjwgok")
+                        .withOsVersions(
+                            Arrays.asList(new OSVersionWrapper().withVersion("jj").withServicePack("ybwfdbkjb"),
+                                new OSVersionWrapper().withVersion("ensvkzykjtj").withServicePack("sxfwushcdp"),
+                                new OSVersionWrapper().withVersion("pn").withServicePack("mgjfbpkuwxeoio")))));
         model = BinaryData.fromObject(model).toObject(SupportedOSProperty.class);
         Assertions.assertEquals("vzrrryveimi", model.instanceType());
         Assertions.assertEquals("yzatvfuzkaft", model.supportedOs().get(0).osName());

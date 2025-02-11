@@ -39,6 +39,17 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      */
     private Boolean disableShowmount;
 
+    /*
+     * Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts in the subscription and
+     * region and only affect non ldap NFSv4 volumes.
+     */
+    private String nfsV4IdDomain;
+
+    /*
+     * This will have true value only if account is Multiple AD enabled.
+     */
+    private Boolean isMultiAdEnabled;
+
     /**
      * Creates an instance of AccountProperties class.
      */
@@ -105,6 +116,37 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
+     * Get the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @return the nfsV4IdDomain value.
+     */
+    public String nfsV4IdDomain() {
+        return this.nfsV4IdDomain;
+    }
+
+    /**
+     * Set the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @param nfsV4IdDomain the nfsV4IdDomain value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withNfsV4IdDomain(String nfsV4IdDomain) {
+        this.nfsV4IdDomain = nfsV4IdDomain;
+        return this;
+    }
+
+    /**
+     * Get the isMultiAdEnabled property: This will have true value only if account is Multiple AD enabled.
+     * 
+     * @return the isMultiAdEnabled value.
+     */
+    public Boolean isMultiAdEnabled() {
+        return this.isMultiAdEnabled;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -127,6 +169,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeArrayField("activeDirectories", this.activeDirectories,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("nfsV4IDDomain", this.nfsV4IdDomain);
         return jsonWriter.writeEndObject();
     }
 
@@ -155,6 +198,10 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     deserializedAccountProperties.encryption = AccountEncryption.fromJson(reader);
                 } else if ("disableShowmount".equals(fieldName)) {
                     deserializedAccountProperties.disableShowmount = reader.getNullable(JsonReader::getBoolean);
+                } else if ("nfsV4IDDomain".equals(fieldName)) {
+                    deserializedAccountProperties.nfsV4IdDomain = reader.getString();
+                } else if ("isMultiAdEnabled".equals(fieldName)) {
+                    deserializedAccountProperties.isMultiAdEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

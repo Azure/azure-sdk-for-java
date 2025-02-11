@@ -6,41 +6,40 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * VwanInfo for Firewall Networking.
  */
 @Fluent
-public final class VwanConfiguration {
+public final class VwanConfiguration implements JsonSerializable<VwanConfiguration> {
     /*
      * Network Virtual Appliance resource ID
      */
-    @JsonProperty(value = "networkVirtualApplianceId")
     private String networkVirtualApplianceId;
 
     /*
      * vHub Address
      */
-    @JsonProperty(value = "vHub", required = true)
     private IpAddressSpace vHub;
 
     /*
      * Trust Subnet
      */
-    @JsonProperty(value = "trustSubnet")
     private IpAddressSpace trustSubnet;
 
     /*
      * Untrust Subnet
      */
-    @JsonProperty(value = "unTrustSubnet")
     private IpAddressSpace unTrustSubnet;
 
     /*
      * IP of trust subnet for UDR
      */
-    @JsonProperty(value = "ipOfTrustSubnetForUdr")
     private IpAddress ipOfTrustSubnetForUdr;
 
     /**
@@ -156,8 +155,8 @@ public final class VwanConfiguration {
      */
     public void validate() {
         if (vHub() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property vHub in model VwanConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property vHub in model VwanConfiguration"));
         } else {
             vHub().validate();
         }
@@ -173,4 +172,53 @@ public final class VwanConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VwanConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("vHub", this.vHub);
+        jsonWriter.writeStringField("networkVirtualApplianceId", this.networkVirtualApplianceId);
+        jsonWriter.writeJsonField("trustSubnet", this.trustSubnet);
+        jsonWriter.writeJsonField("unTrustSubnet", this.unTrustSubnet);
+        jsonWriter.writeJsonField("ipOfTrustSubnetForUdr", this.ipOfTrustSubnetForUdr);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VwanConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VwanConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VwanConfiguration.
+     */
+    public static VwanConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VwanConfiguration deserializedVwanConfiguration = new VwanConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vHub".equals(fieldName)) {
+                    deserializedVwanConfiguration.vHub = IpAddressSpace.fromJson(reader);
+                } else if ("networkVirtualApplianceId".equals(fieldName)) {
+                    deserializedVwanConfiguration.networkVirtualApplianceId = reader.getString();
+                } else if ("trustSubnet".equals(fieldName)) {
+                    deserializedVwanConfiguration.trustSubnet = IpAddressSpace.fromJson(reader);
+                } else if ("unTrustSubnet".equals(fieldName)) {
+                    deserializedVwanConfiguration.unTrustSubnet = IpAddressSpace.fromJson(reader);
+                } else if ("ipOfTrustSubnetForUdr".equals(fieldName)) {
+                    deserializedVwanConfiguration.ipOfTrustSubnetForUdr = IpAddress.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVwanConfiguration;
+        });
+    }
 }

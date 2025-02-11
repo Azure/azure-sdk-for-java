@@ -11,8 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.fluent.RoutingInfoesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.RoutingInfoModelInner;
-import com.azure.resourcemanager.mobilenetwork.models.RoutingInfoes;
 import com.azure.resourcemanager.mobilenetwork.models.RoutingInfoModel;
+import com.azure.resourcemanager.mobilenetwork.models.RoutingInfoes;
 
 public final class RoutingInfoesImpl implements RoutingInfoes {
     private static final ClientLogger LOGGER = new ClientLogger(RoutingInfoesImpl.class);

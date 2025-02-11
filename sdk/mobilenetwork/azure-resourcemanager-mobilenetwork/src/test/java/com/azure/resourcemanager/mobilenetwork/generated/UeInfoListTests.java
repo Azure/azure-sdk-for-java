@@ -20,12 +20,12 @@ public final class UeInfoListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UeInfoList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ratType\":\"5G\",\"ueState\":\"Deregistered\",\"ueIpAddresses\":[{\"dnn\":\"srsjuivfc\",\"ueIpAddress\":{}},{\"dnn\":\"yirnxzhcz\",\"ueIpAddress\":{}},{\"dnn\":\"xzbujrtrhqvwr\",\"ueIpAddress\":{}},{\"dnn\":\"h\",\"ueIpAddress\":{}}],\"lastReadAt\":\"2021-05-29T18:46:57Z\"},\"id\":\"onzlr\",\"name\":\"i\",\"type\":\"yw\"},{\"properties\":{\"ratType\":\"5G\",\"ueState\":\"Idle\",\"ueIpAddresses\":[{\"dnn\":\"z\",\"ueIpAddress\":{}},{\"dnn\":\"izehtdhgbjk\",\"ueIpAddress\":{}},{\"dnn\":\"ljeamu\",\"ueIpAddress\":{}},{\"dnn\":\"mlovuanashcxl\",\"ueIpAddress\":{}}],\"lastReadAt\":\"2021-02-14T08:26:01Z\"},\"id\":\"bdkelvidizo\",\"name\":\"sdbccxjmonfdgnwn\",\"type\":\"ypuuwwltvuqjctze\"}],\"nextLink\":\"eifzzhmk\"}")
+            "{\"value\":[{\"properties\":{\"ratType\":\"5G\",\"ueState\":\"Connected\",\"ueIpAddresses\":[{\"dnn\":\"fbzdixzmqpnoda\",\"ueIpAddress\":{}}],\"lastReadAt\":\"2021-04-25T00:58:51Z\"},\"id\":\"ewjptmcg\",\"name\":\"bostzel\",\"type\":\"dlat\"},{\"properties\":{\"ratType\":\"5G\",\"ueState\":\"Connected\",\"ueIpAddresses\":[{\"dnn\":\"iojlvfhrb\",\"ueIpAddress\":{}},{\"dnn\":\"eqvcwwyyurmoch\",\"ueIpAddress\":{}},{\"dnn\":\"prsnmokayzejn\",\"ueIpAddress\":{}}],\"lastReadAt\":\"2021-01-13T00:06:05Z\"},\"id\":\"bzpcpiljhahzvec\",\"name\":\"ndbnwieh\",\"type\":\"lewjwiuubwef\"}],\"nextLink\":\"fapaqtfer\"}")
             .toObject(UeInfoList.class);
         Assertions.assertEquals(RatType.FIVEG, model.value().get(0).properties().ratType());
-        Assertions.assertEquals(UeState.DEREGISTERED, model.value().get(0).properties().ueState());
-        Assertions.assertEquals("srsjuivfc", model.value().get(0).properties().ueIpAddresses().get(0).dnn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T18:46:57Z"),
+        Assertions.assertEquals(UeState.CONNECTED, model.value().get(0).properties().ueState());
+        Assertions.assertEquals("fbzdixzmqpnoda", model.value().get(0).properties().ueIpAddresses().get(0).dnn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T00:58:51Z"),
             model.value().get(0).properties().lastReadAt());
     }
 
@@ -37,26 +37,22 @@ public final class UeInfoListTests {
                     Arrays
                         .asList(
                             new UeInfoInner().withProperties(new UeInfoPropertiesFormat().withRatType(RatType.FIVEG)
-                                .withUeState(UeState.DEREGISTERED)
+                                .withUeState(UeState.CONNECTED)
                                 .withUeIpAddresses(Arrays.asList(
-                                    new DnnIpPair().withDnn("srsjuivfc").withUeIpAddress(new UeIpAddress()),
-                                    new DnnIpPair().withDnn("yirnxzhcz").withUeIpAddress(new UeIpAddress()),
-                                    new DnnIpPair().withDnn("xzbujrtrhqvwr").withUeIpAddress(new UeIpAddress()),
-                                    new DnnIpPair().withDnn("h").withUeIpAddress(new UeIpAddress())))
-                                .withLastReadAt(OffsetDateTime.parse("2021-05-29T18:46:57Z"))),
+                                    new DnnIpPair().withDnn("fbzdixzmqpnoda").withUeIpAddress(new UeIpAddress())))
+                                .withLastReadAt(OffsetDateTime.parse("2021-04-25T00:58:51Z"))),
                             new UeInfoInner().withProperties(new UeInfoPropertiesFormat().withRatType(RatType.FIVEG)
-                                .withUeState(UeState.IDLE)
-                                .withUeIpAddresses(
-                                    Arrays.asList(new DnnIpPair().withDnn("z").withUeIpAddress(new UeIpAddress()),
-                                        new DnnIpPair().withDnn("izehtdhgbjk").withUeIpAddress(new UeIpAddress()),
-                                        new DnnIpPair().withDnn("ljeamu").withUeIpAddress(new UeIpAddress()),
-                                        new DnnIpPair().withDnn("mlovuanashcxl").withUeIpAddress(new UeIpAddress())))
-                                .withLastReadAt(OffsetDateTime.parse("2021-02-14T08:26:01Z")))));
+                                .withUeState(UeState.CONNECTED)
+                                .withUeIpAddresses(Arrays.asList(
+                                    new DnnIpPair().withDnn("iojlvfhrb").withUeIpAddress(new UeIpAddress()),
+                                    new DnnIpPair().withDnn("eqvcwwyyurmoch").withUeIpAddress(new UeIpAddress()),
+                                    new DnnIpPair().withDnn("prsnmokayzejn").withUeIpAddress(new UeIpAddress())))
+                                .withLastReadAt(OffsetDateTime.parse("2021-01-13T00:06:05Z")))));
         model = BinaryData.fromObject(model).toObject(UeInfoList.class);
         Assertions.assertEquals(RatType.FIVEG, model.value().get(0).properties().ratType());
-        Assertions.assertEquals(UeState.DEREGISTERED, model.value().get(0).properties().ueState());
-        Assertions.assertEquals("srsjuivfc", model.value().get(0).properties().ueIpAddresses().get(0).dnn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T18:46:57Z"),
+        Assertions.assertEquals(UeState.CONNECTED, model.value().get(0).properties().ueState());
+        Assertions.assertEquals("fbzdixzmqpnoda", model.value().get(0).properties().ueIpAddresses().get(0).dnn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T00:58:51Z"),
             model.value().get(0).properties().lastReadAt());
     }
 }

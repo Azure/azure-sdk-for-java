@@ -22,7 +22,8 @@ public final class ConfigurationsUpdateOnCoordinatorSamples {
      */
     public static void updateSingleConfigurationOfCoordinator(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.configurations().updateOnCoordinator("TestResourceGroup", "testcluster", "array_nulls",
-            new ServerConfigurationInner().withValue("on"), com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .updateOnCoordinator("TestResourceGroup", "testcluster", "array_nulls",
+                new ServerConfigurationInner().withValue("on"), com.azure.core.util.Context.NONE);
     }
 }

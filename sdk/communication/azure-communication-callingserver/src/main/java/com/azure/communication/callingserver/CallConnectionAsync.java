@@ -54,9 +54,7 @@ public class CallConnectionAsync {
     private final ContentsImpl contentsInternal;
     private final ClientLogger logger;
 
-    CallConnectionAsync(
-        String callConnectionId,
-        CallConnectionsImpl callConnectionInternal,
+    CallConnectionAsync(String callConnectionId, CallConnectionsImpl callConnectionInternal,
         ContentsImpl contentsInternal) {
         this.callConnectionId = callConnectionId;
         this.callConnectionInternal = callConnectionInternal;
@@ -96,7 +94,8 @@ public class CallConnectionAsync {
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
-                        return new SimpleResponse<>(response, CallConnectionPropertiesConstructorProxy.create(response.getValue()));
+                        return new SimpleResponse<>(response,
+                            CallConnectionPropertiesConstructorProxy.create(response.getValue()));
                     } catch (URISyntaxException e) {
                         throw logger.logExceptionAsError(new RuntimeException(e));
                     }
@@ -136,9 +135,10 @@ public class CallConnectionAsync {
         try {
             context = context == null ? Context.NONE : context;
 
-            return (isForEveryone ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
+            return (isForEveryone
+                ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context))
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -176,8 +176,7 @@ public class CallConnectionAsync {
 
             return callConnectionInternal.getParticipantWithResponseAsync(callConnectionId, participantMri, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(response ->
-                    new SimpleResponse<>(response, CallParticipantConverter.convert(response.getValue())));
+                .map(response -> new SimpleResponse<>(response, CallParticipantConverter.convert(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -229,8 +228,8 @@ public class CallConnectionAsync {
      * @return Response payload for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResult> transferToParticipantCall(
-        TransferToParticipantCallOptions transferToParticipantCallOptions) {
+    public Mono<TransferCallResult>
+        transferToParticipantCall(TransferToParticipantCallOptions transferToParticipantCallOptions) {
         return transferToParticipantCallWithResponse(transferToParticipantCallOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -243,9 +242,10 @@ public class CallConnectionAsync {
      * @return Response for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TransferCallResult>> transferToParticipantCallWithResponse(
-        TransferToParticipantCallOptions transferToParticipantCallOptions) {
-        return withContext(context -> transferToParticipantCallWithResponseInternal(transferToParticipantCallOptions, context));
+    public Mono<Response<TransferCallResult>>
+        transferToParticipantCallWithResponse(TransferToParticipantCallOptions transferToParticipantCallOptions) {
+        return withContext(
+            context -> transferToParticipantCallWithResponseInternal(transferToParticipantCallOptions, context));
     }
 
     Mono<Response<TransferCallResult>> transferToParticipantCallWithResponseInternal(
@@ -254,15 +254,17 @@ public class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTargetParticipant()))
-                .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transferToParticipantCallOptions.getTransfereeCallerId()))
+                .setTargetParticipant(
+                    CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTargetParticipant()))
+                .setTransfereeCallerId(
+                    PhoneNumberIdentifierConverter.convert(transferToParticipantCallOptions.getTransfereeCallerId()))
                 .setUserToUserInformation(transferToParticipantCallOptions.getUserToUserInformation())
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(response ->
-                    new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
+                .map(response -> new SimpleResponse<>(response,
+                    TransferCallResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -290,21 +292,25 @@ public class CallConnectionAsync {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddParticipantsResult>> addParticipantsWithResponse(AddParticipantsOptions addParticipantsOptions) {
+    public Mono<Response<AddParticipantsResult>>
+        addParticipantsWithResponse(AddParticipantsOptions addParticipantsOptions) {
         return withContext(context -> addParticipantsWithResponseInternal(addParticipantsOptions, context));
     }
 
-    Mono<Response<AddParticipantsResult>> addParticipantsWithResponseInternal(AddParticipantsOptions addParticipantsOptions,
-                                                                              Context context) {
+    Mono<Response<AddParticipantsResult>>
+        addParticipantsWithResponseInternal(AddParticipantsOptions addParticipantsOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             List<CommunicationIdentifierModel> participantModels = addParticipantsOptions.getParticipants()
-                .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+                .stream()
+                .map(CommunicationIdentifierConverter::convert)
+                .collect(Collectors.toList());
 
-            AddParticipantsRequestInternal request = new AddParticipantsRequestInternal()
-                .setParticipantsToAdd(participantModels)
-                .setSourceCallerId(PhoneNumberIdentifierConverter.convert(addParticipantsOptions.getSourceCallerId()))
-                .setOperationContext(addParticipantsOptions.getOperationContext());
+            AddParticipantsRequestInternal request
+                = new AddParticipantsRequestInternal().setParticipantsToAdd(participantModels)
+                    .setSourceCallerId(
+                        PhoneNumberIdentifierConverter.convert(addParticipantsOptions.getSourceCallerId()))
+                    .setOperationContext(addParticipantsOptions.getOperationContext());
 
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
             if (addParticipantsOptions.getInvitationTimeout() != null) {
@@ -313,7 +319,8 @@ public class CallConnectionAsync {
 
             return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(response -> new SimpleResponse<>(response, AddParticipantsResponseConstructorProxy.create(response.getValue())));
+                .map(response -> new SimpleResponse<>(response,
+                    AddParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -330,7 +337,7 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemoveParticipantsResult> removeParticipants(List<CommunicationIdentifier> participantsToRemove,
-                                                             String operationContext) {
+        String operationContext) {
         return removeParticipantsWithResponse(participantsToRemove, operationContext).flatMap(FluxUtil::toMono);
     }
 
@@ -344,25 +351,28 @@ public class CallConnectionAsync {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RemoveParticipantsResult>> removeParticipantsWithResponse(List<CommunicationIdentifier> participantsToRemove,
-                                                                                   String operationContext) {
-        return withContext(context -> removeParticipantsWithResponseInternal(participantsToRemove, operationContext, context));
+    public Mono<Response<RemoveParticipantsResult>>
+        removeParticipantsWithResponse(List<CommunicationIdentifier> participantsToRemove, String operationContext) {
+        return withContext(
+            context -> removeParticipantsWithResponseInternal(participantsToRemove, operationContext, context));
     }
 
-    Mono<Response<RemoveParticipantsResult>> removeParticipantsWithResponseInternal(List<CommunicationIdentifier> participantsToRemove,
-                                                                                    String operationContext, Context context) {
+    Mono<Response<RemoveParticipantsResult>> removeParticipantsWithResponseInternal(
+        List<CommunicationIdentifier> participantsToRemove, String operationContext, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            List<CommunicationIdentifierModel> participantModels = participantsToRemove
-                .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+            List<CommunicationIdentifierModel> participantModels = participantsToRemove.stream()
+                .map(CommunicationIdentifierConverter::convert)
+                .collect(Collectors.toList());
 
-            RemoveParticipantsRequestInternal request = new RemoveParticipantsRequestInternal()
-                .setParticipantsToRemove(participantModels)
-                .setOperationContext(operationContext);
+            RemoveParticipantsRequestInternal request
+                = new RemoveParticipantsRequestInternal().setParticipantsToRemove(participantModels)
+                    .setOperationContext(operationContext);
 
             return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(response -> new SimpleResponse<>(response, RemoveParticipantsResponseConstructorProxy.create(response.getValue())));
+                .map(response -> new SimpleResponse<>(response,
+                    RemoveParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"mhquvgjxp\",\"value\":[{\"properties\":{\"dataPlaneEndpoint\":\"ehmtzop\",\"provisioningState\":\"Canceled\"},\"location\":\"rupidgsyb\",\"tags\":{\"xaobhdxbmtqioqjz\":\"hphoycm\",\"ownoizhw\":\"htbmuf\"},\"id\":\"rxybqsoq\",\"name\":\"jgkdmbpazlobcu\",\"type\":\"pdznrbtcqqjnqgl\"},{\"properties\":{\"dataPlaneEndpoint\":\"nufo\",\"provisioningState\":\"Accepted\"},\"location\":\"wifsq\",\"tags\":{\"xrifkwmrvkts\":\"agdfmglzlh\",\"ucmpoyfd\":\"zntocipaouajps\"},\"id\":\"fogknygjofjdde\",\"name\":\"s\",\"type\":\"deupewnwrei\"},{\"properties\":{\"dataPlaneEndpoint\":\"yflusarhmofc\",\"provisioningState\":\"InstallingApplication\"},\"location\":\"yurkdtmlxhekuksj\",\"tags\":{\"mparcryuanzw\":\"kc\",\"pmrqobm\":\"xzdxtayrlhmwh\",\"knryrtihfxtij\":\"u\",\"zk\":\"pzvgnwzsymglzufc\"},\"id\":\"hdbihan\",\"name\":\"fhfcb\",\"type\":\"y\"},{\"properties\":{\"dataPlaneEndpoint\":\"ithxqhabifpi\",\"provisioningState\":\"RunningValidations\"},\"location\":\"zb\",\"tags\":{\"vyq\":\"npqxuh\",\"tfwvukxgaudc\":\"iwbybrkxvdumjg\",\"napczwlokjy\":\"snhsjcnyejhkryh\",\"oxzjnchgejspod\":\"mkkvnip\"},\"id\":\"ailzydehojwyahu\",\"name\":\"inpm\",\"type\":\"njaqwixjspro\"}]}")
-                .toObject(WorkspaceResourceList.class);
+        WorkspaceResourceList model = BinaryData.fromString(
+            "{\"nextLink\":\"mhquvgjxp\",\"value\":[{\"properties\":{\"dataPlaneEndpoint\":\"ehmtzop\",\"provisioningState\":\"Canceled\"},\"location\":\"rupidgsyb\",\"tags\":{\"xaobhdxbmtqioqjz\":\"hphoycm\",\"ownoizhw\":\"htbmuf\"},\"id\":\"rxybqsoq\",\"name\":\"jgkdmbpazlobcu\",\"type\":\"pdznrbtcqqjnqgl\"},{\"properties\":{\"dataPlaneEndpoint\":\"nufo\",\"provisioningState\":\"Accepted\"},\"location\":\"wifsq\",\"tags\":{\"xrifkwmrvkts\":\"agdfmglzlh\",\"ucmpoyfd\":\"zntocipaouajps\"},\"id\":\"fogknygjofjdde\",\"name\":\"s\",\"type\":\"deupewnwrei\"},{\"properties\":{\"dataPlaneEndpoint\":\"yflusarhmofc\",\"provisioningState\":\"InstallingApplication\"},\"location\":\"yurkdtmlxhekuksj\",\"tags\":{\"mparcryuanzw\":\"kc\",\"pmrqobm\":\"xzdxtayrlhmwh\",\"knryrtihfxtij\":\"u\",\"zk\":\"pzvgnwzsymglzufc\"},\"id\":\"hdbihan\",\"name\":\"fhfcb\",\"type\":\"y\"},{\"properties\":{\"dataPlaneEndpoint\":\"ithxqhabifpi\",\"provisioningState\":\"RunningValidations\"},\"location\":\"zb\",\"tags\":{\"vyq\":\"npqxuh\",\"tfwvukxgaudc\":\"iwbybrkxvdumjg\",\"napczwlokjy\":\"snhsjcnyejhkryh\",\"oxzjnchgejspod\":\"mkkvnip\"},\"id\":\"ailzydehojwyahu\",\"name\":\"inpm\",\"type\":\"njaqwixjspro\"}]}")
+            .toObject(WorkspaceResourceList.class);
         Assertions.assertEquals("mhquvgjxp", model.nextLink());
         Assertions.assertEquals("rupidgsyb", model.value().get(0).location());
         Assertions.assertEquals("hphoycm", model.value().get(0).tags().get("xaobhdxbmtqioqjz"));
@@ -27,42 +25,18 @@ public final class WorkspaceResourceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceResourceList model =
-            new WorkspaceResourceList()
-                .withNextLink("mhquvgjxp")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new WorkspaceResourceInner()
-                                .withLocation("rupidgsyb")
-                                .withTags(mapOf("xaobhdxbmtqioqjz", "hphoycm", "ownoizhw", "htbmuf")),
-                            new WorkspaceResourceInner()
-                                .withLocation("wifsq")
-                                .withTags(mapOf("xrifkwmrvkts", "agdfmglzlh", "ucmpoyfd", "zntocipaouajps")),
-                            new WorkspaceResourceInner()
-                                .withLocation("yurkdtmlxhekuksj")
-                                .withTags(
-                                    mapOf(
-                                        "mparcryuanzw",
-                                        "kc",
-                                        "pmrqobm",
-                                        "xzdxtayrlhmwh",
-                                        "knryrtihfxtij",
-                                        "u",
-                                        "zk",
-                                        "pzvgnwzsymglzufc")),
-                            new WorkspaceResourceInner()
-                                .withLocation("zb")
-                                .withTags(
-                                    mapOf(
-                                        "vyq",
-                                        "npqxuh",
-                                        "tfwvukxgaudc",
-                                        "iwbybrkxvdumjg",
-                                        "napczwlokjy",
-                                        "snhsjcnyejhkryh",
-                                        "oxzjnchgejspod",
-                                        "mkkvnip"))));
+        WorkspaceResourceList model = new WorkspaceResourceList().withNextLink("mhquvgjxp")
+            .withValue(Arrays.asList(
+                new WorkspaceResourceInner().withLocation("rupidgsyb")
+                    .withTags(mapOf("xaobhdxbmtqioqjz", "hphoycm", "ownoizhw", "htbmuf")),
+                new WorkspaceResourceInner().withLocation("wifsq")
+                    .withTags(mapOf("xrifkwmrvkts", "agdfmglzlh", "ucmpoyfd", "zntocipaouajps")),
+                new WorkspaceResourceInner().withLocation("yurkdtmlxhekuksj")
+                    .withTags(mapOf("mparcryuanzw", "kc", "pmrqobm", "xzdxtayrlhmwh", "knryrtihfxtij", "u", "zk",
+                        "pzvgnwzsymglzufc")),
+                new WorkspaceResourceInner().withLocation("zb")
+                    .withTags(mapOf("vyq", "npqxuh", "tfwvukxgaudc", "iwbybrkxvdumjg", "napczwlokjy", "snhsjcnyejhkryh",
+                        "oxzjnchgejspod", "mkkvnip"))));
         model = BinaryData.fromObject(model).toObject(WorkspaceResourceList.class);
         Assertions.assertEquals("mhquvgjxp", model.nextLink());
         Assertions.assertEquals("rupidgsyb", model.value().get(0).location());

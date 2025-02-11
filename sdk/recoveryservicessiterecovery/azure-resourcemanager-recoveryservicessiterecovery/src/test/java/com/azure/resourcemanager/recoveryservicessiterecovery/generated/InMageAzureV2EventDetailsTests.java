@@ -26,8 +26,12 @@ public final class InMageAzureV2EventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageAzureV2EventDetails model = new InMageAzureV2EventDetails().withEventType("fhaxttpf")
-            .withCategory("wgsghqucumldd").withComponent("qm").withCorrectiveAction("feothxu")
-            .withDetails("igrjdljlkqhvkrbz").withSummary("astax").withSiteName("pruulhg");
+            .withCategory("wgsghqucumldd")
+            .withComponent("qm")
+            .withCorrectiveAction("feothxu")
+            .withDetails("igrjdljlkqhvkrbz")
+            .withSummary("astax")
+            .withSiteName("pruulhg");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2EventDetails.class);
         Assertions.assertEquals("fhaxttpf", model.eventType());
         Assertions.assertEquals("wgsghqucumldd", model.category());

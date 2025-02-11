@@ -15,8 +15,8 @@ public final class AbstractiveSummaryActionResult extends TextAnalyticsActionRes
     private AbstractiveSummaryResultCollection documentsResults;
 
     static {
-        AbstractiveSummaryActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        AbstractiveSummaryActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**

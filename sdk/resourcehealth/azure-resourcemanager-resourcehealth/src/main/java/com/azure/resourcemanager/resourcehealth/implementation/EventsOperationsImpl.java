@@ -19,8 +19,7 @@ public final class EventsOperationsImpl implements EventsOperations {
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    public EventsOperationsImpl(
-        EventsOperationsClient innerClient,
+    public EventsOperationsImpl(EventsOperationsClient innerClient,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,32 +27,32 @@ public final class EventsOperationsImpl implements EventsOperations {
 
     public PagedIterable<Event> list() {
         PagedIterable<EventInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Event> list(String filter, String queryStartTime, Context context) {
         PagedIterable<EventInner> inner = this.serviceClient().list(filter, queryStartTime, context);
-        return Utils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Event> listByTenantId() {
         PagedIterable<EventInner> inner = this.serviceClient().listByTenantId();
-        return Utils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Event> listByTenantId(String filter, String queryStartTime, Context context) {
         PagedIterable<EventInner> inner = this.serviceClient().listByTenantId(filter, queryStartTime, context);
-        return Utils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Event> listBySingleResource(String resourceUri) {
         PagedIterable<EventInner> inner = this.serviceClient().listBySingleResource(resourceUri);
-        return Utils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Event> listBySingleResource(String resourceUri, String filter, Context context) {
         PagedIterable<EventInner> inner = this.serviceClient().listBySingleResource(resourceUri, filter, context);
-        return Utils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
     }
 
     private EventsOperationsClient serviceClient() {

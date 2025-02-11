@@ -16,19 +16,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workflow CreateOrUpdate. */
+/**
+ * Samples for Workflow CreateOrUpdate.
+ */
 public final class WorkflowCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/
+     * Workflow_CreateOrUpdate.json
      */
     /**
      * Sample code: Create Workflow.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void createWorkflow(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        manager
-            .workflows()
+        manager.workflows()
             .define("workflow1")
             .withRegion("location1")
             .withExistingResourceGroup("resourceGroup1")
@@ -38,21 +41,16 @@ public final class WorkflowCreateOrUpdateSamples {
             .withBranchName("branch1")
             .withDockerfile("repo1/images/Dockerfile")
             .withDockerBuildContext("repo1/src/")
-            .withDeploymentProperties(
-                new DeploymentProperties()
-                    .withManifestType(ManifestType.KUBE)
-                    .withKubeManifestLocations(Arrays.asList("/src/manifests/"))
-                    .withOverrides(mapOf("key1", "value1")))
+            .withDeploymentProperties(new DeploymentProperties().withManifestType(ManifestType.KUBE)
+                .withKubeManifestLocations(Arrays.asList("/src/manifests/"))
+                .withOverrides(mapOf("key1", "fakeTokenPlaceholder")))
             .withNamespace("namespace1")
-            .withAcr(
-                new Acr()
-                    .withAcrSubscriptionId("subscriptionId1")
-                    .withAcrResourceGroup("resourceGroup1")
-                    .withAcrRegistryName("registry1")
-                    .withAcrRepositoryName("repo1"))
+            .withAcr(new Acr().withAcrSubscriptionId("subscriptionId1")
+                .withAcrResourceGroup("resourceGroup1")
+                .withAcrRegistryName("registry1")
+                .withAcrRepositoryName("repo1"))
             .withOidcCredentials(
-                new GitHubWorkflowProfileOidcCredentials()
-                    .withAzureClientId("12345678-3456-7890-5678-012345678901")
+                new GitHubWorkflowProfileOidcCredentials().withAzureClientId("12345678-3456-7890-5678-012345678901")
                     .withAzureTenantId("66666666-3456-7890-5678-012345678901"))
             .withAksResourceId(
                 "/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1")
@@ -60,16 +58,17 @@ public final class WorkflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_CreateOrUpdate_WithArtifactGen.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/
+     * Workflow_CreateOrUpdate_WithArtifactGen.json
      */
     /**
      * Sample code: Create Workflow With Artifact Generation.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void createWorkflowWithArtifactGeneration(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        manager
-            .workflows()
+        manager.workflows()
             .define("workflow1")
             .withRegion("location1")
             .withExistingResourceGroup("resourceGroup1")
@@ -79,20 +78,15 @@ public final class WorkflowCreateOrUpdateSamples {
             .withBranchName("branch1")
             .withDockerfile("repo1/images/Dockerfile")
             .withDockerBuildContext("repo1/src/")
-            .withDeploymentProperties(
-                new DeploymentProperties()
-                    .withManifestType(ManifestType.KUBE)
-                    .withKubeManifestLocations(Arrays.asList("/src/manifests/"))
-                    .withOverrides(mapOf("key1", "value1")))
-            .withAcr(
-                new Acr()
-                    .withAcrSubscriptionId("subscriptionId1")
-                    .withAcrResourceGroup("resourceGroup1")
-                    .withAcrRegistryName("registry1")
-                    .withAcrRepositoryName("repo1"))
+            .withDeploymentProperties(new DeploymentProperties().withManifestType(ManifestType.KUBE)
+                .withKubeManifestLocations(Arrays.asList("/src/manifests/"))
+                .withOverrides(mapOf("key1", "fakeTokenPlaceholder")))
+            .withAcr(new Acr().withAcrSubscriptionId("subscriptionId1")
+                .withAcrResourceGroup("resourceGroup1")
+                .withAcrRegistryName("registry1")
+                .withAcrRepositoryName("repo1"))
             .withOidcCredentials(
-                new GitHubWorkflowProfileOidcCredentials()
-                    .withAzureClientId("12345678-3456-7890-5678-012345678901")
+                new GitHubWorkflowProfileOidcCredentials().withAzureClientId("12345678-3456-7890-5678-012345678901")
                     .withAzureTenantId("66666666-3456-7890-5678-012345678901"))
             .withAksResourceId(
                 "/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1")
@@ -111,6 +105,7 @@ public final class WorkflowCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

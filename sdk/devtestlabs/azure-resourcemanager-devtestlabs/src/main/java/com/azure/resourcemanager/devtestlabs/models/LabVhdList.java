@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.fluent.models.LabVhdInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of a list operation. */
+/**
+ * The response of a list operation.
+ */
 @Fluent
-public final class LabVhdList {
+public final class LabVhdList implements JsonSerializable<LabVhdList> {
     /*
      * Results of the list operation.
      */
-    @JsonProperty(value = "value")
     private List<LabVhdInner> value;
 
     /*
      * Link for next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LabVhdList class. */
+    /**
+     * Creates an instance of LabVhdList class.
+     */
     public LabVhdList() {
     }
 
     /**
      * Get the value property: Results of the list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<LabVhdInner> value() {
@@ -39,7 +45,7 @@ public final class LabVhdList {
 
     /**
      * Set the value property: Results of the list operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the LabVhdList object itself.
      */
@@ -50,7 +56,7 @@ public final class LabVhdList {
 
     /**
      * Get the nextLink property: Link for next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class LabVhdList {
 
     /**
      * Set the nextLink property: Link for next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LabVhdList object itself.
      */
@@ -70,12 +76,52 @@ public final class LabVhdList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabVhdList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabVhdList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the LabVhdList.
+     */
+    public static LabVhdList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabVhdList deserializedLabVhdList = new LabVhdList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LabVhdInner> value = reader.readArray(reader1 -> LabVhdInner.fromJson(reader1));
+                    deserializedLabVhdList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLabVhdList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabVhdList;
+        });
     }
 }

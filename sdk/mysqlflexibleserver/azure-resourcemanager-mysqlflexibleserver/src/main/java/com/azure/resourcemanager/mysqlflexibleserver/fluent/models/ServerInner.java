@@ -7,23 +7,23 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ImportSourceProperties;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Identity;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
-import com.azure.resourcemanager.mysqlflexibleserver.models.MySqlServerIdentity;
-import com.azure.resourcemanager.mysqlflexibleserver.models.MySqlServerSku;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
-import com.azure.resourcemanager.mysqlflexibleserver.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,26 +34,37 @@ public final class ServerInner extends Resource {
     /*
      * The cmk identity for the server.
      */
-    @JsonProperty(value = "identity")
-    private MySqlServerIdentity identity;
+    private Identity identity;
 
     /*
      * The SKU (pricing tier) of the server.
      */
-    @JsonProperty(value = "sku")
-    private MySqlServerSku sku;
+    private Sku sku;
 
     /*
      * Properties of the server.
      */
-    @JsonProperty(value = "properties")
     private ServerProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of ServerInner class.
@@ -66,7 +77,7 @@ public final class ServerInner extends Resource {
      * 
      * @return the identity value.
      */
-    public MySqlServerIdentity identity() {
+    public Identity identity() {
         return this.identity;
     }
 
@@ -76,7 +87,7 @@ public final class ServerInner extends Resource {
      * @param identity the identity value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withIdentity(MySqlServerIdentity identity) {
+    public ServerInner withIdentity(Identity identity) {
         this.identity = identity;
         return this;
     }
@@ -86,7 +97,7 @@ public final class ServerInner extends Resource {
      * 
      * @return the sku value.
      */
-    public MySqlServerSku sku() {
+    public Sku sku() {
         return this.sku;
     }
 
@@ -96,7 +107,7 @@ public final class ServerInner extends Resource {
      * @param sku the sku value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withSku(MySqlServerSku sku) {
+    public ServerInner withSku(Sku sku) {
         this.sku = sku;
         return this;
     }
@@ -111,12 +122,42 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: The system metadata relating to this resource.
      * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -470,15 +511,6 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: PrivateEndpointConnections related properties of a server.
-     * 
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnection> privateEndpointConnections() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
-    }
-
-    /**
      * Get the maintenanceWindow property: Maintenance window of a server.
      * 
      * @return the maintenanceWindow value.
@@ -502,29 +534,6 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the importSourceProperties property: Source properties for import from storage.
-     * 
-     * @return the importSourceProperties value.
-     */
-    public ImportSourceProperties importSourceProperties() {
-        return this.innerProperties() == null ? null : this.innerProperties().importSourceProperties();
-    }
-
-    /**
-     * Set the importSourceProperties property: Source properties for import from storage.
-     * 
-     * @param importSourceProperties the importSourceProperties value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withImportSourceProperties(ImportSourceProperties importSourceProperties) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServerProperties();
-        }
-        this.innerProperties().withImportSourceProperties(importSourceProperties);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -539,5 +548,63 @@ public final class ServerInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerInner.
+     */
+    public static ServerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerInner deserializedServerInner = new ServerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServerInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedServerInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServerInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedServerInner.identity = Identity.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedServerInner.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServerInner.innerProperties = ServerProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedServerInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerInner;
+        });
     }
 }

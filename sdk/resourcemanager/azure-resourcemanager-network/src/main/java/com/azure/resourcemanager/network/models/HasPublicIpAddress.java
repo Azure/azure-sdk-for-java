@@ -7,13 +7,25 @@ import reactor.core.publisher.Mono;
 
 /** An interface representing a model's ability to reference a public IP address. */
 public interface HasPublicIpAddress {
-    /** @return the resource ID of the associated public IP address */
+    /**
+     * Gets the resource ID of the associated public IP address.
+     *
+     * @return the resource ID of the associated public IP address
+     */
     String publicIpAddressId();
 
-    /** @return the associated public IP address */
+    /**
+     * Gets the associated public IP address.
+     *
+     * @return the associated public IP address
+     */
     PublicIpAddress getPublicIpAddress();
 
-    /** @return the associated public IP address */
+    /**
+     * Gets the associated public IP address.
+     *
+     * @return the associated public IP address
+     */
     Mono<PublicIpAddress> getPublicIpAddressAsync();
 
     /** Grouping of definition stages involving specifying the public IP address. */

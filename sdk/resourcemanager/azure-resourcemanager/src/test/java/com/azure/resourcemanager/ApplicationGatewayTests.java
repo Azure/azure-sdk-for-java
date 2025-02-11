@@ -53,21 +53,10 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
     private AzureResourceManager azureResourceManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -91,8 +80,9 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
     @Test
     @Disabled("TODO refactor to avoid pfx")
     public void testAppGatewaysInternalComplex() throws Exception {
-        new TestApplicationGateway().new PrivateComplex(azureResourceManager.resourceGroups().manager().internalContext())
-            .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
+        new TestApplicationGateway().new PrivateComplex(
+            azureResourceManager.resourceGroups().manager().internalContext())
+                .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -109,7 +99,11 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
     @Disabled("WAF_V2 currently does not support private endpoint, and we do not want to have accessible public IP on VM. Enable it after WAF_V2 supports private endpoint.")
     @Test
     public void testAppGatewayBackendHealthCheck() throws Exception {
-        String testId = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("", 15);
+        String testId = azureResourceManager.applicationGateways()
+            .manager()
+            .resourceManager()
+            .internalContext()
+            .randomResourceName("", 15);
         String name = "ag" + testId;
         Region region = Region.US_EAST;
         String password = ResourceManagerTestProxyTestBase.password();
@@ -118,34 +112,29 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
 
         try {
             // Create a vnet
-            Network network =
-                azureResourceManager
-                    .networks()
-                    .define(vnetName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withAddressSpace("10.0.0.0/28")
-                    .withSubnet("subnet1", "10.0.0.0/29")
-                    .withSubnet("subnet2", "10.0.0.8/29")
-                    .create();
+            Network network = azureResourceManager.networks()
+                .define(vnetName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/29")
+                .withSubnet("subnet2", "10.0.0.8/29")
+                .create();
 
             // Create VMs for the backend in the network to connect to
             List<Creatable<VirtualMachine>> vmsDefinitions = new ArrayList<>();
             for (int i = 0; i < 2; i++) {
-                vmsDefinitions
-                    .add(
-                        azureResourceManager
-                            .virtualMachines()
-                            .define("vm" + i + testId)
-                            .withRegion(region)
-                            .withExistingResourceGroup(rgName)
-                            .withExistingPrimaryNetwork(network)
-                            .withSubnet("subnet2")
-                            .withPrimaryPrivateIPAddressDynamic()
-                            .withoutPrimaryPublicIPAddress()
-                            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                            .withRootUsername("tester")
-                            .withRootPassword(password));
+                vmsDefinitions.add(azureResourceManager.virtualMachines()
+                    .define("vm" + i + testId)
+                    .withRegion(region)
+                    .withExistingResourceGroup(rgName)
+                    .withExistingPrimaryNetwork(network)
+                    .withSubnet("subnet2")
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                    .withRootUsername("tester")
+                    .withRootPassword(password));
             }
 
             CreatedResources<VirtualMachine> createdVms = azureResourceManager.virtualMachines().create(vmsDefinitions);
@@ -160,36 +149,33 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
             }
 
             // Create the app gateway in the other subnet of the same vnet and point the backend at the VMs
-            ApplicationGateway appGateway =
-                azureResourceManager
-                    .applicationGateways()
-                    .define(name)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .defineRequestRoutingRule("rule1")
-                    .fromPrivateFrontend()
-                    .fromFrontendHttpPort(80)
-                    .toBackendHttpPort(8080)
-                    .toBackendIPAddresses(ipAddresses) // Connect the VMs via IP addresses
-                    .attach()
-                    .defineRequestRoutingRule("rule2")
-                    .fromPrivateFrontend()
-                    .fromFrontendHttpPort(25)
-                    .toBackendHttpPort(22)
-                    .toBackend("nicBackend")
-                    .attach()
-                    .withExistingSubnet(network.subnets().get("subnet1")) // Backend for connecting the VMs via NICs
-                    .withTier(ApplicationGatewayTier.WAF_V2)
-                    .withSize(ApplicationGatewaySkuName.WAF_V2)
-                    .create();
+            ApplicationGateway appGateway = azureResourceManager.applicationGateways()
+                .define(name)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .defineRequestRoutingRule("rule1")
+                .fromPrivateFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddresses(ipAddresses) // Connect the VMs via IP addresses
+                .attach()
+                .defineRequestRoutingRule("rule2")
+                .fromPrivateFrontend()
+                .fromFrontendHttpPort(25)
+                .toBackendHttpPort(22)
+                .toBackend("nicBackend")
+                .attach()
+                .withExistingSubnet(network.subnets().get("subnet1")) // Backend for connecting the VMs via NICs
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                .create();
 
             // Connect the 1st VM via NIC IP config
             NetworkInterface nic = vms[0].getPrimaryNetworkInterface();
             Assertions.assertNotNull(nic);
             ApplicationGatewayBackend appGatewayBackend = appGateway.backends().get("nicBackend");
             Assertions.assertNotNull(appGatewayBackend);
-            nic
-                .update()
+            nic.update()
                 .updateIPConfiguration(nic.primaryIPConfiguration().name())
                 .withExistingApplicationGatewayBackend(appGateway, appGatewayBackend.name())
                 .parent()
@@ -202,26 +188,24 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
             StringBuilder info = new StringBuilder();
             info.append("\nApplication gateway backend healths: ").append(backendHealths.size());
             for (ApplicationGatewayBackendHealth backendHealth : backendHealths.values()) {
-                info
-                    .append("\n\tApplication gateway backend name: ")
+                info.append("\n\tApplication gateway backend name: ")
                     .append(backendHealth.name())
                     .append("\n\t\tHTTP configuration healths: ")
                     .append(backendHealth.httpConfigurationHealths().size());
                 Assertions.assertNotNull(backendHealth.backend());
-                for (ApplicationGatewayBackendHttpConfigurationHealth backendConfigHealth
-                    : backendHealth.httpConfigurationHealths().values()) {
-                    info
-                        .append("\n\t\t\tHTTP configuration name: ")
+                for (ApplicationGatewayBackendHttpConfigurationHealth backendConfigHealth : backendHealth
+                    .httpConfigurationHealths()
+                    .values()) {
+                    info.append("\n\t\t\tHTTP configuration name: ")
                         .append(backendConfigHealth.name())
                         .append("\n\t\t\tServers: ")
                         .append(backendConfigHealth.innerModel().servers().size());
                     Assertions.assertNotNull(backendConfigHealth.backendHttpConfiguration());
-                    for (ApplicationGatewayBackendServerHealth serverHealth
-                        : backendConfigHealth.serverHealths().values()) {
+                    for (ApplicationGatewayBackendServerHealth serverHealth : backendConfigHealth.serverHealths()
+                        .values()) {
                         NicIpConfiguration ipConfig = serverHealth.getNetworkInterfaceIPConfiguration();
                         if (ipConfig != null) {
-                            info
-                                .append("\n\t\t\t\tServer NIC ID: ")
+                            info.append("\n\t\t\t\tServer NIC ID: ")
                                 .append(ipConfig.parent().id())
                                 .append("\n\t\t\t\tIP Config name: ")
                                 .append(ipConfig.name());
@@ -261,12 +245,12 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
             Assertions.assertNotNull(backendHealth2.backend());
             Assertions.assertEquals(backend2.name(), backendHealth2.name());
             Assertions.assertEquals(1, backendHealth2.httpConfigurationHealths().size());
-            ApplicationGatewayBackendHttpConfigurationHealth httpConfigHealth2 =
-                backendHealth2.httpConfigurationHealths().values().iterator().next();
+            ApplicationGatewayBackendHttpConfigurationHealth httpConfigHealth2
+                = backendHealth2.httpConfigurationHealths().values().iterator().next();
             Assertions.assertNotNull(httpConfigHealth2.backendHttpConfiguration());
             Assertions.assertEquals(1, httpConfigHealth2.serverHealths().size());
-            ApplicationGatewayBackendServerHealth serverHealth =
-                httpConfigHealth2.serverHealths().values().iterator().next();
+            ApplicationGatewayBackendServerHealth serverHealth
+                = httpConfigHealth2.serverHealths().values().iterator().next();
             NicIpConfiguration ipConfig2 = serverHealth.getNetworkInterfaceIPConfiguration();
             Assertions.assertEquals(nic.primaryIPConfiguration().name(), ipConfig2.name());
         } catch (Exception e) {
@@ -286,8 +270,9 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
     @Test
     @Disabled("TODO refactor to avoid pfx")
     public void testAppGatewaysInternalMinimal() throws Exception {
-        new TestApplicationGateway().new PrivateMinimal(azureResourceManager.resourceGroups().manager().internalContext())
-            .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
+        new TestApplicationGateway().new PrivateMinimal(
+            azureResourceManager.resourceGroups().manager().internalContext())
+                .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
     @Test
@@ -297,24 +282,22 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
         String name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ag", 15);
         azureResourceManager.resourceGroups().define(rgName).withRegion(region).create();
         PublicIpAddress pip = createPublicIpAddress(rgName);
-        ApplicationGateway appGateway =
-            azureResourceManager
-                .applicationGateways()
-                .define(name)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                // Request routing rules
-                .defineRequestRoutingRule("rule1")
-                .fromPublicFrontend()
-                .fromFrontendHttpPort(80)
-                .toBackendHttpPort(8080)
-                .toBackendIPAddress("11.1.1.1")
-                .toBackendIPAddress("11.1.1.2")
-                .attach()
-                .withExistingPublicIpAddress(pip)
-                .withTier(ApplicationGatewayTier.STANDARD_V2)
-                .withSize(ApplicationGatewaySkuName.STANDARD_V2)
-                .create();
+        ApplicationGateway appGateway = azureResourceManager.applicationGateways()
+            .define(name)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            // Request routing rules
+            .defineRequestRoutingRule("rule1")
+            .fromPublicFrontend()
+            .fromFrontendHttpPort(80)
+            .toBackendHttpPort(8080)
+            .toBackendIPAddress("11.1.1.1")
+            .toBackendIPAddress("11.1.1.2")
+            .attach()
+            .withExistingPublicIpAddress(pip)
+            .withTier(ApplicationGatewayTier.STANDARD_V2)
+            .withSize(ApplicationGatewaySkuName.STANDARD_V2)
+            .create();
 
         // Test stop/start
         appGateway.stop();
@@ -327,48 +310,54 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
 
     @Test
     public void testApplicationGatewaysInParallel() throws Exception {
-        String rgName = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("rg", 13);
+        String rgName = azureResourceManager.applicationGateways()
+            .manager()
+            .resourceManager()
+            .internalContext()
+            .randomResourceName("rg", 13);
         Region region = Region.US_EAST;
         ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName).withRegion(region).create();
         PublicIpAddress pip1 = createPublicIpAddress(rgName);
         PublicIpAddress pip2 = createPublicIpAddress(rgName);
         List<Creatable<ApplicationGateway>> agCreatables = new ArrayList<>();
 
-        agCreatables
-            .add(
-                azureResourceManager
-                    .applicationGateways()
-                    .define(azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("ag", 13))
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(resourceGroup)
-                    .defineRequestRoutingRule("rule1")
-                    .fromPublicFrontend()
-                    .fromFrontendHttpPort(80)
-                    .toBackendHttpPort(8080)
-                    .toBackendIPAddress("10.0.0.1")
-                    .toBackendIPAddress("10.0.0.2")
-                    .attach()
-                    .withExistingPublicIpAddress(pip1)
-                    .withTier(ApplicationGatewayTier.STANDARD_V2)
-                    .withSize(ApplicationGatewaySkuName.STANDARD_V2));
+        agCreatables.add(azureResourceManager.applicationGateways()
+            .define(azureResourceManager.applicationGateways()
+                .manager()
+                .resourceManager()
+                .internalContext()
+                .randomResourceName("ag", 13))
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(resourceGroup)
+            .defineRequestRoutingRule("rule1")
+            .fromPublicFrontend()
+            .fromFrontendHttpPort(80)
+            .toBackendHttpPort(8080)
+            .toBackendIPAddress("10.0.0.1")
+            .toBackendIPAddress("10.0.0.2")
+            .attach()
+            .withExistingPublicIpAddress(pip1)
+            .withTier(ApplicationGatewayTier.STANDARD_V2)
+            .withSize(ApplicationGatewaySkuName.STANDARD_V2));
 
-        agCreatables
-            .add(
-                azureResourceManager
-                    .applicationGateways()
-                    .define(azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("ag", 13))
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(resourceGroup)
-                    .defineRequestRoutingRule("rule1")
-                    .fromPublicFrontend()
-                    .fromFrontendHttpPort(80)
-                    .toBackendHttpPort(8080)
-                    .toBackendIPAddress("10.0.0.3")
-                    .toBackendIPAddress("10.0.0.4")
-                    .attach()
-                    .withExistingPublicIpAddress(pip2)
-                    .withTier(ApplicationGatewayTier.STANDARD_V2)
-                    .withSize(ApplicationGatewaySkuName.STANDARD_V2));
+        agCreatables.add(azureResourceManager.applicationGateways()
+            .define(azureResourceManager.applicationGateways()
+                .manager()
+                .resourceManager()
+                .internalContext()
+                .randomResourceName("ag", 13))
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(resourceGroup)
+            .defineRequestRoutingRule("rule1")
+            .fromPublicFrontend()
+            .fromFrontendHttpPort(80)
+            .toBackendHttpPort(8080)
+            .toBackendIPAddress("10.0.0.3")
+            .toBackendIPAddress("10.0.0.4")
+            .attach()
+            .withExistingPublicIpAddress(pip2)
+            .withTier(ApplicationGatewayTier.STANDARD_V2)
+            .withSize(ApplicationGatewaySkuName.STANDARD_V2));
 
         CreatedResources<ApplicationGateway> created = azureResourceManager.applicationGateways().create(agCreatables);
         List<ApplicationGateway> ags = new ArrayList<>();
@@ -413,8 +402,9 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
     @Test
     @Disabled("TODO refactor to avoid pfx")
     public void testAppGatewaysInternetFacingMinimal() throws Exception {
-        new TestApplicationGateway().new PublicMinimal(azureResourceManager.resourceGroups().manager().internalContext())
-            .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
+        new TestApplicationGateway().new PublicMinimal(
+            azureResourceManager.resourceGroups().manager().internalContext())
+                .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
     /**
@@ -425,21 +415,20 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
     @Test
     @Disabled("Refactor to avoid to use pfx")
     public void testAppGatewaysInternetFacingComplex() throws Exception {
-        new TestApplicationGateway().new PublicComplex(azureResourceManager.resourceGroups().manager().internalContext())
-            .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
+        new TestApplicationGateway().new PublicComplex(
+            azureResourceManager.resourceGroups().manager().internalContext())
+                .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
     private PublicIpAddress createPublicIpAddress(String rgName) {
         String appPublicIp = generateRandomResourceName("pip", 15);
-        PublicIpAddress pip =
-            azureResourceManager
-                .publicIpAddresses()
-                .define(appPublicIp)
-                .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(rgName)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip = azureResourceManager.publicIpAddresses()
+            .define(appPublicIp)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSku(PublicIPSkuType.STANDARD)
+            .withStaticIP()
+            .create();
         return pip;
     }
 }

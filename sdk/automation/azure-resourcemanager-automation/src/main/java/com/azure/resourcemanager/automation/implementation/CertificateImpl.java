@@ -81,24 +81,20 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
     }
 
     public Certificate create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, certificateName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, certificateName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Certificate create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, certificateName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, certificateName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -115,53 +111,44 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
     }
 
     public Certificate apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, certificateName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .updateWithResponse(resourceGroupName, automationAccountName, certificateName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Certificate apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, certificateName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .updateWithResponse(resourceGroupName, automationAccountName, certificateName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    CertificateImpl(
-        CertificateInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    CertificateImpl(CertificateInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.certificateName = Utils.getValueFromIdByName(innerObject.id(), "certificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.certificateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificates");
     }
 
     public Certificate refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .getWithResponse(resourceGroupName, automationAccountName, certificateName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .getWithResponse(resourceGroupName, automationAccountName, certificateName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Certificate refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .getWithResponse(resourceGroupName, automationAccountName, certificateName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .getWithResponse(resourceGroupName, automationAccountName, certificateName, context)
+            .getValue();
         return this;
     }
 

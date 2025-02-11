@@ -5,45 +5,45 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resource element template object.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ResourceElementTemplate.class)
-@JsonTypeName("ResourceElementTemplate")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "ArmResourceDefinition",
-        value = ArmResourceDefinitionResourceElementTemplateDetails.class),
-    @JsonSubTypes.Type(
-        name = "NetworkFunctionDefinition",
-        value = NetworkFunctionDefinitionResourceElementTemplateDetails.class) })
 @Fluent
-public class ResourceElementTemplate {
+public class ResourceElementTemplate implements JsonSerializable<ResourceElementTemplate> {
+    /*
+     * The resource element template type.
+     */
+    private Type resourceElementType = Type.fromString("ResourceElementTemplate");
+
     /*
      * Name of the resource element template.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The depends on profile.
      */
-    @JsonProperty(value = "dependsOnProfile")
     private DependsOnProfile dependsOnProfile;
 
     /**
      * Creates an instance of ResourceElementTemplate class.
      */
     public ResourceElementTemplate() {
+    }
+
+    /**
+     * Get the resourceElementType property: The resource element template type.
+     * 
+     * @return the resourceElementType value.
+     */
+    public Type resourceElementType() {
+        return this.resourceElementType;
     }
 
     /**
@@ -95,5 +95,75 @@ public class ResourceElementTemplate {
         if (dependsOnProfile() != null) {
             dependsOnProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type",
+            this.resourceElementType == null ? null : this.resourceElementType.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("dependsOnProfile", this.dependsOnProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceElementTemplate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceElementTemplate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceElementTemplate.
+     */
+    public static ResourceElementTemplate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ArmResourceDefinition".equals(discriminatorValue)) {
+                    return ArmResourceDefinitionResourceElementTemplateDetails.fromJson(readerToUse.reset());
+                } else if ("NetworkFunctionDefinition".equals(discriminatorValue)) {
+                    return NetworkFunctionDefinitionResourceElementTemplateDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ResourceElementTemplate fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceElementTemplate deserializedResourceElementTemplate = new ResourceElementTemplate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedResourceElementTemplate.resourceElementType = Type.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceElementTemplate.name = reader.getString();
+                } else if ("dependsOnProfile".equals(fieldName)) {
+                    deserializedResourceElementTemplate.dependsOnProfile = DependsOnProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceElementTemplate;
+        });
     }
 }

@@ -13,16 +13,15 @@ import java.nio.file.Files;
 import java.util.Base64;
 
 /** Implementation for ApplicationGatewayAuthenticationCertificate. */
-class ApplicationGatewayAuthenticationCertificateImpl
-    extends ChildResourceImpl<
-        ApplicationGatewayAuthenticationCertificateInner, ApplicationGatewayImpl, ApplicationGateway>
+class ApplicationGatewayAuthenticationCertificateImpl extends
+    ChildResourceImpl<ApplicationGatewayAuthenticationCertificateInner, ApplicationGatewayImpl, ApplicationGateway>
     implements ApplicationGatewayAuthenticationCertificate,
-        ApplicationGatewayAuthenticationCertificate.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
-        ApplicationGatewayAuthenticationCertificate.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayAuthenticationCertificate.Update {
+    ApplicationGatewayAuthenticationCertificate.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+    ApplicationGatewayAuthenticationCertificate.UpdateDefinition<ApplicationGateway.Update>,
+    ApplicationGatewayAuthenticationCertificate.Update {
 
-    ApplicationGatewayAuthenticationCertificateImpl(
-        ApplicationGatewayAuthenticationCertificateInner inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayAuthenticationCertificateImpl(ApplicationGatewayAuthenticationCertificateInner inner,
+        ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 

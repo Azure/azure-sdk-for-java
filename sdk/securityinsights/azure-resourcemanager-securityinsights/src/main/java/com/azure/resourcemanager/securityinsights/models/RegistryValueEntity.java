@@ -4,28 +4,69 @@
 
 package com.azure.resourcemanager.securityinsights.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.RegistryValueEntityProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents a registry value entity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("RegistryValue")
-@Fluent
-public final class RegistryValueEntity extends EntityInner {
+/**
+ * Represents a registry value entity.
+ */
+@Immutable
+public final class RegistryValueEntity extends Entity {
+    /*
+     * The kind of the entity.
+     */
+    private EntityKindEnum kind = EntityKindEnum.REGISTRY_VALUE;
+
     /*
      * RegistryKey entity properties
      */
-    @JsonProperty(value = "properties")
     private RegistryValueEntityProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RegistryValueEntity class.
+     */
+    public RegistryValueEntity() {
+    }
+
+    /**
+     * Get the kind property: The kind of the entity.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EntityKindEnum kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: RegistryKey entity properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RegistryValueEntityProperties innerProperties() {
@@ -33,8 +74,48 @@ public final class RegistryValueEntity extends EntityInner {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the keyEntityId property: The registry key entity id.
-     *
+     * 
      * @return the keyEntityId value.
      */
     public String keyEntityId() {
@@ -43,7 +124,7 @@ public final class RegistryValueEntity extends EntityInner {
 
     /**
      * Get the valueData property: String formatted representation of the value data.
-     *
+     * 
      * @return the valueData value.
      */
     public String valueData() {
@@ -52,7 +133,7 @@ public final class RegistryValueEntity extends EntityInner {
 
     /**
      * Get the valueName property: The registry value name.
-     *
+     * 
      * @return the valueName value.
      */
     public String valueName() {
@@ -62,7 +143,7 @@ public final class RegistryValueEntity extends EntityInner {
     /**
      * Get the valueType property: Specifies the data types to use when storing values in the registry, or identifies
      * the data type of a value in the registry.
-     *
+     * 
      * @return the valueType value.
      */
     public RegistryValueKind valueType() {
@@ -72,7 +153,7 @@ public final class RegistryValueEntity extends EntityInner {
     /**
      * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
      * to the user.
-     *
+     * 
      * @return the additionalData value.
      */
     public Map<String, Object> additionalData() {
@@ -82,7 +163,7 @@ public final class RegistryValueEntity extends EntityInner {
     /**
      * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
      * graph item instance. This property is optional and might be system generated.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -91,14 +172,61 @@ public final class RegistryValueEntity extends EntityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryValueEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryValueEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RegistryValueEntity.
+     */
+    public static RegistryValueEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryValueEntity deserializedRegistryValueEntity = new RegistryValueEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRegistryValueEntity.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRegistryValueEntity.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRegistryValueEntity.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRegistryValueEntity.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedRegistryValueEntity.kind = EntityKindEnum.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRegistryValueEntity.innerProperties = RegistryValueEntityProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryValueEntity;
+        });
     }
 }

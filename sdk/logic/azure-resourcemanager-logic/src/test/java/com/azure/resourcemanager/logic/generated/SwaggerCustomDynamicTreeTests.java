@@ -16,118 +16,102 @@ import org.junit.jupiter.api.Assertions;
 public final class SwaggerCustomDynamicTreeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwaggerCustomDynamicTree model =
-            BinaryData
-                .fromString(
-                    "{\"settings\":{\"CanSelectParentNodes\":true,\"CanSelectLeafNodes\":false},\"open\":{\"operationId\":\"jhhhqxu\",\"itemsPath\":\"vcacoyv\",\"itemValuePath\":\"bsizus\",\"itemTitlePath\":\"zlbscmnlziji\",\"itemFullTitlePath\":\"ehgmvflnwyv\",\"itemIsParent\":\"xrerlniylylyf\",\"selectableFilter\":\"zutgqztwhghmupg\",\"parameters\":{\"xzu\":{\"selectedItemValuePath\":\"cdxa\",\"value\":\"datau\",\"parameterReference\":\"tabenbbk\",\"required\":false},\"luclvdjjuk\":{\"selectedItemValuePath\":\"feddwwnlza\",\"value\":\"dataxud\",\"parameterReference\":\"hgookrtalvnbwgpb\",\"required\":true},\"emchgavsczuej\":{\"selectedItemValuePath\":\"dnqodx\",\"value\":\"datah\",\"parameterReference\":\"qfaqnvzoqg\",\"required\":false},\"xydkxrx\":{\"selectedItemValuePath\":\"xptlghwzho\",\"value\":\"datawjjstliuhqa\",\"parameterReference\":\"oaiancznvodrrs\",\"required\":true}}},\"browse\":{\"operationId\":\"xiwkgfbql\",\"itemsPath\":\"qkhychocok\",\"itemValuePath\":\"ehurqlr\",\"itemTitlePath\":\"fawey\",\"itemFullTitlePath\":\"kphyjdxrav\",\"itemIsParent\":\"qdbrxmrgc\",\"selectableFilter\":\"apx\",\"parameters\":{\"ycblevpmcl\":{\"selectedItemValuePath\":\"jjk\",\"value\":\"datajbuscg\",\"parameterReference\":\"u\",\"required\":true}}}}")
-                .toObject(SwaggerCustomDynamicTree.class);
-        Assertions.assertEquals(true, model.settings().canSelectParentNodes());
-        Assertions.assertEquals(false, model.settings().canSelectLeafNodes());
-        Assertions.assertEquals("jhhhqxu", model.open().operationId());
-        Assertions.assertEquals("vcacoyv", model.open().itemsPath());
-        Assertions.assertEquals("bsizus", model.open().itemValuePath());
-        Assertions.assertEquals("zlbscmnlziji", model.open().itemTitlePath());
-        Assertions.assertEquals("ehgmvflnwyv", model.open().itemFullTitlePath());
-        Assertions.assertEquals("xrerlniylylyf", model.open().itemIsParent());
-        Assertions.assertEquals("zutgqztwhghmupg", model.open().selectableFilter());
-        Assertions.assertEquals("cdxa", model.open().parameters().get("xzu").selectedItemValuePath());
-        Assertions.assertEquals("tabenbbk", model.open().parameters().get("xzu").parameterReference());
-        Assertions.assertEquals(false, model.open().parameters().get("xzu").required());
-        Assertions.assertEquals("xiwkgfbql", model.browse().operationId());
-        Assertions.assertEquals("qkhychocok", model.browse().itemsPath());
-        Assertions.assertEquals("ehurqlr", model.browse().itemValuePath());
-        Assertions.assertEquals("fawey", model.browse().itemTitlePath());
-        Assertions.assertEquals("kphyjdxrav", model.browse().itemFullTitlePath());
-        Assertions.assertEquals("qdbrxmrgc", model.browse().itemIsParent());
-        Assertions.assertEquals("apx", model.browse().selectableFilter());
-        Assertions.assertEquals("jjk", model.browse().parameters().get("ycblevpmcl").selectedItemValuePath());
-        Assertions.assertEquals("u", model.browse().parameters().get("ycblevpmcl").parameterReference());
-        Assertions.assertEquals(true, model.browse().parameters().get("ycblevpmcl").required());
+        SwaggerCustomDynamicTree model = BinaryData.fromString(
+            "{\"settings\":{\"CanSelectParentNodes\":false,\"CanSelectLeafNodes\":true},\"open\":{\"operationId\":\"hlfvsbaqdgzbjbb\",\"itemsPath\":\"udctdlkucxtyuf\",\"itemValuePath\":\"uhkmc\",\"itemTitlePath\":\"uomdlspsbg\",\"itemFullTitlePath\":\"nygroqia\",\"itemIsParent\":\"xoxwndfuyjo\",\"selectableFilter\":\"alcyflzuztdwxr\",\"parameters\":{\"lyjdbsx\":{\"selectedItemValuePath\":\"zprhpwwarzjzb\",\"value\":\"datat\",\"parameterReference\":\"xhriruvjizuky\",\"required\":true},\"rsmyisnd\":{\"selectedItemValuePath\":\"leqsk\",\"value\":\"dataol\",\"parameterReference\":\"bellpk\",\"required\":false}}},\"browse\":{\"operationId\":\"hgowhnvcqhmuv\",\"itemsPath\":\"stohurktod\",\"itemValuePath\":\"rtyijlvcmp\",\"itemTitlePath\":\"xx\",\"itemFullTitlePath\":\"ledbdkwz\",\"itemIsParent\":\"hvlsahjdebwy\",\"selectableFilter\":\"luszi\",\"parameters\":{\"pjonminsqjnuiiyt\":{\"selectedItemValuePath\":\"pxlkihfxtbvhmsv\",\"value\":\"datace\",\"parameterReference\":\"rhwriihwxchyyf\",\"required\":true},\"wzfxkof\":{\"selectedItemValuePath\":\"rpeyigfdppgkk\",\"value\":\"dataygjldljgd\",\"parameterReference\":\"grtse\",\"required\":false}}}}")
+            .toObject(SwaggerCustomDynamicTree.class);
+        Assertions.assertEquals(false, model.settings().canSelectParentNodes());
+        Assertions.assertEquals(true, model.settings().canSelectLeafNodes());
+        Assertions.assertEquals("hlfvsbaqdgzbjbb", model.open().operationId());
+        Assertions.assertEquals("udctdlkucxtyuf", model.open().itemsPath());
+        Assertions.assertEquals("uhkmc", model.open().itemValuePath());
+        Assertions.assertEquals("uomdlspsbg", model.open().itemTitlePath());
+        Assertions.assertEquals("nygroqia", model.open().itemFullTitlePath());
+        Assertions.assertEquals("xoxwndfuyjo", model.open().itemIsParent());
+        Assertions.assertEquals("alcyflzuztdwxr", model.open().selectableFilter());
+        Assertions.assertEquals("zprhpwwarzjzb", model.open().parameters().get("lyjdbsx").selectedItemValuePath());
+        Assertions.assertEquals("xhriruvjizuky", model.open().parameters().get("lyjdbsx").parameterReference());
+        Assertions.assertEquals(true, model.open().parameters().get("lyjdbsx").required());
+        Assertions.assertEquals("hgowhnvcqhmuv", model.browse().operationId());
+        Assertions.assertEquals("stohurktod", model.browse().itemsPath());
+        Assertions.assertEquals("rtyijlvcmp", model.browse().itemValuePath());
+        Assertions.assertEquals("xx", model.browse().itemTitlePath());
+        Assertions.assertEquals("ledbdkwz", model.browse().itemFullTitlePath());
+        Assertions.assertEquals("hvlsahjdebwy", model.browse().itemIsParent());
+        Assertions.assertEquals("luszi", model.browse().selectableFilter());
+        Assertions.assertEquals("pxlkihfxtbvhmsv",
+            model.browse().parameters().get("pjonminsqjnuiiyt").selectedItemValuePath());
+        Assertions.assertEquals("rhwriihwxchyyf",
+            model.browse().parameters().get("pjonminsqjnuiiyt").parameterReference());
+        Assertions.assertEquals(true, model.browse().parameters().get("pjonminsqjnuiiyt").required());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwaggerCustomDynamicTree model =
-            new SwaggerCustomDynamicTree()
-                .withSettings(
-                    new SwaggerCustomDynamicTreeSettings().withCanSelectParentNodes(true).withCanSelectLeafNodes(false))
-                .withOpen(
-                    new SwaggerCustomDynamicTreeCommand()
-                        .withOperationId("jhhhqxu")
-                        .withItemsPath("vcacoyv")
-                        .withItemValuePath("bsizus")
-                        .withItemTitlePath("zlbscmnlziji")
-                        .withItemFullTitlePath("ehgmvflnwyv")
-                        .withItemIsParent("xrerlniylylyf")
-                        .withSelectableFilter("zutgqztwhghmupg")
-                        .withParameters(
-                            mapOf(
-                                "xzu",
-                                new SwaggerCustomDynamicTreeParameter()
-                                    .withSelectedItemValuePath("cdxa")
-                                    .withValue("datau")
-                                    .withParameterReference("tabenbbk")
-                                    .withRequired(false),
-                                "luclvdjjuk",
-                                new SwaggerCustomDynamicTreeParameter()
-                                    .withSelectedItemValuePath("feddwwnlza")
-                                    .withValue("dataxud")
-                                    .withParameterReference("hgookrtalvnbwgpb")
-                                    .withRequired(true),
-                                "emchgavsczuej",
-                                new SwaggerCustomDynamicTreeParameter()
-                                    .withSelectedItemValuePath("dnqodx")
-                                    .withValue("datah")
-                                    .withParameterReference("qfaqnvzoqg")
-                                    .withRequired(false),
-                                "xydkxrx",
-                                new SwaggerCustomDynamicTreeParameter()
-                                    .withSelectedItemValuePath("xptlghwzho")
-                                    .withValue("datawjjstliuhqa")
-                                    .withParameterReference("oaiancznvodrrs")
-                                    .withRequired(true))))
-                .withBrowse(
-                    new SwaggerCustomDynamicTreeCommand()
-                        .withOperationId("xiwkgfbql")
-                        .withItemsPath("qkhychocok")
-                        .withItemValuePath("ehurqlr")
-                        .withItemTitlePath("fawey")
-                        .withItemFullTitlePath("kphyjdxrav")
-                        .withItemIsParent("qdbrxmrgc")
-                        .withSelectableFilter("apx")
-                        .withParameters(
-                            mapOf(
-                                "ycblevpmcl",
-                                new SwaggerCustomDynamicTreeParameter()
-                                    .withSelectedItemValuePath("jjk")
-                                    .withValue("datajbuscg")
-                                    .withParameterReference("u")
-                                    .withRequired(true))));
+        SwaggerCustomDynamicTree model = new SwaggerCustomDynamicTree()
+            .withSettings(
+                new SwaggerCustomDynamicTreeSettings().withCanSelectParentNodes(false).withCanSelectLeafNodes(true))
+            .withOpen(new SwaggerCustomDynamicTreeCommand().withOperationId("hlfvsbaqdgzbjbb")
+                .withItemsPath("udctdlkucxtyuf")
+                .withItemValuePath("uhkmc")
+                .withItemTitlePath("uomdlspsbg")
+                .withItemFullTitlePath("nygroqia")
+                .withItemIsParent("xoxwndfuyjo")
+                .withSelectableFilter("alcyflzuztdwxr")
+                .withParameters(mapOf("lyjdbsx",
+                    new SwaggerCustomDynamicTreeParameter().withSelectedItemValuePath("zprhpwwarzjzb")
+                        .withValue("datat")
+                        .withParameterReference("xhriruvjizuky")
+                        .withRequired(true),
+                    "rsmyisnd",
+                    new SwaggerCustomDynamicTreeParameter().withSelectedItemValuePath("leqsk")
+                        .withValue("dataol")
+                        .withParameterReference("bellpk")
+                        .withRequired(false))))
+            .withBrowse(new SwaggerCustomDynamicTreeCommand().withOperationId("hgowhnvcqhmuv")
+                .withItemsPath("stohurktod")
+                .withItemValuePath("rtyijlvcmp")
+                .withItemTitlePath("xx")
+                .withItemFullTitlePath("ledbdkwz")
+                .withItemIsParent("hvlsahjdebwy")
+                .withSelectableFilter("luszi")
+                .withParameters(mapOf("pjonminsqjnuiiyt",
+                    new SwaggerCustomDynamicTreeParameter().withSelectedItemValuePath("pxlkihfxtbvhmsv")
+                        .withValue("datace")
+                        .withParameterReference("rhwriihwxchyyf")
+                        .withRequired(true),
+                    "wzfxkof",
+                    new SwaggerCustomDynamicTreeParameter().withSelectedItemValuePath("rpeyigfdppgkk")
+                        .withValue("dataygjldljgd")
+                        .withParameterReference("grtse")
+                        .withRequired(false))));
         model = BinaryData.fromObject(model).toObject(SwaggerCustomDynamicTree.class);
-        Assertions.assertEquals(true, model.settings().canSelectParentNodes());
-        Assertions.assertEquals(false, model.settings().canSelectLeafNodes());
-        Assertions.assertEquals("jhhhqxu", model.open().operationId());
-        Assertions.assertEquals("vcacoyv", model.open().itemsPath());
-        Assertions.assertEquals("bsizus", model.open().itemValuePath());
-        Assertions.assertEquals("zlbscmnlziji", model.open().itemTitlePath());
-        Assertions.assertEquals("ehgmvflnwyv", model.open().itemFullTitlePath());
-        Assertions.assertEquals("xrerlniylylyf", model.open().itemIsParent());
-        Assertions.assertEquals("zutgqztwhghmupg", model.open().selectableFilter());
-        Assertions.assertEquals("cdxa", model.open().parameters().get("xzu").selectedItemValuePath());
-        Assertions.assertEquals("tabenbbk", model.open().parameters().get("xzu").parameterReference());
-        Assertions.assertEquals(false, model.open().parameters().get("xzu").required());
-        Assertions.assertEquals("xiwkgfbql", model.browse().operationId());
-        Assertions.assertEquals("qkhychocok", model.browse().itemsPath());
-        Assertions.assertEquals("ehurqlr", model.browse().itemValuePath());
-        Assertions.assertEquals("fawey", model.browse().itemTitlePath());
-        Assertions.assertEquals("kphyjdxrav", model.browse().itemFullTitlePath());
-        Assertions.assertEquals("qdbrxmrgc", model.browse().itemIsParent());
-        Assertions.assertEquals("apx", model.browse().selectableFilter());
-        Assertions.assertEquals("jjk", model.browse().parameters().get("ycblevpmcl").selectedItemValuePath());
-        Assertions.assertEquals("u", model.browse().parameters().get("ycblevpmcl").parameterReference());
-        Assertions.assertEquals(true, model.browse().parameters().get("ycblevpmcl").required());
+        Assertions.assertEquals(false, model.settings().canSelectParentNodes());
+        Assertions.assertEquals(true, model.settings().canSelectLeafNodes());
+        Assertions.assertEquals("hlfvsbaqdgzbjbb", model.open().operationId());
+        Assertions.assertEquals("udctdlkucxtyuf", model.open().itemsPath());
+        Assertions.assertEquals("uhkmc", model.open().itemValuePath());
+        Assertions.assertEquals("uomdlspsbg", model.open().itemTitlePath());
+        Assertions.assertEquals("nygroqia", model.open().itemFullTitlePath());
+        Assertions.assertEquals("xoxwndfuyjo", model.open().itemIsParent());
+        Assertions.assertEquals("alcyflzuztdwxr", model.open().selectableFilter());
+        Assertions.assertEquals("zprhpwwarzjzb", model.open().parameters().get("lyjdbsx").selectedItemValuePath());
+        Assertions.assertEquals("xhriruvjizuky", model.open().parameters().get("lyjdbsx").parameterReference());
+        Assertions.assertEquals(true, model.open().parameters().get("lyjdbsx").required());
+        Assertions.assertEquals("hgowhnvcqhmuv", model.browse().operationId());
+        Assertions.assertEquals("stohurktod", model.browse().itemsPath());
+        Assertions.assertEquals("rtyijlvcmp", model.browse().itemValuePath());
+        Assertions.assertEquals("xx", model.browse().itemTitlePath());
+        Assertions.assertEquals("ledbdkwz", model.browse().itemFullTitlePath());
+        Assertions.assertEquals("hvlsahjdebwy", model.browse().itemIsParent());
+        Assertions.assertEquals("luszi", model.browse().selectableFilter());
+        Assertions.assertEquals("pxlkihfxtbvhmsv",
+            model.browse().parameters().get("pjonminsqjnuiiyt").selectedItemValuePath());
+        Assertions.assertEquals("rhwriihwxchyyf",
+            model.browse().parameters().get("pjonminsqjnuiiyt").parameterReference());
+        Assertions.assertEquals(true, model.browse().parameters().get("pjonminsqjnuiiyt").required());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

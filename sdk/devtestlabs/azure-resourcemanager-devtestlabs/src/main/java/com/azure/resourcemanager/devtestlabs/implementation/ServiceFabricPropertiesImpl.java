@@ -14,8 +14,7 @@ public final class ServiceFabricPropertiesImpl implements ServiceFabricPropertie
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    ServiceFabricPropertiesImpl(
-        ServiceFabricPropertiesInner innerObject,
+    ServiceFabricPropertiesImpl(ServiceFabricPropertiesInner innerObject,
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

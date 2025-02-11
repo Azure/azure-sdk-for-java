@@ -13,12 +13,12 @@ import java.util.Collection;
  */
 public final class SettingNames extends ExpandableStringEnum<SettingNames> {
     /**
-     * Static value AutoLogon for SettingNames.
+     * AutoLogon setting.
      */
     public static final SettingNames AUTO_LOGON = fromString("AutoLogon");
 
     /**
-     * Static value FirstLogonCommands for SettingNames.
+     * FirstLogonCommands setting.
      */
     public static final SettingNames FIRST_LOGON_COMMANDS = fromString("FirstLogonCommands");
 

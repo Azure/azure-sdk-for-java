@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ResourceProviderAuthorization model. */
+/**
+ * The ResourceProviderAuthorization model.
+ */
 @Fluent
-public final class ResourceProviderAuthorization {
+public final class ResourceProviderAuthorization implements JsonSerializable<ResourceProviderAuthorization> {
     /*
      * The applicationId property.
      */
-    @JsonProperty(value = "applicationId")
     private String applicationId;
 
     /*
      * The roleDefinitionId property.
      */
-    @JsonProperty(value = "roleDefinitionId")
     private String roleDefinitionId;
 
     /*
      * The managedByRoleDefinitionId property.
      */
-    @JsonProperty(value = "managedByRoleDefinitionId")
     private String managedByRoleDefinitionId;
 
-    /** Creates an instance of ResourceProviderAuthorization class. */
+    /**
+     * Creates an instance of ResourceProviderAuthorization class.
+     */
     public ResourceProviderAuthorization() {
     }
 
     /**
      * Get the applicationId property: The applicationId property.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -43,7 +48,7 @@ public final class ResourceProviderAuthorization {
 
     /**
      * Set the applicationId property: The applicationId property.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the ResourceProviderAuthorization object itself.
      */
@@ -54,7 +59,7 @@ public final class ResourceProviderAuthorization {
 
     /**
      * Get the roleDefinitionId property: The roleDefinitionId property.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -63,7 +68,7 @@ public final class ResourceProviderAuthorization {
 
     /**
      * Set the roleDefinitionId property: The roleDefinitionId property.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the ResourceProviderAuthorization object itself.
      */
@@ -74,7 +79,7 @@ public final class ResourceProviderAuthorization {
 
     /**
      * Get the managedByRoleDefinitionId property: The managedByRoleDefinitionId property.
-     *
+     * 
      * @return the managedByRoleDefinitionId value.
      */
     public String managedByRoleDefinitionId() {
@@ -83,7 +88,7 @@ public final class ResourceProviderAuthorization {
 
     /**
      * Set the managedByRoleDefinitionId property: The managedByRoleDefinitionId property.
-     *
+     * 
      * @param managedByRoleDefinitionId the managedByRoleDefinitionId value to set.
      * @return the ResourceProviderAuthorization object itself.
      */
@@ -94,9 +99,52 @@ public final class ResourceProviderAuthorization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationId", this.applicationId);
+        jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
+        jsonWriter.writeStringField("managedByRoleDefinitionId", this.managedByRoleDefinitionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderAuthorization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderAuthorization if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProviderAuthorization.
+     */
+    public static ResourceProviderAuthorization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderAuthorization deserializedResourceProviderAuthorization
+                = new ResourceProviderAuthorization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationId".equals(fieldName)) {
+                    deserializedResourceProviderAuthorization.applicationId = reader.getString();
+                } else if ("roleDefinitionId".equals(fieldName)) {
+                    deserializedResourceProviderAuthorization.roleDefinitionId = reader.getString();
+                } else if ("managedByRoleDefinitionId".equals(fieldName)) {
+                    deserializedResourceProviderAuthorization.managedByRoleDefinitionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderAuthorization;
+        });
     }
 }

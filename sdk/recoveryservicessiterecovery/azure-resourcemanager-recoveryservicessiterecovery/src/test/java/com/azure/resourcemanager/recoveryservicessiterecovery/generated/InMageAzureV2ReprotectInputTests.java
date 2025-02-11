@@ -26,10 +26,13 @@ public final class InMageAzureV2ReprotectInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2ReprotectInput model
-            = new InMageAzureV2ReprotectInput().withMasterTargetId("sqsqkpdmioyjpnml").withProcessServerId("qcpszp")
-                .withStorageAccountId("vqdvrdmvxyrxdhg").withRunAsAccountId("oj").withPolicyId("aotcgbzxmbtp")
-                .withLogStorageAccountId("foioyidoxzn").withDisksToInclude(Arrays.asList("dtmuuvd", "wsxmrszb"));
+        InMageAzureV2ReprotectInput model = new InMageAzureV2ReprotectInput().withMasterTargetId("sqsqkpdmioyjpnml")
+            .withProcessServerId("qcpszp")
+            .withStorageAccountId("vqdvrdmvxyrxdhg")
+            .withRunAsAccountId("oj")
+            .withPolicyId("aotcgbzxmbtp")
+            .withLogStorageAccountId("foioyidoxzn")
+            .withDisksToInclude(Arrays.asList("dtmuuvd", "wsxmrszb"));
         model = BinaryData.fromObject(model).toObject(InMageAzureV2ReprotectInput.class);
         Assertions.assertEquals("sqsqkpdmioyjpnml", model.masterTargetId());
         Assertions.assertEquals("qcpszp", model.processServerId());

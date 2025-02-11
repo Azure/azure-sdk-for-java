@@ -20,29 +20,26 @@ public final class HostSettingsImpl implements HostSettings {
 
     private final com.azure.resourcemanager.botservice.BotServiceManager serviceManager;
 
-    public HostSettingsImpl(
-        HostSettingsClient innerClient, com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
+    public HostSettingsImpl(HostSettingsClient innerClient,
+        com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<HostSettingsResponse> getWithResponse(Context context) {
+        Response<HostSettingsResponseInner> inner = this.serviceClient().getWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new HostSettingsResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public HostSettingsResponse get() {
         HostSettingsResponseInner inner = this.serviceClient().get();
         if (inner != null) {
             return new HostSettingsResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<HostSettingsResponse> getWithResponse(Context context) {
-        Response<HostSettingsResponseInner> inner = this.serviceClient().getWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new HostSettingsResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

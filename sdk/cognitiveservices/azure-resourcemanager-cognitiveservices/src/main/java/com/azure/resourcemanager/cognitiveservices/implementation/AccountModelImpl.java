@@ -21,11 +21,14 @@ public final class AccountModelImpl implements AccountModel {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    AccountModelImpl(
-        AccountModelInner innerObject,
+    AccountModelImpl(AccountModelInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public String publisher() {
+        return this.innerModel().publisher();
     }
 
     public String format() {
@@ -42,6 +45,10 @@ public final class AccountModelImpl implements AccountModel {
 
     public String source() {
         return this.innerModel().source();
+    }
+
+    public String sourceAccount() {
+        return this.innerModel().sourceAccount();
     }
 
     public CallRateLimit callRateLimit() {

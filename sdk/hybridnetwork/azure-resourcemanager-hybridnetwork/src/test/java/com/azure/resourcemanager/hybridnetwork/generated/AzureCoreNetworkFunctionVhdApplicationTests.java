@@ -44,7 +44,8 @@ public final class AzureCoreNetworkFunctionVhdApplicationTests {
                     .withUninstallDependsOn(Arrays.asList("zbfhfovvac", "pbt", "odxeszabbela"))
                     .withUpdateDependsOn(Arrays.asList("ua", "lzkwrrwoy")))
                 .withArtifactProfile(new AzureCoreVhdImageArtifactProfile()
-                    .withArtifactStore(new ReferencedResource().withId("nwncypuuw")).withVhdArtifactProfile(
+                    .withArtifactStore(new ReferencedResource().withId("nwncypuuw"))
+                    .withVhdArtifactProfile(
                         new VhdImageArtifactProfile().withVhdName("di").withVhdVersion("zsdbccxjmon")))
                 .withDeployParametersMappingRuleProfile(new AzureCoreVhdImageDeployMappingRuleProfile()
                     .withApplicationEnablement(ApplicationEnablement.DISABLED)

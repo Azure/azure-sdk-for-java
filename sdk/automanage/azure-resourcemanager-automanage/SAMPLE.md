@@ -76,20 +76,21 @@
 ### BestPractices_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BestPractices Get. */
+/**
+ * Samples for BestPractices Get.
+ */
 public final class BestPracticesGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getBestPractice.json
+     * x-ms-original-file:
+     * specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getBestPractice.json
      */
     /**
      * Sample code: Get an Automanage best practice.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void getAnAutomanageBestPractice(com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.bestPractices().getWithResponse("azureBestPracticesProduction", Context.NONE);
+        manager.bestPractices().getWithResponse("azureBestPracticesProduction", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -97,20 +98,21 @@ public final class BestPracticesGetSamples {
 ### BestPractices_ListByTenant
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BestPractices ListByTenant. */
+/**
+ * Samples for BestPractices ListByTenant.
+ */
 public final class BestPracticesListByTenantSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listBestPracticesByTenant.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listBestPracticesByTenant.json
      */
     /**
      * Sample code: List Automanage bestPractices.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listAutomanageBestPractices(com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.bestPractices().listByTenant(Context.NONE);
+        manager.bestPractices().listByTenant(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -118,21 +120,24 @@ public final class BestPracticesListByTenantSamples {
 ### BestPracticesVersions_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BestPracticesVersions Get. */
+/**
+ * Samples for BestPracticesVersions Get.
+ */
 public final class BestPracticesVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getBestPracticeVersion.json
+     * x-ms-original-file:
+     * specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getBestPracticeVersion.
+     * json
      */
     /**
      * Sample code: Get an Automanage best practice version.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void getAnAutomanageBestPracticeVersion(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.bestPracticesVersions().getWithResponse("azureBestPracticesProduction", "version1", Context.NONE);
+    public static void
+        getAnAutomanageBestPracticeVersion(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.bestPracticesVersions()
+            .getWithResponse("azureBestPracticesProduction", "version1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -140,21 +145,22 @@ public final class BestPracticesVersionsGetSamples {
 ### BestPracticesVersions_ListByTenant
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BestPracticesVersions ListByTenant. */
+/**
+ * Samples for BestPracticesVersions ListByTenant.
+ */
 public final class BestPracticesVersionsListByTenantSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listBestPracticesVersionsByTenant.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listBestPracticesVersionsByTenant.json
      */
     /**
      * Sample code: List Automanage best practices versions.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void listAutomanageBestPracticesVersions(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.bestPracticesVersions().listByTenant("azureBestPracticesProduction", Context.NONE);
+    public static void
+        listAutomanageBestPracticesVersions(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.bestPracticesVersions().listByTenant("azureBestPracticesProduction", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -164,26 +170,26 @@ public final class BestPracticesVersionsListByTenantSamples {
 ```java
 import com.azure.resourcemanager.automanage.models.ConfigurationProfileAssignmentProperties;
 
-/** Samples for ConfigurationProfileAssignments CreateOrUpdate. */
+/**
+ * Samples for ConfigurationProfileAssignments CreateOrUpdate.
+ */
 public final class ConfigurationProfileAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/createOrUpdateConfigurationProfileAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * createOrUpdateConfigurationProfileAssignment.json
      */
     /**
      * Sample code: Create or update configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void createOrUpdateConfigurationProfileAssignment(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileAssignments()
+    public static void
+        createOrUpdateConfigurationProfileAssignment(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfileAssignments()
             .define("default")
             .withExistingVirtualMachine("myResourceGroupName", "myVMName")
-            .withProperties(
-                new ConfigurationProfileAssignmentProperties()
-                    .withConfigurationProfile(
-                        "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"))
+            .withProperties(new ConfigurationProfileAssignmentProperties()
+                .withConfigurationProfile("/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"))
             .create();
     }
 }
@@ -192,23 +198,23 @@ public final class ConfigurationProfileAssignmentsCreateOrUpdateSamples {
 ### ConfigurationProfileAssignments_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileAssignments Delete. */
+/**
+ * Samples for ConfigurationProfileAssignments Delete.
+ */
 public final class ConfigurationProfileAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/deleteConfigurationProfileAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * deleteConfigurationProfileAssignment.json
      */
     /**
      * Sample code: Delete an configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void deleteAnConfigurationProfileAssignment(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileAssignments()
-            .deleteWithResponse("myResourceGroupName", "default", "myVMName", Context.NONE);
+    public static void
+        deleteAnConfigurationProfileAssignment(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfileAssignments()
+            .deleteWithResponse("myResourceGroupName", "default", "myVMName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -216,23 +222,23 @@ public final class ConfigurationProfileAssignmentsDeleteSamples {
 ### ConfigurationProfileAssignments_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileAssignments Get. */
+/**
+ * Samples for ConfigurationProfileAssignments Get.
+ */
 public final class ConfigurationProfileAssignmentsGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getConfigurationProfileAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * getConfigurationProfileAssignment.json
      */
     /**
      * Sample code: Get a configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void getAConfigurationProfileAssignment(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileAssignments()
-            .getWithResponse("myResourceGroupName", "default", "myVMName", Context.NONE);
+    public static void
+        getAConfigurationProfileAssignment(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfileAssignments()
+            .getWithResponse("myResourceGroupName", "default", "myVMName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -240,21 +246,22 @@ public final class ConfigurationProfileAssignmentsGetSamples {
 ### ConfigurationProfileAssignments_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileAssignments List. */
+/**
+ * Samples for ConfigurationProfileAssignments List.
+ */
 public final class ConfigurationProfileAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listConfigurationProfileAssignmentsBySubscription.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listConfigurationProfileAssignmentsBySubscription.json
      */
     /**
      * Sample code: List configuration profile assignments by subscription.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listConfigurationProfileAssignmentsBySubscription(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.configurationProfileAssignments().list(Context.NONE);
+        manager.configurationProfileAssignments().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -262,23 +269,23 @@ public final class ConfigurationProfileAssignmentsListSamples {
 ### ConfigurationProfileAssignments_ListByClusterName
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileAssignments ListByClusterName. */
+/**
+ * Samples for ConfigurationProfileAssignments ListByClusterName.
+ */
 public final class ConfigurationProfileAssignmentsListByClusterNameSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listConfigurationProfileAssignmentsByClusterName.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listConfigurationProfileAssignmentsByClusterName.json
      */
     /**
      * Sample code: List configuration profile assignments by resourceGroup and cluster.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listConfigurationProfileAssignmentsByResourceGroupAndCluster(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileAssignments()
-            .listByClusterName("myResourceGroupName", "myClusterName", Context.NONE);
+        manager.configurationProfileAssignments()
+            .listByClusterName("myResourceGroupName", "myClusterName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -286,23 +293,23 @@ public final class ConfigurationProfileAssignmentsListByClusterNameSamples {
 ### ConfigurationProfileAssignments_ListByMachineName
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileAssignments ListByMachineName. */
+/**
+ * Samples for ConfigurationProfileAssignments ListByMachineName.
+ */
 public final class ConfigurationProfileAssignmentsListByMachineNameSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listConfigurationProfileAssignmentsByMachineName.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listConfigurationProfileAssignmentsByMachineName.json
      */
     /**
      * Sample code: List configuration profile assignments by resourceGroup and machine.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listConfigurationProfileAssignmentsByResourceGroupAndMachine(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileAssignments()
-            .listByMachineName("myResourceGroupName", "myMachineName", Context.NONE);
+        manager.configurationProfileAssignments()
+            .listByMachineName("myResourceGroupName", "myMachineName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -310,21 +317,23 @@ public final class ConfigurationProfileAssignmentsListByMachineNameSamples {
 ### ConfigurationProfileAssignments_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileAssignments ListByResourceGroup. */
+/**
+ * Samples for ConfigurationProfileAssignments ListByResourceGroup.
+ */
 public final class ConfigurationProfileAssignmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listConfigurationProfileAssignmentsByResourceGroup.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listConfigurationProfileAssignmentsByResourceGroup.json
      */
     /**
      * Sample code: List configuration profile assignments by resourceGroup.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listConfigurationProfileAssignmentsByResourceGroup(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.configurationProfileAssignments().listByResourceGroup("myResourceGroupName", Context.NONE);
+        manager.configurationProfileAssignments()
+            .listByResourceGroup("myResourceGroupName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -332,23 +341,23 @@ public final class ConfigurationProfileAssignmentsListByResourceGroupSamples {
 ### ConfigurationProfileAssignments_ListByVirtualMachines
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileAssignments ListByVirtualMachines. */
+/**
+ * Samples for ConfigurationProfileAssignments ListByVirtualMachines.
+ */
 public final class ConfigurationProfileAssignmentsListByVirtualMachinesSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listConfigurationProfileAssignmentsByVirtualMachines.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listConfigurationProfileAssignmentsByVirtualMachines.json
      */
     /**
      * Sample code: List configuration profile assignments by resourceGroup and virtual machine.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listConfigurationProfileAssignmentsByResourceGroupAndVirtualMachine(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileAssignments()
-            .listByVirtualMachines("myResourceGroupName", "myVMName", Context.NONE);
+        manager.configurationProfileAssignments()
+            .listByVirtualMachines("myResourceGroupName", "myVMName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -356,34 +365,30 @@ public final class ConfigurationProfileAssignmentsListByVirtualMachinesSamples {
 ### ConfigurationProfileHciAssignments_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileAssignmentInner;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfileAssignmentProperties;
 
-/** Samples for ConfigurationProfileHciAssignments CreateOrUpdate. */
+/**
+ * Samples for ConfigurationProfileHciAssignments CreateOrUpdate.
+ */
 public final class ConfigurationProfileHciAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/createOrUpdateConfigurationProfileHCIAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * createOrUpdateConfigurationProfileHCIAssignment.json
      */
     /**
      * Sample code: Create or update a HCI configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void createOrUpdateAHCIConfigurationProfileAssignment(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileHciAssignments()
-            .createOrUpdateWithResponse(
-                "myResourceGroupName",
-                "myClusterName",
-                "default",
+        manager.configurationProfileHciAssignments()
+            .createOrUpdateWithResponse("myResourceGroupName", "myClusterName", "default",
                 new ConfigurationProfileAssignmentInner()
-                    .withProperties(
-                        new ConfigurationProfileAssignmentProperties()
-                            .withConfigurationProfile(
-                                "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction")),
-                Context.NONE);
+                    .withProperties(new ConfigurationProfileAssignmentProperties().withConfigurationProfile(
+                        "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -391,23 +396,23 @@ public final class ConfigurationProfileHciAssignmentsCreateOrUpdateSamples {
 ### ConfigurationProfileHciAssignments_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileHciAssignments Delete. */
+/**
+ * Samples for ConfigurationProfileHciAssignments Delete.
+ */
 public final class ConfigurationProfileHciAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/deleteConfigurationProfileHCIAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * deleteConfigurationProfileHCIAssignment.json
      */
     /**
      * Sample code: Delete a HCI configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void deleteAHCIConfigurationProfileAssignment(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileHciAssignments()
-            .deleteWithResponse("myResourceGroupName", "myClusterName", "default", Context.NONE);
+    public static void
+        deleteAHCIConfigurationProfileAssignment(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfileHciAssignments()
+            .deleteWithResponse("myResourceGroupName", "myClusterName", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -415,23 +420,23 @@ public final class ConfigurationProfileHciAssignmentsDeleteSamples {
 ### ConfigurationProfileHciAssignments_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileHciAssignments Get. */
+/**
+ * Samples for ConfigurationProfileHciAssignments Get.
+ */
 public final class ConfigurationProfileHciAssignmentsGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getConfigurationProfileHCIAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * getConfigurationProfileHCIAssignment.json
      */
     /**
      * Sample code: Get a HCI configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void getAHCIConfigurationProfileAssignment(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileHciAssignments()
-            .getWithResponse("myResourceGroupName", "myClusterName", "default", Context.NONE);
+    public static void
+        getAHCIConfigurationProfileAssignment(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfileHciAssignments()
+            .getWithResponse("myResourceGroupName", "myClusterName", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -439,34 +444,30 @@ public final class ConfigurationProfileHciAssignmentsGetSamples {
 ### ConfigurationProfileHcrpAssignments_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileAssignmentInner;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfileAssignmentProperties;
 
-/** Samples for ConfigurationProfileHcrpAssignments CreateOrUpdate. */
+/**
+ * Samples for ConfigurationProfileHcrpAssignments CreateOrUpdate.
+ */
 public final class ConfigurationProfileHcrpAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/createOrUpdateConfigurationProfileHCRPAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * createOrUpdateConfigurationProfileHCRPAssignment.json
      */
     /**
      * Sample code: Create or update HCRP configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void createOrUpdateHCRPConfigurationProfileAssignment(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileHcrpAssignments()
-            .createOrUpdateWithResponse(
-                "myResourceGroupName",
-                "myMachineName",
-                "default",
+        manager.configurationProfileHcrpAssignments()
+            .createOrUpdateWithResponse("myResourceGroupName", "myMachineName", "default",
                 new ConfigurationProfileAssignmentInner()
-                    .withProperties(
-                        new ConfigurationProfileAssignmentProperties()
-                            .withConfigurationProfile(
-                                "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction")),
-                Context.NONE);
+                    .withProperties(new ConfigurationProfileAssignmentProperties().withConfigurationProfile(
+                        "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -474,23 +475,23 @@ public final class ConfigurationProfileHcrpAssignmentsCreateOrUpdateSamples {
 ### ConfigurationProfileHcrpAssignments_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileHcrpAssignments Delete. */
+/**
+ * Samples for ConfigurationProfileHcrpAssignments Delete.
+ */
 public final class ConfigurationProfileHcrpAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/deleteConfigurationProfileHCRPAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * deleteConfigurationProfileHCRPAssignment.json
      */
     /**
      * Sample code: Delete a HCRP configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void deleteAHCRPConfigurationProfileAssignment(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileHcrpAssignments()
-            .deleteWithResponse("myResourceGroupName", "myMachineName", "default", Context.NONE);
+    public static void
+        deleteAHCRPConfigurationProfileAssignment(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfileHcrpAssignments()
+            .deleteWithResponse("myResourceGroupName", "myMachineName", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -498,23 +499,23 @@ public final class ConfigurationProfileHcrpAssignmentsDeleteSamples {
 ### ConfigurationProfileHcrpAssignments_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileHcrpAssignments Get. */
+/**
+ * Samples for ConfigurationProfileHcrpAssignments Get.
+ */
 public final class ConfigurationProfileHcrpAssignmentsGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getConfigurationProfileHCRPAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * getConfigurationProfileHCRPAssignment.json
      */
     /**
      * Sample code: Get a HCRP configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void getAHCRPConfigurationProfileAssignment(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileHcrpAssignments()
-            .getWithResponse("myResourceGroupName", "myMachineName", "default", Context.NONE);
+    public static void
+        getAHCRPConfigurationProfileAssignment(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfileHcrpAssignments()
+            .getWithResponse("myResourceGroupName", "myMachineName", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -524,41 +525,40 @@ public final class ConfigurationProfileHcrpAssignmentsGetSamples {
 ```java
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileProperties;
+import com.azure.resourcemanager.automanage.models.ConfigurationProfileProperties;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ConfigurationProfiles CreateOrUpdate. */
+/**
+ * Samples for ConfigurationProfiles CreateOrUpdate.
+ */
 public final class ConfigurationProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/createOrUpdateConfigurationProfile.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * createOrUpdateConfigurationProfile.json
      */
     /**
      * Sample code: Create or update configuration profile.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void createOrUpdateConfigurationProfile(
         com.azure.resourcemanager.automanage.AutomanageManager manager) throws IOException {
-        manager
-            .configurationProfiles()
+        manager.configurationProfiles()
             .define("customConfigurationProfile")
             .withRegion("East US")
             .withExistingResourceGroup("myResourceGroupName")
             .withTags(mapOf("Organization", "Administration"))
-            .withProperties(
-                new ConfigurationProfileProperties()
-                    .withConfiguration(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize(
-                                "{\"Antimalware/Enable\":false,\"AzureSecurityCenter/Enable\":true,\"Backup/Enable\":false,\"BootDiagnostics/Enable\":true,\"ChangeTrackingAndInventory/Enable\":true,\"GuestConfiguration/Enable\":true,\"LogAnalytics/Enable\":true,\"UpdateManagement/Enable\":true,\"VMInsights/Enable\":true}",
-                                Object.class,
-                                SerializerEncoding.JSON)))
+            .withProperties(new ConfigurationProfileProperties().withConfiguration(SerializerFactory
+                .createDefaultManagementSerializerAdapter()
+                .deserialize(
+                    "{\"Antimalware/Enable\":false,\"AzureSecurityCenter/Enable\":true,\"Backup/Enable\":false,\"BootDiagnostics/Enable\":true,\"ChangeTrackingAndInventory/Enable\":true,\"GuestConfiguration/Enable\":true,\"LogAnalytics/Enable\":true,\"UpdateManagement/Enable\":true,\"VMInsights/Enable\":true}",
+                    Object.class, SerializerEncoding.JSON)))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -575,20 +575,22 @@ public final class ConfigurationProfilesCreateOrUpdateSamples {
 ### ConfigurationProfiles_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfiles Delete. */
+/**
+ * Samples for ConfigurationProfiles Delete.
+ */
 public final class ConfigurationProfilesDeleteSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/deleteConfigurationProfile.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * deleteConfigurationProfile.json
      */
     /**
      * Sample code: Delete a configuration profile.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void deleteAConfigurationProfile(com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.configurationProfiles().deleteWithResponse("rg", "customConfigurationProfile", Context.NONE);
+        manager.configurationProfiles()
+            .deleteByResourceGroupWithResponse("rg", "customConfigurationProfile", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -596,22 +598,24 @@ public final class ConfigurationProfilesDeleteSamples {
 ### ConfigurationProfiles_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfiles GetByResourceGroup. */
+/**
+ * Samples for ConfigurationProfiles GetByResourceGroup.
+ */
 public final class ConfigurationProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getConfigurationProfile.json
+     * x-ms-original-file:
+     * specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getConfigurationProfile
+     * .json
      */
     /**
      * Sample code: Get a configuration profile.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void getAConfigurationProfile(com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfiles()
-            .getByResourceGroupWithResponse("myResourceGroupName", "customConfigurationProfile", Context.NONE);
+        manager.configurationProfiles()
+            .getByResourceGroupWithResponse("myResourceGroupName", "customConfigurationProfile",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -619,21 +623,22 @@ public final class ConfigurationProfilesGetByResourceGroupSamples {
 ### ConfigurationProfiles_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfiles List. */
+/**
+ * Samples for ConfigurationProfiles List.
+ */
 public final class ConfigurationProfilesListSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listConfigurationProfilesBySubscription.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listConfigurationProfilesBySubscription.json
      */
     /**
      * Sample code: List configuration profiles by subscription.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void listConfigurationProfilesBySubscription(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.configurationProfiles().list(Context.NONE);
+    public static void
+        listConfigurationProfilesBySubscription(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfiles().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -641,21 +646,22 @@ public final class ConfigurationProfilesListSamples {
 ### ConfigurationProfiles_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfiles ListByResourceGroup. */
+/**
+ * Samples for ConfigurationProfiles ListByResourceGroup.
+ */
 public final class ConfigurationProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listConfigurationProfilesByResourceGroup.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listConfigurationProfilesByResourceGroup.json
      */
     /**
      * Sample code: List configuration profiles by resource group.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void listConfigurationProfilesByResourceGroup(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.configurationProfiles().listByResourceGroup("myResourceGroupName", Context.NONE);
+    public static void
+        listConfigurationProfilesByResourceGroup(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfiles().listByResourceGroup("myResourceGroupName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -664,46 +670,43 @@ public final class ConfigurationProfilesListByResourceGroupSamples {
 
 ```java
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileProperties;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfile;
+import com.azure.resourcemanager.automanage.models.ConfigurationProfileProperties;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ConfigurationProfiles Update. */
+/**
+ * Samples for ConfigurationProfiles Update.
+ */
 public final class ConfigurationProfilesUpdateSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/updateConfigurationProfile.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * updateConfigurationProfile.json
      */
     /**
      * Sample code: Update configuration profile.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void updateConfigurationProfile(com.azure.resourcemanager.automanage.AutomanageManager manager)
         throws IOException {
-        ConfigurationProfile resource =
-            manager
-                .configurationProfiles()
-                .getByResourceGroupWithResponse("myResourceGroupName", "customConfigurationProfile", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        ConfigurationProfile resource = manager.configurationProfiles()
+            .getByResourceGroupWithResponse("myResourceGroupName", "customConfigurationProfile",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("Organization", "Administration"))
-            .withProperties(
-                new ConfigurationProfileProperties()
-                    .withConfiguration(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize(
-                                "{\"Antimalware/Enable\":false,\"AzureSecurityCenter/Enable\":true,\"Backup/Enable\":false,\"BootDiagnostics/Enable\":true,\"ChangeTrackingAndInventory/Enable\":true,\"GuestConfiguration/Enable\":true,\"LogAnalytics/Enable\":true,\"UpdateManagement/Enable\":true,\"VMInsights/Enable\":true}",
-                                Object.class,
-                                SerializerEncoding.JSON)))
+            .withProperties(new ConfigurationProfileProperties().withConfiguration(SerializerFactory
+                .createDefaultManagementSerializerAdapter()
+                .deserialize(
+                    "{\"Antimalware/Enable\":false,\"AzureSecurityCenter/Enable\":true,\"Backup/Enable\":false,\"BootDiagnostics/Enable\":true,\"ChangeTrackingAndInventory/Enable\":true,\"GuestConfiguration/Enable\":true,\"LogAnalytics/Enable\":true,\"UpdateManagement/Enable\":true,\"VMInsights/Enable\":true}",
+                    Object.class, SerializerEncoding.JSON)))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -721,47 +724,41 @@ public final class ConfigurationProfilesUpdateSamples {
 
 ```java
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileInner;
-import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileProperties;
+import com.azure.resourcemanager.automanage.models.ConfigurationProfileProperties;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ConfigurationProfilesVersions CreateOrUpdate. */
+/**
+ * Samples for ConfigurationProfilesVersions CreateOrUpdate.
+ */
 public final class ConfigurationProfilesVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/createOrUpdateConfigurationProfileVersion.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * createOrUpdateConfigurationProfileVersion.json
      */
     /**
      * Sample code: Create or update configuration profile version.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void createOrUpdateConfigurationProfileVersion(
         com.azure.resourcemanager.automanage.AutomanageManager manager) throws IOException {
-        manager
-            .configurationProfilesVersions()
-            .createOrUpdateWithResponse(
-                "customConfigurationProfile",
-                "version1",
-                "myResourceGroupName",
-                new ConfigurationProfileInner()
-                    .withLocation("East US")
+        manager.configurationProfilesVersions()
+            .createOrUpdateWithResponse("customConfigurationProfile", "version1", "myResourceGroupName",
+                new ConfigurationProfileInner().withLocation("East US")
                     .withTags(mapOf("Organization", "Administration"))
-                    .withProperties(
-                        new ConfigurationProfileProperties()
-                            .withConfiguration(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize(
-                                        "{\"Antimalware/Enable\":false,\"AzureSecurityCenter/Enable\":true,\"Backup/Enable\":false,\"BootDiagnostics/Enable\":true,\"ChangeTrackingAndInventory/Enable\":true,\"GuestConfiguration/Enable\":true,\"LogAnalytics/Enable\":true,\"UpdateManagement/Enable\":true,\"VMInsights/Enable\":true}",
-                                        Object.class,
-                                        SerializerEncoding.JSON))),
-                Context.NONE);
+                    .withProperties(new ConfigurationProfileProperties().withConfiguration(SerializerFactory
+                        .createDefaultManagementSerializerAdapter()
+                        .deserialize(
+                            "{\"Antimalware/Enable\":false,\"AzureSecurityCenter/Enable\":true,\"Backup/Enable\":false,\"BootDiagnostics/Enable\":true,\"ChangeTrackingAndInventory/Enable\":true,\"GuestConfiguration/Enable\":true,\"LogAnalytics/Enable\":true,\"UpdateManagement/Enable\":true,\"VMInsights/Enable\":true}",
+                            Object.class, SerializerEncoding.JSON))),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -778,23 +775,23 @@ public final class ConfigurationProfilesVersionsCreateOrUpdateSamples {
 ### ConfigurationProfilesVersions_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfilesVersions Delete. */
+/**
+ * Samples for ConfigurationProfilesVersions Delete.
+ */
 public final class ConfigurationProfilesVersionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/deleteConfigurationProfileVersion.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * deleteConfigurationProfileVersion.json
      */
     /**
      * Sample code: Delete a configuration profile version.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void deleteAConfigurationProfileVersion(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfilesVersions()
-            .deleteWithResponse("rg", "customConfigurationProfile", "version1", Context.NONE);
+    public static void
+        deleteAConfigurationProfileVersion(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfilesVersions()
+            .deleteWithResponse("rg", "customConfigurationProfile", "version1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -802,22 +799,23 @@ public final class ConfigurationProfilesVersionsDeleteSamples {
 ### ConfigurationProfilesVersions_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfilesVersions Get. */
+/**
+ * Samples for ConfigurationProfilesVersions Get.
+ */
 public final class ConfigurationProfilesVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getConfigurationProfileVersion.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * getConfigurationProfileVersion.json
      */
     /**
      * Sample code: Get a configuration profile version.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void getAConfigurationProfileVersion(com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfilesVersions()
-            .getWithResponse("customConfigurationProfile", "version1", "myResourceGroupName", Context.NONE);
+        manager.configurationProfilesVersions()
+            .getWithResponse("customConfigurationProfile", "version1", "myResourceGroupName",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -825,23 +823,23 @@ public final class ConfigurationProfilesVersionsGetSamples {
 ### ConfigurationProfilesVersions_ListChildResources
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfilesVersions ListChildResources. */
+/**
+ * Samples for ConfigurationProfilesVersions ListChildResources.
+ */
 public final class ConfigurationProfilesVersionsListChildResourcesSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listConfigurationProfileVersions.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listConfigurationProfileVersions.json
      */
     /**
      * Sample code: List configuration profile versions by configuration profile.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listConfigurationProfileVersionsByConfigurationProfile(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfilesVersions()
-            .listChildResources("customConfigurationProfile", "myResourceGroupName", Context.NONE);
+        manager.configurationProfilesVersions()
+            .listChildResources("customConfigurationProfile", "myResourceGroupName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -849,28 +847,24 @@ public final class ConfigurationProfilesVersionsListChildResourcesSamples {
 ### HciReports_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for HciReports Get. */
+/**
+ * Samples for HciReports Get.
+ */
 public final class HciReportsGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getHCIReport.json
+     * x-ms-original-file:
+     * specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getHCIReport.json
      */
     /**
      * Sample code: Get a report for a HCI configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void getAReportForAHCIConfigurationProfileAssignment(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .hciReports()
-            .getWithResponse(
-                "myResourceGroupName",
-                "myClusterName",
-                "default",
-                "b4e9ee6b-1717-4ff0-a8d2-e6d72c33d5f4",
-                Context.NONE);
+        manager.hciReports()
+            .getWithResponse("myResourceGroupName", "myClusterName", "default", "b4e9ee6b-1717-4ff0-a8d2-e6d72c33d5f4",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -878,23 +872,24 @@ public final class HciReportsGetSamples {
 ### HciReports_ListByConfigurationProfileAssignments
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for HciReports ListByConfigurationProfileAssignments. */
+/**
+ * Samples for HciReports ListByConfigurationProfileAssignments.
+ */
 public final class HciReportsListByConfigurationProfileAssignmentsSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listReportsByconfigurationProfileHCIAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listReportsByconfigurationProfileHCIAssignment.json
      */
     /**
      * Sample code: List reports by HCI configuration profiles assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listReportsByHCIConfigurationProfilesAssignment(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .hciReports()
-            .listByConfigurationProfileAssignments("myResourceGroupName", "myClusterName", "default", Context.NONE);
+        manager.hciReports()
+            .listByConfigurationProfileAssignments("myResourceGroupName", "myClusterName", "default",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -902,28 +897,24 @@ public final class HciReportsListByConfigurationProfileAssignmentsSamples {
 ### HcrpReports_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for HcrpReports Get. */
+/**
+ * Samples for HcrpReports Get.
+ */
 public final class HcrpReportsGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getHCRPReport.json
+     * x-ms-original-file:
+     * specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getHCRPReport.json
      */
     /**
      * Sample code: Get a report for a HCRP configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void getAReportForAHCRPConfigurationProfileAssignment(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .hcrpReports()
-            .getWithResponse(
-                "myResourceGroupName",
-                "myMachineName",
-                "default",
-                "b4e9ee6b-1717-4ff0-a8d2-e6d72c33d5f4",
-                Context.NONE);
+        manager.hcrpReports()
+            .getWithResponse("myResourceGroupName", "myMachineName", "default", "b4e9ee6b-1717-4ff0-a8d2-e6d72c33d5f4",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -931,23 +922,24 @@ public final class HcrpReportsGetSamples {
 ### HcrpReports_ListByConfigurationProfileAssignments
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for HcrpReports ListByConfigurationProfileAssignments. */
+/**
+ * Samples for HcrpReports ListByConfigurationProfileAssignments.
+ */
 public final class HcrpReportsListByConfigurationProfileAssignmentsSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listReportsByconfigurationProfileHCRPAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listReportsByconfigurationProfileHCRPAssignment.json
      */
     /**
      * Sample code: List reports by HCRP configuration profiles assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listReportsByHCRPConfigurationProfilesAssignment(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .hcrpReports()
-            .listByConfigurationProfileAssignments("myResourceGroupName", "myMachineName", "default", Context.NONE);
+        manager.hcrpReports()
+            .listByConfigurationProfileAssignments("myResourceGroupName", "myMachineName", "default",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -955,21 +947,22 @@ public final class HcrpReportsListByConfigurationProfileAssignmentsSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listOperations.json
+     * x-ms-original-file:
+     * specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listOperations.json
      */
     /**
      * Sample code: Lists all of the available Automanage REST API operations.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listsAllOfTheAvailableAutomanageRESTAPIOperations(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -977,24 +970,24 @@ public final class OperationsListSamples {
 ### Reports_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Reports Get. */
+/**
+ * Samples for Reports Get.
+ */
 public final class ReportsGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getReport.json
+     * x-ms-original-file:
+     * specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getReport.json
      */
     /**
      * Sample code: Get a report for a configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void getAReportForAConfigurationProfileAssignment(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .reports()
-            .getWithResponse(
-                "myResourceGroupName", "default", "b4e9ee6b-1717-4ff0-a8d2-e6d72c33d5f4", "myVMName", Context.NONE);
+    public static void
+        getAReportForAConfigurationProfileAssignment(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.reports()
+            .getWithResponse("myResourceGroupName", "default", "b4e9ee6b-1717-4ff0-a8d2-e6d72c33d5f4", "myVMName",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1002,23 +995,24 @@ public final class ReportsGetSamples {
 ### Reports_ListByConfigurationProfileAssignments
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Reports ListByConfigurationProfileAssignments. */
+/**
+ * Samples for Reports ListByConfigurationProfileAssignments.
+ */
 public final class ReportsListByConfigurationProfileAssignmentsSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listReportsByconfigurationProfileAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listReportsByconfigurationProfileAssignment.json
      */
     /**
      * Sample code: List reports by configuration profiles assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void listReportsByConfigurationProfilesAssignment(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .reports()
-            .listByConfigurationProfileAssignments("myResourceGroupName", "default", "myVMName", Context.NONE);
+    public static void
+        listReportsByConfigurationProfilesAssignment(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.reports()
+            .listByConfigurationProfileAssignments("myResourceGroupName", "default", "myVMName",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1026,20 +1020,22 @@ public final class ReportsListByConfigurationProfileAssignmentsSamples {
 ### ServicePrincipals_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ServicePrincipals Get. */
+/**
+ * Samples for ServicePrincipals Get.
+ */
 public final class ServicePrincipalsGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getServicePrincipal.json
+     * x-ms-original-file:
+     * specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getServicePrincipal.
+     * json
      */
     /**
      * Sample code: Get service principal.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void getServicePrincipal(com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.servicePrincipals().getWithResponse(Context.NONE);
+        manager.servicePrincipals().getWithResponse(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1047,21 +1043,22 @@ public final class ServicePrincipalsGetSamples {
 ### ServicePrincipals_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ServicePrincipals List. */
+/**
+ * Samples for ServicePrincipals List.
+ */
 public final class ServicePrincipalsListSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listServicePrincipalBySubscription.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listServicePrincipalBySubscription.json
      */
     /**
      * Sample code: List service principal by subscription.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void listServicePrincipalBySubscription(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.servicePrincipals().list(Context.NONE);
+    public static void
+        listServicePrincipalBySubscription(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.servicePrincipals().list(com.azure.core.util.Context.NONE);
     }
 }
 ```

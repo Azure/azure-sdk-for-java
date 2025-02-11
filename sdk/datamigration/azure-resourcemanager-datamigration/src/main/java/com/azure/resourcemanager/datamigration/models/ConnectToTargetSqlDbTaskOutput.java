@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Output for the task that validates connection to SQL DB and target server requirements. */
+/**
+ * Output for the task that validates connection to SQL DB and target server requirements.
+ */
 @Immutable
-public final class ConnectToTargetSqlDbTaskOutput {
+public final class ConnectToTargetSqlDbTaskOutput implements JsonSerializable<ConnectToTargetSqlDbTaskOutput> {
     /*
      * Result identifier
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Source databases as a map from database name to database id
      */
-    @JsonProperty(value = "databases", access = JsonProperty.Access.WRITE_ONLY)
     private String databases;
 
     /*
      * Version of the target server
      */
-    @JsonProperty(value = "targetServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServerVersion;
 
     /*
      * Target server brand version
      */
-    @JsonProperty(value = "targetServerBrandVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServerBrandVersion;
 
-    /** Creates an instance of ConnectToTargetSqlDbTaskOutput class. */
+    /**
+     * Creates an instance of ConnectToTargetSqlDbTaskOutput class.
+     */
     public ConnectToTargetSqlDbTaskOutput() {
     }
 
     /**
      * Get the id property: Result identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -49,7 +53,7 @@ public final class ConnectToTargetSqlDbTaskOutput {
 
     /**
      * Get the databases property: Source databases as a map from database name to database id.
-     *
+     * 
      * @return the databases value.
      */
     public String databases() {
@@ -58,7 +62,7 @@ public final class ConnectToTargetSqlDbTaskOutput {
 
     /**
      * Get the targetServerVersion property: Version of the target server.
-     *
+     * 
      * @return the targetServerVersion value.
      */
     public String targetServerVersion() {
@@ -67,7 +71,7 @@ public final class ConnectToTargetSqlDbTaskOutput {
 
     /**
      * Get the targetServerBrandVersion property: Target server brand version.
-     *
+     * 
      * @return the targetServerBrandVersion value.
      */
     public String targetServerBrandVersion() {
@@ -76,9 +80,51 @@ public final class ConnectToTargetSqlDbTaskOutput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToTargetSqlDbTaskOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToTargetSqlDbTaskOutput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectToTargetSqlDbTaskOutput.
+     */
+    public static ConnectToTargetSqlDbTaskOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToTargetSqlDbTaskOutput deserializedConnectToTargetSqlDbTaskOutput
+                = new ConnectToTargetSqlDbTaskOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectToTargetSqlDbTaskOutput.id = reader.getString();
+                } else if ("databases".equals(fieldName)) {
+                    deserializedConnectToTargetSqlDbTaskOutput.databases = reader.getString();
+                } else if ("targetServerVersion".equals(fieldName)) {
+                    deserializedConnectToTargetSqlDbTaskOutput.targetServerVersion = reader.getString();
+                } else if ("targetServerBrandVersion".equals(fieldName)) {
+                    deserializedConnectToTargetSqlDbTaskOutput.targetServerBrandVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToTargetSqlDbTaskOutput;
+        });
     }
 }

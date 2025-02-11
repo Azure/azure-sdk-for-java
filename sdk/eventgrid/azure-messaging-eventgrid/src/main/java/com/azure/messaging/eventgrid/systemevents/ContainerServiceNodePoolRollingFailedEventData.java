@@ -30,6 +30,9 @@ public final class ContainerServiceNodePoolRollingFailedEventData extends Contai
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

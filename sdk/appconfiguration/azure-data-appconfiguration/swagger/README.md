@@ -41,19 +41,13 @@ customization-class: src/main/java/AppConfigCustomization.java
 ```yaml
 output-folder: ..\
 java: true
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.42'
 enable-sync-stack: true
-generate-client-interfaces: false
 generate-client-as-impl: true
-service-interface-as-public: true
 required-fields-as-ctor-args: true
 license-header: MICROSOFT_MIT_SMALL
 disable-client-builder: true
-add-context-parameter: true
-context-client-method-parameter: true
-generic-response-type: true
 default-http-exception-type: com.azure.core.exception.HttpResponseException
-stream-style-serialization: true
 ```
 
 ### Renames enums

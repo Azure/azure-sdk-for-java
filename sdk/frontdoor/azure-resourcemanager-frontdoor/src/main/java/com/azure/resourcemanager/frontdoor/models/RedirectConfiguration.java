@@ -5,63 +5,53 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes Redirect Route.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "@odata.type",
-    defaultImpl = RedirectConfiguration.class,
-    visible = true)
-@JsonTypeName("#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration")
 @Fluent
 public final class RedirectConfiguration extends RouteConfiguration {
     /*
      * The @odata.type property.
      */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration";
 
     /*
      * The redirect type the rule will use when redirecting traffic.
      */
-    @JsonProperty(value = "redirectType")
     private FrontDoorRedirectType redirectType;
 
     /*
      * The protocol of the destination to where the traffic is redirected
      */
-    @JsonProperty(value = "redirectProtocol")
     private FrontDoorRedirectProtocol redirectProtocol;
 
     /*
      * Host to redirect. Leave empty to use the incoming host as the destination host.
      */
-    @JsonProperty(value = "customHost")
     private String customHost;
 
     /*
-     * The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as destination path.
+     * The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as
+     * destination path.
      */
-    @JsonProperty(value = "customPath")
     private String customPath;
 
     /*
      * Fragment to add to the redirect URL. Fragment is the part of the URL that comes after #. Do not include the #.
      */
-    @JsonProperty(value = "customFragment")
     private String customFragment;
 
     /*
-     * The set of query strings to be placed in the redirect URL. Setting this value would replace any existing query string; leave empty to preserve the incoming query string. Query string must be in <key>=<value> format. The first ? and & will be added automatically so do not include them in the front, but do separate multiple query strings with &.
+     * The set of query strings to be placed in the redirect URL. Setting this value would replace any existing query
+     * string; leave empty to preserve the incoming query string. Query string must be in <key>=<value> format. The
+     * first ? and & will be added automatically so do not include them in the front, but do separate multiple query
+     * strings with &.
      */
-    @JsonProperty(value = "customQueryString")
     private String customQueryString;
 
     /**
@@ -217,6 +207,62 @@ public final class RedirectConfiguration extends RouteConfiguration {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("redirectType", this.redirectType == null ? null : this.redirectType.toString());
+        jsonWriter.writeStringField("redirectProtocol",
+            this.redirectProtocol == null ? null : this.redirectProtocol.toString());
+        jsonWriter.writeStringField("customHost", this.customHost);
+        jsonWriter.writeStringField("customPath", this.customPath);
+        jsonWriter.writeStringField("customFragment", this.customFragment);
+        jsonWriter.writeStringField("customQueryString", this.customQueryString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedirectConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedirectConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RedirectConfiguration.
+     */
+    public static RedirectConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedirectConfiguration deserializedRedirectConfiguration = new RedirectConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedRedirectConfiguration.odataType = reader.getString();
+                } else if ("redirectType".equals(fieldName)) {
+                    deserializedRedirectConfiguration.redirectType
+                        = FrontDoorRedirectType.fromString(reader.getString());
+                } else if ("redirectProtocol".equals(fieldName)) {
+                    deserializedRedirectConfiguration.redirectProtocol
+                        = FrontDoorRedirectProtocol.fromString(reader.getString());
+                } else if ("customHost".equals(fieldName)) {
+                    deserializedRedirectConfiguration.customHost = reader.getString();
+                } else if ("customPath".equals(fieldName)) {
+                    deserializedRedirectConfiguration.customPath = reader.getString();
+                } else if ("customFragment".equals(fieldName)) {
+                    deserializedRedirectConfiguration.customFragment = reader.getString();
+                } else if ("customQueryString".equals(fieldName)) {
+                    deserializedRedirectConfiguration.customQueryString = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedirectConfiguration;
+        });
     }
 }

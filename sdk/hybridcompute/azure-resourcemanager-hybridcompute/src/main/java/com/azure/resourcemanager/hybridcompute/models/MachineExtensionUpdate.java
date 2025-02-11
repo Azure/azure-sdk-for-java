@@ -247,7 +247,6 @@ public final class MachineExtensionUpdate extends ResourceUpdate {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the target availability zone. */
+/**
+ * Gets or sets the target availability zone.
+ */
 public final class TargetAvailabilityZone extends ExpandableStringEnum<TargetAvailabilityZone> {
-    /** Static value 1 for TargetAvailabilityZone. */
+    /**
+     * Static value 1 for TargetAvailabilityZone.
+     */
     public static final TargetAvailabilityZone ONE = fromString("1");
 
-    /** Static value 2 for TargetAvailabilityZone. */
+    /**
+     * Static value 2 for TargetAvailabilityZone.
+     */
     public static final TargetAvailabilityZone TWO = fromString("2");
 
-    /** Static value 3 for TargetAvailabilityZone. */
+    /**
+     * Static value 3 for TargetAvailabilityZone.
+     */
     public static final TargetAvailabilityZone THREE = fromString("3");
 
-    /** Static value NA for TargetAvailabilityZone. */
+    /**
+     * Static value NA for TargetAvailabilityZone.
+     */
     public static final TargetAvailabilityZone NA = fromString("NA");
 
     /**
      * Creates a new instance of TargetAvailabilityZone value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class TargetAvailabilityZone extends ExpandableStringEnum<TargetAva
 
     /**
      * Creates or finds a TargetAvailabilityZone from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TargetAvailabilityZone.
      */
-    @JsonCreator
     public static TargetAvailabilityZone fromString(String name) {
         return fromString(name, TargetAvailabilityZone.class);
     }
 
     /**
      * Gets known TargetAvailabilityZone values.
-     *
+     * 
      * @return known TargetAvailabilityZone values.
      */
     public static Collection<TargetAvailabilityZone> values() {

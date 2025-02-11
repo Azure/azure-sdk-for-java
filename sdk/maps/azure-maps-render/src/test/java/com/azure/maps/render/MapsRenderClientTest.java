@@ -60,8 +60,8 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
         MapTileOptions mapTileOptions = new MapTileOptions();
         mapTileOptions.setTilesetId(TilesetId.MICROSOFT_BASE_ROAD);
         mapTileOptions.setTileIndex(new TileIndex().setX(10).setY(22).setZ(-1000));
-        final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getMapTileWithResponse(mapTileOptions, null));
+        final HttpResponseException httpResponseException
+            = assertThrows(HttpResponseException.class, () -> client.getMapTileWithResponse(mapTileOptions, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
@@ -91,8 +91,8 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testInvalidGetMapTilesetWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
-        final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getMapTilesetWithResponse(new TilesetId(), null));
+        final HttpResponseException httpResponseException
+            = assertThrows(HttpResponseException.class, () -> client.getMapTilesetWithResponse(new TilesetId(), null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
@@ -156,10 +156,8 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     public void testGetMapStaticImage(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
         GeoBoundingBox bbox = new GeoBoundingBox(1.355233, 42.982261, 24.980233, 56.526017);
-        MapStaticImageOptions mapStaticImageOptions = new MapStaticImageOptions().setStaticMapLayer(
-                StaticMapLayer.BASIC)
-            .setZoom(2)
-            .setBoundingBox(bbox);
+        MapStaticImageOptions mapStaticImageOptions
+            = new MapStaticImageOptions().setStaticMapLayer(StaticMapLayer.BASIC).setZoom(2).setBoundingBox(bbox);
         validateGetMapStaticImage(client.getMapStaticImage(mapStaticImageOptions).toBytes());
     }
 
@@ -170,10 +168,8 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     public void testGetMapStaticImageWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
         GeoBoundingBox bbox = new GeoBoundingBox(1.355233, 42.982261, 24.980233, 56.526017);
-        MapStaticImageOptions mapStaticImageOptions = new MapStaticImageOptions().setStaticMapLayer(
-                StaticMapLayer.BASIC)
-            .setZoom(2)
-            .setBoundingBox(bbox);
+        MapStaticImageOptions mapStaticImageOptions
+            = new MapStaticImageOptions().setStaticMapLayer(StaticMapLayer.BASIC).setZoom(2).setBoundingBox(bbox);
         validateGetMapStaticImageWithResponse(client.getMapStaticImageWithResponse(mapStaticImageOptions, null));
     }
 
@@ -208,9 +204,8 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     public void testInvalidGetCopyrightFromBoundingBoxWithResponse(HttpClient httpClient,
         MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
-        final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getCopyrightFromBoundingBoxWithResponse(new GeoBoundingBox(-100, -100, -100, -100), true,
-                null));
+        final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class, () -> client
+            .getCopyrightFromBoundingBoxWithResponse(new GeoBoundingBox(-100, -100, -100, -100), true, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
@@ -229,7 +224,8 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testGetCopyrightForTileWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
-        validateGetCopyrightForTileWithResponse(client.getCopyrightForTileWithResponse(new TileIndex().setX(9).setY(22).setZ(6), true, null));
+        validateGetCopyrightForTileWithResponse(
+            client.getCopyrightForTileWithResponse(new TileIndex().setX(9).setY(22).setZ(6), true, null));
     }
 
     // Case 2: Response 400, incorrect input

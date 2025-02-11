@@ -74,6 +74,7 @@ public final class PolicyResultImpl implements com.azure.security.attestation.mo
      * @return a PolicyResult created from the generated PolicyResult object.
      */
     public static com.azure.security.attestation.models.PolicyResult fromGenerated(PolicyResult generated) {
-        return new com.azure.security.attestation.implementation.models.PolicyResultImpl(generated.getPolicySigner(), generated.getPolicyResolution(), generated.getPolicyTokenHash());
+        return new com.azure.security.attestation.implementation.models.PolicyResultImpl(generated.getPolicySigner(),
+            generated.getPolicyResolution(), generated.getPolicyTokenHash());
     }
 }

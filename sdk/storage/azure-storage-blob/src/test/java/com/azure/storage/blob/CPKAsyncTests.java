@@ -49,26 +49,27 @@ public class CPKAsyncTests extends BlobTestBase {
     @BeforeEach
     public void setup() {
         key = new CustomerProvidedKey(getRandomKey());
-        BlobContainerClientBuilder builder = instrument(new BlobContainerClientBuilder()
-            .endpoint(ccAsync.getBlobContainerUrl().toString())
-            .customerProvidedKey(key)
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential()));
+        BlobContainerClientBuilder builder
+            = instrument(new BlobContainerClientBuilder().endpoint(ccAsync.getBlobContainerUrl())
+                .customerProvidedKey(key)
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential()));
 
         cpkContainer = builder.buildAsyncClient();
         cpkBlockBlob = cpkContainer.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
         cpkPageBlob = cpkContainer.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         cpkAppendBlob = cpkContainer.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
 
-        BlockBlobAsyncClient existingBlobSetup = cpkContainer.getBlobAsyncClient(generateBlobName())
-            .getBlockBlobAsyncClient();
+        BlockBlobAsyncClient existingBlobSetup
+            = cpkContainer.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
         existingBlobSetup.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
         cpkExistingBlob = existingBlobSetup;
     }
 
     @Test
     public void putBlobWithCPK() {
-        StepVerifier.create(cpkBlockBlob.uploadWithResponse(DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize(), null, null, null, null, null))
+        StepVerifier
+            .create(cpkBlockBlob.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null, null,
+                null, null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(r.getValue().isServerEncrypted());
@@ -77,6 +78,7 @@ public class CPKAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getBlobWithCPK() {
         StepVerifier.create(cpkBlockBlob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
@@ -84,15 +86,14 @@ public class CPKAsyncTests extends BlobTestBase {
             .flatMap(r -> {
                 assertResponseStatusCode(r, 200);
                 return FluxUtil.collectBytesInByteBufferStream(r.getValue());
-            }))
-            .assertNext(r -> TestUtils.assertArraysEqual(r, DATA.getDefaultBytes()))
-            .verifyComplete();
+            })).assertNext(r -> TestUtils.assertArraysEqual(r, DATA.getDefaultBytes())).verifyComplete();
     }
 
     @Test
     public void putBlockWithCPK() {
-        StepVerifier.create(cpkBlockBlob.stageBlockWithResponse(getBlockID(), DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize(), null, null))
+        StepVerifier
+            .create(cpkBlockBlob.stageBlockWithResponse(getBlockID(), DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
+                null, null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
@@ -107,9 +108,11 @@ public class CPKAsyncTests extends BlobTestBase {
         String sas = ccAsync.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
             new BlobSasPermission().setReadPermission(true)));
 
-        StepVerifier.create(sourceBlob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).then(cpkBlockBlob.stageBlockFromUrlWithResponse(getBlockID(),
-            sourceBlob.getBlobUrl() + "?" + sas, null, null, null,
-            null)))
+        StepVerifier
+            .create(
+                sourceBlob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+                    .then(cpkBlockBlob.stageBlockFromUrlWithResponse(getBlockID(), sourceBlob.getBlobUrl() + "?" + sas,
+                        null, null, null, null)))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
@@ -123,24 +126,22 @@ public class CPKAsyncTests extends BlobTestBase {
 
         Mono<Response<BlockBlobItem>> response = Flux.fromIterable(blockIDList)
             .flatMap(r -> cpkBlockBlob.stageBlock(r, DATA.getDefaultFlux(), DATA.getDefaultDataSize()))
-            .then(cpkBlockBlob.commitBlockListWithResponse(blockIDList, null, null, null,
-                null));
+            .then(cpkBlockBlob.commitBlockListWithResponse(blockIDList, null, null, null, null));
 
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertResponseStatusCode(r, 201);
-                assertTrue(r.getValue().isServerEncrypted());
-                assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
-            })
-            .verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertResponseStatusCode(r, 201);
+            assertTrue(r.getValue().isServerEncrypted());
+            assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
+        }).verifyComplete();
     }
 
     @Test
     public void putPageWithCPK() {
-        StepVerifier.create(cpkPageBlob.create(PageBlobClient.PAGE_BYTES).then(cpkPageBlob.uploadPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null,
-            null)))
+        StepVerifier
+            .create(cpkPageBlob.create(PageBlobClient.PAGE_BYTES)
+                .then(cpkPageBlob.uploadPagesWithResponse(
+                    new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+                    Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null, null)))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(r.getValue().isServerEncrypted());
@@ -159,29 +160,26 @@ public class CPKAsyncTests extends BlobTestBase {
 
         Mono<Response<PageBlobItem>> response = sourceBlob.create(PageBlobClient.PAGE_BYTES)
             .then(sourceBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-                Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null,
-                null))
+                Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null, null))
             .then(cpkPageBlob.create(PageBlobClient.PAGE_BYTES))
             .then(cpkPageBlob.uploadPagesFromUrlWithResponse(
-                new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-                sourceBlob.getBlobUrl() + "?" + sas, null, null, null,
-                null));
+                new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), sourceBlob.getBlobUrl() + "?" + sas,
+                null, null, null, null));
 
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertResponseStatusCode(r, 201);
-                assertTrue(r.getValue().isServerEncrypted());
-                assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
-            })
-            .verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertResponseStatusCode(r, 201);
+            assertTrue(r.getValue().isServerEncrypted());
+            assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
+        }).verifyComplete();
     }
 
     @Test
     public void putMultiplePagesWithCPK() {
-        StepVerifier.create(cpkPageBlob.create(PageBlobClient.PAGE_BYTES * 2).then(cpkPageBlob.uploadPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
-            Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2))), null,
-            null)))
+        StepVerifier
+            .create(cpkPageBlob.create(PageBlobClient.PAGE_BYTES * 2)
+                .then(cpkPageBlob.uploadPagesWithResponse(
+                    new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
+                    Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2))), null, null)))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(r.getValue().isServerEncrypted());
@@ -192,8 +190,8 @@ public class CPKAsyncTests extends BlobTestBase {
 
     @Test
     public void appendBlockWithCPK() {
-        StepVerifier.create(cpkAppendBlob.create().then(cpkAppendBlob.appendBlockWithResponse(DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize(), null, null)))
+        StepVerifier.create(cpkAppendBlob.create()
+            .then(cpkAppendBlob.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null)))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(r.getValue().isServerEncrypted());
@@ -211,17 +209,14 @@ public class CPKAsyncTests extends BlobTestBase {
 
         Mono<Response<AppendBlobItem>> response = cpkAppendBlob.create()
             .then(sourceBlob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()))
-            .then(cpkAppendBlob.appendBlockFromUrlWithResponse(
-                sourceBlob.getBlobUrl() + "?" + sas, null, null, null,
+            .then(cpkAppendBlob.appendBlockFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas, null, null, null,
                 null));
 
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertResponseStatusCode(r, 201);
-                assertTrue(r.getValue().isServerEncrypted());
-                assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
-            })
-            .verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertResponseStatusCode(r, 201);
+            assertTrue(r.getValue().isServerEncrypted());
+            assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
+        }).verifyComplete();
     }
 
     @Test
@@ -229,32 +224,27 @@ public class CPKAsyncTests extends BlobTestBase {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("foo", "bar");
 
-        StepVerifier.create(cpkExistingBlob.setMetadataWithResponse(metadata, null))
-            .assertNext(r -> {
-                assertResponseStatusCode(r, 200);
-                assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-                assertEquals(key.getKeySha256(), r.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
-            })
-            .verifyComplete();
+        StepVerifier.create(cpkExistingBlob.setMetadataWithResponse(metadata, null)).assertNext(r -> {
+            assertResponseStatusCode(r, 200);
+            assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+            assertEquals(key.getKeySha256(), r.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+        }).verifyComplete();
     }
 
     @Test
     public void getBlobPropertiesAndMetadataWithCPK() {
-        StepVerifier.create(cpkExistingBlob.getPropertiesWithResponse(null))
-            .assertNext(r -> {
-                assertResponseStatusCode(r, 200);
-                assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_SERVER_ENCRYPTED)));
-                assertEquals(key.getKeySha256(), r.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
-            })
-            .verifyComplete();
+        StepVerifier.create(cpkExistingBlob.getPropertiesWithResponse(null)).assertNext(r -> {
+            assertResponseStatusCode(r, 200);
+            assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_SERVER_ENCRYPTED)));
+            assertEquals(key.getKeySha256(), r.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+        }).verifyComplete();
     }
 
     @Test
     public void snapshotBlobWithCPK() {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("foo", "bar");
-        assertAsyncResponseStatusCode(cpkExistingBlob.createSnapshotWithResponse(metadata, null),
-            201);
+        assertAsyncResponseStatusCode(cpkExistingBlob.createSnapshotWithResponse(metadata, null), 201);
     }
 
     @Test
@@ -296,9 +286,7 @@ public class CPKAsyncTests extends BlobTestBase {
     @Test
     public void existsWithoutCPK() {
         BlobAsyncClientBase clientWithoutCpk = cpkExistingBlob.getCustomerProvidedKeyAsyncClient(null);
-        StepVerifier.create(clientWithoutCpk.exists())
-            .expectNext(true)
-            .verifyComplete();
+        StepVerifier.create(clientWithoutCpk.exists()).expectNext(true).verifyComplete();
     }
 
 }

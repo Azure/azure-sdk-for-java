@@ -5,12 +5,15 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.FrontDoorHealthProbeMethod;
 import com.azure.resourcemanager.frontdoor.models.FrontDoorProtocol;
 import com.azure.resourcemanager.frontdoor.models.FrontDoorResourceState;
 import com.azure.resourcemanager.frontdoor.models.HealthProbeEnabled;
 import com.azure.resourcemanager.frontdoor.models.HealthProbeSettingsUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The JSON object that contains the properties required to create a health probe settings.
@@ -18,11 +21,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HealthProbeSettingsProperties extends HealthProbeSettingsUpdateParameters {
     /*
-     * Resource status of the Front Door or Front Door SubResource.
-     * 
      * Resource status.
      */
-    @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private FrontDoorResourceState resourceState;
 
     /**
@@ -32,9 +32,7 @@ public final class HealthProbeSettingsProperties extends HealthProbeSettingsUpda
     }
 
     /**
-     * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     * 
-     * Resource status.
+     * Get the resourceState property: Resource status.
      * 
      * @return the resourceState value.
      */
@@ -94,6 +92,62 @@ public final class HealthProbeSettingsProperties extends HealthProbeSettingsUpda
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", path());
+        jsonWriter.writeStringField("protocol", protocol() == null ? null : protocol().toString());
+        jsonWriter.writeNumberField("intervalInSeconds", intervalInSeconds());
+        jsonWriter.writeStringField("healthProbeMethod",
+            healthProbeMethod() == null ? null : healthProbeMethod().toString());
+        jsonWriter.writeStringField("enabledState", enabledState() == null ? null : enabledState().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthProbeSettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthProbeSettingsProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthProbeSettingsProperties.
+     */
+    public static HealthProbeSettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthProbeSettingsProperties deserializedHealthProbeSettingsProperties
+                = new HealthProbeSettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedHealthProbeSettingsProperties.withPath(reader.getString());
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedHealthProbeSettingsProperties
+                        .withProtocol(FrontDoorProtocol.fromString(reader.getString()));
+                } else if ("intervalInSeconds".equals(fieldName)) {
+                    deserializedHealthProbeSettingsProperties
+                        .withIntervalInSeconds(reader.getNullable(JsonReader::getInt));
+                } else if ("healthProbeMethod".equals(fieldName)) {
+                    deserializedHealthProbeSettingsProperties
+                        .withHealthProbeMethod(FrontDoorHealthProbeMethod.fromString(reader.getString()));
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedHealthProbeSettingsProperties
+                        .withEnabledState(HealthProbeEnabled.fromString(reader.getString()));
+                } else if ("resourceState".equals(fieldName)) {
+                    deserializedHealthProbeSettingsProperties.resourceState
+                        = FrontDoorResourceState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthProbeSettingsProperties;
+        });
     }
 }

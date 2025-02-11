@@ -28,8 +28,7 @@ public final class ApplicationPatchableImpl implements ApplicationPatchable {
 
     private final com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager;
 
-    ApplicationPatchableImpl(
-        ApplicationPatchableInner innerObject,
+    ApplicationPatchableImpl(ApplicationPatchableInner innerObject,
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

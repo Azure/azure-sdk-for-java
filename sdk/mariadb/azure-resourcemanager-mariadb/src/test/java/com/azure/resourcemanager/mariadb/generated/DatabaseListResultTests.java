@@ -13,27 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"charset\":\"qeojnxqbzvddntw\",\"collation\":\"eic\"},\"id\":\"twnpzaoqvuhrhcf\",\"name\":\"cyddglmjthjqk\",\"type\":\"pyeicxm\"},{\"properties\":{\"charset\":\"wqvhkhixuigdt\",\"collation\":\"bob\"},\"id\":\"og\",\"name\":\"m\",\"type\":\"w\"},{\"properties\":{\"charset\":\"a\",\"collation\":\"rzayv\"},\"id\":\"t\",\"name\":\"gvdfgiotkftutq\",\"type\":\"ln\"}]}")
-                .toObject(DatabaseListResult.class);
-        Assertions.assertEquals("qeojnxqbzvddntw", model.value().get(0).charset());
-        Assertions.assertEquals("eic", model.value().get(0).collation());
+        DatabaseListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"charset\":\"exxppofmxaxcfjp\",\"collation\":\"dtocj\"},\"id\":\"xhvpmoue\",\"name\":\"hd\",\"type\":\"xibqeojnx\"},{\"properties\":{\"charset\":\"vddntwn\",\"collation\":\"icbtwnpzao\"},\"id\":\"vuhrhcffcyddgl\",\"name\":\"jthjqkwpyei\",\"type\":\"xmqci\"}]}")
+            .toObject(DatabaseListResult.class);
+        Assertions.assertEquals("exxppofmxaxcfjp", model.value().get(0).charset());
+        Assertions.assertEquals("dtocj", model.value().get(0).collation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseListResult model =
-            new DatabaseListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DatabaseInner().withCharset("qeojnxqbzvddntw").withCollation("eic"),
-                            new DatabaseInner().withCharset("wqvhkhixuigdt").withCollation("bob"),
-                            new DatabaseInner().withCharset("a").withCollation("rzayv")));
+        DatabaseListResult model = new DatabaseListResult()
+            .withValue(Arrays.asList(new DatabaseInner().withCharset("exxppofmxaxcfjp").withCollation("dtocj"),
+                new DatabaseInner().withCharset("vddntwn").withCollation("icbtwnpzao")));
         model = BinaryData.fromObject(model).toObject(DatabaseListResult.class);
-        Assertions.assertEquals("qeojnxqbzvddntw", model.value().get(0).charset());
-        Assertions.assertEquals("eic", model.value().get(0).collation());
+        Assertions.assertEquals("exxppofmxaxcfjp", model.value().get(0).charset());
+        Assertions.assertEquals("dtocj", model.value().get(0).collation());
     }
 }

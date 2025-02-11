@@ -5,65 +5,76 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents an audio track in the asset. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.AudioTrack")
+/**
+ * Represents an audio track in the asset.
+ */
 @Fluent
 public final class AudioTrack extends TrackBase {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.AudioTrack";
+
+    /*
      * The file name to the source file. This file is located in the storage container of the asset.
      */
-    @JsonProperty(value = "fileName")
     private String fileName;
 
     /*
      * The display name of the audio track on a video player. In HLS, this maps to the NAME attribute of EXT-X-MEDIA.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The RFC5646 language code for the audio track.
      */
-    @JsonProperty(value = "languageCode")
     private String languageCode;
 
     /*
      * The HLS specific setting for the audio track.
      */
-    @JsonProperty(value = "hlsSettings")
     private HlsSettings hlsSettings;
 
     /*
      * The DASH specific setting for the audio track.
      */
-    @JsonProperty(value = "dashSettings")
     private DashSettings dashSettings;
 
     /*
      * The MPEG-4 audio track ID for the audio track.
      */
-    @JsonProperty(value = "mpeg4TrackId")
     private Integer mpeg4TrackId;
 
     /*
      * The stream bit rate for the audio track.
      */
-    @JsonProperty(value = "bitRate", access = JsonProperty.Access.WRITE_ONLY)
     private Integer bitRate;
 
-    /** Creates an instance of AudioTrack class. */
+    /**
+     * Creates an instance of AudioTrack class.
+     */
     public AudioTrack() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
      * Get the fileName property: The file name to the source file. This file is located in the storage container of the
      * asset.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -73,7 +84,7 @@ public final class AudioTrack extends TrackBase {
     /**
      * Set the fileName property: The file name to the source file. This file is located in the storage container of the
      * asset.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the AudioTrack object itself.
      */
@@ -85,7 +96,7 @@ public final class AudioTrack extends TrackBase {
     /**
      * Get the displayName property: The display name of the audio track on a video player. In HLS, this maps to the
      * NAME attribute of EXT-X-MEDIA.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -95,7 +106,7 @@ public final class AudioTrack extends TrackBase {
     /**
      * Set the displayName property: The display name of the audio track on a video player. In HLS, this maps to the
      * NAME attribute of EXT-X-MEDIA.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AudioTrack object itself.
      */
@@ -106,7 +117,7 @@ public final class AudioTrack extends TrackBase {
 
     /**
      * Get the languageCode property: The RFC5646 language code for the audio track.
-     *
+     * 
      * @return the languageCode value.
      */
     public String languageCode() {
@@ -115,7 +126,7 @@ public final class AudioTrack extends TrackBase {
 
     /**
      * Set the languageCode property: The RFC5646 language code for the audio track.
-     *
+     * 
      * @param languageCode the languageCode value to set.
      * @return the AudioTrack object itself.
      */
@@ -126,7 +137,7 @@ public final class AudioTrack extends TrackBase {
 
     /**
      * Get the hlsSettings property: The HLS specific setting for the audio track.
-     *
+     * 
      * @return the hlsSettings value.
      */
     public HlsSettings hlsSettings() {
@@ -135,7 +146,7 @@ public final class AudioTrack extends TrackBase {
 
     /**
      * Set the hlsSettings property: The HLS specific setting for the audio track.
-     *
+     * 
      * @param hlsSettings the hlsSettings value to set.
      * @return the AudioTrack object itself.
      */
@@ -146,7 +157,7 @@ public final class AudioTrack extends TrackBase {
 
     /**
      * Get the dashSettings property: The DASH specific setting for the audio track.
-     *
+     * 
      * @return the dashSettings value.
      */
     public DashSettings dashSettings() {
@@ -155,7 +166,7 @@ public final class AudioTrack extends TrackBase {
 
     /**
      * Set the dashSettings property: The DASH specific setting for the audio track.
-     *
+     * 
      * @param dashSettings the dashSettings value to set.
      * @return the AudioTrack object itself.
      */
@@ -166,7 +177,7 @@ public final class AudioTrack extends TrackBase {
 
     /**
      * Get the mpeg4TrackId property: The MPEG-4 audio track ID for the audio track.
-     *
+     * 
      * @return the mpeg4TrackId value.
      */
     public Integer mpeg4TrackId() {
@@ -175,7 +186,7 @@ public final class AudioTrack extends TrackBase {
 
     /**
      * Set the mpeg4TrackId property: The MPEG-4 audio track ID for the audio track.
-     *
+     * 
      * @param mpeg4TrackId the mpeg4TrackId value to set.
      * @return the AudioTrack object itself.
      */
@@ -186,7 +197,7 @@ public final class AudioTrack extends TrackBase {
 
     /**
      * Get the bitRate property: The stream bit rate for the audio track.
-     *
+     * 
      * @return the bitRate value.
      */
     public Integer bitRate() {
@@ -195,17 +206,72 @@ public final class AudioTrack extends TrackBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (hlsSettings() != null) {
             hlsSettings().validate();
         }
         if (dashSettings() != null) {
             dashSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("fileName", this.fileName);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("languageCode", this.languageCode);
+        jsonWriter.writeJsonField("hlsSettings", this.hlsSettings);
+        jsonWriter.writeJsonField("dashSettings", this.dashSettings);
+        jsonWriter.writeNumberField("mpeg4TrackId", this.mpeg4TrackId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AudioTrack from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AudioTrack if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the AudioTrack.
+     */
+    public static AudioTrack fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AudioTrack deserializedAudioTrack = new AudioTrack();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedAudioTrack.odataType = reader.getString();
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedAudioTrack.fileName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAudioTrack.displayName = reader.getString();
+                } else if ("languageCode".equals(fieldName)) {
+                    deserializedAudioTrack.languageCode = reader.getString();
+                } else if ("hlsSettings".equals(fieldName)) {
+                    deserializedAudioTrack.hlsSettings = HlsSettings.fromJson(reader);
+                } else if ("dashSettings".equals(fieldName)) {
+                    deserializedAudioTrack.dashSettings = DashSettings.fromJson(reader);
+                } else if ("mpeg4TrackId".equals(fieldName)) {
+                    deserializedAudioTrack.mpeg4TrackId = reader.getNullable(JsonReader::getInt);
+                } else if ("bitRate".equals(fieldName)) {
+                    deserializedAudioTrack.bitRate = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAudioTrack;
+        });
     }
 }

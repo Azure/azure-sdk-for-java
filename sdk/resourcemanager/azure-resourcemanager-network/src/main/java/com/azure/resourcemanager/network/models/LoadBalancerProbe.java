@@ -9,16 +9,20 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** A client-side representation of a load balancing probe. */
 @Fluent()
-public interface LoadBalancerProbe
-    extends HasInnerModel<ProbeInner>,
-        ChildResource<LoadBalancer>,
-        HasLoadBalancingRules,
-        HasProtocol<ProbeProtocol>,
-        HasPort {
+public interface LoadBalancerProbe extends HasInnerModel<ProbeInner>, ChildResource<LoadBalancer>,
+    HasLoadBalancingRules, HasProtocol<ProbeProtocol>, HasPort {
 
-    /** @return number of seconds between probes */
+    /**
+     * Gets number of seconds between probes.
+     *
+     * @return number of seconds between probes
+     */
     int intervalInSeconds();
 
-    /** @return number of failed probes before the node is determined to be unhealthy */
+    /**
+     * Gets number of failed probes before the node is determined to be unhealthy.
+     *
+     * @return number of failed probes before the node is determined to be unhealthy
+     */
     int numberOfProbes();
 }

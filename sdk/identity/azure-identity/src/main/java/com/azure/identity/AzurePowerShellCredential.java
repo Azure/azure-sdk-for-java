@@ -63,18 +63,15 @@ public class AzurePowerShellCredential implements TokenCredential {
     private final IdentityClient identityClient;
 
     AzurePowerShellCredential(String tenantId, IdentityClientOptions options) {
-        identityClient = new IdentityClientBuilder()
-            .identityClientOptions(options)
-            .tenantId(tenantId)
-            .build();
+        identityClient = new IdentityClientBuilder().identityClientOptions(options).tenantId(tenantId).build();
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzurePowerShell(request)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error))
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error))
             .onErrorMap(error -> {
                 if (identityClient.getIdentityClientOptions().isChained()) {
                     return new CredentialUnavailableException(error.getMessage(), error);

@@ -5,42 +5,31 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Description of a NotificationHub WnsCredential.
  */
 @Fluent
-public final class WnsCredentialProperties {
+public final class WnsCredentialProperties implements JsonSerializable<WnsCredentialProperties> {
     /*
-     * Gets or sets the package ID for this credential.
+     * The package ID for this credential.
      */
-    @JsonProperty(value = "packageSid")
     private String packageSid;
 
     /*
-     * Gets or sets the secret key.
+     * The secret key.
      */
-    @JsonProperty(value = "secretKey")
     private String secretKey;
 
     /*
-     * Gets or sets the Windows Live endpoint.
+     * The Windows Live endpoint.
      */
-    @JsonProperty(value = "windowsLiveEndpoint")
     private String windowsLiveEndpoint;
-
-    /*
-     * Ges or sets the WNS Certificate Key.
-     */
-    @JsonProperty(value = "certificateKey")
-    private String certificateKey;
-
-    /*
-     * Gets or sets the WNS Certificate.
-     */
-    @JsonProperty(value = "wnsCertificate")
-    private String wnsCertificate;
 
     /**
      * Creates an instance of WnsCredentialProperties class.
@@ -49,7 +38,7 @@ public final class WnsCredentialProperties {
     }
 
     /**
-     * Get the packageSid property: Gets or sets the package ID for this credential.
+     * Get the packageSid property: The package ID for this credential.
      * 
      * @return the packageSid value.
      */
@@ -58,7 +47,7 @@ public final class WnsCredentialProperties {
     }
 
     /**
-     * Set the packageSid property: Gets or sets the package ID for this credential.
+     * Set the packageSid property: The package ID for this credential.
      * 
      * @param packageSid the packageSid value to set.
      * @return the WnsCredentialProperties object itself.
@@ -69,7 +58,7 @@ public final class WnsCredentialProperties {
     }
 
     /**
-     * Get the secretKey property: Gets or sets the secret key.
+     * Get the secretKey property: The secret key.
      * 
      * @return the secretKey value.
      */
@@ -78,7 +67,7 @@ public final class WnsCredentialProperties {
     }
 
     /**
-     * Set the secretKey property: Gets or sets the secret key.
+     * Set the secretKey property: The secret key.
      * 
      * @param secretKey the secretKey value to set.
      * @return the WnsCredentialProperties object itself.
@@ -89,7 +78,7 @@ public final class WnsCredentialProperties {
     }
 
     /**
-     * Get the windowsLiveEndpoint property: Gets or sets the Windows Live endpoint.
+     * Get the windowsLiveEndpoint property: The Windows Live endpoint.
      * 
      * @return the windowsLiveEndpoint value.
      */
@@ -98,7 +87,7 @@ public final class WnsCredentialProperties {
     }
 
     /**
-     * Set the windowsLiveEndpoint property: Gets or sets the Windows Live endpoint.
+     * Set the windowsLiveEndpoint property: The Windows Live endpoint.
      * 
      * @param windowsLiveEndpoint the windowsLiveEndpoint value to set.
      * @return the WnsCredentialProperties object itself.
@@ -109,50 +98,52 @@ public final class WnsCredentialProperties {
     }
 
     /**
-     * Get the certificateKey property: Ges or sets the WNS Certificate Key.
-     * 
-     * @return the certificateKey value.
-     */
-    public String certificateKey() {
-        return this.certificateKey;
-    }
-
-    /**
-     * Set the certificateKey property: Ges or sets the WNS Certificate Key.
-     * 
-     * @param certificateKey the certificateKey value to set.
-     * @return the WnsCredentialProperties object itself.
-     */
-    public WnsCredentialProperties withCertificateKey(String certificateKey) {
-        this.certificateKey = certificateKey;
-        return this;
-    }
-
-    /**
-     * Get the wnsCertificate property: Gets or sets the WNS Certificate.
-     * 
-     * @return the wnsCertificate value.
-     */
-    public String wnsCertificate() {
-        return this.wnsCertificate;
-    }
-
-    /**
-     * Set the wnsCertificate property: Gets or sets the WNS Certificate.
-     * 
-     * @param wnsCertificate the wnsCertificate value to set.
-     * @return the WnsCredentialProperties object itself.
-     */
-    public WnsCredentialProperties withWnsCertificate(String wnsCertificate) {
-        this.wnsCertificate = wnsCertificate;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("packageSid", this.packageSid);
+        jsonWriter.writeStringField("secretKey", this.secretKey);
+        jsonWriter.writeStringField("windowsLiveEndpoint", this.windowsLiveEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WnsCredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WnsCredentialProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WnsCredentialProperties.
+     */
+    public static WnsCredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WnsCredentialProperties deserializedWnsCredentialProperties = new WnsCredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packageSid".equals(fieldName)) {
+                    deserializedWnsCredentialProperties.packageSid = reader.getString();
+                } else if ("secretKey".equals(fieldName)) {
+                    deserializedWnsCredentialProperties.secretKey = reader.getString();
+                } else if ("windowsLiveEndpoint".equals(fieldName)) {
+                    deserializedWnsCredentialProperties.windowsLiveEndpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWnsCredentialProperties;
+        });
     }
 }

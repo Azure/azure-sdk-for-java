@@ -13,31 +13,28 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateCostDetailsReportRequestDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateCostDetailsReportRequestDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"metric\":\"AmortizedCost\",\"timePeriod\":{\"start\":\"bminrfdwoyuhhzi\",\"end\":\"iefozbhdmsml\"},\"billingPeriod\":\"qhoftrmaequiah\",\"invoiceId\":\"cslfaoqzpiyylha\"}")
-                .toObject(GenerateCostDetailsReportRequestDefinition.class);
-        Assertions.assertEquals(CostDetailsMetricType.AMORTIZED_COST, model.metric());
-        Assertions.assertEquals("bminrfdwoyuhhzi", model.timePeriod().start());
-        Assertions.assertEquals("iefozbhdmsml", model.timePeriod().end());
-        Assertions.assertEquals("qhoftrmaequiah", model.billingPeriod());
-        Assertions.assertEquals("cslfaoqzpiyylha", model.invoiceId());
+        GenerateCostDetailsReportRequestDefinition model = BinaryData.fromString(
+            "{\"metric\":\"ActualCost\",\"timePeriod\":{\"start\":\"hwuhvctaf\",\"end\":\"rbxrblmliowxihsp\"},\"billingPeriod\":\"wqagnepzwa\",\"invoiceId\":\"sbs\"}")
+            .toObject(GenerateCostDetailsReportRequestDefinition.class);
+        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.metric());
+        Assertions.assertEquals("hwuhvctaf", model.timePeriod().start());
+        Assertions.assertEquals("rbxrblmliowxihsp", model.timePeriod().end());
+        Assertions.assertEquals("wqagnepzwa", model.billingPeriod());
+        Assertions.assertEquals("sbs", model.invoiceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateCostDetailsReportRequestDefinition model =
-            new GenerateCostDetailsReportRequestDefinition()
-                .withMetric(CostDetailsMetricType.AMORTIZED_COST)
-                .withTimePeriod(new CostDetailsTimePeriod().withStart("bminrfdwoyuhhzi").withEnd("iefozbhdmsml"))
-                .withBillingPeriod("qhoftrmaequiah")
-                .withInvoiceId("cslfaoqzpiyylha");
+        GenerateCostDetailsReportRequestDefinition model
+            = new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                .withTimePeriod(new CostDetailsTimePeriod().withStart("hwuhvctaf").withEnd("rbxrblmliowxihsp"))
+                .withBillingPeriod("wqagnepzwa")
+                .withInvoiceId("sbs");
         model = BinaryData.fromObject(model).toObject(GenerateCostDetailsReportRequestDefinition.class);
-        Assertions.assertEquals(CostDetailsMetricType.AMORTIZED_COST, model.metric());
-        Assertions.assertEquals("bminrfdwoyuhhzi", model.timePeriod().start());
-        Assertions.assertEquals("iefozbhdmsml", model.timePeriod().end());
-        Assertions.assertEquals("qhoftrmaequiah", model.billingPeriod());
-        Assertions.assertEquals("cslfaoqzpiyylha", model.invoiceId());
+        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.metric());
+        Assertions.assertEquals("hwuhvctaf", model.timePeriod().start());
+        Assertions.assertEquals("rbxrblmliowxihsp", model.timePeriod().end());
+        Assertions.assertEquals("wqagnepzwa", model.billingPeriod());
+        Assertions.assertEquals("sbs", model.invoiceId());
     }
 }

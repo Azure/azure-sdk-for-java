@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Type of the container. The value of this property for
  * 1. Compute Azure VM is Microsoft.Compute/virtualMachines
@@ -118,7 +115,6 @@ public enum ProtectableContainerType {
      * @param value the serialized value to parse.
      * @return the parsed ProtectableContainerType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProtectableContainerType fromString(String value) {
         if (value == null) {
             return null;
@@ -135,7 +131,6 @@ public enum ProtectableContainerType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

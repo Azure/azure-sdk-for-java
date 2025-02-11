@@ -19,13 +19,14 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
 public final class TestUtils {
-    private static final byte[] PAYLOAD = "this is a circular payload that is used to fill up the message".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] PAYLOAD
+        = "this is a circular payload that is used to fill up the message".getBytes(StandardCharsets.UTF_8);
     private static final Tracer TRACER = GlobalOpenTelemetry.getTracer("ServiceBusScenarioRunner");
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
-    public static ServiceBusClientBuilder.ServiceBusSenderClientBuilder getSenderBuilder(ScenarioOptions options, boolean session) {
-        ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = getBuilder(options)
-            .sender();
+    public static ServiceBusClientBuilder.ServiceBusSenderClientBuilder getSenderBuilder(ScenarioOptions options,
+        boolean session) {
+        ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = getBuilder(options).sender();
 
         if (options.getServiceBusEntityType() == EntityType.QUEUE) {
             builder.queueName(session ? options.getServiceBusSessionQueueName() : options.getServiceBusQueueName());
@@ -36,22 +37,23 @@ public final class TestUtils {
         return builder;
     }
 
-    public static ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getReceiverBuilder(ScenarioOptions options, boolean session) {
+    public static ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getReceiverBuilder(ScenarioOptions options,
+        boolean session) {
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = getBuilder(options).receiver();
 
         if (options.getServiceBusEntityType() == EntityType.QUEUE) {
             builder.queueName(session ? options.getServiceBusSessionQueueName() : options.getServiceBusQueueName());
         } else if (options.getServiceBusEntityType() == EntityType.TOPIC) {
             builder.topicName(options.getServiceBusTopicName());
-            builder.subscriptionName(session ? options.getServiceBusSessionSubscriptionName() : options.getServiceBusSubscriptionName());
+            builder.subscriptionName(
+                session ? options.getServiceBusSessionSubscriptionName() : options.getServiceBusSubscriptionName());
         }
 
-        return builder
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .disableAutoComplete();
+        return builder.receiveMode(ServiceBusReceiveMode.PEEK_LOCK).disableAutoComplete();
     }
 
-    public static ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(ScenarioOptions options) {
+    public static ServiceBusClientBuilder.ServiceBusProcessorClientBuilder
+        getProcessorBuilder(ScenarioOptions options) {
         ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder = getBuilder(options).processor();
 
         if (options.getServiceBusEntityType() == EntityType.QUEUE) {
@@ -61,13 +63,13 @@ public final class TestUtils {
             builder.subscriptionName(options.getServiceBusSubscriptionName());
         }
 
-        return builder
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .disableAutoComplete();
+        return builder.receiveMode(ServiceBusReceiveMode.PEEK_LOCK).disableAutoComplete();
     }
 
-    public static ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(ScenarioOptions options) {
-        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = getBuilder(options).sessionProcessor();
+    public static ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder
+        getSessionProcessorBuilder(ScenarioOptions options) {
+        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder
+            = getBuilder(options).sessionProcessor();
 
         if (options.getServiceBusEntityType() == EntityType.QUEUE) {
             builder.queueName(options.getServiceBusQueueName());
@@ -76,12 +78,11 @@ public final class TestUtils {
             builder.subscriptionName(options.getServiceBusSubscriptionName());
         }
 
-        return builder
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .disableAutoComplete();
+        return builder.receiveMode(ServiceBusReceiveMode.PEEK_LOCK).disableAutoComplete();
     }
 
-    public static ServiceBusMessageBatch createBatchSync(ServiceBusSenderClient client, BinaryData messagePayload, int batchSize) {
+    public static ServiceBusMessageBatch createBatchSync(ServiceBusSenderClient client, BinaryData messagePayload,
+        int batchSize) {
         try {
             ServiceBusMessageBatch batch = client.createMessageBatch();
             for (int i = 0; i < batchSize; i++) {
@@ -103,8 +104,7 @@ public final class TestUtils {
     }
 
     private static ServiceBusClientBuilder getBuilder(ScenarioOptions options) {
-        return new ServiceBusClientBuilder()
-            .retryOptions(new AmqpRetryOptions().setTryTimeout(options.getTryTimeout()))
+        return new ServiceBusClientBuilder().retryOptions(new AmqpRetryOptions().setTryTimeout(options.getTryTimeout()))
             .connectionString(options.getServiceBusConnectionString());
     }
 

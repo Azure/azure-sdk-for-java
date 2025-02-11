@@ -6,10 +6,13 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.fluent.models.JobExecutionInner;
+import com.azure.resourcemanager.appcontainers.models.ContainerExecutionStatus;
 import com.azure.resourcemanager.appcontainers.models.ContainerResources;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentVar;
+import com.azure.resourcemanager.appcontainers.models.ExecutionStatus;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionContainer;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
+import com.azure.resourcemanager.appcontainers.models.ReplicaExecutionStatus;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -18,89 +21,120 @@ public final class JobExecutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobExecutionInner model = BinaryData.fromString(
-            "{\"name\":\"brjlnacgcckknhxk\",\"id\":\"v\",\"type\":\"nrzvuljraaer\",\"properties\":{\"status\":\"Degraded\",\"startTime\":\"2021-08-09T04:53:10Z\",\"endTime\":\"2021-04-13T22:37:48Z\",\"template\":{\"containers\":[{\"image\":\"vbroylaxxu\",\"name\":\"disdosfjbjsvgj\",\"command\":[\"r\",\"vyc\"],\"args\":[\"c\",\"xgccknfnw\"],\"env\":[{},{},{}],\"resources\":{\"cpu\":92.58066049026887,\"memory\":\"jdhttzaefedxi\",\"ephemeralStorage\":\"hrphkmcrjdqn\"}}],\"initContainers\":[{\"image\":\"pbgtgkylkdghrj\",\"name\":\"utlwxezwzhok\",\"command\":[\"nhhtql\",\"ehgpp\",\"pifhpfeoajvgcxtx\",\"csheafidltugsr\"],\"args\":[\"kssjhoiftxfk\"],\"env\":[{},{},{}],\"resources\":{\"cpu\":54.436034211849226,\"memory\":\"tillucbiqtg\",\"ephemeralStorage\":\"ohmcwsld\"}},{\"image\":\"zetpwbra\",\"name\":\"libph\",\"command\":[\"mizak\",\"kan\",\"jpdn\"],\"args\":[\"ajoylhjl\"],\"env\":[{},{}],\"resources\":{\"cpu\":29.664656948593926,\"memory\":\"mrsopte\",\"ephemeralStorage\":\"jme\"}},{\"image\":\"ls\",\"name\":\"asylwx\",\"command\":[\"umweoohguufuzboy\",\"athwt\",\"olbaemwmdx\",\"ebwjscjpahlxvea\"],\"args\":[\"xnmwmqtibxyijddt\",\"qcttadijaeukmrsi\"],\"env\":[{}],\"resources\":{\"cpu\":66.99801356760808,\"memory\":\"apm\",\"ephemeralStorage\":\"qmeqwigpibudqwyx\"}}]}}}")
+            "{\"name\":\"gwumgxdgdhpa\",\"id\":\"dexjddvjs\",\"type\":\"wotmmwllcolsrsxa\",\"properties\":{\"status\":\"Processing\",\"startTime\":\"2021-04-01T03:23:07Z\",\"endTime\":\"2021-03-09T11:00:51Z\",\"template\":{\"containers\":[{\"image\":\"jljnhvlqjbek\",\"name\":\"eksnbksdqhjvyk\",\"command\":[\"sl\"],\"args\":[\"ustcpoq\",\"avnwqj\",\"g\",\"knlejjjkxybwfd\"],\"env\":[{},{}],\"resources\":{\"cpu\":60.943224543269345,\"memory\":\"svkzykj\",\"ephemeralStorage\":\"kns\"}},{\"image\":\"wushcdp\",\"name\":\"pn\",\"command\":[\"gjfbpkuwxeoi\",\"jfizfavkjzwfbc\",\"aykmmf\",\"sbfwxr\"],\"args\":[\"dew\"],\"env\":[{},{}],\"resources\":{\"cpu\":77.68566374552775,\"memory\":\"bjazejwwviy\",\"ephemeralStorage\":\"ps\"}},{\"image\":\"brnnhjxsqw\",\"name\":\"qkbiwet\",\"command\":[\"ycyqiqyhgfsetzl\",\"xbsfledynoj\",\"ziu\"],\"args\":[\"zkkdtnhqs\",\"cljse\"],\"env\":[{},{},{}],\"resources\":{\"cpu\":31.673528645996928,\"memory\":\"afhlbyl\",\"ephemeralStorage\":\"bevxrhyzd\"}},{\"image\":\"rsofpltdbmairrh\",\"name\":\"fnrac\",\"command\":[\"qigtuujwouhdaws\",\"grbjbxsjybvitvqk\",\"y\",\"znumtggmuwdchoz\"],\"args\":[\"fexl\",\"xn\"],\"env\":[{},{}],\"resources\":{\"cpu\":74.29099049732783,\"memory\":\"iknaqlnuwig\",\"ephemeralStorage\":\"xly\"}}],\"initContainers\":[{\"image\":\"vx\",\"name\":\"wxh\",\"command\":[\"jtlkexaonwivkcqh\",\"xhxknlc\"],\"args\":[\"mkyupijub\",\"qjfkakfqfrkemyi\"],\"env\":[{},{},{}],\"resources\":{\"cpu\":80.08756513780673,\"memory\":\"cowvfdjkp\",\"ephemeralStorage\":\"phlkksnm\"}},{\"image\":\"vyfijdkzuqnw\",\"name\":\"thuqolyahluq\",\"command\":[\"lsutrjbh\",\"ykfhyqezvqqugdrf\",\"bcvex\"],\"args\":[\"quowtljvfwhrea\",\"khyxvrqtvbcz\",\"ulmdgglm\",\"pjpfseykgs\"],\"env\":[{},{},{}],\"resources\":{\"cpu\":89.34675754345622,\"memory\":\"afp\",\"ephemeralStorage\":\"lkvec\"}}]},\"detailedStatus\":{\"replicas\":[{\"name\":\"goadyedmzr\",\"containers\":[{},{},{}]},{\"name\":\"knubnoitp\",\"containers\":[{},{},{}]},{\"name\":\"rgdg\",\"containers\":[{},{}]},{\"name\":\"qraswugyxpqitwei\",\"containers\":[{},{},{},{}]}]}}}")
             .toObject(JobExecutionInner.class);
-        Assertions.assertEquals("brjlnacgcckknhxk", model.name());
-        Assertions.assertEquals("v", model.id());
-        Assertions.assertEquals("nrzvuljraaer", model.type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T04:53:10Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-13T22:37:48Z"), model.endTime());
-        Assertions.assertEquals("vbroylaxxu", model.template().containers().get(0).image());
-        Assertions.assertEquals("disdosfjbjsvgj", model.template().containers().get(0).name());
-        Assertions.assertEquals("r", model.template().containers().get(0).command().get(0));
-        Assertions.assertEquals("c", model.template().containers().get(0).args().get(0));
-        Assertions.assertEquals(92.58066049026887D, model.template().containers().get(0).resources().cpu());
-        Assertions.assertEquals("jdhttzaefedxi", model.template().containers().get(0).resources().memory());
-        Assertions.assertEquals("pbgtgkylkdghrj", model.template().initContainers().get(0).image());
-        Assertions.assertEquals("utlwxezwzhok", model.template().initContainers().get(0).name());
-        Assertions.assertEquals("nhhtql", model.template().initContainers().get(0).command().get(0));
-        Assertions.assertEquals("kssjhoiftxfk", model.template().initContainers().get(0).args().get(0));
-        Assertions.assertEquals(54.436034211849226D, model.template().initContainers().get(0).resources().cpu());
-        Assertions.assertEquals("tillucbiqtg", model.template().initContainers().get(0).resources().memory());
+        Assertions.assertEquals("gwumgxdgdhpa", model.name());
+        Assertions.assertEquals("dexjddvjs", model.id());
+        Assertions.assertEquals("wotmmwllcolsrsxa", model.type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T03:23:07Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-09T11:00:51Z"), model.endTime());
+        Assertions.assertEquals("jljnhvlqjbek", model.template().containers().get(0).image());
+        Assertions.assertEquals("eksnbksdqhjvyk", model.template().containers().get(0).name());
+        Assertions.assertEquals("sl", model.template().containers().get(0).command().get(0));
+        Assertions.assertEquals("ustcpoq", model.template().containers().get(0).args().get(0));
+        Assertions.assertEquals(60.943224543269345D, model.template().containers().get(0).resources().cpu());
+        Assertions.assertEquals("svkzykj", model.template().containers().get(0).resources().memory());
+        Assertions.assertEquals("vx", model.template().initContainers().get(0).image());
+        Assertions.assertEquals("wxh", model.template().initContainers().get(0).name());
+        Assertions.assertEquals("jtlkexaonwivkcqh", model.template().initContainers().get(0).command().get(0));
+        Assertions.assertEquals("mkyupijub", model.template().initContainers().get(0).args().get(0));
+        Assertions.assertEquals(80.08756513780673D, model.template().initContainers().get(0).resources().cpu());
+        Assertions.assertEquals("cowvfdjkp", model.template().initContainers().get(0).resources().memory());
+        Assertions.assertEquals("goadyedmzr", model.detailedStatus().replicas().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobExecutionInner model
-            = new JobExecutionInner().withName("brjlnacgcckknhxk")
-                .withId("v")
-                .withType("nrzvuljraaer")
-                .withStartTime(OffsetDateTime.parse("2021-08-09T04:53:10Z"))
-                .withEndTime(OffsetDateTime.parse("2021-04-13T22:37:48Z"))
+            = new JobExecutionInner().withName("gwumgxdgdhpa")
+                .withId("dexjddvjs")
+                .withType("wotmmwllcolsrsxa")
+                .withStartTime(OffsetDateTime.parse("2021-04-01T03:23:07Z"))
+                .withEndTime(OffsetDateTime.parse("2021-03-09T11:00:51Z"))
                 .withTemplate(
                     new JobExecutionTemplate()
-                        .withContainers(Arrays.asList(new JobExecutionContainer().withImage("vbroylaxxu")
-                            .withName("disdosfjbjsvgj")
-                            .withCommand(Arrays.asList("r", "vyc"))
-                            .withArgs(Arrays.asList("c", "xgccknfnw"))
-                            .withEnv(Arrays.asList(new EnvironmentVar(), new EnvironmentVar(), new EnvironmentVar()))
-                            .withResources(
-                                new ContainerResources().withCpu(92.58066049026887D).withMemory("jdhttzaefedxi"))))
-                        .withInitContainers(
+                        .withContainers(
                             Arrays
                                 .asList(
-                                    new JobExecutionContainer().withImage("pbgtgkylkdghrj")
-                                        .withName("utlwxezwzhok")
-                                        .withCommand(
-                                            Arrays.asList("nhhtql", "ehgpp", "pifhpfeoajvgcxtx", "csheafidltugsr"))
-                                        .withArgs(Arrays.asList("kssjhoiftxfk"))
-                                        .withEnv(Arrays.asList(new EnvironmentVar(), new EnvironmentVar(),
-                                            new EnvironmentVar()))
-                                        .withResources(new ContainerResources()
-                                            .withCpu(54.436034211849226D)
-                                            .withMemory("tillucbiqtg")),
-                                    new JobExecutionContainer().withImage("zetpwbra")
-                                        .withName("libph")
-                                        .withCommand(Arrays.asList("mizak", "kan", "jpdn"))
-                                        .withArgs(Arrays.asList("ajoylhjl"))
+                                    new JobExecutionContainer().withImage("jljnhvlqjbek")
+                                        .withName("eksnbksdqhjvyk")
+                                        .withCommand(Arrays.asList("sl"))
+                                        .withArgs(Arrays.asList("ustcpoq", "avnwqj", "g", "knlejjjkxybwfd"))
                                         .withEnv(Arrays.asList(new EnvironmentVar(), new EnvironmentVar()))
-                                        .withResources(new ContainerResources().withCpu(29.664656948593926D)
-                                            .withMemory("mrsopte")),
-                                    new JobExecutionContainer().withImage("ls")
-                                        .withName("asylwx")
+                                        .withResources(new ContainerResources().withCpu(60.943224543269345D)
+                                            .withMemory("svkzykj")),
+                                    new JobExecutionContainer().withImage("wushcdp")
+                                        .withName("pn")
                                         .withCommand(
-                                            Arrays.asList("umweoohguufuzboy", "athwt", "olbaemwmdx", "ebwjscjpahlxvea"))
-                                        .withArgs(Arrays.asList("xnmwmqtibxyijddt", "qcttadijaeukmrsi"))
-                                        .withEnv(Arrays.asList(new EnvironmentVar()))
-                                        .withResources(
-                                            new ContainerResources().withCpu(66.99801356760808D).withMemory("apm")))));
+                                            Arrays.asList("gjfbpkuwxeoi", "jfizfavkjzwfbc", "aykmmf", "sbfwxr"))
+                                        .withArgs(Arrays.asList("dew"))
+                                        .withEnv(Arrays.asList(new EnvironmentVar(), new EnvironmentVar()))
+                                        .withResources(new ContainerResources().withCpu(77.68566374552775D)
+                                            .withMemory("bjazejwwviy")),
+                                    new JobExecutionContainer().withImage("brnnhjxsqw")
+                                        .withName("qkbiwet")
+                                        .withCommand(Arrays.asList("ycyqiqyhgfsetzl", "xbsfledynoj", "ziu"))
+                                        .withArgs(Arrays.asList("zkkdtnhqs", "cljse"))
+                                        .withEnv(Arrays
+                                            .asList(new EnvironmentVar(), new EnvironmentVar(), new EnvironmentVar()))
+                                        .withResources(new ContainerResources()
+                                            .withCpu(31.673528645996928D)
+                                            .withMemory("afhlbyl")),
+                                    new JobExecutionContainer().withImage("rsofpltdbmairrh")
+                                        .withName("fnrac")
+                                        .withCommand(Arrays.asList("qigtuujwouhdaws", "grbjbxsjybvitvqk", "y",
+                                            "znumtggmuwdchoz"))
+                                        .withArgs(Arrays.asList("fexl", "xn"))
+                                        .withEnv(Arrays.asList(new EnvironmentVar(), new EnvironmentVar()))
+                                        .withResources(new ContainerResources().withCpu(74.29099049732783D)
+                                            .withMemory("iknaqlnuwig"))))
+                        .withInitContainers(Arrays.asList(
+                            new JobExecutionContainer().withImage("vx")
+                                .withName("wxh")
+                                .withCommand(Arrays.asList("jtlkexaonwivkcqh", "xhxknlc"))
+                                .withArgs(Arrays.asList("mkyupijub", "qjfkakfqfrkemyi"))
+                                .withEnv(
+                                    Arrays.asList(new EnvironmentVar(), new EnvironmentVar(), new EnvironmentVar()))
+                                .withResources(
+                                    new ContainerResources().withCpu(80.08756513780673D).withMemory("cowvfdjkp")),
+                            new JobExecutionContainer().withImage("vyfijdkzuqnw")
+                                .withName("thuqolyahluq")
+                                .withCommand(Arrays.asList("lsutrjbh", "ykfhyqezvqqugdrf", "bcvex"))
+                                .withArgs(Arrays.asList("quowtljvfwhrea", "khyxvrqtvbcz", "ulmdgglm", "pjpfseykgs"))
+                                .withEnv(
+                                    Arrays.asList(new EnvironmentVar(), new EnvironmentVar(), new EnvironmentVar()))
+                                .withResources(
+                                    new ContainerResources().withCpu(89.34675754345622D).withMemory("afp")))))
+                .withDetailedStatus(new ExecutionStatus().withReplicas(Arrays.asList(
+                    new ReplicaExecutionStatus().withName("goadyedmzr")
+                        .withContainers(Arrays.asList(new ContainerExecutionStatus(), new ContainerExecutionStatus(),
+                            new ContainerExecutionStatus())),
+                    new ReplicaExecutionStatus().withName("knubnoitp")
+                        .withContainers(Arrays.asList(new ContainerExecutionStatus(), new ContainerExecutionStatus(),
+                            new ContainerExecutionStatus())),
+                    new ReplicaExecutionStatus().withName("rgdg")
+                        .withContainers(Arrays.asList(new ContainerExecutionStatus(), new ContainerExecutionStatus())),
+                    new ReplicaExecutionStatus().withName("qraswugyxpqitwei")
+                        .withContainers(Arrays.asList(new ContainerExecutionStatus(), new ContainerExecutionStatus(),
+                            new ContainerExecutionStatus(), new ContainerExecutionStatus())))));
         model = BinaryData.fromObject(model).toObject(JobExecutionInner.class);
-        Assertions.assertEquals("brjlnacgcckknhxk", model.name());
-        Assertions.assertEquals("v", model.id());
-        Assertions.assertEquals("nrzvuljraaer", model.type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T04:53:10Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-13T22:37:48Z"), model.endTime());
-        Assertions.assertEquals("vbroylaxxu", model.template().containers().get(0).image());
-        Assertions.assertEquals("disdosfjbjsvgj", model.template().containers().get(0).name());
-        Assertions.assertEquals("r", model.template().containers().get(0).command().get(0));
-        Assertions.assertEquals("c", model.template().containers().get(0).args().get(0));
-        Assertions.assertEquals(92.58066049026887D, model.template().containers().get(0).resources().cpu());
-        Assertions.assertEquals("jdhttzaefedxi", model.template().containers().get(0).resources().memory());
-        Assertions.assertEquals("pbgtgkylkdghrj", model.template().initContainers().get(0).image());
-        Assertions.assertEquals("utlwxezwzhok", model.template().initContainers().get(0).name());
-        Assertions.assertEquals("nhhtql", model.template().initContainers().get(0).command().get(0));
-        Assertions.assertEquals("kssjhoiftxfk", model.template().initContainers().get(0).args().get(0));
-        Assertions.assertEquals(54.436034211849226D, model.template().initContainers().get(0).resources().cpu());
-        Assertions.assertEquals("tillucbiqtg", model.template().initContainers().get(0).resources().memory());
+        Assertions.assertEquals("gwumgxdgdhpa", model.name());
+        Assertions.assertEquals("dexjddvjs", model.id());
+        Assertions.assertEquals("wotmmwllcolsrsxa", model.type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T03:23:07Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-09T11:00:51Z"), model.endTime());
+        Assertions.assertEquals("jljnhvlqjbek", model.template().containers().get(0).image());
+        Assertions.assertEquals("eksnbksdqhjvyk", model.template().containers().get(0).name());
+        Assertions.assertEquals("sl", model.template().containers().get(0).command().get(0));
+        Assertions.assertEquals("ustcpoq", model.template().containers().get(0).args().get(0));
+        Assertions.assertEquals(60.943224543269345D, model.template().containers().get(0).resources().cpu());
+        Assertions.assertEquals("svkzykj", model.template().containers().get(0).resources().memory());
+        Assertions.assertEquals("vx", model.template().initContainers().get(0).image());
+        Assertions.assertEquals("wxh", model.template().initContainers().get(0).name());
+        Assertions.assertEquals("jtlkexaonwivkcqh", model.template().initContainers().get(0).command().get(0));
+        Assertions.assertEquals("mkyupijub", model.template().initContainers().get(0).args().get(0));
+        Assertions.assertEquals(80.08756513780673D, model.template().initContainers().get(0).resources().cpu());
+        Assertions.assertEquals("cowvfdjkp", model.template().initContainers().get(0).resources().memory());
+        Assertions.assertEquals("goadyedmzr", model.detailedStatus().replicas().get(0).name());
     }
 }

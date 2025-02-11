@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.customerinsights.generated;
 
-/** Samples for WidgetTypes ListByHub. */
+/**
+ * Samples for WidgetTypes ListByHub.
+ */
 public final class WidgetTypesListByHubSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/WidgetTypesListByHub.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/
+     * WidgetTypesListByHub.json
      */
     /**
      * Sample code: WidgetTypes_ListByHub.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
-    public static void widgetTypesListByHub(
-        com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
+    public static void
+        widgetTypesListByHub(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
         manager.widgetTypes().listByHub("TestHubRG", "sdkTestHub", com.azure.core.util.Context.NONE);
     }
 }

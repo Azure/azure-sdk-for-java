@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceConfigurationPropertiesPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceConfigurationPropertiesPatch model =
-            BinaryData.fromString("{\"port\":9010569490634453588}").toObject(ServiceConfigurationPropertiesPatch.class);
+        ServiceConfigurationPropertiesPatch model = BinaryData.fromString("{\"port\":9010569490634453588}")
+            .toObject(ServiceConfigurationPropertiesPatch.class);
         Assertions.assertEquals(9010569490634453588L, model.port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceConfigurationPropertiesPatch model =
-            new ServiceConfigurationPropertiesPatch().withPort(9010569490634453588L);
+        ServiceConfigurationPropertiesPatch model
+            = new ServiceConfigurationPropertiesPatch().withPort(9010569490634453588L);
         model = BinaryData.fromObject(model).toObject(ServiceConfigurationPropertiesPatch.class);
         Assertions.assertEquals(9010569490634453588L, model.port());
     }

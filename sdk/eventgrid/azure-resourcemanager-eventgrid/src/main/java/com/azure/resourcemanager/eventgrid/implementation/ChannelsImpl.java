@@ -13,8 +13,8 @@ import com.azure.resourcemanager.eventgrid.fluent.ChannelsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.ChannelInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionFullUrlInner;
 import com.azure.resourcemanager.eventgrid.models.Channel;
-import com.azure.resourcemanager.eventgrid.models.Channels;
 import com.azure.resourcemanager.eventgrid.models.ChannelUpdateParameters;
+import com.azure.resourcemanager.eventgrid.models.Channels;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFullUrl;
 
 public final class ChannelsImpl implements Channels {

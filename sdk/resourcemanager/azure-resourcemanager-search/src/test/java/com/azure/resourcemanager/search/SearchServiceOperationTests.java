@@ -33,14 +33,13 @@ public class SearchServiceOperationTests extends SearchManagementTest {
     public void canCreateUpdateSearchService() {
         String searchServiceName = generateRandomResourceName("search", 15);
 
-        resourceManager.resourceGroups().define(rgName)
-            .withRegion(region)
-            .create();
+        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         CheckNameAvailabilityOutput result = searchManager.searchServices().checkNameAvailability(searchServiceName);
         Assertions.assertTrue(result.isNameAvailable());
 
-        SearchService searchService = searchManager.searchServices().define(searchServiceName)
+        SearchService searchService = searchManager.searchServices()
+            .define(searchServiceName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withFreeSku()
@@ -60,11 +59,10 @@ public class SearchServiceOperationTests extends SearchManagementTest {
         Assertions.assertTrue(foundSearchService);
 
         if (!isPlaybackMode()) {
-            searchService.update()
-                .withTag("key1", "value1")
-                .apply();
+            searchService.update().withTag("key1", "value1").apply();
 
-            SearchService updatedSearchService = searchManager.searchServices().getByResourceGroup(rgName, searchServiceName);
+            SearchService updatedSearchService
+                = searchManager.searchServices().getByResourceGroup(rgName, searchServiceName);
             Assertions.assertNotNull(updatedSearchService);
             Assertions.assertEquals(SkuName.FREE, updatedSearchService.sku().name());
             Assertions.assertEquals(1, updatedSearchService.tags().size());
@@ -76,9 +74,7 @@ public class SearchServiceOperationTests extends SearchManagementTest {
     public void canCreateAndUpdatePublicNetworkAccess() {
         String searchServiceName = generateRandomResourceName("search", 15);
 
-        resourceManager.resourceGroups().define(rgName)
-            .withRegion(region)
-            .create();
+        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         SearchService searchService = searchManager.searchServices()
             .define(searchServiceName)

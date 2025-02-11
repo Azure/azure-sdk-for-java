@@ -5,24 +5,28 @@
 package com.azure.resourcemanager.quantum.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Azure quantum workspace Api key details.
  */
 @Fluent
-public final class ApiKey {
+public final class ApiKey implements JsonSerializable<ApiKey> {
     /*
      * The creation time of the api key.
      */
-    @JsonProperty(value = "createdAt")
     private OffsetDateTime createdAt;
 
     /*
      * The Api key.
      */
-    @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
     /**
@@ -66,5 +70,45 @@ public final class ApiKey {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdAt",
+            this.createdAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiKey if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the ApiKey.
+     */
+    public static ApiKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiKey deserializedApiKey = new ApiKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdAt".equals(fieldName)) {
+                    deserializedApiKey.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("key".equals(fieldName)) {
+                    deserializedApiKey.key = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiKey;
+        });
     }
 }

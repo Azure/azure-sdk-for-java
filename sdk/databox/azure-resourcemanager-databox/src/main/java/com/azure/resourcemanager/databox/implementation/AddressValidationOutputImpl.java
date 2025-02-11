@@ -13,8 +13,8 @@ public final class AddressValidationOutputImpl implements AddressValidationOutpu
 
     private final com.azure.resourcemanager.databox.DataBoxManager serviceManager;
 
-    AddressValidationOutputImpl(
-        AddressValidationOutputInner innerObject, com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
+    AddressValidationOutputImpl(AddressValidationOutputInner innerObject,
+        com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

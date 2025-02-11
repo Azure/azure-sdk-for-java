@@ -11,22 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventInputTrackSelectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventInputTrackSelection model =
-            BinaryData
-                .fromString("{\"property\":\"eaivxwczel\",\"operation\":\"irels\",\"value\":\"aenwabf\"}")
-                .toObject(LiveEventInputTrackSelection.class);
-        Assertions.assertEquals("eaivxwczel", model.property());
-        Assertions.assertEquals("irels", model.operation());
-        Assertions.assertEquals("aenwabf", model.value());
+        LiveEventInputTrackSelection model = BinaryData
+            .fromString("{\"property\":\"hahhxvrhmzkwpj\",\"operation\":\"wspughftqsxhqx\",\"value\":\"xukndxdigr\"}")
+            .toObject(LiveEventInputTrackSelection.class);
+        Assertions.assertEquals("hahhxvrhmzkwpj", model.property());
+        Assertions.assertEquals("wspughftqsxhqx", model.operation());
+        Assertions.assertEquals("xukndxdigr", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventInputTrackSelection model =
-            new LiveEventInputTrackSelection().withProperty("eaivxwczel").withOperation("irels").withValue("aenwabf");
+        LiveEventInputTrackSelection model = new LiveEventInputTrackSelection().withProperty("hahhxvrhmzkwpj")
+            .withOperation("wspughftqsxhqx")
+            .withValue("xukndxdigr");
         model = BinaryData.fromObject(model).toObject(LiveEventInputTrackSelection.class);
-        Assertions.assertEquals("eaivxwczel", model.property());
-        Assertions.assertEquals("irels", model.operation());
-        Assertions.assertEquals("aenwabf", model.value());
+        Assertions.assertEquals("hahhxvrhmzkwpj", model.property());
+        Assertions.assertEquals("wspughftqsxhqx", model.operation());
+        Assertions.assertEquals("xukndxdigr", model.value());
     }
 }

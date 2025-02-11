@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IssueCommentContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IssueCommentContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"text\":\"lbjazejww\",\"createdDate\":\"2021-03-06T21:39:52Z\",\"userId\":\"oypsuhbrnnhj\"}")
-                .toObject(IssueCommentContractProperties.class);
+        IssueCommentContractProperties model = BinaryData
+            .fromString("{\"text\":\"lbjazejww\",\"createdDate\":\"2021-03-06T21:39:52Z\",\"userId\":\"oypsuhbrnnhj\"}")
+            .toObject(IssueCommentContractProperties.class);
         Assertions.assertEquals("lbjazejww", model.text());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T21:39:52Z"), model.createdDate());
         Assertions.assertEquals("oypsuhbrnnhj", model.userId());
@@ -24,11 +22,9 @@ public final class IssueCommentContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueCommentContractProperties model =
-            new IssueCommentContractProperties()
-                .withText("lbjazejww")
-                .withCreatedDate(OffsetDateTime.parse("2021-03-06T21:39:52Z"))
-                .withUserId("oypsuhbrnnhj");
+        IssueCommentContractProperties model = new IssueCommentContractProperties().withText("lbjazejww")
+            .withCreatedDate(OffsetDateTime.parse("2021-03-06T21:39:52Z"))
+            .withUserId("oypsuhbrnnhj");
         model = BinaryData.fromObject(model).toObject(IssueCommentContractProperties.class);
         Assertions.assertEquals("lbjazejww", model.text());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T21:39:52Z"), model.createdDate());

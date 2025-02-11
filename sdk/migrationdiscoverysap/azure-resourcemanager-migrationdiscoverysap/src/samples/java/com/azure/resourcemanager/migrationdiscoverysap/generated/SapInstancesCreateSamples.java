@@ -24,9 +24,12 @@ public final class SapInstancesCreateSamples {
      */
     public static void createsTheSAPInstanceResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.sapInstances().define("MPP_MPP").withRegion("eastus")
+        manager.sapInstances()
+            .define("MPP_MPP")
+            .withRegion("eastus")
             .withExistingSapDiscoverySite("test-rg", "SampleSite")
-            .withTags(mapOf("property1", "value1", "property2", "value2")).withProperties(new SapInstanceProperties())
+            .withTags(mapOf("property1", "value1", "property2", "value2"))
+            .withProperties(new SapInstanceProperties())
             .create();
     }
 

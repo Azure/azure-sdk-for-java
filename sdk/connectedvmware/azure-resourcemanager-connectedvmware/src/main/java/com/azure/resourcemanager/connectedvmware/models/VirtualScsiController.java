@@ -5,51 +5,52 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * This data object type contains the properties of a SCSI controller device attached to a virtual machine that is
  * reported by the controller.
  */
 @Fluent
-public final class VirtualScsiController {
+public final class VirtualScsiController implements JsonSerializable<VirtualScsiController> {
     /*
      * Gets or sets the controller type.
      */
-    @JsonProperty(value = "type")
     private ScsiControllerType type;
 
     /*
      * Gets or sets the key of the controller.
      */
-    @JsonProperty(value = "controllerKey")
     private Integer controllerKey;
 
     /*
      * Gets or sets the bus number of the controller.
      */
-    @JsonProperty(value = "busNumber")
     private Integer busNumber;
 
     /*
      * Gets or sets the SCSI controller unit number.
      */
-    @JsonProperty(value = "scsiCtlrUnitNumber")
     private Integer scsiCtlrUnitNumber;
 
     /*
      * Gets or sets the sharing mode.
      */
-    @JsonProperty(value = "sharing")
     private VirtualScsiSharing sharing;
 
-    /** Creates an instance of VirtualScsiController class. */
+    /**
+     * Creates an instance of VirtualScsiController class.
+     */
     public VirtualScsiController() {
     }
 
     /**
      * Get the type property: Gets or sets the controller type.
-     *
+     * 
      * @return the type value.
      */
     public ScsiControllerType type() {
@@ -58,7 +59,7 @@ public final class VirtualScsiController {
 
     /**
      * Set the type property: Gets or sets the controller type.
-     *
+     * 
      * @param type the type value to set.
      * @return the VirtualScsiController object itself.
      */
@@ -69,7 +70,7 @@ public final class VirtualScsiController {
 
     /**
      * Get the controllerKey property: Gets or sets the key of the controller.
-     *
+     * 
      * @return the controllerKey value.
      */
     public Integer controllerKey() {
@@ -78,7 +79,7 @@ public final class VirtualScsiController {
 
     /**
      * Set the controllerKey property: Gets or sets the key of the controller.
-     *
+     * 
      * @param controllerKey the controllerKey value to set.
      * @return the VirtualScsiController object itself.
      */
@@ -89,7 +90,7 @@ public final class VirtualScsiController {
 
     /**
      * Get the busNumber property: Gets or sets the bus number of the controller.
-     *
+     * 
      * @return the busNumber value.
      */
     public Integer busNumber() {
@@ -98,7 +99,7 @@ public final class VirtualScsiController {
 
     /**
      * Set the busNumber property: Gets or sets the bus number of the controller.
-     *
+     * 
      * @param busNumber the busNumber value to set.
      * @return the VirtualScsiController object itself.
      */
@@ -109,7 +110,7 @@ public final class VirtualScsiController {
 
     /**
      * Get the scsiCtlrUnitNumber property: Gets or sets the SCSI controller unit number.
-     *
+     * 
      * @return the scsiCtlrUnitNumber value.
      */
     public Integer scsiCtlrUnitNumber() {
@@ -118,7 +119,7 @@ public final class VirtualScsiController {
 
     /**
      * Set the scsiCtlrUnitNumber property: Gets or sets the SCSI controller unit number.
-     *
+     * 
      * @param scsiCtlrUnitNumber the scsiCtlrUnitNumber value to set.
      * @return the VirtualScsiController object itself.
      */
@@ -129,7 +130,7 @@ public final class VirtualScsiController {
 
     /**
      * Get the sharing property: Gets or sets the sharing mode.
-     *
+     * 
      * @return the sharing value.
      */
     public VirtualScsiSharing sharing() {
@@ -138,7 +139,7 @@ public final class VirtualScsiController {
 
     /**
      * Set the sharing property: Gets or sets the sharing mode.
-     *
+     * 
      * @param sharing the sharing value to set.
      * @return the VirtualScsiController object itself.
      */
@@ -149,9 +150,57 @@ public final class VirtualScsiController {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNumberField("controllerKey", this.controllerKey);
+        jsonWriter.writeNumberField("busNumber", this.busNumber);
+        jsonWriter.writeNumberField("scsiCtlrUnitNumber", this.scsiCtlrUnitNumber);
+        jsonWriter.writeStringField("sharing", this.sharing == null ? null : this.sharing.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualScsiController from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualScsiController if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualScsiController.
+     */
+    public static VirtualScsiController fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualScsiController deserializedVirtualScsiController = new VirtualScsiController();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedVirtualScsiController.type = ScsiControllerType.fromString(reader.getString());
+                } else if ("controllerKey".equals(fieldName)) {
+                    deserializedVirtualScsiController.controllerKey = reader.getNullable(JsonReader::getInt);
+                } else if ("busNumber".equals(fieldName)) {
+                    deserializedVirtualScsiController.busNumber = reader.getNullable(JsonReader::getInt);
+                } else if ("scsiCtlrUnitNumber".equals(fieldName)) {
+                    deserializedVirtualScsiController.scsiCtlrUnitNumber = reader.getNullable(JsonReader::getInt);
+                } else if ("sharing".equals(fieldName)) {
+                    deserializedVirtualScsiController.sharing = VirtualScsiSharing.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualScsiController;
+        });
     }
 }

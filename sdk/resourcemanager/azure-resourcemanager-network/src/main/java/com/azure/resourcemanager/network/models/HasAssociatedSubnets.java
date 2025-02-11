@@ -9,6 +9,10 @@ import java.util.List;
 /** An interface representing a model's ability to reference a list of associated subnets. */
 @Fluent()
 public interface HasAssociatedSubnets {
-    /** @return list of subnets associated with this resource */
+    /**
+     * Gets list of subnets associated with this resource.
+     *
+     * @return list of subnets associated with this resource
+     */
     List<Subnet> listAssociatedSubnets();
 }

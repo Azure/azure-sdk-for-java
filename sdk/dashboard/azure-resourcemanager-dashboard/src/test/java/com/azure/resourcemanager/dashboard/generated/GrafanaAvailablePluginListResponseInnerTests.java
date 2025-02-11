@@ -22,8 +22,9 @@ public final class GrafanaAvailablePluginListResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GrafanaAvailablePluginListResponseInner model = new GrafanaAvailablePluginListResponseInner()
-            .withValue(Arrays.asList(new GrafanaAvailablePlugin())).withNextLink("xkrxdqmi");
+        GrafanaAvailablePluginListResponseInner model
+            = new GrafanaAvailablePluginListResponseInner().withValue(Arrays.asList(new GrafanaAvailablePlugin()))
+                .withNextLink("xkrxdqmi");
         model = BinaryData.fromObject(model).toObject(GrafanaAvailablePluginListResponseInner.class);
         Assertions.assertEquals("xkrxdqmi", model.nextLink());
     }

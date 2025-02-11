@@ -112,25 +112,28 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
             case OVERWRITE:
                 commitList = newBlockIds;
                 break;
+
             case APPEND:
-                commitList = Stream.of(existingBlockIds, newBlockIds)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+                commitList
+                    = Stream.of(existingBlockIds, newBlockIds).flatMap(Collection::stream).collect(Collectors.toList());
                 break;
+
             case PREPEND:
-                commitList = Stream.of(newBlockIds, existingBlockIds)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+                commitList
+                    = Stream.of(newBlockIds, existingBlockIds).flatMap(Collection::stream).collect(Collectors.toList());
                 break;
+
             default:
                 // Unreachable block to satisfy compiler
                 throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                     "Commit not supported with the configured BlockBlobSeekableByteChannelWriteMode."));
         }
 
-        client.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(commitList)
-                .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(tier).setRequestConditions(conditions),
-            null, null);
+        client.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(commitList).setHeaders(headers)
+            .setMetadata(metadata)
+            .setTags(tags)
+            .setTier(tier)
+            .setRequestConditions(conditions), null, null);
     }
 
     @Override
@@ -141,7 +144,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
 
     @Override
     public void resize(long newSize) {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-            "Block blobs cannot have size explicitly set."));
+        throw LOGGER
+            .logExceptionAsError(new UnsupportedOperationException("Block blobs cannot have size explicitly set."));
     }
 }

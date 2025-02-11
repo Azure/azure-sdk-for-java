@@ -7,32 +7,52 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.WorkflowModelProperties;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.WorkflowModelSystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Workflow model. */
+/**
+ * Workflow model.
+ */
 @Fluent
 public final class WorkflowModelInner extends ProxyResource {
     /*
      * Workflow model properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private WorkflowModelProperties properties;
 
     /*
      * The systemData property.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowModelSystemData systemData;
 
-    /** Creates an instance of WorkflowModelInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WorkflowModelInner class.
+     */
     public WorkflowModelInner() {
     }
 
     /**
      * Get the properties property: Workflow model properties.
-     *
+     * 
      * @return the properties value.
      */
     public WorkflowModelProperties properties() {
@@ -41,7 +61,7 @@ public final class WorkflowModelInner extends ProxyResource {
 
     /**
      * Set the properties property: Workflow model properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the WorkflowModelInner object itself.
      */
@@ -52,7 +72,7 @@ public final class WorkflowModelInner extends ProxyResource {
 
     /**
      * Get the systemData property: The systemData property.
-     *
+     * 
      * @return the systemData value.
      */
     public WorkflowModelSystemData systemData() {
@@ -60,15 +80,44 @@ public final class WorkflowModelInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model WorkflowModelInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model WorkflowModelInner"));
         } else {
             properties().validate();
         }
@@ -78,4 +127,49 @@ public final class WorkflowModelInner extends ProxyResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkflowModelInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowModelInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkflowModelInner.
+     */
+    public static WorkflowModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowModelInner deserializedWorkflowModelInner = new WorkflowModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkflowModelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkflowModelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkflowModelInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkflowModelInner.properties = WorkflowModelProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWorkflowModelInner.systemData = WorkflowModelSystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowModelInner;
+        });
+    }
 }

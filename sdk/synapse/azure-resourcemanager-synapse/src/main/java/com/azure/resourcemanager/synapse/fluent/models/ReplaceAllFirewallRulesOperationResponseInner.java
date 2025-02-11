@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An existing operation for replacing the firewall rules. */
+/**
+ * An existing operation for replacing the firewall rules.
+ */
 @Fluent
-public final class ReplaceAllFirewallRulesOperationResponseInner {
+public final class ReplaceAllFirewallRulesOperationResponseInner
+    implements JsonSerializable<ReplaceAllFirewallRulesOperationResponseInner> {
     /*
      * The operation ID
      */
-    @JsonProperty(value = "operationId")
     private String operationId;
 
-    /** Creates an instance of ReplaceAllFirewallRulesOperationResponseInner class. */
+    /**
+     * Creates an instance of ReplaceAllFirewallRulesOperationResponseInner class.
+     */
     public ReplaceAllFirewallRulesOperationResponseInner() {
     }
 
     /**
      * Get the operationId property: The operation ID.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -31,7 +39,7 @@ public final class ReplaceAllFirewallRulesOperationResponseInner {
 
     /**
      * Set the operationId property: The operation ID.
-     *
+     * 
      * @param operationId the operationId value to set.
      * @return the ReplaceAllFirewallRulesOperationResponseInner object itself.
      */
@@ -42,9 +50,46 @@ public final class ReplaceAllFirewallRulesOperationResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", this.operationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplaceAllFirewallRulesOperationResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplaceAllFirewallRulesOperationResponseInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplaceAllFirewallRulesOperationResponseInner.
+     */
+    public static ReplaceAllFirewallRulesOperationResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplaceAllFirewallRulesOperationResponseInner deserializedReplaceAllFirewallRulesOperationResponseInner
+                = new ReplaceAllFirewallRulesOperationResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationId".equals(fieldName)) {
+                    deserializedReplaceAllFirewallRulesOperationResponseInner.operationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplaceAllFirewallRulesOperationResponseInner;
+        });
     }
 }

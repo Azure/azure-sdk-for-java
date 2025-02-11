@@ -12,32 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class SensitivityLabelPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SensitivityLabelProperties model =
-            BinaryData
-                .fromString(
-                    "{\"schemaName\":\"sbzkf\",\"tableName\":\"eyvpnqicvinvkj\",\"columnName\":\"dxrbuukzcle\",\"labelName\":\"hmlwpaztzpo\",\"labelId\":\"cckwyfzqwhxxbu\",\"informationType\":\"a\",\"informationTypeId\":\"feqztppriol\",\"isDisabled\":true,\"rank\":\"High\"}")
-                .toObject(SensitivityLabelProperties.class);
-        Assertions.assertEquals("hmlwpaztzpo", model.labelName());
-        Assertions.assertEquals("cckwyfzqwhxxbu", model.labelId());
-        Assertions.assertEquals("a", model.informationType());
-        Assertions.assertEquals("feqztppriol", model.informationTypeId());
-        Assertions.assertEquals(SensitivityLabelRank.HIGH, model.rank());
+        SensitivityLabelProperties model = BinaryData.fromString(
+            "{\"schemaName\":\"xfpxtgqscja\",\"tableName\":\"t\",\"columnName\":\"hdqazkmtgguwp\",\"labelName\":\"r\",\"labelId\":\"civmmg\",\"informationType\":\"cf\",\"informationTypeId\":\"rxgkne\",\"isDisabled\":true,\"rank\":\"None\"}")
+            .toObject(SensitivityLabelProperties.class);
+        Assertions.assertEquals("r", model.labelName());
+        Assertions.assertEquals("civmmg", model.labelId());
+        Assertions.assertEquals("cf", model.informationType());
+        Assertions.assertEquals("rxgkne", model.informationTypeId());
+        Assertions.assertEquals(SensitivityLabelRank.NONE, model.rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SensitivityLabelProperties model =
-            new SensitivityLabelProperties()
-                .withLabelName("hmlwpaztzpo")
-                .withLabelId("cckwyfzqwhxxbu")
-                .withInformationType("a")
-                .withInformationTypeId("feqztppriol")
-                .withRank(SensitivityLabelRank.HIGH);
+        SensitivityLabelProperties model = new SensitivityLabelProperties().withLabelName("r")
+            .withLabelId("civmmg")
+            .withInformationType("cf")
+            .withInformationTypeId("rxgkne")
+            .withRank(SensitivityLabelRank.NONE);
         model = BinaryData.fromObject(model).toObject(SensitivityLabelProperties.class);
-        Assertions.assertEquals("hmlwpaztzpo", model.labelName());
-        Assertions.assertEquals("cckwyfzqwhxxbu", model.labelId());
-        Assertions.assertEquals("a", model.informationType());
-        Assertions.assertEquals("feqztppriol", model.informationTypeId());
-        Assertions.assertEquals(SensitivityLabelRank.HIGH, model.rank());
+        Assertions.assertEquals("r", model.labelName());
+        Assertions.assertEquals("civmmg", model.labelId());
+        Assertions.assertEquals("cf", model.informationType());
+        Assertions.assertEquals("rxgkne", model.informationTypeId());
+        Assertions.assertEquals(SensitivityLabelRank.NONE, model.rank());
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class ResourceHealthStatus extends ExpandableStringEnum<ResourceHea
      * @param name a name to look for.
      * @return the corresponding ResourceHealthStatus.
      */
-    @JsonCreator
     public static ResourceHealthStatus fromString(String name) {
         return fromString(name, ResourceHealthStatus.class);
     }

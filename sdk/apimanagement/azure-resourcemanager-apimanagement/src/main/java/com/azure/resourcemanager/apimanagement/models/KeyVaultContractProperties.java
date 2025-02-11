@@ -5,24 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** KeyVault contract details. */
+/**
+ * KeyVault contract details.
+ */
 @Fluent
 public final class KeyVaultContractProperties extends KeyVaultContractCreateProperties {
     /*
      * Last time sync and refresh status of secret from key vault.
      */
-    @JsonProperty(value = "lastStatus")
     private KeyVaultLastAccessStatusContractProperties lastStatus;
 
-    /** Creates an instance of KeyVaultContractProperties class. */
+    /**
+     * Creates an instance of KeyVaultContractProperties class.
+     */
     public KeyVaultContractProperties() {
     }
 
     /**
      * Get the lastStatus property: Last time sync and refresh status of secret from key vault.
-     *
+     * 
      * @return the lastStatus value.
      */
     public KeyVaultLastAccessStatusContractProperties lastStatus() {
@@ -31,7 +37,7 @@ public final class KeyVaultContractProperties extends KeyVaultContractCreateProp
 
     /**
      * Set the lastStatus property: Last time sync and refresh status of secret from key vault.
-     *
+     * 
      * @param lastStatus the lastStatus value to set.
      * @return the KeyVaultContractProperties object itself.
      */
@@ -40,14 +46,18 @@ public final class KeyVaultContractProperties extends KeyVaultContractCreateProp
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyVaultContractProperties withSecretIdentifier(String secretIdentifier) {
         super.withSecretIdentifier(secretIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyVaultContractProperties withIdentityClientId(String identityClientId) {
         super.withIdentityClientId(identityClientId);
@@ -56,14 +66,56 @@ public final class KeyVaultContractProperties extends KeyVaultContractCreateProp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastStatus() != null) {
             lastStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("secretIdentifier", secretIdentifier());
+        jsonWriter.writeStringField("identityClientId", identityClientId());
+        jsonWriter.writeJsonField("lastStatus", this.lastStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultContractProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultContractProperties.
+     */
+    public static KeyVaultContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultContractProperties deserializedKeyVaultContractProperties = new KeyVaultContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secretIdentifier".equals(fieldName)) {
+                    deserializedKeyVaultContractProperties.withSecretIdentifier(reader.getString());
+                } else if ("identityClientId".equals(fieldName)) {
+                    deserializedKeyVaultContractProperties.withIdentityClientId(reader.getString());
+                } else if ("lastStatus".equals(fieldName)) {
+                    deserializedKeyVaultContractProperties.lastStatus
+                        = KeyVaultLastAccessStatusContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultContractProperties;
+        });
     }
 }

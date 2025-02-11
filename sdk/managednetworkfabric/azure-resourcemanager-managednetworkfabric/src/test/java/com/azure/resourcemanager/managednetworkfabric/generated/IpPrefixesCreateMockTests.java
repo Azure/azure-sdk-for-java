@@ -6,17 +6,14 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.Condition;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefix;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixRule;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -24,82 +21,46 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IpPrefixesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Disabled\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":4520960034287352179,\"networkPrefix\":\"bdj\",\"condition\":\"LesserThanOrEqualTo\",\"subnetMaskLength\":\"xotudamkiyao\"}],\"annotation\":\"hulzugifgsp\"},\"location\":\"dlnoc\",\"tags\":{\"wm\":\"gimizlukj\",\"mspppoeszthjt\":\"ksr\"},\"id\":\"yjskdiylg\",\"name\":\"zuqix\",\"type\":\"sybqowgvmxwbo\"}";
 
-        String responseStr =
-            "{\"properties\":{\"configurationState\":\"Provisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":4449803466898573862,\"networkPrefix\":\"qgqs\",\"condition\":\"Range\",\"subnetMaskLength\":\"efeombo\"},{\"action\":\"Permit\",\"sequenceNumber\":6001894924580740479,\"networkPrefix\":\"fuakqsjymcfvvzc\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"qktcktnbpk\"},{\"action\":\"Permit\",\"sequenceNumber\":1226746474122202062,\"networkPrefix\":\"lncmlzvvrm\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"qsacjqz\"},{\"action\":\"Permit\",\"sequenceNumber\":3498512871956945291,\"networkPrefix\":\"wcbawapndmtq\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"zvagqxfblsx\"}],\"annotation\":\"qgtodgklle\"},\"location\":\"i\",\"tags\":{\"b\":\"sr\",\"gqbmxbpqcnxske\":\"nasgfyxhsx\",\"lfpiuuf\":\"ojvmazu\",\"givbhmn\":\"pdncokq\"},\"id\":\"mjlyhbjf\",\"name\":\"m\",\"type\":\"ibgwcduy\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        IpPrefix response = manager.ipPrefixes()
+            .define("chmeodhzj")
+            .withRegion("owqrzvuxn")
+            .withExistingResourceGroup("zje")
+            .withTags(mapOf("mjdhypngo", "ohshzultdb", "zukekytkzvt", "bdxvrivptbczsuzg", "inha", "maatvogpyc",
+                "khwfjudapbq", "hbdxsbypl"))
+            .withIpPrefixRules(Arrays.asList(new IpPrefixRule().withAction(CommunityActionTypes.PERMIT)
+                .withSequenceNumber(5837362985759110973L)
+                .withNetworkPrefix("eqkwqphfvsfts")
+                .withCondition(Condition.GREATER_THAN_OR_EQUAL_TO)
+                .withSubnetMaskLength("p")))
+            .withAnnotation("achdtezgfctu")
+            .create();
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IpPrefix response =
-            manager
-                .ipPrefixes()
-                .define("gdmfvybfmpot")
-                .withRegion("vtkmx")
-                .withExistingResourceGroup("mazkmqfw")
-                .withTags(mapOf("v", "shnugfbpeigkf", "gtdjhtbarptxurs", "vriqtuzwbkqcgz", "oc", "oyyumhzps"))
-                .withIpPrefixRules(
-                    Arrays
-                        .asList(
-                            new IpPrefixRule()
-                                .withAction(CommunityActionTypes.DENY)
-                                .withSequenceNumber(8899164326683510311L)
-                                .withNetworkPrefix("codbqeo")
-                                .withCondition(Condition.RANGE)
-                                .withSubnetMaskLength("xxbjhsp"),
-                            new IpPrefixRule()
-                                .withAction(CommunityActionTypes.DENY)
-                                .withSequenceNumber(2386191404567686629L)
-                                .withNetworkPrefix("xrwqlwdflgqrplz")
-                                .withCondition(Condition.RANGE)
-                                .withSubnetMaskLength("dbboffgxtaelx")))
-                .withAnnotation("fcyatbxdwr")
-                .create();
-
-        Assertions.assertEquals("i", response.location());
-        Assertions.assertEquals("sr", response.tags().get("b"));
+        Assertions.assertEquals("dlnoc", response.location());
+        Assertions.assertEquals("gimizlukj", response.tags().get("wm"));
         Assertions.assertEquals(CommunityActionTypes.PERMIT, response.ipPrefixRules().get(0).action());
-        Assertions.assertEquals(4449803466898573862L, response.ipPrefixRules().get(0).sequenceNumber());
-        Assertions.assertEquals("qgqs", response.ipPrefixRules().get(0).networkPrefix());
-        Assertions.assertEquals(Condition.RANGE, response.ipPrefixRules().get(0).condition());
-        Assertions.assertEquals("efeombo", response.ipPrefixRules().get(0).subnetMaskLength());
-        Assertions.assertEquals("qgtodgklle", response.annotation());
+        Assertions.assertEquals(4520960034287352179L, response.ipPrefixRules().get(0).sequenceNumber());
+        Assertions.assertEquals("bdj", response.ipPrefixRules().get(0).networkPrefix());
+        Assertions.assertEquals(Condition.LESSER_THAN_OR_EQUAL_TO, response.ipPrefixRules().get(0).condition());
+        Assertions.assertEquals("xotudamkiyao", response.ipPrefixRules().get(0).subnetMaskLength());
+        Assertions.assertEquals("hulzugifgsp", response.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,34 +5,105 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.securityinsights.models.AttackTactic;
-import com.azure.resourcemanager.securityinsights.models.BookmarkEntityMappings;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.IncidentInfo;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Represents a bookmark in Azure Security Insights. */
+/**
+ * Represents a bookmark in Azure Security Insights.
+ */
 @Fluent
 public final class BookmarkInner extends ResourceWithEtag {
     /*
      * Bookmark properties
      */
-    @JsonProperty(value = "properties")
     private BookmarkProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BookmarkInner class.
+     */
+    public BookmarkInner() {
+    }
 
     /**
      * Get the innerProperties property: Bookmark properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BookmarkProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BookmarkInner withEtag(String etag) {
         super.withEtag(etag);
@@ -41,7 +112,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the created property: The time the bookmark was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -50,7 +121,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the created property: The time the bookmark was created.
-     *
+     * 
      * @param created the created value to set.
      * @return the BookmarkInner object itself.
      */
@@ -64,7 +135,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the createdBy property: Describes a user that created the bookmark.
-     *
+     * 
      * @return the createdBy value.
      */
     public UserInfo createdBy() {
@@ -73,7 +144,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the createdBy property: Describes a user that created the bookmark.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the BookmarkInner object itself.
      */
@@ -87,7 +158,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the displayName property: The display name of the bookmark.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -96,7 +167,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the displayName property: The display name of the bookmark.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the BookmarkInner object itself.
      */
@@ -110,7 +181,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the labels property: List of labels relevant to this bookmark.
-     *
+     * 
      * @return the labels value.
      */
     public List<String> labels() {
@@ -119,7 +190,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the labels property: List of labels relevant to this bookmark.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the BookmarkInner object itself.
      */
@@ -133,7 +204,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the notes property: The notes of the bookmark.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -142,7 +213,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the notes property: The notes of the bookmark.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the BookmarkInner object itself.
      */
@@ -156,7 +227,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the query property: The query of the bookmark.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -165,7 +236,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the query property: The query of the bookmark.
-     *
+     * 
      * @param query the query value to set.
      * @return the BookmarkInner object itself.
      */
@@ -179,7 +250,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the queryResult property: The query result of the bookmark.
-     *
+     * 
      * @return the queryResult value.
      */
     public String queryResult() {
@@ -188,7 +259,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the queryResult property: The query result of the bookmark.
-     *
+     * 
      * @param queryResult the queryResult value to set.
      * @return the BookmarkInner object itself.
      */
@@ -202,7 +273,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the updated property: The last time the bookmark was updated.
-     *
+     * 
      * @return the updated value.
      */
     public OffsetDateTime updated() {
@@ -211,7 +282,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the updated property: The last time the bookmark was updated.
-     *
+     * 
      * @param updated the updated value to set.
      * @return the BookmarkInner object itself.
      */
@@ -225,7 +296,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the updatedBy property: Describes a user that updated the bookmark.
-     *
+     * 
      * @return the updatedBy value.
      */
     public UserInfo updatedBy() {
@@ -234,7 +305,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the updatedBy property: Describes a user that updated the bookmark.
-     *
+     * 
      * @param updatedBy the updatedBy value to set.
      * @return the BookmarkInner object itself.
      */
@@ -248,7 +319,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the eventTime property: The bookmark event time.
-     *
+     * 
      * @return the eventTime value.
      */
     public OffsetDateTime eventTime() {
@@ -257,7 +328,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the eventTime property: The bookmark event time.
-     *
+     * 
      * @param eventTime the eventTime value to set.
      * @return the BookmarkInner object itself.
      */
@@ -271,7 +342,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the queryStartTime property: The start time for the query.
-     *
+     * 
      * @return the queryStartTime value.
      */
     public OffsetDateTime queryStartTime() {
@@ -280,7 +351,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the queryStartTime property: The start time for the query.
-     *
+     * 
      * @param queryStartTime the queryStartTime value to set.
      * @return the BookmarkInner object itself.
      */
@@ -294,7 +365,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the queryEndTime property: The end time for the query.
-     *
+     * 
      * @return the queryEndTime value.
      */
     public OffsetDateTime queryEndTime() {
@@ -303,7 +374,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the queryEndTime property: The end time for the query.
-     *
+     * 
      * @param queryEndTime the queryEndTime value to set.
      * @return the BookmarkInner object itself.
      */
@@ -317,7 +388,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Get the incidentInfo property: Describes an incident that relates to bookmark.
-     *
+     * 
      * @return the incidentInfo value.
      */
     public IncidentInfo incidentInfo() {
@@ -326,7 +397,7 @@ public final class BookmarkInner extends ResourceWithEtag {
 
     /**
      * Set the incidentInfo property: Describes an incident that relates to bookmark.
-     *
+     * 
      * @param incidentInfo the incidentInfo value to set.
      * @return the BookmarkInner object itself.
      */
@@ -339,84 +410,62 @@ public final class BookmarkInner extends ResourceWithEtag {
     }
 
     /**
-     * Get the entityMappings property: Describes the entity mappings of the bookmark.
-     *
-     * @return the entityMappings value.
-     */
-    public List<BookmarkEntityMappings> entityMappings() {
-        return this.innerProperties() == null ? null : this.innerProperties().entityMappings();
-    }
-
-    /**
-     * Set the entityMappings property: Describes the entity mappings of the bookmark.
-     *
-     * @param entityMappings the entityMappings value to set.
-     * @return the BookmarkInner object itself.
-     */
-    public BookmarkInner withEntityMappings(List<BookmarkEntityMappings> entityMappings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BookmarkProperties();
-        }
-        this.innerProperties().withEntityMappings(entityMappings);
-        return this;
-    }
-
-    /**
-     * Get the tactics property: A list of relevant mitre attacks.
-     *
-     * @return the tactics value.
-     */
-    public List<AttackTactic> tactics() {
-        return this.innerProperties() == null ? null : this.innerProperties().tactics();
-    }
-
-    /**
-     * Set the tactics property: A list of relevant mitre attacks.
-     *
-     * @param tactics the tactics value to set.
-     * @return the BookmarkInner object itself.
-     */
-    public BookmarkInner withTactics(List<AttackTactic> tactics) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BookmarkProperties();
-        }
-        this.innerProperties().withTactics(tactics);
-        return this;
-    }
-
-    /**
-     * Get the techniques property: A list of relevant mitre techniques.
-     *
-     * @return the techniques value.
-     */
-    public List<String> techniques() {
-        return this.innerProperties() == null ? null : this.innerProperties().techniques();
-    }
-
-    /**
-     * Set the techniques property: A list of relevant mitre techniques.
-     *
-     * @param techniques the techniques value to set.
-     * @return the BookmarkInner object itself.
-     */
-    public BookmarkInner withTechniques(List<String> techniques) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BookmarkProperties();
-        }
-        this.innerProperties().withTechniques(techniques);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BookmarkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BookmarkInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BookmarkInner.
+     */
+    public static BookmarkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BookmarkInner deserializedBookmarkInner = new BookmarkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBookmarkInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBookmarkInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBookmarkInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBookmarkInner.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBookmarkInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBookmarkInner.innerProperties = BookmarkProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBookmarkInner;
+        });
     }
 }

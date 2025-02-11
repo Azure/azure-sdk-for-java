@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current state of dnc delegated subnet resource. */
+/**
+ * The current state of dnc delegated subnet resource.
+ */
 public final class DelegatedSubnetState extends ExpandableStringEnum<DelegatedSubnetState> {
-    /** Static value Deleting for DelegatedSubnetState. */
+    /**
+     * Static value Deleting for DelegatedSubnetState.
+     */
     public static final DelegatedSubnetState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for DelegatedSubnetState. */
+    /**
+     * Static value Succeeded for DelegatedSubnetState.
+     */
     public static final DelegatedSubnetState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for DelegatedSubnetState. */
+    /**
+     * Static value Failed for DelegatedSubnetState.
+     */
     public static final DelegatedSubnetState FAILED = fromString("Failed");
 
-    /** Static value Provisioning for DelegatedSubnetState. */
+    /**
+     * Static value Provisioning for DelegatedSubnetState.
+     */
     public static final DelegatedSubnetState PROVISIONING = fromString("Provisioning");
 
     /**
      * Creates a new instance of DelegatedSubnetState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class DelegatedSubnetState extends ExpandableStringEnum<DelegatedSu
 
     /**
      * Creates or finds a DelegatedSubnetState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DelegatedSubnetState.
      */
-    @JsonCreator
     public static DelegatedSubnetState fromString(String name) {
         return fromString(name, DelegatedSubnetState.class);
     }
 
     /**
      * Gets known DelegatedSubnetState values.
-     *
+     * 
      * @return known DelegatedSubnetState values.
      */
     public static Collection<DelegatedSubnetState> values() {

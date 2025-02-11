@@ -11,10 +11,7 @@ import java.util.Map;
 /**
  * Base interfaces for fluent resources.
  */
-public interface Resource extends
-        Indexable,
-        HasId,
-        HasName {
+public interface Resource extends Indexable, HasId, HasName {
 
     /**
      * A dummy resource that does nothing.
@@ -57,21 +54,29 @@ public interface Resource extends
     };
 
     /**
+     * Gets the type of the resource.
+     *
      * @return the type of the resource
      */
     String type();
 
     /**
+     * Gets the name of the region the resource is in.
+     *
      * @return the name of the region the resource is in
      */
     String regionName();
 
     /**
+     * Gets the region the resource is in.
+     *
      * @return the region the resource is in
      */
     Region region();
 
     /**
+     * Gets the tags for the resource.
+     *
      * @return the tags for the resource
      */
     Map<String, String> tags();

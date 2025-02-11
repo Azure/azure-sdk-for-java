@@ -6,25 +6,46 @@ package com.azure.resourcemanager.changeanalysis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.changeanalysis.models.ChangeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The detected change. */
+/**
+ * The detected change.
+ */
 @Fluent
 public final class ChangeInner extends ProxyResource {
     /*
      * The properties of a change.
      */
-    @JsonProperty(value = "properties")
     private ChangeProperties properties;
 
-    /** Creates an instance of ChangeInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ChangeInner class.
+     */
     public ChangeInner() {
     }
 
     /**
      * Get the properties property: The properties of a change.
-     *
+     * 
      * @return the properties value.
      */
     public ChangeProperties properties() {
@@ -33,7 +54,7 @@ public final class ChangeInner extends ProxyResource {
 
     /**
      * Set the properties property: The properties of a change.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ChangeInner object itself.
      */
@@ -43,13 +64,86 @@ public final class ChangeInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangeInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChangeInner.
+     */
+    public static ChangeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangeInner deserializedChangeInner = new ChangeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedChangeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedChangeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedChangeInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedChangeInner.properties = ChangeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangeInner;
+        });
     }
 }

@@ -8,73 +8,83 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayContractInner;
 
-/** An immutable client-side representation of GatewayContract. */
+/**
+ * An immutable client-side representation of GatewayContract.
+ */
 public interface GatewayContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the locationData property: Gateway location.
-     *
+     * 
      * @return the locationData value.
      */
     ResourceLocationDataContract locationData();
 
     /**
      * Gets the description property: Gateway description.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.GatewayContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     GatewayContractInner innerModel();
 
-    /** The entirety of the GatewayContract definition. */
+    /**
+     * The entirety of the GatewayContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The GatewayContract definition stages. */
+    /**
+     * The GatewayContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the GatewayContract definition. */
+        /**
+         * The first stage of the GatewayContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the GatewayContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the GatewayContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
@@ -90,50 +100,56 @@ public interface GatewayContract {
             extends DefinitionStages.WithLocationData, DefinitionStages.WithDescription, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             GatewayContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             GatewayContract create(Context context);
         }
 
-        /** The stage of the GatewayContract definition allowing to specify locationData. */
+        /**
+         * The stage of the GatewayContract definition allowing to specify locationData.
+         */
         interface WithLocationData {
             /**
              * Specifies the locationData property: Gateway location..
-             *
+             * 
              * @param locationData Gateway location.
              * @return the next definition stage.
              */
             WithCreate withLocationData(ResourceLocationDataContract locationData);
         }
 
-        /** The stage of the GatewayContract definition allowing to specify description. */
+        /**
+         * The stage of the GatewayContract definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Gateway description.
-             *
+             * 
              * @param description Gateway description.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
 
-        /** The stage of the GatewayContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the GatewayContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -142,61 +158,71 @@ public interface GatewayContract {
 
     /**
      * Begins update for the GatewayContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     GatewayContract.Update update();
 
-    /** The template for GatewayContract update. */
+    /**
+     * The template for GatewayContract update.
+     */
     interface Update extends UpdateStages.WithLocationData, UpdateStages.WithDescription, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         GatewayContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         GatewayContract apply(Context context);
     }
 
-    /** The GatewayContract update stages. */
+    /**
+     * The GatewayContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the GatewayContract update allowing to specify locationData. */
+        /**
+         * The stage of the GatewayContract update allowing to specify locationData.
+         */
         interface WithLocationData {
             /**
              * Specifies the locationData property: Gateway location..
-             *
+             * 
              * @param locationData Gateway location.
              * @return the next definition stage.
              */
             Update withLocationData(ResourceLocationDataContract locationData);
         }
 
-        /** The stage of the GatewayContract update allowing to specify description. */
+        /**
+         * The stage of the GatewayContract update allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Gateway description.
-             *
+             * 
              * @param description Gateway description.
              * @return the next definition stage.
              */
             Update withDescription(String description);
         }
 
-        /** The stage of the GatewayContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the GatewayContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -205,14 +231,14 @@ public interface GatewayContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     GatewayContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -220,7 +246,7 @@ public interface GatewayContract {
 
     /**
      * Retrieves gateway keys.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -231,7 +257,7 @@ public interface GatewayContract {
 
     /**
      * Retrieves gateway keys.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gateway authentication keys.
@@ -240,8 +266,8 @@ public interface GatewayContract {
 
     /**
      * Regenerates specified gateway key invalidating any tokens created with it.
-     *
-     * @param parameters Gateway key regeneration request contract properties.
+     * 
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -252,8 +278,8 @@ public interface GatewayContract {
 
     /**
      * Regenerates specified gateway key invalidating any tokens created with it.
-     *
-     * @param parameters Gateway key regeneration request contract properties.
+     * 
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -262,8 +288,8 @@ public interface GatewayContract {
 
     /**
      * Gets the Shared Access Authorization Token for the gateway.
-     *
-     * @param parameters Gateway token request contract properties.
+     * 
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -274,8 +300,8 @@ public interface GatewayContract {
 
     /**
      * Gets the Shared Access Authorization Token for the gateway.
-     *
-     * @param parameters Gateway token request contract properties.
+     * 
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

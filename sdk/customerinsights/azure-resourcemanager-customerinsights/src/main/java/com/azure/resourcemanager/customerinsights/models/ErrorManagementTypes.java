@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The type of error management to use for the mapping. */
+/**
+ * The type of error management to use for the mapping.
+ */
 public enum ErrorManagementTypes {
-    /** Enum value RejectAndContinue. */
+    /**
+     * Enum value RejectAndContinue.
+     */
     REJECT_AND_CONTINUE("RejectAndContinue"),
 
-    /** Enum value StopImport. */
+    /**
+     * Enum value StopImport.
+     */
     STOP_IMPORT("StopImport"),
 
-    /** Enum value RejectUntilLimit. */
+    /**
+     * Enum value RejectUntilLimit.
+     */
     REJECT_UNTIL_LIMIT("RejectUntilLimit");
 
-    /** The actual serialized value for a ErrorManagementTypes instance. */
+    /**
+     * The actual serialized value for a ErrorManagementTypes instance.
+     */
     private final String value;
 
     ErrorManagementTypes(String value) {
@@ -27,11 +34,10 @@ public enum ErrorManagementTypes {
 
     /**
      * Parses a serialized value to a ErrorManagementTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ErrorManagementTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static ErrorManagementTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum ErrorManagementTypes {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

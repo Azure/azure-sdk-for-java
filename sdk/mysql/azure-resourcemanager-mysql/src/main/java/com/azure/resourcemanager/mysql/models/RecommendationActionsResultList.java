@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of recommendation actions. */
 @Immutable
 public final class RecommendationActionsResultList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationActionsResultList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RecommendationActionsResultList.class);
 
     /*
      * The list of recommendation action advisors.

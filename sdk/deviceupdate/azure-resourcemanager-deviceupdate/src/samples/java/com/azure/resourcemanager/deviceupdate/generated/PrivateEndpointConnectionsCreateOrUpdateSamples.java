@@ -23,9 +23,12 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
      */
     public static void
         privateEndpointConnectionCreateOrUpdate(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnections().define("peexample01").withExistingAccount("test-rg", "contoso")
-            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED).withDescription("Auto-Approved"))
+        manager.privateEndpointConnections()
+            .define("peexample01")
+            .withExistingAccount("test-rg", "contoso")
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                    .withDescription("Auto-Approved"))
             .create();
     }
 }

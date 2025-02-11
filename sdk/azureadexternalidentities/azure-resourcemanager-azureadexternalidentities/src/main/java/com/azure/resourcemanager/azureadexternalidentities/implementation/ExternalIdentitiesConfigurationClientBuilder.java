@@ -16,7 +16,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the ExternalIdentitiesConfigurationClientImpl type. */
-@ServiceClientBuilder(serviceClients = {ExternalIdentitiesConfigurationClientImpl.class})
+@ServiceClientBuilder(serviceClients = { ExternalIdentitiesConfigurationClientImpl.class })
 public final class ExternalIdentitiesConfigurationClientBuilder {
     /*
      * Subscription credentials which uniquely identify Microsoft Azure
@@ -133,17 +133,15 @@ public final class ExternalIdentitiesConfigurationClientBuilder {
             this.defaultPollInterval = Duration.ofSeconds(30);
         }
         if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+            this.pipeline
+                = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        ExternalIdentitiesConfigurationClientImpl client =
-            new ExternalIdentitiesConfigurationClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        ExternalIdentitiesConfigurationClientImpl client = new ExternalIdentitiesConfigurationClientImpl(pipeline,
+            serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

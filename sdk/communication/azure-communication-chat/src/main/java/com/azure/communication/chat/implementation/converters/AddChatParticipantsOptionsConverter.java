@@ -19,8 +19,8 @@ public final class AddChatParticipantsOptionsConverter {
      *
      * @param participants A list of participants to add
      */
-    public static com.azure.communication.chat.implementation.models.AddChatParticipantsOptions convert(
-        Iterable<ChatParticipant> participants) {
+    public static com.azure.communication.chat.implementation.models.AddChatParticipantsOptions
+        convert(Iterable<ChatParticipant> participants) {
 
         if (participants == null) {
             return null;
@@ -33,7 +33,7 @@ public final class AddChatParticipantsOptionsConverter {
 
         com.azure.communication.chat.implementation.models.AddChatParticipantsOptions addChatThreadMembersOptions
             = new com.azure.communication.chat.implementation.models.AddChatParticipantsOptions()
-            .setParticipants(targetParticipants);
+                .setParticipants(targetParticipants);
 
         return addChatThreadMembersOptions;
     }

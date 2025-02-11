@@ -17,9 +17,8 @@ public final class ApprovalRejectTests extends PurviewWorkflowClientTestBase {
     public void testApprovalRejectTests() {
         BinaryData approvalResponseComment = BinaryData.fromString("{\"comment\":\"Thanks for raising this!\"}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<Void> response =
-                approvalClient.rejectWithResponse(
-                        "98d98e2c-23fa-4157-a3f8-ff8ce5cc095c", approvalResponseComment, requestOptions);
+        Response<Void> response = approvalClient.rejectWithResponse("98d98e2c-23fa-4157-a3f8-ff8ce5cc095c",
+            approvalResponseComment, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

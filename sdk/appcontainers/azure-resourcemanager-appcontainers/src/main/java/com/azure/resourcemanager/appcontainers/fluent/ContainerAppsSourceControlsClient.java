@@ -105,6 +105,7 @@ public interface ContainerAppsSourceControlsClient {
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
+     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -114,7 +115,8 @@ public interface ContainerAppsSourceControlsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdate(String resourceGroupName,
-        String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope, Context context);
+        String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope,
+        String xMsGithubAuxiliary, Context context);
 
     /**
      * Create or update the SourceControl for a Container App.
@@ -140,6 +142,7 @@ public interface ContainerAppsSourceControlsClient {
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
+     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -149,7 +152,7 @@ public interface ContainerAppsSourceControlsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SourceControlInner createOrUpdate(String resourceGroupName, String containerAppName, String sourceControlName,
-        SourceControlInner sourceControlEnvelope, Context context);
+        SourceControlInner sourceControlEnvelope, String xMsGithubAuxiliary, Context context);
 
     /**
      * Delete a Container App SourceControl.
@@ -173,6 +176,9 @@ public interface ContainerAppsSourceControlsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
+     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
+     * @param ignoreWorkflowDeletionFailure Ignore Workflow Deletion Failure.
+     * @param deleteWorkflow Delete workflow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -182,7 +188,8 @@ public interface ContainerAppsSourceControlsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
-        String sourceControlName, Context context);
+        String sourceControlName, String xMsGithubAuxiliary, Boolean ignoreWorkflowDeletionFailure,
+        Boolean deleteWorkflow, Context context);
 
     /**
      * Delete a Container App SourceControl.
@@ -204,6 +211,9 @@ public interface ContainerAppsSourceControlsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
+     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
+     * @param ignoreWorkflowDeletionFailure Ignore Workflow Deletion Failure.
+     * @param deleteWorkflow Delete workflow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -211,5 +221,6 @@ public interface ContainerAppsSourceControlsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String containerAppName, String sourceControlName, Context context);
+    void delete(String resourceGroupName, String containerAppName, String sourceControlName, String xMsGithubAuxiliary,
+        Boolean ignoreWorkflowDeletionFailure, Boolean deleteWorkflow, Context context);
 }

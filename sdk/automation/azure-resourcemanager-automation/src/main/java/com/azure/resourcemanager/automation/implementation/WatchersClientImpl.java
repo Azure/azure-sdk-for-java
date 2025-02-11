@@ -36,17 +36,23 @@ import com.azure.resourcemanager.automation.models.WatcherListResult;
 import com.azure.resourcemanager.automation.models.WatcherUpdateParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WatchersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WatchersClient.
+ */
 public final class WatchersClientImpl implements WatchersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WatchersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of WatchersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WatchersClientImpl(AutomationClientImpl client) {
@@ -60,135 +66,92 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientWatc")
-    private interface WatchersService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/watchers/{watcherName}")
-        @ExpectedResponses({200, 201})
+    public interface WatchersService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/watchers/{watcherName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WatcherInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WatcherInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("watcherName") String watcherName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WatcherInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("watcherName") String watcherName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") WatcherInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/watchers/{watcherName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/watchers/{watcherName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WatcherInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WatcherInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("watcherName") String watcherName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("watcherName") String watcherName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/watchers/{watcherName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/watchers/{watcherName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WatcherInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WatcherInner>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("watcherName") String watcherName,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("watcherName") String watcherName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WatcherUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") WatcherUpdateParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/watchers/{watcherName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/watchers/{watcherName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("watcherName") String watcherName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("watcherName") String watcherName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/watchers/{watcherName}/start")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/watchers/{watcherName}/start")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> start(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> start(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("watcherName") String watcherName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("watcherName") String watcherName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/watchers/{watcherName}/stop")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/watchers/{watcherName}/stop")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> stop(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> stop(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("watcherName") String watcherName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("watcherName") String watcherName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/watchers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/watchers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WatcherListResult>> listByAutomationAccount(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WatcherListResult>> listByAutomationAccount(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @QueryParam("$filter") String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @QueryParam("$filter") String filter,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WatcherListResult>> listByAutomationAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -199,13 +162,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return definition of the watcher type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WatcherInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String watcherName, WatcherInner parameters) {
+    private Mono<Response<WatcherInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String watcherName, WatcherInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -219,10 +180,8 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -233,24 +192,14 @@ public final class WatchersClientImpl implements WatchersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            watcherName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                    watcherName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -262,17 +211,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return definition of the watcher type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WatcherInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String watcherName,
-        WatcherInner parameters,
-        Context context) {
+    private Mono<Response<WatcherInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String watcherName, WatcherInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -286,10 +229,8 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -299,22 +240,13 @@ public final class WatchersClientImpl implements WatchersClient {
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                watcherName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, automationAccountName, watcherName,
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Create the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -325,33 +257,15 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return definition of the watcher type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WatcherInner> createOrUpdateAsync(
-        String resourceGroupName, String automationAccountName, String watcherName, WatcherInner parameters) {
+    private Mono<WatcherInner> createOrUpdateAsync(String resourceGroupName, String automationAccountName,
+        String watcherName, WatcherInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, watcherName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create the watcher identified by watcher name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param watcherName The watcher name.
-     * @param parameters The create or update parameters for watcher.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the watcher type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WatcherInner createOrUpdate(
-        String resourceGroupName, String automationAccountName, String watcherName, WatcherInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, watcherName, parameters).block();
-    }
-
-    /**
-     * Create the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -363,20 +277,34 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return definition of the watcher type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WatcherInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String watcherName,
-        WatcherInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, automationAccountName, watcherName, parameters, context)
-            .block();
+    public Response<WatcherInner> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        String watcherName, WatcherInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, watcherName, parameters,
+            context).block();
+    }
+
+    /**
+     * Create the watcher identified by watcher name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param watcherName The watcher name.
+     * @param parameters The create or update parameters for watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the watcher type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WatcherInner createOrUpdate(String resourceGroupName, String automationAccountName, String watcherName,
+        WatcherInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, automationAccountName, watcherName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Retrieve the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -386,13 +314,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return definition of the watcher type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WatcherInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String watcherName) {
+    private Mono<Response<WatcherInner>> getWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String watcherName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -406,32 +332,20 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            watcherName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                watcherName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -442,13 +356,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return definition of the watcher type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WatcherInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
+    private Mono<Response<WatcherInner>> getWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String watcherName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -462,29 +374,19 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                watcherName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName, watcherName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieve the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -501,7 +403,25 @@ public final class WatchersClientImpl implements WatchersClient {
 
     /**
      * Retrieve the watcher identified by watcher name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param watcherName The watcher name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the watcher type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WatcherInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String watcherName, Context context) {
+        return getWithResponseAsync(resourceGroupName, automationAccountName, watcherName, context).block();
+    }
+
+    /**
+     * Retrieve the watcher identified by watcher name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -512,30 +432,12 @@ public final class WatchersClientImpl implements WatchersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WatcherInner get(String resourceGroupName, String automationAccountName, String watcherName) {
-        return getAsync(resourceGroupName, automationAccountName, watcherName).block();
-    }
-
-    /**
-     * Retrieve the watcher identified by watcher name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param watcherName The watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the watcher type along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WatcherInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
-        return getWithResponseAsync(resourceGroupName, automationAccountName, watcherName, context).block();
+        return getWithResponse(resourceGroupName, automationAccountName, watcherName, Context.NONE).getValue();
     }
 
     /**
      * Update the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -546,16 +448,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return definition of the watcher type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WatcherInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String watcherName,
-        WatcherUpdateParameters parameters) {
+    private Mono<Response<WatcherInner>> updateWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String watcherName, WatcherUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -569,10 +466,8 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -582,25 +477,14 @@ public final class WatchersClientImpl implements WatchersClient {
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            watcherName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                watcherName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -612,17 +496,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return definition of the watcher type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WatcherInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String watcherName,
-        WatcherUpdateParameters parameters,
-        Context context) {
+    private Mono<Response<WatcherInner>> updateWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String watcherName, WatcherUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -636,10 +514,8 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -649,22 +525,13 @@ public final class WatchersClientImpl implements WatchersClient {
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                watcherName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, automationAccountName, watcherName,
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Update the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -675,10 +542,7 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return definition of the watcher type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WatcherInner> updateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String watcherName,
+    private Mono<WatcherInner> updateAsync(String resourceGroupName, String automationAccountName, String watcherName,
         WatcherUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, watcherName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -686,28 +550,7 @@ public final class WatchersClientImpl implements WatchersClient {
 
     /**
      * Update the watcher identified by watcher name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param watcherName The watcher name.
-     * @param parameters The update parameters for watcher.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the watcher type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WatcherInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String watcherName,
-        WatcherUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, watcherName, parameters).block();
-    }
-
-    /**
-     * Update the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -719,19 +562,34 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return definition of the watcher type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WatcherInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String watcherName,
-        WatcherUpdateParameters parameters,
-        Context context) {
+    public Response<WatcherInner> updateWithResponse(String resourceGroupName, String automationAccountName,
+        String watcherName, WatcherUpdateParameters parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, watcherName, parameters, context)
             .block();
     }
 
     /**
+     * Update the watcher identified by watcher name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param watcherName The watcher name.
+     * @param parameters The update parameters for watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the watcher type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WatcherInner update(String resourceGroupName, String automationAccountName, String watcherName,
+        WatcherUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, watcherName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Delete the watcher by name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -741,13 +599,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String watcherName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String watcherName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -761,32 +617,20 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            watcherName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                watcherName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the watcher by name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -797,13 +641,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String watcherName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -817,29 +659,19 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                watcherName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, automationAccountName, watcherName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Delete the watcher by name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -856,22 +688,7 @@ public final class WatchersClientImpl implements WatchersClient {
 
     /**
      * Delete the watcher by name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param watcherName The watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String watcherName) {
-        deleteAsync(resourceGroupName, automationAccountName, watcherName).block();
-    }
-
-    /**
-     * Delete the watcher by name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -882,14 +699,29 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String watcherName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, watcherName, context).block();
     }
 
     /**
+     * Delete the watcher by name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param watcherName The watcher name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String watcherName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, watcherName, Context.NONE);
+    }
+
+    /**
      * Resume the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -899,13 +731,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> startWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String watcherName) {
+    private Mono<Response<Void>> startWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String watcherName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -919,32 +749,20 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .start(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            watcherName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.start(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                watcherName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Resume the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -955,13 +773,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> startWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
+    private Mono<Response<Void>> startWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String watcherName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -975,29 +791,19 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .start(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                watcherName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.start(this.client.getEndpoint(), resourceGroupName, automationAccountName, watcherName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Resume the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -1014,22 +820,7 @@ public final class WatchersClientImpl implements WatchersClient {
 
     /**
      * Resume the watcher identified by watcher name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param watcherName The watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void start(String resourceGroupName, String automationAccountName, String watcherName) {
-        startAsync(resourceGroupName, automationAccountName, watcherName).block();
-    }
-
-    /**
-     * Resume the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -1040,14 +831,29 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startWithResponse(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
+    public Response<Void> startWithResponse(String resourceGroupName, String automationAccountName, String watcherName,
+        Context context) {
         return startWithResponseAsync(resourceGroupName, automationAccountName, watcherName, context).block();
     }
 
     /**
      * Resume the watcher identified by watcher name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param watcherName The watcher name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void start(String resourceGroupName, String automationAccountName, String watcherName) {
+        startWithResponse(resourceGroupName, automationAccountName, watcherName, Context.NONE);
+    }
+
+    /**
+     * Resume the watcher identified by watcher name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -1057,13 +863,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> stopWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String watcherName) {
+    private Mono<Response<Void>> stopWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String watcherName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1077,32 +881,20 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stop(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            watcherName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.stop(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                watcherName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Resume the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -1113,13 +905,11 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> stopWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
+    private Mono<Response<Void>> stopWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String watcherName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1133,29 +923,19 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter watcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .stop(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                watcherName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.stop(this.client.getEndpoint(), resourceGroupName, automationAccountName, watcherName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Resume the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -1172,22 +952,7 @@ public final class WatchersClientImpl implements WatchersClient {
 
     /**
      * Resume the watcher identified by watcher name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param watcherName The watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stop(String resourceGroupName, String automationAccountName, String watcherName) {
-        stopAsync(resourceGroupName, automationAccountName, watcherName).block();
-    }
-
-    /**
-     * Resume the watcher identified by watcher name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param watcherName The watcher name.
@@ -1198,14 +963,29 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopWithResponse(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
+    public Response<Void> stopWithResponse(String resourceGroupName, String automationAccountName, String watcherName,
+        Context context) {
         return stopWithResponseAsync(resourceGroupName, automationAccountName, watcherName, context).block();
     }
 
     /**
+     * Resume the watcher identified by watcher name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param watcherName The watcher name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stop(String resourceGroupName, String automationAccountName, String watcherName) {
+        stopWithResponse(resourceGroupName, automationAccountName, watcherName, Context.NONE);
+    }
+
+    /**
      * Retrieve a list of watchers.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -1213,16 +993,14 @@ public final class WatchersClientImpl implements WatchersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list watcher operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WatcherInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String filter) {
+    private Mono<PagedResponse<WatcherInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1233,41 +1011,22 @@ public final class WatchersClientImpl implements WatchersClient {
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAutomationAccount(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<WatcherInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAutomationAccount(this.client.getEndpoint(), resourceGroupName,
+                automationAccountName, filter, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<WatcherInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve a list of watchers.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -1276,16 +1035,14 @@ public final class WatchersClientImpl implements WatchersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list watcher operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WatcherInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    private Mono<PagedResponse<WatcherInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1296,38 +1053,22 @@ public final class WatchersClientImpl implements WatchersClient {
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAutomationAccount(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                filter,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAutomationAccount(this.client.getEndpoint(), resourceGroupName, automationAccountName, filter,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieve a list of watchers.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -1337,8 +1078,8 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the response model for the list watcher operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WatcherInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName, String filter) {
+    private PagedFlux<WatcherInner> listByAutomationAccountAsync(String resourceGroupName, String automationAccountName,
+        String filter) {
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter),
             nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
@@ -1346,7 +1087,7 @@ public final class WatchersClientImpl implements WatchersClient {
 
     /**
      * Retrieve a list of watchers.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1355,8 +1096,8 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the response model for the list watcher operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WatcherInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName) {
+    private PagedFlux<WatcherInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName) {
         final String filter = null;
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter),
@@ -1365,7 +1106,7 @@ public final class WatchersClientImpl implements WatchersClient {
 
     /**
      * Retrieve a list of watchers.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -1376,8 +1117,8 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the response model for the list watcher operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WatcherInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    private PagedFlux<WatcherInner> listByAutomationAccountAsync(String resourceGroupName, String automationAccountName,
+        String filter, Context context) {
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter, context),
             nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink, context));
@@ -1385,7 +1126,7 @@ public final class WatchersClientImpl implements WatchersClient {
 
     /**
      * Retrieve a list of watchers.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1401,7 +1142,7 @@ public final class WatchersClientImpl implements WatchersClient {
 
     /**
      * Retrieve a list of watchers.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -1412,22 +1153,21 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the response model for the list watcher operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WatcherInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    public PagedIterable<WatcherInner> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Context context) {
         return new PagedIterable<>(
             listByAutomationAccountAsync(resourceGroupName, automationAccountName, filter, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list watcher operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WatcherInner>> listByAutomationAccountNextSinglePageAsync(String nextLink) {
@@ -1435,63 +1175,43 @@ public final class WatchersClientImpl implements WatchersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WatcherInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<WatcherInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list watcher operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WatcherInner>> listByAutomationAccountNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<WatcherInner>> listByAutomationAccountNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

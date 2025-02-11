@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.RecoverableSqlPoolInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response to a list recoverable sql pools request. */
+/**
+ * The response to a list recoverable sql pools request.
+ */
 @Immutable
-public final class RecoverableSqlPoolListResult {
+public final class RecoverableSqlPoolListResult implements JsonSerializable<RecoverableSqlPoolListResult> {
     /*
      * A list of recoverable sql pool
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecoverableSqlPoolInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RecoverableSqlPoolListResult class. */
+    /**
+     * Creates an instance of RecoverableSqlPoolListResult class.
+     */
     public RecoverableSqlPoolListResult() {
     }
 
     /**
      * Get the value property: A list of recoverable sql pool.
-     *
+     * 
      * @return the value value.
      */
     public List<RecoverableSqlPoolInner> value() {
@@ -39,7 +45,7 @@ public final class RecoverableSqlPoolListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class RecoverableSqlPoolListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoverableSqlPoolListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoverableSqlPoolListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoverableSqlPoolListResult.
+     */
+    public static RecoverableSqlPoolListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoverableSqlPoolListResult deserializedRecoverableSqlPoolListResult = new RecoverableSqlPoolListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RecoverableSqlPoolInner> value
+                        = reader.readArray(reader1 -> RecoverableSqlPoolInner.fromJson(reader1));
+                    deserializedRecoverableSqlPoolListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRecoverableSqlPoolListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoverableSqlPoolListResult;
+        });
     }
 }

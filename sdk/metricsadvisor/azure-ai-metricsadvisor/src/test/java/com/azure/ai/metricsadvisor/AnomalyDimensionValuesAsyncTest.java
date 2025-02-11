@@ -19,16 +19,14 @@ public final class AnomalyDimensionValuesAsyncTest extends AnomalyDimensionValue
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void listAnomalyDimensionValues(HttpClient httpClient,
-                                           MetricsAdvisorServiceVersion serviceVersion) {
-        MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
+    public void listAnomalyDimensionValues(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+        MetricsAdvisorAsyncClient client
+            = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         PagedFlux<String> dimensionValuesFlux = client.listAnomalyDimensionValues(
             ListAnomalyDimensionValuesInput.INSTANCE.detectionConfigurationId,
-            ListAnomalyDimensionValuesInput.INSTANCE.dimensionName,
-            ListAnomalyDimensionValuesInput.INSTANCE.startTime,
-            ListAnomalyDimensionValuesInput.INSTANCE.endTime,
-            ListAnomalyDimensionValuesInput.INSTANCE.options);
+            ListAnomalyDimensionValuesInput.INSTANCE.dimensionName, ListAnomalyDimensionValuesInput.INSTANCE.startTime,
+            ListAnomalyDimensionValuesInput.INSTANCE.endTime, ListAnomalyDimensionValuesInput.INSTANCE.options);
 
         Assertions.assertNotNull(dimensionValuesFlux);
 

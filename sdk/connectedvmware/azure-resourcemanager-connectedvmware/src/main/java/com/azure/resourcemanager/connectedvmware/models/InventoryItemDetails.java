@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the properties of an Inventory Item reference. */
+/**
+ * Describes the properties of an Inventory Item reference.
+ */
 @Fluent
-public final class InventoryItemDetails {
+public final class InventoryItemDetails implements JsonSerializable<InventoryItemDetails> {
     /*
      * Gets or sets the inventory Item ID for the resource.
      */
-    @JsonProperty(value = "inventoryItemId")
     private String inventoryItemId;
 
     /*
      * Gets or sets the vCenter Managed Object name for the resource.
      */
-    @JsonProperty(value = "moName")
     private String moName;
 
     /*
      * The inventory type.
      */
-    @JsonProperty(value = "inventoryType")
     private InventoryType inventoryType;
 
-    /** Creates an instance of InventoryItemDetails class. */
+    /**
+     * Creates an instance of InventoryItemDetails class.
+     */
     public InventoryItemDetails() {
     }
 
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
-     *
+     * 
      * @return the inventoryItemId value.
      */
     public String inventoryItemId() {
@@ -43,7 +48,7 @@ public final class InventoryItemDetails {
 
     /**
      * Set the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
-     *
+     * 
      * @param inventoryItemId the inventoryItemId value to set.
      * @return the InventoryItemDetails object itself.
      */
@@ -54,7 +59,7 @@ public final class InventoryItemDetails {
 
     /**
      * Get the moName property: Gets or sets the vCenter Managed Object name for the resource.
-     *
+     * 
      * @return the moName value.
      */
     public String moName() {
@@ -63,7 +68,7 @@ public final class InventoryItemDetails {
 
     /**
      * Set the moName property: Gets or sets the vCenter Managed Object name for the resource.
-     *
+     * 
      * @param moName the moName value to set.
      * @return the InventoryItemDetails object itself.
      */
@@ -74,7 +79,7 @@ public final class InventoryItemDetails {
 
     /**
      * Get the inventoryType property: The inventory type.
-     *
+     * 
      * @return the inventoryType value.
      */
     public InventoryType inventoryType() {
@@ -83,7 +88,7 @@ public final class InventoryItemDetails {
 
     /**
      * Set the inventoryType property: The inventory type.
-     *
+     * 
      * @param inventoryType the inventoryType value to set.
      * @return the InventoryItemDetails object itself.
      */
@@ -94,9 +99,51 @@ public final class InventoryItemDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("inventoryItemId", this.inventoryItemId);
+        jsonWriter.writeStringField("moName", this.moName);
+        jsonWriter.writeStringField("inventoryType", this.inventoryType == null ? null : this.inventoryType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InventoryItemDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InventoryItemDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InventoryItemDetails.
+     */
+    public static InventoryItemDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InventoryItemDetails deserializedInventoryItemDetails = new InventoryItemDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inventoryItemId".equals(fieldName)) {
+                    deserializedInventoryItemDetails.inventoryItemId = reader.getString();
+                } else if ("moName".equals(fieldName)) {
+                    deserializedInventoryItemDetails.moName = reader.getString();
+                } else if ("inventoryType".equals(fieldName)) {
+                    deserializedInventoryItemDetails.inventoryType = InventoryType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInventoryItemDetails;
+        });
     }
 }

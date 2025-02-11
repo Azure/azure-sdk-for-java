@@ -3,16 +3,17 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public final class IndexingPolicy {
     private List<List<CompositePath>> compositeIndexes;
     private List<SpatialSpec> spatialIndexes;
     private List<CosmosVectorIndexSpec> vectorIndexes;
+    private List<CosmosFullTextIndex> cosmosFullTextIndexes;
     private final JsonSerializable jsonSerializable;
 
     /**
@@ -109,7 +111,7 @@ public final class IndexingPolicy {
      * @return the Indexing Policy.
      */
     public IndexingPolicy setAutomatic(boolean automatic) {
-        this.jsonSerializable.set(Constants.Properties.AUTOMATIC, automatic, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.jsonSerializable.set(Constants.Properties.AUTOMATIC, automatic);
         return this;
     }
 
@@ -136,7 +138,7 @@ public final class IndexingPolicy {
      * @return the Indexing Policy.
      */
     public IndexingPolicy setIndexingMode(IndexingMode indexingMode) {
-        this.jsonSerializable.set(Constants.Properties.INDEXING_MODE, indexingMode.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.jsonSerializable.set(Constants.Properties.INDEXING_MODE, indexingMode.toString());
         return this;
     }
 
@@ -230,7 +232,7 @@ public final class IndexingPolicy {
      */
     public IndexingPolicy setCompositeIndexes(List<List<CompositePath>> compositeIndexes) {
         this.compositeIndexes = compositeIndexes;
-        this.jsonSerializable.set(Constants.Properties.COMPOSITE_INDEXES, this.compositeIndexes, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.jsonSerializable.set(Constants.Properties.COMPOSITE_INDEXES, this.compositeIndexes);
         return this;
     }
 
@@ -261,8 +263,8 @@ public final class IndexingPolicy {
         this.spatialIndexes = spatialIndexes;
         this.jsonSerializable.set(
             Constants.Properties.SPATIAL_INDEXES,
-            this.spatialIndexes,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.spatialIndexes
+        );
         return this;
     }
 
@@ -306,7 +308,38 @@ public final class IndexingPolicy {
      */
     public IndexingPolicy setVectorIndexes(List<CosmosVectorIndexSpec> vectorIndexes) {
         this.vectorIndexes = vectorIndexes;
-        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXES,this.vectorIndexes, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXES,this.vectorIndexes);
+        return this;
+    }
+
+    /**
+     * Gets the full text search paths.
+     *
+     * @return the full text indexes.
+     */
+    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public List<CosmosFullTextIndex> getCosmosFullTextIndexes() {
+        if (this.cosmosFullTextIndexes == null) {
+            this.cosmosFullTextIndexes = this.jsonSerializable.getList(Constants.Properties.FULL_TEXT_INDEXES, CosmosFullTextIndex.class);
+
+            if (this.cosmosFullTextIndexes == null) {
+                this.cosmosFullTextIndexes = new ArrayList<CosmosFullTextIndex>();
+            }
+        }
+
+        return Collections.unmodifiableList(this.cosmosFullTextIndexes);
+    }
+
+    /**
+     * Sets the full text search paths.
+     *
+     * @param cosmosFullTextIndexes the fullText indexes
+     * @return the excluded paths
+     */
+    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public IndexingPolicy setCosmosFullTextIndexes(List<CosmosFullTextIndex> cosmosFullTextIndexes) {
+        this.cosmosFullTextIndexes = cosmosFullTextIndexes;
+        this.jsonSerializable.set(Constants.Properties.FULL_TEXT_INDEXES, cosmosFullTextIndexes);
         return this;
     }
 
@@ -325,8 +358,8 @@ public final class IndexingPolicy {
             }
             this.jsonSerializable.set(
                 Constants.Properties.INCLUDED_PATHS,
-                this.includedPaths,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.includedPaths
+            );
         }
 
         if (this.excludedPaths != null) {
@@ -335,8 +368,8 @@ public final class IndexingPolicy {
             }
             this.jsonSerializable.set(
                 Constants.Properties.EXCLUDED_PATHS,
-                this.excludedPaths,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.excludedPaths
+            );
         }
     }
 

@@ -21,29 +21,26 @@ public final class RackSkusImpl implements RackSkus {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    public RackSkusImpl(
-        RackSkusClient innerClient, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    public RackSkusImpl(RackSkusClient innerClient,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<RackSku> list() {
         PagedIterable<RackSkuInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new RackSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RackSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RackSku> list(Context context) {
         PagedIterable<RackSkuInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new RackSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RackSkuImpl(inner1, this.manager()));
     }
 
     public Response<RackSku> getWithResponse(String rackSkuName, Context context) {
         Response<RackSkuInner> inner = this.serviceClient().getWithResponse(rackSkuName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RackSkuImpl(inner.getValue(), this.manager()));
         } else {
             return null;

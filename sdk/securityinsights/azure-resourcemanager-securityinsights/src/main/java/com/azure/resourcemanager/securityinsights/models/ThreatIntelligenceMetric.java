@@ -5,39 +5,47 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes threat intelligence metric. */
+/**
+ * Describes threat intelligence metric.
+ */
 @Fluent
-public final class ThreatIntelligenceMetric {
+public final class ThreatIntelligenceMetric implements JsonSerializable<ThreatIntelligenceMetric> {
     /*
      * Last updated indicator metric
      */
-    @JsonProperty(value = "lastUpdatedTimeUtc")
     private String lastUpdatedTimeUtc;
 
     /*
      * Threat type metrics
      */
-    @JsonProperty(value = "threatTypeMetrics")
     private List<ThreatIntelligenceMetricEntity> threatTypeMetrics;
 
     /*
      * Pattern type metrics
      */
-    @JsonProperty(value = "patternTypeMetrics")
     private List<ThreatIntelligenceMetricEntity> patternTypeMetrics;
 
     /*
      * Source metrics
      */
-    @JsonProperty(value = "sourceMetrics")
     private List<ThreatIntelligenceMetricEntity> sourceMetrics;
 
     /**
+     * Creates an instance of ThreatIntelligenceMetric class.
+     */
+    public ThreatIntelligenceMetric() {
+    }
+
+    /**
      * Get the lastUpdatedTimeUtc property: Last updated indicator metric.
-     *
+     * 
      * @return the lastUpdatedTimeUtc value.
      */
     public String lastUpdatedTimeUtc() {
@@ -46,7 +54,7 @@ public final class ThreatIntelligenceMetric {
 
     /**
      * Set the lastUpdatedTimeUtc property: Last updated indicator metric.
-     *
+     * 
      * @param lastUpdatedTimeUtc the lastUpdatedTimeUtc value to set.
      * @return the ThreatIntelligenceMetric object itself.
      */
@@ -57,7 +65,7 @@ public final class ThreatIntelligenceMetric {
 
     /**
      * Get the threatTypeMetrics property: Threat type metrics.
-     *
+     * 
      * @return the threatTypeMetrics value.
      */
     public List<ThreatIntelligenceMetricEntity> threatTypeMetrics() {
@@ -66,7 +74,7 @@ public final class ThreatIntelligenceMetric {
 
     /**
      * Set the threatTypeMetrics property: Threat type metrics.
-     *
+     * 
      * @param threatTypeMetrics the threatTypeMetrics value to set.
      * @return the ThreatIntelligenceMetric object itself.
      */
@@ -77,7 +85,7 @@ public final class ThreatIntelligenceMetric {
 
     /**
      * Get the patternTypeMetrics property: Pattern type metrics.
-     *
+     * 
      * @return the patternTypeMetrics value.
      */
     public List<ThreatIntelligenceMetricEntity> patternTypeMetrics() {
@@ -86,7 +94,7 @@ public final class ThreatIntelligenceMetric {
 
     /**
      * Set the patternTypeMetrics property: Pattern type metrics.
-     *
+     * 
      * @param patternTypeMetrics the patternTypeMetrics value to set.
      * @return the ThreatIntelligenceMetric object itself.
      */
@@ -97,7 +105,7 @@ public final class ThreatIntelligenceMetric {
 
     /**
      * Get the sourceMetrics property: Source metrics.
-     *
+     * 
      * @return the sourceMetrics value.
      */
     public List<ThreatIntelligenceMetricEntity> sourceMetrics() {
@@ -106,7 +114,7 @@ public final class ThreatIntelligenceMetric {
 
     /**
      * Set the sourceMetrics property: Source metrics.
-     *
+     * 
      * @param sourceMetrics the sourceMetrics value to set.
      * @return the ThreatIntelligenceMetric object itself.
      */
@@ -117,7 +125,7 @@ public final class ThreatIntelligenceMetric {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -130,5 +138,58 @@ public final class ThreatIntelligenceMetric {
         if (sourceMetrics() != null) {
             sourceMetrics().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastUpdatedTimeUtc", this.lastUpdatedTimeUtc);
+        jsonWriter.writeArrayField("threatTypeMetrics", this.threatTypeMetrics,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("patternTypeMetrics", this.patternTypeMetrics,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sourceMetrics", this.sourceMetrics, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreatIntelligenceMetric from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreatIntelligenceMetric if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThreatIntelligenceMetric.
+     */
+    public static ThreatIntelligenceMetric fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThreatIntelligenceMetric deserializedThreatIntelligenceMetric = new ThreatIntelligenceMetric();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastUpdatedTimeUtc".equals(fieldName)) {
+                    deserializedThreatIntelligenceMetric.lastUpdatedTimeUtc = reader.getString();
+                } else if ("threatTypeMetrics".equals(fieldName)) {
+                    List<ThreatIntelligenceMetricEntity> threatTypeMetrics
+                        = reader.readArray(reader1 -> ThreatIntelligenceMetricEntity.fromJson(reader1));
+                    deserializedThreatIntelligenceMetric.threatTypeMetrics = threatTypeMetrics;
+                } else if ("patternTypeMetrics".equals(fieldName)) {
+                    List<ThreatIntelligenceMetricEntity> patternTypeMetrics
+                        = reader.readArray(reader1 -> ThreatIntelligenceMetricEntity.fromJson(reader1));
+                    deserializedThreatIntelligenceMetric.patternTypeMetrics = patternTypeMetrics;
+                } else if ("sourceMetrics".equals(fieldName)) {
+                    List<ThreatIntelligenceMetricEntity> sourceMetrics
+                        = reader.readArray(reader1 -> ThreatIntelligenceMetricEntity.fromJson(reader1));
+                    deserializedThreatIntelligenceMetric.sourceMetrics = sourceMetrics;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThreatIntelligenceMetric;
+        });
     }
 }

@@ -10,8 +10,10 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
 import com.azure.resourcemanager.appcontainers.models.JobConfiguration;
 import com.azure.resourcemanager.appcontainers.models.JobProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.JobRunningState;
 import com.azure.resourcemanager.appcontainers.models.JobTemplate;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import java.io.IOException;
@@ -23,6 +25,11 @@ import java.util.Map;
  */
 @Fluent
 public final class JobInner extends Resource {
+    /*
+     * The complex type of the extended location.
+     */
+    private ExtendedLocation extendedLocation;
+
     /*
      * Managed identities needed by a container app job to interact with other Azure services to not maintain any
      * secrets or credentials in code.
@@ -40,9 +47,9 @@ public final class JobInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -50,14 +57,34 @@ public final class JobInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of JobInner class.
      */
     public JobInner() {
+    }
+
+    /**
+     * Get the extendedLocation property: The complex type of the extended location.
+     * 
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The complex type of the extended location.
+     * 
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the JobInner object itself.
+     */
+    public JobInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
     }
 
     /**
@@ -101,13 +128,13 @@ public final class JobInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -121,13 +148,13 @@ public final class JobInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -155,6 +182,15 @@ public final class JobInner extends Resource {
      */
     public JobProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the runningState property: Current running state of the job.
+     * 
+     * @return the runningState value.
+     */
+    public JobRunningState runningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().runningState();
     }
 
     /**
@@ -273,6 +309,9 @@ public final class JobInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }
@@ -289,6 +328,7 @@ public final class JobInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
@@ -321,6 +361,8 @@ public final class JobInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedJobInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedJobInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedJobInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {

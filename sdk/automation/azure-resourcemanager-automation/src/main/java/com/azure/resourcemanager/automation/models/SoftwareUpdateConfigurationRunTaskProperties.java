@@ -5,32 +5,42 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Task properties of the software update configuration. */
+/**
+ * Task properties of the software update configuration.
+ */
 @Fluent
-public final class SoftwareUpdateConfigurationRunTaskProperties {
+public final class SoftwareUpdateConfigurationRunTaskProperties
+    implements JsonSerializable<SoftwareUpdateConfigurationRunTaskProperties> {
     /*
      * The status of the task.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The name of the source of the task.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * The job id of the task.
      */
-    @JsonProperty(value = "jobId")
     private String jobId;
 
     /**
+     * Creates an instance of SoftwareUpdateConfigurationRunTaskProperties class.
+     */
+    public SoftwareUpdateConfigurationRunTaskProperties() {
+    }
+
+    /**
      * Get the status property: The status of the task.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -39,7 +49,7 @@ public final class SoftwareUpdateConfigurationRunTaskProperties {
 
     /**
      * Set the status property: The status of the task.
-     *
+     * 
      * @param status the status value to set.
      * @return the SoftwareUpdateConfigurationRunTaskProperties object itself.
      */
@@ -50,7 +60,7 @@ public final class SoftwareUpdateConfigurationRunTaskProperties {
 
     /**
      * Get the source property: The name of the source of the task.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -59,7 +69,7 @@ public final class SoftwareUpdateConfigurationRunTaskProperties {
 
     /**
      * Set the source property: The name of the source of the task.
-     *
+     * 
      * @param source the source value to set.
      * @return the SoftwareUpdateConfigurationRunTaskProperties object itself.
      */
@@ -70,7 +80,7 @@ public final class SoftwareUpdateConfigurationRunTaskProperties {
 
     /**
      * Get the jobId property: The job id of the task.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -79,7 +89,7 @@ public final class SoftwareUpdateConfigurationRunTaskProperties {
 
     /**
      * Set the jobId property: The job id of the task.
-     *
+     * 
      * @param jobId the jobId value to set.
      * @return the SoftwareUpdateConfigurationRunTaskProperties object itself.
      */
@@ -90,9 +100,52 @@ public final class SoftwareUpdateConfigurationRunTaskProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeStringField("jobId", this.jobId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftwareUpdateConfigurationRunTaskProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftwareUpdateConfigurationRunTaskProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SoftwareUpdateConfigurationRunTaskProperties.
+     */
+    public static SoftwareUpdateConfigurationRunTaskProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftwareUpdateConfigurationRunTaskProperties deserializedSoftwareUpdateConfigurationRunTaskProperties
+                = new SoftwareUpdateConfigurationRunTaskProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunTaskProperties.status = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunTaskProperties.source = reader.getString();
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunTaskProperties.jobId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftwareUpdateConfigurationRunTaskProperties;
+        });
     }
 }

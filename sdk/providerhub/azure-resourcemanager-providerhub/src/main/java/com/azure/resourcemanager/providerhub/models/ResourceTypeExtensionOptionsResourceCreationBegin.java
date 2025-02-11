@@ -5,23 +5,35 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ResourceTypeExtensionOptionsResourceCreationBegin model. */
+/**
+ * The ResourceTypeExtensionOptionsResourceCreationBegin model.
+ */
 @Fluent
 public final class ResourceTypeExtensionOptionsResourceCreationBegin extends ExtensionOptions {
-    /** Creates an instance of ResourceTypeExtensionOptionsResourceCreationBegin class. */
+    /**
+     * Creates an instance of ResourceTypeExtensionOptionsResourceCreationBegin class.
+     */
     public ResourceTypeExtensionOptionsResourceCreationBegin() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceTypeExtensionOptionsResourceCreationBegin withRequest(List<ExtensionOptionType> request) {
         super.withRequest(request);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceTypeExtensionOptionsResourceCreationBegin withResponse(List<ExtensionOptionType> response) {
         super.withResponse(response);
@@ -30,11 +42,56 @@ public final class ResourceTypeExtensionOptionsResourceCreationBegin extends Ext
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("request", request(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("response", response(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceTypeExtensionOptionsResourceCreationBegin from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceTypeExtensionOptionsResourceCreationBegin if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceTypeExtensionOptionsResourceCreationBegin.
+     */
+    public static ResourceTypeExtensionOptionsResourceCreationBegin fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceTypeExtensionOptionsResourceCreationBegin deserializedResourceTypeExtensionOptionsResourceCreationBegin
+                = new ResourceTypeExtensionOptionsResourceCreationBegin();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("request".equals(fieldName)) {
+                    List<ExtensionOptionType> request
+                        = reader.readArray(reader1 -> ExtensionOptionType.fromString(reader1.getString()));
+                    deserializedResourceTypeExtensionOptionsResourceCreationBegin.withRequest(request);
+                } else if ("response".equals(fieldName)) {
+                    List<ExtensionOptionType> response
+                        = reader.readArray(reader1 -> ExtensionOptionType.fromString(reader1.getString()));
+                    deserializedResourceTypeExtensionOptionsResourceCreationBegin.withResponse(response);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceTypeExtensionOptionsResourceCreationBegin;
+        });
     }
 }

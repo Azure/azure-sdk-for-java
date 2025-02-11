@@ -6,25 +6,27 @@ package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.AccountResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response of get all accounts Operation.
  */
 @Fluent
-public final class AccountsListResponse {
+public final class AccountsListResponse implements JsonSerializable<AccountsListResponse> {
     /*
      * The AccountResource items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<AccountResourceInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -80,12 +82,54 @@ public final class AccountsListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model AccountsListResponse"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model AccountsListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AccountsListResponse.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountsListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountsListResponse if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccountsListResponse.
+     */
+    public static AccountsListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountsListResponse deserializedAccountsListResponse = new AccountsListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AccountResourceInner> value
+                        = reader.readArray(reader1 -> AccountResourceInner.fromJson(reader1));
+                    deserializedAccountsListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAccountsListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountsListResponse;
+        });
+    }
 }

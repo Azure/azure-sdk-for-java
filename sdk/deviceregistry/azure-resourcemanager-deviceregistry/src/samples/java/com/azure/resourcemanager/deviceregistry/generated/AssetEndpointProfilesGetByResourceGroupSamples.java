@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class AssetEndpointProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-11-01-preview/Get_AssetEndpointProfile.json
+     * x-ms-original-file: 2024-09-01-preview/Get_AssetEndpointProfile.json
      */
     /**
      * Sample code: Get_AssetEndpointProfile.
@@ -17,6 +17,21 @@ public final class AssetEndpointProfilesGetByResourceGroupSamples {
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void getAssetEndpointProfile(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assetEndpointProfiles()
+            .getByResourceGroupWithResponse("myResourceGroup", "my-assetendpointprofile",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01-preview/Get_AssetEndpointProfile_With_SyncStatus.json
+     */
+    /**
+     * Sample code: Get_AssetEndpointProfile_With_SyncStatus.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        getAssetEndpointProfileWithSyncStatus(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.assetEndpointProfiles()
             .getByResourceGroupWithResponse("myResourceGroup", "my-assetendpointprofile",
                 com.azure.core.util.Context.NONE);

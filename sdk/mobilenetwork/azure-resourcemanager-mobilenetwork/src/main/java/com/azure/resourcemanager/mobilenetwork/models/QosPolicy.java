@@ -6,41 +6,49 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * QoS policy.
  */
 @Fluent
-public class QosPolicy {
+public class QosPolicy implements JsonSerializable<QosPolicy> {
     /*
-     * 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the definition the 5QI values.
+     * 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See
+     * 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the definition
+     * the 5QI values.
      */
-    @JsonProperty(value = "5qi")
     private Integer fiveQi;
 
     /*
-     * QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower priority, if the settings of `preemptionCapability` and `preemptionVulnerability` allow it. 1 is the highest level of priority. If this field is not specified then `5qi` is used to derive the ARP value. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
+     * QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower
+     * priority, if the settings of `preemptionCapability` and `preemptionVulnerability` allow it. 1 is the highest
+     * level of priority. If this field is not specified then `5qi` is used to derive the ARP value. See 3GPP TS23.501
+     * section 5.7.2.2 for a full description of the ARP parameters.
      */
-    @JsonProperty(value = "allocationAndRetentionPriorityLevel")
     private Integer allocationAndRetentionPriorityLevel;
 
     /*
-     * QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
+     * QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another
+     * QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP
+     * parameters.
      */
-    @JsonProperty(value = "preemptionCapability")
     private PreemptionCapability preemptionCapability;
 
     /*
-     * QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
+     * QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be
+     * preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of
+     * the ARP parameters.
      */
-    @JsonProperty(value = "preemptionVulnerability")
     private PreemptionVulnerability preemptionVulnerability;
 
     /*
      * The maximum bit rate (MBR) for all service data flows that use this data flow policy rule or service.
      */
-    @JsonProperty(value = "maximumBitRate", required = true)
     private Ambr maximumBitRate;
 
     /**
@@ -184,4 +192,56 @@ public class QosPolicy {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(QosPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("maximumBitRate", this.maximumBitRate);
+        jsonWriter.writeNumberField("5qi", this.fiveQi);
+        jsonWriter.writeNumberField("allocationAndRetentionPriorityLevel", this.allocationAndRetentionPriorityLevel);
+        jsonWriter.writeStringField("preemptionCapability",
+            this.preemptionCapability == null ? null : this.preemptionCapability.toString());
+        jsonWriter.writeStringField("preemptionVulnerability",
+            this.preemptionVulnerability == null ? null : this.preemptionVulnerability.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QosPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QosPolicy if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QosPolicy.
+     */
+    public static QosPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QosPolicy deserializedQosPolicy = new QosPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maximumBitRate".equals(fieldName)) {
+                    deserializedQosPolicy.maximumBitRate = Ambr.fromJson(reader);
+                } else if ("5qi".equals(fieldName)) {
+                    deserializedQosPolicy.fiveQi = reader.getNullable(JsonReader::getInt);
+                } else if ("allocationAndRetentionPriorityLevel".equals(fieldName)) {
+                    deserializedQosPolicy.allocationAndRetentionPriorityLevel = reader.getNullable(JsonReader::getInt);
+                } else if ("preemptionCapability".equals(fieldName)) {
+                    deserializedQosPolicy.preemptionCapability = PreemptionCapability.fromString(reader.getString());
+                } else if ("preemptionVulnerability".equals(fieldName)) {
+                    deserializedQosPolicy.preemptionVulnerability
+                        = PreemptionVulnerability.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQosPolicy;
+        });
+    }
 }

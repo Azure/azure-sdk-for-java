@@ -30,8 +30,8 @@ public final class LinkedEntityMatch {
     }
 
     static {
-        LinkedEntityMatchPropertiesHelper.setAccessor(
-            new LinkedEntityMatchPropertiesHelper.LinkedEntityMatchAccessor() {
+        LinkedEntityMatchPropertiesHelper
+            .setAccessor(new LinkedEntityMatchPropertiesHelper.LinkedEntityMatchAccessor() {
                 @Override
                 public void setLength(LinkedEntityMatch entity, int length) {
                     entity.setLength(length);

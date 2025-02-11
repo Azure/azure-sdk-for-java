@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Resolve health errors input properties.
  */
 @Fluent
-public final class ResolveHealthError {
+public final class ResolveHealthError implements JsonSerializable<ResolveHealthError> {
     /*
      * Health error id.
      */
-    @JsonProperty(value = "healthErrorId")
     private String healthErrorId;
 
     /**
@@ -50,5 +53,41 @@ public final class ResolveHealthError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("healthErrorId", this.healthErrorId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResolveHealthError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResolveHealthError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResolveHealthError.
+     */
+    public static ResolveHealthError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResolveHealthError deserializedResolveHealthError = new ResolveHealthError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("healthErrorId".equals(fieldName)) {
+                    deserializedResolveHealthError.healthErrorId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResolveHealthError;
+        });
     }
 }

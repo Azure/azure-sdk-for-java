@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.automanage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automanage.fluent.models.ServicePrincipalInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of ServicePrincipals. */
+/**
+ * The list of ServicePrincipals.
+ */
 @Fluent
-public final class ServicePrincipalListResult {
+public final class ServicePrincipalListResult implements JsonSerializable<ServicePrincipalListResult> {
     /*
      * The list of servicePrincipals.
      */
-    @JsonProperty(value = "value")
     private List<ServicePrincipalInner> value;
 
     /**
+     * Creates an instance of ServicePrincipalListResult class.
+     */
+    public ServicePrincipalListResult() {
+    }
+
+    /**
      * Get the value property: The list of servicePrincipals.
-     *
+     * 
      * @return the value value.
      */
     public List<ServicePrincipalInner> value() {
@@ -29,7 +40,7 @@ public final class ServicePrincipalListResult {
 
     /**
      * Set the value property: The list of servicePrincipals.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServicePrincipalListResult object itself.
      */
@@ -40,12 +51,50 @@ public final class ServicePrincipalListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicePrincipalListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicePrincipalListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServicePrincipalListResult.
+     */
+    public static ServicePrincipalListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicePrincipalListResult deserializedServicePrincipalListResult = new ServicePrincipalListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ServicePrincipalInner> value
+                        = reader.readArray(reader1 -> ServicePrincipalInner.fromJson(reader1));
+                    deserializedServicePrincipalListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicePrincipalListResult;
+        });
     }
 }

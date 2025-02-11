@@ -6,28 +6,55 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.InterfaceType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Defines the NetworkInterface resource. */
+/**
+ * Defines the NetworkInterface resource.
+ */
 @Fluent
 public final class NetworkInterfaceInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private NetworkInterfaceProperties innerProperties = new NetworkInterfaceProperties();
 
-    /** Creates an instance of NetworkInterfaceInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NetworkInterfaceInner class.
+     */
     public NetworkInterfaceInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkInterfaceProperties innerProperties() {
@@ -35,8 +62,47 @@ public final class NetworkInterfaceInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the physicalIdentifier property: Physical Identifier of the network interface.
-     *
+     * 
      * @return the physicalIdentifier value.
      */
     public String physicalIdentifier() {
@@ -45,7 +111,7 @@ public final class NetworkInterfaceInner extends ProxyResource {
 
     /**
      * Get the connectedTo property: The ARM resource id of the interface or compute server its connected to.
-     *
+     * 
      * @return the connectedTo value.
      */
     public String connectedTo() {
@@ -54,7 +120,7 @@ public final class NetworkInterfaceInner extends ProxyResource {
 
     /**
      * Get the interfaceType property: The Interface Type. Example: Management/Data.
-     *
+     * 
      * @return the interfaceType value.
      */
     public InterfaceType interfaceType() {
@@ -63,7 +129,7 @@ public final class NetworkInterfaceInner extends ProxyResource {
 
     /**
      * Get the ipv4Address property: IPv4Address of the interface.
-     *
+     * 
      * @return the ipv4Address value.
      */
     public String ipv4Address() {
@@ -72,7 +138,7 @@ public final class NetworkInterfaceInner extends ProxyResource {
 
     /**
      * Get the ipv6Address property: IPv6Address of the interface.
-     *
+     * 
      * @return the ipv6Address value.
      */
     public String ipv6Address() {
@@ -81,7 +147,7 @@ public final class NetworkInterfaceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -90,7 +156,7 @@ public final class NetworkInterfaceInner extends ProxyResource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -99,7 +165,7 @@ public final class NetworkInterfaceInner extends ProxyResource {
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -108,7 +174,7 @@ public final class NetworkInterfaceInner extends ProxyResource {
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -122,19 +188,63 @@ public final class NetworkInterfaceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NetworkInterfaceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model NetworkInterfaceInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkInterfaceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfaceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfaceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceInner.
+     */
+    public static NetworkInterfaceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfaceInner deserializedNetworkInterfaceInner = new NetworkInterfaceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetworkInterfaceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkInterfaceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkInterfaceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkInterfaceInner.innerProperties = NetworkInterfaceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedNetworkInterfaceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfaceInner;
+        });
+    }
 }

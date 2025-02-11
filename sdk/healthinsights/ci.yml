@@ -31,6 +31,20 @@ pr:
       - sdk/healthinsights/azure-health-insights-clinicalmatching/pom.xml
       - sdk/healthinsights/azure-health-insights-radiologyinsights/pom.xml
 
+parameters:
+- name: release_azurehealthinsightsclinicalmatching
+  displayName: 'azure-health-insights-clinicalmatching'
+  type: boolean
+  default: true
+- name: release_azurehealthinsightscancerprofiling
+  displayName: 'azure-health-insights-cancerprofiling'
+  type: boolean
+  default: true
+- name: release_azurehealthinsightsradiologyinsights
+  displayName: 'azure-health-insights-radiologyinsights'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -39,9 +53,12 @@ extends:
       - name: azure-health-insights-clinicalmatching
         groupId: com.azure
         safeName: azurehealthinsightsclinicalmatching
+        releaseInBatch: ${{ parameters.release_azurehealthinsightsclinicalmatching }}
       - name: azure-health-insights-cancerprofiling
         groupId: com.azure
         safeName: azurehealthinsightscancerprofiling
+        releaseInBatch: ${{ parameters.release_azurehealthinsightscancerprofiling }}
       - name: azure-health-insights-radiologyinsights
         groupId: com.azure
         safeName: azurehealthinsightsradiologyinsights
+        releaseInBatch: ${{ parameters.release_azurehealthinsightsradiologyinsights }}

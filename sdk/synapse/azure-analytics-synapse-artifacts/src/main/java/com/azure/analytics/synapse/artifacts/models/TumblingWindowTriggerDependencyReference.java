@@ -26,7 +26,8 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
     private String offset;
 
     /*
-     * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used.
+     * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be
+     * used.
      */
     private String size;
 

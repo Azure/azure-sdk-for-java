@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"targetLocation\":\"zlhjxrifkwmrvkt\",\"targetSubscriptionId\":\"izntocipao\"},\"location\":\"ajpsquc\",\"tags\":{\"kfo\":\"yf\"},\"id\":\"knygjofjddeq\",\"name\":\"rd\",\"type\":\"upewnwreitjzy\"}")
-                .toObject(ServiceResourceInner.class);
+        ServiceResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"targetLocation\":\"zlhjxrifkwmrvkt\",\"targetSubscriptionId\":\"izntocipao\"},\"location\":\"ajpsquc\",\"tags\":{\"kfo\":\"yf\"},\"id\":\"knygjofjddeq\",\"name\":\"rd\",\"type\":\"upewnwreitjzy\"}")
+            .toObject(ServiceResourceInner.class);
         Assertions.assertEquals("ajpsquc", model.location());
         Assertions.assertEquals("yf", model.tags().get("kfo"));
         Assertions.assertEquals("zlhjxrifkwmrvkt", model.targetLocation());
@@ -26,12 +24,10 @@ public final class ServiceResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceResourceInner model =
-            new ServiceResourceInner()
-                .withLocation("ajpsquc")
-                .withTags(mapOf("kfo", "yf"))
-                .withTargetLocation("zlhjxrifkwmrvkt")
-                .withTargetSubscriptionId("izntocipao");
+        ServiceResourceInner model = new ServiceResourceInner().withLocation("ajpsquc")
+            .withTags(mapOf("kfo", "yf"))
+            .withTargetLocation("zlhjxrifkwmrvkt")
+            .withTargetSubscriptionId("izntocipao");
         model = BinaryData.fromObject(model).toObject(ServiceResourceInner.class);
         Assertions.assertEquals("ajpsquc", model.location());
         Assertions.assertEquals("yf", model.tags().get("kfo"));

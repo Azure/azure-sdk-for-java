@@ -6,44 +6,45 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * The container settings for a task.
  */
 @Fluent
-public final class TaskContainerSettings {
+public final class TaskContainerSettings implements JsonSerializable<TaskContainerSettings> {
     /*
-     * Additional options to the container create command.
-     * 
      * These additional options are supplied as arguments to the "docker create" command, in addition to those
      * controlled by the Batch Service.
      */
-    @JsonProperty(value = "containerRunOptions")
     private String containerRunOptions;
 
     /*
-     * The image to use to create the container in which the task will run.
-     * 
      * This is the full image reference, as would be specified to "docker pull". If no tag is provided as part of the
      * image name, the tag ":latest" is used as a default.
      */
-    @JsonProperty(value = "imageName", required = true)
     private String imageName;
 
     /*
-     * A private container registry.
-     * 
      * This setting can be omitted if was already provided at pool creation.
      */
-    @JsonProperty(value = "registry")
     private ContainerRegistry registry;
 
     /*
      * A flag to indicate where the container task working directory is. The default is 'taskWorkingDirectory'.
      */
-    @JsonProperty(value = "workingDirectory")
     private ContainerWorkingDirectory workingDirectory;
+
+    /*
+     * If this array is null or be not present, container task will mount entire temporary disk drive in windows (or
+     * AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty.
+     */
+    private List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts;
 
     /**
      * Creates an instance of TaskContainerSettings class.
@@ -52,10 +53,8 @@ public final class TaskContainerSettings {
     }
 
     /**
-     * Get the containerRunOptions property: Additional options to the container create command.
-     * 
-     * These additional options are supplied as arguments to the "docker create" command, in addition to those
-     * controlled by the Batch Service.
+     * Get the containerRunOptions property: These additional options are supplied as arguments to the "docker create"
+     * command, in addition to those controlled by the Batch Service.
      * 
      * @return the containerRunOptions value.
      */
@@ -64,10 +63,8 @@ public final class TaskContainerSettings {
     }
 
     /**
-     * Set the containerRunOptions property: Additional options to the container create command.
-     * 
-     * These additional options are supplied as arguments to the "docker create" command, in addition to those
-     * controlled by the Batch Service.
+     * Set the containerRunOptions property: These additional options are supplied as arguments to the "docker create"
+     * command, in addition to those controlled by the Batch Service.
      * 
      * @param containerRunOptions the containerRunOptions value to set.
      * @return the TaskContainerSettings object itself.
@@ -78,10 +75,8 @@ public final class TaskContainerSettings {
     }
 
     /**
-     * Get the imageName property: The image to use to create the container in which the task will run.
-     * 
-     * This is the full image reference, as would be specified to "docker pull". If no tag is provided as part of the
-     * image name, the tag ":latest" is used as a default.
+     * Get the imageName property: This is the full image reference, as would be specified to "docker pull". If no tag
+     * is provided as part of the image name, the tag ":latest" is used as a default.
      * 
      * @return the imageName value.
      */
@@ -90,10 +85,8 @@ public final class TaskContainerSettings {
     }
 
     /**
-     * Set the imageName property: The image to use to create the container in which the task will run.
-     * 
-     * This is the full image reference, as would be specified to "docker pull". If no tag is provided as part of the
-     * image name, the tag ":latest" is used as a default.
+     * Set the imageName property: This is the full image reference, as would be specified to "docker pull". If no tag
+     * is provided as part of the image name, the tag ":latest" is used as a default.
      * 
      * @param imageName the imageName value to set.
      * @return the TaskContainerSettings object itself.
@@ -104,9 +97,7 @@ public final class TaskContainerSettings {
     }
 
     /**
-     * Get the registry property: A private container registry.
-     * 
-     * This setting can be omitted if was already provided at pool creation.
+     * Get the registry property: This setting can be omitted if was already provided at pool creation.
      * 
      * @return the registry value.
      */
@@ -115,9 +106,7 @@ public final class TaskContainerSettings {
     }
 
     /**
-     * Set the registry property: A private container registry.
-     * 
-     * This setting can be omitted if was already provided at pool creation.
+     * Set the registry property: This setting can be omitted if was already provided at pool creation.
      * 
      * @param registry the registry value to set.
      * @return the TaskContainerSettings object itself.
@@ -150,19 +139,102 @@ public final class TaskContainerSettings {
     }
 
     /**
+     * Get the containerHostBatchBindMounts property: If this array is null or be not present, container task will mount
+     * entire temporary disk drive in windows (or AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into
+     * container if this array is set as empty.
+     * 
+     * @return the containerHostBatchBindMounts value.
+     */
+    public List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts() {
+        return this.containerHostBatchBindMounts;
+    }
+
+    /**
+     * Set the containerHostBatchBindMounts property: If this array is null or be not present, container task will mount
+     * entire temporary disk drive in windows (or AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into
+     * container if this array is set as empty.
+     * 
+     * @param containerHostBatchBindMounts the containerHostBatchBindMounts value to set.
+     * @return the TaskContainerSettings object itself.
+     */
+    public TaskContainerSettings
+        withContainerHostBatchBindMounts(List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts) {
+        this.containerHostBatchBindMounts = containerHostBatchBindMounts;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (imageName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property imageName in model TaskContainerSettings"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property imageName in model TaskContainerSettings"));
         }
         if (registry() != null) {
             registry().validate();
         }
+        if (containerHostBatchBindMounts() != null) {
+            containerHostBatchBindMounts().forEach(e -> e.validate());
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TaskContainerSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("imageName", this.imageName);
+        jsonWriter.writeStringField("containerRunOptions", this.containerRunOptions);
+        jsonWriter.writeJsonField("registry", this.registry);
+        jsonWriter.writeStringField("workingDirectory",
+            this.workingDirectory == null ? null : this.workingDirectory.toString());
+        jsonWriter.writeArrayField("containerHostBatchBindMounts", this.containerHostBatchBindMounts,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskContainerSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskContainerSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TaskContainerSettings.
+     */
+    public static TaskContainerSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskContainerSettings deserializedTaskContainerSettings = new TaskContainerSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("imageName".equals(fieldName)) {
+                    deserializedTaskContainerSettings.imageName = reader.getString();
+                } else if ("containerRunOptions".equals(fieldName)) {
+                    deserializedTaskContainerSettings.containerRunOptions = reader.getString();
+                } else if ("registry".equals(fieldName)) {
+                    deserializedTaskContainerSettings.registry = ContainerRegistry.fromJson(reader);
+                } else if ("workingDirectory".equals(fieldName)) {
+                    deserializedTaskContainerSettings.workingDirectory
+                        = ContainerWorkingDirectory.fromString(reader.getString());
+                } else if ("containerHostBatchBindMounts".equals(fieldName)) {
+                    List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts
+                        = reader.readArray(reader1 -> ContainerHostBatchBindMountEntry.fromJson(reader1));
+                    deserializedTaskContainerSettings.containerHostBatchBindMounts = containerHostBatchBindMounts;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskContainerSettings;
+        });
+    }
 }

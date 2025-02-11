@@ -6,24 +6,45 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gateway certificate authority details. */
+/**
+ * Gateway certificate authority details.
+ */
 @Fluent
 public final class GatewayCertificateAuthorityContractInner extends ProxyResource {
     /*
      * Gateway certificate authority details.
      */
-    @JsonProperty(value = "properties")
     private GatewayCertificateAuthorityContractProperties innerProperties;
 
-    /** Creates an instance of GatewayCertificateAuthorityContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of GatewayCertificateAuthorityContractInner class.
+     */
     public GatewayCertificateAuthorityContractInner() {
     }
 
     /**
      * Get the innerProperties property: Gateway certificate authority details.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GatewayCertificateAuthorityContractProperties innerProperties() {
@@ -31,8 +52,38 @@ public final class GatewayCertificateAuthorityContractInner extends ProxyResourc
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the isTrusted property: Determines whether certificate authority is trusted.
-     *
+     * 
      * @return the isTrusted value.
      */
     public Boolean isTrusted() {
@@ -41,7 +92,7 @@ public final class GatewayCertificateAuthorityContractInner extends ProxyResourc
 
     /**
      * Set the isTrusted property: Determines whether certificate authority is trusted.
-     *
+     * 
      * @param isTrusted the isTrusted value to set.
      * @return the GatewayCertificateAuthorityContractInner object itself.
      */
@@ -55,12 +106,57 @@ public final class GatewayCertificateAuthorityContractInner extends ProxyResourc
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayCertificateAuthorityContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayCertificateAuthorityContractInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GatewayCertificateAuthorityContractInner.
+     */
+    public static GatewayCertificateAuthorityContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayCertificateAuthorityContractInner deserializedGatewayCertificateAuthorityContractInner
+                = new GatewayCertificateAuthorityContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGatewayCertificateAuthorityContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGatewayCertificateAuthorityContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGatewayCertificateAuthorityContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGatewayCertificateAuthorityContractInner.innerProperties
+                        = GatewayCertificateAuthorityContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayCertificateAuthorityContractInner;
+        });
     }
 }

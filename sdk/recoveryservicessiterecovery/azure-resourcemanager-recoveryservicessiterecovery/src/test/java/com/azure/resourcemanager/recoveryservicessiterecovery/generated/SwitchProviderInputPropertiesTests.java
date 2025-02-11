@@ -20,8 +20,9 @@ public final class SwitchProviderInputPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwitchProviderInputProperties model = new SwitchProviderInputProperties()
-            .withTargetInstanceType("trgjupauutpwoqh").withProviderSpecificDetails(new SwitchProviderSpecificInput());
+        SwitchProviderInputProperties model
+            = new SwitchProviderInputProperties().withTargetInstanceType("trgjupauutpwoqh")
+                .withProviderSpecificDetails(new SwitchProviderSpecificInput());
         model = BinaryData.fromObject(model).toObject(SwitchProviderInputProperties.class);
         Assertions.assertEquals("trgjupauutpwoqh", model.targetInstanceType());
     }

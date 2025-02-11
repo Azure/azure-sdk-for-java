@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Available roles for the network device. */
+/**
+ * Available roles for the network device.
+ */
 public final class NetworkDeviceRoleName extends ExpandableStringEnum<NetworkDeviceRoleName> {
-    /** Static value CE for NetworkDeviceRoleName. */
+    /**
+     * Static value CE for NetworkDeviceRoleName.
+     */
     public static final NetworkDeviceRoleName CE = fromString("CE");
 
-    /** Static value ToR for NetworkDeviceRoleName. */
+    /**
+     * Static value ToR for NetworkDeviceRoleName.
+     */
     public static final NetworkDeviceRoleName TOR = fromString("ToR");
 
-    /** Static value NPB for NetworkDeviceRoleName. */
+    /**
+     * Static value NPB for NetworkDeviceRoleName.
+     */
     public static final NetworkDeviceRoleName NPB = fromString("NPB");
 
-    /** Static value TS for NetworkDeviceRoleName. */
+    /**
+     * Static value TS for NetworkDeviceRoleName.
+     */
     public static final NetworkDeviceRoleName TS = fromString("TS");
 
-    /** Static value Management for NetworkDeviceRoleName. */
+    /**
+     * Static value Management for NetworkDeviceRoleName.
+     */
     public static final NetworkDeviceRoleName MANAGEMENT = fromString("Management");
 
     /**
      * Creates a new instance of NetworkDeviceRoleName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class NetworkDeviceRoleName extends ExpandableStringEnum<NetworkDev
 
     /**
      * Creates or finds a NetworkDeviceRoleName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkDeviceRoleName.
      */
-    @JsonCreator
     public static NetworkDeviceRoleName fromString(String name) {
         return fromString(name, NetworkDeviceRoleName.class);
     }
 
     /**
      * Gets known NetworkDeviceRoleName values.
-     *
+     * 
      * @return known NetworkDeviceRoleName values.
      */
     public static Collection<NetworkDeviceRoleName> values() {

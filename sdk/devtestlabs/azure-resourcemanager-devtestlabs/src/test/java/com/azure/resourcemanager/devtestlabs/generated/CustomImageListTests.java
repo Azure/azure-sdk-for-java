@@ -25,18 +25,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomImageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomImageList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"vm\":{\"sourceVmId\":\"khly\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepRequested\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionApplied\"}},\"vhd\":{\"imageName\":\"bdunygaeqid\",\"sysPrep\":true,\"osType\":\"Linux\"},\"description\":\"pxllrx\",\"author\":\"jmoadsuv\",\"creationDate\":\"2021-09-26T15:36:35Z\",\"managedImageId\":\"wdmjsjqbjhhyx\",\"managedSnapshotId\":\"wlycoduhpkxkg\",\"dataDiskStorageInfo\":[{\"lun\":\"eqnajxqugjhkycu\",\"storageType\":\"StandardSSD\"},{\"lun\":\"gssofwq\",\"storageType\":\"Premium\"}],\"customImagePlan\":{\"id\":\"krmnjijpxacqqud\",\"publisher\":\"byxbaaabjy\",\"offer\":\"yffimrzrtuzqogs\"},\"isPlanAuthorized\":false,\"provisioningState\":\"vfdnwnwmewzsyyce\",\"uniqueIdentifier\":\"soibjudpfrx\"},\"location\":\"rthzvaytdwkqbrqu\",\"tags\":{\"r\":\"xhexiilivpdti\",\"yfxrx\":\"tdqoaxoruzfgsq\",\"ptramxj\":\"l\"},\"id\":\"zwl\",\"name\":\"nwxuqlcvydyp\",\"type\":\"tdooaoj\"},{\"properties\":{\"vm\":{\"sourceVmId\":\"odko\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"mmsbvdkcrodtjin\",\"sysPrep\":true,\"osType\":\"None\"},\"description\":\"lt\",\"author\":\"cjvefkdlfo\",\"creationDate\":\"2021-03-28T14:05:44Z\",\"managedImageId\":\"kfpagao\",\"managedSnapshotId\":\"ulpqblylsyxkqjn\",\"dataDiskStorageInfo\":[{\"lun\":\"vti\",\"storageType\":\"Premium\"},{\"lun\":\"dszue\",\"storageType\":\"Premium\"},{\"lun\":\"zkfzbeyv\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"vinvkj\",\"publisher\":\"dxrbuukzcle\",\"offer\":\"hmlwpaztzpo\"},\"isPlanAuthorized\":true,\"provisioningState\":\"kwyfzqwhxxbuyqax\",\"uniqueIdentifier\":\"eqz\"},\"location\":\"ppriol\",\"tags\":{\"sobqw\":\"jaltolmnc\",\"vglsbjjca\":\"sdbnwdcfhucqdpf\",\"t\":\"vxb\"},\"id\":\"udutnco\",\"name\":\"mr\",\"type\":\"xqtvcofu\"},{\"properties\":{\"vm\":{\"sourceVmId\":\"vkg\",\"windowsOsInfo\":{\"windowsOsState\":\"NonSysprepped\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"vsaznqntorudsg\",\"sysPrep\":false,\"osType\":\"Windows\"},\"description\":\"yc\",\"author\":\"auwjuetaebu\",\"creationDate\":\"2021-09-21T03:41:44Z\",\"managedImageId\":\"movsmzlxwabmqoe\",\"managedSnapshotId\":\"ifrvtpu\",\"dataDiskStorageInfo\":[{\"lun\":\"qlgkfbtn\",\"storageType\":\"Premium\"},{\"lun\":\"n\",\"storageType\":\"StandardSSD\"}],\"customImagePlan\":{\"id\":\"tujitcjedft\",\"publisher\":\"ae\",\"offer\":\"ojvdcpzfoqo\"},\"isPlanAuthorized\":false,\"provisioningState\":\"bxarzgszufoxci\",\"uniqueIdentifier\":\"p\"},\"location\":\"doamciodhkha\",\"tags\":{\"ntoe\":\"hnzbonl\",\"hksz\":\"okdwb\",\"bt\":\"cmrvexzt\"},\"id\":\"gsfraoyzkoow\",\"name\":\"lmnguxaw\",\"type\":\"aldsy\"}],\"nextLink\":\"ximerqfobwyznk\"}")
-                .toObject(CustomImageList.class);
+        CustomImageList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"vm\":{\"sourceVmId\":\"khly\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepRequested\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionApplied\"}},\"vhd\":{\"imageName\":\"bdunygaeqid\",\"sysPrep\":true,\"osType\":\"Linux\"},\"description\":\"pxllrx\",\"author\":\"jmoadsuv\",\"creationDate\":\"2021-09-26T15:36:35Z\",\"managedImageId\":\"wdmjsjqbjhhyx\",\"managedSnapshotId\":\"wlycoduhpkxkg\",\"dataDiskStorageInfo\":[{\"lun\":\"eqnajxqugjhkycu\",\"storageType\":\"StandardSSD\"},{\"lun\":\"gssofwq\",\"storageType\":\"Premium\"}],\"customImagePlan\":{\"id\":\"krmnjijpxacqqud\",\"publisher\":\"byxbaaabjy\",\"offer\":\"yffimrzrtuzqogs\"},\"isPlanAuthorized\":false,\"provisioningState\":\"vfdnwnwmewzsyyce\",\"uniqueIdentifier\":\"soibjudpfrx\"},\"location\":\"rthzvaytdwkqbrqu\",\"tags\":{\"r\":\"xhexiilivpdti\",\"yfxrx\":\"tdqoaxoruzfgsq\",\"ptramxj\":\"l\"},\"id\":\"zwl\",\"name\":\"nwxuqlcvydyp\",\"type\":\"tdooaoj\"},{\"properties\":{\"vm\":{\"sourceVmId\":\"odko\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"mmsbvdkcrodtjin\",\"sysPrep\":true,\"osType\":\"None\"},\"description\":\"lt\",\"author\":\"cjvefkdlfo\",\"creationDate\":\"2021-03-28T14:05:44Z\",\"managedImageId\":\"kfpagao\",\"managedSnapshotId\":\"ulpqblylsyxkqjn\",\"dataDiskStorageInfo\":[{\"lun\":\"vti\",\"storageType\":\"Premium\"},{\"lun\":\"dszue\",\"storageType\":\"Premium\"},{\"lun\":\"zkfzbeyv\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"vinvkj\",\"publisher\":\"dxrbuukzcle\",\"offer\":\"hmlwpaztzpo\"},\"isPlanAuthorized\":true,\"provisioningState\":\"kwyfzqwhxxbuyqax\",\"uniqueIdentifier\":\"eqz\"},\"location\":\"ppriol\",\"tags\":{\"sobqw\":\"jaltolmnc\",\"vglsbjjca\":\"sdbnwdcfhucqdpf\",\"t\":\"vxb\"},\"id\":\"udutnco\",\"name\":\"mr\",\"type\":\"xqtvcofu\"},{\"properties\":{\"vm\":{\"sourceVmId\":\"vkg\",\"windowsOsInfo\":{\"windowsOsState\":\"NonSysprepped\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"vsaznqntorudsg\",\"sysPrep\":false,\"osType\":\"Windows\"},\"description\":\"yc\",\"author\":\"auwjuetaebu\",\"creationDate\":\"2021-09-21T03:41:44Z\",\"managedImageId\":\"movsmzlxwabmqoe\",\"managedSnapshotId\":\"ifrvtpu\",\"dataDiskStorageInfo\":[{\"lun\":\"qlgkfbtn\",\"storageType\":\"Premium\"},{\"lun\":\"n\",\"storageType\":\"StandardSSD\"}],\"customImagePlan\":{\"id\":\"tujitcjedft\",\"publisher\":\"ae\",\"offer\":\"ojvdcpzfoqo\"},\"isPlanAuthorized\":false,\"provisioningState\":\"bxarzgszufoxci\",\"uniqueIdentifier\":\"p\"},\"location\":\"doamciodhkha\",\"tags\":{\"ntoe\":\"hnzbonl\",\"hksz\":\"okdwb\",\"bt\":\"cmrvexzt\"},\"id\":\"gsfraoyzkoow\",\"name\":\"lmnguxaw\",\"type\":\"aldsy\"}],\"nextLink\":\"ximerqfobwyznk\"}")
+            .toObject(CustomImageList.class);
         Assertions.assertEquals("rthzvaytdwkqbrqu", model.value().get(0).location());
         Assertions.assertEquals("xhexiilivpdti", model.value().get(0).tags().get("r"));
         Assertions.assertEquals("khly", model.value().get(0).vm().sourceVmId());
-        Assertions
-            .assertEquals(WindowsOsState.SYSPREP_REQUESTED, model.value().get(0).vm().windowsOsInfo().windowsOsState());
-        Assertions
-            .assertEquals(LinuxOsState.DEPROVISION_APPLIED, model.value().get(0).vm().linuxOsInfo().linuxOsState());
+        Assertions.assertEquals(WindowsOsState.SYSPREP_REQUESTED,
+            model.value().get(0).vm().windowsOsInfo().windowsOsState());
+        Assertions.assertEquals(LinuxOsState.DEPROVISION_APPLIED,
+            model.value().get(0).vm().linuxOsInfo().linuxOsState());
         Assertions.assertEquals("bdunygaeqid", model.value().get(0).vhd().imageName());
         Assertions.assertEquals(true, model.value().get(0).vhd().sysPrep());
         Assertions.assertEquals(CustomImageOsType.LINUX, model.value().get(0).vhd().osType());
@@ -45,8 +43,8 @@ public final class CustomImageListTests {
         Assertions.assertEquals("wdmjsjqbjhhyx", model.value().get(0).managedImageId());
         Assertions.assertEquals("wlycoduhpkxkg", model.value().get(0).managedSnapshotId());
         Assertions.assertEquals("eqnajxqugjhkycu", model.value().get(0).dataDiskStorageInfo().get(0).lun());
-        Assertions
-            .assertEquals(StorageType.STANDARD_SSD, model.value().get(0).dataDiskStorageInfo().get(0).storageType());
+        Assertions.assertEquals(StorageType.STANDARD_SSD,
+            model.value().get(0).dataDiskStorageInfo().get(0).storageType());
         Assertions.assertEquals("krmnjijpxacqqud", model.value().get(0).customImagePlan().id());
         Assertions.assertEquals("byxbaaabjy", model.value().get(0).customImagePlan().publisher());
         Assertions.assertEquals("yffimrzrtuzqogs", model.value().get(0).customImagePlan().offer());
@@ -56,125 +54,86 @@ public final class CustomImageListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomImageList model =
-            new CustomImageList()
+        CustomImageList model
+            = new CustomImageList()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new CustomImageInner()
-                                .withLocation("rthzvaytdwkqbrqu")
-                                .withTags(mapOf("r", "xhexiilivpdti", "yfxrx", "tdqoaxoruzfgsq", "ptramxj", "l"))
-                                .withVm(
-                                    new CustomImagePropertiesFromVm()
-                                        .withSourceVmId("khly")
-                                        .withWindowsOsInfo(
-                                            new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_REQUESTED))
-                                        .withLinuxOsInfo(
-                                            new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_APPLIED)))
-                                .withVhd(
-                                    new CustomImagePropertiesCustom()
-                                        .withImageName("bdunygaeqid")
-                                        .withSysPrep(true)
-                                        .withOsType(CustomImageOsType.LINUX))
-                                .withDescription("pxllrx")
-                                .withAuthor("jmoadsuv")
-                                .withManagedImageId("wdmjsjqbjhhyx")
-                                .withManagedSnapshotId("wlycoduhpkxkg")
-                                .withDataDiskStorageInfo(
-                                    Arrays
-                                        .asList(
-                                            new DataDiskStorageTypeInfo()
-                                                .withLun("eqnajxqugjhkycu")
-                                                .withStorageType(StorageType.STANDARD_SSD),
-                                            new DataDiskStorageTypeInfo()
-                                                .withLun("gssofwq")
-                                                .withStorageType(StorageType.PREMIUM)))
-                                .withCustomImagePlan(
-                                    new CustomImagePropertiesFromPlan()
-                                        .withId("krmnjijpxacqqud")
-                                        .withPublisher("byxbaaabjy")
-                                        .withOffer("yffimrzrtuzqogs"))
-                                .withIsPlanAuthorized(false),
-                            new CustomImageInner()
-                                .withLocation("ppriol")
-                                .withTags(mapOf("sobqw", "jaltolmnc", "vglsbjjca", "sdbnwdcfhucqdpf", "t", "vxb"))
-                                .withVm(
-                                    new CustomImagePropertiesFromVm()
-                                        .withSourceVmId("odko")
-                                        .withWindowsOsInfo(
-                                            new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_APPLIED))
-                                        .withLinuxOsInfo(
-                                            new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_REQUESTED)))
-                                .withVhd(
-                                    new CustomImagePropertiesCustom()
-                                        .withImageName("mmsbvdkcrodtjin")
-                                        .withSysPrep(true)
-                                        .withOsType(CustomImageOsType.NONE))
-                                .withDescription("lt")
-                                .withAuthor("cjvefkdlfo")
-                                .withManagedImageId("kfpagao")
-                                .withManagedSnapshotId("ulpqblylsyxkqjn")
-                                .withDataDiskStorageInfo(
-                                    Arrays
-                                        .asList(
-                                            new DataDiskStorageTypeInfo()
-                                                .withLun("vti")
-                                                .withStorageType(StorageType.PREMIUM),
-                                            new DataDiskStorageTypeInfo()
-                                                .withLun("dszue")
-                                                .withStorageType(StorageType.PREMIUM),
-                                            new DataDiskStorageTypeInfo()
-                                                .withLun("zkfzbeyv")
-                                                .withStorageType(StorageType.STANDARD)))
-                                .withCustomImagePlan(
-                                    new CustomImagePropertiesFromPlan()
-                                        .withId("vinvkj")
-                                        .withPublisher("dxrbuukzcle")
-                                        .withOffer("hmlwpaztzpo"))
-                                .withIsPlanAuthorized(true),
-                            new CustomImageInner()
-                                .withLocation("doamciodhkha")
-                                .withTags(mapOf("ntoe", "hnzbonl", "hksz", "okdwb", "bt", "cmrvexzt"))
-                                .withVm(
-                                    new CustomImagePropertiesFromVm()
-                                        .withSourceVmId("vkg")
-                                        .withWindowsOsInfo(
-                                            new WindowsOsInfo().withWindowsOsState(WindowsOsState.NON_SYSPREPPED))
-                                        .withLinuxOsInfo(
-                                            new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_REQUESTED)))
-                                .withVhd(
-                                    new CustomImagePropertiesCustom()
-                                        .withImageName("vsaznqntorudsg")
-                                        .withSysPrep(false)
-                                        .withOsType(CustomImageOsType.WINDOWS))
-                                .withDescription("yc")
-                                .withAuthor("auwjuetaebu")
-                                .withManagedImageId("movsmzlxwabmqoe")
-                                .withManagedSnapshotId("ifrvtpu")
-                                .withDataDiskStorageInfo(
-                                    Arrays
-                                        .asList(
-                                            new DataDiskStorageTypeInfo()
-                                                .withLun("qlgkfbtn")
-                                                .withStorageType(StorageType.PREMIUM),
-                                            new DataDiskStorageTypeInfo()
-                                                .withLun("n")
-                                                .withStorageType(StorageType.STANDARD_SSD)))
-                                .withCustomImagePlan(
-                                    new CustomImagePropertiesFromPlan()
-                                        .withId("tujitcjedft")
-                                        .withPublisher("ae")
-                                        .withOffer("ojvdcpzfoqo"))
-                                .withIsPlanAuthorized(false)))
+                    Arrays.asList(
+                        new CustomImageInner().withLocation("rthzvaytdwkqbrqu")
+                            .withTags(mapOf("r", "xhexiilivpdti", "yfxrx", "tdqoaxoruzfgsq", "ptramxj", "l"))
+                            .withVm(new CustomImagePropertiesFromVm().withSourceVmId("khly")
+                                .withWindowsOsInfo(
+                                    new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_REQUESTED))
+                                .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_APPLIED)))
+                            .withVhd(new CustomImagePropertiesCustom().withImageName("bdunygaeqid")
+                                .withSysPrep(true)
+                                .withOsType(CustomImageOsType.LINUX))
+                            .withDescription("pxllrx")
+                            .withAuthor("jmoadsuv")
+                            .withManagedImageId("wdmjsjqbjhhyx")
+                            .withManagedSnapshotId("wlycoduhpkxkg")
+                            .withDataDiskStorageInfo(Arrays.asList(
+                                new DataDiskStorageTypeInfo().withLun("eqnajxqugjhkycu")
+                                    .withStorageType(StorageType.STANDARD_SSD),
+                                new DataDiskStorageTypeInfo().withLun("gssofwq").withStorageType(StorageType.PREMIUM)))
+                            .withCustomImagePlan(new CustomImagePropertiesFromPlan()
+                                .withId("krmnjijpxacqqud")
+                                .withPublisher("byxbaaabjy")
+                                .withOffer("yffimrzrtuzqogs"))
+                            .withIsPlanAuthorized(false),
+                        new CustomImageInner().withLocation("ppriol")
+                            .withTags(mapOf("sobqw", "jaltolmnc", "vglsbjjca", "sdbnwdcfhucqdpf", "t", "vxb"))
+                            .withVm(new CustomImagePropertiesFromVm().withSourceVmId("odko")
+                                .withWindowsOsInfo(
+                                    new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_APPLIED))
+                                .withLinuxOsInfo(
+                                    new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_REQUESTED)))
+                            .withVhd(new CustomImagePropertiesCustom().withImageName("mmsbvdkcrodtjin")
+                                .withSysPrep(true)
+                                .withOsType(CustomImageOsType.NONE))
+                            .withDescription("lt")
+                            .withAuthor("cjvefkdlfo")
+                            .withManagedImageId("kfpagao")
+                            .withManagedSnapshotId("ulpqblylsyxkqjn")
+                            .withDataDiskStorageInfo(Arrays.asList(
+                                new DataDiskStorageTypeInfo().withLun("vti").withStorageType(StorageType.PREMIUM),
+                                new DataDiskStorageTypeInfo().withLun("dszue").withStorageType(StorageType.PREMIUM),
+                                new DataDiskStorageTypeInfo().withLun("zkfzbeyv")
+                                    .withStorageType(StorageType.STANDARD)))
+                            .withCustomImagePlan(new CustomImagePropertiesFromPlan()
+                                .withId("vinvkj")
+                                .withPublisher("dxrbuukzcle")
+                                .withOffer("hmlwpaztzpo"))
+                            .withIsPlanAuthorized(true),
+                        new CustomImageInner().withLocation("doamciodhkha")
+                            .withTags(mapOf("ntoe", "hnzbonl", "hksz", "okdwb", "bt", "cmrvexzt"))
+                            .withVm(new CustomImagePropertiesFromVm().withSourceVmId("vkg")
+                                .withWindowsOsInfo(
+                                    new WindowsOsInfo().withWindowsOsState(WindowsOsState.NON_SYSPREPPED))
+                                .withLinuxOsInfo(
+                                    new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_REQUESTED)))
+                            .withVhd(new CustomImagePropertiesCustom().withImageName("vsaznqntorudsg")
+                                .withSysPrep(false)
+                                .withOsType(CustomImageOsType.WINDOWS))
+                            .withDescription("yc")
+                            .withAuthor("auwjuetaebu")
+                            .withManagedImageId("movsmzlxwabmqoe")
+                            .withManagedSnapshotId("ifrvtpu")
+                            .withDataDiskStorageInfo(Arrays.asList(
+                                new DataDiskStorageTypeInfo().withLun("qlgkfbtn").withStorageType(StorageType.PREMIUM),
+                                new DataDiskStorageTypeInfo().withLun("n").withStorageType(StorageType.STANDARD_SSD)))
+                            .withCustomImagePlan(new CustomImagePropertiesFromPlan().withId("tujitcjedft")
+                                .withPublisher("ae")
+                                .withOffer("ojvdcpzfoqo"))
+                            .withIsPlanAuthorized(false)))
                 .withNextLink("ximerqfobwyznk");
         model = BinaryData.fromObject(model).toObject(CustomImageList.class);
         Assertions.assertEquals("rthzvaytdwkqbrqu", model.value().get(0).location());
         Assertions.assertEquals("xhexiilivpdti", model.value().get(0).tags().get("r"));
         Assertions.assertEquals("khly", model.value().get(0).vm().sourceVmId());
-        Assertions
-            .assertEquals(WindowsOsState.SYSPREP_REQUESTED, model.value().get(0).vm().windowsOsInfo().windowsOsState());
-        Assertions
-            .assertEquals(LinuxOsState.DEPROVISION_APPLIED, model.value().get(0).vm().linuxOsInfo().linuxOsState());
+        Assertions.assertEquals(WindowsOsState.SYSPREP_REQUESTED,
+            model.value().get(0).vm().windowsOsInfo().windowsOsState());
+        Assertions.assertEquals(LinuxOsState.DEPROVISION_APPLIED,
+            model.value().get(0).vm().linuxOsInfo().linuxOsState());
         Assertions.assertEquals("bdunygaeqid", model.value().get(0).vhd().imageName());
         Assertions.assertEquals(true, model.value().get(0).vhd().sysPrep());
         Assertions.assertEquals(CustomImageOsType.LINUX, model.value().get(0).vhd().osType());
@@ -183,8 +142,8 @@ public final class CustomImageListTests {
         Assertions.assertEquals("wdmjsjqbjhhyx", model.value().get(0).managedImageId());
         Assertions.assertEquals("wlycoduhpkxkg", model.value().get(0).managedSnapshotId());
         Assertions.assertEquals("eqnajxqugjhkycu", model.value().get(0).dataDiskStorageInfo().get(0).lun());
-        Assertions
-            .assertEquals(StorageType.STANDARD_SSD, model.value().get(0).dataDiskStorageInfo().get(0).storageType());
+        Assertions.assertEquals(StorageType.STANDARD_SSD,
+            model.value().get(0).dataDiskStorageInfo().get(0).storageType());
         Assertions.assertEquals("krmnjijpxacqqud", model.value().get(0).customImagePlan().id());
         Assertions.assertEquals("byxbaaabjy", model.value().get(0).customImagePlan().publisher());
         Assertions.assertEquals("yffimrzrtuzqogs", model.value().get(0).customImagePlan().offer());

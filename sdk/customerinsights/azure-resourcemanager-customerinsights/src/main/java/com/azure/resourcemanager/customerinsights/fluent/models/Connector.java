@@ -5,91 +5,87 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.ConnectorStates;
 import com.azure.resourcemanager.customerinsights.models.ConnectorTypes;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Properties of connector. */
+/**
+ * Properties of connector.
+ */
 @Fluent
-public final class Connector {
+public final class Connector implements JsonSerializable<Connector> {
     /*
      * ID of the connector.
      */
-    @JsonProperty(value = "connectorId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer connectorId;
 
     /*
      * Name of the connector.
      */
-    @JsonProperty(value = "connectorName")
     private String connectorName;
 
     /*
      * Type of connector.
      */
-    @JsonProperty(value = "connectorType", required = true)
     private ConnectorTypes connectorType;
 
     /*
      * Display name of the connector.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Description of the connector.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The connector properties.
      */
-    @JsonProperty(value = "connectorProperties", required = true)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> connectorProperties;
 
     /*
      * The created time.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
 
     /*
      * The last modified time.
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * State of connector.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectorStates state;
 
     /*
      * The hub name.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * If this is an internal connector.
      */
-    @JsonProperty(value = "isInternal")
     private Boolean isInternal;
 
-    /** Creates an instance of Connector class. */
+    /**
+     * Creates an instance of Connector class.
+     */
     public Connector() {
     }
 
     /**
      * Get the connectorId property: ID of the connector.
-     *
+     * 
      * @return the connectorId value.
      */
     public Integer connectorId() {
@@ -98,7 +94,7 @@ public final class Connector {
 
     /**
      * Get the connectorName property: Name of the connector.
-     *
+     * 
      * @return the connectorName value.
      */
     public String connectorName() {
@@ -107,7 +103,7 @@ public final class Connector {
 
     /**
      * Set the connectorName property: Name of the connector.
-     *
+     * 
      * @param connectorName the connectorName value to set.
      * @return the Connector object itself.
      */
@@ -118,7 +114,7 @@ public final class Connector {
 
     /**
      * Get the connectorType property: Type of connector.
-     *
+     * 
      * @return the connectorType value.
      */
     public ConnectorTypes connectorType() {
@@ -127,7 +123,7 @@ public final class Connector {
 
     /**
      * Set the connectorType property: Type of connector.
-     *
+     * 
      * @param connectorType the connectorType value to set.
      * @return the Connector object itself.
      */
@@ -138,7 +134,7 @@ public final class Connector {
 
     /**
      * Get the displayName property: Display name of the connector.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -147,7 +143,7 @@ public final class Connector {
 
     /**
      * Set the displayName property: Display name of the connector.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the Connector object itself.
      */
@@ -158,7 +154,7 @@ public final class Connector {
 
     /**
      * Get the description property: Description of the connector.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -167,7 +163,7 @@ public final class Connector {
 
     /**
      * Set the description property: Description of the connector.
-     *
+     * 
      * @param description the description value to set.
      * @return the Connector object itself.
      */
@@ -178,7 +174,7 @@ public final class Connector {
 
     /**
      * Get the connectorProperties property: The connector properties.
-     *
+     * 
      * @return the connectorProperties value.
      */
     public Map<String, Object> connectorProperties() {
@@ -187,7 +183,7 @@ public final class Connector {
 
     /**
      * Set the connectorProperties property: The connector properties.
-     *
+     * 
      * @param connectorProperties the connectorProperties value to set.
      * @return the Connector object itself.
      */
@@ -198,7 +194,7 @@ public final class Connector {
 
     /**
      * Get the created property: The created time.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -207,7 +203,7 @@ public final class Connector {
 
     /**
      * Get the lastModified property: The last modified time.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -216,7 +212,7 @@ public final class Connector {
 
     /**
      * Get the state property: State of connector.
-     *
+     * 
      * @return the state value.
      */
     public ConnectorStates state() {
@@ -225,7 +221,7 @@ public final class Connector {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -234,7 +230,7 @@ public final class Connector {
 
     /**
      * Get the isInternal property: If this is an internal connector.
-     *
+     * 
      * @return the isInternal value.
      */
     public Boolean isInternal() {
@@ -243,7 +239,7 @@ public final class Connector {
 
     /**
      * Set the isInternal property: If this is an internal connector.
-     *
+     * 
      * @param isInternal the isInternal value to set.
      * @return the Connector object itself.
      */
@@ -254,21 +250,85 @@ public final class Connector {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectorType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property connectorType in model Connector"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property connectorType in model Connector"));
         }
         if (connectorProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property connectorProperties in model Connector"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property connectorProperties in model Connector"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Connector.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("connectorType", this.connectorType == null ? null : this.connectorType.toString());
+        jsonWriter.writeMapField("connectorProperties", this.connectorProperties,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("connectorName", this.connectorName);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("isInternal", this.isInternal);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Connector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Connector if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Connector.
+     */
+    public static Connector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Connector deserializedConnector = new Connector();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectorType".equals(fieldName)) {
+                    deserializedConnector.connectorType = ConnectorTypes.fromString(reader.getString());
+                } else if ("connectorProperties".equals(fieldName)) {
+                    Map<String, Object> connectorProperties = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedConnector.connectorProperties = connectorProperties;
+                } else if ("connectorId".equals(fieldName)) {
+                    deserializedConnector.connectorId = reader.getNullable(JsonReader::getInt);
+                } else if ("connectorName".equals(fieldName)) {
+                    deserializedConnector.connectorName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedConnector.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedConnector.description = reader.getString();
+                } else if ("created".equals(fieldName)) {
+                    deserializedConnector.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedConnector.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedConnector.state = ConnectorStates.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedConnector.tenantId = reader.getString();
+                } else if ("isInternal".equals(fieldName)) {
+                    deserializedConnector.isInternal = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnector;
+        });
+    }
 }

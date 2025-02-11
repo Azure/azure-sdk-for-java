@@ -20,7 +20,7 @@ public final class DomainsListByEmailServiceResourceSamples {
      */
     public static void
         listDomainsResourcesByEmailServiceName(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().listByEmailServiceResource("MyResourceGroup", "MyEmailServiceResource",
-            com.azure.core.util.Context.NONE);
+        manager.domains()
+            .listByEmailServiceResource("MyResourceGroup", "MyEmailServiceResource", com.azure.core.util.Context.NONE);
     }
 }

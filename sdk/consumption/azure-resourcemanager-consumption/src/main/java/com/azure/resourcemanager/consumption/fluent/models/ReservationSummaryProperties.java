@@ -5,128 +5,113 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-/** The properties of the reservation summary. */
+/**
+ * The properties of the reservation summary.
+ */
 @Immutable
-public final class ReservationSummaryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationSummaryProperties.class);
-
+public final class ReservationSummaryProperties implements JsonSerializable<ReservationSummaryProperties> {
     /*
-     * The reservation order ID is the identifier for a reservation purchase.
-     * Each reservation order ID represents a single purchase transaction. A
-     * reservation order contains reservations. The reservation order specifies
-     * the VM size and region for the reservations.
+     * The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a
+     * single purchase transaction. A reservation order contains reservations. The reservation order specifies the VM
+     * size and region for the reservations.
      */
-    @JsonProperty(value = "reservationOrderId", access = JsonProperty.Access.WRITE_ONLY)
     private String reservationOrderId;
 
     /*
-     * The reservation ID is the identifier of a reservation within a
-     * reservation order. Each reservation is the grouping for applying the
-     * benefit scope and also specifies the number of instances to which the
-     * reservation benefit can be applied to.
+     * The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the
+     * grouping for applying the benefit scope and also specifies the number of instances to which the reservation
+     * benefit can be applied to.
      */
-    @JsonProperty(value = "reservationId", access = JsonProperty.Access.WRITE_ONLY)
     private String reservationId;
 
     /*
-     * This is the ARM Sku name. It can be used to join with the serviceType
-     * field in additional info in usage records.
+     * This is the ARM Sku name. It can be used to join with the serviceType field in additional info in usage records.
      */
-    @JsonProperty(value = "skuName", access = JsonProperty.Access.WRITE_ONLY)
     private String skuName;
 
     /*
-     * This is the total hours reserved. E.g. if reservation for 1 instance was
-     * made on 1 PM, this will be 11 hours for that day and 24 hours from
-     * subsequent days
+     * This is the total hours reserved. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours for
+     * that day and 24 hours from subsequent days
      */
-    @JsonProperty(value = "reservedHours", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal reservedHours;
 
     /*
-     * Data corresponding to the utilization record. If the grain of data is
-     * monthly, it will be first day of month.
+     * Data corresponding to the utilization record. If the grain of data is monthly, it will be first day of month.
      */
-    @JsonProperty(value = "usageDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime usageDate;
 
     /*
      * Total used hours by the reservation
      */
-    @JsonProperty(value = "usedHours", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal usedHours;
 
     /*
-     * This is the minimum hourly utilization in the usage time (day or month).
-     * E.g. if usage record corresponds to 12/10/2017 and on that for hour 4
-     * and 5, utilization was 10%, this field will return 10% for that day
+     * This is the minimum hourly utilization in the usage time (day or month). E.g. if usage record corresponds to
+     * 12/10/2017 and on that for hour 4 and 5, utilization was 10%, this field will return 10% for that day
      */
-    @JsonProperty(value = "minUtilizationPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal minUtilizationPercentage;
 
     /*
-     * This is average utilization for the entire time range. (day or month
-     * depending on the grain)
+     * This is average utilization for the entire time range. (day or month depending on the grain)
      */
-    @JsonProperty(value = "avgUtilizationPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal avgUtilizationPercentage;
 
     /*
-     * This is the maximum hourly utilization in the usage time (day or month).
-     * E.g. if usage record corresponds to 12/10/2017 and on that for hour 4
-     * and 5, utilization was 100%, this field will return 100% for that day.
+     * This is the maximum hourly utilization in the usage time (day or month). E.g. if usage record corresponds to
+     * 12/10/2017 and on that for hour 4 and 5, utilization was 100%, this field will return 100% for that day.
      */
-    @JsonProperty(value = "maxUtilizationPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal maxUtilizationPercentage;
 
     /*
      * The reservation kind.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * This is the purchased quantity for the reservationId.
      */
-    @JsonProperty(value = "purchasedQuantity", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal purchasedQuantity;
 
     /*
      * This is the remaining quantity for the reservationId.
      */
-    @JsonProperty(value = "remainingQuantity", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal remainingQuantity;
 
     /*
-     * This is the total count of instances that are reserved for the
-     * reservationId.
+     * This is the total count of instances that are reserved for the reservationId.
      */
-    @JsonProperty(value = "totalReservedQuantity", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal totalReservedQuantity;
 
     /*
      * This is the used quantity for the reservationId.
      */
-    @JsonProperty(value = "usedQuantity", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal usedQuantity;
 
     /*
      * This is the utilized percentage for the reservation Id.
      */
-    @JsonProperty(value = "utilizedPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal utilizedPercentage;
+
+    /**
+     * Creates an instance of ReservationSummaryProperties class.
+     */
+    public ReservationSummaryProperties() {
+    }
 
     /**
      * Get the reservationOrderId property: The reservation order ID is the identifier for a reservation purchase. Each
      * reservation order ID represents a single purchase transaction. A reservation order contains reservations. The
      * reservation order specifies the VM size and region for the reservations.
-     *
+     * 
      * @return the reservationOrderId value.
      */
     public String reservationOrderId() {
@@ -137,7 +122,7 @@ public final class ReservationSummaryProperties {
      * Get the reservationId property: The reservation ID is the identifier of a reservation within a reservation order.
      * Each reservation is the grouping for applying the benefit scope and also specifies the number of instances to
      * which the reservation benefit can be applied to.
-     *
+     * 
      * @return the reservationId value.
      */
     public String reservationId() {
@@ -147,7 +132,7 @@ public final class ReservationSummaryProperties {
     /**
      * Get the skuName property: This is the ARM Sku name. It can be used to join with the serviceType field in
      * additional info in usage records.
-     *
+     * 
      * @return the skuName value.
      */
     public String skuName() {
@@ -157,7 +142,7 @@ public final class ReservationSummaryProperties {
     /**
      * Get the reservedHours property: This is the total hours reserved. E.g. if reservation for 1 instance was made on
      * 1 PM, this will be 11 hours for that day and 24 hours from subsequent days.
-     *
+     * 
      * @return the reservedHours value.
      */
     public BigDecimal reservedHours() {
@@ -167,7 +152,7 @@ public final class ReservationSummaryProperties {
     /**
      * Get the usageDate property: Data corresponding to the utilization record. If the grain of data is monthly, it
      * will be first day of month.
-     *
+     * 
      * @return the usageDate value.
      */
     public OffsetDateTime usageDate() {
@@ -176,7 +161,7 @@ public final class ReservationSummaryProperties {
 
     /**
      * Get the usedHours property: Total used hours by the reservation.
-     *
+     * 
      * @return the usedHours value.
      */
     public BigDecimal usedHours() {
@@ -187,7 +172,7 @@ public final class ReservationSummaryProperties {
      * Get the minUtilizationPercentage property: This is the minimum hourly utilization in the usage time (day or
      * month). E.g. if usage record corresponds to 12/10/2017 and on that for hour 4 and 5, utilization was 10%, this
      * field will return 10% for that day.
-     *
+     * 
      * @return the minUtilizationPercentage value.
      */
     public BigDecimal minUtilizationPercentage() {
@@ -197,7 +182,7 @@ public final class ReservationSummaryProperties {
     /**
      * Get the avgUtilizationPercentage property: This is average utilization for the entire time range. (day or month
      * depending on the grain).
-     *
+     * 
      * @return the avgUtilizationPercentage value.
      */
     public BigDecimal avgUtilizationPercentage() {
@@ -208,7 +193,7 @@ public final class ReservationSummaryProperties {
      * Get the maxUtilizationPercentage property: This is the maximum hourly utilization in the usage time (day or
      * month). E.g. if usage record corresponds to 12/10/2017 and on that for hour 4 and 5, utilization was 100%, this
      * field will return 100% for that day.
-     *
+     * 
      * @return the maxUtilizationPercentage value.
      */
     public BigDecimal maxUtilizationPercentage() {
@@ -217,7 +202,7 @@ public final class ReservationSummaryProperties {
 
     /**
      * Get the kind property: The reservation kind.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -226,7 +211,7 @@ public final class ReservationSummaryProperties {
 
     /**
      * Get the purchasedQuantity property: This is the purchased quantity for the reservationId.
-     *
+     * 
      * @return the purchasedQuantity value.
      */
     public BigDecimal purchasedQuantity() {
@@ -235,7 +220,7 @@ public final class ReservationSummaryProperties {
 
     /**
      * Get the remainingQuantity property: This is the remaining quantity for the reservationId.
-     *
+     * 
      * @return the remainingQuantity value.
      */
     public BigDecimal remainingQuantity() {
@@ -245,7 +230,7 @@ public final class ReservationSummaryProperties {
     /**
      * Get the totalReservedQuantity property: This is the total count of instances that are reserved for the
      * reservationId.
-     *
+     * 
      * @return the totalReservedQuantity value.
      */
     public BigDecimal totalReservedQuantity() {
@@ -254,7 +239,7 @@ public final class ReservationSummaryProperties {
 
     /**
      * Get the usedQuantity property: This is the used quantity for the reservationId.
-     *
+     * 
      * @return the usedQuantity value.
      */
     public BigDecimal usedQuantity() {
@@ -263,7 +248,7 @@ public final class ReservationSummaryProperties {
 
     /**
      * Get the utilizedPercentage property: This is the utilized percentage for the reservation Id.
-     *
+     * 
      * @return the utilizedPercentage value.
      */
     public BigDecimal utilizedPercentage() {
@@ -272,9 +257,83 @@ public final class ReservationSummaryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationSummaryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationSummaryProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationSummaryProperties.
+     */
+    public static ReservationSummaryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationSummaryProperties deserializedReservationSummaryProperties = new ReservationSummaryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reservationOrderId".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.reservationOrderId = reader.getString();
+                } else if ("reservationId".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.reservationId = reader.getString();
+                } else if ("skuName".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.skuName = reader.getString();
+                } else if ("reservedHours".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.reservedHours
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("usageDate".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.usageDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("usedHours".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.usedHours
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("minUtilizationPercentage".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.minUtilizationPercentage
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("avgUtilizationPercentage".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.avgUtilizationPercentage
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("maxUtilizationPercentage".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.maxUtilizationPercentage
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("kind".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.kind = reader.getString();
+                } else if ("purchasedQuantity".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.purchasedQuantity
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("remainingQuantity".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.remainingQuantity
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("totalReservedQuantity".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.totalReservedQuantity
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("usedQuantity".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.usedQuantity
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("utilizedPercentage".equals(fieldName)) {
+                    deserializedReservationSummaryProperties.utilizedPercentage
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationSummaryProperties;
+        });
     }
 }

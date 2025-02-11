@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The source reference for the GitRepository object. */
+/**
+ * The source reference for the GitRepository object.
+ */
 @Fluent
-public final class RepositoryRefDefinition {
+public final class RepositoryRefDefinition implements JsonSerializable<RepositoryRefDefinition> {
     /*
      * The git repository branch name to checkout.
      */
-    @JsonProperty(value = "branch")
     private String branch;
 
     /*
      * The git repository tag name to checkout. This takes precedence over branch.
      */
-    @JsonProperty(value = "tag")
     private String tag;
 
     /*
      * The semver range used to match against git repository tags. This takes precedence over tag.
      */
-    @JsonProperty(value = "semver")
     private String semver;
 
     /*
      * The commit SHA to checkout. This value must be combined with the branch name to be valid. This takes precedence
      * over semver.
      */
-    @JsonProperty(value = "commit")
     private String commit;
 
-    /** Creates an instance of RepositoryRefDefinition class. */
+    /**
+     * Creates an instance of RepositoryRefDefinition class.
+     */
     public RepositoryRefDefinition() {
     }
 
     /**
      * Get the branch property: The git repository branch name to checkout.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -50,7 +54,7 @@ public final class RepositoryRefDefinition {
 
     /**
      * Set the branch property: The git repository branch name to checkout.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the RepositoryRefDefinition object itself.
      */
@@ -61,7 +65,7 @@ public final class RepositoryRefDefinition {
 
     /**
      * Get the tag property: The git repository tag name to checkout. This takes precedence over branch.
-     *
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -70,7 +74,7 @@ public final class RepositoryRefDefinition {
 
     /**
      * Set the tag property: The git repository tag name to checkout. This takes precedence over branch.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the RepositoryRefDefinition object itself.
      */
@@ -82,7 +86,7 @@ public final class RepositoryRefDefinition {
     /**
      * Get the semver property: The semver range used to match against git repository tags. This takes precedence over
      * tag.
-     *
+     * 
      * @return the semver value.
      */
     public String semver() {
@@ -92,7 +96,7 @@ public final class RepositoryRefDefinition {
     /**
      * Set the semver property: The semver range used to match against git repository tags. This takes precedence over
      * tag.
-     *
+     * 
      * @param semver the semver value to set.
      * @return the RepositoryRefDefinition object itself.
      */
@@ -104,7 +108,7 @@ public final class RepositoryRefDefinition {
     /**
      * Get the commit property: The commit SHA to checkout. This value must be combined with the branch name to be
      * valid. This takes precedence over semver.
-     *
+     * 
      * @return the commit value.
      */
     public String commit() {
@@ -114,7 +118,7 @@ public final class RepositoryRefDefinition {
     /**
      * Set the commit property: The commit SHA to checkout. This value must be combined with the branch name to be
      * valid. This takes precedence over semver.
-     *
+     * 
      * @param commit the commit value to set.
      * @return the RepositoryRefDefinition object itself.
      */
@@ -125,9 +129,54 @@ public final class RepositoryRefDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeStringField("tag", this.tag);
+        jsonWriter.writeStringField("semver", this.semver);
+        jsonWriter.writeStringField("commit", this.commit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RepositoryRefDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RepositoryRefDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RepositoryRefDefinition.
+     */
+    public static RepositoryRefDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RepositoryRefDefinition deserializedRepositoryRefDefinition = new RepositoryRefDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("branch".equals(fieldName)) {
+                    deserializedRepositoryRefDefinition.branch = reader.getString();
+                } else if ("tag".equals(fieldName)) {
+                    deserializedRepositoryRefDefinition.tag = reader.getString();
+                } else if ("semver".equals(fieldName)) {
+                    deserializedRepositoryRefDefinition.semver = reader.getString();
+                } else if ("commit".equals(fieldName)) {
+                    deserializedRepositoryRefDefinition.commit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRepositoryRefDefinition;
+        });
     }
 }

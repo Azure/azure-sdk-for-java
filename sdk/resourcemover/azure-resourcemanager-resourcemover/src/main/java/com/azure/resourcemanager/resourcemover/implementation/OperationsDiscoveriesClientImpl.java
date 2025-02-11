@@ -24,23 +24,28 @@ import com.azure.resourcemanager.resourcemover.fluent.OperationsDiscoveriesClien
 import com.azure.resourcemanager.resourcemover.fluent.models.OperationsDiscoveryCollectionInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsDiscoveriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsDiscoveriesClient.
+ */
 public final class OperationsDiscoveriesClientImpl implements OperationsDiscoveriesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsDiscoveriesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ResourceMoverServiceApiImpl client;
 
     /**
      * Initializes an instance of OperationsDiscoveriesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsDiscoveriesClientImpl(ResourceMoverServiceApiImpl client) {
-        this.service =
-            RestProxy
-                .create(OperationsDiscoveriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(OperationsDiscoveriesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,32 +56,27 @@ public final class OperationsDiscoveriesClientImpl implements OperationsDiscover
     @Host("{$host}")
     @ServiceInterface(name = "ResourceMoverService")
     public interface OperationsDiscoveriesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Migrate/operations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationsDiscoveryCollectionInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationsDiscoveryCollectionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * The get operation.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ClientDiscovery details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return collection of ClientDiscovery details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationsDiscoveryCollectionInner>> getWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -87,21 +87,19 @@ public final class OperationsDiscoveriesClientImpl implements OperationsDiscover
 
     /**
      * The get operation.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ClientDiscovery details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return collection of ClientDiscovery details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationsDiscoveryCollectionInner>> getWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -110,7 +108,7 @@ public final class OperationsDiscoveriesClientImpl implements OperationsDiscover
 
     /**
      * The get operation.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of ClientDiscovery details on successful completion of {@link Mono}.
@@ -122,7 +120,7 @@ public final class OperationsDiscoveriesClientImpl implements OperationsDiscover
 
     /**
      * The get operation.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -136,7 +134,7 @@ public final class OperationsDiscoveriesClientImpl implements OperationsDiscover
 
     /**
      * The get operation.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of ClientDiscovery details.

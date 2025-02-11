@@ -6,65 +6,34 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterface;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkInterfacesListByNetworkDeviceMockTests {
     @Test
     public void testListByNetworkDevice() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"physicalIdentifier\":\"oyoioxdwffwyzqke\",\"connectedTo\":\"urreuecokyduqz\",\"interfaceType\":\"Management\",\"ipv4Address\":\"lbqv\",\"ipv6Address\":\"tekxnvkdvcgowrdt\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"annotation\":\"dlbbc\"},\"id\":\"amkyrkwsthpiv\",\"name\":\"cffxhvnodqqzjbf\",\"type\":\"roswnfq\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"physicalIdentifier\":\"ukqmkiynbfvk\",\"connectedTo\":\"mq\",\"interfaceType\":\"Data\",\"ipv4Address\":\"tcctirgyu\",\"ipv6Address\":\"x\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Disabled\",\"annotation\":\"gvjbryb\"},\"id\":\"arkhkoqcud\",\"name\":\"wmoyhd\",\"type\":\"jjhq\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<NetworkInterface> response = manager.networkInterfaces()
+            .listByNetworkDevice("znwwtkuytwii", "inlic", com.azure.core.util.Context.NONE);
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<NetworkInterface> response =
-            manager
-                .networkInterfaces()
-                .listByNetworkDevice("dmcbc", "ndidhuepikwcxoa", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("gvjbryb", response.iterator().next().annotation());
+        Assertions.assertEquals("dlbbc", response.iterator().next().annotation());
     }
 }

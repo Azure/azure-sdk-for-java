@@ -6,63 +6,38 @@ package com.azure.resourcemanager.attestation.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.attestation.AttestationManager;
 import com.azure.resourcemanager.attestation.models.AttestationProviderListResult;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.attestation.models.AttestationServiceStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AttestationProvidersListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"trustModel\":\"lixhnrztfol\",\"status\":\"NotReady\",\"attestUri\":\"knalaulppg\",\"privateEndpointConnections\":[{\"id\":\"pnapnyiropuh\",\"name\":\"igvpgylg\",\"type\":\"git\"},{\"id\":\"medjvcslynqwwncw\",\"name\":\"zhxgktrmgucn\",\"type\":\"pkteo\"},{\"id\":\"llwptfdy\",\"name\":\"pfqbuaceopzf\",\"type\":\"rhhuaopppcqeqx\"},{\"id\":\"lzdahzxctobgbkdm\",\"name\":\"izpost\",\"type\":\"grcfb\"}]},\"location\":\"nrmfqjhhk\",\"tags\":{\"vkr\":\"vjymjhxxjyngud\",\"szjfauvjfdxxivet\":\"swbxqz\",\"qaqtdoqmcbxvwvxy\":\"t\",\"obl\":\"lqbhsf\"},\"id\":\"tkblmpewww\",\"name\":\"bkrvrnsvshqj\",\"type\":\"hxcr\"},{\"properties\":{\"trustModel\":\"vasrruvwb\",\"status\":\"NotReady\",\"attestUri\":\"sub\",\"privateEndpointConnections\":[{\"id\":\"birx\",\"name\":\"pybsrfbjfdtw\",\"type\":\"sotftpvj\"}]},\"location\":\"bexilzznfqqnv\",\"tags\":{\"tjrybnwjewgdr\":\"qtaruoujmkcjhwq\",\"doy\":\"ervnaenqpehi\",\"l\":\"mifthnzdnd\",\"ynduha\":\"nayqi\"},\"id\":\"hqlkthumaqo\",\"name\":\"bgycduiertgccym\",\"type\":\"aolps\"},{\"properties\":{\"trustModel\":\"fmmdnbbg\",\"status\":\"NotReady\",\"attestUri\":\"wiydmcwyhzdxssad\",\"privateEndpointConnections\":[{\"id\":\"nvdfznuda\",\"name\":\"dvxzbncblylpst\",\"type\":\"bhhxsrzdzuc\"},{\"id\":\"rsc\",\"name\":\"ntnev\",\"type\":\"iwjmygtdssls\"}]},\"location\":\"tmweriofzpyq\",\"tags\":{\"ets\":\"wab\",\"mwmbes\":\"hszhedplvwiwu\",\"okonzmnsikvmkqz\":\"dnkwwtppjflcxog\",\"eodkwobda\":\"qqkdltfzxmhhvhgu\"},\"id\":\"xtibqdxbxwakbog\",\"name\":\"xndlkzgxhu\",\"type\":\"iplbpodxunkbebxm\"},{\"properties\":{\"trustModel\":\"ntwlrbqtkoie\",\"status\":\"NotReady\",\"attestUri\":\"tgqr\",\"privateEndpointConnections\":[{\"id\":\"muwlauwzizxbm\",\"name\":\"gcj\",\"type\":\"fuzmuvpbtt\"},{\"id\":\"um\",\"name\":\"rp\",\"type\":\"xe\"},{\"id\":\"mnzb\",\"name\":\"bhjpglkfgohdne\",\"type\":\"el\"}]},\"location\":\"phsdyhto\",\"tags\":{\"wwquuvxzxclvithh\":\"kd\",\"hcohfwdsjnk\":\"zonosgg\",\"swacffgdkzz\":\"ljuti\"},\"id\":\"wkfvhqcrailvp\",\"name\":\"ppfufl\",\"type\":\"wdmhdlxyjrxs\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"location\":\"ohoqqnwvlryav\",\"tags\":{\"mqhgyxzkonocuk\":\"eun\"},\"id\":\"klyaxuconu\",\"name\":\"szfkbe\",\"type\":\"pewr\"},{\"location\":\"wv\",\"tags\":{\"xsenhwlr\":\"kt\",\"ihkaetcktvfc\":\"ffrzpwvlqdqgbiqy\"},\"id\":\"vf\",\"name\":\"nkymuctqhjfbebrj\",\"type\":\"xerf\"},{\"location\":\"tttxfvjrb\",\"tags\":{\"yq\":\"hxepcyvahfnlj\",\"uujqgidokgjljyo\":\"j\",\"bgsncghkjeszzhb\":\"gvcl\"},\"id\":\"jhtxfvgxbfsmxne\",\"name\":\"mpvecxgodebfqk\",\"type\":\"rbmpukgri\"},{\"location\":\"zlfbxzpuzycispnq\",\"tags\":{\"qqkpikadrg\":\"mgkbrpyydhibn\",\"jggmebfsiarbu\":\"tqagnbuynh\",\"ttdbhrbnl\":\"rcvpnazzmhjrunmp\"},\"id\":\"nkxmyskpbhenbtk\",\"name\":\"xywnytnrsynlqidy\",\"type\":\"yxczfclh\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AttestationManager manager = AttestationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AttestationProviderListResult response
+            = manager.attestationProviders().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        AttestationManager manager =
-            AttestationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AttestationProviderListResult response =
-            manager.attestationProviders().listWithResponse(com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("ohoqqnwvlryav", response.value().get(0).location());
-        Assertions.assertEquals("eun", response.value().get(0).tags().get("mqhgyxzkonocuk"));
+        Assertions.assertEquals("nrmfqjhhk", response.value().get(0).location());
+        Assertions.assertEquals("vjymjhxxjyngud", response.value().get(0).tags().get("vkr"));
+        Assertions.assertEquals("lixhnrztfol", response.value().get(0).trustModel());
+        Assertions.assertEquals(AttestationServiceStatus.NOT_READY, response.value().get(0).status());
+        Assertions.assertEquals("knalaulppg", response.value().get(0).attestUri());
     }
 }

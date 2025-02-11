@@ -4,6 +4,7 @@
 module com.azure.messaging.eventgrid {
     requires transitive com.azure.core;
     requires transitive com.azure.json;
+
     exports com.azure.messaging.eventgrid;
     exports com.azure.messaging.eventgrid.systemevents;
 

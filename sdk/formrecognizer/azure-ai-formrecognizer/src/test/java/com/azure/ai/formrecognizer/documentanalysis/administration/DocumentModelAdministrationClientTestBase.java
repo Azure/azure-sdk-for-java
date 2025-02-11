@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration;
 
-
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.TestUtils;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
@@ -43,21 +42,20 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
      */
     @Override
     protected void beforeTest() {
-        durationTestMode = interceptorManager.isPlaybackMode()
-            ? TestUtils.ONE_NANO_DURATION : Constants.DEFAULT_POLL_INTERVAL;
+        durationTestMode
+            = interceptorManager.isPlaybackMode() ? TestUtils.ONE_NANO_DURATION : Constants.DEFAULT_POLL_INTERVAL;
     }
 
     DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
-                                                                                DocumentAnalysisServiceVersion serviceVersion) {
+        DocumentAnalysisServiceVersion serviceVersion) {
         String endpoint = getEndpoint();
         DocumentAnalysisAudience audience = TestUtils.getAudience(endpoint);
-        DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
-            .endpoint(endpoint)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion)
-            .audience(audience);
-
+        DocumentModelAdministrationClientBuilder builder
+            = new DocumentModelAdministrationClientBuilder().endpoint(endpoint)
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .serviceVersion(serviceVersion)
+                .audience(audience);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential());
@@ -77,10 +75,9 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
     private void setMatchers() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }
+
     static TokenCredential getCredentialByAuthority(String endpoint) {
-        return new DefaultAzureCredentialBuilder()
-            .authorityHost(TestUtils.getAuthority(endpoint))
-            .build();
+        return new DefaultAzureCredentialBuilder().authorityHost(TestUtils.getAuthority(endpoint)).build();
     }
 
     static void validateCopyAuthorizationResult(DocumentModelCopyAuthorization actualResult) {

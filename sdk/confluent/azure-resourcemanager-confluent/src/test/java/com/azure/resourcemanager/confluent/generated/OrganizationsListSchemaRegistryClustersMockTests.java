@@ -6,51 +6,34 @@ package com.azure.resourcemanager.confluent.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confluent.ConfluentManager;
 import com.azure.resourcemanager.confluent.models.SchemaRegistryClusterRecord;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class OrganizationsListSchemaRegistryClustersMockTests {
     @Test
     public void testListSchemaRegistryClusters() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"value\":[{\"kind\":\"fdn\",\"id\":\"ydvfvfcjnae\",\"properties\":{\"metadata\":{\"self\":\"vhmgorffukis\",\"resourceName\":\"w\",\"createdTimestamp\":\"hwplefaxvx\",\"updatedTimestamp\":\"cbtgnhnz\",\"deletedTimestamp\":\"qxtjjfzqlqhyca\"},\"spec\":{\"name\":\"ggxdb\",\"httpEndpoint\":\"smieknlra\",\"package\":\"aawiuagydwqfb\",\"region\":{\"id\":\"rfgi\",\"related\":\"tcojocqwo\",\"resourceName\":\"nzjvusfzldm\"},\"environment\":{\"id\":\"xylfsb\",\"related\":\"adpysownbt\",\"resourceName\":\"bugrj\"},\"cloud\":\"to\"},\"status\":{\"phase\":\"isofieypefojyqd\"}}}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ConfluentManager manager = ConfluentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ConfluentManager manager = ConfluentManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<SchemaRegistryClusterRecord> response = manager.organizations().listSchemaRegistryClusters(
-            "pavehhr", "kbunzoz", "dhcxgkmoy", 1670062911, "dyuib", com.azure.core.util.Context.NONE);
+        PagedIterable<SchemaRegistryClusterRecord> response = manager.organizations()
+            .listSchemaRegistryClusters("pavehhr", "kbunzoz", "dhcxgkmoy", 1670062911, "dyuib",
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("fdn", response.iterator().next().kind());
         Assertions.assertEquals("ydvfvfcjnae", response.iterator().next().id());

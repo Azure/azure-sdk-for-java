@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MessageScope. */
+/**
+ * Defines values for MessageScope.
+ */
 public final class MessageScope extends ExpandableStringEnum<MessageScope> {
-    /** Static value NotSpecified for MessageScope. */
+    /**
+     * Static value NotSpecified for MessageScope.
+     */
     public static final MessageScope NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value RegisteredSubscriptions for MessageScope. */
+    /**
+     * Static value RegisteredSubscriptions for MessageScope.
+     */
     public static final MessageScope REGISTERED_SUBSCRIPTIONS = fromString("RegisteredSubscriptions");
 
     /**
      * Creates a new instance of MessageScope value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class MessageScope extends ExpandableStringEnum<MessageScope> {
 
     /**
      * Creates or finds a MessageScope from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MessageScope.
      */
-    @JsonCreator
     public static MessageScope fromString(String name) {
         return fromString(name, MessageScope.class);
     }
 
     /**
      * Gets known MessageScope values.
-     *
+     * 
      * @return known MessageScope values.
      */
     public static Collection<MessageScope> values() {

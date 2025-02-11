@@ -49,7 +49,7 @@ public final class StorageEndpoint {
     /**
      * @return the secondary endpoint URI
      */
-    public  String getSecondaryUri() {
+    public String getSecondaryUri() {
         return this.secondaryUri;
     }
 
@@ -73,12 +73,9 @@ public final class StorageEndpoint {
      * @param logger the logger to log any exception while processing the settings.
      * @return a StorageEndpoint if required settings exists, null otherwise.
      */
-    public static StorageEndpoint fromStorageSettings(final ConnectionSettings settings,
-                                                      final String service,
-                                                      final String serviceEndpointName,
-                                                      final String serviceSecondaryEndpointName,
-                                                      final Boolean matchesAutomaticEndpointsSpec,
-                                                      final ClientLogger logger) {
+    public static StorageEndpoint fromStorageSettings(final ConnectionSettings settings, final String service,
+        final String serviceEndpointName, final String serviceSecondaryEndpointName,
+        final Boolean matchesAutomaticEndpointsSpec, final ClientLogger logger) {
         String serviceEndpoint = settings.getSettingValue(serviceEndpointName);
         String serviceSecondaryEndpoint = settings.getSettingValue(serviceSecondaryEndpointName);
 
@@ -101,20 +98,18 @@ public final class StorageEndpoint {
         if (matchesAutomaticEndpointsSpec) {
             // Derive URI from relevant settings
             //
-            final String protocol =
-                    settings.getSettingValue(Constants.ConnectionStringConstants.DEFAULT_ENDPOINTS_PROTOCOL_NAME);
+            final String protocol
+                = settings.getSettingValue(Constants.ConnectionStringConstants.DEFAULT_ENDPOINTS_PROTOCOL_NAME);
             if (isNullOrEmpty(protocol)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'DefaultEndpointsProtocol' is "
-                        + "required, specify whether to use http or https."));
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "'DefaultEndpointsProtocol' is " + "required, specify whether to use http or https."));
             }
-            final String accountName =
-                    settings.getSettingValue(Constants.ConnectionStringConstants.ACCOUNT_NAME);
+            final String accountName = settings.getSettingValue(Constants.ConnectionStringConstants.ACCOUNT_NAME);
             if (isNullOrEmpty(accountName)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'AccountName' is required."));
             }
             //
-            String endpointSuffix =
-                    settings.getSettingValue(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX_NAME);
+            String endpointSuffix = settings.getSettingValue(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX_NAME);
             if (endpointSuffix == null) {
                 // default: core.windows.net
                 endpointSuffix = Constants.ConnectionStringConstants.DEFAULT_DNS;

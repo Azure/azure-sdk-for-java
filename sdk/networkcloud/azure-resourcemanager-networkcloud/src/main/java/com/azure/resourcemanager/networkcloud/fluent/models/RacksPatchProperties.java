@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** RacksPatchProperties represents the properties of the rack during patching. */
+/**
+ * RacksPatchProperties represents the properties of the rack during patching.
+ */
 @Fluent
-public final class RacksPatchProperties {
+public final class RacksPatchProperties implements JsonSerializable<RacksPatchProperties> {
     /*
      * The free-form description of the rack location. (e.g. “DTN Datacenter, Floor 3, Isle 9, Rack 2B”)
      */
-    @JsonProperty(value = "rackLocation")
     private String rackLocation;
 
     /*
      * The globally unique identifier for the rack.
      */
-    @JsonProperty(value = "rackSerialNumber")
     private String rackSerialNumber;
 
-    /** Creates an instance of RacksPatchProperties class. */
+    /**
+     * Creates an instance of RacksPatchProperties class.
+     */
     public RacksPatchProperties() {
     }
 
     /**
      * Get the rackLocation property: The free-form description of the rack location. (e.g. “DTN Datacenter, Floor 3,
      * Isle 9, Rack 2B”).
-     *
+     * 
      * @return the rackLocation value.
      */
     public String rackLocation() {
@@ -39,7 +45,7 @@ public final class RacksPatchProperties {
     /**
      * Set the rackLocation property: The free-form description of the rack location. (e.g. “DTN Datacenter, Floor 3,
      * Isle 9, Rack 2B”).
-     *
+     * 
      * @param rackLocation the rackLocation value to set.
      * @return the RacksPatchProperties object itself.
      */
@@ -50,7 +56,7 @@ public final class RacksPatchProperties {
 
     /**
      * Get the rackSerialNumber property: The globally unique identifier for the rack.
-     *
+     * 
      * @return the rackSerialNumber value.
      */
     public String rackSerialNumber() {
@@ -59,7 +65,7 @@ public final class RacksPatchProperties {
 
     /**
      * Set the rackSerialNumber property: The globally unique identifier for the rack.
-     *
+     * 
      * @param rackSerialNumber the rackSerialNumber value to set.
      * @return the RacksPatchProperties object itself.
      */
@@ -70,9 +76,48 @@ public final class RacksPatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rackLocation", this.rackLocation);
+        jsonWriter.writeStringField("rackSerialNumber", this.rackSerialNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RacksPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RacksPatchProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RacksPatchProperties.
+     */
+    public static RacksPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RacksPatchProperties deserializedRacksPatchProperties = new RacksPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rackLocation".equals(fieldName)) {
+                    deserializedRacksPatchProperties.rackLocation = reader.getString();
+                } else if ("rackSerialNumber".equals(fieldName)) {
+                    deserializedRacksPatchProperties.rackSerialNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRacksPatchProperties;
+        });
     }
 }

@@ -17,10 +17,59 @@ import java.io.IOException;
  */
 @Immutable
 public class ProxyResource extends Resource {
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
     /**
      * Creates an instance of ProxyResource class.
      */
     public ProxyResource() {
+    }
+
+    /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -48,11 +97,11 @@ public class ProxyResource extends Resource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedProxyResource.setId(reader.getString());
+                    deserializedProxyResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedProxyResource.setName(reader.getString());
+                    deserializedProxyResource.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedProxyResource.setType(reader.getString());
+                    deserializedProxyResource.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -52,6 +52,13 @@ public interface Job {
     Map<String, String> tags();
 
     /**
+     * Gets the extendedLocation property: The complex type of the extended location.
+     * 
+     * @return the extendedLocation value.
+     */
+    ExtendedLocation extendedLocation();
+
+    /**
      * Gets the identity property: Managed identities needed by a container app job to interact with other Azure
      * services to not maintain any secrets or credentials in code.
      * 
@@ -72,6 +79,13 @@ public interface Job {
      * @return the provisioningState value.
      */
     JobProvisioningState provisioningState();
+
+    /**
+     * Gets the runningState property: Current running state of the job.
+     * 
+     * @return the runningState value.
+     */
+    JobRunningState runningState();
 
     /**
      * Gets the environmentId property: Resource ID of environment.
@@ -198,8 +212,8 @@ public interface Job {
          * The stage of the Job definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithEnvironmentId, DefinitionStages.WithWorkloadProfileName,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation,
+            DefinitionStages.WithIdentity, DefinitionStages.WithEnvironmentId, DefinitionStages.WithWorkloadProfileName,
             DefinitionStages.WithConfiguration, DefinitionStages.WithTemplate {
             /**
              * Executes the create request.
@@ -228,6 +242,19 @@ public interface Job {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Job definition allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: The complex type of the extended location..
+             * 
+             * @param extendedLocation The complex type of the extended location.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
 
         /**
@@ -309,7 +336,8 @@ public interface Job {
     /**
      * The template for Job update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithExtendedLocation, UpdateStages.WithIdentity,
+        UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -341,6 +369,19 @@ public interface Job {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Job update allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: The complex type of the extended location..
+             * 
+             * @param extendedLocation The complex type of the extended location.
+             * @return the next definition stage.
+             */
+            Update withExtendedLocation(ExtendedLocation extendedLocation);
         }
 
         /**
@@ -453,4 +494,44 @@ public interface Job {
      * @return container Apps Job Secrets Collection ARM resource.
      */
     JobSecretsCollection listSecrets();
+
+    /**
+     * Resumes a suspended job.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job resume();
+
+    /**
+     * Resumes a suspended job.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job resume(Context context);
+
+    /**
+     * Suspends a job.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job suspend();
+
+    /**
+     * Suspends a job.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job suspend(Context context);
 }

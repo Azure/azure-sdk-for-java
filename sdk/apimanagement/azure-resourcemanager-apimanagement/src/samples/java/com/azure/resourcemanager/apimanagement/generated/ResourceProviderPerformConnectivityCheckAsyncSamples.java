@@ -15,22 +15,23 @@ import com.azure.resourcemanager.apimanagement.models.Method;
 import com.azure.resourcemanager.apimanagement.models.PreferredIpVersion;
 import java.util.Arrays;
 
-/** Samples for ResourceProvider PerformConnectivityCheckAsync. */
+/**
+ * Samples for ResourceProvider PerformConnectivityCheckAsync.
+ */
 public final class ResourceProviderPerformConnectivityCheckAsyncSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPerformConnectivityCheck.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementPerformConnectivityCheck.json
      */
     /**
      * Sample code: TCP Connectivity Check.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void tCPConnectivityCheck(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .resourceProviders()
-            .performConnectivityCheckAsync(
-                "rg1",
-                "apimService1",
+        manager.resourceProviders()
+            .performConnectivityCheckAsync("rg1", "apimService1",
                 new ConnectivityCheckRequest()
                     .withSource(new ConnectivityCheckRequestSource().withRegion("northeurope"))
                     .withDestination(new ConnectivityCheckRequestDestination().withAddress("8.8.8.8").withPort(53L))
@@ -39,33 +40,26 @@ public final class ResourceProviderPerformConnectivityCheckAsyncSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPerformConnectivityCheckHttpConnect.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementPerformConnectivityCheckHttpConnect.json
      */
     /**
      * Sample code: HTTP Connectivity Check.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void hTTPConnectivityCheck(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .resourceProviders()
-            .performConnectivityCheckAsync(
-                "rg1",
-                "apimService1",
-                new ConnectivityCheckRequest()
-                    .withSource(new ConnectivityCheckRequestSource().withRegion("northeurope"))
-                    .withDestination(
-                        new ConnectivityCheckRequestDestination().withAddress("https://microsoft.com").withPort(3306L))
-                    .withProtocol(ConnectivityCheckProtocol.HTTPS)
-                    .withProtocolConfiguration(
-                        new ConnectivityCheckRequestProtocolConfiguration()
-                            .withHttpConfiguration(
-                                new ConnectivityCheckRequestProtocolConfigurationHttpConfiguration()
-                                    .withMethod(Method.GET)
-                                    .withValidStatusCodes(Arrays.asList(200L, 204L))
-                                    .withHeaders(
-                                        Arrays
-                                            .asList(new HttpHeader().withName("Authorization").withValue("******"))))),
+        manager.resourceProviders()
+            .performConnectivityCheckAsync("rg1", "apimService1", new ConnectivityCheckRequest()
+                .withSource(new ConnectivityCheckRequestSource().withRegion("northeurope"))
+                .withDestination(
+                    new ConnectivityCheckRequestDestination().withAddress("https://microsoft.com").withPort(3306L))
+                .withProtocol(ConnectivityCheckProtocol.HTTPS)
+                .withProtocolConfiguration(new ConnectivityCheckRequestProtocolConfiguration().withHttpConfiguration(
+                    new ConnectivityCheckRequestProtocolConfigurationHttpConfiguration().withMethod(Method.GET)
+                        .withValidStatusCodes(Arrays.asList(200L, 204L))
+                        .withHeaders(Arrays.asList(new HttpHeader().withName("Authorization").withValue("******"))))),
                 com.azure.core.util.Context.NONE);
     }
 }

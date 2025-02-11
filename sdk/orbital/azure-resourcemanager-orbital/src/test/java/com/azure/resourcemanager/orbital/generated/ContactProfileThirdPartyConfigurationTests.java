@@ -11,22 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactProfileThirdPartyConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactProfileThirdPartyConfiguration model =
-            BinaryData
-                .fromString("{\"providerName\":\"zvdudgwdslfhotwm\",\"missionConfiguration\":\"ynpwlbj\"}")
+        ContactProfileThirdPartyConfiguration model
+            = BinaryData.fromString("{\"providerName\":\"oellwp\",\"missionConfiguration\":\"fdygpfqbuaceopz\"}")
                 .toObject(ContactProfileThirdPartyConfiguration.class);
-        Assertions.assertEquals("zvdudgwdslfhotwm", model.providerName());
-        Assertions.assertEquals("ynpwlbj", model.missionConfiguration());
+        Assertions.assertEquals("oellwp", model.providerName());
+        Assertions.assertEquals("fdygpfqbuaceopz", model.missionConfiguration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactProfileThirdPartyConfiguration model =
-            new ContactProfileThirdPartyConfiguration()
-                .withProviderName("zvdudgwdslfhotwm")
-                .withMissionConfiguration("ynpwlbj");
+        ContactProfileThirdPartyConfiguration model
+            = new ContactProfileThirdPartyConfiguration().withProviderName("oellwp")
+                .withMissionConfiguration("fdygpfqbuaceopz");
         model = BinaryData.fromObject(model).toObject(ContactProfileThirdPartyConfiguration.class);
-        Assertions.assertEquals("zvdudgwdslfhotwm", model.providerName());
-        Assertions.assertEquals("ynpwlbj", model.missionConfiguration());
+        Assertions.assertEquals("oellwp", model.providerName());
+        Assertions.assertEquals("fdygpfqbuaceopz", model.missionConfiguration());
     }
 }

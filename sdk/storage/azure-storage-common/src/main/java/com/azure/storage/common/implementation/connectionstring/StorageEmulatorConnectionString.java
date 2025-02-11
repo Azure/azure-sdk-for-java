@@ -21,24 +21,19 @@ final class StorageEmulatorConnectionString {
      * @return the StorageConnectionString for emulator
      * @throws IllegalArgumentException If settings is invalid for emulator.
      */
-    static StorageConnectionString tryCreate(final ConnectionSettings settings,
-                                             final ClientLogger logger) {
-        if (ConnectionSettingsFilter.matchesSpecification(settings,
-                requireUseEmulatorFlag(),
-                optionalProxyUri())) {
+    static StorageConnectionString tryCreate(final ConnectionSettings settings, final ClientLogger logger) {
+        if (ConnectionSettingsFilter.matchesSpecification(settings, requireUseEmulatorFlag(), optionalProxyUri())) {
             if (!parseUseEmulatorFlag(settings)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Invalid connection string, "
-                        + "the 'UseDevelopmentStorage' key must always have the value 'true'. "
-                        + "Remove the flag entirely otherwise."));
+                    + "the 'UseDevelopmentStorage' key must always have the value 'true'. "
+                    + "Remove the flag entirely otherwise."));
             }
             String scheme;
             String host;
             if (settings.hasSetting(Constants.ConnectionStringConstants.EMULATOR_STORAGE_PROXY_URI_NAME)) {
                 try {
-                    URI devStoreProxyUri
-                            = new URI(settings.getSettingValue(Constants
-                            .ConnectionStringConstants
-                            .EMULATOR_STORAGE_PROXY_URI_NAME));
+                    URI devStoreProxyUri = new URI(
+                        settings.getSettingValue(Constants.ConnectionStringConstants.EMULATOR_STORAGE_PROXY_URI_NAME));
                     scheme = devStoreProxyUri.getScheme();
                     host = devStoreProxyUri.getHost();
                 } catch (URISyntaxException use) {
@@ -60,11 +55,9 @@ final class StorageEmulatorConnectionString {
                 URI tableSecondaryEndpoint = new URI(scheme + "://" + host + ":10002/devstoreaccount1-secondary");
 
                 storageConnectionString = new StorageConnectionString(StorageAuthenticationSettings.forEmulator(),
-                        new StorageEndpoint(blobPrimaryEndpoint, blobSecondaryEndpoint),
-                        new StorageEndpoint(queuePrimaryEndpoint, queueSecondaryEndpoint),
-                        new StorageEndpoint(tablePrimaryEndpoint, tableSecondaryEndpoint),
-                        null,
-                        null);
+                    new StorageEndpoint(blobPrimaryEndpoint, blobSecondaryEndpoint),
+                    new StorageEndpoint(queuePrimaryEndpoint, queueSecondaryEndpoint),
+                    new StorageEndpoint(tablePrimaryEndpoint, tableSecondaryEndpoint), null, null);
             } catch (URISyntaxException use) {
                 throw logger.logExceptionAsError(new RuntimeException(use));
             }
@@ -83,8 +76,7 @@ final class StorageEmulatorConnectionString {
     }
 
     private static Boolean parseUseEmulatorFlag(final ConnectionSettings settings) {
-        return Boolean.parseBoolean(settings.getSettingValue(Constants
-                .ConnectionStringConstants
-                .USE_EMULATOR_STORAGE_NAME));
+        return Boolean
+            .parseBoolean(settings.getSettingValue(Constants.ConnectionStringConstants.USE_EMULATOR_STORAGE_NAME));
     }
 }

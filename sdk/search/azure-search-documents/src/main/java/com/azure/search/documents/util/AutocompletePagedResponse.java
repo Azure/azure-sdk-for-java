@@ -24,12 +24,8 @@ public final class AutocompletePagedResponse extends PagedResponseBase<Void, Aut
      * @param autocompleteResponse Autocomplete response returned from the service.
      */
     public AutocompletePagedResponse(SimpleResponse<AutocompleteResult> autocompleteResponse) {
-        super(autocompleteResponse.getRequest(),
-            autocompleteResponse.getStatusCode(),
-            autocompleteResponse.getHeaders(),
-            autocompleteResponse.getValue().getResults(),
-            null,
-            null);
+        super(autocompleteResponse.getRequest(), autocompleteResponse.getStatusCode(),
+            autocompleteResponse.getHeaders(), autocompleteResponse.getValue().getResults(), null, null);
 
         this.coverage = autocompleteResponse.getValue().getCoverage();
     }

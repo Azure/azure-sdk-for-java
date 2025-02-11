@@ -29,12 +29,7 @@ class VirtualMachineImageImpl extends IndexableWrapperImpl<VirtualMachineImageIn
         this.imageReference.withVersion(version);
     }
 
-    VirtualMachineImageImpl(
-        Region location,
-        String publisher,
-        String offer,
-        String sku,
-        String version,
+    VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version,
         VirtualMachineImageInner innerModel) {
         super(innerModel);
         this.location = location;

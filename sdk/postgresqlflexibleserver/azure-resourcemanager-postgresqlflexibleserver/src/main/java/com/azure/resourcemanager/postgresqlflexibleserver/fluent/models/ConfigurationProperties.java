@@ -5,78 +5,71 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationDataType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties of a configuration.
  */
 @Fluent
-public final class ConfigurationProperties {
+public final class ConfigurationProperties implements JsonSerializable<ConfigurationProperties> {
     /*
-     * Value of the configuration.
+     * Value of the configuration. Required to update the configuration.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Description of the configuration.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Default value of the configuration.
      */
-    @JsonProperty(value = "defaultValue", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultValue;
 
     /*
      * Data type of the configuration.
      */
-    @JsonProperty(value = "dataType", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationDataType dataType;
 
     /*
      * Allowed values of the configuration.
      */
-    @JsonProperty(value = "allowedValues", access = JsonProperty.Access.WRITE_ONLY)
     private String allowedValues;
 
     /*
-     * Source of the configuration.
+     * Source of the configuration. Required to update the configuration.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * Configuration dynamic or static.
      */
-    @JsonProperty(value = "isDynamicConfig", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDynamicConfig;
 
     /*
      * Configuration read-only or not.
      */
-    @JsonProperty(value = "isReadOnly", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isReadOnly;
 
     /*
      * Configuration is pending restart or not.
      */
-    @JsonProperty(value = "isConfigPendingRestart", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isConfigPendingRestart;
 
     /*
      * Configuration unit.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /*
      * Configuration documentation link.
      */
-    @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
     private String documentationLink;
 
     /**
@@ -86,7 +79,7 @@ public final class ConfigurationProperties {
     }
 
     /**
-     * Get the value property: Value of the configuration.
+     * Get the value property: Value of the configuration. Required to update the configuration.
      * 
      * @return the value value.
      */
@@ -95,7 +88,7 @@ public final class ConfigurationProperties {
     }
 
     /**
-     * Set the value property: Value of the configuration.
+     * Set the value property: Value of the configuration. Required to update the configuration.
      * 
      * @param value the value value to set.
      * @return the ConfigurationProperties object itself.
@@ -142,7 +135,7 @@ public final class ConfigurationProperties {
     }
 
     /**
-     * Get the source property: Source of the configuration.
+     * Get the source property: Source of the configuration. Required to update the configuration.
      * 
      * @return the source value.
      */
@@ -151,7 +144,7 @@ public final class ConfigurationProperties {
     }
 
     /**
-     * Set the source property: Source of the configuration.
+     * Set the source property: Source of the configuration. Required to update the configuration.
      * 
      * @param source the source value to set.
      * @return the ConfigurationProperties object itself.
@@ -212,5 +205,63 @@ public final class ConfigurationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("source", this.source);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationProperties.
+     */
+    public static ConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationProperties deserializedConfigurationProperties = new ConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedConfigurationProperties.value = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedConfigurationProperties.description = reader.getString();
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedConfigurationProperties.defaultValue = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedConfigurationProperties.dataType = ConfigurationDataType.fromString(reader.getString());
+                } else if ("allowedValues".equals(fieldName)) {
+                    deserializedConfigurationProperties.allowedValues = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedConfigurationProperties.source = reader.getString();
+                } else if ("isDynamicConfig".equals(fieldName)) {
+                    deserializedConfigurationProperties.isDynamicConfig = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isReadOnly".equals(fieldName)) {
+                    deserializedConfigurationProperties.isReadOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isConfigPendingRestart".equals(fieldName)) {
+                    deserializedConfigurationProperties.isConfigPendingRestart
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedConfigurationProperties.unit = reader.getString();
+                } else if ("documentationLink".equals(fieldName)) {
+                    deserializedConfigurationProperties.documentationLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationProperties;
+        });
     }
 }

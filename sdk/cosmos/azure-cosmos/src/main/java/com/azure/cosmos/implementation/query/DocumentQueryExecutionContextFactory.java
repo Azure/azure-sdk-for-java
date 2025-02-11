@@ -16,12 +16,12 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
-import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -37,6 +37,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,7 @@ public class DocumentQueryExecutionContextFactory {
     private final static int PageSizeFactorForTop = 5;
     private static final Logger logger = LoggerFactory.getLogger(DocumentQueryExecutionContextFactory.class);
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
     private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(DiagnosticsClientContext diagnosticsClientContext,
                                                                                  IDocumentQueryClient client,
                                                                                  ResourceType resourceTypeEnum,
@@ -75,7 +77,7 @@ public class DocumentQueryExecutionContextFactory {
         return collectionCache.resolveCollectionAsync(null, request);
     }
 
-    private static <T> Mono<Pair<List<Range<String>>,QueryInfo>> getPartitionKeyRangesAndQueryInfo(
+    private static <T> Mono<PartitionKeyRangesAndQueryInfos> getPartitionKeyRangesAndQueryInfo(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
         SqlQuerySpec query,
@@ -96,11 +98,16 @@ public class DocumentQueryExecutionContextFactory {
                     collection.getResourceId(),
                     ModelBridgeInternal.getPartitionKeyRangeIdInternal(cosmosQueryRequestOptions));
 
-            return partitionKeyRanges.map(pkRanges -> {
-                List<Range<String>> ranges =
-                    pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList());
-                return Pair.of(ranges, QueryInfo.EMPTY);
-            });
+            Mono<List<Range<String>>> allRanges = queryExecutionContext.getTargetPartitionKeyRanges(
+                collection.getResourceId(), new ArrayList<>(Arrays.asList(PartitionKeyInternalHelper.FullRange))
+            ).map(pkRanges -> pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList()));
+
+            return Mono.zip(partitionKeyRanges, allRanges).
+                map(tuple -> {
+                    List<Range<String>> targetRanges =
+                        tuple.getT1().stream().map(PartitionKeyRange::toRange).collect(Collectors.toList());
+                    return new PartitionKeyRangesAndQueryInfos(QueryInfo.EMPTY, null, targetRanges, tuple.getT2());
+                });
         }
 
         Instant startTime = Instant.now();
@@ -155,16 +162,19 @@ public class DocumentQueryExecutionContextFactory {
             });
     }
 
-    private static <T> Mono<Pair<List<Range<String>>, QueryInfo>> getTargetRangesFromQueryPlan(
+    private static <T> Mono<PartitionKeyRangesAndQueryInfos> getTargetRangesFromQueryPlan(
         CosmosQueryRequestOptions cosmosQueryRequestOptions, DocumentCollection collection,
         DefaultDocumentQueryExecutionContext<T> queryExecutionContext,
         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo, Instant planFetchStartTime,
         Instant planFetchEndTime) {
+
         QueryInfo queryInfo =
             partitionedQueryExecutionInfo.getQueryInfo();
-        queryInfo.setQueryPlanDiagnosticsContext(new QueryInfo.QueryPlanDiagnosticsContext(planFetchStartTime,
-            planFetchEndTime,
-            partitionedQueryExecutionInfo.getQueryPlanRequestTimeline()));
+        if (queryInfo != null) {
+            queryInfo.setQueryPlanDiagnosticsContext(new QueryInfo.QueryPlanDiagnosticsContext(planFetchStartTime,
+                planFetchEndTime,
+                partitionedQueryExecutionInfo.getQueryPlanRequestTimeline()));
+        }
         List<Range<String>> queryRanges =
             partitionedQueryExecutionInfo.getQueryRanges();
 
@@ -172,30 +182,49 @@ public class DocumentQueryExecutionContextFactory {
             PartitionKeyInternal internalPartitionKey =
                 BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
             Range<String> range = Range.getPointRange(
-                internalPartitionKey.getEffectivePartitionKeyString(internalPartitionKey,collection.getPartitionKey()));
+                internalPartitionKey.getEffectivePartitionKeyString(internalPartitionKey, collection.getPartitionKey()));
             queryRanges = Collections.singletonList(range);
         }
 
         if (cosmosQueryRequestOptions != null && cosmosQueryRequestOptions.getFeedRange() != null) {
             FeedRange userProvidedFeedRange = cosmosQueryRequestOptions.getFeedRange();
-            return queryExecutionContext.getTargetRange(collection.getResourceId(),
-                                                        FeedRangeInternal.convert(userProvidedFeedRange))
-                       .map(range -> Pair.of(Collections.singletonList(range),
-                                             partitionedQueryExecutionInfo.getQueryInfo()));
+            Mono<Range<String>> targetRange = queryExecutionContext
+                .getTargetRange(
+                    collection.getResourceId(),
+                    FeedRangeInternal.convert(userProvidedFeedRange));
+            Mono<List<Range<String>>> allRanges = queryExecutionContext.
+                getTargetPartitionKeyRanges(
+                    collection.getResourceId(), new ArrayList<>(Arrays.asList(PartitionKeyInternalHelper.FullRange))
+                ).map(pkRanges -> pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList()));
+
+            return Mono.zip(targetRange, allRanges)
+                .map(tuple -> {
+                    if (partitionedQueryExecutionInfo.hasHybridSearchQueryInfo()) {
+                        return new PartitionKeyRangesAndQueryInfos(null, partitionedQueryExecutionInfo.getHybridSearchQueryInfo(), Collections.singletonList(tuple.getT1()), tuple.getT2());
+                    } else {
+                        return new PartitionKeyRangesAndQueryInfos(queryInfo, null, Collections.singletonList(tuple.getT1()), tuple.getT2());
+                    }
+                });
         }
 
-        return
-            queryExecutionContext.getTargetPartitionKeyRanges(collection.getResourceId(), queryRanges)
-                .map(pkRanges -> {
-                    List<Range<String>> ranges =
-                        pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList());
-                    return Pair.of(
-                        ranges,
-                        partitionedQueryExecutionInfo.getQueryInfo());
-                });
+        Mono<List<Range<String>>> targetRanges = queryExecutionContext.getTargetPartitionKeyRanges(collection.getResourceId(), queryRanges)
+            .map(pkRanges -> pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList()));
+
+        Mono<List<Range<String>>> allRanges = queryExecutionContext.getTargetPartitionKeyRanges(
+            collection.getResourceId(), new ArrayList<>(Arrays.asList(PartitionKeyInternalHelper.FullRange)))
+            .map(pkRanges -> pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList()));
+
+        return Mono.zip(targetRanges, allRanges)
+            .map(tuple -> {
+                if (partitionedQueryExecutionInfo.hasHybridSearchQueryInfo()) {
+                    return new PartitionKeyRangesAndQueryInfos(null, partitionedQueryExecutionInfo.getHybridSearchQueryInfo(), tuple.getT1(), tuple.getT2());
+                } else {
+                    return new PartitionKeyRangesAndQueryInfos(partitionedQueryExecutionInfo.getQueryInfo(), null, tuple.getT1(), tuple.getT2());
+                }
+            });
     }
 
-    private static <T> Mono<Pair<List<Range<String>>, QueryInfo>> getTargetRangesFromEmptyQueryPlan(
+    private static <T> Mono<PartitionKeyRangesAndQueryInfos> getTargetRangesFromEmptyQueryPlan(
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         DocumentCollection collection,
         DefaultDocumentQueryExecutionContext<T> queryExecutionContext,
@@ -216,14 +245,17 @@ public class DocumentQueryExecutionContextFactory {
                 planFetchEndTime));
 
         FeedRange userProvidedFeedRange = cosmosQueryRequestOptions.getFeedRange();
-
-        return queryExecutionContext
+        Mono<Range<String>> targetRange = queryExecutionContext
             .getTargetRange(
                 collection.getResourceId(),
-                FeedRangeInternal.convert(userProvidedFeedRange))
-            .map(range -> Pair.of(
-                Collections.singletonList(range),
-                queryInfo));
+                FeedRangeInternal.convert(userProvidedFeedRange));
+        Mono<List<Range<String>>> allRanges = queryExecutionContext.
+            getTargetPartitionKeyRanges(
+                collection.getResourceId(), new ArrayList<>(Arrays.asList(PartitionKeyInternalHelper.FullRange))
+            ).map(pkRanges -> pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList()));
+
+        return Mono.zip(targetRange, allRanges)
+            .map(tuple -> new PartitionKeyRangesAndQueryInfos(queryInfo, null, Collections.singletonList(tuple.getT1()), tuple.getT2()));
     }
 
     synchronized private static void tryCacheQueryPlan(
@@ -274,6 +306,19 @@ public class DocumentQueryExecutionContextFactory {
         return feedRanges2;
     }
 
+    private static List<FeedRangeEpkImpl> getFeedRangeEpks(List<Range<String>> ranges, DocumentCollection collection, CosmosQueryRequestOptions cosmosQueryRequestOptions) {
+        List<FeedRangeEpkImpl> feedRanges = ranges.stream()
+            .map(FeedRangeEpkImpl::new)
+            .collect(Collectors.toList());
+
+        if (collection.getPartitionKey() != null && cosmosQueryRequestOptions.getPartitionKey() != null
+            && collection.getPartitionKey().getKind().equals(PartitionKind.MULTI_HASH)) {
+            feedRanges = resolveFeedRangeBasedOnPrefixContainer(feedRanges, collection.getPartitionKey(),
+                cosmosQueryRequestOptions.getPartitionKey());
+        }
+        return feedRanges;
+    }
+
     public static <T> Flux<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
@@ -315,7 +360,7 @@ public class DocumentQueryExecutionContextFactory {
             queryRequestOptionsAccessor.setPartitionKeyDefinition(cosmosQueryRequestOptions, collectionValueHolder.v.getPartitionKey());
             queryRequestOptionsAccessor.setCollectionRid(cosmosQueryRequestOptions, collectionValueHolder.v.getResourceId());
 
-            Mono<Pair<List<Range<String>>, QueryInfo>> queryPlanTask =
+            Mono<PartitionKeyRangesAndQueryInfos> queryPlanTask =
                 getPartitionKeyRangesAndQueryInfo(diagnosticsClientContext,
                                                   client,
                                                   query,
@@ -335,8 +380,10 @@ public class DocumentQueryExecutionContextFactory {
                     cosmosQueryRequestOptions,
                     resourceLink,
                     isContinuationExpected,
-                    queryPlan.getRight(),
-                    queryPlan.getLeft(),
+                    queryPlan.getQueryInfo(),
+                    queryPlan.getHybridSearchQueryInfo(),
+                    queryPlan.getTargetRanges(),
+                    queryPlan.getAllRanges(),
                     collectionValueHolder.v,
                     correlatedActivityId,
                     isQueryCancelledOnTimeout)
@@ -344,20 +391,22 @@ public class DocumentQueryExecutionContextFactory {
         }).flux();
     }
 
-	public static <T> Flux<? extends IDocumentQueryExecutionContext<T>> createSpecializedDocumentQueryExecutionContextAsync(
-            DiagnosticsClientContext diagnosticsClientContext,
-	        IDocumentQueryClient client,
-            ResourceType resourceTypeEnum,
-            Class<T> resourceType,
-            SqlQuerySpec query,
-            CosmosQueryRequestOptions cosmosQueryRequestOptions,
-            String resourceLink,
-            boolean isContinuationExpected,
-            QueryInfo queryInfo,
-            List<Range<String>> targetRanges,
-            DocumentCollection collection,
-            UUID correlatedActivityId,
-            final AtomicBoolean isQueryCancelledOnTimeout) {
+    public static <T> Flux<? extends IDocumentQueryExecutionContext<T>> createSpecializedDocumentQueryExecutionContextAsync(
+        DiagnosticsClientContext diagnosticsClientContext,
+        IDocumentQueryClient client,
+        ResourceType resourceTypeEnum,
+        Class<T> resourceType,
+        SqlQuerySpec query,
+        CosmosQueryRequestOptions cosmosQueryRequestOptions,
+        String resourceLink,
+        boolean isContinuationExpected,
+        QueryInfo queryInfo,
+        HybridSearchQueryInfo hybridSearchQueryInfo,
+        List<Range<String>> targetRanges,
+        List<Range<String>> allRanges,
+        DocumentCollection collection,
+        UUID correlatedActivityId,
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         int initialPageSize = Utils.getValueOrDefault(
             ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(cosmosQueryRequestOptions),
@@ -370,75 +419,96 @@ public class DocumentQueryExecutionContextFactory {
             return Flux.error(validationError);
         }
 
-        boolean getLazyFeedResponse = queryInfo.hasTop();
+        boolean getLazyFeedResponse = Boolean.FALSE;
 
-        // We need to compute the optimal initial age size for non-streaming order-by queries
-        if (queryInfo.hasNonStreamingOrderBy()) {
-            // Validate the TOP or LIMIT for non-streaming order-by queries
-            if (!queryInfo.hasTop() && !queryInfo.hasLimit() && queryInfo.getTop() < 0 && queryInfo.getLimit() < 0) {
-                throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
-                    "Executing a vector search query without TOP or LIMIT can consume a large number of RUs" +
-                        "very fast and have long runtimes. Please ensure you are using one of the above two filters" +
-                        "with you vector search query.");
+        if (hybridSearchQueryInfo!=null) {
+            // Validate the TOP for hybrid search queries
+            if (!hybridSearchQueryInfo.hasTake()) {
+                throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                    "Executing a hybrid or full text query without Top or Limit can consume a large number of RUs " +
+                        "very fast and have long runtimes. Please ensure you are using the above filter " +
+                        "with your hybrid or full text search query.");
             }
-            // Validate the size of TOP or LIMIT against MaxItemSizeForVectorSearch
-            int maxLimit = Math.max(queryInfo.hasTop() ? queryInfo.getTop() : 0,
-                queryInfo.hasLimit() ? queryInfo.getLimit() : 0);
-            int maxItemSizeForVectorSearch = Math.max(Configs.getMaxItemCountForVectorSearch(),
-                qryOptAccessor.getMaxItemCountForVectorSearch(cosmosQueryRequestOptions));
-            if (maxLimit > maxItemSizeForVectorSearch) {
-                throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
-                    "Executing a vector search query with TOP or LIMIT larger than the maxItemSizeForVectorSearch " +
+
+            if (hybridSearchQueryInfo.hasSkip() && hybridSearchQueryInfo.getSkip() >= hybridSearchQueryInfo.getTake()) {
+                throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                    "Executing a hybrid or full-text query with an offset(Skip) greater than or equal to limit(Take). " +
+                        "Please ensure limit is greater than offset.");
+            }
+
+            int pageSize = hybridSearchQueryInfo.hasSkip() ? hybridSearchQueryInfo.getTake() + hybridSearchQueryInfo.getSkip() : hybridSearchQueryInfo.getTake();
+            int maxitemSizeForFullTextSearch = Math.max(Configs.getMaxItemCountForHybridSearchSearch(),
+                qryOptAccessor.getMaxItemCountForHybridSearch(cosmosQueryRequestOptions));
+
+            if (pageSize > maxitemSizeForFullTextSearch) {
+                throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                    "Executing a hybrid or full text search query with TOP larger than the maxItemSizeForHybridSearch " +
                         "is not allowed");
             }
-            // Set initialPageSize based on the smallest of TOP or LIMIT
-            if (queryInfo.hasTop() || queryInfo.hasLimit()) {
-                int pageSizeWithTopOrLimit = Math.min(queryInfo.hasTop() ? queryInfo.getTop() : Integer.MAX_VALUE,
-                                           queryInfo.hasLimit() && queryInfo.hasOffset() ?
-                                               queryInfo.getLimit() + queryInfo.getOffset() : Integer.MAX_VALUE);
-                initialPageSize = pageSizeWithTopOrLimit;
-            }
-        }
+            initialPageSize = pageSize;
+        } else {
 
-        // We need to compute the optimal initial page size for order-by queries
-        if (queryInfo.hasOrderBy()) {
-            int top;
-            if (queryInfo.hasTop() && (top = queryInfo.getTop()) > 0) {
-                int pageSizeWithTop = Math.min(
-                        (int)Math.ceil(top / (double)targetRanges.size()) * PageSizeFactorForTop,
+            getLazyFeedResponse = queryInfo.hasTop();
+            // We need to compute the optimal initial page size for non-streaming order-by queries
+            if (queryInfo.hasNonStreamingOrderBy()) {
+                // Validate the TOP or LIMIT for non-streaming order-by queries
+                if (!queryInfo.hasTop() && !queryInfo.hasLimit() && queryInfo.getTop() < 0 && queryInfo.getLimit() < 0) {
+                    throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                        "Executing a vector search query without TOP or LIMIT can consume a large number of RUs" +
+                            "very fast and have long runtimes. Please ensure you are using one of the above two filters" +
+                            "with you vector search query.");
+                }
+                // Validate the size of TOP or LIMIT against MaxItemSizeForVectorSearch
+                int maxLimit = Math.max(queryInfo.hasTop() ? queryInfo.getTop() : 0,
+                    queryInfo.hasLimit() ? queryInfo.getLimit() : 0);
+                int maxItemSizeForVectorSearch = Math.max(Configs.getMaxItemCountForVectorSearch(),
+                    qryOptAccessor.getMaxItemCountForVectorSearch(cosmosQueryRequestOptions));
+                if (maxLimit > maxItemSizeForVectorSearch) {
+                    throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                        "Executing a vector search query with TOP or LIMIT larger than the maxItemSizeForVectorSearch " +
+                            "is not allowed");
+                }
+                // Set initialPageSize based on the smallest of TOP or LIMIT
+                if (queryInfo.hasTop() || queryInfo.hasLimit()) {
+                    int pageSizeWithTopOrLimit = Math.min(queryInfo.hasTop() ? queryInfo.getTop() : Integer.MAX_VALUE,
+                        queryInfo.hasLimit() && queryInfo.hasOffset() ?
+                            queryInfo.getLimit() + queryInfo.getOffset() : Integer.MAX_VALUE);
+                    initialPageSize = pageSizeWithTopOrLimit;
+                }
+            }
+
+            // We need to compute the optimal initial page size for order-by queries
+            if (queryInfo.hasOrderBy()) {
+                int top;
+                if (queryInfo.hasTop() && (top = queryInfo.getTop()) > 0) {
+                    int pageSizeWithTop = Math.min(
+                        (int) Math.ceil(top / (double) targetRanges.size()) * PageSizeFactorForTop,
                         top);
 
-                if (initialPageSize > 0) {
-                    initialPageSize = Math.min(pageSizeWithTop, initialPageSize);
+                    if (initialPageSize > 0) {
+                        initialPageSize = Math.min(pageSizeWithTop, initialPageSize);
+                    } else {
+                        initialPageSize = pageSizeWithTop;
+                    }
                 }
-                else {
-                    initialPageSize = pageSizeWithTop;
-                }
+                // TODO: do not support continuation in string format right now
+                //            else if (isContinuationExpected)
+                //            {
+                //                if (initialPageSize < 0)
+                //                {
+                //                    initialPageSize = (int)Math.Max(feedOptions.MaxBufferedItemCount,
+                //                      ParallelQueryConfig.GetConfig().DefaultMaximumBufferSize);
+                //                }
+                //
+                //                initialPageSize = Math.Min(
+                //                    (int)Math.Ceiling(initialPageSize / (double)targetRanges.Count) * PageSizeFactorForTop,
+                //                    initialPageSize);
+                //            }
             }
-            // TODO: do not support continuation in string format right now
-            //            else if (isContinuationExpected)
-            //            {
-            //                if (initialPageSize < 0)
-            //                {
-            //                    initialPageSize = (int)Math.Max(feedOptions.MaxBufferedItemCount,
-            //                      ParallelQueryConfig.GetConfig().DefaultMaximumBufferSize);
-            //                }
-            //
-            //                initialPageSize = Math.Min(
-            //                    (int)Math.Ceiling(initialPageSize / (double)targetRanges.Count) * PageSizeFactorForTop,
-            //                    initialPageSize);
-            //            }
         }
 
-        List<FeedRangeEpkImpl> feedRangeEpks = targetRanges.stream().map(FeedRangeEpkImpl::new)
-                                                   .collect(Collectors.toList());
-
-        if (collection.getPartitionKey() != null && cosmosQueryRequestOptions.getPartitionKey() != null
-            && collection.getPartitionKey().getKind().equals(PartitionKind.MULTI_HASH)) {
-            feedRangeEpks = resolveFeedRangeBasedOnPrefixContainer(feedRangeEpks, collection.getPartitionKey(),
-                cosmosQueryRequestOptions.getPartitionKey());
-        }
-
+        List<FeedRangeEpkImpl> feedRangeEpks = getFeedRangeEpks(targetRanges, collection, cosmosQueryRequestOptions);
+        List<FeedRangeEpkImpl> allFeedRangeEpks = getFeedRangeEpks(allRanges, collection, cosmosQueryRequestOptions);
         PipelinedDocumentQueryParams<T> documentQueryParams = new PipelinedDocumentQueryParams<>(
             resourceTypeEnum,
             resourceType,
@@ -449,9 +519,11 @@ public class DocumentQueryExecutionContextFactory {
             isContinuationExpected,
             initialPageSize,
             queryInfo,
+            hybridSearchQueryInfo,
             cosmosQueryRequestOptions,
             correlatedActivityId,
             feedRangeEpks,
+            allFeedRangeEpks,
             isQueryCancelledOnTimeout);
 
         return PipelinedQueryExecutionContextBase.createAsync(

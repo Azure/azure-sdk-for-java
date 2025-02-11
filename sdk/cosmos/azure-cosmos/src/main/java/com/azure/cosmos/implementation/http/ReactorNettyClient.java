@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.http;
 import com.azure.cosmos.implementation.Configs;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
@@ -17,6 +18,7 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.ConnectionObserver;
 import reactor.netty.NettyOutbound;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.http.client.HttpClientState;
@@ -33,8 +35,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
-
-import static com.azure.cosmos.implementation.http.HttpClientConfig.REACTOR_NETWORK_LOG_CATEGORY;
 
 /**
  * HttpClient that is implemented using reactor-netty.
@@ -63,6 +63,7 @@ public class ReactorNettyClient implements HttpClient {
     private HttpClientConfig httpClientConfig;
     private reactor.netty.http.client.HttpClient httpClient;
     private ConnectionProvider connectionProvider;
+    private String reactorNetworkLogCategory;
 
     private ReactorNettyClient() {}
 
@@ -72,6 +73,7 @@ public class ReactorNettyClient implements HttpClient {
     public static ReactorNettyClient create(HttpClientConfig httpClientConfig) {
         ReactorNettyClient reactorNettyClient = new ReactorNettyClient();
         reactorNettyClient.httpClientConfig = httpClientConfig;
+        reactorNettyClient.reactorNetworkLogCategory = httpClientConfig.getReactorNetworkLogCategory();
         reactorNettyClient.httpClient = reactor.netty.http.client.HttpClient
             .newConnection()
             .observe(getConnectionObserver())
@@ -88,6 +90,7 @@ public class ReactorNettyClient implements HttpClient {
         ReactorNettyClient reactorNettyClient = new ReactorNettyClient();
         reactorNettyClient.connectionProvider = connectionProvider;
         reactorNettyClient.httpClientConfig = httpClientConfig;
+        reactorNettyClient.reactorNetworkLogCategory = httpClientConfig.getReactorNetworkLogCategory();
         reactorNettyClient.httpClient = reactor.netty.http.client.HttpClient
             .create(connectionProvider)
             .observe(getConnectionObserver())
@@ -128,23 +131,51 @@ public class ReactorNettyClient implements HttpClient {
             );
         }
 
-        if (LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY).isTraceEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
+        if (LoggerFactory.getLogger(reactorNetworkLogCategory).isTraceEnabled()) {
+            this.httpClient = this.httpClient.wiretap(this.httpClientConfig.getReactorNetworkLogCategory(), LogLevel.INFO);
         }
 
-        this.httpClient = this.httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()))
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) configs.getConnectionAcquireTimeout().toMillis())
-            .httpResponseDecoder(httpResponseDecoderSpec ->
-                httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength())
-                    .maxHeaderSize(configs.getMaxHttpHeaderSize())
-                    .maxChunkSize(configs.getMaxHttpChunkSize())
-                    .validateHeaders(true));
+        this.httpClient =
+            this.httpClient
+                .secure(sslContextSpec ->
+                    sslContextSpec.sslContext(
+                        configs.getSslContext(
+                            httpClientConfig.isServerCertValidationDisabled(),
+                            false)))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis())
+                .httpResponseDecoder(httpResponseDecoderSpec ->
+                    httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
+                        .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
+                        .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
+                        .validateHeaders(true));
+
+        if (httpClientConfig.getHttp2Config().isEnabled()) {
+            this.httpClient = this.httpClient
+                .secure(sslContextSpec ->
+                    sslContextSpec.sslContext(
+                        configs.getSslContext(
+                            httpClientConfig.isServerCertValidationDisabled(),
+                            httpClientConfig.getHttp2Config().isEnabled()
+                        )))
+                .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
+                .doOnConnected((connection -> {
+                    // The response header clean up pipeline is being added due to an error getting when calling gateway:
+                    // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
+                    // validateHeaders(false) does not work for http2
+                    ChannelPipeline channelPipeline = connection.channel().pipeline();
+                    if (channelPipeline.get("reactor.left.httpCodec") != null) {
+                        channelPipeline.addAfter(
+                            "reactor.left.httpCodec",
+                            "customHeaderCleaner",
+                            new Http2ResponseHeaderCleanerHandler());
+                    }
+                }));
+        }
     }
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
-        //  By default, Configs.getHttpsResponseTimeoutInSeconds default value is used as response timeout
-        return send(request, Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
+        return send(request, this.httpClientConfig.getNetworkRequestTimeout());
     }
 
     @Override
@@ -375,17 +406,17 @@ public class ReactorNettyClient implements HttpClient {
      * This changes the logging level of Reactor Netty Http Client.
      */
     public void enableNetworkLogging() {
-        Logger logger = LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY);
+        Logger logger = LoggerFactory.getLogger(this.reactorNetworkLogCategory);
         if (logger.isTraceEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.TRACE);
+            this.httpClient = this.httpClient.wiretap(this.reactorNetworkLogCategory, LogLevel.TRACE);
         } else if (logger.isDebugEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.DEBUG);
+            this.httpClient = this.httpClient.wiretap(this.reactorNetworkLogCategory, LogLevel.DEBUG);
         } else if (logger.isInfoEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
+            this.httpClient = this.httpClient.wiretap(this.reactorNetworkLogCategory, LogLevel.INFO);
         } else if (logger.isWarnEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.WARN);
+            this.httpClient = this.httpClient.wiretap(this.reactorNetworkLogCategory, LogLevel.WARN);
         } else if (logger.isErrorEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.ERROR);
+            this.httpClient = this.httpClient.wiretap(this.reactorNetworkLogCategory, LogLevel.ERROR);
         }
     }
 }

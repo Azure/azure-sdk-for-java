@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Endpoints accessed for a common purpose that the Api Management Service requires outbound network access to. */
+/**
+ * Endpoints accessed for a common purpose that the Api Management Service requires outbound network access to.
+ */
 @Fluent
-public final class OutboundEnvironmentEndpoint {
+public final class OutboundEnvironmentEndpoint implements JsonSerializable<OutboundEnvironmentEndpoint> {
     /*
      * The type of service accessed by the Api Management Service, e.g., Azure Storage, Azure SQL Database, and Azure
      * Active Directory.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * The endpoints that the Api Management Service reaches the service at.
      */
-    @JsonProperty(value = "endpoints")
     private List<EndpointDependency> endpoints;
 
-    /** Creates an instance of OutboundEnvironmentEndpoint class. */
+    /**
+     * Creates an instance of OutboundEnvironmentEndpoint class.
+     */
     public OutboundEnvironmentEndpoint() {
     }
 
     /**
      * Get the category property: The type of service accessed by the Api Management Service, e.g., Azure Storage, Azure
      * SQL Database, and Azure Active Directory.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -41,7 +47,7 @@ public final class OutboundEnvironmentEndpoint {
     /**
      * Set the category property: The type of service accessed by the Api Management Service, e.g., Azure Storage, Azure
      * SQL Database, and Azure Active Directory.
-     *
+     * 
      * @param category the category value to set.
      * @return the OutboundEnvironmentEndpoint object itself.
      */
@@ -52,7 +58,7 @@ public final class OutboundEnvironmentEndpoint {
 
     /**
      * Get the endpoints property: The endpoints that the Api Management Service reaches the service at.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<EndpointDependency> endpoints() {
@@ -61,7 +67,7 @@ public final class OutboundEnvironmentEndpoint {
 
     /**
      * Set the endpoints property: The endpoints that the Api Management Service reaches the service at.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the OutboundEnvironmentEndpoint object itself.
      */
@@ -72,12 +78,53 @@ public final class OutboundEnvironmentEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (endpoints() != null) {
             endpoints().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutboundEnvironmentEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutboundEnvironmentEndpoint if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OutboundEnvironmentEndpoint.
+     */
+    public static OutboundEnvironmentEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutboundEnvironmentEndpoint deserializedOutboundEnvironmentEndpoint = new OutboundEnvironmentEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedOutboundEnvironmentEndpoint.category = reader.getString();
+                } else if ("endpoints".equals(fieldName)) {
+                    List<EndpointDependency> endpoints
+                        = reader.readArray(reader1 -> EndpointDependency.fromJson(reader1));
+                    deserializedOutboundEnvironmentEndpoint.endpoints = endpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutboundEnvironmentEndpoint;
+        });
     }
 }

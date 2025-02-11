@@ -8,20 +8,22 @@ import com.azure.resourcemanager.devtestlabs.models.Event;
 import com.azure.resourcemanager.devtestlabs.models.NotificationChannelEventType;
 import java.util.Arrays;
 
-/** Samples for NotificationChannels CreateOrUpdate. */
+/**
+ * Samples for NotificationChannels CreateOrUpdate.
+ */
 public final class NotificationChannelsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/NotificationChannels_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * NotificationChannels_CreateOrUpdate.json
      */
     /**
      * Sample code: NotificationChannels_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
-    public static void notificationChannelsCreateOrUpdate(
-        com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .notificationChannels()
+    public static void
+        notificationChannelsCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
+        manager.notificationChannels()
             .define("{notificationChannelName}")
             .withRegion((String) null)
             .withExistingLab("resourceGroupName", "{labName}")

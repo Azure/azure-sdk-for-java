@@ -14,18 +14,18 @@ import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 public final class HealthcareEntityAssertionPropertiesHelper {
     private static HealthcareEntityAssertionAccessor accessor;
 
-    private HealthcareEntityAssertionPropertiesHelper() { }
+    private HealthcareEntityAssertionPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link HealthcareEntityAssertion} instance.
      */
     public interface HealthcareEntityAssertionAccessor {
-        void setAssociation(HealthcareEntityAssertion assertion,
-            EntityAssociation entityAssociation);
-        void setCertainty(HealthcareEntityAssertion assertion,
-            EntityCertainty entityCertainty);
-        void setConditionality(HealthcareEntityAssertion assertion,
-            EntityConditionality conditionality);
+        void setAssociation(HealthcareEntityAssertion assertion, EntityAssociation entityAssociation);
+
+        void setCertainty(HealthcareEntityAssertion assertion, EntityCertainty entityCertainty);
+
+        void setConditionality(HealthcareEntityAssertion assertion, EntityConditionality conditionality);
     }
 
     /**
@@ -37,18 +37,15 @@ public final class HealthcareEntityAssertionPropertiesHelper {
         accessor = assertionAccessor;
     }
 
-    public static void setAssociation(HealthcareEntityAssertion assertion,
-        EntityAssociation entityAssociation) {
+    public static void setAssociation(HealthcareEntityAssertion assertion, EntityAssociation entityAssociation) {
         accessor.setAssociation(assertion, entityAssociation);
     }
 
-    public static void setCertainty(HealthcareEntityAssertion assertion,
-        EntityCertainty entityCertainty) {
+    public static void setCertainty(HealthcareEntityAssertion assertion, EntityCertainty entityCertainty) {
         accessor.setCertainty(assertion, entityCertainty);
     }
 
-    public static void setConditionality(HealthcareEntityAssertion assertion,
-        EntityConditionality conditionality) {
+    public static void setConditionality(HealthcareEntityAssertion assertion, EntityConditionality conditionality) {
         accessor.setConditionality(assertion, conditionality);
     }
 }

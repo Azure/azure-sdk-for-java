@@ -5,30 +5,49 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** Describes the properties for producing a series of PNG images from the input video. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.PngImage")
+/**
+ * Describes the properties for producing a series of PNG images from the input video.
+ */
 @Fluent
 public final class PngImage extends Image {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.PngImage";
+
+    /*
      * A collection of output PNG image layers to be produced by the encoder.
      */
-    @JsonProperty(value = "layers")
     private List<PngLayer> layers;
 
-    /** Creates an instance of PngImage class. */
+    /**
+     * Creates an instance of PngImage class.
+     */
     public PngImage() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the layers property: A collection of output PNG image layers to be produced by the encoder.
-     *
+     * 
      * @return the layers value.
      */
     public List<PngLayer> layers() {
@@ -37,7 +56,7 @@ public final class PngImage extends Image {
 
     /**
      * Set the layers property: A collection of output PNG image layers to be produced by the encoder.
-     *
+     * 
      * @param layers the layers value to set.
      * @return the PngImage object itself.
      */
@@ -46,49 +65,63 @@ public final class PngImage extends Image {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PngImage withStart(String start) {
         super.withStart(start);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PngImage withStep(String step) {
         super.withStep(step);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PngImage withRange(String range) {
         super.withRange(range);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PngImage withKeyFrameInterval(Duration keyFrameInterval) {
         super.withKeyFrameInterval(keyFrameInterval);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PngImage withStretchMode(StretchMode stretchMode) {
         super.withStretchMode(stretchMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PngImage withSyncMode(VideoSyncMode syncMode) {
         super.withSyncMode(syncMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PngImage withLabel(String label) {
         super.withLabel(label);
@@ -97,14 +130,82 @@ public final class PngImage extends Image {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (layers() != null) {
             layers().forEach(e -> e.validate());
         }
+        if (start() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property start in model PngImage"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PngImage.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("start", start());
+        jsonWriter.writeStringField("label", label());
+        jsonWriter.writeStringField("keyFrameInterval", CoreUtils.durationToStringWithDays(keyFrameInterval()));
+        jsonWriter.writeStringField("stretchMode", stretchMode() == null ? null : stretchMode().toString());
+        jsonWriter.writeStringField("syncMode", syncMode() == null ? null : syncMode().toString());
+        jsonWriter.writeStringField("step", step());
+        jsonWriter.writeStringField("range", range());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeArrayField("layers", this.layers, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PngImage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PngImage if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PngImage.
+     */
+    public static PngImage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PngImage deserializedPngImage = new PngImage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("start".equals(fieldName)) {
+                    deserializedPngImage.withStart(reader.getString());
+                } else if ("label".equals(fieldName)) {
+                    deserializedPngImage.withLabel(reader.getString());
+                } else if ("keyFrameInterval".equals(fieldName)) {
+                    deserializedPngImage.withKeyFrameInterval(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("stretchMode".equals(fieldName)) {
+                    deserializedPngImage.withStretchMode(StretchMode.fromString(reader.getString()));
+                } else if ("syncMode".equals(fieldName)) {
+                    deserializedPngImage.withSyncMode(VideoSyncMode.fromString(reader.getString()));
+                } else if ("step".equals(fieldName)) {
+                    deserializedPngImage.withStep(reader.getString());
+                } else if ("range".equals(fieldName)) {
+                    deserializedPngImage.withRange(reader.getString());
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedPngImage.odataType = reader.getString();
+                } else if ("layers".equals(fieldName)) {
+                    List<PngLayer> layers = reader.readArray(reader1 -> PngLayer.fromJson(reader1));
+                    deserializedPngImage.layers = layers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPngImage;
+        });
     }
 }

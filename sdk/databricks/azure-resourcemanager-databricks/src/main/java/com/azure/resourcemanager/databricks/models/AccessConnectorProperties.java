@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AccessConnectorProperties model. */
+/**
+ * The AccessConnectorProperties model.
+ */
 @Immutable
-public final class AccessConnectorProperties {
+public final class AccessConnectorProperties implements JsonSerializable<AccessConnectorProperties> {
     /*
      * Provisioning status of the accessConnector.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of AccessConnectorProperties class. */
+    /**
+     * Creates an instance of AccessConnectorProperties class.
+     */
     public AccessConnectorProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning status of the accessConnector.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -31,9 +38,45 @@ public final class AccessConnectorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessConnectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessConnectorProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessConnectorProperties.
+     */
+    public static AccessConnectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessConnectorProperties deserializedAccessConnectorProperties = new AccessConnectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedAccessConnectorProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessConnectorProperties;
+        });
     }
 }

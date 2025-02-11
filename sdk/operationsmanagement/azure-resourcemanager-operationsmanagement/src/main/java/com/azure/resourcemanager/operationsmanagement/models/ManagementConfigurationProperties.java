@@ -6,49 +6,52 @@ package com.azure.resourcemanager.operationsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** ManagementConfiguration properties supported by the OperationsManagement resource provider. */
+/**
+ * ManagementConfiguration properties supported by the OperationsManagement resource provider.
+ */
 @Fluent
-public final class ManagementConfigurationProperties {
+public final class ManagementConfigurationProperties implements JsonSerializable<ManagementConfigurationProperties> {
     /*
      * The applicationId of the appliance for this Management.
      */
-    @JsonProperty(value = "applicationId")
     private String applicationId;
 
     /*
      * The type of the parent resource.
      */
-    @JsonProperty(value = "parentResourceType", required = true)
     private String parentResourceType;
 
     /*
      * Parameters to run the ARM template
      */
-    @JsonProperty(value = "parameters", required = true)
     private List<ArmTemplateParameter> parameters;
 
     /*
      * The provisioning state for the ManagementConfiguration.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The Json object containing the ARM template to deploy
      */
-    @JsonProperty(value = "template", required = true)
     private Object template;
 
-    /** Creates an instance of ManagementConfigurationProperties class. */
+    /**
+     * Creates an instance of ManagementConfigurationProperties class.
+     */
     public ManagementConfigurationProperties() {
     }
 
     /**
      * Get the applicationId property: The applicationId of the appliance for this Management.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -57,7 +60,7 @@ public final class ManagementConfigurationProperties {
 
     /**
      * Set the applicationId property: The applicationId of the appliance for this Management.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the ManagementConfigurationProperties object itself.
      */
@@ -68,7 +71,7 @@ public final class ManagementConfigurationProperties {
 
     /**
      * Get the parentResourceType property: The type of the parent resource.
-     *
+     * 
      * @return the parentResourceType value.
      */
     public String parentResourceType() {
@@ -77,7 +80,7 @@ public final class ManagementConfigurationProperties {
 
     /**
      * Set the parentResourceType property: The type of the parent resource.
-     *
+     * 
      * @param parentResourceType the parentResourceType value to set.
      * @return the ManagementConfigurationProperties object itself.
      */
@@ -88,7 +91,7 @@ public final class ManagementConfigurationProperties {
 
     /**
      * Get the parameters property: Parameters to run the ARM template.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ArmTemplateParameter> parameters() {
@@ -97,7 +100,7 @@ public final class ManagementConfigurationProperties {
 
     /**
      * Set the parameters property: Parameters to run the ARM template.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ManagementConfigurationProperties object itself.
      */
@@ -108,7 +111,7 @@ public final class ManagementConfigurationProperties {
 
     /**
      * Get the provisioningState property: The provisioning state for the ManagementConfiguration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -117,7 +120,7 @@ public final class ManagementConfigurationProperties {
 
     /**
      * Get the template property: The Json object containing the ARM template to deploy.
-     *
+     * 
      * @return the template value.
      */
     public Object template() {
@@ -126,7 +129,7 @@ public final class ManagementConfigurationProperties {
 
     /**
      * Set the template property: The Json object containing the ARM template to deploy.
-     *
+     * 
      * @param template the template value to set.
      * @return the ManagementConfigurationProperties object itself.
      */
@@ -137,31 +140,79 @@ public final class ManagementConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parentResourceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parentResourceType in model ManagementConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property parentResourceType in model ManagementConfigurationProperties"));
         }
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model ManagementConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property parameters in model ManagementConfigurationProperties"));
         } else {
             parameters().forEach(e -> e.validate());
         }
         if (template() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property template in model ManagementConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property template in model ManagementConfigurationProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagementConfigurationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("parentResourceType", this.parentResourceType);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeUntypedField("template", this.template);
+        jsonWriter.writeStringField("applicationId", this.applicationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementConfigurationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagementConfigurationProperties.
+     */
+    public static ManagementConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementConfigurationProperties deserializedManagementConfigurationProperties
+                = new ManagementConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("parentResourceType".equals(fieldName)) {
+                    deserializedManagementConfigurationProperties.parentResourceType = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<ArmTemplateParameter> parameters
+                        = reader.readArray(reader1 -> ArmTemplateParameter.fromJson(reader1));
+                    deserializedManagementConfigurationProperties.parameters = parameters;
+                } else if ("template".equals(fieldName)) {
+                    deserializedManagementConfigurationProperties.template = reader.readUntyped();
+                } else if ("applicationId".equals(fieldName)) {
+                    deserializedManagementConfigurationProperties.applicationId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedManagementConfigurationProperties.provisioningState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementConfigurationProperties;
+        });
+    }
 }

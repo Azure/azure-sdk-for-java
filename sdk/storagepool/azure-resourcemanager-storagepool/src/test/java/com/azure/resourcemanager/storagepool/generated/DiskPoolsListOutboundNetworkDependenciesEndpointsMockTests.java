@@ -6,66 +6,43 @@ package com.azure.resourcemanager.storagepool.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagepool.StoragePoolManager;
 import com.azure.resourcemanager.storagepool.models.OutboundEnvironmentEndpoint;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DiskPoolsListOutboundNetworkDependenciesEndpointsMockTests {
     @Test
     public void testListOutboundNetworkDependenciesEndpoints() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"category\":\"iyylhalnswhccsp\",\"endpoints\":[{\"domainName\":\"vwitqscyw\",\"endpointDetails\":[{\"ipAddress\":\"oluhczbwemh\",\"port\":200585156,\"latency\":24.701871909740227,\"isAccessible\":false}]},{\"domainName\":\"wmsweypqwd\",\"endpointDetails\":[{\"ipAddress\":\"cccnxqhuexmktt\",\"port\":1054348500,\"latency\":92.79271506776962,\"isAccessible\":false},{\"ipAddress\":\"mhzrn\",\"port\":434717152,\"latency\":32.86347427675243,\"isAccessible\":false},{\"ipAddress\":\"ypbsfgytguslfead\",\"port\":358703588,\"latency\":60.4427885205602,\"isAccessible\":false}]},{\"domainName\":\"jhzi\",\"endpointDetails\":[{\"ipAddress\":\"pelol\",\"port\":307559074,\"latency\":14.413802340827264,\"isAccessible\":true},{\"ipAddress\":\"ujzra\",\"port\":873981019,\"latency\":12.180108176468474,\"isAccessible\":true},{\"ipAddress\":\"swibyr\",\"port\":66676019,\"latency\":4.114889887356654,\"isAccessible\":true},{\"ipAddress\":\"p\",\"port\":1827993805,\"latency\":53.930387250403825,\"isAccessible\":false}]}]}]}";
 
-        String responseStr =
-            "{\"value\":[{\"category\":\"cnqxwbpokulpi\",\"endpoints\":[{\"domainName\":\"asipqiio\",\"endpointDetails\":[]},{\"domainName\":\"erpqlpqwcciuqg\",\"endpointDetails\":[]}]}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StoragePoolManager manager = StoragePoolManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<OutboundEnvironmentEndpoint> response = manager.diskPools()
+            .listOutboundNetworkDependenciesEndpoints("ah", "icslfaoq", com.azure.core.util.Context.NONE);
 
-        StoragePoolManager manager =
-            StoragePoolManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<OutboundEnvironmentEndpoint> response =
-            manager
-                .diskPools()
-                .listOutboundNetworkDependenciesEndpoints("wo", "nwashrtd", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("cnqxwbpokulpi", response.iterator().next().category());
-        Assertions.assertEquals("asipqiio", response.iterator().next().endpoints().get(0).domainName());
+        Assertions.assertEquals("iyylhalnswhccsp", response.iterator().next().category());
+        Assertions.assertEquals("vwitqscyw", response.iterator().next().endpoints().get(0).domainName());
+        Assertions.assertEquals("oluhczbwemh",
+            response.iterator().next().endpoints().get(0).endpointDetails().get(0).ipAddress());
+        Assertions.assertEquals(200585156,
+            response.iterator().next().endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals(24.701871909740227D,
+            response.iterator().next().endpoints().get(0).endpointDetails().get(0).latency());
+        Assertions.assertEquals(false,
+            response.iterator().next().endpoints().get(0).endpointDetails().get(0).isAccessible());
     }
 }

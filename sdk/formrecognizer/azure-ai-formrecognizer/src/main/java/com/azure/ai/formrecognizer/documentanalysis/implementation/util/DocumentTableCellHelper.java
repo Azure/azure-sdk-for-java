@@ -24,6 +24,7 @@ public final class DocumentTableCellHelper {
      */
     public interface DocumentTableCellAccessor {
         void setSpans(DocumentTableCell documentTableCell, List<DocumentSpan> spans);
+
         void setBoundingRegions(DocumentTableCell documentTableCell, List<BoundingRegion> boundingRegions);
 
         void setContent(DocumentTableCell documentTableCell, String content);

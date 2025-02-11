@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TestAllRoutesInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestAllRoutesInput model =
-            BinaryData
-                .fromString(
-                    "{\"routingSource\":\"TwinChangeEvents\",\"message\":{\"body\":\"rruvwbhsq\",\"appProperties\":{\"bsrfbj\":\"bcgjbirxbp\",\"otftpvjzbexilz\":\"dtws\",\"qtaruoujmkcjhwq\":\"nfqqnvwp\"},\"systemProperties\":{\"bnw\":\"r\",\"enq\":\"ewgdrjervn\",\"ndoygmifthnzdnd\":\"eh\",\"nayqi\":\"l\"}},\"twin\":{\"tags\":\"dataduhavhqlkt\",\"properties\":{\"desired\":\"dataaqolbgycduiertg\",\"reported\":\"datay\"}}}")
-                .toObject(TestAllRoutesInput.class);
+        TestAllRoutesInput model = BinaryData.fromString(
+            "{\"routingSource\":\"TwinChangeEvents\",\"message\":{\"body\":\"rruvwbhsq\",\"appProperties\":{\"bsrfbj\":\"bcgjbirxbp\",\"otftpvjzbexilz\":\"dtws\",\"qtaruoujmkcjhwq\":\"nfqqnvwp\"},\"systemProperties\":{\"bnw\":\"r\",\"enq\":\"ewgdrjervn\",\"ndoygmifthnzdnd\":\"eh\",\"nayqi\":\"l\"}},\"twin\":{\"tags\":\"dataduhavhqlkt\",\"properties\":{\"desired\":\"dataaqolbgycduiertg\",\"reported\":\"datay\"}}}")
+            .toObject(TestAllRoutesInput.class);
         Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.routingSource());
         Assertions.assertEquals("rruvwbhsq", model.message().body());
         Assertions.assertEquals("bcgjbirxbp", model.message().appProperties().get("bsrfbj"));
@@ -30,21 +28,13 @@ public final class TestAllRoutesInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestAllRoutesInput model =
-            new TestAllRoutesInput()
-                .withRoutingSource(RoutingSource.TWIN_CHANGE_EVENTS)
-                .withMessage(
-                    new RoutingMessage()
-                        .withBody("rruvwbhsq")
-                        .withAppProperties(
-                            mapOf("bsrfbj", "bcgjbirxbp", "otftpvjzbexilz", "dtws", "qtaruoujmkcjhwq", "nfqqnvwp"))
-                        .withSystemProperties(
-                            mapOf("bnw", "r", "enq", "ewgdrjervn", "ndoygmifthnzdnd", "eh", "nayqi", "l")))
-                .withTwin(
-                    new RoutingTwin()
-                        .withTags("dataduhavhqlkt")
-                        .withProperties(
-                            new RoutingTwinProperties().withDesired("dataaqolbgycduiertg").withReported("datay")));
+        TestAllRoutesInput model = new TestAllRoutesInput().withRoutingSource(RoutingSource.TWIN_CHANGE_EVENTS)
+            .withMessage(new RoutingMessage().withBody("rruvwbhsq")
+                .withAppProperties(
+                    mapOf("bsrfbj", "bcgjbirxbp", "otftpvjzbexilz", "dtws", "qtaruoujmkcjhwq", "nfqqnvwp"))
+                .withSystemProperties(mapOf("bnw", "r", "enq", "ewgdrjervn", "ndoygmifthnzdnd", "eh", "nayqi", "l")))
+            .withTwin(new RoutingTwin().withTags("dataduhavhqlkt")
+                .withProperties(new RoutingTwinProperties().withDesired("dataaqolbgycduiertg").withReported("datay")));
         model = BinaryData.fromObject(model).toObject(TestAllRoutesInput.class);
         Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.routingSource());
         Assertions.assertEquals("rruvwbhsq", model.message().body());

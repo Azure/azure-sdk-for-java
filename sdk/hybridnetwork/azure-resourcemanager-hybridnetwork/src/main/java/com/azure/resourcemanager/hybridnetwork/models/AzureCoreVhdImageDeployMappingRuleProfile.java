@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure vhd deploy mapping rule profile.
@@ -15,7 +18,6 @@ public final class AzureCoreVhdImageDeployMappingRuleProfile extends MappingRule
     /*
      * The vhd mapping rule profile.
      */
-    @JsonProperty(value = "vhdImageMappingRuleProfile")
     private VhdImageMappingRuleProfile vhdImageMappingRuleProfile;
 
     /**
@@ -62,9 +64,51 @@ public final class AzureCoreVhdImageDeployMappingRuleProfile extends MappingRule
      */
     @Override
     public void validate() {
-        super.validate();
         if (vhdImageMappingRuleProfile() != null) {
             vhdImageMappingRuleProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationEnablement",
+            applicationEnablement() == null ? null : applicationEnablement().toString());
+        jsonWriter.writeJsonField("vhdImageMappingRuleProfile", this.vhdImageMappingRuleProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureCoreVhdImageDeployMappingRuleProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureCoreVhdImageDeployMappingRuleProfile if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureCoreVhdImageDeployMappingRuleProfile.
+     */
+    public static AzureCoreVhdImageDeployMappingRuleProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureCoreVhdImageDeployMappingRuleProfile deserializedAzureCoreVhdImageDeployMappingRuleProfile
+                = new AzureCoreVhdImageDeployMappingRuleProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationEnablement".equals(fieldName)) {
+                    deserializedAzureCoreVhdImageDeployMappingRuleProfile
+                        .withApplicationEnablement(ApplicationEnablement.fromString(reader.getString()));
+                } else if ("vhdImageMappingRuleProfile".equals(fieldName)) {
+                    deserializedAzureCoreVhdImageDeployMappingRuleProfile.vhdImageMappingRuleProfile
+                        = VhdImageMappingRuleProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureCoreVhdImageDeployMappingRuleProfile;
+        });
     }
 }

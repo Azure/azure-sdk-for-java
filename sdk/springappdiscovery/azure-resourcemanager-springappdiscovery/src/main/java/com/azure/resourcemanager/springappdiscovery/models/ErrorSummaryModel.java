@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.springappdiscovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * ErrorSummary model.
  */
 @Fluent
-public final class ErrorSummaryModel {
+public final class ErrorSummaryModel implements JsonSerializable<ErrorSummaryModel> {
     /*
      * The type of Object.
      */
-    @JsonProperty(value = "affectedResourceType")
     private String affectedResourceType;
 
     /*
      * The count.
      */
-    @JsonProperty(value = "affectedObjectsCount")
     private Long affectedObjectsCount;
 
     /**
@@ -76,5 +78,44 @@ public final class ErrorSummaryModel {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("affectedResourceType", this.affectedResourceType);
+        jsonWriter.writeNumberField("affectedObjectsCount", this.affectedObjectsCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorSummaryModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorSummaryModel if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorSummaryModel.
+     */
+    public static ErrorSummaryModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorSummaryModel deserializedErrorSummaryModel = new ErrorSummaryModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("affectedResourceType".equals(fieldName)) {
+                    deserializedErrorSummaryModel.affectedResourceType = reader.getString();
+                } else if ("affectedObjectsCount".equals(fieldName)) {
+                    deserializedErrorSummaryModel.affectedObjectsCount = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorSummaryModel;
+        });
     }
 }

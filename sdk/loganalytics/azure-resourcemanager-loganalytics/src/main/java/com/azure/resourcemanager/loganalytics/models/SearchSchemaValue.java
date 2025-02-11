@@ -5,61 +5,62 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Value object for schema results. */
+/**
+ * Value object for schema results.
+ */
 @Fluent
-public final class SearchSchemaValue {
+public final class SearchSchemaValue implements JsonSerializable<SearchSchemaValue> {
     /*
      * The name of the schema.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The display name of the schema.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The boolean that indicates the field is searchable as free text.
      */
-    @JsonProperty(value = "indexed", required = true)
     private boolean indexed;
 
     /*
      * The boolean that indicates whether or not the field is stored.
      */
-    @JsonProperty(value = "stored", required = true)
     private boolean stored;
 
     /*
      * The boolean that indicates whether or not the field is a facet.
      */
-    @JsonProperty(value = "facet", required = true)
     private boolean facet;
 
     /*
      * The array of workflows containing the field.
      */
-    @JsonProperty(value = "ownerType")
     private List<String> ownerType;
 
-    /** Creates an instance of SearchSchemaValue class. */
+    /**
+     * Creates an instance of SearchSchemaValue class.
+     */
     public SearchSchemaValue() {
     }
 
     /**
      * Get the name property: The name of the schema.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +69,7 @@ public final class SearchSchemaValue {
 
     /**
      * Set the name property: The name of the schema.
-     *
+     * 
      * @param name the name value to set.
      * @return the SearchSchemaValue object itself.
      */
@@ -79,7 +80,7 @@ public final class SearchSchemaValue {
 
     /**
      * Get the displayName property: The display name of the schema.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -88,7 +89,7 @@ public final class SearchSchemaValue {
 
     /**
      * Set the displayName property: The display name of the schema.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SearchSchemaValue object itself.
      */
@@ -99,7 +100,7 @@ public final class SearchSchemaValue {
 
     /**
      * Get the type property: The type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -108,7 +109,7 @@ public final class SearchSchemaValue {
 
     /**
      * Set the type property: The type.
-     *
+     * 
      * @param type the type value to set.
      * @return the SearchSchemaValue object itself.
      */
@@ -119,7 +120,7 @@ public final class SearchSchemaValue {
 
     /**
      * Get the indexed property: The boolean that indicates the field is searchable as free text.
-     *
+     * 
      * @return the indexed value.
      */
     public boolean indexed() {
@@ -128,7 +129,7 @@ public final class SearchSchemaValue {
 
     /**
      * Set the indexed property: The boolean that indicates the field is searchable as free text.
-     *
+     * 
      * @param indexed the indexed value to set.
      * @return the SearchSchemaValue object itself.
      */
@@ -139,7 +140,7 @@ public final class SearchSchemaValue {
 
     /**
      * Get the stored property: The boolean that indicates whether or not the field is stored.
-     *
+     * 
      * @return the stored value.
      */
     public boolean stored() {
@@ -148,7 +149,7 @@ public final class SearchSchemaValue {
 
     /**
      * Set the stored property: The boolean that indicates whether or not the field is stored.
-     *
+     * 
      * @param stored the stored value to set.
      * @return the SearchSchemaValue object itself.
      */
@@ -159,7 +160,7 @@ public final class SearchSchemaValue {
 
     /**
      * Get the facet property: The boolean that indicates whether or not the field is a facet.
-     *
+     * 
      * @return the facet value.
      */
     public boolean facet() {
@@ -168,7 +169,7 @@ public final class SearchSchemaValue {
 
     /**
      * Set the facet property: The boolean that indicates whether or not the field is a facet.
-     *
+     * 
      * @param facet the facet value to set.
      * @return the SearchSchemaValue object itself.
      */
@@ -179,7 +180,7 @@ public final class SearchSchemaValue {
 
     /**
      * Get the ownerType property: The array of workflows containing the field.
-     *
+     * 
      * @return the ownerType value.
      */
     public List<String> ownerType() {
@@ -188,7 +189,7 @@ public final class SearchSchemaValue {
 
     /**
      * Set the ownerType property: The array of workflows containing the field.
-     *
+     * 
      * @param ownerType the ownerType value to set.
      * @return the SearchSchemaValue object itself.
      */
@@ -199,9 +200,65 @@ public final class SearchSchemaValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("indexed", this.indexed);
+        jsonWriter.writeBooleanField("stored", this.stored);
+        jsonWriter.writeBooleanField("facet", this.facet);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeArrayField("ownerType", this.ownerType, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchSchemaValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchSchemaValue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchSchemaValue.
+     */
+    public static SearchSchemaValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchSchemaValue deserializedSearchSchemaValue = new SearchSchemaValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("indexed".equals(fieldName)) {
+                    deserializedSearchSchemaValue.indexed = reader.getBoolean();
+                } else if ("stored".equals(fieldName)) {
+                    deserializedSearchSchemaValue.stored = reader.getBoolean();
+                } else if ("facet".equals(fieldName)) {
+                    deserializedSearchSchemaValue.facet = reader.getBoolean();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSearchSchemaValue.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSearchSchemaValue.displayName = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSearchSchemaValue.type = reader.getString();
+                } else if ("ownerType".equals(fieldName)) {
+                    List<String> ownerType = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchSchemaValue.ownerType = ownerType;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchSchemaValue;
+        });
     }
 }

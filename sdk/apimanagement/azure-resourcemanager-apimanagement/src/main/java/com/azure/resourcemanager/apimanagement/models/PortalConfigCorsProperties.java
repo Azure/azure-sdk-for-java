@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The developer portal Cross-Origin Resource Sharing (CORS) settings. */
+/**
+ * The developer portal Cross-Origin Resource Sharing (CORS) settings.
+ */
 @Fluent
-public final class PortalConfigCorsProperties {
+public final class PortalConfigCorsProperties implements JsonSerializable<PortalConfigCorsProperties> {
     /*
      * Allowed origins, e.g. `https://trusted.com`.
      */
-    @JsonProperty(value = "allowedOrigins")
     private List<String> allowedOrigins;
 
-    /** Creates an instance of PortalConfigCorsProperties class. */
+    /**
+     * Creates an instance of PortalConfigCorsProperties class.
+     */
     public PortalConfigCorsProperties() {
     }
 
     /**
      * Get the allowedOrigins property: Allowed origins, e.g. `https://trusted.com`.
-     *
+     * 
      * @return the allowedOrigins value.
      */
     public List<String> allowedOrigins() {
@@ -32,7 +39,7 @@ public final class PortalConfigCorsProperties {
 
     /**
      * Set the allowedOrigins property: Allowed origins, e.g. `https://trusted.com`.
-     *
+     * 
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the PortalConfigCorsProperties object itself.
      */
@@ -43,9 +50,47 @@ public final class PortalConfigCorsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allowedOrigins", this.allowedOrigins,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalConfigCorsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalConfigCorsProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortalConfigCorsProperties.
+     */
+    public static PortalConfigCorsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalConfigCorsProperties deserializedPortalConfigCorsProperties = new PortalConfigCorsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowedOrigins".equals(fieldName)) {
+                    List<String> allowedOrigins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPortalConfigCorsProperties.allowedOrigins = allowedOrigins;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalConfigCorsProperties;
+        });
     }
 }

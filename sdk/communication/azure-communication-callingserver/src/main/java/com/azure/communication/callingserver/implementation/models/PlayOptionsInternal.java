@@ -5,15 +5,19 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The PlayOptionsInternal model. */
 @Fluent
-public final class PlayOptionsInternal {
+public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsInternal> {
     /*
      * The option to play the provided audio source in loop when set to true
      */
-    @JsonProperty(value = "loop", required = true)
     private boolean loop;
 
     /**
@@ -34,5 +38,37 @@ public final class PlayOptionsInternal {
     public PlayOptionsInternal setLoop(boolean loop) {
         this.loop = loop;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject().writeBooleanField("loop", loop).writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link PlayOptionsInternal} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PlayOptionsInternal}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PlayOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlayOptionsInternal options = new PlayOptionsInternal();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loop".equals(fieldName)) {
+                    options.loop = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return options;
+        });
     }
 }

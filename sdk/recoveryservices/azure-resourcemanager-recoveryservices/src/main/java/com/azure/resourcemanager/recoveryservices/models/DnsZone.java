@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * DNSZone information.
  */
 @Fluent
-public class DnsZone {
+public class DnsZone implements JsonSerializable<DnsZone> {
     /*
      * Subresource type for vault AzureBackup, AzureBackup_secondary or AzureSiteRecovery
      */
-    @JsonProperty(value = "subResource")
     private VaultSubResourceType subResource;
 
     /**
@@ -50,5 +53,41 @@ public class DnsZone {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subResource", this.subResource == null ? null : this.subResource.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsZone from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsZone if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the DnsZone.
+     */
+    public static DnsZone fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsZone deserializedDnsZone = new DnsZone();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subResource".equals(fieldName)) {
+                    deserializedDnsZone.subResource = VaultSubResourceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsZone;
+        });
     }
 }

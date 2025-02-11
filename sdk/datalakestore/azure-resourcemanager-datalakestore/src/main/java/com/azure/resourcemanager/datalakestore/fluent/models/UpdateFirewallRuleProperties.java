@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The firewall rule properties to use when updating a firewall rule. */
+/**
+ * The firewall rule properties to use when updating a firewall rule.
+ */
 @Fluent
-public final class UpdateFirewallRuleProperties {
+public final class UpdateFirewallRuleProperties implements JsonSerializable<UpdateFirewallRuleProperties> {
     /*
      * The start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
      * protocol.
      */
-    @JsonProperty(value = "startIpAddress")
     private String startIpAddress;
 
     /*
      * The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
      * protocol.
      */
-    @JsonProperty(value = "endIpAddress")
     private String endIpAddress;
 
-    /** Creates an instance of UpdateFirewallRuleProperties class. */
+    /**
+     * Creates an instance of UpdateFirewallRuleProperties class.
+     */
     public UpdateFirewallRuleProperties() {
     }
 
     /**
      * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
      * Start and End should be in the same protocol.
-     *
+     * 
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
@@ -41,7 +47,7 @@ public final class UpdateFirewallRuleProperties {
     /**
      * Set the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
      * Start and End should be in the same protocol.
-     *
+     * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the UpdateFirewallRuleProperties object itself.
      */
@@ -53,7 +59,7 @@ public final class UpdateFirewallRuleProperties {
     /**
      * Get the endIpAddress property: The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start
      * and End should be in the same protocol.
-     *
+     * 
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
@@ -63,7 +69,7 @@ public final class UpdateFirewallRuleProperties {
     /**
      * Set the endIpAddress property: The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start
      * and End should be in the same protocol.
-     *
+     * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the UpdateFirewallRuleProperties object itself.
      */
@@ -74,9 +80,48 @@ public final class UpdateFirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startIpAddress", this.startIpAddress);
+        jsonWriter.writeStringField("endIpAddress", this.endIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateFirewallRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateFirewallRuleProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateFirewallRuleProperties.
+     */
+    public static UpdateFirewallRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateFirewallRuleProperties deserializedUpdateFirewallRuleProperties = new UpdateFirewallRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startIpAddress".equals(fieldName)) {
+                    deserializedUpdateFirewallRuleProperties.startIpAddress = reader.getString();
+                } else if ("endIpAddress".equals(fieldName)) {
+                    deserializedUpdateFirewallRuleProperties.endIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateFirewallRuleProperties;
+        });
     }
 }

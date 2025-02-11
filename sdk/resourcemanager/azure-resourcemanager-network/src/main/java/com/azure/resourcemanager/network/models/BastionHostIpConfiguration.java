@@ -125,7 +125,7 @@ public final class BastionHostIpConfiguration extends SubResource {
     }
 
     /**
-     * Get the publicIpAddress property: Reference of the PublicIP resource.
+     * Get the publicIpAddress property: Reference of the PublicIP resource. Null for private only bastion.
      * 
      * @return the publicIpAddress value.
      */
@@ -134,7 +134,7 @@ public final class BastionHostIpConfiguration extends SubResource {
     }
 
     /**
-     * Set the publicIpAddress property: Reference of the PublicIP resource.
+     * Set the publicIpAddress property: Reference of the PublicIP resource. Null for private only bastion.
      * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the BastionHostIpConfiguration object itself.

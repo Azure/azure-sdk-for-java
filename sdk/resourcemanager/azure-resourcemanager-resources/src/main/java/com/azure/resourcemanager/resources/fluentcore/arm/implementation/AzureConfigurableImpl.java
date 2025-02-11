@@ -27,8 +27,7 @@ import java.util.Objects;
  *
  * @param <T> the type of the configurable interface
  */
-public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
-    implements AzureConfigurable<T> {
+public class AzureConfigurableImpl<T extends AzureConfigurable<T>> implements AzureConfigurable<T> {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private final List<HttpPipelinePolicy> policies;

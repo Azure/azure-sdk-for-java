@@ -407,7 +407,7 @@ public final class ReportsClientImpl implements ReportsClient {
         final String country = null;
         return getTimeseriesWithResponseAsync(resourceGroupName, profileName, experimentName, startDateTimeUtc,
             endDateTimeUtc, aggregationInterval, timeseriesType, endpointParam, country)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

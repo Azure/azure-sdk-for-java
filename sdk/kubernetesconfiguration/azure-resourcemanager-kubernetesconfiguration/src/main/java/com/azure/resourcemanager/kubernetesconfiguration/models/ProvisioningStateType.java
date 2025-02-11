@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of the resource provider. */
+/**
+ * The provisioning state of the resource provider.
+ */
 public final class ProvisioningStateType extends ExpandableStringEnum<ProvisioningStateType> {
-    /** Static value Accepted for ProvisioningStateType. */
+    /**
+     * Static value Accepted for ProvisioningStateType.
+     */
     public static final ProvisioningStateType ACCEPTED = fromString("Accepted");
 
-    /** Static value Deleting for ProvisioningStateType. */
+    /**
+     * Static value Deleting for ProvisioningStateType.
+     */
     public static final ProvisioningStateType DELETING = fromString("Deleting");
 
-    /** Static value Running for ProvisioningStateType. */
+    /**
+     * Static value Running for ProvisioningStateType.
+     */
     public static final ProvisioningStateType RUNNING = fromString("Running");
 
-    /** Static value Succeeded for ProvisioningStateType. */
+    /**
+     * Static value Succeeded for ProvisioningStateType.
+     */
     public static final ProvisioningStateType SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ProvisioningStateType. */
+    /**
+     * Static value Failed for ProvisioningStateType.
+     */
     public static final ProvisioningStateType FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of ProvisioningStateType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class ProvisioningStateType extends ExpandableStringEnum<Provisioni
 
     /**
      * Creates or finds a ProvisioningStateType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProvisioningStateType.
      */
-    @JsonCreator
     public static ProvisioningStateType fromString(String name) {
         return fromString(name, ProvisioningStateType.class);
     }
 
     /**
      * Gets known ProvisioningStateType values.
-     *
+     * 
      * @return known ProvisioningStateType values.
      */
     public static Collection<ProvisioningStateType> values() {

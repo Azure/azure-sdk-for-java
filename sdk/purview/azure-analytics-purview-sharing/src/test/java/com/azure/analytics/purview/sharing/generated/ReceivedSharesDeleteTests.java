@@ -17,9 +17,9 @@ public final class ReceivedSharesDeleteTests extends PurviewShareClientTestBase 
     @Disabled
     public void testReceivedSharesDeleteTests() {
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, Void> response =
-                receivedSharesClient.beginDeleteReceivedShare("0D67B9C8-A6C6-4990-9EDE-12EA059D3002", requestOptions);
-        Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+        SyncPoller<BinaryData, Void> response = setPlaybackSyncPollerPollInterval(
+            receivedSharesClient.beginDeleteReceivedShare("0D67B9C8-A6C6-4990-9EDE-12EA059D3002", requestOptions));
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            response.waitForCompletion().getStatus());
     }
 }

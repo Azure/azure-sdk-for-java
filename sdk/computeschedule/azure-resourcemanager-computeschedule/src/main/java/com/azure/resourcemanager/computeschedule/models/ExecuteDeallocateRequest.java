@@ -28,7 +28,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
     private Resources resources;
 
     /*
-     * Correlationid item
+     * CorrelationId item
      */
     private String correlationid;
 
@@ -79,7 +79,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
     }
 
     /**
-     * Get the correlationid property: Correlationid item.
+     * Get the correlationid property: CorrelationId item.
      * 
      * @return the correlationid value.
      */
@@ -88,7 +88,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
     }
 
     /**
-     * Set the correlationid property: Correlationid item.
+     * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
      * @return the ExecuteDeallocateRequest object itself.

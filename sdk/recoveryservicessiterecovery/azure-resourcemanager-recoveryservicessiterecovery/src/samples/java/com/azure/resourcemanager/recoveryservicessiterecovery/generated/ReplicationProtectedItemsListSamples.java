@@ -20,7 +20,7 @@ public final class ReplicationProtectedItemsListSamples {
      */
     public static void getsTheListOfReplicationProtectedItems(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectedItems().list("vault1", "resourceGroupPS1", null, null,
-            com.azure.core.util.Context.NONE);
+        manager.replicationProtectedItems()
+            .list("vault1", "resourceGroupPS1", null, null, com.azure.core.util.Context.NONE);
     }
 }

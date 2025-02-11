@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatastorePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatastoreProperties model =
-            BinaryData
-                .fromString(
-                    "{\"uuid\":\"gpiohgwxrtfudxe\",\"vCenterId\":\"gyqagvrvmnpkuk\",\"moRefId\":\"i\",\"inventoryItemId\":\"blxgwimf\",\"moName\":\"hfjx\",\"statuses\":[{\"type\":\"kkfoqr\",\"status\":\"fkzikfj\",\"reason\":\"n\",\"message\":\"ivx\",\"severity\":\"zel\",\"lastUpdatedAt\":\"2021-02-18T09:10:14Z\"},{\"type\":\"elsfeaen\",\"status\":\"bfatklddxbjhwu\",\"reason\":\"nozj\",\"message\":\"ph\",\"severity\":\"ulpjr\",\"lastUpdatedAt\":\"2021-04-09T11:20:33Z\"},{\"type\":\"l\",\"status\":\"imjwosyt\",\"reason\":\"tcs\",\"message\":\"cktqumiekkezzi\",\"severity\":\"ly\",\"lastUpdatedAt\":\"2021-07-20T01:18:29Z\"}],\"customResourceName\":\"gqggebdunygae\",\"capacityGB\":1190653393457920963,\"freeSpaceGB\":7064706580171927315,\"provisioningState\":\"Canceled\"}")
-                .toObject(DatastoreProperties.class);
+        DatastoreProperties model = BinaryData.fromString(
+            "{\"uuid\":\"gpiohgwxrtfudxe\",\"vCenterId\":\"gyqagvrvmnpkuk\",\"moRefId\":\"i\",\"inventoryItemId\":\"blxgwimf\",\"moName\":\"hfjx\",\"statuses\":[{\"type\":\"kkfoqr\",\"status\":\"fkzikfj\",\"reason\":\"n\",\"message\":\"ivx\",\"severity\":\"zel\",\"lastUpdatedAt\":\"2021-02-18T09:10:14Z\"},{\"type\":\"elsfeaen\",\"status\":\"bfatklddxbjhwu\",\"reason\":\"nozj\",\"message\":\"ph\",\"severity\":\"ulpjr\",\"lastUpdatedAt\":\"2021-04-09T11:20:33Z\"},{\"type\":\"l\",\"status\":\"imjwosyt\",\"reason\":\"tcs\",\"message\":\"cktqumiekkezzi\",\"severity\":\"ly\",\"lastUpdatedAt\":\"2021-07-20T01:18:29Z\"}],\"customResourceName\":\"gqggebdunygae\",\"capacityGB\":1190653393457920963,\"freeSpaceGB\":7064706580171927315,\"provisioningState\":\"Canceled\"}")
+            .toObject(DatastoreProperties.class);
         Assertions.assertEquals("gyqagvrvmnpkuk", model.vCenterId());
         Assertions.assertEquals("i", model.moRefId());
         Assertions.assertEquals("blxgwimf", model.inventoryItemId());
@@ -23,8 +21,9 @@ public final class DatastorePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatastoreProperties model =
-            new DatastoreProperties().withVCenterId("gyqagvrvmnpkuk").withMoRefId("i").withInventoryItemId("blxgwimf");
+        DatastoreProperties model = new DatastoreProperties().withVCenterId("gyqagvrvmnpkuk")
+            .withMoRefId("i")
+            .withInventoryItemId("blxgwimf");
         model = BinaryData.fromObject(model).toObject(DatastoreProperties.class);
         Assertions.assertEquals("gyqagvrvmnpkuk", model.vCenterId());
         Assertions.assertEquals("i", model.moRefId());

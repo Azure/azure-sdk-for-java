@@ -23,8 +23,10 @@ public final class RequestMetadataTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RequestMetadata model = new RequestMetadata().withRelativePath("kgshwa").withHttpMethod(HttpMethod.GET)
-            .withSerializedBody("ixzbinjeputtmryw").withApiVersion("zoqftiyqzrnkcqvy");
+        RequestMetadata model = new RequestMetadata().withRelativePath("kgshwa")
+            .withHttpMethod(HttpMethod.GET)
+            .withSerializedBody("ixzbinjeputtmryw")
+            .withApiVersion("zoqftiyqzrnkcqvy");
         model = BinaryData.fromObject(model).toObject(RequestMetadata.class);
         Assertions.assertEquals("kgshwa", model.relativePath());
         Assertions.assertEquals(HttpMethod.GET, model.httpMethod());

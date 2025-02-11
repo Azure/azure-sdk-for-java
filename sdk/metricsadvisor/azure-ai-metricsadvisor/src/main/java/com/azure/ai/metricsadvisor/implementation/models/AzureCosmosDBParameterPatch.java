@@ -122,6 +122,9 @@ public final class AzureCosmosDBParameterPatch implements JsonSerializable<Azure
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

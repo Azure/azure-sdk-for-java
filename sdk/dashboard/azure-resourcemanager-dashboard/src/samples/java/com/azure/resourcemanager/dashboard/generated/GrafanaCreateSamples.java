@@ -38,10 +38,15 @@ public final class GrafanaCreateSamples {
      * @param manager Entry point to DashboardManager.
      */
     public static void grafanaCreate(com.azure.resourcemanager.dashboard.DashboardManager manager) {
-        manager.grafanas().define("myWorkspace").withRegion("West US").withExistingResourceGroup("myResourceGroup")
-            .withTags(mapOf("Environment", "Dev")).withSku(new ResourceSku().withName("Standard"))
+        manager.grafanas()
+            .define("myWorkspace")
+            .withRegion("West US")
+            .withExistingResourceGroup("myResourceGroup")
+            .withTags(mapOf("Environment", "Dev"))
+            .withSku(new ResourceSku().withName("Standard"))
             .withProperties(new ManagedGrafanaProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                .withZoneRedundancy(ZoneRedundancy.ENABLED).withApiKey(ApiKey.ENABLED)
+                .withZoneRedundancy(ZoneRedundancy.ENABLED)
+                .withApiKey(ApiKey.ENABLED)
                 .withDeterministicOutboundIp(DeterministicOutboundIp.ENABLED)
                 .withGrafanaIntegrations(new GrafanaIntegrations().withAzureMonitorWorkspaceIntegrations(
                     Arrays.asList(new AzureMonitorWorkspaceIntegration().withAzureMonitorWorkspaceResourceId(
@@ -49,11 +54,17 @@ public final class GrafanaCreateSamples {
                 .withEnterpriseConfigurations(new EnterpriseConfigurations().withMarketplacePlanId("myPlanId")
                     .withMarketplaceAutoRenew(MarketplaceAutoRenew.ENABLED))
                 .withGrafanaConfigurations(new GrafanaConfigurations().withSmtp(new Smtp().withEnabled(true)
-                    .withHost("smtp.sendemail.com:587").withUser("username").withPassword("fakeTokenPlaceholder")
-                    .withFromAddress("test@sendemail.com").withFromName("emailsender")
-                    .withStartTlsPolicy(StartTlsPolicy.OPPORTUNISTIC_START_TLS).withSkipVerify(true)))
-                .withGrafanaPlugins(mapOf("sample-plugin-id", new GrafanaPlugin())).withGrafanaMajorVersion("9"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)).create();
+                    .withHost("smtp.sendemail.com:587")
+                    .withUser("username")
+                    .withPassword("fakeTokenPlaceholder")
+                    .withFromAddress("test@sendemail.com")
+                    .withFromName("emailsender")
+                    .withStartTlsPolicy(StartTlsPolicy.OPPORTUNISTIC_START_TLS)
+                    .withSkipVerify(true)))
+                .withGrafanaPlugins(mapOf("sample-plugin-id", new GrafanaPlugin()))
+                .withGrafanaMajorVersion("9"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .create();
     }
 
     // Use "Map.of" if available

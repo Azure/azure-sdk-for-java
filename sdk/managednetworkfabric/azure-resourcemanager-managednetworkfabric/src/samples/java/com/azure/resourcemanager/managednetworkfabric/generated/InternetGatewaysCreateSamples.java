@@ -8,20 +8,23 @@ import com.azure.resourcemanager.managednetworkfabric.models.GatewayType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for InternetGateways Create. */
+/**
+ * Samples for InternetGateways Create.
+ */
 public final class InternetGatewaysCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/InternetGateways_Create_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * InternetGateways_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: InternetGateways_Create_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void internetGatewaysCreateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .internetGateways()
+        manager.internetGateways()
             .define("example-internetGateway")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
@@ -35,6 +38,7 @@ public final class InternetGatewaysCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

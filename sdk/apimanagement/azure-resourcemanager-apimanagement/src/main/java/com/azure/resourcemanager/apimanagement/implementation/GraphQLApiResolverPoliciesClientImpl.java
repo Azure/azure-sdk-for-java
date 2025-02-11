@@ -39,24 +39,28 @@ import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GraphQLApiResolverPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GraphQLApiResolverPoliciesClient.
+ */
 public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiResolverPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GraphQLApiResolverPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of GraphQLApiResolverPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GraphQLApiResolverPoliciesClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    GraphQLApiResolverPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(GraphQLApiResolverPoliciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,128 +71,90 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientG")
     public interface GraphQLApiResolverPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyCollectionInner>> listByResolver(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("resolverId") String resolverId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<PolicyCollectionInner>> listByResolver(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("resolverId") String resolverId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Head("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<GraphQLApiResolverPoliciesGetEntityTagResponse> getEntityTag(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("resolverId") String resolverId,
+            @PathParam("policyId") PolicyIdName policyId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<GraphQLApiResolverPoliciesGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("resolverId") String resolverId,
+            @QueryParam("format") PolicyExportFormat format, @PathParam("policyId") PolicyIdName policyId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<GraphQLApiResolverPoliciesCreateOrUpdateResponse> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("resolverId") String resolverId,
+            @PathParam("policyId") PolicyIdName policyId, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") PolicyContractInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<GraphQLApiResolverPoliciesGetEntityTagResponse> getEntityTag(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("resolverId") String resolverId,
-            @PathParam("policyId") PolicyIdName policyId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("resolverId") String resolverId,
+            @PathParam("policyId") PolicyIdName policyId, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<GraphQLApiResolverPoliciesGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("resolverId") String resolverId,
-            @QueryParam("format") PolicyExportFormat format,
-            @PathParam("policyId") PolicyIdName policyId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<GraphQLApiResolverPoliciesCreateOrUpdateResponse> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("resolverId") String resolverId,
-            @PathParam("policyId") PolicyIdName policyId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PolicyContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/resolvers/{resolverId}/policies/{policyId}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("resolverId") String resolverId,
-            @PathParam("policyId") PolicyIdName policyId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyCollectionInner>> listByResolverNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of policy configuration at the GraphQL API Resolver level along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyContractInner>> listByResolverSinglePageAsync(
-        String resourceGroupName, String serviceName, String apiId, String resolverId) {
+    private Mono<PagedResponse<PolicyContractInner>> listByResolverSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiId, String resolverId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -204,62 +170,40 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
             return Mono.error(new IllegalArgumentException("Parameter resolverId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResolver(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            resolverId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<PolicyContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResolver(this.client.getEndpoint(), resourceGroupName, serviceName,
+                apiId, resolverId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<PolicyContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of policy configuration at the GraphQL API Resolver level along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyContractInner>> listByResolverSinglePageAsync(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context) {
+    private Mono<PagedResponse<PolicyContractInner>> listByResolverSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiId, String resolverId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -275,77 +219,59 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
             return Mono.error(new IllegalArgumentException("Parameter resolverId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResolver(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                resolverId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResolver(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, resolverId,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyContractInner> listByResolverAsync(
-        String resourceGroupName, String serviceName, String apiId, String resolverId) {
-        return new PagedFlux<>(
-            () -> listByResolverSinglePageAsync(resourceGroupName, serviceName, apiId, resolverId),
+    private PagedFlux<PolicyContractInner> listByResolverAsync(String resourceGroupName, String serviceName,
+        String apiId, String resolverId) {
+        return new PagedFlux<>(() -> listByResolverSinglePageAsync(resourceGroupName, serviceName, apiId, resolverId),
             nextLink -> listByResolverNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyContractInner> listByResolverAsync(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context) {
+    private PagedFlux<PolicyContractInner> listByResolverAsync(String resourceGroupName, String serviceName,
+        String apiId, String resolverId, Context context) {
         return new PagedFlux<>(
             () -> listByResolverSinglePageAsync(resourceGroupName, serviceName, apiId, resolverId, context),
             nextLink -> listByResolverNextSinglePageAsync(nextLink, context));
@@ -353,71 +279,69 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyContractInner> listByResolver(
-        String resourceGroupName, String serviceName, String apiId, String resolverId) {
+    public PagedIterable<PolicyContractInner> listByResolver(String resourceGroupName, String serviceName, String apiId,
+        String resolverId) {
         return new PagedIterable<>(listByResolverAsync(resourceGroupName, serviceName, apiId, resolverId));
     }
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyContractInner> listByResolver(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context) {
+    public PagedIterable<PolicyContractInner> listByResolver(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, Context context) {
         return new PagedIterable<>(listByResolverAsync(resourceGroupName, serviceName, apiId, resolverId, context));
     }
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GraphQLApiResolverPoliciesGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId) {
+    private Mono<GraphQLApiResolverPoliciesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String resolverId, PolicyIdName policyId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -436,60 +360,40 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
             return Mono.error(new IllegalArgumentException("Parameter policyId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getEntityTag(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            resolverId,
-                            policyId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName,
+                apiId, resolverId, policyId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GraphQLApiResolverPoliciesGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        Context context) {
+    private Mono<GraphQLApiResolverPoliciesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String resolverId, PolicyIdName policyId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -508,59 +412,47 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
             return Mono.error(new IllegalArgumentException("Parameter policyId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getEntityTag(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                resolverId,
-                policyId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, resolverId,
+            policyId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getEntityTagAsync(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId) {
+    private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, resolverId, policyId)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -569,46 +461,41 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      * @return the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GraphQLApiResolverPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        Context context) {
+    public GraphQLApiResolverPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String apiId, String resolverId, PolicyIdName policyId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, resolverId, policyId, context)
             .block();
     }
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEntityTag(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId) {
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId) {
         getEntityTagWithResponse(resourceGroupName, serviceName, apiId, resolverId, policyId, Context.NONE);
     }
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param format Policy Export Format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -617,18 +504,11 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      * @return the policy configuration at the GraphQL API Resolver level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GraphQLApiResolverPoliciesGetResponse> getWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyExportFormat format) {
+    private Mono<GraphQLApiResolverPoliciesGetResponse> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String resolverId, PolicyIdName policyId, PolicyExportFormat format) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -647,40 +527,26 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
             return Mono.error(new IllegalArgumentException("Parameter policyId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            resolverId,
-                            format,
-                            policyId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, resolverId,
+                    format, policyId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param format Policy Export Format.
      * @param context The context to associate with this operation.
@@ -690,19 +556,12 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      * @return the policy configuration at the GraphQL API Resolver level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GraphQLApiResolverPoliciesGetResponse> getWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
+    private Mono<GraphQLApiResolverPoliciesGetResponse> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String resolverId, PolicyIdName policyId, PolicyExportFormat format,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -721,37 +580,24 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
             return Mono.error(new IllegalArgumentException("Parameter policyId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                resolverId,
-                format,
-                policyId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, resolverId, format,
+            policyId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -759,8 +605,8 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      * @return the policy configuration at the GraphQL API Resolver level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyContractInner> getAsync(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId) {
+    private Mono<PolicyContractInner> getAsync(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, PolicyIdName policyId) {
         final PolicyExportFormat format = null;
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, resolverId, policyId, format)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -768,13 +614,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param format Policy Export Format.
      * @param context The context to associate with this operation.
@@ -784,27 +630,21 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      * @return the policy configuration at the GraphQL API Resolver level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GraphQLApiResolverPoliciesGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context) {
+    public GraphQLApiResolverPoliciesGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String resolverId, PolicyIdName policyId, PolicyExportFormat format, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, resolverId, policyId, format, context)
             .block();
     }
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -812,8 +652,8 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      * @return the policy configuration at the GraphQL API Resolver level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyContractInner get(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId) {
+    public PolicyContractInner get(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId) {
         final PolicyExportFormat format = null;
         return getWithResponse(resourceGroupName, serviceName, apiId, resolverId, policyId, format, Context.NONE)
             .getValue();
@@ -821,13 +661,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -838,18 +678,11 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GraphQLApiResolverPoliciesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch) {
+        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId,
+        PolicyContractInner parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -868,10 +701,8 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
             return Mono.error(new IllegalArgumentException("Parameter policyId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -880,34 +711,21 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            resolverId,
-                            policyId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+                apiId, resolverId, policyId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -919,19 +737,11 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GraphQLApiResolverPoliciesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context) {
+        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId,
+        PolicyContractInner parameters, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -950,10 +760,8 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
             return Mono.error(new IllegalArgumentException("Parameter policyId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -962,31 +770,20 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                resolverId,
-                policyId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, resolverId,
+            policyId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
+            context);
     }
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -995,28 +792,22 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      * @return policy Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters) {
+    private Mono<PolicyContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, PolicyIdName policyId, PolicyContractInner parameters) {
         final String ifMatch = null;
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, apiId, resolverId, policyId, parameters, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, resolverId, policyId, parameters,
+            ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -1027,29 +818,22 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GraphQLApiResolverPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, apiId, resolverId, policyId, parameters, ifMatch, context)
-            .block();
+    public GraphQLApiResolverPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String serviceName, String apiId, String resolverId, PolicyIdName policyId, PolicyContractInner parameters,
+        String ifMatch, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, resolverId, policyId, parameters,
+            ifMatch, context).block();
     }
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1058,49 +842,36 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters) {
+    public PolicyContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, PolicyIdName policyId, PolicyContractInner parameters) {
         final String ifMatch = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName, serviceName, apiId, resolverId, policyId, parameters, ifMatch, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, resolverId, policyId, parameters,
+            ifMatch, Context.NONE).getValue();
     }
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        String ifMatch) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, PolicyIdName policyId, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1122,43 +893,29 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            resolverId,
-                            policyId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, resolverId,
+                    policyId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1166,19 +923,11 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, PolicyIdName policyId, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1200,69 +949,51 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                resolverId,
-                policyId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, resolverId, policyId,
+            ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        String ifMatch) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId, String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, resolverId, policyId, ifMatch)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1270,55 +1001,43 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, PolicyIdName policyId, String ifMatch, Context context) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, resolverId, policyId, ifMatch, context)
             .block();
     }
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        String ifMatch) {
+    public void delete(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId, String ifMatch) {
         deleteWithResponse(resourceGroupName, serviceName, apiId, resolverId, policyId, ifMatch, Context.NONE);
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list policy operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyContractInner>> listByResolverNextSinglePageAsync(String nextLink) {
@@ -1326,62 +1045,42 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResolverNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PolicyContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PolicyContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list policy operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyContractInner>> listByResolverNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PolicyContractInner>> listByResolverNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResolverNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResolverNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

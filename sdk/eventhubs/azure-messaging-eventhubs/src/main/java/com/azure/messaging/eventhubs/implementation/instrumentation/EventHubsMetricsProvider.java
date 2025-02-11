@@ -54,6 +54,7 @@ public final class EventHubsMetricsProvider {
     private DoubleHistogram operationDuration;
     private DoubleHistogram processDuration;
     private DoubleHistogram consumerLag;
+
     public EventHubsMetricsProvider(Meter meter, String namespace, String entityName, String consumerGroup) {
         this.meter = meter;
         this.isEnabled = meter != null && meter.isEnabled();
@@ -63,17 +64,26 @@ public final class EventHubsMetricsProvider {
             this.receiveAttributeCacheSuccess = AttributeCache.create(meter, RECEIVE, commonAttributes);
             this.checkpointAttributeCacheSuccess = AttributeCache.create(meter, CHECKPOINT, commonAttributes);
             this.processAttributeCacheSuccess = AttributeCache.create(meter, PROCESS, commonAttributes);
-            this.getPartitionPropertiesAttributeCacheSuccess = AttributeCache.create(meter, OperationName.GET_PARTITION_PROPERTIES, commonAttributes);
-            this.getEventHubPropertiesAttributeCacheSuccess = AttributeCache.create(meter, OperationName.GET_EVENT_HUB_PROPERTIES, commonAttributes);
+            this.getPartitionPropertiesAttributeCacheSuccess
+                = AttributeCache.create(meter, OperationName.GET_PARTITION_PROPERTIES, commonAttributes);
+            this.getEventHubPropertiesAttributeCacheSuccess
+                = AttributeCache.create(meter, OperationName.GET_EVENT_HUB_PROPERTIES, commonAttributes);
             this.lagAttributeCache = new AttributeCache(meter, MESSAGING_DESTINATION_PARTITION_ID, commonAttributes);
 
-            this.publishedEventCounter = meter.createLongCounter(MESSAGING_CLIENT_PUBLISHED_MESSAGES, "The number of published events", "{event}");
-            this.consumedEventCounter = meter.createLongCounter(MESSAGING_CLIENT_CONSUMED_MESSAGES, "The number of consumed events", "{event}");
+            this.publishedEventCounter = meter.createLongCounter(MESSAGING_CLIENT_PUBLISHED_MESSAGES,
+                "The number of published events", "{event}");
+            this.consumedEventCounter = meter.createLongCounter(MESSAGING_CLIENT_CONSUMED_MESSAGES,
+                "The number of consumed events", "{event}");
 
-            this.operationDuration = meter.createDoubleHistogram(MESSAGING_CLIENT_OPERATION_DURATION, "The duration of client messaging operations involving communication with the Event Hubs namespace", "s");
-            this.processDuration = meter.createDoubleHistogram(MESSAGING_PROCESS_DURATION, "The duration of the processing callback", "s");
+            this.operationDuration = meter.createDoubleHistogram(MESSAGING_CLIENT_OPERATION_DURATION,
+                "The duration of client messaging operations involving communication with the Event Hubs namespace",
+                "s");
+            this.processDuration = meter.createDoubleHistogram(MESSAGING_PROCESS_DURATION,
+                "The duration of the processing callback", "s");
 
-            this.consumerLag = meter.createDoubleHistogram(MESSAGING_EVENTHUBS_CONSUMER_LAG, "Difference between local time when event was received and the local time it was enqueued on broker", "s");
+            this.consumerLag = meter.createDoubleHistogram(MESSAGING_EVENTHUBS_CONSUMER_LAG,
+                "Difference between local time when event was received and the local time it was enqueued on broker",
+                "s");
         }
     }
 
@@ -103,8 +113,8 @@ public final class EventHubsMetricsProvider {
             TelemetryAttributes attributes = getOrCreateAttributes(RECEIVE, partitionId, errorType);
             if (receivedCount > 0) {
                 consumedEventCounter.add(receivedCount,
-                        errorType == null ? attributes : getOrCreateAttributes(RECEIVE, partitionId, null),
-                        scope.getSpan());
+                    errorType == null ? attributes : getOrCreateAttributes(RECEIVE, partitionId, null),
+                    scope.getSpan());
             }
 
             operationDuration.record(getDurationInSeconds(scope.getStartTime()), attributes, scope.getSpan());
@@ -113,43 +123,50 @@ public final class EventHubsMetricsProvider {
 
     public void reportLag(Instant enqueuedTime, String partitionId, InstrumentationScope scope) {
         if (isEnabled && consumerLag.isEnabled()) {
-            consumerLag.record(getDurationInSeconds(enqueuedTime), lagAttributeCache.getOrCreate(partitionId), scope.getSpan());
+            consumerLag.record(getDurationInSeconds(enqueuedTime), lagAttributeCache.getOrCreate(partitionId),
+                scope.getSpan());
         }
     }
 
     public void reportCheckpoint(Checkpoint checkpoint, InstrumentationScope scope) {
         if (isEnabled && operationDuration.isEnabled()) {
             operationDuration.record(getDurationInSeconds(scope.getStartTime()),
-                    getOrCreateAttributes(CHECKPOINT, checkpoint.getPartitionId(), scope.getErrorType()), scope.getSpan());
+                getOrCreateAttributes(CHECKPOINT, checkpoint.getPartitionId(), scope.getErrorType()), scope.getSpan());
         }
     }
 
-    public void reportGenericOperationDuration(OperationName operationName, String partitionId, InstrumentationScope scope) {
+    public void reportGenericOperationDuration(OperationName operationName, String partitionId,
+        InstrumentationScope scope) {
         if (isEnabled && operationDuration.isEnabled()) {
             operationDuration.record(getDurationInSeconds(scope.getStartTime()),
                 getOrCreateAttributes(operationName, partitionId, scope.getErrorType()), scope.getSpan());
         }
     }
 
-    private TelemetryAttributes getOrCreateAttributes(OperationName operationName, String partitionId, String errorType) {
+    private TelemetryAttributes getOrCreateAttributes(OperationName operationName, String partitionId,
+        String errorType) {
         if (errorType == null) {
             switch (operationName) {
                 case SEND:
                     return sendAttributeCacheSuccess.getOrCreate(partitionId);
+
                 case RECEIVE:
                     return receiveAttributeCacheSuccess.getOrCreate(partitionId);
+
                 case CHECKPOINT:
                     return checkpointAttributeCacheSuccess.getOrCreate(partitionId);
+
                 case PROCESS:
                     return processAttributeCacheSuccess.getOrCreate(partitionId);
+
                 case GET_PARTITION_PROPERTIES:
                     return getPartitionPropertiesAttributeCacheSuccess.getOrCreate(partitionId);
+
                 case GET_EVENT_HUB_PROPERTIES:
                     return getEventHubPropertiesAttributeCacheSuccess.getOrCreate(partitionId);
+
                 default:
-                    LOGGER.atVerbose()
-                        .addKeyValue("operationName", operationName)
-                        .log("Unknown operation name");
+                    LOGGER.atVerbose().addKeyValue("operationName", operationName).log("Unknown operation name");
                     // this should never happen
                     return lagAttributeCache.getOrCreate(partitionId);
             }

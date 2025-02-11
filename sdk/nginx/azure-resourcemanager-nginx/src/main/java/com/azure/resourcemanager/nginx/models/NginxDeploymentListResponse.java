@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.nginx.fluent.models.NginxDeploymentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The NginxDeploymentListResponse model.
  */
 @Fluent
-public final class NginxDeploymentListResponse {
+public final class NginxDeploymentListResponse implements JsonSerializable<NginxDeploymentListResponse> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<NginxDeploymentInner> value;
 
     /*
      * The nextLink property.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,46 @@ public final class NginxDeploymentListResponse {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NginxDeploymentListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NginxDeploymentListResponse if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NginxDeploymentListResponse.
+     */
+    public static NginxDeploymentListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NginxDeploymentListResponse deserializedNginxDeploymentListResponse = new NginxDeploymentListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NginxDeploymentInner> value
+                        = reader.readArray(reader1 -> NginxDeploymentInner.fromJson(reader1));
+                    deserializedNginxDeploymentListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedNginxDeploymentListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNginxDeploymentListResponse;
+        });
     }
 }

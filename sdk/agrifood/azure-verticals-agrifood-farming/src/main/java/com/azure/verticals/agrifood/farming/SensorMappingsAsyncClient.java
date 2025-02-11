@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = SensorMappingsClientBuilder.class, isAsync = true)
 public final class SensorMappingsAsyncClient {
-    @Generated private final SensorMappingsImpl serviceClient;
+    @Generated
+    private final SensorMappingsImpl serviceClient;
 
     /**
      * Initializes an instance of SensorMappingsAsyncClient class.
@@ -159,8 +160,8 @@ public final class SensorMappingsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String sensorMappingId, BinaryData sensorMappingObject, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String sensorMappingId, BinaryData sensorMappingObject,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(sensorMappingId, sensorMappingObject, requestOptions);
     }
 

@@ -48,9 +48,9 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
     public Mono<Void> setupAsync() {
-        return super.setupAsync()
-            .then(shareFileAsyncClient.create(options.getSize()))
-            .then(shareFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), new ParallelTransferOptions()))
+        return super.setupAsync().then(shareFileAsyncClient.create(options.getSize()))
+            .then(shareFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()),
+                new ParallelTransferOptions()))
             .then();
     }
 
@@ -64,7 +64,7 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
             // We don't use File.deleteOnExit.
             // This would cause memory accumulation in the java.io.DeleteOnExitHook with random file names
             // and eventually take whole heap in long-running benchmarks.
-            if (!file.delete()){
+            if (!file.delete()) {
                 throw new IllegalStateException("Unable to delete test file");
             }
         }
@@ -73,15 +73,13 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         File file = new File(tempDir, CoreUtils.randomUuid().toString());
-        return shareFileAsyncClient.downloadToFile(file.getAbsolutePath())
-            .doFinally(ignored -> {
-                // We don't use File.deleteOnExit.
-                // This would cause memory accumulation in the java.io.DeleteOnExitHook with random file names
-                // and eventually take whole heap in long-running benchmarks.
-                if (!file.delete()){
-                    throw new IllegalStateException("Unable to delete test file");
-                }
-            })
-            .then();
+        return shareFileAsyncClient.downloadToFile(file.getAbsolutePath()).doFinally(ignored -> {
+            // We don't use File.deleteOnExit.
+            // This would cause memory accumulation in the java.io.DeleteOnExitHook with random file names
+            // and eventually take whole heap in long-running benchmarks.
+            if (!file.delete()) {
+                throw new IllegalStateException("Unable to delete test file");
+            }
+        }).then();
     }
 }

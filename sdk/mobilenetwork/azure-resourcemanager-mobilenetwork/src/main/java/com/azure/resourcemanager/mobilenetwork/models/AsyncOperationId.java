@@ -6,17 +6,20 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Reference to an Azure Async Operation ID.
  */
 @Fluent
-public final class AsyncOperationId {
+public final class AsyncOperationId implements JsonSerializable<AsyncOperationId> {
     /*
      * Azure Async Operation ID.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
@@ -58,4 +61,41 @@ public final class AsyncOperationId {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AsyncOperationId.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AsyncOperationId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AsyncOperationId if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AsyncOperationId.
+     */
+    public static AsyncOperationId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AsyncOperationId deserializedAsyncOperationId = new AsyncOperationId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAsyncOperationId.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAsyncOperationId;
+        });
+    }
 }

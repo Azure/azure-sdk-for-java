@@ -5,25 +5,80 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a ContentKeyPolicyConfiguration that is unavailable in the current API version. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.ContentKeyPolicyUnknownConfiguration")
+/**
+ * Represents a ContentKeyPolicyConfiguration that is unavailable in the current API version.
+ */
 @Immutable
 public final class ContentKeyPolicyUnknownConfiguration extends ContentKeyPolicyConfiguration {
-    /** Creates an instance of ContentKeyPolicyUnknownConfiguration class. */
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.ContentKeyPolicyUnknownConfiguration";
+
+    /**
+     * Creates an instance of ContentKeyPolicyUnknownConfiguration class.
+     */
     public ContentKeyPolicyUnknownConfiguration() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicyUnknownConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicyUnknownConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentKeyPolicyUnknownConfiguration.
+     */
+    public static ContentKeyPolicyUnknownConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicyUnknownConfiguration deserializedContentKeyPolicyUnknownConfiguration
+                = new ContentKeyPolicyUnknownConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedContentKeyPolicyUnknownConfiguration.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicyUnknownConfiguration;
+        });
     }
 }

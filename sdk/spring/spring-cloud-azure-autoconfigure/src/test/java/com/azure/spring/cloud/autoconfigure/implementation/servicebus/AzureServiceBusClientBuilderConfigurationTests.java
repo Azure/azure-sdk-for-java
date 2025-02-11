@@ -6,6 +6,8 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactory;
@@ -14,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.servicebus.ServiceBusTestUtils.CONNECTION_STRING_FORMAT;
+import static com.azure.spring.cloud.autoconfigure.implementation.util.TestServiceBusUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureServiceBusClientBuilderConfigurationTests {
@@ -74,6 +76,19 @@ class AzureServiceBusClientBuilderConfigurationTests {
             .run(context -> {
                 assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
                 assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    @Test
+    void configureWithNamespaceAndEmptyConnectionString() {
+        this.contextRunner.withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.connection-string=",
+                "spring.cloud.azure.servicebus.namespace=test-servicebus-namespace")
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                assertThat(context).doesNotHaveBean(StaticConnectionStringProvider.class);
             });
     }
 

@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.alertsmanagement.fluent.models.AlertProcessingRuleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of alert processing rules. */
+/**
+ * List of alert processing rules.
+ */
 @Fluent
-public final class AlertProcessingRulesList {
+public final class AlertProcessingRulesList implements JsonSerializable<AlertProcessingRulesList> {
     /*
      * URL to fetch the next set of alert processing rules.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * List of alert processing rules.
      */
-    @JsonProperty(value = "value")
     private List<AlertProcessingRuleInner> value;
 
     /**
+     * Creates an instance of AlertProcessingRulesList class.
+     */
+    public AlertProcessingRulesList() {
+    }
+
+    /**
      * Get the nextLink property: URL to fetch the next set of alert processing rules.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +45,7 @@ public final class AlertProcessingRulesList {
 
     /**
      * Set the nextLink property: URL to fetch the next set of alert processing rules.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AlertProcessingRulesList object itself.
      */
@@ -46,7 +56,7 @@ public final class AlertProcessingRulesList {
 
     /**
      * Get the value property: List of alert processing rules.
-     *
+     * 
      * @return the value value.
      */
     public List<AlertProcessingRuleInner> value() {
@@ -55,7 +65,7 @@ public final class AlertProcessingRulesList {
 
     /**
      * Set the value property: List of alert processing rules.
-     *
+     * 
      * @param value the value value to set.
      * @return the AlertProcessingRulesList object itself.
      */
@@ -66,12 +76,53 @@ public final class AlertProcessingRulesList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertProcessingRulesList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertProcessingRulesList if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertProcessingRulesList.
+     */
+    public static AlertProcessingRulesList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertProcessingRulesList deserializedAlertProcessingRulesList = new AlertProcessingRulesList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedAlertProcessingRulesList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<AlertProcessingRuleInner> value
+                        = reader.readArray(reader1 -> AlertProcessingRuleInner.fromJson(reader1));
+                    deserializedAlertProcessingRulesList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertProcessingRulesList;
+        });
     }
 }

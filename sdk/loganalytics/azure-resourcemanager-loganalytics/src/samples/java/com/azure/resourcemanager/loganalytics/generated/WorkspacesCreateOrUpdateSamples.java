@@ -9,19 +9,22 @@ import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workspaces CreateOrUpdate. */
+/**
+ * Samples for Workspaces CreateOrUpdate.
+ */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/WorkspacesCreate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * WorkspacesCreate.json
      */
     /**
      * Sample code: WorkspacesCreate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .define("oiautorest6685")
             .withRegion("australiasoutheast")
             .withExistingResourceGroup("oiautorest6685")

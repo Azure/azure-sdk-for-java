@@ -209,7 +209,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * @param xmlReader The XmlReader being read.
      * @return An instance of ListSharesResponse if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the ListSharesResponse.
      */
     public static ListSharesResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -224,7 +223,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * cases where the model can deserialize from different root element names.
      * @return An instance of ListSharesResponse if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the ListSharesResponse.
      */
     public static ListSharesResponse fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

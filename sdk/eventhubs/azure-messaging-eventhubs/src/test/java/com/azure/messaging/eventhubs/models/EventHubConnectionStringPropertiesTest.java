@@ -22,13 +22,10 @@ public class EventHubConnectionStringPropertiesTest {
     private static final String ENTITY_PATH = "entity-instance";
     private static final String SAS_KEY = "test-sas-key";
     private static final String SAS_VALUE = "some-secret-value";
-    private static final String ENDPOINT_SUFFIX = Configuration.getGlobalConfiguration()
-        .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
-    private static final String SHARED_ACCESS_SIGNATURE = "SharedAccessSignature "
-        + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
-        + "&sig=encodedsignature%3D"
-        + "&se=100000"
-        + "&skn=test-sas-key";
+    private static final String ENDPOINT_SUFFIX
+        = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
+    private static final String SHARED_ACCESS_SIGNATURE = "SharedAccessSignature " + "sr=https%3A%2F%2Fentity-name"
+        + ENDPOINT_SUFFIX + "%2F" + "&sig=encodedsignature%3D" + "&se=100000" + "&skn=test-sas-key";
 
     @Test
     public void nullConnectionString() {
@@ -102,8 +99,8 @@ public class EventHubConnectionStringPropertiesTest {
     @Test
     public void invalidExtraneousComponent() {
         // Arrange
-        final String connectionString = getConnectionString(HOSTNAME_URI, ENTITY_PATH, SAS_KEY, SAS_VALUE)
-            + "FakeKey=FakeValue";
+        final String connectionString
+            = getConnectionString(HOSTNAME_URI, ENTITY_PATH, SAS_KEY, SAS_VALUE) + "FakeKey=FakeValue";
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> EventHubConnectionStringProperties.parse(connectionString));
@@ -119,8 +116,8 @@ public class EventHubConnectionStringPropertiesTest {
         final String connectionString = getConnectionString(HOSTNAME_URI, null, SAS_KEY, SAS_VALUE);
 
         // Act
-        final EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse(
-            connectionString);
+        final EventHubConnectionStringProperties properties
+            = EventHubConnectionStringProperties.parse(connectionString);
 
         // Assert
         assertEquals(HOSTNAME_URI, properties.getEndpoint());
@@ -139,8 +136,8 @@ public class EventHubConnectionStringPropertiesTest {
         final String connectionString = getConnectionString(HOSTNAME_URI, ENTITY_PATH, SAS_KEY, SAS_VALUE);
 
         // Act
-        final EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse(
-            connectionString);
+        final EventHubConnectionStringProperties properties
+            = EventHubConnectionStringProperties.parse(connectionString);
 
         // Assert
         assertEquals(HOSTNAME_URI, properties.getEndpoint());
@@ -153,22 +150,23 @@ public class EventHubConnectionStringPropertiesTest {
     @ParameterizedTest
     @MethodSource("getInvalidConnectionString")
     public void testConnectionStringWithSas(String invalidConnectionString) {
-        assertThrows(IllegalArgumentException.class, () -> EventHubConnectionStringProperties.parse(
-            invalidConnectionString));
+        assertThrows(IllegalArgumentException.class,
+            () -> EventHubConnectionStringProperties.parse(invalidConnectionString));
     }
 
     @ParameterizedTest
     @MethodSource("getSharedAccessSignature")
     public void testInvalidSharedAccessSignature(String sas) {
-        assertThrows(IllegalArgumentException.class, () ->
-            EventHubConnectionStringProperties.parse(getConnectionString(HOSTNAME_URI, null, null, null, sas)));
+        assertThrows(IllegalArgumentException.class,
+            () -> EventHubConnectionStringProperties.parse(getConnectionString(HOSTNAME_URI, null, null, null, sas)));
     }
 
     private static Stream<String> getInvalidConnectionString() {
         String keyNameWithSas = getConnectionString(HOSTNAME_URI, ENTITY_PATH, SAS_KEY, null, SHARED_ACCESS_SIGNATURE);
-        String keyValueWithSas = getConnectionString(HOSTNAME_URI, ENTITY_PATH, null, SAS_VALUE, SHARED_ACCESS_SIGNATURE);
-        String keyNameAndValueWithSas = getConnectionString(HOSTNAME_URI, ENTITY_PATH, SAS_KEY, SAS_VALUE,
-            SHARED_ACCESS_SIGNATURE);
+        String keyValueWithSas
+            = getConnectionString(HOSTNAME_URI, ENTITY_PATH, null, SAS_VALUE, SHARED_ACCESS_SIGNATURE);
+        String keyNameAndValueWithSas
+            = getConnectionString(HOSTNAME_URI, ENTITY_PATH, SAS_KEY, SAS_VALUE, SHARED_ACCESS_SIGNATURE);
         String nullHostName = getConnectionString(null, ENTITY_PATH, SAS_KEY, SAS_VALUE, SHARED_ACCESS_SIGNATURE);
         String nullHostNameValidSas = getConnectionString(null, ENTITY_PATH, null, null, SHARED_ACCESS_SIGNATURE);
         String nullHostNameValidKey = getConnectionString(null, ENTITY_PATH, SAS_KEY, SAS_VALUE, null);
@@ -179,14 +177,10 @@ public class EventHubConnectionStringPropertiesTest {
     private static Stream<String> getSharedAccessSignature() {
         String nullSas = null;
         String sasInvalidPrefix = "AccessSignature " // invalid prefix
-            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
-            + "&sig=encodedsignature%3D"
-            + "&se=100000"
+            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F" + "&sig=encodedsignature%3D" + "&se=100000"
             + "&skn=test-sas-key";
         String sasWithoutSpace = "SharedAccessSignature" // no space after prefix
-            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
-            + "&sig=encodedsignature%3D"
-            + "&se=100000"
+            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F" + "&sig=encodedsignature%3D" + "&se=100000"
             + "&skn=test-sas-key";
 
         return Stream.of(nullSas, sasInvalidPrefix, sasWithoutSpace);

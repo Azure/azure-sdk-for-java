@@ -309,7 +309,6 @@ public final class AzureBlobFSReadSettings extends StoreReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

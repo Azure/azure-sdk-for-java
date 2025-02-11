@@ -98,6 +98,8 @@ public final class ResourceId {
     }
 
     /**
+     * Gets the subscriptionId of the resource.
+     *
      * @return subscriptionId of the resource.
      */
     public String subscriptionId() {
@@ -105,6 +107,8 @@ public final class ResourceId {
     }
 
     /**
+     * Gets the resourceGroupName of the resource.
+     *
      * @return resourceGroupName of the resource.
      */
     public String resourceGroupName() {
@@ -112,6 +116,8 @@ public final class ResourceId {
     }
 
     /**
+     * Gets the name of the resource.
+     *
      * @return name of the resource.
      */
     public String name() {
@@ -119,6 +125,8 @@ public final class ResourceId {
     }
 
     /**
+     * Gets the parent resource id of the resource.
+     *
      * @return parent resource id of the resource if any, otherwise null.
      */
     public ResourceId parent() {
@@ -130,6 +138,8 @@ public final class ResourceId {
     }
 
     /**
+     * Gets name of the provider.
+     *
      * @return name of the provider.
      */
     public String providerNamespace() {
@@ -137,6 +147,8 @@ public final class ResourceId {
     }
 
     /**
+     * Gets type of the resource.
+     *
      * @return type of the resource.
      */
     public String resourceType() {
@@ -144,6 +156,8 @@ public final class ResourceId {
     }
 
     /**
+     * Gets full type of the resource.
+     *
      * @return full type of the resource.
      */
     public String fullResourceType() {
@@ -155,6 +169,8 @@ public final class ResourceId {
     }
 
     /**
+     * Gets id of the resource.
+     *
      * @return the id of the resource.
      */
     public String id() {

@@ -8,24 +8,49 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationTasks;
 import com.azure.resourcemanager.automation.models.SucScheduleProperties;
 import com.azure.resourcemanager.automation.models.UpdateConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Software update configuration properties. */
+/**
+ * Software update configuration properties.
+ */
 @Fluent
 public final class SoftwareUpdateConfigurationInner extends ProxyResource {
     /*
      * Software update configuration properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private SoftwareUpdateConfigurationProperties innerProperties = new SoftwareUpdateConfigurationProperties();
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SoftwareUpdateConfigurationInner class.
+     */
+    public SoftwareUpdateConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: Software update configuration properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SoftwareUpdateConfigurationProperties innerProperties() {
@@ -33,8 +58,38 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the updateConfiguration property: update specific properties for the Software update configuration.
-     *
+     * 
      * @return the updateConfiguration value.
      */
     public UpdateConfiguration updateConfiguration() {
@@ -43,7 +98,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Set the updateConfiguration property: update specific properties for the Software update configuration.
-     *
+     * 
      * @param updateConfiguration the updateConfiguration value to set.
      * @return the SoftwareUpdateConfigurationInner object itself.
      */
@@ -57,7 +112,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Get the scheduleInfo property: Schedule information for the Software update configuration.
-     *
+     * 
      * @return the scheduleInfo value.
      */
     public SucScheduleProperties scheduleInfo() {
@@ -66,7 +121,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Set the scheduleInfo property: Schedule information for the Software update configuration.
-     *
+     * 
      * @param scheduleInfo the scheduleInfo value to set.
      * @return the SoftwareUpdateConfigurationInner object itself.
      */
@@ -81,7 +136,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
     /**
      * Get the provisioningState property: Provisioning state for the software update configuration, which only appears
      * in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -90,7 +145,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Get the error property: Details of provisioning error.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -99,7 +154,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Set the error property: Details of provisioning error.
-     *
+     * 
      * @param error the error value to set.
      * @return the SoftwareUpdateConfigurationInner object itself.
      */
@@ -113,7 +168,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Creation time of the resource, which only appears in the response.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -122,7 +177,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Get the createdBy property: CreatedBy property, which only appears in the response.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -131,7 +186,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Get the lastModifiedTime property: Last time resource was modified, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -140,7 +195,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Get the lastModifiedBy property: LastModifiedBy property, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -149,7 +204,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Get the tasks property: Tasks information for the Software update configuration.
-     *
+     * 
      * @return the tasks value.
      */
     public SoftwareUpdateConfigurationTasks tasks() {
@@ -158,7 +213,7 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Set the tasks property: Tasks information for the Software update configuration.
-     *
+     * 
      * @param tasks the tasks value to set.
      * @return the SoftwareUpdateConfigurationInner object itself.
      */
@@ -172,19 +227,63 @@ public final class SoftwareUpdateConfigurationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SoftwareUpdateConfigurationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model SoftwareUpdateConfigurationInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SoftwareUpdateConfigurationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftwareUpdateConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftwareUpdateConfigurationInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SoftwareUpdateConfigurationInner.
+     */
+    public static SoftwareUpdateConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftwareUpdateConfigurationInner deserializedSoftwareUpdateConfigurationInner
+                = new SoftwareUpdateConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationInner.innerProperties
+                        = SoftwareUpdateConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftwareUpdateConfigurationInner;
+        });
+    }
 }

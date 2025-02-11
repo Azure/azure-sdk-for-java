@@ -43,11 +43,6 @@ public interface UsageAggregates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Get UsageAggregates operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<UsageAggregation> list(
-        OffsetDateTime reportedStartTime,
-        OffsetDateTime reportedEndTime,
-        Boolean showDetails,
-        AggregationGranularity aggregationGranularity,
-        String continuationToken,
-        Context context);
+    PagedIterable<UsageAggregation> list(OffsetDateTime reportedStartTime, OffsetDateTime reportedEndTime,
+        Boolean showDetails, AggregationGranularity aggregationGranularity, String continuationToken, Context context);
 }

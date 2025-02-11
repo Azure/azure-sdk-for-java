@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Configuration relating to a particular PLMN.
@@ -15,7 +19,6 @@ public final class PublicLandMobileNetwork extends PlmnId {
     /*
      * Configuration relating to SUPI concealment.
      */
-    @JsonProperty(value = "homeNetworkPublicKeys")
     private PublicLandMobileNetworkHomeNetworkPublicKeys homeNetworkPublicKeys;
 
     /**
@@ -70,9 +73,62 @@ public final class PublicLandMobileNetwork extends PlmnId {
      */
     @Override
     public void validate() {
-        super.validate();
         if (homeNetworkPublicKeys() != null) {
             homeNetworkPublicKeys().validate();
         }
+        if (mcc() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property mcc in model PublicLandMobileNetwork"));
+        }
+        if (mnc() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property mnc in model PublicLandMobileNetwork"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PublicLandMobileNetwork.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mcc", mcc());
+        jsonWriter.writeStringField("mnc", mnc());
+        jsonWriter.writeJsonField("homeNetworkPublicKeys", this.homeNetworkPublicKeys);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PublicLandMobileNetwork from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PublicLandMobileNetwork if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PublicLandMobileNetwork.
+     */
+    public static PublicLandMobileNetwork fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PublicLandMobileNetwork deserializedPublicLandMobileNetwork = new PublicLandMobileNetwork();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mcc".equals(fieldName)) {
+                    deserializedPublicLandMobileNetwork.withMcc(reader.getString());
+                } else if ("mnc".equals(fieldName)) {
+                    deserializedPublicLandMobileNetwork.withMnc(reader.getString());
+                } else if ("homeNetworkPublicKeys".equals(fieldName)) {
+                    deserializedPublicLandMobileNetwork.homeNetworkPublicKeys
+                        = PublicLandMobileNetworkHomeNetworkPublicKeys.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPublicLandMobileNetwork;
+        });
     }
 }

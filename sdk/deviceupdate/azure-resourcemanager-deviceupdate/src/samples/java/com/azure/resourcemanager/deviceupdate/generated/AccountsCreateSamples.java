@@ -26,13 +26,17 @@ public final class AccountsCreateSamples {
      * @param manager Entry point to DeviceUpdateManager.
      */
     public static void createsOrUpdatesAccount(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.accounts().define("contoso").withRegion("westus2").withExistingResourceGroup("test-rg")
+        manager.accounts()
+            .define("contoso")
+            .withRegion("westus2")
+            .withExistingResourceGroup("test-rg")
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
                     new UserAssignedIdentity())))
-            .withEncryption(new Encryption().withKeyVaultKeyUri("fakeTokenPlaceholder").withUserAssignedIdentity(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"))
+            .withEncryption(new Encryption().withKeyVaultKeyUri("fakeTokenPlaceholder")
+                .withUserAssignedIdentity(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"))
             .create();
     }
 

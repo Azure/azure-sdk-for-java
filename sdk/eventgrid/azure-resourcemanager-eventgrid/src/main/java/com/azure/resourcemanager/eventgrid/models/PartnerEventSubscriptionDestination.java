@@ -5,34 +5,25 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerEventSubscriptionDestinationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * The PartnerEventSubscriptionDestination model.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "endpointType",
-    defaultImpl = PartnerEventSubscriptionDestination.class,
-    visible = true)
-@JsonTypeName("PartnerDestination")
 @Fluent
 public final class PartnerEventSubscriptionDestination extends EventSubscriptionDestination {
     /*
      * Type of the endpoint for the event subscription destination.
      */
-    @JsonTypeId
-    @JsonProperty(value = "endpointType", required = true)
     private EndpointType endpointType = EndpointType.PARTNER_DESTINATION;
 
     /*
      * Partner Destination Properties of the event subscription destination.
      */
-    @JsonProperty(value = "properties")
     private PartnerEventSubscriptionDestinationProperties innerProperties;
 
     /**
@@ -92,9 +83,50 @@ public final class PartnerEventSubscriptionDestination extends EventSubscription
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerEventSubscriptionDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerEventSubscriptionDestination if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerEventSubscriptionDestination.
+     */
+    public static PartnerEventSubscriptionDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerEventSubscriptionDestination deserializedPartnerEventSubscriptionDestination
+                = new PartnerEventSubscriptionDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedPartnerEventSubscriptionDestination.endpointType
+                        = EndpointType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPartnerEventSubscriptionDestination.innerProperties
+                        = PartnerEventSubscriptionDestinationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerEventSubscriptionDestination;
+        });
     }
 }

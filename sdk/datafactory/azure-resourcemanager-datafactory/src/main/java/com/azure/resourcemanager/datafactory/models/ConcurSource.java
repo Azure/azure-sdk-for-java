@@ -126,7 +126,6 @@ public final class ConcurSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

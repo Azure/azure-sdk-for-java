@@ -19,28 +19,22 @@ public final class UserGroupsImpl implements UserGroups {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public UserGroupsImpl(
-        UserGroupsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public UserGroupsImpl(UserGroupsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<GroupContract> list(String resourceGroupName, String serviceName, String userId) {
         PagedIterable<GroupContractInner> inner = this.serviceClient().list(resourceGroupName, serviceName, userId);
-        return Utils.mapPage(inner, inner1 -> new GroupContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<GroupContract> list(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        PagedIterable<GroupContractInner> inner =
-            this.serviceClient().list(resourceGroupName, serviceName, userId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new GroupContractImpl(inner1, this.manager()));
+    public PagedIterable<GroupContract> list(String resourceGroupName, String serviceName, String userId, String filter,
+        Integer top, Integer skip, Context context) {
+        PagedIterable<GroupContractInner> inner
+            = this.serviceClient().list(resourceGroupName, serviceName, userId, filter, top, skip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupContractImpl(inner1, this.manager()));
     }
 
     private UserGroupsClient serviceClient() {

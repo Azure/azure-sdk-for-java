@@ -21,20 +21,28 @@ public class AssetsAsyncTest extends EasmClientTestBase {
         switch (kind) {
             case "as":
                 return AsAssetResource.class;
+
             case "contact":
                 return ContactAssetResource.class;
+
             case "domain":
                 return DomainAssetResource.class;
+
             case "host":
                 return HostAssetResource.class;
+
             case "ipAddress":
                 return IpAddressAssetResource.class;
+
             case "ipBlock":
                 return IpBlockAssetResource.class;
+
             case "page":
                 return PageAssetResource.class;
+
             case "sslCert":
                 return SslCertAssetResource.class;
+
             default:
                 return null;
 
@@ -43,39 +51,30 @@ public class AssetsAsyncTest extends EasmClientTestBase {
 
     @Test
     public void testAssetsListAsync() {
-        PagedFlux<AssetResource> assetPageResponse = easmAsyncClient.listAssetResource(filter, "lastSeen", 0,  null);
+        PagedFlux<AssetResource> assetPageResponse = easmAsyncClient.listAssetResource(filter, "lastSeen", 0, null);
 
-        StepVerifier.create(assetPageResponse)
-            .assertNext(assetResource -> {
-                assertEquals(assetName, assetResource.getName());
-                assertInstanceOf(getAssetResourceClass(assetKind), assetResource);
-            })
-            .expectComplete()
-            .verify();
+        StepVerifier.create(assetPageResponse).assertNext(assetResource -> {
+            assertEquals(assetName, assetResource.getName());
+            assertInstanceOf(getAssetResourceClass(assetKind), assetResource);
+        }).expectComplete().verify();
     }
 
     @Test
     public void testAssetsUpdateAsync() {
         AssetUpdateData assetUpdateData = new AssetUpdateData().setExternalId("new_external_id");
         Mono<Task> taskMono = easmAsyncClient.updateAssets(filter, assetUpdateData);
-        StepVerifier.create(taskMono)
-            .assertNext(task -> {
-                assertEquals(TaskState.COMPLETE, task.getState());
-                assertEquals(TaskPhase.COMPLETE, task.getPhase());
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(taskMono).assertNext(task -> {
+            assertEquals(TaskState.COMPLETE, task.getState());
+            assertEquals(TaskPhase.COMPLETE, task.getPhase());
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void testAssetsGetAsync() {
         Mono<AssetResource> assetMono = easmAsyncClient.getAssetResource(assetId);
-        StepVerifier.create(assetMono)
-            .assertNext(assetResource -> {
-                System.out.println("Asset name is: " + assetResource.getName());
-                assertInstanceOf(getAssetResourceClass(assetKind), assetResource);
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(assetMono).assertNext(assetResource -> {
+            System.out.println("Asset name is: " + assetResource.getName());
+            assertInstanceOf(getAssetResourceClass(assetKind), assetResource);
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 }

@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Format in which the API Details are exported to the Storage Blob with Sas Key valid for 5 minutes. */
+/**
+ * Format in which the API Details are exported to the Storage Blob with Sas Key valid for 5 minutes.
+ */
 public final class ExportResultFormat extends ExpandableStringEnum<ExportResultFormat> {
-    /** Static value swagger-link-json for ExportResultFormat. */
+    /**
+     * Static value swagger-link-json for ExportResultFormat.
+     */
     public static final ExportResultFormat SWAGGER_LINK_JSON = fromString("swagger-link-json");
 
-    /** Static value wsdl-link+xml for ExportResultFormat. */
+    /**
+     * Static value wsdl-link+xml for ExportResultFormat.
+     */
     public static final ExportResultFormat WSDL_LINK_XML = fromString("wsdl-link+xml");
 
-    /** Static value wadl-link-json for ExportResultFormat. */
+    /**
+     * Static value wadl-link-json for ExportResultFormat.
+     */
     public static final ExportResultFormat WADL_LINK_JSON = fromString("wadl-link-json");
 
-    /** Static value openapi-link for ExportResultFormat. */
+    /**
+     * Static value openapi-link for ExportResultFormat.
+     */
     public static final ExportResultFormat OPENAPI_LINK = fromString("openapi-link");
 
     /**
      * Creates a new instance of ExportResultFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ExportResultFormat extends ExpandableStringEnum<ExportResultF
 
     /**
      * Creates or finds a ExportResultFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExportResultFormat.
      */
-    @JsonCreator
     public static ExportResultFormat fromString(String name) {
         return fromString(name, ExportResultFormat.class);
     }
 
     /**
      * Gets known ExportResultFormat values.
-     *
+     * 
      * @return known ExportResultFormat values.
      */
     public static Collection<ExportResultFormat> values() {

@@ -17,15 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point to route table management. */
 @Fluent()
-public interface RouteTables
-    extends SupportsCreating<RouteTable.DefinitionStages.Blank>,
-        SupportsListing<RouteTable>,
-        SupportsListingByResourceGroup<RouteTable>,
-        SupportsGettingByResourceGroup<RouteTable>,
-        SupportsGettingById<RouteTable>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<RouteTable>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+public interface RouteTables extends SupportsCreating<RouteTable.DefinitionStages.Blank>, SupportsListing<RouteTable>,
+    SupportsListingByResourceGroup<RouteTable>, SupportsGettingByResourceGroup<RouteTable>,
+    SupportsGettingById<RouteTable>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<RouteTable>, SupportsBatchDeletion, HasManager<NetworkManager> {
 }

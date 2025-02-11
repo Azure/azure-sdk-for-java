@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Static Route Configuration properties. */
+/**
+ * Static Route Configuration properties.
+ */
 @Fluent
-public class StaticRouteConfiguration {
+public class StaticRouteConfiguration implements JsonSerializable<StaticRouteConfiguration> {
     /*
      * BFD configuration properties
      */
-    @JsonProperty(value = "bfdConfiguration")
     private BfdConfiguration bfdConfiguration;
 
     /*
      * List of IPv4 Routes.
      */
-    @JsonProperty(value = "ipv4Routes")
     private List<StaticRouteProperties> ipv4Routes;
 
     /*
      * List of IPv6 Routes.
      */
-    @JsonProperty(value = "ipv6Routes")
     private List<StaticRouteProperties> ipv6Routes;
 
-    /** Creates an instance of StaticRouteConfiguration class. */
+    /**
+     * Creates an instance of StaticRouteConfiguration class.
+     */
     public StaticRouteConfiguration() {
     }
 
     /**
      * Get the bfdConfiguration property: BFD configuration properties.
-     *
+     * 
      * @return the bfdConfiguration value.
      */
     public BfdConfiguration bfdConfiguration() {
@@ -44,7 +49,7 @@ public class StaticRouteConfiguration {
 
     /**
      * Set the bfdConfiguration property: BFD configuration properties.
-     *
+     * 
      * @param bfdConfiguration the bfdConfiguration value to set.
      * @return the StaticRouteConfiguration object itself.
      */
@@ -55,7 +60,7 @@ public class StaticRouteConfiguration {
 
     /**
      * Get the ipv4Routes property: List of IPv4 Routes.
-     *
+     * 
      * @return the ipv4Routes value.
      */
     public List<StaticRouteProperties> ipv4Routes() {
@@ -64,7 +69,7 @@ public class StaticRouteConfiguration {
 
     /**
      * Set the ipv4Routes property: List of IPv4 Routes.
-     *
+     * 
      * @param ipv4Routes the ipv4Routes value to set.
      * @return the StaticRouteConfiguration object itself.
      */
@@ -75,7 +80,7 @@ public class StaticRouteConfiguration {
 
     /**
      * Get the ipv6Routes property: List of IPv6 Routes.
-     *
+     * 
      * @return the ipv6Routes value.
      */
     public List<StaticRouteProperties> ipv6Routes() {
@@ -84,7 +89,7 @@ public class StaticRouteConfiguration {
 
     /**
      * Set the ipv6Routes property: List of IPv6 Routes.
-     *
+     * 
      * @param ipv6Routes the ipv6Routes value to set.
      * @return the StaticRouteConfiguration object itself.
      */
@@ -95,7 +100,7 @@ public class StaticRouteConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -108,5 +113,51 @@ public class StaticRouteConfiguration {
         if (ipv6Routes() != null) {
             ipv6Routes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("bfdConfiguration", this.bfdConfiguration);
+        jsonWriter.writeArrayField("ipv4Routes", this.ipv4Routes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipv6Routes", this.ipv6Routes, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticRouteConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticRouteConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StaticRouteConfiguration.
+     */
+    public static StaticRouteConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticRouteConfiguration deserializedStaticRouteConfiguration = new StaticRouteConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bfdConfiguration".equals(fieldName)) {
+                    deserializedStaticRouteConfiguration.bfdConfiguration = BfdConfiguration.fromJson(reader);
+                } else if ("ipv4Routes".equals(fieldName)) {
+                    List<StaticRouteProperties> ipv4Routes
+                        = reader.readArray(reader1 -> StaticRouteProperties.fromJson(reader1));
+                    deserializedStaticRouteConfiguration.ipv4Routes = ipv4Routes;
+                } else if ("ipv6Routes".equals(fieldName)) {
+                    List<StaticRouteProperties> ipv6Routes
+                        = reader.readArray(reader1 -> StaticRouteProperties.fromJson(reader1));
+                    deserializedStaticRouteConfiguration.ipv6Routes = ipv6Routes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticRouteConfiguration;
+        });
     }
 }

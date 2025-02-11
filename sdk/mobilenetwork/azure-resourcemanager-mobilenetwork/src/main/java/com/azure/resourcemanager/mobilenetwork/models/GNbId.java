@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * gNodeB identifier.
  */
 @Fluent
-public final class GNbId {
+public final class GNbId implements JsonSerializable<GNbId> {
     /*
      * The bitLength property.
      */
-    @JsonProperty(value = "bitLength")
     private Integer bitLength;
 
     /*
      * The gNBValue property.
      */
-    @JsonProperty(value = "gNBValue")
     private String gNBValue;
 
     /**
@@ -76,5 +78,44 @@ public final class GNbId {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("bitLength", this.bitLength);
+        jsonWriter.writeStringField("gNBValue", this.gNBValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GNbId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GNbId if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the GNbId.
+     */
+    public static GNbId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GNbId deserializedGNbId = new GNbId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bitLength".equals(fieldName)) {
+                    deserializedGNbId.bitLength = reader.getNullable(JsonReader::getInt);
+                } else if ("gNBValue".equals(fieldName)) {
+                    deserializedGNbId.gNBValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGNbId;
+        });
     }
 }

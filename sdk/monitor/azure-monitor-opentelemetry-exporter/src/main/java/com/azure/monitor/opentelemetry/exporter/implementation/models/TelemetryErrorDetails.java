@@ -39,7 +39,7 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
 
     /**
      * Get the index property: The index in the original payload of the item.
-     *
+     * 
      * @return the index value.
      */
     public Integer getIndex() {
@@ -48,7 +48,7 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
 
     /**
      * Set the index property: The index in the original payload of the item.
-     *
+     * 
      * @param index the index value to set.
      * @return the TelemetryErrorDetails object itself.
      */
@@ -59,7 +59,7 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
 
     /**
      * Get the statusCode property: The item specific [HTTP Response status code](#Response Status Codes).
-     *
+     * 
      * @return the statusCode value.
      */
     public Integer getStatusCode() {
@@ -68,7 +68,7 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
 
     /**
      * Set the statusCode property: The item specific [HTTP Response status code](#Response Status Codes).
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the TelemetryErrorDetails object itself.
      */
@@ -79,7 +79,7 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -88,7 +88,7 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the TelemetryErrorDetails object itself.
      */
@@ -111,7 +111,7 @@ public final class TelemetryErrorDetails implements JsonSerializable<TelemetryEr
 
     /**
      * Reads an instance of TelemetryErrorDetails from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TelemetryErrorDetails if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

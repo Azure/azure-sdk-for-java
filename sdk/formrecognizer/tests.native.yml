@@ -11,8 +11,4 @@ extends:
         safeName: azureaiformrecognizer
     CloudConfig:
       Public:
-        ServiceConnection: azure-sdk-tests
-        SubscriptionConfigurationFilePaths:
-          - eng/common/TestResources/sub-config/AzurePublicMsft.json
         Location: 'eastus'
-    SupportedClouds: 'Public'

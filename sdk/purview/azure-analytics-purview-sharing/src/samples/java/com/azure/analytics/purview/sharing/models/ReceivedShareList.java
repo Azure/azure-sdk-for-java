@@ -4,26 +4,28 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.util.List;
-
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * List of received shares.
  */
 @Fluent
-public final class ReceivedShareList {
+public final class ReceivedShareList implements JsonSerializable<ReceivedShareList> {
     /*
      * The Url of next result page.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Collection of items of type ReceivedShare
      */
-    @JsonProperty(value = "value", required = true)
     private List<ReceivedShare> value;
 
     /**
@@ -34,7 +36,7 @@ public final class ReceivedShareList {
 
     /**
      * Get the nextLink property: The Url of next result page.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -43,7 +45,7 @@ public final class ReceivedShareList {
 
     /**
      * Set the nextLink property: The Url of next result page.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the ReceivedShareList object itself.
      */
@@ -54,7 +56,7 @@ public final class ReceivedShareList {
 
     /**
      * Get the value property: Collection of items of type ReceivedShare.
-     * 
+     *
      * @return the value value.
      */
     public List<ReceivedShare> getValue() {
@@ -63,12 +65,53 @@ public final class ReceivedShareList {
 
     /**
      * Set the value property: Collection of items of type ReceivedShare.
-     * 
+     *
      * @param value the value value to set.
      * @return the ReceivedShareList object itself.
      */
     public ReceivedShareList setValue(List<ReceivedShare> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReceivedShareList from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReceivedShareList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReceivedShareList.
+     */
+    public static ReceivedShareList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReceivedShareList deserializedReceivedShareList = new ReceivedShareList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ReceivedShare> value = reader.readArray(reader1 -> ReceivedShare.fromJson(reader1));
+                    deserializedReceivedShareList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedReceivedShareList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReceivedShareList;
+        });
     }
 }

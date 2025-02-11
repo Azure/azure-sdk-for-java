@@ -6,46 +6,48 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.WorkflowModelInner;
 
-/** An immutable client-side representation of WorkflowModel. */
+/**
+ * An immutable client-side representation of WorkflowModel.
+ */
 public interface WorkflowModel {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Workflow model properties.
-     *
+     * 
      * @return the properties value.
      */
     WorkflowModelProperties properties();
 
     /**
      * Gets the systemData property: The systemData property.
-     *
+     * 
      * @return the systemData value.
      */
     WorkflowModelSystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.WorkflowModelInner object.
-     *
+     * 
      * @return the inner object.
      */
     WorkflowModelInner innerModel();

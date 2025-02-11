@@ -10,11 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.ServersClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.HighAvailabilityValidationEstimationInner;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerInner;
-import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailabilityValidationEstimation;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ServerGtidSetParameter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerRestartParameter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Servers;
 
@@ -88,30 +85,6 @@ public final class ServersImpl implements Servers {
         this.serviceClient().failover(resourceGroupName, serverName, context);
     }
 
-    public Response<HighAvailabilityValidationEstimation> validateEstimateHighAvailabilityWithResponse(
-        String resourceGroupName, String serverName, HighAvailabilityValidationEstimationInner parameters,
-        Context context) {
-        Response<HighAvailabilityValidationEstimationInner> inner = this.serviceClient()
-            .validateEstimateHighAvailabilityWithResponse(resourceGroupName, serverName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new HighAvailabilityValidationEstimationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public HighAvailabilityValidationEstimation validateEstimateHighAvailability(String resourceGroupName,
-        String serverName, HighAvailabilityValidationEstimationInner parameters) {
-        HighAvailabilityValidationEstimationInner inner
-            = this.serviceClient().validateEstimateHighAvailability(resourceGroupName, serverName, parameters);
-        if (inner != null) {
-            return new HighAvailabilityValidationEstimationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public void restart(String resourceGroupName, String serverName, ServerRestartParameter parameters) {
         this.serviceClient().restart(resourceGroupName, serverName, parameters);
     }
@@ -135,15 +108,6 @@ public final class ServersImpl implements Servers {
 
     public void stop(String resourceGroupName, String serverName, Context context) {
         this.serviceClient().stop(resourceGroupName, serverName, context);
-    }
-
-    public void resetGtid(String resourceGroupName, String serverName, ServerGtidSetParameter parameters) {
-        this.serviceClient().resetGtid(resourceGroupName, serverName, parameters);
-    }
-
-    public void resetGtid(String resourceGroupName, String serverName, ServerGtidSetParameter parameters,
-        Context context) {
-        this.serviceClient().resetGtid(resourceGroupName, serverName, parameters, context);
     }
 
     public Server getById(String id) {

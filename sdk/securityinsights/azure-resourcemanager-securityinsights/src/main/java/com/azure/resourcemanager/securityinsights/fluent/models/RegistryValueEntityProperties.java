@@ -5,41 +5,60 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.RegistryValueKind;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Map;
 
-/** RegistryValue entity property bag. */
+/**
+ * RegistryValue entity property bag.
+ */
 @Immutable
 public final class RegistryValueEntityProperties extends EntityCommonProperties {
     /*
      * The registry key entity id.
      */
-    @JsonProperty(value = "keyEntityId", access = JsonProperty.Access.WRITE_ONLY)
     private String keyEntityId;
 
     /*
      * String formatted representation of the value data.
      */
-    @JsonProperty(value = "valueData", access = JsonProperty.Access.WRITE_ONLY)
     private String valueData;
 
     /*
      * The registry value name.
      */
-    @JsonProperty(value = "valueName", access = JsonProperty.Access.WRITE_ONLY)
     private String valueName;
 
     /*
      * Specifies the data types to use when storing values in the registry, or identifies the data type of a value in
      * the registry.
      */
-    @JsonProperty(value = "valueType", access = JsonProperty.Access.WRITE_ONLY)
     private RegistryValueKind valueType;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of RegistryValueEntityProperties class.
+     */
+    public RegistryValueEntityProperties() {
+    }
 
     /**
      * Get the keyEntityId property: The registry key entity id.
-     *
+     * 
      * @return the keyEntityId value.
      */
     public String keyEntityId() {
@@ -48,7 +67,7 @@ public final class RegistryValueEntityProperties extends EntityCommonProperties 
 
     /**
      * Get the valueData property: String formatted representation of the value data.
-     *
+     * 
      * @return the valueData value.
      */
     public String valueData() {
@@ -57,7 +76,7 @@ public final class RegistryValueEntityProperties extends EntityCommonProperties 
 
     /**
      * Get the valueName property: The registry value name.
-     *
+     * 
      * @return the valueName value.
      */
     public String valueName() {
@@ -67,7 +86,7 @@ public final class RegistryValueEntityProperties extends EntityCommonProperties 
     /**
      * Get the valueType property: Specifies the data types to use when storing values in the registry, or identifies
      * the data type of a value in the registry.
-     *
+     * 
      * @return the valueType value.
      */
     public RegistryValueKind valueType() {
@@ -75,12 +94,81 @@ public final class RegistryValueEntityProperties extends EntityCommonProperties 
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryValueEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryValueEntityProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryValueEntityProperties.
+     */
+    public static RegistryValueEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryValueEntityProperties deserializedRegistryValueEntityProperties
+                = new RegistryValueEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedRegistryValueEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedRegistryValueEntityProperties.friendlyName = reader.getString();
+                } else if ("keyEntityId".equals(fieldName)) {
+                    deserializedRegistryValueEntityProperties.keyEntityId = reader.getString();
+                } else if ("valueData".equals(fieldName)) {
+                    deserializedRegistryValueEntityProperties.valueData = reader.getString();
+                } else if ("valueName".equals(fieldName)) {
+                    deserializedRegistryValueEntityProperties.valueName = reader.getString();
+                } else if ("valueType".equals(fieldName)) {
+                    deserializedRegistryValueEntityProperties.valueType
+                        = RegistryValueKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryValueEntityProperties;
+        });
     }
 }

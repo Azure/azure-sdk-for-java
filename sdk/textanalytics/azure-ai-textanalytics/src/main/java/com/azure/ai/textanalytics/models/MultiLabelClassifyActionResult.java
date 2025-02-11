@@ -15,8 +15,8 @@ public final class MultiLabelClassifyActionResult extends TextAnalyticsActionRes
     private ClassifyDocumentResultCollection documentsResults;
 
     static {
-        MultiLabelClassifyActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        MultiLabelClassifyActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**

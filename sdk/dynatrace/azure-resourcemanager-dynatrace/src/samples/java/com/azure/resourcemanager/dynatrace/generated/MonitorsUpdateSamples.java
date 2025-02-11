@@ -8,39 +8,39 @@ import com.azure.resourcemanager.dynatrace.models.MonitorResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Monitors Update. */
+/**
+ * Samples for Monitors Update.
+ */
 public final class MonitorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Update_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
     public static void monitorsUpdateMinimumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        MonitorResource resource =
-            manager
-                .monitors()
-                .getByResourceGroupWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE)
-                .getValue();
+        MonitorResource resource = manager.monitors()
+            .getByResourceGroupWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Update_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
     public static void monitorsUpdateMaximumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        MonitorResource resource =
-            manager
-                .monitors()
-                .getByResourceGroupWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE)
-                .getValue();
+        MonitorResource resource = manager.monitors()
+            .getByResourceGroupWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("Environment", "Dev")).apply();
     }
 

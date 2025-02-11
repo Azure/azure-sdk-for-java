@@ -10,8 +10,8 @@ import com.azure.resourcemanager.elastic.fluent.models.ExternalUserCreationRespo
 public final class ExternalUserCreationResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalUserCreationResponseInner model =
-            BinaryData.fromString("{\"created\":true}").toObject(ExternalUserCreationResponseInner.class);
+        ExternalUserCreationResponseInner model
+            = BinaryData.fromString("{\"created\":false}").toObject(ExternalUserCreationResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test

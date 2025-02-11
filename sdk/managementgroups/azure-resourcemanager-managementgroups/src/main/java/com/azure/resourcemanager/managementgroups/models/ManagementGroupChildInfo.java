@@ -5,51 +5,54 @@
 package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The child information of a management group. */
+/**
+ * The child information of a management group.
+ */
 @Fluent
-public final class ManagementGroupChildInfo {
+public final class ManagementGroupChildInfo implements JsonSerializable<ManagementGroupChildInfo> {
     /*
      * The fully qualified resource type which includes provider namespace (e.g. Microsoft.Management/managementGroups)
      */
-    @JsonProperty(value = "type")
     private ManagementGroupChildType type;
 
     /*
-     * The fully qualified ID for the child resource (management group or subscription).  For example,
+     * The fully qualified ID for the child resource (management group or subscription). For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the child entity.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The friendly name of the child resource.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The list of children.
      */
-    @JsonProperty(value = "children")
     private List<ManagementGroupChildInfo> children;
 
-    /** Creates an instance of ManagementGroupChildInfo class. */
+    /**
+     * Creates an instance of ManagementGroupChildInfo class.
+     */
     public ManagementGroupChildInfo() {
     }
 
     /**
      * Get the type property: The fully qualified resource type which includes provider namespace (e.g.
      * Microsoft.Management/managementGroups).
-     *
+     * 
      * @return the type value.
      */
     public ManagementGroupChildType type() {
@@ -59,7 +62,7 @@ public final class ManagementGroupChildInfo {
     /**
      * Set the type property: The fully qualified resource type which includes provider namespace (e.g.
      * Microsoft.Management/managementGroups).
-     *
+     * 
      * @param type the type value to set.
      * @return the ManagementGroupChildInfo object itself.
      */
@@ -71,7 +74,7 @@ public final class ManagementGroupChildInfo {
     /**
      * Get the id property: The fully qualified ID for the child resource (management group or subscription). For
      * example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -81,7 +84,7 @@ public final class ManagementGroupChildInfo {
     /**
      * Set the id property: The fully qualified ID for the child resource (management group or subscription). For
      * example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @param id the id value to set.
      * @return the ManagementGroupChildInfo object itself.
      */
@@ -92,7 +95,7 @@ public final class ManagementGroupChildInfo {
 
     /**
      * Get the name property: The name of the child entity.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -101,7 +104,7 @@ public final class ManagementGroupChildInfo {
 
     /**
      * Set the name property: The name of the child entity.
-     *
+     * 
      * @param name the name value to set.
      * @return the ManagementGroupChildInfo object itself.
      */
@@ -112,7 +115,7 @@ public final class ManagementGroupChildInfo {
 
     /**
      * Get the displayName property: The friendly name of the child resource.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -121,7 +124,7 @@ public final class ManagementGroupChildInfo {
 
     /**
      * Set the displayName property: The friendly name of the child resource.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ManagementGroupChildInfo object itself.
      */
@@ -132,7 +135,7 @@ public final class ManagementGroupChildInfo {
 
     /**
      * Get the children property: The list of children.
-     *
+     * 
      * @return the children value.
      */
     public List<ManagementGroupChildInfo> children() {
@@ -141,7 +144,7 @@ public final class ManagementGroupChildInfo {
 
     /**
      * Set the children property: The list of children.
-     *
+     * 
      * @param children the children value to set.
      * @return the ManagementGroupChildInfo object itself.
      */
@@ -152,12 +155,62 @@ public final class ManagementGroupChildInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (children() != null) {
             children().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("children", this.children, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementGroupChildInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementGroupChildInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementGroupChildInfo.
+     */
+    public static ManagementGroupChildInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementGroupChildInfo deserializedManagementGroupChildInfo = new ManagementGroupChildInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedManagementGroupChildInfo.type = ManagementGroupChildType.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedManagementGroupChildInfo.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagementGroupChildInfo.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedManagementGroupChildInfo.displayName = reader.getString();
+                } else if ("children".equals(fieldName)) {
+                    List<ManagementGroupChildInfo> children
+                        = reader.readArray(reader1 -> ManagementGroupChildInfo.fromJson(reader1));
+                    deserializedManagementGroupChildInfo.children = children;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementGroupChildInfo;
+        });
     }
 }

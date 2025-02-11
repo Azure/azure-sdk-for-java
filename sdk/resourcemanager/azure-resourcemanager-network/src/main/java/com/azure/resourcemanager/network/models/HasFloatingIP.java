@@ -4,7 +4,11 @@ package com.azure.resourcemanager.network.models;
 
 /** An interface representing a model's ability to have floating IP support. */
 public interface HasFloatingIP {
-    /** @return the state of the floating IP enablement */
+    /**
+     * Gets the state of the floating IP enablement.
+     *
+     * @return the state of the floating IP enablement
+     */
     boolean floatingIPEnabled();
 
     /** Grouping of definition stages involving enabling or disabling floating IP support. */

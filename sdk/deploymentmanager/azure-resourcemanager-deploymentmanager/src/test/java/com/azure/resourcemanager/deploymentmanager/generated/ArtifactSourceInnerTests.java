@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactSourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactSourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"sourceType\":\"udxorrqn\",\"artifactRoot\":\"oczvy\",\"authentication\":{\"type\":\"Authentication\"}},\"location\":\"fqrvkdvjsllrmvvd\",\"tags\":{\"pnpulexxbczwtru\":\"t\",\"vsovmyokac\":\"iqzbq\"},\"id\":\"pkwlhz\",\"name\":\"obpxjmflbvvn\",\"type\":\"hrk\"}")
-                .toObject(ArtifactSourceInner.class);
+        ArtifactSourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"sourceType\":\"udxorrqn\",\"artifactRoot\":\"oczvy\",\"authentication\":{\"type\":\"Authentication\"}},\"location\":\"fqrvkdvjsllrmvvd\",\"tags\":{\"pnpulexxbczwtru\":\"t\",\"vsovmyokac\":\"iqzbq\"},\"id\":\"pkwlhz\",\"name\":\"obpxjmflbvvn\",\"type\":\"hrk\"}")
+            .toObject(ArtifactSourceInner.class);
         Assertions.assertEquals("fqrvkdvjsllrmvvd", model.location());
         Assertions.assertEquals("t", model.tags().get("pnpulexxbczwtru"));
         Assertions.assertEquals("udxorrqn", model.sourceType());
@@ -27,13 +25,11 @@ public final class ArtifactSourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactSourceInner model =
-            new ArtifactSourceInner()
-                .withLocation("fqrvkdvjsllrmvvd")
-                .withTags(mapOf("pnpulexxbczwtru", "t", "vsovmyokac", "iqzbq"))
-                .withSourceType("udxorrqn")
-                .withArtifactRoot("oczvy")
-                .withAuthentication(new Authentication());
+        ArtifactSourceInner model = new ArtifactSourceInner().withLocation("fqrvkdvjsllrmvvd")
+            .withTags(mapOf("pnpulexxbczwtru", "t", "vsovmyokac", "iqzbq"))
+            .withSourceType("udxorrqn")
+            .withArtifactRoot("oczvy")
+            .withAuthentication(new Authentication());
         model = BinaryData.fromObject(model).toObject(ArtifactSourceInner.class);
         Assertions.assertEquals("fqrvkdvjsllrmvvd", model.location());
         Assertions.assertEquals("t", model.tags().get("pnpulexxbczwtru"));

@@ -22,7 +22,8 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
     private String text;
 
     /*
-     * A double value representing the relevance of the sentence within the summary. Higher values indicate higher importance.
+     * A double value representing the relevance of the sentence within the summary. Higher values indicate higher
+     * importance.
      */
     private double rankScore;
 

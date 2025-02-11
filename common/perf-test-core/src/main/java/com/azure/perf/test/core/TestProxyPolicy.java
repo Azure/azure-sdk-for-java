@@ -85,13 +85,13 @@ public class TestProxyPolicy implements HttpPipelinePolicy {
 
             // Ensure x-recording-upstream-base-uri header is only set once, since the same HttpRequest may be reused on retries
             if (request.getHeaders().get("x-recording-upstream-base-uri") == null) {
-                URI baseUri = new URI(requestUri.getScheme(), requestUri.getUserInfo(), requestUri.getHost(), requestUri.getPort(),
-                        null, null, null);
+                URI baseUri = new URI(requestUri.getScheme(), requestUri.getUserInfo(), requestUri.getHost(),
+                    requestUri.getPort(), null, null, null);
                 request.setHeader("x-recording-upstream-base-uri", baseUri.toString());
             }
 
             URI testProxyUri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(),
-                    requestUri.getPath(), requestUri.getQuery(), requestUri.getFragment());
+                requestUri.getPath(), requestUri.getQuery(), requestUri.getFragment());
             request.setUrl(testProxyUri.toURL());
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);

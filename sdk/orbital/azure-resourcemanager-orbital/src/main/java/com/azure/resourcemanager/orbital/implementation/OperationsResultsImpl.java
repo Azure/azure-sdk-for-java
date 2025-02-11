@@ -18,8 +18,8 @@ public final class OperationsResultsImpl implements OperationsResults {
 
     private final com.azure.resourcemanager.orbital.OrbitalManager serviceManager;
 
-    public OperationsResultsImpl(
-        OperationsResultsClient innerClient, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
+    public OperationsResultsImpl(OperationsResultsClient innerClient,
+        com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

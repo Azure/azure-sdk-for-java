@@ -62,7 +62,8 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      * @return the errors value.
      */
     public List<ResponseError> getErrors() {
-        return this.errors.stream().map(e -> new ResponseError(e.getCode(), e.getMessage()))
+        return this.errors.stream()
+            .map(e -> new ResponseError(e.getCode(), e.getMessage()))
             .collect(Collectors.toList());
     }
 
@@ -133,6 +134,9 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

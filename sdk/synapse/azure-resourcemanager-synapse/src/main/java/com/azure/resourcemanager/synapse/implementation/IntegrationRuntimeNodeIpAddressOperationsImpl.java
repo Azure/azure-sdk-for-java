@@ -20,38 +20,28 @@ public final class IntegrationRuntimeNodeIpAddressOperationsImpl implements Inte
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public IntegrationRuntimeNodeIpAddressOperationsImpl(
-        IntegrationRuntimeNodeIpAddressOperationsClient innerClient,
+    public IntegrationRuntimeNodeIpAddressOperationsImpl(IntegrationRuntimeNodeIpAddressOperationsClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<IntegrationRuntimeNodeIpAddress> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context) {
-        Response<IntegrationRuntimeNodeIpAddressInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, nodeName, context);
+    public Response<IntegrationRuntimeNodeIpAddress> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName, Context context) {
+        Response<IntegrationRuntimeNodeIpAddressInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, nodeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IntegrationRuntimeNodeIpAddressImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public IntegrationRuntimeNodeIpAddress get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName) {
-        IntegrationRuntimeNodeIpAddressInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName, nodeName);
+    public IntegrationRuntimeNodeIpAddress get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName) {
+        IntegrationRuntimeNodeIpAddressInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName, nodeName);
         if (inner != null) {
             return new IntegrationRuntimeNodeIpAddressImpl(inner, this.manager());
         } else {

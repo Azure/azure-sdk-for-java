@@ -22,7 +22,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"zzjgehkfki\",\"isDataAction\":false,\"display\":{\"provider\":\"okffqyinljqepqwh\",\"resource\":\"monstshiyxgve\",\"operation\":\"clduc\",\"description\":\"irdsvuwcob\"},\"origin\":\"gstmninwjizciln\",\"nextLink\":\"gshejjtbxqmulux\"}]}";
+            = "{\"value\":[{\"name\":\"whixmonstsh\",\"isDataAction\":true,\"display\":{\"provider\":\"elfclducc\",\"resource\":\"rds\",\"operation\":\"wcobie\",\"description\":\"tmninw\"},\"origin\":\"zcilnghg\",\"nextLink\":\"ejjtbxqmul\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class OperationsListMockTests {
 
         PagedIterable<OperationResult> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zzjgehkfki", response.iterator().next().name());
-        Assertions.assertEquals(false, response.iterator().next().isDataAction());
-        Assertions.assertEquals("okffqyinljqepqwh", response.iterator().next().display().provider());
-        Assertions.assertEquals("monstshiyxgve", response.iterator().next().display().resource());
-        Assertions.assertEquals("clduc", response.iterator().next().display().operation());
-        Assertions.assertEquals("irdsvuwcob", response.iterator().next().display().description());
-        Assertions.assertEquals("gstmninwjizciln", response.iterator().next().origin());
-        Assertions.assertEquals("gshejjtbxqmulux", response.iterator().next().nextLink());
+        Assertions.assertEquals("whixmonstsh", response.iterator().next().name());
+        Assertions.assertEquals(true, response.iterator().next().isDataAction());
+        Assertions.assertEquals("elfclducc", response.iterator().next().display().provider());
+        Assertions.assertEquals("rds", response.iterator().next().display().resource());
+        Assertions.assertEquals("wcobie", response.iterator().next().display().operation());
+        Assertions.assertEquals("tmninw", response.iterator().next().display().description());
+        Assertions.assertEquals("zcilnghg", response.iterator().next().origin());
+        Assertions.assertEquals("ejjtbxqmul", response.iterator().next().nextLink());
     }
 }

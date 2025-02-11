@@ -226,6 +226,14 @@ public final class ParallelTransferOptions {
     }
 
     /**
+     * Sets the maximum number of parallel requests that will be issued at any given time as a part of
+     * a single parallel transfer. This value applies per api. For example, if two calls to uploadFromFile are made at
+     * the same time, and each specifies a maxConcurrency of 5, there may be up to 10 outstanding, concurrent requests,
+     * up to 5 for each of the upload operations. For buffered uploads only, the maximum number of buffers to be
+     * allocated as part of the transfer will be {@code maxConcurrency + 1}. In those cases, memory will be allocated
+     * lazily as needed. The amount of memory consumed by methods which buffer may be up to blockSize * maxConcurrency.
+     * In general, upload methods which do not accept a length parameter must perform some buffering.
+     *
      * @param maxConcurrency The maximum number of parallel requests that will be issued at any given time as a part of
      * a single parallel transfer. This value applies per api. For example, if two calls to uploadFromFile are made at
      * the same time, and each specifies a maxConcurrency of 5, there may be up to 10 outstanding, concurrent requests,

@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.util.TestCompatibilityUtils.invokeBuildKafkaProperties;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests<KafkaBinderConfigurationProperties, KafkaBinderConfigurationPropertiesBeanPostProcessor> {
 
     AzureKafkaOAuth2BinderConfigurationTests() {
-        super(new KafkaBinderConfigurationPropertiesBeanPostProcessor(new AzureGlobalProperties()));
+        super(new KafkaBinderConfigurationPropertiesBeanPostProcessor());
     }
 
     private final ApplicationContextRunner contextRunnerWithoutEventHubsURL = new ApplicationContextRunner()
@@ -146,7 +147,6 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                 });
     }
 
-    @SuppressWarnings("removal")
     @Test
     void testNotBindBinderPropertiesOnBoot() {
         getContextRunnerWithEventHubsURL()
@@ -158,11 +158,11 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
             .run(context -> {
                 KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
                 assertFalse(kafkaProperties.getProperties().containsKey("azure.credential.client-id"));
-                assertFalse(kafkaProperties.buildConsumerProperties().containsKey("azure.credential.client-id"));
+                assertFalse(invokeBuildKafkaProperties(kafkaProperties, "buildConsumerProperties").containsKey("azure.credential.client-id"));
                 assertFalse(kafkaProperties.getProducer().getProperties().get(SASL_JAAS_CONFIG).contains("azure.credential.client-id"));
-                assertFalse(kafkaProperties.buildProducerProperties().containsKey("azure.credential.client-id"));
+                assertFalse(invokeBuildKafkaProperties(kafkaProperties, "buildProducerProperties").containsKey("azure.credential.client-id"));
                 assertFalse(kafkaProperties.getConsumer().getProperties().get(SASL_JAAS_CONFIG).contains("azure.credential.client-id"));
-                assertFalse(kafkaProperties.buildAdminProperties().containsKey("azure.credential.client-id"));
+                assertFalse(invokeBuildKafkaProperties(kafkaProperties, "buildAdminProperties").containsKey("azure.credential.client-id"));
                 assertFalse(kafkaProperties.getAdmin().getProperties().get(SASL_JAAS_CONFIG).contains("azure.credential.client-id"));
             });
     }

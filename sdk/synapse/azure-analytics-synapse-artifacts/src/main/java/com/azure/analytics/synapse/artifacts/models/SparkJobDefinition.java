@@ -49,7 +49,8 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
     private SparkJobProperties jobProperties;
 
     /*
-     * The folder that this Spark job definition is in. If not specified, this Spark job definition will appear at the root level.
+     * The folder that this Spark job definition is in. If not specified, this Spark job definition will appear at the
+     * root level.
      */
     private SparkJobDefinitionFolder folder;
 

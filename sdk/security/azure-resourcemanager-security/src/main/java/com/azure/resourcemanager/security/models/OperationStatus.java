@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * A status describing the success/failure of the enablement/disablement operation.
+ * A status describing the success/failure of the extension's enablement/disablement operation.
  */
 @Fluent
-public final class OperationStatus {
+public final class OperationStatus implements JsonSerializable<OperationStatus> {
     /*
      * The operation status code.
      */
-    @JsonProperty(value = "code")
-    private String code;
+    private Code code;
 
     /*
      * Additional information regarding the success/failure of the operation.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -35,7 +37,7 @@ public final class OperationStatus {
      * 
      * @return the code value.
      */
-    public String code() {
+    public Code code() {
         return this.code;
     }
 
@@ -45,7 +47,7 @@ public final class OperationStatus {
      * @param code the code value to set.
      * @return the OperationStatus object itself.
      */
-    public OperationStatus withCode(String code) {
+    public OperationStatus withCode(Code code) {
         this.code = code;
         return this;
     }
@@ -76,5 +78,44 @@ public final class OperationStatus {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code == null ? null : this.code.toString());
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationStatus.
+     */
+    public static OperationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatus deserializedOperationStatus = new OperationStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedOperationStatus.code = Code.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedOperationStatus.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatus;
+        });
     }
 }

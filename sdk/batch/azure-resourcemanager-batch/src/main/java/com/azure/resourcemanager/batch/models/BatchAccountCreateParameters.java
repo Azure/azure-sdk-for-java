@@ -6,9 +6,12 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountCreateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,30 +19,25 @@ import java.util.Map;
  * Parameters supplied to the Create operation.
  */
 @Fluent
-public final class BatchAccountCreateParameters {
+public final class BatchAccountCreateParameters implements JsonSerializable<BatchAccountCreateParameters> {
     /*
      * The region in which to create the account.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * The user-specified tags associated with the account.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The properties of the Batch account.
      */
-    @JsonProperty(value = "properties")
     private BatchAccountCreateProperties innerProperties;
 
     /*
      * The identity of the Batch account.
      */
-    @JsonProperty(value = "identity")
     private BatchAccountIdentity identity;
 
     /**
@@ -142,8 +140,8 @@ public final class BatchAccountCreateParameters {
 
     /**
      * Get the poolAllocationMode property: The pool allocation mode also affects how clients may authenticate to the
-     * Batch Service API. If the mode is BatchService, clients may authenticate using access keys or Microsoft Entra
-     * ID. If the mode is UserSubscription, clients must use Microsoft Entra ID. The default is BatchService.
+     * Batch Service API. If the mode is BatchService, clients may authenticate using access keys or Microsoft Entra ID.
+     * If the mode is UserSubscription, clients must use Microsoft Entra ID. The default is BatchService.
      * 
      * @return the poolAllocationMode value.
      */
@@ -153,8 +151,8 @@ public final class BatchAccountCreateParameters {
 
     /**
      * Set the poolAllocationMode property: The pool allocation mode also affects how clients may authenticate to the
-     * Batch Service API. If the mode is BatchService, clients may authenticate using access keys or Microsoft Entra
-     * ID. If the mode is UserSubscription, clients must use Microsoft Entra ID. The default is BatchService.
+     * Batch Service API. If the mode is BatchService, clients may authenticate using access keys or Microsoft Entra ID.
+     * If the mode is UserSubscription, clients must use Microsoft Entra ID. The default is BatchService.
      * 
      * @param poolAllocationMode the poolAllocationMode value to set.
      * @return the BatchAccountCreateParameters object itself.
@@ -296,8 +294,9 @@ public final class BatchAccountCreateParameters {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property location in model BatchAccountCreateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model BatchAccountCreateParameters"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -308,4 +307,52 @@ public final class BatchAccountCreateParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BatchAccountCreateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchAccountCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchAccountCreateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchAccountCreateParameters.
+     */
+    public static BatchAccountCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchAccountCreateParameters deserializedBatchAccountCreateParameters = new BatchAccountCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedBatchAccountCreateParameters.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBatchAccountCreateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBatchAccountCreateParameters.innerProperties
+                        = BatchAccountCreateProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedBatchAccountCreateParameters.identity = BatchAccountIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchAccountCreateParameters;
+        });
+    }
 }

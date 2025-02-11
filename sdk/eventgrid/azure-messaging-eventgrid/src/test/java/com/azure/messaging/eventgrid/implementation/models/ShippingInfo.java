@@ -23,9 +23,6 @@ public class ShippingInfo implements JsonSerializable<ShippingInfo> {
         return this.shipmentId;
     }
 
-
-
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

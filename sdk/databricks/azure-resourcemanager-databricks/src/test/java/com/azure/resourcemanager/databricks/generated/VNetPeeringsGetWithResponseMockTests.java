@@ -6,67 +6,41 @@ package com.azure.resourcemanager.databricks.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databricks.AzureDatabricksManager;
 import com.azure.resourcemanager.databricks.models.VirtualNetworkPeering;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class VNetPeeringsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":false,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"znud\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"xzb\",\"cblylpstdbhhxsr\"]},\"remoteVirtualNetwork\":{\"id\":\"zucerscdntnev\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"mygtdssls\",\"tmweriofzpyq\",\"emwabnet\",\"hhszh\"]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Failed\"},\"id\":\"wiwubm\",\"name\":\"mbes\",\"type\":\"dnkwwtppjflcxog\"}";
 
-        String responseStr =
-            "{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"iuqgbdbutauv\"},\"databricksAddressSpace\":{\"addressPrefixes\":[]},\"remoteVirtualNetwork\":{\"id\":\"uwhhmhykojoxafn\"},\"remoteAddressSpace\":{\"addressPrefixes\":[]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Deleting\"},\"id\":\"koymkcd\",\"name\":\"h\",\"type\":\"pkkpw\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AzureDatabricksManager manager = AzureDatabricksManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        VirtualNetworkPeering response = manager.vNetPeerings()
+            .getWithResponse("qlfmmdnbb", "lzpswiydm", "wyhzdx", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        AzureDatabricksManager manager =
-            AzureDatabricksManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        VirtualNetworkPeering response =
-            manager.vNetPeerings().getWithResponse("waasip", "i", "obyu", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals(false, response.allowVirtualNetworkAccess());
+        Assertions.assertEquals(true, response.allowVirtualNetworkAccess());
         Assertions.assertEquals(true, response.allowForwardedTraffic());
-        Assertions.assertEquals(true, response.allowGatewayTransit());
+        Assertions.assertEquals(false, response.allowGatewayTransit());
         Assertions.assertEquals(true, response.useRemoteGateways());
-        Assertions.assertEquals("iuqgbdbutauv", response.databricksVirtualNetwork().id());
-        Assertions.assertEquals("uwhhmhykojoxafn", response.remoteVirtualNetwork().id());
+        Assertions.assertEquals("znud", response.databricksVirtualNetwork().id());
+        Assertions.assertEquals("xzb", response.databricksAddressSpace().addressPrefixes().get(0));
+        Assertions.assertEquals("zucerscdntnev", response.remoteVirtualNetwork().id());
+        Assertions.assertEquals("mygtdssls", response.remoteAddressSpace().addressPrefixes().get(0));
     }
 }

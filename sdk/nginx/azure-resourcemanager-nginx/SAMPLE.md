@@ -38,7 +38,8 @@ import com.azure.resourcemanager.nginx.models.NginxCertificateProperties;
  */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_CreateOrUpdate.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/
+     * Certificates_CreateOrUpdate.json
      */
     /**
      * Sample code: Certificates_CreateOrUpdate.
@@ -65,7 +66,8 @@ public final class CertificatesCreateOrUpdateSamples {
  */
 public final class CertificatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_Delete.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_Delete.json
      */
     /**
      * Sample code: Certificates_Delete.
@@ -86,7 +88,8 @@ public final class CertificatesDeleteSamples {
  */
 public final class CertificatesGetSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_Get.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_Get.json
      */
     /**
      * Sample code: Certificates_Get.
@@ -108,7 +111,8 @@ public final class CertificatesGetSamples {
  */
 public final class CertificatesListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_List.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_List.json
      */
     /**
      * Sample code: Certificates_List.
@@ -135,7 +139,9 @@ import java.util.Arrays;
  */
 public final class ConfigurationsAnalysisSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Analysis.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Analysis.
+     * json
      */
     /**
      * Sample code: Configurations_Analysis.
@@ -167,7 +173,8 @@ import java.util.Arrays;
  */
 public final class ConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_CreateOrUpdate.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/
+     * Configurations_CreateOrUpdate.json
      */
     /**
      * Sample code: Configurations_CreateOrUpdate.
@@ -196,7 +203,9 @@ public final class ConfigurationsCreateOrUpdateSamples {
  */
 public final class ConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Delete.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Delete.
+     * json
      */
     /**
      * Sample code: Configurations_Delete.
@@ -217,7 +226,8 @@ public final class ConfigurationsDeleteSamples {
  */
 public final class ConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Get.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Get.json
      */
     /**
      * Sample code: Configurations_Get.
@@ -239,7 +249,8 @@ public final class ConfigurationsGetSamples {
  */
 public final class ConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_List.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_List.json
      */
     /**
      * Sample code: Configurations_List.
@@ -274,7 +285,8 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Create.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Create.json
      */
     /**
      * Sample code: Deployments_Create.
@@ -327,7 +339,8 @@ public final class DeploymentsCreateOrUpdateSamples {
  */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Delete.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Delete.json
      */
     /**
      * Sample code: Deployments_Delete.
@@ -348,7 +361,8 @@ public final class DeploymentsDeleteSamples {
  */
 public final class DeploymentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get.json
      */
     /**
      * Sample code: Deployments_Get.
@@ -361,7 +375,8 @@ public final class DeploymentsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get_AutoScale.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/
+     * Deployments_Get_AutoScale.json
      */
     /**
      * Sample code: Deployments_Get_AutoScale.
@@ -383,7 +398,8 @@ public final class DeploymentsGetByResourceGroupSamples {
  */
 public final class DeploymentsListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_List.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_List.json
      */
     /**
      * Sample code: Deployments_List.
@@ -404,7 +420,8 @@ public final class DeploymentsListSamples {
  */
 public final class DeploymentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_ListByResourceGroup.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/
+     * Deployments_ListByResourceGroup.json
      */
     /**
      * Sample code: Deployments_ListByResourceGroup.
@@ -429,7 +446,8 @@ import java.util.Map;
  */
 public final class DeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Update.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Update.json
      */
     /**
      * Sample code: Deployments_Update.
@@ -465,7 +483,8 @@ public final class DeploymentsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

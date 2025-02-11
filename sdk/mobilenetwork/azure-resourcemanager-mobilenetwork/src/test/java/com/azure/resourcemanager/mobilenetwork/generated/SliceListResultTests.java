@@ -17,40 +17,37 @@ public final class SliceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SliceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"snssai\":{\"sst\":822408153,\"sd\":\"nwm\"},\"description\":\"mvpdvjdhttzaef\"},\"location\":\"x\",\"tags\":{\"dfzpbgtgkylkdg\":\"hrphkmcrjdqn\"},\"id\":\"rjeuut\",\"name\":\"wxezwzhok\",\"type\":\"bwnhhtql\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":2037950734,\"sd\":\"pipifh\"},\"description\":\"e\"},\"location\":\"jvgcxtx\",\"tags\":{\"gsresmkssj\":\"heafidlt\",\"tillucbiqtg\":\"oiftxfkfwegprh\"},\"id\":\"q\",\"name\":\"hm\",\"type\":\"wsldrizetpwbr\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"snssai\":{\"sst\":1155046174,\"sd\":\"bphbqzmizakakank\"},\"description\":\"dnjzh\"},\"location\":\"oylhjlmuoyxprimr\",\"tags\":{\"asylwx\":\"teecjmeislst\",\"eoohguufuzboyj\":\"zaum\"},\"id\":\"thwtzol\",\"name\":\"a\",\"type\":\"mwmdxmebwjscjpa\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"snssai\":{\"sst\":1860405842,\"sd\":\"a\"},\"description\":\"qxnmwmqt\"},\"location\":\"xyi\",\"tags\":{\"mrsieekp\":\"tvqcttadijaeu\"},\"id\":\"dzaapmudqme\",\"name\":\"wig\",\"type\":\"ibudqwy\"}],\"nextLink\":\"beybpmzznrtffyaq\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"snssai\":{\"sst\":1738814564,\"sd\":\"dvruzslzojhpctf\"},\"description\":\"dxotng\"},\"location\":\"gugey\",\"tags\":{\"jee\":\"grkyuizabsnmfpph\",\"omfgbeglqgleohib\":\"yhyhsgzfczb\"},\"id\":\"tnluankrr\",\"name\":\"xeeebtijvacvbmqz\",\"type\":\"qqxlajr\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"snssai\":{\"sst\":799727678,\"sd\":\"evehjkuyxoaf\"},\"description\":\"oqltfae\"},\"location\":\"inmfgvxirp\",\"tags\":{\"yznuciqd\":\"iypoqeyhlqhykprl\",\"asiibmiybnnust\":\"mexiitdfuxt\",\"nmgixh\":\"nlj\",\"oudorhcgyyp\":\"mavmq\"},\"id\":\"otwypundmb\",\"name\":\"hu\",\"type\":\"cmjkavlgorbmftpm\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"snssai\":{\"sst\":1730011842,\"sd\":\"ltfvnz\"},\"description\":\"jtotpvopvpbd\"},\"location\":\"qgqqihedsvqwthmk\",\"tags\":{\"qcwdhoh\":\"cysihs\",\"sufco\":\"dtmcd\"},\"id\":\"dxbzlmcmuap\",\"name\":\"vhdbevwqqxey\",\"type\":\"ko\"}],\"nextLink\":\"zinkfkbgbzbowxeq\"}")
             .toObject(SliceListResult.class);
-        Assertions.assertEquals("x", model.value().get(0).location());
-        Assertions.assertEquals("hrphkmcrjdqn", model.value().get(0).tags().get("dfzpbgtgkylkdg"));
-        Assertions.assertEquals(822408153, model.value().get(0).snssai().sst());
-        Assertions.assertEquals("nwm", model.value().get(0).snssai().sd());
-        Assertions.assertEquals("mvpdvjdhttzaef", model.value().get(0).description());
+        Assertions.assertEquals("gugey", model.value().get(0).location());
+        Assertions.assertEquals("grkyuizabsnmfpph", model.value().get(0).tags().get("jee"));
+        Assertions.assertEquals(1738814564, model.value().get(0).snssai().sst());
+        Assertions.assertEquals("dvruzslzojhpctf", model.value().get(0).snssai().sd());
+        Assertions.assertEquals("dxotng", model.value().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SliceListResult model = new SliceListResult().withValue(Arrays.asList(
-            new SliceInner().withLocation("x")
-                .withTags(mapOf("dfzpbgtgkylkdg", "hrphkmcrjdqn"))
-                .withSnssai(new Snssai().withSst(822408153).withSd("nwm"))
-                .withDescription("mvpdvjdhttzaef"),
-            new SliceInner().withLocation("jvgcxtx")
-                .withTags(mapOf("gsresmkssj", "heafidlt", "tillucbiqtg", "oiftxfkfwegprh"))
-                .withSnssai(new Snssai().withSst(2037950734).withSd("pipifh"))
-                .withDescription("e"),
-            new SliceInner().withLocation("oylhjlmuoyxprimr")
-                .withTags(mapOf("asylwx", "teecjmeislst", "eoohguufuzboyj", "zaum"))
-                .withSnssai(new Snssai().withSst(1155046174).withSd("bphbqzmizakakank"))
-                .withDescription("dnjzh"),
-            new SliceInner().withLocation("xyi")
-                .withTags(mapOf("mrsieekp", "tvqcttadijaeu"))
-                .withSnssai(new Snssai().withSst(1860405842).withSd("a"))
-                .withDescription("qxnmwmqt")));
+            new SliceInner().withLocation("gugey")
+                .withTags(mapOf("jee", "grkyuizabsnmfpph", "omfgbeglqgleohib", "yhyhsgzfczb"))
+                .withSnssai(new Snssai().withSst(1738814564).withSd("dvruzslzojhpctf"))
+                .withDescription("dxotng"),
+            new SliceInner().withLocation("inmfgvxirp")
+                .withTags(mapOf("yznuciqd", "iypoqeyhlqhykprl", "asiibmiybnnust", "mexiitdfuxt", "nmgixh", "nlj",
+                    "oudorhcgyyp", "mavmq"))
+                .withSnssai(new Snssai().withSst(799727678).withSd("evehjkuyxoaf"))
+                .withDescription("oqltfae"),
+            new SliceInner().withLocation("qgqqihedsvqwthmk")
+                .withTags(mapOf("qcwdhoh", "cysihs", "sufco", "dtmcd"))
+                .withSnssai(new Snssai().withSst(1730011842).withSd("ltfvnz"))
+                .withDescription("jtotpvopvpbd")));
         model = BinaryData.fromObject(model).toObject(SliceListResult.class);
-        Assertions.assertEquals("x", model.value().get(0).location());
-        Assertions.assertEquals("hrphkmcrjdqn", model.value().get(0).tags().get("dfzpbgtgkylkdg"));
-        Assertions.assertEquals(822408153, model.value().get(0).snssai().sst());
-        Assertions.assertEquals("nwm", model.value().get(0).snssai().sd());
-        Assertions.assertEquals("mvpdvjdhttzaef", model.value().get(0).description());
+        Assertions.assertEquals("gugey", model.value().get(0).location());
+        Assertions.assertEquals("grkyuizabsnmfpph", model.value().get(0).tags().get("jee"));
+        Assertions.assertEquals(1738814564, model.value().get(0).snssai().sst());
+        Assertions.assertEquals("dvruzslzojhpctf", model.value().get(0).snssai().sd());
+        Assertions.assertEquals("dxotng", model.value().get(0).description());
     }
 
     // Use "Map.of" if available

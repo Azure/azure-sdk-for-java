@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.datalakeanalytics.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The current state of the NestedResourceProvisioning for this account. */
+/**
+ * The current state of the NestedResourceProvisioning for this account.
+ */
 public enum NestedResourceProvisioningState {
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Canceled. */
+    /**
+     * Enum value Canceled.
+     */
     CANCELED("Canceled"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed");
 
-    /** The actual serialized value for a NestedResourceProvisioningState instance. */
+    /**
+     * The actual serialized value for a NestedResourceProvisioningState instance.
+     */
     private final String value;
 
     NestedResourceProvisioningState(String value) {
@@ -27,11 +34,10 @@ public enum NestedResourceProvisioningState {
 
     /**
      * Parses a serialized value to a NestedResourceProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed NestedResourceProvisioningState object, or null if unable to parse.
      */
-    @JsonCreator
     public static NestedResourceProvisioningState fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum NestedResourceProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network Properties.
  */
 @Fluent
-public final class NetworkProperties {
+public final class NetworkProperties implements JsonSerializable<NetworkProperties> {
     /*
      * The Fabric Type.
      */
-    @JsonProperty(value = "fabricType")
     private String fabricType;
 
     /*
      * The List of subnets.
      */
-    @JsonProperty(value = "subnets")
     private List<Subnet> subnets;
 
     /*
      * The Friendly Name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The Network Type.
      */
-    @JsonProperty(value = "networkType")
     private String networkType;
 
     /**
@@ -132,5 +132,51 @@ public final class NetworkProperties {
         if (subnets() != null) {
             subnets().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fabricType", this.fabricType);
+        jsonWriter.writeArrayField("subnets", this.subnets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("networkType", this.networkType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkProperties.
+     */
+    public static NetworkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProperties deserializedNetworkProperties = new NetworkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fabricType".equals(fieldName)) {
+                    deserializedNetworkProperties.fabricType = reader.getString();
+                } else if ("subnets".equals(fieldName)) {
+                    List<Subnet> subnets = reader.readArray(reader1 -> Subnet.fromJson(reader1));
+                    deserializedNetworkProperties.subnets = subnets;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedNetworkProperties.friendlyName = reader.getString();
+                } else if ("networkType".equals(fieldName)) {
+                    deserializedNetworkProperties.networkType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProperties;
+        });
     }
 }

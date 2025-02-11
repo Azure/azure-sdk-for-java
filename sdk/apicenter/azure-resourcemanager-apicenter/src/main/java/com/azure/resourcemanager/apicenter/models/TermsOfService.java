@@ -6,17 +6,20 @@ package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Terms of service for the API.
  */
 @Fluent
-public final class TermsOfService {
+public final class TermsOfService implements JsonSerializable<TermsOfService> {
     /*
      * URL pointing to the terms of service.
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
     /**
@@ -52,10 +55,47 @@ public final class TermsOfService {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model TermsOfService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model TermsOfService"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TermsOfService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TermsOfService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TermsOfService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TermsOfService.
+     */
+    public static TermsOfService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TermsOfService deserializedTermsOfService = new TermsOfService();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedTermsOfService.url = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTermsOfService;
+        });
+    }
 }

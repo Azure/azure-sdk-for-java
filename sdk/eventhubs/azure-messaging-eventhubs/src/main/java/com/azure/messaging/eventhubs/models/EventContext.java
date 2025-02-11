@@ -37,8 +37,8 @@ public class EventContext {
      * {@code null}.
      * @throws NullPointerException If {@code partitionContext}, {@code eventData} or {@code checkpointStore} is null.
      */
-    public EventContext(PartitionContext partitionContext, EventData eventData,
-        CheckpointStore checkpointStore, LastEnqueuedEventProperties lastEnqueuedEventProperties) {
+    public EventContext(PartitionContext partitionContext, EventData eventData, CheckpointStore checkpointStore,
+        LastEnqueuedEventProperties lastEnqueuedEventProperties) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null.");
         this.eventData = eventData;
         this.checkpointStore = Objects.requireNonNull(checkpointStore, "'checkpointStore' cannot be null.");
@@ -88,13 +88,13 @@ public class EventContext {
         if (eventData == null) {
             return Mono.empty();
         }
-        Checkpoint checkpoint = new Checkpoint()
-            .setFullyQualifiedNamespace(partitionContext.getFullyQualifiedNamespace())
-            .setEventHubName(partitionContext.getEventHubName())
-            .setConsumerGroup(partitionContext.getConsumerGroup())
-            .setPartitionId(partitionContext.getPartitionId())
-            .setSequenceNumber(eventData.getSequenceNumber())
-            .setOffset(eventData.getOffset());
+        Checkpoint checkpoint
+            = new Checkpoint().setFullyQualifiedNamespace(partitionContext.getFullyQualifiedNamespace())
+                .setEventHubName(partitionContext.getEventHubName())
+                .setConsumerGroup(partitionContext.getConsumerGroup())
+                .setPartitionId(partitionContext.getPartitionId())
+                .setSequenceNumber(eventData.getSequenceNumber())
+                .setOffset(eventData.getOffset());
         return this.checkpointStore.updateCheckpoint(checkpoint);
     }
 

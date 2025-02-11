@@ -9,7 +9,8 @@ package com.azure.resourcemanager.frontdoor.generated;
  */
 public final class PoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyDelete.json
+     * x-ms-original-file:
+     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyDelete.json
      */
     /**
      * Sample code: Delete protection policy.

@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Tracking courier information. */
+/**
+ * Tracking courier information.
+ */
 @Fluent
-public final class TrackingInfo {
+public final class TrackingInfo implements JsonSerializable<TrackingInfo> {
     /*
      * Serial number of the device being tracked.
      */
-    @JsonProperty(value = "serialNumber")
     private String serialNumber;
 
     /*
      * Name of the carrier used in the delivery.
      */
-    @JsonProperty(value = "carrierName")
     private String carrierName;
 
     /*
      * Tracking ID of the shipment.
      */
-    @JsonProperty(value = "trackingId")
     private String trackingId;
 
     /*
      * Tracking URL of the shipment.
      */
-    @JsonProperty(value = "trackingUrl")
     private String trackingUrl;
 
-    /** Creates an instance of TrackingInfo class. */
+    /**
+     * Creates an instance of TrackingInfo class.
+     */
     public TrackingInfo() {
     }
 
     /**
      * Get the serialNumber property: Serial number of the device being tracked.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -49,7 +53,7 @@ public final class TrackingInfo {
 
     /**
      * Set the serialNumber property: Serial number of the device being tracked.
-     *
+     * 
      * @param serialNumber the serialNumber value to set.
      * @return the TrackingInfo object itself.
      */
@@ -60,7 +64,7 @@ public final class TrackingInfo {
 
     /**
      * Get the carrierName property: Name of the carrier used in the delivery.
-     *
+     * 
      * @return the carrierName value.
      */
     public String carrierName() {
@@ -69,7 +73,7 @@ public final class TrackingInfo {
 
     /**
      * Set the carrierName property: Name of the carrier used in the delivery.
-     *
+     * 
      * @param carrierName the carrierName value to set.
      * @return the TrackingInfo object itself.
      */
@@ -80,7 +84,7 @@ public final class TrackingInfo {
 
     /**
      * Get the trackingId property: Tracking ID of the shipment.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -89,7 +93,7 @@ public final class TrackingInfo {
 
     /**
      * Set the trackingId property: Tracking ID of the shipment.
-     *
+     * 
      * @param trackingId the trackingId value to set.
      * @return the TrackingInfo object itself.
      */
@@ -100,7 +104,7 @@ public final class TrackingInfo {
 
     /**
      * Get the trackingUrl property: Tracking URL of the shipment.
-     *
+     * 
      * @return the trackingUrl value.
      */
     public String trackingUrl() {
@@ -109,7 +113,7 @@ public final class TrackingInfo {
 
     /**
      * Set the trackingUrl property: Tracking URL of the shipment.
-     *
+     * 
      * @param trackingUrl the trackingUrl value to set.
      * @return the TrackingInfo object itself.
      */
@@ -120,9 +124,54 @@ public final class TrackingInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeStringField("carrierName", this.carrierName);
+        jsonWriter.writeStringField("trackingId", this.trackingId);
+        jsonWriter.writeStringField("trackingUrl", this.trackingUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrackingInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrackingInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrackingInfo.
+     */
+    public static TrackingInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrackingInfo deserializedTrackingInfo = new TrackingInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serialNumber".equals(fieldName)) {
+                    deserializedTrackingInfo.serialNumber = reader.getString();
+                } else if ("carrierName".equals(fieldName)) {
+                    deserializedTrackingInfo.carrierName = reader.getString();
+                } else if ("trackingId".equals(fieldName)) {
+                    deserializedTrackingInfo.trackingId = reader.getString();
+                } else if ("trackingUrl".equals(fieldName)) {
+                    deserializedTrackingInfo.trackingUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrackingInfo;
+        });
     }
 }

@@ -39,6 +39,9 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
         return this.modelId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

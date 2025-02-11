@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = ApplicationDataClientBuilder.class, isAsync = true)
 public final class ApplicationDataAsyncClient {
-    @Generated private final ApplicationDatasImpl serviceClient;
+    @Generated
+    private final ApplicationDatasImpl serviceClient;
 
     /**
      * Initializes an instance of ApplicationDataAsyncClient class.
@@ -161,8 +162,8 @@ public final class ApplicationDataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String applicationDataId, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String applicationDataId, RequestOptions requestOptions) {
         return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, applicationDataId, requestOptions);
     }
 
@@ -199,8 +200,8 @@ public final class ApplicationDataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -352,8 +353,8 @@ public final class ApplicationDataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String partyId, String applicationDataId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String applicationDataId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(partyId, applicationDataId, requestOptions);
     }
 
@@ -452,10 +453,10 @@ public final class ApplicationDataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId, String applicationDataId, BinaryData applicationData, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(
-                partyId, applicationDataId, applicationData, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String applicationDataId,
+        BinaryData applicationData, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, applicationDataId, applicationData,
+            requestOptions);
     }
 
     /**
@@ -472,8 +473,8 @@ public final class ApplicationDataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String partyId, String applicationDataId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponse(String partyId, String applicationDataId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(partyId, applicationDataId, requestOptions);
     }
 }

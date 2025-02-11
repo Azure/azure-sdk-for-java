@@ -49,7 +49,8 @@ public class CopyActivity extends ExecutionActivity {
     private Object translator;
 
     /*
-     * Specifies whether to copy data via an interim staging. Default value is false. Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to copy data via an interim staging. Default value is false. Type: boolean (or Expression with
+     * resultType boolean).
      */
     private Object enableStaging;
 
@@ -59,12 +60,14 @@ public class CopyActivity extends ExecutionActivity {
     private StagingSettings stagingSettings;
 
     /*
-     * Maximum number of concurrent sessions opened on the source or sink to avoid overloading the data store. Type: integer (or Expression with resultType integer), minimum: 0.
+     * Maximum number of concurrent sessions opened on the source or sink to avoid overloading the data store. Type:
+     * integer (or Expression with resultType integer), minimum: 0.
      */
     private Object parallelCopies;
 
     /*
-     * Maximum number of data integration units that can be used to perform this data movement. Type: integer (or Expression with resultType integer), minimum: 0.
+     * Maximum number of data integration units that can be used to perform this data movement. Type: integer (or
+     * Expression with resultType integer), minimum: 0.
      */
     private Object dataIntegrationUnits;
 

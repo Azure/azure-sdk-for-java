@@ -6,6 +6,9 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackPropertyCompareOperation;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackPropertyCondition;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackPropertyType;
 import com.azure.resourcemanager.mediaservices.models.FilterTrackSelection;
 import com.azure.resourcemanager.mediaservices.models.FirstQuality;
 import com.azure.resourcemanager.mediaservices.models.PresentationTimeRange;
@@ -15,45 +18,52 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountFilterInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountFilterInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":3538715574200743059,\"endTimestamp\":9137662203121448244,\"presentationWindowDuration\":4843194151512815966,\"liveBackoffDuration\":2700164529170512673,\"timescale\":5204571635136599505,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":1925009977},\"tracks\":[{\"trackSelections\":[]},{\"trackSelections\":[]}]},\"id\":\"gdf\",\"name\":\"glzlhjxrifkwmrv\",\"type\":\"tsizntocipaoua\"}")
-                .toObject(AccountFilterInner.class);
-        Assertions.assertEquals(3538715574200743059L, model.presentationTimeRange().startTimestamp());
-        Assertions.assertEquals(9137662203121448244L, model.presentationTimeRange().endTimestamp());
-        Assertions.assertEquals(4843194151512815966L, model.presentationTimeRange().presentationWindowDuration());
-        Assertions.assertEquals(2700164529170512673L, model.presentationTimeRange().liveBackoffDuration());
-        Assertions.assertEquals(5204571635136599505L, model.presentationTimeRange().timescale());
-        Assertions.assertEquals(false, model.presentationTimeRange().forceEndTimestamp());
-        Assertions.assertEquals(1925009977, model.firstQuality().bitrate());
+        AccountFilterInner model = BinaryData.fromString(
+            "{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":8554549688188296084,\"endTimestamp\":678249660518233622,\"presentationWindowDuration\":4068506387778200139,\"liveBackoffDuration\":4865087054595023149,\"timescale\":6947618391209485494,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":2120506430},\"tracks\":[{\"trackSelections\":[{\"property\":\"Type\",\"value\":\"zw\",\"operation\":\"Equal\"},{\"property\":\"Unknown\",\"value\":\"jye\",\"operation\":\"NotEqual\"}]}]},\"id\":\"vnipjox\",\"name\":\"jnchgej\",\"type\":\"podmailzydehojwy\"}")
+            .toObject(AccountFilterInner.class);
+        Assertions.assertEquals(8554549688188296084L, model.presentationTimeRange().startTimestamp());
+        Assertions.assertEquals(678249660518233622L, model.presentationTimeRange().endTimestamp());
+        Assertions.assertEquals(4068506387778200139L, model.presentationTimeRange().presentationWindowDuration());
+        Assertions.assertEquals(4865087054595023149L, model.presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(6947618391209485494L, model.presentationTimeRange().timescale());
+        Assertions.assertEquals(true, model.presentationTimeRange().forceEndTimestamp());
+        Assertions.assertEquals(2120506430, model.firstQuality().bitrate());
+        Assertions.assertEquals(FilterTrackPropertyType.TYPE,
+            model.tracks().get(0).trackSelections().get(0).property());
+        Assertions.assertEquals("zw", model.tracks().get(0).trackSelections().get(0).value());
+        Assertions.assertEquals(FilterTrackPropertyCompareOperation.EQUAL,
+            model.tracks().get(0).trackSelections().get(0).operation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountFilterInner model =
-            new AccountFilterInner()
-                .withPresentationTimeRange(
-                    new PresentationTimeRange()
-                        .withStartTimestamp(3538715574200743059L)
-                        .withEndTimestamp(9137662203121448244L)
-                        .withPresentationWindowDuration(4843194151512815966L)
-                        .withLiveBackoffDuration(2700164529170512673L)
-                        .withTimescale(5204571635136599505L)
-                        .withForceEndTimestamp(false))
-                .withFirstQuality(new FirstQuality().withBitrate(1925009977))
-                .withTracks(
-                    Arrays
-                        .asList(
-                            new FilterTrackSelection().withTrackSelections(Arrays.asList()),
-                            new FilterTrackSelection().withTrackSelections(Arrays.asList())));
+        AccountFilterInner model = new AccountFilterInner()
+            .withPresentationTimeRange(new PresentationTimeRange().withStartTimestamp(8554549688188296084L)
+                .withEndTimestamp(678249660518233622L)
+                .withPresentationWindowDuration(4068506387778200139L)
+                .withLiveBackoffDuration(4865087054595023149L)
+                .withTimescale(6947618391209485494L)
+                .withForceEndTimestamp(true))
+            .withFirstQuality(new FirstQuality().withBitrate(2120506430))
+            .withTracks(Arrays.asList(new FilterTrackSelection().withTrackSelections(Arrays.asList(
+                new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.TYPE)
+                    .withValue("zw")
+                    .withOperation(FilterTrackPropertyCompareOperation.EQUAL),
+                new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.UNKNOWN)
+                    .withValue("jye")
+                    .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL)))));
         model = BinaryData.fromObject(model).toObject(AccountFilterInner.class);
-        Assertions.assertEquals(3538715574200743059L, model.presentationTimeRange().startTimestamp());
-        Assertions.assertEquals(9137662203121448244L, model.presentationTimeRange().endTimestamp());
-        Assertions.assertEquals(4843194151512815966L, model.presentationTimeRange().presentationWindowDuration());
-        Assertions.assertEquals(2700164529170512673L, model.presentationTimeRange().liveBackoffDuration());
-        Assertions.assertEquals(5204571635136599505L, model.presentationTimeRange().timescale());
-        Assertions.assertEquals(false, model.presentationTimeRange().forceEndTimestamp());
-        Assertions.assertEquals(1925009977, model.firstQuality().bitrate());
+        Assertions.assertEquals(8554549688188296084L, model.presentationTimeRange().startTimestamp());
+        Assertions.assertEquals(678249660518233622L, model.presentationTimeRange().endTimestamp());
+        Assertions.assertEquals(4068506387778200139L, model.presentationTimeRange().presentationWindowDuration());
+        Assertions.assertEquals(4865087054595023149L, model.presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(6947618391209485494L, model.presentationTimeRange().timescale());
+        Assertions.assertEquals(true, model.presentationTimeRange().forceEndTimestamp());
+        Assertions.assertEquals(2120506430, model.firstQuality().bitrate());
+        Assertions.assertEquals(FilterTrackPropertyType.TYPE,
+            model.tracks().get(0).trackSelections().get(0).property());
+        Assertions.assertEquals("zw", model.tracks().get(0).trackSelections().get(0).value());
+        Assertions.assertEquals(FilterTrackPropertyCompareOperation.EQUAL,
+            model.tracks().get(0).trackSelections().get(0).operation());
     }
 }

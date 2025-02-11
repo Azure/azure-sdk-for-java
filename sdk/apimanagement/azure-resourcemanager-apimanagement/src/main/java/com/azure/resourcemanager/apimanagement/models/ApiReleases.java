@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ApiReleases. */
+/**
+ * Resource collection API of ApiReleases.
+ */
 public interface ApiReleases {
     /**
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -29,13 +31,13 @@ public interface ApiReleases {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le,
-     *     eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -44,18 +46,12 @@ public interface ApiReleases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged ApiRelease list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ApiReleaseContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<ApiReleaseContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -66,12 +62,12 @@ public interface ApiReleases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ApiReleasesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, Context context);
+    ApiReleasesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, Context context);
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -84,7 +80,7 @@ public interface ApiReleases {
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -95,12 +91,12 @@ public interface ApiReleases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return apiRelease details.
      */
-    Response<ApiReleaseContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, Context context);
+    Response<ApiReleaseContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, Context context);
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -114,31 +110,31 @@ public interface ApiReleases {
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String releaseId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -147,7 +143,7 @@ public interface ApiReleases {
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,7 +154,7 @@ public interface ApiReleases {
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +166,7 @@ public interface ApiReleases {
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,10 +176,10 @@ public interface ApiReleases {
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -194,7 +190,7 @@ public interface ApiReleases {
 
     /**
      * Begins definition for a new ApiReleaseContract resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ApiReleaseContract definition.
      */

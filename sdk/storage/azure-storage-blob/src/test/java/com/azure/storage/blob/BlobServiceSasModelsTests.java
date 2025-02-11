@@ -29,8 +29,7 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
     public void blobSASPermissionsToString(boolean read, boolean write, boolean delete, boolean create, boolean add,
         boolean deleteVersion, boolean tags, boolean list, boolean move, boolean execute, boolean setImmutabilityPolicy,
         String expectedString) {
-        BlobSasPermission perms = new BlobSasPermission()
-            .setReadPermission(read)
+        BlobSasPermission perms = new BlobSasPermission().setReadPermission(read)
             .setWritePermission(write)
             .setDeletePermission(delete)
             .setCreatePermission(create)
@@ -46,8 +45,7 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> blobSASPermissionsToStringSupplier() {
-        return Stream.of(
-            Arguments.of(true, false, false, false, false, false, false, false, false, false, false, "r"),
+        return Stream.of(Arguments.of(true, false, false, false, false, false, false, false, false, false, false, "r"),
             Arguments.of(false, true, false, false, false, false, false, false, false, false, false, "w"),
             Arguments.of(false, false, true, false, false, false, false, false, false, false, false, "d"),
             Arguments.of(false, false, false, true, false, false, false, false, false, false, false, "c"),
@@ -58,8 +56,7 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
             Arguments.of(false, false, false, false, false, false, false, false, true, false, false, "m"),
             Arguments.of(false, false, false, false, false, false, false, false, false, true, false, "e"),
             Arguments.of(false, false, false, false, false, false, false, false, false, false, true, "i"),
-            Arguments.of(true, true, true, true, true, true, true, true, true, true, true, "racwdxltmei")
-            );
+            Arguments.of(true, true, true, true, true, true, true, true, true, true, true, "racwdxltmei"));
     }
 
     @ParameterizedTest
@@ -83,8 +80,7 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> blobSASPermissionsParseSupplier() {
-        return Stream.of(
-            Arguments.of(true, false, false, false, false, false, false, false, false, false, false, "r"),
+        return Stream.of(Arguments.of(true, false, false, false, false, false, false, false, false, false, false, "r"),
             Arguments.of(false, true, false, false, false, false, false, false, false, false, false, "w"),
             Arguments.of(false, false, true, false, false, false, false, false, false, false, false, "d"),
             Arguments.of(false, false, false, true, false, false, false, false, false, false, false, "c"),
@@ -96,8 +92,7 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
             Arguments.of(false, false, false, false, false, false, false, false, false, true, false, "e"),
             Arguments.of(false, false, false, false, false, false, false, false, false, false, true, "i"),
             Arguments.of(true, true, true, true, true, true, true, true, true, true, true, "racwdxltmei"),
-            Arguments.of(true, true, true, true, true, true, true, true, true, true, true, "dtcxiewlrma")
-        );
+            Arguments.of(true, true, true, true, true, true, true, true, true, true, true, "dtcxiewlrma"));
     }
 
     @Test
@@ -112,11 +107,10 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("blobSASPermissionsToStringSupplier")
-    public void containerSASPermissionsToString(boolean read, boolean write, boolean delete, boolean create, boolean add,
-        boolean deleteVersion, boolean tags, boolean list, boolean move, boolean execute, boolean setImmutabilityPolicy,
-        String expectedString) {
-        BlobContainerSasPermission perms = new BlobContainerSasPermission()
-            .setReadPermission(read)
+    public void containerSASPermissionsToString(boolean read, boolean write, boolean delete, boolean create,
+        boolean add, boolean deleteVersion, boolean tags, boolean list, boolean move, boolean execute,
+        boolean setImmutabilityPolicy, String expectedString) {
+        BlobContainerSasPermission perms = new BlobContainerSasPermission().setReadPermission(read)
             .setWritePermission(write)
             .setDeletePermission(delete)
             .setCreatePermission(create)
@@ -163,33 +157,32 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
 
     @Test
     public void blobSasImplUtilNull() {
-        OffsetDateTime e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0,
-            ZoneOffset.UTC);
+        OffsetDateTime e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         BlobSasPermission p = new BlobSasPermission().setReadPermission(true);
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues(e, p);
-        BlobSasImplUtil implUtil = new BlobSasImplUtil(v, "containerName", "blobName",
-            null, null, null);
+        BlobSasImplUtil implUtil = new BlobSasImplUtil(v, "containerName", "blobName", null, null, null);
 
-        NullPointerException ex = assertThrows(NullPointerException.class, () ->
-            implUtil.generateSas(null, Context.NONE));
+        NullPointerException ex
+            = assertThrows(NullPointerException.class, () -> implUtil.generateSas(null, Context.NONE));
         assertTrue(ex.getMessage().contains("storageSharedKeyCredential"));
 
-        ex = assertThrows(NullPointerException.class, () ->
-            implUtil.generateUserDelegationSas(null, "accountName", Context.NONE));
+        ex = assertThrows(NullPointerException.class,
+            () -> implUtil.generateUserDelegationSas(null, "accountName", Context.NONE));
         assertTrue(ex.getMessage().contains("delegationKey"));
 
-        ex = assertThrows(NullPointerException.class, () ->
-                implUtil.generateUserDelegationSas(new UserDelegationKey(), null, Context.NONE));
+        ex = assertThrows(NullPointerException.class,
+            () -> implUtil.generateUserDelegationSas(new UserDelegationKey(), null, Context.NONE));
 
         assertTrue(ex.getMessage().contains("accountName"));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void ensureStateIllegalArgument() {
         BlobServiceSasSignatureValues sasSignatureValues = new BlobServiceSasSignatureValues();
         BlobSasImplUtil implUtil = new BlobSasImplUtil(sasSignatureValues, null);
-        assertThrows(IllegalStateException.class, () ->
-            implUtil.generateSas(ENVIRONMENT.getPrimaryAccount().getCredential(), Context.NONE));
+        assertThrows(IllegalStateException.class,
+            () -> implUtil.generateSas(ENVIRONMENT.getPrimaryAccount().getCredential(), Context.NONE));
     }
 
     @ParameterizedTest
@@ -210,9 +203,14 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> ensureStateResourceAndPermissionSupplier() {
-        return Stream.of(Arguments.of("container", null, null, null, new BlobContainerSasPermission().setReadPermission(true).setListPermission(true), null, "c", "rl"),
-            Arguments.of("container", "blob", null, null, null, new BlobSasPermission().setReadPermission(true), "b", "r"),
-            Arguments.of("container", "blob", "snapshot", null, null, new BlobSasPermission().setReadPermission(true), "bs", "r"),
-            Arguments.of("container", "blob", null, "version", null, new BlobSasPermission().setReadPermission(true), "bv", "r"));
+        return Stream.of(
+            Arguments.of("container", null, null, null,
+                new BlobContainerSasPermission().setReadPermission(true).setListPermission(true), null, "c", "rl"),
+            Arguments.of("container", "blob", null, null, null, new BlobSasPermission().setReadPermission(true), "b",
+                "r"),
+            Arguments.of("container", "blob", "snapshot", null, null, new BlobSasPermission().setReadPermission(true),
+                "bs", "r"),
+            Arguments.of("container", "blob", null, "version", null, new BlobSasPermission().setReadPermission(true),
+                "bv", "r"));
     }
 }

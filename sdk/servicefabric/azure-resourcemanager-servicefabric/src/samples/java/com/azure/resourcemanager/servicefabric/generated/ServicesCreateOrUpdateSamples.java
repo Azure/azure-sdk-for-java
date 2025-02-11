@@ -32,9 +32,13 @@ public final class ServicesCreateOrUpdateSamples {
      */
     public static void
         putAServiceWithMinimumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.services().define("myService").withExistingApplication("resRg", "myCluster", "myApp").withTags(mapOf())
+        manager.services()
+            .define("myService")
+            .withExistingApplication("resRg", "myCluster", "myApp")
+            .withTags(mapOf())
             .withProperties(new StatelessServiceProperties().withServiceTypeName("myServiceType")
-                .withPartitionDescription(new SingletonPartitionSchemeDescription()).withInstanceCount(1))
+                .withPartitionDescription(new SingletonPartitionSchemeDescription())
+                .withInstanceCount(1))
             .create();
     }
 
@@ -50,17 +54,23 @@ public final class ServicesCreateOrUpdateSamples {
      */
     public static void
         putAServiceWithMaximumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.services().define("myService").withExistingApplication("resRg", "myCluster", "myApp").withTags(mapOf())
+        manager.services()
+            .define("myService")
+            .withExistingApplication("resRg", "myCluster", "myApp")
+            .withTags(mapOf())
             .withProperties(new StatelessServiceProperties().withPlacementConstraints("NodeType==frontend")
-                .withCorrelationScheme(Arrays.asList(new ServiceCorrelationDescription()
-                    .withScheme(ServiceCorrelationScheme.AFFINITY).withServiceName("fabric:/app1/app1~svc1")))
+                .withCorrelationScheme(
+                    Arrays.asList(new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.AFFINITY)
+                        .withServiceName("fabric:/app1/app1~svc1")))
                 .withServiceLoadMetrics(Arrays.asList(
                     new ServiceLoadMetricDescription().withName("metric1").withWeight(ServiceLoadMetricWeight.LOW)))
-                .withServicePlacementPolicies(Arrays.asList()).withDefaultMoveCost(MoveCost.MEDIUM)
+                .withServicePlacementPolicies(Arrays.asList())
+                .withDefaultMoveCost(MoveCost.MEDIUM)
                 .withServiceTypeName("myServiceType")
                 .withPartitionDescription(new SingletonPartitionSchemeDescription())
                 .withServicePackageActivationMode(ArmServicePackageActivationMode.SHARED_PROCESS)
-                .withServiceDnsName("my.service.dns").withInstanceCount(5))
+                .withServiceDnsName("my.service.dns")
+                .withInstanceCount(5))
             .create();
     }
 

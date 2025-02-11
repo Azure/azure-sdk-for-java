@@ -6,68 +6,37 @@ package com.azure.resourcemanager.databoxedge.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databoxedge.DataBoxEdgeManager;
 import com.azure.resourcemanager.databoxedge.models.UpdateSummary;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DevicesGetUpdateSummaryWithResponseMockTests {
     @Test
     public void testGetUpdateSummaryWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"deviceVersionNumber\":\"x\",\"friendlyDeviceVersionName\":\"uwrykqgaifmvikl\",\"deviceLastScannedDateTime\":\"2021-05-22T16:01:58Z\",\"lastCompletedScanJobDateTime\":\"2021-05-16T18:34:19Z\",\"lastCompletedDownloadJobDateTime\":\"2021-08-31T10:25:05Z\",\"lastCompletedInstallJobDateTime\":\"2021-09-28T11:16:32Z\",\"totalNumberOfUpdatesAvailable\":1630038130,\"totalNumberOfUpdatesPendingDownload\":732496831,\"totalNumberOfUpdatesPendingInstall\":246152016,\"rebootBehavior\":\"RequestReboot\",\"ongoingUpdateOperation\":\"Scan\",\"inProgressDownloadJobId\":\"jivolvtnov\",\"inProgressInstallJobId\":\"zgemjdftuljlt\",\"inProgressDownloadJobStartedDateTime\":\"2021-04-12T02:20:30Z\",\"inProgressInstallJobStartedDateTime\":\"2021-06-28T04:10:30Z\",\"updateTitles\":[\"mczuo\",\"ejwcwwqiok\",\"ssxmojms\",\"p\"],\"totalUpdateSizeInBytes\":99.08143470377058},\"id\":\"vk\",\"name\":\"cfzq\",\"type\":\"jyxgtczh\"}";
 
-        String responseStr =
-            "{\"properties\":{\"deviceVersionNumber\":\"zm\",\"friendlyDeviceVersionName\":\"gfipnsxk\",\"deviceLastScannedDateTime\":\"2021-10-27T14:15:12Z\",\"lastCompletedScanJobDateTime\":\"2020-12-24T09:43:24Z\",\"lastCompletedDownloadJobDateTime\":\"2021-04-17T18:50:11Z\",\"lastCompletedInstallJobDateTime\":\"2021-11-05T06:26:25Z\",\"totalNumberOfUpdatesAvailable\":1897122560,\"totalNumberOfUpdatesPendingDownload\":339219254,\"totalNumberOfUpdatesPendingInstall\":1629743975,\"rebootBehavior\":\"RequestReboot\",\"ongoingUpdateOperation\":\"Scan\",\"inProgressDownloadJobId\":\"glikkxwslolb\",\"inProgressInstallJobId\":\"vuzlm\",\"inProgressDownloadJobStartedDateTime\":\"2021-08-06T01:26:51Z\",\"inProgressInstallJobStartedDateTime\":\"2021-03-10T07:17:47Z\",\"updateTitles\":[\"gplcrpwjxeznoigb\"],\"totalUpdateSizeInBytes\":51.77125486468781},\"id\":\"mw\",\"name\":\"pn\",\"type\":\"saz\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataBoxEdgeManager manager = DataBoxEdgeManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        UpdateSummary response = manager.devices()
+            .getUpdateSummaryWithResponse("wkojgcyztsfmzn", "aeqphchqnr", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        DataBoxEdgeManager manager =
-            DataBoxEdgeManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        UpdateSummary response =
-            manager
-                .devices()
-                .getUpdateSummaryWithResponse("ycxzbfvoo", "vrvmtgjqppyost", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("zm", response.deviceVersionNumber());
-        Assertions.assertEquals("gfipnsxk", response.friendlyDeviceVersionName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T14:15:12Z"), response.deviceLastScannedDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-24T09:43:24Z"), response.lastCompletedScanJobDateTime());
+        Assertions.assertEquals("x", response.deviceVersionNumber());
+        Assertions.assertEquals("uwrykqgaifmvikl", response.friendlyDeviceVersionName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T16:01:58Z"), response.deviceLastScannedDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T18:34:19Z"), response.lastCompletedScanJobDateTime());
     }
 }

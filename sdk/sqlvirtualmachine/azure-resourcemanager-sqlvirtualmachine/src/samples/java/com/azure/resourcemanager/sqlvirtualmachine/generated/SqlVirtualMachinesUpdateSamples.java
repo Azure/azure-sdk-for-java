@@ -8,26 +8,29 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachine;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SqlVirtualMachines Update. */
+/**
+ * Samples for SqlVirtualMachines Update.
+ */
 public final class SqlVirtualMachinesUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/UpdateSqlVirtualMachine.json
+     * x-ms-original-file:
+     * specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/
+     * UpdateSqlVirtualMachine.json
      */
     /**
      * Sample code: Updates a SQL virtual machine tags.
-     *
+     * 
      * @param manager Entry point to SqlVirtualMachineManager.
      */
-    public static void updatesASQLVirtualMachineTags(
-        com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        SqlVirtualMachine resource =
-            manager
-                .sqlVirtualMachines()
-                .getByResourceGroupWithResponse("testrg", "testvm", null, com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updatesASQLVirtualMachineTags(com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
+        SqlVirtualMachine resource = manager.sqlVirtualMachines()
+            .getByResourceGroupWithResponse("testrg", "testvm", null, com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

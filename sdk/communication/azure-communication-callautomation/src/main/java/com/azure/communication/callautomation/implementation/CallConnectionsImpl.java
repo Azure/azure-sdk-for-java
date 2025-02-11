@@ -174,8 +174,8 @@ public final class CallConnectionsImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CallParticipantInternal>> getParticipant(@HostParam("endpoint") String endpoint,
             @PathParam("callConnectionId") String callConnectionId,
-            @PathParam("participantRawId") String participantRawId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam(value = "participantRawId", encoded = true) String participantRawId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -714,7 +714,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The request payload for adding participant to the call.
+     * @param addParticipantRequest The add participants request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -736,7 +736,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The request payload for adding participant to the call.
+     * @param addParticipantRequest The add participants request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -758,7 +758,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The request payload for adding participant to the call.
+     * @param addParticipantRequest The add participants request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -775,7 +775,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The request payload for adding participant to the call.
+     * @param addParticipantRequest The add participants request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -793,7 +793,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The request payload for adding participant to the call.
+     * @param addParticipantRequest The add participants request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -810,7 +810,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The request payload for adding participant to the call.
+     * @param addParticipantRequest The add participants request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

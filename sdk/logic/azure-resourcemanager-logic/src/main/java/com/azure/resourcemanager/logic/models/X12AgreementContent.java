@@ -6,30 +6,36 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The X12 agreement content. */
+/**
+ * The X12 agreement content.
+ */
 @Fluent
-public final class X12AgreementContent {
+public final class X12AgreementContent implements JsonSerializable<X12AgreementContent> {
     /*
      * The X12 one-way receive agreement.
      */
-    @JsonProperty(value = "receiveAgreement", required = true)
     private X12OneWayAgreement receiveAgreement;
 
     /*
      * The X12 one-way send agreement.
      */
-    @JsonProperty(value = "sendAgreement", required = true)
     private X12OneWayAgreement sendAgreement;
 
-    /** Creates an instance of X12AgreementContent class. */
+    /**
+     * Creates an instance of X12AgreementContent class.
+     */
     public X12AgreementContent() {
     }
 
     /**
      * Get the receiveAgreement property: The X12 one-way receive agreement.
-     *
+     * 
      * @return the receiveAgreement value.
      */
     public X12OneWayAgreement receiveAgreement() {
@@ -38,7 +44,7 @@ public final class X12AgreementContent {
 
     /**
      * Set the receiveAgreement property: The X12 one-way receive agreement.
-     *
+     * 
      * @param receiveAgreement the receiveAgreement value to set.
      * @return the X12AgreementContent object itself.
      */
@@ -49,7 +55,7 @@ public final class X12AgreementContent {
 
     /**
      * Get the sendAgreement property: The X12 one-way send agreement.
-     *
+     * 
      * @return the sendAgreement value.
      */
     public X12OneWayAgreement sendAgreement() {
@@ -58,7 +64,7 @@ public final class X12AgreementContent {
 
     /**
      * Set the sendAgreement property: The X12 one-way send agreement.
-     *
+     * 
      * @param sendAgreement the sendAgreement value to set.
      * @return the X12AgreementContent object itself.
      */
@@ -69,27 +75,65 @@ public final class X12AgreementContent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (receiveAgreement() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property receiveAgreement in model X12AgreementContent"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property receiveAgreement in model X12AgreementContent"));
         } else {
             receiveAgreement().validate();
         }
         if (sendAgreement() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sendAgreement in model X12AgreementContent"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sendAgreement in model X12AgreementContent"));
         } else {
             sendAgreement().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(X12AgreementContent.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("receiveAgreement", this.receiveAgreement);
+        jsonWriter.writeJsonField("sendAgreement", this.sendAgreement);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of X12AgreementContent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of X12AgreementContent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the X12AgreementContent.
+     */
+    public static X12AgreementContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            X12AgreementContent deserializedX12AgreementContent = new X12AgreementContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("receiveAgreement".equals(fieldName)) {
+                    deserializedX12AgreementContent.receiveAgreement = X12OneWayAgreement.fromJson(reader);
+                } else if ("sendAgreement".equals(fieldName)) {
+                    deserializedX12AgreementContent.sendAgreement = X12OneWayAgreement.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedX12AgreementContent;
+        });
+    }
 }

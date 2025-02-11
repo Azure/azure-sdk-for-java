@@ -30,7 +30,8 @@ public final class TelemetryExceptionData extends MonitorDomain {
     private SeverityLevel severityLevel;
 
     /*
-     * Identifier of where the exception was thrown in code. Used for exceptions grouping. Typically a combination of exception type and a function from the call stack.
+     * Identifier of where the exception was thrown in code. Used for exceptions grouping. Typically a combination of
+     * exception type and a function from the call stack.
      */
     private String problemId;
 
@@ -52,7 +53,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
 
     /**
      * Get the exceptions property: Exception chain - list of inner exceptions.
-     *
+     * 
      * @return the exceptions value.
      */
     public List<TelemetryExceptionDetails> getExceptions() {
@@ -61,7 +62,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
 
     /**
      * Set the exceptions property: Exception chain - list of inner exceptions.
-     *
+     * 
      * @param exceptions the exceptions value to set.
      * @return the TelemetryExceptionData object itself.
      */
@@ -73,7 +74,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
     /**
      * Get the severityLevel property: Severity level. Mostly used to indicate exception severity level when it is
      * reported by logging library.
-     *
+     * 
      * @return the severityLevel value.
      */
     public SeverityLevel getSeverityLevel() {
@@ -83,7 +84,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
     /**
      * Set the severityLevel property: Severity level. Mostly used to indicate exception severity level when it is
      * reported by logging library.
-     *
+     * 
      * @param severityLevel the severityLevel value to set.
      * @return the TelemetryExceptionData object itself.
      */
@@ -95,7 +96,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
     /**
      * Get the problemId property: Identifier of where the exception was thrown in code. Used for exceptions grouping.
      * Typically a combination of exception type and a function from the call stack.
-     *
+     * 
      * @return the problemId value.
      */
     public String getProblemId() {
@@ -105,7 +106,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
     /**
      * Set the problemId property: Identifier of where the exception was thrown in code. Used for exceptions grouping.
      * Typically a combination of exception type and a function from the call stack.
-     *
+     * 
      * @param problemId the problemId value to set.
      * @return the TelemetryExceptionData object itself.
      */
@@ -116,7 +117,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
 
     /**
      * Get the properties property: Collection of custom properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> getProperties() {
@@ -125,7 +126,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
 
     /**
      * Set the properties property: Collection of custom properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the TelemetryExceptionData object itself.
      */
@@ -136,7 +137,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
 
     /**
      * Get the measurements property: Collection of custom measurements.
-     *
+     * 
      * @return the measurements value.
      */
     public Map<String, Double> getMeasurements() {
@@ -145,7 +146,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
 
     /**
      * Set the measurements property: Collection of custom measurements.
-     *
+     * 
      * @param measurements the measurements value to set.
      * @return the TelemetryExceptionData object itself.
      */
@@ -170,11 +171,11 @@ public final class TelemetryExceptionData extends MonitorDomain {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("ver", getVersion());
-        jsonWriter.writeArrayField("exceptions", this.exceptions, JsonWriter::writeJson);
+        jsonWriter.writeArrayField("exceptions", this.exceptions, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("severityLevel", this.severityLevel == null ? null : this.severityLevel.toString());
         jsonWriter.writeStringField("problemId", this.problemId);
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
-        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("measurements", this.measurements, (writer, element) -> writer.writeDouble(element));
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -185,7 +186,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
 
     /**
      * Reads an instance of TelemetryExceptionData from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TelemetryExceptionData if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -203,16 +204,19 @@ public final class TelemetryExceptionData extends MonitorDomain {
                 if ("ver".equals(fieldName)) {
                     deserializedTelemetryExceptionData.setVersion(reader.getInt());
                 } else if ("exceptions".equals(fieldName)) {
-                    deserializedTelemetryExceptionData.exceptions
-                        = reader.readArray(TelemetryExceptionDetails::fromJson);
+                    List<TelemetryExceptionDetails> exceptions
+                        = reader.readArray(reader1 -> TelemetryExceptionDetails.fromJson(reader1));
+                    deserializedTelemetryExceptionData.exceptions = exceptions;
                 } else if ("severityLevel".equals(fieldName)) {
                     deserializedTelemetryExceptionData.severityLevel = SeverityLevel.fromString(reader.getString());
                 } else if ("problemId".equals(fieldName)) {
                     deserializedTelemetryExceptionData.problemId = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedTelemetryExceptionData.properties = reader.readMap(JsonReader::getString);
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTelemetryExceptionData.properties = properties;
                 } else if ("measurements".equals(fieldName)) {
-                    deserializedTelemetryExceptionData.measurements = reader.readMap(JsonReader::getDouble);
+                    Map<String, Double> measurements = reader.readMap(reader1 -> reader1.getDouble());
+                    deserializedTelemetryExceptionData.measurements = measurements;
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

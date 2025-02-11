@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.recoveryservicesdatareplication.generated;
 
-/** Samples for Fabric Delete. */
+/**
+ * Samples for Fabric Delete.
+ */
 public final class FabricDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Fabric_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Fabric_Delete.json
      */
     /**
      * Sample code: Fabric_Delete.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricDelete(

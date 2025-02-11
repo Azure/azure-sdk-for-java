@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.MigrateSqlServerSqlDbTaskO
 public final class MigrateSqlServerSqlDbTaskOutputMigrationLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSqlServerSqlDbTaskOutputMigrationLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-03-19T01:58:37Z\",\"endedOn\":\"2021-06-06T00:52:09Z\",\"durationInSeconds\":1067428032118416748,\"status\":\"SelectLogins\",\"statusMessage\":\"qntcypsxjvfoimwk\",\"message\":\"ircizjxvy\",\"databases\":\"ceacvlhvygdy\",\"databaseSummary\":\"umrtwnawjsl\",\"migrationReport\":{\"id\":\"kojgcyzts\",\"reportUrl\":\"z\"},\"sourceServerVersion\":\"aeqphchqnr\",\"sourceServerBrandVersion\":\"pxehuwrykqga\",\"targetServerVersion\":\"mvikl\",\"targetServerBrandVersion\":\"dvk\",\"exceptionsAndWarnings\":[{\"message\":\"dznx\",\"actionableMessage\":\"dsrhnjiv\",\"filePath\":\"v\",\"lineNumber\":\"ovqfzge\",\"hResult\":1068336147,\"stackTrace\":\"tul\"}],\"id\":\"tduceamt\"}")
-                .toObject(MigrateSqlServerSqlDbTaskOutputMigrationLevel.class);
+        MigrateSqlServerSqlDbTaskOutputMigrationLevel model = BinaryData.fromString(
+            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-04-28T14:16:46Z\",\"endedOn\":\"2021-02-13T21:15:59Z\",\"durationInSeconds\":6361635428329654747,\"status\":\"Configured\",\"statusMessage\":\"pmguaadraufac\",\"message\":\"ahzovajjziuxxp\",\"databases\":\"neekulfg\",\"databaseSummary\":\"qubkw\",\"migrationReport\":{\"id\":\"nrdsutujbazpjuoh\",\"reportUrl\":\"nyfln\"},\"sourceServerVersion\":\"wmd\",\"sourceServerBrandVersion\":\"wpklvxw\",\"targetServerVersion\":\"gdxpg\",\"targetServerBrandVersion\":\"chisze\",\"exceptionsAndWarnings\":[{\"message\":\"jcrxgibbdaxcon\",\"actionableMessage\":\"zauorsuk\",\"filePath\":\"wbqpl\",\"lineNumber\":\"vnuuepzl\",\"hResult\":461883011,\"stackTrace\":\"zsoldwey\"}],\"id\":\"dunvmnnrwrbiorkt\"}")
+            .toObject(MigrateSqlServerSqlDbTaskOutputMigrationLevel.class);
     }
 
     @org.junit.jupiter.api.Test

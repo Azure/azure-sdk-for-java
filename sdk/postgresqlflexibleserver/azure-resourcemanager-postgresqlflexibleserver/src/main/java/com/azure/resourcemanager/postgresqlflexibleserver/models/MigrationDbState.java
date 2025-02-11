@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class MigrationDbState extends ExpandableStringEnum<MigrationDbStat
      * @param name a name to look for.
      * @return the corresponding MigrationDbState.
      */
-    @JsonCreator
     public static MigrationDbState fromString(String name) {
         return fromString(name, MigrationDbState.class);
     }

@@ -70,12 +70,9 @@ public final class AttestationProviderImpl
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -115,22 +112,18 @@ public final class AttestationProviderImpl
     }
 
     public AttestationProvider create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestationProviders()
-                .createWithResponse(resourceGroupName, providerName, createCreationParams, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestationProviders()
+            .createWithResponse(resourceGroupName, providerName, createCreationParams, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AttestationProvider create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestationProviders()
-                .createWithResponse(resourceGroupName, providerName, createCreationParams, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestationProviders()
+            .createWithResponse(resourceGroupName, providerName, createCreationParams, context)
+            .getValue();
         return this;
     }
 
@@ -147,50 +140,42 @@ public final class AttestationProviderImpl
     }
 
     public AttestationProvider apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestationProviders()
-                .updateWithResponse(resourceGroupName, providerName, updateUpdateParams, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestationProviders()
+            .updateWithResponse(resourceGroupName, providerName, updateUpdateParams, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AttestationProvider apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestationProviders()
-                .updateWithResponse(resourceGroupName, providerName, updateUpdateParams, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestationProviders()
+            .updateWithResponse(resourceGroupName, providerName, updateUpdateParams, context)
+            .getValue();
         return this;
     }
 
-    AttestationProviderImpl(
-        AttestationProviderInner innerObject, com.azure.resourcemanager.attestation.AttestationManager serviceManager) {
+    AttestationProviderImpl(AttestationProviderInner innerObject,
+        com.azure.resourcemanager.attestation.AttestationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.providerName = Utils.getValueFromIdByName(innerObject.id(), "attestationProviders");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.providerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "attestationProviders");
     }
 
     public AttestationProvider refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestationProviders()
-                .getByResourceGroupWithResponse(resourceGroupName, providerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestationProviders()
+            .getByResourceGroupWithResponse(resourceGroupName, providerName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AttestationProvider refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestationProviders()
-                .getByResourceGroupWithResponse(resourceGroupName, providerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestationProviders()
+            .getByResourceGroupWithResponse(resourceGroupName, providerName, context)
+            .getValue();
         return this;
     }
 

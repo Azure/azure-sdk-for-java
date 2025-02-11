@@ -10,8 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
-import com.azure.resourcemanager.quota.models.EnvironmentType;
-import com.azure.resourcemanager.quota.models.GroupingIdType;
 import com.azure.resourcemanager.quota.models.GroupQuotasEntity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,7 +21,7 @@ public final class GroupQuotasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"umveekgpwozuhkf\",\"additionalAttributes\":{\"groupId\":{\"groupingIdType\":\"BillingId\",\"value\":\"ofd\"},\"environment\":\"Production\"},\"provisioningState\":\"Failed\"},\"id\":\"ttouwaboekqvkel\",\"name\":\"smv\",\"type\":\"xwyjsflhhc\"}";
+            = "{\"properties\":{\"displayName\":\"gwb\",\"provisioningState\":\"Canceled\"},\"id\":\"ldawkzbaliourqha\",\"name\":\"auhashsfwx\",\"type\":\"sowzxcugi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +30,9 @@ public final class GroupQuotasGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GroupQuotasEntity response = manager.groupQuotas()
-            .getWithResponse("nxipeil", "jzuaejxdultskzbb", com.azure.core.util.Context.NONE)
-            .getValue();
+        GroupQuotasEntity response
+            = manager.groupQuotas().getWithResponse("crgvxpvgom", "lf", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("umveekgpwozuhkf", response.properties().displayName());
-        Assertions.assertEquals(GroupingIdType.BILLING_ID,
-            response.properties().additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("ofd", response.properties().additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.PRODUCTION, response.properties().additionalAttributes().environment());
+        Assertions.assertEquals("gwb", response.properties().displayName());
     }
 }

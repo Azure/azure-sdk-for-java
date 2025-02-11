@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mariadb.fluent.models.ConfigurationListResultInner;
 
-/** An instance of this class provides access to all the operations defined in ServerParametersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerParametersClient.
+ */
 public interface ServerParametersClient {
     /**
      * Update a list of configurations in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param value The parameters for updating a list of server configuration.
@@ -25,12 +27,12 @@ public interface ServerParametersClient {
      * @return the {@link SyncPoller} for polling of a list of server configurations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationListResultInner>, ConfigurationListResultInner> beginListUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value);
+    SyncPoller<PollResult<ConfigurationListResultInner>, ConfigurationListResultInner>
+        beginListUpdateConfigurations(String resourceGroupName, String serverName, ConfigurationListResultInner value);
 
     /**
      * Update a list of configurations in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param value The parameters for updating a list of server configuration.
@@ -46,7 +48,7 @@ public interface ServerParametersClient {
 
     /**
      * Update a list of configurations in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param value The parameters for updating a list of server configuration.
@@ -56,12 +58,12 @@ public interface ServerParametersClient {
      * @return a list of server configurations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationListResultInner listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value);
+    ConfigurationListResultInner listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value);
 
     /**
      * Update a list of configurations in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param value The parameters for updating a list of server configuration.
@@ -72,6 +74,6 @@ public interface ServerParametersClient {
      * @return a list of server configurations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationListResultInner listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value, Context context);
+    ConfigurationListResultInner listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value, Context context);
 }

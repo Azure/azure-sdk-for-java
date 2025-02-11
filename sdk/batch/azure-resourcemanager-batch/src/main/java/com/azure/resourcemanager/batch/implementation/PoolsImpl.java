@@ -36,8 +36,8 @@ public final class PoolsImpl implements Pools {
 
     public PagedIterable<Pool> listByBatchAccount(String resourceGroupName, String accountName, Integer maxresults,
         String select, String filter, Context context) {
-        PagedIterable<PoolInner> inner = this.serviceClient().listByBatchAccount(resourceGroupName, accountName,
-            maxresults, select, filter, context);
+        PagedIterable<PoolInner> inner = this.serviceClient()
+            .listByBatchAccount(resourceGroupName, accountName, maxresults, select, filter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new PoolImpl(inner1, this.manager()));
     }
 

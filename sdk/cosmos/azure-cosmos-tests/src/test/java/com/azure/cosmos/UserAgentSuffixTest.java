@@ -8,8 +8,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.fasterxml.jackson.core.json.JsonReadFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -18,11 +16,6 @@ import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserAgentSuffixTest extends TestSuiteBase {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(
-        JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(),
-        true
-    );
-
     private CosmosClient client;
     private String databaseName;
     private String containerName;
@@ -32,8 +25,8 @@ public class UserAgentSuffixTest extends TestSuiteBase {
         super(clientBuilder.contentResponseOnWriteEnabled(true));
     }
 
-    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
-    public void before_CosmosItemTest() {
+    @BeforeClass(groups = { "fast", "emulator" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    public void before_UserAgentSuffixTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
@@ -41,14 +34,13 @@ public class UserAgentSuffixTest extends TestSuiteBase {
         this.containerName = asyncContainer.getId();
     }
 
-    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.client).isNotNull();
-        this.client.close();
+        safeCloseSyncClient(this.client);
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
-    public void UserAgentSuffixWithoutSpecialCharacter() {
+    public void userAgentSuffixWithoutSpecialCharacter() {
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("TestUserAgent")
             .buildClient();
@@ -65,7 +57,7 @@ public class UserAgentSuffixTest extends TestSuiteBase {
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
-    public void UserAgentSuffixWithSpecialCharacter() {
+    public void userAgentSuffixWithSpecialCharacter() {
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("TéstUserAgent's")
             .buildClient();
@@ -82,7 +74,7 @@ public class UserAgentSuffixTest extends TestSuiteBase {
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
-    public void UserAgentSuffixWithUnicodeCharacter() {
+    public void userAgentSuffixWithUnicodeCharacter() {
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("UnicodeChar鱀InUserAgent")
             .buildClient();
@@ -99,7 +91,7 @@ public class UserAgentSuffixTest extends TestSuiteBase {
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
-    public void UserAgentSuffixWithWhitespaceAndAsciiSpecialChars() {
+    public void userAgentSuffixWithWhitespaceAndAsciiSpecialChars() {
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("UserAgent with space$%_^()*&")
             .buildClient();

@@ -11,41 +11,29 @@ import com.azure.resourcemanager.networkfunction.models.IngestionType;
 import com.azure.resourcemanager.networkfunction.models.SourceType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IngestionPolicyPropertiesFormatTests {
-    @Test
-    public void testDeserialize() {
-        IngestionPolicyPropertiesFormat model =
-            BinaryData
-                .fromString(
-                    "{\"ingestionType\":\"IPFIX\",\"ingestionSources\":[{\"sourceType\":\"Resource\",\"resourceId\":\"ex\"},{\"sourceType\":\"Resource\",\"resourceId\":\"tq\"},{\"sourceType\":\"Resource\",\"resourceId\":\"fpfpsalgbquxigj\"}]}")
-                .toObject(IngestionPolicyPropertiesFormat.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        IngestionPolicyPropertiesFormat model = BinaryData.fromString(
+            "{\"ingestionType\":\"IPFIX\",\"ingestionSources\":[{\"sourceType\":\"Resource\",\"resourceId\":\"jjxhvpmo\"},{\"sourceType\":\"Resource\",\"resourceId\":\"dzxibqeojnxqbzvd\"}]}")
+            .toObject(IngestionPolicyPropertiesFormat.class);
         Assertions.assertEquals(IngestionType.IPFIX, model.ingestionType());
         Assertions.assertEquals(SourceType.RESOURCE, model.ingestionSources().get(0).sourceType());
-        Assertions.assertEquals("ex", model.ingestionSources().get(0).resourceId());
+        Assertions.assertEquals("jjxhvpmo", model.ingestionSources().get(0).resourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        IngestionPolicyPropertiesFormat model =
-            new IngestionPolicyPropertiesFormat()
-                .withIngestionType(IngestionType.IPFIX)
-                .withIngestionSources(
-                    Arrays
-                        .asList(
-                            new IngestionSourcesPropertiesFormat()
-                                .withSourceType(SourceType.RESOURCE)
-                                .withResourceId("ex"),
-                            new IngestionSourcesPropertiesFormat()
-                                .withSourceType(SourceType.RESOURCE)
-                                .withResourceId("tq"),
-                            new IngestionSourcesPropertiesFormat()
-                                .withSourceType(SourceType.RESOURCE)
-                                .withResourceId("fpfpsalgbquxigj")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        IngestionPolicyPropertiesFormat model = new IngestionPolicyPropertiesFormat()
+            .withIngestionType(IngestionType.IPFIX)
+            .withIngestionSources(Arrays.asList(
+                new IngestionSourcesPropertiesFormat().withSourceType(SourceType.RESOURCE).withResourceId("jjxhvpmo"),
+                new IngestionSourcesPropertiesFormat().withSourceType(SourceType.RESOURCE)
+                    .withResourceId("dzxibqeojnxqbzvd")));
         model = BinaryData.fromObject(model).toObject(IngestionPolicyPropertiesFormat.class);
         Assertions.assertEquals(IngestionType.IPFIX, model.ingestionType());
         Assertions.assertEquals(SourceType.RESOURCE, model.ingestionSources().get(0).sourceType());
-        Assertions.assertEquals("ex", model.ingestionSources().get(0).resourceId());
+        Assertions.assertEquals("jjxhvpmo", model.ingestionSources().get(0).resourceId());
     }
 }

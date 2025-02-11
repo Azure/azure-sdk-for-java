@@ -14,8 +14,8 @@ public final class ModelImpl implements Model {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    ModelImpl(
-        ModelInner innerObject, com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
+    ModelImpl(ModelInner innerObject,
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -35,6 +35,10 @@ public final class ModelImpl implements Model {
 
     public String skuName() {
         return this.innerModel().skuName();
+    }
+
+    public String description() {
+        return this.innerModel().description();
     }
 
     public ModelInner innerModel() {

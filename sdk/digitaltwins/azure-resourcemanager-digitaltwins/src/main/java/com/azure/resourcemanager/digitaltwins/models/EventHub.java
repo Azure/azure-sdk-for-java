@@ -5,47 +5,73 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** Properties related to EventHub. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
-@JsonTypeName("EventHub")
+/**
+ * Properties related to EventHub.
+ */
 @Fluent
 public final class EventHub extends DigitalTwinsEndpointResourceProperties {
     /*
+     * The type of Digital Twins endpoint
+     */
+    private EndpointType endpointType = EndpointType.EVENT_HUB;
+
+    /*
      * PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.
      */
-    @JsonProperty(value = "connectionStringPrimaryKey")
     private String connectionStringPrimaryKey;
 
     /*
      * SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.
      */
-    @JsonProperty(value = "connectionStringSecondaryKey")
     private String connectionStringSecondaryKey;
 
     /*
      * The URL of the EventHub namespace for identity-based authentication. It must include the protocol 'sb://'.
      */
-    @JsonProperty(value = "endpointUri")
     private String endpointUri;
 
     /*
      * The EventHub name in the EventHub namespace for identity-based authentication.
      */
-    @JsonProperty(value = "entityPath")
     private String entityPath;
 
-    /** Creates an instance of EventHub class. */
+    /*
+     * Time when the Endpoint was added to DigitalTwinsInstance.
+     */
+    private OffsetDateTime createdTime;
+
+    /*
+     * The provisioning state.
+     */
+    private EndpointProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of EventHub class.
+     */
     public EventHub() {
+    }
+
+    /**
+     * Get the endpointType property: The type of Digital Twins endpoint.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
     }
 
     /**
      * Get the connectionStringPrimaryKey property: PrimaryConnectionString of the endpoint for key-based
      * authentication. Will be obfuscated during read.
-     *
+     * 
      * @return the connectionStringPrimaryKey value.
      */
     public String connectionStringPrimaryKey() {
@@ -55,7 +81,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
     /**
      * Set the connectionStringPrimaryKey property: PrimaryConnectionString of the endpoint for key-based
      * authentication. Will be obfuscated during read.
-     *
+     * 
      * @param connectionStringPrimaryKey the connectionStringPrimaryKey value to set.
      * @return the EventHub object itself.
      */
@@ -67,7 +93,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
     /**
      * Get the connectionStringSecondaryKey property: SecondaryConnectionString of the endpoint for key-based
      * authentication. Will be obfuscated during read.
-     *
+     * 
      * @return the connectionStringSecondaryKey value.
      */
     public String connectionStringSecondaryKey() {
@@ -77,7 +103,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
     /**
      * Set the connectionStringSecondaryKey property: SecondaryConnectionString of the endpoint for key-based
      * authentication. Will be obfuscated during read.
-     *
+     * 
      * @param connectionStringSecondaryKey the connectionStringSecondaryKey value to set.
      * @return the EventHub object itself.
      */
@@ -89,7 +115,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
     /**
      * Get the endpointUri property: The URL of the EventHub namespace for identity-based authentication. It must
      * include the protocol 'sb://'.
-     *
+     * 
      * @return the endpointUri value.
      */
     public String endpointUri() {
@@ -99,7 +125,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
     /**
      * Set the endpointUri property: The URL of the EventHub namespace for identity-based authentication. It must
      * include the protocol 'sb://'.
-     *
+     * 
      * @param endpointUri the endpointUri value to set.
      * @return the EventHub object itself.
      */
@@ -110,7 +136,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Get the entityPath property: The EventHub name in the EventHub namespace for identity-based authentication.
-     *
+     * 
      * @return the entityPath value.
      */
     public String entityPath() {
@@ -119,7 +145,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Set the entityPath property: The EventHub name in the EventHub namespace for identity-based authentication.
-     *
+     * 
      * @param entityPath the entityPath value to set.
      * @return the EventHub object itself.
      */
@@ -128,28 +154,56 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the createdTime property: Time when the Endpoint was added to DigitalTwinsInstance.
+     * 
+     * @return the createdTime value.
+     */
+    @Override
+    public OffsetDateTime createdTime() {
+        return this.createdTime;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public EndpointProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHub withAuthenticationType(AuthenticationType authenticationType) {
         super.withAuthenticationType(authenticationType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHub withDeadLetterSecret(String deadLetterSecret) {
         super.withDeadLetterSecret(deadLetterSecret);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHub withDeadLetterUri(String deadLetterUri) {
         super.withDeadLetterUri(deadLetterUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHub withIdentity(ManagedIdentityReference identity) {
         super.withIdentity(identity);
@@ -158,11 +212,79 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (identity() != null) {
+            identity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authenticationType",
+            authenticationType() == null ? null : authenticationType().toString());
+        jsonWriter.writeStringField("deadLetterSecret", deadLetterSecret());
+        jsonWriter.writeStringField("deadLetterUri", deadLetterUri());
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeStringField("connectionStringPrimaryKey", this.connectionStringPrimaryKey);
+        jsonWriter.writeStringField("connectionStringSecondaryKey", this.connectionStringSecondaryKey);
+        jsonWriter.writeStringField("endpointUri", this.endpointUri);
+        jsonWriter.writeStringField("entityPath", this.entityPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHub from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHub if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the EventHub.
+     */
+    public static EventHub fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHub deserializedEventHub = new EventHub();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedEventHub.provisioningState = EndpointProvisioningState.fromString(reader.getString());
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedEventHub.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedEventHub.withAuthenticationType(AuthenticationType.fromString(reader.getString()));
+                } else if ("deadLetterSecret".equals(fieldName)) {
+                    deserializedEventHub.withDeadLetterSecret(reader.getString());
+                } else if ("deadLetterUri".equals(fieldName)) {
+                    deserializedEventHub.withDeadLetterUri(reader.getString());
+                } else if ("identity".equals(fieldName)) {
+                    deserializedEventHub.withIdentity(ManagedIdentityReference.fromJson(reader));
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedEventHub.endpointType = EndpointType.fromString(reader.getString());
+                } else if ("connectionStringPrimaryKey".equals(fieldName)) {
+                    deserializedEventHub.connectionStringPrimaryKey = reader.getString();
+                } else if ("connectionStringSecondaryKey".equals(fieldName)) {
+                    deserializedEventHub.connectionStringSecondaryKey = reader.getString();
+                } else if ("endpointUri".equals(fieldName)) {
+                    deserializedEventHub.endpointUri = reader.getString();
+                } else if ("entityPath".equals(fieldName)) {
+                    deserializedEventHub.entityPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHub;
+        });
     }
 }

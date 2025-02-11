@@ -25,9 +25,13 @@ public final class AnalyzedDocumentHelper {
      */
     public interface AnalyzedDocumentAccessor {
         void setDocType(AnalyzedDocument analyzedDocument, String docType);
+
         void setBoundingRegions(AnalyzedDocument analyzedDocument, List<BoundingRegion> boundingRegions);
+
         void setSpans(AnalyzedDocument analyzedDocument, List<DocumentSpan> spans);
+
         void setFields(AnalyzedDocument analyzedDocument, Map<String, DocumentField> fields);
+
         void setConfidence(AnalyzedDocument analyzedDocument, float confidence);
     }
 

@@ -56,13 +56,21 @@ public final class GlobalRulestackResourceInnerTests {
                         .withPrincipalId("zjaoyfhrtxil"),
                     "cpr",
                     new AzureResourceManagerUserAssignedIdentity().withClientId("eju").withPrincipalId("qawrlyxwj"))))
-            .withPanEtag("jfkgiawxk").withPanLocation("ypl").withScope(ScopeType.LOCAL)
-            .withAssociatedSubscriptions(Arrays.asList("syyp")).withDescription("dhsgcba")
-            .withDefaultMode(DefaultMode.IPS).withMinAppIdVersion("jkot")
+            .withPanEtag("jfkgiawxk")
+            .withPanLocation("ypl")
+            .withScope(ScopeType.LOCAL)
+            .withAssociatedSubscriptions(Arrays.asList("syyp"))
+            .withDescription("dhsgcba")
+            .withDefaultMode(DefaultMode.IPS)
+            .withMinAppIdVersion("jkot")
             .withSecurityServices(new SecurityServices().withVulnerabilityProfile("ulzndlikwyqk")
-                .withAntiSpywareProfile("gibma").withAntiVirusProfile("akeqs").withUrlFilteringProfile("yb")
-                .withFileBlockingProfile("qedqytbciqfoufl").withDnsSubscription("nkzsmodmglou")
-                .withOutboundUnTrustCertificate("b").withOutboundTrustCertificate("tmut"));
+                .withAntiSpywareProfile("gibma")
+                .withAntiVirusProfile("akeqs")
+                .withUrlFilteringProfile("yb")
+                .withFileBlockingProfile("qedqytbciqfoufl")
+                .withDnsSubscription("nkzsmodmglou")
+                .withOutboundUnTrustCertificate("b")
+                .withOutboundTrustCertificate("tmut"));
         model = BinaryData.fromObject(model).toObject(GlobalRulestackResourceInner.class);
         Assertions.assertEquals("uqktap", model.location());
         Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());

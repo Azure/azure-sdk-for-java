@@ -19,7 +19,8 @@ public final class TargetsDeleteSamples {
      */
     public static void
         deleteATargetThatExtendsAVirtualMachineResource(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.targets().deleteWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
-            "Microsoft-Agent", com.azure.core.util.Context.NONE);
+        manager.targets()
+            .deleteWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM", "Microsoft-Agent",
+                com.azure.core.util.Context.NONE);
     }
 }

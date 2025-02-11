@@ -23,7 +23,8 @@ public final class WebSource extends CopySource {
     private String type = "WebSource";
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     private Object additionalColumns;
 

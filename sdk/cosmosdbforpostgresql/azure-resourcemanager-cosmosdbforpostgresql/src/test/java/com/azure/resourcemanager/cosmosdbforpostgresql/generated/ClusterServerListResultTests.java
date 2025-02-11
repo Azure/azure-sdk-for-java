@@ -15,41 +15,53 @@ public final class ClusterServerListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterServerListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"fullyQualifiedDomainName\":\"pzvgnwzsymglzufc\",\"role\":\"Coordinator\",\"state\":\"hdbihan\",\"haState\":\"hfcbjysa\",\"availabilityZone\":\"th\",\"postgresqlVersion\":\"hab\",\"citusVersion\":\"pikxwczbyscnpqxu\",\"serverEdition\":\"vyq\",\"storageQuotaInMb\":649847293,\"vCores\":992034682,\"enableHa\":false,\"enablePublicIpAccess\":false,\"isReadOnly\":true,\"administratorLogin\":\"mjgr\"},\"id\":\"wvukx\",\"name\":\"audccsnhs\",\"type\":\"cnyejhkryhtnapcz\"},{\"properties\":{\"fullyQualifiedDomainName\":\"kjyemkk\",\"role\":\"Worker\",\"state\":\"joxzjnchgejspodm\",\"haState\":\"lzydehojwyahux\",\"availabilityZone\":\"pmqnja\",\"postgresqlVersion\":\"ixjsprozvcputeg\",\"citusVersion\":\"wmfdatscmdvpjhul\",\"serverEdition\":\"uvm\",\"storageQuotaInMb\":2017964411,\"vCores\":37430274,\"enableHa\":true,\"enablePublicIpAccess\":true,\"isReadOnly\":false,\"administratorLogin\":\"djpslw\"},\"id\":\"dpvwryoqpsoaccta\",\"name\":\"akl\",\"type\":\"lahbcryff\"},{\"properties\":{\"fullyQualifiedDomainName\":\"osygex\",\"role\":\"Worker\",\"state\":\"akhmsbzjhcrz\",\"haState\":\"dphlxaolt\",\"availabilityZone\":\"trg\",\"postgresqlVersion\":\"bpf\",\"citusVersion\":\"s\",\"serverEdition\":\"zgvfcjrwz\",\"storageQuotaInMb\":1151751299,\"vCores\":1189950130,\"enableHa\":true,\"enablePublicIpAccess\":true,\"isReadOnly\":true,\"administratorLogin\":\"zitonpeqfpjkjl\"},\"id\":\"fpdvhpfxxypi\",\"name\":\"i\",\"type\":\"mayhuybbkpodepoo\"},{\"properties\":{\"fullyQualifiedDomainName\":\"uvamiheognarxzxt\",\"role\":\"Coordinator\",\"state\":\"usivye\",\"haState\":\"ciqihnhung\",\"availabilityZone\":\"jzrnf\",\"postgresqlVersion\":\"xgispemvtzfkufu\",\"citusVersion\":\"jofxqe\",\"serverEdition\":\"jaeq\",\"storageQuotaInMb\":1946289710,\"vCores\":158340850,\"enableHa\":false,\"enablePublicIpAccess\":true,\"isReadOnly\":true,\"administratorLogin\":\"qulngsntnbybkzgc\"},\"id\":\"wclxxwrl\",\"name\":\"douskcqvkocrcjdk\",\"type\":\"tnhxbn\"}]}")
+            "{\"value\":[{\"properties\":{\"fullyQualifiedDomainName\":\"jgrtfwvukxga\",\"role\":\"Coordinator\",\"state\":\"snhsjcnyejhkryh\",\"haState\":\"apcz\",\"availabilityZone\":\"okjye\",\"postgresqlVersion\":\"kvnipjoxz\",\"citusVersion\":\"chgejspodm\",\"serverEdition\":\"lzydehojwyahux\",\"storageQuotaInMb\":1511051439,\"vCores\":2090543753,\"enableHa\":true,\"enablePublicIpAccess\":true,\"isReadOnly\":true,\"administratorLogin\":\"jsprozvcpute\"},\"id\":\"vwmf\",\"name\":\"atscmd\",\"type\":\"pjhulsuuvmkj\"},{\"properties\":{\"fullyQualifiedDomainName\":\"rwfndiod\",\"role\":\"Worker\",\"state\":\"w\",\"haState\":\"dpvwryoqpsoaccta\",\"availabilityZone\":\"kljla\",\"postgresqlVersion\":\"cr\",\"citusVersion\":\"fdfdosygexpa\",\"serverEdition\":\"akhmsbzjhcrz\",\"storageQuotaInMb\":268305459,\"vCores\":656929943,\"enableHa\":false,\"enablePublicIpAccess\":true,\"isReadOnly\":false,\"administratorLogin\":\"qtrgqjbpfzfsinzg\"},\"id\":\"cjrwzoxxjtfellu\",\"name\":\"fziton\",\"type\":\"eqfpj\"},{\"properties\":{\"fullyQualifiedDomainName\":\"xofpdvhpfxxypi\",\"role\":\"Worker\",\"state\":\"ayhuy\",\"haState\":\"kpode\",\"availabilityZone\":\"oginuvamiheognar\",\"postgresqlVersion\":\"xth\",\"citusVersion\":\"tusivyevcciqihn\",\"serverEdition\":\"ngbwjz\",\"storageQuotaInMb\":1668036347,\"vCores\":670361377,\"enableHa\":true,\"enablePublicIpAccess\":true,\"isReadOnly\":false,\"administratorLogin\":\"vtz\"},\"id\":\"ufubl\",\"name\":\"ofx\",\"type\":\"eofjaeqjh\"}]}")
             .toObject(ClusterServerListResult.class);
         Assertions.assertEquals(ServerRole.COORDINATOR, model.value().get(0).role());
-        Assertions.assertEquals("th", model.value().get(0).availabilityZone());
-        Assertions.assertEquals("hab", model.value().get(0).postgresqlVersion());
-        Assertions.assertEquals("pikxwczbyscnpqxu", model.value().get(0).citusVersion());
-        Assertions.assertEquals("vyq", model.value().get(0).serverEdition());
-        Assertions.assertEquals(649847293, model.value().get(0).storageQuotaInMb());
-        Assertions.assertEquals(992034682, model.value().get(0).vCores());
-        Assertions.assertEquals(false, model.value().get(0).enableHa());
+        Assertions.assertEquals("okjye", model.value().get(0).availabilityZone());
+        Assertions.assertEquals("kvnipjoxz", model.value().get(0).postgresqlVersion());
+        Assertions.assertEquals("chgejspodm", model.value().get(0).citusVersion());
+        Assertions.assertEquals("lzydehojwyahux", model.value().get(0).serverEdition());
+        Assertions.assertEquals(1511051439, model.value().get(0).storageQuotaInMb());
+        Assertions.assertEquals(2090543753, model.value().get(0).vCores());
+        Assertions.assertEquals(true, model.value().get(0).enableHa());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterServerListResult model = new ClusterServerListResult().withValue(Arrays.asList(
-            new ClusterServerInner().withRole(ServerRole.COORDINATOR).withAvailabilityZone("th")
-                .withPostgresqlVersion("hab").withCitusVersion("pikxwczbyscnpqxu").withServerEdition("vyq")
-                .withStorageQuotaInMb(649847293).withVCores(992034682).withEnableHa(false),
-            new ClusterServerInner().withRole(ServerRole.WORKER).withAvailabilityZone("pmqnja")
-                .withPostgresqlVersion("ixjsprozvcputeg").withCitusVersion("wmfdatscmdvpjhul").withServerEdition("uvm")
-                .withStorageQuotaInMb(2017964411).withVCores(37430274).withEnableHa(true),
-            new ClusterServerInner().withRole(ServerRole.WORKER).withAvailabilityZone("trg")
-                .withPostgresqlVersion("bpf").withCitusVersion("s").withServerEdition("zgvfcjrwz")
-                .withStorageQuotaInMb(1151751299).withVCores(1189950130).withEnableHa(true),
-            new ClusterServerInner().withRole(ServerRole.COORDINATOR).withAvailabilityZone("jzrnf")
-                .withPostgresqlVersion("xgispemvtzfkufu").withCitusVersion("jofxqe").withServerEdition("jaeq")
-                .withStorageQuotaInMb(1946289710).withVCores(158340850).withEnableHa(false)));
+            new ClusterServerInner().withRole(ServerRole.COORDINATOR)
+                .withAvailabilityZone("okjye")
+                .withPostgresqlVersion("kvnipjoxz")
+                .withCitusVersion("chgejspodm")
+                .withServerEdition("lzydehojwyahux")
+                .withStorageQuotaInMb(1511051439)
+                .withVCores(2090543753)
+                .withEnableHa(true),
+            new ClusterServerInner().withRole(ServerRole.WORKER)
+                .withAvailabilityZone("kljla")
+                .withPostgresqlVersion("cr")
+                .withCitusVersion("fdfdosygexpa")
+                .withServerEdition("akhmsbzjhcrz")
+                .withStorageQuotaInMb(268305459)
+                .withVCores(656929943)
+                .withEnableHa(false),
+            new ClusterServerInner().withRole(ServerRole.WORKER)
+                .withAvailabilityZone("oginuvamiheognar")
+                .withPostgresqlVersion("xth")
+                .withCitusVersion("tusivyevcciqihn")
+                .withServerEdition("ngbwjz")
+                .withStorageQuotaInMb(1668036347)
+                .withVCores(670361377)
+                .withEnableHa(true)));
         model = BinaryData.fromObject(model).toObject(ClusterServerListResult.class);
         Assertions.assertEquals(ServerRole.COORDINATOR, model.value().get(0).role());
-        Assertions.assertEquals("th", model.value().get(0).availabilityZone());
-        Assertions.assertEquals("hab", model.value().get(0).postgresqlVersion());
-        Assertions.assertEquals("pikxwczbyscnpqxu", model.value().get(0).citusVersion());
-        Assertions.assertEquals("vyq", model.value().get(0).serverEdition());
-        Assertions.assertEquals(649847293, model.value().get(0).storageQuotaInMb());
-        Assertions.assertEquals(992034682, model.value().get(0).vCores());
-        Assertions.assertEquals(false, model.value().get(0).enableHa());
+        Assertions.assertEquals("okjye", model.value().get(0).availabilityZone());
+        Assertions.assertEquals("kvnipjoxz", model.value().get(0).postgresqlVersion());
+        Assertions.assertEquals("chgejspodm", model.value().get(0).citusVersion());
+        Assertions.assertEquals("lzydehojwyahux", model.value().get(0).serverEdition());
+        Assertions.assertEquals(1511051439, model.value().get(0).storageQuotaInMb());
+        Assertions.assertEquals(2090543753, model.value().get(0).vCores());
+        Assertions.assertEquals(true, model.value().get(0).enableHa());
     }
 }

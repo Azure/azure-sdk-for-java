@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkRacks. */
+/**
+ * Resource collection API of NetworkRacks.
+ */
 public interface NetworkRacks {
     /**
      * Gets a Network Rack.
-     *
-     * <p>Get Network Rack resource details.
-     *
+     * 
+     * Get Network Rack resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface NetworkRacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network Rack resource details along with {@link Response}.
      */
-    Response<NetworkRack> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkRackName, Context context);
+    Response<NetworkRack> getByResourceGroupWithResponse(String resourceGroupName, String networkRackName,
+        Context context);
 
     /**
      * Gets a Network Rack.
-     *
-     * <p>Get Network Rack resource details.
-     *
+     * 
+     * Get Network Rack resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface NetworkRacks {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface NetworkRacks {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface NetworkRacks {
 
     /**
      * List Network Racks by resource group.
-     *
-     * <p>List all Network Rack resources in the given resource group.
-     *
+     * 
+     * List all Network Rack resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface NetworkRacks {
 
     /**
      * List Network Racks by resource group.
-     *
-     * <p>List all Network Rack resources in the given resource group.
-     *
+     * 
+     * List all Network Rack resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface NetworkRacks {
 
     /**
      * List Network Racks by subscription.
-     *
-     * <p>List all Network Rack resources in the given subscription.
-     *
+     * 
+     * List all Network Rack resources in the given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Racks as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface NetworkRacks {
 
     /**
      * List Network Racks by subscription.
-     *
-     * <p>List all Network Rack resources in the given subscription.
-     *
+     * 
+     * List all Network Rack resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface NetworkRacks {
 
     /**
      * Gets a Network Rack.
-     *
-     * <p>Get Network Rack resource details.
-     *
+     * 
+     * Get Network Rack resource details.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +135,9 @@ public interface NetworkRacks {
 
     /**
      * Gets a Network Rack.
-     *
-     * <p>Get Network Rack resource details.
-     *
+     * 
+     * Get Network Rack resource details.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +149,9 @@ public interface NetworkRacks {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,9 +161,9 @@ public interface NetworkRacks {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +174,7 @@ public interface NetworkRacks {
 
     /**
      * Begins definition for a new NetworkRack resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetworkRack definition.
      */

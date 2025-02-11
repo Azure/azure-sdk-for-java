@@ -51,7 +51,11 @@ public interface VirtualMachineEncryption {
      */
     Mono<DiskVolumeEncryptionMonitor> disableAsync(DiskVolumeType volumeType);
 
-    /** @return observable that emits current volume encryption/decryption status */
+    /**
+     * Gets observable that emits current volume encryption/decryption status.
+     *
+     * @return observable that emits current volume encryption/decryption status
+     */
     Mono<DiskVolumeEncryptionMonitor> getMonitorAsync();
 
     /**
@@ -96,6 +100,10 @@ public interface VirtualMachineEncryption {
      */
     DiskVolumeEncryptionMonitor disable(DiskVolumeType volumeType);
 
-    /** @return current volume decryption status */
+    /**
+     * Gets current volume decryption status.
+     *
+     * @return current volume decryption status
+     */
     DiskVolumeEncryptionMonitor getMonitor();
 }

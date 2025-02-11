@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.ResourceSkuCapacity;
 public final class ResourceSkuCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuCapacity model =
-            BinaryData
-                .fromString(
-                    "{\"minimum\":1756077940432608188,\"maximum\":4004614567992112922,\"default\":5486133222251780236,\"scaleType\":\"Automatic\"}")
-                .toObject(ResourceSkuCapacity.class);
+        ResourceSkuCapacity model = BinaryData.fromString(
+            "{\"minimum\":4925998921332611681,\"maximum\":3554487366496283285,\"default\":8175859327820235456,\"scaleType\":\"Automatic\"}")
+            .toObject(ResourceSkuCapacity.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -21,9 +21,8 @@ import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for Galleries. */
-public class GalleriesImpl
-    extends GroupableResourcesImpl<Gallery, GalleryImpl, GalleryInner, GalleriesClient, ComputeManager>
-    implements Galleries {
+public class GalleriesImpl extends
+    GroupableResourcesImpl<Gallery, GalleryImpl, GalleryInner, GalleriesClient, ComputeManager> implements Galleries {
     public GalleriesImpl(ComputeManager manager) {
         super(manager.serviceClient().getGalleries(), manager);
     }
@@ -68,8 +67,8 @@ public class GalleriesImpl
     @Override
     public PagedFlux<Gallery> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return PagedConverter.mapPage(inner().listByResourceGroupAsync(resourceGroupName), this::wrapModel);
     }

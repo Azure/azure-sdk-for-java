@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class PricingsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetResourcePricingByNameVirtualMachines_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetResourcePricingByNameVirtualMachines_example.json
      */
     /**
      * Sample code: Get pricings on resource - VirtualMachines plan.
@@ -25,7 +27,9 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameCloudPosture_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetPricingByNameCloudPosture_example.json
      */
     /**
      * Sample code: Get pricings on subscription - CloudPosture plan.
@@ -40,7 +44,9 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameDns_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetPricingByNameDns_example.json
      */
     /**
      * Sample code: Get pricings on subscription - Dns plan.
@@ -54,7 +60,9 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameContainers_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetPricingByNameContainers_example.json
      */
     /**
      * Sample code: Get pricings on subscription - Containers plan.
@@ -69,7 +77,9 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameStorageAccounts_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetPricingByNameStorageAccounts_example.json
      */
     /**
      * Sample code: Get pricings on subscription - StorageAccounts plan.
@@ -84,7 +94,9 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameVirtualMachines_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetPricingByNameVirtualMachines_example.json
      */
     /**
      * Sample code: Get pricings on subscription - VirtualMachines plan.

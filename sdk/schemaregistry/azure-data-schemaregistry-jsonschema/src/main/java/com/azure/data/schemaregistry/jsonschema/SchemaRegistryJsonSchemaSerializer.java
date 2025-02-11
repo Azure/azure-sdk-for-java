@@ -109,8 +109,9 @@ public final class SchemaRegistryJsonSchemaSerializer {
         try {
             serializedBytes = BinaryData.fromBytes(jsonSerializer.serializeToBytes(object));
         } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new SchemaRegistryJsonSchemaException(String.format(
-                "Error encountered serializing object: %s with schemaId '%s'.", object, schemaId), e, schemaId));
+            throw LOGGER.logExceptionAsError(new SchemaRegistryJsonSchemaException(
+                String.format("Error encountered serializing object: %s with schemaId '%s'.", object, schemaId), e,
+                schemaId));
         }
 
         serializedMessage = resolvedMessageFactory.apply(serializedBytes);
@@ -163,8 +164,8 @@ public final class SchemaRegistryJsonSchemaSerializer {
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      * @throws SchemaRegistryJsonSchemaException if an error occurred while serializing object.
      */
-    public <T extends MessageContent> Mono<T> serializeAsync(Object object,
-        TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
+    public <T extends MessageContent> Mono<T> serializeAsync(Object object, TypeReference<T> typeReference,
+        Function<BinaryData, T> messageFactory) {
 
         final String schemaFullName = object.getClass().getName();
         final Function<BinaryData, T> resolvedMessageFactory = getMessageContentFactory(typeReference, messageFactory);
@@ -181,11 +182,10 @@ public final class SchemaRegistryJsonSchemaSerializer {
             .flatMap(messageBytes -> {
                 final T serializedMessage = resolvedMessageFactory.apply(BinaryData.fromBytes(messageBytes));
 
-                return schemaCache.getSchemaIdAsync(schemaFullName, schemaDefinition)
-                    .map(schemaId -> {
-                        serializedMessage.setContentType(CONTENT_TYPE + "+" + schemaId);
-                        return serializedMessage;
-                    });
+                return schemaCache.getSchemaIdAsync(schemaFullName, schemaDefinition).map(schemaId -> {
+                    serializedMessage.setContentType(CONTENT_TYPE + "+" + schemaId);
+                    return serializedMessage;
+                });
             });
     }
 
@@ -230,8 +230,8 @@ public final class SchemaRegistryJsonSchemaSerializer {
         try {
             deserialized = jsonSerializer.deserialize(body.toStream(), typeReference);
         } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new SchemaRegistryJsonSchemaException(
-                "Error deserializing message", e, schemaId));
+            throw LOGGER
+                .logExceptionAsError(new SchemaRegistryJsonSchemaException("Error deserializing message", e, schemaId));
         }
         if (deserialized == null) {
             return null;
@@ -242,9 +242,10 @@ public final class SchemaRegistryJsonSchemaSerializer {
         if (isValid(deserialized, typeReference, schemaDefinition)) {
             return deserialized;
         } else {
-            throw LOGGER.logExceptionAsError(new SchemaRegistryJsonSchemaException(String.format(
-                "Deserialized JSON object does not match schema. Type: %s, Actual: %s, Definition: %s.",
-                typeReference.getJavaClass(), deserialized, schemaDefinition), null, schemaId));
+            throw LOGGER.logExceptionAsError(new SchemaRegistryJsonSchemaException(
+                String.format("Deserialized JSON object does not match schema. Type: %s, Actual: %s, Definition: %s.",
+                    typeReference.getJavaClass(), deserialized, schemaDefinition),
+                null, schemaId));
         }
     }
 
@@ -292,27 +293,26 @@ public final class SchemaRegistryJsonSchemaSerializer {
         return jsonSerializer.deserializeAsync(body.toStream(), typeReference)
             .onErrorMap(error -> new SchemaRegistryJsonSchemaException("Error deserializing message", error))
             .flatMap(decoded -> {
-                return this.schemaCache.getSchemaDefinitionAsync(schemaId)
-                    .handle((schemaDefinition, sink) -> {
-                        final String schemaFullName = typeReference.getJavaClass().getName();
+                return this.schemaCache.getSchemaDefinitionAsync(schemaId).handle((schemaDefinition, sink) -> {
+                    final String schemaFullName = typeReference.getJavaClass().getName();
 
-                        final boolean isValid;
-                        try {
-                            isValid = schemaGenerator.isValid(decoded, typeReference, schemaDefinition);
-                        } catch (Exception e) {
-                            sink.error(new SchemaRegistryJsonSchemaException("Error while validating schema.", e, schemaId
-                            ));
-                            return;
-                        }
+                    final boolean isValid;
+                    try {
+                        isValid = schemaGenerator.isValid(decoded, typeReference, schemaDefinition);
+                    } catch (Exception e) {
+                        sink.error(
+                            new SchemaRegistryJsonSchemaException("Error while validating schema.", e, schemaId));
+                        return;
+                    }
 
-                        if (isValid) {
-                            sink.next(decoded);
-                        } else {
-                            sink.error(new SchemaRegistryJsonSchemaException(String.format("Deserialized JSON object"
-                                    + "does not match schema. Type: %s, Actual: %s, Definition: %s.",
-                                schemaFullName, decoded, schemaDefinition), null, schemaId));
-                        }
-                    });
+                    if (isValid) {
+                        sink.next(decoded);
+                    } else {
+                        sink.error(new SchemaRegistryJsonSchemaException(String.format(
+                            "Deserialized JSON object" + "does not match schema. Type: %s, Actual: %s, Definition: %s.",
+                            schemaFullName, decoded, schemaDefinition), null, schemaId));
+                    }
+                });
             });
     }
 
@@ -355,8 +355,8 @@ public final class SchemaRegistryJsonSchemaSerializer {
         }
 
         if (schemaDefinition == null) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("JSON schema cannot be null. Type: "
-                + schemaFullName));
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("JSON schema cannot be null. Type: " + schemaFullName));
         }
 
         return schemaDefinition;
@@ -376,9 +376,8 @@ public final class SchemaRegistryJsonSchemaSerializer {
         }
 
         if (!CONTENT_TYPE.equalsIgnoreCase(parts[0])) {
-            throw new IllegalArgumentException(
-                "Json deserialization may only be used on content that is of '" + CONTENT_TYPE + "' type. Actual: "
-                    + message.getContentType());
+            throw new IllegalArgumentException("Json deserialization may only be used on content that is of '"
+                + CONTENT_TYPE + "' type. Actual: " + message.getContentType());
         }
 
         return parts[1];
@@ -394,11 +393,11 @@ public final class SchemaRegistryJsonSchemaSerializer {
      * @param <T> Type of message content to return.
      * @throws IllegalArgumentException If type does not have a no-arg constructor and messageFactory is null.
      */
-    private static <T extends MessageContent> Function<BinaryData, T> getMessageContentFactory(
-        TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
+    private static <T extends MessageContent> Function<BinaryData, T>
+        getMessageContentFactory(TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
 
-        final Optional<Constructor<?>> constructor =
-            Arrays.stream(typeReference.getJavaClass().getDeclaredConstructors())
+        final Optional<Constructor<?>> constructor
+            = Arrays.stream(typeReference.getJavaClass().getDeclaredConstructors())
                 .filter(c -> c.getParameterCount() == 0)
                 .findFirst();
 
@@ -408,8 +407,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
                 + "accepts 'messageFactory'."));
         }
 
-        return messageFactory != null ? messageFactory
-            : binaryData -> {
+        return messageFactory != null ? messageFactory : binaryData -> {
             final T instance = createNoArgumentInstance(typeReference);
             instance.setBodyAsBinaryData(binaryData);
 
@@ -429,8 +427,8 @@ public final class SchemaRegistryJsonSchemaSerializer {
     @SuppressWarnings("unchecked")
     private static <T extends MessageContent> T createNoArgumentInstance(TypeReference<T> typeReference) {
 
-        final Optional<Constructor<?>> constructor =
-            Arrays.stream(typeReference.getJavaClass().getDeclaredConstructors())
+        final Optional<Constructor<?>> constructor
+            = Arrays.stream(typeReference.getJavaClass().getDeclaredConstructors())
                 .filter(c -> c.getParameterCount() == 0)
                 .findFirst();
 
@@ -443,13 +441,13 @@ public final class SchemaRegistryJsonSchemaSerializer {
         try {
             newObject = constructor.get().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(String.format(
-                "Could not instantiate '%s' with no-arg constructor.", typeReference.getJavaClass()), e);
+            throw new RuntimeException(
+                String.format("Could not instantiate '%s' with no-arg constructor.", typeReference.getJavaClass()), e);
         }
 
         if (!typeReference.getJavaClass().isInstance(newObject)) {
-            throw new RuntimeException(String.format(
-                "Constructed '%s' object was not an instanceof T '%s'.", newObject, typeReference.getJavaClass()));
+            throw new RuntimeException(String.format("Constructed '%s' object was not an instanceof T '%s'.", newObject,
+                typeReference.getJavaClass()));
         } else {
             return (T) newObject;
         }

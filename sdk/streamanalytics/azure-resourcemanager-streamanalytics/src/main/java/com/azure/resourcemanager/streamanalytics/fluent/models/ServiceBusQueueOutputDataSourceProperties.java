@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.ServiceBusDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,13 +21,11 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
     /*
      * The name of the Service Bus Queue. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "queueName")
     private String queueName;
 
     /*
      * A string array of the names of output columns to be attached to Service Bus messages as custom properties.
      */
-    @JsonProperty(value = "propertyColumns")
     private List<String> propertyColumns;
 
     /*
@@ -32,7 +33,6 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
      * ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey, SessionId,
      * ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
      */
-    @JsonProperty(value = "systemPropertyColumns")
     private Object systemPropertyColumns;
 
     /**
@@ -85,8 +85,8 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
 
     /**
      * Get the systemPropertyColumns property: The system properties associated with the Service Bus Queue. The
-     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId,
-     * TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
+     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
+     * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
      * 
      * @return the systemPropertyColumns value.
      */
@@ -96,8 +96,8 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
 
     /**
      * Set the systemPropertyColumns property: The system properties associated with the Service Bus Queue. The
-     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId,
-     * TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
+     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
+     * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
      * 
      * @param systemPropertyColumns the systemPropertyColumns value to set.
      * @return the ServiceBusQueueOutputDataSourceProperties object itself.
@@ -150,6 +150,65 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceBusNamespace", serviceBusNamespace());
+        jsonWriter.writeStringField("sharedAccessPolicyName", sharedAccessPolicyName());
+        jsonWriter.writeStringField("sharedAccessPolicyKey", sharedAccessPolicyKey());
+        jsonWriter.writeStringField("authenticationMode",
+            authenticationMode() == null ? null : authenticationMode().toString());
+        jsonWriter.writeStringField("queueName", this.queueName);
+        jsonWriter.writeArrayField("propertyColumns", this.propertyColumns,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeUntypedField("systemPropertyColumns", this.systemPropertyColumns);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceBusQueueOutputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceBusQueueOutputDataSourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceBusQueueOutputDataSourceProperties.
+     */
+    public static ServiceBusQueueOutputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceBusQueueOutputDataSourceProperties deserializedServiceBusQueueOutputDataSourceProperties
+                = new ServiceBusQueueOutputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceBusNamespace".equals(fieldName)) {
+                    deserializedServiceBusQueueOutputDataSourceProperties.withServiceBusNamespace(reader.getString());
+                } else if ("sharedAccessPolicyName".equals(fieldName)) {
+                    deserializedServiceBusQueueOutputDataSourceProperties
+                        .withSharedAccessPolicyName(reader.getString());
+                } else if ("sharedAccessPolicyKey".equals(fieldName)) {
+                    deserializedServiceBusQueueOutputDataSourceProperties.withSharedAccessPolicyKey(reader.getString());
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedServiceBusQueueOutputDataSourceProperties
+                        .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
+                } else if ("queueName".equals(fieldName)) {
+                    deserializedServiceBusQueueOutputDataSourceProperties.queueName = reader.getString();
+                } else if ("propertyColumns".equals(fieldName)) {
+                    List<String> propertyColumns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedServiceBusQueueOutputDataSourceProperties.propertyColumns = propertyColumns;
+                } else if ("systemPropertyColumns".equals(fieldName)) {
+                    deserializedServiceBusQueueOutputDataSourceProperties.systemPropertyColumns = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceBusQueueOutputDataSourceProperties;
+        });
     }
 }

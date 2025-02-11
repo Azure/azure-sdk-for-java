@@ -21,13 +21,12 @@ import com.azure.perf.test.core.PerfStressProgram;
  */
 public class App {
     public static void main(String[] args) {
-        PerfStressProgram.run(new Class<?>[]{
+        PerfStressProgram.run(new Class<?>[] {
             CreateEntityWithAllTypes.class,
             CreateEntityWithStringsOnly.class,
             ListEntitiesWithAllTypesTest.class,
             ListEntitiesWithStringsOnlyTest.class,
             CreateEntityWithAllTypesUsingTransaction.class,
-            CreateEntityWithStringsOnlyUsingTransaction.class
-        }, args);
+            CreateEntityWithStringsOnlyUsingTransaction.class }, args);
     }
 }

@@ -29,22 +29,28 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     private Object mlPipelineId;
 
     /*
-     * Run history experiment name of the pipeline run. This information will be passed in the ExperimentName property of the published pipeline execution request. Type: string (or Expression with resultType string).
+     * Run history experiment name of the pipeline run. This information will be passed in the ExperimentName property
+     * of the published pipeline execution request. Type: string (or Expression with resultType string).
      */
     private Object experimentName;
 
     /*
-     * Key,Value pairs to be passed to the published Azure ML pipeline endpoint. Keys must match the names of pipeline parameters defined in the published pipeline. Values will be passed in the ParameterAssignments property of the published pipeline execution request. Type: object with key value pairs (or Expression with resultType object).
+     * Key,Value pairs to be passed to the published Azure ML pipeline endpoint. Keys must match the names of pipeline
+     * parameters defined in the published pipeline. Values will be passed in the ParameterAssignments property of the
+     * published pipeline execution request. Type: object with key value pairs (or Expression with resultType object).
      */
     private Object mlPipelineParameters;
 
     /*
-     * The parent Azure ML Service pipeline run id. This information will be passed in the ParentRunId property of the published pipeline execution request. Type: string (or Expression with resultType string).
+     * The parent Azure ML Service pipeline run id. This information will be passed in the ParentRunId property of the
+     * published pipeline execution request. Type: string (or Expression with resultType string).
      */
     private Object mlParentRunId;
 
     /*
-     * Whether to continue execution of other steps in the PipelineRun if a step fails. This information will be passed in the continueOnStepFailure property of the published pipeline execution request. Type: boolean (or Expression with resultType boolean).
+     * Whether to continue execution of other steps in the PipelineRun if a step fails. This information will be passed
+     * in the continueOnStepFailure property of the published pipeline execution request. Type: boolean (or Expression
+     * with resultType boolean).
      */
     private Object continueOnStepFailure;
 

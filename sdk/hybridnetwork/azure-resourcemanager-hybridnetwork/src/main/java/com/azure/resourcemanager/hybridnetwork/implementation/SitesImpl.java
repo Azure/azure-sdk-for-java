@@ -57,31 +57,31 @@ public final class SitesImpl implements Sites {
 
     public PagedIterable<Site> list() {
         PagedIterable<SiteInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Site> list(Context context) {
         PagedIterable<SiteInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Site> listByResourceGroup(String resourceGroupName) {
         PagedIterable<SiteInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Site> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<SiteInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
     }
 
     public Site getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String siteName = Utils.getValueFromIdByName(id, "sites");
+        String siteName = ResourceManagerUtils.getValueFromIdByName(id, "sites");
         if (siteName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));
@@ -90,12 +90,12 @@ public final class SitesImpl implements Sites {
     }
 
     public Response<Site> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String siteName = Utils.getValueFromIdByName(id, "sites");
+        String siteName = ResourceManagerUtils.getValueFromIdByName(id, "sites");
         if (siteName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));
@@ -104,12 +104,12 @@ public final class SitesImpl implements Sites {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String siteName = Utils.getValueFromIdByName(id, "sites");
+        String siteName = ResourceManagerUtils.getValueFromIdByName(id, "sites");
         if (siteName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));
@@ -118,12 +118,12 @@ public final class SitesImpl implements Sites {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String siteName = Utils.getValueFromIdByName(id, "sites");
+        String siteName = ResourceManagerUtils.getValueFromIdByName(id, "sites");
         if (siteName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));

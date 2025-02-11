@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CountType. */
+/**
+ * Defines values for CountType.
+ */
 public final class CountType extends ExpandableStringEnum<CountType> {
-    /** Static value status for CountType. */
+    /**
+     * Static value status for CountType.
+     */
     public static final CountType STATUS = fromString("status");
 
-    /** Static value nodeconfiguration for CountType. */
+    /**
+     * Static value nodeconfiguration for CountType.
+     */
     public static final CountType NODECONFIGURATION = fromString("nodeconfiguration");
 
     /**
+     * Creates a new instance of CountType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CountType() {
+    }
+
+    /**
      * Creates or finds a CountType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CountType.
      */
-    @JsonCreator
     public static CountType fromString(String name) {
         return fromString(name, CountType.class);
     }
 
     /**
      * Gets known CountType values.
-     *
+     * 
      * @return known CountType values.
      */
     public static Collection<CountType> values() {

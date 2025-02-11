@@ -31,7 +31,7 @@ public final class RulesEnginesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceState\":\"Enabling\",\"rules\":[{\"name\":\"fwmkoisqcssffxui\",\"priority\":573045315,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"p\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"qzrdzsylollg\"},{\"headerActionType\":\"Append\",\"headerName\":\"czzydmxzjij\"},{\"headerActionType\":\"Delete\",\"headerName\":\"uaurkihcir\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"RequestHeader\",\"rulesEngineOperator\":\"GreaterThanOrEqual\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Continue\"}]},\"id\":\"oxnbkkjanurnnqbn\",\"name\":\"bpizxqltgr\",\"type\":\"ogypxrxvbfihwu\"}";
+            = "{\"properties\":{\"resourceState\":\"Disabled\",\"rules\":[{\"name\":\"leseyqrhvyeldo\",\"priority\":353685526,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Delete\",\"headerName\":\"wiswskukjtasbvw\"},{\"headerActionType\":\"Delete\",\"headerName\":\"pkxkdtxfk\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"vtwknvgmmbugt\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"RequestUri\",\"rulesEngineOperator\":\"Contains\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Stop\"},{\"name\":\"kueatgroeshoy\",\"priority\":1486961645,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"fqxkfaoyteh\"},{\"headerActionType\":\"Delete\",\"headerName\":\"uvjmv\"},{\"headerActionType\":\"Append\",\"headerName\":\"tdwckygr\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"ndljdjuskbr\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"RequestPath\",\"rulesEngineOperator\":\"GeoMatch\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestBody\",\"rulesEngineOperator\":\"BeginsWith\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestPath\",\"rulesEngineOperator\":\"LessThanOrEqual\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestBody\",\"rulesEngineOperator\":\"Any\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Continue\"},{\"name\":\"gplwr\",\"priority\":614396820,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"d\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"gkqu\"},{\"headerActionType\":\"Append\",\"headerName\":\"bwptdacarvvlf\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"IsMobile\",\"rulesEngineOperator\":\"EndsWith\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Stop\"}]},\"id\":\"wenaz\",\"name\":\"r\",\"type\":\"hzr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -41,99 +41,76 @@ public final class RulesEnginesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RulesEngine response = manager.rulesEngines()
-            .define("ulwgniiprglvawuw")
-            .withExistingFrontDoor("wdtgukranblw", "hqlkccuzgygqwaho")
+            .define("liuhqawmoaiancz")
+            .withExistingFrontDoor("ewj", "s")
             .withRules(Arrays.asList(
-                new RulesEngineRule().withName("ivlsbbjpmc")
-                    .withPriority(543267729)
-                    .withAction(new RulesEngineAction().withRequestHeaderActions(Arrays.asList(
-                        new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE).withHeaderName("foxx"),
-                        new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE).withHeaderName("bvphavpm"),
-                        new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE).withHeaderName("rbqgvgov")))
+                new RulesEngineRule().withName("slblxydkxrxvvb")
+                    .withPriority(611172975)
+                    .withAction(new RulesEngineAction()
+                        .withRequestHeaderActions(Arrays.asList(
+                            new HeaderAction().withHeaderActionType(HeaderActionType.APPEND)
+                                .withHeaderName("fbqljnqkh"),
+                            new HeaderAction().withHeaderActionType(HeaderActionType.DELETE).withHeaderName("h"),
+                            new HeaderAction().withHeaderActionType(HeaderActionType.DELETE)
+                                .withHeaderName("okulehurqlrqf")))
                         .withResponseHeaderActions(Arrays.asList(
-                            new HeaderAction().withHeaderActionType(HeaderActionType.APPEND)
-                                .withHeaderName("tefjoknssqyzq"),
-                            new HeaderAction().withHeaderActionType(HeaderActionType.DELETE).withHeaderName("ik"),
-                            new HeaderAction().withHeaderActionType(HeaderActionType.APPEND)
-                                .withHeaderName("rdbiqmrjge")))
+                            new HeaderAction().withHeaderActionType(HeaderActionType.APPEND).withHeaderName("yur"),
+                            new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE).withHeaderName("hy"),
+                            new HeaderAction().withHeaderActionType(HeaderActionType.DELETE).withHeaderName("xra")))
                         .withRouteConfigurationOverride(new RouteConfiguration()))
                     .withMatchConditions(Arrays.asList(
                         new RulesEngineMatchCondition().withRulesEngineMatchVariable(RulesEngineMatchVariable.POST_ARGS)
-                            .withRulesEngineOperator(RulesEngineOperator.EQUAL)
+                            .withRulesEngineOperator(RulesEngineOperator.ANY)
                             .withRulesEngineMatchValue(Arrays.asList()),
                         new RulesEngineMatchCondition()
-                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_METHOD)
-                            .withRulesEngineOperator(RulesEngineOperator.GREATER_THAN_OR_EQUAL)
+                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_SCHEME)
+                            .withRulesEngineOperator(RulesEngineOperator.BEGINS_WITH)
+                            .withRulesEngineMatchValue(Arrays.asList()),
+                        new RulesEngineMatchCondition()
+                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.REMOTE_ADDR)
+                            .withRulesEngineOperator(RulesEngineOperator.LESS_THAN_OR_EQUAL)
                             .withRulesEngineMatchValue(Arrays.asList())))
                     .withMatchProcessingBehavior(MatchProcessingBehavior.STOP),
-                new RulesEngineRule().withName("wzcxmjpbyephmgt")
-                    .withPriority(2078658730)
-                    .withAction(new RulesEngineAction().withRequestHeaderActions(Arrays.asList(
-                        new HeaderAction().withHeaderActionType(HeaderActionType.APPEND)
-                            .withHeaderName("cmyfqipgxhnpo"),
-                        new HeaderAction().withHeaderActionType(HeaderActionType.APPEND).withHeaderName("qwcabvnui"),
-                        new HeaderAction().withHeaderActionType(HeaderActionType.DELETE).withHeaderName("ey"),
-                        new HeaderAction().withHeaderActionType(HeaderActionType.APPEND)
-                            .withHeaderName("wlpaugmrmfjlrxwt")))
+                new RulesEngineRule().withName("hbapxkiyf")
+                    .withPriority(73723123)
+                    .withAction(new RulesEngineAction()
+                        .withRequestHeaderActions(Arrays.asList(
+                            new HeaderAction().withHeaderActionType(HeaderActionType.DELETE).withHeaderName("jbuscg"),
+                            new HeaderAction().withHeaderActionType(HeaderActionType.APPEND).withHeaderName("u"),
+                            new HeaderAction().withHeaderActionType(HeaderActionType.APPEND)
+                                .withHeaderName("oycblevpmc"),
+                            new HeaderAction().withHeaderActionType(HeaderActionType.APPEND).withHeaderName("jy")))
                         .withResponseHeaderActions(Arrays.asList(
-                            new HeaderAction().withHeaderActionType(HeaderActionType.DELETE)
-                                .withHeaderName("hfkvcisizmoaedsx"),
                             new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE)
-                                .withHeaderName("uivedwcgyeewxeiq")))
+                                .withHeaderName("lzgsjgkzzlt"),
+                            new HeaderAction().withHeaderActionType(HeaderActionType.APPEND)
+                                .withHeaderName("hbzffovwmbjlzqs")))
                         .withRouteConfigurationOverride(new RouteConfiguration()))
                     .withMatchConditions(Arrays.asList(
                         new RulesEngineMatchCondition().withRulesEngineMatchVariable(RulesEngineMatchVariable.IS_MOBILE)
                             .withRulesEngineOperator(RulesEngineOperator.EQUAL)
                             .withRulesEngineMatchValue(Arrays.asList()),
                         new RulesEngineMatchCondition()
-                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_FILENAME_EXTENSION)
-                            .withRulesEngineOperator(RulesEngineOperator.ANY)
+                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_HEADER)
+                            .withRulesEngineOperator(RulesEngineOperator.CONTAINS)
                             .withRulesEngineMatchValue(Arrays.asList())))
-                    .withMatchProcessingBehavior(MatchProcessingBehavior.STOP),
-                new RulesEngineRule().withName("mljdlrgmsplzga")
-                    .withPriority(1214868760)
-                    .withAction(new RulesEngineAction()
-                        .withRequestHeaderActions(Arrays.asList(
-                            new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE).withHeaderName("hvn"),
-                            new HeaderAction().withHeaderActionType(HeaderActionType.APPEND)
-                                .withHeaderName("gnxkympqan"),
-                            new HeaderAction().withHeaderActionType(HeaderActionType.APPEND).withHeaderName("jk")))
-                        .withResponseHeaderActions(Arrays.asList(
-                            new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE).withHeaderName("bta")))
-                        .withRouteConfigurationOverride(new RouteConfiguration()))
-                    .withMatchConditions(Arrays.asList(
-                        new RulesEngineMatchCondition()
-                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.QUERY_STRING)
-                            .withRulesEngineOperator(RulesEngineOperator.ANY)
-                            .withRulesEngineMatchValue(Arrays.asList()),
-                        new RulesEngineMatchCondition()
-                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_METHOD)
-                            .withRulesEngineOperator(RulesEngineOperator.GEO_MATCH)
-                            .withRulesEngineMatchValue(Arrays.asList()),
-                        new RulesEngineMatchCondition()
-                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_METHOD)
-                            .withRulesEngineOperator(RulesEngineOperator.ENDS_WITH)
-                            .withRulesEngineMatchValue(Arrays.asList()),
-                        new RulesEngineMatchCondition()
-                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_SCHEME)
-                            .withRulesEngineOperator(RulesEngineOperator.IPMATCH)
-                            .withRulesEngineMatchValue(Arrays.asList())))
-                    .withMatchProcessingBehavior(MatchProcessingBehavior.CONTINUE)))
+                    .withMatchProcessingBehavior(MatchProcessingBehavior.STOP)))
             .create();
 
-        Assertions.assertEquals("fwmkoisqcssffxui", response.rules().get(0).name());
-        Assertions.assertEquals(573045315, response.rules().get(0).priority());
-        Assertions.assertEquals(HeaderActionType.APPEND,
+        Assertions.assertEquals("leseyqrhvyeldo", response.rules().get(0).name());
+        Assertions.assertEquals(353685526, response.rules().get(0).priority());
+        Assertions.assertEquals(HeaderActionType.DELETE,
             response.rules().get(0).action().requestHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("p", response.rules().get(0).action().requestHeaderActions().get(0).headerName());
-        Assertions.assertEquals(HeaderActionType.APPEND,
+        Assertions.assertEquals("wiswskukjtasbvw",
+            response.rules().get(0).action().requestHeaderActions().get(0).headerName());
+        Assertions.assertEquals(HeaderActionType.OVERWRITE,
             response.rules().get(0).action().responseHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("qzrdzsylollg",
+        Assertions.assertEquals("vtwknvgmmbugt",
             response.rules().get(0).action().responseHeaderActions().get(0).headerName());
-        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_HEADER,
+        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_URI,
             response.rules().get(0).matchConditions().get(0).rulesEngineMatchVariable());
-        Assertions.assertEquals(RulesEngineOperator.GREATER_THAN_OR_EQUAL,
+        Assertions.assertEquals(RulesEngineOperator.CONTAINS,
             response.rules().get(0).matchConditions().get(0).rulesEngineOperator());
-        Assertions.assertEquals(MatchProcessingBehavior.CONTINUE, response.rules().get(0).matchProcessingBehavior());
+        Assertions.assertEquals(MatchProcessingBehavior.STOP, response.rules().get(0).matchProcessingBehavior());
     }
 }

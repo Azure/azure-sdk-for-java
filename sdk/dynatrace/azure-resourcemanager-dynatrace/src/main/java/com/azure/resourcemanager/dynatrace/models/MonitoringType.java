@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The monitoring mode of OneAgent. */
+/**
+ * The monitoring mode of OneAgent.
+ */
 public final class MonitoringType extends ExpandableStringEnum<MonitoringType> {
-    /** Static value CLOUD_INFRASTRUCTURE for MonitoringType. */
+    /**
+     * Static value CLOUD_INFRASTRUCTURE for MonitoringType.
+     */
     public static final MonitoringType CLOUD_INFRASTRUCTURE = fromString("CLOUD_INFRASTRUCTURE");
 
-    /** Static value FULL_STACK for MonitoringType. */
+    /**
+     * Static value FULL_STACK for MonitoringType.
+     */
     public static final MonitoringType FULL_STACK = fromString("FULL_STACK");
 
     /**
      * Creates a new instance of MonitoringType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class MonitoringType extends ExpandableStringEnum<MonitoringType> {
 
     /**
      * Creates or finds a MonitoringType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MonitoringType.
      */
-    @JsonCreator
     public static MonitoringType fromString(String name) {
         return fromString(name, MonitoringType.class);
     }
 
     /**
      * Gets known MonitoringType values.
-     *
+     * 
      * @return known MonitoringType values.
      */
     public static Collection<MonitoringType> values() {

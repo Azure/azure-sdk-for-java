@@ -37,11 +37,15 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
+        DeidentificationJob job
+            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
-        DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED).getValue();
+        DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job)
+            .getSyncPoller()
+            .waitUntil(LongRunningOperationStatus.NOT_STARTED)
+            .getValue();
 
         assertNotNull(result);
         assertEquals(jobName, result.getName());
@@ -71,16 +75,20 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
+        DeidentificationJob job
+            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
-        deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED);
+        deidentificationAsyncClient.beginCreateJob(jobName, job)
+            .getSyncPoller()
+            .waitUntil(LongRunningOperationStatus.NOT_STARTED);
 
         PagedFlux<DeidentificationJob> jobs = deidentificationAsyncClient.listJobs();
         jobs.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
             .flatMap(page -> Flux.fromIterable(page.getElements())) // Converts each page into a Flux<T> of its items
-            .filter(item -> item.getName().equals(jobName)).next() // Gets the first item that matches the condition
+            .filter(item -> item.getName().equals(jobName))
+            .next() // Gets the first item that matches the condition
             .subscribe(item -> {
                 assertNotNull(item.getCreatedAt());
                 assertNotNull(item.getLastUpdatedAt());
@@ -109,11 +117,13 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
+        DeidentificationJob job
+            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
-        PollerFlux<DeidentificationJob, DeidentificationJob> poller = setPlaybackPollerFluxPollInterval(deidentificationAsyncClient.beginCreateJob(jobName, job));
+        PollerFlux<DeidentificationJob, DeidentificationJob> poller
+            = setPlaybackPollerFluxPollInterval(deidentificationAsyncClient.beginCreateJob(jobName, job));
         DeidentificationJob result = poller.getSyncPoller().waitForCompletion().getValue();
 
         assertEquals(JobStatus.SUCCEEDED, result.getStatus());
@@ -142,12 +152,15 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
+        DeidentificationJob job
+            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
-        DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED).getValue();
-
+        DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job)
+            .getSyncPoller()
+            .waitUntil(LongRunningOperationStatus.NOT_STARTED)
+            .getValue();
 
         DeidentificationJob cancelledJob = deidentificationAsyncClient.cancelJob(jobName).block();
 
@@ -173,10 +186,14 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
+        DeidentificationJob job
+            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
-        assertThrows(HttpResponseException.class, () -> deidentificationAsyncClient.beginCreateJob(jobName, job).getSyncPoller().waitUntil(LongRunningOperationStatus.NOT_STARTED));
+        assertThrows(HttpResponseException.class,
+            () -> deidentificationAsyncClient.beginCreateJob(jobName, job)
+                .getSyncPoller()
+                .waitUntil(LongRunningOperationStatus.NOT_STARTED));
     }
 }

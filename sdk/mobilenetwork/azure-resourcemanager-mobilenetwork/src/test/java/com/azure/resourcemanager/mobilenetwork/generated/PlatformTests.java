@@ -17,33 +17,33 @@ public final class PlatformTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Platform model = BinaryData.fromString(
-            "{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"ygdvwv\",\"maximumPlatformSoftwareVersion\":\"iohgwxrtfud\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"NotObsolete\",\"haUpgradesAvailable\":[\"agvrvmnpkuk\",\"himdbl\"]}")
+            "{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Validating\",\"minimumPlatformSoftwareVersion\":\"ijfqkacewiipfp\",\"maximumPlatformSoftwareVersion\":\"ji\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\",\"haUpgradesAvailable\":[\"hqkvpuvksgplsak\",\"ynfs\",\"n\",\"jphuopxodlqi\"]}")
             .toObject(Platform.class);
         Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI, model.platformType());
-        Assertions.assertEquals(VersionState.PREVIEW, model.versionState());
-        Assertions.assertEquals("ygdvwv", model.minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("iohgwxrtfud", model.maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(VersionState.VALIDATING, model.versionState());
+        Assertions.assertEquals("ijfqkacewiipfp", model.minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("ji", model.maximumPlatformSoftwareVersion());
         Assertions.assertEquals(RecommendedVersion.RECOMMENDED, model.recommendedVersion());
-        Assertions.assertEquals(ObsoleteVersion.NOT_OBSOLETE, model.obsoleteVersion());
-        Assertions.assertEquals("agvrvmnpkuk", model.haUpgradesAvailable().get(0));
+        Assertions.assertEquals(ObsoleteVersion.OBSOLETE, model.obsoleteVersion());
+        Assertions.assertEquals("hqkvpuvksgplsak", model.haUpgradesAvailable().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Platform model = new Platform().withPlatformType(PlatformType.THREE_P_AZURE_STACK_HCI)
-            .withVersionState(VersionState.PREVIEW)
-            .withMinimumPlatformSoftwareVersion("ygdvwv")
-            .withMaximumPlatformSoftwareVersion("iohgwxrtfud")
+            .withVersionState(VersionState.VALIDATING)
+            .withMinimumPlatformSoftwareVersion("ijfqkacewiipfp")
+            .withMaximumPlatformSoftwareVersion("ji")
             .withRecommendedVersion(RecommendedVersion.RECOMMENDED)
-            .withObsoleteVersion(ObsoleteVersion.NOT_OBSOLETE)
-            .withHaUpgradesAvailable(Arrays.asList("agvrvmnpkuk", "himdbl"));
+            .withObsoleteVersion(ObsoleteVersion.OBSOLETE)
+            .withHaUpgradesAvailable(Arrays.asList("hqkvpuvksgplsak", "ynfs", "n", "jphuopxodlqi"));
         model = BinaryData.fromObject(model).toObject(Platform.class);
         Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI, model.platformType());
-        Assertions.assertEquals(VersionState.PREVIEW, model.versionState());
-        Assertions.assertEquals("ygdvwv", model.minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("iohgwxrtfud", model.maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(VersionState.VALIDATING, model.versionState());
+        Assertions.assertEquals("ijfqkacewiipfp", model.minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("ji", model.maximumPlatformSoftwareVersion());
         Assertions.assertEquals(RecommendedVersion.RECOMMENDED, model.recommendedVersion());
-        Assertions.assertEquals(ObsoleteVersion.NOT_OBSOLETE, model.obsoleteVersion());
-        Assertions.assertEquals("agvrvmnpkuk", model.haUpgradesAvailable().get(0));
+        Assertions.assertEquals(ObsoleteVersion.OBSOLETE, model.obsoleteVersion());
+        Assertions.assertEquals("hqkvpuvksgplsak", model.haUpgradesAvailable().get(0));
     }
 }

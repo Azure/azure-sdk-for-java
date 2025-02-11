@@ -45,20 +45,14 @@ public class MessageSessionSenderAsync extends ServiceBusScenario {
 
         RateLimiter rateLimiter = toClose(new RateLimiter(sendMessageRatePerSecond, sendConcurrency));
 
-        Flux<ServiceBusMessage> messages = Mono.fromSupplier(() -> new ServiceBusMessage(messagePayload).setSessionId(randomSessionId()))
-            .repeat();
+        Flux<ServiceBusMessage> messages
+            = Mono.fromSupplier(() -> new ServiceBusMessage(messagePayload).setSessionId(randomSessionId())).repeat();
 
-        messages
-            .take(options.getTestDuration())
-            .flatMap(msg ->
-                rateLimiter.acquire()
-                    .then(client.sendMessage(msg)
-                        .onErrorResume(t -> true, t -> {
-                            telemetryHelper.recordError(t, "send");
-                            return Mono.empty();
-                        })
-                        .doFinally(i -> rateLimiter.release()))
-            )
+        messages.take(options.getTestDuration())
+            .flatMap(msg -> rateLimiter.acquire().then(client.sendMessage(msg).onErrorResume(t -> true, t -> {
+                telemetryHelper.recordError(t, "send");
+                return Mono.empty();
+            }).doFinally(i -> rateLimiter.release())))
             .parallel(sendConcurrency, sendConcurrency)
             .runOn(Schedulers.boundedElastic())
             .subscribe();

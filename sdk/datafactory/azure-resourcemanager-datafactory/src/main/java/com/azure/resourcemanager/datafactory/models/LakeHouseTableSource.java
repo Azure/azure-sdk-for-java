@@ -163,7 +163,6 @@ public final class LakeHouseTableSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

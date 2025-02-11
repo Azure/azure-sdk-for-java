@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = FieldsClientBuilder.class, isAsync = true)
 public final class FieldsAsyncClient {
-    @Generated private final FieldsImpl serviceClient;
+    @Generated
+    private final FieldsImpl serviceClient;
 
     /**
      * Initializes an instance of FieldsAsyncClient class.
@@ -129,8 +130,8 @@ public final class FieldsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -168,8 +169,8 @@ public final class FieldsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String fieldId, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId, String fieldId,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, fieldId, requestOptions);
     }
 
@@ -335,8 +336,8 @@ public final class FieldsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId, String fieldId, BinaryData field, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String fieldId, BinaryData field,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(partyId, fieldId, field, requestOptions);
     }
 

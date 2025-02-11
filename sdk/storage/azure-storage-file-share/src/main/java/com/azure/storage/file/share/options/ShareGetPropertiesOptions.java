@@ -11,10 +11,17 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
  */
 @Fluent
 public class ShareGetPropertiesOptions {
-
     private ShareRequestConditions requestConditions;
 
     /**
+     * Creates a new instance of {@link ShareGetPropertiesOptions}.
+     */
+    public ShareGetPropertiesOptions() {
+    }
+
+    /**
+     * Gets the {@link ShareRequestConditions}.
+     *
      * @return {@link ShareRequestConditions}.
      */
     public ShareRequestConditions getRequestConditions() {
@@ -22,6 +29,8 @@ public class ShareGetPropertiesOptions {
     }
 
     /**
+     * Sets the {@link ShareRequestConditions}.
+     *
      * @param requestConditions {@link ShareRequestConditions}.
      * @return The updated options.
      */

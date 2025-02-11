@@ -5,28 +5,22 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * Number of device queue purges is not in allowed range.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "ruleType",
-    defaultImpl = QueuePurgesNotInAllowedRange.class,
-    visible = true)
-@JsonTypeName("QueuePurgesNotInAllowedRange")
 @Fluent
 public final class QueuePurgesNotInAllowedRange extends TimeWindowCustomAlertRule {
     /*
      * The type of the custom alert rule.
      */
-    @JsonTypeId
-    @JsonProperty(value = "ruleType", required = true)
     private String ruleType = "QueuePurgesNotInAllowedRange";
 
     /**
@@ -88,6 +82,66 @@ public final class QueuePurgesNotInAllowedRange extends TimeWindowCustomAlertRul
      */
     @Override
     public void validate() {
-        super.validate();
+        if (timeWindowSize() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeWindowSize in model QueuePurgesNotInAllowedRange"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QueuePurgesNotInAllowedRange.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeIntField("minThreshold", minThreshold());
+        jsonWriter.writeIntField("maxThreshold", maxThreshold());
+        jsonWriter.writeStringField("timeWindowSize", CoreUtils.durationToStringWithDays(timeWindowSize()));
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueuePurgesNotInAllowedRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueuePurgesNotInAllowedRange if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QueuePurgesNotInAllowedRange.
+     */
+    public static QueuePurgesNotInAllowedRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueuePurgesNotInAllowedRange deserializedQueuePurgesNotInAllowedRange = new QueuePurgesNotInAllowedRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedQueuePurgesNotInAllowedRange.withIsEnabled(reader.getBoolean());
+                } else if ("minThreshold".equals(fieldName)) {
+                    deserializedQueuePurgesNotInAllowedRange.withMinThreshold(reader.getInt());
+                } else if ("maxThreshold".equals(fieldName)) {
+                    deserializedQueuePurgesNotInAllowedRange.withMaxThreshold(reader.getInt());
+                } else if ("timeWindowSize".equals(fieldName)) {
+                    deserializedQueuePurgesNotInAllowedRange.withTimeWindowSize(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedQueuePurgesNotInAllowedRange.withDisplayName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedQueuePurgesNotInAllowedRange.withDescription(reader.getString());
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedQueuePurgesNotInAllowedRange.ruleType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueuePurgesNotInAllowedRange;
+        });
     }
 }

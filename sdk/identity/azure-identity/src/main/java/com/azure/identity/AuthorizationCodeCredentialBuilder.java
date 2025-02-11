@@ -101,8 +101,8 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
      * @return a {@link AuthorizationCodeCredential} with the current configurations.
      */
     public AuthorizationCodeCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "authorizationCode", authCode,
-            "redirectUrl", redirectUrl);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "authorizationCode", authCode, "redirectUrl",
+            redirectUrl);
 
         try {
             return new AuthorizationCodeCredential(clientId, clientSecret, tenantId, authCode, new URI(redirectUrl),

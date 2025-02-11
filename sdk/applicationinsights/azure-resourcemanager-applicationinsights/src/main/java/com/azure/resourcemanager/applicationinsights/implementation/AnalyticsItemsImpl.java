@@ -26,32 +26,20 @@ public final class AnalyticsItemsImpl implements AnalyticsItems {
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    public AnalyticsItemsImpl(
-        AnalyticsItemsClient innerClient,
+    public AnalyticsItemsImpl(AnalyticsItemsClient innerClient,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<List<ApplicationInsightsComponentAnalyticsItem>> listWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ItemScope scope,
-        ItemTypeParameter type,
-        Boolean includeContent,
+    public Response<List<ApplicationInsightsComponentAnalyticsItem>> listWithResponse(String resourceGroupName,
+        String resourceName, ItemScopePath scopePath, ItemScope scope, ItemTypeParameter type, Boolean includeContent,
         Context context) {
-        Response<List<ApplicationInsightsComponentAnalyticsItemInner>> inner =
-            this
-                .serviceClient()
-                .listWithResponse(resourceGroupName, resourceName, scopePath, scope, type, includeContent, context);
+        Response<List<ApplicationInsightsComponentAnalyticsItemInner>> inner = this.serviceClient()
+            .listWithResponse(resourceGroupName, resourceName, scopePath, scope, type, includeContent, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new ApplicationInsightsComponentAnalyticsItemImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -60,46 +48,35 @@ public final class AnalyticsItemsImpl implements AnalyticsItems {
         }
     }
 
-    public List<ApplicationInsightsComponentAnalyticsItem> list(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath) {
-        List<ApplicationInsightsComponentAnalyticsItemInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName, scopePath);
+    public List<ApplicationInsightsComponentAnalyticsItem> list(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath) {
+        List<ApplicationInsightsComponentAnalyticsItemInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName, scopePath);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ApplicationInsightsComponentAnalyticsItemImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ApplicationInsightsComponentAnalyticsItemImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
     }
 
-    public Response<ApplicationInsightsComponentAnalyticsItem> getWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        String id,
-        String name,
-        Context context) {
-        Response<ApplicationInsightsComponentAnalyticsItemInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, scopePath, id, name, context);
+    public Response<ApplicationInsightsComponentAnalyticsItem> getWithResponse(String resourceGroupName,
+        String resourceName, ItemScopePath scopePath, String id, String name, Context context) {
+        Response<ApplicationInsightsComponentAnalyticsItemInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, scopePath, id, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationInsightsComponentAnalyticsItemImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ApplicationInsightsComponentAnalyticsItem get(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath) {
-        ApplicationInsightsComponentAnalyticsItemInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, scopePath);
+    public ApplicationInsightsComponentAnalyticsItem get(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath) {
+        ApplicationInsightsComponentAnalyticsItemInner inner
+            = this.serviceClient().get(resourceGroupName, resourceName, scopePath);
         if (inner != null) {
             return new ApplicationInsightsComponentAnalyticsItemImpl(inner, this.manager());
         } else {
@@ -107,35 +84,23 @@ public final class AnalyticsItemsImpl implements AnalyticsItems {
         }
     }
 
-    public Response<ApplicationInsightsComponentAnalyticsItem> putWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties,
-        Boolean overrideItem,
-        Context context) {
-        Response<ApplicationInsightsComponentAnalyticsItemInner> inner =
-            this
-                .serviceClient()
-                .putWithResponse(resourceGroupName, resourceName, scopePath, itemProperties, overrideItem, context);
+    public Response<ApplicationInsightsComponentAnalyticsItem> putWithResponse(String resourceGroupName,
+        String resourceName, ItemScopePath scopePath, ApplicationInsightsComponentAnalyticsItemInner itemProperties,
+        Boolean overrideItem, Context context) {
+        Response<ApplicationInsightsComponentAnalyticsItemInner> inner = this.serviceClient()
+            .putWithResponse(resourceGroupName, resourceName, scopePath, itemProperties, overrideItem, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationInsightsComponentAnalyticsItemImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ApplicationInsightsComponentAnalyticsItem put(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties) {
-        ApplicationInsightsComponentAnalyticsItemInner inner =
-            this.serviceClient().put(resourceGroupName, resourceName, scopePath, itemProperties);
+    public ApplicationInsightsComponentAnalyticsItem put(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath, ApplicationInsightsComponentAnalyticsItemInner itemProperties) {
+        ApplicationInsightsComponentAnalyticsItemInner inner
+            = this.serviceClient().put(resourceGroupName, resourceName, scopePath, itemProperties);
         if (inner != null) {
             return new ApplicationInsightsComponentAnalyticsItemImpl(inner, this.manager());
         } else {
@@ -143,13 +108,8 @@ public final class AnalyticsItemsImpl implements AnalyticsItems {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        String id,
-        String name,
-        Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, ItemScopePath scopePath,
+        String id, String name, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, scopePath, id, name, context);
     }
 

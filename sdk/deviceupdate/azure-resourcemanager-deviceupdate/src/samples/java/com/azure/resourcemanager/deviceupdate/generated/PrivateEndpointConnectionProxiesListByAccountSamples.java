@@ -20,7 +20,7 @@ public final class PrivateEndpointConnectionProxiesListByAccountSamples {
      */
     public static void
         privateEndpointConnectionProxyList(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().listByAccount("test-rg", "contoso",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionProxies()
+            .listByAccount("test-rg", "contoso", com.azure.core.util.Context.NONE);
     }
 }

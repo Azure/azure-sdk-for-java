@@ -10,10 +10,6 @@ module com.azure.resourcemanager.mysql {
     exports com.azure.resourcemanager.mysql.fluent.models;
     exports com.azure.resourcemanager.mysql.models;
 
-    opens com.azure.resourcemanager.mysql.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.mysql.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.mysql.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.mysql.models to com.azure.core, com.fasterxml.jackson.databind;
 }

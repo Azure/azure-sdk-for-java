@@ -12,8 +12,7 @@ public final class ApiManagementServiceGetSsoTokenResultImpl implements ApiManag
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    ApiManagementServiceGetSsoTokenResultImpl(
-        ApiManagementServiceGetSsoTokenResultInner innerObject,
+    ApiManagementServiceGetSsoTokenResultImpl(ApiManagementServiceGetSsoTokenResultInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

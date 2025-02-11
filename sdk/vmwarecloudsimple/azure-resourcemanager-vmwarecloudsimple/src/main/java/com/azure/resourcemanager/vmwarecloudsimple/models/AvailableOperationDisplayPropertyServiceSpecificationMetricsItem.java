@@ -6,48 +6,52 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Available operation display property service specification metrics item. */
+/**
+ * Available operation display property service specification metrics item.
+ */
 @Fluent
-public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsItem {
+public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsItem
+    implements JsonSerializable<AvailableOperationDisplayPropertyServiceSpecificationMetricsItem> {
     /*
      * Metric's aggregation type for e.g. (Average, Total)
      */
-    @JsonProperty(value = "aggregationType", required = true)
     private AggregationType aggregationType;
 
     /*
      * Metric's description
      */
-    @JsonProperty(value = "displayDescription", required = true)
     private String displayDescription;
 
     /*
      * Human readable metric's name
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Metric's name/id
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Metric's unit
      */
-    @JsonProperty(value = "unit", required = true)
     private String unit;
 
-    /** Creates an instance of AvailableOperationDisplayPropertyServiceSpecificationMetricsItem class. */
+    /**
+     * Creates an instance of AvailableOperationDisplayPropertyServiceSpecificationMetricsItem class.
+     */
     public AvailableOperationDisplayPropertyServiceSpecificationMetricsItem() {
     }
 
     /**
      * Get the aggregationType property: Metric's aggregation type for e.g. (Average, Total).
-     *
+     * 
      * @return the aggregationType value.
      */
     public AggregationType aggregationType() {
@@ -56,19 +60,19 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsI
 
     /**
      * Set the aggregationType property: Metric's aggregation type for e.g. (Average, Total).
-     *
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the AvailableOperationDisplayPropertyServiceSpecificationMetricsItem object itself.
      */
-    public AvailableOperationDisplayPropertyServiceSpecificationMetricsItem withAggregationType(
-        AggregationType aggregationType) {
+    public AvailableOperationDisplayPropertyServiceSpecificationMetricsItem
+        withAggregationType(AggregationType aggregationType) {
         this.aggregationType = aggregationType;
         return this;
     }
 
     /**
      * Get the displayDescription property: Metric's description.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -77,19 +81,19 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsI
 
     /**
      * Set the displayDescription property: Metric's description.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the AvailableOperationDisplayPropertyServiceSpecificationMetricsItem object itself.
      */
-    public AvailableOperationDisplayPropertyServiceSpecificationMetricsItem withDisplayDescription(
-        String displayDescription) {
+    public AvailableOperationDisplayPropertyServiceSpecificationMetricsItem
+        withDisplayDescription(String displayDescription) {
         this.displayDescription = displayDescription;
         return this;
     }
 
     /**
      * Get the displayName property: Human readable metric's name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -98,7 +102,7 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsI
 
     /**
      * Set the displayName property: Human readable metric's name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AvailableOperationDisplayPropertyServiceSpecificationMetricsItem object itself.
      */
@@ -109,7 +113,7 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsI
 
     /**
      * Get the name property: Metric's name/id.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -118,7 +122,7 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsI
 
     /**
      * Set the name property: Metric's name/id.
-     *
+     * 
      * @param name the name value to set.
      * @return the AvailableOperationDisplayPropertyServiceSpecificationMetricsItem object itself.
      */
@@ -129,7 +133,7 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsI
 
     /**
      * Get the unit property: Metric's unit.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -138,7 +142,7 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsI
 
     /**
      * Set the unit property: Metric's unit.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the AvailableOperationDisplayPropertyServiceSpecificationMetricsItem object itself.
      */
@@ -149,47 +153,95 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsI
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (aggregationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aggregationType in model"
-                            + " AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property aggregationType in model AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
         }
         if (displayDescription() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayDescription in model"
-                            + " AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayDescription in model AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
         }
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model"
-                            + " AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model"
-                            + " AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
         }
         if (unit() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property unit in model"
-                            + " AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property unit in model AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(AvailableOperationDisplayPropertyServiceSpecificationMetricsItem.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(AvailableOperationDisplayPropertyServiceSpecificationMetricsItem.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aggregationType",
+            this.aggregationType == null ? null : this.aggregationType.toString());
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("unit", this.unit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableOperationDisplayPropertyServiceSpecificationMetricsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableOperationDisplayPropertyServiceSpecificationMetricsItem if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the
+     * AvailableOperationDisplayPropertyServiceSpecificationMetricsItem.
+     */
+    public static AvailableOperationDisplayPropertyServiceSpecificationMetricsItem fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableOperationDisplayPropertyServiceSpecificationMetricsItem deserializedAvailableOperationDisplayPropertyServiceSpecificationMetricsItem
+                = new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aggregationType".equals(fieldName)) {
+                    deserializedAvailableOperationDisplayPropertyServiceSpecificationMetricsItem.aggregationType
+                        = AggregationType.fromString(reader.getString());
+                } else if ("displayDescription".equals(fieldName)) {
+                    deserializedAvailableOperationDisplayPropertyServiceSpecificationMetricsItem.displayDescription
+                        = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAvailableOperationDisplayPropertyServiceSpecificationMetricsItem.displayName
+                        = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAvailableOperationDisplayPropertyServiceSpecificationMetricsItem.name
+                        = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedAvailableOperationDisplayPropertyServiceSpecificationMetricsItem.unit
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableOperationDisplayPropertyServiceSpecificationMetricsItem;
+        });
+    }
 }

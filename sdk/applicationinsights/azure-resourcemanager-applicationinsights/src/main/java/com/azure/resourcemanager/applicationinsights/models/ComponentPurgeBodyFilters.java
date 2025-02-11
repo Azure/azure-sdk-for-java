@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** User-defined filters to return data which will be purged from the table. */
+/**
+ * User-defined filters to return data which will be purged from the table.
+ */
 @Fluent
-public final class ComponentPurgeBodyFilters {
+public final class ComponentPurgeBodyFilters implements JsonSerializable<ComponentPurgeBodyFilters> {
     /*
      * The column of the table over which the given query should run
      */
-    @JsonProperty(value = "column")
     private String column;
 
     /*
      * A query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, >,
      * >=, <, <=, between, and have the same behavior as they would in a KQL query.
      */
-    @JsonProperty(value = "operator")
     private String operator;
 
     /*
      * the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >=
      * '2017-09-01') or array of values.
      */
-    @JsonProperty(value = "value")
     private Object value;
 
     /*
      * When filtering over custom dimensions, this key will be used as the name of the custom dimension.
      */
-    @JsonProperty(value = "key")
     private String key;
 
-    /** Creates an instance of ComponentPurgeBodyFilters class. */
+    /**
+     * Creates an instance of ComponentPurgeBodyFilters class.
+     */
     public ComponentPurgeBodyFilters() {
     }
 
     /**
      * Get the column property: The column of the table over which the given query should run.
-     *
+     * 
      * @return the column value.
      */
     public String column() {
@@ -51,7 +55,7 @@ public final class ComponentPurgeBodyFilters {
 
     /**
      * Set the column property: The column of the table over which the given query should run.
-     *
+     * 
      * @param column the column value to set.
      * @return the ComponentPurgeBodyFilters object itself.
      */
@@ -64,7 +68,7 @@ public final class ComponentPurgeBodyFilters {
      * Get the operator property: A query operator to evaluate over the provided column and value(s). Supported
      * operators are ==, =~, in, in~, &gt;, &gt;=, &lt;, &lt;=, between, and have the same behavior as they would in a
      * KQL query.
-     *
+     * 
      * @return the operator value.
      */
     public String operator() {
@@ -75,7 +79,7 @@ public final class ComponentPurgeBodyFilters {
      * Set the operator property: A query operator to evaluate over the provided column and value(s). Supported
      * operators are ==, =~, in, in~, &gt;, &gt;=, &lt;, &lt;=, between, and have the same behavior as they would in a
      * KQL query.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the ComponentPurgeBodyFilters object itself.
      */
@@ -87,7 +91,7 @@ public final class ComponentPurgeBodyFilters {
     /**
      * Get the value property: the value for the operator to function over. This can be a number (e.g., &gt; 100), a
      * string (timestamp &gt;= '2017-09-01') or array of values.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -97,7 +101,7 @@ public final class ComponentPurgeBodyFilters {
     /**
      * Set the value property: the value for the operator to function over. This can be a number (e.g., &gt; 100), a
      * string (timestamp &gt;= '2017-09-01') or array of values.
-     *
+     * 
      * @param value the value value to set.
      * @return the ComponentPurgeBodyFilters object itself.
      */
@@ -109,7 +113,7 @@ public final class ComponentPurgeBodyFilters {
     /**
      * Get the key property: When filtering over custom dimensions, this key will be used as the name of the custom
      * dimension.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -119,7 +123,7 @@ public final class ComponentPurgeBodyFilters {
     /**
      * Set the key property: When filtering over custom dimensions, this key will be used as the name of the custom
      * dimension.
-     *
+     * 
      * @param key the key value to set.
      * @return the ComponentPurgeBodyFilters object itself.
      */
@@ -130,9 +134,54 @@ public final class ComponentPurgeBodyFilters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("column", this.column);
+        jsonWriter.writeStringField("operator", this.operator);
+        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeStringField("key", this.key);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComponentPurgeBodyFilters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComponentPurgeBodyFilters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComponentPurgeBodyFilters.
+     */
+    public static ComponentPurgeBodyFilters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComponentPurgeBodyFilters deserializedComponentPurgeBodyFilters = new ComponentPurgeBodyFilters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("column".equals(fieldName)) {
+                    deserializedComponentPurgeBodyFilters.column = reader.getString();
+                } else if ("operator".equals(fieldName)) {
+                    deserializedComponentPurgeBodyFilters.operator = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedComponentPurgeBodyFilters.value = reader.readUntyped();
+                } else if ("key".equals(fieldName)) {
+                    deserializedComponentPurgeBodyFilters.key = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComponentPurgeBodyFilters;
+        });
     }
 }

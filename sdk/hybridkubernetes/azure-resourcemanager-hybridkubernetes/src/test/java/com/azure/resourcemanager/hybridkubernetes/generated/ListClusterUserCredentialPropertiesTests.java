@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ListClusterUserCredentialPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListClusterUserCredentialProperties model =
-            BinaryData
-                .fromString("{\"authenticationMethod\":\"Token\",\"clientProxy\":false}")
+        ListClusterUserCredentialProperties model
+            = BinaryData.fromString("{\"authenticationMethod\":\"Token\",\"clientProxy\":false}")
                 .toObject(ListClusterUserCredentialProperties.class);
         Assertions.assertEquals(AuthenticationMethod.TOKEN, model.authenticationMethod());
         Assertions.assertEquals(false, model.clientProxy());
@@ -22,9 +21,8 @@ public final class ListClusterUserCredentialPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListClusterUserCredentialProperties model =
-            new ListClusterUserCredentialProperties()
-                .withAuthenticationMethod(AuthenticationMethod.TOKEN)
+        ListClusterUserCredentialProperties model
+            = new ListClusterUserCredentialProperties().withAuthenticationMethod(AuthenticationMethod.TOKEN)
                 .withClientProxy(false);
         model = BinaryData.fromObject(model).toObject(ListClusterUserCredentialProperties.class);
         Assertions.assertEquals(AuthenticationMethod.TOKEN, model.authenticationMethod());

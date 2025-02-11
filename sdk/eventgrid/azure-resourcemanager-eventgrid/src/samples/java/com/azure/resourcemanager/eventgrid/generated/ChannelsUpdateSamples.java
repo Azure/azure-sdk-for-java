@@ -12,7 +12,9 @@ import java.time.OffsetDateTime;
  */
 public final class ChannelsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Channels_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Channels_Update.
+     * json
      */
     /**
      * Sample code: Channels_Update.

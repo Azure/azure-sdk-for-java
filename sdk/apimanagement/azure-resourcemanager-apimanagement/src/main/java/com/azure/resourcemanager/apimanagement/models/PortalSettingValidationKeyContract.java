@@ -6,11 +6,13 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSettingValidationKeyContractInner;
 
-/** An immutable client-side representation of PortalSettingValidationKeyContract. */
+/**
+ * An immutable client-side representation of PortalSettingValidationKeyContract.
+ */
 public interface PortalSettingValidationKeyContract {
     /**
      * Gets the validationKey property: This is secret value of the validation key in portal settings.
-     *
+     * 
      * @return the validationKey value.
      */
     String validationKey();
@@ -18,7 +20,7 @@ public interface PortalSettingValidationKeyContract {
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.PortalSettingValidationKeyContractInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     PortalSettingValidationKeyContractInner innerModel();

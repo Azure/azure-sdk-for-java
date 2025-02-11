@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.labservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The user lab registration state. */
+/**
+ * The user lab registration state.
+ */
 public enum RegistrationState {
-    /** Enum value Registered. */
+    /**
+     * Enum value Registered.
+     */
     REGISTERED("Registered"),
 
-    /** Enum value NotRegistered. */
+    /**
+     * Enum value NotRegistered.
+     */
     NOT_REGISTERED("NotRegistered");
 
-    /** The actual serialized value for a RegistrationState instance. */
+    /**
+     * The actual serialized value for a RegistrationState instance.
+     */
     private final String value;
 
     RegistrationState(String value) {
@@ -24,11 +29,10 @@ public enum RegistrationState {
 
     /**
      * Parses a serialized value to a RegistrationState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RegistrationState object, or null if unable to parse.
      */
-    @JsonCreator
     public static RegistrationState fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum RegistrationState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

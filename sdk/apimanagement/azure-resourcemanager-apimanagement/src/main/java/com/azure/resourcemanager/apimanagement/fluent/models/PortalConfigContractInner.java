@@ -6,29 +6,50 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigCorsProperties;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigCspProperties;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigDelegationProperties;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigPropertiesSignin;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigPropertiesSignup;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The developer portal configuration contract. */
+/**
+ * The developer portal configuration contract.
+ */
 @Fluent
 public final class PortalConfigContractInner extends ProxyResource {
     /*
      * The developer portal configuration contract properties.
      */
-    @JsonProperty(value = "properties")
     private PortalConfigProperties innerProperties;
 
-    /** Creates an instance of PortalConfigContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PortalConfigContractInner class.
+     */
     public PortalConfigContractInner() {
     }
 
     /**
      * Get the innerProperties property: The developer portal configuration contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PortalConfigProperties innerProperties() {
@@ -36,8 +57,38 @@ public final class PortalConfigContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the enableBasicAuth property: Enable or disable Basic authentication method.
-     *
+     * 
      * @return the enableBasicAuth value.
      */
     public Boolean enableBasicAuth() {
@@ -46,7 +97,7 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Set the enableBasicAuth property: Enable or disable Basic authentication method.
-     *
+     * 
      * @param enableBasicAuth the enableBasicAuth value to set.
      * @return the PortalConfigContractInner object itself.
      */
@@ -60,7 +111,7 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Get the signin property: The signin property.
-     *
+     * 
      * @return the signin value.
      */
     public PortalConfigPropertiesSignin signin() {
@@ -69,7 +120,7 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Set the signin property: The signin property.
-     *
+     * 
      * @param signin the signin value to set.
      * @return the PortalConfigContractInner object itself.
      */
@@ -83,7 +134,7 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Get the signup property: The signup property.
-     *
+     * 
      * @return the signup value.
      */
     public PortalConfigPropertiesSignup signup() {
@@ -92,7 +143,7 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Set the signup property: The signup property.
-     *
+     * 
      * @param signup the signup value to set.
      * @return the PortalConfigContractInner object itself.
      */
@@ -106,7 +157,7 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Get the delegation property: The developer portal delegation settings.
-     *
+     * 
      * @return the delegation value.
      */
     public PortalConfigDelegationProperties delegation() {
@@ -115,7 +166,7 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Set the delegation property: The developer portal delegation settings.
-     *
+     * 
      * @param delegation the delegation value to set.
      * @return the PortalConfigContractInner object itself.
      */
@@ -129,7 +180,7 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Get the cors property: The developer portal Cross-Origin Resource Sharing (CORS) settings.
-     *
+     * 
      * @return the cors value.
      */
     public PortalConfigCorsProperties cors() {
@@ -138,7 +189,7 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Set the cors property: The developer portal Cross-Origin Resource Sharing (CORS) settings.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the PortalConfigContractInner object itself.
      */
@@ -152,7 +203,7 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Get the csp property: The developer portal Content Security Policy (CSP) settings.
-     *
+     * 
      * @return the csp value.
      */
     public PortalConfigCspProperties csp() {
@@ -161,7 +212,7 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Set the csp property: The developer portal Content Security Policy (CSP) settings.
-     *
+     * 
      * @param csp the csp value to set.
      * @return the PortalConfigContractInner object itself.
      */
@@ -175,12 +226,55 @@ public final class PortalConfigContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalConfigContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalConfigContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PortalConfigContractInner.
+     */
+    public static PortalConfigContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalConfigContractInner deserializedPortalConfigContractInner = new PortalConfigContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPortalConfigContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPortalConfigContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPortalConfigContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPortalConfigContractInner.innerProperties = PortalConfigProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalConfigContractInner;
+        });
     }
 }

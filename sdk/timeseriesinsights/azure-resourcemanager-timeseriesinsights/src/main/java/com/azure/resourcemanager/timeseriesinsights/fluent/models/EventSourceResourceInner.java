@@ -6,41 +6,98 @@ package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.EventHubEventSourceResource;
+import com.azure.resourcemanager.timeseriesinsights.models.EventSourceResourceKind;
 import com.azure.resourcemanager.timeseriesinsights.models.IoTHubEventSourceResource;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * An environment receives data from one or more event sources. Each event source has associated connection info that
  * allows the Time Series Insights ingress pipeline to connect to and pull data from the event source.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = EventSourceResourceInner.class)
-@JsonTypeName("EventSourceResource")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Microsoft.EventHub", value = EventHubEventSourceResource.class),
-    @JsonSubTypes.Type(name = "Microsoft.IoTHub", value = IoTHubEventSourceResource.class)
-})
 @Fluent
 public class EventSourceResourceInner extends Resource {
-    /** Creates an instance of EventSourceResourceInner class. */
+    /*
+     * The kind of the event source.
+     */
+    private EventSourceResourceKind kind = EventSourceResourceKind.fromString("EventSourceResource");
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EventSourceResourceInner class.
+     */
     public EventSourceResourceInner() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the kind property: The kind of the event source.
+     * 
+     * @return the kind value.
+     */
+    public EventSourceResourceKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventSourceResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventSourceResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -49,9 +106,86 @@ public class EventSourceResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventSourceResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventSourceResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventSourceResourceInner.
+     */
+    public static EventSourceResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Microsoft.EventHub".equals(discriminatorValue)) {
+                    return EventHubEventSourceResource.fromJson(readerToUse.reset());
+                } else if ("Microsoft.IoTHub".equals(discriminatorValue)) {
+                    return IoTHubEventSourceResource.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EventSourceResourceInner fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventSourceResourceInner deserializedEventSourceResourceInner = new EventSourceResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEventSourceResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEventSourceResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEventSourceResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedEventSourceResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEventSourceResourceInner.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEventSourceResourceInner.kind = EventSourceResourceKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventSourceResourceInner;
+        });
     }
 }

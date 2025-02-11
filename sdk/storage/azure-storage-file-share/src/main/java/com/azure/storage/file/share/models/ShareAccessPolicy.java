@@ -149,10 +149,10 @@ public final class ShareAccessPolicy implements XmlSerializable<ShareAccessPolic
 
                 if ("Start".equals(elementName.getLocalPart())) {
                     deserializedShareAccessPolicy.startsOn
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("Expiry".equals(elementName.getLocalPart())) {
                     deserializedShareAccessPolicy.expiresOn
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("Permission".equals(elementName.getLocalPart())) {
                     deserializedShareAccessPolicy.permissions = reader.getStringElement();
                 } else {

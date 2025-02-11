@@ -5,53 +5,50 @@
 package com.azure.resourcemanager.iotfirmwaredefense.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Binary hardening of a firmware.
  */
 @Fluent
-public final class BinaryHardeningResult {
+public final class BinaryHardeningResult implements JsonSerializable<BinaryHardeningResult> {
     /*
      * ID for the binary hardening result.
      */
-    @JsonProperty(value = "binaryHardeningId")
     private String binaryHardeningId;
 
     /*
      * Binary hardening features.
      */
-    @JsonProperty(value = "features")
     private BinaryHardeningFeatures innerFeatures;
 
     /*
      * The architecture of the uploaded firmware.
      */
-    @JsonProperty(value = "architecture")
     private String architecture;
 
     /*
      * The executable path.
      */
-    @JsonProperty(value = "filePath")
     private String filePath;
 
     /*
      * The executable class to indicate 32 or 64 bit.
      */
-    @JsonProperty(value = "class")
     private String classProperty;
 
     /*
      * The runpath of the uploaded firmware.
      */
-    @JsonProperty(value = "runpath")
     private String runpath;
 
     /*
      * The rpath of the uploaded firmware.
      */
-    @JsonProperty(value = "rpath")
     private String rpath;
 
     /**
@@ -313,5 +310,59 @@ public final class BinaryHardeningResult {
         if (innerFeatures() != null) {
             innerFeatures().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("binaryHardeningId", this.binaryHardeningId);
+        jsonWriter.writeJsonField("features", this.innerFeatures);
+        jsonWriter.writeStringField("architecture", this.architecture);
+        jsonWriter.writeStringField("filePath", this.filePath);
+        jsonWriter.writeStringField("class", this.classProperty);
+        jsonWriter.writeStringField("runpath", this.runpath);
+        jsonWriter.writeStringField("rpath", this.rpath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BinaryHardeningResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BinaryHardeningResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BinaryHardeningResult.
+     */
+    public static BinaryHardeningResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BinaryHardeningResult deserializedBinaryHardeningResult = new BinaryHardeningResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("binaryHardeningId".equals(fieldName)) {
+                    deserializedBinaryHardeningResult.binaryHardeningId = reader.getString();
+                } else if ("features".equals(fieldName)) {
+                    deserializedBinaryHardeningResult.innerFeatures = BinaryHardeningFeatures.fromJson(reader);
+                } else if ("architecture".equals(fieldName)) {
+                    deserializedBinaryHardeningResult.architecture = reader.getString();
+                } else if ("filePath".equals(fieldName)) {
+                    deserializedBinaryHardeningResult.filePath = reader.getString();
+                } else if ("class".equals(fieldName)) {
+                    deserializedBinaryHardeningResult.classProperty = reader.getString();
+                } else if ("runpath".equals(fieldName)) {
+                    deserializedBinaryHardeningResult.runpath = reader.getString();
+                } else if ("rpath".equals(fieldName)) {
+                    deserializedBinaryHardeningResult.rpath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBinaryHardeningResult;
+        });
     }
 }

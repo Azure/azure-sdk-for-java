@@ -96,7 +96,7 @@ public final class AttestationSigningKey {
             }
 
             /* Buffer to be signed - this can basically be anything, it doesn't really matter. */
-            final byte[] bufferToSign = { 1, 2, 3, 4, 5};
+            final byte[] bufferToSign = { 1, 2, 3, 4, 5 };
 
             // Sign the buffer.
             signer.initSign(privateKey);

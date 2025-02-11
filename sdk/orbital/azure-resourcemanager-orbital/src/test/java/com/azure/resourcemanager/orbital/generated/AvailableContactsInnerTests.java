@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableContactsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableContactsInner model =
-            BinaryData
-                .fromString(
-                    "{\"spacecraft\":{\"id\":\"x\"},\"groundStationName\":\"jpgd\",\"properties\":{\"maximumElevationDegrees\":6.1451674,\"txStartTime\":\"2021-06-27T10:08:15Z\",\"txEndTime\":\"2021-04-14T06:41:07Z\",\"rxStartTime\":\"2021-01-16T20:17:07Z\",\"rxEndTime\":\"2021-02-07T18:02:36Z\",\"startAzimuthDegrees\":18.75108,\"endAzimuthDegrees\":6.7996445,\"startElevationDegrees\":49.9817,\"endElevationDegrees\":5.346817}}")
-                .toObject(AvailableContactsInner.class);
-        Assertions.assertEquals("x", model.spacecraft().id());
+        AvailableContactsInner model = BinaryData.fromString(
+            "{\"spacecraft\":{\"id\":\"zcxtbzsgfyccsn\"},\"groundStationName\":\"mdwzjeiachboo\",\"properties\":{\"maximumElevationDegrees\":55.106743,\"txStartTime\":\"2021-10-01T08:17:31Z\",\"txEndTime\":\"2021-04-28T23:01:46Z\",\"rxStartTime\":\"2021-02-19T13:41:36Z\",\"rxEndTime\":\"2021-12-01T09:51:17Z\",\"startAzimuthDegrees\":44.67273,\"endAzimuthDegrees\":77.50827,\"startElevationDegrees\":67.05552,\"endElevationDegrees\":45.170357}}")
+            .toObject(AvailableContactsInner.class);
+        Assertions.assertEquals("zcxtbzsgfyccsn", model.spacecraft().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableContactsInner model =
-            new AvailableContactsInner().withSpacecraft(new AvailableContactsSpacecraft().withId("x"));
+        AvailableContactsInner model
+            = new AvailableContactsInner().withSpacecraft(new AvailableContactsSpacecraft().withId("zcxtbzsgfyccsn"));
         model = BinaryData.fromObject(model).toObject(AvailableContactsInner.class);
-        Assertions.assertEquals("x", model.spacecraft().id());
+        Assertions.assertEquals("zcxtbzsgfyccsn", model.spacecraft().id());
     }
 }

@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedProxyRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedProxyRequest model =
-            BinaryData
-                .fromString("{\"service\":\"wrwjfeu\",\"hostname\":\"hutje\",\"serviceName\":\"SSH\"}")
+        ManagedProxyRequest model
+            = BinaryData.fromString("{\"service\":\"wrwjfeu\",\"hostname\":\"hutje\",\"serviceName\":\"SSH\"}")
                 .toObject(ManagedProxyRequest.class);
         Assertions.assertEquals("wrwjfeu", model.service());
         Assertions.assertEquals("hutje", model.hostname());
@@ -23,8 +22,8 @@ public final class ManagedProxyRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedProxyRequest model =
-            new ManagedProxyRequest().withService("wrwjfeu").withHostname("hutje").withServiceName(ServiceName.SSH);
+        ManagedProxyRequest model
+            = new ManagedProxyRequest().withService("wrwjfeu").withHostname("hutje").withServiceName(ServiceName.SSH);
         model = BinaryData.fromObject(model).toObject(ManagedProxyRequest.class);
         Assertions.assertEquals("wrwjfeu", model.service());
         Assertions.assertEquals("hutje", model.hostname());

@@ -62,7 +62,6 @@ public final class OSDiskImageEncryption extends DiskImageEncryption {
      */
     @Override
     public void validate() {
-        super.validate();
         if (securityProfile() != null) {
             securityProfile().validate();
         }

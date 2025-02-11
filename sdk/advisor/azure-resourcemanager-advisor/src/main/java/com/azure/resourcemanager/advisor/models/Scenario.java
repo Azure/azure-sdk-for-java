@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Scenario. */
+/**
+ * Defines values for Scenario.
+ */
 public final class Scenario extends ExpandableStringEnum<Scenario> {
-    /** Static value Alerts for Scenario. */
+    /**
+     * Static value Alerts for Scenario.
+     */
     public static final Scenario ALERTS = fromString("Alerts");
 
     /**
      * Creates a new instance of Scenario value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class Scenario extends ExpandableStringEnum<Scenario> {
 
     /**
      * Creates or finds a Scenario from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Scenario.
      */
-    @JsonCreator
     public static Scenario fromString(String name) {
         return fromString(name, Scenario.class);
     }
 
     /**
      * Gets known Scenario values.
-     *
+     * 
      * @return known Scenario values.
      */
     public static Collection<Scenario> values() {

@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateVirtualNetworkRuleParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateVirtualNetworkRuleParameters model =
-            BinaryData
-                .fromString("{\"properties\":{\"subnetId\":\"lzu\"}}")
+        UpdateVirtualNetworkRuleParameters model
+            = BinaryData.fromString("{\"properties\":{\"subnetId\":\"qrimzinpv\"}}")
                 .toObject(UpdateVirtualNetworkRuleParameters.class);
-        Assertions.assertEquals("lzu", model.subnetId());
+        Assertions.assertEquals("qrimzinpv", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateVirtualNetworkRuleParameters model = new UpdateVirtualNetworkRuleParameters().withSubnetId("lzu");
+        UpdateVirtualNetworkRuleParameters model = new UpdateVirtualNetworkRuleParameters().withSubnetId("qrimzinpv");
         model = BinaryData.fromObject(model).toObject(UpdateVirtualNetworkRuleParameters.class);
-        Assertions.assertEquals("lzu", model.subnetId());
+        Assertions.assertEquals("qrimzinpv", model.subnetId());
     }
 }

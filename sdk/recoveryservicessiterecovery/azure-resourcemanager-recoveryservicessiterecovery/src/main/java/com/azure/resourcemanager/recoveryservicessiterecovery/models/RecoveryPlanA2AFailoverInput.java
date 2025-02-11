@@ -6,39 +6,50 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Recovery plan A2A failover input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
 @Fluent
 public final class RecoveryPlanA2AFailoverInput extends RecoveryPlanProviderSpecificFailoverInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * The recovery point type.
      */
-    @JsonProperty(value = "recoveryPointType", required = true)
     private A2ARpRecoveryPointType recoveryPointType;
 
     /*
      * A value indicating whether to use recovery cloud service for TFO or not.
      */
-    @JsonProperty(value = "cloudServiceCreationOption")
     private String cloudServiceCreationOption;
 
     /*
      * A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
      */
-    @JsonProperty(value = "multiVmSyncPointOption")
     private MultiVmSyncPointOption multiVmSyncPointOption;
 
     /**
      * Creates an instance of RecoveryPlanA2AFailoverInput class.
      */
     public RecoveryPlanA2AFailoverInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -84,8 +95,8 @@ public final class RecoveryPlanA2AFailoverInput extends RecoveryPlanProviderSpec
     }
 
     /**
-     * Get the multiVmSyncPointOption property: A value indicating whether multi VM sync enabled VMs should use multi
-     * VM sync points for failover.
+     * Get the multiVmSyncPointOption property: A value indicating whether multi VM sync enabled VMs should use multi VM
+     * sync points for failover.
      * 
      * @return the multiVmSyncPointOption value.
      */
@@ -94,8 +105,8 @@ public final class RecoveryPlanA2AFailoverInput extends RecoveryPlanProviderSpec
     }
 
     /**
-     * Set the multiVmSyncPointOption property: A value indicating whether multi VM sync enabled VMs should use multi
-     * VM sync points for failover.
+     * Set the multiVmSyncPointOption property: A value indicating whether multi VM sync enabled VMs should use multi VM
+     * sync points for failover.
      * 
      * @param multiVmSyncPointOption the multiVmSyncPointOption value to set.
      * @return the RecoveryPlanA2AFailoverInput object itself.
@@ -112,12 +123,62 @@ public final class RecoveryPlanA2AFailoverInput extends RecoveryPlanProviderSpec
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recoveryPointType in model RecoveryPlanA2AFailoverInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryPointType in model RecoveryPlanA2AFailoverInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPlanA2AFailoverInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryPointType",
+            this.recoveryPointType == null ? null : this.recoveryPointType.toString());
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("cloudServiceCreationOption", this.cloudServiceCreationOption);
+        jsonWriter.writeStringField("multiVmSyncPointOption",
+            this.multiVmSyncPointOption == null ? null : this.multiVmSyncPointOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanA2AFailoverInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanA2AFailoverInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryPlanA2AFailoverInput.
+     */
+    public static RecoveryPlanA2AFailoverInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanA2AFailoverInput deserializedRecoveryPlanA2AFailoverInput = new RecoveryPlanA2AFailoverInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryPointType".equals(fieldName)) {
+                    deserializedRecoveryPlanA2AFailoverInput.recoveryPointType
+                        = A2ARpRecoveryPointType.fromString(reader.getString());
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedRecoveryPlanA2AFailoverInput.instanceType = reader.getString();
+                } else if ("cloudServiceCreationOption".equals(fieldName)) {
+                    deserializedRecoveryPlanA2AFailoverInput.cloudServiceCreationOption = reader.getString();
+                } else if ("multiVmSyncPointOption".equals(fieldName)) {
+                    deserializedRecoveryPlanA2AFailoverInput.multiVmSyncPointOption
+                        = MultiVmSyncPointOption.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanA2AFailoverInput;
+        });
+    }
 }

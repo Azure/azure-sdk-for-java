@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.chaos.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * String of the resource identity type.
  */
@@ -41,7 +38,6 @@ public enum ResourceIdentityType {
      * @param value the serialized value to parse.
      * @return the parsed ResourceIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourceIdentityType fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum ResourceIdentityType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

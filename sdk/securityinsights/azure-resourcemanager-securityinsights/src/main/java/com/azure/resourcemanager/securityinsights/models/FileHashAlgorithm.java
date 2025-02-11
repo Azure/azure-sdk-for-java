@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The hash algorithm type. */
+/**
+ * The hash algorithm type.
+ */
 public final class FileHashAlgorithm extends ExpandableStringEnum<FileHashAlgorithm> {
-    /** Static value Unknown for FileHashAlgorithm. */
+    /**
+     * Static value Unknown for FileHashAlgorithm.
+     */
     public static final FileHashAlgorithm UNKNOWN = fromString("Unknown");
 
-    /** Static value MD5 for FileHashAlgorithm. */
+    /**
+     * Static value MD5 for FileHashAlgorithm.
+     */
     public static final FileHashAlgorithm MD5 = fromString("MD5");
 
-    /** Static value SHA1 for FileHashAlgorithm. */
+    /**
+     * Static value SHA1 for FileHashAlgorithm.
+     */
     public static final FileHashAlgorithm SHA1 = fromString("SHA1");
 
-    /** Static value SHA256 for FileHashAlgorithm. */
+    /**
+     * Static value SHA256 for FileHashAlgorithm.
+     */
     public static final FileHashAlgorithm SHA256 = fromString("SHA256");
 
-    /** Static value SHA256AC for FileHashAlgorithm. */
+    /**
+     * Static value SHA256AC for FileHashAlgorithm.
+     */
     public static final FileHashAlgorithm SHA256AC = fromString("SHA256AC");
 
     /**
+     * Creates a new instance of FileHashAlgorithm value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FileHashAlgorithm() {
+    }
+
+    /**
      * Creates or finds a FileHashAlgorithm from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FileHashAlgorithm.
      */
-    @JsonCreator
     public static FileHashAlgorithm fromString(String name) {
         return fromString(name, FileHashAlgorithm.class);
     }
 
     /**
      * Gets known FileHashAlgorithm values.
-     *
+     * 
      * @return known FileHashAlgorithm values.
      */
     public static Collection<FileHashAlgorithm> values() {

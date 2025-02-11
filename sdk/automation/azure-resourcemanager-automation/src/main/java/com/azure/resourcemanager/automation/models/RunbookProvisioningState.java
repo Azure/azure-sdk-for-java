@@ -4,15 +4,18 @@
 
 package com.azure.resourcemanager.automation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Gets or sets the provisioning state of the runbook. */
+/**
+ * Gets or sets the provisioning state of the runbook.
+ */
 public enum RunbookProvisioningState {
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded");
 
-    /** The actual serialized value for a RunbookProvisioningState instance. */
+    /**
+     * The actual serialized value for a RunbookProvisioningState instance.
+     */
     private final String value;
 
     RunbookProvisioningState(String value) {
@@ -21,11 +24,10 @@ public enum RunbookProvisioningState {
 
     /**
      * Parses a serialized value to a RunbookProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RunbookProvisioningState object, or null if unable to parse.
      */
-    @JsonCreator
     public static RunbookProvisioningState fromString(String value) {
         if (value == null) {
             return null;
@@ -39,8 +41,9 @@ public enum RunbookProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -380,7 +380,8 @@ public final class BlocklistClientImpl {
      * request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItems (Required): [
      *          (Required){
@@ -390,11 +391,13 @@ public final class BlocklistClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItems (Required): [
      *          (Required){
@@ -404,7 +407,8 @@ public final class BlocklistClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param options Options for adding or updating blocklist items.
@@ -432,7 +436,8 @@ public final class BlocklistClientImpl {
      * request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItems (Required): [
      *          (Required){
@@ -442,11 +447,13 @@ public final class BlocklistClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItems (Required): [
      *          (Required){
@@ -456,7 +463,8 @@ public final class BlocklistClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param options Options for adding or updating blocklist items.
@@ -482,21 +490,25 @@ public final class BlocklistClientImpl {
      * Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param options The resource instance.
@@ -522,21 +534,25 @@ public final class BlocklistClientImpl {
      * Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param options The resource instance.
@@ -602,12 +618,14 @@ public final class BlocklistClientImpl {
      * Returns text blocklist details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -632,12 +650,14 @@ public final class BlocklistClientImpl {
      * Returns text blocklist details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -662,13 +682,15 @@ public final class BlocklistClientImpl {
      * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param blocklistItemId The service will generate a BlocklistItemId, which will be a UUID.
@@ -696,13 +718,15 @@ public final class BlocklistClientImpl {
      * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param blocklistItemId The service will generate a BlocklistItemId, which will be a UUID.
@@ -738,13 +762,15 @@ public final class BlocklistClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -783,13 +809,15 @@ public final class BlocklistClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -845,13 +873,15 @@ public final class BlocklistClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -887,13 +917,15 @@ public final class BlocklistClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -940,12 +972,14 @@ public final class BlocklistClientImpl {
      * Get all text blocklists details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -972,12 +1006,14 @@ public final class BlocklistClientImpl {
      * Get all text blocklists details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1003,12 +1039,14 @@ public final class BlocklistClientImpl {
      * Get all text blocklists details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1034,12 +1072,14 @@ public final class BlocklistClientImpl {
      * Get all text blocklists details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1065,13 +1105,15 @@ public final class BlocklistClientImpl {
      * Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemIds (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param options Options for removing blocklist items.
@@ -1097,13 +1139,15 @@ public final class BlocklistClientImpl {
      * Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemIds (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name Text blocklist name.
      * @param options Options for removing blocklist items.
@@ -1129,13 +1173,15 @@ public final class BlocklistClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1163,13 +1209,15 @@ public final class BlocklistClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1195,12 +1243,14 @@ public final class BlocklistClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1227,12 +1277,14 @@ public final class BlocklistClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

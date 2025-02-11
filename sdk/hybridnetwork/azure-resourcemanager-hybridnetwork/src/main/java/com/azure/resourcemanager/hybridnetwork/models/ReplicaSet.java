@@ -5,48 +5,48 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Helm ReplicaSet status properties.
  */
 @Fluent
-public final class ReplicaSet {
+public final class ReplicaSet implements JsonSerializable<ReplicaSet> {
     /*
      * The name of the replicaSet.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The namespace of the replicaSet.
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * Desired number of pods
      */
-    @JsonProperty(value = "desired")
     private Integer desired;
 
     /*
      * Number of ready pods.
      */
-    @JsonProperty(value = "ready")
     private Integer ready;
 
     /*
      * Number of current pods.
      */
-    @JsonProperty(value = "current")
     private Integer current;
 
     /*
      * Creation Time of replicaSet.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /**
@@ -181,5 +181,58 @@ public final class ReplicaSet {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeNumberField("desired", this.desired);
+        jsonWriter.writeNumberField("ready", this.ready);
+        jsonWriter.writeNumberField("current", this.current);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicaSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicaSet if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicaSet.
+     */
+    public static ReplicaSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicaSet deserializedReplicaSet = new ReplicaSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedReplicaSet.name = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedReplicaSet.namespace = reader.getString();
+                } else if ("desired".equals(fieldName)) {
+                    deserializedReplicaSet.desired = reader.getNullable(JsonReader::getInt);
+                } else if ("ready".equals(fieldName)) {
+                    deserializedReplicaSet.ready = reader.getNullable(JsonReader::getInt);
+                } else if ("current".equals(fieldName)) {
+                    deserializedReplicaSet.current = reader.getNullable(JsonReader::getInt);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedReplicaSet.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicaSet;
+        });
     }
 }

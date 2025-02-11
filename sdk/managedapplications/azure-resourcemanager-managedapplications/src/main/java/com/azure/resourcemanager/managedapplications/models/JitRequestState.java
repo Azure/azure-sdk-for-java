@@ -5,38 +5,55 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The JIT request state. */
+/**
+ * The JIT request state.
+ */
 public final class JitRequestState extends ExpandableStringEnum<JitRequestState> {
-    /** Static value NotSpecified for JitRequestState. */
+    /**
+     * Static value NotSpecified for JitRequestState.
+     */
     public static final JitRequestState NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Pending for JitRequestState. */
+    /**
+     * Static value Pending for JitRequestState.
+     */
     public static final JitRequestState PENDING = fromString("Pending");
 
-    /** Static value Approved for JitRequestState. */
+    /**
+     * Static value Approved for JitRequestState.
+     */
     public static final JitRequestState APPROVED = fromString("Approved");
 
-    /** Static value Denied for JitRequestState. */
+    /**
+     * Static value Denied for JitRequestState.
+     */
     public static final JitRequestState DENIED = fromString("Denied");
 
-    /** Static value Failed for JitRequestState. */
+    /**
+     * Static value Failed for JitRequestState.
+     */
     public static final JitRequestState FAILED = fromString("Failed");
 
-    /** Static value Canceled for JitRequestState. */
+    /**
+     * Static value Canceled for JitRequestState.
+     */
     public static final JitRequestState CANCELED = fromString("Canceled");
 
-    /** Static value Expired for JitRequestState. */
+    /**
+     * Static value Expired for JitRequestState.
+     */
     public static final JitRequestState EXPIRED = fromString("Expired");
 
-    /** Static value Timeout for JitRequestState. */
+    /**
+     * Static value Timeout for JitRequestState.
+     */
     public static final JitRequestState TIMEOUT = fromString("Timeout");
 
     /**
      * Creates a new instance of JitRequestState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +62,17 @@ public final class JitRequestState extends ExpandableStringEnum<JitRequestState>
 
     /**
      * Creates or finds a JitRequestState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JitRequestState.
      */
-    @JsonCreator
     public static JitRequestState fromString(String name) {
         return fromString(name, JitRequestState.class);
     }
 
     /**
      * Gets known JitRequestState values.
-     *
+     * 
      * @return known JitRequestState values.
      */
     public static Collection<JitRequestState> values() {

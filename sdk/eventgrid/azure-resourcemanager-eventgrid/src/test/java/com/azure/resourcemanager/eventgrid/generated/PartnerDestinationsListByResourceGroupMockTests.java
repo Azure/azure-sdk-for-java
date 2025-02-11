@@ -24,7 +24,7 @@ public final class PartnerDestinationsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"cb1c6acd-c638-44ff-a116-fd04765e5730\",\"endpointServiceContext\":\"c\",\"expirationTimeIfNotActivatedUtc\":\"2021-06-25T10:53:07Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"vjxitzovnkrt\",\"messageForActivation\":\"lsmnihqlcoqksyi\"},\"location\":\"hyxwbgbud\",\"tags\":{\"rbccqcdht\":\"d\"},\"id\":\"ojvlirknucosaw\",\"name\":\"dtnagzlgpyaix\",\"type\":\"hzqjjtsmuydqfttk\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"daeef811-e7b4-4e32-82df-a385461a3393\",\"endpointServiceContext\":\"c\",\"expirationTimeIfNotActivatedUtc\":\"2021-06-25T10:53:07Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"vjxitzovnkrt\",\"messageForActivation\":\"lsmnihqlcoqksyi\"},\"location\":\"hyxwbgbud\",\"tags\":{\"rbccqcdht\":\"d\"},\"id\":\"ojvlirknucosaw\",\"name\":\"dtnagzlgpyaix\",\"type\":\"hzqjjtsmuydqfttk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,7 +38,7 @@ public final class PartnerDestinationsListByResourceGroupMockTests {
 
         Assertions.assertEquals("hyxwbgbud", response.iterator().next().location());
         Assertions.assertEquals("d", response.iterator().next().tags().get("rbccqcdht"));
-        Assertions.assertEquals(UUID.fromString("cb1c6acd-c638-44ff-a116-fd04765e5730"),
+        Assertions.assertEquals(UUID.fromString("daeef811-e7b4-4e32-82df-a385461a3393"),
             response.iterator().next().partnerRegistrationImmutableId());
         Assertions.assertEquals("c", response.iterator().next().endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T10:53:07Z"),

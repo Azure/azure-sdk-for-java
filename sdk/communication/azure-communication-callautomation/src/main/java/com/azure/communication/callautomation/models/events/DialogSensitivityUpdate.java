@@ -35,7 +35,8 @@ public final class DialogSensitivityUpdate extends CallAutomationEventBase {
     private Boolean sensitiveMask;
 
     /** Creates an instance of DialogSensitivityUpdate class. */
-    public DialogSensitivityUpdate() {}
+    public DialogSensitivityUpdate() {
+    }
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.

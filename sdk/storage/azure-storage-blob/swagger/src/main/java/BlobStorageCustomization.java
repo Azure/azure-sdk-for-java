@@ -8,18 +8,18 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
-import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
@@ -41,27 +41,27 @@ public class BlobStorageCustomization extends Customization {
         models.getClass("PageList").customizeAst(ast -> {
             ast.addImport("com.azure.storage.blob.implementation.models.PageListHelper");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName("PageList").get();
+            ast.getClassByName("PageList").ifPresent(clazz -> {
 
-            clazz.getMethodsByName("getNextMarker").get(0).setModifiers(com.github.javaparser.ast.Modifier.Keyword.PRIVATE);
-            clazz.getMethodsByName("setNextMarker").get(0).setModifiers(com.github.javaparser.ast.Modifier.Keyword.PRIVATE);
+                clazz.getMethodsByName("getNextMarker").forEach(method -> method.setModifiers(Modifier.Keyword.PRIVATE));
+                clazz.getMethodsByName("setNextMarker").forEach(method -> method.setModifiers(Modifier.Keyword.PRIVATE));
 
-            // Add Accessor to PageList
-            clazz.setMembers(clazz.getMembers().addFirst(StaticJavaParser.parseBodyDeclaration(String.join("\n",
-                "static {",
-                "    PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {",
-                "        @Override",
-                "        public String getNextMarker(PageList pageList) {",
-                "            return pageList.getNextMarker();",
-                "        }",
-                "",
-                "        @Override",
-                "        public PageList setNextMarker(PageList pageList, String marker) {",
-                "            return pageList.setNextMarker(marker);",
-                "        }",
-                "    });",
-                "}"
-            ))));
+                // Add Accessor to PageList
+                clazz.setMembers(clazz.getMembers()
+                    .addFirst(StaticJavaParser.parseBodyDeclaration(String.join("\n", "static {",
+                        "    PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {",
+                        "        @Override",
+                        "        public String getNextMarker(PageList pageList) {",
+                        "            return pageList.getNextMarker();",
+                        "        }",
+                        "",
+                        "        @Override",
+                        "        public PageList setNextMarker(PageList pageList, String marker) {",
+                        "            return pageList.setNextMarker(marker);",
+                        "        }",
+                        "    });",
+                        "}"))));
+            });
         });
 
         ClassCustomization blobContainerEncryptionScope = models.getClass("BlobContainerEncryptionScope");
@@ -114,16 +114,21 @@ public class BlobStorageCustomization extends Customization {
         //QueryFormat
         customizeQueryFormat(implementationModels.getClass("QueryFormat"));
 
-        //BlobHierarchyListSegment
-        customizeBlobHierarchyListSegment(implementationModels.getClass("BlobHierarchyListSegment"));
-
-        //BlobFlatListSegment
-        customizeBlobFlatListSegment(implementationModels.getClass("BlobFlatListSegment"));
-
         //BlobSignedIdentifierWrapper
         customizeBlobSignedIdentifierWrapper(implementationModels.getClass("BlobSignedIdentifierWrapper"));
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.blob.implementation"));
+
+        implementationModels.getClass("QueryRequest").customizeAst(ast -> ast.getClassByName("QueryRequest").ifPresent(clazz -> {
+            clazz.getFieldByName("queryType").ifPresent(field -> field.removeModifier(Modifier.Keyword.FINAL));
+            clazz.addMethod("setQueryType", Modifier.Keyword.PUBLIC)
+                .setType("QueryRequest")
+                .addParameter("String", "queryType")
+                .setBody(StaticJavaParser.parseBlock("{ this.queryType = queryType; return this; }"))
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Set the queryType property: Required. The type of the provided query expression."))
+                    .addBlockTag("param", "queryType", "the queryType value to set.")
+                    .addBlockTag("return", "the QueryRequest object itself."));
+        }));
     }
 
     private static void customizeQueryFormat(ClassCustomization classCustomization) {
@@ -133,105 +138,6 @@ public class BlobStorageCustomization extends Customization {
         fileContent = fileContent.replace("deserializedQueryFormat.parquetTextConfiguration = reader.null;",
             "deserializedQueryFormat.parquetTextConfiguration = new Object();\nxmlReader.skipElement();");
         classCustomization.getEditor().replaceFile(classCustomization.getFileName(), fileContent);
-    }
-
-    private static void customizeBlobHierarchyListSegment(ClassCustomization classCustomization){
-        classCustomization.customizeAst(ast -> {
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
-
-            clazz.getMethodsBySignature("toXml", "XmlWriter", "String").get(0)
-                .setBody(StaticJavaParser.parseBlock(String.join("\n",
-                    "{",
-                    "rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;",
-                    "xmlWriter.writeStartElement(rootElementName);",
-                    "if (this.blobPrefixes != null) {",
-                    "    for (BlobPrefixInternal element : this.blobPrefixes) {",
-                    "        xmlWriter.writeXml(element, \"BlobPrefix\");",
-                    "    }",
-                    "}",
-                    "if (this.blobItems != null) {",
-                    "    for (BlobItemInternal element : this.blobItems) {",
-                    "        xmlWriter.writeXml(element, \"Blob\");",
-                    "    }",
-                    "}",
-                    "return xmlWriter.writeEndElement();",
-                    "}"
-                )));
-
-            clazz.getMethodsBySignature("fromXml", "XmlReader", "String").get(0)
-                .setBody(StaticJavaParser.parseBlock(String.join("\n",
-                    "{",
-                    "String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;",
-                    "return xmlReader.readObject(finalRootElementName, reader -> {",
-                    "    BlobHierarchyListSegment deserializedBlobHierarchyListSegment",
-                    "        = new BlobHierarchyListSegment();",
-                    "    while (reader.nextElement() != XmlToken.END_ELEMENT) {",
-                    "        QName elementName = reader.getElementName();",
-                    "",
-                    "        if (\"BlobPrefix\".equals(elementName.getLocalPart())) {",
-                    "            if (deserializedBlobHierarchyListSegment.blobPrefixes == null) {",
-                    "                deserializedBlobHierarchyListSegment.blobPrefixes = new ArrayList<>();",
-                    "            }",
-                    "            deserializedBlobHierarchyListSegment.blobPrefixes",
-                    "                .add(BlobPrefixInternal.fromXml(reader, \"BlobPrefix\"));",
-                    "        } else if (\"Blob\".equals(elementName.getLocalPart())) {",
-                    "            if (deserializedBlobHierarchyListSegment.blobItems == null) {",
-                    "                deserializedBlobHierarchyListSegment.blobItems = new ArrayList<>();",
-                    "            }",
-                    "            deserializedBlobHierarchyListSegment.blobItems.add(BlobItemInternal.fromXml(reader, \"Blob\"));",
-                    "        } else {",
-                    "            reader.skipElement();",
-                    "        }",
-                    "    }",
-                    "",
-                    "    return deserializedBlobHierarchyListSegment;",
-                    "});",
-                    "}"
-                )));
-        });
-    }
-
-    private static void customizeBlobFlatListSegment(ClassCustomization classCustomization){
-        classCustomization.customizeAst(ast -> {
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
-
-            clazz.getMethodsBySignature("toXml", "XmlWriter", "String").get(0)
-                .setBody(StaticJavaParser.parseBlock(
-                    "{\n" +
-                    "rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;" +
-                        "        xmlWriter.writeStartElement(rootElementName);\n" +
-                        "        if (this.blobItems != null) {\n" +
-                        "            for (BlobItemInternal element : this.blobItems) {\n" +
-                        "                xmlWriter.writeXml(element, \"Blob\");\n" +
-                        "            }\n" +
-                        "        }\n" +
-                        "        return xmlWriter.writeEndElement();\n" +
-                        "}"
-                ));
-
-            clazz.getMethodsBySignature("fromXml", "XmlReader", "String").get(0)
-                .setBody(StaticJavaParser.parseBlock(
-                    "{\n" +
-                    "String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;\n" +
-                    "        return xmlReader.readObject(finalRootElementName, reader -> {\n" +
-                    "            BlobFlatListSegment deserializedBlobFlatListSegment = new BlobFlatListSegment();\n" +
-                    "            while (reader.nextElement() != XmlToken.END_ELEMENT) {\n" +
-                    "                QName elementName = reader.getElementName();\n" +
-                    "                if (\"Blob\".equals(elementName.getLocalPart())) {\n" +
-                    "                    if (deserializedBlobFlatListSegment.blobItems == null) {\n" +
-                    "                        deserializedBlobFlatListSegment.blobItems = new ArrayList<>();\n" +
-                    "                    }\n" +
-                    "                    deserializedBlobFlatListSegment.blobItems.add(BlobItemInternal.fromXml(reader, \"Blob\"));\n" +
-                    "                } else {\n" +
-                    "                    reader.skipElement();\n" +
-                    "                }\n" +
-                    "            }\n" +
-                    "\n" +
-                    "            return deserializedBlobFlatListSegment;\n" +
-                    "        });\n" +
-                    "}"
-                ));
-        });
     }
 
     private static void customizeBlobSignedIdentifierWrapper(ClassCustomization classCustomization) {
@@ -343,10 +249,8 @@ public class BlobStorageCustomization extends Customization {
     }
 
     private static void addErrorMappingToSyncMethod(MethodDeclaration method) {
-        BlockStmt body = method.getBody().get();
-
-        // Turn the last statement into a BlockStmt that will be used as the try block.
-        BlockStmt tryBlock = new BlockStmt(new NodeList<>(body.getStatement(body.getStatements().size() - 1)));
+        // Turn the entire method into a BlockStmt that will be used as the try block.
+        BlockStmt tryBlock = method.getBody().get();
         BlockStmt catchBlock = new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement(
             "throw ModelHelper.mapToBlobStorageException(internalException);")));
         Parameter catchParameter = new Parameter().setType("BlobStorageExceptionInternal")
@@ -355,6 +259,6 @@ public class BlobStorageCustomization extends Customization {
         TryStmt tryCatchMap = new TryStmt(tryBlock, new NodeList<>(catchClause), null);
 
         // Replace the last statement with the try-catch block.
-        body.getStatements().set(body.getStatements().size() - 1, tryCatchMap);
+        method.setBody(new BlockStmt(new NodeList<>(tryCatchMap)));
     }
 }

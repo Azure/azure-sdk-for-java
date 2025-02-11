@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Purview Configuration. */
+/**
+ * Purview Configuration.
+ */
 @Fluent
-public final class PurviewConfiguration {
+public final class PurviewConfiguration implements JsonSerializable<PurviewConfiguration> {
     /*
      * Purview Resource ID
      */
-    @JsonProperty(value = "purviewResourceId")
     private String purviewResourceId;
 
-    /** Creates an instance of PurviewConfiguration class. */
+    /**
+     * Creates an instance of PurviewConfiguration class.
+     */
     public PurviewConfiguration() {
     }
 
     /**
      * Get the purviewResourceId property: Purview Resource ID.
-     *
+     * 
      * @return the purviewResourceId value.
      */
     public String purviewResourceId() {
@@ -31,7 +38,7 @@ public final class PurviewConfiguration {
 
     /**
      * Set the purviewResourceId property: Purview Resource ID.
-     *
+     * 
      * @param purviewResourceId the purviewResourceId value to set.
      * @return the PurviewConfiguration object itself.
      */
@@ -42,9 +49,45 @@ public final class PurviewConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("purviewResourceId", this.purviewResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PurviewConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PurviewConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PurviewConfiguration.
+     */
+    public static PurviewConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PurviewConfiguration deserializedPurviewConfiguration = new PurviewConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("purviewResourceId".equals(fieldName)) {
+                    deserializedPurviewConfiguration.purviewResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPurviewConfiguration;
+        });
     }
 }

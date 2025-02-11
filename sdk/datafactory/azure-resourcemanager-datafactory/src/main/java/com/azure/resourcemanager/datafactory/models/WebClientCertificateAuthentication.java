@@ -104,7 +104,6 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
      */
     @Override
     public void validate() {
-        super.validate();
         if (pfx() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -118,6 +117,11 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
                     "Missing required property password in model WebClientCertificateAuthentication"));
         } else {
             password().validate();
+        }
+        if (url() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model WebClientCertificateAuthentication"));
         }
     }
 

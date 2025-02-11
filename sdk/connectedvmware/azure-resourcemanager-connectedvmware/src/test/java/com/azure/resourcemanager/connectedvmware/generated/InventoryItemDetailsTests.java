@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InventoryItemDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InventoryItemDetails model =
-            BinaryData
-                .fromString(
-                    "{\"inventoryItemId\":\"rteeamm\",\"moName\":\"iekkkzddrtkgdojb\",\"inventoryType\":\"VirtualMachine\"}")
-                .toObject(InventoryItemDetails.class);
+        InventoryItemDetails model = BinaryData.fromString(
+            "{\"inventoryItemId\":\"rteeamm\",\"moName\":\"iekkkzddrtkgdojb\",\"inventoryType\":\"VirtualMachine\"}")
+            .toObject(InventoryItemDetails.class);
         Assertions.assertEquals("rteeamm", model.inventoryItemId());
         Assertions.assertEquals("iekkkzddrtkgdojb", model.moName());
         Assertions.assertEquals(InventoryType.VIRTUAL_MACHINE, model.inventoryType());
@@ -24,11 +22,9 @@ public final class InventoryItemDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InventoryItemDetails model =
-            new InventoryItemDetails()
-                .withInventoryItemId("rteeamm")
-                .withMoName("iekkkzddrtkgdojb")
-                .withInventoryType(InventoryType.VIRTUAL_MACHINE);
+        InventoryItemDetails model = new InventoryItemDetails().withInventoryItemId("rteeamm")
+            .withMoName("iekkkzddrtkgdojb")
+            .withInventoryType(InventoryType.VIRTUAL_MACHINE);
         model = BinaryData.fromObject(model).toObject(InventoryItemDetails.class);
         Assertions.assertEquals("rteeamm", model.inventoryItemId());
         Assertions.assertEquals("iekkkzddrtkgdojb", model.moName());

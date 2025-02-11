@@ -15,8 +15,8 @@ public final class MaintenanceWindowOptionsImpl implements MaintenanceWindowOpti
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    MaintenanceWindowOptionsImpl(
-        MaintenanceWindowOptionsInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    MaintenanceWindowOptionsImpl(MaintenanceWindowOptionsInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

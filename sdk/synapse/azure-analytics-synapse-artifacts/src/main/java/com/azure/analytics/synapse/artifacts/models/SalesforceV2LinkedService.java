@@ -24,17 +24,20 @@ public class SalesforceV2LinkedService extends LinkedService {
     private String type = "SalesforceV2";
 
     /*
-     * The URL of Salesforce instance. For example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
+     * The URL of Salesforce instance. For example, 'https://[domain].my.salesforce.com'. Type: string (or Expression
+     * with resultType string).
      */
     private Object environmentUrl;
 
     /*
-     * The authentication type to be used to connect to the Salesforce. Currently, we only support OAuth2ClientCredentials, it is also the default value
+     * The authentication type to be used to connect to the Salesforce. Currently, we only support
+     * OAuth2ClientCredentials, it is also the default value
      */
     private Object authenticationType;
 
     /*
-     * The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance. Type: string (or Expression with resultType string).
+     * The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance. Type: string (or
+     * Expression with resultType string).
      */
     private Object clientId;
 
@@ -44,12 +47,14 @@ public class SalesforceV2LinkedService extends LinkedService {
     private SecretBase clientSecret;
 
     /*
-     * The Salesforce API version used in ADF. The version must be larger than or equal to 47.0 which is required by Salesforce BULK API 2.0. Type: string (or Expression with resultType string).
+     * The Salesforce API version used in ADF. The version must be larger than or equal to 47.0 which is required by
+     * Salesforce BULK API 2.0. Type: string (or Expression with resultType string).
      */
     private Object apiVersion;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     private String encryptedCredential;
 

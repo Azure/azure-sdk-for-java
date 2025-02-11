@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cognitiveservices.models.SkuAvailability;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Check SKU availability result list. */
+/**
+ * Check SKU availability result list.
+ */
 @Fluent
-public final class SkuAvailabilityListResultInner {
+public final class SkuAvailabilityListResultInner implements JsonSerializable<SkuAvailabilityListResultInner> {
     /*
      * Check SKU availability result list.
      */
-    @JsonProperty(value = "value")
     private List<SkuAvailability> value;
 
-    /** Creates an instance of SkuAvailabilityListResultInner class. */
+    /**
+     * Creates an instance of SkuAvailabilityListResultInner class.
+     */
     public SkuAvailabilityListResultInner() {
     }
 
     /**
      * Get the value property: Check SKU availability result list.
-     *
+     * 
      * @return the value value.
      */
     public List<SkuAvailability> value() {
@@ -33,7 +40,7 @@ public final class SkuAvailabilityListResultInner {
 
     /**
      * Set the value property: Check SKU availability result list.
-     *
+     * 
      * @param value the value value to set.
      * @return the SkuAvailabilityListResultInner object itself.
      */
@@ -44,12 +51,50 @@ public final class SkuAvailabilityListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuAvailabilityListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuAvailabilityListResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuAvailabilityListResultInner.
+     */
+    public static SkuAvailabilityListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuAvailabilityListResultInner deserializedSkuAvailabilityListResultInner
+                = new SkuAvailabilityListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SkuAvailability> value = reader.readArray(reader1 -> SkuAvailability.fromJson(reader1));
+                    deserializedSkuAvailabilityListResultInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuAvailabilityListResultInner;
+        });
     }
 }

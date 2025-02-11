@@ -21,9 +21,7 @@ public final class MetricAnomalyAlertSnoozeCondition {
      * @param snoozeScope the scope in which anomalies to be snoozed may appear.
      * @param onlyForSuccessive true to snooze successive anomalies, false otherwise.
      */
-    public MetricAnomalyAlertSnoozeCondition(int autoSnooze,
-                                             SnoozeScope snoozeScope,
-                                             boolean onlyForSuccessive) {
+    public MetricAnomalyAlertSnoozeCondition(int autoSnooze, SnoozeScope snoozeScope, boolean onlyForSuccessive) {
         this.autoSnooze = autoSnooze;
         this.snoozeScope = snoozeScope;
         this.onlyForSuccessive = onlyForSuccessive;

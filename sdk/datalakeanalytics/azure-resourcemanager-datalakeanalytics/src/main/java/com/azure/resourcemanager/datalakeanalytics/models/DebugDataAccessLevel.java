@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.datalakeanalytics.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The current state of the DebugDataAccessLevel for this account. */
+/**
+ * The current state of the DebugDataAccessLevel for this account.
+ */
 public enum DebugDataAccessLevel {
-    /** Enum value All. */
+    /**
+     * Enum value All.
+     */
     ALL("All"),
 
-    /** Enum value Customer. */
+    /**
+     * Enum value Customer.
+     */
     CUSTOMER("Customer"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None");
 
-    /** The actual serialized value for a DebugDataAccessLevel instance. */
+    /**
+     * The actual serialized value for a DebugDataAccessLevel instance.
+     */
     private final String value;
 
     DebugDataAccessLevel(String value) {
@@ -27,11 +34,10 @@ public enum DebugDataAccessLevel {
 
     /**
      * Parses a serialized value to a DebugDataAccessLevel instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DebugDataAccessLevel object, or null if unable to parse.
      */
-    @JsonCreator
     public static DebugDataAccessLevel fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum DebugDataAccessLevel {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -35,9 +35,9 @@ public final class GalleryImageInner extends Resource {
     private GalleryImageProperties innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -45,9 +45,9 @@ public final class GalleryImageInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of GalleryImageInner class.
@@ -65,13 +65,13 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -85,13 +85,13 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -433,7 +433,7 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     * Get the architecture property: CPU architecture supported by an OS disk.
      * 
      * @return the architecture value.
      */
@@ -442,7 +442,7 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     * Set the architecture property: CPU architecture supported by an OS disk.
      * 
      * @param architecture the architecture value to set.
      * @return the GalleryImageInner object itself.
@@ -452,6 +452,29 @@ public final class GalleryImageInner extends Resource {
             this.innerProperties = new GalleryImageProperties();
         }
         this.innerProperties().withArchitecture(architecture);
+        return this;
+    }
+
+    /**
+     * Get the allowUpdateImage property: Optional. Must be set to true if the gallery image features are being updated.
+     * 
+     * @return the allowUpdateImage value.
+     */
+    public Boolean allowUpdateImage() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowUpdateImage();
+    }
+
+    /**
+     * Set the allowUpdateImage property: Optional. Must be set to true if the gallery image features are being updated.
+     * 
+     * @param allowUpdateImage the allowUpdateImage value to set.
+     * @return the GalleryImageInner object itself.
+     */
+    public GalleryImageInner withAllowUpdateImage(Boolean allowUpdateImage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
+        }
+        this.innerProperties().withAllowUpdateImage(allowUpdateImage);
         return this;
     }
 

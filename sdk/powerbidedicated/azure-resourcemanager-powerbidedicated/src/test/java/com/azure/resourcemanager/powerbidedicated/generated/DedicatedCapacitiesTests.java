@@ -9,6 +9,7 @@ import com.azure.resourcemanager.powerbidedicated.fluent.models.DedicatedCapacit
 import com.azure.resourcemanager.powerbidedicated.models.CapacitySku;
 import com.azure.resourcemanager.powerbidedicated.models.CapacitySkuTier;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacities;
+import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacityAdministrators;
 import com.azure.resourcemanager.powerbidedicated.models.Mode;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,92 +19,65 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedCapacitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedCapacities model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"pmqnja\",\"tier\":\"AutoPremiumHost\",\"capacity\":1052966015},\"properties\":{\"state\":\"Scaling\",\"provisioningState\":\"Suspended\",\"mode\":\"Gen2\",\"tenantId\":\"tegjvwmf\",\"friendlyName\":\"t\"},\"location\":\"mdvpjhulsu\",\"tags\":{\"odjpslwejd\":\"kjozkrwfnd\",\"cctazakljlahbc\":\"vwryoqpso\",\"gexpaojakhmsbz\":\"yffdfdos\"},\"id\":\"hcrzevd\",\"name\":\"hlxaolthqtr\",\"type\":\"qjbpfzfsin\"},{\"sku\":{\"name\":\"gvfcj\",\"tier\":\"PBIE_Azure\",\"capacity\":1543108452},\"properties\":{\"state\":\"Provisioning\",\"provisioningState\":\"Resuming\",\"mode\":\"Gen2\",\"tenantId\":\"fziton\",\"friendlyName\":\"qfpjk\"},\"location\":\"xofpdvhpfxxypi\",\"tags\":{\"inuvamiheogn\":\"mayhuybbkpodepoo\",\"usivye\":\"rxzxtheo\",\"nfygxgispemvtz\":\"cciqihnhungbwjz\"},\"id\":\"kufubljo\",\"name\":\"xqeofjaeqjhqjba\",\"type\":\"v\"},{\"sku\":{\"name\":\"smjqulngsntnbyb\",\"tier\":\"PBIE_Azure\",\"capacity\":823404328},\"properties\":{\"state\":\"Failed\",\"provisioningState\":\"Succeeded\",\"mode\":\"Gen2\",\"tenantId\":\"jdous\",\"friendlyName\":\"qvkoc\"},\"location\":\"jdkwtnhxbnjb\",\"tags\":{\"lljfmppeeb\":\"qrglssainqpjwn\",\"yqduujit\":\"mgxsab\",\"rwpdappdsbdkvwrw\":\"jczdzevndh\"},\"id\":\"feusnhut\",\"name\":\"eltmrldhugjzzdat\",\"type\":\"xhocdgeablgphuti\"},{\"sku\":{\"name\":\"ndv\",\"tier\":\"PBIE_Azure\",\"capacity\":563001635},\"properties\":{\"state\":\"Suspended\",\"provisioningState\":\"Succeeded\",\"mode\":\"Gen2\",\"tenantId\":\"rokft\",\"friendlyName\":\"olniwpwcukjf\"},\"location\":\"iawxklry\",\"tags\":{\"sgcbac\":\"ckbasyypndd\",\"zndlikwy\":\"hejkotynqgou\",\"bmadgak\":\"kgfg\"},\"id\":\"qsrxybzqqed\",\"name\":\"ytb\",\"type\":\"iqfouflmmnkz\"}]}")
-                .toObject(DedicatedCapacities.class);
-        Assertions.assertEquals("mdvpjhulsu", model.value().get(0).location());
-        Assertions.assertEquals("kjozkrwfnd", model.value().get(0).tags().get("odjpslwejd"));
+        DedicatedCapacities model = BinaryData.fromString(
+            "{\"value\":[{\"sku\":{\"name\":\"pmqnja\",\"tier\":\"AutoPremiumHost\",\"capacity\":1052966015},\"properties\":{\"state\":\"Scaling\",\"provisioningState\":\"Suspended\",\"administration\":{\"members\":[\"utegjvwmfdats\",\"mdvpjhulsu\",\"vmkjozkrwfndiodj\"]},\"mode\":\"Gen1\",\"tenantId\":\"ej\",\"friendlyName\":\"vwryoqpso\"},\"location\":\"ctazakljlahbcryf\",\"tags\":{\"xpaojakhmsbz\":\"dosyg\",\"hlxaolthqtr\":\"hcrzevd\"},\"id\":\"qjbpfzfsin\",\"name\":\"gvfcj\",\"type\":\"wzo\"},{\"sku\":{\"name\":\"xjtfelluwfzit\",\"tier\":\"PBIE_Azure\",\"capacity\":1181425969},\"properties\":{\"state\":\"Succeeded\",\"provisioningState\":\"Failed\",\"administration\":{\"members\":[\"fpdvhpfxxypi\",\"i\"]},\"mode\":\"Gen1\",\"tenantId\":\"huyb\",\"friendlyName\":\"podepoo\"},\"location\":\"nuvamiheogna\",\"tags\":{\"o\":\"xth\",\"cciqihnhungbwjz\":\"usivye\",\"kufubljo\":\"nfygxgispemvtz\",\"v\":\"xqeofjaeqjhqjba\"},\"id\":\"smjqulngsntnbyb\",\"name\":\"zgcwrw\",\"type\":\"lxxwrljdouskc\"},{\"sku\":{\"name\":\"vkocrcjdkwtn\",\"tier\":\"PBIE_Azure\",\"capacity\":1299495603},\"properties\":{\"state\":\"Preparing\",\"provisioningState\":\"Pausing\",\"administration\":{\"members\":[\"ssainqpjwnzll\",\"fmppe\"]},\"mode\":\"Gen1\",\"tenantId\":\"gxsabkyq\",\"friendlyName\":\"ujitcjcz\"},\"location\":\"evndh\",\"tags\":{\"dkvwrwjfe\":\"pdappds\",\"je\":\"snhu\",\"hocdgeab\":\"tmrldhugjzzdatq\"},\"id\":\"gphuticndvka\",\"name\":\"zwyiftyhxhur\",\"type\":\"k\"},{\"sku\":{\"name\":\"tyxolniwpwc\",\"tier\":\"Premium\",\"capacity\":1720882214},\"properties\":{\"state\":\"Suspended\",\"provisioningState\":\"Suspended\",\"administration\":{\"members\":[\"ypl\",\"ckbasyypndd\",\"sgcbac\",\"hejkotynqgou\"]},\"mode\":\"Gen1\",\"tenantId\":\"likwyqkgfgib\",\"friendlyName\":\"dgak\"},\"location\":\"s\",\"tags\":{\"ouf\":\"bzqqedqytbciq\"},\"id\":\"mmnkzsmodmgl\",\"name\":\"ugpbkw\",\"type\":\"mutduqktaps\"}]}")
+            .toObject(DedicatedCapacities.class);
+        Assertions.assertEquals("ctazakljlahbcryf", model.value().get(0).location());
+        Assertions.assertEquals("dosyg", model.value().get(0).tags().get("xpaojakhmsbz"));
         Assertions.assertEquals("pmqnja", model.value().get(0).sku().name());
         Assertions.assertEquals(CapacitySkuTier.AUTO_PREMIUM_HOST, model.value().get(0).sku().tier());
         Assertions.assertEquals(1052966015, model.value().get(0).sku().capacity());
-        Assertions.assertEquals(Mode.GEN2, model.value().get(0).mode());
+        Assertions.assertEquals("utegjvwmfdats", model.value().get(0).administration().members().get(0));
+        Assertions.assertEquals(Mode.GEN1, model.value().get(0).mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedCapacities model =
-            new DedicatedCapacities()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DedicatedCapacityInner()
-                                .withLocation("mdvpjhulsu")
-                                .withTags(
-                                    mapOf(
-                                        "odjpslwejd",
-                                        "kjozkrwfnd",
-                                        "cctazakljlahbc",
-                                        "vwryoqpso",
-                                        "gexpaojakhmsbz",
-                                        "yffdfdos"))
-                                .withSku(
-                                    new CapacitySku()
-                                        .withName("pmqnja")
-                                        .withTier(CapacitySkuTier.AUTO_PREMIUM_HOST)
-                                        .withCapacity(1052966015))
-                                .withMode(Mode.GEN2),
-                            new DedicatedCapacityInner()
-                                .withLocation("xofpdvhpfxxypi")
-                                .withTags(
-                                    mapOf(
-                                        "inuvamiheogn",
-                                        "mayhuybbkpodepoo",
-                                        "usivye",
-                                        "rxzxtheo",
-                                        "nfygxgispemvtz",
-                                        "cciqihnhungbwjz"))
-                                .withSku(
-                                    new CapacitySku()
-                                        .withName("gvfcj")
-                                        .withTier(CapacitySkuTier.PBIE_AZURE)
-                                        .withCapacity(1543108452))
-                                .withMode(Mode.GEN2),
-                            new DedicatedCapacityInner()
-                                .withLocation("jdkwtnhxbnjb")
-                                .withTags(
-                                    mapOf(
-                                        "lljfmppeeb",
-                                        "qrglssainqpjwn",
-                                        "yqduujit",
-                                        "mgxsab",
-                                        "rwpdappdsbdkvwrw",
-                                        "jczdzevndh"))
-                                .withSku(
-                                    new CapacitySku()
-                                        .withName("smjqulngsntnbyb")
-                                        .withTier(CapacitySkuTier.PBIE_AZURE)
-                                        .withCapacity(823404328))
-                                .withMode(Mode.GEN2),
-                            new DedicatedCapacityInner()
-                                .withLocation("iawxklry")
-                                .withTags(mapOf("sgcbac", "ckbasyypndd", "zndlikwy", "hejkotynqgou", "bmadgak", "kgfg"))
-                                .withSku(
-                                    new CapacitySku()
-                                        .withName("ndv")
-                                        .withTier(CapacitySkuTier.PBIE_AZURE)
-                                        .withCapacity(563001635))
-                                .withMode(Mode.GEN2)));
+        DedicatedCapacities model = new DedicatedCapacities().withValue(Arrays.asList(
+            new DedicatedCapacityInner().withLocation("ctazakljlahbcryf")
+                .withTags(mapOf("xpaojakhmsbz", "dosyg", "hlxaolthqtr", "hcrzevd"))
+                .withSku(new CapacitySku().withName("pmqnja")
+                    .withTier(CapacitySkuTier.AUTO_PREMIUM_HOST)
+                    .withCapacity(1052966015))
+                .withAdministration(new DedicatedCapacityAdministrators()
+                    .withMembers(Arrays.asList("utegjvwmfdats", "mdvpjhulsu", "vmkjozkrwfndiodj")))
+                .withMode(Mode.GEN1),
+            new DedicatedCapacityInner().withLocation("nuvamiheogna")
+                .withTags(mapOf("o", "xth", "cciqihnhungbwjz", "usivye", "kufubljo", "nfygxgispemvtz", "v",
+                    "xqeofjaeqjhqjba"))
+                .withSku(new CapacitySku().withName("xjtfelluwfzit")
+                    .withTier(CapacitySkuTier.PBIE_AZURE)
+                    .withCapacity(1181425969))
+                .withAdministration(
+                    new DedicatedCapacityAdministrators().withMembers(Arrays.asList("fpdvhpfxxypi", "i")))
+                .withMode(Mode.GEN1),
+            new DedicatedCapacityInner().withLocation("evndh")
+                .withTags(mapOf("dkvwrwjfe", "pdappds", "je", "snhu", "hocdgeab", "tmrldhugjzzdatq"))
+                .withSku(new CapacitySku().withName("vkocrcjdkwtn")
+                    .withTier(CapacitySkuTier.PBIE_AZURE)
+                    .withCapacity(1299495603))
+                .withAdministration(
+                    new DedicatedCapacityAdministrators().withMembers(Arrays.asList("ssainqpjwnzll", "fmppe")))
+                .withMode(Mode.GEN1),
+            new DedicatedCapacityInner().withLocation("s")
+                .withTags(mapOf("ouf", "bzqqedqytbciq"))
+                .withSku(new CapacitySku().withName("tyxolniwpwc")
+                    .withTier(CapacitySkuTier.PREMIUM)
+                    .withCapacity(1720882214))
+                .withAdministration(new DedicatedCapacityAdministrators()
+                    .withMembers(Arrays.asList("ypl", "ckbasyypndd", "sgcbac", "hejkotynqgou")))
+                .withMode(Mode.GEN1)));
         model = BinaryData.fromObject(model).toObject(DedicatedCapacities.class);
-        Assertions.assertEquals("mdvpjhulsu", model.value().get(0).location());
-        Assertions.assertEquals("kjozkrwfnd", model.value().get(0).tags().get("odjpslwejd"));
+        Assertions.assertEquals("ctazakljlahbcryf", model.value().get(0).location());
+        Assertions.assertEquals("dosyg", model.value().get(0).tags().get("xpaojakhmsbz"));
         Assertions.assertEquals("pmqnja", model.value().get(0).sku().name());
         Assertions.assertEquals(CapacitySkuTier.AUTO_PREMIUM_HOST, model.value().get(0).sku().tier());
         Assertions.assertEquals(1052966015, model.value().get(0).sku().capacity());
-        Assertions.assertEquals(Mode.GEN2, model.value().get(0).mode());
+        Assertions.assertEquals("utegjvwmfdats", model.value().get(0).administration().members().get(0));
+        Assertions.assertEquals(Mode.GEN1, model.value().get(0).mode());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

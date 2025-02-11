@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RoutingServiceBusTopicEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoutingServiceBusTopicEndpointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"gipwhonowkg\",\"connectionString\":\"wankixzbi\",\"endpointUri\":\"eputtmrywnuzoqf\",\"entityPath\":\"yqzrnkcqvyxlw\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"cohoq\"},\"name\":\"nwvlryavwhheunmm\",\"subscriptionId\":\"gyxzk\",\"resourceGroup\":\"ocukoklyax\"}")
-                .toObject(RoutingServiceBusTopicEndpointProperties.class);
+        RoutingServiceBusTopicEndpointProperties model = BinaryData.fromString(
+            "{\"id\":\"gipwhonowkg\",\"connectionString\":\"wankixzbi\",\"endpointUri\":\"eputtmrywnuzoqf\",\"entityPath\":\"yqzrnkcqvyxlw\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"cohoq\"},\"name\":\"nwvlryavwhheunmm\",\"subscriptionId\":\"gyxzk\",\"resourceGroup\":\"ocukoklyax\"}")
+            .toObject(RoutingServiceBusTopicEndpointProperties.class);
         Assertions.assertEquals("gipwhonowkg", model.id());
         Assertions.assertEquals("wankixzbi", model.connectionString());
         Assertions.assertEquals("eputtmrywnuzoqf", model.endpointUri());
@@ -31,9 +29,8 @@ public final class RoutingServiceBusTopicEndpointPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingServiceBusTopicEndpointProperties model =
-            new RoutingServiceBusTopicEndpointProperties()
-                .withId("gipwhonowkg")
+        RoutingServiceBusTopicEndpointProperties model
+            = new RoutingServiceBusTopicEndpointProperties().withId("gipwhonowkg")
                 .withConnectionString("wankixzbi")
                 .withEndpointUri("eputtmrywnuzoqf")
                 .withEntityPath("yqzrnkcqvyxlw")

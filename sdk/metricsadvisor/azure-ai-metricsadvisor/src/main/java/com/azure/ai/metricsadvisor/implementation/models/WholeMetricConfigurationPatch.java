@@ -131,6 +131,9 @@ public final class WholeMetricConfigurationPatch implements JsonSerializable<Who
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

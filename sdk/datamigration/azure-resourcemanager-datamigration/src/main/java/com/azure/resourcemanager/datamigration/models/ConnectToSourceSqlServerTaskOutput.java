@@ -5,39 +5,45 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Output for the task that validates connection to SQL Server and also validates source server requirements. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "resultType",
-    defaultImpl = ConnectToSourceSqlServerTaskOutput.class)
-@JsonTypeName("ConnectToSourceSqlServerTaskOutput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "TaskLevelOutput", value = ConnectToSourceSqlServerTaskOutputTaskLevel.class),
-    @JsonSubTypes.Type(name = "DatabaseLevelOutput", value = ConnectToSourceSqlServerTaskOutputDatabaseLevel.class),
-    @JsonSubTypes.Type(name = "LoginLevelOutput", value = ConnectToSourceSqlServerTaskOutputLoginLevel.class),
-    @JsonSubTypes.Type(name = "AgentJobLevelOutput", value = ConnectToSourceSqlServerTaskOutputAgentJobLevel.class)
-})
+/**
+ * Output for the task that validates connection to SQL Server and also validates source server requirements.
+ */
 @Immutable
-public class ConnectToSourceSqlServerTaskOutput {
+public class ConnectToSourceSqlServerTaskOutput implements JsonSerializable<ConnectToSourceSqlServerTaskOutput> {
+    /*
+     * Type of result - database level or task level
+     */
+    private String resultType = "ConnectToSourceSqlServerTaskOutput";
+
     /*
      * Result identifier
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of ConnectToSourceSqlServerTaskOutput class. */
+    /**
+     * Creates an instance of ConnectToSourceSqlServerTaskOutput class.
+     */
     public ConnectToSourceSqlServerTaskOutput() {
     }
 
     /**
+     * Get the resultType property: Type of result - database level or task level.
+     * 
+     * @return the resultType value.
+     */
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the id property: Result identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -45,10 +51,91 @@ public class ConnectToSourceSqlServerTaskOutput {
     }
 
     /**
+     * Set the id property: Result identifier.
+     * 
+     * @param id the id value to set.
+     * @return the ConnectToSourceSqlServerTaskOutput object itself.
+     */
+    ConnectToSourceSqlServerTaskOutput withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToSourceSqlServerTaskOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToSourceSqlServerTaskOutput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectToSourceSqlServerTaskOutput.
+     */
+    public static ConnectToSourceSqlServerTaskOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("resultType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("TaskLevelOutput".equals(discriminatorValue)) {
+                    return ConnectToSourceSqlServerTaskOutputTaskLevel.fromJson(readerToUse.reset());
+                } else if ("DatabaseLevelOutput".equals(discriminatorValue)) {
+                    return ConnectToSourceSqlServerTaskOutputDatabaseLevel.fromJson(readerToUse.reset());
+                } else if ("LoginLevelOutput".equals(discriminatorValue)) {
+                    return ConnectToSourceSqlServerTaskOutputLoginLevel.fromJson(readerToUse.reset());
+                } else if ("AgentJobLevelOutput".equals(discriminatorValue)) {
+                    return ConnectToSourceSqlServerTaskOutputAgentJobLevel.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ConnectToSourceSqlServerTaskOutput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToSourceSqlServerTaskOutput deserializedConnectToSourceSqlServerTaskOutput
+                = new ConnectToSourceSqlServerTaskOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resultType".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutput.resultType = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutput.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToSourceSqlServerTaskOutput;
+        });
     }
 }

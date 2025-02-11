@@ -16,13 +16,15 @@ import com.azure.resourcemanager.vmwarecloudsimple.models.PatchPayload;
 import com.azure.resourcemanager.vmwarecloudsimple.models.StopMode;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachineStopMode;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachinesClient.
+ */
 public interface VirtualMachinesClient {
     /**
      * Implements list virtual machine within subscription method
-     *
-     * <p>Returns list virtual machine within subscription.
-     *
+     * 
+     * Returns list virtual machine within subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual machines as paginated response with {@link PagedIterable}.
@@ -32,9 +34,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements list virtual machine within subscription method
-     *
-     * <p>Returns list virtual machine within subscription.
-     *
+     * 
+     * Returns list virtual machine within subscription.
+     * 
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
      * @param skipToken to be used by nextLink implementation.
@@ -49,9 +51,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements list virtual machine within RG method
-     *
-     * <p>Returns list of virtual machine within resource group.
-     *
+     * 
+     * Returns list of virtual machine within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -63,9 +65,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements list virtual machine within RG method
-     *
-     * <p>Returns list of virtual machine within resource group.
-     *
+     * 
+     * Returns list of virtual machine within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -77,14 +79,14 @@ public interface VirtualMachinesClient {
      * @return list of virtual machines as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineInner> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, String skipToken, Context context);
+    PagedIterable<VirtualMachineInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        String skipToken, Context context);
 
     /**
      * Implements virtual machine GET method
-     *
-     * <p>Get virtual machine.
-     *
+     * 
+     * Get virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param context The context to associate with this operation.
@@ -94,14 +96,14 @@ public interface VirtualMachinesClient {
      * @return virtual machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context);
+    Response<VirtualMachineInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualMachineName,
+        Context context);
 
     /**
      * Implements virtual machine GET method
-     *
-     * <p>Get virtual machine.
-     *
+     * 
+     * Get virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,9 +116,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -127,14 +129,14 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
-        String resourceGroupName, String referer, String virtualMachineName, VirtualMachineInner virtualMachineRequest);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String referer, String virtualMachineName, VirtualMachineInner virtualMachineRequest);
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -146,18 +148,14 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        VirtualMachineInner virtualMachineRequest,
-        Context context);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String referer, String virtualMachineName, VirtualMachineInner virtualMachineRequest, Context context);
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -168,14 +166,14 @@ public interface VirtualMachinesClient {
      * @return virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInner createOrUpdate(
-        String resourceGroupName, String referer, String virtualMachineName, VirtualMachineInner virtualMachineRequest);
+    VirtualMachineInner createOrUpdate(String resourceGroupName, String referer, String virtualMachineName,
+        VirtualMachineInner virtualMachineRequest);
 
     /**
      * Implements virtual machine PUT method
-     *
-     * <p>Create Or Update Virtual Machine.
-     *
+     * 
+     * Create Or Update Virtual Machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -187,18 +185,14 @@ public interface VirtualMachinesClient {
      * @return virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInner createOrUpdate(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        VirtualMachineInner virtualMachineRequest,
-        Context context);
+    VirtualMachineInner createOrUpdate(String resourceGroupName, String referer, String virtualMachineName,
+        VirtualMachineInner virtualMachineRequest, Context context);
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -212,9 +206,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -225,14 +219,14 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String referer, String virtualMachineName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String referer, String virtualMachineName,
+        Context context);
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -245,9 +239,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -261,9 +255,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -273,14 +267,14 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
+        String virtualMachineName, PatchPayload virtualMachineRequest);
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -291,14 +285,14 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest, Context context);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
+        String virtualMachineName, PatchPayload virtualMachineRequest, Context context);
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -312,9 +306,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements virtual machine PATCH method
-     *
-     * <p>Patch virtual machine properties.
-     *
+     * 
+     * Patch virtual machine properties.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param virtualMachineRequest Patch virtual machine request.
@@ -325,14 +319,14 @@ public interface VirtualMachinesClient {
      * @return virtual machine model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInner update(
-        String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest, Context context);
+    VirtualMachineInner update(String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest,
+        Context context);
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -346,9 +340,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -359,14 +353,14 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String referer, String virtualMachineName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String referer, String virtualMachineName,
+        Context context);
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -379,9 +373,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -395,9 +389,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -411,9 +405,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -426,19 +420,14 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        StopMode mode,
-        VirtualMachineStopMode m,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String referer, String virtualMachineName,
+        StopMode mode, VirtualMachineStopMode m, Context context);
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -451,9 +440,9 @@ public interface VirtualMachinesClient {
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -465,11 +454,6 @@ public interface VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void stop(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        StopMode mode,
-        VirtualMachineStopMode m,
-        Context context);
+    void stop(String resourceGroupName, String referer, String virtualMachineName, StopMode mode,
+        VirtualMachineStopMode m, Context context);
 }

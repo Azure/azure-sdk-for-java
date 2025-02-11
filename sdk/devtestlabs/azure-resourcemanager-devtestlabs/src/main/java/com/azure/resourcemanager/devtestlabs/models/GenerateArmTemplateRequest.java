@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Parameters for generating an ARM template for deploying artifacts. */
+/**
+ * Parameters for generating an ARM template for deploying artifacts.
+ */
 @Fluent
-public final class GenerateArmTemplateRequest {
+public final class GenerateArmTemplateRequest implements JsonSerializable<GenerateArmTemplateRequest> {
     /*
      * The resource name of the virtual machine.
      */
-    @JsonProperty(value = "virtualMachineName")
     private String virtualMachineName;
 
     /*
      * The parameters of the ARM template.
      */
-    @JsonProperty(value = "parameters")
     private List<ParameterInfo> parameters;
 
     /*
      * The location of the virtual machine.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Options for uploading the files for the artifact. UploadFilesAndGenerateSasTokens is the default value.
      */
-    @JsonProperty(value = "fileUploadOptions")
     private FileUploadOptions fileUploadOptions;
 
-    /** Creates an instance of GenerateArmTemplateRequest class. */
+    /**
+     * Creates an instance of GenerateArmTemplateRequest class.
+     */
     public GenerateArmTemplateRequest() {
     }
 
     /**
      * Get the virtualMachineName property: The resource name of the virtual machine.
-     *
+     * 
      * @return the virtualMachineName value.
      */
     public String virtualMachineName() {
@@ -50,7 +54,7 @@ public final class GenerateArmTemplateRequest {
 
     /**
      * Set the virtualMachineName property: The resource name of the virtual machine.
-     *
+     * 
      * @param virtualMachineName the virtualMachineName value to set.
      * @return the GenerateArmTemplateRequest object itself.
      */
@@ -61,7 +65,7 @@ public final class GenerateArmTemplateRequest {
 
     /**
      * Get the parameters property: The parameters of the ARM template.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ParameterInfo> parameters() {
@@ -70,7 +74,7 @@ public final class GenerateArmTemplateRequest {
 
     /**
      * Set the parameters property: The parameters of the ARM template.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the GenerateArmTemplateRequest object itself.
      */
@@ -81,7 +85,7 @@ public final class GenerateArmTemplateRequest {
 
     /**
      * Get the location property: The location of the virtual machine.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -90,7 +94,7 @@ public final class GenerateArmTemplateRequest {
 
     /**
      * Set the location property: The location of the virtual machine.
-     *
+     * 
      * @param location the location value to set.
      * @return the GenerateArmTemplateRequest object itself.
      */
@@ -102,7 +106,7 @@ public final class GenerateArmTemplateRequest {
     /**
      * Get the fileUploadOptions property: Options for uploading the files for the artifact.
      * UploadFilesAndGenerateSasTokens is the default value.
-     *
+     * 
      * @return the fileUploadOptions value.
      */
     public FileUploadOptions fileUploadOptions() {
@@ -112,7 +116,7 @@ public final class GenerateArmTemplateRequest {
     /**
      * Set the fileUploadOptions property: Options for uploading the files for the artifact.
      * UploadFilesAndGenerateSasTokens is the default value.
-     *
+     * 
      * @param fileUploadOptions the fileUploadOptions value to set.
      * @return the GenerateArmTemplateRequest object itself.
      */
@@ -123,12 +127,60 @@ public final class GenerateArmTemplateRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualMachineName", this.virtualMachineName);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("fileUploadOptions",
+            this.fileUploadOptions == null ? null : this.fileUploadOptions.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateArmTemplateRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateArmTemplateRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenerateArmTemplateRequest.
+     */
+    public static GenerateArmTemplateRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateArmTemplateRequest deserializedGenerateArmTemplateRequest = new GenerateArmTemplateRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualMachineName".equals(fieldName)) {
+                    deserializedGenerateArmTemplateRequest.virtualMachineName = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<ParameterInfo> parameters = reader.readArray(reader1 -> ParameterInfo.fromJson(reader1));
+                    deserializedGenerateArmTemplateRequest.parameters = parameters;
+                } else if ("location".equals(fieldName)) {
+                    deserializedGenerateArmTemplateRequest.location = reader.getString();
+                } else if ("fileUploadOptions".equals(fieldName)) {
+                    deserializedGenerateArmTemplateRequest.fileUploadOptions
+                        = FileUploadOptions.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateArmTemplateRequest;
+        });
     }
 }

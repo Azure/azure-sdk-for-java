@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.edgeorder.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ResourceProvider Delete. */
+/**
+ * Samples for ResourceProvider Delete.
+ */
 public final class ResourceProviderDeleteSamples {
     /*
-     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/DeleteAddressByName.json
+     * x-ms-original-file:
+     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/DeleteAddressByName.json
      */
     /**
      * Sample code: DeleteAddressByName.
-     *
+     * 
      * @param manager Entry point to EdgeOrderManager.
      */
     public static void deleteAddressByName(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders().delete("TestRG", "TestAddressName1", Context.NONE);
+        manager.resourceProviders()
+            .delete("YourResourceGroupName", "TestAddressName1", com.azure.core.util.Context.NONE);
     }
 }

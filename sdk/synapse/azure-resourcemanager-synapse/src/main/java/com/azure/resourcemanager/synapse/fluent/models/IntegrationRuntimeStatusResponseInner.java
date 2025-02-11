@@ -6,31 +6,38 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Integration runtime status response. */
+/**
+ * Integration runtime status response.
+ */
 @Fluent
-public final class IntegrationRuntimeStatusResponseInner {
+public final class IntegrationRuntimeStatusResponseInner
+    implements JsonSerializable<IntegrationRuntimeStatusResponseInner> {
     /*
      * The integration runtime name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Integration runtime properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private IntegrationRuntimeStatus properties;
 
-    /** Creates an instance of IntegrationRuntimeStatusResponseInner class. */
+    /**
+     * Creates an instance of IntegrationRuntimeStatusResponseInner class.
+     */
     public IntegrationRuntimeStatusResponseInner() {
     }
 
     /**
      * Get the name property: The integration runtime name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +46,7 @@ public final class IntegrationRuntimeStatusResponseInner {
 
     /**
      * Get the properties property: Integration runtime properties.
-     *
+     * 
      * @return the properties value.
      */
     public IntegrationRuntimeStatus properties() {
@@ -48,7 +55,7 @@ public final class IntegrationRuntimeStatusResponseInner {
 
     /**
      * Set the properties property: Integration runtime properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the IntegrationRuntimeStatusResponseInner object itself.
      */
@@ -59,19 +66,59 @@ public final class IntegrationRuntimeStatusResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model IntegrationRuntimeStatusResponseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model IntegrationRuntimeStatusResponseInner"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeStatusResponseInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeStatusResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeStatusResponseInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeStatusResponseInner.
+     */
+    public static IntegrationRuntimeStatusResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeStatusResponseInner deserializedIntegrationRuntimeStatusResponseInner
+                = new IntegrationRuntimeStatusResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedIntegrationRuntimeStatusResponseInner.properties
+                        = IntegrationRuntimeStatus.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedIntegrationRuntimeStatusResponseInner.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationRuntimeStatusResponseInner;
+        });
+    }
 }

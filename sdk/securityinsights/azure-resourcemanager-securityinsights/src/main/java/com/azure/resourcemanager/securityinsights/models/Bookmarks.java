@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Bookmarks. */
+/**
+ * Resource collection API of Bookmarks.
+ */
 public interface Bookmarks {
     /**
      * Gets all bookmarks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Bookmarks {
 
     /**
      * Gets all bookmarks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -37,7 +39,22 @@ public interface Bookmarks {
 
     /**
      * Gets a bookmark.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param bookmarkId Bookmark ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a bookmark along with {@link Response}.
+     */
+    Response<Bookmark> getWithResponse(String resourceGroupName, String workspaceName, String bookmarkId,
+        Context context);
+
+    /**
+     * Gets a bookmark.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bookmarkId Bookmark ID.
@@ -49,8 +66,8 @@ public interface Bookmarks {
     Bookmark get(String resourceGroupName, String workspaceName, String bookmarkId);
 
     /**
-     * Gets a bookmark.
-     *
+     * Delete the bookmark.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bookmarkId Bookmark ID.
@@ -58,14 +75,14 @@ public interface Bookmarks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a bookmark along with {@link Response}.
+     * @return the {@link Response}.
      */
-    Response<Bookmark> getWithResponse(
-        String resourceGroupName, String workspaceName, String bookmarkId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String bookmarkId,
+        Context context);
 
     /**
      * Delete the bookmark.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bookmarkId Bookmark ID.
@@ -76,23 +93,8 @@ public interface Bookmarks {
     void delete(String resourceGroupName, String workspaceName, String bookmarkId);
 
     /**
-     * Delete the bookmark.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String bookmarkId, Context context);
-
-    /**
      * Gets a bookmark.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface Bookmarks {
 
     /**
      * Gets a bookmark.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface Bookmarks {
 
     /**
      * Delete the bookmark.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +127,7 @@ public interface Bookmarks {
 
     /**
      * Delete the bookmark.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface Bookmarks {
 
     /**
      * Begins definition for a new Bookmark resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Bookmark definition.
      */

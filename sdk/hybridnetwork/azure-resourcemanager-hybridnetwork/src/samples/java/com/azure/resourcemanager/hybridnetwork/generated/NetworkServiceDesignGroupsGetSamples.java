@@ -20,7 +20,8 @@ public final class NetworkServiceDesignGroupsGetSamples {
      */
     public static void
         getANetworkServiceDesignGroupResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkServiceDesignGroups().getWithResponse("rg", "TestPublisher", "TestNetworkServiceDesignGroupName",
-            com.azure.core.util.Context.NONE);
+        manager.networkServiceDesignGroups()
+            .getWithResponse("rg", "TestPublisher", "TestNetworkServiceDesignGroupName",
+                com.azure.core.util.Context.NONE);
     }
 }

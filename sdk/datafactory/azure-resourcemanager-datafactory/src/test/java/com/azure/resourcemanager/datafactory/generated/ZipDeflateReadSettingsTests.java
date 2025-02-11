@@ -11,13 +11,13 @@ public final class ZipDeflateReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ZipDeflateReadSettings model = BinaryData.fromString(
-            "{\"type\":\"ZipDeflateReadSettings\",\"preserveZipFileNameAsFolder\":\"dataexzyjf\",\"\":{\"tgxdlznfo\":\"datavmq\",\"pp\":\"datacbxrskylq\",\"tsygzjplaxxfnrlt\":\"datateikktret\",\"rotg\":\"datanvb\"}}")
+            "{\"type\":\"ZipDeflateReadSettings\",\"preserveZipFileNameAsFolder\":\"datajxwwqz\",\"\":{\"vwznwcq\":\"datatbffrhq\",\"jkltetfdpurvz\":\"dataapd\",\"sfu\":\"datatjb\",\"qhbwsv\":\"dataedsaafk\"}}")
             .toObject(ZipDeflateReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ZipDeflateReadSettings model = new ZipDeflateReadSettings().withPreserveZipFileNameAsFolder("dataexzyjf");
+        ZipDeflateReadSettings model = new ZipDeflateReadSettings().withPreserveZipFileNameAsFolder("datajxwwqz");
         model = BinaryData.fromObject(model).toObject(ZipDeflateReadSettings.class);
     }
 }

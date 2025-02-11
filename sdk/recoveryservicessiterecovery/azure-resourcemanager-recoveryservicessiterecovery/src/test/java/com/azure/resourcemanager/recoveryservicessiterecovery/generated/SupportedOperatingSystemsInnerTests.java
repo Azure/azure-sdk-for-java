@@ -27,12 +27,19 @@ public final class SupportedOperatingSystemsInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedOperatingSystemsInner model = new SupportedOperatingSystemsInner()
-            .withProperties(new SupportedOSProperties().withSupportedOsList(
-                Arrays.asList(new SupportedOSProperty().withInstanceType("tdacarvvlfn").withSupportedOs(
-                    Arrays.asList(new SupportedOSDetails().withOsName("poi").withOsType("naz").withOsVersions(
-                        Arrays.asList(new OSVersionWrapper(), new OSVersionWrapper(), new OSVersionWrapper())))))))
-            .withLocation("zrsq");
+        SupportedOperatingSystemsInner model
+            = new SupportedOperatingSystemsInner()
+                .withProperties(
+                    new SupportedOSProperties()
+                        .withSupportedOsList(
+                            Arrays
+                                .asList(
+                                    new SupportedOSProperty().withInstanceType("tdacarvvlfn")
+                                        .withSupportedOs(Arrays.asList(new SupportedOSDetails().withOsName("poi")
+                                            .withOsType("naz")
+                                            .withOsVersions(Arrays.asList(new OSVersionWrapper(),
+                                                new OSVersionWrapper(), new OSVersionWrapper())))))))
+                .withLocation("zrsq");
         model = BinaryData.fromObject(model).toObject(SupportedOperatingSystemsInner.class);
         Assertions.assertEquals("tdacarvvlfn", model.properties().supportedOsList().get(0).instanceType());
         Assertions.assertEquals("poi", model.properties().supportedOsList().get(0).supportedOs().get(0).osName());

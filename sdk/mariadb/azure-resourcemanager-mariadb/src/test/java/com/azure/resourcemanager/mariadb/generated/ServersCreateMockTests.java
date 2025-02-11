@@ -6,11 +6,9 @@ package com.azure.resourcemanager.mariadb.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mariadb.MariaDBManager;
 import com.azure.resourcemanager.mariadb.models.GeoRedundantBackup;
 import com.azure.resourcemanager.mariadb.models.MinimalTlsVersionEnum;
@@ -24,106 +22,72 @@ import com.azure.resourcemanager.mariadb.models.SkuTier;
 import com.azure.resourcemanager.mariadb.models.SslEnforcementEnum;
 import com.azure.resourcemanager.mariadb.models.StorageAutogrow;
 import com.azure.resourcemanager.mariadb.models.StorageProfile;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServersCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"sku\":{\"name\":\"ziuiefozbhdm\",\"tier\":\"MemoryOptimized\",\"capacity\":1101350352,\"size\":\"hoftr\",\"family\":\"equi\"},\"properties\":{\"administratorLogin\":\"icslfaoq\",\"version\":\"10.3\",\"sslEnforcement\":\"Disabled\",\"minimalTlsVersion\":\"TLS1_1\",\"userVisibleState\":\"Ready\",\"fullyQualifiedDomainName\":\"swhccsphk\",\"earliestRestoreDate\":\"2021-11-16T11:43:34Z\",\"storageProfile\":{\"backupRetentionDays\":2029165180,\"geoRedundantBackup\":\"Disabled\",\"storageMB\":1063869072,\"storageAutogrow\":\"Enabled\"},\"replicationRole\":\"gwol\",\"masterServerId\":\"czbwemhairsbr\",\"replicaCapacity\":565998030,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"id\":\"ypqwdxggiccc\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"exmk\"},\"provisioningState\":\"Ready\"}}]},\"location\":\"stvlzywemhzrnc\",\"tags\":{\"bsfgytguslfea\":\"clusiy\",\"qukyhejhzi\":\"cy\",\"srp\":\"xgfpelolppv\",\"zraehtwd\":\"vu\"},\"id\":\"r\",\"name\":\"tswiby\",\"type\":\"cdl\"}";
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"fw\",\"tier\":\"GeneralPurpose\",\"capacity\":1139569570,\"size\":\"acjvefkd\",\"family\":\"oakggkfpag\"},\"properties\":{\"administratorLogin\":\"pulpqblylsyxk\",\"version\":\"10.2\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLS1_0\",\"userVisibleState\":\"Disabled\",\"fullyQualifiedDomainName\":\"agxsdszuemps\",\"earliestRestoreDate\":\"2021-10-12T12:33:37Z\",\"storageProfile\":{\"backupRetentionDays\":2080244634,\"geoRedundantBackup\":\"Disabled\",\"storageMB\":946127719,\"storageAutogrow\":\"Enabled\"},\"replicationRole\":\"cvinvkjjxdxrbuuk\",\"masterServerId\":\"lewyhmlwpaz\",\"replicaCapacity\":1765730251,\"publicNetworkAccess\":\"Enabled\",\"privateEndpointConnections\":[]},\"location\":\"ckw\",\"tags\":{\"ppriol\":\"qwhxxbuyqaxzfeqz\",\"altol\":\"or\",\"wcsdbnwdcfhucq\":\"ncwsob\",\"vxb\":\"pfuvglsbjjca\"},\"id\":\"t\",\"name\":\"udutnco\",\"type\":\"mr\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MariaDBManager manager = MariaDBManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Server response = manager.servers()
+            .define("lmnguxaw")
+            .withRegion("dlmkkzevdl")
+            .withExistingResourceGroup("qgsfraoyzkoow")
+            .withProperties(new ServerPropertiesForCreate().withVersion(ServerVersion.ONE_ZERO_THREE)
+                .withSslEnforcement(SslEnforcementEnum.DISABLED)
+                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED)
+                .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED)
+                .withStorageProfile(new StorageProfile().withBackupRetentionDays(306340067)
+                    .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
+                    .withStorageMB(357492176)
+                    .withStorageAutogrow(StorageAutogrow.DISABLED)))
+            .withTags(mapOf("vogvbbejdcngqqmo", "pusdstt", "rwr", "kufgmj", "u", "grtwae", "inrfdwoyu", "zkopb"))
+            .withSku(new Sku().withName("ldsyuuximerqfob")
+                .withTier(SkuTier.GENERAL_PURPOSE)
+                .withCapacity(634741251)
+                .withSize("ykutwpf")
+                .withFamily("a"))
+            .create();
 
-        MariaDBManager manager =
-            MariaDBManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Server response =
-            manager
-                .servers()
-                .define("hzv")
-                .withRegion("xxle")
-                .withExistingResourceGroup("zsoibjudpfrxtr")
-                .withProperties(
-                    new ServerPropertiesForCreate()
-                        .withVersion(ServerVersion.ONE_ZERO_THREE)
-                        .withSslEnforcement(SslEnforcementEnum.DISABLED)
-                        .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_0)
-                        .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED)
-                        .withStorageProfile(
-                            new StorageProfile()
-                                .withBackupRetentionDays(1061692620)
-                                .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
-                                .withStorageMB(1682572993)
-                                .withStorageAutogrow(StorageAutogrow.ENABLED)))
-                .withTags(mapOf("wxuqlcvydypatdoo", "amxjezwlw", "kooebwnu", "ojknio", "vdkcrodtj", "hemms"))
-                .withSku(
-                    new Sku()
-                        .withName("tdwkqbrq")
-                        .withTier(SkuTier.BASIC)
-                        .withCapacity(1150856748)
-                        .withSize("exiili")
-                        .withFamily("dtiirqt"))
-                .create();
-
-        Assertions.assertEquals("ckw", response.location());
-        Assertions.assertEquals("qwhxxbuyqaxzfeqz", response.tags().get("ppriol"));
-        Assertions.assertEquals("fw", response.sku().name());
-        Assertions.assertEquals(SkuTier.GENERAL_PURPOSE, response.sku().tier());
-        Assertions.assertEquals(1139569570, response.sku().capacity());
-        Assertions.assertEquals("acjvefkd", response.sku().size());
-        Assertions.assertEquals("oakggkfpag", response.sku().family());
-        Assertions.assertEquals("pulpqblylsyxk", response.administratorLogin());
-        Assertions.assertEquals(ServerVersion.ONE_ZERO_TWO, response.version());
-        Assertions.assertEquals(SslEnforcementEnum.ENABLED, response.sslEnforcement());
-        Assertions.assertEquals(MinimalTlsVersionEnum.TLS1_0, response.minimalTlsVersion());
-        Assertions.assertEquals(ServerState.DISABLED, response.userVisibleState());
-        Assertions.assertEquals("agxsdszuemps", response.fullyQualifiedDomainName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T12:33:37Z"), response.earliestRestoreDate());
-        Assertions.assertEquals(2080244634, response.storageProfile().backupRetentionDays());
+        Assertions.assertEquals("stvlzywemhzrnc", response.location());
+        Assertions.assertEquals("clusiy", response.tags().get("bsfgytguslfea"));
+        Assertions.assertEquals("ziuiefozbhdm", response.sku().name());
+        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, response.sku().tier());
+        Assertions.assertEquals(1101350352, response.sku().capacity());
+        Assertions.assertEquals("hoftr", response.sku().size());
+        Assertions.assertEquals("equi", response.sku().family());
+        Assertions.assertEquals("icslfaoq", response.administratorLogin());
+        Assertions.assertEquals(ServerVersion.ONE_ZERO_THREE, response.version());
+        Assertions.assertEquals(SslEnforcementEnum.DISABLED, response.sslEnforcement());
+        Assertions.assertEquals(MinimalTlsVersionEnum.TLS1_1, response.minimalTlsVersion());
+        Assertions.assertEquals(ServerState.READY, response.userVisibleState());
+        Assertions.assertEquals("swhccsphk", response.fullyQualifiedDomainName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-16T11:43:34Z"), response.earliestRestoreDate());
+        Assertions.assertEquals(2029165180, response.storageProfile().backupRetentionDays());
         Assertions.assertEquals(GeoRedundantBackup.DISABLED, response.storageProfile().geoRedundantBackup());
-        Assertions.assertEquals(946127719, response.storageProfile().storageMB());
+        Assertions.assertEquals(1063869072, response.storageProfile().storageMB());
         Assertions.assertEquals(StorageAutogrow.ENABLED, response.storageProfile().storageAutogrow());
-        Assertions.assertEquals("cvinvkjjxdxrbuuk", response.replicationRole());
-        Assertions.assertEquals("lewyhmlwpaz", response.masterServerId());
-        Assertions.assertEquals(1765730251, response.replicaCapacity());
-        Assertions.assertEquals(PublicNetworkAccessEnum.ENABLED, response.publicNetworkAccess());
+        Assertions.assertEquals("gwol", response.replicationRole());
+        Assertions.assertEquals("czbwemhairsbr", response.masterServerId());
+        Assertions.assertEquals(565998030, response.replicaCapacity());
+        Assertions.assertEquals(PublicNetworkAccessEnum.DISABLED, response.publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

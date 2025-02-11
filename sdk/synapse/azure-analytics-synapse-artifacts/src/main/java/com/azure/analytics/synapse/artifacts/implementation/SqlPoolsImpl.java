@@ -78,9 +78,7 @@ public final class SqlPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlPoolInfoListResult>> listWithResponseAsync() {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context));
+        return FluxUtil.withContext(context -> listWithResponseAsync(context));
     }
 
     /**
@@ -162,10 +160,7 @@ public final class SqlPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlPool>> getWithResponseAsync(String sqlPoolName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, sqlPoolName, accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(sqlPoolName, context));
     }
 
     /**

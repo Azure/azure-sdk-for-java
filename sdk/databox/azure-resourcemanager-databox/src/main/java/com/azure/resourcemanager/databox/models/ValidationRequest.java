@@ -6,36 +6,47 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Minimum request requirement of any validation category. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "validationCategory",
-    defaultImpl = ValidationRequest.class)
-@JsonTypeName("ValidationRequest")
-@JsonSubTypes({@JsonSubTypes.Type(name = "JobCreationValidation", value = CreateJobValidations.class)})
+/**
+ * Minimum request requirement of any validation category.
+ */
 @Fluent
-public class ValidationRequest {
+public class ValidationRequest implements JsonSerializable<ValidationRequest> {
+    /*
+     * Identify the nature of validation.
+     */
+    private String validationCategory = "ValidationRequest";
+
     /*
      * List of request details contain validationType and its request as key and value respectively.
      */
-    @JsonProperty(value = "individualRequestDetails", required = true)
     private List<ValidationInputRequest> individualRequestDetails;
 
-    /** Creates an instance of ValidationRequest class. */
+    /**
+     * Creates an instance of ValidationRequest class.
+     */
     public ValidationRequest() {
+    }
+
+    /**
+     * Get the validationCategory property: Identify the nature of validation.
+     * 
+     * @return the validationCategory value.
+     */
+    public String validationCategory() {
+        return this.validationCategory;
     }
 
     /**
      * Get the individualRequestDetails property: List of request details contain validationType and its request as key
      * and value respectively.
-     *
+     * 
      * @return the individualRequestDetails value.
      */
     public List<ValidationInputRequest> individualRequestDetails() {
@@ -45,7 +56,7 @@ public class ValidationRequest {
     /**
      * Set the individualRequestDetails property: List of request details contain validationType and its request as key
      * and value respectively.
-     *
+     * 
      * @param individualRequestDetails the individualRequestDetails value to set.
      * @return the ValidationRequest object itself.
      */
@@ -56,19 +67,86 @@ public class ValidationRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (individualRequestDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property individualRequestDetails in model ValidationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property individualRequestDetails in model ValidationRequest"));
         } else {
             individualRequestDetails().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ValidationRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("individualRequestDetails", this.individualRequestDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("validationCategory", this.validationCategory);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ValidationRequest.
+     */
+    public static ValidationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("validationCategory".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("JobCreationValidation".equals(discriminatorValue)) {
+                    return CreateJobValidations.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ValidationRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationRequest deserializedValidationRequest = new ValidationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("individualRequestDetails".equals(fieldName)) {
+                    List<ValidationInputRequest> individualRequestDetails
+                        = reader.readArray(reader1 -> ValidationInputRequest.fromJson(reader1));
+                    deserializedValidationRequest.individualRequestDetails = individualRequestDetails;
+                } else if ("validationCategory".equals(fieldName)) {
+                    deserializedValidationRequest.validationCategory = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidationRequest;
+        });
+    }
 }

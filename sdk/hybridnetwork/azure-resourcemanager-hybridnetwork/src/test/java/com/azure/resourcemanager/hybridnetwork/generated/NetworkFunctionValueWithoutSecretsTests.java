@@ -28,8 +28,11 @@ public final class NetworkFunctionValueWithoutSecretsTests {
     public void testSerialize() throws Exception {
         NetworkFunctionValueWithoutSecrets model = new NetworkFunctionValueWithoutSecrets()
             .withNetworkFunctionDefinitionVersionResourceReference(new DeploymentResourceIdReference())
-            .withNfviType(NfviType.AZURE_ARC_KUBERNETES).withNfviId("z").withAllowSoftwareUpdate(false)
-            .withRoleOverrideValues(Arrays.asList("thwwn", "jhlfzswpchwahf", "ousnfepgfewe")).withDeploymentValues("t");
+            .withNfviType(NfviType.AZURE_ARC_KUBERNETES)
+            .withNfviId("z")
+            .withAllowSoftwareUpdate(false)
+            .withRoleOverrideValues(Arrays.asList("thwwn", "jhlfzswpchwahf", "ousnfepgfewe"))
+            .withDeploymentValues("t");
         model = BinaryData.fromObject(model).toObject(NetworkFunctionValueWithoutSecrets.class);
         Assertions.assertEquals(NfviType.AZURE_ARC_KUBERNETES, model.nfviType());
         Assertions.assertEquals("z", model.nfviId());

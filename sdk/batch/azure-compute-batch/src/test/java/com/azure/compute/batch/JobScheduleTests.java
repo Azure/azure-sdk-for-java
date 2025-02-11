@@ -58,7 +58,9 @@ public class JobScheduleTests extends BatchClientTestBase {
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(poolId);
 
-        BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now()).setDoNotRunAfter(now().plusHours(5)).setStartWindow(Duration.ofDays(5));
+        BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now())
+            .setDoNotRunAfter(now().plusHours(5))
+            .setStartWindow(Duration.ofDays(5));
         BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
         batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, schedule, spec));
 
@@ -83,7 +85,7 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertNotNull(jobSchedules);
 
             boolean found = false;
-            for (BatchJobSchedule batchJobSchedule: jobSchedules) {
+            for (BatchJobSchedule batchJobSchedule : jobSchedules) {
                 if (batchJobSchedule.getId().equals(jobScheduleId)) {
                     found = true;
                     break;
@@ -145,7 +147,9 @@ public class JobScheduleTests extends BatchClientTestBase {
         poolInfo.setPoolId(poolId);
 
         BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
-        BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now()).setDoNotRunAfter(now().plusHours(5)).setStartWindow(Duration.ofDays(5));
+        BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now())
+            .setDoNotRunAfter(now().plusHours(5))
+            .setStartWindow(Duration.ofDays(5));
         batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, schedule, spec));
 
         try {
@@ -163,8 +167,8 @@ public class JobScheduleTests extends BatchClientTestBase {
 
             batchClient.terminateJobSchedule(jobScheduleId);
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-            Assertions.assertTrue(
-                jobSchedule.getState() == BatchJobScheduleState.TERMINATING || jobSchedule.getState() == BatchJobScheduleState.COMPLETED);
+            Assertions.assertTrue(jobSchedule.getState() == BatchJobScheduleState.TERMINATING
+                || jobSchedule.getState() == BatchJobScheduleState.COMPLETED);
 
             sleepIfRunningAgainstService(2 * 1000);
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
@@ -191,22 +195,12 @@ public class JobScheduleTests extends BatchClientTestBase {
     @Test
     public void testDeserializationOfBatchJobScheduleStatistics() {
         // Simulated JSON response with numbers as strings
-        String jsonResponse = "{"
-            + "\"url\":\"https://example.com/schedule-stats\","
-            + "\"startTime\":\"2022-01-01T00:00:00Z\","
-            + "\"lastUpdateTime\":\"2022-01-01T01:00:00Z\","
-            + "\"userCPUTime\":\"PT1H\","
-            + "\"kernelCPUTime\":\"PT30M\","
-            + "\"wallClockTime\":\"PT1H30M\","
-            + "\"readIOps\":\"1000\","
-            + "\"writeIOps\":\"500\","
-            + "\"readIOGiB\":0.5,"
-            + "\"writeIOGiB\":0.25,"
-            + "\"numSucceededTasks\":\"10\","
-            + "\"numFailedTasks\":\"2\","
-            + "\"numTaskRetries\":\"3\","
-            + "\"waitTime\":\"PT10M\""
-            + "}";
+        String jsonResponse = "{" + "\"url\":\"https://example.com/schedule-stats\","
+            + "\"startTime\":\"2022-01-01T00:00:00Z\"," + "\"lastUpdateTime\":\"2022-01-01T01:00:00Z\","
+            + "\"userCPUTime\":\"PT1H\"," + "\"kernelCPUTime\":\"PT30M\"," + "\"wallClockTime\":\"PT1H30M\","
+            + "\"readIOps\":\"1000\"," + "\"writeIOps\":\"500\"," + "\"readIOGiB\":0.5," + "\"writeIOGiB\":0.25,"
+            + "\"numSucceededTasks\":\"10\"," + "\"numFailedTasks\":\"2\"," + "\"numTaskRetries\":\"3\","
+            + "\"waitTime\":\"PT10M\"" + "}";
 
         // Deserialize JSON response using JsonReader from JsonProviders
         try (JsonReader jsonReader = JsonProviders.createReader(new StringReader(jsonResponse))) {

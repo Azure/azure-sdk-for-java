@@ -6,11 +6,13 @@ package com.azure.resourcemanager.reservations.models;
 
 import com.azure.resourcemanager.reservations.fluent.models.CalculateExchangeOperationResultResponseInner;
 
-/** An immutable client-side representation of CalculateExchangeOperationResultResponse. */
+/**
+ * An immutable client-side representation of CalculateExchangeOperationResultResponse.
+ */
 public interface CalculateExchangeOperationResultResponse {
     /**
      * Gets the id property: It should match what is used to GET the operation result.
-     *
+     * 
      * @return the id value.
      */
     String id();
@@ -18,28 +20,28 @@ public interface CalculateExchangeOperationResultResponse {
     /**
      * Gets the name property: It must match the last segment of the id field, and will typically be a GUID / system
      * generated value.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the status property: Status of the operation.
-     *
+     * 
      * @return the status value.
      */
     CalculateExchangeOperationResultStatus status();
 
     /**
      * Gets the properties property: CalculateExchange response properties.
-     *
+     * 
      * @return the properties value.
      */
     CalculateExchangeResponseProperties properties();
 
     /**
      * Gets the error property: Required if status == failed or status == canceled.
-     *
+     * 
      * @return the error value.
      */
     OperationResultError error();
@@ -47,7 +49,7 @@ public interface CalculateExchangeOperationResultResponse {
     /**
      * Gets the inner com.azure.resourcemanager.reservations.fluent.models.CalculateExchangeOperationResultResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     CalculateExchangeOperationResultResponseInner innerModel();

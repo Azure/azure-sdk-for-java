@@ -7,61 +7,84 @@ package com.azure.resourcemanager.alertsmanagement.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for AlertsManagementClient class. */
+/**
+ * The interface for AlertsManagementClient class.
+ */
 public interface AlertsManagementClient {
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the AlertProcessingRulesClient object to access its operations.
-     *
+     * 
      * @return the AlertProcessingRulesClient object.
      */
     AlertProcessingRulesClient getAlertProcessingRules();
 
     /**
+     * Gets the PrometheusRuleGroupsClient object to access its operations.
+     * 
+     * @return the PrometheusRuleGroupsClient object.
+     */
+    PrometheusRuleGroupsClient getPrometheusRuleGroups();
+
+    /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the AlertsClient object to access its operations.
-     *
+     * 
      * @return the AlertsClient object.
      */
     AlertsClient getAlerts();
 
     /**
      * Gets the SmartGroupsClient object to access its operations.
-     *
+     * 
      * @return the SmartGroupsClient object.
      */
     SmartGroupsClient getSmartGroups();
+
+    /**
+     * Gets the AlertRuleRecommendationsClient object to access its operations.
+     * 
+     * @return the AlertRuleRecommendationsClient object.
+     */
+    AlertRuleRecommendationsClient getAlertRuleRecommendations();
+
+    /**
+     * Gets the TenantActivityLogAlertsClient object to access its operations.
+     * 
+     * @return the TenantActivityLogAlertsClient object.
+     */
+    TenantActivityLogAlertsClient getTenantActivityLogAlerts();
 }

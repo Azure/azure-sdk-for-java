@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class BodyDiagnosticSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BodyDiagnosticSettings model =
-            BinaryData.fromString("{\"bytes\":925211968}").toObject(BodyDiagnosticSettings.class);
+        BodyDiagnosticSettings model
+            = BinaryData.fromString("{\"bytes\":925211968}").toObject(BodyDiagnosticSettings.class);
         Assertions.assertEquals(925211968, model.bytes());
     }
 

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.workloads.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloads.models.DatabaseServerFullResourceNames;
 import com.azure.resourcemanager.workloads.models.LoadBalancerResourceNames;
+import com.azure.resourcemanager.workloads.models.NetworkInterfaceResourceNames;
 import com.azure.resourcemanager.workloads.models.VirtualMachineResourceNames;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,54 +17,51 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseServerFullResourceNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseServerFullResourceNames model =
-            BinaryData
-                .fromString(
-                    "{\"virtualMachines\":[{\"vmName\":\"tmmjihyeozph\",\"hostName\":\"auyqncygupkv\",\"networkInterfaces\":[],\"osDiskName\":\"scw\",\"dataDiskNames\":{\"ypelmcu\":[\"evzhfsto\",\"xhojuj\"]}}],\"availabilitySetName\":\"ixbjx\",\"loadBalancer\":{\"loadBalancerName\":\"n\",\"frontendIpConfigurationNames\":[\"coolsttpkiwkkb\"],\"backendPoolNames\":[\"rywvtylbfpn\",\"urdoi\",\"iithtywu\",\"xcbihw\"],\"healthProbeNames\":[\"fdntwjchrdgoih\"]}}")
-                .toObject(DatabaseServerFullResourceNames.class);
-        Assertions.assertEquals("tmmjihyeozph", model.virtualMachines().get(0).vmName());
-        Assertions.assertEquals("auyqncygupkv", model.virtualMachines().get(0).hostname());
-        Assertions.assertEquals("scw", model.virtualMachines().get(0).osDiskName());
-        Assertions.assertEquals("evzhfsto", model.virtualMachines().get(0).dataDiskNames().get("ypelmcu").get(0));
-        Assertions.assertEquals("ixbjx", model.availabilitySetName());
-        Assertions.assertEquals("n", model.loadBalancer().loadBalancerName());
-        Assertions.assertEquals("coolsttpkiwkkb", model.loadBalancer().frontendIpConfigurationNames().get(0));
-        Assertions.assertEquals("rywvtylbfpn", model.loadBalancer().backendPoolNames().get(0));
-        Assertions.assertEquals("fdntwjchrdgoih", model.loadBalancer().healthProbeNames().get(0));
+        DatabaseServerFullResourceNames model = BinaryData.fromString(
+            "{\"virtualMachines\":[{\"vmName\":\"gwfqatmt\",\"hostName\":\"tmdvypgikdgs\",\"networkInterfaces\":[{\"networkInterfaceName\":\"birryuzhl\"}],\"osDiskName\":\"joqrvqqaatj\",\"dataDiskNames\":{\"tkkgllqwjy\":[\"goupmfiibfg\",\"jioolvrwxk\"]}}],\"availabilitySetName\":\"jayvblmhv\",\"loadBalancer\":{\"loadBalancerName\":\"hbxvvyhgsopbyrqu\",\"frontendIpConfigurationNames\":[\"xuvw\"],\"backendPoolNames\":[\"nhlmctlpdng\",\"tvgbmhrixkwmy\"],\"healthProbeNames\":[\"jvegrhbpnaixexcc\",\"dreaxh\",\"exdrrvqahqkg\",\"tpwijnh\"]}}")
+            .toObject(DatabaseServerFullResourceNames.class);
+        Assertions.assertEquals("gwfqatmt", model.virtualMachines().get(0).vmName());
+        Assertions.assertEquals("tmdvypgikdgs", model.virtualMachines().get(0).hostname());
+        Assertions.assertEquals("birryuzhl",
+            model.virtualMachines().get(0).networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("joqrvqqaatj", model.virtualMachines().get(0).osDiskName());
+        Assertions.assertEquals("goupmfiibfg", model.virtualMachines().get(0).dataDiskNames().get("tkkgllqwjy").get(0));
+        Assertions.assertEquals("jayvblmhv", model.availabilitySetName());
+        Assertions.assertEquals("hbxvvyhgsopbyrqu", model.loadBalancer().loadBalancerName());
+        Assertions.assertEquals("xuvw", model.loadBalancer().frontendIpConfigurationNames().get(0));
+        Assertions.assertEquals("nhlmctlpdng", model.loadBalancer().backendPoolNames().get(0));
+        Assertions.assertEquals("jvegrhbpnaixexcc", model.loadBalancer().healthProbeNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseServerFullResourceNames model =
-            new DatabaseServerFullResourceNames()
-                .withVirtualMachines(
-                    Arrays
-                        .asList(
-                            new VirtualMachineResourceNames()
-                                .withVmName("tmmjihyeozph")
-                                .withHostname("auyqncygupkv")
-                                .withNetworkInterfaces(Arrays.asList())
-                                .withOsDiskName("scw")
-                                .withDataDiskNames(mapOf("ypelmcu", Arrays.asList("evzhfsto", "xhojuj")))))
-                .withAvailabilitySetName("ixbjx")
-                .withLoadBalancer(
-                    new LoadBalancerResourceNames()
-                        .withLoadBalancerName("n")
-                        .withFrontendIpConfigurationNames(Arrays.asList("coolsttpkiwkkb"))
-                        .withBackendPoolNames(Arrays.asList("rywvtylbfpn", "urdoi", "iithtywu", "xcbihw"))
-                        .withHealthProbeNames(Arrays.asList("fdntwjchrdgoih")));
+        DatabaseServerFullResourceNames model = new DatabaseServerFullResourceNames()
+            .withVirtualMachines(Arrays.asList(new VirtualMachineResourceNames().withVmName("gwfqatmt")
+                .withHostname("tmdvypgikdgs")
+                .withNetworkInterfaces(
+                    Arrays.asList(new NetworkInterfaceResourceNames().withNetworkInterfaceName("birryuzhl")))
+                .withOsDiskName("joqrvqqaatj")
+                .withDataDiskNames(mapOf("tkkgllqwjy", Arrays.asList("goupmfiibfg", "jioolvrwxk")))))
+            .withAvailabilitySetName("jayvblmhv")
+            .withLoadBalancer(new LoadBalancerResourceNames().withLoadBalancerName("hbxvvyhgsopbyrqu")
+                .withFrontendIpConfigurationNames(Arrays.asList("xuvw"))
+                .withBackendPoolNames(Arrays.asList("nhlmctlpdng", "tvgbmhrixkwmy"))
+                .withHealthProbeNames(Arrays.asList("jvegrhbpnaixexcc", "dreaxh", "exdrrvqahqkg", "tpwijnh")));
         model = BinaryData.fromObject(model).toObject(DatabaseServerFullResourceNames.class);
-        Assertions.assertEquals("tmmjihyeozph", model.virtualMachines().get(0).vmName());
-        Assertions.assertEquals("auyqncygupkv", model.virtualMachines().get(0).hostname());
-        Assertions.assertEquals("scw", model.virtualMachines().get(0).osDiskName());
-        Assertions.assertEquals("evzhfsto", model.virtualMachines().get(0).dataDiskNames().get("ypelmcu").get(0));
-        Assertions.assertEquals("ixbjx", model.availabilitySetName());
-        Assertions.assertEquals("n", model.loadBalancer().loadBalancerName());
-        Assertions.assertEquals("coolsttpkiwkkb", model.loadBalancer().frontendIpConfigurationNames().get(0));
-        Assertions.assertEquals("rywvtylbfpn", model.loadBalancer().backendPoolNames().get(0));
-        Assertions.assertEquals("fdntwjchrdgoih", model.loadBalancer().healthProbeNames().get(0));
+        Assertions.assertEquals("gwfqatmt", model.virtualMachines().get(0).vmName());
+        Assertions.assertEquals("tmdvypgikdgs", model.virtualMachines().get(0).hostname());
+        Assertions.assertEquals("birryuzhl",
+            model.virtualMachines().get(0).networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("joqrvqqaatj", model.virtualMachines().get(0).osDiskName());
+        Assertions.assertEquals("goupmfiibfg", model.virtualMachines().get(0).dataDiskNames().get("tkkgllqwjy").get(0));
+        Assertions.assertEquals("jayvblmhv", model.availabilitySetName());
+        Assertions.assertEquals("hbxvvyhgsopbyrqu", model.loadBalancer().loadBalancerName());
+        Assertions.assertEquals("xuvw", model.loadBalancer().frontendIpConfigurationNames().get(0));
+        Assertions.assertEquals("nhlmctlpdng", model.loadBalancer().backendPoolNames().get(0));
+        Assertions.assertEquals("jvegrhbpnaixexcc", model.loadBalancer().healthProbeNames().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

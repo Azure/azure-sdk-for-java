@@ -18,7 +18,7 @@ public final class OrganizationListEnvironmentsSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationListEnvironments(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().listEnvironments("myResourceGroup", "myOrganization", 10, null,
-            com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .listEnvironments("myResourceGroup", "myOrganization", 10, null, com.azure.core.util.Context.NONE);
     }
 }

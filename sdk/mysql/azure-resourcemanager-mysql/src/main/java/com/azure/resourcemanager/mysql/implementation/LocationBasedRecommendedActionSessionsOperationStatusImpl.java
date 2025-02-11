@@ -17,8 +17,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public final class LocationBasedRecommendedActionSessionsOperationStatusImpl
     implements LocationBasedRecommendedActionSessionsOperationStatus {
     @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(LocationBasedRecommendedActionSessionsOperationStatusImpl.class);
+    private final ClientLogger logger
+        = new ClientLogger(LocationBasedRecommendedActionSessionsOperationStatusImpl.class);
 
     private final LocationBasedRecommendedActionSessionsOperationStatusClient innerClient;
 
@@ -40,15 +40,12 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusImpl
         }
     }
 
-    public Response<RecommendedActionSessionsOperationStatus> getWithResponse(
-        String locationName, String operationId, Context context) {
-        Response<RecommendedActionSessionsOperationStatusInner> inner =
-            this.serviceClient().getWithResponse(locationName, operationId, context);
+    public Response<RecommendedActionSessionsOperationStatus> getWithResponse(String locationName, String operationId,
+        Context context) {
+        Response<RecommendedActionSessionsOperationStatusInner> inner
+            = this.serviceClient().getWithResponse(locationName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RecommendedActionSessionsOperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

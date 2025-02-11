@@ -19,33 +19,35 @@ public final class SalesforceServiceCloudObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceServiceCloudObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"SalesforceServiceCloudObject\",\"typeProperties\":{\"objectApiName\":\"datak\"},\"description\":\"qdrrj\",\"structure\":\"datar\",\"schema\":\"datawobwxrxm\",\"linkedServiceName\":{\"referenceName\":\"okohlsfj\",\"parameters\":{\"huv\":\"dataqjpzhe\",\"dmjhymudjma\":\"dataqxqkv\"}},\"parameters\":{\"yqkaaptb\":{\"type\":\"Array\",\"defaultValue\":\"databhsermclyqwwu\"},\"bptw\":{\"type\":\"Array\",\"defaultValue\":\"datakb\"},\"u\":{\"type\":\"Bool\",\"defaultValue\":\"dataoc\"}},\"annotations\":[\"dataxzbnss\",\"datavqnpszbeuybut\",\"datadzjfjtvpeyxdyuxu\"],\"folder\":{\"name\":\"ltqmmij\"},\"\":{\"xgwpq\":\"datafkwnaeikczscymqf\",\"mzapdokez\":\"datay\",\"knfzqnzbflbqmhb\":\"datape\",\"ea\":\"datayxxvwedhagqbbse\"}}")
+            "{\"type\":\"SalesforceServiceCloudObject\",\"typeProperties\":{\"objectApiName\":\"datafj\"},\"description\":\"tnhrevimxmaxcj\",\"structure\":\"dataitygvdwds\",\"schema\":\"datatb\",\"linkedServiceName\":{\"referenceName\":\"kvuozbzchnqek\",\"parameters\":{\"kjse\":\"dataklpurlcydjh\",\"rdonkgobx\":\"datawiynd\"}},\"parameters\":{\"rswknpdrgnmza\":{\"type\":\"SecureString\",\"defaultValue\":\"datale\"},\"bk\":{\"type\":\"Object\",\"defaultValue\":\"dataoefqckievyrejyo\"},\"rovomep\":{\"type\":\"Bool\",\"defaultValue\":\"datausdwmnrtvvbucn\"}},\"annotations\":[\"dataicvwqzo\",\"datasfshe\",\"datanmsg\"],\"folder\":{\"name\":\"dibugvnrgalvwrhr\"},\"\":{\"vnpyeevffifujgtd\":\"datarbknuubxcwojtupq\",\"ybpchrtczwjcujyz\":\"datawlxmwefc\",\"i\":\"datavyrjqdjlgk\",\"n\":\"dataxxeuwiiirc\"}}")
             .toObject(SalesforceServiceCloudObjectDataset.class);
-        Assertions.assertEquals("qdrrj", model.description());
-        Assertions.assertEquals("okohlsfj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("yqkaaptb").type());
-        Assertions.assertEquals("ltqmmij", model.folder().name());
+        Assertions.assertEquals("tnhrevimxmaxcj", model.description());
+        Assertions.assertEquals("kvuozbzchnqek", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("rswknpdrgnmza").type());
+        Assertions.assertEquals("dibugvnrgalvwrhr", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceServiceCloudObjectDataset model = new SalesforceServiceCloudObjectDataset().withDescription("qdrrj")
-            .withStructure("datar")
-            .withSchema("datawobwxrxm")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("okohlsfj")
-                .withParameters(mapOf("huv", "dataqjpzhe", "dmjhymudjma", "dataqxqkv")))
-            .withParameters(mapOf("yqkaaptb",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("databhsermclyqwwu"),
-                "bptw", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datakb"), "u",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataoc")))
-            .withAnnotations(Arrays.asList("dataxzbnss", "datavqnpszbeuybut", "datadzjfjtvpeyxdyuxu"))
-            .withFolder(new DatasetFolder().withName("ltqmmij"))
-            .withObjectApiName("datak");
+        SalesforceServiceCloudObjectDataset model
+            = new SalesforceServiceCloudObjectDataset().withDescription("tnhrevimxmaxcj")
+                .withStructure("dataitygvdwds")
+                .withSchema("datatb")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("kvuozbzchnqek")
+                    .withParameters(mapOf("kjse", "dataklpurlcydjh", "rdonkgobx", "datawiynd")))
+                .withParameters(mapOf("rswknpdrgnmza",
+                    new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datale"), "bk",
+                    new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataoefqckievyrejyo"),
+                    "rovomep",
+                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datausdwmnrtvvbucn")))
+                .withAnnotations(Arrays.asList("dataicvwqzo", "datasfshe", "datanmsg"))
+                .withFolder(new DatasetFolder().withName("dibugvnrgalvwrhr"))
+                .withObjectApiName("datafj");
         model = BinaryData.fromObject(model).toObject(SalesforceServiceCloudObjectDataset.class);
-        Assertions.assertEquals("qdrrj", model.description());
-        Assertions.assertEquals("okohlsfj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("yqkaaptb").type());
-        Assertions.assertEquals("ltqmmij", model.folder().name());
+        Assertions.assertEquals("tnhrevimxmaxcj", model.description());
+        Assertions.assertEquals("kvuozbzchnqek", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("rswknpdrgnmza").type());
+        Assertions.assertEquals("dibugvnrgalvwrhr", model.folder().name());
     }
 
     // Use "Map.of" if available

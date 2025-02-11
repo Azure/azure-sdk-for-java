@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.SecurityMLAnalyticsSettingInner;
 
-/** An instance of this class provides access to all the operations defined in SecurityMLAnalyticsSettingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SecurityMLAnalyticsSettingsClient.
+ */
 public interface SecurityMLAnalyticsSettingsClient {
     /**
      * Gets all Security ML Analytics Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface SecurityMLAnalyticsSettingsClient {
 
     /**
      * Gets all Security ML Analytics Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -38,12 +40,28 @@ public interface SecurityMLAnalyticsSettingsClient {
      * @return all Security ML Analytics Settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SecurityMLAnalyticsSettingInner> list(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<SecurityMLAnalyticsSettingInner> list(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets the Security ML Analytics Settings.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param settingsResourceName Security ML Analytics Settings resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Security ML Analytics Settings along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SecurityMLAnalyticsSettingInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String settingsResourceName, Context context);
+
+    /**
+     * Gets the Security ML Analytics Settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param settingsResourceName Security ML Analytics Settings resource name.
@@ -56,43 +74,8 @@ public interface SecurityMLAnalyticsSettingsClient {
     SecurityMLAnalyticsSettingInner get(String resourceGroupName, String workspaceName, String settingsResourceName);
 
     /**
-     * Gets the Security ML Analytics Settings.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param settingsResourceName Security ML Analytics Settings resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Security ML Analytics Settings along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityMLAnalyticsSettingInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String settingsResourceName, Context context);
-
-    /**
      * Creates or updates the Security ML Analytics Settings.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param settingsResourceName Security ML Analytics Settings resource name.
-     * @param securityMLAnalyticsSetting The security ML Analytics setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security ML Analytics Setting.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityMLAnalyticsSettingInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String settingsResourceName,
-        SecurityMLAnalyticsSettingInner securityMLAnalyticsSetting);
-
-    /**
-     * Creates or updates the Security ML Analytics Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param settingsResourceName Security ML Analytics Settings resource name.
@@ -104,29 +87,28 @@ public interface SecurityMLAnalyticsSettingsClient {
      * @return security ML Analytics Setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityMLAnalyticsSettingInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String settingsResourceName,
-        SecurityMLAnalyticsSettingInner securityMLAnalyticsSetting,
-        Context context);
+    Response<SecurityMLAnalyticsSettingInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String settingsResourceName, SecurityMLAnalyticsSettingInner securityMLAnalyticsSetting, Context context);
 
     /**
-     * Delete the Security ML Analytics Settings.
-     *
+     * Creates or updates the Security ML Analytics Settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param settingsResourceName Security ML Analytics Settings resource name.
+     * @param securityMLAnalyticsSetting The security ML Analytics setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security ML Analytics Setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String settingsResourceName);
+    SecurityMLAnalyticsSettingInner createOrUpdate(String resourceGroupName, String workspaceName,
+        String settingsResourceName, SecurityMLAnalyticsSettingInner securityMLAnalyticsSetting);
 
     /**
      * Delete the Security ML Analytics Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param settingsResourceName Security ML Analytics Settings resource name.
@@ -137,6 +119,19 @@ public interface SecurityMLAnalyticsSettingsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String settingsResourceName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String settingsResourceName,
+        Context context);
+
+    /**
+     * Delete the Security ML Analytics Settings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param settingsResourceName Security ML Analytics Settings resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String workspaceName, String settingsResourceName);
 }

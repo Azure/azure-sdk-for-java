@@ -15,34 +15,29 @@ import org.junit.jupiter.api.Assertions;
 public final class NeighborGroupPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NeighborGroupPatch model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"destination\":{\"ipv4Addresses\":[\"lciichgjs\",\"smvxodgw\",\"f\",\"zsifcuvbdujgcwx\"],\"ipv6Addresses\":[\"bbwjtrdxrizagb\",\"giarksykpgdqxw\",\"b\"]},\"annotation\":\"wiqrxhaclcdosq\"},\"tags\":{\"xkpbqwun\":\"jqgkifmmainwhe\",\"elwgvydjufbnkl\":\"obuizaz\"}}")
-                .toObject(NeighborGroupPatch.class);
-        Assertions.assertEquals("jqgkifmmainwhe", model.tags().get("xkpbqwun"));
-        Assertions.assertEquals("lciichgjs", model.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("bbwjtrdxrizagb", model.destination().ipv6Addresses().get(0));
-        Assertions.assertEquals("wiqrxhaclcdosq", model.annotation());
+        NeighborGroupPatch model = BinaryData.fromString(
+            "{\"properties\":{\"destination\":{\"ipv4Addresses\":[\"bjlquv\"],\"ipv6Addresses\":[\"cjumv\",\"simi\",\"yoi\",\"l\"]},\"annotation\":\"iqwnnraclibbfq\"},\"tags\":{\"hautw\":\"kladydg\"}}")
+            .toObject(NeighborGroupPatch.class);
+        Assertions.assertEquals("kladydg", model.tags().get("hautw"));
+        Assertions.assertEquals("bjlquv", model.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("cjumv", model.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("iqwnnraclibbfq", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborGroupPatch model =
-            new NeighborGroupPatch()
-                .withTags(mapOf("xkpbqwun", "jqgkifmmainwhe", "elwgvydjufbnkl", "obuizaz"))
-                .withDestination(
-                    new NeighborGroupDestination()
-                        .withIpv4Addresses(Arrays.asList("lciichgjs", "smvxodgw", "f", "zsifcuvbdujgcwx"))
-                        .withIpv6Addresses(Arrays.asList("bbwjtrdxrizagb", "giarksykpgdqxw", "b")))
-                .withAnnotation("wiqrxhaclcdosq");
+        NeighborGroupPatch model = new NeighborGroupPatch().withTags(mapOf("hautw", "kladydg"))
+            .withDestination(new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("bjlquv"))
+                .withIpv6Addresses(Arrays.asList("cjumv", "simi", "yoi", "l")))
+            .withAnnotation("iqwnnraclibbfq");
         model = BinaryData.fromObject(model).toObject(NeighborGroupPatch.class);
-        Assertions.assertEquals("jqgkifmmainwhe", model.tags().get("xkpbqwun"));
-        Assertions.assertEquals("lciichgjs", model.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("bbwjtrdxrizagb", model.destination().ipv6Addresses().get(0));
-        Assertions.assertEquals("wiqrxhaclcdosq", model.annotation());
+        Assertions.assertEquals("kladydg", model.tags().get("hautw"));
+        Assertions.assertEquals("bjlquv", model.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("cjumv", model.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("iqwnnraclibbfq", model.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

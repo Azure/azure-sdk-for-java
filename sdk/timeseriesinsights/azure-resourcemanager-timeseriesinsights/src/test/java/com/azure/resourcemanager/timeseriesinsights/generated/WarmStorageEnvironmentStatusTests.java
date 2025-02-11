@@ -10,11 +10,9 @@ import com.azure.resourcemanager.timeseriesinsights.models.WarmStorageEnvironmen
 public final class WarmStorageEnvironmentStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WarmStorageEnvironmentStatus model =
-            BinaryData
-                .fromString(
-                    "{\"propertiesUsage\":{\"state\":\"Error\",\"stateDetails\":{\"currentCount\":784923897,\"maxCount\":2136509867}}}")
-                .toObject(WarmStorageEnvironmentStatus.class);
+        WarmStorageEnvironmentStatus model = BinaryData.fromString(
+            "{\"propertiesUsage\":{\"state\":\"Error\",\"stateDetails\":{\"currentCount\":1504901100,\"maxCount\":1911093580}}}")
+            .toObject(WarmStorageEnvironmentStatus.class);
     }
 
     @org.junit.jupiter.api.Test

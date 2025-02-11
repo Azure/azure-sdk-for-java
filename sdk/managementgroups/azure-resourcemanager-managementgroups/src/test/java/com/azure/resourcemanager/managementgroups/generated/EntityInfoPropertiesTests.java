@@ -14,47 +14,43 @@ import org.junit.jupiter.api.Assertions;
 public final class EntityInfoPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityInfoProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tenantId\":\"twwrqp\",\"displayName\":\"dckzywbiexz\",\"parent\":{\"id\":\"ue\"},\"permissions\":\"noaccess\",\"inheritedPermissions\":\"delete\",\"numberOfDescendants\":735455048,\"numberOfChildren\":1281560612,\"numberOfChildGroups\":1589097578,\"parentDisplayNameChain\":[\"lmuzy\",\"xaepdkzjancuxr\",\"d\",\"bavxbniwdjswzt\"],\"parentNameChain\":[\"pgn\"]}")
-                .toObject(EntityInfoProperties.class);
-        Assertions.assertEquals("twwrqp", model.tenantId());
-        Assertions.assertEquals("dckzywbiexz", model.displayName());
-        Assertions.assertEquals("ue", model.parent().id());
-        Assertions.assertEquals(Permissions.NOACCESS, model.permissions());
-        Assertions.assertEquals(Permissions.DELETE, model.inheritedPermissions());
-        Assertions.assertEquals(735455048, model.numberOfDescendants());
-        Assertions.assertEquals(1281560612, model.numberOfChildren());
-        Assertions.assertEquals(1589097578, model.numberOfChildGroups());
-        Assertions.assertEquals("lmuzy", model.parentDisplayNameChain().get(0));
-        Assertions.assertEquals("pgn", model.parentNameChain().get(0));
+        EntityInfoProperties model = BinaryData.fromString(
+            "{\"tenantId\":\"pgcjefuzmuvp\",\"displayName\":\"tdum\",\"parent\":{\"id\":\"pxebmnzbt\"},\"permissions\":\"edit\",\"inheritedPermissions\":\"view\",\"numberOfDescendants\":506889446,\"numberOfChildren\":1389073231,\"numberOfChildGroups\":281950816,\"parentDisplayNameChain\":[\"euel\",\"phsdyhto\",\"fikdowwqu\",\"v\"],\"parentNameChain\":[\"clvit\",\"hqzonosggbhcoh\"]}")
+            .toObject(EntityInfoProperties.class);
+        Assertions.assertEquals("pgcjefuzmuvp", model.tenantId());
+        Assertions.assertEquals("tdum", model.displayName());
+        Assertions.assertEquals("pxebmnzbt", model.parent().id());
+        Assertions.assertEquals(Permissions.EDIT, model.permissions());
+        Assertions.assertEquals(Permissions.VIEW, model.inheritedPermissions());
+        Assertions.assertEquals(506889446, model.numberOfDescendants());
+        Assertions.assertEquals(1389073231, model.numberOfChildren());
+        Assertions.assertEquals(281950816, model.numberOfChildGroups());
+        Assertions.assertEquals("euel", model.parentDisplayNameChain().get(0));
+        Assertions.assertEquals("clvit", model.parentNameChain().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EntityInfoProperties model =
-            new EntityInfoProperties()
-                .withTenantId("twwrqp")
-                .withDisplayName("dckzywbiexz")
-                .withParent(new EntityParentGroupInfo().withId("ue"))
-                .withPermissions(Permissions.NOACCESS)
-                .withInheritedPermissions(Permissions.DELETE)
-                .withNumberOfDescendants(735455048)
-                .withNumberOfChildren(1281560612)
-                .withNumberOfChildGroups(1589097578)
-                .withParentDisplayNameChain(Arrays.asList("lmuzy", "xaepdkzjancuxr", "d", "bavxbniwdjswzt"))
-                .withParentNameChain(Arrays.asList("pgn"));
+        EntityInfoProperties model = new EntityInfoProperties().withTenantId("pgcjefuzmuvp")
+            .withDisplayName("tdum")
+            .withParent(new EntityParentGroupInfo().withId("pxebmnzbt"))
+            .withPermissions(Permissions.EDIT)
+            .withInheritedPermissions(Permissions.VIEW)
+            .withNumberOfDescendants(506889446)
+            .withNumberOfChildren(1389073231)
+            .withNumberOfChildGroups(281950816)
+            .withParentDisplayNameChain(Arrays.asList("euel", "phsdyhto", "fikdowwqu", "v"))
+            .withParentNameChain(Arrays.asList("clvit", "hqzonosggbhcoh"));
         model = BinaryData.fromObject(model).toObject(EntityInfoProperties.class);
-        Assertions.assertEquals("twwrqp", model.tenantId());
-        Assertions.assertEquals("dckzywbiexz", model.displayName());
-        Assertions.assertEquals("ue", model.parent().id());
-        Assertions.assertEquals(Permissions.NOACCESS, model.permissions());
-        Assertions.assertEquals(Permissions.DELETE, model.inheritedPermissions());
-        Assertions.assertEquals(735455048, model.numberOfDescendants());
-        Assertions.assertEquals(1281560612, model.numberOfChildren());
-        Assertions.assertEquals(1589097578, model.numberOfChildGroups());
-        Assertions.assertEquals("lmuzy", model.parentDisplayNameChain().get(0));
-        Assertions.assertEquals("pgn", model.parentNameChain().get(0));
+        Assertions.assertEquals("pgcjefuzmuvp", model.tenantId());
+        Assertions.assertEquals("tdum", model.displayName());
+        Assertions.assertEquals("pxebmnzbt", model.parent().id());
+        Assertions.assertEquals(Permissions.EDIT, model.permissions());
+        Assertions.assertEquals(Permissions.VIEW, model.inheritedPermissions());
+        Assertions.assertEquals(506889446, model.numberOfDescendants());
+        Assertions.assertEquals(1389073231, model.numberOfChildren());
+        Assertions.assertEquals(281950816, model.numberOfChildGroups());
+        Assertions.assertEquals("euel", model.parentDisplayNameChain().get(0));
+        Assertions.assertEquals("clvit", model.parentNameChain().get(0));
     }
 }

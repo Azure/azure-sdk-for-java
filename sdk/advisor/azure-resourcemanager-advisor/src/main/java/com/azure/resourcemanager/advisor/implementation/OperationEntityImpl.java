@@ -13,8 +13,8 @@ public final class OperationEntityImpl implements OperationEntity {
 
     private final com.azure.resourcemanager.advisor.AdvisorManager serviceManager;
 
-    OperationEntityImpl(
-        OperationEntityInner innerObject, com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
+    OperationEntityImpl(OperationEntityInner innerObject,
+        com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

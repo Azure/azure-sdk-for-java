@@ -49,7 +49,8 @@ public class FileShareDataset extends Dataset {
     private DatasetStorageFormat format;
 
     /*
-     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or Expression with resultType string).
+     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or
+     * Expression with resultType string).
      */
     private Object fileFilter;
 

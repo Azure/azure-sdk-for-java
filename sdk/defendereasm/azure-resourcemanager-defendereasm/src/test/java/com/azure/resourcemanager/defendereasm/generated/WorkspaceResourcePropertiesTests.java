@@ -10,9 +10,8 @@ import com.azure.resourcemanager.defendereasm.fluent.models.WorkspaceResourcePro
 public final class WorkspaceResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceResourceProperties model =
-            BinaryData
-                .fromString("{\"dataPlaneEndpoint\":\"v\",\"provisioningState\":\"Creating\"}")
+        WorkspaceResourceProperties model
+            = BinaryData.fromString("{\"dataPlaneEndpoint\":\"v\",\"provisioningState\":\"Creating\"}")
                 .toObject(WorkspaceResourceProperties.class);
     }
 

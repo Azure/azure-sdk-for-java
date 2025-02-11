@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitoredSubscriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitoredSubscription model =
-            BinaryData
-                .fromString(
-                    "{\"subscriptionId\":\"gyxzk\",\"status\":\"Failed\",\"error\":\"uko\",\"tagRules\":{\"provisioningState\":\"Deleting\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":true,\"sendResourceLogs\":false,\"filteringTags\":[{\"name\":\"kbeype\",\"value\":\"mjmwvvjektcx\",\"action\":\"Exclude\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"s\",\"value\":\"rzpwvlqdqgbiq\",\"action\":\"Exclude\"}]},\"automuting\":false}}")
-                .toObject(MonitoredSubscription.class);
+        MonitoredSubscription model = BinaryData.fromString(
+            "{\"subscriptionId\":\"gyxzk\",\"status\":\"Failed\",\"error\":\"uko\",\"tagRules\":{\"provisioningState\":\"Deleting\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":true,\"sendResourceLogs\":false,\"filteringTags\":[{\"name\":\"kbeype\",\"value\":\"mjmwvvjektcx\",\"action\":\"Exclude\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"s\",\"value\":\"rzpwvlqdqgbiq\",\"action\":\"Exclude\"}]},\"automuting\":false}}")
+            .toObject(MonitoredSubscription.class);
         Assertions.assertEquals("gyxzk", model.subscriptionId());
         Assertions.assertEquals(Status.FAILED, model.status());
         Assertions.assertEquals("uko", model.error());
@@ -40,35 +38,18 @@ public final class MonitoredSubscriptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredSubscription model =
-            new MonitoredSubscription()
-                .withSubscriptionId("gyxzk")
-                .withStatus(Status.FAILED)
-                .withError("uko")
-                .withTagRules(
-                    new MonitoringTagRulesProperties()
-                        .withLogRules(
-                            new LogRules()
-                                .withSendAadLogs(true)
-                                .withSendSubscriptionLogs(true)
-                                .withSendResourceLogs(false)
-                                .withFilteringTags(
-                                    Arrays
-                                        .asList(
-                                            new FilteringTag()
-                                                .withName("kbeype")
-                                                .withValue("mjmwvvjektcx")
-                                                .withAction(TagAction.EXCLUDE))))
-                        .withMetricRules(
-                            new MetricRules()
-                                .withFilteringTags(
-                                    Arrays
-                                        .asList(
-                                            new FilteringTag()
-                                                .withName("s")
-                                                .withValue("rzpwvlqdqgbiq")
-                                                .withAction(TagAction.EXCLUDE))))
-                        .withAutomuting(false));
+        MonitoredSubscription model = new MonitoredSubscription().withSubscriptionId("gyxzk")
+            .withStatus(Status.FAILED)
+            .withError("uko")
+            .withTagRules(new MonitoringTagRulesProperties()
+                .withLogRules(new LogRules().withSendAadLogs(true)
+                    .withSendSubscriptionLogs(true)
+                    .withSendResourceLogs(false)
+                    .withFilteringTags(Arrays.asList(
+                        new FilteringTag().withName("kbeype").withValue("mjmwvvjektcx").withAction(TagAction.EXCLUDE))))
+                .withMetricRules(new MetricRules().withFilteringTags(Arrays
+                    .asList(new FilteringTag().withName("s").withValue("rzpwvlqdqgbiq").withAction(TagAction.EXCLUDE))))
+                .withAutomuting(false));
         model = BinaryData.fromObject(model).toObject(MonitoredSubscription.class);
         Assertions.assertEquals("gyxzk", model.subscriptionId());
         Assertions.assertEquals(Status.FAILED, model.status());

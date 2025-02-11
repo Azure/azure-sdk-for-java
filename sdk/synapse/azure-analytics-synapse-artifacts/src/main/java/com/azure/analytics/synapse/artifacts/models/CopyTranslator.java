@@ -21,7 +21,7 @@ public class CopyTranslator implements JsonSerializable<CopyTranslator> {
     /*
      * Copy translator type.
      */
-    private String type;
+    private String type = "CopyTranslator";
 
     /*
      * A copy activity translator.
@@ -32,7 +32,6 @@ public class CopyTranslator implements JsonSerializable<CopyTranslator> {
      * Creates an instance of CopyTranslator class.
      */
     public CopyTranslator() {
-        this.type = "CopyTranslator";
     }
 
     /**

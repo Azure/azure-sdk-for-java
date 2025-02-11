@@ -6,12 +6,14 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.resourcemanager.costmanagement.fluent.models.CostManagementOperationInner;
 
-/** An immutable client-side representation of CostManagementOperation. */
+/**
+ * An immutable client-side representation of CostManagementOperation.
+ */
 public interface CostManagementOperation {
     /**
      * Gets the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
      * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
-     *
+     * 
      * @return the name value.
      */
     String name();
@@ -19,14 +21,14 @@ public interface CostManagementOperation {
     /**
      * Gets the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
      * operations and "false" for ARM/control-plane operations.
-     *
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
      * Gets the display property: Localized display information for this particular operation.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
@@ -34,7 +36,7 @@ public interface CostManagementOperation {
     /**
      * Gets the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
      * audit logs UX. Default value is "user,system".
-     *
+     * 
      * @return the origin value.
      */
     Origin origin();
@@ -42,21 +44,21 @@ public interface CostManagementOperation {
     /**
      * Gets the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
      * only APIs.
-     *
+     * 
      * @return the actionType value.
      */
     ActionType actionType();
 
     /**
      * Gets the id property: Operation id: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.CostManagementOperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     CostManagementOperationInner innerModel();

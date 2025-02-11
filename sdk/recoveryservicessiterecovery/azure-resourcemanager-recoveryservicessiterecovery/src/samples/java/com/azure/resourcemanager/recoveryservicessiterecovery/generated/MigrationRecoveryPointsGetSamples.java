@@ -20,8 +20,8 @@ public final class MigrationRecoveryPointsGetSamples {
      */
     public static void getsARecoveryPointForAMigrationItem(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.migrationRecoveryPoints().getWithResponse("migrationvault", "resourcegroup1", "vmwarefabric1",
-            "vmwareContainer1", "virtualmachine1", "b22134ea-620c-474b-9fa5-3c1cb47708e3",
-            com.azure.core.util.Context.NONE);
+        manager.migrationRecoveryPoints()
+            .getWithResponse("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1",
+                "b22134ea-620c-474b-9fa5-3c1cb47708e3", com.azure.core.util.Context.NONE);
     }
 }

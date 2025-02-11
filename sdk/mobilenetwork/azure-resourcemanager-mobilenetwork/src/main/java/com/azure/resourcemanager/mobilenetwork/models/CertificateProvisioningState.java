@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class CertificateProvisioningState extends ExpandableStringEnum<Cer
      * @param name a name to look for.
      * @return the corresponding CertificateProvisioningState.
      */
-    @JsonCreator
     public static CertificateProvisioningState fromString(String name) {
         return fromString(name, CertificateProvisioningState.class);
     }

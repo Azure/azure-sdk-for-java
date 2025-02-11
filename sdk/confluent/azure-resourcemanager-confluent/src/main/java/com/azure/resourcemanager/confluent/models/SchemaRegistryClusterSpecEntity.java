@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details of schema registry cluster spec.
  */
 @Fluent
-public final class SchemaRegistryClusterSpecEntity {
+public final class SchemaRegistryClusterSpecEntity implements JsonSerializable<SchemaRegistryClusterSpecEntity> {
     /*
      * Name of the schema registry cluster
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Http endpoint of the cluster
      */
-    @JsonProperty(value = "httpEndpoint")
     private String httpEndpoint;
 
     /*
      * Type of the cluster package Advanced, essentials
      */
-    @JsonProperty(value = "package")
     private String packageProperty;
 
     /*
      * Region details of the schema registry cluster
      */
-    @JsonProperty(value = "region")
     private SchemaRegistryClusterEnvironmentRegionEntity region;
 
     /*
      * Environment details of the schema registry cluster
      */
-    @JsonProperty(value = "environment")
     private SchemaRegistryClusterEnvironmentRegionEntity environment;
 
     /*
      * The cloud service provider
      */
-    @JsonProperty(value = "cloud")
     private String cloud;
 
     /**
@@ -186,5 +184,59 @@ public final class SchemaRegistryClusterSpecEntity {
         if (environment() != null) {
             environment().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("httpEndpoint", this.httpEndpoint);
+        jsonWriter.writeStringField("package", this.packageProperty);
+        jsonWriter.writeJsonField("region", this.region);
+        jsonWriter.writeJsonField("environment", this.environment);
+        jsonWriter.writeStringField("cloud", this.cloud);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SchemaRegistryClusterSpecEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SchemaRegistryClusterSpecEntity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SchemaRegistryClusterSpecEntity.
+     */
+    public static SchemaRegistryClusterSpecEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SchemaRegistryClusterSpecEntity deserializedSchemaRegistryClusterSpecEntity
+                = new SchemaRegistryClusterSpecEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSchemaRegistryClusterSpecEntity.name = reader.getString();
+                } else if ("httpEndpoint".equals(fieldName)) {
+                    deserializedSchemaRegistryClusterSpecEntity.httpEndpoint = reader.getString();
+                } else if ("package".equals(fieldName)) {
+                    deserializedSchemaRegistryClusterSpecEntity.packageProperty = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedSchemaRegistryClusterSpecEntity.region
+                        = SchemaRegistryClusterEnvironmentRegionEntity.fromJson(reader);
+                } else if ("environment".equals(fieldName)) {
+                    deserializedSchemaRegistryClusterSpecEntity.environment
+                        = SchemaRegistryClusterEnvironmentRegionEntity.fromJson(reader);
+                } else if ("cloud".equals(fieldName)) {
+                    deserializedSchemaRegistryClusterSpecEntity.cloud = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSchemaRegistryClusterSpecEntity;
+        });
     }
 }

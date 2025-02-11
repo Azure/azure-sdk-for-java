@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class UploadWatermarkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UploadWatermark model =
-            BinaryData
-                .fromString(
-                    "{\"metrics\":\"2021-10-25T12:28:17Z\",\"logs\":\"2021-10-31T17:40:20Z\",\"usages\":\"2021-09-30T03:16:16Z\"}")
-                .toObject(UploadWatermark.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-25T12:28:17Z"), model.metrics());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-31T17:40:20Z"), model.logs());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-30T03:16:16Z"), model.usages());
+        UploadWatermark model = BinaryData.fromString(
+            "{\"metrics\":\"2021-03-12T03:03:28Z\",\"logs\":\"2021-11-01T16:23:57Z\",\"usages\":\"2021-01-30T14:58:59Z\"}")
+            .toObject(UploadWatermark.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T03:03:28Z"), model.metrics());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T16:23:57Z"), model.logs());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T14:58:59Z"), model.usages());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UploadWatermark model =
-            new UploadWatermark()
-                .withMetrics(OffsetDateTime.parse("2021-10-25T12:28:17Z"))
-                .withLogs(OffsetDateTime.parse("2021-10-31T17:40:20Z"))
-                .withUsages(OffsetDateTime.parse("2021-09-30T03:16:16Z"));
+        UploadWatermark model = new UploadWatermark().withMetrics(OffsetDateTime.parse("2021-03-12T03:03:28Z"))
+            .withLogs(OffsetDateTime.parse("2021-11-01T16:23:57Z"))
+            .withUsages(OffsetDateTime.parse("2021-01-30T14:58:59Z"));
         model = BinaryData.fromObject(model).toObject(UploadWatermark.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-25T12:28:17Z"), model.metrics());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-31T17:40:20Z"), model.logs());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-30T03:16:16Z"), model.usages());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T03:03:28Z"), model.metrics());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T16:23:57Z"), model.logs());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T14:58:59Z"), model.usages());
     }
 }

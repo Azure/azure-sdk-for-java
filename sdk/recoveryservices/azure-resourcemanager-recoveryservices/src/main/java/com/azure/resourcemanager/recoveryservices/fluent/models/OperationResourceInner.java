@@ -6,48 +6,49 @@ package com.azure.resourcemanager.recoveryservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Operation Resource.
  */
 @Fluent
-public final class OperationResourceInner {
+public final class OperationResourceInner implements JsonSerializable<OperationResourceInner> {
     /*
      * End time of the operation
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
-     * Required if status == failed or status == canceled. This is the OData v4 error format, used by the RPC and will go into the v2.2 Azure REST API guidelines.
+     * Required if status == failed or status == canceled. This is the OData v4 error format, used by the RPC and will
+     * go into the v2.2 Azure REST API guidelines.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /*
      * It should match what is used to GET the operation result
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * It must match the last segment of the "id" field, and will typically be a GUID / system generated value
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The status of the operation. (InProgress/Success/Failed/Cancelled)
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Start time of the operation
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /**
@@ -186,5 +187,60 @@ public final class OperationResourceInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResourceInner.
+     */
+    public static OperationResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResourceInner deserializedOperationResourceInner = new OperationResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endTime".equals(fieldName)) {
+                    deserializedOperationResourceInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationResourceInner.error = ManagementError.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedOperationResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationResourceInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationResourceInner.status = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationResourceInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResourceInner;
+        });
     }
 }

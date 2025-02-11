@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualNetworkInner;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualNetworksClient.
+ */
 public interface VirtualNetworksClient {
     /**
      * Implements list available virtual networks within a subscription method
-     *
-     * <p>Return list of virtual networks in location for private cloud.
-     *
+     * 
+     * Return list of virtual networks in location for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName Resource pool used to derive vSphere cluster which contains virtual networks.
@@ -31,9 +33,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Implements list available virtual networks within a subscription method
-     *
-     * <p>Return list of virtual networks in location for private cloud.
-     *
+     * 
+     * Return list of virtual networks in location for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName Resource pool used to derive vSphere cluster which contains virtual networks.
@@ -48,9 +50,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Implements virtual network GET method
-     *
-     * <p>Return virtual network by its name.
-     *
+     * 
+     * Return virtual network by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param virtualNetworkName virtual network id (vsphereId).
@@ -61,14 +63,14 @@ public interface VirtualNetworksClient {
      * @return virtual network model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkInner> getWithResponse(
-        String regionId, String pcName, String virtualNetworkName, Context context);
+    Response<VirtualNetworkInner> getWithResponse(String regionId, String pcName, String virtualNetworkName,
+        Context context);
 
     /**
      * Implements virtual network GET method
-     *
-     * <p>Return virtual network by its name.
-     *
+     * 
+     * Return virtual network by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param virtualNetworkName virtual network id (vsphereId).

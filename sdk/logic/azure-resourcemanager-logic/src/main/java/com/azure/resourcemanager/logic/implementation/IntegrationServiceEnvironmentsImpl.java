@@ -21,56 +21,55 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public IntegrationServiceEnvironmentsImpl(
-        IntegrationServiceEnvironmentsClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public IntegrationServiceEnvironmentsImpl(IntegrationServiceEnvironmentsClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<IntegrationServiceEnvironment> list() {
         PagedIterable<IntegrationServiceEnvironmentInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new IntegrationServiceEnvironmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IntegrationServiceEnvironmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IntegrationServiceEnvironment> list(Integer top, Context context) {
         PagedIterable<IntegrationServiceEnvironmentInner> inner = this.serviceClient().list(top, context);
-        return Utils.mapPage(inner, inner1 -> new IntegrationServiceEnvironmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IntegrationServiceEnvironmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IntegrationServiceEnvironment> listByResourceGroup(String resourceGroup) {
-        PagedIterable<IntegrationServiceEnvironmentInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroup);
-        return Utils.mapPage(inner, inner1 -> new IntegrationServiceEnvironmentImpl(inner1, this.manager()));
+        PagedIterable<IntegrationServiceEnvironmentInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroup);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IntegrationServiceEnvironmentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<IntegrationServiceEnvironment> listByResourceGroup(
-        String resourceGroup, Integer top, Context context) {
-        PagedIterable<IntegrationServiceEnvironmentInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroup, top, context);
-        return Utils.mapPage(inner, inner1 -> new IntegrationServiceEnvironmentImpl(inner1, this.manager()));
+    public PagedIterable<IntegrationServiceEnvironment> listByResourceGroup(String resourceGroup, Integer top,
+        Context context) {
+        PagedIterable<IntegrationServiceEnvironmentInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroup, top, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IntegrationServiceEnvironmentImpl(inner1, this.manager()));
     }
 
-    public Response<IntegrationServiceEnvironment> getByResourceGroupWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
-        Response<IntegrationServiceEnvironmentInner> inner =
-            this
-                .serviceClient()
-                .getByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
+    public Response<IntegrationServiceEnvironment> getByResourceGroupWithResponse(String resourceGroup,
+        String integrationServiceEnvironmentName, Context context) {
+        Response<IntegrationServiceEnvironmentInner> inner = this.serviceClient()
+            .getByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IntegrationServiceEnvironmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public IntegrationServiceEnvironment getByResourceGroup(
-        String resourceGroup, String integrationServiceEnvironmentName) {
-        IntegrationServiceEnvironmentInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroup, integrationServiceEnvironmentName);
+    public IntegrationServiceEnvironment getByResourceGroup(String resourceGroup,
+        String integrationServiceEnvironmentName) {
+        IntegrationServiceEnvironmentInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroup, integrationServiceEnvironmentName);
         if (inner != null) {
             return new IntegrationServiceEnvironmentImpl(inner, this.manager());
         } else {
@@ -78,8 +77,8 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroup,
+        String integrationServiceEnvironmentName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
     }
 
@@ -87,8 +86,8 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
         this.serviceClient().delete(resourceGroup, integrationServiceEnvironmentName);
     }
 
-    public Response<Void> restartWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
+    public Response<Void> restartWithResponse(String resourceGroup, String integrationServiceEnvironmentName,
+        Context context) {
         return this.serviceClient().restartWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
     }
 
@@ -97,95 +96,62 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
     }
 
     public IntegrationServiceEnvironment getById(String id) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationServiceEnvironmentName = Utils.getValueFromIdByName(id, "integrationServiceEnvironments");
+        String integrationServiceEnvironmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "integrationServiceEnvironments");
         if (integrationServiceEnvironmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'integrationServiceEnvironments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'integrationServiceEnvironments'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, Context.NONE)
             .getValue();
     }
 
     public Response<IntegrationServiceEnvironment> getByIdWithResponse(String id, Context context) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationServiceEnvironmentName = Utils.getValueFromIdByName(id, "integrationServiceEnvironments");
+        String integrationServiceEnvironmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "integrationServiceEnvironments");
         if (integrationServiceEnvironmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'integrationServiceEnvironments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'integrationServiceEnvironments'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationServiceEnvironmentName = Utils.getValueFromIdByName(id, "integrationServiceEnvironments");
+        String integrationServiceEnvironmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "integrationServiceEnvironments");
         if (integrationServiceEnvironmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'integrationServiceEnvironments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'integrationServiceEnvironments'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationServiceEnvironmentName = Utils.getValueFromIdByName(id, "integrationServiceEnvironments");
+        String integrationServiceEnvironmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "integrationServiceEnvironments");
         if (integrationServiceEnvironmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'integrationServiceEnvironments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'integrationServiceEnvironments'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
     }

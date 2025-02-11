@@ -5,84 +5,84 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.LabCostDetailsProperties;
 import com.azure.resourcemanager.devtestlabs.models.LabCostSummaryProperties;
 import com.azure.resourcemanager.devtestlabs.models.LabResourceCostProperties;
 import com.azure.resourcemanager.devtestlabs.models.TargetCostProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Properties of a cost item. */
+/**
+ * Properties of a cost item.
+ */
 @Fluent
-public final class LabCostProperties {
+public final class LabCostProperties implements JsonSerializable<LabCostProperties> {
     /*
      * The target cost properties
      */
-    @JsonProperty(value = "targetCost")
     private TargetCostProperties targetCost;
 
     /*
      * The lab cost summary component of the cost data.
      */
-    @JsonProperty(value = "labCostSummary", access = JsonProperty.Access.WRITE_ONLY)
     private LabCostSummaryProperties labCostSummary;
 
     /*
      * The lab cost details component of the cost data.
      */
-    @JsonProperty(value = "labCostDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<LabCostDetailsProperties> labCostDetails;
 
     /*
      * The resource cost component of the cost data.
      */
-    @JsonProperty(value = "resourceCosts", access = JsonProperty.Access.WRITE_ONLY)
     private List<LabResourceCostProperties> resourceCosts;
 
     /*
      * The currency code of the cost.
      */
-    @JsonProperty(value = "currencyCode")
     private String currencyCode;
 
     /*
      * The start time of the cost data.
      */
-    @JsonProperty(value = "startDateTime")
     private OffsetDateTime startDateTime;
 
     /*
      * The end time of the cost data.
      */
-    @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
      * The creation date of the cost.
      */
-    @JsonProperty(value = "createdDate")
     private OffsetDateTime createdDate;
 
     /*
      * The provisioning status of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique immutable identifier of a resource (Guid).
      */
-    @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
 
-    /** Creates an instance of LabCostProperties class. */
+    /**
+     * Creates an instance of LabCostProperties class.
+     */
     public LabCostProperties() {
     }
 
     /**
      * Get the targetCost property: The target cost properties.
-     *
+     * 
      * @return the targetCost value.
      */
     public TargetCostProperties targetCost() {
@@ -91,7 +91,7 @@ public final class LabCostProperties {
 
     /**
      * Set the targetCost property: The target cost properties.
-     *
+     * 
      * @param targetCost the targetCost value to set.
      * @return the LabCostProperties object itself.
      */
@@ -102,7 +102,7 @@ public final class LabCostProperties {
 
     /**
      * Get the labCostSummary property: The lab cost summary component of the cost data.
-     *
+     * 
      * @return the labCostSummary value.
      */
     public LabCostSummaryProperties labCostSummary() {
@@ -111,7 +111,7 @@ public final class LabCostProperties {
 
     /**
      * Get the labCostDetails property: The lab cost details component of the cost data.
-     *
+     * 
      * @return the labCostDetails value.
      */
     public List<LabCostDetailsProperties> labCostDetails() {
@@ -120,7 +120,7 @@ public final class LabCostProperties {
 
     /**
      * Get the resourceCosts property: The resource cost component of the cost data.
-     *
+     * 
      * @return the resourceCosts value.
      */
     public List<LabResourceCostProperties> resourceCosts() {
@@ -129,7 +129,7 @@ public final class LabCostProperties {
 
     /**
      * Get the currencyCode property: The currency code of the cost.
-     *
+     * 
      * @return the currencyCode value.
      */
     public String currencyCode() {
@@ -138,7 +138,7 @@ public final class LabCostProperties {
 
     /**
      * Set the currencyCode property: The currency code of the cost.
-     *
+     * 
      * @param currencyCode the currencyCode value to set.
      * @return the LabCostProperties object itself.
      */
@@ -149,7 +149,7 @@ public final class LabCostProperties {
 
     /**
      * Get the startDateTime property: The start time of the cost data.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -158,7 +158,7 @@ public final class LabCostProperties {
 
     /**
      * Set the startDateTime property: The start time of the cost data.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the LabCostProperties object itself.
      */
@@ -169,7 +169,7 @@ public final class LabCostProperties {
 
     /**
      * Get the endDateTime property: The end time of the cost data.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -178,7 +178,7 @@ public final class LabCostProperties {
 
     /**
      * Set the endDateTime property: The end time of the cost data.
-     *
+     * 
      * @param endDateTime the endDateTime value to set.
      * @return the LabCostProperties object itself.
      */
@@ -189,7 +189,7 @@ public final class LabCostProperties {
 
     /**
      * Get the createdDate property: The creation date of the cost.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -198,7 +198,7 @@ public final class LabCostProperties {
 
     /**
      * Set the createdDate property: The creation date of the cost.
-     *
+     * 
      * @param createdDate the createdDate value to set.
      * @return the LabCostProperties object itself.
      */
@@ -209,7 +209,7 @@ public final class LabCostProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -218,7 +218,7 @@ public final class LabCostProperties {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -227,7 +227,7 @@ public final class LabCostProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -243,5 +243,73 @@ public final class LabCostProperties {
         if (resourceCosts() != null) {
             resourceCosts().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("targetCost", this.targetCost);
+        jsonWriter.writeStringField("currencyCode", this.currencyCode);
+        jsonWriter.writeStringField("startDateTime",
+            this.startDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDateTime));
+        jsonWriter.writeStringField("endDateTime",
+            this.endDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDateTime));
+        jsonWriter.writeStringField("createdDate",
+            this.createdDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabCostProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabCostProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabCostProperties.
+     */
+    public static LabCostProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabCostProperties deserializedLabCostProperties = new LabCostProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetCost".equals(fieldName)) {
+                    deserializedLabCostProperties.targetCost = TargetCostProperties.fromJson(reader);
+                } else if ("labCostSummary".equals(fieldName)) {
+                    deserializedLabCostProperties.labCostSummary = LabCostSummaryProperties.fromJson(reader);
+                } else if ("labCostDetails".equals(fieldName)) {
+                    List<LabCostDetailsProperties> labCostDetails
+                        = reader.readArray(reader1 -> LabCostDetailsProperties.fromJson(reader1));
+                    deserializedLabCostProperties.labCostDetails = labCostDetails;
+                } else if ("resourceCosts".equals(fieldName)) {
+                    List<LabResourceCostProperties> resourceCosts
+                        = reader.readArray(reader1 -> LabResourceCostProperties.fromJson(reader1));
+                    deserializedLabCostProperties.resourceCosts = resourceCosts;
+                } else if ("currencyCode".equals(fieldName)) {
+                    deserializedLabCostProperties.currencyCode = reader.getString();
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedLabCostProperties.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endDateTime".equals(fieldName)) {
+                    deserializedLabCostProperties.endDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedLabCostProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLabCostProperties.provisioningState = reader.getString();
+                } else if ("uniqueIdentifier".equals(fieldName)) {
+                    deserializedLabCostProperties.uniqueIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabCostProperties;
+        });
     }
 }

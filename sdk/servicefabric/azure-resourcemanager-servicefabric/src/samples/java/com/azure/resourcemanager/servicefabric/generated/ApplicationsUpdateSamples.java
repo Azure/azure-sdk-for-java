@@ -24,10 +24,15 @@ public final class ApplicationsUpdateSamples {
      */
     public static void patchAnApplication(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
         ApplicationResource resource = manager.applications()
-            .getWithResponse("resRg", "myCluster", "myApp", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTypeVersion("1.0").withRemoveApplicationCapacity(false)
-            .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1").withMaximumCapacity(3L)
-                .withReservationCapacity(1L).withTotalApplicationCapacity(5L)))
+            .getWithResponse("resRg", "myCluster", "myApp", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTypeVersion("1.0")
+            .withRemoveApplicationCapacity(false)
+            .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1")
+                .withMaximumCapacity(3L)
+                .withReservationCapacity(1L)
+                .withTotalApplicationCapacity(5L)))
             .apply();
     }
 }

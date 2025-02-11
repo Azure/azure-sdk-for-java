@@ -6,67 +6,37 @@ package com.azure.resourcemanager.costmanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.models.Dimension;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DimensionsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"vpaklozkxbz\",\"filterEnabled\":false,\"groupingEnabled\":true,\"data\":[\"s\",\"nbtttkgsuxu\",\"rswgkpjhboyikeb\",\"uhkslg\"],\"total\":949610294,\"category\":\"hueoijyzcqyp\",\"usageStart\":\"2021-11-16T09:04:28Z\",\"usageEnd\":\"2021-10-11T17:07:04Z\",\"nextLink\":\"s\"},\"sku\":\"ej\",\"eTag\":\"dwtfx\",\"location\":\"tpq\",\"tags\":{\"uullojkp\":\"mkncfgybmxsnxo\",\"j\":\"yhgww\"},\"id\":\"xdbdljzgdyrcvu\",\"name\":\"bsgzl\",\"type\":\"qhbjnqogdxwbsfpy\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"npjhlfzswpchwahf\",\"filterEnabled\":true,\"groupingEnabled\":false,\"data\":[\"pgfewetwlyx\",\"ncxykxhdjhlimm\"],\"total\":122728116,\"category\":\"h\",\"usageStart\":\"2021-05-04T19:01:44Z\",\"usageEnd\":\"2021-08-24T02:48:56Z\",\"nextLink\":\"vxcjzhqizxfpxtgq\"},\"sku\":\"javftjuhdqa\",\"eTag\":\"mtggu\",\"location\":\"pijrajcivmmghf\",\"tags\":{\"nzqodfvpg\":\"wrxgkneuvy\",\"zdjtxvzflbqv\":\"hoxgsgbpf\"},\"id\":\"aqvlgafcqusr\",\"name\":\"vetnwsdtutn\",\"type\":\"lduycv\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Dimension> response = manager.dimensions()
+            .list("hjnlt", "etjdvqydieqqkwa", "uwdxvqzxoebwgj", "bibanbau", 319172782,
+                com.azure.core.util.Context.NONE);
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Dimension> response =
-            manager
-                .dimensions()
-                .list("talhsnvkcdmxzr", "oaimlnw", "aaomylweazu", "cse", 950658214, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("pijrajcivmmghf", response.iterator().next().location());
-        Assertions.assertEquals("wrxgkneuvy", response.iterator().next().tags().get("nzqodfvpg"));
-        Assertions.assertEquals("pgfewetwlyx", response.iterator().next().data().get(0));
+        Assertions.assertEquals("tpq", response.iterator().next().location());
+        Assertions.assertEquals("mkncfgybmxsnxo", response.iterator().next().tags().get("uullojkp"));
+        Assertions.assertEquals("s", response.iterator().next().data().get(0));
     }
 }

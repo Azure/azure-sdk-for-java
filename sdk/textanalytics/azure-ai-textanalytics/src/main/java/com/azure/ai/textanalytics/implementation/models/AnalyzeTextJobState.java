@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -191,20 +192,20 @@ public final class AnalyzeTextJobState extends JobState {
                 reader.nextToken();
 
                 if ("createdDateTime".equals(fieldName)) {
-                    deserializedAnalyzeTextJobState.setCreatedDateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAnalyzeTextJobState.setCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("jobId".equals(fieldName)) {
                     deserializedAnalyzeTextJobState.setJobId(reader.getString());
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    deserializedAnalyzeTextJobState.setLastUpdatedDateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAnalyzeTextJobState.setLastUpdatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("status".equals(fieldName)) {
                     deserializedAnalyzeTextJobState.setStatus(State.fromString(reader.getString()));
                 } else if ("displayName".equals(fieldName)) {
                     deserializedAnalyzeTextJobState.setDisplayName(reader.getString());
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    deserializedAnalyzeTextJobState.setExpirationDateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAnalyzeTextJobState.setExpirationDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("errors".equals(fieldName)) {
                     List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
                     deserializedAnalyzeTextJobState.setErrors(errors);

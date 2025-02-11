@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class BackendReconnectPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackendReconnectProperties model =
-            BinaryData.fromString("{\"after\":\"PT208H13M46S\"}").toObject(BackendReconnectProperties.class);
+        BackendReconnectProperties model
+            = BinaryData.fromString("{\"after\":\"PT208H13M46S\"}").toObject(BackendReconnectProperties.class);
         Assertions.assertEquals(Duration.parse("PT208H13M46S"), model.after());
     }
 

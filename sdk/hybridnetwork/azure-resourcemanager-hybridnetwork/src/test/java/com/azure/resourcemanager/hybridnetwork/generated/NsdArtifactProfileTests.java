@@ -24,7 +24,8 @@ public final class NsdArtifactProfileTests {
     public void testSerialize() throws Exception {
         NsdArtifactProfile model
             = new NsdArtifactProfile().withArtifactStoreReference(new ReferencedResource().withId("bzasqbucljgkyexa"))
-                .withArtifactName("uy").withArtifactVersion("p");
+                .withArtifactName("uy")
+                .withArtifactVersion("p");
         model = BinaryData.fromObject(model).toObject(NsdArtifactProfile.class);
         Assertions.assertEquals("bzasqbucljgkyexa", model.artifactStoreReference().id());
         Assertions.assertEquals("uy", model.artifactName());

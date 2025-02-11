@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The external security solution properties for CEF solutions.
@@ -15,19 +20,16 @@ public final class CefSolutionProperties extends ExternalSecuritySolutionPropert
     /*
      * The hostname property.
      */
-    @JsonProperty(value = "hostname")
     private String hostname;
 
     /*
      * The agent property.
      */
-    @JsonProperty(value = "agent")
     private String agent;
 
     /*
      * The lastEventReceived property.
      */
-    @JsonProperty(value = "lastEventReceived")
     private String lastEventReceived;
 
     /**
@@ -130,6 +132,70 @@ public final class CefSolutionProperties extends ExternalSecuritySolutionPropert
      */
     @Override
     public void validate() {
-        super.validate();
+        if (workspace() != null) {
+            workspace().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceVendor", deviceVendor());
+        jsonWriter.writeStringField("deviceType", deviceType());
+        jsonWriter.writeJsonField("workspace", workspace());
+        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeStringField("agent", this.agent);
+        jsonWriter.writeStringField("lastEventReceived", this.lastEventReceived);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CefSolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CefSolutionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CefSolutionProperties.
+     */
+    public static CefSolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CefSolutionProperties deserializedCefSolutionProperties = new CefSolutionProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceVendor".equals(fieldName)) {
+                    deserializedCefSolutionProperties.withDeviceVendor(reader.getString());
+                } else if ("deviceType".equals(fieldName)) {
+                    deserializedCefSolutionProperties.withDeviceType(reader.getString());
+                } else if ("workspace".equals(fieldName)) {
+                    deserializedCefSolutionProperties.withWorkspace(ConnectedWorkspace.fromJson(reader));
+                } else if ("hostname".equals(fieldName)) {
+                    deserializedCefSolutionProperties.hostname = reader.getString();
+                } else if ("agent".equals(fieldName)) {
+                    deserializedCefSolutionProperties.agent = reader.getString();
+                } else if ("lastEventReceived".equals(fieldName)) {
+                    deserializedCefSolutionProperties.lastEventReceived = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCefSolutionProperties.withAdditionalProperties(additionalProperties);
+
+            return deserializedCefSolutionProperties;
+        });
     }
 }

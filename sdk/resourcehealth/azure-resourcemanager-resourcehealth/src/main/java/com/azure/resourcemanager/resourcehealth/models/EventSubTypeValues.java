@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Sub type of the event. Currently used to determine retirement communications for health advisory events. */
+/**
+ * Sub type of the event. Currently used to determine retirement communications for health advisory events.
+ */
 public final class EventSubTypeValues extends ExpandableStringEnum<EventSubTypeValues> {
-    /** Static value Retirement for EventSubTypeValues. */
+    /**
+     * Static value Retirement for EventSubTypeValues.
+     */
     public static final EventSubTypeValues RETIREMENT = fromString("Retirement");
 
     /**
      * Creates a new instance of EventSubTypeValues value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class EventSubTypeValues extends ExpandableStringEnum<EventSubTypeV
 
     /**
      * Creates or finds a EventSubTypeValues from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventSubTypeValues.
      */
-    @JsonCreator
     public static EventSubTypeValues fromString(String name) {
         return fromString(name, EventSubTypeValues.class);
     }
 
     /**
      * Gets known EventSubTypeValues values.
-     *
+     * 
      * @return known EventSubTypeValues values.
      */
     public static Collection<EventSubTypeValues> values() {

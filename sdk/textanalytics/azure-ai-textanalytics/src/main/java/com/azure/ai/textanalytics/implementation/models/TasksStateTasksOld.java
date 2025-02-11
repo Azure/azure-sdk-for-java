@@ -170,8 +170,8 @@ public final class TasksStateTasksOld implements JsonSerializable<TasksStateTask
      * @param entityRecognitionTasks the entityRecognitionTasks value to set.
      * @return the TasksStateTasksOld object itself.
      */
-    public TasksStateTasksOld setEntityRecognitionTasks(
-        List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasks) {
+    public TasksStateTasksOld
+        setEntityRecognitionTasks(List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasks) {
         this.entityRecognitionTasks = entityRecognitionTasks;
         return this;
     }
@@ -191,8 +191,8 @@ public final class TasksStateTasksOld implements JsonSerializable<TasksStateTask
      * @param entityRecognitionPiiTasks the entityRecognitionPiiTasks value to set.
      * @return the TasksStateTasksOld object itself.
      */
-    public TasksStateTasksOld setEntityRecognitionPiiTasks(
-        List<TasksStateTasksEntityRecognitionPiiTasksItem> entityRecognitionPiiTasks) {
+    public TasksStateTasksOld
+        setEntityRecognitionPiiTasks(List<TasksStateTasksEntityRecognitionPiiTasksItem> entityRecognitionPiiTasks) {
         this.entityRecognitionPiiTasks = entityRecognitionPiiTasks;
         return this;
     }
@@ -212,8 +212,8 @@ public final class TasksStateTasksOld implements JsonSerializable<TasksStateTask
      * @param keyPhraseExtractionTasks the keyPhraseExtractionTasks value to set.
      * @return the TasksStateTasksOld object itself.
      */
-    public TasksStateTasksOld setKeyPhraseExtractionTasks(
-        List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks) {
+    public TasksStateTasksOld
+        setKeyPhraseExtractionTasks(List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks) {
         this.keyPhraseExtractionTasks = keyPhraseExtractionTasks;
         return this;
     }
@@ -253,8 +253,8 @@ public final class TasksStateTasksOld implements JsonSerializable<TasksStateTask
      * @param sentimentAnalysisTasks the sentimentAnalysisTasks value to set.
      * @return the TasksStateTasksOld object itself.
      */
-    public TasksStateTasksOld setSentimentAnalysisTasks(
-        List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks) {
+    public TasksStateTasksOld
+        setSentimentAnalysisTasks(List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks) {
         this.sentimentAnalysisTasks = sentimentAnalysisTasks;
         return this;
     }
@@ -333,21 +333,21 @@ public final class TasksStateTasksOld implements JsonSerializable<TasksStateTask
         jsonWriter.writeIntField("inProgress", this.inProgress);
         jsonWriter.writeIntField("total", this.total);
         jsonWriter.writeArrayField("entityRecognitionTasks", this.entityRecognitionTasks,
-                (writer, element) -> writer.writeJson(element));
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("entityRecognitionPiiTasks", this.entityRecognitionTasks,
-                (writer, element) -> writer.writeJson(element));
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("keyPhraseExtractionTasks", this.entityRecognitionTasks,
-                (writer, element) -> writer.writeJson(element));
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("entityLinkingTasks", this.entityRecognitionTasks,
-                (writer, element) -> writer.writeJson(element));
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("sentimentAnalysisTasks", this.entityRecognitionTasks,
-                (writer, element) -> writer.writeJson(element));
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("customEntityRecognitionTasks", this.entityRecognitionTasks,
-                (writer, element) -> writer.writeJson(element));
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("customSingleClassificationTasks", this.entityRecognitionTasks,
-                (writer, element) -> writer.writeJson(element));
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("customMultiClassificationTasks", this.entityRecognitionTasks,
-                (writer, element) -> writer.writeJson(element));
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -376,29 +376,29 @@ public final class TasksStateTasksOld implements JsonSerializable<TasksStateTask
                 } else if ("total".equals(fieldName)) {
                     deserializedTasksStateTasksOld.total = reader.getInt();
                 } else if ("entityRecognitionTasks".equals(fieldName)) {
-                    deserializedTasksStateTasksOld.entityRecognitionTasks = reader.readArray(
-                            reader1 -> TasksStateTasksEntityRecognitionTasksItem.fromJson(reader1));
+                    deserializedTasksStateTasksOld.entityRecognitionTasks
+                        = reader.readArray(reader1 -> TasksStateTasksEntityRecognitionTasksItem.fromJson(reader1));
                 } else if ("entityRecognitionPiiTasks".equals(fieldName)) {
-                    deserializedTasksStateTasksOld.entityRecognitionPiiTasks = reader.readArray(
-                            reader1 -> TasksStateTasksEntityRecognitionPiiTasksItem.fromJson(reader1));
+                    deserializedTasksStateTasksOld.entityRecognitionPiiTasks
+                        = reader.readArray(reader1 -> TasksStateTasksEntityRecognitionPiiTasksItem.fromJson(reader1));
                 } else if ("keyPhraseExtractionTasks".equals(fieldName)) {
-                    deserializedTasksStateTasksOld.keyPhraseExtractionTasks = reader.readArray(
-                            reader1 -> TasksStateTasksKeyPhraseExtractionTasksItem.fromJson(reader1));
+                    deserializedTasksStateTasksOld.keyPhraseExtractionTasks
+                        = reader.readArray(reader1 -> TasksStateTasksKeyPhraseExtractionTasksItem.fromJson(reader1));
                 } else if ("entityLinkingTasks".equals(fieldName)) {
-                    deserializedTasksStateTasksOld.entityLinkingTasks = reader.readArray(
-                            reader1 -> TasksStateTasksEntityLinkingTasksItem.fromJson(reader1));
+                    deserializedTasksStateTasksOld.entityLinkingTasks
+                        = reader.readArray(reader1 -> TasksStateTasksEntityLinkingTasksItem.fromJson(reader1));
                 } else if ("sentimentAnalysisTasks".equals(fieldName)) {
-                    deserializedTasksStateTasksOld.sentimentAnalysisTasks = reader.readArray(
-                            reader1 -> TasksStateTasksSentimentAnalysisTasksItem.fromJson(reader1));
+                    deserializedTasksStateTasksOld.sentimentAnalysisTasks
+                        = reader.readArray(reader1 -> TasksStateTasksSentimentAnalysisTasksItem.fromJson(reader1));
                 } else if ("customEntityRecognitionTasks".equals(fieldName)) {
-                    deserializedTasksStateTasksOld.customEntityRecognitionTasks = reader.readArray(
-                            reader1 -> TasksStateTasksCustomEntityRecognitionTasksItem.fromJson(reader1));
+                    deserializedTasksStateTasksOld.customEntityRecognitionTasks = reader
+                        .readArray(reader1 -> TasksStateTasksCustomEntityRecognitionTasksItem.fromJson(reader1));
                 } else if ("customSingleClassificationTasks".equals(fieldName)) {
-                    deserializedTasksStateTasksOld.customSingleClassificationTasks = reader.readArray(
-                            reader1 -> TasksStateTasksCustomSingleClassificationTasksItem.fromJson(reader1));
+                    deserializedTasksStateTasksOld.customSingleClassificationTasks = reader
+                        .readArray(reader1 -> TasksStateTasksCustomSingleClassificationTasksItem.fromJson(reader1));
                 } else if ("customMultiClassificationTasks".equals(fieldName)) {
-                    deserializedTasksStateTasksOld.customMultiClassificationTasks = reader.readArray(
-                            reader1 -> TasksStateTasksCustomMultiClassificationTasksItem.fromJson(reader1));
+                    deserializedTasksStateTasksOld.customMultiClassificationTasks = reader
+                        .readArray(reader1 -> TasksStateTasksCustomMultiClassificationTasksItem.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The API deployment parameters metadata. */
+/**
+ * The API deployment parameters metadata.
+ */
 @Fluent
-public final class ApiDeploymentParameterMetadataSet {
+public final class ApiDeploymentParameterMetadataSet implements JsonSerializable<ApiDeploymentParameterMetadataSet> {
     /*
      * The package content link parameter.
      */
-    @JsonProperty(value = "packageContentLink")
     private ApiDeploymentParameterMetadata packageContentLink;
 
     /*
      * The package content link parameter.
      */
-    @JsonProperty(value = "redisCacheConnectionString")
     private ApiDeploymentParameterMetadata redisCacheConnectionString;
 
-    /** Creates an instance of ApiDeploymentParameterMetadataSet class. */
+    /**
+     * Creates an instance of ApiDeploymentParameterMetadataSet class.
+     */
     public ApiDeploymentParameterMetadataSet() {
     }
 
     /**
      * Get the packageContentLink property: The package content link parameter.
-     *
+     * 
      * @return the packageContentLink value.
      */
     public ApiDeploymentParameterMetadata packageContentLink() {
@@ -37,7 +43,7 @@ public final class ApiDeploymentParameterMetadataSet {
 
     /**
      * Set the packageContentLink property: The package content link parameter.
-     *
+     * 
      * @param packageContentLink the packageContentLink value to set.
      * @return the ApiDeploymentParameterMetadataSet object itself.
      */
@@ -48,7 +54,7 @@ public final class ApiDeploymentParameterMetadataSet {
 
     /**
      * Get the redisCacheConnectionString property: The package content link parameter.
-     *
+     * 
      * @return the redisCacheConnectionString value.
      */
     public ApiDeploymentParameterMetadata redisCacheConnectionString() {
@@ -57,19 +63,19 @@ public final class ApiDeploymentParameterMetadataSet {
 
     /**
      * Set the redisCacheConnectionString property: The package content link parameter.
-     *
+     * 
      * @param redisCacheConnectionString the redisCacheConnectionString value to set.
      * @return the ApiDeploymentParameterMetadataSet object itself.
      */
-    public ApiDeploymentParameterMetadataSet withRedisCacheConnectionString(
-        ApiDeploymentParameterMetadata redisCacheConnectionString) {
+    public ApiDeploymentParameterMetadataSet
+        withRedisCacheConnectionString(ApiDeploymentParameterMetadata redisCacheConnectionString) {
         this.redisCacheConnectionString = redisCacheConnectionString;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,5 +85,47 @@ public final class ApiDeploymentParameterMetadataSet {
         if (redisCacheConnectionString() != null) {
             redisCacheConnectionString().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("packageContentLink", this.packageContentLink);
+        jsonWriter.writeJsonField("redisCacheConnectionString", this.redisCacheConnectionString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiDeploymentParameterMetadataSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiDeploymentParameterMetadataSet if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiDeploymentParameterMetadataSet.
+     */
+    public static ApiDeploymentParameterMetadataSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiDeploymentParameterMetadataSet deserializedApiDeploymentParameterMetadataSet
+                = new ApiDeploymentParameterMetadataSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packageContentLink".equals(fieldName)) {
+                    deserializedApiDeploymentParameterMetadataSet.packageContentLink
+                        = ApiDeploymentParameterMetadata.fromJson(reader);
+                } else if ("redisCacheConnectionString".equals(fieldName)) {
+                    deserializedApiDeploymentParameterMetadataSet.redisCacheConnectionString
+                        = ApiDeploymentParameterMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiDeploymentParameterMetadataSet;
+        });
     }
 }

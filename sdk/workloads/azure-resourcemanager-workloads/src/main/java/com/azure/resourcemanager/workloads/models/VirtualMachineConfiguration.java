@@ -6,36 +6,41 @@ package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the virtual machine configuration. */
+/**
+ * Defines the virtual machine configuration.
+ */
 @Fluent
-public final class VirtualMachineConfiguration {
+public final class VirtualMachineConfiguration implements JsonSerializable<VirtualMachineConfiguration> {
     /*
      * The virtual machine size.
      */
-    @JsonProperty(value = "vmSize", required = true)
     private String vmSize;
 
     /*
      * The image reference.
      */
-    @JsonProperty(value = "imageReference", required = true)
     private ImageReference imageReference;
 
     /*
      * The OS profile.
      */
-    @JsonProperty(value = "osProfile", required = true)
     private OSProfile osProfile;
 
-    /** Creates an instance of VirtualMachineConfiguration class. */
+    /**
+     * Creates an instance of VirtualMachineConfiguration class.
+     */
     public VirtualMachineConfiguration() {
     }
 
     /**
      * Get the vmSize property: The virtual machine size.
-     *
+     * 
      * @return the vmSize value.
      */
     public String vmSize() {
@@ -44,7 +49,7 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Set the vmSize property: The virtual machine size.
-     *
+     * 
      * @param vmSize the vmSize value to set.
      * @return the VirtualMachineConfiguration object itself.
      */
@@ -55,7 +60,7 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Get the imageReference property: The image reference.
-     *
+     * 
      * @return the imageReference value.
      */
     public ImageReference imageReference() {
@@ -64,7 +69,7 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Set the imageReference property: The image reference.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the VirtualMachineConfiguration object itself.
      */
@@ -75,7 +80,7 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Get the osProfile property: The OS profile.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -84,7 +89,7 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Set the osProfile property: The OS profile.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineConfiguration object itself.
      */
@@ -95,33 +100,73 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vmSize() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmSize in model VirtualMachineConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vmSize in model VirtualMachineConfiguration"));
         }
         if (imageReference() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property imageReference in model VirtualMachineConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property imageReference in model VirtualMachineConfiguration"));
         } else {
             imageReference().validate();
         }
         if (osProfile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property osProfile in model VirtualMachineConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property osProfile in model VirtualMachineConfiguration"));
         } else {
             osProfile().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeJsonField("imageReference", this.imageReference);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineConfiguration.
+     */
+    public static VirtualMachineConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineConfiguration deserializedVirtualMachineConfiguration = new VirtualMachineConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmSize".equals(fieldName)) {
+                    deserializedVirtualMachineConfiguration.vmSize = reader.getString();
+                } else if ("imageReference".equals(fieldName)) {
+                    deserializedVirtualMachineConfiguration.imageReference = ImageReference.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedVirtualMachineConfiguration.osProfile = OSProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineConfiguration;
+        });
+    }
 }

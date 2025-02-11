@@ -16,54 +16,50 @@ import org.junit.jupiter.api.Assertions;
 public final class InternalNetworkPropertiesBgpConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InternalNetworkPropertiesBgpConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"bfdConfiguration\":{\"administrativeState\":\"Enabled\",\"intervalInMilliSeconds\":1017981463,\"multiplier\":797231309},\"defaultRouteOriginate\":\"True\",\"allowAS\":654268550,\"allowASOverride\":\"Enable\",\"fabricASN\":212980078870398723,\"peerASN\":570360669816848021,\"ipv4ListenRangePrefixes\":[\"rpejp\",\"ssanbtttkgsuxun\"],\"ipv6ListenRangePrefixes\":[\"gkp\",\"hboyikebhuhks\",\"gwl\",\"kh\"],\"ipv4NeighborAddress\":[{\"address\":\"jy\",\"configurationState\":\"Succeeded\"}],\"ipv6NeighborAddress\":[{\"address\":\"qzufgsyfejyvdwt\",\"configurationState\":\"DeferredControl\"},{\"address\":\"pqa\",\"configurationState\":\"Deprovisioning\"}],\"annotation\":\"ncfgybmxsnxoc\"}")
-                .toObject(InternalNetworkPropertiesBgpConfiguration.class);
-        Assertions.assertEquals("ncfgybmxsnxoc", model.annotation());
-        Assertions.assertEquals(1017981463, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(797231309, model.bfdConfiguration().multiplier());
+        InternalNetworkPropertiesBgpConfiguration model = BinaryData.fromString(
+            "{\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":479544259,\"multiplier\":2023428837},\"defaultRouteOriginate\":\"True\",\"allowAS\":313574832,\"allowASOverride\":\"Disable\",\"fabricASN\":9116002011177336524,\"peerASN\":6420721020164105387,\"ipv4ListenRangePrefixes\":[\"ncq\",\"azqicqchygtv\",\"byjanep\",\"bdpkxyqvgx\"],\"ipv6ListenRangePrefixes\":[\"detv\"],\"ipv4NeighborAddress\":[{\"address\":\"dxuwsaifm\",\"configurationState\":\"Succeeded\"},{\"address\":\"s\",\"configurationState\":\"PendingCommit\"},{\"address\":\"hg\",\"configurationState\":\"Deprovisioned\"},{\"address\":\"cknjolgj\",\"configurationState\":\"Succeeded\"}],\"ipv6NeighborAddress\":[{\"address\":\"lszerqzevx\",\"configurationState\":\"ErrorDeprovisioning\"},{\"address\":\"ntxwaljglzob\",\"configurationState\":\"Succeeded\"}],\"annotation\":\"afrqulhm\"}")
+            .toObject(InternalNetworkPropertiesBgpConfiguration.class);
+        Assertions.assertEquals("afrqulhm", model.annotation());
+        Assertions.assertEquals(479544259, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(2023428837, model.bfdConfiguration().multiplier());
         Assertions.assertEquals(BooleanEnumProperty.TRUE, model.defaultRouteOriginate());
-        Assertions.assertEquals(654268550, model.allowAS());
-        Assertions.assertEquals(AllowASOverride.ENABLE, model.allowASOverride());
-        Assertions.assertEquals(570360669816848021L, model.peerAsn());
-        Assertions.assertEquals("rpejp", model.ipv4ListenRangePrefixes().get(0));
-        Assertions.assertEquals("gkp", model.ipv6ListenRangePrefixes().get(0));
-        Assertions.assertEquals("jy", model.ipv4NeighborAddress().get(0).address());
-        Assertions.assertEquals("qzufgsyfejyvdwt", model.ipv6NeighborAddress().get(0).address());
+        Assertions.assertEquals(313574832, model.allowAS());
+        Assertions.assertEquals(AllowASOverride.DISABLE, model.allowASOverride());
+        Assertions.assertEquals(6420721020164105387L, model.peerAsn());
+        Assertions.assertEquals("ncq", model.ipv4ListenRangePrefixes().get(0));
+        Assertions.assertEquals("detv", model.ipv6ListenRangePrefixes().get(0));
+        Assertions.assertEquals("dxuwsaifm", model.ipv4NeighborAddress().get(0).address());
+        Assertions.assertEquals("lszerqzevx", model.ipv6NeighborAddress().get(0).address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternalNetworkPropertiesBgpConfiguration model =
-            new InternalNetworkPropertiesBgpConfiguration()
-                .withAnnotation("ncfgybmxsnxoc")
+        InternalNetworkPropertiesBgpConfiguration model
+            = new InternalNetworkPropertiesBgpConfiguration().withAnnotation("afrqulhm")
                 .withBfdConfiguration(
-                    new BfdConfiguration().withIntervalInMilliSeconds(1017981463).withMultiplier(797231309))
+                    new BfdConfiguration().withIntervalInMilliSeconds(479544259).withMultiplier(2023428837))
                 .withDefaultRouteOriginate(BooleanEnumProperty.TRUE)
-                .withAllowAS(654268550)
-                .withAllowASOverride(AllowASOverride.ENABLE)
-                .withPeerAsn(570360669816848021L)
-                .withIpv4ListenRangePrefixes(Arrays.asList("rpejp", "ssanbtttkgsuxun"))
-                .withIpv6ListenRangePrefixes(Arrays.asList("gkp", "hboyikebhuhks", "gwl", "kh"))
-                .withIpv4NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("jy")))
-                .withIpv6NeighborAddress(
-                    Arrays
-                        .asList(
-                            new NeighborAddress().withAddress("qzufgsyfejyvdwt"),
-                            new NeighborAddress().withAddress("pqa")));
+                .withAllowAS(313574832)
+                .withAllowASOverride(AllowASOverride.DISABLE)
+                .withPeerAsn(6420721020164105387L)
+                .withIpv4ListenRangePrefixes(Arrays.asList("ncq", "azqicqchygtv", "byjanep", "bdpkxyqvgx"))
+                .withIpv6ListenRangePrefixes(Arrays.asList("detv"))
+                .withIpv4NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("dxuwsaifm"),
+                    new NeighborAddress().withAddress("s"), new NeighborAddress().withAddress("hg"),
+                    new NeighborAddress().withAddress("cknjolgj")))
+                .withIpv6NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("lszerqzevx"),
+                    new NeighborAddress().withAddress("ntxwaljglzob")));
         model = BinaryData.fromObject(model).toObject(InternalNetworkPropertiesBgpConfiguration.class);
-        Assertions.assertEquals("ncfgybmxsnxoc", model.annotation());
-        Assertions.assertEquals(1017981463, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(797231309, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals("afrqulhm", model.annotation());
+        Assertions.assertEquals(479544259, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(2023428837, model.bfdConfiguration().multiplier());
         Assertions.assertEquals(BooleanEnumProperty.TRUE, model.defaultRouteOriginate());
-        Assertions.assertEquals(654268550, model.allowAS());
-        Assertions.assertEquals(AllowASOverride.ENABLE, model.allowASOverride());
-        Assertions.assertEquals(570360669816848021L, model.peerAsn());
-        Assertions.assertEquals("rpejp", model.ipv4ListenRangePrefixes().get(0));
-        Assertions.assertEquals("gkp", model.ipv6ListenRangePrefixes().get(0));
-        Assertions.assertEquals("jy", model.ipv4NeighborAddress().get(0).address());
-        Assertions.assertEquals("qzufgsyfejyvdwt", model.ipv6NeighborAddress().get(0).address());
+        Assertions.assertEquals(313574832, model.allowAS());
+        Assertions.assertEquals(AllowASOverride.DISABLE, model.allowASOverride());
+        Assertions.assertEquals(6420721020164105387L, model.peerAsn());
+        Assertions.assertEquals("ncq", model.ipv4ListenRangePrefixes().get(0));
+        Assertions.assertEquals("detv", model.ipv6ListenRangePrefixes().get(0));
+        Assertions.assertEquals("dxuwsaifm", model.ipv4NeighborAddress().get(0).address());
+        Assertions.assertEquals("lszerqzevx", model.ipv6NeighborAddress().get(0).address());
     }
 }

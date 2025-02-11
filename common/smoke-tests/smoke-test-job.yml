@@ -10,7 +10,6 @@ parameters:
     type: number
     default: 90
 
-
 jobs:
   - job: SmokeTest
     timeoutInMinutes: ${{ parameters.Timeout }}
@@ -22,12 +21,6 @@ jobs:
     pool:
       name: $(Pool)
       vmImage: $(OSVmImage)
-
-    variables:
-      azureCloudArmParameters: "@{ storageEndpointSuffix = 'core.windows.net'; azureCloud = 'AzureCloud'; }"
-      azureUSGovernmentArmParameters: "@{ storageEndpointSuffix = 'core.usgovcloudapi.net'; azureCloud = 'AzureUSGovernment'; }"
-      azureChinaCloudArmParameters: "@{ storageEndpointSuffix = 'core.chinacloudapi.cn'; azureCloud = 'AzureChinaCloud'; }"
-
 
     steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
@@ -85,12 +78,11 @@ jobs:
       - template: /eng/common/TestResources/deploy-test-resources.yml
         parameters:
           ServiceDirectory: $(ServiceDirectory)
-          ArmTemplateParameters: $(ArmTemplateParameters)
-          SubscriptionConfiguration: $(SubscriptionConfiguration)
+          ServiceConnection: azure-sdk-tests-public
 
       - ${{ parameters.TestTask }}
 
       - template: /eng/common/TestResources/remove-test-resources.yml
         parameters:
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
-          SubscriptionConfiguration: $(SubscriptionConfiguration)
+          ServiceConnection: azure-sdk-tests-public

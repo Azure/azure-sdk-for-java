@@ -132,7 +132,6 @@ public final class SnowflakeSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (exportSettings() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property exportSettings in model SnowflakeSource"));

@@ -26,7 +26,8 @@ public class KubernetesClusterTests extends SamplesTestBase {
     }
 
     @Test
-    public void testDeployImageFromContainerRegistryToKubernetes() throws JSchException, IOException, InterruptedException {
+    public void testDeployImageFromContainerRegistryToKubernetes()
+        throws JSchException, IOException, InterruptedException {
         if (!isPlaybackMode()) {
             Assertions.assertTrue(DeployImageFromContainerRegistryToKubernetes.runSample(azureResourceManager, "", ""));
         }
@@ -35,6 +36,7 @@ public class KubernetesClusterTests extends SamplesTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testManagedKubernetesClusterWithCustomerManagedKey() {
-        Assertions.assertTrue(ManageKubernetesClusterWithCustomerManagedKey.runSample(azureResourceManager, clientIdFromFile()));
+        Assertions.assertTrue(
+            ManageKubernetesClusterWithCustomerManagedKey.runSample(azureResourceManager, clientIdFromFile()));
     }
 }

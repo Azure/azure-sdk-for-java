@@ -10,33 +10,29 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ContentItem CreateOrUpdate. */
+/**
+ * Samples for ContentItem CreateOrUpdate.
+ */
 public final class ContentItemCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateContentTypeContentItem.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateContentTypeContentItem.json
      */
     /**
      * Sample code: ApiManagementCreateContentTypeContentItem.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementCreateContentTypeContentItem(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) throws IOException {
-        manager
-            .contentItems()
+        manager.contentItems()
             .define("4e3cf6a5-574a-ba08-1f23-2e7a38faa6d8")
             .withExistingContentType("rg1", "apimService1", "page")
-            .withProperties(
-                mapOf(
-                    "en_us",
-                    SerializerFactory
-                        .createDefaultManagementSerializerAdapter()
-                        .deserialize(
-                            "{\"description\":\"Short story about the"
-                                + " company.\",\"documentId\":\"contentTypes/document/contentItems/4e3cf6a5-574a-ba08-1f23-2e7a38faa6d8\",\"keywords\":\"company,"
-                                + " about\",\"permalink\":\"/about\",\"title\":\"About\"}",
-                            Object.class,
-                            SerializerEncoding.JSON)))
+            .withProperties(mapOf("en_us", SerializerFactory.createDefaultManagementSerializerAdapter()
+                .deserialize(
+                    "{\"description\":\"Short story about the company.\",\"documentId\":\"contentTypes/document/contentItems/4e3cf6a5-574a-ba08-1f23-2e7a38faa6d8\",\"keywords\":\"company, about\",\"permalink\":\"/about\",\"title\":\"About\"}",
+                    Object.class, SerializerEncoding.JSON)))
             .create();
     }
 

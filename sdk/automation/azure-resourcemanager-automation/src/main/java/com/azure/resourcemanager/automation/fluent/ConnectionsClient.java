@@ -13,11 +13,29 @@ import com.azure.resourcemanager.automation.fluent.models.ConnectionInner;
 import com.azure.resourcemanager.automation.models.ConnectionCreateOrUpdateParameters;
 import com.azure.resourcemanager.automation.models.ConnectionUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in ConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConnectionsClient.
+ */
 public interface ConnectionsClient {
     /**
      * Delete the connection.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param connectionName The name of connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String connectionName,
+        Context context);
+
+    /**
+     * Delete the connection.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionName The name of connection.
@@ -29,8 +47,8 @@ public interface ConnectionsClient {
     void delete(String resourceGroupName, String automationAccountName, String connectionName);
 
     /**
-     * Delete the connection.
-     *
+     * Retrieve the connection identified by connection name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionName The name of connection.
@@ -38,15 +56,15 @@ public interface ConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return definition of the connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String connectionName, Context context);
+    Response<ConnectionInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String connectionName, Context context);
 
     /**
      * Retrieve the connection identified by connection name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionName The name of connection.
@@ -59,11 +77,12 @@ public interface ConnectionsClient {
     ConnectionInner get(String resourceGroupName, String automationAccountName, String connectionName);
 
     /**
-     * Retrieve the connection identified by connection name.
-     *
+     * Create or update a connection.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param connectionName The name of connection.
+     * @param connectionName The parameters supplied to the create or update connection operation.
+     * @param parameters The parameters supplied to the create or update connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,12 +90,12 @@ public interface ConnectionsClient {
      * @return definition of the connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectionInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String connectionName, Context context);
+    Response<ConnectionInner> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        String connectionName, ConnectionCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create or update a connection.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionName The parameters supplied to the create or update connection operation.
@@ -87,19 +106,16 @@ public interface ConnectionsClient {
      * @return definition of the connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String connectionName,
+    ConnectionInner createOrUpdate(String resourceGroupName, String automationAccountName, String connectionName,
         ConnectionCreateOrUpdateParameters parameters);
 
     /**
-     * Create or update a connection.
-     *
+     * Update a connection.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param connectionName The parameters supplied to the create or update connection operation.
-     * @param parameters The parameters supplied to the create or update connection operation.
+     * @param connectionName The parameters supplied to the update a connection operation.
+     * @param parameters The parameters supplied to the update a connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,16 +123,12 @@ public interface ConnectionsClient {
      * @return definition of the connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String connectionName,
-        ConnectionCreateOrUpdateParameters parameters,
-        Context context);
+    Response<ConnectionInner> updateWithResponse(String resourceGroupName, String automationAccountName,
+        String connectionName, ConnectionUpdateParameters parameters, Context context);
 
     /**
      * Update a connection.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param connectionName The parameters supplied to the update a connection operation.
@@ -127,36 +139,12 @@ public interface ConnectionsClient {
      * @return definition of the connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String connectionName,
+    ConnectionInner update(String resourceGroupName, String automationAccountName, String connectionName,
         ConnectionUpdateParameters parameters);
 
     /**
-     * Update a connection.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param connectionName The parameters supplied to the update a connection operation.
-     * @param parameters The parameters supplied to the update a connection operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectionInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String connectionName,
-        ConnectionUpdateParameters parameters,
-        Context context);
-
-    /**
      * Retrieve a list of connections.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +157,7 @@ public interface ConnectionsClient {
 
     /**
      * Retrieve a list of connections.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -179,6 +167,6 @@ public interface ConnectionsClient {
      * @return the response model for the list connection operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConnectionInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context);
+    PagedIterable<ConnectionInner> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context);
 }

@@ -171,7 +171,6 @@ public final class SsisPackage extends SsisObjectMetadata {
      */
     @Override
     public void validate() {
-        super.validate();
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
         }

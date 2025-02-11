@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Group connectivity details.
  */
 @Fluent
-public final class GroupConnectivityInformation {
+public final class GroupConnectivityInformation implements JsonSerializable<GroupConnectivityInformation> {
     /*
      * Group ID.
      */
-    @JsonProperty(value = "groupId", access = JsonProperty.Access.WRITE_ONLY)
     private String groupId;
 
     /*
      * Member name.
      */
-    @JsonProperty(value = "memberName", access = JsonProperty.Access.WRITE_ONLY)
     private String memberName;
 
     /*
      * List of customer visible FQDNs.
      */
-    @JsonProperty(value = "customerVisibleFqdns")
     private List<String> customerVisibleFqdns;
 
     /*
      * Internal FQDN.
      */
-    @JsonProperty(value = "internalFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String internalFqdn;
 
     /*
      * Redirect map ID.
      */
-    @JsonProperty(value = "redirectMapId")
     private String redirectMapId;
 
     /*
      * PrivateLinkService ARM region.
      */
-    @JsonProperty(value = "privateLinkServiceArmRegion")
     private String privateLinkServiceArmRegion;
 
     /**
@@ -148,5 +146,55 @@ public final class GroupConnectivityInformation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("customerVisibleFqdns", this.customerVisibleFqdns,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("redirectMapId", this.redirectMapId);
+        jsonWriter.writeStringField("privateLinkServiceArmRegion", this.privateLinkServiceArmRegion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupConnectivityInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupConnectivityInformation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupConnectivityInformation.
+     */
+    public static GroupConnectivityInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupConnectivityInformation deserializedGroupConnectivityInformation = new GroupConnectivityInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupId".equals(fieldName)) {
+                    deserializedGroupConnectivityInformation.groupId = reader.getString();
+                } else if ("memberName".equals(fieldName)) {
+                    deserializedGroupConnectivityInformation.memberName = reader.getString();
+                } else if ("customerVisibleFqdns".equals(fieldName)) {
+                    List<String> customerVisibleFqdns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGroupConnectivityInformation.customerVisibleFqdns = customerVisibleFqdns;
+                } else if ("internalFqdn".equals(fieldName)) {
+                    deserializedGroupConnectivityInformation.internalFqdn = reader.getString();
+                } else if ("redirectMapId".equals(fieldName)) {
+                    deserializedGroupConnectivityInformation.redirectMapId = reader.getString();
+                } else if ("privateLinkServiceArmRegion".equals(fieldName)) {
+                    deserializedGroupConnectivityInformation.privateLinkServiceArmRegion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupConnectivityInformation;
+        });
     }
 }

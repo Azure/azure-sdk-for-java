@@ -70,7 +70,8 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
         client = setupClient(builder, "createUserAndTokenWithResponseUsingManagedIdentitySync");
 
         // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(SCOPES, Context.NONE);
+        Response<CommunicationUserIdentifierAndToken> response
+            = client.createUserAndTokenWithResponse(SCOPES, Context.NONE);
         CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
         verifyUserNotEmpty(result.getUser());

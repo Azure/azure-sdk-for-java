@@ -47,6 +47,9 @@ public final class DataLakeGen2SharedKeyParamPatch implements JsonSerializable<D
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

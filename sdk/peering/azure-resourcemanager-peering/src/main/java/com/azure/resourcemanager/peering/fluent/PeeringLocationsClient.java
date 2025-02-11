@@ -12,11 +12,13 @@ import com.azure.resourcemanager.peering.fluent.models.PeeringLocationInner;
 import com.azure.resourcemanager.peering.models.PeeringLocationsDirectPeeringType;
 import com.azure.resourcemanager.peering.models.PeeringLocationsKind;
 
-/** An instance of this class provides access to all the operations defined in PeeringLocationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PeeringLocationsClient.
+ */
 public interface PeeringLocationsClient {
     /**
      * Lists all of the available peering locations for the specified kind of peering.
-     *
+     * 
      * @param kind The kind of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -28,7 +30,7 @@ public interface PeeringLocationsClient {
 
     /**
      * Lists all of the available peering locations for the specified kind of peering.
-     *
+     * 
      * @param kind The kind of the peering.
      * @param directPeeringType The type of direct peering.
      * @param context The context to associate with this operation.
@@ -38,6 +40,6 @@ public interface PeeringLocationsClient {
      * @return the paginated list of peering locations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PeeringLocationInner> list(
-        PeeringLocationsKind kind, PeeringLocationsDirectPeeringType directPeeringType, Context context);
+    PagedIterable<PeeringLocationInner> list(PeeringLocationsKind kind,
+        PeeringLocationsDirectPeeringType directPeeringType, Context context);
 }

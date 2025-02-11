@@ -120,60 +120,59 @@ final class SystemProperties implements Map<String, Object> {
 
         final HashSet<Entry<String, Object>> entries = new HashSet<>();
         if (properties.getMessageId() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.MESSAGE_ID.getValue(), properties.getMessageId().toString(), LOGGER));
+            entries.add(new SystemPropertiesEntry(AmqpMessageConstant.MESSAGE_ID.getValue(),
+                properties.getMessageId().toString(), LOGGER));
         }
         if (properties.getUserId() != null && properties.getUserId().length > 0) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.USER_ID.getValue(), properties.getUserId(), LOGGER));
+            entries
+                .add(new SystemPropertiesEntry(AmqpMessageConstant.USER_ID.getValue(), properties.getUserId(), LOGGER));
         }
         if (properties.getTo() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.TO.getValue(), properties.getTo(), LOGGER));
+            entries.add(new SystemPropertiesEntry(AmqpMessageConstant.TO.getValue(), properties.getTo(), LOGGER));
         }
         if (properties.getSubject() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.SUBJECT.getValue(), properties.getSubject(), LOGGER));
+            entries.add(
+                new SystemPropertiesEntry(AmqpMessageConstant.SUBJECT.getValue(), properties.getSubject(), LOGGER));
         }
         if (properties.getReplyTo() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.REPLY_TO.getValue(), properties.getReplyTo(), LOGGER));
+            entries.add(
+                new SystemPropertiesEntry(AmqpMessageConstant.REPLY_TO.getValue(), properties.getReplyTo(), LOGGER));
         }
         if (properties.getCorrelationId() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.CORRELATION_ID.getValue(), properties.getCorrelationId().toString(), LOGGER));
+            entries.add(new SystemPropertiesEntry(AmqpMessageConstant.CORRELATION_ID.getValue(),
+                properties.getCorrelationId().toString(), LOGGER));
         }
         if (properties.getContentType() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.CONTENT_TYPE.getValue(), properties.getContentType(), LOGGER));
+            entries.add(new SystemPropertiesEntry(AmqpMessageConstant.CONTENT_TYPE.getValue(),
+                properties.getContentType(), LOGGER));
         }
         if (properties.getContentEncoding() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.CONTENT_ENCODING.getValue(), properties.getContentEncoding(), LOGGER));
+            entries.add(new SystemPropertiesEntry(AmqpMessageConstant.CONTENT_ENCODING.getValue(),
+                properties.getContentEncoding(), LOGGER));
         }
         if (properties.getContentEncoding() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue(), properties.getContentEncoding(), LOGGER));
+            entries.add(new SystemPropertiesEntry(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue(),
+                properties.getContentEncoding(), LOGGER));
         }
         if (properties.getCreationTime() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.CREATION_TIME.getValue(), properties.getCreationTime(), LOGGER));
+            entries.add(new SystemPropertiesEntry(AmqpMessageConstant.CREATION_TIME.getValue(),
+                properties.getCreationTime(), LOGGER));
         }
         if (properties.getGroupId() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.GROUP_ID.getValue(), properties.getGroupId(), LOGGER));
+            entries.add(
+                new SystemPropertiesEntry(AmqpMessageConstant.GROUP_ID.getValue(), properties.getGroupId(), LOGGER));
         }
         if (properties.getGroupSequence() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.GROUP_SEQUENCE.getValue(), properties.getGroupSequence(), LOGGER));
+            entries.add(new SystemPropertiesEntry(AmqpMessageConstant.GROUP_SEQUENCE.getValue(),
+                properties.getGroupSequence(), LOGGER));
         }
         if (properties.getReplyToGroupId() != null) {
-            entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue(), properties.getReplyToGroupId(), LOGGER));
+            entries.add(new SystemPropertiesEntry(AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue(),
+                properties.getReplyToGroupId(), LOGGER));
         }
 
-        message.getMessageAnnotations().forEach((key, value) ->
-            entries.add(new SystemPropertiesEntry(key, value, LOGGER)));
+        message.getMessageAnnotations()
+            .forEach((key, value) -> entries.add(new SystemPropertiesEntry(key, value, LOGGER)));
 
         return entries;
     }

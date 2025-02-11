@@ -23,7 +23,8 @@ public final class AzureDataLakeStoreSource extends CopySource {
     private String type = "AzureDataLakeStoreSource";
 
     /*
-     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     private Object recursive;
 

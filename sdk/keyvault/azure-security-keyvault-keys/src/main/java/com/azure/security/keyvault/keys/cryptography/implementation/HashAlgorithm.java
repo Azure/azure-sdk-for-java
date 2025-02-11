@@ -5,9 +5,7 @@ package com.azure.security.keyvault.keys.cryptography.implementation;
 
 enum HashAlgorithm {
 
-    SHA_256("SHA-256"),
-    SHA_384("SHA-384"),
-    SHA_512("SHA-512");
+    SHA_256("SHA-256"), SHA_384("SHA-384"), SHA_512("SHA-512");
 
     private final String value;
 

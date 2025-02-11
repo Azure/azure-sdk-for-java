@@ -85,8 +85,6 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     public void init() {
-        // TODO: add support for openAsync
-        // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
         startRefreshLocationTimerAsync(true).block(maxInitializationTime);
     }
 

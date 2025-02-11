@@ -42,10 +42,10 @@ import java.util.stream.Collectors;
 class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testCreateDevBox() {
-        SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
-            setPlaybackSyncPollerPollInterval(devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName)));
-        Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
+        SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse = setPlaybackSyncPollerPollInterval(
+            devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName)));
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            devBoxCreateResponse.waitForCompletion().getStatus());
         DevBox devBox = devBoxCreateResponse.getFinalResult();
         validateDevBox(devBox);
     }
@@ -61,9 +61,9 @@ class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testListDevBoxes() {
         setupDevBox();
-        
+
         PagedIterable<DevBox> devBoxesResponse = devBoxesClient.listDevBoxes(projectName, meUserId);
-        List<DevBox> devBoxes = devBoxesResponse.stream().collect(Collectors.toList());  
+        List<DevBox> devBoxes = devBoxesResponse.stream().collect(Collectors.toList());
         Assertions.assertEquals(1, devBoxes.size());
         validateDevBox(devBoxes.get(0));
     }
@@ -71,9 +71,9 @@ class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testListAllDevBoxesByUser() {
         setupDevBox();
-        
+
         PagedIterable<DevBox> devBoxesResponse = devBoxesClient.listAllDevBoxesByUser(meUserId);
-        List<DevBox> devBoxes = devBoxesResponse.stream().collect(Collectors.toList());  
+        List<DevBox> devBoxes = devBoxesResponse.stream().collect(Collectors.toList());
         Assertions.assertEquals(1, devBoxes.size());
         validateDevBox(devBoxes.get(0));
     }
@@ -81,9 +81,9 @@ class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testListAllDevBoxes() {
         setupDevBox();
-        
-        PagedIterable<DevBox> devBoxesResponse = devBoxesClient.listAllDevBoxes();  
-        List<DevBox> devBoxes = devBoxesResponse.stream().collect(Collectors.toList());  
+
+        PagedIterable<DevBox> devBoxesResponse = devBoxesClient.listAllDevBoxes();
+        List<DevBox> devBoxes = devBoxesResponse.stream().collect(Collectors.toList());
         Assertions.assertEquals(1, devBoxes.size());
         validateDevBox(devBoxes.get(0));
     }
@@ -91,9 +91,9 @@ class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testGetRemoteConnection() {
         setupDevBox();
-        
+
         RemoteConnection remoteConnection = devBoxesClient.getRemoteConnection(projectName, meUserId, devBoxName);
-        
+
         Assertions.assertNotNull(remoteConnection);
         Assertions.assertTrue(remoteConnection.getWebUrl().startsWith("https"));
         Assertions.assertTrue(remoteConnection.getRdpConnectionUrl().startsWith("ms-avd"));
@@ -102,26 +102,26 @@ class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testStartAndStopDevBox() {
         setupDevBox();
-        
-        SyncPoller<DevCenterOperationDetails, Void> devBoxStopResponse =
-                setPlaybackSyncPollerPollInterval(devBoxesClient.beginStopDevBox(projectName, meUserId, devBoxName));
-        Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxStopResponse.waitForCompletion().getStatus());
 
-        SyncPoller<DevCenterOperationDetails, Void> devBoxStartResponse =
-                setPlaybackSyncPollerPollInterval(devBoxesClient.beginStartDevBox(projectName, meUserId, devBoxName));
-        Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxStartResponse.waitForCompletion().getStatus());
+        SyncPoller<DevCenterOperationDetails, Void> devBoxStopResponse
+            = setPlaybackSyncPollerPollInterval(devBoxesClient.beginStopDevBox(projectName, meUserId, devBoxName));
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            devBoxStopResponse.waitForCompletion().getStatus());
+
+        SyncPoller<DevCenterOperationDetails, Void> devBoxStartResponse
+            = setPlaybackSyncPollerPollInterval(devBoxesClient.beginStartDevBox(projectName, meUserId, devBoxName));
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            devBoxStartResponse.waitForCompletion().getStatus());
     }
 
     @Test
     public void testRestartDevBox() {
         setupDevBox();
 
-        SyncPoller<DevCenterOperationDetails, Void> devBoxRestartResponse =
-                setPlaybackSyncPollerPollInterval(devBoxesClient.beginRestartDevBox(projectName, meUserId, devBoxName));
-        Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxRestartResponse.waitForCompletion().getStatus());
+        SyncPoller<DevCenterOperationDetails, Void> devBoxRestartResponse
+            = setPlaybackSyncPollerPollInterval(devBoxesClient.beginRestartDevBox(projectName, meUserId, devBoxName));
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            devBoxRestartResponse.waitForCompletion().getStatus());
     }
 
     @Test
@@ -133,7 +133,7 @@ class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testListPools() {
         PagedIterable<DevBoxPool> poolsResponse = devBoxesClient.listPools(projectName);
-        List<DevBoxPool> pools = poolsResponse.stream().collect(Collectors.toList());  
+        List<DevBoxPool> pools = poolsResponse.stream().collect(Collectors.toList());
         Assertions.assertEquals(1, pools.size());
         validatePool(pools.get(0));
     }
@@ -147,7 +147,7 @@ class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testListSchedules() {
         PagedIterable<DevBoxSchedule> schedulesResponse = devBoxesClient.listSchedules(projectName, poolName);
-        List<DevBoxSchedule> schedules = schedulesResponse.stream().collect(Collectors.toList());  
+        List<DevBoxSchedule> schedules = schedulesResponse.stream().collect(Collectors.toList());
         Assertions.assertEquals(1, schedules.size());
         validateSchedule(schedules.get(0));
     }
@@ -155,14 +155,15 @@ class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testGetAndDelayDevBoxAction() {
         setupDevBox();
-        
+
         DevBoxAction action = devBoxesClient.getDevBoxAction(projectName, meUserId, devBoxName, "schedule-default");
         validateAction(action);
 
         OffsetDateTime currentScheduledTime = action.getNextAction().getScheduledTime();
         OffsetDateTime delayUntil = currentScheduledTime.plusMinutes(10);
 
-        DevBoxAction delayedAction = devBoxesClient.delayAction(projectName, meUserId, devBoxName, action.getName(), delayUntil);
+        DevBoxAction delayedAction
+            = devBoxesClient.delayAction(projectName, meUserId, devBoxName, action.getName(), delayUntil);
         validateAction(delayedAction);
 
         OffsetDateTime delayedTime = delayedAction.getNextAction().getScheduledTime();
@@ -172,17 +173,21 @@ class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testGetAndDelayAllDevBoxActions() {
         setupDevBox();
-        
-        List<DevBoxAction> devBoxActions = devBoxesClient.listDevBoxActions(projectName, meUserId, devBoxName).stream().collect(Collectors.toList()); 
-        DevBoxAction action = devBoxActions.get(0); 
-        
+
+        List<DevBoxAction> devBoxActions
+            = devBoxesClient.listDevBoxActions(projectName, meUserId, devBoxName).stream().collect(Collectors.toList());
+        DevBoxAction action = devBoxActions.get(0);
+
         Assertions.assertEquals(1, devBoxActions.size());
         validateAction(action);
 
         OffsetDateTime currentScheduledTime = action.getNextAction().getScheduledTime();
         OffsetDateTime delayUntil = currentScheduledTime.plusMinutes(10);
 
-        List<DevBoxActionDelayResult> actionsDelayResult = devBoxesClient.delayAllActions(projectName, meUserId, devBoxName, delayUntil).stream().collect(Collectors.toList()); 
+        List<DevBoxActionDelayResult> actionsDelayResult
+            = devBoxesClient.delayAllActions(projectName, meUserId, devBoxName, delayUntil)
+                .stream()
+                .collect(Collectors.toList());
 
         Assertions.assertEquals(1, actionsDelayResult.size());
         Assertions.assertEquals("schedule-default", actionsDelayResult.get(0).getActionName());
@@ -193,29 +198,29 @@ class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testSkipActionAndDeleteDevBox() {
         setupDevBox();
-        
+
         devBoxesClient.skipAction(projectName, meUserId, devBoxName, "schedule-default");
 
-        SyncPoller<DevCenterOperationDetails, Void> devBoxDeleteResponse =
-                setPlaybackSyncPollerPollInterval(devBoxesClient.beginDeleteDevBox(projectName, meUserId, devBoxName));
-        Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxDeleteResponse.waitForCompletion().getStatus());
+        SyncPoller<DevCenterOperationDetails, Void> devBoxDeleteResponse
+            = setPlaybackSyncPollerPollInterval(devBoxesClient.beginDeleteDevBox(projectName, meUserId, devBoxName));
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            devBoxDeleteResponse.waitForCompletion().getStatus());
     }
 
     public DevBox setupDevBox() {
         //get dev box if exists. If not, NotFound error will be thrown, and then we create dev box
 
-        DevBox devBox; 
+        DevBox devBox;
         try {
             devBox = devBoxesClient.getDevBox(projectName, meUserId, devBoxName);
         } catch (Exception e) {
-            SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
-                    setPlaybackSyncPollerPollInterval(devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName)));
-            Assertions.assertEquals(
-                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
-    
+            SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse = setPlaybackSyncPollerPollInterval(
+                devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName)));
+            Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                devBoxCreateResponse.waitForCompletion().getStatus());
+
             devBox = devBoxCreateResponse.getFinalResult();
-        } 
+        }
         Assertions.assertNotNull(devBox);
         Assertions.assertEquals(devBoxName, devBox.getName());
 
@@ -260,7 +265,8 @@ class DevBoxTests extends DevCenterClientTestBase {
         // verify property "imageReference"
         DevBoxImageReference responseImageReference = devBox.getImageReference();
         Assertions.assertNotNull(responseImageReference);
-        Assertions.assertEquals("MicrosoftWindowsDesktop_windows-ent-cpc_win11-21h2-ent-cpc-m365", responseImageReference.getName());
+        Assertions.assertEquals("MicrosoftWindowsDesktop_windows-ent-cpc_win11-21h2-ent-cpc-m365",
+            responseImageReference.getName());
         Assertions.assertEquals("1.0.0", responseImageReference.getVersion());
         Assertions.assertEquals("Windows11", responseImageReference.getOperatingSystem());
         Assertions.assertEquals("win11-21h2-ent-cpc-m365", responseImageReference.getOsBuildNumber());
@@ -298,7 +304,8 @@ class DevBoxTests extends DevCenterClientTestBase {
         // verify property "imageReference"
         DevBoxImageReference responseImageReference = pool.getImageReference();
         Assertions.assertNotNull(responseImageReference);
-        Assertions.assertEquals("MicrosoftWindowsDesktop_windows-ent-cpc_win11-21h2-ent-cpc-m365", responseImageReference.getName());
+        Assertions.assertEquals("MicrosoftWindowsDesktop_windows-ent-cpc_win11-21h2-ent-cpc-m365",
+            responseImageReference.getName());
         Assertions.assertEquals("1.0.0", responseImageReference.getVersion());
         Assertions.assertEquals("Windows11", responseImageReference.getOperatingSystem());
         Assertions.assertEquals("win11-21h2-ent-cpc-m365", responseImageReference.getOsBuildNumber());
@@ -332,11 +339,11 @@ class DevBoxTests extends DevCenterClientTestBase {
         // verify property "actionType"
         Assertions.assertEquals(DevBoxActionType.STOP, action.getActionType());
         // verify property "sourceId"
-        Assertions.assertEquals("/projects/" + projectName + "/pools/" + poolName + "/schedules/default", action.getSourceId());
+        Assertions.assertEquals("/projects/" + projectName + "/pools/" + poolName + "/schedules/default",
+            action.getSourceId());
         // verify property "nextAction"
         DevBoxNextAction responseNextAction = action.getNextAction();
         Assertions.assertNotNull(responseNextAction);
         Assertions.assertNotNull(responseNextAction.getScheduledTime());
     }
 }
-

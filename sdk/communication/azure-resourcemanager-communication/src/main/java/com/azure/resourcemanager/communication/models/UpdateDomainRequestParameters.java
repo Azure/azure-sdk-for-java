@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.communication.fluent.models.UpdateDomainProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -17,7 +20,6 @@ public final class UpdateDomainRequestParameters extends TaggedResource {
     /*
      * A class that describes the updatable properties of a Domains resource.
      */
-    @JsonProperty(value = "properties")
     private UpdateDomainProperties innerProperties;
 
     /**
@@ -74,9 +76,49 @@ public final class UpdateDomainRequestParameters extends TaggedResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateDomainRequestParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateDomainRequestParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateDomainRequestParameters.
+     */
+    public static UpdateDomainRequestParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateDomainRequestParameters deserializedUpdateDomainRequestParameters
+                = new UpdateDomainRequestParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedUpdateDomainRequestParameters.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpdateDomainRequestParameters.innerProperties = UpdateDomainProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateDomainRequestParameters;
+        });
     }
 }

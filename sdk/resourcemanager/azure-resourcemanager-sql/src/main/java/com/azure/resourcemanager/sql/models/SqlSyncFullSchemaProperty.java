@@ -12,9 +12,17 @@ import java.util.List;
 @Fluent
 public interface SqlSyncFullSchemaProperty extends HasInnerModel<SyncFullSchemaPropertiesInner> {
 
-    /** @return the list of tables in the database full schema. */
+    /**
+     * Gets the list of tables in the database full schema.
+     *
+     * @return the list of tables in the database full schema.
+     */
     List<SyncFullSchemaTable> tables();
 
-    /** @return last update time of the database schema. */
+    /**
+     * Gets last update time of the database schema.
+     *
+     * @return last update time of the database schema.
+     */
     OffsetDateTime lastUpdateTime();
 }

@@ -32,6 +32,6 @@ public interface LocationBasedRecommendedActionSessionsOperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recommendation action session operation status along with {@link Response}.
      */
-    Response<RecommendedActionSessionsOperationStatus> getWithResponse(
-        String locationName, String operationId, Context context);
+    Response<RecommendedActionSessionsOperationStatus> getWithResponse(String locationName, String operationId,
+        Context context);
 }

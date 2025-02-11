@@ -28,11 +28,6 @@ public class MultiplePipelineTrigger extends Trigger {
      */
     private List<TriggerPipelineReference> pipelines;
 
-    /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
-     */
-    private TriggerRuntimeState runtimeState;
-
     /**
      * Creates an instance of MultiplePipelineTrigger class.
      */
@@ -70,17 +65,6 @@ public class MultiplePipelineTrigger extends Trigger {
     }
 
     /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
-     * the Trigger.
-     * 
-     * @return the runtimeState value.
-     */
-    @Override
-    public TriggerRuntimeState runtimeState() {
-        return this.runtimeState;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -105,7 +89,6 @@ public class MultiplePipelineTrigger extends Trigger {
      */
     @Override
     public void validate() {
-        super.validate();
         if (pipelines() != null) {
             pipelines().forEach(e -> e.validate());
         }
@@ -179,8 +162,8 @@ public class MultiplePipelineTrigger extends Trigger {
                 if ("description".equals(fieldName)) {
                     deserializedMultiplePipelineTrigger.withDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedMultiplePipelineTrigger.runtimeState
-                        = TriggerRuntimeState.fromString(reader.getString());
+                    deserializedMultiplePipelineTrigger
+                        .withRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedMultiplePipelineTrigger.withAnnotations(annotations);

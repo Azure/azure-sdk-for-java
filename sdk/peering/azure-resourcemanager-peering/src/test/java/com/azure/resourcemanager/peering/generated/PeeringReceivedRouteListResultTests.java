@@ -13,26 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringReceivedRouteListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringReceivedRouteListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"prefix\":\"b\",\"nextHop\":\"cuh\",\"asPath\":\"tcty\",\"originAsValidationState\":\"klbb\",\"rpkiValidationState\":\"plwzbhvgyugu\",\"trustAnchor\":\"vmkfssxqu\",\"receivedTimestamp\":\"fpl\"},{\"prefix\":\"gsxnkjzkdeslpv\",\"nextHop\":\"pwiyig\",\"asPath\":\"pkdwzbai\",\"originAsValidationState\":\"bbaumnyquped\",\"rpkiValidationState\":\"jn\",\"trustAnchor\":\"ckhsmtxpsieb\",\"receivedTimestamp\":\"hvpesapskrdqm\"},{\"prefix\":\"jdhtldwkyzxu\",\"nextHop\":\"kn\",\"asPath\":\"scwsv\",\"originAsValidationState\":\"otogtwrupqs\",\"rpkiValidationState\":\"nmic\",\"trustAnchor\":\"vce\",\"receivedTimestamp\":\"eil\"}],\"nextLink\":\"notyfjfcnjbkcn\"}")
-                .toObject(PeeringReceivedRouteListResult.class);
-        Assertions.assertEquals("notyfjfcnjbkcn", model.nextLink());
+        PeeringReceivedRouteListResult model = BinaryData.fromString(
+            "{\"value\":[{\"prefix\":\"xhniskxfbkpycgk\",\"nextHop\":\"ndnhj\",\"asPath\":\"uwhvylwzbtdhxujz\",\"originAsValidationState\":\"mpowuwpr\",\"rpkiValidationState\":\"lve\",\"trustAnchor\":\"lupj\",\"receivedTimestamp\":\"hfxobbcswsrtj\"},{\"prefix\":\"plrbpbewtghf\",\"nextHop\":\"lcgwxzvlvqh\",\"asPath\":\"begibtnmxiebwwa\",\"originAsValidationState\":\"ayqcgw\",\"rpkiValidationState\":\"zjuzgwyz\",\"trustAnchor\":\"txon\",\"receivedTimestamp\":\"ts\"}],\"nextLink\":\"jcbpwxqpsrknft\"}")
+            .toObject(PeeringReceivedRouteListResult.class);
+        Assertions.assertEquals("jcbpwxqpsrknft", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringReceivedRouteListResult model =
-            new PeeringReceivedRouteListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PeeringReceivedRouteInner(),
-                            new PeeringReceivedRouteInner(),
-                            new PeeringReceivedRouteInner()))
-                .withNextLink("notyfjfcnjbkcn");
+        PeeringReceivedRouteListResult model = new PeeringReceivedRouteListResult()
+            .withValue(Arrays.asList(new PeeringReceivedRouteInner(), new PeeringReceivedRouteInner()))
+            .withNextLink("jcbpwxqpsrknft");
         model = BinaryData.fromObject(model).toObject(PeeringReceivedRouteListResult.class);
-        Assertions.assertEquals("notyfjfcnjbkcn", model.nextLink());
+        Assertions.assertEquals("jcbpwxqpsrknft", model.nextLink());
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class SecurityFamily extends ExpandableStringEnum<SecurityFamily> {
      * @param name a name to look for.
      * @return the corresponding SecurityFamily.
      */
-    @JsonCreator
     public static SecurityFamily fromString(String name) {
         return fromString(name, SecurityFamily.class);
     }

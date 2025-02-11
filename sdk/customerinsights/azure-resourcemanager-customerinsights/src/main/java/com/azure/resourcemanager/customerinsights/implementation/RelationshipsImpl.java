@@ -21,22 +21,18 @@ public final class RelationshipsImpl implements Relationships {
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    public RelationshipsImpl(
-        RelationshipsClient innerClient,
+    public RelationshipsImpl(RelationshipsClient innerClient,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<RelationshipResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String relationshipName, Context context) {
-        Response<RelationshipResourceFormatInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, hubName, relationshipName, context);
+    public Response<RelationshipResourceFormat> getWithResponse(String resourceGroupName, String hubName,
+        String relationshipName, Context context) {
+        Response<RelationshipResourceFormatInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, hubName, relationshipName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RelationshipResourceFormatImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -61,118 +57,92 @@ public final class RelationshipsImpl implements Relationships {
     }
 
     public PagedIterable<RelationshipResourceFormat> listByHub(String resourceGroupName, String hubName) {
-        PagedIterable<RelationshipResourceFormatInner> inner =
-            this.serviceClient().listByHub(resourceGroupName, hubName);
-        return Utils.mapPage(inner, inner1 -> new RelationshipResourceFormatImpl(inner1, this.manager()));
+        PagedIterable<RelationshipResourceFormatInner> inner
+            = this.serviceClient().listByHub(resourceGroupName, hubName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new RelationshipResourceFormatImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RelationshipResourceFormat> listByHub(
-        String resourceGroupName, String hubName, Context context) {
-        PagedIterable<RelationshipResourceFormatInner> inner =
-            this.serviceClient().listByHub(resourceGroupName, hubName, context);
-        return Utils.mapPage(inner, inner1 -> new RelationshipResourceFormatImpl(inner1, this.manager()));
+    public PagedIterable<RelationshipResourceFormat> listByHub(String resourceGroupName, String hubName,
+        Context context) {
+        PagedIterable<RelationshipResourceFormatInner> inner
+            = this.serviceClient().listByHub(resourceGroupName, hubName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new RelationshipResourceFormatImpl(inner1, this.manager()));
     }
 
     public RelationshipResourceFormat getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String relationshipName = Utils.getValueFromIdByName(id, "relationships");
+        String relationshipName = ResourceManagerUtils.getValueFromIdByName(id, "relationships");
         if (relationshipName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
         }
         return this.getWithResponse(resourceGroupName, hubName, relationshipName, Context.NONE).getValue();
     }
 
     public Response<RelationshipResourceFormat> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String relationshipName = Utils.getValueFromIdByName(id, "relationships");
+        String relationshipName = ResourceManagerUtils.getValueFromIdByName(id, "relationships");
         if (relationshipName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
         }
         return this.getWithResponse(resourceGroupName, hubName, relationshipName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String relationshipName = Utils.getValueFromIdByName(id, "relationships");
+        String relationshipName = ResourceManagerUtils.getValueFromIdByName(id, "relationships");
         if (relationshipName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
         }
         this.delete(resourceGroupName, hubName, relationshipName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String relationshipName = Utils.getValueFromIdByName(id, "relationships");
+        String relationshipName = ResourceManagerUtils.getValueFromIdByName(id, "relationships");
         if (relationshipName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
         }
         this.delete(resourceGroupName, hubName, relationshipName, context);
     }

@@ -22,6 +22,7 @@ public class PageListHelper {
 
     public interface PageListAccessor {
         String getNextMarker(PageList pageList);
+
         PageList setNextMarker(PageList pageList, String marker);
     }
 }

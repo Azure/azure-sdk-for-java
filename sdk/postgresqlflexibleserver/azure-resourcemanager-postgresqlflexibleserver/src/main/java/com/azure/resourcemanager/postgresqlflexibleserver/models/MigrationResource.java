@@ -133,8 +133,8 @@ public interface MigrationResource {
     String sourceDbServerResourceId();
 
     /**
-     * Gets the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Gets the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
      * 
      * @return the sourceDbServerFullyQualifiedDomainName value.
      */
@@ -148,8 +148,8 @@ public interface MigrationResource {
     String targetDbServerResourceId();
 
     /**
-     * Gets the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Gets the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
      * 
      * @return the targetDbServerFullyQualifiedDomainName value.
      */
@@ -463,10 +463,12 @@ public interface MigrationResource {
         interface WithSourceDbServerFullyQualifiedDomainName {
             /**
              * Specifies the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name
-             * or ip. It is a optional value, if customer provide it, dms will always use it for connection.
+             * (FQDN) or IP address. It is a optional value, if customer provide it, migration service will always use
+             * it for connection.
              * 
-             * @param sourceDbServerFullyQualifiedDomainName Source server fully qualified domain name or ip. It is a
-             * optional value, if customer provide it, dms will always use it for connection.
+             * @param sourceDbServerFullyQualifiedDomainName Source server fully qualified domain name (FQDN) or IP
+             * address. It is a optional value, if customer provide it, migration service will always use it for
+             * connection.
              * @return the next definition stage.
              */
             WithCreate withSourceDbServerFullyQualifiedDomainName(String sourceDbServerFullyQualifiedDomainName);
@@ -478,10 +480,12 @@ public interface MigrationResource {
         interface WithTargetDbServerFullyQualifiedDomainName {
             /**
              * Specifies the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name
-             * or ip. It is a optional value, if customer provide it, dms will always use it for connection.
+             * (FQDN) or IP address. It is a optional value, if customer provide it, migration service will always use
+             * it for connection.
              * 
-             * @param targetDbServerFullyQualifiedDomainName Target server fully qualified domain name or ip. It is a
-             * optional value, if customer provide it, dms will always use it for connection.
+             * @param targetDbServerFullyQualifiedDomainName Target server fully qualified domain name (FQDN) or IP
+             * address. It is a optional value, if customer provide it, migration service will always use it for
+             * connection.
              * @return the next definition stage.
              */
             WithCreate withTargetDbServerFullyQualifiedDomainName(String targetDbServerFullyQualifiedDomainName);
@@ -726,10 +730,12 @@ public interface MigrationResource {
         interface WithSourceDbServerFullyQualifiedDomainName {
             /**
              * Specifies the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name
-             * or ip. It is a optional value, if customer provide it, dms will always use it for connection.
+             * (FQDN) or IP address. It is a optional value, if customer provide it, migration service will always use
+             * it for connection.
              * 
-             * @param sourceDbServerFullyQualifiedDomainName Source server fully qualified domain name or ip. It is a
-             * optional value, if customer provide it, dms will always use it for connection.
+             * @param sourceDbServerFullyQualifiedDomainName Source server fully qualified domain name (FQDN) or IP
+             * address. It is a optional value, if customer provide it, migration service will always use it for
+             * connection.
              * @return the next definition stage.
              */
             Update withSourceDbServerFullyQualifiedDomainName(String sourceDbServerFullyQualifiedDomainName);
@@ -741,10 +747,12 @@ public interface MigrationResource {
         interface WithTargetDbServerFullyQualifiedDomainName {
             /**
              * Specifies the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name
-             * or ip. It is a optional value, if customer provide it, dms will always use it for connection.
+             * (FQDN) or IP address. It is a optional value, if customer provide it, migration service will always use
+             * it for connection.
              * 
-             * @param targetDbServerFullyQualifiedDomainName Target server fully qualified domain name or ip. It is a
-             * optional value, if customer provide it, dms will always use it for connection.
+             * @param targetDbServerFullyQualifiedDomainName Target server fully qualified domain name (FQDN) or IP
+             * address. It is a optional value, if customer provide it, migration service will always use it for
+             * connection.
              * @return the next definition stage.
              */
             Update withTargetDbServerFullyQualifiedDomainName(String targetDbServerFullyQualifiedDomainName);

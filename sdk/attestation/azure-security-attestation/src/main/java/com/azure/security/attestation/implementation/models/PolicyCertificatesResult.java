@@ -60,6 +60,9 @@ public final class PolicyCertificatesResult implements JsonSerializable<PolicyCe
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

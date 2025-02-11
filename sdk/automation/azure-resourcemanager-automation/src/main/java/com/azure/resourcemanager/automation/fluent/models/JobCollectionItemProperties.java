@@ -5,72 +5,76 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.JobStatus;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** Job collection item properties. */
+/**
+ * Job collection item properties.
+ */
 @Fluent
-public final class JobCollectionItemProperties {
+public final class JobCollectionItemProperties implements JsonSerializable<JobCollectionItemProperties> {
     /*
      * The runbook association.
      */
-    @JsonProperty(value = "runbook", access = JsonProperty.Access.WRITE_ONLY)
     private RunbookAssociationProperty runbook;
 
     /*
      * The id of the job.
      */
-    @JsonProperty(value = "jobId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID jobId;
 
     /*
      * The creation time of the job.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The status of the job.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private JobStatus status;
 
     /*
      * The start time of the job.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The end time of the job.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * The last modified time of the job.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * The provisioning state of a resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Specifies the runOn group name where the job was executed.
      */
-    @JsonProperty(value = "runOn")
     private String runOn;
 
     /**
+     * Creates an instance of JobCollectionItemProperties class.
+     */
+    public JobCollectionItemProperties() {
+    }
+
+    /**
      * Get the runbook property: The runbook association.
-     *
+     * 
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
@@ -79,7 +83,7 @@ public final class JobCollectionItemProperties {
 
     /**
      * Get the jobId property: The id of the job.
-     *
+     * 
      * @return the jobId value.
      */
     public UUID jobId() {
@@ -88,7 +92,7 @@ public final class JobCollectionItemProperties {
 
     /**
      * Get the creationTime property: The creation time of the job.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -97,7 +101,7 @@ public final class JobCollectionItemProperties {
 
     /**
      * Get the status property: The status of the job.
-     *
+     * 
      * @return the status value.
      */
     public JobStatus status() {
@@ -106,7 +110,7 @@ public final class JobCollectionItemProperties {
 
     /**
      * Get the startTime property: The start time of the job.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -115,7 +119,7 @@ public final class JobCollectionItemProperties {
 
     /**
      * Get the endTime property: The end time of the job.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -124,7 +128,7 @@ public final class JobCollectionItemProperties {
 
     /**
      * Get the lastModifiedTime property: The last modified time of the job.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -133,7 +137,7 @@ public final class JobCollectionItemProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of a resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -142,7 +146,7 @@ public final class JobCollectionItemProperties {
 
     /**
      * Get the runOn property: Specifies the runOn group name where the job was executed.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -151,7 +155,7 @@ public final class JobCollectionItemProperties {
 
     /**
      * Set the runOn property: Specifies the runOn group name where the job was executed.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the JobCollectionItemProperties object itself.
      */
@@ -162,12 +166,69 @@ public final class JobCollectionItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (runbook() != null) {
             runbook().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("runOn", this.runOn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobCollectionItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobCollectionItemProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobCollectionItemProperties.
+     */
+    public static JobCollectionItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobCollectionItemProperties deserializedJobCollectionItemProperties = new JobCollectionItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runbook".equals(fieldName)) {
+                    deserializedJobCollectionItemProperties.runbook = RunbookAssociationProperty.fromJson(reader);
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedJobCollectionItemProperties.jobId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedJobCollectionItemProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedJobCollectionItemProperties.status = JobStatus.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedJobCollectionItemProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedJobCollectionItemProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedJobCollectionItemProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedJobCollectionItemProperties.provisioningState = reader.getString();
+                } else if ("runOn".equals(fieldName)) {
+                    deserializedJobCollectionItemProperties.runOn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobCollectionItemProperties;
+        });
     }
 }

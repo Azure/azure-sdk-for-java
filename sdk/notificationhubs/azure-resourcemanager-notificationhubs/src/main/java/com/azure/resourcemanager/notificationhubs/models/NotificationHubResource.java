@@ -6,7 +6,6 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubResourceInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
@@ -53,109 +52,74 @@ public interface NotificationHubResource {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The Sku description for a namespace.
+     * Gets the sku property: The sku of the created namespace.
      * 
      * @return the sku value.
      */
     Sku sku();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
-     * Gets the namePropertiesName property: Gets or sets the NotificationHub name.
+     * Gets the namePropertiesName property: The NotificationHub name.
      * 
      * @return the namePropertiesName value.
      */
     String namePropertiesName();
 
     /**
-     * Gets the registrationTtl property: Gets or sets the RegistrationTtl of the created NotificationHub.
+     * Gets the registrationTtl property: The RegistrationTtl of the created NotificationHub.
      * 
      * @return the registrationTtl value.
      */
     String registrationTtl();
 
     /**
-     * Gets the authorizationRules property: Gets or sets the AuthorizationRules of the created NotificationHub.
+     * Gets the authorizationRules property: The AuthorizationRules of the created NotificationHub.
      * 
      * @return the authorizationRules value.
      */
     List<SharedAccessAuthorizationRuleProperties> authorizationRules();
 
     /**
-     * Gets the apnsCredential property: Description of a NotificationHub ApnsCredential.
+     * Gets the apnsCredential property: The ApnsCredential of the created NotificationHub.
      * 
      * @return the apnsCredential value.
      */
     ApnsCredential apnsCredential();
 
     /**
-     * Gets the wnsCredential property: Description of a NotificationHub WnsCredential.
+     * Gets the wnsCredential property: The WnsCredential of the created NotificationHub.
      * 
      * @return the wnsCredential value.
      */
     WnsCredential wnsCredential();
 
     /**
-     * Gets the gcmCredential property: Description of a NotificationHub GcmCredential.
+     * Gets the gcmCredential property: The GcmCredential of the created NotificationHub.
      * 
      * @return the gcmCredential value.
      */
     GcmCredential gcmCredential();
 
     /**
-     * Gets the mpnsCredential property: Description of a NotificationHub MpnsCredential.
+     * Gets the mpnsCredential property: The MpnsCredential of the created NotificationHub.
      * 
      * @return the mpnsCredential value.
      */
     MpnsCredential mpnsCredential();
 
     /**
-     * Gets the admCredential property: Description of a NotificationHub AdmCredential.
+     * Gets the admCredential property: The AdmCredential of the created NotificationHub.
      * 
      * @return the admCredential value.
      */
     AdmCredential admCredential();
 
     /**
-     * Gets the baiduCredential property: Description of a NotificationHub BaiduCredential.
+     * Gets the baiduCredential property: The BaiduCredential of the created NotificationHub.
      * 
      * @return the baiduCredential value.
      */
     BaiduCredential baiduCredential();
-
-    /**
-     * Gets the browserCredential property: Description of a NotificationHub BrowserCredential.
-     * 
-     * @return the browserCredential value.
-     */
-    BrowserCredential browserCredential();
-
-    /**
-     * Gets the xiaomiCredential property: Description of a NotificationHub XiaomiCredential.
-     * 
-     * @return the xiaomiCredential value.
-     */
-    XiaomiCredential xiaomiCredential();
-
-    /**
-     * Gets the fcmV1Credential property: Description of a NotificationHub FcmV1Credential.
-     * 
-     * @return the fcmV1Credential value.
-     */
-    FcmV1Credential fcmV1Credential();
-
-    /**
-     * Gets the dailyMaxActiveDevices property: The dailyMaxActiveDevices property.
-     * 
-     * @return the dailyMaxActiveDevices value.
-     */
-    Long dailyMaxActiveDevices();
 
     /**
      * Gets the region of the resource.
@@ -230,8 +194,8 @@ public interface NotificationHubResource {
             /**
              * Specifies resourceGroupName, namespaceName.
              * 
-             * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param namespaceName Namespace name.
+             * @param resourceGroupName The name of the resource group.
+             * @param namespaceName The namespace name.
              * @return the next definition stage.
              */
             WithCreate withExistingNamespace(String resourceGroupName, String namespaceName);
@@ -243,10 +207,9 @@ public interface NotificationHubResource {
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku,
             DefinitionStages.WithNamePropertiesName, DefinitionStages.WithRegistrationTtl,
-            DefinitionStages.WithApnsCredential, DefinitionStages.WithWnsCredential, DefinitionStages.WithGcmCredential,
-            DefinitionStages.WithMpnsCredential, DefinitionStages.WithAdmCredential,
-            DefinitionStages.WithBaiduCredential, DefinitionStages.WithBrowserCredential,
-            DefinitionStages.WithXiaomiCredential, DefinitionStages.WithFcmV1Credential {
+            DefinitionStages.WithAuthorizationRules, DefinitionStages.WithApnsCredential,
+            DefinitionStages.WithWnsCredential, DefinitionStages.WithGcmCredential, DefinitionStages.WithMpnsCredential,
+            DefinitionStages.WithAdmCredential, DefinitionStages.WithBaiduCredential {
             /**
              * Executes the create request.
              * 
@@ -281,9 +244,9 @@ public interface NotificationHubResource {
          */
         interface WithSku {
             /**
-             * Specifies the sku property: The Sku description for a namespace.
+             * Specifies the sku property: The sku of the created namespace.
              * 
-             * @param sku The Sku description for a namespace.
+             * @param sku The sku of the created namespace.
              * @return the next definition stage.
              */
             WithCreate withSku(Sku sku);
@@ -294,9 +257,9 @@ public interface NotificationHubResource {
          */
         interface WithNamePropertiesName {
             /**
-             * Specifies the namePropertiesName property: Gets or sets the NotificationHub name..
+             * Specifies the namePropertiesName property: The NotificationHub name..
              * 
-             * @param namePropertiesName Gets or sets the NotificationHub name.
+             * @param namePropertiesName The NotificationHub name.
              * @return the next definition stage.
              */
             WithCreate withNamePropertiesName(String namePropertiesName);
@@ -307,12 +270,25 @@ public interface NotificationHubResource {
          */
         interface WithRegistrationTtl {
             /**
-             * Specifies the registrationTtl property: Gets or sets the RegistrationTtl of the created NotificationHub.
+             * Specifies the registrationTtl property: The RegistrationTtl of the created NotificationHub.
              * 
-             * @param registrationTtl Gets or sets the RegistrationTtl of the created NotificationHub.
+             * @param registrationTtl The RegistrationTtl of the created NotificationHub.
              * @return the next definition stage.
              */
             WithCreate withRegistrationTtl(String registrationTtl);
+        }
+
+        /**
+         * The stage of the NotificationHubResource definition allowing to specify authorizationRules.
+         */
+        interface WithAuthorizationRules {
+            /**
+             * Specifies the authorizationRules property: The AuthorizationRules of the created NotificationHub.
+             * 
+             * @param authorizationRules The AuthorizationRules of the created NotificationHub.
+             * @return the next definition stage.
+             */
+            WithCreate withAuthorizationRules(List<SharedAccessAuthorizationRuleProperties> authorizationRules);
         }
 
         /**
@@ -320,9 +296,9 @@ public interface NotificationHubResource {
          */
         interface WithApnsCredential {
             /**
-             * Specifies the apnsCredential property: Description of a NotificationHub ApnsCredential..
+             * Specifies the apnsCredential property: The ApnsCredential of the created NotificationHub.
              * 
-             * @param apnsCredential Description of a NotificationHub ApnsCredential.
+             * @param apnsCredential The ApnsCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             WithCreate withApnsCredential(ApnsCredential apnsCredential);
@@ -333,9 +309,9 @@ public interface NotificationHubResource {
          */
         interface WithWnsCredential {
             /**
-             * Specifies the wnsCredential property: Description of a NotificationHub WnsCredential..
+             * Specifies the wnsCredential property: The WnsCredential of the created NotificationHub.
              * 
-             * @param wnsCredential Description of a NotificationHub WnsCredential.
+             * @param wnsCredential The WnsCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             WithCreate withWnsCredential(WnsCredential wnsCredential);
@@ -346,9 +322,9 @@ public interface NotificationHubResource {
          */
         interface WithGcmCredential {
             /**
-             * Specifies the gcmCredential property: Description of a NotificationHub GcmCredential..
+             * Specifies the gcmCredential property: The GcmCredential of the created NotificationHub.
              * 
-             * @param gcmCredential Description of a NotificationHub GcmCredential.
+             * @param gcmCredential The GcmCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             WithCreate withGcmCredential(GcmCredential gcmCredential);
@@ -359,9 +335,9 @@ public interface NotificationHubResource {
          */
         interface WithMpnsCredential {
             /**
-             * Specifies the mpnsCredential property: Description of a NotificationHub MpnsCredential..
+             * Specifies the mpnsCredential property: The MpnsCredential of the created NotificationHub.
              * 
-             * @param mpnsCredential Description of a NotificationHub MpnsCredential.
+             * @param mpnsCredential The MpnsCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             WithCreate withMpnsCredential(MpnsCredential mpnsCredential);
@@ -372,9 +348,9 @@ public interface NotificationHubResource {
          */
         interface WithAdmCredential {
             /**
-             * Specifies the admCredential property: Description of a NotificationHub AdmCredential..
+             * Specifies the admCredential property: The AdmCredential of the created NotificationHub.
              * 
-             * @param admCredential Description of a NotificationHub AdmCredential.
+             * @param admCredential The AdmCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             WithCreate withAdmCredential(AdmCredential admCredential);
@@ -385,51 +361,12 @@ public interface NotificationHubResource {
          */
         interface WithBaiduCredential {
             /**
-             * Specifies the baiduCredential property: Description of a NotificationHub BaiduCredential..
+             * Specifies the baiduCredential property: The BaiduCredential of the created NotificationHub.
              * 
-             * @param baiduCredential Description of a NotificationHub BaiduCredential.
+             * @param baiduCredential The BaiduCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             WithCreate withBaiduCredential(BaiduCredential baiduCredential);
-        }
-
-        /**
-         * The stage of the NotificationHubResource definition allowing to specify browserCredential.
-         */
-        interface WithBrowserCredential {
-            /**
-             * Specifies the browserCredential property: Description of a NotificationHub BrowserCredential..
-             * 
-             * @param browserCredential Description of a NotificationHub BrowserCredential.
-             * @return the next definition stage.
-             */
-            WithCreate withBrowserCredential(BrowserCredential browserCredential);
-        }
-
-        /**
-         * The stage of the NotificationHubResource definition allowing to specify xiaomiCredential.
-         */
-        interface WithXiaomiCredential {
-            /**
-             * Specifies the xiaomiCredential property: Description of a NotificationHub XiaomiCredential..
-             * 
-             * @param xiaomiCredential Description of a NotificationHub XiaomiCredential.
-             * @return the next definition stage.
-             */
-            WithCreate withXiaomiCredential(XiaomiCredential xiaomiCredential);
-        }
-
-        /**
-         * The stage of the NotificationHubResource definition allowing to specify fcmV1Credential.
-         */
-        interface WithFcmV1Credential {
-            /**
-             * Specifies the fcmV1Credential property: Description of a NotificationHub FcmV1Credential..
-             * 
-             * @param fcmV1Credential Description of a NotificationHub FcmV1Credential.
-             * @return the next definition stage.
-             */
-            WithCreate withFcmV1Credential(FcmV1Credential fcmV1Credential);
         }
     }
 
@@ -443,10 +380,10 @@ public interface NotificationHubResource {
     /**
      * The template for NotificationHubResource update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithRegistrationTtl,
-        UpdateStages.WithApnsCredential, UpdateStages.WithWnsCredential, UpdateStages.WithGcmCredential,
-        UpdateStages.WithMpnsCredential, UpdateStages.WithAdmCredential, UpdateStages.WithBaiduCredential,
-        UpdateStages.WithBrowserCredential, UpdateStages.WithXiaomiCredential, UpdateStages.WithFcmV1Credential {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithNamePropertiesName,
+        UpdateStages.WithRegistrationTtl, UpdateStages.WithAuthorizationRules, UpdateStages.WithApnsCredential,
+        UpdateStages.WithWnsCredential, UpdateStages.WithGcmCredential, UpdateStages.WithMpnsCredential,
+        UpdateStages.WithAdmCredential, UpdateStages.WithBaiduCredential {
         /**
          * Executes the update request.
          * 
@@ -472,9 +409,9 @@ public interface NotificationHubResource {
          */
         interface WithTags {
             /**
-             * Specifies the tags property: Dictionary of &lt;string&gt;.
+             * Specifies the tags property: Resource tags..
              * 
-             * @param tags Dictionary of &lt;string&gt;.
+             * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
@@ -485,12 +422,25 @@ public interface NotificationHubResource {
          */
         interface WithSku {
             /**
-             * Specifies the sku property: The Sku description for a namespace.
+             * Specifies the sku property: The sku of the created namespace.
              * 
-             * @param sku The Sku description for a namespace.
+             * @param sku The sku of the created namespace.
              * @return the next definition stage.
              */
             Update withSku(Sku sku);
+        }
+
+        /**
+         * The stage of the NotificationHubResource update allowing to specify namePropertiesName.
+         */
+        interface WithNamePropertiesName {
+            /**
+             * Specifies the namePropertiesName property: The NotificationHub name..
+             * 
+             * @param namePropertiesName The NotificationHub name.
+             * @return the next definition stage.
+             */
+            Update withNamePropertiesName(String namePropertiesName);
         }
 
         /**
@@ -498,12 +448,25 @@ public interface NotificationHubResource {
          */
         interface WithRegistrationTtl {
             /**
-             * Specifies the registrationTtl property: Gets or sets the RegistrationTtl of the created NotificationHub.
+             * Specifies the registrationTtl property: The RegistrationTtl of the created NotificationHub.
              * 
-             * @param registrationTtl Gets or sets the RegistrationTtl of the created NotificationHub.
+             * @param registrationTtl The RegistrationTtl of the created NotificationHub.
              * @return the next definition stage.
              */
             Update withRegistrationTtl(String registrationTtl);
+        }
+
+        /**
+         * The stage of the NotificationHubResource update allowing to specify authorizationRules.
+         */
+        interface WithAuthorizationRules {
+            /**
+             * Specifies the authorizationRules property: The AuthorizationRules of the created NotificationHub.
+             * 
+             * @param authorizationRules The AuthorizationRules of the created NotificationHub.
+             * @return the next definition stage.
+             */
+            Update withAuthorizationRules(List<SharedAccessAuthorizationRuleProperties> authorizationRules);
         }
 
         /**
@@ -511,9 +474,9 @@ public interface NotificationHubResource {
          */
         interface WithApnsCredential {
             /**
-             * Specifies the apnsCredential property: Description of a NotificationHub ApnsCredential..
+             * Specifies the apnsCredential property: The ApnsCredential of the created NotificationHub.
              * 
-             * @param apnsCredential Description of a NotificationHub ApnsCredential.
+             * @param apnsCredential The ApnsCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             Update withApnsCredential(ApnsCredential apnsCredential);
@@ -524,9 +487,9 @@ public interface NotificationHubResource {
          */
         interface WithWnsCredential {
             /**
-             * Specifies the wnsCredential property: Description of a NotificationHub WnsCredential..
+             * Specifies the wnsCredential property: The WnsCredential of the created NotificationHub.
              * 
-             * @param wnsCredential Description of a NotificationHub WnsCredential.
+             * @param wnsCredential The WnsCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             Update withWnsCredential(WnsCredential wnsCredential);
@@ -537,9 +500,9 @@ public interface NotificationHubResource {
          */
         interface WithGcmCredential {
             /**
-             * Specifies the gcmCredential property: Description of a NotificationHub GcmCredential..
+             * Specifies the gcmCredential property: The GcmCredential of the created NotificationHub.
              * 
-             * @param gcmCredential Description of a NotificationHub GcmCredential.
+             * @param gcmCredential The GcmCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             Update withGcmCredential(GcmCredential gcmCredential);
@@ -550,9 +513,9 @@ public interface NotificationHubResource {
          */
         interface WithMpnsCredential {
             /**
-             * Specifies the mpnsCredential property: Description of a NotificationHub MpnsCredential..
+             * Specifies the mpnsCredential property: The MpnsCredential of the created NotificationHub.
              * 
-             * @param mpnsCredential Description of a NotificationHub MpnsCredential.
+             * @param mpnsCredential The MpnsCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             Update withMpnsCredential(MpnsCredential mpnsCredential);
@@ -563,9 +526,9 @@ public interface NotificationHubResource {
          */
         interface WithAdmCredential {
             /**
-             * Specifies the admCredential property: Description of a NotificationHub AdmCredential..
+             * Specifies the admCredential property: The AdmCredential of the created NotificationHub.
              * 
-             * @param admCredential Description of a NotificationHub AdmCredential.
+             * @param admCredential The AdmCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             Update withAdmCredential(AdmCredential admCredential);
@@ -576,51 +539,12 @@ public interface NotificationHubResource {
          */
         interface WithBaiduCredential {
             /**
-             * Specifies the baiduCredential property: Description of a NotificationHub BaiduCredential..
+             * Specifies the baiduCredential property: The BaiduCredential of the created NotificationHub.
              * 
-             * @param baiduCredential Description of a NotificationHub BaiduCredential.
+             * @param baiduCredential The BaiduCredential of the created NotificationHub.
              * @return the next definition stage.
              */
             Update withBaiduCredential(BaiduCredential baiduCredential);
-        }
-
-        /**
-         * The stage of the NotificationHubResource update allowing to specify browserCredential.
-         */
-        interface WithBrowserCredential {
-            /**
-             * Specifies the browserCredential property: Description of a NotificationHub BrowserCredential..
-             * 
-             * @param browserCredential Description of a NotificationHub BrowserCredential.
-             * @return the next definition stage.
-             */
-            Update withBrowserCredential(BrowserCredential browserCredential);
-        }
-
-        /**
-         * The stage of the NotificationHubResource update allowing to specify xiaomiCredential.
-         */
-        interface WithXiaomiCredential {
-            /**
-             * Specifies the xiaomiCredential property: Description of a NotificationHub XiaomiCredential..
-             * 
-             * @param xiaomiCredential Description of a NotificationHub XiaomiCredential.
-             * @return the next definition stage.
-             */
-            Update withXiaomiCredential(XiaomiCredential xiaomiCredential);
-        }
-
-        /**
-         * The stage of the NotificationHubResource update allowing to specify fcmV1Credential.
-         */
-        interface WithFcmV1Credential {
-            /**
-             * Specifies the fcmV1Credential property: Description of a NotificationHub FcmV1Credential..
-             * 
-             * @param fcmV1Credential Description of a NotificationHub FcmV1Credential.
-             * @return the next definition stage.
-             */
-            Update withFcmV1Credential(FcmV1Credential fcmV1Credential);
         }
     }
 
@@ -640,18 +564,19 @@ public interface NotificationHubResource {
     NotificationHubResource refresh(Context context);
 
     /**
-     * Test send a push notification.
+     * test send a push notification.
      * 
+     * @param parameters Debug send parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a NotificationHub Resource along with {@link Response}.
      */
-    Response<DebugSendResponse> debugSendWithResponse(Context context);
+    Response<DebugSendResponse> debugSendWithResponse(Object parameters, Context context);
 
     /**
-     * Test send a push notification.
+     * test send a push notification.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -660,7 +585,7 @@ public interface NotificationHubResource {
     DebugSendResponse debugSend();
 
     /**
-     * Lists the PNS Credentials associated with a notification hub.
+     * Lists the PNS Credentials associated with a notification hub .
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -671,7 +596,7 @@ public interface NotificationHubResource {
     Response<PnsCredentialsResource> getPnsCredentialsWithResponse(Context context);
 
     /**
-     * Lists the PNS Credentials associated with a notification hub.
+     * Lists the PNS Credentials associated with a notification hub .
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

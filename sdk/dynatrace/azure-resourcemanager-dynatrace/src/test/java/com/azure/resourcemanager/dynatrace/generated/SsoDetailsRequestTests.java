@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SsoDetailsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsoDetailsRequest model =
-            BinaryData.fromString("{\"userPrincipal\":\"azjpqyegualhbxxh\"}").toObject(SsoDetailsRequest.class);
+        SsoDetailsRequest model
+            = BinaryData.fromString("{\"userPrincipal\":\"azjpqyegualhbxxh\"}").toObject(SsoDetailsRequest.class);
         Assertions.assertEquals("azjpqyegualhbxxh", model.userPrincipal());
     }
 

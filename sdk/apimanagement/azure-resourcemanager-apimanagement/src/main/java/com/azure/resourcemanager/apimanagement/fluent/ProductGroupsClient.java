@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GroupContractInner;
 
-/** An instance of this class provides access to all the operations defined in ProductGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProductGroupsClient.
+ */
 public interface ProductGroupsClient {
     /**
      * Lists the collection of developer groups associated with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -29,14 +31,14 @@ public interface ProductGroupsClient {
 
     /**
      * Lists the collection of developer groups associated with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -46,18 +48,12 @@ public interface ProductGroupsClient {
      * @return paged Group list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GroupContractInner> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<GroupContractInner> listByProduct(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -69,12 +65,12 @@ public interface ProductGroupsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> checkEntityExistsWithResponse(
-        String resourceGroupName, String serviceName, String productId, String groupId, Context context);
+    Response<Void> checkEntityExistsWithResponse(String resourceGroupName, String serviceName, String productId,
+        String groupId, Context context);
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -88,7 +84,7 @@ public interface ProductGroupsClient {
 
     /**
      * Adds the association between the specified developer group with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -100,12 +96,12 @@ public interface ProductGroupsClient {
      * @return contract details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GroupContractInner> createOrUpdateWithResponse(
-        String resourceGroupName, String serviceName, String productId, String groupId, Context context);
+    Response<GroupContractInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String productId, String groupId, Context context);
 
     /**
      * Adds the association between the specified developer group with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -120,7 +116,7 @@ public interface ProductGroupsClient {
 
     /**
      * Deletes the association between the specified group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -132,12 +128,12 @@ public interface ProductGroupsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String productId, String groupId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId, String groupId,
+        Context context);
 
     /**
      * Deletes the association between the specified group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.

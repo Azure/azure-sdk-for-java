@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request body for change directory of a reservation. */
+/**
+ * Request body for change directory of a reservation.
+ */
 @Fluent
-public final class ChangeDirectoryRequest {
+public final class ChangeDirectoryRequest implements JsonSerializable<ChangeDirectoryRequest> {
     /*
      * Tenant id GUID that reservation order is to be transferred to
      */
-    @JsonProperty(value = "destinationTenantId")
     private String destinationTenantId;
 
-    /** Creates an instance of ChangeDirectoryRequest class. */
+    /**
+     * Creates an instance of ChangeDirectoryRequest class.
+     */
     public ChangeDirectoryRequest() {
     }
 
     /**
      * Get the destinationTenantId property: Tenant id GUID that reservation order is to be transferred to.
-     *
+     * 
      * @return the destinationTenantId value.
      */
     public String destinationTenantId() {
@@ -31,7 +38,7 @@ public final class ChangeDirectoryRequest {
 
     /**
      * Set the destinationTenantId property: Tenant id GUID that reservation order is to be transferred to.
-     *
+     * 
      * @param destinationTenantId the destinationTenantId value to set.
      * @return the ChangeDirectoryRequest object itself.
      */
@@ -42,9 +49,45 @@ public final class ChangeDirectoryRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("destinationTenantId", this.destinationTenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangeDirectoryRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangeDirectoryRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChangeDirectoryRequest.
+     */
+    public static ChangeDirectoryRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangeDirectoryRequest deserializedChangeDirectoryRequest = new ChangeDirectoryRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("destinationTenantId".equals(fieldName)) {
+                    deserializedChangeDirectoryRequest.destinationTenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangeDirectoryRequest;
+        });
     }
 }

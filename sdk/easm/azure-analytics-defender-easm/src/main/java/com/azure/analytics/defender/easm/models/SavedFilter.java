@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class SavedFilter implements JsonSerializable<SavedFilter> {
 
     /*
-     * The system generated unique id for the resource.
+     * This is typically the same as the name but might be different for different models.
      */
     @Generated
     private String id;
@@ -55,7 +55,7 @@ public final class SavedFilter implements JsonSerializable<SavedFilter> {
     }
 
     /**
-     * Get the id property: The system generated unique id for the resource.
+     * Get the id property: This is typically the same as the name but might be different for different models.
      *
      * @return the id value.
      */

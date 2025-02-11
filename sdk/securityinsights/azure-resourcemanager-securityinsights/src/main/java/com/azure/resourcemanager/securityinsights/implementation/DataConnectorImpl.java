@@ -7,14 +7,14 @@ package com.azure.resourcemanager.securityinsights.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
 import com.azure.resourcemanager.securityinsights.models.DataConnector;
+import com.azure.resourcemanager.securityinsights.models.DataConnectorKind;
 
 public final class DataConnectorImpl implements DataConnector {
     private DataConnectorInner innerObject;
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    DataConnectorImpl(
-        DataConnectorInner innerObject,
+    DataConnectorImpl(DataConnectorInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -38,6 +38,10 @@ public final class DataConnectorImpl implements DataConnector {
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public DataConnectorKind kind() {
+        return this.innerModel().kind();
     }
 
     public DataConnectorInner innerModel() {

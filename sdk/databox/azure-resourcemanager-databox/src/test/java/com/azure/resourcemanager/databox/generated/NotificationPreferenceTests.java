@@ -12,22 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationPreferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationPreference model =
-            BinaryData
-                .fromString("{\"stageName\":\"ShippedToCustomer\",\"sendNotification\":true}")
-                .toObject(NotificationPreference.class);
-        Assertions.assertEquals(NotificationStageName.SHIPPED_TO_CUSTOMER, model.stageName());
-        Assertions.assertEquals(true, model.sendNotification());
+        NotificationPreference model = BinaryData.fromString("{\"stageName\":\"AtAzureDC\",\"sendNotification\":false}")
+            .toObject(NotificationPreference.class);
+        Assertions.assertEquals(NotificationStageName.AT_AZURE_DC, model.stageName());
+        Assertions.assertEquals(false, model.sendNotification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationPreference model =
-            new NotificationPreference()
-                .withStageName(NotificationStageName.SHIPPED_TO_CUSTOMER)
-                .withSendNotification(true);
+        NotificationPreference model
+            = new NotificationPreference().withStageName(NotificationStageName.AT_AZURE_DC).withSendNotification(false);
         model = BinaryData.fromObject(model).toObject(NotificationPreference.class);
-        Assertions.assertEquals(NotificationStageName.SHIPPED_TO_CUSTOMER, model.stageName());
-        Assertions.assertEquals(true, model.sendNotification());
+        Assertions.assertEquals(NotificationStageName.AT_AZURE_DC, model.stageName());
+        Assertions.assertEquals(false, model.sendNotification());
     }
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.defendereasm.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.defendereasm.fluent.models.WorkspaceResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of workspaces. */
+/**
+ * The list of workspaces.
+ */
 @Fluent
-public final class WorkspaceResourceList {
+public final class WorkspaceResourceList implements JsonSerializable<WorkspaceResourceList> {
     /*
      * The link used to get the next page of Workspace list.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of workspaces.
      */
-    @JsonProperty(value = "value")
     private List<WorkspaceResourceInner> value;
 
-    /** Creates an instance of WorkspaceResourceList class. */
+    /**
+     * Creates an instance of WorkspaceResourceList class.
+     */
     public WorkspaceResourceList() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of Workspace list.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class WorkspaceResourceList {
 
     /**
      * Set the nextLink property: The link used to get the next page of Workspace list.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WorkspaceResourceList object itself.
      */
@@ -50,7 +56,7 @@ public final class WorkspaceResourceList {
 
     /**
      * Get the value property: The list of workspaces.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkspaceResourceInner> value() {
@@ -59,7 +65,7 @@ public final class WorkspaceResourceList {
 
     /**
      * Set the value property: The list of workspaces.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkspaceResourceList object itself.
      */
@@ -70,12 +76,53 @@ public final class WorkspaceResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceResourceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceResourceList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceResourceList.
+     */
+    public static WorkspaceResourceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceResourceList deserializedWorkspaceResourceList = new WorkspaceResourceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedWorkspaceResourceList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<WorkspaceResourceInner> value
+                        = reader.readArray(reader1 -> WorkspaceResourceInner.fromJson(reader1));
+                    deserializedWorkspaceResourceList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceResourceList;
+        });
     }
 }

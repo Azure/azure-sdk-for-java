@@ -10,7 +10,7 @@ package com.azure.resourcemanager.redis.generated;
 public final class RedisListSamples {
     /*
      * x-ms-original-file:
-     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheList.json
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheList.json
      */
     /**
      * Sample code: RedisCacheList.

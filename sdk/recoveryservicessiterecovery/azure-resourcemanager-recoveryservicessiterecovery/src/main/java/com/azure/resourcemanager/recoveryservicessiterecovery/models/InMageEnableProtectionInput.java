@@ -6,82 +6,86 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * VMware Azure specific enable protection input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMage")
 @Fluent
 public final class InMageEnableProtectionInput extends EnableProtectionProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMage";
+
+    /*
      * The VM Name.
      */
-    @JsonProperty(value = "vmFriendlyName")
     private String vmFriendlyName;
 
     /*
      * The Master Target Id.
      */
-    @JsonProperty(value = "masterTargetId", required = true)
     private String masterTargetId;
 
     /*
      * The Process Server Id.
      */
-    @JsonProperty(value = "processServerId", required = true)
     private String processServerId;
 
     /*
      * The retention drive to use on the MT.
      */
-    @JsonProperty(value = "retentionDrive", required = true)
     private String retentionDrive;
 
     /*
      * The CS account Id.
      */
-    @JsonProperty(value = "runAsAccountId")
     private String runAsAccountId;
 
     /*
      * The multi VM group Id.
      */
-    @JsonProperty(value = "multiVmGroupId", required = true)
     private String multiVmGroupId;
 
     /*
      * The multi VM group name.
      */
-    @JsonProperty(value = "multiVmGroupName", required = true)
     private String multiVmGroupName;
 
     /*
      * The target datastore name.
      */
-    @JsonProperty(value = "datastoreName")
     private String datastoreName;
 
     /*
      * The enable disk exclusion input.
      */
-    @JsonProperty(value = "diskExclusionInput")
     private InMageDiskExclusionInput diskExclusionInput;
 
     /*
      * The disks to include list.
      */
-    @JsonProperty(value = "disksToInclude")
     private List<String> disksToInclude;
 
     /**
      * Creates an instance of InMageEnableProtectionInput class.
      */
     public InMageEnableProtectionInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -291,26 +295,30 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
      */
     @Override
     public void validate() {
-        super.validate();
         if (masterTargetId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property masterTargetId in model InMageEnableProtectionInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property masterTargetId in model InMageEnableProtectionInput"));
         }
         if (processServerId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property processServerId in model InMageEnableProtectionInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property processServerId in model InMageEnableProtectionInput"));
         }
         if (retentionDrive() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property retentionDrive in model InMageEnableProtectionInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property retentionDrive in model InMageEnableProtectionInput"));
         }
         if (multiVmGroupId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property multiVmGroupId in model InMageEnableProtectionInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property multiVmGroupId in model InMageEnableProtectionInput"));
         }
         if (multiVmGroupName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property multiVmGroupName in model InMageEnableProtectionInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property multiVmGroupName in model InMageEnableProtectionInput"));
         }
         if (diskExclusionInput() != null) {
             diskExclusionInput().validate();
@@ -318,4 +326,74 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InMageEnableProtectionInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("masterTargetId", this.masterTargetId);
+        jsonWriter.writeStringField("processServerId", this.processServerId);
+        jsonWriter.writeStringField("retentionDrive", this.retentionDrive);
+        jsonWriter.writeStringField("multiVmGroupId", this.multiVmGroupId);
+        jsonWriter.writeStringField("multiVmGroupName", this.multiVmGroupName);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("vmFriendlyName", this.vmFriendlyName);
+        jsonWriter.writeStringField("runAsAccountId", this.runAsAccountId);
+        jsonWriter.writeStringField("datastoreName", this.datastoreName);
+        jsonWriter.writeJsonField("diskExclusionInput", this.diskExclusionInput);
+        jsonWriter.writeArrayField("disksToInclude", this.disksToInclude,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageEnableProtectionInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageEnableProtectionInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InMageEnableProtectionInput.
+     */
+    public static InMageEnableProtectionInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageEnableProtectionInput deserializedInMageEnableProtectionInput = new InMageEnableProtectionInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("masterTargetId".equals(fieldName)) {
+                    deserializedInMageEnableProtectionInput.masterTargetId = reader.getString();
+                } else if ("processServerId".equals(fieldName)) {
+                    deserializedInMageEnableProtectionInput.processServerId = reader.getString();
+                } else if ("retentionDrive".equals(fieldName)) {
+                    deserializedInMageEnableProtectionInput.retentionDrive = reader.getString();
+                } else if ("multiVmGroupId".equals(fieldName)) {
+                    deserializedInMageEnableProtectionInput.multiVmGroupId = reader.getString();
+                } else if ("multiVmGroupName".equals(fieldName)) {
+                    deserializedInMageEnableProtectionInput.multiVmGroupName = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedInMageEnableProtectionInput.instanceType = reader.getString();
+                } else if ("vmFriendlyName".equals(fieldName)) {
+                    deserializedInMageEnableProtectionInput.vmFriendlyName = reader.getString();
+                } else if ("runAsAccountId".equals(fieldName)) {
+                    deserializedInMageEnableProtectionInput.runAsAccountId = reader.getString();
+                } else if ("datastoreName".equals(fieldName)) {
+                    deserializedInMageEnableProtectionInput.datastoreName = reader.getString();
+                } else if ("diskExclusionInput".equals(fieldName)) {
+                    deserializedInMageEnableProtectionInput.diskExclusionInput
+                        = InMageDiskExclusionInput.fromJson(reader);
+                } else if ("disksToInclude".equals(fieldName)) {
+                    List<String> disksToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInMageEnableProtectionInput.disksToInclude = disksToInclude;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageEnableProtectionInput;
+        });
+    }
 }

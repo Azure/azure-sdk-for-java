@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The tracking event error info. */
+/**
+ * The tracking event error info.
+ */
 @Fluent
-public final class TrackingEventErrorInfo {
+public final class TrackingEventErrorInfo implements JsonSerializable<TrackingEventErrorInfo> {
     /*
      * The message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
-    /** Creates an instance of TrackingEventErrorInfo class. */
+    /**
+     * Creates an instance of TrackingEventErrorInfo class.
+     */
     public TrackingEventErrorInfo() {
     }
 
     /**
      * Get the message property: The message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -37,7 +43,7 @@ public final class TrackingEventErrorInfo {
 
     /**
      * Set the message property: The message.
-     *
+     * 
      * @param message the message value to set.
      * @return the TrackingEventErrorInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class TrackingEventErrorInfo {
 
     /**
      * Get the code property: The code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -57,7 +63,7 @@ public final class TrackingEventErrorInfo {
 
     /**
      * Set the code property: The code.
-     *
+     * 
      * @param code the code value to set.
      * @return the TrackingEventErrorInfo object itself.
      */
@@ -68,9 +74,48 @@ public final class TrackingEventErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("code", this.code);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrackingEventErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrackingEventErrorInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrackingEventErrorInfo.
+     */
+    public static TrackingEventErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrackingEventErrorInfo deserializedTrackingEventErrorInfo = new TrackingEventErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedTrackingEventErrorInfo.message = reader.getString();
+                } else if ("code".equals(fieldName)) {
+                    deserializedTrackingEventErrorInfo.code = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrackingEventErrorInfo;
+        });
     }
 }

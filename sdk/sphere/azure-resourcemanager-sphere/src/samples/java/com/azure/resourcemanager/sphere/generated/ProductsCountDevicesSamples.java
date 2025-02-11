@@ -19,7 +19,7 @@ public final class ProductsCountDevicesSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void productsCountDevices(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.products().countDevicesWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1",
-            com.azure.core.util.Context.NONE);
+        manager.products()
+            .countDevicesWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", com.azure.core.util.Context.NONE);
     }
 }

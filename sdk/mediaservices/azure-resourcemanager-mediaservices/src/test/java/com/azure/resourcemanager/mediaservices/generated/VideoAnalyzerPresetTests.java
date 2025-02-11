@@ -15,33 +15,30 @@ import org.junit.jupiter.api.Assertions;
 public final class VideoAnalyzerPresetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VideoAnalyzerPreset model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.VideoAnalyzerPreset\",\"insightsToExtract\":\"AudioInsightsOnly\",\"audioLanguage\":\"bhu\",\"mode\":\"Basic\",\"experimentalOptions\":{\"slynsqyrpfoo\":\"yue\",\"zdzgtilaxhnfhqly\":\"rlttymsjnygqdnfw\",\"xxrtikvc\":\"ijouwivkxoyzunb\"}}")
-                .toObject(VideoAnalyzerPreset.class);
-        Assertions.assertEquals("bhu", model.audioLanguage());
-        Assertions.assertEquals(AudioAnalysisMode.BASIC, model.mode());
-        Assertions.assertEquals("yue", model.experimentalOptions().get("slynsqyrpfoo"));
-        Assertions.assertEquals(InsightsType.AUDIO_INSIGHTS_ONLY, model.insightsToExtract());
+        VideoAnalyzerPreset model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.VideoAnalyzerPreset\",\"insightsToExtract\":\"AllInsights\",\"audioLanguage\":\"belawumuaslzkwr\",\"mode\":\"Standard\",\"experimentalOptions\":{\"rkywuhpsvfuu\":\"qucwyhahnom\",\"niexzsrzpgepq\":\"utlwexxwla\",\"wwpgdakchzyvlixq\":\"yb\"}}")
+            .toObject(VideoAnalyzerPreset.class);
+        Assertions.assertEquals("belawumuaslzkwr", model.audioLanguage());
+        Assertions.assertEquals(AudioAnalysisMode.STANDARD, model.mode());
+        Assertions.assertEquals("qucwyhahnom", model.experimentalOptions().get("rkywuhpsvfuu"));
+        Assertions.assertEquals(InsightsType.ALL_INSIGHTS, model.insightsToExtract());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VideoAnalyzerPreset model =
-            new VideoAnalyzerPreset()
-                .withAudioLanguage("bhu")
-                .withMode(AudioAnalysisMode.BASIC)
-                .withExperimentalOptions(
-                    mapOf("slynsqyrpfoo", "yue", "zdzgtilaxhnfhqly", "rlttymsjnygqdnfw", "xxrtikvc", "ijouwivkxoyzunb"))
-                .withInsightsToExtract(InsightsType.AUDIO_INSIGHTS_ONLY);
+        VideoAnalyzerPreset model = new VideoAnalyzerPreset().withAudioLanguage("belawumuaslzkwr")
+            .withMode(AudioAnalysisMode.STANDARD)
+            .withExperimentalOptions(
+                mapOf("rkywuhpsvfuu", "qucwyhahnom", "niexzsrzpgepq", "utlwexxwla", "wwpgdakchzyvlixq", "yb"))
+            .withInsightsToExtract(InsightsType.ALL_INSIGHTS);
         model = BinaryData.fromObject(model).toObject(VideoAnalyzerPreset.class);
-        Assertions.assertEquals("bhu", model.audioLanguage());
-        Assertions.assertEquals(AudioAnalysisMode.BASIC, model.mode());
-        Assertions.assertEquals("yue", model.experimentalOptions().get("slynsqyrpfoo"));
-        Assertions.assertEquals(InsightsType.AUDIO_INSIGHTS_ONLY, model.insightsToExtract());
+        Assertions.assertEquals("belawumuaslzkwr", model.audioLanguage());
+        Assertions.assertEquals(AudioAnalysisMode.STANDARD, model.mode());
+        Assertions.assertEquals("qucwyhahnom", model.experimentalOptions().get("rkywuhpsvfuu"));
+        Assertions.assertEquals(InsightsType.ALL_INSIGHTS, model.insightsToExtract());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

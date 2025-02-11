@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PeeringLocationsDirectPeeringType. */
+/**
+ * Defines values for PeeringLocationsDirectPeeringType.
+ */
 public final class PeeringLocationsDirectPeeringType extends ExpandableStringEnum<PeeringLocationsDirectPeeringType> {
-    /** Static value Edge for PeeringLocationsDirectPeeringType. */
+    /**
+     * Static value Edge for PeeringLocationsDirectPeeringType.
+     */
     public static final PeeringLocationsDirectPeeringType EDGE = fromString("Edge");
 
-    /** Static value Transit for PeeringLocationsDirectPeeringType. */
+    /**
+     * Static value Transit for PeeringLocationsDirectPeeringType.
+     */
     public static final PeeringLocationsDirectPeeringType TRANSIT = fromString("Transit");
 
-    /** Static value Cdn for PeeringLocationsDirectPeeringType. */
+    /**
+     * Static value Cdn for PeeringLocationsDirectPeeringType.
+     */
     public static final PeeringLocationsDirectPeeringType CDN = fromString("Cdn");
 
-    /** Static value Internal for PeeringLocationsDirectPeeringType. */
+    /**
+     * Static value Internal for PeeringLocationsDirectPeeringType.
+     */
     public static final PeeringLocationsDirectPeeringType INTERNAL = fromString("Internal");
 
-    /** Static value Ix for PeeringLocationsDirectPeeringType. */
+    /**
+     * Static value Ix for PeeringLocationsDirectPeeringType.
+     */
     public static final PeeringLocationsDirectPeeringType IX = fromString("Ix");
 
-    /** Static value IxRs for PeeringLocationsDirectPeeringType. */
+    /**
+     * Static value IxRs for PeeringLocationsDirectPeeringType.
+     */
     public static final PeeringLocationsDirectPeeringType IX_RS = fromString("IxRs");
 
-    /** Static value Voice for PeeringLocationsDirectPeeringType. */
+    /**
+     * Static value Voice for PeeringLocationsDirectPeeringType.
+     */
     public static final PeeringLocationsDirectPeeringType VOICE = fromString("Voice");
 
     /**
      * Creates a new instance of PeeringLocationsDirectPeeringType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class PeeringLocationsDirectPeeringType extends ExpandableStringEnu
 
     /**
      * Creates or finds a PeeringLocationsDirectPeeringType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PeeringLocationsDirectPeeringType.
      */
-    @JsonCreator
     public static PeeringLocationsDirectPeeringType fromString(String name) {
         return fromString(name, PeeringLocationsDirectPeeringType.class);
     }
 
     /**
      * Gets known PeeringLocationsDirectPeeringType values.
-     *
+     * 
      * @return known PeeringLocationsDirectPeeringType values.
      */
     public static Collection<PeeringLocationsDirectPeeringType> values() {

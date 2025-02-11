@@ -38,10 +38,11 @@ import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAc
 import com.azure.storage.file.datalake.implementation.models.PathLeaseAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
+import com.azure.storage.file.datalake.implementation.models.PathUpdateAction;
 import com.azure.storage.file.datalake.implementation.models.PathsAppendDataHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathsCreateHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathsDeleteHeaders;
-import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
 import com.azure.storage.file.datalake.implementation.models.PathsFlushDataHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathsGetPropertiesHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathsLeaseHeaders;
@@ -51,9 +52,9 @@ import com.azure.storage.file.datalake.implementation.models.PathsSetAccessContr
 import com.azure.storage.file.datalake.implementation.models.PathsSetExpiryHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathsUndeleteHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathsUpdateHeaders;
-import com.azure.storage.file.datalake.implementation.models.PathUpdateAction;
 import com.azure.storage.file.datalake.implementation.models.SetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.EncryptionAlgorithmType;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -62,7 +63,6 @@ import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 
 /**
  * An instance of this class provides access to all the operations defined in Paths.
@@ -1104,108 +1104,11 @@ public final class PathsImpl {
         String encryptionContext, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, CpkInfo cpkInfo) {
-        final String accept = "application/json";
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String sourceIfMatchInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchInternal = sourceModifiedAccessConditions.getSourceIfMatch();
-        }
-        String sourceIfMatch = sourceIfMatchInternal;
-        String sourceIfNoneMatchInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchInternal = sourceModifiedAccessConditions.getSourceIfNoneMatch();
-        }
-        String sourceIfNoneMatch = sourceIfNoneMatchInternal;
-        OffsetDateTime sourceIfModifiedSinceInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfModifiedSince();
-        }
-        OffsetDateTime sourceIfModifiedSince = sourceIfModifiedSinceInternal;
-        OffsetDateTime sourceIfUnmodifiedSinceInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
-        }
-        OffsetDateTime sourceIfUnmodifiedSince = sourceIfUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.create(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), resource, continuation, mode,
-                cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, renameSource, leaseId,
-                sourceLeaseId, properties, permissions, umask, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted,
-                sourceIfUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, owner, group,
-                acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn, encryptionContext, accept, context))
+            .withContext(context -> createWithResponseAsync(requestId, timeout, resource, continuation, mode,
+                renameSource, sourceLeaseId, properties, permissions, umask, owner, group, acl, proposedLeaseId,
+                leaseDuration, expiryOptions, expiresOn, encryptionContext, pathHttpHeaders, leaseAccessConditions,
+                modifiedAccessConditions, sourceModifiedAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1466,8 +1369,8 @@ public final class PathsImpl {
             properties, permissions, umask, owner, group, acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn,
             encryptionContext, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
             sourceModifiedAccessConditions, cpkInfo)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1548,8 +1451,8 @@ public final class PathsImpl {
             properties, permissions, umask, owner, group, acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn,
             encryptionContext, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
             sourceModifiedAccessConditions, cpkInfo, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1626,108 +1529,11 @@ public final class PathsImpl {
         String encryptionContext, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, CpkInfo cpkInfo) {
-        final String accept = "application/json";
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String sourceIfMatchInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchInternal = sourceModifiedAccessConditions.getSourceIfMatch();
-        }
-        String sourceIfMatch = sourceIfMatchInternal;
-        String sourceIfNoneMatchInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchInternal = sourceModifiedAccessConditions.getSourceIfNoneMatch();
-        }
-        String sourceIfNoneMatch = sourceIfNoneMatchInternal;
-        OffsetDateTime sourceIfModifiedSinceInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfModifiedSince();
-        }
-        OffsetDateTime sourceIfModifiedSince = sourceIfModifiedSinceInternal;
-        OffsetDateTime sourceIfUnmodifiedSinceInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
-        }
-        OffsetDateTime sourceIfUnmodifiedSince = sourceIfUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), resource, continuation, mode,
-                cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, renameSource, leaseId,
-                sourceLeaseId, properties, permissions, umask, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted,
-                sourceIfUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, owner, group,
-                acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn, encryptionContext, accept, context))
+            .withContext(context -> createNoCustomHeadersWithResponseAsync(requestId, timeout, resource, continuation,
+                mode, renameSource, sourceLeaseId, properties, permissions, umask, owner, group, acl, proposedLeaseId,
+                leaseDuration, expiryOptions, expiresOn, encryptionContext, pathHttpHeaders, leaseAccessConditions,
+                modifiedAccessConditions, sourceModifiedAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1986,101 +1792,101 @@ public final class PathsImpl {
         String encryptionContext, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, CpkInfo cpkInfo, Context context) {
-        final String accept = "application/json";
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String sourceIfMatchInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchInternal = sourceModifiedAccessConditions.getSourceIfMatch();
-        }
-        String sourceIfMatch = sourceIfMatchInternal;
-        String sourceIfNoneMatchInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchInternal = sourceModifiedAccessConditions.getSourceIfNoneMatch();
-        }
-        String sourceIfNoneMatch = sourceIfNoneMatchInternal;
-        OffsetDateTime sourceIfModifiedSinceInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfModifiedSince();
-        }
-        OffsetDateTime sourceIfModifiedSince = sourceIfModifiedSinceInternal;
-        OffsetDateTime sourceIfUnmodifiedSinceInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
-        }
-        OffsetDateTime sourceIfUnmodifiedSince = sourceIfUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            String cacheControlInternal = null;
+            if (pathHttpHeaders != null) {
+                cacheControlInternal = pathHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentEncodingInternal = null;
+            if (pathHttpHeaders != null) {
+                contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (pathHttpHeaders != null) {
+                contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String contentDispositionInternal = null;
+            if (pathHttpHeaders != null) {
+                contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentTypeInternal = null;
+            if (pathHttpHeaders != null) {
+                contentTypeInternal = pathHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            String sourceIfMatchInternal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfMatchInternal = sourceModifiedAccessConditions.getSourceIfMatch();
+            }
+            String sourceIfMatch = sourceIfMatchInternal;
+            String sourceIfNoneMatchInternal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfNoneMatchInternal = sourceModifiedAccessConditions.getSourceIfNoneMatch();
+            }
+            String sourceIfNoneMatch = sourceIfNoneMatchInternal;
+            OffsetDateTime sourceIfModifiedSinceInternal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfModifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfModifiedSince();
+            }
+            OffsetDateTime sourceIfModifiedSince = sourceIfModifiedSinceInternal;
+            OffsetDateTime sourceIfUnmodifiedSinceInternal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfUnmodifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
+            }
+            OffsetDateTime sourceIfUnmodifiedSince = sourceIfUnmodifiedSinceInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
             return service.createSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
                 requestId, timeout, this.client.getVersion(), resource, continuation, mode, cacheControl,
                 contentEncoding, contentLanguage, contentDisposition, contentType, renameSource, leaseId, sourceLeaseId,
@@ -2246,101 +2052,101 @@ public final class PathsImpl {
         String encryptionContext, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, CpkInfo cpkInfo, Context context) {
-        final String accept = "application/json";
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String sourceIfMatchInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchInternal = sourceModifiedAccessConditions.getSourceIfMatch();
-        }
-        String sourceIfMatch = sourceIfMatchInternal;
-        String sourceIfNoneMatchInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchInternal = sourceModifiedAccessConditions.getSourceIfNoneMatch();
-        }
-        String sourceIfNoneMatch = sourceIfNoneMatchInternal;
-        OffsetDateTime sourceIfModifiedSinceInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfModifiedSince();
-        }
-        OffsetDateTime sourceIfModifiedSince = sourceIfModifiedSinceInternal;
-        OffsetDateTime sourceIfUnmodifiedSinceInternal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
-        }
-        OffsetDateTime sourceIfUnmodifiedSince = sourceIfUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            String cacheControlInternal = null;
+            if (pathHttpHeaders != null) {
+                cacheControlInternal = pathHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentEncodingInternal = null;
+            if (pathHttpHeaders != null) {
+                contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (pathHttpHeaders != null) {
+                contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String contentDispositionInternal = null;
+            if (pathHttpHeaders != null) {
+                contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentTypeInternal = null;
+            if (pathHttpHeaders != null) {
+                contentTypeInternal = pathHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            String sourceIfMatchInternal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfMatchInternal = sourceModifiedAccessConditions.getSourceIfMatch();
+            }
+            String sourceIfMatch = sourceIfMatchInternal;
+            String sourceIfNoneMatchInternal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfNoneMatchInternal = sourceModifiedAccessConditions.getSourceIfNoneMatch();
+            }
+            String sourceIfNoneMatch = sourceIfNoneMatchInternal;
+            OffsetDateTime sourceIfModifiedSinceInternal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfModifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfModifiedSince();
+            }
+            OffsetDateTime sourceIfModifiedSince = sourceIfModifiedSinceInternal;
+            OffsetDateTime sourceIfUnmodifiedSinceInternal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfUnmodifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
+            }
+            OffsetDateTime sourceIfUnmodifiedSince = sourceIfUnmodifiedSinceInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
             return service.createNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), resource, continuation, mode,
                 cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, renameSource, leaseId,
@@ -2438,74 +2244,10 @@ public final class PathsImpl {
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
         String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        byte[] contentMd5Internal = null;
-        if (pathHttpHeaders != null) {
-            contentMd5Internal = pathHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.update(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation,
-                mode, forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
-                cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner,
-                group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                body, accept, context))
+            .withContext(context -> updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords,
+                continuation, forceFlag, position, retainUncommittedData, close, contentLength, properties, owner,
+                group, permissions, acl, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -2753,8 +2495,8 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2846,8 +2588,8 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2935,74 +2677,11 @@ public final class PathsImpl {
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
         String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        byte[] contentMd5Internal = null;
-        if (pathHttpHeaders != null) {
-            contentMd5Internal = pathHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.updateNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation,
-                mode, forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
-                cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner,
-                group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                body, accept, context))
+            .withContext(
+                context -> updateNoCustomHeadersWithResponseAsync(action, mode, body, requestId, timeout, maxRecords,
+                    continuation, forceFlag, position, retainUncommittedData, close, contentLength, properties, owner,
+                    group, permissions, acl, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -3247,74 +2926,10 @@ public final class PathsImpl {
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
         String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        byte[] contentMd5Internal = null;
-        if (pathHttpHeaders != null) {
-            contentMd5Internal = pathHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.update(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation,
-                mode, forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
-                cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner,
-                group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                body, accept, context))
+            .withContext(context -> updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords,
+                continuation, forceFlag, position, retainUncommittedData, close, contentLength, properties, owner,
+                group, permissions, acl, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -3562,8 +3177,8 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3655,8 +3270,8 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3744,74 +3359,11 @@ public final class PathsImpl {
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
         String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        byte[] contentMd5Internal = null;
-        if (pathHttpHeaders != null) {
-            contentMd5Internal = pathHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.updateNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation,
-                mode, forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
-                cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner,
-                group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                body, accept, context))
+            .withContext(
+                context -> updateNoCustomHeadersWithResponseAsync(action, mode, body, requestId, timeout, maxRecords,
+                    continuation, forceFlag, position, retainUncommittedData, close, contentLength, properties, owner,
+                    group, permissions, acl, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -4057,68 +3609,68 @@ public final class PathsImpl {
         Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
         String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String accept = "application/json";
-        byte[] contentMd5Internal = null;
-        if (pathHttpHeaders != null) {
-            contentMd5Internal = pathHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            byte[] contentMd5Internal = null;
+            if (pathHttpHeaders != null) {
+                contentMd5Internal = pathHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String cacheControlInternal = null;
+            if (pathHttpHeaders != null) {
+                cacheControlInternal = pathHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentTypeInternal = null;
+            if (pathHttpHeaders != null) {
+                contentTypeInternal = pathHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentDispositionInternal = null;
+            if (pathHttpHeaders != null) {
+                contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentEncodingInternal = null;
+            if (pathHttpHeaders != null) {
+                contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (pathHttpHeaders != null) {
+                contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.updateSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
                 requestId, timeout, this.client.getVersion(), action, maxRecords, continuation, mode, forceFlag,
                 position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl,
@@ -4309,68 +3861,68 @@ public final class PathsImpl {
         Long contentLength, String properties, String owner, String group, String permissions, String acl,
         PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String accept = "application/json";
-        byte[] contentMd5Internal = null;
-        if (pathHttpHeaders != null) {
-            contentMd5Internal = pathHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            byte[] contentMd5Internal = null;
+            if (pathHttpHeaders != null) {
+                contentMd5Internal = pathHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String cacheControlInternal = null;
+            if (pathHttpHeaders != null) {
+                cacheControlInternal = pathHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentTypeInternal = null;
+            if (pathHttpHeaders != null) {
+                contentTypeInternal = pathHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentDispositionInternal = null;
+            if (pathHttpHeaders != null) {
+                contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentEncodingInternal = null;
+            if (pathHttpHeaders != null) {
+                contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (pathHttpHeaders != null) {
+                contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.updateNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation,
                 mode, forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
@@ -4418,41 +3970,9 @@ public final class PathsImpl {
     public Mono<ResponseBase<PathsLeaseHeaders, Void>> leaseWithResponseAsync(PathLeaseAction xMsLeaseAction,
         String requestId, Integer timeout, Integer xMsLeaseBreakPeriod, String proposedLeaseId,
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.lease(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), xMsLeaseAction,
-                this.client.getXMsLeaseDuration(), xMsLeaseBreakPeriod, leaseId, proposedLeaseId, ifMatch, ifNoneMatch,
-                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
+            .withContext(context -> leaseWithResponseAsync(xMsLeaseAction, requestId, timeout, xMsLeaseBreakPeriod,
+                proposedLeaseId, leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -4570,8 +4090,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions) {
         return leaseWithResponseAsync(xMsLeaseAction, requestId, timeout, xMsLeaseBreakPeriod, proposedLeaseId,
             leaseAccessConditions, modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4613,8 +4133,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return leaseWithResponseAsync(xMsLeaseAction, requestId, timeout, xMsLeaseBreakPeriod, proposedLeaseId,
             leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4653,41 +4173,9 @@ public final class PathsImpl {
     public Mono<Response<Void>> leaseNoCustomHeadersWithResponseAsync(PathLeaseAction xMsLeaseAction, String requestId,
         Integer timeout, Integer xMsLeaseBreakPeriod, String proposedLeaseId,
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.leaseNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), xMsLeaseAction,
-                this.client.getXMsLeaseDuration(), xMsLeaseBreakPeriod, leaseId, proposedLeaseId, ifMatch, ifNoneMatch,
-                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
+            .withContext(context -> leaseNoCustomHeadersWithResponseAsync(xMsLeaseAction, requestId, timeout,
+                xMsLeaseBreakPeriod, proposedLeaseId, leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -4805,37 +4293,37 @@ public final class PathsImpl {
         Integer timeout, Integer xMsLeaseBreakPeriod, String proposedLeaseId,
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
         Context context) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.leaseSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
                 requestId, timeout, this.client.getVersion(), xMsLeaseAction, this.client.getXMsLeaseDuration(),
                 xMsLeaseBreakPeriod, leaseId, proposedLeaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
@@ -4922,37 +4410,37 @@ public final class PathsImpl {
         Integer timeout, Integer xMsLeaseBreakPeriod, String proposedLeaseId,
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
         Context context) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.leaseNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), xMsLeaseAction,
                 this.client.getXMsLeaseDuration(), xMsLeaseBreakPeriod, leaseId, proposedLeaseId, ifMatch, ifNoneMatch,
@@ -4992,56 +4480,9 @@ public final class PathsImpl {
     public Mono<ResponseBase<PathsReadHeaders, Flux<ByteBuffer>>> readWithResponseAsync(String requestId,
         Integer timeout, String range, Boolean xMsRangeGetContentMd5, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.read(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), range, leaseId,
-                xMsRangeGetContentMd5, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                encryptionKey, encryptionKeySha256, encryptionAlgorithm, accept, context))
+            .withContext(context -> readWithResponseAsync(requestId, timeout, range, xMsRangeGetContentMd5,
+                leaseAccessConditions, modifiedAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -5161,8 +4602,8 @@ public final class PathsImpl {
         CpkInfo cpkInfo) {
         return readWithResponseAsync(requestId, timeout, range, xMsRangeGetContentMd5, leaseAccessConditions,
             modifiedAccessConditions, cpkInfo)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -5198,8 +4639,8 @@ public final class PathsImpl {
         Context context) {
         return readWithResponseAsync(requestId, timeout, range, xMsRangeGetContentMd5, leaseAccessConditions,
             modifiedAccessConditions, cpkInfo, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -5232,56 +4673,9 @@ public final class PathsImpl {
     public Mono<StreamResponse> readNoCustomHeadersWithResponseAsync(String requestId, Integer timeout, String range,
         Boolean xMsRangeGetContentMd5, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.readNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), range, leaseId,
-                xMsRangeGetContentMd5, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                encryptionKey, encryptionKeySha256, encryptionAlgorithm, accept, context))
+            .withContext(context -> readNoCustomHeadersWithResponseAsync(requestId, timeout, range,
+                xMsRangeGetContentMd5, leaseAccessConditions, modifiedAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -5400,52 +4794,52 @@ public final class PathsImpl {
     public ResponseBase<PathsReadHeaders, InputStream> readWithResponse(String requestId, Integer timeout, String range,
         Boolean xMsRangeGetContentMd5, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo, Context context) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.readSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), requestId,
                 timeout, this.client.getVersion(), range, leaseId, xMsRangeGetContentMd5, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256,
@@ -5524,52 +4918,52 @@ public final class PathsImpl {
     public Response<InputStream> readNoCustomHeadersWithResponse(String requestId, Integer timeout, String range,
         Boolean xMsRangeGetContentMd5, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo, Context context) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.readNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), range, leaseId,
                 xMsRangeGetContentMd5, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
@@ -5612,40 +5006,9 @@ public final class PathsImpl {
     public Mono<ResponseBase<PathsGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(String requestId,
         Integer timeout, PathGetPropertiesAction action, Boolean upn, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.getProperties(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch,
-                ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
+            .withContext(context -> getPropertiesWithResponseAsync(requestId, timeout, action, upn,
+                leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -5754,8 +5117,8 @@ public final class PathsImpl {
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return getPropertiesWithResponseAsync(requestId, timeout, action, upn, leaseAccessConditions,
             modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5794,8 +5157,8 @@ public final class PathsImpl {
         Context context) {
         return getPropertiesWithResponseAsync(requestId, timeout, action, upn, leaseAccessConditions,
             modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5831,41 +5194,9 @@ public final class PathsImpl {
     public Mono<Response<Void>> getPropertiesNoCustomHeadersWithResponseAsync(String requestId, Integer timeout,
         PathGetPropertiesAction action, Boolean upn, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(
-                context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                    this.client.getPath(), requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch,
-                    ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
+            .withContext(context -> getPropertiesNoCustomHeadersWithResponseAsync(requestId, timeout, action, upn,
+                leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -5973,37 +5304,37 @@ public final class PathsImpl {
     public ResponseBase<PathsGetPropertiesHeaders, Void> getPropertiesWithResponse(String requestId, Integer timeout,
         PathGetPropertiesAction action, Boolean upn, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.getPropertiesSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
                 requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
@@ -6079,37 +5410,37 @@ public final class PathsImpl {
     public Response<Void> getPropertiesNoCustomHeadersWithResponse(String requestId, Integer timeout,
         PathGetPropertiesAction action, Boolean upn, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch,
                 ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
@@ -6150,40 +5481,9 @@ public final class PathsImpl {
     public Mono<ResponseBase<PathsDeleteHeaders, Void>> deleteWithResponseAsync(String requestId, Integer timeout,
         Boolean recursive, String continuation, Boolean paginated, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), recursive, continuation, leaseId,
-                ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context))
+            .withContext(context -> deleteWithResponseAsync(requestId, timeout, recursive, continuation, paginated,
+                leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -6291,8 +5591,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions) {
         return deleteWithResponseAsync(requestId, timeout, recursive, continuation, paginated, leaseAccessConditions,
             modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6330,8 +5630,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return deleteWithResponseAsync(requestId, timeout, recursive, continuation, paginated, leaseAccessConditions,
             modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6366,40 +5666,9 @@ public final class PathsImpl {
     public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(String requestId, Integer timeout,
         Boolean recursive, String continuation, Boolean paginated, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), requestId, timeout, this.client.getVersion(), recursive, continuation, leaseId,
-                ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context))
+            .withContext(context -> deleteNoCustomHeadersWithResponseAsync(requestId, timeout, recursive, continuation,
+                paginated, leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -6506,37 +5775,37 @@ public final class PathsImpl {
     public ResponseBase<PathsDeleteHeaders, Void> deleteWithResponse(String requestId, Integer timeout,
         Boolean recursive, String continuation, Boolean paginated, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.deleteSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
                 requestId, timeout, this.client.getVersion(), recursive, continuation, leaseId, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context);
@@ -6612,37 +5881,37 @@ public final class PathsImpl {
     public Response<Void> deleteNoCustomHeadersWithResponse(String requestId, Integer timeout, Boolean recursive,
         String continuation, Boolean paginated, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/json";
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), recursive, continuation, leaseId,
                 ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context);
@@ -6679,42 +5948,9 @@ public final class PathsImpl {
     public Mono<ResponseBase<PathsSetAccessControlHeaders, Void>> setAccessControlWithResponseAsync(Integer timeout,
         String owner, String group, String permissions, String acl, String requestId,
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
-        final String action = "setAccessControl";
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.setAccessControl(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), action, timeout, leaseId, owner, group, permissions, acl, ifMatch, ifNoneMatch,
-                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), accept,
-                context))
+            .withContext(context -> setAccessControlWithResponseAsync(timeout, owner, group, permissions, acl,
+                requestId, leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -6816,8 +6052,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions) {
         return setAccessControlWithResponseAsync(timeout, owner, group, permissions, acl, requestId,
             leaseAccessConditions, modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6851,8 +6087,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return setAccessControlWithResponseAsync(timeout, owner, group, permissions, acl, requestId,
             leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6883,42 +6119,9 @@ public final class PathsImpl {
     public Mono<Response<Void>> setAccessControlNoCustomHeadersWithResponseAsync(Integer timeout, String owner,
         String group, String permissions, String acl, String requestId, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
-        final String action = "setAccessControl";
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.setAccessControlNoCustomHeaders(this.client.getUrl(),
-                this.client.getFileSystem(), this.client.getPath(), action, timeout, leaseId, owner, group, permissions,
-                acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId,
-                this.client.getVersion(), accept, context))
+            .withContext(context -> setAccessControlNoCustomHeadersWithResponseAsync(timeout, owner, group, permissions,
+                acl, requestId, leaseAccessConditions, modifiedAccessConditions, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -7017,38 +6220,38 @@ public final class PathsImpl {
     public ResponseBase<PathsSetAccessControlHeaders, Void> setAccessControlWithResponse(Integer timeout, String owner,
         String group, String permissions, String acl, String requestId, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String action = "setAccessControl";
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String action = "setAccessControl";
+            final String accept = "application/json";
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.setAccessControlSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), action, timeout, leaseId, owner, group, permissions, acl, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), accept,
@@ -7118,38 +6321,38 @@ public final class PathsImpl {
     public Response<Void> setAccessControlNoCustomHeadersWithResponse(Integer timeout, String owner, String group,
         String permissions, String acl, String requestId, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String action = "setAccessControl";
-        final String accept = "application/json";
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String action = "setAccessControl";
+            final String accept = "application/json";
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.setAccessControlNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), action, timeout, leaseId, owner, group, permissions, acl, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), accept,
@@ -7192,12 +6395,9 @@ public final class PathsImpl {
     public Mono<ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse>>
         setAccessControlRecursiveWithResponseAsync(PathSetAccessControlRecursiveMode mode, Integer timeout,
             String continuation, Boolean forceFlag, Integer maxRecords, String acl, String requestId) {
-        final String action = "setAccessControlRecursive";
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.setAccessControlRecursive(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), action, timeout, continuation, mode, forceFlag, maxRecords, acl, requestId,
-                this.client.getVersion(), accept, context))
+            .withContext(context -> setAccessControlRecursiveWithResponseAsync(mode, timeout, continuation, forceFlag,
+                maxRecords, acl, requestId, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -7279,7 +6479,7 @@ public final class PathsImpl {
         Integer maxRecords, String acl, String requestId) {
         return setAccessControlRecursiveWithResponseAsync(mode, timeout, continuation, forceFlag, maxRecords, acl,
             requestId).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -7318,8 +6518,8 @@ public final class PathsImpl {
         Integer maxRecords, String acl, String requestId, Context context) {
         return setAccessControlRecursiveWithResponseAsync(mode, timeout, continuation, forceFlag, maxRecords, acl,
             requestId, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -7355,12 +6555,9 @@ public final class PathsImpl {
     public Mono<Response<SetAccessControlRecursiveResponse>> setAccessControlRecursiveNoCustomHeadersWithResponseAsync(
         PathSetAccessControlRecursiveMode mode, Integer timeout, String continuation, Boolean forceFlag,
         Integer maxRecords, String acl, String requestId) {
-        final String action = "setAccessControlRecursive";
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.setAccessControlRecursiveNoCustomHeaders(this.client.getUrl(),
-                this.client.getFileSystem(), this.client.getPath(), action, timeout, continuation, mode, forceFlag,
-                maxRecords, acl, requestId, this.client.getVersion(), accept, context))
+            .withContext(context -> setAccessControlRecursiveNoCustomHeadersWithResponseAsync(mode, timeout,
+                continuation, forceFlag, maxRecords, acl, requestId, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -7441,9 +6638,9 @@ public final class PathsImpl {
     public ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse>
         setAccessControlRecursiveWithResponse(PathSetAccessControlRecursiveMode mode, Integer timeout,
             String continuation, Boolean forceFlag, Integer maxRecords, String acl, String requestId, Context context) {
-        final String action = "setAccessControlRecursive";
-        final String accept = "application/json";
         try {
+            final String action = "setAccessControlRecursive";
+            final String accept = "application/json";
             return service.setAccessControlRecursiveSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), action, timeout, continuation, mode, forceFlag, maxRecords, acl, requestId,
                 this.client.getVersion(), accept, context);
@@ -7526,9 +6723,9 @@ public final class PathsImpl {
     public Response<SetAccessControlRecursiveResponse> setAccessControlRecursiveNoCustomHeadersWithResponse(
         PathSetAccessControlRecursiveMode mode, Integer timeout, String continuation, Boolean forceFlag,
         Integer maxRecords, String acl, String requestId, Context context) {
-        final String action = "setAccessControlRecursive";
-        final String accept = "application/json";
         try {
+            final String action = "setAccessControlRecursive";
+            final String accept = "application/json";
             return service.setAccessControlRecursiveNoCustomHeadersSync(this.client.getUrl(),
                 this.client.getFileSystem(), this.client.getPath(), action, timeout, continuation, mode, forceFlag,
                 maxRecords, acl, requestId, this.client.getVersion(), accept, context);
@@ -7588,90 +6785,10 @@ public final class PathsImpl {
         String proposedLeaseId, String requestId, PathHttpHeaders pathHttpHeaders,
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
         CpkInfo cpkInfo) {
-        final String action = "flush";
-        final String accept = "application/json";
-        byte[] contentMd5Internal = null;
-        if (pathHttpHeaders != null) {
-            contentMd5Internal = pathHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.flushData(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), action, timeout, position, retainUncommittedData, close, contentLength,
-                contentMd5Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, cacheControl, contentType,
-                contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), encryptionKey, encryptionKeySha256,
-                encryptionAlgorithm, accept, context))
+            .withContext(context -> flushDataWithResponseAsync(timeout, position, retainUncommittedData, close,
+                contentLength, leaseAction, leaseDuration, proposedLeaseId, requestId, pathHttpHeaders,
+                leaseAccessConditions, modifiedAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -7866,7 +6983,7 @@ public final class PathsImpl {
         return flushDataWithResponseAsync(timeout, position, retainUncommittedData, close, contentLength, leaseAction,
             leaseDuration, proposedLeaseId, requestId, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
             cpkInfo).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7923,8 +7040,8 @@ public final class PathsImpl {
         return flushDataWithResponseAsync(timeout, position, retainUncommittedData, close, contentLength, leaseAction,
             leaseDuration, proposedLeaseId, requestId, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
             cpkInfo, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7978,90 +7095,10 @@ public final class PathsImpl {
         String proposedLeaseId, String requestId, PathHttpHeaders pathHttpHeaders,
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
         CpkInfo cpkInfo) {
-        final String action = "flush";
-        final String accept = "application/json";
-        byte[] contentMd5Internal = null;
-        if (pathHttpHeaders != null) {
-            contentMd5Internal = pathHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.flushDataNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), action, timeout, position, retainUncommittedData, close, contentLength,
-                contentMd5Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, cacheControl, contentType,
-                contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), encryptionKey, encryptionKeySha256,
-                encryptionAlgorithm, accept, context))
+            .withContext(context -> flushDataNoCustomHeadersWithResponseAsync(timeout, position, retainUncommittedData,
+                close, contentLength, leaseAction, leaseDuration, proposedLeaseId, requestId, pathHttpHeaders,
+                leaseAccessConditions, modifiedAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -8256,84 +7293,84 @@ public final class PathsImpl {
         String proposedLeaseId, String requestId, PathHttpHeaders pathHttpHeaders,
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo,
         Context context) {
-        final String action = "flush";
-        final String accept = "application/json";
-        byte[] contentMd5Internal = null;
-        if (pathHttpHeaders != null) {
-            contentMd5Internal = pathHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String action = "flush";
+            final String accept = "application/json";
+            byte[] contentMd5Internal = null;
+            if (pathHttpHeaders != null) {
+                contentMd5Internal = pathHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String cacheControlInternal = null;
+            if (pathHttpHeaders != null) {
+                cacheControlInternal = pathHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentTypeInternal = null;
+            if (pathHttpHeaders != null) {
+                contentTypeInternal = pathHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentDispositionInternal = null;
+            if (pathHttpHeaders != null) {
+                contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentEncodingInternal = null;
+            if (pathHttpHeaders != null) {
+                contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (pathHttpHeaders != null) {
+                contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.flushDataSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
                 action, timeout, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
                 leaseAction, leaseDuration, proposedLeaseId, cacheControl, contentType, contentDisposition,
@@ -8451,84 +7488,84 @@ public final class PathsImpl {
         String proposedLeaseId, String requestId, PathHttpHeaders pathHttpHeaders,
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo,
         Context context) {
-        final String action = "flush";
-        final String accept = "application/json";
-        byte[] contentMd5Internal = null;
-        if (pathHttpHeaders != null) {
-            contentMd5Internal = pathHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String cacheControlInternal = null;
-        if (pathHttpHeaders != null) {
-            cacheControlInternal = pathHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (pathHttpHeaders != null) {
-            contentTypeInternal = pathHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentDispositionInternal = null;
-        if (pathHttpHeaders != null) {
-            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentEncodingInternal = null;
-        if (pathHttpHeaders != null) {
-            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (pathHttpHeaders != null) {
-            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String ifMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifMatchInternal = modifiedAccessConditions.getIfMatch();
-        }
-        String ifMatch = ifMatchInternal;
-        String ifNoneMatchInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        OffsetDateTime ifModifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
-        }
-        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
-        OffsetDateTime ifUnmodifiedSinceInternal = null;
-        if (modifiedAccessConditions != null) {
-            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
-        }
-        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String action = "flush";
+            final String accept = "application/json";
+            byte[] contentMd5Internal = null;
+            if (pathHttpHeaders != null) {
+                contentMd5Internal = pathHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String cacheControlInternal = null;
+            if (pathHttpHeaders != null) {
+                cacheControlInternal = pathHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentTypeInternal = null;
+            if (pathHttpHeaders != null) {
+                contentTypeInternal = pathHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentDispositionInternal = null;
+            if (pathHttpHeaders != null) {
+                contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentEncodingInternal = null;
+            if (pathHttpHeaders != null) {
+                contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (pathHttpHeaders != null) {
+                contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String ifMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifMatchInternal = modifiedAccessConditions.getIfMatch();
+            }
+            String ifMatch = ifMatchInternal;
+            String ifNoneMatchInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+            }
+            String ifNoneMatch = ifNoneMatchInternal;
+            OffsetDateTime ifModifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+            }
+            OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+            OffsetDateTime ifUnmodifiedSinceInternal = null;
+            if (modifiedAccessConditions != null) {
+                ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+            }
+            OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.flushDataNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), action, timeout, position, retainUncommittedData, close, contentLength,
                 contentMd5Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, cacheControl, contentType,
@@ -8580,41 +7617,10 @@ public final class PathsImpl {
         Long position, Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
         Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
         LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo) {
-        final String action = "append";
-        final String accept = "application/json";
-        byte[] transactionalContentHashInternal = null;
-        if (pathHttpHeaders != null) {
-            transactionalContentHashInternal = pathHttpHeaders.getTransactionalContentHash();
-        }
-        byte[] transactionalContentHash = transactionalContentHashInternal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return FluxUtil
-            .withContext(context -> service.appendData(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
-                transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
-                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
-                context))
+            .withContext(context -> appendDataWithResponseAsync(body, position, timeout, contentLength,
+                transactionalContentCrc64, leaseAction, leaseDuration, proposedLeaseId, requestId, flush,
+                pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -8739,7 +7745,7 @@ public final class PathsImpl {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
             cpkInfo).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -8786,8 +7792,8 @@ public final class PathsImpl {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
             cpkInfo, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -8830,41 +7836,10 @@ public final class PathsImpl {
         Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
         Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
         LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo) {
-        final String action = "append";
-        final String accept = "application/json";
-        byte[] transactionalContentHashInternal = null;
-        if (pathHttpHeaders != null) {
-            transactionalContentHashInternal = pathHttpHeaders.getTransactionalContentHash();
-        }
-        byte[] transactionalContentHash = transactionalContentHashInternal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return FluxUtil
-            .withContext(context -> service.appendDataNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
-                transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
-                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
-                context))
+            .withContext(context -> appendDataNoCustomHeadersWithResponseAsync(body, position, timeout, contentLength,
+                transactionalContentCrc64, leaseAction, leaseDuration, proposedLeaseId, requestId, flush,
+                pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -8986,41 +7961,10 @@ public final class PathsImpl {
         Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
         Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
         LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo) {
-        final String action = "append";
-        final String accept = "application/json";
-        byte[] transactionalContentHashInternal = null;
-        if (pathHttpHeaders != null) {
-            transactionalContentHashInternal = pathHttpHeaders.getTransactionalContentHash();
-        }
-        byte[] transactionalContentHash = transactionalContentHashInternal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return FluxUtil
-            .withContext(context -> service.appendData(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
-                transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
-                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
-                context))
+            .withContext(context -> appendDataWithResponseAsync(body, position, timeout, contentLength,
+                transactionalContentCrc64, leaseAction, leaseDuration, proposedLeaseId, requestId, flush,
+                pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -9145,7 +8089,7 @@ public final class PathsImpl {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
             cpkInfo).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -9192,8 +8136,8 @@ public final class PathsImpl {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
             cpkInfo, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -9236,41 +8180,10 @@ public final class PathsImpl {
         Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
         Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
         LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo) {
-        final String action = "append";
-        final String accept = "application/json";
-        byte[] transactionalContentHashInternal = null;
-        if (pathHttpHeaders != null) {
-            transactionalContentHashInternal = pathHttpHeaders.getTransactionalContentHash();
-        }
-        byte[] transactionalContentHash = transactionalContentHashInternal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return FluxUtil
-            .withContext(context -> service.appendDataNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
-                transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
-                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
-                context))
+            .withContext(context -> appendDataNoCustomHeadersWithResponseAsync(body, position, timeout, contentLength,
+                transactionalContentCrc64, leaseAction, leaseDuration, proposedLeaseId, requestId, flush,
+                pathHttpHeaders, leaseAccessConditions, cpkInfo, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -9393,36 +8306,36 @@ public final class PathsImpl {
         Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
         Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
         LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, Context context) {
-        final String action = "append";
-        final String accept = "application/json";
-        byte[] transactionalContentHashInternal = null;
-        if (pathHttpHeaders != null) {
-            transactionalContentHashInternal = pathHttpHeaders.getTransactionalContentHash();
-        }
-        byte[] transactionalContentHash = transactionalContentHashInternal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         try {
+            final String action = "append";
+            final String accept = "application/json";
+            byte[] transactionalContentHashInternal = null;
+            if (pathHttpHeaders != null) {
+                transactionalContentHashInternal = pathHttpHeaders.getTransactionalContentHash();
+            }
+            byte[] transactionalContentHash = transactionalContentHashInternal;
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
             return service.appendDataSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
                 action, position, timeout, contentLength, transactionalContentHashConverted,
                 transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
@@ -9518,36 +8431,36 @@ public final class PathsImpl {
         Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction, Long leaseDuration,
         String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
         LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, Context context) {
-        final String action = "append";
-        final String accept = "application/json";
-        byte[] transactionalContentHashInternal = null;
-        if (pathHttpHeaders != null) {
-            transactionalContentHashInternal = pathHttpHeaders.getTransactionalContentHash();
-        }
-        byte[] transactionalContentHash = transactionalContentHashInternal;
-        String leaseIdInternal = null;
-        if (leaseAccessConditions != null) {
-            leaseIdInternal = leaseAccessConditions.getLeaseId();
-        }
-        String leaseId = leaseIdInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         try {
+            final String action = "append";
+            final String accept = "application/json";
+            byte[] transactionalContentHashInternal = null;
+            if (pathHttpHeaders != null) {
+                transactionalContentHashInternal = pathHttpHeaders.getTransactionalContentHash();
+            }
+            byte[] transactionalContentHash = transactionalContentHashInternal;
+            String leaseIdInternal = null;
+            if (leaseAccessConditions != null) {
+                leaseIdInternal = leaseAccessConditions.getLeaseId();
+            }
+            String leaseId = leaseIdInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
             return service.appendDataNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
                 transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
@@ -9576,12 +8489,8 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<PathsSetExpiryHeaders, Void>> setExpiryWithResponseAsync(PathExpiryOptions expiryOptions,
         Integer timeout, String requestId, String expiresOn) {
-        final String comp = "expiry";
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.setExpiry(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
-                    comp, timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context))
+            .withContext(context -> setExpiryWithResponseAsync(expiryOptions, timeout, requestId, expiresOn, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -9677,12 +8586,8 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setExpiryNoCustomHeadersWithResponseAsync(PathExpiryOptions expiryOptions,
         Integer timeout, String requestId, String expiresOn) {
-        final String comp = "expiry";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.setExpiryNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), comp, timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn,
-                accept, context))
+        return FluxUtil.withContext(
+            context -> setExpiryNoCustomHeadersWithResponseAsync(expiryOptions, timeout, requestId, expiresOn, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -9732,9 +8637,9 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<PathsSetExpiryHeaders, Void> setExpiryWithResponse(PathExpiryOptions expiryOptions,
         Integer timeout, String requestId, String expiresOn, Context context) {
-        final String comp = "expiry";
-        final String accept = "application/json";
         try {
+            final String comp = "expiry";
+            final String accept = "application/json";
             return service.setExpirySync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), comp,
                 timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -9780,9 +8685,9 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setExpiryNoCustomHeadersWithResponse(PathExpiryOptions expiryOptions, Integer timeout,
         String requestId, String expiresOn, Context context) {
-        final String comp = "expiry";
-        final String accept = "application/json";
         try {
+            final String comp = "expiry";
+            final String accept = "application/json";
             return service.setExpiryNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), comp, timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn,
                 accept, context);
@@ -9809,12 +8714,7 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<PathsUndeleteHeaders, Void>> undeleteWithResponseAsync(Integer timeout,
         String undeleteSource, String requestId) {
-        final String comp = "undelete";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.undelete(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
-                    comp, timeout, undeleteSource, this.client.getVersion(), requestId, accept, context))
+        return FluxUtil.withContext(context -> undeleteWithResponseAsync(timeout, undeleteSource, requestId, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -9908,12 +8808,9 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> undeleteNoCustomHeadersWithResponseAsync(Integer timeout, String undeleteSource,
         String requestId) {
-        final String comp = "undelete";
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.undeleteNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
-                this.client.getPath(), comp, timeout, undeleteSource, this.client.getVersion(), requestId, accept,
-                context))
+            .withContext(
+                context -> undeleteNoCustomHeadersWithResponseAsync(timeout, undeleteSource, requestId, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -9963,9 +8860,9 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<PathsUndeleteHeaders, Void> undeleteWithResponse(Integer timeout, String undeleteSource,
         String requestId, Context context) {
-        final String comp = "undelete";
-        final String accept = "application/json";
         try {
+            final String comp = "undelete";
+            final String accept = "application/json";
             return service.undeleteSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), comp,
                 timeout, undeleteSource, this.client.getVersion(), requestId, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
@@ -10011,9 +8908,9 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> undeleteNoCustomHeadersWithResponse(Integer timeout, String undeleteSource, String requestId,
         Context context) {
-        final String comp = "undelete";
-        final String accept = "application/json";
         try {
+            final String comp = "undelete";
+            final String accept = "application/json";
             return service.undeleteNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), comp, timeout, undeleteSource, this.client.getVersion(), requestId, accept,
                 context);

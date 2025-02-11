@@ -5,51 +5,60 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties for a CVE analysis summary.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "summaryType")
-@JsonTypeName("CVE")
 @Fluent
 public final class CveSummary extends SummaryResourceProperties {
     /*
+     * Describes the type of summary.
+     */
+    private SummaryType summaryType = SummaryType.CVE;
+
+    /*
      * The total number of critical severity CVEs detected
      */
-    @JsonProperty(value = "critical")
     private Long critical;
 
     /*
      * The total number of high severity CVEs detected
      */
-    @JsonProperty(value = "high")
     private Long high;
 
     /*
      * The total number of medium severity CVEs detected
      */
-    @JsonProperty(value = "medium")
     private Long medium;
 
     /*
      * The total number of low severity CVEs detected
      */
-    @JsonProperty(value = "low")
     private Long low;
 
     /*
      * The total number of unknown severity CVEs detected
      */
-    @JsonProperty(value = "unknown")
     private Long unknown;
 
     /**
      * Creates an instance of CveSummary class.
      */
     public CveSummary() {
+    }
+
+    /**
+     * Get the summaryType property: Describes the type of summary.
+     * 
+     * @return the summaryType value.
+     */
+    @Override
+    public SummaryType summaryType() {
+        return this.summaryType;
     }
 
     /**
@@ -159,6 +168,56 @@ public final class CveSummary extends SummaryResourceProperties {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("summaryType", this.summaryType == null ? null : this.summaryType.toString());
+        jsonWriter.writeNumberField("critical", this.critical);
+        jsonWriter.writeNumberField("high", this.high);
+        jsonWriter.writeNumberField("medium", this.medium);
+        jsonWriter.writeNumberField("low", this.low);
+        jsonWriter.writeNumberField("unknown", this.unknown);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CveSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CveSummary if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the CveSummary.
+     */
+    public static CveSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CveSummary deserializedCveSummary = new CveSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("summaryType".equals(fieldName)) {
+                    deserializedCveSummary.summaryType = SummaryType.fromString(reader.getString());
+                } else if ("critical".equals(fieldName)) {
+                    deserializedCveSummary.critical = reader.getNullable(JsonReader::getLong);
+                } else if ("high".equals(fieldName)) {
+                    deserializedCveSummary.high = reader.getNullable(JsonReader::getLong);
+                } else if ("medium".equals(fieldName)) {
+                    deserializedCveSummary.medium = reader.getNullable(JsonReader::getLong);
+                } else if ("low".equals(fieldName)) {
+                    deserializedCveSummary.low = reader.getNullable(JsonReader::getLong);
+                } else if ("unknown".equals(fieldName)) {
+                    deserializedCveSummary.unknown = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCveSummary;
+        });
     }
 }

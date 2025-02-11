@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.ForecastColumn;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Forecast properties. */
+/**
+ * Forecast properties.
+ */
 @Fluent
-public final class ForecastProperties {
+public final class ForecastProperties implements JsonSerializable<ForecastProperties> {
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Array of columns
      */
-    @JsonProperty(value = "columns")
     private List<ForecastColumn> columns;
 
     /*
      * Array of rows
      */
-    @JsonProperty(value = "rows")
     private List<List<Object>> rows;
 
-    /** Creates an instance of ForecastProperties class. */
+    /**
+     * Creates an instance of ForecastProperties class.
+     */
     public ForecastProperties() {
     }
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -45,7 +50,7 @@ public final class ForecastProperties {
 
     /**
      * Set the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ForecastProperties object itself.
      */
@@ -56,7 +61,7 @@ public final class ForecastProperties {
 
     /**
      * Get the columns property: Array of columns.
-     *
+     * 
      * @return the columns value.
      */
     public List<ForecastColumn> columns() {
@@ -65,7 +70,7 @@ public final class ForecastProperties {
 
     /**
      * Set the columns property: Array of columns.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the ForecastProperties object itself.
      */
@@ -76,7 +81,7 @@ public final class ForecastProperties {
 
     /**
      * Get the rows property: Array of rows.
-     *
+     * 
      * @return the rows value.
      */
     public List<List<Object>> rows() {
@@ -85,7 +90,7 @@ public final class ForecastProperties {
 
     /**
      * Set the rows property: Array of rows.
-     *
+     * 
      * @param rows the rows value to set.
      * @return the ForecastProperties object itself.
      */
@@ -96,12 +101,58 @@ public final class ForecastProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (columns() != null) {
             columns().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("columns", this.columns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("rows", this.rows,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForecastProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForecastProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ForecastProperties.
+     */
+    public static ForecastProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForecastProperties deserializedForecastProperties = new ForecastProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedForecastProperties.nextLink = reader.getString();
+                } else if ("columns".equals(fieldName)) {
+                    List<ForecastColumn> columns = reader.readArray(reader1 -> ForecastColumn.fromJson(reader1));
+                    deserializedForecastProperties.columns = columns;
+                } else if ("rows".equals(fieldName)) {
+                    List<List<Object>> rows
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.readUntyped()));
+                    deserializedForecastProperties.rows = rows;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForecastProperties;
+        });
     }
 }

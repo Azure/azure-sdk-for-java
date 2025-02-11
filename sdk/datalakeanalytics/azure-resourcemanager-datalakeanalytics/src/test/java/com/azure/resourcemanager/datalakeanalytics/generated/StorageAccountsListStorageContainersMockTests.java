@@ -6,65 +6,34 @@ package com.azure.resourcemanager.datalakeanalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager;
 import com.azure.resourcemanager.datalakeanalytics.models.StorageContainer;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class StorageAccountsListStorageContainersMockTests {
     @Test
     public void testListStorageContainers() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"lastModifiedTime\":\"2021-05-09T01:43:12Z\"},\"name\":\"ly\",\"type\":\"hdgqggeb\",\"id\":\"nyga\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"lastModifiedTime\":\"2021-07-15T10:08:59Z\"},\"name\":\"sjqbjhhyxxrw\",\"type\":\"co\",\"id\":\"hp\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataLakeAnalyticsManager manager = DataLakeAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<StorageContainer> response = manager.storageAccounts()
+            .listStorageContainers("tx", "tcs", "fcktqumiekke", com.azure.core.util.Context.NONE);
 
-        DataLakeAnalyticsManager manager =
-            DataLakeAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<StorageContainer> response =
-            manager
-                .storageAccounts()
-                .listStorageContainers("fatpxllrxcyjmoa", "su", "arm", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("hp", response.iterator().next().id());
+        Assertions.assertEquals("nyga", response.iterator().next().id());
     }
 }

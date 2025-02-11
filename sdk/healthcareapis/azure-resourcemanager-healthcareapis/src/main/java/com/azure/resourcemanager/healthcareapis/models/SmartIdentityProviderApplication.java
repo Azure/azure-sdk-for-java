@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * An Application configured in the Identity Provider used to access FHIR resources.
  */
 @Fluent
-public final class SmartIdentityProviderApplication {
+public final class SmartIdentityProviderApplication implements JsonSerializable<SmartIdentityProviderApplication> {
     /*
-     * The application client id defined in the identity provider. This value will be used to validate bearer tokens against the given authority.
+     * The application client id defined in the identity provider. This value will be used to validate bearer tokens
+     * against the given authority.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * The audience that will be used to validate bearer tokens against the given authority.
      */
-    @JsonProperty(value = "audience")
     private String audience;
 
     /*
      * The actions that are permitted to be performed on FHIR resources for the application.
      */
-    @JsonProperty(value = "allowedDataActions")
     private List<SmartDataActions> allowedDataActions;
 
     /**
@@ -107,5 +109,51 @@ public final class SmartIdentityProviderApplication {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("audience", this.audience);
+        jsonWriter.writeArrayField("allowedDataActions", this.allowedDataActions,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmartIdentityProviderApplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmartIdentityProviderApplication if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SmartIdentityProviderApplication.
+     */
+    public static SmartIdentityProviderApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmartIdentityProviderApplication deserializedSmartIdentityProviderApplication
+                = new SmartIdentityProviderApplication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientId".equals(fieldName)) {
+                    deserializedSmartIdentityProviderApplication.clientId = reader.getString();
+                } else if ("audience".equals(fieldName)) {
+                    deserializedSmartIdentityProviderApplication.audience = reader.getString();
+                } else if ("allowedDataActions".equals(fieldName)) {
+                    List<SmartDataActions> allowedDataActions
+                        = reader.readArray(reader1 -> SmartDataActions.fromString(reader1.getString()));
+                    deserializedSmartIdentityProviderApplication.allowedDataActions = allowedDataActions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmartIdentityProviderApplication;
+        });
     }
 }

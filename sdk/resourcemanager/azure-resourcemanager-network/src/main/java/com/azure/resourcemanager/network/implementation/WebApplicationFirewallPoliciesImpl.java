@@ -11,11 +11,8 @@ import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicy;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link WebApplicationFirewallPolicies}. */
-public class WebApplicationFirewallPoliciesImpl
-    extends
-    TopLevelModifiableResourcesImpl<
-            WebApplicationFirewallPolicy, WebApplicationFirewallPolicyImpl, WebApplicationFirewallPolicyInner,
-            WebApplicationFirewallPoliciesClient, NetworkManager>
+public class WebApplicationFirewallPoliciesImpl extends
+    TopLevelModifiableResourcesImpl<WebApplicationFirewallPolicy, WebApplicationFirewallPolicyImpl, WebApplicationFirewallPolicyInner, WebApplicationFirewallPoliciesClient, NetworkManager>
     implements WebApplicationFirewallPolicies {
 
     public WebApplicationFirewallPoliciesImpl(NetworkManager manager) {

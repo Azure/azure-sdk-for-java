@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for QueryPacks ListByResourceGroup. */
+/**
+ * Samples for QueryPacks ListByResourceGroup.
+ */
 public final class QueryPacksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPacksListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPacksListByResourceGroup.json
      */
     /**
      * Sample code: QueryPackListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
-    public static void queryPackListByResourceGroup(
-        com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+    public static void
+        queryPackListByResourceGroup(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager.queryPacks().listByResourceGroup("my-resource-group", com.azure.core.util.Context.NONE);
     }
 }

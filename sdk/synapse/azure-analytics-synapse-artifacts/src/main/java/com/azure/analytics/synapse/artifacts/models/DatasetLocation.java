@@ -21,7 +21,7 @@ public class DatasetLocation implements JsonSerializable<DatasetLocation> {
     /*
      * Type of dataset storage location.
      */
-    private String type;
+    private String type = "DatasetLocation";
 
     /*
      * Specify the folder path of dataset. Type: string (or Expression with resultType string)
@@ -42,7 +42,6 @@ public class DatasetLocation implements JsonSerializable<DatasetLocation> {
      * Creates an instance of DatasetLocation class.
      */
     public DatasetLocation() {
-        this.type = "DatasetLocation";
     }
 
     /**

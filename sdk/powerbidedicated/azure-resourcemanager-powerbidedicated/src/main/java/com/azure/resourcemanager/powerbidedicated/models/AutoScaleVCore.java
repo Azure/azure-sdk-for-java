@@ -10,53 +10,55 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.powerbidedicated.fluent.models.AutoScaleVCoreInner;
 import java.util.Map;
 
-/** An immutable client-side representation of AutoScaleVCore. */
+/**
+ * An immutable client-side representation of AutoScaleVCore.
+ */
 public interface AutoScaleVCore {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the sku property: The SKU of the auto scale v-core resource.
-     *
+     * 
      * @return the sku value.
      */
     AutoScaleVCoreSku sku();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
@@ -64,7 +66,7 @@ public interface AutoScaleVCore {
     /**
      * Gets the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
      * resource.
-     *
+     * 
      * @return the capacityObjectId value.
      */
     String capacityObjectId();
@@ -72,64 +74,70 @@ public interface AutoScaleVCore {
     /**
      * Gets the provisioningState property: The current deployment state of an auto scale v-core resource. The
      * provisioningState is to indicate states for resource provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     VCoreProvisioningState provisioningState();
 
     /**
      * Gets the capacityLimit property: The maximum capacity of an auto scale v-core resource.
-     *
+     * 
      * @return the capacityLimit value.
      */
     Integer capacityLimit();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.powerbidedicated.fluent.models.AutoScaleVCoreInner object.
-     *
+     * 
      * @return the inner object.
      */
     AutoScaleVCoreInner innerModel();
 
-    /** The entirety of the AutoScaleVCore definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the AutoScaleVCore definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
-    /** The AutoScaleVCore definition stages. */
+
+    /**
+     * The AutoScaleVCore definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the AutoScaleVCore definition. */
+        /**
+         * The first stage of the AutoScaleVCore definition.
+         */
         interface Blank extends WithLocation {
         }
-        /** The stage of the AutoScaleVCore definition allowing to specify location. */
+
+        /**
+         * The stage of the AutoScaleVCore definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -137,168 +145,199 @@ public interface AutoScaleVCore {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
-        /** The stage of the AutoScaleVCore definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the AutoScaleVCore definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity
-             *     is part. This name must be at least 1 character in length, and no more than 90.
+             * is part. This name must be at least 1 character in length, and no more than 90.
              * @return the next definition stage.
              */
             WithSku withExistingResourceGroup(String resourceGroupName);
         }
-        /** The stage of the AutoScaleVCore definition allowing to specify sku. */
+
+        /**
+         * The stage of the AutoScaleVCore definition allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: The SKU of the auto scale v-core resource..
-             *
+             * 
              * @param sku The SKU of the auto scale v-core resource.
              * @return the next definition stage.
              */
             WithCreate withSku(AutoScaleVCoreSku sku);
         }
+
         /**
          * The stage of the AutoScaleVCore definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSystemData,
-                DefinitionStages.WithCapacityObjectId,
-                DefinitionStages.WithCapacityLimit {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSystemData,
+            DefinitionStages.WithCapacityObjectId, DefinitionStages.WithCapacityLimit {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             AutoScaleVCore create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             AutoScaleVCore create(Context context);
         }
-        /** The stage of the AutoScaleVCore definition allowing to specify tags. */
+
+        /**
+         * The stage of the AutoScaleVCore definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the AutoScaleVCore definition allowing to specify systemData. */
+
+        /**
+         * The stage of the AutoScaleVCore definition allowing to specify systemData.
+         */
         interface WithSystemData {
             /**
              * Specifies the systemData property: Metadata pertaining to creation and last modification of the
              * resource..
-             *
+             * 
              * @param systemData Metadata pertaining to creation and last modification of the resource.
              * @return the next definition stage.
              */
             WithCreate withSystemData(SystemData systemData);
         }
-        /** The stage of the AutoScaleVCore definition allowing to specify capacityObjectId. */
+
+        /**
+         * The stage of the AutoScaleVCore definition allowing to specify capacityObjectId.
+         */
         interface WithCapacityObjectId {
             /**
              * Specifies the capacityObjectId property: The object ID of the capacity resource associated with the auto
              * scale v-core resource..
-             *
+             * 
              * @param capacityObjectId The object ID of the capacity resource associated with the auto scale v-core
-             *     resource.
+             * resource.
              * @return the next definition stage.
              */
             WithCreate withCapacityObjectId(String capacityObjectId);
         }
-        /** The stage of the AutoScaleVCore definition allowing to specify capacityLimit. */
+
+        /**
+         * The stage of the AutoScaleVCore definition allowing to specify capacityLimit.
+         */
         interface WithCapacityLimit {
             /**
              * Specifies the capacityLimit property: The maximum capacity of an auto scale v-core resource..
-             *
+             * 
              * @param capacityLimit The maximum capacity of an auto scale v-core resource.
              * @return the next definition stage.
              */
             WithCreate withCapacityLimit(Integer capacityLimit);
         }
     }
+
     /**
      * Begins update for the AutoScaleVCore resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     AutoScaleVCore.Update update();
 
-    /** The template for AutoScaleVCore update. */
+    /**
+     * The template for AutoScaleVCore update.
+     */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithCapacityLimit {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         AutoScaleVCore apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         AutoScaleVCore apply(Context context);
     }
-    /** The AutoScaleVCore update stages. */
+
+    /**
+     * The AutoScaleVCore update stages.
+     */
     interface UpdateStages {
-        /** The stage of the AutoScaleVCore update allowing to specify tags. */
+        /**
+         * The stage of the AutoScaleVCore update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Key-value pairs of additional provisioning properties..
-             *
+             * 
              * @param tags Key-value pairs of additional provisioning properties.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
-        /** The stage of the AutoScaleVCore update allowing to specify sku. */
+
+        /**
+         * The stage of the AutoScaleVCore update allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: The SKU of the auto scale v-core resource..
-             *
+             * 
              * @param sku The SKU of the auto scale v-core resource.
              * @return the next definition stage.
              */
             Update withSku(AutoScaleVCoreSku sku);
         }
-        /** The stage of the AutoScaleVCore update allowing to specify capacityLimit. */
+
+        /**
+         * The stage of the AutoScaleVCore update allowing to specify capacityLimit.
+         */
         interface WithCapacityLimit {
             /**
              * Specifies the capacityLimit property: The maximum capacity of an auto scale v-core resource..
-             *
+             * 
              * @param capacityLimit The maximum capacity of an auto scale v-core resource.
              * @return the next definition stage.
              */
             Update withCapacityLimit(Integer capacityLimit);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     AutoScaleVCore refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

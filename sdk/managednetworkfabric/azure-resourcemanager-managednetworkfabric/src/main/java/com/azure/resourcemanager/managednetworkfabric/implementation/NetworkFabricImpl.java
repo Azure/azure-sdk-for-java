@@ -20,7 +20,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatcha
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabricProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
 import java.util.Collections;
@@ -185,25 +185,21 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
     }
 
     public NetworkFabric create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabrics()
-                .create(resourceGroupName, networkFabricName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabrics()
+            .create(resourceGroupName, networkFabricName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetworkFabric create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabrics()
-                .create(resourceGroupName, networkFabricName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabrics()
+            .create(resourceGroupName, networkFabricName, this.innerModel(), context);
         return this;
     }
 
-    NetworkFabricImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    NetworkFabricImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new NetworkFabricInner();
         this.serviceManager = serviceManager;
         this.networkFabricName = name;
@@ -215,49 +211,40 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
     }
 
     public NetworkFabric apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabrics()
-                .update(resourceGroupName, networkFabricName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabrics()
+            .update(resourceGroupName, networkFabricName, updateBody, Context.NONE);
         return this;
     }
 
     public NetworkFabric apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabrics()
-                .update(resourceGroupName, networkFabricName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabrics()
+            .update(resourceGroupName, networkFabricName, updateBody, context);
         return this;
     }
 
-    NetworkFabricImpl(
-        NetworkFabricInner innerObject,
+    NetworkFabricImpl(NetworkFabricInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkFabricName = Utils.getValueFromIdByName(innerObject.id(), "networkFabrics");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkFabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkFabrics");
     }
 
     public NetworkFabric refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabrics()
-                .getByResourceGroupWithResponse(resourceGroupName, networkFabricName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabrics()
+            .getByResourceGroupWithResponse(resourceGroupName, networkFabricName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkFabric refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkFabrics()
-                .getByResourceGroupWithResponse(resourceGroupName, networkFabricName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkFabrics()
+            .getByResourceGroupWithResponse(resourceGroupName, networkFabricName, context)
+            .getValue();
         return this;
     }
 
@@ -277,11 +264,11 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         return serviceManager.networkFabrics().deprovision(resourceGroupName, networkFabricName, context);
     }
 
-    public CommonPostActionResponseForStateUpdate upgrade(UpdateVersion body) {
+    public CommonPostActionResponseForStateUpdate upgrade(UpgradeNetworkFabricProperties body) {
         return serviceManager.networkFabrics().upgrade(resourceGroupName, networkFabricName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate upgrade(UpdateVersion body, Context context) {
+    public CommonPostActionResponseForStateUpdate upgrade(UpgradeNetworkFabricProperties body, Context context) {
         return serviceManager.networkFabrics().upgrade(resourceGroupName, networkFabricName, body, context);
     }
 
@@ -293,31 +280,27 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         return serviceManager.networkFabrics().refreshConfiguration(resourceGroupName, networkFabricName, context);
     }
 
-    public CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
-        UpdateAdministrativeState body) {
-        return serviceManager
-            .networkFabrics()
+    public CommonPostActionResponseForStateUpdate
+        updateWorkloadManagementBfdConfiguration(UpdateAdministrativeState body) {
+        return serviceManager.networkFabrics()
             .updateWorkloadManagementBfdConfiguration(resourceGroupName, networkFabricName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .networkFabrics()
+    public CommonPostActionResponseForStateUpdate
+        updateWorkloadManagementBfdConfiguration(UpdateAdministrativeState body, Context context) {
+        return serviceManager.networkFabrics()
             .updateWorkloadManagementBfdConfiguration(resourceGroupName, networkFabricName, body, context);
     }
 
-    public CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
-        UpdateAdministrativeState body) {
-        return serviceManager
-            .networkFabrics()
+    public CommonPostActionResponseForStateUpdate
+        updateInfraManagementBfdConfiguration(UpdateAdministrativeState body) {
+        return serviceManager.networkFabrics()
             .updateInfraManagementBfdConfiguration(resourceGroupName, networkFabricName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .networkFabrics()
+    public CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(UpdateAdministrativeState body,
+        Context context) {
+        return serviceManager.networkFabrics()
             .updateInfraManagementBfdConfiguration(resourceGroupName, networkFabricName, body, context);
     }
 
@@ -326,8 +309,7 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
     }
 
     public ValidateConfigurationResponse validateConfiguration(ValidateConfigurationProperties body, Context context) {
-        return serviceManager
-            .networkFabrics()
+        return serviceManager.networkFabrics()
             .validateConfiguration(resourceGroupName, networkFabricName, body, context);
     }
 
@@ -392,8 +374,8 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         return this;
     }
 
-    public NetworkFabricImpl withManagementNetworkConfiguration(
-        ManagementNetworkConfigurationProperties managementNetworkConfiguration) {
+    public NetworkFabricImpl
+        withManagementNetworkConfiguration(ManagementNetworkConfigurationProperties managementNetworkConfiguration) {
         this.innerModel().withManagementNetworkConfiguration(managementNetworkConfiguration);
         return this;
     }
@@ -406,6 +388,11 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
             this.updateBody.withTags(tags);
             return this;
         }
+    }
+
+    public NetworkFabricImpl withFabricVersion(String fabricVersion) {
+        this.innerModel().withFabricVersion(fabricVersion);
+        return this;
     }
 
     public NetworkFabricImpl withRackCount(Integer rackCount) {

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AlertsUpdateResourceGroupLevelStateToDismissSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/UpdateAlertResourceGroupLocation_dismiss_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * UpdateAlertResourceGroupLocation_dismiss_example.json
      */
     /**
      * Sample code: Update security alert state on a resource group from a security data location.

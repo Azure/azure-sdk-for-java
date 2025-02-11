@@ -5,41 +5,75 @@
 package com.azure.resourcemanager.loadtesting.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Check quota availability response object. */
+/**
+ * Check quota availability response object.
+ */
 @Fluent
-public final class CheckQuotaAvailabilityResponseInner extends ProxyResource {
+public final class CheckQuotaAvailabilityResponseInner
+    implements JsonSerializable<CheckQuotaAvailabilityResponseInner> {
     /*
-     * Check quota availability response properties.
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
      */
-    @JsonProperty(value = "properties")
-    private CheckQuotaAvailabilityResponseProperties innerProperties;
+    private String id;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of CheckQuotaAvailabilityResponseInner class. */
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Check quota availability response properties.
+     */
+    private CheckQuotaAvailabilityResponseProperties innerProperties;
+
+    /**
+     * Creates an instance of CheckQuotaAvailabilityResponseInner class.
+     */
     public CheckQuotaAvailabilityResponseInner() {
     }
 
     /**
-     * Get the innerProperties property: Check quota availability response properties.
-     *
-     * @return the innerProperties value.
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
      */
-    private CheckQuotaAvailabilityResponseProperties innerProperties() {
-        return this.innerProperties;
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -47,8 +81,26 @@ public final class CheckQuotaAvailabilityResponseInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the innerProperties property: Check quota availability response properties.
+     * 
+     * @return the innerProperties value.
+     */
+    private CheckQuotaAvailabilityResponseProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the isAvailable property: True/False indicating whether the quota request be granted based on availability.
-     *
+     * 
      * @return the isAvailable value.
      */
     public Boolean isAvailable() {
@@ -57,7 +109,7 @@ public final class CheckQuotaAvailabilityResponseInner extends ProxyResource {
 
     /**
      * Set the isAvailable property: True/False indicating whether the quota request be granted based on availability.
-     *
+     * 
      * @param isAvailable the isAvailable value to set.
      * @return the CheckQuotaAvailabilityResponseInner object itself.
      */
@@ -71,7 +123,7 @@ public final class CheckQuotaAvailabilityResponseInner extends ProxyResource {
 
     /**
      * Get the availabilityStatus property: Message indicating additional details to add to quota support request.
-     *
+     * 
      * @return the availabilityStatus value.
      */
     public String availabilityStatus() {
@@ -80,7 +132,7 @@ public final class CheckQuotaAvailabilityResponseInner extends ProxyResource {
 
     /**
      * Set the availabilityStatus property: Message indicating additional details to add to quota support request.
-     *
+     * 
      * @param availabilityStatus the availabilityStatus value to set.
      * @return the CheckQuotaAvailabilityResponseInner object itself.
      */
@@ -94,12 +146,59 @@ public final class CheckQuotaAvailabilityResponseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckQuotaAvailabilityResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckQuotaAvailabilityResponseInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CheckQuotaAvailabilityResponseInner.
+     */
+    public static CheckQuotaAvailabilityResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckQuotaAvailabilityResponseInner deserializedCheckQuotaAvailabilityResponseInner
+                = new CheckQuotaAvailabilityResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCheckQuotaAvailabilityResponseInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCheckQuotaAvailabilityResponseInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCheckQuotaAvailabilityResponseInner.systemData = SystemData.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedCheckQuotaAvailabilityResponseInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCheckQuotaAvailabilityResponseInner.innerProperties
+                        = CheckQuotaAvailabilityResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckQuotaAvailabilityResponseInner;
+        });
     }
 }

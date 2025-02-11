@@ -30,77 +30,97 @@ import java.util.List;
  * An immutable client-side representation of an Azure deployment.
  */
 @Fluent
-public interface Deployment extends
-        Indexable,
-        Refreshable<Deployment>,
-        Updatable<Deployment.Update>,
-        HasInnerModel<DeploymentExtendedInner>,
-        HasManager<ResourceManager>,
-        HasName,
-        HasId {
+public interface Deployment extends Indexable, Refreshable<Deployment>, Updatable<Deployment.Update>,
+    HasInnerModel<DeploymentExtendedInner>, HasManager<ResourceManager>, HasName, HasId {
 
     /**
+     * Gets the name of this deployment's resource group.
+     *
      * @return the name of this deployment's resource group
      */
     String resourceGroupName();
 
     /**
+     * Gets the state of the provisioning process of the resources being deployed.
+     *
      * @return the state of the provisioning process of the resources being deployed
      */
     String provisioningState();
 
     /**
+     * Gets the correlation ID of the deployment.
+     *
      * @return the correlation ID of the deployment
      */
     String correlationId();
 
     /**
+     * Gets the timestamp of the template deployment.
+     *
      * @return the timestamp of the template deployment
      */
     OffsetDateTime timestamp();
 
     /**
+     * Gets key/value pairs that represent deployment output.
+     *
      * @return key/value pairs that represent deployment output
      */
     Object outputs();
 
     /**
+     * Gets the list of resource providers needed for the deployment.
+     *
      * @return the list of resource providers needed for the deployment
      */
     List<Provider> providers();
 
     /**
+     * Gets the list of deployment dependencies.
+     *
      * @return the list of deployment dependencies
      */
     List<Dependency> dependencies();
 
     /**
+     * Gets the hash produced for the template.
+     *
      * @return the hash produced for the template
      */
     String templateHash();
 
     /**
+     * Gets the URI referencing the template.
+     *
      * @return the URI referencing the template
      */
     TemplateLink templateLink();
 
     /**
+     * Gets the deployment parameters.
+     *
      * @return the deployment parameters
      */
     Object parameters();
 
     /**
+     * Gets the URI referencing the parameters.
+     *
      * @return the URI referencing the parameters
      */
     ParametersLink parametersLink();
 
     /**
+     * Gets the deployment mode.
+     *
      * @return the deployment mode. Possible values include:
      * 'Incremental', 'Complete'.
      */
     DeploymentMode mode();
 
     /**
+     * Gets the ManagementError.
+     *
      * @return the {@link ManagementError}, if deployment fails.
      */
     ManagementError error();
@@ -113,6 +133,8 @@ public interface Deployment extends
     List<ResourceReference> outputResources();
 
     /**
+     * Gets the operations related to this deployment.
+     *
      * @return the operations related to this deployment
      */
     DeploymentOperations deploymentOperations();
@@ -153,13 +175,8 @@ public interface Deployment extends
     /**
      * Container interface for all the deployment definitions.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithTemplate,
-            DefinitionStages.WithParameters,
-            DefinitionStages.WithMode,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithTemplate,
+        DefinitionStages.WithParameters, DefinitionStages.WithMode, DefinitionStages.WithCreate {
     }
 
     /**
@@ -384,26 +401,17 @@ public interface Deployment extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the deployment in Azure.
      */
-    interface Update extends
-            Appliable<Deployment>,
-            UpdateStages.WithTemplate,
-            UpdateStages.WithParameters,
-            UpdateStages.WithMode {
+    interface Update
+        extends Appliable<Deployment>, UpdateStages.WithTemplate, UpdateStages.WithParameters, UpdateStages.WithMode {
     }
 
     /**
      * Container interface for all the deployment execution.
      */
-    interface Execution extends
-            ExecutionStages.Blank,
-            ExecutionStages.WithExecute,
-            ExecutionStages.WithWhatIf,
-            ExecutionStages.WithWhatIfDeploymentMode,
-            ExecutionStages.WithWhatIfLocation,
-            ExecutionStages.WithWhatIfOnErrorDeploymentType,
-            ExecutionStages.WithWhatIfParameter,
-            ExecutionStages.WithWhatIfResultFormat,
-            ExecutionStages.WithWhatIfTemplate {
+    interface Execution extends ExecutionStages.Blank, ExecutionStages.WithExecute, ExecutionStages.WithWhatIf,
+        ExecutionStages.WithWhatIfDeploymentMode, ExecutionStages.WithWhatIfLocation,
+        ExecutionStages.WithWhatIfOnErrorDeploymentType, ExecutionStages.WithWhatIfParameter,
+        ExecutionStages.WithWhatIfResultFormat, ExecutionStages.WithWhatIfTemplate {
     }
 
     /**
@@ -419,14 +427,8 @@ public interface Deployment extends
         /**
          * A deployment execution allowing What-if parameters to be specified.
          */
-        interface WithWhatIf extends
-                WithExecute,
-                WithWhatIfDeploymentMode,
-                WithWhatIfLocation,
-                WithWhatIfOnErrorDeploymentType,
-                WithWhatIfParameter,
-                WithWhatIfResultFormat,
-                WithWhatIfTemplate {
+        interface WithWhatIf extends WithExecute, WithWhatIfDeploymentMode, WithWhatIfLocation,
+            WithWhatIfOnErrorDeploymentType, WithWhatIfParameter, WithWhatIfResultFormat, WithWhatIfTemplate {
             /**
              * Specifies the type of information to log for debugging.
              *
@@ -578,7 +580,6 @@ public interface Deployment extends
              * @return the next stage of the execution.
              */
             Mono<WhatIfOperationResult> whatIfAsync();
-
 
             /**
              * Gets changes that will be made by the deployment if executed at the scope of the subscription.

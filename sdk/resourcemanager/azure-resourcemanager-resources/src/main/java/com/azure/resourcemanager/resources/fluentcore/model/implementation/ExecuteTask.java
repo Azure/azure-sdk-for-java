@@ -53,9 +53,9 @@ public class ExecuteTask<ResultT extends Indexable> implements TaskItem {
     @Override
     public Mono<Indexable> invokeAsync(TaskGroup.InvocationContext context) {
         return this.executor.executeWorkAsync()
-                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
-                .doOnNext(resultT -> result = resultT)
-                .map(resourceT -> resourceT);
+            .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
+            .doOnNext(resultT -> result = resultT)
+            .map(resourceT -> resourceT);
     }
 
     @Override

@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.advisor.fluent.models.ResourceRecommendationBaseInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of Advisor recommendations. */
+/**
+ * The list of Advisor recommendations.
+ */
 @Fluent
-public final class ResourceRecommendationBaseListResult {
+public final class ResourceRecommendationBaseListResult
+    implements JsonSerializable<ResourceRecommendationBaseListResult> {
     /*
      * The link used to get the next page of recommendations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of recommendations.
      */
-    @JsonProperty(value = "value")
     private List<ResourceRecommendationBaseInner> value;
 
-    /** Creates an instance of ResourceRecommendationBaseListResult class. */
+    /**
+     * Creates an instance of ResourceRecommendationBaseListResult class.
+     */
     public ResourceRecommendationBaseListResult() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of recommendations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +46,7 @@ public final class ResourceRecommendationBaseListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of recommendations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ResourceRecommendationBaseListResult object itself.
      */
@@ -50,7 +57,7 @@ public final class ResourceRecommendationBaseListResult {
 
     /**
      * Get the value property: The list of recommendations.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceRecommendationBaseInner> value() {
@@ -59,7 +66,7 @@ public final class ResourceRecommendationBaseListResult {
 
     /**
      * Set the value property: The list of recommendations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceRecommendationBaseListResult object itself.
      */
@@ -70,12 +77,54 @@ public final class ResourceRecommendationBaseListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceRecommendationBaseListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceRecommendationBaseListResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceRecommendationBaseListResult.
+     */
+    public static ResourceRecommendationBaseListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceRecommendationBaseListResult deserializedResourceRecommendationBaseListResult
+                = new ResourceRecommendationBaseListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedResourceRecommendationBaseListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<ResourceRecommendationBaseInner> value
+                        = reader.readArray(reader1 -> ResourceRecommendationBaseInner.fromJson(reader1));
+                    deserializedResourceRecommendationBaseListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceRecommendationBaseListResult;
+        });
     }
 }

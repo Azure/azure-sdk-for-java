@@ -11,11 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 
 /** Entry point to disk encryption set management API. */
-public interface DiskEncryptionSets
-    extends SupportsCreating<DiskEncryptionSet.DefinitionStages.Blank>,
-        SupportsListingByResourceGroup<DiskEncryptionSet>,
-        SupportsGettingByResourceGroup<DiskEncryptionSet>,
-        SupportsGettingById<DiskEncryptionSet>,
-        SupportsDeletingByResourceGroup,
-        SupportsDeletingById {
+public interface DiskEncryptionSets extends SupportsCreating<DiskEncryptionSet.DefinitionStages.Blank>,
+    SupportsListingByResourceGroup<DiskEncryptionSet>, SupportsGettingByResourceGroup<DiskEncryptionSet>,
+    SupportsGettingById<DiskEncryptionSet>, SupportsDeletingByResourceGroup, SupportsDeletingById {
 }

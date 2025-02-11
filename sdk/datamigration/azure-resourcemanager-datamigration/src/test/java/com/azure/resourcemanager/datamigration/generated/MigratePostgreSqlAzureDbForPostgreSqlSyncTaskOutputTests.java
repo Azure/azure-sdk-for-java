@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datamigration.models.MigratePostgreSqlAzureDbFo
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput model =
-            BinaryData
-                .fromString("{\"resultType\":\"MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput\",\"id\":\"hlt\"}")
-                .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput.class);
+        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput model = BinaryData
+            .fromString("{\"resultType\":\"MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput\",\"id\":\"rfdwoyu\"}")
+            .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput model =
-            new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput();
+        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput model
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput();
         model = BinaryData.fromObject(model).toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput.class);
     }
 }

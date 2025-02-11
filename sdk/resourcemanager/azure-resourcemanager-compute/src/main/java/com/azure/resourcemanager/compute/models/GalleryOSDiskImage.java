@@ -61,7 +61,9 @@ public final class GalleryOSDiskImage extends GalleryDiskImage {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (source() != null) {
+            source().validate();
+        }
     }
 
     /**

@@ -12,62 +12,62 @@ import java.util.Collection;
  */
 public final class ResourceState extends ExpandableStringEnum<ResourceState> {
     /**
-     * Static value Active for ResourceState.
+     * Resource is active.
      */
     public static final ResourceState ACTIVE = fromString("Active");
 
     /**
-     * Static value Provisioning for ResourceState.
+     * Resource is provisioning.
      */
     public static final ResourceState PROVISIONING = fromString("Provisioning");
 
     /**
-     * Static value Failed for ResourceState.
+     * Resource is failed.
      */
     public static final ResourceState FAILED = fromString("Failed");
 
     /**
-     * Static value Updating for ResourceState.
+     * Resource is updating.
      */
     public static final ResourceState UPDATING = fromString("Updating");
 
     /**
-     * Static value Deleting for ResourceState.
+     * Resource is deleting.
      */
     public static final ResourceState DELETING = fromString("Deleting");
 
     /**
-     * Static value Suspending for ResourceState.
+     * Resource is suspending.
      */
     public static final ResourceState SUSPENDING = fromString("Suspending");
 
     /**
-     * Static value Suspended for ResourceState.
+     * Resource is suspended.
      */
     public static final ResourceState SUSPENDED = fromString("Suspended");
 
     /**
-     * Static value Pausing for ResourceState.
+     * Resource is pausing.
      */
     public static final ResourceState PAUSING = fromString("Pausing");
 
     /**
-     * Static value Paused for ResourceState.
+     * Resource is paused.
      */
     public static final ResourceState PAUSED = fromString("Paused");
 
     /**
-     * Static value Resuming for ResourceState.
+     * Resource is resuming.
      */
     public static final ResourceState RESUMING = fromString("Resuming");
 
     /**
-     * Static value Scaling for ResourceState.
+     * Resource is scaling.
      */
     public static final ResourceState SCALING = fromString("Scaling");
 
     /**
-     * Static value Preparing for ResourceState.
+     * Resource is preparing.
      */
     public static final ResourceState PREPARING = fromString("Preparing");
 

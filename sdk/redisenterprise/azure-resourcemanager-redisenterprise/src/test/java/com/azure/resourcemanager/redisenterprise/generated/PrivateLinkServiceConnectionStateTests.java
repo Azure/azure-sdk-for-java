@@ -12,23 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model
-            = BinaryData.fromString("{\"status\":\"Pending\",\"description\":\"ininmay\",\"actionsRequired\":\"ybb\"}")
-                .toObject(PrivateLinkServiceConnectionState.class);
+        PrivateLinkServiceConnectionState model = BinaryData
+            .fromString("{\"status\":\"Pending\",\"description\":\"xxjtfe\",\"actionsRequired\":\"uwfzitonpe\"}")
+            .toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("ininmay", model.description());
-        Assertions.assertEquals("ybb", model.actionsRequired());
+        Assertions.assertEquals("xxjtfe", model.description());
+        Assertions.assertEquals("uwfzitonpe", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model
             = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                .withDescription("ininmay")
-                .withActionsRequired("ybb");
+                .withDescription("xxjtfe")
+                .withActionsRequired("uwfzitonpe");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("ininmay", model.description());
-        Assertions.assertEquals("ybb", model.actionsRequired());
+        Assertions.assertEquals("xxjtfe", model.description());
+        Assertions.assertEquals("uwfzitonpe", model.actionsRequired());
     }
 }

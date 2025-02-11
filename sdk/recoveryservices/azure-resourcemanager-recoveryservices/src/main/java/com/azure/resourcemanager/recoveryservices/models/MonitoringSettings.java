@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Monitoring Settings of the vault.
  */
 @Fluent
-public final class MonitoringSettings {
+public final class MonitoringSettings implements JsonSerializable<MonitoringSettings> {
     /*
      * Settings for Azure Monitor based alerts
      */
-    @JsonProperty(value = "azureMonitorAlertSettings")
     private AzureMonitorAlertSettings azureMonitorAlertSettings;
 
     /*
      * Settings for classic alerts
      */
-    @JsonProperty(value = "classicAlertSettings")
     private ClassicAlertSettings classicAlertSettings;
 
     /**
@@ -82,5 +84,45 @@ public final class MonitoringSettings {
         if (classicAlertSettings() != null) {
             classicAlertSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("azureMonitorAlertSettings", this.azureMonitorAlertSettings);
+        jsonWriter.writeJsonField("classicAlertSettings", this.classicAlertSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitoringSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitoringSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitoringSettings.
+     */
+    public static MonitoringSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitoringSettings deserializedMonitoringSettings = new MonitoringSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureMonitorAlertSettings".equals(fieldName)) {
+                    deserializedMonitoringSettings.azureMonitorAlertSettings
+                        = AzureMonitorAlertSettings.fromJson(reader);
+                } else if ("classicAlertSettings".equals(fieldName)) {
+                    deserializedMonitoringSettings.classicAlertSettings = ClassicAlertSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitoringSettings;
+        });
     }
 }

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.VideoTrackDescriptor;
 public final class VideoTrackDescriptorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VideoTrackDescriptor model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.VideoTrackDescriptor\"}")
+        VideoTrackDescriptor model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.VideoTrackDescriptor\"}")
                 .toObject(VideoTrackDescriptor.class);
     }
 

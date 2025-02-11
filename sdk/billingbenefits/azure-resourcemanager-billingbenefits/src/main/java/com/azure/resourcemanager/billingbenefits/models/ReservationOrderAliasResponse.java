@@ -8,81 +8,83 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billingbenefits.fluent.models.ReservationOrderAliasResponseInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of ReservationOrderAliasResponse. */
+/**
+ * An immutable client-side representation of ReservationOrderAliasResponse.
+ */
 public interface ReservationOrderAliasResponse {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the sku property: Reservation order SKU.
-     *
+     * 
      * @return the sku value.
      */
     Sku sku();
 
     /**
      * Gets the location property: The Azure Region where the reserved resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the displayName property: Display name.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the reservationOrderId property: Identifier of the reservation order created.
-     *
+     * 
      * @return the reservationOrderId value.
      */
     String reservationOrderId();
 
     /**
      * Gets the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the billingScopeId property: Subscription that will be charged for purchasing the benefit.
-     *
+     * 
      * @return the billingScopeId value.
      */
     String billingScopeId();
 
     /**
      * Gets the term property: Represent benefit term in ISO 8601 format.
-     *
+     * 
      * @return the term value.
      */
     Term term();
@@ -90,14 +92,14 @@ public interface ReservationOrderAliasResponse {
     /**
      * Gets the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     BillingPlan billingPlan();
 
     /**
      * Gets the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     AppliedScopeType appliedScopeType();
@@ -105,14 +107,14 @@ public interface ReservationOrderAliasResponse {
     /**
      * Gets the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     AppliedScopeProperties appliedScopeProperties();
 
     /**
      * Gets the quantity property: Total Quantity of the SKUs purchased in the Reservation.
-     *
+     * 
      * @return the quantity value.
      */
     Integer quantity();
@@ -120,21 +122,21 @@ public interface ReservationOrderAliasResponse {
     /**
      * Gets the renew property: Setting this to true will automatically purchase a new benefit on the expiration date
      * time.
-     *
+     * 
      * @return the renew value.
      */
     Boolean renew();
 
     /**
      * Gets the reservedResourceType property: The type of the resource that is being reserved.
-     *
+     * 
      * @return the reservedResourceType value.
      */
     ReservedResourceType reservedResourceType();
 
     /**
      * Gets the reviewDateTime property: This is the date-time when the Reservation needs to be reviewed.
-     *
+     * 
      * @return the reviewDateTime value.
      */
     OffsetDateTime reviewDateTime();
@@ -142,14 +144,14 @@ public interface ReservationOrderAliasResponse {
     /**
      * Gets the reservedResourceProperties property: Properties specific to each reserved resource type. Not required if
      * not applicable.
-     *
+     * 
      * @return the reservedResourceProperties value.
      */
     ReservationOrderAliasResponsePropertiesReservedResourceProperties reservedResourceProperties();
 
     /**
      * Gets the inner com.azure.resourcemanager.billingbenefits.fluent.models.ReservationOrderAliasResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ReservationOrderAliasResponseInner innerModel();

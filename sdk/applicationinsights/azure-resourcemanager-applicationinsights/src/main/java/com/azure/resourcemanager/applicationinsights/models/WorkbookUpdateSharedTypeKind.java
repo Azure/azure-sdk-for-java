@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of workbook. Only valid value is shared. */
+/**
+ * The kind of workbook. Only valid value is shared.
+ */
 public final class WorkbookUpdateSharedTypeKind extends ExpandableStringEnum<WorkbookUpdateSharedTypeKind> {
-    /** Static value shared for WorkbookUpdateSharedTypeKind. */
+    /**
+     * Static value shared for WorkbookUpdateSharedTypeKind.
+     */
     public static final WorkbookUpdateSharedTypeKind SHARED = fromString("shared");
 
     /**
      * Creates a new instance of WorkbookUpdateSharedTypeKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class WorkbookUpdateSharedTypeKind extends ExpandableStringEnum<Wor
 
     /**
      * Creates or finds a WorkbookUpdateSharedTypeKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkbookUpdateSharedTypeKind.
      */
-    @JsonCreator
     public static WorkbookUpdateSharedTypeKind fromString(String name) {
         return fromString(name, WorkbookUpdateSharedTypeKind.class);
     }
 
     /**
      * Gets known WorkbookUpdateSharedTypeKind values.
-     *
+     * 
      * @return known WorkbookUpdateSharedTypeKind values.
      */
     public static Collection<WorkbookUpdateSharedTypeKind> values() {

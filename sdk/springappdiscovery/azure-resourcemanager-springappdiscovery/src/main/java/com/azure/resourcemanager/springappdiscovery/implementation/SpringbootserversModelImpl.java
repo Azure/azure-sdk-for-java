@@ -75,14 +75,17 @@ public final class SpringbootserversModelImpl
     }
 
     public SpringbootserversModel create() {
-        this.innerObject
-            = serviceManager.serviceClient().getSpringbootservers().createOrUpdateWithResponse(resourceGroupName,
-                siteName, springbootserversName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootservers()
+            .createOrUpdateWithResponse(resourceGroupName, siteName, springbootserversName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public SpringbootserversModel create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSpringbootservers()
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootservers()
             .createOrUpdateWithResponse(resourceGroupName, siteName, springbootserversName, this.innerModel(), context)
             .getValue();
         return this;
@@ -101,14 +104,16 @@ public final class SpringbootserversModelImpl
     }
 
     public SpringbootserversModel apply() {
-        this.innerObject = serviceManager.serviceClient().getSpringbootservers().update(resourceGroupName, siteName,
-            springbootserversName, updateSpringbootservers, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootservers()
+            .update(resourceGroupName, siteName, springbootserversName, updateSpringbootservers, Context.NONE);
         return this;
     }
 
     public SpringbootserversModel apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSpringbootservers().update(resourceGroupName, siteName,
-            springbootserversName, updateSpringbootservers, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootservers()
+            .update(resourceGroupName, siteName, springbootserversName, updateSpringbootservers, context);
         return this;
     }
 
@@ -122,14 +127,18 @@ public final class SpringbootserversModelImpl
     }
 
     public SpringbootserversModel refresh() {
-        this.innerObject = serviceManager.serviceClient().getSpringbootservers()
-            .getWithResponse(resourceGroupName, siteName, springbootserversName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootservers()
+            .getWithResponse(resourceGroupName, siteName, springbootserversName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SpringbootserversModel refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSpringbootservers()
-            .getWithResponse(resourceGroupName, siteName, springbootserversName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootservers()
+            .getWithResponse(resourceGroupName, siteName, springbootserversName, context)
+            .getValue();
         return this;
     }
 

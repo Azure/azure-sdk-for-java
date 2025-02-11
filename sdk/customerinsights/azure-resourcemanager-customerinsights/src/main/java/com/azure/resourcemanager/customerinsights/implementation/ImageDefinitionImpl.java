@@ -12,8 +12,7 @@ public final class ImageDefinitionImpl implements ImageDefinition {
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    ImageDefinitionImpl(
-        ImageDefinitionInner innerObject,
+    ImageDefinitionImpl(ImageDefinitionInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

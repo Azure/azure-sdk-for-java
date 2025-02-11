@@ -24,12 +24,14 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
     private String type = "CustomEventsTrigger";
 
     /*
-     * The event subject must begin with the pattern provided for trigger to fire. At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
+     * The event subject must begin with the pattern provided for trigger to fire. At least one of these must be
+     * provided: subjectBeginsWith, subjectEndsWith.
      */
     private String subjectBeginsWith;
 
     /*
-     * The event subject must end with the pattern provided for trigger to fire. At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
+     * The event subject must end with the pattern provided for trigger to fire. At least one of these must be provided:
+     * subjectBeginsWith, subjectEndsWith.
      */
     private String subjectEndsWith;
 
@@ -42,6 +44,11 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
      * The ARM resource ID of the Azure Event Grid Topic.
      */
     private String scope;
+
+    /*
+     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
+     */
+    private TriggerRuntimeState runtimeState;
 
     /**
      * Creates an instance of CustomEventsTrigger class.
@@ -144,6 +151,17 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
     }
 
     /**
+     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
+     * the Trigger.
+     * 
+     * @return the runtimeState value.
+     */
+    @Override
+    public TriggerRuntimeState getRuntimeState() {
+        return this.runtimeState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -216,7 +234,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
                 if ("description".equals(fieldName)) {
                     deserializedCustomEventsTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedCustomEventsTrigger.setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                    deserializedCustomEventsTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedCustomEventsTrigger.setAnnotations(annotations);

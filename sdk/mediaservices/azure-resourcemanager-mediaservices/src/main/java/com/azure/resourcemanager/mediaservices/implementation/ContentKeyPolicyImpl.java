@@ -88,24 +88,20 @@ public final class ContentKeyPolicyImpl
     }
 
     public ContentKeyPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentKeyPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, contentKeyPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentKeyPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, contentKeyPolicyName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContentKeyPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentKeyPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, contentKeyPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentKeyPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, contentKeyPolicyName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -120,65 +116,53 @@ public final class ContentKeyPolicyImpl
     }
 
     public ContentKeyPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentKeyPolicies()
-                .updateWithResponse(
-                    resourceGroupName, accountName, contentKeyPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentKeyPolicies()
+            .updateWithResponse(resourceGroupName, accountName, contentKeyPolicyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContentKeyPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentKeyPolicies()
-                .updateWithResponse(resourceGroupName, accountName, contentKeyPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentKeyPolicies()
+            .updateWithResponse(resourceGroupName, accountName, contentKeyPolicyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ContentKeyPolicyImpl(
-        ContentKeyPolicyInner innerObject,
+    ContentKeyPolicyImpl(ContentKeyPolicyInner innerObject,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "mediaServices");
-        this.contentKeyPolicyName = Utils.getValueFromIdByName(innerObject.id(), "contentKeyPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mediaServices");
+        this.contentKeyPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contentKeyPolicies");
     }
 
     public ContentKeyPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentKeyPolicies()
-                .getWithResponse(resourceGroupName, accountName, contentKeyPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentKeyPolicies()
+            .getWithResponse(resourceGroupName, accountName, contentKeyPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContentKeyPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentKeyPolicies()
-                .getWithResponse(resourceGroupName, accountName, contentKeyPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentKeyPolicies()
+            .getWithResponse(resourceGroupName, accountName, contentKeyPolicyName, context)
+            .getValue();
         return this;
     }
 
     public Response<ContentKeyPolicyProperties> getPolicyPropertiesWithSecretsWithResponse(Context context) {
-        return serviceManager
-            .contentKeyPolicies()
+        return serviceManager.contentKeyPolicies()
             .getPolicyPropertiesWithSecretsWithResponse(resourceGroupName, accountName, contentKeyPolicyName, context);
     }
 
     public ContentKeyPolicyProperties getPolicyPropertiesWithSecrets() {
-        return serviceManager
-            .contentKeyPolicies()
+        return serviceManager.contentKeyPolicies()
             .getPolicyPropertiesWithSecrets(resourceGroupName, accountName, contentKeyPolicyName);
     }
 

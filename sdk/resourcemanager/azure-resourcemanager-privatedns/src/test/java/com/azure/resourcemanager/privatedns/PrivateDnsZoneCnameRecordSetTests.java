@@ -32,24 +32,11 @@ public class PrivateDnsZoneCnameRecordSetTests extends ResourceManagerTestProxyT
     protected PrivateDnsZoneManager privateZoneManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
-
-
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -69,16 +56,14 @@ public class PrivateDnsZoneCnameRecordSetTests extends ResourceManagerTestProxyT
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        PrivateDnsZone dnsZone =
-            privateZoneManager
-                .privateZones()
-                .define(topLevelDomain)
-                .withNewResourceGroup(rgName, region)
-                .defineCnameRecordSet("www")
-                    .withAlias("cname.contoso.com")
-                    .withTimeToLive(7200)
-                    .attach()
-                .create();
+        PrivateDnsZone dnsZone = privateZoneManager.privateZones()
+            .define(topLevelDomain)
+            .withNewResourceGroup(rgName, region)
+            .defineCnameRecordSet("www")
+            .withAlias("cname.contoso.com")
+            .withTimeToLive(7200)
+            .attach()
+            .create();
 
         // Check CNAME records
         dnsZone.refresh();
@@ -90,13 +75,7 @@ public class PrivateDnsZoneCnameRecordSetTests extends ResourceManagerTestProxyT
         Assertions.assertEquals("cname.contoso.com", cnameRecordSet.canonicalName());
 
         // Update alias and ttl:
-        dnsZone
-            .update()
-            .updateCnameRecordSet("www")
-            .withAlias("new.contoso.com")
-            .withTimeToLive(1234)
-            .parent()
-            .apply();
+        dnsZone.update().updateCnameRecordSet("www").withAlias("new.contoso.com").withTimeToLive(1234).parent().apply();
 
         // Check CNAME records
         dnsZone.refresh();

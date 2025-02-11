@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ReadOnlyProvisioningState extends ExpandableStringEnum<ReadOn
      * @param name a name to look for.
      * @return the corresponding ReadOnlyProvisioningState.
      */
-    @JsonCreator
     public static ReadOnlyProvisioningState fromString(String name) {
         return fromString(name, ReadOnlyProvisioningState.class);
     }

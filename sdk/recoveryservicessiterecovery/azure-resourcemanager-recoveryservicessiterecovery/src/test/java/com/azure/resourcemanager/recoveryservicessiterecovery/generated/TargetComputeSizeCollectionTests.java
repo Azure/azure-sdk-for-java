@@ -39,24 +39,33 @@ public final class TargetComputeSizeCollectionTests {
         TargetComputeSizeCollection model
             = new TargetComputeSizeCollection()
                 .withValue(Arrays.asList(
-                    new TargetComputeSizeInner().withId("g").withName("pnfqntcyp").withType("jv")
-                        .withProperties(new TargetComputeSizeProperties().withName("mwks").withFriendlyName("rcizjxvyd")
-                            .withCpuCoresCount(1161175344).withMemoryInGB(62.392147891228966D)
-                            .withMaxDataDiskCount(733359450).withMaxNicsCount(788840144)
+                    new TargetComputeSizeInner().withId("g")
+                        .withName("pnfqntcyp")
+                        .withType("jv")
+                        .withProperties(new TargetComputeSizeProperties().withName("mwks")
+                            .withFriendlyName("rcizjxvyd")
+                            .withCpuCoresCount(1161175344)
+                            .withMemoryInGB(62.392147891228966D)
+                            .withMaxDataDiskCount(733359450)
+                            .withMaxNicsCount(788840144)
                             .withErrors(Arrays.asList(
                                 new ComputeSizeErrorDetails().withMessage("umrtwnawjsl").withSeverity("wkojgcyztsfmzn"),
                                 new ComputeSizeErrorDetails().withMessage("eqphchqnrnr")
                                     .withSeverity("ehuwrykqgaifmvik"),
                                 new ComputeSizeErrorDetails().withMessage("ydv").withSeverity("bejdznxcv"),
                                 new ComputeSizeErrorDetails().withMessage("rhnj").withSeverity("olvtnovqfzge")))
-                            .withHighIopsSupported(
-                                "dftuljltduce")
+                            .withHighIopsSupported("dftuljltduce")
                             .withHyperVGenerations(Arrays.asList("mczuo", "ejwcwwqiok", "ssxmojms", "p"))),
-                    new TargetComputeSizeInner().withId("prvkwcfzqljyxgtc").withName("eydbsd").withType("m")
+                    new TargetComputeSizeInner().withId("prvkwcfzqljyxgtc")
+                        .withName("eydbsd")
+                        .withType("m")
                         .withProperties(
-                            new TargetComputeSizeProperties().withName("aehvbbxuri").withFriendlyName("tfnhtbaxkgxywr")
-                                .withCpuCoresCount(1619197472).withMemoryInGB(98.67117973109978D)
-                                .withMaxDataDiskCount(309006078).withMaxNicsCount(1167250360)
+                            new TargetComputeSizeProperties().withName("aehvbbxuri")
+                                .withFriendlyName("tfnhtbaxkgxywr")
+                                .withCpuCoresCount(1619197472)
+                                .withMemoryInGB(98.67117973109978D)
+                                .withMaxDataDiskCount(309006078)
+                                .withMaxNicsCount(1167250360)
                                 .withErrors(Arrays.asList(
                                     new ComputeSizeErrorDetails().withMessage("ruud").withSeverity("zibt"),
                                     new ComputeSizeErrorDetails().withMessage("stgktst")

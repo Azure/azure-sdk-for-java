@@ -8,6 +8,7 @@ import com.azure.ai.inference.models.EmbeddingInput;
 import com.azure.ai.inference.models.EmbeddingInputType;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The ImageEmbedRequest model.
+ * The EmbedRequest1 model.
  */
 @Fluent
 public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedRequest> {
@@ -63,7 +64,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * Additional properties
      */
     @Generated
-    private Map<String, Object> additionalProperties;
+    private Map<String, BinaryData> additionalProperties;
 
     /**
      * Creates an instance of EmbedRequest1 class.
@@ -104,7 +105,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * Returns a 422 error if the model doesn't support the value or parameter.
      *
      * @param dimensions the dimensions value to set.
-     * @return the ImageEmbedRequest object itself.
+     * @return the EmbedRequest1 object itself.
      */
     @Generated
     public ImageEmbedRequest setDimensions(Integer dimensions) {
@@ -130,7 +131,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * Returns a 422 error if the model doesn't support the value or parameter.
      *
      * @param encodingFormat the encodingFormat value to set.
-     * @return the ImageEmbedRequest object itself.
+     * @return the EmbedRequest1 object itself.
      */
     @Generated
     public ImageEmbedRequest setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
@@ -154,7 +155,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * Returns a 422 error if the model doesn't support the value or parameter.
      *
      * @param inputType the inputType value to set.
-     * @return the ImageEmbedRequest object itself.
+     * @return the EmbedRequest1 object itself.
      */
     @Generated
     public ImageEmbedRequest setInputType(EmbeddingInputType inputType) {
@@ -176,7 +177,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * Set the model property: ID of the specific AI model to use, if more than one model is available on the endpoint.
      *
      * @param model the model value to set.
-     * @return the ImageEmbedRequest object itself.
+     * @return the EmbedRequest1 object itself.
      */
     @Generated
     public ImageEmbedRequest setModel(String model) {
@@ -190,7 +191,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * @return the additionalProperties value.
      */
     @Generated
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, BinaryData> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -198,10 +199,10 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * Set the additionalProperties property: Additional properties.
      *
      * @param additionalProperties the additionalProperties value to set.
-     * @return the ImageEmbedRequest object itself.
+     * @return the EmbedRequest1 object itself.
      */
     @Generated
-    public ImageEmbedRequest setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public ImageEmbedRequest setAdditionalProperties(Map<String, BinaryData> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -220,18 +221,23 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
         jsonWriter.writeStringField("input_type", this.inputType == null ? null : this.inputType.toString());
         jsonWriter.writeStringField("model", this.model);
         if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeFieldName(additionalProperty.getKey());
+                if (additionalProperty.getValue() == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    additionalProperty.getValue().writeTo(jsonWriter);
+                }
             }
         }
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ImageEmbedRequest from the JsonReader.
+     * Reads an instance of EmbedRequest1 from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ImageEmbedRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of EmbedRequest1 if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EmbedRequest1.
@@ -244,7 +250,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
             EmbeddingEncodingFormat encodingFormat = null;
             EmbeddingInputType inputType = null;
             String model = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -262,16 +268,17 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
                     }
-                    additionalProperties.put(fieldName, reader.readUntyped());
+                    additionalProperties.put(fieldName,
+                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 }
             }
-            ImageEmbedRequest deserializedImageEmbedRequest = new ImageEmbedRequest(input);
-            deserializedImageEmbedRequest.dimensions = dimensions;
-            deserializedImageEmbedRequest.encodingFormat = encodingFormat;
-            deserializedImageEmbedRequest.inputType = inputType;
-            deserializedImageEmbedRequest.model = model;
-            deserializedImageEmbedRequest.additionalProperties = additionalProperties;
-            return deserializedImageEmbedRequest;
+            ImageEmbedRequest deserializedEmbedRequest1 = new ImageEmbedRequest(input);
+            deserializedEmbedRequest1.dimensions = dimensions;
+            deserializedEmbedRequest1.encodingFormat = encodingFormat;
+            deserializedEmbedRequest1.inputType = inputType;
+            deserializedEmbedRequest1.model = model;
+            deserializedEmbedRequest1.additionalProperties = additionalProperties;
+            return deserializedEmbedRequest1;
         });
     }
 }

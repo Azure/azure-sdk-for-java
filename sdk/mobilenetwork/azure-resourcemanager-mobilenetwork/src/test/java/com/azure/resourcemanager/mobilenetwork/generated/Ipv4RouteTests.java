@@ -14,20 +14,20 @@ public final class Ipv4RouteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Ipv4Route model = BinaryData.fromString(
-            "{\"destination\":\"ichkoymkcdyhb\",\"nextHops\":[{\"address\":\"wdreqnovvqfovl\",\"priority\":1752726450}]}")
+            "{\"destination\":\"btbhjpglkfgohd\",\"nextHops\":[{\"address\":\"lfphsdyhtozfikd\",\"priority\":493623669}]}")
             .toObject(Ipv4Route.class);
-        Assertions.assertEquals("ichkoymkcdyhb", model.destination());
-        Assertions.assertEquals("wdreqnovvqfovl", model.nextHops().get(0).address());
-        Assertions.assertEquals(1752726450, model.nextHops().get(0).priority());
+        Assertions.assertEquals("btbhjpglkfgohd", model.destination());
+        Assertions.assertEquals("lfphsdyhtozfikd", model.nextHops().get(0).address());
+        Assertions.assertEquals(493623669, model.nextHops().get(0).priority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Ipv4Route model = new Ipv4Route().withDestination("ichkoymkcdyhb")
-            .withNextHops(Arrays.asList(new Ipv4RouteNextHop().withAddress("wdreqnovvqfovl").withPriority(1752726450)));
+        Ipv4Route model = new Ipv4Route().withDestination("btbhjpglkfgohd")
+            .withNextHops(Arrays.asList(new Ipv4RouteNextHop().withAddress("lfphsdyhtozfikd").withPriority(493623669)));
         model = BinaryData.fromObject(model).toObject(Ipv4Route.class);
-        Assertions.assertEquals("ichkoymkcdyhb", model.destination());
-        Assertions.assertEquals("wdreqnovvqfovl", model.nextHops().get(0).address());
-        Assertions.assertEquals(1752726450, model.nextHops().get(0).priority());
+        Assertions.assertEquals("btbhjpglkfgohd", model.destination());
+        Assertions.assertEquals("lfphsdyhtozfikd", model.nextHops().get(0).address());
+        Assertions.assertEquals(493623669, model.nextHops().get(0).priority());
     }
 }

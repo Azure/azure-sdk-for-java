@@ -114,32 +114,28 @@ public final class IntegrationAccountSchemaImpl
 
     private String schemaName;
 
-    public IntegrationAccountSchemaImpl withExistingIntegrationAccount(
-        String resourceGroupName, String integrationAccountName) {
+    public IntegrationAccountSchemaImpl withExistingIntegrationAccount(String resourceGroupName,
+        String integrationAccountName) {
         this.resourceGroupName = resourceGroupName;
         this.integrationAccountName = integrationAccountName;
         return this;
     }
 
     public IntegrationAccountSchema create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSchemas()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, schemaName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSchemas()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, schemaName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountSchema create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSchemas()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, schemaName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSchemas()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, schemaName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -154,67 +150,58 @@ public final class IntegrationAccountSchemaImpl
     }
 
     public IntegrationAccountSchema apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSchemas()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, schemaName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSchemas()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, schemaName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountSchema apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSchemas()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, schemaName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSchemas()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, schemaName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    IntegrationAccountSchemaImpl(
-        IntegrationAccountSchemaInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    IntegrationAccountSchemaImpl(IntegrationAccountSchemaInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.integrationAccountName = Utils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
-        this.schemaName = Utils.getValueFromIdByName(innerObject.id(), "schemas");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.integrationAccountName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
+        this.schemaName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schemas");
     }
 
     public IntegrationAccountSchema refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSchemas()
-                .getWithResponse(resourceGroupName, integrationAccountName, schemaName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSchemas()
+            .getWithResponse(resourceGroupName, integrationAccountName, schemaName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountSchema refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSchemas()
-                .getWithResponse(resourceGroupName, integrationAccountName, schemaName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSchemas()
+            .getWithResponse(resourceGroupName, integrationAccountName, schemaName, context)
+            .getValue();
         return this;
     }
 
-    public Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
-        GetCallbackUrlParameters listContentCallbackUrl, Context context) {
-        return serviceManager
-            .integrationAccountSchemas()
-            .listContentCallbackUrlWithResponse(
-                resourceGroupName, integrationAccountName, schemaName, listContentCallbackUrl, context);
+    public Response<WorkflowTriggerCallbackUrl>
+        listContentCallbackUrlWithResponse(GetCallbackUrlParameters listContentCallbackUrl, Context context) {
+        return serviceManager.integrationAccountSchemas()
+            .listContentCallbackUrlWithResponse(resourceGroupName, integrationAccountName, schemaName,
+                listContentCallbackUrl, context);
     }
 
     public WorkflowTriggerCallbackUrl listContentCallbackUrl(GetCallbackUrlParameters listContentCallbackUrl) {
-        return serviceManager
-            .integrationAccountSchemas()
+        return serviceManager.integrationAccountSchemas()
             .listContentCallbackUrl(resourceGroupName, integrationAccountName, schemaName, listContentCallbackUrl);
     }
 

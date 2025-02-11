@@ -14,7 +14,8 @@ import java.util.List;
 /** Performance tier properties. */
 @Fluent
 public final class PerformanceTierPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerformanceTierPropertiesInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PerformanceTierPropertiesInner.class);
 
     /*
      * ID of the performance tier.
@@ -219,8 +220,8 @@ public final class PerformanceTierPropertiesInner {
      * @param serviceLevelObjectives the serviceLevelObjectives value to set.
      * @return the PerformanceTierPropertiesInner object itself.
      */
-    public PerformanceTierPropertiesInner withServiceLevelObjectives(
-        List<PerformanceTierServiceLevelObjectives> serviceLevelObjectives) {
+    public PerformanceTierPropertiesInner
+        withServiceLevelObjectives(List<PerformanceTierServiceLevelObjectives> serviceLevelObjectives) {
         this.serviceLevelObjectives = serviceLevelObjectives;
         return this;
     }

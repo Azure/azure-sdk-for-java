@@ -128,20 +128,16 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
     }
 
     public VirtualNetwork create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworks()
-                .create(resourceGroupName, virtualNetworkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworks()
+            .create(resourceGroupName, virtualNetworkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VirtualNetwork create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworks()
-                .create(resourceGroupName, virtualNetworkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworks()
+            .create(resourceGroupName, virtualNetworkName, this.innerModel(), context);
         return this;
     }
 
@@ -157,51 +153,42 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
     }
 
     public VirtualNetwork apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworks()
-                .updateWithResponse(resourceGroupName, virtualNetworkName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworks()
+            .updateWithResponse(resourceGroupName, virtualNetworkName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VirtualNetwork apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworks()
-                .updateWithResponse(resourceGroupName, virtualNetworkName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworks()
+            .updateWithResponse(resourceGroupName, virtualNetworkName, updateBody, context)
+            .getValue();
         return this;
     }
 
-    VirtualNetworkImpl(
-        VirtualNetworkInner innerObject,
+    VirtualNetworkImpl(VirtualNetworkInner innerObject,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualNetworkName = Utils.getValueFromIdByName(innerObject.id(), "virtualNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.virtualNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualNetworks");
     }
 
     public VirtualNetwork refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworks()
-                .getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworks()
+            .getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VirtualNetwork refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworks()
-                .getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworks()
+            .getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context)
+            .getValue();
         return this;
     }
 

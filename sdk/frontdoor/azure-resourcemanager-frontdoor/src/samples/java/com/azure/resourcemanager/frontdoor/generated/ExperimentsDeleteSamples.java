@@ -9,7 +9,8 @@ package com.azure.resourcemanager.frontdoor.generated;
  */
 public final class ExperimentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentDeleteExperiment.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
+     * NetworkExperimentDeleteExperiment.json
      */
     /**
      * Sample code: Deletes an Experiment.

@@ -6,31 +6,37 @@ package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the body of a purge request for an App Insights component. */
+/**
+ * Describes the body of a purge request for an App Insights component.
+ */
 @Fluent
-public final class ComponentPurgeBody {
+public final class ComponentPurgeBody implements JsonSerializable<ComponentPurgeBody> {
     /*
      * Table from which to purge data.
      */
-    @JsonProperty(value = "table", required = true)
     private String table;
 
     /*
      * The set of columns and filters (queries) to run over them to purge the resulting data.
      */
-    @JsonProperty(value = "filters", required = true)
     private List<ComponentPurgeBodyFilters> filters;
 
-    /** Creates an instance of ComponentPurgeBody class. */
+    /**
+     * Creates an instance of ComponentPurgeBody class.
+     */
     public ComponentPurgeBody() {
     }
 
     /**
      * Get the table property: Table from which to purge data.
-     *
+     * 
      * @return the table value.
      */
     public String table() {
@@ -39,7 +45,7 @@ public final class ComponentPurgeBody {
 
     /**
      * Set the table property: Table from which to purge data.
-     *
+     * 
      * @param table the table value to set.
      * @return the ComponentPurgeBody object itself.
      */
@@ -50,7 +56,7 @@ public final class ComponentPurgeBody {
 
     /**
      * Get the filters property: The set of columns and filters (queries) to run over them to purge the resulting data.
-     *
+     * 
      * @return the filters value.
      */
     public List<ComponentPurgeBodyFilters> filters() {
@@ -59,7 +65,7 @@ public final class ComponentPurgeBody {
 
     /**
      * Set the filters property: The set of columns and filters (queries) to run over them to purge the resulting data.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the ComponentPurgeBody object itself.
      */
@@ -70,23 +76,63 @@ public final class ComponentPurgeBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (table() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property table in model ComponentPurgeBody"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property table in model ComponentPurgeBody"));
         }
         if (filters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property filters in model ComponentPurgeBody"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property filters in model ComponentPurgeBody"));
         } else {
             filters().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ComponentPurgeBody.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("table", this.table);
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComponentPurgeBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComponentPurgeBody if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ComponentPurgeBody.
+     */
+    public static ComponentPurgeBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComponentPurgeBody deserializedComponentPurgeBody = new ComponentPurgeBody();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("table".equals(fieldName)) {
+                    deserializedComponentPurgeBody.table = reader.getString();
+                } else if ("filters".equals(fieldName)) {
+                    List<ComponentPurgeBodyFilters> filters
+                        = reader.readArray(reader1 -> ComponentPurgeBodyFilters.fromJson(reader1));
+                    deserializedComponentPurgeBody.filters = filters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComponentPurgeBody;
+        });
+    }
 }

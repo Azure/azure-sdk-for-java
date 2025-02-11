@@ -5,71 +5,65 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the properties of a latency metric used in the latency scorecard.
  */
 @Immutable
-public final class LatencyMetric {
+public final class LatencyMetric implements JsonSerializable<LatencyMetric> {
     /*
      * The name of the Latency Metric
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The end time of the Latency Scorecard in UTC
      */
-    @JsonProperty(value = "endDateTimeUTC", access = JsonProperty.Access.WRITE_ONLY)
     private String endDateTimeUtc;
 
     /*
      * The metric value of the A endpoint
      */
-    @JsonProperty(value = "aValue", access = JsonProperty.Access.WRITE_ONLY)
     private Float aValue;
 
     /*
      * The metric value of the B endpoint
      */
-    @JsonProperty(value = "bValue", access = JsonProperty.Access.WRITE_ONLY)
     private Float bValue;
 
     /*
      * The difference in value between endpoint A and B
      */
-    @JsonProperty(value = "delta", access = JsonProperty.Access.WRITE_ONLY)
     private Float delta;
 
     /*
      * The percent difference between endpoint A and B
      */
-    @JsonProperty(value = "deltaPercent", access = JsonProperty.Access.WRITE_ONLY)
     private Float deltaPercent;
 
     /*
      * The lower end of the 95% confidence interval for endpoint A
      */
-    @JsonProperty(value = "aCLower95CI", access = JsonProperty.Access.WRITE_ONLY)
     private Float aCLower95CI;
 
     /*
      * The upper end of the 95% confidence interval for endpoint A
      */
-    @JsonProperty(value = "aHUpper95CI", access = JsonProperty.Access.WRITE_ONLY)
     private Float aHUpper95CI;
 
     /*
      * The lower end of the 95% confidence interval for endpoint B
      */
-    @JsonProperty(value = "bCLower95CI", access = JsonProperty.Access.WRITE_ONLY)
     private Float bCLower95CI;
 
     /*
      * The upper end of the 95% confidence interval for endpoint B
      */
-    @JsonProperty(value = "bUpper95CI", access = JsonProperty.Access.WRITE_ONLY)
     private Float bUpper95CI;
 
     /**
@@ -174,5 +168,58 @@ public final class LatencyMetric {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LatencyMetric from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LatencyMetric if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LatencyMetric.
+     */
+    public static LatencyMetric fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LatencyMetric deserializedLatencyMetric = new LatencyMetric();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLatencyMetric.name = reader.getString();
+                } else if ("endDateTimeUTC".equals(fieldName)) {
+                    deserializedLatencyMetric.endDateTimeUtc = reader.getString();
+                } else if ("aValue".equals(fieldName)) {
+                    deserializedLatencyMetric.aValue = reader.getNullable(JsonReader::getFloat);
+                } else if ("bValue".equals(fieldName)) {
+                    deserializedLatencyMetric.bValue = reader.getNullable(JsonReader::getFloat);
+                } else if ("delta".equals(fieldName)) {
+                    deserializedLatencyMetric.delta = reader.getNullable(JsonReader::getFloat);
+                } else if ("deltaPercent".equals(fieldName)) {
+                    deserializedLatencyMetric.deltaPercent = reader.getNullable(JsonReader::getFloat);
+                } else if ("aCLower95CI".equals(fieldName)) {
+                    deserializedLatencyMetric.aCLower95CI = reader.getNullable(JsonReader::getFloat);
+                } else if ("aHUpper95CI".equals(fieldName)) {
+                    deserializedLatencyMetric.aHUpper95CI = reader.getNullable(JsonReader::getFloat);
+                } else if ("bCLower95CI".equals(fieldName)) {
+                    deserializedLatencyMetric.bCLower95CI = reader.getNullable(JsonReader::getFloat);
+                } else if ("bUpper95CI".equals(fieldName)) {
+                    deserializedLatencyMetric.bUpper95CI = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLatencyMetric;
+        });
     }
 }

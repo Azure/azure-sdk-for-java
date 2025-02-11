@@ -4,60 +4,93 @@
 
 package com.azure.resourcemanager.automation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Gets or sets the provisioning state of the module. */
+/**
+ * Gets or sets the provisioning state of the module.
+ */
 public enum ModuleProvisioningState {
-    /** Enum value Created. */
+    /**
+     * Enum value Created.
+     */
     CREATED("Created"),
 
-    /** Enum value Creating. */
+    /**
+     * Enum value Creating.
+     */
     CREATING("Creating"),
 
-    /** Enum value StartingImportModuleRunbook. */
+    /**
+     * Enum value StartingImportModuleRunbook.
+     */
     STARTING_IMPORT_MODULE_RUNBOOK("StartingImportModuleRunbook"),
 
-    /** Enum value RunningImportModuleRunbook. */
+    /**
+     * Enum value RunningImportModuleRunbook.
+     */
     RUNNING_IMPORT_MODULE_RUNBOOK("RunningImportModuleRunbook"),
 
-    /** Enum value ContentRetrieved. */
+    /**
+     * Enum value ContentRetrieved.
+     */
     CONTENT_RETRIEVED("ContentRetrieved"),
 
-    /** Enum value ContentDownloaded. */
+    /**
+     * Enum value ContentDownloaded.
+     */
     CONTENT_DOWNLOADED("ContentDownloaded"),
 
-    /** Enum value ContentValidated. */
+    /**
+     * Enum value ContentValidated.
+     */
     CONTENT_VALIDATED("ContentValidated"),
 
-    /** Enum value ConnectionTypeImported. */
+    /**
+     * Enum value ConnectionTypeImported.
+     */
     CONNECTION_TYPE_IMPORTED("ConnectionTypeImported"),
 
-    /** Enum value ContentStored. */
+    /**
+     * Enum value ContentStored.
+     */
     CONTENT_STORED("ContentStored"),
 
-    /** Enum value ModuleDataStored. */
+    /**
+     * Enum value ModuleDataStored.
+     */
     MODULE_DATA_STORED("ModuleDataStored"),
 
-    /** Enum value ActivitiesStored. */
+    /**
+     * Enum value ActivitiesStored.
+     */
     ACTIVITIES_STORED("ActivitiesStored"),
 
-    /** Enum value ModuleImportRunbookComplete. */
+    /**
+     * Enum value ModuleImportRunbookComplete.
+     */
     MODULE_IMPORT_RUNBOOK_COMPLETE("ModuleImportRunbookComplete"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Cancelled. */
+    /**
+     * Enum value Cancelled.
+     */
     CANCELLED("Cancelled"),
 
-    /** Enum value Updating. */
+    /**
+     * Enum value Updating.
+     */
     UPDATING("Updating");
 
-    /** The actual serialized value for a ModuleProvisioningState instance. */
+    /**
+     * The actual serialized value for a ModuleProvisioningState instance.
+     */
     private final String value;
 
     ModuleProvisioningState(String value) {
@@ -66,11 +99,10 @@ public enum ModuleProvisioningState {
 
     /**
      * Parses a serialized value to a ModuleProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ModuleProvisioningState object, or null if unable to parse.
      */
-    @JsonCreator
     public static ModuleProvisioningState fromString(String value) {
         if (value == null) {
             return null;
@@ -84,8 +116,9 @@ public enum ModuleProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

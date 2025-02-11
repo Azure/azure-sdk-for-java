@@ -9,7 +9,8 @@ package com.azure.resourcemanager.frontdoor.generated;
  */
 public final class NetworkExperimentProfilesListSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentListProfiles.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
+     * NetworkExperimentListProfiles.json
      */
     /**
      * Sample code: List NetworkExperiment Profiles in a Resource Group.

@@ -18,7 +18,7 @@ import java.util.Map;
 public interface IntegrationServiceEnvironmentNetworkHealthsClient {
     /**
      * Gets the integration service environment network health.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param context The context to associate with this operation.
@@ -28,12 +28,12 @@ public interface IntegrationServiceEnvironmentNetworkHealthsClient {
      * @return the integration service environment network health along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, IntegrationServiceEnvironmentSubnetNetworkHealthInner>> getWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context);
+    Response<Map<String, IntegrationServiceEnvironmentSubnetNetworkHealthInner>> getWithResponse(String resourceGroup,
+        String integrationServiceEnvironmentName, Context context);
 
     /**
      * Gets the integration service environment network health.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,6 +42,6 @@ public interface IntegrationServiceEnvironmentNetworkHealthsClient {
      * @return the integration service environment network health.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, IntegrationServiceEnvironmentSubnetNetworkHealthInner> get(
-        String resourceGroup, String integrationServiceEnvironmentName);
+    Map<String, IntegrationServiceEnvironmentSubnetNetworkHealthInner> get(String resourceGroup,
+        String integrationServiceEnvironmentName);
 }

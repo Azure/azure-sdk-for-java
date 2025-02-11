@@ -17,13 +17,15 @@ import com.azure.resourcemanager.reservations.fluent.models.ReservationOrderResp
 import com.azure.resourcemanager.reservations.models.ChangeDirectoryRequest;
 import com.azure.resourcemanager.reservations.models.PurchaseRequest;
 
-/** An instance of this class provides access to all the operations defined in ReservationOrdersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReservationOrdersClient.
+ */
 public interface ReservationOrdersClient {
     /**
      * Calculate price for a `ReservationOrder`.
-     *
-     * <p>Calculate price for placing a `ReservationOrder`.
-     *
+     * 
+     * Calculate price for placing a `ReservationOrder`.
+     * 
      * @param body Information needed for calculate or purchase reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,9 +38,9 @@ public interface ReservationOrdersClient {
 
     /**
      * Calculate price for a `ReservationOrder`.
-     *
-     * <p>Calculate price for placing a `ReservationOrder`.
-     *
+     * 
+     * Calculate price for placing a `ReservationOrder`.
+     * 
      * @param body Information needed for calculate or purchase reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -50,9 +52,9 @@ public interface ReservationOrdersClient {
 
     /**
      * Get all `ReservationOrder`s.
-     *
-     * <p>List of all the `ReservationOrder`s that the user has access to in the current tenant.
-     *
+     * 
+     * List of all the `ReservationOrder`s that the user has access to in the current tenant.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of `ReservationOrder`s as paginated response with {@link PagedIterable}.
@@ -62,9 +64,9 @@ public interface ReservationOrdersClient {
 
     /**
      * Get all `ReservationOrder`s.
-     *
-     * <p>List of all the `ReservationOrder`s that the user has access to in the current tenant.
-     *
+     * 
+     * List of all the `ReservationOrder`s that the user has access to in the current tenant.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,9 +78,9 @@ public interface ReservationOrdersClient {
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,14 +89,14 @@ public interface ReservationOrdersClient {
      * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPurchase(
-        String reservationOrderId, PurchaseRequest body);
+    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPurchase(String reservationOrderId, PurchaseRequest body);
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @param context The context to associate with this operation.
@@ -104,14 +106,14 @@ public interface ReservationOrdersClient {
      * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPurchase(
-        String reservationOrderId, PurchaseRequest body, Context context);
+    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPurchase(String reservationOrderId, PurchaseRequest body, Context context);
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,9 +126,9 @@ public interface ReservationOrdersClient {
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @param context The context to associate with this operation.
@@ -140,9 +142,9 @@ public interface ReservationOrdersClient {
 
     /**
      * Get a specific `ReservationOrder`.
-     *
-     * <p>Get the details of the `ReservationOrder`.
-     *
+     * 
+     * Get the details of the `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param expand May be used to expand the planInformation.
      * @param context The context to associate with this operation.
@@ -156,9 +158,9 @@ public interface ReservationOrdersClient {
 
     /**
      * Get a specific `ReservationOrder`.
-     *
-     * <p>Get the details of the `ReservationOrder`.
-     *
+     * 
+     * Get the details of the `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -170,9 +172,9 @@ public interface ReservationOrdersClient {
 
     /**
      * Change directory of `ReservationOrder`.
-     *
-     * <p>Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
-     *
+     * 
+     * Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to change directory of reservation order.
      * @param context The context to associate with this operation.
@@ -182,14 +184,14 @@ public interface ReservationOrdersClient {
      * @return change directory response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ChangeDirectoryResponseInner> changeDirectoryWithResponse(
-        String reservationOrderId, ChangeDirectoryRequest body, Context context);
+    Response<ChangeDirectoryResponseInner> changeDirectoryWithResponse(String reservationOrderId,
+        ChangeDirectoryRequest body, Context context);
 
     /**
      * Change directory of `ReservationOrder`.
-     *
-     * <p>Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
-     *
+     * 
+     * Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to change directory of reservation order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

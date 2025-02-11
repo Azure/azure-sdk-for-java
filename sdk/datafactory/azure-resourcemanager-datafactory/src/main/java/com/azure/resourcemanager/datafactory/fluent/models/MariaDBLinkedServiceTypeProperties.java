@@ -19,7 +19,8 @@ import java.io.IOException;
 public final class MariaDBLinkedServiceTypeProperties implements JsonSerializable<MariaDBLinkedServiceTypeProperties> {
     /*
      * The version of the MariaDB driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can support
-     * connection string and property bag, V2 can only support connection string.
+     * connection string and property bag, V2 can only support connection string. The legacy driver is scheduled for
+     * deprecation by October 2024.
      */
     private Object driverVersion;
 
@@ -49,6 +50,19 @@ public final class MariaDBLinkedServiceTypeProperties implements JsonSerializabl
     private Object database;
 
     /*
+     * This option specifies whether the driver uses TLS encryption and verification when connecting to MariaDB. E.g.,
+     * SSLMode=<0/1/2/3/4>. Options: DISABLED (0) / PREFERRED (1) (Default) / REQUIRED (2) / VERIFY_CA (3) /
+     * VERIFY_IDENTITY (4), REQUIRED (2) is recommended to only allow connections encrypted with SSL/TLS.
+     */
+    private Object sslMode;
+
+    /*
+     * This option specifies whether to use a CA certificate from the system trust store, or from a specified PEM file.
+     * E.g. UseSystemTrustStore=<0/1>; Options: Enabled (1) / Disabled (0) (Default)
+     */
+    private Object useSystemTrustStore;
+
+    /*
      * The Azure key vault secret reference of password in connection string.
      */
     private AzureKeyVaultSecretReference password;
@@ -67,7 +81,8 @@ public final class MariaDBLinkedServiceTypeProperties implements JsonSerializabl
 
     /**
      * Get the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
-     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string. The
+     * legacy driver is scheduled for deprecation by October 2024.
      * 
      * @return the driverVersion value.
      */
@@ -77,7 +92,8 @@ public final class MariaDBLinkedServiceTypeProperties implements JsonSerializabl
 
     /**
      * Set the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
-     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string. The
+     * legacy driver is scheduled for deprecation by October 2024.
      * 
      * @param driverVersion the driverVersion value to set.
      * @return the MariaDBLinkedServiceTypeProperties object itself.
@@ -190,6 +206,56 @@ public final class MariaDBLinkedServiceTypeProperties implements JsonSerializabl
     }
 
     /**
+     * Get the sslMode property: This option specifies whether the driver uses TLS encryption and verification when
+     * connecting to MariaDB. E.g., SSLMode=&lt;0/1/2/3/4&gt;. Options: DISABLED (0) / PREFERRED (1) (Default) /
+     * REQUIRED (2) / VERIFY_CA (3) / VERIFY_IDENTITY (4), REQUIRED (2) is recommended to only allow connections
+     * encrypted with SSL/TLS.
+     * 
+     * @return the sslMode value.
+     */
+    public Object sslMode() {
+        return this.sslMode;
+    }
+
+    /**
+     * Set the sslMode property: This option specifies whether the driver uses TLS encryption and verification when
+     * connecting to MariaDB. E.g., SSLMode=&lt;0/1/2/3/4&gt;. Options: DISABLED (0) / PREFERRED (1) (Default) /
+     * REQUIRED (2) / VERIFY_CA (3) / VERIFY_IDENTITY (4), REQUIRED (2) is recommended to only allow connections
+     * encrypted with SSL/TLS.
+     * 
+     * @param sslMode the sslMode value to set.
+     * @return the MariaDBLinkedServiceTypeProperties object itself.
+     */
+    public MariaDBLinkedServiceTypeProperties withSslMode(Object sslMode) {
+        this.sslMode = sslMode;
+        return this;
+    }
+
+    /**
+     * Get the useSystemTrustStore property: This option specifies whether to use a CA certificate from the system trust
+     * store, or from a specified PEM file. E.g. UseSystemTrustStore=&lt;0/1&gt;; Options: Enabled (1) / Disabled (0)
+     * (Default).
+     * 
+     * @return the useSystemTrustStore value.
+     */
+    public Object useSystemTrustStore() {
+        return this.useSystemTrustStore;
+    }
+
+    /**
+     * Set the useSystemTrustStore property: This option specifies whether to use a CA certificate from the system trust
+     * store, or from a specified PEM file. E.g. UseSystemTrustStore=&lt;0/1&gt;; Options: Enabled (1) / Disabled (0)
+     * (Default).
+     * 
+     * @param useSystemTrustStore the useSystemTrustStore value to set.
+     * @return the MariaDBLinkedServiceTypeProperties object itself.
+     */
+    public MariaDBLinkedServiceTypeProperties withUseSystemTrustStore(Object useSystemTrustStore) {
+        this.useSystemTrustStore = useSystemTrustStore;
+        return this;
+    }
+
+    /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
      * 
      * @return the password value.
@@ -254,6 +320,8 @@ public final class MariaDBLinkedServiceTypeProperties implements JsonSerializabl
         jsonWriter.writeUntypedField("port", this.port);
         jsonWriter.writeUntypedField("username", this.username);
         jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeUntypedField("sslMode", this.sslMode);
+        jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
@@ -287,6 +355,10 @@ public final class MariaDBLinkedServiceTypeProperties implements JsonSerializabl
                     deserializedMariaDBLinkedServiceTypeProperties.username = reader.readUntyped();
                 } else if ("database".equals(fieldName)) {
                     deserializedMariaDBLinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("sslMode".equals(fieldName)) {
+                    deserializedMariaDBLinkedServiceTypeProperties.sslMode = reader.readUntyped();
+                } else if ("useSystemTrustStore".equals(fieldName)) {
+                    deserializedMariaDBLinkedServiceTypeProperties.useSystemTrustStore = reader.readUntyped();
                 } else if ("password".equals(fieldName)) {
                     deserializedMariaDBLinkedServiceTypeProperties.password
                         = AzureKeyVaultSecretReference.fromJson(reader);

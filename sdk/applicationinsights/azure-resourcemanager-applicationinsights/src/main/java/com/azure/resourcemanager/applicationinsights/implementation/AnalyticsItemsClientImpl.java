@@ -32,22 +32,28 @@ import com.azure.resourcemanager.applicationinsights.models.ItemTypeParameter;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AnalyticsItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AnalyticsItemsClient.
+ */
 public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AnalyticsItemsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of AnalyticsItemsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AnalyticsItemsClientImpl(ApplicationInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(AnalyticsItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AnalyticsItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,112 +64,81 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
     public interface AnalyticsItemsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<ApplicationInsightsComponentAnalyticsItemInner>>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<List<ApplicationInsightsComponentAnalyticsItemInner>>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("scopePath") ItemScopePath scopePath,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("scope") ItemScope scope,
-            @QueryParam("type") ItemTypeParameter type,
-            @QueryParam("includeContent") Boolean includeContent,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("scopePath") ItemScopePath scopePath, @QueryParam("api-version") String apiVersion,
+            @QueryParam("scope") ItemScope scope, @QueryParam("type") ItemTypeParameter type,
+            @QueryParam("includeContent") Boolean includeContent, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("scopePath") ItemScopePath scopePath,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("id") String id,
-            @QueryParam("name") String name,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("scopePath") ItemScopePath scopePath, @QueryParam("api-version") String apiVersion,
+            @QueryParam("id") String id, @QueryParam("name") String name, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> put(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> put(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("scopePath") ItemScopePath scopePath,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("scopePath") ItemScopePath scopePath, @QueryParam("api-version") String apiVersion,
             @QueryParam("overrideItem") Boolean overrideItem,
             @BodyParam("application/json") ApplicationInsightsComponentAnalyticsItemInner itemProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("scopePath") ItemScopePath scopePath,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("id") String id,
-            @QueryParam("name") String name,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("scopePath") ItemScopePath scopePath, @QueryParam("api-version") String apiVersion,
+            @QueryParam("id") String id, @QueryParam("name") String name, Context context);
     }
 
     /**
      * Gets a list of Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param scope Enum indicating if this item definition is owned by a specific user or is shared between all users
-     *     with access to the Application Insights component.
+     * with access to the Application Insights component.
      * @param type Enum indicating the type of the Analytics item.
      * @param includeContent Flag indicating whether or not to return the content of each applicable item. If false,
-     *     only return the item information.
+     * only return the item information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Analytics Items defined within an Application Insights component along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentAnalyticsItemInner>>> listWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ItemScope scope,
-        ItemTypeParameter type,
+        String resourceGroupName, String resourceName, ItemScopePath scopePath, ItemScope scope, ItemTypeParameter type,
         Boolean includeContent) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -178,63 +153,41 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            scopePath,
-                            apiVersion,
-                            scope,
-                            type,
-                            includeContent,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, scopePath, apiVersion, scope, type, includeContent, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param scope Enum indicating if this item definition is owned by a specific user or is shared between all users
-     *     with access to the Application Insights component.
+     * with access to the Application Insights component.
      * @param type Enum indicating the type of the Analytics item.
      * @param includeContent Flag indicating whether or not to return the content of each applicable item. If false,
-     *     only return the item information.
+     * only return the item information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Analytics Items defined within an Application Insights component along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentAnalyticsItemInner>>> listWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ItemScope scope,
-        ItemTypeParameter type,
-        Boolean includeContent,
-        Context context) {
+        String resourceGroupName, String resourceName, ItemScopePath scopePath, ItemScope scope, ItemTypeParameter type,
+        Boolean includeContent, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -249,37 +202,26 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                scopePath,
-                apiVersion,
-                scope,
-                type,
-                includeContent,
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, resourceName,
+            scopePath, apiVersion, scope, type, includeContent, accept, context);
     }
 
     /**
      * Gets a list of Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Analytics Items defined within an Application Insights component on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<ApplicationInsightsComponentAnalyticsItemInner>> listAsync(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath) {
+    private Mono<List<ApplicationInsightsComponentAnalyticsItemInner>> listAsync(String resourceGroupName,
+        String resourceName, ItemScopePath scopePath) {
         final ItemScope scope = null;
         final ItemTypeParameter type = null;
         final Boolean includeContent = null;
@@ -289,16 +231,16 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a list of Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param scope Enum indicating if this item definition is owned by a specific user or is shared between all users
-     *     with access to the Application Insights component.
+     * with access to the Application Insights component.
      * @param type Enum indicating the type of the Analytics item.
      * @param includeContent Flag indicating whether or not to return the content of each applicable item. If false,
-     *     only return the item information.
+     * only return the item information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -306,13 +248,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @return a list of Analytics Items defined within an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<ApplicationInsightsComponentAnalyticsItemInner>> listWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ItemScope scope,
-        ItemTypeParameter type,
-        Boolean includeContent,
+    public Response<List<ApplicationInsightsComponentAnalyticsItemInner>> listWithResponse(String resourceGroupName,
+        String resourceName, ItemScopePath scopePath, ItemScope scope, ItemTypeParameter type, Boolean includeContent,
         Context context) {
         return listWithResponseAsync(resourceGroupName, resourceName, scopePath, scope, type, includeContent, context)
             .block();
@@ -320,19 +257,19 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a list of Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Analytics Items defined within an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<ApplicationInsightsComponentAnalyticsItemInner> list(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath) {
+    public List<ApplicationInsightsComponentAnalyticsItemInner> list(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath) {
         final ItemScope scope = null;
         final ItemTypeParameter type = null;
         final Boolean includeContent = null;
@@ -342,33 +279,29 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Analytics Items defined within an Application Insights component along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> getWithResponseAsync(
         String resourceGroupName, String resourceName, ItemScopePath scopePath, String id, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -383,30 +316,18 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            scopePath,
-                            apiVersion,
-                            id,
-                            name,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, scopePath, apiVersion, id, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @param context The context to associate with this operation.
@@ -414,27 +335,19 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Analytics Items defined within an Application Insights component along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        String id,
-        String name,
+        String resourceGroupName, String resourceName, ItemScopePath scopePath, String id, String name,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -449,36 +362,26 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                scopePath,
-                apiVersion,
-                id,
-                name,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, resourceName,
+            scopePath, apiVersion, id, name, accept, context);
     }
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Analytics Items defined within an Application Insights component on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentAnalyticsItemInner> getAsync(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath) {
+    private Mono<ApplicationInsightsComponentAnalyticsItemInner> getAsync(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath) {
         final String id = null;
         final String name = null;
         return getWithResponseAsync(resourceGroupName, resourceName, scopePath, id, name)
@@ -487,11 +390,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @param context The context to associate with this operation.
@@ -501,31 +404,26 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @return a specific Analytics Items defined within an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentAnalyticsItemInner> getWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        String id,
-        String name,
-        Context context) {
+    public Response<ApplicationInsightsComponentAnalyticsItemInner> getWithResponse(String resourceGroupName,
+        String resourceName, ItemScopePath scopePath, String id, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, scopePath, id, name, context).block();
     }
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Analytics Items defined within an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentAnalyticsItemInner get(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath) {
+    public ApplicationInsightsComponentAnalyticsItemInner get(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath) {
         final String id = null;
         final String name = null;
         return getWithResponse(resourceGroupName, resourceName, scopePath, id, name, Context.NONE).getValue();
@@ -533,39 +431,32 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
-     *     Insights component.
+     * Insights component.
      * @param overrideItem Flag indicating whether or not to force save an item. This allows overriding an item if it
-     *     already exists.
+     * already exists.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an Analytics item that is associated to an Application Insights component along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> putWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties,
-        Boolean overrideItem) {
+        String resourceGroupName, String resourceName, ItemScopePath scopePath,
+        ApplicationInsightsComponentAnalyticsItemInner itemProperties, Boolean overrideItem) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -585,60 +476,40 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .put(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            scopePath,
-                            apiVersion,
-                            overrideItem,
-                            itemProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.put(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, scopePath, apiVersion, overrideItem, itemProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
-     *     Insights component.
+     * Insights component.
      * @param overrideItem Flag indicating whether or not to force save an item. This allows overriding an item if it
-     *     already exists.
+     * already exists.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an Analytics item that is associated to an Application Insights component along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> putWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties,
-        Boolean overrideItem,
-        Context context) {
+        String resourceGroupName, String resourceName, ItemScopePath scopePath,
+        ApplicationInsightsComponentAnalyticsItemInner itemProperties, Boolean overrideItem, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -658,41 +529,28 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .put(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                scopePath,
-                apiVersion,
-                overrideItem,
-                itemProperties,
-                accept,
-                context);
+        return service.put(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, resourceName,
+            scopePath, apiVersion, overrideItem, itemProperties, accept, context);
     }
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
-     *     Insights component.
+     * Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an Analytics item that is associated to an Application Insights component on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentAnalyticsItemInner> putAsync(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties) {
+    private Mono<ApplicationInsightsComponentAnalyticsItemInner> putAsync(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath, ApplicationInsightsComponentAnalyticsItemInner itemProperties) {
         final Boolean overrideItem = null;
         return putWithResponseAsync(resourceGroupName, resourceName, scopePath, itemProperties, overrideItem)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -700,54 +558,47 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
-     *     Insights component.
+     * Insights component.
      * @param overrideItem Flag indicating whether or not to force save an item. This allows overriding an item if it
-     *     already exists.
+     * already exists.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an Analytics item that is associated to an Application Insights component along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentAnalyticsItemInner> putWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties,
-        Boolean overrideItem,
-        Context context) {
+    public Response<ApplicationInsightsComponentAnalyticsItemInner> putWithResponse(String resourceGroupName,
+        String resourceName, ItemScopePath scopePath, ApplicationInsightsComponentAnalyticsItemInner itemProperties,
+        Boolean overrideItem, Context context) {
         return putWithResponseAsync(resourceGroupName, resourceName, scopePath, itemProperties, overrideItem, context)
             .block();
     }
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
-     *     Insights component.
+     * Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an Analytics item that is associated to an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentAnalyticsItemInner put(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties) {
+    public ApplicationInsightsComponentAnalyticsItemInner put(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath, ApplicationInsightsComponentAnalyticsItemInner itemProperties) {
         final Boolean overrideItem = null;
         return putWithResponse(resourceGroupName, resourceName, scopePath, itemProperties, overrideItem, Context.NONE)
             .getValue();
@@ -755,11 +606,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -768,19 +619,15 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath, String id, String name) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath, String id, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -794,29 +641,18 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         }
         final String apiVersion = "2015-05-01";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            scopePath,
-                            apiVersion,
-                            id,
-                            name,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, scopePath, apiVersion, id, name, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @param context The context to associate with this operation.
@@ -826,24 +662,15 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        String id,
-        String name,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath, String id, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -857,26 +684,17 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         }
         final String apiVersion = "2015-05-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                scopePath,
-                apiVersion,
-                id,
-                name,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, scopePath, apiVersion, id, name, context);
     }
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -892,11 +710,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @param context The context to associate with this operation.
@@ -906,23 +724,18 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        String id,
-        String name,
-        Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, ItemScopePath scopePath,
+        String id, String name, Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, scopePath, id, name, context).block();
     }
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -71,7 +71,6 @@ public final class DistributeVersionerLatest extends DistributeVersioner {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

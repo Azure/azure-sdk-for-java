@@ -4,22 +4,23 @@
 
 package com.azure.resourcemanager.automanage.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for HcrpReports ListByConfigurationProfileAssignments. */
+/**
+ * Samples for HcrpReports ListByConfigurationProfileAssignments.
+ */
 public final class HcrpReportsListByConfigurationProfileAssignmentsSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listReportsByconfigurationProfileHCRPAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listReportsByconfigurationProfileHCRPAssignment.json
      */
     /**
      * Sample code: List reports by HCRP configuration profiles assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listReportsByHCRPConfigurationProfilesAssignment(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .hcrpReports()
-            .listByConfigurationProfileAssignments("myResourceGroupName", "myMachineName", "default", Context.NONE);
+        manager.hcrpReports()
+            .listByConfigurationProfileAssignments("myResourceGroupName", "myMachineName", "default",
+                com.azure.core.util.Context.NONE);
     }
 }

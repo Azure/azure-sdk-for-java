@@ -5,59 +5,56 @@
 package com.azure.resourcemanager.deviceupdate.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.deviceupdate.models.Encryption;
 import com.azure.resourcemanager.deviceupdate.models.Location;
 import com.azure.resourcemanager.deviceupdate.models.ProvisioningState;
 import com.azure.resourcemanager.deviceupdate.models.PublicNetworkAccess;
 import com.azure.resourcemanager.deviceupdate.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Device Update account properties.
  */
 @Fluent
-public final class AccountProperties {
+public final class AccountProperties implements JsonSerializable<AccountProperties> {
     /*
      * Provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * API host name.
      */
-    @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * Whether or not public network access is allowed for the account.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * List of private endpoint connections associated with the account.
      */
-    @JsonProperty(value = "privateEndpointConnections")
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Device Update Sku
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * CMK encryption at rest properties
      */
-    @JsonProperty(value = "encryption")
     private Encryption encryption;
 
     /*
      * Device Update account primary and failover location details
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<Location> locations;
 
     /**
@@ -189,5 +186,62 @@ public final class AccountProperties {
         if (locations() != null) {
             locations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeArrayField("privateEndpointConnections", this.privateEndpointConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("sku", this.sku == null ? null : this.sku.toString());
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountProperties.
+     */
+    public static AccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountProperties deserializedAccountProperties = new AccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedAccountProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedAccountProperties.hostname = reader.getString();
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedAccountProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedAccountProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAccountProperties.sku = Sku.fromString(reader.getString());
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedAccountProperties.encryption = Encryption.fromJson(reader);
+                } else if ("locations".equals(fieldName)) {
+                    List<Location> locations = reader.readArray(reader1 -> Location.fromJson(reader1));
+                    deserializedAccountProperties.locations = locations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountProperties;
+        });
     }
 }

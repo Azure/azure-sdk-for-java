@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request body for resizing a virtual machine. */
+/**
+ * Request body for resizing a virtual machine.
+ */
 @Fluent
-public final class ResizeLabVirtualMachineProperties {
+public final class ResizeLabVirtualMachineProperties implements JsonSerializable<ResizeLabVirtualMachineProperties> {
     /*
      * Specifies the size of the virtual machine.
      */
-    @JsonProperty(value = "size")
     private String size;
 
-    /** Creates an instance of ResizeLabVirtualMachineProperties class. */
+    /**
+     * Creates an instance of ResizeLabVirtualMachineProperties class.
+     */
     public ResizeLabVirtualMachineProperties() {
     }
 
     /**
      * Get the size property: Specifies the size of the virtual machine.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -31,7 +38,7 @@ public final class ResizeLabVirtualMachineProperties {
 
     /**
      * Set the size property: Specifies the size of the virtual machine.
-     *
+     * 
      * @param size the size value to set.
      * @return the ResizeLabVirtualMachineProperties object itself.
      */
@@ -42,9 +49,46 @@ public final class ResizeLabVirtualMachineProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("size", this.size);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResizeLabVirtualMachineProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResizeLabVirtualMachineProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResizeLabVirtualMachineProperties.
+     */
+    public static ResizeLabVirtualMachineProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResizeLabVirtualMachineProperties deserializedResizeLabVirtualMachineProperties
+                = new ResizeLabVirtualMachineProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("size".equals(fieldName)) {
+                    deserializedResizeLabVirtualMachineProperties.size = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResizeLabVirtualMachineProperties;
+        });
     }
 }

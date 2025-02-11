@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourcePoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourcePoolInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"hashsfwxosow\",\"location\":\"cugicjoox\",\"name\":\"ebwpucwwfvo\",\"privateCloudId\":\"vmeueci\",\"properties\":{\"fullName\":\"zceuojgjrw\"},\"type\":\"eiotwmcdytdx\"}")
-                .toObject(ResourcePoolInner.class);
-        Assertions.assertEquals("hashsfwxosow", model.id());
+        ResourcePoolInner model = BinaryData.fromString(
+            "{\"id\":\"wabm\",\"location\":\"efkifr\",\"name\":\"puqujmqlgkfbtn\",\"privateCloudId\":\"aongbj\",\"properties\":{\"fullName\":\"ujitcjedftww\"},\"type\":\"zkoj\"}")
+            .toObject(ResourcePoolInner.class);
+        Assertions.assertEquals("wabm", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourcePoolInner model = new ResourcePoolInner().withId("hashsfwxosow");
+        ResourcePoolInner model = new ResourcePoolInner().withId("wabm");
         model = BinaryData.fromObject(model).toObject(ResourcePoolInner.class);
-        Assertions.assertEquals("hashsfwxosow", model.id());
+        Assertions.assertEquals("wabm", model.id());
     }
 }

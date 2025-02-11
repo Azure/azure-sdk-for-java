@@ -13,8 +13,7 @@ public final class AlertsMetadataImpl implements AlertsMetadata {
 
     private final com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager;
 
-    AlertsMetadataImpl(
-        AlertsMetadataInner innerObject,
+    AlertsMetadataImpl(AlertsMetadataInner innerObject,
         com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.containerinstance.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
@@ -42,24 +42,25 @@ public class ManageContainerInstanceWithMultipleContainerImages {
             //=============================================================
             // Create a container group with two container instances
 
-            ContainerGroup containerGroup = azureResourceManager.containerGroups().define(aciName)
+            ContainerGroup containerGroup = azureResourceManager.containerGroups()
+                .define(aciName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
                 .withLinux()
                 .withPublicImageRegistryOnly()
                 .withoutVolume()
                 .defineContainerInstance(aciName + "-1")
-                    .withImage(containerImageName1)
-                    .withExternalTcpPort(80)
-                    .withCpuCoreCount(.5)
-                    .withMemorySizeInGB(0.8)
-                    .attach()
+                .withImage(containerImageName1)
+                .withExternalTcpPort(80)
+                .withCpuCoreCount(.5)
+                .withMemorySizeInGB(0.8)
+                .attach()
                 .defineContainerInstance(aciName + "-2")
-                    .withImage(containerImageName2)
-                    .withoutPorts()
-                    .withCpuCoreCount(.5)
-                    .withMemorySizeInGB(0.8)
-                    .attach()
+                .withImage(containerImageName2)
+                .withoutPorts()
+                .withCpuCoreCount(.5)
+                .withMemorySizeInGB(0.8)
+                .attach()
                 .withRestartPolicy(ContainerGroupRestartPolicy.NEVER)
                 .withDnsPrefix(aciName)
                 .create();
@@ -113,13 +114,12 @@ public class ManageContainerInstanceWithMultipleContainerImages {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

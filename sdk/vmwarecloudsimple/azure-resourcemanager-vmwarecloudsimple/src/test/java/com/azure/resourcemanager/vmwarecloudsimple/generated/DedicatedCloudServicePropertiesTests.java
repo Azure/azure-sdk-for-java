@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedCloudServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedCloudServiceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"gatewaySubnet\":\"bkbfkgukdkex\",\"isAccountOnboarded\":\"notOnBoarded\",\"nodes\":922056801,\"serviceURL\":\"xaxcfjpgddtocjjx\"}")
-                .toObject(DedicatedCloudServiceProperties.class);
-        Assertions.assertEquals("bkbfkgukdkex", model.gatewaySubnet());
+        DedicatedCloudServiceProperties model = BinaryData.fromString(
+            "{\"gatewaySubnet\":\"yokacspkw\",\"isAccountOnboarded\":\"onBoarding\",\"nodes\":950671055,\"serviceURL\":\"pxjmflbvvnchr\"}")
+            .toObject(DedicatedCloudServiceProperties.class);
+        Assertions.assertEquals("yokacspkw", model.gatewaySubnet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedCloudServiceProperties model = new DedicatedCloudServiceProperties().withGatewaySubnet("bkbfkgukdkex");
+        DedicatedCloudServiceProperties model = new DedicatedCloudServiceProperties().withGatewaySubnet("yokacspkw");
         model = BinaryData.fromObject(model).toObject(DedicatedCloudServiceProperties.class);
-        Assertions.assertEquals("bkbfkgukdkex", model.gatewaySubnet());
+        Assertions.assertEquals("yokacspkw", model.gatewaySubnet());
     }
 }

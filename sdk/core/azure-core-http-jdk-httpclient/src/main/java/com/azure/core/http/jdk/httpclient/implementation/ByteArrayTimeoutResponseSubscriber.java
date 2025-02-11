@@ -7,10 +7,10 @@ import java.net.http.HttpTimeoutException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Flow;
+import java.util.concurrent.ScheduledFuture;
 
 /**
  * Implementation of {@link HttpResponse.BodySubscriber} that accumulates the response body into a byte array while
@@ -25,7 +25,7 @@ public final class ByteArrayTimeoutResponseSubscriber implements HttpResponse.Bo
     private final List<ByteBuffer> received = new ArrayList<>();
 
     private final long readTimeout;
-    private TimerTask currentTimeout;
+    private ScheduledFuture<?> currentTimeout;
 
     private volatile Flow.Subscription subscription;
 
@@ -56,7 +56,7 @@ public final class ByteArrayTimeoutResponseSubscriber implements HttpResponse.Bo
     public void onNext(List<ByteBuffer> item) {
         // From documentation within ResponseSubscribers it is mentioned that the ByteBuffers passed here won't be used
         // anywhere else. So, it is safe to store them without copying.
-        currentTimeout.cancel();
+        currentTimeout.cancel(false);
         received.addAll(item);
         currentTimeout = createTimeout();
         subscription.request(1);
@@ -64,14 +64,14 @@ public final class ByteArrayTimeoutResponseSubscriber implements HttpResponse.Bo
 
     @Override
     public void onError(Throwable throwable) {
-        currentTimeout.cancel();
+        currentTimeout.cancel(false);
         received.clear();
         future.completeExceptionally(throwable);
     }
 
     @Override
     public void onComplete() {
-        currentTimeout.cancel();
+        currentTimeout.cancel(false);
         int size = JdkHttpUtils.getSizeOfBuffers(received);
         byte[] result = new byte[size];
         int offset = 0;
@@ -83,19 +83,13 @@ public final class ByteArrayTimeoutResponseSubscriber implements HttpResponse.Bo
         future.complete(result);
     }
 
-    private TimerTask createTimeout() {
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                // Complete the future first. Cancelling the subscription causes an error to be emitted about the
-                // subscription being cancelled which we don't want to propagate as we are explicitly doing it.
-                future.completeExceptionally(new HttpTimeoutException("Timeout reading response body."));
-                subscription.cancel();
-            }
-        };
-
-        JdkHttpUtils.scheduleTimeoutTask(task, readTimeout);
-        return task;
+    private ScheduledFuture<?> createTimeout() {
+        return JdkHttpUtils.scheduleTimeoutTask(() -> {
+            // Complete the future first. Cancelling the subscription causes an error to be emitted about the
+            // subscription being cancelled which we don't want to propagate as we are explicitly doing it.
+            future.completeExceptionally(new HttpTimeoutException("Timeout reading response body."));
+            subscription.cancel();
+        }, readTimeout);
     }
 
     @Override

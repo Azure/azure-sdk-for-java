@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a Sql pool connection policy. */
+/**
+ * Properties of a Sql pool connection policy.
+ */
 @Fluent
-public final class SqlPoolConnectionPolicyProperties {
+public final class SqlPoolConnectionPolicyProperties implements JsonSerializable<SqlPoolConnectionPolicyProperties> {
     /*
      * The state of security access.
      */
-    @JsonProperty(value = "securityEnabledAccess")
     private String securityEnabledAccess;
 
     /*
      * The fully qualified host name of the auditing proxy.
      */
-    @JsonProperty(value = "proxyDnsName")
     private String proxyDnsName;
 
     /*
      * The port number of the auditing proxy.
      */
-    @JsonProperty(value = "proxyPort")
     private String proxyPort;
 
     /*
      * The visibility of the auditing proxy.
      */
-    @JsonProperty(value = "visibility")
     private String visibility;
 
     /*
      * Whether server default is enabled or disabled.
      */
-    @JsonProperty(value = "useServerDefault")
     private String useServerDefault;
 
     /*
      * The state of proxy redirection.
      */
-    @JsonProperty(value = "redirectionState")
     private String redirectionState;
 
     /*
      * The connection policy state.
      */
-    @JsonProperty(value = "state")
     private String state;
 
-    /** Creates an instance of SqlPoolConnectionPolicyProperties class. */
+    /**
+     * Creates an instance of SqlPoolConnectionPolicyProperties class.
+     */
     public SqlPoolConnectionPolicyProperties() {
     }
 
     /**
      * Get the securityEnabledAccess property: The state of security access.
-     *
+     * 
      * @return the securityEnabledAccess value.
      */
     public String securityEnabledAccess() {
@@ -67,7 +68,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Set the securityEnabledAccess property: The state of security access.
-     *
+     * 
      * @param securityEnabledAccess the securityEnabledAccess value to set.
      * @return the SqlPoolConnectionPolicyProperties object itself.
      */
@@ -78,7 +79,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Get the proxyDnsName property: The fully qualified host name of the auditing proxy.
-     *
+     * 
      * @return the proxyDnsName value.
      */
     public String proxyDnsName() {
@@ -87,7 +88,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Set the proxyDnsName property: The fully qualified host name of the auditing proxy.
-     *
+     * 
      * @param proxyDnsName the proxyDnsName value to set.
      * @return the SqlPoolConnectionPolicyProperties object itself.
      */
@@ -98,7 +99,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Get the proxyPort property: The port number of the auditing proxy.
-     *
+     * 
      * @return the proxyPort value.
      */
     public String proxyPort() {
@@ -107,7 +108,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Set the proxyPort property: The port number of the auditing proxy.
-     *
+     * 
      * @param proxyPort the proxyPort value to set.
      * @return the SqlPoolConnectionPolicyProperties object itself.
      */
@@ -118,7 +119,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Get the visibility property: The visibility of the auditing proxy.
-     *
+     * 
      * @return the visibility value.
      */
     public String visibility() {
@@ -127,7 +128,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Set the visibility property: The visibility of the auditing proxy.
-     *
+     * 
      * @param visibility the visibility value to set.
      * @return the SqlPoolConnectionPolicyProperties object itself.
      */
@@ -138,7 +139,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Get the useServerDefault property: Whether server default is enabled or disabled.
-     *
+     * 
      * @return the useServerDefault value.
      */
     public String useServerDefault() {
@@ -147,7 +148,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Set the useServerDefault property: Whether server default is enabled or disabled.
-     *
+     * 
      * @param useServerDefault the useServerDefault value to set.
      * @return the SqlPoolConnectionPolicyProperties object itself.
      */
@@ -158,7 +159,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Get the redirectionState property: The state of proxy redirection.
-     *
+     * 
      * @return the redirectionState value.
      */
     public String redirectionState() {
@@ -167,7 +168,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Set the redirectionState property: The state of proxy redirection.
-     *
+     * 
      * @param redirectionState the redirectionState value to set.
      * @return the SqlPoolConnectionPolicyProperties object itself.
      */
@@ -178,7 +179,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Get the state property: The connection policy state.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -187,7 +188,7 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Set the state property: The connection policy state.
-     *
+     * 
      * @param state the state value to set.
      * @return the SqlPoolConnectionPolicyProperties object itself.
      */
@@ -198,9 +199,64 @@ public final class SqlPoolConnectionPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("securityEnabledAccess", this.securityEnabledAccess);
+        jsonWriter.writeStringField("proxyDnsName", this.proxyDnsName);
+        jsonWriter.writeStringField("proxyPort", this.proxyPort);
+        jsonWriter.writeStringField("visibility", this.visibility);
+        jsonWriter.writeStringField("useServerDefault", this.useServerDefault);
+        jsonWriter.writeStringField("redirectionState", this.redirectionState);
+        jsonWriter.writeStringField("state", this.state);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlPoolConnectionPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlPoolConnectionPolicyProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlPoolConnectionPolicyProperties.
+     */
+    public static SqlPoolConnectionPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlPoolConnectionPolicyProperties deserializedSqlPoolConnectionPolicyProperties
+                = new SqlPoolConnectionPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("securityEnabledAccess".equals(fieldName)) {
+                    deserializedSqlPoolConnectionPolicyProperties.securityEnabledAccess = reader.getString();
+                } else if ("proxyDnsName".equals(fieldName)) {
+                    deserializedSqlPoolConnectionPolicyProperties.proxyDnsName = reader.getString();
+                } else if ("proxyPort".equals(fieldName)) {
+                    deserializedSqlPoolConnectionPolicyProperties.proxyPort = reader.getString();
+                } else if ("visibility".equals(fieldName)) {
+                    deserializedSqlPoolConnectionPolicyProperties.visibility = reader.getString();
+                } else if ("useServerDefault".equals(fieldName)) {
+                    deserializedSqlPoolConnectionPolicyProperties.useServerDefault = reader.getString();
+                } else if ("redirectionState".equals(fieldName)) {
+                    deserializedSqlPoolConnectionPolicyProperties.redirectionState = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedSqlPoolConnectionPolicyProperties.state = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlPoolConnectionPolicyProperties;
+        });
     }
 }

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class AsyncOperationIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AsyncOperationId model = BinaryData.fromString("{\"id\":\"uhcdhm\"}").toObject(AsyncOperationId.class);
-        Assertions.assertEquals("uhcdhm", model.id());
+        AsyncOperationId model = BinaryData.fromString("{\"id\":\"melmqkrha\"}").toObject(AsyncOperationId.class);
+        Assertions.assertEquals("melmqkrha", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AsyncOperationId model = new AsyncOperationId().withId("uhcdhm");
+        AsyncOperationId model = new AsyncOperationId().withId("melmqkrha");
         model = BinaryData.fromObject(model).toObject(AsyncOperationId.class);
-        Assertions.assertEquals("uhcdhm", model.id());
+        Assertions.assertEquals("melmqkrha", model.id());
     }
 }

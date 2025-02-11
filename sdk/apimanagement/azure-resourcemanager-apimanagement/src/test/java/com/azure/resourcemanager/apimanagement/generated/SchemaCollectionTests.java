@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SchemaCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SchemaCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"contentType\":\"dlfp\",\"document\":{\"value\":\"pucygvoavyunss\",\"definitions\":\"dataghiee\",\"components\":\"datalgvvpaseksgbu\"}},\"id\":\"antuygdhgaqipirp\",\"name\":\"wrq\",\"type\":\"fulopmjnlexwhcb\"}],\"count\":6406773935608396321,\"nextLink\":\"e\"}")
-                .toObject(SchemaCollection.class);
+        SchemaCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"contentType\":\"dlfp\",\"document\":{\"value\":\"pucygvoavyunss\",\"definitions\":\"dataghiee\",\"components\":\"datalgvvpaseksgbu\"}},\"id\":\"antuygdhgaqipirp\",\"name\":\"wrq\",\"type\":\"fulopmjnlexwhcb\"}],\"count\":6406773935608396321,\"nextLink\":\"e\"}")
+            .toObject(SchemaCollection.class);
         Assertions.assertEquals(6406773935608396321L, model.count());
     }
 

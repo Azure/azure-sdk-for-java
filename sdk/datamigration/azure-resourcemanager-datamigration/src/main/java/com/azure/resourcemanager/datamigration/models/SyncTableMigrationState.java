@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum of the different state of table level online migration. */
+/**
+ * Enum of the different state of table level online migration.
+ */
 public final class SyncTableMigrationState extends ExpandableStringEnum<SyncTableMigrationState> {
-    /** Static value BEFORE_LOAD for SyncTableMigrationState. */
+    /**
+     * Static value BEFORE_LOAD for SyncTableMigrationState.
+     */
     public static final SyncTableMigrationState BEFORE_LOAD = fromString("BEFORE_LOAD");
 
-    /** Static value FULL_LOAD for SyncTableMigrationState. */
+    /**
+     * Static value FULL_LOAD for SyncTableMigrationState.
+     */
     public static final SyncTableMigrationState FULL_LOAD = fromString("FULL_LOAD");
 
-    /** Static value COMPLETED for SyncTableMigrationState. */
+    /**
+     * Static value COMPLETED for SyncTableMigrationState.
+     */
     public static final SyncTableMigrationState COMPLETED = fromString("COMPLETED");
 
-    /** Static value CANCELED for SyncTableMigrationState. */
+    /**
+     * Static value CANCELED for SyncTableMigrationState.
+     */
     public static final SyncTableMigrationState CANCELED = fromString("CANCELED");
 
-    /** Static value ERROR for SyncTableMigrationState. */
+    /**
+     * Static value ERROR for SyncTableMigrationState.
+     */
     public static final SyncTableMigrationState ERROR = fromString("ERROR");
 
-    /** Static value FAILED for SyncTableMigrationState. */
+    /**
+     * Static value FAILED for SyncTableMigrationState.
+     */
     public static final SyncTableMigrationState FAILED = fromString("FAILED");
 
     /**
      * Creates a new instance of SyncTableMigrationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class SyncTableMigrationState extends ExpandableStringEnum<SyncTabl
 
     /**
      * Creates or finds a SyncTableMigrationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SyncTableMigrationState.
      */
-    @JsonCreator
     public static SyncTableMigrationState fromString(String name) {
         return fromString(name, SyncTableMigrationState.class);
     }
 
     /**
      * Gets known SyncTableMigrationState values.
-     *
+     * 
      * @return known SyncTableMigrationState values.
      */
     public static Collection<SyncTableMigrationState> values() {

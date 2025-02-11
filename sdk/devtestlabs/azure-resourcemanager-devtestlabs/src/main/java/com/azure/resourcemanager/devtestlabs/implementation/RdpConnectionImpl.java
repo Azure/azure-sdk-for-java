@@ -12,8 +12,8 @@ public final class RdpConnectionImpl implements RdpConnection {
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    RdpConnectionImpl(
-        RdpConnectionInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    RdpConnectionImpl(RdpConnectionInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

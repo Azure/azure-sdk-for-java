@@ -21,44 +21,30 @@ public final class IntegrationRuntimeAuthKeysOperationsImpl implements Integrati
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public IntegrationRuntimeAuthKeysOperationsImpl(
-        IntegrationRuntimeAuthKeysOperationsClient innerClient,
+    public IntegrationRuntimeAuthKeysOperationsImpl(IntegrationRuntimeAuthKeysOperationsClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<IntegrationRuntimeAuthKeys> regenerateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
+    public Response<IntegrationRuntimeAuthKeys> regenerateWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
         Context context) {
-        Response<IntegrationRuntimeAuthKeysInner> inner =
-            this
-                .serviceClient()
-                .regenerateWithResponse(
-                    resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters, context);
+        Response<IntegrationRuntimeAuthKeysInner> inner = this.serviceClient()
+            .regenerateWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IntegrationRuntimeAuthKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public IntegrationRuntimeAuthKeys regenerate(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
-        IntegrationRuntimeAuthKeysInner inner =
-            this
-                .serviceClient()
-                .regenerate(resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters);
+    public IntegrationRuntimeAuthKeys regenerate(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
+        IntegrationRuntimeAuthKeysInner inner = this.serviceClient()
+            .regenerate(resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters);
         if (inner != null) {
             return new IntegrationRuntimeAuthKeysImpl(inner, this.manager());
         } else {
@@ -66,25 +52,22 @@ public final class IntegrationRuntimeAuthKeysOperationsImpl implements Integrati
         }
     }
 
-    public Response<IntegrationRuntimeAuthKeys> listWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
-        Response<IntegrationRuntimeAuthKeysInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, context);
+    public Response<IntegrationRuntimeAuthKeys> listWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context) {
+        Response<IntegrationRuntimeAuthKeysInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IntegrationRuntimeAuthKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public IntegrationRuntimeAuthKeys list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeAuthKeysInner inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, integrationRuntimeName);
+    public IntegrationRuntimeAuthKeys list(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName) {
+        IntegrationRuntimeAuthKeysInner inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, integrationRuntimeName);
         if (inner != null) {
             return new IntegrationRuntimeAuthKeysImpl(inner, this.manager());
         } else {

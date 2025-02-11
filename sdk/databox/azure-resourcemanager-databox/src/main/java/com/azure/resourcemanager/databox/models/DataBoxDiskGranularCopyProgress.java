@@ -5,30 +5,122 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** DataBox Disk Granular Copy Progress. */
+/**
+ * DataBox Disk Granular Copy Progress.
+ */
 @Immutable
 public final class DataBoxDiskGranularCopyProgress extends GranularCopyProgress {
     /*
      * Disk Serial Number.
      */
-    @JsonProperty(value = "serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /*
      * The Status of the copy
      */
-    @JsonProperty(value = "copyStatus", access = JsonProperty.Access.WRITE_ONLY)
     private CopyStatus copyStatus;
 
-    /** Creates an instance of DataBoxDiskGranularCopyProgress class. */
+    /*
+     * Available actions on the job.
+     */
+    private List<CustomerResolutionCode> actions;
+
+    /*
+     * Error, if any, in the stage
+     */
+    private CloudError error;
+
+    /*
+     * To indicate if enumeration of data is in progress.
+     * Until this is true, the TotalBytesToProcess may not be valid.
+     */
+    private Boolean isEnumerationInProgress;
+
+    /*
+     * To indicate directories renamed
+     */
+    private Long invalidDirectoriesProcessed;
+
+    /*
+     * To indicate directories errored out in the job.
+     */
+    private Long directoriesErroredOut;
+
+    /*
+     * Number of files which could not be copied
+     */
+    private Long filesErroredOut;
+
+    /*
+     * Number of folders not adhering to azure naming conventions which were processed by automatic renaming
+     */
+    private Long renamedContainerCount;
+
+    /*
+     * Total amount of data not adhering to azure naming conventions which were processed by automatic renaming
+     */
+    private Long invalidFileBytesUploaded;
+
+    /*
+     * Number of files not adhering to azure naming conventions which were processed by automatic renaming
+     */
+    private Long invalidFilesProcessed;
+
+    /*
+     * Total files to process
+     */
+    private Long totalFilesToProcess;
+
+    /*
+     * Number of files processed
+     */
+    private Long filesProcessed;
+
+    /*
+     * Total amount of data to be processed by the job.
+     */
+    private Long totalBytesToProcess;
+
+    /*
+     * To indicate bytes transferred.
+     */
+    private Long bytesProcessed;
+
+    /*
+     * Id of the account where the data needs to be uploaded.
+     */
+    private String accountId;
+
+    /*
+     * Data Account Type.
+     */
+    private DataAccountType dataAccountType;
+
+    /*
+     * Transfer type of data
+     */
+    private TransferType transferType;
+
+    /*
+     * Name of the storage account. This will be empty for data account types other than storage account.
+     */
+    private String storageAccountName;
+
+    /**
+     * Creates an instance of DataBoxDiskGranularCopyProgress class.
+     */
     public DataBoxDiskGranularCopyProgress() {
     }
 
     /**
      * Get the serialNumber property: Disk Serial Number.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -37,7 +129,7 @@ public final class DataBoxDiskGranularCopyProgress extends GranularCopyProgress 
 
     /**
      * Get the copyStatus property: The Status of the copy.
-     *
+     * 
      * @return the copyStatus value.
      */
     public CopyStatus copyStatus() {
@@ -45,12 +137,276 @@ public final class DataBoxDiskGranularCopyProgress extends GranularCopyProgress 
     }
 
     /**
+     * Get the actions property: Available actions on the job.
+     * 
+     * @return the actions value.
+     */
+    @Override
+    public List<CustomerResolutionCode> actions() {
+        return this.actions;
+    }
+
+    /**
+     * Get the error property: Error, if any, in the stage.
+     * 
+     * @return the error value.
+     */
+    @Override
+    public CloudError error() {
+        return this.error;
+    }
+
+    /**
+     * Get the isEnumerationInProgress property: To indicate if enumeration of data is in progress.
+     * Until this is true, the TotalBytesToProcess may not be valid.
+     * 
+     * @return the isEnumerationInProgress value.
+     */
+    @Override
+    public Boolean isEnumerationInProgress() {
+        return this.isEnumerationInProgress;
+    }
+
+    /**
+     * Get the invalidDirectoriesProcessed property: To indicate directories renamed.
+     * 
+     * @return the invalidDirectoriesProcessed value.
+     */
+    @Override
+    public Long invalidDirectoriesProcessed() {
+        return this.invalidDirectoriesProcessed;
+    }
+
+    /**
+     * Get the directoriesErroredOut property: To indicate directories errored out in the job.
+     * 
+     * @return the directoriesErroredOut value.
+     */
+    @Override
+    public Long directoriesErroredOut() {
+        return this.directoriesErroredOut;
+    }
+
+    /**
+     * Get the filesErroredOut property: Number of files which could not be copied.
+     * 
+     * @return the filesErroredOut value.
+     */
+    @Override
+    public Long filesErroredOut() {
+        return this.filesErroredOut;
+    }
+
+    /**
+     * Get the renamedContainerCount property: Number of folders not adhering to azure naming conventions which were
+     * processed by automatic renaming.
+     * 
+     * @return the renamedContainerCount value.
+     */
+    @Override
+    public Long renamedContainerCount() {
+        return this.renamedContainerCount;
+    }
+
+    /**
+     * Get the invalidFileBytesUploaded property: Total amount of data not adhering to azure naming conventions which
+     * were processed by automatic renaming.
+     * 
+     * @return the invalidFileBytesUploaded value.
+     */
+    @Override
+    public Long invalidFileBytesUploaded() {
+        return this.invalidFileBytesUploaded;
+    }
+
+    /**
+     * Get the invalidFilesProcessed property: Number of files not adhering to azure naming conventions which were
+     * processed by automatic renaming.
+     * 
+     * @return the invalidFilesProcessed value.
+     */
+    @Override
+    public Long invalidFilesProcessed() {
+        return this.invalidFilesProcessed;
+    }
+
+    /**
+     * Get the totalFilesToProcess property: Total files to process.
+     * 
+     * @return the totalFilesToProcess value.
+     */
+    @Override
+    public Long totalFilesToProcess() {
+        return this.totalFilesToProcess;
+    }
+
+    /**
+     * Get the filesProcessed property: Number of files processed.
+     * 
+     * @return the filesProcessed value.
+     */
+    @Override
+    public Long filesProcessed() {
+        return this.filesProcessed;
+    }
+
+    /**
+     * Get the totalBytesToProcess property: Total amount of data to be processed by the job.
+     * 
+     * @return the totalBytesToProcess value.
+     */
+    @Override
+    public Long totalBytesToProcess() {
+        return this.totalBytesToProcess;
+    }
+
+    /**
+     * Get the bytesProcessed property: To indicate bytes transferred.
+     * 
+     * @return the bytesProcessed value.
+     */
+    @Override
+    public Long bytesProcessed() {
+        return this.bytesProcessed;
+    }
+
+    /**
+     * Get the accountId property: Id of the account where the data needs to be uploaded.
+     * 
+     * @return the accountId value.
+     */
+    @Override
+    public String accountId() {
+        return this.accountId;
+    }
+
+    /**
+     * Get the dataAccountType property: Data Account Type.
+     * 
+     * @return the dataAccountType value.
+     */
+    @Override
+    public DataAccountType dataAccountType() {
+        return this.dataAccountType;
+    }
+
+    /**
+     * Get the transferType property: Transfer type of data.
+     * 
+     * @return the transferType value.
+     */
+    @Override
+    public TransferType transferType() {
+        return this.transferType;
+    }
+
+    /**
+     * Get the storageAccountName property: Name of the storage account. This will be empty for data account types other
+     * than storage account.
+     * 
+     * @return the storageAccountName value.
+     */
+    @Override
+    public String storageAccountName() {
+        return this.storageAccountName;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (error() != null) {
+            error().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxDiskGranularCopyProgress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxDiskGranularCopyProgress if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataBoxDiskGranularCopyProgress.
+     */
+    public static DataBoxDiskGranularCopyProgress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxDiskGranularCopyProgress deserializedDataBoxDiskGranularCopyProgress
+                = new DataBoxDiskGranularCopyProgress();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountName".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.storageAccountName = reader.getString();
+                } else if ("transferType".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.transferType
+                        = TransferType.fromString(reader.getString());
+                } else if ("dataAccountType".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.dataAccountType
+                        = DataAccountType.fromString(reader.getString());
+                } else if ("accountId".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.accountId = reader.getString();
+                } else if ("bytesProcessed".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.bytesProcessed
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("totalBytesToProcess".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.totalBytesToProcess
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("filesProcessed".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.filesProcessed
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("totalFilesToProcess".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.totalFilesToProcess
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("invalidFilesProcessed".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.invalidFilesProcessed
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("invalidFileBytesUploaded".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.invalidFileBytesUploaded
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("renamedContainerCount".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.renamedContainerCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("filesErroredOut".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.filesErroredOut
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("directoriesErroredOut".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.directoriesErroredOut
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("invalidDirectoriesProcessed".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.invalidDirectoriesProcessed
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("isEnumerationInProgress".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.isEnumerationInProgress
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("error".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.error = CloudError.fromJson(reader);
+                } else if ("actions".equals(fieldName)) {
+                    List<CustomerResolutionCode> actions
+                        = reader.readArray(reader1 -> CustomerResolutionCode.fromString(reader1.getString()));
+                    deserializedDataBoxDiskGranularCopyProgress.actions = actions;
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.serialNumber = reader.getString();
+                } else if ("copyStatus".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyProgress.copyStatus = CopyStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxDiskGranularCopyProgress;
+        });
     }
 }

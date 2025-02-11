@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The {@code HttpLogOptions} class provides configuration options for HTTP logging. This includes setting the log level,
@@ -34,9 +36,9 @@ import java.util.Set;
  * <pre>
  * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;;
  * logOptions.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;;
- * logOptions.setAllowedHeaderNames&#40;new HashSet&lt;&gt;&#40;Arrays.asList&#40;&quot;Date&quot;, &quot;x-ms-request-id&quot;&#41;&#41;&#41;;
+ * logOptions.setAllowedHttpHeaderNames&#40;new HashSet&lt;&gt;&#40;Arrays.asList&#40;HttpHeaderName.DATE,
+ *     HttpHeaderName.X_MS_REQUEST_ID&#41;&#41;&#41;;
  * logOptions.setAllowedQueryParamNames&#40;new HashSet&lt;&gt;&#40;Arrays.asList&#40;&quot;api-version&quot;&#41;&#41;&#41;;
- * logOptions.setPrettyPrintBody&#40;true&#41;;
  * HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy&#40;logOptions&#41;;
  * </pre>
  * <!-- end com.azure.core.http.policy.HttpLogOptions.constructor -->
@@ -49,9 +51,14 @@ import java.util.Set;
  * @see com.azure.core.http.HttpResponse
  */
 public class HttpLogOptions {
+    private static final HttpHeaderName X_MS_RETURN_CLIENT_REQUEST_ID
+        = HttpHeaderName.fromString("x-ms-return-client-request-id");
+    private static final HttpHeaderName MS_CV = HttpHeaderName.fromString("MS-CV");
+    private static final HttpHeaderName REQUEST_ID = HttpHeaderName.fromString("Request-Id");
+
     private String applicationId;
     private HttpLogDetailLevel logLevel;
-    private Set<String> allowedHeaderNames;
+    private Set<HttpHeaderName> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
     private boolean prettyPrintBody;
     private boolean disableRedactedHeaderLogging;
@@ -66,12 +73,15 @@ public class HttpLogOptions {
     private static final String INVALID_APPLICATION_ID_LENGTH
         = "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
-    static final List<String> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList("x-ms-request-id", "x-ms-client-request-id",
-        "x-ms-return-client-request-id", "traceparent", "MS-CV",
-
-        "Accept", "Cache-Control", "Connection", "Content-Length", "Content-Type", "Date", "ETag", "Expires",
-        "If-Match", "If-Modified-Since", "If-None-Match", "If-Unmodified-Since", "Last-Modified", "Pragma",
-        "Request-Id", "Retry-After", "Server", "Transfer-Encoding", "User-Agent", "WWW-Authenticate");
+    static final Set<HttpHeaderName> DEFAULT_HEADERS_ALLOWLIST
+        = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(HttpHeaderName.X_MS_REQUEST_ID,
+            HttpHeaderName.X_MS_CLIENT_REQUEST_ID, X_MS_RETURN_CLIENT_REQUEST_ID, HttpHeaderName.TRACEPARENT, MS_CV,
+            HttpHeaderName.ACCEPT, HttpHeaderName.CACHE_CONTROL, HttpHeaderName.CONNECTION,
+            HttpHeaderName.CONTENT_LENGTH, HttpHeaderName.DATE, HttpHeaderName.ETAG, HttpHeaderName.EXPIRES,
+            HttpHeaderName.IF_MATCH, HttpHeaderName.IF_MODIFIED_SINCE, HttpHeaderName.IF_NONE_MATCH,
+            HttpHeaderName.IF_UNMODIFIED_SINCE, HttpHeaderName.LAST_MODIFIED, HttpHeaderName.PRAGMA, REQUEST_ID,
+            HttpHeaderName.RETRY_AFTER, HttpHeaderName.RETRY_AFTER_MS, HttpHeaderName.SERVER,
+            HttpHeaderName.TRANSFER_ENCODING, HttpHeaderName.USER_AGENT, HttpHeaderName.WWW_AUTHENTICATE)));
 
     static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList("api-version");
 
@@ -109,39 +119,93 @@ public class HttpLogOptions {
 
     /**
      * Gets the allowed headers that should be logged.
+     * <p>
+     * With the deprecation of this method, this will now return a new {@link HashSet} each time called where the values
+     * are mapped from {@link HttpHeaderName#getCaseSensitiveName()}.
      *
      * @return The list of allowed headers.
+     * @deprecated Use {@link #getAllowedHttpHeaderNames()} instead.
      */
+    @Deprecated
     public Set<String> getAllowedHeaderNames() {
+        return allowedHeaderNames.stream().map(HttpHeaderName::getCaseSensitiveName).collect(Collectors.toSet());
+    }
+
+    /**
+     * Gets the allowed {@link HttpHeaderName HttpHeaderNames} that should be logged.
+     *
+     * @return The list of allowed {@link HttpHeaderName HttpHeaderNames}.
+     */
+    public Set<HttpHeaderName> getAllowedHttpHeaderNames() {
         return allowedHeaderNames;
     }
 
     /**
      * Sets the given allowed headers that should be logged.
-     *
      * <p>
      * This method sets the provided header names to be the allowed header names which will be logged for all HTTP
      * requests and responses, overwriting any previously configured headers. Additionally, users can use {@link
      * HttpLogOptions#addAllowedHeaderName(String)} or {@link HttpLogOptions#getAllowedHeaderNames()} to add or remove
      * more headers names to the existing set of allowed header names.
-     * </p>
+     * <p>
+     * With the deprecation of this method, if {@code allowedHeaderNames} is non-null, this will map the passed
+     * {@code allowedHeaderNames} to a set of {@link HttpHeaderName} using {@link HttpHeaderName#fromString(String)}
+     * on each value in the set.
      *
-     * @param allowedHeaderNames The list of allowed header names from the user.
+     * @param allowedHeaderNames The list of allowed header names.
+     * @return The updated HttpLogOptions object.
+     * @deprecated Use {@link #setAllowedHttpHeaderNames(Set)} instead.
+     */
+    @Deprecated
+    public HttpLogOptions setAllowedHeaderNames(Set<String> allowedHeaderNames) {
+        this.allowedHeaderNames = allowedHeaderNames == null
+            ? new HashSet<>()
+            : allowedHeaderNames.stream().map(HttpHeaderName::fromString).collect(Collectors.toSet());
+        return this;
+    }
+
+    /**
+     * Sets the given allowed {@link HttpHeaderName HttpHeaderNames} that should be logged.
+     * <p>
+     * This method sets the provided header names to be the allowed header names which will be logged for all HTTP
+     * requests and responses, overwriting any previously configured headers. Additionally, users can use {@link
+     * HttpLogOptions#addAllowedHeaderName(String)} or {@link HttpLogOptions#getAllowedHeaderNames()} to add or remove
+     * more headers names to the existing set of allowed header names.
+     *
+     * @param allowedHttpHeaderNames The list of allowed {@link HttpHeaderName HttpHeaderNames}.
      * @return The updated HttpLogOptions object.
      */
-    public HttpLogOptions setAllowedHeaderNames(final Set<String> allowedHeaderNames) {
-        this.allowedHeaderNames = allowedHeaderNames == null ? new HashSet<>() : allowedHeaderNames;
+    public HttpLogOptions setAllowedHttpHeaderNames(Set<HttpHeaderName> allowedHttpHeaderNames) {
+        this.allowedHeaderNames = allowedHttpHeaderNames == null ? new HashSet<>() : allowedHttpHeaderNames;
         return this;
     }
 
     /**
      * Sets the given allowed header to the default header set that should be logged.
+     * <p>
+     * With the deprecation of this method, the passed {@code allowedHeaderName} will be converted to an
+     * {@link HttpHeaderName} using {@link HttpHeaderName#fromString(String)}.
      *
-     * @param allowedHeaderName The allowed header name from the user.
+     * @param allowedHeaderName The allowed header name.
+     * @return The updated HttpLogOptions object.
+     * @throws NullPointerException If {@code allowedHeaderName} is {@code null}.
+     * @deprecated Use {@link #addAllowedHttpHeaderName(HttpHeaderName)} instead.
+     */
+    @Deprecated
+    public HttpLogOptions addAllowedHeaderName(String allowedHeaderName) {
+        Objects.requireNonNull(allowedHeaderName);
+        this.allowedHeaderNames.add(HttpHeaderName.fromString(allowedHeaderName));
+        return this;
+    }
+
+    /**
+     * Sets the given allowed {@link HttpHeaderName} to the default header set that should be logged.
+     *
+     * @param allowedHeaderName The allowed {@link HttpHeaderName}.
      * @return The updated HttpLogOptions object.
      * @throws NullPointerException If {@code allowedHeaderName} is {@code null}.
      */
-    public HttpLogOptions addAllowedHeaderName(final String allowedHeaderName) {
+    public HttpLogOptions addAllowedHttpHeaderName(HttpHeaderName allowedHeaderName) {
         Objects.requireNonNull(allowedHeaderName);
         this.allowedHeaderNames.add(allowedHeaderName);
         return this;
@@ -176,9 +240,7 @@ public class HttpLogOptions {
      */
     public HttpLogOptions addAllowedQueryParamName(final String allowedQueryParamName) {
         this.allowedQueryParamNames.add(allowedQueryParamName);
-        this.getClass().getName();
         return this;
-
     }
 
     /**
@@ -196,12 +258,9 @@ public class HttpLogOptions {
      * Sets the custom application specific id supplied by the user of the client library.
      *
      * @param applicationId The user specified application id.
-     *
      * @return The updated HttpLogOptions object.
-     *
      * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
      * length.
-     *
      * @deprecated Use {@link ClientOptions} to configure {@code applicationId}.
      */
     @Deprecated
@@ -223,7 +282,10 @@ public class HttpLogOptions {
      * Gets flag to allow pretty printing of message bodies.
      *
      * @return true if pretty printing of message bodies is allowed.
+     * @deprecated Use {@link #setRequestLogger(HttpRequestLogger)} and {@link #setResponseLogger(HttpResponseLogger)}
+     * to configure how requests and responses should be logged at a granular level instead.
      */
+    @Deprecated
     public boolean isPrettyPrintBody() {
         return prettyPrintBody;
     }
@@ -234,7 +296,10 @@ public class HttpLogOptions {
      * @param prettyPrintBody If true, pretty prints message bodies when logging. If the detailLevel does not include
      * body logging, this flag does nothing.
      * @return The updated HttpLogOptions object.
+     * @deprecated Use {@link #setRequestLogger(HttpRequestLogger)} and {@link #setResponseLogger(HttpResponseLogger)}
+     * to configure how requests and responses should be logged at a granular level instead.
      */
+    @Deprecated
     public HttpLogOptions setPrettyPrintBody(boolean prettyPrintBody) {
         this.prettyPrintBody = prettyPrintBody;
         return this;
@@ -291,11 +356,11 @@ public class HttpLogOptions {
     /**
      * Sets the flag that controls if header names which value is redacted should be logged.
      * <p>
-     * Applies only if logging request and response headers is enabled. See {@link HttpLogOptions#setLogLevel(HttpLogDetailLevel)} for details.
-     * Defaults to `false` - redacted header names are logged.
+     * Applies only if logging request and response headers is enabled. See {@link #setLogLevel(HttpLogDetailLevel)} for
+     * details. Defaults to false - redacted header names are logged.
      *
      * @param disableRedactedHeaderLogging If true, redacted header names are not logged.
-     * Otherwise, they are logged as a comma separated list under `redactedHeaders` property.
+     * Otherwise, they are logged as a comma separated list under redactedHeaders property.
      * @return The updated HttpLogOptions object.
      */
     public HttpLogOptions disableRedactedHeaderLogging(boolean disableRedactedHeaderLogging) {

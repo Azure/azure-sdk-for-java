@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.reservations.generated;
 
-/** Samples for Reservation List. */
+/**
+ * Samples for Reservation List.
+ */
 public final class ReservationListSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/GetReservationsFromOrder.json
+     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/
+     * GetReservationsFromOrder.json
      */
     /**
      * Sample code: ReservationList.
-     *
+     * 
      * @param manager Entry point to ReservationsManager.
      */
     public static void reservationList(com.azure.resourcemanager.reservations.ReservationsManager manager) {

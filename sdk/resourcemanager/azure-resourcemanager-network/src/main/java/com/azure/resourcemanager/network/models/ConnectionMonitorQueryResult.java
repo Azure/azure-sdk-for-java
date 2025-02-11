@@ -10,9 +10,17 @@ import java.util.List;
 /** List of connection states snaphots. */
 @Fluent
 public interface ConnectionMonitorQueryResult extends HasInnerModel<ConnectionMonitorQueryResultInner> {
-    /** @return status of connection monitor source */
+    /**
+     * Gets status of connection monitor source.
+     *
+     * @return status of connection monitor source
+     */
     ConnectionMonitorSourceStatus sourceStatus();
 
-    /** @return information about connection states */
+    /**
+     * Gets information about connection states.
+     *
+     * @return information about connection states
+     */
     List<ConnectionStateSnapshot> states();
 }

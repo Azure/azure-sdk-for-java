@@ -11,20 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SchemaDocumentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SchemaDocumentProperties model =
-            BinaryData
-                .fromString("{\"value\":\"pzgsk\",\"definitions\":\"datafhfv\",\"components\":\"datamknbnxwcdommpv\"}")
-                .toObject(SchemaDocumentProperties.class);
+        SchemaDocumentProperties model = BinaryData
+            .fromString("{\"value\":\"pzgsk\",\"definitions\":\"datafhfv\",\"components\":\"datamknbnxwcdommpv\"}")
+            .toObject(SchemaDocumentProperties.class);
         Assertions.assertEquals("pzgsk", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaDocumentProperties model =
-            new SchemaDocumentProperties()
-                .withValue("pzgsk")
-                .withDefinitions("datafhfv")
-                .withComponents("datamknbnxwcdommpv");
+        SchemaDocumentProperties model = new SchemaDocumentProperties().withValue("pzgsk")
+            .withDefinitions("datafhfv")
+            .withComponents("datamknbnxwcdommpv");
         model = BinaryData.fromObject(model).toObject(SchemaDocumentProperties.class);
         Assertions.assertEquals("pzgsk", model.value());
     }

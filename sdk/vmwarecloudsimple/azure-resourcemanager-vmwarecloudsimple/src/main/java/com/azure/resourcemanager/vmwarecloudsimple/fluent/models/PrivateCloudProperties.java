@@ -5,165 +5,152 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Properties of private. */
+/**
+ * Properties of private.
+ */
 @Fluent
-public final class PrivateCloudProperties {
+public final class PrivateCloudProperties implements JsonSerializable<PrivateCloudProperties> {
     /*
      * Availability Zone id, e.g. "az1"
      */
-    @JsonProperty(value = "availabilityZoneId")
     private String availabilityZoneId;
 
     /*
      * Availability Zone name, e.g. "Availability Zone 1"
      */
-    @JsonProperty(value = "availabilityZoneName")
     private String availabilityZoneName;
 
     /*
      * Number of clusters
      */
-    @JsonProperty(value = "clustersNumber")
     private Integer clustersNumber;
 
     /*
      * User's emails who created cloud
      */
-    @JsonProperty(value = "createdBy")
     private String createdBy;
 
     /*
      * When private cloud was created
      */
-    @JsonProperty(value = "createdOn")
     private OffsetDateTime createdOn;
 
     /*
      * Array of DNS servers
      */
-    @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /*
      * Expiration date of PC
      */
-    @JsonProperty(value = "expires")
     private String expires;
 
     /*
      * Nsx Type, e.g. "Advanced"
      */
-    @JsonProperty(value = "nsxType")
     private String nsxType;
 
     /*
      * Placement Group id, e.g. "n1"
      */
-    @JsonProperty(value = "placementGroupId")
     private String placementGroupId;
 
     /*
      * Placement Group name
      */
-    @JsonProperty(value = "placementGroupName")
     private String placementGroupName;
 
     /*
      * Id of a private cloud
      */
-    @JsonProperty(value = "privateCloudId")
     private UUID privateCloudId;
 
     /*
      * The list of Resource Pools
      */
-    @JsonProperty(value = "resourcePools")
     private List<ResourcePoolInner> resourcePools;
 
     /*
      * Private Cloud state, e.g. "operational"
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * Number of cores
      */
-    @JsonProperty(value = "totalCpuCores")
     private Integer totalCpuCores;
 
     /*
      * Number of nodes
      */
-    @JsonProperty(value = "totalNodes")
     private Integer totalNodes;
 
     /*
      * Memory size
      */
-    @JsonProperty(value = "totalRam")
     private Integer totalRam;
 
     /*
      * Disk space in TB
      */
-    @JsonProperty(value = "totalStorage")
     private Float totalStorage;
 
     /*
      * Virtualization type e.g. "vSphere"
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * e.g. "6.5u2"
      */
-    @JsonProperty(value = "vSphereVersion")
     private String vSphereVersion;
 
     /*
      * FQDN for vcenter access
      */
-    @JsonProperty(value = "vcenterFqdn")
     private String vcenterFqdn;
 
     /*
      * Vcenter ip address
      */
-    @JsonProperty(value = "vcenterRefid")
     private String vcenterRefid;
 
     /*
      * The list of Virtual Machine Templates
      */
-    @JsonProperty(value = "virtualMachineTemplates")
     private List<VirtualMachineTemplateInner> virtualMachineTemplates;
 
     /*
      * The list of Virtual Networks
      */
-    @JsonProperty(value = "virtualNetworks")
     private List<VirtualNetworkInner> virtualNetworks;
 
     /*
      * Is vRealize Operations Manager enabled/disabled
      */
-    @JsonProperty(value = "vrOpsEnabled")
     private Boolean vrOpsEnabled;
 
-    /** Creates an instance of PrivateCloudProperties class. */
+    /**
+     * Creates an instance of PrivateCloudProperties class.
+     */
     public PrivateCloudProperties() {
     }
 
     /**
      * Get the availabilityZoneId property: Availability Zone id, e.g. "az1".
-     *
+     * 
      * @return the availabilityZoneId value.
      */
     public String availabilityZoneId() {
@@ -172,7 +159,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the availabilityZoneId property: Availability Zone id, e.g. "az1".
-     *
+     * 
      * @param availabilityZoneId the availabilityZoneId value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -183,7 +170,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the availabilityZoneName property: Availability Zone name, e.g. "Availability Zone 1".
-     *
+     * 
      * @return the availabilityZoneName value.
      */
     public String availabilityZoneName() {
@@ -192,7 +179,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the availabilityZoneName property: Availability Zone name, e.g. "Availability Zone 1".
-     *
+     * 
      * @param availabilityZoneName the availabilityZoneName value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -203,7 +190,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the clustersNumber property: Number of clusters.
-     *
+     * 
      * @return the clustersNumber value.
      */
     public Integer clustersNumber() {
@@ -212,7 +199,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the clustersNumber property: Number of clusters.
-     *
+     * 
      * @param clustersNumber the clustersNumber value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -223,7 +210,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the createdBy property: User's emails who created cloud.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -232,7 +219,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the createdBy property: User's emails who created cloud.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -243,7 +230,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the createdOn property: When private cloud was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -252,7 +239,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the createdOn property: When private cloud was created.
-     *
+     * 
      * @param createdOn the createdOn value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -263,7 +250,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the dnsServers property: Array of DNS servers.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -272,7 +259,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the dnsServers property: Array of DNS servers.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -283,7 +270,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the expires property: Expiration date of PC.
-     *
+     * 
      * @return the expires value.
      */
     public String expires() {
@@ -292,7 +279,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the expires property: Expiration date of PC.
-     *
+     * 
      * @param expires the expires value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -303,7 +290,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the nsxType property: Nsx Type, e.g. "Advanced".
-     *
+     * 
      * @return the nsxType value.
      */
     public String nsxType() {
@@ -312,7 +299,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the nsxType property: Nsx Type, e.g. "Advanced".
-     *
+     * 
      * @param nsxType the nsxType value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -323,7 +310,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the placementGroupId property: Placement Group id, e.g. "n1".
-     *
+     * 
      * @return the placementGroupId value.
      */
     public String placementGroupId() {
@@ -332,7 +319,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the placementGroupId property: Placement Group id, e.g. "n1".
-     *
+     * 
      * @param placementGroupId the placementGroupId value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -343,7 +330,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the placementGroupName property: Placement Group name.
-     *
+     * 
      * @return the placementGroupName value.
      */
     public String placementGroupName() {
@@ -352,7 +339,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the placementGroupName property: Placement Group name.
-     *
+     * 
      * @param placementGroupName the placementGroupName value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -363,7 +350,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the privateCloudId property: Id of a private cloud.
-     *
+     * 
      * @return the privateCloudId value.
      */
     public UUID privateCloudId() {
@@ -372,7 +359,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the privateCloudId property: Id of a private cloud.
-     *
+     * 
      * @param privateCloudId the privateCloudId value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -383,7 +370,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the resourcePools property: The list of Resource Pools.
-     *
+     * 
      * @return the resourcePools value.
      */
     public List<ResourcePoolInner> resourcePools() {
@@ -392,7 +379,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the resourcePools property: The list of Resource Pools.
-     *
+     * 
      * @param resourcePools the resourcePools value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -403,7 +390,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the state property: Private Cloud state, e.g. "operational".
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -412,7 +399,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the state property: Private Cloud state, e.g. "operational".
-     *
+     * 
      * @param state the state value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -423,7 +410,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the totalCpuCores property: Number of cores.
-     *
+     * 
      * @return the totalCpuCores value.
      */
     public Integer totalCpuCores() {
@@ -432,7 +419,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the totalCpuCores property: Number of cores.
-     *
+     * 
      * @param totalCpuCores the totalCpuCores value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -443,7 +430,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the totalNodes property: Number of nodes.
-     *
+     * 
      * @return the totalNodes value.
      */
     public Integer totalNodes() {
@@ -452,7 +439,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the totalNodes property: Number of nodes.
-     *
+     * 
      * @param totalNodes the totalNodes value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -463,7 +450,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the totalRam property: Memory size.
-     *
+     * 
      * @return the totalRam value.
      */
     public Integer totalRam() {
@@ -472,7 +459,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the totalRam property: Memory size.
-     *
+     * 
      * @param totalRam the totalRam value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -483,7 +470,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the totalStorage property: Disk space in TB.
-     *
+     * 
      * @return the totalStorage value.
      */
     public Float totalStorage() {
@@ -492,7 +479,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the totalStorage property: Disk space in TB.
-     *
+     * 
      * @param totalStorage the totalStorage value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -503,7 +490,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the type property: Virtualization type e.g. "vSphere".
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -512,7 +499,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the type property: Virtualization type e.g. "vSphere".
-     *
+     * 
      * @param type the type value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -523,7 +510,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the vSphereVersion property: e.g. "6.5u2".
-     *
+     * 
      * @return the vSphereVersion value.
      */
     public String vSphereVersion() {
@@ -532,7 +519,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the vSphereVersion property: e.g. "6.5u2".
-     *
+     * 
      * @param vSphereVersion the vSphereVersion value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -543,7 +530,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the vcenterFqdn property: FQDN for vcenter access.
-     *
+     * 
      * @return the vcenterFqdn value.
      */
     public String vcenterFqdn() {
@@ -552,7 +539,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the vcenterFqdn property: FQDN for vcenter access.
-     *
+     * 
      * @param vcenterFqdn the vcenterFqdn value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -563,7 +550,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the vcenterRefid property: Vcenter ip address.
-     *
+     * 
      * @return the vcenterRefid value.
      */
     public String vcenterRefid() {
@@ -572,7 +559,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the vcenterRefid property: Vcenter ip address.
-     *
+     * 
      * @param vcenterRefid the vcenterRefid value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -583,7 +570,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the virtualMachineTemplates property: The list of Virtual Machine Templates.
-     *
+     * 
      * @return the virtualMachineTemplates value.
      */
     public List<VirtualMachineTemplateInner> virtualMachineTemplates() {
@@ -592,19 +579,19 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the virtualMachineTemplates property: The list of Virtual Machine Templates.
-     *
+     * 
      * @param virtualMachineTemplates the virtualMachineTemplates value to set.
      * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudProperties withVirtualMachineTemplates(
-        List<VirtualMachineTemplateInner> virtualMachineTemplates) {
+    public PrivateCloudProperties
+        withVirtualMachineTemplates(List<VirtualMachineTemplateInner> virtualMachineTemplates) {
         this.virtualMachineTemplates = virtualMachineTemplates;
         return this;
     }
 
     /**
      * Get the virtualNetworks property: The list of Virtual Networks.
-     *
+     * 
      * @return the virtualNetworks value.
      */
     public List<VirtualNetworkInner> virtualNetworks() {
@@ -613,7 +600,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the virtualNetworks property: The list of Virtual Networks.
-     *
+     * 
      * @param virtualNetworks the virtualNetworks value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -624,7 +611,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Get the vrOpsEnabled property: Is vRealize Operations Manager enabled/disabled.
-     *
+     * 
      * @return the vrOpsEnabled value.
      */
     public Boolean vrOpsEnabled() {
@@ -633,7 +620,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Set the vrOpsEnabled property: Is vRealize Operations Manager enabled/disabled.
-     *
+     * 
      * @param vrOpsEnabled the vrOpsEnabled value to set.
      * @return the PrivateCloudProperties object itself.
      */
@@ -644,7 +631,7 @@ public final class PrivateCloudProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -657,5 +644,122 @@ public final class PrivateCloudProperties {
         if (virtualNetworks() != null) {
             virtualNetworks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("availabilityZoneId", this.availabilityZoneId);
+        jsonWriter.writeStringField("availabilityZoneName", this.availabilityZoneName);
+        jsonWriter.writeNumberField("clustersNumber", this.clustersNumber);
+        jsonWriter.writeStringField("createdBy", this.createdBy);
+        jsonWriter.writeStringField("createdOn",
+            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
+        jsonWriter.writeArrayField("dnsServers", this.dnsServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("expires", this.expires);
+        jsonWriter.writeStringField("nsxType", this.nsxType);
+        jsonWriter.writeStringField("placementGroupId", this.placementGroupId);
+        jsonWriter.writeStringField("placementGroupName", this.placementGroupName);
+        jsonWriter.writeStringField("privateCloudId", Objects.toString(this.privateCloudId, null));
+        jsonWriter.writeArrayField("resourcePools", this.resourcePools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeNumberField("totalCpuCores", this.totalCpuCores);
+        jsonWriter.writeNumberField("totalNodes", this.totalNodes);
+        jsonWriter.writeNumberField("totalRam", this.totalRam);
+        jsonWriter.writeNumberField("totalStorage", this.totalStorage);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("vSphereVersion", this.vSphereVersion);
+        jsonWriter.writeStringField("vcenterFqdn", this.vcenterFqdn);
+        jsonWriter.writeStringField("vcenterRefid", this.vcenterRefid);
+        jsonWriter.writeArrayField("virtualMachineTemplates", this.virtualMachineTemplates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("virtualNetworks", this.virtualNetworks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("vrOpsEnabled", this.vrOpsEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateCloudProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateCloudProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateCloudProperties.
+     */
+    public static PrivateCloudProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateCloudProperties deserializedPrivateCloudProperties = new PrivateCloudProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("availabilityZoneId".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.availabilityZoneId = reader.getString();
+                } else if ("availabilityZoneName".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.availabilityZoneName = reader.getString();
+                } else if ("clustersNumber".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.clustersNumber = reader.getNullable(JsonReader::getInt);
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.createdBy = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dnsServers".equals(fieldName)) {
+                    List<String> dnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateCloudProperties.dnsServers = dnsServers;
+                } else if ("expires".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.expires = reader.getString();
+                } else if ("nsxType".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.nsxType = reader.getString();
+                } else if ("placementGroupId".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.placementGroupId = reader.getString();
+                } else if ("placementGroupName".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.placementGroupName = reader.getString();
+                } else if ("privateCloudId".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.privateCloudId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("resourcePools".equals(fieldName)) {
+                    List<ResourcePoolInner> resourcePools
+                        = reader.readArray(reader1 -> ResourcePoolInner.fromJson(reader1));
+                    deserializedPrivateCloudProperties.resourcePools = resourcePools;
+                } else if ("state".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.state = reader.getString();
+                } else if ("totalCpuCores".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.totalCpuCores = reader.getNullable(JsonReader::getInt);
+                } else if ("totalNodes".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.totalNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("totalRam".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.totalRam = reader.getNullable(JsonReader::getInt);
+                } else if ("totalStorage".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.totalStorage = reader.getNullable(JsonReader::getFloat);
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.type = reader.getString();
+                } else if ("vSphereVersion".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.vSphereVersion = reader.getString();
+                } else if ("vcenterFqdn".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.vcenterFqdn = reader.getString();
+                } else if ("vcenterRefid".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.vcenterRefid = reader.getString();
+                } else if ("virtualMachineTemplates".equals(fieldName)) {
+                    List<VirtualMachineTemplateInner> virtualMachineTemplates
+                        = reader.readArray(reader1 -> VirtualMachineTemplateInner.fromJson(reader1));
+                    deserializedPrivateCloudProperties.virtualMachineTemplates = virtualMachineTemplates;
+                } else if ("virtualNetworks".equals(fieldName)) {
+                    List<VirtualNetworkInner> virtualNetworks
+                        = reader.readArray(reader1 -> VirtualNetworkInner.fromJson(reader1));
+                    deserializedPrivateCloudProperties.virtualNetworks = virtualNetworks;
+                } else if ("vrOpsEnabled".equals(fieldName)) {
+                    deserializedPrivateCloudProperties.vrOpsEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateCloudProperties;
+        });
     }
 }

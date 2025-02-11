@@ -48,9 +48,8 @@ public final class WaitStepAttributes {
      */
     public void validate() {
         if (duration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property duration in model WaitStepAttributes"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property duration in model WaitStepAttributes"));
         }
     }
 

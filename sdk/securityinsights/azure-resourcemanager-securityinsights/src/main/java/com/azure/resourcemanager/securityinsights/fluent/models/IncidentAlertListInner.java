@@ -6,22 +6,33 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.SecurityAlert;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of incident alerts. */
+/**
+ * List of incident alerts.
+ */
 @Fluent
-public final class IncidentAlertListInner {
+public final class IncidentAlertListInner implements JsonSerializable<IncidentAlertListInner> {
     /*
      * Array of incident alerts.
      */
-    @JsonProperty(value = "value", required = true)
     private List<SecurityAlert> value;
 
     /**
+     * Creates an instance of IncidentAlertListInner class.
+     */
+    public IncidentAlertListInner() {
+    }
+
+    /**
      * Get the value property: Array of incident alerts.
-     *
+     * 
      * @return the value value.
      */
     public List<SecurityAlert> value() {
@@ -30,7 +41,7 @@ public final class IncidentAlertListInner {
 
     /**
      * Set the value property: Array of incident alerts.
-     *
+     * 
      * @param value the value value to set.
      * @return the IncidentAlertListInner object itself.
      */
@@ -41,18 +52,55 @@ public final class IncidentAlertListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model IncidentAlertListInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model IncidentAlertListInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IncidentAlertListInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentAlertListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentAlertListInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IncidentAlertListInner.
+     */
+    public static IncidentAlertListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentAlertListInner deserializedIncidentAlertListInner = new IncidentAlertListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SecurityAlert> value = reader.readArray(reader1 -> SecurityAlert.fromJson(reader1));
+                    deserializedIncidentAlertListInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentAlertListInner;
+        });
+    }
 }

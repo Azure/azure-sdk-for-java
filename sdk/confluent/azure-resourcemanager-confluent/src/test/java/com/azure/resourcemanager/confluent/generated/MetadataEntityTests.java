@@ -23,8 +23,11 @@ public final class MetadataEntityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetadataEntity model = new MetadataEntity().withSelf("x").withResourceName("qgtz").withCreatedAt("pnqbqqwxrjfe")
-            .withUpdatedAt("lnwsubisn").withDeletedAt("mpmngnzscxaqwoo");
+        MetadataEntity model = new MetadataEntity().withSelf("x")
+            .withResourceName("qgtz")
+            .withCreatedAt("pnqbqqwxrjfe")
+            .withUpdatedAt("lnwsubisn")
+            .withDeletedAt("mpmngnzscxaqwoo");
         model = BinaryData.fromObject(model).toObject(MetadataEntity.class);
         Assertions.assertEquals("x", model.self());
         Assertions.assertEquals("qgtz", model.resourceName());

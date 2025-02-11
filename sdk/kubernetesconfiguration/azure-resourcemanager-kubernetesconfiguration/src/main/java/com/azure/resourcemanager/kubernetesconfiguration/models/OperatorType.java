@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the operator. */
+/**
+ * Type of the operator.
+ */
 public final class OperatorType extends ExpandableStringEnum<OperatorType> {
-    /** Static value Flux for OperatorType. */
+    /**
+     * Static value Flux for OperatorType.
+     */
     public static final OperatorType FLUX = fromString("Flux");
 
     /**
      * Creates a new instance of OperatorType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class OperatorType extends ExpandableStringEnum<OperatorType> {
 
     /**
      * Creates or finds a OperatorType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperatorType.
      */
-    @JsonCreator
     public static OperatorType fromString(String name) {
         return fromString(name, OperatorType.class);
     }
 
     /**
      * Gets known OperatorType values.
-     *
+     * 
      * @return known OperatorType values.
      */
     public static Collection<OperatorType> values() {

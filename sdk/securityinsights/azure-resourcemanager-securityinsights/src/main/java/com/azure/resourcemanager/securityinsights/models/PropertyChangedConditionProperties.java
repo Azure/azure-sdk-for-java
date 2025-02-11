@@ -5,24 +5,45 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes an automation rule condition that evaluates a property's value change. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "conditionType")
-@JsonTypeName("PropertyChanged")
+/**
+ * Describes an automation rule condition that evaluates a property's value change.
+ */
 @Fluent
 public final class PropertyChangedConditionProperties extends AutomationRuleCondition {
     /*
+     * The conditionType property.
+     */
+    private ConditionType conditionType = ConditionType.PROPERTY_CHANGED;
+
+    /*
      * The conditionProperties property.
      */
-    @JsonProperty(value = "conditionProperties")
     private AutomationRulePropertyValuesChangedCondition conditionProperties;
 
     /**
+     * Creates an instance of PropertyChangedConditionProperties class.
+     */
+    public PropertyChangedConditionProperties() {
+    }
+
+    /**
+     * Get the conditionType property: The conditionType property.
+     * 
+     * @return the conditionType value.
+     */
+    @Override
+    public ConditionType conditionType() {
+        return this.conditionType;
+    }
+
+    /**
      * Get the conditionProperties property: The conditionProperties property.
-     *
+     * 
      * @return the conditionProperties value.
      */
     public AutomationRulePropertyValuesChangedCondition conditionProperties() {
@@ -31,26 +52,67 @@ public final class PropertyChangedConditionProperties extends AutomationRuleCond
 
     /**
      * Set the conditionProperties property: The conditionProperties property.
-     *
+     * 
      * @param conditionProperties the conditionProperties value to set.
      * @return the PropertyChangedConditionProperties object itself.
      */
-    public PropertyChangedConditionProperties withConditionProperties(
-        AutomationRulePropertyValuesChangedCondition conditionProperties) {
+    public PropertyChangedConditionProperties
+        withConditionProperties(AutomationRulePropertyValuesChangedCondition conditionProperties) {
         this.conditionProperties = conditionProperties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (conditionProperties() != null) {
             conditionProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("conditionType", this.conditionType == null ? null : this.conditionType.toString());
+        jsonWriter.writeJsonField("conditionProperties", this.conditionProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PropertyChangedConditionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PropertyChangedConditionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PropertyChangedConditionProperties.
+     */
+    public static PropertyChangedConditionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PropertyChangedConditionProperties deserializedPropertyChangedConditionProperties
+                = new PropertyChangedConditionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("conditionType".equals(fieldName)) {
+                    deserializedPropertyChangedConditionProperties.conditionType
+                        = ConditionType.fromString(reader.getString());
+                } else if ("conditionProperties".equals(fieldName)) {
+                    deserializedPropertyChangedConditionProperties.conditionProperties
+                        = AutomationRulePropertyValuesChangedCondition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPropertyChangedConditionProperties;
+        });
     }
 }

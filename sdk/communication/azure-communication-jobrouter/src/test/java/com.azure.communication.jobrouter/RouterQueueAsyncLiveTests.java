@@ -34,14 +34,12 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
         String distributionPolicyId = String.format("%s-CreateQueueAsync-DistributionPolicy", JAVA_LIVE_TESTS);
         String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            distributionPolicyId,
-            Duration.ofSeconds(10),
-            new LongestIdleMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10))
-            .setName(distributionPolicyName);
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(distributionPolicyId, Duration.ofSeconds(10),
+                new LongestIdleMode().setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                    .setName(distributionPolicyName);
+        DistributionPolicy distributionPolicy
+            = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueId = String.format("%s-CreateQueueAsync-Queue", JAVA_LIVE_TESTS);
 
@@ -49,9 +47,8 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
         String queueName = String.format("%s-Name", queueId);
         Map<String, RouterValue> queueLabels = Collections.singletonMap("Label_1", new RouterValue("Value_1"));
 
-        CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
-            .setLabels(queueLabels)
-            .setName(queueName);
+        CreateQueueOptions createQueueOptions
+            = new CreateQueueOptions(queueId, distributionPolicyId).setLabels(queueLabels).setName(queueName);
         RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
 
         // Verify
@@ -85,28 +82,27 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
 
         String queueId = String.format("%s-UpdateQueueAsync-Queue", JAVA_LIVE_TESTS);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            distributionPolicyId,
-            Duration.ofSeconds(10),
-            new LongestIdleMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10))
-            .setName(distributionPolicyName);
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(distributionPolicyId, Duration.ofSeconds(10),
+                new LongestIdleMode().setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                    .setName(distributionPolicyName);
+        DistributionPolicy distributionPolicy
+            = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueName = String.format("%s-Name", queueId);
         Map<String, RouterValue> queueLabels = Collections.singletonMap("Label_1", new RouterValue("Value_1"));
 
-        CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
-            .setLabels(queueLabels)
-            .setName(queueName);
+        CreateQueueOptions createQueueOptions
+            = new CreateQueueOptions(queueId, distributionPolicyId).setLabels(queueLabels).setName(queueName);
         RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
 
         // Update Label
         jobQueue.getLabels().put("Label_1", new RouterValue("UpdatedValue"));
 
         // Action
-        Response<BinaryData> binaryData = administrationAsyncClient.updateQueueWithResponse(queueId, BinaryData.fromObject(jobQueue), new RequestOptions()).block();
+        Response<BinaryData> binaryData = administrationAsyncClient
+            .updateQueueWithResponse(queueId, BinaryData.fromObject(jobQueue), new RequestOptions())
+            .block();
         RouterQueue updatedQueue = binaryData.getValue().toObject(RouterQueue.class);
 
         // Verify

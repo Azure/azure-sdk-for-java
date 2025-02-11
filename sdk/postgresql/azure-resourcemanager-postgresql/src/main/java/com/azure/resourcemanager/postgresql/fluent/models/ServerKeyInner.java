@@ -6,32 +6,52 @@ package com.azure.resourcemanager.postgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresql.models.ServerKeyType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A PostgreSQL Server key. */
+/**
+ * A PostgreSQL Server key.
+ */
 @Fluent
 public final class ServerKeyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerKeyInner.class);
-
     /*
      * Kind of encryption protector used to protect the key.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * Properties of the ServerKey Resource.
      */
-    @JsonProperty(value = "properties")
     private ServerKeyProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ServerKeyInner class.
+     */
+    public ServerKeyInner() {
+    }
 
     /**
      * Get the kind property: Kind of encryption protector used to protect the key.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -40,7 +60,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Properties of the ServerKey Resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerKeyProperties innerProperties() {
@@ -48,8 +68,38 @@ public final class ServerKeyInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the serverKeyType property: The key type like 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -58,7 +108,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Set the serverKeyType property: The key type like 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the ServerKeyInner object itself.
      */
@@ -72,7 +122,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the uri property: The URI of the key.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -81,7 +131,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Set the uri property: The URI of the key.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ServerKeyInner object itself.
      */
@@ -95,7 +145,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The key creation date.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -104,12 +154,57 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerKeyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerKeyInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerKeyInner.
+     */
+    public static ServerKeyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerKeyInner deserializedServerKeyInner = new ServerKeyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServerKeyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServerKeyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServerKeyInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedServerKeyInner.kind = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServerKeyInner.innerProperties = ServerKeyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerKeyInner;
+        });
     }
 }

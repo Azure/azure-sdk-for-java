@@ -48,12 +48,14 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
 
     @Override
     public PagedIterable<LocalizableString> listEventCategories() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getEventCategories().list(), LocalizableStringImpl::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getEventCategories().list(),
+            LocalizableStringImpl::new);
     }
 
     @Override
     public PagedFlux<LocalizableString> listEventCategoriesAsync() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getEventCategories().listAsync(), LocalizableStringImpl::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getEventCategories().listAsync(),
+            LocalizableStringImpl::new);
     }
 
     @Override
@@ -86,10 +88,8 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
     public ActivityLogsImpl withResponseProperties(EventDataPropertyName... responseProperties) {
         this.responsePropertySelector.clear();
 
-        this
-            .responsePropertySelector
-            .addAll(
-                Arrays.stream(responseProperties).map(EventDataPropertyName::toString).collect(Collectors.toList()));
+        this.responsePropertySelector.addAll(
+            Arrays.stream(responseProperties).map(EventDataPropertyName::toString).collect(Collectors.toList()));
         return this;
     }
 
@@ -142,23 +142,19 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
     }
 
     private String getOdataFilterString() {
-        return String
-            .format(
-                "eventTimestamp ge '%s' and eventTimestamp le '%s'",
-                DateTimeFormatter.ISO_INSTANT.format(this.queryStartTime.atZoneSameInstant(ZoneOffset.UTC)),
-                DateTimeFormatter.ISO_INSTANT.format(this.queryEndTime.atZoneSameInstant(ZoneOffset.UTC)));
+        return String.format("eventTimestamp ge '%s' and eventTimestamp le '%s'",
+            DateTimeFormatter.ISO_INSTANT.format(this.queryStartTime.atZoneSameInstant(ZoneOffset.UTC)),
+            DateTimeFormatter.ISO_INSTANT.format(this.queryEndTime.atZoneSameInstant(ZoneOffset.UTC)));
     }
 
     private PagedIterable<EventData> listEventData(String filter) {
-        return PagedConverter.mapPage(this.inner().list(filter, createPropertyFilter(), Context.NONE), EventDataImpl::new);
+        return PagedConverter.mapPage(this.inner().list(filter, createPropertyFilter(), Context.NONE),
+            EventDataImpl::new);
     }
 
     private PagedIterable<EventData> listEventDataForTenant(String filter) {
-        return PagedConverter.mapPage(this
-            .manager()
-            .serviceClient()
-            .getTenantActivityLogs()
-            .list(filter, createPropertyFilter(), Context.NONE),
+        return PagedConverter.mapPage(
+            this.manager().serviceClient().getTenantActivityLogs().list(filter, createPropertyFilter(), Context.NONE),
             EventDataImpl::new);
     }
 
@@ -167,17 +163,14 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
     }
 
     private PagedFlux<EventData> listEventDataForTenantAsync(String filter) {
-        return PagedConverter.mapPage(this
-            .manager()
-            .serviceClient()
-            .getTenantActivityLogs()
-            .listAsync(filter, createPropertyFilter()),
+        return PagedConverter.mapPage(
+            this.manager().serviceClient().getTenantActivityLogs().listAsync(filter, createPropertyFilter()),
             EventDataImpl::new);
     }
 
     private String createPropertyFilter() {
-        String propertyFilter =
-            this.responsePropertySelector == null ? null : String.join(",", this.responsePropertySelector);
+        String propertyFilter
+            = this.responsePropertySelector == null ? null : String.join(",", this.responsePropertySelector);
         if (propertyFilter != null && propertyFilter.trim().isEmpty()) {
             propertyFilter = null;
         }

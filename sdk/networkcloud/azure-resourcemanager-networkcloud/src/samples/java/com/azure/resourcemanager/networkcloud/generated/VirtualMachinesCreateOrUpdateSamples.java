@@ -24,79 +24,64 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualMachines CreateOrUpdate. */
+/**
+ * Samples for VirtualMachines CreateOrUpdate.
+ */
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/VirtualMachines_Create.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * VirtualMachines_Create.json
      */
     /**
      * Sample code: Create or update virtual machine.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void createOrUpdateVirtualMachine(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .virtualMachines()
+    public static void
+        createOrUpdateVirtualMachine(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        manager.virtualMachines()
             .define("virtualMachineName")
             .withRegion("location")
             .withExistingResourceGroup("resourceGroupName")
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withName(
-                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
-                    .withType("CustomLocation"))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
+                .withType("CustomLocation"))
             .withAdminUsername("username")
-            .withCloudServicesNetworkAttachment(
-                new NetworkAttachment()
-                    .withAttachedNetworkId(
-                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName")
-                    .withIpAllocationMethod(VirtualMachineIpAllocationMethod.DYNAMIC))
+            .withCloudServicesNetworkAttachment(new NetworkAttachment().withAttachedNetworkId(
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName")
+                .withIpAllocationMethod(VirtualMachineIpAllocationMethod.DYNAMIC))
             .withCpuCores(2L)
             .withMemorySizeGB(8L)
-            .withStorageProfile(
-                new StorageProfile()
-                    .withOsDisk(
-                        new OsDisk()
-                            .withCreateOption(OsDiskCreateOption.EPHEMERAL)
-                            .withDeleteOption(OsDiskDeleteOption.DELETE)
-                            .withDiskSizeGB(120L))
-                    .withVolumeAttachments(
-                        Arrays
-                            .asList(
-                                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")))
+            .withStorageProfile(new StorageProfile()
+                .withOsDisk(new OsDisk().withCreateOption(OsDiskCreateOption.EPHEMERAL)
+                    .withDeleteOption(OsDiskDeleteOption.DELETE)
+                    .withDiskSizeGB(120L))
+                .withVolumeAttachments(Arrays.asList(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")))
             .withVmImage("myacr.azurecr.io/foobar:latest")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withBootMethod(VirtualMachineBootMethod.UEFI)
-            .withNetworkAttachments(
-                Arrays
-                    .asList(
-                        new NetworkAttachment()
-                            .withAttachedNetworkId(
-                                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName")
-                            .withDefaultGateway(DefaultGateway.TRUE)
-                            .withIpAllocationMethod(VirtualMachineIpAllocationMethod.DYNAMIC)
-                            .withIpv4Address("198.51.100.1")
-                            .withIpv6Address("2001:0db8:0000:0000:0000:0000:0000:0000")
-                            .withNetworkAttachmentName("netAttachName01")))
+            .withNetworkAttachments(Arrays.asList(new NetworkAttachment().withAttachedNetworkId(
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName")
+                .withDefaultGateway(DefaultGateway.TRUE)
+                .withIpAllocationMethod(VirtualMachineIpAllocationMethod.DYNAMIC)
+                .withIpv4Address("198.51.100.1")
+                .withIpv6Address("2001:0db8:0000:0000:0000:0000:0000:0000")
+                .withNetworkAttachmentName("netAttachName01")))
             .withNetworkData("bmV0d29ya0RhdGVTYW1wbGU=")
-            .withPlacementHints(
-                Arrays
-                    .asList(
-                        new VirtualMachinePlacementHint()
-                            .withHintType(VirtualMachinePlacementHintType.AFFINITY)
-                            .withResourceId(
-                                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName")
-                            .withSchedulingExecution(VirtualMachineSchedulingExecution.HARD)
-                            .withScope(VirtualMachinePlacementHintPodAffinityScope.fromString(""))))
+            .withPlacementHints(Arrays.asList(new VirtualMachinePlacementHint()
+                .withHintType(VirtualMachinePlacementHintType.AFFINITY)
+                .withResourceId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName")
+                .withSchedulingExecution(VirtualMachineSchedulingExecution.HARD)
+                .withScope(VirtualMachinePlacementHintPodAffinityScope.fromString(""))))
             .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder")))
             .withUserData("dXNlckRhdGVTYW1wbGU=")
             .withVmDeviceModel(VirtualMachineDeviceModelType.T2)
-            .withVmImageRepositoryCredentials(
-                new ImageRepositoryCredentials()
-                    .withPassword("fakeTokenPlaceholder")
-                    .withRegistryUrl("myacr.azurecr.io")
-                    .withUsername("myuser"))
+            .withVmImageRepositoryCredentials(new ImageRepositoryCredentials().withPassword("fakeTokenPlaceholder")
+                .withRegistryUrl("myacr.azurecr.io")
+                .withUsername("myuser"))
             .create();
     }
 

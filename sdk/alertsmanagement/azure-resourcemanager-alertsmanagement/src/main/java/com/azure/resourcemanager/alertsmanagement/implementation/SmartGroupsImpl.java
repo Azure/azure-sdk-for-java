@@ -32,8 +32,7 @@ public final class SmartGroupsImpl implements SmartGroups {
 
     private final com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager;
 
-    public SmartGroupsImpl(
-        SmartGroupsClient innerClient,
+    public SmartGroupsImpl(SmartGroupsClient innerClient,
         com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -41,39 +40,26 @@ public final class SmartGroupsImpl implements SmartGroups {
 
     public PagedIterable<SmartGroup> list() {
         PagedIterable<SmartGroupInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SmartGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SmartGroupImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SmartGroup> list(
-        String targetResource,
-        String targetResourceGroup,
-        String targetResourceType,
-        MonitorService monitorService,
-        MonitorCondition monitorCondition,
-        Severity severity,
-        AlertState smartGroupState,
-        TimeRange timeRange,
-        Long pageCount,
-        SmartGroupsSortByFields sortBy,
-        SortOrder sortOrder,
-        Context context) {
-        PagedIterable<SmartGroupInner> inner =
-            this
-                .serviceClient()
-                .list(
-                    targetResource,
-                    targetResourceGroup,
-                    targetResourceType,
-                    monitorService,
-                    monitorCondition,
-                    severity,
-                    smartGroupState,
-                    timeRange,
-                    pageCount,
-                    sortBy,
-                    sortOrder,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new SmartGroupImpl(inner1, this.manager()));
+    public PagedIterable<SmartGroup> list(String targetResource, String targetResourceGroup, String targetResourceType,
+        MonitorService monitorService, MonitorCondition monitorCondition, Severity severity, AlertState smartGroupState,
+        TimeRange timeRange, Long pageCount, SmartGroupsSortByFields sortBy, SortOrder sortOrder, Context context) {
+        PagedIterable<SmartGroupInner> inner = this.serviceClient()
+            .list(targetResource, targetResourceGroup, targetResourceType, monitorService, monitorCondition, severity,
+                smartGroupState, timeRange, pageCount, sortBy, sortOrder, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SmartGroupImpl(inner1, this.manager()));
+    }
+
+    public Response<SmartGroup> getByIdWithResponse(String smartGroupId, Context context) {
+        SmartGroupsGetByIdResponse inner = this.serviceClient().getByIdWithResponse(smartGroupId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SmartGroupImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SmartGroup getById(String smartGroupId) {
@@ -85,13 +71,11 @@ public final class SmartGroupsImpl implements SmartGroups {
         }
     }
 
-    public Response<SmartGroup> getByIdWithResponse(String smartGroupId, Context context) {
-        SmartGroupsGetByIdResponse inner = this.serviceClient().getByIdWithResponse(smartGroupId, context);
+    public Response<SmartGroup> changeStateWithResponse(String smartGroupId, AlertState newState, Context context) {
+        SmartGroupsChangeStateResponse inner
+            = this.serviceClient().changeStateWithResponse(smartGroupId, newState, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SmartGroupImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -107,15 +91,12 @@ public final class SmartGroupsImpl implements SmartGroups {
         }
     }
 
-    public Response<SmartGroup> changeStateWithResponse(String smartGroupId, AlertState newState, Context context) {
-        SmartGroupsChangeStateResponse inner =
-            this.serviceClient().changeStateWithResponse(smartGroupId, newState, context);
+    public Response<SmartGroupModification> getHistoryWithResponse(String smartGroupId, Context context) {
+        Response<SmartGroupModificationInner> inner
+            = this.serviceClient().getHistoryWithResponse(smartGroupId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SmartGroupImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SmartGroupModificationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -125,20 +106,6 @@ public final class SmartGroupsImpl implements SmartGroups {
         SmartGroupModificationInner inner = this.serviceClient().getHistory(smartGroupId);
         if (inner != null) {
             return new SmartGroupModificationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<SmartGroupModification> getHistoryWithResponse(String smartGroupId, Context context) {
-        Response<SmartGroupModificationInner> inner =
-            this.serviceClient().getHistoryWithResponse(smartGroupId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SmartGroupModificationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

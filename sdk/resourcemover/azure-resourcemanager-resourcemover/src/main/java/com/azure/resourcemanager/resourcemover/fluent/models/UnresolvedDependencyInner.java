@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.resourcemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Unresolved dependency. */
+/**
+ * Unresolved dependency.
+ */
 @Fluent
-public final class UnresolvedDependencyInner {
+public final class UnresolvedDependencyInner implements JsonSerializable<UnresolvedDependencyInner> {
     /*
      * Gets or sets the count.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * Gets or sets the arm id of the dependency.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of UnresolvedDependencyInner class. */
+    /**
+     * Creates an instance of UnresolvedDependencyInner class.
+     */
     public UnresolvedDependencyInner() {
     }
 
     /**
      * Get the count property: Gets or sets the count.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -37,7 +43,7 @@ public final class UnresolvedDependencyInner {
 
     /**
      * Set the count property: Gets or sets the count.
-     *
+     * 
      * @param count the count value to set.
      * @return the UnresolvedDependencyInner object itself.
      */
@@ -48,7 +54,7 @@ public final class UnresolvedDependencyInner {
 
     /**
      * Get the id property: Gets or sets the arm id of the dependency.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -57,7 +63,7 @@ public final class UnresolvedDependencyInner {
 
     /**
      * Set the id property: Gets or sets the arm id of the dependency.
-     *
+     * 
      * @param id the id value to set.
      * @return the UnresolvedDependencyInner object itself.
      */
@@ -68,9 +74,48 @@ public final class UnresolvedDependencyInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UnresolvedDependencyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UnresolvedDependencyInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UnresolvedDependencyInner.
+     */
+    public static UnresolvedDependencyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UnresolvedDependencyInner deserializedUnresolvedDependencyInner = new UnresolvedDependencyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedUnresolvedDependencyInner.count = reader.getNullable(JsonReader::getInt);
+                } else if ("id".equals(fieldName)) {
+                    deserializedUnresolvedDependencyInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUnresolvedDependencyInner;
+        });
     }
 }

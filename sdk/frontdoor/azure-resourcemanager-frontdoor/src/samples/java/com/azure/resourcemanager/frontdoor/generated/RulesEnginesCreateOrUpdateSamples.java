@@ -30,7 +30,9 @@ import java.util.Arrays;
  */
 public final class RulesEnginesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineCreate.json
+     * x-ms-original-file:
+     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineCreate.
+     * json
      */
     /**
      * Sample code: Create or update a specific Rules Engine Configuration.

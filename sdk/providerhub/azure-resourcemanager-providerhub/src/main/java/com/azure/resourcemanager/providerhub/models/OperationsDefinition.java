@@ -6,53 +6,55 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
 
-/** An immutable client-side representation of OperationsDefinition. */
+/**
+ * An immutable client-side representation of OperationsDefinition.
+ */
 public interface OperationsDefinition {
     /**
      * Gets the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the isDataAction property: Indicates whether the operation applies to data-plane.
-     *
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
      * Gets the origin property: The origin property.
-     *
+     * 
      * @return the origin value.
      */
     OperationOrigins origin();
 
     /**
      * Gets the display property: Display information of the operation.
-     *
+     * 
      * @return the display value.
      */
     OperationsDefinitionDisplay display();
 
     /**
      * Gets the actionType property: The actionType property.
-     *
+     * 
      * @return the actionType value.
      */
     OperationActionType actionType();
 
     /**
      * Gets the properties property: Anything.
-     *
+     * 
      * @return the properties value.
      */
     Object properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationsDefinitionInner innerModel();

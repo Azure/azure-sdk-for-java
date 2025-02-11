@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.attestation.generated;
 
-/** Samples for AttestationProviders ListByResourceGroup. */
+/**
+ * Samples for AttestationProviders ListByResourceGroup.
+ */
 public final class AttestationProvidersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Get_AttestationProvidersListByResourceGroup.json
+     * x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/
+     * Get_AttestationProvidersListByResourceGroup.json
      */
     /**
      * Sample code: AttestationProviders_ListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to AttestationManager.
      */
-    public static void attestationProvidersListByResourceGroup(
-        com.azure.resourcemanager.attestation.AttestationManager manager) {
+    public static void
+        attestationProvidersListByResourceGroup(com.azure.resourcemanager.attestation.AttestationManager manager) {
         manager.attestationProviders().listByResourceGroupWithResponse("testrg1", com.azure.core.util.Context.NONE);
     }
 }

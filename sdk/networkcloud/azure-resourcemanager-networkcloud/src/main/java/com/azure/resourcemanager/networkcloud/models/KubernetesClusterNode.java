@@ -5,129 +5,120 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** KubernetesClusterNode represents the details of a node in a Kubernetes cluster. */
+/**
+ * KubernetesClusterNode represents the details of a node in a Kubernetes cluster.
+ */
 @Immutable
-public final class KubernetesClusterNode {
+public final class KubernetesClusterNode implements JsonSerializable<KubernetesClusterNode> {
     /*
      * The resource ID of the agent pool that this node belongs to. This value is not represented on control plane
      * nodes.
      */
-    @JsonProperty(value = "agentPoolId", access = JsonProperty.Access.WRITE_ONLY)
     private String agentPoolId;
 
     /*
      * The availability zone this node is running within.
      */
-    @JsonProperty(value = "availabilityZone", access = JsonProperty.Access.WRITE_ONLY)
     private String availabilityZone;
 
     /*
      * The resource ID of the bare metal machine that hosts this node.
      */
-    @JsonProperty(value = "bareMetalMachineId", access = JsonProperty.Access.WRITE_ONLY)
     private String bareMetalMachineId;
 
     /*
      * The number of CPU cores configured for this node, derived from the VM SKU specified.
      */
-    @JsonProperty(value = "cpuCores", access = JsonProperty.Access.WRITE_ONLY)
     private Long cpuCores;
 
     /*
      * The detailed state of this node.
      */
-    @JsonProperty(value = "detailedStatus", access = JsonProperty.Access.WRITE_ONLY)
     private KubernetesClusterNodeDetailedStatus detailedStatus;
 
     /*
      * The descriptive message about the current detailed status.
      */
-    @JsonProperty(value = "detailedStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String detailedStatusMessage;
 
     /*
-     * The size of the disk configured for this node.
+     * The size of the disk configured for this node. Allocations are measured in gibibytes.
      */
-    @JsonProperty(value = "diskSizeGB", access = JsonProperty.Access.WRITE_ONLY)
     private Long diskSizeGB;
 
     /*
      * The machine image used to deploy this node.
      */
-    @JsonProperty(value = "image", access = JsonProperty.Access.WRITE_ONLY)
     private String image;
 
     /*
      * The currently running version of Kubernetes and bundled features running on this node.
      */
-    @JsonProperty(value = "kubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kubernetesVersion;
 
     /*
      * The list of labels on this node that have been assigned to the agent pool containing this node.
      */
-    @JsonProperty(value = "labels", access = JsonProperty.Access.WRITE_ONLY)
     private List<KubernetesLabel> labels;
 
     /*
-     * The amount of memory configured for this node, derived from the vm SKU specified.
+     * The amount of memory configured for this node, derived from the vm SKU specified. Allocations are measured in
+     * gibibytes.
      */
-    @JsonProperty(value = "memorySizeGB", access = JsonProperty.Access.WRITE_ONLY)
     private Long memorySizeGB;
 
     /*
      * The mode of the agent pool containing this node. Not applicable for control plane nodes.
      */
-    @JsonProperty(value = "mode", access = JsonProperty.Access.WRITE_ONLY)
     private AgentPoolMode mode;
 
     /*
      * The name of this node, as realized in the Kubernetes cluster.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The NetworkAttachments made to this node.
      */
-    @JsonProperty(value = "networkAttachments", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkAttachment> networkAttachments;
 
     /*
      * The power state of this node.
      */
-    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
     private KubernetesNodePowerState powerState;
 
     /*
      * The role of this node in the cluster.
      */
-    @JsonProperty(value = "role", access = JsonProperty.Access.WRITE_ONLY)
     private KubernetesNodeRole role;
 
     /*
      * The list of taints that have been assigned to the agent pool containing this node.
      */
-    @JsonProperty(value = "taints", access = JsonProperty.Access.WRITE_ONLY)
     private List<KubernetesLabel> taints;
 
     /*
      * The VM SKU name that was used to create this cluster node.
      */
-    @JsonProperty(value = "vmSkuName", access = JsonProperty.Access.WRITE_ONLY)
     private String vmSkuName;
 
-    /** Creates an instance of KubernetesClusterNode class. */
+    /**
+     * Creates an instance of KubernetesClusterNode class.
+     */
     public KubernetesClusterNode() {
     }
 
     /**
      * Get the agentPoolId property: The resource ID of the agent pool that this node belongs to. This value is not
      * represented on control plane nodes.
-     *
+     * 
      * @return the agentPoolId value.
      */
     public String agentPoolId() {
@@ -136,7 +127,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the availabilityZone property: The availability zone this node is running within.
-     *
+     * 
      * @return the availabilityZone value.
      */
     public String availabilityZone() {
@@ -145,7 +136,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the bareMetalMachineId property: The resource ID of the bare metal machine that hosts this node.
-     *
+     * 
      * @return the bareMetalMachineId value.
      */
     public String bareMetalMachineId() {
@@ -154,7 +145,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the cpuCores property: The number of CPU cores configured for this node, derived from the VM SKU specified.
-     *
+     * 
      * @return the cpuCores value.
      */
     public Long cpuCores() {
@@ -163,7 +154,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the detailedStatus property: The detailed state of this node.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public KubernetesClusterNodeDetailedStatus detailedStatus() {
@@ -172,7 +163,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -180,8 +171,9 @@ public final class KubernetesClusterNode {
     }
 
     /**
-     * Get the diskSizeGB property: The size of the disk configured for this node.
-     *
+     * Get the diskSizeGB property: The size of the disk configured for this node. Allocations are measured in
+     * gibibytes.
+     * 
      * @return the diskSizeGB value.
      */
     public Long diskSizeGB() {
@@ -190,7 +182,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the image property: The machine image used to deploy this node.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -200,7 +192,7 @@ public final class KubernetesClusterNode {
     /**
      * Get the kubernetesVersion property: The currently running version of Kubernetes and bundled features running on
      * this node.
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -210,7 +202,7 @@ public final class KubernetesClusterNode {
     /**
      * Get the labels property: The list of labels on this node that have been assigned to the agent pool containing
      * this node.
-     *
+     * 
      * @return the labels value.
      */
     public List<KubernetesLabel> labels() {
@@ -219,7 +211,8 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the memorySizeGB property: The amount of memory configured for this node, derived from the vm SKU specified.
-     *
+     * Allocations are measured in gibibytes.
+     * 
      * @return the memorySizeGB value.
      */
     public Long memorySizeGB() {
@@ -228,7 +221,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the mode property: The mode of the agent pool containing this node. Not applicable for control plane nodes.
-     *
+     * 
      * @return the mode value.
      */
     public AgentPoolMode mode() {
@@ -237,7 +230,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the name property: The name of this node, as realized in the Kubernetes cluster.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -246,7 +239,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the networkAttachments property: The NetworkAttachments made to this node.
-     *
+     * 
      * @return the networkAttachments value.
      */
     public List<NetworkAttachment> networkAttachments() {
@@ -255,7 +248,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the powerState property: The power state of this node.
-     *
+     * 
      * @return the powerState value.
      */
     public KubernetesNodePowerState powerState() {
@@ -264,7 +257,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the role property: The role of this node in the cluster.
-     *
+     * 
      * @return the role value.
      */
     public KubernetesNodeRole role() {
@@ -273,7 +266,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the taints property: The list of taints that have been assigned to the agent pool containing this node.
-     *
+     * 
      * @return the taints value.
      */
     public List<KubernetesLabel> taints() {
@@ -282,7 +275,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Get the vmSkuName property: The VM SKU name that was used to create this cluster node.
-     *
+     * 
      * @return the vmSkuName value.
      */
     public String vmSkuName() {
@@ -291,7 +284,7 @@ public final class KubernetesClusterNode {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -304,5 +297,80 @@ public final class KubernetesClusterNode {
         if (taints() != null) {
             taints().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesClusterNode from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesClusterNode if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesClusterNode.
+     */
+    public static KubernetesClusterNode fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesClusterNode deserializedKubernetesClusterNode = new KubernetesClusterNode();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("agentPoolId".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.agentPoolId = reader.getString();
+                } else if ("availabilityZone".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.availabilityZone = reader.getString();
+                } else if ("bareMetalMachineId".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.bareMetalMachineId = reader.getString();
+                } else if ("cpuCores".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.cpuCores = reader.getNullable(JsonReader::getLong);
+                } else if ("detailedStatus".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.detailedStatus
+                        = KubernetesClusterNodeDetailedStatus.fromString(reader.getString());
+                } else if ("detailedStatusMessage".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.detailedStatusMessage = reader.getString();
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.diskSizeGB = reader.getNullable(JsonReader::getLong);
+                } else if ("image".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.image = reader.getString();
+                } else if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.kubernetesVersion = reader.getString();
+                } else if ("labels".equals(fieldName)) {
+                    List<KubernetesLabel> labels = reader.readArray(reader1 -> KubernetesLabel.fromJson(reader1));
+                    deserializedKubernetesClusterNode.labels = labels;
+                } else if ("memorySizeGB".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.memorySizeGB = reader.getNullable(JsonReader::getLong);
+                } else if ("mode".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.mode = AgentPoolMode.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.name = reader.getString();
+                } else if ("networkAttachments".equals(fieldName)) {
+                    List<NetworkAttachment> networkAttachments
+                        = reader.readArray(reader1 -> NetworkAttachment.fromJson(reader1));
+                    deserializedKubernetesClusterNode.networkAttachments = networkAttachments;
+                } else if ("powerState".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.powerState
+                        = KubernetesNodePowerState.fromString(reader.getString());
+                } else if ("role".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.role = KubernetesNodeRole.fromString(reader.getString());
+                } else if ("taints".equals(fieldName)) {
+                    List<KubernetesLabel> taints = reader.readArray(reader1 -> KubernetesLabel.fromJson(reader1));
+                    deserializedKubernetesClusterNode.taints = taints;
+                } else if ("vmSkuName".equals(fieldName)) {
+                    deserializedKubernetesClusterNode.vmSkuName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesClusterNode;
+        });
     }
 }

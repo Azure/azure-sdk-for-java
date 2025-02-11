@@ -6,25 +6,27 @@ package com.azure.resourcemanager.largeinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.largeinstance.fluent.models.AzureLargeInstanceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of a AzureLargeInstance list operation.
  */
 @Fluent
-public final class AzureLargeInstanceListResult {
+public final class AzureLargeInstanceListResult implements JsonSerializable<AzureLargeInstanceListResult> {
     /*
      * The AzureLargeInstance items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<AzureLargeInstanceInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -80,12 +82,55 @@ public final class AzureLargeInstanceListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model AzureLargeInstanceListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model AzureLargeInstanceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureLargeInstanceListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureLargeInstanceListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureLargeInstanceListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureLargeInstanceListResult.
+     */
+    public static AzureLargeInstanceListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureLargeInstanceListResult deserializedAzureLargeInstanceListResult = new AzureLargeInstanceListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AzureLargeInstanceInner> value
+                        = reader.readArray(reader1 -> AzureLargeInstanceInner.fromJson(reader1));
+                    deserializedAzureLargeInstanceListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAzureLargeInstanceListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureLargeInstanceListResult;
+        });
+    }
 }

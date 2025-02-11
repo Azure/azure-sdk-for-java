@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.signalr.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.signalr.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.signalr.models.PrivateLinkResource;
 import com.azure.resourcemanager.signalr.models.ShareablePrivateLinkResourceType;
@@ -16,8 +15,8 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
 
     private final com.azure.resourcemanager.signalr.SignalRManager serviceManager;
 
-    PrivateLinkResourceImpl(
-        PrivateLinkResourceInner innerObject, com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
+    PrivateLinkResourceImpl(PrivateLinkResourceInner innerObject,
+        com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -32,10 +31,6 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String groupId() {

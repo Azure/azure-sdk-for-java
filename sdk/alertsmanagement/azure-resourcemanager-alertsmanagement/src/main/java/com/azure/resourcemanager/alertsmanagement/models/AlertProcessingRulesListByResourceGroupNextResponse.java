@@ -8,30 +8,29 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/** Contains all response data for the listByResourceGroupNext operation. */
+/**
+ * Contains all response data for the listByResourceGroupNext operation.
+ */
 public final class AlertProcessingRulesListByResourceGroupNextResponse
     extends ResponseBase<AlertProcessingRulesListByResourceGroupNextHeaders, AlertProcessingRulesList> {
     /**
      * Creates an instance of AlertProcessingRulesListByResourceGroupNextResponse.
-     *
+     * 
      * @param request the request which resulted in this AlertProcessingRulesListByResourceGroupNextResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public AlertProcessingRulesListByResourceGroupNextResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        AlertProcessingRulesList value,
+    public AlertProcessingRulesListByResourceGroupNextResponse(HttpRequest request, int statusCode,
+        HttpHeaders rawHeaders, AlertProcessingRulesList value,
         AlertProcessingRulesListByResourceGroupNextHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

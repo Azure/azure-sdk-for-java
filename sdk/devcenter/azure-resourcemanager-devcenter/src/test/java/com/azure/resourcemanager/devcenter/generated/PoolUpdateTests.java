@@ -21,49 +21,50 @@ public final class PoolUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"devBoxDefinitionName\":\"lma\",\"networkConnectionName\":\"tcyohpfkyrk\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\",\"stopOnDisconnect\":{\"status\":\"Enabled\",\"gracePeriodMinutes\":2107096986},\"singleSignOnStatus\":\"Disabled\",\"displayName\":\"qjnobaiyhddviac\",\"virtualNetworkType\":\"Unmanaged\",\"managedVirtualNetworkRegions\":[\"ntfpmvmemfnc\"]},\"tags\":{\"l\":\"vvbalx\"},\"location\":\"hpodbzev\"}")
+            "{\"properties\":{\"devBoxDefinitionName\":\"jmfxumvf\",\"networkConnectionName\":\"uyovw\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\",\"stopOnDisconnect\":{\"status\":\"Disabled\",\"gracePeriodMinutes\":1537243599},\"singleSignOnStatus\":\"Enabled\",\"displayName\":\"wzdgirujbzbo\",\"virtualNetworkType\":\"Unmanaged\",\"managedVirtualNetworkRegions\":[\"tdcqvpniyuj\",\"iylwdshfssnr\",\"gy\",\"frymsgaojfmwnc\"]},\"tags\":{\"rctym\":\"rfh\",\"xacpqjli\":\"xoftpipiwyczu\",\"skasdvlmfwdgzxu\":\"hyus\"},\"location\":\"cvpa\"}")
             .toObject(PoolUpdate.class);
-        Assertions.assertEquals("vvbalx", model.tags().get("l"));
-        Assertions.assertEquals("hpodbzev", model.location());
-        Assertions.assertEquals("lma", model.devBoxDefinitionName());
-        Assertions.assertEquals("tcyohpfkyrk", model.networkConnectionName());
+        Assertions.assertEquals("rfh", model.tags().get("rctym"));
+        Assertions.assertEquals("cvpa", model.location());
+        Assertions.assertEquals("jmfxumvf", model.devBoxDefinitionName());
+        Assertions.assertEquals("uyovw", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
         Assertions.assertEquals(LocalAdminStatus.ENABLED, model.localAdministrator());
-        Assertions.assertEquals(StopOnDisconnectEnableStatus.ENABLED, model.stopOnDisconnect().status());
-        Assertions.assertEquals(2107096986, model.stopOnDisconnect().gracePeriodMinutes());
-        Assertions.assertEquals(SingleSignOnStatus.DISABLED, model.singleSignOnStatus());
-        Assertions.assertEquals("qjnobaiyhddviac", model.displayName());
+        Assertions.assertEquals(StopOnDisconnectEnableStatus.DISABLED, model.stopOnDisconnect().status());
+        Assertions.assertEquals(1537243599, model.stopOnDisconnect().gracePeriodMinutes());
+        Assertions.assertEquals(SingleSignOnStatus.ENABLED, model.singleSignOnStatus());
+        Assertions.assertEquals("wzdgirujbzbo", model.displayName());
         Assertions.assertEquals(VirtualNetworkType.UNMANAGED, model.virtualNetworkType());
-        Assertions.assertEquals("ntfpmvmemfnc", model.managedVirtualNetworkRegions().get(0));
+        Assertions.assertEquals("tdcqvpniyuj", model.managedVirtualNetworkRegions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolUpdate model = new PoolUpdate().withTags(mapOf("l", "vvbalx"))
-            .withLocation("hpodbzev")
-            .withDevBoxDefinitionName("lma")
-            .withNetworkConnectionName("tcyohpfkyrk")
+        PoolUpdate model = new PoolUpdate()
+            .withTags(mapOf("rctym", "rfh", "xacpqjli", "xoftpipiwyczu", "skasdvlmfwdgzxu", "hyus"))
+            .withLocation("cvpa")
+            .withDevBoxDefinitionName("jmfxumvf")
+            .withNetworkConnectionName("uyovw")
             .withLicenseType(LicenseType.WINDOWS_CLIENT)
             .withLocalAdministrator(LocalAdminStatus.ENABLED)
-            .withStopOnDisconnect(new StopOnDisconnectConfiguration().withStatus(StopOnDisconnectEnableStatus.ENABLED)
-                .withGracePeriodMinutes(2107096986))
-            .withSingleSignOnStatus(SingleSignOnStatus.DISABLED)
-            .withDisplayName("qjnobaiyhddviac")
+            .withStopOnDisconnect(new StopOnDisconnectConfiguration().withStatus(StopOnDisconnectEnableStatus.DISABLED)
+                .withGracePeriodMinutes(1537243599))
+            .withSingleSignOnStatus(SingleSignOnStatus.ENABLED)
+            .withDisplayName("wzdgirujbzbo")
             .withVirtualNetworkType(VirtualNetworkType.UNMANAGED)
-            .withManagedVirtualNetworkRegions(Arrays.asList("ntfpmvmemfnc"));
+            .withManagedVirtualNetworkRegions(Arrays.asList("tdcqvpniyuj", "iylwdshfssnr", "gy", "frymsgaojfmwnc"));
         model = BinaryData.fromObject(model).toObject(PoolUpdate.class);
-        Assertions.assertEquals("vvbalx", model.tags().get("l"));
-        Assertions.assertEquals("hpodbzev", model.location());
-        Assertions.assertEquals("lma", model.devBoxDefinitionName());
-        Assertions.assertEquals("tcyohpfkyrk", model.networkConnectionName());
+        Assertions.assertEquals("rfh", model.tags().get("rctym"));
+        Assertions.assertEquals("cvpa", model.location());
+        Assertions.assertEquals("jmfxumvf", model.devBoxDefinitionName());
+        Assertions.assertEquals("uyovw", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
         Assertions.assertEquals(LocalAdminStatus.ENABLED, model.localAdministrator());
-        Assertions.assertEquals(StopOnDisconnectEnableStatus.ENABLED, model.stopOnDisconnect().status());
-        Assertions.assertEquals(2107096986, model.stopOnDisconnect().gracePeriodMinutes());
-        Assertions.assertEquals(SingleSignOnStatus.DISABLED, model.singleSignOnStatus());
-        Assertions.assertEquals("qjnobaiyhddviac", model.displayName());
+        Assertions.assertEquals(StopOnDisconnectEnableStatus.DISABLED, model.stopOnDisconnect().status());
+        Assertions.assertEquals(1537243599, model.stopOnDisconnect().gracePeriodMinutes());
+        Assertions.assertEquals(SingleSignOnStatus.ENABLED, model.singleSignOnStatus());
+        Assertions.assertEquals("wzdgirujbzbo", model.displayName());
         Assertions.assertEquals(VirtualNetworkType.UNMANAGED, model.virtualNetworkType());
-        Assertions.assertEquals("ntfpmvmemfnc", model.managedVirtualNetworkRegions().get(0));
+        Assertions.assertEquals("tdcqvpniyuj", model.managedVirtualNetworkRegions().get(0));
     }
 
     // Use "Map.of" if available

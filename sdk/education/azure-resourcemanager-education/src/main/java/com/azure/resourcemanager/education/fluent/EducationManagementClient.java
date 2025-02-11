@@ -7,81 +7,83 @@ package com.azure.resourcemanager.education.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for EducationManagementClient class. */
+/**
+ * The interface for EducationManagementClient class.
+ */
 public interface EducationManagementClient {
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the GrantsClient object to access its operations.
-     *
+     * 
      * @return the GrantsClient object.
      */
     GrantsClient getGrants();
 
     /**
      * Gets the LabsClient object to access its operations.
-     *
+     * 
      * @return the LabsClient object.
      */
     LabsClient getLabs();
 
     /**
      * Gets the JoinRequestsClient object to access its operations.
-     *
+     * 
      * @return the JoinRequestsClient object.
      */
     JoinRequestsClient getJoinRequests();
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     ResourceProvidersClient getResourceProviders();
 
     /**
      * Gets the StudentsClient object to access its operations.
-     *
+     * 
      * @return the StudentsClient object.
      */
     StudentsClient getStudents();
 
     /**
      * Gets the StudentLabsClient object to access its operations.
-     *
+     * 
      * @return the StudentLabsClient object.
      */
     StudentLabsClient getStudentLabs();

@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.connectedvmware.fluent.models.HostModelInner;
 import com.azure.resourcemanager.connectedvmware.models.ResourcePatch;
 
-/** An instance of this class provides access to all the operations defined in HostsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HostsClient.
+ */
 public interface HostsClient {
     /**
      * Implements host PUT method.
-     *
-     * <p>Create Or Update host.
-     *
+     * 
+     * Create Or Update host.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,9 +35,9 @@ public interface HostsClient {
 
     /**
      * Implements host PUT method.
-     *
-     * <p>Create Or Update host.
-     *
+     * 
+     * Create Or Update host.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @param body Request payload.
@@ -46,14 +48,14 @@ public interface HostsClient {
      * @return the {@link SyncPoller} for polling of define the host.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(
-        String resourceGroupName, String hostname, HostModelInner body, Context context);
+    SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(String resourceGroupName, String hostname,
+        HostModelInner body, Context context);
 
     /**
      * Implements host PUT method.
-     *
-     * <p>Create Or Update host.
-     *
+     * 
+     * Create Or Update host.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,9 +68,9 @@ public interface HostsClient {
 
     /**
      * Implements host PUT method.
-     *
-     * <p>Create Or Update host.
-     *
+     * 
+     * Create Or Update host.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @param body Request payload.
@@ -83,9 +85,9 @@ public interface HostsClient {
 
     /**
      * Gets a host.
-     *
-     * <p>Implements host GET method.
-     *
+     * 
+     * Implements host GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @param context The context to associate with this operation.
@@ -99,9 +101,9 @@ public interface HostsClient {
 
     /**
      * Gets a host.
-     *
-     * <p>Implements host GET method.
-     *
+     * 
+     * Implements host GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,9 +116,9 @@ public interface HostsClient {
 
     /**
      * Updates a host.
-     *
-     * <p>API to update certain properties of the host resource.
-     *
+     * 
+     * API to update certain properties of the host resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @param body Resource properties to update.
@@ -127,14 +129,14 @@ public interface HostsClient {
      * @return define the host along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HostModelInner> updateWithResponse(
-        String resourceGroupName, String hostname, ResourcePatch body, Context context);
+    Response<HostModelInner> updateWithResponse(String resourceGroupName, String hostname, ResourcePatch body,
+        Context context);
 
     /**
      * Updates a host.
-     *
-     * <p>API to update certain properties of the host resource.
-     *
+     * 
+     * API to update certain properties of the host resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +149,9 @@ public interface HostsClient {
 
     /**
      * Deletes an host.
-     *
-     * <p>Implements host DELETE method.
-     *
+     * 
+     * Implements host DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,9 +164,9 @@ public interface HostsClient {
 
     /**
      * Deletes an host.
-     *
-     * <p>Implements host DELETE method.
-     *
+     * 
+     * Implements host DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @param force Whether force delete was specified.
@@ -175,14 +177,14 @@ public interface HostsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hostname, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostname, Boolean force,
+        Context context);
 
     /**
      * Deletes an host.
-     *
-     * <p>Implements host DELETE method.
-     *
+     * 
+     * Implements host DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,9 +196,9 @@ public interface HostsClient {
 
     /**
      * Deletes an host.
-     *
-     * <p>Implements host DELETE method.
-     *
+     * 
+     * Implements host DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
      * @param force Whether force delete was specified.
@@ -210,9 +212,9 @@ public interface HostsClient {
 
     /**
      * Implements GET hosts in a subscription.
-     *
-     * <p>List of hosts in a subscription.
-     *
+     * 
+     * List of hosts in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Hosts as paginated response with {@link PagedIterable}.
@@ -222,9 +224,9 @@ public interface HostsClient {
 
     /**
      * Implements GET hosts in a subscription.
-     *
-     * <p>List of hosts in a subscription.
-     *
+     * 
+     * List of hosts in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -236,9 +238,9 @@ public interface HostsClient {
 
     /**
      * Implements GET hosts in a resource group.
-     *
-     * <p>List of hosts in a resource group.
-     *
+     * 
+     * List of hosts in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -250,9 +252,9 @@ public interface HostsClient {
 
     /**
      * Implements GET hosts in a resource group.
-     *
-     * <p>List of hosts in a resource group.
-     *
+     * 
+     * List of hosts in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

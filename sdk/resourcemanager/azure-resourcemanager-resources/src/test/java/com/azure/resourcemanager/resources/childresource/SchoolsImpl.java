@@ -127,11 +127,10 @@ class SchoolsImpl {
 
         @Override
         public Mono<Indexable> invokeAsync(TaskGroup.InvocationContext context) {
-            return Mono.<Indexable>just(this)
-                    .map(indexable -> {
-                        isInvoked = true;
-                        return indexable;
-                    });
+            return Mono.<Indexable>just(this).map(indexable -> {
+                isInvoked = true;
+                return indexable;
+            });
         }
 
         @Override
@@ -153,9 +152,8 @@ class SchoolsImpl {
     /**
      * Type representing an instance of Teacher.
      */
-    class TeacherImpl
-            extends ExternalChildResourceImpl<TeacherImpl, Object, SchoolImpl, Object>
-            implements TaskGroup.HasTaskGroup, Creatable<TeacherImpl> {
+    class TeacherImpl extends ExternalChildResourceImpl<TeacherImpl, Object, SchoolImpl, Object>
+        implements TaskGroup.HasTaskGroup, Creatable<TeacherImpl> {
 
         private boolean isInvoked;
 
@@ -178,11 +176,10 @@ class SchoolsImpl {
 
         @Override
         public Mono<TeacherImpl> createResourceAsync() {
-            return Mono.just(this)
-                    .map(teacher -> {
-                        isInvoked = true;
-                        return teacher;
-                    });
+            return Mono.just(this).map(teacher -> {
+                isInvoked = true;
+                return teacher;
+            });
         }
 
         @Override
@@ -208,7 +205,8 @@ class SchoolsImpl {
     /**
      * Type representing Teacher collection where a teacher entries can be created as part of parent School.
      */
-    class InlineTeachersImpl extends ExternalChildResourcesCachedImpl<TeacherImpl, TeacherImpl, Object, SchoolImpl, Object> {
+    class InlineTeachersImpl
+        extends ExternalChildResourcesCachedImpl<TeacherImpl, TeacherImpl, Object, SchoolImpl, Object> {
 
         protected InlineTeachersImpl(SchoolImpl parent, TaskGroup parentTaskGroup, String childResourceName) {
             super(parent, parentTaskGroup, childResourceName);
@@ -256,9 +254,8 @@ class SchoolsImpl {
     /**
      * Type representing an instance of Student.
      */
-    class StudentImpl
-            extends ExternalChildResourceImpl<StudentImpl, Object, SchoolImpl, Object>
-            implements TaskGroup.HasTaskGroup, Creatable<StudentImpl> {
+    class StudentImpl extends ExternalChildResourceImpl<StudentImpl, Object, SchoolImpl, Object>
+        implements TaskGroup.HasTaskGroup, Creatable<StudentImpl> {
         private String teacherName;
         private boolean isInvoked;
 
@@ -338,7 +335,8 @@ class SchoolsImpl {
     /**
      * Type representing Student collection where a student entries can be created as part of parent School.
      */
-    class InlineStudentsImpl extends ExternalChildResourcesCachedImpl<StudentImpl, StudentImpl, Object, SchoolImpl, Object> {
+    class InlineStudentsImpl
+        extends ExternalChildResourcesCachedImpl<StudentImpl, StudentImpl, Object, SchoolImpl, Object> {
 
         protected InlineStudentsImpl(SchoolImpl parent, TaskGroup parentTaskGroup, String childResourceName) {
             super(parent, parentTaskGroup, childResourceName);

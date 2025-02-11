@@ -14,6 +14,15 @@ public class ContainerServiceResourceTypes extends ExpandableStringEnum<Containe
     public static final ContainerServiceResourceTypes MANAGED_CLUSTERS = fromString("managedClusters");
 
     /**
+     * Creates a new instance of ContainerServiceResourceTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContainerServiceResourceTypes() {
+    }
+
+    /**
      * Creates or finds a ContainerServiceResourceTypes from its string representation.
      *
      * @param name a name to look for.
@@ -23,7 +32,11 @@ public class ContainerServiceResourceTypes extends ExpandableStringEnum<Containe
         return fromString(name, ContainerServiceResourceTypes.class);
     }
 
-    /** @return known ExtendedLocationTypes values. */
+    /**
+     * Gets known ExtendedLocationTypes values.
+     *
+     * @return known ExtendedLocationTypes values.
+     */
     public static Collection<ContainerServiceResourceTypes> values() {
         return values(ContainerServiceResourceTypes.class);
     }

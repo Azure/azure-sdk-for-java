@@ -44,12 +44,9 @@ public class BufferAggregatorTests {
     }
 
     private static Stream<List<byte[]>> readFirstNBytesSupplier() {
-        return Stream.of(
-            Arrays.asList(new byte[5], new byte[95]),
+        return Stream.of(Arrays.asList(new byte[5], new byte[95]),
             Arrays.asList(new byte[10], new byte[10], new byte[10], new byte[70]),
-            Collections.singletonList(new byte[100]),
-            Arrays.asList(new byte[50], new byte[50]),
-            Arrays.asList(new byte[70], new byte[20], new byte[10])
-        );
+            Collections.singletonList(new byte[100]), Arrays.asList(new byte[50], new byte[50]),
+            Arrays.asList(new byte[70], new byte[20], new byte[10]));
     }
 }

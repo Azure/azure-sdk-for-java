@@ -10,10 +10,9 @@ import com.azure.resourcemanager.databoxedge.models.Ipv4Config;
 public final class Ipv4ConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Ipv4Config model =
-            BinaryData
-                .fromString("{\"ipAddress\":\"psiebtfhvpes\",\"subnet\":\"skrdqmhjj\",\"gateway\":\"tldwkyzxuutk\"}")
-                .toObject(Ipv4Config.class);
+        Ipv4Config model = BinaryData
+            .fromString("{\"ipAddress\":\"alupjm\",\"subnet\":\"fxobbcsws\",\"gateway\":\"jriplrbpbewtghf\"}")
+            .toObject(Ipv4Config.class);
     }
 
     @org.junit.jupiter.api.Test

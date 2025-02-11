@@ -14,11 +14,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class WorkflowsList {
     public static void main(String[] args) {
-        WorkflowsClient workflowsClient =
-                new WorkflowsClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                        .buildClient();
+        WorkflowsClient workflowsClient
+            = new WorkflowsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.workflow.generated.workflowslist.workflowslist
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = workflowsClient.list(requestOptions);

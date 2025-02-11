@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IssueNameParameter. */
+/**
+ * Defines values for IssueNameParameter.
+ */
 public final class IssueNameParameter extends ExpandableStringEnum<IssueNameParameter> {
-    /** Static value default for IssueNameParameter. */
+    /**
+     * Static value default for IssueNameParameter.
+     */
     public static final IssueNameParameter DEFAULT = fromString("default");
 
     /**
      * Creates a new instance of IssueNameParameter value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class IssueNameParameter extends ExpandableStringEnum<IssueNamePara
 
     /**
      * Creates or finds a IssueNameParameter from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IssueNameParameter.
      */
-    @JsonCreator
     public static IssueNameParameter fromString(String name) {
         return fromString(name, IssueNameParameter.class);
     }
 
     /**
      * Gets known IssueNameParameter values.
-     *
+     * 
      * @return known IssueNameParameter values.
      */
     public static Collection<IssueNameParameter> values() {

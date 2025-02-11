@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An available operation for Data Lake Analytics. */
+/**
+ * An available operation for Data Lake Analytics.
+ */
 @Immutable
-public final class Operation {
+public final class Operation implements JsonSerializable<Operation> {
     /*
      * The name of the operation.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The display information for the operation.
      */
-    @JsonProperty(value = "display", access = JsonProperty.Access.WRITE_ONLY)
     private OperationDisplay display;
 
     /*
      * The OperationMetaPropertyInfo for the operation.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private OperationMetaPropertyInfo properties;
 
     /*
      * The intended executor of the operation.
      */
-    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private OperationOrigin origin;
 
-    /** Creates an instance of Operation class. */
+    /**
+     * Creates an instance of Operation class.
+     */
     public Operation() {
     }
 
     /**
      * Get the name property: The name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class Operation {
 
     /**
      * Get the display property: The display information for the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -58,7 +62,7 @@ public final class Operation {
 
     /**
      * Get the properties property: The OperationMetaPropertyInfo for the operation.
-     *
+     * 
      * @return the properties value.
      */
     public OperationMetaPropertyInfo properties() {
@@ -67,7 +71,7 @@ public final class Operation {
 
     /**
      * Get the origin property: The intended executor of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public OperationOrigin origin() {
@@ -76,7 +80,7 @@ public final class Operation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -86,5 +90,46 @@ public final class Operation {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Operation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Operation if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Operation.
+     */
+    public static Operation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Operation deserializedOperation = new Operation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperation.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperation.display = OperationDisplay.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperation.properties = OperationMetaPropertyInfo.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperation.origin = OperationOrigin.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperation;
+        });
     }
 }

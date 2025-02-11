@@ -6,13 +6,13 @@ package com.azure.ai.inference.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
-import com.azure.json.JsonProviders;
 import java.io.StringReader;
+import java.util.List;
 
 /**
  * A request chat message representing user input to the assistant.
@@ -48,8 +48,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @param content the string content value to set.
      */
     public ChatRequestUserMessage(String content) {
-        String contentString = String.format("\"%s\"", content);
-        this.content = BinaryData.fromString(contentString);
+        this.content = BinaryData.fromObject(content);
     }
 
     /**
@@ -80,7 +79,8 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("content", this.content.toObject(Object.class));
+        jsonWriter.writeFieldName("content");
+        this.content.writeTo(jsonWriter);
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         return jsonWriter.writeEndObject();
     }
@@ -146,23 +146,23 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
         if (contentItems == null || contentItems.isEmpty()) {
             throw new RuntimeException("Content items cannot be null or empty.");
         }
-        String jsonPrompt = "{\"content\":[";
+        StringBuilder jsonPrompt = new StringBuilder("{\"content\":[");
         for (ChatMessageContentItem item : contentItems) {
             if (item instanceof ChatMessageTextContentItem) {
                 ChatMessageTextContentItem textItem = (ChatMessageTextContentItem) item;
-                String textPrompt = "{\"type\": \"text\", \"text\":\"%s\"" + "}";
-                jsonPrompt += String.format(textPrompt, textItem.getText());
+                String textPrompt = "{\"type\": \"text\", \"text\":\"%s\"}";
+                jsonPrompt.append(String.format(textPrompt, textItem.getText()));
             } else if (item instanceof ChatMessageImageContentItem) {
                 ChatMessageImageContentItem imageItem = (ChatMessageImageContentItem) item;
-                String imageUrlPrompt = "{\"type\": \"image_url\", \"image_url\":{ \"url\": \"%s\"}" + "}";
-                jsonPrompt += String.format(imageUrlPrompt, imageItem.getImageUrl().getUrl());
+                String imageUrlPrompt = "{\"type\": \"image_url\", \"image_url\":{ \"url\": \"%s\"}}";
+                jsonPrompt.append(String.format(imageUrlPrompt, imageItem.getImageUrl().getUrl()));
             }
-            jsonPrompt += ",";
+            jsonPrompt.append(",");
         }
-        jsonPrompt = jsonPrompt.substring(0, jsonPrompt.length() - 1);
-        jsonPrompt += "]}";
+        jsonPrompt = new StringBuilder(jsonPrompt.substring(0, jsonPrompt.length() - 1));
+        jsonPrompt.append("]}");
         try {
-            return ChatRequestUserMessage.fromJson(JsonProviders.createReader(new StringReader(jsonPrompt)));
+            return ChatRequestUserMessage.fromJson(JsonProviders.createReader(new StringReader(jsonPrompt.toString())));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

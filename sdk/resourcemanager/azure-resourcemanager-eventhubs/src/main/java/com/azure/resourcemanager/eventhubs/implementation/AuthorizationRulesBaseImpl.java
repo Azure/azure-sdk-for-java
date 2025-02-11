@@ -11,11 +11,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletin
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import reactor.core.publisher.Mono;
 
-abstract class AuthorizationRulesBaseImpl<InnerT, RuleT, RuleImpl>
-    extends WrapperImpl<InnerT>
-    implements HasManager<EventHubsManager>,
-        SupportsGettingById<RuleT>,
-        SupportsDeletingById {
+abstract class AuthorizationRulesBaseImpl<InnerT, RuleT, RuleImpl> extends WrapperImpl<InnerT>
+    implements HasManager<EventHubsManager>, SupportsGettingById<RuleT>, SupportsDeletingById {
 
     protected final EventHubsManager manager;
 
@@ -40,5 +37,6 @@ abstract class AuthorizationRulesBaseImpl<InnerT, RuleT, RuleImpl>
     }
 
     protected abstract RuleImpl wrapModel(AuthorizationRuleInner innerModel);
+
     public abstract Mono<RuleT> getByIdAsync(String id);
 }

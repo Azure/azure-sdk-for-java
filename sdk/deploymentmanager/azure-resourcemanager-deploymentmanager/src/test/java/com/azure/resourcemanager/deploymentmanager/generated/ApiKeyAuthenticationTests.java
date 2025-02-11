@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiKeyAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiKeyAuthentication model =
-            BinaryData
-                .fromString("{\"type\":\"ApiKey\",\"name\":\"ok\",\"in\":\"Query\",\"value\":\"ljyoxgvcltb\"}")
+        ApiKeyAuthentication model
+            = BinaryData.fromString("{\"type\":\"ApiKey\",\"name\":\"ok\",\"in\":\"Query\",\"value\":\"ljyoxgvcltb\"}")
                 .toObject(ApiKeyAuthentication.class);
         Assertions.assertEquals("ok", model.name());
         Assertions.assertEquals(RestAuthLocation.QUERY, model.in());
@@ -23,8 +22,8 @@ public final class ApiKeyAuthenticationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiKeyAuthentication model =
-            new ApiKeyAuthentication().withName("ok").withIn(RestAuthLocation.QUERY).withValue("ljyoxgvcltb");
+        ApiKeyAuthentication model
+            = new ApiKeyAuthentication().withName("ok").withIn(RestAuthLocation.QUERY).withValue("ljyoxgvcltb");
         model = BinaryData.fromObject(model).toObject(ApiKeyAuthentication.class);
         Assertions.assertEquals("ok", model.name());
         Assertions.assertEquals(RestAuthLocation.QUERY, model.in());

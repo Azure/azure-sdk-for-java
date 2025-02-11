@@ -6,25 +6,46 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.ProductState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Product details. */
+/**
+ * Product details.
+ */
 @Fluent
 public final class ProductContractInner extends ProxyResource {
     /*
      * Product entity contract properties.
      */
-    @JsonProperty(value = "properties")
     private ProductContractProperties innerProperties;
 
-    /** Creates an instance of ProductContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ProductContractInner class.
+     */
     public ProductContractInner() {
     }
 
     /**
      * Get the innerProperties property: Product entity contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProductContractProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class ProductContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: Product name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -42,7 +93,7 @@ public final class ProductContractInner extends ProxyResource {
 
     /**
      * Set the displayName property: Product name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ProductContractInner object itself.
      */
@@ -56,7 +107,7 @@ public final class ProductContractInner extends ProxyResource {
 
     /**
      * Get the description property: Product description. May include HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -65,7 +116,7 @@ public final class ProductContractInner extends ProxyResource {
 
     /**
      * Set the description property: Product description. May include HTML formatting tags.
-     *
+     * 
      * @param description the description value to set.
      * @return the ProductContractInner object itself.
      */
@@ -80,7 +131,7 @@ public final class ProductContractInner extends ProxyResource {
     /**
      * Get the terms property: Product terms of use. Developers trying to subscribe to the product will be presented and
      * required to accept these terms before they can complete the subscription process.
-     *
+     * 
      * @return the terms value.
      */
     public String terms() {
@@ -90,7 +141,7 @@ public final class ProductContractInner extends ProxyResource {
     /**
      * Set the terms property: Product terms of use. Developers trying to subscribe to the product will be presented and
      * required to accept these terms before they can complete the subscription process.
-     *
+     * 
      * @param terms the terms value to set.
      * @return the ProductContractInner object itself.
      */
@@ -108,7 +159,7 @@ public final class ProductContractInner extends ProxyResource {
      * request to an API included in the product to succeed. If false, the product is referred to as "open" and requests
      * to an API included in the product can be made without a subscription key. If property is omitted when creating a
      * new product it's value is assumed to be true.
-     *
+     * 
      * @return the subscriptionRequired value.
      */
     public Boolean subscriptionRequired() {
@@ -121,7 +172,7 @@ public final class ProductContractInner extends ProxyResource {
      * request to an API included in the product to succeed. If false, the product is referred to as "open" and requests
      * to an API included in the product can be made without a subscription key. If property is omitted when creating a
      * new product it's value is assumed to be true.
-     *
+     * 
      * @param subscriptionRequired the subscriptionRequired value to set.
      * @return the ProductContractInner object itself.
      */
@@ -138,7 +189,7 @@ public final class ProductContractInner extends ProxyResource {
      * approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true,
      * administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be
      * present only if subscriptionRequired property is present and has a value of false.
-     *
+     * 
      * @return the approvalRequired value.
      */
     public Boolean approvalRequired() {
@@ -150,7 +201,7 @@ public final class ProductContractInner extends ProxyResource {
      * approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true,
      * administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be
      * present only if subscriptionRequired property is present and has a value of false.
-     *
+     * 
      * @param approvalRequired the approvalRequired value to set.
      * @return the ProductContractInner object itself.
      */
@@ -166,7 +217,7 @@ public final class ProductContractInner extends ProxyResource {
      * Get the subscriptionsLimit property: Whether the number of subscriptions a user can have to this product at the
      * same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if
      * subscriptionRequired property is present and has a value of false.
-     *
+     * 
      * @return the subscriptionsLimit value.
      */
     public Integer subscriptionsLimit() {
@@ -177,7 +228,7 @@ public final class ProductContractInner extends ProxyResource {
      * Set the subscriptionsLimit property: Whether the number of subscriptions a user can have to this product at the
      * same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if
      * subscriptionRequired property is present and has a value of false.
-     *
+     * 
      * @param subscriptionsLimit the subscriptionsLimit value to set.
      * @return the ProductContractInner object itself.
      */
@@ -193,7 +244,7 @@ public final class ProductContractInner extends ProxyResource {
      * Get the state property: whether product is published or not. Published products are discoverable by users of
      * developer portal. Non published products are visible only to administrators. Default state of Product is
      * notPublished.
-     *
+     * 
      * @return the state value.
      */
     public ProductState state() {
@@ -204,7 +255,7 @@ public final class ProductContractInner extends ProxyResource {
      * Set the state property: whether product is published or not. Published products are discoverable by users of
      * developer portal. Non published products are visible only to administrators. Default state of Product is
      * notPublished.
-     *
+     * 
      * @param state the state value to set.
      * @return the ProductContractInner object itself.
      */
@@ -218,12 +269,55 @@ public final class ProductContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductContractInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProductContractInner.
+     */
+    public static ProductContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductContractInner deserializedProductContractInner = new ProductContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProductContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProductContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProductContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProductContractInner.innerProperties = ProductContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductContractInner;
+        });
     }
 }

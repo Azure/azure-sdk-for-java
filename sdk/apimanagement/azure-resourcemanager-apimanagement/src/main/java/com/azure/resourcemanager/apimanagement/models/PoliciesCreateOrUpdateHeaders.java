@@ -7,21 +7,21 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PoliciesCreateOrUpdateHeaders model. */
+/**
+ * The PoliciesCreateOrUpdateHeaders model.
+ */
 @Fluent
 public final class PoliciesCreateOrUpdateHeaders {
     /*
      * The Etag property.
      */
-    @JsonProperty(value = "Etag")
     private String etag;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PoliciesCreateOrUpdateHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PoliciesCreateOrUpdateHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +30,7 @@ public final class PoliciesCreateOrUpdateHeaders {
 
     /**
      * Get the etag property: The Etag property.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -39,7 +39,7 @@ public final class PoliciesCreateOrUpdateHeaders {
 
     /**
      * Set the etag property: The Etag property.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the PoliciesCreateOrUpdateHeaders object itself.
      */
@@ -50,7 +50,7 @@ public final class PoliciesCreateOrUpdateHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,264 +5,231 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Edifact agreement envelope settings. */
+/**
+ * The Edifact agreement envelope settings.
+ */
 @Fluent
-public final class EdifactEnvelopeSettings {
+public final class EdifactEnvelopeSettings implements JsonSerializable<EdifactEnvelopeSettings> {
     /*
      * The group association assigned code.
      */
-    @JsonProperty(value = "groupAssociationAssignedCode")
     private String groupAssociationAssignedCode;
 
     /*
      * The communication agreement id.
      */
-    @JsonProperty(value = "communicationAgreementId")
     private String communicationAgreementId;
 
     /*
      * The value indicating whether to apply delimiter string advice.
      */
-    @JsonProperty(value = "applyDelimiterStringAdvice", required = true)
     private boolean applyDelimiterStringAdvice;
 
     /*
      * The value indicating whether to create grouping segments.
      */
-    @JsonProperty(value = "createGroupingSegments", required = true)
     private boolean createGroupingSegments;
 
     /*
      * The value indicating whether to enable default group headers.
      */
-    @JsonProperty(value = "enableDefaultGroupHeaders", required = true)
     private boolean enableDefaultGroupHeaders;
 
     /*
      * The recipient reference password value.
      */
-    @JsonProperty(value = "recipientReferencePasswordValue")
     private String recipientReferencePasswordValue;
 
     /*
      * The recipient reference password qualifier.
      */
-    @JsonProperty(value = "recipientReferencePasswordQualifier")
     private String recipientReferencePasswordQualifier;
 
     /*
      * The application reference id.
      */
-    @JsonProperty(value = "applicationReferenceId")
     private String applicationReferenceId;
 
     /*
      * The processing priority code.
      */
-    @JsonProperty(value = "processingPriorityCode")
     private String processingPriorityCode;
 
     /*
      * The interchange control number lower bound.
      */
-    @JsonProperty(value = "interchangeControlNumberLowerBound", required = true)
     private long interchangeControlNumberLowerBound;
 
     /*
      * The interchange control number upper bound.
      */
-    @JsonProperty(value = "interchangeControlNumberUpperBound", required = true)
     private long interchangeControlNumberUpperBound;
 
     /*
      * The value indicating whether to rollover interchange control number.
      */
-    @JsonProperty(value = "rolloverInterchangeControlNumber", required = true)
     private boolean rolloverInterchangeControlNumber;
 
     /*
      * The interchange control number prefix.
      */
-    @JsonProperty(value = "interchangeControlNumberPrefix")
     private String interchangeControlNumberPrefix;
 
     /*
      * The interchange control number suffix.
      */
-    @JsonProperty(value = "interchangeControlNumberSuffix")
     private String interchangeControlNumberSuffix;
 
     /*
      * The sender reverse routing address.
      */
-    @JsonProperty(value = "senderReverseRoutingAddress")
     private String senderReverseRoutingAddress;
 
     /*
      * The receiver reverse routing address.
      */
-    @JsonProperty(value = "receiverReverseRoutingAddress")
     private String receiverReverseRoutingAddress;
 
     /*
      * The functional group id.
      */
-    @JsonProperty(value = "functionalGroupId")
     private String functionalGroupId;
 
     /*
      * The group controlling agency code.
      */
-    @JsonProperty(value = "groupControllingAgencyCode")
     private String groupControllingAgencyCode;
 
     /*
      * The group message version.
      */
-    @JsonProperty(value = "groupMessageVersion")
     private String groupMessageVersion;
 
     /*
      * The group message release.
      */
-    @JsonProperty(value = "groupMessageRelease")
     private String groupMessageRelease;
 
     /*
      * The group control number lower bound.
      */
-    @JsonProperty(value = "groupControlNumberLowerBound", required = true)
     private long groupControlNumberLowerBound;
 
     /*
      * The group control number upper bound.
      */
-    @JsonProperty(value = "groupControlNumberUpperBound", required = true)
     private long groupControlNumberUpperBound;
 
     /*
      * The value indicating whether to rollover group control number.
      */
-    @JsonProperty(value = "rolloverGroupControlNumber", required = true)
     private boolean rolloverGroupControlNumber;
 
     /*
      * The group control number prefix.
      */
-    @JsonProperty(value = "groupControlNumberPrefix")
     private String groupControlNumberPrefix;
 
     /*
      * The group control number suffix.
      */
-    @JsonProperty(value = "groupControlNumberSuffix")
     private String groupControlNumberSuffix;
 
     /*
      * The group application receiver qualifier.
      */
-    @JsonProperty(value = "groupApplicationReceiverQualifier")
     private String groupApplicationReceiverQualifier;
 
     /*
      * The group application receiver id.
      */
-    @JsonProperty(value = "groupApplicationReceiverId")
     private String groupApplicationReceiverId;
 
     /*
      * The group application sender qualifier.
      */
-    @JsonProperty(value = "groupApplicationSenderQualifier")
     private String groupApplicationSenderQualifier;
 
     /*
      * The group application sender id.
      */
-    @JsonProperty(value = "groupApplicationSenderId")
     private String groupApplicationSenderId;
 
     /*
      * The group application password.
      */
-    @JsonProperty(value = "groupApplicationPassword")
     private String groupApplicationPassword;
 
     /*
      * The value indicating whether to overwrite existing transaction set control number.
      */
-    @JsonProperty(value = "overwriteExistingTransactionSetControlNumber", required = true)
     private boolean overwriteExistingTransactionSetControlNumber;
 
     /*
      * The transaction set control number prefix.
      */
-    @JsonProperty(value = "transactionSetControlNumberPrefix")
     private String transactionSetControlNumberPrefix;
 
     /*
      * The transaction set control number suffix.
      */
-    @JsonProperty(value = "transactionSetControlNumberSuffix")
     private String transactionSetControlNumberSuffix;
 
     /*
      * The transaction set control number lower bound.
      */
-    @JsonProperty(value = "transactionSetControlNumberLowerBound", required = true)
     private long transactionSetControlNumberLowerBound;
 
     /*
      * The transaction set control number upper bound.
      */
-    @JsonProperty(value = "transactionSetControlNumberUpperBound", required = true)
     private long transactionSetControlNumberUpperBound;
 
     /*
      * The value indicating whether to rollover transaction set control number.
      */
-    @JsonProperty(value = "rolloverTransactionSetControlNumber", required = true)
     private boolean rolloverTransactionSetControlNumber;
 
     /*
      * The value indicating whether the message is a test interchange.
      */
-    @JsonProperty(value = "isTestInterchange", required = true)
     private boolean isTestInterchange;
 
     /*
      * The sender internal identification.
      */
-    @JsonProperty(value = "senderInternalIdentification")
     private String senderInternalIdentification;
 
     /*
      * The sender internal sub identification.
      */
-    @JsonProperty(value = "senderInternalSubIdentification")
     private String senderInternalSubIdentification;
 
     /*
      * The receiver internal identification.
      */
-    @JsonProperty(value = "receiverInternalIdentification")
     private String receiverInternalIdentification;
 
     /*
      * The receiver internal sub identification.
      */
-    @JsonProperty(value = "receiverInternalSubIdentification")
     private String receiverInternalSubIdentification;
 
-    /** Creates an instance of EdifactEnvelopeSettings class. */
+    /**
+     * Creates an instance of EdifactEnvelopeSettings class.
+     */
     public EdifactEnvelopeSettings() {
     }
 
     /**
      * Get the groupAssociationAssignedCode property: The group association assigned code.
-     *
+     * 
      * @return the groupAssociationAssignedCode value.
      */
     public String groupAssociationAssignedCode() {
@@ -271,7 +238,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupAssociationAssignedCode property: The group association assigned code.
-     *
+     * 
      * @param groupAssociationAssignedCode the groupAssociationAssignedCode value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -282,7 +249,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the communicationAgreementId property: The communication agreement id.
-     *
+     * 
      * @return the communicationAgreementId value.
      */
     public String communicationAgreementId() {
@@ -291,7 +258,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the communicationAgreementId property: The communication agreement id.
-     *
+     * 
      * @param communicationAgreementId the communicationAgreementId value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -302,7 +269,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the applyDelimiterStringAdvice property: The value indicating whether to apply delimiter string advice.
-     *
+     * 
      * @return the applyDelimiterStringAdvice value.
      */
     public boolean applyDelimiterStringAdvice() {
@@ -311,7 +278,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the applyDelimiterStringAdvice property: The value indicating whether to apply delimiter string advice.
-     *
+     * 
      * @param applyDelimiterStringAdvice the applyDelimiterStringAdvice value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -322,7 +289,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the createGroupingSegments property: The value indicating whether to create grouping segments.
-     *
+     * 
      * @return the createGroupingSegments value.
      */
     public boolean createGroupingSegments() {
@@ -331,7 +298,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the createGroupingSegments property: The value indicating whether to create grouping segments.
-     *
+     * 
      * @param createGroupingSegments the createGroupingSegments value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -342,7 +309,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the enableDefaultGroupHeaders property: The value indicating whether to enable default group headers.
-     *
+     * 
      * @return the enableDefaultGroupHeaders value.
      */
     public boolean enableDefaultGroupHeaders() {
@@ -351,7 +318,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the enableDefaultGroupHeaders property: The value indicating whether to enable default group headers.
-     *
+     * 
      * @param enableDefaultGroupHeaders the enableDefaultGroupHeaders value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -362,7 +329,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the recipientReferencePasswordValue property: The recipient reference password value.
-     *
+     * 
      * @return the recipientReferencePasswordValue value.
      */
     public String recipientReferencePasswordValue() {
@@ -371,7 +338,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the recipientReferencePasswordValue property: The recipient reference password value.
-     *
+     * 
      * @param recipientReferencePasswordValue the recipientReferencePasswordValue value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -382,7 +349,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the recipientReferencePasswordQualifier property: The recipient reference password qualifier.
-     *
+     * 
      * @return the recipientReferencePasswordQualifier value.
      */
     public String recipientReferencePasswordQualifier() {
@@ -391,7 +358,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the recipientReferencePasswordQualifier property: The recipient reference password qualifier.
-     *
+     * 
      * @param recipientReferencePasswordQualifier the recipientReferencePasswordQualifier value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -402,7 +369,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the applicationReferenceId property: The application reference id.
-     *
+     * 
      * @return the applicationReferenceId value.
      */
     public String applicationReferenceId() {
@@ -411,7 +378,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the applicationReferenceId property: The application reference id.
-     *
+     * 
      * @param applicationReferenceId the applicationReferenceId value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -422,7 +389,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the processingPriorityCode property: The processing priority code.
-     *
+     * 
      * @return the processingPriorityCode value.
      */
     public String processingPriorityCode() {
@@ -431,7 +398,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the processingPriorityCode property: The processing priority code.
-     *
+     * 
      * @param processingPriorityCode the processingPriorityCode value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -442,7 +409,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the interchangeControlNumberLowerBound property: The interchange control number lower bound.
-     *
+     * 
      * @return the interchangeControlNumberLowerBound value.
      */
     public long interchangeControlNumberLowerBound() {
@@ -451,7 +418,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the interchangeControlNumberLowerBound property: The interchange control number lower bound.
-     *
+     * 
      * @param interchangeControlNumberLowerBound the interchangeControlNumberLowerBound value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -462,7 +429,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the interchangeControlNumberUpperBound property: The interchange control number upper bound.
-     *
+     * 
      * @return the interchangeControlNumberUpperBound value.
      */
     public long interchangeControlNumberUpperBound() {
@@ -471,7 +438,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the interchangeControlNumberUpperBound property: The interchange control number upper bound.
-     *
+     * 
      * @param interchangeControlNumberUpperBound the interchangeControlNumberUpperBound value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -483,7 +450,7 @@ public final class EdifactEnvelopeSettings {
     /**
      * Get the rolloverInterchangeControlNumber property: The value indicating whether to rollover interchange control
      * number.
-     *
+     * 
      * @return the rolloverInterchangeControlNumber value.
      */
     public boolean rolloverInterchangeControlNumber() {
@@ -493,7 +460,7 @@ public final class EdifactEnvelopeSettings {
     /**
      * Set the rolloverInterchangeControlNumber property: The value indicating whether to rollover interchange control
      * number.
-     *
+     * 
      * @param rolloverInterchangeControlNumber the rolloverInterchangeControlNumber value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -504,7 +471,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the interchangeControlNumberPrefix property: The interchange control number prefix.
-     *
+     * 
      * @return the interchangeControlNumberPrefix value.
      */
     public String interchangeControlNumberPrefix() {
@@ -513,7 +480,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the interchangeControlNumberPrefix property: The interchange control number prefix.
-     *
+     * 
      * @param interchangeControlNumberPrefix the interchangeControlNumberPrefix value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -524,7 +491,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the interchangeControlNumberSuffix property: The interchange control number suffix.
-     *
+     * 
      * @return the interchangeControlNumberSuffix value.
      */
     public String interchangeControlNumberSuffix() {
@@ -533,7 +500,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the interchangeControlNumberSuffix property: The interchange control number suffix.
-     *
+     * 
      * @param interchangeControlNumberSuffix the interchangeControlNumberSuffix value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -544,7 +511,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the senderReverseRoutingAddress property: The sender reverse routing address.
-     *
+     * 
      * @return the senderReverseRoutingAddress value.
      */
     public String senderReverseRoutingAddress() {
@@ -553,7 +520,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the senderReverseRoutingAddress property: The sender reverse routing address.
-     *
+     * 
      * @param senderReverseRoutingAddress the senderReverseRoutingAddress value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -564,7 +531,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the receiverReverseRoutingAddress property: The receiver reverse routing address.
-     *
+     * 
      * @return the receiverReverseRoutingAddress value.
      */
     public String receiverReverseRoutingAddress() {
@@ -573,7 +540,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the receiverReverseRoutingAddress property: The receiver reverse routing address.
-     *
+     * 
      * @param receiverReverseRoutingAddress the receiverReverseRoutingAddress value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -584,7 +551,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the functionalGroupId property: The functional group id.
-     *
+     * 
      * @return the functionalGroupId value.
      */
     public String functionalGroupId() {
@@ -593,7 +560,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the functionalGroupId property: The functional group id.
-     *
+     * 
      * @param functionalGroupId the functionalGroupId value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -604,7 +571,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupControllingAgencyCode property: The group controlling agency code.
-     *
+     * 
      * @return the groupControllingAgencyCode value.
      */
     public String groupControllingAgencyCode() {
@@ -613,7 +580,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupControllingAgencyCode property: The group controlling agency code.
-     *
+     * 
      * @param groupControllingAgencyCode the groupControllingAgencyCode value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -624,7 +591,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupMessageVersion property: The group message version.
-     *
+     * 
      * @return the groupMessageVersion value.
      */
     public String groupMessageVersion() {
@@ -633,7 +600,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupMessageVersion property: The group message version.
-     *
+     * 
      * @param groupMessageVersion the groupMessageVersion value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -644,7 +611,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupMessageRelease property: The group message release.
-     *
+     * 
      * @return the groupMessageRelease value.
      */
     public String groupMessageRelease() {
@@ -653,7 +620,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupMessageRelease property: The group message release.
-     *
+     * 
      * @param groupMessageRelease the groupMessageRelease value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -664,7 +631,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupControlNumberLowerBound property: The group control number lower bound.
-     *
+     * 
      * @return the groupControlNumberLowerBound value.
      */
     public long groupControlNumberLowerBound() {
@@ -673,7 +640,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupControlNumberLowerBound property: The group control number lower bound.
-     *
+     * 
      * @param groupControlNumberLowerBound the groupControlNumberLowerBound value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -684,7 +651,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupControlNumberUpperBound property: The group control number upper bound.
-     *
+     * 
      * @return the groupControlNumberUpperBound value.
      */
     public long groupControlNumberUpperBound() {
@@ -693,7 +660,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupControlNumberUpperBound property: The group control number upper bound.
-     *
+     * 
      * @param groupControlNumberUpperBound the groupControlNumberUpperBound value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -704,7 +671,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the rolloverGroupControlNumber property: The value indicating whether to rollover group control number.
-     *
+     * 
      * @return the rolloverGroupControlNumber value.
      */
     public boolean rolloverGroupControlNumber() {
@@ -713,7 +680,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the rolloverGroupControlNumber property: The value indicating whether to rollover group control number.
-     *
+     * 
      * @param rolloverGroupControlNumber the rolloverGroupControlNumber value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -724,7 +691,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupControlNumberPrefix property: The group control number prefix.
-     *
+     * 
      * @return the groupControlNumberPrefix value.
      */
     public String groupControlNumberPrefix() {
@@ -733,7 +700,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupControlNumberPrefix property: The group control number prefix.
-     *
+     * 
      * @param groupControlNumberPrefix the groupControlNumberPrefix value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -744,7 +711,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupControlNumberSuffix property: The group control number suffix.
-     *
+     * 
      * @return the groupControlNumberSuffix value.
      */
     public String groupControlNumberSuffix() {
@@ -753,7 +720,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupControlNumberSuffix property: The group control number suffix.
-     *
+     * 
      * @param groupControlNumberSuffix the groupControlNumberSuffix value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -764,7 +731,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupApplicationReceiverQualifier property: The group application receiver qualifier.
-     *
+     * 
      * @return the groupApplicationReceiverQualifier value.
      */
     public String groupApplicationReceiverQualifier() {
@@ -773,7 +740,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupApplicationReceiverQualifier property: The group application receiver qualifier.
-     *
+     * 
      * @param groupApplicationReceiverQualifier the groupApplicationReceiverQualifier value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -784,7 +751,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupApplicationReceiverId property: The group application receiver id.
-     *
+     * 
      * @return the groupApplicationReceiverId value.
      */
     public String groupApplicationReceiverId() {
@@ -793,7 +760,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupApplicationReceiverId property: The group application receiver id.
-     *
+     * 
      * @param groupApplicationReceiverId the groupApplicationReceiverId value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -804,7 +771,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupApplicationSenderQualifier property: The group application sender qualifier.
-     *
+     * 
      * @return the groupApplicationSenderQualifier value.
      */
     public String groupApplicationSenderQualifier() {
@@ -813,7 +780,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupApplicationSenderQualifier property: The group application sender qualifier.
-     *
+     * 
      * @param groupApplicationSenderQualifier the groupApplicationSenderQualifier value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -824,7 +791,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupApplicationSenderId property: The group application sender id.
-     *
+     * 
      * @return the groupApplicationSenderId value.
      */
     public String groupApplicationSenderId() {
@@ -833,7 +800,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupApplicationSenderId property: The group application sender id.
-     *
+     * 
      * @param groupApplicationSenderId the groupApplicationSenderId value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -844,7 +811,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the groupApplicationPassword property: The group application password.
-     *
+     * 
      * @return the groupApplicationPassword value.
      */
     public String groupApplicationPassword() {
@@ -853,7 +820,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the groupApplicationPassword property: The group application password.
-     *
+     * 
      * @param groupApplicationPassword the groupApplicationPassword value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -865,7 +832,7 @@ public final class EdifactEnvelopeSettings {
     /**
      * Get the overwriteExistingTransactionSetControlNumber property: The value indicating whether to overwrite existing
      * transaction set control number.
-     *
+     * 
      * @return the overwriteExistingTransactionSetControlNumber value.
      */
     public boolean overwriteExistingTransactionSetControlNumber() {
@@ -875,20 +842,20 @@ public final class EdifactEnvelopeSettings {
     /**
      * Set the overwriteExistingTransactionSetControlNumber property: The value indicating whether to overwrite existing
      * transaction set control number.
-     *
+     * 
      * @param overwriteExistingTransactionSetControlNumber the overwriteExistingTransactionSetControlNumber value to
-     *     set.
+     * set.
      * @return the EdifactEnvelopeSettings object itself.
      */
-    public EdifactEnvelopeSettings withOverwriteExistingTransactionSetControlNumber(
-        boolean overwriteExistingTransactionSetControlNumber) {
+    public EdifactEnvelopeSettings
+        withOverwriteExistingTransactionSetControlNumber(boolean overwriteExistingTransactionSetControlNumber) {
         this.overwriteExistingTransactionSetControlNumber = overwriteExistingTransactionSetControlNumber;
         return this;
     }
 
     /**
      * Get the transactionSetControlNumberPrefix property: The transaction set control number prefix.
-     *
+     * 
      * @return the transactionSetControlNumberPrefix value.
      */
     public String transactionSetControlNumberPrefix() {
@@ -897,7 +864,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the transactionSetControlNumberPrefix property: The transaction set control number prefix.
-     *
+     * 
      * @param transactionSetControlNumberPrefix the transactionSetControlNumberPrefix value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -908,7 +875,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the transactionSetControlNumberSuffix property: The transaction set control number suffix.
-     *
+     * 
      * @return the transactionSetControlNumberSuffix value.
      */
     public String transactionSetControlNumberSuffix() {
@@ -917,7 +884,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the transactionSetControlNumberSuffix property: The transaction set control number suffix.
-     *
+     * 
      * @param transactionSetControlNumberSuffix the transactionSetControlNumberSuffix value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -928,7 +895,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the transactionSetControlNumberLowerBound property: The transaction set control number lower bound.
-     *
+     * 
      * @return the transactionSetControlNumberLowerBound value.
      */
     public long transactionSetControlNumberLowerBound() {
@@ -937,19 +904,19 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the transactionSetControlNumberLowerBound property: The transaction set control number lower bound.
-     *
+     * 
      * @param transactionSetControlNumberLowerBound the transactionSetControlNumberLowerBound value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
-    public EdifactEnvelopeSettings withTransactionSetControlNumberLowerBound(
-        long transactionSetControlNumberLowerBound) {
+    public EdifactEnvelopeSettings
+        withTransactionSetControlNumberLowerBound(long transactionSetControlNumberLowerBound) {
         this.transactionSetControlNumberLowerBound = transactionSetControlNumberLowerBound;
         return this;
     }
 
     /**
      * Get the transactionSetControlNumberUpperBound property: The transaction set control number upper bound.
-     *
+     * 
      * @return the transactionSetControlNumberUpperBound value.
      */
     public long transactionSetControlNumberUpperBound() {
@@ -958,12 +925,12 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the transactionSetControlNumberUpperBound property: The transaction set control number upper bound.
-     *
+     * 
      * @param transactionSetControlNumberUpperBound the transactionSetControlNumberUpperBound value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
-    public EdifactEnvelopeSettings withTransactionSetControlNumberUpperBound(
-        long transactionSetControlNumberUpperBound) {
+    public EdifactEnvelopeSettings
+        withTransactionSetControlNumberUpperBound(long transactionSetControlNumberUpperBound) {
         this.transactionSetControlNumberUpperBound = transactionSetControlNumberUpperBound;
         return this;
     }
@@ -971,7 +938,7 @@ public final class EdifactEnvelopeSettings {
     /**
      * Get the rolloverTransactionSetControlNumber property: The value indicating whether to rollover transaction set
      * control number.
-     *
+     * 
      * @return the rolloverTransactionSetControlNumber value.
      */
     public boolean rolloverTransactionSetControlNumber() {
@@ -981,19 +948,19 @@ public final class EdifactEnvelopeSettings {
     /**
      * Set the rolloverTransactionSetControlNumber property: The value indicating whether to rollover transaction set
      * control number.
-     *
+     * 
      * @param rolloverTransactionSetControlNumber the rolloverTransactionSetControlNumber value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
-    public EdifactEnvelopeSettings withRolloverTransactionSetControlNumber(
-        boolean rolloverTransactionSetControlNumber) {
+    public EdifactEnvelopeSettings
+        withRolloverTransactionSetControlNumber(boolean rolloverTransactionSetControlNumber) {
         this.rolloverTransactionSetControlNumber = rolloverTransactionSetControlNumber;
         return this;
     }
 
     /**
      * Get the isTestInterchange property: The value indicating whether the message is a test interchange.
-     *
+     * 
      * @return the isTestInterchange value.
      */
     public boolean isTestInterchange() {
@@ -1002,7 +969,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the isTestInterchange property: The value indicating whether the message is a test interchange.
-     *
+     * 
      * @param isTestInterchange the isTestInterchange value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -1013,7 +980,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the senderInternalIdentification property: The sender internal identification.
-     *
+     * 
      * @return the senderInternalIdentification value.
      */
     public String senderInternalIdentification() {
@@ -1022,7 +989,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the senderInternalIdentification property: The sender internal identification.
-     *
+     * 
      * @param senderInternalIdentification the senderInternalIdentification value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -1033,7 +1000,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the senderInternalSubIdentification property: The sender internal sub identification.
-     *
+     * 
      * @return the senderInternalSubIdentification value.
      */
     public String senderInternalSubIdentification() {
@@ -1042,7 +1009,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the senderInternalSubIdentification property: The sender internal sub identification.
-     *
+     * 
      * @param senderInternalSubIdentification the senderInternalSubIdentification value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -1053,7 +1020,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the receiverInternalIdentification property: The receiver internal identification.
-     *
+     * 
      * @return the receiverInternalIdentification value.
      */
     public String receiverInternalIdentification() {
@@ -1062,7 +1029,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the receiverInternalIdentification property: The receiver internal identification.
-     *
+     * 
      * @param receiverInternalIdentification the receiverInternalIdentification value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -1073,7 +1040,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Get the receiverInternalSubIdentification property: The receiver internal sub identification.
-     *
+     * 
      * @return the receiverInternalSubIdentification value.
      */
     public String receiverInternalSubIdentification() {
@@ -1082,7 +1049,7 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Set the receiverInternalSubIdentification property: The receiver internal sub identification.
-     *
+     * 
      * @param receiverInternalSubIdentification the receiverInternalSubIdentification value to set.
      * @return the EdifactEnvelopeSettings object itself.
      */
@@ -1093,9 +1060,168 @@ public final class EdifactEnvelopeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("applyDelimiterStringAdvice", this.applyDelimiterStringAdvice);
+        jsonWriter.writeBooleanField("createGroupingSegments", this.createGroupingSegments);
+        jsonWriter.writeBooleanField("enableDefaultGroupHeaders", this.enableDefaultGroupHeaders);
+        jsonWriter.writeLongField("interchangeControlNumberLowerBound", this.interchangeControlNumberLowerBound);
+        jsonWriter.writeLongField("interchangeControlNumberUpperBound", this.interchangeControlNumberUpperBound);
+        jsonWriter.writeBooleanField("rolloverInterchangeControlNumber", this.rolloverInterchangeControlNumber);
+        jsonWriter.writeLongField("groupControlNumberLowerBound", this.groupControlNumberLowerBound);
+        jsonWriter.writeLongField("groupControlNumberUpperBound", this.groupControlNumberUpperBound);
+        jsonWriter.writeBooleanField("rolloverGroupControlNumber", this.rolloverGroupControlNumber);
+        jsonWriter.writeBooleanField("overwriteExistingTransactionSetControlNumber",
+            this.overwriteExistingTransactionSetControlNumber);
+        jsonWriter.writeLongField("transactionSetControlNumberLowerBound", this.transactionSetControlNumberLowerBound);
+        jsonWriter.writeLongField("transactionSetControlNumberUpperBound", this.transactionSetControlNumberUpperBound);
+        jsonWriter.writeBooleanField("rolloverTransactionSetControlNumber", this.rolloverTransactionSetControlNumber);
+        jsonWriter.writeBooleanField("isTestInterchange", this.isTestInterchange);
+        jsonWriter.writeStringField("groupAssociationAssignedCode", this.groupAssociationAssignedCode);
+        jsonWriter.writeStringField("communicationAgreementId", this.communicationAgreementId);
+        jsonWriter.writeStringField("recipientReferencePasswordValue", this.recipientReferencePasswordValue);
+        jsonWriter.writeStringField("recipientReferencePasswordQualifier", this.recipientReferencePasswordQualifier);
+        jsonWriter.writeStringField("applicationReferenceId", this.applicationReferenceId);
+        jsonWriter.writeStringField("processingPriorityCode", this.processingPriorityCode);
+        jsonWriter.writeStringField("interchangeControlNumberPrefix", this.interchangeControlNumberPrefix);
+        jsonWriter.writeStringField("interchangeControlNumberSuffix", this.interchangeControlNumberSuffix);
+        jsonWriter.writeStringField("senderReverseRoutingAddress", this.senderReverseRoutingAddress);
+        jsonWriter.writeStringField("receiverReverseRoutingAddress", this.receiverReverseRoutingAddress);
+        jsonWriter.writeStringField("functionalGroupId", this.functionalGroupId);
+        jsonWriter.writeStringField("groupControllingAgencyCode", this.groupControllingAgencyCode);
+        jsonWriter.writeStringField("groupMessageVersion", this.groupMessageVersion);
+        jsonWriter.writeStringField("groupMessageRelease", this.groupMessageRelease);
+        jsonWriter.writeStringField("groupControlNumberPrefix", this.groupControlNumberPrefix);
+        jsonWriter.writeStringField("groupControlNumberSuffix", this.groupControlNumberSuffix);
+        jsonWriter.writeStringField("groupApplicationReceiverQualifier", this.groupApplicationReceiverQualifier);
+        jsonWriter.writeStringField("groupApplicationReceiverId", this.groupApplicationReceiverId);
+        jsonWriter.writeStringField("groupApplicationSenderQualifier", this.groupApplicationSenderQualifier);
+        jsonWriter.writeStringField("groupApplicationSenderId", this.groupApplicationSenderId);
+        jsonWriter.writeStringField("groupApplicationPassword", this.groupApplicationPassword);
+        jsonWriter.writeStringField("transactionSetControlNumberPrefix", this.transactionSetControlNumberPrefix);
+        jsonWriter.writeStringField("transactionSetControlNumberSuffix", this.transactionSetControlNumberSuffix);
+        jsonWriter.writeStringField("senderInternalIdentification", this.senderInternalIdentification);
+        jsonWriter.writeStringField("senderInternalSubIdentification", this.senderInternalSubIdentification);
+        jsonWriter.writeStringField("receiverInternalIdentification", this.receiverInternalIdentification);
+        jsonWriter.writeStringField("receiverInternalSubIdentification", this.receiverInternalSubIdentification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdifactEnvelopeSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdifactEnvelopeSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdifactEnvelopeSettings.
+     */
+    public static EdifactEnvelopeSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdifactEnvelopeSettings deserializedEdifactEnvelopeSettings = new EdifactEnvelopeSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applyDelimiterStringAdvice".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.applyDelimiterStringAdvice = reader.getBoolean();
+                } else if ("createGroupingSegments".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.createGroupingSegments = reader.getBoolean();
+                } else if ("enableDefaultGroupHeaders".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.enableDefaultGroupHeaders = reader.getBoolean();
+                } else if ("interchangeControlNumberLowerBound".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.interchangeControlNumberLowerBound = reader.getLong();
+                } else if ("interchangeControlNumberUpperBound".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.interchangeControlNumberUpperBound = reader.getLong();
+                } else if ("rolloverInterchangeControlNumber".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.rolloverInterchangeControlNumber = reader.getBoolean();
+                } else if ("groupControlNumberLowerBound".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupControlNumberLowerBound = reader.getLong();
+                } else if ("groupControlNumberUpperBound".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupControlNumberUpperBound = reader.getLong();
+                } else if ("rolloverGroupControlNumber".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.rolloverGroupControlNumber = reader.getBoolean();
+                } else if ("overwriteExistingTransactionSetControlNumber".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.overwriteExistingTransactionSetControlNumber
+                        = reader.getBoolean();
+                } else if ("transactionSetControlNumberLowerBound".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.transactionSetControlNumberLowerBound = reader.getLong();
+                } else if ("transactionSetControlNumberUpperBound".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.transactionSetControlNumberUpperBound = reader.getLong();
+                } else if ("rolloverTransactionSetControlNumber".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.rolloverTransactionSetControlNumber = reader.getBoolean();
+                } else if ("isTestInterchange".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.isTestInterchange = reader.getBoolean();
+                } else if ("groupAssociationAssignedCode".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupAssociationAssignedCode = reader.getString();
+                } else if ("communicationAgreementId".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.communicationAgreementId = reader.getString();
+                } else if ("recipientReferencePasswordValue".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.recipientReferencePasswordValue = reader.getString();
+                } else if ("recipientReferencePasswordQualifier".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.recipientReferencePasswordQualifier = reader.getString();
+                } else if ("applicationReferenceId".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.applicationReferenceId = reader.getString();
+                } else if ("processingPriorityCode".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.processingPriorityCode = reader.getString();
+                } else if ("interchangeControlNumberPrefix".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.interchangeControlNumberPrefix = reader.getString();
+                } else if ("interchangeControlNumberSuffix".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.interchangeControlNumberSuffix = reader.getString();
+                } else if ("senderReverseRoutingAddress".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.senderReverseRoutingAddress = reader.getString();
+                } else if ("receiverReverseRoutingAddress".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.receiverReverseRoutingAddress = reader.getString();
+                } else if ("functionalGroupId".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.functionalGroupId = reader.getString();
+                } else if ("groupControllingAgencyCode".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupControllingAgencyCode = reader.getString();
+                } else if ("groupMessageVersion".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupMessageVersion = reader.getString();
+                } else if ("groupMessageRelease".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupMessageRelease = reader.getString();
+                } else if ("groupControlNumberPrefix".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupControlNumberPrefix = reader.getString();
+                } else if ("groupControlNumberSuffix".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupControlNumberSuffix = reader.getString();
+                } else if ("groupApplicationReceiverQualifier".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupApplicationReceiverQualifier = reader.getString();
+                } else if ("groupApplicationReceiverId".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupApplicationReceiverId = reader.getString();
+                } else if ("groupApplicationSenderQualifier".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupApplicationSenderQualifier = reader.getString();
+                } else if ("groupApplicationSenderId".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupApplicationSenderId = reader.getString();
+                } else if ("groupApplicationPassword".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.groupApplicationPassword = reader.getString();
+                } else if ("transactionSetControlNumberPrefix".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.transactionSetControlNumberPrefix = reader.getString();
+                } else if ("transactionSetControlNumberSuffix".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.transactionSetControlNumberSuffix = reader.getString();
+                } else if ("senderInternalIdentification".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.senderInternalIdentification = reader.getString();
+                } else if ("senderInternalSubIdentification".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.senderInternalSubIdentification = reader.getString();
+                } else if ("receiverInternalIdentification".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.receiverInternalIdentification = reader.getString();
+                } else if ("receiverInternalSubIdentification".equals(fieldName)) {
+                    deserializedEdifactEnvelopeSettings.receiverInternalSubIdentification = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdifactEnvelopeSettings;
+        });
     }
 }

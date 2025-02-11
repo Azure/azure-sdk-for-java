@@ -8,42 +8,61 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.powerbidedicated.models.CapacityProvisioningState;
 import com.azure.resourcemanager.powerbidedicated.models.CapacitySku;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacityAdministrators;
 import com.azure.resourcemanager.powerbidedicated.models.Mode;
 import com.azure.resourcemanager.powerbidedicated.models.State;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents an instance of a Dedicated Capacity resource. */
+/**
+ * Represents an instance of a Dedicated Capacity resource.
+ */
 @Fluent
 public final class DedicatedCapacityInner extends Resource {
     /*
      * The SKU of the PowerBI Dedicated capacity resource.
      */
-    @JsonProperty(value = "sku", required = true)
     private CapacitySku sku;
 
     /*
      * Properties of the provision operation request.
      */
-    @JsonProperty(value = "properties")
     private DedicatedCapacityProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData")
     private SystemData systemData;
 
-    /** Creates an instance of DedicatedCapacityInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DedicatedCapacityInner class.
+     */
     public DedicatedCapacityInner() {
     }
 
     /**
      * Get the sku property: The SKU of the PowerBI Dedicated capacity resource.
-     *
+     * 
      * @return the sku value.
      */
     public CapacitySku sku() {
@@ -52,7 +71,7 @@ public final class DedicatedCapacityInner extends Resource {
 
     /**
      * Set the sku property: The SKU of the PowerBI Dedicated capacity resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DedicatedCapacityInner object itself.
      */
@@ -63,7 +82,7 @@ public final class DedicatedCapacityInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the provision operation request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DedicatedCapacityProperties innerProperties() {
@@ -72,7 +91,7 @@ public final class DedicatedCapacityInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -81,7 +100,7 @@ public final class DedicatedCapacityInner extends Resource {
 
     /**
      * Set the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @param systemData the systemData value to set.
      * @return the DedicatedCapacityInner object itself.
      */
@@ -90,14 +109,48 @@ public final class DedicatedCapacityInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedCapacityInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedCapacityInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -107,7 +160,7 @@ public final class DedicatedCapacityInner extends Resource {
     /**
      * Get the state property: The current state of PowerBI Dedicated resource. The state is to indicate more states
      * outside of resource provisioning.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -117,7 +170,7 @@ public final class DedicatedCapacityInner extends Resource {
     /**
      * Get the provisioningState property: The current deployment state of PowerBI Dedicated resource. The
      * provisioningState is to indicate states for resource provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CapacityProvisioningState provisioningState() {
@@ -126,7 +179,7 @@ public final class DedicatedCapacityInner extends Resource {
 
     /**
      * Get the administration property: A collection of Dedicated capacity administrators.
-     *
+     * 
      * @return the administration value.
      */
     public DedicatedCapacityAdministrators administration() {
@@ -135,7 +188,7 @@ public final class DedicatedCapacityInner extends Resource {
 
     /**
      * Set the administration property: A collection of Dedicated capacity administrators.
-     *
+     * 
      * @param administration the administration value to set.
      * @return the DedicatedCapacityInner object itself.
      */
@@ -151,7 +204,7 @@ public final class DedicatedCapacityInner extends Resource {
      * Get the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
      * default value 'Gen2' is used. [Learn
      * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
-     *
+     * 
      * @return the mode value.
      */
     public Mode mode() {
@@ -162,7 +215,7 @@ public final class DedicatedCapacityInner extends Resource {
      * Set the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
      * default value 'Gen2' is used. [Learn
      * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
-     *
+     * 
      * @param mode the mode value to set.
      * @return the DedicatedCapacityInner object itself.
      */
@@ -176,7 +229,7 @@ public final class DedicatedCapacityInner extends Resource {
 
     /**
      * Get the tenantId property: Tenant ID for the capacity. Used for creating Pro Plus capacity.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -185,7 +238,7 @@ public final class DedicatedCapacityInner extends Resource {
 
     /**
      * Get the friendlyName property: Capacity name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -194,14 +247,13 @@ public final class DedicatedCapacityInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model DedicatedCapacityInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model DedicatedCapacityInner"));
         } else {
             sku().validate();
         }
@@ -211,4 +263,60 @@ public final class DedicatedCapacityInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DedicatedCapacityInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("systemData", this.systemData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedCapacityInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedCapacityInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DedicatedCapacityInner.
+     */
+    public static DedicatedCapacityInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedCapacityInner deserializedDedicatedCapacityInner = new DedicatedCapacityInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDedicatedCapacityInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDedicatedCapacityInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDedicatedCapacityInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDedicatedCapacityInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDedicatedCapacityInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDedicatedCapacityInner.sku = CapacitySku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDedicatedCapacityInner.innerProperties = DedicatedCapacityProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDedicatedCapacityInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedCapacityInner;
+        });
+    }
 }

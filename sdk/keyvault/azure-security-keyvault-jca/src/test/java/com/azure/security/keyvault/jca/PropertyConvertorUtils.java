@@ -15,26 +15,23 @@ import java.util.List;
 
 public class PropertyConvertorUtils {
 
-    private static final Configuration GLOBAL_CONFIGURATION =  Configuration.getGlobalConfiguration();
+    private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     public static void putEnvironmentPropertyToSystemPropertyForKeyVaultJca() {
-        KEYVAULT_JCA_SYSTEM_PROPERTIES.forEach(
-            environmentPropertyKey -> {
-                String value = getPropertyValue(environmentPropertyKey);
-                String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
-                    "azure.keyvault.").replaceAll("_", "-");
-                System.getProperties().put(systemPropertyKey, value);
-            }
-        );
+        KEYVAULT_JCA_SYSTEM_PROPERTIES.forEach(environmentPropertyKey -> {
+            String value = getPropertyValue(environmentPropertyKey);
+            String systemPropertyKey = environmentPropertyKey.toLowerCase()
+                .replaceFirst("azure_keyvault_", "azure.keyvault.")
+                .replaceAll("_", "-");
+            System.getProperties().put(systemPropertyKey, value);
+        });
     }
 
     public static final List<String> KEYVAULT_JCA_SYSTEM_PROPERTIES = Arrays.asList("AZURE_KEYVAULT_ENDPOINT",
-        "AZURE_KEYVAULT_TENANT_ID",
-        "AZURE_KEYVAULT_CLIENT_ID",
-        "AZURE_KEYVAULT_CLIENT_SECRET",
-        "AZURE_KEYVAULT_URI");
+        "AZURE_KEYVAULT_TENANT_ID", "AZURE_KEYVAULT_CLIENT_ID", "AZURE_KEYVAULT_CLIENT_SECRET", "AZURE_KEYVAULT_URI");
 
-    public static KeyStore getKeyVaultKeyStore() throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
+    public static KeyStore getKeyVaultKeyStore()
+        throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
         return KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
     }
 

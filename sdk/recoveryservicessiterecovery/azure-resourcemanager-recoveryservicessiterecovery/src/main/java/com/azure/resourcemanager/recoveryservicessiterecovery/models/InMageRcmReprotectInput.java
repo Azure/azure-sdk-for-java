@@ -6,45 +6,55 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * InMageRcm specific provider input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcm")
 @Fluent
 public final class InMageRcmReprotectInput extends ReverseReplicationProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMageRcm";
+
+    /*
      * The reprotect agent Id.
      */
-    @JsonProperty(value = "reprotectAgentId", required = true)
     private String reprotectAgentId;
 
     /*
      * The target datastore name.
      */
-    @JsonProperty(value = "datastoreName", required = true)
     private String datastoreName;
 
     /*
      * The log storage account ARM Id.
      */
-    @JsonProperty(value = "logStorageAccountId", required = true)
     private String logStorageAccountId;
 
     /*
      * The Policy Id.
      */
-    @JsonProperty(value = "policyId")
     private String policyId;
 
     /**
      * Creates an instance of InMageRcmReprotectInput class.
      */
     public InMageRcmReprotectInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -134,20 +144,71 @@ public final class InMageRcmReprotectInput extends ReverseReplicationProviderSpe
      */
     @Override
     public void validate() {
-        super.validate();
         if (reprotectAgentId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property reprotectAgentId in model InMageRcmReprotectInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property reprotectAgentId in model InMageRcmReprotectInput"));
         }
         if (datastoreName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property datastoreName in model InMageRcmReprotectInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property datastoreName in model InMageRcmReprotectInput"));
         }
         if (logStorageAccountId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property logStorageAccountId in model InMageRcmReprotectInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property logStorageAccountId in model InMageRcmReprotectInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InMageRcmReprotectInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reprotectAgentId", this.reprotectAgentId);
+        jsonWriter.writeStringField("datastoreName", this.datastoreName);
+        jsonWriter.writeStringField("logStorageAccountId", this.logStorageAccountId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("policyId", this.policyId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmReprotectInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmReprotectInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InMageRcmReprotectInput.
+     */
+    public static InMageRcmReprotectInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmReprotectInput deserializedInMageRcmReprotectInput = new InMageRcmReprotectInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reprotectAgentId".equals(fieldName)) {
+                    deserializedInMageRcmReprotectInput.reprotectAgentId = reader.getString();
+                } else if ("datastoreName".equals(fieldName)) {
+                    deserializedInMageRcmReprotectInput.datastoreName = reader.getString();
+                } else if ("logStorageAccountId".equals(fieldName)) {
+                    deserializedInMageRcmReprotectInput.logStorageAccountId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmReprotectInput.instanceType = reader.getString();
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedInMageRcmReprotectInput.policyId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmReprotectInput;
+        });
+    }
 }

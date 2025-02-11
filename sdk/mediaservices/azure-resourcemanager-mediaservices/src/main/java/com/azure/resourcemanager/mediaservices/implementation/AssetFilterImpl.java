@@ -80,24 +80,20 @@ public final class AssetFilterImpl implements AssetFilter, AssetFilter.Definitio
     }
 
     public AssetFilter create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssetFilters()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, assetName, filterName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssetFilters()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, assetName, filterName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AssetFilter create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssetFilters()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, assetName, filterName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssetFilters()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, assetName, filterName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -112,53 +108,44 @@ public final class AssetFilterImpl implements AssetFilter, AssetFilter.Definitio
     }
 
     public AssetFilter apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssetFilters()
-                .updateWithResponse(
-                    resourceGroupName, accountName, assetName, filterName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssetFilters()
+            .updateWithResponse(resourceGroupName, accountName, assetName, filterName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public AssetFilter apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssetFilters()
-                .updateWithResponse(resourceGroupName, accountName, assetName, filterName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssetFilters()
+            .updateWithResponse(resourceGroupName, accountName, assetName, filterName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    AssetFilterImpl(
-        AssetFilterInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
+    AssetFilterImpl(AssetFilterInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "mediaServices");
-        this.assetName = Utils.getValueFromIdByName(innerObject.id(), "assets");
-        this.filterName = Utils.getValueFromIdByName(innerObject.id(), "assetFilters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mediaServices");
+        this.assetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "assets");
+        this.filterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "assetFilters");
     }
 
     public AssetFilter refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssetFilters()
-                .getWithResponse(resourceGroupName, accountName, assetName, filterName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssetFilters()
+            .getWithResponse(resourceGroupName, accountName, assetName, filterName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AssetFilter refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssetFilters()
-                .getWithResponse(resourceGroupName, accountName, assetName, filterName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssetFilters()
+            .getWithResponse(resourceGroupName, accountName, assetName, filterName, context)
+            .getValue();
         return this;
     }
 

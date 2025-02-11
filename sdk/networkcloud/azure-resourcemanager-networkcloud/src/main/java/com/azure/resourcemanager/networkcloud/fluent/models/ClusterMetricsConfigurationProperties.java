@@ -5,57 +5,60 @@
 package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfigurationDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfigurationProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** ClusterMetricsConfigurationProperties represents the properties of metrics configuration for the cluster. */
+/**
+ * ClusterMetricsConfigurationProperties represents the properties of metrics configuration for the cluster.
+ */
 @Fluent
-public final class ClusterMetricsConfigurationProperties {
+public final class ClusterMetricsConfigurationProperties
+    implements JsonSerializable<ClusterMetricsConfigurationProperties> {
     /*
      * The interval in minutes by which metrics will be collected.
      */
-    @JsonProperty(value = "collectionInterval", required = true)
     private long collectionInterval;
 
     /*
      * The more detailed status of the metrics configuration.
      */
-    @JsonProperty(value = "detailedStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterMetricsConfigurationDetailedStatus detailedStatus;
 
     /*
      * The descriptive message about the current detailed status.
      */
-    @JsonProperty(value = "detailedStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String detailedStatusMessage;
 
     /*
      * The list of metrics that are available for the cluster but disabled at the moment.
      */
-    @JsonProperty(value = "disabledMetrics", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> disabledMetrics;
 
     /*
      * The list of metric names that have been chosen to be enabled in addition to the core set of enabled metrics.
      */
-    @JsonProperty(value = "enabledMetrics")
     private List<String> enabledMetrics;
 
     /*
      * The provisioning state of the metrics configuration.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterMetricsConfigurationProvisioningState provisioningState;
 
-    /** Creates an instance of ClusterMetricsConfigurationProperties class. */
+    /**
+     * Creates an instance of ClusterMetricsConfigurationProperties class.
+     */
     public ClusterMetricsConfigurationProperties() {
     }
 
     /**
      * Get the collectionInterval property: The interval in minutes by which metrics will be collected.
-     *
+     * 
      * @return the collectionInterval value.
      */
     public long collectionInterval() {
@@ -64,7 +67,7 @@ public final class ClusterMetricsConfigurationProperties {
 
     /**
      * Set the collectionInterval property: The interval in minutes by which metrics will be collected.
-     *
+     * 
      * @param collectionInterval the collectionInterval value to set.
      * @return the ClusterMetricsConfigurationProperties object itself.
      */
@@ -75,7 +78,7 @@ public final class ClusterMetricsConfigurationProperties {
 
     /**
      * Get the detailedStatus property: The more detailed status of the metrics configuration.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public ClusterMetricsConfigurationDetailedStatus detailedStatus() {
@@ -84,7 +87,7 @@ public final class ClusterMetricsConfigurationProperties {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -94,7 +97,7 @@ public final class ClusterMetricsConfigurationProperties {
     /**
      * Get the disabledMetrics property: The list of metrics that are available for the cluster but disabled at the
      * moment.
-     *
+     * 
      * @return the disabledMetrics value.
      */
     public List<String> disabledMetrics() {
@@ -104,7 +107,7 @@ public final class ClusterMetricsConfigurationProperties {
     /**
      * Get the enabledMetrics property: The list of metric names that have been chosen to be enabled in addition to the
      * core set of enabled metrics.
-     *
+     * 
      * @return the enabledMetrics value.
      */
     public List<String> enabledMetrics() {
@@ -114,7 +117,7 @@ public final class ClusterMetricsConfigurationProperties {
     /**
      * Set the enabledMetrics property: The list of metric names that have been chosen to be enabled in addition to the
      * core set of enabled metrics.
-     *
+     * 
      * @param enabledMetrics the enabledMetrics value to set.
      * @return the ClusterMetricsConfigurationProperties object itself.
      */
@@ -125,7 +128,7 @@ public final class ClusterMetricsConfigurationProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the metrics configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ClusterMetricsConfigurationProvisioningState provisioningState() {
@@ -134,9 +137,63 @@ public final class ClusterMetricsConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("collectionInterval", this.collectionInterval);
+        jsonWriter.writeArrayField("enabledMetrics", this.enabledMetrics,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterMetricsConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterMetricsConfigurationProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterMetricsConfigurationProperties.
+     */
+    public static ClusterMetricsConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterMetricsConfigurationProperties deserializedClusterMetricsConfigurationProperties
+                = new ClusterMetricsConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("collectionInterval".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationProperties.collectionInterval = reader.getLong();
+                } else if ("detailedStatus".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationProperties.detailedStatus
+                        = ClusterMetricsConfigurationDetailedStatus.fromString(reader.getString());
+                } else if ("detailedStatusMessage".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationProperties.detailedStatusMessage = reader.getString();
+                } else if ("disabledMetrics".equals(fieldName)) {
+                    List<String> disabledMetrics = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterMetricsConfigurationProperties.disabledMetrics = disabledMetrics;
+                } else if ("enabledMetrics".equals(fieldName)) {
+                    List<String> enabledMetrics = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterMetricsConfigurationProperties.enabledMetrics = enabledMetrics;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationProperties.provisioningState
+                        = ClusterMetricsConfigurationProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterMetricsConfigurationProperties;
+        });
     }
 }

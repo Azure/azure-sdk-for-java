@@ -35,23 +35,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AzureTrafficCollectorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AzureTrafficCollectorsClient.
+ */
 public final class AzureTrafficCollectorsClientImpl implements AzureTrafficCollectorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AzureTrafficCollectorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureTrafficCollectorManagementClientImpl client;
 
     /**
      * Initializes an instance of AzureTrafficCollectorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AzureTrafficCollectorsClientImpl(AzureTrafficCollectorManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(AzureTrafficCollectorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AzureTrafficCollectorsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,124 +67,88 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
     @Host("{$host}")
     @ServiceInterface(name = "AzureTrafficCollecto")
     public interface AzureTrafficCollectorsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction"
-                + "/azureTrafficCollectors/{azureTrafficCollectorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureTrafficCollectorInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AzureTrafficCollectorInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
+            @BodyParam("application/json") AzureTrafficCollectorInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction"
-                + "/azureTrafficCollectors/{azureTrafficCollectorName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
-            @BodyParam("application/json") AzureTrafficCollectorInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction"
-                + "/azureTrafficCollectors/{azureTrafficCollectorName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AzureTrafficCollectorInner>> updateTags(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction"
-                + "/azureTrafficCollectors/{azureTrafficCollectorName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureTrafficCollectorInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TagsObject parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Azure Traffic Collector in a specified resource group along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureTrafficCollectorInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName) {
+    private Mono<Response<AzureTrafficCollectorInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            azureTrafficCollectorName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), azureTrafficCollectorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -187,67 +156,54 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Azure Traffic Collector in a specified resource group along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureTrafficCollectorInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName, Context context) {
+    private Mono<Response<AzureTrafficCollectorInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                azureTrafficCollectorName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), azureTrafficCollectorName, accept, context);
     }
 
     /**
      * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Traffic Collector in a specified resource group on successful completion of {@link
-     *     Mono}.
+     * @return the specified Azure Traffic Collector in a specified resource group on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureTrafficCollectorInner> getByResourceGroupAsync(
-        String resourceGroupName, String azureTrafficCollectorName) {
+    private Mono<AzureTrafficCollectorInner> getByResourceGroupAsync(String resourceGroupName,
+        String azureTrafficCollectorName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, azureTrafficCollectorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -257,14 +213,14 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return the specified Azure Traffic Collector in a specified resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureTrafficCollectorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureTrafficCollectorName, Context context) {
+    public Response<AzureTrafficCollectorInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureTrafficCollectorName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, azureTrafficCollectorName, context).block();
     }
 
     /**
      * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,7 +235,7 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -289,29 +245,23 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return azure Traffic Collector resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName, AzureTrafficCollectorInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, AzureTrafficCollectorInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -320,24 +270,15 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            azureTrafficCollectorName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), azureTrafficCollectorName, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -348,32 +289,23 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return azure Traffic Collector resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        AzureTrafficCollectorInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, AzureTrafficCollectorInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -382,21 +314,13 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                azureTrafficCollectorName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), azureTrafficCollectorName, parameters, accept, context);
     }
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -408,21 +332,16 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureTrafficCollectorInner>, AzureTrafficCollectorInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String azureTrafficCollectorName, AzureTrafficCollectorInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, azureTrafficCollectorName, parameters);
-        return this
-            .client
-            .<AzureTrafficCollectorInner, AzureTrafficCollectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureTrafficCollectorInner.class,
-                AzureTrafficCollectorInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, azureTrafficCollectorName, parameters);
+        return this.client.<AzureTrafficCollectorInner, AzureTrafficCollectorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureTrafficCollectorInner.class, AzureTrafficCollectorInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -434,26 +353,18 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureTrafficCollectorInner>, AzureTrafficCollectorInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        AzureTrafficCollectorInner parameters,
+        String resourceGroupName, String azureTrafficCollectorName, AzureTrafficCollectorInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, azureTrafficCollectorName, parameters, context);
-        return this
-            .client
-            .<AzureTrafficCollectorInner, AzureTrafficCollectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureTrafficCollectorInner.class,
-                AzureTrafficCollectorInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, azureTrafficCollectorName, parameters, context);
+        return this.client.<AzureTrafficCollectorInner, AzureTrafficCollectorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureTrafficCollectorInner.class, AzureTrafficCollectorInner.class, context);
     }
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -465,12 +376,12 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureTrafficCollectorInner>, AzureTrafficCollectorInner> beginCreateOrUpdate(
         String resourceGroupName, String azureTrafficCollectorName, AzureTrafficCollectorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, parameters).getSyncPoller();
     }
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -482,17 +393,15 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureTrafficCollectorInner>, AzureTrafficCollectorInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        AzureTrafficCollectorInner parameters,
+        String resourceGroupName, String azureTrafficCollectorName, AzureTrafficCollectorInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, parameters, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -502,16 +411,15 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return azure Traffic Collector resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureTrafficCollectorInner> createOrUpdateAsync(
-        String resourceGroupName, String azureTrafficCollectorName, AzureTrafficCollectorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, parameters)
-            .last()
+    private Mono<AzureTrafficCollectorInner> createOrUpdateAsync(String resourceGroupName,
+        String azureTrafficCollectorName, AzureTrafficCollectorInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -522,19 +430,15 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return azure Traffic Collector resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureTrafficCollectorInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        AzureTrafficCollectorInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, parameters, context)
-            .last()
+    private Mono<AzureTrafficCollectorInner> createOrUpdateAsync(String resourceGroupName,
+        String azureTrafficCollectorName, AzureTrafficCollectorInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -544,14 +448,14 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return azure Traffic Collector resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureTrafficCollectorInner createOrUpdate(
-        String resourceGroupName, String azureTrafficCollectorName, AzureTrafficCollectorInner parameters) {
+    public AzureTrafficCollectorInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
+        AzureTrafficCollectorInner parameters) {
         return createOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, parameters).block();
     }
 
     /**
      * Creates or updates a Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters The parameters to provide for the created Azure Traffic Collector.
@@ -562,17 +466,14 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return azure Traffic Collector resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureTrafficCollectorInner createOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        AzureTrafficCollectorInner parameters,
-        Context context) {
+    public AzureTrafficCollectorInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
+        AzureTrafficCollectorInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, parameters, context).block();
     }
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -581,49 +482,35 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            azureTrafficCollectorName,
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), azureTrafficCollectorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -633,46 +520,33 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                azureTrafficCollectorName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), azureTrafficCollectorName, accept, context);
     }
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -681,18 +555,16 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String azureTrafficCollectorName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String azureTrafficCollectorName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, azureTrafficCollectorName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -702,19 +574,18 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String azureTrafficCollectorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String azureTrafficCollectorName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, azureTrafficCollectorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, azureTrafficCollectorName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -724,12 +595,12 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureTrafficCollectorName) {
-        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, azureTrafficCollectorName).getSyncPoller();
     }
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -739,14 +610,14 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String azureTrafficCollectorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureTrafficCollectorName,
+        Context context) {
+        return this.beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, context).getSyncPoller();
     }
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -756,14 +627,13 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String azureTrafficCollectorName) {
-        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -774,14 +644,13 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String azureTrafficCollectorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -795,7 +664,7 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -810,7 +679,7 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
 
     /**
      * Updates the specified Azure Traffic Collector tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters Parameters supplied to update Azure Traffic Collector tags.
@@ -820,29 +689,23 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return azure Traffic Collector resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureTrafficCollectorInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName, TagsObject parameters) {
+    private Mono<Response<AzureTrafficCollectorInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -851,24 +714,15 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            azureTrafficCollectorName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), azureTrafficCollectorName, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the specified Azure Traffic Collector tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters Parameters supplied to update Azure Traffic Collector tags.
@@ -879,29 +733,23 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return azure Traffic Collector resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureTrafficCollectorInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName, TagsObject parameters, Context context) {
+    private Mono<Response<AzureTrafficCollectorInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -910,21 +758,13 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                azureTrafficCollectorName,
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), azureTrafficCollectorName, parameters, accept, context);
     }
 
     /**
      * Updates the specified Azure Traffic Collector tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters Parameters supplied to update Azure Traffic Collector tags.
@@ -934,15 +774,15 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return azure Traffic Collector resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureTrafficCollectorInner> updateTagsAsync(
-        String resourceGroupName, String azureTrafficCollectorName, TagsObject parameters) {
+    private Mono<AzureTrafficCollectorInner> updateTagsAsync(String resourceGroupName, String azureTrafficCollectorName,
+        TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, azureTrafficCollectorName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the specified Azure Traffic Collector tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters Parameters supplied to update Azure Traffic Collector tags.
@@ -953,14 +793,14 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return azure Traffic Collector resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureTrafficCollectorInner> updateTagsWithResponse(
-        String resourceGroupName, String azureTrafficCollectorName, TagsObject parameters, Context context) {
+    public Response<AzureTrafficCollectorInner> updateTagsWithResponse(String resourceGroupName,
+        String azureTrafficCollectorName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, azureTrafficCollectorName, parameters, context).block();
     }
 
     /**
      * Updates the specified Azure Traffic Collector tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param parameters Parameters supplied to update Azure Traffic Collector tags.
@@ -970,8 +810,8 @@ public final class AzureTrafficCollectorsClientImpl implements AzureTrafficColle
      * @return azure Traffic Collector resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureTrafficCollectorInner updateTags(
-        String resourceGroupName, String azureTrafficCollectorName, TagsObject parameters) {
+    public AzureTrafficCollectorInner updateTags(String resourceGroupName, String azureTrafficCollectorName,
+        TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, azureTrafficCollectorName, parameters, Context.NONE)
             .getValue();
     }

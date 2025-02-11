@@ -16,26 +16,25 @@ import org.junit.jupiter.api.Assertions;
 public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
-        VirtualMachine virtualMachine =
-            virtualMachines
-                .define(vmName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup()
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withAdminUsername("testuser")
-                .withAdminPassword(ResourceManagerTestProxyTestBase.password())
-                .withUnmanagedDisks()
-                .withNewUnmanagedDataDisk(30)
-                .defineUnmanagedDataDisk("disk2")
-                .withNewVhd(20)
-                .withCaching(CachingTypes.READ_ONLY)
-                .attach()
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .create();
+        final String vmName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        VirtualMachine virtualMachine = virtualMachines.define(vmName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup()
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("testuser")
+            .withAdminPassword(ResourceManagerTestProxyTestBase.password())
+            .withUnmanagedDisks()
+            .withNewUnmanagedDataDisk(30)
+            .defineUnmanagedDataDisk("disk2")
+            .withNewVhd(20)
+            .withCaching(CachingTypes.READ_ONLY)
+            .attach()
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .create();
 
         // Assertions.assertTrue(virtualMachine.size().equals(VirtualMachineSizeTypes.fromString("Standard_D2a_v4")));
         Assertions.assertTrue(virtualMachine.unmanagedDataDisks().size() == 2);
@@ -54,15 +53,13 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
 
     @Override
     public VirtualMachine updateResource(VirtualMachine virtualMachine) throws Exception {
-        virtualMachine =
-            virtualMachine
-                .update()
-                .withoutUnmanagedDataDisk("disk2")
-                .defineUnmanagedDataDisk("disk3")
-                .withNewVhd(10)
-                .withLun(2)
-                .attach()
-                .apply();
+        virtualMachine = virtualMachine.update()
+            .withoutUnmanagedDataDisk("disk2")
+            .defineUnmanagedDataDisk("disk3")
+            .withNewVhd(10)
+            .withLun(2)
+            .attach()
+            .apply();
         Assertions.assertTrue(virtualMachine.unmanagedDataDisks().size() == 2);
         VirtualMachineUnmanagedDataDisk disk3 = null;
         for (VirtualMachineUnmanagedDataDisk dataDisk : virtualMachine.unmanagedDataDisks().values()) {

@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of the module error info type. */
+/**
+ * Definition of the module error info type.
+ */
 @Fluent
-public final class ModuleErrorInfo {
+public final class ModuleErrorInfo implements JsonSerializable<ModuleErrorInfo> {
     /*
      * Gets or sets the error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Gets or sets the error message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
+     * Creates an instance of ModuleErrorInfo class.
+     */
+    public ModuleErrorInfo() {
+    }
+
+    /**
      * Get the code property: Gets or sets the error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -33,7 +43,7 @@ public final class ModuleErrorInfo {
 
     /**
      * Set the code property: Gets or sets the error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ModuleErrorInfo object itself.
      */
@@ -44,7 +54,7 @@ public final class ModuleErrorInfo {
 
     /**
      * Get the message property: Gets or sets the error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -53,7 +63,7 @@ public final class ModuleErrorInfo {
 
     /**
      * Set the message property: Gets or sets the error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ModuleErrorInfo object itself.
      */
@@ -64,9 +74,48 @@ public final class ModuleErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ModuleErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ModuleErrorInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ModuleErrorInfo.
+     */
+    public static ModuleErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ModuleErrorInfo deserializedModuleErrorInfo = new ModuleErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedModuleErrorInfo.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedModuleErrorInfo.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedModuleErrorInfo;
+        });
     }
 }

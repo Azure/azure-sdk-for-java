@@ -33,22 +33,28 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in QueryTextsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in QueryTextsClient.
+ */
 public final class QueryTextsClientImpl implements QueryTextsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final QueryTextsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MariaDBManagementClientImpl client;
 
     /**
      * Initializes an instance of QueryTextsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     QueryTextsClientImpl(MariaDBManagementClientImpl client) {
-        this.service =
-            RestProxy.create(QueryTextsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(QueryTextsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,52 +65,37 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
     @Host("{$host}")
     @ServiceInterface(name = "MariaDBManagementCli")
     public interface QueryTextsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
-                + "/servers/{serverName}/queryTexts/{queryId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/queryTexts/{queryId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueryTextInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("queryId") String queryId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QueryTextInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("queryId") String queryId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
-                + "/servers/{serverName}/queryTexts")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/queryTexts")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueryTextsResultList>> listByServer(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<QueryTextsResultList>> listByServer(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @QueryParam(value = "queryIds", multipleQueryParams = true) List<String> queryIds,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<QueryTextsResultList>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieve the Query-Store query texts for the queryId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryId The Query-Store query identifier.
@@ -114,19 +105,15 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @return represents a Query Text along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryTextInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String queryId) {
+    private Mono<Response<QueryTextInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String queryId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -141,24 +128,14 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            queryId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, serverName, queryId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the Query-Store query texts for the queryId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryId The Query-Store query identifier.
@@ -169,19 +146,15 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @return represents a Query Text along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryTextInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String queryId, Context context) {
+    private Mono<Response<QueryTextInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String queryId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -196,21 +169,13 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                queryId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            serverName, queryId, accept, context);
     }
 
     /**
      * Retrieve the Query-Store query texts for the queryId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryId The Query-Store query identifier.
@@ -227,7 +192,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
 
     /**
      * Retrieve the Query-Store query texts for the queryId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryId The Query-Store query identifier.
@@ -238,14 +203,14 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @return represents a Query Text along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryTextInner> getWithResponse(
-        String resourceGroupName, String serverName, String queryId, Context context) {
+    public Response<QueryTextInner> getWithResponse(String resourceGroupName, String serverName, String queryId,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, queryId, context).block();
     }
 
     /**
      * Retrieve the Query-Store query texts for the queryId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryId The Query-Store query identifier.
@@ -261,7 +226,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
 
     /**
      * Retrieve the Query-Store query texts for specified queryIds.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryIds The query identifiers.
@@ -271,19 +236,15 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @return a list of query texts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QueryTextInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, List<String> queryIds) {
+    private Mono<PagedResponse<QueryTextInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName,
+        List<String> queryIds) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -297,36 +258,19 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
         }
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
-        List<String> queryIdsConverted =
-            queryIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> queryIdsConverted
+            = queryIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            queryIdsConverted,
-                            accept,
-                            context))
-            .<PagedResponse<QueryTextInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, serverName, queryIdsConverted, accept, context))
+            .<PagedResponse<QueryTextInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the Query-Store query texts for specified queryIds.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryIds The query identifiers.
@@ -337,19 +281,15 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @return a list of query texts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QueryTextInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, List<String> queryIds, Context context) {
+    private Mono<PagedResponse<QueryTextInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName,
+        List<String> queryIds, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -363,33 +303,19 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
         }
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
-        List<String> queryIdsConverted =
-            queryIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> queryIdsConverted
+            = queryIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
-            .listByServer(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                queryIdsConverted,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByServer(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                serverName, queryIdsConverted, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieve the Query-Store query texts for specified queryIds.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryIds The query identifiers.
@@ -399,16 +325,15 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @return a list of query texts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QueryTextInner> listByServerAsync(
-        String resourceGroupName, String serverName, List<String> queryIds) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, queryIds),
+    private PagedFlux<QueryTextInner> listByServerAsync(String resourceGroupName, String serverName,
+        List<String> queryIds) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, queryIds),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieve the Query-Store query texts for specified queryIds.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryIds The query identifiers.
@@ -419,16 +344,15 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @return a list of query texts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QueryTextInner> listByServerAsync(
-        String resourceGroupName, String serverName, List<String> queryIds, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, queryIds, context),
+    private PagedFlux<QueryTextInner> listByServerAsync(String resourceGroupName, String serverName,
+        List<String> queryIds, Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, queryIds, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieve the Query-Store query texts for specified queryIds.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryIds The query identifiers.
@@ -438,14 +362,14 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @return a list of query texts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QueryTextInner> listByServer(
-        String resourceGroupName, String serverName, List<String> queryIds) {
+    public PagedIterable<QueryTextInner> listByServer(String resourceGroupName, String serverName,
+        List<String> queryIds) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, queryIds));
     }
 
     /**
      * Retrieve the Query-Store query texts for specified queryIds.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryIds The query identifiers.
@@ -456,16 +380,15 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @return a list of query texts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QueryTextInner> listByServer(
-        String resourceGroupName, String serverName, List<String> queryIds, Context context) {
+    public PagedIterable<QueryTextInner> listByServer(String resourceGroupName, String serverName,
+        List<String> queryIds, Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, queryIds, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -477,31 +400,21 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<QueryTextInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<QueryTextInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -514,23 +427,13 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

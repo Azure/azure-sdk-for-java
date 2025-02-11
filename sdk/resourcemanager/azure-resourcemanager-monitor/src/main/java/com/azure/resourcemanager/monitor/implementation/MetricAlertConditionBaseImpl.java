@@ -19,8 +19,7 @@ import java.util.TreeMap;
  * @param <InnerT> inner class, MetricCriteria or DynamicMetricCriteria
  * @param <SubclassT> subclass, i.e., MetricAlertConditionImpl or MetricDynamicAlertConditionImpl
  */
-class MetricAlertConditionBaseImpl<
-        InnerT extends MultiMetricCriteria, SubclassT extends MetricAlertConditionBaseImpl<InnerT, SubclassT>>
+class MetricAlertConditionBaseImpl<InnerT extends MultiMetricCriteria, SubclassT extends MetricAlertConditionBaseImpl<InnerT, SubclassT>>
     extends WrapperImpl<InnerT> {
 
     protected final MetricAlertImpl parent;

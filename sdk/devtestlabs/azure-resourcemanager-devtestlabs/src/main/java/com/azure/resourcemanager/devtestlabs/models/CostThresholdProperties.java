@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a cost threshold item. */
+/**
+ * Properties of a cost threshold item.
+ */
 @Fluent
-public final class CostThresholdProperties {
+public final class CostThresholdProperties implements JsonSerializable<CostThresholdProperties> {
     /*
      * The ID of the cost threshold item.
      */
-    @JsonProperty(value = "thresholdId")
     private String thresholdId;
 
     /*
      * The value of the percentage cost threshold.
      */
-    @JsonProperty(value = "percentageThreshold")
     private PercentageCostThresholdProperties percentageThreshold;
 
     /*
      * Indicates whether this threshold will be displayed on cost charts.
      */
-    @JsonProperty(value = "displayOnChart")
     private CostThresholdStatus displayOnChart;
 
     /*
      * Indicates whether notifications will be sent when this threshold is exceeded.
      */
-    @JsonProperty(value = "sendNotificationWhenExceeded")
     private CostThresholdStatus sendNotificationWhenExceeded;
 
     /*
      * Indicates the datetime when notifications were last sent for this threshold.
      */
-    @JsonProperty(value = "notificationSent")
     private String notificationSent;
 
-    /** Creates an instance of CostThresholdProperties class. */
+    /**
+     * Creates an instance of CostThresholdProperties class.
+     */
     public CostThresholdProperties() {
     }
 
     /**
      * Get the thresholdId property: The ID of the cost threshold item.
-     *
+     * 
      * @return the thresholdId value.
      */
     public String thresholdId() {
@@ -55,7 +58,7 @@ public final class CostThresholdProperties {
 
     /**
      * Set the thresholdId property: The ID of the cost threshold item.
-     *
+     * 
      * @param thresholdId the thresholdId value to set.
      * @return the CostThresholdProperties object itself.
      */
@@ -66,7 +69,7 @@ public final class CostThresholdProperties {
 
     /**
      * Get the percentageThreshold property: The value of the percentage cost threshold.
-     *
+     * 
      * @return the percentageThreshold value.
      */
     public PercentageCostThresholdProperties percentageThreshold() {
@@ -75,7 +78,7 @@ public final class CostThresholdProperties {
 
     /**
      * Set the percentageThreshold property: The value of the percentage cost threshold.
-     *
+     * 
      * @param percentageThreshold the percentageThreshold value to set.
      * @return the CostThresholdProperties object itself.
      */
@@ -86,7 +89,7 @@ public final class CostThresholdProperties {
 
     /**
      * Get the displayOnChart property: Indicates whether this threshold will be displayed on cost charts.
-     *
+     * 
      * @return the displayOnChart value.
      */
     public CostThresholdStatus displayOnChart() {
@@ -95,7 +98,7 @@ public final class CostThresholdProperties {
 
     /**
      * Set the displayOnChart property: Indicates whether this threshold will be displayed on cost charts.
-     *
+     * 
      * @param displayOnChart the displayOnChart value to set.
      * @return the CostThresholdProperties object itself.
      */
@@ -107,7 +110,7 @@ public final class CostThresholdProperties {
     /**
      * Get the sendNotificationWhenExceeded property: Indicates whether notifications will be sent when this threshold
      * is exceeded.
-     *
+     * 
      * @return the sendNotificationWhenExceeded value.
      */
     public CostThresholdStatus sendNotificationWhenExceeded() {
@@ -117,7 +120,7 @@ public final class CostThresholdProperties {
     /**
      * Set the sendNotificationWhenExceeded property: Indicates whether notifications will be sent when this threshold
      * is exceeded.
-     *
+     * 
      * @param sendNotificationWhenExceeded the sendNotificationWhenExceeded value to set.
      * @return the CostThresholdProperties object itself.
      */
@@ -128,7 +131,7 @@ public final class CostThresholdProperties {
 
     /**
      * Get the notificationSent property: Indicates the datetime when notifications were last sent for this threshold.
-     *
+     * 
      * @return the notificationSent value.
      */
     public String notificationSent() {
@@ -137,7 +140,7 @@ public final class CostThresholdProperties {
 
     /**
      * Set the notificationSent property: Indicates the datetime when notifications were last sent for this threshold.
-     *
+     * 
      * @param notificationSent the notificationSent value to set.
      * @return the CostThresholdProperties object itself.
      */
@@ -148,12 +151,65 @@ public final class CostThresholdProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (percentageThreshold() != null) {
             percentageThreshold().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("thresholdId", this.thresholdId);
+        jsonWriter.writeJsonField("percentageThreshold", this.percentageThreshold);
+        jsonWriter.writeStringField("displayOnChart",
+            this.displayOnChart == null ? null : this.displayOnChart.toString());
+        jsonWriter.writeStringField("sendNotificationWhenExceeded",
+            this.sendNotificationWhenExceeded == null ? null : this.sendNotificationWhenExceeded.toString());
+        jsonWriter.writeStringField("notificationSent", this.notificationSent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CostThresholdProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CostThresholdProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CostThresholdProperties.
+     */
+    public static CostThresholdProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CostThresholdProperties deserializedCostThresholdProperties = new CostThresholdProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("thresholdId".equals(fieldName)) {
+                    deserializedCostThresholdProperties.thresholdId = reader.getString();
+                } else if ("percentageThreshold".equals(fieldName)) {
+                    deserializedCostThresholdProperties.percentageThreshold
+                        = PercentageCostThresholdProperties.fromJson(reader);
+                } else if ("displayOnChart".equals(fieldName)) {
+                    deserializedCostThresholdProperties.displayOnChart
+                        = CostThresholdStatus.fromString(reader.getString());
+                } else if ("sendNotificationWhenExceeded".equals(fieldName)) {
+                    deserializedCostThresholdProperties.sendNotificationWhenExceeded
+                        = CostThresholdStatus.fromString(reader.getString());
+                } else if ("notificationSent".equals(fieldName)) {
+                    deserializedCostThresholdProperties.notificationSent = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCostThresholdProperties;
+        });
     }
 }

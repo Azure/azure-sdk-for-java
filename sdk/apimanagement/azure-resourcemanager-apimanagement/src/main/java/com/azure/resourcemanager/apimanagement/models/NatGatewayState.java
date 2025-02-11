@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Property can be used to enable NAT Gateway for this API Management service. */
+/**
+ * Property can be used to enable NAT Gateway for this API Management service.
+ */
 public final class NatGatewayState extends ExpandableStringEnum<NatGatewayState> {
-    /** Static value Enabled for NatGatewayState. */
+    /**
+     * Static value Enabled for NatGatewayState.
+     */
     public static final NatGatewayState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for NatGatewayState. */
+    /**
+     * Static value Disabled for NatGatewayState.
+     */
     public static final NatGatewayState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of NatGatewayState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class NatGatewayState extends ExpandableStringEnum<NatGatewayState>
 
     /**
      * Creates or finds a NatGatewayState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NatGatewayState.
      */
-    @JsonCreator
     public static NatGatewayState fromString(String name) {
         return fromString(name, NatGatewayState.class);
     }
 
     /**
      * Gets known NatGatewayState values.
-     *
+     * 
      * @return known NatGatewayState values.
      */
     public static Collection<NatGatewayState> values() {

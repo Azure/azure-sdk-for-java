@@ -18,7 +18,8 @@ public final class CatalogsListDeploymentsSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsListDeployments(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().listDeployments("MyResourceGroup1", "MyCatalog1", null, null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.catalogs()
+            .listDeployments("MyResourceGroup1", "MyCatalog1", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

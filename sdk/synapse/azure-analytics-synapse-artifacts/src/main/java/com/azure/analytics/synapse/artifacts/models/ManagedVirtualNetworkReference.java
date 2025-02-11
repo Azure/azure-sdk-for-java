@@ -19,7 +19,7 @@ public final class ManagedVirtualNetworkReference implements JsonSerializable<Ma
     /*
      * Managed Virtual Network reference type.
      */
-    private String type = "ManagedVirtualNetworkReference";
+    private final String type = "ManagedVirtualNetworkReference";
 
     /*
      * Reference ManagedVirtualNetwork name.
@@ -39,17 +39,6 @@ public final class ManagedVirtualNetworkReference implements JsonSerializable<Ma
      */
     public String getType() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Managed Virtual Network reference type.
-     * 
-     * @param type the type value to set.
-     * @return the ManagedVirtualNetworkReference object itself.
-     */
-    public ManagedVirtualNetworkReference setType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

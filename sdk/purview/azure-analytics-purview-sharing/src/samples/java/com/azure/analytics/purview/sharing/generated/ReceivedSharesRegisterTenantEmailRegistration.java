@@ -13,15 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReceivedSharesRegisterTenantEmailRegistration {
     public static void main(String[] args) {
-        ReceivedSharesClient receivedSharesClient =
-                new ReceivedSharesClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("accountName.purview.azure.com/share")
-                        .buildClient();
+        ReceivedSharesClient receivedSharesClient
+            = new ReceivedSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("accountName.purview.azure.com/share")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.sharing.generated.receivedsharesregistertenantemailregistration.receivedsharesregistertenantemailregistration
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                receivedSharesClient.registerTenantEmailRegistrationWithResponse(requestOptions);
+        Response<BinaryData> response
+            = receivedSharesClient.registerTenantEmailRegistrationWithResponse(requestOptions);
         // END:com.azure.analytics.purview.sharing.generated.receivedsharesregistertenantemailregistration.receivedsharesregistertenantemailregistration
     }
 }

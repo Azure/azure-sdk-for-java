@@ -16,13 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for Azure function app deployment slot management API. */
 @Fluent
-public interface FunctionDeploymentSlots
-    extends SupportsCreating<FunctionDeploymentSlot.DefinitionStages.Blank>,
-        SupportsListing<FunctionDeploymentSlotBasic>,
-        SupportsGettingByName<FunctionDeploymentSlot>,
-        SupportsGettingById<FunctionDeploymentSlot>,
-        SupportsDeletingById,
-        SupportsDeletingByName,
-        HasManager<AppServiceManager>,
-        HasParent<FunctionApp> {
+public interface FunctionDeploymentSlots extends SupportsCreating<FunctionDeploymentSlot.DefinitionStages.Blank>,
+    SupportsListing<FunctionDeploymentSlotBasic>, SupportsGettingByName<FunctionDeploymentSlot>,
+    SupportsGettingById<FunctionDeploymentSlot>, SupportsDeletingById, SupportsDeletingByName,
+    HasManager<AppServiceManager>, HasParent<FunctionApp> {
 }

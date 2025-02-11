@@ -10,11 +10,9 @@ import com.azure.resourcemanager.resourceconnector.models.UpgradeGraphProperties
 public final class UpgradeGraphPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpgradeGraphProperties model =
-            BinaryData
-                .fromString(
-                    "{\"applianceVersion\":\"ihnhun\",\"supportedVersions\":[{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"fygxgispemvtzfk\",\"catalog\":\"ubljofxqe\",\"offer\":\"jaeq\",\"version\":\"qjbasvms\"},\"name\":\"qulngsntnbybkzgc\",\"namespace\":\"wclxxwrl\"}},\"version\":\"ouskcqvkocrc\"},{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"nh\",\"catalog\":\"njbiksqrglssain\",\"offer\":\"jwnzlljfmp\",\"version\":\"ebvmgxsabkyqd\"},\"name\":\"jitcjczdzevn\",\"namespace\":\"krwpdap\"}},\"version\":\"sbdkvwr\"},{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"snhu\",\"catalog\":\"eltmrldhugjzzdat\",\"offer\":\"hocdgeab\",\"version\":\"phut\"},\"name\":\"ndv\",\"namespace\":\"ozwyiftyhxhuro\"}},\"version\":\"tyxolniwpwc\"},{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"giawx\",\"catalog\":\"ryplwckbasyypn\",\"offer\":\"hsgcbacphejkot\",\"version\":\"qgoulznd\"},\"name\":\"kwy\",\"namespace\":\"gfgibm\"}},\"version\":\"gakeqsr\"}]}")
-                .toObject(UpgradeGraphProperties.class);
+        UpgradeGraphProperties model = BinaryData.fromString(
+            "{\"applianceVersion\":\"ihnhun\",\"supportedVersions\":[{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"fygxgispemvtzfk\",\"catalog\":\"ubljofxqe\",\"offer\":\"jaeq\",\"version\":\"qjbasvms\"},\"name\":\"qulngsntnbybkzgc\",\"namespace\":\"wclxxwrl\"}},\"version\":\"ouskcqvkocrc\"},{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"nh\",\"catalog\":\"njbiksqrglssain\",\"offer\":\"jwnzlljfmp\",\"version\":\"ebvmgxsabkyqd\"},\"name\":\"jitcjczdzevn\",\"namespace\":\"krwpdap\"}},\"version\":\"sbdkvwr\"},{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"snhu\",\"catalog\":\"eltmrldhugjzzdat\",\"offer\":\"hocdgeab\",\"version\":\"phut\"},\"name\":\"ndv\",\"namespace\":\"ozwyiftyhxhuro\"}},\"version\":\"tyxolniwpwc\"},{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"giawx\",\"catalog\":\"ryplwckbasyypn\",\"offer\":\"hsgcbacphejkot\",\"version\":\"qgoulznd\"},\"name\":\"kwy\",\"namespace\":\"gfgibm\"}},\"version\":\"gakeqsr\"}]}")
+            .toObject(UpgradeGraphProperties.class);
     }
 
     @org.junit.jupiter.api.Test

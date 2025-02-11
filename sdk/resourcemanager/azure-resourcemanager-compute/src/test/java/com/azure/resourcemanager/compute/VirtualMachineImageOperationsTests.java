@@ -25,8 +25,8 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
         Assertions.assertTrue(TestUtilities.getSize(images) > 0);
          */
 
-        PagedIterable<VirtualMachinePublisher> publishers =
-            computeManager.virtualMachineImages().publishers().listByRegion(Region.US_EAST);
+        PagedIterable<VirtualMachinePublisher> publishers
+            = computeManager.virtualMachineImages().publishers().listByRegion(Region.US_EAST);
 
         VirtualMachinePublisher canonicalPublisher = null;
         for (VirtualMachinePublisher publisher : publishers) {
@@ -59,32 +59,18 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
             Assertions.assertNotNull(diskImage.lun());
         }
 
-        VirtualMachineImage vmImage =
-            computeManager
-                .virtualMachineImages()
-                .getImage(
-                    Region.US_EAST,
-                    firstVMImage.publisherName(),
-                    firstVMImage.offer(),
-                    firstVMImage.sku(),
-                    firstVMImage.version());
+        VirtualMachineImage vmImage = computeManager.virtualMachineImages()
+            .getImage(Region.US_EAST, firstVMImage.publisherName(), firstVMImage.offer(), firstVMImage.sku(),
+                firstVMImage.version());
         Assertions.assertNotNull(vmImage);
 
-        vmImage =
-            computeManager
-                .virtualMachineImages()
-                .getImage(
-                    "eastus",
-                    firstVMImage.publisherName(),
-                    firstVMImage.offer(),
-                    firstVMImage.sku(),
-                    firstVMImage.version());
+        vmImage = computeManager.virtualMachineImages()
+            .getImage("eastus", firstVMImage.publisherName(), firstVMImage.offer(), firstVMImage.sku(),
+                firstVMImage.version());
         Assertions.assertNotNull(vmImage);
 
-        vmImage =
-            computeManager
-                .virtualMachineImages()
-                .getImage("eastus", firstVMImage.publisherName(), firstVMImage.offer(), firstVMImage.sku(), "latest");
+        vmImage = computeManager.virtualMachineImages()
+            .getImage("eastus", firstVMImage.publisherName(), firstVMImage.offer(), firstVMImage.sku(), "latest");
         Assertions.assertNotNull(vmImage);
     }
 }

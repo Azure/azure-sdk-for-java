@@ -13,8 +13,8 @@ public final class ElasticVersionListFormatImpl implements ElasticVersionListFor
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    ElasticVersionListFormatImpl(
-        ElasticVersionListFormatInner innerObject, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    ElasticVersionListFormatImpl(ElasticVersionListFormatInner innerObject,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

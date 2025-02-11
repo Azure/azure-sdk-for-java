@@ -6,24 +6,31 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The FeaturesRule model. */
+/**
+ * The FeaturesRule model.
+ */
 @Fluent
-public class FeaturesRule {
+public class FeaturesRule implements JsonSerializable<FeaturesRule> {
     /*
      * The requiredFeaturesPolicy property.
      */
-    @JsonProperty(value = "requiredFeaturesPolicy", required = true)
     private FeaturesPolicy requiredFeaturesPolicy;
 
-    /** Creates an instance of FeaturesRule class. */
+    /**
+     * Creates an instance of FeaturesRule class.
+     */
     public FeaturesRule() {
     }
 
     /**
      * Get the requiredFeaturesPolicy property: The requiredFeaturesPolicy property.
-     *
+     * 
      * @return the requiredFeaturesPolicy value.
      */
     public FeaturesPolicy requiredFeaturesPolicy() {
@@ -32,7 +39,7 @@ public class FeaturesRule {
 
     /**
      * Set the requiredFeaturesPolicy property: The requiredFeaturesPolicy property.
-     *
+     * 
      * @param requiredFeaturesPolicy the requiredFeaturesPolicy value to set.
      * @return the FeaturesRule object itself.
      */
@@ -43,17 +50,54 @@ public class FeaturesRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (requiredFeaturesPolicy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property requiredFeaturesPolicy in model FeaturesRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property requiredFeaturesPolicy in model FeaturesRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FeaturesRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("requiredFeaturesPolicy",
+            this.requiredFeaturesPolicy == null ? null : this.requiredFeaturesPolicy.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FeaturesRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FeaturesRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FeaturesRule.
+     */
+    public static FeaturesRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FeaturesRule deserializedFeaturesRule = new FeaturesRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requiredFeaturesPolicy".equals(fieldName)) {
+                    deserializedFeaturesRule.requiredFeaturesPolicy = FeaturesPolicy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFeaturesRule;
+        });
+    }
 }

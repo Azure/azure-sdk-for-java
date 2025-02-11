@@ -10,9 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.implementation.util.MappingUtils;
 import java.io.IOException;
 import java.util.Map;
-import com.azure.search.documents.implementation.util.MappingUtils;
 
 /**
  * Represents parameters for indexer execution.

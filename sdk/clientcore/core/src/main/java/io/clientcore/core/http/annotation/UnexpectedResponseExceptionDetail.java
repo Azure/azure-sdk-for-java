@@ -70,7 +70,7 @@ public @interface UnexpectedResponseExceptionDetail {
      *
      * @return The HTTP status codes that trigger the exception to be thrown or returned.
      */
-    int[] statusCode() default {};
+    int[] statusCode() default { };
 
     /**
      * The class to decode the body of the HTTP response that accompanies an {@link HttpResponseException} to be thrown

@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Action status. */
+/**
+ * Action status.
+ */
 @Fluent
-public final class ActionStatus {
+public final class ActionStatus implements JsonSerializable<ActionStatus> {
     /*
      * Value indicating whether alert is suppressed.
      */
-    @JsonProperty(value = "isSuppressed")
     private Boolean isSuppressed;
 
     /**
+     * Creates an instance of ActionStatus class.
+     */
+    public ActionStatus() {
+    }
+
+    /**
      * Get the isSuppressed property: Value indicating whether alert is suppressed.
-     *
+     * 
      * @return the isSuppressed value.
      */
     public Boolean isSuppressed() {
@@ -27,7 +38,7 @@ public final class ActionStatus {
 
     /**
      * Set the isSuppressed property: Value indicating whether alert is suppressed.
-     *
+     * 
      * @param isSuppressed the isSuppressed value to set.
      * @return the ActionStatus object itself.
      */
@@ -38,9 +49,45 @@ public final class ActionStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isSuppressed", this.isSuppressed);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActionStatus.
+     */
+    public static ActionStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionStatus deserializedActionStatus = new ActionStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isSuppressed".equals(fieldName)) {
+                    deserializedActionStatus.isSuppressed = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionStatus;
+        });
     }
 }

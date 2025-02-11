@@ -398,7 +398,7 @@ public interface AnnotationJavadocCodesnippets {
             @QueryParam(value = "query", encoded = true) String query);
 
         // In this case, if consumer pass "a=b" as the value for 'query' then the resolved url looks like:
-        // "http://wq.com/foo/paramblah/values?connectionString=a=b"
+        // "http://wq.com/foo/subpath/values?connectionString=a=b"
         // END: com.azure.core.annotation.QueryParam.class3
 
         // BEGIN: com.azure.core.annotation.QueryParam.class4

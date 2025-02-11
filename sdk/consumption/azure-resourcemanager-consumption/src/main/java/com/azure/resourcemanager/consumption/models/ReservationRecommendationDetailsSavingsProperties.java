@@ -5,57 +5,58 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Details of the estimated savings. */
+/**
+ * Details of the estimated savings.
+ */
 @Fluent
-public final class ReservationRecommendationDetailsSavingsProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ReservationRecommendationDetailsSavingsProperties.class);
-
+public final class ReservationRecommendationDetailsSavingsProperties
+    implements JsonSerializable<ReservationRecommendationDetailsSavingsProperties> {
     /*
      * List of calculated savings.
      */
-    @JsonProperty(value = "calculatedSavings")
     private List<ReservationRecommendationDetailsCalculatedSavingsProperties> calculatedSavings;
 
     /*
-     * Number of days of usage to look back used for computing the
-     * recommendation.
+     * Number of days of usage to look back used for computing the recommendation.
      */
-    @JsonProperty(value = "lookBackPeriod", access = JsonProperty.Access.WRITE_ONLY)
     private Integer lookBackPeriod;
 
     /*
      * Number of recommended units of the resource.
      */
-    @JsonProperty(value = "recommendedQuantity", access = JsonProperty.Access.WRITE_ONLY)
     private Float recommendedQuantity;
 
     /*
      * Term period of the reservation, ex: P1Y or P3Y.
      */
-    @JsonProperty(value = "reservationOrderTerm", access = JsonProperty.Access.WRITE_ONLY)
     private String reservationOrderTerm;
 
     /*
      * Type of savings, ex: instance.
      */
-    @JsonProperty(value = "savingsType", access = JsonProperty.Access.WRITE_ONLY)
     private String savingsType;
 
     /*
      * Measurement unit ex: hour etc.
      */
-    @JsonProperty(value = "unitOfMeasure", access = JsonProperty.Access.WRITE_ONLY)
     private String unitOfMeasure;
 
     /**
+     * Creates an instance of ReservationRecommendationDetailsSavingsProperties class.
+     */
+    public ReservationRecommendationDetailsSavingsProperties() {
+    }
+
+    /**
      * Get the calculatedSavings property: List of calculated savings.
-     *
+     * 
      * @return the calculatedSavings value.
      */
     public List<ReservationRecommendationDetailsCalculatedSavingsProperties> calculatedSavings() {
@@ -64,19 +65,19 @@ public final class ReservationRecommendationDetailsSavingsProperties {
 
     /**
      * Set the calculatedSavings property: List of calculated savings.
-     *
+     * 
      * @param calculatedSavings the calculatedSavings value to set.
      * @return the ReservationRecommendationDetailsSavingsProperties object itself.
      */
-    public ReservationRecommendationDetailsSavingsProperties withCalculatedSavings(
-        List<ReservationRecommendationDetailsCalculatedSavingsProperties> calculatedSavings) {
+    public ReservationRecommendationDetailsSavingsProperties
+        withCalculatedSavings(List<ReservationRecommendationDetailsCalculatedSavingsProperties> calculatedSavings) {
         this.calculatedSavings = calculatedSavings;
         return this;
     }
 
     /**
      * Get the lookBackPeriod property: Number of days of usage to look back used for computing the recommendation.
-     *
+     * 
      * @return the lookBackPeriod value.
      */
     public Integer lookBackPeriod() {
@@ -85,7 +86,7 @@ public final class ReservationRecommendationDetailsSavingsProperties {
 
     /**
      * Get the recommendedQuantity property: Number of recommended units of the resource.
-     *
+     * 
      * @return the recommendedQuantity value.
      */
     public Float recommendedQuantity() {
@@ -94,7 +95,7 @@ public final class ReservationRecommendationDetailsSavingsProperties {
 
     /**
      * Get the reservationOrderTerm property: Term period of the reservation, ex: P1Y or P3Y.
-     *
+     * 
      * @return the reservationOrderTerm value.
      */
     public String reservationOrderTerm() {
@@ -103,7 +104,7 @@ public final class ReservationRecommendationDetailsSavingsProperties {
 
     /**
      * Get the savingsType property: Type of savings, ex: instance.
-     *
+     * 
      * @return the savingsType value.
      */
     public String savingsType() {
@@ -112,7 +113,7 @@ public final class ReservationRecommendationDetailsSavingsProperties {
 
     /**
      * Get the unitOfMeasure property: Measurement unit ex: hour etc.
-     *
+     * 
      * @return the unitOfMeasure value.
      */
     public String unitOfMeasure() {
@@ -121,12 +122,66 @@ public final class ReservationRecommendationDetailsSavingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (calculatedSavings() != null) {
             calculatedSavings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("calculatedSavings", this.calculatedSavings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationRecommendationDetailsSavingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationRecommendationDetailsSavingsProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationRecommendationDetailsSavingsProperties.
+     */
+    public static ReservationRecommendationDetailsSavingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationRecommendationDetailsSavingsProperties deserializedReservationRecommendationDetailsSavingsProperties
+                = new ReservationRecommendationDetailsSavingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("calculatedSavings".equals(fieldName)) {
+                    List<ReservationRecommendationDetailsCalculatedSavingsProperties> calculatedSavings
+                        = reader.readArray(
+                            reader1 -> ReservationRecommendationDetailsCalculatedSavingsProperties.fromJson(reader1));
+                    deserializedReservationRecommendationDetailsSavingsProperties.calculatedSavings = calculatedSavings;
+                } else if ("lookBackPeriod".equals(fieldName)) {
+                    deserializedReservationRecommendationDetailsSavingsProperties.lookBackPeriod
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("recommendedQuantity".equals(fieldName)) {
+                    deserializedReservationRecommendationDetailsSavingsProperties.recommendedQuantity
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("reservationOrderTerm".equals(fieldName)) {
+                    deserializedReservationRecommendationDetailsSavingsProperties.reservationOrderTerm
+                        = reader.getString();
+                } else if ("savingsType".equals(fieldName)) {
+                    deserializedReservationRecommendationDetailsSavingsProperties.savingsType = reader.getString();
+                } else if ("unitOfMeasure".equals(fieldName)) {
+                    deserializedReservationRecommendationDetailsSavingsProperties.unitOfMeasure = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationRecommendationDetailsSavingsProperties;
+        });
     }
 }

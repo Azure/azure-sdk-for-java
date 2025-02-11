@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -25,7 +24,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
 public class AzureEventHubsKafkaOAuth2AutoConfiguration {
 
     @Bean(PASSWORDLESS_KAFKA_PROPERTIES_BEAN_POST_PROCESSOR_BEAN_NAME)
-    static BeanPostProcessor kafkaPropertiesBeanPostProcessor(AzureGlobalProperties properties) {
-        return new KafkaPropertiesBeanPostProcessor(properties);
+    static BeanPostProcessor kafkaPropertiesBeanPostProcessor() {
+        return new KafkaPropertiesBeanPostProcessor();
     }
 }

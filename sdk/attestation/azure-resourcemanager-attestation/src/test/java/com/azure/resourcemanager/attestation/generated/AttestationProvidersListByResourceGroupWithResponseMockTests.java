@@ -6,66 +6,39 @@ package com.azure.resourcemanager.attestation.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.attestation.AttestationManager;
 import com.azure.resourcemanager.attestation.models.AttestationProviderListResult;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.attestation.models.AttestationServiceStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AttestationProvidersListByResourceGroupWithResponseMockTests {
     @Test
     public void testListByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"trustModel\":\"q\",\"status\":\"Error\",\"attestUri\":\"qdcvdrhvoo\",\"privateEndpointConnections\":[{\"id\":\"tbobz\",\"name\":\"opcjwvnhd\",\"type\":\"d\"},{\"id\":\"mgxcxrslpm\",\"name\":\"twuoegrpkhjwni\",\"type\":\"qsluicp\"},{\"id\":\"ggkzzlvmbmpa\",\"name\":\"modfvuefywsbpfvm\",\"type\":\"yhrfouyftaakcpw\"}]},\"location\":\"yzvqt\",\"tags\":{\"quxvypomgkop\":\"bexkpzksmondj\"},\"id\":\"whojvp\",\"name\":\"jqg\",\"type\":\"ysmocmbqfqvmkcxo\"},{\"properties\":{\"trustModel\":\"helxprglya\",\"status\":\"NotReady\",\"attestUri\":\"kcbcue\",\"privateEndpointConnections\":[{\"id\":\"xgc\",\"name\":\"qibrhosxsdqrhzoy\",\"type\":\"i\"},{\"id\":\"m\",\"name\":\"qyib\",\"type\":\"hwflu\"},{\"id\":\"zdtmhrkwofy\",\"name\":\"voqacpiexpbt\",\"type\":\"iwbwoenwashrtdtk\"}]},\"location\":\"nqxwbp\",\"tags\":{\"ipqiiobyuqerpq\":\"lpiujwaa\",\"fbtkuwhhmhyk\":\"pqwcciuqgbdbutau\"},\"id\":\"joxafnndlpi\",\"name\":\"hkoymkcdyhbp\",\"type\":\"kpw\"},{\"properties\":{\"trustModel\":\"novvqfovljxy\",\"status\":\"NotReady\",\"attestUri\":\"syrsndsytgadgvra\",\"privateEndpointConnections\":[{\"id\":\"neqn\",\"name\":\"arrwlquu\",\"type\":\"jfqka\"}]},\"location\":\"e\",\"tags\":{\"f\":\"pfpubjibww\",\"kn\":\"ohqkvpuvksgpls\"},\"id\":\"n\",\"name\":\"synljphuopxodl\",\"type\":\"iyntorzihle\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"location\":\"ktsthsucocmny\",\"tags\":{\"bt\":\"t\"},\"id\":\"wrqpue\",\"name\":\"ckzywbiexzfeyue\",\"type\":\"xibxujwbhqwalm\"},{\"location\":\"oxaepd\",\"tags\":{\"bavxbniwdjswzt\":\"ancuxrhd\",\"xbzpfzab\":\"dbpgnxytxhp\"},\"id\":\"lcuhxwtctyqiklb\",\"name\":\"ovplw\",\"type\":\"bhvgy\"},{\"location\":\"osvmk\",\"tags\":{\"fpl\":\"xquk\"},\"id\":\"mg\",\"name\":\"xnkjzkdesl\",\"type\":\"vlopwiyighx\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AttestationManager manager = AttestationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AttestationProviderListResult response = manager.attestationProviders()
+            .listByResourceGroupWithResponse("gafcnihgwqapnedg", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        AttestationManager manager =
-            AttestationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AttestationProviderListResult response =
-            manager
-                .attestationProviders()
-                .listByResourceGroupWithResponse("axdbabph", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("ktsthsucocmny", response.value().get(0).location());
-        Assertions.assertEquals("t", response.value().get(0).tags().get("bt"));
+        Assertions.assertEquals("yzvqt", response.value().get(0).location());
+        Assertions.assertEquals("bexkpzksmondj", response.value().get(0).tags().get("quxvypomgkop"));
+        Assertions.assertEquals("q", response.value().get(0).trustModel());
+        Assertions.assertEquals(AttestationServiceStatus.ERROR, response.value().get(0).status());
+        Assertions.assertEquals("qdcvdrhvoo", response.value().get(0).attestUri());
     }
 }

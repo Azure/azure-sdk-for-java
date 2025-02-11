@@ -13,38 +13,35 @@ import org.junit.jupiter.api.Assertions;
 public final class GuestOsnicCustomizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GuestOsnicCustomization model =
-            BinaryData
-                .fromString(
-                    "{\"allocation\":\"dynamic\",\"dnsServers\":[\"jhxbld\"],\"gateway\":[\"wrlkdmtn\",\"vokotllxdyh\",\"syocogjltdtbnnha\"],\"ipAddress\":\"ocrkvcikh\",\"mask\":\"p\",\"primaryWinsServer\":\"qgxqquezikyw\",\"secondaryWinsServer\":\"xkalla\"}")
-                .toObject(GuestOsnicCustomization.class);
-        Assertions.assertEquals(GuestOsnicCustomizationAllocation.DYNAMIC, model.allocation());
-        Assertions.assertEquals("jhxbld", model.dnsServers().get(0));
-        Assertions.assertEquals("wrlkdmtn", model.gateway().get(0));
-        Assertions.assertEquals("ocrkvcikh", model.ipAddress());
-        Assertions.assertEquals("p", model.mask());
-        Assertions.assertEquals("qgxqquezikyw", model.primaryWinsServer());
-        Assertions.assertEquals("xkalla", model.secondaryWinsServer());
+        GuestOsnicCustomization model = BinaryData.fromString(
+            "{\"allocation\":\"static\",\"dnsServers\":[\"cesutrgjupauut\",\"woqhihe\"],\"gateway\":[\"w\"],\"ipAddress\":\"nfqn\",\"mask\":\"ypsxjvfoim\",\"primaryWinsServer\":\"slirciz\",\"secondaryWinsServer\":\"vydfceacvlhvygdy\"}")
+            .toObject(GuestOsnicCustomization.class);
+        Assertions.assertEquals(GuestOsnicCustomizationAllocation.STATIC, model.allocation());
+        Assertions.assertEquals("cesutrgjupauut", model.dnsServers().get(0));
+        Assertions.assertEquals("w", model.gateway().get(0));
+        Assertions.assertEquals("nfqn", model.ipAddress());
+        Assertions.assertEquals("ypsxjvfoim", model.mask());
+        Assertions.assertEquals("slirciz", model.primaryWinsServer());
+        Assertions.assertEquals("vydfceacvlhvygdy", model.secondaryWinsServer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GuestOsnicCustomization model =
-            new GuestOsnicCustomization()
-                .withAllocation(GuestOsnicCustomizationAllocation.DYNAMIC)
-                .withDnsServers(Arrays.asList("jhxbld"))
-                .withGateway(Arrays.asList("wrlkdmtn", "vokotllxdyh", "syocogjltdtbnnha"))
-                .withIpAddress("ocrkvcikh")
-                .withMask("p")
-                .withPrimaryWinsServer("qgxqquezikyw")
-                .withSecondaryWinsServer("xkalla");
+        GuestOsnicCustomization model
+            = new GuestOsnicCustomization().withAllocation(GuestOsnicCustomizationAllocation.STATIC)
+                .withDnsServers(Arrays.asList("cesutrgjupauut", "woqhihe"))
+                .withGateway(Arrays.asList("w"))
+                .withIpAddress("nfqn")
+                .withMask("ypsxjvfoim")
+                .withPrimaryWinsServer("slirciz")
+                .withSecondaryWinsServer("vydfceacvlhvygdy");
         model = BinaryData.fromObject(model).toObject(GuestOsnicCustomization.class);
-        Assertions.assertEquals(GuestOsnicCustomizationAllocation.DYNAMIC, model.allocation());
-        Assertions.assertEquals("jhxbld", model.dnsServers().get(0));
-        Assertions.assertEquals("wrlkdmtn", model.gateway().get(0));
-        Assertions.assertEquals("ocrkvcikh", model.ipAddress());
-        Assertions.assertEquals("p", model.mask());
-        Assertions.assertEquals("qgxqquezikyw", model.primaryWinsServer());
-        Assertions.assertEquals("xkalla", model.secondaryWinsServer());
+        Assertions.assertEquals(GuestOsnicCustomizationAllocation.STATIC, model.allocation());
+        Assertions.assertEquals("cesutrgjupauut", model.dnsServers().get(0));
+        Assertions.assertEquals("w", model.gateway().get(0));
+        Assertions.assertEquals("nfqn", model.ipAddress());
+        Assertions.assertEquals("ypsxjvfoim", model.mask());
+        Assertions.assertEquals("slirciz", model.primaryWinsServer());
+        Assertions.assertEquals("vydfceacvlhvygdy", model.secondaryWinsServer());
     }
 }

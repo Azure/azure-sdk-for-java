@@ -21,7 +21,7 @@ public class FormatWriteSettings implements JsonSerializable<FormatWriteSettings
     /*
      * The write setting type.
      */
-    private String type;
+    private String type = "FormatWriteSettings";
 
     /*
      * Format write settings.
@@ -32,7 +32,6 @@ public class FormatWriteSettings implements JsonSerializable<FormatWriteSettings
      * Creates an instance of FormatWriteSettings class.
      */
     public FormatWriteSettings() {
-        this.type = "FormatWriteSettings";
     }
 
     /**

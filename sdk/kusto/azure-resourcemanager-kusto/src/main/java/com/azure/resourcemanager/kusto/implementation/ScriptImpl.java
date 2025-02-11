@@ -7,8 +7,10 @@ package com.azure.resourcemanager.kusto.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.fluent.models.ScriptInner;
+import com.azure.resourcemanager.kusto.models.PrincipalPermissionsAction;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.Script;
+import com.azure.resourcemanager.kusto.models.ScriptLevel;
 
 public final class ScriptImpl implements Script, Script.Definition, Script.Update {
     private ScriptInner innerObject;
@@ -55,6 +57,14 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
         return this.innerModel().provisioningState();
     }
 
+    public ScriptLevel scriptLevel() {
+        return this.innerModel().scriptLevel();
+    }
+
+    public PrincipalPermissionsAction principalPermissionsAction() {
+        return this.innerModel().principalPermissionsAction();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -83,21 +93,16 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
     }
 
     public Script create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .createOrUpdate(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Script create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .createOrUpdate(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .createOrUpdate(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), context);
         return this;
     }
 
@@ -112,49 +117,41 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
     }
 
     public Script apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .update(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .update(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Script apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .update(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .update(resourceGroupName, clusterName, databaseName, scriptName, this.innerModel(), context);
         return this;
     }
 
     ScriptImpl(ScriptInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.databaseName = Utils.getValueFromIdByName(innerObject.id(), "databases");
-        this.scriptName = Utils.getValueFromIdByName(innerObject.id(), "scripts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databases");
+        this.scriptName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "scripts");
     }
 
     public Script refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .getWithResponse(resourceGroupName, clusterName, databaseName, scriptName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .getWithResponse(resourceGroupName, clusterName, databaseName, scriptName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Script refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScripts()
-                .getWithResponse(resourceGroupName, clusterName, databaseName, scriptName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScripts()
+            .getWithResponse(resourceGroupName, clusterName, databaseName, scriptName, context)
+            .getValue();
         return this;
     }
 
@@ -180,6 +177,16 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
 
     public ScriptImpl withContinueOnErrors(Boolean continueOnErrors) {
         this.innerModel().withContinueOnErrors(continueOnErrors);
+        return this;
+    }
+
+    public ScriptImpl withScriptLevel(ScriptLevel scriptLevel) {
+        this.innerModel().withScriptLevel(scriptLevel);
+        return this;
+    }
+
+    public ScriptImpl withPrincipalPermissionsAction(PrincipalPermissionsAction principalPermissionsAction) {
+        this.innerModel().withPrincipalPermissionsAction(principalPermissionsAction);
         return this;
     }
 }

@@ -20,8 +20,9 @@ public final class AzureStorageAccountContainerCredentialTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStorageAccountContainerCredential model = new AzureStorageAccountContainerCredential()
-            .withContainerName("hlabrq").withContainerSasUri("kzjcjbtrgae");
+        AzureStorageAccountContainerCredential model
+            = new AzureStorageAccountContainerCredential().withContainerName("hlabrq")
+                .withContainerSasUri("kzjcjbtrgae");
         model = BinaryData.fromObject(model).toObject(AzureStorageAccountContainerCredential.class);
         Assertions.assertEquals("hlabrq", model.containerName());
         Assertions.assertEquals("kzjcjbtrgae", model.containerSasUri());

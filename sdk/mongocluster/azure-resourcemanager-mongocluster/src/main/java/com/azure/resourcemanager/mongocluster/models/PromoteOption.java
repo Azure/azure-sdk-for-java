@@ -12,7 +12,8 @@ import java.util.Collection;
  */
 public final class PromoteOption extends ExpandableStringEnum<PromoteOption> {
     /**
-     * Static value Forced for PromoteOption.
+     * Promote option forces the promotion without waiting for the replica to be caught up to the primary. This can
+     * result in data-loss so should only be used during disaster recovery scenarios.
      */
     public static final PromoteOption FORCED = fromString("Forced");
 

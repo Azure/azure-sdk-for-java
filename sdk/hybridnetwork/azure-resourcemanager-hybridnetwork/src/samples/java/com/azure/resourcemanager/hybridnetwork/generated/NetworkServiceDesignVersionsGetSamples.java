@@ -20,7 +20,8 @@ public final class NetworkServiceDesignVersionsGetSamples {
      */
     public static void
         getANetworkServiceDesignVersionResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkServiceDesignVersions().getWithResponse("rg", "TestPublisher",
-            "TestNetworkServiceDesignGroupName", "1.0.0", com.azure.core.util.Context.NONE);
+        manager.networkServiceDesignVersions()
+            .getWithResponse("rg", "TestPublisher", "TestNetworkServiceDesignGroupName", "1.0.0",
+                com.azure.core.util.Context.NONE);
     }
 }

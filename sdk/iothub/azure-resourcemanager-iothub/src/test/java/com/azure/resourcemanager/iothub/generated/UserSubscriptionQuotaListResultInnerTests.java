@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UserSubscriptionQuotaListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserSubscriptionQuotaListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"ucnapkteoellwp\",\"type\":\"d\",\"unit\":\"pfqbuaceopzf\",\"currentValue\":1219903446,\"limit\":391831639,\"name\":{\"value\":\"pppcqeqxo\",\"localizedValue\":\"dahzxctobg\"}},{\"id\":\"dmoizpostmg\",\"type\":\"fbunrmfqjhhk\",\"unit\":\"pvjymjhxxjyng\",\"currentValue\":1804869047,\"limit\":216222103,\"name\":{\"value\":\"swbxqz\",\"localizedValue\":\"zjf\"}}],\"nextLink\":\"vjfdx\"}")
-                .toObject(UserSubscriptionQuotaListResultInner.class);
+        UserSubscriptionQuotaListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"ucnapkteoellwp\",\"type\":\"d\",\"unit\":\"pfqbuaceopzf\",\"currentValue\":1219903446,\"limit\":391831639,\"name\":{\"value\":\"pppcqeqxo\",\"localizedValue\":\"dahzxctobg\"}},{\"id\":\"dmoizpostmg\",\"type\":\"fbunrmfqjhhk\",\"unit\":\"pvjymjhxxjyng\",\"currentValue\":1804869047,\"limit\":216222103,\"name\":{\"value\":\"swbxqz\",\"localizedValue\":\"zjf\"}}],\"nextLink\":\"vjfdx\"}")
+            .toObject(UserSubscriptionQuotaListResultInner.class);
         Assertions.assertEquals("ucnapkteoellwp", model.value().get(0).id());
         Assertions.assertEquals("d", model.value().get(0).type());
         Assertions.assertEquals("pfqbuaceopzf", model.value().get(0).unit());
@@ -30,25 +28,19 @@ public final class UserSubscriptionQuotaListResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserSubscriptionQuotaListResultInner model =
-            new UserSubscriptionQuotaListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new UserSubscriptionQuota()
-                                .withId("ucnapkteoellwp")
-                                .withType("d")
-                                .withUnit("pfqbuaceopzf")
-                                .withCurrentValue(1219903446)
-                                .withLimit(391831639)
-                                .withName(new Name().withValue("pppcqeqxo").withLocalizedValue("dahzxctobg")),
-                            new UserSubscriptionQuota()
-                                .withId("dmoizpostmg")
-                                .withType("fbunrmfqjhhk")
-                                .withUnit("pvjymjhxxjyng")
-                                .withCurrentValue(1804869047)
-                                .withLimit(216222103)
-                                .withName(new Name().withValue("swbxqz").withLocalizedValue("zjf"))));
+        UserSubscriptionQuotaListResultInner model = new UserSubscriptionQuotaListResultInner().withValue(Arrays.asList(
+            new UserSubscriptionQuota().withId("ucnapkteoellwp")
+                .withType("d")
+                .withUnit("pfqbuaceopzf")
+                .withCurrentValue(1219903446)
+                .withLimit(391831639)
+                .withName(new Name().withValue("pppcqeqxo").withLocalizedValue("dahzxctobg")),
+            new UserSubscriptionQuota().withId("dmoizpostmg")
+                .withType("fbunrmfqjhhk")
+                .withUnit("pvjymjhxxjyng")
+                .withCurrentValue(1804869047)
+                .withLimit(216222103)
+                .withName(new Name().withValue("swbxqz").withLocalizedValue("zjf"))));
         model = BinaryData.fromObject(model).toObject(UserSubscriptionQuotaListResultInner.class);
         Assertions.assertEquals("ucnapkteoellwp", model.value().get(0).id());
         Assertions.assertEquals("d", model.value().get(0).type());

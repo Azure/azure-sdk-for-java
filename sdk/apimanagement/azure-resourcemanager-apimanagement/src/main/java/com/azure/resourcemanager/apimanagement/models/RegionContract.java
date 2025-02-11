@@ -6,32 +6,34 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.RegionContractInner;
 
-/** An immutable client-side representation of RegionContract. */
+/**
+ * An immutable client-side representation of RegionContract.
+ */
 public interface RegionContract {
     /**
      * Gets the name property: Region name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the isMasterRegion property: whether Region is the master region.
-     *
+     * 
      * @return the isMasterRegion value.
      */
     Boolean isMasterRegion();
 
     /**
      * Gets the isDeleted property: whether Region is deleted.
-     *
+     * 
      * @return the isDeleted value.
      */
     Boolean isDeleted();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.RegionContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     RegionContractInner innerModel();

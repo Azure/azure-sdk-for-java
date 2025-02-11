@@ -20,7 +20,7 @@ public final class ReplicationProtectionIntentsGetSamples {
      */
     public static void getsTheDetailsOfAReplicationProtectionIntentItem(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionIntents().getWithResponse("vault1", "resourceGroupPS1", "vm1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationProtectionIntents()
+            .getWithResponse("vault1", "resourceGroupPS1", "vm1", com.azure.core.util.Context.NONE);
     }
 }

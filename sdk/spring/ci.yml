@@ -10,6 +10,10 @@ trigger:
   paths:
     include:
       - sdk/spring/
+    exclude:
+      - sdk/spring/spring-cloud-azure-starter-monitor/
+      - sdk/spring/spring-cloud-azure-starter-monitor-test/
+
 pr:
   branches:
     include:
@@ -20,6 +24,9 @@ pr:
   paths:
     include:
       - sdk/spring/
+    exclude:
+      - sdk/spring/spring-cloud-azure-starter-monitor/
+      - sdk/spring/spring-cloud-azure-starter-monitor-test/
 
 # Note - the name parameter cannot contain dashes (-) which is why both
 # a name and displayName are required. Each parameter corresponds to a
@@ -241,7 +248,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: spring
-    JavadocSafeJavaBuildVersion: '1.21'
     Artifacts:
       - name: azure-spring-data-cosmos
         groupId: com.azure

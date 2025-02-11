@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EntityViewParameterType. */
+/**
+ * Defines values for EntityViewParameterType.
+ */
 public final class EntityViewParameterType extends ExpandableStringEnum<EntityViewParameterType> {
-    /** Static value FullHierarchy for EntityViewParameterType. */
+    /**
+     * Static value FullHierarchy for EntityViewParameterType.
+     */
     public static final EntityViewParameterType FULL_HIERARCHY = fromString("FullHierarchy");
 
-    /** Static value GroupsOnly for EntityViewParameterType. */
+    /**
+     * Static value GroupsOnly for EntityViewParameterType.
+     */
     public static final EntityViewParameterType GROUPS_ONLY = fromString("GroupsOnly");
 
-    /** Static value SubscriptionsOnly for EntityViewParameterType. */
+    /**
+     * Static value SubscriptionsOnly for EntityViewParameterType.
+     */
     public static final EntityViewParameterType SUBSCRIPTIONS_ONLY = fromString("SubscriptionsOnly");
 
-    /** Static value Audit for EntityViewParameterType. */
+    /**
+     * Static value Audit for EntityViewParameterType.
+     */
     public static final EntityViewParameterType AUDIT = fromString("Audit");
 
     /**
      * Creates a new instance of EntityViewParameterType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class EntityViewParameterType extends ExpandableStringEnum<EntityVi
 
     /**
      * Creates or finds a EntityViewParameterType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EntityViewParameterType.
      */
-    @JsonCreator
     public static EntityViewParameterType fromString(String name) {
         return fromString(name, EntityViewParameterType.class);
     }
 
     /**
      * Gets known EntityViewParameterType values.
-     *
+     * 
      * @return known EntityViewParameterType values.
      */
     public static Collection<EntityViewParameterType> values() {

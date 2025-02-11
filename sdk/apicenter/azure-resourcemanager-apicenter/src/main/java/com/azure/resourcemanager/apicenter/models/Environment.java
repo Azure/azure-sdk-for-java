@@ -138,7 +138,7 @@ public interface Environment {
     /**
      * The template for Environment update.
      */
-    interface Update {
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -159,6 +159,18 @@ public interface Environment {
      * The Environment update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the Environment update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(EnvironmentProperties properties);
+        }
     }
 
     /**

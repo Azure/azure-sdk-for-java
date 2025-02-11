@@ -23,9 +23,10 @@ public final class AzureCoreArmTemplateArtifactProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureCoreArmTemplateArtifactProfile model = new AzureCoreArmTemplateArtifactProfile()
-            .withArtifactStore(new ReferencedResource().withId("tfnmdx")).withTemplateArtifactProfile(
-                new ArmTemplateArtifactProfile().withTemplateName("wmkyoqufdvruzsl").withTemplateVersion("j"));
+        AzureCoreArmTemplateArtifactProfile model
+            = new AzureCoreArmTemplateArtifactProfile().withArtifactStore(new ReferencedResource().withId("tfnmdx"))
+                .withTemplateArtifactProfile(
+                    new ArmTemplateArtifactProfile().withTemplateName("wmkyoqufdvruzsl").withTemplateVersion("j"));
         model = BinaryData.fromObject(model).toObject(AzureCoreArmTemplateArtifactProfile.class);
         Assertions.assertEquals("tfnmdx", model.artifactStore().id());
         Assertions.assertEquals("wmkyoqufdvruzsl", model.templateArtifactProfile().templateName());

@@ -6,30 +6,52 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.EntityResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Library response details. */
+/**
+ * Library response details.
+ */
 @Fluent
 public final class LibraryResourceInner extends EntityResource {
     /*
-     * Information about a library/package created at the workspace level.
-     *
      * Library/package properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private LibraryInfo innerProperties = new LibraryInfo();
 
-    /** Creates an instance of LibraryResourceInner class. */
+    /*
+     * Resource Etag.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LibraryResourceInner class.
+     */
     public LibraryResourceInner() {
     }
 
     /**
-     * Get the innerProperties property: Information about a library/package created at the workspace level.
-     *
-     * <p>Library/package properties.
-     *
+     * Get the innerProperties property: Library/package properties.
+     * 
      * @return the innerProperties value.
      */
     private LibraryInfo innerProperties() {
@@ -37,8 +59,48 @@ public final class LibraryResourceInner extends EntityResource {
     }
 
     /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the name property: Name of the library.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -47,7 +109,7 @@ public final class LibraryResourceInner extends EntityResource {
 
     /**
      * Set the name property: Name of the library.
-     *
+     * 
      * @param name the name value to set.
      * @return the LibraryResourceInner object itself.
      */
@@ -61,7 +123,7 @@ public final class LibraryResourceInner extends EntityResource {
 
     /**
      * Get the path property: Storage blob path of library.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -70,7 +132,7 @@ public final class LibraryResourceInner extends EntityResource {
 
     /**
      * Set the path property: Storage blob path of library.
-     *
+     * 
      * @param path the path value to set.
      * @return the LibraryResourceInner object itself.
      */
@@ -84,7 +146,7 @@ public final class LibraryResourceInner extends EntityResource {
 
     /**
      * Get the containerName property: Storage blob container name.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -93,7 +155,7 @@ public final class LibraryResourceInner extends EntityResource {
 
     /**
      * Set the containerName property: Storage blob container name.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the LibraryResourceInner object itself.
      */
@@ -107,7 +169,7 @@ public final class LibraryResourceInner extends EntityResource {
 
     /**
      * Get the uploadedTimestamp property: The last update time of the library.
-     *
+     * 
      * @return the uploadedTimestamp value.
      */
     public OffsetDateTime uploadedTimestamp() {
@@ -116,7 +178,7 @@ public final class LibraryResourceInner extends EntityResource {
 
     /**
      * Get the type property: Type of the library.
-     *
+     * 
      * @return the type value.
      */
     public String typePropertiesType() {
@@ -125,7 +187,7 @@ public final class LibraryResourceInner extends EntityResource {
 
     /**
      * Set the type property: Type of the library.
-     *
+     * 
      * @param type the type value to set.
      * @return the LibraryResourceInner object itself.
      */
@@ -139,7 +201,7 @@ public final class LibraryResourceInner extends EntityResource {
 
     /**
      * Get the provisioningStatus property: Provisioning status of the library/package.
-     *
+     * 
      * @return the provisioningStatus value.
      */
     public String provisioningStatus() {
@@ -148,7 +210,7 @@ public final class LibraryResourceInner extends EntityResource {
 
     /**
      * Get the creatorId property: Creator Id of the library/package.
-     *
+     * 
      * @return the creatorId value.
      */
     public String creatorId() {
@@ -157,21 +219,64 @@ public final class LibraryResourceInner extends EntityResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LibraryResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model LibraryResourceInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LibraryResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LibraryResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LibraryResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LibraryResourceInner.
+     */
+    public static LibraryResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LibraryResourceInner deserializedLibraryResourceInner = new LibraryResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLibraryResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLibraryResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLibraryResourceInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedLibraryResourceInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLibraryResourceInner.innerProperties = LibraryInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLibraryResourceInner;
+        });
+    }
 }

@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure arc kubernetes network function application definition.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "artifactType",
-    defaultImpl = AzureArcKubernetesNetworkFunctionApplication.class)
-@JsonTypeName("AzureArcKubernetesNetworkFunctionApplication")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "HelmPackage", value = AzureArcKubernetesHelmApplication.class) })
 @Fluent
 public class AzureArcKubernetesNetworkFunctionApplication extends NetworkFunctionApplication {
+    /*
+     * The artifact type.
+     */
+    private AzureArcKubernetesArtifactType artifactType
+        = AzureArcKubernetesArtifactType.fromString("AzureArcKubernetesNetworkFunctionApplication");
+
     /**
      * Creates an instance of AzureArcKubernetesNetworkFunctionApplication class.
      */
     public AzureArcKubernetesNetworkFunctionApplication() {
+    }
+
+    /**
+     * Get the artifactType property: The artifact type.
+     * 
+     * @return the artifactType value.
+     */
+    public AzureArcKubernetesArtifactType artifactType() {
+        return this.artifactType;
     }
 
     /**
@@ -52,6 +61,79 @@ public class AzureArcKubernetesNetworkFunctionApplication extends NetworkFunctio
      */
     @Override
     public void validate() {
-        super.validate();
+        if (dependsOnProfile() != null) {
+            dependsOnProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeJsonField("dependsOnProfile", dependsOnProfile());
+        jsonWriter.writeStringField("artifactType", this.artifactType == null ? null : this.artifactType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureArcKubernetesNetworkFunctionApplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureArcKubernetesNetworkFunctionApplication if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureArcKubernetesNetworkFunctionApplication.
+     */
+    public static AzureArcKubernetesNetworkFunctionApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("artifactType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("HelmPackage".equals(discriminatorValue)) {
+                    return AzureArcKubernetesHelmApplication.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AzureArcKubernetesNetworkFunctionApplication fromJsonKnownDiscriminator(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureArcKubernetesNetworkFunctionApplication deserializedAzureArcKubernetesNetworkFunctionApplication
+                = new AzureArcKubernetesNetworkFunctionApplication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureArcKubernetesNetworkFunctionApplication.withName(reader.getString());
+                } else if ("dependsOnProfile".equals(fieldName)) {
+                    deserializedAzureArcKubernetesNetworkFunctionApplication
+                        .withDependsOnProfile(DependsOnProfile.fromJson(reader));
+                } else if ("artifactType".equals(fieldName)) {
+                    deserializedAzureArcKubernetesNetworkFunctionApplication.artifactType
+                        = AzureArcKubernetesArtifactType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureArcKubernetesNetworkFunctionApplication;
+        });
     }
 }

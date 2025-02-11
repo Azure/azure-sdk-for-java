@@ -6,25 +6,27 @@ package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.resourcemanager.powerbidedicated.fluent.models.CheckCapacityNameAvailabilityResultInner;
 
-/** An immutable client-side representation of CheckCapacityNameAvailabilityResult. */
+/**
+ * An immutable client-side representation of CheckCapacityNameAvailabilityResult.
+ */
 public interface CheckCapacityNameAvailabilityResult {
     /**
      * Gets the nameAvailable property: Indicator of availability of the capacity name.
-     *
+     * 
      * @return the nameAvailable value.
      */
     Boolean nameAvailable();
 
     /**
      * Gets the reason property: The reason of unavailability.
-     *
+     * 
      * @return the reason value.
      */
     String reason();
 
     /**
      * Gets the message property: The detailed message of the request unavailability.
-     *
+     * 
      * @return the message value.
      */
     String message();
@@ -32,7 +34,7 @@ public interface CheckCapacityNameAvailabilityResult {
     /**
      * Gets the inner com.azure.resourcemanager.powerbidedicated.fluent.models.CheckCapacityNameAvailabilityResultInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     CheckCapacityNameAvailabilityResultInner innerModel();

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-/** Samples for Datastores GetByResourceGroup. */
+/**
+ * Samples for Datastores GetByResourceGroup.
+ */
 public final class DatastoresGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetDatastore.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetDatastore.json
      */
     /**
      * Sample code: GetDatastore.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getDatastore(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {

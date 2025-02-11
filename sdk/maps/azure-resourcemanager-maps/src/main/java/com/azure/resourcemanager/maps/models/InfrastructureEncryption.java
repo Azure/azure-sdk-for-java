@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Values are enabled and disabled. */
+/**
+ * Values are enabled and disabled.
+ */
 public final class InfrastructureEncryption extends ExpandableStringEnum<InfrastructureEncryption> {
-    /** Static value enabled for InfrastructureEncryption. */
+    /**
+     * Static value enabled for InfrastructureEncryption.
+     */
     public static final InfrastructureEncryption ENABLED = fromString("enabled");
 
-    /** Static value disabled for InfrastructureEncryption. */
+    /**
+     * Static value disabled for InfrastructureEncryption.
+     */
     public static final InfrastructureEncryption DISABLED = fromString("disabled");
 
     /**
      * Creates a new instance of InfrastructureEncryption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class InfrastructureEncryption extends ExpandableStringEnum<Infrast
 
     /**
      * Creates or finds a InfrastructureEncryption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InfrastructureEncryption.
      */
-    @JsonCreator
     public static InfrastructureEncryption fromString(String name) {
         return fromString(name, InfrastructureEncryption.class);
     }
 
     /**
      * Gets known InfrastructureEncryption values.
-     *
+     * 
      * @return known InfrastructureEncryption values.
      */
     public static Collection<InfrastructureEncryption> values() {

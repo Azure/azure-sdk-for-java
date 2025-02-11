@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a .rdp file. */
+/**
+ * Represents a .rdp file.
+ */
 @Fluent
-public final class RdpConnectionInner {
+public final class RdpConnectionInner implements JsonSerializable<RdpConnectionInner> {
     /*
      * The contents of the .rdp file
      */
-    @JsonProperty(value = "contents")
     private String contents;
 
-    /** Creates an instance of RdpConnectionInner class. */
+    /**
+     * Creates an instance of RdpConnectionInner class.
+     */
     public RdpConnectionInner() {
     }
 
     /**
      * Get the contents property: The contents of the .rdp file.
-     *
+     * 
      * @return the contents value.
      */
     public String contents() {
@@ -31,7 +38,7 @@ public final class RdpConnectionInner {
 
     /**
      * Set the contents property: The contents of the .rdp file.
-     *
+     * 
      * @param contents the contents value to set.
      * @return the RdpConnectionInner object itself.
      */
@@ -42,9 +49,45 @@ public final class RdpConnectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("contents", this.contents);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RdpConnectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RdpConnectionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RdpConnectionInner.
+     */
+    public static RdpConnectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RdpConnectionInner deserializedRdpConnectionInner = new RdpConnectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contents".equals(fieldName)) {
+                    deserializedRdpConnectionInner.contents = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRdpConnectionInner;
+        });
     }
 }

@@ -18,8 +18,8 @@ public class MixedRealityAccountKeyCredentialTest {
     private final UUID accountId = UUID.fromString("3ff503e0-15ef-4be9-bd99-29e6026d4bf6");
 
     // NOT REAL: Base64 encoded accountId.
-    private final AzureKeyCredential keyCredential =
-        new AzureKeyCredential("M2ZmNTAzZTAtMTVlZi00YmU5LWJkOTktMjllNjAyNmQ0YmY2");
+    private final AzureKeyCredential keyCredential
+        = new AzureKeyCredential("M2ZmNTAzZTAtMTVlZi00YmU5LWJkOTktMjllNjAyNmQ0YmY2");
 
     @Test
     public void create() {
@@ -30,8 +30,8 @@ public class MixedRealityAccountKeyCredentialTest {
 
     @Test
     public void getToken() {
-        String expectedAccessTokenValue =
-            "3ff503e0-15ef-4be9-bd99-29e6026d4bf6:M2ZmNTAzZTAtMTVlZi00YmU5LWJkOTktMjllNjAyNmQ0YmY2";
+        String expectedAccessTokenValue
+            = "3ff503e0-15ef-4be9-bd99-29e6026d4bf6:M2ZmNTAzZTAtMTVlZi00YmU5LWJkOTktMjllNjAyNmQ0YmY2";
         OffsetDateTime expectedExpiration = OffsetDateTime.MAX;
         MixedRealityAccountKeyCredential credential = new MixedRealityAccountKeyCredential(accountId, keyCredential);
 

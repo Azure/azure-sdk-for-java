@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Values returned by the List operation.
  */
 @Fluent
-public final class ListPrivateEndpointConnectionsResult {
+public final class ListPrivateEndpointConnectionsResult
+    implements JsonSerializable<ListPrivateEndpointConnectionsResult> {
     /*
      * The collection of returned private endpoint connection.
      */
-    @JsonProperty(value = "value")
     private List<PrivateEndpointConnectionInner> value;
 
     /*
      * The continuation token.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +84,47 @@ public final class ListPrivateEndpointConnectionsResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListPrivateEndpointConnectionsResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListPrivateEndpointConnectionsResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListPrivateEndpointConnectionsResult.
+     */
+    public static ListPrivateEndpointConnectionsResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListPrivateEndpointConnectionsResult deserializedListPrivateEndpointConnectionsResult
+                = new ListPrivateEndpointConnectionsResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> value
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedListPrivateEndpointConnectionsResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedListPrivateEndpointConnectionsResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListPrivateEndpointConnectionsResult;
+        });
     }
 }

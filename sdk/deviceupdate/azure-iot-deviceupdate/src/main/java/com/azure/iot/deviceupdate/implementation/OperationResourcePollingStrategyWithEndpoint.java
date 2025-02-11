@@ -32,8 +32,7 @@ import static com.azure.iot.deviceupdate.implementation.PollingUtils.convertResp
 import static com.azure.iot.deviceupdate.implementation.PollingUtils.getAbsolutePath;
 import static com.azure.iot.deviceupdate.implementation.PollingUtils.serializeResponse;
 
-
-public class OperationResourcePollingStrategyWithEndpoint<T, U> extends OperationResourcePollingStrategy<T, U>  {
+public class OperationResourcePollingStrategyWithEndpoint<T, U> extends OperationResourcePollingStrategy<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(OperationResourcePollingStrategy.class);
 
     private final String endpoint;
@@ -51,10 +50,11 @@ public class OperationResourcePollingStrategyWithEndpoint<T, U> extends Operatio
      * @param operationLocationHeaderName a custom header for polling the long running operation.
      * @param context an instance of {@link com.azure.core.util.Context}.
      */
-    public OperationResourcePollingStrategyWithEndpoint(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
-                                            String operationLocationHeaderName, Context context) {
+    public OperationResourcePollingStrategyWithEndpoint(HttpPipeline httpPipeline, String endpoint,
+        ObjectSerializer serializer, String operationLocationHeaderName, Context context) {
         super(httpPipeline, endpoint, serializer, operationLocationHeaderName, context);
-        this.operationLocationHeaderName = operationLocationHeaderName != null ? operationLocationHeaderName : "Operation-Location";
+        this.operationLocationHeaderName
+            = operationLocationHeaderName != null ? operationLocationHeaderName : "Operation-Location";
         this.endpoint = endpoint;
         this.serializer = serializer != null ? serializer : new DefaultJsonSerializer();
         this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
@@ -77,7 +77,7 @@ public class OperationResourcePollingStrategyWithEndpoint<T, U> extends Operatio
 
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                                   TypeReference<T> pollResponseType) {
+        TypeReference<T> pollResponseType) {
         HttpHeader operationLocationHeader = response.getHeaders().get(operationLocationHeaderName);
         HttpHeader locationHeader = response.getHeaders().get(PollingConstants.LOCATION);
         if (operationLocationHeader != null) {
@@ -99,12 +99,13 @@ public class OperationResourcePollingStrategyWithEndpoint<T, U> extends Operatio
             Duration retryAfter = retryAfterValue == null ? null : Duration.ofSeconds(Long.parseLong(retryAfterValue));
             return convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
-                .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
-                    LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
+                .switchIfEmpty(Mono
+                    .fromSupplier(() -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
         } else {
-            return Mono.error(new AzureException(String.format("Operation failed or cancelled with status code %d,"
-                    + ", '%s' header: %s, and response body: %s", response.getStatusCode(), operationLocationHeaderName,
-                operationLocationHeader, serializeResponse(response.getValue(), serializer))));
+            return Mono.error(new AzureException(String.format(
+                "Operation failed or cancelled with status code %d," + ", '%s' header: %s, and response body: %s",
+                response.getStatusCode(), operationLocationHeaderName, operationLocationHeader,
+                serializeResponse(response.getValue(), serializer))));
         }
     }
 
@@ -115,7 +116,8 @@ public class OperationResourcePollingStrategyWithEndpoint<T, U> extends Operatio
         } else if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
             return Mono.error(new AzureException("Long running operation cancelled."));
         }
-        String finalGetUrl = getAbsolutePath(pollingContext.getData(PollingConstants.RESOURCE_LOCATION), endpoint, LOGGER);
+        String finalGetUrl
+            = getAbsolutePath(pollingContext.getData(PollingConstants.RESOURCE_LOCATION), endpoint, LOGGER);
         if (finalGetUrl == null) {
             String httpMethod = pollingContext.getData(PollingConstants.HTTP_METHOD);
             if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
@@ -133,8 +135,8 @@ public class OperationResourcePollingStrategyWithEndpoint<T, U> extends Operatio
             return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
-            return FluxUtil.withContext(context1 -> httpPipeline.send(request,
-                    CoreUtils.mergeContexts(context1, this.context)))
+            return FluxUtil
+                .withContext(context1 -> httpPipeline.send(request, CoreUtils.mergeContexts(context1, this.context)))
                 .flatMap(HttpResponse::getBodyAsByteArray)
                 .map(BinaryData::fromBytes)
                 .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, serializer, resultType));

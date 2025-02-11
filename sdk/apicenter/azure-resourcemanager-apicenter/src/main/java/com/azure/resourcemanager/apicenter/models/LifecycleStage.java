@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class LifecycleStage extends ExpandableStringEnum<LifecycleStage> {
      * @param name a name to look for.
      * @return the corresponding LifecycleStage.
      */
-    @JsonCreator
     public static LifecycleStage fromString(String name) {
         return fromString(name, LifecycleStage.class);
     }

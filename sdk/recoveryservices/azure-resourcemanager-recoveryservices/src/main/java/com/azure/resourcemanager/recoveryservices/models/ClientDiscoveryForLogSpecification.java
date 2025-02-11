@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Class to represent shoebox log specification in json client discovery.
  */
 @Fluent
-public final class ClientDiscoveryForLogSpecification {
+public final class ClientDiscoveryForLogSpecification implements JsonSerializable<ClientDiscoveryForLogSpecification> {
     /*
      * Name of the log.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Localized display name
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Blobs created in customer storage account per hour
      */
-    @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
     /**
@@ -102,5 +103,48 @@ public final class ClientDiscoveryForLogSpecification {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("blobDuration", this.blobDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientDiscoveryForLogSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientDiscoveryForLogSpecification if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClientDiscoveryForLogSpecification.
+     */
+    public static ClientDiscoveryForLogSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientDiscoveryForLogSpecification deserializedClientDiscoveryForLogSpecification
+                = new ClientDiscoveryForLogSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedClientDiscoveryForLogSpecification.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedClientDiscoveryForLogSpecification.displayName = reader.getString();
+                } else if ("blobDuration".equals(fieldName)) {
+                    deserializedClientDiscoveryForLogSpecification.blobDuration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientDiscoveryForLogSpecification;
+        });
     }
 }

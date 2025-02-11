@@ -10,10 +10,8 @@ import com.azure.resourcemanager.datamigration.models.ValidationError;
 public final class ValidationErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidationError model =
-            BinaryData
-                .fromString("{\"text\":\"uunnoxyhkxgqdd\",\"severity\":\"Warning\"}")
-                .toObject(ValidationError.class);
+        ValidationError model
+            = BinaryData.fromString("{\"text\":\"of\",\"severity\":\"Warning\"}").toObject(ValidationError.class);
     }
 
     @org.junit.jupiter.api.Test

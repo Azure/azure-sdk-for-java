@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for creating a Batch job.
  */
 public class CreateBatchJobOptions extends BatchBaseOptions {
-
+    /**
+     * Creates an instance of {@link CreateBatchJobOptions}.
+     */
+    public CreateBatchJobOptions() {
+    }
 }

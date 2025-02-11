@@ -52,25 +52,25 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * The service client containing this operation class.
      */
-    private final StorageMoverClientImpl client;
+    private final StorageMoverManagementClientImpl client;
 
     /**
      * Initializes an instance of EndpointsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    EndpointsClientImpl(StorageMoverClientImpl client) {
+    EndpointsClientImpl(StorageMoverManagementClientImpl client) {
         this.service
             = RestProxy.create(EndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StorageMoverClientEndpoints to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for StorageMoverManagementClientEndpoints to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageMoverClientEn")
+    @ServiceInterface(name = "StorageMoverManageme")
     public interface EndpointsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints")

@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListByMongoClusterMockTests {
     @Test
     public void testListByMongoCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"sdpydnfyhxdeoejz\"],\"privateEndpoint\":{\"id\":\"ifsjttgzfbishcb\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"deyeamdphagalpbu\",\"actionsRequired\":\"gipwhonowkg\"},\"provisioningState\":\"Deleting\"},\"id\":\"nkixzbinj\",\"name\":\"pu\",\"type\":\"tmryw\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"zbinjeputtm\",\"ywnuzoq\",\"tiyqzrnkcqv\"],\"privateEndpoint\":{\"id\":\"whzlsicohoq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"lryav\",\"actionsRequired\":\"heun\"},\"provisioningState\":\"Failed\"},\"id\":\"gyxzk\",\"name\":\"noc\",\"type\":\"koklya\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class PrivateEndpointConnectionsListByMongoClusterMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateEndpointConnectionResource> response
-            = manager.privateEndpointConnections().listByMongoCluster("yp", "rbpizc", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateEndpointConnectionResource> response = manager.privateEndpointConnections()
+            .listByMongoCluster("agalpbuxwgipwhon", "wkgshwa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("deyeamdphagalpbu",
+        Assertions.assertEquals("lryav",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("gipwhonowkg",
+        Assertions.assertEquals("heun",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

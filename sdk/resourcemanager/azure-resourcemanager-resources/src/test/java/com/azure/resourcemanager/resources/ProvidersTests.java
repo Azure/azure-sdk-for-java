@@ -35,7 +35,9 @@ public class ProvidersTests extends ResourceManagementTest {
         Assertions.assertFalse(resourceTypes.isEmpty());
         Assertions.assertNotNull(provider);
         if ("Registered".equals(provider.registrationState())) {
-            Assertions.fail(String.format("Provider '%s' already registered, please test with a provider that not currently registered.", providerNamespace));
+            Assertions.fail(String.format(
+                "Provider '%s' already registered, please test with a provider that not currently registered.",
+                providerNamespace));
         }
 
         // register

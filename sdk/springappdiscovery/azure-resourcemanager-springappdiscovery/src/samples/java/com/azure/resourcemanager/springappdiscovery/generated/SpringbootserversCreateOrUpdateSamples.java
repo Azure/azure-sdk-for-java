@@ -23,12 +23,17 @@ public final class SpringbootserversCreateOrUpdateSamples {
      */
     public static void springbootserversCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootservers().define("zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn")
+        manager.springbootservers()
+            .define("zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn")
             .withExistingSpringbootsite("rgspringbootservers",
                 "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj")
-            .withProperties(new SpringbootserversProperties().withPort(10).withServer("thhuxocfyqpeluqcgnypi")
-                .withFqdnAndIpAddressList(Arrays.asList()).withMachineArmId("fvfkiapbqsprnbzczdfmuryknrna")
-                .withTotalApps(5).withSpringBootApps(17).withErrors(Arrays.asList()))
+            .withProperties(new SpringbootserversProperties().withPort(10)
+                .withServer("thhuxocfyqpeluqcgnypi")
+                .withFqdnAndIpAddressList(Arrays.asList())
+                .withMachineArmId("fvfkiapbqsprnbzczdfmuryknrna")
+                .withTotalApps(5)
+                .withSpringBootApps(17)
+                .withErrors(Arrays.asList()))
             .create();
     }
 
@@ -44,7 +49,10 @@ public final class SpringbootserversCreateOrUpdateSamples {
      */
     public static void springbootserversCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootservers().define("zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn").withExistingSpringbootsite(
-            "rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj").create();
+        manager.springbootservers()
+            .define("zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn")
+            .withExistingSpringbootsite("rgspringbootservers",
+                "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj")
+            .create();
     }
 }

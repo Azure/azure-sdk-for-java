@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Interactions. */
+/**
+ * Resource collection API of Interactions.
+ */
 public interface Interactions {
     /**
      * Gets information about the specified interaction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -23,12 +25,12 @@ public interface Interactions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified interaction along with {@link Response}.
      */
-    Response<InteractionResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String interactionName, String localeCode, Context context);
+    Response<InteractionResourceFormat> getWithResponse(String resourceGroupName, String hubName,
+        String interactionName, String localeCode, Context context);
 
     /**
      * Gets information about the specified interaction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -41,7 +43,7 @@ public interface Interactions {
 
     /**
      * Gets all interactions in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +55,7 @@ public interface Interactions {
 
     /**
      * Gets all interactions in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param localeCode Locale of interaction to retrieve, default is en-us.
@@ -63,12 +65,12 @@ public interface Interactions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all interactions in the hub as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<InteractionResourceFormat> listByHub(
-        String resourceGroupName, String hubName, String localeCode, Context context);
+    PagedIterable<InteractionResourceFormat> listByHub(String resourceGroupName, String hubName, String localeCode,
+        Context context);
 
     /**
      * Suggests relationships to create relationship links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -78,12 +80,12 @@ public interface Interactions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of suggest relationship links operation along with {@link Response}.
      */
-    Response<SuggestRelationshipLinksResponse> suggestRelationshipLinksWithResponse(
-        String resourceGroupName, String hubName, String interactionName, Context context);
+    Response<SuggestRelationshipLinksResponse> suggestRelationshipLinksWithResponse(String resourceGroupName,
+        String hubName, String interactionName, Context context);
 
     /**
      * Suggests relationships to create relationship links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -92,12 +94,12 @@ public interface Interactions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of suggest relationship links operation.
      */
-    SuggestRelationshipLinksResponse suggestRelationshipLinks(
-        String resourceGroupName, String hubName, String interactionName);
+    SuggestRelationshipLinksResponse suggestRelationshipLinks(String resourceGroupName, String hubName,
+        String interactionName);
 
     /**
      * Gets information about the specified interaction.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,7 +110,7 @@ public interface Interactions {
 
     /**
      * Gets information about the specified interaction.
-     *
+     * 
      * @param id the resource ID.
      * @param localeCode Locale of interaction to retrieve, default is en-us.
      * @param context The context to associate with this operation.
@@ -121,7 +123,7 @@ public interface Interactions {
 
     /**
      * Begins definition for a new InteractionResourceFormat resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new InteractionResourceFormat definition.
      */

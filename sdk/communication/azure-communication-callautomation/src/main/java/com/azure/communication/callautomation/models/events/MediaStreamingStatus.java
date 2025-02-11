@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.util.ExpandableStringEnum;
+
 import java.util.Collection;
 
 /** Defines values for MediaStreamingStatus. */
@@ -21,6 +22,15 @@ public final class MediaStreamingStatus extends ExpandableStringEnum<MediaStream
     public static final MediaStreamingStatus UNSPECIFIED_ERROR = fromString("unspecifiedError");
 
     /**
+     * Creates an instance of {@link MediaStreamingStatus} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of MediaStreamingStatus.
+     */
+    @Deprecated
+    public MediaStreamingStatus() {
+    }
+
+    /**
      * Creates or finds a MediaStreamingStatus from its string representation.
      *
      * @param name a name to look for.
@@ -30,7 +40,10 @@ public final class MediaStreamingStatus extends ExpandableStringEnum<MediaStream
         return fromString(name, MediaStreamingStatus.class);
     }
 
-    /** @return known MediaStreamingStatus values. */
+    /**
+     * Get the collection of MediaStreamingStatus values.
+     * @return known MediaStreamingStatus values.
+     */
     public static Collection<MediaStreamingStatus> values() {
         return values(MediaStreamingStatus.class);
     }

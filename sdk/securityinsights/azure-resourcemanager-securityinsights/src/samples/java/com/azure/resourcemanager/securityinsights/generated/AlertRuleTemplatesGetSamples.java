@@ -4,22 +4,24 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AlertRuleTemplates Get. */
+/**
+ * Samples for AlertRuleTemplates Get.
+ */
 public final class AlertRuleTemplatesGetSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRuleTemplates/GetAlertRuleTemplateById.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/
+     * alertRuleTemplates/GetAlertRuleTemplateById.json
      */
     /**
      * Sample code: Get alert rule template by Id.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
-    public static void getAlertRuleTemplateById(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .alertRuleTemplates()
-            .getWithResponse("myRg", "myWorkspace", "65360bb0-8986-4ade-a89d-af3cf44d28aa", Context.NONE);
+    public static void
+        getAlertRuleTemplateById(com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
+        manager.alertRuleTemplates()
+            .getWithResponse("myRg", "myWorkspace", "65360bb0-8986-4ade-a89d-af3cf44d28aa",
+                com.azure.core.util.Context.NONE);
     }
 }

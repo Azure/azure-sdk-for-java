@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ContainerHostMappingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContainerHostMappingInner model =
-            BinaryData
-                .fromString(
-                    "{\"containerHostResourceId\":\"mhquvgjxp\",\"mappedControllerResourceId\":\"czmehmtzopbsp\"}")
-                .toObject(ContainerHostMappingInner.class);
+        ContainerHostMappingInner model = BinaryData
+            .fromString("{\"containerHostResourceId\":\"mhquvgjxp\",\"mappedControllerResourceId\":\"czmehmtzopbsp\"}")
+            .toObject(ContainerHostMappingInner.class);
         Assertions.assertEquals("mhquvgjxp", model.containerHostResourceId());
     }
 

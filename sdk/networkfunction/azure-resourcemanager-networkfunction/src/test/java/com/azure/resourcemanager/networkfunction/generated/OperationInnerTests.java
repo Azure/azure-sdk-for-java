@@ -8,16 +8,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkfunction.fluent.models.OperationInner;
 import com.azure.resourcemanager.networkfunction.models.OperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationInnerTests {
-    @Test
-    public void testDeserialize() {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"nygj\",\"isDataAction\":true,\"display\":{\"provider\":\"eqsrdeupewnwreit\",\"resource\":\"yflusarhmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"origin\":\"txukcdmp\"}")
-                .toObject(OperationInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"nygj\",\"isDataAction\":true,\"display\":{\"provider\":\"eqsrdeupewnwreit\",\"resource\":\"yflusarhmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"origin\":\"txukcdmp\"}")
+            .toObject(OperationInner.class);
         Assertions.assertEquals("nygj", model.name());
         Assertions.assertEquals(true, model.isDataAction());
         Assertions.assertEquals("eqsrdeupewnwreit", model.display().provider());
@@ -27,19 +24,15 @@ public final class OperationInnerTests {
         Assertions.assertEquals("txukcdmp", model.origin());
     }
 
-    @Test
-    public void testSerialize() {
-        OperationInner model =
-            new OperationInner()
-                .withName("nygj")
-                .withIsDataAction(true)
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("eqsrdeupewnwreit")
-                        .withResource("yflusarhmofc")
-                        .withOperation("smy")
-                        .withDescription("kdtmlxhekuk"))
-                .withOrigin("txukcdmp");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationInner model = new OperationInner().withName("nygj")
+            .withIsDataAction(true)
+            .withDisplay(new OperationDisplay().withProvider("eqsrdeupewnwreit")
+                .withResource("yflusarhmofc")
+                .withOperation("smy")
+                .withDescription("kdtmlxhekuk"))
+            .withOrigin("txukcdmp");
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
         Assertions.assertEquals("nygj", model.name());
         Assertions.assertEquals(true, model.isDataAction());

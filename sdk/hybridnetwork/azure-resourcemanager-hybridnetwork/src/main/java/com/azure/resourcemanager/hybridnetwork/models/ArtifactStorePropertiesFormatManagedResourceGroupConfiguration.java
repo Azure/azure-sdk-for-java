@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ArtifactStorePropertiesFormatManagedResourceGroupConfiguration model.
  */
 @Fluent
-public final class ArtifactStorePropertiesFormatManagedResourceGroupConfiguration {
+public final class ArtifactStorePropertiesFormatManagedResourceGroupConfiguration
+    implements JsonSerializable<ArtifactStorePropertiesFormatManagedResourceGroupConfiguration> {
     /*
      * The managed resource group name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The managed resource group location.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /**
@@ -76,5 +79,49 @@ public final class ArtifactStorePropertiesFormatManagedResourceGroupConfiguratio
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactStorePropertiesFormatManagedResourceGroupConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactStorePropertiesFormatManagedResourceGroupConfiguration if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ArtifactStorePropertiesFormatManagedResourceGroupConfiguration.
+     */
+    public static ArtifactStorePropertiesFormatManagedResourceGroupConfiguration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactStorePropertiesFormatManagedResourceGroupConfiguration deserializedArtifactStorePropertiesFormatManagedResourceGroupConfiguration
+                = new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedArtifactStorePropertiesFormatManagedResourceGroupConfiguration.name
+                        = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedArtifactStorePropertiesFormatManagedResourceGroupConfiguration.location
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactStorePropertiesFormatManagedResourceGroupConfiguration;
+        });
     }
 }

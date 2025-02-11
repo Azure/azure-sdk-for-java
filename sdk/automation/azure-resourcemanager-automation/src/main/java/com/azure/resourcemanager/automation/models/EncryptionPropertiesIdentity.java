@@ -5,22 +5,34 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** User identity used for CMK. */
+/**
+ * User identity used for CMK.
+ */
 @Fluent
-public class EncryptionPropertiesIdentity {
+public final class EncryptionPropertiesIdentity implements JsonSerializable<EncryptionPropertiesIdentity> {
     /*
      * The user identity used for CMK. It will be an ARM resource id in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
-    @JsonProperty(value = "userAssignedIdentity")
     private Object userAssignedIdentity;
+
+    /**
+     * Creates an instance of EncryptionPropertiesIdentity class.
+     */
+    public EncryptionPropertiesIdentity() {
+    }
 
     /**
      * Get the userAssignedIdentity property: The user identity used for CMK. It will be an ARM resource id in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @return the userAssignedIdentity value.
      */
     public Object userAssignedIdentity() {
@@ -30,7 +42,7 @@ public class EncryptionPropertiesIdentity {
     /**
      * Set the userAssignedIdentity property: The user identity used for CMK. It will be an ARM resource id in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @param userAssignedIdentity the userAssignedIdentity value to set.
      * @return the EncryptionPropertiesIdentity object itself.
      */
@@ -41,9 +53,45 @@ public class EncryptionPropertiesIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("userAssignedIdentity", this.userAssignedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionPropertiesIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionPropertiesIdentity if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionPropertiesIdentity.
+     */
+    public static EncryptionPropertiesIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionPropertiesIdentity deserializedEncryptionPropertiesIdentity = new EncryptionPropertiesIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userAssignedIdentity".equals(fieldName)) {
+                    deserializedEncryptionPropertiesIdentity.userAssignedIdentity = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionPropertiesIdentity;
+        });
     }
 }

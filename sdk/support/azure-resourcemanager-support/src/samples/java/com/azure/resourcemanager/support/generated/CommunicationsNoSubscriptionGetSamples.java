@@ -9,7 +9,8 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class CommunicationsNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetCommunicationDetailsForSupportTicket.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * GetCommunicationDetailsForSupportTicket.json
      */
     /**
      * Sample code: Get communication details for a no-subscription support ticket.

@@ -24,8 +24,7 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient,
+    public OperationsImpl(OperationsClient innerClient,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -33,22 +32,19 @@ public final class OperationsImpl implements Operations {
 
     public PagedIterable<AvailableOperation> list() {
         PagedIterable<AvailableOperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AvailableOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailableOperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailableOperation> list(Context context) {
         PagedIterable<AvailableOperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AvailableOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailableOperationImpl(inner1, this.manager()));
     }
 
-    public Response<OperationResource> getWithResponse(
-        String regionId, String referer, String operationId, Context context) {
+    public Response<OperationResource> getWithResponse(String regionId, String referer, String operationId,
+        Context context) {
         OperationsGetResponse inner = this.serviceClient().getWithResponse(regionId, referer, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

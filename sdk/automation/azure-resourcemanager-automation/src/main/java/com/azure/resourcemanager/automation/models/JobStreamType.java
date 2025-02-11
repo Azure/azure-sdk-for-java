@@ -5,46 +5,69 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the stream type. */
+/**
+ * Gets or sets the stream type.
+ */
 public final class JobStreamType extends ExpandableStringEnum<JobStreamType> {
-    /** Static value Progress for JobStreamType. */
+    /**
+     * Static value Progress for JobStreamType.
+     */
     public static final JobStreamType PROGRESS = fromString("Progress");
 
-    /** Static value Output for JobStreamType. */
+    /**
+     * Static value Output for JobStreamType.
+     */
     public static final JobStreamType OUTPUT = fromString("Output");
 
-    /** Static value Warning for JobStreamType. */
+    /**
+     * Static value Warning for JobStreamType.
+     */
     public static final JobStreamType WARNING = fromString("Warning");
 
-    /** Static value Error for JobStreamType. */
+    /**
+     * Static value Error for JobStreamType.
+     */
     public static final JobStreamType ERROR = fromString("Error");
 
-    /** Static value Debug for JobStreamType. */
+    /**
+     * Static value Debug for JobStreamType.
+     */
     public static final JobStreamType DEBUG = fromString("Debug");
 
-    /** Static value Verbose for JobStreamType. */
+    /**
+     * Static value Verbose for JobStreamType.
+     */
     public static final JobStreamType VERBOSE = fromString("Verbose");
 
-    /** Static value Any for JobStreamType. */
+    /**
+     * Static value Any for JobStreamType.
+     */
     public static final JobStreamType ANY = fromString("Any");
 
     /**
+     * Creates a new instance of JobStreamType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobStreamType() {
+    }
+
+    /**
      * Creates or finds a JobStreamType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobStreamType.
      */
-    @JsonCreator
     public static JobStreamType fromString(String name) {
         return fromString(name, JobStreamType.class);
     }
 
     /**
      * Gets known JobStreamType values.
-     *
+     * 
      * @return known JobStreamType values.
      */
     public static Collection<JobStreamType> values() {

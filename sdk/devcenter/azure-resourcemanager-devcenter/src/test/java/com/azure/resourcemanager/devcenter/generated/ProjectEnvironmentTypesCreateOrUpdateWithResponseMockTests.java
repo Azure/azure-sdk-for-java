@@ -30,7 +30,7 @@ public final class ProjectEnvironmentTypesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"TransientFailure\",\"environmentCount\":1455417694,\"deploymentTargetId\":\"rvkmjcwmjvlgfggc\",\"displayName\":\"yylizrz\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"w\":{\"roleName\":\"fuzt\",\"description\":\"tmvag\"},\"vlwyzg\":{\"roleName\":\"qlvh\",\"description\":\"oveofizrvjfnmj\"},\"oeo\":{\"roleName\":\"lkujrllfojui\",\"description\":\"puuyjucejik\"}}},\"userRoleAssignments\":{\"zvhqjwtrhtgvg\":{\"roles\":{\"je\":{},\"jklntikyj\":{},\"zkdbqzolx\":{}}},\"wro\":{\"roles\":{\"rrkolawjmjs\":{}}},\"zvlnsnnjz\":{\"roles\":{\"xfzzzwyjafitlhgu\":{},\"nuchlgmltxdwhmo\":{},\"us\":{}}}}},\"tags\":{\"p\":\"folpymwamxqzra\",\"ulajvlejchc\":\"dphtv\",\"mzlanru\":\"rlzk\",\"phcnzqtpj\":\"dwv\"},\"identity\":{\"principalId\":\"d28d66a0-e5f8-44d9-b17d-29c4ba128764\",\"tenantId\":\"179385a5-f1ca-4ec3-9f72-16284b69b6ec\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"aiwdcxsmlzzhz\":{\"principalId\":\"a5e3ca05-d7fa-40e0-930d-bbf6d3fc3cdf\",\"clientId\":\"3ba85177-bc00-4335-9615-91d563669714\"},\"etlgydlhqvlnnpx\":{\"principalId\":\"575e86a0-41ae-4659-943e-8b8b485e78bc\",\"clientId\":\"133d4e94-ebc5-4917-a8e4-ca2cfd09a537\"},\"fiqgeaar\":{\"principalId\":\"e2132761-52c5-4914-860d-5b047cfa4ab6\",\"clientId\":\"76bf0e39-c419-4f36-ad90-bf934ea93ff2\"}}},\"location\":\"jekglklbyuli\",\"id\":\"cwvmzegj\",\"name\":\"nfhjirwgdnqzbr\",\"type\":\"kspzhzmtksjcit\"}";
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"environmentCount\":1601507048,\"deploymentTargetId\":\"k\",\"displayName\":\"aimmoiroqb\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{\"sjcaacfdmmcpugm\":{\"roleName\":\"apyyrmfsvbpavbo\",\"description\":\"ppdbwnupgahxkum\"}}},\"userRoleAssignments\":{\"chorimkrsr\":{\"roles\":{\"vufhbzehewhoq\":{},\"nlbqnbldxeaclg\":{}}},\"aabeolhbhlvbmxuq\":{\"roles\":{\"ucsofldpuviyf\":{}}},\"siowlkjxnqpv\":{\"roles\":{\"xtkcudfbsfar\":{}}}}},\"tags\":{\"saoafcluqvox\":\"stmhqykizmd\",\"gwe\":\"ycjimryvwgcwwpbm\",\"efoh\":\"ydsx\",\"mtkhlowkxxpvbr\":\"cbvopwndyqleallk\"},\"identity\":{\"principalId\":\"fbfd6108-9e0c-4b96-a04c-9e02ff2a73ba\",\"tenantId\":\"6d70021e-b46a-429d-b34f-947efba3234b\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"hotlhikcyychunsj\":{\"principalId\":\"e9d4400c-0d2d-46fa-a2bf-b3499c649c4d\",\"clientId\":\"59a2e49b-7c02-417a-92f8-05282ad28672\"},\"rtws\":{\"principalId\":\"1808689b-59ba-4a5a-8dac-d3c82f0633db\",\"clientId\":\"f9d62a64-a9d2-4613-b724-682a12f39afa\"},\"vuicp\":{\"principalId\":\"a784aa71-ac5b-4470-bf09-c3e3d93f45eb\",\"clientId\":\"91812808-dae6-4d9d-8427-6f9d0f224b5b\"}}},\"location\":\"trrmhwrb\",\"id\":\"pyf\",\"name\":\"ubhvj\",\"type\":\"lrocuyzlwh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,33 +40,36 @@ public final class ProjectEnvironmentTypesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ProjectEnvironmentType response = manager.projectEnvironmentTypes()
-            .define("xmycjimryvwgcw")
-            .withExistingProject("kizmdksaoafclu", "v")
-            .withRegion("fpubntnbatz")
-            .withTags(mapOf("lpxuzzjgnrefq", "e", "oihiqak", "hqo", "brkwpzdqt", "diw"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("axsipietgb", new UserAssignedIdentity(), "fulbmoichdl", new UserAssignedIdentity())))
-            .withDeploymentTargetId("esyds")
-            .withDisplayName("efoh")
-            .withStatus(EnvironmentTypeEnableStatus.DISABLED)
+            .define("etndnbfqyggagf")
+            .withExistingProject("uuuybnchrsziz", "yuel")
+            .withRegion("yuicdhzbdy")
+            .withTags(mapOf("nwvroevytlyokrr", "annovvoxczytpr", "uxvnsasbcrymodi", "o", "lmv", "rxklobdxnazpmk",
+                "zxlioh", "vfxzopjh"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ba", new UserAssignedIdentity(), "bbnz", new UserAssignedIdentity(),
+                    "knapq", new UserAssignedIdentity())))
+            .withDeploymentTargetId("wahzjmucftbyr")
+            .withDisplayName("rohkpigqfusu")
+            .withStatus(EnvironmentTypeEnableStatus.ENABLED)
             .withCreatorRoleAssignment(
-                new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment().withRoles(mapOf("vbrdfjmzsyzfho",
-                    new EnvironmentRole(), "rtws", new EnvironmentRole(), "hvtrrmhwrbfdpyf", new EnvironmentRole())))
-            .withUserRoleAssignments(mapOf("qmemc",
-                new UserRoleAssignmentValue().withRoles(mapOf("jgl", new EnvironmentRole(), "ocu",
-                    new EnvironmentRole(), "zlwhhmemhooclu", new EnvironmentRole(), "n", new EnvironmentRole())),
-                "rfih",
-                new UserRoleAssignmentValue().withRoles(mapOf("mmyky", new EnvironmentRole(), "jxsglhsr",
-                    new EnvironmentRole(), "rye", new EnvironmentRole(), "ylmbkzudni", new EnvironmentRole()))))
+                new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment().withRoles(mapOf("ydyynfsvkh",
+                    new EnvironmentRole(), "khnmgbrou", new EnvironmentRole(), "wjxhpdulon", new EnvironmentRole())))
+            .withUserRoleAssignments(mapOf("kfuarenlv",
+                new UserRoleAssignmentValue().withRoles(mapOf("qwtehtuevr", new EnvironmentRole(), "rljyoogwxhnsdu",
+                    new EnvironmentRole(), "gwbsreurf", new EnvironmentRole())),
+                "chaqdtvqec",
+                new UserRoleAssignmentValue()
+                    .withRoles(mapOf("klnvnafvvkyfede", new EnvironmentRole(), "jboslcqxypok", new EnvironmentRole(),
+                        "hminqcymczngnbdx", new EnvironmentRole(), "ewuninvud", new EnvironmentRole())),
+                "xzvtzna", new UserRoleAssignmentValue().withRoles(mapOf("tmxxdtddmflhuy", new EnvironmentRole()))))
             .create();
 
-        Assertions.assertEquals("folpymwamxqzra", response.tags().get("p"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("jekglklbyuli", response.location());
-        Assertions.assertEquals("rvkmjcwmjvlgfggc", response.deploymentTargetId());
-        Assertions.assertEquals("yylizrz", response.displayName());
-        Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, response.status());
+        Assertions.assertEquals("stmhqykizmd", response.tags().get("saoafcluqvox"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("trrmhwrb", response.location());
+        Assertions.assertEquals("k", response.deploymentTargetId());
+        Assertions.assertEquals("aimmoiroqb", response.displayName());
+        Assertions.assertEquals(EnvironmentTypeEnableStatus.DISABLED, response.status());
     }
 
     // Use "Map.of" if available

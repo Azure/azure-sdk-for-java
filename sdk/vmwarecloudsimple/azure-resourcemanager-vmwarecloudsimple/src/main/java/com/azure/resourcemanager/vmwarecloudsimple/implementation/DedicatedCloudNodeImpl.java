@@ -145,26 +145,21 @@ public final class DedicatedCloudNodeImpl
     }
 
     public DedicatedCloudNode create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudNodes()
-                .createOrUpdate(
-                    resourceGroupName, createReferer, dedicatedCloudNodeName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudNodes()
+            .createOrUpdate(resourceGroupName, createReferer, dedicatedCloudNodeName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DedicatedCloudNode create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudNodes()
-                .createOrUpdate(resourceGroupName, createReferer, dedicatedCloudNodeName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudNodes()
+            .createOrUpdate(resourceGroupName, createReferer, dedicatedCloudNodeName, this.innerModel(), context);
         return this;
     }
 
-    DedicatedCloudNodeImpl(
-        String name, com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
+    DedicatedCloudNodeImpl(String name,
+        com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = new DedicatedCloudNodeInner();
         this.serviceManager = serviceManager;
         this.dedicatedCloudNodeName = name;
@@ -177,52 +172,44 @@ public final class DedicatedCloudNodeImpl
     }
 
     public DedicatedCloudNode apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudNodes()
-                .updateWithResponse(
-                    resourceGroupName, dedicatedCloudNodeName, updateDedicatedCloudNodeRequest, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudNodes()
+            .updateWithResponse(resourceGroupName, dedicatedCloudNodeName, updateDedicatedCloudNodeRequest,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DedicatedCloudNode apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudNodes()
-                .updateWithResponse(resourceGroupName, dedicatedCloudNodeName, updateDedicatedCloudNodeRequest, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudNodes()
+            .updateWithResponse(resourceGroupName, dedicatedCloudNodeName, updateDedicatedCloudNodeRequest, context)
+            .getValue();
         return this;
     }
 
-    DedicatedCloudNodeImpl(
-        DedicatedCloudNodeInner innerObject,
+    DedicatedCloudNodeImpl(DedicatedCloudNodeInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dedicatedCloudNodeName = Utils.getValueFromIdByName(innerObject.id(), "dedicatedCloudNodes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dedicatedCloudNodeName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dedicatedCloudNodes");
     }
 
     public DedicatedCloudNode refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudNodes()
-                .getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudNodes()
+            .getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DedicatedCloudNode refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudNodes()
-                .getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudNodes()
+            .getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, context)
+            .getValue();
         return this;
     }
 

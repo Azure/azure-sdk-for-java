@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ArtifactInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of a list operation. */
+/**
+ * The response of a list operation.
+ */
 @Fluent
-public final class ArtifactList {
+public final class ArtifactList implements JsonSerializable<ArtifactList> {
     /*
      * Results of the list operation.
      */
-    @JsonProperty(value = "value")
     private List<ArtifactInner> value;
 
     /*
      * Link for next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ArtifactList class. */
+    /**
+     * Creates an instance of ArtifactList class.
+     */
     public ArtifactList() {
     }
 
     /**
      * Get the value property: Results of the list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<ArtifactInner> value() {
@@ -39,7 +45,7 @@ public final class ArtifactList {
 
     /**
      * Set the value property: Results of the list operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the ArtifactList object itself.
      */
@@ -50,7 +56,7 @@ public final class ArtifactList {
 
     /**
      * Get the nextLink property: Link for next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ArtifactList {
 
     /**
      * Set the nextLink property: Link for next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ArtifactList object itself.
      */
@@ -70,12 +76,52 @@ public final class ArtifactList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactList.
+     */
+    public static ArtifactList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactList deserializedArtifactList = new ArtifactList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ArtifactInner> value = reader.readArray(reader1 -> ArtifactInner.fromJson(reader1));
+                    deserializedArtifactList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedArtifactList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactList;
+        });
     }
 }

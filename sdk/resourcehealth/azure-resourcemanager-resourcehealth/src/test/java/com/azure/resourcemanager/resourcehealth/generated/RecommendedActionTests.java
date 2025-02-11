@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendedActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendedAction model =
-            BinaryData
-                .fromString(
-                    "{\"action\":\"lcuiywgqywgndr\",\"actionUrl\":\"nhzgpphrcgyn\",\"_ActionUrl.Comment\":\"cpecfvmmcoofs\",\"actionUrlText\":\"zevgb\"}")
-                .toObject(RecommendedAction.class);
+        RecommendedAction model = BinaryData.fromString(
+            "{\"action\":\"lcuiywgqywgndr\",\"actionUrl\":\"nhzgpphrcgyn\",\"_ActionUrl.Comment\":\"cpecfvmmcoofs\",\"actionUrlText\":\"zevgb\"}")
+            .toObject(RecommendedAction.class);
         Assertions.assertEquals("lcuiywgqywgndr", model.action());
         Assertions.assertEquals("nhzgpphrcgyn", model.actionUrl());
         Assertions.assertEquals("zevgb", model.actionUrlText());
@@ -23,11 +21,9 @@ public final class RecommendedActionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecommendedAction model =
-            new RecommendedAction()
-                .withAction("lcuiywgqywgndr")
-                .withActionUrl("nhzgpphrcgyn")
-                .withActionUrlText("zevgb");
+        RecommendedAction model = new RecommendedAction().withAction("lcuiywgqywgndr")
+            .withActionUrl("nhzgpphrcgyn")
+            .withActionUrlText("zevgb");
         model = BinaryData.fromObject(model).toObject(RecommendedAction.class);
         Assertions.assertEquals("lcuiywgqywgndr", model.action());
         Assertions.assertEquals("nhzgpphrcgyn", model.actionUrl());

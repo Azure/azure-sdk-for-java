@@ -5,73 +5,69 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * UE Connection Info for 4G.
  */
 @Fluent
-public final class UeConnectionInfo4G {
+public final class UeConnectionInfo4G implements JsonSerializable<UeConnectionInfo4G> {
     /*
      * UE Location Info properties
      */
-    @JsonProperty(value = "locationInfo")
     private UeLocationInfo locationInfo;
 
     /*
      * Global RAN Node ID
      */
-    @JsonProperty(value = "globalRanNodeId", required = true)
     private GlobalRanNodeId globalRanNodeId;
 
     /*
      * Per-UE transport network layer association
      */
-    @JsonProperty(value = "perUeTnla")
     private String perUeTnla;
 
     /*
      * MME S1AP identifier
      */
-    @JsonProperty(value = "mmeS1apId", required = true)
     private int mmeS1ApId;
 
     /*
      * eNodeB S1AP identifier
      */
-    @JsonProperty(value = "enbS1apId", required = true)
     private int enbS1ApId;
 
     /*
      * Last Visited TAI
      */
-    @JsonProperty(value = "lastVisitedTai")
     private String lastVisitedTai;
 
     /*
      * State of the UE.
      */
-    @JsonProperty(value = "ueState", required = true)
     private UeState ueState;
 
     /*
      * Radio connection establishment cause
      */
-    @JsonProperty(value = "rrcEstablishmentCause", required = true)
     private RrcEstablishmentCause rrcEstablishmentCause;
 
     /*
      * The UE's usage setting
      */
-    @JsonProperty(value = "ueUsageSetting")
     private UeUsageSetting ueUsageSetting;
 
     /*
      * The timestamp of last activity of UE (UTC).
      */
-    @JsonProperty(value = "lastActivityTime")
     private OffsetDateTime lastActivityTime;
 
     /**
@@ -308,4 +304,75 @@ public final class UeConnectionInfo4G {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UeConnectionInfo4G.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("globalRanNodeId", this.globalRanNodeId);
+        jsonWriter.writeIntField("mmeS1apId", this.mmeS1ApId);
+        jsonWriter.writeIntField("enbS1apId", this.enbS1ApId);
+        jsonWriter.writeStringField("ueState", this.ueState == null ? null : this.ueState.toString());
+        jsonWriter.writeStringField("rrcEstablishmentCause",
+            this.rrcEstablishmentCause == null ? null : this.rrcEstablishmentCause.toString());
+        jsonWriter.writeJsonField("locationInfo", this.locationInfo);
+        jsonWriter.writeStringField("perUeTnla", this.perUeTnla);
+        jsonWriter.writeStringField("lastVisitedTai", this.lastVisitedTai);
+        jsonWriter.writeStringField("ueUsageSetting",
+            this.ueUsageSetting == null ? null : this.ueUsageSetting.toString());
+        jsonWriter.writeStringField("lastActivityTime",
+            this.lastActivityTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastActivityTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UeConnectionInfo4G from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UeConnectionInfo4G if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UeConnectionInfo4G.
+     */
+    public static UeConnectionInfo4G fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UeConnectionInfo4G deserializedUeConnectionInfo4G = new UeConnectionInfo4G();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("globalRanNodeId".equals(fieldName)) {
+                    deserializedUeConnectionInfo4G.globalRanNodeId = GlobalRanNodeId.fromJson(reader);
+                } else if ("mmeS1apId".equals(fieldName)) {
+                    deserializedUeConnectionInfo4G.mmeS1ApId = reader.getInt();
+                } else if ("enbS1apId".equals(fieldName)) {
+                    deserializedUeConnectionInfo4G.enbS1ApId = reader.getInt();
+                } else if ("ueState".equals(fieldName)) {
+                    deserializedUeConnectionInfo4G.ueState = UeState.fromString(reader.getString());
+                } else if ("rrcEstablishmentCause".equals(fieldName)) {
+                    deserializedUeConnectionInfo4G.rrcEstablishmentCause
+                        = RrcEstablishmentCause.fromString(reader.getString());
+                } else if ("locationInfo".equals(fieldName)) {
+                    deserializedUeConnectionInfo4G.locationInfo = UeLocationInfo.fromJson(reader);
+                } else if ("perUeTnla".equals(fieldName)) {
+                    deserializedUeConnectionInfo4G.perUeTnla = reader.getString();
+                } else if ("lastVisitedTai".equals(fieldName)) {
+                    deserializedUeConnectionInfo4G.lastVisitedTai = reader.getString();
+                } else if ("ueUsageSetting".equals(fieldName)) {
+                    deserializedUeConnectionInfo4G.ueUsageSetting = UeUsageSetting.fromString(reader.getString());
+                } else if ("lastActivityTime".equals(fieldName)) {
+                    deserializedUeConnectionInfo4G.lastActivityTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUeConnectionInfo4G;
+        });
+    }
 }

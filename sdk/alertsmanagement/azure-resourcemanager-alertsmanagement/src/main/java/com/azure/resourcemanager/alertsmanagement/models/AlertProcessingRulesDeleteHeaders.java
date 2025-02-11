@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AlertProcessingRulesDeleteHeaders model. */
+/**
+ * The AlertProcessingRulesDeleteHeaders model.
+ */
 @Fluent
 public final class AlertProcessingRulesDeleteHeaders {
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of AlertProcessingRulesDeleteHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public AlertProcessingRulesDeleteHeaders(HttpHeaders rawHeaders) {
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
     }
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String xMsRequestId() {
@@ -38,7 +39,7 @@ public final class AlertProcessingRulesDeleteHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the AlertProcessingRulesDeleteHeaders object itself.
      */
@@ -49,7 +50,7 @@ public final class AlertProcessingRulesDeleteHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

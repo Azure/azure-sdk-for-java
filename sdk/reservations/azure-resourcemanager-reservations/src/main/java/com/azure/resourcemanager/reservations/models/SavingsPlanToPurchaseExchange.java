@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Savings plan purchase details. */
+/**
+ * Savings plan purchase details.
+ */
 @Fluent
-public final class SavingsPlanToPurchaseExchange {
+public final class SavingsPlanToPurchaseExchange implements JsonSerializable<SavingsPlanToPurchaseExchange> {
     /*
      * Fully qualified id of the savings plan order being purchased
      */
-    @JsonProperty(value = "savingsPlanOrderId")
     private String savingsPlanOrderId;
 
     /*
      * Fully qualified id of the savings plan being purchased. This value is only guaranteed to be non-null if the
      * purchase is successful.
      */
-    @JsonProperty(value = "savingsPlanId")
     private String savingsPlanId;
 
     /*
      * Request body for savings plan purchase
      */
-    @JsonProperty(value = "properties")
     private SavingsPlanPurchaseRequest properties;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "billingCurrencyTotal")
     private Price billingCurrencyTotal;
 
     /*
      * Status of the individual operation.
      */
-    @JsonProperty(value = "status")
     private OperationStatus status;
 
-    /** Creates an instance of SavingsPlanToPurchaseExchange class. */
+    /**
+     * Creates an instance of SavingsPlanToPurchaseExchange class.
+     */
     public SavingsPlanToPurchaseExchange() {
     }
 
     /**
      * Get the savingsPlanOrderId property: Fully qualified id of the savings plan order being purchased.
-     *
+     * 
      * @return the savingsPlanOrderId value.
      */
     public String savingsPlanOrderId() {
@@ -56,7 +59,7 @@ public final class SavingsPlanToPurchaseExchange {
 
     /**
      * Set the savingsPlanOrderId property: Fully qualified id of the savings plan order being purchased.
-     *
+     * 
      * @param savingsPlanOrderId the savingsPlanOrderId value to set.
      * @return the SavingsPlanToPurchaseExchange object itself.
      */
@@ -68,7 +71,7 @@ public final class SavingsPlanToPurchaseExchange {
     /**
      * Get the savingsPlanId property: Fully qualified id of the savings plan being purchased. This value is only
      * guaranteed to be non-null if the purchase is successful.
-     *
+     * 
      * @return the savingsPlanId value.
      */
     public String savingsPlanId() {
@@ -78,7 +81,7 @@ public final class SavingsPlanToPurchaseExchange {
     /**
      * Set the savingsPlanId property: Fully qualified id of the savings plan being purchased. This value is only
      * guaranteed to be non-null if the purchase is successful.
-     *
+     * 
      * @param savingsPlanId the savingsPlanId value to set.
      * @return the SavingsPlanToPurchaseExchange object itself.
      */
@@ -89,7 +92,7 @@ public final class SavingsPlanToPurchaseExchange {
 
     /**
      * Get the properties property: Request body for savings plan purchase.
-     *
+     * 
      * @return the properties value.
      */
     public SavingsPlanPurchaseRequest properties() {
@@ -98,7 +101,7 @@ public final class SavingsPlanToPurchaseExchange {
 
     /**
      * Set the properties property: Request body for savings plan purchase.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SavingsPlanToPurchaseExchange object itself.
      */
@@ -109,7 +112,7 @@ public final class SavingsPlanToPurchaseExchange {
 
     /**
      * Get the billingCurrencyTotal property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the billingCurrencyTotal value.
      */
     public Price billingCurrencyTotal() {
@@ -118,7 +121,7 @@ public final class SavingsPlanToPurchaseExchange {
 
     /**
      * Set the billingCurrencyTotal property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param billingCurrencyTotal the billingCurrencyTotal value to set.
      * @return the SavingsPlanToPurchaseExchange object itself.
      */
@@ -129,7 +132,7 @@ public final class SavingsPlanToPurchaseExchange {
 
     /**
      * Get the status property: Status of the individual operation.
-     *
+     * 
      * @return the status value.
      */
     public OperationStatus status() {
@@ -138,7 +141,7 @@ public final class SavingsPlanToPurchaseExchange {
 
     /**
      * Set the status property: Status of the individual operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the SavingsPlanToPurchaseExchange object itself.
      */
@@ -149,7 +152,7 @@ public final class SavingsPlanToPurchaseExchange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -159,5 +162,54 @@ public final class SavingsPlanToPurchaseExchange {
         if (billingCurrencyTotal() != null) {
             billingCurrencyTotal().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("savingsPlanOrderId", this.savingsPlanOrderId);
+        jsonWriter.writeStringField("savingsPlanId", this.savingsPlanId);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("billingCurrencyTotal", this.billingCurrencyTotal);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanToPurchaseExchange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanToPurchaseExchange if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SavingsPlanToPurchaseExchange.
+     */
+    public static SavingsPlanToPurchaseExchange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanToPurchaseExchange deserializedSavingsPlanToPurchaseExchange
+                = new SavingsPlanToPurchaseExchange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("savingsPlanOrderId".equals(fieldName)) {
+                    deserializedSavingsPlanToPurchaseExchange.savingsPlanOrderId = reader.getString();
+                } else if ("savingsPlanId".equals(fieldName)) {
+                    deserializedSavingsPlanToPurchaseExchange.savingsPlanId = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSavingsPlanToPurchaseExchange.properties = SavingsPlanPurchaseRequest.fromJson(reader);
+                } else if ("billingCurrencyTotal".equals(fieldName)) {
+                    deserializedSavingsPlanToPurchaseExchange.billingCurrencyTotal = Price.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedSavingsPlanToPurchaseExchange.status = OperationStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanToPurchaseExchange;
+        });
     }
 }

@@ -20,8 +20,8 @@ public final class FirewallsGetByResourceGroupSamples {
      */
     public static void
         firewallsGetMaximumSetGen(com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.firewalls().getByResourceGroupWithResponse("firewall-rg", "firewall1",
-            com.azure.core.util.Context.NONE);
+        manager.firewalls()
+            .getByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class FirewallsGetByResourceGroupSamples {
      */
     public static void
         firewallsGetMinimumSetGen(com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.firewalls().getByResourceGroupWithResponse("firewall-rg", "firewall1",
-            com.azure.core.util.Context.NONE);
+        manager.firewalls()
+            .getByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
     }
 }

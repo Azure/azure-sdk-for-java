@@ -14,8 +14,7 @@ public final class ApplicableSchedulePropertiesImpl implements ApplicableSchedul
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    ApplicableSchedulePropertiesImpl(
-        ApplicableSchedulePropertiesInner innerObject,
+    ApplicableSchedulePropertiesImpl(ApplicableSchedulePropertiesInner innerObject,
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

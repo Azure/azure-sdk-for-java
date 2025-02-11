@@ -6,65 +6,34 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
 import com.azure.resourcemanager.logic.models.WorkflowTrigger;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkflowTriggersListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Registering\",\"createdTime\":\"2021-04-11T16:59:14Z\",\"changedTime\":\"2021-05-01T01:18:09Z\",\"state\":\"Completed\",\"status\":\"NotSpecified\",\"lastExecutionTime\":\"2021-03-26T19:04Z\",\"nextExecutionTime\":\"2021-01-05T19:17:51Z\",\"recurrence\":{\"frequency\":\"NotSpecified\",\"interval\":1022163228,\"startTime\":\"ppxthsfux\",\"endTime\":\"goexudn\",\"timeZone\":\"oorgtxdlewhbxvri\",\"schedule\":{\"minutes\":[990789977,1212762636,1810908296],\"hours\":[400889009],\"weekDays\":[\"Thursday\",\"Monday\",\"Monday\"],\"monthDays\":[1071751296],\"monthlyOccurrences\":[{}]}},\"workflow\":{\"id\":\"atp\",\"name\":\"ljajz\",\"type\":\"gwarbvblat\"}},\"name\":\"jk\",\"type\":\"todgisfej\",\"id\":\"p\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"createdTime\":\"2021-02-26T22:42:09Z\",\"changedTime\":\"2021-10-26T22:40:22Z\",\"state\":\"Deleted\",\"status\":\"NotSpecified\",\"lastExecutionTime\":\"2021-08-02T09:03:58Z\",\"nextExecutionTime\":\"2021-02-22T03:32:52Z\",\"recurrence\":{\"frequency\":\"NotSpecified\",\"interval\":926979381,\"startTime\":\"rmtqjkqevadr\",\"endTime\":\"wiu\",\"timeZone\":\"vcmjzkxiidisczsk\"},\"workflow\":{\"id\":\"qiqazugamxzkr\",\"name\":\"oiisbamnppcce\",\"type\":\"ztdsbeza\"}},\"name\":\"f\",\"type\":\"zxuizhyhnepkpe\",\"id\":\"arxqiubx\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<WorkflowTrigger> response = manager.workflowTriggers()
+            .list("rwfu", "xalvdhmumsmnub", 1775243032, "xrpstypxidqnv", com.azure.core.util.Context.NONE);
 
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<WorkflowTrigger> response =
-            manager
-                .workflowTriggers()
-                .list("jtpusllywpvtiotz", "pdbollg", 82157514, "fqiu", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("arxqiubx", response.iterator().next().id());
+        Assertions.assertEquals("p", response.iterator().next().id());
     }
 }

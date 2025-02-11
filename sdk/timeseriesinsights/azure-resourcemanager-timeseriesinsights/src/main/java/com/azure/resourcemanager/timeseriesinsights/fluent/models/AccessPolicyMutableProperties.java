@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.AccessPolicyRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** An object that represents a set of mutable access policy resource properties. */
+/**
+ * An object that represents a set of mutable access policy resource properties.
+ */
 @Fluent
-public final class AccessPolicyMutableProperties {
+public final class AccessPolicyMutableProperties implements JsonSerializable<AccessPolicyMutableProperties> {
     /*
      * An description of the access policy.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The list of roles the principal is assigned on the environment.
      */
-    @JsonProperty(value = "roles")
     private List<AccessPolicyRole> roles;
 
-    /** Creates an instance of AccessPolicyMutableProperties class. */
+    /**
+     * Creates an instance of AccessPolicyMutableProperties class.
+     */
     public AccessPolicyMutableProperties() {
     }
 
     /**
      * Get the description property: An description of the access policy.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -39,7 +45,7 @@ public final class AccessPolicyMutableProperties {
 
     /**
      * Set the description property: An description of the access policy.
-     *
+     * 
      * @param description the description value to set.
      * @return the AccessPolicyMutableProperties object itself.
      */
@@ -50,7 +56,7 @@ public final class AccessPolicyMutableProperties {
 
     /**
      * Get the roles property: The list of roles the principal is assigned on the environment.
-     *
+     * 
      * @return the roles value.
      */
     public List<AccessPolicyRole> roles() {
@@ -59,7 +65,7 @@ public final class AccessPolicyMutableProperties {
 
     /**
      * Set the roles property: The list of roles the principal is assigned on the environment.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the AccessPolicyMutableProperties object itself.
      */
@@ -70,9 +76,52 @@ public final class AccessPolicyMutableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("roles", this.roles,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessPolicyMutableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessPolicyMutableProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessPolicyMutableProperties.
+     */
+    public static AccessPolicyMutableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessPolicyMutableProperties deserializedAccessPolicyMutableProperties
+                = new AccessPolicyMutableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedAccessPolicyMutableProperties.description = reader.getString();
+                } else if ("roles".equals(fieldName)) {
+                    List<AccessPolicyRole> roles
+                        = reader.readArray(reader1 -> AccessPolicyRole.fromString(reader1.getString()));
+                    deserializedAccessPolicyMutableProperties.roles = roles;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessPolicyMutableProperties;
+        });
     }
 }

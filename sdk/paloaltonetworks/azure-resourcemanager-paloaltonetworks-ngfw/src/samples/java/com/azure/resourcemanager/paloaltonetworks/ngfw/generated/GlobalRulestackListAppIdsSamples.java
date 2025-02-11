@@ -20,8 +20,8 @@ public final class GlobalRulestackListAppIdsSamples {
      */
     public static void globalRulestackListAppIdsMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.globalRulestacks().listAppIdsWithResponse("praval", "8543", "pref", "a6a321", 20,
-            com.azure.core.util.Context.NONE);
+        manager.globalRulestacks()
+            .listAppIdsWithResponse("praval", "8543", "pref", "a6a321", 20, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class GlobalRulestackListAppIdsSamples {
      */
     public static void globalRulestackListAppIdsMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.globalRulestacks().listAppIdsWithResponse("praval", null, null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.globalRulestacks()
+            .listAppIdsWithResponse("praval", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

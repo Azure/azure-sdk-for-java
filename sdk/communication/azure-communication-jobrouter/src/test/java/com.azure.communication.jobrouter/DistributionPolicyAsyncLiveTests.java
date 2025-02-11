@@ -32,26 +32,24 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
     public void createDistributionPolicyBestWorkerDefaultScoringRule(HttpClient httpClient) {
         // Setup
         JobRouterAdministrationAsyncClient administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
-        String bestWorkerModeDistributionPolicyId = String.format("%s-BestWorkerDefaultScoringRuleAsync-DistributionPolicy", JAVA_LIVE_TESTS);
+        String bestWorkerModeDistributionPolicyId
+            = String.format("%s-BestWorkerDefaultScoringRuleAsync-DistributionPolicy", JAVA_LIVE_TESTS);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            bestWorkerModeDistributionPolicyId,
-            Duration.ofSeconds(10),
-            new BestWorkerMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-                .setScoringRule(new StaticRouterRule().setValue(new RouterValue(5)))
-                .setBypassSelectors(true)
-                .setScoringRuleOptions(new ScoringRuleOptions()
-                    .setBatchScoringEnabled(true)
-                    .setScoringParameters(Collections.singletonList(ScoringRuleParameterSelector.JOB_LABELS))
-                    .setBatchSize(30)
-                    .setDescendingOrder(true)))
-            .setName(bestWorkerModeDistributionPolicyName);
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(bestWorkerModeDistributionPolicyId, Duration.ofSeconds(10),
+                new BestWorkerMode().setMinConcurrentOffers(1)
+                    .setMaxConcurrentOffers(10)
+                    .setScoringRule(new StaticRouterRule().setValue(new RouterValue(5)))
+                    .setBypassSelectors(true)
+                    .setScoringRuleOptions(new ScoringRuleOptions().setBatchScoringEnabled(true)
+                        .setScoringParameters(Collections.singletonList(ScoringRuleParameterSelector.JOB_LABELS))
+                        .setBatchSize(30)
+                        .setDescendingOrder(true))).setName(bestWorkerModeDistributionPolicyName);
 
         // Action
-        DistributionPolicy result = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
+        DistributionPolicy result
+            = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         // Verify
         assertEquals(bestWorkerModeDistributionPolicyId, result.getId());
@@ -62,13 +60,15 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
         assertEquals(1, result.getMode().getMinConcurrentOffers());
         assertEquals(10, result.getMode().getMaxConcurrentOffers());
         assertEquals(true, result.getMode().isBypassSelectors());
-        assertEquals(5, ((StaticRouterRule) ((BestWorkerMode) result.getMode()).getScoringRule()).getValue().getIntValue());
+        assertEquals(5,
+            ((StaticRouterRule) ((BestWorkerMode) result.getMode()).getScoringRule()).getValue().getIntValue());
         assertEquals(30, ((BestWorkerMode) result.getMode()).getScoringRuleOptions().getBatchSize());
         assertEquals(true, ((BestWorkerMode) result.getMode()).getScoringRuleOptions().isDescendingOrder());
         assertEquals(true, ((BestWorkerMode) result.getMode()).getScoringRuleOptions().isBatchScoringEnabled());
         assertEquals(1, ((BestWorkerMode) result.getMode()).getScoringRuleOptions().getScoringParameters().size());
 
-        Response<BinaryData> binaryResponse = administrationAsyncClient.getDistributionPolicyWithResponse(result.getId(), null).block();
+        Response<BinaryData> binaryResponse
+            = administrationAsyncClient.getDistributionPolicyWithResponse(result.getId(), null).block();
         DistributionPolicy deserialized = binaryResponse.getValue().toObject(DistributionPolicy.class);
 
         assertEquals(bestWorkerModeDistributionPolicyId, deserialized.getId());
@@ -79,16 +79,18 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
         assertEquals(1, deserialized.getMode().getMinConcurrentOffers());
         assertEquals(10, deserialized.getMode().getMaxConcurrentOffers());
         assertEquals(true, deserialized.getMode().isBypassSelectors());
-        assertEquals(5, ((StaticRouterRule) ((BestWorkerMode) deserialized.getMode()).getScoringRule()).getValue().getIntValue());
+        assertEquals(5,
+            ((StaticRouterRule) ((BestWorkerMode) deserialized.getMode()).getScoringRule()).getValue().getIntValue());
         assertEquals(30, ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().getBatchSize());
         assertEquals(true, ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().isDescendingOrder());
         assertEquals(true, ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().isBatchScoringEnabled());
-        assertEquals(1, ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().getScoringParameters().size());
+        assertEquals(1,
+            ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().getScoringParameters().size());
 
         ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().setScoringParameters(new ArrayList<>());
         deserialized.setOfferExpiresAfter(Duration.ofMinutes(5));
-        DistributionPolicy updatedPolicy = administrationAsyncClient.updateDistributionPolicy(
-            deserialized.getId(), deserialized).block();
+        DistributionPolicy updatedPolicy
+            = administrationAsyncClient.updateDistributionPolicy(deserialized.getId(), deserialized).block();
 
         assertEquals(bestWorkerModeDistributionPolicyId, updatedPolicy.getId());
         assertNotEquals(result.getEtag(), updatedPolicy.getEtag());
@@ -98,11 +100,13 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
         assertEquals(1, updatedPolicy.getMode().getMinConcurrentOffers());
         assertEquals(10, updatedPolicy.getMode().getMaxConcurrentOffers());
         assertEquals(true, updatedPolicy.getMode().isBypassSelectors());
-        assertEquals(5, ((StaticRouterRule) ((BestWorkerMode) updatedPolicy.getMode()).getScoringRule()).getValue().getIntValue());
+        assertEquals(5,
+            ((StaticRouterRule) ((BestWorkerMode) updatedPolicy.getMode()).getScoringRule()).getValue().getIntValue());
         assertEquals(30, ((BestWorkerMode) updatedPolicy.getMode()).getScoringRuleOptions().getBatchSize());
         assertEquals(true, ((BestWorkerMode) updatedPolicy.getMode()).getScoringRuleOptions().isDescendingOrder());
         assertEquals(true, ((BestWorkerMode) updatedPolicy.getMode()).getScoringRuleOptions().isBatchScoringEnabled());
-        assertEquals(0, ((BestWorkerMode) updatedPolicy.getMode()).getScoringRuleOptions().getScoringParameters().size());
+        assertEquals(0,
+            ((BestWorkerMode) updatedPolicy.getMode()).getScoringRuleOptions().getScoringParameters().size());
 
         // Cleanup
         administrationAsyncClient.deleteDistributionPolicy(bestWorkerModeDistributionPolicyId).block();

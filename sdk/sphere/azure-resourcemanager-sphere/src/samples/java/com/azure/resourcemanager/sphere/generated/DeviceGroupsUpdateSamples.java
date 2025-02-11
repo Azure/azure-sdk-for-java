@@ -20,8 +20,10 @@ public final class DeviceGroupsUpdateSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deviceGroupsUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        DeviceGroup resource = manager.deviceGroups().getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1",
-            "MyDeviceGroup1", com.azure.core.util.Context.NONE).getValue();
+        DeviceGroup resource = manager.deviceGroups()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

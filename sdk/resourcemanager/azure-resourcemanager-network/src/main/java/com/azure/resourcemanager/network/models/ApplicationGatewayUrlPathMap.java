@@ -15,16 +15,32 @@ import java.util.Map;
 public interface ApplicationGatewayUrlPathMap
     extends HasInnerModel<ApplicationGatewayUrlPathMapInner>, ChildResource<ApplicationGateway> {
 
-    /** @return default backend address pool */
+    /**
+     * Gets default backend address pool.
+     *
+     * @return default backend address pool
+     */
     ApplicationGatewayBackend defaultBackend();
 
-    /** @return default backend HTTP settings configuration */
+    /**
+     * Gets default backend HTTP settings configuration.
+     *
+     * @return default backend HTTP settings configuration
+     */
     ApplicationGatewayBackendHttpConfiguration defaultBackendHttpConfiguration();
 
-    /** @return default redirect configuration */
+    /**
+     * Gets default redirect configuration.
+     *
+     * @return default redirect configuration
+     */
     ApplicationGatewayRedirectConfiguration defaultRedirectConfiguration();
 
-    /** @return path rules of URL path map resource */
+    /**
+     * Gets path rules of URL path map resource.
+     *
+     * @return path rules of URL path map resource
+     */
     Map<String, ApplicationGatewayPathRule> pathRules();
 
     /** Grouping of application gateway URL path map definition stages. */
@@ -159,12 +175,9 @@ public interface ApplicationGatewayUrlPathMap
      * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ReturnT>
-        extends DefinitionStages.Blank<ReturnT>,
-            DefinitionStages.WithBackendHttpConfiguration<ReturnT>,
-            DefinitionStages.WithBackend<ReturnT>,
-            DefinitionStages.WithPathRule<ReturnT>,
-            DefinitionStages.WithAttach<ReturnT> {
+    interface Definition<ReturnT> extends DefinitionStages.Blank<ReturnT>,
+        DefinitionStages.WithBackendHttpConfiguration<ReturnT>, DefinitionStages.WithBackend<ReturnT>,
+        DefinitionStages.WithPathRule<ReturnT>, DefinitionStages.WithAttach<ReturnT> {
     }
 
     /** The entirety of an application gateway URL path map update as part of an application gateway update. */
@@ -371,11 +384,9 @@ public interface ApplicationGatewayUrlPathMap
      *     definition
      */
     interface UpdateDefinition<ReturnT>
-        extends UpdateDefinitionStages.Blank<ReturnT>,
-            UpdateDefinitionStages.WithBackendOrAddress<ReturnT>,
-            UpdateDefinitionStages.WithBackendHttpConfiguration<ReturnT>,
-            UpdateDefinitionStages.WithBackendAddressOrPath<ReturnT>,
-            UpdateDefinitionStages.WithPathRule<ReturnT>,
-            UpdateDefinitionStages.WithAttach<ReturnT> {
+        extends UpdateDefinitionStages.Blank<ReturnT>, UpdateDefinitionStages.WithBackendOrAddress<ReturnT>,
+        UpdateDefinitionStages.WithBackendHttpConfiguration<ReturnT>,
+        UpdateDefinitionStages.WithBackendAddressOrPath<ReturnT>, UpdateDefinitionStages.WithPathRule<ReturnT>,
+        UpdateDefinitionStages.WithAttach<ReturnT> {
     }
 }

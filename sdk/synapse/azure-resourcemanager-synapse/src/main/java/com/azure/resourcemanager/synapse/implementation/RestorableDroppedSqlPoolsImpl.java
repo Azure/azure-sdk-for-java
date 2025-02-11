@@ -21,31 +21,28 @@ public final class RestorableDroppedSqlPoolsImpl implements RestorableDroppedSql
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public RestorableDroppedSqlPoolsImpl(
-        RestorableDroppedSqlPoolsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public RestorableDroppedSqlPoolsImpl(RestorableDroppedSqlPoolsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<RestorableDroppedSqlPool> getWithResponse(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId, Context context) {
-        Response<RestorableDroppedSqlPoolInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, restorableDroppedSqlPoolId, context);
+    public Response<RestorableDroppedSqlPool> getWithResponse(String resourceGroupName, String workspaceName,
+        String restorableDroppedSqlPoolId, Context context) {
+        Response<RestorableDroppedSqlPoolInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, restorableDroppedSqlPoolId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RestorableDroppedSqlPoolImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RestorableDroppedSqlPool get(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId) {
-        RestorableDroppedSqlPoolInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, restorableDroppedSqlPoolId);
+    public RestorableDroppedSqlPool get(String resourceGroupName, String workspaceName,
+        String restorableDroppedSqlPoolId) {
+        RestorableDroppedSqlPoolInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, restorableDroppedSqlPoolId);
         if (inner != null) {
             return new RestorableDroppedSqlPoolImpl(inner, this.manager());
         } else {
@@ -54,16 +51,16 @@ public final class RestorableDroppedSqlPoolsImpl implements RestorableDroppedSql
     }
 
     public PagedIterable<RestorableDroppedSqlPool> listByWorkspace(String resourceGroupName, String workspaceName) {
-        PagedIterable<RestorableDroppedSqlPoolInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new RestorableDroppedSqlPoolImpl(inner1, this.manager()));
+        PagedIterable<RestorableDroppedSqlPoolInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RestorableDroppedSqlPoolImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RestorableDroppedSqlPool> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<RestorableDroppedSqlPoolInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new RestorableDroppedSqlPoolImpl(inner1, this.manager()));
+    public PagedIterable<RestorableDroppedSqlPool> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
+        PagedIterable<RestorableDroppedSqlPoolInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RestorableDroppedSqlPoolImpl(inner1, this.manager()));
     }
 
     private RestorableDroppedSqlPoolsClient serviceClient() {

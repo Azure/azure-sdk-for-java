@@ -20,6 +20,7 @@ import java.util.Objects;
 /** Entry point to Azure compute resource management. */
 public final class CosmosManager extends Manager<CosmosDBManagementClient> {
     private CosmosDBAccountsImpl databaseAccounts;
+
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
      *
@@ -76,17 +77,18 @@ public final class CosmosManager extends Manager<CosmosDBManagementClient> {
     }
 
     private CosmosManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new CosmosDBManagementClientBuilder()
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+        super(httpPipeline, profile,
+            new CosmosDBManagementClientBuilder().endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .pipeline(httpPipeline)
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
     }
 
-    /** @return the cosmos db database account resource management API entry point */
+    /**
+     * Gets the cosmos db database account resource management API entry point.
+     *
+     * @return the cosmos db database account resource management API entry point
+     */
     public CosmosDBAccounts databaseAccounts() {
         if (databaseAccounts == null) {
             databaseAccounts = new CosmosDBAccountsImpl(this);

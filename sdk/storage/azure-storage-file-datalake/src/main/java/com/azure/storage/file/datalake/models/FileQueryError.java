@@ -7,7 +7,6 @@ package com.azure.storage.file.datalake.models;
  * Defines a file query error that can be returned on parsing a file query request.
  */
 public class FileQueryError {
-
     private final boolean fatal;
     private final String name;
     private final String description;
@@ -15,7 +14,7 @@ public class FileQueryError {
 
     /**
      * Creates a new FileQueryError object.
-     * @param fatal Whether or not the error is fatal.
+     * @param fatal Whether the error is fatal.
      * @param name The name of the error.
      * @param description A description of the error.
      * @param position The file offset at which the error occurred.
@@ -28,16 +27,19 @@ public class FileQueryError {
     }
 
     /**
-     * Whether or not the error is fatal. If true, this error prevents further query processing. More result data may
-     * be returned, but there is no guarantee that all of the original data will be processed. If false, this error
-     * does not prevent further query processing.
-     * @return Whether or not the error is fatal.
+     * Whether the error is fatal. If true, this error prevents further query processing. More result data may be
+     * returned, but there is no guarantee that all the original data will be processed. If false, this error does not
+     * prevent further query processing.
+     *
+     * @return Whether the error is fatal.
      */
     public boolean isFatal() {
         return fatal;
     }
 
     /**
+     * Gets the name of the error.
+     *
      * @return The name of the error.
      */
     public String getName() {
@@ -45,6 +47,7 @@ public class FileQueryError {
     }
 
     /**
+     * Gets a description of the error.
      *
      * @return A description of the error.
      */
@@ -53,6 +56,8 @@ public class FileQueryError {
     }
 
     /**
+     * Gets the file offset at which the error occurred.
+     *
      * @return The file offset at which the error occurred.
      */
     public long getPosition() {

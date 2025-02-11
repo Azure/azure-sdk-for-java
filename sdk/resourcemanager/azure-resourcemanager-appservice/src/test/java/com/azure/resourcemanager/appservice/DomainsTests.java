@@ -24,30 +24,27 @@ public class DomainsTests extends AppServiceTest {
     }
 
     @Test
-    @Disabled(
-        "Test is failing fix it. we may not intent to create a resource here but just to fetch existing resource.")
+    @Disabled("Test is failing fix it. we may not intent to create a resource here but just to fetch existing resource.")
     public void canCRUDDomain() throws Exception {
         // CREATE
-        AppServiceDomain domain =
-            appServiceManager
-                .domains()
-                .define(domainName)
-                .withExistingResourceGroup(rgName)
-                .defineRegistrantContact()
-                .withFirstName("Jianghao")
-                .withLastName("Lu")
-                .withEmail("jianghlu@microsoft.com")
-                .withAddressLine1("1 Microsoft Way")
-                .withCity("Seattle")
-                .withStateOrProvince("WA")
-                .withCountry(CountryIsoCode.UNITED_STATES)
-                .withPostalCode("98101")
-                .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                .withPhoneNumber("4258828080")
-                .attach()
-                .withDomainPrivacyEnabled(true)
-                .withAutoRenewEnabled(true)
-                .create();
+        AppServiceDomain domain = appServiceManager.domains()
+            .define(domainName)
+            .withExistingResourceGroup(rgName)
+            .defineRegistrantContact()
+            .withFirstName("Jianghao")
+            .withLastName("Lu")
+            .withEmail("jianghlu@microsoft.com")
+            .withAddressLine1("1 Microsoft Way")
+            .withCity("Seattle")
+            .withStateOrProvince("WA")
+            .withCountry(CountryIsoCode.UNITED_STATES)
+            .withPostalCode("98101")
+            .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+            .withPhoneNumber("4258828080")
+            .attach()
+            .withDomainPrivacyEnabled(true)
+            .withAutoRenewEnabled(true)
+            .create();
         //        Domain domain = appServiceManager.domains().getByGroup(RG_NAME, DOMAIN_NAME);
         Assertions.assertNotNull(domain);
         domain.update().withAutoRenewEnabled(false).apply();
@@ -55,7 +52,8 @@ public class DomainsTests extends AppServiceTest {
 
     @Test
     public void canListTopLevelDomainsAgreements() {
-        PagedIterable<TldLegalAgreementInner> iterable = appServiceManager.serviceClient().getTopLevelDomains()
+        PagedIterable<TldLegalAgreementInner> iterable = appServiceManager.serviceClient()
+            .getTopLevelDomains()
             .listAgreements("com", new TopLevelDomainAgreementOption());
         Assertions.assertNotNull(iterable.stream().collect(Collectors.toList()));
     }

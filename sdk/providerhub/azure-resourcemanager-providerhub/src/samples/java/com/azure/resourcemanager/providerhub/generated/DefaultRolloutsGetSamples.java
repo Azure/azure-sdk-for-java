@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.providerhub.generated;
 
-/** Samples for DefaultRollouts Get. */
+/**
+ * Samples for DefaultRollouts Get.
+ */
 public final class DefaultRolloutsGetSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_Get.json
+     * x-ms-original-file:
+     * specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_Get.
+     * json
      */
     /**
      * Sample code: DefaultRollouts_Get.
-     *
+     * 
      * @param manager Entry point to ProviderHubManager.
      */
     public static void defaultRolloutsGet(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {

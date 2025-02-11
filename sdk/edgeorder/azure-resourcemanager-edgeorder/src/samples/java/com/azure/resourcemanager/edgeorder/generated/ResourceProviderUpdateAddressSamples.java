@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.edgeorder.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.edgeorder.models.AddressResource;
 import com.azure.resourcemanager.edgeorder.models.AddressType;
 import com.azure.resourcemanager.edgeorder.models.ContactDetails;
@@ -13,53 +12,42 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ResourceProvider UpdateAddress. */
+/**
+ * Samples for ResourceProvider UpdateAddress.
+ */
 public final class ResourceProviderUpdateAddressSamples {
     /*
-     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/UpdateAddress.json
+     * x-ms-original-file:
+     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/UpdateAddress.json
      */
     /**
      * Sample code: UpdateAddress.
-     *
+     * 
      * @param manager Entry point to EdgeOrderManager.
      */
     public static void updateAddress(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        AddressResource resource =
-            manager
-                .resourceProviders()
-                .getByResourceGroupWithResponse("TestRG", "TestAddressName2", Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withTags(
-                mapOf(
-                    "Hobby",
-                    "Web Series Added",
-                    "Name",
-                    "Smile-Updated",
-                    "WhatElse",
-                    "Web Series Added",
-                    "Work",
-                    "Engineering"))
-            .withShippingAddress(
-                new ShippingAddress()
-                    .withStreetAddress1("16 TOWNSEND STT")
-                    .withStreetAddress2("UNIT 1")
-                    .withCity("San Francisco")
-                    .withStateOrProvince("CA")
-                    .withCountry("US")
-                    .withPostalCode("94107")
-                    .withCompanyName("Microsoft")
-                    .withAddressType(AddressType.NONE))
-            .withContactDetails(
-                new ContactDetails()
-                    .withContactName("Petr Cech")
-                    .withPhone("fakePhoneNumberPlaceholder")
-                    .withPhoneExtension("")
-                    .withEmailList(Arrays.asList("ssemcr@microsoft.com")))
+        AddressResource resource = manager.resourceProviders()
+            .getByResourceGroupWithResponse("YourResourceGroupName", "TestAddressName2",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
+            .withShippingAddress(new ShippingAddress().withStreetAddress1("16 TOWNSEND ST")
+                .withStreetAddress2("UNIT 1")
+                .withCity("San Francisco")
+                .withStateOrProvince("CA")
+                .withCountry("US")
+                .withPostalCode("fakeTokenPlaceholder")
+                .withCompanyName("Microsoft")
+                .withAddressType(AddressType.NONE))
+            .withContactDetails(new ContactDetails().withContactName("YYYY YYYY")
+                .withPhone("0000000000")
+                .withPhoneExtension("")
+                .withEmailList(Arrays.asList("xxxx@xxxx.xxx")))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

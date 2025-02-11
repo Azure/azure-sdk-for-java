@@ -5,47 +5,54 @@
 package com.azure.resourcemanager.agrifood.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.agrifood.models.ProvisioningState;
 import com.azure.resourcemanager.agrifood.models.PublicNetworkAccess;
 import com.azure.resourcemanager.agrifood.models.SensorIntegration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** FarmBeats ARM Resource properties. */
+/**
+ * FarmBeats ARM Resource properties.
+ */
 @Fluent
-public final class FarmBeatsPropertiesInner {
+public final class FarmBeatsPropertiesInner implements JsonSerializable<FarmBeatsPropertiesInner> {
     /*
      * Uri of the FarmBeats instance.
      */
-    @JsonProperty(value = "instanceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceUri;
 
     /*
      * FarmBeats instance provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Sensor integration request model.
      */
-    @JsonProperty(value = "sensorIntegration")
     private SensorIntegration sensorIntegration;
 
     /*
      * Property to allow or block public traffic for an Azure FarmBeats resource.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * The Private Endpoint Connection resource.
+     * The private endpoint connection resource.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointConnectionInner privateEndpointConnections;
 
     /**
+     * Creates an instance of FarmBeatsPropertiesInner class.
+     */
+    public FarmBeatsPropertiesInner() {
+    }
+
+    /**
      * Get the instanceUri property: Uri of the FarmBeats instance.
-     *
+     * 
      * @return the instanceUri value.
      */
     public String instanceUri() {
@@ -54,7 +61,7 @@ public final class FarmBeatsPropertiesInner {
 
     /**
      * Get the provisioningState property: FarmBeats instance provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -63,7 +70,7 @@ public final class FarmBeatsPropertiesInner {
 
     /**
      * Get the sensorIntegration property: Sensor integration request model.
-     *
+     * 
      * @return the sensorIntegration value.
      */
     public SensorIntegration sensorIntegration() {
@@ -72,7 +79,7 @@ public final class FarmBeatsPropertiesInner {
 
     /**
      * Set the sensorIntegration property: Sensor integration request model.
-     *
+     * 
      * @param sensorIntegration the sensorIntegration value to set.
      * @return the FarmBeatsPropertiesInner object itself.
      */
@@ -83,7 +90,7 @@ public final class FarmBeatsPropertiesInner {
 
     /**
      * Get the publicNetworkAccess property: Property to allow or block public traffic for an Azure FarmBeats resource.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -92,7 +99,7 @@ public final class FarmBeatsPropertiesInner {
 
     /**
      * Set the publicNetworkAccess property: Property to allow or block public traffic for an Azure FarmBeats resource.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the FarmBeatsPropertiesInner object itself.
      */
@@ -102,8 +109,8 @@ public final class FarmBeatsPropertiesInner {
     }
 
     /**
-     * Get the privateEndpointConnections property: The Private Endpoint Connection resource.
-     *
+     * Get the privateEndpointConnections property: The private endpoint connection resource.
+     * 
      * @return the privateEndpointConnections value.
      */
     public PrivateEndpointConnectionInner privateEndpointConnections() {
@@ -112,7 +119,7 @@ public final class FarmBeatsPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -122,5 +129,54 @@ public final class FarmBeatsPropertiesInner {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sensorIntegration", this.sensorIntegration);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FarmBeatsPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FarmBeatsPropertiesInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FarmBeatsPropertiesInner.
+     */
+    public static FarmBeatsPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FarmBeatsPropertiesInner deserializedFarmBeatsPropertiesInner = new FarmBeatsPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceUri".equals(fieldName)) {
+                    deserializedFarmBeatsPropertiesInner.instanceUri = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFarmBeatsPropertiesInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("sensorIntegration".equals(fieldName)) {
+                    deserializedFarmBeatsPropertiesInner.sensorIntegration = SensorIntegration.fromJson(reader);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedFarmBeatsPropertiesInner.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    deserializedFarmBeatsPropertiesInner.privateEndpointConnections
+                        = PrivateEndpointConnectionInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFarmBeatsPropertiesInner;
+        });
     }
 }

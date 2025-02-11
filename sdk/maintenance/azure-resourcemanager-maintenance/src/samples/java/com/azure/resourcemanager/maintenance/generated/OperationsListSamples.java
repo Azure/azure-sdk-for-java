@@ -9,7 +9,9 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/
+     * Operations_List.json
      */
     /**
      * Sample code: Operations_List.

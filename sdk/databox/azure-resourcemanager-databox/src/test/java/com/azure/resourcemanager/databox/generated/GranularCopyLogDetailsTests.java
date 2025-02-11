@@ -10,10 +10,8 @@ import com.azure.resourcemanager.databox.models.GranularCopyLogDetails;
 public final class GranularCopyLogDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GranularCopyLogDetails model =
-            BinaryData
-                .fromString("{\"copyLogDetailsType\":\"GranularCopyLogDetails\"}")
-                .toObject(GranularCopyLogDetails.class);
+        GranularCopyLogDetails model = BinaryData.fromString("{\"copyLogDetailsType\":\"GranularCopyLogDetails\"}")
+            .toObject(GranularCopyLogDetails.class);
     }
 
     @org.junit.jupiter.api.Test

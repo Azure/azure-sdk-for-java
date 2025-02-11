@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties of an add vCenter request.
  */
 @Fluent
-public final class AddVCenterRequestProperties {
+public final class AddVCenterRequestProperties implements JsonSerializable<AddVCenterRequestProperties> {
     /*
      * The friendly name of the vCenter.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The IP address of the vCenter to be discovered.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * The process server Id from where the discovery is orchestrated.
      */
-    @JsonProperty(value = "processServerId")
     private String processServerId;
 
     /*
      * The port number for discovery.
      */
-    @JsonProperty(value = "port")
     private String port;
 
     /*
      * The account Id which has privileges to discover the vCenter.
      */
-    @JsonProperty(value = "runAsAccountId")
     private String runAsAccountId;
 
     /**
@@ -154,5 +153,53 @@ public final class AddVCenterRequestProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("processServerId", this.processServerId);
+        jsonWriter.writeStringField("port", this.port);
+        jsonWriter.writeStringField("runAsAccountId", this.runAsAccountId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddVCenterRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddVCenterRequestProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddVCenterRequestProperties.
+     */
+    public static AddVCenterRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddVCenterRequestProperties deserializedAddVCenterRequestProperties = new AddVCenterRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedAddVCenterRequestProperties.friendlyName = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedAddVCenterRequestProperties.ipAddress = reader.getString();
+                } else if ("processServerId".equals(fieldName)) {
+                    deserializedAddVCenterRequestProperties.processServerId = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedAddVCenterRequestProperties.port = reader.getString();
+                } else if ("runAsAccountId".equals(fieldName)) {
+                    deserializedAddVCenterRequestProperties.runAsAccountId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddVCenterRequestProperties;
+        });
     }
 }

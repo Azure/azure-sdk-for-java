@@ -36,7 +36,7 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
 
     /**
      * Get the version property: Schema version.
-     *
+     * 
      * @return the version value.
      */
     public int getVersion() {
@@ -45,7 +45,7 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
 
     /**
      * Set the version property: Schema version.
-     *
+     * 
      * @param version the version value to set.
      * @return the MonitorDomain object itself.
      */
@@ -56,7 +56,7 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
 
     /**
      * Get the additionalProperties property: The abstract common base of all domains.
-     *
+     * 
      * @return the additionalProperties value.
      */
     public Map<String, Object> getAdditionalProperties() {
@@ -65,7 +65,7 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
 
     /**
      * Set the additionalProperties property: The abstract common base of all domains.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MonitorDomain object itself.
      */
@@ -91,7 +91,7 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
 
     /**
      * Reads an instance of MonitorDomain from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of MonitorDomain if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

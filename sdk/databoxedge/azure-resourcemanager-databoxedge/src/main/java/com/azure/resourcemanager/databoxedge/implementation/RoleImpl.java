@@ -6,6 +6,7 @@ package com.azure.resourcemanager.databoxedge.implementation;
 
 import com.azure.resourcemanager.databoxedge.fluent.models.RoleInner;
 import com.azure.resourcemanager.databoxedge.models.Role;
+import com.azure.resourcemanager.databoxedge.models.RoleTypes;
 
 public final class RoleImpl implements Role {
     private RoleInner innerObject;
@@ -27,6 +28,10 @@ public final class RoleImpl implements Role {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public RoleTypes kind() {
+        return this.innerModel().kind();
     }
 
     public RoleInner innerModel() {

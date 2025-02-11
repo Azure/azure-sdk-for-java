@@ -10,32 +10,34 @@ import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.Extension
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of Extension. */
+/**
+ * An immutable client-side representation of Extension.
+ */
 public interface Extension {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the identity property: Identity of the Extension resource.
-     *
+     * 
      * @return the identity value.
      */
     Identity identity();
@@ -43,14 +45,14 @@ public interface Extension {
     /**
      * Gets the systemData property: Top level metadata
      * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-contracts.md#system-metadata-for-all-azure-resources.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the plan property: The plan information.
-     *
+     * 
      * @return the plan value.
      */
     Plan plan();
@@ -58,7 +60,7 @@ public interface Extension {
     /**
      * Gets the extensionType property: Type of the Extension, of which this resource is an instance of. It must be one
      * of the Extension Types registered with Microsoft.KubernetesConfiguration by the Extension publisher.
-     *
+     * 
      * @return the extensionType value.
      */
     String extensionType();
@@ -66,7 +68,7 @@ public interface Extension {
     /**
      * Gets the autoUpgradeMinorVersion property: Flag to note if this extension participates in auto upgrade of minor
      * version, or not.
-     *
+     * 
      * @return the autoUpgradeMinorVersion value.
      */
     Boolean autoUpgradeMinorVersion();
@@ -74,7 +76,7 @@ public interface Extension {
     /**
      * Gets the releaseTrain property: ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable,
      * Preview, etc.) - only if autoUpgradeMinorVersion is 'true'.
-     *
+     * 
      * @return the releaseTrain value.
      */
     String releaseTrain();
@@ -82,14 +84,14 @@ public interface Extension {
     /**
      * Gets the version property: User-specified version of the extension for this extension to 'pin'. To use 'version',
      * autoUpgradeMinorVersion must be 'false'.
-     *
+     * 
      * @return the version value.
      */
     String version();
 
     /**
      * Gets the scope property: Scope at which the extension is installed.
-     *
+     * 
      * @return the scope value.
      */
     Scope scope();
@@ -97,7 +99,7 @@ public interface Extension {
     /**
      * Gets the configurationSettings property: Configuration settings, as name-value pairs for configuring this
      * extension.
-     *
+     * 
      * @return the configurationSettings value.
      */
     Map<String, String> configurationSettings();
@@ -105,70 +107,70 @@ public interface Extension {
     /**
      * Gets the configurationProtectedSettings property: Configuration settings that are sensitive, as name-value pairs
      * for configuring this extension.
-     *
+     * 
      * @return the configurationProtectedSettings value.
      */
     Map<String, String> configurationProtectedSettings();
 
     /**
      * Gets the currentVersion property: Currently installed version of the extension.
-     *
+     * 
      * @return the currentVersion value.
      */
     String currentVersion();
 
     /**
      * Gets the provisioningState property: Status of installation of this extension.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the statuses property: Status from this extension.
-     *
+     * 
      * @return the statuses value.
      */
     List<ExtensionStatus> statuses();
 
     /**
      * Gets the errorInfo property: Error information from the Agent - e.g. errors during installation.
-     *
+     * 
      * @return the errorInfo value.
      */
     ManagementError errorInfo();
 
     /**
      * Gets the customLocationSettings property: Custom Location settings properties.
-     *
+     * 
      * @return the customLocationSettings value.
      */
     Map<String, String> customLocationSettings();
 
     /**
      * Gets the packageUri property: Uri of the Helm package.
-     *
+     * 
      * @return the packageUri value.
      */
     String packageUri();
 
     /**
      * Gets the aksAssignedIdentity property: Identity of the Extension resource in an AKS cluster.
-     *
+     * 
      * @return the aksAssignedIdentity value.
      */
     ExtensionPropertiesAksAssignedIdentity aksAssignedIdentity();
 
     /**
      * Gets the isSystemExtension property: Flag to note if this extension is a system extension.
-     *
+     * 
      * @return the isSystemExtension value.
      */
     Boolean isSystemExtension();
 
     /**
      * Gets the inner com.azure.resourcemanager.kubernetesconfiguration.fluent.models.ExtensionInner object.
-     *
+     * 
      * @return the inner object.
      */
     ExtensionInner innerModel();

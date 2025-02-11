@@ -5,65 +5,65 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Connection information for encrypting the on-premises data source credentials. */
+/**
+ * Connection information for encrypting the on-premises data source credentials.
+ */
 @Fluent
-public final class IntegrationRuntimeConnectionInfoInner {
+public final class IntegrationRuntimeConnectionInfoInner
+    implements JsonSerializable<IntegrationRuntimeConnectionInfoInner> {
     /*
      * The token generated in service. Callers use this token to authenticate to integration runtime.
      */
-    @JsonProperty(value = "serviceToken", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceToken;
 
     /*
      * The integration runtime SSL certificate thumbprint. Click-Once application uses it to do server validation.
      */
-    @JsonProperty(value = "identityCertThumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String identityCertThumbprint;
 
     /*
      * The on-premises integration runtime host URL.
      */
-    @JsonProperty(value = "hostServiceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String hostServiceUri;
 
     /*
      * The integration runtime version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * The public key for encrypting a credential when transferring the credential to the integration runtime.
      */
-    @JsonProperty(value = "publicKey", access = JsonProperty.Access.WRITE_ONLY)
     private String publicKey;
 
     /*
      * Whether the identity certificate is expired.
      */
-    @JsonProperty(value = "isIdentityCertExprired", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isIdentityCertExprired;
 
     /*
      * Connection information for encrypting the on-premises data source credentials.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of IntegrationRuntimeConnectionInfoInner class. */
+    /**
+     * Creates an instance of IntegrationRuntimeConnectionInfoInner class.
+     */
     public IntegrationRuntimeConnectionInfoInner() {
     }
 
     /**
      * Get the serviceToken property: The token generated in service. Callers use this token to authenticate to
      * integration runtime.
-     *
+     * 
      * @return the serviceToken value.
      */
     public String serviceToken() {
@@ -73,7 +73,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
     /**
      * Get the identityCertThumbprint property: The integration runtime SSL certificate thumbprint. Click-Once
      * application uses it to do server validation.
-     *
+     * 
      * @return the identityCertThumbprint value.
      */
     public String identityCertThumbprint() {
@@ -82,7 +82,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
 
     /**
      * Get the hostServiceUri property: The on-premises integration runtime host URL.
-     *
+     * 
      * @return the hostServiceUri value.
      */
     public String hostServiceUri() {
@@ -91,7 +91,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
 
     /**
      * Get the version property: The integration runtime version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -101,7 +101,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
     /**
      * Get the publicKey property: The public key for encrypting a credential when transferring the credential to the
      * integration runtime.
-     *
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -110,7 +110,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
 
     /**
      * Get the isIdentityCertExprired property: Whether the identity certificate is expired.
-     *
+     * 
      * @return the isIdentityCertExprired value.
      */
     public Boolean isIdentityCertExprired() {
@@ -120,10 +120,9 @@ public final class IntegrationRuntimeConnectionInfoInner {
     /**
      * Get the additionalProperties property: Connection information for encrypting the on-premises data source
      * credentials.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -131,7 +130,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
     /**
      * Set the additionalProperties property: Connection information for encrypting the on-premises data source
      * credentials.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeConnectionInfoInner object itself.
      */
@@ -140,19 +139,69 @@ public final class IntegrationRuntimeConnectionInfoInner {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeConnectionInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeConnectionInfoInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeConnectionInfoInner.
+     */
+    public static IntegrationRuntimeConnectionInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeConnectionInfoInner deserializedIntegrationRuntimeConnectionInfoInner
+                = new IntegrationRuntimeConnectionInfoInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceToken".equals(fieldName)) {
+                    deserializedIntegrationRuntimeConnectionInfoInner.serviceToken = reader.getString();
+                } else if ("identityCertThumbprint".equals(fieldName)) {
+                    deserializedIntegrationRuntimeConnectionInfoInner.identityCertThumbprint = reader.getString();
+                } else if ("hostServiceUri".equals(fieldName)) {
+                    deserializedIntegrationRuntimeConnectionInfoInner.hostServiceUri = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedIntegrationRuntimeConnectionInfoInner.version = reader.getString();
+                } else if ("publicKey".equals(fieldName)) {
+                    deserializedIntegrationRuntimeConnectionInfoInner.publicKey = reader.getString();
+                } else if ("isIdentityCertExprired".equals(fieldName)) {
+                    deserializedIntegrationRuntimeConnectionInfoInner.isIdentityCertExprired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedIntegrationRuntimeConnectionInfoInner.additionalProperties = additionalProperties;
+
+            return deserializedIntegrationRuntimeConnectionInfoInner;
+        });
     }
 }

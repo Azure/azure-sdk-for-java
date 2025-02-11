@@ -21,8 +21,7 @@ public class VirtualMachinePublishersImpl
     private final VirtualMachineImagesClient imagesClientCollection;
     private final VirtualMachineExtensionImagesClient extensionsInnerCollection;
 
-    public VirtualMachinePublishersImpl(
-        VirtualMachineImagesClient imagesClientCollection,
+    public VirtualMachinePublishersImpl(VirtualMachineImagesClient imagesClientCollection,
         VirtualMachineExtensionImagesClient extensionsInnerCollection) {
         this.imagesClientCollection = imagesClientCollection;
         this.extensionsInnerCollection = extensionsInnerCollection;
@@ -38,11 +37,8 @@ public class VirtualMachinePublishersImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualMachinePublisherImpl(
-            Region.fromName(inner.location()),
-            inner.name(),
-            this.imagesClientCollection,
-            this.extensionsInnerCollection);
+        return new VirtualMachinePublisherImpl(Region.fromName(inner.location()), inner.name(),
+            this.imagesClientCollection, this.extensionsInnerCollection);
     }
 
     @Override
@@ -57,8 +53,8 @@ public class VirtualMachinePublishersImpl
 
     @Override
     public PagedFlux<VirtualMachinePublisher> listByRegionAsync(String regionName) {
-        return PagedConverter.mapPage(PagedConverter
-            .convertListToPagedFlux(imagesClientCollection.listPublishersWithResponseAsync(regionName)),
+        return PagedConverter.mapPage(
+            PagedConverter.convertListToPagedFlux(imagesClientCollection.listPublishersWithResponseAsync(regionName)),
             this::wrapModel);
     }
 }

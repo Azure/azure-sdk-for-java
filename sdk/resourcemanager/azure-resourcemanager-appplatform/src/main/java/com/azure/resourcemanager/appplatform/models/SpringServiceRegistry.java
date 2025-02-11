@@ -13,15 +13,26 @@ import java.util.List;
 /** An immutable client-side representation of an Azure Spring Service Registry. */
 @Fluent
 public interface SpringServiceRegistry
-    extends ExternalChildResource<SpringServiceRegistry, SpringService>,
-    HasInnerModel<ServiceRegistryResourceInner> {
+    extends ExternalChildResource<SpringServiceRegistry, SpringService>, HasInnerModel<ServiceRegistryResourceInner> {
 
-    /** @return cpu for the Service Registry */
+    /**
+     * Gets CPU for the Service Registry.
+     *
+     * @return CPU for the Service Registry
+     */
     Double cpu();
 
-    /** @return memory for the Service Registry */
+    /**
+     * Gets memory for the Service Registry.
+     *
+     * @return memory for the Service Registry
+     */
     Double memory();
 
-    /** @return apps that have bindings to this Service Registry */
+    /**
+     * Gets apps that have bindings to this Service Registry.
+     *
+     * @return apps that have bindings to this Service Registry
+     */
     List<SpringApp> getAppBindings();
 }

@@ -14,23 +14,21 @@ public final class DatabaseListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"charset\":\"irsoodqxhcrmnohj\",\"collation\":\"kwh\"},\"id\":\"oifiyipjxsqwpgr\",\"name\":\"bznorcjxvsnby\",\"type\":\"qabnmoc\"},{\"properties\":{\"charset\":\"shurzafbljjgpbto\",\"collation\":\"jmkljavbqidtqajz\"},\"id\":\"l\",\"name\":\"kudjkrlkhb\",\"type\":\"hfepgzgqex\"},{\"properties\":{\"charset\":\"c\",\"collation\":\"c\"},\"id\":\"ierhhbcsglummaj\",\"name\":\"j\",\"type\":\"odxobnbdxkqpxok\"}],\"nextLink\":\"ionpimexg\"}")
+            "{\"value\":[{\"properties\":{\"charset\":\"ddgmb\",\"collation\":\"ex\"},\"id\":\"bhtqqrolfpfpsa\",\"name\":\"gbquxigj\",\"type\":\"jgzjaoyfhrtx\"}],\"nextLink\":\"n\"}")
             .toObject(DatabaseListResult.class);
-        Assertions.assertEquals("irsoodqxhcrmnohj", model.value().get(0).charset());
-        Assertions.assertEquals("kwh", model.value().get(0).collation());
-        Assertions.assertEquals("ionpimexg", model.nextLink());
+        Assertions.assertEquals("ddgmb", model.value().get(0).charset());
+        Assertions.assertEquals("ex", model.value().get(0).collation());
+        Assertions.assertEquals("n", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabaseListResult model = new DatabaseListResult()
-            .withValue(Arrays.asList(new DatabaseInner().withCharset("irsoodqxhcrmnohj").withCollation("kwh"),
-                new DatabaseInner().withCharset("shurzafbljjgpbto").withCollation("jmkljavbqidtqajz"),
-                new DatabaseInner().withCharset("c").withCollation("c")))
-            .withNextLink("ionpimexg");
+            .withValue(Arrays.asList(new DatabaseInner().withCharset("ddgmb").withCollation("ex")))
+            .withNextLink("n");
         model = BinaryData.fromObject(model).toObject(DatabaseListResult.class);
-        Assertions.assertEquals("irsoodqxhcrmnohj", model.value().get(0).charset());
-        Assertions.assertEquals("kwh", model.value().get(0).collation());
-        Assertions.assertEquals("ionpimexg", model.nextLink());
+        Assertions.assertEquals("ddgmb", model.value().get(0).charset());
+        Assertions.assertEquals("ex", model.value().get(0).collation());
+        Assertions.assertEquals("n", model.nextLink());
     }
 }

@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SavingsPlanUtilizationSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SavingsPlanUtilizationSummary model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"SavingsPlan\",\"properties\":{\"armSkuName\":\"dcqvpn\",\"benefitId\":\"ujviylwdshfs\",\"benefitOrderId\":\"rbgyefry\",\"benefitType\":\"IncludedQuantity\",\"usageDate\":\"2020-12-23T00:32:06Z\"},\"id\":\"j\",\"name\":\"mwn\",\"type\":\"otmrfhir\"}")
-                .toObject(SavingsPlanUtilizationSummary.class);
-        Assertions.assertEquals(BenefitKind.INCLUDED_QUANTITY, model.benefitType());
+        SavingsPlanUtilizationSummary model = BinaryData.fromString(
+            "{\"kind\":\"SavingsPlan\",\"properties\":{\"armSkuName\":\"oejnndljdju\",\"benefitId\":\"br\",\"benefitOrderId\":\"qyn\",\"benefitType\":\"Reservation\",\"usageDate\":\"2021-10-29T09:08:54Z\"},\"id\":\"faqegplwryshwddk\",\"name\":\"bxgkqusy\",\"type\":\"w\"}")
+            .toObject(SavingsPlanUtilizationSummary.class);
+        Assertions.assertEquals(BenefitKind.RESERVATION, model.benefitType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SavingsPlanUtilizationSummary model =
-            new SavingsPlanUtilizationSummary().withBenefitType(BenefitKind.INCLUDED_QUANTITY);
+        SavingsPlanUtilizationSummary model
+            = new SavingsPlanUtilizationSummary().withBenefitType(BenefitKind.RESERVATION);
         model = BinaryData.fromObject(model).toObject(SavingsPlanUtilizationSummary.class);
-        Assertions.assertEquals(BenefitKind.INCLUDED_QUANTITY, model.benefitType());
+        Assertions.assertEquals(BenefitKind.RESERVATION, model.benefitType());
     }
 }

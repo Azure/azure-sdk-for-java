@@ -30,7 +30,6 @@ public class UnwrapTest extends CryptographyTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return cryptographyAsyncClient.unwrapKey(keyWrapAlgorithm, wrapResult.getEncryptedKey())
-            .then();
+        return cryptographyAsyncClient.unwrapKey(keyWrapAlgorithm, wrapResult.getEncryptedKey()).then();
     }
 }

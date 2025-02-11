@@ -20,8 +20,8 @@ public final class OperationsStatusImpl implements OperationsStatus {
 
     private final com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager;
 
-    public OperationsStatusImpl(
-        OperationsStatusClient innerClient, com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
+    public OperationsStatusImpl(OperationsStatusClient innerClient,
+        com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -29,10 +29,7 @@ public final class OperationsStatusImpl implements OperationsStatus {
     public Response<Job> getWithResponse(String deviceName, String name, String resourceGroupName, Context context) {
         Response<JobInner> inner = this.serviceClient().getWithResponse(deviceName, name, resourceGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JobImpl(inner.getValue(), this.manager()));
         } else {
             return null;

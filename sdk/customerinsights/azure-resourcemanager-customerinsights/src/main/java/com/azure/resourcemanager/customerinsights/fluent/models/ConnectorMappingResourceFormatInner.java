@@ -6,29 +6,50 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.ConnectorMappingProperties;
 import com.azure.resourcemanager.customerinsights.models.ConnectorMappingStates;
 import com.azure.resourcemanager.customerinsights.models.ConnectorTypes;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The connector mapping resource format. */
+/**
+ * The connector mapping resource format.
+ */
 @Fluent
 public final class ConnectorMappingResourceFormatInner extends ProxyResource {
     /*
      * The connector mapping definition.
      */
-    @JsonProperty(value = "properties")
     private ConnectorMapping innerProperties;
 
-    /** Creates an instance of ConnectorMappingResourceFormatInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ConnectorMappingResourceFormatInner class.
+     */
     public ConnectorMappingResourceFormatInner() {
     }
 
     /**
      * Get the innerProperties property: The connector mapping definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConnectorMapping innerProperties() {
@@ -36,8 +57,38 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the connectorName property: The connector name.
-     *
+     * 
      * @return the connectorName value.
      */
     public String connectorName() {
@@ -46,7 +97,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the connectorType property: Type of connector.
-     *
+     * 
      * @return the connectorType value.
      */
     public ConnectorTypes connectorType() {
@@ -55,7 +106,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Set the connectorType property: Type of connector.
-     *
+     * 
      * @param connectorType the connectorType value to set.
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
@@ -69,7 +120,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the created property: The created time.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -78,7 +129,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the lastModified property: The last modified time.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -87,7 +138,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the entityType property: Defines which entity type the file should map to.
-     *
+     * 
      * @return the entityType value.
      */
     public EntityTypes entityType() {
@@ -96,7 +147,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Set the entityType property: Defines which entity type the file should map to.
-     *
+     * 
      * @param entityType the entityType value to set.
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
@@ -110,7 +161,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the entityTypeName property: The mapping entity name.
-     *
+     * 
      * @return the entityTypeName value.
      */
     public String entityTypeName() {
@@ -119,7 +170,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Set the entityTypeName property: The mapping entity name.
-     *
+     * 
      * @param entityTypeName the entityTypeName value to set.
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
@@ -133,7 +184,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the connectorMappingName property: The connector mapping name.
-     *
+     * 
      * @return the connectorMappingName value.
      */
     public String connectorMappingName() {
@@ -142,7 +193,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the displayName property: Display name for the connector mapping.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -151,7 +202,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Set the displayName property: Display name for the connector mapping.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
@@ -165,7 +216,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the description property: The description of the connector mapping.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -174,7 +225,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Set the description property: The description of the connector mapping.
-     *
+     * 
      * @param description the description value to set.
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
@@ -188,7 +239,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the dataFormatId property: The DataFormat ID.
-     *
+     * 
      * @return the dataFormatId value.
      */
     public String dataFormatId() {
@@ -197,7 +248,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the mappingProperties property: The properties of the mapping.
-     *
+     * 
      * @return the mappingProperties value.
      */
     public ConnectorMappingProperties mappingProperties() {
@@ -206,7 +257,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Set the mappingProperties property: The properties of the mapping.
-     *
+     * 
      * @param mappingProperties the mappingProperties value to set.
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
@@ -220,7 +271,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the nextRunTime property: The next run time based on customer's settings.
-     *
+     * 
      * @return the nextRunTime value.
      */
     public OffsetDateTime nextRunTime() {
@@ -229,7 +280,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the runId property: The RunId.
-     *
+     * 
      * @return the runId value.
      */
     public String runId() {
@@ -238,7 +289,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the state property: State of connector mapping.
-     *
+     * 
      * @return the state value.
      */
     public ConnectorMappingStates state() {
@@ -247,7 +298,7 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -256,12 +307,56 @@ public final class ConnectorMappingResourceFormatInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectorMappingResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectorMappingResourceFormatInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectorMappingResourceFormatInner.
+     */
+    public static ConnectorMappingResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectorMappingResourceFormatInner deserializedConnectorMappingResourceFormatInner
+                = new ConnectorMappingResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectorMappingResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConnectorMappingResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConnectorMappingResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConnectorMappingResourceFormatInner.innerProperties = ConnectorMapping.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectorMappingResourceFormatInner;
+        });
     }
 }

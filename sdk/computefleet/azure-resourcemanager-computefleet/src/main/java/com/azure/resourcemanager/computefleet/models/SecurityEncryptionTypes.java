@@ -13,17 +13,20 @@ import java.util.Collection;
  */
 public final class SecurityEncryptionTypes extends ExpandableStringEnum<SecurityEncryptionTypes> {
     /**
-     * Static value VMGuestStateOnly for SecurityEncryptionTypes.
+     * EncryptionType of the managed disk is set to VMGuestStateOnly for encryption
+     * of just the VMGuestState blob.
      */
     public static final SecurityEncryptionTypes VMGUEST_STATE_ONLY = fromString("VMGuestStateOnly");
 
     /**
-     * Static value DiskWithVMGuestState for SecurityEncryptionTypes.
+     * EncryptionType of the managed disk is set to DiskWithVMGuestState for encryption
+     * of the managed disk along with VMGuestState blob.
      */
     public static final SecurityEncryptionTypes DISK_WITH_VMGUEST_STATE = fromString("DiskWithVMGuestState");
 
     /**
-     * Static value NonPersistedTPM for SecurityEncryptionTypes.
+     * EncryptionType of the managed disk is set to NonPersistedTPM for not persisting
+     * firmware state in the VMGuestState blob.
      */
     public static final SecurityEncryptionTypes NON_PERSISTED_TPM = fromString("NonPersistedTPM");
 

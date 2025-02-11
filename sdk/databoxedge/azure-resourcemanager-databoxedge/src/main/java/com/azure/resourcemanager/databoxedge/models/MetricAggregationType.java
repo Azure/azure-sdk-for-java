@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Metric aggregation type. */
+/**
+ * Metric aggregation type.
+ */
 public final class MetricAggregationType extends ExpandableStringEnum<MetricAggregationType> {
-    /** Static value NotSpecified for MetricAggregationType. */
+    /**
+     * Static value NotSpecified for MetricAggregationType.
+     */
     public static final MetricAggregationType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value None for MetricAggregationType. */
+    /**
+     * Static value None for MetricAggregationType.
+     */
     public static final MetricAggregationType NONE = fromString("None");
 
-    /** Static value Average for MetricAggregationType. */
+    /**
+     * Static value Average for MetricAggregationType.
+     */
     public static final MetricAggregationType AVERAGE = fromString("Average");
 
-    /** Static value Minimum for MetricAggregationType. */
+    /**
+     * Static value Minimum for MetricAggregationType.
+     */
     public static final MetricAggregationType MINIMUM = fromString("Minimum");
 
-    /** Static value Maximum for MetricAggregationType. */
+    /**
+     * Static value Maximum for MetricAggregationType.
+     */
     public static final MetricAggregationType MAXIMUM = fromString("Maximum");
 
-    /** Static value Total for MetricAggregationType. */
+    /**
+     * Static value Total for MetricAggregationType.
+     */
     public static final MetricAggregationType TOTAL = fromString("Total");
 
-    /** Static value Count for MetricAggregationType. */
+    /**
+     * Static value Count for MetricAggregationType.
+     */
     public static final MetricAggregationType COUNT = fromString("Count");
 
     /**
      * Creates a new instance of MetricAggregationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
 
     /**
      * Creates or finds a MetricAggregationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MetricAggregationType.
      */
-    @JsonCreator
     public static MetricAggregationType fromString(String name) {
         return fromString(name, MetricAggregationType.class);
     }
 
     /**
      * Gets known MetricAggregationType values.
-     *
+     * 
      * @return known MetricAggregationType values.
      */
     public static Collection<MetricAggregationType> values() {

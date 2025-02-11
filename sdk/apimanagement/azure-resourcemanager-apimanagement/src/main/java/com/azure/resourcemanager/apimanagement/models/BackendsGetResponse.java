@@ -9,29 +9,27 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.BackendContractInner;
 
-/** Contains all response data for the get operation. */
+/**
+ * Contains all response data for the get operation.
+ */
 public final class BackendsGetResponse extends ResponseBase<BackendsGetHeaders, BackendContractInner> {
     /**
      * Creates an instance of BackendsGetResponse.
-     *
+     * 
      * @param request the request which resulted in this BackendsGetResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BackendsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        BackendContractInner value,
+    public BackendsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, BackendContractInner value,
         BackendsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

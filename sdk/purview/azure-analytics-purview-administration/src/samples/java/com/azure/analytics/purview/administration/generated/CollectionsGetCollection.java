@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class CollectionsGetCollection {
     public static void main(String[] args) {
-        CollectionsClient collectionsClient =
-                new CollectionsClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{endpoint}")
-                        .buildClient();
+        CollectionsClient collectionsClient
+            = new CollectionsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.administration.generated.collectionsgetcollection.collectionsgetcollection
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = collectionsClient.getCollectionWithResponse("myCollection1", requestOptions);

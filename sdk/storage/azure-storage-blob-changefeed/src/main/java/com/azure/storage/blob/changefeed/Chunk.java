@@ -39,7 +39,7 @@ class Chunk {
      * @return A reactive stream of {@link BlobChangefeedEventWrapper}
      */
     Flux<BlobChangefeedEventWrapper> getEvents() {
-            /* Read avro objects. The AvroReader will only return relevant objects. */
+        /* Read avro objects. The AvroReader will only return relevant objects. */
         return avroReader.read()
             /* Convert AvroObjects into BlobChangefeedEventWrappers. */
             .map(avroObject -> {

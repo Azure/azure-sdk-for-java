@@ -19,17 +19,17 @@ import reactor.core.publisher.Mono;
  * Base class for Azure FormRecognizer performance tests.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    private static final String CONFIGURATION_ERROR = "Configuration %s must be set in either environment variables "
-        + "or system properties.%n";
+    private static final String CONFIGURATION_ERROR
+        = "Configuration %s must be set in either environment variables " + "or system properties.%n";
     protected final DocumentAnalysisClient documentAnalysisClient;
     protected final DocumentAnalysisAsyncClient documentAnalysisAsyncClient;
     protected final DocumentModelAdministrationClient documentModelAdministrationClient;
     protected final DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient;
     protected static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
-    private static final String AZURE_FORM_RECOGNIZER_ENDPOINT =
-        GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_ENDPOINT");
-    private static final String AZURE_FORM_RECOGNIZER_API_KEY =
-        GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_API_KEY");
+    private static final String AZURE_FORM_RECOGNIZER_ENDPOINT
+        = GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_ENDPOINT");
+    private static final String AZURE_FORM_RECOGNIZER_API_KEY
+        = GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_API_KEY");
     protected String modelId;
 
     /**
@@ -49,9 +49,9 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             throw new RuntimeException(String.format(CONFIGURATION_ERROR, "AZURE_FORM_RECOGNIZER_API_KEY"));
         }
 
-        DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
-            .endpoint(AZURE_FORM_RECOGNIZER_ENDPOINT)
-            .credential(new AzureKeyCredential(AZURE_FORM_RECOGNIZER_API_KEY));
+        DocumentModelAdministrationClientBuilder builder
+            = new DocumentModelAdministrationClientBuilder().endpoint(AZURE_FORM_RECOGNIZER_ENDPOINT)
+                .credential(new AzureKeyCredential(AZURE_FORM_RECOGNIZER_API_KEY));
 
         this.documentModelAdministrationClient = builder.buildClient();
         this.documentAnalysisAsyncClient = builder.buildAsyncClient().getDocumentAnalysisAsyncClient();

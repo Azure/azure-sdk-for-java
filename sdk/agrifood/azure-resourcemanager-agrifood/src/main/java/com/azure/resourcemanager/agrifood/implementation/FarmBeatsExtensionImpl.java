@@ -16,8 +16,8 @@ public final class FarmBeatsExtensionImpl implements FarmBeatsExtension {
 
     private final com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager;
 
-    FarmBeatsExtensionImpl(
-        FarmBeatsExtensionInner innerObject, com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
+    FarmBeatsExtensionImpl(FarmBeatsExtensionInner innerObject,
+        com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

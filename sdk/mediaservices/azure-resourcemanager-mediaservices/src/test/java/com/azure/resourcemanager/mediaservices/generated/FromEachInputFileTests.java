@@ -12,18 +12,15 @@ import java.util.Arrays;
 public final class FromEachInputFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FromEachInputFile model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.FromEachInputFile\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"}]}")
-                .toObject(FromEachInputFile.class);
+        FromEachInputFile model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.FromEachInputFile\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"}]}")
+            .toObject(FromEachInputFile.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FromEachInputFile model =
-            new FromEachInputFile()
-                .withIncludedTracks(Arrays.asList(new TrackDescriptor(), new TrackDescriptor(), new TrackDescriptor()));
+        FromEachInputFile model = new FromEachInputFile().withIncludedTracks(
+            Arrays.asList(new TrackDescriptor(), new TrackDescriptor(), new TrackDescriptor(), new TrackDescriptor()));
         model = BinaryData.fromObject(model).toObject(FromEachInputFile.class);
     }
 }

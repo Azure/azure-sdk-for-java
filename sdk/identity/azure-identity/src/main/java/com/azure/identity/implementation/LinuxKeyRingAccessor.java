@@ -34,8 +34,8 @@ public class LinuxKeyRingAccessor {
      * @param attributeKey2 the key value of the attribute to lookup
      * @param attributeValue2 the value of the attribute to lookup
      */
-    public LinuxKeyRingAccessor(String keyringSchemaName, String attributeKey1,
-                                String attributeValue1, String attributeKey2, String attributeValue2) {
+    public LinuxKeyRingAccessor(String keyringSchemaName, String attributeKey1, String attributeValue1,
+        String attributeKey2, String attributeValue2) {
         this.keyringSchemaName = keyringSchemaName;
         this.attributeKey1 = attributeKey1;
         this.attributeValue1 = attributeValue1;
@@ -43,13 +43,11 @@ public class LinuxKeyRingAccessor {
         this.attributeValue2 = attributeValue2;
     }
 
-
     private byte[] read(String attributeValue1, String attributeValue2) {
         byte[] data = null;
         Pointer[] error = new Pointer[1];
-        String secret = ISecurityLibrary.library.secret_password_lookup_sync(this.getLibSecretSchema(),
-            (Pointer) null, error, this.attributeKey1, attributeValue1, this.attributeKey2,
-            attributeValue2, (Pointer) null);
+        String secret = ISecurityLibrary.library.secret_password_lookup_sync(this.getLibSecretSchema(), (Pointer) null,
+            error, this.attributeKey1, attributeValue1, this.attributeKey2, attributeValue2, (Pointer) null);
         if (error[0] != Pointer.NULL) {
             GError err = new GError(error[0]);
             throw LOGGER.logExceptionAsError(new RuntimeException("An error while reading secret from keyring, domain:"
@@ -72,8 +70,8 @@ public class LinuxKeyRingAccessor {
 
     private Pointer getLibSecretSchema() {
         if (this.libSecretSchema == Pointer.NULL) {
-            this.libSecretSchema = ISecurityLibrary.library.secret_schema_new(this.keyringSchemaName,
-                0, this.attributeKey1, 0, this.attributeKey2, 0, (Pointer) null);
+            this.libSecretSchema = ISecurityLibrary.library.secret_schema_new(this.keyringSchemaName, 0,
+                this.attributeKey1, 0, this.attributeKey2, 0, (Pointer) null);
             if (this.libSecretSchema == Pointer.NULL) {
                 throw LOGGER.logExceptionAsError(
                     new RuntimeException("Failed to create libSecret schema " + this.keyringSchemaName));
@@ -98,4 +96,3 @@ public class LinuxKeyRingAccessor {
         }
     }
 }
-

@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The severity level of this active event. */
+/**
+ * The severity level of this active event.
+ */
 public final class SeverityValues extends ExpandableStringEnum<SeverityValues> {
-    /** Static value Information for SeverityValues. */
+    /**
+     * Static value Information for SeverityValues.
+     */
     public static final SeverityValues INFORMATION = fromString("Information");
 
-    /** Static value Warning for SeverityValues. */
+    /**
+     * Static value Warning for SeverityValues.
+     */
     public static final SeverityValues WARNING = fromString("Warning");
 
-    /** Static value Error for SeverityValues. */
+    /**
+     * Static value Error for SeverityValues.
+     */
     public static final SeverityValues ERROR = fromString("Error");
 
     /**
      * Creates a new instance of SeverityValues value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class SeverityValues extends ExpandableStringEnum<SeverityValues> {
 
     /**
      * Creates or finds a SeverityValues from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SeverityValues.
      */
-    @JsonCreator
     public static SeverityValues fromString(String name) {
         return fromString(name, SeverityValues.class);
     }
 
     /**
      * Gets known SeverityValues values.
-     *
+     * 
      * @return known SeverityValues values.
      */
     public static Collection<SeverityValues> values() {

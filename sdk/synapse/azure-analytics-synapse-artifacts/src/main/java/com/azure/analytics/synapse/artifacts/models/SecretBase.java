@@ -19,13 +19,12 @@ public class SecretBase implements JsonSerializable<SecretBase> {
     /*
      * Type of the secret.
      */
-    private String type;
+    private String type = "SecretBase";
 
     /**
      * Creates an instance of SecretBase class.
      */
     public SecretBase() {
-        this.type = "SecretBase";
     }
 
     /**

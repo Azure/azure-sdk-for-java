@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicelinker.fluent.models.LinkerProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A linker to be updated. */
+/**
+ * A linker to be updated.
+ */
 @Fluent
-public final class LinkerPatch {
+public final class LinkerPatch implements JsonSerializable<LinkerPatch> {
     /*
      * Linker properties
      */
-    @JsonProperty(value = "properties")
     private LinkerProperties innerProperties;
 
     /**
+     * Creates an instance of LinkerPatch class.
+     */
+    public LinkerPatch() {
+    }
+
+    /**
      * Get the innerProperties property: Linker properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LinkerProperties innerProperties() {
@@ -28,7 +39,7 @@ public final class LinkerPatch {
 
     /**
      * Get the targetService property: The target service properties.
-     *
+     * 
      * @return the targetService value.
      */
     public TargetServiceBase targetService() {
@@ -37,7 +48,7 @@ public final class LinkerPatch {
 
     /**
      * Set the targetService property: The target service properties.
-     *
+     * 
      * @param targetService the targetService value to set.
      * @return the LinkerPatch object itself.
      */
@@ -51,7 +62,7 @@ public final class LinkerPatch {
 
     /**
      * Get the authInfo property: The authentication type.
-     *
+     * 
      * @return the authInfo value.
      */
     public AuthInfoBase authInfo() {
@@ -60,7 +71,7 @@ public final class LinkerPatch {
 
     /**
      * Set the authInfo property: The authentication type.
-     *
+     * 
      * @param authInfo the authInfo value to set.
      * @return the LinkerPatch object itself.
      */
@@ -74,7 +85,7 @@ public final class LinkerPatch {
 
     /**
      * Get the clientType property: The application client type.
-     *
+     * 
      * @return the clientType value.
      */
     public ClientType clientType() {
@@ -83,7 +94,7 @@ public final class LinkerPatch {
 
     /**
      * Set the clientType property: The application client type.
-     *
+     * 
      * @param clientType the clientType value to set.
      * @return the LinkerPatch object itself.
      */
@@ -97,7 +108,7 @@ public final class LinkerPatch {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -106,7 +117,7 @@ public final class LinkerPatch {
 
     /**
      * Get the vNetSolution property: The VNet solution.
-     *
+     * 
      * @return the vNetSolution value.
      */
     public VNetSolution vNetSolution() {
@@ -115,7 +126,7 @@ public final class LinkerPatch {
 
     /**
      * Set the vNetSolution property: The VNet solution.
-     *
+     * 
      * @param vNetSolution the vNetSolution value to set.
      * @return the LinkerPatch object itself.
      */
@@ -129,7 +140,7 @@ public final class LinkerPatch {
 
     /**
      * Get the secretStore property: An option to store secret value in secure place.
-     *
+     * 
      * @return the secretStore value.
      */
     public SecretStore secretStore() {
@@ -138,7 +149,7 @@ public final class LinkerPatch {
 
     /**
      * Set the secretStore property: An option to store secret value in secure place.
-     *
+     * 
      * @param secretStore the secretStore value to set.
      * @return the LinkerPatch object itself.
      */
@@ -152,7 +163,7 @@ public final class LinkerPatch {
 
     /**
      * Get the scope property: connection scope in source service.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -161,7 +172,7 @@ public final class LinkerPatch {
 
     /**
      * Set the scope property: connection scope in source service.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the LinkerPatch object itself.
      */
@@ -175,12 +186,48 @@ public final class LinkerPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkerPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkerPatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkerPatch.
+     */
+    public static LinkerPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkerPatch deserializedLinkerPatch = new LinkerPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedLinkerPatch.innerProperties = LinkerProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkerPatch;
+        });
     }
 }

@@ -16,11 +16,13 @@ import com.azure.resourcemanager.apimanagement.models.DocumentationsGetEntityTag
 import com.azure.resourcemanager.apimanagement.models.DocumentationsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.DocumentationsUpdateResponse;
 
-/** An instance of this class provides access to all the operations defined in DocumentationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DocumentationsClient.
+ */
 public interface DocumentationsClient {
     /**
      * Lists all Documentations of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,12 +35,12 @@ public interface DocumentationsClient {
 
     /**
      * Lists all Documentations of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq |
-     *     contains |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq | contains
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -48,12 +50,12 @@ public interface DocumentationsClient {
      * @return paged Documentation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DocumentationContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<DocumentationContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Documentation by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -64,12 +66,12 @@ public interface DocumentationsClient {
      * @return the entity state (Etag) version of the Documentation by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, Context context);
+    DocumentationsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String documentationId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Documentation by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -82,7 +84,7 @@ public interface DocumentationsClient {
 
     /**
      * Gets the details of the Documentation specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -93,12 +95,12 @@ public interface DocumentationsClient {
      * @return the details of the Documentation specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, Context context);
+    DocumentationsGetResponse getWithResponse(String resourceGroupName, String serviceName, String documentationId,
+        Context context);
 
     /**
      * Gets the details of the Documentation specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -112,7 +114,7 @@ public interface DocumentationsClient {
 
     /**
      * Creates a new Documentation or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -125,17 +127,12 @@ public interface DocumentationsClient {
      * @return markdown documentation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String documentationId,
-        DocumentationContractInner parameters,
-        String ifMatch,
-        Context context);
+    DocumentationsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String documentationId, DocumentationContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new Documentation or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -146,17 +143,17 @@ public interface DocumentationsClient {
      * @return markdown documentation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String documentationId, DocumentationContractInner parameters);
+    DocumentationContractInner createOrUpdate(String resourceGroupName, String serviceName, String documentationId,
+        DocumentationContractInner parameters);
 
     /**
      * Updates the details of the Documentation for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Documentation Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,22 +162,17 @@ public interface DocumentationsClient {
      * @return markdown documentation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String documentationId,
-        String ifMatch,
-        DocumentationUpdateContract parameters,
-        Context context);
+    DocumentationsUpdateResponse updateWithResponse(String resourceGroupName, String serviceName,
+        String documentationId, String ifMatch, DocumentationUpdateContract parameters, Context context);
 
     /**
      * Updates the details of the Documentation for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Documentation Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -188,21 +180,17 @@ public interface DocumentationsClient {
      * @return markdown documentation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String documentationId,
-        String ifMatch,
-        DocumentationUpdateContract parameters);
+    DocumentationContractInner update(String resourceGroupName, String serviceName, String documentationId,
+        String ifMatch, DocumentationUpdateContract parameters);
 
     /**
      * Deletes the specified Documentation from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -210,17 +198,17 @@ public interface DocumentationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String documentationId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified Documentation from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

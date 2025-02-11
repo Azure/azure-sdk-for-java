@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Source of event. */
+/**
+ * Source of event.
+ */
 public final class EventSourceValues extends ExpandableStringEnum<EventSourceValues> {
-    /** Static value ResourceHealth for EventSourceValues. */
+    /**
+     * Static value ResourceHealth for EventSourceValues.
+     */
     public static final EventSourceValues RESOURCE_HEALTH = fromString("ResourceHealth");
 
-    /** Static value ServiceHealth for EventSourceValues. */
+    /**
+     * Static value ServiceHealth for EventSourceValues.
+     */
     public static final EventSourceValues SERVICE_HEALTH = fromString("ServiceHealth");
 
     /**
      * Creates a new instance of EventSourceValues value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class EventSourceValues extends ExpandableStringEnum<EventSourceVal
 
     /**
      * Creates or finds a EventSourceValues from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventSourceValues.
      */
-    @JsonCreator
     public static EventSourceValues fromString(String name) {
         return fromString(name, EventSourceValues.class);
     }
 
     /**
      * Gets known EventSourceValues values.
-     *
+     * 
      * @return known EventSourceValues values.
      */
     public static Collection<EventSourceValues> values() {

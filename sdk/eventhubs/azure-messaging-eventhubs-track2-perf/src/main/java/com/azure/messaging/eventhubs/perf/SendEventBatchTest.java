@@ -44,32 +44,33 @@ public class SendEventBatchTest extends ServiceBatchTest<EventHubsPerfOptions> {
 
     @Override
     public Mono<Void> setupAsync() {
-        return super.setupAsync()
-            .then(Mono.fromCallable(() -> {
-                if (createBatchOptions != null) {
-                    eventDataBatch = eventHubProducerClient.createBatch(createBatchOptions);
-                } else {
-                    eventDataBatch = eventHubProducerClient.createBatch();
-                }
-                addEventsToBatch(eventDataBatch);
-                return 1;
-            })).then(Mono.defer(() -> createBatchOptions != null
+        return super.setupAsync().then(Mono.fromCallable(() -> {
+            if (createBatchOptions != null) {
+                eventDataBatch = eventHubProducerClient.createBatch(createBatchOptions);
+            } else {
+                eventDataBatch = eventHubProducerClient.createBatch();
+            }
+            addEventsToBatch(eventDataBatch);
+            return 1;
+        }))
+            .then(Mono.defer(() -> createBatchOptions != null
                 ? eventHubProducerAsyncClient.createBatch(createBatchOptions)
-                : eventHubProducerAsyncClient.createBatch()
-            )).map(eventBatch -> {
+                : eventHubProducerAsyncClient.createBatch()))
+            .map(eventBatch -> {
                 addEventsToBatch(eventBatch);
                 eventDataBatchAsync = eventBatch;
                 return Mono.empty();
-            }).then();
+            })
+            .then();
     }
 
     private void addEventsToBatch(EventDataBatch eventDataBatch) {
         EventData eventData = new EventData(Util.generateString(options.getMessageSize()));
         for (int i = 0; i < options.getEvents(); i++) {
             if (!eventDataBatch.tryAdd(eventData)) {
-                throw new IllegalStateException(String.format(
-                    "Batch can only fit %d number of messages with batch size of %d ",
-                    options.getCount(), options.getSize()));
+                throw new IllegalStateException(
+                    String.format("Batch can only fit %d number of messages with batch size of %d ", options.getCount(),
+                        options.getSize()));
             }
         }
     }

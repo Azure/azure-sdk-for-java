@@ -14,29 +14,29 @@ public final class BlobEventsTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobEventsTriggerTypeProperties model = BinaryData.fromString(
-            "{\"blobPathBeginsWith\":\"kghtsfppjunk\",\"blobPathEndsWith\":\"thkqnyvufvzrqa\",\"ignoreEmptyBlobs\":false,\"events\":[\"Microsoft.Storage.BlobDeleted\",\"Microsoft.Storage.BlobCreated\",\"Microsoft.Storage.BlobCreated\"],\"scope\":\"eeqqetasijiaqqwo\"}")
+            "{\"blobPathBeginsWith\":\"rlvkdaphzemnjast\",\"blobPathEndsWith\":\"zzyqbwimzjh\",\"ignoreEmptyBlobs\":true,\"events\":[\"Microsoft.Storage.BlobDeleted\",\"Microsoft.Storage.BlobCreated\"],\"scope\":\"grakmwyo\"}")
             .toObject(BlobEventsTriggerTypeProperties.class);
-        Assertions.assertEquals("kghtsfppjunk", model.blobPathBeginsWith());
-        Assertions.assertEquals("thkqnyvufvzrqa", model.blobPathEndsWith());
-        Assertions.assertEquals(false, model.ignoreEmptyBlobs());
+        Assertions.assertEquals("rlvkdaphzemnjast", model.blobPathBeginsWith());
+        Assertions.assertEquals("zzyqbwimzjh", model.blobPathEndsWith());
+        Assertions.assertEquals(true, model.ignoreEmptyBlobs());
         Assertions.assertEquals(BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED, model.events().get(0));
-        Assertions.assertEquals("eeqqetasijiaqqwo", model.scope());
+        Assertions.assertEquals("grakmwyo", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BlobEventsTriggerTypeProperties model
-            = new BlobEventsTriggerTypeProperties().withBlobPathBeginsWith("kghtsfppjunk")
-                .withBlobPathEndsWith("thkqnyvufvzrqa")
-                .withIgnoreEmptyBlobs(false)
+            = new BlobEventsTriggerTypeProperties().withBlobPathBeginsWith("rlvkdaphzemnjast")
+                .withBlobPathEndsWith("zzyqbwimzjh")
+                .withIgnoreEmptyBlobs(true)
                 .withEvents(Arrays.asList(BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED,
-                    BlobEventTypes.MICROSOFT_STORAGE_BLOB_CREATED, BlobEventTypes.MICROSOFT_STORAGE_BLOB_CREATED))
-                .withScope("eeqqetasijiaqqwo");
+                    BlobEventTypes.MICROSOFT_STORAGE_BLOB_CREATED))
+                .withScope("grakmwyo");
         model = BinaryData.fromObject(model).toObject(BlobEventsTriggerTypeProperties.class);
-        Assertions.assertEquals("kghtsfppjunk", model.blobPathBeginsWith());
-        Assertions.assertEquals("thkqnyvufvzrqa", model.blobPathEndsWith());
-        Assertions.assertEquals(false, model.ignoreEmptyBlobs());
+        Assertions.assertEquals("rlvkdaphzemnjast", model.blobPathBeginsWith());
+        Assertions.assertEquals("zzyqbwimzjh", model.blobPathEndsWith());
+        Assertions.assertEquals(true, model.ignoreEmptyBlobs());
         Assertions.assertEquals(BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED, model.events().get(0));
-        Assertions.assertEquals("eeqqetasijiaqqwo", model.scope());
+        Assertions.assertEquals("grakmwyo", model.scope());
     }
 }

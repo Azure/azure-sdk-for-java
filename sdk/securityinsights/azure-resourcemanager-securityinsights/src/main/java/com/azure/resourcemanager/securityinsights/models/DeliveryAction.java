@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.securityinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The delivery action of this mail message like Delivered, Blocked, Replaced etc. */
+/**
+ * The delivery action of this mail message like Delivered, Blocked, Replaced etc.
+ */
 public enum DeliveryAction {
-    /** Enum value Unknown. */
+    /**
+     * Enum value Unknown.
+     */
     UNKNOWN("Unknown"),
 
-    /** Enum value DeliveredAsSpam. */
+    /**
+     * Enum value DeliveredAsSpam.
+     */
     DELIVERED_AS_SPAM("DeliveredAsSpam"),
 
-    /** Enum value Delivered. */
+    /**
+     * Enum value Delivered.
+     */
     DELIVERED("Delivered"),
 
-    /** Enum value Blocked. */
+    /**
+     * Enum value Blocked.
+     */
     BLOCKED("Blocked"),
 
-    /** Enum value Replaced. */
+    /**
+     * Enum value Replaced.
+     */
     REPLACED("Replaced");
 
-    /** The actual serialized value for a DeliveryAction instance. */
+    /**
+     * The actual serialized value for a DeliveryAction instance.
+     */
     private final String value;
 
     DeliveryAction(String value) {
@@ -33,11 +44,10 @@ public enum DeliveryAction {
 
     /**
      * Parses a serialized value to a DeliveryAction instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DeliveryAction object, or null if unable to parse.
      */
-    @JsonCreator
     public static DeliveryAction fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +61,9 @@ public enum DeliveryAction {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

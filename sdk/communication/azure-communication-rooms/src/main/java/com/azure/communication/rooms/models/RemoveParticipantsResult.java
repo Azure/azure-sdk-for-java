@@ -4,8 +4,12 @@
 package com.azure.communication.rooms.models;
 
 /**
- * Represents the result of an remove operation for participants in a room.
+ * Represents the result of a remove operation for participants in a room.
  */
 public final class RemoveParticipantsResult {
-
+    /**
+     * Creates an instance of {@link RemoveParticipantsResult}.
+     */
+    public RemoveParticipantsResult() {
+    }
 }

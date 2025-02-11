@@ -16,14 +16,9 @@ import reactor.core.publisher.Mono;
 
 /** Entry point for Spring App Custom Domains API. */
 @Fluent
-public interface SpringAppDomains
-    extends HasManager<AppPlatformManager>,
-    HasParent<SpringApp>,
-    SupportsGettingById<SpringAppDomain>,
-    SupportsGettingByName<SpringAppDomain>,
-    SupportsListing<SpringAppDomain>,
-    SupportsDeletingById,
-    SupportsDeletingByName {
+public interface SpringAppDomains extends HasManager<AppPlatformManager>, HasParent<SpringApp>,
+    SupportsGettingById<SpringAppDomain>, SupportsGettingByName<SpringAppDomain>, SupportsListing<SpringAppDomain>,
+    SupportsDeletingById, SupportsDeletingByName {
     /**
      * Checks the domain is validate for the app or not.
      *

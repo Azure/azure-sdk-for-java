@@ -34,12 +34,11 @@ public interface ActivityLogs extends HasManager<MonitorManager> {
     ActivityLogsQueryDefinitionStages.WithEventDataStartTimeFilter defineQuery();
 
     /** The entirety of a Activity Logs query definition. */
-    interface ActivityLogsQueryDefinition
-        extends ActivityLogsQueryDefinitionStages.WithEventDataStartTimeFilter,
-            ActivityLogsQueryDefinitionStages.WithEventDataEndFilter,
-            ActivityLogsQueryDefinitionStages.WithEventDataFieldFilter,
-            ActivityLogsQueryDefinitionStages.WithActivityLogsSelectFilter,
-            ActivityLogsQueryDefinitionStages.WithActivityLogsQueryExecute {
+    interface ActivityLogsQueryDefinition extends ActivityLogsQueryDefinitionStages.WithEventDataStartTimeFilter,
+        ActivityLogsQueryDefinitionStages.WithEventDataEndFilter,
+        ActivityLogsQueryDefinitionStages.WithEventDataFieldFilter,
+        ActivityLogsQueryDefinitionStages.WithActivityLogsSelectFilter,
+        ActivityLogsQueryDefinitionStages.WithActivityLogsQueryExecute {
     }
 
     /** Grouping of Activity log query stages. */

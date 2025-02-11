@@ -16,182 +16,180 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookTemplatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookTemplateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"priority\":2042838071,\"author\":\"azt\",\"templateData\":\"databt\",\"galleries\":[{\"name\":\"qpuedckzywbiex\",\"category\":\"eyueaxibxujwb\",\"type\":\"walm\",\"order\":978941807,\"resourceType\":\"xaepdkzjancuxr\"},{\"name\":\"wbavxbniwdj\",\"category\":\"zt\",\"type\":\"bpg\",\"order\":1127167490,\"resourceType\":\"x\"}],\"localized\":{\"fudwpznt\":[{\"templateData\":\"datazpfzabglc\",\"galleries\":[{\"name\":\"tcty\",\"category\":\"klbb\",\"type\":\"plwzbhvgyugu\",\"order\":230150141,\"resourceType\":\"kfssxqukkf\"},{\"name\":\"gmgsxnkjzkde\",\"category\":\"pvlopwiyighxpkd\",\"type\":\"baiuebbaumny\",\"order\":624396177,\"resourceType\":\"deoj\"},{\"name\":\"bckhsmtxpsi\",\"category\":\"tfhvpesapskrdqmh\",\"type\":\"dhtldwkyz\",\"order\":1335454628,\"resourceType\":\"kn\"},{\"name\":\"scwsv\",\"category\":\"otogtwrupqs\",\"type\":\"nmic\",\"order\":560100496,\"resourceType\":\"eoveilovnotyf\"}]},{\"templateData\":\"datacnjbkcnxdhbt\",\"galleries\":[{\"name\":\"ywpnvjt\",\"category\":\"nermcl\",\"type\":\"lphox\",\"order\":1158038840,\"resourceType\":\"pabgyeps\"},{\"name\":\"tazqugxywpmueefj\",\"category\":\"fqkquj\",\"type\":\"suyonobglaocq\",\"order\":676078143,\"resourceType\":\"mgyudxytlmoyrxv\"}]}],\"eiotwmcdytdx\":[{\"templateData\":\"datazhlrqjb\",\"galleries\":[{\"name\":\"rlhrxs\",\"category\":\"yvpycanuzbpzk\",\"type\":\"kuwbcrnwb\",\"order\":1542253292,\"resourceType\":\"seyvj\"},{\"name\":\"rts\",\"category\":\"spkdee\",\"type\":\"ofmxagkvtmelmqkr\",\"order\":669336905,\"resourceType\":\"ljuahaquhcdh\"},{\"name\":\"ualaexqpvfadmw\",\"category\":\"crgvxpvgom\",\"type\":\"fmisg\",\"order\":1787960878,\"resourceType\":\"beldawkzbaliourq\"}]},{\"templateData\":\"datakauhashsfwxo\",\"galleries\":[{\"name\":\"xcug\",\"category\":\"jooxdjebw\",\"type\":\"cwwfvovbvme\",\"order\":321338352,\"resourceType\":\"vyhzceuojgjrwj\"}]}],\"nojvknmefqsg\":[{\"templateData\":\"dataxnrj\",\"galleries\":[{\"name\":\"wgxhn\",\"category\":\"kxfbkpycgklwndn\",\"type\":\"dauwhvylwzbtd\",\"order\":1131914831,\"resourceType\":\"znbmpowuwprzq\"},{\"name\":\"eualupjmkhf\",\"category\":\"bbcswsrtjri\",\"type\":\"rbpbewtghfgblcg\",\"order\":1261477123,\"resourceType\":\"lvqhjkbegibtnmx\"},{\"name\":\"bwwaloa\",\"category\":\"cgwrtzjuz\",\"type\":\"yzm\",\"order\":1961357126,\"resourceType\":\"ngmtsavjcb\"},{\"name\":\"xqpsrknftguv\",\"category\":\"uhprwmdyvxqt\",\"type\":\"riwwroy\",\"order\":1621118855,\"resourceType\":\"rmcqiby\"}]}]}}")
-                .toObject(WorkbookTemplateProperties.class);
-        Assertions.assertEquals(2042838071, model.priority());
-        Assertions.assertEquals("azt", model.author());
-        Assertions.assertEquals("qpuedckzywbiex", model.galleries().get(0).name());
-        Assertions.assertEquals("eyueaxibxujwb", model.galleries().get(0).category());
-        Assertions.assertEquals("walm", model.galleries().get(0).type());
-        Assertions.assertEquals(978941807, model.galleries().get(0).order());
-        Assertions.assertEquals("xaepdkzjancuxr", model.galleries().get(0).resourceType());
-        Assertions.assertEquals("tcty", model.localized().get("fudwpznt").get(0).galleries().get(0).name());
-        Assertions.assertEquals("klbb", model.localized().get("fudwpznt").get(0).galleries().get(0).category());
-        Assertions.assertEquals("plwzbhvgyugu", model.localized().get("fudwpznt").get(0).galleries().get(0).type());
-        Assertions.assertEquals(230150141, model.localized().get("fudwpznt").get(0).galleries().get(0).order());
-        Assertions
-            .assertEquals("kfssxqukkf", model.localized().get("fudwpznt").get(0).galleries().get(0).resourceType());
+        WorkbookTemplateProperties model = BinaryData.fromString(
+            "{\"priority\":2121055666,\"author\":\"fqsgzvahapjy\",\"templateData\":\"datahpvgqz\",\"galleries\":[{\"name\":\"vxdjzlmwlxkvugf\",\"category\":\"ovawjvzunlu\",\"type\":\"nnprn\",\"order\":1539688741,\"resourceType\":\"ilpjzuaejxdult\"}],\"localized\":{\"rruvwbhsq\":[{\"templateData\":\"datatdzumveekgpw\",\"galleries\":[{\"name\":\"kfpbs\",\"category\":\"ofd\",\"type\":\"uusdttouwa\",\"order\":1947792369,\"resourceType\":\"qvkelnsm\"}]},{\"templateData\":\"dataxwyjsflhhc\",\"galleries\":[{\"name\":\"jixisxyawjoyaqcs\",\"category\":\"jpkiidzyexznelix\",\"type\":\"rzt\",\"order\":1975568377,\"resourceType\":\"bnxknalaulppg\"},{\"name\":\"tpnapnyiropuhpig\",\"category\":\"gylgqgitxmedjvcs\",\"type\":\"n\",\"order\":1519896216,\"resourceType\":\"cwzzhxgktr\"},{\"name\":\"ucnapkteoellwp\",\"category\":\"d\",\"type\":\"pfqbuaceopzf\",\"order\":1219903446,\"resourceType\":\"uaopppcqeq\"}]},{\"templateData\":\"datalzdahzxctobgbkdm\",\"galleries\":[{\"name\":\"ostmgrcf\",\"category\":\"nrmfqjhhk\",\"type\":\"pvjymjhxxjyng\",\"order\":1804869047,\"resourceType\":\"krtswbxqz\"},{\"name\":\"zjf\",\"category\":\"vjfdx\",\"type\":\"vetvt\",\"order\":393815457,\"resourceType\":\"tdo\"},{\"name\":\"cbxvwvxyslqbh\",\"category\":\"xoblytkbl\",\"type\":\"ewwwfbkrvrnsv\",\"order\":82404259,\"resourceType\":\"ohxcrsbfova\"}]}],\"mdnbbglzpswiy\":[{\"templateData\":\"databcgjbirxbp\",\"galleries\":[{\"name\":\"fbjfdtwssotftpvj\",\"category\":\"exilzznfqqnvwpmq\",\"type\":\"ruoujmk\",\"order\":1426920839,\"resourceType\":\"qytjrybnwjewgd\"},{\"name\":\"ervnaenqpehi\",\"category\":\"oygmift\",\"type\":\"zdnds\",\"order\":1279542640,\"resourceType\":\"yq\"},{\"name\":\"ynduha\",\"category\":\"qlkth\",\"type\":\"aqolbgycduiertg\",\"order\":178925296,\"resourceType\":\"vaolpsslqlf\"}]}],\"iyzvqtmnub\":[{\"templateData\":\"datawyhzdx\",\"galleries\":[{\"name\":\"bzmnvdfznud\",\"category\":\"dvxzbncblylpst\",\"type\":\"hh\",\"order\":1188392360,\"resourceType\":\"dzu\"},{\"name\":\"rsc\",\"category\":\"t\",\"type\":\"vfiwjmygtdss\",\"order\":1943196565,\"resourceType\":\"mweriofzpy\"},{\"name\":\"emwabnet\",\"category\":\"hszhedplvwiwu\",\"type\":\"wmbesldnkw\",\"order\":353281330,\"resourceType\":\"jflcxog\"},{\"name\":\"konzmnsik\",\"category\":\"kqze\",\"type\":\"kdltfzxmhhvhg\",\"order\":243631399,\"resourceType\":\"dkwobdagx\"}]},{\"templateData\":\"databqdxbx\",\"galleries\":[{\"name\":\"ogqxndlkzgxhuri\",\"category\":\"bpodxunkbebxm\",\"type\":\"yyntwl\",\"order\":2005326650,\"resourceType\":\"koievseo\"},{\"name\":\"q\",\"category\":\"ltmuwlauwzizx\",\"type\":\"pgcjefuzmuvp\",\"order\":887975126,\"resourceType\":\"um\"},{\"name\":\"p\",\"category\":\"ebmnzbtbhjpglk\",\"type\":\"ohdneuel\",\"order\":571890155,\"resourceType\":\"dyhtozfikdowwquu\"},{\"name\":\"zx\",\"category\":\"vithh\",\"type\":\"o\",\"order\":485357732,\"resourceType\":\"gbhcohfwdsj\"}]},{\"templateData\":\"dataaljutiiswac\",\"galleries\":[{\"name\":\"k\",\"category\":\"ewkfvhqcrai\",\"type\":\"pnppfuf\",\"order\":888986239,\"resourceType\":\"mh\"}]},{\"templateData\":\"dataxyjrxsagafcnih\",\"galleries\":[{\"name\":\"pnedgf\",\"category\":\"vkcvqvpkeqd\",\"type\":\"drhvoodsotbo\",\"order\":138973043,\"resourceType\":\"pcjwv\"},{\"name\":\"dldwmgxc\",\"category\":\"slpmutwuo\",\"type\":\"rpkhjwn\",\"order\":1641060352,\"resourceType\":\"luicpdggkzzlvmbm\"},{\"name\":\"xmodf\",\"category\":\"efyw\",\"type\":\"pfvmwyhrfou\",\"order\":1120299710,\"resourceType\":\"akcp\"}]}]}}")
+            .toObject(WorkbookTemplateProperties.class);
+        Assertions.assertEquals(2121055666, model.priority());
+        Assertions.assertEquals("fqsgzvahapjy", model.author());
+        Assertions.assertEquals("vxdjzlmwlxkvugf", model.galleries().get(0).name());
+        Assertions.assertEquals("ovawjvzunlu", model.galleries().get(0).category());
+        Assertions.assertEquals("nnprn", model.galleries().get(0).type());
+        Assertions.assertEquals(1539688741, model.galleries().get(0).order());
+        Assertions.assertEquals("ilpjzuaejxdult", model.galleries().get(0).resourceType());
+        Assertions.assertEquals("kfpbs", model.localized().get("rruvwbhsq").get(0).galleries().get(0).name());
+        Assertions.assertEquals("ofd", model.localized().get("rruvwbhsq").get(0).galleries().get(0).category());
+        Assertions.assertEquals("uusdttouwa", model.localized().get("rruvwbhsq").get(0).galleries().get(0).type());
+        Assertions.assertEquals(1947792369, model.localized().get("rruvwbhsq").get(0).galleries().get(0).order());
+        Assertions.assertEquals("qvkelnsm",
+            model.localized().get("rruvwbhsq").get(0).galleries().get(0).resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookTemplateProperties model =
-            new WorkbookTemplateProperties()
-                .withPriority(2042838071)
-                .withAuthor("azt")
-                .withTemplateData("databt")
-                .withGalleries(
-                    Arrays
-                        .asList(
-                            new WorkbookTemplateGallery()
-                                .withName("qpuedckzywbiex")
-                                .withCategory("eyueaxibxujwb")
-                                .withType("walm")
-                                .withOrder(978941807)
-                                .withResourceType("xaepdkzjancuxr"),
-                            new WorkbookTemplateGallery()
-                                .withName("wbavxbniwdj")
-                                .withCategory("zt")
-                                .withType("bpg")
-                                .withOrder(1127167490)
-                                .withResourceType("x")))
+        WorkbookTemplateProperties model
+            = new WorkbookTemplateProperties().withPriority(2121055666)
+                .withAuthor("fqsgzvahapjy")
+                .withTemplateData("datahpvgqz")
+                .withGalleries(Arrays.asList(new WorkbookTemplateGallery().withName("vxdjzlmwlxkvugf")
+                    .withCategory("ovawjvzunlu")
+                    .withType("nnprn")
+                    .withOrder(1539688741)
+                    .withResourceType("ilpjzuaejxdult")))
                 .withLocalized(
-                    mapOf(
-                        "fudwpznt",
+                    mapOf("rruvwbhsq",
                         Arrays
                             .asList(
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("datazpfzabglc")
-                                    .withGalleries(
-                                        Arrays
-                                            .asList(
-                                                new WorkbookTemplateGallery()
-                                                    .withName("tcty")
-                                                    .withCategory("klbb")
-                                                    .withType("plwzbhvgyugu")
-                                                    .withOrder(230150141)
-                                                    .withResourceType("kfssxqukkf"),
-                                                new WorkbookTemplateGallery()
-                                                    .withName("gmgsxnkjzkde")
-                                                    .withCategory("pvlopwiyighxpkd")
-                                                    .withType("baiuebbaumny")
-                                                    .withOrder(624396177)
-                                                    .withResourceType("deoj"),
-                                                new WorkbookTemplateGallery()
-                                                    .withName("bckhsmtxpsi")
-                                                    .withCategory("tfhvpesapskrdqmh")
-                                                    .withType("dhtldwkyz")
-                                                    .withOrder(1335454628)
-                                                    .withResourceType("kn"),
-                                                new WorkbookTemplateGallery()
-                                                    .withName("scwsv")
-                                                    .withCategory("otogtwrupqs")
-                                                    .withType("nmic")
-                                                    .withOrder(560100496)
-                                                    .withResourceType("eoveilovnotyf"))),
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("datacnjbkcnxdhbt")
-                                    .withGalleries(
-                                        Arrays
-                                            .asList(
-                                                new WorkbookTemplateGallery()
-                                                    .withName("ywpnvjt")
-                                                    .withCategory("nermcl")
-                                                    .withType("lphox")
-                                                    .withOrder(1158038840)
-                                                    .withResourceType("pabgyeps"),
-                                                new WorkbookTemplateGallery()
-                                                    .withName("tazqugxywpmueefj")
-                                                    .withCategory("fqkquj")
-                                                    .withType("suyonobglaocq")
-                                                    .withOrder(676078143)
-                                                    .withResourceType("mgyudxytlmoyrxv")))),
-                        "eiotwmcdytdx",
-                        Arrays
-                            .asList(
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("datazhlrqjb")
-                                    .withGalleries(
-                                        Arrays
-                                            .asList(
-                                                new WorkbookTemplateGallery()
-                                                    .withName("rlhrxs")
-                                                    .withCategory("yvpycanuzbpzk")
-                                                    .withType("kuwbcrnwb")
-                                                    .withOrder(1542253292)
-                                                    .withResourceType("seyvj"),
-                                                new WorkbookTemplateGallery()
-                                                    .withName("rts")
-                                                    .withCategory("spkdee")
-                                                    .withType("ofmxagkvtmelmqkr")
-                                                    .withOrder(669336905)
-                                                    .withResourceType("ljuahaquhcdh"),
-                                                new WorkbookTemplateGallery()
-                                                    .withName("ualaexqpvfadmw")
-                                                    .withCategory("crgvxpvgom")
-                                                    .withType("fmisg")
-                                                    .withOrder(1787960878)
-                                                    .withResourceType("beldawkzbaliourq"))),
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("datakauhashsfwxo")
-                                    .withGalleries(
-                                        Arrays
-                                            .asList(
-                                                new WorkbookTemplateGallery()
-                                                    .withName("xcug")
-                                                    .withCategory("jooxdjebw")
-                                                    .withType("cwwfvovbvme")
-                                                    .withOrder(321338352)
-                                                    .withResourceType("vyhzceuojgjrwj")))),
-                        "nojvknmefqsg",
-                        Arrays
-                            .asList(
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("dataxnrj")
-                                    .withGalleries(
-                                        Arrays
-                                            .asList(
-                                                new WorkbookTemplateGallery()
-                                                    .withName("wgxhn")
-                                                    .withCategory("kxfbkpycgklwndn")
-                                                    .withType("dauwhvylwzbtd")
-                                                    .withOrder(1131914831)
-                                                    .withResourceType("znbmpowuwprzq"),
-                                                new WorkbookTemplateGallery()
-                                                    .withName("eualupjmkhf")
-                                                    .withCategory("bbcswsrtjri")
-                                                    .withType("rbpbewtghfgblcg")
-                                                    .withOrder(1261477123)
-                                                    .withResourceType("lvqhjkbegibtnmx"),
-                                                new WorkbookTemplateGallery()
-                                                    .withName("bwwaloa")
-                                                    .withCategory("cgwrtzjuz")
-                                                    .withType("yzm")
-                                                    .withOrder(1961357126)
-                                                    .withResourceType("ngmtsavjcb"),
-                                                new WorkbookTemplateGallery()
-                                                    .withName("xqpsrknftguv")
-                                                    .withCategory("uhprwmdyvxqt")
-                                                    .withType("riwwroy")
-                                                    .withOrder(1621118855)
-                                                    .withResourceType("rmcqiby"))))));
+                                new WorkbookTemplateLocalizedGallery().withTemplateData("datatdzumveekgpw")
+                                    .withGalleries(Arrays.asList(new WorkbookTemplateGallery().withName("kfpbs")
+                                        .withCategory("ofd")
+                                        .withType("uusdttouwa")
+                                        .withOrder(1947792369)
+                                        .withResourceType("qvkelnsm"))),
+                                new WorkbookTemplateLocalizedGallery().withTemplateData("dataxwyjsflhhc")
+                                    .withGalleries(Arrays.asList(
+                                        new WorkbookTemplateGallery().withName("jixisxyawjoyaqcs")
+                                            .withCategory("jpkiidzyexznelix")
+                                            .withType("rzt")
+                                            .withOrder(1975568377)
+                                            .withResourceType("bnxknalaulppg"),
+                                        new WorkbookTemplateGallery().withName("tpnapnyiropuhpig")
+                                            .withCategory("gylgqgitxmedjvcs")
+                                            .withType("n")
+                                            .withOrder(1519896216)
+                                            .withResourceType("cwzzhxgktr"),
+                                        new WorkbookTemplateGallery().withName("ucnapkteoellwp")
+                                            .withCategory("d")
+                                            .withType("pfqbuaceopzf")
+                                            .withOrder(1219903446)
+                                            .withResourceType("uaopppcqeq"))),
+                                new WorkbookTemplateLocalizedGallery().withTemplateData("datalzdahzxctobgbkdm")
+                                    .withGalleries(Arrays.asList(
+                                        new WorkbookTemplateGallery().withName("ostmgrcf")
+                                            .withCategory("nrmfqjhhk")
+                                            .withType("pvjymjhxxjyng")
+                                            .withOrder(1804869047)
+                                            .withResourceType("krtswbxqz"),
+                                        new WorkbookTemplateGallery().withName("zjf")
+                                            .withCategory("vjfdx")
+                                            .withType("vetvt")
+                                            .withOrder(393815457)
+                                            .withResourceType("tdo"),
+                                        new WorkbookTemplateGallery().withName("cbxvwvxyslqbh")
+                                            .withCategory("xoblytkbl")
+                                            .withType("ewwwfbkrvrnsv")
+                                            .withOrder(82404259)
+                                            .withResourceType("ohxcrsbfova")))),
+                        "mdnbbglzpswiy",
+                        Arrays.asList(new WorkbookTemplateLocalizedGallery().withTemplateData("databcgjbirxbp")
+                            .withGalleries(Arrays.asList(
+                                new WorkbookTemplateGallery().withName("fbjfdtwssotftpvj")
+                                    .withCategory("exilzznfqqnvwpmq")
+                                    .withType("ruoujmk")
+                                    .withOrder(1426920839)
+                                    .withResourceType("qytjrybnwjewgd"),
+                                new WorkbookTemplateGallery().withName("ervnaenqpehi")
+                                    .withCategory("oygmift")
+                                    .withType("zdnds")
+                                    .withOrder(1279542640)
+                                    .withResourceType("yq"),
+                                new WorkbookTemplateGallery().withName("ynduha")
+                                    .withCategory("qlkth")
+                                    .withType("aqolbgycduiertg")
+                                    .withOrder(178925296)
+                                    .withResourceType("vaolpsslqlf")))),
+                        "iyzvqtmnub",
+                        Arrays.asList(
+                            new WorkbookTemplateLocalizedGallery().withTemplateData("datawyhzdx")
+                                .withGalleries(Arrays.asList(
+                                    new WorkbookTemplateGallery().withName("bzmnvdfznud")
+                                        .withCategory("dvxzbncblylpst")
+                                        .withType("hh")
+                                        .withOrder(1188392360)
+                                        .withResourceType("dzu"),
+                                    new WorkbookTemplateGallery().withName("rsc")
+                                        .withCategory("t")
+                                        .withType("vfiwjmygtdss")
+                                        .withOrder(1943196565)
+                                        .withResourceType("mweriofzpy"),
+                                    new WorkbookTemplateGallery().withName("emwabnet")
+                                        .withCategory("hszhedplvwiwu")
+                                        .withType("wmbesldnkw")
+                                        .withOrder(353281330)
+                                        .withResourceType("jflcxog"),
+                                    new WorkbookTemplateGallery().withName("konzmnsik")
+                                        .withCategory("kqze")
+                                        .withType("kdltfzxmhhvhg")
+                                        .withOrder(243631399)
+                                        .withResourceType("dkwobdagx"))),
+                            new WorkbookTemplateLocalizedGallery().withTemplateData("databqdxbx")
+                                .withGalleries(Arrays.asList(
+                                    new WorkbookTemplateGallery().withName("ogqxndlkzgxhuri")
+                                        .withCategory("bpodxunkbebxm")
+                                        .withType("yyntwl")
+                                        .withOrder(2005326650)
+                                        .withResourceType("koievseo"),
+                                    new WorkbookTemplateGallery().withName("q")
+                                        .withCategory("ltmuwlauwzizx")
+                                        .withType("pgcjefuzmuvp")
+                                        .withOrder(887975126)
+                                        .withResourceType("um"),
+                                    new WorkbookTemplateGallery().withName("p")
+                                        .withCategory("ebmnzbtbhjpglk")
+                                        .withType("ohdneuel")
+                                        .withOrder(571890155)
+                                        .withResourceType("dyhtozfikdowwquu"),
+                                    new WorkbookTemplateGallery().withName("zx")
+                                        .withCategory("vithh")
+                                        .withType("o")
+                                        .withOrder(485357732)
+                                        .withResourceType("gbhcohfwdsj"))),
+                            new WorkbookTemplateLocalizedGallery().withTemplateData("dataaljutiiswac")
+                                .withGalleries(Arrays.asList(new WorkbookTemplateGallery().withName("k")
+                                    .withCategory("ewkfvhqcrai")
+                                    .withType("pnppfuf")
+                                    .withOrder(888986239)
+                                    .withResourceType("mh"))),
+                            new WorkbookTemplateLocalizedGallery().withTemplateData("dataxyjrxsagafcnih")
+                                .withGalleries(Arrays.asList(
+                                    new WorkbookTemplateGallery().withName("pnedgf")
+                                        .withCategory("vkcvqvpkeqd")
+                                        .withType("drhvoodsotbo")
+                                        .withOrder(138973043)
+                                        .withResourceType("pcjwv"),
+                                    new WorkbookTemplateGallery().withName("dldwmgxc")
+                                        .withCategory("slpmutwuo")
+                                        .withType("rpkhjwn")
+                                        .withOrder(1641060352)
+                                        .withResourceType("luicpdggkzzlvmbm"),
+                                    new WorkbookTemplateGallery().withName("xmodf")
+                                        .withCategory("efyw")
+                                        .withType("pfvmwyhrfou")
+                                        .withOrder(1120299710)
+                                        .withResourceType("akcp"))))));
         model = BinaryData.fromObject(model).toObject(WorkbookTemplateProperties.class);
-        Assertions.assertEquals(2042838071, model.priority());
-        Assertions.assertEquals("azt", model.author());
-        Assertions.assertEquals("qpuedckzywbiex", model.galleries().get(0).name());
-        Assertions.assertEquals("eyueaxibxujwb", model.galleries().get(0).category());
-        Assertions.assertEquals("walm", model.galleries().get(0).type());
-        Assertions.assertEquals(978941807, model.galleries().get(0).order());
-        Assertions.assertEquals("xaepdkzjancuxr", model.galleries().get(0).resourceType());
-        Assertions.assertEquals("tcty", model.localized().get("fudwpznt").get(0).galleries().get(0).name());
-        Assertions.assertEquals("klbb", model.localized().get("fudwpznt").get(0).galleries().get(0).category());
-        Assertions.assertEquals("plwzbhvgyugu", model.localized().get("fudwpznt").get(0).galleries().get(0).type());
-        Assertions.assertEquals(230150141, model.localized().get("fudwpznt").get(0).galleries().get(0).order());
-        Assertions
-            .assertEquals("kfssxqukkf", model.localized().get("fudwpznt").get(0).galleries().get(0).resourceType());
+        Assertions.assertEquals(2121055666, model.priority());
+        Assertions.assertEquals("fqsgzvahapjy", model.author());
+        Assertions.assertEquals("vxdjzlmwlxkvugf", model.galleries().get(0).name());
+        Assertions.assertEquals("ovawjvzunlu", model.galleries().get(0).category());
+        Assertions.assertEquals("nnprn", model.galleries().get(0).type());
+        Assertions.assertEquals(1539688741, model.galleries().get(0).order());
+        Assertions.assertEquals("ilpjzuaejxdult", model.galleries().get(0).resourceType());
+        Assertions.assertEquals("kfpbs", model.localized().get("rruvwbhsq").get(0).galleries().get(0).name());
+        Assertions.assertEquals("ofd", model.localized().get("rruvwbhsq").get(0).galleries().get(0).category());
+        Assertions.assertEquals("uusdttouwa", model.localized().get("rruvwbhsq").get(0).galleries().get(0).type());
+        Assertions.assertEquals(1947792369, model.localized().get("rruvwbhsq").get(0).galleries().get(0).order());
+        Assertions.assertEquals("qvkelnsm",
+            model.localized().get("rruvwbhsq").get(0).galleries().get(0).resourceType());
     }
 
     // Use "Map.of" if available

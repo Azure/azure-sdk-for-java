@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of API. */
+/**
+ * Type of API.
+ */
 public final class ApiType extends ExpandableStringEnum<ApiType> {
-    /** Static value http for ApiType. */
+    /**
+     * Static value http for ApiType.
+     */
     public static final ApiType HTTP = fromString("http");
 
-    /** Static value soap for ApiType. */
+    /**
+     * Static value soap for ApiType.
+     */
     public static final ApiType SOAP = fromString("soap");
 
-    /** Static value websocket for ApiType. */
+    /**
+     * Static value websocket for ApiType.
+     */
     public static final ApiType WEBSOCKET = fromString("websocket");
 
-    /** Static value graphql for ApiType. */
+    /**
+     * Static value graphql for ApiType.
+     */
     public static final ApiType GRAPHQL = fromString("graphql");
 
     /**
      * Creates a new instance of ApiType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ApiType extends ExpandableStringEnum<ApiType> {
 
     /**
      * Creates or finds a ApiType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApiType.
      */
-    @JsonCreator
     public static ApiType fromString(String name) {
         return fromString(name, ApiType.class);
     }
 
     /**
      * Gets known ApiType values.
-     *
+     * 
      * @return known ApiType values.
      */
     public static Collection<ApiType> values() {

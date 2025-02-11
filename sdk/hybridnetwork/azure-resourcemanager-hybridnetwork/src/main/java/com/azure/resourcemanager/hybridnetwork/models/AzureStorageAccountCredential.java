@@ -5,42 +5,55 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.ArtifactAccessCredentialInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The azure storage account credential definition.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "credentialType")
-@JsonTypeName("AzureStorageAccountToken")
 @Fluent
 public final class AzureStorageAccountCredential extends ArtifactAccessCredentialInner {
     /*
+     * The credential type.
+     */
+    private CredentialType credentialType = CredentialType.AZURE_STORAGE_ACCOUNT_TOKEN;
+
+    /*
      * The storage account Id
      */
-    @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
     /*
      * The containers that could be accessed using the current credential.
      */
-    @JsonProperty(value = "containerCredentials")
     private List<AzureStorageAccountContainerCredential> containerCredentials;
 
     /*
      * The UTC time when credential will expire.
      */
-    @JsonProperty(value = "expiry")
     private OffsetDateTime expiry;
 
     /**
      * Creates an instance of AzureStorageAccountCredential class.
      */
     public AzureStorageAccountCredential() {
+    }
+
+    /**
+     * Get the credentialType property: The credential type.
+     * 
+     * @return the credentialType value.
+     */
+    @Override
+    public CredentialType credentialType() {
+        return this.credentialType;
     }
 
     /**
@@ -111,9 +124,61 @@ public final class AzureStorageAccountCredential extends ArtifactAccessCredentia
      */
     @Override
     public void validate() {
-        super.validate();
         if (containerCredentials() != null) {
             containerCredentials().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("credentialType",
+            this.credentialType == null ? null : this.credentialType.toString());
+        jsonWriter.writeStringField("storageAccountId", this.storageAccountId);
+        jsonWriter.writeArrayField("containerCredentials", this.containerCredentials,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("expiry",
+            this.expiry == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiry));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureStorageAccountCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureStorageAccountCredential if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureStorageAccountCredential.
+     */
+    public static AzureStorageAccountCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureStorageAccountCredential deserializedAzureStorageAccountCredential
+                = new AzureStorageAccountCredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("credentialType".equals(fieldName)) {
+                    deserializedAzureStorageAccountCredential.credentialType
+                        = CredentialType.fromString(reader.getString());
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedAzureStorageAccountCredential.storageAccountId = reader.getString();
+                } else if ("containerCredentials".equals(fieldName)) {
+                    List<AzureStorageAccountContainerCredential> containerCredentials
+                        = reader.readArray(reader1 -> AzureStorageAccountContainerCredential.fromJson(reader1));
+                    deserializedAzureStorageAccountCredential.containerCredentials = containerCredentials;
+                } else if ("expiry".equals(fieldName)) {
+                    deserializedAzureStorageAccountCredential.expiry = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureStorageAccountCredential;
+        });
     }
 }

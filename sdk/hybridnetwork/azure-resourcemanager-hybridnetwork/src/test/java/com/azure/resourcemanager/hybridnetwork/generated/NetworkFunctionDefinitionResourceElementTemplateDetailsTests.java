@@ -39,10 +39,13 @@ public final class NetworkFunctionDefinitionResourceElementTemplateDetailsTests 
                     .withInstallDependsOn(Arrays.asList("lcfhmlrqryxy", "qnzrd", "sovwxznptgoeiyb", "abpfhvfs"))
                     .withUninstallDependsOn(Arrays.asList("ntjlr", "gjkskyrioov", "idsxwaabzmifry"))
                     .withUpdateDependsOn(Arrays.asList("mmaxrizkzobgo", "xlhslnel", "ieixynllxe")))
-                .withConfiguration(new ArmResourceDefinitionResourceElementTemplate()
-                    .withTemplateType(TemplateType.ARM_TEMPLATE).withParameterValues("ultxijjumfq").withArtifactProfile(
-                        new NsdArtifactProfile().withArtifactStoreReference(new ReferencedResource().withId("nqnm"))
-                            .withArtifactName("ngz").withArtifactVersion("qxtbjwgnyf")));
+                .withConfiguration(
+                    new ArmResourceDefinitionResourceElementTemplate().withTemplateType(TemplateType.ARM_TEMPLATE)
+                        .withParameterValues("ultxijjumfq")
+                        .withArtifactProfile(
+                            new NsdArtifactProfile().withArtifactStoreReference(new ReferencedResource().withId("nqnm"))
+                                .withArtifactName("ngz")
+                                .withArtifactVersion("qxtbjwgnyf")));
         model = BinaryData.fromObject(model).toObject(NetworkFunctionDefinitionResourceElementTemplateDetails.class);
         Assertions.assertEquals("fzsvtuikzh", model.name());
         Assertions.assertEquals("lcfhmlrqryxy", model.dependsOnProfile().installDependsOn().get(0));

@@ -7,69 +7,76 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.DraModelInner;
 
-/** An immutable client-side representation of DraModel. */
+/**
+ * An immutable client-side representation of DraModel.
+ */
 public interface DraModel {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Dra model properties.
-     *
+     * 
      * @return the properties value.
      */
     DraModelProperties properties();
 
     /**
      * Gets the systemData property: The systemData property.
-     *
+     * 
      * @return the systemData value.
      */
     DraModelSystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.DraModelInner object.
-     *
+     * 
      * @return the inner object.
      */
     DraModelInner innerModel();
 
-    /** The entirety of the DraModel definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the DraModel definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
-    /** The DraModel definition stages. */
+    /**
+     * The DraModel definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the DraModel definition. */
+        /**
+         * The first stage of the DraModel definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the DraModel definition allowing to specify parent resource. */
+        /**
+         * The stage of the DraModel definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, fabricName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param fabricName The fabric name.
              * @return the next definition stage.
@@ -77,11 +84,13 @@ public interface DraModel {
             WithProperties withExistingReplicationFabric(String resourceGroupName, String fabricName);
         }
 
-        /** The stage of the DraModel definition allowing to specify properties. */
+        /**
+         * The stage of the DraModel definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Dra model properties..
-             *
+             * 
              * @param properties Dra model properties.
              * @return the next definition stage.
              */
@@ -95,14 +104,14 @@ public interface DraModel {
         interface WithCreate {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             DraModel create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
@@ -112,14 +121,14 @@ public interface DraModel {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     DraModel refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

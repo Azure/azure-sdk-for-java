@@ -115,7 +115,6 @@ public final class AmazonS3Location extends DatasetLocation {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

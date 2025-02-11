@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of a query text. */
+/**
+ * The properties of a query text.
+ */
 @Fluent
-public final class QueryTextProperties {
+public final class QueryTextProperties implements JsonSerializable<QueryTextProperties> {
     /*
      * Query identifier unique to the server.
      */
-    @JsonProperty(value = "queryId")
     private String queryId;
 
     /*
      * Query text.
      */
-    @JsonProperty(value = "queryText")
     private String queryText;
 
-    /** Creates an instance of QueryTextProperties class. */
+    /**
+     * Creates an instance of QueryTextProperties class.
+     */
     public QueryTextProperties() {
     }
 
     /**
      * Get the queryId property: Query identifier unique to the server.
-     *
+     * 
      * @return the queryId value.
      */
     public String queryId() {
@@ -37,7 +43,7 @@ public final class QueryTextProperties {
 
     /**
      * Set the queryId property: Query identifier unique to the server.
-     *
+     * 
      * @param queryId the queryId value to set.
      * @return the QueryTextProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class QueryTextProperties {
 
     /**
      * Get the queryText property: Query text.
-     *
+     * 
      * @return the queryText value.
      */
     public String queryText() {
@@ -57,7 +63,7 @@ public final class QueryTextProperties {
 
     /**
      * Set the queryText property: Query text.
-     *
+     * 
      * @param queryText the queryText value to set.
      * @return the QueryTextProperties object itself.
      */
@@ -68,9 +74,48 @@ public final class QueryTextProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("queryId", this.queryId);
+        jsonWriter.writeStringField("queryText", this.queryText);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryTextProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryTextProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryTextProperties.
+     */
+    public static QueryTextProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryTextProperties deserializedQueryTextProperties = new QueryTextProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("queryId".equals(fieldName)) {
+                    deserializedQueryTextProperties.queryId = reader.getString();
+                } else if ("queryText".equals(fieldName)) {
+                    deserializedQueryTextProperties.queryText = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryTextProperties;
+        });
     }
 }

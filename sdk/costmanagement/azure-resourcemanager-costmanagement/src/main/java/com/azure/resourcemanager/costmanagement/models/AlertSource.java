@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Source of alert. */
+/**
+ * Source of alert.
+ */
 public final class AlertSource extends ExpandableStringEnum<AlertSource> {
-    /** Static value Preset for AlertSource. */
+    /**
+     * Static value Preset for AlertSource.
+     */
     public static final AlertSource PRESET = fromString("Preset");
 
-    /** Static value User for AlertSource. */
+    /**
+     * Static value User for AlertSource.
+     */
     public static final AlertSource USER = fromString("User");
 
     /**
      * Creates a new instance of AlertSource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AlertSource extends ExpandableStringEnum<AlertSource> {
 
     /**
      * Creates or finds a AlertSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlertSource.
      */
-    @JsonCreator
     public static AlertSource fromString(String name) {
         return fromString(name, AlertSource.class);
     }
 
     /**
      * Gets known AlertSource values.
-     *
+     * 
      * @return known AlertSource values.
      */
     public static Collection<AlertSource> values() {

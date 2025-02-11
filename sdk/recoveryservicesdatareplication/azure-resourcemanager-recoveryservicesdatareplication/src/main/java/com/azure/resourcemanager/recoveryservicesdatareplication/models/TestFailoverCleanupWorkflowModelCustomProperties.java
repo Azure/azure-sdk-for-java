@@ -5,28 +5,51 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Map;
 
-/** Test failover cleanup workflow model custom properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("TestFailoverCleanupWorkflowDetails")
+/**
+ * Test failover cleanup workflow model custom properties.
+ */
 @Immutable
 public final class TestFailoverCleanupWorkflowModelCustomProperties extends WorkflowModelCustomProperties {
     /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "TestFailoverCleanupWorkflowDetails";
+
+    /*
      * Gets or sets the test failover cleanup comments.
      */
-    @JsonProperty(value = "comments", access = JsonProperty.Access.WRITE_ONLY)
     private String comments;
 
-    /** Creates an instance of TestFailoverCleanupWorkflowModelCustomProperties class. */
+    /*
+     * Gets or sets any custom properties of the affected object.
+     */
+    private Map<String, String> affectedObjectDetails;
+
+    /**
+     * Creates an instance of TestFailoverCleanupWorkflowModelCustomProperties class.
+     */
     public TestFailoverCleanupWorkflowModelCustomProperties() {
     }
 
     /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the comments property: Gets or sets the test failover cleanup comments.
-     *
+     * 
      * @return the comments value.
      */
     public String comments() {
@@ -34,12 +57,64 @@ public final class TestFailoverCleanupWorkflowModelCustomProperties extends Work
     }
 
     /**
+     * Get the affectedObjectDetails property: Gets or sets any custom properties of the affected object.
+     * 
+     * @return the affectedObjectDetails value.
+     */
+    @Override
+    public Map<String, String> affectedObjectDetails() {
+        return this.affectedObjectDetails;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestFailoverCleanupWorkflowModelCustomProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestFailoverCleanupWorkflowModelCustomProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TestFailoverCleanupWorkflowModelCustomProperties.
+     */
+    public static TestFailoverCleanupWorkflowModelCustomProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestFailoverCleanupWorkflowModelCustomProperties deserializedTestFailoverCleanupWorkflowModelCustomProperties
+                = new TestFailoverCleanupWorkflowModelCustomProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("affectedObjectDetails".equals(fieldName)) {
+                    Map<String, String> affectedObjectDetails = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTestFailoverCleanupWorkflowModelCustomProperties.affectedObjectDetails
+                        = affectedObjectDetails;
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedTestFailoverCleanupWorkflowModelCustomProperties.instanceType = reader.getString();
+                } else if ("comments".equals(fieldName)) {
+                    deserializedTestFailoverCleanupWorkflowModelCustomProperties.comments = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestFailoverCleanupWorkflowModelCustomProperties;
+        });
     }
 }

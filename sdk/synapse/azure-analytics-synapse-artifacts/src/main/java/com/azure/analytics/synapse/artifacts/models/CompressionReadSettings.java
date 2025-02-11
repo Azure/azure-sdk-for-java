@@ -21,7 +21,7 @@ public class CompressionReadSettings implements JsonSerializable<CompressionRead
     /*
      * The Compression setting type.
      */
-    private String type;
+    private String type = "CompressionReadSettings";
 
     /*
      * Compression read settings.
@@ -32,7 +32,6 @@ public class CompressionReadSettings implements JsonSerializable<CompressionRead
      * Creates an instance of CompressionReadSettings class.
      */
     public CompressionReadSettings() {
-        this.type = "CompressionReadSettings";
     }
 
     /**

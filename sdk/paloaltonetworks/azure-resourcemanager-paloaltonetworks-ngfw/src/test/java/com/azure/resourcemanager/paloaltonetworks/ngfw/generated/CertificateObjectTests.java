@@ -25,7 +25,9 @@ public final class CertificateObjectTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CertificateObject model = new CertificateObject().withCertificateSignerResourceId("scjeypv")
-            .withCertificateSelfSigned(BooleanEnum.FALSE).withAuditComment("rkgqhcjrefo").withDescription("mkqsleyyv")
+            .withCertificateSelfSigned(BooleanEnum.FALSE)
+            .withAuditComment("rkgqhcjrefo")
+            .withDescription("mkqsleyyv")
             .withEtag("qjpkcattpngjcrc");
         model = BinaryData.fromObject(model).toObject(CertificateObject.class);
         Assertions.assertEquals("scjeypv", model.certificateSignerResourceId());

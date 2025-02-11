@@ -5,22 +5,35 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines reference to load balancer NAT rules. */
+/**
+ * Defines reference to load balancer NAT rules.
+ */
 @Fluent
 public final class LoadBalancerNatRuleReference extends ProxyResourceReference {
-    /** Creates an instance of LoadBalancerNatRuleReference class. */
+    /**
+     * Creates an instance of LoadBalancerNatRuleReference class.
+     */
     public LoadBalancerNatRuleReference() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LoadBalancerNatRuleReference withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LoadBalancerNatRuleReference withSourceArmResourceId(String sourceArmResourceId) {
         super.withSourceArmResourceId(sourceArmResourceId);
@@ -29,11 +42,57 @@ public final class LoadBalancerNatRuleReference extends ProxyResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (sourceArmResourceId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceArmResourceId in model LoadBalancerNatRuleReference"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerNatRuleReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceArmResourceId", sourceArmResourceId());
+        jsonWriter.writeStringField("name", name());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBalancerNatRuleReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBalancerNatRuleReference if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LoadBalancerNatRuleReference.
+     */
+    public static LoadBalancerNatRuleReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBalancerNatRuleReference deserializedLoadBalancerNatRuleReference = new LoadBalancerNatRuleReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceArmResourceId".equals(fieldName)) {
+                    deserializedLoadBalancerNatRuleReference.withSourceArmResourceId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedLoadBalancerNatRuleReference.withName(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBalancerNatRuleReference;
+        });
     }
 }

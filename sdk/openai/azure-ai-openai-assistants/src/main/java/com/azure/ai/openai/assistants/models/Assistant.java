@@ -191,7 +191,8 @@ public final class Assistant implements JsonSerializable<Assistant> {
         jsonWriter.writeNumberField("top_p", this.topP);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         if (this.responseFormat != null) {
-            jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
+            jsonWriter.writeFieldName("response_format");
+            this.responseFormat.writeTo(jsonWriter);
         }
         return jsonWriter.writeEndObject();
     }

@@ -7,39 +7,41 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.resourcemanager.apimanagement.fluent.models.TenantSettingsContractInner;
 import java.util.Map;
 
-/** An immutable client-side representation of TenantSettingsContract. */
+/**
+ * An immutable client-side representation of TenantSettingsContract.
+ */
 public interface TenantSettingsContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the settings property: Tenant settings.
-     *
+     * 
      * @return the settings value.
      */
     Map<String, String> settings();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.TenantSettingsContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     TenantSettingsContractInner innerModel();

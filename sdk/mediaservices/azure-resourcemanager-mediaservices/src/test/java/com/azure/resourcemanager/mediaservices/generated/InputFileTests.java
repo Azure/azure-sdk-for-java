@@ -13,19 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class InputFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InputFile model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.InputFile\",\"filename\":\"ligovibrxkpm\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"}]}")
-                .toObject(InputFile.class);
-        Assertions.assertEquals("ligovibrxkpm", model.filename());
+        InputFile model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.InputFile\",\"filename\":\"jzh\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"}]}")
+            .toObject(InputFile.class);
+        Assertions.assertEquals("jzh", model.filename());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InputFile model =
-            new InputFile().withIncludedTracks(Arrays.asList(new TrackDescriptor())).withFilename("ligovibrxkpm");
+        InputFile model = new InputFile()
+            .withIncludedTracks(Arrays.asList(new TrackDescriptor(), new TrackDescriptor(), new TrackDescriptor()))
+            .withFilename("jzh");
         model = BinaryData.fromObject(model).toObject(InputFile.class);
-        Assertions.assertEquals("ligovibrxkpm", model.filename());
+        Assertions.assertEquals("jzh", model.filename());
     }
 }

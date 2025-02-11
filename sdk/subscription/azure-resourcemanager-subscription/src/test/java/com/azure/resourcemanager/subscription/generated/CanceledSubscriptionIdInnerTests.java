@@ -10,8 +10,8 @@ import com.azure.resourcemanager.subscription.fluent.models.CanceledSubscription
 public final class CanceledSubscriptionIdInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CanceledSubscriptionIdInner model =
-            BinaryData.fromString("{\"subscriptionId\":\"kbasyypn\"}").toObject(CanceledSubscriptionIdInner.class);
+        CanceledSubscriptionIdInner model
+            = BinaryData.fromString("{\"subscriptionId\":\"xth\"}").toObject(CanceledSubscriptionIdInner.class);
     }
 
     @org.junit.jupiter.api.Test

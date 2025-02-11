@@ -8,7 +8,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 /** An interface representing a model's ability to references a frontend. */
 @Fluent
 public interface HasFrontend {
-    /** @return the associated frontend */
+    /**
+     * Gets the associated frontend.
+     *
+     * @return the associated frontend
+     */
     LoadBalancerFrontend frontend();
 
     /** Grouping of definition stages involving specifying the frontend. */

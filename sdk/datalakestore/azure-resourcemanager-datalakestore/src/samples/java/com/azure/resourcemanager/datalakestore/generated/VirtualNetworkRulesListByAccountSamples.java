@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.datalakestore.generated;
 
-/** Samples for VirtualNetworkRules ListByAccount. */
+/**
+ * Samples for VirtualNetworkRules ListByAccount.
+ */
 public final class VirtualNetworkRulesListByAccountSamples {
     /*
-     * x-ms-original-file: specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/VirtualNetworkRules_ListByAccount.json
+     * x-ms-original-file:
+     * specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/
+     * VirtualNetworkRules_ListByAccount.json
      */
     /**
      * Sample code: Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
-     *
+     * 
      * @param manager Entry point to DataLakeStoreManager.
      */
     public static void listsTheDataLakeStoreVirtualNetworkRulesWithinTheSpecifiedDataLakeStoreAccount(

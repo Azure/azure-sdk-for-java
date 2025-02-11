@@ -17,8 +17,8 @@ public final class WorkflowTriggerHistoryImpl implements WorkflowTriggerHistory 
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    WorkflowTriggerHistoryImpl(
-        WorkflowTriggerHistoryInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    WorkflowTriggerHistoryImpl(WorkflowTriggerHistoryInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

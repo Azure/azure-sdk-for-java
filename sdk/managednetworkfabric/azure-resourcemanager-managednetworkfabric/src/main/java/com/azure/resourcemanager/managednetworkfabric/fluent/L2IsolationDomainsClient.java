@@ -18,14 +18,16 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConf
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomainPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
-/** An instance of this class provides access to all the operations defined in L2IsolationDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in L2IsolationDomainsClient.
+ */
 public interface L2IsolationDomainsClient {
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -35,15 +37,15 @@ public interface L2IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body);
+    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainInner body);
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -54,15 +56,15 @@ public interface L2IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body, Context context);
+    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainInner body, Context context);
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -76,10 +78,10 @@ public interface L2IsolationDomainsClient {
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -90,14 +92,14 @@ public interface L2IsolationDomainsClient {
      * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    L2IsolationDomainInner create(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body, Context context);
+    L2IsolationDomainInner create(String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body,
+        Context context);
 
     /**
      * Retrieves details of this L2 Isolation Domain.
-     *
-     * <p>Implements L2 Isolation Domain GET method.
-     *
+     * 
+     * Implements L2 Isolation Domain GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -107,14 +109,14 @@ public interface L2IsolationDomainsClient {
      * @return the L2 Isolation Domain resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<L2IsolationDomainInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    Response<L2IsolationDomainInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String l2IsolationDomainName, Context context);
 
     /**
      * Retrieves details of this L2 Isolation Domain.
-     *
-     * <p>Implements L2 Isolation Domain GET method.
-     *
+     * 
+     * Implements L2 Isolation Domain GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,9 +129,9 @@ public interface L2IsolationDomainsClient {
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -139,14 +141,14 @@ public interface L2IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body);
+    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainPatch body);
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -157,14 +159,14 @@ public interface L2IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body, Context context);
+    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainPatch body, Context context);
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -178,9 +180,9 @@ public interface L2IsolationDomainsClient {
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -191,14 +193,14 @@ public interface L2IsolationDomainsClient {
      * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    L2IsolationDomainInner update(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body, Context context);
+    L2IsolationDomainInner update(String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body,
+        Context context);
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,9 +213,9 @@ public interface L2IsolationDomainsClient {
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -223,14 +225,14 @@ public interface L2IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2IsolationDomainName,
+        Context context);
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,9 +244,9 @@ public interface L2IsolationDomainsClient {
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -257,9 +259,9 @@ public interface L2IsolationDomainsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -270,14 +272,14 @@ public interface L2IsolationDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body);
+        beginUpdateAdministrativeState(String resourceGroupName, String l2IsolationDomainName,
+            UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -289,14 +291,14 @@ public interface L2IsolationDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String l2IsolationDomainName,
+            UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -306,14 +308,14 @@ public interface L2IsolationDomainsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -324,12 +326,12 @@ public interface L2IsolationDomainsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -343,7 +345,7 @@ public interface L2IsolationDomainsClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -358,7 +360,7 @@ public interface L2IsolationDomainsClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -371,7 +373,7 @@ public interface L2IsolationDomainsClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -381,14 +383,14 @@ public interface L2IsolationDomainsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String l2IsolationDomainName,
+        Context context);
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -402,9 +404,9 @@ public interface L2IsolationDomainsClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -419,9 +421,9 @@ public interface L2IsolationDomainsClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -430,14 +432,14 @@ public interface L2IsolationDomainsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String l2IsolationDomainName);
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
+        String l2IsolationDomainName);
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -447,14 +449,14 @@ public interface L2IsolationDomainsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
+        String l2IsolationDomainName, Context context);
 
     /**
      * List L2IsolationDomains by resource group.
-     *
-     * <p>Displays L2IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -466,9 +468,9 @@ public interface L2IsolationDomainsClient {
 
     /**
      * List L2IsolationDomains by resource group.
-     *
-     * <p>Displays L2IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -481,9 +483,9 @@ public interface L2IsolationDomainsClient {
 
     /**
      * List L2IsolationDomains by subscription.
-     *
-     * <p>Displays L2IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
@@ -493,9 +495,9 @@ public interface L2IsolationDomainsClient {
 
     /**
      * List L2IsolationDomains by subscription.
-     *
-     * <p>Displays L2IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -6,19 +6,22 @@ package com.azure.resourcemanager.devtestlabs.generated;
 
 import com.azure.resourcemanager.devtestlabs.models.StorageType;
 
-/** Samples for Disks CreateOrUpdate. */
+/**
+ * Samples for Disks CreateOrUpdate.
+ */
 public final class DisksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_CreateOrUpdate.
+     * json
      */
     /**
      * Sample code: Disks_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void disksCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .disks()
+        manager.disks()
             .define("{diskName}")
             .withRegion((String) null)
             .withExistingUser("resourceGroupName", "{labName}", "{userId}")

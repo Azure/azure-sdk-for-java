@@ -63,22 +63,19 @@ public class FeedbackTest extends FeedbackTestBase {
             int pageCount = 0;
             for (PagedResponse<MetricFeedback> metricFeedbackPagedResponse : client.listFeedback(METRIC_ID,
                 new ListMetricFeedbackOptions()
-                    .setFilter(new ListMetricFeedbackFilter()
-                        .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
+                    .setFilter(new ListMetricFeedbackFilter().setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
                         .setStartTime(firstFeedbackCreatedTime.minusDays(1))
                         .setEndTime(firstFeedbackCreatedTime.plusDays(1))),
                 Context.NONE).iterableByPage()) {
-                metricFeedbackPagedResponse.getValue()
-                    .forEach(actualMetricFeedbackList::add);
+                metricFeedbackPagedResponse.getValue().forEach(actualMetricFeedbackList::add);
                 pageCount++;
                 if (pageCount > 4) {
                     break;
                 }
             }
 
-            final List<String> expectedMetricFeedbackIdList = expectedMetricFeedbackList.stream()
-                .map(MetricFeedback::getId)
-                .collect(Collectors.toList());
+            final List<String> expectedMetricFeedbackIdList
+                = expectedMetricFeedbackList.stream().map(MetricFeedback::getId).collect(Collectors.toList());
             final List<MetricFeedback> actualList = actualMetricFeedbackList.stream()
                 .filter(metricFeedback -> expectedMetricFeedbackIdList.contains(metricFeedback.getId()))
                 .collect(Collectors.toList());
@@ -91,8 +88,8 @@ public class FeedbackTest extends FeedbackTestBase {
             final AtomicInteger i = new AtomicInteger(-1);
 
             final List<FeedbackType> metricFeedbackTypes = Arrays.asList(COMMENT, COMMENT);
-            expectedMetricFeedbackList.forEach(expectedMetricFeedback ->
-                validateMetricFeedbackResult(expectedMetricFeedback,
+            expectedMetricFeedbackList
+                .forEach(expectedMetricFeedback -> validateMetricFeedbackResult(expectedMetricFeedback,
                     actualList.get(i.incrementAndGet()), metricFeedbackTypes.get(i.get())));
         });
     }
@@ -109,24 +106,29 @@ public class FeedbackTest extends FeedbackTestBase {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
         creatMetricFeedbackRunner(inputMetricFeedback -> {
-            MetricFeedback createdFeedback = client.addFeedback(METRIC_ID, inputMetricFeedback
-                .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)));
+            MetricFeedback createdFeedback = client.addFeedback(METRIC_ID,
+                inputMetricFeedback.setDimensionFilter(new DimensionKey(DIMENSION_FILTER)));
             final OffsetDateTime feedbackCreatedTime = createdFeedback.getCreatedTime();
 
             // Act & Assert
             Assertions.assertNotNull(createdFeedback.getId());
-            client.listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
-                    .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
-                    .setStartTime(feedbackCreatedTime.minusDays(1))
-                    .setEndTime(feedbackCreatedTime.plusDays(1))
-                    .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)))
-                    .setMaxPageSize(10),
-                Context.NONE)
+            client
+                .listFeedback(METRIC_ID,
+                    new ListMetricFeedbackOptions()
+                        .setFilter(
+                            new ListMetricFeedbackFilter().setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
+                                .setStartTime(feedbackCreatedTime.minusDays(1))
+                                .setEndTime(feedbackCreatedTime.plusDays(1))
+                                .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)))
+                        .setMaxPageSize(10),
+                    Context.NONE)
                 .stream()
                 .iterator()
-                .forEachRemaining(metricFeedback ->
-                    metricFeedback.getDimensionFilter().asMap().keySet().stream()
-                        .anyMatch(DIMENSION_FILTER::containsKey));
+                .forEachRemaining(metricFeedback -> metricFeedback.getDimensionFilter()
+                    .asMap()
+                    .keySet()
+                    .stream()
+                    .anyMatch(DIMENSION_FILTER::containsKey));
         }, ANOMALY);
     }
 
@@ -143,11 +145,13 @@ public class FeedbackTest extends FeedbackTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         // Act & Assert
-        client.listFeedback(METRIC_ID,
-            new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter().setFeedbackType(ANOMALY)),
-            Context.NONE)
+        client
+            .listFeedback(METRIC_ID,
+                new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter().setFeedbackType(ANOMALY)),
+                Context.NONE)
             .stream()
-            .limit(LISTING_FILTER_BY_FEEDBACK_TYPE_LIMIT).iterator()
+            .limit(LISTING_FILTER_BY_FEEDBACK_TYPE_LIMIT)
+            .iterator()
             .forEachRemaining(metricFeedback -> assertEquals(ANOMALY, metricFeedback.getFeedbackType()));
     }
 
@@ -165,12 +169,14 @@ public class FeedbackTest extends FeedbackTestBase {
             final MetricFeedback createdMetricFeedback = client.addFeedback(METRIC_ID, inputMetricFeedback);
 
             // Act & Assert
-            client.listFeedback(METRIC_ID,
-                new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
-                    .setStartTime(createdMetricFeedback.getCreatedTime())
-                    .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)), Context.NONE)
-                .forEach(metricFeedback ->
-                    assertTrue(metricFeedback.getCreatedTime().isAfter(createdMetricFeedback.getCreatedTime())
+            client
+                .listFeedback(METRIC_ID,
+                    new ListMetricFeedbackOptions()
+                        .setFilter(new ListMetricFeedbackFilter().setStartTime(createdMetricFeedback.getCreatedTime())
+                            .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)),
+                    Context.NONE)
+                .forEach(metricFeedback -> assertTrue(
+                    metricFeedback.getCreatedTime().isAfter(createdMetricFeedback.getCreatedTime())
                         || metricFeedback.getCreatedTime().isEqual(createdMetricFeedback.getCreatedTime())));
         }, ANOMALY);
     }
@@ -203,8 +209,8 @@ public class FeedbackTest extends FeedbackTestBase {
         creatMetricFeedbackRunner(expectedMetricFeedback -> {
             final MetricFeedback createdFeedback = client.addFeedback(METRIC_ID, expectedMetricFeedback);
             // Act & Assert
-            final Response<MetricFeedback> metricFeedbackResponse =
-                client.getFeedbackWithResponse(createdFeedback.getId(), Context.NONE);
+            final Response<MetricFeedback> metricFeedbackResponse
+                = client.getFeedbackWithResponse(createdFeedback.getId(), Context.NONE);
             assertEquals(metricFeedbackResponse.getStatusCode(), HttpResponseStatus.OK.code());
             validateMetricFeedbackResult(getCommentFeedback(), metricFeedbackResponse.getValue(), COMMENT);
         }, COMMENT);

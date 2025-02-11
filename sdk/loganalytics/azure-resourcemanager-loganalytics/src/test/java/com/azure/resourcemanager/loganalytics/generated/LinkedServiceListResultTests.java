@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedServiceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"resourceId\":\"aepdkzjanc\",\"writeAccessResourceId\":\"rhdwbavxbniw\",\"provisioningState\":\"Deleting\"},\"tags\":{\"ytxhp\":\"tsdbpgn\"},\"id\":\"xbzpfzab\",\"name\":\"lcuhxwtctyqiklb\",\"type\":\"ovplw\"},{\"properties\":{\"resourceId\":\"hvgyuguosvmk\",\"writeAccessResourceId\":\"sxqu\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"lpvlopw\":\"gmgsxnkjzkde\"},\"id\":\"yighxpk\",\"name\":\"wzbaiue\",\"type\":\"baumnyqupedeoj\"}]}")
-                .toObject(LinkedServiceListResult.class);
+        LinkedServiceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"resourceId\":\"aepdkzjanc\",\"writeAccessResourceId\":\"rhdwbavxbniw\",\"provisioningState\":\"Deleting\"},\"tags\":{\"ytxhp\":\"tsdbpgn\"},\"id\":\"xbzpfzab\",\"name\":\"lcuhxwtctyqiklb\",\"type\":\"ovplw\"},{\"properties\":{\"resourceId\":\"hvgyuguosvmk\",\"writeAccessResourceId\":\"sxqu\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"lpvlopw\":\"gmgsxnkjzkde\"},\"id\":\"yighxpk\",\"name\":\"wzbaiue\",\"type\":\"baumnyqupedeoj\"}]}")
+            .toObject(LinkedServiceListResult.class);
         Assertions.assertEquals("tsdbpgn", model.value().get(0).tags().get("ytxhp"));
         Assertions.assertEquals("aepdkzjanc", model.value().get(0).resourceId());
         Assertions.assertEquals("rhdwbavxbniw", model.value().get(0).writeAccessResourceId());
@@ -29,21 +27,15 @@ public final class LinkedServiceListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceListResult model =
-            new LinkedServiceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LinkedServiceInner()
-                                .withTags(mapOf("ytxhp", "tsdbpgn"))
-                                .withResourceId("aepdkzjanc")
-                                .withWriteAccessResourceId("rhdwbavxbniw")
-                                .withProvisioningState(LinkedServiceEntityStatus.DELETING),
-                            new LinkedServiceInner()
-                                .withTags(mapOf("lpvlopw", "gmgsxnkjzkde"))
-                                .withResourceId("hvgyuguosvmk")
-                                .withWriteAccessResourceId("sxqu")
-                                .withProvisioningState(LinkedServiceEntityStatus.SUCCEEDED)));
+        LinkedServiceListResult model = new LinkedServiceListResult().withValue(Arrays.asList(
+            new LinkedServiceInner().withTags(mapOf("ytxhp", "tsdbpgn"))
+                .withResourceId("aepdkzjanc")
+                .withWriteAccessResourceId("rhdwbavxbniw")
+                .withProvisioningState(LinkedServiceEntityStatus.DELETING),
+            new LinkedServiceInner().withTags(mapOf("lpvlopw", "gmgsxnkjzkde"))
+                .withResourceId("hvgyuguosvmk")
+                .withWriteAccessResourceId("sxqu")
+                .withProvisioningState(LinkedServiceEntityStatus.SUCCEEDED)));
         model = BinaryData.fromObject(model).toObject(LinkedServiceListResult.class);
         Assertions.assertEquals("tsdbpgn", model.value().get(0).tags().get("ytxhp"));
         Assertions.assertEquals("aepdkzjanc", model.value().get(0).resourceId());

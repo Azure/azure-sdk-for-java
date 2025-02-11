@@ -5,29 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Provider specific input for container creation operation.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = ReplicationProviderSpecificContainerCreationInput.class)
-@JsonTypeName("ReplicationProviderSpecificContainerCreationInput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "A2A", value = A2AContainerCreationInput.class),
-    @JsonSubTypes.Type(name = "A2ACrossClusterMigration", value = A2ACrossClusterMigrationContainerCreationInput.class),
-    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtContainerCreationInput.class) })
 @Immutable
-public class ReplicationProviderSpecificContainerCreationInput {
+public class ReplicationProviderSpecificContainerCreationInput
+    implements JsonSerializable<ReplicationProviderSpecificContainerCreationInput> {
+    /*
+     * The class type.
+     */
+    private String instanceType = "ReplicationProviderSpecificContainerCreationInput";
+
     /**
      * Creates an instance of ReplicationProviderSpecificContainerCreationInput class.
      */
     public ReplicationProviderSpecificContainerCreationInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -36,5 +43,72 @@ public class ReplicationProviderSpecificContainerCreationInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationProviderSpecificContainerCreationInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationProviderSpecificContainerCreationInput if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationProviderSpecificContainerCreationInput.
+     */
+    public static ReplicationProviderSpecificContainerCreationInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("A2A".equals(discriminatorValue)) {
+                    return A2AContainerCreationInput.fromJson(readerToUse.reset());
+                } else if ("A2ACrossClusterMigration".equals(discriminatorValue)) {
+                    return A2ACrossClusterMigrationContainerCreationInput.fromJson(readerToUse.reset());
+                } else if ("VMwareCbt".equals(discriminatorValue)) {
+                    return VMwareCbtContainerCreationInput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ReplicationProviderSpecificContainerCreationInput fromJsonKnownDiscriminator(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationProviderSpecificContainerCreationInput deserializedReplicationProviderSpecificContainerCreationInput
+                = new ReplicationProviderSpecificContainerCreationInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedReplicationProviderSpecificContainerCreationInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationProviderSpecificContainerCreationInput;
+        });
     }
 }

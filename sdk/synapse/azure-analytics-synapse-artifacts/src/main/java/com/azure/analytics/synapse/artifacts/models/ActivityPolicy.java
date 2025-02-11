@@ -19,7 +19,8 @@ import java.util.Map;
 @Fluent
 public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
     /*
-     * Specifies the timeout for the activity to run. The default timeout is 7 days. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the timeout for the activity to run. The default timeout is 7 days. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     private Object timeout;
 

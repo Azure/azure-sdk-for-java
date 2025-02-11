@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class MetadataAssignmentEntity extends ExpandableStringEnum<Metadat
      * @param name a name to look for.
      * @return the corresponding MetadataAssignmentEntity.
      */
-    @JsonCreator
     public static MetadataAssignmentEntity fromString(String name) {
         return fromString(name, MetadataAssignmentEntity.class);
     }

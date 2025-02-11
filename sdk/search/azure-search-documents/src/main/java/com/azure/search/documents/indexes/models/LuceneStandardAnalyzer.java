@@ -10,8 +10,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Standard Apache Lucene analyzer; Composed of the standard tokenizer, lowercase filter and stop filter.

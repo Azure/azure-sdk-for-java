@@ -93,6 +93,8 @@ public interface JobsClient {
     DiagnosticsInner getDetector(String resourceGroupName, String jobName, String detectorName);
 
     /**
+     * Get the properties for a given Container App Job.
+     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -109,6 +111,8 @@ public interface JobsClient {
     Response<JobInner> proxyGetWithResponse(String resourceGroupName, String jobName, String apiName, Context context);
 
     /**
+     * Get the properties for a given Container App Job.
+     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -609,4 +613,112 @@ public interface JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     JobSecretsCollectionInner listSecrets(String resourceGroupName, String jobName);
+
+    /**
+     * Resumes a suspended job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of container App Job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<JobInner>, JobInner> beginResume(String resourceGroupName, String jobName);
+
+    /**
+     * Resumes a suspended job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of container App Job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<JobInner>, JobInner> beginResume(String resourceGroupName, String jobName, Context context);
+
+    /**
+     * Resumes a suspended job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobInner resume(String resourceGroupName, String jobName);
+
+    /**
+     * Resumes a suspended job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobInner resume(String resourceGroupName, String jobName, Context context);
+
+    /**
+     * Suspends a job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of container App Job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<JobInner>, JobInner> beginSuspend(String resourceGroupName, String jobName);
+
+    /**
+     * Suspends a job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of container App Job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<JobInner>, JobInner> beginSuspend(String resourceGroupName, String jobName, Context context);
+
+    /**
+     * Suspends a job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobInner suspend(String resourceGroupName, String jobName);
+
+    /**
+     * Suspends a job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobInner suspend(String resourceGroupName, String jobName, Context context);
 }

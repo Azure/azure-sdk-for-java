@@ -33,15 +33,13 @@ public class ChatClientTestBase extends TestProxyTestBase {
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
 
-    protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ACCESS_KEY", "pw==");
-
+    protected static final String ACCESS_KEY
+        = Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ACCESS_KEY", "pw==");
 
     protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
 
-        builder
-            .endpoint(ENDPOINT)
+        builder.endpoint(ENDPOINT)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
@@ -58,8 +56,8 @@ public class ChatClientTestBase extends TestProxyTestBase {
         }
 
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+            interceptorManager.addSanitizers(
+                Arrays.asList(new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
             // Remove the sanitizer `id` from the list of common sanitizers
             interceptorManager.removeSanitizers("AZSDK3430");
         }
@@ -70,14 +68,13 @@ public class ChatClientTestBase extends TestProxyTestBase {
     protected ChatThreadClientBuilder getChatThreadClientBuilder(String token, HttpClient httpClient) {
         ChatThreadClientBuilder builder = new ChatThreadClientBuilder();
 
-        builder
-            .endpoint(ENDPOINT)
+        builder.endpoint(ENDPOINT)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new CommunicationTokenCredential(generateRawToken()));
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
+            interceptorManager.addMatchers(Arrays
+                .asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
             return builder;
         } else {
             builder.credential(new CommunicationTokenCredential(token));
@@ -88,8 +85,8 @@ public class ChatClientTestBase extends TestProxyTestBase {
         }
 
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+            interceptorManager.addSanitizers(
+                Arrays.asList(new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
             // Remove the sanitizer `id` from the list of common sanitizers
             interceptorManager.removeSanitizers("AZSDK3430");
         }
@@ -104,16 +101,16 @@ public class ChatClientTestBase extends TestProxyTestBase {
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
+            interceptorManager.addMatchers(Arrays
+                .asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
         }
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+            interceptorManager.addSanitizers(
+                Arrays.asList(new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
             // Remove the sanitizer `id` from the list of common sanitizers
             interceptorManager.removeSanitizers("AZSDK3430");
         }
@@ -129,14 +126,16 @@ public class ChatClientTestBase extends TestProxyTestBase {
         long expSeconds = ldtUTC.toInstant().toEpochMilli() / 1000;
         builder.claim("exp", expSeconds);
 
-        JWTClaimsSet claims =  builder.build();
+        JWTClaimsSet claims = builder.build();
         JWT idToken = new PlainJWT(claims);
         return idToken.serialize();
     }
 
-    protected boolean checkParticipantsListContainsParticipantId(List<ChatParticipant> participantList, String participantId) {
-        for (ChatParticipant participant: participantList) {
-            if (((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId().equals(participantId)) {
+    protected boolean checkParticipantsListContainsParticipantId(List<ChatParticipant> participantList,
+        String participantId) {
+        for (ChatParticipant participant : participantList) {
+            if (((CommunicationUserIdentifier) participant.getCommunicationIdentifier()).getId()
+                .equals(participantId)) {
                 return true;
             }
         }
@@ -144,8 +143,9 @@ public class ChatClientTestBase extends TestProxyTestBase {
         return false;
     }
 
-    protected boolean checkReadReceiptListContainsMessageId(List<ChatMessageReadReceipt> receiptList, String messageId) {
-        for (ChatMessageReadReceipt receipt: receiptList) {
+    protected boolean checkReadReceiptListContainsMessageId(List<ChatMessageReadReceipt> receiptList,
+        String messageId) {
+        for (ChatMessageReadReceipt receipt : receiptList) {
             if (receipt.getChatMessageId().equals(messageId)) {
                 return true;
             }

@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of event. */
+/**
+ * Type of event.
+ */
 public final class EventTypeValues extends ExpandableStringEnum<EventTypeValues> {
-    /** Static value ServiceIssue for EventTypeValues. */
+    /**
+     * Static value ServiceIssue for EventTypeValues.
+     */
     public static final EventTypeValues SERVICE_ISSUE = fromString("ServiceIssue");
 
-    /** Static value PlannedMaintenance for EventTypeValues. */
+    /**
+     * Static value PlannedMaintenance for EventTypeValues.
+     */
     public static final EventTypeValues PLANNED_MAINTENANCE = fromString("PlannedMaintenance");
 
-    /** Static value HealthAdvisory for EventTypeValues. */
+    /**
+     * Static value HealthAdvisory for EventTypeValues.
+     */
     public static final EventTypeValues HEALTH_ADVISORY = fromString("HealthAdvisory");
 
-    /** Static value RCA for EventTypeValues. */
+    /**
+     * Static value RCA for EventTypeValues.
+     */
     public static final EventTypeValues RCA = fromString("RCA");
 
-    /** Static value EmergingIssues for EventTypeValues. */
+    /**
+     * Static value EmergingIssues for EventTypeValues.
+     */
     public static final EventTypeValues EMERGING_ISSUES = fromString("EmergingIssues");
 
-    /** Static value SecurityAdvisory for EventTypeValues. */
+    /**
+     * Static value SecurityAdvisory for EventTypeValues.
+     */
     public static final EventTypeValues SECURITY_ADVISORY = fromString("SecurityAdvisory");
 
     /**
      * Creates a new instance of EventTypeValues value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class EventTypeValues extends ExpandableStringEnum<EventTypeValues>
 
     /**
      * Creates or finds a EventTypeValues from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventTypeValues.
      */
-    @JsonCreator
     public static EventTypeValues fromString(String name) {
         return fromString(name, EventTypeValues.class);
     }
 
     /**
      * Gets known EventTypeValues values.
-     *
+     * 
      * @return known EventTypeValues values.
      */
     public static Collection<EventTypeValues> values() {

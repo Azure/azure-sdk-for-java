@@ -24,7 +24,8 @@ public final class ImageInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImageInner model = new ImageInner().withProperties(new ImageProperties().withImage("ymwisdkft")
-            .withImageId("xmnteiwaop").withRegionalDataBoundary(RegionalDataBoundary.NONE));
+            .withImageId("xmnteiwaop")
+            .withRegionalDataBoundary(RegionalDataBoundary.NONE));
         model = BinaryData.fromObject(model).toObject(ImageInner.class);
         Assertions.assertEquals("ymwisdkft", model.properties().image());
         Assertions.assertEquals("xmnteiwaop", model.properties().imageId());

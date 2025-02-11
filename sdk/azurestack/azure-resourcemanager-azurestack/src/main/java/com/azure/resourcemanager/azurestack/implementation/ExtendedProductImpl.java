@@ -18,8 +18,8 @@ public final class ExtendedProductImpl implements ExtendedProduct {
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    ExtendedProductImpl(
-        ExtendedProductInner innerObject, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    ExtendedProductImpl(ExtendedProductInner innerObject,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

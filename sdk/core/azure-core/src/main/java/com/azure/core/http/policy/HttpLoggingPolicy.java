@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -119,11 +118,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      *
      * @param httpLogOptions The HTTP logging configuration options.
      */
+    @SuppressWarnings("deprecation")
     public HttpLoggingPolicy(HttpLogOptions httpLogOptions) {
         if (httpLogOptions == null) {
             this.httpLogDetailLevel = HttpLogDetailLevel.ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL;
             this.allowedHeaderNames = HttpLogOptions.DEFAULT_HEADERS_ALLOWLIST.stream()
-                .map(headerName -> headerName.toLowerCase(Locale.ROOT))
+                .map(HttpHeaderName::getCaseInsensitiveName)
                 .collect(Collectors.toSet());
             this.urlSanitizer = new UrlSanitizer(null);
             this.prettyPrintBody = false;
@@ -133,9 +133,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             this.responseLogger = new DefaultHttpResponseLogger();
         } else {
             this.httpLogDetailLevel = httpLogOptions.getLogLevel();
-            this.allowedHeaderNames = httpLogOptions.getAllowedHeaderNames()
+            this.allowedHeaderNames = httpLogOptions.getAllowedHttpHeaderNames()
                 .stream()
-                .map(headerName -> headerName.toLowerCase(Locale.ROOT))
+                .map(HttpHeaderName::getCaseInsensitiveName)
                 .collect(Collectors.toSet());
             this.urlSanitizer = new UrlSanitizer(httpLogOptions.getAllowedQueryParamNames());
             this.prettyPrintBody = httpLogOptions.isPrettyPrintBody();

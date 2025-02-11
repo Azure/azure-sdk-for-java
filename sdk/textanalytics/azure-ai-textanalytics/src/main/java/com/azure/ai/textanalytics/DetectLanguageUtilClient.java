@@ -68,8 +68,8 @@ class DetectLanguageUtilClient {
      *
      * @return A mono {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
-    Mono<Response<DetectLanguageResultCollection>> detectLanguageBatch(
-        Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options) {
+    Mono<Response<DetectLanguageResultCollection>> detectLanguageBatch(Iterable<DetectLanguageInput> documents,
+        TextAnalyticsRequestOptions options) {
         try {
             return withContext(context -> getDetectedLanguageResponse(documents, options, context));
         } catch (RuntimeException ex) {
@@ -96,34 +96,28 @@ class DetectLanguageUtilClient {
             return service
                 .analyzeTextWithResponseAsync(
                     new AnalyzeTextLanguageDetectionInput()
-                        .setParameters(
-                            new LanguageDetectionTaskParameters()
-                                .setModelVersion(options.getModelVersion())
-                                .setLoggingOptOut(
-                                    options.isServiceLogsDisabled()))
-                        .setAnalysisInput(new LanguageDetectionAnalysisInput()
-                            .setDocuments(toLanguageInput(documents))),
-                    options.isIncludeStatistics(),
-                    getNotNullContext(context))
-                .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
-                    getDocumentCount(documents)))
-                .doOnSuccess(response -> LOGGER.info("Detected languages for a batch of documents - {}",
-                    response.getValue()))
+                        .setParameters(new LanguageDetectionTaskParameters().setModelVersion(options.getModelVersion())
+                            .setLoggingOptOut(options.isServiceLogsDisabled()))
+                        .setAnalysisInput(
+                            new LanguageDetectionAnalysisInput().setDocuments(toLanguageInput(documents))),
+                    options.isIncludeStatistics(), getNotNullContext(context))
+                .doOnSubscribe(
+                    ignoredValue -> LOGGER.info("A batch of documents with count - {}", getDocumentCount(documents)))
+                .doOnSuccess(
+                    response -> LOGGER.info("Detected languages for a batch of documents - {}", response.getValue()))
                 .doOnError(error -> LOGGER.warning("Failed to detect language - {}", error))
                 .map(Utility::toDetectLanguageResultCollectionLanguageApi)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
-        return legacyService.languagesWithResponseAsync(
-            new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
-            options.getModelVersion(),
-            options.isIncludeStatistics(),
-            options.isServiceLogsDisabled(),
-            getNotNullContext(context))
-            .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
-                getDocumentCount(documents)))
-            .doOnSuccess(response -> LOGGER.info("Detected languages for a batch of documents - {}",
-                response.getValue()))
+        return legacyService
+            .languagesWithResponseAsync(new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
+                options.getModelVersion(), options.isIncludeStatistics(), options.isServiceLogsDisabled(),
+                getNotNullContext(context))
+            .doOnSubscribe(
+                ignoredValue -> LOGGER.info("A batch of documents with count - {}", getDocumentCount(documents)))
+            .doOnSuccess(
+                response -> LOGGER.info("Detected languages for a batch of documents - {}", response.getValue()))
             .doOnError(error -> LOGGER.warning("Failed to detect language - {}", error))
             .map(Utility::toDetectLanguageResultCollectionLegacyApi)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -139,8 +133,8 @@ class DetectLanguageUtilClient {
      *
      * @return A {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
-    Response<DetectLanguageResultCollection> getDetectedLanguageResponseSync(
-        Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
+    Response<DetectLanguageResultCollection> getDetectedLanguageResponseSync(Iterable<DetectLanguageInput> documents,
+        TextAnalyticsRequestOptions options, Context context) {
         throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
         context = enableSyncRestProxy(getNotNullContext(context));
@@ -150,21 +144,14 @@ class DetectLanguageUtilClient {
             return (service != null)
                 ? toDetectLanguageResultCollectionLanguageApi(service.analyzeTextWithResponse(
                     new AnalyzeTextLanguageDetectionInput()
-                        .setParameters(
-                            new LanguageDetectionTaskParameters()
-                                .setModelVersion(options.getModelVersion())
-                                .setLoggingOptOut(
-                                    options.isServiceLogsDisabled()))
-                        .setAnalysisInput(new LanguageDetectionAnalysisInput()
-                            .setDocuments(toLanguageInput(documents))),
-                    options.isIncludeStatistics(),
-                    context))
+                        .setParameters(new LanguageDetectionTaskParameters().setModelVersion(options.getModelVersion())
+                            .setLoggingOptOut(options.isServiceLogsDisabled()))
+                        .setAnalysisInput(
+                            new LanguageDetectionAnalysisInput().setDocuments(toLanguageInput(documents))),
+                    options.isIncludeStatistics(), context))
                 : toDetectLanguageResultCollectionLegacyApi(legacyService.languagesWithResponseSync(
-                    new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
-                    options.getModelVersion(),
-                    options.isIncludeStatistics(),
-                    options.isServiceLogsDisabled(),
-                    context));
+                    new LanguageBatchInput().setDocuments(toLanguageInput(documents)), options.getModelVersion(),
+                    options.isIncludeStatistics(), options.isServiceLogsDisabled(), context));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
@@ -173,8 +160,8 @@ class DetectLanguageUtilClient {
     private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {
         if (options != null && options.isServiceLogsDisabled()) {
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
-                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
         }
     }
 }

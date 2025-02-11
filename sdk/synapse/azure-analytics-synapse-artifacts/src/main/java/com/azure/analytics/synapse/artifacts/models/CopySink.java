@@ -21,7 +21,7 @@ public class CopySink implements JsonSerializable<CopySink> {
     /*
      * Copy sink type.
      */
-    private String type;
+    private String type = "CopySink";
 
     /*
      * Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
@@ -29,7 +29,8 @@ public class CopySink implements JsonSerializable<CopySink> {
     private Object writeBatchSize;
 
     /*
-     * Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Write batch timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     private Object writeBatchTimeout;
 
@@ -39,12 +40,14 @@ public class CopySink implements JsonSerializable<CopySink> {
     private Object sinkRetryCount;
 
     /*
-     * Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Sink retry wait. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     private Object sinkRetryWait;
 
     /*
-     * The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
+     * The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType
+     * integer).
      */
     private Object maxConcurrentConnections;
 
@@ -57,7 +60,6 @@ public class CopySink implements JsonSerializable<CopySink> {
      * Creates an instance of CopySink class.
      */
     public CopySink() {
-        this.type = "CopySink";
     }
 
     /**

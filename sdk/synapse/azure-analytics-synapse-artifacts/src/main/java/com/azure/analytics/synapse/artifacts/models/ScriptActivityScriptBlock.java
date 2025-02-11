@@ -23,7 +23,8 @@ public final class ScriptActivityScriptBlock implements JsonSerializable<ScriptA
     private Object text;
 
     /*
-     * The type of the query. Please refer to the ScriptType for valid options. Type: string (or Expression with resultType string).
+     * The type of the query. Please refer to the ScriptType for valid options. Type: string (or Expression with
+     * resultType string).
      */
     private Object type;
 

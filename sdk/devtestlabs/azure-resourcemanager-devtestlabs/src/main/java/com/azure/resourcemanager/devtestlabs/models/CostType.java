@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the cost. */
+/**
+ * The type of the cost.
+ */
 public final class CostType extends ExpandableStringEnum<CostType> {
-    /** Static value Unavailable for CostType. */
+    /**
+     * Static value Unavailable for CostType.
+     */
     public static final CostType UNAVAILABLE = fromString("Unavailable");
 
-    /** Static value Reported for CostType. */
+    /**
+     * Static value Reported for CostType.
+     */
     public static final CostType REPORTED = fromString("Reported");
 
-    /** Static value Projected for CostType. */
+    /**
+     * Static value Projected for CostType.
+     */
     public static final CostType PROJECTED = fromString("Projected");
 
     /**
      * Creates a new instance of CostType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class CostType extends ExpandableStringEnum<CostType> {
 
     /**
      * Creates or finds a CostType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CostType.
      */
-    @JsonCreator
     public static CostType fromString(String name) {
         return fromString(name, CostType.class);
     }
 
     /**
      * Gets known CostType values.
-     *
+     * 
      * @return known CostType values.
      */
     public static Collection<CostType> values() {

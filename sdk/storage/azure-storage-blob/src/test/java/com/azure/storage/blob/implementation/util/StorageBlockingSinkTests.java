@@ -36,14 +36,11 @@ public class StorageBlockingSinkTests {
         blockingSink.emitCompleteOrThrow();
 
         Flux<ByteBuffer> flux = blockingSink.asFlux();
-        StepVerifier.create(flux)
-            .expectNextMatches(buffer -> buffer.remaining() == 0)
-            .expectComplete()
-            .verify();
+        StepVerifier.create(flux).expectNextMatches(buffer -> buffer.remaining() == 0).expectComplete().verify();
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {5, 10, 50, 100})
+    @ValueSource(ints = { 5, 10, 50, 100 })
     public void producerDelayedConsumer(int num) {
         StorageBlockingSink blockingSink = new StorageBlockingSink();
 
@@ -86,7 +83,7 @@ public class StorageBlockingSinkTests {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {5, 10, 50, 100})
+    @ValueSource(ints = { 5, 10, 50, 100 })
     void delayedProducerConsumer(int num) {
         StorageBlockingSink blockingSink = new StorageBlockingSink();
 
@@ -139,8 +136,8 @@ public class StorageBlockingSinkTests {
         blockingSink.emitNext(ByteBuffer.wrap(new byte[0]));
         blockingSink.emitCompleteOrThrow();
         StorageBlockingSink finalBlockingSink = blockingSink;
-        IllegalStateException e = assertThrows(IllegalStateException.class,
-            () -> finalBlockingSink.emitNext(ByteBuffer.wrap(new byte[0])));
+        IllegalStateException e
+            = assertThrows(IllegalStateException.class, () -> finalBlockingSink.emitNext(ByteBuffer.wrap(new byte[0])));
 
         assertEquals(((Sinks.EmissionException) e.getCause()).getReason(), Sinks.EmitResult.FAIL_TERMINATED);
 
@@ -149,8 +146,8 @@ public class StorageBlockingSinkTests {
 
         blockingSink.emitCompleteOrThrow();
         StorageBlockingSink finalBlockingSink1 = blockingSink;
-        Sinks.EmissionException ex = assertThrows(Sinks.EmissionException.class,
-            finalBlockingSink1::emitCompleteOrThrow);
+        Sinks.EmissionException ex
+            = assertThrows(Sinks.EmissionException.class, finalBlockingSink1::emitCompleteOrThrow);
         assertEquals(ex.getReason(), Sinks.EmitResult.FAIL_TERMINATED);
     }
 
@@ -166,10 +163,9 @@ public class StorageBlockingSinkTests {
 
         latch.await(1, TimeUnit.MINUTES);
 
-
         StorageBlockingSink finalBlockingSink = blockingSink;
-        IllegalStateException e = assertThrows(IllegalStateException.class,
-            () -> finalBlockingSink.emitNext(ByteBuffer.wrap(new byte[0])));
+        IllegalStateException e
+            = assertThrows(IllegalStateException.class, () -> finalBlockingSink.emitNext(ByteBuffer.wrap(new byte[0])));
 
         assertEquals(((Sinks.EmissionException) e.getCause()).getReason(), Sinks.EmitResult.FAIL_CANCELLED);
 
@@ -184,8 +180,8 @@ public class StorageBlockingSinkTests {
         latch2.await(1, TimeUnit.MINUTES);
 
         StorageBlockingSink finalBlockingSink1 = blockingSink;
-        Sinks.EmissionException ex = assertThrows(Sinks.EmissionException.class,
-            finalBlockingSink1::emitCompleteOrThrow);
+        Sinks.EmissionException ex
+            = assertThrows(Sinks.EmissionException.class, finalBlockingSink1::emitCompleteOrThrow);
         assertEquals(ex.getReason(), Sinks.EmitResult.FAIL_CANCELLED);
     }
 

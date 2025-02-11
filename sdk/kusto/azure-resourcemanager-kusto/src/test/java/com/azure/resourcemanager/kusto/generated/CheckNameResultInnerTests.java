@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"nameAvailable\":false,\"name\":\"jq\",\"message\":\"hmuouqfprwzwbn\",\"reason\":\"AlreadyExists\"}")
-                .toObject(CheckNameResultInner.class);
+        CheckNameResultInner model = BinaryData
+            .fromString("{\"nameAvailable\":false,\"name\":\"y\",\"message\":\"hr\",\"reason\":\"AlreadyExists\"}")
+            .toObject(CheckNameResultInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals("jq", model.name());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.message());
+        Assertions.assertEquals("y", model.name());
+        Assertions.assertEquals("hr", model.message());
         Assertions.assertEquals(Reason.ALREADY_EXISTS, model.reason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameResultInner model =
-            new CheckNameResultInner()
-                .withNameAvailable(false)
-                .withName("jq")
-                .withMessage("hmuouqfprwzwbn")
-                .withReason(Reason.ALREADY_EXISTS);
+        CheckNameResultInner model = new CheckNameResultInner().withNameAvailable(false)
+            .withName("y")
+            .withMessage("hr")
+            .withReason(Reason.ALREADY_EXISTS);
         model = BinaryData.fromObject(model).toObject(CheckNameResultInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals("jq", model.name());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.message());
+        Assertions.assertEquals("y", model.name());
+        Assertions.assertEquals("hr", model.message());
         Assertions.assertEquals(Reason.ALREADY_EXISTS, model.reason());
     }
 }

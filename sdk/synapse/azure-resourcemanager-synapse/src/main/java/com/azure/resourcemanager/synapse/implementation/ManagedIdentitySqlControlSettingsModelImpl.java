@@ -13,8 +13,7 @@ public final class ManagedIdentitySqlControlSettingsModelImpl implements Managed
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    ManagedIdentitySqlControlSettingsModelImpl(
-        ManagedIdentitySqlControlSettingsModelInner innerObject,
+    ManagedIdentitySqlControlSettingsModelImpl(ManagedIdentitySqlControlSettingsModelInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

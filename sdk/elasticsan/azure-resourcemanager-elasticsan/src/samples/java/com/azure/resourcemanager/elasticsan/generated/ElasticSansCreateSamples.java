@@ -4,7 +4,10 @@
 
 package com.azure.resourcemanager.elasticsan.generated;
 
+import com.azure.resourcemanager.elasticsan.models.AutoScalePolicyEnforcement;
+import com.azure.resourcemanager.elasticsan.models.AutoScaleProperties;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
+import com.azure.resourcemanager.elasticsan.models.ScaleUpProperties;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
@@ -17,7 +20,8 @@ import java.util.Map;
  */
 public final class ElasticSansCreateSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
+     * x-ms-original-file:
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
      * ElasticSans_Create_MaximumSet_Gen.json
      */
     /**
@@ -31,16 +35,22 @@ public final class ElasticSansCreateSamples {
             .withRegion("France Central")
             .withExistingResourceGroup("resourcegroupname")
             .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
-            .withBaseSizeTiB(5L)
-            .withExtendedCapacitySizeTiB(25L)
-            .withTags(mapOf("key9316", "fakeTokenPlaceholder"))
-            .withAvailabilityZones(Arrays.asList("1"))
+            .withBaseSizeTiB(1L)
+            .withExtendedCapacitySizeTiB(3L)
+            .withTags(mapOf("key9706", "fakeTokenPlaceholder"))
+            .withAvailabilityZones(Arrays.asList("xoz"))
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .withAutoScaleProperties(
+                new AutoScaleProperties().withScaleUpProperties(new ScaleUpProperties().withUnusedSizeTiB(24L)
+                    .withIncreaseCapacityUnitByTiB(4L)
+                    .withCapacityUnitScaleUpLimitTiB(17L)
+                    .withAutoScalePolicyEnforcement(AutoScalePolicyEnforcement.NONE)))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
+     * x-ms-original-file:
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
      * ElasticSans_Create_MinimumSet_Gen.json
      */
     /**
@@ -54,8 +64,8 @@ public final class ElasticSansCreateSamples {
             .withRegion("France Central")
             .withExistingResourceGroup("resourcegroupname")
             .withSku(new Sku().withName(SkuName.PREMIUM_LRS))
-            .withBaseSizeTiB(15L)
-            .withExtendedCapacitySizeTiB(27L)
+            .withBaseSizeTiB(1L)
+            .withExtendedCapacitySizeTiB(3L)
             .create();
     }
 

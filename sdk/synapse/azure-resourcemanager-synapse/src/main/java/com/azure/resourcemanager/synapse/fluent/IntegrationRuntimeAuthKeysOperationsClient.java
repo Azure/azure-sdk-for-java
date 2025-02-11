@@ -18,9 +18,9 @@ import com.azure.resourcemanager.synapse.models.IntegrationRuntimeRegenerateKeyP
 public interface IntegrationRuntimeAuthKeysOperationsClient {
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -32,18 +32,15 @@ public interface IntegrationRuntimeAuthKeysOperationsClient {
      * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeAuthKeysInner> regenerateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
+    Response<IntegrationRuntimeAuthKeysInner> regenerateWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
         Context context);
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -54,17 +51,14 @@ public interface IntegrationRuntimeAuthKeysOperationsClient {
      * @return the integration runtime authentication keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeAuthKeysInner regenerate(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters);
+    IntegrationRuntimeAuthKeysInner regenerate(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters);
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -75,14 +69,14 @@ public interface IntegrationRuntimeAuthKeysOperationsClient {
      * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeAuthKeysInner> listWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeAuthKeysInner> listWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

@@ -13,18 +13,18 @@ public final class CertBasedSecurityPrincipalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertBasedSecurityPrincipal model
-            = BinaryData.fromString("{\"cert\":\"smjqulngsntnbyb\",\"ledgerRoleName\":\"Reader\"}")
+            = BinaryData.fromString("{\"cert\":\"ispe\",\"ledgerRoleName\":\"Contributor\"}")
                 .toObject(CertBasedSecurityPrincipal.class);
-        Assertions.assertEquals("smjqulngsntnbyb", model.cert());
-        Assertions.assertEquals(LedgerRoleName.READER, model.ledgerRoleName());
+        Assertions.assertEquals("ispe", model.cert());
+        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR, model.ledgerRoleName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CertBasedSecurityPrincipal model
-            = new CertBasedSecurityPrincipal().withCert("smjqulngsntnbyb").withLedgerRoleName(LedgerRoleName.READER);
+            = new CertBasedSecurityPrincipal().withCert("ispe").withLedgerRoleName(LedgerRoleName.CONTRIBUTOR);
         model = BinaryData.fromObject(model).toObject(CertBasedSecurityPrincipal.class);
-        Assertions.assertEquals("smjqulngsntnbyb", model.cert());
-        Assertions.assertEquals(LedgerRoleName.READER, model.ledgerRoleName());
+        Assertions.assertEquals("ispe", model.cert());
+        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR, model.ledgerRoleName());
     }
 }

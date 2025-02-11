@@ -48,8 +48,7 @@ public final class KeyVaultKeysUtils {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'keyName' cannot be null or empty."));
         }
 
-        return new CryptographyClientBuilder()
-            .keyIdentifier(generateKeyId(keyName, keyVersion, vaultUrl))
+        return new CryptographyClientBuilder().keyIdentifier(generateKeyId(keyName, keyVersion, vaultUrl))
             .pipeline(httpPipeline)
             .serviceVersion(CryptographyServiceVersion.valueOf(serviceVersion.name()));
     }

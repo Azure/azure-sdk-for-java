@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,15 +13,19 @@ import java.util.Collection;
  * hub can failover to.
  */
 public final class IotHubReplicaRoleType extends ExpandableStringEnum<IotHubReplicaRoleType> {
-    /** Static value primary for IotHubReplicaRoleType. */
+    /**
+     * Static value primary for IotHubReplicaRoleType.
+     */
     public static final IotHubReplicaRoleType PRIMARY = fromString("primary");
 
-    /** Static value secondary for IotHubReplicaRoleType. */
+    /**
+     * Static value secondary for IotHubReplicaRoleType.
+     */
     public static final IotHubReplicaRoleType SECONDARY = fromString("secondary");
 
     /**
      * Creates a new instance of IotHubReplicaRoleType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +34,17 @@ public final class IotHubReplicaRoleType extends ExpandableStringEnum<IotHubRepl
 
     /**
      * Creates or finds a IotHubReplicaRoleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IotHubReplicaRoleType.
      */
-    @JsonCreator
     public static IotHubReplicaRoleType fromString(String name) {
         return fromString(name, IotHubReplicaRoleType.class);
     }
 
     /**
      * Gets known IotHubReplicaRoleType values.
-     *
+     * 
      * @return known IotHubReplicaRoleType values.
      */
     public static Collection<IotHubReplicaRoleType> values() {

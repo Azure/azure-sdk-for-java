@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for Consoles ListByVirtualMachine. */
+/**
+ * Samples for Consoles ListByVirtualMachine.
+ */
 public final class ConsolesListByVirtualMachineSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Consoles_ListByVirtualMachine.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * Consoles_ListByVirtualMachine.json
      */
     /**
      * Sample code: List consoles of the virtual machine.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void listConsolesOfTheVirtualMachine(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .consoles()
+    public static void
+        listConsolesOfTheVirtualMachine(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        manager.consoles()
             .listByVirtualMachine("resourceGroupName", "virtualMachineName", com.azure.core.util.Context.NONE);
     }
 }

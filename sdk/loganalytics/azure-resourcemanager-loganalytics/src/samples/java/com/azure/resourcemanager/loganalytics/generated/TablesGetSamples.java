@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for Tables Get. */
+/**
+ * Samples for Tables Get.
+ */
 public final class TablesGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/TablesGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * TablesGet.json
      */
     /**
      * Sample code: TablesGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void tablesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .tables()
+        manager.tables()
             .getWithResponse("oiautorest6685", "oiautorest6685", "table1_SRCH", com.azure.core.util.Context.NONE);
     }
 }

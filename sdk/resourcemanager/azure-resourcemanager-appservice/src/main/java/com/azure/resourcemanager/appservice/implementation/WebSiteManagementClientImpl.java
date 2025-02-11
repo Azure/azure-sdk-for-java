@@ -33,13 +33,13 @@ import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionRepetitionsClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionRepetitionsRequestHistoriesClient;
-import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionsClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionScopeRepetitionsClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionsClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowRunsClient;
-import com.azure.resourcemanager.appservice.fluent.WorkflowsClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowTriggerHistoriesClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowTriggersClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowVersionsClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -175,6 +175,20 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The DomainRegistrationProvidersClient object to access its operations.
+     */
+    private final DomainRegistrationProvidersClient domainRegistrationProviders;
+
+    /**
+     * Gets the DomainRegistrationProvidersClient object to access its operations.
+     * 
+     * @return the DomainRegistrationProvidersClient object.
+     */
+    public DomainRegistrationProvidersClient getDomainRegistrationProviders() {
+        return this.domainRegistrationProviders;
+    }
+
+    /**
      * The DomainsClient object to access its operations.
      */
     private final DomainsClient domains;
@@ -200,20 +214,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      */
     public TopLevelDomainsClient getTopLevelDomains() {
         return this.topLevelDomains;
-    }
-
-    /**
-     * The DomainRegistrationProvidersClient object to access its operations.
-     */
-    private final DomainRegistrationProvidersClient domainRegistrationProviders;
-
-    /**
-     * Gets the DomainRegistrationProvidersClient object to access its operations.
-     * 
-     * @return the DomainRegistrationProvidersClient object.
-     */
-    public DomainRegistrationProvidersClient getDomainRegistrationProviders() {
-        return this.domainRegistrationProviders;
     }
 
     /**
@@ -585,13 +585,13 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-12-01";
+        this.apiVersion = "2024-04-01";
         this.appServiceCertificateOrders = new AppServiceCertificateOrdersClientImpl(this);
         this.certificateOrdersDiagnostics = new CertificateOrdersDiagnosticsClientImpl(this);
         this.certificateRegistrationProviders = new CertificateRegistrationProvidersClientImpl(this);
+        this.domainRegistrationProviders = new DomainRegistrationProvidersClientImpl(this);
         this.domains = new DomainsClientImpl(this);
         this.topLevelDomains = new TopLevelDomainsClientImpl(this);
-        this.domainRegistrationProviders = new DomainRegistrationProvidersClientImpl(this);
         this.appServiceEnvironments = new AppServiceEnvironmentsClientImpl(this);
         this.appServicePlans = new AppServicePlansClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);

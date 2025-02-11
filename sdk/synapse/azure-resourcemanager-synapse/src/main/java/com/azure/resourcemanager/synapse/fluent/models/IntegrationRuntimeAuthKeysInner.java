@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The integration runtime authentication keys. */
+/**
+ * The integration runtime authentication keys.
+ */
 @Fluent
-public final class IntegrationRuntimeAuthKeysInner {
+public final class IntegrationRuntimeAuthKeysInner implements JsonSerializable<IntegrationRuntimeAuthKeysInner> {
     /*
      * The primary integration runtime authentication key.
      */
-    @JsonProperty(value = "authKey1")
     private String authKey1;
 
     /*
      * The secondary integration runtime authentication key.
      */
-    @JsonProperty(value = "authKey2")
     private String authKey2;
 
-    /** Creates an instance of IntegrationRuntimeAuthKeysInner class. */
+    /**
+     * Creates an instance of IntegrationRuntimeAuthKeysInner class.
+     */
     public IntegrationRuntimeAuthKeysInner() {
     }
 
     /**
      * Get the authKey1 property: The primary integration runtime authentication key.
-     *
+     * 
      * @return the authKey1 value.
      */
     public String authKey1() {
@@ -37,7 +43,7 @@ public final class IntegrationRuntimeAuthKeysInner {
 
     /**
      * Set the authKey1 property: The primary integration runtime authentication key.
-     *
+     * 
      * @param authKey1 the authKey1 value to set.
      * @return the IntegrationRuntimeAuthKeysInner object itself.
      */
@@ -48,7 +54,7 @@ public final class IntegrationRuntimeAuthKeysInner {
 
     /**
      * Get the authKey2 property: The secondary integration runtime authentication key.
-     *
+     * 
      * @return the authKey2 value.
      */
     public String authKey2() {
@@ -57,7 +63,7 @@ public final class IntegrationRuntimeAuthKeysInner {
 
     /**
      * Set the authKey2 property: The secondary integration runtime authentication key.
-     *
+     * 
      * @param authKey2 the authKey2 value to set.
      * @return the IntegrationRuntimeAuthKeysInner object itself.
      */
@@ -68,9 +74,49 @@ public final class IntegrationRuntimeAuthKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authKey1", this.authKey1);
+        jsonWriter.writeStringField("authKey2", this.authKey2);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeAuthKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeAuthKeysInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeAuthKeysInner.
+     */
+    public static IntegrationRuntimeAuthKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeAuthKeysInner deserializedIntegrationRuntimeAuthKeysInner
+                = new IntegrationRuntimeAuthKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authKey1".equals(fieldName)) {
+                    deserializedIntegrationRuntimeAuthKeysInner.authKey1 = reader.getString();
+                } else if ("authKey2".equals(fieldName)) {
+                    deserializedIntegrationRuntimeAuthKeysInner.authKey2 = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationRuntimeAuthKeysInner;
+        });
     }
 }

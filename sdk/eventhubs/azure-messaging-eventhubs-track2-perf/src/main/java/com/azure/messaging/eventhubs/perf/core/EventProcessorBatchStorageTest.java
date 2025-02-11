@@ -34,7 +34,6 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
     protected String eventHubName;
     protected byte[] eventDataBytes;
 
-
     /**
      * Creates an instance of performance test.
      *
@@ -60,14 +59,12 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
         if (CoreUtils.isNullOrEmpty(eventHubName)) {
             throw new IllegalStateException("Environment variable EVENTHUB_NAME must be set");
         }
-        containerAsyncClient = new BlobContainerClientBuilder()
-            .connectionString(connectionString)
+        containerAsyncClient = new BlobContainerClientBuilder().connectionString(connectionString)
             .containerName(CONTAINER_NAME)
             .buildAsyncClient();
 
-        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
-            .connectionString(connectionString)
-            .containerName(CONTAINER_NAME);
+        BlobContainerClientBuilder builder
+            = new BlobContainerClientBuilder().connectionString(connectionString).containerName(CONTAINER_NAME);
 
         containerClient = builder.buildClient();
         containerAsyncClient = builder.buildAsyncClient();
@@ -75,8 +72,8 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
 
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(containerAsyncClient);
 
-        Consumer<ErrorContext> errorProcessor = errorContext ->
-            System.out.println("err + " + errorContext.getThrowable().getMessage());
+        Consumer<ErrorContext> errorProcessor
+            = errorContext -> System.out.println("err + " + errorContext.getThrowable().getMessage());
 
         Map<String, EventPosition> initalPositionMap = new HashMap<>();
         for (int i = 0; i < 32; i++) {
@@ -89,29 +86,28 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
 
         eventDataBytes = generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8);
 
-        eventProcessorClient = new EventProcessorClientBuilder()
-            .connectionString(eventhubsConnectionString, eventHubName)
-            .consumerGroup(options.getConsumerGroup())
-            .checkpointStore(blobCheckpointStore)
-            .processError(errorProcessor)
-            .loadBalancingStrategy(LoadBalancingStrategy.GREEDY)
-            .processEventBatch(eventBatchContext -> {
-                for (EventData eventData : eventBatchContext.getEvents()) {
-                    super.eventRaised();
-                }
-            }, options.getBatchSize())
-            .initialPartitionEventPosition(initalPositionMap)
-            .prefetchCount(options.getPrefetch())
-            .buildEventProcessorClient();
+        eventProcessorClient
+            = new EventProcessorClientBuilder().connectionString(eventhubsConnectionString, eventHubName)
+                .consumerGroup(options.getConsumerGroup())
+                .checkpointStore(blobCheckpointStore)
+                .processError(errorProcessor)
+                .loadBalancingStrategy(LoadBalancingStrategy.GREEDY)
+                .processEventBatch(eventBatchContext -> {
+                    for (EventData eventData : eventBatchContext.getEvents()) {
+                        super.eventRaised();
+                    }
+                }, options.getBatchSize())
+                .initialPartitionEventPosition(initalPositionMap)
+                .prefetchCount(options.getPrefetch())
+                .buildEventProcessorClient();
     }
 
     @Override
     public Mono<Void> setupAsync() {
-        return super.setupAsync()
-            .then(Mono.defer(() -> {
-                eventProcessorClient.start();
-                return Mono.empty();
-            }));
+        return super.setupAsync().then(Mono.defer(() -> {
+            eventProcessorClient.start();
+            return Mono.empty();
+        }));
     }
 
     @Override
@@ -124,8 +120,8 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(Mono.defer(() -> Util.preLoadEvents(eventHubProducerAsyncClient, options.getPartitionId() != null
-                ? String.valueOf(options.getPartitionId()) : null , options.getEvents(), eventDataBytes)));
+        return super.globalSetupAsync().then(Mono.defer(() -> Util.preLoadEvents(eventHubProducerAsyncClient,
+            options.getPartitionId() != null ? String.valueOf(options.getPartitionId()) : null, options.getEvents(),
+            eventDataBytes)));
     }
 }

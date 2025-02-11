@@ -24,7 +24,8 @@ public final class AzureOperatorNexusArmTemplateArtifactProfileTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureOperatorNexusArmTemplateArtifactProfile model = new AzureOperatorNexusArmTemplateArtifactProfile()
-            .withArtifactStore(new ReferencedResource().withId("kbzefezrxcczurt")).withTemplateArtifactProfile(
+            .withArtifactStore(new ReferencedResource().withId("kbzefezrxcczurt"))
+            .withTemplateArtifactProfile(
                 new ArmTemplateArtifactProfile().withTemplateName("xeqoc").withTemplateVersion("mygvkzqkj"));
         model = BinaryData.fromObject(model).toObject(AzureOperatorNexusArmTemplateArtifactProfile.class);
         Assertions.assertEquals("kbzefezrxcczurt", model.artifactStore().id());

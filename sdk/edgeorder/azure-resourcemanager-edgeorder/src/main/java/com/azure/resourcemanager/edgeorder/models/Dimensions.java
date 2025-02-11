@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Dimensions of a configuration. */
+/**
+ * Dimensions of a configuration.
+ */
 @Immutable
-public final class Dimensions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dimensions.class);
-
+public final class Dimensions implements JsonSerializable<Dimensions> {
     /*
      * Length of the device.
      */
-    @JsonProperty(value = "length", access = JsonProperty.Access.WRITE_ONLY)
     private Double length;
 
     /*
      * Height of the device.
      */
-    @JsonProperty(value = "height", access = JsonProperty.Access.WRITE_ONLY)
     private Double height;
 
     /*
      * Width of the device.
      */
-    @JsonProperty(value = "width", access = JsonProperty.Access.WRITE_ONLY)
     private Double width;
 
     /*
      * Unit for the dimensions of length, height and width.
      */
-    @JsonProperty(value = "lengthHeightUnit", access = JsonProperty.Access.WRITE_ONLY)
     private LengthHeightUnit lengthHeightUnit;
 
     /*
      * Weight of the device.
      */
-    @JsonProperty(value = "weight", access = JsonProperty.Access.WRITE_ONLY)
     private Double weight;
 
     /*
      * Depth of the device.
      */
-    @JsonProperty(value = "depth", access = JsonProperty.Access.WRITE_ONLY)
     private Double depth;
 
     /*
      * Unit for the dimensions of weight.
      */
-    @JsonProperty(value = "weightUnit", access = JsonProperty.Access.WRITE_ONLY)
     private WeightMeasurementUnit weightUnit;
 
     /**
+     * Creates an instance of Dimensions class.
+     */
+    public Dimensions() {
+    }
+
+    /**
      * Get the length property: Length of the device.
-     *
+     * 
      * @return the length value.
      */
     public Double length() {
@@ -67,7 +68,7 @@ public final class Dimensions {
 
     /**
      * Get the height property: Height of the device.
-     *
+     * 
      * @return the height value.
      */
     public Double height() {
@@ -76,7 +77,7 @@ public final class Dimensions {
 
     /**
      * Get the width property: Width of the device.
-     *
+     * 
      * @return the width value.
      */
     public Double width() {
@@ -85,7 +86,7 @@ public final class Dimensions {
 
     /**
      * Get the lengthHeightUnit property: Unit for the dimensions of length, height and width.
-     *
+     * 
      * @return the lengthHeightUnit value.
      */
     public LengthHeightUnit lengthHeightUnit() {
@@ -94,7 +95,7 @@ public final class Dimensions {
 
     /**
      * Get the weight property: Weight of the device.
-     *
+     * 
      * @return the weight value.
      */
     public Double weight() {
@@ -103,7 +104,7 @@ public final class Dimensions {
 
     /**
      * Get the depth property: Depth of the device.
-     *
+     * 
      * @return the depth value.
      */
     public Double depth() {
@@ -112,7 +113,7 @@ public final class Dimensions {
 
     /**
      * Get the weightUnit property: Unit for the dimensions of weight.
-     *
+     * 
      * @return the weightUnit value.
      */
     public WeightMeasurementUnit weightUnit() {
@@ -121,9 +122,56 @@ public final class Dimensions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Dimensions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Dimensions if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Dimensions.
+     */
+    public static Dimensions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Dimensions deserializedDimensions = new Dimensions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("length".equals(fieldName)) {
+                    deserializedDimensions.length = reader.getNullable(JsonReader::getDouble);
+                } else if ("height".equals(fieldName)) {
+                    deserializedDimensions.height = reader.getNullable(JsonReader::getDouble);
+                } else if ("width".equals(fieldName)) {
+                    deserializedDimensions.width = reader.getNullable(JsonReader::getDouble);
+                } else if ("lengthHeightUnit".equals(fieldName)) {
+                    deserializedDimensions.lengthHeightUnit = LengthHeightUnit.fromString(reader.getString());
+                } else if ("weight".equals(fieldName)) {
+                    deserializedDimensions.weight = reader.getNullable(JsonReader::getDouble);
+                } else if ("depth".equals(fieldName)) {
+                    deserializedDimensions.depth = reader.getNullable(JsonReader::getDouble);
+                } else if ("weightUnit".equals(fieldName)) {
+                    deserializedDimensions.weightUnit = WeightMeasurementUnit.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDimensions;
+        });
     }
 }

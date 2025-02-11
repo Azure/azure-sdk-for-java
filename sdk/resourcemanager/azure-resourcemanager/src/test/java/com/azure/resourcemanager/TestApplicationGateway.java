@@ -48,12 +48,11 @@ public class TestApplicationGateway {
     String groupName = "";
     String appGatewayName = "";
     String[] pipNames = null;
-    static final String ID_TEMPLATE =
-        "/subscriptions/${subId}/resourceGroups/${rgName}/providers/Microsoft.Network/applicationGateways/${resourceName}";
+    static final String ID_TEMPLATE
+        = "/subscriptions/${subId}/resourceGroups/${rgName}/providers/Microsoft.Network/applicationGateways/${resourceName}";
 
     String createResourceId(String subscriptionId) {
-        return ID_TEMPLATE
-            .replace("${subId}", subscriptionId)
+        return ID_TEMPLATE.replace("${subId}", subscriptionId)
             .replace("${rgName}", groupName)
             .replace("${resourceName}", appGatewayName);
     }
@@ -62,7 +61,7 @@ public class TestApplicationGateway {
         testId = internalContext.randomResourceName("", 8);
         groupName = "rg" + testId;
         appGatewayName = "ag" + testId;
-        pipNames = new String[] {"pipa" + testId, "pipb" + testId};
+        pipNames = new String[] { "pipa" + testId, "pipb" + testId };
     }
 
     /** Minimalistic internal (private) app gateway test. */
@@ -79,30 +78,27 @@ public class TestApplicationGateway {
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
             // Prepare a separate thread for resource creation
-            Thread creationThread =
-                new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            // Create an application gateway
-                            resources
-                                .define(appGatewayName)
-                                .withRegion(REGION)
-                                .withNewResourceGroup(groupName)
-                                // Request routing rules
-                                .defineRequestRoutingRule("rule1")
-                                .fromPublicFrontend()
-                                .fromFrontendHttpPort(80)
-                                .toBackendHttpPort(8080)
-                                .toBackendIPAddress("11.1.1.1")
-                                .toBackendIPAddress("11.1.1.2")
-                                .attach()
-                                .withNewPublicIpAddress()
-                                .withTier(ApplicationGatewayTier.STANDARD_V2)
-                                .withSize(ApplicationGatewaySkuName.STANDARD_V2)
-                                .create();
-                        }
-                    });
+            Thread creationThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Create an application gateway
+                    resources.define(appGatewayName)
+                        .withRegion(REGION)
+                        .withNewResourceGroup(groupName)
+                        // Request routing rules
+                        .defineRequestRoutingRule("rule1")
+                        .fromPublicFrontend()
+                        .fromFrontendHttpPort(80)
+                        .toBackendHttpPort(8080)
+                        .toBackendIPAddress("11.1.1.1")
+                        .toBackendIPAddress("11.1.1.2")
+                        .attach()
+                        .withNewPublicIpAddress()
+                        .withTier(ApplicationGatewayTier.STANDARD_V2)
+                        .withSize(ApplicationGatewaySkuName.STANDARD_V2)
+                        .create();
+                }
+            });
 
             // Start the creation...
             creationThread.start();
@@ -159,8 +155,7 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway updateResource(final ApplicationGateway resource) throws Exception {
-            resource
-                .update()
+            resource.update()
                 .withInstanceCount(2)
                 .withFrontendPort(81, "port81") // Add a new port
                 .withoutBackendIPAddress("11.1.1.1") // Remove from all existing backends
@@ -258,18 +253,16 @@ public class TestApplicationGateway {
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
             String appPublicIp = "pip" + testId;
-            PublicIpAddress pip =
-                resources.manager()
-                    .publicIpAddresses()
-                    .define(appPublicIp)
-                    .withRegion(REGION)
-                    .withNewResourceGroup(groupName)
-                    .withSku(PublicIPSkuType.STANDARD)
-                    .withStaticIP()
-                    .create();
+            PublicIpAddress pip = resources.manager()
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(REGION)
+                .withNewResourceGroup(groupName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
             // Create an application gateway
-            resources
-                .define(appGatewayName)
+            resources.define(appGatewayName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(groupName)
                 .definePathBasedRoutingRule("pathMap")
@@ -337,8 +330,7 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway updateResource(final ApplicationGateway resource) throws Exception {
-            resource
-                .update()
+            resource.update()
                 .withoutUrlPathMap("pathMap")
                 // Request routing rules
                 .definePathBasedRoutingRule("rule2")
@@ -399,133 +391,125 @@ public class TestApplicationGateway {
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
             ensurePIPs(resources.manager().publicIpAddresses());
 
-            final Network vnet =
-                resources
-                    .manager()
-                    .networks()
-                    .define("net" + testId)
-                    .withRegion(REGION)
-                    .withNewResourceGroup(groupName)
-                    .withAddressSpace("10.0.0.0/28")
-                    .withSubnet("subnet1", "10.0.0.0/29")
-                    .withSubnet("subnet2", "10.0.0.8/29")
-                    .create();
+            final Network vnet = resources.manager()
+                .networks()
+                .define("net" + testId)
+                .withRegion(REGION)
+                .withNewResourceGroup(groupName)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/29")
+                .withSubnet("subnet2", "10.0.0.8/29")
+                .create();
 
-            Thread.UncaughtExceptionHandler threadException =
-                new Thread.UncaughtExceptionHandler() {
-                    public void uncaughtException(Thread th, Throwable ex) {
-                        LOGGER.log(LogLevel.VERBOSE, () -> "Uncaught exception", ex);
-                    }
-                };
+            Thread.UncaughtExceptionHandler threadException = new Thread.UncaughtExceptionHandler() {
+                public void uncaughtException(Thread th, Throwable ex) {
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Uncaught exception", ex);
+                }
+            };
 
             // Prepare for execution in a separate thread to shorten the test
-            Thread creationThread =
-                new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            // Create an application gateway
-                            try {
-                                resources
-                                    .define(appGatewayName)
-                                    .withRegion(REGION)
-                                    .withExistingResourceGroup(groupName)
+            Thread creationThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Create an application gateway
+                    try {
+                        resources.define(appGatewayName)
+                            .withRegion(REGION)
+                            .withExistingResourceGroup(groupName)
 
-                                    // Request routing rules
-                                    .defineRequestRoutingRule("rule80")
-                                    .fromPrivateFrontend()
-                                    .fromFrontendHttpPort(80)
-                                    .toBackendHttpPort(8080)
-                                    .toBackendIPAddress("11.1.1.1")
-                                    .toBackendIPAddress("11.1.1.2")
-                                    .withCookieBasedAffinity()
-                                    .attach()
-                                    .defineRequestRoutingRule("rule443")
-                                    .fromPrivateFrontend()
-                                    .fromFrontendHttpsPort(443)
-                                    .withSslCertificateFromPfxFile(
-                                        new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
-                                    .withSslCertificatePassword("Abc123")
-                                    .toBackendHttpConfiguration("config1")
-                                    .toBackend("backend1")
-                                    .attach()
-                                    .defineRequestRoutingRule("rule9000")
-                                    .fromListener("listener1")
-                                    .toBackendHttpConfiguration("config1")
-                                    .toBackend("backend1")
-                                    .attach()
-                                    .defineRequestRoutingRule("ruleRedirect")
-                                    .fromPrivateFrontend()
-                                    .fromFrontendHttpsPort(444)
-                                    .withSslCertificate("cert1")
-                                    .withRedirectConfiguration("redirect1")
-                                    .attach()
+                            // Request routing rules
+                            .defineRequestRoutingRule("rule80")
+                            .fromPrivateFrontend()
+                            .fromFrontendHttpPort(80)
+                            .toBackendHttpPort(8080)
+                            .toBackendIPAddress("11.1.1.1")
+                            .toBackendIPAddress("11.1.1.2")
+                            .withCookieBasedAffinity()
+                            .attach()
+                            .defineRequestRoutingRule("rule443")
+                            .fromPrivateFrontend()
+                            .fromFrontendHttpsPort(443)
+                            .withSslCertificateFromPfxFile(
+                                new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
+                            .withSslCertificatePassword("Abc123")
+                            .toBackendHttpConfiguration("config1")
+                            .toBackend("backend1")
+                            .attach()
+                            .defineRequestRoutingRule("rule9000")
+                            .fromListener("listener1")
+                            .toBackendHttpConfiguration("config1")
+                            .toBackend("backend1")
+                            .attach()
+                            .defineRequestRoutingRule("ruleRedirect")
+                            .fromPrivateFrontend()
+                            .fromFrontendHttpsPort(444)
+                            .withSslCertificate("cert1")
+                            .withRedirectConfiguration("redirect1")
+                            .attach()
 
-                                    // Additional/explicit backends
-                                    .defineBackend("backend1")
-                                    .withIPAddress("11.1.1.3")
-                                    .withIPAddress("11.1.1.4")
-                                    .attach()
-                                    .defineBackend("backend2")
-                                    .attach()
+                            // Additional/explicit backends
+                            .defineBackend("backend1")
+                            .withIPAddress("11.1.1.3")
+                            .withIPAddress("11.1.1.4")
+                            .attach()
+                            .defineBackend("backend2")
+                            .attach()
 
-                                    // Additional/explicit frontend listeners
-                                    .defineListener("listener1")
-                                    .withPrivateFrontend()
-                                    .withFrontendPort(9000)
-                                    .withHttp()
-                                    .attach()
+                            // Additional/explicit frontend listeners
+                            .defineListener("listener1")
+                            .withPrivateFrontend()
+                            .withFrontendPort(9000)
+                            .withHttp()
+                            .attach()
 
-                                    // Additional/explicit certificates
-                                    .defineSslCertificate("cert1")
-                                    .withPfxFromFile(
-                                        new File(getClass().getClassLoader().getResource("myTest2.pfx").getFile()))
-                                    .withPfxPassword("Abc123")
-                                    .attach()
+                            // Additional/explicit certificates
+                            .defineSslCertificate("cert1")
+                            .withPfxFromFile(new File(getClass().getClassLoader().getResource("myTest2.pfx").getFile()))
+                            .withPfxPassword("Abc123")
+                            .attach()
 
-                                    // Authentication certificates
-                                    .defineAuthenticationCertificate("auth2")
-                                    .fromFile(
-                                        new File(getClass().getClassLoader().getResource("myTest2.cer").getFile()))
-                                    .attach()
+                            // Authentication certificates
+                            .defineAuthenticationCertificate("auth2")
+                            .fromFile(new File(getClass().getClassLoader().getResource("myTest2.cer").getFile()))
+                            .attach()
 
-                                    // Additional/explicit backend HTTP setting configs
-                                    .defineBackendHttpConfiguration("config1")
-                                    .withPort(8081)
-                                    .withRequestTimeout(45)
-                                    .withHttps()
-                                    .withAuthenticationCertificateFromFile(
-                                        new File(getClass().getClassLoader().getResource("myTest.cer").getFile()))
-                                    .attach()
-                                    .defineBackendHttpConfiguration("config2")
-                                    .withPort(8082)
-                                    .withHttps()
-                                    .withAuthenticationCertificate("auth2")
-                                    // Add the same cert, so only one should be added
-                                    .withAuthenticationCertificateFromFile(
-                                        new File(getClass().getClassLoader().getResource("myTest2.cer").getFile()))
-                                    .attach()
+                            // Additional/explicit backend HTTP setting configs
+                            .defineBackendHttpConfiguration("config1")
+                            .withPort(8081)
+                            .withRequestTimeout(45)
+                            .withHttps()
+                            .withAuthenticationCertificateFromFile(
+                                new File(getClass().getClassLoader().getResource("myTest.cer").getFile()))
+                            .attach()
+                            .defineBackendHttpConfiguration("config2")
+                            .withPort(8082)
+                            .withHttps()
+                            .withAuthenticationCertificate("auth2")
+                            // Add the same cert, so only one should be added
+                            .withAuthenticationCertificateFromFile(
+                                new File(getClass().getClassLoader().getResource("myTest2.cer").getFile()))
+                            .attach()
 
-                                    // Redirect configurations
-                                    .defineRedirectConfiguration("redirect1")
-                                    .withType(ApplicationGatewayRedirectType.PERMANENT)
-                                    .withTargetListener("listener1")
-                                    .withPathIncluded()
-                                    .attach()
-                                    .defineRedirectConfiguration("redirect2")
-                                    .withType(ApplicationGatewayRedirectType.TEMPORARY)
-                                    .withTargetUrl("http://www.microsoft.com")
-                                    .withQueryStringIncluded()
-                                    .attach()
-                                    .withExistingSubnet(vnet, "subnet1")
-                                    .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
-                                    .withInstanceCount(2)
-                                    .create();
-                            } catch (IOException e) {
-                                LOGGER.log(LogLevel.VERBOSE, () -> "Error creating application gateway", e);
-                            }
-                        }
-                    });
+                            // Redirect configurations
+                            .defineRedirectConfiguration("redirect1")
+                            .withType(ApplicationGatewayRedirectType.PERMANENT)
+                            .withTargetListener("listener1")
+                            .withPathIncluded()
+                            .attach()
+                            .defineRedirectConfiguration("redirect2")
+                            .withType(ApplicationGatewayRedirectType.TEMPORARY)
+                            .withTargetUrl("http://www.microsoft.com")
+                            .withQueryStringIncluded()
+                            .attach()
+                            .withExistingSubnet(vnet, "subnet1")
+                            .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
+                            .withInstanceCount(2)
+                            .create();
+                    } catch (IOException e) {
+                        LOGGER.log(LogLevel.VERBOSE, () -> "Error creating application gateway", e);
+                    }
+                }
+            });
 
             // Start creating in a separate thread...
             creationThread.setUncaughtExceptionHandler(threadException);
@@ -610,18 +594,18 @@ public class TestApplicationGateway {
 
             // Verify authentication certificates
             Assertions.assertEquals(2, appGateway.authenticationCertificates().size());
-            ApplicationGatewayAuthenticationCertificate authCert2 =
-                appGateway.authenticationCertificates().get("auth2");
+            ApplicationGatewayAuthenticationCertificate authCert2
+                = appGateway.authenticationCertificates().get("auth2");
             Assertions.assertNotNull(authCert2);
             Assertions.assertNotNull(authCert2.data());
 
-            ApplicationGatewayAuthenticationCertificate authCert =
-                config.authenticationCertificates().values().iterator().next();
+            ApplicationGatewayAuthenticationCertificate authCert
+                = config.authenticationCertificates().values().iterator().next();
             Assertions.assertNotNull(authCert);
 
             Assertions.assertEquals(1, config2.authenticationCertificates().size());
-            Assertions
-                .assertEquals(authCert2.name(), config2.authenticationCertificates().values().iterator().next().name());
+            Assertions.assertEquals(authCert2.name(),
+                config2.authenticationCertificates().values().iterator().next().name());
 
             // Verify backends
             Assertions.assertEquals(3, appGateway.backends().size());
@@ -686,14 +670,12 @@ public class TestApplicationGateway {
             final int configCount = resource.backendHttpConfigurations().size();
             final int sslCertCount = resource.sslCertificates().size();
             final int authCertCount = resource.authenticationCertificates().size();
-            final ApplicationGatewayAuthenticationCertificate authCert1 =
-                resource
-                    .backendHttpConfigurations()
-                    .get("config1")
-                    .authenticationCertificates()
-                    .values()
-                    .iterator()
-                    .next();
+            final ApplicationGatewayAuthenticationCertificate authCert1 = resource.backendHttpConfigurations()
+                .get("config1")
+                .authenticationCertificates()
+                .values()
+                .iterator()
+                .next();
             Assertions.assertNotNull(authCert1);
 
             PublicIpAddress pip = resource.manager().publicIpAddresses().getByResourceGroup(groupName, pipNames[0]);
@@ -702,8 +684,7 @@ public class TestApplicationGateway {
             ApplicationGatewayListener listenerRedirect = resource.requestRoutingRules().get("ruleRedirect").listener();
             Assertions.assertNotNull(listenerRedirect);
 
-            resource
-                .update()
+            resource.update()
                 .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
                 .withInstanceCount(1)
                 .withoutFrontendPort(9000)
@@ -773,15 +754,8 @@ public class TestApplicationGateway {
             // Verify frontends
             Assertions.assertEquals(frontendCount + 1, resource.frontends().size());
             Assertions.assertEquals(1, resource.publicFrontends().size());
-            Assertions
-                .assertTrue(
-                    resource
-                        .publicFrontends()
-                        .values()
-                        .iterator()
-                        .next()
-                        .publicIpAddressId()
-                        .equalsIgnoreCase(pip.id()));
+            Assertions.assertTrue(
+                resource.publicFrontends().values().iterator().next().publicIpAddressId().equalsIgnoreCase(pip.id()));
             Assertions.assertEquals(1, resource.privateFrontends().size());
             ApplicationGatewayFrontend frontend = resource.privateFrontends().values().iterator().next();
             Assertions.assertFalse(frontend.isPublic());
@@ -859,115 +833,111 @@ public class TestApplicationGateway {
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
             ensurePIPs(resources.manager().publicIpAddresses());
-            Thread.UncaughtExceptionHandler threadException =
-                new Thread.UncaughtExceptionHandler() {
-                    public void uncaughtException(Thread th, Throwable ex) {
-                        LOGGER.log(LogLevel.VERBOSE, () -> "Uncaught exception", ex);
-                    }
-                };
+            Thread.UncaughtExceptionHandler threadException = new Thread.UncaughtExceptionHandler() {
+                public void uncaughtException(Thread th, Throwable ex) {
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Uncaught exception", ex);
+                }
+            };
 
-            final PublicIpAddress pip =
-                resources.manager().publicIpAddresses().getByResourceGroup(groupName, pipNames[0]);
+            final PublicIpAddress pip
+                = resources.manager().publicIpAddresses().getByResourceGroup(groupName, pipNames[0]);
 
             // Prepare for execution in a separate thread to shorten the test
-            Thread creationThread =
-                new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            // Create an application gateway
-                            try {
-                                resources
-                                    .define(appGatewayName)
-                                    .withRegion(REGION)
-                                    .withExistingResourceGroup(groupName)
+            Thread creationThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Create an application gateway
+                    try {
+                        resources.define(appGatewayName)
+                            .withRegion(REGION)
+                            .withExistingResourceGroup(groupName)
 
-                                    // Request routing rules
-                                    .defineRequestRoutingRule("rule80")
-                                    .fromPublicFrontend()
-                                    .fromFrontendHttpPort(80)
-                                    .toBackendHttpPort(8080)
-                                    .toBackendFqdn("www.microsoft.com")
-                                    .toBackendFqdn("www.example.com")
-                                    .toBackendIPAddress("11.1.1.1")
-                                    .toBackendIPAddress("11.1.1.2")
-                                    .withCookieBasedAffinity()
-                                    .attach()
-                                    .defineRequestRoutingRule("rule443")
-                                    .fromPublicFrontend()
-                                    .fromFrontendHttpsPort(443)
-                                    .withSslCertificateFromPfxFile(
-                                        new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
-                                    .withSslCertificatePassword("Abc123")
-                                    .toBackendHttpConfiguration("config1")
-                                    .toBackend("backend1")
-                                    .attach()
-                                    .defineRequestRoutingRule("rule9000")
-                                    .fromListener("listener1")
-                                    .toBackendHttpConfiguration("config1")
-                                    .toBackend("backend1")
-                                    .attach()
+                            // Request routing rules
+                            .defineRequestRoutingRule("rule80")
+                            .fromPublicFrontend()
+                            .fromFrontendHttpPort(80)
+                            .toBackendHttpPort(8080)
+                            .toBackendFqdn("www.microsoft.com")
+                            .toBackendFqdn("www.example.com")
+                            .toBackendIPAddress("11.1.1.1")
+                            .toBackendIPAddress("11.1.1.2")
+                            .withCookieBasedAffinity()
+                            .attach()
+                            .defineRequestRoutingRule("rule443")
+                            .fromPublicFrontend()
+                            .fromFrontendHttpsPort(443)
+                            .withSslCertificateFromPfxFile(
+                                new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
+                            .withSslCertificatePassword("Abc123")
+                            .toBackendHttpConfiguration("config1")
+                            .toBackend("backend1")
+                            .attach()
+                            .defineRequestRoutingRule("rule9000")
+                            .fromListener("listener1")
+                            .toBackendHttpConfiguration("config1")
+                            .toBackend("backend1")
+                            .attach()
 
-                                    // Additional/explicit frontend listeners
-                                    .defineListener("listener1")
-                                    .withPublicFrontend()
-                                    .withFrontendPort(9000)
-                                    .withHttps()
-                                    .withSslCertificateFromPfxFile(
-                                        new File(getClass().getClassLoader().getResource("myTest2.pfx").getFile()))
-                                    .withSslCertificatePassword("Abc123")
-                                    .withServerNameIndication()
-                                    .withHostname("www.fabricam.com")
-                                    .attach()
+                            // Additional/explicit frontend listeners
+                            .defineListener("listener1")
+                            .withPublicFrontend()
+                            .withFrontendPort(9000)
+                            .withHttps()
+                            .withSslCertificateFromPfxFile(
+                                new File(getClass().getClassLoader().getResource("myTest2.pfx").getFile()))
+                            .withSslCertificatePassword("Abc123")
+                            .withServerNameIndication()
+                            .withHostname("www.fabricam.com")
+                            .attach()
 
-                                    // Additional/explicit backends
-                                    .defineBackend("backend1")
-                                    .withIPAddress("11.1.1.1")
-                                    .withIPAddress("11.1.1.2")
-                                    .attach()
-                                    .withExistingPublicIpAddress(pip)
-                                    .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
-                                    .withInstanceCount(2)
+                            // Additional/explicit backends
+                            .defineBackend("backend1")
+                            .withIPAddress("11.1.1.1")
+                            .withIPAddress("11.1.1.2")
+                            .attach()
+                            .withExistingPublicIpAddress(pip)
+                            .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
+                            .withInstanceCount(2)
 
-                                    // Probes
-                                    .defineProbe("probe1")
-                                    .withHost("microsoft.com")
-                                    .withPath("/")
-                                    .withHttp()
-                                    .withTimeoutInSeconds(10)
-                                    .withTimeBetweenProbesInSeconds(9)
-                                    .withRetriesBeforeUnhealthy(5)
-                                    .withHealthyHttpResponseStatusCodeRange(200, 249)
-                                    .attach()
-                                    .defineProbe("probe2")
-                                    .withHost("microsoft.com")
-                                    .withPath("/")
-                                    .withHttps()
-                                    .withTimeoutInSeconds(11)
-                                    .withHealthyHttpResponseStatusCodeRange(600, 610)
-                                    .withHealthyHttpResponseStatusCodeRange(650, 660)
-                                    .withHealthyHttpResponseBodyContents("I am too healthy for this test.")
-                                    .attach()
+                            // Probes
+                            .defineProbe("probe1")
+                            .withHost("microsoft.com")
+                            .withPath("/")
+                            .withHttp()
+                            .withTimeoutInSeconds(10)
+                            .withTimeBetweenProbesInSeconds(9)
+                            .withRetriesBeforeUnhealthy(5)
+                            .withHealthyHttpResponseStatusCodeRange(200, 249)
+                            .attach()
+                            .defineProbe("probe2")
+                            .withHost("microsoft.com")
+                            .withPath("/")
+                            .withHttps()
+                            .withTimeoutInSeconds(11)
+                            .withHealthyHttpResponseStatusCodeRange(600, 610)
+                            .withHealthyHttpResponseStatusCodeRange(650, 660)
+                            .withHealthyHttpResponseBodyContents("I am too healthy for this test.")
+                            .attach()
 
-                                    // Additional/explicit backend HTTP setting configs
-                                    .defineBackendHttpConfiguration("config1")
-                                    .withPort(8081)
-                                    .withRequestTimeout(45)
-                                    .withProbe("probe1")
-                                    .withHostHeader("foo")
-                                    .withConnectionDrainingTimeoutInSeconds(100)
-                                    .withPath("path")
-                                    .withAffinityCookieName("cookie")
-                                    .attach()
-                                    .withDisabledSslProtocols(
-                                        ApplicationGatewaySslProtocol.TLSV1_0, ApplicationGatewaySslProtocol.TLSV1_1)
-                                    .withHttp2()
-                                    .create();
-                            } catch (IOException e) {
-                                LOGGER.log(LogLevel.VERBOSE, () -> "Uncaught exception", e);
-                            }
-                        }
-                    });
+                            // Additional/explicit backend HTTP setting configs
+                            .defineBackendHttpConfiguration("config1")
+                            .withPort(8081)
+                            .withRequestTimeout(45)
+                            .withProbe("probe1")
+                            .withHostHeader("foo")
+                            .withConnectionDrainingTimeoutInSeconds(100)
+                            .withPath("path")
+                            .withAffinityCookieName("cookie")
+                            .attach()
+                            .withDisabledSslProtocols(ApplicationGatewaySslProtocol.TLSV1_0,
+                                ApplicationGatewaySslProtocol.TLSV1_1)
+                            .withHttp2()
+                            .create();
+                    } catch (IOException e) {
+                        LOGGER.log(LogLevel.VERBOSE, () -> "Uncaught exception", e);
+                    }
+                }
+            });
 
             // Start creating in a separate thread...
             creationThread.setUncaughtExceptionHandler(threadException);
@@ -1114,8 +1084,7 @@ public class TestApplicationGateway {
             ApplicationGatewayBackendHttpConfiguration backendConfig80 = rule80.backendHttpConfiguration();
             Assertions.assertNotNull(backendConfig80);
 
-            resource
-                .update()
+            resource.update()
                 .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
                 .withInstanceCount(1)
                 .updateListener("listener1")
@@ -1139,8 +1108,8 @@ public class TestApplicationGateway {
                 .withoutHealthyHttpResponseStatusCodeRanges()
                 .withHealthyHttpResponseBodyContents(null)
                 .parent()
-                .withoutDisabledSslProtocols(
-                    ApplicationGatewaySslProtocol.TLSV1_0, ApplicationGatewaySslProtocol.TLSV1_1)
+                .withoutDisabledSslProtocols(ApplicationGatewaySslProtocol.TLSV1_0,
+                    ApplicationGatewaySslProtocol.TLSV1_1)
                 .withoutHttp2()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
@@ -1173,8 +1142,8 @@ public class TestApplicationGateway {
             Assertions.assertNull(probe.healthyHttpResponseBodyContents());
 
             // Verify backend configs
-            ApplicationGatewayBackendHttpConfiguration backendConfig =
-                resource.backendHttpConfigurations().get("config1");
+            ApplicationGatewayBackendHttpConfiguration backendConfig
+                = resource.backendHttpConfigurations().get("config1");
             Assertions.assertNotNull(backendConfig);
             Assertions.assertNull(backendConfig.probe());
             Assertions.assertFalse(backendConfig.isHostHeaderFromBackend());
@@ -1210,35 +1179,32 @@ public class TestApplicationGateway {
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
             // Prepare a separate thread for resource creation
-            Thread creationThread =
-                new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            // Create an application gateway
-                            try {
-                                resources
-                                    .define(appGatewayName)
-                                    .withRegion(REGION)
-                                    .withNewResourceGroup(groupName)
+            Thread creationThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Create an application gateway
+                    try {
+                        resources.define(appGatewayName)
+                            .withRegion(REGION)
+                            .withNewResourceGroup(groupName)
 
-                                    // Request routing rules
-                                    .defineRequestRoutingRule("rule1")
-                                    .fromPublicFrontend()
-                                    .fromFrontendHttpsPort(443)
-                                    .withSslCertificateFromPfxFile(
-                                        new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
-                                    .withSslCertificatePassword("Abc123")
-                                    .toBackendHttpPort(8080)
-                                    .toBackendIPAddress("11.1.1.1")
-                                    .toBackendIPAddress("11.1.1.2")
-                                    .attach()
-                                    .create();
-                            } catch (IOException e) {
-                                LOGGER.log(LogLevel.VERBOSE, () -> "Error occurred", e);
-                            }
-                        }
-                    });
+                            // Request routing rules
+                            .defineRequestRoutingRule("rule1")
+                            .fromPublicFrontend()
+                            .fromFrontendHttpsPort(443)
+                            .withSslCertificateFromPfxFile(
+                                new File(getClass().getClassLoader().getResource("myTest.pfx").getFile()))
+                            .withSslCertificatePassword("Abc123")
+                            .toBackendHttpPort(8080)
+                            .toBackendIPAddress("11.1.1.1")
+                            .toBackendIPAddress("11.1.1.2")
+                            .attach()
+                            .create();
+                    } catch (IOException e) {
+                        LOGGER.log(LogLevel.VERBOSE, () -> "Error occurred", e);
+                    }
+                }
+            });
 
             // Start the creation...
             creationThread.start();
@@ -1296,8 +1262,7 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway updateResource(final ApplicationGateway resource) throws Exception {
-            resource
-                .update()
+            resource.update()
                 .withInstanceCount(2)
                 .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                 .withoutBackendIPAddress("11.1.1.1")
@@ -1386,8 +1351,7 @@ public class TestApplicationGateway {
     // Print app gateway info
     static void printAppGateway(ApplicationGateway resource) {
         StringBuilder info = new StringBuilder();
-        info
-            .append("Application gateway: ")
+        info.append("Application gateway: ")
             .append(resource.id())
             .append("Name: ")
             .append(resource.name())
@@ -1416,8 +1380,7 @@ public class TestApplicationGateway {
         Map<String, ApplicationGatewayIpConfiguration> ipConfigs = resource.ipConfigurations();
         info.append("\n\tIP configurations: ").append(ipConfigs.size());
         for (ApplicationGatewayIpConfiguration ipConfig : ipConfigs.values()) {
-            info
-                .append("\n\t\tName: ")
+            info.append("\n\t\tName: ")
                 .append(ipConfig.name())
                 .append("\n\t\t\tNetwork id: ")
                 .append(ipConfig.networkId())
@@ -1438,8 +1401,7 @@ public class TestApplicationGateway {
 
             if (frontend.isPrivate()) {
                 // Show private frontend info
-                info
-                    .append("\n\t\t\tPrivate IP address: ")
+                info.append("\n\t\t\tPrivate IP address: ")
                     .append(frontend.privateIpAddress())
                     .append("\n\t\t\tPrivate IP allocation method: ")
                     .append(frontend.privateIpAllocationMethod())
@@ -1454,8 +1416,7 @@ public class TestApplicationGateway {
         Map<String, ApplicationGatewayBackend> backends = resource.backends();
         info.append("\n\tBackends: ").append(backends.size());
         for (ApplicationGatewayBackend backend : backends.values()) {
-            info
-                .append("\n\t\tName: ")
+            info.append("\n\t\tName: ")
                 .append(backend.name())
                 .append("\n\t\t\tAssociated NIC IP configuration IDs: ")
                 .append(backend.backendNicIPConfigurationNames().keySet());
@@ -1464,8 +1425,7 @@ public class TestApplicationGateway {
             Collection<ApplicationGatewayBackendAddress> addresses = backend.addresses();
             info.append("\n\t\t\tAddresses: ").append(addresses.size());
             for (ApplicationGatewayBackendAddress address : addresses) {
-                info
-                    .append("\n\t\t\t\tFQDN: ")
+                info.append("\n\t\t\t\tFQDN: ")
                     .append(address.fqdn())
                     .append("\n\t\t\t\tIP: ")
                     .append(address.ipAddress());
@@ -1476,8 +1436,7 @@ public class TestApplicationGateway {
         Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigs = resource.backendHttpConfigurations();
         info.append("\n\tHTTP Configurations: ").append(httpConfigs.size());
         for (ApplicationGatewayBackendHttpConfiguration httpConfig : httpConfigs.values()) {
-            info
-                .append("\n\t\tName: ")
+            info.append("\n\t\tName: ")
                 .append(httpConfig.name())
                 .append("\n\t\t\tCookie based affinity: ")
                 .append(httpConfig.cookieBasedAffinity())
@@ -1515,8 +1474,7 @@ public class TestApplicationGateway {
         Map<String, ApplicationGatewayListener> listeners = resource.listeners();
         info.append("\n\tHTTP listeners: ").append(listeners.size());
         for (ApplicationGatewayListener listener : listeners.values()) {
-            info
-                .append("\n\t\tName: ")
+            info.append("\n\t\tName: ")
                 .append(listener.name())
                 .append("\n\t\t\tHost name: ")
                 .append(listener.hostname())
@@ -1539,8 +1497,7 @@ public class TestApplicationGateway {
         Map<String, ApplicationGatewayProbe> probes = resource.probes();
         info.append("\n\tProbes: ").append(probes.size());
         for (ApplicationGatewayProbe probe : probes.values()) {
-            info
-                .append("\n\t\tName: ")
+            info.append("\n\t\tName: ")
                 .append(probe.name())
                 .append("\n\t\tProtocol:")
                 .append(probe.protocol().toString())
@@ -1569,8 +1526,7 @@ public class TestApplicationGateway {
         Map<String, ApplicationGatewayRedirectConfiguration> redirects = resource.redirectConfigurations();
         info.append("\n\tRedirect configurations: ").append(redirects.size());
         for (ApplicationGatewayRedirectConfiguration redirect : redirects.values()) {
-            info
-                .append("\n\t\tName: ")
+            info.append("\n\t\tName: ")
                 .append(redirect.name())
                 .append("\n\t\tTarget URL: ")
                 .append(redirect.type())
@@ -1590,8 +1546,7 @@ public class TestApplicationGateway {
         Map<String, ApplicationGatewayRequestRoutingRule> rules = resource.requestRoutingRules();
         info.append("\n\tRequest routing rules: ").append(rules.size());
         for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
-            info
-                .append("\n\t\tName: ")
+            info.append("\n\t\tName: ")
                 .append(rule.name())
                 .append("\n\t\tType: ")
                 .append(rule.ruleType())

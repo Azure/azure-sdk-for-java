@@ -12,8 +12,7 @@ public final class AccessInformationSecretsContractImpl implements AccessInforma
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    AccessInformationSecretsContractImpl(
-        AccessInformationSecretsContractInner innerObject,
+    AccessInformationSecretsContractImpl(AccessInformationSecretsContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

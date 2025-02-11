@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databricks.fluent.models.AccessConnectorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of azure databricks accessConnector. */
+/**
+ * List of azure databricks accessConnector.
+ */
 @Fluent
-public final class AccessConnectorListResult {
+public final class AccessConnectorListResult implements JsonSerializable<AccessConnectorListResult> {
     /*
      * The array of azure databricks accessConnector.
      */
-    @JsonProperty(value = "value")
     private List<AccessConnectorInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AccessConnectorListResult class. */
+    /**
+     * Creates an instance of AccessConnectorListResult class.
+     */
     public AccessConnectorListResult() {
     }
 
     /**
      * Get the value property: The array of azure databricks accessConnector.
-     *
+     * 
      * @return the value value.
      */
     public List<AccessConnectorInner> value() {
@@ -39,7 +45,7 @@ public final class AccessConnectorListResult {
 
     /**
      * Set the value property: The array of azure databricks accessConnector.
-     *
+     * 
      * @param value the value value to set.
      * @return the AccessConnectorListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class AccessConnectorListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class AccessConnectorListResult {
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AccessConnectorListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class AccessConnectorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessConnectorListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessConnectorListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessConnectorListResult.
+     */
+    public static AccessConnectorListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessConnectorListResult deserializedAccessConnectorListResult = new AccessConnectorListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AccessConnectorInner> value
+                        = reader.readArray(reader1 -> AccessConnectorInner.fromJson(reader1));
+                    deserializedAccessConnectorListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAccessConnectorListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessConnectorListResult;
+        });
     }
 }

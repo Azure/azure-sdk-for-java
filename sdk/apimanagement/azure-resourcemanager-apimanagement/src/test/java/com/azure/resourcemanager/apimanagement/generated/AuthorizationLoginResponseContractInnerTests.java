@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AuthorizationLoginResponseContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthorizationLoginResponseContractInner model =
-            BinaryData.fromString("{\"loginLink\":\"dt\"}").toObject(AuthorizationLoginResponseContractInner.class);
+        AuthorizationLoginResponseContractInner model
+            = BinaryData.fromString("{\"loginLink\":\"dt\"}").toObject(AuthorizationLoginResponseContractInner.class);
         Assertions.assertEquals("dt", model.loginLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthorizationLoginResponseContractInner model =
-            new AuthorizationLoginResponseContractInner().withLoginLink("dt");
+        AuthorizationLoginResponseContractInner model
+            = new AuthorizationLoginResponseContractInner().withLoginLink("dt");
         model = BinaryData.fromObject(model).toObject(AuthorizationLoginResponseContractInner.class);
         Assertions.assertEquals("dt", model.loginLink());
     }

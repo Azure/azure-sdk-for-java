@@ -269,7 +269,7 @@ public final class RedisManagementClientImpl extends AzureServiceClient implemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-03-01";
+        this.apiVersion = "2024-11-01";
         this.operations = new OperationsClientImpl(this);
         this.redis = new RedisClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);

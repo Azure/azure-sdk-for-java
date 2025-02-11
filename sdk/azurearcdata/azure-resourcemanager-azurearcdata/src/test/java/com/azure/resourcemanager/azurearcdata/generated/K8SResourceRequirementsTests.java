@@ -13,36 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class K8SResourceRequirementsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        K8SResourceRequirements model =
-            BinaryData
-                .fromString(
-                    "{\"requests\":{\"pjmcmatuokthfuiu\":\"eupfhyhltrpm\"},\"limits\":{\"zydagfuaxbezyiuo\":\"sfcpkvxodpuozm\",\"dxwzywqsmbsurexi\":\"ktwh\",\"yocf\":\"o\",\"uxh\":\"fksymddystki\"},\"\":{\"i\":\"datadxorrqnbpoczv\",\"sllr\":\"dataqrvkdv\"}}")
-                .toObject(K8SResourceRequirements.class);
-        Assertions.assertEquals("eupfhyhltrpm", model.requests().get("pjmcmatuokthfuiu"));
-        Assertions.assertEquals("sfcpkvxodpuozm", model.limits().get("zydagfuaxbezyiuo"));
+        K8SResourceRequirements model = BinaryData.fromString(
+            "{\"requests\":{\"v\":\"eiithlvmez\",\"xwburvjxxjns\":\"hxmzsbbzoggig\",\"ou\":\"ydptkoen\"},\"limits\":{\"ngkpocipazy\":\"udwtiukbl\",\"gukgjnpiucgygevq\":\"o\",\"dpydn\":\"ntypmrbpizcdrqj\",\"sjttgzfbish\":\"yhxdeoejzicwi\"},\"\":{\"alpbuxwgipwhon\":\"datahajdeyeamdpha\"}}")
+            .toObject(K8SResourceRequirements.class);
+        Assertions.assertEquals("eiithlvmez", model.requests().get("v"));
+        Assertions.assertEquals("udwtiukbl", model.limits().get("ngkpocipazy"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        K8SResourceRequirements model =
-            new K8SResourceRequirements()
-                .withRequests(mapOf("pjmcmatuokthfuiu", "eupfhyhltrpm"))
-                .withLimits(
-                    mapOf(
-                        "zydagfuaxbezyiuo",
-                        "sfcpkvxodpuozm",
-                        "dxwzywqsmbsurexi",
-                        "ktwh",
-                        "yocf",
-                        "o",
-                        "uxh",
-                        "fksymddystki"))
-                .withAdditionalProperties(mapOf());
+        K8SResourceRequirements model = new K8SResourceRequirements()
+            .withRequests(mapOf("v", "eiithlvmez", "xwburvjxxjns", "hxmzsbbzoggig", "ou", "ydptkoen"))
+            .withLimits(mapOf("ngkpocipazy", "udwtiukbl", "gukgjnpiucgygevq", "o", "dpydn", "ntypmrbpizcdrqj",
+                "sjttgzfbish", "yhxdeoejzicwi"))
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(K8SResourceRequirements.class);
-        Assertions.assertEquals("eupfhyhltrpm", model.requests().get("pjmcmatuokthfuiu"));
-        Assertions.assertEquals("sfcpkvxodpuozm", model.limits().get("zydagfuaxbezyiuo"));
+        Assertions.assertEquals("eiithlvmez", model.requests().get("v"));
+        Assertions.assertEquals("udwtiukbl", model.limits().get("ngkpocipazy"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

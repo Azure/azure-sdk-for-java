@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.customerinsights.fluent.models.WidgetTypeResourceFormatInner;
 
-/** An instance of this class provides access to all the operations defined in WidgetTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WidgetTypesClient.
+ */
 public interface WidgetTypesClient {
     /**
      * Gets all available widget types in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface WidgetTypesClient {
 
     /**
      * Gets all available widget types in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -42,7 +44,7 @@ public interface WidgetTypesClient {
 
     /**
      * Gets a widget type in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param widgetTypeName The name of the widget type.
@@ -53,12 +55,12 @@ public interface WidgetTypesClient {
      * @return a widget type in the specified hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WidgetTypeResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String widgetTypeName, Context context);
+    Response<WidgetTypeResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String widgetTypeName, Context context);
 
     /**
      * Gets a widget type in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param widgetTypeName The name of the widget type.

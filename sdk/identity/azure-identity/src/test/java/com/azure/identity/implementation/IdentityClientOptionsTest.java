@@ -22,8 +22,8 @@ public class IdentityClientOptionsTest {
 
         Configuration configuration = Configuration.getGlobalConfiguration();
 
-        String expected = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
-            AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        String expected
+            = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
 
         Assertions.assertEquals(expected, identityClientOptions.getAuthorityHost());
     }
@@ -31,8 +31,8 @@ public class IdentityClientOptionsTest {
     @Test
     public void testEnvAuthorityHost() {
         String envAuthorityHost = "https://envauthority.com/";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("AZURE_AUTHORITY_HOST", envAuthorityHost));
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put("AZURE_AUTHORITY_HOST", envAuthorityHost));
 
         IdentityClientOptions identityClientOptions = new IdentityClientOptions().setConfiguration(configuration);
         Assertions.assertEquals(envAuthorityHost, identityClientOptions.getAuthorityHost());
@@ -69,7 +69,6 @@ public class IdentityClientOptionsTest {
         int retry = 1;
         Queue<Integer> expectedEntries = new LinkedList<>();
         expectedEntries.addAll(Arrays.asList(800, 1600, 3200, 6400, 12800));
-
 
         while (retry < identityClientOptions.getMaxRetry()) {
             int timeout = idClient.getRetryTimeoutInMs(retry);

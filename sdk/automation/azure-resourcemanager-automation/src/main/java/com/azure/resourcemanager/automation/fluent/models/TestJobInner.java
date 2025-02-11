@@ -5,84 +5,85 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-/** Definition of the test job. */
+/**
+ * Definition of the test job.
+ */
 @Fluent
-public final class TestJobInner {
+public final class TestJobInner implements JsonSerializable<TestJobInner> {
     /*
      * Gets or sets the creation time of the test job.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the status of the test job.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Gets or sets the status details of the test job.
      */
-    @JsonProperty(value = "statusDetails")
     private String statusDetails;
 
     /*
      * Gets or sets the runOn which specifies the group name where the job is to be executed.
      */
-    @JsonProperty(value = "runOn")
     private String runOn;
 
     /*
      * Gets or sets the start time of the test job.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Gets or sets the end time of the test job.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Gets or sets the exception of the test job.
      */
-    @JsonProperty(value = "exception")
     private String exception;
 
     /*
      * Gets or sets the last modified time of the test job.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the last status modified time of the test job.
      */
-    @JsonProperty(value = "lastStatusModifiedTime")
     private OffsetDateTime lastStatusModifiedTime;
 
     /*
      * Gets or sets the parameters of the test job.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * The activity-level tracing options of the runbook.
      */
-    @JsonProperty(value = "logActivityTrace")
     private Integer logActivityTrace;
 
     /**
+     * Creates an instance of TestJobInner class.
+     */
+    public TestJobInner() {
+    }
+
+    /**
      * Get the creationTime property: Gets or sets the creation time of the test job.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -91,7 +92,7 @@ public final class TestJobInner {
 
     /**
      * Set the creationTime property: Gets or sets the creation time of the test job.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the TestJobInner object itself.
      */
@@ -102,7 +103,7 @@ public final class TestJobInner {
 
     /**
      * Get the status property: Gets or sets the status of the test job.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -111,7 +112,7 @@ public final class TestJobInner {
 
     /**
      * Set the status property: Gets or sets the status of the test job.
-     *
+     * 
      * @param status the status value to set.
      * @return the TestJobInner object itself.
      */
@@ -122,7 +123,7 @@ public final class TestJobInner {
 
     /**
      * Get the statusDetails property: Gets or sets the status details of the test job.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -131,7 +132,7 @@ public final class TestJobInner {
 
     /**
      * Set the statusDetails property: Gets or sets the status details of the test job.
-     *
+     * 
      * @param statusDetails the statusDetails value to set.
      * @return the TestJobInner object itself.
      */
@@ -142,7 +143,7 @@ public final class TestJobInner {
 
     /**
      * Get the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -151,7 +152,7 @@ public final class TestJobInner {
 
     /**
      * Set the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the TestJobInner object itself.
      */
@@ -162,7 +163,7 @@ public final class TestJobInner {
 
     /**
      * Get the startTime property: Gets or sets the start time of the test job.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -171,7 +172,7 @@ public final class TestJobInner {
 
     /**
      * Set the startTime property: Gets or sets the start time of the test job.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the TestJobInner object itself.
      */
@@ -182,7 +183,7 @@ public final class TestJobInner {
 
     /**
      * Get the endTime property: Gets or sets the end time of the test job.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -191,7 +192,7 @@ public final class TestJobInner {
 
     /**
      * Set the endTime property: Gets or sets the end time of the test job.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the TestJobInner object itself.
      */
@@ -202,7 +203,7 @@ public final class TestJobInner {
 
     /**
      * Get the exception property: Gets or sets the exception of the test job.
-     *
+     * 
      * @return the exception value.
      */
     public String exception() {
@@ -211,7 +212,7 @@ public final class TestJobInner {
 
     /**
      * Set the exception property: Gets or sets the exception of the test job.
-     *
+     * 
      * @param exception the exception value to set.
      * @return the TestJobInner object itself.
      */
@@ -222,7 +223,7 @@ public final class TestJobInner {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time of the test job.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -231,7 +232,7 @@ public final class TestJobInner {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time of the test job.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the TestJobInner object itself.
      */
@@ -242,7 +243,7 @@ public final class TestJobInner {
 
     /**
      * Get the lastStatusModifiedTime property: Gets or sets the last status modified time of the test job.
-     *
+     * 
      * @return the lastStatusModifiedTime value.
      */
     public OffsetDateTime lastStatusModifiedTime() {
@@ -251,7 +252,7 @@ public final class TestJobInner {
 
     /**
      * Set the lastStatusModifiedTime property: Gets or sets the last status modified time of the test job.
-     *
+     * 
      * @param lastStatusModifiedTime the lastStatusModifiedTime value to set.
      * @return the TestJobInner object itself.
      */
@@ -262,7 +263,7 @@ public final class TestJobInner {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the test job.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -271,7 +272,7 @@ public final class TestJobInner {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the test job.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the TestJobInner object itself.
      */
@@ -282,7 +283,7 @@ public final class TestJobInner {
 
     /**
      * Get the logActivityTrace property: The activity-level tracing options of the runbook.
-     *
+     * 
      * @return the logActivityTrace value.
      */
     public Integer logActivityTrace() {
@@ -291,7 +292,7 @@ public final class TestJobInner {
 
     /**
      * Set the logActivityTrace property: The activity-level tracing options of the runbook.
-     *
+     * 
      * @param logActivityTrace the logActivityTrace value to set.
      * @return the TestJobInner object itself.
      */
@@ -302,9 +303,90 @@ public final class TestJobInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("statusDetails", this.statusDetails);
+        jsonWriter.writeStringField("runOn", this.runOn);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("exception", this.exception);
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("lastStatusModifiedTime",
+            this.lastStatusModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastStatusModifiedTime));
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("logActivityTrace", this.logActivityTrace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestJobInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestJobInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TestJobInner.
+     */
+    public static TestJobInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestJobInner deserializedTestJobInner = new TestJobInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("creationTime".equals(fieldName)) {
+                    deserializedTestJobInner.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedTestJobInner.status = reader.getString();
+                } else if ("statusDetails".equals(fieldName)) {
+                    deserializedTestJobInner.statusDetails = reader.getString();
+                } else if ("runOn".equals(fieldName)) {
+                    deserializedTestJobInner.runOn = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedTestJobInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedTestJobInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("exception".equals(fieldName)) {
+                    deserializedTestJobInner.exception = reader.getString();
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedTestJobInner.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastStatusModifiedTime".equals(fieldName)) {
+                    deserializedTestJobInner.lastStatusModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTestJobInner.parameters = parameters;
+                } else if ("logActivityTrace".equals(fieldName)) {
+                    deserializedTestJobInner.logActivityTrace = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestJobInner;
+        });
     }
 }

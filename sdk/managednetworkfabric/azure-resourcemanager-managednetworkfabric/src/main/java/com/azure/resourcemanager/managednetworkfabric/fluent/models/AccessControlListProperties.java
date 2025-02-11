@@ -5,75 +5,81 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Access Control List Properties defines the resource properties. */
+/**
+ * Access Control List Properties defines the resource properties.
+ */
 @Fluent
 public final class AccessControlListProperties extends AnnotationResource {
     /*
      * The last synced timestamp.
      */
-    @JsonProperty(value = "lastSyncedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSyncedTime;
 
     /*
      * Configuration state of the resource.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Administrative state of the resource.
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private AdministrativeState administrativeState;
 
     /*
      * Input method to configure Access Control List.
      */
-    @JsonProperty(value = "configurationType")
     private ConfigurationType configurationType;
 
     /*
      * Access Control List file URL.
      */
-    @JsonProperty(value = "aclsUrl")
     private String aclsUrl;
+
+    /*
+     * Default action that needs to be applied when no condition is matched. Example: Permit | Deny.
+     */
+    private CommunityActionTypes defaultAction;
 
     /*
      * List of match configurations.
      */
-    @JsonProperty(value = "matchConfigurations")
     private List<AccessControlListMatchConfiguration> matchConfigurations;
 
     /*
      * List of dynamic match configurations.
      */
-    @JsonProperty(value = "dynamicMatchConfigurations")
     private List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations;
 
-    /** Creates an instance of AccessControlListProperties class. */
+    /**
+     * Creates an instance of AccessControlListProperties class.
+     */
     public AccessControlListProperties() {
     }
 
     /**
      * Get the lastSyncedTime property: The last synced timestamp.
-     *
+     * 
      * @return the lastSyncedTime value.
      */
     public OffsetDateTime lastSyncedTime() {
@@ -82,7 +88,7 @@ public final class AccessControlListProperties extends AnnotationResource {
 
     /**
      * Get the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -91,7 +97,7 @@ public final class AccessControlListProperties extends AnnotationResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -100,7 +106,7 @@ public final class AccessControlListProperties extends AnnotationResource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -109,7 +115,7 @@ public final class AccessControlListProperties extends AnnotationResource {
 
     /**
      * Get the configurationType property: Input method to configure Access Control List.
-     *
+     * 
      * @return the configurationType value.
      */
     public ConfigurationType configurationType() {
@@ -118,7 +124,7 @@ public final class AccessControlListProperties extends AnnotationResource {
 
     /**
      * Set the configurationType property: Input method to configure Access Control List.
-     *
+     * 
      * @param configurationType the configurationType value to set.
      * @return the AccessControlListProperties object itself.
      */
@@ -129,7 +135,7 @@ public final class AccessControlListProperties extends AnnotationResource {
 
     /**
      * Get the aclsUrl property: Access Control List file URL.
-     *
+     * 
      * @return the aclsUrl value.
      */
     public String aclsUrl() {
@@ -138,7 +144,7 @@ public final class AccessControlListProperties extends AnnotationResource {
 
     /**
      * Set the aclsUrl property: Access Control List file URL.
-     *
+     * 
      * @param aclsUrl the aclsUrl value to set.
      * @return the AccessControlListProperties object itself.
      */
@@ -148,8 +154,30 @@ public final class AccessControlListProperties extends AnnotationResource {
     }
 
     /**
+     * Get the defaultAction property: Default action that needs to be applied when no condition is matched. Example:
+     * Permit | Deny.
+     * 
+     * @return the defaultAction value.
+     */
+    public CommunityActionTypes defaultAction() {
+        return this.defaultAction;
+    }
+
+    /**
+     * Set the defaultAction property: Default action that needs to be applied when no condition is matched. Example:
+     * Permit | Deny.
+     * 
+     * @param defaultAction the defaultAction value to set.
+     * @return the AccessControlListProperties object itself.
+     */
+    public AccessControlListProperties withDefaultAction(CommunityActionTypes defaultAction) {
+        this.defaultAction = defaultAction;
+        return this;
+    }
+
+    /**
      * Get the matchConfigurations property: List of match configurations.
-     *
+     * 
      * @return the matchConfigurations value.
      */
     public List<AccessControlListMatchConfiguration> matchConfigurations() {
@@ -158,19 +186,19 @@ public final class AccessControlListProperties extends AnnotationResource {
 
     /**
      * Set the matchConfigurations property: List of match configurations.
-     *
+     * 
      * @param matchConfigurations the matchConfigurations value to set.
      * @return the AccessControlListProperties object itself.
      */
-    public AccessControlListProperties withMatchConfigurations(
-        List<AccessControlListMatchConfiguration> matchConfigurations) {
+    public AccessControlListProperties
+        withMatchConfigurations(List<AccessControlListMatchConfiguration> matchConfigurations) {
         this.matchConfigurations = matchConfigurations;
         return this;
     }
 
     /**
      * Get the dynamicMatchConfigurations property: List of dynamic match configurations.
-     *
+     * 
      * @return the dynamicMatchConfigurations value.
      */
     public List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations() {
@@ -179,17 +207,19 @@ public final class AccessControlListProperties extends AnnotationResource {
 
     /**
      * Set the dynamicMatchConfigurations property: List of dynamic match configurations.
-     *
+     * 
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the AccessControlListProperties object itself.
      */
-    public AccessControlListProperties withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public AccessControlListProperties
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         this.dynamicMatchConfigurations = dynamicMatchConfigurations;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -198,17 +228,88 @@ public final class AccessControlListProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (matchConfigurations() != null) {
             matchConfigurations().forEach(e -> e.validate());
         }
         if (dynamicMatchConfigurations() != null) {
             dynamicMatchConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("configurationType",
+            this.configurationType == null ? null : this.configurationType.toString());
+        jsonWriter.writeStringField("aclsUrl", this.aclsUrl);
+        jsonWriter.writeStringField("defaultAction", this.defaultAction == null ? null : this.defaultAction.toString());
+        jsonWriter.writeArrayField("matchConfigurations", this.matchConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dynamicMatchConfigurations", this.dynamicMatchConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessControlListProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessControlListProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessControlListProperties.
+     */
+    public static AccessControlListProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessControlListProperties deserializedAccessControlListProperties = new AccessControlListProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedAccessControlListProperties.withAnnotation(reader.getString());
+                } else if ("lastSyncedTime".equals(fieldName)) {
+                    deserializedAccessControlListProperties.lastSyncedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("configurationState".equals(fieldName)) {
+                    deserializedAccessControlListProperties.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAccessControlListProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedAccessControlListProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
+                } else if ("configurationType".equals(fieldName)) {
+                    deserializedAccessControlListProperties.configurationType
+                        = ConfigurationType.fromString(reader.getString());
+                } else if ("aclsUrl".equals(fieldName)) {
+                    deserializedAccessControlListProperties.aclsUrl = reader.getString();
+                } else if ("defaultAction".equals(fieldName)) {
+                    deserializedAccessControlListProperties.defaultAction
+                        = CommunityActionTypes.fromString(reader.getString());
+                } else if ("matchConfigurations".equals(fieldName)) {
+                    List<AccessControlListMatchConfiguration> matchConfigurations
+                        = reader.readArray(reader1 -> AccessControlListMatchConfiguration.fromJson(reader1));
+                    deserializedAccessControlListProperties.matchConfigurations = matchConfigurations;
+                } else if ("dynamicMatchConfigurations".equals(fieldName)) {
+                    List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations
+                        = reader.readArray(reader1 -> CommonDynamicMatchConfiguration.fromJson(reader1));
+                    deserializedAccessControlListProperties.dynamicMatchConfigurations = dynamicMatchConfigurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessControlListProperties;
+        });
     }
 }

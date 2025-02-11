@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -57,13 +58,13 @@ public final class VirtualMachineScaleSetExtensionProperties
     /*
      * Json formatted public settings for the extension.
      */
-    private Map<String, Object> settings;
+    private Map<String, BinaryData> settings;
 
     /*
      * The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
      */
-    private Map<String, Object> protectedSettings;
+    private Map<String, BinaryData> protectedSettings;
 
     /*
      * The provisioning state, which only appears in the response.
@@ -232,7 +233,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the settings value.
      */
-    public Map<String, Object> settings() {
+    public Map<String, BinaryData> settings() {
         return this.settings;
     }
 
@@ -242,7 +243,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param settings the settings value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
-    public VirtualMachineScaleSetExtensionProperties withSettings(Map<String, Object> settings) {
+    public VirtualMachineScaleSetExtensionProperties withSettings(Map<String, BinaryData> settings) {
         this.settings = settings;
         return this;
     }
@@ -253,7 +254,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the protectedSettings value.
      */
-    public Map<String, Object> protectedSettings() {
+    public Map<String, BinaryData> protectedSettings() {
         return this.protectedSettings;
     }
 
@@ -264,7 +265,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param protectedSettings the protectedSettings value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
-    public VirtualMachineScaleSetExtensionProperties withProtectedSettings(Map<String, Object> protectedSettings) {
+    public VirtualMachineScaleSetExtensionProperties withProtectedSettings(Map<String, BinaryData> protectedSettings) {
         this.protectedSettings = protectedSettings;
         return this;
     }
@@ -373,9 +374,10 @@ public final class VirtualMachineScaleSetExtensionProperties
         jsonWriter.writeStringField("typeHandlerVersion", this.typeHandlerVersion);
         jsonWriter.writeBooleanField("autoUpgradeMinorVersion", this.autoUpgradeMinorVersion);
         jsonWriter.writeBooleanField("enableAutomaticUpgrade", this.enableAutomaticUpgrade);
-        jsonWriter.writeMapField("settings", this.settings, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("settings", this.settings,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeMapField("protectedSettings", this.protectedSettings,
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeArrayField("provisionAfterExtensions", this.provisionAfterExtensions,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("suppressFailures", this.suppressFailures);
@@ -414,10 +416,12 @@ public final class VirtualMachineScaleSetExtensionProperties
                     deserializedVirtualMachineScaleSetExtensionProperties.enableAutomaticUpgrade
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("settings".equals(fieldName)) {
-                    Map<String, Object> settings = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> settings = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedVirtualMachineScaleSetExtensionProperties.settings = settings;
                 } else if ("protectedSettings".equals(fieldName)) {
-                    Map<String, Object> protectedSettings = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> protectedSettings = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedVirtualMachineScaleSetExtensionProperties.protectedSettings = protectedSettings;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetExtensionProperties.provisioningState = reader.getString();

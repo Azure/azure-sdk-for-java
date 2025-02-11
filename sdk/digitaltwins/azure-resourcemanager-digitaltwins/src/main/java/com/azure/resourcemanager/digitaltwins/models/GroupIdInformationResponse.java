@@ -7,18 +7,20 @@ package com.azure.resourcemanager.digitaltwins.models;
 import com.azure.resourcemanager.digitaltwins.fluent.models.GroupIdInformationResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of GroupIdInformationResponse. */
+/**
+ * An immutable client-side representation of GroupIdInformationResponse.
+ */
 public interface GroupIdInformationResponse {
     /**
      * Gets the value property: The list of available private link resources for a Digital Twin.
-     *
+     * 
      * @return the value value.
      */
     List<GroupIdInformation> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.digitaltwins.fluent.models.GroupIdInformationResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     GroupIdInformationResponseInner innerModel();

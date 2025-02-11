@@ -9,7 +9,9 @@ package com.azure.resourcemanager.frontdoor.generated;
  */
 public final class RulesEnginesGetSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineGet.json
+     * x-ms-original-file:
+     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineGet.
+     * json
      */
     /**
      * Sample code: Get Rules Engine Configuration.

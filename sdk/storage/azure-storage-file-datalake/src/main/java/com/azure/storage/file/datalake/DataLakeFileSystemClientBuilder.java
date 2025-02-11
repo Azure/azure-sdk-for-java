@@ -59,14 +59,11 @@ import java.util.Objects;
  * accessible.
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {DataLakeFileSystemClient.class, DataLakeFileSystemAsyncClient.class})
-public class DataLakeFileSystemClientBuilder implements
-    TokenCredentialTrait<DataLakeFileSystemClientBuilder>,
+@ServiceClientBuilder(serviceClients = { DataLakeFileSystemClient.class, DataLakeFileSystemAsyncClient.class })
+public class DataLakeFileSystemClientBuilder implements TokenCredentialTrait<DataLakeFileSystemClientBuilder>,
     AzureNamedKeyCredentialTrait<DataLakeFileSystemClientBuilder>,
-    AzureSasCredentialTrait<DataLakeFileSystemClientBuilder>,
-    HttpTrait<DataLakeFileSystemClientBuilder>,
-    ConfigurationTrait<DataLakeFileSystemClientBuilder>,
-    EndpointTrait<DataLakeFileSystemClientBuilder> {
+    AzureSasCredentialTrait<DataLakeFileSystemClientBuilder>, HttpTrait<DataLakeFileSystemClientBuilder>,
+    ConfigurationTrait<DataLakeFileSystemClientBuilder>, EndpointTrait<DataLakeFileSystemClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeFileSystemClientBuilder.class);
 
     private final BlobContainerClientBuilder blobContainerClientBuilder;
@@ -108,11 +105,12 @@ public class DataLakeFileSystemClientBuilder implements
     }
 
     private HttpPipeline constructPipeline() {
-        return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint, retryOptions, coreRetryOptions,
-            logOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+        return (httpPipeline != null)
+            ? httpPipeline
+            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint,
+                retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+                perRetryPolicies, configuration, audience, LOGGER);
     }
-
 
     /**
      * <p><strong>Code Samples</strong></p>
@@ -137,8 +135,8 @@ public class DataLakeFileSystemClientBuilder implements
         to read and debug.
          */
         DataLakeFileSystemAsyncClient asyncClient = buildAsyncClient();
-        String dataLakeFileSystemName = CoreUtils.isNullOrEmpty(fileSystemName)
-            ? DataLakeFileSystemClient.ROOT_FILESYSTEM_NAME : fileSystemName;
+        String dataLakeFileSystemName
+            = CoreUtils.isNullOrEmpty(fileSystemName) ? DataLakeFileSystemClient.ROOT_FILESYSTEM_NAME : fileSystemName;
         return new DataLakeFileSystemClient(asyncClient, blobContainerClientBuilder.buildClient(),
             asyncClient.getHttpPipeline(), endpoint, getServiceVersion(), accountName, dataLakeFileSystemName,
             azureSasCredential, tokenCredential != null);
@@ -167,7 +165,8 @@ public class DataLakeFileSystemClientBuilder implements
         to read and debug.
          */
         String dataLakeFileSystemName = CoreUtils.isNullOrEmpty(fileSystemName)
-            ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME : fileSystemName;
+            ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME
+            : fileSystemName;
 
         return new DataLakeFileSystemAsyncClient(constructPipeline(), endpoint, getServiceVersion(), accountName,
             dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient(), azureSasCredential,
@@ -191,8 +190,8 @@ public class DataLakeFileSystemClientBuilder implements
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.accountName = parts.getAccountName();
-            this.fileSystemName = parts.getBlobContainerName() == null ? this.fileSystemName
-                : parts.getBlobContainerName();
+            this.fileSystemName
+                = parts.getBlobContainerName() == null ? this.fileSystemName : parts.getBlobContainerName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
@@ -263,8 +262,8 @@ public class DataLakeFileSystemClientBuilder implements
      */
     public DataLakeFileSystemClientBuilder sasToken(String sasToken) {
         blobContainerClientBuilder.sasToken(sasToken);
-        this.azureSasCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.azureSasCredential
+            = new AzureSasCredential(Objects.requireNonNull(sasToken, "'sasToken' cannot be null."));
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -280,8 +279,7 @@ public class DataLakeFileSystemClientBuilder implements
     @Override
     public DataLakeFileSystemClientBuilder credential(AzureSasCredential credential) {
         blobContainerClientBuilder.credential(credential);
-        this.azureSasCredential = Objects.requireNonNull(credential,
-            "'credential' cannot be null.");
+        this.azureSasCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -307,8 +305,8 @@ public class DataLakeFileSystemClientBuilder implements
      * @param fileSystemEncryptionScopeOptions Encryption scope containing the encryption key information.
      * @return the updated DataLakeFileSystemClientBuilder object
      */
-    public DataLakeFileSystemClientBuilder fileSystemEncryptionScopeOptions(
-        FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions) {
+    public DataLakeFileSystemClientBuilder
+        fileSystemEncryptionScopeOptions(FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions) {
         blobContainerClientBuilder
             .blobContainerEncryptionScope(Transforms.toBlobContainerEncryptionScope(fileSystemEncryptionScopeOptions));
         return this;

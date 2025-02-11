@@ -12,14 +12,14 @@ public final class ActivateApplicationPackageParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActivateApplicationPackageParameters model
-            = BinaryData.fromString("{\"format\":\"yqduujit\"}").toObject(ActivateApplicationPackageParameters.class);
-        Assertions.assertEquals("yqduujit", model.format());
+            = BinaryData.fromString("{\"format\":\"ugpbkw\"}").toObject(ActivateApplicationPackageParameters.class);
+        Assertions.assertEquals("ugpbkw", model.format());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActivateApplicationPackageParameters model = new ActivateApplicationPackageParameters().withFormat("yqduujit");
+        ActivateApplicationPackageParameters model = new ActivateApplicationPackageParameters().withFormat("ugpbkw");
         model = BinaryData.fromObject(model).toObject(ActivateApplicationPackageParameters.class);
-        Assertions.assertEquals("yqduujit", model.format());
+        Assertions.assertEquals("ugpbkw", model.format());
     }
 }

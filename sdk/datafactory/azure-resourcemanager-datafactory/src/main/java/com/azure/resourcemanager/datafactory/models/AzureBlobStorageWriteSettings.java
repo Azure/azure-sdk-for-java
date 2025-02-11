@@ -109,7 +109,9 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (metadata() != null) {
+            metadata().forEach(e -> e.validate());
+        }
     }
 
     /**

@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties of the control plane nodes of the provisioned cluster.
  */
 @Fluent
-public final class ControlPlaneProfile {
+public final class ControlPlaneProfile implements JsonSerializable<ControlPlaneProfile> {
     /*
      * Number of control plane nodes. The default value is 1, and the count should be an odd number
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * VM sku size of the control plane nodes
      */
-    @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
      * IP Address of the Kubernetes API server
      */
-    @JsonProperty(value = "controlPlaneEndpoint")
     private ControlPlaneProfileControlPlaneEndpoint controlPlaneEndpoint;
 
     /**
@@ -107,5 +108,48 @@ public final class ControlPlaneProfile {
         if (controlPlaneEndpoint() != null) {
             controlPlaneEndpoint().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeJsonField("controlPlaneEndpoint", this.controlPlaneEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControlPlaneProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControlPlaneProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ControlPlaneProfile.
+     */
+    public static ControlPlaneProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControlPlaneProfile deserializedControlPlaneProfile = new ControlPlaneProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedControlPlaneProfile.count = reader.getNullable(JsonReader::getInt);
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedControlPlaneProfile.vmSize = reader.getString();
+                } else if ("controlPlaneEndpoint".equals(fieldName)) {
+                    deserializedControlPlaneProfile.controlPlaneEndpoint
+                        = ControlPlaneProfileControlPlaneEndpoint.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControlPlaneProfile;
+        });
     }
 }

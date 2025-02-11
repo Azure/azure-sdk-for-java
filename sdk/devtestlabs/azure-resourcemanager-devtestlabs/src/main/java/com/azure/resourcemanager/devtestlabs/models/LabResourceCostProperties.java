@@ -5,72 +5,71 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of a resource cost item. */
+/**
+ * The properties of a resource cost item.
+ */
 @Fluent
-public final class LabResourceCostProperties {
+public final class LabResourceCostProperties implements JsonSerializable<LabResourceCostProperties> {
     /*
      * The name of the resource.
      */
-    @JsonProperty(value = "resourcename")
     private String resourcename;
 
     /*
      * The unique identifier of the resource.
      */
-    @JsonProperty(value = "resourceUId")
     private String resourceUId;
 
     /*
      * The cost component of the resource cost item.
      */
-    @JsonProperty(value = "resourceCost")
     private Double resourceCost;
 
     /*
      * The logical resource type (ex. virtualmachine, storageaccount)
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * The owner of the resource (ex. janedoe@microsoft.com)
      */
-    @JsonProperty(value = "resourceOwner")
     private String resourceOwner;
 
     /*
      * The category of the resource (ex. Premium_LRS, Standard_DS1)
      */
-    @JsonProperty(value = "resourcePricingTier")
     private String resourcePricingTier;
 
     /*
      * The status of the resource (ex. Active)
      */
-    @JsonProperty(value = "resourceStatus")
     private String resourceStatus;
 
     /*
      * The ID of the resource
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The ID of the external resource
      */
-    @JsonProperty(value = "externalResourceId")
     private String externalResourceId;
 
-    /** Creates an instance of LabResourceCostProperties class. */
+    /**
+     * Creates an instance of LabResourceCostProperties class.
+     */
     public LabResourceCostProperties() {
     }
 
     /**
      * Get the resourcename property: The name of the resource.
-     *
+     * 
      * @return the resourcename value.
      */
     public String resourcename() {
@@ -79,7 +78,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Set the resourcename property: The name of the resource.
-     *
+     * 
      * @param resourcename the resourcename value to set.
      * @return the LabResourceCostProperties object itself.
      */
@@ -90,7 +89,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Get the resourceUId property: The unique identifier of the resource.
-     *
+     * 
      * @return the resourceUId value.
      */
     public String resourceUId() {
@@ -99,7 +98,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Set the resourceUId property: The unique identifier of the resource.
-     *
+     * 
      * @param resourceUId the resourceUId value to set.
      * @return the LabResourceCostProperties object itself.
      */
@@ -110,7 +109,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Get the resourceCost property: The cost component of the resource cost item.
-     *
+     * 
      * @return the resourceCost value.
      */
     public Double resourceCost() {
@@ -119,7 +118,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Set the resourceCost property: The cost component of the resource cost item.
-     *
+     * 
      * @param resourceCost the resourceCost value to set.
      * @return the LabResourceCostProperties object itself.
      */
@@ -130,7 +129,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Get the resourceType property: The logical resource type (ex. virtualmachine, storageaccount).
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -139,7 +138,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Set the resourceType property: The logical resource type (ex. virtualmachine, storageaccount).
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the LabResourceCostProperties object itself.
      */
@@ -149,8 +148,8 @@ public final class LabResourceCostProperties {
     }
 
     /**
-     * Get the resourceOwner property: The owner of the resource (ex. janedoe@microsoft.com).
-     *
+     * Get the resourceOwner property: The owner of the resource (ex. janedoe&#064;microsoft.com).
+     * 
      * @return the resourceOwner value.
      */
     public String resourceOwner() {
@@ -158,8 +157,8 @@ public final class LabResourceCostProperties {
     }
 
     /**
-     * Set the resourceOwner property: The owner of the resource (ex. janedoe@microsoft.com).
-     *
+     * Set the resourceOwner property: The owner of the resource (ex. janedoe&#064;microsoft.com).
+     * 
      * @param resourceOwner the resourceOwner value to set.
      * @return the LabResourceCostProperties object itself.
      */
@@ -170,7 +169,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Get the resourcePricingTier property: The category of the resource (ex. Premium_LRS, Standard_DS1).
-     *
+     * 
      * @return the resourcePricingTier value.
      */
     public String resourcePricingTier() {
@@ -179,7 +178,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Set the resourcePricingTier property: The category of the resource (ex. Premium_LRS, Standard_DS1).
-     *
+     * 
      * @param resourcePricingTier the resourcePricingTier value to set.
      * @return the LabResourceCostProperties object itself.
      */
@@ -190,7 +189,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Get the resourceStatus property: The status of the resource (ex. Active).
-     *
+     * 
      * @return the resourceStatus value.
      */
     public String resourceStatus() {
@@ -199,7 +198,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Set the resourceStatus property: The status of the resource (ex. Active).
-     *
+     * 
      * @param resourceStatus the resourceStatus value to set.
      * @return the LabResourceCostProperties object itself.
      */
@@ -210,7 +209,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Get the resourceId property: The ID of the resource.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -219,7 +218,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Set the resourceId property: The ID of the resource.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the LabResourceCostProperties object itself.
      */
@@ -230,7 +229,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Get the externalResourceId property: The ID of the external resource.
-     *
+     * 
      * @return the externalResourceId value.
      */
     public String externalResourceId() {
@@ -239,7 +238,7 @@ public final class LabResourceCostProperties {
 
     /**
      * Set the externalResourceId property: The ID of the external resource.
-     *
+     * 
      * @param externalResourceId the externalResourceId value to set.
      * @return the LabResourceCostProperties object itself.
      */
@@ -250,9 +249,69 @@ public final class LabResourceCostProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourcename", this.resourcename);
+        jsonWriter.writeStringField("resourceUId", this.resourceUId);
+        jsonWriter.writeNumberField("resourceCost", this.resourceCost);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("resourceOwner", this.resourceOwner);
+        jsonWriter.writeStringField("resourcePricingTier", this.resourcePricingTier);
+        jsonWriter.writeStringField("resourceStatus", this.resourceStatus);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("externalResourceId", this.externalResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabResourceCostProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabResourceCostProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabResourceCostProperties.
+     */
+    public static LabResourceCostProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabResourceCostProperties deserializedLabResourceCostProperties = new LabResourceCostProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourcename".equals(fieldName)) {
+                    deserializedLabResourceCostProperties.resourcename = reader.getString();
+                } else if ("resourceUId".equals(fieldName)) {
+                    deserializedLabResourceCostProperties.resourceUId = reader.getString();
+                } else if ("resourceCost".equals(fieldName)) {
+                    deserializedLabResourceCostProperties.resourceCost = reader.getNullable(JsonReader::getDouble);
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedLabResourceCostProperties.resourceType = reader.getString();
+                } else if ("resourceOwner".equals(fieldName)) {
+                    deserializedLabResourceCostProperties.resourceOwner = reader.getString();
+                } else if ("resourcePricingTier".equals(fieldName)) {
+                    deserializedLabResourceCostProperties.resourcePricingTier = reader.getString();
+                } else if ("resourceStatus".equals(fieldName)) {
+                    deserializedLabResourceCostProperties.resourceStatus = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedLabResourceCostProperties.resourceId = reader.getString();
+                } else if ("externalResourceId".equals(fieldName)) {
+                    deserializedLabResourceCostProperties.externalResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabResourceCostProperties;
+        });
     }
 }

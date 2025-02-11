@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkableEnvironmentRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkableEnvironmentRequest model =
-            BinaryData
-                .fromString(
-                    "{\"tenantId\":\"ujjugwdkcglh\",\"userPrincipal\":\"lazjdyggdtjixhbk\",\"region\":\"ofqweykhmenevfye\"}")
-                .toObject(LinkableEnvironmentRequest.class);
+        LinkableEnvironmentRequest model = BinaryData.fromString(
+            "{\"tenantId\":\"ujjugwdkcglh\",\"userPrincipal\":\"lazjdyggdtjixhbk\",\"region\":\"ofqweykhmenevfye\"}")
+            .toObject(LinkableEnvironmentRequest.class);
         Assertions.assertEquals("ujjugwdkcglh", model.tenantId());
         Assertions.assertEquals("lazjdyggdtjixhbk", model.userPrincipal());
         Assertions.assertEquals("ofqweykhmenevfye", model.region());
@@ -23,11 +21,9 @@ public final class LinkableEnvironmentRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkableEnvironmentRequest model =
-            new LinkableEnvironmentRequest()
-                .withTenantId("ujjugwdkcglh")
-                .withUserPrincipal("lazjdyggdtjixhbk")
-                .withRegion("ofqweykhmenevfye");
+        LinkableEnvironmentRequest model = new LinkableEnvironmentRequest().withTenantId("ujjugwdkcglh")
+            .withUserPrincipal("lazjdyggdtjixhbk")
+            .withRegion("ofqweykhmenevfye");
         model = BinaryData.fromObject(model).toObject(LinkableEnvironmentRequest.class);
         Assertions.assertEquals("ujjugwdkcglh", model.tenantId());
         Assertions.assertEquals("lazjdyggdtjixhbk", model.userPrincipal());

@@ -12,20 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DatadogSingleSignOnPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatadogSingleSignOnProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Deleting\",\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"uimjmvx\",\"singleSignOnUrl\":\"duugidyjr\"}")
-                .toObject(DatadogSingleSignOnProperties.class);
+        DatadogSingleSignOnProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Deleting\",\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"uimjmvx\",\"singleSignOnUrl\":\"duugidyjr\"}")
+            .toObject(DatadogSingleSignOnProperties.class);
         Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
         Assertions.assertEquals("uimjmvx", model.enterpriseAppId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatadogSingleSignOnProperties model =
-            new DatadogSingleSignOnProperties()
-                .withSingleSignOnState(SingleSignOnStates.INITIAL)
+        DatadogSingleSignOnProperties model
+            = new DatadogSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
                 .withEnterpriseAppId("uimjmvx");
         model = BinaryData.fromObject(model).toObject(DatadogSingleSignOnProperties.class);
         Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());

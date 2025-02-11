@@ -46,9 +46,8 @@ public class QueueTestBase extends TestProxyTestBase {
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
         // in SAS tokens.
         // TODO (alzimmer): Once all Storage libraries are migrated to test proxy move this into the common parent.
-        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-            .setQueryOrderingIgnored(true)
-            .setIgnoredQueryParameters(Arrays.asList("sv"))));
+        interceptorManager.addMatchers(Arrays
+            .asList(new CustomMatcher().setQueryOrderingIgnored(true).setIgnoredQueryParameters(Arrays.asList("sv"))));
     }
 
     /**
@@ -61,9 +60,8 @@ public class QueueTestBase extends TestProxyTestBase {
             return;
         }
 
-        QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
-            .connectionString(getPrimaryConnectionString())
-            .buildClient();
+        QueueServiceClient cleanupQueueServiceClient
+            = new QueueServiceClientBuilder().connectionString(getPrimaryConnectionString()).buildClient();
 
         cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(prefix), null, Context.NONE)
             .forEach(queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.getName()));
@@ -82,14 +80,13 @@ public class QueueTestBase extends TestProxyTestBase {
     }
 
     protected QueueClientBuilder queueBuilderHelper() {
-        return instrument(new QueueClientBuilder())
-            .connectionString(getPrimaryConnectionString())
+        return instrument(new QueueClientBuilder()).connectionString(getPrimaryConnectionString())
             .queueName(getRandomName(60));
     }
 
     protected QueueServiceClientBuilder getOAuthServiceClientBuilder() {
-        QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint());
+        QueueServiceClientBuilder builder
+            = new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint());
 
         instrument(builder);
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
@@ -97,8 +94,7 @@ public class QueueTestBase extends TestProxyTestBase {
 
     protected QueueServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
-            .endpoint(endpoint);
+        QueueServiceClientBuilder builder = new QueueServiceClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -118,8 +114,8 @@ public class QueueTestBase extends TestProxyTestBase {
     }
 
     protected QueueClientBuilder getOAuthQueueClientBuilder() {
-        QueueClientBuilder builder = new QueueClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint());
+        QueueClientBuilder builder
+            = new QueueClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint());
 
         instrument(builder);
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));

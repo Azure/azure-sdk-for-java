@@ -86,7 +86,7 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getMultivariateBatchDetectionResult(@HostParam("Endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @PathParam("resultId") String resultId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/multivariate/detect-batch/{resultId}")
         @ExpectedResponses({ 200 })
@@ -96,7 +96,7 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getMultivariateBatchDetectionResultSync(@HostParam("Endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @PathParam("resultId") String resultId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/multivariate/models")
         @ExpectedResponses({ 201 })
@@ -105,8 +105,9 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> trainMultivariateModel(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData modelInfo, RequestOptions requestOptions, Context context);
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData modelInfo,
+            RequestOptions requestOptions, Context context);
 
         @Post("/multivariate/models")
         @ExpectedResponses({ 201 })
@@ -115,8 +116,9 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> trainMultivariateModelSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData modelInfo, RequestOptions requestOptions, Context context);
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData modelInfo,
+            RequestOptions requestOptions, Context context);
 
         @Get("/multivariate/models")
         @ExpectedResponses({ 200 })
@@ -125,7 +127,7 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listMultivariateModels(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/multivariate/models")
@@ -135,7 +137,7 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listMultivariateModelsSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/multivariate/models/{modelId}")
@@ -146,7 +148,7 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteMultivariateModel(@HostParam("Endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/multivariate/models/{modelId}")
         @ExpectedResponses({ 204 })
@@ -156,7 +158,7 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteMultivariateModelSync(@HostParam("Endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/multivariate/models/{modelId}")
         @ExpectedResponses({ 200 })
@@ -166,7 +168,7 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getMultivariateModel(@HostParam("Endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/multivariate/models/{modelId}")
         @ExpectedResponses({ 200 })
@@ -176,7 +178,7 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getMultivariateModelSync(@HostParam("Endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/multivariate/models/{modelId}:detect-batch")
         @ExpectedResponses({ 202 })
@@ -186,8 +188,8 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectMultivariateBatchAnomaly(@HostParam("Endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData options,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
 
         @Post("/multivariate/models/{modelId}:detect-batch")
         @ExpectedResponses({ 202 })
@@ -197,8 +199,8 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> detectMultivariateBatchAnomalySync(@HostParam("Endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData options,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
 
         @Post("/multivariate/models/{modelId}:detect-last")
         @ExpectedResponses({ 200 })
@@ -208,8 +210,8 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectMultivariateLastAnomaly(@HostParam("Endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData options,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
 
         @Post("/multivariate/models/{modelId}:detect-last")
         @ExpectedResponses({ 200 })
@@ -219,8 +221,8 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> detectMultivariateLastAnomalySync(@HostParam("Endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData options,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -230,7 +232,7 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listMultivariateModelsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -241,7 +243,7 @@ public final class MultivariatesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listMultivariateModelsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
     }
 
@@ -252,7 +254,8 @@ public final class MultivariatesImpl {
      * resultId value that the BatchDetectAnomaly API returns.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     resultId: String (Required)
      *     summary (Required): {
@@ -304,7 +307,8 @@ public final class MultivariatesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param resultId ID of a batch detection result.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -312,7 +316,10 @@ public final class MultivariatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detection results for the resultId value along with {@link Response} on successful completion of
+     * @return multivariate Anomaly Detection Result
+     * 
+     * For asynchronous inference, get a multivariate anomaly detection result based on the
+     * resultId value that the BatchDetectAnomaly API returns along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -330,7 +337,8 @@ public final class MultivariatesImpl {
      * resultId value that the BatchDetectAnomaly API returns.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     resultId: String (Required)
      *     summary (Required): {
@@ -382,7 +390,8 @@ public final class MultivariatesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param resultId ID of a batch detection result.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -390,7 +399,10 @@ public final class MultivariatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detection results for the resultId value along with {@link Response}.
+     * @return multivariate Anomaly Detection Result
+     * 
+     * For asynchronous inference, get a multivariate anomaly detection result based on the
+     * resultId value that the BatchDetectAnomaly API returns along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getMultivariateBatchDetectionResultWithResponse(String resultId,
@@ -417,7 +429,8 @@ public final class MultivariatesImpl {
      * modelInfo object.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dataSource: String (Required)
      *     dataSchema: String(OneTable/MultiTable) (Optional)
@@ -463,11 +476,13 @@ public final class MultivariatesImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -518,7 +533,8 @@ public final class MultivariatesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelInfo Model information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -531,9 +547,10 @@ public final class MultivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> trainMultivariateModelWithResponseAsync(BinaryData modelInfo,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.trainMultivariateModel(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, modelInfo, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, modelInfo, requestOptions, context));
     }
 
     /**
@@ -553,7 +570,8 @@ public final class MultivariatesImpl {
      * modelInfo object.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dataSource: String (Required)
      *     dataSchema: String(OneTable/MultiTable) (Optional)
@@ -599,11 +617,13 @@ public final class MultivariatesImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -654,7 +674,8 @@ public final class MultivariatesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelInfo Model information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -667,9 +688,10 @@ public final class MultivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> trainMultivariateModelWithResponse(BinaryData modelInfo,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.trainMultivariateModelSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, modelInfo, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), contentType, accept, modelInfo, requestOptions, Context.NONE);
     }
 
     /**
@@ -686,7 +708,8 @@ public final class MultivariatesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -737,7 +760,8 @@ public final class MultivariatesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -770,7 +794,8 @@ public final class MultivariatesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -821,7 +846,8 @@ public final class MultivariatesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -853,7 +879,8 @@ public final class MultivariatesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -904,7 +931,8 @@ public final class MultivariatesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -936,7 +964,8 @@ public final class MultivariatesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -987,7 +1016,8 @@ public final class MultivariatesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1053,7 +1083,8 @@ public final class MultivariatesImpl {
      * and variables used in the model.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -1104,7 +1135,8 @@ public final class MultivariatesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Model identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1112,7 +1144,9 @@ public final class MultivariatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed information about the multivariate model, including the training status
+     * @return multivariate Model
+     * 
+     * Get detailed information about the multivariate model, including the training status
      * and variables used in the model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1130,7 +1164,8 @@ public final class MultivariatesImpl {
      * and variables used in the model.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -1181,7 +1216,8 @@ public final class MultivariatesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Model identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1189,7 +1225,9 @@ public final class MultivariatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed information about the multivariate model, including the training status
+     * @return multivariate Model
+     * 
+     * Get detailed information about the multivariate model, including the training status
      * and variables used in the model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1210,18 +1248,21 @@ public final class MultivariatesImpl {
      * Storage folder or points to a CSV file in Azure Blob Storage.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dataSource: String (Required)
      *     topContributorCount: Integer (Optional)
      *     startTime: OffsetDateTime (Required)
      *     endTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     resultId: String (Required)
      *     summary (Required): {
@@ -1273,7 +1314,8 @@ public final class MultivariatesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Model identifier.
      * @param options Request of multivariate anomaly detection.
@@ -1288,9 +1330,11 @@ public final class MultivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> detectMultivariateBatchAnomalyWithResponseAsync(String modelId,
         BinaryData options, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.detectMultivariateBatchAnomaly(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), modelId, accept, options, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), modelId, contentType, accept, options, requestOptions,
+            context));
     }
 
     /**
@@ -1304,18 +1348,21 @@ public final class MultivariatesImpl {
      * Storage folder or points to a CSV file in Azure Blob Storage.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dataSource: String (Required)
      *     topContributorCount: Integer (Optional)
      *     startTime: OffsetDateTime (Required)
      *     endTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     resultId: String (Required)
      *     summary (Required): {
@@ -1367,7 +1414,8 @@ public final class MultivariatesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Model identifier.
      * @param options Request of multivariate anomaly detection.
@@ -1381,9 +1429,11 @@ public final class MultivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectMultivariateBatchAnomalyWithResponse(String modelId, BinaryData options,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.detectMultivariateBatchAnomalySync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), modelId, accept, options, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), modelId, contentType, accept, options, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1395,7 +1445,8 @@ public final class MultivariatesImpl {
      * immediately in the response body.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     variables (Required): [
      *          (Required){
@@ -1410,11 +1461,13 @@ public final class MultivariatesImpl {
      *     ]
      *     topContributorCount: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     variableStates (Optional): [
      *          (Optional){
@@ -1453,7 +1506,8 @@ public final class MultivariatesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Model identifier.
      * @param options Request of the last detection.
@@ -1467,9 +1521,11 @@ public final class MultivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> detectMultivariateLastAnomalyWithResponseAsync(String modelId, BinaryData options,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.detectMultivariateLastAnomaly(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), modelId, accept, options, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), modelId, contentType, accept, options, requestOptions,
+            context));
     }
 
     /**
@@ -1481,7 +1537,8 @@ public final class MultivariatesImpl {
      * immediately in the response body.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     variables (Required): [
      *          (Required){
@@ -1496,11 +1553,13 @@ public final class MultivariatesImpl {
      *     ]
      *     topContributorCount: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     variableStates (Optional): [
      *          (Optional){
@@ -1539,7 +1598,8 @@ public final class MultivariatesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Model identifier.
      * @param options Request of the last detection.
@@ -1553,9 +1613,11 @@ public final class MultivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectMultivariateLastAnomalyWithResponse(String modelId, BinaryData options,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.detectMultivariateLastAnomalySync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), modelId, accept, options, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), modelId, contentType, accept, options, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1564,7 +1626,8 @@ public final class MultivariatesImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -1615,7 +1678,8 @@ public final class MultivariatesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1642,7 +1706,8 @@ public final class MultivariatesImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -1693,7 +1758,8 @@ public final class MultivariatesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The flow endpoints configuration. */
+/**
+ * The flow endpoints configuration.
+ */
 @Fluent
-public final class FlowEndpoints {
+public final class FlowEndpoints implements JsonSerializable<FlowEndpoints> {
     /*
      * The outgoing ip address.
      */
-    @JsonProperty(value = "outgoingIpAddresses")
     private List<IpAddress> outgoingIpAddresses;
 
     /*
      * The access endpoint ip address.
      */
-    @JsonProperty(value = "accessEndpointIpAddresses")
     private List<IpAddress> accessEndpointIpAddresses;
 
-    /** Creates an instance of FlowEndpoints class. */
+    /**
+     * Creates an instance of FlowEndpoints class.
+     */
     public FlowEndpoints() {
     }
 
     /**
      * Get the outgoingIpAddresses property: The outgoing ip address.
-     *
+     * 
      * @return the outgoingIpAddresses value.
      */
     public List<IpAddress> outgoingIpAddresses() {
@@ -38,7 +44,7 @@ public final class FlowEndpoints {
 
     /**
      * Set the outgoingIpAddresses property: The outgoing ip address.
-     *
+     * 
      * @param outgoingIpAddresses the outgoingIpAddresses value to set.
      * @return the FlowEndpoints object itself.
      */
@@ -49,7 +55,7 @@ public final class FlowEndpoints {
 
     /**
      * Get the accessEndpointIpAddresses property: The access endpoint ip address.
-     *
+     * 
      * @return the accessEndpointIpAddresses value.
      */
     public List<IpAddress> accessEndpointIpAddresses() {
@@ -58,7 +64,7 @@ public final class FlowEndpoints {
 
     /**
      * Set the accessEndpointIpAddresses property: The access endpoint ip address.
-     *
+     * 
      * @param accessEndpointIpAddresses the accessEndpointIpAddresses value to set.
      * @return the FlowEndpoints object itself.
      */
@@ -69,7 +75,7 @@ public final class FlowEndpoints {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,5 +85,49 @@ public final class FlowEndpoints {
         if (accessEndpointIpAddresses() != null) {
             accessEndpointIpAddresses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("outgoingIpAddresses", this.outgoingIpAddresses,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("accessEndpointIpAddresses", this.accessEndpointIpAddresses,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FlowEndpoints from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FlowEndpoints if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FlowEndpoints.
+     */
+    public static FlowEndpoints fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FlowEndpoints deserializedFlowEndpoints = new FlowEndpoints();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("outgoingIpAddresses".equals(fieldName)) {
+                    List<IpAddress> outgoingIpAddresses = reader.readArray(reader1 -> IpAddress.fromJson(reader1));
+                    deserializedFlowEndpoints.outgoingIpAddresses = outgoingIpAddresses;
+                } else if ("accessEndpointIpAddresses".equals(fieldName)) {
+                    List<IpAddress> accessEndpointIpAddresses
+                        = reader.readArray(reader1 -> IpAddress.fromJson(reader1));
+                    deserializedFlowEndpoints.accessEndpointIpAddresses = accessEndpointIpAddresses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFlowEndpoints;
+        });
     }
 }

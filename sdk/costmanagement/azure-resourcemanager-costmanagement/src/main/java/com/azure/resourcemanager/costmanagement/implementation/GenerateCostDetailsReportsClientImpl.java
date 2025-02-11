@@ -33,24 +33,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GenerateCostDetailsReportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GenerateCostDetailsReportsClient.
+ */
 public final class GenerateCostDetailsReportsClientImpl implements GenerateCostDetailsReportsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GenerateCostDetailsReportsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CostManagementClientImpl client;
 
     /**
      * Initializes an instance of GenerateCostDetailsReportsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GenerateCostDetailsReportsClientImpl(CostManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    GenerateCostDetailsReportsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(GenerateCostDetailsReportsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,29 +65,22 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface GenerateCostDetailsReportsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{scope}/providers/Microsoft.CostManagement/generateCostDetailsReport")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOperation(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> createOperation(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GenerateCostDetailsReportRequestDefinition parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.CostManagement/costDetailsOperationResults/{operationId}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getOperationResults(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> getOperationResults(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -97,24 +94,22 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the long running operation for cost details Api along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOperationWithResponseAsync(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOperationWithResponseAsync(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -126,11 +121,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOperation(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
+            .withContext(context -> service.createOperation(this.client.getEndpoint(), scope,
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -145,25 +137,23 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the long running operation for cost details Api along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOperationWithResponseAsync(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOperationWithResponseAsync(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -175,9 +165,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOperation(
-                this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context);
+        return service.createOperation(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters,
+            accept, context);
     }
 
     /**
@@ -191,9 +180,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -204,14 +193,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
     private PollerFlux<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
         beginCreateOperationAsync(String scope, GenerateCostDetailsReportRequestDefinition parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOperationWithResponseAsync(scope, parameters);
-        return this
-            .client
-            .<CostDetailsOperationResultsInner, CostDetailsOperationResultsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CostDetailsOperationResultsInner.class,
-                CostDetailsOperationResultsInner.class,
-                this.client.getContext());
+        return this.client.<CostDetailsOperationResultsInner, CostDetailsOperationResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CostDetailsOperationResultsInner.class,
+            CostDetailsOperationResultsInner.class, this.client.getContext());
     }
 
     /**
@@ -225,9 +209,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,18 +221,13 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
-        beginCreateOperationAsync(
-            String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context) {
+        beginCreateOperationAsync(String scope, GenerateCostDetailsReportRequestDefinition parameters,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOperationWithResponseAsync(scope, parameters, context);
-        return this
-            .client
-            .<CostDetailsOperationResultsInner, CostDetailsOperationResultsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CostDetailsOperationResultsInner.class,
-                CostDetailsOperationResultsInner.class,
-                context);
+        return this.client.<CostDetailsOperationResultsInner, CostDetailsOperationResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CostDetailsOperationResultsInner.class,
+            CostDetailsOperationResultsInner.class, context);
     }
 
     /**
@@ -262,9 +241,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -288,9 +267,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,9 +294,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -325,8 +304,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * @return the result of the long running operation for cost details Api on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CostDetailsOperationResultsInner> createOperationAsync(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters) {
+    private Mono<CostDetailsOperationResultsInner> createOperationAsync(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters) {
         return beginCreateOperationAsync(scope, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -341,9 +320,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -352,10 +331,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * @return the result of the long running operation for cost details Api on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CostDetailsOperationResultsInner> createOperationAsync(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context) {
-        return beginCreateOperationAsync(scope, parameters, context)
-            .last()
+    private Mono<CostDetailsOperationResultsInner> createOperationAsync(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters, Context context) {
+        return beginCreateOperationAsync(scope, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -370,9 +348,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -380,8 +358,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * @return the result of the long running operation for cost details Api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CostDetailsOperationResultsInner createOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters) {
+    public CostDetailsOperationResultsInner createOperation(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters) {
         return createOperationAsync(scope, parameters).block();
     }
 
@@ -396,9 +374,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -407,31 +385,29 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * @return the result of the long running operation for cost details Api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CostDetailsOperationResultsInner createOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context) {
+    public CostDetailsOperationResultsInner createOperation(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters, Context context) {
         return createOperationAsync(scope, parameters, context).block();
     }
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the specified operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of the specified operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getOperationResultsWithResponseAsync(String scope, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -441,41 +417,31 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getOperationResults(
-                            this.client.getEndpoint(),
-                            scope,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getOperationResults(this.client.getEndpoint(), scope, operationId,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the specified operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of the specified operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getOperationResultsWithResponseAsync(
-        String scope, String operationId, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> getOperationResultsWithResponseAsync(String scope, String operationId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -485,17 +451,16 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getOperationResults(
-                this.client.getEndpoint(), scope, operationId, this.client.getApiVersion(), accept, context);
+        return service.getOperationResults(this.client.getEndpoint(), scope, operationId, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -506,22 +471,17 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
     private PollerFlux<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
         beginGetOperationResultsAsync(String scope, String operationId) {
         Mono<Response<Flux<ByteBuffer>>> mono = getOperationResultsWithResponseAsync(scope, operationId);
-        return this
-            .client
-            .<CostDetailsOperationResultsInner, CostDetailsOperationResultsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CostDetailsOperationResultsInner.class,
-                CostDetailsOperationResultsInner.class,
-                this.client.getContext());
+        return this.client.<CostDetailsOperationResultsInner, CostDetailsOperationResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CostDetailsOperationResultsInner.class,
+            CostDetailsOperationResultsInner.class, this.client.getContext());
     }
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -534,22 +494,17 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
         beginGetOperationResultsAsync(String scope, String operationId, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = getOperationResultsWithResponseAsync(scope, operationId, context);
-        return this
-            .client
-            .<CostDetailsOperationResultsInner, CostDetailsOperationResultsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CostDetailsOperationResultsInner.class,
-                CostDetailsOperationResultsInner.class,
-                context);
+        return this.client.<CostDetailsOperationResultsInner, CostDetailsOperationResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CostDetailsOperationResultsInner.class,
+            CostDetailsOperationResultsInner.class, context);
     }
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -565,9 +520,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -584,9 +539,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -601,9 +556,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -612,19 +567,18 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * @return the result of the specified operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CostDetailsOperationResultsInner> getOperationResultsAsync(
-        String scope, String operationId, Context context) {
-        return beginGetOperationResultsAsync(scope, operationId, context)
-            .last()
+    private Mono<CostDetailsOperationResultsInner> getOperationResultsAsync(String scope, String operationId,
+        Context context) {
+        return beginGetOperationResultsAsync(scope, operationId, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -639,9 +593,9 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

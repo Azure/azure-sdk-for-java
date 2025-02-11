@@ -42,8 +42,8 @@ public class NioBlobOutputStreamTests extends BlobNioTestBase {
         fs = createFS(initializeConfigMap());
         AzurePath path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()));
 
-        nioStream = new NioBlobOutputStream(bc.getBlobOutputStream(new ParallelTransferOptions(BLOCK_SIZE, null, null,
-            MAX_SINGLE_UPLOAD_SIZE), null, null, null, null), path);
+        nioStream = new NioBlobOutputStream(bc.getBlobOutputStream(
+            new ParallelTransferOptions(BLOCK_SIZE, null, null, MAX_SINGLE_UPLOAD_SIZE), null, null, null, null), path);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class NioBlobOutputStreamTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"0,100", "20,80", "20,40"})
+    @CsvSource(value = { "0,100", "20,80", "20,40" })
     public void writeOffsetLen(int offset, int len) throws IOException {
         int dataSize = 100;
         byte[] data = getRandomByteArray(dataSize);

@@ -17,15 +17,14 @@ public final class IntegrationRuntimeCredentialsImpl implements IntegrationRunti
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public IntegrationRuntimeCredentialsImpl(
-        IntegrationRuntimeCredentialsClient innerClient,
+    public IntegrationRuntimeCredentialsImpl(IntegrationRuntimeCredentialsClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> syncWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
+    public Response<Void> syncWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context) {
         return this.serviceClient().syncWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, context);
     }
 

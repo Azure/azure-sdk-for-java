@@ -13,9 +13,17 @@ import java.util.List;
 /** Type representing LegalHold. */
 @Fluent
 public interface LegalHold extends HasInnerModel<LegalHoldInner>, HasManager<StorageManager> {
-    /** @return the hasLegalHold value. */
+    /**
+     * Checks whether legal hold id true.
+     *
+     * @return the hasLegalHold value.
+     */
     Boolean hasLegalHold();
 
-    /** @return the tags value. */
+    /**
+     * Gets the tags.
+     *
+     * @return the tags value.
+     */
     List<String> tags();
 }

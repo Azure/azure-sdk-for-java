@@ -5,141 +5,130 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.models.FirmwareType;
 import com.azure.resourcemanager.connectedvmware.models.NetworkInterface;
 import com.azure.resourcemanager.connectedvmware.models.OsType;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.azure.resourcemanager.connectedvmware.models.VirtualDisk;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the properties of a Virtual Machine Template. */
+/**
+ * Describes the properties of a Virtual Machine Template.
+ */
 @Fluent
-public final class VirtualMachineTemplateProperties {
+public final class VirtualMachineTemplateProperties implements JsonSerializable<VirtualMachineTemplateProperties> {
     /*
      * Gets or sets a unique identifier for this resource.
      */
-    @JsonProperty(value = "uuid", access = JsonProperty.Access.WRITE_ONLY)
     private String uuid;
 
     /*
      * Gets or sets the ARM Id of the vCenter resource in which this template resides.
      */
-    @JsonProperty(value = "vCenterId")
     private String vCenterId;
 
     /*
      * Gets or sets the vCenter MoRef (Managed Object Reference) ID for the virtual machine
      * template.
      */
-    @JsonProperty(value = "moRefId")
     private String moRefId;
 
     /*
      * Gets or sets the inventory Item ID for the virtual machine template.
      */
-    @JsonProperty(value = "inventoryItemId")
     private String inventoryItemId;
 
     /*
      * Gets or sets the vCenter Managed Object name for the virtual machine template.
      */
-    @JsonProperty(value = "moName", access = JsonProperty.Access.WRITE_ONLY)
     private String moName;
 
     /*
      * Gets or sets memory size in MBs for the template.
      */
-    @JsonProperty(value = "memorySizeMB", access = JsonProperty.Access.WRITE_ONLY)
     private Integer memorySizeMB;
 
     /*
      * Gets or sets the number of vCPUs for the template.
      */
-    @JsonProperty(value = "numCPUs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer numCPUs;
 
     /*
      * Gets or sets the number of cores per socket for the template.
      * Defaults to 1 if unspecified.
      */
-    @JsonProperty(value = "numCoresPerSocket", access = JsonProperty.Access.WRITE_ONLY)
     private Integer numCoresPerSocket;
 
     /*
      * Gets or sets the type of the os.
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OsType osType;
 
     /*
      * Gets or sets os name.
      */
-    @JsonProperty(value = "osName", access = JsonProperty.Access.WRITE_ONLY)
     private String osName;
 
     /*
      * Gets or sets the folder path of the template.
      */
-    @JsonProperty(value = "folderPath", access = JsonProperty.Access.WRITE_ONLY)
     private String folderPath;
 
     /*
      * Gets or sets the network interfaces of the template.
      */
-    @JsonProperty(value = "networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterface> networkInterfaces;
 
     /*
      * Gets or sets the disks the template.
      */
-    @JsonProperty(value = "disks", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualDisk> disks;
 
     /*
      * Gets the name of the corresponding resource in Kubernetes.
      */
-    @JsonProperty(value = "customResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String customResourceName;
 
     /*
      * Gets or sets the current version status of VMware Tools installed in the guest operating system.
      */
-    @JsonProperty(value = "toolsVersionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String toolsVersionStatus;
 
     /*
      * Gets or sets the current version of VMware Tools.
      */
-    @JsonProperty(value = "toolsVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String toolsVersion;
 
     /*
      * Firmware type
      */
-    @JsonProperty(value = "firmwareType", access = JsonProperty.Access.WRITE_ONLY)
     private FirmwareType firmwareType;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceStatus> statuses;
 
     /*
      * Gets the provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VirtualMachineTemplateProperties class. */
+    /**
+     * Creates an instance of VirtualMachineTemplateProperties class.
+     */
     public VirtualMachineTemplateProperties() {
     }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
-     *
+     * 
      * @return the uuid value.
      */
     public String uuid() {
@@ -148,7 +137,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this template resides.
-     *
+     * 
      * @return the vCenterId value.
      */
     public String vCenterId() {
@@ -157,7 +146,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this template resides.
-     *
+     * 
      * @param vCenterId the vCenterId value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -169,7 +158,7 @@ public final class VirtualMachineTemplateProperties {
     /**
      * Get the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the virtual machine
      * template.
-     *
+     * 
      * @return the moRefId value.
      */
     public String moRefId() {
@@ -179,7 +168,7 @@ public final class VirtualMachineTemplateProperties {
     /**
      * Set the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the virtual machine
      * template.
-     *
+     * 
      * @param moRefId the moRefId value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -190,7 +179,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the virtual machine template.
-     *
+     * 
      * @return the inventoryItemId value.
      */
     public String inventoryItemId() {
@@ -199,7 +188,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Set the inventoryItemId property: Gets or sets the inventory Item ID for the virtual machine template.
-     *
+     * 
      * @param inventoryItemId the inventoryItemId value to set.
      * @return the VirtualMachineTemplateProperties object itself.
      */
@@ -210,7 +199,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the moName property: Gets or sets the vCenter Managed Object name for the virtual machine template.
-     *
+     * 
      * @return the moName value.
      */
     public String moName() {
@@ -219,7 +208,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the memorySizeMB property: Gets or sets memory size in MBs for the template.
-     *
+     * 
      * @return the memorySizeMB value.
      */
     public Integer memorySizeMB() {
@@ -228,7 +217,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the numCPUs property: Gets or sets the number of vCPUs for the template.
-     *
+     * 
      * @return the numCPUs value.
      */
     public Integer numCPUs() {
@@ -236,9 +225,9 @@ public final class VirtualMachineTemplateProperties {
     }
 
     /**
-     * Get the numCoresPerSocket property: Gets or sets the number of cores per socket for the template. Defaults to 1
-     * if unspecified.
-     *
+     * Get the numCoresPerSocket property: Gets or sets the number of cores per socket for the template.
+     * Defaults to 1 if unspecified.
+     * 
      * @return the numCoresPerSocket value.
      */
     public Integer numCoresPerSocket() {
@@ -247,7 +236,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the osType property: Gets or sets the type of the os.
-     *
+     * 
      * @return the osType value.
      */
     public OsType osType() {
@@ -256,7 +245,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the osName property: Gets or sets os name.
-     *
+     * 
      * @return the osName value.
      */
     public String osName() {
@@ -265,7 +254,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the folderPath property: Gets or sets the folder path of the template.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -274,7 +263,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the networkInterfaces property: Gets or sets the network interfaces of the template.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterface> networkInterfaces() {
@@ -283,7 +272,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the disks property: Gets or sets the disks the template.
-     *
+     * 
      * @return the disks value.
      */
     public List<VirtualDisk> disks() {
@@ -292,7 +281,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
-     *
+     * 
      * @return the customResourceName value.
      */
     public String customResourceName() {
@@ -302,7 +291,7 @@ public final class VirtualMachineTemplateProperties {
     /**
      * Get the toolsVersionStatus property: Gets or sets the current version status of VMware Tools installed in the
      * guest operating system.
-     *
+     * 
      * @return the toolsVersionStatus value.
      */
     public String toolsVersionStatus() {
@@ -311,7 +300,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the toolsVersion property: Gets or sets the current version of VMware Tools.
-     *
+     * 
      * @return the toolsVersion value.
      */
     public String toolsVersion() {
@@ -320,7 +309,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the firmwareType property: Firmware type.
-     *
+     * 
      * @return the firmwareType value.
      */
     public FirmwareType firmwareType() {
@@ -329,7 +318,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceStatus> statuses() {
@@ -338,7 +327,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -347,7 +336,7 @@ public final class VirtualMachineTemplateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -360,5 +349,87 @@ public final class VirtualMachineTemplateProperties {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vCenterId", this.vCenterId);
+        jsonWriter.writeStringField("moRefId", this.moRefId);
+        jsonWriter.writeStringField("inventoryItemId", this.inventoryItemId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineTemplateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineTemplateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineTemplateProperties.
+     */
+    public static VirtualMachineTemplateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineTemplateProperties deserializedVirtualMachineTemplateProperties
+                = new VirtualMachineTemplateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uuid".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.uuid = reader.getString();
+                } else if ("vCenterId".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.vCenterId = reader.getString();
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.moRefId = reader.getString();
+                } else if ("inventoryItemId".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.inventoryItemId = reader.getString();
+                } else if ("moName".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.moName = reader.getString();
+                } else if ("memorySizeMB".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.memorySizeMB = reader.getNullable(JsonReader::getInt);
+                } else if ("numCPUs".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.numCPUs = reader.getNullable(JsonReader::getInt);
+                } else if ("numCoresPerSocket".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.numCoresPerSocket
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("osType".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.osType = OsType.fromString(reader.getString());
+                } else if ("osName".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.osName = reader.getString();
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.folderPath = reader.getString();
+                } else if ("networkInterfaces".equals(fieldName)) {
+                    List<NetworkInterface> networkInterfaces
+                        = reader.readArray(reader1 -> NetworkInterface.fromJson(reader1));
+                    deserializedVirtualMachineTemplateProperties.networkInterfaces = networkInterfaces;
+                } else if ("disks".equals(fieldName)) {
+                    List<VirtualDisk> disks = reader.readArray(reader1 -> VirtualDisk.fromJson(reader1));
+                    deserializedVirtualMachineTemplateProperties.disks = disks;
+                } else if ("customResourceName".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.customResourceName = reader.getString();
+                } else if ("toolsVersionStatus".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.toolsVersionStatus = reader.getString();
+                } else if ("toolsVersion".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.toolsVersion = reader.getString();
+                } else if ("firmwareType".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.firmwareType
+                        = FirmwareType.fromString(reader.getString());
+                } else if ("statuses".equals(fieldName)) {
+                    List<ResourceStatus> statuses = reader.readArray(reader1 -> ResourceStatus.fromJson(reader1));
+                    deserializedVirtualMachineTemplateProperties.statuses = statuses;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineTemplateProperties;
+        });
     }
 }

@@ -5,46 +5,60 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Granular Copy Log Details for customer disk. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "copyLogDetailsType")
-@JsonTypeName("DataBoxCustomerDisk")
+/**
+ * Granular Copy Log Details for customer disk.
+ */
 @Immutable
 public final class DataBoxDiskGranularCopyLogDetails extends GranularCopyLogDetails {
     /*
+     * Indicates the type of job details.
+     */
+    private ClassDiscriminator copyLogDetailsType = ClassDiscriminator.DATA_BOX_CUSTOMER_DISK;
+
+    /*
      * Disk Serial Number.
      */
-    @JsonProperty(value = "serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /*
      * Account id.
      */
-    @JsonProperty(value = "accountId", access = JsonProperty.Access.WRITE_ONLY)
     private String accountId;
 
     /*
      * Link for copy error logs.
      */
-    @JsonProperty(value = "errorLogLink", access = JsonProperty.Access.WRITE_ONLY)
     private String errorLogLink;
 
     /*
      * Link for copy verbose logs.
      */
-    @JsonProperty(value = "verboseLogLink", access = JsonProperty.Access.WRITE_ONLY)
     private String verboseLogLink;
 
-    /** Creates an instance of DataBoxDiskGranularCopyLogDetails class. */
+    /**
+     * Creates an instance of DataBoxDiskGranularCopyLogDetails class.
+     */
     public DataBoxDiskGranularCopyLogDetails() {
     }
 
     /**
+     * Get the copyLogDetailsType property: Indicates the type of job details.
+     * 
+     * @return the copyLogDetailsType value.
+     */
+    @Override
+    public ClassDiscriminator copyLogDetailsType() {
+        return this.copyLogDetailsType;
+    }
+
+    /**
      * Get the serialNumber property: Disk Serial Number.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -53,7 +67,7 @@ public final class DataBoxDiskGranularCopyLogDetails extends GranularCopyLogDeta
 
     /**
      * Get the accountId property: Account id.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -62,7 +76,7 @@ public final class DataBoxDiskGranularCopyLogDetails extends GranularCopyLogDeta
 
     /**
      * Get the errorLogLink property: Link for copy error logs.
-     *
+     * 
      * @return the errorLogLink value.
      */
     public String errorLogLink() {
@@ -71,7 +85,7 @@ public final class DataBoxDiskGranularCopyLogDetails extends GranularCopyLogDeta
 
     /**
      * Get the verboseLogLink property: Link for copy verbose logs.
-     *
+     * 
      * @return the verboseLogLink value.
      */
     public String verboseLogLink() {
@@ -80,11 +94,57 @@ public final class DataBoxDiskGranularCopyLogDetails extends GranularCopyLogDeta
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("copyLogDetailsType",
+            this.copyLogDetailsType == null ? null : this.copyLogDetailsType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxDiskGranularCopyLogDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxDiskGranularCopyLogDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataBoxDiskGranularCopyLogDetails.
+     */
+    public static DataBoxDiskGranularCopyLogDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxDiskGranularCopyLogDetails deserializedDataBoxDiskGranularCopyLogDetails
+                = new DataBoxDiskGranularCopyLogDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("copyLogDetailsType".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyLogDetails.copyLogDetailsType
+                        = ClassDiscriminator.fromString(reader.getString());
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyLogDetails.serialNumber = reader.getString();
+                } else if ("accountId".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyLogDetails.accountId = reader.getString();
+                } else if ("errorLogLink".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyLogDetails.errorLogLink = reader.getString();
+                } else if ("verboseLogLink".equals(fieldName)) {
+                    deserializedDataBoxDiskGranularCopyLogDetails.verboseLogLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxDiskGranularCopyLogDetails;
+        });
     }
 }

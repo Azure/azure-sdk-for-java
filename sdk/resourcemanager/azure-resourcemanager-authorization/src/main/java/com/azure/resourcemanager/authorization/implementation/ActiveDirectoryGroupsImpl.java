@@ -44,8 +44,7 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public Mono<ActiveDirectoryGroup> getByIdAsync(String id) {
-        return inner().getGroupAsync(id)
-            .map(groupInner -> new ActiveDirectoryGroupImpl(groupInner, manager()));
+        return inner().getGroupAsync(id).map(groupInner -> new ActiveDirectoryGroupImpl(groupInner, manager()));
     }
 
     @Override
@@ -55,8 +54,7 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public Mono<ActiveDirectoryGroup> getByNameAsync(String name) {
-        return listByFilterAsync(String.format("displayName eq '%s'", name))
-            .singleOrEmpty();
+        return listByFilterAsync(String.format("displayName eq '%s'", name)).singleOrEmpty();
     }
 
     @Override

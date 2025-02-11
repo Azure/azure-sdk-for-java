@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -34,7 +34,7 @@ public final class ConvertVirtualMachineToManagedDisks {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String userName = "tirekicker";
         final String sshPublicKey = Utils.sshPublicKey();
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
 
         try {
             //=============================================================
@@ -42,26 +42,27 @@ public final class ConvertVirtualMachineToManagedDisks {
 
             System.out.println("Creating an un-managed Linux VM");
 
-            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withUnmanagedDisks()
-                    .defineUnmanagedDataDisk("disk-1")
-                        .withNewVhd(100)
-                        .withLun(1)
-                        .attach()
-                    .defineUnmanagedDataDisk("disk-2")
-                        .withNewVhd(50)
-                        .withLun(2)
-                        .attach()
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines()
+                .define(linuxVMName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withUnmanagedDisks()
+                .defineUnmanagedDataDisk("disk-1")
+                .withNewVhd(100)
+                .withLun(1)
+                .attach()
+                .defineUnmanagedDataDisk("disk-2")
+                .withNewVhd(50)
+                .withLun(2)
+                .attach()
+                .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+                .create();
 
             System.out.println("Created a Linux VM with un-managed OS and data disks: " + linuxVM.id());
             Utils.print(linuxVM);
@@ -107,13 +108,12 @@ public final class ConvertVirtualMachineToManagedDisks {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

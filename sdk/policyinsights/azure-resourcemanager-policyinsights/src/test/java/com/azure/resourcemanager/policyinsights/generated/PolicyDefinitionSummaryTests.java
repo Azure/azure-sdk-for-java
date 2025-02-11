@@ -10,73 +10,58 @@ import com.azure.resourcemanager.policyinsights.models.PolicyDefinitionSummary;
 import com.azure.resourcemanager.policyinsights.models.SummaryResults;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PolicyDefinitionSummaryTests {
-    @Test
-    public void testDeserialize() {
-        PolicyDefinitionSummary model =
-            BinaryData
-                .fromString(
-                    "{\"policyDefinitionId\":\"nayqi\",\"policyDefinitionReferenceId\":\"nduhavhqlkthum\",\"policyDefinitionGroupNames\":[\"lbg\",\"cdui\",\"r\",\"gccymvaolpssl\"],\"effect\":\"fmmdnbbg\",\"results\":{\"queryResultsUri\":\"swiydmcwyhzdx\",\"nonCompliantResources\":1314424917,\"nonCompliantPolicies\":759374962,\"resourceDetails\":[{\"complianceState\":\"vdfznudaodvxzb\",\"count\":364348069},{\"complianceState\":\"ylpstdbhhxsrzdz\",\"count\":241843348}],\"policyDetails\":[{\"complianceState\":\"dntnevf\",\"count\":2060062752},{\"complianceState\":\"ygtdsslswt\",\"count\":478767297},{\"complianceState\":\"iofz\",\"count\":158092972}],\"policyGroupDetails\":[{\"complianceState\":\"wab\",\"count\":334511461},{\"complianceState\":\"hhszh\",\"count\":1422875618}]}}")
-                .toObject(PolicyDefinitionSummary.class);
-        Assertions.assertEquals("nayqi", model.policyDefinitionId());
-        Assertions.assertEquals("nduhavhqlkthum", model.policyDefinitionReferenceId());
-        Assertions.assertEquals("lbg", model.policyDefinitionGroupNames().get(0));
-        Assertions.assertEquals("fmmdnbbg", model.effect());
-        Assertions.assertEquals("swiydmcwyhzdx", model.results().queryResultsUri());
-        Assertions.assertEquals(1314424917, model.results().nonCompliantResources());
-        Assertions.assertEquals(759374962, model.results().nonCompliantPolicies());
-        Assertions.assertEquals("vdfznudaodvxzb", model.results().resourceDetails().get(0).complianceState());
-        Assertions.assertEquals(364348069, model.results().resourceDetails().get(0).count());
-        Assertions.assertEquals("dntnevf", model.results().policyDetails().get(0).complianceState());
-        Assertions.assertEquals(2060062752, model.results().policyDetails().get(0).count());
-        Assertions.assertEquals("wab", model.results().policyGroupDetails().get(0).complianceState());
-        Assertions.assertEquals(334511461, model.results().policyGroupDetails().get(0).count());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PolicyDefinitionSummary model = BinaryData.fromString(
+            "{\"policyDefinitionId\":\"xuns\",\"policyDefinitionReferenceId\":\"bn\",\"policyDefinitionGroupNames\":[\"xynenl\",\"vxei\",\"zg\",\"klnsrmffey\"],\"effect\":\"ckt\",\"results\":{\"queryResultsUri\":\"merteeammxqiek\",\"nonCompliantResources\":1184462676,\"nonCompliantPolicies\":2029731138,\"resourceDetails\":[{\"complianceState\":\"g\",\"count\":221974172},{\"complianceState\":\"mxvavrefdee\",\"count\":506699302},{\"complianceState\":\"uij\",\"count\":1020538162}],\"policyDetails\":[{\"complianceState\":\"wprtu\",\"count\":1190284129}],\"policyGroupDetails\":[{\"complianceState\":\"djibabxvitit\",\"count\":1297733750},{\"complianceState\":\"exavoxt\",\"count\":165499088}]}}")
+            .toObject(PolicyDefinitionSummary.class);
+        Assertions.assertEquals("xuns", model.policyDefinitionId());
+        Assertions.assertEquals("bn", model.policyDefinitionReferenceId());
+        Assertions.assertEquals("xynenl", model.policyDefinitionGroupNames().get(0));
+        Assertions.assertEquals("ckt", model.effect());
+        Assertions.assertEquals("merteeammxqiek", model.results().queryResultsUri());
+        Assertions.assertEquals(1184462676, model.results().nonCompliantResources());
+        Assertions.assertEquals(2029731138, model.results().nonCompliantPolicies());
+        Assertions.assertEquals("g", model.results().resourceDetails().get(0).complianceState());
+        Assertions.assertEquals(221974172, model.results().resourceDetails().get(0).count());
+        Assertions.assertEquals("wprtu", model.results().policyDetails().get(0).complianceState());
+        Assertions.assertEquals(1190284129, model.results().policyDetails().get(0).count());
+        Assertions.assertEquals("djibabxvitit", model.results().policyGroupDetails().get(0).complianceState());
+        Assertions.assertEquals(1297733750, model.results().policyGroupDetails().get(0).count());
     }
 
-    @Test
-    public void testSerialize() {
-        PolicyDefinitionSummary model =
-            new PolicyDefinitionSummary()
-                .withPolicyDefinitionId("nayqi")
-                .withPolicyDefinitionReferenceId("nduhavhqlkthum")
-                .withPolicyDefinitionGroupNames(Arrays.asList("lbg", "cdui", "r", "gccymvaolpssl"))
-                .withEffect("fmmdnbbg")
-                .withResults(
-                    new SummaryResults()
-                        .withQueryResultsUri("swiydmcwyhzdx")
-                        .withNonCompliantResources(1314424917)
-                        .withNonCompliantPolicies(759374962)
-                        .withResourceDetails(
-                            Arrays
-                                .asList(
-                                    new ComplianceDetail().withComplianceState("vdfznudaodvxzb").withCount(364348069),
-                                    new ComplianceDetail().withComplianceState("ylpstdbhhxsrzdz").withCount(241843348)))
-                        .withPolicyDetails(
-                            Arrays
-                                .asList(
-                                    new ComplianceDetail().withComplianceState("dntnevf").withCount(2060062752),
-                                    new ComplianceDetail().withComplianceState("ygtdsslswt").withCount(478767297),
-                                    new ComplianceDetail().withComplianceState("iofz").withCount(158092972)))
-                        .withPolicyGroupDetails(
-                            Arrays
-                                .asList(
-                                    new ComplianceDetail().withComplianceState("wab").withCount(334511461),
-                                    new ComplianceDetail().withComplianceState("hhszh").withCount(1422875618))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PolicyDefinitionSummary model = new PolicyDefinitionSummary().withPolicyDefinitionId("xuns")
+            .withPolicyDefinitionReferenceId("bn")
+            .withPolicyDefinitionGroupNames(Arrays.asList("xynenl", "vxei", "zg", "klnsrmffey"))
+            .withEffect("ckt")
+            .withResults(new SummaryResults().withQueryResultsUri("merteeammxqiek")
+                .withNonCompliantResources(1184462676)
+                .withNonCompliantPolicies(2029731138)
+                .withResourceDetails(Arrays.asList(new ComplianceDetail().withComplianceState("g").withCount(221974172),
+                    new ComplianceDetail().withComplianceState("mxvavrefdee").withCount(506699302),
+                    new ComplianceDetail().withComplianceState("uij").withCount(1020538162)))
+                .withPolicyDetails(
+                    Arrays.asList(new ComplianceDetail().withComplianceState("wprtu").withCount(1190284129)))
+                .withPolicyGroupDetails(
+                    Arrays.asList(new ComplianceDetail().withComplianceState("djibabxvitit").withCount(1297733750),
+                        new ComplianceDetail().withComplianceState("exavoxt").withCount(165499088))));
         model = BinaryData.fromObject(model).toObject(PolicyDefinitionSummary.class);
-        Assertions.assertEquals("nayqi", model.policyDefinitionId());
-        Assertions.assertEquals("nduhavhqlkthum", model.policyDefinitionReferenceId());
-        Assertions.assertEquals("lbg", model.policyDefinitionGroupNames().get(0));
-        Assertions.assertEquals("fmmdnbbg", model.effect());
-        Assertions.assertEquals("swiydmcwyhzdx", model.results().queryResultsUri());
-        Assertions.assertEquals(1314424917, model.results().nonCompliantResources());
-        Assertions.assertEquals(759374962, model.results().nonCompliantPolicies());
-        Assertions.assertEquals("vdfznudaodvxzb", model.results().resourceDetails().get(0).complianceState());
-        Assertions.assertEquals(364348069, model.results().resourceDetails().get(0).count());
-        Assertions.assertEquals("dntnevf", model.results().policyDetails().get(0).complianceState());
-        Assertions.assertEquals(2060062752, model.results().policyDetails().get(0).count());
-        Assertions.assertEquals("wab", model.results().policyGroupDetails().get(0).complianceState());
-        Assertions.assertEquals(334511461, model.results().policyGroupDetails().get(0).count());
+        Assertions.assertEquals("xuns", model.policyDefinitionId());
+        Assertions.assertEquals("bn", model.policyDefinitionReferenceId());
+        Assertions.assertEquals("xynenl", model.policyDefinitionGroupNames().get(0));
+        Assertions.assertEquals("ckt", model.effect());
+        Assertions.assertEquals("merteeammxqiek", model.results().queryResultsUri());
+        Assertions.assertEquals(1184462676, model.results().nonCompliantResources());
+        Assertions.assertEquals(2029731138, model.results().nonCompliantPolicies());
+        Assertions.assertEquals("g", model.results().resourceDetails().get(0).complianceState());
+        Assertions.assertEquals(221974172, model.results().resourceDetails().get(0).count());
+        Assertions.assertEquals("wprtu", model.results().policyDetails().get(0).complianceState());
+        Assertions.assertEquals(1190284129, model.results().policyDetails().get(0).count());
+        Assertions.assertEquals("djibabxvitit", model.results().policyGroupDetails().get(0).complianceState());
+        Assertions.assertEquals(1297733750, model.results().policyGroupDetails().get(0).count());
     }
 }

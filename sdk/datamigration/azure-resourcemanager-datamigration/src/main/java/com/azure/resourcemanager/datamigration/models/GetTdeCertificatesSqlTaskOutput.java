@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Output of the task that gets TDE certificates in Base64 encoded format. */
+/**
+ * Output of the task that gets TDE certificates in Base64 encoded format.
+ */
 @Immutable
-public final class GetTdeCertificatesSqlTaskOutput {
+public final class GetTdeCertificatesSqlTaskOutput implements JsonSerializable<GetTdeCertificatesSqlTaskOutput> {
     /*
      * Mapping from certificate name to base 64 encoded format.
      */
-    @JsonProperty(value = "base64EncodedCertificates", access = JsonProperty.Access.WRITE_ONLY)
     private String base64EncodedCertificates;
 
     /*
      * Validation errors
      */
-    @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> validationErrors;
 
-    /** Creates an instance of GetTdeCertificatesSqlTaskOutput class. */
+    /**
+     * Creates an instance of GetTdeCertificatesSqlTaskOutput class.
+     */
     public GetTdeCertificatesSqlTaskOutput() {
     }
 
     /**
      * Get the base64EncodedCertificates property: Mapping from certificate name to base 64 encoded format.
-     *
+     * 
      * @return the base64EncodedCertificates value.
      */
     public String base64EncodedCertificates() {
@@ -38,7 +44,7 @@ public final class GetTdeCertificatesSqlTaskOutput {
 
     /**
      * Get the validationErrors property: Validation errors.
-     *
+     * 
      * @return the validationErrors value.
      */
     public List<ReportableException> validationErrors() {
@@ -47,12 +53,52 @@ public final class GetTdeCertificatesSqlTaskOutput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (validationErrors() != null) {
             validationErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetTdeCertificatesSqlTaskOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetTdeCertificatesSqlTaskOutput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetTdeCertificatesSqlTaskOutput.
+     */
+    public static GetTdeCertificatesSqlTaskOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetTdeCertificatesSqlTaskOutput deserializedGetTdeCertificatesSqlTaskOutput
+                = new GetTdeCertificatesSqlTaskOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("base64EncodedCertificates".equals(fieldName)) {
+                    deserializedGetTdeCertificatesSqlTaskOutput.base64EncodedCertificates = reader.getString();
+                } else if ("validationErrors".equals(fieldName)) {
+                    List<ReportableException> validationErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedGetTdeCertificatesSqlTaskOutput.validationErrors = validationErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetTdeCertificatesSqlTaskOutput;
+        });
     }
 }

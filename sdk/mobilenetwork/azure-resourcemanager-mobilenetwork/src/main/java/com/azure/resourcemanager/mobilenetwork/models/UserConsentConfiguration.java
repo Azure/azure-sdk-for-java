@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The UserConsentConfiguration model.
  */
 @Fluent
-public final class UserConsentConfiguration {
+public final class UserConsentConfiguration implements JsonSerializable<UserConsentConfiguration> {
     /*
      * Allow Microsoft to access non-PII telemetry information from the packet core.
      */
-    @JsonProperty(value = "allowSupportTelemetryAccess")
     private Boolean allowSupportTelemetryAccess;
 
     /**
@@ -52,5 +55,42 @@ public final class UserConsentConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowSupportTelemetryAccess", this.allowSupportTelemetryAccess);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserConsentConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserConsentConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserConsentConfiguration.
+     */
+    public static UserConsentConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserConsentConfiguration deserializedUserConsentConfiguration = new UserConsentConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowSupportTelemetryAccess".equals(fieldName)) {
+                    deserializedUserConsentConfiguration.allowSupportTelemetryAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserConsentConfiguration;
+        });
     }
 }

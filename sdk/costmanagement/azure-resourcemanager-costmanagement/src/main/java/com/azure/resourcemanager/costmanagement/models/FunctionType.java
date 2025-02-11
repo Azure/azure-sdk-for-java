@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The name of the aggregation function to use. */
+/**
+ * The name of the aggregation function to use.
+ */
 public final class FunctionType extends ExpandableStringEnum<FunctionType> {
-    /** Static value Sum for FunctionType. */
+    /**
+     * Static value Sum for FunctionType.
+     */
     public static final FunctionType SUM = fromString("Sum");
 
     /**
      * Creates a new instance of FunctionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class FunctionType extends ExpandableStringEnum<FunctionType> {
 
     /**
      * Creates or finds a FunctionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FunctionType.
      */
-    @JsonCreator
     public static FunctionType fromString(String name) {
         return fromString(name, FunctionType.class);
     }
 
     /**
      * Gets known FunctionType values.
-     *
+     * 
      * @return known FunctionType values.
      */
     public static Collection<FunctionType> values() {

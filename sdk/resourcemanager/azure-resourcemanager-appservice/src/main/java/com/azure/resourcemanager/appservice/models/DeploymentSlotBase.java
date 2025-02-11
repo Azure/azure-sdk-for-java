@@ -11,9 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
  *
  * @param <FluentT> the type of the resource
  */
-public interface DeploymentSlotBase<FluentT> extends
-    WebAppBase,
-    Updatable<DeploymentSlotBase.Update<FluentT>> {
+public interface DeploymentSlotBase<FluentT> extends WebAppBase, Updatable<DeploymentSlotBase.Update<FluentT>> {
 
     /**
      * Grouping of all the deployment slot update stages.
@@ -21,6 +19,8 @@ public interface DeploymentSlotBase<FluentT> extends
     interface UpdateStages {
         /**
          * A deployment slot update allowing runtime version to be specified.
+         *
+         * @param <FluentT> the type of the resource
          */
         interface WithRuntimeVersion<FluentT> {
             /**
@@ -46,6 +46,8 @@ public interface DeploymentSlotBase<FluentT> extends
 
         /**
          * A deployment slot update allowing docker image source to be specified.
+         *
+         * @param <FluentT> the type of the resource
          */
         interface WithDockerContainerImage<FluentT> {
             /**
@@ -73,6 +75,8 @@ public interface DeploymentSlotBase<FluentT> extends
 
         /**
          * A deployment slot update allowing docker hub credentials to be set.
+         *
+         * @param <FluentT> the type of the resource
          */
         interface WithCredentials<FluentT> {
             /**
@@ -87,6 +91,8 @@ public interface DeploymentSlotBase<FluentT> extends
         /**
          * A deployment slot update allowing docker startup command to be specified.
          * This will replace the "CMD" section in the Dockerfile.
+         *
+         * @param <FluentT> the type of the resource
          */
         interface WithStartUpCommand<FluentT> {
             /**
@@ -99,13 +105,13 @@ public interface DeploymentSlotBase<FluentT> extends
         }
     }
 
-    /** The template for a web app update operation, containing all the settings that can be modified. */
-    interface Update<FluentT> extends
-        Appliable<FluentT>,
-        WebAppBase.Update<FluentT>,
-        UpdateStages.WithRuntimeVersion<FluentT>,
-        UpdateStages.WithDockerContainerImage<FluentT>,
-        UpdateStages.WithStartUpCommand<FluentT>,
-        UpdateStages.WithCredentials<FluentT> {
+    /**
+     * The template for a web app update operation, containing all the settings that can be modified.
+     *
+     * @param <FluentT> the type of the resource
+     */
+    interface Update<FluentT> extends Appliable<FluentT>, WebAppBase.Update<FluentT>,
+        UpdateStages.WithRuntimeVersion<FluentT>, UpdateStages.WithDockerContainerImage<FluentT>,
+        UpdateStages.WithStartUpCommand<FluentT>, UpdateStages.WithCredentials<FluentT> {
     }
 }

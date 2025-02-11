@@ -27,7 +27,7 @@ public final class SitesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.sites().delete("jriyb", "rz", "epnxwd", com.azure.core.util.Context.NONE);
+        manager.sites().delete("p", "ujd", "gatolekscbctnan", com.azure.core.util.Context.NONE);
 
     }
 }

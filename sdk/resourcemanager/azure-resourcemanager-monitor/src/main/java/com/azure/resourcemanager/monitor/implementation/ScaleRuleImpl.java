@@ -16,12 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Wrapp
 import java.time.Duration;
 
 /** Implementation for ScaleRule. */
-class ScaleRuleImpl extends WrapperImpl<ScaleRuleInner>
-    implements ScaleRule,
-        ScaleRule.Definition,
-        ScaleRule.ParentUpdateDefinition,
-        ScaleRule.UpdateDefinition,
-        ScaleRule.Update {
+class ScaleRuleImpl extends WrapperImpl<ScaleRuleInner> implements ScaleRule, ScaleRule.Definition,
+    ScaleRule.ParentUpdateDefinition, ScaleRule.UpdateDefinition, ScaleRule.Update {
 
     private final AutoscaleProfileImpl parent;
 
@@ -179,8 +175,8 @@ class ScaleRuleImpl extends WrapperImpl<ScaleRuleInner>
     }
 
     @Override
-    public ScaleRuleImpl withCondition(
-        TimeAggregationType timeAggregation, ComparisonOperationType condition, double threshold) {
+    public ScaleRuleImpl withCondition(TimeAggregationType timeAggregation, ComparisonOperationType condition,
+        double threshold) {
         this.innerModel().metricTrigger().withOperator(condition);
         this.innerModel().metricTrigger().withTimeAggregation(timeAggregation);
         this.innerModel().metricTrigger().withThreshold(threshold);
@@ -188,8 +184,8 @@ class ScaleRuleImpl extends WrapperImpl<ScaleRuleInner>
     }
 
     @Override
-    public ScaleRuleImpl withScaleAction(
-        ScaleDirection direction, ScaleType type, int instanceCountChange, Duration cooldown) {
+    public ScaleRuleImpl withScaleAction(ScaleDirection direction, ScaleType type, int instanceCountChange,
+        Duration cooldown) {
         this.innerModel().scaleAction().withDirection(direction);
         this.innerModel().scaleAction().withType(type);
         this.innerModel().scaleAction().withValue(Integer.toString(instanceCountChange));

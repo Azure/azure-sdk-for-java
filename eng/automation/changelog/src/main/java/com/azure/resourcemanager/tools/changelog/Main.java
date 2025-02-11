@@ -14,6 +14,7 @@ import japicmp.model.JApiClass;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -24,6 +25,12 @@ public class Main {
     private final static String NEW_FEATURE_TITLE = "### Features Added\n\n";
 
     public static void main(String[] args) throws Exception {
+        JSONObject json = getChangelog();
+
+        System.out.println(json.toString());
+    }
+
+    static JSONObject getChangelog() {
         String oldJar = System.getProperty("OLD_JAR");
         if (oldJar == null || oldJar.isEmpty()) {
             System.err.println("Cannot found OLD_JAR property");
@@ -62,14 +69,17 @@ public class Main {
         List<ChangeLog> changeLogs = ChangeLog.fromClasses(classes);
         StringBuilder breakingChange = new StringBuilder();
         StringBuilder newFeature = new StringBuilder();
+        List<String> breakingChangeItems = new ArrayList<>();
         changeLogs.forEach(x -> {
             if (x.isClassLevelChanged()) {
                 breakingChange.append(x.getBreakingChange());
+                breakingChangeItems.addAll(x.getBreakingChangeItems());
             }
         });
         changeLogs.forEach(x -> {
             if (!x.isClassLevelChanged()) {
                 breakingChange.append(x.getBreakingChange());
+                breakingChangeItems.addAll(x.getBreakingChangeItems());
             }
         });
         changeLogs.forEach(x -> {
@@ -87,9 +97,8 @@ public class Main {
             (newFeature.length() > 0 ? NEW_FEATURE_TITLE + newFeature.toString().replace(namespaces.getBase() + ".", "") : "");
 
         JSONObject json = new JSONObject();
-        json.put("breaking", breakingChange.length() > 0);
+        json.put("breakingChanges", breakingChangeItems);
         json.put("changelog", changelog);
-
-        System.out.println(json.toString());
+        return json;
     }
 }

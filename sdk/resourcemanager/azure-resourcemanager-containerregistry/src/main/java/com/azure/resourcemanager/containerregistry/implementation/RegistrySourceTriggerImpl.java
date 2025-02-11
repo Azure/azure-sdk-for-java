@@ -18,12 +18,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.ArrayList;
 import java.util.List;
 
-class RegistrySourceTriggerImpl
-    implements RegistrySourceTrigger,
-        RegistrySourceTrigger.Definition,
-        RegistrySourceTrigger.Update,
-        RegistrySourceTrigger.UpdateDefinition,
-        HasInnerModel<SourceTrigger> {
+class RegistrySourceTriggerImpl implements RegistrySourceTrigger, RegistrySourceTrigger.Definition,
+    RegistrySourceTrigger.Update, RegistrySourceTrigger.UpdateDefinition, HasInnerModel<SourceTrigger> {
     private SourceTrigger inner;
     private RegistryTaskImpl registryTaskImpl;
     private SourceTriggerUpdateParameters sourceTriggerUpdateParameters;
@@ -46,8 +42,8 @@ class RegistrySourceTriggerImpl
             this.inner.withSourceRepository(new SourceProperties());
 
             boolean foundSourceTrigger = false;
-            for (SourceTriggerUpdateParameters stup
-                : registryTaskImpl.taskUpdateParameters.trigger().sourceTriggers()) {
+            for (SourceTriggerUpdateParameters stup : registryTaskImpl.taskUpdateParameters.trigger()
+                .sourceTriggers()) {
                 if (stup.name().equals(sourceTriggerName)) {
                     this.sourceTriggerUpdateParameters = stup;
                     foundSourceTrigger = true;
@@ -102,9 +98,7 @@ class RegistrySourceTriggerImpl
         if (isInCreateMode()) {
             this.inner.sourceRepository().withSourceControlType(SourceControlType.VISUAL_STUDIO_TEAM_SERVICE);
         } else {
-            this
-                .sourceTriggerUpdateParameters
-                .sourceRepository()
+            this.sourceTriggerUpdateParameters.sourceRepository()
                 .withSourceControlType(SourceControlType.VISUAL_STUDIO_TEAM_SERVICE);
         }
         return this;
@@ -115,9 +109,7 @@ class RegistrySourceTriggerImpl
         if (isInCreateMode()) {
             this.inner.sourceRepository().withSourceControlType(SourceControlType.fromString(sourceControl.toString()));
         } else {
-            this
-                .sourceTriggerUpdateParameters
-                .sourceRepository()
+            this.sourceTriggerUpdateParameters.sourceRepository()
                 .withSourceControlType(SourceControlType.fromString(sourceControl.toString()));
         }
         return this;
@@ -149,39 +141,31 @@ class RegistrySourceTriggerImpl
             AuthInfo authInfo = new AuthInfo().withTokenType(tokenType).withToken(token);
             this.inner.sourceRepository().withSourceControlAuthProperties(authInfo);
         } else {
-            AuthInfoUpdateParameters authInfoUpdateParameters =
-                new AuthInfoUpdateParameters().withTokenType(tokenType).withToken(token);
-            this
-                .sourceTriggerUpdateParameters
-                .sourceRepository()
+            AuthInfoUpdateParameters authInfoUpdateParameters
+                = new AuthInfoUpdateParameters().withTokenType(tokenType).withToken(token);
+            this.sourceTriggerUpdateParameters.sourceRepository()
                 .withSourceControlAuthProperties(authInfoUpdateParameters);
         }
         return this;
     }
 
     @Override
-    public RegistrySourceTriggerImpl withRepositoryAuthentication(
-        TokenType tokenType, String token, String refreshToken, String scope, int expiresIn) {
+    public RegistrySourceTriggerImpl withRepositoryAuthentication(TokenType tokenType, String token,
+        String refreshToken, String scope, int expiresIn) {
         if (isInCreateMode()) {
-            AuthInfo authInfo =
-                new AuthInfo()
-                    .withTokenType(tokenType)
-                    .withToken(token)
-                    .withRefreshToken(refreshToken)
-                    .withScope(scope)
-                    .withExpiresIn(expiresIn);
+            AuthInfo authInfo = new AuthInfo().withTokenType(tokenType)
+                .withToken(token)
+                .withRefreshToken(refreshToken)
+                .withScope(scope)
+                .withExpiresIn(expiresIn);
             this.inner.sourceRepository().withSourceControlAuthProperties(authInfo);
         } else {
-            AuthInfoUpdateParameters authInfoUpdateParameters =
-                new AuthInfoUpdateParameters()
-                    .withTokenType(tokenType)
-                    .withToken(token)
-                    .withRefreshToken(refreshToken)
-                    .withScope(scope)
-                    .withExpiresIn(expiresIn);
-            this
-                .sourceTriggerUpdateParameters
-                .sourceRepository()
+            AuthInfoUpdateParameters authInfoUpdateParameters = new AuthInfoUpdateParameters().withTokenType(tokenType)
+                .withToken(token)
+                .withRefreshToken(refreshToken)
+                .withScope(scope)
+                .withExpiresIn(expiresIn);
+            this.sourceTriggerUpdateParameters.sourceRepository()
                 .withSourceControlAuthProperties(authInfoUpdateParameters);
         }
         return this;

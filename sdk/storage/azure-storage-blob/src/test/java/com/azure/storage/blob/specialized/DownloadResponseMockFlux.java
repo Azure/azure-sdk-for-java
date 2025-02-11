@@ -42,13 +42,13 @@ public class DownloadResponseMockFlux {
         if (scenario == DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK) {
             this.scenarioData = testBase.getRandomData(512 * 1024);
         } else if (scenario == DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK
-                || scenario == DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES
-                || scenario == DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION
-                || scenario == DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA
-                || scenario == DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED
-                || scenario == DR_TEST_SCENARIO_NON_RETRYABLE_ERROR
-                || scenario == DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE
-                || scenario == DR_TEST_SCENARIO_TIMEOUT) {
+            || scenario == DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES
+            || scenario == DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION
+            || scenario == DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA
+            || scenario == DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED
+            || scenario == DR_TEST_SCENARIO_NON_RETRYABLE_ERROR
+            || scenario == DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE
+            || scenario == DR_TEST_SCENARIO_TIMEOUT) {
             this.scenarioData = testBase.getRandomData(1024);
         } else {
             throw new IllegalArgumentException("Invalid download resource test scenario.");
@@ -58,7 +58,8 @@ public class DownloadResponseMockFlux {
     /*
     For internal construction on NO_MULTIPLE_SUBSCRIPTION test
     */
-    public DownloadResponseMockFlux(int scenario, int tryNumber, ByteBuffer scenarioData, DownloadRetryOptions options) {
+    public DownloadResponseMockFlux(int scenario, int tryNumber, ByteBuffer scenarioData,
+        DownloadRetryOptions options) {
         this.scenario = scenario;
         this.tryNumber = tryNumber;
         this.scenarioData = scenarioData;
@@ -138,7 +139,8 @@ public class DownloadResponseMockFlux {
                  * We return a retryable error here so we have to invoke the getter, which will throw an error in
                  * this case.
                  */
-                return (this.tryNumber == 1) ? Flux.error(new IOException())
+                return (this.tryNumber == 1)
+                    ? Flux.error(new IOException())
                     : Flux.error(new IllegalArgumentException("Retried after getter error."));
 
             case DR_TEST_SCENARIO_TIMEOUT:
@@ -171,28 +173,31 @@ public class DownloadResponseMockFlux {
                     return getDownloadStream(finalOffset, finalCount);
                 }
             };
-            Long contentUpperBound = finalCount == null
-                ? scenarioData.remaining() - 1 : finalOffset + finalCount - 1;
-            response.getHeaders().set(HttpHeaderName.CONTENT_RANGE, String.format("%d-%d/%d", finalOffset,
-                contentUpperBound, scenarioData.remaining()));
+            Long contentUpperBound = finalCount == null ? scenarioData.remaining() - 1 : finalOffset + finalCount - 1;
+            response.getHeaders()
+                .set(HttpHeaderName.CONTENT_RANGE,
+                    String.format("%d-%d/%d", finalOffset, contentUpperBound, scenarioData.remaining()));
 
             switch (scenario) {
                 case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
                     switch (tryNumber) {
                         case 1:
                             return Mono.just(response);
+
                         case 2:
                             /*
                              This validates that we don't retry in the getter even if it's a retryable error from the
                              service.
                              */
                             throw new BlobStorageException("Message", new MockHttpResponse(null, 500), null);
+
                         default:
                             throw new IllegalArgumentException("Retried after error in getter");
                     }
                 case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
                     // Construct a new flux each time to mimic getting a new download stream.
-                    DownloadResponseMockFlux nextFlux = new DownloadResponseMockFlux(scenario, tryNumber, scenarioData, options);
+                    DownloadResponseMockFlux nextFlux
+                        = new DownloadResponseMockFlux(scenario, tryNumber, scenarioData, options);
                     MockHttpResponse newResponse = new MockHttpResponse(null, 200) {
                         @Override
                         public Flux<ByteBuffer> getBody() {
@@ -200,6 +205,7 @@ public class DownloadResponseMockFlux {
                         }
                     };
                     return Mono.just(newResponse);
+
                 default:
                     return Mono.just(response);
             }

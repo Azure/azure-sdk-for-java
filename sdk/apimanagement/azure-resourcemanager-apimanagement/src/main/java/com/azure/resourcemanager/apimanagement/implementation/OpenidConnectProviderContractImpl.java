@@ -11,10 +11,8 @@ import com.azure.resourcemanager.apimanagement.models.ClientSecretContract;
 import com.azure.resourcemanager.apimanagement.models.OpenidConnectProviderContract;
 import com.azure.resourcemanager.apimanagement.models.OpenidConnectProviderUpdateContract;
 
-public final class OpenidConnectProviderContractImpl
-    implements OpenidConnectProviderContract,
-        OpenidConnectProviderContract.Definition,
-        OpenidConnectProviderContract.Update {
+public final class OpenidConnectProviderContractImpl implements OpenidConnectProviderContract,
+    OpenidConnectProviderContract.Definition, OpenidConnectProviderContract.Update {
     private OpenidConnectProviderContractInner innerObject;
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
@@ -90,29 +88,24 @@ public final class OpenidConnectProviderContractImpl
     }
 
     public OpenidConnectProviderContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOpenIdConnectProviders()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, opid, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOpenIdConnectProviders()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, opid, this.innerModel(), createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public OpenidConnectProviderContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOpenIdConnectProviders()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, opid, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOpenIdConnectProviders()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, opid, this.innerModel(), createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    OpenidConnectProviderContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    OpenidConnectProviderContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new OpenidConnectProviderContractInner();
         this.serviceManager = serviceManager;
         this.opid = name;
@@ -126,58 +119,48 @@ public final class OpenidConnectProviderContractImpl
     }
 
     public OpenidConnectProviderContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOpenIdConnectProviders()
-                .updateWithResponse(resourceGroupName, serviceName, opid, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOpenIdConnectProviders()
+            .updateWithResponse(resourceGroupName, serviceName, opid, updateIfMatch, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public OpenidConnectProviderContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOpenIdConnectProviders()
-                .updateWithResponse(resourceGroupName, serviceName, opid, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOpenIdConnectProviders()
+            .updateWithResponse(resourceGroupName, serviceName, opid, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    OpenidConnectProviderContractImpl(
-        OpenidConnectProviderContractInner innerObject,
+    OpenidConnectProviderContractImpl(OpenidConnectProviderContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.opid = Utils.getValueFromIdByName(innerObject.id(), "openidConnectProviders");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.opid = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "openidConnectProviders");
     }
 
     public OpenidConnectProviderContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOpenIdConnectProviders()
-                .getWithResponse(resourceGroupName, serviceName, opid, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOpenIdConnectProviders()
+            .getWithResponse(resourceGroupName, serviceName, opid, Context.NONE)
+            .getValue();
         return this;
     }
 
     public OpenidConnectProviderContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOpenIdConnectProviders()
-                .getWithResponse(resourceGroupName, serviceName, opid, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOpenIdConnectProviders()
+            .getWithResponse(resourceGroupName, serviceName, opid, context)
+            .getValue();
         return this;
     }
 
     public Response<ClientSecretContract> listSecretsWithResponse(Context context) {
-        return serviceManager
-            .openIdConnectProviders()
+        return serviceManager.openIdConnectProviders()
             .listSecretsWithResponse(resourceGroupName, serviceName, opid, context);
     }
 

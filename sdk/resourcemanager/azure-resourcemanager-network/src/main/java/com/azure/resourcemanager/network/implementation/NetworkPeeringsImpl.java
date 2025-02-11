@@ -15,14 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** Implementation for network peerings. */
-class NetworkPeeringsImpl
-    extends IndependentChildrenImpl<
-        NetworkPeering,
-        NetworkPeeringImpl,
-        VirtualNetworkPeeringInner,
-        VirtualNetworkPeeringsClient,
-        NetworkManager,
-        Network>
+class NetworkPeeringsImpl extends
+    IndependentChildrenImpl<NetworkPeering, NetworkPeeringImpl, VirtualNetworkPeeringInner, VirtualNetworkPeeringsClient, NetworkManager, Network>
     implements NetworkPeerings {
 
     private final NetworkImpl network;
@@ -53,51 +47,46 @@ class NetworkPeeringsImpl
 
     @Override
     public Mono<Void> deleteByParentAsync(String groupName, String parentName, final String name) {
-        return this
-            .manager()
+        return this.manager()
             .networks()
             // Get the parent network of the peering to delete
             .getByResourceGroupAsync(groupName, parentName)
 
             // Then find the local peering to delete
-            .flatMap(
-                localNetwork -> {
-                    if (localNetwork == null) {
-                        return Mono.empty(); // Missing local network, so nothing else to do
-                    } else {
-                        String peeringId = localNetwork.id() + "/peerings/" + name;
-                        return localNetwork.peerings().getByIdAsync(peeringId);
-                    }
-                })
+            .flatMap(localNetwork -> {
+                if (localNetwork == null) {
+                    return Mono.empty(); // Missing local network, so nothing else to do
+                } else {
+                    String peeringId = localNetwork.id() + "/peerings/" + name;
+                    return localNetwork.peerings().getByIdAsync(peeringId);
+                }
+            })
             .flux()
 
             // Then get the remote peering if available and possible to delete
-            .flatMap(
-                localPeering -> {
-                    if (localPeering == null) {
-                        return Mono.empty();
-                    } else if (!localPeering.isSameSubscription()) {
-                        return Mono.just(localPeering);
-                    } else {
-                        return Mono.just(localPeering).concatWith(localPeering.getRemotePeeringAsync());
-                    }
-                })
+            .flatMap(localPeering -> {
+                if (localPeering == null) {
+                    return Mono.empty();
+                } else if (!localPeering.isSameSubscription()) {
+                    return Mono.just(localPeering);
+                } else {
+                    return Mono.just(localPeering).concatWith(localPeering.getRemotePeeringAsync());
+                }
+            })
 
             // Then delete each peering (this will be called for each of the peerings, so at least once for the local
             // peering, and second time for the remote one if any
-            .flatMap(
-                peering -> {
-                    if (peering == null) {
-                        return Mono.empty();
-                    } else {
-                        String networkName = ResourceUtils.nameFromResourceId(peering.networkId());
-                        return peering
-                            .manager()
-                            .serviceClient()
-                            .getVirtualNetworkPeerings()
-                            .deleteAsync(peering.resourceGroupName(), networkName, peering.name());
-                    }
-                })
+            .flatMap(peering -> {
+                if (peering == null) {
+                    return Mono.empty();
+                } else {
+                    String networkName = ResourceUtils.nameFromResourceId(peering.networkId());
+                    return peering.manager()
+                        .serviceClient()
+                        .getVirtualNetworkPeerings()
+                        .deleteAsync(peering.resourceGroupName(), networkName, peering.name());
+                }
+            })
 
             // Then continue till the last peering is deleted
             .then();
@@ -154,17 +143,13 @@ class NetworkPeeringsImpl
         if (remoteNetworkResourceId == null) {
             return Mono.empty();
         } else {
-            return this
-                .listAsync()
-                .filter(
-                    peering -> {
-                        if (peering == null) {
-                            return false;
-                        } else {
-                            return remoteNetworkResourceId.equalsIgnoreCase(peering.remoteNetworkId());
-                        }
-                    })
-                .last();
+            return this.listAsync().filter(peering -> {
+                if (peering == null) {
+                    return false;
+                } else {
+                    return remoteNetworkResourceId.equalsIgnoreCase(peering.remoteNetworkId());
+                }
+            }).last();
         }
     }
 }

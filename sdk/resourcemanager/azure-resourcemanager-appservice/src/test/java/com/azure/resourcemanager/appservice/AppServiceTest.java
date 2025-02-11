@@ -60,21 +60,10 @@ public class AppServiceTest extends ResourceManagerTestProxyTestBase {
     protected String rgName = "";
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -122,73 +111,59 @@ public class AppServiceTest extends ResourceManagerTestProxyTestBase {
     }
 
     private void createNewDomainAndCertificate() {
-        domain =
-            appServiceManager
-                .domains()
-                .define(System.getenv("appservice-domain"))
-                .withExistingResourceGroup(System.getenv("appservice-group"))
-                .defineRegistrantContact()
-                .withFirstName("Jon")
-                .withLastName("Doe")
-                .withEmail("jondoe@contoso.com")
-                .withAddressLine1("123 4th Ave")
-                .withCity("Redmond")
-                .withStateOrProvince("WA")
-                .withCountry(CountryIsoCode.UNITED_STATES)
-                .withPostalCode("98052")
-                .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                .withPhoneNumber("4258828080")
-                .attach()
-                .withDomainPrivacyEnabled(true)
-                .withAutoRenewEnabled(true)
-                .create();
-        certificateOrder =
-            appServiceManager
-                .certificateOrders()
-                .define(System.getenv("appservice-certificateorder"))
-                .withExistingResourceGroup(System.getenv("appservice-group"))
-                .withHostName("*." + domain.name())
-                .withWildcardSku()
-                .withDomainVerification(domain)
-                .withNewKeyVault("graphvault", Region.US_WEST)
-                .withValidYears(1)
-                .create();
+        domain = appServiceManager.domains()
+            .define(System.getenv("appservice-domain"))
+            .withExistingResourceGroup(System.getenv("appservice-group"))
+            .defineRegistrantContact()
+            .withFirstName("Jon")
+            .withLastName("Doe")
+            .withEmail("jondoe@contoso.com")
+            .withAddressLine1("123 4th Ave")
+            .withCity("Redmond")
+            .withStateOrProvince("WA")
+            .withCountry(CountryIsoCode.UNITED_STATES)
+            .withPostalCode("98052")
+            .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+            .withPhoneNumber("4258828080")
+            .attach()
+            .withDomainPrivacyEnabled(true)
+            .withAutoRenewEnabled(true)
+            .create();
+        certificateOrder = appServiceManager.certificateOrders()
+            .define(System.getenv("appservice-certificateorder"))
+            .withExistingResourceGroup(System.getenv("appservice-group"))
+            .withHostName("*." + domain.name())
+            .withWildcardSku()
+            .withDomainVerification(domain)
+            .withNewKeyVault("graphvault", Region.US_WEST)
+            .withValidYears(1)
+            .create();
     }
 
     protected static Response<String> curl(String urlString) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, urlString);
-        Mono<Response<String>> response =
-            stringResponse(HTTP_PIPELINE.send(request)
-                .flatMap(response1 -> {
-                    int code = response1.getStatusCode();
-                    if (code == 200 || code == 400 || code == 404) {
-                        return Mono.just(response1);
-                    } else {
-                        return Mono.error(new HttpResponseException(response1));
-                    }
-                })
-                .retryWhen(Retry
-                    .fixedDelay(3, Duration.ofSeconds(30))
-                    .filter(t -> t instanceof TimeoutException)));
+        Mono<Response<String>> response = stringResponse(HTTP_PIPELINE.send(request).flatMap(response1 -> {
+            int code = response1.getStatusCode();
+            if (code == 200 || code == 400 || code == 404) {
+                return Mono.just(response1);
+            } else {
+                return Mono.error(new HttpResponseException(response1));
+            }
+        }).retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(30)).filter(t -> t instanceof TimeoutException)));
         return response.block();
     }
 
     protected static String post(String urlString, String body) {
         try {
             HttpRequest request = new HttpRequest(HttpMethod.POST, urlString).setBody(body);
-            Mono<Response<String>> response =
-                stringResponse(HTTP_PIPELINE.send(request)
-                    .flatMap(response1 -> {
-                        int code = response1.getStatusCode();
-                        if (code == 200 || code == 400 || code == 404) {
-                            return Mono.just(response1);
-                        } else {
-                            return Mono.error(new HttpResponseException(response1));
-                        }
-                    })
-                    .retryWhen(Retry
-                        .fixedDelay(3, Duration.ofSeconds(30))
-                        .filter(t -> t instanceof TimeoutException)));
+            Mono<Response<String>> response = stringResponse(HTTP_PIPELINE.send(request).flatMap(response1 -> {
+                int code = response1.getStatusCode();
+                if (code == 200 || code == 400 || code == 404) {
+                    return Mono.just(response1);
+                } else {
+                    return Mono.error(new HttpResponseException(response1));
+                }
+            }).retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(30)).filter(t -> t instanceof TimeoutException)));
             Response<String> ret = response.block();
             return ret == null ? null : ret.getValue();
         } catch (Exception e) {
@@ -203,8 +178,8 @@ public class AppServiceTest extends ResourceManagerTestProxyTestBase {
             ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
             String name = "linux_function_app";
-            Response<String> response = curl("https://" + functionApp.defaultHostname()
-                + "/api/HttpTrigger-Java?name=" + name);
+            Response<String> response
+                = curl("https://" + functionApp.defaultHostname() + "/api/HttpTrigger-Java?name=" + name);
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);
@@ -253,13 +228,14 @@ public class AppServiceTest extends ResourceManagerTestProxyTestBase {
 
     private static Mono<Response<String>> stringResponse(Mono<HttpResponse> responseMono) {
         return responseMono.flatMap(response -> response.getBodyAsString()
-            .map(str -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
+            .map(str -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                str)));
     }
 
-    private static final HttpPipeline HTTP_PIPELINE = new HttpPipelineBuilder()
-        .policies(
-            new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)),
-            new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(30)), "Retry-After", ChronoUnit.SECONDS),
-            new HttpDebugLoggingPolicy())
-        .build();
+    private static final HttpPipeline HTTP_PIPELINE
+        = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)),
+                new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(30)), "Retry-After", ChronoUnit.SECONDS),
+                new HttpDebugLoggingPolicy())
+            .build();
 }

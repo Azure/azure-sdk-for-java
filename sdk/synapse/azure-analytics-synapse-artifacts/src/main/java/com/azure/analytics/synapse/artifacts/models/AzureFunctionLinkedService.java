@@ -34,7 +34,8 @@ public class AzureFunctionLinkedService extends LinkedService {
     private SecretBase functionKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 
@@ -49,7 +50,8 @@ public class AzureFunctionLinkedService extends LinkedService {
     private Object resourceId;
 
     /*
-     * Type of authentication (Required to specify MSI) used to connect to AzureFunction. Type: string (or Expression with resultType string).
+     * Type of authentication (Required to specify MSI) used to connect to AzureFunction. Type: string (or Expression
+     * with resultType string).
      */
     private Object authentication;
 

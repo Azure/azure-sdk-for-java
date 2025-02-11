@@ -6,31 +6,51 @@ package com.azure.resourcemanager.operationsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementAssociationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The container for solution. */
+/**
+ * The container for solution.
+ */
 @Fluent
 public final class ManagementAssociationInner extends ProxyResource {
     /*
      * Resource location
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Properties for ManagementAssociation object supported by the OperationsManagement resource provider.
      */
-    @JsonProperty(value = "properties")
     private ManagementAssociationProperties properties;
 
-    /** Creates an instance of ManagementAssociationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ManagementAssociationInner class.
+     */
     public ManagementAssociationInner() {
     }
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -39,7 +59,7 @@ public final class ManagementAssociationInner extends ProxyResource {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the ManagementAssociationInner object itself.
      */
@@ -51,7 +71,7 @@ public final class ManagementAssociationInner extends ProxyResource {
     /**
      * Get the properties property: Properties for ManagementAssociation object supported by the OperationsManagement
      * resource provider.
-     *
+     * 
      * @return the properties value.
      */
     public ManagementAssociationProperties properties() {
@@ -61,7 +81,7 @@ public final class ManagementAssociationInner extends ProxyResource {
     /**
      * Set the properties property: Properties for ManagementAssociation object supported by the OperationsManagement
      * resource provider.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ManagementAssociationInner object itself.
      */
@@ -71,13 +91,90 @@ public final class ManagementAssociationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementAssociationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementAssociationInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagementAssociationInner.
+     */
+    public static ManagementAssociationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementAssociationInner deserializedManagementAssociationInner = new ManagementAssociationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagementAssociationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagementAssociationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagementAssociationInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedManagementAssociationInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagementAssociationInner.properties
+                        = ManagementAssociationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementAssociationInner;
+        });
     }
 }

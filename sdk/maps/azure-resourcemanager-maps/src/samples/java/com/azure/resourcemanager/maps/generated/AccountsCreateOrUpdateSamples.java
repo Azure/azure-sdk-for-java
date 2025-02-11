@@ -22,146 +22,115 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Accounts CreateOrUpdate. */
+/**
+ * Samples for Accounts CreateOrUpdate.
+ */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountGen2.json
+     * x-ms-original-file:
+     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountGen2.json
      */
     /**
      * Sample code: Create Gen2 Account.
-     *
+     * 
      * @param manager Entry point to AzureMapsManager.
      */
     public static void createGen2Account(com.azure.resourcemanager.maps.AzureMapsManager manager) {
-        manager
-            .accounts()
+        manager.accounts()
             .define("myMapsAccount")
             .withRegion("eastus")
             .withExistingResourceGroup("myResourceGroup")
             .withSku(new Sku().withName(Name.G2))
             .withTags(mapOf("test", "true"))
             .withKind(Kind.GEN2)
-            .withProperties(
-                new MapsAccountProperties()
-                    .withDisableLocalAuth(true)
-                    .withCors(
-                        new CorsRules()
-                            .withCorsRules(
-                                Arrays
-                                    .asList(
-                                        new CorsRule()
-                                            .withAllowedOrigins(
-                                                Arrays.asList("http://www.contoso.com", "http://www.fabrikam.com"))))))
+            .withProperties(new MapsAccountProperties().withDisableLocalAuth(true)
+                .withCors(new CorsRules().withCorsRules(Arrays.asList(new CorsRule()
+                    .withAllowedOrigins(Arrays.asList("http://www.contoso.com", "http://www.fabrikam.com"))))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountEncryption.json
+     * x-ms-original-file:
+     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountEncryption.json
      */
     /**
      * Sample code: Create Account with Encryption.
-     *
+     * 
      * @param manager Entry point to AzureMapsManager.
      */
     public static void createAccountWithEncryption(com.azure.resourcemanager.maps.AzureMapsManager manager) {
-        manager
-            .accounts()
+        manager.accounts()
             .define("myMapsAccount")
             .withRegion("eastus")
             .withExistingResourceGroup("myResourceGroup")
             .withSku(new Sku().withName(Name.G2))
             .withKind(Kind.GEN2)
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName",
-                            new UserAssignedIdentity())))
-            .withProperties(
-                new MapsAccountProperties()
-                    .withEncryption(
-                        new Encryption()
-                            .withCustomerManagedKeyEncryption(
-                                new CustomerManagedKeyEncryption()
-                                    .withKeyEncryptionKeyIdentity(
-                                        new CustomerManagedKeyEncryptionKeyIdentity()
-                                            .withIdentityType(IdentityType.USER_ASSIGNED_IDENTITY)
-                                            .withUserAssignedIdentityResourceId(
-                                                "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName"))
-                                    .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName",
+                    new UserAssignedIdentity())))
+            .withProperties(new MapsAccountProperties()
+                .withEncryption(new Encryption().withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryption()
+                    .withKeyEncryptionKeyIdentity(new CustomerManagedKeyEncryptionKeyIdentity()
+                        .withIdentityType(IdentityType.USER_ASSIGNED_IDENTITY)
+                        .withUserAssignedIdentityResourceId(
+                            "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName"))
+                    .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccount.json
+     * x-ms-original-file:
+     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccount.json
      */
     /**
      * Sample code: Create Gen1 Account.
-     *
+     * 
      * @param manager Entry point to AzureMapsManager.
      */
     public static void createGen1Account(com.azure.resourcemanager.maps.AzureMapsManager manager) {
-        manager
-            .accounts()
+        manager.accounts()
             .define("myMapsAccount")
             .withRegion("eastus")
             .withExistingResourceGroup("myResourceGroup")
             .withSku(new Sku().withName(Name.S0))
             .withTags(mapOf("test", "true"))
             .withKind(Kind.GEN1)
-            .withProperties(
-                new MapsAccountProperties()
-                    .withDisableLocalAuth(false)
-                    .withCors(
-                        new CorsRules()
-                            .withCorsRules(
-                                Arrays
-                                    .asList(
-                                        new CorsRule()
-                                            .withAllowedOrigins(
-                                                Arrays.asList("http://www.contoso.com", "http://www.fabrikam.com"))))))
+            .withProperties(new MapsAccountProperties().withDisableLocalAuth(false)
+                .withCors(new CorsRules().withCorsRules(Arrays.asList(new CorsRule()
+                    .withAllowedOrigins(Arrays.asList("http://www.contoso.com", "http://www.fabrikam.com"))))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountManagedIdentity.json
+     * x-ms-original-file:
+     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountManagedIdentity.json
      */
     /**
      * Sample code: Create Account with Managed Identities.
-     *
+     * 
      * @param manager Entry point to AzureMapsManager.
      */
     public static void createAccountWithManagedIdentities(com.azure.resourcemanager.maps.AzureMapsManager manager) {
-        manager
-            .accounts()
+        manager.accounts()
             .define("myMapsAccount")
             .withRegion("eastus")
             .withExistingResourceGroup("myResourceGroup")
             .withSku(new Sku().withName(Name.G2))
             .withTags(mapOf("test", "true"))
             .withKind(Kind.GEN2)
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName",
-                            new UserAssignedIdentity())))
-            .withProperties(
-                new MapsAccountProperties()
-                    .withDisableLocalAuth(false)
-                    .withLinkedResources(
-                        Arrays
-                            .asList(
-                                new LinkedResource()
-                                    .withUniqueName("myBatchStorageAccount")
-                                    .withId(
-                                        "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Storage/accounts/mystorageacc"),
-                                new LinkedResource()
-                                    .withUniqueName("myBlobDataSource")
-                                    .withId(
-                                        "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Storage/accounts/mystorageacc"))))
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName",
+                    new UserAssignedIdentity())))
+            .withProperties(new MapsAccountProperties().withDisableLocalAuth(false)
+                .withLinkedResources(Arrays.asList(new LinkedResource().withUniqueName("myBatchStorageAccount")
+                    .withId(
+                        "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Storage/accounts/mystorageacc"),
+                    new LinkedResource().withUniqueName("myBlobDataSource")
+                        .withId(
+                            "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Storage/accounts/mystorageacc"))))
             .create();
     }
 

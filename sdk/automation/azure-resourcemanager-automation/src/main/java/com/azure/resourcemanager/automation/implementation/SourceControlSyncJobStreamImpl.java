@@ -14,8 +14,7 @@ public final class SourceControlSyncJobStreamImpl implements SourceControlSyncJo
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    SourceControlSyncJobStreamImpl(
-        SourceControlSyncJobStreamInner innerObject,
+    SourceControlSyncJobStreamImpl(SourceControlSyncJobStreamInner innerObject,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

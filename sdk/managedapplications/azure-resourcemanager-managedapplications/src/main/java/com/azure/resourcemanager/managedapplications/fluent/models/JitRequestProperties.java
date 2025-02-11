@@ -6,72 +6,72 @@ package com.azure.resourcemanager.managedapplications.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managedapplications.models.ApplicationClientDetails;
 import com.azure.resourcemanager.managedapplications.models.JitAuthorizationPolicies;
 import com.azure.resourcemanager.managedapplications.models.JitRequestState;
 import com.azure.resourcemanager.managedapplications.models.JitSchedulingPolicy;
 import com.azure.resourcemanager.managedapplications.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Information about JIT request properties. */
+/**
+ * Information about JIT request properties.
+ */
 @Fluent
-public final class JitRequestProperties {
+public final class JitRequestProperties implements JsonSerializable<JitRequestProperties> {
     /*
      * The parent application id.
      */
-    @JsonProperty(value = "applicationResourceId", required = true)
     private String applicationResourceId;
 
     /*
      * The publisher tenant id.
      */
-    @JsonProperty(value = "publisherTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String publisherTenantId;
 
     /*
      * The JIT authorization policies.
      */
-    @JsonProperty(value = "jitAuthorizationPolicies", required = true)
     private List<JitAuthorizationPolicies> jitAuthorizationPolicies;
 
     /*
      * The JIT request properties.
      */
-    @JsonProperty(value = "jitSchedulingPolicy", required = true)
     private JitSchedulingPolicy jitSchedulingPolicy;
 
     /*
      * The JIT request provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The JIT request state.
      */
-    @JsonProperty(value = "jitRequestState", access = JsonProperty.Access.WRITE_ONLY)
     private JitRequestState jitRequestState;
 
     /*
      * The client entity that created the JIT request.
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationClientDetails createdBy;
 
     /*
      * The client entity that last updated the JIT request.
      */
-    @JsonProperty(value = "updatedBy", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationClientDetails updatedBy;
 
-    /** Creates an instance of JitRequestProperties class. */
+    /**
+     * Creates an instance of JitRequestProperties class.
+     */
     public JitRequestProperties() {
     }
 
     /**
      * Get the applicationResourceId property: The parent application id.
-     *
+     * 
      * @return the applicationResourceId value.
      */
     public String applicationResourceId() {
@@ -80,7 +80,7 @@ public final class JitRequestProperties {
 
     /**
      * Set the applicationResourceId property: The parent application id.
-     *
+     * 
      * @param applicationResourceId the applicationResourceId value to set.
      * @return the JitRequestProperties object itself.
      */
@@ -91,7 +91,7 @@ public final class JitRequestProperties {
 
     /**
      * Get the publisherTenantId property: The publisher tenant id.
-     *
+     * 
      * @return the publisherTenantId value.
      */
     public String publisherTenantId() {
@@ -100,7 +100,7 @@ public final class JitRequestProperties {
 
     /**
      * Get the jitAuthorizationPolicies property: The JIT authorization policies.
-     *
+     * 
      * @return the jitAuthorizationPolicies value.
      */
     public List<JitAuthorizationPolicies> jitAuthorizationPolicies() {
@@ -109,7 +109,7 @@ public final class JitRequestProperties {
 
     /**
      * Set the jitAuthorizationPolicies property: The JIT authorization policies.
-     *
+     * 
      * @param jitAuthorizationPolicies the jitAuthorizationPolicies value to set.
      * @return the JitRequestProperties object itself.
      */
@@ -120,7 +120,7 @@ public final class JitRequestProperties {
 
     /**
      * Get the jitSchedulingPolicy property: The JIT request properties.
-     *
+     * 
      * @return the jitSchedulingPolicy value.
      */
     public JitSchedulingPolicy jitSchedulingPolicy() {
@@ -129,7 +129,7 @@ public final class JitRequestProperties {
 
     /**
      * Set the jitSchedulingPolicy property: The JIT request properties.
-     *
+     * 
      * @param jitSchedulingPolicy the jitSchedulingPolicy value to set.
      * @return the JitRequestProperties object itself.
      */
@@ -140,7 +140,7 @@ public final class JitRequestProperties {
 
     /**
      * Get the provisioningState property: The JIT request provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -149,7 +149,7 @@ public final class JitRequestProperties {
 
     /**
      * Get the jitRequestState property: The JIT request state.
-     *
+     * 
      * @return the jitRequestState value.
      */
     public JitRequestState jitRequestState() {
@@ -158,7 +158,7 @@ public final class JitRequestProperties {
 
     /**
      * Get the createdBy property: The client entity that created the JIT request.
-     *
+     * 
      * @return the createdBy value.
      */
     public ApplicationClientDetails createdBy() {
@@ -167,7 +167,7 @@ public final class JitRequestProperties {
 
     /**
      * Get the updatedBy property: The client entity that last updated the JIT request.
-     *
+     * 
      * @return the updatedBy value.
      */
     public ApplicationClientDetails updatedBy() {
@@ -176,29 +176,26 @@ public final class JitRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (applicationResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property applicationResourceId in model JitRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property applicationResourceId in model JitRequestProperties"));
         }
         if (jitAuthorizationPolicies() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property jitAuthorizationPolicies in model JitRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property jitAuthorizationPolicies in model JitRequestProperties"));
         } else {
             jitAuthorizationPolicies().forEach(e -> e.validate());
         }
         if (jitSchedulingPolicy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property jitSchedulingPolicy in model JitRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property jitSchedulingPolicy in model JitRequestProperties"));
         } else {
             jitSchedulingPolicy().validate();
         }
@@ -211,4 +208,61 @@ public final class JitRequestProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JitRequestProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationResourceId", this.applicationResourceId);
+        jsonWriter.writeArrayField("jitAuthorizationPolicies", this.jitAuthorizationPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("jitSchedulingPolicy", this.jitSchedulingPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JitRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JitRequestProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JitRequestProperties.
+     */
+    public static JitRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JitRequestProperties deserializedJitRequestProperties = new JitRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationResourceId".equals(fieldName)) {
+                    deserializedJitRequestProperties.applicationResourceId = reader.getString();
+                } else if ("jitAuthorizationPolicies".equals(fieldName)) {
+                    List<JitAuthorizationPolicies> jitAuthorizationPolicies
+                        = reader.readArray(reader1 -> JitAuthorizationPolicies.fromJson(reader1));
+                    deserializedJitRequestProperties.jitAuthorizationPolicies = jitAuthorizationPolicies;
+                } else if ("jitSchedulingPolicy".equals(fieldName)) {
+                    deserializedJitRequestProperties.jitSchedulingPolicy = JitSchedulingPolicy.fromJson(reader);
+                } else if ("publisherTenantId".equals(fieldName)) {
+                    deserializedJitRequestProperties.publisherTenantId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedJitRequestProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("jitRequestState".equals(fieldName)) {
+                    deserializedJitRequestProperties.jitRequestState = JitRequestState.fromString(reader.getString());
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedJitRequestProperties.createdBy = ApplicationClientDetails.fromJson(reader);
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedJitRequestProperties.updatedBy = ApplicationClientDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJitRequestProperties;
+        });
+    }
 }

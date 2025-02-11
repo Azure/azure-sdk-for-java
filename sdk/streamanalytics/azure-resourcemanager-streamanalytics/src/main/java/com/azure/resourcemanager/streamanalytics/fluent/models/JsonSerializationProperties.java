@@ -5,20 +5,23 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
 import com.azure.resourcemanager.streamanalytics.models.JsonOutputSerializationFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties that are associated with the JSON serialization type.
  */
 @Fluent
-public final class JsonSerializationProperties {
+public final class JsonSerializationProperties implements JsonSerializable<JsonSerializationProperties> {
     /*
-     * Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case
-     * of output. Required on PUT (CreateOrReplace) requests.
+     * Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of
+     * output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "encoding")
     private Encoding encoding;
 
     /*
@@ -28,7 +31,6 @@ public final class JsonSerializationProperties {
      * 'array' indicating the output will be formatted as an array of JSON objects. Default value is 'lineSeparated' if
      * left null.
      */
-    @JsonProperty(value = "format")
     private JsonOutputSerializationFormat format;
 
     /**
@@ -93,5 +95,45 @@ public final class JsonSerializationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("encoding", this.encoding == null ? null : this.encoding.toString());
+        jsonWriter.writeStringField("format", this.format == null ? null : this.format.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JsonSerializationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JsonSerializationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JsonSerializationProperties.
+     */
+    public static JsonSerializationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonSerializationProperties deserializedJsonSerializationProperties = new JsonSerializationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encoding".equals(fieldName)) {
+                    deserializedJsonSerializationProperties.encoding = Encoding.fromString(reader.getString());
+                } else if ("format".equals(fieldName)) {
+                    deserializedJsonSerializationProperties.format
+                        = JsonOutputSerializationFormat.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJsonSerializationProperties;
+        });
     }
 }

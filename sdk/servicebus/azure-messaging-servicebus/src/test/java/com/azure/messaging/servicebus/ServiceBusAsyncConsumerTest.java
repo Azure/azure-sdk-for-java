@@ -101,11 +101,11 @@ class ServiceBusAsyncConsumerTest {
         final int prefetch = 10;
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(0);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
-        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId");
+        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE,
+            prefetch, maxAutoLockRenewDuration, false, "sessionId");
 
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            receiverOptions);
+        final ServiceBusAsyncConsumer consumer
+            = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer, receiverOptions);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -123,12 +123,11 @@ class ServiceBusAsyncConsumerTest {
         when(serializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
 
         // Act and Assert
-        StepVerifier.create(consumer.receive())
-            .then(() -> {
-                linkPublisher.next(link);
-                endpointPublisher.next(AmqpEndpointState.ACTIVE);
-                messagePublisher.next(message1);
-            })
+        StepVerifier.create(consumer.receive()).then(() -> {
+            linkPublisher.next(link);
+            endpointPublisher.next(AmqpEndpointState.ACTIVE);
+            messagePublisher.next(message1);
+        })
             .expectNext(receivedMessage1)
             .then(() -> messagePublisher.next(message2))
             .expectNext(receivedMessage2)
@@ -148,11 +147,11 @@ class ServiceBusAsyncConsumerTest {
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId");
+        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE,
+            prefetch, maxAutoLockRenewDuration, false, "sessionId");
 
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            receiverOptions);
+        final ServiceBusAsyncConsumer consumer
+            = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer, receiverOptions);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
@@ -162,19 +161,14 @@ class ServiceBusAsyncConsumerTest {
         when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
 
         // Act and Assert
-        StepVerifier.create(consumer.receive())
-            .then(() -> {
-                linkPublisher.next(link);
-                endpointPublisher.next(AmqpEndpointState.ACTIVE);
-                messagePublisher.next(message1);
-            })
-            .expectNext(receivedMessage1)
-            .then(() -> {
-                linkPublisher.complete();
-                endpointPublisher.complete();
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(consumer.receive()).then(() -> {
+            linkPublisher.next(link);
+            endpointPublisher.next(AmqpEndpointState.ACTIVE);
+            messagePublisher.next(message1);
+        }).expectNext(receivedMessage1).then(() -> {
+            linkPublisher.complete();
+            endpointPublisher.complete();
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
@@ -189,11 +183,11 @@ class ServiceBusAsyncConsumerTest {
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId");
+        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE,
+            prefetch, maxAutoLockRenewDuration, false, "sessionId");
 
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            receiverOptions);
+        final ServiceBusAsyncConsumer consumer
+            = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer, receiverOptions);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
@@ -207,19 +201,14 @@ class ServiceBusAsyncConsumerTest {
         when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
 
         // Act and Assert
-        StepVerifier.create(consumer.receive())
-            .then(() -> {
-                linkPublisher.next(link);
-                endpointPublisher.next(AmqpEndpointState.ACTIVE);
-                messagePublisher.next(message1);
-            })
-            .expectNext(receivedMessage1)
-            .then(() -> {
-                linkPublisher.error(new Throwable("fake error"));
-                endpointPublisher.complete();
-            })
-            .expectError()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(consumer.receive()).then(() -> {
+            linkPublisher.next(link);
+            endpointPublisher.next(AmqpEndpointState.ACTIVE);
+            messagePublisher.next(message1);
+        }).expectNext(receivedMessage1).then(() -> {
+            linkPublisher.error(new Throwable("fake error"));
+            endpointPublisher.complete();
+        }).expectError().verify(DEFAULT_TIMEOUT);
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }

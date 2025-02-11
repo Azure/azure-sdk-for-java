@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.databoxedge.generated;
 
-/** Samples for Users Delete. */
+/**
+ * Samples for Users Delete.
+ */
 public final class UsersDeleteSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/UserDelete.json
+     * x-ms-original-file:
+     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/UserDelete.json
      */
     /**
      * Sample code: UserDelete.
-     *
+     * 
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void userDelete(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {

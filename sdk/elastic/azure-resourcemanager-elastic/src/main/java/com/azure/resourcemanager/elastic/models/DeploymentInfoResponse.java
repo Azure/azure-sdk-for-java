@@ -6,53 +6,63 @@ package com.azure.resourcemanager.elastic.models;
 
 import com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInner;
 
-/** An immutable client-side representation of DeploymentInfoResponse. */
+/**
+ * An immutable client-side representation of DeploymentInfoResponse.
+ */
 public interface DeploymentInfoResponse {
     /**
      * Gets the status property: The Elastic deployment status.
-     *
+     * 
      * @return the status value.
      */
     ElasticDeploymentStatus status();
 
     /**
      * Gets the version property: Version of the elasticsearch in Elastic cloud deployment.
-     *
+     * 
      * @return the version value.
      */
     String version();
 
     /**
      * Gets the memoryCapacity property: RAM capacity of the elasticsearch in Elastic cloud deployment.
-     *
+     * 
      * @return the memoryCapacity value.
      */
     String memoryCapacity();
 
     /**
      * Gets the diskCapacity property: Disk capacity of the elasticsearch in Elastic cloud deployment.
-     *
+     * 
      * @return the diskCapacity value.
      */
     String diskCapacity();
 
     /**
+     * Gets the elasticsearchEndPoint property: Elasticsearch endpoint in Elastic cloud deployment. This is either the
+     * aliased_endpoint if available, or the service_url otherwise.
+     * 
+     * @return the elasticsearchEndPoint value.
+     */
+    String elasticsearchEndPoint();
+
+    /**
      * Gets the deploymentUrl property: Deployment URL of the elasticsearch in Elastic cloud deployment.
-     *
+     * 
      * @return the deploymentUrl value.
      */
     String deploymentUrl();
 
     /**
      * Gets the marketplaceSaasInfo property: Marketplace SaaS Info of the resource.
-     *
+     * 
      * @return the marketplaceSaasInfo value.
      */
     MarketplaceSaaSInfo marketplaceSaasInfo();
 
     /**
      * Gets the inner com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     DeploymentInfoResponseInner innerModel();

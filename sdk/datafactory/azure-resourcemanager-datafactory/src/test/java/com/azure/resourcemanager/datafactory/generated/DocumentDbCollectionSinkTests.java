@@ -11,20 +11,20 @@ public final class DocumentDbCollectionSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DocumentDbCollectionSink model = BinaryData.fromString(
-            "{\"type\":\"DocumentDbCollectionSink\",\"nestingSeparator\":\"dataoqegerxmlfn\",\"writeBehavior\":\"datalmyrkrtd\",\"writeBatchSize\":\"dataoxzwgrs\",\"writeBatchTimeout\":\"datatlmcaehjhwklf\",\"sinkRetryCount\":\"dataqqgyp\",\"sinkRetryWait\":\"datawejbngojnak\",\"maxConcurrentConnections\":\"dataytk\",\"disableMetricsCollection\":\"datafo\",\"\":{\"wxmnrdfjobhrvon\":\"dataksormfhru\",\"pbdfrtasau\":\"dataaupjmjig\"}}")
+            "{\"type\":\"DocumentDbCollectionSink\",\"nestingSeparator\":\"datazvveer\",\"writeBehavior\":\"dataehsnlmdosiyzfdc\",\"writeBatchSize\":\"datakggbmzdnyrmolm\",\"writeBatchTimeout\":\"datakcpumckcbsa\",\"sinkRetryCount\":\"dataucsscwdqilz\",\"sinkRetryWait\":\"datai\",\"maxConcurrentConnections\":\"datarqzwypwh\",\"disableMetricsCollection\":\"databflrpvcgqqxek\",\"\":{\"vfjkxxnqrqdx\":\"datapsqvuisedeq\",\"lsvicvpagwohkro\":\"databtpvwx\",\"mlozjyovrllvhbgk\":\"datazss\"}}")
             .toObject(DocumentDbCollectionSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DocumentDbCollectionSink model = new DocumentDbCollectionSink().withWriteBatchSize("dataoxzwgrs")
-            .withWriteBatchTimeout("datatlmcaehjhwklf")
-            .withSinkRetryCount("dataqqgyp")
-            .withSinkRetryWait("datawejbngojnak")
-            .withMaxConcurrentConnections("dataytk")
-            .withDisableMetricsCollection("datafo")
-            .withNestingSeparator("dataoqegerxmlfn")
-            .withWriteBehavior("datalmyrkrtd");
+        DocumentDbCollectionSink model = new DocumentDbCollectionSink().withWriteBatchSize("datakggbmzdnyrmolm")
+            .withWriteBatchTimeout("datakcpumckcbsa")
+            .withSinkRetryCount("dataucsscwdqilz")
+            .withSinkRetryWait("datai")
+            .withMaxConcurrentConnections("datarqzwypwh")
+            .withDisableMetricsCollection("databflrpvcgqqxek")
+            .withNestingSeparator("datazvveer")
+            .withWriteBehavior("dataehsnlmdosiyzfdc");
         model = BinaryData.fromObject(model).toObject(DocumentDbCollectionSink.class);
     }
 }

@@ -12,7 +12,8 @@ import com.azure.ai.formrecognizer.models.FormTable;
 public final class FormTableHelper {
     private static FormTableAccessor accessor;
 
-    private FormTableHelper() { }
+    private FormTableHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link FormTable} instance.

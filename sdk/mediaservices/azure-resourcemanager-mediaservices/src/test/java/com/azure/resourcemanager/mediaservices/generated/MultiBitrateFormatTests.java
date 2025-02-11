@@ -13,30 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class MultiBitrateFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MultiBitrateFormat model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.MultiBitrateFormat\",\"outputFiles\":[{\"labels\":[\"ra\",\"iaa\",\"iuagydwqfbylyrfg\"]},{\"labels\":[\"gtcojocqwo\"]},{\"labels\":[\"nzjvusfzldm\",\"zuxylfsbtkadpyso\",\"nbtgkbugrjqctoj\"]},{\"labels\":[\"isofieypefojyqd\"]}],\"filenamePattern\":\"cuplcplcwkhih\"}")
-                .toObject(MultiBitrateFormat.class);
-        Assertions.assertEquals("cuplcplcwkhih", model.filenamePattern());
-        Assertions.assertEquals("ra", model.outputFiles().get(0).labels().get(0));
+        MultiBitrateFormat model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.MultiBitrateFormat\",\"outputFiles\":[{\"labels\":[\"edxihchrphkmcrj\",\"qnsdfzpbgtgky\",\"kdghrjeuutlwx\",\"z\"]},{\"labels\":[\"hokvbwnh\",\"tqlgehgppi\",\"ifhpf\"]},{\"labels\":[\"ajvgcxtxjcsheafi\",\"ltugsresmkssjhoi\",\"txfkfweg\"]},{\"labels\":[\"hpt\",\"llu\",\"biqtgdq\"]}],\"filenamePattern\":\"hm\"}")
+            .toObject(MultiBitrateFormat.class);
+        Assertions.assertEquals("hm", model.filenamePattern());
+        Assertions.assertEquals("edxihchrphkmcrj", model.outputFiles().get(0).labels().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MultiBitrateFormat model =
-            new MultiBitrateFormat()
-                .withFilenamePattern("cuplcplcwkhih")
-                .withOutputFiles(
-                    Arrays
-                        .asList(
-                            new OutputFile().withLabels(Arrays.asList("ra", "iaa", "iuagydwqfbylyrfg")),
-                            new OutputFile().withLabels(Arrays.asList("gtcojocqwo")),
-                            new OutputFile()
-                                .withLabels(Arrays.asList("nzjvusfzldm", "zuxylfsbtkadpyso", "nbtgkbugrjqctoj")),
-                            new OutputFile().withLabels(Arrays.asList("isofieypefojyqd"))));
+        MultiBitrateFormat model = new MultiBitrateFormat().withFilenamePattern("hm")
+            .withOutputFiles(Arrays.asList(
+                new OutputFile().withLabels(Arrays.asList("edxihchrphkmcrj", "qnsdfzpbgtgky", "kdghrjeuutlwx", "z")),
+                new OutputFile().withLabels(Arrays.asList("hokvbwnh", "tqlgehgppi", "ifhpf")),
+                new OutputFile().withLabels(Arrays.asList("ajvgcxtxjcsheafi", "ltugsresmkssjhoi", "txfkfweg")),
+                new OutputFile().withLabels(Arrays.asList("hpt", "llu", "biqtgdq"))));
         model = BinaryData.fromObject(model).toObject(MultiBitrateFormat.class);
-        Assertions.assertEquals("cuplcplcwkhih", model.filenamePattern());
-        Assertions.assertEquals("ra", model.outputFiles().get(0).labels().get(0));
+        Assertions.assertEquals("hm", model.filenamePattern());
+        Assertions.assertEquals("edxihchrphkmcrj", model.outputFiles().get(0).labels().get(0));
     }
 }

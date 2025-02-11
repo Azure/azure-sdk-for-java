@@ -5,30 +5,33 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Additional information on Azure Sql specific protected item.
  */
 @Fluent
-public final class AzureSqlProtectedItemExtendedInfo {
+public final class AzureSqlProtectedItemExtendedInfo implements JsonSerializable<AzureSqlProtectedItemExtendedInfo> {
     /*
      * The oldest backup copy available for this item in the service.
      */
-    @JsonProperty(value = "oldestRecoveryPoint")
     private OffsetDateTime oldestRecoveryPoint;
 
     /*
      * Number of available backup copies associated with this backup item.
      */
-    @JsonProperty(value = "recoveryPointCount")
     private Integer recoveryPointCount;
 
     /*
      * State of the backup policy associated with this backup item.
      */
-    @JsonProperty(value = "policyState")
     private String policyState;
 
     /**
@@ -103,5 +106,53 @@ public final class AzureSqlProtectedItemExtendedInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("oldestRecoveryPoint",
+            this.oldestRecoveryPoint == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.oldestRecoveryPoint));
+        jsonWriter.writeNumberField("recoveryPointCount", this.recoveryPointCount);
+        jsonWriter.writeStringField("policyState", this.policyState);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlProtectedItemExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlProtectedItemExtendedInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlProtectedItemExtendedInfo.
+     */
+    public static AzureSqlProtectedItemExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlProtectedItemExtendedInfo deserializedAzureSqlProtectedItemExtendedInfo
+                = new AzureSqlProtectedItemExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("oldestRecoveryPoint".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItemExtendedInfo.oldestRecoveryPoint = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveryPointCount".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItemExtendedInfo.recoveryPointCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("policyState".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItemExtendedInfo.policyState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlProtectedItemExtendedInfo;
+        });
     }
 }

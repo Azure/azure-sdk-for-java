@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CreatorListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreatorList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"nuqqkpikadrgvt\",\"storageUnits\":902769225},\"location\":\"n\",\"tags\":{\"rbu\":\"nhijggmebfsi\",\"ttdbhrbnl\":\"rcvpnazzmhjrunmp\",\"xywnytnrsynlqidy\":\"nkxmyskpbhenbtk\"},\"id\":\"yxczfclh\",\"name\":\"axdbabph\",\"type\":\"wrqlfktsthsuco\"},{\"properties\":{\"provisioningState\":\"nyyazttbtwwrqpue\",\"storageUnits\":1640743814},\"location\":\"zywbiex\",\"tags\":{\"qwalmuzyoxaepd\":\"yueaxibxujwb\",\"d\":\"zjancuxr\",\"dbpgnxytxhp\":\"bavxbniwdjswzt\",\"lcuhxwtctyqiklb\":\"xbzpfzab\"},\"id\":\"ovplw\",\"name\":\"bhvgy\",\"type\":\"gu\"},{\"properties\":{\"provisioningState\":\"vmkfssxqu\",\"storageUnits\":773521524},\"location\":\"plgmgsxnk\",\"tags\":{\"lopwiyig\":\"deslp\"},\"id\":\"xpkd\",\"name\":\"zb\",\"type\":\"iuebbaumny\"}],\"nextLink\":\"ped\"}")
-                .toObject(CreatorList.class);
+        CreatorList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"nuqqkpikadrgvt\",\"storageUnits\":902769225},\"location\":\"n\",\"tags\":{\"rbu\":\"nhijggmebfsi\",\"ttdbhrbnl\":\"rcvpnazzmhjrunmp\",\"xywnytnrsynlqidy\":\"nkxmyskpbhenbtk\"},\"id\":\"yxczfclh\",\"name\":\"axdbabph\",\"type\":\"wrqlfktsthsuco\"},{\"properties\":{\"provisioningState\":\"nyyazttbtwwrqpue\",\"storageUnits\":1640743814},\"location\":\"zywbiex\",\"tags\":{\"qwalmuzyoxaepd\":\"yueaxibxujwb\",\"d\":\"zjancuxr\",\"dbpgnxytxhp\":\"bavxbniwdjswzt\",\"lcuhxwtctyqiklb\":\"xbzpfzab\"},\"id\":\"ovplw\",\"name\":\"bhvgy\",\"type\":\"gu\"},{\"properties\":{\"provisioningState\":\"vmkfssxqu\",\"storageUnits\":773521524},\"location\":\"plgmgsxnk\",\"tags\":{\"lopwiyig\":\"deslp\"},\"id\":\"xpkd\",\"name\":\"zb\",\"type\":\"iuebbaumny\"}],\"nextLink\":\"ped\"}")
+            .toObject(CreatorList.class);
         Assertions.assertEquals("ped", model.nextLink());
     }
 

@@ -29,59 +29,82 @@ public final class StorageTasksPreviewActionsSamples {
      */
     public static void
         performStorageTaskActionsPreview(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
-        manager.storageTasks().previewActionsWithResponse("eastus",
-            new StorageTaskPreviewActionInner().withProperties(new StorageTaskPreviewActionProperties()
-                .withContainer(new StorageTaskPreviewContainerProperties().withName("firstContainer")
-                    .withMetadata(Arrays.asList(new StorageTaskPreviewKeyValueProperties()
-                        .withKey("fakeTokenPlaceholder").withValue("mContainerValue1"))))
-                .withBlobs(Arrays.asList(
-                    new StorageTaskPreviewBlobProperties().withName("folder1/file1.txt").withProperties(Arrays.asList(
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
-                            .withValue("Wed, 07 Jun 2023 05:23:29 GMT"),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
-                            .withValue("Wed, 07 Jun 2023 05:23:29 GMT"),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
-                            .withValue("0x8DB67175454D36D"),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder").withValue("38619"),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
-                            .withValue("text/xml"),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder").withValue(""),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder").withValue(""),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder").withValue(""),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
-                            .withValue("njr6iDrmU9+FC89WMK22EA=="),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder").withValue(""),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder").withValue(""),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
-                            .withValue("BlockBlob"),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder").withValue("Hot"),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder").withValue("true"),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
-                            .withValue("unlocked"),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
-                            .withValue("available"),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder").withValue("true"),
-                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder").withValue("1")))
-                        .withMetadata(Arrays.asList(new StorageTaskPreviewKeyValueProperties()
-                            .withKey("fakeTokenPlaceholder").withValue("mValue1")))
-                        .withTags(Arrays.asList(new StorageTaskPreviewKeyValueProperties()
-                            .withKey("fakeTokenPlaceholder").withValue("tValue1"))),
-                    new StorageTaskPreviewBlobProperties().withName("folder2/file1.txt")
-                        .withProperties(Arrays.asList(
-                            new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
-                                .withValue("Wed, 06 Jun 2023 05:23:29 GMT"),
-                            new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
-                                .withValue("Wed, 06 Jun 2023 05:23:29 GMT"),
-                            new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
-                                .withValue("0x6FB67175454D36D")))
-                        .withMetadata(Arrays.asList(new StorageTaskPreviewKeyValueProperties()
-                            .withKey("fakeTokenPlaceholder").withValue("mValue2")))
-                        .withTags(Arrays.asList(new StorageTaskPreviewKeyValueProperties()
-                            .withKey("fakeTokenPlaceholder").withValue("tValue2")))))
-                .withAction(new StorageTaskPreviewActionCondition()
-                    .withIfProperty(
-                        new StorageTaskPreviewActionIfCondition().withCondition("[[equals(AccessTier, 'Hot')]]"))
-                    .withElseBlockExists(true))),
-            com.azure.core.util.Context.NONE);
+        manager.storageTasks()
+            .previewActionsWithResponse("eastus",
+                new StorageTaskPreviewActionInner()
+                    .withProperties(
+                        new StorageTaskPreviewActionProperties()
+                            .withContainer(
+                                new StorageTaskPreviewContainerProperties().withName("firstContainer")
+                                    .withMetadata(Arrays.asList(new StorageTaskPreviewKeyValueProperties()
+                                        .withKey("fakeTokenPlaceholder")
+                                        .withValue("mContainerValue1"))))
+                            .withBlobs(Arrays.asList(new StorageTaskPreviewBlobProperties()
+                                .withName("folder1/file1.txt")
+                                .withProperties(Arrays.asList(new StorageTaskPreviewKeyValueProperties()
+                                    .withKey("fakeTokenPlaceholder")
+                                    .withValue("Wed, 07 Jun 2023 05:23:29 GMT"),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("Wed, 07 Jun 2023 05:23:29 GMT"),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("0x8DB67175454D36D"),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("38619"),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("text/xml"),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue(""),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue(""),
+                                    new StorageTaskPreviewKeyValueProperties()
+                                        .withKey("fakeTokenPlaceholder")
+                                        .withValue(""),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("njr6iDrmU9+FC89WMK22EA=="),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue(""),
+                                    new StorageTaskPreviewKeyValueProperties()
+                                        .withKey("fakeTokenPlaceholder")
+                                        .withValue(""),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("BlockBlob"),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("Hot"),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("true"),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("unlocked"),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("available"),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("true"),
+                                    new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("1")))
+                                .withMetadata(Arrays
+                                    .asList(new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("mValue1")))
+                                .withTags(Arrays
+                                    .asList(new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                        .withValue("tValue1"))),
+                                new StorageTaskPreviewBlobProperties()
+                                    .withName("folder2/file1.txt")
+                                    .withProperties(Arrays.asList(
+                                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                            .withValue("Wed, 06 Jun 2023 05:23:29 GMT"),
+                                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                            .withValue("Wed, 06 Jun 2023 05:23:29 GMT"),
+                                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                            .withValue("0x6FB67175454D36D")))
+                                    .withMetadata(Arrays.asList(
+                                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                            .withValue("mValue2")))
+                                    .withTags(Arrays.asList(
+                                        new StorageTaskPreviewKeyValueProperties().withKey("fakeTokenPlaceholder")
+                                            .withValue("tValue2")))))
+                            .withAction(new StorageTaskPreviewActionCondition()
+                                .withIfProperty(new StorageTaskPreviewActionIfCondition()
+                                    .withCondition("[[equals(AccessTier, 'Hot')]]"))
+                                .withElseBlockExists(true))),
+                com.azure.core.util.Context.NONE);
     }
 }

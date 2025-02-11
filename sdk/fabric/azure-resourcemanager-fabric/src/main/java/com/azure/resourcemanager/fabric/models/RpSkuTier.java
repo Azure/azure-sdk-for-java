@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public final class RpSkuTier extends ExpandableStringEnum<RpSkuTier> {
     /**
-     * Static value Fabric for RpSkuTier.
+     * Fabric tier.
      */
     public static final RpSkuTier FABRIC = fromString("Fabric");
 

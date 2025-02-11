@@ -10,9 +10,8 @@ import com.azure.analytics.purview.datamap.models.QueryResult;
 import com.azure.analytics.purview.datamap.models.SearchHighlights;
 import com.azure.analytics.purview.datamap.models.SearchResultValue;
 import com.azure.analytics.purview.datamap.models.TermSearchResultValue;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -22,13 +21,12 @@ import org.junit.jupiter.api.Test;
 public final class DiscoveryQueryAndOrNestedTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testDiscoveryQueryAndOrNestedTests() throws IOException {
+    public void testDiscoveryQueryAndOrNestedTests() {
         // method invocation
         QueryResult response = discoveryClient.query(new QueryOptions().setLimit(10)
-            .setFilter(JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(
-                    "{\"and\":[{\"entityType\":\"azure_blob_path\"},{\"attributeName\":\"qualifiedName\",\"operator\":\"contains\",\"attributeValue\":\".csv\"},{\"or\":[{\"attributeName\":\"name\",\"operator\":\"eq\",\"attributeValue\":\"exampledata.csv\"},{\"attributeName\":\"qualifiedName\",\"operator\":\"prefix\",\"attributeValue\":\"https://\"}]}]}",
-                    Object.class, SerializerEncoding.JSON)));
+            .setFilter(BinaryData.fromBytes(
+                "{and=[{entityType=azure_blob_path}, {attributeName=qualifiedName, operator=contains, attributeValue=.csv}, {or=[{attributeName=name, operator=eq, attributeValue=exampledata.csv}, {attributeName=qualifiedName, operator=prefix, attributeValue=https://}]}]}"
+                    .getBytes(StandardCharsets.UTF_8))));
 
         // response assertion
         Assertions.assertNotNull(response);

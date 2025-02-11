@@ -9,7 +9,8 @@ package com.azure.resourcemanager.devcenter.generated;
  */
 public final class EnvironmentDefinitionsGetErrorDetailsSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/EnvironmentDefinitions_GetErrorDetails.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * EnvironmentDefinitions_GetErrorDetails.json
      */
     /**
      * Sample code: EnvironmentDefinitions_GetErrorDetails.

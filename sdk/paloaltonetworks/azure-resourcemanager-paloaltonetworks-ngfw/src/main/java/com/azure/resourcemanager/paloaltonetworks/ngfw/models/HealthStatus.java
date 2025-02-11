@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
      * @param name a name to look for.
      * @return the corresponding HealthStatus.
      */
-    @JsonCreator
     public static HealthStatus fromString(String name) {
         return fromString(name, HealthStatus.class);
     }

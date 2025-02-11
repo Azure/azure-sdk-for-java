@@ -5,41 +5,49 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Windows specific update configuration. */
+/**
+ * Windows specific update configuration.
+ */
 @Fluent
-public final class WindowsProperties {
+public final class WindowsProperties implements JsonSerializable<WindowsProperties> {
     /*
      * Update classification included in the software update configuration. A comma separated string with required
      * values
      */
-    @JsonProperty(value = "includedUpdateClassifications")
     private WindowsUpdateClasses includedUpdateClassifications;
 
     /*
      * KB numbers excluded from the software update configuration.
      */
-    @JsonProperty(value = "excludedKbNumbers")
     private List<String> excludedKbNumbers;
 
     /*
      * KB numbers included from the software update configuration.
      */
-    @JsonProperty(value = "includedKbNumbers")
     private List<String> includedKbNumbers;
 
     /*
      * Reboot setting for the software update configuration.
      */
-    @JsonProperty(value = "rebootSetting")
     private String rebootSetting;
+
+    /**
+     * Creates an instance of WindowsProperties class.
+     */
+    public WindowsProperties() {
+    }
 
     /**
      * Get the includedUpdateClassifications property: Update classification included in the software update
      * configuration. A comma separated string with required values.
-     *
+     * 
      * @return the includedUpdateClassifications value.
      */
     public WindowsUpdateClasses includedUpdateClassifications() {
@@ -49,7 +57,7 @@ public final class WindowsProperties {
     /**
      * Set the includedUpdateClassifications property: Update classification included in the software update
      * configuration. A comma separated string with required values.
-     *
+     * 
      * @param includedUpdateClassifications the includedUpdateClassifications value to set.
      * @return the WindowsProperties object itself.
      */
@@ -60,7 +68,7 @@ public final class WindowsProperties {
 
     /**
      * Get the excludedKbNumbers property: KB numbers excluded from the software update configuration.
-     *
+     * 
      * @return the excludedKbNumbers value.
      */
     public List<String> excludedKbNumbers() {
@@ -69,7 +77,7 @@ public final class WindowsProperties {
 
     /**
      * Set the excludedKbNumbers property: KB numbers excluded from the software update configuration.
-     *
+     * 
      * @param excludedKbNumbers the excludedKbNumbers value to set.
      * @return the WindowsProperties object itself.
      */
@@ -80,7 +88,7 @@ public final class WindowsProperties {
 
     /**
      * Get the includedKbNumbers property: KB numbers included from the software update configuration.
-     *
+     * 
      * @return the includedKbNumbers value.
      */
     public List<String> includedKbNumbers() {
@@ -89,7 +97,7 @@ public final class WindowsProperties {
 
     /**
      * Set the includedKbNumbers property: KB numbers included from the software update configuration.
-     *
+     * 
      * @param includedKbNumbers the includedKbNumbers value to set.
      * @return the WindowsProperties object itself.
      */
@@ -100,7 +108,7 @@ public final class WindowsProperties {
 
     /**
      * Get the rebootSetting property: Reboot setting for the software update configuration.
-     *
+     * 
      * @return the rebootSetting value.
      */
     public String rebootSetting() {
@@ -109,7 +117,7 @@ public final class WindowsProperties {
 
     /**
      * Set the rebootSetting property: Reboot setting for the software update configuration.
-     *
+     * 
      * @param rebootSetting the rebootSetting value to set.
      * @return the WindowsProperties object itself.
      */
@@ -120,9 +128,60 @@ public final class WindowsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("includedUpdateClassifications",
+            this.includedUpdateClassifications == null ? null : this.includedUpdateClassifications.toString());
+        jsonWriter.writeArrayField("excludedKbNumbers", this.excludedKbNumbers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("includedKbNumbers", this.includedKbNumbers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("rebootSetting", this.rebootSetting);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WindowsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WindowsProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WindowsProperties.
+     */
+    public static WindowsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WindowsProperties deserializedWindowsProperties = new WindowsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("includedUpdateClassifications".equals(fieldName)) {
+                    deserializedWindowsProperties.includedUpdateClassifications
+                        = WindowsUpdateClasses.fromString(reader.getString());
+                } else if ("excludedKbNumbers".equals(fieldName)) {
+                    List<String> excludedKbNumbers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWindowsProperties.excludedKbNumbers = excludedKbNumbers;
+                } else if ("includedKbNumbers".equals(fieldName)) {
+                    List<String> includedKbNumbers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWindowsProperties.includedKbNumbers = includedKbNumbers;
+                } else if ("rebootSetting".equals(fieldName)) {
+                    deserializedWindowsProperties.rebootSetting = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWindowsProperties;
+        });
     }
 }

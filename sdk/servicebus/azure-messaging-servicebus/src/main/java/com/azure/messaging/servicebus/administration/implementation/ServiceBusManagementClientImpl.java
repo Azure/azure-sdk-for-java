@@ -268,9 +268,7 @@ public final class ServiceBusManagementClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionDescriptionFeedImpl>> listSubscriptionsWithResponseAsync(String topicName,
         Integer skip, Integer top) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.listSubscriptions(this.getEndpoint(), topicName, skip, top,
-            this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> listSubscriptionsWithResponseAsync(topicName, skip, top, context));
     }
 
     /**
@@ -394,9 +392,8 @@ public final class ServiceBusManagementClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RuleDescriptionFeedImpl>> listRulesWithResponseAsync(String topicName, String subscriptionName,
         Integer skip, Integer top) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.listRules(this.getEndpoint(), topicName, subscriptionName, skip,
-            top, this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> listRulesWithResponseAsync(topicName, subscriptionName, skip, top, context));
     }
 
     /**
@@ -524,9 +521,7 @@ public final class ServiceBusManagementClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> listEntitiesWithResponseAsync(String entityType, Integer skip, Integer top) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.listEntities(this.getEndpoint(), entityType, skip, top,
-            this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> listEntitiesWithResponseAsync(entityType, skip, top, context));
     }
 
     /**

@@ -5,41 +5,66 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StageStatus. */
+/**
+ * Stage status.
+ */
 public final class StageStatus extends ExpandableStringEnum<StageStatus> {
-    /** Static value None for StageStatus. */
+    /**
+     * Static value None for StageStatus.
+     */
     public static final StageStatus NONE = fromString("None");
 
-    /** Static value InProgress for StageStatus. */
+    /**
+     * Static value InProgress for StageStatus.
+     */
     public static final StageStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Succeeded for StageStatus. */
+    /**
+     * Static value Succeeded for StageStatus.
+     */
     public static final StageStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for StageStatus. */
+    /**
+     * Static value Failed for StageStatus.
+     */
     public static final StageStatus FAILED = fromString("Failed");
 
-    /** Static value Cancelled for StageStatus. */
+    /**
+     * Static value Cancelled for StageStatus.
+     */
     public static final StageStatus CANCELLED = fromString("Cancelled");
 
-    /** Static value Cancelling for StageStatus. */
+    /**
+     * Static value Cancelling for StageStatus.
+     */
     public static final StageStatus CANCELLING = fromString("Cancelling");
 
     /**
+     * Creates a new instance of StageStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StageStatus() {
+    }
+
+    /**
      * Creates or finds a StageStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StageStatus.
      */
-    @JsonCreator
     public static StageStatus fromString(String name) {
         return fromString(name, StageStatus.class);
     }
 
-    /** @return known StageStatus values. */
+    /**
+     * Gets known StageStatus values.
+     * 
+     * @return known StageStatus values.
+     */
     public static Collection<StageStatus> values() {
         return values(StageStatus.class);
     }

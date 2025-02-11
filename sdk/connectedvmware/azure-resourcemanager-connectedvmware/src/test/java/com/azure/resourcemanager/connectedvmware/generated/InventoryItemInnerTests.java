@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InventoryItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InventoryItemInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"ezwwv\",\"moRefId\":\"qyuvvfonkp\",\"moName\":\"qyikvy\",\"provisioningState\":\"Failed\"},\"kind\":\"avluwmncs\",\"id\":\"ijf\",\"name\":\"bvpoekrsgsgbdhu\",\"type\":\"qgnjdgkynscli\"}")
-                .toObject(InventoryItemInner.class);
+        InventoryItemInner model = BinaryData.fromString(
+            "{\"properties\":{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"ezwwv\",\"moRefId\":\"qyuvvfonkp\",\"moName\":\"qyikvy\",\"provisioningState\":\"Failed\"},\"kind\":\"avluwmncs\",\"id\":\"ijf\",\"name\":\"bvpoekrsgsgbdhu\",\"type\":\"qgnjdgkynscli\"}")
+            .toObject(InventoryItemInner.class);
         Assertions.assertEquals("ezwwv", model.properties().managedResourceId());
         Assertions.assertEquals("qyuvvfonkp", model.properties().moRefId());
         Assertions.assertEquals("qyikvy", model.properties().moName());
@@ -25,14 +23,9 @@ public final class InventoryItemInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InventoryItemInner model =
-            new InventoryItemInner()
-                .withProperties(
-                    new InventoryItemProperties()
-                        .withManagedResourceId("ezwwv")
-                        .withMoRefId("qyuvvfonkp")
-                        .withMoName("qyikvy"))
-                .withKind("avluwmncs");
+        InventoryItemInner model = new InventoryItemInner().withProperties(
+            new InventoryItemProperties().withManagedResourceId("ezwwv").withMoRefId("qyuvvfonkp").withMoName("qyikvy"))
+            .withKind("avluwmncs");
         model = BinaryData.fromObject(model).toObject(InventoryItemInner.class);
         Assertions.assertEquals("ezwwv", model.properties().managedResourceId());
         Assertions.assertEquals("qyuvvfonkp", model.properties().moRefId());

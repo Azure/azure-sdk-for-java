@@ -5,30 +5,38 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.alertsmanagement.fluent.models.PatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Data contract for patch. */
+/**
+ * Data contract for patch.
+ */
 @Fluent
-public final class PatchObject {
+public final class PatchObject implements JsonSerializable<PatchObject> {
     /*
      * Properties supported by patch operation.
      */
-    @JsonProperty(value = "properties")
     private PatchProperties innerProperties;
 
     /*
      * Tags to be updated.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of PatchObject class.
+     */
+    public PatchObject() {
+    }
+
+    /**
      * Get the innerProperties property: Properties supported by patch operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PatchProperties innerProperties() {
@@ -37,7 +45,7 @@ public final class PatchObject {
 
     /**
      * Get the tags property: Tags to be updated.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -46,7 +54,7 @@ public final class PatchObject {
 
     /**
      * Set the tags property: Tags to be updated.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PatchObject object itself.
      */
@@ -57,7 +65,7 @@ public final class PatchObject {
 
     /**
      * Get the enabled property: Indicates if the given alert processing rule is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -66,7 +74,7 @@ public final class PatchObject {
 
     /**
      * Set the enabled property: Indicates if the given alert processing rule is enabled or disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the PatchObject object itself.
      */
@@ -80,12 +88,52 @@ public final class PatchObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatchObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatchObject if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PatchObject.
+     */
+    public static PatchObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PatchObject deserializedPatchObject = new PatchObject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedPatchObject.innerProperties = PatchProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPatchObject.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPatchObject;
+        });
     }
 }

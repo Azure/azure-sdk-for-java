@@ -4,17 +4,13 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The location of the certificate store on the compute node into which to install the certificate.
  * 
- * The default value is currentUser. This property is applicable only for pools configured with Windows nodes (that is,
- * created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows image reference). For
- * Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment
- * variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with
- * visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g.,
+ * The default value is currentUser. This property is applicable only for pools configured with Windows compute nodes.
+ * For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an
+ * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates
+ * with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g.,
  * /home/{user-name}/certs) and certificates are placed in that directory.
  */
 public enum CertificateStoreLocation {
@@ -43,7 +39,6 @@ public enum CertificateStoreLocation {
      * @param value the serialized value to parse.
      * @return the parsed CertificateStoreLocation object, or null if unable to parse.
      */
-    @JsonCreator
     public static CertificateStoreLocation fromString(String value) {
         if (value == null) {
             return null;
@@ -60,7 +55,6 @@ public enum CertificateStoreLocation {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

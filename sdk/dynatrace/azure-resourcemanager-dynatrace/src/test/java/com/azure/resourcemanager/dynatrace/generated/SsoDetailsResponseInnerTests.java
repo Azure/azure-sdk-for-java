@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SsoDetailsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsoDetailsResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"isSsoEnabled\":\"Enabled\",\"metadataUrl\":\"zvdudgwdslfhotwm\",\"singleSignOnUrl\":\"npwlbjnpg\",\"aadDomains\":[\"tadehxnltyfsopp\",\"suesnzw\",\"ej\",\"avo\"],\"adminUsers\":[\"dmoh\",\"tbqvudw\",\"dndnvow\"]}")
-                .toObject(SsoDetailsResponseInner.class);
+        SsoDetailsResponseInner model = BinaryData.fromString(
+            "{\"isSsoEnabled\":\"Enabled\",\"metadataUrl\":\"zvdudgwdslfhotwm\",\"singleSignOnUrl\":\"npwlbjnpg\",\"aadDomains\":[\"tadehxnltyfsopp\",\"suesnzw\",\"ej\",\"avo\"],\"adminUsers\":[\"dmoh\",\"tbqvudw\",\"dndnvow\"]}")
+            .toObject(SsoDetailsResponseInner.class);
         Assertions.assertEquals(SsoStatus.ENABLED, model.isSsoEnabled());
         Assertions.assertEquals("zvdudgwdslfhotwm", model.metadataUrl());
         Assertions.assertEquals("npwlbjnpg", model.singleSignOnUrl());
@@ -27,13 +25,11 @@ public final class SsoDetailsResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsoDetailsResponseInner model =
-            new SsoDetailsResponseInner()
-                .withIsSsoEnabled(SsoStatus.ENABLED)
-                .withMetadataUrl("zvdudgwdslfhotwm")
-                .withSingleSignOnUrl("npwlbjnpg")
-                .withAadDomains(Arrays.asList("tadehxnltyfsopp", "suesnzw", "ej", "avo"))
-                .withAdminUsers(Arrays.asList("dmoh", "tbqvudw", "dndnvow"));
+        SsoDetailsResponseInner model = new SsoDetailsResponseInner().withIsSsoEnabled(SsoStatus.ENABLED)
+            .withMetadataUrl("zvdudgwdslfhotwm")
+            .withSingleSignOnUrl("npwlbjnpg")
+            .withAadDomains(Arrays.asList("tadehxnltyfsopp", "suesnzw", "ej", "avo"))
+            .withAdminUsers(Arrays.asList("dmoh", "tbqvudw", "dndnvow"));
         model = BinaryData.fromObject(model).toObject(SsoDetailsResponseInner.class);
         Assertions.assertEquals(SsoStatus.ENABLED, model.isSsoEnabled());
         Assertions.assertEquals("zvdudgwdslfhotwm", model.metadataUrl());

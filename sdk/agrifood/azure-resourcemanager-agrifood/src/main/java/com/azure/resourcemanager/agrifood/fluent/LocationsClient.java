@@ -11,23 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.agrifood.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.agrifood.models.CheckNameAvailabilityRequest;
 
-/** An instance of this class provides access to all the operations defined in LocationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LocationsClient.
+ */
 public interface LocationsClient {
     /**
      * Checks the name availability of the resource with requested resource name.
-     *
-     * @param body NameAvailabilityRequest object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest body);
-
-    /**
-     * Checks the name availability of the resource with requested resource name.
-     *
+     * 
      * @param body NameAvailabilityRequest object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,6 +26,18 @@ public interface LocationsClient {
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest body, Context context);
+    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest body,
+        Context context);
+
+    /**
+     * Checks the name availability of the resource with requested resource name.
+     * 
+     * @param body NameAvailabilityRequest object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest body);
 }

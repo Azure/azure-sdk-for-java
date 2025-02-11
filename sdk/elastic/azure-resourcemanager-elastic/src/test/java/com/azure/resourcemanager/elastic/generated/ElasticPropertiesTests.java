@@ -12,19 +12,15 @@ import com.azure.resourcemanager.elastic.models.ElasticProperties;
 public final class ElasticPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticProperties model =
-            BinaryData
-                .fromString(
-                    "{\"elasticCloudUser\":{\"emailAddress\":\"xofpdvhpfxxypi\",\"id\":\"nmayhuybb\",\"elasticCloudSsoDefaultUrl\":\"odepoogin\"},\"elasticCloudDeployment\":{\"name\":\"mihe\",\"deploymentId\":\"narxzxtheotus\",\"azureSubscriptionId\":\"yevc\",\"elasticsearchRegion\":\"qi\",\"elasticsearchServiceUrl\":\"hungbwjzrnf\",\"kibanaServiceUrl\":\"xgispemvtzfkufu\",\"kibanaSsoUrl\":\"jofxqe\"}}")
-                .toObject(ElasticProperties.class);
+        ElasticProperties model = BinaryData.fromString(
+            "{\"elasticCloudUser\":{\"emailAddress\":\"szdnr\",\"id\":\"qguhmuo\",\"elasticCloudSsoDefaultUrl\":\"f\"},\"elasticCloudDeployment\":{\"name\":\"zw\",\"deploymentId\":\"g\",\"azureSubscriptionId\":\"tnwu\",\"elasticsearchRegion\":\"gazxuf\",\"elasticsearchServiceUrl\":\"uckyf\",\"kibanaServiceUrl\":\"rfidfvzwdz\",\"kibanaSsoUrl\":\"tymw\"}}")
+            .toObject(ElasticProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticProperties model =
-            new ElasticProperties()
-                .withElasticCloudUser(new ElasticCloudUser())
-                .withElasticCloudDeployment(new ElasticCloudDeployment());
+        ElasticProperties model = new ElasticProperties().withElasticCloudUser(new ElasticCloudUser())
+            .withElasticCloudDeployment(new ElasticCloudDeployment());
         model = BinaryData.fromObject(model).toObject(ElasticProperties.class);
     }
 }

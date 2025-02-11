@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResolverUpdateContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResolverUpdateContract model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"isglrrc\",\"path\":\"zkhhltnjadhqo\",\"description\":\"jqoyueayfbpcm\"}}")
-                .toObject(ResolverUpdateContract.class);
+        ResolverUpdateContract model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"isglrrc\",\"path\":\"zkhhltnjadhqo\",\"description\":\"jqoyueayfbpcm\"}}")
+            .toObject(ResolverUpdateContract.class);
         Assertions.assertEquals("isglrrc", model.displayName());
         Assertions.assertEquals("zkhhltnjadhqo", model.path());
         Assertions.assertEquals("jqoyueayfbpcm", model.description());
@@ -23,11 +21,9 @@ public final class ResolverUpdateContractTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResolverUpdateContract model =
-            new ResolverUpdateContract()
-                .withDisplayName("isglrrc")
-                .withPath("zkhhltnjadhqo")
-                .withDescription("jqoyueayfbpcm");
+        ResolverUpdateContract model = new ResolverUpdateContract().withDisplayName("isglrrc")
+            .withPath("zkhhltnjadhqo")
+            .withDescription("jqoyueayfbpcm");
         model = BinaryData.fromObject(model).toObject(ResolverUpdateContract.class);
         Assertions.assertEquals("isglrrc", model.displayName());
         Assertions.assertEquals("zkhhltnjadhqo", model.path());

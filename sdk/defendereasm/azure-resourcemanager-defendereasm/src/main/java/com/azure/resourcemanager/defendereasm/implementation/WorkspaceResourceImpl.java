@@ -89,20 +89,16 @@ public final class WorkspaceResourceImpl
     }
 
     public WorkspaceResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createAndUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .createAndUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkspaceResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createAndUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .createAndUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
         return this;
     }
 
@@ -118,50 +114,42 @@ public final class WorkspaceResourceImpl
     }
 
     public WorkspaceResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .updateWithResponse(resourceGroupName, workspaceName, updateWorkspacePatchResource, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .updateWithResponse(resourceGroupName, workspaceName, updateWorkspacePatchResource, Context.NONE)
+            .getValue();
         return this;
     }
 
     public WorkspaceResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .updateWithResponse(resourceGroupName, workspaceName, updateWorkspacePatchResource, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .updateWithResponse(resourceGroupName, workspaceName, updateWorkspacePatchResource, context)
+            .getValue();
         return this;
     }
 
-    WorkspaceResourceImpl(
-        WorkspaceResourceInner innerObject, com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
+    WorkspaceResourceImpl(WorkspaceResourceInner innerObject,
+        com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
     }
 
     public WorkspaceResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public WorkspaceResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
+            .getValue();
         return this;
     }
 

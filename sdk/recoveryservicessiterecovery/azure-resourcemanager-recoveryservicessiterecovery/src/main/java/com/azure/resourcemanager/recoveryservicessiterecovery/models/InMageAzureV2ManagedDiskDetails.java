@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * InMageAzureV2 Managed disk details.
  */
 @Fluent
-public final class InMageAzureV2ManagedDiskDetails {
+public final class InMageAzureV2ManagedDiskDetails implements JsonSerializable<InMageAzureV2ManagedDiskDetails> {
     /*
      * The disk id.
      */
-    @JsonProperty(value = "diskId")
     private String diskId;
 
     /*
      * Seed managed disk Id.
      */
-    @JsonProperty(value = "seedManagedDiskId")
     private String seedManagedDiskId;
 
     /*
      * The replica disk type.
      */
-    @JsonProperty(value = "replicaDiskType")
     private String replicaDiskType;
 
     /*
      * The DiskEncryptionSet ARM ID.
      */
-    @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
     /*
      * The target disk name.
      */
-    @JsonProperty(value = "targetDiskName")
     private String targetDiskName;
 
     /**
@@ -154,5 +153,54 @@ public final class InMageAzureV2ManagedDiskDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("seedManagedDiskId", this.seedManagedDiskId);
+        jsonWriter.writeStringField("replicaDiskType", this.replicaDiskType);
+        jsonWriter.writeStringField("diskEncryptionSetId", this.diskEncryptionSetId);
+        jsonWriter.writeStringField("targetDiskName", this.targetDiskName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageAzureV2ManagedDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageAzureV2ManagedDiskDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageAzureV2ManagedDiskDetails.
+     */
+    public static InMageAzureV2ManagedDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageAzureV2ManagedDiskDetails deserializedInMageAzureV2ManagedDiskDetails
+                = new InMageAzureV2ManagedDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedInMageAzureV2ManagedDiskDetails.diskId = reader.getString();
+                } else if ("seedManagedDiskId".equals(fieldName)) {
+                    deserializedInMageAzureV2ManagedDiskDetails.seedManagedDiskId = reader.getString();
+                } else if ("replicaDiskType".equals(fieldName)) {
+                    deserializedInMageAzureV2ManagedDiskDetails.replicaDiskType = reader.getString();
+                } else if ("diskEncryptionSetId".equals(fieldName)) {
+                    deserializedInMageAzureV2ManagedDiskDetails.diskEncryptionSetId = reader.getString();
+                } else if ("targetDiskName".equals(fieldName)) {
+                    deserializedInMageAzureV2ManagedDiskDetails.targetDiskName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageAzureV2ManagedDiskDetails;
+        });
     }
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.changeanalysis.fluent.models.ChangeInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of detected changes. */
+/**
+ * The list of detected changes.
+ */
 @Fluent
-public final class ChangeList {
+public final class ChangeList implements JsonSerializable<ChangeList> {
     /*
      * The list of changes.
      */
-    @JsonProperty(value = "value")
     private List<ChangeInner> value;
 
     /*
      * The URI that can be used to request the next page of changes.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ChangeList class. */
+    /**
+     * Creates an instance of ChangeList class.
+     */
     public ChangeList() {
     }
 
     /**
      * Get the value property: The list of changes.
-     *
+     * 
      * @return the value value.
      */
     public List<ChangeInner> value() {
@@ -39,7 +45,7 @@ public final class ChangeList {
 
     /**
      * Set the value property: The list of changes.
-     *
+     * 
      * @param value the value value to set.
      * @return the ChangeList object itself.
      */
@@ -50,7 +56,7 @@ public final class ChangeList {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next page of changes.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ChangeList {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next page of changes.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ChangeList object itself.
      */
@@ -70,12 +76,52 @@ public final class ChangeList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangeList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangeList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ChangeList.
+     */
+    public static ChangeList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangeList deserializedChangeList = new ChangeList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ChangeInner> value = reader.readArray(reader1 -> ChangeInner.fromJson(reader1));
+                    deserializedChangeList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedChangeList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangeList;
+        });
     }
 }

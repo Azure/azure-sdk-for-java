@@ -5,68 +5,69 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Information about backup files when existing backup mode is used. */
+/**
+ * Information about backup files when existing backup mode is used.
+ */
 @Immutable
-public final class DatabaseBackupInfo {
+public final class DatabaseBackupInfo implements JsonSerializable<DatabaseBackupInfo> {
     /*
      * Database name.
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * Backup Type.
      */
-    @JsonProperty(value = "backupType", access = JsonProperty.Access.WRITE_ONLY)
     private BackupType backupType;
 
     /*
      * The list of backup files for the current database.
      */
-    @JsonProperty(value = "backupFiles", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> backupFiles;
 
     /*
      * Position of current database backup in the file.
      */
-    @JsonProperty(value = "position", access = JsonProperty.Access.WRITE_ONLY)
     private Integer position;
 
     /*
      * Database was damaged when backed up, but the backup operation was requested to continue despite errors.
      */
-    @JsonProperty(value = "isDamaged", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDamaged;
 
     /*
      * Whether the backup set is compressed
      */
-    @JsonProperty(value = "isCompressed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCompressed;
 
     /*
      * Number of files in the backup set.
      */
-    @JsonProperty(value = "familyCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer familyCount;
 
     /*
      * Date and time when the backup operation finished.
      */
-    @JsonProperty(value = "backupFinishDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime backupFinishDate;
 
-    /** Creates an instance of DatabaseBackupInfo class. */
+    /**
+     * Creates an instance of DatabaseBackupInfo class.
+     */
     public DatabaseBackupInfo() {
     }
 
     /**
      * Get the databaseName property: Database name.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -75,7 +76,7 @@ public final class DatabaseBackupInfo {
 
     /**
      * Get the backupType property: Backup Type.
-     *
+     * 
      * @return the backupType value.
      */
     public BackupType backupType() {
@@ -84,7 +85,7 @@ public final class DatabaseBackupInfo {
 
     /**
      * Get the backupFiles property: The list of backup files for the current database.
-     *
+     * 
      * @return the backupFiles value.
      */
     public List<String> backupFiles() {
@@ -93,7 +94,7 @@ public final class DatabaseBackupInfo {
 
     /**
      * Get the position property: Position of current database backup in the file.
-     *
+     * 
      * @return the position value.
      */
     public Integer position() {
@@ -103,7 +104,7 @@ public final class DatabaseBackupInfo {
     /**
      * Get the isDamaged property: Database was damaged when backed up, but the backup operation was requested to
      * continue despite errors.
-     *
+     * 
      * @return the isDamaged value.
      */
     public Boolean isDamaged() {
@@ -112,7 +113,7 @@ public final class DatabaseBackupInfo {
 
     /**
      * Get the isCompressed property: Whether the backup set is compressed.
-     *
+     * 
      * @return the isCompressed value.
      */
     public Boolean isCompressed() {
@@ -121,7 +122,7 @@ public final class DatabaseBackupInfo {
 
     /**
      * Get the familyCount property: Number of files in the backup set.
-     *
+     * 
      * @return the familyCount value.
      */
     public Integer familyCount() {
@@ -130,7 +131,7 @@ public final class DatabaseBackupInfo {
 
     /**
      * Get the backupFinishDate property: Date and time when the backup operation finished.
-     *
+     * 
      * @return the backupFinishDate value.
      */
     public OffsetDateTime backupFinishDate() {
@@ -139,9 +140,60 @@ public final class DatabaseBackupInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseBackupInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseBackupInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseBackupInfo.
+     */
+    public static DatabaseBackupInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseBackupInfo deserializedDatabaseBackupInfo = new DatabaseBackupInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseName".equals(fieldName)) {
+                    deserializedDatabaseBackupInfo.databaseName = reader.getString();
+                } else if ("backupType".equals(fieldName)) {
+                    deserializedDatabaseBackupInfo.backupType = BackupType.fromString(reader.getString());
+                } else if ("backupFiles".equals(fieldName)) {
+                    List<String> backupFiles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDatabaseBackupInfo.backupFiles = backupFiles;
+                } else if ("position".equals(fieldName)) {
+                    deserializedDatabaseBackupInfo.position = reader.getNullable(JsonReader::getInt);
+                } else if ("isDamaged".equals(fieldName)) {
+                    deserializedDatabaseBackupInfo.isDamaged = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isCompressed".equals(fieldName)) {
+                    deserializedDatabaseBackupInfo.isCompressed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("familyCount".equals(fieldName)) {
+                    deserializedDatabaseBackupInfo.familyCount = reader.getNullable(JsonReader::getInt);
+                } else if ("backupFinishDate".equals(fieldName)) {
+                    deserializedDatabaseBackupInfo.backupFinishDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseBackupInfo;
+        });
     }
 }

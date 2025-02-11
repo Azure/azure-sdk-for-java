@@ -18,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("StepProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "HealthCheck", value = HealthCheckStepProperties.class),
-    @JsonSubTypes.Type(name = "Wait", value = WaitStepProperties.class)
-})
+    @JsonSubTypes.Type(name = "Wait", value = WaitStepProperties.class) })
 @Immutable
 public class StepProperties {
     /** Creates an instance of StepProperties class. */

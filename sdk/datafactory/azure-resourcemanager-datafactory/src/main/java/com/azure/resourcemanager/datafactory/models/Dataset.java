@@ -343,6 +343,8 @@ public class Dataset implements JsonSerializable<Dataset> {
                     return OrcDataset.fromJson(readerToUse.reset());
                 } else if ("Binary".equals(discriminatorValue)) {
                     return BinaryDataset.fromJson(readerToUse.reset());
+                } else if ("Iceberg".equals(discriminatorValue)) {
+                    return IcebergDataset.fromJson(readerToUse.reset());
                 } else if ("AzureBlob".equals(discriminatorValue)) {
                     return AzureBlobDataset.fromJson(readerToUse.reset());
                 } else if ("AzureTable".equals(discriminatorValue)) {

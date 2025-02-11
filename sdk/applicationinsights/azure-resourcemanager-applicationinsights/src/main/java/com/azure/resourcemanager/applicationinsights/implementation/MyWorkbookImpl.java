@@ -141,28 +141,24 @@ public final class MyWorkbookImpl implements MyWorkbook, MyWorkbook.Definition, 
     }
 
     public MyWorkbook create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMyWorkbooks()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, resourceName, this.innerModel(), createSourceId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMyWorkbooks()
+            .createOrUpdateWithResponse(resourceGroupName, resourceName, this.innerModel(), createSourceId,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public MyWorkbook create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMyWorkbooks()
-                .createOrUpdateWithResponse(resourceGroupName, resourceName, this.innerModel(), createSourceId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMyWorkbooks()
+            .createOrUpdateWithResponse(resourceGroupName, resourceName, this.innerModel(), createSourceId, context)
+            .getValue();
         return this;
     }
 
-    MyWorkbookImpl(
-        String name, com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
+    MyWorkbookImpl(String name,
+        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = new MyWorkbookInner();
         this.serviceManager = serviceManager;
         this.resourceName = name;
@@ -175,51 +171,42 @@ public final class MyWorkbookImpl implements MyWorkbook, MyWorkbook.Definition, 
     }
 
     public MyWorkbook apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMyWorkbooks()
-                .updateWithResponse(resourceGroupName, resourceName, this.innerModel(), updateSourceId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMyWorkbooks()
+            .updateWithResponse(resourceGroupName, resourceName, this.innerModel(), updateSourceId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MyWorkbook apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMyWorkbooks()
-                .updateWithResponse(resourceGroupName, resourceName, this.innerModel(), updateSourceId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMyWorkbooks()
+            .updateWithResponse(resourceGroupName, resourceName, this.innerModel(), updateSourceId, context)
+            .getValue();
         return this;
     }
 
-    MyWorkbookImpl(
-        MyWorkbookInner innerObject,
+    MyWorkbookImpl(MyWorkbookInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "myWorkbooks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "myWorkbooks");
     }
 
     public MyWorkbook refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMyWorkbooks()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMyWorkbooks()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MyWorkbook refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMyWorkbooks()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMyWorkbooks()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

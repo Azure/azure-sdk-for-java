@@ -74,17 +74,20 @@ public class KeyVaultKeylessRsaSsaPssSignatureTest {
 
     @Test
     public void engineInitVerifyTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessRsaSsaPssSignature.engineInitVerify(publicKey));
+        assertThrows(UnsupportedOperationException.class,
+            () -> keyVaultKeylessRsaSsaPssSignature.engineInitVerify(publicKey));
     }
 
     @Test
     public void engineInitSignTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessRsaSsaPssSignature.engineInitSign(privateKey));
+        assertThrows(UnsupportedOperationException.class,
+            () -> keyVaultKeylessRsaSsaPssSignature.engineInitSign(privateKey));
     }
 
     @Test
     public void engineInitSignWithRandomTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessRsaSsaPssSignature.engineInitSign(privateKey, null));
+        assertThrows(UnsupportedOperationException.class,
+            () -> keyVaultKeylessRsaSsaPssSignature.engineInitSign(privateKey, null));
     }
 
     @Test
@@ -94,7 +97,8 @@ public class KeyVaultKeylessRsaSsaPssSignatureTest {
 
     @Test
     public void engineSetParameterTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessRsaSsaPssSignature.engineSetParameter("", null));
+        assertThrows(UnsupportedOperationException.class,
+            () -> keyVaultKeylessRsaSsaPssSignature.engineSetParameter("", null));
     }
 
     @Test
@@ -102,28 +106,33 @@ public class KeyVaultKeylessRsaSsaPssSignatureTest {
         keyVaultKeylessRsaSsaPssSignature = new KeyVaultKeylessRsaSsaPssSignature();
         when(keyVaultPrivateKey.getKeyVaultClient()).thenReturn(keyVaultClient);
         keyVaultKeylessRsaSsaPssSignature.engineInitSign(keyVaultPrivateKey, null);
-        keyVaultKeylessRsaSsaPssSignature.engineSetParameter(new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, 20, 1));
-        when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("PS256"), anyString(), ArgumentMatchers.eq(null))).thenReturn("fakeValue".getBytes());
+        keyVaultKeylessRsaSsaPssSignature
+            .engineSetParameter(new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, 20, 1));
+        when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("PS256"), anyString(),
+            ArgumentMatchers.eq(null))).thenReturn("fakeValue".getBytes());
         assertArrayEquals("fakeValue".getBytes(), keyVaultKeylessRsaSsaPssSignature.engineSign());
     }
 
     @Test
     public void engineSetParameterWithNullParameterTest() {
         keyVaultKeylessRsaSsaPssSignature = new KeyVaultKeylessRsaSsaPssSignature();
-        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeylessRsaSsaPssSignature.engineSetParameter(null));
+        assertThrows(InvalidAlgorithmParameterException.class,
+            () -> keyVaultKeylessRsaSsaPssSignature.engineSetParameter(null));
     }
 
     @Test
     public void engineSetParameterWithNotPSSParameterSpecTest() {
         keyVaultKeylessRsaSsaPssSignature = new KeyVaultKeylessRsaSsaPssSignature();
         AlgorithmParameterSpec algorithmParameterSpec = mock(AlgorithmParameterSpec.class);
-        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeylessRsaSsaPssSignature.engineSetParameter(algorithmParameterSpec));
+        assertThrows(InvalidAlgorithmParameterException.class,
+            () -> keyVaultKeylessRsaSsaPssSignature.engineSetParameter(algorithmParameterSpec));
     }
 
     @Test
     public void engineSetParameterWithNullAlgorithmTest() {
         keyVaultKeylessRsaSsaPssSignature = new KeyVaultKeylessRsaSsaPssSignature();
         AlgorithmParameterSpec algorithmParameterSpec = new PSSParameterSpec("fake-value", "fake-value", null, 10, 10);
-        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeylessRsaSsaPssSignature.engineSetParameter(algorithmParameterSpec));
+        assertThrows(InvalidAlgorithmParameterException.class,
+            () -> keyVaultKeylessRsaSsaPssSignature.engineSetParameter(algorithmParameterSpec));
     }
 }

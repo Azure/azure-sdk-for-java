@@ -25,20 +25,16 @@ public final class MSIToken extends AccessToken {
     private static final ClientLogger LOGGER = new ClientLogger(MSIToken.class);
     private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
-    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX")
-        .withLocale(Locale.US);
+    private static final DateTimeFormatter DTF
+        = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX").withLocale(Locale.US);
 
     // This is the format for app service on Windows as of API version 2017-09-01.
     // The format is changed to Unix timestamp in 2019-08-01 but this API version
     // has not been deployed to Linux app services.
-    private static final DateTimeFormatter DTF_WINDOWS = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a XXX")
-        .withLocale(Locale.US);
+    private static final DateTimeFormatter DTF_WINDOWS
+        = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a XXX").withLocale(Locale.US);
 
-    private String accessToken;
-
-    private String expiresOn;
-
-    private String expiresIn;
+    private final String accessToken;
 
     /**
      * Creates an access token instance.
@@ -51,14 +47,13 @@ public final class MSIToken extends AccessToken {
         super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)),
             inferManagedIdentityRefreshInValue(EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn))));
         this.accessToken = token;
-        this.expiresOn = expiresOn;
-        this.expiresIn = expiresIn;
     }
 
     @Override
     public String getToken() {
         return accessToken;
     }
+
     public static MSIToken fromJson(JsonReader jsonReader) throws IOException {
 
         // a serialized MSIToken will have more fields in it, but we don't need them
@@ -90,12 +85,13 @@ public final class MSIToken extends AccessToken {
         // expiresOn = timestamp of refresh expressed as seconds since epoch.
 
         // if we have an expiresOn, we'll use it. Otherwise, we use expiresIn.
-        String dateToParse = CoreUtils.isNullOrEmpty(expiresOn) ? expiresIn : expiresOn;
+        boolean isExpiresOn = !CoreUtils.isNullOrEmpty(expiresOn);
+        String dateToParse = isExpiresOn ? expiresOn : expiresIn;
 
         try {
             long seconds = Long.parseLong(dateToParse);
             // we have an expiresOn, so no parsing required.
-            if (!CoreUtils.isNullOrEmpty(expiresOn)) {
+            if (isExpiresOn) {
                 return seconds;
             } else {
                 // otherwise we need the OffsetDateTime representing now plus the expiresIn duration.

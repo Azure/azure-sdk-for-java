@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ExtensionOptions model. */
+/**
+ * The ExtensionOptions model.
+ */
 @Fluent
-public class ExtensionOptions {
+public class ExtensionOptions implements JsonSerializable<ExtensionOptions> {
     /*
      * The request property.
      */
-    @JsonProperty(value = "request")
     private List<ExtensionOptionType> request;
 
     /*
      * The response property.
      */
-    @JsonProperty(value = "response")
     private List<ExtensionOptionType> response;
 
-    /** Creates an instance of ExtensionOptions class. */
+    /**
+     * Creates an instance of ExtensionOptions class.
+     */
     public ExtensionOptions() {
     }
 
     /**
      * Get the request property: The request property.
-     *
+     * 
      * @return the request value.
      */
     public List<ExtensionOptionType> request() {
@@ -38,7 +44,7 @@ public class ExtensionOptions {
 
     /**
      * Set the request property: The request property.
-     *
+     * 
      * @param request the request value to set.
      * @return the ExtensionOptions object itself.
      */
@@ -49,7 +55,7 @@ public class ExtensionOptions {
 
     /**
      * Get the response property: The response property.
-     *
+     * 
      * @return the response value.
      */
     public List<ExtensionOptionType> response() {
@@ -58,7 +64,7 @@ public class ExtensionOptions {
 
     /**
      * Set the response property: The response property.
-     *
+     * 
      * @param response the response value to set.
      * @return the ExtensionOptions object itself.
      */
@@ -69,9 +75,54 @@ public class ExtensionOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("request", this.request,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("response", this.response,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtensionOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtensionOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExtensionOptions.
+     */
+    public static ExtensionOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtensionOptions deserializedExtensionOptions = new ExtensionOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("request".equals(fieldName)) {
+                    List<ExtensionOptionType> request
+                        = reader.readArray(reader1 -> ExtensionOptionType.fromString(reader1.getString()));
+                    deserializedExtensionOptions.request = request;
+                } else if ("response".equals(fieldName)) {
+                    List<ExtensionOptionType> response
+                        = reader.readArray(reader1 -> ExtensionOptionType.fromString(reader1.getString()));
+                    deserializedExtensionOptions.response = response;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtensionOptions;
+        });
     }
 }

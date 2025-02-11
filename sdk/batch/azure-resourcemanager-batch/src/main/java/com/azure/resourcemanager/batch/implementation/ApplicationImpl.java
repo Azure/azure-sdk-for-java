@@ -7,6 +7,8 @@ package com.azure.resourcemanager.batch.implementation;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.batch.models.Application;
+import java.util.Collections;
+import java.util.Map;
 
 public final class ApplicationImpl implements Application, Application.Definition, Application.Update {
     private ApplicationInner innerObject;
@@ -27,6 +29,15 @@ public final class ApplicationImpl implements Application, Application.Definitio
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public String displayName() {
@@ -66,15 +77,18 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application create() {
-        this.innerObject = serviceManager.serviceClient().getApplications()
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
             .createWithResponse(resourceGroupName, accountName, applicationName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public Application create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplications()
-            .createWithResponse(resourceGroupName, accountName, applicationName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .createWithResponse(resourceGroupName, accountName, applicationName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -89,15 +103,18 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application apply() {
-        this.innerObject = serviceManager.serviceClient().getApplications()
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
             .updateWithResponse(resourceGroupName, accountName, applicationName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public Application apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplications()
-            .updateWithResponse(resourceGroupName, accountName, applicationName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .updateWithResponse(resourceGroupName, accountName, applicationName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -110,14 +127,23 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application refresh() {
-        this.innerObject = serviceManager.serviceClient().getApplications()
-            .getWithResponse(resourceGroupName, accountName, applicationName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .getWithResponse(resourceGroupName, accountName, applicationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Application refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplications()
-            .getWithResponse(resourceGroupName, accountName, applicationName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .getWithResponse(resourceGroupName, accountName, applicationName, context)
+            .getValue();
+        return this;
+    }
+
+    public ApplicationImpl withTags(Map<String, String> tags) {
+        this.innerModel().withTags(tags);
         return this;
     }
 

@@ -26,8 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PolicyTests extends ResourceManagementTest {
-    private String policyRule = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"southcentralus\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}";
-    private String policyRule2 = "{\"if\":{\"not\":{\"field\":\"name\",\"like\":\"[concat(parameters('prefix'),'*',parameters('suffix'))]\"}},\"then\":{\"effect\":\"deny\"}}";
+    private String policyRule
+        = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"southcentralus\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}";
+    private String policyRule2
+        = "{\"if\":{\"not\":{\"field\":\"name\",\"like\":\"[concat(parameters('prefix'),'*',parameters('suffix'))]\"}},\"then\":{\"effect\":\"deny\"}}";
     private final SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
 
     @Override
@@ -47,14 +49,15 @@ public class PolicyTests extends ResourceManagementTest {
             metadata.put("category", "Compute");
 
             // Create
-            PolicyDefinition definition = resourceClient.policyDefinitions().define(policyName)
-                    .withPolicyRuleJson(policyRule)
-                    .withPolicyType(PolicyType.CUSTOM)
-                    .withDisplayName(displayName)
-                    .withDescription("This is my policy")
-                    .withMode("All")
-                    .withMetadata(metadata)
-                    .create();
+            PolicyDefinition definition = resourceClient.policyDefinitions()
+                .define(policyName)
+                .withPolicyRuleJson(policyRule)
+                .withPolicyType(PolicyType.CUSTOM)
+                .withDisplayName(displayName)
+                .withDescription("This is my policy")
+                .withMode("All")
+                .withMetadata(metadata)
+                .create();
             Assertions.assertEquals(policyName, definition.name());
             Assertions.assertEquals(PolicyType.CUSTOM, definition.policyType());
             Assertions.assertEquals(displayName, definition.displayName());
@@ -102,21 +105,21 @@ public class PolicyTests extends ResourceManagementTest {
         String resourceName = generateRandomResourceName("webassignment", 15);
         try {
             // Create definition
-            PolicyDefinition definition = resourceClient.policyDefinitions().define(policyName)
-                    .withPolicyRuleJson(policyRule)
-                    .withPolicyType(PolicyType.CUSTOM)
-                    .withDisplayName(displayName)
-                    .withDescription("This is my policy")
-                    .create();
+            PolicyDefinition definition = resourceClient.policyDefinitions()
+                .define(policyName)
+                .withPolicyRuleJson(policyRule)
+                .withPolicyType(PolicyType.CUSTOM)
+                .withDisplayName(displayName)
+                .withDescription("This is my policy")
+                .create();
             // Create assignment
-            ResourceGroup group = resourceClient.resourceGroups().define(rgName)
-                    .withRegion(Region.UK_WEST)
-                    .create();
-            PolicyAssignment assignment1 = resourceClient.policyAssignments().define(assignmentName1)
-                    .forResourceGroup(group)
-                    .withPolicyDefinition(definition)
-                    .withDisplayName("My Assignment")
-                    .create();
+            ResourceGroup group = resourceClient.resourceGroups().define(rgName).withRegion(Region.UK_WEST).create();
+            PolicyAssignment assignment1 = resourceClient.policyAssignments()
+                .define(assignmentName1)
+                .forResourceGroup(group)
+                .withPolicyDefinition(definition)
+                .withDisplayName("My Assignment")
+                .create();
 
             Assertions.assertNotNull(assignment1);
             Assertions.assertEquals("My Assignment", assignment1.displayName());
@@ -126,27 +129,31 @@ public class PolicyTests extends ResourceManagementTest {
             Assertions.assertEquals(EnforcementMode.DEFAULT, assignment1.enforcementMode());
             Assertions.assertEquals(0, assignment1.parameters().size());
 
-            GenericResource resource = resourceClient.genericResources().define(resourceName)
-                    .withRegion(Region.US_SOUTH_CENTRAL)
-                    .withExistingResourceGroup(group)
-                    .withResourceType("sites")
-                    .withProviderNamespace("Microsoft.Web")
-                    .withoutPlan()
-                    .withApiVersion("2020-12-01")
-                    .withParentResourcePath("")
-                    .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}", Object.class, SerializerEncoding.JSON))
-                    .create();
+            GenericResource resource = resourceClient.genericResources()
+                .define(resourceName)
+                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withExistingResourceGroup(group)
+                .withResourceType("sites")
+                .withProviderNamespace("Microsoft.Web")
+                .withoutPlan()
+                .withApiVersion("2020-12-01")
+                .withParentResourcePath("")
+                .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}",
+                    Object.class, SerializerEncoding.JSON))
+                .create();
 
-            PolicyAssignment assignment2 = resourceClient.policyAssignments().define(assignmentName2)
-                    .forResource(resource)
-                    .withPolicyDefinition(definition)
-                    .withDisplayName("My Assignment 2")
-                    .create();
+            PolicyAssignment assignment2 = resourceClient.policyAssignments()
+                .define(assignmentName2)
+                .forResource(resource)
+                .withPolicyDefinition(definition)
+                .withDisplayName("My Assignment 2")
+                .create();
 
             Assertions.assertNotNull(assignment2);
             Assertions.assertEquals("My Assignment 2", assignment2.displayName());
 
-            PagedIterable<PolicyAssignment> assignments = resourceClient.policyAssignments().listByResourceGroup(rgName);
+            PagedIterable<PolicyAssignment> assignments
+                = resourceClient.policyAssignments().listByResourceGroup(rgName);
             Assertions.assertTrue(TestUtilities.getSize(assignments) >= 2);
 
             boolean foundAssignment1 = false;
@@ -162,15 +169,18 @@ public class PolicyTests extends ResourceManagementTest {
             Assertions.assertTrue(foundAssignment2);
 
             // definition and assignment with parameters
-            PolicyDefinition definition2 = resourceClient.policyDefinitions().define(policyName)
+            PolicyDefinition definition2 = resourceClient.policyDefinitions()
+                .define(policyName)
                 .withPolicyRuleJson(policyRule2)
                 .withPolicyType(PolicyType.CUSTOM)
                 .withParameter("prefix", ParameterType.STRING, "dept")
-                .withParameter("suffix", new ParameterDefinitionsValue().withType(ParameterType.STRING).withDefaultValue("-US"))
+                .withParameter("suffix",
+                    new ParameterDefinitionsValue().withType(ParameterType.STRING).withDefaultValue("-US"))
                 .withDisplayName(displayName)
                 .withDescription("Test policy")
                 .create();
-            PolicyAssignment assignment3 = resourceClient.policyAssignments().define(assignmentName3)
+            PolicyAssignment assignment3 = resourceClient.policyAssignments()
+                .define(assignmentName3)
                 .forResourceGroup(group)
                 .withPolicyDefinition(definition2)
                 .withExcludedScope(resource.id())

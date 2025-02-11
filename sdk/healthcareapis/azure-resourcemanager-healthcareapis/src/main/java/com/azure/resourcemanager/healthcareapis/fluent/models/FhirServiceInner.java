@@ -6,6 +6,9 @@ package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.models.Encryption;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAcrConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAuthenticationConfiguration;
@@ -21,7 +24,7 @@ import com.azure.resourcemanager.healthcareapis.models.ResourceVersionPolicyConf
 import com.azure.resourcemanager.healthcareapis.models.ServiceEventState;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityIdentity;
 import com.azure.resourcemanager.healthcareapis.models.TaggedResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -33,26 +36,37 @@ public final class FhirServiceInner extends TaggedResource {
     /*
      * The kind of the service.
      */
-    @JsonProperty(value = "kind")
     private FhirServiceKind kind;
 
     /*
      * Fhir Service configuration.
      */
-    @JsonProperty(value = "properties")
     private FhirServiceProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Setting indicating whether the service has a managed identity associated with it.
      */
-    @JsonProperty(value = "identity")
     private ServiceManagedIdentityIdentity identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of FhirServiceInner class.
@@ -116,6 +130,36 @@ public final class FhirServiceInner extends TaggedResource {
     public FhirServiceInner withIdentity(ServiceManagedIdentityIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -392,12 +436,72 @@ public final class FhirServiceInner extends TaggedResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirServiceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirServiceInner.
+     */
+    public static FhirServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirServiceInner deserializedFhirServiceInner = new FhirServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFhirServiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFhirServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFhirServiceInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedFhirServiceInner.withEtag(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedFhirServiceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFhirServiceInner.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedFhirServiceInner.kind = FhirServiceKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFhirServiceInner.innerProperties = FhirServiceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFhirServiceInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedFhirServiceInner.identity = ServiceManagedIdentityIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFhirServiceInner;
+        });
     }
 }

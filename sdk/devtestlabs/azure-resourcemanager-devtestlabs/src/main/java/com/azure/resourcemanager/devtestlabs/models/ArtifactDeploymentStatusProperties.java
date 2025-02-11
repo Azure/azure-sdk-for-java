@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of an artifact deployment. */
+/**
+ * Properties of an artifact deployment.
+ */
 @Fluent
-public final class ArtifactDeploymentStatusProperties {
+public final class ArtifactDeploymentStatusProperties implements JsonSerializable<ArtifactDeploymentStatusProperties> {
     /*
      * The deployment status of the artifact.
      */
-    @JsonProperty(value = "deploymentStatus")
     private String deploymentStatus;
 
     /*
      * The total count of the artifacts that were successfully applied.
      */
-    @JsonProperty(value = "artifactsApplied")
     private Integer artifactsApplied;
 
     /*
      * The total count of the artifacts that were tentatively applied.
      */
-    @JsonProperty(value = "totalArtifacts")
     private Integer totalArtifacts;
 
-    /** Creates an instance of ArtifactDeploymentStatusProperties class. */
+    /**
+     * Creates an instance of ArtifactDeploymentStatusProperties class.
+     */
     public ArtifactDeploymentStatusProperties() {
     }
 
     /**
      * Get the deploymentStatus property: The deployment status of the artifact.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public String deploymentStatus() {
@@ -43,7 +48,7 @@ public final class ArtifactDeploymentStatusProperties {
 
     /**
      * Set the deploymentStatus property: The deployment status of the artifact.
-     *
+     * 
      * @param deploymentStatus the deploymentStatus value to set.
      * @return the ArtifactDeploymentStatusProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class ArtifactDeploymentStatusProperties {
 
     /**
      * Get the artifactsApplied property: The total count of the artifacts that were successfully applied.
-     *
+     * 
      * @return the artifactsApplied value.
      */
     public Integer artifactsApplied() {
@@ -63,7 +68,7 @@ public final class ArtifactDeploymentStatusProperties {
 
     /**
      * Set the artifactsApplied property: The total count of the artifacts that were successfully applied.
-     *
+     * 
      * @param artifactsApplied the artifactsApplied value to set.
      * @return the ArtifactDeploymentStatusProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class ArtifactDeploymentStatusProperties {
 
     /**
      * Get the totalArtifacts property: The total count of the artifacts that were tentatively applied.
-     *
+     * 
      * @return the totalArtifacts value.
      */
     public Integer totalArtifacts() {
@@ -83,7 +88,7 @@ public final class ArtifactDeploymentStatusProperties {
 
     /**
      * Set the totalArtifacts property: The total count of the artifacts that were tentatively applied.
-     *
+     * 
      * @param totalArtifacts the totalArtifacts value to set.
      * @return the ArtifactDeploymentStatusProperties object itself.
      */
@@ -94,9 +99,54 @@ public final class ArtifactDeploymentStatusProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deploymentStatus", this.deploymentStatus);
+        jsonWriter.writeNumberField("artifactsApplied", this.artifactsApplied);
+        jsonWriter.writeNumberField("totalArtifacts", this.totalArtifacts);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactDeploymentStatusProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactDeploymentStatusProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactDeploymentStatusProperties.
+     */
+    public static ArtifactDeploymentStatusProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactDeploymentStatusProperties deserializedArtifactDeploymentStatusProperties
+                = new ArtifactDeploymentStatusProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentStatus".equals(fieldName)) {
+                    deserializedArtifactDeploymentStatusProperties.deploymentStatus = reader.getString();
+                } else if ("artifactsApplied".equals(fieldName)) {
+                    deserializedArtifactDeploymentStatusProperties.artifactsApplied
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("totalArtifacts".equals(fieldName)) {
+                    deserializedArtifactDeploymentStatusProperties.totalArtifacts
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactDeploymentStatusProperties;
+        });
     }
 }

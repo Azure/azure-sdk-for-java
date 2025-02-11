@@ -27,22 +27,28 @@ import com.azure.resourcemanager.peering.models.CheckServiceProviderAvailability
 import com.azure.resourcemanager.peering.models.Enum0;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PeeringManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(PeeringManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,24 +59,21 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "PeeringManagementCli")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/CheckServiceProviderAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Enum0>> checkServiceProviderAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Enum0>> checkServiceProviderAvailability(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Checks if the peering service provider is present within 1000 miles of customer's location.
-     *
+     * 
      * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer
-     *     location and service provider.
+     * location and service provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -80,45 +83,32 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<Response<Enum0>> checkServiceProviderAvailabilityWithResponseAsync(
         CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkServiceProviderAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkServiceProviderAvailabilityInput is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter checkServiceProviderAvailabilityInput is required and cannot be null."));
         } else {
             checkServiceProviderAvailabilityInput.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkServiceProviderAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            checkServiceProviderAvailabilityInput,
-                            accept,
-                            context))
+            .withContext(context -> service.checkServiceProviderAvailability(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), checkServiceProviderAvailabilityInput,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks if the peering service provider is present within 1000 miles of customer's location.
-     *
+     * 
      * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer
-     *     location and service provider.
+     * location and service provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -129,42 +119,30 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<Response<Enum0>> checkServiceProviderAvailabilityWithResponseAsync(
         CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkServiceProviderAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkServiceProviderAvailabilityInput is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter checkServiceProviderAvailabilityInput is required and cannot be null."));
         } else {
             checkServiceProviderAvailabilityInput.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkServiceProviderAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                checkServiceProviderAvailabilityInput,
-                accept,
-                context);
+        return service.checkServiceProviderAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), checkServiceProviderAvailabilityInput, accept, context);
     }
 
     /**
      * Checks if the peering service provider is present within 1000 miles of customer's location.
-     *
+     * 
      * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer
-     *     location and service provider.
+     * location and service provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -179,9 +157,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checks if the peering service provider is present within 1000 miles of customer's location.
-     *
+     * 
      * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer
-     *     location and service provider.
+     * location and service provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -197,17 +175,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checks if the peering service provider is present within 1000 miles of customer's location.
-     *
+     * 
      * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer
-     *     location and service provider.
+     * location and service provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Enum0 checkServiceProviderAvailability(
-        CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput) {
+    public Enum0
+        checkServiceProviderAvailability(CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput) {
         return checkServiceProviderAvailabilityWithResponse(checkServiceProviderAvailabilityInput, Context.NONE)
             .getValue();
     }

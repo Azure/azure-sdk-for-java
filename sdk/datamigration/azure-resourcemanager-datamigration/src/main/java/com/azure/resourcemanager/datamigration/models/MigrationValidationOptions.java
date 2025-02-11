@@ -5,22 +5,26 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Types of validations to run after the migration. */
+/**
+ * Types of validations to run after the migration.
+ */
 @Fluent
-public final class MigrationValidationOptions {
+public final class MigrationValidationOptions implements JsonSerializable<MigrationValidationOptions> {
     /*
      * Allows to compare the schema information between source and target.
      */
-    @JsonProperty(value = "enableSchemaValidation")
     private Boolean enableSchemaValidation;
 
     /*
      * Allows to perform a checksum based data integrity validation between source and target for the selected database
      * / tables .
      */
-    @JsonProperty(value = "enableDataIntegrityValidation")
     private Boolean enableDataIntegrityValidation;
 
     /*
@@ -28,16 +32,17 @@ public final class MigrationValidationOptions {
      * executes them in the target. The result will have execution statistics for executions in source and target
      * databases for the extracted queries.
      */
-    @JsonProperty(value = "enableQueryAnalysisValidation")
     private Boolean enableQueryAnalysisValidation;
 
-    /** Creates an instance of MigrationValidationOptions class. */
+    /**
+     * Creates an instance of MigrationValidationOptions class.
+     */
     public MigrationValidationOptions() {
     }
 
     /**
      * Get the enableSchemaValidation property: Allows to compare the schema information between source and target.
-     *
+     * 
      * @return the enableSchemaValidation value.
      */
     public Boolean enableSchemaValidation() {
@@ -46,7 +51,7 @@ public final class MigrationValidationOptions {
 
     /**
      * Set the enableSchemaValidation property: Allows to compare the schema information between source and target.
-     *
+     * 
      * @param enableSchemaValidation the enableSchemaValidation value to set.
      * @return the MigrationValidationOptions object itself.
      */
@@ -58,7 +63,7 @@ public final class MigrationValidationOptions {
     /**
      * Get the enableDataIntegrityValidation property: Allows to perform a checksum based data integrity validation
      * between source and target for the selected database / tables .
-     *
+     * 
      * @return the enableDataIntegrityValidation value.
      */
     public Boolean enableDataIntegrityValidation() {
@@ -68,7 +73,7 @@ public final class MigrationValidationOptions {
     /**
      * Set the enableDataIntegrityValidation property: Allows to perform a checksum based data integrity validation
      * between source and target for the selected database / tables .
-     *
+     * 
      * @param enableDataIntegrityValidation the enableDataIntegrityValidation value to set.
      * @return the MigrationValidationOptions object itself.
      */
@@ -81,7 +86,7 @@ public final class MigrationValidationOptions {
      * Get the enableQueryAnalysisValidation property: Allows to perform a quick and intelligent query analysis by
      * retrieving queries from the source database and executes them in the target. The result will have execution
      * statistics for executions in source and target databases for the extracted queries.
-     *
+     * 
      * @return the enableQueryAnalysisValidation value.
      */
     public Boolean enableQueryAnalysisValidation() {
@@ -92,7 +97,7 @@ public final class MigrationValidationOptions {
      * Set the enableQueryAnalysisValidation property: Allows to perform a quick and intelligent query analysis by
      * retrieving queries from the source database and executes them in the target. The result will have execution
      * statistics for executions in source and target databases for the extracted queries.
-     *
+     * 
      * @param enableQueryAnalysisValidation the enableQueryAnalysisValidation value to set.
      * @return the MigrationValidationOptions object itself.
      */
@@ -103,9 +108,54 @@ public final class MigrationValidationOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enableSchemaValidation", this.enableSchemaValidation);
+        jsonWriter.writeBooleanField("enableDataIntegrityValidation", this.enableDataIntegrityValidation);
+        jsonWriter.writeBooleanField("enableQueryAnalysisValidation", this.enableQueryAnalysisValidation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationValidationOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationValidationOptions if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrationValidationOptions.
+     */
+    public static MigrationValidationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationValidationOptions deserializedMigrationValidationOptions = new MigrationValidationOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enableSchemaValidation".equals(fieldName)) {
+                    deserializedMigrationValidationOptions.enableSchemaValidation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableDataIntegrityValidation".equals(fieldName)) {
+                    deserializedMigrationValidationOptions.enableDataIntegrityValidation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableQueryAnalysisValidation".equals(fieldName)) {
+                    deserializedMigrationValidationOptions.enableQueryAnalysisValidation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationValidationOptions;
+        });
     }
 }

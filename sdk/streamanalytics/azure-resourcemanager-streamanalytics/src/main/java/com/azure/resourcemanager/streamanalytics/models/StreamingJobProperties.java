@@ -197,13 +197,6 @@ public interface StreamingJobProperties {
     ContentStoragePolicy contentStoragePolicy();
 
     /**
-     * Gets the externals property: The storage account where the custom code artifacts are located.
-     * 
-     * @return the externals value.
-     */
-    External externals();
-
-    /**
      * Gets the cluster property: The cluster which streaming jobs will run on.
      * 
      * @return the cluster value.

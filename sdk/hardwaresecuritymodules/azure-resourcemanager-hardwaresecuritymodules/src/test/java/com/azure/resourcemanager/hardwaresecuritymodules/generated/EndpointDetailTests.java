@@ -12,22 +12,22 @@ public final class EndpointDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointDetail model = BinaryData
-            .fromString("{\"ipAddress\":\"youlp\",\"port\":106141655,\"protocol\":\"ag\",\"description\":\"vimjwos\"}")
+            .fromString("{\"ipAddress\":\"c\",\"port\":1704525857,\"protocol\":\"nbacfi\",\"description\":\"l\"}")
             .toObject(EndpointDetail.class);
-        Assertions.assertEquals("youlp", model.ipAddress());
-        Assertions.assertEquals(106141655, model.port());
-        Assertions.assertEquals("ag", model.protocol());
-        Assertions.assertEquals("vimjwos", model.description());
+        Assertions.assertEquals("c", model.ipAddress());
+        Assertions.assertEquals(1704525857, model.port());
+        Assertions.assertEquals("nbacfi", model.protocol());
+        Assertions.assertEquals("l", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointDetail model = new EndpointDetail().withIpAddress("youlp").withPort(106141655).withProtocol("ag")
-            .withDescription("vimjwos");
+        EndpointDetail model
+            = new EndpointDetail().withIpAddress("c").withPort(1704525857).withProtocol("nbacfi").withDescription("l");
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);
-        Assertions.assertEquals("youlp", model.ipAddress());
-        Assertions.assertEquals(106141655, model.port());
-        Assertions.assertEquals("ag", model.protocol());
-        Assertions.assertEquals("vimjwos", model.description());
+        Assertions.assertEquals("c", model.ipAddress());
+        Assertions.assertEquals(1704525857, model.port());
+        Assertions.assertEquals("nbacfi", model.protocol());
+        Assertions.assertEquals("l", model.description());
     }
 }

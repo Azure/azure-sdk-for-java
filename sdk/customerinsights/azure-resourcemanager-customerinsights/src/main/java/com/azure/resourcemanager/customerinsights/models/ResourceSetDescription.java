@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The resource set description. */
+/**
+ * The resource set description.
+ */
 @Fluent
-public final class ResourceSetDescription {
+public final class ResourceSetDescription implements JsonSerializable<ResourceSetDescription> {
     /*
      * The elements included in the set.
      */
-    @JsonProperty(value = "elements")
     private List<String> elements;
 
     /*
      * The elements that are not included in the set, in case elements contains '*' indicating 'all'.
      */
-    @JsonProperty(value = "exceptions")
     private List<String> exceptions;
 
-    /** Creates an instance of ResourceSetDescription class. */
+    /**
+     * Creates an instance of ResourceSetDescription class.
+     */
     public ResourceSetDescription() {
     }
 
     /**
      * Get the elements property: The elements included in the set.
-     *
+     * 
      * @return the elements value.
      */
     public List<String> elements() {
@@ -38,7 +44,7 @@ public final class ResourceSetDescription {
 
     /**
      * Set the elements property: The elements included in the set.
-     *
+     * 
      * @param elements the elements value to set.
      * @return the ResourceSetDescription object itself.
      */
@@ -50,7 +56,7 @@ public final class ResourceSetDescription {
     /**
      * Get the exceptions property: The elements that are not included in the set, in case elements contains '*'
      * indicating 'all'.
-     *
+     * 
      * @return the exceptions value.
      */
     public List<String> exceptions() {
@@ -60,7 +66,7 @@ public final class ResourceSetDescription {
     /**
      * Set the exceptions property: The elements that are not included in the set, in case elements contains '*'
      * indicating 'all'.
-     *
+     * 
      * @param exceptions the exceptions value to set.
      * @return the ResourceSetDescription object itself.
      */
@@ -71,9 +77,50 @@ public final class ResourceSetDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("elements", this.elements, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("exceptions", this.exceptions, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSetDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSetDescription if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSetDescription.
+     */
+    public static ResourceSetDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSetDescription deserializedResourceSetDescription = new ResourceSetDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("elements".equals(fieldName)) {
+                    List<String> elements = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceSetDescription.elements = elements;
+                } else if ("exceptions".equals(fieldName)) {
+                    List<String> exceptions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceSetDescription.exceptions = exceptions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSetDescription;
+        });
     }
 }

@@ -76,31 +76,29 @@ class LockRenewalOperation implements AutoCloseable, Disposable {
         this.logger = new ClientLogger(LockRenewalOperation.class, loggingContext);
 
         if (maxLockRenewalDuration.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "'maxLockRenewalDuration' cannot be negative."));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'maxLockRenewalDuration' cannot be negative."));
         }
 
         this.lockedUntil.set(tokenLockedUntil);
 
-        final Flux<OffsetDateTime> renewLockOperation = getRenewLockOperation(tokenLockedUntil,
-            maxLockRenewalDuration)
-            .takeUntilOther(cancellationProcessor)
-            .cache(Duration.ofMinutes(2));
+        final Flux<OffsetDateTime> renewLockOperation
+            = getRenewLockOperation(tokenLockedUntil, maxLockRenewalDuration).takeUntilOther(cancellationProcessor)
+                .cache(Duration.ofMinutes(2));
 
         this.completionMono = renewLockOperation.then();
-        this.subscription = renewLockOperation.subscribe(until -> this.lockedUntil.set(until),
-            error -> {
-                logger.error("Error occurred while renewing lock token.", error);
-                status.set(LockRenewalStatus.FAILED);
-                throwable.set(error);
-                cancellationProcessor.onComplete();
-            }, () -> {
-                if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
-                    logger.verbose("Renewing lock task completed.");
-                }
+        this.subscription = renewLockOperation.subscribe(until -> this.lockedUntil.set(until), error -> {
+            logger.error("Error occurred while renewing lock token.", error);
+            status.set(LockRenewalStatus.FAILED);
+            throwable.set(error);
+            cancellationProcessor.onComplete();
+        }, () -> {
+            if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
+                logger.verbose("Renewing lock task completed.");
+            }
 
-                cancellationProcessor.onComplete();
-            });
+            cancellationProcessor.onComplete();
+        });
     }
 
     /**
@@ -205,8 +203,9 @@ class LockRenewalOperation implements AutoCloseable, Disposable {
         sink.next(calculateRenewalDelay(initialLockedUntil));
 
         final Flux<Object> cancellationSignals = Flux.first(cancellationProcessor, Mono.delay(maxLockRenewalDuration));
-        return Flux.switchOnNext(emitterProcessor.map(interval -> Mono.delay(interval)
-            .thenReturn(Flux.create(s -> s.next(interval)))))
+        return Flux
+            .switchOnNext(
+                emitterProcessor.map(interval -> Mono.delay(interval).thenReturn(Flux.create(s -> s.next(interval)))))
             .takeUntilOther(cancellationSignals)
             .flatMap(delay -> {
                 logger.info("Starting lock renewal.");
@@ -235,14 +234,12 @@ class LockRenewalOperation implements AutoCloseable, Disposable {
         // C# class : github.com/azure-sdk-for-net/.../Azure.Messaging.ServiceBus/src/Processor/ReceiverManager.cs#L367
 
         if (remainingTime.toMillis() < 400) {
-            logger.atInfo()
-                .addKeyValue("lockedUntil", initialLockedUntil)
-                .log("Duration was less than 400ms.");
+            logger.atInfo().addKeyValue("lockedUntil", initialLockedUntil).log("Duration was less than 400ms.");
             return Duration.ZERO;
         } else {
             // Adjust the interval, so we can buffer time for the time it'll take to refresh.
-            final long bufferInMilliSec = Math.min(remainingTime.toMillis() / 2,
-                MAX_RENEWAL_BUFFER_DURATION.toMillis());
+            final long bufferInMilliSec
+                = Math.min(remainingTime.toMillis() / 2, MAX_RENEWAL_BUFFER_DURATION.toMillis());
             final Duration renewAfter = Duration.ofMillis(remainingTime.toMillis() - bufferInMilliSec);
             if (renewAfter.isNegative()) {
                 logger.atInfo()

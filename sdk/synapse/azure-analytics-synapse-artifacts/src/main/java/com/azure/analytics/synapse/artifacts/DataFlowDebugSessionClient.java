@@ -13,8 +13,8 @@ import com.azure.analytics.synapse.artifacts.models.DataFlowDebugCommandRequest;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugCommandResponse;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugPackage;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionInfo;
-import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsCreateDataFlowDebugSessionResponse;
-import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsExecuteCommandResponse;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsCreateDataFlowDebugSessionHeaders;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsExecuteCommandHeaders;
 import com.azure.analytics.synapse.artifacts.models.DeleteDataFlowDebugSessionRequest;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -22,6 +22,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 
 /**
@@ -50,11 +51,11 @@ public final class DataFlowDebugSessionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session.
+     * @return response body structure for creating data flow debug session along with {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataFlowDebugSessionsCreateDataFlowDebugSessionResponse
+    public ResponseBase<DataFlowDebugSessionsCreateDataFlowDebugSessionHeaders, CreateDataFlowDebugSessionResponse>
         createDataFlowDebugSessionWithResponse(CreateDataFlowDebugSessionRequest request, Context context) {
         return this.serviceClient.createDataFlowDebugSessionWithResponse(request, context);
     }
@@ -72,6 +73,23 @@ public final class DataFlowDebugSessionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateDataFlowDebugSessionResponse createDataFlowDebugSession(CreateDataFlowDebugSessionRequest request) {
         return this.serviceClient.createDataFlowDebugSession(request);
+    }
+
+    /**
+     * Creates a data flow debug session.
+     * 
+     * @param request Data flow debug session definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for creating data flow debug session along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreateDataFlowDebugSessionResponse> createDataFlowDebugSessionNoCustomHeadersWithResponse(
+        CreateDataFlowDebugSessionRequest request, Context context) {
+        return this.serviceClient.createDataFlowDebugSessionNoCustomHeadersWithResponse(request, context);
     }
 
     /**
@@ -173,12 +191,13 @@ public final class DataFlowDebugSessionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     * {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataFlowDebugSessionsExecuteCommandResponse executeCommandWithResponse(DataFlowDebugCommandRequest request,
-        Context context) {
+    public ResponseBase<DataFlowDebugSessionsExecuteCommandHeaders, DataFlowDebugCommandResponse>
+        executeCommandWithResponse(DataFlowDebugCommandRequest request, Context context) {
         return this.serviceClient.executeCommandWithResponse(request, context);
     }
 
@@ -195,5 +214,23 @@ public final class DataFlowDebugSessionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFlowDebugCommandResponse executeCommand(DataFlowDebugCommandRequest request) {
         return this.serviceClient.executeCommand(request);
+    }
+
+    /**
+     * Execute a data flow debug command.
+     * 
+     * @param request Data flow debug command definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataFlowDebugCommandResponse>
+        executeCommandNoCustomHeadersWithResponse(DataFlowDebugCommandRequest request, Context context) {
+        return this.serviceClient.executeCommandNoCustomHeadersWithResponse(request, context);
     }
 }

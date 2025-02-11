@@ -6,17 +6,20 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Reference to a SIM policy resource.
  */
 @Fluent
-public final class SimPolicyResourceId {
+public final class SimPolicyResourceId implements JsonSerializable<SimPolicyResourceId> {
     /*
      * SIM policy resource ID.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
@@ -58,4 +61,41 @@ public final class SimPolicyResourceId {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SimPolicyResourceId.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimPolicyResourceId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimPolicyResourceId if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SimPolicyResourceId.
+     */
+    public static SimPolicyResourceId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimPolicyResourceId deserializedSimPolicyResourceId = new SimPolicyResourceId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSimPolicyResourceId.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimPolicyResourceId;
+        });
+    }
 }

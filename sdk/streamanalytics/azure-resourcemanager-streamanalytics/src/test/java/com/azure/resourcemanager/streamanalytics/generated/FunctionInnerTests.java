@@ -17,29 +17,30 @@ public final class FunctionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FunctionInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"FunctionProperties\",\"etag\":\"hq\",\"properties\":{\"inputs\":[{\"dataType\":\"pybczmehmtzopb\",\"isConfigurationParameter\":false},{\"dataType\":\"upi\",\"isConfigurationParameter\":true},{\"dataType\":\"bb\",\"isConfigurationParameter\":false}],\"output\":{\"dataType\":\"oycmsxaobhdxbmt\"},\"binding\":{\"type\":\"FunctionBinding\"}}},\"name\":\"qj\",\"type\":\"htbmuf\",\"id\":\"wnoi\"}")
+            "{\"properties\":{\"type\":\"FunctionProperties\",\"etag\":\"ulngsntn\",\"properties\":{\"inputs\":[{\"dataType\":\"gc\",\"isConfigurationParameter\":false},{\"dataType\":\"lxxwrljdouskc\",\"isConfigurationParameter\":true},{\"dataType\":\"cr\",\"isConfigurationParameter\":false}],\"output\":{\"dataType\":\"tnhxbn\"},\"binding\":{\"type\":\"FunctionBinding\"}}},\"name\":\"ksqrglssai\",\"type\":\"p\",\"id\":\"nzl\"}")
             .toObject(FunctionInner.class);
-        Assertions.assertEquals("wnoi", model.id());
-        Assertions.assertEquals("pybczmehmtzopb", model.properties().inputs().get(0).dataType());
+        Assertions.assertEquals("nzl", model.id());
+        Assertions.assertEquals("gc", model.properties().inputs().get(0).dataType());
         Assertions.assertEquals(false, model.properties().inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("oycmsxaobhdxbmt", model.properties().output().dataType());
-        Assertions.assertEquals("qj", model.name());
+        Assertions.assertEquals("tnhxbn", model.properties().output().dataType());
+        Assertions.assertEquals("ksqrglssai", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FunctionInner model = new FunctionInner().withId("wnoi").withProperties(new FunctionProperties()
-            .withInputs(
-                Arrays.asList(new FunctionInput().withDataType("pybczmehmtzopb").withIsConfigurationParameter(false),
-                    new FunctionInput().withDataType("upi").withIsConfigurationParameter(true),
-                    new FunctionInput().withDataType("bb").withIsConfigurationParameter(false)))
-            .withOutput(new FunctionOutput().withDataType("oycmsxaobhdxbmt")).withBinding(new FunctionBinding()))
-            .withName("qj");
+        FunctionInner model = new FunctionInner().withId("nzl")
+            .withProperties(new FunctionProperties()
+                .withInputs(Arrays.asList(new FunctionInput().withDataType("gc").withIsConfigurationParameter(false),
+                    new FunctionInput().withDataType("lxxwrljdouskc").withIsConfigurationParameter(true),
+                    new FunctionInput().withDataType("cr").withIsConfigurationParameter(false)))
+                .withOutput(new FunctionOutput().withDataType("tnhxbn"))
+                .withBinding(new FunctionBinding()))
+            .withName("ksqrglssai");
         model = BinaryData.fromObject(model).toObject(FunctionInner.class);
-        Assertions.assertEquals("wnoi", model.id());
-        Assertions.assertEquals("pybczmehmtzopb", model.properties().inputs().get(0).dataType());
+        Assertions.assertEquals("nzl", model.id());
+        Assertions.assertEquals("gc", model.properties().inputs().get(0).dataType());
         Assertions.assertEquals(false, model.properties().inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("oycmsxaobhdxbmt", model.properties().output().dataType());
-        Assertions.assertEquals("qj", model.name());
+        Assertions.assertEquals("tnhxbn", model.properties().output().dataType());
+        Assertions.assertEquals("ksqrglssai", model.name());
     }
 }

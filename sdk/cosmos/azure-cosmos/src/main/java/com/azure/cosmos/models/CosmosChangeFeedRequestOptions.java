@@ -184,6 +184,37 @@ public final class CosmosChangeFeedRequestOptions {
         return this;
     }
 
+    /***
+     * Whether the query should be completed when all available changes when the query starts have been fetched.
+     *
+     * @param completeAfterAllCurrentChangesRetrieved flag to indicate whether to complete the query when all changes up to current moment have been fetched.
+     * @return the CosmosChangeFeedRequestOptions.
+     */
+    public CosmosChangeFeedRequestOptions setCompleteAfterAllCurrentChangesRetrieved(
+        boolean completeAfterAllCurrentChangesRetrieved) {
+        this.actualRequestOptions.setCompleteAfterAllCurrentChangesRetrieved(completeAfterAllCurrentChangesRetrieved);
+        return this;
+    }
+
+    /***
+     * Whether the query should be completed when all available changes when the query starts have been fetched.
+     *
+     * @return true if complete the query when all changes up to the current moment have been fetched.
+     */
+    public boolean isCompleteAfterAllCurrentChangesRetrieved() {
+        return this.actualRequestOptions.isCompleteAfterAllCurrentChangesRetrieved();
+    }
+
+    // This will override setCompleteAfterAllCurrentChangesRetrieved if both used together
+    CosmosChangeFeedRequestOptions setEndLSN(Long endLsn) {
+        this.actualRequestOptions.setEndLSN(endLsn);
+        return this;
+    }
+
+    Long getEndLSN() {
+        return this.actualRequestOptions.getEndLSN();
+    }
+
     boolean isSplitHandlingDisabled() {
         return this.actualRequestOptions.isSplitHandlingDisabled();
     }
@@ -600,6 +631,16 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public CosmosChangeFeedRequestOptionsImpl getImpl(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.getImpl();
+                }
+
+                @Override
+                public CosmosChangeFeedRequestOptions setEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions, Long endLsn) {
+                    return changeFeedRequestOptions.setEndLSN(endLsn);
+                }
+
+                @Override
+                public Long getEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.getEndLSN();
                 }
 
                 @Override

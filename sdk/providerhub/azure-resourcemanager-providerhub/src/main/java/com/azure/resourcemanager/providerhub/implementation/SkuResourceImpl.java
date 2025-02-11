@@ -51,22 +51,18 @@ public final class SkuResourceImpl implements SkuResource, SkuResource.Definitio
     }
 
     public SkuResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSkus()
-                .createOrUpdateWithResponse(providerNamespace, resourceType, sku, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSkus()
+            .createOrUpdateWithResponse(providerNamespace, resourceType, sku, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SkuResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSkus()
-                .createOrUpdateWithResponse(providerNamespace, resourceType, sku, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSkus()
+            .createOrUpdateWithResponse(providerNamespace, resourceType, sku, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -81,51 +77,43 @@ public final class SkuResourceImpl implements SkuResource, SkuResource.Definitio
     }
 
     public SkuResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSkus()
-                .createOrUpdateWithResponse(providerNamespace, resourceType, sku, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSkus()
+            .createOrUpdateWithResponse(providerNamespace, resourceType, sku, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SkuResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSkus()
-                .createOrUpdateWithResponse(providerNamespace, resourceType, sku, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSkus()
+            .createOrUpdateWithResponse(providerNamespace, resourceType, sku, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    SkuResourceImpl(
-        SkuResourceInner innerObject, com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
+    SkuResourceImpl(SkuResourceInner innerObject,
+        com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = Utils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.resourceType = Utils.getValueFromIdByName(innerObject.id(), "resourcetypeRegistrations");
-        this.sku = Utils.getValueFromIdByName(innerObject.id(), "skus");
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
+        this.resourceType = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcetypeRegistrations");
+        this.sku = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "skus");
     }
 
     public SkuResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSkus()
-                .getWithResponse(providerNamespace, resourceType, sku, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSkus()
+            .getWithResponse(providerNamespace, resourceType, sku, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SkuResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSkus()
-                .getWithResponse(providerNamespace, resourceType, sku, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSkus()
+            .getWithResponse(providerNamespace, resourceType, sku, context)
+            .getValue();
         return this;
     }
 

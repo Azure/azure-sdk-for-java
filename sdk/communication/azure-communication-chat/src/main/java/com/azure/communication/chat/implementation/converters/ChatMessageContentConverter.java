@@ -24,8 +24,8 @@ public final class ChatMessageContentConverter {
      * {com.azure.communication.chat.implementation.models.ChatMessageContent} to
      * {@link ChatMessageContent}.
      */
-    public static ChatMessageContent convert(
-            com.azure.communication.chat.implementation.models.ChatMessageContent chatMessageContent) {
+    public static ChatMessageContent
+        convert(com.azure.communication.chat.implementation.models.ChatMessageContent chatMessageContent) {
         Objects.requireNonNull(chatMessageContent, "'chatMessageContent' cannot be null.");
 
         Iterable<ChatParticipant> participants = new ArrayList<ChatParticipant>();
@@ -33,26 +33,26 @@ public final class ChatMessageContentConverter {
         CommunicationIdentifier initiator = null;
 
         if (chatMessageContent.getInitiatorCommunicationIdentifier() != null) {
-            initiator = CommunicationIdentifierConverter.convert(chatMessageContent.getInitiatorCommunicationIdentifier());
+            initiator
+                = CommunicationIdentifierConverter.convert(chatMessageContent.getInitiatorCommunicationIdentifier());
         }
 
         if (chatMessageContent.getParticipants() != null) {
             participants = chatMessageContent.getParticipants()
-                    .stream()
-                    .map(participant -> ChatParticipantConverter.convert(participant))
-                    .collect(Collectors.toList());
+                .stream()
+                .map(participant -> ChatParticipantConverter.convert(participant))
+                .collect(Collectors.toList());
         }
 
         if (chatMessageContent.getAttachments() != null) {
             attachments = chatMessageContent.getAttachments()
-                    .stream()
-                    .map(attachment -> ChatAttachmentConverter.convert(attachment))
-                    .collect(Collectors.toList());
+                .stream()
+                .map(attachment -> ChatAttachmentConverter.convert(attachment))
+                .collect(Collectors.toList());
         }
 
         ChatMessageContent content = new ChatMessageContent(chatMessageContent.getMessage(),
-                chatMessageContent.getTopic(), participants,
-                initiator).setAttachments(attachments);
+            chatMessageContent.getTopic(), participants, initiator).setAttachments(attachments);
 
         return content;
     }

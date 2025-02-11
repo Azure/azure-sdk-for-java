@@ -5,143 +5,129 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The swagger schema. */
+/**
+ * The swagger schema.
+ */
 @Fluent
-public final class SwaggerSchema {
+public final class SwaggerSchema implements JsonSerializable<SwaggerSchema> {
     /*
      * The reference.
      */
-    @JsonProperty(value = "ref")
     private String ref;
 
     /*
      * The type
      */
-    @JsonProperty(value = "type")
     private SwaggerSchemaType type;
 
     /*
      * The title.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The items schema.
      */
-    @JsonProperty(value = "items")
     private SwaggerSchema items;
 
     /*
      * The object properties
      */
-    @JsonProperty(value = "properties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SwaggerSchema> properties;
 
     /*
      * The additional properties.
      */
-    @JsonProperty(value = "additionalProperties")
     private Object additionalProperties;
 
     /*
      * The object required properties.
      */
-    @JsonProperty(value = "required")
     private List<String> required;
 
     /*
      * The maximum number of allowed properties.
      */
-    @JsonProperty(value = "maxProperties")
     private Integer maxProperties;
 
     /*
      * The minimum number of allowed properties.
      */
-    @JsonProperty(value = "minProperties")
     private Integer minProperties;
 
     /*
      * The schemas which must pass validation when this schema is used.
      */
-    @JsonProperty(value = "allOf")
     private List<SwaggerSchema> allOf;
 
     /*
      * The discriminator.
      */
-    @JsonProperty(value = "discriminator")
     private String discriminator;
 
     /*
      * Indicates whether this property must be present in the a request.
      */
-    @JsonProperty(value = "readOnly")
     private Boolean readOnly;
 
     /*
      * The xml representation format for a property.
      */
-    @JsonProperty(value = "xml")
     private SwaggerXml xml;
 
     /*
      * The external documentation.
      */
-    @JsonProperty(value = "externalDocs")
     private SwaggerExternalDocumentation externalDocs;
 
     /*
      * The example value.
      */
-    @JsonProperty(value = "example")
     private Object example;
 
     /*
      * Indicates the notification url extension. If this is set, the property's value should be a callback url for a
      * webhook.
      */
-    @JsonProperty(value = "notificationUrlExtension")
     private Boolean notificationUrlExtension;
 
     /*
      * The dynamic schema configuration.
      */
-    @JsonProperty(value = "dynamicSchemaOld")
     private SwaggerCustomDynamicSchema dynamicSchemaOld;
 
     /*
      * The dynamic schema configuration.
      */
-    @JsonProperty(value = "dynamicSchemaNew")
     private SwaggerCustomDynamicProperties dynamicSchemaNew;
 
     /*
      * The dynamic list.
      */
-    @JsonProperty(value = "dynamicListNew")
     private SwaggerCustomDynamicList dynamicListNew;
 
     /*
      * The dynamic values tree configuration.
      */
-    @JsonProperty(value = "dynamicTree")
     private SwaggerCustomDynamicTree dynamicTree;
 
-    /** Creates an instance of SwaggerSchema class. */
+    /**
+     * Creates an instance of SwaggerSchema class.
+     */
     public SwaggerSchema() {
     }
 
     /**
      * Get the ref property: The reference.
-     *
+     * 
      * @return the ref value.
      */
     public String ref() {
@@ -150,7 +136,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the ref property: The reference.
-     *
+     * 
      * @param ref the ref value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -161,7 +147,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the type property: The type.
-     *
+     * 
      * @return the type value.
      */
     public SwaggerSchemaType type() {
@@ -170,7 +156,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the type property: The type.
-     *
+     * 
      * @param type the type value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -181,7 +167,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the title property: The title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -190,7 +176,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the title property: The title.
-     *
+     * 
      * @param title the title value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -201,7 +187,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the items property: The items schema.
-     *
+     * 
      * @return the items value.
      */
     public SwaggerSchema items() {
@@ -210,7 +196,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the items property: The items schema.
-     *
+     * 
      * @param items the items value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -221,7 +207,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the properties property: The object properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, SwaggerSchema> properties() {
@@ -230,7 +216,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the properties property: The object properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -241,7 +227,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the additionalProperties property: The additional properties.
-     *
+     * 
      * @return the additionalProperties value.
      */
     public Object additionalProperties() {
@@ -250,7 +236,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the additionalProperties property: The additional properties.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -261,7 +247,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the required property: The object required properties.
-     *
+     * 
      * @return the required value.
      */
     public List<String> required() {
@@ -270,7 +256,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the required property: The object required properties.
-     *
+     * 
      * @param required the required value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -281,7 +267,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the maxProperties property: The maximum number of allowed properties.
-     *
+     * 
      * @return the maxProperties value.
      */
     public Integer maxProperties() {
@@ -290,7 +276,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the maxProperties property: The maximum number of allowed properties.
-     *
+     * 
      * @param maxProperties the maxProperties value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -301,7 +287,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the minProperties property: The minimum number of allowed properties.
-     *
+     * 
      * @return the minProperties value.
      */
     public Integer minProperties() {
@@ -310,7 +296,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the minProperties property: The minimum number of allowed properties.
-     *
+     * 
      * @param minProperties the minProperties value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -321,7 +307,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the allOf property: The schemas which must pass validation when this schema is used.
-     *
+     * 
      * @return the allOf value.
      */
     public List<SwaggerSchema> allOf() {
@@ -330,7 +316,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the allOf property: The schemas which must pass validation when this schema is used.
-     *
+     * 
      * @param allOf the allOf value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -341,7 +327,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the discriminator property: The discriminator.
-     *
+     * 
      * @return the discriminator value.
      */
     public String discriminator() {
@@ -350,7 +336,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the discriminator property: The discriminator.
-     *
+     * 
      * @param discriminator the discriminator value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -361,7 +347,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the readOnly property: Indicates whether this property must be present in the a request.
-     *
+     * 
      * @return the readOnly value.
      */
     public Boolean readOnly() {
@@ -370,7 +356,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the readOnly property: Indicates whether this property must be present in the a request.
-     *
+     * 
      * @param readOnly the readOnly value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -381,7 +367,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the xml property: The xml representation format for a property.
-     *
+     * 
      * @return the xml value.
      */
     public SwaggerXml xml() {
@@ -390,7 +376,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the xml property: The xml representation format for a property.
-     *
+     * 
      * @param xml the xml value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -401,7 +387,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the externalDocs property: The external documentation.
-     *
+     * 
      * @return the externalDocs value.
      */
     public SwaggerExternalDocumentation externalDocs() {
@@ -410,7 +396,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the externalDocs property: The external documentation.
-     *
+     * 
      * @param externalDocs the externalDocs value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -421,7 +407,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the example property: The example value.
-     *
+     * 
      * @return the example value.
      */
     public Object example() {
@@ -430,7 +416,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the example property: The example value.
-     *
+     * 
      * @param example the example value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -442,7 +428,7 @@ public final class SwaggerSchema {
     /**
      * Get the notificationUrlExtension property: Indicates the notification url extension. If this is set, the
      * property's value should be a callback url for a webhook.
-     *
+     * 
      * @return the notificationUrlExtension value.
      */
     public Boolean notificationUrlExtension() {
@@ -452,7 +438,7 @@ public final class SwaggerSchema {
     /**
      * Set the notificationUrlExtension property: Indicates the notification url extension. If this is set, the
      * property's value should be a callback url for a webhook.
-     *
+     * 
      * @param notificationUrlExtension the notificationUrlExtension value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -463,7 +449,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the dynamicSchemaOld property: The dynamic schema configuration.
-     *
+     * 
      * @return the dynamicSchemaOld value.
      */
     public SwaggerCustomDynamicSchema dynamicSchemaOld() {
@@ -472,7 +458,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the dynamicSchemaOld property: The dynamic schema configuration.
-     *
+     * 
      * @param dynamicSchemaOld the dynamicSchemaOld value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -483,7 +469,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the dynamicSchemaNew property: The dynamic schema configuration.
-     *
+     * 
      * @return the dynamicSchemaNew value.
      */
     public SwaggerCustomDynamicProperties dynamicSchemaNew() {
@@ -492,7 +478,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the dynamicSchemaNew property: The dynamic schema configuration.
-     *
+     * 
      * @param dynamicSchemaNew the dynamicSchemaNew value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -503,7 +489,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the dynamicListNew property: The dynamic list.
-     *
+     * 
      * @return the dynamicListNew value.
      */
     public SwaggerCustomDynamicList dynamicListNew() {
@@ -512,7 +498,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the dynamicListNew property: The dynamic list.
-     *
+     * 
      * @param dynamicListNew the dynamicListNew value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -523,7 +509,7 @@ public final class SwaggerSchema {
 
     /**
      * Get the dynamicTree property: The dynamic values tree configuration.
-     *
+     * 
      * @return the dynamicTree value.
      */
     public SwaggerCustomDynamicTree dynamicTree() {
@@ -532,7 +518,7 @@ public final class SwaggerSchema {
 
     /**
      * Set the dynamicTree property: The dynamic values tree configuration.
-     *
+     * 
      * @param dynamicTree the dynamicTree value to set.
      * @return the SwaggerSchema object itself.
      */
@@ -543,7 +529,7 @@ public final class SwaggerSchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -551,14 +537,11 @@ public final class SwaggerSchema {
             items().validate();
         }
         if (properties() != null) {
-            properties()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            properties().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (allOf() != null) {
             allOf().forEach(e -> e.validate());
@@ -581,5 +564,101 @@ public final class SwaggerSchema {
         if (dynamicTree() != null) {
             dynamicTree().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ref", this.ref);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeJsonField("items", this.items);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeUntypedField("additionalProperties", this.additionalProperties);
+        jsonWriter.writeArrayField("required", this.required, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("maxProperties", this.maxProperties);
+        jsonWriter.writeNumberField("minProperties", this.minProperties);
+        jsonWriter.writeArrayField("allOf", this.allOf, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("discriminator", this.discriminator);
+        jsonWriter.writeBooleanField("readOnly", this.readOnly);
+        jsonWriter.writeJsonField("xml", this.xml);
+        jsonWriter.writeJsonField("externalDocs", this.externalDocs);
+        jsonWriter.writeUntypedField("example", this.example);
+        jsonWriter.writeBooleanField("notificationUrlExtension", this.notificationUrlExtension);
+        jsonWriter.writeJsonField("dynamicSchemaOld", this.dynamicSchemaOld);
+        jsonWriter.writeJsonField("dynamicSchemaNew", this.dynamicSchemaNew);
+        jsonWriter.writeJsonField("dynamicListNew", this.dynamicListNew);
+        jsonWriter.writeJsonField("dynamicTree", this.dynamicTree);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwaggerSchema from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwaggerSchema if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwaggerSchema.
+     */
+    public static SwaggerSchema fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwaggerSchema deserializedSwaggerSchema = new SwaggerSchema();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ref".equals(fieldName)) {
+                    deserializedSwaggerSchema.ref = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSwaggerSchema.type = SwaggerSchemaType.fromString(reader.getString());
+                } else if ("title".equals(fieldName)) {
+                    deserializedSwaggerSchema.title = reader.getString();
+                } else if ("items".equals(fieldName)) {
+                    deserializedSwaggerSchema.items = SwaggerSchema.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, SwaggerSchema> properties = reader.readMap(reader1 -> SwaggerSchema.fromJson(reader1));
+                    deserializedSwaggerSchema.properties = properties;
+                } else if ("additionalProperties".equals(fieldName)) {
+                    deserializedSwaggerSchema.additionalProperties = reader.readUntyped();
+                } else if ("required".equals(fieldName)) {
+                    List<String> required = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSwaggerSchema.required = required;
+                } else if ("maxProperties".equals(fieldName)) {
+                    deserializedSwaggerSchema.maxProperties = reader.getNullable(JsonReader::getInt);
+                } else if ("minProperties".equals(fieldName)) {
+                    deserializedSwaggerSchema.minProperties = reader.getNullable(JsonReader::getInt);
+                } else if ("allOf".equals(fieldName)) {
+                    List<SwaggerSchema> allOf = reader.readArray(reader1 -> SwaggerSchema.fromJson(reader1));
+                    deserializedSwaggerSchema.allOf = allOf;
+                } else if ("discriminator".equals(fieldName)) {
+                    deserializedSwaggerSchema.discriminator = reader.getString();
+                } else if ("readOnly".equals(fieldName)) {
+                    deserializedSwaggerSchema.readOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("xml".equals(fieldName)) {
+                    deserializedSwaggerSchema.xml = SwaggerXml.fromJson(reader);
+                } else if ("externalDocs".equals(fieldName)) {
+                    deserializedSwaggerSchema.externalDocs = SwaggerExternalDocumentation.fromJson(reader);
+                } else if ("example".equals(fieldName)) {
+                    deserializedSwaggerSchema.example = reader.readUntyped();
+                } else if ("notificationUrlExtension".equals(fieldName)) {
+                    deserializedSwaggerSchema.notificationUrlExtension = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dynamicSchemaOld".equals(fieldName)) {
+                    deserializedSwaggerSchema.dynamicSchemaOld = SwaggerCustomDynamicSchema.fromJson(reader);
+                } else if ("dynamicSchemaNew".equals(fieldName)) {
+                    deserializedSwaggerSchema.dynamicSchemaNew = SwaggerCustomDynamicProperties.fromJson(reader);
+                } else if ("dynamicListNew".equals(fieldName)) {
+                    deserializedSwaggerSchema.dynamicListNew = SwaggerCustomDynamicList.fromJson(reader);
+                } else if ("dynamicTree".equals(fieldName)) {
+                    deserializedSwaggerSchema.dynamicTree = SwaggerCustomDynamicTree.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwaggerSchema;
+        });
     }
 }

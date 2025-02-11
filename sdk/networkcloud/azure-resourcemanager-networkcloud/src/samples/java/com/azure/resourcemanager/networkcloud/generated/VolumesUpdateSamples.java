@@ -8,22 +8,24 @@ import com.azure.resourcemanager.networkcloud.models.Volume;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Volumes Update. */
+/**
+ * Samples for Volumes Update.
+ */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Volumes_Patch.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * Volumes_Patch.json
      */
     /**
      * Sample code: Patch volume.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void patchVolume(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        Volume resource =
-            manager
-                .volumes()
-                .getByResourceGroupWithResponse("resourceGroupName", "volumeName", com.azure.core.util.Context.NONE)
-                .getValue();
+        Volume resource = manager.volumes()
+            .getByResourceGroupWithResponse("resourceGroupName", "volumeName", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")).apply();
     }
 

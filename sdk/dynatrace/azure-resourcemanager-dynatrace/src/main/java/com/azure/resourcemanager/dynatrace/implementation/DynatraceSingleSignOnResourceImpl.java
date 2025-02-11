@@ -13,10 +13,8 @@ import com.azure.resourcemanager.dynatrace.models.SingleSignOnStates;
 import java.util.Collections;
 import java.util.List;
 
-public final class DynatraceSingleSignOnResourceImpl
-    implements DynatraceSingleSignOnResource,
-        DynatraceSingleSignOnResource.Definition,
-        DynatraceSingleSignOnResource.Update {
+public final class DynatraceSingleSignOnResourceImpl implements DynatraceSingleSignOnResource,
+    DynatraceSingleSignOnResource.Definition, DynatraceSingleSignOnResource.Update {
     private DynatraceSingleSignOnResourceInner innerObject;
 
     private final com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager;
@@ -87,25 +85,21 @@ public final class DynatraceSingleSignOnResourceImpl
     }
 
     public DynatraceSingleSignOnResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DynatraceSingleSignOnResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
         return this;
     }
 
-    DynatraceSingleSignOnResourceImpl(
-        String name, com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
+    DynatraceSingleSignOnResourceImpl(String name,
+        com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = new DynatraceSingleSignOnResourceInner();
         this.serviceManager = serviceManager;
         this.configurationName = name;
@@ -116,50 +110,42 @@ public final class DynatraceSingleSignOnResourceImpl
     }
 
     public DynatraceSingleSignOnResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DynatraceSingleSignOnResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
         return this;
     }
 
-    DynatraceSingleSignOnResourceImpl(
-        DynatraceSingleSignOnResourceInner innerObject,
+    DynatraceSingleSignOnResourceImpl(DynatraceSingleSignOnResourceInner innerObject,
         com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = Utils.getValueFromIdByName(innerObject.id(), "monitors");
-        this.configurationName = Utils.getValueFromIdByName(innerObject.id(), "singleSignOnConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.configurationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "singleSignOnConfigurations");
     }
 
     public DynatraceSingleSignOnResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DynatraceSingleSignOnResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .getWithResponse(resourceGroupName, monitorName, configurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .getWithResponse(resourceGroupName, monitorName, configurationName, context)
+            .getValue();
         return this;
     }
 

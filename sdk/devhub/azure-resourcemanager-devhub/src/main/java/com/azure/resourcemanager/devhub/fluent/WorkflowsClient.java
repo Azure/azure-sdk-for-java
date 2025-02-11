@@ -13,35 +13,37 @@ import com.azure.resourcemanager.devhub.fluent.models.DeleteWorkflowResponseInne
 import com.azure.resourcemanager.devhub.fluent.models.WorkflowInner;
 import com.azure.resourcemanager.devhub.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in WorkflowsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowsClient.
+ */
 public interface WorkflowsClient {
     /**
      * Gets a list of workflows associated with the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows associated with the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of workflows associated with the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkflowInner> list();
 
     /**
      * Gets a list of workflows associated with the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows associated with the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of workflows associated with the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkflowInner> list(Context context);
 
     /**
      * Gets a list of workflows within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -53,7 +55,7 @@ public interface WorkflowsClient {
 
     /**
      * Gets a list of workflows within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedClusterResource The ManagedCluster resource associated with the workflows.
      * @param context The context to associate with this operation.
@@ -63,12 +65,12 @@ public interface WorkflowsClient {
      * @return a list of workflows within a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowInner> listByResourceGroup(
-        String resourceGroupName, String managedClusterResource, Context context);
+    PagedIterable<WorkflowInner> listByResourceGroup(String resourceGroupName, String managedClusterResource,
+        Context context);
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
@@ -78,12 +80,12 @@ public interface WorkflowsClient {
      * @return a workflow along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String workflowName, Context context);
+    Response<WorkflowInner> getByResourceGroupWithResponse(String resourceGroupName, String workflowName,
+        Context context);
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,10 +98,10 @@ public interface WorkflowsClient {
 
     /**
      * Creates or updates a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @param parameters Resource representation of a workflow.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,15 +109,15 @@ public interface WorkflowsClient {
      * @return workflow along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workflowName, WorkflowInner parameters, Context context);
+    Response<WorkflowInner> createOrUpdateWithResponse(String resourceGroupName, String workflowName,
+        WorkflowInner parameters, Context context);
 
     /**
      * Creates or updates a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @param parameters Resource representation of a workflow.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -126,7 +128,7 @@ public interface WorkflowsClient {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
@@ -136,12 +138,12 @@ public interface WorkflowsClient {
      * @return delete response if content must be provided on delete operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeleteWorkflowResponseInner> deleteWithResponse(
-        String resourceGroupName, String workflowName, Context context);
+    Response<DeleteWorkflowResponseInner> deleteWithResponse(String resourceGroupName, String workflowName,
+        Context context);
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +156,7 @@ public interface WorkflowsClient {
 
     /**
      * Updates tags on a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param parameters Parameters supplied to the Update Workflow Tags operation.
@@ -165,12 +167,12 @@ public interface WorkflowsClient {
      * @return workflow along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowInner> updateTagsWithResponse(
-        String resourceGroupName, String workflowName, TagsObject parameters, Context context);
+    Response<WorkflowInner> updateTagsWithResponse(String resourceGroupName, String workflowName, TagsObject parameters,
+        Context context);
 
     /**
      * Updates tags on a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param parameters Parameters supplied to the Update Workflow Tags operation.

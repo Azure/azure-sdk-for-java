@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.billingbenefits.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Role assignment entity properties. */
+/**
+ * Role assignment entity properties.
+ */
 @Fluent
-public final class RoleAssignmentEntityProperties {
+public final class RoleAssignmentEntityProperties implements JsonSerializable<RoleAssignmentEntityProperties> {
     /*
      * Principal Id
      */
-    @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
      * Role definition id
      */
-    @JsonProperty(value = "roleDefinitionId")
     private String roleDefinitionId;
 
     /*
      * Scope of the role assignment entity
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
-    /** Creates an instance of RoleAssignmentEntityProperties class. */
+    /**
+     * Creates an instance of RoleAssignmentEntityProperties class.
+     */
     public RoleAssignmentEntityProperties() {
     }
 
     /**
      * Get the principalId property: Principal Id.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -43,7 +48,7 @@ public final class RoleAssignmentEntityProperties {
 
     /**
      * Set the principalId property: Principal Id.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentEntityProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class RoleAssignmentEntityProperties {
 
     /**
      * Get the roleDefinitionId property: Role definition id.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -63,7 +68,7 @@ public final class RoleAssignmentEntityProperties {
 
     /**
      * Set the roleDefinitionId property: Role definition id.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentEntityProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class RoleAssignmentEntityProperties {
 
     /**
      * Get the scope property: Scope of the role assignment entity.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -83,7 +88,7 @@ public final class RoleAssignmentEntityProperties {
 
     /**
      * Set the scope property: Scope of the role assignment entity.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the RoleAssignmentEntityProperties object itself.
      */
@@ -94,9 +99,52 @@ public final class RoleAssignmentEntityProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
+        jsonWriter.writeStringField("scope", this.scope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignmentEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentEntityProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleAssignmentEntityProperties.
+     */
+    public static RoleAssignmentEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignmentEntityProperties deserializedRoleAssignmentEntityProperties
+                = new RoleAssignmentEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedRoleAssignmentEntityProperties.principalId = reader.getString();
+                } else if ("roleDefinitionId".equals(fieldName)) {
+                    deserializedRoleAssignmentEntityProperties.roleDefinitionId = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedRoleAssignmentEntityProperties.scope = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignmentEntityProperties;
+        });
     }
 }

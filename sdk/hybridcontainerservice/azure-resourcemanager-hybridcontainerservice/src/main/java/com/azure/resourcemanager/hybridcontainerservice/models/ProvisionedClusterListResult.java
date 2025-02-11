@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Lists the ProvisionedClusterInstance resource associated with the ConnectedCluster.
  */
 @Fluent
-public final class ProvisionedClusterListResult {
+public final class ProvisionedClusterListResult implements JsonSerializable<ProvisionedClusterListResult> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<ProvisionedClusterInner> value;
 
     /*
      * The nextLink property.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,46 @@ public final class ProvisionedClusterListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProvisionedClusterListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProvisionedClusterListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProvisionedClusterListResult.
+     */
+    public static ProvisionedClusterListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProvisionedClusterListResult deserializedProvisionedClusterListResult = new ProvisionedClusterListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ProvisionedClusterInner> value
+                        = reader.readArray(reader1 -> ProvisionedClusterInner.fromJson(reader1));
+                    deserializedProvisionedClusterListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedProvisionedClusterListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProvisionedClusterListResult;
+        });
     }
 }

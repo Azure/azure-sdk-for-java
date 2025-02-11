@@ -36,7 +36,11 @@ public class WebAppRuntimeStack {
         this.runtime = Objects.requireNonNull(runtime);
     }
 
-    /** @return the name of the language runtime */
+    /**
+     * Gets the name of the language runtime.
+     *
+     * @return the name of the language runtime
+     */
     public String runtime() {
         return runtime;
     }

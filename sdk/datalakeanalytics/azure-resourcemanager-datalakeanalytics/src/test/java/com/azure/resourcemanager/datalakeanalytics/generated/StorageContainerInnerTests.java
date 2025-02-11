@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageContainerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageContainerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"lastModifiedTime\":\"2021-03-24T05:50:38Z\"},\"name\":\"ncwscwsvlxoto\",\"type\":\"wrupqsxvnmicykvc\",\"id\":\"vei\"}")
-                .toObject(StorageContainerInner.class);
-        Assertions.assertEquals("vei", model.id());
+        StorageContainerInner model = BinaryData.fromString(
+            "{\"properties\":{\"lastModifiedTime\":\"2021-04-08T19:10:22Z\"},\"name\":\"wlrsffrzpwv\",\"type\":\"dqgbiqylihkaetc\",\"id\":\"vfcivfsnkymuc\"}")
+            .toObject(StorageContainerInner.class);
+        Assertions.assertEquals("vfcivfsnkymuc", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageContainerInner model = new StorageContainerInner().withId("vei");
+        StorageContainerInner model = new StorageContainerInner().withId("vfcivfsnkymuc");
         model = BinaryData.fromObject(model).toObject(StorageContainerInner.class);
-        Assertions.assertEquals("vei", model.id());
+        Assertions.assertEquals("vfcivfsnkymuc", model.id());
     }
 }

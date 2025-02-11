@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for CallRejectReasonInternal. */
@@ -20,12 +20,21 @@ public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRej
     public static final CallRejectReasonInternal FORBIDDEN = fromString("forbidden");
 
     /**
+     * Creates an instance of {@link CallRejectReasonInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link CallRejectReasonInternal}
+     * instead.
+     */
+    @Deprecated
+    public CallRejectReasonInternal() {
+    }
+
+    /**
      * Creates or finds a CallRejectReasonInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding CallRejectReasonInternal.
      */
-    @JsonCreator
     public static CallRejectReasonInternal fromString(String name) {
         return fromString(name, CallRejectReasonInternal.class);
     }

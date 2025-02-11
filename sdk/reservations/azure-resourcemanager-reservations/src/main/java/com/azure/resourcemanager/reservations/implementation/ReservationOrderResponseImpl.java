@@ -24,8 +24,7 @@ public final class ReservationOrderResponseImpl implements ReservationOrderRespo
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    ReservationOrderResponseImpl(
-        ReservationOrderResponseInner innerObject,
+    ReservationOrderResponseImpl(ReservationOrderResponseInner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -98,12 +97,9 @@ public final class ReservationOrderResponseImpl implements ReservationOrderRespo
     public List<ReservationResponse> reservations() {
         List<ReservationResponseInner> inner = this.innerModel().reservations();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ReservationResponseImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ReservationResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

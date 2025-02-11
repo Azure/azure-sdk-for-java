@@ -29,6 +29,12 @@ public final class UserArtifactSettings implements JsonSerializable<UserArtifact
      */
     private String configFileName;
 
+    /*
+     * Optional. The action to be taken with regards to install/update/remove of the gallery application in the event of
+     * a reboot.
+     */
+    private GalleryApplicationScriptRebootBehavior scriptBehaviorAfterReboot;
+
     /**
      * Creates an instance of UserArtifactSettings class.
      */
@@ -84,6 +90,29 @@ public final class UserArtifactSettings implements JsonSerializable<UserArtifact
     }
 
     /**
+     * Get the scriptBehaviorAfterReboot property: Optional. The action to be taken with regards to
+     * install/update/remove of the gallery application in the event of a reboot.
+     * 
+     * @return the scriptBehaviorAfterReboot value.
+     */
+    public GalleryApplicationScriptRebootBehavior scriptBehaviorAfterReboot() {
+        return this.scriptBehaviorAfterReboot;
+    }
+
+    /**
+     * Set the scriptBehaviorAfterReboot property: Optional. The action to be taken with regards to
+     * install/update/remove of the gallery application in the event of a reboot.
+     * 
+     * @param scriptBehaviorAfterReboot the scriptBehaviorAfterReboot value to set.
+     * @return the UserArtifactSettings object itself.
+     */
+    public UserArtifactSettings
+        withScriptBehaviorAfterReboot(GalleryApplicationScriptRebootBehavior scriptBehaviorAfterReboot) {
+        this.scriptBehaviorAfterReboot = scriptBehaviorAfterReboot;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -99,6 +128,8 @@ public final class UserArtifactSettings implements JsonSerializable<UserArtifact
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("packageFileName", this.packageFileName);
         jsonWriter.writeStringField("configFileName", this.configFileName);
+        jsonWriter.writeStringField("scriptBehaviorAfterReboot",
+            this.scriptBehaviorAfterReboot == null ? null : this.scriptBehaviorAfterReboot.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -121,6 +152,9 @@ public final class UserArtifactSettings implements JsonSerializable<UserArtifact
                     deserializedUserArtifactSettings.packageFileName = reader.getString();
                 } else if ("configFileName".equals(fieldName)) {
                     deserializedUserArtifactSettings.configFileName = reader.getString();
+                } else if ("scriptBehaviorAfterReboot".equals(fieldName)) {
+                    deserializedUserArtifactSettings.scriptBehaviorAfterReboot
+                        = GalleryApplicationScriptRebootBehavior.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -38,20 +38,20 @@ public final class TagRuleUpdatePropertiesInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagRuleUpdatePropertiesInner model
-            = new TagRuleUpdatePropertiesInner()
-                .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
-                    .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
-                    .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
-                    .withFilteringTags(Arrays.asList(new FilteringTag().withName("bmpukgriwflz")
-                        .withValue("bxzpuzycisp").withAction(TagAction.EXCLUDE))))
-                .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
-                    .withFilteringTags(Arrays.asList(
-                        new FilteringTag().withName("rp").withValue("dhibnuq").withAction(TagAction.INCLUDE),
+        TagRuleUpdatePropertiesInner model = new TagRuleUpdatePropertiesInner()
+            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
+                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
+                .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
+                .withFilteringTags(Arrays.asList(new FilteringTag().withName("bmpukgriwflz")
+                    .withValue("bxzpuzycisp")
+                    .withAction(TagAction.EXCLUDE))))
+            .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
+                .withFilteringTags(
+                    Arrays.asList(new FilteringTag().withName("rp").withValue("dhibnuq").withAction(TagAction.INCLUDE),
                         new FilteringTag().withName("kadrgvt").withValue("gnbuy").withAction(TagAction.EXCLUDE),
                         new FilteringTag().withName("gg").withValue("bfs").withAction(TagAction.INCLUDE),
                         new FilteringTag().withName("utrc").withValue("na").withAction(TagAction.EXCLUDE)))
-                    .withUserEmail("jrunmpxtt"));
+                .withUserEmail("jrunmpxtt"));
         model = BinaryData.fromObject(model).toObject(TagRuleUpdatePropertiesInner.class);
         Assertions.assertEquals(SendAadLogsStatus.DISABLED, model.logRules().sendAadLogs());
         Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED, model.logRules().sendSubscriptionLogs());

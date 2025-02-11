@@ -15,8 +15,7 @@ public final class UpdateAccessDefinitionImpl implements UpdateAccessDefinition 
 
     private final com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager;
 
-    UpdateAccessDefinitionImpl(
-        UpdateAccessDefinitionInner innerObject,
+    UpdateAccessDefinitionImpl(UpdateAccessDefinitionInner innerObject,
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

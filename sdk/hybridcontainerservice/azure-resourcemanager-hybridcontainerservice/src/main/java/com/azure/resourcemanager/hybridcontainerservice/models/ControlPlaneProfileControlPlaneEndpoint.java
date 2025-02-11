@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * IP Address of the Kubernetes API server.
  */
 @Fluent
-public final class ControlPlaneProfileControlPlaneEndpoint {
+public final class ControlPlaneProfileControlPlaneEndpoint
+    implements JsonSerializable<ControlPlaneProfileControlPlaneEndpoint> {
     /*
      * IP address of the Kubernetes API server
      */
-    @JsonProperty(value = "hostIP")
     private String hostIp;
 
     /**
@@ -50,5 +54,42 @@ public final class ControlPlaneProfileControlPlaneEndpoint {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostIP", this.hostIp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControlPlaneProfileControlPlaneEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControlPlaneProfileControlPlaneEndpoint if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ControlPlaneProfileControlPlaneEndpoint.
+     */
+    public static ControlPlaneProfileControlPlaneEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControlPlaneProfileControlPlaneEndpoint deserializedControlPlaneProfileControlPlaneEndpoint
+                = new ControlPlaneProfileControlPlaneEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostIP".equals(fieldName)) {
+                    deserializedControlPlaneProfileControlPlaneEndpoint.hostIp = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControlPlaneProfileControlPlaneEndpoint;
+        });
     }
 }

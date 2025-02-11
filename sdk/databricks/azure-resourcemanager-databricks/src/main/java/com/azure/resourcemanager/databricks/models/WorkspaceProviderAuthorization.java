@@ -6,17 +6,23 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** The workspace provider authorization. */
+/**
+ * The workspace provider authorization.
+ */
 @Fluent
-public final class WorkspaceProviderAuthorization {
+public final class WorkspaceProviderAuthorization implements JsonSerializable<WorkspaceProviderAuthorization> {
     /*
      * The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the
      * workspace resources.
      */
-    @JsonProperty(value = "principalId", required = true)
     private UUID principalId;
 
     /*
@@ -24,17 +30,18 @@ public final class WorkspaceProviderAuthorization {
      * on the workspace's container resource group. This role definition cannot have permission to delete the resource
      * group.
      */
-    @JsonProperty(value = "roleDefinitionId", required = true)
     private UUID roleDefinitionId;
 
-    /** Creates an instance of WorkspaceProviderAuthorization class. */
+    /**
+     * Creates an instance of WorkspaceProviderAuthorization class.
+     */
     public WorkspaceProviderAuthorization() {
     }
 
     /**
      * Get the principalId property: The provider's principal identifier. This is the identity that the provider will
      * use to call ARM to manage the workspace resources.
-     *
+     * 
      * @return the principalId value.
      */
     public UUID principalId() {
@@ -44,7 +51,7 @@ public final class WorkspaceProviderAuthorization {
     /**
      * Set the principalId property: The provider's principal identifier. This is the identity that the provider will
      * use to call ARM to manage the workspace resources.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the WorkspaceProviderAuthorization object itself.
      */
@@ -57,7 +64,7 @@ public final class WorkspaceProviderAuthorization {
      * Get the roleDefinitionId property: The provider's role definition identifier. This role will define all the
      * permissions that the provider must have on the workspace's container resource group. This role definition cannot
      * have permission to delete the resource group.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public UUID roleDefinitionId() {
@@ -68,7 +75,7 @@ public final class WorkspaceProviderAuthorization {
      * Set the roleDefinitionId property: The provider's role definition identifier. This role will define all the
      * permissions that the provider must have on the workspace's container resource group. This role definition cannot
      * have permission to delete the resource group.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the WorkspaceProviderAuthorization object itself.
      */
@@ -79,23 +86,64 @@ public final class WorkspaceProviderAuthorization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model WorkspaceProviderAuthorization"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model WorkspaceProviderAuthorization"));
         }
         if (roleDefinitionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property roleDefinitionId in model WorkspaceProviderAuthorization"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roleDefinitionId in model WorkspaceProviderAuthorization"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkspaceProviderAuthorization.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", Objects.toString(this.principalId, null));
+        jsonWriter.writeStringField("roleDefinitionId", Objects.toString(this.roleDefinitionId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceProviderAuthorization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceProviderAuthorization if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkspaceProviderAuthorization.
+     */
+    public static WorkspaceProviderAuthorization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceProviderAuthorization deserializedWorkspaceProviderAuthorization
+                = new WorkspaceProviderAuthorization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedWorkspaceProviderAuthorization.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("roleDefinitionId".equals(fieldName)) {
+                    deserializedWorkspaceProviderAuthorization.roleDefinitionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceProviderAuthorization;
+        });
+    }
 }

@@ -10,5 +10,3 @@ extends:
       - name: azure-resourcemanager-deviceprovisioningservices
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdeviceprovisioningservices
-    Clouds: 'Public'
-    UseFederatedAuth: true

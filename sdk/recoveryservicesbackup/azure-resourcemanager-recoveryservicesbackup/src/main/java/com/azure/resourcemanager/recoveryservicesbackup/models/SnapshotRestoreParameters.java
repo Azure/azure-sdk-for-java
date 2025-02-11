@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Encapsulates information regarding snapshot recovery for SAP Hana.
  */
 @Fluent
-public final class SnapshotRestoreParameters {
+public final class SnapshotRestoreParameters implements JsonSerializable<SnapshotRestoreParameters> {
     /*
      * The skipAttachAndMount property.
      */
-    @JsonProperty(value = "skipAttachAndMount")
     private Boolean skipAttachAndMount;
 
     /*
      * The logPointInTimeForDBRecovery property.
      */
-    @JsonProperty(value = "logPointInTimeForDBRecovery")
     private String logPointInTimeForDBRecovery;
 
     /**
@@ -76,5 +78,45 @@ public final class SnapshotRestoreParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("skipAttachAndMount", this.skipAttachAndMount);
+        jsonWriter.writeStringField("logPointInTimeForDBRecovery", this.logPointInTimeForDBRecovery);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotRestoreParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotRestoreParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SnapshotRestoreParameters.
+     */
+    public static SnapshotRestoreParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotRestoreParameters deserializedSnapshotRestoreParameters = new SnapshotRestoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("skipAttachAndMount".equals(fieldName)) {
+                    deserializedSnapshotRestoreParameters.skipAttachAndMount
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("logPointInTimeForDBRecovery".equals(fieldName)) {
+                    deserializedSnapshotRestoreParameters.logPointInTimeForDBRecovery = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotRestoreParameters;
+        });
     }
 }

@@ -19,7 +19,8 @@ public final class CommunicationServicesGetByResourceGroupSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void getResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
+                com.azure.core.util.Context.NONE);
     }
 }

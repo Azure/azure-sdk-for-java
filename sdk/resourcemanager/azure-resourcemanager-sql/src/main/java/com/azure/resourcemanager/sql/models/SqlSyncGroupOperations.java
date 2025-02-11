@@ -37,8 +37,8 @@ public interface SqlSyncGroupOperations
      * @param name the name of the child resource
      * @return a representation of the deferred computation of this call returning the found resource
      */
-    Mono<SqlSyncGroup> getBySqlServerAsync(
-        String resourceGroupName, String sqlServerName, String databaseName, String name);
+    Mono<SqlSyncGroup> getBySqlServerAsync(String resourceGroupName, String sqlServerName, String databaseName,
+        String name);
 
     /**
      * Gets a collection of sync database ids.
@@ -73,16 +73,14 @@ public interface SqlSyncGroupOperations
     PagedFlux<String> listSyncDatabaseIdsAsync(Region region);
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface SqlSyncGroupOperationsDefinition
-        extends SqlSyncGroupOperations.DefinitionStages.WithSqlServer,
-            SqlSyncGroupOperations.DefinitionStages.WithSyncGroupDatabase,
-            SqlSyncGroupOperations.DefinitionStages.WithSyncDatabaseId,
-            SqlSyncGroupOperations.DefinitionStages.WithDatabaseUserName,
-            SqlSyncGroupOperations.DefinitionStages.WithDatabasePassword,
-            SqlSyncGroupOperations.DefinitionStages.WithConflictResolutionPolicy,
-            SqlSyncGroupOperations.DefinitionStages.WithInterval,
-            SqlSyncGroupOperations.DefinitionStages.WithSchema,
-            SqlSyncGroupOperations.DefinitionStages.WithCreate {
+    interface SqlSyncGroupOperationsDefinition extends SqlSyncGroupOperations.DefinitionStages.WithSqlServer,
+        SqlSyncGroupOperations.DefinitionStages.WithSyncGroupDatabase,
+        SqlSyncGroupOperations.DefinitionStages.WithSyncDatabaseId,
+        SqlSyncGroupOperations.DefinitionStages.WithDatabaseUserName,
+        SqlSyncGroupOperations.DefinitionStages.WithDatabasePassword,
+        SqlSyncGroupOperations.DefinitionStages.WithConflictResolutionPolicy,
+        SqlSyncGroupOperations.DefinitionStages.WithInterval, SqlSyncGroupOperations.DefinitionStages.WithSchema,
+        SqlSyncGroupOperations.DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the SQL Sync Group definition stages. */
@@ -96,8 +94,8 @@ public interface SqlSyncGroupOperations
              * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
-            SqlSyncGroupOperations.DefinitionStages.WithSyncGroupDatabase withExistingSqlServer(
-                String resourceGroupName, String sqlServerName);
+            SqlSyncGroupOperations.DefinitionStages.WithSyncGroupDatabase
+                withExistingSqlServer(String resourceGroupName, String sqlServerName);
 
             /**
              * Sets the parent SQL server for the new Sync Group.

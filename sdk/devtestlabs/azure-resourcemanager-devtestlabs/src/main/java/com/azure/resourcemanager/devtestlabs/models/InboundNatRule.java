@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A rule for NAT - exposing a VM's port (backendPort) on the public IP address using a load balancer. */
+/**
+ * A rule for NAT - exposing a VM's port (backendPort) on the public IP address using a load balancer.
+ */
 @Fluent
-public final class InboundNatRule {
+public final class InboundNatRule implements JsonSerializable<InboundNatRule> {
     /*
      * The transport protocol for the endpoint.
      */
-    @JsonProperty(value = "transportProtocol")
     private TransportProtocol transportProtocol;
 
     /*
      * The external endpoint port of the inbound connection. Possible values range between 1 and 65535, inclusive. If
      * unspecified, a value will be allocated automatically.
      */
-    @JsonProperty(value = "frontendPort")
     private Integer frontendPort;
 
     /*
      * The port to which the external traffic will be redirected.
      */
-    @JsonProperty(value = "backendPort")
     private Integer backendPort;
 
-    /** Creates an instance of InboundNatRule class. */
+    /**
+     * Creates an instance of InboundNatRule class.
+     */
     public InboundNatRule() {
     }
 
     /**
      * Get the transportProtocol property: The transport protocol for the endpoint.
-     *
+     * 
      * @return the transportProtocol value.
      */
     public TransportProtocol transportProtocol() {
@@ -44,7 +49,7 @@ public final class InboundNatRule {
 
     /**
      * Set the transportProtocol property: The transport protocol for the endpoint.
-     *
+     * 
      * @param transportProtocol the transportProtocol value to set.
      * @return the InboundNatRule object itself.
      */
@@ -56,7 +61,7 @@ public final class InboundNatRule {
     /**
      * Get the frontendPort property: The external endpoint port of the inbound connection. Possible values range
      * between 1 and 65535, inclusive. If unspecified, a value will be allocated automatically.
-     *
+     * 
      * @return the frontendPort value.
      */
     public Integer frontendPort() {
@@ -66,7 +71,7 @@ public final class InboundNatRule {
     /**
      * Set the frontendPort property: The external endpoint port of the inbound connection. Possible values range
      * between 1 and 65535, inclusive. If unspecified, a value will be allocated automatically.
-     *
+     * 
      * @param frontendPort the frontendPort value to set.
      * @return the InboundNatRule object itself.
      */
@@ -77,7 +82,7 @@ public final class InboundNatRule {
 
     /**
      * Get the backendPort property: The port to which the external traffic will be redirected.
-     *
+     * 
      * @return the backendPort value.
      */
     public Integer backendPort() {
@@ -86,7 +91,7 @@ public final class InboundNatRule {
 
     /**
      * Set the backendPort property: The port to which the external traffic will be redirected.
-     *
+     * 
      * @param backendPort the backendPort value to set.
      * @return the InboundNatRule object itself.
      */
@@ -97,9 +102,52 @@ public final class InboundNatRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transportProtocol",
+            this.transportProtocol == null ? null : this.transportProtocol.toString());
+        jsonWriter.writeNumberField("frontendPort", this.frontendPort);
+        jsonWriter.writeNumberField("backendPort", this.backendPort);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InboundNatRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InboundNatRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InboundNatRule.
+     */
+    public static InboundNatRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InboundNatRule deserializedInboundNatRule = new InboundNatRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transportProtocol".equals(fieldName)) {
+                    deserializedInboundNatRule.transportProtocol = TransportProtocol.fromString(reader.getString());
+                } else if ("frontendPort".equals(fieldName)) {
+                    deserializedInboundNatRule.frontendPort = reader.getNullable(JsonReader::getInt);
+                } else if ("backendPort".equals(fieldName)) {
+                    deserializedInboundNatRule.backendPort = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInboundNatRule;
+        });
     }
 }

@@ -26,13 +26,12 @@ public class RuleFilterImpl implements XmlSerializable<RuleFilterImpl> {
     /*
      * The type property.
      */
-    private String type;
+    private String type = "RuleFilter";
 
     /**
      * Creates an instance of RuleFilter class.
      */
     public RuleFilterImpl() {
-        this.type = "RuleFilter";
     }
 
     /**
@@ -65,6 +64,7 @@ public class RuleFilterImpl implements XmlSerializable<RuleFilterImpl> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of RuleFilter if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
+     * @throws IllegalStateException If the deserialized XML object has an invalid polymorphic discriminator value.
      * @throws XMLStreamException If an error occurs while reading the RuleFilter.
      */
     public static RuleFilterImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -79,6 +79,7 @@ public class RuleFilterImpl implements XmlSerializable<RuleFilterImpl> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of RuleFilter if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
+     * @throws IllegalStateException If the deserialized XML object has an invalid polymorphic discriminator value.
      * @throws XMLStreamException If an error occurs while reading the RuleFilter.
      */
     public static RuleFilterImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -96,10 +97,9 @@ public class ProxyHostTest extends TestSuiteBase {
     /**
      * This test will try to create document via http proxy server with netty wire logging and validate it.
      *
-     * @throws Exception
      */
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
-    public void createDocumentWithValidHttpProxyWithNettyWireLogging() throws Exception {
+    public void createDocumentWithValidHttpProxyWithNettyWireLogging() {
         CosmosAsyncClient clientWithRightProxy = null;
         try {
             final StringWriter consoleWriter = new StringWriter();
@@ -125,7 +125,13 @@ public class ProxyHostTest extends TestSuiteBase {
 
             assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_1);
             assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_2);
-            assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_3);
+            boolean isHttp2Enabled = Configs.isHttp2Enabled();
+            if (isHttp2Enabled) {
+                assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_HTTP_2);
+            } else {
+                assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_HTTP_1_1);
+            }
+
         } finally {
             safeClose(clientWithRightProxy);
         }

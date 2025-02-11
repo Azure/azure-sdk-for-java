@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OrchestratorResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrchestratorResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"resourceGuid\":\"zevdphlx\",\"provisioningState\":\"Failed\",\"orchestratorAppId\":\"hqtrgqjbpf\",\"orchestratorTenantId\":\"s\",\"clusterRootCA\":\"zgvfcjrwz\",\"apiServerEndpoint\":\"xjtfelluwfzit\",\"privateLinkResourceId\":\"peqfpjkjl\",\"controllerDetails\":{\"id\":\"fpdvhpfxxypi\"}}")
-                .toObject(OrchestratorResourceProperties.class);
+        OrchestratorResourceProperties model = BinaryData.fromString(
+            "{\"resourceGuid\":\"zevdphlx\",\"provisioningState\":\"Failed\",\"orchestratorAppId\":\"hqtrgqjbpf\",\"orchestratorTenantId\":\"s\",\"clusterRootCA\":\"zgvfcjrwz\",\"apiServerEndpoint\":\"xjtfelluwfzit\",\"privateLinkResourceId\":\"peqfpjkjl\",\"controllerDetails\":{\"id\":\"fpdvhpfxxypi\"}}")
+            .toObject(OrchestratorResourceProperties.class);
         Assertions.assertEquals("hqtrgqjbpf", model.orchestratorAppId());
         Assertions.assertEquals("s", model.orchestratorTenantId());
         Assertions.assertEquals("zgvfcjrwz", model.clusterRootCA());
@@ -27,14 +25,12 @@ public final class OrchestratorResourcePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrchestratorResourceProperties model =
-            new OrchestratorResourceProperties()
-                .withOrchestratorAppId("hqtrgqjbpf")
-                .withOrchestratorTenantId("s")
-                .withClusterRootCA("zgvfcjrwz")
-                .withApiServerEndpoint("xjtfelluwfzit")
-                .withPrivateLinkResourceId("peqfpjkjl")
-                .withControllerDetails(new ControllerDetails().withId("fpdvhpfxxypi"));
+        OrchestratorResourceProperties model = new OrchestratorResourceProperties().withOrchestratorAppId("hqtrgqjbpf")
+            .withOrchestratorTenantId("s")
+            .withClusterRootCA("zgvfcjrwz")
+            .withApiServerEndpoint("xjtfelluwfzit")
+            .withPrivateLinkResourceId("peqfpjkjl")
+            .withControllerDetails(new ControllerDetails().withId("fpdvhpfxxypi"));
         model = BinaryData.fromObject(model).toObject(OrchestratorResourceProperties.class);
         Assertions.assertEquals("hqtrgqjbpf", model.orchestratorAppId());
         Assertions.assertEquals("s", model.orchestratorTenantId());

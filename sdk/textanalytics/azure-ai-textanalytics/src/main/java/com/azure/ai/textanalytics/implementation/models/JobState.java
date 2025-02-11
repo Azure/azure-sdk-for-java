@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -266,20 +267,20 @@ public class JobState implements JsonSerializable<JobState> {
                 reader.nextToken();
 
                 if ("createdDateTime".equals(fieldName)) {
-                    deserializedJobState.createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedJobState.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("jobId".equals(fieldName)) {
                     deserializedJobState.jobId = reader.getString();
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    deserializedJobState.lastUpdatedDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedJobState.lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
                     deserializedJobState.status = State.fromString(reader.getString());
                 } else if ("displayName".equals(fieldName)) {
                     deserializedJobState.displayName = reader.getString();
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    deserializedJobState.expirationDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedJobState.expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("errors".equals(fieldName)) {
                     List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
                     deserializedJobState.errors = errors;

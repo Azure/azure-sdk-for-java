@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class LogonType extends ExpandableStringEnum<LogonType> {
     /**
-     * Static value Service for LogonType.
+     * Run as a service.
      */
     public static final LogonType SERVICE = fromString("Service");
 
     /**
-     * Static value Interactive for LogonType.
+     * Run in interactive mode.
      */
     public static final LogonType INTERACTIVE = fromString("Interactive");
 

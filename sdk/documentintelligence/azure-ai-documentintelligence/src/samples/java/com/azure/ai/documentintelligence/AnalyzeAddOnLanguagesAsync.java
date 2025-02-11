@@ -3,10 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentLanguage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -16,7 +15,6 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,16 +40,9 @@ public class AnalyzeAddOnLanguagesAsync {
         File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/fonts_and_languages.png");
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutPoller =
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
-                null,
-                null,
-                null,
-                Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
-                null,
-                null,
-                null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                    new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
             analyzeLayoutPoller

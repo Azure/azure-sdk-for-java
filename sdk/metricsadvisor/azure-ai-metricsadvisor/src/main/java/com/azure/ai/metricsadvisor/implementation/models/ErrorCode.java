@@ -72,6 +72,9 @@ public final class ErrorCode implements JsonSerializable<ErrorCode> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

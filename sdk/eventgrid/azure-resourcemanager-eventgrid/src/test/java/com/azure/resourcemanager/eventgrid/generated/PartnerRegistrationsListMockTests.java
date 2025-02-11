@@ -23,7 +23,7 @@ public final class PartnerRegistrationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"c93fd16e-8054-4011-b133-3f05b727f25c\"},\"location\":\"ahuq\",\"tags\":{\"wvmqxi\":\"zucwwmejjqhd\",\"bn\":\"ookyfoz\"},\"id\":\"x\",\"name\":\"ypfqpgaixw\",\"type\":\"grkkderfrswq\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"2d61a9bb-b9aa-4154-9cf3-0959a79b27e5\"},\"location\":\"ahuq\",\"tags\":{\"wvmqxi\":\"zucwwmejjqhd\",\"bn\":\"ookyfoz\"},\"id\":\"x\",\"name\":\"ypfqpgaixw\",\"type\":\"grkkderfrswq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,7 +37,7 @@ public final class PartnerRegistrationsListMockTests {
 
         Assertions.assertEquals("ahuq", response.iterator().next().location());
         Assertions.assertEquals("zucwwmejjqhd", response.iterator().next().tags().get("wvmqxi"));
-        Assertions.assertEquals(UUID.fromString("c93fd16e-8054-4011-b133-3f05b727f25c"),
+        Assertions.assertEquals(UUID.fromString("2d61a9bb-b9aa-4154-9cf3-0959a79b27e5"),
             response.iterator().next().partnerRegistrationImmutableId());
     }
 }

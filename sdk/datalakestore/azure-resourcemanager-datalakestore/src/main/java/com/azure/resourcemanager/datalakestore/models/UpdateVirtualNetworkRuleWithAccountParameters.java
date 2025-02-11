@@ -6,31 +6,38 @@ package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakestore.fluent.models.UpdateVirtualNetworkRuleProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters used to update a virtual network rule while updating a Data Lake Store account. */
+/**
+ * The parameters used to update a virtual network rule while updating a Data Lake Store account.
+ */
 @Fluent
-public final class UpdateVirtualNetworkRuleWithAccountParameters {
+public final class UpdateVirtualNetworkRuleWithAccountParameters
+    implements JsonSerializable<UpdateVirtualNetworkRuleWithAccountParameters> {
     /*
      * The unique name of the virtual network rule to update.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The virtual network rule properties to use when updating a virtual network rule.
      */
-    @JsonProperty(value = "properties")
     private UpdateVirtualNetworkRuleProperties innerProperties;
 
-    /** Creates an instance of UpdateVirtualNetworkRuleWithAccountParameters class. */
+    /**
+     * Creates an instance of UpdateVirtualNetworkRuleWithAccountParameters class.
+     */
     public UpdateVirtualNetworkRuleWithAccountParameters() {
     }
 
     /**
      * Get the name property: The unique name of the virtual network rule to update.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +46,7 @@ public final class UpdateVirtualNetworkRuleWithAccountParameters {
 
     /**
      * Set the name property: The unique name of the virtual network rule to update.
-     *
+     * 
      * @param name the name value to set.
      * @return the UpdateVirtualNetworkRuleWithAccountParameters object itself.
      */
@@ -51,7 +58,7 @@ public final class UpdateVirtualNetworkRuleWithAccountParameters {
     /**
      * Get the innerProperties property: The virtual network rule properties to use when updating a virtual network
      * rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateVirtualNetworkRuleProperties innerProperties() {
@@ -60,7 +67,7 @@ public final class UpdateVirtualNetworkRuleWithAccountParameters {
 
     /**
      * Get the subnetId property: The resource identifier for the subnet.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -69,7 +76,7 @@ public final class UpdateVirtualNetworkRuleWithAccountParameters {
 
     /**
      * Set the subnetId property: The resource identifier for the subnet.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the UpdateVirtualNetworkRuleWithAccountParameters object itself.
      */
@@ -83,15 +90,14 @@ public final class UpdateVirtualNetworkRuleWithAccountParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model UpdateVirtualNetworkRuleWithAccountParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model UpdateVirtualNetworkRuleWithAccountParameters"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -99,4 +105,46 @@ public final class UpdateVirtualNetworkRuleWithAccountParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpdateVirtualNetworkRuleWithAccountParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateVirtualNetworkRuleWithAccountParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateVirtualNetworkRuleWithAccountParameters if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateVirtualNetworkRuleWithAccountParameters.
+     */
+    public static UpdateVirtualNetworkRuleWithAccountParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateVirtualNetworkRuleWithAccountParameters deserializedUpdateVirtualNetworkRuleWithAccountParameters
+                = new UpdateVirtualNetworkRuleWithAccountParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedUpdateVirtualNetworkRuleWithAccountParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpdateVirtualNetworkRuleWithAccountParameters.innerProperties
+                        = UpdateVirtualNetworkRuleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateVirtualNetworkRuleWithAccountParameters;
+        });
+    }
 }

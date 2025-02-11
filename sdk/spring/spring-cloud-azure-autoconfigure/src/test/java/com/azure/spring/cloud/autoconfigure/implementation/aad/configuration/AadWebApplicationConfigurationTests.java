@@ -21,6 +21,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.aad.WebApplica
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AadWebApplicationConfigurationTests {
+
     @Test
     void useDefaultSecurityFilterChain() {
         webApplicationContextRunner()

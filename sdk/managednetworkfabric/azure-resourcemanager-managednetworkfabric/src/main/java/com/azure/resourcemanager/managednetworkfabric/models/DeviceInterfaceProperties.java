@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Network device interface properties. */
+/**
+ * Network device interface properties.
+ */
 @Fluent
-public final class DeviceInterfaceProperties {
+public final class DeviceInterfaceProperties implements JsonSerializable<DeviceInterfaceProperties> {
     /*
      * Interface identifier. Example: HundredGigE0/0.
      */
-    @JsonProperty(value = "identifier")
     private String identifier;
 
     /*
      * Interface type.
      */
-    @JsonProperty(value = "interfaceType")
     private String interfaceType;
 
     /*
      * List of supported connector types.
      */
-    @JsonProperty(value = "supportedConnectorTypes")
     private List<SupportedConnectorProperties> supportedConnectorTypes;
 
-    /** Creates an instance of DeviceInterfaceProperties class. */
+    /**
+     * Creates an instance of DeviceInterfaceProperties class.
+     */
     public DeviceInterfaceProperties() {
     }
 
     /**
      * Get the identifier property: Interface identifier. Example: HundredGigE0/0.
-     *
+     * 
      * @return the identifier value.
      */
     public String identifier() {
@@ -44,7 +49,7 @@ public final class DeviceInterfaceProperties {
 
     /**
      * Set the identifier property: Interface identifier. Example: HundredGigE0/0.
-     *
+     * 
      * @param identifier the identifier value to set.
      * @return the DeviceInterfaceProperties object itself.
      */
@@ -55,7 +60,7 @@ public final class DeviceInterfaceProperties {
 
     /**
      * Get the interfaceType property: Interface type.
-     *
+     * 
      * @return the interfaceType value.
      */
     public String interfaceType() {
@@ -64,7 +69,7 @@ public final class DeviceInterfaceProperties {
 
     /**
      * Set the interfaceType property: Interface type.
-     *
+     * 
      * @param interfaceType the interfaceType value to set.
      * @return the DeviceInterfaceProperties object itself.
      */
@@ -75,7 +80,7 @@ public final class DeviceInterfaceProperties {
 
     /**
      * Get the supportedConnectorTypes property: List of supported connector types.
-     *
+     * 
      * @return the supportedConnectorTypes value.
      */
     public List<SupportedConnectorProperties> supportedConnectorTypes() {
@@ -84,24 +89,69 @@ public final class DeviceInterfaceProperties {
 
     /**
      * Set the supportedConnectorTypes property: List of supported connector types.
-     *
+     * 
      * @param supportedConnectorTypes the supportedConnectorTypes value to set.
      * @return the DeviceInterfaceProperties object itself.
      */
-    public DeviceInterfaceProperties withSupportedConnectorTypes(
-        List<SupportedConnectorProperties> supportedConnectorTypes) {
+    public DeviceInterfaceProperties
+        withSupportedConnectorTypes(List<SupportedConnectorProperties> supportedConnectorTypes) {
         this.supportedConnectorTypes = supportedConnectorTypes;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (supportedConnectorTypes() != null) {
             supportedConnectorTypes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("identifier", this.identifier);
+        jsonWriter.writeStringField("interfaceType", this.interfaceType);
+        jsonWriter.writeArrayField("supportedConnectorTypes", this.supportedConnectorTypes,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceInterfaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceInterfaceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceInterfaceProperties.
+     */
+    public static DeviceInterfaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceInterfaceProperties deserializedDeviceInterfaceProperties = new DeviceInterfaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identifier".equals(fieldName)) {
+                    deserializedDeviceInterfaceProperties.identifier = reader.getString();
+                } else if ("interfaceType".equals(fieldName)) {
+                    deserializedDeviceInterfaceProperties.interfaceType = reader.getString();
+                } else if ("supportedConnectorTypes".equals(fieldName)) {
+                    List<SupportedConnectorProperties> supportedConnectorTypes
+                        = reader.readArray(reader1 -> SupportedConnectorProperties.fromJson(reader1));
+                    deserializedDeviceInterfaceProperties.supportedConnectorTypes = supportedConnectorTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceInterfaceProperties;
+        });
     }
 }

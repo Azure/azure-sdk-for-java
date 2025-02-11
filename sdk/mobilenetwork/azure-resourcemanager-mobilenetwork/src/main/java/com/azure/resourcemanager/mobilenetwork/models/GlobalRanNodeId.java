@@ -6,59 +6,55 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Global RAN Node ID.
  */
 @Fluent
-public final class GlobalRanNodeId {
+public final class GlobalRanNodeId implements JsonSerializable<GlobalRanNodeId> {
     /*
      * PLMN Identifier
      */
-    @JsonProperty(value = "plmnId", required = true)
     private PlmnId plmnId;
 
     /*
      * gNodeB identifier
      */
-    @JsonProperty(value = "gNbId")
     private GNbId gNbId;
 
     /*
      * NG-eNodeB identifier
      */
-    @JsonProperty(value = "ngeNbId")
     private String ngeNbId;
 
     /*
      * eNodeB identifier
      */
-    @JsonProperty(value = "eNbId")
     private String eNbId;
 
     /*
      * N3 IWF identifier
      */
-    @JsonProperty(value = "n3IwfId")
     private String n3IwfId;
 
     /*
      * W-AGF identifier
      */
-    @JsonProperty(value = "wagfId")
     private String wagfId;
 
     /*
      * TNGF identifier
      */
-    @JsonProperty(value = "tngfId")
     private String tngfId;
 
     /*
      * Network identifier
      */
-    @JsonProperty(value = "nid")
     private String nid;
 
     /**
@@ -245,4 +241,62 @@ public final class GlobalRanNodeId {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GlobalRanNodeId.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("plmnId", this.plmnId);
+        jsonWriter.writeJsonField("gNbId", this.gNbId);
+        jsonWriter.writeStringField("ngeNbId", this.ngeNbId);
+        jsonWriter.writeStringField("eNbId", this.eNbId);
+        jsonWriter.writeStringField("n3IwfId", this.n3IwfId);
+        jsonWriter.writeStringField("wagfId", this.wagfId);
+        jsonWriter.writeStringField("tngfId", this.tngfId);
+        jsonWriter.writeStringField("nid", this.nid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GlobalRanNodeId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GlobalRanNodeId if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GlobalRanNodeId.
+     */
+    public static GlobalRanNodeId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GlobalRanNodeId deserializedGlobalRanNodeId = new GlobalRanNodeId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("plmnId".equals(fieldName)) {
+                    deserializedGlobalRanNodeId.plmnId = PlmnId.fromJson(reader);
+                } else if ("gNbId".equals(fieldName)) {
+                    deserializedGlobalRanNodeId.gNbId = GNbId.fromJson(reader);
+                } else if ("ngeNbId".equals(fieldName)) {
+                    deserializedGlobalRanNodeId.ngeNbId = reader.getString();
+                } else if ("eNbId".equals(fieldName)) {
+                    deserializedGlobalRanNodeId.eNbId = reader.getString();
+                } else if ("n3IwfId".equals(fieldName)) {
+                    deserializedGlobalRanNodeId.n3IwfId = reader.getString();
+                } else if ("wagfId".equals(fieldName)) {
+                    deserializedGlobalRanNodeId.wagfId = reader.getString();
+                } else if ("tngfId".equals(fieldName)) {
+                    deserializedGlobalRanNodeId.tngfId = reader.getString();
+                } else if ("nid".equals(fieldName)) {
+                    deserializedGlobalRanNodeId.nid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGlobalRanNodeId;
+        });
+    }
 }

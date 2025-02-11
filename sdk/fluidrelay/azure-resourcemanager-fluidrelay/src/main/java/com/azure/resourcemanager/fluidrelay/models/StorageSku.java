@@ -5,31 +5,46 @@
 package com.azure.resourcemanager.fluidrelay.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageSku. */
+/**
+ * StorageSKU
+ * 
+ * Sku of the storage associated with the resource.
+ */
 public final class StorageSku extends ExpandableStringEnum<StorageSku> {
-    /** Static value standard for StorageSku. */
+    /**
+     * Static value standard for StorageSku.
+     */
     public static final StorageSku STANDARD = fromString("standard");
 
-    /** Static value basic for StorageSku. */
+    /**
+     * Static value basic for StorageSku.
+     */
     public static final StorageSku BASIC = fromString("basic");
 
     /**
+     * Creates a new instance of StorageSku value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageSku() {
+    }
+
+    /**
      * Creates or finds a StorageSku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageSku.
      */
-    @JsonCreator
     public static StorageSku fromString(String name) {
         return fromString(name, StorageSku.class);
     }
 
     /**
      * Gets known StorageSku values.
-     *
+     * 
      * @return known StorageSku values.
      */
     public static Collection<StorageSku> values() {

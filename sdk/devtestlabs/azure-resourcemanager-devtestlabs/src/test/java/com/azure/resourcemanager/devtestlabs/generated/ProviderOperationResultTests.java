@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProviderOperationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProviderOperationResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"quvgjxpybczme\",\"display\":{\"provider\":\"zopbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"}},{\"name\":\"ownoizhw\",\"display\":{\"provider\":\"ybqsoqijg\",\"resource\":\"mbpazlobcufpdzn\",\"operation\":\"t\",\"description\":\"qjnqglhqgnufoooj\"}},{\"name\":\"ifsqesaagdfmg\",\"display\":{\"provider\":\"hjxri\",\"resource\":\"wmrvktsizntocipa\",\"operation\":\"ajpsquc\",\"description\":\"o\"}}],\"nextLink\":\"dkfo\"}")
-                .toObject(ProviderOperationResult.class);
+        ProviderOperationResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"quvgjxpybczme\",\"display\":{\"provider\":\"zopbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"}},{\"name\":\"ownoizhw\",\"display\":{\"provider\":\"ybqsoqijg\",\"resource\":\"mbpazlobcufpdzn\",\"operation\":\"t\",\"description\":\"qjnqglhqgnufoooj\"}},{\"name\":\"ifsqesaagdfmg\",\"display\":{\"provider\":\"hjxri\",\"resource\":\"wmrvktsizntocipa\",\"operation\":\"ajpsquc\",\"description\":\"o\"}}],\"nextLink\":\"dkfo\"}")
+            .toObject(ProviderOperationResult.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
         Assertions.assertEquals("zopbsphrupidgs", model.value().get(0).display().provider());
         Assertions.assertEquals("bejhphoycmsxa", model.value().get(0).display().resource());
@@ -28,35 +26,22 @@ public final class ProviderOperationResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProviderOperationResult model =
-            new ProviderOperationResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationMetadataInner()
-                                .withName("quvgjxpybczme")
-                                .withDisplay(
-                                    new OperationMetadataDisplay()
-                                        .withProvider("zopbsphrupidgs")
-                                        .withResource("bejhphoycmsxa")
-                                        .withOperation("hdxbmtqio")
-                                        .withDescription("zehtbmu")),
-                            new OperationMetadataInner()
-                                .withName("ownoizhw")
-                                .withDisplay(
-                                    new OperationMetadataDisplay()
-                                        .withProvider("ybqsoqijg")
-                                        .withResource("mbpazlobcufpdzn")
-                                        .withOperation("t")
-                                        .withDescription("qjnqglhqgnufoooj")),
-                            new OperationMetadataInner()
-                                .withName("ifsqesaagdfmg")
-                                .withDisplay(
-                                    new OperationMetadataDisplay()
-                                        .withProvider("hjxri")
-                                        .withResource("wmrvktsizntocipa")
-                                        .withOperation("ajpsquc")
-                                        .withDescription("o"))));
+        ProviderOperationResult model = new ProviderOperationResult().withValue(Arrays.asList(
+            new OperationMetadataInner().withName("quvgjxpybczme")
+                .withDisplay(new OperationMetadataDisplay().withProvider("zopbsphrupidgs")
+                    .withResource("bejhphoycmsxa")
+                    .withOperation("hdxbmtqio")
+                    .withDescription("zehtbmu")),
+            new OperationMetadataInner().withName("ownoizhw")
+                .withDisplay(new OperationMetadataDisplay().withProvider("ybqsoqijg")
+                    .withResource("mbpazlobcufpdzn")
+                    .withOperation("t")
+                    .withDescription("qjnqglhqgnufoooj")),
+            new OperationMetadataInner().withName("ifsqesaagdfmg")
+                .withDisplay(new OperationMetadataDisplay().withProvider("hjxri")
+                    .withResource("wmrvktsizntocipa")
+                    .withOperation("ajpsquc")
+                    .withDescription("o"))));
         model = BinaryData.fromObject(model).toObject(ProviderOperationResult.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
         Assertions.assertEquals("zopbsphrupidgs", model.value().get(0).display().provider());

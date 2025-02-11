@@ -153,8 +153,11 @@ public final class PersonalizerClient {
      * @return the response body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerRankMultiSlotResult rankMultiSlot(List<PersonalizerRankableAction> actions, List<PersonalizerSlotOptions> slots, List<BinaryData> contextFeatures) {
-        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(actions).setSlots(slots).setContextFeatures(contextFeatures);
+    public PersonalizerRankMultiSlotResult rankMultiSlot(List<PersonalizerRankableAction> actions,
+        List<PersonalizerSlotOptions> slots, List<BinaryData> contextFeatures) {
+        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(actions)
+            .setSlots(slots)
+            .setContextFeatures(contextFeatures);
         return rankMultiSlot(request);
     }
 
@@ -185,7 +188,8 @@ public final class PersonalizerClient {
      * @throws IllegalArgumentException if rankMultiSlotOptions is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PersonalizerRankMultiSlotResult> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankMultiSlotOptions, Context context) {
+    public Response<PersonalizerRankMultiSlotResult>
+        rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankMultiSlotOptions, Context context) {
         return client.rankMultiSlotWithResponse(rankMultiSlotOptions, context).block();
     }
 
@@ -203,7 +207,8 @@ public final class PersonalizerClient {
     public void rewardMultiSlot(String eventId, String slotId, float reward) {
         ArrayList<PersonalizerSlotReward> slotRewards = new ArrayList<PersonalizerSlotReward>();
         slotRewards.add(new PersonalizerSlotReward().setSlotId(slotId).setValue(reward));
-        PersonalizerRewardMultiSlotOptions rewardRequest = new PersonalizerRewardMultiSlotOptions().setReward(slotRewards);
+        PersonalizerRewardMultiSlotOptions rewardRequest
+            = new PersonalizerRewardMultiSlotOptions().setReward(slotRewards);
         rewardMultiSlot(eventId, rewardRequest);
     }
 
@@ -235,7 +240,8 @@ public final class PersonalizerClient {
      * @throws IllegalArgumentException if rewardMultiSlotOptions is null or eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions, Context context) {
+    public Response<Void> rewardMultiSlotWithResponse(String eventId,
+        PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions, Context context) {
         return client.rewardMultiSlotWithResponse(eventId, rewardMultiSlotOptions, context).block();
     }
 

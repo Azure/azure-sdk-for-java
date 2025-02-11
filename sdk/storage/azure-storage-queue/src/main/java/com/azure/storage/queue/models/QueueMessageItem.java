@@ -294,8 +294,7 @@ public final class QueueMessageItem implements XmlSerializable<QueueMessageItem>
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the QueueMessageItem.
      */
-    public static QueueMessageItem fromXml(XmlReader xmlReader, String rootElementName)
-        throws XMLStreamException {
+    public static QueueMessageItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueMessageItem deserializedQueueMessageItem = new QueueMessageItem();
@@ -305,16 +304,13 @@ public final class QueueMessageItem implements XmlSerializable<QueueMessageItem>
                 if ("MessageId".equals(elementName.getLocalPart())) {
                     deserializedQueueMessageItem.messageId = reader.getStringElement();
                 } else if ("InsertionTime".equals(elementName.getLocalPart())) {
-                    deserializedQueueMessageItem.insertionTime
-                        = reader.getNullableElement(DateTimeRfc1123::new);
+                    deserializedQueueMessageItem.insertionTime = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("ExpirationTime".equals(elementName.getLocalPart())) {
-                    deserializedQueueMessageItem.expirationTime
-                        = reader.getNullableElement(DateTimeRfc1123::new);
+                    deserializedQueueMessageItem.expirationTime = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("PopReceipt".equals(elementName.getLocalPart())) {
                     deserializedQueueMessageItem.popReceipt = reader.getStringElement();
                 } else if ("TimeNextVisible".equals(elementName.getLocalPart())) {
-                    deserializedQueueMessageItem.timeNextVisible
-                        = reader.getNullableElement(DateTimeRfc1123::new);
+                    deserializedQueueMessageItem.timeNextVisible = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("DequeueCount".equals(elementName.getLocalPart())) {
                     deserializedQueueMessageItem.dequeueCount = reader.getLongElement();
                 } else if ("MessageText".equals(elementName.getLocalPart())) {

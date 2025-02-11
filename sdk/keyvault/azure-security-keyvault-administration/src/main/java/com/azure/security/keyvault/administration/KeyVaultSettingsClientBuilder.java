@@ -94,11 +94,9 @@ import java.util.stream.Collectors;
  * @see KeyVaultSettingsClient
  * @see KeyVaultSettingsAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {KeyVaultSettingsClient.class, KeyVaultSettingsAsyncClient.class})
-public final class KeyVaultSettingsClientBuilder implements
-    TokenCredentialTrait<KeyVaultSettingsClientBuilder>,
-    HttpTrait<KeyVaultSettingsClientBuilder>,
-    ConfigurationTrait<KeyVaultSettingsClientBuilder> {
+@ServiceClientBuilder(serviceClients = { KeyVaultSettingsClient.class, KeyVaultSettingsAsyncClient.class })
+public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait<KeyVaultSettingsClientBuilder>,
+    HttpTrait<KeyVaultSettingsClientBuilder>, ConfigurationTrait<KeyVaultSettingsClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
@@ -155,8 +153,7 @@ public final class KeyVaultSettingsClientBuilder implements
             URL url = new URL(vaultUrl);
             this.vaultUrl = url.toString();
         } catch (MalformedURLException e) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
         }
 
         return this;
@@ -400,8 +397,8 @@ public final class KeyVaultSettingsClientBuilder implements
      */
     private KeyVaultSettingsClientImpl buildImplClient() {
         HttpPipeline buildPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        KeyVaultAdministrationServiceVersion version = (serviceVersion != null)
-            ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
+        KeyVaultAdministrationServiceVersion version
+            = (serviceVersion != null) ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
         return new KeyVaultSettingsClientImpl(buildPipeline, version.getVersion());
     }
 
@@ -410,12 +407,12 @@ public final class KeyVaultSettingsClientBuilder implements
             return pipeline;
         }
 
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         if (vaultUrl == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
@@ -441,10 +438,9 @@ public final class KeyVaultSettingsClientBuilder implements
             policies.add(new AddHeadersPolicy(headers));
         }
 
-        policies.addAll(
-            this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .collect(Collectors.toList()));
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
@@ -452,10 +448,9 @@ public final class KeyVaultSettingsClientBuilder implements
         policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
-        policies.addAll(
-            this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .collect(Collectors.toList()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
@@ -463,8 +458,7 @@ public final class KeyVaultSettingsClientBuilder implements
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
             .tracer(tracer)

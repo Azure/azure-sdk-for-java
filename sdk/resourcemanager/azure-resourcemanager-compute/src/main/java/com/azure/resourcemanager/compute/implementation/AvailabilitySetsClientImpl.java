@@ -688,7 +688,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
     /**
      * Lists all availability sets in a subscription.
      * 
-     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'virtualMachines/$ref'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -718,7 +718,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
     /**
      * Lists all availability sets in a subscription.
      * 
-     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'virtualMachines/$ref'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -748,7 +748,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
     /**
      * Lists all availability sets in a subscription.
      * 
-     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'virtualMachines/$ref'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -777,7 +777,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
     /**
      * Lists all availability sets in a subscription.
      * 
-     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'virtualMachines/$ref'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -806,7 +806,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
     /**
      * Lists all availability sets in a subscription.
      * 
-     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'virtualMachines/$ref'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

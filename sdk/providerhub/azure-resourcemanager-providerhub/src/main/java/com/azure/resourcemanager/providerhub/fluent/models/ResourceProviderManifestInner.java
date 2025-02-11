@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.providerhub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderAuthorization;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderCapabilities;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderEndpoint;
@@ -15,103 +19,93 @@ import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestReRe
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestRequestHeaderOptions;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderType;
 import com.azure.resourcemanager.providerhub.models.ResourceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The ResourceProviderManifest model. */
+/**
+ * The ResourceProviderManifest model.
+ */
 @Fluent
-public final class ResourceProviderManifestInner {
+public final class ResourceProviderManifestInner implements JsonSerializable<ResourceProviderManifestInner> {
     /*
      * The providerAuthentication property.
      */
-    @JsonProperty(value = "providerAuthentication")
     private ResourceProviderManifestProviderAuthentication providerAuthentication;
 
     /*
      * The providerAuthorizations property.
      */
-    @JsonProperty(value = "providerAuthorizations")
     private List<ResourceProviderAuthorization> providerAuthorizations;
 
     /*
      * The namespace property.
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * The providerVersion property.
      */
-    @JsonProperty(value = "providerVersion")
     private String providerVersion;
 
     /*
      * The providerType property.
      */
-    @JsonProperty(value = "providerType")
     private ResourceProviderType providerType;
 
     /*
      * The requiredFeatures property.
      */
-    @JsonProperty(value = "requiredFeatures")
     private List<String> requiredFeatures;
 
     /*
      * The featuresRule property.
      */
-    @JsonProperty(value = "featuresRule")
     private ResourceProviderManifestFeaturesRule featuresRule;
 
     /*
      * The requestHeaderOptions property.
      */
-    @JsonProperty(value = "requestHeaderOptions")
     private ResourceProviderManifestRequestHeaderOptions requestHeaderOptions;
 
     /*
      * The resourceTypes property.
      */
-    @JsonProperty(value = "resourceTypes")
     private List<ResourceType> resourceTypes;
 
     /*
      * The management property.
      */
-    @JsonProperty(value = "management")
     private ResourceProviderManifestManagement management;
 
     /*
      * The capabilities property.
      */
-    @JsonProperty(value = "capabilities")
     private List<ResourceProviderCapabilities> capabilities;
 
     /*
      * Anything
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The globalNotificationEndpoints property.
      */
-    @JsonProperty(value = "globalNotificationEndpoints")
     private List<ResourceProviderEndpoint> globalNotificationEndpoints;
 
     /*
      * The reRegisterSubscriptionMetadata property.
      */
-    @JsonProperty(value = "reRegisterSubscriptionMetadata")
     private ResourceProviderManifestReRegisterSubscriptionMetadata reRegisterSubscriptionMetadata;
 
-    /** Creates an instance of ResourceProviderManifestInner class. */
+    /**
+     * Creates an instance of ResourceProviderManifestInner class.
+     */
     public ResourceProviderManifestInner() {
     }
 
     /**
      * Get the providerAuthentication property: The providerAuthentication property.
-     *
+     * 
      * @return the providerAuthentication value.
      */
     public ResourceProviderManifestProviderAuthentication providerAuthentication() {
@@ -120,19 +114,19 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the providerAuthentication property: The providerAuthentication property.
-     *
+     * 
      * @param providerAuthentication the providerAuthentication value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
-    public ResourceProviderManifestInner withProviderAuthentication(
-        ResourceProviderManifestProviderAuthentication providerAuthentication) {
+    public ResourceProviderManifestInner
+        withProviderAuthentication(ResourceProviderManifestProviderAuthentication providerAuthentication) {
         this.providerAuthentication = providerAuthentication;
         return this;
     }
 
     /**
      * Get the providerAuthorizations property: The providerAuthorizations property.
-     *
+     * 
      * @return the providerAuthorizations value.
      */
     public List<ResourceProviderAuthorization> providerAuthorizations() {
@@ -141,19 +135,19 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the providerAuthorizations property: The providerAuthorizations property.
-     *
+     * 
      * @param providerAuthorizations the providerAuthorizations value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
-    public ResourceProviderManifestInner withProviderAuthorizations(
-        List<ResourceProviderAuthorization> providerAuthorizations) {
+    public ResourceProviderManifestInner
+        withProviderAuthorizations(List<ResourceProviderAuthorization> providerAuthorizations) {
         this.providerAuthorizations = providerAuthorizations;
         return this;
     }
 
     /**
      * Get the namespace property: The namespace property.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -162,7 +156,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the namespace property: The namespace property.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
@@ -173,7 +167,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Get the providerVersion property: The providerVersion property.
-     *
+     * 
      * @return the providerVersion value.
      */
     public String providerVersion() {
@@ -182,7 +176,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the providerVersion property: The providerVersion property.
-     *
+     * 
      * @param providerVersion the providerVersion value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
@@ -193,7 +187,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Get the providerType property: The providerType property.
-     *
+     * 
      * @return the providerType value.
      */
     public ResourceProviderType providerType() {
@@ -202,7 +196,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the providerType property: The providerType property.
-     *
+     * 
      * @param providerType the providerType value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
@@ -213,7 +207,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Get the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @return the requiredFeatures value.
      */
     public List<String> requiredFeatures() {
@@ -222,7 +216,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
@@ -233,7 +227,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Get the featuresRule property: The featuresRule property.
-     *
+     * 
      * @return the featuresRule value.
      */
     public ResourceProviderManifestFeaturesRule featuresRule() {
@@ -242,7 +236,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the featuresRule property: The featuresRule property.
-     *
+     * 
      * @param featuresRule the featuresRule value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
@@ -253,7 +247,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Get the requestHeaderOptions property: The requestHeaderOptions property.
-     *
+     * 
      * @return the requestHeaderOptions value.
      */
     public ResourceProviderManifestRequestHeaderOptions requestHeaderOptions() {
@@ -262,19 +256,19 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the requestHeaderOptions property: The requestHeaderOptions property.
-     *
+     * 
      * @param requestHeaderOptions the requestHeaderOptions value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
-    public ResourceProviderManifestInner withRequestHeaderOptions(
-        ResourceProviderManifestRequestHeaderOptions requestHeaderOptions) {
+    public ResourceProviderManifestInner
+        withRequestHeaderOptions(ResourceProviderManifestRequestHeaderOptions requestHeaderOptions) {
         this.requestHeaderOptions = requestHeaderOptions;
         return this;
     }
 
     /**
      * Get the resourceTypes property: The resourceTypes property.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<ResourceType> resourceTypes() {
@@ -283,7 +277,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the resourceTypes property: The resourceTypes property.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
@@ -294,7 +288,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Get the management property: The management property.
-     *
+     * 
      * @return the management value.
      */
     public ResourceProviderManifestManagement management() {
@@ -303,7 +297,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the management property: The management property.
-     *
+     * 
      * @param management the management value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
@@ -314,7 +308,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Get the capabilities property: The capabilities property.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<ResourceProviderCapabilities> capabilities() {
@@ -323,7 +317,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the capabilities property: The capabilities property.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
@@ -334,7 +328,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Get the metadata property: Anything.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -343,7 +337,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the metadata property: Anything.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
@@ -354,7 +348,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Get the globalNotificationEndpoints property: The globalNotificationEndpoints property.
-     *
+     * 
      * @return the globalNotificationEndpoints value.
      */
     public List<ResourceProviderEndpoint> globalNotificationEndpoints() {
@@ -363,19 +357,19 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the globalNotificationEndpoints property: The globalNotificationEndpoints property.
-     *
+     * 
      * @param globalNotificationEndpoints the globalNotificationEndpoints value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
-    public ResourceProviderManifestInner withGlobalNotificationEndpoints(
-        List<ResourceProviderEndpoint> globalNotificationEndpoints) {
+    public ResourceProviderManifestInner
+        withGlobalNotificationEndpoints(List<ResourceProviderEndpoint> globalNotificationEndpoints) {
         this.globalNotificationEndpoints = globalNotificationEndpoints;
         return this;
     }
 
     /**
      * Get the reRegisterSubscriptionMetadata property: The reRegisterSubscriptionMetadata property.
-     *
+     * 
      * @return the reRegisterSubscriptionMetadata value.
      */
     public ResourceProviderManifestReRegisterSubscriptionMetadata reRegisterSubscriptionMetadata() {
@@ -384,7 +378,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Set the reRegisterSubscriptionMetadata property: The reRegisterSubscriptionMetadata property.
-     *
+     * 
      * @param reRegisterSubscriptionMetadata the reRegisterSubscriptionMetadata value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
@@ -396,7 +390,7 @@ public final class ResourceProviderManifestInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -427,5 +421,98 @@ public final class ResourceProviderManifestInner {
         if (reRegisterSubscriptionMetadata() != null) {
             reRegisterSubscriptionMetadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("providerAuthentication", this.providerAuthentication);
+        jsonWriter.writeArrayField("providerAuthorizations", this.providerAuthorizations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeStringField("providerVersion", this.providerVersion);
+        jsonWriter.writeStringField("providerType", this.providerType == null ? null : this.providerType.toString());
+        jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("featuresRule", this.featuresRule);
+        jsonWriter.writeJsonField("requestHeaderOptions", this.requestHeaderOptions);
+        jsonWriter.writeArrayField("resourceTypes", this.resourceTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("management", this.management);
+        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeArrayField("globalNotificationEndpoints", this.globalNotificationEndpoints,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("reRegisterSubscriptionMetadata", this.reRegisterSubscriptionMetadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderManifestInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderManifestInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProviderManifestInner.
+     */
+    public static ResourceProviderManifestInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderManifestInner deserializedResourceProviderManifestInner
+                = new ResourceProviderManifestInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerAuthentication".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.providerAuthentication
+                        = ResourceProviderManifestProviderAuthentication.fromJson(reader);
+                } else if ("providerAuthorizations".equals(fieldName)) {
+                    List<ResourceProviderAuthorization> providerAuthorizations
+                        = reader.readArray(reader1 -> ResourceProviderAuthorization.fromJson(reader1));
+                    deserializedResourceProviderManifestInner.providerAuthorizations = providerAuthorizations;
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.namespace = reader.getString();
+                } else if ("providerVersion".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.providerVersion = reader.getString();
+                } else if ("providerType".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.providerType
+                        = ResourceProviderType.fromString(reader.getString());
+                } else if ("requiredFeatures".equals(fieldName)) {
+                    List<String> requiredFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManifestInner.requiredFeatures = requiredFeatures;
+                } else if ("featuresRule".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.featuresRule
+                        = ResourceProviderManifestFeaturesRule.fromJson(reader);
+                } else if ("requestHeaderOptions".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.requestHeaderOptions
+                        = ResourceProviderManifestRequestHeaderOptions.fromJson(reader);
+                } else if ("resourceTypes".equals(fieldName)) {
+                    List<ResourceType> resourceTypes = reader.readArray(reader1 -> ResourceType.fromJson(reader1));
+                    deserializedResourceProviderManifestInner.resourceTypes = resourceTypes;
+                } else if ("management".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.management
+                        = ResourceProviderManifestManagement.fromJson(reader);
+                } else if ("capabilities".equals(fieldName)) {
+                    List<ResourceProviderCapabilities> capabilities
+                        = reader.readArray(reader1 -> ResourceProviderCapabilities.fromJson(reader1));
+                    deserializedResourceProviderManifestInner.capabilities = capabilities;
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.metadata = reader.readUntyped();
+                } else if ("globalNotificationEndpoints".equals(fieldName)) {
+                    List<ResourceProviderEndpoint> globalNotificationEndpoints
+                        = reader.readArray(reader1 -> ResourceProviderEndpoint.fromJson(reader1));
+                    deserializedResourceProviderManifestInner.globalNotificationEndpoints = globalNotificationEndpoints;
+                } else if ("reRegisterSubscriptionMetadata".equals(fieldName)) {
+                    deserializedResourceProviderManifestInner.reRegisterSubscriptionMetadata
+                        = ResourceProviderManifestReRegisterSubscriptionMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderManifestInner;
+        });
     }
 }

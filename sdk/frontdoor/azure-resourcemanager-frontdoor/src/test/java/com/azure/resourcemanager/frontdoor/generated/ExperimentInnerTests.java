@@ -16,35 +16,35 @@ public final class ExperimentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExperimentInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"vgpmun\",\"endpointA\":{\"name\":\"xvmhf\",\"endpoint\":\"zjyi\"},\"endpointB\":{\"name\":\"sbhud\",\"endpoint\":\"ohyuemslynsq\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Disabling\",\"status\":\"brlttymsjnygq\",\"scriptFileUri\":\"fwqzdz\"},\"location\":\"tilaxh\",\"tags\":{\"wivkxo\":\"qlyvijo\",\"ti\":\"zunbixx\"},\"id\":\"vcpwpgclrc\",\"name\":\"vtsoxf\",\"type\":\"kenx\"}")
+            "{\"properties\":{\"description\":\"jmonfdgn\",\"endpointA\":{\"name\":\"ypuuwwltvuqjctze\",\"endpoint\":\"eifzzhmk\"},\"endpointB\":{\"name\":\"vflyhbxcu\",\"endpoint\":\"hxgsrboldfor\"},\"enabledState\":\"Disabled\",\"resourceState\":\"Enabling\",\"status\":\"izbfhfovvacq\",\"scriptFileUri\":\"tuodxeszabbelaw\"},\"location\":\"muaslzkw\",\"tags\":{\"ahnomdrkywu\":\"oycqucwy\",\"lniexz\":\"psvfuurutlwexxwl\",\"tybbwwpgda\":\"rzpgep\"},\"id\":\"chzyvlixqnrk\",\"name\":\"xkjibnxmy\",\"type\":\"uxswqrntvl\"}")
             .toObject(ExperimentInner.class);
-        Assertions.assertEquals("tilaxh", model.location());
-        Assertions.assertEquals("qlyvijo", model.tags().get("wivkxo"));
-        Assertions.assertEquals("vgpmun", model.description());
-        Assertions.assertEquals("xvmhf", model.endpointA().name());
-        Assertions.assertEquals("zjyi", model.endpointA().endpoint());
-        Assertions.assertEquals("sbhud", model.endpointB().name());
-        Assertions.assertEquals("ohyuemslynsq", model.endpointB().endpoint());
-        Assertions.assertEquals(State.ENABLED, model.enabledState());
+        Assertions.assertEquals("muaslzkw", model.location());
+        Assertions.assertEquals("oycqucwy", model.tags().get("ahnomdrkywu"));
+        Assertions.assertEquals("jmonfdgn", model.description());
+        Assertions.assertEquals("ypuuwwltvuqjctze", model.endpointA().name());
+        Assertions.assertEquals("eifzzhmk", model.endpointA().endpoint());
+        Assertions.assertEquals("vflyhbxcu", model.endpointB().name());
+        Assertions.assertEquals("hxgsrboldfor", model.endpointB().endpoint());
+        Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentInner model = new ExperimentInner().withLocation("tilaxh")
-            .withTags(mapOf("wivkxo", "qlyvijo", "ti", "zunbixx"))
-            .withDescription("vgpmun")
-            .withEndpointA(new Endpoint().withName("xvmhf").withEndpoint("zjyi"))
-            .withEndpointB(new Endpoint().withName("sbhud").withEndpoint("ohyuemslynsq"))
-            .withEnabledState(State.ENABLED);
+        ExperimentInner model = new ExperimentInner().withLocation("muaslzkw")
+            .withTags(mapOf("ahnomdrkywu", "oycqucwy", "lniexz", "psvfuurutlwexxwl", "tybbwwpgda", "rzpgep"))
+            .withDescription("jmonfdgn")
+            .withEndpointA(new Endpoint().withName("ypuuwwltvuqjctze").withEndpoint("eifzzhmk"))
+            .withEndpointB(new Endpoint().withName("vflyhbxcu").withEndpoint("hxgsrboldfor"))
+            .withEnabledState(State.DISABLED);
         model = BinaryData.fromObject(model).toObject(ExperimentInner.class);
-        Assertions.assertEquals("tilaxh", model.location());
-        Assertions.assertEquals("qlyvijo", model.tags().get("wivkxo"));
-        Assertions.assertEquals("vgpmun", model.description());
-        Assertions.assertEquals("xvmhf", model.endpointA().name());
-        Assertions.assertEquals("zjyi", model.endpointA().endpoint());
-        Assertions.assertEquals("sbhud", model.endpointB().name());
-        Assertions.assertEquals("ohyuemslynsq", model.endpointB().endpoint());
-        Assertions.assertEquals(State.ENABLED, model.enabledState());
+        Assertions.assertEquals("muaslzkw", model.location());
+        Assertions.assertEquals("oycqucwy", model.tags().get("ahnomdrkywu"));
+        Assertions.assertEquals("jmonfdgn", model.description());
+        Assertions.assertEquals("ypuuwwltvuqjctze", model.endpointA().name());
+        Assertions.assertEquals("eifzzhmk", model.endpointA().endpoint());
+        Assertions.assertEquals("vflyhbxcu", model.endpointB().name());
+        Assertions.assertEquals("hxgsrboldfor", model.endpointB().endpoint());
+        Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 
     // Use "Map.of" if available

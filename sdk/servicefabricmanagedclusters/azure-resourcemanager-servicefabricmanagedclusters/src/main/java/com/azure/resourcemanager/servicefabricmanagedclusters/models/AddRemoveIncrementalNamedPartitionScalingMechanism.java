@@ -119,7 +119,6 @@ public final class AddRemoveIncrementalNamedPartitionScalingMechanism extends Sc
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

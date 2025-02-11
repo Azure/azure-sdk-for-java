@@ -13,18 +13,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReceivedSharesActivateTenantEmailRegistration {
     public static void main(String[] args) {
-        ReceivedSharesClient receivedSharesClient =
-                new ReceivedSharesClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("accountName.purview.azure.com/share")
-                        .buildClient();
+        ReceivedSharesClient receivedSharesClient
+            = new ReceivedSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("accountName.purview.azure.com/share")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.sharing.generated.receivedsharesactivatetenantemailregistration.receivedsharesactivatetenantemailregistration
-        BinaryData tenantEmailRegistration =
-                BinaryData.fromString("{\"properties\":{\"activationCode\":\"15ee7153fe0df5a3a449a897d6cec836\"}}");
+        BinaryData tenantEmailRegistration
+            = BinaryData.fromString("{\"properties\":{\"activationCode\":\"15ee7153fe0df5a3a449a897d6cec836\"}}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                receivedSharesClient.activateTenantEmailRegistrationWithResponse(
-                        tenantEmailRegistration, requestOptions);
+        Response<BinaryData> response
+            = receivedSharesClient.activateTenantEmailRegistrationWithResponse(tenantEmailRegistration, requestOptions);
         // END:com.azure.analytics.purview.sharing.generated.receivedsharesactivatetenantemailregistration.receivedsharesactivatetenantemailregistration
     }
 }

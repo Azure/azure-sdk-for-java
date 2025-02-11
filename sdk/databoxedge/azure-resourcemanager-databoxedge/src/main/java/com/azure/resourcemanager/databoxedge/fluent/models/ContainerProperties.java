@@ -5,47 +5,52 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.AzureContainerDataFormat;
 import com.azure.resourcemanager.databoxedge.models.ContainerStatus;
 import com.azure.resourcemanager.databoxedge.models.RefreshDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The container properties. */
+/**
+ * The container properties.
+ */
 @Fluent
-public final class ContainerProperties {
+public final class ContainerProperties implements JsonSerializable<ContainerProperties> {
     /*
      * Current status of the container.
      */
-    @JsonProperty(value = "containerStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ContainerStatus containerStatus;
 
     /*
      * DataFormat for Container
      */
-    @JsonProperty(value = "dataFormat", required = true)
     private AzureContainerDataFormat dataFormat;
 
     /*
      * Details of the refresh job on this container.
      */
-    @JsonProperty(value = "refreshDetails", access = JsonProperty.Access.WRITE_ONLY)
     private RefreshDetails refreshDetails;
 
     /*
      * The UTC time when container got created.
      */
-    @JsonProperty(value = "createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateTime;
 
-    /** Creates an instance of ContainerProperties class. */
+    /**
+     * Creates an instance of ContainerProperties class.
+     */
     public ContainerProperties() {
     }
 
     /**
      * Get the containerStatus property: Current status of the container.
-     *
+     * 
      * @return the containerStatus value.
      */
     public ContainerStatus containerStatus() {
@@ -54,7 +59,7 @@ public final class ContainerProperties {
 
     /**
      * Get the dataFormat property: DataFormat for Container.
-     *
+     * 
      * @return the dataFormat value.
      */
     public AzureContainerDataFormat dataFormat() {
@@ -63,7 +68,7 @@ public final class ContainerProperties {
 
     /**
      * Set the dataFormat property: DataFormat for Container.
-     *
+     * 
      * @param dataFormat the dataFormat value to set.
      * @return the ContainerProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class ContainerProperties {
 
     /**
      * Get the refreshDetails property: Details of the refresh job on this container.
-     *
+     * 
      * @return the refreshDetails value.
      */
     public RefreshDetails refreshDetails() {
@@ -83,7 +88,7 @@ public final class ContainerProperties {
 
     /**
      * Get the createdDateTime property: The UTC time when container got created.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -92,14 +97,13 @@ public final class ContainerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataFormat in model ContainerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dataFormat in model ContainerProperties"));
         }
         if (refreshDetails() != null) {
             refreshDetails().validate();
@@ -107,4 +111,49 @@ public final class ContainerProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataFormat", this.dataFormat == null ? null : this.dataFormat.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerProperties.
+     */
+    public static ContainerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerProperties deserializedContainerProperties = new ContainerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataFormat".equals(fieldName)) {
+                    deserializedContainerProperties.dataFormat
+                        = AzureContainerDataFormat.fromString(reader.getString());
+                } else if ("containerStatus".equals(fieldName)) {
+                    deserializedContainerProperties.containerStatus = ContainerStatus.fromString(reader.getString());
+                } else if ("refreshDetails".equals(fieldName)) {
+                    deserializedContainerProperties.refreshDetails = RefreshDetails.fromJson(reader);
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedContainerProperties.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerProperties;
+        });
+    }
 }

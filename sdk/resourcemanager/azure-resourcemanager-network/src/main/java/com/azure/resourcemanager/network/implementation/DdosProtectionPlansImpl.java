@@ -10,9 +10,8 @@ import com.azure.resourcemanager.network.models.DdosProtectionPlans;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for DdosProtectionPlans. */
-public class DdosProtectionPlansImpl
-    extends TopLevelModifiableResourcesImpl<
-        DdosProtectionPlan, DdosProtectionPlanImpl, DdosProtectionPlanInner, DdosProtectionPlansClient, NetworkManager>
+public class DdosProtectionPlansImpl extends
+    TopLevelModifiableResourcesImpl<DdosProtectionPlan, DdosProtectionPlanImpl, DdosProtectionPlanInner, DdosProtectionPlansClient, NetworkManager>
     implements DdosProtectionPlans {
 
     public DdosProtectionPlansImpl(final NetworkManager networkManager) {

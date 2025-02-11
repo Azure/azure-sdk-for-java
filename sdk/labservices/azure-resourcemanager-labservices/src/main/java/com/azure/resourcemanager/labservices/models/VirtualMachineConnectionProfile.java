@@ -5,56 +5,61 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The connection information for the virtual machine. */
+/**
+ * The connection information for the virtual machine.
+ */
 @Immutable
-public final class VirtualMachineConnectionProfile {
+public final class VirtualMachineConnectionProfile implements JsonSerializable<VirtualMachineConnectionProfile> {
     /*
      * The private IP address of the virtual machine.
      */
-    @JsonProperty(value = "privateIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
 
     /*
      * Port and host name separated by semicolon for connecting via SSH protocol to the virtual machine.
      */
-    @JsonProperty(value = "sshAuthority", access = JsonProperty.Access.WRITE_ONLY)
     private String sshAuthority;
 
     /*
      * URL for connecting via SSH protocol to the virtual machine in browser.
      */
-    @JsonProperty(value = "sshInBrowserUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String sshInBrowserUrl;
 
     /*
      * Port and host name separated by semicolon for connecting via RDP protocol to the virtual machine.
      */
-    @JsonProperty(value = "rdpAuthority", access = JsonProperty.Access.WRITE_ONLY)
     private String rdpAuthority;
 
     /*
      * URL for connecting via RDP protocol to the virtual machine in browser.
      */
-    @JsonProperty(value = "rdpInBrowserUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String rdpInBrowserUrl;
 
     /*
      * The username used to log on to the virtual machine as admin.
      */
-    @JsonProperty(value = "adminUsername", access = JsonProperty.Access.WRITE_ONLY)
     private String adminUsername;
 
     /*
      * The username used to log on to the virtual machine as non-admin, if one exists.
      */
-    @JsonProperty(value = "nonAdminUsername", access = JsonProperty.Access.WRITE_ONLY)
     private String nonAdminUsername;
 
     /**
+     * Creates an instance of VirtualMachineConnectionProfile class.
+     */
+    public VirtualMachineConnectionProfile() {
+    }
+
+    /**
      * Get the privateIpAddress property: The private IP address of the virtual machine.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -64,7 +69,7 @@ public final class VirtualMachineConnectionProfile {
     /**
      * Get the sshAuthority property: Port and host name separated by semicolon for connecting via SSH protocol to the
      * virtual machine.
-     *
+     * 
      * @return the sshAuthority value.
      */
     public String sshAuthority() {
@@ -73,7 +78,7 @@ public final class VirtualMachineConnectionProfile {
 
     /**
      * Get the sshInBrowserUrl property: URL for connecting via SSH protocol to the virtual machine in browser.
-     *
+     * 
      * @return the sshInBrowserUrl value.
      */
     public String sshInBrowserUrl() {
@@ -83,7 +88,7 @@ public final class VirtualMachineConnectionProfile {
     /**
      * Get the rdpAuthority property: Port and host name separated by semicolon for connecting via RDP protocol to the
      * virtual machine.
-     *
+     * 
      * @return the rdpAuthority value.
      */
     public String rdpAuthority() {
@@ -92,7 +97,7 @@ public final class VirtualMachineConnectionProfile {
 
     /**
      * Get the rdpInBrowserUrl property: URL for connecting via RDP protocol to the virtual machine in browser.
-     *
+     * 
      * @return the rdpInBrowserUrl value.
      */
     public String rdpInBrowserUrl() {
@@ -101,7 +106,7 @@ public final class VirtualMachineConnectionProfile {
 
     /**
      * Get the adminUsername property: The username used to log on to the virtual machine as admin.
-     *
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -111,7 +116,7 @@ public final class VirtualMachineConnectionProfile {
     /**
      * Get the nonAdminUsername property: The username used to log on to the virtual machine as non-admin, if one
      * exists.
-     *
+     * 
      * @return the nonAdminUsername value.
      */
     public String nonAdminUsername() {
@@ -120,9 +125,57 @@ public final class VirtualMachineConnectionProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineConnectionProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineConnectionProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineConnectionProfile.
+     */
+    public static VirtualMachineConnectionProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineConnectionProfile deserializedVirtualMachineConnectionProfile
+                = new VirtualMachineConnectionProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateIpAddress".equals(fieldName)) {
+                    deserializedVirtualMachineConnectionProfile.privateIpAddress = reader.getString();
+                } else if ("sshAuthority".equals(fieldName)) {
+                    deserializedVirtualMachineConnectionProfile.sshAuthority = reader.getString();
+                } else if ("sshInBrowserUrl".equals(fieldName)) {
+                    deserializedVirtualMachineConnectionProfile.sshInBrowserUrl = reader.getString();
+                } else if ("rdpAuthority".equals(fieldName)) {
+                    deserializedVirtualMachineConnectionProfile.rdpAuthority = reader.getString();
+                } else if ("rdpInBrowserUrl".equals(fieldName)) {
+                    deserializedVirtualMachineConnectionProfile.rdpInBrowserUrl = reader.getString();
+                } else if ("adminUsername".equals(fieldName)) {
+                    deserializedVirtualMachineConnectionProfile.adminUsername = reader.getString();
+                } else if ("nonAdminUsername".equals(fieldName)) {
+                    deserializedVirtualMachineConnectionProfile.nonAdminUsername = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineConnectionProfile;
+        });
     }
 }

@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.logic.generated;
 
-/** Samples for WorkflowTriggers ListCallbackUrl. */
+/**
+ * Samples for WorkflowTriggers ListCallbackUrl.
+ */
 public final class WorkflowTriggersListCallbackUrlSamples {
     /*
-     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/WorkflowTriggers_ListCallbackUrl.json
+     * x-ms-original-file:
+     * specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/WorkflowTriggers_ListCallbackUrl.
+     * json
      */
     /**
      * Sample code: Get the callback URL for a trigger.
-     *
+     * 
      * @param manager Entry point to LogicManager.
      */
     public static void getTheCallbackURLForATrigger(com.azure.resourcemanager.logic.LogicManager manager) {
-        manager
-            .workflowTriggers()
-            .listCallbackUrlWithResponse(
-                "test-resource-group", "test-workflow", "manual", com.azure.core.util.Context.NONE);
+        manager.workflowTriggers()
+            .listCallbackUrlWithResponse("test-resource-group", "test-workflow", "manual",
+                com.azure.core.util.Context.NONE);
     }
 }

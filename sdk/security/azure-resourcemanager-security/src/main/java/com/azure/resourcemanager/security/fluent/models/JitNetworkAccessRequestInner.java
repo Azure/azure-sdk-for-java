@@ -5,39 +5,41 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.JitNetworkAccessRequestVirtualMachine;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The JitNetworkAccessRequest model.
  */
 @Fluent
-public final class JitNetworkAccessRequestInner {
+public final class JitNetworkAccessRequestInner implements JsonSerializable<JitNetworkAccessRequestInner> {
     /*
      * The virtualMachines property.
      */
-    @JsonProperty(value = "virtualMachines", required = true)
     private List<JitNetworkAccessRequestVirtualMachine> virtualMachines;
 
     /*
      * The start time of the request in UTC
      */
-    @JsonProperty(value = "startTimeUtc", required = true)
     private OffsetDateTime startTimeUtc;
 
     /*
      * The identity of the person who made the request
      */
-    @JsonProperty(value = "requestor", required = true)
     private String requestor;
 
     /*
      * The justification for making the initiate request
      */
-    @JsonProperty(value = "justification")
     private String justification;
 
     /**
@@ -153,4 +155,55 @@ public final class JitNetworkAccessRequestInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessRequestInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("virtualMachines", this.virtualMachines,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("startTimeUtc",
+            this.startTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTimeUtc));
+        jsonWriter.writeStringField("requestor", this.requestor);
+        jsonWriter.writeStringField("justification", this.justification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JitNetworkAccessRequestInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JitNetworkAccessRequestInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JitNetworkAccessRequestInner.
+     */
+    public static JitNetworkAccessRequestInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JitNetworkAccessRequestInner deserializedJitNetworkAccessRequestInner = new JitNetworkAccessRequestInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualMachines".equals(fieldName)) {
+                    List<JitNetworkAccessRequestVirtualMachine> virtualMachines
+                        = reader.readArray(reader1 -> JitNetworkAccessRequestVirtualMachine.fromJson(reader1));
+                    deserializedJitNetworkAccessRequestInner.virtualMachines = virtualMachines;
+                } else if ("startTimeUtc".equals(fieldName)) {
+                    deserializedJitNetworkAccessRequestInner.startTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("requestor".equals(fieldName)) {
+                    deserializedJitNetworkAccessRequestInner.requestor = reader.getString();
+                } else if ("justification".equals(fieldName)) {
+                    deserializedJitNetworkAccessRequestInner.justification = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJitNetworkAccessRequestInner;
+        });
+    }
 }

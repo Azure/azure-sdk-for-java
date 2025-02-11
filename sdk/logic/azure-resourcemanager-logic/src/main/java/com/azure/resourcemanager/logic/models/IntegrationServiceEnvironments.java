@@ -8,61 +8,63 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationServiceEnvironments. */
+/**
+ * Resource collection API of IntegrationServiceEnvironments.
+ */
 public interface IntegrationServiceEnvironments {
     /**
      * Gets a list of integration service environments by subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of integration service environments by subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<IntegrationServiceEnvironment> list();
 
     /**
      * Gets a list of integration service environments by subscription.
-     *
+     * 
      * @param top The number of items to be included in the result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of integration service environments by subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<IntegrationServiceEnvironment> list(Integer top, Context context);
 
     /**
      * Gets a list of integration service environments by resource group.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of integration service environments by resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<IntegrationServiceEnvironment> listByResourceGroup(String resourceGroup);
 
     /**
      * Gets a list of integration service environments by resource group.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param top The number of items to be included in the result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of integration service environments by resource group as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<IntegrationServiceEnvironment> listByResourceGroup(
-        String resourceGroup, Integer top, Context context);
+    PagedIterable<IntegrationServiceEnvironment> listByResourceGroup(String resourceGroup, Integer top,
+        Context context);
 
     /**
      * Gets an integration service environment.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param context The context to associate with this operation.
@@ -71,12 +73,12 @@ public interface IntegrationServiceEnvironments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration service environment along with {@link Response}.
      */
-    Response<IntegrationServiceEnvironment> getByResourceGroupWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context);
+    Response<IntegrationServiceEnvironment> getByResourceGroupWithResponse(String resourceGroup,
+        String integrationServiceEnvironmentName, Context context);
 
     /**
      * Gets an integration service environment.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -88,7 +90,7 @@ public interface IntegrationServiceEnvironments {
 
     /**
      * Deletes an integration service environment.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param context The context to associate with this operation.
@@ -97,12 +99,12 @@ public interface IntegrationServiceEnvironments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroup, String integrationServiceEnvironmentName,
+        Context context);
 
     /**
      * Deletes an integration service environment.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,7 +115,7 @@ public interface IntegrationServiceEnvironments {
 
     /**
      * Restarts an integration service environment.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param context The context to associate with this operation.
@@ -126,7 +128,7 @@ public interface IntegrationServiceEnvironments {
 
     /**
      * Restarts an integration service environment.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface IntegrationServiceEnvironments {
 
     /**
      * Gets an integration service environment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,7 +150,7 @@ public interface IntegrationServiceEnvironments {
 
     /**
      * Gets an integration service environment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +162,7 @@ public interface IntegrationServiceEnvironments {
 
     /**
      * Deletes an integration service environment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -170,7 +172,7 @@ public interface IntegrationServiceEnvironments {
 
     /**
      * Deletes an integration service environment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +184,7 @@ public interface IntegrationServiceEnvironments {
 
     /**
      * Begins definition for a new IntegrationServiceEnvironment resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IntegrationServiceEnvironment definition.
      */

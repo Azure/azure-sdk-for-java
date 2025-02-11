@@ -4,54 +4,32 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.time.OffsetDateTime;
-
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * A tenant email registration data transfer object.
  */
-@JsonFlatten
 @Fluent
-public class TenantEmailRegistration extends ProxyResource {
+public final class TenantEmailRegistration extends ProxyResource {
     /*
-     * Activation code for the registration.
+     * Tenant email registration property bag.
      */
-    @JsonProperty(value = "properties.activationCode")
-    private String activationCode;
+    private TenantEmailRegistrationProperties properties;
 
     /*
-     * Date of the activation expiration. Represented in the standard date-time format as defined by [RFC
-     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
+     * Type of the resource.
      */
-    @JsonProperty(value = "properties.activationExpiration", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime activationExpiration;
+    private String type;
 
     /*
-     * The email to register.
+     * The unique id of the resource.
      */
-    @JsonProperty(value = "properties.email", access = JsonProperty.Access.WRITE_ONLY)
-    private String email;
-
-    /*
-     * Defines the supported types for registration.
-     */
-    @JsonProperty(value = "properties.registrationStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private TenantEmailRegistrationStatus registrationStatus;
-
-    /*
-     * State of the resource
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private State state;
-
-    /*
-     * The tenant id to register.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    private String id;
 
     /**
      * Creates an instance of TenantEmailRegistration class.
@@ -60,68 +38,82 @@ public class TenantEmailRegistration extends ProxyResource {
     }
 
     /**
-     * Get the activationCode property: Activation code for the registration.
-     * 
-     * @return the activationCode value.
+     * Get the properties property: Tenant email registration property bag.
+     *
+     * @return the properties value.
      */
-    public String getActivationCode() {
-        return this.activationCode;
+    public TenantEmailRegistrationProperties getProperties() {
+        return this.properties;
     }
 
     /**
-     * Set the activationCode property: Activation code for the registration.
-     * 
-     * @param activationCode the activationCode value to set.
+     * Set the properties property: Tenant email registration property bag.
+     *
+     * @param properties the properties value to set.
      * @return the TenantEmailRegistration object itself.
      */
-    public TenantEmailRegistration setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
+    public TenantEmailRegistration setProperties(TenantEmailRegistrationProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the activationExpiration property: Date of the activation expiration. Represented in the standard date-time
-     * format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
-     * 
-     * @return the activationExpiration value.
+     * Get the type property: Type of the resource.
+     *
+     * @return the type value.
      */
-    public OffsetDateTime getActivationExpiration() {
-        return this.activationExpiration;
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
-     * Get the email property: The email to register.
-     * 
-     * @return the email value.
+     * Get the id property: The unique id of the resource.
+     *
+     * @return the id value.
      */
-    public String getEmail() {
-        return this.email;
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     /**
-     * Get the registrationStatus property: Defines the supported types for registration.
-     * 
-     * @return the registrationStatus value.
+     * {@inheritDoc}
      */
-    public TenantEmailRegistrationStatus getRegistrationStatus() {
-        return this.registrationStatus;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Get the state property: State of the resource.
-     * 
-     * @return the state value.
+     * Reads an instance of TenantEmailRegistration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TenantEmailRegistration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TenantEmailRegistration.
      */
-    public State getState() {
-        return this.state;
-    }
+    public static TenantEmailRegistration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TenantEmailRegistration deserializedTenantEmailRegistration = new TenantEmailRegistration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-    /**
-     * Get the tenantId property: The tenant id to register.
-     * 
-     * @return the tenantId value.
-     */
-    public String getTenantId() {
-        return this.tenantId;
+                if ("id".equals(fieldName)) {
+                    deserializedTenantEmailRegistration.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTenantEmailRegistration.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTenantEmailRegistration.properties = TenantEmailRegistrationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTenantEmailRegistration;
+        });
     }
 }

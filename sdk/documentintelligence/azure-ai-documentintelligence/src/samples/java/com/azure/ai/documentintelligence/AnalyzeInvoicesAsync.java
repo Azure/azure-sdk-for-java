@@ -3,10 +3,10 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
 import com.azure.core.credential.AzureKeyCredential;
@@ -42,16 +42,9 @@ public class AnalyzeInvoicesAsync {
 
         File invoice = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/invoices/sample_invoice.jpg");
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicePoller =
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeInvoicePoller =
             client.beginAnalyzeDocument("prebuilt-invoice",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoice.toPath()))
+                    new AnalyzeDocumentOptions(Files.readAllBytes(invoice.toPath()))
             );
 
 
@@ -69,7 +62,7 @@ public class AnalyzeInvoicesAsync {
 
         analyzeInvoiceResultMono.subscribe(analyzeInvoiceResult -> {
             for (int i = 0; i < analyzeInvoiceResult.getDocuments().size(); i++) {
-                Document analyzedInvoice = analyzeInvoiceResult.getDocuments().get(i);
+                AnalyzedDocument analyzedInvoice = analyzeInvoiceResult.getDocuments().get(i);
                 Map<String, DocumentField> invoiceFields = analyzedInvoice.getFields();
                 System.out.printf("----------- Analyzing invoice  %d -----------%n", i);
                 DocumentField vendorNameField = invoiceFields.get("VendorName");
@@ -139,10 +132,10 @@ public class AnalyzeInvoicesAsync {
                 if (invoiceItemsField != null) {
                     System.out.printf("Invoice Items: %n");
                     if (DocumentFieldType.ARRAY == invoiceItemsField.getType()) {
-                        List<DocumentField> invoiceItems = invoiceItemsField.getValueArray();
+                        List<DocumentField> invoiceItems = invoiceItemsField.getValueList();
                         invoiceItems.stream()
                             .filter(invoiceItem -> DocumentFieldType.OBJECT == invoiceItem.getType())
-                            .map(DocumentField::getValueObject)
+                            .map(DocumentField::getValueMap)
                             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                                 // See a full list of fields found on an invoice here:
                                 // https://aka.ms/formrecognizer/invoicefields

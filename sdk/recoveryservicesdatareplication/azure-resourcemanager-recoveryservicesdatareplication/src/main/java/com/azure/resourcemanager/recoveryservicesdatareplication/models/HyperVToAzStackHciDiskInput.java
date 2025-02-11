@@ -6,55 +6,57 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** HyperVToAzStack disk input. */
+/**
+ * HyperVToAzStack disk input.
+ */
 @Fluent
-public final class HyperVToAzStackHciDiskInput {
+public final class HyperVToAzStackHciDiskInput implements JsonSerializable<HyperVToAzStackHciDiskInput> {
     /*
      * Gets or sets the disk Id.
      */
-    @JsonProperty(value = "diskId", required = true)
     private String diskId;
 
     /*
      * Gets or sets the target storage account ARM Id.
      */
-    @JsonProperty(value = "storageContainerId")
     private String storageContainerId;
 
     /*
      * Gets or sets a value indicating whether dynamic sizing is enabled on the virtual hard
      * disk.
      */
-    @JsonProperty(value = "isDynamic")
     private Boolean isDynamic;
 
     /*
      * Gets or sets the disk size in GB.
      */
-    @JsonProperty(value = "diskSizeGB", required = true)
     private long diskSizeGB;
 
     /*
      * Gets or sets the type of the virtual hard disk, vhd or vhdx.
      */
-    @JsonProperty(value = "diskFileFormat", required = true)
     private String diskFileFormat;
 
     /*
      * Gets or sets a value indicating whether disk is os disk.
      */
-    @JsonProperty(value = "isOsDisk", required = true)
     private boolean isOsDisk;
 
-    /** Creates an instance of HyperVToAzStackHciDiskInput class. */
+    /**
+     * Creates an instance of HyperVToAzStackHciDiskInput class.
+     */
     public HyperVToAzStackHciDiskInput() {
     }
 
     /**
      * Get the diskId property: Gets or sets the disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -63,7 +65,7 @@ public final class HyperVToAzStackHciDiskInput {
 
     /**
      * Set the diskId property: Gets or sets the disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the HyperVToAzStackHciDiskInput object itself.
      */
@@ -74,7 +76,7 @@ public final class HyperVToAzStackHciDiskInput {
 
     /**
      * Get the storageContainerId property: Gets or sets the target storage account ARM Id.
-     *
+     * 
      * @return the storageContainerId value.
      */
     public String storageContainerId() {
@@ -83,7 +85,7 @@ public final class HyperVToAzStackHciDiskInput {
 
     /**
      * Set the storageContainerId property: Gets or sets the target storage account ARM Id.
-     *
+     * 
      * @param storageContainerId the storageContainerId value to set.
      * @return the HyperVToAzStackHciDiskInput object itself.
      */
@@ -95,7 +97,7 @@ public final class HyperVToAzStackHciDiskInput {
     /**
      * Get the isDynamic property: Gets or sets a value indicating whether dynamic sizing is enabled on the virtual hard
      * disk.
-     *
+     * 
      * @return the isDynamic value.
      */
     public Boolean isDynamic() {
@@ -105,7 +107,7 @@ public final class HyperVToAzStackHciDiskInput {
     /**
      * Set the isDynamic property: Gets or sets a value indicating whether dynamic sizing is enabled on the virtual hard
      * disk.
-     *
+     * 
      * @param isDynamic the isDynamic value to set.
      * @return the HyperVToAzStackHciDiskInput object itself.
      */
@@ -116,7 +118,7 @@ public final class HyperVToAzStackHciDiskInput {
 
     /**
      * Get the diskSizeGB property: Gets or sets the disk size in GB.
-     *
+     * 
      * @return the diskSizeGB value.
      */
     public long diskSizeGB() {
@@ -125,7 +127,7 @@ public final class HyperVToAzStackHciDiskInput {
 
     /**
      * Set the diskSizeGB property: Gets or sets the disk size in GB.
-     *
+     * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the HyperVToAzStackHciDiskInput object itself.
      */
@@ -136,7 +138,7 @@ public final class HyperVToAzStackHciDiskInput {
 
     /**
      * Get the diskFileFormat property: Gets or sets the type of the virtual hard disk, vhd or vhdx.
-     *
+     * 
      * @return the diskFileFormat value.
      */
     public String diskFileFormat() {
@@ -145,7 +147,7 @@ public final class HyperVToAzStackHciDiskInput {
 
     /**
      * Set the diskFileFormat property: Gets or sets the type of the virtual hard disk, vhd or vhdx.
-     *
+     * 
      * @param diskFileFormat the diskFileFormat value to set.
      * @return the HyperVToAzStackHciDiskInput object itself.
      */
@@ -156,7 +158,7 @@ public final class HyperVToAzStackHciDiskInput {
 
     /**
      * Get the isOsDisk property: Gets or sets a value indicating whether disk is os disk.
-     *
+     * 
      * @return the isOsDisk value.
      */
     public boolean isOsDisk() {
@@ -165,7 +167,7 @@ public final class HyperVToAzStackHciDiskInput {
 
     /**
      * Set the isOsDisk property: Gets or sets a value indicating whether disk is os disk.
-     *
+     * 
      * @param isOsDisk the isOsDisk value to set.
      * @return the HyperVToAzStackHciDiskInput object itself.
      */
@@ -176,23 +178,73 @@ public final class HyperVToAzStackHciDiskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskId in model HyperVToAzStackHciDiskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property diskId in model HyperVToAzStackHciDiskInput"));
         }
         if (diskFileFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskFileFormat in model HyperVToAzStackHciDiskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property diskFileFormat in model HyperVToAzStackHciDiskInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HyperVToAzStackHciDiskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeLongField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeStringField("diskFileFormat", this.diskFileFormat);
+        jsonWriter.writeBooleanField("isOsDisk", this.isOsDisk);
+        jsonWriter.writeStringField("storageContainerId", this.storageContainerId);
+        jsonWriter.writeBooleanField("isDynamic", this.isDynamic);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVToAzStackHciDiskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVToAzStackHciDiskInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HyperVToAzStackHciDiskInput.
+     */
+    public static HyperVToAzStackHciDiskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVToAzStackHciDiskInput deserializedHyperVToAzStackHciDiskInput = new HyperVToAzStackHciDiskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciDiskInput.diskId = reader.getString();
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciDiskInput.diskSizeGB = reader.getLong();
+                } else if ("diskFileFormat".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciDiskInput.diskFileFormat = reader.getString();
+                } else if ("isOsDisk".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciDiskInput.isOsDisk = reader.getBoolean();
+                } else if ("storageContainerId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciDiskInput.storageContainerId = reader.getString();
+                } else if ("isDynamic".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciDiskInput.isDynamic = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVToAzStackHciDiskInput;
+        });
+    }
 }

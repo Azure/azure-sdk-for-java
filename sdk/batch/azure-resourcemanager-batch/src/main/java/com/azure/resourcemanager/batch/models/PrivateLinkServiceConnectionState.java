@@ -6,29 +6,30 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The private link service connection state of the private endpoint connection.
  */
 @Fluent
-public final class PrivateLinkServiceConnectionState {
+public final class PrivateLinkServiceConnectionState implements JsonSerializable<PrivateLinkServiceConnectionState> {
     /*
      * The status of the Batch private endpoint connection
      */
-    @JsonProperty(value = "status", required = true)
     private PrivateLinkServiceConnectionStatus status;
 
     /*
      * Description of the private Connection state
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Action required on the private connection state
      */
-    @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String actionsRequired;
 
     /**
@@ -93,10 +94,55 @@ public final class PrivateLinkServiceConnectionState {
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property status in model PrivateLinkServiceConnectionState"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model PrivateLinkServiceConnectionState"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkServiceConnectionState.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkServiceConnectionState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkServiceConnectionState if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateLinkServiceConnectionState.
+     */
+    public static PrivateLinkServiceConnectionState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkServiceConnectionState deserializedPrivateLinkServiceConnectionState
+                = new PrivateLinkServiceConnectionState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnectionState.status
+                        = PrivateLinkServiceConnectionStatus.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnectionState.description = reader.getString();
+                } else if ("actionsRequired".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnectionState.actionsRequired = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkServiceConnectionState;
+        });
+    }
 }

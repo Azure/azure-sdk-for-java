@@ -18,8 +18,7 @@ public final class ChatMessageConverter {
             return null;
         }
 
-        ChatMessage chatMessage = new ChatMessage()
-            .setId(obj.getId())
+        ChatMessage chatMessage = new ChatMessage().setId(obj.getId())
             .setType(obj.getType())
             .setVersion(obj.getVersion())
             .setContent(ChatMessageContentConverter.convert(obj.getContent()))
@@ -30,8 +29,7 @@ public final class ChatMessageConverter {
             .setMetadata(obj.getMetadata());
 
         if (obj.getSenderCommunicationIdentifier() != null) {
-            chatMessage.setSender(
-                CommunicationIdentifierConverter.convert(obj.getSenderCommunicationIdentifier()));
+            chatMessage.setSender(CommunicationIdentifierConverter.convert(obj.getSenderCommunicationIdentifier()));
         }
 
         return chatMessage;

@@ -20,8 +20,8 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -29,10 +29,7 @@ public final class OperationsImpl implements Operations {
     public Response<OperationsList> listWithResponse(Context context) {
         Response<OperationsListInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationsListImpl(inner.getValue(), this.manager()));
         } else {
             return null;

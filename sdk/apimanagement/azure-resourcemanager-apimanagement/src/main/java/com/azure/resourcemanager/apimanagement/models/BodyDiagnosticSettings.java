@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Body logging settings. */
+/**
+ * Body logging settings.
+ */
 @Fluent
-public final class BodyDiagnosticSettings {
+public final class BodyDiagnosticSettings implements JsonSerializable<BodyDiagnosticSettings> {
     /*
      * Number of request body bytes to log.
      */
-    @JsonProperty(value = "bytes")
     private Integer bytes;
 
-    /** Creates an instance of BodyDiagnosticSettings class. */
+    /**
+     * Creates an instance of BodyDiagnosticSettings class.
+     */
     public BodyDiagnosticSettings() {
     }
 
     /**
      * Get the bytes property: Number of request body bytes to log.
-     *
+     * 
      * @return the bytes value.
      */
     public Integer bytes() {
@@ -31,7 +38,7 @@ public final class BodyDiagnosticSettings {
 
     /**
      * Set the bytes property: Number of request body bytes to log.
-     *
+     * 
      * @param bytes the bytes value to set.
      * @return the BodyDiagnosticSettings object itself.
      */
@@ -42,9 +49,45 @@ public final class BodyDiagnosticSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("bytes", this.bytes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BodyDiagnosticSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BodyDiagnosticSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BodyDiagnosticSettings.
+     */
+    public static BodyDiagnosticSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BodyDiagnosticSettings deserializedBodyDiagnosticSettings = new BodyDiagnosticSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bytes".equals(fieldName)) {
+                    deserializedBodyDiagnosticSettings.bytes = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBodyDiagnosticSettings;
+        });
     }
 }

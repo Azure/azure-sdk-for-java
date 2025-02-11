@@ -31,10 +31,10 @@ public final class NodeTypesRestartMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.nodeTypes()
-            .restart("snkq", "hsyrqunj", "hdenxaulk",
-                new NodeTypeActionParameters().withNodes(Arrays.asList("d"))
-                    .withForce(true)
-                    .withUpdateType(UpdateType.DEFAULT),
+            .restart("ebwlnbmhyreeudzq", "vbpdqmjxlyyzglgo", "wtlmjjyuo",
+                new NodeTypeActionParameters().withNodes(Arrays.asList("obaxkjeytu"))
+                    .withForce(false)
+                    .withUpdateType(UpdateType.BY_UPGRADE_DOMAIN),
                 com.azure.core.util.Context.NONE);
 
     }

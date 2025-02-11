@@ -12,8 +12,8 @@ public final class PeeringServiceLocationImpl implements PeeringServiceLocation 
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    PeeringServiceLocationImpl(
-        PeeringServiceLocationInner innerObject, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    PeeringServiceLocationImpl(PeeringServiceLocationInner innerObject,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -28,8 +28,10 @@ public class App {
      * @param args Performance tests configuration arguments.
      */
     public static void main(String[] args) {
-        PerfStressProgram.run(
-            new Class<?>[]{AutocompleteTest.class, IndexDocumentsTest.class, SearchDocumentsTest.class,
-                SuggestTest.class}, args);
+        PerfStressProgram.run(new Class<?>[] {
+            AutocompleteTest.class,
+            IndexDocumentsTest.class,
+            SearchDocumentsTest.class,
+            SuggestTest.class }, args);
     }
 }

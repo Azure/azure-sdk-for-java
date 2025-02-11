@@ -10,11 +10,15 @@ import java.io.InputStream;
  */
 public interface DataLakeFileOpenInputStreamResult {
     /**
+     * Gets the {@link InputStream} of the target file.
+     *
      * @return the {@link InputStream} of the target file.
      */
     InputStream getInputStream();
 
     /**
+     * Gets the {@link PathProperties} of the target file.
+     *
      * @return the {@link PathProperties} of the target file.
      */
     PathProperties getProperties();

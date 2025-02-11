@@ -5,39 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.BareMetalMachinePatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** BareMetalMachinePatchParameters represents the body of the request to patch bare metal machine properties. */
+/**
+ * BareMetalMachinePatchParameters represents the body of the request to patch bare metal machine properties.
+ */
 @Fluent
-public final class BareMetalMachinePatchParameters {
+public final class BareMetalMachinePatchParameters implements JsonSerializable<BareMetalMachinePatchParameters> {
     /*
-     * BareMetalMachinePatchProperties represents the properties of the bare metal machine that can be patched.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties")
     private BareMetalMachinePatchProperties innerProperties;
 
     /*
      * The Azure resource tags that will replace the existing ones.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of BareMetalMachinePatchParameters class. */
+    /**
+     * Creates an instance of BareMetalMachinePatchParameters class.
+     */
     public BareMetalMachinePatchParameters() {
     }
 
     /**
-     * Get the innerProperties property: BareMetalMachinePatchProperties represents the properties of the bare metal
-     * machine that can be patched.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private BareMetalMachinePatchProperties innerProperties() {
@@ -46,7 +45,7 @@ public final class BareMetalMachinePatchParameters {
 
     /**
      * Get the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -55,7 +54,7 @@ public final class BareMetalMachinePatchParameters {
 
     /**
      * Set the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the BareMetalMachinePatchParameters object itself.
      */
@@ -65,9 +64,9 @@ public final class BareMetalMachinePatchParameters {
     }
 
     /**
-     * Get the machineDetails property: The details provided by the customer during the creation of rack manifests that
-     * allows for custom data to be associated with this machine.
-     *
+     * Get the machineDetails property: The details provided by the customer during the creation of rack manifests
+     * that allows for custom data to be associated with this machine.
+     * 
      * @return the machineDetails value.
      */
     public String machineDetails() {
@@ -75,9 +74,9 @@ public final class BareMetalMachinePatchParameters {
     }
 
     /**
-     * Set the machineDetails property: The details provided by the customer during the creation of rack manifests that
-     * allows for custom data to be associated with this machine.
-     *
+     * Set the machineDetails property: The details provided by the customer during the creation of rack manifests
+     * that allows for custom data to be associated with this machine.
+     * 
      * @param machineDetails the machineDetails value to set.
      * @return the BareMetalMachinePatchParameters object itself.
      */
@@ -91,12 +90,54 @@ public final class BareMetalMachinePatchParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BareMetalMachinePatchParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BareMetalMachinePatchParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BareMetalMachinePatchParameters.
+     */
+    public static BareMetalMachinePatchParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BareMetalMachinePatchParameters deserializedBareMetalMachinePatchParameters
+                = new BareMetalMachinePatchParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedBareMetalMachinePatchParameters.innerProperties
+                        = BareMetalMachinePatchProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBareMetalMachinePatchParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBareMetalMachinePatchParameters;
+        });
     }
 }

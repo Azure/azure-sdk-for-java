@@ -70,7 +70,6 @@ public final class ImageTemplateManagedImageSource extends ImageTemplateSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (imageId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

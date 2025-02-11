@@ -6,42 +6,52 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Data flow template.
  */
 @Fluent
-public final class ServiceDataFlowTemplate {
+public final class ServiceDataFlowTemplate implements JsonSerializable<ServiceDataFlowTemplate> {
     /*
-     * The name of the data flow template. This must be unique within the parent data flow policy rule. You must not use any of the following reserved strings - `default`, `requested` or `service`.
+     * The name of the data flow template. This must be unique within the parent data flow policy rule. You must not use
+     * any of the following reserved strings - `default`, `requested` or `service`.
      */
-    @JsonProperty(value = "templateName", required = true)
     private String templateName;
 
     /*
      * The direction of this flow.
      */
-    @JsonProperty(value = "direction", required = true)
     private SdfDirection direction;
 
     /*
-     * A list of the allowed protocol(s) for this flow. If you want this flow to be able to use any protocol within the internet protocol suite, use the value `ip`. If you only want to allow a selection of protocols, you must use the corresponding IANA Assigned Internet Protocol Number for each protocol, as described in https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml. For example, for UDP, you must use 17. If you use the value `ip` then you must leave the field `port` unspecified.
+     * A list of the allowed protocol(s) for this flow. If you want this flow to be able to use any protocol within the
+     * internet protocol suite, use the value `ip`. If you only want to allow a selection of protocols, you must use the
+     * corresponding IANA Assigned Internet Protocol Number for each protocol, as described in
+     * https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml. For example, for UDP, you must use 17.
+     * If you use the value `ip` then you must leave the field `port` unspecified.
      */
-    @JsonProperty(value = "protocol", required = true)
     private List<String> protocol;
 
     /*
-     * The remote IP address(es) to which UEs will connect for this flow. If you want to allow connections on any IP address, use the value `any`. Otherwise, you must provide each of the remote IP addresses to which the packet core instance will connect for this flow. You must provide each IP address in CIDR notation, including the netmask (for example, 192.0.2.54/24).
+     * The remote IP address(es) to which UEs will connect for this flow. If you want to allow connections on any IP
+     * address, use the value `any`. Otherwise, you must provide each of the remote IP addresses to which the packet
+     * core instance will connect for this flow. You must provide each IP address in CIDR notation, including the
+     * netmask (for example, 192.0.2.54/24).
      */
-    @JsonProperty(value = "remoteIpList", required = true)
     private List<String> remoteIpList;
 
     /*
-     * The port(s) to which UEs will connect for this flow. You can specify zero or more ports or port ranges. If you specify one or more ports or port ranges then you must specify a value other than `ip` in the `protocol` field. This is an optional setting. If you do not specify it then connections will be allowed on all ports. Port ranges must be specified as <FirstPort>-<LastPort>. For example: [`8080`, `8082-8085`].
+     * The port(s) to which UEs will connect for this flow. You can specify zero or more ports or port ranges. If you
+     * specify one or more ports or port ranges then you must specify a value other than `ip` in the `protocol` field.
+     * This is an optional setting. If you do not specify it then connections will be allowed on all ports. Port ranges
+     * must be specified as <FirstPort>-<LastPort>. For example: [`8080`, `8082-8085`].
      */
-    @JsonProperty(value = "ports")
     private List<String> ports;
 
     /**
@@ -203,4 +213,56 @@ public final class ServiceDataFlowTemplate {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceDataFlowTemplate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("templateName", this.templateName);
+        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
+        jsonWriter.writeArrayField("protocol", this.protocol, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("remoteIpList", this.remoteIpList, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ports", this.ports, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceDataFlowTemplate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceDataFlowTemplate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceDataFlowTemplate.
+     */
+    public static ServiceDataFlowTemplate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceDataFlowTemplate deserializedServiceDataFlowTemplate = new ServiceDataFlowTemplate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("templateName".equals(fieldName)) {
+                    deserializedServiceDataFlowTemplate.templateName = reader.getString();
+                } else if ("direction".equals(fieldName)) {
+                    deserializedServiceDataFlowTemplate.direction = SdfDirection.fromString(reader.getString());
+                } else if ("protocol".equals(fieldName)) {
+                    List<String> protocol = reader.readArray(reader1 -> reader1.getString());
+                    deserializedServiceDataFlowTemplate.protocol = protocol;
+                } else if ("remoteIpList".equals(fieldName)) {
+                    List<String> remoteIpList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedServiceDataFlowTemplate.remoteIpList = remoteIpList;
+                } else if ("ports".equals(fieldName)) {
+                    List<String> ports = reader.readArray(reader1 -> reader1.getString());
+                    deserializedServiceDataFlowTemplate.ports = ports;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceDataFlowTemplate;
+        });
+    }
 }

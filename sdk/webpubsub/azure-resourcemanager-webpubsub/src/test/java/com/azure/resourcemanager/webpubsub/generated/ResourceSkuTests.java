@@ -12,22 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSku model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"wo\",\"tier\":\"Basic\",\"size\":\"shrtdtkcnqxwb\",\"family\":\"kulpiujwaasi\",\"capacity\":172575084}")
-                .toObject(ResourceSku.class);
-        Assertions.assertEquals("wo", model.name());
-        Assertions.assertEquals(WebPubSubSkuTier.BASIC, model.tier());
-        Assertions.assertEquals(172575084, model.capacity());
+        ResourceSku model = BinaryData.fromString(
+            "{\"name\":\"hqkvpuvksgplsak\",\"tier\":\"Free\",\"size\":\"synljphuopxodl\",\"family\":\"ynt\",\"capacity\":863114887}")
+            .toObject(ResourceSku.class);
+        Assertions.assertEquals("hqkvpuvksgplsak", model.name());
+        Assertions.assertEquals(WebPubSubSkuTier.FREE, model.tier());
+        Assertions.assertEquals(863114887, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceSku model = new ResourceSku().withName("wo").withTier(WebPubSubSkuTier.BASIC).withCapacity(172575084);
+        ResourceSku model
+            = new ResourceSku().withName("hqkvpuvksgplsak").withTier(WebPubSubSkuTier.FREE).withCapacity(863114887);
         model = BinaryData.fromObject(model).toObject(ResourceSku.class);
-        Assertions.assertEquals("wo", model.name());
-        Assertions.assertEquals(WebPubSubSkuTier.BASIC, model.tier());
-        Assertions.assertEquals(172575084, model.capacity());
+        Assertions.assertEquals("hqkvpuvksgplsak", model.name());
+        Assertions.assertEquals(WebPubSubSkuTier.FREE, model.tier());
+        Assertions.assertEquals(863114887, model.capacity());
     }
 }

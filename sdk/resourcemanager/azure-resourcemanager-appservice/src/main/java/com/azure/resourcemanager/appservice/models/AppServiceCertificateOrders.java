@@ -17,12 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point for app service certificate order management API. */
 @Fluent
 public interface AppServiceCertificateOrders
-    extends SupportsCreating<AppServiceCertificateOrder.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsListingByResourceGroup<AppServiceCertificateOrder>,
-        SupportsGettingByResourceGroup<AppServiceCertificateOrder>,
-        SupportsListing<AppServiceCertificateOrder>,
-        SupportsGettingById<AppServiceCertificateOrder>,
-        SupportsDeletingByResourceGroup,
-        HasManager<AppServiceManager> {
+    extends SupportsCreating<AppServiceCertificateOrder.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsListingByResourceGroup<AppServiceCertificateOrder>,
+    SupportsGettingByResourceGroup<AppServiceCertificateOrder>, SupportsListing<AppServiceCertificateOrder>,
+    SupportsGettingById<AppServiceCertificateOrder>, SupportsDeletingByResourceGroup, HasManager<AppServiceManager> {
 }

@@ -15,8 +15,7 @@ public final class StreamingEndpointSkuInfoListResultImpl implements StreamingEn
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    StreamingEndpointSkuInfoListResultImpl(
-        StreamingEndpointSkuInfoListResultInner innerObject,
+    StreamingEndpointSkuInfoListResultImpl(StreamingEndpointSkuInfoListResultInner innerObject,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

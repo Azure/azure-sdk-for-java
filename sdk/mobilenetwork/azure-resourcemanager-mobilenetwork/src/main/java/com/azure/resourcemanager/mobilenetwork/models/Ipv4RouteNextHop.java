@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The next hop in an IPv4 route.
  */
 @Fluent
-public final class Ipv4RouteNextHop {
+public final class Ipv4RouteNextHop implements JsonSerializable<Ipv4RouteNextHop> {
     /*
      * The next hop address.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * The priority of this next hop. Next hops with lower preference values are preferred.
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /**
@@ -76,5 +78,44 @@ public final class Ipv4RouteNextHop {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeNumberField("priority", this.priority);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Ipv4RouteNextHop from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Ipv4RouteNextHop if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Ipv4RouteNextHop.
+     */
+    public static Ipv4RouteNextHop fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Ipv4RouteNextHop deserializedIpv4RouteNextHop = new Ipv4RouteNextHop();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("address".equals(fieldName)) {
+                    deserializedIpv4RouteNextHop.address = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedIpv4RouteNextHop.priority = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpv4RouteNextHop;
+        });
     }
 }

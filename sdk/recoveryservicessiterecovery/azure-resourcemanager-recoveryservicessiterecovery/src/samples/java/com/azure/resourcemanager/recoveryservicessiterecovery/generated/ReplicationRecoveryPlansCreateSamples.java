@@ -27,7 +27,9 @@ public final class ReplicationRecoveryPlansCreateSamples {
      */
     public static void createsARecoveryPlanWithTheGivenDetails(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().define("RPtest1").withExistingVault("vault1", "resourceGroupPS1")
+        manager.replicationRecoveryPlans()
+            .define("RPtest1")
+            .withExistingVault("vault1", "resourceGroupPS1")
             .withProperties(new CreateRecoveryPlanInputProperties().withPrimaryFabricId(
                 "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1")
                 .withRecoveryFabricId("Microsoft Azure")
@@ -36,7 +38,8 @@ public final class ReplicationRecoveryPlansCreateSamples {
                     .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem().withId(
                         "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b")
                         .withVirtualMachineId("f8491e4f-817a-40dd-a90c-af773978c75b")))
-                    .withStartGroupActions(Arrays.asList()).withEndGroupActions(Arrays.asList()))))
+                    .withStartGroupActions(Arrays.asList())
+                    .withEndGroupActions(Arrays.asList()))))
             .create();
     }
 }

@@ -6,44 +6,49 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Common response for device updates. */
+/**
+ * Common response for device updates.
+ */
 @Fluent
-public final class CommonPostActionResponseForDeviceUpdateInner {
+public final class CommonPostActionResponseForDeviceUpdateInner
+    implements JsonSerializable<CommonPostActionResponseForDeviceUpdateInner> {
     /*
      * Gets the configuration state.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * List of ARM Resource IDs for which the given action applied successfully.
      */
-    @JsonProperty(value = "successfulDevices")
     private List<String> successfulDevices;
 
     /*
      * List of ARM Resource IDs for which the given action failed to apply.
      */
-    @JsonProperty(value = "failedDevices")
     private List<String> failedDevices;
 
     /*
      * The error object.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of CommonPostActionResponseForDeviceUpdateInner class. */
+    /**
+     * Creates an instance of CommonPostActionResponseForDeviceUpdateInner class.
+     */
     public CommonPostActionResponseForDeviceUpdateInner() {
     }
 
     /**
      * Get the configurationState property: Gets the configuration state.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -52,7 +57,7 @@ public final class CommonPostActionResponseForDeviceUpdateInner {
 
     /**
      * Get the successfulDevices property: List of ARM Resource IDs for which the given action applied successfully.
-     *
+     * 
      * @return the successfulDevices value.
      */
     public List<String> successfulDevices() {
@@ -61,7 +66,7 @@ public final class CommonPostActionResponseForDeviceUpdateInner {
 
     /**
      * Set the successfulDevices property: List of ARM Resource IDs for which the given action applied successfully.
-     *
+     * 
      * @param successfulDevices the successfulDevices value to set.
      * @return the CommonPostActionResponseForDeviceUpdateInner object itself.
      */
@@ -72,7 +77,7 @@ public final class CommonPostActionResponseForDeviceUpdateInner {
 
     /**
      * Get the failedDevices property: List of ARM Resource IDs for which the given action failed to apply.
-     *
+     * 
      * @return the failedDevices value.
      */
     public List<String> failedDevices() {
@@ -81,7 +86,7 @@ public final class CommonPostActionResponseForDeviceUpdateInner {
 
     /**
      * Set the failedDevices property: List of ARM Resource IDs for which the given action failed to apply.
-     *
+     * 
      * @param failedDevices the failedDevices value to set.
      * @return the CommonPostActionResponseForDeviceUpdateInner object itself.
      */
@@ -92,7 +97,7 @@ public final class CommonPostActionResponseForDeviceUpdateInner {
 
     /**
      * Get the error property: The error object.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -101,7 +106,7 @@ public final class CommonPostActionResponseForDeviceUpdateInner {
 
     /**
      * Set the error property: The error object.
-     *
+     * 
      * @param error the error value to set.
      * @return the CommonPostActionResponseForDeviceUpdateInner object itself.
      */
@@ -112,9 +117,59 @@ public final class CommonPostActionResponseForDeviceUpdateInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("successfulDevices", this.successfulDevices,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("failedDevices", this.failedDevices,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonPostActionResponseForDeviceUpdateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonPostActionResponseForDeviceUpdateInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommonPostActionResponseForDeviceUpdateInner.
+     */
+    public static CommonPostActionResponseForDeviceUpdateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommonPostActionResponseForDeviceUpdateInner deserializedCommonPostActionResponseForDeviceUpdateInner
+                = new CommonPostActionResponseForDeviceUpdateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationState".equals(fieldName)) {
+                    deserializedCommonPostActionResponseForDeviceUpdateInner.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("successfulDevices".equals(fieldName)) {
+                    List<String> successfulDevices = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCommonPostActionResponseForDeviceUpdateInner.successfulDevices = successfulDevices;
+                } else if ("failedDevices".equals(fieldName)) {
+                    List<String> failedDevices = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCommonPostActionResponseForDeviceUpdateInner.failedDevices = failedDevices;
+                } else if ("error".equals(fieldName)) {
+                    deserializedCommonPostActionResponseForDeviceUpdateInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommonPostActionResponseForDeviceUpdateInner;
+        });
     }
 }

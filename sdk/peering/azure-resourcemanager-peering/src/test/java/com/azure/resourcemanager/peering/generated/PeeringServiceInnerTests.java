@@ -14,41 +14,38 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringServiceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceInner model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"fbkrvrnsvs\"},\"properties\":{\"peeringServiceLocation\":\"ohxcrsbfova\",\"peeringServiceProvider\":\"ruvw\",\"provisioningState\":\"Failed\",\"providerPrimaryPeeringLocation\":\"fsubcgjbirxbpy\",\"providerBackupPeeringLocation\":\"rfbjf\"},\"location\":\"twss\",\"tags\":{\"vwpm\":\"tpvjzbexilzznfqq\",\"wqytjrybnwjewgdr\":\"taruoujmkcj\",\"doy\":\"ervnaenqpehi\"},\"id\":\"mifthnzdnd\",\"name\":\"l\",\"type\":\"nayqi\"}")
-                .toObject(PeeringServiceInner.class);
-        Assertions.assertEquals("fbkrvrnsvs", model.sku().name());
-        Assertions.assertEquals("twss", model.location());
-        Assertions.assertEquals("tpvjzbexilzznfqq", model.tags().get("vwpm"));
-        Assertions.assertEquals("ohxcrsbfova", model.peeringServiceLocation());
-        Assertions.assertEquals("ruvw", model.peeringServiceProvider());
-        Assertions.assertEquals("fsubcgjbirxbpy", model.providerPrimaryPeeringLocation());
-        Assertions.assertEquals("rfbjf", model.providerBackupPeeringLocation());
+        PeeringServiceInner model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"rjxgciqib\"},\"properties\":{\"peeringServiceLocation\":\"sxsdqrhzoymibm\",\"peeringServiceProvider\":\"yiba\",\"provisioningState\":\"Updating\",\"providerPrimaryPeeringLocation\":\"uszdtmhrkwof\",\"providerBackupPeeringLocation\":\"voqacpiexpbt\"},\"location\":\"iwbwoenwashrtdtk\",\"tags\":{\"aasipqi\":\"xwbpokulpiuj\",\"erpqlpqwcciuqg\":\"obyu\",\"hykojoxafnndlpic\":\"dbutauvfbtkuwhh\"},\"id\":\"koymkcd\",\"name\":\"h\",\"type\":\"pkkpw\"}")
+            .toObject(PeeringServiceInner.class);
+        Assertions.assertEquals("rjxgciqib", model.sku().name());
+        Assertions.assertEquals("iwbwoenwashrtdtk", model.location());
+        Assertions.assertEquals("xwbpokulpiuj", model.tags().get("aasipqi"));
+        Assertions.assertEquals("sxsdqrhzoymibm", model.peeringServiceLocation());
+        Assertions.assertEquals("yiba", model.peeringServiceProvider());
+        Assertions.assertEquals("uszdtmhrkwof", model.providerPrimaryPeeringLocation());
+        Assertions.assertEquals("voqacpiexpbt", model.providerBackupPeeringLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringServiceInner model =
-            new PeeringServiceInner()
-                .withSku(new PeeringServiceSku().withName("fbkrvrnsvs"))
-                .withLocation("twss")
-                .withTags(mapOf("vwpm", "tpvjzbexilzznfqq", "wqytjrybnwjewgdr", "taruoujmkcj", "doy", "ervnaenqpehi"))
-                .withPeeringServiceLocation("ohxcrsbfova")
-                .withPeeringServiceProvider("ruvw")
-                .withProviderPrimaryPeeringLocation("fsubcgjbirxbpy")
-                .withProviderBackupPeeringLocation("rfbjf");
+        PeeringServiceInner model = new PeeringServiceInner().withSku(new PeeringServiceSku().withName("rjxgciqib"))
+            .withLocation("iwbwoenwashrtdtk")
+            .withTags(mapOf("aasipqi", "xwbpokulpiuj", "erpqlpqwcciuqg", "obyu", "hykojoxafnndlpic", "dbutauvfbtkuwhh"))
+            .withPeeringServiceLocation("sxsdqrhzoymibm")
+            .withPeeringServiceProvider("yiba")
+            .withProviderPrimaryPeeringLocation("uszdtmhrkwof")
+            .withProviderBackupPeeringLocation("voqacpiexpbt");
         model = BinaryData.fromObject(model).toObject(PeeringServiceInner.class);
-        Assertions.assertEquals("fbkrvrnsvs", model.sku().name());
-        Assertions.assertEquals("twss", model.location());
-        Assertions.assertEquals("tpvjzbexilzznfqq", model.tags().get("vwpm"));
-        Assertions.assertEquals("ohxcrsbfova", model.peeringServiceLocation());
-        Assertions.assertEquals("ruvw", model.peeringServiceProvider());
-        Assertions.assertEquals("fsubcgjbirxbpy", model.providerPrimaryPeeringLocation());
-        Assertions.assertEquals("rfbjf", model.providerBackupPeeringLocation());
+        Assertions.assertEquals("rjxgciqib", model.sku().name());
+        Assertions.assertEquals("iwbwoenwashrtdtk", model.location());
+        Assertions.assertEquals("xwbpokulpiuj", model.tags().get("aasipqi"));
+        Assertions.assertEquals("sxsdqrhzoymibm", model.peeringServiceLocation());
+        Assertions.assertEquals("yiba", model.peeringServiceProvider());
+        Assertions.assertEquals("uszdtmhrkwof", model.providerPrimaryPeeringLocation());
+        Assertions.assertEquals("voqacpiexpbt", model.providerBackupPeeringLocation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

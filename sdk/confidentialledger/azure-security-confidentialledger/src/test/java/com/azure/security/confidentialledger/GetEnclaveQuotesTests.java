@@ -17,16 +17,16 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
     @Test
     public void testGetEnclaveQuotes() throws Exception {
         Response<BinaryData> enclaveQuotesWithResponse = confidentialLedgerClient.getEnclaveQuotesWithResponse(null);
-        Assertions.assertEquals(enclaveQuotesWithResponse.getStatusCode(), 200);
+        Assertions.assertEquals(200, enclaveQuotesWithResponse.getStatusCode());
         BinaryData parsedResponse = enclaveQuotesWithResponse.getValue();
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode responseBodyJson = null;
 
         responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
-        
+
         JsonNode enclaveQuotes = responseBodyJson.get("enclaveQuotes");
         String enclaveQuotesKey = enclaveQuotes.fields().next().getKey();
-        Assertions.assertEquals(enclaveQuotes.get(enclaveQuotesKey).get("quoteVersion").asText(), "OE_SGX_v1");
+        Assertions.assertEquals("OE_SGX_v1", enclaveQuotes.get(enclaveQuotesKey).get("quoteVersion").asText());
     }
 }

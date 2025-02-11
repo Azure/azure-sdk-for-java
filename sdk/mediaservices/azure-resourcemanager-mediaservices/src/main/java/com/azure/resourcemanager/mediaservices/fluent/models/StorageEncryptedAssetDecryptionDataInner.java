@@ -6,32 +6,39 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.AssetFileEncryptionMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Data needed to decrypt asset files encrypted with legacy storage encryption. */
+/**
+ * Data needed to decrypt asset files encrypted with legacy storage encryption.
+ */
 @Fluent
-public final class StorageEncryptedAssetDecryptionDataInner {
+public final class StorageEncryptedAssetDecryptionDataInner
+    implements JsonSerializable<StorageEncryptedAssetDecryptionDataInner> {
     /*
      * The Asset File storage encryption key.
      */
-    @JsonProperty(value = "key")
     private byte[] key;
 
     /*
      * Asset File encryption metadata.
      */
-    @JsonProperty(value = "assetFileEncryptionMetadata")
     private List<AssetFileEncryptionMetadata> assetFileEncryptionMetadata;
 
-    /** Creates an instance of StorageEncryptedAssetDecryptionDataInner class. */
+    /**
+     * Creates an instance of StorageEncryptedAssetDecryptionDataInner class.
+     */
     public StorageEncryptedAssetDecryptionDataInner() {
     }
 
     /**
      * Get the key property: The Asset File storage encryption key.
-     *
+     * 
      * @return the key value.
      */
     public byte[] key() {
@@ -40,7 +47,7 @@ public final class StorageEncryptedAssetDecryptionDataInner {
 
     /**
      * Set the key property: The Asset File storage encryption key.
-     *
+     * 
      * @param key the key value to set.
      * @return the StorageEncryptedAssetDecryptionDataInner object itself.
      */
@@ -51,7 +58,7 @@ public final class StorageEncryptedAssetDecryptionDataInner {
 
     /**
      * Get the assetFileEncryptionMetadata property: Asset File encryption metadata.
-     *
+     * 
      * @return the assetFileEncryptionMetadata value.
      */
     public List<AssetFileEncryptionMetadata> assetFileEncryptionMetadata() {
@@ -60,24 +67,68 @@ public final class StorageEncryptedAssetDecryptionDataInner {
 
     /**
      * Set the assetFileEncryptionMetadata property: Asset File encryption metadata.
-     *
+     * 
      * @param assetFileEncryptionMetadata the assetFileEncryptionMetadata value to set.
      * @return the StorageEncryptedAssetDecryptionDataInner object itself.
      */
-    public StorageEncryptedAssetDecryptionDataInner withAssetFileEncryptionMetadata(
-        List<AssetFileEncryptionMetadata> assetFileEncryptionMetadata) {
+    public StorageEncryptedAssetDecryptionDataInner
+        withAssetFileEncryptionMetadata(List<AssetFileEncryptionMetadata> assetFileEncryptionMetadata) {
         this.assetFileEncryptionMetadata = assetFileEncryptionMetadata;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (assetFileEncryptionMetadata() != null) {
             assetFileEncryptionMetadata().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBinaryField("key", this.key);
+        jsonWriter.writeArrayField("assetFileEncryptionMetadata", this.assetFileEncryptionMetadata,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageEncryptedAssetDecryptionDataInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageEncryptedAssetDecryptionDataInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageEncryptedAssetDecryptionDataInner.
+     */
+    public static StorageEncryptedAssetDecryptionDataInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageEncryptedAssetDecryptionDataInner deserializedStorageEncryptedAssetDecryptionDataInner
+                = new StorageEncryptedAssetDecryptionDataInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedStorageEncryptedAssetDecryptionDataInner.key = reader.getBinary();
+                } else if ("assetFileEncryptionMetadata".equals(fieldName)) {
+                    List<AssetFileEncryptionMetadata> assetFileEncryptionMetadata
+                        = reader.readArray(reader1 -> AssetFileEncryptionMetadata.fromJson(reader1));
+                    deserializedStorageEncryptedAssetDecryptionDataInner.assetFileEncryptionMetadata
+                        = assetFileEncryptionMetadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageEncryptedAssetDecryptionDataInner;
+        });
     }
 }

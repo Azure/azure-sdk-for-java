@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * One or more actions that will execute, modifying the request and/or response.
  */
 @Fluent
-public final class RulesEngineAction {
+public final class RulesEngineAction implements JsonSerializable<RulesEngineAction> {
     /*
      * A list of header actions to apply from the request from AFD to the origin.
      */
-    @JsonProperty(value = "requestHeaderActions")
     private List<HeaderAction> requestHeaderActions;
 
     /*
      * A list of header actions to apply from the response from AFD to the client.
      */
-    @JsonProperty(value = "responseHeaderActions")
     private List<HeaderAction> responseHeaderActions;
 
     /*
      * Override the route configuration.
      */
-    @JsonProperty(value = "routeConfigurationOverride")
     private RouteConfiguration routeConfigurationOverride;
 
     /**
@@ -114,5 +115,53 @@ public final class RulesEngineAction {
         if (routeConfigurationOverride() != null) {
             routeConfigurationOverride().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("requestHeaderActions", this.requestHeaderActions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("responseHeaderActions", this.responseHeaderActions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("routeConfigurationOverride", this.routeConfigurationOverride);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RulesEngineAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RulesEngineAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RulesEngineAction.
+     */
+    public static RulesEngineAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RulesEngineAction deserializedRulesEngineAction = new RulesEngineAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requestHeaderActions".equals(fieldName)) {
+                    List<HeaderAction> requestHeaderActions
+                        = reader.readArray(reader1 -> HeaderAction.fromJson(reader1));
+                    deserializedRulesEngineAction.requestHeaderActions = requestHeaderActions;
+                } else if ("responseHeaderActions".equals(fieldName)) {
+                    List<HeaderAction> responseHeaderActions
+                        = reader.readArray(reader1 -> HeaderAction.fromJson(reader1));
+                    deserializedRulesEngineAction.responseHeaderActions = responseHeaderActions;
+                } else if ("routeConfigurationOverride".equals(fieldName)) {
+                    deserializedRulesEngineAction.routeConfigurationOverride = RouteConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRulesEngineAction;
+        });
     }
 }

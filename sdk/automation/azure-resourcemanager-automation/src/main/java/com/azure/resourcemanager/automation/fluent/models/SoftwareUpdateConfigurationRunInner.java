@@ -5,35 +5,45 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationRunTasks;
 import com.azure.resourcemanager.automation.models.UpdateConfigurationNavigation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Software update configuration Run properties. */
+/**
+ * Software update configuration Run properties.
+ */
 @Fluent
-public final class SoftwareUpdateConfigurationRunInner {
+public final class SoftwareUpdateConfigurationRunInner
+    implements JsonSerializable<SoftwareUpdateConfigurationRunInner> {
     /*
      * Name of the software update configuration run.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource Id of the software update configuration run
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Software update configuration Run properties.
      */
-    @JsonProperty(value = "properties")
     private SoftwareUpdateConfigurationRunProperties innerProperties;
 
     /**
+     * Creates an instance of SoftwareUpdateConfigurationRunInner class.
+     */
+    public SoftwareUpdateConfigurationRunInner() {
+    }
+
+    /**
      * Get the name property: Name of the software update configuration run.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -42,7 +52,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the id property: Resource Id of the software update configuration run.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -51,7 +61,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the innerProperties property: Software update configuration Run properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SoftwareUpdateConfigurationRunProperties innerProperties() {
@@ -60,7 +70,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the softwareUpdateConfiguration property: software update configuration triggered this run.
-     *
+     * 
      * @return the softwareUpdateConfiguration value.
      */
     public UpdateConfigurationNavigation softwareUpdateConfiguration() {
@@ -69,12 +79,12 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Set the softwareUpdateConfiguration property: software update configuration triggered this run.
-     *
+     * 
      * @param softwareUpdateConfiguration the softwareUpdateConfiguration value to set.
      * @return the SoftwareUpdateConfigurationRunInner object itself.
      */
-    public SoftwareUpdateConfigurationRunInner withSoftwareUpdateConfiguration(
-        UpdateConfigurationNavigation softwareUpdateConfiguration) {
+    public SoftwareUpdateConfigurationRunInner
+        withSoftwareUpdateConfiguration(UpdateConfigurationNavigation softwareUpdateConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SoftwareUpdateConfigurationRunProperties();
         }
@@ -84,7 +94,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the status property: Status of the software update configuration run.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -93,7 +103,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the configuredDuration property: Configured duration for the software update configuration run.
-     *
+     * 
      * @return the configuredDuration value.
      */
     public String configuredDuration() {
@@ -102,7 +112,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the osType property: Operating system target of the software update configuration triggered this run.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -111,7 +121,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the startTime property: Start time of the software update configuration run.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -120,7 +130,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the endTime property: End time of the software update configuration run.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -129,7 +139,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the computerCount property: Number of computers in the software update configuration run.
-     *
+     * 
      * @return the computerCount value.
      */
     public Integer computerCount() {
@@ -138,7 +148,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the failedCount property: Number of computers with failed status.
-     *
+     * 
      * @return the failedCount value.
      */
     public Integer failedCount() {
@@ -147,7 +157,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the creationTime property: Creation time of the resource, which only appears in the response.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -156,7 +166,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the createdBy property: CreatedBy property, which only appears in the response.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -165,7 +175,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the lastModifiedTime property: Last time resource was modified, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -174,7 +184,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the lastModifiedBy property: LastModifiedBy property, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -183,7 +193,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Get the tasks property: Software update configuration tasks triggered in this run.
-     *
+     * 
      * @return the tasks value.
      */
     public SoftwareUpdateConfigurationRunTasks tasks() {
@@ -192,7 +202,7 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Set the tasks property: Software update configuration tasks triggered in this run.
-     *
+     * 
      * @param tasks the tasks value to set.
      * @return the SoftwareUpdateConfigurationRunInner object itself.
      */
@@ -206,12 +216,54 @@ public final class SoftwareUpdateConfigurationRunInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftwareUpdateConfigurationRunInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftwareUpdateConfigurationRunInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SoftwareUpdateConfigurationRunInner.
+     */
+    public static SoftwareUpdateConfigurationRunInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftwareUpdateConfigurationRunInner deserializedSoftwareUpdateConfigurationRunInner
+                = new SoftwareUpdateConfigurationRunInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunInner.id = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationRunInner.innerProperties
+                        = SoftwareUpdateConfigurationRunProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftwareUpdateConfigurationRunInner;
+        });
     }
 }

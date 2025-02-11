@@ -12,17 +12,22 @@ import java.util.Map;
  * A client-side representation of the health information of an application gateway backend HTTP settings configuration.
  */
 @Fluent
-public interface ApplicationGatewayBackendHttpConfigurationHealth
-    extends HasInnerModel<ApplicationGatewayBackendHealthHttpSettings>,
-        HasParent<ApplicationGatewayBackendHealth>,
-        HasName {
+public interface ApplicationGatewayBackendHttpConfigurationHealth extends
+    HasInnerModel<ApplicationGatewayBackendHealthHttpSettings>, HasParent<ApplicationGatewayBackendHealth>, HasName {
 
     /**
+     * Gets the associated application gateway backend HTTP configuration settings this health information pertains
+     *     to.
+     *
      * @return the associated application gateway backend HTTP configuration settings this health information pertains
      *     to
      */
     ApplicationGatewayBackendHttpConfiguration backendHttpConfiguration();
 
-    /** @return information about the health of each backend server, indexed by the server's IP address */
+    /**
+     * Gets information about the health of each backend server.
+     *
+     * @return information about the health of each backend server, indexed by the server's IP address
+     */
     Map<String, ApplicationGatewayBackendServerHealth> serverHealths();
 }

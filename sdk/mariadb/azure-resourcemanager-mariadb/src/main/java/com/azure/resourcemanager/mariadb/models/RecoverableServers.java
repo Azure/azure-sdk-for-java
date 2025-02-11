@@ -7,11 +7,13 @@ package com.azure.resourcemanager.mariadb.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RecoverableServers. */
+/**
+ * Resource collection API of RecoverableServers.
+ */
 public interface RecoverableServers {
     /**
      * Gets a recoverable MariaDB Server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -24,7 +26,7 @@ public interface RecoverableServers {
 
     /**
      * Gets a recoverable MariaDB Server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

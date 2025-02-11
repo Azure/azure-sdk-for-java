@@ -7,33 +7,35 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReferenceDataSets. */
+/**
+ * Resource collection API of ReferenceDataSets.
+ */
 public interface ReferenceDataSets {
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the reference data set with the specified name in the specified environment along with {@link Response}.
      */
-    Response<ReferenceDataSetResource> getWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context);
+    Response<ReferenceDataSetResource> getWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context);
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -44,30 +46,30 @@ public interface ReferenceDataSets {
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String referenceDataSetName,
+        Context context);
 
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -77,26 +79,26 @@ public interface ReferenceDataSets {
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource
      * group and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Reference Data Sets operation along with {@link Response}.
      */
-    Response<ReferenceDataSetListResponse> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
+    Response<ReferenceDataSetListResponse> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context);
 
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource
      * group and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -106,7 +108,7 @@ public interface ReferenceDataSets {
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -117,7 +119,7 @@ public interface ReferenceDataSets {
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,7 +132,7 @@ public interface ReferenceDataSets {
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,7 +143,7 @@ public interface ReferenceDataSets {
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +155,7 @@ public interface ReferenceDataSets {
 
     /**
      * Begins definition for a new ReferenceDataSetResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ReferenceDataSetResource definition.
      */

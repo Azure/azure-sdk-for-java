@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.elasticsan {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.elasticsan;
     exports com.azure.resourcemanager.elasticsan.fluent;
     exports com.azure.resourcemanager.elasticsan.fluent.models;
     exports com.azure.resourcemanager.elasticsan.models;
+
     opens com.azure.resourcemanager.elasticsan.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.elasticsan.models to com.azure.core;
 }

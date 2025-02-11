@@ -5,114 +5,118 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The MigrateSqlServerSqlMITaskOutputMigrationLevel model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("MigrationLevelOutput")
+/**
+ * The MigrateSqlServerSqlMITaskOutputMigrationLevel model.
+ */
 @Immutable
 public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends MigrateSqlServerSqlMITaskOutput {
     /*
+     * Result type
+     */
+    private String resultType = "MigrationLevelOutput";
+
+    /*
      * Migration start time
      */
-    @JsonProperty(value = "startedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedOn;
 
     /*
      * Migration end time
      */
-    @JsonProperty(value = "endedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endedOn;
 
     /*
      * Current status of migration
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationStatus status;
 
     /*
      * Current state of migration
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState state;
 
     /*
      * Selected agent jobs as a map from name to id
      */
-    @JsonProperty(value = "agentJobs", access = JsonProperty.Access.WRITE_ONLY)
     private String agentJobs;
 
     /*
      * Selected logins as a map from name to id
      */
-    @JsonProperty(value = "logins", access = JsonProperty.Access.WRITE_ONLY)
     private String logins;
 
     /*
      * Migration progress message
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Map of server role migration results.
      */
-    @JsonProperty(value = "serverRoleResults", access = JsonProperty.Access.WRITE_ONLY)
     private String serverRoleResults;
 
     /*
      * List of orphaned users.
      */
-    @JsonProperty(value = "orphanedUsersInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<OrphanedUserInfo> orphanedUsersInfo;
 
     /*
      * Selected databases as a map from database name to database id
      */
-    @JsonProperty(value = "databases", access = JsonProperty.Access.WRITE_ONLY)
     private String databases;
 
     /*
      * Source server version
      */
-    @JsonProperty(value = "sourceServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceServerVersion;
 
     /*
      * Source server brand version
      */
-    @JsonProperty(value = "sourceServerBrandVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceServerBrandVersion;
 
     /*
      * Target server version
      */
-    @JsonProperty(value = "targetServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServerVersion;
 
     /*
      * Target server brand version
      */
-    @JsonProperty(value = "targetServerBrandVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServerBrandVersion;
 
     /*
      * Migration exceptions and warnings.
      */
-    @JsonProperty(value = "exceptionsAndWarnings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> exceptionsAndWarnings;
 
-    /** Creates an instance of MigrateSqlServerSqlMITaskOutputMigrationLevel class. */
+    /**
+     * Creates an instance of MigrateSqlServerSqlMITaskOutputMigrationLevel class.
+     */
     public MigrateSqlServerSqlMITaskOutputMigrationLevel() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the startedOn property: Migration start time.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -121,7 +125,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the endedOn property: Migration end time.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -130,7 +134,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the status property: Current status of migration.
-     *
+     * 
      * @return the status value.
      */
     public MigrationStatus status() {
@@ -139,7 +143,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the state property: Current state of migration.
-     *
+     * 
      * @return the state value.
      */
     public MigrationState state() {
@@ -148,7 +152,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the agentJobs property: Selected agent jobs as a map from name to id.
-     *
+     * 
      * @return the agentJobs value.
      */
     public String agentJobs() {
@@ -157,7 +161,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the logins property: Selected logins as a map from name to id.
-     *
+     * 
      * @return the logins value.
      */
     public String logins() {
@@ -166,7 +170,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the message property: Migration progress message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -175,7 +179,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the serverRoleResults property: Map of server role migration results.
-     *
+     * 
      * @return the serverRoleResults value.
      */
     public String serverRoleResults() {
@@ -184,7 +188,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the orphanedUsersInfo property: List of orphaned users.
-     *
+     * 
      * @return the orphanedUsersInfo value.
      */
     public List<OrphanedUserInfo> orphanedUsersInfo() {
@@ -193,7 +197,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the databases property: Selected databases as a map from database name to database id.
-     *
+     * 
      * @return the databases value.
      */
     public String databases() {
@@ -202,7 +206,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the sourceServerVersion property: Source server version.
-     *
+     * 
      * @return the sourceServerVersion value.
      */
     public String sourceServerVersion() {
@@ -211,7 +215,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the sourceServerBrandVersion property: Source server brand version.
-     *
+     * 
      * @return the sourceServerBrandVersion value.
      */
     public String sourceServerBrandVersion() {
@@ -220,7 +224,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the targetServerVersion property: Target server version.
-     *
+     * 
      * @return the targetServerVersion value.
      */
     public String targetServerVersion() {
@@ -229,7 +233,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the targetServerBrandVersion property: Target server brand version.
-     *
+     * 
      * @return the targetServerBrandVersion value.
      */
     public String targetServerBrandVersion() {
@@ -238,7 +242,7 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Get the exceptionsAndWarnings property: Migration exceptions and warnings.
-     *
+     * 
      * @return the exceptionsAndWarnings value.
      */
     public List<ReportableException> exceptionsAndWarnings() {
@@ -247,17 +251,96 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (orphanedUsersInfo() != null) {
             orphanedUsersInfo().forEach(e -> e.validate());
         }
         if (exceptionsAndWarnings() != null) {
             exceptionsAndWarnings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlMITaskOutputMigrationLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlMITaskOutputMigrationLevel if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlMITaskOutputMigrationLevel.
+     */
+    public static MigrateSqlServerSqlMITaskOutputMigrationLevel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlMITaskOutputMigrationLevel deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel
+                = new MigrateSqlServerSqlMITaskOutputMigrationLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.withId(reader.getString());
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.resultType = reader.getString();
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.status
+                        = MigrationStatus.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.state
+                        = MigrationState.fromString(reader.getString());
+                } else if ("agentJobs".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.agentJobs = reader.getString();
+                } else if ("logins".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.logins = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.message = reader.getString();
+                } else if ("serverRoleResults".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.serverRoleResults = reader.getString();
+                } else if ("orphanedUsersInfo".equals(fieldName)) {
+                    List<OrphanedUserInfo> orphanedUsersInfo
+                        = reader.readArray(reader1 -> OrphanedUserInfo.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.orphanedUsersInfo = orphanedUsersInfo;
+                } else if ("databases".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.databases = reader.getString();
+                } else if ("sourceServerVersion".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.sourceServerVersion = reader.getString();
+                } else if ("sourceServerBrandVersion".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.sourceServerBrandVersion
+                        = reader.getString();
+                } else if ("targetServerVersion".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.targetServerVersion = reader.getString();
+                } else if ("targetServerBrandVersion".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.targetServerBrandVersion
+                        = reader.getString();
+                } else if ("exceptionsAndWarnings".equals(fieldName)) {
+                    List<ReportableException> exceptionsAndWarnings
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel.exceptionsAndWarnings
+                        = exceptionsAndWarnings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlMITaskOutputMigrationLevel;
+        });
     }
 }

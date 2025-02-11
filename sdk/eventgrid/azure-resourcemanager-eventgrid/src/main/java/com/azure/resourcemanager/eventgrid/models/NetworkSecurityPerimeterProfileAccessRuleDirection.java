@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class NetworkSecurityPerimeterProfileAccessRuleDirection
      * @param name a name to look for.
      * @return the corresponding NetworkSecurityPerimeterProfileAccessRuleDirection.
      */
-    @JsonCreator
     public static NetworkSecurityPerimeterProfileAccessRuleDirection fromString(String name) {
         return fromString(name, NetworkSecurityPerimeterProfileAccessRuleDirection.class);
     }

@@ -33,7 +33,6 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.function.Consumer;
 
-
 /**
  * Client to a storage account. It may only be instantiated through a {@link DataLakeServiceClientBuilder}. This class
  * does not hold any state about a particular storage account but is instead a convenient way of sending off appropriate
@@ -289,8 +288,6 @@ public class DataLakeServiceClient {
         return new PagedIterable<>(dataLakeServiceAsyncClient.listFileSystemsWithOptionalTimeout(options, timeout));
     }
 
-
-
     /**
      * Returns the resource's metadata and properties.
      *
@@ -442,9 +439,8 @@ public class DataLakeServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(DataLakeServiceProperties properties, Duration timeout,
         Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobServiceClient.setPropertiesWithResponse(Transforms.toBlobServiceProperties(properties),
-                timeout, context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(() -> blobServiceClient
+            .setPropertiesWithResponse(Transforms.toBlobServiceProperties(properties), timeout, context), LOGGER);
     }
 
     /**
@@ -492,8 +488,8 @@ public class DataLakeServiceClient {
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
-            Response<com.azure.storage.blob.models.UserDelegationKey> response = blobServiceClient
-                .getUserDelegationKeyWithResponse(start, expiry, timeout, context);
+            Response<com.azure.storage.blob.models.UserDelegationKey> response
+                = blobServiceClient.getUserDelegationKeyWithResponse(start, expiry, timeout, context);
             return new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue()));
         }, LOGGER);
     }
@@ -617,9 +613,10 @@ public class DataLakeServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileSystemClient undeleteFileSystem(String deletedFileSystemName, String deletedFileSystemVersion) {
-        return this.undeleteFileSystemWithResponse(
-            new FileSystemUndeleteOptions(deletedFileSystemName, deletedFileSystemVersion), null,
-            Context.NONE).getValue();
+        return this
+            .undeleteFileSystemWithResponse(
+                new FileSystemUndeleteOptions(deletedFileSystemName, deletedFileSystemVersion), null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -654,57 +651,57 @@ public class DataLakeServiceClient {
      * used to interact with the restored file system.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataLakeFileSystemClient> undeleteFileSystemWithResponse(
-        FileSystemUndeleteOptions options, Duration timeout, Context context) {
+    public Response<DataLakeFileSystemClient> undeleteFileSystemWithResponse(FileSystemUndeleteOptions options,
+        Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
-            Response<com.azure.storage.blob.BlobContainerClient> response = blobServiceClient
-                .undeleteBlobContainerWithResponse(Transforms.toBlobContainerUndeleteOptions(options), timeout,
-                    context);
+            Response<com.azure.storage.blob.BlobContainerClient> response
+                = blobServiceClient.undeleteBlobContainerWithResponse(
+                    Transforms.toBlobContainerUndeleteOptions(options), timeout, context);
             return new SimpleResponse<>(response, getFileSystemClient(response.getValue().getBlobContainerName()));
         }, LOGGER);
     }
 
-//    /**
-//     * Renames an existing file system.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String -->
-//     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String -->
-//     *
-//     * @param sourceFileSystemName The current name of the file system.
-//     * @param destinationFileSystemName The new name of the file system.
-//     * @return A {@link DataLakeFileSystemClient} used to interact with the renamed file system.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public DataLakeFileSystemClient renameFileSystem(String sourceFileSystemName, String destinationFileSystemName) {
-//        return this.renameFileSystemWithResponse(sourceFileSystemName,
-//            new FileSystemRenameOptions(destinationFileSystemName), null, Context.NONE).getValue();
-//    }
-//
-//    /**
-//     * Renames an existing file system.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context -->
-//     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context -->
-//     *
-//     * @param sourceFileSystemName The current name of the file system.
-//     * @param options {@link FileSystemRenameOptions}
-//     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-//     * @param context Additional context that is passed through the Http pipeline during the service call.
-//     * @return A {@link Response} whose {@link Response#getValue() value} contains a
-//     * {@link DataLakeFileSystemClient} used to interact with the renamed file system.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DataLakeFileSystemClient> renameFileSystemWithResponse(String sourceFileSystemName,
-//        FileSystemRenameOptions options, Duration timeout, Context context) {
-//        return DataLakeImplUtils.returnOrConvertException(() -> {
-//            Response<com.azure.storage.blob.BlobContainerClient> response = blobServiceClient
-//                .renameBlobContainerWithResponse(sourceFileSystemName,
-//                    Transforms.toBlobContainerRenameOptions(options), timeout, context);
-//            return new SimpleResponse<>(response, getFileSystemClient(options.getDestinationFileSystemName()));
-//        }, logger);
-//    }
+    //    /**
+    //     * Renames an existing file system.
+    //     *
+    //     * <p><strong>Code Samples</strong></p>
+    //     *
+    //     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String -->
+    //     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String -->
+    //     *
+    //     * @param sourceFileSystemName The current name of the file system.
+    //     * @param destinationFileSystemName The new name of the file system.
+    //     * @return A {@link DataLakeFileSystemClient} used to interact with the renamed file system.
+    //     */
+    //    @ServiceMethod(returns = ReturnType.SINGLE)
+    //    public DataLakeFileSystemClient renameFileSystem(String sourceFileSystemName, String destinationFileSystemName) {
+    //        return this.renameFileSystemWithResponse(sourceFileSystemName,
+    //            new FileSystemRenameOptions(destinationFileSystemName), null, Context.NONE).getValue();
+    //    }
+    //
+    //    /**
+    //     * Renames an existing file system.
+    //     *
+    //     * <p><strong>Code Samples</strong></p>
+    //     *
+    //     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context -->
+    //     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context -->
+    //     *
+    //     * @param sourceFileSystemName The current name of the file system.
+    //     * @param options {@link FileSystemRenameOptions}
+    //     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+    //     * @param context Additional context that is passed through the Http pipeline during the service call.
+    //     * @return A {@link Response} whose {@link Response#getValue() value} contains a
+    //     * {@link DataLakeFileSystemClient} used to interact with the renamed file system.
+    //     */
+    //    @ServiceMethod(returns = ReturnType.SINGLE)
+    //    public Response<DataLakeFileSystemClient> renameFileSystemWithResponse(String sourceFileSystemName,
+    //        FileSystemRenameOptions options, Duration timeout, Context context) {
+    //        return DataLakeImplUtils.returnOrConvertException(() -> {
+    //            Response<com.azure.storage.blob.BlobContainerClient> response = blobServiceClient
+    //                .renameBlobContainerWithResponse(sourceFileSystemName,
+    //                    Transforms.toBlobContainerRenameOptions(options), timeout, context);
+    //            return new SimpleResponse<>(response, getFileSystemClient(options.getDestinationFileSystemName()));
+    //        }, logger);
+    //    }
 }

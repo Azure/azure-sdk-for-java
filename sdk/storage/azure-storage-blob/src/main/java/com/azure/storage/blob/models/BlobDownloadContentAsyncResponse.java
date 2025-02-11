@@ -22,7 +22,7 @@ public final class BlobDownloadContentAsyncResponse extends ResponseBase<BlobDow
      * @param deserializedHeaders Headers deserialized into an object.
      */
     public BlobDownloadContentAsyncResponse(HttpRequest request, int statusCode, HttpHeaders headers, BinaryData value,
-                                            BlobDownloadHeaders deserializedHeaders) {
+        BlobDownloadHeaders deserializedHeaders) {
         super(request, statusCode, headers, value, deserializedHeaders);
     }
 }

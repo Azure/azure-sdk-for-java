@@ -5,28 +5,29 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Results of the model's work for a single patient.
  */
 @Immutable
-public final class RadiologyInsightsPatientResult {
+public final class RadiologyInsightsPatientResult implements JsonSerializable<RadiologyInsightsPatientResult> {
 
     /*
      * Identifier given for the patient in the request.
      */
     @Generated
-    @JsonProperty(value = "patientId")
     private final String patientId;
 
     /*
      * The model's inferences for the given patient.
      */
     @Generated
-    @JsonProperty(value = "inferences")
     private final List<RadiologyInsightsInference> inferences;
 
     /**
@@ -36,9 +37,7 @@ public final class RadiologyInsightsPatientResult {
      * @param inferences the inferences value to set.
      */
     @Generated
-    @JsonCreator
-    private RadiologyInsightsPatientResult(@JsonProperty(value = "patientId") String patientId,
-        @JsonProperty(value = "inferences") List<RadiologyInsightsInference> inferences) {
+    private RadiologyInsightsPatientResult(String patientId, List<RadiologyInsightsInference> inferences) {
         this.patientId = patientId;
         this.inferences = inferences;
     }
@@ -61,5 +60,46 @@ public final class RadiologyInsightsPatientResult {
     @Generated
     public List<RadiologyInsightsInference> getInferences() {
         return this.inferences;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("patientId", this.patientId);
+        jsonWriter.writeArrayField("inferences", this.inferences, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RadiologyInsightsPatientResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RadiologyInsightsPatientResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RadiologyInsightsPatientResult.
+     */
+    @Generated
+    public static RadiologyInsightsPatientResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String patientId = null;
+            List<RadiologyInsightsInference> inferences = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("patientId".equals(fieldName)) {
+                    patientId = reader.getString();
+                } else if ("inferences".equals(fieldName)) {
+                    inferences = reader.readArray(reader1 -> RadiologyInsightsInference.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new RadiologyInsightsPatientResult(patientId, inferences);
+        });
     }
 }

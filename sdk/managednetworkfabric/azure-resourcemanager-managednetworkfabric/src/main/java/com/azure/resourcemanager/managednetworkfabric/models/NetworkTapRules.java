@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkTapRules. */
+/**
+ * Resource collection API of NetworkTapRules.
+ */
 public interface NetworkTapRules {
     /**
      * Gets a Network Tap Rule.
-     *
-     * <p>Get Network Tap Rule resource details.
-     *
+     * 
+     * Get Network Tap Rule resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface NetworkTapRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network Tap Rule resource details along with {@link Response}.
      */
-    Response<NetworkTapRule> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkTapRuleName, Context context);
+    Response<NetworkTapRule> getByResourceGroupWithResponse(String resourceGroupName, String networkTapRuleName,
+        Context context);
 
     /**
      * Gets a Network Tap Rule.
-     *
-     * <p>Get Network Tap Rule resource details.
-     *
+     * 
+     * Get Network Tap Rule resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface NetworkTapRules {
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface NetworkTapRules {
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface NetworkTapRules {
 
     /**
      * List Network Tap Rules by resource group.
-     *
-     * <p>List all the Network Tap Rule resources in the given resource group.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface NetworkTapRules {
 
     /**
      * List Network Tap Rules by resource group.
-     *
-     * <p>List all the Network Tap Rule resources in the given resource group.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface NetworkTapRules {
 
     /**
      * List NetworkTapRules by subscription.
-     *
-     * <p>List all the Network Tap Rule resources in the given subscription.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkTapRules as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface NetworkTapRules {
 
     /**
      * List NetworkTapRules by subscription.
-     *
-     * <p>List all the Network Tap Rule resources in the given subscription.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface NetworkTapRules {
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -131,14 +133,14 @@ public interface NetworkTapRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -148,14 +150,14 @@ public interface NetworkTapRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body, Context context);
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,9 +169,9 @@ public interface NetworkTapRules {
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -182,9 +184,9 @@ public interface NetworkTapRules {
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,9 +198,9 @@ public interface NetworkTapRules {
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -207,14 +209,14 @@ public interface NetworkTapRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String networkTapRuleName, Context context);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkTapRuleName,
+        Context context);
 
     /**
      * Gets a Network Tap Rule.
-     *
-     * <p>Get Network Tap Rule resource details.
-     *
+     * 
+     * Get Network Tap Rule resource details.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -225,9 +227,9 @@ public interface NetworkTapRules {
 
     /**
      * Gets a Network Tap Rule.
-     *
-     * <p>Get Network Tap Rule resource details.
-     *
+     * 
+     * Get Network Tap Rule resource details.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -239,9 +241,9 @@ public interface NetworkTapRules {
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -251,9 +253,9 @@ public interface NetworkTapRules {
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,7 +266,7 @@ public interface NetworkTapRules {
 
     /**
      * Begins definition for a new NetworkTapRule resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetworkTapRule definition.
      */

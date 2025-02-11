@@ -5,12 +5,22 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+
 import java.util.Collection;
 
 /** Defines values for MediaStreamingTransportType. */
 public final class MediaStreamingTransport extends ExpandableStringEnum<MediaStreamingTransport> {
     /** Static value websocket for MediaStreamingTransportType. */
     public static final MediaStreamingTransport WEBSOCKET = fromString("websocket");
+
+    /**
+     * Creates an instance of {@link MediaStreamingTransport} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of MediaStreamingTransport.
+     */
+    @Deprecated
+    public MediaStreamingTransport() {
+    }
 
     /**
      * Creates or finds a MediaStreamingTransportType from its string representation.
@@ -22,7 +32,10 @@ public final class MediaStreamingTransport extends ExpandableStringEnum<MediaStr
         return fromString(name, MediaStreamingTransport.class);
     }
 
-    /** @return known MediaStreamingTransportType values. */
+    /**
+     * Get the collection of MediaStreamingTransportType values.
+     * @return known MediaStreamingTransportType values.
+     */
     public static Collection<MediaStreamingTransport> values() {
         return values(MediaStreamingTransport.class);
     }

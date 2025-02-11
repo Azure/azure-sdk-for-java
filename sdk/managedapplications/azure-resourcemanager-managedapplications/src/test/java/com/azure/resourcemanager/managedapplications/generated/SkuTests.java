@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"uouq\",\"tier\":\"rwzwbng\",\"size\":\"tnwu\",\"family\":\"gazxuf\",\"model\":\"uckyf\",\"capacity\":279638935}")
-                .toObject(Sku.class);
+        Sku model = BinaryData.fromString(
+            "{\"name\":\"uouq\",\"tier\":\"rwzwbng\",\"size\":\"tnwu\",\"family\":\"gazxuf\",\"model\":\"uckyf\",\"capacity\":279638935}")
+            .toObject(Sku.class);
         Assertions.assertEquals("uouq", model.name());
         Assertions.assertEquals("rwzwbng", model.tier());
         Assertions.assertEquals("tnwu", model.size());
@@ -26,14 +24,12 @@ public final class SkuTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model =
-            new Sku()
-                .withName("uouq")
-                .withTier("rwzwbng")
-                .withSize("tnwu")
-                .withFamily("gazxuf")
-                .withModel("uckyf")
-                .withCapacity(279638935);
+        Sku model = new Sku().withName("uouq")
+            .withTier("rwzwbng")
+            .withSize("tnwu")
+            .withFamily("gazxuf")
+            .withModel("uckyf")
+            .withCapacity(279638935);
         model = BinaryData.fromObject(model).toObject(Sku.class);
         Assertions.assertEquals("uouq", model.name());
         Assertions.assertEquals("rwzwbng", model.tier());

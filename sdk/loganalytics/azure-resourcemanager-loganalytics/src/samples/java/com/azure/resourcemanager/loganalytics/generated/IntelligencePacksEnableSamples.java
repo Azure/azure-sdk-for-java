@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for IntelligencePacks Enable. */
+/**
+ * Samples for IntelligencePacks Enable.
+ */
 public final class IntelligencePacksEnableSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesEnableIntelligencePack.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesEnableIntelligencePack.json
      */
     /**
      * Sample code: IntelligencePacksEnable.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void intelligencePacksEnable(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .intelligencePacks()
+        manager.intelligencePacks()
             .enableWithResponse("rg1", "TestLinkWS", "ChangeTracking", com.azure.core.util.Context.NONE);
     }
 }

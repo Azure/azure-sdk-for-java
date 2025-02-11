@@ -6,11 +6,9 @@ package com.azure.resourcemanager.devtestlabs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devtestlabs.DevTestLabsManager;
 import com.azure.resourcemanager.devtestlabs.models.CustomImage;
 import com.azure.resourcemanager.devtestlabs.models.CustomImageOsType;
@@ -23,7 +21,6 @@ import com.azure.resourcemanager.devtestlabs.models.LinuxOsState;
 import com.azure.resourcemanager.devtestlabs.models.StorageType;
 import com.azure.resourcemanager.devtestlabs.models.WindowsOsInfo;
 import com.azure.resourcemanager.devtestlabs.models.WindowsOsState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -31,74 +28,42 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class CustomImagesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"vm\":{\"sourceVmId\":\"gqphrgfnzhctmjts\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"NonDeprovisioned\"}},\"vhd\":{\"imageName\":\"arpzeqacdldtzm\",\"sysPrep\":false,\"osType\":\"Linux\"},\"description\":\"cpczshnuqnd\",\"author\":\"zupfkhuytuszxhm\",\"creationDate\":\"2021-10-02T12:20:25Z\",\"managedImageId\":\"egw\",\"managedSnapshotId\":\"ukvzwydwttha\",\"dataDiskStorageInfo\":[{\"lun\":\"skjivbsshajqfuk\",\"storageType\":\"Standard\"},{\"lun\":\"pgeumilh\",\"storageType\":\"Premium\"},{\"lun\":\"rdexyio\",\"storageType\":\"Premium\"}],\"customImagePlan\":{\"id\":\"nbdbzsxcwqqr\",\"publisher\":\"pcbbprtugav\",\"offer\":\"bcyksivmfogd\"},\"isPlanAuthorized\":true,\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"gmbawvifdxk\"},\"location\":\"cifhocjxwkl\",\"tags\":{\"xxvir\":\"rvtxvcmufunlc\",\"rquv\":\"eyngjg\"},\"id\":\"ygg\",\"name\":\"pmcrdcuelj\",\"type\":\"iahxmfqryarvs\"}";
 
-        String responseStr =
-            "{\"properties\":{\"vm\":{\"sourceVmId\":\"gqphrgfnzhctmjts\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"NonDeprovisioned\"}},\"vhd\":{\"imageName\":\"arpzeqacdldtzm\",\"sysPrep\":false,\"osType\":\"Linux\"},\"description\":\"cpczshnuqnd\",\"author\":\"zupfkhuytuszxhm\",\"creationDate\":\"2021-10-02T12:20:25Z\",\"managedImageId\":\"egw\",\"managedSnapshotId\":\"ukvzwydwttha\",\"dataDiskStorageInfo\":[{\"lun\":\"skjivbsshajqfuk\",\"storageType\":\"Standard\"},{\"lun\":\"pgeumilh\",\"storageType\":\"Premium\"},{\"lun\":\"rdexyio\",\"storageType\":\"Premium\"}],\"customImagePlan\":{\"id\":\"nbdbzsxcwqqr\",\"publisher\":\"pcbbprtugav\",\"offer\":\"bcyksivmfogd\"},\"isPlanAuthorized\":true,\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"gmbawvifdxk\"},\"location\":\"cifhocjxwkl\",\"tags\":{\"xxvir\":\"rvtxvcmufunlc\",\"rquv\":\"eyngjg\"},\"id\":\"ygg\",\"name\":\"pmcrdcuelj\",\"type\":\"iahxmfqryarvs\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        CustomImage response =
-            manager
-                .customImages()
-                .define("jrr")
-                .withRegion("lj")
-                .withExistingLab("hmtybkcgsuthhll", "mwynefxexlfciatx")
-                .withTags(mapOf("jpbi", "vume", "leqirccjclykcgxv", "nzpphepife", "punettepdjxq", "pjlvczuoda"))
-                .withVm(
-                    new CustomImagePropertiesFromVm()
-                        .withSourceVmId("dskjhhxdlaj")
-                        .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_APPLIED))
-                        .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_APPLIED)))
-                .withVhd(
-                    new CustomImagePropertiesCustom()
-                        .withImageName("lxlhuavkrm")
-                        .withSysPrep(true)
-                        .withOsType(CustomImageOsType.NONE))
-                .withDescription("mkxettcsloj")
-                .withAuthor("qid")
-                .withManagedImageId("qxjhqxcsqhtkbtnq")
-                .withManagedSnapshotId("ngldmbiipsn")
-                .withDataDiskStorageInfo(
-                    Arrays.asList(new DataDiskStorageTypeInfo().withLun("qkzn").withStorageType(StorageType.PREMIUM)))
-                .withCustomImagePlan(
-                    new CustomImagePropertiesFromPlan().withId("xricctkwmuqq").withPublisher("jxeiy").withOffer("esrw"))
-                .withIsPlanAuthorized(false)
-                .create();
+        CustomImage response = manager.customImages()
+            .define("jrr")
+            .withRegion("lj")
+            .withExistingLab("hmtybkcgsuthhll", "mwynefxexlfciatx")
+            .withTags(mapOf("jpbi", "vume", "leqirccjclykcgxv", "nzpphepife", "punettepdjxq", "pjlvczuoda"))
+            .withVm(new CustomImagePropertiesFromVm().withSourceVmId("dskjhhxdlaj")
+                .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_APPLIED))
+                .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_APPLIED)))
+            .withVhd(new CustomImagePropertiesCustom().withImageName("lxlhuavkrm")
+                .withSysPrep(true)
+                .withOsType(CustomImageOsType.NONE))
+            .withDescription("mkxettcsloj")
+            .withAuthor("qid")
+            .withManagedImageId("qxjhqxcsqhtkbtnq")
+            .withManagedSnapshotId("ngldmbiipsn")
+            .withDataDiskStorageInfo(
+                Arrays.asList(new DataDiskStorageTypeInfo().withLun("qkzn").withStorageType(StorageType.PREMIUM)))
+            .withCustomImagePlan(
+                new CustomImagePropertiesFromPlan().withId("xricctkwmuqq").withPublisher("jxeiy").withOffer("esrw"))
+            .withIsPlanAuthorized(false)
+            .create();
 
         Assertions.assertEquals("cifhocjxwkl", response.location());
         Assertions.assertEquals("rvtxvcmufunlc", response.tags().get("xxvir"));

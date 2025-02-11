@@ -5,108 +5,98 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Migration status of an individual database.
  */
 @Fluent
-public final class DbMigrationStatus {
+public final class DbMigrationStatus implements JsonSerializable<DbMigrationStatus> {
     /*
      * Name of the database
      */
-    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /*
      * Migration db state of an individual database
      */
-    @JsonProperty(value = "migrationState")
     private MigrationDbState migrationState;
 
     /*
      * Migration operation of an individual database
      */
-    @JsonProperty(value = "migrationOperation")
     private String migrationOperation;
 
     /*
      * Start date-time of a migration state
      */
-    @JsonProperty(value = "startedOn")
     private OffsetDateTime startedOn;
 
     /*
      * End date-time of a migration state
      */
-    @JsonProperty(value = "endedOn")
     private OffsetDateTime endedOn;
 
     /*
      * Number of tables queued for the migration of a DB
      */
-    @JsonProperty(value = "fullLoadQueuedTables")
     private Integer fullLoadQueuedTables;
 
     /*
      * Number of tables errored out during the migration of a DB
      */
-    @JsonProperty(value = "fullLoadErroredTables")
     private Integer fullLoadErroredTables;
 
     /*
      * Number of tables loading during the migration of a DB
      */
-    @JsonProperty(value = "fullLoadLoadingTables")
     private Integer fullLoadLoadingTables;
 
     /*
      * Number of tables loaded during the migration of a DB
      */
-    @JsonProperty(value = "fullLoadCompletedTables")
     private Integer fullLoadCompletedTables;
 
     /*
      * CDC update counter
      */
-    @JsonProperty(value = "cdcUpdateCounter")
     private Integer cdcUpdateCounter;
 
     /*
      * CDC delete counter
      */
-    @JsonProperty(value = "cdcDeleteCounter")
     private Integer cdcDeleteCounter;
 
     /*
      * CDC insert counter
      */
-    @JsonProperty(value = "cdcInsertCounter")
     private Integer cdcInsertCounter;
 
     /*
      * CDC applied changes counter
      */
-    @JsonProperty(value = "appliedChanges")
     private Integer appliedChanges;
 
     /*
      * CDC incoming changes counter
      */
-    @JsonProperty(value = "incomingChanges")
     private Integer incomingChanges;
 
     /*
      * Lag in seconds between source and target during online phase
      */
-    @JsonProperty(value = "latency")
     private Integer latency;
 
     /*
      * Error message, if any, for the migration state
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -441,5 +431,91 @@ public final class DbMigrationStatus {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeStringField("migrationState",
+            this.migrationState == null ? null : this.migrationState.toString());
+        jsonWriter.writeStringField("migrationOperation", this.migrationOperation);
+        jsonWriter.writeStringField("startedOn",
+            this.startedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startedOn));
+        jsonWriter.writeStringField("endedOn",
+            this.endedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endedOn));
+        jsonWriter.writeNumberField("fullLoadQueuedTables", this.fullLoadQueuedTables);
+        jsonWriter.writeNumberField("fullLoadErroredTables", this.fullLoadErroredTables);
+        jsonWriter.writeNumberField("fullLoadLoadingTables", this.fullLoadLoadingTables);
+        jsonWriter.writeNumberField("fullLoadCompletedTables", this.fullLoadCompletedTables);
+        jsonWriter.writeNumberField("cdcUpdateCounter", this.cdcUpdateCounter);
+        jsonWriter.writeNumberField("cdcDeleteCounter", this.cdcDeleteCounter);
+        jsonWriter.writeNumberField("cdcInsertCounter", this.cdcInsertCounter);
+        jsonWriter.writeNumberField("appliedChanges", this.appliedChanges);
+        jsonWriter.writeNumberField("incomingChanges", this.incomingChanges);
+        jsonWriter.writeNumberField("latency", this.latency);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DbMigrationStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DbMigrationStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DbMigrationStatus.
+     */
+    public static DbMigrationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DbMigrationStatus deserializedDbMigrationStatus = new DbMigrationStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseName".equals(fieldName)) {
+                    deserializedDbMigrationStatus.databaseName = reader.getString();
+                } else if ("migrationState".equals(fieldName)) {
+                    deserializedDbMigrationStatus.migrationState = MigrationDbState.fromString(reader.getString());
+                } else if ("migrationOperation".equals(fieldName)) {
+                    deserializedDbMigrationStatus.migrationOperation = reader.getString();
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedDbMigrationStatus.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedDbMigrationStatus.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fullLoadQueuedTables".equals(fieldName)) {
+                    deserializedDbMigrationStatus.fullLoadQueuedTables = reader.getNullable(JsonReader::getInt);
+                } else if ("fullLoadErroredTables".equals(fieldName)) {
+                    deserializedDbMigrationStatus.fullLoadErroredTables = reader.getNullable(JsonReader::getInt);
+                } else if ("fullLoadLoadingTables".equals(fieldName)) {
+                    deserializedDbMigrationStatus.fullLoadLoadingTables = reader.getNullable(JsonReader::getInt);
+                } else if ("fullLoadCompletedTables".equals(fieldName)) {
+                    deserializedDbMigrationStatus.fullLoadCompletedTables = reader.getNullable(JsonReader::getInt);
+                } else if ("cdcUpdateCounter".equals(fieldName)) {
+                    deserializedDbMigrationStatus.cdcUpdateCounter = reader.getNullable(JsonReader::getInt);
+                } else if ("cdcDeleteCounter".equals(fieldName)) {
+                    deserializedDbMigrationStatus.cdcDeleteCounter = reader.getNullable(JsonReader::getInt);
+                } else if ("cdcInsertCounter".equals(fieldName)) {
+                    deserializedDbMigrationStatus.cdcInsertCounter = reader.getNullable(JsonReader::getInt);
+                } else if ("appliedChanges".equals(fieldName)) {
+                    deserializedDbMigrationStatus.appliedChanges = reader.getNullable(JsonReader::getInt);
+                } else if ("incomingChanges".equals(fieldName)) {
+                    deserializedDbMigrationStatus.incomingChanges = reader.getNullable(JsonReader::getInt);
+                } else if ("latency".equals(fieldName)) {
+                    deserializedDbMigrationStatus.latency = reader.getNullable(JsonReader::getInt);
+                } else if ("message".equals(fieldName)) {
+                    deserializedDbMigrationStatus.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDbMigrationStatus;
+        });
     }
 }

@@ -13,8 +13,7 @@ import reactor.core.publisher.Mono;
 
 /** Entry point to role definition management API. */
 @Fluent
-public interface RoleDefinitions
-    extends SupportsGettingById<RoleDefinition>, HasManager<AuthorizationManager> {
+public interface RoleDefinitions extends SupportsGettingById<RoleDefinition>, HasManager<AuthorizationManager> {
     /**
      * Gets the information about a role definition based on scope and name.
      *

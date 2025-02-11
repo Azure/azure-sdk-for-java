@@ -12,39 +12,35 @@ import com.azure.resourcemanager.consumption.fluent.CreditsClient;
 import com.azure.resourcemanager.consumption.fluent.models.CreditSummaryInner;
 import com.azure.resourcemanager.consumption.models.CreditSummary;
 import com.azure.resourcemanager.consumption.models.Credits;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CreditsImpl implements Credits {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreditsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CreditsImpl.class);
 
     private final CreditsClient innerClient;
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    public CreditsImpl(
-        CreditsClient innerClient, com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
+    public CreditsImpl(CreditsClient innerClient,
+        com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<CreditSummary> getWithResponse(String billingAccountId, String billingProfileId, Context context) {
+        Response<CreditSummaryInner> inner
+            = this.serviceClient().getWithResponse(billingAccountId, billingProfileId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CreditSummaryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CreditSummary get(String billingAccountId, String billingProfileId) {
         CreditSummaryInner inner = this.serviceClient().get(billingAccountId, billingProfileId);
         if (inner != null) {
             return new CreditSummaryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CreditSummary> getWithResponse(String billingAccountId, String billingProfileId, Context context) {
-        Response<CreditSummaryInner> inner =
-            this.serviceClient().getWithResponse(billingAccountId, billingProfileId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CreditSummaryImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

@@ -5,46 +5,50 @@
 package com.azure.resourcemanager.managementgroups.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managementgroups.models.CreateManagementGroupChildInfo;
 import com.azure.resourcemanager.managementgroups.models.CreateManagementGroupDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The generic properties of a management group used during creation. */
+/**
+ * The generic properties of a management group used during creation.
+ */
 @Fluent
-public final class CreateManagementGroupProperties {
+public final class CreateManagementGroupProperties implements JsonSerializable<CreateManagementGroupProperties> {
     /*
      * The AAD Tenant ID associated with the management group. For example, 00000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The friendly name of the management group. If no value is passed then this  field will be set to the groupId.
+     * The friendly name of the management group. If no value is passed then this field will be set to the groupId.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The details of a management group used during creation.
      */
-    @JsonProperty(value = "details")
     private CreateManagementGroupDetails details;
 
     /*
      * The list of children.
      */
-    @JsonProperty(value = "children", access = JsonProperty.Access.WRITE_ONLY)
     private List<CreateManagementGroupChildInfo> children;
 
-    /** Creates an instance of CreateManagementGroupProperties class. */
+    /**
+     * Creates an instance of CreateManagementGroupProperties class.
+     */
     public CreateManagementGroupProperties() {
     }
 
     /**
      * Get the tenantId property: The AAD Tenant ID associated with the management group. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -54,7 +58,7 @@ public final class CreateManagementGroupProperties {
     /**
      * Get the displayName property: The friendly name of the management group. If no value is passed then this field
      * will be set to the groupId.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -64,7 +68,7 @@ public final class CreateManagementGroupProperties {
     /**
      * Set the displayName property: The friendly name of the management group. If no value is passed then this field
      * will be set to the groupId.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the CreateManagementGroupProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class CreateManagementGroupProperties {
 
     /**
      * Get the details property: The details of a management group used during creation.
-     *
+     * 
      * @return the details value.
      */
     public CreateManagementGroupDetails details() {
@@ -84,7 +88,7 @@ public final class CreateManagementGroupProperties {
 
     /**
      * Set the details property: The details of a management group used during creation.
-     *
+     * 
      * @param details the details value to set.
      * @return the CreateManagementGroupProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class CreateManagementGroupProperties {
 
     /**
      * Get the children property: The list of children.
-     *
+     * 
      * @return the children value.
      */
     public List<CreateManagementGroupChildInfo> children() {
@@ -104,7 +108,7 @@ public final class CreateManagementGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -114,5 +118,51 @@ public final class CreateManagementGroupProperties {
         if (children() != null) {
             children().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("details", this.details);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateManagementGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateManagementGroupProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateManagementGroupProperties.
+     */
+    public static CreateManagementGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateManagementGroupProperties deserializedCreateManagementGroupProperties
+                = new CreateManagementGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedCreateManagementGroupProperties.tenantId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedCreateManagementGroupProperties.displayName = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    deserializedCreateManagementGroupProperties.details = CreateManagementGroupDetails.fromJson(reader);
+                } else if ("children".equals(fieldName)) {
+                    List<CreateManagementGroupChildInfo> children
+                        = reader.readArray(reader1 -> CreateManagementGroupChildInfo.fromJson(reader1));
+                    deserializedCreateManagementGroupProperties.children = children;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateManagementGroupProperties;
+        });
     }
 }

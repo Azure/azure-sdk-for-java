@@ -17,69 +17,62 @@ public final class RoutingInfoPropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingInfoPropertiesFormat model = BinaryData.fromString(
-            "{\"controlPlaneAccessRoutes\":[{\"destination\":\"exkpzksmondjmq\",\"nextHops\":[{\"address\":\"pomgkopkwhojvp\",\"priority\":996289807},{\"address\":\"xysmoc\",\"priority\":1861395903},{\"address\":\"qvmkcxo\",\"priority\":109668081},{\"address\":\"helxprglya\",\"priority\":1462356590}]}],\"userPlaneAccessRoutes\":[{\"destination\":\"bcuejrjxgci\",\"nextHops\":[{\"address\":\"hos\",\"priority\":341443712}]},{\"destination\":\"rhzo\",\"nextHops\":[{\"address\":\"m\",\"priority\":812505700}]}],\"userPlaneDataRoutes\":[{\"attachedDataNetwork\":{\"id\":\"hwflu\"},\"routes\":[{\"destination\":\"mhrkwofyyvoqacp\",\"nextHops\":[{},{},{}]},{\"destination\":\"btgiwbwoenwas\",\"nextHops\":[{},{}]},{\"destination\":\"tkcnqxwb\",\"nextHops\":[{},{},{}]},{\"destination\":\"lpiujwaa\",\"nextHops\":[{},{},{}]}]},{\"attachedDataNetwork\":{\"id\":\"i\"},\"routes\":[{\"destination\":\"uqerpqlpqwc\",\"nextHops\":[{},{},{},{}]},{\"destination\":\"gbdbutauv\",\"nextHops\":[{},{},{},{}]},{\"destination\":\"uwhhmhykojoxafn\",\"nextHops\":[{},{}]}]}]}")
+            "{\"controlPlaneAccessRoutes\":[{\"destination\":\"nvdfznuda\",\"nextHops\":[{\"address\":\"zbn\",\"priority\":2109510262},{\"address\":\"lpstdbhhxsrzdz\",\"priority\":241843348}]},{\"destination\":\"scdntnevf\",\"nextHops\":[{\"address\":\"ygtdsslswt\",\"priority\":478767297},{\"address\":\"iofz\",\"priority\":158092972},{\"address\":\"emwabnet\",\"priority\":1149443455},{\"address\":\"zhedplvwiw\",\"priority\":1386333367}]},{\"destination\":\"mbes\",\"nextHops\":[{\"address\":\"wwtppj\",\"priority\":799059143}]},{\"destination\":\"ogaok\",\"nextHops\":[{\"address\":\"nsikvmkqzeqqkdl\",\"priority\":228938566}]}],\"userPlaneAccessRoutes\":[{\"destination\":\"hvhgureod\",\"nextHops\":[{\"address\":\"dagxtibqd\",\"priority\":1020209011},{\"address\":\"akbogqxndlkzgxh\",\"priority\":1924988063},{\"address\":\"lbpodxunk\",\"priority\":81041412},{\"address\":\"mubyynt\",\"priority\":2007013655}]}],\"userPlaneDataRoutes\":[{\"attachedDataNetwork\":{\"id\":\"koievseo\"},\"routes\":[{\"destination\":\"l\",\"nextHops\":[{},{},{},{}]}]},{\"attachedDataNetwork\":{\"id\":\"wlauwzizxbmpg\"},\"routes\":[{\"destination\":\"u\",\"nextHops\":[{}]},{\"destination\":\"pbttdum\",\"nextHops\":[{}]},{\"destination\":\"xe\",\"nextHops\":[{},{}]}]}]}")
             .toObject(RoutingInfoPropertiesFormat.class);
-        Assertions.assertEquals("exkpzksmondjmq", model.controlPlaneAccessRoutes().get(0).destination());
-        Assertions.assertEquals("pomgkopkwhojvp", model.controlPlaneAccessRoutes().get(0).nextHops().get(0).address());
-        Assertions.assertEquals(996289807, model.controlPlaneAccessRoutes().get(0).nextHops().get(0).priority());
-        Assertions.assertEquals("bcuejrjxgci", model.userPlaneAccessRoutes().get(0).destination());
-        Assertions.assertEquals("hos", model.userPlaneAccessRoutes().get(0).nextHops().get(0).address());
-        Assertions.assertEquals(341443712, model.userPlaneAccessRoutes().get(0).nextHops().get(0).priority());
-        Assertions.assertEquals("hwflu", model.userPlaneDataRoutes().get(0).attachedDataNetwork().id());
-        Assertions.assertEquals("mhrkwofyyvoqacp", model.userPlaneDataRoutes().get(0).routes().get(0).destination());
+        Assertions.assertEquals("nvdfznuda", model.controlPlaneAccessRoutes().get(0).destination());
+        Assertions.assertEquals("zbn", model.controlPlaneAccessRoutes().get(0).nextHops().get(0).address());
+        Assertions.assertEquals(2109510262, model.controlPlaneAccessRoutes().get(0).nextHops().get(0).priority());
+        Assertions.assertEquals("hvhgureod", model.userPlaneAccessRoutes().get(0).destination());
+        Assertions.assertEquals("dagxtibqd", model.userPlaneAccessRoutes().get(0).nextHops().get(0).address());
+        Assertions.assertEquals(1020209011, model.userPlaneAccessRoutes().get(0).nextHops().get(0).priority());
+        Assertions.assertEquals("koievseo", model.userPlaneDataRoutes().get(0).attachedDataNetwork().id());
+        Assertions.assertEquals("l", model.userPlaneDataRoutes().get(0).routes().get(0).destination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingInfoPropertiesFormat model
-            = new RoutingInfoPropertiesFormat()
-                .withControlPlaneAccessRoutes(
-                    Arrays
-                        .asList(new Ipv4Route().withDestination("exkpzksmondjmq")
-                            .withNextHops(Arrays.asList(
-                                new Ipv4RouteNextHop().withAddress("pomgkopkwhojvp").withPriority(996289807),
-                                new Ipv4RouteNextHop().withAddress("xysmoc").withPriority(1861395903),
-                                new Ipv4RouteNextHop().withAddress("qvmkcxo").withPriority(109668081),
-                                new Ipv4RouteNextHop().withAddress("helxprglya").withPriority(1462356590)))))
-                .withUserPlaneAccessRoutes(Arrays.asList(
-                    new Ipv4Route().withDestination("bcuejrjxgci")
-                        .withNextHops(Arrays.asList(new Ipv4RouteNextHop().withAddress("hos").withPriority(341443712))),
-                    new Ipv4Route().withDestination("rhzo")
-                        .withNextHops(Arrays.asList(new Ipv4RouteNextHop().withAddress("m").withPriority(812505700)))))
-                .withUserPlaneDataRoutes(Arrays.asList(
-                    new UserPlaneDataRoutesItem()
-                        .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId("hwflu"))
-                        .withRoutes(Arrays.asList(
-                            new Ipv4Route().withDestination("mhrkwofyyvoqacp")
-                                .withNextHops(Arrays.asList(new Ipv4RouteNextHop(), new Ipv4RouteNextHop(),
-                                    new Ipv4RouteNextHop())),
-                            new Ipv4Route().withDestination("btgiwbwoenwas")
-                                .withNextHops(Arrays.asList(new Ipv4RouteNextHop(), new Ipv4RouteNextHop())),
-                            new Ipv4Route().withDestination("tkcnqxwb")
-                                .withNextHops(Arrays
-                                    .asList(new Ipv4RouteNextHop(), new Ipv4RouteNextHop(), new Ipv4RouteNextHop())),
-                            new Ipv4Route().withDestination("lpiujwaa")
-                                .withNextHops(Arrays.asList(new Ipv4RouteNextHop(), new Ipv4RouteNextHop(),
-                                    new Ipv4RouteNextHop())))),
-                    new UserPlaneDataRoutesItem()
-                        .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId("i"))
-                        .withRoutes(Arrays.asList(
-                            new Ipv4Route().withDestination("uqerpqlpqwc")
-                                .withNextHops(Arrays.asList(new Ipv4RouteNextHop(), new Ipv4RouteNextHop(),
-                                    new Ipv4RouteNextHop(), new Ipv4RouteNextHop())),
-                            new Ipv4Route().withDestination("gbdbutauv")
-                                .withNextHops(Arrays.asList(new Ipv4RouteNextHop(), new Ipv4RouteNextHop(),
-                                    new Ipv4RouteNextHop(), new Ipv4RouteNextHop())),
-                            new Ipv4Route().withDestination("uwhhmhykojoxafn")
-                                .withNextHops(Arrays.asList(new Ipv4RouteNextHop(), new Ipv4RouteNextHop()))))));
+        RoutingInfoPropertiesFormat model = new RoutingInfoPropertiesFormat()
+            .withControlPlaneAccessRoutes(Arrays.asList(
+                new Ipv4Route().withDestination("nvdfznuda")
+                    .withNextHops(Arrays.asList(new Ipv4RouteNextHop().withAddress("zbn").withPriority(2109510262),
+                        new Ipv4RouteNextHop().withAddress("lpstdbhhxsrzdz").withPriority(241843348))),
+                new Ipv4Route().withDestination("scdntnevf")
+                    .withNextHops(
+                        Arrays.asList(new Ipv4RouteNextHop().withAddress("ygtdsslswt").withPriority(478767297),
+                            new Ipv4RouteNextHop().withAddress("iofz").withPriority(158092972),
+                            new Ipv4RouteNextHop().withAddress("emwabnet").withPriority(1149443455),
+                            new Ipv4RouteNextHop().withAddress("zhedplvwiw").withPriority(1386333367))),
+                new Ipv4Route().withDestination("mbes")
+                    .withNextHops(Arrays.asList(new Ipv4RouteNextHop().withAddress("wwtppj").withPriority(799059143))),
+                new Ipv4Route().withDestination("ogaok")
+                    .withNextHops(
+                        Arrays.asList(new Ipv4RouteNextHop().withAddress("nsikvmkqzeqqkdl").withPriority(228938566)))))
+            .withUserPlaneAccessRoutes(Arrays.asList(new Ipv4Route().withDestination("hvhgureod")
+                .withNextHops(Arrays.asList(new Ipv4RouteNextHop().withAddress("dagxtibqd").withPriority(1020209011),
+                    new Ipv4RouteNextHop().withAddress("akbogqxndlkzgxh").withPriority(1924988063),
+                    new Ipv4RouteNextHop().withAddress("lbpodxunk").withPriority(81041412),
+                    new Ipv4RouteNextHop().withAddress("mubyynt").withPriority(2007013655)))))
+            .withUserPlaneDataRoutes(Arrays.asList(
+                new UserPlaneDataRoutesItem()
+                    .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId("koievseo"))
+                    .withRoutes(Arrays.asList(new Ipv4Route().withDestination("l")
+                        .withNextHops(Arrays.asList(new Ipv4RouteNextHop(), new Ipv4RouteNextHop(),
+                            new Ipv4RouteNextHop(), new Ipv4RouteNextHop())))),
+                new UserPlaneDataRoutesItem()
+                    .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId("wlauwzizxbmpg"))
+                    .withRoutes(Arrays.asList(
+                        new Ipv4Route().withDestination("u").withNextHops(Arrays.asList(new Ipv4RouteNextHop())),
+                        new Ipv4Route().withDestination("pbttdum").withNextHops(Arrays.asList(new Ipv4RouteNextHop())),
+                        new Ipv4Route().withDestination("xe")
+                            .withNextHops(Arrays.asList(new Ipv4RouteNextHop(), new Ipv4RouteNextHop()))))));
         model = BinaryData.fromObject(model).toObject(RoutingInfoPropertiesFormat.class);
-        Assertions.assertEquals("exkpzksmondjmq", model.controlPlaneAccessRoutes().get(0).destination());
-        Assertions.assertEquals("pomgkopkwhojvp", model.controlPlaneAccessRoutes().get(0).nextHops().get(0).address());
-        Assertions.assertEquals(996289807, model.controlPlaneAccessRoutes().get(0).nextHops().get(0).priority());
-        Assertions.assertEquals("bcuejrjxgci", model.userPlaneAccessRoutes().get(0).destination());
-        Assertions.assertEquals("hos", model.userPlaneAccessRoutes().get(0).nextHops().get(0).address());
-        Assertions.assertEquals(341443712, model.userPlaneAccessRoutes().get(0).nextHops().get(0).priority());
-        Assertions.assertEquals("hwflu", model.userPlaneDataRoutes().get(0).attachedDataNetwork().id());
-        Assertions.assertEquals("mhrkwofyyvoqacp", model.userPlaneDataRoutes().get(0).routes().get(0).destination());
+        Assertions.assertEquals("nvdfznuda", model.controlPlaneAccessRoutes().get(0).destination());
+        Assertions.assertEquals("zbn", model.controlPlaneAccessRoutes().get(0).nextHops().get(0).address());
+        Assertions.assertEquals(2109510262, model.controlPlaneAccessRoutes().get(0).nextHops().get(0).priority());
+        Assertions.assertEquals("hvhgureod", model.userPlaneAccessRoutes().get(0).destination());
+        Assertions.assertEquals("dagxtibqd", model.userPlaneAccessRoutes().get(0).nextHops().get(0).address());
+        Assertions.assertEquals(1020209011, model.userPlaneAccessRoutes().get(0).nextHops().get(0).priority());
+        Assertions.assertEquals("koievseo", model.userPlaneDataRoutes().get(0).attachedDataNetwork().id());
+        Assertions.assertEquals("l", model.userPlaneDataRoutes().get(0).routes().get(0).destination());
     }
 }

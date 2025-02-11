@@ -5,33 +5,58 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The cluster inventory item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "inventoryType")
-@JsonTypeName("Cluster")
+/**
+ * The cluster inventory item.
+ */
 @Fluent
 public final class ClusterInventoryItem extends InventoryItemProperties {
-    /** Creates an instance of ClusterInventoryItem class. */
+    /*
+     * They inventory type.
+     */
+    private InventoryType inventoryType = InventoryType.CLUSTER;
+
+    /**
+     * Creates an instance of ClusterInventoryItem class.
+     */
     public ClusterInventoryItem() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the inventoryType property: They inventory type.
+     * 
+     * @return the inventoryType value.
+     */
+    @Override
+    public InventoryType inventoryType() {
+        return this.inventoryType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInventoryItem withManagedResourceId(String managedResourceId) {
         super.withManagedResourceId(managedResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInventoryItem withMoRefId(String moRefId) {
         super.withMoRefId(moRefId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInventoryItem withMoName(String moName) {
         super.withMoName(moName);
@@ -40,11 +65,58 @@ public final class ClusterInventoryItem extends InventoryItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("managedResourceId", managedResourceId());
+        jsonWriter.writeStringField("moRefId", moRefId());
+        jsonWriter.writeStringField("moName", moName());
+        jsonWriter.writeStringField("inventoryType", this.inventoryType == null ? null : this.inventoryType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInventoryItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInventoryItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterInventoryItem.
+     */
+    public static ClusterInventoryItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInventoryItem deserializedClusterInventoryItem = new ClusterInventoryItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedResourceId".equals(fieldName)) {
+                    deserializedClusterInventoryItem.withManagedResourceId(reader.getString());
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedClusterInventoryItem.withMoRefId(reader.getString());
+                } else if ("moName".equals(fieldName)) {
+                    deserializedClusterInventoryItem.withMoName(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterInventoryItem
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("inventoryType".equals(fieldName)) {
+                    deserializedClusterInventoryItem.inventoryType = InventoryType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInventoryItem;
+        });
     }
 }

@@ -30,22 +30,28 @@ import com.azure.resourcemanager.automation.fluent.models.DscNodeReportInner;
 import com.azure.resourcemanager.automation.models.DscNodeReportListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NodeReportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NodeReportsClient.
+ */
 public final class NodeReportsClientImpl implements NodeReportsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NodeReportsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of NodeReportsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NodeReportsClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy.create(NodeReportsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NodeReportsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,72 +61,49 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientNode")
-    private interface NodeReportsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports")
-        @ExpectedResponses({200})
+    public interface NodeReportsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DscNodeReportListResult>> listByNode(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DscNodeReportListResult>> listByNode(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("nodeId") String nodeId,
-            @QueryParam("$filter") String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @PathParam("nodeId") String nodeId,
+            @QueryParam("$filter") String filter, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports/{reportId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports/{reportId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DscNodeReportInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DscNodeReportInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("nodeId") String nodeId,
-            @PathParam("reportId") String reportId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @PathParam("nodeId") String nodeId,
+            @PathParam("reportId") String reportId, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports/{reportId}/content")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports/{reportId}/content")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Object>> getContent(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Object>> getContent(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("nodeId") String nodeId,
-            @PathParam("reportId") String reportId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @PathParam("nodeId") String nodeId,
+            @PathParam("reportId") String reportId, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DscNodeReportListResult>> listByNodeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieve the Dsc node report list by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The parameters supplied to the list operation.
@@ -129,16 +112,14 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list dsc nodes operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DscNodeReportInner>> listByNodeSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, String filter) {
+    private Mono<PagedResponse<DscNodeReportInner>> listByNodeSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String nodeId, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -152,42 +133,22 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByNode(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            nodeId,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<DscNodeReportInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByNode(this.client.getEndpoint(), resourceGroupName,
+                automationAccountName, nodeId, filter, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<DscNodeReportInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the Dsc node report list by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The parameters supplied to the list operation.
@@ -197,16 +158,14 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list dsc nodes operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DscNodeReportInner>> listByNodeSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, String filter, Context context) {
+    private Mono<PagedResponse<DscNodeReportInner>> listByNodeSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String nodeId, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -220,39 +179,22 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByNode(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                nodeId,
-                filter,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByNode(this.client.getEndpoint(), resourceGroupName, automationAccountName, nodeId, filter,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieve the Dsc node report list by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The parameters supplied to the list operation.
@@ -263,8 +205,8 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @return the response model for the list dsc nodes operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscNodeReportInner> listByNodeAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, String filter) {
+    private PagedFlux<DscNodeReportInner> listByNodeAsync(String resourceGroupName, String automationAccountName,
+        String nodeId, String filter) {
         return new PagedFlux<>(
             () -> listByNodeSinglePageAsync(resourceGroupName, automationAccountName, nodeId, filter),
             nextLink -> listByNodeNextSinglePageAsync(nextLink));
@@ -272,7 +214,7 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
 
     /**
      * Retrieve the Dsc node report list by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The parameters supplied to the list operation.
@@ -282,8 +224,8 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @return the response model for the list dsc nodes operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscNodeReportInner> listByNodeAsync(
-        String resourceGroupName, String automationAccountName, String nodeId) {
+    private PagedFlux<DscNodeReportInner> listByNodeAsync(String resourceGroupName, String automationAccountName,
+        String nodeId) {
         final String filter = null;
         return new PagedFlux<>(
             () -> listByNodeSinglePageAsync(resourceGroupName, automationAccountName, nodeId, filter),
@@ -292,7 +234,7 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
 
     /**
      * Retrieve the Dsc node report list by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The parameters supplied to the list operation.
@@ -304,8 +246,8 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @return the response model for the list dsc nodes operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscNodeReportInner> listByNodeAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, String filter, Context context) {
+    private PagedFlux<DscNodeReportInner> listByNodeAsync(String resourceGroupName, String automationAccountName,
+        String nodeId, String filter, Context context) {
         return new PagedFlux<>(
             () -> listByNodeSinglePageAsync(resourceGroupName, automationAccountName, nodeId, filter, context),
             nextLink -> listByNodeNextSinglePageAsync(nextLink, context));
@@ -313,7 +255,7 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
 
     /**
      * Retrieve the Dsc node report list by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The parameters supplied to the list operation.
@@ -323,15 +265,15 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DscNodeReportInner> listByNode(
-        String resourceGroupName, String automationAccountName, String nodeId) {
+    public PagedIterable<DscNodeReportInner> listByNode(String resourceGroupName, String automationAccountName,
+        String nodeId) {
         final String filter = null;
         return new PagedIterable<>(listByNodeAsync(resourceGroupName, automationAccountName, nodeId, filter));
     }
 
     /**
      * Retrieve the Dsc node report list by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The parameters supplied to the list operation.
@@ -343,14 +285,14 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DscNodeReportInner> listByNode(
-        String resourceGroupName, String automationAccountName, String nodeId, String filter, Context context) {
+    public PagedIterable<DscNodeReportInner> listByNode(String resourceGroupName, String automationAccountName,
+        String nodeId, String filter, Context context) {
         return new PagedIterable<>(listByNodeAsync(resourceGroupName, automationAccountName, nodeId, filter, context));
     }
 
     /**
      * Retrieve the Dsc node report data by node id and report id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
@@ -358,17 +300,15 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node report type along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of the dsc node report type along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscNodeReportInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
+    private Mono<Response<DscNodeReportInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String nodeId, String reportId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -385,33 +325,20 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter reportId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            nodeId,
-                            reportId,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                nodeId, reportId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the Dsc node report data by node id and report id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
@@ -420,17 +347,15 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node report type along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of the dsc node report type along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscNodeReportInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context) {
+    private Mono<Response<DscNodeReportInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String nodeId, String reportId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -447,30 +372,19 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter reportId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                nodeId,
-                reportId,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName, nodeId, reportId,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieve the Dsc node report data by node id and report id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
@@ -481,33 +395,15 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @return definition of the dsc node report type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscNodeReportInner> getAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
+    private Mono<DscNodeReportInner> getAsync(String resourceGroupName, String automationAccountName, String nodeId,
+        String reportId) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, nodeId, reportId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve the Dsc node report data by node id and report id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The Dsc node id.
-     * @param reportId The report id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node report type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscNodeReportInner get(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
-        return getAsync(resourceGroupName, automationAccountName, nodeId, reportId).block();
-    }
-
-    /**
-     * Retrieve the Dsc node report data by node id and report id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
@@ -519,14 +415,32 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @return definition of the dsc node report type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DscNodeReportInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context) {
+    public Response<DscNodeReportInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String nodeId, String reportId, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, nodeId, reportId, context).block();
     }
 
     /**
+     * Retrieve the Dsc node report data by node id and report id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId The Dsc node id.
+     * @param reportId The report id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the dsc node report type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscNodeReportInner get(String resourceGroupName, String automationAccountName, String nodeId,
+        String reportId) {
+        return getWithResponse(resourceGroupName, automationAccountName, nodeId, reportId, Context.NONE).getValue();
+    }
+
+    /**
      * Retrieve the Dsc node reports by node id and report id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
@@ -537,13 +451,11 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Object>> getContentWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
+    private Mono<Response<Object>> getContentWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String nodeId, String reportId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -560,33 +472,20 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter reportId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getContent(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            nodeId,
-                            reportId,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.getContent(this.client.getEndpoint(), resourceGroupName,
+                automationAccountName, nodeId, reportId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the Dsc node reports by node id and report id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
@@ -598,13 +497,11 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Object>> getContentWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context) {
+    private Mono<Response<Object>> getContentWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String nodeId, String reportId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -621,30 +518,19 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter reportId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getContent(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                nodeId,
-                reportId,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.getContent(this.client.getEndpoint(), resourceGroupName, automationAccountName, nodeId, reportId,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieve the Dsc node reports by node id and report id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
@@ -655,32 +541,15 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Object> getContentAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
+    private Mono<Object> getContentAsync(String resourceGroupName, String automationAccountName, String nodeId,
+        String reportId) {
         return getContentWithResponseAsync(resourceGroupName, automationAccountName, nodeId, reportId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve the Dsc node reports by node id and report id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The Dsc node id.
-     * @param reportId The report id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object getContent(String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
-        return getContentAsync(resourceGroupName, automationAccountName, nodeId, reportId).block();
-    }
-
-    /**
-     * Retrieve the Dsc node reports by node id and report id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
@@ -692,21 +561,38 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
      * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> getContentWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context) {
+    public Response<Object> getContentWithResponse(String resourceGroupName, String automationAccountName,
+        String nodeId, String reportId, Context context) {
         return getContentWithResponseAsync(resourceGroupName, automationAccountName, nodeId, reportId, context).block();
     }
 
     /**
+     * Retrieve the Dsc node reports by node id and report id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId The Dsc node id.
+     * @param reportId The report id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object getContent(String resourceGroupName, String automationAccountName, String nodeId, String reportId) {
+        return getContentWithResponse(resourceGroupName, automationAccountName, nodeId, reportId, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list dsc nodes operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscNodeReportInner>> listByNodeNextSinglePageAsync(String nextLink) {
@@ -714,37 +600,27 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByNodeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DscNodeReportInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DscNodeReportInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list dsc nodes operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscNodeReportInner>> listByNodeNextSinglePageAsync(String nextLink, Context context) {
@@ -752,23 +628,13 @@ public final class NodeReportsClientImpl implements NodeReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByNodeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByNodeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

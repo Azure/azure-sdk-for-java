@@ -7,11 +7,13 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PortalConfigs. */
+/**
+ * Resource collection API of PortalConfigs.
+ */
 public interface PortalConfigs {
     /**
      * Lists the developer portal configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -20,12 +22,12 @@ public interface PortalConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the collection of the developer portal configurations along with {@link Response}.
      */
-    Response<PortalConfigCollection> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PortalConfigCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Lists the developer portal configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface PortalConfigs {
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -47,12 +49,12 @@ public interface PortalConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the developer portal configuration.
      */
-    PortalConfigsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String portalConfigId, Context context);
+    PortalConfigsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String portalConfigId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -64,7 +66,7 @@ public interface PortalConfigs {
 
     /**
      * Get the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -74,12 +76,12 @@ public interface PortalConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the developer portal configuration.
      */
-    Response<PortalConfigContract> getWithResponse(
-        String resourceGroupName, String serviceName, String portalConfigId, Context context);
+    Response<PortalConfigContract> getWithResponse(String resourceGroupName, String serviceName, String portalConfigId,
+        Context context);
 
     /**
      * Get the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -92,7 +94,7 @@ public interface PortalConfigs {
 
     /**
      * Get the developer portal configuration.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface PortalConfigs {
 
     /**
      * Get the developer portal configuration.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface PortalConfigs {
 
     /**
      * Begins definition for a new PortalConfigContract resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PortalConfigContract definition.
      */

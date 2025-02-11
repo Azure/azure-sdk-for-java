@@ -20,7 +20,7 @@ public class DataFlow implements JsonSerializable<DataFlow> {
     /*
      * Type of data flow.
      */
-    private String type;
+    private String type = "DataFlow";
 
     /*
      * The description of the data flow.
@@ -41,7 +41,6 @@ public class DataFlow implements JsonSerializable<DataFlow> {
      * Creates an instance of DataFlow class.
      */
     public DataFlow() {
-        this.type = "DataFlow";
     }
 
     /**

@@ -5,11 +5,17 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Serverless settings. */
+/**
+ * Serverless settings.
+ */
 @Fluent
-public final class ServerlessSettings {
+public final class ServerlessSettings implements JsonSerializable<ServerlessSettings> {
     /*
      * Gets or sets Client Connection Timeout. Optional to be set.
      * Value in seconds.
@@ -21,21 +27,25 @@ public final class ServerlessSettings {
      * The service considers the client disconnected if it hasn't received a message (including keep-alive) in this
      * interval.
      */
-    @JsonProperty(value = "connectionTimeoutInSeconds")
     private Integer connectionTimeoutInSeconds;
 
-    /** Creates an instance of ServerlessSettings class. */
+    /**
+     * Creates an instance of ServerlessSettings class.
+     */
     public ServerlessSettings() {
     }
 
     /**
-     * Get the connectionTimeoutInSeconds property: Gets or sets Client Connection Timeout. Optional to be set. Value in
-     * seconds. Default value is 30 seconds. Customer should set the timeout to a shorter period if messages are
-     * expected to be sent in shorter intervals, and want the client to disconnect more quickly after the last message
-     * is sent. You can set the timeout to a longer period if messages are expected to be sent in longer intervals, and
-     * they want to keep the same client connection alive during this session. The service considers the client
-     * disconnected if it hasn't received a message (including keep-alive) in this interval.
-     *
+     * Get the connectionTimeoutInSeconds property: Gets or sets Client Connection Timeout. Optional to be set.
+     * Value in seconds.
+     * Default value is 30 seconds.
+     * Customer should set the timeout to a shorter period if messages are expected to be sent in shorter intervals,
+     * and want the client to disconnect more quickly after the last message is sent.
+     * You can set the timeout to a longer period if messages are expected to be sent in longer intervals,
+     * and they want to keep the same client connection alive during this session.
+     * The service considers the client disconnected if it hasn't received a message (including keep-alive) in this
+     * interval.
+     * 
      * @return the connectionTimeoutInSeconds value.
      */
     public Integer connectionTimeoutInSeconds() {
@@ -43,13 +53,16 @@ public final class ServerlessSettings {
     }
 
     /**
-     * Set the connectionTimeoutInSeconds property: Gets or sets Client Connection Timeout. Optional to be set. Value in
-     * seconds. Default value is 30 seconds. Customer should set the timeout to a shorter period if messages are
-     * expected to be sent in shorter intervals, and want the client to disconnect more quickly after the last message
-     * is sent. You can set the timeout to a longer period if messages are expected to be sent in longer intervals, and
-     * they want to keep the same client connection alive during this session. The service considers the client
-     * disconnected if it hasn't received a message (including keep-alive) in this interval.
-     *
+     * Set the connectionTimeoutInSeconds property: Gets or sets Client Connection Timeout. Optional to be set.
+     * Value in seconds.
+     * Default value is 30 seconds.
+     * Customer should set the timeout to a shorter period if messages are expected to be sent in shorter intervals,
+     * and want the client to disconnect more quickly after the last message is sent.
+     * You can set the timeout to a longer period if messages are expected to be sent in longer intervals,
+     * and they want to keep the same client connection alive during this session.
+     * The service considers the client disconnected if it hasn't received a message (including keep-alive) in this
+     * interval.
+     * 
      * @param connectionTimeoutInSeconds the connectionTimeoutInSeconds value to set.
      * @return the ServerlessSettings object itself.
      */
@@ -60,9 +73,45 @@ public final class ServerlessSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("connectionTimeoutInSeconds", this.connectionTimeoutInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerlessSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerlessSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerlessSettings.
+     */
+    public static ServerlessSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerlessSettings deserializedServerlessSettings = new ServerlessSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionTimeoutInSeconds".equals(fieldName)) {
+                    deserializedServerlessSettings.connectionTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerlessSettings;
+        });
     }
 }

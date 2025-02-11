@@ -12,11 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 
 /** Entry point for private dns zone groups management API. */
-public interface PrivateDnsZoneGroups extends
-    SupportsCreating<PrivateDnsZoneGroup.DefinitionStages.Blank>,
-    SupportsDeletingById,
-    SupportsGettingById<PrivateDnsZoneGroup>,
-    SupportsDeletingByParent,
-    SupportsListing<PrivateDnsZoneGroup>,
-    HasManager<NetworkManager> {
+public interface PrivateDnsZoneGroups extends SupportsCreating<PrivateDnsZoneGroup.DefinitionStages.Blank>,
+    SupportsDeletingById, SupportsGettingById<PrivateDnsZoneGroup>, SupportsDeletingByParent,
+    SupportsListing<PrivateDnsZoneGroup>, HasManager<NetworkManager> {
 }

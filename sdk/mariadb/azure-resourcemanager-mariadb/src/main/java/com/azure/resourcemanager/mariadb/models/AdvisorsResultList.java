@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mariadb.fluent.models.AdvisorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of query statistics. */
+/**
+ * A list of query statistics.
+ */
 @Immutable
-public final class AdvisorsResultList {
+public final class AdvisorsResultList implements JsonSerializable<AdvisorsResultList> {
     /*
      * The list of recommendation action advisors.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AdvisorInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AdvisorsResultList class. */
+    /**
+     * Creates an instance of AdvisorsResultList class.
+     */
     public AdvisorsResultList() {
     }
 
     /**
      * Get the value property: The list of recommendation action advisors.
-     *
+     * 
      * @return the value value.
      */
     public List<AdvisorInner> value() {
@@ -39,7 +45,7 @@ public final class AdvisorsResultList {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,50 @@ public final class AdvisorsResultList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdvisorsResultList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdvisorsResultList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdvisorsResultList.
+     */
+    public static AdvisorsResultList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdvisorsResultList deserializedAdvisorsResultList = new AdvisorsResultList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AdvisorInner> value = reader.readArray(reader1 -> AdvisorInner.fromJson(reader1));
+                    deserializedAdvisorsResultList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAdvisorsResultList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdvisorsResultList;
+        });
     }
 }

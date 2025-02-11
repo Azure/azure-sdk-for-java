@@ -5,61 +5,177 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.math.BigDecimal;
 
-/** The properties of the benefit recommendation when scope is 'Shared'. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "scope")
-@JsonTypeName("Shared")
+/**
+ * The properties of the benefit recommendation when scope is 'Shared'.
+ */
 @Fluent
 public final class SharedScopeBenefitRecommendationProperties extends BenefitRecommendationProperties {
-    /** Creates an instance of SharedScopeBenefitRecommendationProperties class. */
+    /*
+     * Benefit scope. For example, Single or Shared.
+     */
+    private Scope scope = Scope.SHARED;
+
+    /**
+     * Creates an instance of SharedScopeBenefitRecommendationProperties class.
+     */
     public SharedScopeBenefitRecommendationProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the scope property: Benefit scope. For example, Single or Shared.
+     * 
+     * @return the scope value.
+     */
+    @Override
+    public Scope scope() {
+        return this.scope;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SharedScopeBenefitRecommendationProperties withLookBackPeriod(LookBackPeriod lookBackPeriod) {
         super.withLookBackPeriod(lookBackPeriod);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SharedScopeBenefitRecommendationProperties withUsage(RecommendationUsageDetails usage) {
         super.withUsage(usage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SharedScopeBenefitRecommendationProperties withTerm(Term term) {
         super.withTerm(term);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SharedScopeBenefitRecommendationProperties withCommitmentGranularity(Grain commitmentGranularity) {
         super.withCommitmentGranularity(commitmentGranularity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public SharedScopeBenefitRecommendationProperties withRecommendationDetails(
-        AllSavingsBenefitDetails recommendationDetails) {
+    public SharedScopeBenefitRecommendationProperties
+        withRecommendationDetails(AllSavingsBenefitDetails recommendationDetails) {
         super.withRecommendationDetails(recommendationDetails);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (usage() != null) {
+            usage().validate();
+        }
+        if (recommendationDetails() != null) {
+            recommendationDetails().validate();
+        }
+        if (allRecommendationDetails() != null) {
+            allRecommendationDetails().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lookBackPeriod", lookBackPeriod() == null ? null : lookBackPeriod().toString());
+        jsonWriter.writeJsonField("usage", usage());
+        jsonWriter.writeStringField("term", term() == null ? null : term().toString());
+        jsonWriter.writeStringField("commitmentGranularity",
+            commitmentGranularity() == null ? null : commitmentGranularity().toString());
+        jsonWriter.writeJsonField("recommendationDetails", recommendationDetails());
+        jsonWriter.writeStringField("scope", this.scope == null ? null : this.scope.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharedScopeBenefitRecommendationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharedScopeBenefitRecommendationProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SharedScopeBenefitRecommendationProperties.
+     */
+    public static SharedScopeBenefitRecommendationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharedScopeBenefitRecommendationProperties deserializedSharedScopeBenefitRecommendationProperties
+                = new SharedScopeBenefitRecommendationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("firstConsumptionDate".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties.withFirstConsumptionDate(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastConsumptionDate".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties.withLastConsumptionDate(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lookBackPeriod".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties
+                        .withLookBackPeriod(LookBackPeriod.fromString(reader.getString()));
+                } else if ("totalHours".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties
+                        .withTotalHours(reader.getNullable(JsonReader::getInt));
+                } else if ("usage".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties
+                        .withUsage(RecommendationUsageDetails.fromJson(reader));
+                } else if ("armSkuName".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties.withArmSkuName(reader.getString());
+                } else if ("term".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties
+                        .withTerm(Term.fromString(reader.getString()));
+                } else if ("commitmentGranularity".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties
+                        .withCommitmentGranularity(Grain.fromString(reader.getString()));
+                } else if ("currencyCode".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties.withCurrencyCode(reader.getString());
+                } else if ("costWithoutBenefit".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties.withCostWithoutBenefit(
+                        reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString())));
+                } else if ("recommendationDetails".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties
+                        .withRecommendationDetails(AllSavingsBenefitDetails.fromJson(reader));
+                } else if ("allRecommendationDetails".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties
+                        .withAllRecommendationDetails(AllSavingsList.fromJson(reader));
+                } else if ("scope".equals(fieldName)) {
+                    deserializedSharedScopeBenefitRecommendationProperties.scope = Scope.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharedScopeBenefitRecommendationProperties;
+        });
     }
 }

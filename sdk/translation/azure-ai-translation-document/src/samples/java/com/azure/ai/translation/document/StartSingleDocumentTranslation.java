@@ -19,38 +19,39 @@ import java.util.logging.Logger;
  */
 public class StartSingleDocumentTranslation {
     private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
-    private static final Path DOCUMENT_FILE_PATH = Paths.get(CURRENT_DIRECTORY, "src", "test", "java", "com", "azure", "ai", "translation", "document", "TestData", "test-input.txt");
-    
-    public static void main(final String[] args) {
+    private static final Path DOCUMENT_FILE_PATH = Paths.get(CURRENT_DIRECTORY, "src", "test", "java", "com", "azure",
+            "ai", "translation", "document", "TestData", "test-input.txt");
+
+    public static void main(final String[]args) {
         SingleDocumentTranslationClient singleDocumentTranslationClient = new SingleDocumentTranslationClientBuilder()
             .endpoint("{endpoint}")
             .credential(new AzureKeyCredential("{key}"))
             .buildClient();
-        
+
         // BEGIN:SingleDocumentTranslation
         DocumentFileDetails document = createDocumentContent();
         DocumentTranslateContent documentTranslateContent = new DocumentTranslateContent(document);
-        String targetLanguage = "hi";    
-        
-        BinaryData response = singleDocumentTranslationClient.documentTranslate(targetLanguage, documentTranslateContent);        
+        String targetLanguage = "hi";
+
+        BinaryData response = singleDocumentTranslationClient.translate(targetLanguage, documentTranslateContent);
         String translatedResponse = response.toString();
         System.out.println("Translated Response: " + translatedResponse);
         // END:SingleDocumentTranslation
     }
-    
+
     private static DocumentFileDetails createDocumentContent() {
         DocumentFileDetails document = null;
         try {
-            byte[] fileData = Files.readAllBytes(DOCUMENT_FILE_PATH);
+            byte[]fileData = Files.readAllBytes(DOCUMENT_FILE_PATH);
             BinaryData documentContent = BinaryData.fromBytes(fileData);
-            
+
             String documentFilename = DOCUMENT_FILE_PATH.getFileName().toString();
             String documentContentType = "text/html";
-            
+
             document = new DocumentFileDetails(documentContent)
-                    .setFilename(documentFilename)
-                    .setContentType(documentContentType);            
-            
+                .setFilename(documentFilename)
+                .setContentType(documentContentType);
+
         } catch (IOException ex) {
             Logger.getLogger(SingleDocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
         }

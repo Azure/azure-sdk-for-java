@@ -18,8 +18,8 @@ public final class ResourceSkuImpl implements ResourceSku {
 
     private final com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager;
 
-    ResourceSkuImpl(
-        ResourceSkuInner innerObject, com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
+    ResourceSkuImpl(ResourceSkuInner innerObject,
+        com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

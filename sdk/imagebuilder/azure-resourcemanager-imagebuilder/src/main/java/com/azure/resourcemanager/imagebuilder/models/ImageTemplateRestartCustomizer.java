@@ -133,7 +133,6 @@ public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomize
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

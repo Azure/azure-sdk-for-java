@@ -24,11 +24,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomImageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomImageInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"vm\":{\"sourceVmId\":\"utwpfhp\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepRequested\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"nfd\",\"sysPrep\":true,\"osType\":\"Linux\"},\"description\":\"gtdlmk\",\"author\":\"evdlh\",\"creationDate\":\"2021-05-16T03:51:54Z\",\"managedImageId\":\"sdsttwvog\",\"managedSnapshotId\":\"bejdcn\",\"dataDiskStorageInfo\":[{\"lun\":\"oakufgm\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"dgrtwaenuuzkopbm\",\"publisher\":\"rfdwoyu\",\"offer\":\"ziuiefozbhdm\"},\"isPlanAuthorized\":false,\"provisioningState\":\"zqhof\",\"uniqueIdentifier\":\"maequiahxicslfa\"},\"location\":\"qzpiyyl\",\"tags\":{\"ph\":\"nswhcc\",\"gwol\":\"aivwitqscywu\"},\"id\":\"h\",\"name\":\"zbwemh\",\"type\":\"i\"}")
-                .toObject(CustomImageInner.class);
+        CustomImageInner model = BinaryData.fromString(
+            "{\"properties\":{\"vm\":{\"sourceVmId\":\"utwpfhp\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepRequested\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"nfd\",\"sysPrep\":true,\"osType\":\"Linux\"},\"description\":\"gtdlmk\",\"author\":\"evdlh\",\"creationDate\":\"2021-05-16T03:51:54Z\",\"managedImageId\":\"sdsttwvog\",\"managedSnapshotId\":\"bejdcn\",\"dataDiskStorageInfo\":[{\"lun\":\"oakufgm\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"dgrtwaenuuzkopbm\",\"publisher\":\"rfdwoyu\",\"offer\":\"ziuiefozbhdm\"},\"isPlanAuthorized\":false,\"provisioningState\":\"zqhof\",\"uniqueIdentifier\":\"maequiahxicslfa\"},\"location\":\"qzpiyyl\",\"tags\":{\"ph\":\"nswhcc\",\"gwol\":\"aivwitqscywu\"},\"id\":\"h\",\"name\":\"zbwemh\",\"type\":\"i\"}")
+            .toObject(CustomImageInner.class);
         Assertions.assertEquals("qzpiyyl", model.location());
         Assertions.assertEquals("nswhcc", model.tags().get("ph"));
         Assertions.assertEquals("utwpfhp", model.vm().sourceVmId());
@@ -51,33 +49,24 @@ public final class CustomImageInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomImageInner model =
-            new CustomImageInner()
-                .withLocation("qzpiyyl")
-                .withTags(mapOf("ph", "nswhcc", "gwol", "aivwitqscywu"))
-                .withVm(
-                    new CustomImagePropertiesFromVm()
-                        .withSourceVmId("utwpfhp")
-                        .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_REQUESTED))
-                        .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_REQUESTED)))
-                .withVhd(
-                    new CustomImagePropertiesCustom()
-                        .withImageName("nfd")
-                        .withSysPrep(true)
-                        .withOsType(CustomImageOsType.LINUX))
-                .withDescription("gtdlmk")
-                .withAuthor("evdlh")
-                .withManagedImageId("sdsttwvog")
-                .withManagedSnapshotId("bejdcn")
-                .withDataDiskStorageInfo(
-                    Arrays
-                        .asList(new DataDiskStorageTypeInfo().withLun("oakufgm").withStorageType(StorageType.STANDARD)))
-                .withCustomImagePlan(
-                    new CustomImagePropertiesFromPlan()
-                        .withId("dgrtwaenuuzkopbm")
-                        .withPublisher("rfdwoyu")
-                        .withOffer("ziuiefozbhdm"))
-                .withIsPlanAuthorized(false);
+        CustomImageInner model = new CustomImageInner().withLocation("qzpiyyl")
+            .withTags(mapOf("ph", "nswhcc", "gwol", "aivwitqscywu"))
+            .withVm(new CustomImagePropertiesFromVm().withSourceVmId("utwpfhp")
+                .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_REQUESTED))
+                .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_REQUESTED)))
+            .withVhd(new CustomImagePropertiesCustom().withImageName("nfd")
+                .withSysPrep(true)
+                .withOsType(CustomImageOsType.LINUX))
+            .withDescription("gtdlmk")
+            .withAuthor("evdlh")
+            .withManagedImageId("sdsttwvog")
+            .withManagedSnapshotId("bejdcn")
+            .withDataDiskStorageInfo(
+                Arrays.asList(new DataDiskStorageTypeInfo().withLun("oakufgm").withStorageType(StorageType.STANDARD)))
+            .withCustomImagePlan(new CustomImagePropertiesFromPlan().withId("dgrtwaenuuzkopbm")
+                .withPublisher("rfdwoyu")
+                .withOffer("ziuiefozbhdm"))
+            .withIsPlanAuthorized(false);
         model = BinaryData.fromObject(model).toObject(CustomImageInner.class);
         Assertions.assertEquals("qzpiyyl", model.location());
         Assertions.assertEquals("nswhcc", model.tags().get("ph"));

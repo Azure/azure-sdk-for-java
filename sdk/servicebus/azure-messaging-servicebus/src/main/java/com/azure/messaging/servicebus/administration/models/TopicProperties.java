@@ -65,8 +65,7 @@ public final class TopicProperties {
 
             @Override
             public TopicDescriptionImpl toImplementation(TopicProperties topic, List<AuthorizationRuleImpl> rules) {
-                final TopicDescriptionImpl description = new TopicDescriptionImpl()
-                    .setAccessedAt(topic.getAccessedAt())
+                final TopicDescriptionImpl description = new TopicDescriptionImpl().setAccessedAt(topic.getAccessedAt())
                     .setAutoDeleteOnIdle(topic.getAutoDeleteOnIdle())
                     .setCreatedAt(topic.getCreatedAt())
                     .setDefaultMessageTimeToLive(topic.getDefaultMessageTimeToLive())
@@ -507,7 +506,6 @@ public final class TopicProperties {
         this.enableExpress = enableExpress;
         return this;
     }
-
 
     /**
      * Get the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.

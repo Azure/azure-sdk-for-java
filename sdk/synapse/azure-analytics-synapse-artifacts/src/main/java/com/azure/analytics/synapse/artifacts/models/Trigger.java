@@ -22,7 +22,7 @@ public class Trigger implements JsonSerializable<Trigger> {
     /*
      * Trigger type.
      */
-    private String type;
+    private String type = "Trigger";
 
     /*
      * Trigger description.
@@ -48,7 +48,6 @@ public class Trigger implements JsonSerializable<Trigger> {
      * Creates an instance of Trigger class.
      */
     public Trigger() {
-        this.type = "Trigger";
     }
 
     /**

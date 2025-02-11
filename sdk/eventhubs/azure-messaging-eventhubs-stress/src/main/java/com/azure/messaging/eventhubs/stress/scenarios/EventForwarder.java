@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.blockingWait;
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.createMessagePayload;
+import static com.azure.messaging.eventhubs.stress.util.TestUtils.getBuilder;
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.getProcessorBuilder;
 
 /**
@@ -79,14 +80,18 @@ public class EventForwarder extends EventHubsScenario {
         EventProcessorClient[] processors = new EventProcessorClient[processorInstancesCount];
         for (int i = 0; i < processorInstancesCount; i++) {
             String processorId = String.valueOf(i);
-            processors[i] = getProcessorBuilder(options, prefetchCount)
-                .loadBalancingStrategy(LoadBalancingStrategy.GREEDY)
-                .processEventBatch(batch -> telemetryHelper.instrumentProcess(() -> processBatch(batch), "processBatch", batch.getPartitionContext().getPartitionId()), maxBatchSize, maxWaitTime)
-                .initialPartitionEventPosition(p -> EventPosition.earliest())
-                .processError(err -> telemetryHelper.recordError(err.getThrowable(), String.format("processError[%s]", processorId), err.getPartitionContext().getPartitionId()))
-                .processPartitionClose(closeContext -> telemetryHelper.recordPartitionClosedEvent(closeContext, processorId))
-                .processPartitionInitialization(initializationContext -> telemetryHelper.recordPartitionInitializedEvent(initializationContext, processorId))
-                .buildEventProcessorClient();
+            processors[i]
+                = getProcessorBuilder(options, prefetchCount).loadBalancingStrategy(LoadBalancingStrategy.GREEDY)
+                    .processEventBatch(batch -> telemetryHelper.instrumentProcess(() -> processBatch(batch),
+                        "processBatch", batch.getPartitionContext().getPartitionId()), maxBatchSize, maxWaitTime)
+                    .initialPartitionEventPosition(p -> EventPosition.earliest())
+                    .processError(err -> telemetryHelper.recordError(err.getThrowable(),
+                        String.format("processError[%s]", processorId), err.getPartitionContext().getPartitionId()))
+                    .processPartitionClose(
+                        closeContext -> telemetryHelper.recordPartitionClosedEvent(closeContext, processorId))
+                    .processPartitionInitialization(initializationContext -> telemetryHelper
+                        .recordPartitionInitializedEvent(initializationContext, processorId))
+                    .buildEventProcessorClient();
             processors[i].start();
         }
 
@@ -100,11 +105,12 @@ public class EventForwarder extends EventHubsScenario {
     }
 
     private EventHubProducerAsyncClient getForwardProducer() {
-        return toClose(new EventHubClientBuilder()
-            .connectionString(forwardConnectionString)
+        // Gets the builder then overwrites the previously set values with new forwarder ones.
+        final EventHubClientBuilder builder = getBuilder(options).connectionString(forwardConnectionString)
             .eventHubName(forwardEventHubName)
-            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildAsyncProducerClient());
+            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)));
+
+        return toClose(builder.buildAsyncProducerClient());
     }
 
     @SuppressWarnings("try")
@@ -121,8 +127,8 @@ public class EventForwarder extends EventHubsScenario {
                 }
 
                 return producerClient.send(entry.getValue(), new SendOptions().setPartitionKey(entry.getKey()))
-                       .doOnCancel(() -> telemetryHelper.recordError("cancelled", "sendBatch", entry.getKey()))
-                       .doOnError(err -> telemetryHelper.recordError(err, "sendBatch", entry.getKey()));
+                    .doOnCancel(() -> telemetryHelper.recordError("cancelled", "sendBatch", entry.getKey()))
+                    .doOnError(err -> telemetryHelper.recordError(err, "sendBatch", entry.getKey()));
             })
             .parallel(batches.entrySet().size(), 1)
             .runOn(Schedulers.boundedElastic())

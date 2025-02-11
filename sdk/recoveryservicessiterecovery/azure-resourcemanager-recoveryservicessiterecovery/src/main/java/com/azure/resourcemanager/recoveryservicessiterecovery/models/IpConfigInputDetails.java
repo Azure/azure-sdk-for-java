@@ -5,78 +5,71 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The IpConfigInputDetails model.
  */
 @Fluent
-public final class IpConfigInputDetails {
+public final class IpConfigInputDetails implements JsonSerializable<IpConfigInputDetails> {
     /*
      * The ipConfigName property.
      */
-    @JsonProperty(value = "ipConfigName")
     private String ipConfigName;
 
     /*
      * The isPrimary property.
      */
-    @JsonProperty(value = "isPrimary")
     private Boolean isPrimary;
 
     /*
      * The isSeletedForFailover property.
      */
-    @JsonProperty(value = "isSeletedForFailover")
     private Boolean isSeletedForFailover;
 
     /*
      * The recoverySubnetName property.
      */
-    @JsonProperty(value = "recoverySubnetName")
     private String recoverySubnetName;
 
     /*
      * The recoveryStaticIPAddress property.
      */
-    @JsonProperty(value = "recoveryStaticIPAddress")
     private String recoveryStaticIpAddress;
 
     /*
      * The recoveryPublicIPAddressId property.
      */
-    @JsonProperty(value = "recoveryPublicIPAddressId")
     private String recoveryPublicIpAddressId;
 
     /*
      * The recoveryLBBackendAddressPoolIds property.
      */
-    @JsonProperty(value = "recoveryLBBackendAddressPoolIds")
     private List<String> recoveryLBBackendAddressPoolIds;
 
     /*
      * The tfoSubnetName property.
      */
-    @JsonProperty(value = "tfoSubnetName")
     private String tfoSubnetName;
 
     /*
      * The tfoStaticIPAddress property.
      */
-    @JsonProperty(value = "tfoStaticIPAddress")
     private String tfoStaticIpAddress;
 
     /*
      * The tfoPublicIPAddressId property.
      */
-    @JsonProperty(value = "tfoPublicIPAddressId")
     private String tfoPublicIpAddressId;
 
     /*
      * The tfoLBBackendAddressPoolIds property.
      */
-    @JsonProperty(value = "tfoLBBackendAddressPoolIds")
     private List<String> tfoLBBackendAddressPoolIds;
 
     /**
@@ -311,5 +304,75 @@ public final class IpConfigInputDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipConfigName", this.ipConfigName);
+        jsonWriter.writeBooleanField("isPrimary", this.isPrimary);
+        jsonWriter.writeBooleanField("isSeletedForFailover", this.isSeletedForFailover);
+        jsonWriter.writeStringField("recoverySubnetName", this.recoverySubnetName);
+        jsonWriter.writeStringField("recoveryStaticIPAddress", this.recoveryStaticIpAddress);
+        jsonWriter.writeStringField("recoveryPublicIPAddressId", this.recoveryPublicIpAddressId);
+        jsonWriter.writeArrayField("recoveryLBBackendAddressPoolIds", this.recoveryLBBackendAddressPoolIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("tfoSubnetName", this.tfoSubnetName);
+        jsonWriter.writeStringField("tfoStaticIPAddress", this.tfoStaticIpAddress);
+        jsonWriter.writeStringField("tfoPublicIPAddressId", this.tfoPublicIpAddressId);
+        jsonWriter.writeArrayField("tfoLBBackendAddressPoolIds", this.tfoLBBackendAddressPoolIds,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpConfigInputDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpConfigInputDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpConfigInputDetails.
+     */
+    public static IpConfigInputDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpConfigInputDetails deserializedIpConfigInputDetails = new IpConfigInputDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipConfigName".equals(fieldName)) {
+                    deserializedIpConfigInputDetails.ipConfigName = reader.getString();
+                } else if ("isPrimary".equals(fieldName)) {
+                    deserializedIpConfigInputDetails.isPrimary = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isSeletedForFailover".equals(fieldName)) {
+                    deserializedIpConfigInputDetails.isSeletedForFailover = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recoverySubnetName".equals(fieldName)) {
+                    deserializedIpConfigInputDetails.recoverySubnetName = reader.getString();
+                } else if ("recoveryStaticIPAddress".equals(fieldName)) {
+                    deserializedIpConfigInputDetails.recoveryStaticIpAddress = reader.getString();
+                } else if ("recoveryPublicIPAddressId".equals(fieldName)) {
+                    deserializedIpConfigInputDetails.recoveryPublicIpAddressId = reader.getString();
+                } else if ("recoveryLBBackendAddressPoolIds".equals(fieldName)) {
+                    List<String> recoveryLBBackendAddressPoolIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpConfigInputDetails.recoveryLBBackendAddressPoolIds = recoveryLBBackendAddressPoolIds;
+                } else if ("tfoSubnetName".equals(fieldName)) {
+                    deserializedIpConfigInputDetails.tfoSubnetName = reader.getString();
+                } else if ("tfoStaticIPAddress".equals(fieldName)) {
+                    deserializedIpConfigInputDetails.tfoStaticIpAddress = reader.getString();
+                } else if ("tfoPublicIPAddressId".equals(fieldName)) {
+                    deserializedIpConfigInputDetails.tfoPublicIpAddressId = reader.getString();
+                } else if ("tfoLBBackendAddressPoolIds".equals(fieldName)) {
+                    List<String> tfoLBBackendAddressPoolIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpConfigInputDetails.tfoLBBackendAddressPoolIds = tfoLBBackendAddressPoolIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpConfigInputDetails;
+        });
     }
 }

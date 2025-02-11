@@ -5,106 +5,103 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.DscConfigurationAssociationProperty;
 import com.azure.resourcemanager.automation.models.JobProvisioningState;
 import com.azure.resourcemanager.automation.models.JobStatus;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** Definition of Dsc Compilation job properties. */
+/**
+ * Definition of Dsc Compilation job properties.
+ */
 @Fluent
-public final class DscCompilationJobProperties {
+public final class DscCompilationJobProperties implements JsonSerializable<DscCompilationJobProperties> {
     /*
      * Gets or sets the configuration.
      */
-    @JsonProperty(value = "configuration")
     private DscConfigurationAssociationProperty configuration;
 
     /*
      * Gets the compilation job started by.
      */
-    @JsonProperty(value = "startedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String startedBy;
 
     /*
      * Gets the id of the job.
      */
-    @JsonProperty(value = "jobId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID jobId;
 
     /*
      * Gets the creation time of the job.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The current provisioning state of the job.
      */
-    @JsonProperty(value = "provisioningState")
     private JobProvisioningState provisioningState;
 
     /*
      * Gets or sets the runOn which specifies the group name where the job is to be executed.
      */
-    @JsonProperty(value = "runOn")
     private String runOn;
 
     /*
      * Gets or sets the status of the job.
      */
-    @JsonProperty(value = "status")
     private JobStatus status;
 
     /*
      * Gets or sets the status details of the job.
      */
-    @JsonProperty(value = "statusDetails")
     private String statusDetails;
 
     /*
      * Gets the start time of the job.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Gets the end time of the job.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Gets the exception of the job.
      */
-    @JsonProperty(value = "exception", access = JsonProperty.Access.WRITE_ONLY)
     private String exception;
 
     /*
      * Gets the last modified time of the job.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets the last status modified time of the job.
      */
-    @JsonProperty(value = "lastStatusModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastStatusModifiedTime;
 
     /*
      * Gets or sets the parameters of the job.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /**
+     * Creates an instance of DscCompilationJobProperties class.
+     */
+    public DscCompilationJobProperties() {
+    }
+
+    /**
      * Get the configuration property: Gets or sets the configuration.
-     *
+     * 
      * @return the configuration value.
      */
     public DscConfigurationAssociationProperty configuration() {
@@ -113,7 +110,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Set the configuration property: Gets or sets the configuration.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the DscCompilationJobProperties object itself.
      */
@@ -124,7 +121,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the startedBy property: Gets the compilation job started by.
-     *
+     * 
      * @return the startedBy value.
      */
     public String startedBy() {
@@ -133,7 +130,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the jobId property: Gets the id of the job.
-     *
+     * 
      * @return the jobId value.
      */
     public UUID jobId() {
@@ -142,7 +139,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the creationTime property: Gets the creation time of the job.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -151,7 +148,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the provisioningState property: The current provisioning state of the job.
-     *
+     * 
      * @return the provisioningState value.
      */
     public JobProvisioningState provisioningState() {
@@ -160,7 +157,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Set the provisioningState property: The current provisioning state of the job.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the DscCompilationJobProperties object itself.
      */
@@ -171,7 +168,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -180,7 +177,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Set the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the DscCompilationJobProperties object itself.
      */
@@ -191,7 +188,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the status property: Gets or sets the status of the job.
-     *
+     * 
      * @return the status value.
      */
     public JobStatus status() {
@@ -200,7 +197,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Set the status property: Gets or sets the status of the job.
-     *
+     * 
      * @param status the status value to set.
      * @return the DscCompilationJobProperties object itself.
      */
@@ -211,7 +208,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the statusDetails property: Gets or sets the status details of the job.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -220,7 +217,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Set the statusDetails property: Gets or sets the status details of the job.
-     *
+     * 
      * @param statusDetails the statusDetails value to set.
      * @return the DscCompilationJobProperties object itself.
      */
@@ -231,7 +228,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the startTime property: Gets the start time of the job.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -240,7 +237,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the endTime property: Gets the end time of the job.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -249,7 +246,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the exception property: Gets the exception of the job.
-     *
+     * 
      * @return the exception value.
      */
     public String exception() {
@@ -258,7 +255,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the lastModifiedTime property: Gets the last modified time of the job.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -267,7 +264,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the lastStatusModifiedTime property: Gets the last status modified time of the job.
-     *
+     * 
      * @return the lastStatusModifiedTime value.
      */
     public OffsetDateTime lastStatusModifiedTime() {
@@ -276,7 +273,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -285,7 +282,7 @@ public final class DscCompilationJobProperties {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DscCompilationJobProperties object itself.
      */
@@ -296,12 +293,89 @@ public final class DscCompilationJobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (configuration() != null) {
             configuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("runOn", this.runOn);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("statusDetails", this.statusDetails);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscCompilationJobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscCompilationJobProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscCompilationJobProperties.
+     */
+    public static DscCompilationJobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscCompilationJobProperties deserializedDscCompilationJobProperties = new DscCompilationJobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configuration".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.configuration
+                        = DscConfigurationAssociationProperty.fromJson(reader);
+                } else if ("startedBy".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.startedBy = reader.getString();
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.jobId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.provisioningState
+                        = JobProvisioningState.fromString(reader.getString());
+                } else if ("runOn".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.runOn = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.status = JobStatus.fromString(reader.getString());
+                } else if ("statusDetails".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.statusDetails = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("exception".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.exception = reader.getString();
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastStatusModifiedTime".equals(fieldName)) {
+                    deserializedDscCompilationJobProperties.lastStatusModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDscCompilationJobProperties.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscCompilationJobProperties;
+        });
     }
 }

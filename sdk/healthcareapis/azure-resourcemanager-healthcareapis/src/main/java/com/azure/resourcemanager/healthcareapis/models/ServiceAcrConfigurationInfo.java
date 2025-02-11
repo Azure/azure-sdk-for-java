@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure container registry configuration information.
  */
 @Fluent
-public final class ServiceAcrConfigurationInfo {
+public final class ServiceAcrConfigurationInfo implements JsonSerializable<ServiceAcrConfigurationInfo> {
     /*
      * The list of the ACR login servers.
      */
-    @JsonProperty(value = "loginServers")
     private List<String> loginServers;
 
     /*
      * The list of Open Container Initiative (OCI) artifacts.
      */
-    @JsonProperty(value = "ociArtifacts")
     private List<ServiceOciArtifactEntry> ociArtifacts;
 
     /**
@@ -80,5 +82,47 @@ public final class ServiceAcrConfigurationInfo {
         if (ociArtifacts() != null) {
             ociArtifacts().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("loginServers", this.loginServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ociArtifacts", this.ociArtifacts, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceAcrConfigurationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceAcrConfigurationInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceAcrConfigurationInfo.
+     */
+    public static ServiceAcrConfigurationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceAcrConfigurationInfo deserializedServiceAcrConfigurationInfo = new ServiceAcrConfigurationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loginServers".equals(fieldName)) {
+                    List<String> loginServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedServiceAcrConfigurationInfo.loginServers = loginServers;
+                } else if ("ociArtifacts".equals(fieldName)) {
+                    List<ServiceOciArtifactEntry> ociArtifacts
+                        = reader.readArray(reader1 -> ServiceOciArtifactEntry.fromJson(reader1));
+                    deserializedServiceAcrConfigurationInfo.ociArtifacts = ociArtifacts;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceAcrConfigurationInfo;
+        });
     }
 }

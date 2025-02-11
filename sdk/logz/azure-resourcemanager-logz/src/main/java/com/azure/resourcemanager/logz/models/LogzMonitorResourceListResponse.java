@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logz.fluent.models.LogzMonitorResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response of a list operation. */
+/**
+ * Response of a list operation.
+ */
 @Fluent
-public final class LogzMonitorResourceListResponse {
+public final class LogzMonitorResourceListResponse implements JsonSerializable<LogzMonitorResourceListResponse> {
     /*
      * Results of a list operation.
      */
-    @JsonProperty(value = "value")
     private List<LogzMonitorResourceInner> value;
 
     /*
      * Link to the next set of results, if any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LogzMonitorResourceListResponse class. */
+    /**
+     * Creates an instance of LogzMonitorResourceListResponse class.
+     */
     public LogzMonitorResourceListResponse() {
     }
 
     /**
      * Get the value property: Results of a list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<LogzMonitorResourceInner> value() {
@@ -39,7 +45,7 @@ public final class LogzMonitorResourceListResponse {
 
     /**
      * Set the value property: Results of a list operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the LogzMonitorResourceListResponse object itself.
      */
@@ -50,7 +56,7 @@ public final class LogzMonitorResourceListResponse {
 
     /**
      * Get the nextLink property: Link to the next set of results, if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class LogzMonitorResourceListResponse {
 
     /**
      * Set the nextLink property: Link to the next set of results, if any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LogzMonitorResourceListResponse object itself.
      */
@@ -70,12 +76,54 @@ public final class LogzMonitorResourceListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogzMonitorResourceListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogzMonitorResourceListResponse if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogzMonitorResourceListResponse.
+     */
+    public static LogzMonitorResourceListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogzMonitorResourceListResponse deserializedLogzMonitorResourceListResponse
+                = new LogzMonitorResourceListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LogzMonitorResourceInner> value
+                        = reader.readArray(reader1 -> LogzMonitorResourceInner.fromJson(reader1));
+                    deserializedLogzMonitorResourceListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLogzMonitorResourceListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogzMonitorResourceListResponse;
+        });
     }
 }

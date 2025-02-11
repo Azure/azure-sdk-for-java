@@ -18,7 +18,7 @@ public final class GrafanaFetchAvailablePluginsSamples {
      * @param manager Entry point to DashboardManager.
      */
     public static void grafanaFetchAvailablePlugins(com.azure.resourcemanager.dashboard.DashboardManager manager) {
-        manager.grafanas().fetchAvailablePluginsWithResponse("myResourceGroup", "myWorkspace",
-            com.azure.core.util.Context.NONE);
+        manager.grafanas()
+            .fetchAvailablePluginsWithResponse("myResourceGroup", "myWorkspace", com.azure.core.util.Context.NONE);
     }
 }

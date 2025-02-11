@@ -17,11 +17,11 @@ import com.azure.resourcemanager.connectedvmware.fluent.models.VmInstanceHybridI
 public interface VmInstanceHybridIdentityMetadatasClient {
     /**
      * Gets HybridIdentityMetadata.
-     *
-     * <p>Implements HybridIdentityMetadata GET method.
-     *
+     * 
+     * Implements HybridIdentityMetadata GET method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,11 +33,11 @@ public interface VmInstanceHybridIdentityMetadatasClient {
 
     /**
      * Gets HybridIdentityMetadata.
-     *
-     * <p>Implements HybridIdentityMetadata GET method.
-     *
+     * 
+     * Implements HybridIdentityMetadata GET method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -48,11 +48,11 @@ public interface VmInstanceHybridIdentityMetadatasClient {
 
     /**
      * Implements GET HybridIdentityMetadata in a vm.
-     *
-     * <p>Returns the list of HybridIdentityMetadata of the given vm.
-     *
+     * 
+     * Returns the list of HybridIdentityMetadata of the given vm.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -63,11 +63,11 @@ public interface VmInstanceHybridIdentityMetadatasClient {
 
     /**
      * Implements GET HybridIdentityMetadata in a vm.
-     *
-     * <p>Returns the list of HybridIdentityMetadata of the given vm.
-     *
+     * 
+     * Returns the list of HybridIdentityMetadata of the given vm.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

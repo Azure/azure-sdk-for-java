@@ -21,9 +21,9 @@ import java.time.format.DateTimeFormatter;
 public final class BatchNodeUserUpdateContent implements JsonSerializable<BatchNodeUserUpdateContent> {
 
     /*
-     * The password of the Account. The password is required for Windows Compute Nodes (those created with
-     * 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can
-     * optionally be specified along with the sshPublicKey property. If omitted, any existing password is removed.
+     * The password of the Account. The password is required for Windows Compute Nodes. For Linux Compute Nodes, the
+     * password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is
+     * removed.
      */
     @Generated
     private String password;
@@ -53,10 +53,9 @@ public final class BatchNodeUserUpdateContent implements JsonSerializable<BatchN
     }
 
     /**
-     * Get the password property: The password of the Account. The password is required for Windows Compute Nodes (those
-     * created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the
-     * password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is
-     * removed.
+     * Get the password property: The password of the Account. The password is required for Windows Compute Nodes. For
+     * Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property. If omitted,
+     * any existing password is removed.
      *
      * @return the password value.
      */
@@ -66,10 +65,9 @@ public final class BatchNodeUserUpdateContent implements JsonSerializable<BatchN
     }
 
     /**
-     * Set the password property: The password of the Account. The password is required for Windows Compute Nodes (those
-     * created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the
-     * password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is
-     * removed.
+     * Set the password property: The password of the Account. The password is required for Windows Compute Nodes. For
+     * Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property. If omitted,
+     * any existing password is removed.
      *
      * @param password the password value to set.
      * @return the BatchNodeUserUpdateContent object itself.

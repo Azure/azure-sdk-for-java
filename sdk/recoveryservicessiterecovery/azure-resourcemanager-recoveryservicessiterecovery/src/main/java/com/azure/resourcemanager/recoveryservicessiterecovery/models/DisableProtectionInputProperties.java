@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Disable protection input properties.
  */
 @Fluent
-public final class DisableProtectionInputProperties {
+public final class DisableProtectionInputProperties implements JsonSerializable<DisableProtectionInputProperties> {
     /*
      * Disable protection reason. It can have values NotSpecified/MigrationComplete.
      */
-    @JsonProperty(value = "disableProtectionReason")
     private DisableProtectionReason disableProtectionReason;
 
     /*
      * Replication provider specific input.
      */
-    @JsonProperty(value = "replicationProviderInput")
     private DisableProtectionProviderSpecificInput replicationProviderInput;
 
     /**
@@ -83,5 +85,48 @@ public final class DisableProtectionInputProperties {
         if (replicationProviderInput() != null) {
             replicationProviderInput().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("disableProtectionReason",
+            this.disableProtectionReason == null ? null : this.disableProtectionReason.toString());
+        jsonWriter.writeJsonField("replicationProviderInput", this.replicationProviderInput);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DisableProtectionInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DisableProtectionInputProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DisableProtectionInputProperties.
+     */
+    public static DisableProtectionInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DisableProtectionInputProperties deserializedDisableProtectionInputProperties
+                = new DisableProtectionInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disableProtectionReason".equals(fieldName)) {
+                    deserializedDisableProtectionInputProperties.disableProtectionReason
+                        = DisableProtectionReason.fromString(reader.getString());
+                } else if ("replicationProviderInput".equals(fieldName)) {
+                    deserializedDisableProtectionInputProperties.replicationProviderInput
+                        = DisableProtectionProviderSpecificInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDisableProtectionInputProperties;
+        });
     }
 }

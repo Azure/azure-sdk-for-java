@@ -14,40 +14,30 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementConfigurationInner model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"ufubl\",\"properties\":{\"applicationId\":\"xqeofjaeqjhqjba\",\"parentResourceType\":\"v\",\"parameters\":[{\"name\":\"jqul\",\"value\":\"sntnbybkzgcw\"},{\"name\":\"clxxwrljdo\",\"value\":\"kcqvkocrc\"},{\"name\":\"kwt\",\"value\":\"xbnjbiksq\"},{\"name\":\"lssai\",\"value\":\"p\"}],\"provisioningState\":\"nzl\",\"template\":\"datajfm\"},\"id\":\"pee\",\"name\":\"vmgxsab\",\"type\":\"yqduujit\"}")
-                .toObject(ManagementConfigurationInner.class);
-        Assertions.assertEquals("ufubl", model.location());
-        Assertions.assertEquals("xqeofjaeqjhqjba", model.properties().applicationId());
-        Assertions.assertEquals("v", model.properties().parentResourceType());
-        Assertions.assertEquals("jqul", model.properties().parameters().get(0).name());
-        Assertions.assertEquals("sntnbybkzgcw", model.properties().parameters().get(0).value());
+        ManagementConfigurationInner model = BinaryData.fromString(
+            "{\"location\":\"awxklr\",\"properties\":{\"applicationId\":\"wckbasyypnd\",\"parentResourceType\":\"hsgcbacphejkot\",\"parameters\":[{\"name\":\"gou\",\"value\":\"ndlik\"},{\"name\":\"qkgfgibma\",\"value\":\"akeqs\"},{\"name\":\"yb\",\"value\":\"qedqytbciqfoufl\"}],\"provisioningState\":\"nkzsmodmglou\",\"template\":\"datapbkwtmu\"},\"id\":\"duqkt\",\"name\":\"pspwgcuertu\",\"type\":\"kdosvqw\"}")
+            .toObject(ManagementConfigurationInner.class);
+        Assertions.assertEquals("awxklr", model.location());
+        Assertions.assertEquals("wckbasyypnd", model.properties().applicationId());
+        Assertions.assertEquals("hsgcbacphejkot", model.properties().parentResourceType());
+        Assertions.assertEquals("gou", model.properties().parameters().get(0).name());
+        Assertions.assertEquals("ndlik", model.properties().parameters().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementConfigurationInner model =
-            new ManagementConfigurationInner()
-                .withLocation("ufubl")
-                .withProperties(
-                    new ManagementConfigurationProperties()
-                        .withApplicationId("xqeofjaeqjhqjba")
-                        .withParentResourceType("v")
-                        .withParameters(
-                            Arrays
-                                .asList(
-                                    new ArmTemplateParameter().withName("jqul").withValue("sntnbybkzgcw"),
-                                    new ArmTemplateParameter().withName("clxxwrljdo").withValue("kcqvkocrc"),
-                                    new ArmTemplateParameter().withName("kwt").withValue("xbnjbiksq"),
-                                    new ArmTemplateParameter().withName("lssai").withValue("p")))
-                        .withTemplate("datajfm"));
+        ManagementConfigurationInner model = new ManagementConfigurationInner().withLocation("awxklr")
+            .withProperties(new ManagementConfigurationProperties().withApplicationId("wckbasyypnd")
+                .withParentResourceType("hsgcbacphejkot")
+                .withParameters(Arrays.asList(new ArmTemplateParameter().withName("gou").withValue("ndlik"),
+                    new ArmTemplateParameter().withName("qkgfgibma").withValue("akeqs"),
+                    new ArmTemplateParameter().withName("yb").withValue("qedqytbciqfoufl")))
+                .withTemplate("datapbkwtmu"));
         model = BinaryData.fromObject(model).toObject(ManagementConfigurationInner.class);
-        Assertions.assertEquals("ufubl", model.location());
-        Assertions.assertEquals("xqeofjaeqjhqjba", model.properties().applicationId());
-        Assertions.assertEquals("v", model.properties().parentResourceType());
-        Assertions.assertEquals("jqul", model.properties().parameters().get(0).name());
-        Assertions.assertEquals("sntnbybkzgcw", model.properties().parameters().get(0).value());
+        Assertions.assertEquals("awxklr", model.location());
+        Assertions.assertEquals("wckbasyypnd", model.properties().applicationId());
+        Assertions.assertEquals("hsgcbacphejkot", model.properties().parentResourceType());
+        Assertions.assertEquals("gou", model.properties().parameters().get(0).name());
+        Assertions.assertEquals("ndlik", model.properties().parameters().get(0).value());
     }
 }

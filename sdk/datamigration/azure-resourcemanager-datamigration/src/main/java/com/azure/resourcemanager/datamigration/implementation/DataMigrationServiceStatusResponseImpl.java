@@ -14,8 +14,7 @@ public final class DataMigrationServiceStatusResponseImpl implements DataMigrati
 
     private final com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager;
 
-    DataMigrationServiceStatusResponseImpl(
-        DataMigrationServiceStatusResponseInner innerObject,
+    DataMigrationServiceStatusResponseImpl(DataMigrationServiceStatusResponseInner innerObject,
         com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

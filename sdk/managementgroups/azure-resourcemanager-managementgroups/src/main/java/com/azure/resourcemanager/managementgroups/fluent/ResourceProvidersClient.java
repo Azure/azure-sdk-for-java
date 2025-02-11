@@ -12,26 +12,28 @@ import com.azure.resourcemanager.managementgroups.fluent.models.CheckNameAvailab
 import com.azure.resourcemanager.managementgroups.fluent.models.TenantBackfillStatusResultInner;
 import com.azure.resourcemanager.managementgroups.models.CheckNameAvailabilityRequest;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Checks if the specified management group name is valid and unique.
-     *
+     * 
      * @param checkNameAvailabilityRequest Management group name availability check parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to check management group name availability along with {@link
-     *     Response}.
+     * @return describes the result of the request to check management group name availability along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+    Response<CheckNameAvailabilityResultInner>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
      * Checks if the specified management group name is valid and unique.
-     *
+     * 
      * @param checkNameAvailabilityRequest Management group name availability check parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Starts backfilling subscriptions for the Tenant.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -55,7 +57,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Starts backfilling subscriptions for the Tenant.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenant backfill status.
@@ -65,7 +67,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Gets tenant backfill status.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,7 +79,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Gets tenant backfill status.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tenant backfill status.

@@ -23,8 +23,10 @@ public final class InMageAgentDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAgentDetails model = new InMageAgentDetails().withAgentVersion("wyambhba").withAgentUpdateStatus("bz")
-            .withPostUpdateRebootStatus("k").withAgentExpiryDate(OffsetDateTime.parse("2021-01-13T18:27:32Z"));
+        InMageAgentDetails model = new InMageAgentDetails().withAgentVersion("wyambhba")
+            .withAgentUpdateStatus("bz")
+            .withPostUpdateRebootStatus("k")
+            .withAgentExpiryDate(OffsetDateTime.parse("2021-01-13T18:27:32Z"));
         model = BinaryData.fromObject(model).toObject(InMageAgentDetails.class);
         Assertions.assertEquals("wyambhba", model.agentVersion());
         Assertions.assertEquals("bz", model.agentUpdateStatus());

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information about a VM from which a formula is to be created. */
+/**
+ * Information about a VM from which a formula is to be created.
+ */
 @Fluent
-public final class FormulaPropertiesFromVm {
+public final class FormulaPropertiesFromVm implements JsonSerializable<FormulaPropertiesFromVm> {
     /*
      * The identifier of the VM from which a formula is to be created.
      */
-    @JsonProperty(value = "labVmId")
     private String labVmId;
 
-    /** Creates an instance of FormulaPropertiesFromVm class. */
+    /**
+     * Creates an instance of FormulaPropertiesFromVm class.
+     */
     public FormulaPropertiesFromVm() {
     }
 
     /**
      * Get the labVmId property: The identifier of the VM from which a formula is to be created.
-     *
+     * 
      * @return the labVmId value.
      */
     public String labVmId() {
@@ -31,7 +38,7 @@ public final class FormulaPropertiesFromVm {
 
     /**
      * Set the labVmId property: The identifier of the VM from which a formula is to be created.
-     *
+     * 
      * @param labVmId the labVmId value to set.
      * @return the FormulaPropertiesFromVm object itself.
      */
@@ -42,9 +49,45 @@ public final class FormulaPropertiesFromVm {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("labVmId", this.labVmId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FormulaPropertiesFromVm from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FormulaPropertiesFromVm if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FormulaPropertiesFromVm.
+     */
+    public static FormulaPropertiesFromVm fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FormulaPropertiesFromVm deserializedFormulaPropertiesFromVm = new FormulaPropertiesFromVm();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("labVmId".equals(fieldName)) {
+                    deserializedFormulaPropertiesFromVm.labVmId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFormulaPropertiesFromVm;
+        });
     }
 }

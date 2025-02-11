@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedResourceInner model =
-            BinaryData.fromString("{\"id\":\"wdzuhtymwisd\"}").toObject(LinkedResourceInner.class);
+        LinkedResourceInner model
+            = BinaryData.fromString("{\"id\":\"wdzuhtymwisd\"}").toObject(LinkedResourceInner.class);
         Assertions.assertEquals("wdzuhtymwisd", model.id());
     }
 

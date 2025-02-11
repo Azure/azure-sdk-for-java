@@ -242,10 +242,8 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlScriptResource>> createOrUpdateSqlScriptWithResponseAsync(String sqlScriptName,
         SqlScriptResource sqlScript, String ifMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdateSqlScript(this.client.getEndpoint(), sqlScriptName,
-            apiVersion, ifMatch, sqlScript, accept, context));
+        return FluxUtil.withContext(
+            context -> createOrUpdateSqlScriptWithResponseAsync(sqlScriptName, sqlScript, ifMatch, context));
     }
 
     /**
@@ -392,10 +390,7 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlScriptResource>> getSqlScriptWithResponseAsync(String sqlScriptName, String ifNoneMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSqlScript(this.client.getEndpoint(), sqlScriptName,
-            apiVersion, ifNoneMatch, accept, context));
+        return FluxUtil.withContext(context -> getSqlScriptWithResponseAsync(sqlScriptName, ifNoneMatch, context));
     }
 
     /**
@@ -529,10 +524,7 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSqlScriptWithResponseAsync(String sqlScriptName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deleteSqlScript(this.client.getEndpoint(), sqlScriptName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> deleteSqlScriptWithResponseAsync(sqlScriptName, context));
     }
 
     /**
@@ -621,10 +613,7 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSqlScriptWithResponseAsync(String sqlScriptName, ArtifactRenameRequest request) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.renameSqlScript(this.client.getEndpoint(), sqlScriptName,
-            apiVersion, request, accept, context));
+        return FluxUtil.withContext(context -> renameSqlScriptWithResponseAsync(sqlScriptName, request, context));
     }
 
     /**
@@ -711,9 +700,7 @@ public final class SqlScriptsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -733,9 +720,7 @@ public final class SqlScriptsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -755,9 +740,7 @@ public final class SqlScriptsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -771,9 +754,7 @@ public final class SqlScriptsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

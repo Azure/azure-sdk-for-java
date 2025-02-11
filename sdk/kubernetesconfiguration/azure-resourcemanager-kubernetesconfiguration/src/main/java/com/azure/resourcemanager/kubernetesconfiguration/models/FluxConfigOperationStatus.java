@@ -7,16 +7,18 @@ package com.azure.resourcemanager.kubernetesconfiguration.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FluxConfigOperationStatus. */
+/**
+ * Resource collection API of FluxConfigOperationStatus.
+ */
 public interface FluxConfigOperationStatus {
     /**
      * Get Async Operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param fluxConfigurationName Name of the Flux Configuration.
      * @param operationId operation Id.
@@ -26,23 +28,18 @@ public interface FluxConfigOperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return async Operation status along with {@link Response}.
      */
-    Response<OperationStatusResult> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId,
+    Response<OperationStatusResult> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, String operationId,
         Context context);
 
     /**
      * Get Async Operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param fluxConfigurationName Name of the Flux Configuration.
      * @param operationId operation Id.
@@ -51,11 +48,6 @@ public interface FluxConfigOperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return async Operation status.
      */
-    OperationStatusResult get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId);
+    OperationStatusResult get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, String operationId);
 }

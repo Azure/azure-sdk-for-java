@@ -10,16 +10,14 @@ import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountSessionPr
 public final class IntegrationAccountSessionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountSessionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"createdTime\":\"2021-02-13T23:18:10Z\",\"changedTime\":\"2021-03-04T18:22:07Z\",\"content\":\"dataqzdz\"}")
-                .toObject(IntegrationAccountSessionProperties.class);
+        IntegrationAccountSessionProperties model = BinaryData.fromString(
+            "{\"createdTime\":\"2021-05-21T07:01:15Z\",\"changedTime\":\"2021-06-28T02:42:03Z\",\"content\":\"datazgp\"}")
+            .toObject(IntegrationAccountSessionProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountSessionProperties model = new IntegrationAccountSessionProperties().withContent("dataqzdz");
+        IntegrationAccountSessionProperties model = new IntegrationAccountSessionProperties().withContent("datazgp");
         model = BinaryData.fromObject(model).toObject(IntegrationAccountSessionProperties.class);
     }
 }

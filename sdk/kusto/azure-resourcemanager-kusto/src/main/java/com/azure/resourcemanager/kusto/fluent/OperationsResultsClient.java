@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.fluent.models.OperationResultInner;
 
-/** An instance of this class provides access to all the operations defined in OperationsResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsResultsClient.
+ */
 public interface OperationsResultsClient {
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
@@ -28,7 +30,7 @@ public interface OperationsResultsClient {
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

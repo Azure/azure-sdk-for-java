@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class TagResourceContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagResourceContractProperties model =
-            BinaryData
-                .fromString("{\"id\":\"dqllzsauzpjlxeeh\",\"name\":\"iqhzlr\"}")
-                .toObject(TagResourceContractProperties.class);
+        TagResourceContractProperties model = BinaryData.fromString("{\"id\":\"dqllzsauzpjlxeeh\",\"name\":\"iqhzlr\"}")
+            .toObject(TagResourceContractProperties.class);
         Assertions.assertEquals("dqllzsauzpjlxeeh", model.id());
         Assertions.assertEquals("iqhzlr", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagResourceContractProperties model =
-            new TagResourceContractProperties().withId("dqllzsauzpjlxeeh").withName("iqhzlr");
+        TagResourceContractProperties model
+            = new TagResourceContractProperties().withId("dqllzsauzpjlxeeh").withName("iqhzlr");
         model = BinaryData.fromObject(model).toObject(TagResourceContractProperties.class);
         Assertions.assertEquals("dqllzsauzpjlxeeh", model.id());
         Assertions.assertEquals("iqhzlr", model.name());

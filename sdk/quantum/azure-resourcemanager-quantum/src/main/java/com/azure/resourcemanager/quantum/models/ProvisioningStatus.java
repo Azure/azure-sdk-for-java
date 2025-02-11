@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.quantum.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class ProvisioningStatus extends ExpandableStringEnum<ProvisioningS
      * @param name a name to look for.
      * @return the corresponding ProvisioningStatus.
      */
-    @JsonCreator
     public static ProvisioningStatus fromString(String name) {
         return fromString(name, ProvisioningStatus.class);
     }

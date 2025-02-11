@@ -12,24 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactProperties model =
-            BinaryData
-                .fromString(
-                    "{\"createdTime\":\"2021-11-19T10:41:07Z\",\"changedTime\":\"2021-02-09T03:54:38Z\",\"metadata\":\"dataeosjswsr\"}")
-                .toObject(ArtifactProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T10:41:07Z"), model.createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-09T03:54:38Z"), model.changedTime());
+        ArtifactProperties model = BinaryData.fromString(
+            "{\"createdTime\":\"2021-04-30T14:41:30Z\",\"changedTime\":\"2021-02-16T20:00:10Z\",\"metadata\":\"datantiew\"}")
+            .toObject(ArtifactProperties.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T14:41:30Z"), model.createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T20:00:10Z"), model.changedTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactProperties model =
-            new ArtifactProperties()
-                .withCreatedTime(OffsetDateTime.parse("2021-11-19T10:41:07Z"))
-                .withChangedTime(OffsetDateTime.parse("2021-02-09T03:54:38Z"))
-                .withMetadata("dataeosjswsr");
+        ArtifactProperties model
+            = new ArtifactProperties().withCreatedTime(OffsetDateTime.parse("2021-04-30T14:41:30Z"))
+                .withChangedTime(OffsetDateTime.parse("2021-02-16T20:00:10Z"))
+                .withMetadata("datantiew");
         model = BinaryData.fromObject(model).toObject(ArtifactProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T10:41:07Z"), model.createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-09T03:54:38Z"), model.changedTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T14:41:30Z"), model.createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T20:00:10Z"), model.changedTime());
     }
 }

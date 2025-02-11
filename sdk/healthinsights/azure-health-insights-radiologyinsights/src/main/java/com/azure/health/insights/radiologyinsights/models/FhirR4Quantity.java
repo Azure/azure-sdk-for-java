@@ -5,7 +5,10 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,35 +22,30 @@ public final class FhirR4Quantity extends FhirR4Element {
      * Numerical value (with implicit precision)
      */
     @Generated
-    @JsonProperty(value = "value")
     private Double value;
 
     /*
      * < | <= | >= | > - how to understand the value
      */
     @Generated
-    @JsonProperty(value = "comparator")
     private String comparator;
 
     /*
      * Unit representation
      */
     @Generated
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * System that defines coded unit form
      */
     @Generated
-    @JsonProperty(value = "system")
     private String system;
 
     /*
      * Coded form of the unit
      */
     @Generated
-    @JsonProperty(value = "code")
     private String code;
 
     /**
@@ -185,5 +183,60 @@ public final class FhirR4Quantity extends FhirR4Element {
     public FhirR4Quantity setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("value", this.value);
+        jsonWriter.writeStringField("comparator", this.comparator);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("system", this.system);
+        jsonWriter.writeStringField("code", this.code);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4Quantity from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4Quantity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FhirR4Quantity.
+     */
+    @Generated
+    public static FhirR4Quantity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirR4Quantity deserializedFhirR4Quantity = new FhirR4Quantity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedFhirR4Quantity.setId(reader.getString());
+                } else if ("extension".equals(fieldName)) {
+                    List<FhirR4Extension> extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                    deserializedFhirR4Quantity.setExtension(extension);
+                } else if ("value".equals(fieldName)) {
+                    deserializedFhirR4Quantity.value = reader.getNullable(JsonReader::getDouble);
+                } else if ("comparator".equals(fieldName)) {
+                    deserializedFhirR4Quantity.comparator = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedFhirR4Quantity.unit = reader.getString();
+                } else if ("system".equals(fieldName)) {
+                    deserializedFhirR4Quantity.system = reader.getString();
+                } else if ("code".equals(fieldName)) {
+                    deserializedFhirR4Quantity.code = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedFhirR4Quantity;
+        });
     }
 }

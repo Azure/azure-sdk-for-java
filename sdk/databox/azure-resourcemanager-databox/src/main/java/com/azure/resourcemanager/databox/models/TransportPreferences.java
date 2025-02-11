@@ -6,31 +6,37 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Preferences related to the shipment logistics of the sku. */
+/**
+ * Preferences related to the shipment logistics of the sku.
+ */
 @Fluent
-public final class TransportPreferences {
+public final class TransportPreferences implements JsonSerializable<TransportPreferences> {
     /*
      * Indicates Shipment Logistics type that the customer preferred.
      */
-    @JsonProperty(value = "preferredShipmentType", required = true)
     private TransportShipmentTypes preferredShipmentType;
 
     /*
      * Read only property which indicates whether transport preferences has been updated or not after device is
      * prepared.
      */
-    @JsonProperty(value = "isUpdated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isUpdated;
 
-    /** Creates an instance of TransportPreferences class. */
+    /**
+     * Creates an instance of TransportPreferences class.
+     */
     public TransportPreferences() {
     }
 
     /**
      * Get the preferredShipmentType property: Indicates Shipment Logistics type that the customer preferred.
-     *
+     * 
      * @return the preferredShipmentType value.
      */
     public TransportShipmentTypes preferredShipmentType() {
@@ -39,7 +45,7 @@ public final class TransportPreferences {
 
     /**
      * Set the preferredShipmentType property: Indicates Shipment Logistics type that the customer preferred.
-     *
+     * 
      * @param preferredShipmentType the preferredShipmentType value to set.
      * @return the TransportPreferences object itself.
      */
@@ -51,7 +57,7 @@ public final class TransportPreferences {
     /**
      * Get the isUpdated property: Read only property which indicates whether transport preferences has been updated or
      * not after device is prepared.
-     *
+     * 
      * @return the isUpdated value.
      */
     public Boolean isUpdated() {
@@ -60,17 +66,57 @@ public final class TransportPreferences {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (preferredShipmentType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property preferredShipmentType in model TransportPreferences"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property preferredShipmentType in model TransportPreferences"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TransportPreferences.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("preferredShipmentType",
+            this.preferredShipmentType == null ? null : this.preferredShipmentType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransportPreferences from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransportPreferences if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TransportPreferences.
+     */
+    public static TransportPreferences fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransportPreferences deserializedTransportPreferences = new TransportPreferences();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("preferredShipmentType".equals(fieldName)) {
+                    deserializedTransportPreferences.preferredShipmentType
+                        = TransportShipmentTypes.fromString(reader.getString());
+                } else if ("isUpdated".equals(fieldName)) {
+                    deserializedTransportPreferences.isUpdated = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransportPreferences;
+        });
+    }
 }

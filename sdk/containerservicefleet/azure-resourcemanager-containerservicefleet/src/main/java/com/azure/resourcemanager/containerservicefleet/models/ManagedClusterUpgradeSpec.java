@@ -6,23 +6,25 @@ package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The upgrade to apply to a ManagedCluster.
  */
 @Fluent
-public final class ManagedClusterUpgradeSpec {
+public final class ManagedClusterUpgradeSpec implements JsonSerializable<ManagedClusterUpgradeSpec> {
     /*
      * ManagedClusterUpgradeType is the type of upgrade to be applied.
      */
-    @JsonProperty(value = "type", required = true)
     private ManagedClusterUpgradeType type;
 
     /*
      * The Kubernetes version to upgrade the member clusters to.
      */
-    @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
 
     /**
@@ -84,4 +86,45 @@ public final class ManagedClusterUpgradeSpec {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterUpgradeSpec.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("kubernetesVersion", this.kubernetesVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterUpgradeSpec from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterUpgradeSpec if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedClusterUpgradeSpec.
+     */
+    public static ManagedClusterUpgradeSpec fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterUpgradeSpec deserializedManagedClusterUpgradeSpec = new ManagedClusterUpgradeSpec();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedManagedClusterUpgradeSpec.type
+                        = ManagedClusterUpgradeType.fromString(reader.getString());
+                } else if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedManagedClusterUpgradeSpec.kubernetesVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterUpgradeSpec;
+        });
+    }
 }

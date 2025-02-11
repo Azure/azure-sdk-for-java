@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for NetworkFabrics GetTopology. */
+/**
+ * Samples for NetworkFabrics GetTopology.
+ */
 public final class NetworkFabricsGetTopologySamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkFabrics_GetTopology_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkFabrics_GetTopology_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkFabrics_GetTopology_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkFabricsGetTopologyMaximumSetGen(

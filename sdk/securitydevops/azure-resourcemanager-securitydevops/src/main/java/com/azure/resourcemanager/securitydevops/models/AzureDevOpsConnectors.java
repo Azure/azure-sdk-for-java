@@ -44,8 +44,8 @@ public interface AzureDevOpsConnectors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<AzureDevOpsConnector> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context);
+    Response<AzureDevOpsConnector> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureDevOpsConnectorName, Context context);
 
     /**
      * Returns a monitored AzureDevOps Connector resource for a given ID.

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.loganalytics.models.AzureResourceProperties;
 public final class AzureResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureResourceProperties model =
-            BinaryData
-                .fromString("{\"id\":\"sxlzevgbmqj\",\"name\":\"bcypmi\",\"type\":\"w\"}")
+        AzureResourceProperties model
+            = BinaryData.fromString("{\"id\":\"sxlzevgbmqj\",\"name\":\"bcypmi\",\"type\":\"w\"}")
                 .toObject(AzureResourceProperties.class);
     }
 

@@ -185,15 +185,11 @@ public class CallRecording {
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> downloadToWithResponse(String sourceEndpoint,
-                                                 OutputStream destinationStream,
-                                                 HttpRange httpRange,
-                                                 Context context) {
+    public Response<Void> downloadToWithResponse(String sourceEndpoint, OutputStream destinationStream,
+        HttpRange httpRange, Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
-        return callRecordingAsync
-            .downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, context)
-            .block();
+        return callRecordingAsync.downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, context).block();
     }
 
     /**
@@ -232,8 +228,7 @@ public class CallRecording {
      * @param destinationPath - File location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceEndpoint,
-                           Path destinationPath) {
+    public void downloadTo(String sourceEndpoint, Path destinationPath) {
         DownloadToFileOptions options = new DownloadToFileOptions();
         downloadToWithResponse(sourceEndpoint, destinationPath, options, null);
     }
@@ -249,14 +244,12 @@ public class CallRecording {
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> downloadToWithResponse(String sourceEndpoint,
-                                                 Path destinationPath,
-                                                 DownloadToFileOptions options,
-                                                 final Context context) {
+    public Response<Void> downloadToWithResponse(String sourceEndpoint, Path destinationPath,
+        DownloadToFileOptions options, final Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
-        return callRecordingAsync.downloadToWithResponseInternal(sourceEndpoint, destinationPath,
-            options, context).block();
+        return callRecordingAsync.downloadToWithResponseInternal(sourceEndpoint, destinationPath, options, context)
+            .block();
     }
 
     /**

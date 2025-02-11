@@ -9,6 +9,7 @@ import com.azure.resourcemanager.sphere.fluent.models.CertificateInner;
 import com.azure.resourcemanager.sphere.models.CertificateListResult;
 import com.azure.resourcemanager.sphere.models.CertificateProperties;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class CertificateListResultTests {
     @org.junit.jupiter.api.Test
@@ -16,14 +17,18 @@ public final class CertificateListResultTests {
         CertificateListResult model = BinaryData.fromString(
             "{\"value\":[{\"properties\":{\"certificate\":\"v\",\"status\":\"Inactive\",\"subject\":\"ihnhun\",\"thumbprint\":\"wjzrnfygxgisp\",\"expiryUtc\":\"2021-05-03T11:09:18Z\",\"notBeforeUtc\":\"2021-01-12T09:11:57Z\",\"provisioningState\":\"Accepted\"},\"id\":\"fublj\",\"name\":\"fxqeof\",\"type\":\"aeqjhqjbasvms\"},{\"properties\":{\"certificate\":\"ulngsntn\",\"status\":\"Expired\",\"subject\":\"zgcwrw\",\"thumbprint\":\"xxwr\",\"expiryUtc\":\"2021-07-19T21:40:35Z\",\"notBeforeUtc\":\"2021-04-09T18:31:52Z\",\"provisioningState\":\"Canceled\"},\"id\":\"qvkoc\",\"name\":\"cjdkwtnhxbnjbi\",\"type\":\"sqrglssainq\"},{\"properties\":{\"certificate\":\"nzl\",\"status\":\"Inactive\",\"subject\":\"ppeebvmgxsab\",\"thumbprint\":\"qduujitcjczdz\",\"expiryUtc\":\"2021-11-12T14:41:45Z\",\"notBeforeUtc\":\"2021-05-08T08:52:13Z\",\"provisioningState\":\"Deleting\"},\"id\":\"pdappds\",\"name\":\"dkvwrwjfe\",\"type\":\"snhu\"}],\"nextLink\":\"eltmrldhugjzzdat\"}")
             .toObject(CertificateListResult.class);
+        Assertions.assertEquals("eltmrldhugjzzdat", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateListResult model = new CertificateListResult()
-            .withValue(Arrays.asList(new CertificateInner().withProperties(new CertificateProperties()),
-                new CertificateInner().withProperties(new CertificateProperties()),
-                new CertificateInner().withProperties(new CertificateProperties())));
+        CertificateListResult model
+            = new CertificateListResult()
+                .withValue(Arrays.asList(new CertificateInner().withProperties(new CertificateProperties()),
+                    new CertificateInner().withProperties(new CertificateProperties()),
+                    new CertificateInner().withProperties(new CertificateProperties())))
+                .withNextLink("eltmrldhugjzzdat");
         model = BinaryData.fromObject(model).toObject(CertificateListResult.class);
+        Assertions.assertEquals("eltmrldhugjzzdat", model.nextLink());
     }
 }

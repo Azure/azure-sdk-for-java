@@ -14,12 +14,12 @@ import java.util.Collection;
  */
 public final class OperatingSystemTypes extends ExpandableStringEnum<OperatingSystemTypes> {
     /**
-     * Static value Windows for OperatingSystemTypes.
+     * Windows OS type.
      */
     public static final OperatingSystemTypes WINDOWS = fromString("Windows");
 
     /**
-     * Static value Linux for OperatingSystemTypes.
+     * Linux OS type.
      */
     public static final OperatingSystemTypes LINUX = fromString("Linux");
 

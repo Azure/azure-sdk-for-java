@@ -15,8 +15,7 @@ public final class SapAvailabilityZoneDetailsResultImpl implements SapAvailabili
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    SapAvailabilityZoneDetailsResultImpl(
-        SapAvailabilityZoneDetailsResultInner innerObject,
+    SapAvailabilityZoneDetailsResultImpl(SapAvailabilityZoneDetailsResultInner innerObject,
         com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ReservationToReturnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationToReturn model =
-            BinaryData
-                .fromString("{\"reservationId\":\"rxv\",\"quantity\":76468143}")
+        ReservationToReturn model
+            = BinaryData.fromString("{\"reservationId\":\"pukgriwflzlfb\",\"quantity\":599393599}")
                 .toObject(ReservationToReturn.class);
-        Assertions.assertEquals("rxv", model.reservationId());
-        Assertions.assertEquals(76468143, model.quantity());
+        Assertions.assertEquals("pukgriwflzlfb", model.reservationId());
+        Assertions.assertEquals(599393599, model.quantity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReservationToReturn model = new ReservationToReturn().withReservationId("rxv").withQuantity(76468143);
+        ReservationToReturn model
+            = new ReservationToReturn().withReservationId("pukgriwflzlfb").withQuantity(599393599);
         model = BinaryData.fromObject(model).toObject(ReservationToReturn.class);
-        Assertions.assertEquals("rxv", model.reservationId());
-        Assertions.assertEquals(76468143, model.quantity());
+        Assertions.assertEquals("pukgriwflzlfb", model.reservationId());
+        Assertions.assertEquals(599393599, model.quantity());
     }
 }

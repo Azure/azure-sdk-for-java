@@ -102,10 +102,12 @@ public class BatchApiTests extends BlobBatchTestBase {
         String blobName2 = generateBlobName();
         BlobBatch batch = batchClient.getBlobBatch();
         BlobContainerClient containerClient = primaryBlobServiceClient.createBlobContainer(containerName);
-        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize());
-        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize());
+        containerClient.getBlobClient(blobName1)
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        containerClient.getBlobClient(blobName2)
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
         Response<Void> response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT);
         Response<Void> response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.COOL);
@@ -127,8 +129,8 @@ public class BatchApiTests extends BlobBatchTestBase {
         blobClient1.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         blobClient1.setAccessTier(AccessTier.ARCHIVE);
 
-        Response<Void> response1 = batch.setBlobAccessTier(
-            new BlobBatchSetBlobAccessTierOptions(blobClient1.getBlobUrl(), AccessTier.HOT)
+        Response<Void> response1
+            = batch.setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(blobClient1.getBlobUrl(), AccessTier.HOT)
                 .setPriority(rehydratePriority));
         batchClient.submitBatch(batch);
 
@@ -150,20 +152,18 @@ public class BatchApiTests extends BlobBatchTestBase {
         blobClient1.getBlockBlobClient().upload(DATA.getDefaultBinaryData());
         blobClient1.setTags(Collections.singletonMap("foo", "bar"));
 
-        Response<Void> response1 = batch.setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(
-            blobClient1.getBlobUrl(), AccessTier.HOT)
-            .setLeaseId(setupBlobLeaseCondition(blobClient1, leaseId)).setTagsConditions(tags));
+        Response<Void> response1
+            = batch.setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(blobClient1.getBlobUrl(), AccessTier.HOT)
+                .setLeaseId(setupBlobLeaseCondition(blobClient1, leaseId))
+                .setTagsConditions(tags));
         batchClient.submitBatch(batch);
 
         assertEquals(200, response1.getStatusCode());
     }
 
     private static Stream<Arguments> setTierAcSupplier() {
-        return Stream.of(
-            Arguments.of(null, null),
-            Arguments.of(RECEIVED_LEASE_ID, null),
-            Arguments.of(null, "\"foo\" = 'bar'")
-        );
+        return Stream.of(Arguments.of(null, null), Arguments.of(RECEIVED_LEASE_ID, null),
+            Arguments.of(null, "\"foo\" = 'bar'"));
     }
 
     @ParameterizedTest
@@ -174,12 +174,12 @@ public class BatchApiTests extends BlobBatchTestBase {
         BlobClient blobClient1 = containerClient.getBlobClient(generateBlobName());
         blobClient1.getBlockBlobClient().upload(DATA.getDefaultBinaryData());
 
-        batch.setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(blobClient1.getBlobUrl(), AccessTier.HOT)
-            .setLeaseId(leaseId).setTagsConditions(tags));
+        batch.setBlobAccessTier(
+            new BlobBatchSetBlobAccessTierOptions(blobClient1.getBlobUrl(), AccessTier.HOT).setLeaseId(leaseId)
+                .setTagsConditions(tags));
 
         assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
     }
-
 
     // Ensures errors in the batch using BlobBatchAsyncClient are emitted as onError and are not thrown.
     @ParameterizedTest
@@ -190,8 +190,9 @@ public class BatchApiTests extends BlobBatchTestBase {
         BlobClient blobClient1 = containerClient.getBlobClient(generateBlobName());
         blobClient1.getBlockBlobClient().upload(DATA.getDefaultBinaryData());
 
-        batch.setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(blobClient1.getBlobUrl(), AccessTier.HOT)
-            .setLeaseId(leaseId).setTagsConditions(tags));
+        batch.setBlobAccessTier(
+            new BlobBatchSetBlobAccessTierOptions(blobClient1.getBlobUrl(), AccessTier.HOT).setLeaseId(leaseId)
+                .setTagsConditions(tags));
 
         StepVerifier.create(batchAsyncClient.submitBatch(batch))
             .expectError(BlobBatchStorageException.class)
@@ -278,8 +279,8 @@ public class BatchApiTests extends BlobBatchTestBase {
         Response<Void> response1 = batch.setBlobAccessTier(containerName, generateBlobName(), AccessTier.HOT);
         Response<Void> response2 = batch.setBlobAccessTier(containerName, generateBlobName(), AccessTier.COOL);
 
-        BlobBatchStorageException ex = assertThrows(BlobBatchStorageException.class,
-            () -> batchClient.submitBatch(batch));
+        BlobBatchStorageException ex
+            = assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
         assertEquals(2, getIterableSize(ex.getBatchExceptions()));
         assertThrows(BlobStorageException.class, response1::getStatusCode);
         assertThrows(BlobStorageException.class, response2::getStatusCode);
@@ -369,8 +370,8 @@ public class BatchApiTests extends BlobBatchTestBase {
         Response<Void> response1 = batch.deleteBlob(containerName, generateBlobName());
         Response<Void> response2 = batch.deleteBlob(containerName, generateBlobName());
 
-        BlobBatchStorageException ex = assertThrows(BlobBatchStorageException.class,
-            () -> batchClient.submitBatch(batch));
+        BlobBatchStorageException ex
+            = assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
         assertEquals(2, getIterableSize(ex.getBatchExceptions()));
         assertThrows(BlobStorageException.class, response1::getStatusCode);
         assertThrows(BlobStorageException.class, response2::getStatusCode);
@@ -409,7 +410,8 @@ public class BatchApiTests extends BlobBatchTestBase {
         }
 
         List<Response<Void>> responseList = batchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE)
-            .stream().collect(Collectors.toList());
+            .stream()
+            .collect(Collectors.toList());
 
         assertEquals(10, responseList.size());
         for (Response<Void> response : responseList) {
@@ -427,8 +429,8 @@ public class BatchApiTests extends BlobBatchTestBase {
             blobUrls.add(blockBlobClient.getBlobUrl());
         }
 
-        List<Response<Void>> responseList = batchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).stream()
-            .collect(Collectors.toList());
+        List<Response<Void>> responseList
+            = batchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).stream().collect(Collectors.toList());
 
         assertEquals(10, responseList.size());
         for (Response<Void> response : responseList) {
@@ -444,8 +446,8 @@ public class BatchApiTests extends BlobBatchTestBase {
         BlobClientBase snapClient = blobClient.createSnapshot();
 
         List<String> blobUrls = Collections.singletonList(snapClient.getBlobUrl());
-        List<Response<Void>> responseList = batchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).stream()
-            .collect(Collectors.toList());
+        List<Response<Void>> responseList
+            = batchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).stream().collect(Collectors.toList());
 
         assertEquals(1, responseList.size());
         assertEquals(200, responseList.get(0).getStatusCode());
@@ -461,10 +463,10 @@ public class BatchApiTests extends BlobBatchTestBase {
         BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available());
         blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true);
 
-        List<String> blobUrls = Collections.singletonList(blobClient.getVersionClient(blobItemV1.getVersionId())
-            .getBlobUrl());
-        List<Response<Void>> responseList = batchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).stream()
-            .collect(Collectors.toList());
+        List<String> blobUrls
+            = Collections.singletonList(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl());
+        List<Response<Void>> responseList
+            = batchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).stream().collect(Collectors.toList());
 
         assertEquals(1, responseList.size());
         assertEquals(200, responseList.get(0).getStatusCode());
@@ -542,20 +544,16 @@ public class BatchApiTests extends BlobBatchTestBase {
         containerClient.getBlobClient(blobName2).getPageBlobClient().create(0);
 
         AccountSasService service = new AccountSasService().setBlobAccess(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setService(true)
-            .setObject(true);
-        AccountSasPermission permissions = new AccountSasPermission()
-            .setReadPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true);
-        AccountSasSignatureValues sasValues = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1),
-            permissions, service, resourceType);
+        AccountSasResourceType resourceType
+            = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
+        AccountSasPermission permissions
+            = new AccountSasPermission().setReadPermission(true).setCreatePermission(true).setDeletePermission(true);
+        AccountSasSignatureValues sasValues
+            = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions, service, resourceType);
 
-        BlobBatchClient batchClient = new BlobBatchClientBuilder(getServiceClient(
-            primaryBlobServiceClient.generateAccountSas(sasValues), primaryBlobServiceClient.getAccountUrl()))
-            .buildClient();
+        BlobBatchClient batchClient
+            = new BlobBatchClientBuilder(getServiceClient(primaryBlobServiceClient.generateAccountSas(sasValues),
+                primaryBlobServiceClient.getAccountUrl())).buildClient();
 
         BlobBatch batch = batchClient.getBlobBatch();
         Response<Void> response1 = batch.deleteBlob(containerName, blobName1);
@@ -577,26 +575,24 @@ public class BatchApiTests extends BlobBatchTestBase {
         containerClient.getBlobClient(blobName2).getPageBlobClient().create(0);
 
         AccountSasService service = new AccountSasService().setBlobAccess(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setService(true)
-            .setObject(true);
+        AccountSasResourceType resourceType
+            = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
         AccountSasPermission permissions = new AccountSasPermission() // No delete permission
             .setReadPermission(true)
             .setCreatePermission(true);
-        AccountSasSignatureValues sasValues = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1),
-            permissions, service, resourceType);
+        AccountSasSignatureValues sasValues
+            = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions, service, resourceType);
 
-        BlobBatchClient batchClient = new BlobBatchClientBuilder(getServiceClient(
-            primaryBlobServiceClient.generateAccountSas(sasValues), primaryBlobServiceClient.getAccountUrl()))
-            .buildClient();
+        BlobBatchClient batchClient
+            = new BlobBatchClientBuilder(getServiceClient(primaryBlobServiceClient.generateAccountSas(sasValues),
+                primaryBlobServiceClient.getAccountUrl())).buildClient();
 
         BlobBatch batch = batchClient.getBlobBatch();
         batch.deleteBlob(containerName, blobName1);
         batch.deleteBlob(containerName, blobName2);
 
-        BlobBatchStorageException ex = assertThrows(BlobBatchStorageException.class,
-            () -> batchClient.submitBatch(batch));
+        BlobBatchStorageException ex
+            = assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
         assertEquals(2, getIterableSize(ex.getBatchExceptions()));
     }
 
@@ -729,8 +725,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         containerClient.getBlobClient(blobName1).getPageBlobClient().create(0);
         containerClient.getBlobClient(blobName2).getPageBlobClient().create(0);
 
-        BlobContainerSasPermission permission = new BlobContainerSasPermission()
-            .setReadPermission(true)
+        BlobContainerSasPermission permission = new BlobContainerSasPermission().setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
@@ -738,19 +733,19 @@ public class BatchApiTests extends BlobBatchTestBase {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true);
-        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            permission)
-            .setStartTime(testResourceNamer.now().minusDays(1))
-            .setProtocol(SasProtocol.HTTPS_HTTP)
-            .setCacheControl("cache")
-            .setContentDisposition("disposition")
-            .setContentEncoding("encoding")
-            .setContentLanguage("language")
-            .setContentType("type");
+        BlobServiceSasSignatureValues sasValues
+            = new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permission)
+                .setStartTime(testResourceNamer.now().minusDays(1))
+                .setProtocol(SasProtocol.HTTPS_HTTP)
+                .setCacheControl("cache")
+                .setContentDisposition("disposition")
+                .setContentEncoding("encoding")
+                .setContentLanguage("language")
+                .setContentType("type");
 
         BlobBatchClient batchClient = new BlobBatchClientBuilder(
             getContainerClient(containerClient.generateSas(sasValues), containerClient.getBlobContainerUrl()))
-            .buildClient();
+                .buildClient();
 
         BlobBatch batch = batchClient.getBlobBatch();
 
@@ -777,26 +772,26 @@ public class BatchApiTests extends BlobBatchTestBase {
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true);
-        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            permission)
-            .setStartTime(testResourceNamer.now().minusDays(1))
-            .setProtocol(SasProtocol.HTTPS_HTTP)
-            .setCacheControl("cache")
-            .setContentDisposition("disposition")
-            .setContentEncoding("encoding")
-            .setContentLanguage("language")
-            .setContentType("type");
+        BlobServiceSasSignatureValues sasValues
+            = new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permission)
+                .setStartTime(testResourceNamer.now().minusDays(1))
+                .setProtocol(SasProtocol.HTTPS_HTTP)
+                .setCacheControl("cache")
+                .setContentDisposition("disposition")
+                .setContentEncoding("encoding")
+                .setContentLanguage("language")
+                .setContentType("type");
 
         BlobBatchClient batchClient = new BlobBatchClientBuilder(
             getContainerClient(containerClient.generateSas(sasValues), containerClient.getBlobContainerUrl()))
-            .buildClient();
+                .buildClient();
 
         BlobBatch batch = batchClient.getBlobBatch();
         batch.deleteBlob(containerName, blobName1);
         batch.deleteBlob(containerName, blobName2);
 
-        BlobBatchStorageException ex = assertThrows(BlobBatchStorageException.class,
-            () -> batchClient.submitBatch(batch));
+        BlobBatchStorageException ex
+            = assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
         assertEquals(2, getIterableSize(ex.getBatchExceptions()));
     }
 }

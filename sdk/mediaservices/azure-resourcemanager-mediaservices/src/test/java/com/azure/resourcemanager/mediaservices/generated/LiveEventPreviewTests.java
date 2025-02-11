@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mediaservices.models.IpAccessControl;
+import com.azure.resourcemanager.mediaservices.models.IpRange;
 import com.azure.resourcemanager.mediaservices.models.LiveEventEndpoint;
 import com.azure.resourcemanager.mediaservices.models.LiveEventPreview;
 import com.azure.resourcemanager.mediaservices.models.LiveEventPreviewAccessControl;
@@ -15,38 +16,45 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventPreviewTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventPreview model =
-            BinaryData
-                .fromString(
-                    "{\"endpoints\":[{\"protocol\":\"gj\",\"url\":\"bldtlww\"},{\"protocol\":\"kdmtncvokotll\",\"url\":\"yhgsy\"},{\"protocol\":\"ogjltdtbnnhad\",\"url\":\"crkvcikhnv\"}],\"accessControl\":{\"ip\":{\"allow\":[]}},\"previewLocator\":\"qqu\",\"streamingPolicyName\":\"ik\",\"alternativeMediaId\":\"ggxkallatmelwuip\"}")
-                .toObject(LiveEventPreview.class);
-        Assertions.assertEquals("gj", model.endpoints().get(0).protocol());
-        Assertions.assertEquals("bldtlww", model.endpoints().get(0).url());
-        Assertions.assertEquals("qqu", model.previewLocator());
-        Assertions.assertEquals("ik", model.streamingPolicyName());
-        Assertions.assertEquals("ggxkallatmelwuip", model.alternativeMediaId());
+        LiveEventPreview model = BinaryData.fromString(
+            "{\"endpoints\":[{\"protocol\":\"stawfsdjpvkv\",\"url\":\"jxbkzbzkdvn\"},{\"protocol\":\"abudurgk\",\"url\":\"mokzhjjklf\"},{\"protocol\":\"mouwqlgzrfzeey\",\"url\":\"izikayuhq\"}],\"accessControl\":{\"ip\":{\"allow\":[{\"name\":\"bbqwrvtldg\",\"address\":\"pgvmpipaslthaqfx\",\"subnetPrefixLength\":400254725},{\"name\":\"u\",\"address\":\"bdsrez\",\"subnetPrefixLength\":187520251}]}},\"previewLocator\":\"neuyow\",\"streamingPolicyName\":\"d\",\"alternativeMediaId\":\"t\"}")
+            .toObject(LiveEventPreview.class);
+        Assertions.assertEquals("stawfsdjpvkv", model.endpoints().get(0).protocol());
+        Assertions.assertEquals("jxbkzbzkdvn", model.endpoints().get(0).url());
+        Assertions.assertEquals("bbqwrvtldg", model.accessControl().ip().allow().get(0).name());
+        Assertions.assertEquals("pgvmpipaslthaqfx", model.accessControl().ip().allow().get(0).address());
+        Assertions.assertEquals(400254725, model.accessControl().ip().allow().get(0).subnetPrefixLength());
+        Assertions.assertEquals("neuyow", model.previewLocator());
+        Assertions.assertEquals("d", model.streamingPolicyName());
+        Assertions.assertEquals("t", model.alternativeMediaId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventPreview model =
-            new LiveEventPreview()
+        LiveEventPreview model
+            = new LiveEventPreview()
                 .withEndpoints(
-                    Arrays
-                        .asList(
-                            new LiveEventEndpoint().withProtocol("gj").withUrl("bldtlww"),
-                            new LiveEventEndpoint().withProtocol("kdmtncvokotll").withUrl("yhgsy"),
-                            new LiveEventEndpoint().withProtocol("ogjltdtbnnhad").withUrl("crkvcikhnv")))
+                    Arrays.asList(new LiveEventEndpoint().withProtocol("stawfsdjpvkv").withUrl("jxbkzbzkdvn"),
+                        new LiveEventEndpoint().withProtocol("abudurgk")
+                            .withUrl("mokzhjjklf"),
+                        new LiveEventEndpoint().withProtocol("mouwqlgzrfzeey").withUrl("izikayuhq")))
                 .withAccessControl(
-                    new LiveEventPreviewAccessControl().withIp(new IpAccessControl().withAllow(Arrays.asList())))
-                .withPreviewLocator("qqu")
-                .withStreamingPolicyName("ik")
-                .withAlternativeMediaId("ggxkallatmelwuip");
+                    new LiveEventPreviewAccessControl().withIp(new IpAccessControl().withAllow(Arrays.asList(
+                        new IpRange().withName("bbqwrvtldg")
+                            .withAddress("pgvmpipaslthaqfx")
+                            .withSubnetPrefixLength(400254725),
+                        new IpRange().withName("u").withAddress("bdsrez").withSubnetPrefixLength(187520251)))))
+                .withPreviewLocator("neuyow")
+                .withStreamingPolicyName("d")
+                .withAlternativeMediaId("t");
         model = BinaryData.fromObject(model).toObject(LiveEventPreview.class);
-        Assertions.assertEquals("gj", model.endpoints().get(0).protocol());
-        Assertions.assertEquals("bldtlww", model.endpoints().get(0).url());
-        Assertions.assertEquals("qqu", model.previewLocator());
-        Assertions.assertEquals("ik", model.streamingPolicyName());
-        Assertions.assertEquals("ggxkallatmelwuip", model.alternativeMediaId());
+        Assertions.assertEquals("stawfsdjpvkv", model.endpoints().get(0).protocol());
+        Assertions.assertEquals("jxbkzbzkdvn", model.endpoints().get(0).url());
+        Assertions.assertEquals("bbqwrvtldg", model.accessControl().ip().allow().get(0).name());
+        Assertions.assertEquals("pgvmpipaslthaqfx", model.accessControl().ip().allow().get(0).address());
+        Assertions.assertEquals(400254725, model.accessControl().ip().allow().get(0).subnetPrefixLength());
+        Assertions.assertEquals("neuyow", model.previewLocator());
+        Assertions.assertEquals("d", model.streamingPolicyName());
+        Assertions.assertEquals("t", model.alternativeMediaId());
     }
 }

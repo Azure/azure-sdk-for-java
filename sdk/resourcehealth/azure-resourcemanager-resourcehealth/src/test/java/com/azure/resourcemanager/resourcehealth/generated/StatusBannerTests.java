@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StatusBannerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StatusBanner model =
-            BinaryData
-                .fromString(
-                    "{\"title\":\"qmqhldvriii\",\"message\":\"nalghfkvtvsexso\",\"cloud\":\"el\",\"lastModifiedTime\":\"2021-11-06T19:32:24Z\"}")
-                .toObject(StatusBanner.class);
+        StatusBanner model = BinaryData.fromString(
+            "{\"title\":\"qmqhldvriii\",\"message\":\"nalghfkvtvsexso\",\"cloud\":\"el\",\"lastModifiedTime\":\"2021-11-06T19:32:24Z\"}")
+            .toObject(StatusBanner.class);
         Assertions.assertEquals("qmqhldvriii", model.title());
         Assertions.assertEquals("nalghfkvtvsexso", model.message());
         Assertions.assertEquals("el", model.cloud());
@@ -25,12 +23,10 @@ public final class StatusBannerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StatusBanner model =
-            new StatusBanner()
-                .withTitle("qmqhldvriii")
-                .withMessage("nalghfkvtvsexso")
-                .withCloud("el")
-                .withLastModifiedTime(OffsetDateTime.parse("2021-11-06T19:32:24Z"));
+        StatusBanner model = new StatusBanner().withTitle("qmqhldvriii")
+            .withMessage("nalghfkvtvsexso")
+            .withCloud("el")
+            .withLastModifiedTime(OffsetDateTime.parse("2021-11-06T19:32:24Z"));
         model = BinaryData.fromObject(model).toObject(StatusBanner.class);
         Assertions.assertEquals("qmqhldvriii", model.title());
         Assertions.assertEquals("nalghfkvtvsexso", model.message());

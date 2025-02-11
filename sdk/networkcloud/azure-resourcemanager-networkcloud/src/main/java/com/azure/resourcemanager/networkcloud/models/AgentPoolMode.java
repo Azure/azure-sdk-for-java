@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,18 +13,24 @@ import java.util.Collection;
  * Kubernetes cluster must contain at least one system node pool with at least one node.
  */
 public final class AgentPoolMode extends ExpandableStringEnum<AgentPoolMode> {
-    /** Static value System for AgentPoolMode. */
+    /**
+     * Static value System for AgentPoolMode.
+     */
     public static final AgentPoolMode SYSTEM = fromString("System");
 
-    /** Static value User for AgentPoolMode. */
+    /**
+     * Static value User for AgentPoolMode.
+     */
     public static final AgentPoolMode USER = fromString("User");
 
-    /** Static value NotApplicable for AgentPoolMode. */
+    /**
+     * Static value NotApplicable for AgentPoolMode.
+     */
     public static final AgentPoolMode NOT_APPLICABLE = fromString("NotApplicable");
 
     /**
      * Creates a new instance of AgentPoolMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +39,17 @@ public final class AgentPoolMode extends ExpandableStringEnum<AgentPoolMode> {
 
     /**
      * Creates or finds a AgentPoolMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgentPoolMode.
      */
-    @JsonCreator
     public static AgentPoolMode fromString(String name) {
         return fromString(name, AgentPoolMode.class);
     }
 
     /**
      * Gets known AgentPoolMode values.
-     *
+     * 
      * @return known AgentPoolMode values.
      */
     public static Collection<AgentPoolMode> values() {

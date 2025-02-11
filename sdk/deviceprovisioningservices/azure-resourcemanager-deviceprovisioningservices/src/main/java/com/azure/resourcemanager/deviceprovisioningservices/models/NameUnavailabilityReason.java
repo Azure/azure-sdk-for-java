@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NameUnavailabilityReason. */
+/**
+ * specifies the reason a name is unavailable.
+ */
 public final class NameUnavailabilityReason extends ExpandableStringEnum<NameUnavailabilityReason> {
-    /** Static value Invalid for NameUnavailabilityReason. */
+    /**
+     * Static value Invalid for NameUnavailabilityReason.
+     */
     public static final NameUnavailabilityReason INVALID = fromString("Invalid");
 
-    /** Static value AlreadyExists for NameUnavailabilityReason. */
+    /**
+     * Static value AlreadyExists for NameUnavailabilityReason.
+     */
     public static final NameUnavailabilityReason ALREADY_EXISTS = fromString("AlreadyExists");
 
     /**
+     * Creates a new instance of NameUnavailabilityReason value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NameUnavailabilityReason() {
+    }
+
+    /**
      * Creates or finds a NameUnavailabilityReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NameUnavailabilityReason.
      */
-    @JsonCreator
     public static NameUnavailabilityReason fromString(String name) {
         return fromString(name, NameUnavailabilityReason.class);
     }
 
     /**
      * Gets known NameUnavailabilityReason values.
-     *
+     * 
      * @return known NameUnavailabilityReason values.
      */
     public static Collection<NameUnavailabilityReason> values() {

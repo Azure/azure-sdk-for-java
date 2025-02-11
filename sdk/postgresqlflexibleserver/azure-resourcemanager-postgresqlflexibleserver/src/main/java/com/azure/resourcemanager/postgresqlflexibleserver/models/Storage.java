@@ -5,47 +5,46 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Storage properties of a server.
  */
 @Fluent
-public final class Storage {
+public final class Storage implements JsonSerializable<Storage> {
     /*
      * Max storage allowed for a server.
      */
-    @JsonProperty(value = "storageSizeGB")
     private Integer storageSizeGB;
 
     /*
      * Flag to enable / disable Storage Auto grow for flexible server.
      */
-    @JsonProperty(value = "autoGrow")
     private StorageAutoGrow autoGrow;
 
     /*
      * Name of storage tier for IOPS.
      */
-    @JsonProperty(value = "tier")
     private AzureManagedDiskPerformanceTiers tier;
 
     /*
      * Storage tier IOPS quantity. This property is required to be set for storage Type PremiumV2_LRS
      */
-    @JsonProperty(value = "iops")
     private Integer iops;
 
     /*
      * Storage throughput for the server. This is required to be set for storage Type PremiumV2_LRS
      */
-    @JsonProperty(value = "throughput")
     private Integer throughput;
 
     /*
-     * Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default is Premium_LRS if not specified
+     * Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default is Premium_LRS if not
+     * specified
      */
-    @JsonProperty(value = "type")
     private StorageType type;
 
     /**
@@ -186,5 +185,56 @@ public final class Storage {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("storageSizeGB", this.storageSizeGB);
+        jsonWriter.writeStringField("autoGrow", this.autoGrow == null ? null : this.autoGrow.toString());
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeNumberField("iops", this.iops);
+        jsonWriter.writeNumberField("throughput", this.throughput);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Storage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Storage if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Storage.
+     */
+    public static Storage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Storage deserializedStorage = new Storage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageSizeGB".equals(fieldName)) {
+                    deserializedStorage.storageSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("autoGrow".equals(fieldName)) {
+                    deserializedStorage.autoGrow = StorageAutoGrow.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedStorage.tier = AzureManagedDiskPerformanceTiers.fromString(reader.getString());
+                } else if ("iops".equals(fieldName)) {
+                    deserializedStorage.iops = reader.getNullable(JsonReader::getInt);
+                } else if ("throughput".equals(fieldName)) {
+                    deserializedStorage.throughput = reader.getNullable(JsonReader::getInt);
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorage.type = StorageType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorage;
+        });
     }
 }

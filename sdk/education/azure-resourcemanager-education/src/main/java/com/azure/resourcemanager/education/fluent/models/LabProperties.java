@@ -5,81 +5,81 @@
 package com.azure.resourcemanager.education.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.education.models.LabStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Lab detail result properties. */
+/**
+ * Lab detail result properties.
+ */
 @Fluent
-public final class LabProperties {
+public final class LabProperties implements JsonSerializable<LabProperties> {
     /*
      * Lab Display Name
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Default monetary cap for each student in this lab
      */
-    @JsonProperty(value = "budgetPerStudent", required = true)
     private Amount budgetPerStudent;
 
     /*
      * Detail description of this lab
      */
-    @JsonProperty(value = "description", required = true)
     private String description;
 
     /*
      * Default expiration date for each student in this lab
      */
-    @JsonProperty(value = "expirationDate", required = true)
     private OffsetDateTime expirationDate;
 
     /*
      * Lab creation date
      */
-    @JsonProperty(value = "effectiveDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime effectiveDate;
 
     /*
      * The status of this lab
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private LabStatus status;
 
     /*
      * the total number of students that can be accepted to the lab.
      */
-    @JsonProperty(value = "maxStudentCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float maxStudentCount;
 
     /*
      * invitation code for redeemable lab
      */
-    @JsonProperty(value = "invitationCode", access = JsonProperty.Access.WRITE_ONLY)
     private String invitationCode;
 
     /*
      * Total budget
      */
-    @JsonProperty(value = "totalBudget", access = JsonProperty.Access.WRITE_ONLY)
     private Amount innerTotalBudget;
 
     /*
      * Total allocated budget
      */
-    @JsonProperty(value = "totalAllocatedBudget", access = JsonProperty.Access.WRITE_ONLY)
     private Amount innerTotalAllocatedBudget;
 
-    /** Creates an instance of LabProperties class. */
+    /**
+     * Creates an instance of LabProperties class.
+     */
     public LabProperties() {
     }
 
     /**
      * Get the displayName property: Lab Display Name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -88,7 +88,7 @@ public final class LabProperties {
 
     /**
      * Set the displayName property: Lab Display Name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the LabProperties object itself.
      */
@@ -99,7 +99,7 @@ public final class LabProperties {
 
     /**
      * Get the budgetPerStudent property: Default monetary cap for each student in this lab.
-     *
+     * 
      * @return the budgetPerStudent value.
      */
     public Amount budgetPerStudent() {
@@ -108,7 +108,7 @@ public final class LabProperties {
 
     /**
      * Set the budgetPerStudent property: Default monetary cap for each student in this lab.
-     *
+     * 
      * @param budgetPerStudent the budgetPerStudent value to set.
      * @return the LabProperties object itself.
      */
@@ -119,7 +119,7 @@ public final class LabProperties {
 
     /**
      * Get the description property: Detail description of this lab.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -128,7 +128,7 @@ public final class LabProperties {
 
     /**
      * Set the description property: Detail description of this lab.
-     *
+     * 
      * @param description the description value to set.
      * @return the LabProperties object itself.
      */
@@ -139,7 +139,7 @@ public final class LabProperties {
 
     /**
      * Get the expirationDate property: Default expiration date for each student in this lab.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -148,7 +148,7 @@ public final class LabProperties {
 
     /**
      * Set the expirationDate property: Default expiration date for each student in this lab.
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the LabProperties object itself.
      */
@@ -159,7 +159,7 @@ public final class LabProperties {
 
     /**
      * Get the effectiveDate property: Lab creation date.
-     *
+     * 
      * @return the effectiveDate value.
      */
     public OffsetDateTime effectiveDate() {
@@ -168,7 +168,7 @@ public final class LabProperties {
 
     /**
      * Get the status property: The status of this lab.
-     *
+     * 
      * @return the status value.
      */
     public LabStatus status() {
@@ -177,7 +177,7 @@ public final class LabProperties {
 
     /**
      * Get the maxStudentCount property: the total number of students that can be accepted to the lab.
-     *
+     * 
      * @return the maxStudentCount value.
      */
     public Float maxStudentCount() {
@@ -186,7 +186,7 @@ public final class LabProperties {
 
     /**
      * Get the invitationCode property: invitation code for redeemable lab.
-     *
+     * 
      * @return the invitationCode value.
      */
     public String invitationCode() {
@@ -195,7 +195,7 @@ public final class LabProperties {
 
     /**
      * Get the innerTotalBudget property: Total budget.
-     *
+     * 
      * @return the innerTotalBudget value.
      */
     private Amount innerTotalBudget() {
@@ -204,7 +204,7 @@ public final class LabProperties {
 
     /**
      * Get the innerTotalAllocatedBudget property: Total allocated budget.
-     *
+     * 
      * @return the innerTotalAllocatedBudget value.
      */
     private Amount innerTotalAllocatedBudget() {
@@ -213,7 +213,7 @@ public final class LabProperties {
 
     /**
      * Get the currency property: The type of currency being used for the value.
-     *
+     * 
      * @return the currency value.
      */
     public String currency() {
@@ -222,7 +222,7 @@ public final class LabProperties {
 
     /**
      * Set the currency property: The type of currency being used for the value.
-     *
+     * 
      * @param currency the currency value to set.
      * @return the LabProperties object itself.
      */
@@ -236,7 +236,7 @@ public final class LabProperties {
 
     /**
      * Get the value property: Amount value.
-     *
+     * 
      * @return the value value.
      */
     public Float value() {
@@ -245,7 +245,7 @@ public final class LabProperties {
 
     /**
      * Set the value property: Amount value.
-     *
+     * 
      * @param value the value value to set.
      * @return the LabProperties object itself.
      */
@@ -259,7 +259,7 @@ public final class LabProperties {
 
     /**
      * Get the currency property: The type of currency being used for the value.
-     *
+     * 
      * @return the currency value.
      */
     public String currencyTotalAllocatedBudgetCurrency() {
@@ -268,7 +268,7 @@ public final class LabProperties {
 
     /**
      * Set the currency property: The type of currency being used for the value.
-     *
+     * 
      * @param currency the currency value to set.
      * @return the LabProperties object itself.
      */
@@ -282,7 +282,7 @@ public final class LabProperties {
 
     /**
      * Get the value property: Amount value.
-     *
+     * 
      * @return the value value.
      */
     public Float valueTotalAllocatedBudgetValue() {
@@ -291,7 +291,7 @@ public final class LabProperties {
 
     /**
      * Set the value property: Amount value.
-     *
+     * 
      * @param value the value value to set.
      * @return the LabProperties object itself.
      */
@@ -305,31 +305,27 @@ public final class LabProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property displayName in model LabProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property displayName in model LabProperties"));
         }
         if (budgetPerStudent() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property budgetPerStudent in model LabProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property budgetPerStudent in model LabProperties"));
         } else {
             budgetPerStudent().validate();
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property description in model LabProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property description in model LabProperties"));
         }
         if (expirationDate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property expirationDate in model LabProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property expirationDate in model LabProperties"));
         }
         if (innerTotalBudget() != null) {
             innerTotalBudget().validate();
@@ -340,4 +336,65 @@ public final class LabProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LabProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("budgetPerStudent", this.budgetPerStudent);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("expirationDate",
+            this.expirationDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LabProperties.
+     */
+    public static LabProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabProperties deserializedLabProperties = new LabProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedLabProperties.displayName = reader.getString();
+                } else if ("budgetPerStudent".equals(fieldName)) {
+                    deserializedLabProperties.budgetPerStudent = Amount.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedLabProperties.description = reader.getString();
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedLabProperties.expirationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("effectiveDate".equals(fieldName)) {
+                    deserializedLabProperties.effectiveDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedLabProperties.status = LabStatus.fromString(reader.getString());
+                } else if ("maxStudentCount".equals(fieldName)) {
+                    deserializedLabProperties.maxStudentCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("invitationCode".equals(fieldName)) {
+                    deserializedLabProperties.invitationCode = reader.getString();
+                } else if ("totalBudget".equals(fieldName)) {
+                    deserializedLabProperties.innerTotalBudget = Amount.fromJson(reader);
+                } else if ("totalAllocatedBudget".equals(fieldName)) {
+                    deserializedLabProperties.innerTotalAllocatedBudget = Amount.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabProperties;
+        });
+    }
 }

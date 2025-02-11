@@ -44,7 +44,8 @@ public final class TransactionalBatchImpl {
      * implementation client.
      */
     public TransactionalBatchImpl(AzureTableImpl client, SerializerAdapter transactionalBatchSerializer) {
-        this.service = RestProxy.create(TransactionalBatchService.class, client.getHttpPipeline(), transactionalBatchSerializer);
+        this.service
+            = RestProxy.create(TransactionalBatchService.class, client.getHttpPipeline(), transactionalBatchSerializer);
         this.client = client;
     }
 
@@ -56,28 +57,24 @@ public final class TransactionalBatchImpl {
     @ServiceInterface(name = "AzureTableServices")
     public interface TransactionalBatchService {
         @Post("/$batch")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
-        Mono<ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>> submitTransactionalBatch(
-            @HostParam("url") String url,
-            @HeaderParam("Content-Type") String multipartContentType,
-            @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("DataServiceVersion") String dataServiceVersion,
-            @BodyParam("multipart/mixed") TransactionalBatchRequestBody body,
-            Context context);
+        Mono<ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>>
+            submitTransactionalBatch(@HostParam("url") String url,
+                @HeaderParam("Content-Type") String multipartContentType, @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("DataServiceVersion") String dataServiceVersion,
+                @BodyParam("multipart/mixed") TransactionalBatchRequestBody body, Context context);
 
         @Post("/$batch")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
-        ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> submitTransactionalBatchSync(
-            @HostParam("url") String url,
-            @HeaderParam("Content-Type") String multipartContentType,
-            @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("DataServiceVersion") String dataServiceVersion,
-            @BodyParam("multipart/mixed") TransactionalBatchRequestBody body,
-            Context context);
+        ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>
+            submitTransactionalBatchSync(@HostParam("url") String url,
+                @HeaderParam("Content-Type") String multipartContentType, @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("DataServiceVersion") String dataServiceVersion,
+                @BodyParam("multipart/mixed") TransactionalBatchRequestBody body, Context context);
     }
 
     /**
@@ -93,11 +90,13 @@ public final class TransactionalBatchImpl {
      * @throws IllegalArgumentException If parameters fail validation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>> submitTransactionalBatchWithRestResponseAsync(TransactionalBatchRequestBody body, String requestId, Context context) {
+    public Mono<ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>>
+        submitTransactionalBatchWithRestResponseAsync(TransactionalBatchRequestBody body, String requestId,
+            Context context) {
         final String dataServiceVersion = "3.0";
 
-        return service.submitTransactionalBatch(this.client.getUrl(), body.getContentType(), this.client.getVersion(), requestId,
-            dataServiceVersion, body, context);
+        return service.submitTransactionalBatch(this.client.getUrl(), body.getContentType(), this.client.getVersion(),
+            requestId, dataServiceVersion, body, context);
     }
 
     /**
@@ -113,11 +112,13 @@ public final class TransactionalBatchImpl {
      * @throws IllegalArgumentException If parameters fail validation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> submitTransactionalBatchWithRestResponse(TransactionalBatchRequestBody body, String requestId, Context context) {
+    public ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>
+        submitTransactionalBatchWithRestResponse(TransactionalBatchRequestBody body, String requestId,
+            Context context) {
         final String dataServiceVersion = "3.0";
 
-        return service.submitTransactionalBatchSync(this.client.getUrl(), body.getContentType(), this.client.getVersion(), requestId,
-            dataServiceVersion, body, context);
+        return service.submitTransactionalBatchSync(this.client.getUrl(), body.getContentType(),
+            this.client.getVersion(), requestId, dataServiceVersion, body, context);
     }
 
 }

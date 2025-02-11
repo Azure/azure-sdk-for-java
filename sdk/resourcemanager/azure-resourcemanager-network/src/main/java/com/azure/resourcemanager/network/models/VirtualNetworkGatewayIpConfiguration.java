@@ -14,19 +14,39 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 @Fluent
 public interface VirtualNetworkGatewayIpConfiguration
     extends HasInnerModel<VirtualNetworkGatewayIpConfigurationInner>, ChildResource<VirtualNetworkGateway> {
-    /** @return the resource ID of the virtual network the application gateway is in */
+    /**
+     * Gets the resource ID of the virtual network the application gateway is in.
+     *
+     * @return the resource ID of the virtual network the application gateway is in
+     */
     String networkId();
 
-    /** @return the resource id of associated public IP address */
+    /**
+     * Gets the resource ID of associated public IP address.
+     *
+     * @return the resource ID of associated public IP address
+     */
     String publicIpAddressId();
 
-    /** @return the name of the subnet the virtual network gateway is in */
+    /**
+     * GEts the name of the subnet the virtual network gateway is in.
+     *
+     * @return the name of the subnet the virtual network gateway is in
+     */
     String subnetName();
 
-    /** @return the private IP allocation method. Possible values are: 'Static' and 'Dynamic'. */
+    /**
+     * Gets the private IP allocation method.
+     *
+     * @return the private IP allocation method. Possible values are: 'Static' and 'Dynamic'.
+     */
     IpAllocationMethod privateIpAllocationMethod();
 
-    /** @return the subnet the virtual network gateway is in Note, this results in a separate call to Azure. */
+    /**
+     * Gets the subnet the virtual network gateway is in Note, this results in a separate call to Azure.
+     *
+     * @return the subnet the virtual network gateway is in Note, this results in a separate call to Azure.
+     */
     Subnet getSubnet();
 
     /** Grouping of virtual network gateway IP configuration definition stages. */
@@ -97,10 +117,8 @@ public interface VirtualNetworkGatewayIpConfiguration
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithPublicIPAddress<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithPublicIPAddress<ParentT> {
     }
 
     /** Grouping of application gateway IP configuration update stages. */

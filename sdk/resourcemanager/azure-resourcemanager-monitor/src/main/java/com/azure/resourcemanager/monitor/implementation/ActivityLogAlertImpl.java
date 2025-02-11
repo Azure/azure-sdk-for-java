@@ -24,15 +24,13 @@ import java.util.TreeMap;
 /** Implementation for ActivityLogAlert. */
 class ActivityLogAlertImpl
     extends GroupableResourceImpl<ActivityLogAlert, ActivityLogAlertResourceInner, ActivityLogAlertImpl, MonitorManager>
-    implements ActivityLogAlert,
-        ActivityLogAlert.Definition,
-        ActivityLogAlert.Update,
-        ActivityLogAlert.UpdateStages.WithActivityLogUpdate {
+    implements ActivityLogAlert, ActivityLogAlert.Definition, ActivityLogAlert.Update,
+    ActivityLogAlert.UpdateStages.WithActivityLogUpdate {
 
     private Map<String, String> conditions;
 
-    ActivityLogAlertImpl(
-        String name, final ActivityLogAlertResourceInner innerModel, final MonitorManager monitorManager) {
+    ActivityLogAlertImpl(String name, final ActivityLogAlertResourceInner innerModel,
+        final MonitorManager monitorManager) {
         super(name, innerModel, monitorManager);
         this.conditions = new TreeMap<>();
         if (innerModel.condition() != null && innerModel.condition().allOf() != null) {
@@ -90,8 +88,7 @@ class ActivityLogAlertImpl
             condition.allOf().add(alalc);
         }
         this.innerModel().withCondition(condition);
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getActivityLogAlerts()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
@@ -100,8 +97,7 @@ class ActivityLogAlertImpl
 
     @Override
     protected Mono<ActivityLogAlertResourceInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getActivityLogAlerts()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());

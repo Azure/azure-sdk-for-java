@@ -37,4 +37,3 @@ public class TableServiceException extends HttpResponseException {
         return (TableServiceError) super.getValue();
     }
 }
-

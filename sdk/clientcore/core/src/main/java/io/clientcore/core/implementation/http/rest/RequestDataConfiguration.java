@@ -6,13 +6,13 @@ package io.clientcore.core.implementation.http.rest;
 import io.clientcore.core.http.models.HttpRequest;
 
 public class RequestDataConfiguration {
-    private HttpRequest httpRequest;
-    private SwaggerMethodParser methodParser;
-    private boolean isJson;
-    private Object bodyContent;
+    private final HttpRequest httpRequest;
+    private final SwaggerMethodParser methodParser;
+    private final boolean isJson;
+    private final Object bodyContent;
 
-    public RequestDataConfiguration(HttpRequest httpRequest, SwaggerMethodParser swaggerMethodParser,
-                                    boolean isJson, Object requestBodyContent) {
+    public RequestDataConfiguration(HttpRequest httpRequest, SwaggerMethodParser swaggerMethodParser, boolean isJson,
+        Object requestBodyContent) {
 
         this.httpRequest = httpRequest;
         this.methodParser = swaggerMethodParser;

@@ -13,8 +13,7 @@ public final class VirtualNetworkDnsForwardingRulesetImpl implements VirtualNetw
 
     private final com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager;
 
-    VirtualNetworkDnsForwardingRulesetImpl(
-        VirtualNetworkDnsForwardingRulesetInner innerObject,
+    VirtualNetworkDnsForwardingRulesetImpl(VirtualNetworkDnsForwardingRulesetInner innerObject,
         com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

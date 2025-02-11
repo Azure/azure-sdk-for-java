@@ -12,25 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowParameter model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Object\",\"value\":\"datanpzaoq\",\"metadata\":\"datahrhcffcyddglmjth\",\"description\":\"kw\"}")
-                .toObject(WorkflowParameter.class);
-        Assertions.assertEquals(ParameterType.OBJECT, model.type());
-        Assertions.assertEquals("kw", model.description());
+        WorkflowParameter model = BinaryData.fromString(
+            "{\"type\":\"String\",\"value\":\"datazvahapjy\",\"metadata\":\"datapvgqzcjrvxdjzlm\",\"description\":\"xkvugfhzov\"}")
+            .toObject(WorkflowParameter.class);
+        Assertions.assertEquals(ParameterType.STRING, model.type());
+        Assertions.assertEquals("xkvugfhzov", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowParameter model =
-            new WorkflowParameter()
-                .withType(ParameterType.OBJECT)
-                .withValue("datanpzaoq")
-                .withMetadata("datahrhcffcyddglmjth")
-                .withDescription("kw");
+        WorkflowParameter model = new WorkflowParameter().withType(ParameterType.STRING)
+            .withValue("datazvahapjy")
+            .withMetadata("datapvgqzcjrvxdjzlm")
+            .withDescription("xkvugfhzov");
         model = BinaryData.fromObject(model).toObject(WorkflowParameter.class);
-        Assertions.assertEquals(ParameterType.OBJECT, model.type());
-        Assertions.assertEquals("kw", model.description());
+        Assertions.assertEquals(ParameterType.STRING, model.type());
+        Assertions.assertEquals("xkvugfhzov", model.description());
     }
 }

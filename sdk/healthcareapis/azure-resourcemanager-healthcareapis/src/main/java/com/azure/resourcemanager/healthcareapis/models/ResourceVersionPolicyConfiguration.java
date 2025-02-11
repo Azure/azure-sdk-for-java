@@ -5,26 +5,26 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The settings for history tracking for FHIR resources.
  */
 @Fluent
-public final class ResourceVersionPolicyConfiguration {
+public final class ResourceVersionPolicyConfiguration implements JsonSerializable<ResourceVersionPolicyConfiguration> {
     /*
      * The default value for tracking history across all resources.
      */
-    @JsonProperty(value = "default")
     private FhirResourceVersionPolicy defaultProperty;
 
     /*
      * A list of FHIR Resources and their version policy overrides.
      */
-    @JsonProperty(value = "resourceTypeOverrides")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, FhirResourceVersionPolicy> resourceTypeOverrides;
 
     /**
@@ -80,5 +80,49 @@ public final class ResourceVersionPolicyConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("default", this.defaultProperty == null ? null : this.defaultProperty.toString());
+        jsonWriter.writeMapField("resourceTypeOverrides", this.resourceTypeOverrides,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceVersionPolicyConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceVersionPolicyConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceVersionPolicyConfiguration.
+     */
+    public static ResourceVersionPolicyConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceVersionPolicyConfiguration deserializedResourceVersionPolicyConfiguration
+                = new ResourceVersionPolicyConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("default".equals(fieldName)) {
+                    deserializedResourceVersionPolicyConfiguration.defaultProperty
+                        = FhirResourceVersionPolicy.fromString(reader.getString());
+                } else if ("resourceTypeOverrides".equals(fieldName)) {
+                    Map<String, FhirResourceVersionPolicy> resourceTypeOverrides
+                        = reader.readMap(reader1 -> FhirResourceVersionPolicy.fromString(reader1.getString()));
+                    deserializedResourceVersionPolicyConfiguration.resourceTypeOverrides = resourceTypeOverrides;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceVersionPolicyConfiguration;
+        });
     }
 }

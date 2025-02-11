@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the condition that can be filtered using the selected IPs. */
+/**
+ * Defines the condition that can be filtered using the selected IPs.
+ */
 @Fluent
-public final class IpMatchCondition {
+public final class IpMatchCondition implements JsonSerializable<IpMatchCondition> {
     /*
-     * IP Address type.
+     * IP Address type that needs to be matched.
      */
-    @JsonProperty(value = "type")
     private SourceDestinationType type;
 
     /*
-     * IP Prefix Type.
+     * IP Prefix Type that needs to be matched.
      */
-    @JsonProperty(value = "prefixType")
     private PrefixType prefixType;
 
     /*
-     * The list of IP Prefixes.
+     * The list of IP Prefixes that need to be matched.
      */
-    @JsonProperty(value = "ipPrefixValues")
     private List<String> ipPrefixValues;
 
     /*
      * The List of IP Group Names that need to be matched.
      */
-    @JsonProperty(value = "ipGroupNames")
     private List<String> ipGroupNames;
 
-    /** Creates an instance of IpMatchCondition class. */
+    /**
+     * Creates an instance of IpMatchCondition class.
+     */
     public IpMatchCondition() {
     }
 
     /**
-     * Get the type property: IP Address type.
-     *
+     * Get the type property: IP Address type that needs to be matched.
+     * 
      * @return the type value.
      */
     public SourceDestinationType type() {
@@ -49,8 +53,8 @@ public final class IpMatchCondition {
     }
 
     /**
-     * Set the type property: IP Address type.
-     *
+     * Set the type property: IP Address type that needs to be matched.
+     * 
      * @param type the type value to set.
      * @return the IpMatchCondition object itself.
      */
@@ -60,8 +64,8 @@ public final class IpMatchCondition {
     }
 
     /**
-     * Get the prefixType property: IP Prefix Type.
-     *
+     * Get the prefixType property: IP Prefix Type that needs to be matched.
+     * 
      * @return the prefixType value.
      */
     public PrefixType prefixType() {
@@ -69,8 +73,8 @@ public final class IpMatchCondition {
     }
 
     /**
-     * Set the prefixType property: IP Prefix Type.
-     *
+     * Set the prefixType property: IP Prefix Type that needs to be matched.
+     * 
      * @param prefixType the prefixType value to set.
      * @return the IpMatchCondition object itself.
      */
@@ -80,8 +84,8 @@ public final class IpMatchCondition {
     }
 
     /**
-     * Get the ipPrefixValues property: The list of IP Prefixes.
-     *
+     * Get the ipPrefixValues property: The list of IP Prefixes that need to be matched.
+     * 
      * @return the ipPrefixValues value.
      */
     public List<String> ipPrefixValues() {
@@ -89,8 +93,8 @@ public final class IpMatchCondition {
     }
 
     /**
-     * Set the ipPrefixValues property: The list of IP Prefixes.
-     *
+     * Set the ipPrefixValues property: The list of IP Prefixes that need to be matched.
+     * 
      * @param ipPrefixValues the ipPrefixValues value to set.
      * @return the IpMatchCondition object itself.
      */
@@ -101,7 +105,7 @@ public final class IpMatchCondition {
 
     /**
      * Get the ipGroupNames property: The List of IP Group Names that need to be matched.
-     *
+     * 
      * @return the ipGroupNames value.
      */
     public List<String> ipGroupNames() {
@@ -110,7 +114,7 @@ public final class IpMatchCondition {
 
     /**
      * Set the ipGroupNames property: The List of IP Group Names that need to be matched.
-     *
+     * 
      * @param ipGroupNames the ipGroupNames value to set.
      * @return the IpMatchCondition object itself.
      */
@@ -121,9 +125,57 @@ public final class IpMatchCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("prefixType", this.prefixType == null ? null : this.prefixType.toString());
+        jsonWriter.writeArrayField("ipPrefixValues", this.ipPrefixValues,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ipGroupNames", this.ipGroupNames, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpMatchCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpMatchCondition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpMatchCondition.
+     */
+    public static IpMatchCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpMatchCondition deserializedIpMatchCondition = new IpMatchCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedIpMatchCondition.type = SourceDestinationType.fromString(reader.getString());
+                } else if ("prefixType".equals(fieldName)) {
+                    deserializedIpMatchCondition.prefixType = PrefixType.fromString(reader.getString());
+                } else if ("ipPrefixValues".equals(fieldName)) {
+                    List<String> ipPrefixValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpMatchCondition.ipPrefixValues = ipPrefixValues;
+                } else if ("ipGroupNames".equals(fieldName)) {
+                    List<String> ipGroupNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpMatchCondition.ipGroupNames = ipGroupNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpMatchCondition;
+        });
     }
 }

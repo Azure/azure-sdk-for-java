@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,46 +18,43 @@ import java.util.List;
  * allowed across all endpoint types for free hubs.
  */
 @Fluent
-public final class RoutingEndpoints {
+public final class RoutingEndpoints implements JsonSerializable<RoutingEndpoints> {
     /*
      * The list of Service Bus queue endpoints that IoT hub routes the messages to, based on the routing rules.
      */
-    @JsonProperty(value = "serviceBusQueues")
     private List<RoutingServiceBusQueueEndpointProperties> serviceBusQueues;
 
     /*
      * The list of Service Bus topic endpoints that the IoT hub routes the messages to, based on the routing rules.
      */
-    @JsonProperty(value = "serviceBusTopics")
     private List<RoutingServiceBusTopicEndpointProperties> serviceBusTopics;
 
     /*
      * The list of Event Hubs endpoints that IoT hub routes messages to, based on the routing rules. This list does not
      * include the built-in Event Hubs endpoint.
      */
-    @JsonProperty(value = "eventHubs")
     private List<RoutingEventHubProperties> eventHubs;
 
     /*
      * The list of storage container endpoints that IoT hub routes messages to, based on the routing rules.
      */
-    @JsonProperty(value = "storageContainers")
     private List<RoutingStorageContainerProperties> storageContainers;
 
     /*
      * The list of Cosmos DB container endpoints that IoT hub routes messages to, based on the routing rules.
      */
-    @JsonProperty(value = "cosmosDBSqlContainers")
     private List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlContainers;
 
-    /** Creates an instance of RoutingEndpoints class. */
+    /**
+     * Creates an instance of RoutingEndpoints class.
+     */
     public RoutingEndpoints() {
     }
 
     /**
      * Get the serviceBusQueues property: The list of Service Bus queue endpoints that IoT hub routes the messages to,
      * based on the routing rules.
-     *
+     * 
      * @return the serviceBusQueues value.
      */
     public List<RoutingServiceBusQueueEndpointProperties> serviceBusQueues() {
@@ -63,7 +64,7 @@ public final class RoutingEndpoints {
     /**
      * Set the serviceBusQueues property: The list of Service Bus queue endpoints that IoT hub routes the messages to,
      * based on the routing rules.
-     *
+     * 
      * @param serviceBusQueues the serviceBusQueues value to set.
      * @return the RoutingEndpoints object itself.
      */
@@ -75,7 +76,7 @@ public final class RoutingEndpoints {
     /**
      * Get the serviceBusTopics property: The list of Service Bus topic endpoints that the IoT hub routes the messages
      * to, based on the routing rules.
-     *
+     * 
      * @return the serviceBusTopics value.
      */
     public List<RoutingServiceBusTopicEndpointProperties> serviceBusTopics() {
@@ -85,7 +86,7 @@ public final class RoutingEndpoints {
     /**
      * Set the serviceBusTopics property: The list of Service Bus topic endpoints that the IoT hub routes the messages
      * to, based on the routing rules.
-     *
+     * 
      * @param serviceBusTopics the serviceBusTopics value to set.
      * @return the RoutingEndpoints object itself.
      */
@@ -97,7 +98,7 @@ public final class RoutingEndpoints {
     /**
      * Get the eventHubs property: The list of Event Hubs endpoints that IoT hub routes messages to, based on the
      * routing rules. This list does not include the built-in Event Hubs endpoint.
-     *
+     * 
      * @return the eventHubs value.
      */
     public List<RoutingEventHubProperties> eventHubs() {
@@ -107,7 +108,7 @@ public final class RoutingEndpoints {
     /**
      * Set the eventHubs property: The list of Event Hubs endpoints that IoT hub routes messages to, based on the
      * routing rules. This list does not include the built-in Event Hubs endpoint.
-     *
+     * 
      * @param eventHubs the eventHubs value to set.
      * @return the RoutingEndpoints object itself.
      */
@@ -119,7 +120,7 @@ public final class RoutingEndpoints {
     /**
      * Get the storageContainers property: The list of storage container endpoints that IoT hub routes messages to,
      * based on the routing rules.
-     *
+     * 
      * @return the storageContainers value.
      */
     public List<RoutingStorageContainerProperties> storageContainers() {
@@ -129,7 +130,7 @@ public final class RoutingEndpoints {
     /**
      * Set the storageContainers property: The list of storage container endpoints that IoT hub routes messages to,
      * based on the routing rules.
-     *
+     * 
      * @param storageContainers the storageContainers value to set.
      * @return the RoutingEndpoints object itself.
      */
@@ -141,7 +142,7 @@ public final class RoutingEndpoints {
     /**
      * Get the cosmosDBSqlContainers property: The list of Cosmos DB container endpoints that IoT hub routes messages
      * to, based on the routing rules.
-     *
+     * 
      * @return the cosmosDBSqlContainers value.
      */
     public List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlContainers() {
@@ -151,7 +152,7 @@ public final class RoutingEndpoints {
     /**
      * Set the cosmosDBSqlContainers property: The list of Cosmos DB container endpoints that IoT hub routes messages
      * to, based on the routing rules.
-     *
+     * 
      * @param cosmosDBSqlContainers the cosmosDBSqlContainers value to set.
      * @return the RoutingEndpoints object itself.
      */
@@ -162,7 +163,7 @@ public final class RoutingEndpoints {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -181,5 +182,67 @@ public final class RoutingEndpoints {
         if (cosmosDBSqlContainers() != null) {
             cosmosDBSqlContainers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("serviceBusQueues", this.serviceBusQueues,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceBusTopics", this.serviceBusTopics,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("eventHubs", this.eventHubs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("storageContainers", this.storageContainers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("cosmosDBSqlContainers", this.cosmosDBSqlContainers,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutingEndpoints from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutingEndpoints if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoutingEndpoints.
+     */
+    public static RoutingEndpoints fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutingEndpoints deserializedRoutingEndpoints = new RoutingEndpoints();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceBusQueues".equals(fieldName)) {
+                    List<RoutingServiceBusQueueEndpointProperties> serviceBusQueues
+                        = reader.readArray(reader1 -> RoutingServiceBusQueueEndpointProperties.fromJson(reader1));
+                    deserializedRoutingEndpoints.serviceBusQueues = serviceBusQueues;
+                } else if ("serviceBusTopics".equals(fieldName)) {
+                    List<RoutingServiceBusTopicEndpointProperties> serviceBusTopics
+                        = reader.readArray(reader1 -> RoutingServiceBusTopicEndpointProperties.fromJson(reader1));
+                    deserializedRoutingEndpoints.serviceBusTopics = serviceBusTopics;
+                } else if ("eventHubs".equals(fieldName)) {
+                    List<RoutingEventHubProperties> eventHubs
+                        = reader.readArray(reader1 -> RoutingEventHubProperties.fromJson(reader1));
+                    deserializedRoutingEndpoints.eventHubs = eventHubs;
+                } else if ("storageContainers".equals(fieldName)) {
+                    List<RoutingStorageContainerProperties> storageContainers
+                        = reader.readArray(reader1 -> RoutingStorageContainerProperties.fromJson(reader1));
+                    deserializedRoutingEndpoints.storageContainers = storageContainers;
+                } else if ("cosmosDBSqlContainers".equals(fieldName)) {
+                    List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlContainers
+                        = reader.readArray(reader1 -> RoutingCosmosDBSqlApiProperties.fromJson(reader1));
+                    deserializedRoutingEndpoints.cosmosDBSqlContainers = cosmosDBSqlContainers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutingEndpoints;
+        });
     }
 }

@@ -17,58 +17,114 @@ import java.util.List;
 @Fluent
 public interface AppServiceCertificate
     extends GroupableResource<AppServiceManager, CertificateInner>, Refreshable<AppServiceCertificate> {
-    /** @return the friendly name of the certificate */
+    /**
+     * Gets the friendly name of the certificate.
+     *
+     * @return the friendly name of the certificate
+     */
     String friendlyName();
 
-    /** @return the subject name of the certificate */
+    /**
+     * Gets the subject name of the certificate.
+     *
+     * @return the subject name of the certificate
+     */
     String subjectName();
 
-    /** @return the host names the certificate applies to */
+    /**
+     * Gets the host names the certificate applies to.
+     *
+     * @return the host names the certificate applies to
+     */
     List<String> hostNames();
 
-    /** @return the pfx blob */
+    /**
+     * Gets the pfx blob.
+     *
+     * @return the pfx blob
+     */
     byte[] pfxBlob();
 
-    /** @return the app name */
+    /**
+     * Gets the app name.
+     *
+     * @return the app name
+     */
     String siteName();
 
-    /** @return the self link */
+    /**
+     * Gets the self link.
+     *
+     * @return the self link
+     */
     String selfLink();
 
-    /** @return the certificate issuer */
+    /**
+     * Gets the certificate issuer.
+     *
+     * @return the certificate issuer
+     */
     String issuer();
 
-    /** @return the certificate issue Date */
+    /**
+     * Gets the certificate issue Date.
+     *
+     * @return the certificate issue Date
+     */
     OffsetDateTime issueDate();
 
-    /** @return the certificate expriration date */
+    /**
+     * Gets the certificate expriration date .
+     *
+     * @return the certificate expriration date
+     */
     OffsetDateTime expirationDate();
 
-    /** @return the certificate password */
+    /**
+     * Gets the certificate password.
+     *
+     * @return the certificate password
+     */
     String password();
 
-    /** @return the certificate thumbprint */
+    /**
+     * Gets the certificate thumbprint.
+     *
+     * @return the certificate thumbprint
+     */
     String thumbprint();
 
-    /** @return if the certificate valid */
+    /**
+     * Check whether the certificate valid.
+     *
+     * @return if the certificate valid
+     */
     Boolean valid();
 
-    /** @return the raw bytes of .cer file */
+    /**
+     * Gets the raw bytes of .cer file.
+     *
+     * @return the raw bytes of .cer file
+     */
     byte[] certificateBlob();
 
-    /** @return the public key hash */
+    /**
+     * Gets the public key hash.
+     *
+     * @return the public key hash
+     */
     String publicKeyHash();
 
-    /** @return the specification for the App Service Environment to use for the certificate */
+    /**
+     * Gets the specification for the App Service Environment to use for the certificate.
+     *
+     * @return the specification for the App Service Environment to use for the certificate
+     */
     HostingEnvironmentProfile hostingEnvironmentProfile();
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCertificate,
-            DefinitionStages.WithPfxFilePassword,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCertificate,
+        DefinitionStages.WithPfxFilePassword, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the site definition stages. */
@@ -115,6 +171,7 @@ public interface AppServiceCertificate
              */
             WithCreate withExistingCertificateOrder(AppServiceCertificateOrder certificateOrder);
         }
+
         /** An app service certificate definition allowing PFX certificate password to be set. */
         interface WithPfxFilePassword {
             /**

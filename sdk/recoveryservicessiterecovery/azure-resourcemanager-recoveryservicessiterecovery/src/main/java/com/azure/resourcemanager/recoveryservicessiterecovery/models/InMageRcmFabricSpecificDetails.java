@@ -5,118 +5,116 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * InMageRcm fabric specific details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcm")
 @Fluent
 public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "InMageRcm";
+
+    /*
      * The ARM Id of the VMware site.
      */
-    @JsonProperty(value = "vmwareSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmwareSiteId;
 
     /*
      * The ARM Id of the physical site.
      */
-    @JsonProperty(value = "physicalSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private String physicalSiteId;
 
     /*
      * The service endpoint.
      */
-    @JsonProperty(value = "serviceEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceEndpoint;
 
     /*
      * The service resource Id.
      */
-    @JsonProperty(value = "serviceResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceResourceId;
 
     /*
      * The service container Id.
      */
-    @JsonProperty(value = "serviceContainerId", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceContainerId;
 
     /*
      * The data plane Uri.
      */
-    @JsonProperty(value = "dataPlaneUri", access = JsonProperty.Access.WRITE_ONLY)
     private String dataPlaneUri;
 
     /*
      * The control plane Uri.
      */
-    @JsonProperty(value = "controlPlaneUri", access = JsonProperty.Access.WRITE_ONLY)
     private String controlPlaneUri;
 
     /*
      * The source agent identity details.
      */
-    @JsonProperty(value = "sourceAgentIdentityDetails")
     private IdentityProviderDetails sourceAgentIdentityDetails;
 
     /*
      * The list of process servers.
      */
-    @JsonProperty(value = "processServers", access = JsonProperty.Access.WRITE_ONLY)
     private List<ProcessServerDetails> processServers;
 
     /*
      * The list of RCM proxies.
      */
-    @JsonProperty(value = "rcmProxies", access = JsonProperty.Access.WRITE_ONLY)
     private List<RcmProxyDetails> rcmProxies;
 
     /*
      * The list of push installers.
      */
-    @JsonProperty(value = "pushInstallers", access = JsonProperty.Access.WRITE_ONLY)
     private List<PushInstallerDetails> pushInstallers;
 
     /*
      * The list of replication agents.
      */
-    @JsonProperty(value = "replicationAgents", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReplicationAgentDetails> replicationAgents;
 
     /*
      * The list of reprotect agents.
      */
-    @JsonProperty(value = "reprotectAgents", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReprotectAgentDetails> reprotectAgents;
 
     /*
      * The list of Mars agents.
      */
-    @JsonProperty(value = "marsAgents", access = JsonProperty.Access.WRITE_ONLY)
     private List<MarsAgentDetails> marsAgents;
 
     /*
      * The list of DRAs.
      */
-    @JsonProperty(value = "dras", access = JsonProperty.Access.WRITE_ONLY)
     private List<DraDetails> dras;
 
     /*
      * The list of agent details.
      */
-    @JsonProperty(value = "agentDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<AgentDetails> agentDetails;
 
     /**
      * Creates an instance of InMageRcmFabricSpecificDetails class.
      */
     public InMageRcmFabricSpecificDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -282,7 +280,6 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
      */
     @Override
     public void validate() {
-        super.validate();
         if (sourceAgentIdentityDetails() != null) {
             sourceAgentIdentityDetails().validate();
         }
@@ -310,5 +307,88 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
         if (agentDetails() != null) {
             agentDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeJsonField("sourceAgentIdentityDetails", this.sourceAgentIdentityDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmFabricSpecificDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmFabricSpecificDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmFabricSpecificDetails.
+     */
+    public static InMageRcmFabricSpecificDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmFabricSpecificDetails deserializedInMageRcmFabricSpecificDetails
+                = new InMageRcmFabricSpecificDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmFabricSpecificDetails.instanceType = reader.getString();
+                } else if ("vmwareSiteId".equals(fieldName)) {
+                    deserializedInMageRcmFabricSpecificDetails.vmwareSiteId = reader.getString();
+                } else if ("physicalSiteId".equals(fieldName)) {
+                    deserializedInMageRcmFabricSpecificDetails.physicalSiteId = reader.getString();
+                } else if ("serviceEndpoint".equals(fieldName)) {
+                    deserializedInMageRcmFabricSpecificDetails.serviceEndpoint = reader.getString();
+                } else if ("serviceResourceId".equals(fieldName)) {
+                    deserializedInMageRcmFabricSpecificDetails.serviceResourceId = reader.getString();
+                } else if ("serviceContainerId".equals(fieldName)) {
+                    deserializedInMageRcmFabricSpecificDetails.serviceContainerId = reader.getString();
+                } else if ("dataPlaneUri".equals(fieldName)) {
+                    deserializedInMageRcmFabricSpecificDetails.dataPlaneUri = reader.getString();
+                } else if ("controlPlaneUri".equals(fieldName)) {
+                    deserializedInMageRcmFabricSpecificDetails.controlPlaneUri = reader.getString();
+                } else if ("sourceAgentIdentityDetails".equals(fieldName)) {
+                    deserializedInMageRcmFabricSpecificDetails.sourceAgentIdentityDetails
+                        = IdentityProviderDetails.fromJson(reader);
+                } else if ("processServers".equals(fieldName)) {
+                    List<ProcessServerDetails> processServers
+                        = reader.readArray(reader1 -> ProcessServerDetails.fromJson(reader1));
+                    deserializedInMageRcmFabricSpecificDetails.processServers = processServers;
+                } else if ("rcmProxies".equals(fieldName)) {
+                    List<RcmProxyDetails> rcmProxies = reader.readArray(reader1 -> RcmProxyDetails.fromJson(reader1));
+                    deserializedInMageRcmFabricSpecificDetails.rcmProxies = rcmProxies;
+                } else if ("pushInstallers".equals(fieldName)) {
+                    List<PushInstallerDetails> pushInstallers
+                        = reader.readArray(reader1 -> PushInstallerDetails.fromJson(reader1));
+                    deserializedInMageRcmFabricSpecificDetails.pushInstallers = pushInstallers;
+                } else if ("replicationAgents".equals(fieldName)) {
+                    List<ReplicationAgentDetails> replicationAgents
+                        = reader.readArray(reader1 -> ReplicationAgentDetails.fromJson(reader1));
+                    deserializedInMageRcmFabricSpecificDetails.replicationAgents = replicationAgents;
+                } else if ("reprotectAgents".equals(fieldName)) {
+                    List<ReprotectAgentDetails> reprotectAgents
+                        = reader.readArray(reader1 -> ReprotectAgentDetails.fromJson(reader1));
+                    deserializedInMageRcmFabricSpecificDetails.reprotectAgents = reprotectAgents;
+                } else if ("marsAgents".equals(fieldName)) {
+                    List<MarsAgentDetails> marsAgents = reader.readArray(reader1 -> MarsAgentDetails.fromJson(reader1));
+                    deserializedInMageRcmFabricSpecificDetails.marsAgents = marsAgents;
+                } else if ("dras".equals(fieldName)) {
+                    List<DraDetails> dras = reader.readArray(reader1 -> DraDetails.fromJson(reader1));
+                    deserializedInMageRcmFabricSpecificDetails.dras = dras;
+                } else if ("agentDetails".equals(fieldName)) {
+                    List<AgentDetails> agentDetails = reader.readArray(reader1 -> AgentDetails.fromJson(reader1));
+                    deserializedInMageRcmFabricSpecificDetails.agentDetails = agentDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmFabricSpecificDetails;
+        });
     }
 }

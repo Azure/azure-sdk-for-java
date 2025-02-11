@@ -9,9 +9,8 @@ import com.azure.analytics.purview.datamap.models.QueryOptions;
 import com.azure.analytics.purview.datamap.models.QueryResult;
 import com.azure.analytics.purview.datamap.models.SearchResultValue;
 import com.azure.analytics.purview.datamap.models.TermSearchResultValue;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -21,11 +20,10 @@ import org.junit.jupiter.api.Test;
 public final class DiscoveryQueryCollectionTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testDiscoveryQueryCollectionTests() throws IOException {
+    public void testDiscoveryQueryCollectionTests() {
         // method invocation
         QueryResult response = discoveryClient.query(new QueryOptions().setLimit(10)
-            .setFilter(JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize("{\"collectionId\":\"collectionName\"}", Object.class, SerializerEncoding.JSON)));
+            .setFilter(BinaryData.fromBytes("{collectionId=collectionName}".getBytes(StandardCharsets.UTF_8))));
 
         // response assertion
         Assertions.assertNotNull(response);

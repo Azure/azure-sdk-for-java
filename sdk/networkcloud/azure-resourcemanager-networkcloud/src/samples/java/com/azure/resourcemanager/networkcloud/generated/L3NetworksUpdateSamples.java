@@ -8,22 +8,24 @@ import com.azure.resourcemanager.networkcloud.models.L3Network;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for L3Networks Update. */
+/**
+ * Samples for L3Networks Update.
+ */
 public final class L3NetworksUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/L3Networks_Patch.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * L3Networks_Patch.json
      */
     /**
      * Sample code: Patch L3 network.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void patchL3Network(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        L3Network resource =
-            manager
-                .l3Networks()
-                .getByResourceGroupWithResponse("resourceGroupName", "l3NetworkName", com.azure.core.util.Context.NONE)
-                .getValue();
+        L3Network resource = manager.l3Networks()
+            .getByResourceGroupWithResponse("resourceGroupName", "l3NetworkName", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")).apply();
     }
 

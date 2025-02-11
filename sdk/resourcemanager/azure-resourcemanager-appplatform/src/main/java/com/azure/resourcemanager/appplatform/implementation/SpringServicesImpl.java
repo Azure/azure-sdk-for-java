@@ -19,9 +19,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
-public class SpringServicesImpl
-    extends GroupableResourcesImpl<
-        SpringService, SpringServiceImpl, ServiceResourceInner, ServicesClient, AppPlatformManager>
+public class SpringServicesImpl extends
+    GroupableResourcesImpl<SpringService, SpringServiceImpl, ServiceResourceInner, ServicesClient, AppPlatformManager>
     implements SpringServices {
     private static final String SPRING_TYPE = "Microsoft.AppPlatform/Spring";
 
@@ -56,8 +55,8 @@ public class SpringServicesImpl
 
     @Override
     public Mono<NameAvailability> checkNameAvailabilityAsync(String name, Region region) {
-        return inner().checkNameAvailabilityAsync(
-            region.toString(), new NameAvailabilityParameters().withName(name).withType(SPRING_TYPE));
+        return inner().checkNameAvailabilityAsync(region.toString(),
+            new NameAvailabilityParameters().withName(name).withType(SPRING_TYPE));
     }
 
     @Override
@@ -78,8 +77,8 @@ public class SpringServicesImpl
     @Override
     public PagedFlux<SpringService> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return PagedConverter.mapPage(inner().listByResourceGroupAsync(resourceGroupName), this::wrapModel);
     }

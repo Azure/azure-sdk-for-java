@@ -21,30 +21,51 @@ public interface Troubleshooting extends Executable<Troubleshooting>, HasParent<
      */
     String targetResourceId();
 
-    /** @return id of the storage account where troubleshooting information was saved */
+    /**
+     * Gets ID of the storage account where troubleshooting information was saved.
+     *
+     * @return ID of the storage account where troubleshooting information was saved
+     */
     String storageId();
 
-    /** @return the path to the blob to save the troubleshoot result in */
+    /**
+     * Gets the path to the blob to save the troubleshoot result in.
+     *
+     * @return the path to the blob to save the troubleshoot result in
+     */
     String storagePath();
 
-    /** @return The start time of the troubleshooting */
+    /**
+     * Gets the start time of the troubleshooting.
+     *
+     * @return The start time of the troubleshooting
+     */
     OffsetDateTime startTime();
 
-    /** @return the end time of the troubleshooting */
+    /**
+     * Gets the end time of the troubleshooting.
+     *
+     * @return the end time of the troubleshooting
+     */
     OffsetDateTime endTime();
 
-    /** @return the result code of the troubleshooting */
+    /**
+     * Gets the result code of the troubleshooting.
+     *
+     * @return the result code of the troubleshooting
+     */
     String code();
 
-    /** @return information from troubleshooting */
+    /**
+     * Gets information from troubleshooting.
+     *
+     * @return information from troubleshooting
+     */
     List<TroubleshootingDetails> results();
 
     /** The entirety of troubleshooting parameters definition. */
-    interface Definition
-        extends DefinitionStages.WithTargetResource,
-            DefinitionStages.WithStorageAccount,
-            DefinitionStages.WithStoragePath,
-            DefinitionStages.WithExecute {
+    interface Definition extends DefinitionStages.WithTargetResource, DefinitionStages.WithStorageAccount,
+        DefinitionStages.WithStoragePath, DefinitionStages.WithExecute {
     }
 
     /** Grouping of troubleshooting definition stages. */

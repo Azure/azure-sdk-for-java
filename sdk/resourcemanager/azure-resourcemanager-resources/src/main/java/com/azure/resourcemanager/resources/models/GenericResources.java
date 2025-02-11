@@ -21,14 +21,10 @@ import java.util.List;
  * Entry point to generic resources management API.
  */
 @Fluent
-public interface GenericResources extends
-        SupportsListing<GenericResource>,
-        SupportsListingByResourceGroup<GenericResource>,
-        SupportsListingInResourceGroupByTag<GenericResource>,
-        SupportsGettingById<GenericResource>,
-        SupportsCreating<GenericResource.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        HasManager<ResourceManager> {
+public interface GenericResources
+    extends SupportsListing<GenericResource>, SupportsListingByResourceGroup<GenericResource>,
+    SupportsListingInResourceGroupByTag<GenericResource>, SupportsGettingById<GenericResource>,
+    SupportsCreating<GenericResource.DefinitionStages.Blank>, SupportsDeletingById, HasManager<ResourceManager> {
     /**
      * Deletes a resource from Azure, identifying it by its resource ID.
      *
@@ -114,13 +110,8 @@ public interface GenericResources extends
      * @param apiVersion the API version
      * @return true if the resource exists; false otherwise
      */
-    boolean checkExistence(
-            String resourceGroupName,
-            String resourceProviderNamespace,
-            String parentResourcePath,
-            String resourceType,
-            String resourceName,
-            String apiVersion);
+    boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath,
+        String resourceType, String resourceName, String apiVersion);
 
     /**
      * Checks if a resource exists.
@@ -152,13 +143,8 @@ public interface GenericResources extends
      * @param apiVersion the API version
      * @return the generic resource
      */
-    GenericResource get(
-            String resourceGroupName,
-            String resourceProviderNamespace,
-            String parentResourcePath,
-            String resourceType,
-            String resourceName,
-            String apiVersion);
+    GenericResource get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath,
+        String resourceType, String resourceName, String apiVersion);
 
     /**
      * Returns a resource belonging to a resource group.
@@ -169,11 +155,7 @@ public interface GenericResources extends
      * @param resourceName the name of the resource
      * @return the generic resource
      */
-    GenericResource get(
-            String resourceGroupName,
-            String providerNamespace,
-            String resourceType,
-            String resourceName);
+    GenericResource get(String resourceGroupName, String providerNamespace, String resourceType, String resourceName);
 
     /**
      * Validates move resources from one resource group to another.
@@ -184,7 +166,7 @@ public interface GenericResources extends
      * @param resourceIds the list of IDs of the resources to move
      */
     void validateMoveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup,
-                               List<String> resourceIds);
+        List<String> resourceIds);
 
     /**
      * Validates move resources from one resource group to another asynchronously.
@@ -196,7 +178,7 @@ public interface GenericResources extends
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> validateMoveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup,
-                                          List<String> resourceIds);
+        List<String> resourceIds);
 
     /**
      * Move resources from one resource group to another.
@@ -216,7 +198,7 @@ public interface GenericResources extends
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> moveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup,
-                                  List<String> resourceIds);
+        List<String> resourceIds);
 
     /**
      * Delete resource and all of its child resources.
@@ -228,9 +210,8 @@ public interface GenericResources extends
      * @param resourceName Resource identity.
      * @param apiVersion the API version
      */
-    void delete(String resourceGroupName, String resourceProviderNamespace,
-                String parentResourcePath, String resourceType, String resourceName, String apiVersion);
-
+    void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath,
+        String resourceType, String resourceName, String apiVersion);
 
     /**
      * Delete resource and all of its child resources asynchronously.
@@ -243,8 +224,8 @@ public interface GenericResources extends
      * @param apiVersion the API version
      * @return a representation of the deferred computation of this call
      */
-    Mono<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace,
-                           String parentResourcePath, String resourceType, String resourceName, String apiVersion);
+    Mono<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath,
+        String resourceType, String resourceName, String apiVersion);
 
     /**
      * Begins deleting a resource from Azure, identifying it by its resource ID.

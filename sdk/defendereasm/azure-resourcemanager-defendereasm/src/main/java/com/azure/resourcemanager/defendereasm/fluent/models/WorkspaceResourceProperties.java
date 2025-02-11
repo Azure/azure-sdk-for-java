@@ -5,25 +5,37 @@
 package com.azure.resourcemanager.defendereasm.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.defendereasm.models.ResourceBaseProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.defendereasm.models.ResourceState;
+import java.io.IOException;
 
-/** Workspace properties. */
+/**
+ * Workspace properties.
+ */
 @Immutable
 public final class WorkspaceResourceProperties extends ResourceBaseProperties {
     /*
      * Data plane endpoint.
      */
-    @JsonProperty(value = "dataPlaneEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String dataPlaneEndpoint;
 
-    /** Creates an instance of WorkspaceResourceProperties class. */
+    /*
+     * Resource provisioning state.
+     */
+    private ResourceState provisioningState;
+
+    /**
+     * Creates an instance of WorkspaceResourceProperties class.
+     */
     public WorkspaceResourceProperties() {
     }
 
     /**
      * Get the dataPlaneEndpoint property: Data plane endpoint.
-     *
+     * 
      * @return the dataPlaneEndpoint value.
      */
     public String dataPlaneEndpoint() {
@@ -31,12 +43,59 @@ public final class WorkspaceResourceProperties extends ResourceBaseProperties {
     }
 
     /**
+     * Get the provisioningState property: Resource provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ResourceState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceResourceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceResourceProperties.
+     */
+    public static WorkspaceResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceResourceProperties deserializedWorkspaceResourceProperties = new WorkspaceResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedWorkspaceResourceProperties.provisioningState
+                        = ResourceState.fromString(reader.getString());
+                } else if ("dataPlaneEndpoint".equals(fieldName)) {
+                    deserializedWorkspaceResourceProperties.dataPlaneEndpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceResourceProperties;
+        });
     }
 }

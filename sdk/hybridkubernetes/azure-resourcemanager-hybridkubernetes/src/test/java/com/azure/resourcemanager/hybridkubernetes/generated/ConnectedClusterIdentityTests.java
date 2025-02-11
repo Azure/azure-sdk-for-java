@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectedClusterIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectedClusterIdentity model =
-            BinaryData
-                .fromString("{\"principalId\":\"sybbejhph\",\"tenantId\":\"cmsxaobhdxbm\",\"type\":\"SystemAssigned\"}")
-                .toObject(ConnectedClusterIdentity.class);
+        ConnectedClusterIdentity model = BinaryData
+            .fromString("{\"principalId\":\"sybbejhph\",\"tenantId\":\"cmsxaobhdxbm\",\"type\":\"SystemAssigned\"}")
+            .toObject(ConnectedClusterIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 

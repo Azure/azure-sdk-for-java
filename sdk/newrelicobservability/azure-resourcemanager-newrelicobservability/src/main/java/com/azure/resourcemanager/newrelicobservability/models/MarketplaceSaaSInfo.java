@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Marketplace SAAS Info of the resource.
  */
 @Fluent
-public final class MarketplaceSaaSInfo {
+public final class MarketplaceSaaSInfo implements JsonSerializable<MarketplaceSaaSInfo> {
     /*
      * Marketplace Subscription Id. This is a GUID-formatted string.
      */
-    @JsonProperty(value = "marketplaceSubscriptionId")
     private String marketplaceSubscriptionId;
 
     /*
      * Marketplace Subscription Details: SAAS Name
      */
-    @JsonProperty(value = "marketplaceSubscriptionName")
     private String marketplaceSubscriptionName;
 
     /*
      * Marketplace Subscription Details: Resource URI
      */
-    @JsonProperty(value = "marketplaceResourceId")
     private String marketplaceResourceId;
 
     /*
      * Marketplace Subscription Details: SaaS Subscription Status
      */
-    @JsonProperty(value = "marketplaceStatus")
     private String marketplaceStatus;
 
     /*
      * The Azure Subscription ID to which the Marketplace Subscription belongs and gets billed into.
      */
-    @JsonProperty(value = "billedAzureSubscriptionId")
     private String billedAzureSubscriptionId;
 
     /**
@@ -156,5 +155,53 @@ public final class MarketplaceSaaSInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("marketplaceSubscriptionId", this.marketplaceSubscriptionId);
+        jsonWriter.writeStringField("marketplaceSubscriptionName", this.marketplaceSubscriptionName);
+        jsonWriter.writeStringField("marketplaceResourceId", this.marketplaceResourceId);
+        jsonWriter.writeStringField("marketplaceStatus", this.marketplaceStatus);
+        jsonWriter.writeStringField("billedAzureSubscriptionId", this.billedAzureSubscriptionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MarketplaceSaaSInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MarketplaceSaaSInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MarketplaceSaaSInfo.
+     */
+    public static MarketplaceSaaSInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MarketplaceSaaSInfo deserializedMarketplaceSaaSInfo = new MarketplaceSaaSInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("marketplaceSubscriptionId".equals(fieldName)) {
+                    deserializedMarketplaceSaaSInfo.marketplaceSubscriptionId = reader.getString();
+                } else if ("marketplaceSubscriptionName".equals(fieldName)) {
+                    deserializedMarketplaceSaaSInfo.marketplaceSubscriptionName = reader.getString();
+                } else if ("marketplaceResourceId".equals(fieldName)) {
+                    deserializedMarketplaceSaaSInfo.marketplaceResourceId = reader.getString();
+                } else if ("marketplaceStatus".equals(fieldName)) {
+                    deserializedMarketplaceSaaSInfo.marketplaceStatus = reader.getString();
+                } else if ("billedAzureSubscriptionId".equals(fieldName)) {
+                    deserializedMarketplaceSaaSInfo.billedAzureSubscriptionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMarketplaceSaaSInfo;
+        });
     }
 }

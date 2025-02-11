@@ -15,32 +15,26 @@ import org.junit.jupiter.api.Assertions;
 public final class FilterTrackSelectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FilterTrackSelection model =
-            BinaryData
-                .fromString(
-                    "{\"trackSelections\":[{\"property\":\"Language\",\"value\":\"flusarhmof\",\"operation\":\"NotEqual\"}]}")
-                .toObject(FilterTrackSelection.class);
-        Assertions.assertEquals(FilterTrackPropertyType.LANGUAGE, model.trackSelections().get(0).property());
-        Assertions.assertEquals("flusarhmof", model.trackSelections().get(0).value());
-        Assertions
-            .assertEquals(FilterTrackPropertyCompareOperation.NOT_EQUAL, model.trackSelections().get(0).operation());
+        FilterTrackSelection model = BinaryData
+            .fromString(
+                "{\"trackSelections\":[{\"property\":\"Type\",\"value\":\"pfzfsinzgvfc\",\"operation\":\"NotEqual\"}]}")
+            .toObject(FilterTrackSelection.class);
+        Assertions.assertEquals(FilterTrackPropertyType.TYPE, model.trackSelections().get(0).property());
+        Assertions.assertEquals("pfzfsinzgvfc", model.trackSelections().get(0).value());
+        Assertions.assertEquals(FilterTrackPropertyCompareOperation.NOT_EQUAL,
+            model.trackSelections().get(0).operation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FilterTrackSelection model =
-            new FilterTrackSelection()
-                .withTrackSelections(
-                    Arrays
-                        .asList(
-                            new FilterTrackPropertyCondition()
-                                .withProperty(FilterTrackPropertyType.LANGUAGE)
-                                .withValue("flusarhmof")
-                                .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL)));
+        FilterTrackSelection model = new FilterTrackSelection().withTrackSelections(
+            Arrays.asList(new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.TYPE)
+                .withValue("pfzfsinzgvfc")
+                .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL)));
         model = BinaryData.fromObject(model).toObject(FilterTrackSelection.class);
-        Assertions.assertEquals(FilterTrackPropertyType.LANGUAGE, model.trackSelections().get(0).property());
-        Assertions.assertEquals("flusarhmof", model.trackSelections().get(0).value());
-        Assertions
-            .assertEquals(FilterTrackPropertyCompareOperation.NOT_EQUAL, model.trackSelections().get(0).operation());
+        Assertions.assertEquals(FilterTrackPropertyType.TYPE, model.trackSelections().get(0).property());
+        Assertions.assertEquals("pfzfsinzgvfc", model.trackSelections().get(0).value());
+        Assertions.assertEquals(FilterTrackPropertyCompareOperation.NOT_EQUAL,
+            model.trackSelections().get(0).operation());
     }
 }

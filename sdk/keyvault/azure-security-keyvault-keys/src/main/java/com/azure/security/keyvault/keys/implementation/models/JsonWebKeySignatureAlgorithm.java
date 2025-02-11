@@ -12,50 +12,73 @@ import java.util.Collection;
  * JsonWebKeySignatureAlgorithm.
  */
 public final class JsonWebKeySignatureAlgorithm extends ExpandableStringEnum<JsonWebKeySignatureAlgorithm> {
-    /** RSASSA-PSS using SHA-256 and MGF1 with SHA-256, as described in https://tools.ietf.org/html/rfc7518. */
+    /**
+     * RSASSA-PSS using SHA-256 and MGF1 with SHA-256, as described in https://tools.ietf.org/html/rfc7518.
+     */
     public static final JsonWebKeySignatureAlgorithm PS256 = fromString("PS256");
 
-    /** RSASSA-PSS using SHA-384 and MGF1 with SHA-384, as described in https://tools.ietf.org/html/rfc7518. */
+    /**
+     * RSASSA-PSS using SHA-384 and MGF1 with SHA-384, as described in https://tools.ietf.org/html/rfc7518.
+     */
     public static final JsonWebKeySignatureAlgorithm PS384 = fromString("PS384");
 
-    /** RSASSA-PSS using SHA-512 and MGF1 with SHA-512, as described in https://tools.ietf.org/html/rfc7518. */
+    /**
+     * RSASSA-PSS using SHA-512 and MGF1 with SHA-512, as described in https://tools.ietf.org/html/rfc7518.
+     */
     public static final JsonWebKeySignatureAlgorithm PS512 = fromString("PS512");
 
-    /** RSASSA-PKCS1-v1_5 using SHA-256, as described in https://tools.ietf.org/html/rfc7518. */
+    /**
+     * RSASSA-PKCS1-v1_5 using SHA-256, as described in https://tools.ietf.org/html/rfc7518.
+     */
     public static final JsonWebKeySignatureAlgorithm RS256 = fromString("RS256");
 
-    /** RSASSA-PKCS1-v1_5 using SHA-384, as described in https://tools.ietf.org/html/rfc7518. */
+    /**
+     * RSASSA-PKCS1-v1_5 using SHA-384, as described in https://tools.ietf.org/html/rfc7518.
+     */
     public static final JsonWebKeySignatureAlgorithm RS384 = fromString("RS384");
 
-    /** RSASSA-PKCS1-v1_5 using SHA-512, as described in https://tools.ietf.org/html/rfc7518. */
+    /**
+     * RSASSA-PKCS1-v1_5 using SHA-512, as described in https://tools.ietf.org/html/rfc7518.
+     */
     public static final JsonWebKeySignatureAlgorithm RS512 = fromString("RS512");
 
-    /** Reserved. */
+    /**
+     * Reserved.
+     */
     public static final JsonWebKeySignatureAlgorithm RSNULL = fromString("RSNULL");
 
-    /** ECDSA using P-256 and SHA-256, as described in https://tools.ietf.org/html/rfc7518. */
+    /**
+     * ECDSA using P-256 and SHA-256, as described in https://tools.ietf.org/html/rfc7518.
+     */
     public static final JsonWebKeySignatureAlgorithm ES256 = fromString("ES256");
 
-    /** ECDSA using P-384 and SHA-384, as described in https://tools.ietf.org/html/rfc7518. */
+    /**
+     * ECDSA using P-384 and SHA-384, as described in https://tools.ietf.org/html/rfc7518.
+     */
     public static final JsonWebKeySignatureAlgorithm ES384 = fromString("ES384");
 
-    /** ECDSA using P-521 and SHA-512, as described in https://tools.ietf.org/html/rfc7518. */
+    /**
+     * ECDSA using P-521 and SHA-512, as described in https://tools.ietf.org/html/rfc7518.
+     */
     public static final JsonWebKeySignatureAlgorithm ES512 = fromString("ES512");
 
-    /** ECDSA using P-256K and SHA-256, as described in https://tools.ietf.org/html/rfc7518. */
+    /**
+     * ECDSA using P-256K and SHA-256, as described in https://tools.ietf.org/html/rfc7518.
+     */
     public static final JsonWebKeySignatureAlgorithm ES256K = fromString("ES256K");
 
     /**
      * Creates a new instance of JsonWebKeySignatureAlgorithm value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public JsonWebKeySignatureAlgorithm() {}
+    public JsonWebKeySignatureAlgorithm() {
+    }
 
     /**
      * Creates or finds a JsonWebKeySignatureAlgorithm from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JsonWebKeySignatureAlgorithm.
      */
@@ -65,7 +88,7 @@ public final class JsonWebKeySignatureAlgorithm extends ExpandableStringEnum<Jso
 
     /**
      * Gets known JsonWebKeySignatureAlgorithm values.
-     *
+     * 
      * @return known JsonWebKeySignatureAlgorithm values.
      */
     public static Collection<JsonWebKeySignatureAlgorithm> values() {

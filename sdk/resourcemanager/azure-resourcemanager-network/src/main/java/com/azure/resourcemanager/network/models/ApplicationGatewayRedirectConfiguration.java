@@ -15,22 +15,46 @@ import java.util.Map;
 public interface ApplicationGatewayRedirectConfiguration
     extends HasInnerModel<ApplicationGatewayRedirectConfigurationInner>, ChildResource<ApplicationGateway> {
 
-    /** @return the type of redirection. */
+    /**
+     * Gets the type of redirection.
+     *
+     * @return the type of redirection.
+     */
     ApplicationGatewayRedirectType type();
 
-    /** @return the target listener on this application network traffic is redirected to */
+    /**
+     * Gets the target listener on this application network traffic is redirected to.
+     *
+     * @return the target listener on this application network traffic is redirected to
+     */
     ApplicationGatewayListener targetListener();
 
-    /** @return the target URL network traffic is redirected to */
+    /**
+     * Gets the target URL network traffic is redirected to.
+     *
+     * @return the target URL network traffic is redirected to
+     */
     String targetUrl();
 
-    /** @return request routing rules on this application referencing this redirect configuration, indexed by name */
+    /**
+     * Gets request routing rules on this application referencing this redirect configuration.
+     *
+     * @return request routing rules on this application referencing this redirect configuration, indexed by name
+     */
     Map<String, ApplicationGatewayRequestRoutingRule> requestRoutingRules();
 
-    /** @return true if the path is included in the redirected URL, otherwise false */
+    /**
+     * Checks whether the path is included in the redirected URL.
+     *
+     * @return true if the path is included in the redirected URL, otherwise false
+     */
     boolean isPathIncluded();
 
-    /** @return true if the query string is included in the redirected URL, otherwise false */
+    /**
+     * Checks whether the query string is included in the redirected URL.
+     *
+     * @return true if the query string is included in the redirected URL, otherwise false
+     */
     boolean isQueryStringIncluded();
 
     /** Grouping of application gateway redirect configuration configuration stages. */
@@ -148,12 +172,9 @@ public interface ApplicationGatewayRedirectConfiguration
      * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ReturnT>
-        extends DefinitionStages.Blank<ReturnT>,
-            DefinitionStages.WithAttach<ReturnT>,
-            DefinitionStages.WithAttachAndPath<ReturnT>,
-            DefinitionStages.WithTarget<ReturnT>,
-            DefinitionStages.WithType<ReturnT> {
+    interface Definition<ReturnT> extends DefinitionStages.Blank<ReturnT>, DefinitionStages.WithAttach<ReturnT>,
+        DefinitionStages.WithAttachAndPath<ReturnT>, DefinitionStages.WithTarget<ReturnT>,
+        DefinitionStages.WithType<ReturnT> {
     }
 
     /** Grouping of application gateway redirect configuration update stages. */
@@ -253,12 +274,8 @@ public interface ApplicationGatewayRedirectConfiguration
     /**
      * The entirety of an application gateway redirect configuration update as part of an application gateway update.
      */
-    interface Update
-        extends Settable<ApplicationGateway.Update>,
-            UpdateStages.WithTarget,
-            UpdateStages.WithType,
-            UpdateStages.WithPathIncluded,
-            UpdateStages.WithQueryStringIncluded {
+    interface Update extends Settable<ApplicationGateway.Update>, UpdateStages.WithTarget, UpdateStages.WithType,
+        UpdateStages.WithPathIncluded, UpdateStages.WithQueryStringIncluded {
     }
 
     /**
@@ -380,11 +397,8 @@ public interface ApplicationGatewayRedirectConfiguration
      * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface UpdateDefinition<ReturnT>
-        extends UpdateDefinitionStages.Blank<ReturnT>,
-            UpdateDefinitionStages.WithAttach<ReturnT>,
-            UpdateDefinitionStages.WithAttachAndPath<ReturnT>,
-            UpdateDefinitionStages.WithTarget<ReturnT>,
-            UpdateDefinitionStages.WithType<ReturnT> {
+    interface UpdateDefinition<ReturnT> extends UpdateDefinitionStages.Blank<ReturnT>,
+        UpdateDefinitionStages.WithAttach<ReturnT>, UpdateDefinitionStages.WithAttachAndPath<ReturnT>,
+        UpdateDefinitionStages.WithTarget<ReturnT>, UpdateDefinitionStages.WithType<ReturnT> {
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.consumption.implementation;
 
 import com.azure.resourcemanager.consumption.fluent.models.UsageDetailInner;
 import com.azure.resourcemanager.consumption.models.UsageDetail;
+import com.azure.resourcemanager.consumption.models.UsageDetailsKind;
 import java.util.Collections;
 import java.util.Map;
 
@@ -14,8 +15,8 @@ public final class UsageDetailImpl implements UsageDetail {
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    UsageDetailImpl(
-        UsageDetailInner innerObject, com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
+    UsageDetailImpl(UsageDetailInner innerObject,
+        com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -30,6 +31,10 @@ public final class UsageDetailImpl implements UsageDetail {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public UsageDetailsKind kind() {
+        return this.innerModel().kind();
     }
 
     public String etag() {

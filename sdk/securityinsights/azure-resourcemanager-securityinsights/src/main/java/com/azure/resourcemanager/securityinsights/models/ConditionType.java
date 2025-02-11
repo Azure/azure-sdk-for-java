@@ -5,40 +5,49 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConditionType. */
+/**
+ * Defines values for ConditionType.
+ */
 public final class ConditionType extends ExpandableStringEnum<ConditionType> {
-    /** Static value Property for ConditionType. */
+    /**
+     * Static value Property for ConditionType.
+     */
     public static final ConditionType PROPERTY = fromString("Property");
 
-    /** Static value PropertyArray for ConditionType. */
-    public static final ConditionType PROPERTY_ARRAY = fromString("PropertyArray");
-
-    /** Static value PropertyChanged for ConditionType. */
+    /**
+     * Static value PropertyChanged for ConditionType.
+     */
     public static final ConditionType PROPERTY_CHANGED = fromString("PropertyChanged");
 
-    /** Static value PropertyArrayChanged for ConditionType. */
+    /**
+     * Static value PropertyArrayChanged for ConditionType.
+     */
     public static final ConditionType PROPERTY_ARRAY_CHANGED = fromString("PropertyArrayChanged");
 
-    /** Static value Boolean for ConditionType. */
-    public static final ConditionType BOOLEAN = fromString("Boolean");
+    /**
+     * Creates a new instance of ConditionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConditionType() {
+    }
 
     /**
      * Creates or finds a ConditionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConditionType.
      */
-    @JsonCreator
     public static ConditionType fromString(String name) {
         return fromString(name, ConditionType.class);
     }
 
     /**
      * Gets known ConditionType values.
-     *
+     * 
      * @return known ConditionType values.
      */
     public static Collection<ConditionType> values() {

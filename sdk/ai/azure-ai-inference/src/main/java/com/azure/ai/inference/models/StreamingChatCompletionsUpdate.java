@@ -136,6 +136,15 @@ public final class StreamingChatCompletionsUpdate implements JsonSerializable<St
     }
 
     /**
+     * Get the choice property: The chat choice associated with this completion response.
+     *
+     * @return the choice value.
+     */
+    public StreamingChatChoiceUpdate getChoice() {
+        return this.choices.get(0);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated

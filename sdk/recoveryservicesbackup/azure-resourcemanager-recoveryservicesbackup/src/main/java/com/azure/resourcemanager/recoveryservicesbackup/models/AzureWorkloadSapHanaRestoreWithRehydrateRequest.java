@@ -5,35 +5,27 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 /**
  * AzureWorkload SAP Hana-specific restore with integrated rehydration of recovery point.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = AzureWorkloadSapHanaRestoreWithRehydrateRequest.class,
-    visible = true)
-@JsonTypeName("AzureWorkloadSAPHanaRestoreWithRehydrateRequest")
 @Fluent
 public final class AzureWorkloadSapHanaRestoreWithRehydrateRequest extends AzureWorkloadSapHanaRestoreRequest {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private String objectType = "AzureWorkloadSAPHanaRestoreWithRehydrateRequest";
 
     /*
      * RP Rehydration Info
      */
-    @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
     /**
@@ -174,9 +166,100 @@ public final class AzureWorkloadSapHanaRestoreWithRehydrateRequest extends Azure
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointRehydrationInfo() != null) {
             recoveryPointRehydrationInfo().validate();
         }
+        if (targetInfo() != null) {
+            targetInfo().validate();
+        }
+        if (userAssignedManagedIdentityDetails() != null) {
+            userAssignedManagedIdentityDetails().validate();
+        }
+        if (snapshotRestoreParameters() != null) {
+            snapshotRestoreParameters().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("recoveryType", recoveryType() == null ? null : recoveryType().toString());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeMapField("propertyBag", propertyBag(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("targetInfo", targetInfo());
+        jsonWriter.writeStringField("recoveryMode", recoveryMode() == null ? null : recoveryMode().toString());
+        jsonWriter.writeStringField("targetResourceGroupName", targetResourceGroupName());
+        jsonWriter.writeJsonField("userAssignedManagedIdentityDetails", userAssignedManagedIdentityDetails());
+        jsonWriter.writeJsonField("snapshotRestoreParameters", snapshotRestoreParameters());
+        jsonWriter.writeStringField("targetVirtualMachineId", targetVirtualMachineId());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeJsonField("recoveryPointRehydrationInfo", this.recoveryPointRehydrationInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWorkloadSapHanaRestoreWithRehydrateRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWorkloadSapHanaRestoreWithRehydrateRequest if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWorkloadSapHanaRestoreWithRehydrateRequest.
+     */
+    public static AzureWorkloadSapHanaRestoreWithRehydrateRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWorkloadSapHanaRestoreWithRehydrateRequest deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest
+                = new AzureWorkloadSapHanaRestoreWithRehydrateRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("recoveryType".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest
+                        .withRecoveryType(RecoveryType.fromString(reader.getString()));
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest
+                        .withSourceResourceId(reader.getString());
+                } else if ("propertyBag".equals(fieldName)) {
+                    Map<String, String> propertyBag = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest.withPropertyBag(propertyBag);
+                } else if ("targetInfo".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest
+                        .withTargetInfo(TargetRestoreInfo.fromJson(reader));
+                } else if ("recoveryMode".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest
+                        .withRecoveryMode(RecoveryMode.fromString(reader.getString()));
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest
+                        .withTargetResourceGroupName(reader.getString());
+                } else if ("userAssignedManagedIdentityDetails".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest
+                        .withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails.fromJson(reader));
+                } else if ("snapshotRestoreParameters".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest
+                        .withSnapshotRestoreParameters(SnapshotRestoreParameters.fromJson(reader));
+                } else if ("targetVirtualMachineId".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest
+                        .withTargetVirtualMachineId(reader.getString());
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest.objectType = reader.getString();
+                } else if ("recoveryPointRehydrationInfo".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest.recoveryPointRehydrationInfo
+                        = RecoveryPointRehydrationInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWorkloadSapHanaRestoreWithRehydrateRequest;
+        });
     }
 }

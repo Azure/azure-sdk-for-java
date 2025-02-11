@@ -23,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class TestHelper {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_DIGITALTWINS_TEST_SERVICE_VERSIONS = "AZURE_DIGITALTWINS_TEST_SERVICE_VERSIONS";
-    private static final String SERVICE_VERSION_FROM_ENV = Configuration.getGlobalConfiguration()
-        .get(AZURE_DIGITALTWINS_TEST_SERVICE_VERSIONS);
+    private static final String SERVICE_VERSION_FROM_ENV
+        = Configuration.getGlobalConfiguration().get(AZURE_DIGITALTWINS_TEST_SERVICE_VERSIONS);
 
     static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
         assertRestException(exceptionThrower, ErrorResponseException.class, expectedStatusCode);

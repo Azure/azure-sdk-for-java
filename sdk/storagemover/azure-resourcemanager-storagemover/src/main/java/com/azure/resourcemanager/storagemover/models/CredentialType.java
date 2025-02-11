@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class CredentialType extends ExpandableStringEnum<CredentialType> {
      * @param name a name to look for.
      * @return the corresponding CredentialType.
      */
-    @JsonCreator
     public static CredentialType fromString(String name) {
         return fromString(name, CredentialType.class);
     }

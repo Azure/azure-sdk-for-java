@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resource storage details.
  */
 @Fluent
-public final class BackupResourceConfig {
+public final class BackupResourceConfig implements JsonSerializable<BackupResourceConfig> {
     /*
      * Storage type
      */
-    @JsonProperty(value = "storageModelType")
     private StorageType storageModelType;
 
     /*
      * Storage type.
      */
-    @JsonProperty(value = "storageType")
     private StorageType storageType;
 
     /*
      * Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked.
      */
-    @JsonProperty(value = "storageTypeState")
     private StorageTypeState storageTypeState;
 
     /*
      * Opt in details of Cross Region Restore feature.
      */
-    @JsonProperty(value = "crossRegionRestoreFlag")
     private Boolean crossRegionRestoreFlag;
 
     /*
      * Vault Dedup state
      */
-    @JsonProperty(value = "dedupState")
     private DedupState dedupState;
 
     /*
      * Vault x-cool state
      */
-    @JsonProperty(value = "xcoolState")
     private XcoolState xcoolState;
 
     /**
@@ -182,5 +180,59 @@ public final class BackupResourceConfig {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageModelType",
+            this.storageModelType == null ? null : this.storageModelType.toString());
+        jsonWriter.writeStringField("storageType", this.storageType == null ? null : this.storageType.toString());
+        jsonWriter.writeStringField("storageTypeState",
+            this.storageTypeState == null ? null : this.storageTypeState.toString());
+        jsonWriter.writeBooleanField("crossRegionRestoreFlag", this.crossRegionRestoreFlag);
+        jsonWriter.writeStringField("dedupState", this.dedupState == null ? null : this.dedupState.toString());
+        jsonWriter.writeStringField("xcoolState", this.xcoolState == null ? null : this.xcoolState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupResourceConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupResourceConfig if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupResourceConfig.
+     */
+    public static BackupResourceConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupResourceConfig deserializedBackupResourceConfig = new BackupResourceConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageModelType".equals(fieldName)) {
+                    deserializedBackupResourceConfig.storageModelType = StorageType.fromString(reader.getString());
+                } else if ("storageType".equals(fieldName)) {
+                    deserializedBackupResourceConfig.storageType = StorageType.fromString(reader.getString());
+                } else if ("storageTypeState".equals(fieldName)) {
+                    deserializedBackupResourceConfig.storageTypeState = StorageTypeState.fromString(reader.getString());
+                } else if ("crossRegionRestoreFlag".equals(fieldName)) {
+                    deserializedBackupResourceConfig.crossRegionRestoreFlag
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dedupState".equals(fieldName)) {
+                    deserializedBackupResourceConfig.dedupState = DedupState.fromString(reader.getString());
+                } else if ("xcoolState".equals(fieldName)) {
+                    deserializedBackupResourceConfig.xcoolState = XcoolState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupResourceConfig;
+        });
     }
 }

@@ -18,8 +18,9 @@ public final class DevicesDeleteSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void devicesDelete(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.devices().delete("MyResourceGroup1", "MyCatalog1", "MyProductName1", "DeviceGroupName1",
-            "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.devices()
+            .delete("MyResourceGroup1", "MyCatalog1", "MyProductName1", "DeviceGroupName1",
+                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

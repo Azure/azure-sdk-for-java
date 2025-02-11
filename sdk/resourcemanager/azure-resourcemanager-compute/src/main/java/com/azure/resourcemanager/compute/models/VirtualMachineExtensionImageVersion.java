@@ -12,18 +12,38 @@ import reactor.core.publisher.Mono;
 /** An immutable client-side representation of an Azure virtual machine extension image version. */
 @Fluent
 public interface VirtualMachineExtensionImageVersion extends HasInnerModel<VirtualMachineExtensionImageInner>, HasName {
-    /** @return the resource ID of the extension image version */
+    /**
+     * Gets the resource ID of the extension image version.
+     *
+     * @return the resource ID of the extension image version
+     */
     String id();
 
-    /** @return the region in which virtual machine extension image version is available */
+    /**
+     * Gets the region in which virtual machine extension image version is available.
+     *
+     * @return the region in which virtual machine extension image version is available
+     */
     String regionName();
 
-    /** @return the virtual machine extension image type this version belongs to */
+    /**
+     * Gets the virtual machine extension image type this version belongs to.
+     *
+     * @return the virtual machine extension image type this version belongs to
+     */
     VirtualMachineExtensionImageType type();
 
-    /** @return virtual machine extension image this version represents */
+    /**
+     * Gets virtual machine extension image this version represents.
+     *
+     * @return virtual machine extension image this version represents
+     */
     VirtualMachineExtensionImage getImage();
 
-    /** @return an observable upon subscription emits the image */
+    /**
+     * Gets an observable upon subscription emits the image.
+     *
+     * @return an observable upon subscription emits the image
+     */
     Mono<VirtualMachineExtensionImage> getImageAsync();
 }

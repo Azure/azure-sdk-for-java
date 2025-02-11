@@ -6,36 +6,41 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Class to specify one track property condition. */
+/**
+ * Class to specify one track property condition.
+ */
 @Fluent
-public final class TrackPropertyCondition {
+public final class TrackPropertyCondition implements JsonSerializable<TrackPropertyCondition> {
     /*
      * Track property type
      */
-    @JsonProperty(value = "property", required = true)
     private TrackPropertyType property;
 
     /*
      * Track property condition operation
      */
-    @JsonProperty(value = "operation", required = true)
     private TrackPropertyCompareOperation operation;
 
     /*
      * Track property value
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of TrackPropertyCondition class. */
+    /**
+     * Creates an instance of TrackPropertyCondition class.
+     */
     public TrackPropertyCondition() {
     }
 
     /**
      * Get the property property: Track property type.
-     *
+     * 
      * @return the property value.
      */
     public TrackPropertyType property() {
@@ -44,7 +49,7 @@ public final class TrackPropertyCondition {
 
     /**
      * Set the property property: Track property type.
-     *
+     * 
      * @param property the property value to set.
      * @return the TrackPropertyCondition object itself.
      */
@@ -55,7 +60,7 @@ public final class TrackPropertyCondition {
 
     /**
      * Get the operation property: Track property condition operation.
-     *
+     * 
      * @return the operation value.
      */
     public TrackPropertyCompareOperation operation() {
@@ -64,7 +69,7 @@ public final class TrackPropertyCondition {
 
     /**
      * Set the operation property: Track property condition operation.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the TrackPropertyCondition object itself.
      */
@@ -75,7 +80,7 @@ public final class TrackPropertyCondition {
 
     /**
      * Get the value property: Track property value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -84,7 +89,7 @@ public final class TrackPropertyCondition {
 
     /**
      * Set the value property: Track property value.
-     *
+     * 
      * @param value the value value to set.
      * @return the TrackPropertyCondition object itself.
      */
@@ -95,22 +100,65 @@ public final class TrackPropertyCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (property() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property property in model TrackPropertyCondition"));
         }
         if (operation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operation in model TrackPropertyCondition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property operation in model TrackPropertyCondition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TrackPropertyCondition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("property", this.property == null ? null : this.property.toString());
+        jsonWriter.writeStringField("operation", this.operation == null ? null : this.operation.toString());
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrackPropertyCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrackPropertyCondition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrackPropertyCondition.
+     */
+    public static TrackPropertyCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrackPropertyCondition deserializedTrackPropertyCondition = new TrackPropertyCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("property".equals(fieldName)) {
+                    deserializedTrackPropertyCondition.property = TrackPropertyType.fromString(reader.getString());
+                } else if ("operation".equals(fieldName)) {
+                    deserializedTrackPropertyCondition.operation
+                        = TrackPropertyCompareOperation.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedTrackPropertyCondition.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrackPropertyCondition;
+        });
+    }
 }

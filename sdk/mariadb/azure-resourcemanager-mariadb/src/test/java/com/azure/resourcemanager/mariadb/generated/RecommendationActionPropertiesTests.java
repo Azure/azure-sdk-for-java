@@ -14,44 +14,41 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendationActionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendationActionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"advisorName\":\"rcfbunrm\",\"sessionId\":\"jhhkxbp\",\"actionId\":1880019175,\"createdTime\":\"2021-10-28T17:00:48Z\",\"expirationTime\":\"2021-09-20T17:06:07Z\",\"reason\":\"j\",\"recommendationType\":\"gudivkrtswbxqz\",\"details\":{\"e\":\"jfauvjfdxxi\"}}")
-                .toObject(RecommendationActionProperties.class);
-        Assertions.assertEquals("rcfbunrm", model.advisorName());
-        Assertions.assertEquals("jhhkxbp", model.sessionId());
-        Assertions.assertEquals(1880019175, model.actionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-28T17:00:48Z"), model.createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-20T17:06:07Z"), model.expirationTime());
-        Assertions.assertEquals("j", model.reason());
-        Assertions.assertEquals("gudivkrtswbxqz", model.recommendationType());
-        Assertions.assertEquals("jfauvjfdxxi", model.details().get("e"));
+        RecommendationActionProperties model = BinaryData.fromString(
+            "{\"advisorName\":\"zmh\",\"sessionId\":\"ongmtsa\",\"actionId\":1151721891,\"createdTime\":\"2021-07-03T11:39:07Z\",\"expirationTime\":\"2021-10-07T01:22:52Z\",\"reason\":\"p\",\"recommendationType\":\"knftguvriuh\",\"details\":{\"ro\":\"mdyvxqtayriw\",\"mcqibycnojv\":\"qbex\",\"zhpvgqzcjrvxd\":\"nmefqsgzvahapj\"}}")
+            .toObject(RecommendationActionProperties.class);
+        Assertions.assertEquals("zmh", model.advisorName());
+        Assertions.assertEquals("ongmtsa", model.sessionId());
+        Assertions.assertEquals(1151721891, model.actionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T11:39:07Z"), model.createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T01:22:52Z"), model.expirationTime());
+        Assertions.assertEquals("p", model.reason());
+        Assertions.assertEquals("knftguvriuh", model.recommendationType());
+        Assertions.assertEquals("mdyvxqtayriw", model.details().get("ro"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecommendationActionProperties model =
-            new RecommendationActionProperties()
-                .withAdvisorName("rcfbunrm")
-                .withSessionId("jhhkxbp")
-                .withActionId(1880019175)
-                .withCreatedTime(OffsetDateTime.parse("2021-10-28T17:00:48Z"))
-                .withExpirationTime(OffsetDateTime.parse("2021-09-20T17:06:07Z"))
-                .withReason("j")
-                .withRecommendationType("gudivkrtswbxqz")
-                .withDetails(mapOf("e", "jfauvjfdxxi"));
+        RecommendationActionProperties model = new RecommendationActionProperties().withAdvisorName("zmh")
+            .withSessionId("ongmtsa")
+            .withActionId(1151721891)
+            .withCreatedTime(OffsetDateTime.parse("2021-07-03T11:39:07Z"))
+            .withExpirationTime(OffsetDateTime.parse("2021-10-07T01:22:52Z"))
+            .withReason("p")
+            .withRecommendationType("knftguvriuh")
+            .withDetails(mapOf("ro", "mdyvxqtayriw", "mcqibycnojv", "qbex", "zhpvgqzcjrvxd", "nmefqsgzvahapj"));
         model = BinaryData.fromObject(model).toObject(RecommendationActionProperties.class);
-        Assertions.assertEquals("rcfbunrm", model.advisorName());
-        Assertions.assertEquals("jhhkxbp", model.sessionId());
-        Assertions.assertEquals(1880019175, model.actionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-28T17:00:48Z"), model.createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-20T17:06:07Z"), model.expirationTime());
-        Assertions.assertEquals("j", model.reason());
-        Assertions.assertEquals("gudivkrtswbxqz", model.recommendationType());
-        Assertions.assertEquals("jfauvjfdxxi", model.details().get("e"));
+        Assertions.assertEquals("zmh", model.advisorName());
+        Assertions.assertEquals("ongmtsa", model.sessionId());
+        Assertions.assertEquals(1151721891, model.actionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T11:39:07Z"), model.createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T01:22:52Z"), model.expirationTime());
+        Assertions.assertEquals("p", model.reason());
+        Assertions.assertEquals("knftguvriuh", model.recommendationType());
+        Assertions.assertEquals("mdyvxqtayriw", model.details().get("ro"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

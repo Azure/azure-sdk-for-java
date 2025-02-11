@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The field indicating if Microsoft provides session ip addresses. */
+/**
+ * The field indicating if Microsoft provides session ip addresses.
+ */
 public final class SessionAddressProvider extends ExpandableStringEnum<SessionAddressProvider> {
-    /** Static value Microsoft for SessionAddressProvider. */
+    /**
+     * Static value Microsoft for SessionAddressProvider.
+     */
     public static final SessionAddressProvider MICROSOFT = fromString("Microsoft");
 
-    /** Static value Peer for SessionAddressProvider. */
+    /**
+     * Static value Peer for SessionAddressProvider.
+     */
     public static final SessionAddressProvider PEER = fromString("Peer");
 
     /**
      * Creates a new instance of SessionAddressProvider value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class SessionAddressProvider extends ExpandableStringEnum<SessionAd
 
     /**
      * Creates or finds a SessionAddressProvider from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SessionAddressProvider.
      */
-    @JsonCreator
     public static SessionAddressProvider fromString(String name) {
         return fromString(name, SessionAddressProvider.class);
     }
 
     /**
      * Gets known SessionAddressProvider values.
-     *
+     * 
      * @return known SessionAddressProvider values.
      */
     public static Collection<SessionAddressProvider> values() {

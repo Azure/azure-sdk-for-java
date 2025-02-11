@@ -27,22 +27,28 @@ import com.azure.resourcemanager.mixedreality.fluent.models.CheckNameAvailabilit
 import com.azure.resourcemanager.mixedreality.models.CheckNameAvailabilityRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MixedRealityClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(MixedRealityClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,25 +59,20 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "MixedRealityClientRe")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.MixedReality/locations/{location}"
-                + "/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.MixedReality/locations/{location}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityLocal(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityRequest checkNameAvailability,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Check Name Availability for local uniqueness.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param checkNameAvailability Check Name Availability Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,16 +84,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityLocalWithResponseAsync(
         String location, CheckNameAvailabilityRequest checkNameAvailability) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -105,23 +102,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailabilityLocal(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            this.client.getApiVersion(),
-                            checkNameAvailability,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailabilityLocal(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), location, this.client.getApiVersion(), checkNameAvailability, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check Name Availability for local uniqueness.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param checkNameAvailability Check Name Availability Request.
      * @param context The context to associate with this operation.
@@ -134,16 +123,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityLocalWithResponseAsync(
         String location, CheckNameAvailabilityRequest checkNameAvailability, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -156,20 +141,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailabilityLocal(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                this.client.getApiVersion(),
-                checkNameAvailability,
-                accept,
-                context);
+        return service.checkNameAvailabilityLocal(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), checkNameAvailability, accept, context);
     }
 
     /**
      * Check Name Availability for local uniqueness.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param checkNameAvailability Check Name Availability Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,15 +156,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return check Name Availability Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityLocalAsync(
-        String location, CheckNameAvailabilityRequest checkNameAvailability) {
+    private Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityLocalAsync(String location,
+        CheckNameAvailabilityRequest checkNameAvailability) {
         return checkNameAvailabilityLocalWithResponseAsync(location, checkNameAvailability)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Check Name Availability for local uniqueness.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param checkNameAvailability Check Name Availability Request.
      * @param context The context to associate with this operation.
@@ -196,14 +174,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return check Name Availability Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityLocalWithResponse(
-        String location, CheckNameAvailabilityRequest checkNameAvailability, Context context) {
+    public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityLocalWithResponse(String location,
+        CheckNameAvailabilityRequest checkNameAvailability, Context context) {
         return checkNameAvailabilityLocalWithResponseAsync(location, checkNameAvailability, context).block();
     }
 
     /**
      * Check Name Availability for local uniqueness.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param checkNameAvailability Check Name Availability Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -212,8 +190,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return check Name Availability Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResponseInner checkNameAvailabilityLocal(
-        String location, CheckNameAvailabilityRequest checkNameAvailability) {
+    public CheckNameAvailabilityResponseInner checkNameAvailabilityLocal(String location,
+        CheckNameAvailabilityRequest checkNameAvailability) {
         return checkNameAvailabilityLocalWithResponse(location, checkNameAvailability, Context.NONE).getValue();
     }
 }

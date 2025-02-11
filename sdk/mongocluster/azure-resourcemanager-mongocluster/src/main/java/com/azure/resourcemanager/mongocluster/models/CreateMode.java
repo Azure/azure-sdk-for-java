@@ -12,22 +12,22 @@ import java.util.Collection;
  */
 public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /**
-     * Static value Default for CreateMode.
+     * Create a new mongo cluster.
      */
     public static final CreateMode DEFAULT = fromString("Default");
 
     /**
-     * Static value PointInTimeRestore for CreateMode.
+     * Create a mongo cluster from a restore point-in-time.
      */
     public static final CreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
     /**
-     * Static value GeoReplica for CreateMode.
+     * Create a replica cluster in distinct geographic region from the source cluster.
      */
     public static final CreateMode GEO_REPLICA = fromString("GeoReplica");
 
     /**
-     * Static value Replica for CreateMode.
+     * Create a replica cluster in the same geographic region as the source cluster.
      */
     public static final CreateMode REPLICA = fromString("Replica");
 

@@ -31,6 +31,7 @@ import static com.azure.spring.cloud.core.provider.RetryOptionsProvider.RetryMod
 import static com.azure.spring.cloud.core.provider.RetryOptionsProvider.RetryMode.FIXED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class AzurePropertiesUtilsTests {
@@ -404,6 +405,8 @@ class AzurePropertiesUtilsTests {
     void testCopyPropertiesSourceNotChanged() {
         AzurePropertiesA source = new AzurePropertiesA();
         source.credential.setClientId("client-id-A");
+        source.credential.setManagedIdentityEnabled(true);
+        source.credential.setTokenCredentialBeanName("my-token-credential");
         source.getProfile().setCloudType(AZURE);
 
         AzurePropertiesB target = new AzurePropertiesB();
@@ -411,6 +414,8 @@ class AzurePropertiesUtilsTests {
         AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
         assertEquals("client-id-A", target.credential.getClientId());
+        assertEquals("my-token-credential", target.credential.getTokenCredentialBeanName());
+        assertTrue(target.credential.isManagedIdentityEnabled());
 
         // Update target will not affect source
         target.retry.getExponential().setBaseDelay(Duration.ofSeconds(2));

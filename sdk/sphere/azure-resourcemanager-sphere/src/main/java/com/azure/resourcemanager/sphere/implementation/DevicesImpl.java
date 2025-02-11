@@ -38,15 +38,15 @@ public final class DevicesImpl implements Devices {
 
     public PagedIterable<Device> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, Context context) {
-        PagedIterable<DeviceInner> inner = this.serviceClient().listByDeviceGroup(resourceGroupName, catalogName,
-            productName, deviceGroupName, context);
+        PagedIterable<DeviceInner> inner = this.serviceClient()
+            .listByDeviceGroup(resourceGroupName, catalogName, productName, deviceGroupName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DeviceImpl(inner1, this.manager()));
     }
 
     public Response<Device> getWithResponse(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deviceName, Context context) {
-        Response<DeviceInner> inner = this.serviceClient().getWithResponse(resourceGroupName, catalogName, productName,
-            deviceGroupName, deviceName, context);
+        Response<DeviceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DeviceImpl(inner.getValue(), this.manager()));
@@ -79,8 +79,9 @@ public final class DevicesImpl implements Devices {
     public SignedCapabilityImageResponse generateCapabilityImage(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName,
         GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        SignedCapabilityImageResponseInner inner = this.serviceClient().generateCapabilityImage(resourceGroupName,
-            catalogName, productName, deviceGroupName, deviceName, generateDeviceCapabilityRequest);
+        SignedCapabilityImageResponseInner inner = this.serviceClient()
+            .generateCapabilityImage(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+                generateDeviceCapabilityRequest);
         if (inner != null) {
             return new SignedCapabilityImageResponseImpl(inner, this.manager());
         } else {
@@ -91,8 +92,9 @@ public final class DevicesImpl implements Devices {
     public SignedCapabilityImageResponse generateCapabilityImage(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName,
         GenerateCapabilityImageRequest generateDeviceCapabilityRequest, Context context) {
-        SignedCapabilityImageResponseInner inner = this.serviceClient().generateCapabilityImage(resourceGroupName,
-            catalogName, productName, deviceGroupName, deviceName, generateDeviceCapabilityRequest, context);
+        SignedCapabilityImageResponseInner inner = this.serviceClient()
+            .generateCapabilityImage(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+                generateDeviceCapabilityRequest, context);
         if (inner != null) {
             return new SignedCapabilityImageResponseImpl(inner, this.manager());
         } else {

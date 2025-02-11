@@ -40,6 +40,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
      */
     private String currentOrchestratorVersion;
 
+    /*
+     * Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is
+     * updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable
+     * optimistic concurrency per the normal etag convention.
+     */
+    private String etag;
+
     /**
      * Creates an instance of ManagedClusterAgentPoolProfile class.
      */
@@ -96,6 +103,18 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public String currentOrchestratorVersion() {
         return this.currentOrchestratorVersion;
+    }
+
+    /**
+     * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
+     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -589,7 +608,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("count".equals(fieldName)) {
+                if ("eTag".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.etag = reader.getString();
+                } else if ("count".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.withCount(reader.getNullable(JsonReader::getInt));
                 } else if ("vmSize".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.withVmSize(reader.getString());

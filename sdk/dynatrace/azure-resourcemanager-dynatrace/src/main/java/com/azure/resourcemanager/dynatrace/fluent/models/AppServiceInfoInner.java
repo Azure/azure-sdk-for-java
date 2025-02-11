@@ -5,77 +5,76 @@
 package com.azure.resourcemanager.dynatrace.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dynatrace.models.AutoUpdateSetting;
 import com.azure.resourcemanager.dynatrace.models.AvailabilityState;
 import com.azure.resourcemanager.dynatrace.models.LogModule;
 import com.azure.resourcemanager.dynatrace.models.MonitoringType;
 import com.azure.resourcemanager.dynatrace.models.UpdateStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Details of App Services having Dynatrace OneAgent installed. */
+/**
+ * Details of App Services having Dynatrace OneAgent installed.
+ */
 @Fluent
-public final class AppServiceInfoInner {
+public final class AppServiceInfoInner implements JsonSerializable<AppServiceInfoInner> {
     /*
      * App service resource ID
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Version of the Dynatrace agent installed on the App Service.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * The monitoring mode of OneAgent
      */
-    @JsonProperty(value = "monitoringType")
     private MonitoringType monitoringType;
 
     /*
      * Update settings of OneAgent.
      */
-    @JsonProperty(value = "autoUpdateSetting")
     private AutoUpdateSetting autoUpdateSetting;
 
     /*
      * The current update status of OneAgent.
      */
-    @JsonProperty(value = "updateStatus")
     private UpdateStatus updateStatus;
 
     /*
      * The availability state of OneAgent.
      */
-    @JsonProperty(value = "availabilityState")
     private AvailabilityState availabilityState;
 
     /*
      * Tells whether log modules are enabled or not
      */
-    @JsonProperty(value = "logModule")
     private LogModule logModule;
 
     /*
      * The name of the host group
      */
-    @JsonProperty(value = "hostGroup")
     private String hostGroup;
 
     /*
      * The name of the host
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
-    /** Creates an instance of AppServiceInfoInner class. */
+    /**
+     * Creates an instance of AppServiceInfoInner class.
+     */
     public AppServiceInfoInner() {
     }
 
     /**
      * Get the resourceId property: App service resource ID.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -84,7 +83,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the resourceId property: App service resource ID.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -95,7 +94,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Get the version property: Version of the Dynatrace agent installed on the App Service.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -104,7 +103,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the version property: Version of the Dynatrace agent installed on the App Service.
-     *
+     * 
      * @param version the version value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -115,7 +114,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Get the monitoringType property: The monitoring mode of OneAgent.
-     *
+     * 
      * @return the monitoringType value.
      */
     public MonitoringType monitoringType() {
@@ -124,7 +123,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the monitoringType property: The monitoring mode of OneAgent.
-     *
+     * 
      * @param monitoringType the monitoringType value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -135,7 +134,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Get the autoUpdateSetting property: Update settings of OneAgent.
-     *
+     * 
      * @return the autoUpdateSetting value.
      */
     public AutoUpdateSetting autoUpdateSetting() {
@@ -144,7 +143,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the autoUpdateSetting property: Update settings of OneAgent.
-     *
+     * 
      * @param autoUpdateSetting the autoUpdateSetting value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -155,7 +154,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Get the updateStatus property: The current update status of OneAgent.
-     *
+     * 
      * @return the updateStatus value.
      */
     public UpdateStatus updateStatus() {
@@ -164,7 +163,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the updateStatus property: The current update status of OneAgent.
-     *
+     * 
      * @param updateStatus the updateStatus value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -175,7 +174,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Get the availabilityState property: The availability state of OneAgent.
-     *
+     * 
      * @return the availabilityState value.
      */
     public AvailabilityState availabilityState() {
@@ -184,7 +183,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the availabilityState property: The availability state of OneAgent.
-     *
+     * 
      * @param availabilityState the availabilityState value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -195,7 +194,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Get the logModule property: Tells whether log modules are enabled or not.
-     *
+     * 
      * @return the logModule value.
      */
     public LogModule logModule() {
@@ -204,7 +203,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the logModule property: Tells whether log modules are enabled or not.
-     *
+     * 
      * @param logModule the logModule value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -215,7 +214,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Get the hostGroup property: The name of the host group.
-     *
+     * 
      * @return the hostGroup value.
      */
     public String hostGroup() {
@@ -224,7 +223,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the hostGroup property: The name of the host group.
-     *
+     * 
      * @param hostGroup the hostGroup value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -235,7 +234,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Get the hostname property: The name of the host.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -244,7 +243,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the hostname property: The name of the host.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -255,9 +254,74 @@ public final class AppServiceInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("monitoringType",
+            this.monitoringType == null ? null : this.monitoringType.toString());
+        jsonWriter.writeStringField("autoUpdateSetting",
+            this.autoUpdateSetting == null ? null : this.autoUpdateSetting.toString());
+        jsonWriter.writeStringField("updateStatus", this.updateStatus == null ? null : this.updateStatus.toString());
+        jsonWriter.writeStringField("availabilityState",
+            this.availabilityState == null ? null : this.availabilityState.toString());
+        jsonWriter.writeStringField("logModule", this.logModule == null ? null : this.logModule.toString());
+        jsonWriter.writeStringField("hostGroup", this.hostGroup);
+        jsonWriter.writeStringField("hostName", this.hostname);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServiceInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServiceInfoInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppServiceInfoInner.
+     */
+    public static AppServiceInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServiceInfoInner deserializedAppServiceInfoInner = new AppServiceInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.resourceId = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.version = reader.getString();
+                } else if ("monitoringType".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.monitoringType = MonitoringType.fromString(reader.getString());
+                } else if ("autoUpdateSetting".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.autoUpdateSetting
+                        = AutoUpdateSetting.fromString(reader.getString());
+                } else if ("updateStatus".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.updateStatus = UpdateStatus.fromString(reader.getString());
+                } else if ("availabilityState".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.availabilityState
+                        = AvailabilityState.fromString(reader.getString());
+                } else if ("logModule".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.logModule = LogModule.fromString(reader.getString());
+                } else if ("hostGroup".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.hostGroup = reader.getString();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.hostname = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServiceInfoInner;
+        });
     }
 }

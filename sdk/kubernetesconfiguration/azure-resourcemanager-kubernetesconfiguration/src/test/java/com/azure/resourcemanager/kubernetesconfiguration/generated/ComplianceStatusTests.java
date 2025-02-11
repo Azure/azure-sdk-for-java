@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ComplianceStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComplianceStatus model =
-            BinaryData
-                .fromString(
-                    "{\"complianceState\":\"Failed\",\"lastConfigApplied\":\"2021-03-06T10:40:17Z\",\"message\":\"kfrlhrxsbky\",\"messageLevel\":\"Error\"}")
-                .toObject(ComplianceStatus.class);
+        ComplianceStatus model = BinaryData.fromString(
+            "{\"complianceState\":\"Failed\",\"lastConfigApplied\":\"2021-03-06T10:40:17Z\",\"message\":\"kfrlhrxsbky\",\"messageLevel\":\"Error\"}")
+            .toObject(ComplianceStatus.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T10:40:17Z"), model.lastConfigApplied());
         Assertions.assertEquals("kfrlhrxsbky", model.message());
         Assertions.assertEquals(MessageLevelType.ERROR, model.messageLevel());
@@ -25,9 +23,8 @@ public final class ComplianceStatusTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComplianceStatus model =
-            new ComplianceStatus()
-                .withLastConfigApplied(OffsetDateTime.parse("2021-03-06T10:40:17Z"))
+        ComplianceStatus model
+            = new ComplianceStatus().withLastConfigApplied(OffsetDateTime.parse("2021-03-06T10:40:17Z"))
                 .withMessage("kfrlhrxsbky")
                 .withMessageLevel(MessageLevelType.ERROR);
         model = BinaryData.fromObject(model).toObject(ComplianceStatus.class);

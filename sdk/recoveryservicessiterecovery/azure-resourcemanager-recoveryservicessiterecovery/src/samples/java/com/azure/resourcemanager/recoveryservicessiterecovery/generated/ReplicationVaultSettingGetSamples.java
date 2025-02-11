@@ -20,7 +20,7 @@ public final class ReplicationVaultSettingGetSamples {
      */
     public static void
         getsTheVaultSetting(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationVaultSettings().getWithResponse("vault1", "resourceGroupPS1", "default",
-            com.azure.core.util.Context.NONE);
+        manager.replicationVaultSettings()
+            .getWithResponse("vault1", "resourceGroupPS1", "default", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RoutePolicies. */
+/**
+ * Resource collection API of RoutePolicies.
+ */
 public interface RoutePolicies {
     /**
      * Gets a Route Policy.
-     *
-     * <p>Implements Route Policy GET method.
-     *
+     * 
+     * Implements Route Policy GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface RoutePolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RoutePolicy resource definition along with {@link Response}.
      */
-    Response<RoutePolicy> getByResourceGroupWithResponse(
-        String resourceGroupName, String routePolicyName, Context context);
+    Response<RoutePolicy> getByResourceGroupWithResponse(String resourceGroupName, String routePolicyName,
+        Context context);
 
     /**
      * Gets a Route Policy.
-     *
-     * <p>Implements Route Policy GET method.
-     *
+     * 
+     * Implements Route Policy GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface RoutePolicies {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface RoutePolicies {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface RoutePolicies {
 
     /**
      * List RoutePolicies by resource group.
-     *
-     * <p>Implements RoutePolicies list by resource group GET method.
-     *
+     * 
+     * Implements RoutePolicies list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface RoutePolicies {
 
     /**
      * List RoutePolicies by resource group.
-     *
-     * <p>Implements RoutePolicies list by resource group GET method.
-     *
+     * 
+     * Implements RoutePolicies list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface RoutePolicies {
 
     /**
      * List RoutePolicies by subscription.
-     *
-     * <p>Implements RoutePolicies list by subscription GET method.
-     *
+     * 
+     * Implements RoutePolicies list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of RoutePolicies as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface RoutePolicies {
 
     /**
      * List RoutePolicies by subscription.
-     *
-     * <p>Implements RoutePolicies list by subscription GET method.
-     *
+     * 
+     * Implements RoutePolicies list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface RoutePolicies {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -131,14 +133,14 @@ public interface RoutePolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName, String routePolicyName,
+        UpdateAdministrativeState body);
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -148,12 +150,12 @@ public interface RoutePolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName, String routePolicyName,
+        UpdateAdministrativeState body, Context context);
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,7 +167,7 @@ public interface RoutePolicies {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -174,14 +176,14 @@ public interface RoutePolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String routePolicyName, Context context);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String routePolicyName,
+        Context context);
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,9 +195,9 @@ public interface RoutePolicies {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -204,14 +206,14 @@ public interface RoutePolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate commitConfiguration(
-        String resourceGroupName, String routePolicyName, Context context);
+    CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String routePolicyName,
+        Context context);
 
     /**
      * Gets a Route Policy.
-     *
-     * <p>Implements Route Policy GET method.
-     *
+     * 
+     * Implements Route Policy GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -222,9 +224,9 @@ public interface RoutePolicies {
 
     /**
      * Gets a Route Policy.
-     *
-     * <p>Implements Route Policy GET method.
-     *
+     * 
+     * Implements Route Policy GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,9 +238,9 @@ public interface RoutePolicies {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -248,9 +250,9 @@ public interface RoutePolicies {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,7 +263,7 @@ public interface RoutePolicies {
 
     /**
      * Begins definition for a new RoutePolicy resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new RoutePolicy definition.
      */

@@ -6,31 +6,37 @@ package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A setting defines which kinds of events should be sent to which endpoint. */
+/**
+ * A setting defines which kinds of events should be sent to which endpoint.
+ */
 @Fluent
-public final class EventListener {
+public final class EventListener implements JsonSerializable<EventListener> {
     /*
      * A base class for event filter which determines whether an event should be sent to an event listener.
      */
-    @JsonProperty(value = "filter", required = true)
     private EventListenerFilter filter;
 
     /*
      * An endpoint specifying where Web PubSub should send events to.
      */
-    @JsonProperty(value = "endpoint", required = true)
     private EventListenerEndpoint endpoint;
 
-    /** Creates an instance of EventListener class. */
+    /**
+     * Creates an instance of EventListener class.
+     */
     public EventListener() {
     }
 
     /**
      * Get the filter property: A base class for event filter which determines whether an event should be sent to an
      * event listener.
-     *
+     * 
      * @return the filter value.
      */
     public EventListenerFilter filter() {
@@ -40,7 +46,7 @@ public final class EventListener {
     /**
      * Set the filter property: A base class for event filter which determines whether an event should be sent to an
      * event listener.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the EventListener object itself.
      */
@@ -51,7 +57,7 @@ public final class EventListener {
 
     /**
      * Get the endpoint property: An endpoint specifying where Web PubSub should send events to.
-     *
+     * 
      * @return the endpoint value.
      */
     public EventListenerEndpoint endpoint() {
@@ -60,7 +66,7 @@ public final class EventListener {
 
     /**
      * Set the endpoint property: An endpoint specifying where Web PubSub should send events to.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the EventListener object itself.
      */
@@ -71,25 +77,63 @@ public final class EventListener {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property filter in model EventListener"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property filter in model EventListener"));
         } else {
             filter().validate();
         }
         if (endpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endpoint in model EventListener"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property endpoint in model EventListener"));
         } else {
             endpoint().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventListener.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("filter", this.filter);
+        jsonWriter.writeJsonField("endpoint", this.endpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventListener from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventListener if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventListener.
+     */
+    public static EventListener fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventListener deserializedEventListener = new EventListener();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filter".equals(fieldName)) {
+                    deserializedEventListener.filter = EventListenerFilter.fromJson(reader);
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedEventListener.endpoint = EventListenerEndpoint.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventListener;
+        });
+    }
 }

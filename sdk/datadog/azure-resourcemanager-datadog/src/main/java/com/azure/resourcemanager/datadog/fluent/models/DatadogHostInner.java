@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.datadog.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datadog.models.DatadogHostMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The DatadogHost model. */
+/**
+ * The DatadogHost model.
+ */
 @Fluent
-public final class DatadogHostInner {
+public final class DatadogHostInner implements JsonSerializable<DatadogHostInner> {
     /*
      * The name of the host.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The aliases for the host installed via the Datadog agent.
      */
-    @JsonProperty(value = "aliases")
     private List<String> aliases;
 
     /*
      * The Datadog integrations reporting metrics for the host.
      */
-    @JsonProperty(value = "apps")
     private List<String> apps;
 
     /*
      * The meta property.
      */
-    @JsonProperty(value = "meta")
     private DatadogHostMetadata meta;
 
-    /** Creates an instance of DatadogHostInner class. */
+    /**
+     * Creates an instance of DatadogHostInner class.
+     */
     public DatadogHostInner() {
     }
 
     /**
      * Get the name property: The name of the host.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +55,7 @@ public final class DatadogHostInner {
 
     /**
      * Set the name property: The name of the host.
-     *
+     * 
      * @param name the name value to set.
      * @return the DatadogHostInner object itself.
      */
@@ -62,7 +66,7 @@ public final class DatadogHostInner {
 
     /**
      * Get the aliases property: The aliases for the host installed via the Datadog agent.
-     *
+     * 
      * @return the aliases value.
      */
     public List<String> aliases() {
@@ -71,7 +75,7 @@ public final class DatadogHostInner {
 
     /**
      * Set the aliases property: The aliases for the host installed via the Datadog agent.
-     *
+     * 
      * @param aliases the aliases value to set.
      * @return the DatadogHostInner object itself.
      */
@@ -82,7 +86,7 @@ public final class DatadogHostInner {
 
     /**
      * Get the apps property: The Datadog integrations reporting metrics for the host.
-     *
+     * 
      * @return the apps value.
      */
     public List<String> apps() {
@@ -91,7 +95,7 @@ public final class DatadogHostInner {
 
     /**
      * Set the apps property: The Datadog integrations reporting metrics for the host.
-     *
+     * 
      * @param apps the apps value to set.
      * @return the DatadogHostInner object itself.
      */
@@ -102,7 +106,7 @@ public final class DatadogHostInner {
 
     /**
      * Get the meta property: The meta property.
-     *
+     * 
      * @return the meta value.
      */
     public DatadogHostMetadata meta() {
@@ -111,7 +115,7 @@ public final class DatadogHostInner {
 
     /**
      * Set the meta property: The meta property.
-     *
+     * 
      * @param meta the meta value to set.
      * @return the DatadogHostInner object itself.
      */
@@ -122,12 +126,59 @@ public final class DatadogHostInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (meta() != null) {
             meta().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("aliases", this.aliases, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("apps", this.apps, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("meta", this.meta);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatadogHostInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatadogHostInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatadogHostInner.
+     */
+    public static DatadogHostInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatadogHostInner deserializedDatadogHostInner = new DatadogHostInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDatadogHostInner.name = reader.getString();
+                } else if ("aliases".equals(fieldName)) {
+                    List<String> aliases = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDatadogHostInner.aliases = aliases;
+                } else if ("apps".equals(fieldName)) {
+                    List<String> apps = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDatadogHostInner.apps = apps;
+                } else if ("meta".equals(fieldName)) {
+                    deserializedDatadogHostInner.meta = DatadogHostMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatadogHostInner;
+        });
     }
 }

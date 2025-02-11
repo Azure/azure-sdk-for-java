@@ -41,26 +41,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AttachedDatabaseConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AttachedDatabaseConfigurationsClient.
+ */
 public final class AttachedDatabaseConfigurationsClientImpl implements AttachedDatabaseConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AttachedDatabaseConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KustoManagementClientImpl client;
 
     /**
      * Initializes an instance of AttachedDatabaseConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AttachedDatabaseConfigurationsClientImpl(KustoManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    AttachedDatabaseConfigurationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(AttachedDatabaseConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,85 +73,60 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
     public interface AttachedDatabaseConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurationCheckNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurationCheckNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") AttachedDatabaseConfigurationsCheckNameRequest resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AttachedDatabaseConfigurationListResult>> listByCluster(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AttachedDatabaseConfigurationListResult>> listByCluster(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AttachedDatabaseConfigurationInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+        Mono<Response<AttachedDatabaseConfigurationInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("attachedDatabaseConfigurationName") String attachedDatabaseConfigurationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("attachedDatabaseConfigurationName") String attachedDatabaseConfigurationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AttachedDatabaseConfigurationInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("attachedDatabaseConfigurationName") String attachedDatabaseConfigurationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -157,16 +134,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
+        String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -176,10 +151,8 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -189,23 +162,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            accept,
-                            context))
+                context -> service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName, clusterName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -214,19 +178,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
-        Context context) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
+        String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -236,10 +195,8 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -248,21 +205,13 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceName,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName, clusterName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceName, accept, context);
     }
 
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -272,15 +221,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return the result returned from a check name availability request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName,
+        AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -291,17 +240,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
-        Context context) {
+    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName, Context context) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName, context).block();
     }
 
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -311,30 +257,28 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+    public CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName,
+        AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponse(resourceGroupName, clusterName, resourceName, Context.NONE).getValue();
     }
 
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list attached database configurations operation response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedDatabaseConfigurationInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<PagedResponse<AttachedDatabaseConfigurationInner>>
+        listByClusterSinglePageAsync(String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -344,34 +288,21 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByCluster(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AttachedDatabaseConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByCluster(this.client.getEndpoint(), resourceGroupName, clusterName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AttachedDatabaseConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -379,16 +310,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list attached database configurations operation response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedDatabaseConfigurationInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<PagedResponse<AttachedDatabaseConfigurationInner>>
+        listByClusterSinglePageAsync(String resourceGroupName, String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -398,101 +327,91 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCluster(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByCluster(this.client.getEndpoint(), resourceGroupName, clusterName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AttachedDatabaseConfigurationInner> listByClusterAsync(
-        String resourceGroupName, String clusterName) {
+    private PagedFlux<AttachedDatabaseConfigurationInner> listByClusterAsync(String resourceGroupName,
+        String clusterName) {
         return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName));
     }
 
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AttachedDatabaseConfigurationInner> listByClusterAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private PagedFlux<AttachedDatabaseConfigurationInner> listByClusterAsync(String resourceGroupName,
+        String clusterName, Context context) {
         return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context));
     }
 
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AttachedDatabaseConfigurationInner> listByCluster(
-        String resourceGroupName, String clusterName) {
+    public PagedIterable<AttachedDatabaseConfigurationInner> listByCluster(String resourceGroupName,
+        String clusterName) {
         return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName));
     }
 
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AttachedDatabaseConfigurationInner> listByCluster(
-        String resourceGroupName, String clusterName, Context context) {
+    public PagedIterable<AttachedDatabaseConfigurationInner> listByCluster(String resourceGroupName, String clusterName,
+        Context context) {
         return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName, context));
     }
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -500,16 +419,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedDatabaseConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+    private Mono<Response<AttachedDatabaseConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String clusterName, String attachedDatabaseConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -519,37 +436,24 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (attachedDatabaseConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            attachedDatabaseConfigurationName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, clusterName,
+                attachedDatabaseConfigurationName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -558,16 +462,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedDatabaseConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
+    private Mono<Response<AttachedDatabaseConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String clusterName, String attachedDatabaseConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -577,34 +479,22 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (attachedDatabaseConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                attachedDatabaseConfigurationName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, clusterName, attachedDatabaseConfigurationName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -614,15 +504,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return class representing an attached database configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedDatabaseConfigurationInner> getAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+    private Mono<AttachedDatabaseConfigurationInner> getAsync(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName) {
         return getWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -633,14 +523,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return class representing an attached database configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttachedDatabaseConfigurationInner> getWithResponse(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
+    public Response<AttachedDatabaseConfigurationInner> getWithResponse(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context).block();
     }
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -650,15 +540,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return class representing an attached database configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDatabaseConfigurationInner get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+    public AttachedDatabaseConfigurationInner get(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName) {
         return getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -667,19 +557,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String attachedDatabaseConfigurationName, AttachedDatabaseConfigurationInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -689,16 +574,12 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (attachedDatabaseConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -707,25 +588,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            attachedDatabaseConfigurationName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, clusterName,
+                attachedDatabaseConfigurationName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -735,20 +606,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String attachedDatabaseConfigurationName, AttachedDatabaseConfigurationInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -758,16 +624,12 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (attachedDatabaseConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -776,22 +638,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                attachedDatabaseConfigurationName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, clusterName,
+            attachedDatabaseConfigurationName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters,
+            accept, context);
     }
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -803,27 +657,18 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String clusterName,
-            String attachedDatabaseConfigurationName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName,
             AttachedDatabaseConfigurationInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters);
-        return this
-            .client
-            .<AttachedDatabaseConfigurationInner, AttachedDatabaseConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AttachedDatabaseConfigurationInner.class,
-                AttachedDatabaseConfigurationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            attachedDatabaseConfigurationName, parameters);
+        return this.client.<AttachedDatabaseConfigurationInner, AttachedDatabaseConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AttachedDatabaseConfigurationInner.class,
+            AttachedDatabaseConfigurationInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -836,29 +681,19 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String clusterName,
-            String attachedDatabaseConfigurationName,
-            AttachedDatabaseConfigurationInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName,
+            AttachedDatabaseConfigurationInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, context);
-        return this
-            .client
-            .<AttachedDatabaseConfigurationInner, AttachedDatabaseConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AttachedDatabaseConfigurationInner.class,
-                AttachedDatabaseConfigurationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            attachedDatabaseConfigurationName, parameters, context);
+        return this.client.<AttachedDatabaseConfigurationInner, AttachedDatabaseConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AttachedDatabaseConfigurationInner.class,
+            AttachedDatabaseConfigurationInner.class, context);
     }
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -870,10 +705,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String clusterName,
-            String attachedDatabaseConfigurationName,
+        beginCreateOrUpdate(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName,
             AttachedDatabaseConfigurationInner parameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters)
@@ -882,7 +714,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -895,21 +727,17 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String clusterName,
-            String attachedDatabaseConfigurationName,
-            AttachedDatabaseConfigurationInner parameters,
-            Context context) {
+        beginCreateOrUpdate(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName,
+            AttachedDatabaseConfigurationInner parameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, context)
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -920,11 +748,8 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return class representing an attached database configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedDatabaseConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters) {
+    private Mono<AttachedDatabaseConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, AttachedDatabaseConfigurationInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -932,7 +757,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -944,21 +769,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return class representing an attached database configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedDatabaseConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<AttachedDatabaseConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, AttachedDatabaseConfigurationInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -969,18 +788,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return class representing an attached database configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDatabaseConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters) {
+    public AttachedDatabaseConfigurationInner createOrUpdate(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, AttachedDatabaseConfigurationInner parameters) {
         return createOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters)
             .block();
     }
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -992,20 +808,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return class representing an attached database configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDatabaseConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, context)
-            .block();
+    public AttachedDatabaseConfigurationInner createOrUpdate(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, AttachedDatabaseConfigurationInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters,
+            context).block();
     }
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -1015,13 +826,11 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1031,37 +840,24 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (attachedDatabaseConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            attachedDatabaseConfigurationName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, clusterName,
+                attachedDatabaseConfigurationName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -1072,13 +868,11 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1088,34 +882,23 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (attachedDatabaseConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                attachedDatabaseConfigurationName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, clusterName,
+            attachedDatabaseConfigurationName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -1125,19 +908,17 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -1148,19 +929,18 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -1170,14 +950,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName).getSyncPoller();
     }
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -1188,16 +968,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -1207,16 +986,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName) {
+        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -1227,16 +1005,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -1251,7 +1028,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -1261,8 +1038,8 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
+    public void delete(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName,
+        Context context) {
         deleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context).block();
     }
 }

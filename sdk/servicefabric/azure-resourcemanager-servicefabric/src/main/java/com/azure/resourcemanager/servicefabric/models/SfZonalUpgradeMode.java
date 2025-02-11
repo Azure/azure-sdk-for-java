@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class SfZonalUpgradeMode extends ExpandableStringEnum<SfZonalUpgrad
      * @param name a name to look for.
      * @return the corresponding SfZonalUpgradeMode.
      */
-    @JsonCreator
     public static SfZonalUpgradeMode fromString(String name) {
         return fromString(name, SfZonalUpgradeMode.class);
     }

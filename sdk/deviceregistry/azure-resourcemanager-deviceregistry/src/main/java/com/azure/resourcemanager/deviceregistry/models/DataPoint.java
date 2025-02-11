@@ -7,7 +7,6 @@ package com.azure.resourcemanager.deviceregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -16,34 +15,11 @@ import java.io.IOException;
  * Defines the data point properties.
  */
 @Fluent
-public final class DataPoint implements JsonSerializable<DataPoint> {
-    /*
-     * The name of the data point.
-     */
-    private String name;
-
-    /*
-     * The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on the
-     * asset.
-     */
-    private String dataSource;
-
-    /*
-     * The path to the type definition of the capability (e.g. DTMI, OPC UA information model node id, etc.), for
-     * example dtmi:com:example:Robot:_contents:__prop1;1.
-     */
-    private String capabilityId;
-
+public final class DataPoint extends DataPointBase {
     /*
      * An indication of how the data point should be mapped to OpenTelemetry.
      */
-    private DataPointsObservabilityMode observabilityMode;
-
-    /*
-     * Protocol-specific configuration for the data point. For OPC UA, this could include configuration like,
-     * publishingInterval, samplingInterval, and queueSize.
-     */
-    private String dataPointConfiguration;
+    private DataPointObservabilityMode observabilityMode;
 
     /**
      * Creates an instance of DataPoint class.
@@ -52,75 +28,11 @@ public final class DataPoint implements JsonSerializable<DataPoint> {
     }
 
     /**
-     * Get the name property: The name of the data point.
-     * 
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the data point.
-     * 
-     * @param name the name value to set.
-     * @return the DataPoint object itself.
-     */
-    public DataPoint withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the dataSource property: The address of the source of the data in the asset (e.g. URL) so that a client can
-     * access the data source on the asset.
-     * 
-     * @return the dataSource value.
-     */
-    public String dataSource() {
-        return this.dataSource;
-    }
-
-    /**
-     * Set the dataSource property: The address of the source of the data in the asset (e.g. URL) so that a client can
-     * access the data source on the asset.
-     * 
-     * @param dataSource the dataSource value to set.
-     * @return the DataPoint object itself.
-     */
-    public DataPoint withDataSource(String dataSource) {
-        this.dataSource = dataSource;
-        return this;
-    }
-
-    /**
-     * Get the capabilityId property: The path to the type definition of the capability (e.g. DTMI, OPC UA information
-     * model node id, etc.), for example dtmi:com:example:Robot:_contents:__prop1;1.
-     * 
-     * @return the capabilityId value.
-     */
-    public String capabilityId() {
-        return this.capabilityId;
-    }
-
-    /**
-     * Set the capabilityId property: The path to the type definition of the capability (e.g. DTMI, OPC UA information
-     * model node id, etc.), for example dtmi:com:example:Robot:_contents:__prop1;1.
-     * 
-     * @param capabilityId the capabilityId value to set.
-     * @return the DataPoint object itself.
-     */
-    public DataPoint withCapabilityId(String capabilityId) {
-        this.capabilityId = capabilityId;
-        return this;
-    }
-
-    /**
      * Get the observabilityMode property: An indication of how the data point should be mapped to OpenTelemetry.
      * 
      * @return the observabilityMode value.
      */
-    public DataPointsObservabilityMode observabilityMode() {
+    public DataPointObservabilityMode observabilityMode() {
         return this.observabilityMode;
     }
 
@@ -130,30 +42,35 @@ public final class DataPoint implements JsonSerializable<DataPoint> {
      * @param observabilityMode the observabilityMode value to set.
      * @return the DataPoint object itself.
      */
-    public DataPoint withObservabilityMode(DataPointsObservabilityMode observabilityMode) {
+    public DataPoint withObservabilityMode(DataPointObservabilityMode observabilityMode) {
         this.observabilityMode = observabilityMode;
         return this;
     }
 
     /**
-     * Get the dataPointConfiguration property: Protocol-specific configuration for the data point. For OPC UA, this
-     * could include configuration like, publishingInterval, samplingInterval, and queueSize.
-     * 
-     * @return the dataPointConfiguration value.
+     * {@inheritDoc}
      */
-    public String dataPointConfiguration() {
-        return this.dataPointConfiguration;
+    @Override
+    public DataPoint withName(String name) {
+        super.withName(name);
+        return this;
     }
 
     /**
-     * Set the dataPointConfiguration property: Protocol-specific configuration for the data point. For OPC UA, this
-     * could include configuration like, publishingInterval, samplingInterval, and queueSize.
-     * 
-     * @param dataPointConfiguration the dataPointConfiguration value to set.
-     * @return the DataPoint object itself.
+     * {@inheritDoc}
      */
+    @Override
+    public DataPoint withDataSource(String dataSource) {
+        super.withDataSource(dataSource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DataPoint withDataPointConfiguration(String dataPointConfiguration) {
-        this.dataPointConfiguration = dataPointConfiguration;
+        super.withDataPointConfiguration(dataPointConfiguration);
         return this;
     }
 
@@ -162,7 +79,12 @@ public final class DataPoint implements JsonSerializable<DataPoint> {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model DataPoint"));
+        }
         if (dataSource() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property dataSource in model DataPoint"));
@@ -177,12 +99,11 @@ public final class DataPoint implements JsonSerializable<DataPoint> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSource", this.dataSource);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("capabilityId", this.capabilityId);
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("dataSource", dataSource());
+        jsonWriter.writeStringField("dataPointConfiguration", dataPointConfiguration());
         jsonWriter.writeStringField("observabilityMode",
             this.observabilityMode == null ? null : this.observabilityMode.toString());
-        jsonWriter.writeStringField("dataPointConfiguration", this.dataPointConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -202,17 +123,14 @@ public final class DataPoint implements JsonSerializable<DataPoint> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSource".equals(fieldName)) {
-                    deserializedDataPoint.dataSource = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedDataPoint.name = reader.getString();
-                } else if ("capabilityId".equals(fieldName)) {
-                    deserializedDataPoint.capabilityId = reader.getString();
-                } else if ("observabilityMode".equals(fieldName)) {
-                    deserializedDataPoint.observabilityMode
-                        = DataPointsObservabilityMode.fromString(reader.getString());
+                if ("name".equals(fieldName)) {
+                    deserializedDataPoint.withName(reader.getString());
+                } else if ("dataSource".equals(fieldName)) {
+                    deserializedDataPoint.withDataSource(reader.getString());
                 } else if ("dataPointConfiguration".equals(fieldName)) {
-                    deserializedDataPoint.dataPointConfiguration = reader.getString();
+                    deserializedDataPoint.withDataPointConfiguration(reader.getString());
+                } else if ("observabilityMode".equals(fieldName)) {
+                    deserializedDataPoint.observabilityMode = DataPointObservabilityMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

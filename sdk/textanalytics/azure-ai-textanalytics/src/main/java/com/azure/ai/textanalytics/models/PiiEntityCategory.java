@@ -55,8 +55,8 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory AZURE_DOCUMENT_DB_AUTH_KEY = fromString("AzureDocumentDBAuthKey");
 
     /** Static value AzureIAASDatabaseConnectionAndSQLString for PiiEntityCategory. */
-    public static final PiiEntityCategory AZURE_IAAS_DATABASE_CONNECTION_AND_SQL_STRING =
-            fromString("AzureIAASDatabaseConnectionAndSQLString");
+    public static final PiiEntityCategory AZURE_IAAS_DATABASE_CONNECTION_AND_SQL_STRING
+        = fromString("AzureIAASDatabaseConnectionAndSQLString");
 
     /** Static value AzureIoTConnectionString for PiiEntityCategory. */
     public static final PiiEntityCategory AZURE_IOT_CONNECTION_STRING = fromString("AzureIoTConnectionString");
@@ -113,8 +113,8 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory CA_PASSPORT_NUMBER = fromString("CAPassportNumber");
 
     /** Static value CAPersonalHealthIdentification for PiiEntityCategory. */
-    public static final PiiEntityCategory CA_PERSONAL_HEALTH_IDENTIFICATION =
-        fromString("CAPersonalHealthIdentification");
+    public static final PiiEntityCategory CA_PERSONAL_HEALTH_IDENTIFICATION
+        = fromString("CAPersonalHealthIdentification");
 
     /** Static value CASocialInsuranceNumber for PiiEntityCategory. */
     public static final PiiEntityCategory CA_SOCIAL_INSURANCE_NUMBER = fromString("CASocialInsuranceNumber");
@@ -135,12 +135,12 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory HR_NATIONAL_ID_NUMBER = fromString("HRNationalIDNumber");
 
     /** Static value HRPersonalIdentificationNumber for PiiEntityCategory. */
-    public static final PiiEntityCategory HR_PERSONAL_IDENTIFICATION_NUMBER =
-        fromString("HRPersonalIdentificationNumber");
+    public static final PiiEntityCategory HR_PERSONAL_IDENTIFICATION_NUMBER
+        = fromString("HRPersonalIdentificationNumber");
 
     /** Static value HRPersonalIdentificationOIBNumberV2 for PiiEntityCategory. */
-    public static final PiiEntityCategory HR_PERSONAL_IDENTIFICATION_OIB_NUMBER_V2 =
-        fromString("HRPersonalIdentificationOIBNumberV2");
+    public static final PiiEntityCategory HR_PERSONAL_IDENTIFICATION_OIB_NUMBER_V2
+        = fromString("HRPersonalIdentificationOIBNumberV2");
 
     /** Static value CYIdentityCard for PiiEntityCategory. */
     public static final PiiEntityCategory CY_IDENTITY_CARD = fromString("CYIdentityCard");
@@ -155,8 +155,8 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory CZ_PERSONAL_IDENTITY_V2 = fromString("CZPersonalIdentityV2");
 
     /** Static value DKPersonalIdentificationNumber for PiiEntityCategory. */
-    public static final PiiEntityCategory DK_PERSONAL_IDENTIFICATION_NUMBER =
-        fromString("DKPersonalIdentificationNumber");
+    public static final PiiEntityCategory DK_PERSONAL_IDENTIFICATION_NUMBER
+        = fromString("DKPersonalIdentificationNumber");
 
     /** Static value DKPersonalIdentificationV2 for PiiEntityCategory. */
     public static final PiiEntityCategory DK_PERSONAL_IDENTIFICATION_V2 = fromString("DKPersonalIdentificationV2");
@@ -177,8 +177,8 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory EU_GPS_COORDINATES = fromString("EUGPSCoordinates");
 
     /** Static value EUNationalIdentificationNumber for PiiEntityCategory. */
-    public static final PiiEntityCategory EU_NATIONAL_IDENTIFICATION_NUMBER =
-        fromString("EUNationalIdentificationNumber");
+    public static final PiiEntityCategory EU_NATIONAL_IDENTIFICATION_NUMBER
+        = fromString("EUNationalIdentificationNumber");
 
     /** Static value EUPassportNumber for PiiEntityCategory. */
     public static final PiiEntityCategory EU_PASSPORT_NUMBER = fromString("EUPassportNumber");
@@ -253,7 +253,8 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory HU_VALUE_ADDED_NUMBER = fromString("HUValueAddedNumber");
 
     /** Static value HUPersonalIdentificationNumber for PiiEntityCategory. */
-    public static final PiiEntityCategory HU_PERSONAL_IDENTIFICATION_NUMBER = fromString("HUPersonalIdentificationNumber");
+    public static final PiiEntityCategory HU_PERSONAL_IDENTIFICATION_NUMBER
+        = fromString("HUPersonalIdentificationNumber");
 
     /** Static value HUTaxIdentificationNumber for PiiEntityCategory. */
     public static final PiiEntityCategory HU_TAX_IDENTIFICATION_NUMBER = fromString("HUTaxIdentificationNumber");
@@ -268,16 +269,16 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory ID_IDENTITY_CARD_NUMBER = fromString("IDIdentityCardNumber");
 
     /** Static value InternationalBankingAccountNumber for PiiEntityCategory. */
-    public static final PiiEntityCategory INTERNATIONAL_BANKING_ACCOUNT_NUMBER =
-            fromString("InternationalBankingAccountNumber");
+    public static final PiiEntityCategory INTERNATIONAL_BANKING_ACCOUNT_NUMBER
+        = fromString("InternationalBankingAccountNumber");
 
     /** Static value IEPersonalPublicServiceNumber for PiiEntityCategory. */
-    public static final PiiEntityCategory IE_PERSONAL_PUBLIC_SERVICE_NUMBER =
-        fromString("IEPersonalPublicServiceNumber");
+    public static final PiiEntityCategory IE_PERSONAL_PUBLIC_SERVICE_NUMBER
+        = fromString("IEPersonalPublicServiceNumber");
 
     /** Static value IEPersonalPublicServiceNumberV2 for PiiEntityCategory. */
-    public static final PiiEntityCategory IE_PERSONAL_PUBLIC_SERVICE_NUMBER_V2 =
-        fromString("IEPersonalPublicServiceNumberV2");
+    public static final PiiEntityCategory IE_PERSONAL_PUBLIC_SERVICE_NUMBER_V2
+        = fromString("IEPersonalPublicServiceNumberV2");
 
     /** Static value ILBankAccountNumber for PiiEntityCategory. */
     public static final PiiEntityCategory IL_BANK_ACCOUNT_NUMBER = fromString("ILBankAccountNumber");
@@ -325,12 +326,12 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory LT_PERSONAL_CODE = fromString("LTPersonalCode");
 
     /** Static value LUNationalIdentificationNumberNatural for PiiEntityCategory. */
-    public static final PiiEntityCategory LU_NATIONAL_IDENTIFICATION_NUMBER_NATURAL =
-            fromString("LUNationalIdentificationNumberNatural");
+    public static final PiiEntityCategory LU_NATIONAL_IDENTIFICATION_NUMBER_NATURAL
+        = fromString("LUNationalIdentificationNumberNatural");
 
     /** Static value LUNationalIdentificationNumberNonNatural for PiiEntityCategory. */
-    public static final PiiEntityCategory LU_NATIONAL_IDENTIFICATION_NUMBER_NON_NATURAL =
-            fromString("LUNationalIdentificationNumberNonNatural");
+    public static final PiiEntityCategory LU_NATIONAL_IDENTIFICATION_NUMBER_NON_NATURAL
+        = fromString("LUNationalIdentificationNumberNonNatural");
 
     /** Static value MYIdentityCardNumber for PiiEntityCategory. */
     public static final PiiEntityCategory MY_IDENTITY_CARD_NUMBER = fromString("MYIdentityCardNumber");
@@ -372,8 +373,8 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory NO_IDENTITY_NUMBER = fromString("NOIdentityNumber");
 
     /** Static value PHUnifiedMultiPurposeIDNumber for PiiEntityCategory. */
-    public static final PiiEntityCategory PH_UNIFIED_MULTI_PURPOSE_ID_NUMBER =
-        fromString("PHUnifiedMultiPurposeIDNumber");
+    public static final PiiEntityCategory PH_UNIFIED_MULTI_PURPOSE_ID_NUMBER
+        = fromString("PHUnifiedMultiPurposeIDNumber");
 
     /** Static value PLIdentityCard for PiiEntityCategory. */
     public static final PiiEntityCategory PL_IDENTITY_CARD = fromString("PLIdentityCard");
@@ -409,15 +410,15 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory RU_PASSPORT_NUMBER_DOMESTIC = fromString("RUPassportNumberDomestic");
 
     /** Static value RUPassportNumberInternational for PiiEntityCategory. */
-    public static final PiiEntityCategory RU_PASSPORT_NUMBER_INTERNATIONAL =
-        fromString("RUPassportNumberInternational");
+    public static final PiiEntityCategory RU_PASSPORT_NUMBER_INTERNATIONAL
+        = fromString("RUPassportNumberInternational");
 
     /** Static value SANationalID for PiiEntityCategory. */
     public static final PiiEntityCategory SA_NATIONAL_ID = fromString("SANationalID");
 
     /** Static value SGNationalRegistrationIdentityCardNumber for PiiEntityCategory. */
-    public static final PiiEntityCategory SG_NATIONAL_REGISTRATION_IDENTITY_CARD_NUMBER =
-            fromString("SGNationalRegistrationIdentityCardNumber");
+    public static final PiiEntityCategory SG_NATIONAL_REGISTRATION_IDENTITY_CARD_NUMBER
+        = fromString("SGNationalRegistrationIdentityCardNumber");
 
     /** Static value SKPersonalNumber for PiiEntityCategory. */
     public static final PiiEntityCategory SK_PERSONAL_NUMBER = fromString("SKPersonalNumber");
@@ -474,12 +475,12 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory TW_RESIDENT_CERTIFICATE = fromString("TWResidentCertificate");
 
     /** Static value THPopulationIdentificationCode for PiiEntityCategory. */
-    public static final PiiEntityCategory TH_POPULATION_IDENTIFICATION_CODE =
-        fromString("THPopulationIdentificationCode");
+    public static final PiiEntityCategory TH_POPULATION_IDENTIFICATION_CODE
+        = fromString("THPopulationIdentificationCode");
 
     /** Static value TRNationalIdentificationNumber for PiiEntityCategory. */
-    public static final PiiEntityCategory TR_NATIONAL_IDENTIFICATION_NUMBER =
-        fromString("TRNationalIdentificationNumber");
+    public static final PiiEntityCategory TR_NATIONAL_IDENTIFICATION_NUMBER
+        = fromString("TRNationalIdentificationNumber");
 
     /** Static value UKDriversLicenseNumber for PiiEntityCategory. */
     public static final PiiEntityCategory UK_DRIVERS_LICENSE_NUMBER = fromString("UKDriversLicenseNumber");
@@ -506,8 +507,8 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory US_DRIVERS_LICENSE_NUMBER = fromString("USDriversLicenseNumber");
 
     /** Static value USIndividualTaxpayerIdentification for PiiEntityCategory. */
-    public static final PiiEntityCategory US_INDIVIDUAL_TAXPAYER_IDENTIFICATION =
-            fromString("USIndividualTaxpayerIdentification");
+    public static final PiiEntityCategory US_INDIVIDUAL_TAXPAYER_IDENTIFICATION
+        = fromString("USIndividualTaxpayerIdentification");
 
     /** Static value USSocialSecurityNumber for PiiEntityCategory. */
     public static final PiiEntityCategory US_SOCIAL_SECURITY_NUMBER = fromString("USSocialSecurityNumber");
@@ -516,7 +517,8 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory UA_PASSPORT_NUMBER_DOMESTIC = fromString("UAPassportNumberDomestic");
 
     /** Static value UAPassportNumberInternational for PiiEntityCategory. */
-    public static final PiiEntityCategory UA_PASSPORT_NUMBER_INTERNATIONAL = fromString("UAPassportNumberInternational");
+    public static final PiiEntityCategory UA_PASSPORT_NUMBER_INTERNATIONAL
+        = fromString("UAPassportNumberInternational");
 
     /** Static value Organization for PiiEntityCategory. */
     public static final PiiEntityCategory ORGANIZATION = fromString("Organization");

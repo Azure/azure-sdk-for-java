@@ -22,7 +22,7 @@ public final class DiscoveredSecuritySolutionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"securityFamily\":\"SaasWaf\",\"offer\":\"tvagwnnw\",\"publisher\":\"nv\",\"sku\":\"nyldjdkjvd\"},\"location\":\"knkxi\",\"id\":\"xhnrjl\",\"name\":\"doqejexfdlhu\",\"type\":\"d\"}";
+            = "{\"properties\":{\"securityFamily\":\"Waf\",\"offer\":\"xtdisnjevhd\",\"publisher\":\"mydidwhepfw\",\"sku\":\"tjfdoesxxhmw\"},\"location\":\"bckyoikxk\",\"id\":\"hnegknj\",\"name\":\"rbhtmeplvukaobr\",\"type\":\"bpgsnbagnc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class DiscoveredSecuritySolutionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DiscoveredSecuritySolution response = manager.discoveredSecuritySolutions()
-            .getWithResponse("s", "z", "cctvkog", com.azure.core.util.Context.NONE)
+            .getWithResponse("z", "vxhmtfhocnxzcmj", "ngxno", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(SecurityFamily.SAAS_WAF, response.securityFamily());
-        Assertions.assertEquals("tvagwnnw", response.offer());
-        Assertions.assertEquals("nv", response.publisher());
-        Assertions.assertEquals("nyldjdkjvd", response.sku());
+        Assertions.assertEquals(SecurityFamily.WAF, response.securityFamily());
+        Assertions.assertEquals("xtdisnjevhd", response.offer());
+        Assertions.assertEquals("mydidwhepfw", response.publisher());
+        Assertions.assertEquals("tjfdoesxxhmw", response.sku());
     }
 }

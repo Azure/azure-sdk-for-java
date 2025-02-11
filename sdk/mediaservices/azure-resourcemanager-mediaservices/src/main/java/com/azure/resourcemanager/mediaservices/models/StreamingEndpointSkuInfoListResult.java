@@ -7,11 +7,13 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointSkuInfoListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of StreamingEndpointSkuInfoListResult. */
+/**
+ * An immutable client-side representation of StreamingEndpointSkuInfoListResult.
+ */
 public interface StreamingEndpointSkuInfoListResult {
     /**
      * Gets the value property: The result of the List StreamingEndpoint skus.
-     *
+     * 
      * @return the value value.
      */
     List<ArmStreamingEndpointSkuInfo> value();
@@ -19,7 +21,7 @@ public interface StreamingEndpointSkuInfoListResult {
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointSkuInfoListResultInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     StreamingEndpointSkuInfoListResultInner innerModel();

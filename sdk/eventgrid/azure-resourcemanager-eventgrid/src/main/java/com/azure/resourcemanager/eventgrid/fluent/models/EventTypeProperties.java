@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the event type.
  */
 @Fluent
-public final class EventTypeProperties {
+public final class EventTypeProperties implements JsonSerializable<EventTypeProperties> {
     /*
      * Display name of the event type.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Description of the event type.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Url of the schema for this event type.
      */
-    @JsonProperty(value = "schemaUrl")
     private String schemaUrl;
 
     /*
      * IsInDefaultSet flag of the event type.
      */
-    @JsonProperty(value = "isInDefaultSet")
     private Boolean isInDefaultSet;
 
     /**
@@ -128,5 +128,50 @@ public final class EventTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("schemaUrl", this.schemaUrl);
+        jsonWriter.writeBooleanField("isInDefaultSet", this.isInDefaultSet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventTypeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventTypeProperties.
+     */
+    public static EventTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventTypeProperties deserializedEventTypeProperties = new EventTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedEventTypeProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedEventTypeProperties.description = reader.getString();
+                } else if ("schemaUrl".equals(fieldName)) {
+                    deserializedEventTypeProperties.schemaUrl = reader.getString();
+                } else if ("isInDefaultSet".equals(fieldName)) {
+                    deserializedEventTypeProperties.isInDefaultSet = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventTypeProperties;
+        });
     }
 }

@@ -5,72 +5,74 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Definition of the watcher properties. */
+/**
+ * Definition of the watcher properties.
+ */
 @Fluent
-public final class WatcherProperties {
+public final class WatcherProperties implements JsonSerializable<WatcherProperties> {
     /*
      * Gets or sets the frequency at which the watcher is invoked.
      */
-    @JsonProperty(value = "executionFrequencyInSeconds")
     private Long executionFrequencyInSeconds;
 
     /*
      * Gets or sets the name of the script the watcher is attached to, i.e. the name of an existing runbook.
      */
-    @JsonProperty(value = "scriptName")
     private String scriptName;
 
     /*
      * Gets or sets the parameters of the script.
      */
-    @JsonProperty(value = "scriptParameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> scriptParameters;
 
     /*
      * Gets or sets the name of the hybrid worker group the watcher will run on.
      */
-    @JsonProperty(value = "scriptRunOn")
     private String scriptRunOn;
 
     /*
      * Gets the current status of the watcher.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Gets or sets the creation time.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Details of the user who last modified the watcher.
      */
-    @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String lastModifiedBy;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of WatcherProperties class.
+     */
+    public WatcherProperties() {
+    }
+
+    /**
      * Get the executionFrequencyInSeconds property: Gets or sets the frequency at which the watcher is invoked.
-     *
+     * 
      * @return the executionFrequencyInSeconds value.
      */
     public Long executionFrequencyInSeconds() {
@@ -79,7 +81,7 @@ public final class WatcherProperties {
 
     /**
      * Set the executionFrequencyInSeconds property: Gets or sets the frequency at which the watcher is invoked.
-     *
+     * 
      * @param executionFrequencyInSeconds the executionFrequencyInSeconds value to set.
      * @return the WatcherProperties object itself.
      */
@@ -91,7 +93,7 @@ public final class WatcherProperties {
     /**
      * Get the scriptName property: Gets or sets the name of the script the watcher is attached to, i.e. the name of an
      * existing runbook.
-     *
+     * 
      * @return the scriptName value.
      */
     public String scriptName() {
@@ -101,7 +103,7 @@ public final class WatcherProperties {
     /**
      * Set the scriptName property: Gets or sets the name of the script the watcher is attached to, i.e. the name of an
      * existing runbook.
-     *
+     * 
      * @param scriptName the scriptName value to set.
      * @return the WatcherProperties object itself.
      */
@@ -112,7 +114,7 @@ public final class WatcherProperties {
 
     /**
      * Get the scriptParameters property: Gets or sets the parameters of the script.
-     *
+     * 
      * @return the scriptParameters value.
      */
     public Map<String, String> scriptParameters() {
@@ -121,7 +123,7 @@ public final class WatcherProperties {
 
     /**
      * Set the scriptParameters property: Gets or sets the parameters of the script.
-     *
+     * 
      * @param scriptParameters the scriptParameters value to set.
      * @return the WatcherProperties object itself.
      */
@@ -132,7 +134,7 @@ public final class WatcherProperties {
 
     /**
      * Get the scriptRunOn property: Gets or sets the name of the hybrid worker group the watcher will run on.
-     *
+     * 
      * @return the scriptRunOn value.
      */
     public String scriptRunOn() {
@@ -141,7 +143,7 @@ public final class WatcherProperties {
 
     /**
      * Set the scriptRunOn property: Gets or sets the name of the hybrid worker group the watcher will run on.
-     *
+     * 
      * @param scriptRunOn the scriptRunOn value to set.
      * @return the WatcherProperties object itself.
      */
@@ -152,7 +154,7 @@ public final class WatcherProperties {
 
     /**
      * Get the status property: Gets the current status of the watcher.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -161,7 +163,7 @@ public final class WatcherProperties {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -170,7 +172,7 @@ public final class WatcherProperties {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -179,7 +181,7 @@ public final class WatcherProperties {
 
     /**
      * Get the lastModifiedBy property: Details of the user who last modified the watcher.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -188,7 +190,7 @@ public final class WatcherProperties {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -197,7 +199,7 @@ public final class WatcherProperties {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the WatcherProperties object itself.
      */
@@ -208,9 +210,69 @@ public final class WatcherProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("executionFrequencyInSeconds", this.executionFrequencyInSeconds);
+        jsonWriter.writeStringField("scriptName", this.scriptName);
+        jsonWriter.writeMapField("scriptParameters", this.scriptParameters,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("scriptRunOn", this.scriptRunOn);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WatcherProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WatcherProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WatcherProperties.
+     */
+    public static WatcherProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WatcherProperties deserializedWatcherProperties = new WatcherProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("executionFrequencyInSeconds".equals(fieldName)) {
+                    deserializedWatcherProperties.executionFrequencyInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("scriptName".equals(fieldName)) {
+                    deserializedWatcherProperties.scriptName = reader.getString();
+                } else if ("scriptParameters".equals(fieldName)) {
+                    Map<String, String> scriptParameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWatcherProperties.scriptParameters = scriptParameters;
+                } else if ("scriptRunOn".equals(fieldName)) {
+                    deserializedWatcherProperties.scriptRunOn = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedWatcherProperties.status = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedWatcherProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedWatcherProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedWatcherProperties.lastModifiedBy = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedWatcherProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWatcherProperties;
+        });
     }
 }

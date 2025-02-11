@@ -33,8 +33,8 @@ public final class ImagesImpl implements Images {
 
     public PagedIterable<Image> listByCatalog(String resourceGroupName, String catalogName, String filter, Integer top,
         Integer skip, Integer maxpagesize, Context context) {
-        PagedIterable<ImageInner> inner = this.serviceClient().listByCatalog(resourceGroupName, catalogName, filter,
-            top, skip, maxpagesize, context);
+        PagedIterable<ImageInner> inner = this.serviceClient()
+            .listByCatalog(resourceGroupName, catalogName, filter, top, skip, maxpagesize, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ImageImpl(inner1, this.manager()));
     }
 

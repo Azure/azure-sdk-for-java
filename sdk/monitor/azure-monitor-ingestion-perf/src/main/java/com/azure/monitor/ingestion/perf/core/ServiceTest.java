@@ -16,8 +16,8 @@ import com.azure.perf.test.core.PerfStressTest;
  * Base class for Azure Monitor Ingestion performance tests.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    public static final String CONFIGURATION_ERROR = "Configuration %s must be set in either environment variables "
-            + "or system properties.%n";
+    public static final String CONFIGURATION_ERROR
+        = "Configuration %s must be set in either environment variables " + "or system properties.%n";
 
     protected final LogsIngestionClient logsIngestionClient;
     protected final LogsIngestionAsyncClient logsIngestionAsyncClient;
@@ -34,8 +34,8 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             throw new IllegalStateException(String.format(CONFIGURATION_ERROR, "AZURE_MONITOR_DCE"));
         }
 
-        LogsIngestionClientBuilder logsIngestionClientBuilder = new LogsIngestionClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build())
+        LogsIngestionClientBuilder logsIngestionClientBuilder
+            = new LogsIngestionClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(dataCollectionEndpoint);
 
         this.logsIngestionClient = logsIngestionClientBuilder.buildClient();

@@ -5,24 +5,45 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The service properties when target service type is ConfluentSchemaRegistry. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ConfluentSchemaRegistry")
+/**
+ * The service properties when target service type is ConfluentSchemaRegistry.
+ */
 @Fluent
 public final class ConfluentSchemaRegistry extends TargetServiceBase {
     /*
+     * The target service type.
+     */
+    private TargetServiceType type = TargetServiceType.CONFLUENT_SCHEMA_REGISTRY;
+
+    /*
      * The endpoint of service.
      */
-    @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /**
+     * Creates an instance of ConfluentSchemaRegistry class.
+     */
+    public ConfluentSchemaRegistry() {
+    }
+
+    /**
+     * Get the type property: The target service type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public TargetServiceType type() {
+        return this.type;
+    }
+
+    /**
      * Get the endpoint property: The endpoint of service.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -31,7 +52,7 @@ public final class ConfluentSchemaRegistry extends TargetServiceBase {
 
     /**
      * Set the endpoint property: The endpoint of service.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the ConfluentSchemaRegistry object itself.
      */
@@ -42,11 +63,49 @@ public final class ConfluentSchemaRegistry extends TargetServiceBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfluentSchemaRegistry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfluentSchemaRegistry if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfluentSchemaRegistry.
+     */
+    public static ConfluentSchemaRegistry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfluentSchemaRegistry deserializedConfluentSchemaRegistry = new ConfluentSchemaRegistry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedConfluentSchemaRegistry.type = TargetServiceType.fromString(reader.getString());
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedConfluentSchemaRegistry.endpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfluentSchemaRegistry;
+        });
     }
 }

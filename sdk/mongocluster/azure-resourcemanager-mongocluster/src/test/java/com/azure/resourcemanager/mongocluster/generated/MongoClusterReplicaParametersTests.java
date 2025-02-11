@@ -12,18 +12,18 @@ public final class MongoClusterReplicaParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoClusterReplicaParameters model
-            = BinaryData.fromString("{\"sourceResourceId\":\"ukxgaud\",\"sourceLocation\":\"cs\"}")
+            = BinaryData.fromString("{\"sourceResourceId\":\"napczwlokjy\",\"sourceLocation\":\"mkkvnip\"}")
                 .toObject(MongoClusterReplicaParameters.class);
-        Assertions.assertEquals("ukxgaud", model.sourceResourceId());
-        Assertions.assertEquals("cs", model.sourceLocation());
+        Assertions.assertEquals("napczwlokjy", model.sourceResourceId());
+        Assertions.assertEquals("mkkvnip", model.sourceLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MongoClusterReplicaParameters model
-            = new MongoClusterReplicaParameters().withSourceResourceId("ukxgaud").withSourceLocation("cs");
+            = new MongoClusterReplicaParameters().withSourceResourceId("napczwlokjy").withSourceLocation("mkkvnip");
         model = BinaryData.fromObject(model).toObject(MongoClusterReplicaParameters.class);
-        Assertions.assertEquals("ukxgaud", model.sourceResourceId());
-        Assertions.assertEquals("cs", model.sourceLocation());
+        Assertions.assertEquals("napczwlokjy", model.sourceResourceId());
+        Assertions.assertEquals("mkkvnip", model.sourceLocation());
     }
 }

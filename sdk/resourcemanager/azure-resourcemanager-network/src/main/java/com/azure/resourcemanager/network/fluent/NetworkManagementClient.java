@@ -43,1015 +43,1050 @@ public interface NetworkManagementClient {
     /**
      * Gets The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
      * forms part of the URI for every service call.
-     * 
+     *
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     * 
+     *
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the ApplicationGatewaysClient object to access its operations.
-     * 
+     *
      * @return the ApplicationGatewaysClient object.
      */
     ApplicationGatewaysClient getApplicationGateways();
 
     /**
      * Gets the ApplicationGatewayPrivateLinkResourcesClient object to access its operations.
-     * 
+     *
      * @return the ApplicationGatewayPrivateLinkResourcesClient object.
      */
     ApplicationGatewayPrivateLinkResourcesClient getApplicationGatewayPrivateLinkResources();
 
     /**
      * Gets the ApplicationGatewayPrivateEndpointConnectionsClient object to access its operations.
-     * 
+     *
      * @return the ApplicationGatewayPrivateEndpointConnectionsClient object.
      */
     ApplicationGatewayPrivateEndpointConnectionsClient getApplicationGatewayPrivateEndpointConnections();
 
     /**
      * Gets the ApplicationGatewayWafDynamicManifestsDefaultsClient object to access its operations.
-     * 
+     *
      * @return the ApplicationGatewayWafDynamicManifestsDefaultsClient object.
      */
     ApplicationGatewayWafDynamicManifestsDefaultsClient getApplicationGatewayWafDynamicManifestsDefaults();
 
     /**
      * Gets the ApplicationGatewayWafDynamicManifestsClient object to access its operations.
-     * 
+     *
      * @return the ApplicationGatewayWafDynamicManifestsClient object.
      */
     ApplicationGatewayWafDynamicManifestsClient getApplicationGatewayWafDynamicManifests();
 
     /**
      * Gets the ApplicationSecurityGroupsClient object to access its operations.
-     * 
+     *
      * @return the ApplicationSecurityGroupsClient object.
      */
     ApplicationSecurityGroupsClient getApplicationSecurityGroups();
 
     /**
      * Gets the AvailableDelegationsClient object to access its operations.
-     * 
+     *
      * @return the AvailableDelegationsClient object.
      */
     AvailableDelegationsClient getAvailableDelegations();
 
     /**
      * Gets the AvailableResourceGroupDelegationsClient object to access its operations.
-     * 
+     *
      * @return the AvailableResourceGroupDelegationsClient object.
      */
     AvailableResourceGroupDelegationsClient getAvailableResourceGroupDelegations();
 
     /**
      * Gets the AvailableServiceAliasesClient object to access its operations.
-     * 
+     *
      * @return the AvailableServiceAliasesClient object.
      */
     AvailableServiceAliasesClient getAvailableServiceAliases();
 
     /**
      * Gets the AzureFirewallsClient object to access its operations.
-     * 
+     *
      * @return the AzureFirewallsClient object.
      */
     AzureFirewallsClient getAzureFirewalls();
 
     /**
      * Gets the AzureFirewallFqdnTagsClient object to access its operations.
-     * 
+     *
      * @return the AzureFirewallFqdnTagsClient object.
      */
     AzureFirewallFqdnTagsClient getAzureFirewallFqdnTags();
 
     /**
      * Gets the WebCategoriesClient object to access its operations.
-     * 
+     *
      * @return the WebCategoriesClient object.
      */
     WebCategoriesClient getWebCategories();
 
     /**
      * Gets the BastionHostsClient object to access its operations.
-     * 
+     *
      * @return the BastionHostsClient object.
      */
     BastionHostsClient getBastionHosts();
 
     /**
      * Gets the NetworkInterfacesClient object to access its operations.
-     * 
+     *
      * @return the NetworkInterfacesClient object.
      */
     NetworkInterfacesClient getNetworkInterfaces();
 
     /**
      * Gets the PublicIpAddressesClient object to access its operations.
-     * 
+     *
      * @return the PublicIpAddressesClient object.
      */
     PublicIpAddressesClient getPublicIpAddresses();
 
     /**
      * Gets the VipSwapsClient object to access its operations.
-     * 
+     *
      * @return the VipSwapsClient object.
      */
     VipSwapsClient getVipSwaps();
 
     /**
      * Gets the CustomIpPrefixesClient object to access its operations.
-     * 
+     *
      * @return the CustomIpPrefixesClient object.
      */
     CustomIpPrefixesClient getCustomIpPrefixes();
 
     /**
      * Gets the DdosCustomPoliciesClient object to access its operations.
-     * 
+     *
      * @return the DdosCustomPoliciesClient object.
      */
     DdosCustomPoliciesClient getDdosCustomPolicies();
 
     /**
      * Gets the DdosProtectionPlansClient object to access its operations.
-     * 
+     *
      * @return the DdosProtectionPlansClient object.
      */
     DdosProtectionPlansClient getDdosProtectionPlans();
 
     /**
      * Gets the DscpConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the DscpConfigurationsClient object.
      */
     DscpConfigurationsClient getDscpConfigurations();
 
     /**
      * Gets the AvailableEndpointServicesClient object to access its operations.
-     * 
+     *
      * @return the AvailableEndpointServicesClient object.
      */
     AvailableEndpointServicesClient getAvailableEndpointServices();
 
     /**
      * Gets the ExpressRouteCircuitAuthorizationsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCircuitAuthorizationsClient object.
      */
     ExpressRouteCircuitAuthorizationsClient getExpressRouteCircuitAuthorizations();
 
     /**
      * Gets the ExpressRouteCircuitPeeringsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCircuitPeeringsClient object.
      */
     ExpressRouteCircuitPeeringsClient getExpressRouteCircuitPeerings();
 
     /**
      * Gets the ExpressRouteCircuitConnectionsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCircuitConnectionsClient object.
      */
     ExpressRouteCircuitConnectionsClient getExpressRouteCircuitConnections();
 
     /**
      * Gets the PeerExpressRouteCircuitConnectionsClient object to access its operations.
-     * 
+     *
      * @return the PeerExpressRouteCircuitConnectionsClient object.
      */
     PeerExpressRouteCircuitConnectionsClient getPeerExpressRouteCircuitConnections();
 
     /**
      * Gets the ExpressRouteCircuitsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCircuitsClient object.
      */
     ExpressRouteCircuitsClient getExpressRouteCircuits();
 
     /**
      * Gets the ExpressRouteServiceProvidersClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteServiceProvidersClient object.
      */
     ExpressRouteServiceProvidersClient getExpressRouteServiceProviders();
 
     /**
      * Gets the ExpressRouteCrossConnectionsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCrossConnectionsClient object.
      */
     ExpressRouteCrossConnectionsClient getExpressRouteCrossConnections();
 
     /**
      * Gets the ExpressRouteCrossConnectionPeeringsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCrossConnectionPeeringsClient object.
      */
     ExpressRouteCrossConnectionPeeringsClient getExpressRouteCrossConnectionPeerings();
 
     /**
      * Gets the ExpressRoutePortsLocationsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRoutePortsLocationsClient object.
      */
     ExpressRoutePortsLocationsClient getExpressRoutePortsLocations();
 
     /**
      * Gets the ExpressRoutePortsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRoutePortsClient object.
      */
     ExpressRoutePortsClient getExpressRoutePorts();
 
     /**
      * Gets the ExpressRouteLinksClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteLinksClient object.
      */
     ExpressRouteLinksClient getExpressRouteLinks();
 
     /**
      * Gets the ExpressRoutePortAuthorizationsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRoutePortAuthorizationsClient object.
      */
     ExpressRoutePortAuthorizationsClient getExpressRoutePortAuthorizations();
 
     /**
      * Gets the ExpressRouteProviderPortsLocationsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteProviderPortsLocationsClient object.
      */
     ExpressRouteProviderPortsLocationsClient getExpressRouteProviderPortsLocations();
 
     /**
      * Gets the FirewallPoliciesClient object to access its operations.
-     * 
+     *
      * @return the FirewallPoliciesClient object.
      */
     FirewallPoliciesClient getFirewallPolicies();
 
     /**
      * Gets the FirewallPolicyRuleCollectionGroupsClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyRuleCollectionGroupsClient object.
      */
     FirewallPolicyRuleCollectionGroupsClient getFirewallPolicyRuleCollectionGroups();
 
     /**
      * Gets the FirewallPolicyIdpsSignaturesClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyIdpsSignaturesClient object.
      */
     FirewallPolicyIdpsSignaturesClient getFirewallPolicyIdpsSignatures();
 
     /**
      * Gets the FirewallPolicyIdpsSignaturesOverridesClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyIdpsSignaturesOverridesClient object.
      */
     FirewallPolicyIdpsSignaturesOverridesClient getFirewallPolicyIdpsSignaturesOverrides();
 
     /**
      * Gets the FirewallPolicyIdpsSignaturesFilterValuesClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyIdpsSignaturesFilterValuesClient object.
      */
     FirewallPolicyIdpsSignaturesFilterValuesClient getFirewallPolicyIdpsSignaturesFilterValues();
 
     /**
      * Gets the FirewallPolicyDraftsClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyDraftsClient object.
      */
     FirewallPolicyDraftsClient getFirewallPolicyDrafts();
 
     /**
      * Gets the FirewallPolicyDeploymentsClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyDeploymentsClient object.
      */
     FirewallPolicyDeploymentsClient getFirewallPolicyDeployments();
 
     /**
      * Gets the FirewallPolicyRuleCollectionGroupDraftsClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyRuleCollectionGroupDraftsClient object.
      */
     FirewallPolicyRuleCollectionGroupDraftsClient getFirewallPolicyRuleCollectionGroupDrafts();
 
     /**
+     * Gets the IpamPoolsClient object to access its operations.
+     *
+     * @return the IpamPoolsClient object.
+     */
+    IpamPoolsClient getIpamPools();
+
+    /**
+     * Gets the StaticCidrsClient object to access its operations.
+     *
+     * @return the StaticCidrsClient object.
+     */
+    StaticCidrsClient getStaticCidrs();
+
+    /**
      * Gets the IpAllocationsClient object to access its operations.
-     * 
+     *
      * @return the IpAllocationsClient object.
      */
     IpAllocationsClient getIpAllocations();
 
     /**
      * Gets the IpGroupsClient object to access its operations.
-     * 
+     *
      * @return the IpGroupsClient object.
      */
     IpGroupsClient getIpGroups();
 
     /**
      * Gets the LoadBalancersClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancersClient object.
      */
     LoadBalancersClient getLoadBalancers();
 
     /**
      * Gets the LoadBalancerBackendAddressPoolsClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerBackendAddressPoolsClient object.
      */
     LoadBalancerBackendAddressPoolsClient getLoadBalancerBackendAddressPools();
 
     /**
      * Gets the LoadBalancerFrontendIpConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerFrontendIpConfigurationsClient object.
      */
     LoadBalancerFrontendIpConfigurationsClient getLoadBalancerFrontendIpConfigurations();
 
     /**
      * Gets the InboundNatRulesClient object to access its operations.
-     * 
+     *
      * @return the InboundNatRulesClient object.
      */
     InboundNatRulesClient getInboundNatRules();
 
     /**
      * Gets the LoadBalancerLoadBalancingRulesClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerLoadBalancingRulesClient object.
      */
     LoadBalancerLoadBalancingRulesClient getLoadBalancerLoadBalancingRules();
 
     /**
      * Gets the LoadBalancerOutboundRulesClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerOutboundRulesClient object.
      */
     LoadBalancerOutboundRulesClient getLoadBalancerOutboundRules();
 
     /**
      * Gets the LoadBalancerNetworkInterfacesClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerNetworkInterfacesClient object.
      */
     LoadBalancerNetworkInterfacesClient getLoadBalancerNetworkInterfaces();
 
     /**
      * Gets the LoadBalancerProbesClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerProbesClient object.
      */
     LoadBalancerProbesClient getLoadBalancerProbes();
 
     /**
      * Gets the NatGatewaysClient object to access its operations.
-     * 
+     *
      * @return the NatGatewaysClient object.
      */
     NatGatewaysClient getNatGateways();
 
     /**
      * Gets the NetworkInterfaceIpConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the NetworkInterfaceIpConfigurationsClient object.
      */
     NetworkInterfaceIpConfigurationsClient getNetworkInterfaceIpConfigurations();
 
     /**
      * Gets the NetworkInterfaceLoadBalancersClient object to access its operations.
-     * 
+     *
      * @return the NetworkInterfaceLoadBalancersClient object.
      */
     NetworkInterfaceLoadBalancersClient getNetworkInterfaceLoadBalancers();
 
     /**
      * Gets the NetworkInterfaceTapConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the NetworkInterfaceTapConfigurationsClient object.
      */
     NetworkInterfaceTapConfigurationsClient getNetworkInterfaceTapConfigurations();
 
     /**
      * Gets the NetworkManagersClient object to access its operations.
-     * 
+     *
      * @return the NetworkManagersClient object.
      */
     NetworkManagersClient getNetworkManagers();
 
     /**
      * Gets the NetworkManagerCommitsClient object to access its operations.
-     * 
+     *
      * @return the NetworkManagerCommitsClient object.
      */
     NetworkManagerCommitsClient getNetworkManagerCommits();
 
     /**
      * Gets the NetworkManagerDeploymentStatusOperationsClient object to access its operations.
-     * 
+     *
      * @return the NetworkManagerDeploymentStatusOperationsClient object.
      */
     NetworkManagerDeploymentStatusOperationsClient getNetworkManagerDeploymentStatusOperations();
 
     /**
      * Gets the SubscriptionNetworkManagerConnectionsClient object to access its operations.
-     * 
+     *
      * @return the SubscriptionNetworkManagerConnectionsClient object.
      */
     SubscriptionNetworkManagerConnectionsClient getSubscriptionNetworkManagerConnections();
 
     /**
      * Gets the ManagementGroupNetworkManagerConnectionsClient object to access its operations.
-     * 
+     *
      * @return the ManagementGroupNetworkManagerConnectionsClient object.
      */
     ManagementGroupNetworkManagerConnectionsClient getManagementGroupNetworkManagerConnections();
 
     /**
      * Gets the ConnectivityConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the ConnectivityConfigurationsClient object.
      */
     ConnectivityConfigurationsClient getConnectivityConfigurations();
 
     /**
      * Gets the NetworkGroupsClient object to access its operations.
-     * 
+     *
      * @return the NetworkGroupsClient object.
      */
     NetworkGroupsClient getNetworkGroups();
 
     /**
      * Gets the StaticMembersClient object to access its operations.
-     * 
+     *
      * @return the StaticMembersClient object.
      */
     StaticMembersClient getStaticMembers();
 
     /**
-     * Gets the ScopeConnectionsClient object to access its operations.
-     * 
-     * @return the ScopeConnectionsClient object.
-     */
-    ScopeConnectionsClient getScopeConnections();
-
-    /**
-     * Gets the SecurityAdminConfigurationsClient object to access its operations.
-     * 
-     * @return the SecurityAdminConfigurationsClient object.
-     */
-    SecurityAdminConfigurationsClient getSecurityAdminConfigurations();
-
-    /**
-     * Gets the AdminRuleCollectionsClient object to access its operations.
-     * 
-     * @return the AdminRuleCollectionsClient object.
-     */
-    AdminRuleCollectionsClient getAdminRuleCollections();
-
-    /**
-     * Gets the AdminRulesClient object to access its operations.
-     * 
-     * @return the AdminRulesClient object.
-     */
-    AdminRulesClient getAdminRules();
-
-    /**
-     * Gets the SecurityUserConfigurationsClient object to access its operations.
-     * 
-     * @return the SecurityUserConfigurationsClient object.
-     */
-    SecurityUserConfigurationsClient getSecurityUserConfigurations();
-
-    /**
-     * Gets the SecurityUserRuleCollectionsClient object to access its operations.
-     * 
-     * @return the SecurityUserRuleCollectionsClient object.
-     */
-    SecurityUserRuleCollectionsClient getSecurityUserRuleCollections();
-
-    /**
-     * Gets the SecurityUserRulesClient object to access its operations.
-     * 
-     * @return the SecurityUserRulesClient object.
-     */
-    SecurityUserRulesClient getSecurityUserRules();
-
-    /**
      * Gets the NetworkManagerRoutingConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the NetworkManagerRoutingConfigurationsClient object.
      */
     NetworkManagerRoutingConfigurationsClient getNetworkManagerRoutingConfigurations();
 
     /**
      * Gets the RoutingRuleCollectionsClient object to access its operations.
-     * 
+     *
      * @return the RoutingRuleCollectionsClient object.
      */
     RoutingRuleCollectionsClient getRoutingRuleCollections();
 
     /**
      * Gets the RoutingRulesClient object to access its operations.
-     * 
+     *
      * @return the RoutingRulesClient object.
      */
     RoutingRulesClient getRoutingRules();
 
     /**
+     * Gets the ScopeConnectionsClient object to access its operations.
+     *
+     * @return the ScopeConnectionsClient object.
+     */
+    ScopeConnectionsClient getScopeConnections();
+
+    /**
+     * Gets the SecurityAdminConfigurationsClient object to access its operations.
+     *
+     * @return the SecurityAdminConfigurationsClient object.
+     */
+    SecurityAdminConfigurationsClient getSecurityAdminConfigurations();
+
+    /**
+     * Gets the AdminRuleCollectionsClient object to access its operations.
+     *
+     * @return the AdminRuleCollectionsClient object.
+     */
+    AdminRuleCollectionsClient getAdminRuleCollections();
+
+    /**
+     * Gets the AdminRulesClient object to access its operations.
+     *
+     * @return the AdminRulesClient object.
+     */
+    AdminRulesClient getAdminRules();
+
+    /**
+     * Gets the SecurityUserConfigurationsClient object to access its operations.
+     *
+     * @return the SecurityUserConfigurationsClient object.
+     */
+    SecurityUserConfigurationsClient getSecurityUserConfigurations();
+
+    /**
+     * Gets the SecurityUserRuleCollectionsClient object to access its operations.
+     *
+     * @return the SecurityUserRuleCollectionsClient object.
+     */
+    SecurityUserRuleCollectionsClient getSecurityUserRuleCollections();
+
+    /**
+     * Gets the SecurityUserRulesClient object to access its operations.
+     *
+     * @return the SecurityUserRulesClient object.
+     */
+    SecurityUserRulesClient getSecurityUserRules();
+
+    /**
      * Gets the NetworkProfilesClient object to access its operations.
-     * 
+     *
      * @return the NetworkProfilesClient object.
      */
     NetworkProfilesClient getNetworkProfiles();
 
     /**
      * Gets the NetworkSecurityGroupsClient object to access its operations.
-     * 
+     *
      * @return the NetworkSecurityGroupsClient object.
      */
     NetworkSecurityGroupsClient getNetworkSecurityGroups();
 
     /**
      * Gets the SecurityRulesClient object to access its operations.
-     * 
+     *
      * @return the SecurityRulesClient object.
      */
     SecurityRulesClient getSecurityRules();
 
     /**
      * Gets the DefaultSecurityRulesClient object to access its operations.
-     * 
+     *
      * @return the DefaultSecurityRulesClient object.
      */
     DefaultSecurityRulesClient getDefaultSecurityRules();
 
     /**
+     * Gets the ReachabilityAnalysisIntentsClient object to access its operations.
+     *
+     * @return the ReachabilityAnalysisIntentsClient object.
+     */
+    ReachabilityAnalysisIntentsClient getReachabilityAnalysisIntents();
+
+    /**
+     * Gets the ReachabilityAnalysisRunsClient object to access its operations.
+     *
+     * @return the ReachabilityAnalysisRunsClient object.
+     */
+    ReachabilityAnalysisRunsClient getReachabilityAnalysisRuns();
+
+    /**
+     * Gets the VerifierWorkspacesClient object to access its operations.
+     *
+     * @return the VerifierWorkspacesClient object.
+     */
+    VerifierWorkspacesClient getVerifierWorkspaces();
+
+    /**
      * Gets the NetworkVirtualAppliancesClient object to access its operations.
-     * 
+     *
      * @return the NetworkVirtualAppliancesClient object.
      */
     NetworkVirtualAppliancesClient getNetworkVirtualAppliances();
 
     /**
      * Gets the VirtualApplianceSitesClient object to access its operations.
-     * 
+     *
      * @return the VirtualApplianceSitesClient object.
      */
     VirtualApplianceSitesClient getVirtualApplianceSites();
 
     /**
      * Gets the VirtualApplianceSkusClient object to access its operations.
-     * 
+     *
      * @return the VirtualApplianceSkusClient object.
      */
     VirtualApplianceSkusClient getVirtualApplianceSkus();
 
     /**
      * Gets the InboundSecurityRuleOperationsClient object to access its operations.
-     * 
+     *
      * @return the InboundSecurityRuleOperationsClient object.
      */
     InboundSecurityRuleOperationsClient getInboundSecurityRuleOperations();
 
     /**
      * Gets the NetworkWatchersClient object to access its operations.
-     * 
+     *
      * @return the NetworkWatchersClient object.
      */
     NetworkWatchersClient getNetworkWatchers();
 
     /**
      * Gets the PacketCapturesClient object to access its operations.
-     * 
+     *
      * @return the PacketCapturesClient object.
      */
     PacketCapturesClient getPacketCaptures();
 
     /**
      * Gets the ConnectionMonitorsClient object to access its operations.
-     * 
+     *
      * @return the ConnectionMonitorsClient object.
      */
     ConnectionMonitorsClient getConnectionMonitors();
 
     /**
      * Gets the FlowLogsClient object to access its operations.
-     * 
+     *
      * @return the FlowLogsClient object.
      */
     FlowLogsClient getFlowLogs();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     * 
+     *
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the PrivateEndpointsClient object to access its operations.
-     * 
+     *
      * @return the PrivateEndpointsClient object.
      */
     PrivateEndpointsClient getPrivateEndpoints();
 
     /**
      * Gets the AvailablePrivateEndpointTypesClient object to access its operations.
-     * 
+     *
      * @return the AvailablePrivateEndpointTypesClient object.
      */
     AvailablePrivateEndpointTypesClient getAvailablePrivateEndpointTypes();
 
     /**
      * Gets the PrivateDnsZoneGroupsClient object to access its operations.
-     * 
+     *
      * @return the PrivateDnsZoneGroupsClient object.
      */
     PrivateDnsZoneGroupsClient getPrivateDnsZoneGroups();
 
     /**
      * Gets the PrivateLinkServicesClient object to access its operations.
-     * 
+     *
      * @return the PrivateLinkServicesClient object.
      */
     PrivateLinkServicesClient getPrivateLinkServices();
 
     /**
      * Gets the PublicIpPrefixesClient object to access its operations.
-     * 
+     *
      * @return the PublicIpPrefixesClient object.
      */
     PublicIpPrefixesClient getPublicIpPrefixes();
 
     /**
      * Gets the RouteFiltersClient object to access its operations.
-     * 
+     *
      * @return the RouteFiltersClient object.
      */
     RouteFiltersClient getRouteFilters();
 
     /**
      * Gets the RouteFilterRulesClient object to access its operations.
-     * 
+     *
      * @return the RouteFilterRulesClient object.
      */
     RouteFilterRulesClient getRouteFilterRules();
 
     /**
      * Gets the RouteTablesClient object to access its operations.
-     * 
+     *
      * @return the RouteTablesClient object.
      */
     RouteTablesClient getRouteTables();
 
     /**
      * Gets the RoutesClient object to access its operations.
-     * 
+     *
      * @return the RoutesClient object.
      */
     RoutesClient getRoutes();
 
     /**
      * Gets the SecurityPartnerProvidersClient object to access its operations.
-     * 
+     *
      * @return the SecurityPartnerProvidersClient object.
      */
     SecurityPartnerProvidersClient getSecurityPartnerProviders();
 
     /**
      * Gets the BgpServiceCommunitiesClient object to access its operations.
-     * 
+     *
      * @return the BgpServiceCommunitiesClient object.
      */
     BgpServiceCommunitiesClient getBgpServiceCommunities();
 
     /**
      * Gets the ServiceEndpointPoliciesClient object to access its operations.
-     * 
+     *
      * @return the ServiceEndpointPoliciesClient object.
      */
     ServiceEndpointPoliciesClient getServiceEndpointPolicies();
 
     /**
      * Gets the ServiceEndpointPolicyDefinitionsClient object to access its operations.
-     * 
+     *
      * @return the ServiceEndpointPolicyDefinitionsClient object.
      */
     ServiceEndpointPolicyDefinitionsClient getServiceEndpointPolicyDefinitions();
 
     /**
      * Gets the ServiceTagsClient object to access its operations.
-     * 
+     *
      * @return the ServiceTagsClient object.
      */
     ServiceTagsClient getServiceTags();
 
     /**
      * Gets the ServiceTagInformationsClient object to access its operations.
-     * 
+     *
      * @return the ServiceTagInformationsClient object.
      */
     ServiceTagInformationsClient getServiceTagInformations();
 
     /**
      * Gets the UsagesClient object to access its operations.
-     * 
+     *
      * @return the UsagesClient object.
      */
     UsagesClient getUsages();
 
     /**
      * Gets the VirtualNetworksClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworksClient object.
      */
     VirtualNetworksClient getVirtualNetworks();
 
     /**
      * Gets the SubnetsClient object to access its operations.
-     * 
+     *
      * @return the SubnetsClient object.
      */
     SubnetsClient getSubnets();
 
     /**
      * Gets the ResourceNavigationLinksClient object to access its operations.
-     * 
+     *
      * @return the ResourceNavigationLinksClient object.
      */
     ResourceNavigationLinksClient getResourceNavigationLinks();
 
     /**
      * Gets the ServiceAssociationLinksClient object to access its operations.
-     * 
+     *
      * @return the ServiceAssociationLinksClient object.
      */
     ServiceAssociationLinksClient getServiceAssociationLinks();
 
     /**
      * Gets the VirtualNetworkPeeringsClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworkPeeringsClient object.
      */
     VirtualNetworkPeeringsClient getVirtualNetworkPeerings();
 
     /**
      * Gets the VirtualNetworkGatewaysClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworkGatewaysClient object.
      */
     VirtualNetworkGatewaysClient getVirtualNetworkGateways();
 
     /**
      * Gets the VirtualNetworkGatewayConnectionsClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworkGatewayConnectionsClient object.
      */
     VirtualNetworkGatewayConnectionsClient getVirtualNetworkGatewayConnections();
 
     /**
      * Gets the LocalNetworkGatewaysClient object to access its operations.
-     * 
+     *
      * @return the LocalNetworkGatewaysClient object.
      */
     LocalNetworkGatewaysClient getLocalNetworkGateways();
 
     /**
      * Gets the VirtualNetworkGatewayNatRulesClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworkGatewayNatRulesClient object.
      */
     VirtualNetworkGatewayNatRulesClient getVirtualNetworkGatewayNatRules();
 
     /**
      * Gets the VirtualNetworkTapsClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworkTapsClient object.
      */
     VirtualNetworkTapsClient getVirtualNetworkTaps();
 
     /**
      * Gets the VirtualRoutersClient object to access its operations.
-     * 
+     *
      * @return the VirtualRoutersClient object.
      */
     VirtualRoutersClient getVirtualRouters();
 
     /**
      * Gets the VirtualRouterPeeringsClient object to access its operations.
-     * 
+     *
      * @return the VirtualRouterPeeringsClient object.
      */
     VirtualRouterPeeringsClient getVirtualRouterPeerings();
 
     /**
      * Gets the VirtualWansClient object to access its operations.
-     * 
+     *
      * @return the VirtualWansClient object.
      */
     VirtualWansClient getVirtualWans();
 
     /**
      * Gets the VpnSitesClient object to access its operations.
-     * 
+     *
      * @return the VpnSitesClient object.
      */
     VpnSitesClient getVpnSites();
 
     /**
      * Gets the VpnSiteLinksClient object to access its operations.
-     * 
+     *
      * @return the VpnSiteLinksClient object.
      */
     VpnSiteLinksClient getVpnSiteLinks();
 
     /**
      * Gets the VpnSitesConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the VpnSitesConfigurationsClient object.
      */
     VpnSitesConfigurationsClient getVpnSitesConfigurations();
 
     /**
      * Gets the VpnServerConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the VpnServerConfigurationsClient object.
      */
     VpnServerConfigurationsClient getVpnServerConfigurations();
 
     /**
      * Gets the ConfigurationPolicyGroupsClient object to access its operations.
-     * 
+     *
      * @return the ConfigurationPolicyGroupsClient object.
      */
     ConfigurationPolicyGroupsClient getConfigurationPolicyGroups();
 
     /**
      * Gets the VirtualHubsClient object to access its operations.
-     * 
+     *
      * @return the VirtualHubsClient object.
      */
     VirtualHubsClient getVirtualHubs();
 
     /**
      * Gets the RouteMapsClient object to access its operations.
-     * 
+     *
      * @return the RouteMapsClient object.
      */
     RouteMapsClient getRouteMaps();
 
     /**
      * Gets the HubVirtualNetworkConnectionsClient object to access its operations.
-     * 
+     *
      * @return the HubVirtualNetworkConnectionsClient object.
      */
     HubVirtualNetworkConnectionsClient getHubVirtualNetworkConnections();
 
     /**
      * Gets the VpnGatewaysClient object to access its operations.
-     * 
+     *
      * @return the VpnGatewaysClient object.
      */
     VpnGatewaysClient getVpnGateways();
 
     /**
      * Gets the VpnLinkConnectionsClient object to access its operations.
-     * 
+     *
      * @return the VpnLinkConnectionsClient object.
      */
     VpnLinkConnectionsClient getVpnLinkConnections();
 
     /**
      * Gets the VpnConnectionsClient object to access its operations.
-     * 
+     *
      * @return the VpnConnectionsClient object.
      */
     VpnConnectionsClient getVpnConnections();
 
     /**
      * Gets the VpnSiteLinkConnectionsClient object to access its operations.
-     * 
+     *
      * @return the VpnSiteLinkConnectionsClient object.
      */
     VpnSiteLinkConnectionsClient getVpnSiteLinkConnections();
 
     /**
      * Gets the NatRulesClient object to access its operations.
-     * 
+     *
      * @return the NatRulesClient object.
      */
     NatRulesClient getNatRules();
 
     /**
      * Gets the P2SVpnGatewaysClient object to access its operations.
-     * 
+     *
      * @return the P2SVpnGatewaysClient object.
      */
     P2SVpnGatewaysClient getP2SVpnGateways();
 
     /**
      * Gets the VpnServerConfigurationsAssociatedWithVirtualWansClient object to access its operations.
-     * 
+     *
      * @return the VpnServerConfigurationsAssociatedWithVirtualWansClient object.
      */
     VpnServerConfigurationsAssociatedWithVirtualWansClient getVpnServerConfigurationsAssociatedWithVirtualWans();
 
     /**
      * Gets the VirtualHubRouteTableV2SClient object to access its operations.
-     * 
+     *
      * @return the VirtualHubRouteTableV2SClient object.
      */
     VirtualHubRouteTableV2SClient getVirtualHubRouteTableV2S();
 
     /**
      * Gets the ExpressRouteGatewaysClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteGatewaysClient object.
      */
     ExpressRouteGatewaysClient getExpressRouteGateways();
 
     /**
      * Gets the ExpressRouteConnectionsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteConnectionsClient object.
      */
     ExpressRouteConnectionsClient getExpressRouteConnections();
 
     /**
      * Gets the NetworkVirtualApplianceConnectionsClient object to access its operations.
-     * 
+     *
      * @return the NetworkVirtualApplianceConnectionsClient object.
      */
     NetworkVirtualApplianceConnectionsClient getNetworkVirtualApplianceConnections();
 
     /**
      * Gets the VirtualHubBgpConnectionsClient object to access its operations.
-     * 
+     *
      * @return the VirtualHubBgpConnectionsClient object.
      */
     VirtualHubBgpConnectionsClient getVirtualHubBgpConnections();
 
     /**
      * Gets the VirtualHubIpConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the VirtualHubIpConfigurationsClient object.
      */
     VirtualHubIpConfigurationsClient getVirtualHubIpConfigurations();
 
     /**
      * Gets the HubRouteTablesClient object to access its operations.
-     * 
+     *
      * @return the HubRouteTablesClient object.
      */
     HubRouteTablesClient getHubRouteTables();
 
     /**
      * Gets the RoutingIntentsClient object to access its operations.
-     * 
+     *
      * @return the RoutingIntentsClient object.
      */
     RoutingIntentsClient getRoutingIntents();
 
     /**
      * Gets the WebApplicationFirewallPoliciesClient object to access its operations.
-     * 
+     *
      * @return the WebApplicationFirewallPoliciesClient object.
      */
     WebApplicationFirewallPoliciesClient getWebApplicationFirewallPolicies();
 
     /**
      * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1066,7 +1101,7 @@ public interface NetworkManagementClient {
 
     /**
      * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1081,7 +1116,7 @@ public interface NetworkManagementClient {
 
     /**
      * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1097,7 +1132,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1112,7 +1147,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1127,7 +1162,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1142,7 +1177,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1158,7 +1193,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1173,7 +1208,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1187,7 +1222,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1202,7 +1237,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -1217,7 +1252,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -1232,7 +1267,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -1247,7 +1282,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -1263,7 +1298,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -1278,7 +1313,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -1292,7 +1327,7 @@ public interface NetworkManagementClient {
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -1307,7 +1342,7 @@ public interface NetworkManagementClient {
 
     /**
      * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1322,7 +1357,7 @@ public interface NetworkManagementClient {
 
     /**
      * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1337,7 +1372,7 @@ public interface NetworkManagementClient {
 
     /**
      * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -1353,7 +1388,7 @@ public interface NetworkManagementClient {
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1366,7 +1401,7 @@ public interface NetworkManagementClient {
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1379,7 +1414,7 @@ public interface NetworkManagementClient {
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param context The context to associate with this operation.
@@ -1394,7 +1429,7 @@ public interface NetworkManagementClient {
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param sessionIds The list of sessionids to disconnect.
@@ -1409,7 +1444,7 @@ public interface NetworkManagementClient {
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param sessionIds The list of sessionids to disconnect.
@@ -1424,7 +1459,7 @@ public interface NetworkManagementClient {
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param sessionIds The list of sessionids to disconnect.
@@ -1440,7 +1475,7 @@ public interface NetworkManagementClient {
 
     /**
      * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
+     *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
@@ -1456,7 +1491,7 @@ public interface NetworkManagementClient {
 
     /**
      * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
+     *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
@@ -1470,7 +1505,7 @@ public interface NetworkManagementClient {
 
     /**
      * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
+     *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
@@ -1486,7 +1521,7 @@ public interface NetworkManagementClient {
 
     /**
      * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
+     *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
@@ -1500,7 +1535,7 @@ public interface NetworkManagementClient {
 
     /**
      * Retrieves detail of a provider port.
-     * 
+     *
      * @param providerport The name of the provider port.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1512,7 +1547,7 @@ public interface NetworkManagementClient {
 
     /**
      * Retrieves detail of a provider port.
-     * 
+     *
      * @param providerport The name of the provider port.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1524,7 +1559,7 @@ public interface NetworkManagementClient {
 
     /**
      * Retrieves detail of a provider port.
-     * 
+     *
      * @param providerport The name of the provider port.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1537,7 +1572,7 @@ public interface NetworkManagementClient {
 
     /**
      * Retrieves detail of a provider port.
-     * 
+     *
      * @param providerport The name of the provider port.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1549,7 +1584,7 @@ public interface NetworkManagementClient {
 
     /**
      * Lists active connectivity configurations in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -1568,7 +1603,7 @@ public interface NetworkManagementClient {
 
     /**
      * Lists active connectivity configurations in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -1584,7 +1619,7 @@ public interface NetworkManagementClient {
 
     /**
      * Lists active connectivity configurations in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -1603,7 +1638,7 @@ public interface NetworkManagementClient {
 
     /**
      * Lists active connectivity configurations in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -1618,7 +1653,7 @@ public interface NetworkManagementClient {
 
     /**
      * Lists active security admin rules in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -1636,7 +1671,7 @@ public interface NetworkManagementClient {
 
     /**
      * Lists active security admin rules in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -1651,7 +1686,7 @@ public interface NetworkManagementClient {
 
     /**
      * Lists active security admin rules in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -1669,7 +1704,7 @@ public interface NetworkManagementClient {
 
     /**
      * Lists active security admin rules in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -1684,7 +1719,7 @@ public interface NetworkManagementClient {
 
     /**
      * List all effective connectivity configurations applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -1703,7 +1738,7 @@ public interface NetworkManagementClient {
 
     /**
      * List all effective connectivity configurations applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -1720,7 +1755,7 @@ public interface NetworkManagementClient {
 
     /**
      * List all effective connectivity configurations applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -1740,7 +1775,7 @@ public interface NetworkManagementClient {
 
     /**
      * List all effective connectivity configurations applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -1756,7 +1791,7 @@ public interface NetworkManagementClient {
 
     /**
      * List all effective security admin rules applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -1775,7 +1810,7 @@ public interface NetworkManagementClient {
 
     /**
      * List all effective security admin rules applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -1791,7 +1826,7 @@ public interface NetworkManagementClient {
 
     /**
      * List all effective security admin rules applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -1810,7 +1845,7 @@ public interface NetworkManagementClient {
 
     /**
      * List all effective security admin rules applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -1825,7 +1860,7 @@ public interface NetworkManagementClient {
 
     /**
      * Gives the supported security providers for the virtual wan.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1839,7 +1874,7 @@ public interface NetworkManagementClient {
 
     /**
      * Gives the supported security providers for the virtual wan.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1853,7 +1888,7 @@ public interface NetworkManagementClient {
 
     /**
      * Gives the supported security providers for the virtual wan.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @param context The context to associate with this operation.
@@ -1868,7 +1903,7 @@ public interface NetworkManagementClient {
 
     /**
      * Gives the supported security providers for the virtual wan.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1882,7 +1917,7 @@ public interface NetworkManagementClient {
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -1899,7 +1934,7 @@ public interface NetworkManagementClient {
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -1916,7 +1951,7 @@ public interface NetworkManagementClient {
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -1933,7 +1968,7 @@ public interface NetworkManagementClient {
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -1951,7 +1986,7 @@ public interface NetworkManagementClient {
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -1967,7 +2002,7 @@ public interface NetworkManagementClient {
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -1983,7 +2018,7 @@ public interface NetworkManagementClient {
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.

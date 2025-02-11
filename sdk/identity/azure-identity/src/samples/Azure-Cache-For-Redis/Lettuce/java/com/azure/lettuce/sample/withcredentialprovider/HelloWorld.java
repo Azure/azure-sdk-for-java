@@ -24,9 +24,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Objects;
 
-
+/**
+ * A "Hello World" sample.
+ */
 public class HelloWorld {
 
+    /**
+     * The runnable sample.
+     *
+     * @param args Ignored.
+     */
     public static void main(String[] args) {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
@@ -65,9 +72,9 @@ public class HelloWorld {
      */
     public static class AzureRedisCredentials implements RedisCredentials {
         // Note: The Scopes value will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
-        private TokenRequestContext tokenRequestContext = new TokenRequestContext()
+        private final TokenRequestContext tokenRequestContext = new TokenRequestContext()
             .addScopes("https://redis.azure.com/.default");
-        private TokenCredential tokenCredential;
+        private final TokenCredential tokenCredential;
         private final String username;
 
         /**

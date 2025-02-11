@@ -6,58 +6,70 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information for connecting to SQL database server. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SqlConnectionInfo")
+/**
+ * Information for connecting to SQL database server.
+ */
 @Fluent
 public final class SqlConnectionInfo extends ConnectionInfo {
     /*
+     * Type of connection info
+     */
+    private String type = "SqlConnectionInfo";
+
+    /*
      * Data source in the format Protocol:MachineName\SQLServerInstanceName,PortNumber
      */
-    @JsonProperty(value = "dataSource", required = true)
     private String dataSource;
 
     /*
      * Authentication type to use for connection
      */
-    @JsonProperty(value = "authentication")
     private AuthenticationType authentication;
 
     /*
      * Whether to encrypt the connection
      */
-    @JsonProperty(value = "encryptConnection")
     private Boolean encryptConnection;
 
     /*
      * Additional connection settings
      */
-    @JsonProperty(value = "additionalSettings")
     private String additionalSettings;
 
     /*
      * Whether to trust the server certificate
      */
-    @JsonProperty(value = "trustServerCertificate")
     private Boolean trustServerCertificate;
 
     /*
      * Server platform type for connection
      */
-    @JsonProperty(value = "platform")
     private SqlSourcePlatform platform;
 
-    /** Creates an instance of SqlConnectionInfo class. */
+    /**
+     * Creates an instance of SqlConnectionInfo class.
+     */
     public SqlConnectionInfo() {
     }
 
     /**
+     * Get the type property: Type of connection info.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the dataSource property: Data source in the format Protocol:MachineName\SQLServerInstanceName,PortNumber.
-     *
+     * 
      * @return the dataSource value.
      */
     public String dataSource() {
@@ -66,7 +78,7 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Set the dataSource property: Data source in the format Protocol:MachineName\SQLServerInstanceName,PortNumber.
-     *
+     * 
      * @param dataSource the dataSource value to set.
      * @return the SqlConnectionInfo object itself.
      */
@@ -77,7 +89,7 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Get the authentication property: Authentication type to use for connection.
-     *
+     * 
      * @return the authentication value.
      */
     public AuthenticationType authentication() {
@@ -86,7 +98,7 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Set the authentication property: Authentication type to use for connection.
-     *
+     * 
      * @param authentication the authentication value to set.
      * @return the SqlConnectionInfo object itself.
      */
@@ -97,7 +109,7 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Get the encryptConnection property: Whether to encrypt the connection.
-     *
+     * 
      * @return the encryptConnection value.
      */
     public Boolean encryptConnection() {
@@ -106,7 +118,7 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Set the encryptConnection property: Whether to encrypt the connection.
-     *
+     * 
      * @param encryptConnection the encryptConnection value to set.
      * @return the SqlConnectionInfo object itself.
      */
@@ -117,7 +129,7 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Get the additionalSettings property: Additional connection settings.
-     *
+     * 
      * @return the additionalSettings value.
      */
     public String additionalSettings() {
@@ -126,7 +138,7 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Set the additionalSettings property: Additional connection settings.
-     *
+     * 
      * @param additionalSettings the additionalSettings value to set.
      * @return the SqlConnectionInfo object itself.
      */
@@ -137,7 +149,7 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Get the trustServerCertificate property: Whether to trust the server certificate.
-     *
+     * 
      * @return the trustServerCertificate value.
      */
     public Boolean trustServerCertificate() {
@@ -146,7 +158,7 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Set the trustServerCertificate property: Whether to trust the server certificate.
-     *
+     * 
      * @param trustServerCertificate the trustServerCertificate value to set.
      * @return the SqlConnectionInfo object itself.
      */
@@ -157,7 +169,7 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Get the platform property: Server platform type for connection.
-     *
+     * 
      * @return the platform value.
      */
     public SqlSourcePlatform platform() {
@@ -166,7 +178,7 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Set the platform property: Server platform type for connection.
-     *
+     * 
      * @param platform the platform value to set.
      * @return the SqlConnectionInfo object itself.
      */
@@ -175,14 +187,18 @@ public final class SqlConnectionInfo extends ConnectionInfo {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlConnectionInfo withUsername(String username) {
         super.withUsername(username);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlConnectionInfo withPassword(String password) {
         super.withPassword(password);
@@ -191,18 +207,78 @@ public final class SqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (dataSource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataSource in model SqlConnectionInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dataSource in model SqlConnectionInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlConnectionInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userName", username());
+        jsonWriter.writeStringField("password", password());
+        jsonWriter.writeStringField("dataSource", this.dataSource);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("authentication",
+            this.authentication == null ? null : this.authentication.toString());
+        jsonWriter.writeBooleanField("encryptConnection", this.encryptConnection);
+        jsonWriter.writeStringField("additionalSettings", this.additionalSettings);
+        jsonWriter.writeBooleanField("trustServerCertificate", this.trustServerCertificate);
+        jsonWriter.writeStringField("platform", this.platform == null ? null : this.platform.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlConnectionInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlConnectionInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlConnectionInfo.
+     */
+    public static SqlConnectionInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlConnectionInfo deserializedSqlConnectionInfo = new SqlConnectionInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userName".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.withUsername(reader.getString());
+                } else if ("password".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.withPassword(reader.getString());
+                } else if ("dataSource".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.dataSource = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.type = reader.getString();
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.authentication = AuthenticationType.fromString(reader.getString());
+                } else if ("encryptConnection".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.encryptConnection = reader.getNullable(JsonReader::getBoolean);
+                } else if ("additionalSettings".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.additionalSettings = reader.getString();
+                } else if ("trustServerCertificate".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.trustServerCertificate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("platform".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.platform = SqlSourcePlatform.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlConnectionInfo;
+        });
+    }
 }

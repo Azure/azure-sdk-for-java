@@ -11,44 +11,40 @@ import org.junit.jupiter.api.Assertions;
 public final class VideoLayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VideoLayer model =
-            BinaryData
-                .fromString(
-                    "{\"bitrate\":1713301534,\"maxBitrate\":1058689711,\"bFrames\":698504930,\"frameRate\":\"wchpxlk\",\"slices\":17628020,\"adaptiveBFrame\":true,\"width\":\"ycslevufuztcktyh\",\"height\":\"qedcgzulwm\",\"label\":\"qzz\"}")
-                .toObject(VideoLayer.class);
-        Assertions.assertEquals("ycslevufuztcktyh", model.width());
-        Assertions.assertEquals("qedcgzulwm", model.height());
-        Assertions.assertEquals("qzz", model.label());
-        Assertions.assertEquals(1713301534, model.bitrate());
-        Assertions.assertEquals(1058689711, model.maxBitrate());
-        Assertions.assertEquals(698504930, model.bFrames());
-        Assertions.assertEquals("wchpxlk", model.frameRate());
-        Assertions.assertEquals(17628020, model.slices());
-        Assertions.assertEquals(true, model.adaptiveBFrame());
+        VideoLayer model = BinaryData.fromString(
+            "{\"bitrate\":187526121,\"maxBitrate\":759312882,\"bFrames\":957966922,\"frameRate\":\"hnakzyb\",\"slices\":549542779,\"adaptiveBFrame\":false,\"width\":\"ksyxkyxvxevblbje\",\"height\":\"ljlageuaulxu\",\"label\":\"mjbnk\"}")
+            .toObject(VideoLayer.class);
+        Assertions.assertEquals("ksyxkyxvxevblbje", model.width());
+        Assertions.assertEquals("ljlageuaulxu", model.height());
+        Assertions.assertEquals("mjbnk", model.label());
+        Assertions.assertEquals(187526121, model.bitrate());
+        Assertions.assertEquals(759312882, model.maxBitrate());
+        Assertions.assertEquals(957966922, model.bFrames());
+        Assertions.assertEquals("hnakzyb", model.frameRate());
+        Assertions.assertEquals(549542779, model.slices());
+        Assertions.assertEquals(false, model.adaptiveBFrame());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VideoLayer model =
-            new VideoLayer()
-                .withWidth("ycslevufuztcktyh")
-                .withHeight("qedcgzulwm")
-                .withLabel("qzz")
-                .withBitrate(1713301534)
-                .withMaxBitrate(1058689711)
-                .withBFrames(698504930)
-                .withFrameRate("wchpxlk")
-                .withSlices(17628020)
-                .withAdaptiveBFrame(true);
+        VideoLayer model = new VideoLayer().withWidth("ksyxkyxvxevblbje")
+            .withHeight("ljlageuaulxu")
+            .withLabel("mjbnk")
+            .withBitrate(187526121)
+            .withMaxBitrate(759312882)
+            .withBFrames(957966922)
+            .withFrameRate("hnakzyb")
+            .withSlices(549542779)
+            .withAdaptiveBFrame(false);
         model = BinaryData.fromObject(model).toObject(VideoLayer.class);
-        Assertions.assertEquals("ycslevufuztcktyh", model.width());
-        Assertions.assertEquals("qedcgzulwm", model.height());
-        Assertions.assertEquals("qzz", model.label());
-        Assertions.assertEquals(1713301534, model.bitrate());
-        Assertions.assertEquals(1058689711, model.maxBitrate());
-        Assertions.assertEquals(698504930, model.bFrames());
-        Assertions.assertEquals("wchpxlk", model.frameRate());
-        Assertions.assertEquals(17628020, model.slices());
-        Assertions.assertEquals(true, model.adaptiveBFrame());
+        Assertions.assertEquals("ksyxkyxvxevblbje", model.width());
+        Assertions.assertEquals("ljlageuaulxu", model.height());
+        Assertions.assertEquals("mjbnk", model.label());
+        Assertions.assertEquals(187526121, model.bitrate());
+        Assertions.assertEquals(759312882, model.maxBitrate());
+        Assertions.assertEquals(957966922, model.bFrames());
+        Assertions.assertEquals("hnakzyb", model.frameRate());
+        Assertions.assertEquals(549542779, model.slices());
+        Assertions.assertEquals(false, model.adaptiveBFrame());
     }
 }

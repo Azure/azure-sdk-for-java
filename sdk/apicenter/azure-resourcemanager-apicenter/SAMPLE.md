@@ -89,8 +89,10 @@ public final class ApiDefinitionsCreateOrUpdateSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiDefinitionsCreateOrUpdate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiDefinitions().define("openapi")
-            .withExistingVersion("contoso-resources", "contoso", "default", "openapi", "2023-01-01").create();
+        manager.apiDefinitions()
+            .define("openapi")
+            .withExistingVersion("contoso-resources", "contoso", "default", "openapi", "2023-01-01")
+            .create();
     }
 }
 ```
@@ -113,8 +115,9 @@ public final class ApiDefinitionsDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiDefinitionsDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiDefinitions().deleteWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
-            "openapi", com.azure.core.util.Context.NONE);
+        manager.apiDefinitions()
+            .deleteWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01", "openapi",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -136,8 +139,9 @@ public final class ApiDefinitionsExportSpecificationSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiDefinitionsExportSpecification(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiDefinitions().exportSpecification("contoso-resources", "contoso", "default", "echo-api",
-            "2023-01-01", "openapi", com.azure.core.util.Context.NONE);
+        manager.apiDefinitions()
+            .exportSpecification("contoso-resources", "contoso", "default", "echo-api", "2023-01-01", "openapi",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -159,8 +163,9 @@ public final class ApiDefinitionsGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiDefinitionsGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiDefinitions().getWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
-            "openapi", com.azure.core.util.Context.NONE);
+        manager.apiDefinitions()
+            .getWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01", "openapi",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -182,8 +187,9 @@ public final class ApiDefinitionsHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiDefinitionsHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiDefinitions().headWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
-            "openapi", com.azure.core.util.Context.NONE);
+        manager.apiDefinitions()
+            .headWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01", "openapi",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -206,8 +212,9 @@ public final class ApiDefinitionsImportSpecificationSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiDefinitionsImportSpecification(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiDefinitions().importSpecification("contoso-resources", "contoso", "default", "echo-api",
-            "2023-01-01", "openapi", null, com.azure.core.util.Context.NONE);
+        manager.apiDefinitions()
+            .importSpecification("contoso-resources", "contoso", "default", "echo-api", "2023-01-01", "openapi", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -229,8 +236,9 @@ public final class ApiDefinitionsListSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiDefinitionsListByApiVersion(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiDefinitions().list("contoso-resources", "contoso", "default", "echo-api", "2023-01-01", null,
-            com.azure.core.util.Context.NONE);
+        manager.apiDefinitions()
+            .list("contoso-resources", "contoso", "default", "echo-api", "2023-01-01", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -252,8 +260,10 @@ public final class ApiVersionsCreateOrUpdateSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiVersionsCreateOrUpdate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiVersions().define("2023-01-01")
-            .withExistingApi("contoso-resources", "contoso", "default", "echo-api").create();
+        manager.apiVersions()
+            .define("2023-01-01")
+            .withExistingApi("contoso-resources", "contoso", "default", "echo-api")
+            .create();
     }
 }
 ```
@@ -275,8 +285,9 @@ public final class ApiVersionsDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiVersionsDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiVersions().deleteWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
-            com.azure.core.util.Context.NONE);
+        manager.apiVersions()
+            .deleteWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -298,8 +309,9 @@ public final class ApiVersionsGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiVersionsGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiVersions().getWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
-            com.azure.core.util.Context.NONE);
+        manager.apiVersions()
+            .getWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -321,8 +333,9 @@ public final class ApiVersionsHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiVersionsHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiVersions().headWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
-            com.azure.core.util.Context.NONE);
+        manager.apiVersions()
+            .headWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -344,8 +357,8 @@ public final class ApiVersionsListSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiVersionsListByApi(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiVersions().list("contoso-resources", "contoso", "default", "echo-api", null,
-            com.azure.core.util.Context.NONE);
+        manager.apiVersions()
+            .list("contoso-resources", "contoso", "default", "echo-api", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -389,8 +402,9 @@ public final class ApisDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apisDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apis().deleteWithResponse("contoso-resources", "contoso", "default", "echo-api",
-            com.azure.core.util.Context.NONE);
+        manager.apis()
+            .deleteWithResponse("contoso-resources", "contoso", "default", "echo-api",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -412,8 +426,8 @@ public final class ApisGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apisGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apis().getWithResponse("contoso-resources", "contoso", "default", "echo-api",
-            com.azure.core.util.Context.NONE);
+        manager.apis()
+            .getWithResponse("contoso-resources", "contoso", "default", "echo-api", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -435,8 +449,8 @@ public final class ApisHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apisHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apis().headWithResponse("contoso-resources", "contoso", "default", "echo-api",
-            com.azure.core.util.Context.NONE);
+        manager.apis()
+            .headWithResponse("contoso-resources", "contoso", "default", "echo-api", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -480,8 +494,10 @@ public final class DeploymentsCreateOrUpdateSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void deploymentsCreateOrUpdate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.deployments().define("production")
-            .withExistingApi("contoso-resources", "contoso", "default", "echo-api").create();
+        manager.deployments()
+            .define("production")
+            .withExistingApi("contoso-resources", "contoso", "default", "echo-api")
+            .create();
     }
 }
 ```
@@ -503,8 +519,9 @@ public final class DeploymentsDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void deploymentsDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.deployments().deleteWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
-            com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .deleteWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -526,8 +543,9 @@ public final class DeploymentsGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void deploymentsGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.deployments().getWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
-            com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .getWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -549,8 +567,9 @@ public final class DeploymentsHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void deploymentsHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.deployments().headWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
-            com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .headWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -572,8 +591,8 @@ public final class DeploymentsListSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void deploymentsListByApi(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.deployments().list("contoso-resources", "contoso", "default", "echo-api", null,
-            com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .list("contoso-resources", "contoso", "default", "echo-api", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -595,7 +614,9 @@ public final class EnvironmentsCreateOrUpdateSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void environmentsCreateOrUpdate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.environments().define("public").withExistingWorkspace("contoso-resources", "contoso", "default")
+        manager.environments()
+            .define("public")
+            .withExistingWorkspace("contoso-resources", "contoso", "default")
             .create();
     }
 }
@@ -618,8 +639,8 @@ public final class EnvironmentsDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void environmentsDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.environments().deleteWithResponse("contoso-resources", "contoso", "default", "public",
-            com.azure.core.util.Context.NONE);
+        manager.environments()
+            .deleteWithResponse("contoso-resources", "contoso", "default", "public", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -641,8 +662,8 @@ public final class EnvironmentsGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void environmentsGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.environments().getWithResponse("contoso-resources", "contoso", "default", "public",
-            com.azure.core.util.Context.NONE);
+        manager.environments()
+            .getWithResponse("contoso-resources", "contoso", "default", "public", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -664,8 +685,8 @@ public final class EnvironmentsHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void environmentsHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.environments().headWithResponse("contoso-resources", "contoso", "default", "public",
-            com.azure.core.util.Context.NONE);
+        manager.environments()
+            .headWithResponse("contoso-resources", "contoso", "default", "public", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -732,8 +753,8 @@ public final class MetadataSchemasDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void metadataSchemasDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.metadataSchemas().deleteWithResponse("contoso-resources", "contoso", "author",
-            com.azure.core.util.Context.NONE);
+        manager.metadataSchemas()
+            .deleteWithResponse("contoso-resources", "contoso", "author", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -755,8 +776,8 @@ public final class MetadataSchemasGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void metadataSchemasGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.metadataSchemas().getWithResponse("contoso-resources", "contoso", "lastName",
-            com.azure.core.util.Context.NONE);
+        manager.metadataSchemas()
+            .getWithResponse("contoso-resources", "contoso", "lastName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -778,8 +799,8 @@ public final class MetadataSchemasHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void metadataSchemasHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.metadataSchemas().headWithResponse("contoso-resources", "contoso", "author",
-            com.azure.core.util.Context.NONE);
+        manager.metadataSchemas()
+            .headWithResponse("contoso-resources", "contoso", "author", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -853,8 +874,12 @@ public final class ServicesCreateOrUpdateSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void servicesCreateOrUpdate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.services().define("contoso").withRegion("East US").withExistingResourceGroup("contoso-resources")
-            .withTags(mapOf()).withProperties(new ServiceProperties())
+        manager.services()
+            .define("contoso")
+            .withRegion("East US")
+            .withExistingResourceGroup("contoso-resources")
+            .withTags(mapOf())
+            .withProperties(new ServiceProperties())
             .withIdentity(new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
                 .withUserAssignedIdentities(mapOf(
@@ -894,8 +919,8 @@ public final class ServicesDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void servicesDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.services().deleteByResourceGroupWithResponse("contoso-resources", "contoso",
-            com.azure.core.util.Context.NONE);
+        manager.services()
+            .deleteByResourceGroupWithResponse("contoso-resources", "contoso", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -940,8 +965,8 @@ public final class ServicesGetByResourceGroupSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void servicesGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.services().getByResourceGroupWithResponse("contoso-resources", "contoso",
-            com.azure.core.util.Context.NONE);
+        manager.services()
+            .getByResourceGroupWithResponse("contoso-resources", "contoso", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1057,8 +1082,8 @@ public final class WorkspacesDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void workspacesDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.workspaces().deleteWithResponse("contoso-resources", "contoso", "default",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .deleteWithResponse("contoso-resources", "contoso", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1080,8 +1105,8 @@ public final class WorkspacesGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void workspacesGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.workspaces().getWithResponse("contoso-resources", "contoso", "default",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .getWithResponse("contoso-resources", "contoso", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1103,8 +1128,8 @@ public final class WorkspacesHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void workspacesHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.workspaces().headWithResponse("contoso-resources", "contoso", "default",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .headWithResponse("contoso-resources", "contoso", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```

@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for KubernetesClusters GetByResourceGroup. */
+/**
+ * Samples for KubernetesClusters GetByResourceGroup.
+ */
 public final class KubernetesClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/KubernetesClusters_Get.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * KubernetesClusters_Get.json
      */
     /**
      * Sample code: Get Kubernetes cluster.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void getKubernetesCluster(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .kubernetesClusters()
-            .getByResourceGroupWithResponse(
-                "resourceGroupName", "kubernetesClusterName", com.azure.core.util.Context.NONE);
+        manager.kubernetesClusters()
+            .getByResourceGroupWithResponse("resourceGroupName", "kubernetesClusterName",
+                com.azure.core.util.Context.NONE);
     }
 }

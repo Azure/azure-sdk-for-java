@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.EnvironmentDeploymentProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of an environment. */
+/**
+ * Properties of an environment.
+ */
 @Fluent
-public final class EnvironmentProperties {
+public final class EnvironmentProperties implements JsonSerializable<EnvironmentProperties> {
     /*
      * The deployment properties of the environment.
      */
-    @JsonProperty(value = "deploymentProperties")
     private EnvironmentDeploymentProperties deploymentProperties;
 
     /*
      * The display name of the Azure Resource Manager template that produced the environment.
      */
-    @JsonProperty(value = "armTemplateDisplayName")
     private String armTemplateDisplayName;
 
     /*
      * The identifier of the resource group containing the environment's resources.
      */
-    @JsonProperty(value = "resourceGroupId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroupId;
 
     /*
      * The creator of the environment.
      */
-    @JsonProperty(value = "createdByUser", access = JsonProperty.Access.WRITE_ONLY)
     private String createdByUser;
 
     /*
      * The provisioning status of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique immutable identifier of a resource (Guid).
      */
-    @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
 
-    /** Creates an instance of EnvironmentProperties class. */
+    /**
+     * Creates an instance of EnvironmentProperties class.
+     */
     public EnvironmentProperties() {
     }
 
     /**
      * Get the deploymentProperties property: The deployment properties of the environment.
-     *
+     * 
      * @return the deploymentProperties value.
      */
     public EnvironmentDeploymentProperties deploymentProperties() {
@@ -62,7 +64,7 @@ public final class EnvironmentProperties {
 
     /**
      * Set the deploymentProperties property: The deployment properties of the environment.
-     *
+     * 
      * @param deploymentProperties the deploymentProperties value to set.
      * @return the EnvironmentProperties object itself.
      */
@@ -74,7 +76,7 @@ public final class EnvironmentProperties {
     /**
      * Get the armTemplateDisplayName property: The display name of the Azure Resource Manager template that produced
      * the environment.
-     *
+     * 
      * @return the armTemplateDisplayName value.
      */
     public String armTemplateDisplayName() {
@@ -84,7 +86,7 @@ public final class EnvironmentProperties {
     /**
      * Set the armTemplateDisplayName property: The display name of the Azure Resource Manager template that produced
      * the environment.
-     *
+     * 
      * @param armTemplateDisplayName the armTemplateDisplayName value to set.
      * @return the EnvironmentProperties object itself.
      */
@@ -95,7 +97,7 @@ public final class EnvironmentProperties {
 
     /**
      * Get the resourceGroupId property: The identifier of the resource group containing the environment's resources.
-     *
+     * 
      * @return the resourceGroupId value.
      */
     public String resourceGroupId() {
@@ -104,7 +106,7 @@ public final class EnvironmentProperties {
 
     /**
      * Get the createdByUser property: The creator of the environment.
-     *
+     * 
      * @return the createdByUser value.
      */
     public String createdByUser() {
@@ -113,7 +115,7 @@ public final class EnvironmentProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -122,7 +124,7 @@ public final class EnvironmentProperties {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -131,12 +133,60 @@ public final class EnvironmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deploymentProperties() != null) {
             deploymentProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("deploymentProperties", this.deploymentProperties);
+        jsonWriter.writeStringField("armTemplateDisplayName", this.armTemplateDisplayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentProperties.
+     */
+    public static EnvironmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentProperties deserializedEnvironmentProperties = new EnvironmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentProperties".equals(fieldName)) {
+                    deserializedEnvironmentProperties.deploymentProperties
+                        = EnvironmentDeploymentProperties.fromJson(reader);
+                } else if ("armTemplateDisplayName".equals(fieldName)) {
+                    deserializedEnvironmentProperties.armTemplateDisplayName = reader.getString();
+                } else if ("resourceGroupId".equals(fieldName)) {
+                    deserializedEnvironmentProperties.resourceGroupId = reader.getString();
+                } else if ("createdByUser".equals(fieldName)) {
+                    deserializedEnvironmentProperties.createdByUser = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedEnvironmentProperties.provisioningState = reader.getString();
+                } else if ("uniqueIdentifier".equals(fieldName)) {
+                    deserializedEnvironmentProperties.uniqueIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentProperties;
+        });
     }
 }

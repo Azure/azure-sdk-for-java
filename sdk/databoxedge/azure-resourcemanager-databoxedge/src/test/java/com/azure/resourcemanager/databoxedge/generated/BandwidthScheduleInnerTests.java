@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class BandwidthScheduleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BandwidthScheduleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"start\":\"fhyhltrpmopjmcma\",\"stop\":\"u\",\"rateInMbps\":1605990961,\"days\":[\"Wednesday\",\"Monday\",\"Sunday\",\"Tuesday\"]},\"id\":\"uaodsfcpk\",\"name\":\"xodpuozmyzydagfu\",\"type\":\"xbezyiuokktwh\"}")
-                .toObject(BandwidthScheduleInner.class);
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.start());
-        Assertions.assertEquals("u", model.stop());
-        Assertions.assertEquals(1605990961, model.rateInMbps());
-        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.days().get(0));
+        BandwidthScheduleInner model = BinaryData.fromString(
+            "{\"properties\":{\"start\":\"ywqsmbsurexim\",\"stop\":\"ryocfsfksymdd\",\"rateInMbps\":830050857,\"days\":[\"Thursday\"]},\"id\":\"i\",\"name\":\"uxh\",\"type\":\"yudxorrqnbp\"}")
+            .toObject(BandwidthScheduleInner.class);
+        Assertions.assertEquals("ywqsmbsurexim", model.start());
+        Assertions.assertEquals("ryocfsfksymdd", model.stop());
+        Assertions.assertEquals(830050857, model.rateInMbps());
+        Assertions.assertEquals(DayOfWeek.THURSDAY, model.days().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BandwidthScheduleInner model =
-            new BandwidthScheduleInner()
-                .withStart("fhyhltrpmopjmcma")
-                .withStop("u")
-                .withRateInMbps(1605990961)
-                .withDays(Arrays.asList(DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY, DayOfWeek.SUNDAY, DayOfWeek.TUESDAY));
+        BandwidthScheduleInner model = new BandwidthScheduleInner().withStart("ywqsmbsurexim")
+            .withStop("ryocfsfksymdd")
+            .withRateInMbps(830050857)
+            .withDays(Arrays.asList(DayOfWeek.THURSDAY));
         model = BinaryData.fromObject(model).toObject(BandwidthScheduleInner.class);
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.start());
-        Assertions.assertEquals("u", model.stop());
-        Assertions.assertEquals(1605990961, model.rateInMbps());
-        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.days().get(0));
+        Assertions.assertEquals("ywqsmbsurexim", model.start());
+        Assertions.assertEquals("ryocfsfksymdd", model.stop());
+        Assertions.assertEquals(830050857, model.rateInMbps());
+        Assertions.assertEquals(DayOfWeek.THURSDAY, model.days().get(0));
     }
 }

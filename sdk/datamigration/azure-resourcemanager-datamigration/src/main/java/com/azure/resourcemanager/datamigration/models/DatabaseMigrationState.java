@@ -5,44 +5,65 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Database level migration state. */
+/**
+ * Database level migration state.
+ */
 public final class DatabaseMigrationState extends ExpandableStringEnum<DatabaseMigrationState> {
-    /** Static value UNDEFINED for DatabaseMigrationState. */
+    /**
+     * Static value UNDEFINED for DatabaseMigrationState.
+     */
     public static final DatabaseMigrationState UNDEFINED = fromString("UNDEFINED");
 
-    /** Static value INITIAL for DatabaseMigrationState. */
+    /**
+     * Static value INITIAL for DatabaseMigrationState.
+     */
     public static final DatabaseMigrationState INITIAL = fromString("INITIAL");
 
-    /** Static value FULL_BACKUP_UPLOAD_START for DatabaseMigrationState. */
+    /**
+     * Static value FULL_BACKUP_UPLOAD_START for DatabaseMigrationState.
+     */
     public static final DatabaseMigrationState FULL_BACKUP_UPLOAD_START = fromString("FULL_BACKUP_UPLOAD_START");
 
-    /** Static value LOG_SHIPPING_START for DatabaseMigrationState. */
+    /**
+     * Static value LOG_SHIPPING_START for DatabaseMigrationState.
+     */
     public static final DatabaseMigrationState LOG_SHIPPING_START = fromString("LOG_SHIPPING_START");
 
-    /** Static value UPLOAD_LOG_FILES_START for DatabaseMigrationState. */
+    /**
+     * Static value UPLOAD_LOG_FILES_START for DatabaseMigrationState.
+     */
     public static final DatabaseMigrationState UPLOAD_LOG_FILES_START = fromString("UPLOAD_LOG_FILES_START");
 
-    /** Static value CUTOVER_START for DatabaseMigrationState. */
+    /**
+     * Static value CUTOVER_START for DatabaseMigrationState.
+     */
     public static final DatabaseMigrationState CUTOVER_START = fromString("CUTOVER_START");
 
-    /** Static value POST_CUTOVER_COMPLETE for DatabaseMigrationState. */
+    /**
+     * Static value POST_CUTOVER_COMPLETE for DatabaseMigrationState.
+     */
     public static final DatabaseMigrationState POST_CUTOVER_COMPLETE = fromString("POST_CUTOVER_COMPLETE");
 
-    /** Static value COMPLETED for DatabaseMigrationState. */
+    /**
+     * Static value COMPLETED for DatabaseMigrationState.
+     */
     public static final DatabaseMigrationState COMPLETED = fromString("COMPLETED");
 
-    /** Static value CANCELLED for DatabaseMigrationState. */
+    /**
+     * Static value CANCELLED for DatabaseMigrationState.
+     */
     public static final DatabaseMigrationState CANCELLED = fromString("CANCELLED");
 
-    /** Static value FAILED for DatabaseMigrationState. */
+    /**
+     * Static value FAILED for DatabaseMigrationState.
+     */
     public static final DatabaseMigrationState FAILED = fromString("FAILED");
 
     /**
      * Creates a new instance of DatabaseMigrationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,18 +72,17 @@ public final class DatabaseMigrationState extends ExpandableStringEnum<DatabaseM
 
     /**
      * Creates or finds a DatabaseMigrationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatabaseMigrationState.
      */
-    @JsonCreator
     public static DatabaseMigrationState fromString(String name) {
         return fromString(name, DatabaseMigrationState.class);
     }
 
     /**
      * Gets known DatabaseMigrationState values.
-     *
+     * 
      * @return known DatabaseMigrationState values.
      */
     public static Collection<DatabaseMigrationState> values() {

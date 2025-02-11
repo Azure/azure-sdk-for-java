@@ -27,8 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NioClientBuilderTests {
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-storage-blob-nio.properties");
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-storage-blob-nio.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
 
@@ -40,10 +39,14 @@ public class NioClientBuilderTests {
     public void azureFileSystemServiceClient() throws IOException {
         Map<String, Object> config = new HashMap<>();
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, "containerName");
-        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT, new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
-        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, new StorageSharedKeyCredential("accountName", "accountKey"));
+        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT,
+            new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
+                + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
+        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
+            new StorageSharedKeyCredential("accountName", "accountKey"));
 
-        AzureFileSystem fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config);
+        AzureFileSystem fileSystem
+            = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config);
         HttpPipeline pipeline = fileSystem.getBlobServiceClient().getHttpPipeline();
 
         verifyPipelineAndResponse(pipeline, fileSystem.getBlobServiceClient().getAccountUrl());
@@ -53,9 +56,13 @@ public class NioClientBuilderTests {
     public void azureFileStoreContainerClient() throws IOException {
         Map<String, Object> config = new HashMap<>();
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, "containerName");
-        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT, new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
-        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, new StorageSharedKeyCredential("accountName", "accountKey"));
-        AzureFileSystem fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config);
+        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT,
+            new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
+                + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
+        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
+            new StorageSharedKeyCredential("accountName", "accountKey"));
+        AzureFileSystem fileSystem
+            = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config);
         AzureFileStore fileStore = (AzureFileStore) fileSystem.getFileStore("containerName");
         HttpPipeline pipeline = fileStore.getContainerClient().getHttpPipeline();
 
@@ -66,9 +73,13 @@ public class NioClientBuilderTests {
     public void azResourceBlobClient() throws IOException {
         Map<String, Object> config = new HashMap<>();
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, "containerName");
-        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT, new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
-        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, new StorageSharedKeyCredential("accountName", "accountKey"));
-        AzureFileSystem fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config);
+        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT,
+            new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
+                + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"));
+        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
+            new StorageSharedKeyCredential("accountName", "accountKey"));
+        AzureFileSystem fileSystem
+            = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config);
         AzurePath path = (AzurePath) fileSystem.getPath("blobName");
         AzureResource resource = new AzureResource(path);
         HttpPipeline pipeline = resource.getBlobClient().getHttpPipeline();

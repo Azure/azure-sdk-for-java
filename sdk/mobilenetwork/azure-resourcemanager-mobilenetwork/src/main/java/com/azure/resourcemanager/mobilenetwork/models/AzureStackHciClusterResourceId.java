@@ -6,17 +6,20 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Reference to an Azure Stack HCI cluster resource.
  */
 @Fluent
-public final class AzureStackHciClusterResourceId {
+public final class AzureStackHciClusterResourceId implements JsonSerializable<AzureStackHciClusterResourceId> {
     /*
      * Azure Stack HCI cluster resource ID.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
@@ -59,4 +62,42 @@ public final class AzureStackHciClusterResourceId {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureStackHciClusterResourceId.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureStackHciClusterResourceId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureStackHciClusterResourceId if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureStackHciClusterResourceId.
+     */
+    public static AzureStackHciClusterResourceId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureStackHciClusterResourceId deserializedAzureStackHciClusterResourceId
+                = new AzureStackHciClusterResourceId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAzureStackHciClusterResourceId.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureStackHciClusterResourceId;
+        });
+    }
 }

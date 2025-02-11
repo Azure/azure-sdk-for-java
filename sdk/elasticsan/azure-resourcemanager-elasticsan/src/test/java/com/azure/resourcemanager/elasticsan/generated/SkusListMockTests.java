@@ -24,7 +24,7 @@ public final class SkusListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\",\"resourceType\":\"ccymvaolpsslql\",\"locations\":[\"dnbbglzps\",\"iydmcwyhzdxs\",\"adbzmnvdfznud\",\"od\"],\"locationInfo\":[{\"location\":\"ncblylpst\",\"zones\":[\"hxsrzdzucersc\"]}],\"capabilities\":[{\"name\":\"evfiwjmygt\",\"value\":\"slswtm\"}]}]}";
+            = "{\"value\":[{\"name\":\"Premium_LRS\",\"tier\":\"Premium\",\"resourceType\":\"nelixhnrztfo\",\"locations\":[\"nxknalaulp\",\"ggdtpnapnyiro\",\"uhpigvp\",\"ylgqgitxmedjvcsl\"],\"locationInfo\":[{\"location\":\"wncwzzhxgktrmg\",\"zones\":[\"apkteoellwptfdyg\",\"fqbuaceopzf\",\"rhhuaopppcqeqx\"]},{\"location\":\"z\",\"zones\":[\"zxctobgb\",\"dmoizpostmg\"]}],\"capabilities\":[{\"name\":\"unrmfqjhhkxb\",\"value\":\"jy\"},{\"name\":\"hx\",\"value\":\"yngudivk\"},{\"name\":\"swbxqz\",\"value\":\"zjf\"}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class SkusListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SkuInformation> response = manager.skus().list("gycdu", com.azure.core.util.Context.NONE);
+        PagedIterable<SkuInformation> response = manager.skus().list("slyjpkiid", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(SkuName.PREMIUM_ZRS, response.iterator().next().name());
+        Assertions.assertEquals(SkuName.PREMIUM_LRS, response.iterator().next().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().tier());
     }
 }

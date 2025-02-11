@@ -25,33 +25,50 @@ import java.util.Set;
 
 /** An immutable client-side representation of an Azure storage account. */
 @Fluent
-public interface StorageAccount
-    extends GroupableResource<StorageManager, StorageAccountInner>,
-    Refreshable<StorageAccount>,
-    Updatable<StorageAccount.Update>,
-    SupportsListingPrivateLinkResource,
-    SupportsListingPrivateEndpointConnection,
-    SupportsUpdatingPrivateEndpointConnection {
+public interface StorageAccount extends GroupableResource<StorageManager, StorageAccountInner>,
+    Refreshable<StorageAccount>, Updatable<StorageAccount.Update>, SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection, SupportsUpdatingPrivateEndpointConnection {
 
     /**
+     * Gets the status indicating whether the primary and secondary location of the storage account is available or
+     *     unavailable.
+     *
      * @return the status indicating whether the primary and secondary location of the storage account is available or
      *     unavailable. Possible values include: 'Available', 'Unavailable'
      */
     AccountStatuses accountStatuses();
 
-    /** @return the sku of this storage account. */
+    /**
+     * Gets the sku of this storage account.
+     *
+     * @return the sku of this storage account.
+     */
     StorageAccountSkuType skuType();
 
-    /** @return the kind of the storage account. Possible values are 'Storage', 'BlobStorage'. */
+    /**
+     * Gets the kind of the storage account.
+     *
+     * @return the kind of the storage account. Possible values are 'Storage', 'BlobStorage'.
+     */
     Kind kind();
 
-    /** @return the creation date and time of the storage account in UTC */
+    /**
+     * Gets the creation date and time of the storage account in UTC.
+     *
+     * @return the creation date and time of the storage account in UTC
+     */
     OffsetDateTime creationTime();
 
-    /** @return the user assigned custom domain assigned to this storage account */
+    /**
+     * Gets the user assigned custom domain assigned to this storage account.
+     *
+     * @return the user assigned custom domain assigned to this storage account
+     */
     CustomDomain customDomain();
 
     /**
+     * Gets the timestamp of the most recent instance of a failover to the secondary location.
+     *
      * @return the timestamp of the most recent instance of a failover to the secondary location. Only the most recent
      *     timestamp is retained. This element is not returned if there has never been a failover instance. Only
      *     available if the accountType is StandardGRS or StandardRAGRS
@@ -59,12 +76,16 @@ public interface StorageAccount
     OffsetDateTime lastGeoFailoverTime();
 
     /**
+     * Gets the status of the storage account.
+     *
      * @return the status of the storage account at the time the operation was called. Possible values include:
      *     'Creating', 'ResolvingDNS', 'Succeeded'
      */
     ProvisioningState provisioningState();
 
     /**
+     * Gets the URLs that are used to perform a retrieval of a public blob, queue or table object.
+     *
      * @return the URLs that are used to perform a retrieval of a public blob, queue or table object. Note that
      *     StandardZRS and PremiumLRS accounts only return the blob endpoint
      */
@@ -79,49 +100,84 @@ public interface StorageAccount
      */
     StorageAccountEncryptionKeySource encryptionKeySource();
 
-    /** @return the encryption statuses indexed by storage service type. */
+    /**
+     * Gets the encryption statuses indexed by storage service type.
+     *
+     * @return the encryption statuses indexed by storage service type.
+     */
     Map<StorageService, StorageAccountEncryptionStatus> encryptionStatuses();
 
-    /** @return whether infrastructure encryption for Azure Storage data is enabled. */
+    /**
+     * Checks whether infrastructure encryption for Azure Storage data is enabled.
+     *
+     * @return whether infrastructure encryption for Azure Storage data is enabled.
+     */
     boolean infrastructureEncryptionEnabled();
 
     /**
+     * Gets access tier used for billing.
+     *
      * @return access tier used for billing. Access tier cannot be changed more than once every 7 days (168 hours).
      *     Access tier cannot be set for StandardLRS, StandardGRS, StandardRAGRS, or PremiumLRS account types. Possible
      *     values include: 'Hot', 'Cool'.
      */
     AccessTier accessTier();
 
-    /** @return the Managed Service Identity specific Active Directory tenant ID assigned to the storage account. */
+    /**
+     * Gets the Managed Service Identity specific Active Directory tenant ID assigned to the storage account.
+     *
+     * @return the Managed Service Identity specific Active Directory tenant ID assigned to the storage account.
+     */
     String systemAssignedManagedServiceIdentityTenantId();
 
     /**
+     * Gets the Managed Service Identity specific Active Directory service principal ID assigned to the storage
+     *     account.
+     *
      * @return the Managed Service Identity specific Active Directory service principal ID assigned to the storage
      *     account.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /** @return the resource ids of User Assigned Managed Service Identities associated with the storage account. */
+    /**
+     * Gets the resource ids of User Assigned Managed Service Identities associated with the storage account.
+     *
+     * @return the resource ids of User Assigned Managed Service Identities associated with the storage account.
+     */
     Set<String> userAssignedManagedServiceIdentityIds();
 
     /**
+     * Checks whether authenticated application from any network is allowed to access the storage account.
+     *
      * @return true if authenticated application from any network is allowed to access the storage account, false if
      *     only application from whitelisted network (subnet, ip address, ip address range) can access the storage
      *     account.
      */
     boolean isAccessAllowedFromAllNetworks();
 
-    /** @return the list of resource id of virtual network subnet having access to the storage account. */
+    /**
+     * Gets the list of resource id of virtual network subnet having access to the storage account.
+     *
+     * @return the list of resource id of virtual network subnet having access to the storage account.
+     */
     List<String> networkSubnetsWithAccess();
 
-    /** @return the list of ip addresses having access to the storage account. */
+    /**
+     * Gets the list of ip addresses having access to the storage account.
+     *
+     * @return the list of ip addresses having access to the storage account.
+     */
     List<String> ipAddressesWithAccess();
 
-    /** @return the list of ip address ranges having access to the storage account. */
+    /**
+     * Gets the list of ip address ranges having access to the storage account.
+     *
+     * @return the list of ip address ranges having access to the storage account.
+     */
     List<String> ipAddressRangesWithAccess();
 
     /**
-     * Checks storage log entries can be read from any network.
+     * Checks whether storage log entries can be read from any network.
      *
      * @return true if storage log entries can be read from any network, false otherwise
      */
@@ -163,6 +219,8 @@ public interface StorageAccount
     boolean isLargeFileSharesEnabled();
 
     /**
+     * Gets the minimum TLS version for HTTPS traffic.
+     *
      * @return the minimum TLS version for HTTPS traffic.
      */
     MinimumTlsVersion minimumTlsVersion();
@@ -252,6 +310,7 @@ public interface StorageAccount
      *         {@link StorageAccount#identityTypeForCustomerEncryptionKey()} is not {@link IdentityType#USER_ASSIGNED}
      */
     String userAssignedIdentityIdForCustomerEncryptionKey();
+
     /**
      * Whether the storage account can be accessed from public network.
      *
@@ -260,11 +319,8 @@ public interface StorageAccount
     PublicNetworkAccess publicNetworkAccess();
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithCreateAndAccessTier {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate,
+        DefinitionStages.WithCreateAndAccessTier {
     }
 
     /** Grouping of all the storage account definition stages. */
@@ -430,7 +486,8 @@ public interface StorageAccount
              * @param userAssignedIdentity user-assigned identity to access the KeyVault
              * @return the next stage of storage account update
              */
-            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity);
+            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion,
+                Identity userAssignedIdentity);
 
             /**
              * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
@@ -447,7 +504,8 @@ public interface StorageAccount
              * @param userAssignedIdentityId ID of the user-assigned identity to access the KeyVault
              * @return the next stage of storage account update
              */
-            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId);
+            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion,
+                String userAssignedIdentityId);
         }
 
         /** The stage of a storage account definition allowing to associate custom domain with the account. */
@@ -571,6 +629,7 @@ public interface StorageAccount
              * @return the next stage of the definition
              */
             WithCreate disablePublicNetworkAccess();
+
             /**
              * Specifies that by default access to storage account should be allowed from all networks.
              *
@@ -694,7 +753,7 @@ public interface StorageAccount
         }
 
         /** The stage of storage account definition allowing to configure default to oauth authentication. */
-        interface  WithDefaultToOAuthAuthentication {
+        interface WithDefaultToOAuthAuthentication {
             /**
              * Allows default to oauth authentication, configured by individual containers.
              *
@@ -707,26 +766,15 @@ public interface StorageAccount
          * A storage account definition with sufficient inputs to create a new storage account in the cloud, but
          * exposing additional optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<StorageAccount>,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithBlobStorageAccountKind,
-                DefinitionStages.WithGeneralPurposeAccountKind,
-                DefinitionStages.WithBlockBlobStorageAccountKind,
-                DefinitionStages.WithFileStorageAccountKind,
-                DefinitionStages.WithEncryption,
-                DefinitionStages.WithCustomDomain,
-                DefinitionStages.WithManagedServiceIdentity,
-                DefinitionStages.WithUserAssignedManagedServiceIdentity,
-                DefinitionStages.WithAccessTraffic,
-                DefinitionStages.WithNetworkAccess,
-                DefinitionStages.WithAzureFilesAadIntegration,
-                DefinitionStages.WithLargeFileShares,
-                DefinitionStages.WithHns,
-                DefinitionStages.WithBlobAccess,
-                DefinitionStages.WithAllowCrossTenantReplication,
-                DefinitionStages.WithDefaultToOAuthAuthentication,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<StorageAccount>, DefinitionStages.WithSku,
+            DefinitionStages.WithBlobStorageAccountKind, DefinitionStages.WithGeneralPurposeAccountKind,
+            DefinitionStages.WithBlockBlobStorageAccountKind, DefinitionStages.WithFileStorageAccountKind,
+            DefinitionStages.WithEncryption, DefinitionStages.WithCustomDomain,
+            DefinitionStages.WithManagedServiceIdentity, DefinitionStages.WithUserAssignedManagedServiceIdentity,
+            DefinitionStages.WithAccessTraffic, DefinitionStages.WithNetworkAccess,
+            DefinitionStages.WithAzureFilesAadIntegration, DefinitionStages.WithLargeFileShares,
+            DefinitionStages.WithHns, DefinitionStages.WithBlobAccess, DefinitionStages.WithAllowCrossTenantReplication,
+            DefinitionStages.WithDefaultToOAuthAuthentication, Resource.DefinitionWithTags<WithCreate> {
         }
 
         /** The stage of storage account definition allowing to set access tier. */
@@ -853,7 +901,8 @@ public interface StorageAccount
              * @param userAssignedIdentity user-assigned identity to access the KeyVault
              * @return the next stage of storage account update
              */
-            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity);
+            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion,
+                Identity userAssignedIdentity);
 
             /**
              * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
@@ -870,7 +919,8 @@ public interface StorageAccount
              * @param userAssignedIdentityId ID of the user-assigned identity to access the KeyVault
              * @return the next stage of storage account update
              */
-            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId);
+            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion,
+                String userAssignedIdentityId);
 
             /**
              * Specifies the Microsoft-managed key to be used as key for encryption. This is the default encryption type.
@@ -1174,7 +1224,7 @@ public interface StorageAccount
         }
 
         /** The stage of storage account update allowing to configure default to oauth authentication. */
-        interface  WithDefaultToOAuthAuthentication {
+        interface WithDefaultToOAuthAuthentication {
             /**
              * Allows default to oauth authentication, configured by individual containers.
              *
@@ -1195,20 +1245,11 @@ public interface StorageAccount
     }
 
     /** The template for a storage account update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<StorageAccount>,
-            UpdateStages.WithSku,
-            UpdateStages.WithCustomDomain,
-            UpdateStages.WithEncryption,
-            UpdateStages.WithAccessTier,
-            UpdateStages.WithManagedServiceIdentity,
-            UpdateStages.WithUserAssignedManagedServiceIdentity,
-            UpdateStages.WithAccessTraffic,
-            UpdateStages.WithNetworkAccess,
-            UpdateStages.WithUpgrade,
-            UpdateStages.WithBlobAccess,
-            UpdateStages.WithAllowCrossTenantReplication,
-            UpdateStages.WithDefaultToOAuthAuthentication,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<StorageAccount>, UpdateStages.WithSku, UpdateStages.WithCustomDomain,
+        UpdateStages.WithEncryption, UpdateStages.WithAccessTier, UpdateStages.WithManagedServiceIdentity,
+        UpdateStages.WithUserAssignedManagedServiceIdentity, UpdateStages.WithAccessTraffic,
+        UpdateStages.WithNetworkAccess, UpdateStages.WithUpgrade, UpdateStages.WithBlobAccess,
+        UpdateStages.WithAllowCrossTenantReplication, UpdateStages.WithDefaultToOAuthAuthentication,
+        Resource.UpdateWithTags<Update> {
     }
 }

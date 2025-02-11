@@ -90,8 +90,8 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
      * @param creatableIdentity yet-to-be-created identity to be associated with the virtual machine
      * @return WebAppMsiHandler
      */
-    WebAppMsiHandler<FluentT, FluentImplT> withNewExternalManagedServiceIdentity(
-        Creatable<Identity> creatableIdentity) {
+    WebAppMsiHandler<FluentT, FluentImplT>
+        withNewExternalManagedServiceIdentity(Creatable<Identity> creatableIdentity) {
         this.initSiteIdentity(ManagedServiceIdentityType.USER_ASSIGNED);
 
         TaskGroup.HasTaskGroup dependency = (TaskGroup.HasTaskGroup) creatableIdentity;
@@ -211,22 +211,20 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
                     }
                 }
                 Set<String> removeIds = new HashSet<>();
-                for (Map.Entry<String, UserAssignedIdentity> entrySet
-                    : this.userAssignedIdentities.entrySet()) {
+                for (Map.Entry<String, UserAssignedIdentity> entrySet : this.userAssignedIdentities.entrySet()) {
                     if (entrySet.getValue() == null) {
                         removeIds.add(entrySet.getKey().toLowerCase(Locale.ROOT));
                     }
                 }
                 // If so check user want to remove all the identities
-                boolean removeAllCurrentIds =
-                    currentIds.size() == removeIds.size() && currentIds.containsAll(removeIds);
+                boolean removeAllCurrentIds
+                    = currentIds.size() == removeIds.size() && currentIds.containsAll(removeIds);
                 if (removeAllCurrentIds) {
                     // If so adjust  the identity type [Setting type to SYSTEM_ASSIGNED orNONE will remove all the
                     // identities]
                     if (currentIdentity == null || currentIdentity.type() == null) {
                         siteUpdate.withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE));
-                    } else if (currentIdentity
-                        .type()
+                    } else if (currentIdentity.type()
                         .equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
                         siteUpdate.withIdentity(currentIdentity);
                         siteUpdate.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED);

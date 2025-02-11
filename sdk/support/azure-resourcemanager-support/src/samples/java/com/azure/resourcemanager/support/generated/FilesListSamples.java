@@ -9,7 +9,8 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class FilesListSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListFilesForSubscriptionUnderFileWorkspace.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * ListFilesForSubscriptionUnderFileWorkspace.json
      */
     /**
      * Sample code: List files under a workspace for a subscription.

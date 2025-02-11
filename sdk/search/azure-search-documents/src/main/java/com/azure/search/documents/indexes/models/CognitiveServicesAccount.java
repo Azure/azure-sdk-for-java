@@ -103,6 +103,10 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
                     return DefaultCognitiveServicesAccount.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Azure.Search.CognitiveServicesByKey".equals(discriminatorValue)) {
                     return CognitiveServicesAccountKey.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Azure.Search.AIServicesByKey".equals(discriminatorValue)) {
+                    return AIServicesAccountKey.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Azure.Search.AIServicesByIdentity".equals(discriminatorValue)) {
+                    return AIServicesAccountIdentity.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

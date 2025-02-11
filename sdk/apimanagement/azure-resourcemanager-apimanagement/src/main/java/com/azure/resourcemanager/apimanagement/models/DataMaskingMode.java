@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Data masking mode. */
+/**
+ * Data masking mode.
+ */
 public final class DataMaskingMode extends ExpandableStringEnum<DataMaskingMode> {
-    /** Static value Mask for DataMaskingMode. */
+    /**
+     * Static value Mask for DataMaskingMode.
+     */
     public static final DataMaskingMode MASK = fromString("Mask");
 
-    /** Static value Hide for DataMaskingMode. */
+    /**
+     * Static value Hide for DataMaskingMode.
+     */
     public static final DataMaskingMode HIDE = fromString("Hide");
 
     /**
      * Creates a new instance of DataMaskingMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class DataMaskingMode extends ExpandableStringEnum<DataMaskingMode>
 
     /**
      * Creates or finds a DataMaskingMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataMaskingMode.
      */
-    @JsonCreator
     public static DataMaskingMode fromString(String name) {
         return fromString(name, DataMaskingMode.class);
     }
 
     /**
      * Gets known DataMaskingMode values.
-     *
+     * 
      * @return known DataMaskingMode values.
      */
     public static Collection<DataMaskingMode> values() {

@@ -5,24 +5,37 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** The DefaultRolloutSpecificationHighTraffic model. */
+/**
+ * The DefaultRolloutSpecificationHighTraffic model.
+ */
 @Fluent
 public final class DefaultRolloutSpecificationHighTraffic extends TrafficRegionRolloutConfiguration {
-    /** Creates an instance of DefaultRolloutSpecificationHighTraffic class. */
+    /**
+     * Creates an instance of DefaultRolloutSpecificationHighTraffic class.
+     */
     public DefaultRolloutSpecificationHighTraffic() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultRolloutSpecificationHighTraffic withWaitDuration(Duration waitDuration) {
         super.withWaitDuration(waitDuration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultRolloutSpecificationHighTraffic withRegions(List<String> regions) {
         super.withRegions(regions);
@@ -31,11 +44,52 @@ public final class DefaultRolloutSpecificationHighTraffic extends TrafficRegionR
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("regions", regions(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("waitDuration", CoreUtils.durationToStringWithDays(waitDuration()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefaultRolloutSpecificationHighTraffic from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultRolloutSpecificationHighTraffic if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefaultRolloutSpecificationHighTraffic.
+     */
+    public static DefaultRolloutSpecificationHighTraffic fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefaultRolloutSpecificationHighTraffic deserializedDefaultRolloutSpecificationHighTraffic
+                = new DefaultRolloutSpecificationHighTraffic();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("regions".equals(fieldName)) {
+                    List<String> regions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDefaultRolloutSpecificationHighTraffic.withRegions(regions);
+                } else if ("waitDuration".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecificationHighTraffic.withWaitDuration(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefaultRolloutSpecificationHighTraffic;
+        });
     }
 }

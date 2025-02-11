@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -207,6 +208,9 @@ public final class PolicyInsightsPolicyStateDeletedEventData
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -238,8 +242,8 @@ public final class PolicyInsightsPolicyStateDeletedEventData
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedPolicyInsightsPolicyStateDeletedEventData.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPolicyInsightsPolicyStateDeletedEventData.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("policyAssignmentId".equals(fieldName)) {
                     deserializedPolicyInsightsPolicyStateDeletedEventData.policyAssignmentId = reader.getString();
                 } else if ("policyDefinitionId".equals(fieldName)) {

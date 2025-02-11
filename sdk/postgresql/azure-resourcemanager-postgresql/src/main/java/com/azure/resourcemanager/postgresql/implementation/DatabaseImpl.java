@@ -33,6 +33,10 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this.innerModel().collation();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DatabaseInner innerModel() {
         return this.innerObject;
     }
@@ -54,20 +58,16 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public Database create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Database create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), context);
         return this;
     }
 
@@ -82,48 +82,40 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public Database apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Database apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .createOrUpdate(resourceGroupName, serverName, databaseName, this.innerModel(), context);
         return this;
     }
 
     DatabaseImpl(DatabaseInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
-        this.databaseName = Utils.getValueFromIdByName(innerObject.id(), "databases");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servers");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databases");
     }
 
     public Database refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Database refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .getWithResponse(resourceGroupName, serverName, databaseName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .getWithResponse(resourceGroupName, serverName, databaseName, context)
+            .getValue();
         return this;
     }
 

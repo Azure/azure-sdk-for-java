@@ -69,20 +69,16 @@ public final class CustomDomainImpl implements CustomDomain, CustomDomain.Defini
     }
 
     public CustomDomain create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRCustomDomains()
-                .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRCustomDomains()
+            .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CustomDomain create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRCustomDomains()
-                .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRCustomDomains()
+            .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), context);
         return this;
     }
 
@@ -97,48 +93,40 @@ public final class CustomDomainImpl implements CustomDomain, CustomDomain.Defini
     }
 
     public CustomDomain apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRCustomDomains()
-                .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRCustomDomains()
+            .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CustomDomain apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRCustomDomains()
-                .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRCustomDomains()
+            .createOrUpdate(resourceGroupName, resourceName, name, this.innerModel(), context);
         return this;
     }
 
     CustomDomainImpl(CustomDomainInner innerObject, com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "signalR");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "customDomains");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "signalR");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "customDomains");
     }
 
     public CustomDomain refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRCustomDomains()
-                .getWithResponse(resourceGroupName, resourceName, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRCustomDomains()
+            .getWithResponse(resourceGroupName, resourceName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomDomain refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRCustomDomains()
-                .getWithResponse(resourceGroupName, resourceName, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRCustomDomains()
+            .getWithResponse(resourceGroupName, resourceName, name, context)
+            .getValue();
         return this;
     }
 

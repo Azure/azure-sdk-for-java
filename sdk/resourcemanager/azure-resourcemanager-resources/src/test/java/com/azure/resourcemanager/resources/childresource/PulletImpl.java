@@ -7,8 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl, Object>
-        implements Pullet {
+class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl, Object> implements Pullet {
     Integer age;
     private FailFlag failFlag = FailFlag.None;
 
@@ -42,9 +41,7 @@ class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl, 
         }
 
         Pullet self = this;
-        return Mono
-                .just(self)
-                .subscribeOn(Schedulers.boundedElastic());
+        return Mono.just(self).subscribeOn(Schedulers.boundedElastic());
     }
 
     @Override
@@ -59,9 +56,7 @@ class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl, 
         }
 
         Pullet self = this;
-        return Mono
-                .just(self)
-                .subscribeOn(Schedulers.boundedElastic());
+        return Mono.just(self).subscribeOn(Schedulers.boundedElastic());
     }
 
     @Override
@@ -89,9 +84,6 @@ class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl, 
     }
 
     enum FailFlag {
-        None,
-        OnCreate,
-        OnUpdate,
-        OnDelete
+        None, OnCreate, OnUpdate, OnDelete
     }
 }

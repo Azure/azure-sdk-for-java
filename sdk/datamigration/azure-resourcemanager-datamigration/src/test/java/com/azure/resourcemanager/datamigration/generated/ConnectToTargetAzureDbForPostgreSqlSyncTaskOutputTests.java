@@ -10,17 +10,15 @@ import com.azure.resourcemanager.datamigration.models.ConnectToTargetAzureDbForP
 public final class ConnectToTargetAzureDbForPostgreSqlSyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"pp\",\"targetServerVersion\":\"lcxog\",\"databases\":[\"onz\",\"nsikvmkqzeqqkdl\",\"fzxmhhvhgureodkw\"],\"targetServerBrandVersion\":\"dagxtibqd\",\"validationErrors\":[{\"message\":\"akbogqxndlkzgxh\",\"actionableMessage\":\"iplbpodxunkbebxm\",\"filePath\":\"yyntwl\",\"lineNumber\":\"qtkoievs\",\"hResult\":921402224,\"stackTrace\":\"q\"}]}")
-                .toObject(ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput.class);
+        ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput model = BinaryData.fromString(
+            "{\"id\":\"hkfpbs\",\"targetServerVersion\":\"ofd\",\"databases\":[\"us\",\"ttouwaboekqvkel\",\"smv\"],\"targetServerBrandVersion\":\"wyjsflhhcaalnjix\",\"validationErrors\":[{\"message\":\"awjoyaqcslyjp\",\"actionableMessage\":\"idzyexznelixhnr\",\"filePath\":\"folhbnxknal\",\"lineNumber\":\"lp\",\"hResult\":809589965,\"stackTrace\":\"tpnapnyiropuhpig\"},{\"message\":\"gylgqgitxmedjvcs\",\"actionableMessage\":\"n\",\"filePath\":\"wncwzzhxgktrmg\",\"lineNumber\":\"napkteoellw\",\"hResult\":1750481006,\"stackTrace\":\"ygpfqb\"}]}")
+            .toObject(ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput model =
-            new ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput();
+        ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput model
+            = new ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput();
         model = BinaryData.fromObject(model).toObject(ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput.class);
     }
 }

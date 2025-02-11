@@ -11,33 +11,73 @@ import java.util.Map;
 /** An immutable client-side representation of an Azure virtual machine image. */
 @Fluent
 public interface VirtualMachineImage extends HasInnerModel<VirtualMachineImageInner> {
-    /** @return the resource ID of this image */
+    /**
+     * Gets the resource ID of this image.
+     *
+     * @return the resource ID of this image
+     */
     String id();
 
-    /** @return the region in which virtual machine image is available */
+    /**
+     * Gets the region in which virtual machine image is available.
+     *
+     * @return the region in which virtual machine image is available
+     */
     Region location();
 
-    /** @return the publisher name of the virtual machine image */
+    /**
+     * Gets the publisher name of the virtual machine image.
+     *
+     * @return the publisher name of the virtual machine image
+     */
     String publisherName();
 
-    /** @return the name of the virtual machine image offer this image is part of */
+    /**
+     * Gets the name of the virtual machine image offer this image is part of.
+     *
+     * @return the name of the virtual machine image offer this image is part of
+     */
     String offer();
 
-    /** @return the commercial name of the virtual machine image (SKU) */
+    /**
+     * Gets the commercial name of the virtual machine image (SKU).
+     *
+     * @return the commercial name of the virtual machine image (SKU)
+     */
     String sku();
 
-    /** @return the version of the virtual machine image */
+    /**
+     * Gets the version of the virtual machine image.
+     *
+     * @return the version of the virtual machine image
+     */
     String version();
 
-    /** @return the image reference representing the publisher, offer, SKU and version of the virtual machine image */
+    /**
+     * Gets the image reference representing the publisher, offer, SKU and version of the virtual machine image.
+     *
+     * @return the image reference representing the publisher, offer, SKU and version of the virtual machine image
+     */
     ImageReference imageReference();
 
-    /** @return the purchase plan for the virtual machine image */
+    /**
+     * Gets the purchase plan for the virtual machine image.
+     *
+     * @return the purchase plan for the virtual machine image
+     */
     PurchasePlan plan();
 
-    /** @return OS disk image in the virtual machine image */
+    /**
+     * Gets OS disk image in the virtual machine image.
+     *
+     * @return OS disk image in the virtual machine image
+     */
     OSDiskImage osDiskImage();
 
-    /** @return data disk images in the virtual machine image, indexed by the disk LUN */
+    /**
+     * Gets data disk images in the virtual machine image.
+     *
+     * @return data disk images in the virtual machine image, indexed by the disk LUN
+     */
     Map<Integer, DataDiskImage> dataDiskImages();
 }

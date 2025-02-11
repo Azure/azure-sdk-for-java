@@ -18,15 +18,13 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
         final String testId = registries.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String newName = "acr" + testId;
         final String rgName = "rgacr" + testId;
-        Registry registry =
-            registries
-                .define(newName + "1")
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withStandardSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registries.define(newName + "1")
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withStandardSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
         Assertions.assertTrue(registry.adminUserEnabled());
 
@@ -38,30 +36,28 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
         Assertions.assertEquals(2, registryCredentials.accessKeys().size());
         Assertions.assertEquals(0, registry.webhooks().list().stream().count());
 
-        Registry registry2 =
-            registries
-                .define(newName + "2")
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withBasicSku()
-                .withRegistryNameAsAdminUser()
-                .defineWebhook("webhookbing1")
-                .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
-                .withServiceUri("https://www.bing.com")
-                .withRepositoriesScope("")
-                .withTag("tag", "value")
-                .withCustomHeader("name", "value")
-                .attach()
-                .defineWebhook("webhookbing2")
-                .withTriggerWhen(WebhookAction.PUSH)
-                .withServiceUri("https://www.bing.com")
-                .enabled(false)
-                .withRepositoriesScope("")
-                .withTag("tag", "value")
-                .withCustomHeader("name", "value")
-                .attach()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry2 = registries.define(newName + "2")
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withBasicSku()
+            .withRegistryNameAsAdminUser()
+            .defineWebhook("webhookbing1")
+            .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
+            .withServiceUri("https://www.bing.com")
+            .withRepositoriesScope("")
+            .withTag("tag", "value")
+            .withCustomHeader("name", "value")
+            .attach()
+            .defineWebhook("webhookbing2")
+            .withTriggerWhen(WebhookAction.PUSH)
+            .withServiceUri("https://www.bing.com")
+            .enabled(false)
+            .withRepositoriesScope("")
+            .withTag("tag", "value")
+            .withCustomHeader("name", "value")
+            .attach()
+            .withTag("tag1", "value1")
+            .create();
 
         Assertions.assertTrue(registry2.adminUserEnabled());
 
@@ -97,8 +93,7 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
     @Override
     public Registry updateResource(Registry resource) throws Exception {
-        resource
-            .update()
+        resource.update()
             .withoutWebhook("webhookbing1")
             .defineWebhook("webhookms")
             .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
@@ -133,8 +128,7 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
         webhook.enable();
         Assertions.assertTrue(webhook.isEnabled());
 
-        webhook
-            .update()
+        webhook.update()
             .withCustomHeader("header1", "value1")
             .enabled(false)
             .withServiceUri("https://www.msn.com")
@@ -161,20 +155,16 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
     @Override
     public void print(Registry resource) {
-        System
-            .out
-            .println(
-                new StringBuilder()
-                    .append("Regsitry: ")
-                    .append(resource.id())
-                    .append("Name: ")
-                    .append(resource.name())
-                    .append("\n\tResource group: ")
-                    .append(resource.resourceGroupName())
-                    .append("\n\tRegion: ")
-                    .append(resource.region())
-                    .append("\n\tTags: ")
-                    .append(resource.tags())
-                    .toString());
+        System.out.println(new StringBuilder().append("Regsitry: ")
+            .append(resource.id())
+            .append("Name: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .toString());
     }
 }

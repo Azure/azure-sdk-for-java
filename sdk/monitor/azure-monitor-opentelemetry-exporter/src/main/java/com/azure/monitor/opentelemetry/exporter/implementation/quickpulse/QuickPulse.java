@@ -26,7 +26,7 @@ public class QuickPulse {
 
     public static QuickPulse create(HttpPipeline httpPipeline, Supplier<URL> endpointUrl,
         Supplier<String> instrumentationKey, @Nullable String roleName, @Nullable String roleInstance,
-        boolean useNormalizedValueForNonNormalizedCpuPercentage, String sdkVersion) {
+        String sdkVersion) {
 
         QuickPulse quickPulse = new QuickPulse();
 
@@ -40,8 +40,7 @@ public class QuickPulse {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            quickPulse.initialize(httpPipeline, endpointUrl, instrumentationKey, roleName, roleInstance,
-                useNormalizedValueForNonNormalizedCpuPercentage, sdkVersion);
+            quickPulse.initialize(httpPipeline, endpointUrl, instrumentationKey, roleName, roleInstance, sdkVersion);
         });
         // the condition below will always be false, but by referencing the executor it ensures the
         // executor can't become unreachable in the middle of the execute() method execution above
@@ -65,8 +64,7 @@ public class QuickPulse {
     }
 
     private void initialize(HttpPipeline httpPipeline, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey,
-        @Nullable String roleName, @Nullable String roleInstance,
-        boolean useNormalizedValueForNonNormalizedCpuPercentage, String sdkVersion) {
+        @Nullable String roleName, @Nullable String roleInstance, String sdkVersion) {
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
         ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
@@ -83,8 +81,7 @@ public class QuickPulse {
             instanceName = "Unknown host";
         }
 
-        QuickPulseDataCollector collector
-            = new QuickPulseDataCollector(useNormalizedValueForNonNormalizedCpuPercentage);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector();
 
         QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(httpPipeline, endpointUrl,
             instrumentationKey, roleName, instanceName, machineName, quickPulseId, sdkVersion);

@@ -14,11 +14,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletin
 
 /** Entry point for managed HSM management API. */
 @Fluent
-public interface ManagedHsms
-    extends SupportsListingByResourceGroup<ManagedHsm>,
-    SupportsGettingByResourceGroup<ManagedHsm>,
-    SupportsGettingById<ManagedHsm>,
-    SupportsDeletingByResourceGroup,
-    SupportsDeletingById,
-    HasManager<KeyVaultManager> {
+public interface ManagedHsms extends SupportsListingByResourceGroup<ManagedHsm>,
+    SupportsGettingByResourceGroup<ManagedHsm>, SupportsGettingById<ManagedHsm>, SupportsDeletingByResourceGroup,
+    SupportsDeletingById, HasManager<KeyVaultManager> {
 }

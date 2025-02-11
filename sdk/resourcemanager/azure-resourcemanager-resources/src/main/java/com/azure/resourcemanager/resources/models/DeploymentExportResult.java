@@ -11,15 +11,17 @@ import com.azure.resourcemanager.resources.fluent.models.DeploymentExportResultI
  * An immutable client-side representation of an Azure deployment template export result.
  */
 @Fluent
-public interface DeploymentExportResult extends
-        HasInnerModel<DeploymentExportResultInner> {
+public interface DeploymentExportResult extends HasInnerModel<DeploymentExportResultInner> {
 
     /**
+     * Gets the template content.
+     *
      * @return the template content
      */
     Object template();
 
     /**
+     * Gets the template content as a JSON string.
      * @return the template content as a JSON string
      */
     String templateAsJson();

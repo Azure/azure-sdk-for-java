@@ -5,66 +5,69 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The properties of the schedule. */
+/**
+ * The properties of the schedule.
+ */
 @Fluent
-public final class ScheduleProperties {
+public final class ScheduleProperties implements JsonSerializable<ScheduleProperties> {
     /*
      * Frequency of the schedule.
      */
-    @JsonProperty(value = "frequency", required = true)
     private ScheduleFrequency frequency;
 
     /*
      * UTC time at which cost analysis data will be emailed.
      */
-    @JsonProperty(value = "hourOfDay")
     private Integer hourOfDay;
 
     /*
      * Day names in english on which cost analysis data will be emailed. This property is applicable when frequency is
      * Weekly or Monthly.
      */
-    @JsonProperty(value = "daysOfWeek")
     private List<DaysOfWeek> daysOfWeek;
 
     /*
-     * Weeks in which cost analysis data will be emailed. This property is applicable when frequency is Monthly and
-     * used in combination with daysOfWeek.
+     * Weeks in which cost analysis data will be emailed. This property is applicable when frequency is Monthly and used
+     * in combination with daysOfWeek.
      */
-    @JsonProperty(value = "weeksOfMonth")
     private List<WeeksOfMonth> weeksOfMonth;
 
     /*
      * UTC day on which cost analysis data will be emailed. Must be between 1 and 31. This property is applicable when
      * frequency is Monthly and overrides weeksOfMonth or daysOfWeek.
      */
-    @JsonProperty(value = "dayOfMonth")
     private Integer dayOfMonth;
 
     /*
      * The start date and time of the scheduled action (UTC).
      */
-    @JsonProperty(value = "startDate", required = true)
     private OffsetDateTime startDate;
 
     /*
      * The end date and time of the scheduled action (UTC).
      */
-    @JsonProperty(value = "endDate", required = true)
     private OffsetDateTime endDate;
 
-    /** Creates an instance of ScheduleProperties class. */
+    /**
+     * Creates an instance of ScheduleProperties class.
+     */
     public ScheduleProperties() {
     }
 
     /**
      * Get the frequency property: Frequency of the schedule.
-     *
+     * 
      * @return the frequency value.
      */
     public ScheduleFrequency frequency() {
@@ -73,7 +76,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the frequency property: Frequency of the schedule.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -84,7 +87,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the hourOfDay property: UTC time at which cost analysis data will be emailed.
-     *
+     * 
      * @return the hourOfDay value.
      */
     public Integer hourOfDay() {
@@ -93,7 +96,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the hourOfDay property: UTC time at which cost analysis data will be emailed.
-     *
+     * 
      * @param hourOfDay the hourOfDay value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -105,7 +108,7 @@ public final class ScheduleProperties {
     /**
      * Get the daysOfWeek property: Day names in english on which cost analysis data will be emailed. This property is
      * applicable when frequency is Weekly or Monthly.
-     *
+     * 
      * @return the daysOfWeek value.
      */
     public List<DaysOfWeek> daysOfWeek() {
@@ -115,7 +118,7 @@ public final class ScheduleProperties {
     /**
      * Set the daysOfWeek property: Day names in english on which cost analysis data will be emailed. This property is
      * applicable when frequency is Weekly or Monthly.
-     *
+     * 
      * @param daysOfWeek the daysOfWeek value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -127,7 +130,7 @@ public final class ScheduleProperties {
     /**
      * Get the weeksOfMonth property: Weeks in which cost analysis data will be emailed. This property is applicable
      * when frequency is Monthly and used in combination with daysOfWeek.
-     *
+     * 
      * @return the weeksOfMonth value.
      */
     public List<WeeksOfMonth> weeksOfMonth() {
@@ -137,7 +140,7 @@ public final class ScheduleProperties {
     /**
      * Set the weeksOfMonth property: Weeks in which cost analysis data will be emailed. This property is applicable
      * when frequency is Monthly and used in combination with daysOfWeek.
-     *
+     * 
      * @param weeksOfMonth the weeksOfMonth value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -149,7 +152,7 @@ public final class ScheduleProperties {
     /**
      * Get the dayOfMonth property: UTC day on which cost analysis data will be emailed. Must be between 1 and 31. This
      * property is applicable when frequency is Monthly and overrides weeksOfMonth or daysOfWeek.
-     *
+     * 
      * @return the dayOfMonth value.
      */
     public Integer dayOfMonth() {
@@ -159,7 +162,7 @@ public final class ScheduleProperties {
     /**
      * Set the dayOfMonth property: UTC day on which cost analysis data will be emailed. Must be between 1 and 31. This
      * property is applicable when frequency is Monthly and overrides weeksOfMonth or daysOfWeek.
-     *
+     * 
      * @param dayOfMonth the dayOfMonth value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -170,7 +173,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the startDate property: The start date and time of the scheduled action (UTC).
-     *
+     * 
      * @return the startDate value.
      */
     public OffsetDateTime startDate() {
@@ -179,7 +182,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the startDate property: The start date and time of the scheduled action (UTC).
-     *
+     * 
      * @param startDate the startDate value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -190,7 +193,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the endDate property: The end date and time of the scheduled action (UTC).
-     *
+     * 
      * @return the endDate value.
      */
     public OffsetDateTime endDate() {
@@ -199,7 +202,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the endDate property: The end date and time of the scheduled action (UTC).
-     *
+     * 
      * @param endDate the endDate value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -210,26 +213,88 @@ public final class ScheduleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (frequency() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property frequency in model ScheduleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property frequency in model ScheduleProperties"));
         }
         if (startDate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startDate in model ScheduleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property startDate in model ScheduleProperties"));
         }
         if (endDate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endDate in model ScheduleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property endDate in model ScheduleProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeStringField("startDate",
+            this.startDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDate));
+        jsonWriter.writeStringField("endDate",
+            this.endDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDate));
+        jsonWriter.writeNumberField("hourOfDay", this.hourOfDay);
+        jsonWriter.writeArrayField("daysOfWeek", this.daysOfWeek,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("weeksOfMonth", this.weeksOfMonth,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeNumberField("dayOfMonth", this.dayOfMonth);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduleProperties.
+     */
+    public static ScheduleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleProperties deserializedScheduleProperties = new ScheduleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frequency".equals(fieldName)) {
+                    deserializedScheduleProperties.frequency = ScheduleFrequency.fromString(reader.getString());
+                } else if ("startDate".equals(fieldName)) {
+                    deserializedScheduleProperties.startDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endDate".equals(fieldName)) {
+                    deserializedScheduleProperties.endDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("hourOfDay".equals(fieldName)) {
+                    deserializedScheduleProperties.hourOfDay = reader.getNullable(JsonReader::getInt);
+                } else if ("daysOfWeek".equals(fieldName)) {
+                    List<DaysOfWeek> daysOfWeek
+                        = reader.readArray(reader1 -> DaysOfWeek.fromString(reader1.getString()));
+                    deserializedScheduleProperties.daysOfWeek = daysOfWeek;
+                } else if ("weeksOfMonth".equals(fieldName)) {
+                    List<WeeksOfMonth> weeksOfMonth
+                        = reader.readArray(reader1 -> WeeksOfMonth.fromString(reader1.getString()));
+                    deserializedScheduleProperties.weeksOfMonth = weeksOfMonth;
+                } else if ("dayOfMonth".equals(fieldName)) {
+                    deserializedScheduleProperties.dayOfMonth = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleProperties;
+        });
+    }
 }

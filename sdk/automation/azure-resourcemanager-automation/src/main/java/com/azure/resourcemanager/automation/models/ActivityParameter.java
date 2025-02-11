@@ -5,41 +5,42 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Definition of the activity parameter. */
+/**
+ * Definition of the activity parameter.
+ */
 @Fluent
-public final class ActivityParameter {
+public final class ActivityParameter implements JsonSerializable<ActivityParameter> {
     /*
      * Gets or sets the name of the activity parameter.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the type of the activity parameter.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Gets or sets a Boolean value that indicates true if the parameter is required. If the value is false, the
      * parameter is optional.
      */
-    @JsonProperty(value = "isMandatory")
     private Boolean isMandatory;
 
     /*
      * Gets or sets a Boolean value that indicates true if the parameter is dynamic.
      */
-    @JsonProperty(value = "isDynamic")
     private Boolean isDynamic;
 
     /*
      * Gets or sets the position of the activity parameter.
      */
-    @JsonProperty(value = "position")
     private Long position;
 
     /*
@@ -47,7 +48,6 @@ public final class ActivityParameter {
      * objects. This setting is used if the cmdlet must access the complete input object. false indicates that the
      * parameter cannot take values from the complete input object.
      */
-    @JsonProperty(value = "valueFromPipeline")
     private Boolean valueFromPipeline;
 
     /*
@@ -55,32 +55,34 @@ public final class ActivityParameter {
      * pipeline object that has the same name as this parameter. false indicates that the parameter cannot be filled
      * from the incoming pipeline object property with the same name.
      */
-    @JsonProperty(value = "valueFromPipelineByPropertyName")
     private Boolean valueFromPipelineByPropertyName;
 
     /*
      * Gets or sets a Boolean value that indicates true if the cmdlet parameter accepts all the remaining command-line
-     * arguments that are associated with this parameter in the form of an array. false if the cmdlet parameter does
-     * not accept all the remaining argument values.
+     * arguments that are associated with this parameter in the form of an array. false if the cmdlet parameter does not
+     * accept all the remaining argument values.
      */
-    @JsonProperty(value = "valueFromRemainingArguments")
     private Boolean valueFromRemainingArguments;
 
     /*
      * Gets or sets the description of the activity parameter.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Gets or sets the validation set of activity parameter.
      */
-    @JsonProperty(value = "validationSet")
     private List<ActivityParameterValidationSet> validationSet;
 
     /**
+     * Creates an instance of ActivityParameter class.
+     */
+    public ActivityParameter() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the activity parameter.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +91,7 @@ public final class ActivityParameter {
 
     /**
      * Set the name property: Gets or sets the name of the activity parameter.
-     *
+     * 
      * @param name the name value to set.
      * @return the ActivityParameter object itself.
      */
@@ -100,7 +102,7 @@ public final class ActivityParameter {
 
     /**
      * Get the type property: Gets or sets the type of the activity parameter.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -109,7 +111,7 @@ public final class ActivityParameter {
 
     /**
      * Set the type property: Gets or sets the type of the activity parameter.
-     *
+     * 
      * @param type the type value to set.
      * @return the ActivityParameter object itself.
      */
@@ -121,7 +123,7 @@ public final class ActivityParameter {
     /**
      * Get the isMandatory property: Gets or sets a Boolean value that indicates true if the parameter is required. If
      * the value is false, the parameter is optional.
-     *
+     * 
      * @return the isMandatory value.
      */
     public Boolean isMandatory() {
@@ -131,7 +133,7 @@ public final class ActivityParameter {
     /**
      * Set the isMandatory property: Gets or sets a Boolean value that indicates true if the parameter is required. If
      * the value is false, the parameter is optional.
-     *
+     * 
      * @param isMandatory the isMandatory value to set.
      * @return the ActivityParameter object itself.
      */
@@ -142,7 +144,7 @@ public final class ActivityParameter {
 
     /**
      * Get the isDynamic property: Gets or sets a Boolean value that indicates true if the parameter is dynamic.
-     *
+     * 
      * @return the isDynamic value.
      */
     public Boolean isDynamic() {
@@ -151,7 +153,7 @@ public final class ActivityParameter {
 
     /**
      * Set the isDynamic property: Gets or sets a Boolean value that indicates true if the parameter is dynamic.
-     *
+     * 
      * @param isDynamic the isDynamic value to set.
      * @return the ActivityParameter object itself.
      */
@@ -162,7 +164,7 @@ public final class ActivityParameter {
 
     /**
      * Get the position property: Gets or sets the position of the activity parameter.
-     *
+     * 
      * @return the position value.
      */
     public Long position() {
@@ -171,7 +173,7 @@ public final class ActivityParameter {
 
     /**
      * Set the position property: Gets or sets the position of the activity parameter.
-     *
+     * 
      * @param position the position value to set.
      * @return the ActivityParameter object itself.
      */
@@ -184,7 +186,7 @@ public final class ActivityParameter {
      * Get the valueFromPipeline property: Gets or sets a Boolean value that indicates true if the parameter can take
      * values from the incoming pipeline objects. This setting is used if the cmdlet must access the complete input
      * object. false indicates that the parameter cannot take values from the complete input object.
-     *
+     * 
      * @return the valueFromPipeline value.
      */
     public Boolean valueFromPipeline() {
@@ -195,7 +197,7 @@ public final class ActivityParameter {
      * Set the valueFromPipeline property: Gets or sets a Boolean value that indicates true if the parameter can take
      * values from the incoming pipeline objects. This setting is used if the cmdlet must access the complete input
      * object. false indicates that the parameter cannot take values from the complete input object.
-     *
+     * 
      * @param valueFromPipeline the valueFromPipeline value to set.
      * @return the ActivityParameter object itself.
      */
@@ -209,7 +211,7 @@ public final class ActivityParameter {
      * parameter can be filled from a property of the incoming pipeline object that has the same name as this parameter.
      * false indicates that the parameter cannot be filled from the incoming pipeline object property with the same
      * name.
-     *
+     * 
      * @return the valueFromPipelineByPropertyName value.
      */
     public Boolean valueFromPipelineByPropertyName() {
@@ -221,7 +223,7 @@ public final class ActivityParameter {
      * parameter can be filled from a property of the incoming pipeline object that has the same name as this parameter.
      * false indicates that the parameter cannot be filled from the incoming pipeline object property with the same
      * name.
-     *
+     * 
      * @param valueFromPipelineByPropertyName the valueFromPipelineByPropertyName value to set.
      * @return the ActivityParameter object itself.
      */
@@ -234,7 +236,7 @@ public final class ActivityParameter {
      * Get the valueFromRemainingArguments property: Gets or sets a Boolean value that indicates true if the cmdlet
      * parameter accepts all the remaining command-line arguments that are associated with this parameter in the form of
      * an array. false if the cmdlet parameter does not accept all the remaining argument values.
-     *
+     * 
      * @return the valueFromRemainingArguments value.
      */
     public Boolean valueFromRemainingArguments() {
@@ -245,7 +247,7 @@ public final class ActivityParameter {
      * Set the valueFromRemainingArguments property: Gets or sets a Boolean value that indicates true if the cmdlet
      * parameter accepts all the remaining command-line arguments that are associated with this parameter in the form of
      * an array. false if the cmdlet parameter does not accept all the remaining argument values.
-     *
+     * 
      * @param valueFromRemainingArguments the valueFromRemainingArguments value to set.
      * @return the ActivityParameter object itself.
      */
@@ -256,7 +258,7 @@ public final class ActivityParameter {
 
     /**
      * Get the description property: Gets or sets the description of the activity parameter.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -265,7 +267,7 @@ public final class ActivityParameter {
 
     /**
      * Set the description property: Gets or sets the description of the activity parameter.
-     *
+     * 
      * @param description the description value to set.
      * @return the ActivityParameter object itself.
      */
@@ -276,7 +278,7 @@ public final class ActivityParameter {
 
     /**
      * Get the validationSet property: Gets or sets the validation set of activity parameter.
-     *
+     * 
      * @return the validationSet value.
      */
     public List<ActivityParameterValidationSet> validationSet() {
@@ -285,7 +287,7 @@ public final class ActivityParameter {
 
     /**
      * Set the validationSet property: Gets or sets the validation set of activity parameter.
-     *
+     * 
      * @param validationSet the validationSet value to set.
      * @return the ActivityParameter object itself.
      */
@@ -296,12 +298,79 @@ public final class ActivityParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (validationSet() != null) {
             validationSet().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeBooleanField("isMandatory", this.isMandatory);
+        jsonWriter.writeBooleanField("isDynamic", this.isDynamic);
+        jsonWriter.writeNumberField("position", this.position);
+        jsonWriter.writeBooleanField("valueFromPipeline", this.valueFromPipeline);
+        jsonWriter.writeBooleanField("valueFromPipelineByPropertyName", this.valueFromPipelineByPropertyName);
+        jsonWriter.writeBooleanField("valueFromRemainingArguments", this.valueFromRemainingArguments);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("validationSet", this.validationSet, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityParameter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActivityParameter.
+     */
+    public static ActivityParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityParameter deserializedActivityParameter = new ActivityParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedActivityParameter.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedActivityParameter.type = reader.getString();
+                } else if ("isMandatory".equals(fieldName)) {
+                    deserializedActivityParameter.isMandatory = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDynamic".equals(fieldName)) {
+                    deserializedActivityParameter.isDynamic = reader.getNullable(JsonReader::getBoolean);
+                } else if ("position".equals(fieldName)) {
+                    deserializedActivityParameter.position = reader.getNullable(JsonReader::getLong);
+                } else if ("valueFromPipeline".equals(fieldName)) {
+                    deserializedActivityParameter.valueFromPipeline = reader.getNullable(JsonReader::getBoolean);
+                } else if ("valueFromPipelineByPropertyName".equals(fieldName)) {
+                    deserializedActivityParameter.valueFromPipelineByPropertyName
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("valueFromRemainingArguments".equals(fieldName)) {
+                    deserializedActivityParameter.valueFromRemainingArguments
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("description".equals(fieldName)) {
+                    deserializedActivityParameter.description = reader.getString();
+                } else if ("validationSet".equals(fieldName)) {
+                    List<ActivityParameterValidationSet> validationSet
+                        = reader.readArray(reader1 -> ActivityParameterValidationSet.fromJson(reader1));
+                    deserializedActivityParameter.validationSet = validationSet;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActivityParameter;
+        });
     }
 }

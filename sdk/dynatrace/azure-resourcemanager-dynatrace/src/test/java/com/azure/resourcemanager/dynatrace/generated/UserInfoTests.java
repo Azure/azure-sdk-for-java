@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UserInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserInfo model =
-            BinaryData
-                .fromString(
-                    "{\"firstName\":\"rtfw\",\"lastName\":\"k\",\"emailAddress\":\"audccsnhs\",\"phoneNumber\":\"nyejhkryhtnap\",\"country\":\"wlokjyem\"}")
-                .toObject(UserInfo.class);
+        UserInfo model = BinaryData.fromString(
+            "{\"firstName\":\"rtfw\",\"lastName\":\"k\",\"emailAddress\":\"audccsnhs\",\"phoneNumber\":\"nyejhkryhtnap\",\"country\":\"wlokjyem\"}")
+            .toObject(UserInfo.class);
         Assertions.assertEquals("rtfw", model.firstName());
         Assertions.assertEquals("k", model.lastName());
         Assertions.assertEquals("audccsnhs", model.emailAddress());
@@ -25,13 +23,11 @@ public final class UserInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserInfo model =
-            new UserInfo()
-                .withFirstName("rtfw")
-                .withLastName("k")
-                .withEmailAddress("audccsnhs")
-                .withPhoneNumber("nyejhkryhtnap")
-                .withCountry("wlokjyem");
+        UserInfo model = new UserInfo().withFirstName("rtfw")
+            .withLastName("k")
+            .withEmailAddress("audccsnhs")
+            .withPhoneNumber("nyejhkryhtnap")
+            .withCountry("wlokjyem");
         model = BinaryData.fromObject(model).toObject(UserInfo.class);
         Assertions.assertEquals("rtfw", model.firstName());
         Assertions.assertEquals("k", model.lastName());

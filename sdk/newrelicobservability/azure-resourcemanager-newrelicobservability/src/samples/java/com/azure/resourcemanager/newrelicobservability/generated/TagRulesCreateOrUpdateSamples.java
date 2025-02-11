@@ -28,16 +28,19 @@ public final class TagRulesCreateOrUpdateSamples {
      */
     public static void tagRulesCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().define("bxcantgzggsepbhqmedjqyrqeezmfb")
+        manager.tagRules()
+            .define("bxcantgzggsepbhqmedjqyrqeezmfb")
             .withExistingMonitor("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron")
             .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
                 .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
                 .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
                 .withFilteringTags(Arrays.asList(new FilteringTag().withName("saokgpjvdlorciqbjmjxazpee")
-                    .withValue("sarxrqsxouhdjwsrqqicbeirdb").withAction(TagAction.INCLUDE))))
+                    .withValue("sarxrqsxouhdjwsrqqicbeirdb")
+                    .withAction(TagAction.INCLUDE))))
             .withMetricRules(new MetricRulesInner()
                 .withFilteringTags(Arrays.asList(new FilteringTag().withName("saokgpjvdlorciqbjmjxazpee")
-                    .withValue("sarxrqsxouhdjwsrqqicbeirdb").withAction(TagAction.INCLUDE)))
+                    .withValue("sarxrqsxouhdjwsrqqicbeirdb")
+                    .withAction(TagAction.INCLUDE)))
                 .withUserEmail("test@testing.com"))
             .create();
     }
@@ -53,7 +56,9 @@ public final class TagRulesCreateOrUpdateSamples {
      */
     public static void tagRulesCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().define("bxcantgzggsepbhqmedjqyrqeezmfb")
-            .withExistingMonitor("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron").create();
+        manager.tagRules()
+            .define("bxcantgzggsepbhqmedjqyrqeezmfb")
+            .withExistingMonitor("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron")
+            .create();
     }
 }

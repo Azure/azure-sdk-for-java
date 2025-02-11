@@ -19,23 +19,23 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PrivateLinkResource> automation(String resourceGroupName, String automationAccountName) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().automation(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().automation(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateLinkResource> automation(
-        String resourceGroupName, String automationAccountName, Context context) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().automation(resourceGroupName, automationAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+    public PagedIterable<PrivateLinkResource> automation(String resourceGroupName, String automationAccountName,
+        Context context) {
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().automation(resourceGroupName, automationAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     private PrivateLinkResourcesClient serviceClient() {

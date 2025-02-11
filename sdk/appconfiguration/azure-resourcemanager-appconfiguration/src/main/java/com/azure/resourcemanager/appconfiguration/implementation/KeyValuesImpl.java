@@ -20,22 +20,18 @@ public final class KeyValuesImpl implements KeyValues {
 
     private final com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager;
 
-    public KeyValuesImpl(
-        KeyValuesClient innerClient,
+    public KeyValuesImpl(KeyValuesClient innerClient,
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<KeyValue> getWithResponse(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
-        Response<KeyValueInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, configStoreName, keyValueName, context);
+    public Response<KeyValue> getWithResponse(String resourceGroupName, String configStoreName, String keyValueName,
+        Context context) {
+        Response<KeyValueInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, configStoreName, keyValueName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new KeyValueImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -60,113 +56,77 @@ public final class KeyValuesImpl implements KeyValues {
     }
 
     public KeyValue getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
+        String keyValueName = ResourceManagerUtils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
         }
         return this.getWithResponse(resourceGroupName, configStoreName, keyValueName, Context.NONE).getValue();
     }
 
     public Response<KeyValue> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
+        String keyValueName = ResourceManagerUtils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
         }
         return this.getWithResponse(resourceGroupName, configStoreName, keyValueName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
+        String keyValueName = ResourceManagerUtils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
         }
         this.delete(resourceGroupName, configStoreName, keyValueName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
+        String keyValueName = ResourceManagerUtils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
         }
         this.delete(resourceGroupName, configStoreName, keyValueName, context);
     }

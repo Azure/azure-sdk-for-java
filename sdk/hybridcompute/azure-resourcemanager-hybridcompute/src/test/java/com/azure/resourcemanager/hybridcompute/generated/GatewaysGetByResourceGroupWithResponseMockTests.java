@@ -22,7 +22,7 @@ public final class GatewaysGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"quflqbctq\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"jrwdkqz\",\"allowedFeatures\":[\"jleziunjx\",\"fza\",\"tkw\"]},\"location\":\"gyamlbnseqacjjv\",\"tags\":{\"ueio\":\"guooqjagmdit\",\"tdtpdelqacslmo\":\"kjbsah\",\"xofvcjk\":\"oebn\"},\"id\":\"dirazf\",\"name\":\"xejw\",\"type\":\"bmdujtmvcopexc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"gatewayId\":\"epmrut\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"aobn\",\"allowedFeatures\":[\"jdjltymkmvgui\",\"ywart\",\"pphkixkykxds\"]},\"location\":\"pemmucfxhik\",\"tags\":{\"s\":\"rmymyincqlhr\",\"iiiovgqcgxuugq\":\"sl\",\"e\":\"ctotiowlx\",\"wphqlkccuzgygqw\":\"dptjgwdtgukranb\"},\"id\":\"hoi\",\"name\":\"lwgniiprglvawu\",\"type\":\"z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class GatewaysGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Gateway response = manager.gateways()
-            .getByResourceGroupWithResponse("bnwgfmxj", "cgbjbgdlfgt", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("sxze", "paxwkufyk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gyamlbnseqacjjv", response.location());
-        Assertions.assertEquals("guooqjagmdit", response.tags().get("ueio"));
+        Assertions.assertEquals("pemmucfxhik", response.location());
+        Assertions.assertEquals("rmymyincqlhr", response.tags().get("s"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.gatewayType());
-        Assertions.assertEquals("jleziunjx", response.allowedFeatures().get(0));
+        Assertions.assertEquals("jdjltymkmvgui", response.allowedFeatures().get(0));
     }
 }

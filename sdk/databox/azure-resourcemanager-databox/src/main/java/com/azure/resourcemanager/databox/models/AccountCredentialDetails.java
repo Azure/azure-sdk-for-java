@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Credential details of the account. */
+/**
+ * Credential details of the account.
+ */
 @Immutable
-public final class AccountCredentialDetails {
+public final class AccountCredentialDetails implements JsonSerializable<AccountCredentialDetails> {
     /*
      * Name of the account.
      */
-    @JsonProperty(value = "accountName", access = JsonProperty.Access.WRITE_ONLY)
     private String accountName;
 
     /*
      * Type of the account.
      */
-    @JsonProperty(value = "dataAccountType", access = JsonProperty.Access.WRITE_ONLY)
     private DataAccountType dataAccountType;
 
     /*
      * Connection string of the account endpoint to use the account as a storage endpoint on the device.
      */
-    @JsonProperty(value = "accountConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String accountConnectionString;
 
     /*
      * Per share level unencrypted access credentials.
      */
-    @JsonProperty(value = "shareCredentialDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<ShareCredentialDetails> shareCredentialDetails;
 
-    /** Creates an instance of AccountCredentialDetails class. */
+    /**
+     * Creates an instance of AccountCredentialDetails class.
+     */
     public AccountCredentialDetails() {
     }
 
     /**
      * Get the accountName property: Name of the account.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -50,7 +54,7 @@ public final class AccountCredentialDetails {
 
     /**
      * Get the dataAccountType property: Type of the account.
-     *
+     * 
      * @return the dataAccountType value.
      */
     public DataAccountType dataAccountType() {
@@ -60,7 +64,7 @@ public final class AccountCredentialDetails {
     /**
      * Get the accountConnectionString property: Connection string of the account endpoint to use the account as a
      * storage endpoint on the device.
-     *
+     * 
      * @return the accountConnectionString value.
      */
     public String accountConnectionString() {
@@ -69,7 +73,7 @@ public final class AccountCredentialDetails {
 
     /**
      * Get the shareCredentialDetails property: Per share level unencrypted access credentials.
-     *
+     * 
      * @return the shareCredentialDetails value.
      */
     public List<ShareCredentialDetails> shareCredentialDetails() {
@@ -78,12 +82,56 @@ public final class AccountCredentialDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (shareCredentialDetails() != null) {
             shareCredentialDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountCredentialDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountCredentialDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountCredentialDetails.
+     */
+    public static AccountCredentialDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountCredentialDetails deserializedAccountCredentialDetails = new AccountCredentialDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedAccountCredentialDetails.accountName = reader.getString();
+                } else if ("dataAccountType".equals(fieldName)) {
+                    deserializedAccountCredentialDetails.dataAccountType
+                        = DataAccountType.fromString(reader.getString());
+                } else if ("accountConnectionString".equals(fieldName)) {
+                    deserializedAccountCredentialDetails.accountConnectionString = reader.getString();
+                } else if ("shareCredentialDetails".equals(fieldName)) {
+                    List<ShareCredentialDetails> shareCredentialDetails
+                        = reader.readArray(reader1 -> ShareCredentialDetails.fromJson(reader1));
+                    deserializedAccountCredentialDetails.shareCredentialDetails = shareCredentialDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountCredentialDetails;
+        });
     }
 }

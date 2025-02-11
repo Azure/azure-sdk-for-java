@@ -23,7 +23,11 @@ public final class PublishersCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateAPublisherResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.publishers().define("TestPublisher").withRegion("eastus").withExistingResourceGroup("rg")
-            .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.fromString("Public"))).create();
+        manager.publishers()
+            .define("TestPublisher")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rg")
+            .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.fromString("Public")))
+            .create();
     }
 }

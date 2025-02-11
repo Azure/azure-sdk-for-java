@@ -15,23 +15,24 @@ public final class BlobTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobTriggerTypeProperties model = BinaryData.fromString(
-            "{\"folderPath\":\"fp\",\"maxConcurrency\":1551794950,\"linkedService\":{\"referenceName\":\"kieom\",\"parameters\":{\"zd\":\"databmwitnihwl\"}}}")
+            "{\"folderPath\":\"rmhewdfua\",\"maxConcurrency\":1306502182,\"linkedService\":{\"referenceName\":\"kfojn\",\"parameters\":{\"oprkpdghqsatbebx\":\"datatuyim\",\"zqaavxxvl\":\"dataedyyengnhoxbp\",\"ihqw\":\"dataspptxdra\",\"yguqsqobrent\":\"datartbvqtogkxdevkn\"}}}")
             .toObject(BlobTriggerTypeProperties.class);
-        Assertions.assertEquals("fp", model.folderPath());
-        Assertions.assertEquals(1551794950, model.maxConcurrency());
-        Assertions.assertEquals("kieom", model.linkedService().referenceName());
+        Assertions.assertEquals("rmhewdfua", model.folderPath());
+        Assertions.assertEquals(1306502182, model.maxConcurrency());
+        Assertions.assertEquals("kfojn", model.linkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobTriggerTypeProperties model = new BlobTriggerTypeProperties().withFolderPath("fp")
-            .withMaxConcurrency(1551794950)
-            .withLinkedService(
-                new LinkedServiceReference().withReferenceName("kieom").withParameters(mapOf("zd", "databmwitnihwl")));
+        BlobTriggerTypeProperties model = new BlobTriggerTypeProperties().withFolderPath("rmhewdfua")
+            .withMaxConcurrency(1306502182)
+            .withLinkedService(new LinkedServiceReference().withReferenceName("kfojn")
+                .withParameters(mapOf("oprkpdghqsatbebx", "datatuyim", "zqaavxxvl", "dataedyyengnhoxbp", "ihqw",
+                    "dataspptxdra", "yguqsqobrent", "datartbvqtogkxdevkn")));
         model = BinaryData.fromObject(model).toObject(BlobTriggerTypeProperties.class);
-        Assertions.assertEquals("fp", model.folderPath());
-        Assertions.assertEquals(1551794950, model.maxConcurrency());
-        Assertions.assertEquals("kieom", model.linkedService().referenceName());
+        Assertions.assertEquals("rmhewdfua", model.folderPath());
+        Assertions.assertEquals(1306502182, model.maxConcurrency());
+        Assertions.assertEquals("kfojn", model.linkedService().referenceName());
     }
 
     // Use "Map.of" if available

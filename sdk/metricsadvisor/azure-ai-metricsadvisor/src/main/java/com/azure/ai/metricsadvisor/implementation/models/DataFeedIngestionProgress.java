@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -55,6 +56,9 @@ public final class DataFeedIngestionProgress implements JsonSerializable<DataFee
         return this.latestActiveTimestamp;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,11 +81,11 @@ public final class DataFeedIngestionProgress implements JsonSerializable<DataFee
                 reader.nextToken();
 
                 if ("latestSuccessTimestamp".equals(fieldName)) {
-                    deserializedDataFeedIngestionProgress.latestSuccessTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDataFeedIngestionProgress.latestSuccessTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("latestActiveTimestamp".equals(fieldName)) {
-                    deserializedDataFeedIngestionProgress.latestActiveTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDataFeedIngestionProgress.latestActiveTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

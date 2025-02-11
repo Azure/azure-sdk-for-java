@@ -77,17 +77,18 @@ public final class TrafficManager extends Manager<TrafficManagerManagementClient
     }
 
     private TrafficManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new TrafficManagerManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new TrafficManagerManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
     }
 
-    /** @return entry point to traffic manager profile management */
+    /**
+     * Gets entry point to traffic manager profile management.
+     *
+     * @return entry point to traffic manager profile management
+     */
     public TrafficManagerProfiles profiles() {
         if (this.profiles == null) {
             this.profiles = new TrafficManagerProfilesImpl(this);

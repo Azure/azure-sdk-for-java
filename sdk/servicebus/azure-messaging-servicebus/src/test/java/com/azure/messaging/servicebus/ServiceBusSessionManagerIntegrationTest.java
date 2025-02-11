@@ -67,34 +67,30 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         final int numberToSend = 5;
 
         setSender(entityType, entityIndex);
-        final Disposable subscription = Flux.interval(Duration.ofMillis(500))
-            .take(numberToSend)
-            .flatMap(index -> {
-                final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
-                    .setSessionId(sessionId);
-                return sender.sendMessage(message).thenReturn(index);
-            })
-            .subscribe(
-                number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
+        final Disposable subscription = Flux.interval(Duration.ofMillis(500)).take(numberToSend).flatMap(index -> {
+            final ServiceBusMessage message = getServiceBusMessage(contents, messageId).setSessionId(sessionId);
+            return sender.sendMessage(message).thenReturn(index);
+        })
+            .subscribe(number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
                 error -> logger.error("sessionId[{}] Error encountered.", sessionId, error),
                 () -> logger.info("sessionId[{}] Finished sending.", sessionId));
         toClose(subscription);
         setReceiver(entityType, entityIndex, Function.identity());
 
         // Act & Assert
-        StepVerifier.create(receiver.receiveMessages().concatMap(
-            receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)
-        ))
-            .assertNext(serviceBusReceivedMessage ->
-                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
-            .assertNext(serviceBusReceivedMessage ->
-                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
-            .assertNext(serviceBusReceivedMessage ->
-                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
-            .assertNext(serviceBusReceivedMessage ->
-                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
-            .assertNext(serviceBusReceivedMessage ->
-                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+        StepVerifier
+            .create(receiver.receiveMessages()
+                .concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)))
+            .assertNext(serviceBusReceivedMessage -> assertMessageEquals(sessionId, messageId, contents,
+                serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage -> assertMessageEquals(sessionId, messageId, contents,
+                serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage -> assertMessageEquals(sessionId, messageId, contents,
+                serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage -> assertMessageEquals(sessionId, messageId, contents,
+                serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage -> assertMessageEquals(sessionId, messageId, contents,
+                serviceBusReceivedMessage))
             .thenCancel()
             .verify(Duration.ofMinutes(2));
     }
@@ -106,11 +102,11 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         final Duration sessionIdleTimeout = Duration.ofSeconds(3);
         setSender(entityType, entityIndex);
 
-        this.receiver = toClose(getSessionReceiverBuilder(entityType, entityIndex, false, DEFAULT_RETRY_OPTIONS)
-            .disableAutoComplete()
-            .maxConcurrentSessions(1)
-            .sessionIdleTimeout(sessionIdleTimeout)
-            .buildAsyncClientForProcessor());
+        this.receiver = toClose(
+            getSessionReceiverBuilder(entityType, entityIndex, false, DEFAULT_RETRY_OPTIONS).disableAutoComplete()
+                .maxConcurrentSessions(1)
+                .sessionIdleTimeout(sessionIdleTimeout)
+                .buildAsyncClientForProcessor());
 
         rollingSessionTest();
     }
@@ -123,10 +119,10 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(tryTimeout);
         setSender(entityType, entityIndex);
 
-        this.receiver = toClose(getSessionReceiverBuilder(entityType, entityIndex, false, retryOptions)
-            .disableAutoComplete()
-            .maxConcurrentSessions(1)
-            .buildAsyncClientForProcessor());
+        this.receiver
+            = toClose(getSessionReceiverBuilder(entityType, entityIndex, false, retryOptions).disableAutoComplete()
+                .maxConcurrentSessions(1)
+                .buildAsyncClientForProcessor());
 
         rollingSessionTest();
     }
@@ -134,22 +130,24 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
     private void rollingSessionTest() throws InterruptedException {
         final String contents = "Some-contents";
         final String randomPrefix = UUID.randomUUID().toString();
-        ServiceBusMessage message0 = getServiceBusMessage(contents, randomPrefix + "0").setSessionId(randomPrefix + "0");
-        ServiceBusMessage message1 = getServiceBusMessage(contents, randomPrefix + "1").setSessionId(randomPrefix + "1");
+        ServiceBusMessage message0
+            = getServiceBusMessage(contents, randomPrefix + "0").setSessionId(randomPrefix + "0");
+        ServiceBusMessage message1
+            = getServiceBusMessage(contents, randomPrefix + "1").setSessionId(randomPrefix + "1");
 
         CountDownLatch latch = new CountDownLatch(2);
         toClose(sender.sendMessage(message0)
             .thenMany(receiver.receiveMessages())
             .flatMap(m -> receiver.complete(m).thenReturn(m))
             .filter(m -> m.getMessageId().startsWith(randomPrefix))
-            .flatMap(m ->
-                (message0.getMessageId().equals(m.getMessageId()))
-                    ? sender.sendMessage(message1).thenReturn(m) : Mono.just(m)
-            )
+            .flatMap(m -> (message0.getMessageId().equals(m.getMessageId()))
+                ? sender.sendMessage(message1).thenReturn(m)
+                : Mono.just(m))
             .subscribe(m -> latch.countDown(), ex -> fail(ex)));
 
         assertTrue(latch.await(20, TimeUnit.SECONDS));
     }
+
     @ParameterizedTest
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     void noRollingSessionWhenNoConcurrentSessions(MessagingEntityType entityType) {
@@ -159,49 +157,47 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         final Duration tryTimeout = Duration.ofSeconds(10);
         setSender(entityType, entityIndex);
         final String randomPrefix = UUID.randomUUID().toString();
-        ServiceBusMessage message0 = getServiceBusMessage(contents, randomPrefix + "0").setSessionId(randomPrefix + "0");
-        ServiceBusMessage message1 = getServiceBusMessage(contents, randomPrefix + "1").setSessionId(randomPrefix + "1");
+        ServiceBusMessage message0
+            = getServiceBusMessage(contents, randomPrefix + "0").setSessionId(randomPrefix + "0");
+        ServiceBusMessage message1
+            = getServiceBusMessage(contents, randomPrefix + "1").setSessionId(randomPrefix + "1");
 
         AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(tryTimeout);
-        this.receiver = toClose(getSessionReceiverBuilder(entityType, entityIndex, false, retryOptions)
-            .disableAutoComplete()
-            .sessionIdleTimeout(sessionIdleTimeout)
-            .buildAsyncClientForProcessor());
+        this.receiver
+            = toClose(getSessionReceiverBuilder(entityType, entityIndex, false, retryOptions).disableAutoComplete()
+                .sessionIdleTimeout(sessionIdleTimeout)
+                .buildAsyncClientForProcessor());
 
         AtomicReference<String> sessionId = new AtomicReference<>();
-        StepVerifier.create(
-                sender.sendMessage(message0)
-                    .thenMany(receiver.receiveMessages())
-                    .flatMap(m -> receiver.complete(m).thenReturn(m))
-                    .flatMap(m -> {
-                        if (!sessionId.compareAndSet(null, m.getSessionId())) {
-                            assertEquals(sessionId.get(), m.getSessionId(), "session rolling should not happen");
-                        }
-                        return sender.sendMessage(message1).thenReturn(m);
-                    })
-            )
-            .expectNextCount(1)
-            .verifyTimeout(tryTimeout.plusSeconds(20));
+        StepVerifier.create(sender.sendMessage(message0)
+            .thenMany(receiver.receiveMessages())
+            .flatMap(m -> receiver.complete(m).thenReturn(m))
+            .flatMap(m -> {
+                if (!sessionId.compareAndSet(null, m.getSessionId())) {
+                    assertEquals(sessionId.get(), m.getSessionId(), "session rolling should not happen");
+                }
+                return sender.sendMessage(message1).thenReturn(m);
+            })).expectNextCount(1).verifyTimeout(tryTimeout.plusSeconds(20));
     }
 
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSender(MessagingEntityType entityType, int entityIndex) {
-        this.sender = toClose(getSenderBuilder(entityType, entityIndex, true, false)
-            .buildAsyncClient());
+        this.sender = toClose(getSenderBuilder(entityType, entityIndex, true, false).buildAsyncClient());
     }
 
     private void setReceiver(MessagingEntityType entityType, int entityIndex,
         Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
-        ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(entityType, entityIndex,
-            false, DEFAULT_RETRY_OPTIONS).disableAutoComplete();
+        ServiceBusSessionReceiverClientBuilder sessionBuilder
+            = getSessionReceiverBuilder(entityType, entityIndex, false, DEFAULT_RETRY_OPTIONS).disableAutoComplete();
 
         this.sessionReceiver = toClose(onBuild.apply(sessionBuilder).buildAsyncClient());
         this.receiver = toClose(this.sessionReceiver.acceptSession(sessionId).block());
     }
 
-    private static void assertMessageEquals(String sessionId, String messageId, String contents, ServiceBusReceivedMessage message) {
+    private static void assertMessageEquals(String sessionId, String messageId, String contents,
+        ServiceBusReceivedMessage message) {
         assertNotNull(message, "'message' should not be null.");
 
         if (!CoreUtils.isNullOrEmpty(sessionId)) {

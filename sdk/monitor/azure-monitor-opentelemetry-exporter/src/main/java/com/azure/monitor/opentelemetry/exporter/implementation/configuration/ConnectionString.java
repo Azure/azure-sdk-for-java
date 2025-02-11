@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.configuration;
 
 import java.net.URL;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class ConnectionString {
@@ -29,6 +30,7 @@ public final class ConnectionString {
     }
 
     public static ConnectionString parse(String connectionString) {
+        Objects.requireNonNull(connectionString, "Connection string cannot be null");
         return cache.computeIfAbsent(connectionString,
             key -> new ConnectionStringBuilder().setConnectionString(key).build());
     }

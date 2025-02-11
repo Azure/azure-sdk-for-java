@@ -10,9 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Wrapp
 /**
  * Implementation for AuthorizationKeys.
  */
-class EventHubAuthorizationKeyImpl
-        extends WrapperImpl<AccessKeysInner>
-        implements EventHubAuthorizationKey {
+class EventHubAuthorizationKeyImpl extends WrapperImpl<AccessKeysInner> implements EventHubAuthorizationKey {
 
     EventHubAuthorizationKeyImpl(AccessKeysInner inner) {
         super(inner);

@@ -48,7 +48,8 @@ public final class SqlSink extends CopySink {
     private Object storedProcedureTableTypeParameterName;
 
     /*
-     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression with resultType string).
+     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
+     * (or Expression with resultType string).
      */
     private Object tableOption;
 

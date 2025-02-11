@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.advisor.generated;
 
-/** Samples for RecommendationMetadata Get. */
+/**
+ * Samples for RecommendationMetadata Get.
+ */
 public final class RecommendationMetadataGetSamples {
     /*
-     * x-ms-original-file: specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/GetRecommendationMetadataEntity.json
+     * x-ms-original-file: specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/
+     * GetRecommendationMetadataEntity.json
      */
     /**
      * Sample code: GetMetadata.
-     *
+     * 
      * @param manager Entry point to AdvisorManager.
      */
     public static void getMetadata(com.azure.resourcemanager.advisor.AdvisorManager manager) {

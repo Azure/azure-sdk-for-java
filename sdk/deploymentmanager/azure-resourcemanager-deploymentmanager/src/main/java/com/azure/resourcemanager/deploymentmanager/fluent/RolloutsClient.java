@@ -30,8 +30,8 @@ public interface RolloutsClient {
      * @return the {@link SyncPoller} for polling of defines the PUT rollout request body.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdate(
-        String resourceGroupName, String rolloutName);
+    SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdate(String resourceGroupName,
+        String rolloutName);
 
     /**
      * Creates or updates a rollout.
@@ -49,8 +49,8 @@ public interface RolloutsClient {
      * @return the {@link SyncPoller} for polling of defines the PUT rollout request body.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdate(
-        String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, Context context);
+    SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdate(String resourceGroupName,
+        String rolloutName, RolloutRequestInner rolloutRequest, Context context);
 
     /**
      * Creates or updates a rollout.
@@ -84,8 +84,8 @@ public interface RolloutsClient {
      * @return defines the PUT rollout request body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RolloutRequestInner createOrUpdate(
-        String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, Context context);
+    RolloutRequestInner createOrUpdate(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest,
+        Context context);
 
     /**
      * Gets detailed information of a rollout.
@@ -101,8 +101,8 @@ public interface RolloutsClient {
      * @return detailed information of a rollout along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RolloutInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String rolloutName, Integer retryAttempt, Context context);
+    Response<RolloutInner> getByResourceGroupWithResponse(String resourceGroupName, String rolloutName,
+        Integer retryAttempt, Context context);
 
     /**
      * Gets detailed information of a rollout.
@@ -195,8 +195,8 @@ public interface RolloutsClient {
      * @return defines the rollout along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RolloutInner> restartWithResponse(
-        String resourceGroupName, String rolloutName, Boolean skipSucceeded, Context context);
+    Response<RolloutInner> restartWithResponse(String resourceGroupName, String rolloutName, Boolean skipSucceeded,
+        Context context);
 
     /**
      * Restarts a failed rollout and optionally skips all succeeded steps.

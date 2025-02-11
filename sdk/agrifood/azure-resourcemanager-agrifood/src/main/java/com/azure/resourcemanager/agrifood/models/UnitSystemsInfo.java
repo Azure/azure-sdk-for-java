@@ -6,27 +6,37 @@ package com.azure.resourcemanager.agrifood.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Unit systems info for the data provider. */
+/**
+ * Unit systems info for the data provider.
+ */
 @Fluent
-public final class UnitSystemsInfo {
+public final class UnitSystemsInfo implements JsonSerializable<UnitSystemsInfo> {
     /*
      * UnitSystem key sent as part of ProviderInput.
      */
-    @JsonProperty(value = "key", required = true)
     private String key;
 
     /*
      * List of unit systems supported by this data provider.
      */
-    @JsonProperty(value = "values", required = true)
     private List<String> values;
 
     /**
+     * Creates an instance of UnitSystemsInfo class.
+     */
+    public UnitSystemsInfo() {
+    }
+
+    /**
      * Get the key property: UnitSystem key sent as part of ProviderInput.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -35,7 +45,7 @@ public final class UnitSystemsInfo {
 
     /**
      * Set the key property: UnitSystem key sent as part of ProviderInput.
-     *
+     * 
      * @param key the key value to set.
      * @return the UnitSystemsInfo object itself.
      */
@@ -46,7 +56,7 @@ public final class UnitSystemsInfo {
 
     /**
      * Get the values property: List of unit systems supported by this data provider.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -55,7 +65,7 @@ public final class UnitSystemsInfo {
 
     /**
      * Set the values property: List of unit systems supported by this data provider.
-     *
+     * 
      * @param values the values value to set.
      * @return the UnitSystemsInfo object itself.
      */
@@ -66,21 +76,60 @@ public final class UnitSystemsInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (key() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property key in model UnitSystemsInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property key in model UnitSystemsInfo"));
         }
         if (values() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property values in model UnitSystemsInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property values in model UnitSystemsInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UnitSystemsInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UnitSystemsInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UnitSystemsInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UnitSystemsInfo.
+     */
+    public static UnitSystemsInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UnitSystemsInfo deserializedUnitSystemsInfo = new UnitSystemsInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedUnitSystemsInfo.key = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<String> values = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUnitSystemsInfo.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUnitSystemsInfo;
+        });
+    }
 }

@@ -62,7 +62,6 @@ class PerfMessageSerializer implements MessageSerializer {
         return annotationsSize + applicationPropertiesSize + payloadSize;
     }
 
-
     @Override
     public <T> Message serialize(T object) {
         throw new UnsupportedOperationException("This is not used.");
@@ -147,7 +146,6 @@ class PerfMessageSerializer implements MessageSerializer {
             return 32;
         }
 
-        throw new IllegalArgumentException(String.format(Messages.ENCODING_TYPE_NOT_SUPPORTED,
-            obj.getClass()));
+        throw new IllegalArgumentException(String.format(Messages.ENCODING_TYPE_NOT_SUPPORTED, obj.getClass()));
     }
 }

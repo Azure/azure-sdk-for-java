@@ -17,46 +17,43 @@ import org.junit.jupiter.api.Assertions;
 public final class DataBoxEdgeDeviceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataBoxEdgeDeviceInner model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"sycbkbfk\",\"tags\":{\"axcfjpgddtocjjx\":\"dkexxppofm\",\"eojnxqbzvddn\":\"vpmouexhdzxib\"},\"sku\":{\"name\":\"TEA_1Node_UPS_Heater\",\"tier\":\"Standard\"},\"etag\":\"btwnpzaoqvuhrhcf\",\"properties\":{\"dataBoxEdgeDeviceStatus\":\"NeedsAttention\",\"serialNumber\":\"glmjth\",\"description\":\"kw\",\"modelDescription\":\"eicxmqciwqvhkhi\",\"deviceType\":\"DataBoxEdgeDevice\",\"friendlyName\":\"dtopbob\",\"culture\":\"ghmewuam\",\"deviceModel\":\"hrzayvvtpgvdf\",\"deviceSoftwareVersion\":\"otkftutqxlngx\",\"deviceLocalCapacity\":6623521547442247310,\"timeZone\":\"gnxkrxdqmidtth\",\"deviceHcsVersion\":\"vqdra\",\"configuredRoleTypes\":[\"IOT\",\"IOT\"],\"nodeCount\":1370032032},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"}")
-                .toObject(DataBoxEdgeDeviceInner.class);
-        Assertions.assertEquals("sycbkbfk", model.location());
-        Assertions.assertEquals("dkexxppofm", model.tags().get("axcfjpgddtocjjx"));
-        Assertions.assertEquals(SkuName.TEA_1NODE_UPS_HEATER, model.sku().name());
+        DataBoxEdgeDeviceInner model = BinaryData.fromString(
+            "{\"location\":\"ghmewuam\",\"tags\":{\"t\":\"rzayv\",\"ln\":\"gvdfgiotkftutq\",\"qmi\":\"xlefgugnxkrx\",\"abhjybi\":\"tthzrvqd\"},\"sku\":{\"name\":\"Edge\",\"tier\":\"Standard\"},\"etag\":\"owskanyktz\",\"properties\":{\"dataBoxEdgeDeviceStatus\":\"NeedsAttention\",\"serialNumber\":\"wgqyw\",\"description\":\"drvyn\",\"modelDescription\":\"gpphrcgyn\",\"deviceType\":\"DataBoxEdgeDevice\",\"friendlyName\":\"ecfvmm\",\"culture\":\"ofsx\",\"deviceModel\":\"evgbmqjq\",\"deviceSoftwareVersion\":\"c\",\"deviceLocalCapacity\":2539087817926802481,\"timeZone\":\"kwlzuvccfwnfn\",\"deviceHcsVersion\":\"cfionl\",\"configuredRoleTypes\":[\"Functions\"],\"nodeCount\":1013324715},\"id\":\"gtzxdpn\",\"name\":\"bqqwxrj\",\"type\":\"eallnwsubisnj\"}")
+            .toObject(DataBoxEdgeDeviceInner.class);
+        Assertions.assertEquals("ghmewuam", model.location());
+        Assertions.assertEquals("rzayv", model.tags().get("t"));
+        Assertions.assertEquals(SkuName.EDGE, model.sku().name());
         Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
-        Assertions.assertEquals("btwnpzaoqvuhrhcf", model.etag());
+        Assertions.assertEquals("owskanyktz", model.etag());
         Assertions.assertEquals(DataBoxEdgeDeviceStatus.NEEDS_ATTENTION, model.dataBoxEdgeDeviceStatus());
-        Assertions.assertEquals("kw", model.description());
-        Assertions.assertEquals("eicxmqciwqvhkhi", model.modelDescription());
-        Assertions.assertEquals("dtopbob", model.friendlyName());
+        Assertions.assertEquals("drvyn", model.description());
+        Assertions.assertEquals("gpphrcgyn", model.modelDescription());
+        Assertions.assertEquals("ecfvmm", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataBoxEdgeDeviceInner model =
-            new DataBoxEdgeDeviceInner()
-                .withLocation("sycbkbfk")
-                .withTags(mapOf("axcfjpgddtocjjx", "dkexxppofm", "eojnxqbzvddn", "vpmouexhdzxib"))
-                .withSku(new Sku().withName(SkuName.TEA_1NODE_UPS_HEATER).withTier(SkuTier.STANDARD))
-                .withEtag("btwnpzaoqvuhrhcf")
-                .withDataBoxEdgeDeviceStatus(DataBoxEdgeDeviceStatus.NEEDS_ATTENTION)
-                .withDescription("kw")
-                .withModelDescription("eicxmqciwqvhkhi")
-                .withFriendlyName("dtopbob");
+        DataBoxEdgeDeviceInner model = new DataBoxEdgeDeviceInner().withLocation("ghmewuam")
+            .withTags(mapOf("t", "rzayv", "ln", "gvdfgiotkftutq", "qmi", "xlefgugnxkrx", "abhjybi", "tthzrvqd"))
+            .withSku(new Sku().withName(SkuName.EDGE).withTier(SkuTier.STANDARD))
+            .withEtag("owskanyktz")
+            .withDataBoxEdgeDeviceStatus(DataBoxEdgeDeviceStatus.NEEDS_ATTENTION)
+            .withDescription("drvyn")
+            .withModelDescription("gpphrcgyn")
+            .withFriendlyName("ecfvmm");
         model = BinaryData.fromObject(model).toObject(DataBoxEdgeDeviceInner.class);
-        Assertions.assertEquals("sycbkbfk", model.location());
-        Assertions.assertEquals("dkexxppofm", model.tags().get("axcfjpgddtocjjx"));
-        Assertions.assertEquals(SkuName.TEA_1NODE_UPS_HEATER, model.sku().name());
+        Assertions.assertEquals("ghmewuam", model.location());
+        Assertions.assertEquals("rzayv", model.tags().get("t"));
+        Assertions.assertEquals(SkuName.EDGE, model.sku().name());
         Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
-        Assertions.assertEquals("btwnpzaoqvuhrhcf", model.etag());
+        Assertions.assertEquals("owskanyktz", model.etag());
         Assertions.assertEquals(DataBoxEdgeDeviceStatus.NEEDS_ATTENTION, model.dataBoxEdgeDeviceStatus());
-        Assertions.assertEquals("kw", model.description());
-        Assertions.assertEquals("eicxmqciwqvhkhi", model.modelDescription());
-        Assertions.assertEquals("dtopbob", model.friendlyName());
+        Assertions.assertEquals("drvyn", model.description());
+        Assertions.assertEquals("gpphrcgyn", model.modelDescription());
+        Assertions.assertEquals("ecfvmm", model.friendlyName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

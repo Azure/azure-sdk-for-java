@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -191,6 +192,9 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -218,8 +222,8 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedAnomalyResult.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAnomalyResult.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("dimension".equals(fieldName)) {
                     Map<String, String> dimension = reader.readMap(reader1 -> reader1.getString());
                     deserializedAnomalyResult.dimension = dimension;
@@ -235,11 +239,11 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
                     deserializedAnomalyResult.anomalyDetectionConfigurationId
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedAnomalyResult.createdTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAnomalyResult.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("modifiedTime".equals(fieldName)) {
-                    deserializedAnomalyResult.modifiedTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAnomalyResult.modifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

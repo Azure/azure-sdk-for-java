@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The collection of content validation properties. */
+/**
+ * The collection of content validation properties.
+ */
 @Fluent
-public final class WebTestPropertiesValidationRulesContentValidation {
+public final class WebTestPropertiesValidationRulesContentValidation
+    implements JsonSerializable<WebTestPropertiesValidationRulesContentValidation> {
     /*
-     * Content to look for in the return of the WebTest.  Must not be null or empty.
+     * Content to look for in the return of the WebTest. Must not be null or empty.
      */
-    @JsonProperty(value = "ContentMatch")
     private String contentMatch;
 
     /*
      * When set, this value makes the ContentMatch validation case insensitive.
      */
-    @JsonProperty(value = "IgnoreCase")
     private Boolean ignoreCase;
 
     /*
-     * When true, validation will pass if there is a match for the ContentMatch string.  If false, validation will fail
+     * When true, validation will pass if there is a match for the ContentMatch string. If false, validation will fail
      * if there is a match
      */
-    @JsonProperty(value = "PassIfTextFound")
     private Boolean passIfTextFound;
 
-    /** Creates an instance of WebTestPropertiesValidationRulesContentValidation class. */
+    /**
+     * Creates an instance of WebTestPropertiesValidationRulesContentValidation class.
+     */
     public WebTestPropertiesValidationRulesContentValidation() {
     }
 
     /**
      * Get the contentMatch property: Content to look for in the return of the WebTest. Must not be null or empty.
-     *
+     * 
      * @return the contentMatch value.
      */
     public String contentMatch() {
@@ -44,7 +50,7 @@ public final class WebTestPropertiesValidationRulesContentValidation {
 
     /**
      * Set the contentMatch property: Content to look for in the return of the WebTest. Must not be null or empty.
-     *
+     * 
      * @param contentMatch the contentMatch value to set.
      * @return the WebTestPropertiesValidationRulesContentValidation object itself.
      */
@@ -55,7 +61,7 @@ public final class WebTestPropertiesValidationRulesContentValidation {
 
     /**
      * Get the ignoreCase property: When set, this value makes the ContentMatch validation case insensitive.
-     *
+     * 
      * @return the ignoreCase value.
      */
     public Boolean ignoreCase() {
@@ -64,7 +70,7 @@ public final class WebTestPropertiesValidationRulesContentValidation {
 
     /**
      * Set the ignoreCase property: When set, this value makes the ContentMatch validation case insensitive.
-     *
+     * 
      * @param ignoreCase the ignoreCase value to set.
      * @return the WebTestPropertiesValidationRulesContentValidation object itself.
      */
@@ -76,7 +82,7 @@ public final class WebTestPropertiesValidationRulesContentValidation {
     /**
      * Get the passIfTextFound property: When true, validation will pass if there is a match for the ContentMatch
      * string. If false, validation will fail if there is a match.
-     *
+     * 
      * @return the passIfTextFound value.
      */
     public Boolean passIfTextFound() {
@@ -86,7 +92,7 @@ public final class WebTestPropertiesValidationRulesContentValidation {
     /**
      * Set the passIfTextFound property: When true, validation will pass if there is a match for the ContentMatch
      * string. If false, validation will fail if there is a match.
-     *
+     * 
      * @param passIfTextFound the passIfTextFound value to set.
      * @return the WebTestPropertiesValidationRulesContentValidation object itself.
      */
@@ -97,9 +103,54 @@ public final class WebTestPropertiesValidationRulesContentValidation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ContentMatch", this.contentMatch);
+        jsonWriter.writeBooleanField("IgnoreCase", this.ignoreCase);
+        jsonWriter.writeBooleanField("PassIfTextFound", this.passIfTextFound);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebTestPropertiesValidationRulesContentValidation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebTestPropertiesValidationRulesContentValidation if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebTestPropertiesValidationRulesContentValidation.
+     */
+    public static WebTestPropertiesValidationRulesContentValidation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebTestPropertiesValidationRulesContentValidation deserializedWebTestPropertiesValidationRulesContentValidation
+                = new WebTestPropertiesValidationRulesContentValidation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ContentMatch".equals(fieldName)) {
+                    deserializedWebTestPropertiesValidationRulesContentValidation.contentMatch = reader.getString();
+                } else if ("IgnoreCase".equals(fieldName)) {
+                    deserializedWebTestPropertiesValidationRulesContentValidation.ignoreCase
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("PassIfTextFound".equals(fieldName)) {
+                    deserializedWebTestPropertiesValidationRulesContentValidation.passIfTextFound
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebTestPropertiesValidationRulesContentValidation;
+        });
     }
 }

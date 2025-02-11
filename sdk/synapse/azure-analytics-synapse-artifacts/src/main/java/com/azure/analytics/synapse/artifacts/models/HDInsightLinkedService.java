@@ -49,7 +49,8 @@ public class HDInsightLinkedService extends LinkedService {
     private LinkedServiceReference hcatalogLinkedServiceName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 
@@ -59,7 +60,8 @@ public class HDInsightLinkedService extends LinkedService {
     private Object isEspEnabled;
 
     /*
-     * Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type: string (or Expression with resultType string).
+     * Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type: string (or Expression with
+     * resultType string).
      */
     private Object fileSystem;
 

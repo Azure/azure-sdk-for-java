@@ -478,7 +478,7 @@ public class QuorumReader {
                 // We pick higher of the 2 LSN and wait for the other to reach that LSN.
                 if (storeResult.lsn != storeResult.quorumAckedLSN) {
                     logger.info("Store LSN {} and quorum acked LSN {} don't match", storeResult.lsn, storeResult.quorumAckedLSN);
-                    long higherLsn = storeResult.lsn > storeResult.quorumAckedLSN ? storeResult.lsn : storeResult.quorumAckedLSN;
+                    long higherLsn = Math.max(storeResult.lsn, storeResult.quorumAckedLSN);
 
                     Mono<RxDocumentServiceRequest> waitForLsnRequestObs = BarrierRequestHelper.createAsync(this.diagnosticsClientContext, entity, this.authorizationTokenProvider, higherLsn, null);
                     return waitForLsnRequestObs.flatMap(
@@ -595,8 +595,7 @@ public class QuorumReader {
                             return Flux.just(true);
                     }
 
-                    maxGlobalCommittedLsn.set(maxGlobalCommittedLsn.get() > maxGlobalCommittedLsnInResponses ?
-                        maxGlobalCommittedLsn.get() : maxGlobalCommittedLsnInResponses);
+                    maxGlobalCommittedLsn.set(Math.max(maxGlobalCommittedLsn.get(), maxGlobalCommittedLsnInResponses));
 
                     //only refresh on first barrier call, set to false for subsequent attempts.
                     barrierRequest.requestContext.forceRefreshAddressCache = false;
@@ -651,8 +650,8 @@ public class QuorumReader {
                                                     return Flux.just(true);
                                            }
 
-                                           maxGlobalCommittedLsn.set(maxGlobalCommittedLsn.get() > maxGlobalCommittedLsnInResponses ?
-                                               maxGlobalCommittedLsn.get() : maxGlobalCommittedLsnInResponses);
+                                           maxGlobalCommittedLsn.set(
+                                               Math.max(maxGlobalCommittedLsn.get(), maxGlobalCommittedLsnInResponses));
 
                                            //trace on last retry.
                                            if (readBarrierRetryCountMultiRegion.getAndDecrement() == 0) {

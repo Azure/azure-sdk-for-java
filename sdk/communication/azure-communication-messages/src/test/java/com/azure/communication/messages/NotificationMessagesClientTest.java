@@ -4,10 +4,7 @@
 package com.azure.communication.messages;
 
 import com.azure.communication.messages.models.*;
-import com.azure.communication.messages.models.channels.WhatsAppMessageButtonSubType;
-import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindings;
-import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsButton;
-import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsComponent;
+import com.azure.communication.messages.models.channels.*;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -37,8 +34,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
 
-        SendMessageResult result = messagesClient.send(new TextNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, "Hello!"));
+        SendMessageResult result
+            = messagesClient.send(new TextNotificationContent(CHANNEL_REGISTRATION_ID, recipients, "Hello!"));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -52,8 +49,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
 
-        SendMessageResult result = messagesClient.send(new MediaNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, "https://wallpapercave.com/wp/wp2163723.jpg"));
+        SendMessageResult result = messagesClient.send(new ImageNotificationContent(CHANNEL_REGISTRATION_ID, recipients,
+            "https://wallpapercave.com/wp/wp2163723.jpg"));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -61,7 +58,222 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendMessageTemplateWithImage(HttpClient httpClient) {
+    public void shouldSendImageMessageWithCaption(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        ImageNotificationContent imageMessage = new ImageNotificationContent(CHANNEL_REGISTRATION_ID, recipients,
+            "https://wallpapercave.com/wp/wp2163723.jpg");
+        imageMessage.setCaption("wow!");
+
+        SendMessageResult result = messagesClient.send(imageMessage);
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void shouldSendVideoMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+
+        SendMessageResult result = messagesClient.send(new VideoNotificationContent(CHANNEL_REGISTRATION_ID, recipients,
+            "https://sample-videos.com/video321/mp4/480/big_buck_bunny_480p_1mb.mp4"));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void shouldSendAudioMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+
+        SendMessageResult result = messagesClient.send(new AudioNotificationContent(CHANNEL_REGISTRATION_ID, recipients,
+            "https://sample-videos.com/audio/mp3/wave.mp3"));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void shouldSendDocumentMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+
+        SendMessageResult result = messagesClient.send(new DocumentNotificationContent(CHANNEL_REGISTRATION_ID,
+            recipients, "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendStickerMessage(HttpClient httpClient) {
+        String mediaUrl = "https://www.gstatic.com/webp/gallery/1.sm.webp";
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        SendMessageResult result
+            = messagesClient.send(new StickerNotificationContent(CHANNEL_REGISTRATION_ID, recipients, mediaUrl));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendReactionMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        SendMessageResult result = messagesClient.send(new ReactionNotificationContent(CHANNEL_REGISTRATION_ID,
+            recipients, "\uD83D\uDE00", "3b5c2a30-936b-4f26-bd5c-491b22e74853"));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithButtonAction(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
+        SendMessageResult result = messagesClient
+            .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithButtonActionWithImageHeader(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
+        interactiveMessage.setHeader(new ImageMessageContent("https://wallpapercave.com/wp/wp2163723.jpg"));
+        SendMessageResult result = messagesClient
+            .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithButtonActionWithDocumentHeader(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
+        interactiveMessage.setHeader(
+            new DocumentMessageContent("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
+        SendMessageResult result = messagesClient
+            .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithButtonActionWithVideoHeader(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(new TextMessageContent("Do you like it?"),
+            new WhatsAppButtonActionBindings(buttonSet));
+        interactiveMessage.setHeader(new VideoMessageContent("https://sample-videos.com/audio/mp3/wave.mp3"));
+        SendMessageResult result = messagesClient
+            .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithListAction(HttpClient httpClient) {
+        List<ActionGroupItem> group1 = new ArrayList<>();
+        group1.add(new ActionGroupItem("priority_express", "Priority Mail Express", "Delivered on same day!"));
+        group1.add(new ActionGroupItem("priority_mail", "Priority Mail", "Delivered in 1-2 days"));
+
+        List<ActionGroupItem> group2 = new ArrayList<>();
+        group2.add(new ActionGroupItem("usps_ground_advantage", "USPS Ground Advantage", "Delivered in 2-5 days"));
+        group2.add(new ActionGroupItem("usps_mail", "USPS Mail", "Delivered in 5-8 days"));
+
+        List<ActionGroup> options = new ArrayList<>();
+        options.add(new ActionGroup("Express Delivery", group1));
+        options.add(new ActionGroup("Normal Delivery", group2));
+
+        ActionGroupContent actionGroupContent = new ActionGroupContent("Shipping Options", options);
+        InteractiveMessage interactiveMessage
+            = new InteractiveMessage(new TextMessageContent("Which shipping option do you want?"),
+                new WhatsAppListActionBindings(actionGroupContent));
+        interactiveMessage.setFooter(new TextMessageContent("Eagle Logistic"));
+        interactiveMessage.setHeader(new TextMessageContent("Shipping Options"));
+
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        SendMessageResult result = messagesClient
+            .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithUrlAction(HttpClient httpClient) {
+        LinkContent urlAction = new LinkContent("Rocket is the best!", "https://wallpapercave.com/wp/wp2163723.jpg");
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("The best Guardian of Galaxy"), new WhatsAppUrlActionBindings(urlAction));
+        interactiveMessage.setFooter(new TextMessageContent("Intergalactic News Ltd"));
+
+        messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        SendMessageResult result = messagesClient
+            .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage));
+
+        assertEquals(1, result.getReceipts().size());
+        assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void shouldSendMessageImageTemplate(HttpClient httpClient) {
         messagesClient = buildNotificationMessagesClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
@@ -77,41 +289,11 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         //Update template parameter binding
         List<WhatsAppMessageTemplateBindingsComponent> components = new ArrayList<>();
         components.add(new WhatsAppMessageTemplateBindingsComponent("Days"));
-        MessageTemplateBindings bindings = new WhatsAppMessageTemplateBindings()
-            .setBody(components);
+        MessageTemplateBindings bindings = new WhatsAppMessageTemplateBindings().setBody(components);
         template.setBindings(bindings);
 
-        SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, template));
-
-        assertEquals(1, result.getReceipts().size());
-        assertNotNull(result.getReceipts().get(0).getMessageId());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendMessageImageTemplateWithTokenCredential(HttpClient httpClient) {
-        messagesClient = buildNotificationMessagesClientWithTokenCredential(httpClient);
-        List<String> recipients = new ArrayList<>();
-        recipients.add(RECIPIENT_IDENTIFIER);
-
-        //Update Template Name and language according your template associate to your channel.
-        MessageTemplate template = new MessageTemplate("sample_shipping_confirmation", "en_US");
-
-        //Update template parameter type and value
-        List<MessageTemplateValue> messageTemplateValues = new ArrayList<>();
-        messageTemplateValues.add(new MessageTemplateText("Days", "5"));
-        template.setValues(messageTemplateValues);
-
-        //Update template parameter binding
-        List<WhatsAppMessageTemplateBindingsComponent> components = new ArrayList<>();
-        components.add(new WhatsAppMessageTemplateBindingsComponent("Days"));
-        MessageTemplateBindings bindings = new WhatsAppMessageTemplateBindings()
-            .setBody(components);
-        template.setBindings(bindings);
-
-        SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, template));
+        SendMessageResult result
+            = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID, recipients, template));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -129,7 +311,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
         //Add template parameter type with value in a list
         List<MessageTemplateValue> messageTemplateValues = new ArrayList<>();
-        messageTemplateValues.add(new MessageTemplateVideo("HeaderVideo", "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"));
+        messageTemplateValues.add(new MessageTemplateVideo("HeaderVideo",
+            "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"));
         messageTemplateValues.add(new MessageTemplateText("VenueInfoInBody", "Starbucks"));
         messageTemplateValues.add(new MessageTemplateText("TimeInfoInBody", "Today 2-4PM"));
 
@@ -142,16 +325,14 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         templateBodyBindings.add(new WhatsAppMessageTemplateBindingsComponent("VenueInfoInBody"));
         templateBodyBindings.add(new WhatsAppMessageTemplateBindingsComponent("TimeInfoInBody"));
 
-        MessageTemplateBindings templateBindings = new WhatsAppMessageTemplateBindings()
-            .setHeaderProperty(templateHeaderBindings) // Set the parameter binding for template header
-            .setBody(templateBodyBindings); // Set the parameter binding for template body
+        MessageTemplateBindings templateBindings
+            = new WhatsAppMessageTemplateBindings().setHeaderProperty(templateHeaderBindings) // Set the parameter binding for template header
+                .setBody(templateBodyBindings); // Set the parameter binding for template body
 
-        template
-            .setBindings(templateBindings)
-            .setValues(messageTemplateValues);
+        template.setBindings(templateBindings).setValues(messageTemplateValues);
 
-        SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, template));
+        SendMessageResult result
+            = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID, recipients, template));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -176,19 +357,20 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
         // Add parameter binding for template buttons in a list
         List<WhatsAppMessageTemplateBindingsButton> templateButtonBindings = new ArrayList<>();
-        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "Yes"));
-        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "No"));
+        templateButtonBindings
+            .add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "Yes"));
+        templateButtonBindings
+            .add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "No"));
 
-        MessageTemplateBindings templateBindings = new WhatsAppMessageTemplateBindings()
-            .setBody(templateBodyBindings) // Set the parameter binding for template body
+        MessageTemplateBindings templateBindings = new WhatsAppMessageTemplateBindings().setBody(templateBodyBindings) // Set the parameter binding for template body
             .setButtons(templateButtonBindings); // Set the parameter binding for template buttons
 
-        MessageTemplate messageTemplate = new MessageTemplate("sample_issue_resolution", "en_US")
-            .setBindings(templateBindings)
-            .setValues(messageTemplateValues);
+        MessageTemplate messageTemplate
+            = new MessageTemplate("sample_issue_resolution", "en_US").setBindings(templateBindings)
+                .setValues(messageTemplateValues);
 
-        SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, messageTemplate));
+        SendMessageResult result = messagesClient
+            .send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID, recipients, messageTemplate));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -206,7 +388,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
         //Add template parameter type with value in a list
         List<MessageTemplateValue> messageTemplateValues = new ArrayList<>();
-        messageTemplateValues.add(new MessageTemplateDocument("HeaderDoc", "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
+        messageTemplateValues.add(new MessageTemplateDocument("HeaderDoc",
+            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
         messageTemplateValues.add(new MessageTemplateText("SourceInfoInBody", "RDU"));
         messageTemplateValues.add(new MessageTemplateText("DestinationInfoInBody", "LAX"));
         messageTemplateValues.add(new MessageTemplateText("TimeInfoInBody", "June 4th, 2024 @ 2PM"));
@@ -221,16 +404,14 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         templateBodyBindings.add(new WhatsAppMessageTemplateBindingsComponent("DestinationInfoInBody"));
         templateBodyBindings.add(new WhatsAppMessageTemplateBindingsComponent("TimeInfoInBody"));
 
-        MessageTemplateBindings templateBindings = new WhatsAppMessageTemplateBindings()
-            .setHeaderProperty(templateHeaderBindings) // Set the parameter binding for template header
-            .setBody(templateBodyBindings); // Set the parameter binding for template body
+        MessageTemplateBindings templateBindings
+            = new WhatsAppMessageTemplateBindings().setHeaderProperty(templateHeaderBindings) // Set the parameter binding for template header
+                .setBody(templateBodyBindings); // Set the parameter binding for template body
 
-        template
-            .setBindings(templateBindings)
-            .setValues(messageTemplateValues);
+        template.setBindings(templateBindings).setValues(messageTemplateValues);
 
-        SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, template));
+        SendMessageResult result
+            = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID, recipients, template));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());

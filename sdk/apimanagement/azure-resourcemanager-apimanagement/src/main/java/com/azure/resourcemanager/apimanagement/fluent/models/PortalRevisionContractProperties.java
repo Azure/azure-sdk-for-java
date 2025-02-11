@@ -5,56 +5,59 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.PortalRevisionStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The PortalRevisionContractProperties model. */
+/**
+ * The PortalRevisionContractProperties model.
+ */
 @Fluent
-public final class PortalRevisionContractProperties {
+public final class PortalRevisionContractProperties implements JsonSerializable<PortalRevisionContractProperties> {
     /*
      * Portal revision description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Portal revision publishing status details.
      */
-    @JsonProperty(value = "statusDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String statusDetails;
 
     /*
      * Status of the portal's revision.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PortalRevisionStatus status;
 
     /*
      * Indicates if the portal's revision is public.
      */
-    @JsonProperty(value = "isCurrent")
     private Boolean isCurrent;
 
     /*
      * Portal's revision creation date and time.
      */
-    @JsonProperty(value = "createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateTime;
 
     /*
      * Last updated date and time.
      */
-    @JsonProperty(value = "updatedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedDateTime;
 
-    /** Creates an instance of PortalRevisionContractProperties class. */
+    /**
+     * Creates an instance of PortalRevisionContractProperties class.
+     */
     public PortalRevisionContractProperties() {
     }
 
     /**
      * Get the description property: Portal revision description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -63,7 +66,7 @@ public final class PortalRevisionContractProperties {
 
     /**
      * Set the description property: Portal revision description.
-     *
+     * 
      * @param description the description value to set.
      * @return the PortalRevisionContractProperties object itself.
      */
@@ -74,7 +77,7 @@ public final class PortalRevisionContractProperties {
 
     /**
      * Get the statusDetails property: Portal revision publishing status details.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -83,7 +86,7 @@ public final class PortalRevisionContractProperties {
 
     /**
      * Get the status property: Status of the portal's revision.
-     *
+     * 
      * @return the status value.
      */
     public PortalRevisionStatus status() {
@@ -92,7 +95,7 @@ public final class PortalRevisionContractProperties {
 
     /**
      * Get the isCurrent property: Indicates if the portal's revision is public.
-     *
+     * 
      * @return the isCurrent value.
      */
     public Boolean isCurrent() {
@@ -101,7 +104,7 @@ public final class PortalRevisionContractProperties {
 
     /**
      * Set the isCurrent property: Indicates if the portal's revision is public.
-     *
+     * 
      * @param isCurrent the isCurrent value to set.
      * @return the PortalRevisionContractProperties object itself.
      */
@@ -112,7 +115,7 @@ public final class PortalRevisionContractProperties {
 
     /**
      * Get the createdDateTime property: Portal's revision creation date and time.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -121,7 +124,7 @@ public final class PortalRevisionContractProperties {
 
     /**
      * Get the updatedDateTime property: Last updated date and time.
-     *
+     * 
      * @return the updatedDateTime value.
      */
     public OffsetDateTime updatedDateTime() {
@@ -130,9 +133,60 @@ public final class PortalRevisionContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("isCurrent", this.isCurrent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalRevisionContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalRevisionContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortalRevisionContractProperties.
+     */
+    public static PortalRevisionContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalRevisionContractProperties deserializedPortalRevisionContractProperties
+                = new PortalRevisionContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedPortalRevisionContractProperties.description = reader.getString();
+                } else if ("statusDetails".equals(fieldName)) {
+                    deserializedPortalRevisionContractProperties.statusDetails = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedPortalRevisionContractProperties.status
+                        = PortalRevisionStatus.fromString(reader.getString());
+                } else if ("isCurrent".equals(fieldName)) {
+                    deserializedPortalRevisionContractProperties.isCurrent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedPortalRevisionContractProperties.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedDateTime".equals(fieldName)) {
+                    deserializedPortalRevisionContractProperties.updatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalRevisionContractProperties;
+        });
     }
 }

@@ -146,14 +146,16 @@ public final class FirewallResourceImpl
     }
 
     public FirewallResource create() {
-        this.innerObject = serviceManager.serviceClient().getFirewalls().createOrUpdate(resourceGroupName, firewallName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewalls()
+            .createOrUpdate(resourceGroupName, firewallName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FirewallResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFirewalls().createOrUpdate(resourceGroupName, firewallName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewalls()
+            .createOrUpdate(resourceGroupName, firewallName, this.innerModel(), context);
         return this;
     }
 
@@ -170,14 +172,18 @@ public final class FirewallResourceImpl
     }
 
     public FirewallResource apply() {
-        this.innerObject = serviceManager.serviceClient().getFirewalls()
-            .updateWithResponse(resourceGroupName, firewallName, updateProperties, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewalls()
+            .updateWithResponse(resourceGroupName, firewallName, updateProperties, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FirewallResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFirewalls()
-            .updateWithResponse(resourceGroupName, firewallName, updateProperties, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewalls()
+            .updateWithResponse(resourceGroupName, firewallName, updateProperties, context)
+            .getValue();
         return this;
     }
 
@@ -185,19 +191,23 @@ public final class FirewallResourceImpl
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.firewallName = Utils.getValueFromIdByName(innerObject.id(), "firewalls");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.firewallName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "firewalls");
     }
 
     public FirewallResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getFirewalls()
-            .getByResourceGroupWithResponse(resourceGroupName, firewallName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewalls()
+            .getByResourceGroupWithResponse(resourceGroupName, firewallName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FirewallResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFirewalls()
-            .getByResourceGroupWithResponse(resourceGroupName, firewallName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewalls()
+            .getByResourceGroupWithResponse(resourceGroupName, firewallName, context)
+            .getValue();
         return this;
     }
 
@@ -226,8 +236,8 @@ public final class FirewallResourceImpl
     }
 
     public Response<Void> saveLogProfileWithResponse(LogSettingsInner logSettings, Context context) {
-        return serviceManager.firewalls().saveLogProfileWithResponse(resourceGroupName, firewallName, logSettings,
-            context);
+        return serviceManager.firewalls()
+            .saveLogProfileWithResponse(resourceGroupName, firewallName, logSettings, context);
     }
 
     public void saveLogProfile() {

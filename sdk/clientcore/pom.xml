@@ -11,9 +11,10 @@
 
   <modules>
     <module>core</module>
-    <module>core-json</module>
-    <module>http-jdk-httpclient</module>
     <module>http-okhttp3</module>
+    <module>optional-dependency-tests</module>
     <module>http-stress</module>
+    <module>annotation-processor</module>
+    <module>annotation-processor-test</module>
   </modules>
 </project>

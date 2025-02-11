@@ -6,26 +6,34 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.CreateOrUpdateComputePolicyProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** The parameters used to create a new compute policy. */
+/**
+ * The parameters used to create a new compute policy.
+ */
 @Fluent
-public final class CreateOrUpdateComputePolicyParameters {
+public final class CreateOrUpdateComputePolicyParameters
+    implements JsonSerializable<CreateOrUpdateComputePolicyParameters> {
     /*
      * The compute policy properties to use when creating a new compute policy.
      */
-    @JsonProperty(value = "properties", required = true)
     private CreateOrUpdateComputePolicyProperties innerProperties = new CreateOrUpdateComputePolicyProperties();
 
-    /** Creates an instance of CreateOrUpdateComputePolicyParameters class. */
+    /**
+     * Creates an instance of CreateOrUpdateComputePolicyParameters class.
+     */
     public CreateOrUpdateComputePolicyParameters() {
     }
 
     /**
      * Get the innerProperties property: The compute policy properties to use when creating a new compute policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CreateOrUpdateComputePolicyProperties innerProperties() {
@@ -34,7 +42,7 @@ public final class CreateOrUpdateComputePolicyParameters {
 
     /**
      * Get the objectId property: The AAD object identifier for the entity to create a policy for.
-     *
+     * 
      * @return the objectId value.
      */
     public UUID objectId() {
@@ -43,7 +51,7 @@ public final class CreateOrUpdateComputePolicyParameters {
 
     /**
      * Set the objectId property: The AAD object identifier for the entity to create a policy for.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the CreateOrUpdateComputePolicyParameters object itself.
      */
@@ -57,7 +65,7 @@ public final class CreateOrUpdateComputePolicyParameters {
 
     /**
      * Get the objectType property: The type of AAD object the object identifier refers to.
-     *
+     * 
      * @return the objectType value.
      */
     public AadObjectType objectType() {
@@ -66,7 +74,7 @@ public final class CreateOrUpdateComputePolicyParameters {
 
     /**
      * Set the objectType property: The type of AAD object the object identifier refers to.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the CreateOrUpdateComputePolicyParameters object itself.
      */
@@ -81,7 +89,7 @@ public final class CreateOrUpdateComputePolicyParameters {
     /**
      * Get the maxDegreeOfParallelismPerJob property: The maximum degree of parallelism per job this user can use to
      * submit jobs. This property, the min priority per job property, or both must be passed.
-     *
+     * 
      * @return the maxDegreeOfParallelismPerJob value.
      */
     public Integer maxDegreeOfParallelismPerJob() {
@@ -91,12 +99,12 @@ public final class CreateOrUpdateComputePolicyParameters {
     /**
      * Set the maxDegreeOfParallelismPerJob property: The maximum degree of parallelism per job this user can use to
      * submit jobs. This property, the min priority per job property, or both must be passed.
-     *
+     * 
      * @param maxDegreeOfParallelismPerJob the maxDegreeOfParallelismPerJob value to set.
      * @return the CreateOrUpdateComputePolicyParameters object itself.
      */
-    public CreateOrUpdateComputePolicyParameters withMaxDegreeOfParallelismPerJob(
-        Integer maxDegreeOfParallelismPerJob) {
+    public CreateOrUpdateComputePolicyParameters
+        withMaxDegreeOfParallelismPerJob(Integer maxDegreeOfParallelismPerJob) {
         if (this.innerProperties() == null) {
             this.innerProperties = new CreateOrUpdateComputePolicyProperties();
         }
@@ -107,7 +115,7 @@ public final class CreateOrUpdateComputePolicyParameters {
     /**
      * Get the minPriorityPerJob property: The minimum priority per job this user can use to submit jobs. This property,
      * the max degree of parallelism per job property, or both must be passed.
-     *
+     * 
      * @return the minPriorityPerJob value.
      */
     public Integer minPriorityPerJob() {
@@ -117,7 +125,7 @@ public final class CreateOrUpdateComputePolicyParameters {
     /**
      * Set the minPriorityPerJob property: The minimum priority per job this user can use to submit jobs. This property,
      * the max degree of parallelism per job property, or both must be passed.
-     *
+     * 
      * @param minPriorityPerJob the minPriorityPerJob value to set.
      * @return the CreateOrUpdateComputePolicyParameters object itself.
      */
@@ -131,19 +139,57 @@ public final class CreateOrUpdateComputePolicyParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model CreateOrUpdateComputePolicyParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model CreateOrUpdateComputePolicyParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CreateOrUpdateComputePolicyParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateOrUpdateComputePolicyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateOrUpdateComputePolicyParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateOrUpdateComputePolicyParameters.
+     */
+    public static CreateOrUpdateComputePolicyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateOrUpdateComputePolicyParameters deserializedCreateOrUpdateComputePolicyParameters
+                = new CreateOrUpdateComputePolicyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedCreateOrUpdateComputePolicyParameters.innerProperties
+                        = CreateOrUpdateComputePolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateOrUpdateComputePolicyParameters;
+        });
+    }
 }

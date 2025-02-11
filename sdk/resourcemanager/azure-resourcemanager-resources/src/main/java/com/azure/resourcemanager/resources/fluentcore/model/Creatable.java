@@ -12,9 +12,7 @@ import reactor.core.publisher.Mono;
  *
  * @param <T> the fluent type of the resource to be created
  */
-public interface Creatable<T> extends
-        Indexable,
-        HasName {
+public interface Creatable<T> extends Indexable, HasName {
 
     /**
      * Execute the create request.

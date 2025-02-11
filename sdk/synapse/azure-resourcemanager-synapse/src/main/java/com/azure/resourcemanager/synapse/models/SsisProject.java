@@ -5,47 +5,61 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Ssis project. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Project")
+/**
+ * Ssis project.
+ */
 @Fluent
 public final class SsisProject extends SsisObjectMetadata {
     /*
+     * Type of metadata.
+     */
+    private SsisObjectMetadataType type = SsisObjectMetadataType.PROJECT;
+
+    /*
      * Folder id which contains project.
      */
-    @JsonProperty(value = "folderId")
     private Long folderId;
 
     /*
      * Project version.
      */
-    @JsonProperty(value = "version")
     private Long version;
 
     /*
      * Environment reference in project
      */
-    @JsonProperty(value = "environmentRefs")
     private List<SsisEnvironmentReference> environmentRefs;
 
     /*
      * Parameters in project
      */
-    @JsonProperty(value = "parameters")
     private List<SsisParameter> parameters;
 
-    /** Creates an instance of SsisProject class. */
+    /**
+     * Creates an instance of SsisProject class.
+     */
     public SsisProject() {
     }
 
     /**
+     * Get the type property: Type of metadata.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public SsisObjectMetadataType type() {
+        return this.type;
+    }
+
+    /**
      * Get the folderId property: Folder id which contains project.
-     *
+     * 
      * @return the folderId value.
      */
     public Long folderId() {
@@ -54,7 +68,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Set the folderId property: Folder id which contains project.
-     *
+     * 
      * @param folderId the folderId value to set.
      * @return the SsisProject object itself.
      */
@@ -65,7 +79,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Get the version property: Project version.
-     *
+     * 
      * @return the version value.
      */
     public Long version() {
@@ -74,7 +88,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Set the version property: Project version.
-     *
+     * 
      * @param version the version value to set.
      * @return the SsisProject object itself.
      */
@@ -85,7 +99,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Get the environmentRefs property: Environment reference in project.
-     *
+     * 
      * @return the environmentRefs value.
      */
     public List<SsisEnvironmentReference> environmentRefs() {
@@ -94,7 +108,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Set the environmentRefs property: Environment reference in project.
-     *
+     * 
      * @param environmentRefs the environmentRefs value to set.
      * @return the SsisProject object itself.
      */
@@ -105,7 +119,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Get the parameters property: Parameters in project.
-     *
+     * 
      * @return the parameters value.
      */
     public List<SsisParameter> parameters() {
@@ -114,7 +128,7 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Set the parameters property: Parameters in project.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SsisProject object itself.
      */
@@ -123,21 +137,27 @@ public final class SsisProject extends SsisObjectMetadata {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisProject withId(Long id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisProject withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisProject withDescription(String description) {
         super.withDescription(description);
@@ -146,17 +166,77 @@ public final class SsisProject extends SsisObjectMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (environmentRefs() != null) {
             environmentRefs().forEach(e -> e.validate());
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", id());
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNumberField("folderId", this.folderId);
+        jsonWriter.writeNumberField("version", this.version);
+        jsonWriter.writeArrayField("environmentRefs", this.environmentRefs,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisProject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisProject if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisProject.
+     */
+    public static SsisProject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisProject deserializedSsisProject = new SsisProject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSsisProject.withId(reader.getNullable(JsonReader::getLong));
+                } else if ("name".equals(fieldName)) {
+                    deserializedSsisProject.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSsisProject.withDescription(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSsisProject.type = SsisObjectMetadataType.fromString(reader.getString());
+                } else if ("folderId".equals(fieldName)) {
+                    deserializedSsisProject.folderId = reader.getNullable(JsonReader::getLong);
+                } else if ("version".equals(fieldName)) {
+                    deserializedSsisProject.version = reader.getNullable(JsonReader::getLong);
+                } else if ("environmentRefs".equals(fieldName)) {
+                    List<SsisEnvironmentReference> environmentRefs
+                        = reader.readArray(reader1 -> SsisEnvironmentReference.fromJson(reader1));
+                    deserializedSsisProject.environmentRefs = environmentRefs;
+                } else if ("parameters".equals(fieldName)) {
+                    List<SsisParameter> parameters = reader.readArray(reader1 -> SsisParameter.fromJson(reader1));
+                    deserializedSsisProject.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisProject;
+        });
     }
 }

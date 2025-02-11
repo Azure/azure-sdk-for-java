@@ -18,7 +18,8 @@ public final class ApisDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apisDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apis().deleteWithResponse("contoso-resources", "contoso", "default", "echo-api",
-            com.azure.core.util.Context.NONE);
+        manager.apis()
+            .deleteWithResponse("contoso-resources", "contoso", "default", "echo-api",
+                com.azure.core.util.Context.NONE);
     }
 }

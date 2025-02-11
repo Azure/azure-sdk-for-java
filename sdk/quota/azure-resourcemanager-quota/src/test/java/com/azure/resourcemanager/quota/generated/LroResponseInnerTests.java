@@ -12,7 +12,7 @@ public final class LroResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LroResponseInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Accepted\"},\"id\":\"nrbtcqqjnq\",\"name\":\"lhqgnufooojy\",\"type\":\"ifsqesaagdfmg\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"qj\",\"name\":\"ehtbm\",\"type\":\"fpownoizhwlr\"}")
             .toObject(LroResponseInner.class);
     }
 

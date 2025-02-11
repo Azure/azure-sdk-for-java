@@ -11,7 +11,7 @@ public final class OutputListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutputListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"datasource\":{\"type\":\"OutputDataSource\"},\"timeWindow\":\"qi\",\"sizeWindow\":720964194,\"serialization\":{\"type\":\"Serialization\"},\"diagnostics\":{\"conditions\":[{},{}]},\"etag\":\"jzrnf\",\"lastOutputEventTimestamps\":[{\"lastOutputEventTime\":\"ispe\",\"lastUpdateTime\":\"tzfkufubl\"},{\"lastOutputEventTime\":\"fxqeof\",\"lastUpdateTime\":\"e\"},{\"lastOutputEventTime\":\"hqjbasvmsmj\",\"lastUpdateTime\":\"lngsntnbybkzgcwr\"},{\"lastOutputEventTime\":\"lxxwrljdouskc\",\"lastUpdateTime\":\"kocrcjdkwtnhx\"}],\"watermarkSettings\":{\"watermarkMode\":\"SendLowestWatermarkAcrossPartitions\",\"maxWatermarkDifferenceAcrossPartitions\":\"ksqrglssai\"}},\"name\":\"p\",\"type\":\"nzl\",\"id\":\"fmppe\"}],\"nextLink\":\"vmgxsab\"}")
+            "{\"value\":[{\"properties\":{\"datasource\":{\"type\":\"OutputDataSource\"},\"timeWindow\":\"cp\",\"sizeWindow\":1867037750,\"serialization\":{\"type\":\"Serialization\"},\"diagnostics\":{\"conditions\":[{},{},{}]},\"etag\":\"mvdjwzrlovmc\"},\"name\":\"hijco\",\"type\":\"ctbzaq\",\"id\":\"sycbkbfk\"},{\"properties\":{\"datasource\":{\"type\":\"OutputDataSource\"},\"timeWindow\":\"kexxppof\",\"sizeWindow\":1878270858,\"serialization\":{\"type\":\"Serialization\"},\"diagnostics\":{\"conditions\":[{}]},\"etag\":\"gddtocj\"},\"name\":\"hvpmoue\",\"type\":\"dzxibqeojnxqbzvd\",\"id\":\"t\"}],\"nextLink\":\"deicbtwnpzao\"}")
             .toObject(OutputListResult.class);
     }
 

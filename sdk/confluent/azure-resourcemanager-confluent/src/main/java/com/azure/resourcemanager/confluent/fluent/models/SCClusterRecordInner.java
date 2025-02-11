@@ -5,38 +5,38 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.ClusterStatusEntity;
 import com.azure.resourcemanager.confluent.models.SCClusterSpecEntity;
 import com.azure.resourcemanager.confluent.models.SCMetadataEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Details of cluster record.
  */
 @Fluent
-public final class SCClusterRecordInner {
+public final class SCClusterRecordInner implements JsonSerializable<SCClusterRecordInner> {
     /*
      * Type of cluster
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * Id of the cluster
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Cluster Properties
      */
-    @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
 
     /*
      * Display name of the cluster
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -192,5 +192,50 @@ public final class SCClusterRecordInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SCClusterRecordInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SCClusterRecordInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SCClusterRecordInner.
+     */
+    public static SCClusterRecordInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SCClusterRecordInner deserializedSCClusterRecordInner = new SCClusterRecordInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedSCClusterRecordInner.kind = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSCClusterRecordInner.id = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSCClusterRecordInner.innerProperties = ClusterProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSCClusterRecordInner.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSCClusterRecordInner;
+        });
     }
 }

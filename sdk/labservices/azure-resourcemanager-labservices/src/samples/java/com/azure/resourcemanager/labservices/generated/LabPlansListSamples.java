@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.labservices.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for LabPlans List. */
+/**
+ * Samples for LabPlans List.
+ */
 public final class LabPlansListSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/LabPlans/listLabPlans.json
+     * x-ms-original-file:
+     * specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/LabPlans/listLabPlans
+     * .json
      */
     /**
      * Sample code: listLabPlans.
-     *
+     * 
      * @param manager Entry point to LabServicesManager.
      */
     public static void listLabPlans(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.labPlans().list(null, Context.NONE);
+        manager.labPlans().list(null, com.azure.core.util.Context.NONE);
     }
 }

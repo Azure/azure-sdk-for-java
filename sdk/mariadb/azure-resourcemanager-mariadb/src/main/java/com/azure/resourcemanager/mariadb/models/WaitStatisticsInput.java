@@ -6,26 +6,33 @@ package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mariadb.fluent.models.WaitStatisticsInputProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Input to get wait statistics. */
+/**
+ * Input to get wait statistics.
+ */
 @Fluent
-public final class WaitStatisticsInput {
+public final class WaitStatisticsInput implements JsonSerializable<WaitStatisticsInput> {
     /*
      * The properties of a wait statistics input.
      */
-    @JsonProperty(value = "properties", required = true)
     private WaitStatisticsInputProperties innerProperties = new WaitStatisticsInputProperties();
 
-    /** Creates an instance of WaitStatisticsInput class. */
+    /**
+     * Creates an instance of WaitStatisticsInput class.
+     */
     public WaitStatisticsInput() {
     }
 
     /**
      * Get the innerProperties property: The properties of a wait statistics input.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WaitStatisticsInputProperties innerProperties() {
@@ -34,7 +41,7 @@ public final class WaitStatisticsInput {
 
     /**
      * Get the observationStartTime property: Observation start time.
-     *
+     * 
      * @return the observationStartTime value.
      */
     public OffsetDateTime observationStartTime() {
@@ -43,7 +50,7 @@ public final class WaitStatisticsInput {
 
     /**
      * Set the observationStartTime property: Observation start time.
-     *
+     * 
      * @param observationStartTime the observationStartTime value to set.
      * @return the WaitStatisticsInput object itself.
      */
@@ -57,7 +64,7 @@ public final class WaitStatisticsInput {
 
     /**
      * Get the observationEndTime property: Observation end time.
-     *
+     * 
      * @return the observationEndTime value.
      */
     public OffsetDateTime observationEndTime() {
@@ -66,7 +73,7 @@ public final class WaitStatisticsInput {
 
     /**
      * Set the observationEndTime property: Observation end time.
-     *
+     * 
      * @param observationEndTime the observationEndTime value to set.
      * @return the WaitStatisticsInput object itself.
      */
@@ -80,7 +87,7 @@ public final class WaitStatisticsInput {
 
     /**
      * Get the aggregationWindow property: Aggregation interval type in ISO 8601 format.
-     *
+     * 
      * @return the aggregationWindow value.
      */
     public String aggregationWindow() {
@@ -89,7 +96,7 @@ public final class WaitStatisticsInput {
 
     /**
      * Set the aggregationWindow property: Aggregation interval type in ISO 8601 format.
-     *
+     * 
      * @param aggregationWindow the aggregationWindow value to set.
      * @return the WaitStatisticsInput object itself.
      */
@@ -103,19 +110,55 @@ public final class WaitStatisticsInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model WaitStatisticsInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model WaitStatisticsInput"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WaitStatisticsInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WaitStatisticsInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WaitStatisticsInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WaitStatisticsInput.
+     */
+    public static WaitStatisticsInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WaitStatisticsInput deserializedWaitStatisticsInput = new WaitStatisticsInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedWaitStatisticsInput.innerProperties = WaitStatisticsInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWaitStatisticsInput;
+        });
+    }
 }

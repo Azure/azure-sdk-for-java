@@ -13,8 +13,7 @@ public final class SmartGroupModificationImpl implements SmartGroupModification 
 
     private final com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager;
 
-    SmartGroupModificationImpl(
-        SmartGroupModificationInner innerObject,
+    SmartGroupModificationImpl(SmartGroupModificationInner innerObject,
         com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

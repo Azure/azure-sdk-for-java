@@ -42,12 +42,12 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
         throws IOException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
+        String floorModelId
+            = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String roomModelId
+            = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String hvacModelId
+            = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
 
         String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, asyncClient,
             getRandomIntegerStringGenerator());
@@ -64,20 +64,19 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Connect the created twins via relationships
             String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId,
                 CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            String floorTwinCoolsRelationshipPayload = TestAssetsHelper.getRelationshipPayload(floorTwinId,
-                COOLS_RELATIONSHIP);
-            String floorTwinContainedInRelationshipPayload = TestAssetsHelper.getRelationshipPayload(floorTwinId,
-                CONTAINED_IN_RELATIONSHIP);
-            String floorCooledByHvacPayload = TestAssetsHelper.getRelationshipPayload(hvacTwinId,
-                COOLED_BY_RELATIONSHIP);
-            JsonPatchDocument floorContainsRoomUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload(
-                "/isAccessRestricted", false);
+            String floorTwinCoolsRelationshipPayload
+                = TestAssetsHelper.getRelationshipPayload(floorTwinId, COOLS_RELATIONSHIP);
+            String floorTwinContainedInRelationshipPayload
+                = TestAssetsHelper.getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
+            String floorCooledByHvacPayload
+                = TestAssetsHelper.getRelationshipPayload(hvacTwinId, COOLED_BY_RELATIONSHIP);
+            JsonPatchDocument floorContainsRoomUpdatePayload
+                = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
-            StepVerifier.create(
-                    asyncClient.createOrReplaceRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                        deserializeJsonString(floorContainsRoomPayload, BasicRelationship::fromJson),
-                        BasicRelationship.class))
+            StepVerifier.create(asyncClient.createOrReplaceRelationship(floorTwinId,
+                FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                deserializeJsonString(floorContainsRoomPayload, BasicRelationship::fromJson), BasicRelationship.class))
                 .assertNext(basicRelationship -> {
                     assertEquals(FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, basicRelationship.getId());
                     logger.info("Created {} relationship between source = {} and target = {}",
@@ -86,10 +85,9 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete();
 
             // Create relationship from Floor -> Hvac
-            StepVerifier.create(
-                    asyncClient.createOrReplaceRelationship(floorTwinId, FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID,
-                        deserializeJsonString(floorCooledByHvacPayload, BasicRelationship::fromJson),
-                        BasicRelationship.class))
+            StepVerifier.create(asyncClient.createOrReplaceRelationship(floorTwinId,
+                FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID,
+                deserializeJsonString(floorCooledByHvacPayload, BasicRelationship::fromJson), BasicRelationship.class))
                 .assertNext(basicRelationship -> {
                     assertEquals(FLOOR_COOLED_BY_HVAC_RELATIONSHIP_ID, basicRelationship.getId());
                     logger.info("Created {} relationship between source = {} and target = {}",
@@ -100,17 +98,15 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Create relationship from Hvac -> Floor
             StepVerifier.create(asyncClient.createOrReplaceRelationship(hvacTwinId, HVAC_COOLS_FLOOR_RELATIONSHIP_ID,
                 deserializeJsonString(floorTwinCoolsRelationshipPayload, BasicRelationship::fromJson),
-                BasicRelationship.class))
-                .assertNext(basicRelationship -> {
+                BasicRelationship.class)).assertNext(basicRelationship -> {
                     assertEquals(HVAC_COOLS_FLOOR_RELATIONSHIP_ID, basicRelationship.getId());
                     logger.info("Created {} relationship between source = {} and target = {}",
                         basicRelationship.getId(), basicRelationship.getSourceId(), basicRelationship.getTargetId());
-                })
-                .verifyComplete();
+                }).verifyComplete();
 
             // Create relationship from Room -> Floor
-            StepVerifier.create(
-                asyncClient.createOrReplaceRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+            StepVerifier
+                .create(asyncClient.createOrReplaceRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
                     deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship::fromJson),
                     BasicRelationship.class))
                 .assertNext(basicRelationship -> {
@@ -121,18 +117,17 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete();
 
             // Create a relation which already exists - should return status code 409 (Conflict).
-            StepVerifier.create(
-                asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
-                    floorTwinContainedInRelationshipPayload, String.class,
+            StepVerifier
+                .create(asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId,
+                    ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class,
                     new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_PRECON_FAILED));
 
             // Update relationships
 
             // Create relationship from Floor -> Room
-            StepVerifier.create(
-                asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorContainsRoomUpdatePayload, null))
+            StepVerifier.create(asyncClient.updateRelationshipWithResponse(floorTwinId,
+                FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorContainsRoomUpdatePayload, null))
                 .assertNext(voidDigitalTwinsResponse -> {
                     assertEquals(HTTP_NO_CONTENT, voidDigitalTwinsResponse.getStatusCode());
                     logger.info("Updated {} relationship successfully in source {}",
@@ -141,8 +136,9 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete();
 
             // GET relationship
-            StepVerifier.create(
-                asyncClient.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, BasicRelationship.class))
+            StepVerifier
+                .create(asyncClient.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                    BasicRelationship.class))
                 .assertNext(basicRelationship -> {
                     assertEquals(FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, basicRelationship.getId());
                     logger.info("Retrieved {} relationship under source {}", basicRelationship.getId(),
@@ -179,8 +175,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 Arrays.toString(relationshipsTargetIds.toArray()));
 
             // LIST relationship by name
-            StepVerifier.create(
-                    asyncClient.listRelationships(roomTwinId, CONTAINED_IN_RELATIONSHIP, BasicRelationship.class))
+            StepVerifier
+                .create(asyncClient.listRelationships(roomTwinId, CONTAINED_IN_RELATIONSHIP, BasicRelationship.class))
                 .assertNext(basicRelationship -> {
                     assertEquals(CONTAINED_IN_RELATIONSHIP, basicRelationship.getName());
                     assertEquals(floorTwinId, basicRelationship.getTargetId());
@@ -207,8 +203,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             logger.info("Deleted relationship {} for twin {}", HVAC_COOLS_FLOOR_RELATIONSHIP_ID, hvacTwinId);
 
             // GET a relationship which doesn't exist - should return status code 404 (Not Found).
-            StepVerifier.create(
-                    asyncClient.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, String.class))
+            StepVerifier
+                .create(asyncClient.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, String.class))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_NOT_FOUND));
 
         } finally {
@@ -221,15 +217,11 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             asyncClient.listRelationships(floorTwinId, BasicRelationship.class)
                 .doOnNext(relationships::add)
                 .blockLast();
-            asyncClient.listRelationships(roomTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            relationships.forEach(
-                basicRelationship -> asyncClient.deleteRelationship(basicRelationship.getSourceId(),
-                    basicRelationship.getId()).block());
+            asyncClient.listRelationships(roomTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            relationships.forEach(basicRelationship -> asyncClient
+                .deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId())
+                .block());
 
             // Now the twins and models can be deleted.
             logger.info("Deleting created digital twins.");
@@ -250,12 +242,12 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
     public void relationshipListOperationWithMultiplePages(HttpClient httpClient,
         DigitalTwinsServiceVersion serviceVersion) throws IOException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
-        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
+        String floorModelId
+            = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String roomModelId
+            = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String hvacModelId
+            = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
 
         String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, asyncClient,
             getRandomIntegerStringGenerator());
@@ -274,8 +266,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Connect the created twins via relationships
             String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId,
                 CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            String roomContainedInFloorPayload = TestAssetsHelper.getRelationshipPayload(floorTwinId,
-                CONTAINED_IN_RELATIONSHIP);
+            String roomContainedInFloorPayload
+                = TestAssetsHelper.getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
 
             // Create large number of relationships to test paging functionality
             // Relationship list api does not have max item count request option, so we have to create a large number of
@@ -283,7 +275,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Create relationships from Floor -> Room
             for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
                 String relationshipId = FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
-                StepVerifier.create(asyncClient.createOrReplaceRelationship(floorTwinId, relationshipId,
+                StepVerifier
+                    .create(asyncClient.createOrReplaceRelationship(floorTwinId, relationshipId,
                         deserializeJsonString(floorContainsRoomPayload, BasicRelationship::fromJson),
                         BasicRelationship.class))
                     .assertNext(response -> logger.info("Created relationship with Id {}", relationshipId))
@@ -298,7 +291,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // to the same floor.
             for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
                 String relationshipId = ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
-                StepVerifier.create(asyncClient.createOrReplaceRelationship(roomTwinId, relationshipId,
+                StepVerifier
+                    .create(asyncClient.createOrReplaceRelationship(roomTwinId, relationshipId,
                         deserializeJsonString(roomContainedInFloorPayload, BasicRelationship::fromJson),
                         BasicRelationship.class))
                     .assertNext(response -> logger.info("Created relationship with Id {}", relationshipId))
@@ -355,10 +349,10 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             logger.info("Deleting created relationships.");
             // Delete the created relationships.
-            createdOutgoingRelationshipIds.forEach(
-                relationshipId -> asyncClient.deleteRelationship(floorTwinId, relationshipId).block());
-            createdIncomingRelationshipIds.forEach(
-                relationshipId -> asyncClient.deleteRelationship(roomTwinId, relationshipId).block());
+            createdOutgoingRelationshipIds
+                .forEach(relationshipId -> asyncClient.deleteRelationship(floorTwinId, relationshipId).block());
+            createdIncomingRelationshipIds
+                .forEach(relationshipId -> asyncClient.deleteRelationship(roomTwinId, relationshipId).block());
 
             // Now the twins and models can be deleted.
             logger.info("Deleting created digital twins.");
@@ -380,12 +374,12 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
         DigitalTwinsServiceVersion serviceVersion) throws IOException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
+        String floorModelId
+            = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String roomModelId
+            = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String hvacModelId
+            = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
 
         String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, asyncClient,
             getRandomIntegerStringGenerator());
@@ -400,22 +394,22 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 hvacTwinId);
 
             // Connect the created twins via relationships
-            String floorTwinContainedInRelationshipPayload = TestAssetsHelper.getRelationshipPayload(floorTwinId,
-                CONTAINED_IN_RELATIONSHIP);
+            String floorTwinContainedInRelationshipPayload
+                = TestAssetsHelper.getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
 
             // Create relationship from Room -> Floor
-            StepVerifier.create(
-                asyncClient.createOrReplaceRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+            StepVerifier
+                .create(asyncClient.createOrReplaceRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
                     deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship::fromJson),
                     BasicRelationship.class))
-                .assertNext(basicRelationship -> logger.info(
-                    "Created {} relationship between source = {} and target = {}", basicRelationship.getId(),
-                    basicRelationship.getSourceId(), basicRelationship.getTargetId()))
+                .assertNext(
+                    basicRelationship -> logger.info("Created {} relationship between source = {} and target = {}",
+                        basicRelationship.getId(), basicRelationship.getSourceId(), basicRelationship.getTargetId()))
                 .verifyComplete();
 
-            StepVerifier.create(
-                asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
-                    floorTwinContainedInRelationshipPayload, String.class,
+            StepVerifier
+                .create(asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId,
+                    ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class,
                     new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_PRECON_FAILED));
 
@@ -433,15 +427,11 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             asyncClient.listRelationships(floorTwinId, BasicRelationship.class)
                 .doOnNext(relationships::add)
                 .blockLast();
-            asyncClient.listRelationships(roomTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            relationships.forEach(
-                basicRelationship -> asyncClient.deleteRelationship(basicRelationship.getSourceId(),
-                    basicRelationship.getId()).block());
+            asyncClient.listRelationships(roomTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            relationships.forEach(basicRelationship -> asyncClient
+                .deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId())
+                .block());
 
             // Now the twins and models can be deleted.
             logger.info("Deleting created digital twins.");
@@ -463,12 +453,12 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
         DigitalTwinsServiceVersion serviceVersion) throws IOException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
+        String floorModelId
+            = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String roomModelId
+            = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String hvacModelId
+            = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
 
         String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, asyncClient,
             getRandomIntegerStringGenerator());
@@ -483,22 +473,21 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 hvacTwinId);
 
             // Connect the created twins via relationships
-            String floorTwinContainedInRelationshipPayload = TestAssetsHelper.getRelationshipPayload(floorTwinId,
-                CONTAINED_IN_RELATIONSHIP);
+            String floorTwinContainedInRelationshipPayload
+                = TestAssetsHelper.getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
 
             // Create relationship from Room -> Floor
-            StepVerifier.create(
-                asyncClient.createOrReplaceRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+            StepVerifier
+                .create(asyncClient.createOrReplaceRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
                     deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship::fromJson),
                     BasicRelationship.class))
-                .assertNext(basicRelationship -> logger.info(
-                    "Created {} relationship between source = {} and target = {}", basicRelationship.getId(),
-                    basicRelationship.getSourceId(), basicRelationship.getTargetId()))
+                .assertNext(
+                    basicRelationship -> logger.info("Created {} relationship between source = {} and target = {}",
+                        basicRelationship.getId(), basicRelationship.getSourceId(), basicRelationship.getTargetId()))
                 .verifyComplete();
 
-            StepVerifier.create(
-                asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
-                    floorTwinContainedInRelationshipPayload, String.class, null)) // don't set ifMatchNone header
+            StepVerifier.create(asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId,
+                ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class, null)) // don't set ifMatchNone header
                 .expectNextCount(1) /* don't care as long as it is a success status code */
                 .verifyComplete();
 
@@ -516,15 +505,11 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             asyncClient.listRelationships(floorTwinId, BasicRelationship.class)
                 .doOnNext(relationships::add)
                 .blockLast();
-            asyncClient.listRelationships(roomTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            relationships.forEach(
-                basicRelationship -> asyncClient.deleteRelationship(basicRelationship.getSourceId(),
-                    basicRelationship.getId()).block());
+            asyncClient.listRelationships(roomTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            relationships.forEach(basicRelationship -> asyncClient
+                .deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId())
+                .block());
 
             // Now the twins and models can be deleted.
             logger.info("Deleting created digital twins.");
@@ -546,12 +531,12 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
         DigitalTwinsServiceVersion serviceVersion) throws IOException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
+        String floorModelId
+            = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String roomModelId
+            = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String hvacModelId
+            = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
 
         String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, asyncClient,
             getRandomIntegerStringGenerator());
@@ -568,8 +553,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Connect the created twins via relationships
             String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId,
                 CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            JsonPatchDocument floorContainsRoomUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload(
-                "/isAccessRestricted", false);
+            JsonPatchDocument floorContainsRoomUpdatePayload
+                = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
             AtomicReference<String> etagBeforeUpdate = new AtomicReference<>();
@@ -587,19 +572,19 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete();
 
             // Update relationship to make etag fall out of date
-            StepVerifier.create(
-                asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+            StepVerifier
+                .create(asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     floorContainsRoomUpdatePayload, null))
                 .assertNext(voidDigitalTwinsResponse -> logger.info("Updated {} relationship successfully in source {}",
                     FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId))
                 .verifyComplete();
 
-            JsonPatchDocument floorContainsRoomSecondUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload(
-                "/isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomSecondUpdatePayload
+                = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", true);
 
             // Try to update the relationship with the now out of date etag, expect it to throw a 412
-            StepVerifier.create(
-                asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+            StepVerifier
+                .create(asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     floorContainsRoomSecondUpdatePayload,
                     new UpdateRelationshipOptions().setIfMatch(etagBeforeUpdate.get())))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
@@ -618,15 +603,11 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             asyncClient.listRelationships(floorTwinId, BasicRelationship.class)
                 .doOnNext(relationships::add)
                 .blockLast();
-            asyncClient.listRelationships(roomTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            relationships.forEach(
-                basicRelationship -> asyncClient.deleteRelationship(basicRelationship.getSourceId(),
-                    basicRelationship.getId()).block());
+            asyncClient.listRelationships(roomTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            relationships.forEach(basicRelationship -> asyncClient
+                .deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId())
+                .block());
 
             // Now the twins and models can be deleted.
             logger.info("Deleting created digital twins.");
@@ -648,12 +629,12 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
         DigitalTwinsServiceVersion serviceVersion) throws IOException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
+        String floorModelId
+            = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String roomModelId
+            = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String hvacModelId
+            = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
 
         String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, asyncClient,
             getRandomIntegerStringGenerator());
@@ -670,12 +651,13 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Connect the created twins via relationships
             String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId,
                 CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            JsonPatchDocument floorContainsRoomUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload(
-                "/isAccessRestricted", false);
+            JsonPatchDocument floorContainsRoomUpdatePayload
+                = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
-            StepVerifier.create(
-                asyncClient.createOrReplaceRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+            StepVerifier
+                .create(asyncClient.createOrReplaceRelationshipWithResponse(floorTwinId,
+                    FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     deserializeJsonString(floorContainsRoomPayload, BasicRelationship::fromJson),
                     BasicRelationship.class, null))
                 .assertNext(basicRelationshipResponse -> logger.info(
@@ -685,9 +667,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete();
 
             AtomicReference<String> upToDateETag = new AtomicReference<>();
-            StepVerifier.create(
-                asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorContainsRoomUpdatePayload, null))
+            StepVerifier.create(asyncClient.updateRelationshipWithResponse(floorTwinId,
+                FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorContainsRoomUpdatePayload, null))
                 .assertNext(voidDigitalTwinsResponse -> {
                     upToDateETag.set(voidDigitalTwinsResponse.getDeserializedHeaders().getETag());
                     logger.info("Updated {} relationship successfully in source {}",
@@ -695,12 +676,12 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 })
                 .verifyComplete();
 
-            JsonPatchDocument floorContainsRoomSecondUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload(
-                "/isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomSecondUpdatePayload
+                = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", true);
 
             // Try to update the relationship with an up to date ETag
-            StepVerifier.create(
-                asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+            StepVerifier
+                .create(asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     floorContainsRoomSecondUpdatePayload,
                     new UpdateRelationshipOptions().setIfMatch(upToDateETag.get())))
                 .expectNextCount(1) /* don't care as long as it is a success status code */
@@ -720,15 +701,11 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             asyncClient.listRelationships(floorTwinId, BasicRelationship.class)
                 .doOnNext(relationships::add)
                 .blockLast();
-            asyncClient.listRelationships(roomTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            relationships.forEach(
-                basicRelationship -> asyncClient.deleteRelationship(basicRelationship.getSourceId(),
-                    basicRelationship.getId()).block());
+            asyncClient.listRelationships(roomTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            relationships.forEach(basicRelationship -> asyncClient
+                .deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId())
+                .block());
 
             // Now the twins and models can be deleted.
             logger.info("Deleting created digital twins.");
@@ -750,12 +727,12 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
         DigitalTwinsServiceVersion serviceVersion) throws IOException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
+        String floorModelId
+            = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String roomModelId
+            = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String hvacModelId
+            = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
 
         String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, asyncClient,
             getRandomIntegerStringGenerator());
@@ -772,8 +749,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Connect the created twins via relationships
             String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId,
                 CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            JsonPatchDocument floorContainsRoomUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload(
-                "/isAccessRestricted", false);
+            JsonPatchDocument floorContainsRoomUpdatePayload
+                = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
             AtomicReference<String> etagBeforeUpdate = new AtomicReference<>();
@@ -791,16 +768,16 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete();
 
             // Update relationship to make etag fall out of date
-            StepVerifier.create(
-                asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+            StepVerifier
+                .create(asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     floorContainsRoomUpdatePayload, null))
                 .assertNext(voidDigitalTwinsResponse -> logger.info("Updated {} relationship successfully in source {}",
                     FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId))
                 .verifyComplete();
 
             // Try to delete the relationship with the now out of date etag, expect it to throw a 412
-            StepVerifier.create(
-                asyncClient.deleteRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+            StepVerifier
+                .create(asyncClient.deleteRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     new DeleteRelationshipOptions().setIfMatch(etagBeforeUpdate.get())))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
 
@@ -815,15 +792,11 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             asyncClient.listRelationships(floorTwinId, BasicRelationship.class)
                 .doOnNext(relationships::add)
                 .blockLast();
-            asyncClient.listRelationships(roomTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            relationships.forEach(
-                basicRelationship -> asyncClient.deleteRelationship(basicRelationship.getSourceId(),
-                    basicRelationship.getId()).block());
+            asyncClient.listRelationships(roomTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            relationships.forEach(basicRelationship -> asyncClient
+                .deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId())
+                .block());
 
             // Now the twins and models can be deleted.
             logger.info("Deleting created digital twins.");
@@ -845,12 +818,12 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
         DigitalTwinsServiceVersion serviceVersion) throws IOException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
-        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient,
-            getRandomIntegerStringGenerator());
+        String floorModelId
+            = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String roomModelId
+            = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String hvacModelId
+            = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
 
         String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, asyncClient,
             getRandomIntegerStringGenerator());
@@ -867,12 +840,13 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Connect the created twins via relationships
             String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId,
                 CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            JsonPatchDocument floorContainsRoomUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload(
-                "/isAccessRestricted", false);
+            JsonPatchDocument floorContainsRoomUpdatePayload
+                = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
-            StepVerifier.create(
-                asyncClient.createOrReplaceRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+            StepVerifier
+                .create(asyncClient.createOrReplaceRelationshipWithResponse(floorTwinId,
+                    FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     deserializeJsonString(floorContainsRoomPayload, BasicRelationship::fromJson),
                     BasicRelationship.class, null))
                 .assertNext(basicRelationshipResponse -> logger.info(
@@ -882,9 +856,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete();
 
             AtomicReference<String> upToDateETag = new AtomicReference<>();
-            StepVerifier.create(
-                asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorContainsRoomUpdatePayload, null))
+            StepVerifier.create(asyncClient.updateRelationshipWithResponse(floorTwinId,
+                FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorContainsRoomUpdatePayload, null))
                 .assertNext(voidDigitalTwinsResponse -> {
                     upToDateETag.set(voidDigitalTwinsResponse.getDeserializedHeaders().getETag());
                     logger.info("Updated {} relationship successfully in source {}",
@@ -893,8 +866,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete();
 
             // Try to delete the relationship with an up to date ETag
-            StepVerifier.create(
-                asyncClient.deleteRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+            StepVerifier
+                .create(asyncClient.deleteRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     new DeleteRelationshipOptions().setIfMatch(upToDateETag.get())))
                 .expectNextCount(1) /* don't care as long as it is a success status code */
                 .verifyComplete();
@@ -910,15 +883,11 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             asyncClient.listRelationships(floorTwinId, BasicRelationship.class)
                 .doOnNext(relationships::add)
                 .blockLast();
-            asyncClient.listRelationships(roomTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class)
-                .doOnNext(relationships::add)
-                .blockLast();
-            relationships.forEach(
-                basicRelationship -> asyncClient.deleteRelationship(basicRelationship.getSourceId(),
-                    basicRelationship.getId()).block());
+            asyncClient.listRelationships(roomTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            asyncClient.listRelationships(hvacTwinId, BasicRelationship.class).doOnNext(relationships::add).blockLast();
+            relationships.forEach(basicRelationship -> asyncClient
+                .deleteRelationship(basicRelationship.getSourceId(), basicRelationship.getId())
+                .block());
 
             // Now the twins and models can be deleted.
             logger.info("Deleting created digital twins.");
@@ -942,21 +911,24 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 .verifyComplete());
 
         // Create floor twin
-        createFloorTwinRunner(floorTwinId, floorModelId, (twinId, twin) -> StepVerifier.create(
-                asyncClient.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class))
-            .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
-            .verifyComplete());
+        createFloorTwinRunner(floorTwinId, floorModelId,
+            (twinId, twin) -> StepVerifier
+                .create(asyncClient.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class))
+                .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
+                .verifyComplete());
 
         // Create room twin
-        createRoomTwinRunner(roomTwinId, roomModelId, (twinId, twin) -> StepVerifier.create(
-                asyncClient.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class))
-            .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
-            .verifyComplete());
+        createRoomTwinRunner(roomTwinId, roomModelId,
+            (twinId, twin) -> StepVerifier
+                .create(asyncClient.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class))
+                .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
+                .verifyComplete());
 
         // Create hvac twin
-        createHvacTwinRunner(hvacTwinId, hvacModelId, (twinId, twin) -> StepVerifier.create(
-                asyncClient.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class))
-            .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
-            .verifyComplete());
+        createHvacTwinRunner(hvacTwinId, hvacModelId,
+            (twinId, twin) -> StepVerifier
+                .create(asyncClient.createOrReplaceDigitalTwin(twinId, twin, BasicDigitalTwin.class))
+                .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
+                .verifyComplete());
     }
 }

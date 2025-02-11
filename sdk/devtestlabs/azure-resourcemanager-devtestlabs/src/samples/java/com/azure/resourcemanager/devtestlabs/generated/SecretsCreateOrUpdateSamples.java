@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.devtestlabs.generated;
 
-/** Samples for Secrets CreateOrUpdate. */
+/**
+ * Samples for Secrets CreateOrUpdate.
+ */
 public final class SecretsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_CreateOrUpdate
+     * .json
      */
     /**
      * Sample code: Secrets_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void secretsCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .secrets()
+        manager.secrets()
             .define("{secretName}")
             .withRegion((String) null)
             .withExistingUser("resourceGroupName", "{labName}", "{userName}")

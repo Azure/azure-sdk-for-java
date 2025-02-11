@@ -80,29 +80,32 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         ServiceBusProcessorClient processor;
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            AmqpRetryOptions amqpRetryOptions = new AmqpRetryOptions()
-                .setTryTimeout(Duration.ofSeconds(2 * lockTimeoutDurationSeconds));
+            AmqpRetryOptions amqpRetryOptions
+                = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(2 * lockTimeoutDurationSeconds));
             processor = toClose(getSessionProcessorBuilder(entityType, entityIndex, false, amqpRetryOptions)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
-                .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
+                .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime,
+                    lockTimeoutDurationSeconds))
                 .processError(context -> processError(context, countDownLatch))
                 .buildProcessorClient());
 
         } else {
-            processor = toClose(getProcessorBuilder(entityType, entityIndex, false)
-                .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
-                .disableAutoComplete()
-                .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
-                .processError(context -> processError(context, countDownLatch))
-                .buildProcessorClient());
+            processor = toClose(
+                getProcessorBuilder(entityType, entityIndex, false).maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
+                    .disableAutoComplete()
+                    .processMessage(context -> processMessage(context, countDownLatch, messageId,
+                        lastMessageReceivedTime, lockTimeoutDurationSeconds))
+                    .processError(context -> processError(context, countDownLatch))
+                    .buildProcessorClient());
         }
 
         // Assert & Act
         processor.start();
         toClose((AutoCloseable) () -> processor.stop());
 
-        assertTrue(countDownLatch.await(lockTimeoutDurationSeconds * 6, TimeUnit.SECONDS), "Message not arrived, closing processor.");
+        assertTrue(countDownLatch.await(lockTimeoutDurationSeconds * 6, TimeUnit.SECONDS),
+            "Message not arrived, closing processor.");
         LOGGER.info("Message lock has been renewed. Now closing processor");
     }
 
@@ -114,8 +117,8 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
         ServiceBusSenderAsyncClient sender = createSender(entityType, entityIndex, true);
 
-        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder  processorBuilder =
-            getSessionProcessorBuilder(entityType, entityIndex, false, RETRY_OPTIONS)
+        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorBuilder
+            = getSessionProcessorBuilder(entityType, entityIndex, false, RETRY_OPTIONS)
                 .sessionIdleTimeout(sessionIdleTimeout)
                 .disableAutoComplete();
 
@@ -129,35 +132,34 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         final Duration tryTimeout = Duration.ofSeconds(3);
 
         ServiceBusSenderAsyncClient sender = createSender(entityType, entityIndex, true);
-        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder  processorBuilder =
-            getSessionProcessorBuilder(entityType, entityIndex, false,
-                    new AmqpRetryOptions().setTryTimeout(tryTimeout))
-                .disableAutoComplete();
+        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorBuilder
+            = getSessionProcessorBuilder(entityType, entityIndex, false,
+                new AmqpRetryOptions().setTryTimeout(tryTimeout)).disableAutoComplete();
 
         rollingSessionTest(sender, processorBuilder);
     }
 
-    void rollingSessionTest(ServiceBusSenderAsyncClient sender, ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorBuilder) throws InterruptedException {
+    void rollingSessionTest(ServiceBusSenderAsyncClient sender,
+        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorBuilder) throws InterruptedException {
         final String contents = "Some-contents";
         final String randomPrefix = UUID.randomUUID().toString();
-        ServiceBusMessage message0 = getServiceBusMessage(contents, randomPrefix + "0").setSessionId(randomPrefix + "0");
-        ServiceBusMessage message1 = getServiceBusMessage(contents, randomPrefix + "1").setSessionId(randomPrefix + "1");
+        ServiceBusMessage message0
+            = getServiceBusMessage(contents, randomPrefix + "0").setSessionId(randomPrefix + "0");
+        ServiceBusMessage message1
+            = getServiceBusMessage(contents, randomPrefix + "1").setSessionId(randomPrefix + "1");
 
         CountDownLatch latch = new CountDownLatch(2);
-        ServiceBusProcessorClient processor = toClose(processorBuilder
-            .processMessage(context -> {
-                ServiceBusReceivedMessage received = context.getMessage();
-                context.complete();
+        ServiceBusProcessorClient processor = toClose(processorBuilder.processMessage(context -> {
+            ServiceBusReceivedMessage received = context.getMessage();
+            context.complete();
 
-                if (received.getMessageId().startsWith(randomPrefix)) {
-                    latch.countDown();
-                    if (message0.getMessageId().equals(received.getMessageId())) {
-                        sendMessage(sender, message1).block();
-                    }
+            if (received.getMessageId().startsWith(randomPrefix)) {
+                latch.countDown();
+                if (message0.getMessageId().equals(received.getMessageId())) {
+                    sendMessage(sender, message1).block();
                 }
-            })
-            .processError(context -> fail(context.getException()))
-            .buildProcessorClient());
+            }
+        }).processError(context -> fail(context.getException())).buildProcessorClient());
 
         processor.start();
         sendMessage(sender, message0).block();
@@ -173,21 +175,24 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         if (message.getMessageId().equals(expectedMessageId)) {
             LOGGER.info("Processing message. Session: {}, Sequence #: {}. Contents: {}", message.getMessageId(),
                 message.getSequenceNumber(), message.getBody());
-            if (lastMessageReceivedTime.get() ==  null) {
+            if (lastMessageReceivedTime.get() == null) {
                 lastMessageReceivedTime.set(OffsetTime.now());
                 countDownLatch.countDown();
             } else {
-                long messageReceivedAfterSeconds = Duration.between(lastMessageReceivedTime.get(), OffsetTime.now()).getSeconds();
-                LOGGER.info("Processing message again. Session: {}, Sequence #: {}. Contents: {}, message received after {} seconds.", message.getMessageId(),
-                    message.getSequenceNumber(), message.getBody(), messageReceivedAfterSeconds);
+                long messageReceivedAfterSeconds
+                    = Duration.between(lastMessageReceivedTime.get(), OffsetTime.now()).getSeconds();
+                LOGGER.info(
+                    "Processing message again. Session: {}, Sequence #: {}. Contents: {}, message received after {} seconds.",
+                    message.getMessageId(), message.getSequenceNumber(), message.getBody(),
+                    messageReceivedAfterSeconds);
                 // Ensure that the lock is renewed and message is received again after atlest one lock renew
                 if (messageReceivedAfterSeconds >= 2 * lockTimeoutDurationSeconds) {
                     countDownLatch.countDown();
                 }
             }
         } else {
-            LOGGER.info("Received message, message id did not match. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
-                message.getSequenceNumber(), message.getBody());
+            LOGGER.info("Received message, message id did not match. Session: %s, Sequence #: %s. Contents: %s%n",
+                message.getMessageId(), message.getSequenceNumber(), message.getBody());
         }
     }
 
@@ -206,6 +211,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
                 return builder.processor().queueName(queueName);
+
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
                 final String subscriptionName = getSubscriptionBaseName();
@@ -213,13 +219,14 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
                 return builder.processor().topicName(topicName).subscriptionName(subscriptionName);
+
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
-    private ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(MessagingEntityType entityType,
-        int entityIndex, boolean sharedConnection, AmqpRetryOptions amqpRetryOptions) {
+    private ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(
+        MessagingEntityType entityType, int entityIndex, boolean sharedConnection, AmqpRetryOptions amqpRetryOptions) {
 
         ServiceBusClientBuilder builder = getBuilder(sharedConnection);
         builder.retryOptions(amqpRetryOptions);
@@ -228,26 +235,24 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             case QUEUE:
                 final String queueName = getSessionQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
-                return builder
-                    .sessionProcessor()
-                    .queueName(queueName);
+                return builder.sessionProcessor().queueName(queueName);
 
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
                 final String subscriptionName = getSessionSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-                return builder.sessionProcessor()
-                    .topicName(topicName).subscriptionName(subscriptionName);
+                return builder.sessionProcessor().topicName(topicName).subscriptionName(subscriptionName);
+
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
-    private ServiceBusSenderAsyncClient createSender(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
+    private ServiceBusSenderAsyncClient createSender(MessagingEntityType entityType, int entityIndex,
+        boolean isSessionEnabled) {
         final boolean shareConnection = false;
-        return toClose(getSenderBuilder(entityType, entityIndex, isSessionEnabled, shareConnection)
-            .buildAsyncClient());
+        return toClose(getSenderBuilder(entityType, entityIndex, isSessionEnabled, shareConnection).buildAsyncClient());
     }
 
     private Mono<Void> sendMessage(ServiceBusSenderAsyncClient sender, ServiceBusMessage message) {

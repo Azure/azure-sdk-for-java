@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of InternetGateways. */
+/**
+ * Resource collection API of InternetGateways.
+ */
 public interface InternetGateways {
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface InternetGateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Internet Gateway resource definition along with {@link Response}.
      */
-    Response<InternetGateway> getByResourceGroupWithResponse(
-        String resourceGroupName, String internetGatewayName, Context context);
+    Response<InternetGateway> getByResourceGroupWithResponse(String resourceGroupName, String internetGatewayName,
+        Context context);
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface InternetGateways {
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface InternetGateways {
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface InternetGateways {
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface InternetGateways {
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface InternetGateways {
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of InternetGateways as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface InternetGateways {
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface InternetGateways {
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +135,9 @@ public interface InternetGateways {
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +149,9 @@ public interface InternetGateways {
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,9 +161,9 @@ public interface InternetGateways {
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +174,7 @@ public interface InternetGateways {
 
     /**
      * Begins definition for a new InternetGateway resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new InternetGateway definition.
      */

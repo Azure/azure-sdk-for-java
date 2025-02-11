@@ -5,7 +5,12 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
+import com.azure.communication.jobrouter.implementation.converters.OptionBagAdapters;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateQueueOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.RouterQueue;
@@ -25,11 +30,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
-import com.azure.communication.jobrouter.implementation.converters.OptionBagAdapters;
-import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateQueueOptions;
 
 /**
  * Initializes a new instance of the synchronous JobRouterAdministrationClient type.
@@ -64,7 +64,8 @@ public final class JobRouterAdministrationClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -77,11 +78,13 @@ public final class JobRouterAdministrationClient {
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -94,7 +97,8 @@ public final class JobRouterAdministrationClient {
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param distributionPolicyId Id of a distribution policy.
      * @param resource The resource instance.
@@ -145,7 +149,8 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     distributionPolicyId: String (Required)
      *     name: String (Optional)
@@ -156,12 +161,14 @@ public final class JobRouterAdministrationClient {
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     distributionPolicyId: String (Required)
      *     name: String (Optional)
@@ -172,7 +179,8 @@ public final class JobRouterAdministrationClient {
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param distributionPolicyId The unique identifier of the policy.
      * @param resource The resource instance.
@@ -222,7 +230,8 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     distributionPolicyId: String (Required)
      *     name: String (Optional)
@@ -233,12 +242,14 @@ public final class JobRouterAdministrationClient {
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     distributionPolicyId: String (Required)
      *     name: String (Optional)
@@ -249,7 +260,8 @@ public final class JobRouterAdministrationClient {
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param distributionPolicyId The unique identifier of the policy.
      * @param resource The resource instance.
@@ -322,7 +334,8 @@ public final class JobRouterAdministrationClient {
      * Retrieves an existing distribution policy by Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -335,7 +348,8 @@ public final class JobRouterAdministrationClient {
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param distributionPolicyId Id of a distribution policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -363,7 +377,8 @@ public final class JobRouterAdministrationClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -376,7 +391,8 @@ public final class JobRouterAdministrationClient {
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -423,7 +439,8 @@ public final class JobRouterAdministrationClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -443,11 +460,13 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -467,7 +486,8 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param classificationPolicyId Id of a classification policy.
      * @param resource The resource instance.
@@ -519,7 +539,8 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classificationPolicyId: String (Required)
      *     name: String (Optional)
@@ -535,12 +556,14 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classificationPolicyId: String (Required)
      *     name: String (Optional)
@@ -556,7 +579,8 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param classificationPolicyId Unique identifier of this policy.
      * @param resource The resource instance.
@@ -607,7 +631,8 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classificationPolicyId: String (Required)
      *     name: String (Optional)
@@ -623,12 +648,14 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classificationPolicyId: String (Required)
      *     name: String (Optional)
@@ -644,7 +671,8 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param classificationPolicyId Unique identifier of this policy.
      * @param resource The resource instance.
@@ -720,7 +748,8 @@ public final class JobRouterAdministrationClient {
      * Retrieves an existing classification policy by Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -740,7 +769,8 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param classificationPolicyId Id of a classification policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -768,7 +798,8 @@ public final class JobRouterAdministrationClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -788,7 +819,8 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -835,7 +867,8 @@ public final class JobRouterAdministrationClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -855,11 +888,13 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -879,7 +914,8 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param exceptionPolicyId Id of an exception policy.
      * @param resource The resource instance.
@@ -930,7 +966,8 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     exceptionPolicyId: String (Required)
      *     name: String (Optional)
@@ -945,12 +982,14 @@ public final class JobRouterAdministrationClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     exceptionPolicyId: String (Required)
      *     name: String (Optional)
@@ -965,7 +1004,8 @@ public final class JobRouterAdministrationClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param exceptionPolicyId The Id of the exception policy.
      * @param resource The resource instance.
@@ -1015,7 +1055,8 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     exceptionPolicyId: String (Required)
      *     name: String (Optional)
@@ -1030,12 +1071,14 @@ public final class JobRouterAdministrationClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     exceptionPolicyId: String (Required)
      *     name: String (Optional)
@@ -1050,7 +1093,8 @@ public final class JobRouterAdministrationClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param exceptionPolicyId The Id of the exception policy.
      * @param resource The resource instance.
@@ -1122,7 +1166,8 @@ public final class JobRouterAdministrationClient {
      * Retrieves an existing exception policy by Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1142,7 +1187,8 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param exceptionPolicyId Id of an exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1184,7 +1230,8 @@ public final class JobRouterAdministrationClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1202,7 +1249,8 @@ public final class JobRouterAdministrationClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1247,7 +1295,8 @@ public final class JobRouterAdministrationClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1258,11 +1307,13 @@ public final class JobRouterAdministrationClient {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1273,7 +1324,8 @@ public final class JobRouterAdministrationClient {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param queueId Id of a queue.
      * @param resource The resource instance.
@@ -1323,7 +1375,8 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     queueId: String (Required)
      *     name: String (Optional)
@@ -1333,12 +1386,14 @@ public final class JobRouterAdministrationClient {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     queueId: String (Required)
      *     name: String (Optional)
@@ -1348,7 +1403,8 @@ public final class JobRouterAdministrationClient {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param queueId The Id of this queue.
      * @param resource RouterQueue resource.
@@ -1398,7 +1454,8 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     queueId: String (Required)
      *     name: String (Optional)
@@ -1408,12 +1465,14 @@ public final class JobRouterAdministrationClient {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     queueId: String (Required)
      *     name: String (Optional)
@@ -1423,7 +1482,8 @@ public final class JobRouterAdministrationClient {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param queueId The Id of this queue.
      * @param resource RouterQueue resource.
@@ -1491,7 +1551,8 @@ public final class JobRouterAdministrationClient {
      * Retrieves an existing queue by Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1502,7 +1563,8 @@ public final class JobRouterAdministrationClient {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param queueId Id of a queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1529,7 +1591,8 @@ public final class JobRouterAdministrationClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1540,7 +1603,8 @@ public final class JobRouterAdministrationClient {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

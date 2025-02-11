@@ -40,12 +40,21 @@ public final class AccessListRoleBindingsSuccessResponseInnerTests {
     public void testSerialize() throws Exception {
         AccessListRoleBindingsSuccessResponseInner model
             = new AccessListRoleBindingsSuccessResponseInner().withKind("bzdopcj")
-                .withMetadata(new ConfluentListMetadata().withFirst("hdldwmgxcxrsl").withLast("utwu")
-                    .withPrev("grpkhjwniyqs").withNext("i").withTotalSize(1317619791))
-                .withData(Arrays.asList(new RoleBindingRecord().withKind("zzlvmbmpaxmodfv").withId("fy")
-                    .withMetadata(new MetadataEntity().withSelf("pfvmwyhrfou").withResourceName("taakc")
-                        .withCreatedAt("iyzvqtmnub").withUpdatedAt("kpzksmondjmq").withDeletedAt("vypomgkopkwho"))
-                    .withPrincipal("pajqgxysm").withRoleName("mbqfqvmk").withCrnPattern("oz")));
+                .withMetadata(new ConfluentListMetadata().withFirst("hdldwmgxcxrsl")
+                    .withLast("utwu")
+                    .withPrev("grpkhjwniyqs")
+                    .withNext("i")
+                    .withTotalSize(1317619791))
+                .withData(Arrays.asList(new RoleBindingRecord().withKind("zzlvmbmpaxmodfv")
+                    .withId("fy")
+                    .withMetadata(new MetadataEntity().withSelf("pfvmwyhrfou")
+                        .withResourceName("taakc")
+                        .withCreatedAt("iyzvqtmnub")
+                        .withUpdatedAt("kpzksmondjmq")
+                        .withDeletedAt("vypomgkopkwho"))
+                    .withPrincipal("pajqgxysm")
+                    .withRoleName("mbqfqvmk")
+                    .withCrnPattern("oz")));
         model = BinaryData.fromObject(model).toObject(AccessListRoleBindingsSuccessResponseInner.class);
         Assertions.assertEquals("bzdopcj", model.kind());
         Assertions.assertEquals("hdldwmgxcxrsl", model.metadata().first());

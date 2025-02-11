@@ -21,8 +21,9 @@ public final class CertificatesRetrieveProofOfPossessionNonceSamples {
      */
     public static void
         certificatesRetrieveProofOfPossessionNonce(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.certificates().retrieveProofOfPossessionNonceWithResponse("MyResourceGroup1", "MyCatalog1", "active",
-            new ProofOfPossessionNonceRequest().withProofOfPossessionNonce("proofOfPossessionNonce"),
-            com.azure.core.util.Context.NONE);
+        manager.certificates()
+            .retrieveProofOfPossessionNonceWithResponse("MyResourceGroup1", "MyCatalog1", "active",
+                new ProofOfPossessionNonceRequest().withProofOfPossessionNonce("proofOfPossessionNonce"),
+                com.azure.core.util.Context.NONE);
     }
 }

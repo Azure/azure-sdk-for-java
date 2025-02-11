@@ -11,18 +11,19 @@ public final class CommonDataServiceForAppsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommonDataServiceForAppsSource model = BinaryData.fromString(
-            "{\"type\":\"CommonDataServiceForAppsSource\",\"query\":\"datajstncjwze\",\"additionalColumns\":\"dataezltlundkjphvh\",\"sourceRetryCount\":\"dataivsh\",\"sourceRetryWait\":\"datax\",\"maxConcurrentConnections\":\"datajythxearlpnajjt\",\"disableMetricsCollection\":\"datalyd\",\"\":{\"gucdfxglrcj\":\"dataxbungmpnry\",\"jcwuzanpoyrqjoni\":\"datagoazzy\",\"cloq\":\"datanyhzestt\",\"hfmzeufjzqaqeqc\":\"datagzdbonep\"}}")
+            "{\"type\":\"CommonDataServiceForAppsSource\",\"query\":\"dataljzrqw\",\"additionalColumns\":\"dataswemotjkejy\",\"sourceRetryCount\":\"datakyjvctqaqcz\",\"sourceRetryWait\":\"datapaeyklxsvcbr\",\"maxConcurrentConnections\":\"datalt\",\"disableMetricsCollection\":\"datamdsngoaofmrph\",\"\":{\"exibo\":\"datafrunkcgdnha\"}}")
             .toObject(CommonDataServiceForAppsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommonDataServiceForAppsSource model = new CommonDataServiceForAppsSource().withSourceRetryCount("dataivsh")
-            .withSourceRetryWait("datax")
-            .withMaxConcurrentConnections("datajythxearlpnajjt")
-            .withDisableMetricsCollection("datalyd")
-            .withQuery("datajstncjwze")
-            .withAdditionalColumns("dataezltlundkjphvh");
+        CommonDataServiceForAppsSource model
+            = new CommonDataServiceForAppsSource().withSourceRetryCount("datakyjvctqaqcz")
+                .withSourceRetryWait("datapaeyklxsvcbr")
+                .withMaxConcurrentConnections("datalt")
+                .withDisableMetricsCollection("datamdsngoaofmrph")
+                .withQuery("dataljzrqw")
+                .withAdditionalColumns("dataswemotjkejy");
         model = BinaryData.fromObject(model).toObject(CommonDataServiceForAppsSource.class);
     }
 }

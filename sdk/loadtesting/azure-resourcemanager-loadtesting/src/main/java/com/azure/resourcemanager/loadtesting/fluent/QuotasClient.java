@@ -13,38 +13,40 @@ import com.azure.resourcemanager.loadtesting.fluent.models.CheckQuotaAvailabilit
 import com.azure.resourcemanager.loadtesting.fluent.models.QuotaResourceInner;
 import com.azure.resourcemanager.loadtesting.models.QuotaBucketRequest;
 
-/** An instance of this class provides access to all the operations defined in QuotasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in QuotasClient.
+ */
 public interface QuotasClient {
     /**
-     * Lists all the available quota per region per subscription.
-     *
-     * @param location The name of Azure region.
+     * List quotas for a given subscription Id.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects as paginated response with {@link PagedIterable}.
+     * @return the response of a QuotaResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<QuotaResourceInner> list(String location);
 
     /**
-     * Lists all the available quota per region per subscription.
-     *
-     * @param location The name of Azure region.
+     * List quotas for a given subscription Id.
+     * 
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects as paginated response with {@link PagedIterable}.
+     * @return the response of a QuotaResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<QuotaResourceInner> list(String location, Context context);
 
     /**
      * Get the available quota for a quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,9 +58,9 @@ public interface QuotasClient {
 
     /**
      * Get the available quota for a quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -69,10 +71,10 @@ public interface QuotasClient {
 
     /**
      * Check Quota Availability on quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
-     * @param quotaBucketRequest Quota Bucket Request data.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -80,21 +82,21 @@ public interface QuotasClient {
      * @return check quota availability response object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckQuotaAvailabilityResponseInner> checkAvailabilityWithResponse(
-        String location, String quotaBucketName, QuotaBucketRequest quotaBucketRequest, Context context);
+    Response<CheckQuotaAvailabilityResponseInner> checkAvailabilityWithResponse(String location, String quotaBucketName,
+        QuotaBucketRequest body, Context context);
 
     /**
      * Check Quota Availability on quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
-     * @param quotaBucketRequest Quota Bucket Request data.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return check quota availability response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckQuotaAvailabilityResponseInner checkAvailability(
-        String location, String quotaBucketName, QuotaBucketRequest quotaBucketRequest);
+    CheckQuotaAvailabilityResponseInner checkAvailability(String location, String quotaBucketName,
+        QuotaBucketRequest body);
 }

@@ -11,7 +11,8 @@ import com.azure.resourcemanager.devcenter.models.Pool;
  */
 public final class PoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Pools_Patch.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Pools_Patch.json
      */
     /**
      * Sample code: Pools_Update.

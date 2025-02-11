@@ -22,16 +22,12 @@ public class CallDialogAsyncUnitTests {
     @Test
     public void startDialogWithResponseTest() {
         // override callDialog to mock 201 response code
-        CallConnectionAsync callConnectionAsync =
-            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>(generateDialogStateResponse(), 201)))
-            );
+        CallConnectionAsync callConnectionAsync = CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
+            Collections.singletonList(new AbstractMap.SimpleEntry<>(generateDialogStateResponse(), 201))));
         callDialogAsync = callConnectionAsync.getCallDialogAsync();
 
         Map<String, Object> dialogContext = new HashMap<>();
-        StartDialogOptions options = new StartDialogOptions(
-            DialogInputType.POWER_VIRTUAL_AGENTS,
-            dialogContext);
+        StartDialogOptions options = new StartDialogOptions(DialogInputType.POWER_VIRTUAL_AGENTS, dialogContext);
 
         options.setOperationContext("operationContext");
         options.setBotId(BOT_APP_ID);
@@ -45,10 +41,8 @@ public class CallDialogAsyncUnitTests {
     @Test
     public void stopDialogWithResponseTest() {
         // override callDialog to mock 204 response code
-        CallConnectionAsync callConnectionAsync =
-            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 204)))
-            );
+        CallConnectionAsync callConnectionAsync = CallAutomationUnitTestBase
+            .getCallConnectionAsync(new ArrayList<>(Collections.singletonList(new AbstractMap.SimpleEntry<>("", 204))));
         callDialogAsync = callConnectionAsync.getCallDialogAsync();
 
         Response<Void> response = callDialogAsync.stopDialogWithResponse(DIALOG_ID).block();

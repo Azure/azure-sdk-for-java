@@ -13,15 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ClassificationRulesDelete {
     public static void main(String[] args) {
-        ClassificationRulesClient classificationRulesClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildClassificationRulesClient();
+        ClassificationRulesClient classificationRulesClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClassificationRulesClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.classificationrulesdelete.classificationrulesdelete
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                classificationRulesClient.deleteWithResponse("ClassificationRule1", requestOptions);
+        Response<BinaryData> response
+            = classificationRulesClient.deleteWithResponse("ClassificationRule1", requestOptions);
         // END:com.azure.analytics.purview.scanning.generated.classificationrulesdelete.classificationrulesdelete
     }
 }

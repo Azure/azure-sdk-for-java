@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Key Encryption Key (KEK) information.
  */
 @Fluent
-public final class KeyEncryptionKeyInfo {
+public final class KeyEncryptionKeyInfo implements JsonSerializable<KeyEncryptionKeyInfo> {
     /*
      * The key URL / identifier.
      */
-    @JsonProperty(value = "keyIdentifier")
     private String keyIdentifier;
 
     /*
      * The KeyVault resource ARM Id for key.
      */
-    @JsonProperty(value = "keyVaultResourceArmId")
     private String keyVaultResourceArmId;
 
     /**
@@ -76,5 +78,44 @@ public final class KeyEncryptionKeyInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyIdentifier", this.keyIdentifier);
+        jsonWriter.writeStringField("keyVaultResourceArmId", this.keyVaultResourceArmId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyEncryptionKeyInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyEncryptionKeyInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyEncryptionKeyInfo.
+     */
+    public static KeyEncryptionKeyInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyEncryptionKeyInfo deserializedKeyEncryptionKeyInfo = new KeyEncryptionKeyInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyIdentifier".equals(fieldName)) {
+                    deserializedKeyEncryptionKeyInfo.keyIdentifier = reader.getString();
+                } else if ("keyVaultResourceArmId".equals(fieldName)) {
+                    deserializedKeyEncryptionKeyInfo.keyVaultResourceArmId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyEncryptionKeyInfo;
+        });
     }
 }

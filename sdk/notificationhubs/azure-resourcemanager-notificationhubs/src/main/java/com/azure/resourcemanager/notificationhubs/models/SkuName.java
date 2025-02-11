@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Namespace SKU name.
+ * Name of the notification hub sku.
  */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
     /**
@@ -42,7 +41,6 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
      * @param name a name to look for.
      * @return the corresponding SkuName.
      */
-    @JsonCreator
     public static SkuName fromString(String name) {
         return fromString(name, SkuName.class);
     }

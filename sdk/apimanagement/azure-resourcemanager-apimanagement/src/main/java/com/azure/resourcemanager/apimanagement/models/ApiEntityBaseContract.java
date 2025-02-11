@@ -5,108 +5,101 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** API base contract details. */
+/**
+ * API base contract details.
+ */
 @Fluent
-public class ApiEntityBaseContract {
+public class ApiEntityBaseContract implements JsonSerializable<ApiEntityBaseContract> {
     /*
      * Description of the API. May include HTML formatting tags.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Collection of authentication settings included into this API.
      */
-    @JsonProperty(value = "authenticationSettings")
     private AuthenticationSettingsContract authenticationSettings;
 
     /*
      * Protocols over which API is made available.
      */
-    @JsonProperty(value = "subscriptionKeyParameterNames")
     private SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames;
 
     /*
      * Type of API.
      */
-    @JsonProperty(value = "type")
     private ApiType apiType;
 
     /*
      * Describes the revision of the API. If no value is provided, default revision 1 is created
      */
-    @JsonProperty(value = "apiRevision")
     private String apiRevision;
 
     /*
      * Indicates the version identifier of the API if the API is versioned
      */
-    @JsonProperty(value = "apiVersion")
     private String apiVersion;
 
     /*
      * Indicates if API revision is current api revision.
      */
-    @JsonProperty(value = "isCurrent")
     private Boolean isCurrent;
 
     /*
      * Indicates if API revision is accessible via the gateway.
      */
-    @JsonProperty(value = "isOnline", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isOnline;
 
     /*
      * Description of the API Revision.
      */
-    @JsonProperty(value = "apiRevisionDescription")
     private String apiRevisionDescription;
 
     /*
      * Description of the API Version.
      */
-    @JsonProperty(value = "apiVersionDescription")
     private String apiVersionDescription;
 
     /*
      * A resource identifier for the related ApiVersionSet.
      */
-    @JsonProperty(value = "apiVersionSetId")
     private String apiVersionSetId;
 
     /*
      * Specifies whether an API or Product subscription is required for accessing the API.
      */
-    @JsonProperty(value = "subscriptionRequired")
     private Boolean subscriptionRequired;
 
     /*
      * A URL to the Terms of Service for the API. MUST be in the format of a URL.
      */
-    @JsonProperty(value = "termsOfServiceUrl")
     private String termsOfServiceUrl;
 
     /*
      * Contact information for the API.
      */
-    @JsonProperty(value = "contact")
     private ApiContactInformation contact;
 
     /*
      * License information for the API.
      */
-    @JsonProperty(value = "license")
     private ApiLicenseInformation license;
 
-    /** Creates an instance of ApiEntityBaseContract class. */
+    /**
+     * Creates an instance of ApiEntityBaseContract class.
+     */
     public ApiEntityBaseContract() {
     }
 
     /**
      * Get the description property: Description of the API. May include HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -115,7 +108,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the description property: Description of the API. May include HTML formatting tags.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -126,7 +119,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Get the authenticationSettings property: Collection of authentication settings included into this API.
-     *
+     * 
      * @return the authenticationSettings value.
      */
     public AuthenticationSettingsContract authenticationSettings() {
@@ -135,7 +128,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the authenticationSettings property: Collection of authentication settings included into this API.
-     *
+     * 
      * @param authenticationSettings the authenticationSettings value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -146,7 +139,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Get the subscriptionKeyParameterNames property: Protocols over which API is made available.
-     *
+     * 
      * @return the subscriptionKeyParameterNames value.
      */
     public SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames() {
@@ -155,19 +148,19 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the subscriptionKeyParameterNames property: Protocols over which API is made available.
-     *
+     * 
      * @param subscriptionKeyParameterNames the subscriptionKeyParameterNames value to set.
      * @return the ApiEntityBaseContract object itself.
      */
-    public ApiEntityBaseContract withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+    public ApiEntityBaseContract
+        withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
         this.subscriptionKeyParameterNames = subscriptionKeyParameterNames;
         return this;
     }
 
     /**
      * Get the apiType property: Type of API.
-     *
+     * 
      * @return the apiType value.
      */
     public ApiType apiType() {
@@ -176,7 +169,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the apiType property: Type of API.
-     *
+     * 
      * @param apiType the apiType value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -188,7 +181,7 @@ public class ApiEntityBaseContract {
     /**
      * Get the apiRevision property: Describes the revision of the API. If no value is provided, default revision 1 is
      * created.
-     *
+     * 
      * @return the apiRevision value.
      */
     public String apiRevision() {
@@ -198,7 +191,7 @@ public class ApiEntityBaseContract {
     /**
      * Set the apiRevision property: Describes the revision of the API. If no value is provided, default revision 1 is
      * created.
-     *
+     * 
      * @param apiRevision the apiRevision value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -209,7 +202,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Get the apiVersion property: Indicates the version identifier of the API if the API is versioned.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String apiVersion() {
@@ -218,7 +211,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the apiVersion property: Indicates the version identifier of the API if the API is versioned.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -229,7 +222,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Get the isCurrent property: Indicates if API revision is current api revision.
-     *
+     * 
      * @return the isCurrent value.
      */
     public Boolean isCurrent() {
@@ -238,7 +231,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the isCurrent property: Indicates if API revision is current api revision.
-     *
+     * 
      * @param isCurrent the isCurrent value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -249,7 +242,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Get the isOnline property: Indicates if API revision is accessible via the gateway.
-     *
+     * 
      * @return the isOnline value.
      */
     public Boolean isOnline() {
@@ -257,8 +250,19 @@ public class ApiEntityBaseContract {
     }
 
     /**
+     * Set the isOnline property: Indicates if API revision is accessible via the gateway.
+     * 
+     * @param isOnline the isOnline value to set.
+     * @return the ApiEntityBaseContract object itself.
+     */
+    ApiEntityBaseContract withIsOnline(Boolean isOnline) {
+        this.isOnline = isOnline;
+        return this;
+    }
+
+    /**
      * Get the apiRevisionDescription property: Description of the API Revision.
-     *
+     * 
      * @return the apiRevisionDescription value.
      */
     public String apiRevisionDescription() {
@@ -267,7 +271,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the apiRevisionDescription property: Description of the API Revision.
-     *
+     * 
      * @param apiRevisionDescription the apiRevisionDescription value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -278,7 +282,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Get the apiVersionDescription property: Description of the API Version.
-     *
+     * 
      * @return the apiVersionDescription value.
      */
     public String apiVersionDescription() {
@@ -287,7 +291,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the apiVersionDescription property: Description of the API Version.
-     *
+     * 
      * @param apiVersionDescription the apiVersionDescription value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -298,7 +302,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Get the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
-     *
+     * 
      * @return the apiVersionSetId value.
      */
     public String apiVersionSetId() {
@@ -307,7 +311,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
-     *
+     * 
      * @param apiVersionSetId the apiVersionSetId value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -319,7 +323,7 @@ public class ApiEntityBaseContract {
     /**
      * Get the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
      * the API.
-     *
+     * 
      * @return the subscriptionRequired value.
      */
     public Boolean subscriptionRequired() {
@@ -329,7 +333,7 @@ public class ApiEntityBaseContract {
     /**
      * Set the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
      * the API.
-     *
+     * 
      * @param subscriptionRequired the subscriptionRequired value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -340,7 +344,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Get the termsOfServiceUrl property: A URL to the Terms of Service for the API. MUST be in the format of a URL.
-     *
+     * 
      * @return the termsOfServiceUrl value.
      */
     public String termsOfServiceUrl() {
@@ -349,7 +353,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the termsOfServiceUrl property: A URL to the Terms of Service for the API. MUST be in the format of a URL.
-     *
+     * 
      * @param termsOfServiceUrl the termsOfServiceUrl value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -360,7 +364,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Get the contact property: Contact information for the API.
-     *
+     * 
      * @return the contact value.
      */
     public ApiContactInformation contact() {
@@ -369,7 +373,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the contact property: Contact information for the API.
-     *
+     * 
      * @param contact the contact value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -380,7 +384,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Get the license property: License information for the API.
-     *
+     * 
      * @return the license value.
      */
     public ApiLicenseInformation license() {
@@ -389,7 +393,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Set the license property: License information for the API.
-     *
+     * 
      * @param license the license value to set.
      * @return the ApiEntityBaseContract object itself.
      */
@@ -400,7 +404,7 @@ public class ApiEntityBaseContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -416,5 +420,84 @@ public class ApiEntityBaseContract {
         if (license() != null) {
             license().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("authenticationSettings", this.authenticationSettings);
+        jsonWriter.writeJsonField("subscriptionKeyParameterNames", this.subscriptionKeyParameterNames);
+        jsonWriter.writeStringField("type", this.apiType == null ? null : this.apiType.toString());
+        jsonWriter.writeStringField("apiRevision", this.apiRevision);
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeBooleanField("isCurrent", this.isCurrent);
+        jsonWriter.writeStringField("apiRevisionDescription", this.apiRevisionDescription);
+        jsonWriter.writeStringField("apiVersionDescription", this.apiVersionDescription);
+        jsonWriter.writeStringField("apiVersionSetId", this.apiVersionSetId);
+        jsonWriter.writeBooleanField("subscriptionRequired", this.subscriptionRequired);
+        jsonWriter.writeStringField("termsOfServiceUrl", this.termsOfServiceUrl);
+        jsonWriter.writeJsonField("contact", this.contact);
+        jsonWriter.writeJsonField("license", this.license);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiEntityBaseContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiEntityBaseContract if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiEntityBaseContract.
+     */
+    public static ApiEntityBaseContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiEntityBaseContract deserializedApiEntityBaseContract = new ApiEntityBaseContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.description = reader.getString();
+                } else if ("authenticationSettings".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.authenticationSettings
+                        = AuthenticationSettingsContract.fromJson(reader);
+                } else if ("subscriptionKeyParameterNames".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.subscriptionKeyParameterNames
+                        = SubscriptionKeyParameterNamesContract.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.apiType = ApiType.fromString(reader.getString());
+                } else if ("apiRevision".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.apiRevision = reader.getString();
+                } else if ("apiVersion".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.apiVersion = reader.getString();
+                } else if ("isCurrent".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.isCurrent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isOnline".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.isOnline = reader.getNullable(JsonReader::getBoolean);
+                } else if ("apiRevisionDescription".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.apiRevisionDescription = reader.getString();
+                } else if ("apiVersionDescription".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.apiVersionDescription = reader.getString();
+                } else if ("apiVersionSetId".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.apiVersionSetId = reader.getString();
+                } else if ("subscriptionRequired".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.subscriptionRequired = reader.getNullable(JsonReader::getBoolean);
+                } else if ("termsOfServiceUrl".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.termsOfServiceUrl = reader.getString();
+                } else if ("contact".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.contact = ApiContactInformation.fromJson(reader);
+                } else if ("license".equals(fieldName)) {
+                    deserializedApiEntityBaseContract.license = ApiLicenseInformation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiEntityBaseContract;
+        });
     }
 }

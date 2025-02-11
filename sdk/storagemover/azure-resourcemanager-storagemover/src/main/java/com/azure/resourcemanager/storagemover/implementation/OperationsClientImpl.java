@@ -42,25 +42,25 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final StorageMoverClientImpl client;
+    private final StorageMoverManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(StorageMoverClientImpl client) {
+    OperationsClientImpl(StorageMoverManagementClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StorageMoverClientOperations to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for StorageMoverManagementClientOperations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageMoverClientOp")
+    @ServiceInterface(name = "StorageMoverManageme")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.StorageMover/operations")

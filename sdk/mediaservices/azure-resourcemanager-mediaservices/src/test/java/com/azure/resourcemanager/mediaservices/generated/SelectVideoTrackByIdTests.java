@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SelectVideoTrackByIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelectVideoTrackById model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.SelectVideoTrackById\",\"trackId\":6108338538781494691}")
-                .toObject(SelectVideoTrackById.class);
-        Assertions.assertEquals(6108338538781494691L, model.trackId());
+        SelectVideoTrackById model = BinaryData
+            .fromString("{\"@odata.type\":\"#Microsoft.Media.SelectVideoTrackById\",\"trackId\":6225539481081816034}")
+            .toObject(SelectVideoTrackById.class);
+        Assertions.assertEquals(6225539481081816034L, model.trackId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelectVideoTrackById model = new SelectVideoTrackById().withTrackId(6108338538781494691L);
+        SelectVideoTrackById model = new SelectVideoTrackById().withTrackId(6225539481081816034L);
         model = BinaryData.fromObject(model).toObject(SelectVideoTrackById.class);
-        Assertions.assertEquals(6108338538781494691L, model.trackId());
+        Assertions.assertEquals(6225539481081816034L, model.trackId());
     }
 }

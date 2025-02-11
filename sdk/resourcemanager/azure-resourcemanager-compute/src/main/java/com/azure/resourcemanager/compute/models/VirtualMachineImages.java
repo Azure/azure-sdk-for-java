@@ -33,6 +33,10 @@ public interface VirtualMachineImages extends SupportsListingByRegion<VirtualMac
      */
     VirtualMachineImage getImage(String region, String publisherName, String offerName, String skuName, String version);
 
-    /** @return entry point to virtual machine image publishers */
+    /**
+     * Gets entry point to virtual machine image publishers.
+     *
+     * @return entry point to virtual machine image publishers
+     */
     VirtualMachinePublishers publishers();
 }

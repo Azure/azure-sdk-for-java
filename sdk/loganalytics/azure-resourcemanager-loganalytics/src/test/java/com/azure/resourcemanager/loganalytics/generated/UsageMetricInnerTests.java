@@ -13,37 +13,34 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageMetricInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageMetricInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":{\"value\":\"xknalaulppg\",\"localizedValue\":\"tpnapnyiropuhpig\"},\"unit\":\"gylgqgitxmedjvcs\",\"currentValue\":1.7087985829917218,\"limit\":85.38784112555038,\"nextResetTime\":\"2021-09-17T17:00:46Z\",\"quotaPeriod\":\"zhxgktrmgucn\"}")
-                .toObject(UsageMetricInner.class);
-        Assertions.assertEquals("xknalaulppg", model.name().value());
-        Assertions.assertEquals("tpnapnyiropuhpig", model.name().localizedValue());
-        Assertions.assertEquals("gylgqgitxmedjvcs", model.unit());
-        Assertions.assertEquals(1.7087985829917218D, model.currentValue());
-        Assertions.assertEquals(85.38784112555038D, model.limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T17:00:46Z"), model.nextResetTime());
-        Assertions.assertEquals("zhxgktrmgucn", model.quotaPeriod());
+        UsageMetricInner model = BinaryData.fromString(
+            "{\"name\":{\"value\":\"yjsflhhcaalnji\",\"localizedValue\":\"sxyawjoyaqcs\"},\"unit\":\"jpkiidzyexznelix\",\"currentValue\":16.42737179588487,\"limit\":65.0090874045316,\"nextResetTime\":\"2021-01-11T05:27:37Z\",\"quotaPeriod\":\"nxknalaulp\"}")
+            .toObject(UsageMetricInner.class);
+        Assertions.assertEquals("yjsflhhcaalnji", model.name().value());
+        Assertions.assertEquals("sxyawjoyaqcs", model.name().localizedValue());
+        Assertions.assertEquals("jpkiidzyexznelix", model.unit());
+        Assertions.assertEquals(16.42737179588487D, model.currentValue());
+        Assertions.assertEquals(65.0090874045316D, model.limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T05:27:37Z"), model.nextResetTime());
+        Assertions.assertEquals("nxknalaulp", model.quotaPeriod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageMetricInner model =
-            new UsageMetricInner()
-                .withName(new MetricName().withValue("xknalaulppg").withLocalizedValue("tpnapnyiropuhpig"))
-                .withUnit("gylgqgitxmedjvcs")
-                .withCurrentValue(1.7087985829917218D)
-                .withLimit(85.38784112555038D)
-                .withNextResetTime(OffsetDateTime.parse("2021-09-17T17:00:46Z"))
-                .withQuotaPeriod("zhxgktrmgucn");
+        UsageMetricInner model = new UsageMetricInner()
+            .withName(new MetricName().withValue("yjsflhhcaalnji").withLocalizedValue("sxyawjoyaqcs"))
+            .withUnit("jpkiidzyexznelix")
+            .withCurrentValue(16.42737179588487D)
+            .withLimit(65.0090874045316D)
+            .withNextResetTime(OffsetDateTime.parse("2021-01-11T05:27:37Z"))
+            .withQuotaPeriod("nxknalaulp");
         model = BinaryData.fromObject(model).toObject(UsageMetricInner.class);
-        Assertions.assertEquals("xknalaulppg", model.name().value());
-        Assertions.assertEquals("tpnapnyiropuhpig", model.name().localizedValue());
-        Assertions.assertEquals("gylgqgitxmedjvcs", model.unit());
-        Assertions.assertEquals(1.7087985829917218D, model.currentValue());
-        Assertions.assertEquals(85.38784112555038D, model.limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T17:00:46Z"), model.nextResetTime());
-        Assertions.assertEquals("zhxgktrmgucn", model.quotaPeriod());
+        Assertions.assertEquals("yjsflhhcaalnji", model.name().value());
+        Assertions.assertEquals("sxyawjoyaqcs", model.name().localizedValue());
+        Assertions.assertEquals("jpkiidzyexznelix", model.unit());
+        Assertions.assertEquals(16.42737179588487D, model.currentValue());
+        Assertions.assertEquals(65.0090874045316D, model.limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T05:27:37Z"), model.nextResetTime());
+        Assertions.assertEquals("nxknalaulp", model.quotaPeriod());
     }
 }

@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationDisplayPropertyServiceSpecificationMetricsList;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Available operation display property service specification model. */
+/**
+ * Available operation display property service specification model.
+ */
 @Fluent
-public final class AvailableOperationDisplayPropertyServiceSpecification {
+public final class AvailableOperationDisplayPropertyServiceSpecification
+    implements JsonSerializable<AvailableOperationDisplayPropertyServiceSpecification> {
     /*
      * The list of specification's service metrics
      */
-    @JsonProperty(value = "serviceSpecification")
     private AvailableOperationDisplayPropertyServiceSpecificationMetricsList serviceSpecification;
 
-    /** Creates an instance of AvailableOperationDisplayPropertyServiceSpecification class. */
+    /**
+     * Creates an instance of AvailableOperationDisplayPropertyServiceSpecification class.
+     */
     public AvailableOperationDisplayPropertyServiceSpecification() {
     }
 
     /**
      * Get the serviceSpecification property: The list of specification's service metrics.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public AvailableOperationDisplayPropertyServiceSpecificationMetricsList serviceSpecification() {
@@ -32,7 +40,7 @@ public final class AvailableOperationDisplayPropertyServiceSpecification {
 
     /**
      * Set the serviceSpecification property: The list of specification's service metrics.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the AvailableOperationDisplayPropertyServiceSpecification object itself.
      */
@@ -44,12 +52,51 @@ public final class AvailableOperationDisplayPropertyServiceSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceSpecification() != null) {
             serviceSpecification().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("serviceSpecification", this.serviceSpecification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableOperationDisplayPropertyServiceSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableOperationDisplayPropertyServiceSpecification if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableOperationDisplayPropertyServiceSpecification.
+     */
+    public static AvailableOperationDisplayPropertyServiceSpecification fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableOperationDisplayPropertyServiceSpecification deserializedAvailableOperationDisplayPropertyServiceSpecification
+                = new AvailableOperationDisplayPropertyServiceSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceSpecification".equals(fieldName)) {
+                    deserializedAvailableOperationDisplayPropertyServiceSpecification.serviceSpecification
+                        = AvailableOperationDisplayPropertyServiceSpecificationMetricsList.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableOperationDisplayPropertyServiceSpecification;
+        });
     }
 }

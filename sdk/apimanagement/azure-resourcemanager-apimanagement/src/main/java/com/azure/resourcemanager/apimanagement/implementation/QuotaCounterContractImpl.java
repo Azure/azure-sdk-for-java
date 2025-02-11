@@ -14,8 +14,7 @@ public final class QuotaCounterContractImpl implements QuotaCounterContract {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    QuotaCounterContractImpl(
-        QuotaCounterContractInner innerObject,
+    QuotaCounterContractImpl(QuotaCounterContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

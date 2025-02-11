@@ -5,124 +5,117 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.InstallRebootBehavior;
 import com.azure.resourcemanager.databoxedge.models.UpdateOperation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The device update information summary. */
+/**
+ * The device update information summary.
+ */
 @Fluent
-public final class UpdateSummaryProperties {
+public final class UpdateSummaryProperties implements JsonSerializable<UpdateSummaryProperties> {
     /*
      * The current version of the device in format: 1.2.17312.13.",
      */
-    @JsonProperty(value = "deviceVersionNumber")
     private String deviceVersionNumber;
 
     /*
      * The current version of the device in text format.
      */
-    @JsonProperty(value = "friendlyDeviceVersionName")
     private String friendlyDeviceVersionName;
 
     /*
      * The last time when a scan was done on the device.
      */
-    @JsonProperty(value = "deviceLastScannedDateTime")
     private OffsetDateTime deviceLastScannedDateTime;
 
     /*
      * The time when the last scan job was completed (success/cancelled/failed) on the appliance.
      */
-    @JsonProperty(value = "lastCompletedScanJobDateTime")
     private OffsetDateTime lastCompletedScanJobDateTime;
 
     /*
      * The time when the last Download job was completed (success/cancelled/failed) on the appliance.
      */
-    @JsonProperty(value = "lastCompletedDownloadJobDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastCompletedDownloadJobDateTime;
 
     /*
      * The time when the last Install job was completed (success/cancelled/failed) on the appliance.
      */
-    @JsonProperty(value = "lastCompletedInstallJobDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastCompletedInstallJobDateTime;
 
     /*
      * The number of updates available for the current device version as per the last device scan.
      */
-    @JsonProperty(value = "totalNumberOfUpdatesAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalNumberOfUpdatesAvailable;
 
     /*
      * The total number of items pending download.
      */
-    @JsonProperty(value = "totalNumberOfUpdatesPendingDownload", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalNumberOfUpdatesPendingDownload;
 
     /*
      * The total number of items pending install.
      */
-    @JsonProperty(value = "totalNumberOfUpdatesPendingInstall", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalNumberOfUpdatesPendingInstall;
 
     /*
      * Indicates if updates are available and at least one of the updates needs a reboot.
      */
-    @JsonProperty(value = "rebootBehavior", access = JsonProperty.Access.WRITE_ONLY)
     private InstallRebootBehavior rebootBehavior;
 
     /*
      * The current update operation.
      */
-    @JsonProperty(value = "ongoingUpdateOperation", access = JsonProperty.Access.WRITE_ONLY)
     private UpdateOperation ongoingUpdateOperation;
 
     /*
      * The job ID of the download job in progress.
      */
-    @JsonProperty(value = "inProgressDownloadJobId", access = JsonProperty.Access.WRITE_ONLY)
     private String inProgressDownloadJobId;
 
     /*
      * The job ID of the install job in progress.
      */
-    @JsonProperty(value = "inProgressInstallJobId", access = JsonProperty.Access.WRITE_ONLY)
     private String inProgressInstallJobId;
 
     /*
      * The time when the currently running download (if any) started.
      */
-    @JsonProperty(value = "inProgressDownloadJobStartedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime inProgressDownloadJobStartedDateTime;
 
     /*
      * The time when the currently running install (if any) started.
      */
-    @JsonProperty(value = "inProgressInstallJobStartedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime inProgressInstallJobStartedDateTime;
 
     /*
      * The list of updates available for install.
      */
-    @JsonProperty(value = "updateTitles", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> updateTitles;
 
     /*
      * The total size of updates available for download in bytes.
      */
-    @JsonProperty(value = "totalUpdateSizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Double totalUpdateSizeInBytes;
 
-    /** Creates an instance of UpdateSummaryProperties class. */
+    /**
+     * Creates an instance of UpdateSummaryProperties class.
+     */
     public UpdateSummaryProperties() {
     }
 
     /**
      * Get the deviceVersionNumber property: The current version of the device in format: 1.2.17312.13.",.
-     *
+     * 
      * @return the deviceVersionNumber value.
      */
     public String deviceVersionNumber() {
@@ -131,7 +124,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Set the deviceVersionNumber property: The current version of the device in format: 1.2.17312.13.",.
-     *
+     * 
      * @param deviceVersionNumber the deviceVersionNumber value to set.
      * @return the UpdateSummaryProperties object itself.
      */
@@ -142,7 +135,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Get the friendlyDeviceVersionName property: The current version of the device in text format.
-     *
+     * 
      * @return the friendlyDeviceVersionName value.
      */
     public String friendlyDeviceVersionName() {
@@ -151,7 +144,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Set the friendlyDeviceVersionName property: The current version of the device in text format.
-     *
+     * 
      * @param friendlyDeviceVersionName the friendlyDeviceVersionName value to set.
      * @return the UpdateSummaryProperties object itself.
      */
@@ -162,7 +155,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Get the deviceLastScannedDateTime property: The last time when a scan was done on the device.
-     *
+     * 
      * @return the deviceLastScannedDateTime value.
      */
     public OffsetDateTime deviceLastScannedDateTime() {
@@ -171,7 +164,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Set the deviceLastScannedDateTime property: The last time when a scan was done on the device.
-     *
+     * 
      * @param deviceLastScannedDateTime the deviceLastScannedDateTime value to set.
      * @return the UpdateSummaryProperties object itself.
      */
@@ -183,7 +176,7 @@ public final class UpdateSummaryProperties {
     /**
      * Get the lastCompletedScanJobDateTime property: The time when the last scan job was completed
      * (success/cancelled/failed) on the appliance.
-     *
+     * 
      * @return the lastCompletedScanJobDateTime value.
      */
     public OffsetDateTime lastCompletedScanJobDateTime() {
@@ -193,7 +186,7 @@ public final class UpdateSummaryProperties {
     /**
      * Set the lastCompletedScanJobDateTime property: The time when the last scan job was completed
      * (success/cancelled/failed) on the appliance.
-     *
+     * 
      * @param lastCompletedScanJobDateTime the lastCompletedScanJobDateTime value to set.
      * @return the UpdateSummaryProperties object itself.
      */
@@ -205,7 +198,7 @@ public final class UpdateSummaryProperties {
     /**
      * Get the lastCompletedDownloadJobDateTime property: The time when the last Download job was completed
      * (success/cancelled/failed) on the appliance.
-     *
+     * 
      * @return the lastCompletedDownloadJobDateTime value.
      */
     public OffsetDateTime lastCompletedDownloadJobDateTime() {
@@ -215,7 +208,7 @@ public final class UpdateSummaryProperties {
     /**
      * Get the lastCompletedInstallJobDateTime property: The time when the last Install job was completed
      * (success/cancelled/failed) on the appliance.
-     *
+     * 
      * @return the lastCompletedInstallJobDateTime value.
      */
     public OffsetDateTime lastCompletedInstallJobDateTime() {
@@ -225,7 +218,7 @@ public final class UpdateSummaryProperties {
     /**
      * Get the totalNumberOfUpdatesAvailable property: The number of updates available for the current device version as
      * per the last device scan.
-     *
+     * 
      * @return the totalNumberOfUpdatesAvailable value.
      */
     public Integer totalNumberOfUpdatesAvailable() {
@@ -234,7 +227,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Get the totalNumberOfUpdatesPendingDownload property: The total number of items pending download.
-     *
+     * 
      * @return the totalNumberOfUpdatesPendingDownload value.
      */
     public Integer totalNumberOfUpdatesPendingDownload() {
@@ -243,7 +236,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Get the totalNumberOfUpdatesPendingInstall property: The total number of items pending install.
-     *
+     * 
      * @return the totalNumberOfUpdatesPendingInstall value.
      */
     public Integer totalNumberOfUpdatesPendingInstall() {
@@ -253,7 +246,7 @@ public final class UpdateSummaryProperties {
     /**
      * Get the rebootBehavior property: Indicates if updates are available and at least one of the updates needs a
      * reboot.
-     *
+     * 
      * @return the rebootBehavior value.
      */
     public InstallRebootBehavior rebootBehavior() {
@@ -262,7 +255,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Get the ongoingUpdateOperation property: The current update operation.
-     *
+     * 
      * @return the ongoingUpdateOperation value.
      */
     public UpdateOperation ongoingUpdateOperation() {
@@ -271,7 +264,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Get the inProgressDownloadJobId property: The job ID of the download job in progress.
-     *
+     * 
      * @return the inProgressDownloadJobId value.
      */
     public String inProgressDownloadJobId() {
@@ -280,7 +273,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Get the inProgressInstallJobId property: The job ID of the install job in progress.
-     *
+     * 
      * @return the inProgressInstallJobId value.
      */
     public String inProgressInstallJobId() {
@@ -290,7 +283,7 @@ public final class UpdateSummaryProperties {
     /**
      * Get the inProgressDownloadJobStartedDateTime property: The time when the currently running download (if any)
      * started.
-     *
+     * 
      * @return the inProgressDownloadJobStartedDateTime value.
      */
     public OffsetDateTime inProgressDownloadJobStartedDateTime() {
@@ -300,7 +293,7 @@ public final class UpdateSummaryProperties {
     /**
      * Get the inProgressInstallJobStartedDateTime property: The time when the currently running install (if any)
      * started.
-     *
+     * 
      * @return the inProgressInstallJobStartedDateTime value.
      */
     public OffsetDateTime inProgressInstallJobStartedDateTime() {
@@ -309,7 +302,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Get the updateTitles property: The list of updates available for install.
-     *
+     * 
      * @return the updateTitles value.
      */
     public List<String> updateTitles() {
@@ -318,7 +311,7 @@ public final class UpdateSummaryProperties {
 
     /**
      * Get the totalUpdateSizeInBytes property: The total size of updates available for download in bytes.
-     *
+     * 
      * @return the totalUpdateSizeInBytes value.
      */
     public Double totalUpdateSizeInBytes() {
@@ -327,9 +320,99 @@ public final class UpdateSummaryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceVersionNumber", this.deviceVersionNumber);
+        jsonWriter.writeStringField("friendlyDeviceVersionName", this.friendlyDeviceVersionName);
+        jsonWriter.writeStringField("deviceLastScannedDateTime",
+            this.deviceLastScannedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deviceLastScannedDateTime));
+        jsonWriter.writeStringField("lastCompletedScanJobDateTime",
+            this.lastCompletedScanJobDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastCompletedScanJobDateTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateSummaryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateSummaryProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateSummaryProperties.
+     */
+    public static UpdateSummaryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateSummaryProperties deserializedUpdateSummaryProperties = new UpdateSummaryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceVersionNumber".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.deviceVersionNumber = reader.getString();
+                } else if ("friendlyDeviceVersionName".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.friendlyDeviceVersionName = reader.getString();
+                } else if ("deviceLastScannedDateTime".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.deviceLastScannedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastCompletedScanJobDateTime".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.lastCompletedScanJobDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastCompletedDownloadJobDateTime".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.lastCompletedDownloadJobDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastCompletedInstallJobDateTime".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.lastCompletedInstallJobDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("totalNumberOfUpdatesAvailable".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.totalNumberOfUpdatesAvailable
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("totalNumberOfUpdatesPendingDownload".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.totalNumberOfUpdatesPendingDownload
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("totalNumberOfUpdatesPendingInstall".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.totalNumberOfUpdatesPendingInstall
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("rebootBehavior".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.rebootBehavior
+                        = InstallRebootBehavior.fromString(reader.getString());
+                } else if ("ongoingUpdateOperation".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.ongoingUpdateOperation
+                        = UpdateOperation.fromString(reader.getString());
+                } else if ("inProgressDownloadJobId".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.inProgressDownloadJobId = reader.getString();
+                } else if ("inProgressInstallJobId".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.inProgressInstallJobId = reader.getString();
+                } else if ("inProgressDownloadJobStartedDateTime".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.inProgressDownloadJobStartedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("inProgressInstallJobStartedDateTime".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.inProgressInstallJobStartedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updateTitles".equals(fieldName)) {
+                    List<String> updateTitles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUpdateSummaryProperties.updateTitles = updateTitles;
+                } else if ("totalUpdateSizeInBytes".equals(fieldName)) {
+                    deserializedUpdateSummaryProperties.totalUpdateSizeInBytes
+                        = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateSummaryProperties;
+        });
     }
 }

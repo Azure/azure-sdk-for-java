@@ -13,8 +13,7 @@ public final class GenerateDetailedCostReportOperationResultImpl implements Gene
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    GenerateDetailedCostReportOperationResultImpl(
-        GenerateDetailedCostReportOperationResultInner innerObject,
+    GenerateDetailedCostReportOperationResultImpl(GenerateDetailedCostReportOperationResultInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

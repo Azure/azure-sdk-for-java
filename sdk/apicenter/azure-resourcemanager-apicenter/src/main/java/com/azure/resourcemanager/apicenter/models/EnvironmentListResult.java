@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apicenter.fluent.models.EnvironmentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of a Environment list operation.
  */
 @Immutable
-public final class EnvironmentListResult {
+public final class EnvironmentListResult implements JsonSerializable<EnvironmentListResult> {
     /*
      * The Environment items on this page
      */
-    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<EnvironmentInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -59,5 +61,44 @@ public final class EnvironmentListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnvironmentListResult.
+     */
+    public static EnvironmentListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentListResult deserializedEnvironmentListResult = new EnvironmentListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<EnvironmentInner> value = reader.readArray(reader1 -> EnvironmentInner.fromJson(reader1));
+                    deserializedEnvironmentListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedEnvironmentListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentListResult;
+        });
     }
 }

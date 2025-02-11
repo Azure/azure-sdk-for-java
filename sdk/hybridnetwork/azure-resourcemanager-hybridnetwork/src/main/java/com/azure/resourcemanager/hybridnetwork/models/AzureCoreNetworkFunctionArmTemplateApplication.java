@@ -5,33 +5,45 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure core network function Template application definition.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "artifactType")
-@JsonTypeName("ArmTemplate")
 @Fluent
 public final class AzureCoreNetworkFunctionArmTemplateApplication extends AzureCoreNetworkFunctionApplication {
     /*
+     * The artifact type.
+     */
+    private AzureCoreArtifactType artifactType = AzureCoreArtifactType.ARM_TEMPLATE;
+
+    /*
      * Azure template artifact profile.
      */
-    @JsonProperty(value = "artifactProfile")
     private AzureCoreArmTemplateArtifactProfile artifactProfile;
 
     /*
      * Deploy mapping rule profile.
      */
-    @JsonProperty(value = "deployParametersMappingRuleProfile")
     private AzureCoreArmTemplateDeployMappingRuleProfile deployParametersMappingRuleProfile;
 
     /**
      * Creates an instance of AzureCoreNetworkFunctionArmTemplateApplication class.
      */
     public AzureCoreNetworkFunctionArmTemplateApplication() {
+    }
+
+    /**
+     * Get the artifactType property: The artifact type.
+     * 
+     * @return the artifactType value.
+     */
+    @Override
+    public AzureCoreArtifactType artifactType() {
+        return this.artifactType;
     }
 
     /**
@@ -101,12 +113,67 @@ public final class AzureCoreNetworkFunctionArmTemplateApplication extends AzureC
      */
     @Override
     public void validate() {
-        super.validate();
         if (artifactProfile() != null) {
             artifactProfile().validate();
         }
         if (deployParametersMappingRuleProfile() != null) {
             deployParametersMappingRuleProfile().validate();
         }
+        if (dependsOnProfile() != null) {
+            dependsOnProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeJsonField("dependsOnProfile", dependsOnProfile());
+        jsonWriter.writeStringField("artifactType", this.artifactType == null ? null : this.artifactType.toString());
+        jsonWriter.writeJsonField("artifactProfile", this.artifactProfile);
+        jsonWriter.writeJsonField("deployParametersMappingRuleProfile", this.deployParametersMappingRuleProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureCoreNetworkFunctionArmTemplateApplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureCoreNetworkFunctionArmTemplateApplication if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureCoreNetworkFunctionArmTemplateApplication.
+     */
+    public static AzureCoreNetworkFunctionArmTemplateApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureCoreNetworkFunctionArmTemplateApplication deserializedAzureCoreNetworkFunctionArmTemplateApplication
+                = new AzureCoreNetworkFunctionArmTemplateApplication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureCoreNetworkFunctionArmTemplateApplication.withName(reader.getString());
+                } else if ("dependsOnProfile".equals(fieldName)) {
+                    deserializedAzureCoreNetworkFunctionArmTemplateApplication
+                        .withDependsOnProfile(DependsOnProfile.fromJson(reader));
+                } else if ("artifactType".equals(fieldName)) {
+                    deserializedAzureCoreNetworkFunctionArmTemplateApplication.artifactType
+                        = AzureCoreArtifactType.fromString(reader.getString());
+                } else if ("artifactProfile".equals(fieldName)) {
+                    deserializedAzureCoreNetworkFunctionArmTemplateApplication.artifactProfile
+                        = AzureCoreArmTemplateArtifactProfile.fromJson(reader);
+                } else if ("deployParametersMappingRuleProfile".equals(fieldName)) {
+                    deserializedAzureCoreNetworkFunctionArmTemplateApplication.deployParametersMappingRuleProfile
+                        = AzureCoreArmTemplateDeployMappingRuleProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureCoreNetworkFunctionArmTemplateApplication;
+        });
     }
 }

@@ -27,7 +27,7 @@ public final class FrontendEndpointsDisableHttpsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.frontendEndpoints().disableHttps("xfbvfb", "dy", "rhpw", com.azure.core.util.Context.NONE);
+        manager.frontendEndpoints().disableHttps("vfkakpold", "vevboclzh", "jknyu", com.azure.core.util.Context.NONE);
 
     }
 }

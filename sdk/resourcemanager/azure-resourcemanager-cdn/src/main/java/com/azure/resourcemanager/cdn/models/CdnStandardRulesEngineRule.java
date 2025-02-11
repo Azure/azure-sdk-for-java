@@ -22,7 +22,8 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
          *
          * @param <T> the stage of the parent CDN endpoint definition to return to after attaching this definition
          */
-        interface Blank<T> extends WithOrder<T> {}
+        interface Blank<T> extends WithOrder<T> {
+        }
 
         /**
          * The stage of a CDN Standard rules engine rule definition allowing to specify the order of the rule.
@@ -49,7 +50,8 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
          *
          * @param <T> the stage of the parent CDN endpoint definition to return to after attaching this definition
          */
-        interface WithMatchConditionsOrActions<T> extends WithMatchConditions<T>, WithActions<T> {}
+        interface WithMatchConditionsOrActions<T> extends WithMatchConditions<T>, WithActions<T> {
+        }
 
         /**
          * The stage of a CDN Standard rules engine rule definition allowing to specify match conditions.
@@ -142,10 +144,8 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
      *
      * @param <ParentT> the stage of the parent CDN endpoint definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStage.Blank<ParentT>,
-        DefinitionStage.WithMatchConditionsOrActions<ParentT>,
-        Attachable<ParentT> {
+    interface Definition<ParentT> extends DefinitionStage.Blank<ParentT>,
+        DefinitionStage.WithMatchConditionsOrActions<ParentT>, Attachable<ParentT> {
     }
 
     /**
@@ -153,10 +153,7 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
      *
      * @param <ParentT> the stage of the parent CDN endpoint update to return to after updating this definition
      */
-    interface Update<ParentT>
-        extends Settable<ParentT>,
-        UpdateStages.WithOrder<ParentT>,
-        UpdateStages.WithMatchConditions<ParentT>,
-        UpdateStages.WithActions<ParentT> {
+    interface Update<ParentT> extends Settable<ParentT>, UpdateStages.WithOrder<ParentT>,
+        UpdateStages.WithMatchConditions<ParentT>, UpdateStages.WithActions<ParentT> {
     }
 }

@@ -5,30 +5,54 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.EntityTypeDefinition;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
 import com.azure.resourcemanager.customerinsights.models.PropertyDefinition;
+import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.StrongId;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The profile type definition. */
+/**
+ * The profile type definition.
+ */
 @Fluent
 public final class ProfileTypeDefinition extends EntityTypeDefinition {
     /*
      * The strong IDs.
      */
-    @JsonProperty(value = "strongIds")
     private List<StrongId> strongIds;
 
-    /** Creates an instance of ProfileTypeDefinition class. */
+    /*
+     * The hub name.
+     */
+    private String tenantId;
+
+    /*
+     * Provisioning state.
+     */
+    private ProvisioningStates provisioningState;
+
+    /*
+     * The last changed time for the type definition.
+     */
+    private OffsetDateTime lastChangedUtc;
+
+    /**
+     * Creates an instance of ProfileTypeDefinition class.
+     */
     public ProfileTypeDefinition() {
     }
 
     /**
      * Get the strongIds property: The strong IDs.
-     *
+     * 
      * @return the strongIds value.
      */
     public List<StrongId> strongIds() {
@@ -37,7 +61,7 @@ public final class ProfileTypeDefinition extends EntityTypeDefinition {
 
     /**
      * Set the strongIds property: The strong IDs.
-     *
+     * 
      * @param strongIds the strongIds value to set.
      * @return the ProfileTypeDefinition object itself.
      */
@@ -46,98 +70,156 @@ public final class ProfileTypeDefinition extends EntityTypeDefinition {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the tenantId property: The hub name.
+     * 
+     * @return the tenantId value.
+     */
+    @Override
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningStates provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the lastChangedUtc property: The last changed time for the type definition.
+     * 
+     * @return the lastChangedUtc value.
+     */
+    @Override
+    public OffsetDateTime lastChangedUtc() {
+        return this.lastChangedUtc;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withApiEntitySetName(String apiEntitySetName) {
         super.withApiEntitySetName(apiEntitySetName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withEntityType(EntityTypes entityType) {
         super.withEntityType(entityType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withFields(List<PropertyDefinition> fields) {
         super.withFields(fields);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withInstancesCount(Integer instancesCount) {
         super.withInstancesCount(instancesCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withSchemaItemTypeLink(String schemaItemTypeLink) {
         super.withSchemaItemTypeLink(schemaItemTypeLink);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withTimestampFieldName(String timestampFieldName) {
         super.withTimestampFieldName(timestampFieldName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withTypeName(String typeName) {
         super.withTypeName(typeName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withAttributes(Map<String, List<String>> attributes) {
         super.withAttributes(attributes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withDescription(Map<String, String> description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withDisplayName(Map<String, String> displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes) {
         super.withLocalizedAttributes(localizedAttributes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withSmallImage(String smallImage) {
         super.withSmallImage(smallImage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withMediumImage(String mediumImage) {
         super.withMediumImage(mediumImage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileTypeDefinition withLargeImage(String largeImage) {
         super.withLargeImage(largeImage);
@@ -146,14 +228,112 @@ public final class ProfileTypeDefinition extends EntityTypeDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (strongIds() != null) {
             strongIds().forEach(e -> e.validate());
         }
+        if (fields() != null) {
+            fields().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("attributes", attributes(),
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeMapField("description", description(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("displayName", displayName(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("localizedAttributes", localizedAttributes(),
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeStringField("smallImage", smallImage());
+        jsonWriter.writeStringField("mediumImage", mediumImage());
+        jsonWriter.writeStringField("largeImage", largeImage());
+        jsonWriter.writeStringField("apiEntitySetName", apiEntitySetName());
+        jsonWriter.writeStringField("entityType", entityType() == null ? null : entityType().toString());
+        jsonWriter.writeArrayField("fields", fields(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("instancesCount", instancesCount());
+        jsonWriter.writeStringField("schemaItemTypeLink", schemaItemTypeLink());
+        jsonWriter.writeStringField("timestampFieldName", timestampFieldName());
+        jsonWriter.writeStringField("typeName", typeName());
+        jsonWriter.writeArrayField("strongIds", this.strongIds, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileTypeDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileTypeDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProfileTypeDefinition.
+     */
+    public static ProfileTypeDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileTypeDefinition deserializedProfileTypeDefinition = new ProfileTypeDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("attributes".equals(fieldName)) {
+                    Map<String, List<String>> attributes
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedProfileTypeDefinition.withAttributes(attributes);
+                } else if ("description".equals(fieldName)) {
+                    Map<String, String> description = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProfileTypeDefinition.withDescription(description);
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProfileTypeDefinition.withDisplayName(displayName);
+                } else if ("localizedAttributes".equals(fieldName)) {
+                    Map<String, Map<String, String>> localizedAttributes
+                        = reader.readMap(reader1 -> reader1.readMap(reader2 -> reader2.getString()));
+                    deserializedProfileTypeDefinition.withLocalizedAttributes(localizedAttributes);
+                } else if ("smallImage".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.withSmallImage(reader.getString());
+                } else if ("mediumImage".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.withMediumImage(reader.getString());
+                } else if ("largeImage".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.withLargeImage(reader.getString());
+                } else if ("apiEntitySetName".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.withApiEntitySetName(reader.getString());
+                } else if ("entityType".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.withEntityType(EntityTypes.fromString(reader.getString()));
+                } else if ("fields".equals(fieldName)) {
+                    List<PropertyDefinition> fields = reader.readArray(reader1 -> PropertyDefinition.fromJson(reader1));
+                    deserializedProfileTypeDefinition.withFields(fields);
+                } else if ("instancesCount".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.withInstancesCount(reader.getNullable(JsonReader::getInt));
+                } else if ("lastChangedUtc".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.lastChangedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.provisioningState
+                        = ProvisioningStates.fromString(reader.getString());
+                } else if ("schemaItemTypeLink".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.withSchemaItemTypeLink(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.tenantId = reader.getString();
+                } else if ("timestampFieldName".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.withTimestampFieldName(reader.getString());
+                } else if ("typeName".equals(fieldName)) {
+                    deserializedProfileTypeDefinition.withTypeName(reader.getString());
+                } else if ("strongIds".equals(fieldName)) {
+                    List<StrongId> strongIds = reader.readArray(reader1 -> StrongId.fromJson(reader1));
+                    deserializedProfileTypeDefinition.strongIds = strongIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileTypeDefinition;
+        });
     }
 }

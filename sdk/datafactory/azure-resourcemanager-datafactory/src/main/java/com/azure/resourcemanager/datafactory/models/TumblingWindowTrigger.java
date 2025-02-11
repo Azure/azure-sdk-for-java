@@ -37,11 +37,6 @@ public final class TumblingWindowTrigger extends Trigger {
      */
     private TumblingWindowTriggerTypeProperties innerTypeProperties = new TumblingWindowTriggerTypeProperties();
 
-    /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
-     */
-    private TriggerRuntimeState runtimeState;
-
     /**
      * Creates an instance of TumblingWindowTrigger class.
      */
@@ -87,17 +82,6 @@ public final class TumblingWindowTrigger extends Trigger {
      */
     private TumblingWindowTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
-    }
-
-    /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
-     * the Trigger.
-     * 
-     * @return the runtimeState value.
-     */
-    @Override
-    public TriggerRuntimeState runtimeState() {
-        return this.runtimeState;
     }
 
     /**
@@ -319,7 +303,6 @@ public final class TumblingWindowTrigger extends Trigger {
      */
     @Override
     public void validate() {
-        super.validate();
         if (pipeline() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property pipeline in model TumblingWindowTrigger"));
@@ -376,7 +359,8 @@ public final class TumblingWindowTrigger extends Trigger {
                 if ("description".equals(fieldName)) {
                     deserializedTumblingWindowTrigger.withDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedTumblingWindowTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
+                    deserializedTumblingWindowTrigger
+                        .withRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedTumblingWindowTrigger.withAnnotations(annotations);

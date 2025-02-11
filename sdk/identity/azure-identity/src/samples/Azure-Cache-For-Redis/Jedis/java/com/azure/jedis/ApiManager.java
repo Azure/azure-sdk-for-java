@@ -17,9 +17,9 @@ import java.util.function.Supplier;
  * Manages Api calls for Azure Redis Client.
  */
 class ApiManager {
-    private final ClientLogger clientLogger = new ClientLogger(ApiManager.class);
-    private Authenticator authenticator;
-    private RetryStrategy retryStrategy;
+    private static final ClientLogger LOGGER = new ClientLogger(ApiManager.class);
+    private final Authenticator authenticator;
+    private final RetryStrategy retryStrategy;
 
     /**
      * Creates an instance of ApiManager class.
@@ -43,23 +43,24 @@ class ApiManager {
                 authenticator.authenticateIfRequired(jedisClient);
                 T out = supplier.get();
                 String methodName = getMethodName(4);
-                clientLogger.log(LogLevel.INFORMATIONAL, () -> "Successfully executed API call: " + methodName);
+                LOGGER.log(LogLevel.INFORMATIONAL, () -> "Successfully executed API call: " + methodName);
                 return out;
             } catch (Exception e) {
                 retries++;
                 if (retries >= retryStrategy.getMaxRetries()) {
-                    throw clientLogger.logThrowableAsError((e instanceof JedisException ? (JedisException) e : new RuntimeException(e)));
+                    throw LOGGER.logThrowableAsError((e instanceof JedisException ? (JedisException) e : new RuntimeException(e)));
                 }
-                clientLogger.logThrowableAsWarning((e instanceof JedisException ? (JedisException) e : new RuntimeException(e)));
-                clientLogger.log(LogLevel.INFORMATIONAL, () -> "Retrying to execute the command.");
+                LOGGER.logThrowableAsWarning((e instanceof JedisException ? (JedisException) e : new RuntimeException(e)));
+                LOGGER.log(LogLevel.INFORMATIONAL, () -> "Retrying to execute the command.");
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(retries).toMillis());
                 } catch (InterruptedException ex) {
-                    throw clientLogger.logExceptionAsError(new RuntimeException(ex));
+                    e.addSuppressed(ex);
+                    throw LOGGER.logExceptionAsError(new RuntimeException(ex));
                 }
             }
         }
-        throw clientLogger.logExceptionAsError(new IllegalStateException("Failed to execute the command"));
+        throw LOGGER.logExceptionAsError(new IllegalStateException("Failed to execute the command"));
     }
 
     private RetryStrategy getRetryStrategy(RetryOptions retryOptions) {

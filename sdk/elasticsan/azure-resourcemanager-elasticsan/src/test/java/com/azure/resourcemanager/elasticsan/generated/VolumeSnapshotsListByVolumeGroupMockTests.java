@@ -22,7 +22,7 @@ public final class VolumeSnapshotsListByVolumeGroupMockTests {
     @Test
     public void testListByVolumeGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"pna\"},\"provisioningState\":\"Deleting\",\"sourceVolumeSizeGiB\":6631545016985545724,\"volumeName\":\"dreaxh\"},\"id\":\"xdrrvqahqkghtp\",\"name\":\"ijnhyjsvfycxzbf\",\"type\":\"oowvrv\"}]}";
+            = "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"pvuzlmv\"},\"provisioningState\":\"Updating\",\"sourceVolumeSizeGiB\":7439617895559455713,\"volumeName\":\"plcrpwjxeznoig\"},\"id\":\"njwmwkpnbsazejj\",\"name\":\"qkagfhsxt\",\"type\":\"augzxnfaazpxdtn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,9 @@ public final class VolumeSnapshotsListByVolumeGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Snapshot> response = manager.volumeSnapshots()
-            .listByVolumeGroup("lmctlpd", "gitvg", "mhrixkwmyijejve", "rh", com.azure.core.util.Context.NONE);
+            .listByVolumeGroup("yhgfipnsx", "mcwaekrrjr", "afxtsgum", "jglikkxwslolb",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pna", response.iterator().next().creationData().sourceId());
+        Assertions.assertEquals("pvuzlmv", response.iterator().next().creationData().sourceId());
     }
 }

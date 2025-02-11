@@ -12,26 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupFileInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupFileInfo model =
-            BinaryData
-                .fromString(
-                    "{\"fileLocation\":\"dckzywbiexz\",\"familySequenceNumber\":1043765409,\"status\":\"Uploading\"}")
-                .toObject(BackupFileInfo.class);
-        Assertions.assertEquals("dckzywbiexz", model.fileLocation());
-        Assertions.assertEquals(1043765409, model.familySequenceNumber());
-        Assertions.assertEquals(BackupFileStatus.UPLOADING, model.status());
+        BackupFileInfo model = BinaryData
+            .fromString(
+                "{\"fileLocation\":\"kouknvudwtiu\",\"familySequenceNumber\":45967354,\"status\":\"Restoring\"}")
+            .toObject(BackupFileInfo.class);
+        Assertions.assertEquals("kouknvudwtiu", model.fileLocation());
+        Assertions.assertEquals(45967354, model.familySequenceNumber());
+        Assertions.assertEquals(BackupFileStatus.RESTORING, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupFileInfo model =
-            new BackupFileInfo()
-                .withFileLocation("dckzywbiexz")
-                .withFamilySequenceNumber(1043765409)
-                .withStatus(BackupFileStatus.UPLOADING);
+        BackupFileInfo model = new BackupFileInfo().withFileLocation("kouknvudwtiu")
+            .withFamilySequenceNumber(45967354)
+            .withStatus(BackupFileStatus.RESTORING);
         model = BinaryData.fromObject(model).toObject(BackupFileInfo.class);
-        Assertions.assertEquals("dckzywbiexz", model.fileLocation());
-        Assertions.assertEquals(1043765409, model.familySequenceNumber());
-        Assertions.assertEquals(BackupFileStatus.UPLOADING, model.status());
+        Assertions.assertEquals("kouknvudwtiu", model.fileLocation());
+        Assertions.assertEquals(45967354, model.familySequenceNumber());
+        Assertions.assertEquals(BackupFileStatus.RESTORING, model.status());
     }
 }

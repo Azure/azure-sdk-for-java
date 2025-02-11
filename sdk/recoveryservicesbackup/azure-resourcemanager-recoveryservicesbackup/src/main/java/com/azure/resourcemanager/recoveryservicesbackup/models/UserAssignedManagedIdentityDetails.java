@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * User assigned managed identity details.
  */
 @Fluent
-public final class UserAssignedManagedIdentityDetails {
+public final class UserAssignedManagedIdentityDetails implements JsonSerializable<UserAssignedManagedIdentityDetails> {
     /*
      * The ARM id of the assigned identity.
      */
-    @JsonProperty(value = "identityArmId")
     private String identityArmId;
 
     /*
      * The name of the assigned identity.
      */
-    @JsonProperty(value = "identityName")
     private String identityName;
 
     /*
      * User assigned managed identity properties
      */
-    @JsonProperty(value = "userAssignedIdentityProperties")
     private UserAssignedIdentityProperties userAssignedIdentityProperties;
 
     /**
@@ -106,5 +107,49 @@ public final class UserAssignedManagedIdentityDetails {
         if (userAssignedIdentityProperties() != null) {
             userAssignedIdentityProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("identityArmId", this.identityArmId);
+        jsonWriter.writeStringField("identityName", this.identityName);
+        jsonWriter.writeJsonField("userAssignedIdentityProperties", this.userAssignedIdentityProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAssignedManagedIdentityDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAssignedManagedIdentityDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserAssignedManagedIdentityDetails.
+     */
+    public static UserAssignedManagedIdentityDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAssignedManagedIdentityDetails deserializedUserAssignedManagedIdentityDetails
+                = new UserAssignedManagedIdentityDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identityArmId".equals(fieldName)) {
+                    deserializedUserAssignedManagedIdentityDetails.identityArmId = reader.getString();
+                } else if ("identityName".equals(fieldName)) {
+                    deserializedUserAssignedManagedIdentityDetails.identityName = reader.getString();
+                } else if ("userAssignedIdentityProperties".equals(fieldName)) {
+                    deserializedUserAssignedManagedIdentityDetails.userAssignedIdentityProperties
+                        = UserAssignedIdentityProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAssignedManagedIdentityDetails;
+        });
     }
 }

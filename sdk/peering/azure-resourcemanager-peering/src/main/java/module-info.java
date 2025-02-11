@@ -10,10 +10,6 @@ module com.azure.resourcemanager.peering {
     exports com.azure.resourcemanager.peering.fluent.models;
     exports com.azure.resourcemanager.peering.models;
 
-    opens com.azure.resourcemanager.peering.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.peering.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.peering.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.peering.models to com.azure.core;
 }

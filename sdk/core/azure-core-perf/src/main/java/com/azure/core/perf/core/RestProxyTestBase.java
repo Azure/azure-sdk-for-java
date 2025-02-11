@@ -4,6 +4,7 @@
 package com.azure.core.perf.core;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -29,14 +30,11 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -144,7 +142,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
             server.stubFor(any(urlPathMatching("/(RawData|UserDatabase|BinaryData).*"))
                 .willReturn(aResponse().withBody(response.getBodyAsByteArray().block())
                     .withStatus(response.getStatusCode())
-                    .withHeader("Content-Type", response.getHeaderValue("Content-Type"))));
+                    .withHeader("Content-Type", response.getHeaderValue(HttpHeaderName.CONTENT_TYPE))));
         }
 
         server.start();
@@ -152,18 +150,8 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     }
 
     public static HttpResponse createMockResponse(HttpRequest httpRequest, String contentType, byte[] bodyBytes) {
-        HttpHeaders headers = new HttpHeaders().set("Content-Type", contentType);
-        HttpResponse res = new MockHttpResponse(httpRequest, 200, headers, bodyBytes);
-        return res;
-    }
-
-    public static byte[] serializeData(Object object, ObjectMapper objectMapper) {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            objectMapper.writeValue(outputStream, object);
-            return outputStream.toByteArray();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);
+        return new MockHttpResponse(httpRequest, 200, headers, bodyBytes);
     }
 
     public static Supplier<BinaryData> createBinaryDataSupplier(CorePerfStressOptions options) {

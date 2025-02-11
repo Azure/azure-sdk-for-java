@@ -6,24 +6,45 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** GraphQL API Resolver details. */
+/**
+ * GraphQL API Resolver details.
+ */
 @Fluent
 public final class ResolverContractInner extends ProxyResource {
     /*
      * Properties of the Resolver Contract.
      */
-    @JsonProperty(value = "properties")
     private ResolverEntityBaseContract innerProperties;
 
-    /** Creates an instance of ResolverContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ResolverContractInner class.
+     */
     public ResolverContractInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Resolver Contract.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ResolverEntityBaseContract innerProperties() {
@@ -31,8 +52,38 @@ public final class ResolverContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: Resolver Name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -41,7 +92,7 @@ public final class ResolverContractInner extends ProxyResource {
 
     /**
      * Set the displayName property: Resolver Name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ResolverContractInner object itself.
      */
@@ -55,7 +106,7 @@ public final class ResolverContractInner extends ProxyResource {
 
     /**
      * Get the path property: Path is type/field being resolved.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -64,7 +115,7 @@ public final class ResolverContractInner extends ProxyResource {
 
     /**
      * Set the path property: Path is type/field being resolved.
-     *
+     * 
      * @param path the path value to set.
      * @return the ResolverContractInner object itself.
      */
@@ -78,7 +129,7 @@ public final class ResolverContractInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the resolver. May include HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -87,7 +138,7 @@ public final class ResolverContractInner extends ProxyResource {
 
     /**
      * Set the description property: Description of the resolver. May include HTML formatting tags.
-     *
+     * 
      * @param description the description value to set.
      * @return the ResolverContractInner object itself.
      */
@@ -101,12 +152,55 @@ public final class ResolverContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResolverContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResolverContractInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResolverContractInner.
+     */
+    public static ResolverContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResolverContractInner deserializedResolverContractInner = new ResolverContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedResolverContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedResolverContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedResolverContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedResolverContractInner.innerProperties = ResolverEntityBaseContract.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResolverContractInner;
+        });
     }
 }

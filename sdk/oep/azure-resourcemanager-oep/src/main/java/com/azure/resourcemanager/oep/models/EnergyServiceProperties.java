@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.oep.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The EnergyServiceProperties model. */
+/**
+ * The EnergyServiceProperties model.
+ */
 @Fluent
-public final class EnergyServiceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnergyServiceProperties.class);
-
+public final class EnergyServiceProperties implements JsonSerializable<EnergyServiceProperties> {
     /*
      * The dnsName property.
      */
-    @JsonProperty(value = "dnsName", access = JsonProperty.Access.WRITE_ONLY)
     private String dnsName;
 
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The authAppId property.
      */
-    @JsonProperty(value = "authAppId")
     private String authAppId;
 
     /*
      * The dataPartitionNames property.
      */
-    @JsonProperty(value = "dataPartitionNames")
     private List<DataPartitionNames> dataPartitionNames;
 
     /**
+     * Creates an instance of EnergyServiceProperties class.
+     */
+    public EnergyServiceProperties() {
+    }
+
+    /**
      * Get the dnsName property: The dnsName property.
-     *
+     * 
      * @return the dnsName value.
      */
     public String dnsName() {
@@ -50,7 +54,7 @@ public final class EnergyServiceProperties {
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -59,7 +63,7 @@ public final class EnergyServiceProperties {
 
     /**
      * Get the authAppId property: The authAppId property.
-     *
+     * 
      * @return the authAppId value.
      */
     public String authAppId() {
@@ -68,7 +72,7 @@ public final class EnergyServiceProperties {
 
     /**
      * Set the authAppId property: The authAppId property.
-     *
+     * 
      * @param authAppId the authAppId value to set.
      * @return the EnergyServiceProperties object itself.
      */
@@ -79,7 +83,7 @@ public final class EnergyServiceProperties {
 
     /**
      * Get the dataPartitionNames property: The dataPartitionNames property.
-     *
+     * 
      * @return the dataPartitionNames value.
      */
     public List<DataPartitionNames> dataPartitionNames() {
@@ -88,7 +92,7 @@ public final class EnergyServiceProperties {
 
     /**
      * Set the dataPartitionNames property: The dataPartitionNames property.
-     *
+     * 
      * @param dataPartitionNames the dataPartitionNames value to set.
      * @return the EnergyServiceProperties object itself.
      */
@@ -99,12 +103,59 @@ public final class EnergyServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataPartitionNames() != null) {
             dataPartitionNames().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authAppId", this.authAppId);
+        jsonWriter.writeArrayField("dataPartitionNames", this.dataPartitionNames,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnergyServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnergyServiceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnergyServiceProperties.
+     */
+    public static EnergyServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnergyServiceProperties deserializedEnergyServiceProperties = new EnergyServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dnsName".equals(fieldName)) {
+                    deserializedEnergyServiceProperties.dnsName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedEnergyServiceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("authAppId".equals(fieldName)) {
+                    deserializedEnergyServiceProperties.authAppId = reader.getString();
+                } else if ("dataPartitionNames".equals(fieldName)) {
+                    List<DataPartitionNames> dataPartitionNames
+                        = reader.readArray(reader1 -> DataPartitionNames.fromJson(reader1));
+                    deserializedEnergyServiceProperties.dataPartitionNames = dataPartitionNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnergyServiceProperties;
+        });
     }
 }

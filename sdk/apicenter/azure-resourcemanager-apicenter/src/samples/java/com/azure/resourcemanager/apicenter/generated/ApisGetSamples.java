@@ -18,7 +18,7 @@ public final class ApisGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apisGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apis().getWithResponse("contoso-resources", "contoso", "default", "echo-api",
-            com.azure.core.util.Context.NONE);
+        manager.apis()
+            .getWithResponse("contoso-resources", "contoso", "default", "echo-api", com.azure.core.util.Context.NONE);
     }
 }

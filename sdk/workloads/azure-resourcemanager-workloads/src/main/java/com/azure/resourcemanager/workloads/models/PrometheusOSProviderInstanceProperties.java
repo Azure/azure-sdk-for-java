@@ -5,46 +5,60 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gets or sets the PrometheusOS provider properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "providerType")
-@JsonTypeName("PrometheusOS")
+/**
+ * Gets or sets the PrometheusOS provider properties.
+ */
 @Fluent
 public final class PrometheusOSProviderInstanceProperties extends ProviderSpecificProperties {
     /*
+     * The provider type. For example, the value can be SapHana.
+     */
+    private String providerType = "PrometheusOS";
+
+    /*
      * URL of the Node Exporter endpoint
      */
-    @JsonProperty(value = "prometheusUrl")
     private String prometheusUrl;
 
     /*
      * Gets or sets certificate preference if secure communication is enabled.
      */
-    @JsonProperty(value = "sslPreference")
     private SslPreference sslPreference;
 
     /*
      * Gets or sets the blob URI to SSL certificate for the prometheus node exporter.
      */
-    @JsonProperty(value = "sslCertificateUri")
     private String sslCertificateUri;
 
     /*
      * Gets or sets the SAP System Identifier
      */
-    @JsonProperty(value = "sapSid")
     private String sapSid;
 
-    /** Creates an instance of PrometheusOSProviderInstanceProperties class. */
+    /**
+     * Creates an instance of PrometheusOSProviderInstanceProperties class.
+     */
     public PrometheusOSProviderInstanceProperties() {
     }
 
     /**
+     * Get the providerType property: The provider type. For example, the value can be SapHana.
+     * 
+     * @return the providerType value.
+     */
+    @Override
+    public String providerType() {
+        return this.providerType;
+    }
+
+    /**
      * Get the prometheusUrl property: URL of the Node Exporter endpoint.
-     *
+     * 
      * @return the prometheusUrl value.
      */
     public String prometheusUrl() {
@@ -53,7 +67,7 @@ public final class PrometheusOSProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the prometheusUrl property: URL of the Node Exporter endpoint.
-     *
+     * 
      * @param prometheusUrl the prometheusUrl value to set.
      * @return the PrometheusOSProviderInstanceProperties object itself.
      */
@@ -64,7 +78,7 @@ public final class PrometheusOSProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
-     *
+     * 
      * @return the sslPreference value.
      */
     public SslPreference sslPreference() {
@@ -73,7 +87,7 @@ public final class PrometheusOSProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
-     *
+     * 
      * @param sslPreference the sslPreference value to set.
      * @return the PrometheusOSProviderInstanceProperties object itself.
      */
@@ -85,7 +99,7 @@ public final class PrometheusOSProviderInstanceProperties extends ProviderSpecif
     /**
      * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the prometheus node
      * exporter.
-     *
+     * 
      * @return the sslCertificateUri value.
      */
     public String sslCertificateUri() {
@@ -95,7 +109,7 @@ public final class PrometheusOSProviderInstanceProperties extends ProviderSpecif
     /**
      * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the prometheus node
      * exporter.
-     *
+     * 
      * @param sslCertificateUri the sslCertificateUri value to set.
      * @return the PrometheusOSProviderInstanceProperties object itself.
      */
@@ -106,7 +120,7 @@ public final class PrometheusOSProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sapSid property: Gets or sets the SAP System Identifier.
-     *
+     * 
      * @return the sapSid value.
      */
     public String sapSid() {
@@ -115,7 +129,7 @@ public final class PrometheusOSProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sapSid property: Gets or sets the SAP System Identifier.
-     *
+     * 
      * @param sapSid the sapSid value to set.
      * @return the PrometheusOSProviderInstanceProperties object itself.
      */
@@ -126,11 +140,60 @@ public final class PrometheusOSProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("providerType", this.providerType);
+        jsonWriter.writeStringField("prometheusUrl", this.prometheusUrl);
+        jsonWriter.writeStringField("sslPreference", this.sslPreference == null ? null : this.sslPreference.toString());
+        jsonWriter.writeStringField("sslCertificateUri", this.sslCertificateUri);
+        jsonWriter.writeStringField("sapSid", this.sapSid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrometheusOSProviderInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrometheusOSProviderInstanceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrometheusOSProviderInstanceProperties.
+     */
+    public static PrometheusOSProviderInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrometheusOSProviderInstanceProperties deserializedPrometheusOSProviderInstanceProperties
+                = new PrometheusOSProviderInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerType".equals(fieldName)) {
+                    deserializedPrometheusOSProviderInstanceProperties.providerType = reader.getString();
+                } else if ("prometheusUrl".equals(fieldName)) {
+                    deserializedPrometheusOSProviderInstanceProperties.prometheusUrl = reader.getString();
+                } else if ("sslPreference".equals(fieldName)) {
+                    deserializedPrometheusOSProviderInstanceProperties.sslPreference
+                        = SslPreference.fromString(reader.getString());
+                } else if ("sslCertificateUri".equals(fieldName)) {
+                    deserializedPrometheusOSProviderInstanceProperties.sslCertificateUri = reader.getString();
+                } else if ("sapSid".equals(fieldName)) {
+                    deserializedPrometheusOSProviderInstanceProperties.sapSid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrometheusOSProviderInstanceProperties;
+        });
     }
 }

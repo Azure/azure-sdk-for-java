@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.azurearcdata.generated;
 
-/** Samples for SqlServerInstances ListByResourceGroup. */
+/**
+ * Samples for SqlServerInstances ListByResourceGroup.
+ */
 public final class SqlServerInstancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/ListByResourceGroupSqlServerInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * ListByResourceGroupSqlServerInstance.json
      */
     /**
      * Sample code: Gets all SQL Server Instance in a resource group.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void getsAllSQLServerInstanceInAResourceGroup(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+    public static void
+        getsAllSQLServerInstanceInAResourceGroup(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
         manager.sqlServerInstances().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }

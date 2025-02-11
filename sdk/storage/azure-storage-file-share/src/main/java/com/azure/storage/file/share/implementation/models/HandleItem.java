@@ -333,7 +333,6 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of HandleItem if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the HandleItem.
      */
     public static HandleItem fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -348,7 +347,6 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of HandleItem if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the HandleItem.
      */
     public static HandleItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

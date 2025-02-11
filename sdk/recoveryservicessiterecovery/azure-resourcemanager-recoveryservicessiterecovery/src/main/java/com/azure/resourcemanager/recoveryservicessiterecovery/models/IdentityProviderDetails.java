@@ -5,45 +5,44 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Identity provider details.
  */
 @Fluent
-public final class IdentityProviderDetails {
+public final class IdentityProviderDetails implements JsonSerializable<IdentityProviderDetails> {
     /*
      * The tenant Id for the service principal with which the on-premise management/data plane components would
      * communicate with our Azure services.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * The application/client Id for the service principal with which the on-premise management/data plane components
      * would communicate with our Azure services.
      */
-    @JsonProperty(value = "applicationId")
     private String applicationId;
 
     /*
      * The object Id of the service principal with which the on-premise management/data plane components would
      * communicate with our Azure services.
      */
-    @JsonProperty(value = "objectId")
     private String objectId;
 
     /*
      * The intended Audience of the service principal with which the on-premise management/data plane components would
      * communicate with our Azure services.
      */
-    @JsonProperty(value = "audience")
     private String audience;
 
     /*
      * The base authority for Azure Active Directory authentication.
      */
-    @JsonProperty(value = "aadAuthority")
     private String aadAuthority;
 
     /**
@@ -97,8 +96,8 @@ public final class IdentityProviderDetails {
     }
 
     /**
-     * Get the objectId property: The object Id of the service principal with which the on-premise management/data
-     * plane components would communicate with our Azure services.
+     * Get the objectId property: The object Id of the service principal with which the on-premise management/data plane
+     * components would communicate with our Azure services.
      * 
      * @return the objectId value.
      */
@@ -107,8 +106,8 @@ public final class IdentityProviderDetails {
     }
 
     /**
-     * Set the objectId property: The object Id of the service principal with which the on-premise management/data
-     * plane components would communicate with our Azure services.
+     * Set the objectId property: The object Id of the service principal with which the on-premise management/data plane
+     * components would communicate with our Azure services.
      * 
      * @param objectId the objectId value to set.
      * @return the IdentityProviderDetails object itself.
@@ -166,5 +165,53 @@ public final class IdentityProviderDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("applicationId", this.applicationId);
+        jsonWriter.writeStringField("objectId", this.objectId);
+        jsonWriter.writeStringField("audience", this.audience);
+        jsonWriter.writeStringField("aadAuthority", this.aadAuthority);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityProviderDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityProviderDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentityProviderDetails.
+     */
+    public static IdentityProviderDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityProviderDetails deserializedIdentityProviderDetails = new IdentityProviderDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedIdentityProviderDetails.tenantId = reader.getString();
+                } else if ("applicationId".equals(fieldName)) {
+                    deserializedIdentityProviderDetails.applicationId = reader.getString();
+                } else if ("objectId".equals(fieldName)) {
+                    deserializedIdentityProviderDetails.objectId = reader.getString();
+                } else if ("audience".equals(fieldName)) {
+                    deserializedIdentityProviderDetails.audience = reader.getString();
+                } else if ("aadAuthority".equals(fieldName)) {
+                    deserializedIdentityProviderDetails.aadAuthority = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityProviderDetails;
+        });
     }
 }

@@ -21,8 +21,9 @@ public final class AzureOperatorNexusClusterNfviDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureOperatorNexusClusterNfviDetails model = new AzureOperatorNexusClusterNfviDetails()
-            .withName("qjujeickpzvcp").withCustomLocationReference(new ReferencedResource().withId("zhraglkafh"));
+        AzureOperatorNexusClusterNfviDetails model
+            = new AzureOperatorNexusClusterNfviDetails().withName("qjujeickpzvcp")
+                .withCustomLocationReference(new ReferencedResource().withId("zhraglkafh"));
         model = BinaryData.fromObject(model).toObject(AzureOperatorNexusClusterNfviDetails.class);
         Assertions.assertEquals("qjujeickpzvcp", model.name());
         Assertions.assertEquals("zhraglkafh", model.customLocationReference().id());

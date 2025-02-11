@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the actual difference for the compared object, while performing schema comparison. */
+/**
+ * Type of the actual difference for the compared object, while performing schema comparison.
+ */
 public final class UpdateActionType extends ExpandableStringEnum<UpdateActionType> {
-    /** Static value DeletedOnTarget for UpdateActionType. */
+    /**
+     * Static value DeletedOnTarget for UpdateActionType.
+     */
     public static final UpdateActionType DELETED_ON_TARGET = fromString("DeletedOnTarget");
 
-    /** Static value ChangedOnTarget for UpdateActionType. */
+    /**
+     * Static value ChangedOnTarget for UpdateActionType.
+     */
     public static final UpdateActionType CHANGED_ON_TARGET = fromString("ChangedOnTarget");
 
-    /** Static value AddedOnTarget for UpdateActionType. */
+    /**
+     * Static value AddedOnTarget for UpdateActionType.
+     */
     public static final UpdateActionType ADDED_ON_TARGET = fromString("AddedOnTarget");
 
     /**
      * Creates a new instance of UpdateActionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class UpdateActionType extends ExpandableStringEnum<UpdateActionTyp
 
     /**
      * Creates or finds a UpdateActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UpdateActionType.
      */
-    @JsonCreator
     public static UpdateActionType fromString(String name) {
         return fromString(name, UpdateActionType.class);
     }
 
     /**
      * Gets known UpdateActionType values.
-     *
+     * 
      * @return known UpdateActionType values.
      */
     public static Collection<UpdateActionType> values() {

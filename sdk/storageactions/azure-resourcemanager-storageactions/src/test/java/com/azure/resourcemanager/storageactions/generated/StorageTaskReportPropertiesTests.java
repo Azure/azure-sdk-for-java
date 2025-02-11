@@ -11,7 +11,7 @@ public final class StorageTaskReportPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTaskReportProperties model = BinaryData.fromString(
-            "{\"taskAssignmentId\":\"epsbjtazqu\",\"storageAccountId\":\"ywpmueefjzwfqkq\",\"startTime\":\"ids\",\"finishTime\":\"onobglaocqx\",\"objectsTargetedCount\":\"cmgyud\",\"objectsOperatedOnCount\":\"tlmoyrx\",\"objectFailedCount\":\"fudwpznt\",\"objectsSucceededCount\":\"dzhlrq\",\"runStatusError\":\"hckfrlhrx\",\"runStatusEnum\":\"InProgress\",\"summaryReportPath\":\"vpycanuzbp\",\"taskId\":\"afkuwb\",\"taskVersion\":\"nwbmeh\",\"runResult\":\"Failed\"}")
+            "{\"taskAssignmentId\":\"dobpxjmflbvvn\",\"storageAccountId\":\"rkcciwwzjuqk\",\"startTime\":\"sa\",\"finishTime\":\"wkuofoskghsauu\",\"objectsTargetedCount\":\"jmvxie\",\"objectsOperatedOnCount\":\"ugidyjrr\",\"objectFailedCount\":\"y\",\"objectsSucceededCount\":\"svexcsonpclhoco\",\"runStatusError\":\"lkevle\",\"runStatusEnum\":\"InProgress\",\"summaryReportPath\":\"buhfmvfaxkffeiit\",\"taskId\":\"vmezy\",\"taskVersion\":\"hxmzsbbzoggig\",\"runResult\":\"Failed\"}")
             .toObject(StorageTaskReportProperties.class);
     }
 

@@ -24,12 +24,14 @@ public final class ReplicationFabricsReassociateGatewaySamples {
      */
     public static void performFailoverOfTheProcessServer(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().reassociateGateway("MadhaviVault", "MadhaviVRG", "GRACE-V2A-1",
-            new FailoverProcessServerRequest().withProperties(new FailoverProcessServerRequestProperties()
-                .withContainerName("cloud_1f3c15af-2256-4568-9e06-e1ef4f728f75")
-                .withSourceProcessServerId("AFA0EC54-1894-4E44-9CAB02DB8854B117")
-                .withTargetProcessServerId("5D3ED340-85AE-C646-B338641E015DA405")
-                .withVmsToMigrate(Arrays.asList("Vm1", "Vm2")).withUpdateType("ServerLevel")),
-            com.azure.core.util.Context.NONE);
+        manager.replicationFabrics()
+            .reassociateGateway("MadhaviVault", "MadhaviVRG", "GRACE-V2A-1",
+                new FailoverProcessServerRequest().withProperties(new FailoverProcessServerRequestProperties()
+                    .withContainerName("cloud_1f3c15af-2256-4568-9e06-e1ef4f728f75")
+                    .withSourceProcessServerId("AFA0EC54-1894-4E44-9CAB02DB8854B117")
+                    .withTargetProcessServerId("5D3ED340-85AE-C646-B338641E015DA405")
+                    .withVmsToMigrate(Arrays.asList("Vm1", "Vm2"))
+                    .withUpdateType("ServerLevel")),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -6,31 +6,52 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.CardinalityTypes;
 import com.azure.resourcemanager.customerinsights.models.PropertyDefinition;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.RelationshipTypeMapping;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The relationship resource format. */
+/**
+ * The relationship resource format.
+ */
 @Fluent
 public final class RelationshipResourceFormatInner extends ProxyResource {
     /*
      * The definition of Relationship.
      */
-    @JsonProperty(value = "properties")
     private RelationshipDefinition innerProperties;
 
-    /** Creates an instance of RelationshipResourceFormatInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RelationshipResourceFormatInner class.
+     */
     public RelationshipResourceFormatInner() {
     }
 
     /**
      * Get the innerProperties property: The definition of Relationship.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RelationshipDefinition innerProperties() {
@@ -38,8 +59,38 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the cardinality property: The Relationship Cardinality.
-     *
+     * 
      * @return the cardinality value.
      */
     public CardinalityTypes cardinality() {
@@ -48,7 +99,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Set the cardinality property: The Relationship Cardinality.
-     *
+     * 
      * @param cardinality the cardinality value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
@@ -62,7 +113,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Get the displayName property: Localized display name for the Relationship.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -71,7 +122,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Set the displayName property: Localized display name for the Relationship.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
@@ -85,7 +136,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Get the description property: Localized descriptions for the Relationship.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -94,7 +145,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Set the description property: Localized descriptions for the Relationship.
-     *
+     * 
      * @param description the description value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
@@ -108,7 +159,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Get the expiryDateTimeUtc property: The expiry date time in UTC.
-     *
+     * 
      * @return the expiryDateTimeUtc value.
      */
     public OffsetDateTime expiryDateTimeUtc() {
@@ -117,7 +168,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Set the expiryDateTimeUtc property: The expiry date time in UTC.
-     *
+     * 
      * @param expiryDateTimeUtc the expiryDateTimeUtc value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
@@ -131,7 +182,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Get the fields property: The properties of the Relationship.
-     *
+     * 
      * @return the fields value.
      */
     public List<PropertyDefinition> fields() {
@@ -140,7 +191,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Set the fields property: The properties of the Relationship.
-     *
+     * 
      * @param fields the fields value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
@@ -155,7 +206,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
     /**
      * Get the lookupMappings property: Optional property to be used to map fields in profile to their strong ids in
      * related profile.
-     *
+     * 
      * @return the lookupMappings value.
      */
     public List<RelationshipTypeMapping> lookupMappings() {
@@ -165,7 +216,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
     /**
      * Set the lookupMappings property: Optional property to be used to map fields in profile to their strong ids in
      * related profile.
-     *
+     * 
      * @param lookupMappings the lookupMappings value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
@@ -179,7 +230,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Get the profileType property: Profile type.
-     *
+     * 
      * @return the profileType value.
      */
     public String profileType() {
@@ -188,7 +239,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Set the profileType property: Profile type.
-     *
+     * 
      * @param profileType the profileType value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
@@ -202,7 +253,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -211,7 +262,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Get the relationshipName property: The Relationship name.
-     *
+     * 
      * @return the relationshipName value.
      */
     public String relationshipName() {
@@ -220,7 +271,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Get the relatedProfileType property: Related profile being referenced.
-     *
+     * 
      * @return the relatedProfileType value.
      */
     public String relatedProfileType() {
@@ -229,7 +280,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Set the relatedProfileType property: Related profile being referenced.
-     *
+     * 
      * @param relatedProfileType the relatedProfileType value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
@@ -243,7 +294,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Get the relationshipGuidId property: The relationship guid id.
-     *
+     * 
      * @return the relationshipGuidId value.
      */
     public String relationshipGuidId() {
@@ -252,7 +303,7 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -261,12 +312,57 @@ public final class RelationshipResourceFormatInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelationshipResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelationshipResourceFormatInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelationshipResourceFormatInner.
+     */
+    public static RelationshipResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelationshipResourceFormatInner deserializedRelationshipResourceFormatInner
+                = new RelationshipResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRelationshipResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRelationshipResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRelationshipResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRelationshipResourceFormatInner.innerProperties
+                        = RelationshipDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelationshipResourceFormatInner;
+        });
     }
 }

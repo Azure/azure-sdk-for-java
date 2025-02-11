@@ -22,14 +22,15 @@ public final class PrivateEndpointConnectionProxiesUpdatePrivateEndpointProperti
      */
     public static void privateEndpointConnectionProxyPrivateEndpointUpdate(
         com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().updatePrivateEndpointPropertiesWithResponse("test-rg", "contoso",
-            "peexample01",
-            new PrivateEndpointUpdate().withId(
-                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
-                .withLocation("westus2").withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000")
-                .withImmutableResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
-                .withVnetTrafficTag("12345678"),
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionProxies()
+            .updatePrivateEndpointPropertiesWithResponse("test-rg", "contoso", "peexample01",
+                new PrivateEndpointUpdate().withId(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
+                    .withLocation("westus2")
+                    .withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000")
+                    .withImmutableResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
+                    .withVnetTrafficTag("12345678"),
+                com.azure.core.util.Context.NONE);
     }
 }

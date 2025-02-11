@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.resourceconnector.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Get Telemetry Config Result appliance. */
+/**
+ * The Get Telemetry Config Result appliance.
+ */
 @Immutable
-public final class ApplianceGetTelemetryConfigResultInner {
+public final class ApplianceGetTelemetryConfigResultInner
+    implements JsonSerializable<ApplianceGetTelemetryConfigResultInner> {
     /*
      * Telemetry instrumentation key.
      */
-    @JsonProperty(value = "telemetryInstrumentationKey", access = JsonProperty.Access.WRITE_ONLY)
     private String telemetryInstrumentationKey;
 
-    /** Creates an instance of ApplianceGetTelemetryConfigResultInner class. */
+    /**
+     * Creates an instance of ApplianceGetTelemetryConfigResultInner class.
+     */
     public ApplianceGetTelemetryConfigResultInner() {
     }
 
     /**
      * Get the telemetryInstrumentationKey property: Telemetry instrumentation key.
-     *
+     * 
      * @return the telemetryInstrumentationKey value.
      */
     public String telemetryInstrumentationKey() {
@@ -31,9 +39,45 @@ public final class ApplianceGetTelemetryConfigResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplianceGetTelemetryConfigResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplianceGetTelemetryConfigResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplianceGetTelemetryConfigResultInner.
+     */
+    public static ApplianceGetTelemetryConfigResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplianceGetTelemetryConfigResultInner deserializedApplianceGetTelemetryConfigResultInner
+                = new ApplianceGetTelemetryConfigResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("telemetryInstrumentationKey".equals(fieldName)) {
+                    deserializedApplianceGetTelemetryConfigResultInner.telemetryInstrumentationKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplianceGetTelemetryConfigResultInner;
+        });
     }
 }

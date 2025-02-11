@@ -23,7 +23,8 @@ public final class SapOdpSource extends TabularSource {
     private String type = "SapOdpSource";
 
     /*
-     * The extraction mode. Allowed value include: Full, Delta and Recovery. The default value is Full. Type: string (or Expression with resultType string).
+     * The extraction mode. Allowed value include: Full, Delta and Recovery. The default value is Full. Type: string (or
+     * Expression with resultType string).
      */
     private Object extractionMode;
 
@@ -33,12 +34,14 @@ public final class SapOdpSource extends TabularSource {
     private Object subscriberProcess;
 
     /*
-     * Specifies the selection conditions from source data. Type: array of objects(selection) (or Expression with resultType array of objects).
+     * Specifies the selection conditions from source data. Type: array of objects(selection) (or Expression with
+     * resultType array of objects).
      */
     private Object selection;
 
     /*
-     * Specifies the columns to be selected from source data. Type: array of objects(projection) (or Expression with resultType array of objects).
+     * Specifies the columns to be selected from source data. Type: array of objects(projection) (or Expression with
+     * resultType array of objects).
      */
     private Object projection;
 

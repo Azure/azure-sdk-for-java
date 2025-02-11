@@ -18,25 +18,25 @@
 ```java
 import java.time.OffsetDateTime;
 
-/** Samples for Changes List. */
+/**
+ * Samples for Changes List.
+ */
 public final class ChangesListSamples {
     /*
-     * x-ms-original-file: specification/changeanalysis/resource-manager/Microsoft.ChangeAnalysis/stable/2021-04-01/examples/ChangesListChangesBySubscription.json
+     * x-ms-original-file:
+     * specification/changeanalysis/resource-manager/Microsoft.ChangeAnalysis/stable/2021-04-01/examples/
+     * ChangesListChangesBySubscription.json
      */
     /**
      * Sample code: Changes_ListChangesBySubscription.
-     *
+     * 
      * @param manager Entry point to AzureChangeAnalysisManager.
      */
-    public static void changesListChangesBySubscription(
-        com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager manager) {
-        manager
-            .changes()
-            .list(
-                OffsetDateTime.parse("2021-04-25T12:09:03.141Z"),
-                OffsetDateTime.parse("2021-04-26T12:09:03.141Z"),
-                null,
-                com.azure.core.util.Context.NONE);
+    public static void
+        changesListChangesBySubscription(com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager manager) {
+        manager.changes()
+            .list(OffsetDateTime.parse("2021-04-25T12:09:03.141Z"), OffsetDateTime.parse("2021-04-26T12:09:03.141Z"),
+                null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -46,26 +46,25 @@ public final class ChangesListSamples {
 ```java
 import java.time.OffsetDateTime;
 
-/** Samples for Changes ListByResourceGroup. */
+/**
+ * Samples for Changes ListByResourceGroup.
+ */
 public final class ChangesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/changeanalysis/resource-manager/Microsoft.ChangeAnalysis/stable/2021-04-01/examples/ChangesListChangesByResourceGroup.json
+     * x-ms-original-file:
+     * specification/changeanalysis/resource-manager/Microsoft.ChangeAnalysis/stable/2021-04-01/examples/
+     * ChangesListChangesByResourceGroup.json
      */
     /**
      * Sample code: Changes_ListChangesByResourceGroup.
-     *
+     * 
      * @param manager Entry point to AzureChangeAnalysisManager.
      */
-    public static void changesListChangesByResourceGroup(
-        com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager manager) {
-        manager
-            .changes()
-            .listByResourceGroup(
-                "MyResourceGroup",
-                OffsetDateTime.parse("2021-04-25T12:09:03.141Z"),
-                OffsetDateTime.parse("2021-04-26T12:09:03.141Z"),
-                null,
-                com.azure.core.util.Context.NONE);
+    public static void
+        changesListChangesByResourceGroup(com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager manager) {
+        manager.changes()
+            .listByResourceGroup("MyResourceGroup", OffsetDateTime.parse("2021-04-25T12:09:03.141Z"),
+                OffsetDateTime.parse("2021-04-26T12:09:03.141Z"), null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -73,14 +72,18 @@ public final class ChangesListByResourceGroupSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/changeanalysis/resource-manager/Microsoft.ChangeAnalysis/stable/2021-04-01/examples/OperationsList.json
+     * x-ms-original-file:
+     * specification/changeanalysis/resource-manager/Microsoft.ChangeAnalysis/stable/2021-04-01/examples/OperationsList.
+     * json
      */
     /**
      * Sample code: Operations_List.
-     *
+     * 
      * @param manager Entry point to AzureChangeAnalysisManager.
      */
     public static void operationsList(com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager manager) {
@@ -94,26 +97,27 @@ public final class OperationsListSamples {
 ```java
 import java.time.OffsetDateTime;
 
-/** Samples for ResourceChanges List. */
+/**
+ * Samples for ResourceChanges List.
+ */
 public final class ResourceChangesListSamples {
     /*
-     * x-ms-original-file: specification/changeanalysis/resource-manager/Microsoft.ChangeAnalysis/stable/2021-04-01/examples/ResourceChangesList.json
+     * x-ms-original-file:
+     * specification/changeanalysis/resource-manager/Microsoft.ChangeAnalysis/stable/2021-04-01/examples/
+     * ResourceChangesList.json
      */
     /**
      * Sample code: ResourceChanges_List.
-     *
+     * 
      * @param manager Entry point to AzureChangeAnalysisManager.
      */
-    public static void resourceChangesList(
-        com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager manager) {
-        manager
-            .resourceChanges()
+    public static void
+        resourceChangesList(com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager manager) {
+        manager.resourceChanges()
             .list(
                 "subscriptions/4d962866-1e3f-47f2-bd18-450c08f914c1/resourceGroups/MyResourceGroup/providers/Microsoft.Web/sites/mysite",
-                OffsetDateTime.parse("2021-04-25T12:09:03.141Z"),
-                OffsetDateTime.parse("2021-04-26T12:09:03.141Z"),
-                null,
-                com.azure.core.util.Context.NONE);
+                OffsetDateTime.parse("2021-04-25T12:09:03.141Z"), OffsetDateTime.parse("2021-04-26T12:09:03.141Z"),
+                null, com.azure.core.util.Context.NONE);
     }
 }
 ```

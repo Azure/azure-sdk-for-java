@@ -6,74 +6,45 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlList;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.IpAddressType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessControlListsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"lastSyncedTime\":\"2021-11-22T15:22:40Z\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"Enabled\",\"configurationType\":\"Inline\",\"aclsUrl\":\"ciyoypoedk\",\"defaultAction\":\"Permit\",\"matchConfigurations\":[{\"matchConfigurationName\":\"py\",\"sequenceNumber\":2877359021254224088,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{},{},{}]},{\"matchConfigurationName\":\"te\",\"sequenceNumber\":5641083204128969165,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{}],\"vlanGroups\":[{},{},{}],\"portGroups\":[{},{},{},{}]},{\"ipGroups\":[{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{},{}],\"vlanGroups\":[{}],\"portGroups\":[{}]}],\"annotation\":\"obpmgqlw\"},\"location\":\"znbbyzposzfut\",\"tags\":{\"ewflwzhxzuxe\":\"ygbnbcmoiqgtzpv\",\"jdajdqxymxxyfrd\":\"xhywlrkqsqvvdkfp\"},\"id\":\"idcetfvgwfwsldi\",\"name\":\"wouppvyddq\",\"type\":\"vclrsn\"}";
 
-        String responseStr =
-            "{\"properties\":{\"lastSyncedTime\":\"2021-09-23T22:30:34Z\",\"configurationState\":\"Failed\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Disabled\",\"configurationType\":\"File\",\"aclsUrl\":\"uzscyfyi\",\"matchConfigurations\":[{\"matchConfigurationName\":\"asjnfgngxaojeeyv\",\"sequenceNumber\":4807900032809026267,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{}],\"portGroups\":[{},{},{},{}]}],\"annotation\":\"kjcdzuiygtcyzcje\"},\"location\":\"ubaldjcgldryvlr\",\"tags\":{\"jbfomfbozpjyxe\":\"hzirmxca\",\"jthp\":\"ppqcwdnn\"},\"id\":\"nxebycympohx\",\"name\":\"bnnpnsebcxnous\",\"type\":\"dyzssjlmykdygj\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AccessControlList response = manager.accessControlLists()
+            .getByResourceGroupWithResponse("hgxuwudgcyqruvum", "yddnqivah", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AccessControlList response =
-            manager
-                .accessControlLists()
-                .getByResourceGroupWithResponse("tuqvirlun", "skydigtvjxsocsv", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("ubaldjcgldryvlr", response.location());
-        Assertions.assertEquals("hzirmxca", response.tags().get("jbfomfbozpjyxe"));
-        Assertions.assertEquals(ConfigurationType.FILE, response.configurationType());
-        Assertions.assertEquals("uzscyfyi", response.aclsUrl());
-        Assertions.assertEquals("asjnfgngxaojeeyv", response.matchConfigurations().get(0).matchConfigurationName());
-        Assertions.assertEquals(4807900032809026267L, response.matchConfigurations().get(0).sequenceNumber());
-        Assertions.assertEquals(IpAddressType.IPV4, response.matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals("kjcdzuiygtcyzcje", response.annotation());
+        Assertions.assertEquals("znbbyzposzfut", response.location());
+        Assertions.assertEquals("ygbnbcmoiqgtzpv", response.tags().get("ewflwzhxzuxe"));
+        Assertions.assertEquals(ConfigurationType.INLINE, response.configurationType());
+        Assertions.assertEquals("ciyoypoedk", response.aclsUrl());
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.defaultAction());
+        Assertions.assertEquals("py", response.matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(2877359021254224088L, response.matchConfigurations().get(0).sequenceNumber());
+        Assertions.assertEquals(IpAddressType.IPV6, response.matchConfigurations().get(0).ipAddressType());
+        Assertions.assertEquals("obpmgqlw", response.annotation());
     }
 }

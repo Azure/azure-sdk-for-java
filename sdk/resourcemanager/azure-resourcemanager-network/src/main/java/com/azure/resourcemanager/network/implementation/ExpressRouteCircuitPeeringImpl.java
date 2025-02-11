@@ -18,24 +18,16 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
-class ExpressRouteCircuitPeeringImpl<
-        ParentModelT,
-        ParentInnerT,
-        ParentT extends GroupableResource<NetworkManager, ParentInnerT> & Refreshable<ParentModelT>>
-    extends CreatableUpdatableImpl<
-        ExpressRouteCircuitPeering,
-        ExpressRouteCircuitPeeringInner,
-        ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>>
+class ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT extends GroupableResource<NetworkManager, ParentInnerT> & Refreshable<ParentModelT>>
+    extends
+    CreatableUpdatableImpl<ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>>
     implements ExpressRouteCircuitPeering, ExpressRouteCircuitPeering.Definition, ExpressRouteCircuitPeering.Update {
     private final ExpressRouteCircuitPeeringsClient client;
     private final ParentT parent;
     private ExpressRouteCircuitStatsImpl stats;
 
-    ExpressRouteCircuitPeeringImpl(
-        ParentT parent,
-        ExpressRouteCircuitPeeringInner innerObject,
-        ExpressRouteCircuitPeeringsClient client,
-        ExpressRoutePeeringType type) {
+    ExpressRouteCircuitPeeringImpl(ParentT parent, ExpressRouteCircuitPeeringInner innerObject,
+        ExpressRouteCircuitPeeringsClient client, ExpressRoutePeeringType type) {
         super(type.toString(), innerObject);
         this.client = client;
         this.parent = parent;
@@ -44,8 +36,8 @@ class ExpressRouteCircuitPeeringImpl<
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withAdvertisedPublicPrefixes(
-        String publicPrefix) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
+        withAdvertisedPublicPrefixes(String publicPrefix) {
         ensureMicrosoftPeeringConfig().withAdvertisedPublicPrefixes(Arrays.asList(publicPrefix));
         return this;
     }
@@ -58,15 +50,15 @@ class ExpressRouteCircuitPeeringImpl<
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withPrimaryPeerAddressPrefix(
-        String addressPrefix) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
+        withPrimaryPeerAddressPrefix(String addressPrefix) {
         innerModel().withPrimaryPeerAddressPrefix(addressPrefix);
         return this;
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withSecondaryPeerAddressPrefix(
-        String addressPrefix) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
+        withSecondaryPeerAddressPrefix(String addressPrefix) {
         innerModel().withSecondaryPeerAddressPrefix(addressPrefix);
         return this;
     }
@@ -95,15 +87,12 @@ class ExpressRouteCircuitPeeringImpl<
 
     @Override
     public Mono<ExpressRouteCircuitPeering> createResourceAsync() {
-        return this
-            .client
-            .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), innerModel())
-            .flatMap(
-                innerModel -> {
-                    this.setInner(innerModel);
-                    stats = new ExpressRouteCircuitStatsImpl(innerModel.stats());
-                    return parent.refreshAsync().then(Mono.just(this));
-                });
+        return this.client.createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), innerModel())
+            .flatMap(innerModel -> {
+                this.setInner(innerModel);
+                stats = new ExpressRouteCircuitStatsImpl(innerModel.stats());
+                return parent.refreshAsync().then(Mono.just(this));
+            });
     }
 
     // Getters

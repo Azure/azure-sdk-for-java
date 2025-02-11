@@ -7,6 +7,7 @@ package com.azure.resourcemanager.chaos.implementation;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.chaos.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.chaos.models.OperationStatus;
+import java.time.OffsetDateTime;
 
 public final class OperationStatusImpl implements OperationStatus {
     private OperationStatusInner innerObject;
@@ -26,11 +27,11 @@ public final class OperationStatusImpl implements OperationStatus {
         return this.innerModel().name();
     }
 
-    public String startTime() {
+    public OffsetDateTime startTime() {
         return this.innerModel().startTime();
     }
 
-    public String endTime() {
+    public OffsetDateTime endTime() {
         return this.innerModel().endTime();
     }
 

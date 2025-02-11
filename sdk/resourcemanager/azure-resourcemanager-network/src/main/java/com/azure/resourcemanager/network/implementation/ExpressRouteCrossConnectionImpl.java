@@ -18,9 +18,8 @@ import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /** Implementation for ExpressRouteCrossConnection. */
-public class ExpressRouteCrossConnectionImpl
-    extends GroupableParentResourceWithTagsImpl<
-        ExpressRouteCrossConnection, ExpressRouteCrossConnectionInner, ExpressRouteCrossConnectionImpl, NetworkManager>
+public class ExpressRouteCrossConnectionImpl extends
+    GroupableParentResourceWithTagsImpl<ExpressRouteCrossConnection, ExpressRouteCrossConnectionInner, ExpressRouteCrossConnectionImpl, NetworkManager>
     implements ExpressRouteCrossConnection, ExpressRouteCrossConnection.Update {
     private ExpressRouteCrossConnectionPeeringsImpl peerings;
     private Map<String, ExpressRouteCrossConnectionPeering> crossConnectionPeerings;
@@ -32,8 +31,7 @@ public class ExpressRouteCrossConnectionImpl
 
     @Override
     protected Mono<ExpressRouteCrossConnectionInner> createInner() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getExpressRouteCrossConnections()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());
@@ -44,18 +42,15 @@ public class ExpressRouteCrossConnectionImpl
         crossConnectionPeerings = new HashMap<>();
         if (innerModel().peerings() != null) {
             for (ExpressRouteCrossConnectionPeeringInner peering : innerModel().peerings()) {
-                crossConnectionPeerings
-                    .put(
-                        peering.name(),
-                        new ExpressRouteCrossConnectionPeeringImpl(this, peering, peering.peeringType()));
+                crossConnectionPeerings.put(peering.name(),
+                    new ExpressRouteCrossConnectionPeeringImpl(this, peering, peering.peeringType()));
             }
         }
     }
 
     @Override
     protected Mono<ExpressRouteCrossConnectionInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getExpressRouteCrossConnections()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -63,21 +58,16 @@ public class ExpressRouteCrossConnectionImpl
 
     @Override
     public Mono<ExpressRouteCrossConnection> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                expressRouteCrossConnection -> {
-                    ExpressRouteCrossConnectionImpl impl =
-                        (ExpressRouteCrossConnectionImpl) expressRouteCrossConnection;
-                    impl.initializeChildrenFromInner();
-                    return impl;
-                });
+        return super.refreshAsync().map(expressRouteCrossConnection -> {
+            ExpressRouteCrossConnectionImpl impl = (ExpressRouteCrossConnectionImpl) expressRouteCrossConnection;
+            impl.initializeChildrenFromInner();
+            return impl;
+        });
     }
 
     @Override
     protected Mono<ExpressRouteCrossConnectionInner> applyTagsToInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getExpressRouteCrossConnections()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));

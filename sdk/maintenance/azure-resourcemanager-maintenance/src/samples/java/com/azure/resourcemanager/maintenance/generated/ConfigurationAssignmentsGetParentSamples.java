@@ -9,7 +9,9 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class ConfigurationAssignmentsGetParentSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ConfigurationAssignments_GetParent.json
+     * x-ms-original-file:
+     * specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/
+     * ConfigurationAssignments_GetParent.json
      */
     /**
      * Sample code: ConfigurationAssignments_GetParent.

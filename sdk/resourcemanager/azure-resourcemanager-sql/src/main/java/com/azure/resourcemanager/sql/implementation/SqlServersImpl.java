@@ -177,27 +177,27 @@ public class SqlServersImpl
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) {
-        return new CheckNameAvailabilityResultImpl(this.inner().checkNameAvailability(
-            new CheckNameAvailabilityRequest().withName(name)));
+        return new CheckNameAvailabilityResultImpl(
+            this.inner().checkNameAvailability(new CheckNameAvailabilityRequest().withName(name)));
     }
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
-        return this.inner().checkNameAvailabilityAsync(new CheckNameAvailabilityRequest().withName(name))
+        return this.inner()
+            .checkNameAvailabilityAsync(new CheckNameAvailabilityRequest().withName(name))
             .map(CheckNameAvailabilityResultImpl::new);
     }
 
     @Override
     public RegionCapabilities getCapabilitiesByRegion(Region region) {
-        LocationCapabilitiesInner capabilitiesInner =
-            this.manager().serviceClient().getCapabilities().listByLocation(region.name());
+        LocationCapabilitiesInner capabilitiesInner
+            = this.manager().serviceClient().getCapabilities().listByLocation(region.name());
         return capabilitiesInner != null ? new RegionCapabilitiesImpl(capabilitiesInner) : null;
     }
 
     @Override
     public Mono<RegionCapabilities> getCapabilitiesByRegionAsync(Region region) {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getCapabilities()
             .listByLocationAsync(region.name())
@@ -208,8 +208,8 @@ public class SqlServersImpl
     public List<SqlSubscriptionUsageMetric> listUsageByRegion(Region region) {
         Objects.requireNonNull(region);
         List<SqlSubscriptionUsageMetric> subscriptionUsages = new ArrayList<>();
-        PagedIterable<SubscriptionUsageInner> subscriptionUsageInners =
-            this.manager().serviceClient().getSubscriptionUsages().listByLocation(region.name());
+        PagedIterable<SubscriptionUsageInner> subscriptionUsageInners
+            = this.manager().serviceClient().getSubscriptionUsages().listByLocation(region.name());
         for (SubscriptionUsageInner inner : subscriptionUsageInners) {
             subscriptionUsages.add(new SqlSubscriptionUsageMetricImpl(region.name(), inner, this.manager()));
         }
@@ -220,12 +220,9 @@ public class SqlServersImpl
     public PagedFlux<SqlSubscriptionUsageMetric> listUsageByRegionAsync(final Region region) {
         Objects.requireNonNull(region);
         final SqlServers self = this;
-        return PagedConverter.mapPage(this
-            .manager()
-            .serviceClient()
-            .getSubscriptionUsages()
-            .listByLocationAsync(region.name()),
-                subscriptionUsageInner ->
-                    new SqlSubscriptionUsageMetricImpl(region.name(), subscriptionUsageInner, self.manager()));
+        return PagedConverter.mapPage(
+            this.manager().serviceClient().getSubscriptionUsages().listByLocationAsync(region.name()),
+            subscriptionUsageInner -> new SqlSubscriptionUsageMetricImpl(region.name(), subscriptionUsageInner,
+                self.manager()));
     }
 }

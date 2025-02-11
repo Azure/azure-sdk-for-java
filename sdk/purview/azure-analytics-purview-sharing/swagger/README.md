@@ -5,13 +5,12 @@ input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/purview/data-plane/Azure.Analytics.Purview.Share/preview/2023-05-30-preview/share.json
 output-folder: ../
 java: true
-regenerate-pom: false
+use: '@autorest/java@4.1.42'
 data-plane: true
 generate-tests: true
 artifact-id: azure-analytics-purview-sharing
 generate-samples: true
 namespace: com.azure.analytics.purview.sharing
-enable-sync-stack: false
 service-versions:
 - 2023-05-30-preview
 directive:

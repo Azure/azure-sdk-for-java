@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for RoutePolicies ValidateConfiguration. */
+/**
+ * Samples for RoutePolicies ValidateConfiguration.
+ */
 public final class RoutePoliciesValidateConfigurationSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/RoutePolicies_ValidateConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * RoutePolicies_ValidateConfiguration_MaximumSet_Gen.json
      */
     /**
      * Sample code: RoutePolicies_ValidateConfiguration_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void routePoliciesValidateConfigurationMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .routePolicies()
+        manager.routePolicies()
             .validateConfiguration("example-rg", "example-routePolicy", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,8 +12,7 @@ public final class WorkItemConfigurationImpl implements WorkItemConfiguration {
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    WorkItemConfigurationImpl(
-        WorkItemConfigurationInner innerObject,
+    WorkItemConfigurationImpl(WorkItemConfigurationInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

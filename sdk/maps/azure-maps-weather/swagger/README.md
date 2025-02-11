@@ -39,7 +39,7 @@ directive:
       $["security"] = [];
 
 title: WeatherClient
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Weather/stable/1.1/weather.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/maps/data-plane/Weather/stable/1.1/weather.json
 namespace: com.azure.maps.weather
 java: true
 use: '@autorest/java@4.1.29'

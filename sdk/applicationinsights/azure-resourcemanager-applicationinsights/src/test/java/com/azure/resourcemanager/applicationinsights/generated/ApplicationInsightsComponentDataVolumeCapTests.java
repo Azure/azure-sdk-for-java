@@ -11,29 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInsightsComponentDataVolumeCapTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentDataVolumeCap model =
-            BinaryData
-                .fromString(
-                    "{\"Cap\":85.262695,\"ResetTime\":727267147,\"WarningThreshold\":1154463022,\"StopSendNotificationWhenHitThreshold\":true,\"StopSendNotificationWhenHitCap\":true,\"MaxHistoryCap\":5.3407373}")
-                .toObject(ApplicationInsightsComponentDataVolumeCap.class);
-        Assertions.assertEquals(85.262695F, model.cap());
-        Assertions.assertEquals(1154463022, model.warningThreshold());
-        Assertions.assertEquals(true, model.stopSendNotificationWhenHitThreshold());
+        ApplicationInsightsComponentDataVolumeCap model = BinaryData.fromString(
+            "{\"Cap\":79.06951,\"ResetTime\":1982194402,\"WarningThreshold\":922988316,\"StopSendNotificationWhenHitThreshold\":false,\"StopSendNotificationWhenHitCap\":true,\"MaxHistoryCap\":45.168953}")
+            .toObject(ApplicationInsightsComponentDataVolumeCap.class);
+        Assertions.assertEquals(79.06951F, model.cap());
+        Assertions.assertEquals(922988316, model.warningThreshold());
+        Assertions.assertEquals(false, model.stopSendNotificationWhenHitThreshold());
         Assertions.assertEquals(true, model.stopSendNotificationWhenHitCap());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentDataVolumeCap model =
-            new ApplicationInsightsComponentDataVolumeCap()
-                .withCap(85.262695F)
-                .withWarningThreshold(1154463022)
-                .withStopSendNotificationWhenHitThreshold(true)
+        ApplicationInsightsComponentDataVolumeCap model
+            = new ApplicationInsightsComponentDataVolumeCap().withCap(79.06951F)
+                .withWarningThreshold(922988316)
+                .withStopSendNotificationWhenHitThreshold(false)
                 .withStopSendNotificationWhenHitCap(true);
         model = BinaryData.fromObject(model).toObject(ApplicationInsightsComponentDataVolumeCap.class);
-        Assertions.assertEquals(85.262695F, model.cap());
-        Assertions.assertEquals(1154463022, model.warningThreshold());
-        Assertions.assertEquals(true, model.stopSendNotificationWhenHitThreshold());
+        Assertions.assertEquals(79.06951F, model.cap());
+        Assertions.assertEquals(922988316, model.warningThreshold());
+        Assertions.assertEquals(false, model.stopSendNotificationWhenHitThreshold());
         Assertions.assertEquals(true, model.stopSendNotificationWhenHitCap());
     }
 }

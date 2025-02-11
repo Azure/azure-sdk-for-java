@@ -62,12 +62,8 @@ public interface AutoscaleProfile extends HasInnerModel<AutoscaleProfileInner>, 
     List<ScaleRule> rules();
 
     /** The entirety of an autoscale profile definition. */
-    interface Definition
-        extends DefinitionStages.WithAttach,
-            DefinitionStages.Blank,
-            DefinitionStages.WithScaleRule,
-            DefinitionStages.WithScaleRuleOptional,
-            DefinitionStages.WithScaleSchedule {
+    interface Definition extends DefinitionStages.WithAttach, DefinitionStages.Blank, DefinitionStages.WithScaleRule,
+        DefinitionStages.WithScaleRuleOptional, DefinitionStages.WithScaleSchedule {
     }
 
     /** Grouping of autoscale profile definition stages. */
@@ -88,8 +84,8 @@ public interface AutoscaleProfile extends HasInnerModel<AutoscaleProfileInner>, 
              *     evaluation. The default is only used if the current instance count is lower than the default.
              * @return the next stage of the definition.
              */
-            WithScaleRule withMetricBasedScale(
-                int minimumInstanceCount, int maximumInstanceCount, int defaultInstanceCount);
+            WithScaleRule withMetricBasedScale(int minimumInstanceCount, int maximumInstanceCount,
+                int defaultInstanceCount);
 
             /**
              * Selects schedule based autoscale profile.
@@ -174,8 +170,8 @@ public interface AutoscaleProfile extends HasInnerModel<AutoscaleProfileInner>, 
              * @param weekday list of week days when the schedule should be active.
              * @return the next stage of the definition.
              */
-            WithScaleRuleOptional withRecurrentSchedule(
-                String scheduleTimeZone, String startTime, DayOfWeek... weekday);
+            WithScaleRuleOptional withRecurrentSchedule(String scheduleTimeZone, String startTime,
+                DayOfWeek... weekday);
         }
 
         /** The stage of the definition which specifies autoscale profile schedule. */
@@ -231,11 +227,8 @@ public interface AutoscaleProfile extends HasInnerModel<AutoscaleProfileInner>, 
 
     /** The entirety of an autoscale profile definition during current autoscale settings update. */
     interface UpdateDefinition
-        extends UpdateDefinitionStages.WithAttach,
-            UpdateDefinitionStages.Blank,
-            UpdateDefinitionStages.WithScaleRule,
-            UpdateDefinitionStages.WithScaleRuleOptional,
-            UpdateDefinitionStages.WithScaleSchedule {
+        extends UpdateDefinitionStages.WithAttach, UpdateDefinitionStages.Blank, UpdateDefinitionStages.WithScaleRule,
+        UpdateDefinitionStages.WithScaleRuleOptional, UpdateDefinitionStages.WithScaleSchedule {
     }
 
     /** Grouping of autoscale profile definition stages during current autoscale settings update stage. */
@@ -256,8 +249,8 @@ public interface AutoscaleProfile extends HasInnerModel<AutoscaleProfileInner>, 
              *     evaluation. The default is only used if the current instance count is lower than the default.
              * @return the next stage of the definition.
              */
-            WithScaleRule withMetricBasedScale(
-                int minimumInstanceCount, int maximumInstanceCount, int defaultInstanceCount);
+            WithScaleRule withMetricBasedScale(int minimumInstanceCount, int maximumInstanceCount,
+                int defaultInstanceCount);
 
             /**
              * Selects schedule based autoscale profile.
@@ -333,8 +326,8 @@ public interface AutoscaleProfile extends HasInnerModel<AutoscaleProfileInner>, 
              * @param weekday list of week days when the schedule should be active.
              * @return the next stage of the definition.
              */
-            WithScaleRuleOptional withRecurrentSchedule(
-                String scheduleTimeZone, String startTime, DayOfWeek... weekday);
+            WithScaleRuleOptional withRecurrentSchedule(String scheduleTimeZone, String startTime,
+                DayOfWeek... weekday);
         }
 
         /** The stage of the definition which specifies autoscale profile schedule. */

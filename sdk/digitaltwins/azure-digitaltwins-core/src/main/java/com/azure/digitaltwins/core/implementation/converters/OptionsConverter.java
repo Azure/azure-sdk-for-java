@@ -34,17 +34,16 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsAddOptions()
-            .setIfNoneMatch(options.getIfNoneMatch());
+        return new DigitalTwinsAddOptions().setIfNoneMatch(options.getIfNoneMatch());
     }
 
-    public static DigitalTwinsAddRelationshipOptions toProtocolLayerOptions(CreateOrReplaceRelationshipOptions options) {
+    public static DigitalTwinsAddRelationshipOptions
+        toProtocolLayerOptions(CreateOrReplaceRelationshipOptions options) {
         if (options == null) {
             return null;
         }
 
-        return new DigitalTwinsAddRelationshipOptions()
-            .setIfNoneMatch(options.getIfNoneMatch());
+        return new DigitalTwinsAddRelationshipOptions().setIfNoneMatch(options.getIfNoneMatch());
     }
 
     public static DigitalTwinModelsListOptions toProtocolLayerOptions(ListModelsOptions options) {
@@ -52,8 +51,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinModelsListOptions()
-            .setMaxItemsPerPage(options.getMaxItemsPerPage());
+        return new DigitalTwinModelsListOptions().setMaxItemsPerPage(options.getMaxItemsPerPage());
     }
 
     public static EventRoutesListOptions toProtocolLayerOptions(ListDigitalTwinsEventRoutesOptions options) {
@@ -61,8 +59,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new EventRoutesListOptions()
-            .setMaxItemsPerPage(options.getMaxItemsPerPage());
+        return new EventRoutesListOptions().setMaxItemsPerPage(options.getMaxItemsPerPage());
     }
 
     public static DigitalTwinsDeleteOptions toProtocolLayerOptions(DeleteDigitalTwinOptions options) {
@@ -70,8 +67,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsDeleteOptions()
-            .setIfMatch(options.getIfMatch());
+        return new DigitalTwinsDeleteOptions().setIfMatch(options.getIfMatch());
     }
 
     public static DigitalTwinsUpdateOptions toProtocolLayerOptions(UpdateDigitalTwinOptions options) {
@@ -79,8 +75,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsUpdateOptions()
-            .setIfMatch(options.getIfMatch());
+        return new DigitalTwinsUpdateOptions().setIfMatch(options.getIfMatch());
     }
 
     public static DigitalTwinsUpdateRelationshipOptions toProtocolLayerOptions(UpdateRelationshipOptions options) {
@@ -88,8 +83,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsUpdateRelationshipOptions()
-            .setIfMatch(options.getIfMatch());
+        return new DigitalTwinsUpdateRelationshipOptions().setIfMatch(options.getIfMatch());
     }
 
     public static DigitalTwinsDeleteRelationshipOptions toProtocolLayerOptions(DeleteRelationshipOptions options) {
@@ -97,8 +91,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsDeleteRelationshipOptions()
-            .setIfMatch(options.getIfMatch());
+        return new DigitalTwinsDeleteRelationshipOptions().setIfMatch(options.getIfMatch());
     }
 
     public static DigitalTwinsUpdateComponentOptions toProtocolLayerOptions(UpdateComponentOptions options) {
@@ -106,8 +99,7 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new DigitalTwinsUpdateComponentOptions()
-            .setIfMatch(options.getIfMatch());
+        return new DigitalTwinsUpdateComponentOptions().setIfMatch(options.getIfMatch());
     }
 
     public static QueryTwinsOptions toProtocolLayerOptions(QueryOptions options) {
@@ -115,7 +107,6 @@ public final class OptionsConverter {
             return null;
         }
 
-        return new QueryTwinsOptions()
-            .setMaxItemsPerPage(options.getMaxItemsPerPage());
+        return new QueryTwinsOptions().setMaxItemsPerPage(options.getMaxItemsPerPage());
     }
 }

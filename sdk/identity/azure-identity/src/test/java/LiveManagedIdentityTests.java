@@ -7,12 +7,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.implementation.Retry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -28,12 +28,13 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-
-public class LiveManagedIdentityTests extends TestBase {
+public class LiveManagedIdentityTests {
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
+    @Retry(maxRetries = 3)
     public void testManagedIdentityFuncDeployment() {
+
         HttpClient client = HttpClient.createDefault();
         String functionUrl = "https://" + System.getenv("IDENTITY_FUNCTION_NAME") + ".azurewebsites.net/api/mitest";
         HttpRequest request = new HttpRequest(HttpMethod.GET, functionUrl);
@@ -46,6 +47,7 @@ public class LiveManagedIdentityTests extends TestBase {
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
+    @Retry(maxRetries = 3)
     public void testManagedIdentityWebAppDeployment() {
         HttpClient client = HttpClient.createDefault();
         String functionUrl = "https://" + System.getenv("IDENTITY_WEBAPP_NAME") + ".azurewebsites.net/mitest";
@@ -63,51 +65,43 @@ public class LiveManagedIdentityTests extends TestBase {
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     @EnabledIfSystemProperty(named = "os.name", matches = "Linux")
     @Timeout(value = 15, unit = TimeUnit.MINUTES)
+    @Retry(maxRetries = 3)
     public void testManagedIdentityAksDeployment() {
-
+        System.out.println("Environment: " + System.getenv("IDENTITY_ENVIRONMENT"));
         String os = System.getProperty("os.name");
         System.out.println("OS: " + os);
         //Setup Env
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
-        String spClientId = configuration.get("IDENTITY_CLIENT_ID");
-        String secret = configuration.get("IDENTITY_CLIENT_SECRET");
-        String tenantId = configuration.get("IDENTITY_TENANT_ID");
-        String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
-        String aksCluster = configuration.get("IDENTITY_AKS_CLUSTER_NAME");
-        String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
         String podName = configuration.get("IDENTITY_AKS_POD_NAME");
         String pathCommand = os.contains("Windows") ? "where" : "which";
 
-        String azPath = runCommand(pathCommand, "az").trim();
         String kubectlPath = runCommand(pathCommand, "kubectl").trim();
-
-        runCommand(azPath, "login",  "--service-principal", "-u", spClientId, "-p", secret, "--tenant", tenantId);
-        runCommand(azPath, "account", "set", "--subscription", subscriptionId);
-        runCommand(azPath, "aks", "get-credentials", "--resource-group", resourceGroup, "--name", aksCluster,
-            "--overwrite-existing");
 
         String podOutput = runCommand(kubectlPath, "get", "pods", "-o", "jsonpath='{.items[0].metadata.name}'");
         assertTrue(podOutput.contains(podName), "Pod name not found in the output");
 
         String output = runCommand(kubectlPath, "exec", "-it", podName, "--", "java", "-jar", "/identity-test.jar");
-        assertTrue(output.contains("Successfully retrieved managed identity tokens"), "Failed to get response from AKS");
+        assertTrue(output.contains("Successfully retrieved managed identity tokens"),
+            "Failed to get response from AKS");
     }
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
+    @EnabledIfEnvironmentVariable(named = "IDENTITY_ENVIRONMENT", matches = "AzureCloud")
     @EnabledIfSystemProperty(named = "os.name", matches = "Linux")
     @Timeout(value = 15, unit = TimeUnit.MINUTES)
+    @Retry(maxRetries = 3)
     public void testManagedIdentityVmDeployment() {
-
+        System.out.println("Environment: " + System.getenv("IDENTITY_ENVIRONMENT"));
         String os = System.getProperty("os.name");
         System.out.println("OS: " + os);
         //Setup Env
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
-        String spClientId = configuration.get("IDENTITY_CLIENT_ID");
-        String secret = configuration.get("IDENTITY_CLIENT_SECRET");
-        String tenantId = configuration.get("IDENTITY_TENANT_ID");
+        String spClientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String oidc = configuration.get("AZ_OIDC_TOKEN");
+        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
         String vmName = configuration.get("IDENTITY_VM_NAME");
@@ -118,19 +112,20 @@ public class LiveManagedIdentityTests extends TestBase {
         String azPath = runCommand(isWindows ? "where" : "which", "az").trim();
         azPath = isWindows ? extractAzCmdPath(azPath) : azPath;
 
-        runCommand(azPath, "login",  "--service-principal", "-u", spClientId, "-p", secret, "--tenant", tenantId);
+        runCommand(azPath, "login", "--federated-token", oidc, "--service-principal", "-u", spClientId, "--tenant",
+            tenantId);
         runCommand(azPath, "account", "set", "--subscription", subscriptionId);
 
-
-        String storageKey = runCommand(azPath, "storage", "account", "keys", "list", "--account-name", storageAcccountName,
-            "--resource-group", resourceGroup, "--query", "[0].value", "--output", "tsv").trim();
+        String storageKey = runCommand(azPath, "storage", "account", "keys", "list", "--account-name",
+            storageAcccountName, "--resource-group", resourceGroup, "--query", "[0].value", "--output", "tsv").trim();
 
         String expiry = LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String sasToken = runCommand(azPath, "storage", "blob", "generate-sas", "--account-name", storageAcccountName,
-            "--account-key", "\"" + storageKey + "\"", "--container-name", "vmcontainer", "--name", "testfile.jar", "--permissions", "r",
-            "--expiry", expiry, "--https-only", "--output", "tsv").trim();
+            "--account-key", "\"" + storageKey + "\"", "--container-name", "vmcontainer", "--name", "testfile.jar",
+            "--permissions", "r", "--expiry", expiry, "--https-only", "--output", "tsv").trim();
 
-        String vmBlob = String.format("https://%s.blob.core.windows.net/vmcontainer/testfile.jar?%s", storageAcccountName, sasToken);
+        String vmBlob = String.format("https://%s.blob.core.windows.net/vmcontainer/testfile.jar?%s",
+            storageAcccountName, sasToken);
         String script = String.format("curl \'%s\' -o ./testfile.jar && java -jar ./testfile.jar", vmBlob);
 
         System.out.println("Script: " + script);
@@ -138,28 +133,26 @@ public class LiveManagedIdentityTests extends TestBase {
         String output = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
             "--command-id", "RunShellScript", "--scripts", script);
 
-        assertTrue(output.contains("Successfully retrieved managed identity tokens"),
-            "Failed to get response from VM");
+        assertTrue(output.contains("Successfully retrieved managed identity tokens"), "Failed to get response from VM");
     }
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
+    @Retry(maxRetries = 3)
     public void callGraphWithClientSecret() {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
-        String multiTenantId = configuration.get("AZURE_IDENTITY_MULTI_TENANT_TENANT_ID");
-        String multiClientId = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_ID");
+        String multiTenantId = "54826b22-38d6-4fb2-bad9-b7b93a3e9c5a";
+        String multiClientId = "4fc2b07b-9d91-4a4a-86e0-96d5b9145075";
         String multiClientSecret = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET");
 
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .tenantId(multiTenantId)
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(multiTenantId)
             .clientId(multiClientId)
             .clientSecret(multiClientSecret)
             .build();
 
-
-        AccessToken accessToken = credential
-            .getTokenSync(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"));
+        AccessToken accessToken
+            = credential.getTokenSync(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"));
 
         assertTrue(accessToken != null, "Failed to get access token");
     }
@@ -190,7 +183,6 @@ public class LiveManagedIdentityTests extends TestBase {
             throw new RuntimeException(e);
         }
     }
-
 
     private String extractAzCmdPath(String output) {
         String[] lines = output.split("\\r?\\n");

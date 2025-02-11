@@ -13,8 +13,8 @@ public final class GitHubOAuthResponseImpl implements GitHubOAuthResponse {
 
     private final com.azure.resourcemanager.devhub.DevHubManager serviceManager;
 
-    GitHubOAuthResponseImpl(
-        GitHubOAuthResponseInner innerObject, com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
+    GitHubOAuthResponseImpl(GitHubOAuthResponseInner innerObject,
+        com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

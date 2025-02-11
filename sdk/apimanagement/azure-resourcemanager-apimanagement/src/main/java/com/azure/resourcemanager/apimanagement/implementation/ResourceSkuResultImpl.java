@@ -14,8 +14,7 @@ public final class ResourceSkuResultImpl implements ResourceSkuResult {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    ResourceSkuResultImpl(
-        ResourceSkuResultInner innerObject,
+    ResourceSkuResultImpl(ResourceSkuResultInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

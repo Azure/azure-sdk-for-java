@@ -19,20 +19,20 @@ public final class PeeringServiceCountriesImpl implements PeeringServiceCountrie
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    public PeeringServiceCountriesImpl(
-        PeeringServiceCountriesClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    public PeeringServiceCountriesImpl(PeeringServiceCountriesClient innerClient,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PeeringServiceCountry> list() {
         PagedIterable<PeeringServiceCountryInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceCountryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceCountryImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PeeringServiceCountry> list(Context context) {
         PagedIterable<PeeringServiceCountryInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceCountryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceCountryImpl(inner1, this.manager()));
     }
 
     private PeeringServiceCountriesClient serviceClient() {

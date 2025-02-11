@@ -36,8 +36,8 @@ public final class EventHubProperties {
     EventHubProperties(final String name, final Instant createdAt, final String[] partitionIds) {
         this.name = Objects.requireNonNull(name, "'name' cannot be null.");
         this.createdAt = Objects.requireNonNull(createdAt, "'createdAt' cannot be null.");
-        this.partitionIds = new IterableStream<>(Arrays.asList(
-            Objects.requireNonNull(partitionIds, "'partitionIds' cannot be null.")));
+        this.partitionIds = new IterableStream<>(
+            Arrays.asList(Objects.requireNonNull(partitionIds, "'partitionIds' cannot be null.")));
     }
 
     /**

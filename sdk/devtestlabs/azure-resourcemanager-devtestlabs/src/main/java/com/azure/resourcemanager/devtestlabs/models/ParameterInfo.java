@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information about an artifact's parameter. */
+/**
+ * Information about an artifact's parameter.
+ */
 @Fluent
-public final class ParameterInfo {
+public final class ParameterInfo implements JsonSerializable<ParameterInfo> {
     /*
      * The name of the artifact parameter.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The value of the artifact parameter.
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of ParameterInfo class. */
+    /**
+     * Creates an instance of ParameterInfo class.
+     */
     public ParameterInfo() {
     }
 
     /**
      * Get the name property: The name of the artifact parameter.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class ParameterInfo {
 
     /**
      * Set the name property: The name of the artifact parameter.
-     *
+     * 
      * @param name the name value to set.
      * @return the ParameterInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class ParameterInfo {
 
     /**
      * Get the value property: The value of the artifact parameter.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +63,7 @@ public final class ParameterInfo {
 
     /**
      * Set the value property: The value of the artifact parameter.
-     *
+     * 
      * @param value the value value to set.
      * @return the ParameterInfo object itself.
      */
@@ -68,9 +74,48 @@ public final class ParameterInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParameterInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParameterInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ParameterInfo.
+     */
+    public static ParameterInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParameterInfo deserializedParameterInfo = new ParameterInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedParameterInfo.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedParameterInfo.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedParameterInfo;
+        });
     }
 }

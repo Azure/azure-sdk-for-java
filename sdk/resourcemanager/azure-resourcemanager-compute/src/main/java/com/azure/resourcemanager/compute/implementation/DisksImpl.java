@@ -36,12 +36,11 @@ public class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, D
     }
 
     @Override
-    public Mono<String> grantAccessAsync(
-        String resourceGroupName, String diskName, AccessLevel accessLevel, int accessDuration) {
+    public Mono<String> grantAccessAsync(String resourceGroupName, String diskName, AccessLevel accessLevel,
+        int accessDuration) {
         GrantAccessData grantAccessDataInner = new GrantAccessData();
         grantAccessDataInner.withAccess(accessLevel).withDurationInSeconds(accessDuration);
-        return this
-            .inner()
+        return this.inner()
             .grantAccessAsync(resourceGroupName, diskName, grantAccessDataInner)
             .map(accessUriInner -> accessUriInner.accessSas());
     }
@@ -63,16 +62,10 @@ public class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, D
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
-        return AcceptedImpl
-            .newAccepted(
-                logger,
-                this.manager().serviceClient().getHttpPipeline(),
-                this.manager().serviceClient().getDefaultPollInterval(),
-                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
-                Function.identity(),
-                Void.class,
-                null,
-                Context.NONE);
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
+            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(), Function.identity(),
+            Void.class, null, Context.NONE);
     }
 
     @Override

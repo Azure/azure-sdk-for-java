@@ -16,42 +16,47 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkRacksListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkRacksListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"networkRackType\":\"Combined\",\"networkFabricId\":\"gapvdgtfpeerscdx\",\"networkDevices\":[\"njrcuf\"],\"provisioningState\":\"Canceled\",\"annotation\":\"cnrgfdtnc\"},\"location\":\"psa\",\"tags\":{\"qiqmlfvhlq\":\"meub\"},\"id\":\"skkqjmxptuei\",\"name\":\"uugkw\",\"type\":\"rq\"}],\"nextLink\":\"pahu\"}")
-                .toObject(NetworkRacksListResult.class);
-        Assertions.assertEquals("psa", model.value().get(0).location());
-        Assertions.assertEquals("meub", model.value().get(0).tags().get("qiqmlfvhlq"));
-        Assertions.assertEquals(NetworkRackType.COMBINED, model.value().get(0).networkRackType());
-        Assertions.assertEquals("gapvdgtfpeerscdx", model.value().get(0).networkFabricId());
-        Assertions.assertEquals("cnrgfdtnc", model.value().get(0).annotation());
-        Assertions.assertEquals("pahu", model.nextLink());
+        NetworkRacksListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"networkRackType\":\"Compute\",\"networkFabricId\":\"htujcyohigimwdc\",\"networkDevices\":[\"kqnqvkixnmbzme\"],\"provisioningState\":\"Accepted\",\"annotation\":\"zwimbzayspz\"},\"location\":\"i\",\"tags\":{\"pvdvatlzmgs\":\"fphmdzxplg\"},\"id\":\"hnzrsbkkzovlzdm\",\"name\":\"fmfws\",\"type\":\"afofu\"},{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"immovzwd\",\"networkDevices\":[\"kmvhzfo\",\"anyrvaprtgelgwe\",\"ikfyaqandm\",\"mnqoqjum\"],\"provisioningState\":\"Deleting\",\"annotation\":\"bpbvzopaxmf\"},\"location\":\"smcwoxfaxd\",\"tags\":{\"bsat\":\"i\"},\"id\":\"oiauesugmocpcj\",\"name\":\"cboe\",\"type\":\"rgttw\"},{\"properties\":{\"networkRackType\":\"Compute\",\"networkFabricId\":\"siuorinikcedpk\",\"networkDevices\":[\"wmmtmqrxrzq\"],\"provisioningState\":\"Canceled\",\"annotation\":\"zyayubtgmbxi\"},\"location\":\"hragpxmib\",\"tags\":{\"ovyzt\":\"upoyryefqm\",\"ceeg\":\"lnomfpb\",\"ukkrehyh\":\"yieztkutnjil\",\"fvulxfaryr\":\"mjodu\"},\"id\":\"jlgdez\",\"name\":\"jqwahoyi\",\"type\":\"axqvjweiwtczkddn\"}],\"nextLink\":\"vbooqbmdqrxy\"}")
+            .toObject(NetworkRacksListResult.class);
+        Assertions.assertEquals("i", model.value().get(0).location());
+        Assertions.assertEquals("fphmdzxplg", model.value().get(0).tags().get("pvdvatlzmgs"));
+        Assertions.assertEquals(NetworkRackType.COMPUTE, model.value().get(0).networkRackType());
+        Assertions.assertEquals("htujcyohigimwdc", model.value().get(0).networkFabricId());
+        Assertions.assertEquals("zwimbzayspz", model.value().get(0).annotation());
+        Assertions.assertEquals("vbooqbmdqrxy", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRacksListResult model =
-            new NetworkRacksListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new NetworkRackInner()
-                                .withLocation("psa")
-                                .withTags(mapOf("qiqmlfvhlq", "meub"))
-                                .withNetworkRackType(NetworkRackType.COMBINED)
-                                .withNetworkFabricId("gapvdgtfpeerscdx")
-                                .withAnnotation("cnrgfdtnc")))
-                .withNextLink("pahu");
+        NetworkRacksListResult model = new NetworkRacksListResult().withValue(Arrays.asList(
+            new NetworkRackInner().withLocation("i")
+                .withTags(mapOf("pvdvatlzmgs", "fphmdzxplg"))
+                .withNetworkRackType(NetworkRackType.COMPUTE)
+                .withNetworkFabricId("htujcyohigimwdc")
+                .withAnnotation("zwimbzayspz"),
+            new NetworkRackInner().withLocation("smcwoxfaxd")
+                .withTags(mapOf("bsat", "i"))
+                .withNetworkRackType(NetworkRackType.AGGREGATE)
+                .withNetworkFabricId("immovzwd")
+                .withAnnotation("bpbvzopaxmf"),
+            new NetworkRackInner().withLocation("hragpxmib")
+                .withTags(
+                    mapOf("ovyzt", "upoyryefqm", "ceeg", "lnomfpb", "ukkrehyh", "yieztkutnjil", "fvulxfaryr", "mjodu"))
+                .withNetworkRackType(NetworkRackType.COMPUTE)
+                .withNetworkFabricId("siuorinikcedpk")
+                .withAnnotation("zyayubtgmbxi")))
+            .withNextLink("vbooqbmdqrxy");
         model = BinaryData.fromObject(model).toObject(NetworkRacksListResult.class);
-        Assertions.assertEquals("psa", model.value().get(0).location());
-        Assertions.assertEquals("meub", model.value().get(0).tags().get("qiqmlfvhlq"));
-        Assertions.assertEquals(NetworkRackType.COMBINED, model.value().get(0).networkRackType());
-        Assertions.assertEquals("gapvdgtfpeerscdx", model.value().get(0).networkFabricId());
-        Assertions.assertEquals("cnrgfdtnc", model.value().get(0).annotation());
-        Assertions.assertEquals("pahu", model.nextLink());
+        Assertions.assertEquals("i", model.value().get(0).location());
+        Assertions.assertEquals("fphmdzxplg", model.value().get(0).tags().get("pvdvatlzmgs"));
+        Assertions.assertEquals(NetworkRackType.COMPUTE, model.value().get(0).networkRackType());
+        Assertions.assertEquals("htujcyohigimwdc", model.value().get(0).networkFabricId());
+        Assertions.assertEquals("zwimbzayspz", model.value().get(0).annotation());
+        Assertions.assertEquals("vbooqbmdqrxy", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

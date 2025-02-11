@@ -34,18 +34,20 @@ class SparkE2EWriteITest
                                           itemWriteStrategy: ItemWriteStrategy,
                                           hasId: Boolean = true,
                                           initialBatchSize: Option[Int] = None,
-                                          maxBatchSize: Option[Int] = None)
+                                          maxBatchSize: Option[Int] = None,
+                                          minTargetBatchSize: Option[Int] = None)
 
   private val upsertParameterTest = Seq(
-    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None, maxBatchSize = None),
-    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = Some(1), maxBatchSize = None),
-    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = Some(1), maxBatchSize = Some(5)),
-    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None, maxBatchSize = None),
-    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemAppend, initialBatchSize = None, maxBatchSize = None)
+    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None, maxBatchSize = None, minTargetBatchSize = None),
+    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = Some(1), maxBatchSize = None, minTargetBatchSize = None),
+    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = Some(1), maxBatchSize = Some(5), minTargetBatchSize = None),
+    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = Some(1), maxBatchSize = Some(5), minTargetBatchSize = Some(2)),
+    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None, maxBatchSize = None, minTargetBatchSize = None),
+    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemAppend, initialBatchSize = None, maxBatchSize = None, minTargetBatchSize = None)
   )
 
-  for (UpsertParameterTest(bulkEnabled, itemWriteStrategy, hasId, initialBatchSize, maxBatchSize) <- upsertParameterTest) {
-    it should s"support upserts with bulkEnabled = $bulkEnabled itemWriteStrategy = $itemWriteStrategy hasId = $hasId initialBatchSize = $initialBatchSize, maxBatchSize = $maxBatchSize" in {
+  for (UpsertParameterTest(bulkEnabled, itemWriteStrategy, hasId, initialBatchSize, maxBatchSize, minTargetBatchSize) <- upsertParameterTest) {
+    it should s"support upserts with bulkEnabled = $bulkEnabled itemWriteStrategy = $itemWriteStrategy hasId = $hasId initialBatchSize = $initialBatchSize, maxBatchSize = $maxBatchSize, minTargetBatchSize = $minTargetBatchSize" in {
       val cosmosEndpoint = TestConfigurations.HOST
       val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -86,6 +88,18 @@ class SparkE2EWriteITest
 
           configOverrideMapBuilder += (
             "spark.cosmos.write.bulk.maxBatchSize" -> customMaxBatchSize.toString,
+            )
+        case None =>
+      }
+
+      minTargetBatchSize match {
+        case Some(customMinTargetBatchSize) =>
+          configMapBuilder += (
+            "spark.cosmos.write.bulk.minTargetBatchSize" -> customMinTargetBatchSize.toString,
+            )
+
+          configOverrideMapBuilder += (
+            "spark.cosmos.write.bulk.minTargetBatchSize" -> customMinTargetBatchSize.toString,
             )
         case None =>
       }

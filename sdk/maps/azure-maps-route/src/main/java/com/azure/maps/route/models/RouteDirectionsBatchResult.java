@@ -22,8 +22,8 @@ public class RouteDirectionsBatchResult implements JsonSerializable<RouteDirecti
     private String batchId;
 
     static {
-        RouteDirectionsBatchResultPropertiesHelper.setAccessor(
-            RouteDirectionsBatchResult::setFromRouteDirectionsBatchResultPrivate);
+        RouteDirectionsBatchResultPropertiesHelper
+            .setAccessor(RouteDirectionsBatchResult::setFromRouteDirectionsBatchResultPrivate);
     }
 
     /**
@@ -82,8 +82,7 @@ public class RouteDirectionsBatchResult implements JsonSerializable<RouteDirecti
      */
     public static RouteDirectionsBatchResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RouteDirectionsBatchResult deserializedRouteDirectionsBatchResult
-                = new RouteDirectionsBatchResult();
+            RouteDirectionsBatchResult deserializedRouteDirectionsBatchResult = new RouteDirectionsBatchResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

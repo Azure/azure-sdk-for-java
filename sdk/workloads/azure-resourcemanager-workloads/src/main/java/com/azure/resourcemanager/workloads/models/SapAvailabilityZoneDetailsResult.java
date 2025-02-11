@@ -7,18 +7,20 @@ package com.azure.resourcemanager.workloads.models;
 import com.azure.resourcemanager.workloads.fluent.models.SapAvailabilityZoneDetailsResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of SapAvailabilityZoneDetailsResult. */
+/**
+ * An immutable client-side representation of SapAvailabilityZoneDetailsResult.
+ */
 public interface SapAvailabilityZoneDetailsResult {
     /**
      * Gets the availabilityZonePairs property: Gets the list of availability zone pairs.
-     *
+     * 
      * @return the availabilityZonePairs value.
      */
     List<SapAvailabilityZonePair> availabilityZonePairs();
 
     /**
      * Gets the inner com.azure.resourcemanager.workloads.fluent.models.SapAvailabilityZoneDetailsResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     SapAvailabilityZoneDetailsResultInner innerModel();

@@ -52,7 +52,8 @@ public final class PersonalizerAdministrationClient {
      * @return a {@link SyncPoller} that will return counterfactual evaluation when polled.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
+    public SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation>
+        beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
         return beginCreateEvaluation(evaluationOptions, Context.NONE);
     }
 
@@ -65,10 +66,9 @@ public final class PersonalizerAdministrationClient {
      * @throws NullPointerException thrown if evaluationOptions is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions, Context context) {
-        return client
-            .beginCreateEvaluation(evaluationOptions, context)
-            .getSyncPoller();
+    public SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation>
+        beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions, Context context) {
+        return client.beginCreateEvaluation(evaluationOptions, context).getSyncPoller();
     }
 
     /**
@@ -202,7 +202,8 @@ public final class PersonalizerAdministrationClient {
      * @throws IllegalArgumentException thrown if the serviceProperties is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PersonalizerServiceProperties> updatePropertiesWithResponse(PersonalizerServiceProperties serviceProperties, Context context) {
+    public Response<PersonalizerServiceProperties>
+        updatePropertiesWithResponse(PersonalizerServiceProperties serviceProperties, Context context) {
         return client.updatePropertiesWithResponse(serviceProperties, context).block();
     }
 
@@ -226,7 +227,6 @@ public final class PersonalizerAdministrationClient {
     public Response<PersonalizerServiceProperties> getServicePropertiesWithResponse(Context context) {
         return client.getServicePropertiesWithResponse(context).block();
     }
-
 
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning

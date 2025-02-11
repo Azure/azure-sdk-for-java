@@ -31,8 +31,7 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
     @Override
     public void run() {
         if (producer == null) {
-            producer = createEventHubClientBuilder()
-                .buildProducerClient();
+            producer = createEventHubClientBuilder().buildProducerClient();
         }
 
         for (final EventData event : events) {

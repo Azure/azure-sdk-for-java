@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DataControllers. */
+/**
+ * Resource collection API of DataControllers.
+ */
 public interface DataControllers {
     /**
      * List dataController resources in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface DataControllers {
 
     /**
      * List dataController resources in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface DataControllers {
 
     /**
      * List dataController resources in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface DataControllers {
 
     /**
      * List dataController resources in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +57,7 @@ public interface DataControllers {
 
     /**
      * Deletes a dataController resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +68,7 @@ public interface DataControllers {
 
     /**
      * Deletes a dataController resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @param context The context to associate with this operation.
@@ -78,7 +80,7 @@ public interface DataControllers {
 
     /**
      * Retrieves a dataController resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @param context The context to associate with this operation.
@@ -87,12 +89,12 @@ public interface DataControllers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data controller resource along with {@link Response}.
      */
-    Response<DataControllerResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String dataControllerName, Context context);
+    Response<DataControllerResource> getByResourceGroupWithResponse(String resourceGroupName, String dataControllerName,
+        Context context);
 
     /**
      * Retrieves a dataController resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +106,7 @@ public interface DataControllers {
 
     /**
      * Retrieves a dataController resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,7 +117,7 @@ public interface DataControllers {
 
     /**
      * Retrieves a dataController resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,7 +129,7 @@ public interface DataControllers {
 
     /**
      * Deletes a dataController resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +139,7 @@ public interface DataControllers {
 
     /**
      * Deletes a dataController resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +150,7 @@ public interface DataControllers {
 
     /**
      * Begins definition for a new DataControllerResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DataControllerResource definition.
      */

@@ -30,8 +30,7 @@ public final class EndpointsPurgeContentMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.endpoints()
-            .purgeContent("gddeimaw", "o",
-                new PurgeParameters().withContentPaths(Arrays.asList("kkum", "ikjcjcazt", "wsnsqowx")),
+            .purgeContent("gvttx", "nrup", new PurgeParameters().withContentPaths(Arrays.asList("amrdixtrekidswys")),
                 com.azure.core.util.Context.NONE);
 
     }

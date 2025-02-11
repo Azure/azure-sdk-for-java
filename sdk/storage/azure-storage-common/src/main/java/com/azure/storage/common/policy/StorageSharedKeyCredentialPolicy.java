@@ -50,8 +50,7 @@ public final class StorageSharedKeyCredentialPolicy implements HttpPipelinePolic
 
     private void setAuthorizationHeader(HttpPipelineCallContext context) {
         String authorizationValue = credential.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
-            context.getHttpRequest().getHttpMethod().toString(),
-            context.getHttpRequest().getHeaders(),
+            context.getHttpRequest().getHttpMethod().toString(), context.getHttpRequest().getHeaders(),
             Boolean.TRUE.equals(context.getData(Constants.STORAGE_LOG_STRING_TO_SIGN).orElse(false)));
         context.getHttpRequest().setHeader("Authorization", authorizationValue);
     }

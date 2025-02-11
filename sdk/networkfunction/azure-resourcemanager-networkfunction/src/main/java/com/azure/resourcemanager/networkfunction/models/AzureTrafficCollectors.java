@@ -7,11 +7,13 @@ package com.azure.resourcemanager.networkfunction.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AzureTrafficCollectors. */
+/**
+ * Resource collection API of AzureTrafficCollectors.
+ */
 public interface AzureTrafficCollectors {
     /**
      * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -20,12 +22,12 @@ public interface AzureTrafficCollectors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Azure Traffic Collector in a specified resource group along with {@link Response}.
      */
-    Response<AzureTrafficCollector> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureTrafficCollectorName, Context context);
+    Response<AzureTrafficCollector> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureTrafficCollectorName, Context context);
 
     /**
      * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface AzureTrafficCollectors {
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +50,7 @@ public interface AzureTrafficCollectors {
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -60,7 +62,7 @@ public interface AzureTrafficCollectors {
 
     /**
      * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,7 +73,7 @@ public interface AzureTrafficCollectors {
 
     /**
      * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,7 +85,7 @@ public interface AzureTrafficCollectors {
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -93,7 +95,7 @@ public interface AzureTrafficCollectors {
 
     /**
      * Deletes a specified Azure Traffic Collector resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +106,7 @@ public interface AzureTrafficCollectors {
 
     /**
      * Begins definition for a new AzureTrafficCollector resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AzureTrafficCollector definition.
      */

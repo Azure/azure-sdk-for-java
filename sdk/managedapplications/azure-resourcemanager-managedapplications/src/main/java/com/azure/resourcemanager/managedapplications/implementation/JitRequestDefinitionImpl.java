@@ -123,25 +123,21 @@ public final class JitRequestDefinitionImpl
     }
 
     public JitRequestDefinition create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitRequests()
-                .createOrUpdate(resourceGroupName, jitRequestName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getJitRequests()
+            .createOrUpdate(resourceGroupName, jitRequestName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public JitRequestDefinition create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitRequests()
-                .createOrUpdate(resourceGroupName, jitRequestName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getJitRequests()
+            .createOrUpdate(resourceGroupName, jitRequestName, this.innerModel(), context);
         return this;
     }
 
-    JitRequestDefinitionImpl(
-        String name, com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
+    JitRequestDefinitionImpl(String name,
+        com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = new JitRequestDefinitionInner();
         this.serviceManager = serviceManager;
         this.jitRequestName = name;
@@ -153,51 +149,42 @@ public final class JitRequestDefinitionImpl
     }
 
     public JitRequestDefinition apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitRequests()
-                .updateWithResponse(resourceGroupName, jitRequestName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJitRequests()
+            .updateWithResponse(resourceGroupName, jitRequestName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public JitRequestDefinition apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitRequests()
-                .updateWithResponse(resourceGroupName, jitRequestName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJitRequests()
+            .updateWithResponse(resourceGroupName, jitRequestName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    JitRequestDefinitionImpl(
-        JitRequestDefinitionInner innerObject,
+    JitRequestDefinitionImpl(JitRequestDefinitionInner innerObject,
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.jitRequestName = Utils.getValueFromIdByName(innerObject.id(), "jitRequests");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.jitRequestName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "jitRequests");
     }
 
     public JitRequestDefinition refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitRequests()
-                .getByResourceGroupWithResponse(resourceGroupName, jitRequestName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJitRequests()
+            .getByResourceGroupWithResponse(resourceGroupName, jitRequestName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public JitRequestDefinition refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJitRequests()
-                .getByResourceGroupWithResponse(resourceGroupName, jitRequestName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJitRequests()
+            .getByResourceGroupWithResponse(resourceGroupName, jitRequestName, context)
+            .getValue();
         return this;
     }
 
@@ -226,8 +213,8 @@ public final class JitRequestDefinitionImpl
         return this;
     }
 
-    public JitRequestDefinitionImpl withJitAuthorizationPolicies(
-        List<JitAuthorizationPolicies> jitAuthorizationPolicies) {
+    public JitRequestDefinitionImpl
+        withJitAuthorizationPolicies(List<JitAuthorizationPolicies> jitAuthorizationPolicies) {
         this.innerModel().withJitAuthorizationPolicies(jitAuthorizationPolicies);
         return this;
     }

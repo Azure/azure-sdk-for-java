@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class GroupQuotaSubscriptionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        String responseStr = "{\"id\":\"gvpgy\",\"name\":\"gqgitxmedjvcsl\",\"type\":\"n\"}";
+        String responseStr = "{\"id\":\"klwndnhjdauwhv\",\"name\":\"l\",\"type\":\"zbtd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class GroupQuotaSubscriptionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ProxyResource response = manager.groupQuotaSubscriptions()
-            .createOrUpdate("xknalaulppg", "dtpnapnyiropuhp", com.azure.core.util.Context.NONE);
+            .createOrUpdate("nrjawgqwg", "hniskxfbkpyc", com.azure.core.util.Context.NONE);
 
     }
 }

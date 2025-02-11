@@ -16,8 +16,8 @@ import java.util.function.Supplier;
  * @see ContinuablePagedFluxCore
  */
 @Immutable
-public final class ClassifyDocumentPagedFlux extends ContinuablePagedFluxCore<String,
-    ClassifyDocumentResultCollection, PagedResponse<ClassifyDocumentResultCollection>> {
+public final class ClassifyDocumentPagedFlux extends
+    ContinuablePagedFluxCore<String, ClassifyDocumentResultCollection, PagedResponse<ClassifyDocumentResultCollection>> {
     /**
      * Creates an instance of {@code ClassifyDocumentPagedFlux}
      *

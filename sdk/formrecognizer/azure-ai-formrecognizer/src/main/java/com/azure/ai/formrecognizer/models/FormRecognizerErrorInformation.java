@@ -40,7 +40,6 @@ public final class FormRecognizerErrorInformation {
         return this.errorCode;
     }
 
-
     /**
      * Get the message property returned by the service.
      *

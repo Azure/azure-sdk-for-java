@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the ephemeral disk placement for operating system disk for all VMs in the pool.
  * 
@@ -37,7 +34,6 @@ public enum DiffDiskPlacement {
      * @param value the serialized value to parse.
      * @return the parsed DiffDiskPlacement object, or null if unable to parse.
      */
-    @JsonCreator
     public static DiffDiskPlacement fromString(String value) {
         if (value == null) {
             return null;
@@ -54,7 +50,6 @@ public enum DiffDiskPlacement {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

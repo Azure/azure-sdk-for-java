@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -44,7 +43,6 @@ public final class HyperVReplicaAzureRpRecoveryPointType
      * @param name a name to look for.
      * @return the corresponding HyperVReplicaAzureRpRecoveryPointType.
      */
-    @JsonCreator
     public static HyperVReplicaAzureRpRecoveryPointType fromString(String name) {
         return fromString(name, HyperVReplicaAzureRpRecoveryPointType.class);
     }

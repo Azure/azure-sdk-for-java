@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Username and password for basic login authentication. */
+/**
+ * Username and password for basic login authentication.
+ */
 @Fluent
-public final class BasicLoginInformation {
+public final class BasicLoginInformation implements JsonSerializable<BasicLoginInformation> {
     /*
      * Login username.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * Login password.
      */
-    @JsonProperty(value = "password")
     private String password;
 
-    /** Creates an instance of BasicLoginInformation class. */
+    /**
+     * Creates an instance of BasicLoginInformation class.
+     */
     public BasicLoginInformation() {
     }
 
     /**
      * Get the username property: Login username.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -37,7 +43,7 @@ public final class BasicLoginInformation {
 
     /**
      * Set the username property: Login username.
-     *
+     * 
      * @param username the username value to set.
      * @return the BasicLoginInformation object itself.
      */
@@ -48,7 +54,7 @@ public final class BasicLoginInformation {
 
     /**
      * Get the password property: Login password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -57,7 +63,7 @@ public final class BasicLoginInformation {
 
     /**
      * Set the password property: Login password.
-     *
+     * 
      * @param password the password value to set.
      * @return the BasicLoginInformation object itself.
      */
@@ -68,9 +74,48 @@ public final class BasicLoginInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BasicLoginInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BasicLoginInformation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BasicLoginInformation.
+     */
+    public static BasicLoginInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BasicLoginInformation deserializedBasicLoginInformation = new BasicLoginInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedBasicLoginInformation.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedBasicLoginInformation.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBasicLoginInformation;
+        });
     }
 }

@@ -5,179 +5,145 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * IaaS VM workload-specific restore.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = IaasVMRestoreRequest.class,
-    visible = true)
-@JsonTypeName("IaasVMRestoreRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "IaasVMRestoreWithRehydrationRequest",
-        value = IaasVMRestoreWithRehydrationRequest.class) })
 @Fluent
 public class IaasVMRestoreRequest extends RestoreRequest {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private String objectType = "IaasVMRestoreRequest";
 
     /*
      * ID of the backup copy to be recovered.
      */
-    @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
     /*
      * Type of this recovery.
      */
-    @JsonProperty(value = "recoveryType")
     private RecoveryType recoveryType;
 
     /*
      * Fully qualified ARM ID of the VM which is being recovered.
      */
-    @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
     /*
      * This is the complete ARM Id of the VM that will be created.
      * For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
      */
-    @JsonProperty(value = "targetVirtualMachineId")
     private String targetVirtualMachineId;
 
     /*
      * This is the ARM Id of the resource group that you want to create for this Virtual machine and other artifacts.
      * For e.g. /subscriptions/{subId}/resourcegroups/{rg}
      */
-    @JsonProperty(value = "targetResourceGroupId")
     private String targetResourceGroupId;
 
     /*
      * Fully qualified ARM ID of the storage account to which the VM has to be restored.
      */
-    @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
     /*
      * This is the virtual network Id of the vnet that will be attached to the virtual machine.
      * User will be validated for join action permissions in the linked access.
      */
-    @JsonProperty(value = "virtualNetworkId")
     private String virtualNetworkId;
 
     /*
      * Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be
-     * {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to represent
+     * {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to
+     * represent
      * the subnet.
      */
-    @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
      * Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic
      * Virtual Machines.
      */
-    @JsonProperty(value = "targetDomainNameId")
     private String targetDomainNameId;
 
     /*
      * Region in which the virtual machine is restored.
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * Affinity group associated to VM to be restored. Used only for Classic Compute Virtual Machines.
      */
-    @JsonProperty(value = "affinityGroup")
     private String affinityGroup;
 
     /*
      * Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same
      * cloud service as it was at the time of backup.
      */
-    @JsonProperty(value = "createNewCloudService")
     private Boolean createNewCloudService;
 
     /*
      * Original Storage Account Option
      */
-    @JsonProperty(value = "originalStorageAccountOption")
     private Boolean originalStorageAccountOption;
 
     /*
      * Details needed if the VM was encrypted at the time of backup.
      */
-    @JsonProperty(value = "encryptionDetails")
     private EncryptionDetails encryptionDetails;
 
     /*
      * List of Disk LUNs for partial restore
      */
-    @JsonProperty(value = "restoreDiskLunList")
     private List<Integer> restoreDiskLunList;
 
     /*
      * Flag to denote of an Unmanaged disk VM should be restored with Managed disks.
      */
-    @JsonProperty(value = "restoreWithManagedDisks")
     private Boolean restoreWithManagedDisks;
 
     /*
      * DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest during restore with customer managed key.
      */
-    @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
     /*
      * Target zone where the VM and its disks should be restored.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * Managed Identity information required to access customer storage account.
      */
-    @JsonProperty(value = "identityInfo")
     private IdentityInfo identityInfo;
 
     /*
      * IaaS VM workload specific restore details for restores using managed identity.
      */
-    @JsonProperty(value = "identityBasedRestoreDetails")
     private IdentityBasedRestoreDetails identityBasedRestoreDetails;
 
     /*
      * Target extended location where the VM should be restored,
      * should be null if restore is to be done in public cloud
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
      * Stores Secured VM Details
      */
-    @JsonProperty(value = "securedVMDetails")
     private SecuredVMDetails securedVMDetails;
 
     /*
      * Specifies target network access settings for disks of VM to be restored,
      */
-    @JsonProperty(value = "targetDiskNetworkAccessSettings")
     private TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings;
 
     /**
@@ -715,7 +681,6 @@ public class IaasVMRestoreRequest extends RestoreRequest {
      */
     @Override
     public void validate() {
-        super.validate();
         if (encryptionDetails() != null) {
             encryptionDetails().validate();
         }
@@ -734,5 +699,147 @@ public class IaasVMRestoreRequest extends RestoreRequest {
         if (targetDiskNetworkAccessSettings() != null) {
             targetDiskNetworkAccessSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("recoveryType", this.recoveryType == null ? null : this.recoveryType.toString());
+        jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        jsonWriter.writeStringField("targetVirtualMachineId", this.targetVirtualMachineId);
+        jsonWriter.writeStringField("targetResourceGroupId", this.targetResourceGroupId);
+        jsonWriter.writeStringField("storageAccountId", this.storageAccountId);
+        jsonWriter.writeStringField("virtualNetworkId", this.virtualNetworkId);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("targetDomainNameId", this.targetDomainNameId);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("affinityGroup", this.affinityGroup);
+        jsonWriter.writeBooleanField("createNewCloudService", this.createNewCloudService);
+        jsonWriter.writeBooleanField("originalStorageAccountOption", this.originalStorageAccountOption);
+        jsonWriter.writeJsonField("encryptionDetails", this.encryptionDetails);
+        jsonWriter.writeArrayField("restoreDiskLunList", this.restoreDiskLunList,
+            (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeBooleanField("restoreWithManagedDisks", this.restoreWithManagedDisks);
+        jsonWriter.writeStringField("diskEncryptionSetId", this.diskEncryptionSetId);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identityInfo", this.identityInfo);
+        jsonWriter.writeJsonField("identityBasedRestoreDetails", this.identityBasedRestoreDetails);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("securedVMDetails", this.securedVMDetails);
+        jsonWriter.writeJsonField("targetDiskNetworkAccessSettings", this.targetDiskNetworkAccessSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IaasVMRestoreRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IaasVMRestoreRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IaasVMRestoreRequest.
+     */
+    public static IaasVMRestoreRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("IaasVMRestoreWithRehydrationRequest".equals(discriminatorValue)) {
+                    return IaasVMRestoreWithRehydrationRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static IaasVMRestoreRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IaasVMRestoreRequest deserializedIaasVMRestoreRequest = new IaasVMRestoreRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIaasVMRestoreRequest.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.objectType = reader.getString();
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.recoveryPointId = reader.getString();
+                } else if ("recoveryType".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.recoveryType = RecoveryType.fromString(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.sourceResourceId = reader.getString();
+                } else if ("targetVirtualMachineId".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.targetVirtualMachineId = reader.getString();
+                } else if ("targetResourceGroupId".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.targetResourceGroupId = reader.getString();
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.storageAccountId = reader.getString();
+                } else if ("virtualNetworkId".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.virtualNetworkId = reader.getString();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.subnetId = reader.getString();
+                } else if ("targetDomainNameId".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.targetDomainNameId = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.region = reader.getString();
+                } else if ("affinityGroup".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.affinityGroup = reader.getString();
+                } else if ("createNewCloudService".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.createNewCloudService = reader.getNullable(JsonReader::getBoolean);
+                } else if ("originalStorageAccountOption".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.originalStorageAccountOption
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("encryptionDetails".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.encryptionDetails = EncryptionDetails.fromJson(reader);
+                } else if ("restoreDiskLunList".equals(fieldName)) {
+                    List<Integer> restoreDiskLunList = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedIaasVMRestoreRequest.restoreDiskLunList = restoreDiskLunList;
+                } else if ("restoreWithManagedDisks".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.restoreWithManagedDisks
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("diskEncryptionSetId".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.diskEncryptionSetId = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIaasVMRestoreRequest.zones = zones;
+                } else if ("identityInfo".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.identityInfo = IdentityInfo.fromJson(reader);
+                } else if ("identityBasedRestoreDetails".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.identityBasedRestoreDetails
+                        = IdentityBasedRestoreDetails.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("securedVMDetails".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.securedVMDetails = SecuredVMDetails.fromJson(reader);
+                } else if ("targetDiskNetworkAccessSettings".equals(fieldName)) {
+                    deserializedIaasVMRestoreRequest.targetDiskNetworkAccessSettings
+                        = TargetDiskNetworkAccessSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIaasVMRestoreRequest;
+        });
     }
 }

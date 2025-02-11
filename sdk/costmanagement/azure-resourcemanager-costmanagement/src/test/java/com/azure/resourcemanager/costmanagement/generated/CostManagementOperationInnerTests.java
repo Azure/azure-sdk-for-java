@@ -11,11 +11,9 @@ import com.azure.resourcemanager.costmanagement.models.OperationDisplay;
 public final class CostManagementOperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CostManagementOperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"fcqhsmyurkd\",\"name\":\"lx\",\"isDataAction\":true,\"display\":{\"provider\":\"sjtxukcdmp\",\"resource\":\"cryuan\",\"operation\":\"uxzdxtay\",\"description\":\"hmwhfpmrqo\"},\"origin\":\"system\",\"actionType\":\"Internal\"}")
-                .toObject(CostManagementOperationInner.class);
+        CostManagementOperationInner model = BinaryData.fromString(
+            "{\"id\":\"fcqhsmyurkd\",\"name\":\"lx\",\"isDataAction\":true,\"display\":{\"provider\":\"sjtxukcdmp\",\"resource\":\"cryuan\",\"operation\":\"uxzdxtay\",\"description\":\"hmwhfpmrqo\"},\"origin\":\"system\",\"actionType\":\"Internal\"}")
+            .toObject(CostManagementOperationInner.class);
     }
 
     @org.junit.jupiter.api.Test

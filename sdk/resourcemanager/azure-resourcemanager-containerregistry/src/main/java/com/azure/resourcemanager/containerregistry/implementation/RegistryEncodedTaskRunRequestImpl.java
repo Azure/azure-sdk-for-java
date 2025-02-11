@@ -13,10 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class RegistryEncodedTaskRunRequestImpl
-    implements RegistryEncodedTaskRunRequest,
-        RegistryEncodedTaskRunRequest.Definition,
-        HasInnerModel<EncodedTaskRunRequest> {
+class RegistryEncodedTaskRunRequestImpl implements RegistryEncodedTaskRunRequest,
+    RegistryEncodedTaskRunRequest.Definition, HasInnerModel<EncodedTaskRunRequest> {
 
     private EncodedTaskRunRequest inner;
     private RegistryTaskRunImpl registryTaskRunImpl;

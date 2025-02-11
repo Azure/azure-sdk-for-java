@@ -5,101 +5,96 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.CardinalityTypes;
 import com.azure.resourcemanager.customerinsights.models.PropertyDefinition;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.RelationshipTypeMapping;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** The definition of Relationship. */
+/**
+ * The definition of Relationship.
+ */
 @Fluent
-public final class RelationshipDefinition {
+public final class RelationshipDefinition implements JsonSerializable<RelationshipDefinition> {
     /*
      * The Relationship Cardinality.
      */
-    @JsonProperty(value = "cardinality")
     private CardinalityTypes cardinality;
 
     /*
      * Localized display name for the Relationship.
      */
-    @JsonProperty(value = "displayName")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Localized descriptions for the Relationship.
      */
-    @JsonProperty(value = "description")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
 
     /*
      * The expiry date time in UTC.
      */
-    @JsonProperty(value = "expiryDateTimeUtc")
     private OffsetDateTime expiryDateTimeUtc;
 
     /*
      * The properties of the Relationship.
      */
-    @JsonProperty(value = "fields")
     private List<PropertyDefinition> fields;
 
     /*
      * Optional property to be used to map fields in profile to their strong ids in related profile.
      */
-    @JsonProperty(value = "lookupMappings")
     private List<RelationshipTypeMapping> lookupMappings;
 
     /*
      * Profile type.
      */
-    @JsonProperty(value = "profileType", required = true)
     private String profileType;
 
     /*
      * Provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /*
      * The Relationship name.
      */
-    @JsonProperty(value = "relationshipName", access = JsonProperty.Access.WRITE_ONLY)
     private String relationshipName;
 
     /*
      * Related profile being referenced.
      */
-    @JsonProperty(value = "relatedProfileType", required = true)
     private String relatedProfileType;
 
     /*
      * The relationship guid id.
      */
-    @JsonProperty(value = "relationshipGuidId", access = JsonProperty.Access.WRITE_ONLY)
     private String relationshipGuidId;
 
     /*
      * The hub name.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of RelationshipDefinition class. */
+    /**
+     * Creates an instance of RelationshipDefinition class.
+     */
     public RelationshipDefinition() {
     }
 
     /**
      * Get the cardinality property: The Relationship Cardinality.
-     *
+     * 
      * @return the cardinality value.
      */
     public CardinalityTypes cardinality() {
@@ -108,7 +103,7 @@ public final class RelationshipDefinition {
 
     /**
      * Set the cardinality property: The Relationship Cardinality.
-     *
+     * 
      * @param cardinality the cardinality value to set.
      * @return the RelationshipDefinition object itself.
      */
@@ -119,7 +114,7 @@ public final class RelationshipDefinition {
 
     /**
      * Get the displayName property: Localized display name for the Relationship.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -128,7 +123,7 @@ public final class RelationshipDefinition {
 
     /**
      * Set the displayName property: Localized display name for the Relationship.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RelationshipDefinition object itself.
      */
@@ -139,7 +134,7 @@ public final class RelationshipDefinition {
 
     /**
      * Get the description property: Localized descriptions for the Relationship.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -148,7 +143,7 @@ public final class RelationshipDefinition {
 
     /**
      * Set the description property: Localized descriptions for the Relationship.
-     *
+     * 
      * @param description the description value to set.
      * @return the RelationshipDefinition object itself.
      */
@@ -159,7 +154,7 @@ public final class RelationshipDefinition {
 
     /**
      * Get the expiryDateTimeUtc property: The expiry date time in UTC.
-     *
+     * 
      * @return the expiryDateTimeUtc value.
      */
     public OffsetDateTime expiryDateTimeUtc() {
@@ -168,7 +163,7 @@ public final class RelationshipDefinition {
 
     /**
      * Set the expiryDateTimeUtc property: The expiry date time in UTC.
-     *
+     * 
      * @param expiryDateTimeUtc the expiryDateTimeUtc value to set.
      * @return the RelationshipDefinition object itself.
      */
@@ -179,7 +174,7 @@ public final class RelationshipDefinition {
 
     /**
      * Get the fields property: The properties of the Relationship.
-     *
+     * 
      * @return the fields value.
      */
     public List<PropertyDefinition> fields() {
@@ -188,7 +183,7 @@ public final class RelationshipDefinition {
 
     /**
      * Set the fields property: The properties of the Relationship.
-     *
+     * 
      * @param fields the fields value to set.
      * @return the RelationshipDefinition object itself.
      */
@@ -200,7 +195,7 @@ public final class RelationshipDefinition {
     /**
      * Get the lookupMappings property: Optional property to be used to map fields in profile to their strong ids in
      * related profile.
-     *
+     * 
      * @return the lookupMappings value.
      */
     public List<RelationshipTypeMapping> lookupMappings() {
@@ -210,7 +205,7 @@ public final class RelationshipDefinition {
     /**
      * Set the lookupMappings property: Optional property to be used to map fields in profile to their strong ids in
      * related profile.
-     *
+     * 
      * @param lookupMappings the lookupMappings value to set.
      * @return the RelationshipDefinition object itself.
      */
@@ -221,7 +216,7 @@ public final class RelationshipDefinition {
 
     /**
      * Get the profileType property: Profile type.
-     *
+     * 
      * @return the profileType value.
      */
     public String profileType() {
@@ -230,7 +225,7 @@ public final class RelationshipDefinition {
 
     /**
      * Set the profileType property: Profile type.
-     *
+     * 
      * @param profileType the profileType value to set.
      * @return the RelationshipDefinition object itself.
      */
@@ -241,7 +236,7 @@ public final class RelationshipDefinition {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -250,7 +245,7 @@ public final class RelationshipDefinition {
 
     /**
      * Get the relationshipName property: The Relationship name.
-     *
+     * 
      * @return the relationshipName value.
      */
     public String relationshipName() {
@@ -259,7 +254,7 @@ public final class RelationshipDefinition {
 
     /**
      * Get the relatedProfileType property: Related profile being referenced.
-     *
+     * 
      * @return the relatedProfileType value.
      */
     public String relatedProfileType() {
@@ -268,7 +263,7 @@ public final class RelationshipDefinition {
 
     /**
      * Set the relatedProfileType property: Related profile being referenced.
-     *
+     * 
      * @param relatedProfileType the relatedProfileType value to set.
      * @return the RelationshipDefinition object itself.
      */
@@ -279,7 +274,7 @@ public final class RelationshipDefinition {
 
     /**
      * Get the relationshipGuidId property: The relationship guid id.
-     *
+     * 
      * @return the relationshipGuidId value.
      */
     public String relationshipGuidId() {
@@ -288,7 +283,7 @@ public final class RelationshipDefinition {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -297,7 +292,7 @@ public final class RelationshipDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -308,18 +303,93 @@ public final class RelationshipDefinition {
             lookupMappings().forEach(e -> e.validate());
         }
         if (profileType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property profileType in model RelationshipDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property profileType in model RelationshipDefinition"));
         }
         if (relatedProfileType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property relatedProfileType in model RelationshipDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property relatedProfileType in model RelationshipDefinition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RelationshipDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("profileType", this.profileType);
+        jsonWriter.writeStringField("relatedProfileType", this.relatedProfileType);
+        jsonWriter.writeStringField("cardinality", this.cardinality == null ? null : this.cardinality.toString());
+        jsonWriter.writeMapField("displayName", this.displayName, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("description", this.description, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("expiryDateTimeUtc",
+            this.expiryDateTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryDateTimeUtc));
+        jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("lookupMappings", this.lookupMappings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelationshipDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelationshipDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelationshipDefinition.
+     */
+    public static RelationshipDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelationshipDefinition deserializedRelationshipDefinition = new RelationshipDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("profileType".equals(fieldName)) {
+                    deserializedRelationshipDefinition.profileType = reader.getString();
+                } else if ("relatedProfileType".equals(fieldName)) {
+                    deserializedRelationshipDefinition.relatedProfileType = reader.getString();
+                } else if ("cardinality".equals(fieldName)) {
+                    deserializedRelationshipDefinition.cardinality = CardinalityTypes.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRelationshipDefinition.displayName = displayName;
+                } else if ("description".equals(fieldName)) {
+                    Map<String, String> description = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRelationshipDefinition.description = description;
+                } else if ("expiryDateTimeUtc".equals(fieldName)) {
+                    deserializedRelationshipDefinition.expiryDateTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fields".equals(fieldName)) {
+                    List<PropertyDefinition> fields = reader.readArray(reader1 -> PropertyDefinition.fromJson(reader1));
+                    deserializedRelationshipDefinition.fields = fields;
+                } else if ("lookupMappings".equals(fieldName)) {
+                    List<RelationshipTypeMapping> lookupMappings
+                        = reader.readArray(reader1 -> RelationshipTypeMapping.fromJson(reader1));
+                    deserializedRelationshipDefinition.lookupMappings = lookupMappings;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRelationshipDefinition.provisioningState
+                        = ProvisioningStates.fromString(reader.getString());
+                } else if ("relationshipName".equals(fieldName)) {
+                    deserializedRelationshipDefinition.relationshipName = reader.getString();
+                } else if ("relationshipGuidId".equals(fieldName)) {
+                    deserializedRelationshipDefinition.relationshipGuidId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedRelationshipDefinition.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelationshipDefinition;
+        });
+    }
 }

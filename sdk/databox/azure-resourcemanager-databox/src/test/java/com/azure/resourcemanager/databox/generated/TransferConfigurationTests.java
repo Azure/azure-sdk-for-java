@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.databox.models.AzureFileFilterDetails;
+import com.azure.resourcemanager.databox.models.BlobFilterDetails;
 import com.azure.resourcemanager.databox.models.DataAccountType;
+import com.azure.resourcemanager.databox.models.FilterFileDetails;
+import com.azure.resourcemanager.databox.models.FilterFileType;
 import com.azure.resourcemanager.databox.models.TransferAllDetails;
 import com.azure.resourcemanager.databox.models.TransferConfiguration;
 import com.azure.resourcemanager.databox.models.TransferConfigurationTransferAllDetails;
@@ -18,44 +22,79 @@ import org.junit.jupiter.api.Assertions;
 public final class TransferConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransferConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"transferConfigurationType\":\"TransferUsingFilter\",\"transferFilterDetails\":{\"include\":{\"dataAccountType\":\"StorageAccount\",\"filterFileDetails\":[]}},\"transferAllDetails\":{\"include\":{\"dataAccountType\":\"StorageAccount\",\"transferAllBlobs\":true,\"transferAllFiles\":false}}}")
-                .toObject(TransferConfiguration.class);
-        Assertions.assertEquals(TransferConfigurationType.TRANSFER_USING_FILTER, model.transferConfigurationType());
-        Assertions
-            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferFilterDetails().include().dataAccountType());
-        Assertions
-            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferAllDetails().include().dataAccountType());
+        TransferConfiguration model = BinaryData.fromString(
+            "{\"transferConfigurationType\":\"TransferAll\",\"transferFilterDetails\":{\"include\":{\"dataAccountType\":\"StorageAccount\",\"blobFilterDetails\":{\"blobPrefixList\":[\"wmdwzjeiachboo\",\"flnrosfqpteehzz\"],\"blobPathList\":[\"yqrimzin\"],\"containerList\":[\"wjdk\",\"rsoodqxhcrmnoh\",\"t\"]},\"azureFileFilterDetails\":{\"filePrefixList\":[\"dsoifiyipj\"],\"filePathList\":[\"wpgrjbzno\",\"cjxvsnbyxqab\",\"mocpc\"],\"fileShareList\":[\"urzafb\",\"jjgpb\",\"oq\"]},\"filterFileDetails\":[{\"filterFileType\":\"AzureBlob\",\"filterFilePath\":\"ljavbqid\"},{\"filterFileType\":\"AzureFile\",\"filterFilePath\":\"ajzyul\"}]}},\"transferAllDetails\":{\"include\":{\"dataAccountType\":\"StorageAccount\",\"transferAllBlobs\":true,\"transferAllFiles\":false}}}")
+            .toObject(TransferConfiguration.class);
+        Assertions.assertEquals(TransferConfigurationType.TRANSFER_ALL, model.transferConfigurationType());
+        Assertions.assertEquals(DataAccountType.STORAGE_ACCOUNT,
+            model.transferFilterDetails().include().dataAccountType());
+        Assertions.assertEquals("wmdwzjeiachboo",
+            model.transferFilterDetails().include().blobFilterDetails().blobPrefixList().get(0));
+        Assertions.assertEquals("yqrimzin",
+            model.transferFilterDetails().include().blobFilterDetails().blobPathList().get(0));
+        Assertions.assertEquals("wjdk",
+            model.transferFilterDetails().include().blobFilterDetails().containerList().get(0));
+        Assertions.assertEquals("dsoifiyipj",
+            model.transferFilterDetails().include().azureFileFilterDetails().filePrefixList().get(0));
+        Assertions.assertEquals("wpgrjbzno",
+            model.transferFilterDetails().include().azureFileFilterDetails().filePathList().get(0));
+        Assertions.assertEquals("urzafb",
+            model.transferFilterDetails().include().azureFileFilterDetails().fileShareList().get(0));
+        Assertions.assertEquals(FilterFileType.AZURE_BLOB,
+            model.transferFilterDetails().include().filterFileDetails().get(0).filterFileType());
+        Assertions.assertEquals("ljavbqid",
+            model.transferFilterDetails().include().filterFileDetails().get(0).filterFilePath());
+        Assertions.assertEquals(DataAccountType.STORAGE_ACCOUNT,
+            model.transferAllDetails().include().dataAccountType());
         Assertions.assertEquals(true, model.transferAllDetails().include().transferAllBlobs());
         Assertions.assertEquals(false, model.transferAllDetails().include().transferAllFiles());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransferConfiguration model =
-            new TransferConfiguration()
-                .withTransferConfigurationType(TransferConfigurationType.TRANSFER_USING_FILTER)
-                .withTransferFilterDetails(
-                    new TransferConfigurationTransferFilterDetails()
-                        .withInclude(
-                            new TransferFilterDetails()
-                                .withDataAccountType(DataAccountType.STORAGE_ACCOUNT)
-                                .withFilterFileDetails(Arrays.asList())))
-                .withTransferAllDetails(
-                    new TransferConfigurationTransferAllDetails()
-                        .withInclude(
-                            new TransferAllDetails()
-                                .withDataAccountType(DataAccountType.STORAGE_ACCOUNT)
-                                .withTransferAllBlobs(true)
-                                .withTransferAllFiles(false)));
+        TransferConfiguration model
+            = new TransferConfiguration().withTransferConfigurationType(TransferConfigurationType.TRANSFER_ALL)
+                .withTransferFilterDetails(new TransferConfigurationTransferFilterDetails()
+                    .withInclude(new TransferFilterDetails().withDataAccountType(DataAccountType.STORAGE_ACCOUNT)
+                        .withBlobFilterDetails(new BlobFilterDetails()
+                            .withBlobPrefixList(Arrays.asList("wmdwzjeiachboo", "flnrosfqpteehzz"))
+                            .withBlobPathList(Arrays.asList("yqrimzin"))
+                            .withContainerList(Arrays.asList("wjdk", "rsoodqxhcrmnoh", "t")))
+                        .withAzureFileFilterDetails(
+                            new AzureFileFilterDetails().withFilePrefixList(Arrays.asList("dsoifiyipj"))
+                                .withFilePathList(Arrays.asList("wpgrjbzno", "cjxvsnbyxqab", "mocpc"))
+                                .withFileShareList(Arrays.asList("urzafb", "jjgpb", "oq")))
+                        .withFilterFileDetails(Arrays.asList(
+                            new FilterFileDetails().withFilterFileType(FilterFileType.AZURE_BLOB)
+                                .withFilterFilePath("ljavbqid"),
+                            new FilterFileDetails().withFilterFileType(FilterFileType.AZURE_FILE)
+                                .withFilterFilePath("ajzyul")))))
+                .withTransferAllDetails(new TransferConfigurationTransferAllDetails()
+                    .withInclude(new TransferAllDetails().withDataAccountType(DataAccountType.STORAGE_ACCOUNT)
+                        .withTransferAllBlobs(true)
+                        .withTransferAllFiles(false)));
         model = BinaryData.fromObject(model).toObject(TransferConfiguration.class);
-        Assertions.assertEquals(TransferConfigurationType.TRANSFER_USING_FILTER, model.transferConfigurationType());
-        Assertions
-            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferFilterDetails().include().dataAccountType());
-        Assertions
-            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferAllDetails().include().dataAccountType());
+        Assertions.assertEquals(TransferConfigurationType.TRANSFER_ALL, model.transferConfigurationType());
+        Assertions.assertEquals(DataAccountType.STORAGE_ACCOUNT,
+            model.transferFilterDetails().include().dataAccountType());
+        Assertions.assertEquals("wmdwzjeiachboo",
+            model.transferFilterDetails().include().blobFilterDetails().blobPrefixList().get(0));
+        Assertions.assertEquals("yqrimzin",
+            model.transferFilterDetails().include().blobFilterDetails().blobPathList().get(0));
+        Assertions.assertEquals("wjdk",
+            model.transferFilterDetails().include().blobFilterDetails().containerList().get(0));
+        Assertions.assertEquals("dsoifiyipj",
+            model.transferFilterDetails().include().azureFileFilterDetails().filePrefixList().get(0));
+        Assertions.assertEquals("wpgrjbzno",
+            model.transferFilterDetails().include().azureFileFilterDetails().filePathList().get(0));
+        Assertions.assertEquals("urzafb",
+            model.transferFilterDetails().include().azureFileFilterDetails().fileShareList().get(0));
+        Assertions.assertEquals(FilterFileType.AZURE_BLOB,
+            model.transferFilterDetails().include().filterFileDetails().get(0).filterFileType());
+        Assertions.assertEquals("ljavbqid",
+            model.transferFilterDetails().include().filterFileDetails().get(0).filterFilePath());
+        Assertions.assertEquals(DataAccountType.STORAGE_ACCOUNT,
+            model.transferAllDetails().include().dataAccountType());
         Assertions.assertEquals(true, model.transferAllDetails().include().transferAllBlobs());
         Assertions.assertEquals(false, model.transferAllDetails().include().transferAllFiles());
     }

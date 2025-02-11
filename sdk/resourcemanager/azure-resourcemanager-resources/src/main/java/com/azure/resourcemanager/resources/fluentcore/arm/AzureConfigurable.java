@@ -34,7 +34,7 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      *
      * If set, this configure will override {@link HttpLogOptions#setLogLevel(HttpLogDetailLevel)} configure of
      * {@link AzureConfigurable#withLogOptions(HttpLogOptions)}.
-
+    
      * @param logLevel the logging level
      * @return the configurable object itself
      */

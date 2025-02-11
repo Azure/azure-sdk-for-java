@@ -5,75 +5,69 @@
 package com.azure.resourcemanager.iotfirmwaredefense.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveComponent;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveLink;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Details of a CVE detected in firmware.
  */
 @Fluent
-public final class CveResult {
+public final class CveResult implements JsonSerializable<CveResult> {
     /*
      * ID of the CVE result.
      */
-    @JsonProperty(value = "cveId")
     private String cveId;
 
     /*
      * The SBOM component for the CVE.
      */
-    @JsonProperty(value = "component")
     private CveComponent component;
 
     /*
      * Severity of the CVE.
      */
-    @JsonProperty(value = "severity")
     private String severity;
 
     /*
      * Name of the CVE.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * A single CVSS score to represent the CVE. If a V3 score is specified, then it will use the V3 score. Otherwise
-     * if the V2 score is specified it will be the V2 score.
+     * A single CVSS score to represent the CVE. If a V3 score is specified, then it will use the V3 score. Otherwise if
+     * the V2 score is specified it will be the V2 score.
      */
-    @JsonProperty(value = "cvssScore")
     private String cvssScore;
 
     /*
      * CVSS version of the CVE.
      */
-    @JsonProperty(value = "cvssVersion")
     private String cvssVersion;
 
     /*
      * CVSS V2 score of the CVE.
      */
-    @JsonProperty(value = "cvssV2Score")
     private String cvssV2Score;
 
     /*
      * CVSS V3 score of the CVE.
      */
-    @JsonProperty(value = "cvssV3Score")
     private String cvssV3Score;
 
     /*
      * The list of reference links for the CVE.
      */
-    @JsonProperty(value = "links", access = JsonProperty.Access.WRITE_ONLY)
     private List<CveLink> links;
 
     /*
      * The CVE description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -285,5 +279,68 @@ public final class CveResult {
         if (links() != null) {
             links().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cveId", this.cveId);
+        jsonWriter.writeJsonField("component", this.component);
+        jsonWriter.writeStringField("severity", this.severity);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("cvssScore", this.cvssScore);
+        jsonWriter.writeStringField("cvssVersion", this.cvssVersion);
+        jsonWriter.writeStringField("cvssV2Score", this.cvssV2Score);
+        jsonWriter.writeStringField("cvssV3Score", this.cvssV3Score);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CveResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CveResult if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the CveResult.
+     */
+    public static CveResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CveResult deserializedCveResult = new CveResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cveId".equals(fieldName)) {
+                    deserializedCveResult.cveId = reader.getString();
+                } else if ("component".equals(fieldName)) {
+                    deserializedCveResult.component = CveComponent.fromJson(reader);
+                } else if ("severity".equals(fieldName)) {
+                    deserializedCveResult.severity = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCveResult.name = reader.getString();
+                } else if ("cvssScore".equals(fieldName)) {
+                    deserializedCveResult.cvssScore = reader.getString();
+                } else if ("cvssVersion".equals(fieldName)) {
+                    deserializedCveResult.cvssVersion = reader.getString();
+                } else if ("cvssV2Score".equals(fieldName)) {
+                    deserializedCveResult.cvssV2Score = reader.getString();
+                } else if ("cvssV3Score".equals(fieldName)) {
+                    deserializedCveResult.cvssV3Score = reader.getString();
+                } else if ("links".equals(fieldName)) {
+                    List<CveLink> links = reader.readArray(reader1 -> CveLink.fromJson(reader1));
+                    deserializedCveResult.links = links;
+                } else if ("description".equals(fieldName)) {
+                    deserializedCveResult.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCveResult;
+        });
     }
 }

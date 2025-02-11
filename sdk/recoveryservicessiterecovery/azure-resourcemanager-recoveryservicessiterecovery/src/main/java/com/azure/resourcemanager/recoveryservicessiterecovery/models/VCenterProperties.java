@@ -5,79 +5,74 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * vCenter properties.
  */
 @Fluent
-public final class VCenterProperties {
+public final class VCenterProperties implements JsonSerializable<VCenterProperties> {
     /*
      * Friendly name of the vCenter.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * VCenter internal ID.
      */
-    @JsonProperty(value = "internalId")
     private String internalId;
 
     /*
      * The time when the last heartbeat was received by vCenter.
      */
-    @JsonProperty(value = "lastHeartbeat")
     private OffsetDateTime lastHeartbeat;
 
     /*
      * The VCenter discovery status.
      */
-    @JsonProperty(value = "discoveryStatus")
     private String discoveryStatus;
 
     /*
      * The process server Id.
      */
-    @JsonProperty(value = "processServerId")
     private String processServerId;
 
     /*
      * The IP address of the vCenter.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * The infrastructure Id of vCenter.
      */
-    @JsonProperty(value = "infrastructureId")
     private String infrastructureId;
 
     /*
      * The port number for discovery.
      */
-    @JsonProperty(value = "port")
     private String port;
 
     /*
      * The account Id which has privileges to discover the vCenter.
      */
-    @JsonProperty(value = "runAsAccountId")
     private String runAsAccountId;
 
     /*
      * The ARM resource name of the fabric containing this VCenter.
      */
-    @JsonProperty(value = "fabricArmResourceName")
     private String fabricArmResourceName;
 
     /*
      * The health errors for this VCenter.
      */
-    @JsonProperty(value = "healthErrors")
     private List<HealthError> healthErrors;
 
     /**
@@ -315,5 +310,74 @@ public final class VCenterProperties {
         if (healthErrors() != null) {
             healthErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("internalId", this.internalId);
+        jsonWriter.writeStringField("lastHeartbeat",
+            this.lastHeartbeat == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastHeartbeat));
+        jsonWriter.writeStringField("discoveryStatus", this.discoveryStatus);
+        jsonWriter.writeStringField("processServerId", this.processServerId);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("infrastructureId", this.infrastructureId);
+        jsonWriter.writeStringField("port", this.port);
+        jsonWriter.writeStringField("runAsAccountId", this.runAsAccountId);
+        jsonWriter.writeStringField("fabricArmResourceName", this.fabricArmResourceName);
+        jsonWriter.writeArrayField("healthErrors", this.healthErrors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VCenterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VCenterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VCenterProperties.
+     */
+    public static VCenterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VCenterProperties deserializedVCenterProperties = new VCenterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedVCenterProperties.friendlyName = reader.getString();
+                } else if ("internalId".equals(fieldName)) {
+                    deserializedVCenterProperties.internalId = reader.getString();
+                } else if ("lastHeartbeat".equals(fieldName)) {
+                    deserializedVCenterProperties.lastHeartbeat = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("discoveryStatus".equals(fieldName)) {
+                    deserializedVCenterProperties.discoveryStatus = reader.getString();
+                } else if ("processServerId".equals(fieldName)) {
+                    deserializedVCenterProperties.processServerId = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedVCenterProperties.ipAddress = reader.getString();
+                } else if ("infrastructureId".equals(fieldName)) {
+                    deserializedVCenterProperties.infrastructureId = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedVCenterProperties.port = reader.getString();
+                } else if ("runAsAccountId".equals(fieldName)) {
+                    deserializedVCenterProperties.runAsAccountId = reader.getString();
+                } else if ("fabricArmResourceName".equals(fieldName)) {
+                    deserializedVCenterProperties.fabricArmResourceName = reader.getString();
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthError> healthErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedVCenterProperties.healthErrors = healthErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVCenterProperties;
+        });
     }
 }

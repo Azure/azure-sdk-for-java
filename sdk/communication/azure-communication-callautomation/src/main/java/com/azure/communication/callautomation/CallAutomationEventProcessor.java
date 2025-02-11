@@ -90,7 +90,8 @@ public final class CallAutomationEventProcessor {
      * @return Returns the event once matching event arrives.
      * @param <TEvent> Any CallAutomation events.
      */
-    public <TEvent extends CallAutomationEventBase> TEvent waitForEventProcessor(String connectionId, String operationContext, Class<TEvent> eventType) {
+    public <TEvent extends CallAutomationEventBase> TEvent waitForEventProcessor(String connectionId,
+        String operationContext, Class<TEvent> eventType) {
         return waitForEventProcessorAsync(connectionId, operationContext, eventType).block();
     }
 
@@ -103,7 +104,8 @@ public final class CallAutomationEventProcessor {
      * @return Returns the event once matching event arrives.
      * @param <TEvent> Any CallAutomation events.
      */
-    public <TEvent extends CallAutomationEventBase> TEvent waitForEventProcessor(String connectionId, String operationContext, Class<TEvent> eventType, Duration timeout) {
+    public <TEvent extends CallAutomationEventBase> TEvent waitForEventProcessor(String connectionId,
+        String operationContext, Class<TEvent> eventType, Duration timeout) {
         return waitForEventProcessorAsync(connectionId, operationContext, eventType, timeout).block();
     }
 
@@ -122,7 +124,8 @@ public final class CallAutomationEventProcessor {
      * @param timeout The timeout duration for the event to arrive.
      * @return Returns the event once matching event arrives.
      */
-    public CallAutomationEventBase waitForEventProcessor(Predicate<CallAutomationEventBase> predicate, Duration timeout) {
+    public CallAutomationEventBase waitForEventProcessor(Predicate<CallAutomationEventBase> predicate,
+        Duration timeout) {
         return waitForEventProcessorAsync(predicate, timeout).block();
     }
 
@@ -135,8 +138,10 @@ public final class CallAutomationEventProcessor {
      * @param <TEvent> Any CallAutomation events.
      */
     @SuppressWarnings("unchecked")
-    public <TEvent extends CallAutomationEventBase> Mono<TEvent> waitForEventProcessorAsync(String connectionId, String operationContext, Class<TEvent> eventType) {
-        return waitForEventProcessorAsync(connectionId, operationContext, eventType, Duration.ofSeconds(DEFAULT_EVENT_AWAITER_EXPIRATION_SECONDS));
+    public <TEvent extends CallAutomationEventBase> Mono<TEvent> waitForEventProcessorAsync(String connectionId,
+        String operationContext, Class<TEvent> eventType) {
+        return waitForEventProcessorAsync(connectionId, operationContext, eventType,
+            Duration.ofSeconds(DEFAULT_EVENT_AWAITER_EXPIRATION_SECONDS));
     }
 
     /**
@@ -149,10 +154,13 @@ public final class CallAutomationEventProcessor {
      * @param <TEvent> Any CallAutomation events.
      */
     @SuppressWarnings("unchecked")
-    public <TEvent extends CallAutomationEventBase> Mono<TEvent> waitForEventProcessorAsync(String connectionId, String operationContext, Class<TEvent> eventType, Duration timeout) {
-        Mono<CallAutomationEventBase> ret = waitForEventProcessorAsync(event -> (Objects.equals(event.getCallConnectionId(), connectionId) || Objects.isNull(connectionId))
-            && (Objects.equals(event.getOperationContext(), operationContext) || Objects.isNull(operationContext))
-            && event.getClass() == eventType, timeout);
+    public <TEvent extends CallAutomationEventBase> Mono<TEvent> waitForEventProcessorAsync(String connectionId,
+        String operationContext, Class<TEvent> eventType, Duration timeout) {
+        Mono<CallAutomationEventBase> ret = waitForEventProcessorAsync(
+            event -> (Objects.equals(event.getCallConnectionId(), connectionId) || Objects.isNull(connectionId))
+                && (Objects.equals(event.getOperationContext(), operationContext) || Objects.isNull(operationContext))
+                && event.getClass() == eventType,
+            timeout);
 
         return ret.map(event -> event == null ? null : (TEvent) event);
     }
@@ -174,7 +182,8 @@ public final class CallAutomationEventProcessor {
      * @return Returns the event once matching event arrives.
      * @throws RuntimeException all checked exceptions if the logic fails.
      */
-    public Mono<CallAutomationEventBase> waitForEventProcessorAsync(Predicate<CallAutomationEventBase> predicate, Duration timeout) {
+    public Mono<CallAutomationEventBase> waitForEventProcessorAsync(Predicate<CallAutomationEventBase> predicate,
+        Duration timeout) {
         // Initialize awaiter
         EventAwaiterSingleTime eventAwaiterSingleTime = new EventAwaiterSingleTime(predicate);
 
@@ -186,7 +195,8 @@ public final class CallAutomationEventProcessor {
 
             if (eventWithBacklogId == null) {
                 // If event comes to backlog later before the awaiter expires, ret will get that event, otherwise a timeout exception will throw.
-                Mono<EventWithBacklogId> futureEventWithBacklogId = eventAwaiterSingleTime.getEventWithBacklogId().timeout(timeout);
+                Mono<EventWithBacklogId> futureEventWithBacklogId
+                    = eventAwaiterSingleTime.getEventWithBacklogId().timeout(timeout);
                 futureEventWithBacklogId.subscribe(event -> {
                     eventBacklog.removeEvent(event.getBackLogEventId());
                     // Remove the awaiter since the event is found or the awaiter is expired.
@@ -216,8 +226,10 @@ public final class CallAutomationEventProcessor {
      * @param eventType The event type that is being waited.
      * @param <TEvent> Any CallAutomation events.
      */
-    public <TEvent extends CallAutomationEventBase> void attachOngoingEventProcessor(String callConnectionId, Consumer<TEvent> eventProcessor, Class<TEvent> eventType) {
-        EventAwaiterOngoing<TEvent> eventAwaiterOngoing = new EventAwaiterOngoing<>(eventType, callConnectionId, eventProcessor);
+    public <TEvent extends CallAutomationEventBase> void attachOngoingEventProcessor(String callConnectionId,
+        Consumer<TEvent> eventProcessor, Class<TEvent> eventType) {
+        EventAwaiterOngoing<TEvent> eventAwaiterOngoing
+            = new EventAwaiterOngoing<>(eventType, callConnectionId, eventProcessor);
 
         try {
             // Queue it into the subscriber list.
@@ -246,13 +258,17 @@ public final class CallAutomationEventProcessor {
      * @param eventType The event type that is being waited.
      * @param <TEvent> Any CallAutomation events.
      */
-    public <TEvent extends CallAutomationEventBase> void detachOngoingEventProcessor(String callConnectionId, Class<TEvent> eventType) {
+    public <TEvent extends CallAutomationEventBase> void detachOngoingEventProcessor(String callConnectionId,
+        Class<TEvent> eventType) {
         removeFromOngoingEvent(callConnectionId, eventType);
     }
+
     private <TEvent extends CallAutomationEventBase> void removeFromOngoingEvent(String connectionId) {
         removeFromOngoingEvent(connectionId, null);
     }
-    private <TEvent extends CallAutomationEventBase> void removeFromOngoingEvent(String connectionId, Class<TEvent> clazz) {
+
+    private <TEvent extends CallAutomationEventBase> void removeFromOngoingEvent(String connectionId,
+        Class<TEvent> clazz) {
         if (clazz == null) {
             // Remove all matching connectionId
             List<OngoingEventAwaiterKey<?>> keysToRemove = new ArrayList<>();

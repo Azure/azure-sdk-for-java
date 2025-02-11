@@ -28,5 +28,6 @@ public final class KeyVaultCertificateWithPolicyHelper {
         KeyVaultCertificateWithPolicyHelper.accessor = accessor;
     }
 
-    private KeyVaultCertificateWithPolicyHelper() { }
+    private KeyVaultCertificateWithPolicyHelper() {
+    }
 }

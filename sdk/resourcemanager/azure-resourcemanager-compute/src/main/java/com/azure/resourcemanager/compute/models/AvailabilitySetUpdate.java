@@ -209,7 +209,6 @@ public final class AvailabilitySetUpdate extends UpdateResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

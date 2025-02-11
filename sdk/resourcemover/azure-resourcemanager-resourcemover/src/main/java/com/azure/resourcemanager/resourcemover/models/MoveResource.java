@@ -8,66 +8,76 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner;
 
-/** An immutable client-side representation of MoveResource. */
+/**
+ * An immutable client-side representation of MoveResource.
+ */
 public interface MoveResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Defines the move resource properties.
-     *
+     * 
      * @return the properties value.
      */
     MoveResourceProperties properties();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     MoveResourceInner innerModel();
 
-    /** The entirety of the MoveResource definition. */
+    /**
+     * The entirety of the MoveResource definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The MoveResource definition stages. */
+    /**
+     * The MoveResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the MoveResource definition. */
+        /**
+         * The first stage of the MoveResource definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the MoveResource definition allowing to specify parent resource. */
+        /**
+         * The stage of the MoveResource definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, moveCollectionName.
-             *
+             * 
              * @param resourceGroupName The Resource Group Name.
              * @param moveCollectionName The Move Collection Name.
              * @return the next definition stage.
@@ -82,25 +92,27 @@ public interface MoveResource {
         interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             MoveResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             MoveResource create(Context context);
         }
 
-        /** The stage of the MoveResource definition allowing to specify properties. */
+        /**
+         * The stage of the MoveResource definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Defines the move resource properties..
-             *
+             * 
              * @param properties Defines the move resource properties.
              * @return the next definition stage.
              */
@@ -110,14 +122,14 @@ public interface MoveResource {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     MoveResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

@@ -23,9 +23,10 @@ public final class InMageAzureV2DiskInputDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2DiskInputDetails model
-            = new InMageAzureV2DiskInputDetails().withDiskId("ibhlenntrv").withLogStorageAccountId("psabdu")
-                .withDiskType(DiskAccountType.PREMIUM_LRS).withDiskEncryptionSetId("lghnysvlp");
+        InMageAzureV2DiskInputDetails model = new InMageAzureV2DiskInputDetails().withDiskId("ibhlenntrv")
+            .withLogStorageAccountId("psabdu")
+            .withDiskType(DiskAccountType.PREMIUM_LRS)
+            .withDiskEncryptionSetId("lghnysvlp");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2DiskInputDetails.class);
         Assertions.assertEquals("ibhlenntrv", model.diskId());
         Assertions.assertEquals("psabdu", model.logStorageAccountId());

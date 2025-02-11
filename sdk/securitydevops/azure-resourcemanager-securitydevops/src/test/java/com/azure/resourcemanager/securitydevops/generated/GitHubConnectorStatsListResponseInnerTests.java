@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Test;
 public final class GitHubConnectorStatsListResponseInnerTests {
     @Test
     public void testDeserialize() {
-        GitHubConnectorStatsListResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"ownersCount\":5831950550270419885,\"reposCount\":8758975476442574500},\"id\":\"xppofmxaxcfjp\",\"name\":\"ddtocjjxhvp\",\"type\":\"o\"},{\"properties\":{\"provisioningState\":\"Failed\",\"ownersCount\":9219996873321943982,\"reposCount\":3171024248855177563},\"id\":\"ojnxqbzvdd\",\"name\":\"t\",\"type\":\"ndei\"}],\"nextLink\":\"twnpzaoqvuhrhcf\"}")
-                .toObject(GitHubConnectorStatsListResponseInner.class);
+        GitHubConnectorStatsListResponseInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"ownersCount\":5831950550270419885,\"reposCount\":8758975476442574500},\"id\":\"xppofmxaxcfjp\",\"name\":\"ddtocjjxhvp\",\"type\":\"o\"},{\"properties\":{\"provisioningState\":\"Failed\",\"ownersCount\":9219996873321943982,\"reposCount\":3171024248855177563},\"id\":\"ojnxqbzvdd\",\"name\":\"t\",\"type\":\"ndei\"}],\"nextLink\":\"twnpzaoqvuhrhcf\"}")
+            .toObject(GitHubConnectorStatsListResponseInner.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(5831950550270419885L, model.value().get(0).properties().ownersCount());
         Assertions.assertEquals(8758975476442574500L, model.value().get(0).properties().reposCount());
@@ -29,23 +27,16 @@ public final class GitHubConnectorStatsListResponseInnerTests {
 
     @Test
     public void testSerialize() {
-        GitHubConnectorStatsListResponseInner model =
-            new GitHubConnectorStatsListResponseInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new GitHubConnectorStats()
-                                .withProperties(
-                                    new GitHubConnectorStatsProperties()
-                                        .withProvisioningState(ProvisioningState.SUCCEEDED)
-                                        .withOwnersCount(5831950550270419885L)
-                                        .withReposCount(8758975476442574500L)),
-                            new GitHubConnectorStats()
-                                .withProperties(
-                                    new GitHubConnectorStatsProperties()
-                                        .withProvisioningState(ProvisioningState.FAILED)
-                                        .withOwnersCount(9219996873321943982L)
-                                        .withReposCount(3171024248855177563L))))
+        GitHubConnectorStatsListResponseInner model
+            = new GitHubConnectorStatsListResponseInner().withValue(Arrays.asList(
+                new GitHubConnectorStats().withProperties(
+                    new GitHubConnectorStatsProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
+                        .withOwnersCount(5831950550270419885L)
+                        .withReposCount(8758975476442574500L)),
+                new GitHubConnectorStats()
+                    .withProperties(new GitHubConnectorStatsProperties().withProvisioningState(ProvisioningState.FAILED)
+                        .withOwnersCount(9219996873321943982L)
+                        .withReposCount(3171024248855177563L))))
                 .withNextLink("twnpzaoqvuhrhcf");
         model = BinaryData.fromObject(model).toObject(GitHubConnectorStatsListResponseInner.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).properties().provisioningState());

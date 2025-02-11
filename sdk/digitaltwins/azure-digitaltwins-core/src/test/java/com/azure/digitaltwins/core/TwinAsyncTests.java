@@ -52,7 +52,8 @@ public class TwinAsyncTests extends TwinTestBase {
                 .verifyComplete();
 
             // Create a Twin
-            StepVerifier.create(asyncClient.createOrReplaceDigitalTwin(roomTwinId,
+            StepVerifier
+                .create(asyncClient.createOrReplaceDigitalTwin(roomTwinId,
                     deserializeJsonString(roomTwin, BasicDigitalTwin::fromJson), BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
                     assertEquals(createdTwin.getId(), roomTwinId);
@@ -70,9 +71,9 @@ public class TwinAsyncTests extends TwinTestBase {
                 .verifyComplete();
 
             // Update Twin
-            StepVerifier.create(
-                asyncClient.updateDigitalTwinWithResponse(roomTwinId, TestAssetsHelper.getRoomTwinUpdatePayload(),
-                    null))
+            StepVerifier
+                .create(asyncClient.updateDigitalTwinWithResponse(roomTwinId,
+                    TestAssetsHelper.getRoomTwinUpdatePayload(), null))
                 .assertNext(updateResponse -> {
                     assertEquals(updateResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
                     logger.info("Updated the twin successfully");
@@ -146,9 +147,9 @@ public class TwinAsyncTests extends TwinTestBase {
                 })
                 .verifyComplete();
 
-            StepVerifier.create(
-                    asyncClient.createOrReplaceDigitalTwinWithResponse(roomTwinId, twin, BasicDigitalTwin.class,
-                        new CreateOrReplaceDigitalTwinOptions().setIfNoneMatch("*")))
+            StepVerifier
+                .create(asyncClient.createOrReplaceDigitalTwinWithResponse(roomTwinId, twin, BasicDigitalTwin.class,
+                    new CreateOrReplaceDigitalTwinOptions().setIfNoneMatch("*")))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
         } finally {
             if (roomTwinId != null) {
@@ -201,10 +202,12 @@ public class TwinAsyncTests extends TwinTestBase {
                 })
                 .verifyComplete();
 
-            StepVerifier.create(
-                    asyncClient.createOrReplaceDigitalTwinWithResponse(roomTwinId, twin, BasicDigitalTwin.class,
-                        null)) //don't set ifNoneMatch header
-                .assertNext(response -> { /* don't care as long as it is a success status code */ }).verifyComplete();
+            StepVerifier
+                .create(
+                    asyncClient.createOrReplaceDigitalTwinWithResponse(roomTwinId, twin, BasicDigitalTwin.class, null)) //don't set ifNoneMatch header
+                .assertNext(response -> {
+                    /* don't care as long as it is a success status code */ })
+                .verifyComplete();
         } finally {
             if (roomTwinId != null) {
                 asyncClient.deleteDigitalTwin(roomTwinId).block();
@@ -241,7 +244,8 @@ public class TwinAsyncTests extends TwinTestBase {
 
             // Create a Twin
             AtomicReference<String> etagBeforeUpdate = new AtomicReference<>();
-            StepVerifier.create(asyncClient.createOrReplaceDigitalTwin(roomTwinId,
+            StepVerifier
+                .create(asyncClient.createOrReplaceDigitalTwin(roomTwinId,
                     deserializeJsonString(roomTwin, BasicDigitalTwin::fromJson), BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
                     assertEquals(createdTwin.getId(), roomTwinId);
@@ -251,17 +255,18 @@ public class TwinAsyncTests extends TwinTestBase {
                 .verifyComplete();
 
             // Update Twin
-            StepVerifier.create(
-                asyncClient.updateDigitalTwinWithResponse(roomTwinId, TestAssetsHelper.getRoomTwinUpdatePayload(),
-                    null))
+            StepVerifier
+                .create(asyncClient.updateDigitalTwinWithResponse(roomTwinId,
+                    TestAssetsHelper.getRoomTwinUpdatePayload(), null))
                 .assertNext(updateResponse -> {
                     assertEquals(updateResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
                     logger.info("Updated the twin successfully");
                 })
                 .verifyComplete();
 
-            StepVerifier.create(
-                asyncClient.updateDigitalTwinWithResponse(roomTwinId, TestAssetsHelper.getRoomTwinSecondUpdatePayload(),
+            StepVerifier
+                .create(asyncClient.updateDigitalTwinWithResponse(roomTwinId,
+                    TestAssetsHelper.getRoomTwinSecondUpdatePayload(),
                     new UpdateDigitalTwinOptions().setIfMatch(etagBeforeUpdate.get())))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
         } finally {
@@ -299,7 +304,8 @@ public class TwinAsyncTests extends TwinTestBase {
                 .verifyComplete();
 
             // Create a Twin
-            StepVerifier.create(asyncClient.createOrReplaceDigitalTwin(roomTwinId,
+            StepVerifier
+                .create(asyncClient.createOrReplaceDigitalTwin(roomTwinId,
                     deserializeJsonString(roomTwin, BasicDigitalTwin::fromJson), BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
                     assertEquals(createdTwin.getId(), roomTwinId);
@@ -309,9 +315,9 @@ public class TwinAsyncTests extends TwinTestBase {
 
             // Update Twin
             AtomicReference<String> updateToDateETag = new AtomicReference<>();
-            StepVerifier.create(
-                asyncClient.updateDigitalTwinWithResponse(roomTwinId, TestAssetsHelper.getRoomTwinUpdatePayload(),
-                    null))
+            StepVerifier
+                .create(asyncClient.updateDigitalTwinWithResponse(roomTwinId,
+                    TestAssetsHelper.getRoomTwinUpdatePayload(), null))
                 .assertNext(updateResponse -> {
                     assertEquals(updateResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
                     logger.info("Updated the twin successfully");
@@ -319,9 +325,10 @@ public class TwinAsyncTests extends TwinTestBase {
                 })
                 .verifyComplete();
 
-            StepVerifier.create(
-                    asyncClient.updateDigitalTwinWithResponse(roomTwinId, TestAssetsHelper.getRoomTwinSecondUpdatePayload(),
-                        new UpdateDigitalTwinOptions().setIfMatch(updateToDateETag.get())))
+            StepVerifier
+                .create(asyncClient.updateDigitalTwinWithResponse(roomTwinId,
+                    TestAssetsHelper.getRoomTwinSecondUpdatePayload(),
+                    new UpdateDigitalTwinOptions().setIfMatch(updateToDateETag.get())))
                 .expectNextCount(1) /* don't care as long as it is a success status code */
                 .verifyComplete();
         } finally {
@@ -360,7 +367,8 @@ public class TwinAsyncTests extends TwinTestBase {
 
             // Create a Twin
             AtomicReference<String> etagBeforeUpdate = new AtomicReference<>();
-            StepVerifier.create(asyncClient.createOrReplaceDigitalTwin(roomTwinId,
+            StepVerifier
+                .create(asyncClient.createOrReplaceDigitalTwin(roomTwinId,
                     deserializeJsonString(roomTwin, BasicDigitalTwin::fromJson), BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
                     assertEquals(createdTwin.getId(), roomTwinId);
@@ -370,16 +378,17 @@ public class TwinAsyncTests extends TwinTestBase {
                 .verifyComplete();
 
             // Update Twin
-            StepVerifier.create(
-                asyncClient.updateDigitalTwinWithResponse(roomTwinId, TestAssetsHelper.getRoomTwinUpdatePayload(),
-                    null))
+            StepVerifier
+                .create(asyncClient.updateDigitalTwinWithResponse(roomTwinId,
+                    TestAssetsHelper.getRoomTwinUpdatePayload(), null))
                 .assertNext(updateResponse -> {
                     assertEquals(updateResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
                     logger.info("Updated the twin successfully");
                 })
                 .verifyComplete();
 
-            StepVerifier.create(asyncClient.deleteDigitalTwinWithResponse(roomTwinId,
+            StepVerifier
+                .create(asyncClient.deleteDigitalTwinWithResponse(roomTwinId,
                     new DeleteDigitalTwinOptions().setIfMatch(etagBeforeUpdate.get())))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
         } finally {
@@ -417,7 +426,8 @@ public class TwinAsyncTests extends TwinTestBase {
                 .verifyComplete();
 
             // Create a Twin
-            StepVerifier.create(asyncClient.createOrReplaceDigitalTwin(roomTwinId,
+            StepVerifier
+                .create(asyncClient.createOrReplaceDigitalTwin(roomTwinId,
                     deserializeJsonString(roomTwin, BasicDigitalTwin::fromJson), BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
                     assertEquals(createdTwin.getId(), roomTwinId);
@@ -427,9 +437,9 @@ public class TwinAsyncTests extends TwinTestBase {
 
             // Update Twin
             AtomicReference<String> updateToDateETag = new AtomicReference<>();
-            StepVerifier.create(
-                asyncClient.updateDigitalTwinWithResponse(roomTwinId, TestAssetsHelper.getRoomTwinUpdatePayload(),
-                    null))
+            StepVerifier
+                .create(asyncClient.updateDigitalTwinWithResponse(roomTwinId,
+                    TestAssetsHelper.getRoomTwinUpdatePayload(), null))
                 .assertNext(updateResponse -> {
                     assertEquals(updateResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
                     logger.info("Updated the twin successfully");
@@ -437,7 +447,8 @@ public class TwinAsyncTests extends TwinTestBase {
                 })
                 .verifyComplete();
 
-            StepVerifier.create(asyncClient.deleteDigitalTwinWithResponse(roomTwinId,
+            StepVerifier
+                .create(asyncClient.deleteDigitalTwinWithResponse(roomTwinId,
                     new DeleteDigitalTwinOptions().setIfMatch(updateToDateETag.get())))
                 .expectNextCount(1) /* don't care as long as it is a success status code */
                 .verifyComplete();
@@ -482,8 +493,8 @@ public class TwinAsyncTests extends TwinTestBase {
             floorTwinToCreate.addToContents("name", "1234");
             floorTwinToCreate.addToContents("roomType", "1234 spacious");
 
-            StepVerifier.create(
-                    asyncClient.createOrReplaceDigitalTwin(floorTwinId, floorTwinToCreate, BasicDigitalTwin.class))
+            StepVerifier
+                .create(asyncClient.createOrReplaceDigitalTwin(floorTwinId, floorTwinToCreate, BasicDigitalTwin.class))
                 .assertNext(createdTwin -> {
                     assertEquals(createdTwin.getId(), floorTwinId);
                     logger.info("Created {} twin successfully", createdTwin.getId());

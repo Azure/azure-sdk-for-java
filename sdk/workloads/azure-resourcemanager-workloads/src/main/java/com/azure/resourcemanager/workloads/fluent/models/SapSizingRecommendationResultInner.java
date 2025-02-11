@@ -5,34 +5,111 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.workloads.models.SapDeploymentType;
 import com.azure.resourcemanager.workloads.models.SingleServerRecommendationResult;
 import com.azure.resourcemanager.workloads.models.ThreeTierRecommendationResult;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** The SAP sizing recommendation result. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "deploymentType",
-    defaultImpl = SapSizingRecommendationResultInner.class)
-@JsonTypeName("SapSizingRecommendationResult")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "SingleServer", value = SingleServerRecommendationResult.class),
-    @JsonSubTypes.Type(name = "ThreeTier", value = ThreeTierRecommendationResult.class)
-})
+/**
+ * The SAP sizing recommendation result.
+ */
 @Immutable
-public class SapSizingRecommendationResultInner {
-    /** Creates an instance of SapSizingRecommendationResultInner class. */
+public class SapSizingRecommendationResultInner implements JsonSerializable<SapSizingRecommendationResultInner> {
+    /*
+     * The type of SAP deployment, single server or Three tier.
+     */
+    private SapDeploymentType deploymentType = SapDeploymentType.fromString("SapSizingRecommendationResult");
+
+    /**
+     * Creates an instance of SapSizingRecommendationResultInner class.
+     */
     public SapSizingRecommendationResultInner() {
     }
 
     /**
+     * Get the deploymentType property: The type of SAP deployment, single server or Three tier.
+     * 
+     * @return the deploymentType value.
+     */
+    public SapDeploymentType deploymentType() {
+        return this.deploymentType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deploymentType",
+            this.deploymentType == null ? null : this.deploymentType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapSizingRecommendationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapSizingRecommendationResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapSizingRecommendationResultInner.
+     */
+    public static SapSizingRecommendationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("deploymentType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("SingleServer".equals(discriminatorValue)) {
+                    return SingleServerRecommendationResult.fromJson(readerToUse.reset());
+                } else if ("ThreeTier".equals(discriminatorValue)) {
+                    return ThreeTierRecommendationResult.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static SapSizingRecommendationResultInner fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapSizingRecommendationResultInner deserializedSapSizingRecommendationResultInner
+                = new SapSizingRecommendationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentType".equals(fieldName)) {
+                    deserializedSapSizingRecommendationResultInner.deploymentType
+                        = SapDeploymentType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapSizingRecommendationResultInner;
+        });
     }
 }

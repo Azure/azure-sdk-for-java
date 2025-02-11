@@ -5,32 +5,34 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.ConfluentListMetadata;
 import com.azure.resourcemanager.confluent.models.ServiceAccountRecord;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List service accounts success response.
  */
 @Fluent
-public final class AccessListServiceAccountsSuccessResponseInner {
+public final class AccessListServiceAccountsSuccessResponseInner
+    implements JsonSerializable<AccessListServiceAccountsSuccessResponseInner> {
     /*
      * Type of response
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * Metadata of the list
      */
-    @JsonProperty(value = "metadata")
     private ConfluentListMetadata metadata;
 
     /*
      * Data of the service accounts list
      */
-    @JsonProperty(value = "data")
     private List<ServiceAccountRecord> data;
 
     /**
@@ -111,5 +113,51 @@ public final class AccessListServiceAccountsSuccessResponseInner {
         if (data() != null) {
             data().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessListServiceAccountsSuccessResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessListServiceAccountsSuccessResponseInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessListServiceAccountsSuccessResponseInner.
+     */
+    public static AccessListServiceAccountsSuccessResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessListServiceAccountsSuccessResponseInner deserializedAccessListServiceAccountsSuccessResponseInner
+                = new AccessListServiceAccountsSuccessResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedAccessListServiceAccountsSuccessResponseInner.kind = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedAccessListServiceAccountsSuccessResponseInner.metadata
+                        = ConfluentListMetadata.fromJson(reader);
+                } else if ("data".equals(fieldName)) {
+                    List<ServiceAccountRecord> data
+                        = reader.readArray(reader1 -> ServiceAccountRecord.fromJson(reader1));
+                    deserializedAccessListServiceAccountsSuccessResponseInner.data = data;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessListServiceAccountsSuccessResponseInner;
+        });
     }
 }

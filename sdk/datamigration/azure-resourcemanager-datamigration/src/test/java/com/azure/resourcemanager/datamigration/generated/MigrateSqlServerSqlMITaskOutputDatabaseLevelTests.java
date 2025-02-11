@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.MigrateSqlServerSqlMITaskO
 public final class MigrateSqlServerSqlMITaskOutputDatabaseLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSqlServerSqlMITaskOutputDatabaseLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"DatabaseLevelOutput\",\"databaseName\":\"jj\",\"sizeMB\":63.13862474716693,\"state\":\"None\",\"stage\":\"Backup\",\"startedOn\":\"2021-02-26T04:41:23Z\",\"endedOn\":\"2021-05-28T10:13:33Z\",\"message\":\"moob\",\"exceptionsAndWarnings\":[{\"message\":\"idgfc\",\"actionableMessage\":\"mpimaqxzhemjyh\",\"filePath\":\"uj\",\"lineNumber\":\"t\",\"hResult\":509926505,\"stackTrace\":\"zwculkbawpfajnj\"}],\"id\":\"tlwtjjguktalhsn\"}")
-                .toObject(MigrateSqlServerSqlMITaskOutputDatabaseLevel.class);
+        MigrateSqlServerSqlMITaskOutputDatabaseLevel model = BinaryData.fromString(
+            "{\"resultType\":\"DatabaseLevelOutput\",\"databaseName\":\"vxei\",\"sizeMB\":39.23626946309939,\"state\":\"None\",\"stage\":\"Completed\",\"startedOn\":\"2021-10-15T15:55:41Z\",\"endedOn\":\"2021-08-04T15:57:37Z\",\"message\":\"ycxcktpiym\",\"exceptionsAndWarnings\":[{\"message\":\"eammxqiekkkzddr\",\"actionableMessage\":\"g\",\"filePath\":\"jbmxvavre\",\"lineNumber\":\"eesvecu\",\"hResult\":2054437598,\"stackTrace\":\"txsu\"},{\"message\":\"rtujwsawddjibab\",\"actionableMessage\":\"ititvtzeexavoxt\",\"filePath\":\"lecdmdqbw\",\"lineNumber\":\"pqtgsfjac\",\"hResult\":2096730025,\"stackTrace\":\"hxudbxvodht\"},{\"message\":\"irudh\",\"actionableMessage\":\"mes\",\"filePath\":\"dlpagzrcxfail\",\"lineNumber\":\"xwmdboxd\",\"hResult\":1260487269,\"stackTrace\":\"tufqobrjlnacgc\"},{\"message\":\"knh\",\"actionableMessage\":\"izvy\",\"filePath\":\"rzvul\",\"lineNumber\":\"aaeranokqgukk\",\"hResult\":531608748,\"stackTrace\":\"broyla\"}],\"id\":\"ulcdisdosf\"}")
+            .toObject(MigrateSqlServerSqlMITaskOutputDatabaseLevel.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -10,16 +10,16 @@ import com.azure.resourcemanager.datafactory.fluent.models.OracleTableDatasetTyp
 public final class OracleTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OracleTableDatasetTypeProperties model = BinaryData.fromString(
-            "{\"tableName\":\"dataqcwggchxvl\",\"schema\":\"datafbrvecicaovphirl\",\"table\":\"dataipiunnepkwzzzku\"}")
+        OracleTableDatasetTypeProperties model = BinaryData
+            .fromString("{\"tableName\":\"datawdzpzl\",\"schema\":\"datauexlqpww\",\"table\":\"databjecfwl\"}")
             .toObject(OracleTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleTableDatasetTypeProperties model = new OracleTableDatasetTypeProperties().withTableName("dataqcwggchxvl")
-            .withSchema("datafbrvecicaovphirl")
-            .withTable("dataipiunnepkwzzzku");
+        OracleTableDatasetTypeProperties model = new OracleTableDatasetTypeProperties().withTableName("datawdzpzl")
+            .withSchema("datauexlqpww")
+            .withTable("databjecfwl");
         model = BinaryData.fromObject(model).toObject(OracleTableDatasetTypeProperties.class);
     }
 }

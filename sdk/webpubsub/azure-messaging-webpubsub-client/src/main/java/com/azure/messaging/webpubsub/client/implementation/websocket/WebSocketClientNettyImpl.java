@@ -15,8 +15,8 @@ public final class WebSocketClientNettyImpl implements WebSocketClient {
         AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
         Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
         try {
-            WebSocketSessionNettyImpl session = new WebSocketSessionNettyImpl(cec, path, loggerReference,
-                messageHandler, openHandler, closeHandler);
+            WebSocketSessionNettyImpl session
+                = new WebSocketSessionNettyImpl(cec, path, loggerReference, messageHandler, openHandler, closeHandler);
             session.connect();
             return session;
         } catch (Exception e) {

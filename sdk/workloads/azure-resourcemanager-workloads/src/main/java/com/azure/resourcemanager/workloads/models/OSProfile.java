@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the operating system settings for the virtual machine. Some of the settings cannot be changed once VM is
  * provisioned.
  */
 @Fluent
-public final class OSProfile {
+public final class OSProfile implements JsonSerializable<OSProfile> {
     /*
      * Specifies the name of the administrator account. <br><br> This property cannot be updated after the VM is
      * created. <br><br> **Windows-only restriction:** Cannot end in "." <br><br> **Disallowed values:**
      * "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a",
      * "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest", "john", "owner", "root", "server",
      * "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5". <br><br> **Minimum-length
-     * (Linux):** 1  character <br><br> **Max-length (Linux):** 64 characters <br><br> **Max-length (Windows):** 20
+     * (Linux):** 1 character <br><br> **Max-length (Linux):** 64 characters <br><br> **Max-length (Windows):** 20
      * characters.
      */
-    @JsonProperty(value = "adminUsername")
     private String adminUsername;
 
     /*
-     * Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters
-     * <br><br> **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br>
-     * **Max-length (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to
-     * be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character
-     * (Regex match [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123",
-     * "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" <br><br> For resetting the
-     * password, see [How to reset the Remote Desktop service or its login password in a Windows
+     * Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters <br><br>
+     * **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br> **Max-length
+     * (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
+     * <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match
+     * [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
+     * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" <br><br> For resetting the password, see [How
+     * to reset the Remote Desktop service or its login password in a Windows
      * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root
      * password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
      */
-    @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
     /*
      * Specifies Windows operating system settings on the virtual machine.
      */
-    @JsonProperty(value = "osConfiguration")
     private OSConfiguration osConfiguration;
 
-    /** Creates an instance of OSProfile class. */
+    /**
+     * Creates an instance of OSProfile class.
+     */
     public OSProfile() {
     }
 
@@ -58,7 +61,7 @@ public final class OSProfile {
      * "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3",
      * "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1 character &lt;br&gt;&lt;br&gt; **Max-length
      * (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 20 characters.
-     *
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -73,7 +76,7 @@ public final class OSProfile {
      * "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3",
      * "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1 character &lt;br&gt;&lt;br&gt; **Max-length
      * (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 20 characters.
-     *
+     * 
      * @param adminUsername the adminUsername value to set.
      * @return the OSProfile object itself.
      */
@@ -88,13 +91,14 @@ public final class OSProfile {
      * &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 123 characters &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 72
      * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
      * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
-     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt;
-     * For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) &lt;br&gt;&lt;br&gt; For resetting
-     * root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
+     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc&#064;123", "P&#064;$$w0rd",
+     * "P&#064;ssw0rd", "P&#064;ssword123", "Pa$$word", "pass&#064;word1", "Password!", "Password1", "Password22",
+     * "iloveyou!" &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its
+     * login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
+     * Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
-     *
+     * 
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -107,13 +111,14 @@ public final class OSProfile {
      * &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 123 characters &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 72
      * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
      * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
-     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt;
-     * For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) &lt;br&gt;&lt;br&gt; For resetting
-     * root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
+     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc&#064;123", "P&#064;$$w0rd",
+     * "P&#064;ssw0rd", "P&#064;ssword123", "Pa$$word", "pass&#064;word1", "Password!", "Password1", "Password22",
+     * "iloveyou!" &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its
+     * login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
+     * Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
-     *
+     * 
      * @param adminPassword the adminPassword value to set.
      * @return the OSProfile object itself.
      */
@@ -124,7 +129,7 @@ public final class OSProfile {
 
     /**
      * Get the osConfiguration property: Specifies Windows operating system settings on the virtual machine.
-     *
+     * 
      * @return the osConfiguration value.
      */
     public OSConfiguration osConfiguration() {
@@ -133,7 +138,7 @@ public final class OSProfile {
 
     /**
      * Set the osConfiguration property: Specifies Windows operating system settings on the virtual machine.
-     *
+     * 
      * @param osConfiguration the osConfiguration value to set.
      * @return the OSProfile object itself.
      */
@@ -144,12 +149,54 @@ public final class OSProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (osConfiguration() != null) {
             osConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("adminUsername", this.adminUsername);
+        jsonWriter.writeStringField("adminPassword", this.adminPassword);
+        jsonWriter.writeJsonField("osConfiguration", this.osConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSProfile if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the OSProfile.
+     */
+    public static OSProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSProfile deserializedOSProfile = new OSProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("adminUsername".equals(fieldName)) {
+                    deserializedOSProfile.adminUsername = reader.getString();
+                } else if ("adminPassword".equals(fieldName)) {
+                    deserializedOSProfile.adminPassword = reader.getString();
+                } else if ("osConfiguration".equals(fieldName)) {
+                    deserializedOSProfile.osConfiguration = OSConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSProfile;
+        });
     }
 }

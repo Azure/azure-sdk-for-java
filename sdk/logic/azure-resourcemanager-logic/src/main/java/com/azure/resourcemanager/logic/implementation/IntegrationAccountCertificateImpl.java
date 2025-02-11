@@ -13,10 +13,8 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 
-public final class IntegrationAccountCertificateImpl
-    implements IntegrationAccountCertificate,
-        IntegrationAccountCertificate.Definition,
-        IntegrationAccountCertificate.Update {
+public final class IntegrationAccountCertificateImpl implements IntegrationAccountCertificate,
+    IntegrationAccountCertificate.Definition, IntegrationAccountCertificate.Update {
     private IntegrationAccountCertificateInner innerObject;
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
@@ -92,32 +90,28 @@ public final class IntegrationAccountCertificateImpl
 
     private String certificateName;
 
-    public IntegrationAccountCertificateImpl withExistingIntegrationAccount(
-        String resourceGroupName, String integrationAccountName) {
+    public IntegrationAccountCertificateImpl withExistingIntegrationAccount(String resourceGroupName,
+        String integrationAccountName) {
         this.resourceGroupName = resourceGroupName;
         this.integrationAccountName = integrationAccountName;
         return this;
     }
 
     public IntegrationAccountCertificate create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, certificateName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, certificateName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountCertificate create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, certificateName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, certificateName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -132,53 +126,46 @@ public final class IntegrationAccountCertificateImpl
     }
 
     public IntegrationAccountCertificate apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, certificateName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, certificateName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountCertificate apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, certificateName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, certificateName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    IntegrationAccountCertificateImpl(
-        IntegrationAccountCertificateInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    IntegrationAccountCertificateImpl(IntegrationAccountCertificateInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.integrationAccountName = Utils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
-        this.certificateName = Utils.getValueFromIdByName(innerObject.id(), "certificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.integrationAccountName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
+        this.certificateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificates");
     }
 
     public IntegrationAccountCertificate refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountCertificates()
-                .getWithResponse(resourceGroupName, integrationAccountName, certificateName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountCertificates()
+            .getWithResponse(resourceGroupName, integrationAccountName, certificateName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountCertificate refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountCertificates()
-                .getWithResponse(resourceGroupName, integrationAccountName, certificateName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountCertificates()
+            .getWithResponse(resourceGroupName, integrationAccountName, certificateName, context)
+            .getValue();
         return this;
     }
 

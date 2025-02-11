@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for TrunkedNetworks Delete. */
+/**
+ * Samples for TrunkedNetworks Delete.
+ */
 public final class TrunkedNetworksDeleteSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/TrunkedNetworks_Delete.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * TrunkedNetworks_Delete.json
      */
     /**
      * Sample code: Delete trunked network.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void deleteTrunkedNetwork(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {

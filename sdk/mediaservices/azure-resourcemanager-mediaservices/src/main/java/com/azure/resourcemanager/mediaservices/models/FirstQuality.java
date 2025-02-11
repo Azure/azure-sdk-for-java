@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Filter First Quality. */
+/**
+ * Filter First Quality.
+ */
 @Fluent
-public final class FirstQuality {
+public final class FirstQuality implements JsonSerializable<FirstQuality> {
     /*
      * The first quality bitrate.
      */
-    @JsonProperty(value = "bitrate", required = true)
     private int bitrate;
 
-    /** Creates an instance of FirstQuality class. */
+    /**
+     * Creates an instance of FirstQuality class.
+     */
     public FirstQuality() {
     }
 
     /**
      * Get the bitrate property: The first quality bitrate.
-     *
+     * 
      * @return the bitrate value.
      */
     public int bitrate() {
@@ -31,7 +38,7 @@ public final class FirstQuality {
 
     /**
      * Set the bitrate property: The first quality bitrate.
-     *
+     * 
      * @param bitrate the bitrate value to set.
      * @return the FirstQuality object itself.
      */
@@ -42,9 +49,46 @@ public final class FirstQuality {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("bitrate", this.bitrate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirstQuality from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirstQuality if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FirstQuality.
+     */
+    public static FirstQuality fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirstQuality deserializedFirstQuality = new FirstQuality();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bitrate".equals(fieldName)) {
+                    deserializedFirstQuality.bitrate = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirstQuality;
+        });
     }
 }

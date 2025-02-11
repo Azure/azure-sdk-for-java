@@ -31,7 +31,9 @@ public final class DocumentLanguageHelper {
      */
     public interface DocumentLanguageAccessor {
         void setLocale(DocumentLanguage documentLanguage, String locale);
+
         void setSpans(DocumentLanguage documentLanguage, List<DocumentSpan> spans);
+
         void setConfidence(DocumentLanguage documentLanguage, Float confidence);
     }
 

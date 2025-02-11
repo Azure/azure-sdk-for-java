@@ -28,9 +28,12 @@ public final class DeploymentInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentInner model = new DeploymentInner()
-            .withProperties(new DeploymentProperties().withTitle("ihkaetcktvfc").withDescription("fsnkymuctq")
-                .withEnvironmentId("fbebrjcxer").withDefinitionId("wutttxfvjrbi").withState(DeploymentState.INACTIVE)
+        DeploymentInner model
+            = new DeploymentInner().withProperties(new DeploymentProperties().withTitle("ihkaetcktvfc")
+                .withDescription("fsnkymuctq")
+                .withEnvironmentId("fbebrjcxer")
+                .withDefinitionId("wutttxfvjrbi")
+                .withState(DeploymentState.INACTIVE)
                 .withServer(new DeploymentServer().withRuntimeUri(Arrays.asList("c", "vahfn", "jky", "xjvuujqgidokg")))
                 .withCustomProperties("datajyoxgvclt"));
         model = BinaryData.fromObject(model).toObject(DeploymentInner.class);

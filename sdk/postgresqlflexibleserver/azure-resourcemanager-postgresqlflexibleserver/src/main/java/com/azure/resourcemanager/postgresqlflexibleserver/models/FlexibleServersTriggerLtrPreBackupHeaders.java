@@ -7,7 +7,6 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The FlexibleServersTriggerLtrPreBackupHeaders model.
@@ -17,7 +16,6 @@ public final class FlexibleServersTriggerLtrPreBackupHeaders {
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     // HttpHeaders containing the raw property values.

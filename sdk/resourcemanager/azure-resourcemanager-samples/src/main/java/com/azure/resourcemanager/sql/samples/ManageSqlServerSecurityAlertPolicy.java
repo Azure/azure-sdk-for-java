@@ -4,7 +4,7 @@ package com.azure.resourcemanager.sql.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
@@ -47,15 +47,16 @@ public class ManageSqlServerSecurityAlertPolicy {
             // Create a primary SQL Server with a sample database.
             System.out.println("Creating a primary SQL Server with a sample database");
 
-            SqlServer sqlServer = azureResourceManager.sqlServers().define(sqlServerName)
+            SqlServer sqlServer = azureResourceManager.sqlServers()
+                .define(sqlServerName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
                 .withAdministratorPassword(administratorPassword)
                 .defineDatabase(dbName)
-                    .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                    .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                    .attach()
+                .fromSample(SampleName.ADVENTURE_WORKS_LT)
+                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+                .attach()
                 .create();
 
             Utils.print(sqlServer);
@@ -63,7 +64,8 @@ public class ManageSqlServerSecurityAlertPolicy {
             // ============================================================
             // Create an Azure Storage Account and get the storage account blob entry point.
             System.out.println("Creating an Azure Storage Account and a storage account blob");
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(storageAccountName)
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define(storageAccountName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .create();
@@ -73,7 +75,8 @@ public class ManageSqlServerSecurityAlertPolicy {
             // ============================================================
             // Create a Server Security Alert Policy.
             System.out.println("Creating a Server Security Alert Policy");
-            sqlServer.serverSecurityAlertPolicies().define()
+            sqlServer.serverSecurityAlertPolicies()
+                .define()
                 .withState(SecurityAlertPolicyState.ENABLED)
                 .withEmailAccountAdmins()
                 .withStorageEndpoint(blobEntrypoint, accountKey)
@@ -81,12 +84,10 @@ public class ManageSqlServerSecurityAlertPolicy {
                 .withRetentionDays(5)
                 .create();
 
-
             // ============================================================
             // Get the Server Security Alert Policy.
             System.out.println("Getting the Server Security Alert Policy");
             SqlServerSecurityAlertPolicy sqlSecurityAlertPolicy = sqlServer.serverSecurityAlertPolicies().get();
-
 
             // ============================================================
             // Update the Server Security Alert Policy.
@@ -96,7 +97,6 @@ public class ManageSqlServerSecurityAlertPolicy {
                 .withEmailAddresses("testSecurityAlert@contoso.com")
                 .withRetentionDays(1)
                 .apply();
-
 
             // Delete the SQL Servers.
             System.out.println("Deleting the Sql Servers");
@@ -119,13 +119,12 @@ public class ManageSqlServerSecurityAlertPolicy {
      */
     public static void main(String[] args) {
         try {
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

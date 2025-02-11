@@ -58,25 +58,14 @@ import java.util.stream.Collectors;
  * @param <FluentWithCreateT> the definition stage that derives from Creatable
  * @param <FluentUpdateT> The definition stage that derives from Appliable
  */
-abstract class AppServiceBaseImpl<
-        FluentT extends WebAppBase,
-        FluentImplT extends AppServiceBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT>,
-        FluentWithCreateT,
-        FluentUpdateT>
-    extends WebAppBaseImpl<FluentT, FluentImplT>
-    implements
-    SupportsListingPrivateLinkResource,
-    SupportsListingPrivateEndpointConnection,
-    SupportsUpdatingPrivateEndpointConnection {
+abstract class AppServiceBaseImpl<FluentT extends WebAppBase, FluentImplT extends AppServiceBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT>, FluentWithCreateT, FluentUpdateT>
+    extends WebAppBaseImpl<FluentT, FluentImplT> implements SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection, SupportsUpdatingPrivateEndpointConnection {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    AppServiceBaseImpl(
-        String name,
-        SiteInner innerObject,
-        SiteConfigResourceInner siteConfig,
-        SiteLogsConfigInner logConfig,
-        AppServiceManager manager) {
+    AppServiceBaseImpl(String name, SiteInner innerObject, SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig, AppServiceManager manager) {
         super(name, innerObject, siteConfig, logConfig, manager);
     }
 
@@ -102,8 +91,7 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getWebApps()
             .createOrUpdateConfigurationAsync(resourceGroupName(), name(), siteConfig);
@@ -111,7 +99,9 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<Void> deleteHostnameBinding(String hostname) {
-        return this.manager().serviceClient().getWebApps()
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
             .deleteHostnameBindingAsync(resourceGroupName(), name(), hostname);
     }
 
@@ -122,7 +112,9 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<StringDictionaryInner> updateAppSettings(StringDictionaryInner inner) {
-        return this.manager().serviceClient().getWebApps()
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
             .updateApplicationSettingsAsync(resourceGroupName(), name(), inner);
     }
 
@@ -133,7 +125,9 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<ConnectionStringDictionaryInner> updateConnectionStrings(ConnectionStringDictionaryInner inner) {
-        return this.manager().serviceClient().getWebApps()
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
             .updateConnectionStringsAsync(resourceGroupName(), name(), inner);
     }
 
@@ -144,13 +138,17 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner) {
-        return this.manager().serviceClient().getWebApps()
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
             .updateSlotConfigurationNamesAsync(resourceGroupName(), name(), inner);
     }
 
     @Override
     Mono<SiteSourceControlInner> createOrUpdateSourceControl(SiteSourceControlInner inner) {
-        return this.manager().serviceClient().getWebApps()
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
             .createOrUpdateSourceControlAsync(resourceGroupName(), name(), inner);
     }
 
@@ -177,25 +175,13 @@ abstract class AppServiceBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public Mono<Map<String, HostnameBinding>> getHostnameBindingsAsync() {
-        return PagedConverter.mapPage(this
-            .manager()
-            .serviceClient()
-            .getWebApps()
-            .listHostnameBindingsAsync(resourceGroupName(), name()),
-                hostNameBindingInner ->
-                    new HostnameBindingImpl<>(hostNameBindingInner, (FluentImplT) AppServiceBaseImpl.this))
+        return PagedConverter
+            .mapPage(this.manager().serviceClient().getWebApps().listHostnameBindingsAsync(resourceGroupName(), name()),
+                hostNameBindingInner -> new HostnameBindingImpl<>(hostNameBindingInner,
+                    (FluentImplT) AppServiceBaseImpl.this))
             .collectList()
-            .map(
-                hostNameBindings ->
-                    Collections
-                        .<String, HostnameBinding>unmodifiableMap(
-                            hostNameBindings
-                                .stream()
-                                .collect(
-                                    Collectors
-                                        .toMap(
-                                            binding -> binding.name().replace(name() + "/", ""),
-                                            Function.identity()))));
+            .map(hostNameBindings -> Collections.<String, HostnameBinding>unmodifiableMap(hostNameBindings.stream()
+                .collect(Collectors.toMap(binding -> binding.name().replace(name() + "/", ""), Function.identity()))));
     }
 
     @Override
@@ -204,8 +190,7 @@ abstract class AppServiceBaseImpl<
     }
 
     public Mono<PublishingProfile> getPublishingProfileAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .listPublishingProfileXmlWithSecretsAsync(resourceGroupName(), name(), new CsmPublishingProfileOptions())
             .map(binaryData -> new PublishingProfileImpl(binaryData.toString(), this));
@@ -218,18 +203,17 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<WebAppSourceControl> getSourceControlAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .getSourceControlAsync(resourceGroupName(), name())
-            .map(
-                siteSourceControlInner ->
-                    new WebAppSourceControlImpl<>(siteSourceControlInner, AppServiceBaseImpl.this));
+            .map(siteSourceControlInner -> new WebAppSourceControlImpl<>(siteSourceControlInner,
+                AppServiceBaseImpl.this));
     }
 
     @Override
     Mono<MSDeployStatusInner> createMSDeploy(MSDeploy msDeployInner) {
-        return manager().serviceClient().getWebApps()
+        return manager().serviceClient()
+            .getWebApps()
             .createMSDeployOperationAsync(resourceGroupName(), name(), msDeployInner);
     }
 
@@ -241,12 +225,11 @@ abstract class AppServiceBaseImpl<
     @Override
     public Mono<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
         IdentifierInner identifierInner = new IdentifierInner().withValue(domainVerificationToken);
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getWebApps()
-            .createOrUpdateDomainOwnershipIdentifierAsync(
-                resourceGroupName(), name(), certificateOrderName, identifierInner)
+            .createOrUpdateDomainOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName,
+                identifierInner)
             .then(Mono.empty());
     }
 
@@ -257,8 +240,7 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> startAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .startAsync(resourceGroupName(), name())
             .then(refreshAsync())
@@ -272,8 +254,7 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> stopAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .stopAsync(resourceGroupName(), name())
             .then(refreshAsync())
@@ -287,8 +268,7 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> restartAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .restartAsync(resourceGroupName(), name())
             .then(refreshAsync())
@@ -302,8 +282,7 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> swapAsync(String slotName) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .swapSlotWithProductionAsync(resourceGroupName(), name(), new CsmSlotEntity().withTargetSlot(slotName))
             .then(refreshAsync())
@@ -317,8 +296,7 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> applySlotConfigurationsAsync(String slotName) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .applySlotConfigToProductionAsync(resourceGroupName(), name(), new CsmSlotEntity().withTargetSlot(slotName))
             .then(refreshAsync())
@@ -332,8 +310,7 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> resetSlotConfigurationsAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .resetProductionSlotConfigAsync(resourceGroupName(), name())
             .then(refreshAsync())
@@ -347,7 +324,9 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<byte[]> getContainerLogsAsync() {
-        return manager().serviceClient().getWebApps().getWebSiteContainerLogsAsync(resourceGroupName(), name())
+        return manager().serviceClient()
+            .getWebApps()
+            .getWebSiteContainerLogsAsync(resourceGroupName(), name())
             .map(BinaryData::toBytes);
     }
 
@@ -358,14 +337,15 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<byte[]> getContainerLogsZipAsync() {
-        return manager().serviceClient().getWebApps().getContainerLogsZipAsync(resourceGroupName(), name())
+        return manager().serviceClient()
+            .getWebApps()
+            .getContainerLogsZipAsync(resourceGroupName(), name())
             .map(BinaryData::toBytes);
     }
 
     @Override
     Mono<SiteLogsConfigInner> updateDiagnosticLogsConfig(SiteLogsConfigInner siteLogsConfigInner) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .updateDiagnosticLogsConfigAsync(resourceGroupName(), name(), siteLogsConfigInner);
     }
@@ -376,8 +356,9 @@ abstract class AppServiceBaseImpl<
     }
 
     private AppServicePlanImpl newDefaultAppServicePlan(String appServicePlanName) {
-        AppServicePlanImpl appServicePlan =
-            (AppServicePlanImpl) (this.manager().appServicePlans().define(appServicePlanName)).withRegion(regionName());
+        AppServicePlanImpl appServicePlan
+            = (AppServicePlanImpl) (this.manager().appServicePlans().define(appServicePlanName))
+                .withRegion(regionName());
         if (super.creatableGroup != null && isInCreateMode()) {
             appServicePlan = appServicePlan.withNewResourceGroup(super.creatableGroup);
         } else {
@@ -399,12 +380,10 @@ abstract class AppServiceBaseImpl<
             newDefaultAppServicePlan().withOperatingSystem(operatingSystem).withPricingTier(pricingTier));
     }
 
-    FluentImplT withNewAppServicePlan(
-        String appServicePlanName, OperatingSystem operatingSystem, PricingTier pricingTier) {
-        return withNewAppServicePlan(
-            newDefaultAppServicePlan(appServicePlanName)
-                .withOperatingSystem(operatingSystem)
-                .withPricingTier(pricingTier));
+    FluentImplT withNewAppServicePlan(String appServicePlanName, OperatingSystem operatingSystem,
+        PricingTier pricingTier) {
+        return withNewAppServicePlan(newDefaultAppServicePlan(appServicePlanName).withOperatingSystem(operatingSystem)
+            .withPricingTier(pricingTier));
     }
 
     public FluentImplT withNewAppServicePlan(PricingTier pricingTier) {
@@ -417,15 +396,8 @@ abstract class AppServiceBaseImpl<
 
     public FluentImplT withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable) {
         this.addDependency(appServicePlanCreatable);
-        String id =
-            ResourceUtils
-                .constructResourceId(
-                    this.manager().subscriptionId(),
-                    resourceGroupName(),
-                    "Microsoft.Web",
-                    "serverFarms",
-                    appServicePlanCreatable.name(),
-                    "");
+        String id = ResourceUtils.constructResourceId(this.manager().subscriptionId(), resourceGroupName(),
+            "Microsoft.Web", "serverFarms", appServicePlanCreatable.name(), "");
         innerModel().withServerFarmId(id);
         if (appServicePlanCreatable instanceof AppServicePlanImpl) {
             return withOperatingSystem(((AppServicePlanImpl) appServicePlanCreatable).operatingSystem());
@@ -506,11 +478,12 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
-        Mono<Response<List<PrivateLinkResource>>> retList = this.manager().serviceClient().getWebApps()
+        Mono<Response<List<PrivateLinkResource>>> retList = this.manager()
+            .serviceClient()
+            .getWebApps()
             .getPrivateLinkResourcesWithResponseAsync(this.resourceGroupName(), this.name())
-            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
-                .map(PrivateLinkResourceImpl::new)
-                .collect(Collectors.toList())));
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue().value().stream().map(PrivateLinkResourceImpl::new).collect(Collectors.toList())));
 
         return PagedConverter.convertListToPagedFlux(retList);
     }
@@ -522,8 +495,11 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getWebApps()
-            .getPrivateEndpointConnectionListAsync(this.resourceGroupName(), this.name()),
+        return PagedConverter.mapPage(
+            this.manager()
+                .serviceClient()
+                .getWebApps()
+                .getPrivateEndpointConnectionListAsync(this.resourceGroupName(), this.name()),
             PrivateEndpointConnectionImpl::new);
     }
 
@@ -534,13 +510,14 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return this.manager().serviceClient().getWebApps()
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
             .approveOrRejectPrivateEndpointConnectionAsync(this.resourceGroupName(), this.name(),
                 privateEndpointConnectionName,
-                new RemotePrivateEndpointConnectionArmResourceInner().withPrivateLinkServiceConnectionState(
-                    new PrivateLinkConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED.toString())
-                ))
+                new RemotePrivateEndpointConnectionArmResourceInner()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED.toString())))
             .then();
     }
 
@@ -551,13 +528,14 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return this.manager().serviceClient().getWebApps()
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
             .approveOrRejectPrivateEndpointConnectionAsync(this.resourceGroupName(), this.name(),
                 privateEndpointConnectionName,
-                new RemotePrivateEndpointConnectionArmResourceInner().withPrivateLinkServiceConnectionState(
-                    new PrivateLinkConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED.toString())
-                ))
+                new RemotePrivateEndpointConnectionArmResourceInner()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED.toString())))
             .then();
     }
 }

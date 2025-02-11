@@ -293,8 +293,8 @@ public final class QueueServiceSasSignatureValues {
      * after initializing {@link QueueServiceSasSignatureValues}.
      */
     @Deprecated
-    public QueueServiceSasQueryParameters generateSasQueryParameters(
-        StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public QueueServiceSasQueryParameters
+        generateSasQueryParameters(StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         // Signature is generated on the un-url-encoded values.

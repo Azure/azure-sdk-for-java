@@ -4,53 +4,58 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DscNodeConfiguration ListByAutomationAccount. */
+/**
+ * Samples for DscNodeConfiguration ListByAutomationAccount.
+ */
 public final class DscNodeConfigurationListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodeConfigurationsWithNoFilter.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodeConfigurationsWithNoFilter.json
      */
     /**
      * Sample code: List Paged DSC node configurations by Automation Account with no filter.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listPagedDSCNodeConfigurationsByAutomationAccountWithNoFilter(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodeConfigurations()
-            .listByAutomationAccount("rg", "myAutomationAccount33", null, 0, 4, "allpages", Context.NONE);
+        manager.dscNodeConfigurations()
+            .listByAutomationAccount("rg", "myAutomationAccount33", null, 0, 4, "allpages",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listDscNodeConfigurations.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listDscNodeConfigurations.json
      */
     /**
      * Sample code: List DSC node configurations by Automation Account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listDSCNodeConfigurationsByAutomationAccount(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodeConfigurations()
-            .listByAutomationAccount("rg", "myAutomationAccount33", null, null, null, null, Context.NONE);
+    public static void
+        listDSCNodeConfigurationsByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.dscNodeConfigurations()
+            .listByAutomationAccount("rg", "myAutomationAccount33", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodeConfigurationsWithNameFilter.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodeConfigurationsWithNameFilter.json
      */
     /**
      * Sample code: List Paged DSC node configurations by Automation Account with name filter.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listPagedDSCNodeConfigurationsByAutomationAccountWithNameFilter(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodeConfigurations()
-            .listByAutomationAccount(
-                "rg", "myAutomationAccount33", "contains('.localhost',name)", 0, 2, "allpages", Context.NONE);
+        manager.dscNodeConfigurations()
+            .listByAutomationAccount("rg", "myAutomationAccount33", "contains('.localhost',name)", 0, 2, "allpages",
+                com.azure.core.util.Context.NONE);
     }
 }

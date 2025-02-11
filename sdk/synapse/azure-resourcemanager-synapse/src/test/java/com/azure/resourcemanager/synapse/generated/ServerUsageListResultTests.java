@@ -12,24 +12,15 @@ import java.util.Arrays;
 public final class ServerUsageListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerUsageListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"tdhlfkqo\",\"resourceName\":\"ykvgtrdcnifmz\",\"displayName\":\"dymbrny\",\"currentValue\":46.451447996054554,\"limit\":83.52714933447804,\"unit\":\"wgck\",\"nextResetTime\":\"2021-10-29T18:48:32Z\"},{\"name\":\"vdff\",\"resourceName\":\"afqr\",\"displayName\":\"daspavehhrvk\",\"currentValue\":1.1838483598822447,\"limit\":42.47072653885069,\"unit\":\"hcxgkmoyx\",\"nextResetTime\":\"2021-01-10T03:49:41Z\"},{\"name\":\"ibhmfdn\",\"resourceName\":\"ydvfvfcjnae\",\"displayName\":\"srvhmgorffuki\",\"currentValue\":94.64225623949771,\"limit\":84.35615092688725,\"unit\":\"plef\",\"nextResetTime\":\"2021-07-03T18:39:05Z\"},{\"name\":\"ilcbtgnhnzeyqxtj\",\"resourceName\":\"zqlqhyc\",\"displayName\":\"odggx\",\"currentValue\":8.822766264266713,\"limit\":65.97138391291614,\"unit\":\"knlrariaawiuagy\",\"nextResetTime\":\"2021-09-15T12:14:34Z\"}],\"nextLink\":\"bylyrfgia\"}")
-                .toObject(ServerUsageListResult.class);
+        ServerUsageListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"pdfgkmtdherngbt\",\"resourceName\":\"uahokq\",\"displayName\":\"bkau\",\"currentValue\":33.28571037343065,\"limit\":37.56433108394144,\"unit\":\"wpnulaiywzejyw\",\"nextResetTime\":\"2021-06-24T13:04:54Z\"},{\"name\":\"koj\",\"resourceName\":\"l\",\"displayName\":\"npdwr\",\"currentValue\":54.92209371720976,\"limit\":86.45776975178757,\"unit\":\"snnfhyetefyp\",\"nextResetTime\":\"2021-08-10T19:55:02Z\"}],\"nextLink\":\"tfjgt\"}")
+            .toObject(ServerUsageListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerUsageListResult model =
-            new ServerUsageListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ServerUsageInner(),
-                            new ServerUsageInner(),
-                            new ServerUsageInner(),
-                            new ServerUsageInner()));
+        ServerUsageListResult model
+            = new ServerUsageListResult().withValue(Arrays.asList(new ServerUsageInner(), new ServerUsageInner()));
         model = BinaryData.fromObject(model).toObject(ServerUsageListResult.class);
     }
 }

@@ -3165,7 +3165,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String backupName, CopyLongTermRetentionBackupParameters parameters) {
         return beginCopyByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName,
             longTermRetentionDatabaseName, backupName, parameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3190,7 +3190,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String backupName, CopyLongTermRetentionBackupParameters parameters, Context context) {
         return beginCopyByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName,
             longTermRetentionDatabaseName, backupName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3494,7 +3494,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String backupName, UpdateLongTermRetentionBackupParameters parameters) {
         return beginUpdateByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName,
             longTermRetentionDatabaseName, backupName, parameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3519,7 +3519,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String backupName, UpdateLongTermRetentionBackupParameters parameters, Context context) {
         return beginUpdateByResourceGroupAsync(resourceGroupName, locationName, longTermRetentionServerName,
             longTermRetentionDatabaseName, backupName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

@@ -26,7 +26,8 @@ public final class SiteInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SiteInner model = new SiteInner().withLocation("ubkwdle").withTags(mapOf("pjuohminyfl", "sutujba"))
+        SiteInner model = new SiteInner().withLocation("ubkwdle")
+            .withTags(mapOf("pjuohminyfl", "sutujba"))
             .withProperties(new SitePropertiesFormat().withNfvis(Arrays.asList(new NfvIs().withName("uaadraufactkahzo"),
                 new NfvIs().withName("jjziuxxpsh"), new NfvIs().withName("e"))));
         model = BinaryData.fromObject(model).toObject(SiteInner.class);

@@ -25,13 +25,17 @@ public final class ArtifactManifestPropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArtifactManifestPropertiesFormat model = new ArtifactManifestPropertiesFormat().withArtifacts(Arrays.asList(
-            new ManifestArtifactFormat().withArtifactName("rykqgaifmvikl").withArtifactType(ArtifactType.ARM_TEMPLATE)
+            new ManifestArtifactFormat().withArtifactName("rykqgaifmvikl")
+                .withArtifactType(ArtifactType.ARM_TEMPLATE)
                 .withArtifactVersion("khbejdznxc"),
-            new ManifestArtifactFormat().withArtifactName("srhnjivo").withArtifactType(ArtifactType.IMAGE_FILE)
+            new ManifestArtifactFormat().withArtifactName("srhnjivo")
+                .withArtifactType(ArtifactType.IMAGE_FILE)
                 .withArtifactVersion("ovqfzge"),
-            new ManifestArtifactFormat().withArtifactName("dftuljltduce").withArtifactType(ArtifactType.ARM_TEMPLATE)
+            new ManifestArtifactFormat().withArtifactName("dftuljltduce")
+                .withArtifactType(ArtifactType.ARM_TEMPLATE)
                 .withArtifactVersion("czu"),
-            new ManifestArtifactFormat().withArtifactName("ejwcwwqiok").withArtifactType(ArtifactType.OCIARTIFACT)
+            new ManifestArtifactFormat().withArtifactName("ejwcwwqiok")
+                .withArtifactType(ArtifactType.OCIARTIFACT)
                 .withArtifactVersion("mojmsvpkjprvkw")));
         model = BinaryData.fromObject(model).toObject(ArtifactManifestPropertiesFormat.class);
         Assertions.assertEquals("rykqgaifmvikl", model.artifacts().get(0).artifactName());

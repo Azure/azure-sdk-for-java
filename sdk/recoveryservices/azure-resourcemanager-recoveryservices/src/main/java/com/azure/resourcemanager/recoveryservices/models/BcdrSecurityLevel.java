@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class BcdrSecurityLevel extends ExpandableStringEnum<BcdrSecurityLe
      * @param name a name to look for.
      * @return the corresponding BcdrSecurityLevel.
      */
-    @JsonCreator
     public static BcdrSecurityLevel fromString(String name) {
         return fromString(name, BcdrSecurityLevel.class);
     }

@@ -88,8 +88,8 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
     }
 
     private MsiManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(httpPipeline, profile, new ManagedServiceIdentityClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new ManagedServiceIdentityClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
@@ -97,6 +97,8 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
     }
 
     /**
+     * Gets entry point to Azure MSI Identity resource management API.
+     *
      * @return entry point to Azure MSI Identity resource management API
      */
     public Identities identities() {
@@ -107,6 +109,8 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
     }
 
     /**
+     * Gets the authorization manager.
+     *
      * @return the authorization manager.
      */
     public AuthorizationManager authorizationManager() {

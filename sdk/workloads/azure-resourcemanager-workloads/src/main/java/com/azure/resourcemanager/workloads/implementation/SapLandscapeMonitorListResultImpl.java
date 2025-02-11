@@ -17,8 +17,7 @@ public final class SapLandscapeMonitorListResultImpl implements SapLandscapeMoni
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    SapLandscapeMonitorListResultImpl(
-        SapLandscapeMonitorListResultInner innerObject,
+    SapLandscapeMonitorListResultImpl(SapLandscapeMonitorListResultInner innerObject,
         com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class SapLandscapeMonitorListResultImpl implements SapLandscapeMoni
     public List<SapLandscapeMonitor> value() {
         List<SapLandscapeMonitorInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new SapLandscapeMonitorImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new SapLandscapeMonitorImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

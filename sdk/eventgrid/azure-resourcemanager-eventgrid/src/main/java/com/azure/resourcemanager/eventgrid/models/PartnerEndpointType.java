@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class PartnerEndpointType extends ExpandableStringEnum<PartnerEndpo
      * @param name a name to look for.
      * @return the corresponding PartnerEndpointType.
      */
-    @JsonCreator
     public static PartnerEndpointType fromString(String name) {
         return fromString(name, PartnerEndpointType.class);
     }

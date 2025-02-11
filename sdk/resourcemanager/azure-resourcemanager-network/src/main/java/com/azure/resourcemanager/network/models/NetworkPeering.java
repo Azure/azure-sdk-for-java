@@ -16,29 +16,44 @@ import reactor.core.publisher.Mono;
 
 /** An client-side representation of a network peering. */
 @Fluent()
-public interface NetworkPeering
-    extends IndependentChild<NetworkManager>,
-        HasInnerModel<VirtualNetworkPeeringInner>,
-        Refreshable<NetworkPeering>,
-        Updatable<NetworkPeering.Update> {
+public interface NetworkPeering extends IndependentChild<NetworkManager>, HasInnerModel<VirtualNetworkPeeringInner>,
+    Refreshable<NetworkPeering>, Updatable<NetworkPeering.Update> {
 
-    /** @return the local virtual network's ID */
+    /**
+     * Gets the local virtual network's ID.
+     *
+     * @return the local virtual network's ID
+     */
     String networkId();
 
-    /** @return the reference of the remote virtual network address space */
+    /**
+     * Gets the reference of the remote virtual network address space.
+     *
+     * @return the reference of the remote virtual network address space
+     */
     List<String> remoteAddressSpaces();
 
     /**
+     * Checks whether the peering enables IP addresses within the peered networks to be accessible from both networks.
+     *
      * @return true if the peering enables IP addresses within the peered networks to be accessible from both networks,
      *     otherwise false
      *     <p>(Note this method makes a separate call to Azure.)
      */
     boolean checkAccessBetweenNetworks();
 
-    /** @return the associated remote virtual network's ID */
+    /**
+     * Gets the associated remote virtual network's ID.
+     *
+     * @return the associated remote virtual network's ID
+     */
     String remoteNetworkId();
 
-    /** @return the remote network if it is in the same subscription, otherwise null. */
+    /**
+     * Gets the remote network.
+     *
+     * @return the remote network if it is in the same subscription, otherwise null.
+     */
     Network getRemoteNetwork();
 
     /**
@@ -49,6 +64,8 @@ public interface NetworkPeering
     Mono<Network> getRemoteNetworkAsync();
 
     /**
+     * Gets the associated matching peering on the remote network.
+     *
      * @return the associated matching peering on the remote network if it is in the same subscription, otherwise this
      *     future computation will evaluate to null.
      */
@@ -61,16 +78,32 @@ public interface NetworkPeering
      */
     Mono<NetworkPeering> getRemotePeeringAsync();
 
-    /** @return the state of the peering between the two networks */
+    /**
+     * Gets the state of the peering between the two networks.
+     *
+     * @return the state of the peering between the two networks
+     */
     VirtualNetworkPeeringState state();
 
-    /** @return the type of gateway use enabled for this network */
+    /**
+     * Gets the type of gateway use enabled for this network.
+     *
+     * @return the type of gateway use enabled for this network
+     */
     NetworkPeeringGatewayUse gatewayUse();
 
-    /** @return true if traffic forwarding from the remote network is allowed into this network */
+    /**
+     * Checks whether traffic forwarding from the remote network is allowed into this network.
+     *
+     * @return true if traffic forwarding from the remote network is allowed into this network
+     */
     boolean isTrafficForwardingFromRemoteNetworkAllowed();
 
-    /** @return true if the peered networks are in the same subscription, otherwise false */
+    /**
+     * Checks whether the peered networks are in the same subscription.
+     *
+     * @return true if the peered networks are in the same subscription, otherwise false
+     */
     boolean isSameSubscription();
 
     /** Grouping of all the network peering definition stages. */
@@ -226,11 +259,8 @@ public interface NetworkPeering
     }
 
     /** The template for a network peering update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<NetworkPeering>,
-            UpdateStages.WithTrafficForwarding,
-            UpdateStages.WithAccess,
-            UpdateStages.WithGatewayUse {
+    interface Update extends Appliable<NetworkPeering>, UpdateStages.WithTrafficForwarding, UpdateStages.WithAccess,
+        UpdateStages.WithGatewayUse {
     }
 
     /** Grouping of all the network peering update stages. */

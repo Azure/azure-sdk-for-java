@@ -19,7 +19,8 @@ public final class ProxyArtifactGetSamples {
      * @param manager Entry point to HybridNetworkManager.
      */
     public static void getAnArtifactOverview(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.proxyArtifacts().get("TestResourceGroup", "TestPublisher", "TestArtifactStoreName", "fedrbac",
-            com.azure.core.util.Context.NONE);
+        manager.proxyArtifacts()
+            .get("TestResourceGroup", "TestPublisher", "TestArtifactStoreName", "fedrbac",
+                com.azure.core.util.Context.NONE);
     }
 }

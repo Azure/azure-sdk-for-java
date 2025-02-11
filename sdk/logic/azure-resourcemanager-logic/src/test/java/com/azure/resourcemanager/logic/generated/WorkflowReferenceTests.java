@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowReference model =
-            BinaryData
-                .fromString("{\"id\":\"pnqbqqwxrjfe\",\"name\":\"lnwsubisn\",\"type\":\"mpmngnzscxaqwoo\"}")
-                .toObject(WorkflowReference.class);
-        Assertions.assertEquals("pnqbqqwxrjfe", model.id());
+        WorkflowReference model = BinaryData.fromString("{\"id\":\"z\",\"name\":\"hzxct\",\"type\":\"gbkdmoizpos\"}")
+            .toObject(WorkflowReference.class);
+        Assertions.assertEquals("z", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowReference model = new WorkflowReference().withId("pnqbqqwxrjfe");
+        WorkflowReference model = new WorkflowReference().withId("z");
         model = BinaryData.fromObject(model).toObject(WorkflowReference.class);
-        Assertions.assertEquals("pnqbqqwxrjfe", model.id());
+        Assertions.assertEquals("z", model.id());
     }
 }

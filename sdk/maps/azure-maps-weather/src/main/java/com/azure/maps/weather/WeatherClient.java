@@ -822,8 +822,9 @@ public final class WeatherClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DailyIndicesResult> getDailyIndicesWithResponse(GeoPosition position, String language,
         Integer duration, Integer indexId, Integer indexGroupId, Context context) {
-        return this.asyncClient.getDailyIndicesWithResponse(position, language, duration, indexId, indexGroupId,
-            context).block();
+        return this.asyncClient
+            .getDailyIndicesWithResponse(position, language, duration, indexId, indexGroupId, context)
+            .block();
     }
 
     /**
@@ -1309,8 +1310,9 @@ public final class WeatherClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AirQualityResult> getAirQualityHourlyForecastsWithResponse(GeoPosition position, String language,
         HourlyDuration duration, Boolean includePollutantDetails, Context context) {
-        return this.asyncClient.getAirQualityHourlyForecastsWithResponse(position, language, duration,
-            includePollutantDetails, context).block();
+        return this.asyncClient
+            .getAirQualityHourlyForecastsWithResponse(position, language, duration, includePollutantDetails, context)
+            .block();
     }
 
     /**

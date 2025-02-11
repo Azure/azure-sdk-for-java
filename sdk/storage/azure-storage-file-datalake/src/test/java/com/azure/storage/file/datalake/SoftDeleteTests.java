@@ -93,8 +93,12 @@ public class SoftDeleteTests extends DataLakeTestBase {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @ParameterizedTest
-    @ValueSource(strings = {"!'();[]@&%=+\\$,#äÄöÖüÜß;", "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B",
-        " my cool directory ", "directory"})
+    @ValueSource(
+        strings = {
+            "!'();[]@&%=+\\$,#äÄöÖüÜß;",
+            "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B",
+            " my cool directory ",
+            "directory" })
     public void restorePathSpecialCharacters(String name) {
         DataLakeDirectoryClient dir = fileSystemClient.getDirectoryClient("dir" + name);
         dir.create();
@@ -109,8 +113,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
         String dirDeletionId = paths.next().getDeletionId();
         String fileDeletionId = paths.next().getDeletionId();
 
-        DataLakePathClient returnedClient = fileSystemClient.undeletePath(dir.getDirectoryName(),
-            dirDeletionId);
+        DataLakePathClient returnedClient = fileSystemClient.undeletePath(dir.getDirectoryName(), dirDeletionId);
 
         assertInstanceOf(DataLakeDirectoryClient.class, returnedClient);
         assertNotNull(dir.getProperties());
@@ -144,7 +147,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
         fc3.create();
         fc3.delete();
 
-        for (PagedResponse<PathDeletedItem > page : fileSystemClient.listDeletedPaths().iterableByPage(1)) {
+        for (PagedResponse<PathDeletedItem> page : fileSystemClient.listDeletedPaths().iterableByPage(1)) {
             assertEquals(1, page.getValue().size());
         }
     }
@@ -170,7 +173,8 @@ public class SoftDeleteTests extends DataLakeTestBase {
         fc2.delete();
 
         List<PathDeletedItem> deletedFiles = fileSystemClient.listDeletedPaths(dir.getDirectoryName(), null, null)
-            .stream().collect(Collectors.toList());
+            .stream()
+            .collect(Collectors.toList());
 
         assertEquals(1, deletedFiles.size());
         assertFalse(deletedFiles.get(0).isPrefix());

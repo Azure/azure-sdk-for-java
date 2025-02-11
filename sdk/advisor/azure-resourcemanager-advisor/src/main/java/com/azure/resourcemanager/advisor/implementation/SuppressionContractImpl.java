@@ -14,8 +14,8 @@ public final class SuppressionContractImpl implements SuppressionContract, Suppr
 
     private final com.azure.resourcemanager.advisor.AdvisorManager serviceManager;
 
-    SuppressionContractImpl(
-        SuppressionContractInner innerObject, com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
+    SuppressionContractImpl(SuppressionContractInner innerObject,
+        com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -65,22 +65,18 @@ public final class SuppressionContractImpl implements SuppressionContract, Suppr
     }
 
     public SuppressionContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSuppressions()
-                .createWithResponse(resourceUri, recommendationId, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSuppressions()
+            .createWithResponse(resourceUri, recommendationId, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SuppressionContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSuppressions()
-                .createWithResponse(resourceUri, recommendationId, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSuppressions()
+            .createWithResponse(resourceUri, recommendationId, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -91,22 +87,18 @@ public final class SuppressionContractImpl implements SuppressionContract, Suppr
     }
 
     public SuppressionContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSuppressions()
-                .getWithResponse(resourceUri, recommendationId, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSuppressions()
+            .getWithResponse(resourceUri, recommendationId, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SuppressionContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSuppressions()
-                .getWithResponse(resourceUri, recommendationId, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSuppressions()
+            .getWithResponse(resourceUri, recommendationId, name, context)
+            .getValue();
         return this;
     }
 

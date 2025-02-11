@@ -18,8 +18,8 @@ public final class RunbookDraftImpl implements RunbookDraft {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    RunbookDraftImpl(
-        RunbookDraftInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    RunbookDraftImpl(RunbookDraftInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

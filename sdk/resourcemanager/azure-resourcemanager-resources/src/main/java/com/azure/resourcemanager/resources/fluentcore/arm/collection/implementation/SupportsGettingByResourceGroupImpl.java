@@ -14,15 +14,12 @@ import reactor.core.publisher.Mono;
  *
  * @param <T> the type of the resource to get.
  */
-public abstract class SupportsGettingByResourceGroupImpl<T>
-        extends SupportsGettingByIdImpl<T>
-        implements
-        SupportsGettingByResourceGroup<T> {
+public abstract class SupportsGettingByResourceGroupImpl<T> extends SupportsGettingByIdImpl<T>
+    implements SupportsGettingByResourceGroup<T> {
     @Override
     public T getByResourceGroup(String resourceGroupName, String name) {
         return this.getByResourceGroupAsync(resourceGroupName, name).block();
     }
-
 
     @Override
     public Mono<T> getByIdAsync(String id) {

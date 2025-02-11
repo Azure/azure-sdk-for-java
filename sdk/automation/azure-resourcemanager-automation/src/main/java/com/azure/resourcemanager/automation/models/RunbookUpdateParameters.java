@@ -5,42 +5,48 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.RunbookUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters supplied to the update runbook operation. */
+/**
+ * The parameters supplied to the update runbook operation.
+ */
 @Fluent
-public final class RunbookUpdateParameters {
+public final class RunbookUpdateParameters implements JsonSerializable<RunbookUpdateParameters> {
     /*
      * Gets or sets the runbook update properties.
      */
-    @JsonProperty(value = "properties")
     private RunbookUpdateProperties innerProperties;
 
     /*
      * Gets or sets the name of the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the location of the resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Gets or sets the tags attached to the resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of RunbookUpdateParameters class.
+     */
+    public RunbookUpdateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Gets or sets the runbook update properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RunbookUpdateProperties innerProperties() {
@@ -49,7 +55,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Get the name property: Gets or sets the name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +64,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Set the name property: Gets or sets the name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the RunbookUpdateParameters object itself.
      */
@@ -69,7 +75,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Get the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -78,7 +84,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Set the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the RunbookUpdateParameters object itself.
      */
@@ -89,7 +95,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Get the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -98,7 +104,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Set the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the RunbookUpdateParameters object itself.
      */
@@ -109,7 +115,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Get the description property: Gets or sets the description of the runbook.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -118,7 +124,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Set the description property: Gets or sets the description of the runbook.
-     *
+     * 
      * @param description the description value to set.
      * @return the RunbookUpdateParameters object itself.
      */
@@ -132,7 +138,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Get the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @return the logVerbose value.
      */
     public Boolean logVerbose() {
@@ -141,7 +147,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Set the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @param logVerbose the logVerbose value to set.
      * @return the RunbookUpdateParameters object itself.
      */
@@ -155,7 +161,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Get the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @return the logProgress value.
      */
     public Boolean logProgress() {
@@ -164,7 +170,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Set the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @param logProgress the logProgress value to set.
      * @return the RunbookUpdateParameters object itself.
      */
@@ -178,7 +184,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Get the logActivityTrace property: Gets or sets the activity-level tracing options of the runbook.
-     *
+     * 
      * @return the logActivityTrace value.
      */
     public Integer logActivityTrace() {
@@ -187,7 +193,7 @@ public final class RunbookUpdateParameters {
 
     /**
      * Set the logActivityTrace property: Gets or sets the activity-level tracing options of the runbook.
-     *
+     * 
      * @param logActivityTrace the logActivityTrace value to set.
      * @return the RunbookUpdateParameters object itself.
      */
@@ -201,12 +207,58 @@ public final class RunbookUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunbookUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunbookUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunbookUpdateParameters.
+     */
+    public static RunbookUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunbookUpdateParameters deserializedRunbookUpdateParameters = new RunbookUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedRunbookUpdateParameters.innerProperties = RunbookUpdateProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedRunbookUpdateParameters.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRunbookUpdateParameters.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRunbookUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunbookUpdateParameters;
+        });
     }
 }

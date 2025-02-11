@@ -4,41 +4,43 @@
 
 package com.azure.resourcemanager.hybridconnectivity.generated;
 
-/** Samples for Endpoints Get. */
+/**
+ * Samples for Endpoints Get.
+ */
 public final class EndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/EndpointsGetDefault.json
+     * x-ms-original-file:
+     * specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/
+     * EndpointsGetDefault.json
      */
     /**
      * Sample code: HybridConnectivityEndpointsGetDefault.
-     *
+     * 
      * @param manager Entry point to HybridConnectivityManager.
      */
     public static void hybridConnectivityEndpointsGetDefault(
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager manager) {
-        manager
-            .endpoints()
+        manager.endpoints()
             .getWithResponse(
                 "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine",
-                "default",
-                com.azure.core.util.Context.NONE);
+                "default", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/EndpointsGetCustom.json
+     * x-ms-original-file:
+     * specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/
+     * EndpointsGetCustom.json
      */
     /**
      * Sample code: HybridConnectivityEndpointsGetCustom.
-     *
+     * 
      * @param manager Entry point to HybridConnectivityManager.
      */
     public static void hybridConnectivityEndpointsGetCustom(
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager manager) {
-        manager
-            .endpoints()
+        manager.endpoints()
             .getWithResponse(
                 "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine",
-                "custom",
-                com.azure.core.util.Context.NONE);
+                "custom", com.azure.core.util.Context.NONE);
     }
 }

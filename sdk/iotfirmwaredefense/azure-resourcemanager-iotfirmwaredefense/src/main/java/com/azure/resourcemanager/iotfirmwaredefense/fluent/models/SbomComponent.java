@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.iotfirmwaredefense.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * SBOM component of a firmware.
  */
 @Fluent
-public final class SbomComponent {
+public final class SbomComponent implements JsonSerializable<SbomComponent> {
     /*
      * ID for the component.
      */
-    @JsonProperty(value = "componentId")
     private String componentId;
 
     /*
      * Name for the component.
      */
-    @JsonProperty(value = "componentName")
     private String componentName;
 
     /*
      * Version for the component.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * License for the component.
      */
-    @JsonProperty(value = "license")
     private String license;
 
     /*
      * File paths related to the component.
      */
-    @JsonProperty(value = "filePaths")
     private List<String> filePaths;
 
     /**
@@ -155,5 +154,54 @@ public final class SbomComponent {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("componentId", this.componentId);
+        jsonWriter.writeStringField("componentName", this.componentName);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("license", this.license);
+        jsonWriter.writeArrayField("filePaths", this.filePaths, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SbomComponent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SbomComponent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SbomComponent.
+     */
+    public static SbomComponent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SbomComponent deserializedSbomComponent = new SbomComponent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("componentId".equals(fieldName)) {
+                    deserializedSbomComponent.componentId = reader.getString();
+                } else if ("componentName".equals(fieldName)) {
+                    deserializedSbomComponent.componentName = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSbomComponent.version = reader.getString();
+                } else if ("license".equals(fieldName)) {
+                    deserializedSbomComponent.license = reader.getString();
+                } else if ("filePaths".equals(fieldName)) {
+                    List<String> filePaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSbomComponent.filePaths = filePaths;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSbomComponent;
+        });
     }
 }

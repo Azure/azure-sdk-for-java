@@ -6,49 +6,31 @@ package com.azure.resourcemanager.apicenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apicenter.ApiCenterManager;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.apicenter.models.Service;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServicesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"6a734486-5c53-4a37-b47b-df965b1665f1\",\"tenantId\":\"f7668c9a-9dea-4b04-99b7-775fccae75bd\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ctobg\":{\"principalId\":\"73f7d595-a7fa-4e07-8f0a-5584d8814194\",\"clientId\":\"abc2645d-e551-4a56-8312-8db199d8a9d9\"},\"moizpos\":{\"principalId\":\"3ecb246c-6558-4017-92b0-499cf3b840bc\",\"clientId\":\"6d743c2e-dc54-4f13-9bea-45a9402233e6\"}}},\"location\":\"grcfb\",\"tags\":{\"jy\":\"mfqjhhkxbp\",\"u\":\"jhxxjyn\",\"xqzvszjfa\":\"ivkrtsw\",\"ivetvtcq\":\"vjfdx\"},\"id\":\"qtdo\",\"name\":\"mcbxvwvxysl\",\"type\":\"bhsfxob\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"ab0eb03e-4c2a-4aca-a957-4975479bc490\",\"tenantId\":\"2d3c2fc9-37a3-418b-9a27-77ea626451a0\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ctobg\":{\"principalId\":\"fa16011e-4b19-41aa-90c5-45baa694dd21\",\"clientId\":\"9c126cfd-3fc2-4b00-a4db-2a08253a5405\"},\"moizpos\":{\"principalId\":\"6eeabd15-9a6f-461e-91fb-85f836845d5e\",\"clientId\":\"58a420bc-6b95-4019-9894-005157fffa85\"}}},\"location\":\"grcfb\",\"tags\":{\"jy\":\"mfqjhhkxbp\",\"u\":\"jhxxjyn\",\"xqzvszjfa\":\"ivkrtsw\",\"ivetvtcq\":\"vjfdx\"},\"id\":\"qtdo\",\"name\":\"mcbxvwvxysl\",\"type\":\"bhsfxob\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Service> response = manager.services().list(com.azure.core.util.Context.NONE);
 

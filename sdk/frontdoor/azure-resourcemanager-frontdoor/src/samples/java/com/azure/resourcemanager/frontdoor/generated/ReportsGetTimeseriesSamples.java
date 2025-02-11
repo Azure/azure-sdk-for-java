@@ -13,7 +13,8 @@ import java.time.OffsetDateTime;
  */
 public final class ReportsGetTimeseriesSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentGetTimeseries.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
+     * NetworkExperimentGetTimeseries.json
      */
     /**
      * Sample code: Gets a Timeseries for a given Experiment.

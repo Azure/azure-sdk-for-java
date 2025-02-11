@@ -14,15 +14,15 @@ public final class DiskEncryptionConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiskEncryptionConfiguration model
-            = BinaryData.fromString("{\"targets\":[\"TemporaryDisk\",\"TemporaryDisk\",\"TemporaryDisk\"]}")
+            = BinaryData.fromString("{\"targets\":[\"TemporaryDisk\",\"OsDisk\",\"TemporaryDisk\",\"TemporaryDisk\"]}")
                 .toObject(DiskEncryptionConfiguration.class);
         Assertions.assertEquals(DiskEncryptionTarget.TEMPORARY_DISK, model.targets().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskEncryptionConfiguration model
-            = new DiskEncryptionConfiguration().withTargets(Arrays.asList(DiskEncryptionTarget.TEMPORARY_DISK,
+        DiskEncryptionConfiguration model = new DiskEncryptionConfiguration()
+            .withTargets(Arrays.asList(DiskEncryptionTarget.TEMPORARY_DISK, DiskEncryptionTarget.OS_DISK,
                 DiskEncryptionTarget.TEMPORARY_DISK, DiskEncryptionTarget.TEMPORARY_DISK));
         model = BinaryData.fromObject(model).toObject(DiskEncryptionConfiguration.class);
         Assertions.assertEquals(DiskEncryptionTarget.TEMPORARY_DISK, model.targets().get(0));

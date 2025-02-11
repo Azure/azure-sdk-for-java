@@ -5,229 +5,199 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Details of the Process Server.
  */
 @Fluent
-public final class ProcessServer {
+public final class ProcessServer implements JsonSerializable<ProcessServer> {
     /*
      * The Process Server's friendly name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The Process Server Id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The IP address of the server.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * The OS type of the server.
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * The version of the scout component on the server.
      */
-    @JsonProperty(value = "agentVersion")
     private String agentVersion;
 
     /*
      * The last heartbeat received from the server.
      */
-    @JsonProperty(value = "lastHeartbeat")
     private OffsetDateTime lastHeartbeat;
 
     /*
      * Version status.
      */
-    @JsonProperty(value = "versionStatus")
     private String versionStatus;
 
     /*
      * The list of the mobility service updates available on the Process Server.
      */
-    @JsonProperty(value = "mobilityServiceUpdates")
     private List<MobilityServiceUpdate> mobilityServiceUpdates;
 
     /*
      * The agent generated Id.
      */
-    @JsonProperty(value = "hostId")
     private String hostId;
 
     /*
      * The servers configured with this PS.
      */
-    @JsonProperty(value = "machineCount")
     private String machineCount;
 
     /*
      * The number of replication pairs configured in this PS.
      */
-    @JsonProperty(value = "replicationPairCount")
     private String replicationPairCount;
 
     /*
      * The percentage of the system load.
      */
-    @JsonProperty(value = "systemLoad")
     private String systemLoad;
 
     /*
      * The system load status.
      */
-    @JsonProperty(value = "systemLoadStatus")
     private String systemLoadStatus;
 
     /*
      * The percentage of the CPU load.
      */
-    @JsonProperty(value = "cpuLoad")
     private String cpuLoad;
 
     /*
      * The CPU load status.
      */
-    @JsonProperty(value = "cpuLoadStatus")
     private String cpuLoadStatus;
 
     /*
      * The total memory.
      */
-    @JsonProperty(value = "totalMemoryInBytes")
     private Long totalMemoryInBytes;
 
     /*
      * The available memory.
      */
-    @JsonProperty(value = "availableMemoryInBytes")
     private Long availableMemoryInBytes;
 
     /*
      * The memory usage status.
      */
-    @JsonProperty(value = "memoryUsageStatus")
     private String memoryUsageStatus;
 
     /*
      * The total space.
      */
-    @JsonProperty(value = "totalSpaceInBytes")
     private Long totalSpaceInBytes;
 
     /*
      * The available space.
      */
-    @JsonProperty(value = "availableSpaceInBytes")
     private Long availableSpaceInBytes;
 
     /*
      * The space usage status.
      */
-    @JsonProperty(value = "spaceUsageStatus")
     private String spaceUsageStatus;
 
     /*
      * The PS service status.
      */
-    @JsonProperty(value = "psServiceStatus")
     private String psServiceStatus;
 
     /*
      * The PS SSL cert expiry date.
      */
-    @JsonProperty(value = "sslCertExpiryDate")
     private OffsetDateTime sslCertExpiryDate;
 
     /*
      * CS SSL cert expiry date.
      */
-    @JsonProperty(value = "sslCertExpiryRemainingDays")
     private Integer sslCertExpiryRemainingDays;
 
     /*
      * OS Version of the process server. Note: This will get populated if user has CS version greater than 9.12.0.0.
      */
-    @JsonProperty(value = "osVersion")
     private String osVersion;
 
     /*
      * Health errors.
      */
-    @JsonProperty(value = "healthErrors")
     private List<HealthError> healthErrors;
 
     /*
      * Agent expiry date.
      */
-    @JsonProperty(value = "agentExpiryDate")
     private OffsetDateTime agentExpiryDate;
 
     /*
      * The agent version details.
      */
-    @JsonProperty(value = "agentVersionDetails")
     private VersionDetails agentVersionDetails;
 
     /*
      * The health of Process Server.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectionHealth health;
 
     /*
      * The process server stats refresh time.
      */
-    @JsonProperty(value = "psStatsRefreshTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime psStatsRefreshTime;
 
     /*
      * The uploading pending data in bytes.
      */
-    @JsonProperty(value = "throughputUploadPendingDataInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long throughputUploadPendingDataInBytes;
 
     /*
      * The throughput in MBps.
      */
-    @JsonProperty(value = "throughputInMBps", access = JsonProperty.Access.WRITE_ONLY)
     private Long throughputInMBps;
 
     /*
      * The throughput in bytes.
      */
-    @JsonProperty(value = "throughputInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long throughputInBytes;
 
     /*
      * The throughput status.
      */
-    @JsonProperty(value = "throughputStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String throughputStatus;
 
     /*
      * The MARS communication status.
      */
-    @JsonProperty(value = "marsCommunicationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String marsCommunicationStatus;
 
     /*
      * The MARS registration status.
      */
-    @JsonProperty(value = "marsRegistrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String marsRegistrationStatus;
 
     /**
@@ -887,5 +857,152 @@ public final class ProcessServer {
         if (agentVersionDetails() != null) {
             agentVersionDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeStringField("lastHeartbeat",
+            this.lastHeartbeat == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastHeartbeat));
+        jsonWriter.writeStringField("versionStatus", this.versionStatus);
+        jsonWriter.writeArrayField("mobilityServiceUpdates", this.mobilityServiceUpdates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("hostId", this.hostId);
+        jsonWriter.writeStringField("machineCount", this.machineCount);
+        jsonWriter.writeStringField("replicationPairCount", this.replicationPairCount);
+        jsonWriter.writeStringField("systemLoad", this.systemLoad);
+        jsonWriter.writeStringField("systemLoadStatus", this.systemLoadStatus);
+        jsonWriter.writeStringField("cpuLoad", this.cpuLoad);
+        jsonWriter.writeStringField("cpuLoadStatus", this.cpuLoadStatus);
+        jsonWriter.writeNumberField("totalMemoryInBytes", this.totalMemoryInBytes);
+        jsonWriter.writeNumberField("availableMemoryInBytes", this.availableMemoryInBytes);
+        jsonWriter.writeStringField("memoryUsageStatus", this.memoryUsageStatus);
+        jsonWriter.writeNumberField("totalSpaceInBytes", this.totalSpaceInBytes);
+        jsonWriter.writeNumberField("availableSpaceInBytes", this.availableSpaceInBytes);
+        jsonWriter.writeStringField("spaceUsageStatus", this.spaceUsageStatus);
+        jsonWriter.writeStringField("psServiceStatus", this.psServiceStatus);
+        jsonWriter.writeStringField("sslCertExpiryDate",
+            this.sslCertExpiryDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.sslCertExpiryDate));
+        jsonWriter.writeNumberField("sslCertExpiryRemainingDays", this.sslCertExpiryRemainingDays);
+        jsonWriter.writeStringField("osVersion", this.osVersion);
+        jsonWriter.writeArrayField("healthErrors", this.healthErrors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("agentExpiryDate",
+            this.agentExpiryDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.agentExpiryDate));
+        jsonWriter.writeJsonField("agentVersionDetails", this.agentVersionDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessServer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessServer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProcessServer.
+     */
+    public static ProcessServer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessServer deserializedProcessServer = new ProcessServer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedProcessServer.friendlyName = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedProcessServer.id = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedProcessServer.ipAddress = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedProcessServer.osType = reader.getString();
+                } else if ("agentVersion".equals(fieldName)) {
+                    deserializedProcessServer.agentVersion = reader.getString();
+                } else if ("lastHeartbeat".equals(fieldName)) {
+                    deserializedProcessServer.lastHeartbeat = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("versionStatus".equals(fieldName)) {
+                    deserializedProcessServer.versionStatus = reader.getString();
+                } else if ("mobilityServiceUpdates".equals(fieldName)) {
+                    List<MobilityServiceUpdate> mobilityServiceUpdates
+                        = reader.readArray(reader1 -> MobilityServiceUpdate.fromJson(reader1));
+                    deserializedProcessServer.mobilityServiceUpdates = mobilityServiceUpdates;
+                } else if ("hostId".equals(fieldName)) {
+                    deserializedProcessServer.hostId = reader.getString();
+                } else if ("machineCount".equals(fieldName)) {
+                    deserializedProcessServer.machineCount = reader.getString();
+                } else if ("replicationPairCount".equals(fieldName)) {
+                    deserializedProcessServer.replicationPairCount = reader.getString();
+                } else if ("systemLoad".equals(fieldName)) {
+                    deserializedProcessServer.systemLoad = reader.getString();
+                } else if ("systemLoadStatus".equals(fieldName)) {
+                    deserializedProcessServer.systemLoadStatus = reader.getString();
+                } else if ("cpuLoad".equals(fieldName)) {
+                    deserializedProcessServer.cpuLoad = reader.getString();
+                } else if ("cpuLoadStatus".equals(fieldName)) {
+                    deserializedProcessServer.cpuLoadStatus = reader.getString();
+                } else if ("totalMemoryInBytes".equals(fieldName)) {
+                    deserializedProcessServer.totalMemoryInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("availableMemoryInBytes".equals(fieldName)) {
+                    deserializedProcessServer.availableMemoryInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("memoryUsageStatus".equals(fieldName)) {
+                    deserializedProcessServer.memoryUsageStatus = reader.getString();
+                } else if ("totalSpaceInBytes".equals(fieldName)) {
+                    deserializedProcessServer.totalSpaceInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("availableSpaceInBytes".equals(fieldName)) {
+                    deserializedProcessServer.availableSpaceInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("spaceUsageStatus".equals(fieldName)) {
+                    deserializedProcessServer.spaceUsageStatus = reader.getString();
+                } else if ("psServiceStatus".equals(fieldName)) {
+                    deserializedProcessServer.psServiceStatus = reader.getString();
+                } else if ("sslCertExpiryDate".equals(fieldName)) {
+                    deserializedProcessServer.sslCertExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sslCertExpiryRemainingDays".equals(fieldName)) {
+                    deserializedProcessServer.sslCertExpiryRemainingDays = reader.getNullable(JsonReader::getInt);
+                } else if ("osVersion".equals(fieldName)) {
+                    deserializedProcessServer.osVersion = reader.getString();
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthError> healthErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedProcessServer.healthErrors = healthErrors;
+                } else if ("agentExpiryDate".equals(fieldName)) {
+                    deserializedProcessServer.agentExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("agentVersionDetails".equals(fieldName)) {
+                    deserializedProcessServer.agentVersionDetails = VersionDetails.fromJson(reader);
+                } else if ("health".equals(fieldName)) {
+                    deserializedProcessServer.health = ProtectionHealth.fromString(reader.getString());
+                } else if ("psStatsRefreshTime".equals(fieldName)) {
+                    deserializedProcessServer.psStatsRefreshTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("throughputUploadPendingDataInBytes".equals(fieldName)) {
+                    deserializedProcessServer.throughputUploadPendingDataInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("throughputInMBps".equals(fieldName)) {
+                    deserializedProcessServer.throughputInMBps = reader.getNullable(JsonReader::getLong);
+                } else if ("throughputInBytes".equals(fieldName)) {
+                    deserializedProcessServer.throughputInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("throughputStatus".equals(fieldName)) {
+                    deserializedProcessServer.throughputStatus = reader.getString();
+                } else if ("marsCommunicationStatus".equals(fieldName)) {
+                    deserializedProcessServer.marsCommunicationStatus = reader.getString();
+                } else if ("marsRegistrationStatus".equals(fieldName)) {
+                    deserializedProcessServer.marsRegistrationStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessServer;
+        });
     }
 }

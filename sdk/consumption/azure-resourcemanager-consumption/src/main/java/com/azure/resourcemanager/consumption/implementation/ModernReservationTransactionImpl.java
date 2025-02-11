@@ -17,8 +17,7 @@ public final class ModernReservationTransactionImpl implements ModernReservation
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    ModernReservationTransactionImpl(
-        ModernReservationTransactionInner innerObject,
+    ModernReservationTransactionImpl(ModernReservationTransactionInner innerObject,
         com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

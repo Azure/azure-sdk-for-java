@@ -13,17 +13,23 @@ import com.azure.ai.textanalytics.models.TextSentiment;
 public final class AssessmentSentimentPropertiesHelper {
     private static AssessmentSentimentAccessor accessor;
 
-    private AssessmentSentimentPropertiesHelper() { }
+    private AssessmentSentimentPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AssessmentSentiment} instance.
      */
     public interface AssessmentSentimentAccessor {
         void setText(AssessmentSentiment assessmentSentiment, String text);
+
         void setSentiment(AssessmentSentiment assessmentSentiment, TextSentiment sentiment);
+
         void setConfidenceScores(AssessmentSentiment assessmentSentiment, SentimentConfidenceScores confidenceScores);
+
         void setNegated(AssessmentSentiment assessmentSentiment, boolean isNegated);
+
         void setOffset(AssessmentSentiment assessmentSentiment, int offset);
+
         void setLength(AssessmentSentiment assessmentSentiment, int length);
     }
 

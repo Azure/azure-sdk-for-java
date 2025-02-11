@@ -14,6 +14,7 @@ interface HasCredential<T extends HasCredential<T>> {
      * @return the interface itself
      */
     T withCertificateCredential(CertificateCredentialImpl<?> credential);
+
     /**
      * Attach a credential to this model.
      *

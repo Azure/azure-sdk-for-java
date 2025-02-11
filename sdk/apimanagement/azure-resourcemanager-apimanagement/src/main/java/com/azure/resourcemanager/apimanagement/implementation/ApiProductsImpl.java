@@ -19,29 +19,23 @@ public final class ApiProductsImpl implements ApiProducts {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ApiProductsImpl(
-        ApiProductsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public ApiProductsImpl(ApiProductsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ProductContract> listByApis(String resourceGroupName, String serviceName, String apiId) {
-        PagedIterable<ProductContractInner> inner =
-            this.serviceClient().listByApis(resourceGroupName, serviceName, apiId);
-        return Utils.mapPage(inner, inner1 -> new ProductContractImpl(inner1, this.manager()));
+        PagedIterable<ProductContractInner> inner
+            = this.serviceClient().listByApis(resourceGroupName, serviceName, apiId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProductContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ProductContract> listByApis(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        PagedIterable<ProductContractInner> inner =
-            this.serviceClient().listByApis(resourceGroupName, serviceName, apiId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new ProductContractImpl(inner1, this.manager()));
+    public PagedIterable<ProductContract> listByApis(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context) {
+        PagedIterable<ProductContractInner> inner
+            = this.serviceClient().listByApis(resourceGroupName, serviceName, apiId, filter, top, skip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProductContractImpl(inner1, this.manager()));
     }
 
     private ApiProductsClient serviceClient() {

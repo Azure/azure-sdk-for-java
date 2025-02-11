@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactParameterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactParameterProperties model =
-            BinaryData
-                .fromString("{\"name\":\"gvjayvblmh\",\"value\":\"zuhbxvvyhgsopb\"}")
+        ArtifactParameterProperties model
+            = BinaryData.fromString("{\"name\":\"gvjayvblmh\",\"value\":\"zuhbxvvyhgsopb\"}")
                 .toObject(ArtifactParameterProperties.class);
         Assertions.assertEquals("gvjayvblmh", model.name());
         Assertions.assertEquals("zuhbxvvyhgsopb", model.value());
@@ -21,8 +20,8 @@ public final class ArtifactParameterPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactParameterProperties model =
-            new ArtifactParameterProperties().withName("gvjayvblmh").withValue("zuhbxvvyhgsopb");
+        ArtifactParameterProperties model
+            = new ArtifactParameterProperties().withName("gvjayvblmh").withValue("zuhbxvvyhgsopb");
         model = BinaryData.fromObject(model).toObject(ArtifactParameterProperties.class);
         Assertions.assertEquals("gvjayvblmh", model.name());
         Assertions.assertEquals("zuhbxvvyhgsopb", model.value());

@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.models.RoleAssignmentResourceFormatInner;
 
-/** An instance of this class provides access to all the operations defined in RoleAssignmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoleAssignmentsClient.
+ */
 public interface RoleAssignmentsClient {
     /**
      * Gets all the role assignments for the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface RoleAssignmentsClient {
 
     /**
      * Gets all the role assignments for the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -40,12 +42,12 @@ public interface RoleAssignmentsClient {
      * @return all the role assignments for the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentResourceFormatInner> listByHub(
-        String resourceGroupName, String hubName, Context context);
+    PagedIterable<RoleAssignmentResourceFormatInner> listByHub(String resourceGroupName, String hubName,
+        Context context);
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -61,7 +63,7 @@ public interface RoleAssignmentsClient {
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -74,15 +76,12 @@ public interface RoleAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RoleAssignmentResourceFormatInner>, RoleAssignmentResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String assignmentName,
-        RoleAssignmentResourceFormatInner parameters,
+        String resourceGroupName, String hubName, String assignmentName, RoleAssignmentResourceFormatInner parameters,
         Context context);
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -93,12 +92,12 @@ public interface RoleAssignmentsClient {
      * @return the Role Assignment resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String assignmentName, RoleAssignmentResourceFormatInner parameters);
+    RoleAssignmentResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String assignmentName,
+        RoleAssignmentResourceFormatInner parameters);
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -110,16 +109,12 @@ public interface RoleAssignmentsClient {
      * @return the Role Assignment resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String assignmentName,
-        RoleAssignmentResourceFormatInner parameters,
-        Context context);
+    RoleAssignmentResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String assignmentName,
+        RoleAssignmentResourceFormatInner parameters, Context context);
 
     /**
      * Gets the role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
@@ -130,12 +125,12 @@ public interface RoleAssignmentsClient {
      * @return the role assignment in the hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleAssignmentResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String assignmentName, Context context);
+    Response<RoleAssignmentResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String assignmentName, Context context);
 
     /**
      * Gets the role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
@@ -149,7 +144,7 @@ public interface RoleAssignmentsClient {
 
     /**
      * Deletes the role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
@@ -164,7 +159,7 @@ public interface RoleAssignmentsClient {
 
     /**
      * Deletes the role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.

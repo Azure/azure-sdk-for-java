@@ -20,7 +20,8 @@ public final class ReplicationProtectionContainersDeleteSamples {
      */
     public static void removesAProtectionContainer(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionContainers().delete("vault1", "resourceGroupPS1", "cloud1",
-            "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", com.azure.core.util.Context.NONE);
+        manager.replicationProtectionContainers()
+            .delete("vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+                com.azure.core.util.Context.NONE);
     }
 }

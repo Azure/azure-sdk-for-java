@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The mapping content.
  */
 @Fluent
-public final class IotMappingProperties {
+public final class IotMappingProperties implements JsonSerializable<IotMappingProperties> {
     /*
      * The mapping.
      */
-    @JsonProperty(value = "content")
     private Object content;
 
     /**
@@ -50,5 +53,41 @@ public final class IotMappingProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("content", this.content);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotMappingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotMappingProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotMappingProperties.
+     */
+    public static IotMappingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotMappingProperties deserializedIotMappingProperties = new IotMappingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("content".equals(fieldName)) {
+                    deserializedIotMappingProperties.content = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotMappingProperties;
+        });
     }
 }

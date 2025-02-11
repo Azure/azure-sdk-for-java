@@ -20,7 +20,7 @@ public final class ImagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"clnapxbiygnugjkn\",\"publisher\":\"mfcttux\",\"offer\":\"yilflqoiquvrehmr\",\"sku\":\"hvsujztc\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":51352608,\"max\":221110799},\"vCPUs\":{\"min\":1863941224,\"max\":897856665}},\"provisioningState\":\"Canceled\",\"hibernateSupport\":\"Disabled\"},\"id\":\"letlx\",\"name\":\"mr\",\"type\":\"ddoui\"}";
+            = "{\"properties\":{\"description\":\"gi\",\"publisher\":\"cjfelisdjubgg\",\"offer\":\"igkxkbsazga\",\"sku\":\"acy\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":1512551942,\"max\":722640724},\"vCPUs\":{\"min\":1831739785,\"max\":361382788}},\"provisioningState\":\"Succeeded\",\"hibernateSupport\":\"Enabled\"},\"id\":\"lniofrzgbzje\",\"name\":\"mstk\",\"type\":\"nlvxbcuii\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class ImagesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Image response = manager.images()
-            .getWithResponse("zvzbglbyv", "ctctbrxkjz", "rgxffmshkw", "bkgozxwopdbydpi",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("bcblemb", "kbwvqvxkdiv", "ihebwtsw", "zuwfmdur", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

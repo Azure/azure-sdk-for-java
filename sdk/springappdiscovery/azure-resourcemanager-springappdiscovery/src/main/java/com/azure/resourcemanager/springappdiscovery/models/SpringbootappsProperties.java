@@ -5,181 +5,159 @@
 package com.azure.resourcemanager.springappdiscovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The springbootapps resource definition.
  */
 @Fluent
-public final class SpringbootappsProperties {
+public final class SpringbootappsProperties implements JsonSerializable<SpringbootappsProperties> {
     /*
      * The name of SpringBootApp.
      */
-    @JsonProperty(value = "appName")
     private String appName;
 
     /*
      * The artifact name of SpringBootApp.
      */
-    @JsonProperty(value = "artifactName")
     private String artifactName;
 
     /*
      * The application port.
      */
-    @JsonProperty(value = "appPort")
     private Integer appPort;
 
     /*
      * The application type, whether it is a SpringBoot app.
      */
-    @JsonProperty(value = "appType")
     private String appType;
 
     /*
      * The application configuration file list.
      */
-    @JsonProperty(value = "applicationConfigurations")
     private List<SpringbootappsPropertiesApplicationConfigurationsItem> applicationConfigurations;
 
     /*
      * The application binding port list.
      */
-    @JsonProperty(value = "bindingPorts")
     private List<Integer> bindingPorts;
 
     /*
      * The jdk version in build.
      */
-    @JsonProperty(value = "buildJdkVersion")
     private String buildJdkVersion;
 
     /*
      * The certificate file list.
      */
-    @JsonProperty(value = "certificates")
     private List<String> certificates;
 
     /*
      * The checksum of jar file.
      */
-    @JsonProperty(value = "checksum")
     private String checksum;
 
     /*
      * The dependency list.
      */
-    @JsonProperty(value = "dependencies")
     private List<String> dependencies;
 
     /*
      * The environment variable list.
      */
-    @JsonProperty(value = "environments")
     private List<String> environments;
 
     /*
      * The total instance count the app deployed.
      */
-    @JsonProperty(value = "instanceCount")
     private Integer instanceCount;
 
     /*
      * The jar file location on the server.
      */
-    @JsonProperty(value = "jarFileLocation")
     private String jarFileLocation;
 
     /*
      * The jvm heap memory allocated.
      */
-    @JsonProperty(value = "jvmMemoryInMB")
     private Integer jvmMemoryInMB;
 
     /*
      * The jvm options.
      */
-    @JsonProperty(value = "jvmOptions")
     private List<String> jvmOptions;
 
     /*
      * The other types of date collected.
      */
-    @JsonProperty(value = "miscs")
     private List<SpringbootappsPropertiesMiscsItem> miscs;
 
     /*
      * The breakdown info for app instances on all the servers
      */
-    @JsonProperty(value = "instances")
     private List<SpringbootappsPropertiesInstancesItem> instances;
 
     /*
      * The jdk version installed on server
      */
-    @JsonProperty(value = "runtimeJdkVersion")
     private String runtimeJdkVersion;
 
     /*
      * The server list the app installed
      */
-    @JsonProperty(value = "servers")
     private List<String> servers;
 
     /*
      * The machine ARM id list the app belongs to.
      */
-    @JsonProperty(value = "machineArmIds")
     private List<String> machineArmIds;
 
     /*
      * The site name.
      */
-    @JsonProperty(value = "siteName")
     private String siteName;
 
     /*
      * The spring boot version.
      */
-    @JsonProperty(value = "springBootVersion")
     private String springBootVersion;
 
     /*
      * The static content location list.
      */
-    @JsonProperty(value = "staticContentLocations")
     private List<String> staticContentLocations;
 
     /*
      * The connection string list.
      */
-    @JsonProperty(value = "connectionStrings")
     private List<String> connectionStrings;
 
     /*
      * Time when this springbootapps jar file was last modified.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Time when this springbootapps instance was last refreshed.
      */
-    @JsonProperty(value = "lastUpdatedTime")
     private OffsetDateTime lastUpdatedTime;
 
     /*
      * The resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /*
      * The list of errors.
      */
-    @JsonProperty(value = "errors")
     private List<Error> errors;
 
     /**
@@ -767,5 +745,150 @@ public final class SpringbootappsProperties {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appName", this.appName);
+        jsonWriter.writeStringField("artifactName", this.artifactName);
+        jsonWriter.writeNumberField("appPort", this.appPort);
+        jsonWriter.writeStringField("appType", this.appType);
+        jsonWriter.writeArrayField("applicationConfigurations", this.applicationConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("bindingPorts", this.bindingPorts, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeStringField("buildJdkVersion", this.buildJdkVersion);
+        jsonWriter.writeArrayField("certificates", this.certificates, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("checksum", this.checksum);
+        jsonWriter.writeArrayField("dependencies", this.dependencies, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("environments", this.environments, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("instanceCount", this.instanceCount);
+        jsonWriter.writeStringField("jarFileLocation", this.jarFileLocation);
+        jsonWriter.writeNumberField("jvmMemoryInMB", this.jvmMemoryInMB);
+        jsonWriter.writeArrayField("jvmOptions", this.jvmOptions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("miscs", this.miscs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("instances", this.instances, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("runtimeJdkVersion", this.runtimeJdkVersion);
+        jsonWriter.writeArrayField("servers", this.servers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("machineArmIds", this.machineArmIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("siteName", this.siteName);
+        jsonWriter.writeStringField("springBootVersion", this.springBootVersion);
+        jsonWriter.writeArrayField("staticContentLocations", this.staticContentLocations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("connectionStrings", this.connectionStrings,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("lastUpdatedTime",
+            this.lastUpdatedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedTime));
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpringbootappsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpringbootappsProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SpringbootappsProperties.
+     */
+    public static SpringbootappsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpringbootappsProperties deserializedSpringbootappsProperties = new SpringbootappsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appName".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.appName = reader.getString();
+                } else if ("artifactName".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.artifactName = reader.getString();
+                } else if ("appPort".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.appPort = reader.getNullable(JsonReader::getInt);
+                } else if ("appType".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.appType = reader.getString();
+                } else if ("applicationConfigurations".equals(fieldName)) {
+                    List<SpringbootappsPropertiesApplicationConfigurationsItem> applicationConfigurations = reader
+                        .readArray(reader1 -> SpringbootappsPropertiesApplicationConfigurationsItem.fromJson(reader1));
+                    deserializedSpringbootappsProperties.applicationConfigurations = applicationConfigurations;
+                } else if ("bindingPorts".equals(fieldName)) {
+                    List<Integer> bindingPorts = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedSpringbootappsProperties.bindingPorts = bindingPorts;
+                } else if ("buildJdkVersion".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.buildJdkVersion = reader.getString();
+                } else if ("certificates".equals(fieldName)) {
+                    List<String> certificates = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSpringbootappsProperties.certificates = certificates;
+                } else if ("checksum".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.checksum = reader.getString();
+                } else if ("dependencies".equals(fieldName)) {
+                    List<String> dependencies = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSpringbootappsProperties.dependencies = dependencies;
+                } else if ("environments".equals(fieldName)) {
+                    List<String> environments = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSpringbootappsProperties.environments = environments;
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.instanceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("jarFileLocation".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.jarFileLocation = reader.getString();
+                } else if ("jvmMemoryInMB".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.jvmMemoryInMB = reader.getNullable(JsonReader::getInt);
+                } else if ("jvmOptions".equals(fieldName)) {
+                    List<String> jvmOptions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSpringbootappsProperties.jvmOptions = jvmOptions;
+                } else if ("miscs".equals(fieldName)) {
+                    List<SpringbootappsPropertiesMiscsItem> miscs
+                        = reader.readArray(reader1 -> SpringbootappsPropertiesMiscsItem.fromJson(reader1));
+                    deserializedSpringbootappsProperties.miscs = miscs;
+                } else if ("instances".equals(fieldName)) {
+                    List<SpringbootappsPropertiesInstancesItem> instances
+                        = reader.readArray(reader1 -> SpringbootappsPropertiesInstancesItem.fromJson(reader1));
+                    deserializedSpringbootappsProperties.instances = instances;
+                } else if ("runtimeJdkVersion".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.runtimeJdkVersion = reader.getString();
+                } else if ("servers".equals(fieldName)) {
+                    List<String> servers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSpringbootappsProperties.servers = servers;
+                } else if ("machineArmIds".equals(fieldName)) {
+                    List<String> machineArmIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSpringbootappsProperties.machineArmIds = machineArmIds;
+                } else if ("siteName".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.siteName = reader.getString();
+                } else if ("springBootVersion".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.springBootVersion = reader.getString();
+                } else if ("staticContentLocations".equals(fieldName)) {
+                    List<String> staticContentLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSpringbootappsProperties.staticContentLocations = staticContentLocations;
+                } else if ("connectionStrings".equals(fieldName)) {
+                    List<String> connectionStrings = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSpringbootappsProperties.connectionStrings = connectionStrings;
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdatedTime".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.lastUpdatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSpringbootappsProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
+                    deserializedSpringbootappsProperties.errors = errors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpringbootappsProperties;
+        });
     }
 }

@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.deviceprovisioningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorMessage;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Result of a long running operation. */
+/**
+ * Result of a long running operation.
+ */
 @Fluent
-public final class AsyncOperationResultInner {
+public final class AsyncOperationResultInner implements JsonSerializable<AsyncOperationResultInner> {
     /*
      * current status of a long running operation.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Error message containing code, description and details
      */
-    @JsonProperty(value = "error")
     private ErrorMessage error;
 
     /**
+     * Creates an instance of AsyncOperationResultInner class.
+     */
+    public AsyncOperationResultInner() {
+    }
+
+    /**
      * Get the status property: current status of a long running operation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -34,7 +44,7 @@ public final class AsyncOperationResultInner {
 
     /**
      * Set the status property: current status of a long running operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the AsyncOperationResultInner object itself.
      */
@@ -45,7 +55,7 @@ public final class AsyncOperationResultInner {
 
     /**
      * Get the error property: Error message containing code, description and details.
-     *
+     * 
      * @return the error value.
      */
     public ErrorMessage error() {
@@ -54,7 +64,7 @@ public final class AsyncOperationResultInner {
 
     /**
      * Set the error property: Error message containing code, description and details.
-     *
+     * 
      * @param error the error value to set.
      * @return the AsyncOperationResultInner object itself.
      */
@@ -65,12 +75,51 @@ public final class AsyncOperationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AsyncOperationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AsyncOperationResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AsyncOperationResultInner.
+     */
+    public static AsyncOperationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AsyncOperationResultInner deserializedAsyncOperationResultInner = new AsyncOperationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedAsyncOperationResultInner.status = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedAsyncOperationResultInner.error = ErrorMessage.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAsyncOperationResultInner;
+        });
     }
 }

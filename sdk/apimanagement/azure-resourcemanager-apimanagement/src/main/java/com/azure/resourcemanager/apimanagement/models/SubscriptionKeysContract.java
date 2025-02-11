@@ -6,25 +6,27 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionKeysContractInner;
 
-/** An immutable client-side representation of SubscriptionKeysContract. */
+/**
+ * An immutable client-side representation of SubscriptionKeysContract.
+ */
 public interface SubscriptionKeysContract {
     /**
      * Gets the primaryKey property: Subscription primary key.
-     *
+     * 
      * @return the primaryKey value.
      */
     String primaryKey();
 
     /**
      * Gets the secondaryKey property: Subscription secondary key.
-     *
+     * 
      * @return the secondaryKey value.
      */
     String secondaryKey();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionKeysContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     SubscriptionKeysContractInner innerModel();

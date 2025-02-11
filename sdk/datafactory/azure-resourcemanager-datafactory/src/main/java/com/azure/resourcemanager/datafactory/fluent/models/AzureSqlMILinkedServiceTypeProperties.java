@@ -568,7 +568,6 @@ public final class AzureSqlMILinkedServiceTypeProperties extends SqlServerBaseLi
      */
     @Override
     public void validate() {
-        super.validate();
         if (password() != null) {
             password().validate();
         }

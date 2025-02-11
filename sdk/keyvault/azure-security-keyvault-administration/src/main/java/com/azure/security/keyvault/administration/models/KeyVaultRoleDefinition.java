@@ -35,8 +35,8 @@ public final class KeyVaultRoleDefinition {
      * @param assignableScopes The assignable scopes of the {@link KeyVaultRoleDefinition role definition}.
      */
     public KeyVaultRoleDefinition(String id, String name, KeyVaultRoleDefinitionType type, String roleName,
-                                  String description, KeyVaultRoleType roleType, List<KeyVaultPermission> permissions,
-                                  List<KeyVaultRoleScope> assignableScopes) {
+        String description, KeyVaultRoleType roleType, List<KeyVaultPermission> permissions,
+        List<KeyVaultRoleScope> assignableScopes) {
         this.id = id;
         this.name = name;
         this.type = type;

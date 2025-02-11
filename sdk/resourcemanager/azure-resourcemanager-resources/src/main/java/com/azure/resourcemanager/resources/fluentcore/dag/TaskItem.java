@@ -14,6 +14,8 @@ import reactor.core.publisher.Mono;
  */
 public interface TaskItem {
     /**
+     * Gets the result of the task invocation.
+     *
      * @return the result of the task invocation
      */
     Indexable result();
@@ -25,6 +27,8 @@ public interface TaskItem {
     void beforeGroupInvoke();
 
     /**
+     * Check whether is a hot observable.
+     *
      * @return true if the publisher returned by invokeAsync(cxt) is a hot observable,
      * false if its a cold publisher.
      */

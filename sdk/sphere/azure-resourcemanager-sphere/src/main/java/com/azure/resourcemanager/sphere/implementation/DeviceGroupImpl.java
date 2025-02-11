@@ -70,14 +70,17 @@ public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definitio
     }
 
     public DeviceGroup create() {
-        this.innerObject = serviceManager.serviceClient().getDeviceGroups().createOrUpdate(resourceGroupName,
-            catalogName, productName, deviceGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceGroups()
+            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public DeviceGroup create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDeviceGroups().createOrUpdate(resourceGroupName,
-            catalogName, productName, deviceGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceGroups()
+            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, this.innerModel(), context);
         return this;
     }
 
@@ -93,14 +96,16 @@ public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definitio
     }
 
     public DeviceGroup apply() {
-        this.innerObject = serviceManager.serviceClient().getDeviceGroups().update(resourceGroupName, catalogName,
-            productName, deviceGroupName, updateProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceGroups()
+            .update(resourceGroupName, catalogName, productName, deviceGroupName, updateProperties, Context.NONE);
         return this;
     }
 
     public DeviceGroup apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDeviceGroups().update(resourceGroupName, catalogName,
-            productName, deviceGroupName, updateProperties, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceGroups()
+            .update(resourceGroupName, catalogName, productName, deviceGroupName, updateProperties, context);
         return this;
     }
 
@@ -114,30 +119,34 @@ public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definitio
     }
 
     public DeviceGroup refresh() {
-        this.innerObject = serviceManager.serviceClient().getDeviceGroups()
-            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceGroups()
+            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DeviceGroup refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDeviceGroups()
-            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceGroups()
+            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, context)
+            .getValue();
         return this;
     }
 
     public void claimDevices(ClaimDevicesRequest claimDevicesRequest) {
-        serviceManager.deviceGroups().claimDevices(resourceGroupName, catalogName, productName, deviceGroupName,
-            claimDevicesRequest);
+        serviceManager.deviceGroups()
+            .claimDevices(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest);
     }
 
     public void claimDevices(ClaimDevicesRequest claimDevicesRequest, Context context) {
-        serviceManager.deviceGroups().claimDevices(resourceGroupName, catalogName, productName, deviceGroupName,
-            claimDevicesRequest, context);
+        serviceManager.deviceGroups()
+            .claimDevices(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest, context);
     }
 
     public Response<CountDevicesResponse> countDevicesWithResponse(Context context) {
-        return serviceManager.deviceGroups().countDevicesWithResponse(resourceGroupName, catalogName, productName,
-            deviceGroupName, context);
+        return serviceManager.deviceGroups()
+            .countDevicesWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, context);
     }
 
     public CountDevicesResponse countDevices() {

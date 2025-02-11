@@ -42,25 +42,25 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final NotificationHubsRPClientImpl client;
+    private final NotificationHubsManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(NotificationHubsRPClientImpl client) {
+    OperationsClientImpl(NotificationHubsManagementClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NotificationHubsRPClientOperations to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for NotificationHubsManagementClientOperations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NotificationHubsRPCl")
+    @ServiceInterface(name = "NotificationHubsMana")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.NotificationHubs/operations")
@@ -78,7 +78,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all available Notification Hubs operations.
+     * Lists all of the available NotificationHubs REST API operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -101,7 +101,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all available Notification Hubs operations.
+     * Lists all of the available NotificationHubs REST API operations.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +124,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all available Notification Hubs operations.
+     * Lists all of the available NotificationHubs REST API operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -136,7 +136,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all available Notification Hubs operations.
+     * Lists all of the available NotificationHubs REST API operations.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +151,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all available Notification Hubs operations.
+     * Lists all of the available NotificationHubs REST API operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -164,7 +164,7 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all available Notification Hubs operations.
+     * Lists all of the available NotificationHubs REST API operations.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,9 +181,7 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -209,9 +207,7 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

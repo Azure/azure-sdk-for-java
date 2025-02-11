@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -51,8 +52,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -60,6 +63,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class Utils {
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+
+    // Flag to indicate whether enable JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS
+    // Keep the config here not Configs to break the circular reference
+    private static final boolean DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS = true;
+    private static final String ALLOW_UNQUOTED_CONTROL_CHARS = "COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS";
 
     public static final Class<?> byteArrayClass = new byte[0].getClass();
 
@@ -83,6 +91,26 @@ public class Utils {
 
     private static AtomicReference<ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor> itemSerializerAccessor =
         new AtomicReference<>(null);
+
+    public static ObjectMapper getDocumentObjectMapper(String serializationInclusionMode) {
+        if (Strings.isNullOrEmpty(serializationInclusionMode)) {
+            return simpleObjectMapper;
+        } else if ("Always".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.ALWAYS);
+        } else if ("NonNull".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        } else if ("NonEmpty".equalsIgnoreCase(serializationInclusionMode)) {
+        return createAndInitializeObjectMapper(false)
+            .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        } else if ("NonDefault".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+        }
+
+        return simpleObjectMapper;
+    }
 
     // NOTE DateTimeFormatter.RFC_1123_DATE_TIME cannot be used.
     // because cosmos db rfc1123 validation requires two digits for day.
@@ -115,6 +143,10 @@ public class Utils {
             objectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
         }
         objectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
+
+        if (shouldAllowUnquotedControlChars()) {
+            objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+        }
 
         tryToLoadJacksonPerformanceLibrary(objectMapper);
 
@@ -663,6 +695,7 @@ public class Utils {
         boolean isIdValidationEnabled) {
 
         checkArgument(serializer != null || object instanceof Map<?, ?>, "Argument 'serializer' must not be null.");
+
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
@@ -677,6 +710,7 @@ public class Utils {
                 onAfterSerialization.accept(jsonTreeMap);
             }
 
+            ObjectMapper mapper = ensureItemSerializerAccessor().getItemObjectMapper(serializer);
             JsonNode jsonNode;
 
             if (jsonTreeMap instanceof PrimitiveJsonNodeMap) {
@@ -684,10 +718,10 @@ public class Utils {
             } else if (jsonTreeMap instanceof ObjectNodeMap && onAfterSerialization == null) {
                 jsonNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
             } else {
-                jsonNode = simpleObjectMapper.convertValue(jsonTreeMap, JsonNode.class);
+                jsonNode = mapper.convertValue(jsonTreeMap, JsonNode.class);
             }
 
-            simpleObjectMapper.writeValue(byteBufferOutputStream, jsonNode);
+            mapper.writeValue(byteBufferOutputStream, jsonNode);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
             // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere
@@ -761,5 +795,17 @@ public class Utils {
             throw new IllegalArgumentException("MaxIntegratedCacheStaleness duration cannot be negative");
         }
         return maxIntegratedCacheStaleness.toMillis();
+    }
+
+    public static boolean shouldAllowUnquotedControlChars() {
+
+        String shouldAllowUnquotedControlCharsConfig =
+            System.getProperty(
+                ALLOW_UNQUOTED_CONTROL_CHARS,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(ALLOW_UNQUOTED_CONTROL_CHARS)),
+                    String.valueOf(DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS)));
+
+        return Boolean.parseBoolean(shouldAllowUnquotedControlCharsConfig);
     }
 }

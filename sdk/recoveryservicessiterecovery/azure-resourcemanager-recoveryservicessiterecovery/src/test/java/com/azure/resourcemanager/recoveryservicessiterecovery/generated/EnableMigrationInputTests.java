@@ -21,8 +21,9 @@ public final class EnableMigrationInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnableMigrationInput model = new EnableMigrationInput().withProperties(new EnableMigrationInputProperties()
-            .withPolicyId("hjkbegibtnmxieb").withProviderSpecificDetails(new EnableMigrationProviderSpecificInput()));
+        EnableMigrationInput model = new EnableMigrationInput()
+            .withProperties(new EnableMigrationInputProperties().withPolicyId("hjkbegibtnmxieb")
+                .withProviderSpecificDetails(new EnableMigrationProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(EnableMigrationInput.class);
         Assertions.assertEquals("hjkbegibtnmxieb", model.properties().policyId());
     }

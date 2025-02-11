@@ -5,76 +5,77 @@
 package com.azure.resourcemanager.education.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.education.models.StudentLabStatus;
 import com.azure.resourcemanager.education.models.StudentRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Student lab detail properties. */
+/**
+ * Student lab detail properties.
+ */
 @Immutable
-public final class StudentLabProperties {
+public final class StudentLabProperties implements JsonSerializable<StudentLabProperties> {
     /*
      * Student lab Display Name
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Detail description of this lab
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Date the lab will expire and by default will be the expiration date for each student in this lab
      */
-    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationDate;
 
     /*
      * Student Role
      */
-    @JsonProperty(value = "role", access = JsonProperty.Access.WRITE_ONLY)
     private StudentRole role;
 
     /*
      * Student Budget
      */
-    @JsonProperty(value = "budget", access = JsonProperty.Access.WRITE_ONLY)
     private Amount budget;
 
     /*
      * Subscription Id
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * Student Lab Status
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private StudentLabStatus status;
 
     /*
      * User Added Date
      */
-    @JsonProperty(value = "effectiveDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime effectiveDate;
 
     /*
      * Lab Scope.
-     * /providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/
+     * invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default
      */
-    @JsonProperty(value = "labScope", access = JsonProperty.Access.WRITE_ONLY)
     private String labScope;
 
-    /** Creates an instance of StudentLabProperties class. */
+    /**
+     * Creates an instance of StudentLabProperties class.
+     */
     public StudentLabProperties() {
     }
 
     /**
      * Get the displayName property: Student lab Display Name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -83,7 +84,7 @@ public final class StudentLabProperties {
 
     /**
      * Get the description property: Detail description of this lab.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -93,7 +94,7 @@ public final class StudentLabProperties {
     /**
      * Get the expirationDate property: Date the lab will expire and by default will be the expiration date for each
      * student in this lab.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -102,7 +103,7 @@ public final class StudentLabProperties {
 
     /**
      * Get the role property: Student Role.
-     *
+     * 
      * @return the role value.
      */
     public StudentRole role() {
@@ -111,7 +112,7 @@ public final class StudentLabProperties {
 
     /**
      * Get the budget property: Student Budget.
-     *
+     * 
      * @return the budget value.
      */
     public Amount budget() {
@@ -120,7 +121,7 @@ public final class StudentLabProperties {
 
     /**
      * Get the subscriptionId property: Subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -129,7 +130,7 @@ public final class StudentLabProperties {
 
     /**
      * Get the status property: Student Lab Status.
-     *
+     * 
      * @return the status value.
      */
     public StudentLabStatus status() {
@@ -138,7 +139,7 @@ public final class StudentLabProperties {
 
     /**
      * Get the effectiveDate property: User Added Date.
-     *
+     * 
      * @return the effectiveDate value.
      */
     public OffsetDateTime effectiveDate() {
@@ -148,7 +149,7 @@ public final class StudentLabProperties {
     /**
      * Get the labScope property: Lab Scope.
      * /providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default.
-     *
+     * 
      * @return the labScope value.
      */
     public String labScope() {
@@ -157,12 +158,65 @@ public final class StudentLabProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (budget() != null) {
             budget().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StudentLabProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StudentLabProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StudentLabProperties.
+     */
+    public static StudentLabProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StudentLabProperties deserializedStudentLabProperties = new StudentLabProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedStudentLabProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedStudentLabProperties.description = reader.getString();
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedStudentLabProperties.expirationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("role".equals(fieldName)) {
+                    deserializedStudentLabProperties.role = StudentRole.fromString(reader.getString());
+                } else if ("budget".equals(fieldName)) {
+                    deserializedStudentLabProperties.budget = Amount.fromJson(reader);
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedStudentLabProperties.subscriptionId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedStudentLabProperties.status = StudentLabStatus.fromString(reader.getString());
+                } else if ("effectiveDate".equals(fieldName)) {
+                    deserializedStudentLabProperties.effectiveDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("labScope".equals(fieldName)) {
+                    deserializedStudentLabProperties.labScope = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStudentLabProperties;
+        });
     }
 }

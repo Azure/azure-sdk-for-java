@@ -105,25 +105,21 @@ public final class ConnectorResourceFormatImpl
     }
 
     public ConnectorResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectors()
-                .createOrUpdate(resourceGroupName, hubName, connectorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .createOrUpdate(resourceGroupName, hubName, connectorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ConnectorResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectors()
-                .createOrUpdate(resourceGroupName, hubName, connectorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .createOrUpdate(resourceGroupName, hubName, connectorName, this.innerModel(), context);
         return this;
     }
 
-    ConnectorResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    ConnectorResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new ConnectorResourceFormatInner();
         this.serviceManager = serviceManager;
         this.connectorName = name;
@@ -134,50 +130,41 @@ public final class ConnectorResourceFormatImpl
     }
 
     public ConnectorResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectors()
-                .createOrUpdate(resourceGroupName, hubName, connectorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .createOrUpdate(resourceGroupName, hubName, connectorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ConnectorResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectors()
-                .createOrUpdate(resourceGroupName, hubName, connectorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .createOrUpdate(resourceGroupName, hubName, connectorName, this.innerModel(), context);
         return this;
     }
 
-    ConnectorResourceFormatImpl(
-        ConnectorResourceFormatInner innerObject,
+    ConnectorResourceFormatImpl(ConnectorResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.connectorName = Utils.getValueFromIdByName(innerObject.id(), "connectors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.connectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectors");
     }
 
     public ConnectorResourceFormat refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectors()
-                .getWithResponse(resourceGroupName, hubName, connectorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .getWithResponse(resourceGroupName, hubName, connectorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectorResourceFormat refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectors()
-                .getWithResponse(resourceGroupName, hubName, connectorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .getWithResponse(resourceGroupName, hubName, connectorName, context)
+            .getValue();
         return this;
     }
 

@@ -13,22 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"dataPlaneEndpoint\":\"putegjvwmfd\",\"provisioningState\":\"ProvisioningResources\"},\"location\":\"mdvpjhulsu\",\"tags\":{\"odjpslwejd\":\"kjozkrwfnd\",\"cctazakljlahbc\":\"vwryoqpso\",\"gexpaojakhmsbz\":\"yffdfdos\"},\"id\":\"hcrzevd\",\"name\":\"hlxaolthqtr\",\"type\":\"qjbpfzfsin\"}")
-                .toObject(WorkspaceResourceInner.class);
+        WorkspaceResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"dataPlaneEndpoint\":\"putegjvwmfd\",\"provisioningState\":\"ProvisioningResources\"},\"location\":\"mdvpjhulsu\",\"tags\":{\"odjpslwejd\":\"kjozkrwfnd\",\"cctazakljlahbc\":\"vwryoqpso\",\"gexpaojakhmsbz\":\"yffdfdos\"},\"id\":\"hcrzevd\",\"name\":\"hlxaolthqtr\",\"type\":\"qjbpfzfsin\"}")
+            .toObject(WorkspaceResourceInner.class);
         Assertions.assertEquals("mdvpjhulsu", model.location());
         Assertions.assertEquals("kjozkrwfnd", model.tags().get("odjpslwejd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceResourceInner model =
-            new WorkspaceResourceInner()
-                .withLocation("mdvpjhulsu")
-                .withTags(
-                    mapOf("odjpslwejd", "kjozkrwfnd", "cctazakljlahbc", "vwryoqpso", "gexpaojakhmsbz", "yffdfdos"));
+        WorkspaceResourceInner model = new WorkspaceResourceInner().withLocation("mdvpjhulsu")
+            .withTags(mapOf("odjpslwejd", "kjozkrwfnd", "cctazakljlahbc", "vwryoqpso", "gexpaojakhmsbz", "yffdfdos"));
         model = BinaryData.fromObject(model).toObject(WorkspaceResourceInner.class);
         Assertions.assertEquals("mdvpjhulsu", model.location());
         Assertions.assertEquals("kjozkrwfnd", model.tags().get("odjpslwejd"));

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Username / Password Credentials to connect to vcenter. */
+/**
+ * Username / Password Credentials to connect to vcenter.
+ */
 @Fluent
-public final class VICredential {
+public final class VICredential implements JsonSerializable<VICredential> {
     /*
      * Gets or sets username to connect with the vCenter.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * Gets or sets the password to connect with the vCenter.
      */
-    @JsonProperty(value = "password")
     private String password;
 
-    /** Creates an instance of VICredential class. */
+    /**
+     * Creates an instance of VICredential class.
+     */
     public VICredential() {
     }
 
     /**
      * Get the username property: Gets or sets username to connect with the vCenter.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -37,7 +43,7 @@ public final class VICredential {
 
     /**
      * Set the username property: Gets or sets username to connect with the vCenter.
-     *
+     * 
      * @param username the username value to set.
      * @return the VICredential object itself.
      */
@@ -48,7 +54,7 @@ public final class VICredential {
 
     /**
      * Get the password property: Gets or sets the password to connect with the vCenter.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -57,7 +63,7 @@ public final class VICredential {
 
     /**
      * Set the password property: Gets or sets the password to connect with the vCenter.
-     *
+     * 
      * @param password the password value to set.
      * @return the VICredential object itself.
      */
@@ -68,9 +74,48 @@ public final class VICredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VICredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VICredential if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VICredential.
+     */
+    public static VICredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VICredential deserializedVICredential = new VICredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedVICredential.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedVICredential.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVICredential;
+        });
     }
 }

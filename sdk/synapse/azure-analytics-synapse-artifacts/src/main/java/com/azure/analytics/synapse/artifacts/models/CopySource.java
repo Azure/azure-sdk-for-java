@@ -21,7 +21,7 @@ public class CopySource implements JsonSerializable<CopySource> {
     /*
      * Copy source type.
      */
-    private String type;
+    private String type = "CopySource";
 
     /*
      * Source retry count. Type: integer (or Expression with resultType integer).
@@ -29,12 +29,14 @@ public class CopySource implements JsonSerializable<CopySource> {
     private Object sourceRetryCount;
 
     /*
-     * Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Source retry wait. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     private Object sourceRetryWait;
 
     /*
-     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
+     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
+     * integer).
      */
     private Object maxConcurrentConnections;
 
@@ -47,7 +49,6 @@ public class CopySource implements JsonSerializable<CopySource> {
      * Creates an instance of CopySource class.
      */
     public CopySource() {
-        this.type = "CopySource";
     }
 
     /**

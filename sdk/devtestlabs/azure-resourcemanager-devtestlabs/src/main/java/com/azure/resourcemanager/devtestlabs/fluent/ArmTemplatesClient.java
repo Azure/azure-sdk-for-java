@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateInner;
 
-/** An instance of this class provides access to all the operations defined in ArmTemplatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ArmTemplatesClient.
+ */
 public interface ArmTemplatesClient {
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -29,7 +31,7 @@ public interface ArmTemplatesClient {
 
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -44,19 +46,12 @@ public interface ArmTemplatesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ArmTemplateInner> list(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<ArmTemplateInner> list(String resourceGroupName, String labName, String artifactSourceName,
+        String expand, String filter, Integer top, String orderby, Context context);
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -69,17 +64,12 @@ public interface ArmTemplatesClient {
      * @return azure resource manager template along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArmTemplateInner> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        String expand,
-        Context context);
+    Response<ArmTemplateInner> getWithResponse(String resourceGroupName, String labName, String artifactSourceName,
+        String name, String expand, Context context);
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.

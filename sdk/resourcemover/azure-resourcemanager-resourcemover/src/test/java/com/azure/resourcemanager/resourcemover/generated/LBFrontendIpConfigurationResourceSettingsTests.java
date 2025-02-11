@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LBFrontendIpConfigurationResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LBFrontendIpConfigurationResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"loayqcgw\",\"privateIpAddress\":\"zjuzgwyz\",\"privateIpAllocationMethod\":\"txon\",\"subnet\":{\"name\":\"savjcbpwxqps\",\"sourceArmResourceId\":\"knftguvriuh\"},\"zones\":\"wmdyvxqtay\"}")
-                .toObject(LBFrontendIpConfigurationResourceSettings.class);
+        LBFrontendIpConfigurationResourceSettings model = BinaryData.fromString(
+            "{\"name\":\"loayqcgw\",\"privateIpAddress\":\"zjuzgwyz\",\"privateIpAllocationMethod\":\"txon\",\"subnet\":{\"name\":\"savjcbpwxqps\",\"sourceArmResourceId\":\"knftguvriuh\"},\"zones\":\"wmdyvxqtay\"}")
+            .toObject(LBFrontendIpConfigurationResourceSettings.class);
         Assertions.assertEquals("loayqcgw", model.name());
         Assertions.assertEquals("zjuzgwyz", model.privateIpAddress());
         Assertions.assertEquals("txon", model.privateIpAllocationMethod());
@@ -27,9 +25,8 @@ public final class LBFrontendIpConfigurationResourceSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LBFrontendIpConfigurationResourceSettings model =
-            new LBFrontendIpConfigurationResourceSettings()
-                .withName("loayqcgw")
+        LBFrontendIpConfigurationResourceSettings model
+            = new LBFrontendIpConfigurationResourceSettings().withName("loayqcgw")
                 .withPrivateIpAddress("zjuzgwyz")
                 .withPrivateIpAllocationMethod("txon")
                 .withSubnet(new SubnetReference().withSourceArmResourceId("knftguvriuh").withName("savjcbpwxqps"))

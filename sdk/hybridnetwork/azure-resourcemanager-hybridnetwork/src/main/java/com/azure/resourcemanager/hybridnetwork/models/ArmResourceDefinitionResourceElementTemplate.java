@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The arm template RE.
  */
 @Fluent
-public final class ArmResourceDefinitionResourceElementTemplate {
+public final class ArmResourceDefinitionResourceElementTemplate
+    implements JsonSerializable<ArmResourceDefinitionResourceElementTemplate> {
     /*
      * The template type.
      */
-    @JsonProperty(value = "templateType")
     private TemplateType templateType;
 
     /*
      * Name and value pairs that define the parameter values. It can be a well formed escaped JSON string.
      */
-    @JsonProperty(value = "parameterValues")
     private String parameterValues;
 
     /*
      * Artifact profile properties.
      */
-    @JsonProperty(value = "artifactProfile")
     private NsdArtifactProfile artifactProfile;
 
     /**
@@ -57,8 +59,8 @@ public final class ArmResourceDefinitionResourceElementTemplate {
     }
 
     /**
-     * Get the parameterValues property: Name and value pairs that define the parameter values. It can be a well
-     * formed escaped JSON string.
+     * Get the parameterValues property: Name and value pairs that define the parameter values. It can be a well formed
+     * escaped JSON string.
      * 
      * @return the parameterValues value.
      */
@@ -67,8 +69,8 @@ public final class ArmResourceDefinitionResourceElementTemplate {
     }
 
     /**
-     * Set the parameterValues property: Name and value pairs that define the parameter values. It can be a well
-     * formed escaped JSON string.
+     * Set the parameterValues property: Name and value pairs that define the parameter values. It can be a well formed
+     * escaped JSON string.
      * 
      * @param parameterValues the parameterValues value to set.
      * @return the ArmResourceDefinitionResourceElementTemplate object itself.
@@ -107,5 +109,50 @@ public final class ArmResourceDefinitionResourceElementTemplate {
         if (artifactProfile() != null) {
             artifactProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("templateType", this.templateType == null ? null : this.templateType.toString());
+        jsonWriter.writeStringField("parameterValues", this.parameterValues);
+        jsonWriter.writeJsonField("artifactProfile", this.artifactProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArmResourceDefinitionResourceElementTemplate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArmResourceDefinitionResourceElementTemplate if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmResourceDefinitionResourceElementTemplate.
+     */
+    public static ArmResourceDefinitionResourceElementTemplate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArmResourceDefinitionResourceElementTemplate deserializedArmResourceDefinitionResourceElementTemplate
+                = new ArmResourceDefinitionResourceElementTemplate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("templateType".equals(fieldName)) {
+                    deserializedArmResourceDefinitionResourceElementTemplate.templateType
+                        = TemplateType.fromString(reader.getString());
+                } else if ("parameterValues".equals(fieldName)) {
+                    deserializedArmResourceDefinitionResourceElementTemplate.parameterValues = reader.getString();
+                } else if ("artifactProfile".equals(fieldName)) {
+                    deserializedArmResourceDefinitionResourceElementTemplate.artifactProfile
+                        = NsdArtifactProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArmResourceDefinitionResourceElementTemplate;
+        });
     }
 }

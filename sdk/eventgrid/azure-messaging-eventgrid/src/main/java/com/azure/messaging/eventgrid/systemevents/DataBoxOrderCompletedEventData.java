@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,8 +20,8 @@ import java.time.format.DateTimeFormatter;
 @Fluent
 public final class DataBoxOrderCompletedEventData implements JsonSerializable<DataBoxOrderCompletedEventData> {
     /*
-     * Serial Number of the device associated with the event. The list is comma separated if more than one serial
-     * number is associated.
+     * Serial Number of the device associated with the event. The list is comma separated if more than one serial number
+     * is associated.
      */
     private String serialNumber;
 
@@ -41,8 +42,8 @@ public final class DataBoxOrderCompletedEventData implements JsonSerializable<Da
     }
 
     /**
-     * Get the serialNumber property: Serial Number of the device associated with the event. The list is comma
-     * separated if more than one serial number is associated.
+     * Get the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
+     * if more than one serial number is associated.
      * 
      * @return the serialNumber value.
      */
@@ -51,8 +52,8 @@ public final class DataBoxOrderCompletedEventData implements JsonSerializable<Da
     }
 
     /**
-     * Set the serialNumber property: Serial Number of the device associated with the event. The list is comma
-     * separated if more than one serial number is associated.
+     * Set the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
+     * if more than one serial number is associated.
      * 
      * @param serialNumber the serialNumber value to set.
      * @return the DataBoxOrderCompletedEventData object itself.
@@ -102,6 +103,9 @@ public final class DataBoxOrderCompletedEventData implements JsonSerializable<Da
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -134,8 +138,8 @@ public final class DataBoxOrderCompletedEventData implements JsonSerializable<Da
                     deserializedDataBoxOrderCompletedEventData.stageName
                         = DataBoxStageName.fromString(reader.getString());
                 } else if ("stageTime".equals(fieldName)) {
-                    deserializedDataBoxOrderCompletedEventData.stageTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDataBoxOrderCompletedEventData.stageTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

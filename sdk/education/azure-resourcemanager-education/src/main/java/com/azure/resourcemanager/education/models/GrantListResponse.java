@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.education.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.education.fluent.models.GrantDetailsInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of Grants info. */
+/**
+ * List of Grants info.
+ */
 @Immutable
-public final class GrantListResponse {
+public final class GrantListResponse implements JsonSerializable<GrantListResponse> {
     /*
      * The list of labs.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<GrantDetailsInner> value;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of GrantListResponse class. */
+    /**
+     * Creates an instance of GrantListResponse class.
+     */
     public GrantListResponse() {
     }
 
     /**
      * Get the value property: The list of labs.
-     *
+     * 
      * @return the value value.
      */
     public List<GrantDetailsInner> value() {
@@ -39,7 +45,7 @@ public final class GrantListResponse {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,50 @@ public final class GrantListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GrantListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GrantListResponse if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GrantListResponse.
+     */
+    public static GrantListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GrantListResponse deserializedGrantListResponse = new GrantListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GrantDetailsInner> value = reader.readArray(reader1 -> GrantDetailsInner.fromJson(reader1));
+                    deserializedGrantListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedGrantListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGrantListResponse;
+        });
     }
 }

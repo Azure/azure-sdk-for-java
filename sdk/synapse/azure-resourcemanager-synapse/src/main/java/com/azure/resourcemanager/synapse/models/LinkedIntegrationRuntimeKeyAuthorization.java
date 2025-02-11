@@ -6,28 +6,45 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The key authorization type integration runtime. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authorizationType")
-@JsonTypeName("Key")
+/**
+ * The key authorization type integration runtime.
+ */
 @Fluent
 public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegrationRuntimeType {
     /*
+     * The authorization type for integration runtime sharing.
+     */
+    private String authorizationType = "Key";
+
+    /*
      * The key used for authorization.
      */
-    @JsonProperty(value = "key", required = true)
     private SecureString key;
 
-    /** Creates an instance of LinkedIntegrationRuntimeKeyAuthorization class. */
+    /**
+     * Creates an instance of LinkedIntegrationRuntimeKeyAuthorization class.
+     */
     public LinkedIntegrationRuntimeKeyAuthorization() {
     }
 
     /**
+     * Get the authorizationType property: The authorization type for integration runtime sharing.
+     * 
+     * @return the authorizationType value.
+     */
+    @Override
+    public String authorizationType() {
+        return this.authorizationType;
+    }
+
+    /**
      * Get the key property: The key used for authorization.
-     *
+     * 
      * @return the key value.
      */
     public SecureString key() {
@@ -36,7 +53,7 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
 
     /**
      * Set the key property: The key used for authorization.
-     *
+     * 
      * @param key the key value to set.
      * @return the LinkedIntegrationRuntimeKeyAuthorization object itself.
      */
@@ -47,21 +64,60 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (key() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property key in model LinkedIntegrationRuntimeKeyAuthorization"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property key in model LinkedIntegrationRuntimeKeyAuthorization"));
         } else {
             key().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LinkedIntegrationRuntimeKeyAuthorization.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("key", this.key);
+        jsonWriter.writeStringField("authorizationType", this.authorizationType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkedIntegrationRuntimeKeyAuthorization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkedIntegrationRuntimeKeyAuthorization if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LinkedIntegrationRuntimeKeyAuthorization.
+     */
+    public static LinkedIntegrationRuntimeKeyAuthorization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkedIntegrationRuntimeKeyAuthorization deserializedLinkedIntegrationRuntimeKeyAuthorization
+                = new LinkedIntegrationRuntimeKeyAuthorization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedLinkedIntegrationRuntimeKeyAuthorization.key = SecureString.fromJson(reader);
+                } else if ("authorizationType".equals(fieldName)) {
+                    deserializedLinkedIntegrationRuntimeKeyAuthorization.authorizationType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkedIntegrationRuntimeKeyAuthorization;
+        });
+    }
 }

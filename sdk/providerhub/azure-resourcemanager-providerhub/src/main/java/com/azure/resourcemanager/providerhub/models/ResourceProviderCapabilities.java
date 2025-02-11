@@ -6,37 +6,42 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ResourceProviderCapabilities model. */
+/**
+ * The ResourceProviderCapabilities model.
+ */
 @Fluent
-public final class ResourceProviderCapabilities {
+public final class ResourceProviderCapabilities implements JsonSerializable<ResourceProviderCapabilities> {
     /*
      * The quotaId property.
      */
-    @JsonProperty(value = "quotaId", required = true)
     private String quotaId;
 
     /*
      * The effect property.
      */
-    @JsonProperty(value = "effect", required = true)
     private ResourceProviderCapabilitiesEffect effect;
 
     /*
      * The requiredFeatures property.
      */
-    @JsonProperty(value = "requiredFeatures")
     private List<String> requiredFeatures;
 
-    /** Creates an instance of ResourceProviderCapabilities class. */
+    /**
+     * Creates an instance of ResourceProviderCapabilities class.
+     */
     public ResourceProviderCapabilities() {
     }
 
     /**
      * Get the quotaId property: The quotaId property.
-     *
+     * 
      * @return the quotaId value.
      */
     public String quotaId() {
@@ -45,7 +50,7 @@ public final class ResourceProviderCapabilities {
 
     /**
      * Set the quotaId property: The quotaId property.
-     *
+     * 
      * @param quotaId the quotaId value to set.
      * @return the ResourceProviderCapabilities object itself.
      */
@@ -56,7 +61,7 @@ public final class ResourceProviderCapabilities {
 
     /**
      * Get the effect property: The effect property.
-     *
+     * 
      * @return the effect value.
      */
     public ResourceProviderCapabilitiesEffect effect() {
@@ -65,7 +70,7 @@ public final class ResourceProviderCapabilities {
 
     /**
      * Set the effect property: The effect property.
-     *
+     * 
      * @param effect the effect value to set.
      * @return the ResourceProviderCapabilities object itself.
      */
@@ -76,7 +81,7 @@ public final class ResourceProviderCapabilities {
 
     /**
      * Get the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @return the requiredFeatures value.
      */
     public List<String> requiredFeatures() {
@@ -85,7 +90,7 @@ public final class ResourceProviderCapabilities {
 
     /**
      * Set the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceProviderCapabilities object itself.
      */
@@ -96,23 +101,67 @@ public final class ResourceProviderCapabilities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (quotaId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property quotaId in model ResourceProviderCapabilities"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property quotaId in model ResourceProviderCapabilities"));
         }
         if (effect() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property effect in model ResourceProviderCapabilities"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property effect in model ResourceProviderCapabilities"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceProviderCapabilities.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("quotaId", this.quotaId);
+        jsonWriter.writeStringField("effect", this.effect == null ? null : this.effect.toString());
+        jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderCapabilities from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderCapabilities if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceProviderCapabilities.
+     */
+    public static ResourceProviderCapabilities fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderCapabilities deserializedResourceProviderCapabilities = new ResourceProviderCapabilities();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("quotaId".equals(fieldName)) {
+                    deserializedResourceProviderCapabilities.quotaId = reader.getString();
+                } else if ("effect".equals(fieldName)) {
+                    deserializedResourceProviderCapabilities.effect
+                        = ResourceProviderCapabilitiesEffect.fromString(reader.getString());
+                } else if ("requiredFeatures".equals(fieldName)) {
+                    List<String> requiredFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderCapabilities.requiredFeatures = requiredFeatures;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderCapabilities;
+        });
+    }
 }

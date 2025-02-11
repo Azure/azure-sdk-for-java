@@ -29,22 +29,17 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
-        Mono<NotificationHook> createHookMono  = client.createHook(CreateEmailHookInput.INSTANCE.hook);
+        Mono<NotificationHook> createHookMono = client.createHook(CreateEmailHookInput.INSTANCE.hook);
         String[] hookId = new String[1];
         Assertions.assertNotNull(createHookMono);
-        StepVerifier.create(createHookMono)
-            .assertNext(hook -> {
-                assertCreateEmailHookOutput(hook);
-                hookId[0] = hook.getId();
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(createHookMono).assertNext(hook -> {
+            assertCreateEmailHookOutput(hook);
+            hookId[0] = hook.getId();
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
 
         Mono<Void> deleteHookMono = client.deleteHook(hookId[0]);
 
-        StepVerifier.create(deleteHookMono)
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(deleteHookMono).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -54,22 +49,17 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
-        Mono<NotificationHook> createHookMono  = client.createHook(CreateWebHookInput.INSTANCE.hook);
+        Mono<NotificationHook> createHookMono = client.createHook(CreateWebHookInput.INSTANCE.hook);
         String[] hookId = new String[1];
         Assertions.assertNotNull(createHookMono);
-        StepVerifier.create(createHookMono)
-            .assertNext(hook -> {
-                assertCreateWebHookOutput(hook);
-                hookId[0] = hook.getId();
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(createHookMono).assertNext(hook -> {
+            assertCreateWebHookOutput(hook);
+            hookId[0] = hook.getId();
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
 
         Mono<Void> deleteHookMono = client.deleteHook(hookId[0]);
 
-        StepVerifier.create(deleteHookMono)
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(deleteHookMono).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -101,20 +91,14 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
         assertListHookOutput(notificationHookList);
 
         List<PagedResponse<NotificationHook>> hookPageList = new ArrayList<>();
-        StepVerifier.create(client.listHooks(new ListHookOptions()
-            .setHookNameFilter("java_test")
-            .setMaxPageSize(ListHookInput.INSTANCE.pageSize)).byPage())
-            .thenConsumeWhile(hookPageList::add)
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(client
+            .listHooks(
+                new ListHookOptions().setHookNameFilter("java_test").setMaxPageSize(ListHookInput.INSTANCE.pageSize))
+            .byPage()).thenConsumeWhile(hookPageList::add).expectComplete().verify(DEFAULT_TIMEOUT);
 
         assertPagedListHookOutput(hookPageList);
 
-        StepVerifier.create(client.deleteHook(hookId[0]))
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
-        StepVerifier.create(client.deleteHook(hookId[1]))
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(client.deleteHook(hookId[0])).expectComplete().verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(client.deleteHook(hookId[1])).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 }

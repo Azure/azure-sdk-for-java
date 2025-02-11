@@ -13,6 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +26,12 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
      * The approximate count of documents falling within the bucket described by this facet.
      */
     private Long count;
+
+    /*
+     * The nested facet query results for the search operation, organized as a collection of buckets for each faceted
+     * field; null if the query did not contain any nested facets.
+     */
+    private Map<String, List<FacetResult>> facets;
 
     /*
      * A single bucket of a facet query result. Reports the number of documents with a field value falling within a
@@ -45,6 +52,16 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
      */
     public Long getCount() {
         return this.count;
+    }
+
+    /**
+     * Get the facets property: The nested facet query results for the search operation, organized as a collection of
+     * buckets for each faceted field; null if the query did not contain any nested facets.
+     * 
+     * @return the facets value.
+     */
+    public Map<String, List<FacetResult>> getFacets() {
+        return this.facets;
     }
 
     /**
@@ -101,6 +118,10 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
 
                 if ("count".equals(fieldName)) {
                     deserializedFacetResult.count = reader.getNullable(JsonReader::getLong);
+                } else if ("@search.facets".equals(fieldName)) {
+                    Map<String, List<FacetResult>> facets
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> FacetResult.fromJson(reader2)));
+                    deserializedFacetResult.facets = facets;
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

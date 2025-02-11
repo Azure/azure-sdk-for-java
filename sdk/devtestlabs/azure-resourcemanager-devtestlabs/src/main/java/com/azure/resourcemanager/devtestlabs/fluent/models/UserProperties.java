@@ -5,51 +5,55 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.UserIdentity;
 import com.azure.resourcemanager.devtestlabs.models.UserSecretStore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of a lab user profile. */
+/**
+ * Properties of a lab user profile.
+ */
 @Fluent
-public final class UserProperties {
+public final class UserProperties implements JsonSerializable<UserProperties> {
     /*
      * The identity of the user.
      */
-    @JsonProperty(value = "identity")
     private UserIdentity identity;
 
     /*
      * The secret store of the user.
      */
-    @JsonProperty(value = "secretStore")
     private UserSecretStore secretStore;
 
     /*
      * The creation date of the user profile.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
      * The provisioning status of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique immutable identifier of a resource (Guid).
      */
-    @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
 
-    /** Creates an instance of UserProperties class. */
+    /**
+     * Creates an instance of UserProperties class.
+     */
     public UserProperties() {
     }
 
     /**
      * Get the identity property: The identity of the user.
-     *
+     * 
      * @return the identity value.
      */
     public UserIdentity identity() {
@@ -58,7 +62,7 @@ public final class UserProperties {
 
     /**
      * Set the identity property: The identity of the user.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the UserProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class UserProperties {
 
     /**
      * Get the secretStore property: The secret store of the user.
-     *
+     * 
      * @return the secretStore value.
      */
     public UserSecretStore secretStore() {
@@ -78,7 +82,7 @@ public final class UserProperties {
 
     /**
      * Set the secretStore property: The secret store of the user.
-     *
+     * 
      * @param secretStore the secretStore value to set.
      * @return the UserProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class UserProperties {
 
     /**
      * Get the createdDate property: The creation date of the user profile.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -98,7 +102,7 @@ public final class UserProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -107,7 +111,7 @@ public final class UserProperties {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -116,7 +120,7 @@ public final class UserProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -126,5 +130,51 @@ public final class UserProperties {
         if (secretStore() != null) {
             secretStore().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("secretStore", this.secretStore);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserProperties.
+     */
+    public static UserProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserProperties deserializedUserProperties = new UserProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedUserProperties.identity = UserIdentity.fromJson(reader);
+                } else if ("secretStore".equals(fieldName)) {
+                    deserializedUserProperties.secretStore = UserSecretStore.fromJson(reader);
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedUserProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedUserProperties.provisioningState = reader.getString();
+                } else if ("uniqueIdentifier".equals(fieldName)) {
+                    deserializedUserProperties.uniqueIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserProperties;
+        });
     }
 }

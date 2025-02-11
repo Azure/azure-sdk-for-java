@@ -46,23 +46,29 @@ public class UsernamePasswordCredentialTest {
 
         // mock
 
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithUsernamePassword(request1, fakeUsernamePlaceholder, fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-            when(identityClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithUsernamePassword(request1, fakeUsernamePlaceholder,
+                    fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+                when(identityClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
-                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                         return TestUtils.getMockMsalToken(token2, expiresAt);
-                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         return Mono.error(new UnsupportedOperationException("nothing cached"));
                     } else {
-                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-        })) {
+            })) {
             // test
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId).username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).build();
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId)
+                .username(fakeUsernamePlaceholder)
+                .password(fakePasswordPlaceholder)
+                .build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -74,22 +80,28 @@ public class UsernamePasswordCredentialTest {
             Assertions.assertNotNull(identityClientMock);
         }
 
-        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithUsernamePassword(request1, fakeUsernamePlaceholder, fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
-            when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> {
+        try (MockedConstruction<IdentitySyncClient> identityClientMock
+            = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+                when(identitySyncClient.authenticateWithUsernamePassword(request1, fakeUsernamePlaceholder,
+                    fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
+                when(identitySyncClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
-                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                         return TestUtils.getMockMsalTokenSync(token2, expiresAt);
-                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         return Mono.error(new UnsupportedOperationException("nothing cached"));
                     } else {
-                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-        })) {
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId).username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).build();
+            })) {
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId)
+                .username(fakeUsernamePlaceholder)
+                .password(fakePasswordPlaceholder)
+                .build();
             // test
             AccessToken accessToken = credential.getTokenSync(request1);
             Assertions.assertEquals(token1, accessToken.getToken());
@@ -109,29 +121,38 @@ public class UsernamePasswordCredentialTest {
         String fakePasswordPlaceholder = "fakePasswordPlaceholder";
         String token1 = "token1";
         String token2 = "token2";
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com").setCaeEnabled(true);
-        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net").setCaeEnabled(true);
+        TokenRequestContext request1
+            = new TokenRequestContext().addScopes("https://management.azure.com").setCaeEnabled(true);
+        TokenRequestContext request2
+            = new TokenRequestContext().addScopes("https://vault.azure.net").setCaeEnabled(true);
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
 
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithUsernamePassword(request1, fakeUsernamePlaceholder, fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-            when(identityClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithUsernamePassword(request1, fakeUsernamePlaceholder,
+                    fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+                when(identityClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
-                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0)) && argument.isCaeEnabled()) {
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))
+                        && argument.isCaeEnabled()) {
                         return TestUtils.getMockMsalToken(token2, expiresAt);
-                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         return Mono.error(new UnsupportedOperationException("nothing cached"));
                     } else {
-                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-        })) {
+            })) {
             // test
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId).username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).build();
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId)
+                .username(fakeUsernamePlaceholder)
+                .password(fakePasswordPlaceholder)
+                .build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -143,23 +164,29 @@ public class UsernamePasswordCredentialTest {
             Assertions.assertNotNull(identityClientMock);
         }
 
-        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithUsernamePassword(request1, fakeUsernamePlaceholder, fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
-            when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> {
+        try (MockedConstruction<IdentitySyncClient> identityClientMock
+            = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+                when(identitySyncClient.authenticateWithUsernamePassword(request1, fakeUsernamePlaceholder,
+                    fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
+                when(identitySyncClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
-                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))
                         && argument.isCaeEnabled()) {
                         return TestUtils.getMockMsalTokenSync(token2, expiresAt);
-                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         return Mono.error(new UnsupportedOperationException("nothing cached"));
                     } else {
-                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-        })) {
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId).username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).build();
+            })) {
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId)
+                .username(fakeUsernamePlaceholder)
+                .password(fakePasswordPlaceholder)
+                .build();
             // test
             AccessToken accessToken = credential.getTokenSync(request1);
             Assertions.assertEquals(token1, accessToken.getToken());
@@ -180,30 +207,38 @@ public class UsernamePasswordCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithUsernamePassword(request, fakeUsernamePlaceholder, badPassword)).thenThrow(new MsalServiceException("bad credential", "BadCredential"));
-            when(identityClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
-            when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithUsernamePassword(request, fakeUsernamePlaceholder, badPassword))
+                    .thenThrow(new MsalServiceException("bad credential", "BadCredential"));
+                when(identityClient.authenticateWithPublicClientCache(any(), any()))
+                    .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
+                when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
             // test
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId).username(fakeUsernamePlaceholder).password(badPassword).build();
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId)
+                .username(fakeUsernamePlaceholder)
+                .password(badPassword)
+                .build();
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(t -> t instanceof MsalServiceException && "bad credential".equals(t.getMessage()))
                 .verify();
             Assertions.assertNotNull(identityClientMock);
         }
 
-        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithUsernamePassword(request, fakeUsernamePlaceholder, badPassword)).thenThrow(new MsalServiceException("bad credential", "BadCredential"));
-            when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
-            when(identitySyncClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        })) {
+        try (MockedConstruction<IdentitySyncClient> identityClientMock
+            = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+                when(identitySyncClient.authenticateWithUsernamePassword(request, fakeUsernamePlaceholder, badPassword))
+                    .thenThrow(new MsalServiceException("bad credential", "BadCredential"));
+                when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
+                    .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
+                when(identitySyncClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
             // test
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId).username(fakeUsernamePlaceholder).password(badPassword).build();
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId)
+                .username(fakeUsernamePlaceholder)
+                .password(badPassword)
+                .build();
             try {
                 credential.getTokenSync(request);
             } catch (Exception e) {
@@ -223,14 +258,18 @@ public class UsernamePasswordCredentialTest {
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithUsernamePassword(request, fakeUsernamePlaceholder, fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
-            when(identityClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithUsernamePassword(request, fakeUsernamePlaceholder,
+                    fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
+                when(identityClient.authenticateWithPublicClientCache(any(), any()))
+                    .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
+            })) {
             // test
             try {
-                new UsernamePasswordCredentialBuilder().username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).build();
+                new UsernamePasswordCredentialBuilder().username(fakeUsernamePlaceholder)
+                    .password(fakePasswordPlaceholder)
+                    .build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assertions.assertTrue(e.getMessage().contains("clientId"));
@@ -261,14 +300,16 @@ public class UsernamePasswordCredentialTest {
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithUsernamePassword(eq(request1), eq(fakeUsernamePlaceholder), eq(fakePasswordPlaceholder)))
-                .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithUsernamePassword(eq(request1), eq(fakeUsernamePlaceholder),
+                    eq(fakePasswordPlaceholder))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+            })) {
             // test
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId)
-                    .username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).build();
+            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId)
+                .username(fakeUsernamePlaceholder)
+                .password(fakePasswordPlaceholder)
+                .build();
             StepVerifier.create(credential.authenticate(request1))
                 .expectNextMatches(authenticationRecord -> authenticationRecord.getAuthority()
                     .equals("http://login.microsoftonline.com")
@@ -285,12 +326,15 @@ public class UsernamePasswordCredentialTest {
         String fakeUsernamePlaceholder = "fakeUsernamePlaceholder";
         String fakePasswordPlaceholder = "fakePasswordPlaceholder";
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        UsernamePasswordCredential credential =
-            new UsernamePasswordCredentialBuilder().username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder)
-                .clientId(clientId).additionallyAllowedTenants("RANDOM").build();
+        UsernamePasswordCredential credential
+            = new UsernamePasswordCredentialBuilder().username(fakeUsernamePlaceholder)
+                .password(fakePasswordPlaceholder)
+                .clientId(clientId)
+                .additionallyAllowedTenants("RANDOM")
+                .build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(e -> e.getCause() instanceof MsalServiceException)
             .verify();
@@ -302,14 +346,17 @@ public class UsernamePasswordCredentialTest {
         String fakeUsernamePlaceholder = "fakeUsernamePlaceholder";
         String fakePasswordPlaceholder = "fakePasswordPlaceholder";
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        UsernamePasswordCredential credential =
-            new UsernamePasswordCredentialBuilder().tenantId("tenant").username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder)
-                .clientId(clientId).build();
+        UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().tenantId("tenant")
+            .username(fakeUsernamePlaceholder)
+            .password(fakePasswordPlaceholder)
+            .clientId(clientId)
+            .build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getCause().getMessage().startsWith("The current credential is not configured to")))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException
+                && (e.getCause().getMessage().startsWith("The current credential is not configured to")))
             .verify();
     }
 
@@ -319,16 +366,19 @@ public class UsernamePasswordCredentialTest {
         String fakeUsernamePlaceholder = "fakeUsernamePlaceholder";
         String fakePasswordPlaceholder = "fakePasswordPlaceholder";
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        UsernamePasswordCredential credential =
-            new UsernamePasswordCredentialBuilder().username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).tenantId("tenant")
-                .clientId(clientId).additionallyAllowedTenants(IdentityUtil.ALL_TENANTS).build();
+        UsernamePasswordCredential credential
+            = new UsernamePasswordCredentialBuilder().username(fakeUsernamePlaceholder)
+                .password(fakePasswordPlaceholder)
+                .tenantId("tenant")
+                .clientId(clientId)
+                .additionallyAllowedTenants(IdentityUtil.ALL_TENANTS)
+                .build();
 
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(e -> e.getCause() instanceof MsalServiceException)
             .verify();
     }
 }
-

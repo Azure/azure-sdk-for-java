@@ -6,31 +6,38 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The participant profile property reference. */
+/**
+ * The participant profile property reference.
+ */
 @Fluent
-public final class ParticipantProfilePropertyReference {
+public final class ParticipantProfilePropertyReference
+    implements JsonSerializable<ParticipantProfilePropertyReference> {
     /*
      * The source interaction property that maps to the target profile property.
      */
-    @JsonProperty(value = "interactionPropertyName", required = true)
     private String interactionPropertyName;
 
     /*
      * The target profile property that maps to the source interaction property.
      */
-    @JsonProperty(value = "profilePropertyName", required = true)
     private String profilePropertyName;
 
-    /** Creates an instance of ParticipantProfilePropertyReference class. */
+    /**
+     * Creates an instance of ParticipantProfilePropertyReference class.
+     */
     public ParticipantProfilePropertyReference() {
     }
 
     /**
      * Get the interactionPropertyName property: The source interaction property that maps to the target profile
      * property.
-     *
+     * 
      * @return the interactionPropertyName value.
      */
     public String interactionPropertyName() {
@@ -40,7 +47,7 @@ public final class ParticipantProfilePropertyReference {
     /**
      * Set the interactionPropertyName property: The source interaction property that maps to the target profile
      * property.
-     *
+     * 
      * @param interactionPropertyName the interactionPropertyName value to set.
      * @return the ParticipantProfilePropertyReference object itself.
      */
@@ -51,7 +58,7 @@ public final class ParticipantProfilePropertyReference {
 
     /**
      * Get the profilePropertyName property: The target profile property that maps to the source interaction property.
-     *
+     * 
      * @return the profilePropertyName value.
      */
     public String profilePropertyName() {
@@ -60,7 +67,7 @@ public final class ParticipantProfilePropertyReference {
 
     /**
      * Set the profilePropertyName property: The target profile property that maps to the source interaction property.
-     *
+     * 
      * @param profilePropertyName the profilePropertyName value to set.
      * @return the ParticipantProfilePropertyReference object itself.
      */
@@ -71,24 +78,62 @@ public final class ParticipantProfilePropertyReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (interactionPropertyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property interactionPropertyName in model"
-                            + " ParticipantProfilePropertyReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property interactionPropertyName in model ParticipantProfilePropertyReference"));
         }
         if (profilePropertyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property profilePropertyName in model ParticipantProfilePropertyReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property profilePropertyName in model ParticipantProfilePropertyReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ParticipantProfilePropertyReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("interactionPropertyName", this.interactionPropertyName);
+        jsonWriter.writeStringField("profilePropertyName", this.profilePropertyName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParticipantProfilePropertyReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParticipantProfilePropertyReference if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ParticipantProfilePropertyReference.
+     */
+    public static ParticipantProfilePropertyReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParticipantProfilePropertyReference deserializedParticipantProfilePropertyReference
+                = new ParticipantProfilePropertyReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("interactionPropertyName".equals(fieldName)) {
+                    deserializedParticipantProfilePropertyReference.interactionPropertyName = reader.getString();
+                } else if ("profilePropertyName".equals(fieldName)) {
+                    deserializedParticipantProfilePropertyReference.profilePropertyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedParticipantProfilePropertyReference;
+        });
+    }
 }

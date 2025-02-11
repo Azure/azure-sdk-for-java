@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.connectedvmware.fluent.models.ClusterInner;
 import com.azure.resourcemanager.connectedvmware.models.ResourcePatch;
 
-/** An instance of this class provides access to all the operations defined in ClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClustersClient.
+ */
 public interface ClustersClient {
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,9 +35,9 @@ public interface ClustersClient {
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Request payload.
@@ -46,14 +48,14 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of define the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName, String clusterName, ClusterInner body, Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName, String clusterName,
+        ClusterInner body, Context context);
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,9 +68,9 @@ public interface ClustersClient {
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Request payload.
@@ -83,9 +85,9 @@ public interface ClustersClient {
 
     /**
      * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
+     * 
+     * Implements cluster GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param context The context to associate with this operation.
@@ -95,14 +97,14 @@ public interface ClustersClient {
      * @return define the cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
+     * 
+     * Implements cluster GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,9 +117,9 @@ public interface ClustersClient {
 
     /**
      * Updates a cluster.
-     *
-     * <p>API to update certain properties of the cluster resource.
-     *
+     * 
+     * API to update certain properties of the cluster resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Resource properties to update.
@@ -128,14 +130,14 @@ public interface ClustersClient {
      * @return define the cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> updateWithResponse(
-        String resourceGroupName, String clusterName, ResourcePatch body, Context context);
+    Response<ClusterInner> updateWithResponse(String resourceGroupName, String clusterName, ResourcePatch body,
+        Context context);
 
     /**
      * Updates a cluster.
-     *
-     * <p>API to update certain properties of the cluster resource.
-     *
+     * 
+     * API to update certain properties of the cluster resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,9 +150,9 @@ public interface ClustersClient {
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -163,9 +165,9 @@ public interface ClustersClient {
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param force Whether force delete was specified.
@@ -176,14 +178,14 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, Boolean force,
+        Context context);
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,9 +197,9 @@ public interface ClustersClient {
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param force Whether force delete was specified.
@@ -211,9 +213,9 @@ public interface ClustersClient {
 
     /**
      * Implements GET clusters in a subscription.
-     *
-     * <p>List of clusters in a subscription.
-     *
+     * 
+     * List of clusters in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Clusters as paginated response with {@link PagedIterable}.
@@ -223,9 +225,9 @@ public interface ClustersClient {
 
     /**
      * Implements GET clusters in a subscription.
-     *
-     * <p>List of clusters in a subscription.
-     *
+     * 
+     * List of clusters in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -237,9 +239,9 @@ public interface ClustersClient {
 
     /**
      * Implements GET clusters in a resource group.
-     *
-     * <p>List of clusters in a resource group.
-     *
+     * 
+     * List of clusters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -251,9 +253,9 @@ public interface ClustersClient {
 
     /**
      * Implements GET clusters in a resource group.
-     *
-     * <p>List of clusters in a resource group.
-     *
+     * 
+     * List of clusters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

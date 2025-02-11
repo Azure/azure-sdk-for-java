@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Operation result properties. */
+/**
+ * Operation result properties.
+ */
 @Fluent
-public final class OperationResultProperties {
+public final class OperationResultProperties implements JsonSerializable<OperationResultProperties> {
     /*
      * The kind of the operation.
      */
-    @JsonProperty(value = "operationKind")
     private String operationKind;
 
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The state of the operation.
      */
-    @JsonProperty(value = "operationState")
     private String operationState;
 
-    /** Creates an instance of OperationResultProperties class. */
+    /**
+     * Creates an instance of OperationResultProperties class.
+     */
     public OperationResultProperties() {
     }
 
     /**
      * Get the operationKind property: The kind of the operation.
-     *
+     * 
      * @return the operationKind value.
      */
     public String operationKind() {
@@ -44,7 +49,7 @@ public final class OperationResultProperties {
 
     /**
      * Set the operationKind property: The kind of the operation.
-     *
+     * 
      * @param operationKind the operationKind value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -55,7 +60,7 @@ public final class OperationResultProperties {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -64,7 +69,7 @@ public final class OperationResultProperties {
 
     /**
      * Get the operationState property: The state of the operation.
-     *
+     * 
      * @return the operationState value.
      */
     public String operationState() {
@@ -73,7 +78,7 @@ public final class OperationResultProperties {
 
     /**
      * Set the operationState property: The state of the operation.
-     *
+     * 
      * @param operationState the operationState value to set.
      * @return the OperationResultProperties object itself.
      */
@@ -84,9 +89,51 @@ public final class OperationResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationKind", this.operationKind);
+        jsonWriter.writeStringField("operationState", this.operationState);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultProperties.
+     */
+    public static OperationResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultProperties deserializedOperationResultProperties = new OperationResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationKind".equals(fieldName)) {
+                    deserializedOperationResultProperties.operationKind = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedOperationResultProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("operationState".equals(fieldName)) {
+                    deserializedOperationResultProperties.operationState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultProperties;
+        });
     }
 }

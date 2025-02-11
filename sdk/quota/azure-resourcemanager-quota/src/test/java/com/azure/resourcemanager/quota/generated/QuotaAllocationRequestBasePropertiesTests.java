@@ -12,18 +12,18 @@ public final class QuotaAllocationRequestBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaAllocationRequestBaseProperties model = BinaryData.fromString(
-            "{\"limit\":1364175055394963114,\"name\":{\"value\":\"orxzdmohctbqvud\",\"localizedValue\":\"dndnvow\"},\"region\":\"jjugwdkcglhslaz\"}")
+            "{\"limit\":6472421771400984812,\"name\":{\"value\":\"yvdcsitynnaa\",\"localizedValue\":\"ectehf\"},\"region\":\"scjeypv\"}")
             .toObject(QuotaAllocationRequestBaseProperties.class);
-        Assertions.assertEquals(1364175055394963114L, model.limit());
-        Assertions.assertEquals("jjugwdkcglhslaz", model.region());
+        Assertions.assertEquals(6472421771400984812L, model.limit());
+        Assertions.assertEquals("scjeypv", model.region());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QuotaAllocationRequestBaseProperties model
-            = new QuotaAllocationRequestBaseProperties().withLimit(1364175055394963114L).withRegion("jjugwdkcglhslaz");
+            = new QuotaAllocationRequestBaseProperties().withLimit(6472421771400984812L).withRegion("scjeypv");
         model = BinaryData.fromObject(model).toObject(QuotaAllocationRequestBaseProperties.class);
-        Assertions.assertEquals(1364175055394963114L, model.limit());
-        Assertions.assertEquals("jjugwdkcglhslaz", model.region());
+        Assertions.assertEquals(6472421771400984812L, model.limit());
+        Assertions.assertEquals("scjeypv", model.region());
     }
 }

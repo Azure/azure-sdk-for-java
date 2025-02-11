@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public final class ImportJobsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/importJob_Update.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/importJob_Update.
+     * json
      */
     /**
      * Sample code: importJobs_Update.

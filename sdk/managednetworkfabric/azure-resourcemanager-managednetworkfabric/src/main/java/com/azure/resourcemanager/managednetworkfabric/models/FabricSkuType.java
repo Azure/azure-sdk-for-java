@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of Network Fabric SKU. */
+/**
+ * Type of Network Fabric SKU.
+ */
 public final class FabricSkuType extends ExpandableStringEnum<FabricSkuType> {
-    /** Static value SingleRack for FabricSkuType. */
+    /**
+     * Static value SingleRack for FabricSkuType.
+     */
     public static final FabricSkuType SINGLE_RACK = fromString("SingleRack");
 
-    /** Static value MultiRack for FabricSkuType. */
+    /**
+     * Static value MultiRack for FabricSkuType.
+     */
     public static final FabricSkuType MULTI_RACK = fromString("MultiRack");
 
     /**
      * Creates a new instance of FabricSkuType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class FabricSkuType extends ExpandableStringEnum<FabricSkuType> {
 
     /**
      * Creates or finds a FabricSkuType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FabricSkuType.
      */
-    @JsonCreator
     public static FabricSkuType fromString(String name) {
         return fromString(name, FabricSkuType.class);
     }
 
     /**
      * Gets known FabricSkuType values.
-     *
+     * 
      * @return known FabricSkuType values.
      */
     public static Collection<FabricSkuType> values() {

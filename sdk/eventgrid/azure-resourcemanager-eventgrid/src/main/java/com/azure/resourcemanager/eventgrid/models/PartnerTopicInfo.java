@@ -5,38 +5,39 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the corresponding partner topic of a Channel.
  */
 @Fluent
-public final class PartnerTopicInfo {
+public final class PartnerTopicInfo implements JsonSerializable<PartnerTopicInfo> {
     /*
      * Azure subscription ID of the subscriber. The partner topic associated with the channel will be
      * created under this Azure subscription.
      */
-    @JsonProperty(value = "azureSubscriptionId")
     private String azureSubscriptionId;
 
     /*
      * Azure Resource Group of the subscriber. The partner topic associated with the channel will be
      * created under this resource group.
      */
-    @JsonProperty(value = "resourceGroupName")
     private String resourceGroupName;
 
     /*
      * Name of the partner topic associated with the channel.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Event Type Information for the partner topic. This information is provided by the publisher and can be used by the 
+     * Event Type Information for the partner topic. This information is provided by the publisher and can be used by
+     * the
      * subscriber to view different types of events that are published.
      */
-    @JsonProperty(value = "eventTypeInfo")
     private EventTypeInfo eventTypeInfo;
 
     /*
@@ -44,7 +45,6 @@ public final class PartnerTopicInfo {
      * are originating. This information can be used by the subscriber during the approval process of the
      * created partner topic.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /**
@@ -180,5 +180,53 @@ public final class PartnerTopicInfo {
         if (eventTypeInfo() != null) {
             eventTypeInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azureSubscriptionId", this.azureSubscriptionId);
+        jsonWriter.writeStringField("resourceGroupName", this.resourceGroupName);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("eventTypeInfo", this.eventTypeInfo);
+        jsonWriter.writeStringField("source", this.source);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerTopicInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerTopicInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerTopicInfo.
+     */
+    public static PartnerTopicInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerTopicInfo deserializedPartnerTopicInfo = new PartnerTopicInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureSubscriptionId".equals(fieldName)) {
+                    deserializedPartnerTopicInfo.azureSubscriptionId = reader.getString();
+                } else if ("resourceGroupName".equals(fieldName)) {
+                    deserializedPartnerTopicInfo.resourceGroupName = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPartnerTopicInfo.name = reader.getString();
+                } else if ("eventTypeInfo".equals(fieldName)) {
+                    deserializedPartnerTopicInfo.eventTypeInfo = EventTypeInfo.fromJson(reader);
+                } else if ("source".equals(fieldName)) {
+                    deserializedPartnerTopicInfo.source = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerTopicInfo;
+        });
     }
 }

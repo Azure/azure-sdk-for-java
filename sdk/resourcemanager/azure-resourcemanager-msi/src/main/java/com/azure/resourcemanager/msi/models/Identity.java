@@ -15,26 +15,29 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
-
 /**
  * An immutable client-side representation of an Azure Managed Service Identity (MSI) Identity resource.
  */
 @Fluent
 public interface Identity
-        extends GroupableResource<MsiManager, IdentityInner>,
-        Refreshable<Identity>,
-        Updatable<Identity.Update> {
+    extends GroupableResource<MsiManager, IdentityInner>, Refreshable<Identity>, Updatable<Identity.Update> {
     /**
+     * Gets the ID of the Azure Active Directory tenant to which the identity belongs to.
+     *
      * @return id of the Azure Active Directory tenant to which the identity belongs to
      */
     String tenantId();
 
     /**
+     * Gets the ID of the Azure Active Directory service principal object associated with the identity.
+     *
      * @return id of the Azure Active Directory service principal object associated with the identity
      */
     String principalId();
 
     /**
+     * Gets the ID of the Azure Active Directory application associated with the identity.
+     *
      * @return id of the Azure Active Directory application associated with the identity
      */
     String clientId();
@@ -42,10 +45,7 @@ public interface Identity
     /**
      * Container interface for all the definitions related to identity.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
     }
 
     /**
@@ -140,10 +140,8 @@ public interface Identity
          * The stage of the identity definition which contains all the minimum required inputs for
          * the resource to be created but also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends
-                Resource.DefinitionWithTags<WithCreate>,
-                Creatable<Identity>,
-                DefinitionStages.WithAccess {
+        interface WithCreate
+            extends Resource.DefinitionWithTags<WithCreate>, Creatable<Identity>, DefinitionStages.WithAccess {
         }
     }
 
@@ -244,9 +242,6 @@ public interface Identity
     /**
      * The template for an identity update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-            Appliable<Identity>,
-            UpdateStages.WithAccess,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<Identity>, UpdateStages.WithAccess, Resource.UpdateWithTags<Update> {
     }
 }

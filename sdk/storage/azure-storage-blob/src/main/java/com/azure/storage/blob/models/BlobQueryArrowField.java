@@ -11,13 +11,14 @@ import com.azure.storage.common.implementation.StorageImplUtils;
  */
 @Fluent
 public class BlobQueryArrowField {
-
     private String name;
     private Integer precision;
     private Integer scale;
     private final BlobQueryArrowFieldType type;
 
     /**
+     * Creates a new instance of {@link BlobQueryArrowField}.
+     *
      * @param type {@link BlobQueryArrowFieldType}
      */
     public BlobQueryArrowField(BlobQueryArrowFieldType type) {
@@ -26,6 +27,8 @@ public class BlobQueryArrowField {
     }
 
     /**
+     * Sets the name of the field.
+     *
      * @param name The name of the field.
      * @return The updated options.
      */
@@ -35,6 +38,8 @@ public class BlobQueryArrowField {
     }
 
     /**
+     * Sets the precision of the field. Required if type is {@link BlobQueryArrowFieldType#DECIMAL}.
+     *
      * @param precision The precision of the field. Required if type is {@link BlobQueryArrowFieldType#DECIMAL}
      * @return The updated options.
      */
@@ -44,6 +49,8 @@ public class BlobQueryArrowField {
     }
 
     /**
+     * Sets the scale of the field. Required if type is {@link BlobQueryArrowFieldType#DECIMAL}.
+     *
      * @param scale The scale of the field. Required if type is {@link BlobQueryArrowFieldType#DECIMAL}
      * @return The updated options.
      */
@@ -53,6 +60,8 @@ public class BlobQueryArrowField {
     }
 
     /**
+     * Gets the name.
+     *
      * @return The name.
      */
     public String getName() {
@@ -60,6 +69,8 @@ public class BlobQueryArrowField {
     }
 
     /**
+     * Gets the precision.
+     *
      * @return The precision.
      */
     public Integer getPrecision() {
@@ -67,6 +78,8 @@ public class BlobQueryArrowField {
     }
 
     /**
+     * Gets the scale.
+     *
      * @return The scale.
      */
     public Integer getScale() {
@@ -74,6 +87,8 @@ public class BlobQueryArrowField {
     }
 
     /**
+     * Gets the {@link BlobQueryArrowFieldType}.
+     *
      * @return {@link BlobQueryArrowFieldType}
      */
     public BlobQueryArrowFieldType getType() {

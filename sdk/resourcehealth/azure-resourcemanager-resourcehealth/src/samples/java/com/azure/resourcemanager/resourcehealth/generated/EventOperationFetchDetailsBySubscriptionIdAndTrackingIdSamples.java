@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.resourcehealth.generated;
 
-/** Samples for EventOperation FetchDetailsBySubscriptionIdAndTrackingId. */
+/**
+ * Samples for EventOperation FetchDetailsBySubscriptionIdAndTrackingId.
+ */
 public final class EventOperationFetchDetailsBySubscriptionIdAndTrackingIdSamples {
     /*
-     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/Event_fetchDetailsBySubscriptionIdAndTrackingId.json
+     * x-ms-original-file:
+     * specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/
+     * Event_fetchDetailsBySubscriptionIdAndTrackingId.json
      */
     /**
      * Sample code: EventDetailsBySubscriptionIdAndTrackingId.
-     *
+     * 
      * @param manager Entry point to ResourceHealthManager.
      */
     public static void eventDetailsBySubscriptionIdAndTrackingId(
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager manager) {
-        manager
-            .eventOperations()
+        manager.eventOperations()
             .fetchDetailsBySubscriptionIdAndTrackingIdWithResponse("eventTrackingId", com.azure.core.util.Context.NONE);
     }
 }

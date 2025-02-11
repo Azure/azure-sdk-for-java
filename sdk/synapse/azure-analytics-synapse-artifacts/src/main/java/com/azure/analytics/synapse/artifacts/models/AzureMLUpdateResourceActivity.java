@@ -24,7 +24,8 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     private String type = "AzureMLUpdateResource";
 
     /*
-     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with resultType string).
+     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with
+     * resultType string).
      */
     private Object trainedModelName;
 
@@ -34,7 +35,8 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     private LinkedServiceReference trainedModelLinkedServiceName;
 
     /*
-     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the update operation.  Type: string (or Expression with resultType string).
+     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the
+     * update operation. Type: string (or Expression with resultType string).
      */
     private Object trainedModelFilePath;
 

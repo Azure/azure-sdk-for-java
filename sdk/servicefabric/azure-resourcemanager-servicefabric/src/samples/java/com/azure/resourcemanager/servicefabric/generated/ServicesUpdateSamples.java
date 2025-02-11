@@ -26,7 +26,8 @@ public final class ServicesUpdateSamples {
      */
     public static void patchAService(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
         ServiceResource resource = manager.services()
-            .getWithResponse("resRg", "myCluster", "myApp", "myService", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("resRg", "myCluster", "myApp", "myService", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
             .withProperties(new StatelessServiceUpdateProperties().withServiceLoadMetrics(Arrays.asList(
                 new ServiceLoadMetricDescription().withName("metric1").withWeight(ServiceLoadMetricWeight.LOW))))

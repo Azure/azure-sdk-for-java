@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.extendedlocation.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CustomLocations GetByResourceGroup. */
+/**
+ * Samples for CustomLocations GetByResourceGroup.
+ */
 public final class CustomLocationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsGet.json
+     * x-ms-original-file:
+     * specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/
+     * CustomLocationsGet.json
      */
     /**
      * Sample code: Get Custom Location.
-     *
+     * 
      * @param manager Entry point to CustomLocationsManager.
      */
     public static void getCustomLocation(com.azure.resourcemanager.extendedlocation.CustomLocationsManager manager) {
-        manager.customLocations().getByResourceGroupWithResponse("testresourcegroup", "customLocation01", Context.NONE);
+        manager.customLocations()
+            .getByResourceGroupWithResponse("testresourcegroup", "customLocation01", com.azure.core.util.Context.NONE);
     }
 }

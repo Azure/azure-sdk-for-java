@@ -124,7 +124,6 @@ public final class InformixSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -80,8 +80,8 @@ public class SqlRuleFilter extends RuleFilter {
         if (sqlExpression == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'sqlExpression' cannot be null."));
         } else if (sqlExpression.isEmpty()) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'sqlExpression' cannot be an empty string."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'sqlExpression' cannot be an empty string."));
         }
 
         this.sqlExpression = sqlExpression;

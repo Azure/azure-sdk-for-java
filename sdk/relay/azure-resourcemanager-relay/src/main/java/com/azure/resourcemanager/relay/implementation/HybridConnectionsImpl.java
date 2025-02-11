@@ -26,32 +26,44 @@ public final class HybridConnectionsImpl implements HybridConnections {
 
     private final com.azure.resourcemanager.relay.RelayManager serviceManager;
 
-    public HybridConnectionsImpl(
-        HybridConnectionsClient innerClient, com.azure.resourcemanager.relay.RelayManager serviceManager) {
+    public HybridConnectionsImpl(HybridConnectionsClient innerClient,
+        com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<HybridConnection> listByNamespace(String resourceGroupName, String namespaceName) {
-        PagedIterable<HybridConnectionInner> inner =
-            this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
-        return Utils.mapPage(inner, inner1 -> new HybridConnectionImpl(inner1, this.manager()));
+        PagedIterable<HybridConnectionInner> inner
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HybridConnectionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<HybridConnection> listByNamespace(
-        String resourceGroupName, String namespaceName, Context context) {
-        PagedIterable<HybridConnectionInner> inner =
-            this.serviceClient().listByNamespace(resourceGroupName, namespaceName, context);
-        return Utils.mapPage(inner, inner1 -> new HybridConnectionImpl(inner1, this.manager()));
+    public PagedIterable<HybridConnection> listByNamespace(String resourceGroupName, String namespaceName,
+        Context context) {
+        PagedIterable<HybridConnectionInner> inner
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HybridConnectionImpl(inner1, this.manager()));
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName,
+        String hybridConnectionName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, namespaceName, hybridConnectionName, context);
     }
 
     public void delete(String resourceGroupName, String namespaceName, String hybridConnectionName) {
         this.serviceClient().delete(resourceGroupName, namespaceName, hybridConnectionName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String namespaceName, String hybridConnectionName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, namespaceName, hybridConnectionName, context);
+    public Response<HybridConnection> getWithResponse(String resourceGroupName, String namespaceName,
+        String hybridConnectionName, Context context) {
+        Response<HybridConnectionInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, namespaceName, hybridConnectionName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new HybridConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public HybridConnection get(String resourceGroupName, String namespaceName, String hybridConnectionName) {
@@ -63,48 +75,39 @@ public final class HybridConnectionsImpl implements HybridConnections {
         }
     }
 
-    public Response<HybridConnection> getWithResponse(
-        String resourceGroupName, String namespaceName, String hybridConnectionName, Context context) {
-        Response<HybridConnectionInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, namespaceName, hybridConnectionName, context);
+    public PagedIterable<AuthorizationRule> listAuthorizationRules(String resourceGroupName, String namespaceName,
+        String hybridConnectionName) {
+        PagedIterable<AuthorizationRuleInner> inner
+            = this.serviceClient().listAuthorizationRules(resourceGroupName, namespaceName, hybridConnectionName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<AuthorizationRule> listAuthorizationRules(String resourceGroupName, String namespaceName,
+        String hybridConnectionName, Context context) {
+        PagedIterable<AuthorizationRuleInner> inner = this.serviceClient()
+            .listAuthorizationRules(resourceGroupName, namespaceName, hybridConnectionName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
+    }
+
+    public Response<AuthorizationRule> createOrUpdateAuthorizationRuleWithResponse(String resourceGroupName,
+        String namespaceName, String hybridConnectionName, String authorizationRuleName,
+        AuthorizationRuleInner parameters, Context context) {
+        Response<AuthorizationRuleInner> inner = this.serviceClient()
+            .createOrUpdateAuthorizationRuleWithResponse(resourceGroupName, namespaceName, hybridConnectionName,
+                authorizationRuleName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new HybridConnectionImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AuthorizationRuleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PagedIterable<AuthorizationRule> listAuthorizationRules(
-        String resourceGroupName, String namespaceName, String hybridConnectionName) {
-        PagedIterable<AuthorizationRuleInner> inner =
-            this.serviceClient().listAuthorizationRules(resourceGroupName, namespaceName, hybridConnectionName);
-        return Utils.mapPage(inner, inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<AuthorizationRule> listAuthorizationRules(
-        String resourceGroupName, String namespaceName, String hybridConnectionName, Context context) {
-        PagedIterable<AuthorizationRuleInner> inner =
-            this
-                .serviceClient()
-                .listAuthorizationRules(resourceGroupName, namespaceName, hybridConnectionName, context);
-        return Utils.mapPage(inner, inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
-    }
-
-    public AuthorizationRule createOrUpdateAuthorizationRule(
-        String resourceGroupName,
-        String namespaceName,
-        String hybridConnectionName,
-        String authorizationRuleName,
-        AuthorizationRuleInner parameters) {
-        AuthorizationRuleInner inner =
-            this
-                .serviceClient()
-                .createOrUpdateAuthorizationRule(
-                    resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName, parameters);
+    public AuthorizationRule createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName,
+        String hybridConnectionName, String authorizationRuleName, AuthorizationRuleInner parameters) {
+        AuthorizationRuleInner inner = this.serviceClient()
+            .createOrUpdateAuthorizationRule(resourceGroupName, namespaceName, hybridConnectionName,
+                authorizationRuleName, parameters);
         if (inner != null) {
             return new AuthorizationRuleImpl(inner, this.manager());
         } else {
@@ -112,54 +115,36 @@ public final class HybridConnectionsImpl implements HybridConnections {
         }
     }
 
-    public Response<AuthorizationRule> createOrUpdateAuthorizationRuleWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String hybridConnectionName,
-        String authorizationRuleName,
-        AuthorizationRuleInner parameters,
-        Context context) {
-        Response<AuthorizationRuleInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateAuthorizationRuleWithResponse(
-                    resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AuthorizationRuleImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteAuthorizationRuleWithResponse(String resourceGroupName, String namespaceName,
+        String hybridConnectionName, String authorizationRuleName, Context context) {
+        return this.serviceClient()
+            .deleteAuthorizationRuleWithResponse(resourceGroupName, namespaceName, hybridConnectionName,
+                authorizationRuleName, context);
     }
 
-    public void deleteAuthorizationRule(
-        String resourceGroupName, String namespaceName, String hybridConnectionName, String authorizationRuleName) {
-        this
-            .serviceClient()
+    public void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String hybridConnectionName,
+        String authorizationRuleName) {
+        this.serviceClient()
             .deleteAuthorizationRule(resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName);
     }
 
-    public Response<Void> deleteAuthorizationRuleWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String hybridConnectionName,
-        String authorizationRuleName,
-        Context context) {
-        return this
-            .serviceClient()
-            .deleteAuthorizationRuleWithResponse(
-                resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName, context);
+    public Response<AuthorizationRule> getAuthorizationRuleWithResponse(String resourceGroupName, String namespaceName,
+        String hybridConnectionName, String authorizationRuleName, Context context) {
+        Response<AuthorizationRuleInner> inner = this.serviceClient()
+            .getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, hybridConnectionName,
+                authorizationRuleName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AuthorizationRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public AuthorizationRule getAuthorizationRule(
-        String resourceGroupName, String namespaceName, String hybridConnectionName, String authorizationRuleName) {
-        AuthorizationRuleInner inner =
-            this
-                .serviceClient()
-                .getAuthorizationRule(resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName);
+    public AuthorizationRule getAuthorizationRule(String resourceGroupName, String namespaceName,
+        String hybridConnectionName, String authorizationRuleName) {
+        AuthorizationRuleInner inner = this.serviceClient()
+            .getAuthorizationRule(resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName);
         if (inner != null) {
             return new AuthorizationRuleImpl(inner, this.manager());
         } else {
@@ -167,34 +152,23 @@ public final class HybridConnectionsImpl implements HybridConnections {
         }
     }
 
-    public Response<AuthorizationRule> getAuthorizationRuleWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String hybridConnectionName,
-        String authorizationRuleName,
-        Context context) {
-        Response<AuthorizationRuleInner> inner =
-            this
-                .serviceClient()
-                .getAuthorizationRuleWithResponse(
-                    resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName, context);
+    public Response<AccessKeys> listKeysWithResponse(String resourceGroupName, String namespaceName,
+        String hybridConnectionName, String authorizationRuleName, Context context) {
+        Response<AccessKeysInner> inner = this.serviceClient()
+            .listKeysWithResponse(resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AuthorizationRuleImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AccessKeys listKeys(
-        String resourceGroupName, String namespaceName, String hybridConnectionName, String authorizationRuleName) {
-        AccessKeysInner inner =
-            this
-                .serviceClient()
-                .listKeys(resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName);
+    public AccessKeys listKeys(String resourceGroupName, String namespaceName, String hybridConnectionName,
+        String authorizationRuleName) {
+        AccessKeysInner inner = this.serviceClient()
+            .listKeys(resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName);
         if (inner != null) {
             return new AccessKeysImpl(inner, this.manager());
         } else {
@@ -202,177 +176,103 @@ public final class HybridConnectionsImpl implements HybridConnections {
         }
     }
 
-    public Response<AccessKeys> listKeysWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String hybridConnectionName,
-        String authorizationRuleName,
+    public Response<AccessKeys> regenerateKeysWithResponse(String resourceGroupName, String namespaceName,
+        String hybridConnectionName, String authorizationRuleName, RegenerateAccessKeyParameters parameters,
         Context context) {
-        Response<AccessKeysInner> inner =
-            this
-                .serviceClient()
-                .listKeysWithResponse(
-                    resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName, context);
+        Response<AccessKeysInner> inner = this.serviceClient()
+            .regenerateKeysWithResponse(resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName,
+                parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AccessKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AccessKeys regenerateKeys(
-        String resourceGroupName,
-        String namespaceName,
-        String hybridConnectionName,
-        String authorizationRuleName,
-        RegenerateAccessKeyParameters parameters) {
-        AccessKeysInner inner =
-            this
-                .serviceClient()
-                .regenerateKeys(
-                    resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName, parameters);
+    public AccessKeys regenerateKeys(String resourceGroupName, String namespaceName, String hybridConnectionName,
+        String authorizationRuleName, RegenerateAccessKeyParameters parameters) {
+        AccessKeysInner inner = this.serviceClient()
+            .regenerateKeys(resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName, parameters);
         if (inner != null) {
             return new AccessKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<AccessKeys> regenerateKeysWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String hybridConnectionName,
-        String authorizationRuleName,
-        RegenerateAccessKeyParameters parameters,
-        Context context) {
-        Response<AccessKeysInner> inner =
-            this
-                .serviceClient()
-                .regenerateKeysWithResponse(
-                    resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AccessKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
     public HybridConnection getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String hybridConnectionName = Utils.getValueFromIdByName(id, "hybridConnections");
+        String hybridConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "hybridConnections");
         if (hybridConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridConnections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hybridConnections'.", id)));
         }
         return this.getWithResponse(resourceGroupName, namespaceName, hybridConnectionName, Context.NONE).getValue();
     }
 
     public Response<HybridConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String hybridConnectionName = Utils.getValueFromIdByName(id, "hybridConnections");
+        String hybridConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "hybridConnections");
         if (hybridConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridConnections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hybridConnections'.", id)));
         }
         return this.getWithResponse(resourceGroupName, namespaceName, hybridConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String hybridConnectionName = Utils.getValueFromIdByName(id, "hybridConnections");
+        String hybridConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "hybridConnections");
         if (hybridConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridConnections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hybridConnections'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, namespaceName, hybridConnectionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String hybridConnectionName = Utils.getValueFromIdByName(id, "hybridConnections");
+        String hybridConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "hybridConnections");
         if (hybridConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridConnections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hybridConnections'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, namespaceName, hybridConnectionName, context);
     }

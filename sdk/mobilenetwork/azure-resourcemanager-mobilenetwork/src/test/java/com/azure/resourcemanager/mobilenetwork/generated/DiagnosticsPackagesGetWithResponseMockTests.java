@@ -20,7 +20,7 @@ public final class DiagnosticsPackagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Deleted\",\"status\":\"Error\",\"reason\":\"pj\"},\"id\":\"zxlioh\",\"name\":\"d\",\"type\":\"dtfgxqbawpcbb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Error\",\"reason\":\"sggux\"},\"id\":\"mlwywaeeczg\",\"name\":\"bukklels\",\"type\":\"xblycsxzuj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class DiagnosticsPackagesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DiagnosticsPackage response = manager.diagnosticsPackages()
-            .getWithResponse("uxvnsasbcrymodi", "rxklobdxnazpmk", "lmv", com.azure.core.util.Context.NONE)
+            .getWithResponse("kcoeqswank", "t", "tmhdroznnhdr", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

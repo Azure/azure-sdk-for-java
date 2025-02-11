@@ -7,21 +7,21 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApiWikisCreateOrUpdateHeaders model. */
+/**
+ * The ApiWikisCreateOrUpdateHeaders model.
+ */
 @Fluent
 public final class ApiWikisCreateOrUpdateHeaders {
     /*
      * The Etag property.
      */
-    @JsonProperty(value = "Etag")
     private String etag;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ApiWikisCreateOrUpdateHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ApiWikisCreateOrUpdateHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +30,7 @@ public final class ApiWikisCreateOrUpdateHeaders {
 
     /**
      * Get the etag property: The Etag property.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -39,7 +39,7 @@ public final class ApiWikisCreateOrUpdateHeaders {
 
     /**
      * Set the etag property: The Etag property.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ApiWikisCreateOrUpdateHeaders object itself.
      */
@@ -50,7 +50,7 @@ public final class ApiWikisCreateOrUpdateHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Products. */
+/**
+ * Resource collection API of Products.
+ */
 public interface Products {
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Products {
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface Products {
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -47,12 +49,12 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return product information along with {@link Response}.
      */
-    Response<Product> getWithResponse(
-        String resourceGroup, String registrationName, String productName, Context context);
+    Response<Product> getWithResponse(String resourceGroup, String registrationName, String productName,
+        Context context);
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -65,7 +67,7 @@ public interface Products {
 
     /**
      * Returns the extended properties of a product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -73,15 +75,15 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extended description about the product required for installing it into Azure Stack along with {@link
-     *     Response}.
+     * @return extended description about the product required for installing it into Azure Stack along with
+     * {@link Response}.
      */
-    Response<ExtendedProduct> listDetailsWithResponse(
-        String resourceGroup, String registrationName, String productName, Context context);
+    Response<ExtendedProduct> listDetailsWithResponse(String resourceGroup, String registrationName, String productName,
+        Context context);
 
     /**
      * Returns the extended properties of a product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -94,7 +96,7 @@ public interface Products {
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -105,16 +107,12 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pageable list of products along with {@link Response}.
      */
-    Response<ProductList> listProductsWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        DeviceConfiguration deviceConfiguration,
-        Context context);
+    Response<ProductList> listProductsWithResponse(String resourceGroup, String registrationName, String productName,
+        DeviceConfiguration deviceConfiguration, Context context);
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -127,7 +125,7 @@ public interface Products {
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -138,16 +136,12 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pageable list of products along with {@link Response}.
      */
-    Response<ProductList> getProductsWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        DeviceConfiguration deviceConfiguration,
-        Context context);
+    Response<ProductList> getProductsWithResponse(String resourceGroup, String registrationName, String productName,
+        DeviceConfiguration deviceConfiguration, Context context);
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -160,7 +154,7 @@ public interface Products {
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -171,16 +165,12 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return product information along with {@link Response}.
      */
-    Response<Product> getProductWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        DeviceConfiguration deviceConfiguration,
-        Context context);
+    Response<Product> getProductWithResponse(String resourceGroup, String registrationName, String productName,
+        DeviceConfiguration deviceConfiguration, Context context);
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -193,7 +183,7 @@ public interface Products {
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
@@ -204,16 +194,12 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return product action log along with {@link Response}.
      */
-    Response<ProductLog> uploadLogWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        MarketplaceProductLogUpdate marketplaceProductLogUpdate,
-        Context context);
+    Response<ProductLog> uploadLogWithResponse(String resourceGroup, String registrationName, String productName,
+        MarketplaceProductLogUpdate marketplaceProductLogUpdate, Context context);
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.

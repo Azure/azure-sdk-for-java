@@ -55,15 +55,13 @@ public class StandbyPoolTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        standbyPoolManager = StandbyPoolManager
-                .configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                .authenticate(credential, profile);
+        standbyPoolManager = StandbyPoolManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
-        computeManager = ComputeManager
-                .configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                .authenticate(credential, profile);
+        computeManager = ComputeManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -71,10 +69,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            computeManager.resourceManager().resourceGroups()
-                    .define(resourceGroupName)
-                    .withRegion(REGION)
-                    .create();
+            computeManager.resourceManager().resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -98,46 +93,47 @@ public class StandbyPoolTests extends TestProxyTestBase {
 
             // Create virtual network and virtual machine scale set
             virtualNetwork = this.computeManager.networkManager()
-                    .networks()
-                    .define("vmssvnet")
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(resourceGroupName)
-                    .withAddressSpace("10.0.0.0/27")
-                    .withSubnet("default", "10.0.0.0/27")
-                    .create();
+                .networks()
+                .define("vmssvnet")
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroupName)
+                .withAddressSpace("10.0.0.0/27")
+                .withSubnet("default", "10.0.0.0/27")
+                .create();
 
             virtualMachineScaleSet = computeManager.virtualMachineScaleSets()
-                    .define("vmss")
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(resourceGroupName)
-                    .withFlexibleOrchestrationMode()
-                    .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                    .withExistingPrimaryNetworkSubnet(virtualNetwork, "default")
-                    .withoutPrimaryInternetFacingLoadBalancer()
-                    .withoutPrimaryInternalLoadBalancer()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                    .withRootUsername("Foo12")
-                    .withSsh(sshPublicKey())
-                    .withVirtualMachinePublicIp()
-                    .withCapacity(3L)
-                    .create();
+                .define("vmss")
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroupName)
+                .withFlexibleOrchestrationMode()
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingPrimaryNetworkSubnet(virtualNetwork, "default")
+                .withoutPrimaryInternetFacingLoadBalancer()
+                .withoutPrimaryInternalLoadBalancer()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+                .withRootUsername("Foo12")
+                .withSsh(sshPublicKey())
+                .withVirtualMachinePublicIp()
+                .withCapacity(3L)
+                .create();
 
             // create standby virtual machine pool
             standbyVirtualMachinePool = standbyPoolManager.standbyVirtualMachinePools()
-                    .define(poolName)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(resourceGroupName)
-                    .withProperties(new StandbyVirtualMachinePoolResourceProperties()
-                            .withAttachedVirtualMachineScaleSetId(virtualMachineScaleSet.id())
-                            .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
-                            .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile()
-                                    .withMaxReadyCapacity(3L)
-                                    .withMinReadyCapacity(1L)))
-                    .create();
+                .define(poolName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroupName)
+                .withProperties(new StandbyVirtualMachinePoolResourceProperties()
+                    .withAttachedVirtualMachineScaleSetId(virtualMachineScaleSet.id())
+                    .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
+                    .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(3L)
+                        .withMinReadyCapacity(1L)))
+                .create();
             // @embedmeEnd
             standbyVirtualMachinePool.refresh();
             Assertions.assertEquals(poolName, standbyVirtualMachinePool.name());
-            Assertions.assertTrue(standbyPoolManager.standbyVirtualMachinePools().listByResourceGroup(resourceGroupName).stream().count() > 0);
+            Assertions.assertTrue(
+                standbyPoolManager.standbyVirtualMachinePools().listByResourceGroup(resourceGroupName).stream().count()
+                    > 0);
         } finally {
             if (standbyVirtualMachinePool != null) {
                 standbyPoolManager.standbyVirtualMachinePools().deleteById(standbyVirtualMachinePool.id());
@@ -170,7 +166,8 @@ public class StandbyPoolTests extends TestProxyTestBase {
             dos.write(rsaPublicKey.getPublicExponent().toByteArray());
             dos.writeInt(rsaPublicKey.getModulus().toByteArray().length);
             dos.write(rsaPublicKey.getModulus().toByteArray());
-            String publicKeyEncoded = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
+            String publicKeyEncoded
+                = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
             sshPublicKey = "ssh-rsa " + publicKeyEncoded;
         } catch (NoSuchAlgorithmException | IOException e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("failed to generate ssh key", e));

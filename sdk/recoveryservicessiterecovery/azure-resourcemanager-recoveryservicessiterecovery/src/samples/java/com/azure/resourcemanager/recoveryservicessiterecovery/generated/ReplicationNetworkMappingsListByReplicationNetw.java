@@ -20,8 +20,9 @@ public final class ReplicationNetworkMappingsListByReplicationNetw {
      */
     public static void getsAllTheNetworkMappingsUnderANetwork(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationNetworkMappings().listByReplicationNetworks("srce2avaultbvtaC27", "srcBvte2a14C27",
-            "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac", "e2267b5c-2650-49bd-ab3f-d66aae694c06",
-            com.azure.core.util.Context.NONE);
+        manager.replicationNetworkMappings()
+            .listByReplicationNetworks("srce2avaultbvtaC27", "srcBvte2a14C27",
+                "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac",
+                "e2267b5c-2650-49bd-ab3f-d66aae694c06", com.azure.core.util.Context.NONE);
     }
 }

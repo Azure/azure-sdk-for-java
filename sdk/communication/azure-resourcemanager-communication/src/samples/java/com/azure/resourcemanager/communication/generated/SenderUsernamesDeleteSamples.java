@@ -20,7 +20,8 @@ public final class SenderUsernamesDeleteSamples {
      */
     public static void
         deleteSenderUsernamesResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.senderUsernames().deleteWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
-            "contosoNewsAlerts", com.azure.core.util.Context.NONE);
+        manager.senderUsernames()
+            .deleteWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com", "contosoNewsAlerts",
+                com.azure.core.util.Context.NONE);
     }
 }

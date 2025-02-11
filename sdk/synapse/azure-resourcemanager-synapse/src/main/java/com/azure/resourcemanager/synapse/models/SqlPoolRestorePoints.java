@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlPoolRestorePoints. */
+/**
+ * Resource collection API of SqlPoolRestorePoints.
+ */
 public interface SqlPoolRestorePoints {
     /**
      * Get SQL pool backup
-     *
-     * <p>Get SQL pool backup information.
-     *
+     * 
+     * Get SQL pool backup information.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -27,9 +29,9 @@ public interface SqlPoolRestorePoints {
 
     /**
      * Get SQL pool backup
-     *
-     * <p>Get SQL pool backup information.
-     *
+     * 
+     * Get SQL pool backup information.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -39,12 +41,12 @@ public interface SqlPoolRestorePoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool backup information as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RestorePoint> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<RestorePoint> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -54,15 +56,12 @@ public interface SqlPoolRestorePoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return database restore points.
      */
-    RestorePoint create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    RestorePoint create(String resourceGroupName, String workspaceName, String sqlPoolName,
         CreateSqlPoolRestorePointDefinition parameters);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -73,16 +72,12 @@ public interface SqlPoolRestorePoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return database restore points.
      */
-    RestorePoint create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
-        Context context);
+    RestorePoint create(String resourceGroupName, String workspaceName, String sqlPoolName,
+        CreateSqlPoolRestorePointDefinition parameters, Context context);
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -93,12 +88,12 @@ public interface SqlPoolRestorePoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a restore point along with {@link Response}.
      */
-    Response<RestorePoint> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);
+    Response<RestorePoint> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName, Context context);
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -112,7 +107,7 @@ public interface SqlPoolRestorePoints {
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -123,12 +118,12 @@ public interface SqlPoolRestorePoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName, Context context);
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

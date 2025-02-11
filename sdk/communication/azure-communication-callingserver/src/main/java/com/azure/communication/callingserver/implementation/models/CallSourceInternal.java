@@ -5,22 +5,25 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The CallSourceInternal model. */
 @Fluent
-public final class CallSourceInternal {
+public final class CallSourceInternal implements JsonSerializable<CallSourceInternal> {
     /*
      * The alternate identity of the source of the call if dialing out to a
      * pstn number
      */
-    @JsonProperty(value = "callerId")
     private PhoneNumberIdentifierModel callerId;
 
     /*
      * The identifier of the source of the call
      */
-    @JsonProperty(value = "identifier", required = true)
     private CommunicationIdentifierModel identifier;
 
     /**
@@ -61,5 +64,42 @@ public final class CallSourceInternal {
     public CallSourceInternal setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeJsonField("calledId", callerId)
+            .writeJsonField("identifier", identifier)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link CallSourceInternal} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link CallSourceInternal}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static CallSourceInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CallSourceInternal source = new CallSourceInternal();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("callerId".equals(fieldName)) {
+                    source.callerId = PhoneNumberIdentifierModel.fromJson(reader);
+                } else if ("identifier".equals(fieldName)) {
+                    source.identifier = CommunicationIdentifierModel.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return source;
+        });
     }
 }

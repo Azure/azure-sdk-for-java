@@ -20,7 +20,7 @@ public final class ConfigurationGroupSchemasDeleteSamples {
      */
     public static void
         deleteANetworkFunctionGroupResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.configurationGroupSchemas().delete("rg1", "testPublisher", "testConfigurationGroupSchema",
-            com.azure.core.util.Context.NONE);
+        manager.configurationGroupSchemas()
+            .delete("rg1", "testPublisher", "testConfigurationGroupSchema", com.azure.core.util.Context.NONE);
     }
 }

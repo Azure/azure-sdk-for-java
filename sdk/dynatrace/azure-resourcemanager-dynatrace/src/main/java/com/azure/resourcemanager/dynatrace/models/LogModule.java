@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Tells whether log modules are enabled or not. */
+/**
+ * Tells whether log modules are enabled or not.
+ */
 public final class LogModule extends ExpandableStringEnum<LogModule> {
-    /** Static value ENABLED for LogModule. */
+    /**
+     * Static value ENABLED for LogModule.
+     */
     public static final LogModule ENABLED = fromString("ENABLED");
 
-    /** Static value DISABLED for LogModule. */
+    /**
+     * Static value DISABLED for LogModule.
+     */
     public static final LogModule DISABLED = fromString("DISABLED");
 
     /**
      * Creates a new instance of LogModule value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class LogModule extends ExpandableStringEnum<LogModule> {
 
     /**
      * Creates or finds a LogModule from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LogModule.
      */
-    @JsonCreator
     public static LogModule fromString(String name) {
         return fromString(name, LogModule.class);
     }
 
     /**
      * Gets known LogModule values.
-     *
+     * 
      * @return known LogModule values.
      */
     public static Collection<LogModule> values() {

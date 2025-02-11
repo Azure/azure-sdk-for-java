@@ -15,7 +15,6 @@ import java.util.EnumSet;
  * A class used to represent the SMB properties of a file.
  */
 public class FileSmbProperties {
-
     private String filePermissionKey;
     private EnumSet<NtfsFileAttributes> ntfsFileAttributes;
     private OffsetDateTime fileCreationTime;
@@ -34,6 +33,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's permission key.
+     *
      * @return The file's permission key.
      */
     public String getFilePermissionKey() {
@@ -41,6 +42,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's {@link NtfsFileAttributes}.
+     *
      * @return The file's {@link NtfsFileAttributes}.
      */
     public EnumSet<NtfsFileAttributes> getNtfsFileAttributes() {
@@ -48,6 +51,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's creation time.
+     *
      * @return The file's creation time.
      */
     public OffsetDateTime getFileCreationTime() {
@@ -55,6 +60,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's last write time.
+     *
      * @return The file's last write time.
      */
     public OffsetDateTime getFileLastWriteTime() {
@@ -62,6 +69,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's change time.
+     *
      * @return The file's change time.
      */
     public OffsetDateTime getFileChangeTime() {
@@ -69,6 +78,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's ID.
+     *
      * @return The file's ID.
      */
     public String getFileId() {
@@ -76,6 +87,8 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the file's parent ID.
+     *
      * @return The file's parent ID.
      */
     public String getParentId() {
@@ -147,9 +160,7 @@ public class FileSmbProperties {
      * @return The value of the file permission header
      */
     String setFilePermission(String filePermission, String defaultValue) {
-        return (filePermission == null) && (filePermissionKey == null)
-            ? defaultValue
-            : filePermission;
+        return (filePermission == null) && (filePermissionKey == null) ? defaultValue : filePermission;
     }
 
     /**
@@ -159,9 +170,7 @@ public class FileSmbProperties {
      * @return The value of the ntfs attributes header
      */
     String setNtfsFileAttributes(String defaultValue) {
-        return ntfsFileAttributes == null
-            ? defaultValue
-            : NtfsFileAttributes.toString(ntfsFileAttributes);
+        return ntfsFileAttributes == null ? defaultValue : NtfsFileAttributes.toString(ntfsFileAttributes);
     }
 
     /**
@@ -171,9 +180,7 @@ public class FileSmbProperties {
      * @return The value of the creation time header
      */
     String setFileCreationTime(String defaultValue) {
-        return fileCreationTime == null
-            ? defaultValue
-            : parseFileSMBDate(fileCreationTime);
+        return fileCreationTime == null ? defaultValue : parseFileSMBDate(fileCreationTime);
     }
 
     /**
@@ -183,9 +190,7 @@ public class FileSmbProperties {
      * @return The value of the last write time header
      */
     String setFileLastWriteTime(String defaultValue) {
-        return fileLastWriteTime == null
-            ? defaultValue
-            : parseFileSMBDate(fileLastWriteTime);
+        return fileLastWriteTime == null ? defaultValue : parseFileSMBDate(fileLastWriteTime);
     }
 
     /**
@@ -194,9 +199,34 @@ public class FileSmbProperties {
      * @return The value of the file change time header
      */
     String getFileChangeTimeString() {
-        return fileChangeTime == null
-            ? null
-            : parseFileSMBDate(fileChangeTime);
+        return fileChangeTime == null ? null : parseFileSMBDate(fileChangeTime);
+    }
+
+    /**
+     * Gets the string representation of the file's {@link NtfsFileAttributes} or null if no value is set.
+     *
+     * @return The value of the file's {@link NtfsFileAttributes}.
+     */
+    String getNtfsFileAttributesString() {
+        return ntfsFileAttributes == null ? null : NtfsFileAttributes.toString(ntfsFileAttributes);
+    }
+
+    /**
+     * Gets the string representation of the file's creation time or null if no value is set.
+     *
+     * @return The value of the file's creation time.
+     */
+    String getFileCreationTimeString() {
+        return fileCreationTime == null ? null : parseFileSMBDate(fileCreationTime);
+    }
+
+    /**
+     * Gets the string representation of the file's last write time or null if no value is set.
+     *
+     * @return The value of the file's last write time.
+     */
+    String getFileLastWriteTimeString() {
+        return fileLastWriteTime == null ? null : parseFileSMBDate(fileLastWriteTime);
     }
 
     /**
@@ -219,8 +249,7 @@ public class FileSmbProperties {
         this.filePermissionKey = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PERMISSION_KEY);
         String attributes = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ATTRIBUTES);
         this.ntfsFileAttributes = attributes == null ? null : NtfsFileAttributes.toAttributes(attributes);
-        String fileCreation = httpHeaders
-            .getValue(FileConstants.HeaderConstants.FILE_CREATION_TIME);
+        String fileCreation = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_CREATION_TIME);
         this.fileCreationTime = fileCreation == null ? null : OffsetDateTime.parse(fileCreation);
         String fileLastWrite = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME);
         this.fileLastWriteTime = fileLastWrite == null ? null : OffsetDateTime.parse(fileLastWrite);
@@ -231,11 +260,6 @@ public class FileSmbProperties {
     }
 
     static {
-        FileSmbPropertiesHelper.setAccessor(new FileSmbPropertiesHelper.FileSmbPropertiesAccessor() {
-            @Override
-            public FileSmbProperties create(HttpHeaders httpHeaders) {
-                return new FileSmbProperties(httpHeaders);
-            }
-        });
+        FileSmbPropertiesHelper.setAccessor(FileSmbProperties::new);
     }
 }

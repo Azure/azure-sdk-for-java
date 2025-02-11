@@ -53,14 +53,14 @@ public class ScoringParameterTests {
 
     @Test
     public void testConstructorWithMapNullName() {
-        assertThrows(NullPointerException.class, () -> new ScoringParameter((String) FOOL_SPOTBUGS.get("name"),
-            Arrays.asList("hello", "tests")));
+        assertThrows(NullPointerException.class,
+            () -> new ScoringParameter((String) FOOL_SPOTBUGS.get("name"), Arrays.asList("hello", "tests")));
     }
 
     @Test
     public void testConstructorWithMapNullValues() {
-        assertThrows(NullPointerException.class, () -> new ScoringParameter("null value",
-            (List<String>) FOOL_SPOTBUGS.get("values")));
+        assertThrows(NullPointerException.class,
+            () -> new ScoringParameter("null value", (List<String>) FOOL_SPOTBUGS.get("values")));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class ScoringParameterTests {
 
     @Test
     public void testConstructorWithNullGeoPoint() {
-        assertThrows(NullPointerException.class, () -> new ScoringParameter("null geopoint",
-            (GeoPoint) FOOL_SPOTBUGS.get("geoPoint")));
+        assertThrows(NullPointerException.class,
+            () -> new ScoringParameter("null geopoint", (GeoPoint) FOOL_SPOTBUGS.get("geoPoint")));
     }
 }

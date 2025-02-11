@@ -28,7 +28,8 @@ public final class AlertsUpdateSubscriptionLevelStateToResolveWithResponseMockTe
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.alerts()
-            .updateSubscriptionLevelStateToResolveWithResponse("njl", "icqomanefwl", com.azure.core.util.Context.NONE);
+            .updateSubscriptionLevelStateToResolveWithResponse("jrlhiqlwixvtboug", "xtndopgjttbasua",
+                com.azure.core.util.Context.NONE);
 
     }
 }

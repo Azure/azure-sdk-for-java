@@ -34,7 +34,8 @@ public final class PageViewPerfData extends MonitorDomain {
     private String url;
 
     /*
-     * Request duration in format: DD.HH:MM:SS.MMMMMM. For a page view (PageViewData), this is the duration. For a page view with performance information (PageViewPerfData), this is the page load time. Must be less than 1000 days.
+     * Request duration in format: DD.HH:MM:SS.MMMMMM. For a page view (PageViewData), this is the duration. For a page
+     * view with performance information (PageViewPerfData), this is the page load time. Must be less than 1000 days.
      */
     private String duration;
 
@@ -82,7 +83,7 @@ public final class PageViewPerfData extends MonitorDomain {
     /**
      * Get the id property: Identifier of a page view instance. Used for correlation between page view and other
      * telemetry items.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -92,7 +93,7 @@ public final class PageViewPerfData extends MonitorDomain {
     /**
      * Set the id property: Identifier of a page view instance. Used for correlation between page view and other
      * telemetry items.
-     *
+     * 
      * @param id the id value to set.
      * @return the PageViewPerfData object itself.
      */
@@ -103,7 +104,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Get the name property: Event name. Keep it low cardinality to allow proper grouping and useful metrics.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -112,7 +113,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Set the name property: Event name. Keep it low cardinality to allow proper grouping and useful metrics.
-     *
+     * 
      * @param name the name value to set.
      * @return the PageViewPerfData object itself.
      */
@@ -123,7 +124,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Get the url property: Request URL with all query string parameters.
-     *
+     * 
      * @return the url value.
      */
     public String getUrl() {
@@ -132,7 +133,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Set the url property: Request URL with all query string parameters.
-     *
+     * 
      * @param url the url value to set.
      * @return the PageViewPerfData object itself.
      */
@@ -145,7 +146,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * Get the duration property: Request duration in format: DD.HH:MM:SS.MMMMMM. For a page view (PageViewData), this
      * is the duration. For a page view with performance information (PageViewPerfData), this is the page load time.
      * Must be less than 1000 days.
-     *
+     * 
      * @return the duration value.
      */
     public String getDuration() {
@@ -156,7 +157,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * Set the duration property: Request duration in format: DD.HH:MM:SS.MMMMMM. For a page view (PageViewData), this
      * is the duration. For a page view with performance information (PageViewPerfData), this is the page load time.
      * Must be less than 1000 days.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the PageViewPerfData object itself.
      */
@@ -167,7 +168,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Get the perfTotal property: Performance total in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff.
-     *
+     * 
      * @return the perfTotal value.
      */
     public String getPerfTotal() {
@@ -176,7 +177,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Set the perfTotal property: Performance total in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff.
-     *
+     * 
      * @param perfTotal the perfTotal value to set.
      * @return the PageViewPerfData object itself.
      */
@@ -188,7 +189,7 @@ public final class PageViewPerfData extends MonitorDomain {
     /**
      * Get the networkConnect property: Network connection time in TimeSpan 'G' (general long) format:
      * d:hh:mm:ss.fffffff.
-     *
+     * 
      * @return the networkConnect value.
      */
     public String getNetworkConnect() {
@@ -198,7 +199,7 @@ public final class PageViewPerfData extends MonitorDomain {
     /**
      * Set the networkConnect property: Network connection time in TimeSpan 'G' (general long) format:
      * d:hh:mm:ss.fffffff.
-     *
+     * 
      * @param networkConnect the networkConnect value to set.
      * @return the PageViewPerfData object itself.
      */
@@ -209,7 +210,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Get the sentRequest property: Sent request time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff.
-     *
+     * 
      * @return the sentRequest value.
      */
     public String getSentRequest() {
@@ -218,7 +219,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Set the sentRequest property: Sent request time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff.
-     *
+     * 
      * @param sentRequest the sentRequest value to set.
      * @return the PageViewPerfData object itself.
      */
@@ -230,7 +231,7 @@ public final class PageViewPerfData extends MonitorDomain {
     /**
      * Get the receivedResponse property: Received response time in TimeSpan 'G' (general long) format:
      * d:hh:mm:ss.fffffff.
-     *
+     * 
      * @return the receivedResponse value.
      */
     public String getReceivedResponse() {
@@ -240,7 +241,7 @@ public final class PageViewPerfData extends MonitorDomain {
     /**
      * Set the receivedResponse property: Received response time in TimeSpan 'G' (general long) format:
      * d:hh:mm:ss.fffffff.
-     *
+     * 
      * @param receivedResponse the receivedResponse value to set.
      * @return the PageViewPerfData object itself.
      */
@@ -251,7 +252,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Get the domProcessing property: DOM processing time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff.
-     *
+     * 
      * @return the domProcessing value.
      */
     public String getDomProcessing() {
@@ -260,7 +261,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Set the domProcessing property: DOM processing time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff.
-     *
+     * 
      * @param domProcessing the domProcessing value to set.
      * @return the PageViewPerfData object itself.
      */
@@ -271,7 +272,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Get the properties property: Collection of custom properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> getProperties() {
@@ -280,7 +281,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Set the properties property: Collection of custom properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the PageViewPerfData object itself.
      */
@@ -291,7 +292,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Get the measurements property: Collection of custom measurements.
-     *
+     * 
      * @return the measurements value.
      */
     public Map<String, Double> getMeasurements() {
@@ -300,7 +301,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Set the measurements property: Collection of custom measurements.
-     *
+     * 
      * @param measurements the measurements value to set.
      * @return the PageViewPerfData object itself.
      */
@@ -334,8 +335,8 @@ public final class PageViewPerfData extends MonitorDomain {
         jsonWriter.writeStringField("sentRequest", this.sentRequest);
         jsonWriter.writeStringField("receivedResponse", this.receivedResponse);
         jsonWriter.writeStringField("domProcessing", this.domProcessing);
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
-        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("measurements", this.measurements, (writer, element) -> writer.writeDouble(element));
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -346,7 +347,7 @@ public final class PageViewPerfData extends MonitorDomain {
 
     /**
      * Reads an instance of PageViewPerfData from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PageViewPerfData if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -382,9 +383,11 @@ public final class PageViewPerfData extends MonitorDomain {
                 } else if ("domProcessing".equals(fieldName)) {
                     deserializedPageViewPerfData.domProcessing = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedPageViewPerfData.properties = reader.readMap(JsonReader::getString);
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPageViewPerfData.properties = properties;
                 } else if ("measurements".equals(fieldName)) {
-                    deserializedPageViewPerfData.measurements = reader.readMap(JsonReader::getDouble);
+                    Map<String, Double> measurements = reader.readMap(reader1 -> reader1.getDouble());
+                    deserializedPageViewPerfData.measurements = measurements;
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

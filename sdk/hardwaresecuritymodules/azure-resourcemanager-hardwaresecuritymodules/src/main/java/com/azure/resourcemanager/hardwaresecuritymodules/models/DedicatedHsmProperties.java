@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the dedicated hsm.
  */
 @Fluent
-public final class DedicatedHsmProperties {
+public final class DedicatedHsmProperties implements JsonSerializable<DedicatedHsmProperties> {
     /*
      * Specifies the network interfaces of the dedicated hsm.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
      * Specifies the management network interfaces of the dedicated hsm.
      */
-    @JsonProperty(value = "managementNetworkProfile")
     private NetworkProfile managementNetworkProfile;
 
     /*
      * This field will be used when RP does not support Availability zones.
      */
-    @JsonProperty(value = "stampId")
     private String stampId;
 
     /*
      * Resource Status Message.
      */
-    @JsonProperty(value = "statusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String statusMessage;
 
     /*
      * Provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private JsonWebKeyType provisioningState;
 
     /**
@@ -138,5 +137,52 @@ public final class DedicatedHsmProperties {
         if (managementNetworkProfile() != null) {
             managementNetworkProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeJsonField("managementNetworkProfile", this.managementNetworkProfile);
+        jsonWriter.writeStringField("stampId", this.stampId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHsmProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHsmProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedHsmProperties.
+     */
+    public static DedicatedHsmProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHsmProperties deserializedDedicatedHsmProperties = new DedicatedHsmProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkProfile".equals(fieldName)) {
+                    deserializedDedicatedHsmProperties.networkProfile = NetworkProfile.fromJson(reader);
+                } else if ("managementNetworkProfile".equals(fieldName)) {
+                    deserializedDedicatedHsmProperties.managementNetworkProfile = NetworkProfile.fromJson(reader);
+                } else if ("stampId".equals(fieldName)) {
+                    deserializedDedicatedHsmProperties.stampId = reader.getString();
+                } else if ("statusMessage".equals(fieldName)) {
+                    deserializedDedicatedHsmProperties.statusMessage = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDedicatedHsmProperties.provisioningState
+                        = JsonWebKeyType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHsmProperties;
+        });
     }
 }

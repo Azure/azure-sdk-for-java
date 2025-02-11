@@ -52,5 +52,5 @@ For more information about other Azure Management SDK, refer [here][MGMT_SDK_LIN
 <!-- LINKS -->
 [SERVICELINKER_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicelinker/azure-resourcemanager-servicelinker#getting-started
 [SERVICELINKER_SAMPLE_CODE]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicelinker/azure-resourcemanager-servicelinker/src/samples/java/com/azure/resourcemanager/servicelinker/CreateServiceLinker.java
-[SERVICELINKER_DOCS]: https://docs.microsoft.com/azure/service-connector
+[SERVICELINKER_DOCS]: https://learn.microsoft.com/azure/service-connector
 [MGMT_SDK_LINK]: https://aka.ms/azsdk/java/mgmt

@@ -6,26 +6,51 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.DscConfigurationAssociationProperty;
 import com.azure.resourcemanager.automation.models.JobProvisioningState;
 import com.azure.resourcemanager.automation.models.JobStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** Definition of the Dsc Compilation job. */
+/**
+ * Definition of the Dsc Compilation job.
+ */
 @Fluent
 public final class DscCompilationJobInner extends ProxyResource {
     /*
      * Gets or sets the properties of the Dsc Compilation job.
      */
-    @JsonProperty(value = "properties")
     private DscCompilationJobProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DscCompilationJobInner class.
+     */
+    public DscCompilationJobInner() {
+    }
 
     /**
      * Get the innerProperties property: Gets or sets the properties of the Dsc Compilation job.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DscCompilationJobProperties innerProperties() {
@@ -33,8 +58,38 @@ public final class DscCompilationJobInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the configuration property: Gets or sets the configuration.
-     *
+     * 
      * @return the configuration value.
      */
     public DscConfigurationAssociationProperty configuration() {
@@ -43,7 +98,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Set the configuration property: Gets or sets the configuration.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the DscCompilationJobInner object itself.
      */
@@ -57,7 +112,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the startedBy property: Gets the compilation job started by.
-     *
+     * 
      * @return the startedBy value.
      */
     public String startedBy() {
@@ -66,7 +121,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the jobId property: Gets the id of the job.
-     *
+     * 
      * @return the jobId value.
      */
     public UUID jobId() {
@@ -75,7 +130,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Gets the creation time of the job.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -84,7 +139,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The current provisioning state of the job.
-     *
+     * 
      * @return the provisioningState value.
      */
     public JobProvisioningState provisioningState() {
@@ -93,7 +148,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Set the provisioningState property: The current provisioning state of the job.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the DscCompilationJobInner object itself.
      */
@@ -107,7 +162,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -116,7 +171,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Set the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the DscCompilationJobInner object itself.
      */
@@ -130,7 +185,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the status property: Gets or sets the status of the job.
-     *
+     * 
      * @return the status value.
      */
     public JobStatus status() {
@@ -139,7 +194,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Set the status property: Gets or sets the status of the job.
-     *
+     * 
      * @param status the status value to set.
      * @return the DscCompilationJobInner object itself.
      */
@@ -153,7 +208,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the statusDetails property: Gets or sets the status details of the job.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -162,7 +217,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Set the statusDetails property: Gets or sets the status details of the job.
-     *
+     * 
      * @param statusDetails the statusDetails value to set.
      * @return the DscCompilationJobInner object itself.
      */
@@ -176,7 +231,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the startTime property: Gets the start time of the job.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -185,7 +240,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the endTime property: Gets the end time of the job.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -194,7 +249,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the exception property: Gets the exception of the job.
-     *
+     * 
      * @return the exception value.
      */
     public String exception() {
@@ -203,7 +258,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the lastModifiedTime property: Gets the last modified time of the job.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -212,7 +267,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the lastStatusModifiedTime property: Gets the last status modified time of the job.
-     *
+     * 
      * @return the lastStatusModifiedTime value.
      */
     public OffsetDateTime lastStatusModifiedTime() {
@@ -221,7 +276,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -230,7 +285,7 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DscCompilationJobInner object itself.
      */
@@ -244,12 +299,55 @@ public final class DscCompilationJobInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscCompilationJobInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscCompilationJobInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DscCompilationJobInner.
+     */
+    public static DscCompilationJobInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscCompilationJobInner deserializedDscCompilationJobInner = new DscCompilationJobInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDscCompilationJobInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDscCompilationJobInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDscCompilationJobInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDscCompilationJobInner.innerProperties = DscCompilationJobProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscCompilationJobInner;
+        });
     }
 }

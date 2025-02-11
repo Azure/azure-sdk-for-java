@@ -38,7 +38,7 @@ import java.util.function.Supplier;
 public abstract class ParallelDocumentQueryExecutionContextBase<T>
         extends DocumentQueryExecutionContextBase<T> implements IDocumentQueryExecutionComponent<T> {
 
-    protected final List<DocumentProducer<T>> documentProducers;
+    protected List<DocumentProducer<T>> documentProducers;
     protected final SqlQuerySpec querySpec;
     protected int top = -1;
     private final CosmosItemSerializer itemSerializer;

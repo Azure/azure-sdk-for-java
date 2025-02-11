@@ -139,15 +139,13 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * @see ServiceBusAdministrationClient
  * @see ServiceBusAdministrationAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {ServiceBusAdministrationClient.class,
-    ServiceBusAdministrationAsyncClient.class})
-public final class ServiceBusAdministrationClientBuilder implements
-    TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
+@ServiceClientBuilder(
+    serviceClients = { ServiceBusAdministrationClient.class, ServiceBusAdministrationAsyncClient.class })
+public final class ServiceBusAdministrationClientBuilder
+    implements TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
     AzureSasCredentialTrait<ServiceBusAdministrationClientBuilder>,
-    ConnectionStringTrait<ServiceBusAdministrationClientBuilder>,
-    HttpTrait<ServiceBusAdministrationClientBuilder>,
-    ConfigurationTrait<ServiceBusAdministrationClientBuilder>,
-    EndpointTrait<ServiceBusAdministrationClientBuilder> {
+    ConnectionStringTrait<ServiceBusAdministrationClientBuilder>, HttpTrait<ServiceBusAdministrationClientBuilder>,
+    ConfigurationTrait<ServiceBusAdministrationClientBuilder>, EndpointTrait<ServiceBusAdministrationClientBuilder> {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
 
@@ -209,9 +207,8 @@ public final class ServiceBusAdministrationClientBuilder implements
             throw LOGGER.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
         }
 
-        final ServiceBusServiceVersion apiVersion = serviceVersion == null
-            ? ServiceBusServiceVersion.getLatest()
-            : serviceVersion;
+        final ServiceBusServiceVersion apiVersion
+            = serviceVersion == null ? ServiceBusServiceVersion.getLatest() : serviceVersion;
         final HttpPipeline httpPipeline = createPipeline();
         return new ServiceBusManagementClientImpl(httpPipeline, SERIALIZER, endpoint, apiVersion.getVersion());
     }
@@ -321,8 +318,8 @@ public final class ServiceBusAdministrationClientBuilder implements
             tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
                 properties.getSharedAccessKey(), ServiceBusConstants.TOKEN_VALIDITY);
         } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(
-                new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
+            throw LOGGER
+                .logExceptionAsError(new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
         }
 
         this.endpoint = properties.getEndpoint().getHost();
@@ -344,8 +341,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      */
     public ServiceBusAdministrationClientBuilder credential(String fullyQualifiedNamespace,
         TokenCredential credential) {
-        this.endpoint = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
+        this.endpoint = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
@@ -542,9 +538,8 @@ public final class ServiceBusAdministrationClientBuilder implements
             return pipeline;
         }
 
-        final Configuration buildConfiguration = configuration == null
-            ? Configuration.getGlobalConfiguration().clone()
-            : configuration;
+        final Configuration buildConfiguration
+            = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPolicies = new ArrayList<>();
@@ -577,15 +572,16 @@ public final class ServiceBusAdministrationClientBuilder implements
 
         HttpPolicyProviders.addAfterRetryPolicies(httpPolicies);
 
-        return new HttpPipelineBuilder()
-            .policies(httpPolicies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(httpPolicies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(clientOptions)
             .tracer(createTracer())
             .build();
     }
+
     private Tracer createTracer() {
-        return TracerProvider.getDefaultProvider().createTracer(CLIENT_NAME, CLIENT_VERSION,
-            AZ_TRACING_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
+        return TracerProvider.getDefaultProvider()
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, AZ_TRACING_NAMESPACE_VALUE,
+                clientOptions == null ? null : clientOptions.getTracingOptions());
     }
 }

@@ -5,118 +5,185 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the DataSource. */
+/**
+ * The kind of the DataSource.
+ */
 public final class DataSourceKind extends ExpandableStringEnum<DataSourceKind> {
-    /** Static value WindowsEvent for DataSourceKind. */
+    /**
+     * Static value WindowsEvent for DataSourceKind.
+     */
     public static final DataSourceKind WINDOWS_EVENT = fromString("WindowsEvent");
 
-    /** Static value WindowsPerformanceCounter for DataSourceKind. */
+    /**
+     * Static value WindowsPerformanceCounter for DataSourceKind.
+     */
     public static final DataSourceKind WINDOWS_PERFORMANCE_COUNTER = fromString("WindowsPerformanceCounter");
 
-    /** Static value IISLogs for DataSourceKind. */
+    /**
+     * Static value IISLogs for DataSourceKind.
+     */
     public static final DataSourceKind IISLOGS = fromString("IISLogs");
 
-    /** Static value LinuxSyslog for DataSourceKind. */
+    /**
+     * Static value LinuxSyslog for DataSourceKind.
+     */
     public static final DataSourceKind LINUX_SYSLOG = fromString("LinuxSyslog");
 
-    /** Static value LinuxSyslogCollection for DataSourceKind. */
+    /**
+     * Static value LinuxSyslogCollection for DataSourceKind.
+     */
     public static final DataSourceKind LINUX_SYSLOG_COLLECTION = fromString("LinuxSyslogCollection");
 
-    /** Static value LinuxPerformanceObject for DataSourceKind. */
+    /**
+     * Static value LinuxPerformanceObject for DataSourceKind.
+     */
     public static final DataSourceKind LINUX_PERFORMANCE_OBJECT = fromString("LinuxPerformanceObject");
 
-    /** Static value LinuxPerformanceCollection for DataSourceKind. */
+    /**
+     * Static value LinuxPerformanceCollection for DataSourceKind.
+     */
     public static final DataSourceKind LINUX_PERFORMANCE_COLLECTION = fromString("LinuxPerformanceCollection");
 
-    /** Static value CustomLog for DataSourceKind. */
+    /**
+     * Static value CustomLog for DataSourceKind.
+     */
     public static final DataSourceKind CUSTOM_LOG = fromString("CustomLog");
 
-    /** Static value CustomLogCollection for DataSourceKind. */
+    /**
+     * Static value CustomLogCollection for DataSourceKind.
+     */
     public static final DataSourceKind CUSTOM_LOG_COLLECTION = fromString("CustomLogCollection");
 
-    /** Static value AzureAuditLog for DataSourceKind. */
+    /**
+     * Static value AzureAuditLog for DataSourceKind.
+     */
     public static final DataSourceKind AZURE_AUDIT_LOG = fromString("AzureAuditLog");
 
-    /** Static value AzureActivityLog for DataSourceKind. */
+    /**
+     * Static value AzureActivityLog for DataSourceKind.
+     */
     public static final DataSourceKind AZURE_ACTIVITY_LOG = fromString("AzureActivityLog");
 
-    /** Static value GenericDataSource for DataSourceKind. */
+    /**
+     * Static value GenericDataSource for DataSourceKind.
+     */
     public static final DataSourceKind GENERIC_DATA_SOURCE = fromString("GenericDataSource");
 
-    /** Static value ChangeTrackingCustomPath for DataSourceKind. */
+    /**
+     * Static value ChangeTrackingCustomPath for DataSourceKind.
+     */
     public static final DataSourceKind CHANGE_TRACKING_CUSTOM_PATH = fromString("ChangeTrackingCustomPath");
 
-    /** Static value ChangeTrackingPath for DataSourceKind. */
+    /**
+     * Static value ChangeTrackingPath for DataSourceKind.
+     */
     public static final DataSourceKind CHANGE_TRACKING_PATH = fromString("ChangeTrackingPath");
 
-    /** Static value ChangeTrackingServices for DataSourceKind. */
+    /**
+     * Static value ChangeTrackingServices for DataSourceKind.
+     */
     public static final DataSourceKind CHANGE_TRACKING_SERVICES = fromString("ChangeTrackingServices");
 
-    /** Static value ChangeTrackingDataTypeConfiguration for DataSourceKind. */
-    public static final DataSourceKind CHANGE_TRACKING_DATA_TYPE_CONFIGURATION =
-        fromString("ChangeTrackingDataTypeConfiguration");
+    /**
+     * Static value ChangeTrackingDataTypeConfiguration for DataSourceKind.
+     */
+    public static final DataSourceKind CHANGE_TRACKING_DATA_TYPE_CONFIGURATION
+        = fromString("ChangeTrackingDataTypeConfiguration");
 
-    /** Static value ChangeTrackingDefaultRegistry for DataSourceKind. */
+    /**
+     * Static value ChangeTrackingDefaultRegistry for DataSourceKind.
+     */
     public static final DataSourceKind CHANGE_TRACKING_DEFAULT_REGISTRY = fromString("ChangeTrackingDefaultRegistry");
 
-    /** Static value ChangeTrackingRegistry for DataSourceKind. */
+    /**
+     * Static value ChangeTrackingRegistry for DataSourceKind.
+     */
     public static final DataSourceKind CHANGE_TRACKING_REGISTRY = fromString("ChangeTrackingRegistry");
 
-    /** Static value ChangeTrackingLinuxPath for DataSourceKind. */
+    /**
+     * Static value ChangeTrackingLinuxPath for DataSourceKind.
+     */
     public static final DataSourceKind CHANGE_TRACKING_LINUX_PATH = fromString("ChangeTrackingLinuxPath");
 
-    /** Static value LinuxChangeTrackingPath for DataSourceKind. */
+    /**
+     * Static value LinuxChangeTrackingPath for DataSourceKind.
+     */
     public static final DataSourceKind LINUX_CHANGE_TRACKING_PATH = fromString("LinuxChangeTrackingPath");
 
-    /** Static value ChangeTrackingContentLocation for DataSourceKind. */
+    /**
+     * Static value ChangeTrackingContentLocation for DataSourceKind.
+     */
     public static final DataSourceKind CHANGE_TRACKING_CONTENT_LOCATION = fromString("ChangeTrackingContentLocation");
 
-    /** Static value WindowsTelemetry for DataSourceKind. */
+    /**
+     * Static value WindowsTelemetry for DataSourceKind.
+     */
     public static final DataSourceKind WINDOWS_TELEMETRY = fromString("WindowsTelemetry");
 
-    /** Static value Office365 for DataSourceKind. */
+    /**
+     * Static value Office365 for DataSourceKind.
+     */
     public static final DataSourceKind OFFICE365 = fromString("Office365");
 
-    /** Static value SecurityWindowsBaselineConfiguration for DataSourceKind. */
-    public static final DataSourceKind SECURITY_WINDOWS_BASELINE_CONFIGURATION =
-        fromString("SecurityWindowsBaselineConfiguration");
+    /**
+     * Static value SecurityWindowsBaselineConfiguration for DataSourceKind.
+     */
+    public static final DataSourceKind SECURITY_WINDOWS_BASELINE_CONFIGURATION
+        = fromString("SecurityWindowsBaselineConfiguration");
 
-    /** Static value SecurityCenterSecurityWindowsBaselineConfiguration for DataSourceKind. */
-    public static final DataSourceKind SECURITY_CENTER_SECURITY_WINDOWS_BASELINE_CONFIGURATION =
-        fromString("SecurityCenterSecurityWindowsBaselineConfiguration");
+    /**
+     * Static value SecurityCenterSecurityWindowsBaselineConfiguration for DataSourceKind.
+     */
+    public static final DataSourceKind SECURITY_CENTER_SECURITY_WINDOWS_BASELINE_CONFIGURATION
+        = fromString("SecurityCenterSecurityWindowsBaselineConfiguration");
 
-    /** Static value SecurityEventCollectionConfiguration for DataSourceKind. */
-    public static final DataSourceKind SECURITY_EVENT_COLLECTION_CONFIGURATION =
-        fromString("SecurityEventCollectionConfiguration");
+    /**
+     * Static value SecurityEventCollectionConfiguration for DataSourceKind.
+     */
+    public static final DataSourceKind SECURITY_EVENT_COLLECTION_CONFIGURATION
+        = fromString("SecurityEventCollectionConfiguration");
 
-    /** Static value SecurityInsightsSecurityEventCollectionConfiguration for DataSourceKind. */
-    public static final DataSourceKind SECURITY_INSIGHTS_SECURITY_EVENT_COLLECTION_CONFIGURATION =
-        fromString("SecurityInsightsSecurityEventCollectionConfiguration");
+    /**
+     * Static value SecurityInsightsSecurityEventCollectionConfiguration for DataSourceKind.
+     */
+    public static final DataSourceKind SECURITY_INSIGHTS_SECURITY_EVENT_COLLECTION_CONFIGURATION
+        = fromString("SecurityInsightsSecurityEventCollectionConfiguration");
 
-    /** Static value ImportComputerGroup for DataSourceKind. */
+    /**
+     * Static value ImportComputerGroup for DataSourceKind.
+     */
     public static final DataSourceKind IMPORT_COMPUTER_GROUP = fromString("ImportComputerGroup");
 
-    /** Static value NetworkMonitoring for DataSourceKind. */
+    /**
+     * Static value NetworkMonitoring for DataSourceKind.
+     */
     public static final DataSourceKind NETWORK_MONITORING = fromString("NetworkMonitoring");
 
-    /** Static value Itsm for DataSourceKind. */
+    /**
+     * Static value Itsm for DataSourceKind.
+     */
     public static final DataSourceKind ITSM = fromString("Itsm");
 
-    /** Static value DnsAnalytics for DataSourceKind. */
+    /**
+     * Static value DnsAnalytics for DataSourceKind.
+     */
     public static final DataSourceKind DNS_ANALYTICS = fromString("DnsAnalytics");
 
-    /** Static value ApplicationInsights for DataSourceKind. */
+    /**
+     * Static value ApplicationInsights for DataSourceKind.
+     */
     public static final DataSourceKind APPLICATION_INSIGHTS = fromString("ApplicationInsights");
 
-    /** Static value SqlDataClassification for DataSourceKind. */
+    /**
+     * Static value SqlDataClassification for DataSourceKind.
+     */
     public static final DataSourceKind SQL_DATA_CLASSIFICATION = fromString("SqlDataClassification");
 
     /**
      * Creates a new instance of DataSourceKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -125,18 +192,17 @@ public final class DataSourceKind extends ExpandableStringEnum<DataSourceKind> {
 
     /**
      * Creates or finds a DataSourceKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataSourceKind.
      */
-    @JsonCreator
     public static DataSourceKind fromString(String name) {
         return fromString(name, DataSourceKind.class);
     }
 
     /**
      * Gets known DataSourceKind values.
-     *
+     * 
      * @return known DataSourceKind values.
      */
     public static Collection<DataSourceKind> values() {

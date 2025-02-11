@@ -8,25 +8,26 @@ import com.azure.resourcemanager.mediaservices.models.StreamingEndpoint;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for StreamingEndpoints Update. */
+/**
+ * Samples for StreamingEndpoints Update.
+ */
 public final class StreamingEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-11-01/examples/streamingendpoint-update.json
+     * x-ms-original-file:
+     * specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-11-01/examples/
+     * streamingendpoint-update.json
      */
     /**
      * Sample code: Update a streaming endpoint.
-     *
+     * 
      * @param manager Entry point to MediaServicesManager.
      */
     public static void updateAStreamingEndpoint(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        StreamingEndpoint resource =
-            manager
-                .streamingEndpoints()
-                .getWithResponse(
-                    "mediaresources", "slitestmedia10", "myStreamingEndpoint1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        StreamingEndpoint resource = manager.streamingEndpoints()
+            .getWithResponse("mediaresources", "slitestmedia10", "myStreamingEndpoint1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("tag3", "value3", "tag5", "value5"))
             .withDescription("test event 2")
             .withScaleUnits(5)
@@ -34,6 +35,7 @@ public final class StreamingEndpointsUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

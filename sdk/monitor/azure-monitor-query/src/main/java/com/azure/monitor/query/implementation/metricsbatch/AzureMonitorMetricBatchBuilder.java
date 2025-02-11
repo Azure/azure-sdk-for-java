@@ -268,6 +268,7 @@ public final class AzureMonitorMetricBatchBuilder
      */
     @Generated
     public AzureMonitorMetricBatch buildClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localApiVersion = (apiVersion != null) ? apiVersion : "2024-02-01";
         SerializerAdapter localSerializerAdapter
@@ -275,6 +276,13 @@ public final class AzureMonitorMetricBatchBuilder
         AzureMonitorMetricBatch client
             = new AzureMonitorMetricBatch(localPipeline, localSerializerAdapter, this.endpoint, localApiVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
     @Generated

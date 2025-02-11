@@ -98,7 +98,7 @@ public final class ClasspathCertificates implements AzureCertificates {
         if (!aliases.contains(alias)) {
             aliases.add(alias);
             certificates.put(alias, certificate);
-            certificateChains.put(alias, new Certificate[]{certificate});
+            certificateChains.put(alias, new Certificate[] { certificate });
         }
     }
 
@@ -132,7 +132,7 @@ public final class ClasspathCertificates implements AzureCertificates {
                             setCertificateEntry(alias, certificate);
                             certificateChains.put(alias, loadX509CertificatesFromFile(inputStream));
                             LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
-                                new Object[]{alias, filename});
+                                new Object[] { alias, filename });
                         } catch (CertificateException e) {
                             LOGGER.log(WARNING, "Unable to side-load certificate from: " + filename, e);
                         }

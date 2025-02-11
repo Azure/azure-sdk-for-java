@@ -51,9 +51,8 @@ public final class SensorDataModelsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     SensorDataModelsImpl(FarmBeatsClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        SensorDataModelsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SensorDataModelsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,107 +64,58 @@ public final class SensorDataModelsImpl {
     @ServiceInterface(name = "FarmBeatsClientSenso")
     public interface SensorDataModelsService {
         @Get("/sensor-partners/{sensorPartnerId}/sensor-data-models")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("sensorPartnerId") String sensorPartnerId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
+            @PathParam("sensorPartnerId") String sensorPartnerId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/sensor-partners/{sensorPartnerId}/sensor-data-models/{sensorDataModelId}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("sensorPartnerId") String sensorPartnerId,
-                @PathParam("sensorDataModelId") String sensorDataModelId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") BinaryData sensorDataModelObject,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @PathParam("sensorPartnerId") String sensorPartnerId,
+            @PathParam("sensorDataModelId") String sensorDataModelId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") BinaryData sensorDataModelObject,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/sensor-partners/{sensorPartnerId}/sensor-data-models/{sensorDataModelId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("sensorPartnerId") String sensorPartnerId,
-                @PathParam("sensorDataModelId") String sensorDataModelId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
+            @PathParam("sensorPartnerId") String sensorPartnerId,
+            @PathParam("sensorDataModelId") String sensorDataModelId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/sensor-partners/{sensorPartnerId}/sensor-data-models/{sensorDataModelId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("sensorPartnerId") String sensorPartnerId,
-                @PathParam("sensorDataModelId") String sensorDataModelId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
+            @PathParam("sensorPartnerId") String sensorPartnerId,
+            @PathParam("sensorDataModelId") String sensorDataModelId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -238,24 +188,11 @@ public final class SensorDataModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listSinglePageAsync(String sensorPartnerId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.list(
-                                        this.client.getEndpoint(),
-                                        sensorPartnerId,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), sensorPartnerId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -329,12 +266,9 @@ public final class SensorDataModelsImpl {
     public PagedFlux<BinaryData> listAsync(String sensorPartnerId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listSinglePageAsync(sensorPartnerId, requestOptions),
-                nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listSinglePageAsync(sensorPartnerId, requestOptions),
+            nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -491,23 +425,12 @@ public final class SensorDataModelsImpl {
      * @return sensorModel API model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String sensorPartnerId,
-            String sensorDataModelId,
-            BinaryData sensorDataModelObject,
-            RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String sensorPartnerId, String sensorDataModelId,
+        BinaryData sensorDataModelObject, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdate(
-                                this.client.getEndpoint(),
-                                sensorPartnerId,
-                                sensorDataModelId,
-                                this.client.getServiceVersion().getVersion(),
-                                sensorDataModelObject,
-                                accept,
-                                requestOptions,
-                                context));
+            context -> service.createOrUpdate(this.client.getEndpoint(), sensorPartnerId, sensorDataModelId,
+                this.client.getServiceVersion().getVersion(), sensorDataModelObject, accept, requestOptions, context));
     }
 
     /**
@@ -592,14 +515,10 @@ public final class SensorDataModelsImpl {
      * @return sensorModel API model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String sensorPartnerId,
-            String sensorDataModelId,
-            BinaryData sensorDataModelObject,
-            RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(
-                        sensorPartnerId, sensorDataModelId, sensorDataModelObject, requestOptions)
-                .block();
+    public Response<BinaryData> createOrUpdateWithResponse(String sensorPartnerId, String sensorDataModelId,
+        BinaryData sensorDataModelObject, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(sensorPartnerId, sensorDataModelId, sensorDataModelObject,
+            requestOptions).block();
     }
 
     /**
@@ -649,19 +568,11 @@ public final class SensorDataModelsImpl {
      * @return a sensor data model entity along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(
-            String sensorPartnerId, String sensorDataModelId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponseAsync(String sensorPartnerId, String sensorDataModelId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                sensorPartnerId,
-                                sensorDataModelId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), sensorPartnerId,
+            sensorDataModelId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -711,8 +622,8 @@ public final class SensorDataModelsImpl {
      * @return a sensor data model entity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String sensorPartnerId, String sensorDataModelId, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String sensorPartnerId, String sensorDataModelId,
+        RequestOptions requestOptions) {
         return getWithResponseAsync(sensorPartnerId, sensorDataModelId, requestOptions).block();
     }
 
@@ -729,19 +640,11 @@ public final class SensorDataModelsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-            String sensorPartnerId, String sensorDataModelId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String sensorPartnerId, String sensorDataModelId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getEndpoint(),
-                                sensorPartnerId,
-                                sensorDataModelId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), sensorPartnerId,
+            sensorDataModelId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -757,8 +660,8 @@ public final class SensorDataModelsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-            String sensorPartnerId, String sensorDataModelId, RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponse(String sensorPartnerId, String sensorDataModelId,
+        RequestOptions requestOptions) {
         return deleteWithResponseAsync(sensorPartnerId, sensorDataModelId, requestOptions).block();
     }
 
@@ -812,18 +715,11 @@ public final class SensorDataModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

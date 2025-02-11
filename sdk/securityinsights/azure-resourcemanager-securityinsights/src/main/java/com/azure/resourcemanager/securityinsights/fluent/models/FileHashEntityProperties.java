@@ -5,28 +5,49 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.FileHashAlgorithm;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Map;
 
-/** FileHash entity property bag. */
+/**
+ * FileHash entity property bag.
+ */
 @Immutable
 public final class FileHashEntityProperties extends EntityCommonProperties {
     /*
      * The hash algorithm type.
      */
-    @JsonProperty(value = "algorithm", access = JsonProperty.Access.WRITE_ONLY)
     private FileHashAlgorithm algorithm;
 
     /*
      * The file hash value.
      */
-    @JsonProperty(value = "hashValue", access = JsonProperty.Access.WRITE_ONLY)
     private String hashValue;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of FileHashEntityProperties class.
+     */
+    public FileHashEntityProperties() {
+    }
 
     /**
      * Get the algorithm property: The hash algorithm type.
-     *
+     * 
      * @return the algorithm value.
      */
     public FileHashAlgorithm algorithm() {
@@ -35,7 +56,7 @@ public final class FileHashEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the hashValue property: The file hash value.
-     *
+     * 
      * @return the hashValue value.
      */
     public String hashValue() {
@@ -43,12 +64,75 @@ public final class FileHashEntityProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileHashEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileHashEntityProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileHashEntityProperties.
+     */
+    public static FileHashEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileHashEntityProperties deserializedFileHashEntityProperties = new FileHashEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedFileHashEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedFileHashEntityProperties.friendlyName = reader.getString();
+                } else if ("algorithm".equals(fieldName)) {
+                    deserializedFileHashEntityProperties.algorithm = FileHashAlgorithm.fromString(reader.getString());
+                } else if ("hashValue".equals(fieldName)) {
+                    deserializedFileHashEntityProperties.hashValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileHashEntityProperties;
+        });
     }
 }

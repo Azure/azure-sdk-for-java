@@ -5,58 +5,48 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Generic backup copy.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = GenericRecoveryPoint.class,
-    visible = true)
-@JsonTypeName("GenericRecoveryPoint")
 @Fluent
 public final class GenericRecoveryPoint extends RecoveryPoint {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private String objectType = "GenericRecoveryPoint";
 
     /*
      * Friendly name of the backup copy.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Type of the backup copy.
      */
-    @JsonProperty(value = "recoveryPointType")
     private String recoveryPointType;
 
     /*
      * Time at which this backup copy was created.
      */
-    @JsonProperty(value = "recoveryPointTime")
     private OffsetDateTime recoveryPointTime;
 
     /*
      * Additional information associated with this backup copy.
      */
-    @JsonProperty(value = "recoveryPointAdditionalInfo")
     private String recoveryPointAdditionalInfo;
 
     /*
      * Properties of Recovery Point
      */
-    @JsonProperty(value = "recoveryPointProperties")
     private RecoveryPointProperties recoveryPointProperties;
 
     /**
@@ -183,9 +173,63 @@ public final class GenericRecoveryPoint extends RecoveryPoint {
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointProperties() != null) {
             recoveryPointProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("recoveryPointType", this.recoveryPointType);
+        jsonWriter.writeStringField("recoveryPointTime",
+            this.recoveryPointTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recoveryPointTime));
+        jsonWriter.writeStringField("recoveryPointAdditionalInfo", this.recoveryPointAdditionalInfo);
+        jsonWriter.writeJsonField("recoveryPointProperties", this.recoveryPointProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenericRecoveryPoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenericRecoveryPoint if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenericRecoveryPoint.
+     */
+    public static GenericRecoveryPoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenericRecoveryPoint deserializedGenericRecoveryPoint = new GenericRecoveryPoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedGenericRecoveryPoint.objectType = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedGenericRecoveryPoint.friendlyName = reader.getString();
+                } else if ("recoveryPointType".equals(fieldName)) {
+                    deserializedGenericRecoveryPoint.recoveryPointType = reader.getString();
+                } else if ("recoveryPointTime".equals(fieldName)) {
+                    deserializedGenericRecoveryPoint.recoveryPointTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveryPointAdditionalInfo".equals(fieldName)) {
+                    deserializedGenericRecoveryPoint.recoveryPointAdditionalInfo = reader.getString();
+                } else if ("recoveryPointProperties".equals(fieldName)) {
+                    deserializedGenericRecoveryPoint.recoveryPointProperties = RecoveryPointProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenericRecoveryPoint;
+        });
     }
 }

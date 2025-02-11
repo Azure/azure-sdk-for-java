@@ -7,7 +7,9 @@ package com.azure.resourcemanager.streamanalytics.implementation;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.PrivateEndpointInner;
 import com.azure.resourcemanager.streamanalytics.models.PrivateEndpoint;
-import com.azure.resourcemanager.streamanalytics.models.PrivateEndpointProperties;
+import com.azure.resourcemanager.streamanalytics.models.PrivateLinkServiceConnection;
+import java.util.Collections;
+import java.util.List;
 
 public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoint.Definition, PrivateEndpoint.Update {
     private PrivateEndpointInner innerObject;
@@ -26,12 +28,21 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
         return this.innerModel().type();
     }
 
-    public PrivateEndpointProperties properties() {
-        return this.innerModel().properties();
-    }
-
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public String createdDate() {
+        return this.innerModel().createdDate();
+    }
+
+    public List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections() {
+        List<PrivateLinkServiceConnection> inner = this.innerModel().manualPrivateLinkServiceConnections();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String resourceGroupName() {
@@ -67,7 +78,8 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint create() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
             .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
                 createIfMatch, createIfNoneMatch, Context.NONE)
             .getValue();
@@ -75,7 +87,8 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
             .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
                 createIfMatch, createIfNoneMatch, context)
             .getValue();
@@ -97,7 +110,8 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
             .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
                 updateIfMatch, updateIfNoneMatch, Context.NONE)
             .getValue();
@@ -105,7 +119,8 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
             .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
                 updateIfMatch, updateIfNoneMatch, context)
             .getValue();
@@ -122,19 +137,24 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
-            .getWithResponse(resourceGroupName, clusterName, privateEndpointName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
+            .getWithResponse(resourceGroupName, clusterName, privateEndpointName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpoint refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
-            .getWithResponse(resourceGroupName, clusterName, privateEndpointName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
+            .getWithResponse(resourceGroupName, clusterName, privateEndpointName, context)
+            .getValue();
         return this;
     }
 
-    public PrivateEndpointImpl withProperties(PrivateEndpointProperties properties) {
-        this.innerModel().withProperties(properties);
+    public PrivateEndpointImpl withManualPrivateLinkServiceConnections(
+        List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections) {
+        this.innerModel().withManualPrivateLinkServiceConnections(manualPrivateLinkServiceConnections);
         return this;
     }
 

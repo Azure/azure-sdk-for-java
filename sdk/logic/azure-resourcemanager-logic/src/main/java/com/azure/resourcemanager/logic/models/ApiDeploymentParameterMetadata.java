@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The API deployment parameter metadata. */
+/**
+ * The API deployment parameter metadata.
+ */
 @Fluent
-public final class ApiDeploymentParameterMetadata {
+public final class ApiDeploymentParameterMetadata implements JsonSerializable<ApiDeploymentParameterMetadata> {
     /*
      * The type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Indicates whether its required.
      */
-    @JsonProperty(value = "isRequired")
     private Boolean isRequired;
 
     /*
      * The display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The visibility.
      */
-    @JsonProperty(value = "visibility")
     private ApiDeploymentParameterVisibility visibility;
 
-    /** Creates an instance of ApiDeploymentParameterMetadata class. */
+    /**
+     * Creates an instance of ApiDeploymentParameterMetadata class.
+     */
     public ApiDeploymentParameterMetadata() {
     }
 
     /**
      * Get the type property: The type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -55,7 +58,7 @@ public final class ApiDeploymentParameterMetadata {
 
     /**
      * Set the type property: The type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ApiDeploymentParameterMetadata object itself.
      */
@@ -66,7 +69,7 @@ public final class ApiDeploymentParameterMetadata {
 
     /**
      * Get the isRequired property: Indicates whether its required.
-     *
+     * 
      * @return the isRequired value.
      */
     public Boolean isRequired() {
@@ -75,7 +78,7 @@ public final class ApiDeploymentParameterMetadata {
 
     /**
      * Set the isRequired property: Indicates whether its required.
-     *
+     * 
      * @param isRequired the isRequired value to set.
      * @return the ApiDeploymentParameterMetadata object itself.
      */
@@ -86,7 +89,7 @@ public final class ApiDeploymentParameterMetadata {
 
     /**
      * Get the displayName property: The display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -95,7 +98,7 @@ public final class ApiDeploymentParameterMetadata {
 
     /**
      * Set the displayName property: The display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ApiDeploymentParameterMetadata object itself.
      */
@@ -106,7 +109,7 @@ public final class ApiDeploymentParameterMetadata {
 
     /**
      * Get the description property: The description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -115,7 +118,7 @@ public final class ApiDeploymentParameterMetadata {
 
     /**
      * Set the description property: The description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApiDeploymentParameterMetadata object itself.
      */
@@ -126,7 +129,7 @@ public final class ApiDeploymentParameterMetadata {
 
     /**
      * Get the visibility property: The visibility.
-     *
+     * 
      * @return the visibility value.
      */
     public ApiDeploymentParameterVisibility visibility() {
@@ -135,7 +138,7 @@ public final class ApiDeploymentParameterMetadata {
 
     /**
      * Set the visibility property: The visibility.
-     *
+     * 
      * @param visibility the visibility value to set.
      * @return the ApiDeploymentParameterMetadata object itself.
      */
@@ -146,9 +149,59 @@ public final class ApiDeploymentParameterMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeBooleanField("isRequired", this.isRequired);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("visibility", this.visibility == null ? null : this.visibility.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiDeploymentParameterMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiDeploymentParameterMetadata if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiDeploymentParameterMetadata.
+     */
+    public static ApiDeploymentParameterMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiDeploymentParameterMetadata deserializedApiDeploymentParameterMetadata
+                = new ApiDeploymentParameterMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedApiDeploymentParameterMetadata.type = reader.getString();
+                } else if ("isRequired".equals(fieldName)) {
+                    deserializedApiDeploymentParameterMetadata.isRequired = reader.getNullable(JsonReader::getBoolean);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedApiDeploymentParameterMetadata.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedApiDeploymentParameterMetadata.description = reader.getString();
+                } else if ("visibility".equals(fieldName)) {
+                    deserializedApiDeploymentParameterMetadata.visibility
+                        = ApiDeploymentParameterVisibility.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiDeploymentParameterMetadata;
+        });
     }
 }

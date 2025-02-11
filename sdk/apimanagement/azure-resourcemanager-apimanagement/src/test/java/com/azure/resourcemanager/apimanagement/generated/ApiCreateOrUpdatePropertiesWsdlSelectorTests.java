@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiCreateOrUpdatePropertiesWsdlSelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiCreateOrUpdatePropertiesWsdlSelector model =
-            BinaryData
-                .fromString("{\"wsdlServiceName\":\"fmppe\",\"wsdlEndpointName\":\"vmgxsab\"}")
+        ApiCreateOrUpdatePropertiesWsdlSelector model
+            = BinaryData.fromString("{\"wsdlServiceName\":\"fmppe\",\"wsdlEndpointName\":\"vmgxsab\"}")
                 .toObject(ApiCreateOrUpdatePropertiesWsdlSelector.class);
         Assertions.assertEquals("fmppe", model.wsdlServiceName());
         Assertions.assertEquals("vmgxsab", model.wsdlEndpointName());
@@ -21,8 +20,9 @@ public final class ApiCreateOrUpdatePropertiesWsdlSelectorTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiCreateOrUpdatePropertiesWsdlSelector model =
-            new ApiCreateOrUpdatePropertiesWsdlSelector().withWsdlServiceName("fmppe").withWsdlEndpointName("vmgxsab");
+        ApiCreateOrUpdatePropertiesWsdlSelector model
+            = new ApiCreateOrUpdatePropertiesWsdlSelector().withWsdlServiceName("fmppe")
+                .withWsdlEndpointName("vmgxsab");
         model = BinaryData.fromObject(model).toObject(ApiCreateOrUpdatePropertiesWsdlSelector.class);
         Assertions.assertEquals("fmppe", model.wsdlServiceName());
         Assertions.assertEquals("vmgxsab", model.wsdlEndpointName());

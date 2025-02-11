@@ -3,33 +3,18 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import java.io.IOException;
+
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
-import java.io.IOException;
-
-/** AnswerFailed event. */
+/** The AnswerFailed model. */
 @Immutable
 public final class AnswerFailed extends CallAutomationEventBase {
-
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    private ResultInformation resultInformation;
-
     private AnswerFailed() {
-        this.resultInformation = null;
-    }
 
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**
@@ -38,7 +23,6 @@ public final class AnswerFailed extends CallAutomationEventBase {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resultInformation", resultInformation);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
     }
@@ -57,12 +41,8 @@ public final class AnswerFailed extends CallAutomationEventBase {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("resultInformation".equals(fieldName)) {
-                    event.resultInformation = ResultInformation.fromJson(reader);
-                } else {
-                    if (!event.readField(fieldName, reader)) {
-                        reader.skipChildren();
-                    }
+                if (!event.readField(fieldName, reader)) {
+                    reader.skipChildren();
                 }
             }
             return event;

@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -13,59 +18,51 @@ import java.util.List;
  * InMageRcmFailback mobility agent details.
  */
 @Immutable
-public final class InMageRcmFailbackMobilityAgentDetails {
+public final class InMageRcmFailbackMobilityAgentDetails
+    implements JsonSerializable<InMageRcmFailbackMobilityAgentDetails> {
     /*
      * The agent version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * The latest agent version available.
      */
-    @JsonProperty(value = "latestVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String latestVersion;
 
     /*
      * The driver version.
      */
-    @JsonProperty(value = "driverVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String driverVersion;
 
     /*
      * The latest upgradeable version available without reboot.
      */
-    @JsonProperty(value = "latestUpgradableVersionWithoutReboot", access = JsonProperty.Access.WRITE_ONLY)
     private String latestUpgradableVersionWithoutReboot;
 
     /*
      * The agent version expiry date.
      */
-    @JsonProperty(value = "agentVersionExpiryDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime agentVersionExpiryDate;
 
     /*
      * The driver version expiry date.
      */
-    @JsonProperty(value = "driverVersionExpiryDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime driverVersionExpiryDate;
 
     /*
      * The time of the last heartbeat received from the agent.
      */
-    @JsonProperty(value = "lastHeartbeatUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastHeartbeatUtc;
 
     /*
      * The whether update is possible or not.
      */
-    @JsonProperty(value = "reasonsBlockingUpgrade", access = JsonProperty.Access.WRITE_ONLY)
     private List<AgentUpgradeBlockedReason> reasonsBlockingUpgrade;
 
     /*
      * A value indicating whether agent is upgradeable or not.
      */
-    @JsonProperty(value = "isUpgradeable", access = JsonProperty.Access.WRITE_ONLY)
     private String isUpgradeable;
 
     /**
@@ -161,5 +158,63 @@ public final class InMageRcmFailbackMobilityAgentDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmFailbackMobilityAgentDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmFailbackMobilityAgentDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmFailbackMobilityAgentDetails.
+     */
+    public static InMageRcmFailbackMobilityAgentDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmFailbackMobilityAgentDetails deserializedInMageRcmFailbackMobilityAgentDetails
+                = new InMageRcmFailbackMobilityAgentDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedInMageRcmFailbackMobilityAgentDetails.version = reader.getString();
+                } else if ("latestVersion".equals(fieldName)) {
+                    deserializedInMageRcmFailbackMobilityAgentDetails.latestVersion = reader.getString();
+                } else if ("driverVersion".equals(fieldName)) {
+                    deserializedInMageRcmFailbackMobilityAgentDetails.driverVersion = reader.getString();
+                } else if ("latestUpgradableVersionWithoutReboot".equals(fieldName)) {
+                    deserializedInMageRcmFailbackMobilityAgentDetails.latestUpgradableVersionWithoutReboot
+                        = reader.getString();
+                } else if ("agentVersionExpiryDate".equals(fieldName)) {
+                    deserializedInMageRcmFailbackMobilityAgentDetails.agentVersionExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("driverVersionExpiryDate".equals(fieldName)) {
+                    deserializedInMageRcmFailbackMobilityAgentDetails.driverVersionExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastHeartbeatUtc".equals(fieldName)) {
+                    deserializedInMageRcmFailbackMobilityAgentDetails.lastHeartbeatUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("reasonsBlockingUpgrade".equals(fieldName)) {
+                    List<AgentUpgradeBlockedReason> reasonsBlockingUpgrade
+                        = reader.readArray(reader1 -> AgentUpgradeBlockedReason.fromString(reader1.getString()));
+                    deserializedInMageRcmFailbackMobilityAgentDetails.reasonsBlockingUpgrade = reasonsBlockingUpgrade;
+                } else if ("isUpgradeable".equals(fieldName)) {
+                    deserializedInMageRcmFailbackMobilityAgentDetails.isUpgradeable = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmFailbackMobilityAgentDetails;
+        });
     }
 }

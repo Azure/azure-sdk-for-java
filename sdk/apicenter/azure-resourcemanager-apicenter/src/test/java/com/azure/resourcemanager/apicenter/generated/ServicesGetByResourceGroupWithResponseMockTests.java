@@ -6,51 +6,34 @@ package com.azure.resourcemanager.apicenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apicenter.ApiCenterManager;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.apicenter.models.Service;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServicesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"a06d8e00-7cc0-4198-b8a3-ea2d32d2bb23\",\"tenantId\":\"396571b9-27f3-45b5-90da-f624a94ca3fc\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"uhavhql\":{\"principalId\":\"2c0055c5-f042-46a1-a2fc-e95f8b336f69\",\"clientId\":\"0affbc61-9d30-4a8a-b349-cfad9c10fc1c\"},\"umaq\":{\"principalId\":\"8406e33a-85b5-47db-b0aa-8415d4638704\",\"clientId\":\"0bcb29b0-0fe0-4452-9130-40c7e4c90c69\"}}},\"location\":\"bgycduiertgccym\",\"tags\":{\"ssl\":\"l\",\"d\":\"lfmmdnbbglzpswi\",\"bzmnvdfznud\":\"cwyhzdxssa\"},\"id\":\"od\",\"name\":\"xzb\",\"type\":\"cblylpstdbhhxsr\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"682b9801-40b0-4a5c-8a95-99e90924506a\",\"tenantId\":\"8f62dbce-67b5-4351-8254-8af3aa46d033\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"uhavhql\":{\"principalId\":\"d2351eca-5662-4c3d-9e1d-87a650ec19c2\",\"clientId\":\"4f13496d-1cc9-4c4c-9c5a-287d2ba1cc28\"},\"umaq\":{\"principalId\":\"2490db57-d519-49cc-8bc6-a4308962fa2a\",\"clientId\":\"879e5f25-2eba-4767-b6fc-f1d485025498\"}}},\"location\":\"bgycduiertgccym\",\"tags\":{\"ssl\":\"l\",\"d\":\"lfmmdnbbglzpswi\",\"bzmnvdfznud\":\"cwyhzdxssa\"},\"id\":\"od\",\"name\":\"xzb\",\"type\":\"cblylpstdbhhxsr\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Service response = manager.services()
-            .getByResourceGroupWithResponse("doy", "mifthnzdnd", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("doy", "mifthnzdnd", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("bgycduiertgccym", response.location());
         Assertions.assertEquals("l", response.tags().get("ssl"));

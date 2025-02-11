@@ -20,7 +20,7 @@ public final class ReplicationRecoveryPlansDeleteSamples {
      */
     public static void deletesTheSpecifiedRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().delete("vault1", "resourceGroupPS1", "RPtest1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationRecoveryPlans()
+            .delete("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE);
     }
 }

@@ -115,10 +115,12 @@ public final class ServiceBusReceivedMessage {
             case DATA:
                 final byte[] payload = amqpAnnotatedMessage.getBody().getFirstData();
                 return BinaryData.fromBytes(payload);
+
             case SEQUENCE:
             case VALUE:
-                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                    "This body type not is supported: " + bodyType));
+                throw LOGGER.logExceptionAsError(
+                    new UnsupportedOperationException("This body type not is supported: " + bodyType));
+
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException("Body type not valid: " + bodyType));
         }
@@ -267,9 +269,7 @@ public final class ServiceBusReceivedMessage {
     public OffsetDateTime getExpiresAt() {
         final Duration timeToLive = getTimeToLive();
         final OffsetDateTime enqueuedTime = getEnqueuedTime();
-        return enqueuedTime != null && timeToLive != null
-            ? enqueuedTime.plus(timeToLive)
-            : null;
+        return enqueuedTime != null && timeToLive != null ? enqueuedTime.plus(timeToLive) : null;
     }
 
     /**
@@ -353,8 +353,7 @@ public final class ServiceBusReceivedMessage {
      * @see ServiceBusMessage#getPartitionKey()
      */
     public String getPartitionKey() {
-        return getStringValue(amqpAnnotatedMessage.getMessageAnnotations(),
-            PARTITION_KEY_ANNOTATION_NAME.getValue());
+        return getStringValue(amqpAnnotatedMessage.getMessageAnnotations(), PARTITION_KEY_ANNOTATION_NAME.getValue());
     }
 
     /**
@@ -438,8 +437,7 @@ public final class ServiceBusReceivedMessage {
      *     Timestamps</a>
      */
     public long getSequenceNumber() {
-        return getLongValue(amqpAnnotatedMessage.getMessageAnnotations(),
-            SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+        return getLongValue(amqpAnnotatedMessage.getMessageAnnotations(), SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
     }
 
     /**
@@ -512,7 +510,7 @@ public final class ServiceBusReceivedMessage {
 
     /**
      * Gets the "to" address.
-
+    
      * <p>
      * This property is reserved for future use in routing scenarios and presently ignored by the broker itself.
      * Applications can use this value in rule-driven
@@ -595,8 +593,8 @@ public final class ServiceBusReceivedMessage {
      * @param deadLetterErrorDescription Dead letter description.
      */
     void setDeadLetterErrorDescription(String deadLetterErrorDescription) {
-        amqpAnnotatedMessage.getApplicationProperties().put(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue(),
-            deadLetterErrorDescription);
+        amqpAnnotatedMessage.getApplicationProperties()
+            .put(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue(), deadLetterErrorDescription);
     }
 
     /**
@@ -605,8 +603,8 @@ public final class ServiceBusReceivedMessage {
      * @param deadLetterReason Dead letter reason.
      */
     void setDeadLetterReason(String deadLetterReason) {
-        amqpAnnotatedMessage.getApplicationProperties().put(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue(),
-            deadLetterReason);
+        amqpAnnotatedMessage.getApplicationProperties()
+            .put(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue(), deadLetterReason);
     }
 
     /**
@@ -617,8 +615,8 @@ public final class ServiceBusReceivedMessage {
      * before it was deadlettered.
      */
     void setDeadLetterSource(String deadLetterSource) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue(),
-            deadLetterSource);
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue(), deadLetterSource);
     }
 
     /**
@@ -636,8 +634,8 @@ public final class ServiceBusReceivedMessage {
      * @param enqueuedSequenceNumber The message's sequence number.
      */
     void setEnqueuedSequenceNumber(long enqueuedSequenceNumber) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
-            enqueuedSequenceNumber);
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), enqueuedSequenceNumber);
     }
 
     /**
@@ -814,8 +812,8 @@ public final class ServiceBusReceivedMessage {
 
     private void setValue(Map<String, Object> dataMap, AmqpMessageConstant key, OffsetDateTime value) {
         if (value != null) {
-            amqpAnnotatedMessage.getMessageAnnotations().put(key.getValue(),
-                new Date(value.toInstant().toEpochMilli()));
+            amqpAnnotatedMessage.getMessageAnnotations()
+                .put(key.getValue(), new Date(value.toInstant().toEpochMilli()));
         }
     }
 }

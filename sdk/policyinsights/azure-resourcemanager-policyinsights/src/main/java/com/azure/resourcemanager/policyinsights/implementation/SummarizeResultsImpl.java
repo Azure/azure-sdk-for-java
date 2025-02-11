@@ -15,8 +15,7 @@ public final class SummarizeResultsImpl implements SummarizeResults {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    SummarizeResultsImpl(
-        SummarizeResultsInner innerObject,
+    SummarizeResultsImpl(SummarizeResultsInner innerObject,
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

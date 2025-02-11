@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitoringTagRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitoringTagRulesProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Creating\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":true,\"filteringTags\":[{\"name\":\"cattpngjcrcczsq\",\"value\":\"hvmdajvnysounq\",\"action\":\"Include\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"upfh\",\"value\":\"ltrpmopj\",\"action\":\"Include\"}]},\"automuting\":false}")
-                .toObject(MonitoringTagRulesProperties.class);
+        MonitoringTagRulesProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Creating\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":true,\"filteringTags\":[{\"name\":\"cattpngjcrcczsq\",\"value\":\"hvmdajvnysounq\",\"action\":\"Include\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"upfh\",\"value\":\"ltrpmopj\",\"action\":\"Include\"}]},\"automuting\":false}")
+            .toObject(MonitoringTagRulesProperties.class);
         Assertions.assertEquals(false, model.logRules().sendAadLogs());
         Assertions.assertEquals(false, model.logRules().sendSubscriptionLogs());
         Assertions.assertEquals(true, model.logRules().sendResourceLogs());
@@ -35,30 +33,16 @@ public final class MonitoringTagRulesPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoringTagRulesProperties model =
-            new MonitoringTagRulesProperties()
-                .withLogRules(
-                    new LogRules()
-                        .withSendAadLogs(false)
-                        .withSendSubscriptionLogs(false)
-                        .withSendResourceLogs(true)
-                        .withFilteringTags(
-                            Arrays
-                                .asList(
-                                    new FilteringTag()
-                                        .withName("cattpngjcrcczsq")
-                                        .withValue("hvmdajvnysounq")
-                                        .withAction(TagAction.INCLUDE))))
-                .withMetricRules(
-                    new MetricRules()
-                        .withFilteringTags(
-                            Arrays
-                                .asList(
-                                    new FilteringTag()
-                                        .withName("upfh")
-                                        .withValue("ltrpmopj")
-                                        .withAction(TagAction.INCLUDE))))
-                .withAutomuting(false);
+        MonitoringTagRulesProperties model = new MonitoringTagRulesProperties()
+            .withLogRules(new LogRules().withSendAadLogs(false)
+                .withSendSubscriptionLogs(false)
+                .withSendResourceLogs(true)
+                .withFilteringTags(Arrays.asList(new FilteringTag().withName("cattpngjcrcczsq")
+                    .withValue("hvmdajvnysounq")
+                    .withAction(TagAction.INCLUDE))))
+            .withMetricRules(new MetricRules().withFilteringTags(
+                Arrays.asList(new FilteringTag().withName("upfh").withValue("ltrpmopj").withAction(TagAction.INCLUDE))))
+            .withAutomuting(false);
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesProperties.class);
         Assertions.assertEquals(false, model.logRules().sendAadLogs());
         Assertions.assertEquals(false, model.logRules().sendSubscriptionLogs());

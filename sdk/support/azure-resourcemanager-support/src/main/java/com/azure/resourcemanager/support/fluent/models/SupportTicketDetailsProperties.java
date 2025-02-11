@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.ContactProfile;
 import com.azure.resourcemanager.support.models.IsTemporaryTicket;
@@ -15,175 +20,152 @@ import com.azure.resourcemanager.support.models.ServiceLevelAgreement;
 import com.azure.resourcemanager.support.models.SeverityLevel;
 import com.azure.resourcemanager.support.models.SupportEngineer;
 import com.azure.resourcemanager.support.models.TechnicalTicketDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Describes the properties of a support ticket.
  */
 @Fluent
-public final class SupportTicketDetailsProperties {
+public final class SupportTicketDetailsProperties implements JsonSerializable<SupportTicketDetailsProperties> {
     /*
      * System generated support ticket Id that is unique.
      */
-    @JsonProperty(value = "supportTicketId")
     private String supportTicketId;
 
     /*
      * Detailed description of the question or issue.
      */
-    @JsonProperty(value = "description", required = true)
     private String description;
 
     /*
-     * Each Azure service has its own set of issue categories, also known as problem classification. This parameter is the unique Id for the type of problem you are experiencing.
+     * Each Azure service has its own set of issue categories, also known as problem classification. This parameter is
+     * the unique Id for the type of problem you are experiencing.
      */
-    @JsonProperty(value = "problemClassificationId", required = true)
     private String problemClassificationId;
 
     /*
      * Localized name of problem classification.
      */
-    @JsonProperty(value = "problemClassificationDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String problemClassificationDisplayName;
 
     /*
-     * A value that indicates the urgency of the case, which in turn determines the response time according to the service level agreement of the technical support plan you have with Azure. Note: 'Highest critical impact', also known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium customers.
+     * A value that indicates the urgency of the case, which in turn determines the response time according to the
+     * service level agreement of the technical support plan you have with Azure. Note: 'Highest critical impact', also
+     * known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium customers.
      */
-    @JsonProperty(value = "severity", required = true)
     private SeverityLevel severity;
 
     /*
      * Enrollment Id associated with the support ticket.
      */
-    @JsonProperty(value = "enrollmentId")
     private String enrollmentId;
 
     /*
      * Indicates if this requires a 24x7 response from Azure.
      */
-    @JsonProperty(value = "require24X7Response")
     private Boolean require24X7Response;
 
     /*
      * Advanced diagnostic consent to be updated on the support ticket.
      */
-    @JsonProperty(value = "advancedDiagnosticConsent", required = true)
     private Consent advancedDiagnosticConsent;
 
     /*
      * Problem scoping questions associated with the support ticket.
      */
-    @JsonProperty(value = "problemScopingQuestions")
     private String problemScopingQuestions;
 
     /*
      * Support plan id associated with the support ticket.
      */
-    @JsonProperty(value = "supportPlanId")
     private String supportPlanId;
 
     /*
      * Contact information of the user requesting to create a support ticket.
      */
-    @JsonProperty(value = "contactDetails", required = true)
     private ContactProfile contactDetails;
 
     /*
      * Service Level Agreement information for this support ticket.
      */
-    @JsonProperty(value = "serviceLevelAgreement")
     private ServiceLevelAgreement serviceLevelAgreement;
 
     /*
      * Information about the support engineer working on this support ticket.
      */
-    @JsonProperty(value = "supportEngineer")
     private SupportEngineer supportEngineer;
 
     /*
      * Support plan type associated with the support ticket.
      */
-    @JsonProperty(value = "supportPlanType", access = JsonProperty.Access.WRITE_ONLY)
     private String supportPlanType;
 
     /*
      * Support plan type associated with the support ticket.
      */
-    @JsonProperty(value = "supportPlanDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String supportPlanDisplayName;
 
     /*
      * Title of the support ticket.
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /*
      * Time in UTC (ISO 8601 format) when the problem started.
      */
-    @JsonProperty(value = "problemStartTime")
     private OffsetDateTime problemStartTime;
 
     /*
      * This is the resource Id of the Azure service resource associated with the support ticket.
      */
-    @JsonProperty(value = "serviceId", required = true)
     private String serviceId;
 
     /*
      * Localized name of the Azure service.
      */
-    @JsonProperty(value = "serviceDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceDisplayName;
 
     /*
      * Status of the support ticket.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Time in UTC (ISO 8601 format) when the support ticket was created.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
      * Time in UTC (ISO 8601 format) when the support ticket was last modified.
      */
-    @JsonProperty(value = "modifiedDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime modifiedDate;
 
     /*
      * File workspace name.
      */
-    @JsonProperty(value = "fileWorkspaceName")
     private String fileWorkspaceName;
 
     /*
      * This property indicates if support ticket is a temporary ticket.
      */
-    @JsonProperty(value = "isTemporaryTicket", access = JsonProperty.Access.WRITE_ONLY)
     private IsTemporaryTicket isTemporaryTicket;
 
     /*
      * Additional ticket details associated with a technical support ticket request.
      */
-    @JsonProperty(value = "technicalTicketDetails")
     private TechnicalTicketDetails technicalTicketDetails;
 
     /*
      * Additional ticket details associated with a quota support ticket request.
      */
-    @JsonProperty(value = "quotaTicketDetails")
     private QuotaTicketDetails quotaTicketDetails;
 
     /*
      * This property indicates secondary consents for the support ticket
      */
-    @JsonProperty(value = "secondaryConsent")
     private List<SecondaryConsent> secondaryConsent;
 
     /**
@@ -717,4 +699,127 @@ public final class SupportTicketDetailsProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SupportTicketDetailsProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("problemClassificationId", this.problemClassificationId);
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("advancedDiagnosticConsent",
+            this.advancedDiagnosticConsent == null ? null : this.advancedDiagnosticConsent.toString());
+        jsonWriter.writeJsonField("contactDetails", this.contactDetails);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("serviceId", this.serviceId);
+        jsonWriter.writeStringField("supportTicketId", this.supportTicketId);
+        jsonWriter.writeStringField("enrollmentId", this.enrollmentId);
+        jsonWriter.writeBooleanField("require24X7Response", this.require24X7Response);
+        jsonWriter.writeStringField("problemScopingQuestions", this.problemScopingQuestions);
+        jsonWriter.writeStringField("supportPlanId", this.supportPlanId);
+        jsonWriter.writeJsonField("serviceLevelAgreement", this.serviceLevelAgreement);
+        jsonWriter.writeJsonField("supportEngineer", this.supportEngineer);
+        jsonWriter.writeStringField("problemStartTime",
+            this.problemStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.problemStartTime));
+        jsonWriter.writeStringField("fileWorkspaceName", this.fileWorkspaceName);
+        jsonWriter.writeJsonField("technicalTicketDetails", this.technicalTicketDetails);
+        jsonWriter.writeJsonField("quotaTicketDetails", this.quotaTicketDetails);
+        jsonWriter.writeArrayField("secondaryConsent", this.secondaryConsent,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportTicketDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportTicketDetailsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SupportTicketDetailsProperties.
+     */
+    public static SupportTicketDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportTicketDetailsProperties deserializedSupportTicketDetailsProperties
+                = new SupportTicketDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.description = reader.getString();
+                } else if ("problemClassificationId".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.problemClassificationId = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.severity = SeverityLevel.fromString(reader.getString());
+                } else if ("advancedDiagnosticConsent".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.advancedDiagnosticConsent
+                        = Consent.fromString(reader.getString());
+                } else if ("contactDetails".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.contactDetails = ContactProfile.fromJson(reader);
+                } else if ("title".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.title = reader.getString();
+                } else if ("serviceId".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.serviceId = reader.getString();
+                } else if ("supportTicketId".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.supportTicketId = reader.getString();
+                } else if ("problemClassificationDisplayName".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.problemClassificationDisplayName = reader.getString();
+                } else if ("enrollmentId".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.enrollmentId = reader.getString();
+                } else if ("require24X7Response".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.require24X7Response
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("problemScopingQuestions".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.problemScopingQuestions = reader.getString();
+                } else if ("supportPlanId".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.supportPlanId = reader.getString();
+                } else if ("serviceLevelAgreement".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.serviceLevelAgreement
+                        = ServiceLevelAgreement.fromJson(reader);
+                } else if ("supportEngineer".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.supportEngineer = SupportEngineer.fromJson(reader);
+                } else if ("supportPlanType".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.supportPlanType = reader.getString();
+                } else if ("supportPlanDisplayName".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.supportPlanDisplayName = reader.getString();
+                } else if ("problemStartTime".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.problemStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("serviceDisplayName".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.serviceDisplayName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.status = reader.getString();
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("modifiedDate".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.modifiedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fileWorkspaceName".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.fileWorkspaceName = reader.getString();
+                } else if ("isTemporaryTicket".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.isTemporaryTicket
+                        = IsTemporaryTicket.fromString(reader.getString());
+                } else if ("technicalTicketDetails".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.technicalTicketDetails
+                        = TechnicalTicketDetails.fromJson(reader);
+                } else if ("quotaTicketDetails".equals(fieldName)) {
+                    deserializedSupportTicketDetailsProperties.quotaTicketDetails = QuotaTicketDetails.fromJson(reader);
+                } else if ("secondaryConsent".equals(fieldName)) {
+                    List<SecondaryConsent> secondaryConsent
+                        = reader.readArray(reader1 -> SecondaryConsent.fromJson(reader1));
+                    deserializedSupportTicketDetailsProperties.secondaryConsent = secondaryConsent;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportTicketDetailsProperties;
+        });
+    }
 }

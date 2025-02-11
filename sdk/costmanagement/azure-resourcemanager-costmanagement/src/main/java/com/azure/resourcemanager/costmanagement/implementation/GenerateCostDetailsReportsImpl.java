@@ -19,15 +19,14 @@ public final class GenerateCostDetailsReportsImpl implements GenerateCostDetails
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public GenerateCostDetailsReportsImpl(
-        GenerateCostDetailsReportsClient innerClient,
+    public GenerateCostDetailsReportsImpl(GenerateCostDetailsReportsClient innerClient,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public CostDetailsOperationResults createOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters) {
+    public CostDetailsOperationResults createOperation(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters) {
         CostDetailsOperationResultsInner inner = this.serviceClient().createOperation(scope, parameters);
         if (inner != null) {
             return new CostDetailsOperationResultsImpl(inner, this.manager());
@@ -36,8 +35,8 @@ public final class GenerateCostDetailsReportsImpl implements GenerateCostDetails
         }
     }
 
-    public CostDetailsOperationResults createOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context) {
+    public CostDetailsOperationResults createOperation(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters, Context context) {
         CostDetailsOperationResultsInner inner = this.serviceClient().createOperation(scope, parameters, context);
         if (inner != null) {
             return new CostDetailsOperationResultsImpl(inner, this.manager());

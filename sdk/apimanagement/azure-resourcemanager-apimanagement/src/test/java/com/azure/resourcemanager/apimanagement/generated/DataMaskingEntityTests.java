@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DataMaskingEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataMaskingEntity model =
-            BinaryData.fromString("{\"value\":\"juqdbrx\",\"mode\":\"Hide\"}").toObject(DataMaskingEntity.class);
+        DataMaskingEntity model
+            = BinaryData.fromString("{\"value\":\"juqdbrx\",\"mode\":\"Hide\"}").toObject(DataMaskingEntity.class);
         Assertions.assertEquals("juqdbrx", model.value());
         Assertions.assertEquals(DataMaskingMode.HIDE, model.mode());
     }

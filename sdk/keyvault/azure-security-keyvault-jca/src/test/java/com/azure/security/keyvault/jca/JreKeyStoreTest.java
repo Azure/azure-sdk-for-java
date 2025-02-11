@@ -65,18 +65,13 @@ public class JreKeyStoreTest {
          * - Set hostname verifier to trust any hostname.
          */
 
-        SSLContext sslContext = SSLContexts
-            .custom()
-            .loadTrustMaterial(ks, null)
-            .build();
+        SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(ks, null).build();
 
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-            sslContext, (hostname, session) -> true);
+        SSLConnectionSocketFactory sslConnectionSocketFactory
+            = new SSLConnectionSocketFactory(sslContext, (hostname, session) -> true);
 
         PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-            RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("https", sslConnectionSocketFactory)
-                .build());
+            RegistryBuilder.<ConnectionSocketFactory>create().register("https", sslConnectionSocketFactory).build());
 
         /*
          * And now execute the test.

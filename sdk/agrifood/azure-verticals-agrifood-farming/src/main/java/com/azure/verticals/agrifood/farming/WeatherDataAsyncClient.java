@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = WeatherDataClientBuilder.class, isAsync = true)
 public final class WeatherDataAsyncClient {
-    @Generated private final WeatherDatasImpl serviceClient;
+    @Generated
+    private final WeatherDatasImpl serviceClient;
 
     /**
      * Initializes an instance of WeatherDataAsyncClient class.
@@ -175,8 +176,8 @@ public final class WeatherDataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            BinaryData weatherDataProviderRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(BinaryData weatherDataProviderRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(weatherDataProviderRequest, requestOptions);
     }
 }

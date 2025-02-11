@@ -6,7 +6,9 @@ package com.azure.resourcemanager.delegatednetwork.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedSubnetInner;
+import com.azure.resourcemanager.delegatednetwork.models.ControllerDetails;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnets;
+import com.azure.resourcemanager.delegatednetwork.models.SubnetDetails;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,30 +17,42 @@ import org.junit.jupiter.api.Assertions;
 public final class DelegatedSubnetsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DelegatedSubnets model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"resourceGuid\":\"ipheoflokeyyien\",\"provisioningState\":\"Failed\"},\"location\":\"tgrhpdjpjumas\",\"tags\":{\"lhbxxhejjzzvdud\":\"jpqyegu\"},\"id\":\"wdslfhotwmcy\",\"name\":\"pwlbjnpg\",\"type\":\"cftadeh\"}],\"nextLink\":\"ltyfsop\"}")
-                .toObject(DelegatedSubnets.class);
-        Assertions.assertEquals("tgrhpdjpjumas", model.value().get(0).location());
-        Assertions.assertEquals("jpqyegu", model.value().get(0).tags().get("lhbxxhejjzzvdud"));
+        DelegatedSubnets model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"resourceGuid\":\"lnwsubisn\",\"provisioningState\":\"Provisioning\",\"subnetDetails\":{\"id\":\"ngnzscxaqwoochc\"},\"controllerDetails\":{\"id\":\"qvpkvlrxnjeaseip\"}},\"location\":\"eo\",\"tags\":{\"nj\":\"keyyi\",\"jumasx\":\"dlwtgrhpdj\",\"qyeg\":\"zj\"},\"id\":\"alhbx\",\"name\":\"hejjz\",\"type\":\"v\"},{\"properties\":{\"resourceGuid\":\"gwdslfhotwm\",\"provisioningState\":\"Failed\",\"subnetDetails\":{\"id\":\"lbjnpgacftadehx\"},\"controllerDetails\":{\"id\":\"yfsoppu\"}},\"location\":\"uesnzwdejbavo\",\"tags\":{\"tbqvudw\":\"dmoh\",\"ujjugwdkcglh\":\"dndnvow\",\"ofqweykhmenevfye\":\"lazjdyggdtjixhbk\"},\"id\":\"fwhybcibvy\",\"name\":\"dcsi\",\"type\":\"ynnaam\"},{\"properties\":{\"resourceGuid\":\"tehfiqscjeypvh\",\"provisioningState\":\"Failed\",\"subnetDetails\":{\"id\":\"q\"},\"controllerDetails\":{\"id\":\"refovgmkqsleyyvx\"}},\"location\":\"qjpkcattpngjcrc\",\"tags\":{\"v\":\"qpjhvmda\",\"q\":\"ysou\",\"yhltrpmopjmcm\":\"canoaeupf\"},\"id\":\"tuo\",\"name\":\"thfuiuaodsfcpkvx\",\"type\":\"dpuozmyz\"},{\"properties\":{\"resourceGuid\":\"gf\",\"provisioningState\":\"Provisioning\",\"subnetDetails\":{\"id\":\"zyiuokk\"},\"controllerDetails\":{\"id\":\"rdxwzywqsm\"}},\"location\":\"surex\",\"tags\":{\"stkiiuxhqyud\":\"ryocfsfksymdd\"},\"id\":\"o\",\"name\":\"rq\",\"type\":\"b\"}],\"nextLink\":\"czvyifq\"}")
+            .toObject(DelegatedSubnets.class);
+        Assertions.assertEquals("eo", model.value().get(0).location());
+        Assertions.assertEquals("keyyi", model.value().get(0).tags().get("nj"));
+        Assertions.assertEquals("ngnzscxaqwoochc", model.value().get(0).subnetDetails().id());
+        Assertions.assertEquals("qvpkvlrxnjeaseip", model.value().get(0).controllerDetails().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelegatedSubnets model =
-            new DelegatedSubnets()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DelegatedSubnetInner()
-                                .withLocation("tgrhpdjpjumas")
-                                .withTags(mapOf("lhbxxhejjzzvdud", "jpqyegu"))));
+        DelegatedSubnets model = new DelegatedSubnets().withValue(Arrays.asList(
+            new DelegatedSubnetInner().withLocation("eo")
+                .withTags(mapOf("nj", "keyyi", "jumasx", "dlwtgrhpdj", "qyeg", "zj"))
+                .withSubnetDetails(new SubnetDetails().withId("ngnzscxaqwoochc"))
+                .withControllerDetails(new ControllerDetails().withId("qvpkvlrxnjeaseip")),
+            new DelegatedSubnetInner().withLocation("uesnzwdejbavo")
+                .withTags(mapOf("tbqvudw", "dmoh", "ujjugwdkcglh", "dndnvow", "ofqweykhmenevfye", "lazjdyggdtjixhbk"))
+                .withSubnetDetails(new SubnetDetails().withId("lbjnpgacftadehx"))
+                .withControllerDetails(new ControllerDetails().withId("yfsoppu")),
+            new DelegatedSubnetInner().withLocation("qjpkcattpngjcrc")
+                .withTags(mapOf("v", "qpjhvmda", "q", "ysou", "yhltrpmopjmcm", "canoaeupf"))
+                .withSubnetDetails(new SubnetDetails().withId("q"))
+                .withControllerDetails(new ControllerDetails().withId("refovgmkqsleyyvx")),
+            new DelegatedSubnetInner().withLocation("surex")
+                .withTags(mapOf("stkiiuxhqyud", "ryocfsfksymdd"))
+                .withSubnetDetails(new SubnetDetails().withId("zyiuokk"))
+                .withControllerDetails(new ControllerDetails().withId("rdxwzywqsm"))));
         model = BinaryData.fromObject(model).toObject(DelegatedSubnets.class);
-        Assertions.assertEquals("tgrhpdjpjumas", model.value().get(0).location());
-        Assertions.assertEquals("jpqyegu", model.value().get(0).tags().get("lhbxxhejjzzvdud"));
+        Assertions.assertEquals("eo", model.value().get(0).location());
+        Assertions.assertEquals("keyyi", model.value().get(0).tags().get("nj"));
+        Assertions.assertEquals("ngnzscxaqwoochc", model.value().get(0).subnetDetails().id());
+        Assertions.assertEquals("qvpkvlrxnjeaseip", model.value().get(0).controllerDetails().id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

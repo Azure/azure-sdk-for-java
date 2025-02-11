@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Output for task that migrates SQL Server databases to Azure SQL Database Managed Instance using Log Replay Service.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "resultType",
-    defaultImpl = MigrateSqlServerSqlMISyncTaskOutput.class)
-@JsonTypeName("MigrateSqlServerSqlMISyncTaskOutput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "MigrationLevelOutput", value = MigrateSqlServerSqlMISyncTaskOutputMigrationLevel.class),
-    @JsonSubTypes.Type(name = "DatabaseLevelOutput", value = MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.class),
-    @JsonSubTypes.Type(name = "ErrorOutput", value = MigrateSqlServerSqlMISyncTaskOutputError.class)
-})
 @Immutable
-public class MigrateSqlServerSqlMISyncTaskOutput {
+public class MigrateSqlServerSqlMISyncTaskOutput implements JsonSerializable<MigrateSqlServerSqlMISyncTaskOutput> {
+    /*
+     * Result type
+     */
+    private String resultType = "MigrateSqlServerSqlMISyncTaskOutput";
+
     /*
      * Result identifier
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of MigrateSqlServerSqlMISyncTaskOutput class. */
+    /**
+     * Creates an instance of MigrateSqlServerSqlMISyncTaskOutput class.
+     */
     public MigrateSqlServerSqlMISyncTaskOutput() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the id property: Result identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -46,10 +51,89 @@ public class MigrateSqlServerSqlMISyncTaskOutput {
     }
 
     /**
+     * Set the id property: Result identifier.
+     * 
+     * @param id the id value to set.
+     * @return the MigrateSqlServerSqlMISyncTaskOutput object itself.
+     */
+    MigrateSqlServerSqlMISyncTaskOutput withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlMISyncTaskOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlMISyncTaskOutput if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlMISyncTaskOutput.
+     */
+    public static MigrateSqlServerSqlMISyncTaskOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("resultType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("MigrationLevelOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlMISyncTaskOutputMigrationLevel.fromJson(readerToUse.reset());
+                } else if ("DatabaseLevelOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.fromJson(readerToUse.reset());
+                } else if ("ErrorOutput".equals(discriminatorValue)) {
+                    return MigrateSqlServerSqlMISyncTaskOutputError.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static MigrateSqlServerSqlMISyncTaskOutput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlMISyncTaskOutput deserializedMigrateSqlServerSqlMISyncTaskOutput
+                = new MigrateSqlServerSqlMISyncTaskOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resultType".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutput.resultType = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutput.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlMISyncTaskOutput;
+        });
     }
 }

@@ -44,24 +44,23 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BuilderHelperTests {
-    private static final StorageSharedKeyCredential CREDENTIALS = new StorageSharedKeyCredential("accountName",
-        "accountKey");
+    private static final StorageSharedKeyCredential CREDENTIALS
+        = new StorageSharedKeyCredential("accountName", "accountKey");
     private static final String ENDPOINT = "https://account.blob.core.windows.net/";
-    private static final RequestRetryOptions REQUEST_RETRY_OPTIONS = new RequestRetryOptions(RetryPolicyType.FIXED, 2,
-        2, 1000L, 4000L, null);
-    private static final RetryOptions CORE_RETRY_OPTIONS = new RetryOptions(new FixedDelayOptions(1,
-        Duration.ofMillis(1000)));
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-storage-file-datalake.properties");
+    private static final RequestRetryOptions REQUEST_RETRY_OPTIONS
+        = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000L, 4000L, null);
+    private static final RetryOptions CORE_RETRY_OPTIONS
+        = new RetryOptions(new FixedDelayOptions(1, Duration.ofMillis(1000)));
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-storage-file-datalake.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
-    private static final String UA_PATTERN =
-        "azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + CLIENT_NAME + "/"
-        + CLIENT_VERSION + " " + "(.)*";
+    private static final String UA_PATTERN
+        = "azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + CLIENT_NAME + "/"
+            + CLIENT_VERSION + " " + "(.)*";
 
     private static HttpRequest request(String url) {
-        return new HttpRequest(HttpMethod.HEAD, url)
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, "0")
+        return new HttpRequest(HttpMethod.HEAD, url).setHeader(HttpHeaderName.CONTENT_LENGTH, "0")
             .setBody(Flux.empty());
     }
 
@@ -84,8 +83,7 @@ public class BuilderHelperTests {
      */
     @Test
     public void serviceClientFreshDateOnRetry() {
-        DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .httpClient(new FreshDateTestClient())
             .retryOptions(REQUEST_RETRY_OPTIONS)
@@ -101,8 +99,7 @@ public class BuilderHelperTests {
      */
     @Test
     public void fileSystemClientFreshDateOnRetry() {
-        DataLakeFileSystemClient fileSystemClient = new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
+        DataLakeFileSystemClient fileSystemClient = new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
             .fileSystemName("fileSystem")
             .credential(CREDENTIALS)
             .httpClient(new FreshDateTestClient())
@@ -119,8 +116,7 @@ public class BuilderHelperTests {
      */
     @Test
     public void pathClientFreshDateOnRetry() {
-        DataLakePathClientBuilder pathClientBuilder = new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
+        DataLakePathClientBuilder pathClientBuilder = new DataLakePathClientBuilder().endpoint(ENDPOINT)
             .fileSystemName("fileSystem")
             .pathName("path")
             .credential(CREDENTIALS)
@@ -146,8 +142,7 @@ public class BuilderHelperTests {
             Arguments.of("log-options-id", null, "log-options-id"),
             Arguments.of(null, "client-options-id", "client-options-id"),
             // Client options preferred over log options
-            Arguments.of("log-options-id", "client-options-id", "client-options-id")
-        );
+            Arguments.of("log-options-id", "client-options-id", "client-options-id"));
     }
 
     /**
@@ -175,8 +170,7 @@ public class BuilderHelperTests {
     @MethodSource("clientAndLogOptions")
     public void serviceClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
         String expectedUA) {
-        DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .httpClient(new ApplicationIdUAStringTestClient(expectedUA))
             .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
@@ -196,8 +190,7 @@ public class BuilderHelperTests {
     @MethodSource("clientAndLogOptions")
     public void fileSystemClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
         String expectedUA) {
-        DataLakeFileSystemClient fileSystemClient = new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
+        DataLakeFileSystemClient fileSystemClient = new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
             .fileSystemName("fileSystem")
             .credential(CREDENTIALS)
             .httpClient(new ApplicationIdUAStringTestClient(expectedUA))
@@ -218,8 +211,7 @@ public class BuilderHelperTests {
     @MethodSource("clientAndLogOptions")
     public void pathClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
         String expectedUA) {
-        DataLakePathClientBuilder pathClientBuilder = new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
+        DataLakePathClientBuilder pathClientBuilder = new DataLakePathClientBuilder().endpoint(ENDPOINT)
             .fileSystemName("fileSystem")
             .pathName("path")
             .credential(CREDENTIALS)
@@ -242,23 +234,20 @@ public class BuilderHelperTests {
 
     @Test
     public void doesNotThrowOnAmbiguousCredentialsWithoutAzureSasCredential() {
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
+        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
             .credential(new StorageSharedKeyCredential("foo", "bar"))
             .credential(new MockTokenCredential())
             .sasToken("foo")
             .buildClient());
 
-        assertDoesNotThrow(() -> new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
+        assertDoesNotThrow(() -> new DataLakePathClientBuilder().endpoint(ENDPOINT)
             .pathName("foo")
             .credential(new StorageSharedKeyCredential("foo", "bar"))
             .credential(new MockTokenCredential())
             .sasToken("foo")
             .buildDirectoryClient());
 
-        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new StorageSharedKeyCredential("foo", "bar"))
             .credential(new MockTokenCredential())
             .sasToken("foo")
@@ -267,156 +256,156 @@ public class BuilderHelperTests {
 
     @Test
     public void throwsOnAmbiguousCredentialsWithAzureSasCredential() {
-        assertThrows(IllegalStateException.class, () -> new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
+                .credential(new StorageSharedKeyCredential("foo", "bar"))
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new MockTokenCredential())
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
+                .credential(new MockTokenCredential())
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
-            .sasToken("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
+                .sasToken("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT + "?sig=foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT + "?sig=foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
-            .pathName("foo")
-            .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(new AzureSasCredential("foo"))
-            .buildDirectoryClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakePathClientBuilder().endpoint(ENDPOINT)
+                .pathName("foo")
+                .credential(new StorageSharedKeyCredential("foo", "bar"))
+                .credential(new AzureSasCredential("foo"))
+                .buildDirectoryClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
-            .pathName("foo")
-            .credential(new MockTokenCredential())
-            .credential(new AzureSasCredential("foo"))
-            .buildDirectoryClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakePathClientBuilder().endpoint(ENDPOINT)
+                .pathName("foo")
+                .credential(new MockTokenCredential())
+                .credential(new AzureSasCredential("foo"))
+                .buildDirectoryClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
-            .pathName("foo")
-            .sasToken("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildDirectoryClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakePathClientBuilder().endpoint(ENDPOINT)
+                .pathName("foo")
+                .sasToken("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildDirectoryClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT + "?sig=foo")
-            .pathName("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildDirectoryClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakePathClientBuilder().endpoint(ENDPOINT + "?sig=foo")
+                .pathName("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildDirectoryClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakeServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
+                .credential(new StorageSharedKeyCredential("foo", "bar"))
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakeServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new MockTokenCredential())
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
+                .credential(new MockTokenCredential())
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakeServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .sasToken("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
+                .sasToken("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakeServiceClientBuilder()
-            .endpoint(ENDPOINT + "?sig=foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakeServiceClientBuilder().endpoint(ENDPOINT + "?sig=foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
     }
 
     @Test
     public void onlyOneRetryOptionsCanBeApplied() {
-        assertThrows(IllegalStateException.class, () -> new DataLakeServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .fileSystemName("foo")
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .fileSystemName("foo")
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .fileSystemName("foo")
-            .pathName("foo")
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildFileClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakePathClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .fileSystemName("foo")
+                .pathName("foo")
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildFileClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .fileSystemName("foo")
-            .pathName("foo")
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildFileClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakePathClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .fileSystemName("foo")
+                .pathName("foo")
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildFileClient());
 
-        assertThrows(IllegalStateException.class, () -> new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .fileSystemName("foo")
-            .pathName("foo")
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildDirectoryClient());
+        assertThrows(IllegalStateException.class,
+            () -> new DataLakePathClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .fileSystemName("foo")
+                .pathName("foo")
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildDirectoryClient());
     }
 
     @Test
     public void serviceClientBlobUserAgentModificationPolicy() {
-        DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .httpClient(new UAStringTestClient(UA_PATTERN))
             .buildClient();
 
-        StepVerifier.create(serviceClient.blobServiceClient.getHttpPipeline().send(request(serviceClient.getAccountUrl())))
+        StepVerifier
+            .create(serviceClient.blobServiceClient.getHttpPipeline().send(request(serviceClient.getAccountUrl())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void fileSystemClientBlobUserAgentModificationPolicy() {
-        DataLakeFileSystemClient fileSystemClient = new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
+        DataLakeFileSystemClient fileSystemClient = new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT)
             .fileSystemName("fileSystem")
             .credential(CREDENTIALS)
             .httpClient(new UAStringTestClient(UA_PATTERN))
             .buildClient();
 
-        StepVerifier.create(fileSystemClient.blobContainerClient.getHttpPipeline().send(request(fileSystemClient.getFileSystemUrl())))
+        StepVerifier
+            .create(fileSystemClient.blobContainerClient.getHttpPipeline()
+                .send(request(fileSystemClient.getFileSystemUrl())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void pathClientBlobUserAgentModificationPolicy() {
-        DataLakePathClientBuilder pathClientBuilder = new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
+        DataLakePathClientBuilder pathClientBuilder = new DataLakePathClientBuilder().endpoint(ENDPOINT)
             .fileSystemName("fileSystem")
             .pathName("path")
             .credential(CREDENTIALS)
@@ -424,7 +413,8 @@ public class BuilderHelperTests {
 
         DataLakeDirectoryClient directoryClient = pathClientBuilder.buildDirectoryClient();
 
-        StepVerifier.create(directoryClient.blockBlobClient.getHttpPipeline().send(request(directoryClient.getDirectoryUrl())))
+        StepVerifier
+            .create(directoryClient.blockBlobClient.getHttpPipeline().send(request(directoryClient.getDirectoryUrl())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 

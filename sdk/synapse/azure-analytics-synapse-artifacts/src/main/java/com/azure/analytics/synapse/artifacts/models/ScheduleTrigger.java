@@ -28,6 +28,11 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
      */
     private ScheduleTriggerRecurrence recurrence;
 
+    /*
+     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
+     */
+    private TriggerRuntimeState runtimeState;
+
     /**
      * Creates an instance of ScheduleTrigger class.
      */
@@ -62,6 +67,17 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
     public ScheduleTrigger setRecurrence(ScheduleTriggerRecurrence recurrence) {
         this.recurrence = recurrence;
         return this;
+    }
+
+    /**
+     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
+     * the Trigger.
+     * 
+     * @return the runtimeState value.
+     */
+    @Override
+    public TriggerRuntimeState getRuntimeState() {
+        return this.runtimeState;
     }
 
     /**
@@ -134,7 +150,7 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
                 if ("description".equals(fieldName)) {
                     deserializedScheduleTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedScheduleTrigger.setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                    deserializedScheduleTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedScheduleTrigger.setAnnotations(annotations);

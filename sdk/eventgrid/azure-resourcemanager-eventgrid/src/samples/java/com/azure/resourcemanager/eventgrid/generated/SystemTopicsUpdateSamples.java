@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public final class SystemTopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/SystemTopics_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * SystemTopics_Update.json
      */
     /**
      * Sample code: SystemTopics_Update.

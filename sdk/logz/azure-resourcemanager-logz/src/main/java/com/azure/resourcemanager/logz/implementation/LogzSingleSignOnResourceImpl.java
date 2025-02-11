@@ -61,20 +61,16 @@ public final class LogzSingleSignOnResourceImpl
     }
 
     public LogzSingleSignOnResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public LogzSingleSignOnResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
         return this;
     }
 
@@ -89,49 +85,42 @@ public final class LogzSingleSignOnResourceImpl
     }
 
     public LogzSingleSignOnResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public LogzSingleSignOnResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
         return this;
     }
 
-    LogzSingleSignOnResourceImpl(
-        LogzSingleSignOnResourceInner innerObject, com.azure.resourcemanager.logz.LogzManager serviceManager) {
+    LogzSingleSignOnResourceImpl(LogzSingleSignOnResourceInner innerObject,
+        com.azure.resourcemanager.logz.LogzManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = Utils.getValueFromIdByName(innerObject.id(), "monitors");
-        this.configurationName = Utils.getValueFromIdByName(innerObject.id(), "singleSignOnConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.configurationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "singleSignOnConfigurations");
     }
 
     public LogzSingleSignOnResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LogzSingleSignOnResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOns()
-                .getWithResponse(resourceGroupName, monitorName, configurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOns()
+            .getWithResponse(resourceGroupName, monitorName, configurationName, context)
+            .getValue();
         return this;
     }
 

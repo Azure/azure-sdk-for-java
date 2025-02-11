@@ -43,9 +43,10 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     private void createClient(HttpClient httpClient, SecretServiceVersion serviceVersion, String testTenantId) {
-        secretClient = getClientBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode()
-            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId, getEndpoint(), serviceVersion)
-            .buildClient();
+        secretClient = getClientBuilder(
+            buildSyncAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
+            testTenantId, getEndpoint(), serviceVersion).buildClient();
 
         if (!interceptorManager.isLiveMode()) {
             // Remove `id` and `name` sanitizers from the list of common sanitizers.
@@ -54,9 +55,7 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertSync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertSync().build();
     }
 
     /**
@@ -152,8 +151,8 @@ public class SecretClientTest extends SecretClientTestBase {
 
         updateDisabledSecretRunner((originalSecret, updatedSecret) -> {
             assertSecretEquals(originalSecret, secretClient.setSecret(originalSecret));
-            assertRestException(() -> secretClient.getSecret(originalSecret.getName()),
-                ResourceModifiedException.class, HttpURLConnection.HTTP_FORBIDDEN);
+            assertRestException(() -> secretClient.getSecret(originalSecret.getName()), ResourceModifiedException.class,
+                HttpURLConnection.HTTP_FORBIDDEN);
         });
     }
 
@@ -199,8 +198,8 @@ public class SecretClientTest extends SecretClientTestBase {
     public void getSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         createClient(httpClient, serviceVersion);
 
-        assertRestException(() -> secretClient.getSecret("non-existing"),
-            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> secretClient.getSecret("non-existing"), ResourceNotFoundException.class,
+            HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -214,8 +213,8 @@ public class SecretClientTest extends SecretClientTestBase {
         deleteSecretRunner((secretToDelete) -> {
             assertSecretEquals(secretToDelete, secretClient.setSecret(secretToDelete));
 
-            SyncPoller<DeletedSecret, Void> poller = setPlaybackSyncPollerPollInterval(
-                secretClient.beginDeleteSecret(secretToDelete.getName()));
+            SyncPoller<DeletedSecret, Void> poller
+                = setPlaybackSyncPollerPollInterval(secretClient.beginDeleteSecret(secretToDelete.getName()));
 
             DeletedSecret deletedSecret = poller.waitForCompletion().getValue();
 
@@ -231,8 +230,8 @@ public class SecretClientTest extends SecretClientTestBase {
     public void deleteSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         createClient(httpClient, serviceVersion);
 
-        assertRestException(() -> secretClient.beginDeleteSecret("non-existing"),
-            ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> secretClient.beginDeleteSecret("non-existing"), ResourceNotFoundException.class,
+            HttpResponseStatus.NOT_FOUND.code());
     }
 
     /**
@@ -246,8 +245,8 @@ public class SecretClientTest extends SecretClientTestBase {
         getDeletedSecretRunner((secretToDeleteAndGet) -> {
             assertSecretEquals(secretToDeleteAndGet, secretClient.setSecret(secretToDeleteAndGet));
 
-            SyncPoller<DeletedSecret, Void> poller = setPlaybackSyncPollerPollInterval(
-                secretClient.beginDeleteSecret(secretToDeleteAndGet.getName()));
+            SyncPoller<DeletedSecret, Void> poller
+                = setPlaybackSyncPollerPollInterval(secretClient.beginDeleteSecret(secretToDeleteAndGet.getName()));
 
             poller.waitForCompletion();
 
@@ -268,10 +267,9 @@ public class SecretClientTest extends SecretClientTestBase {
     public void getDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         createClient(httpClient, serviceVersion);
 
-        assertRestException(() -> secretClient.getDeletedSecret("non-existing"),
-            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> secretClient.getDeletedSecret("non-existing"), ResourceNotFoundException.class,
+            HttpURLConnection.HTTP_NOT_FOUND);
     }
-
 
     /**
      * Tests that a deleted secret can be recovered on a soft-delete enabled vault.
@@ -284,8 +282,8 @@ public class SecretClientTest extends SecretClientTestBase {
         recoverDeletedSecretRunner((secretToDeleteAndRecover) -> {
             assertSecretEquals(secretToDeleteAndRecover, secretClient.setSecret(secretToDeleteAndRecover));
 
-            SyncPoller<DeletedSecret, Void> delPoller = setPlaybackSyncPollerPollInterval(
-                secretClient.beginDeleteSecret(secretToDeleteAndRecover.getName()));
+            SyncPoller<DeletedSecret, Void> delPoller
+                = setPlaybackSyncPollerPollInterval(secretClient.beginDeleteSecret(secretToDeleteAndRecover.getName()));
 
             delPoller.waitForCompletion();
 
@@ -340,8 +338,8 @@ public class SecretClientTest extends SecretClientTestBase {
     public void backupSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         createClient(httpClient, serviceVersion);
 
-        assertRestException(() -> secretClient.backupSecret("non-existing"),
-            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> secretClient.backupSecret("non-existing"), ResourceNotFoundException.class,
+            HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -360,8 +358,8 @@ public class SecretClientTest extends SecretClientTestBase {
             assertNotNull(backupBytes);
             assertTrue(backupBytes.length > 0);
 
-            SyncPoller<DeletedSecret, Void> poller = setPlaybackSyncPollerPollInterval(
-                secretClient.beginDeleteSecret(secretToBackupAndRestore.getName()));
+            SyncPoller<DeletedSecret, Void> poller
+                = setPlaybackSyncPollerPollInterval(secretClient.beginDeleteSecret(secretToBackupAndRestore.getName()));
 
             poller.waitForCompletion();
 
@@ -388,8 +386,8 @@ public class SecretClientTest extends SecretClientTestBase {
 
         byte[] secretBackupBytes = "non-existing".getBytes();
 
-        assertRestException(() -> secretClient.restoreSecretBackup(secretBackupBytes),
-            ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
+        assertRestException(() -> secretClient.restoreSecretBackup(secretBackupBytes), ResourceModifiedException.class,
+            HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     /**
@@ -438,8 +436,8 @@ public class SecretClientTest extends SecretClientTestBase {
             }
 
             for (KeyVaultSecret secret : secretsToSetAndDelete.values()) {
-                SyncPoller<DeletedSecret, Void> poller = setPlaybackSyncPollerPollInterval(
-                    secretClient.beginDeleteSecret(secret.getName()));
+                SyncPoller<DeletedSecret, Void> poller
+                    = setPlaybackSyncPollerPollInterval(secretClient.beginDeleteSecret(secret.getName()));
 
                 poller.waitForCompletion();
             }

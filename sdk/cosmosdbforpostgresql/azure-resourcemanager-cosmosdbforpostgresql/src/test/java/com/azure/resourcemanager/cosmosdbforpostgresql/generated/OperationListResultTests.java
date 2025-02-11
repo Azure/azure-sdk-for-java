@@ -14,16 +14,17 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"clhocohsl\",\"display\":{\"provider\":\"leggzfbu\",\"resource\":\"mvfaxkffeiith\",\"operation\":\"m\",\"description\":\"yvshxmz\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"pydptko\":\"dataigrxwburvjxxjn\"}}],\"nextLink\":\"kouknvudwtiu\"}")
+            "{\"value\":[{\"name\":\"eduugi\",\"display\":{\"provider\":\"rrfbyaosvexcson\",\"resource\":\"lhocohslkev\",\"operation\":\"ggzfbu\",\"description\":\"mvfaxkffeiith\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"burvjxxjnspy\":\"datashxmzsbbzoggigrx\"}},{\"name\":\"tko\",\"display\":{\"provider\":\"ou\",\"resource\":\"vudwtiukbldng\",\"operation\":\"ocipazyxoeg\",\"description\":\"g\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"drqjsdpy\":\"dataygevqzntypmrbpiz\",\"eoejzic\":\"datanfyhx\"}},{\"name\":\"fsj\",\"display\":{\"provider\":\"zfbishcbkhaj\",\"resource\":\"yeamdphagalpb\",\"operation\":\"wgipwhono\",\"description\":\"gshwankixz\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"iyqzrnk\":\"datattmrywnuzoqf\",\"qnwvlrya\":\"dataqvyxlwhzlsicoho\",\"heun\":\"dataw\",\"klyaxuconu\":\"datamqhgyxzkonocuk\"}},{\"name\":\"zf\",\"display\":{\"provider\":\"ypewrmjmwvvjekt\",\"resource\":\"senhwlrs\",\"operation\":\"rzpwvlqdqgbiq\",\"description\":\"ihkaetcktvfc\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"ctq\":\"datam\",\"ebrjcxe\":\"datajf\",\"jrbirphxepcyv\":\"datafuwutttxf\",\"j\":\"datahfnljkyq\"}}],\"nextLink\":\"ujqgidok\"}")
             .toObject(OperationListResult.class);
-        Assertions.assertEquals(true, model.value().get(0).isDataAction());
+        Assertions.assertEquals(false, model.value().get(0).isDataAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model
-            = new OperationListResult().withValue(Arrays.asList(new OperationInner().withIsDataAction(true)));
+        OperationListResult model = new OperationListResult().withValue(
+            Arrays.asList(new OperationInner().withIsDataAction(false), new OperationInner().withIsDataAction(false),
+                new OperationInner().withIsDataAction(true), new OperationInner().withIsDataAction(true)));
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals(true, model.value().get(0).isDataAction());
+        Assertions.assertEquals(false, model.value().get(0).isDataAction());
     }
 }

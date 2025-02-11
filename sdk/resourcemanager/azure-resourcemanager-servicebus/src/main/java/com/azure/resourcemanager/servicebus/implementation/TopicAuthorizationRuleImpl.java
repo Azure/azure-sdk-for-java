@@ -13,24 +13,13 @@ import reactor.core.publisher.Mono;
 /**
  * Implementation for TopicAuthorizationRule.
  */
-class TopicAuthorizationRuleImpl
-    extends AuthorizationRuleBaseImpl<TopicAuthorizationRule,
-        TopicImpl,
-        SBAuthorizationRuleInner,
-        TopicAuthorizationRuleImpl,
-        ServiceBusManager>
-    implements
-        TopicAuthorizationRule,
-        TopicAuthorizationRule.Definition,
-        TopicAuthorizationRule.Update {
+class TopicAuthorizationRuleImpl extends
+    AuthorizationRuleBaseImpl<TopicAuthorizationRule, TopicImpl, SBAuthorizationRuleInner, TopicAuthorizationRuleImpl, ServiceBusManager>
+    implements TopicAuthorizationRule, TopicAuthorizationRule.Definition, TopicAuthorizationRule.Update {
     private final String namespaceName;
 
-    TopicAuthorizationRuleImpl(String resourceGroupName,
-                               String namespaceName,
-                               String topicName,
-                               String name,
-                               SBAuthorizationRuleInner inner,
-                               ServiceBusManager manager) {
+    TopicAuthorizationRuleImpl(String resourceGroupName, String namespaceName, String topicName, String name,
+        SBAuthorizationRuleInner inner, ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
         this.withExistingParentResource(resourceGroupName, topicName);
@@ -48,21 +37,20 @@ class TopicAuthorizationRuleImpl
 
     @Override
     protected Mono<SBAuthorizationRuleInner> getInnerAsync() {
-        return this.manager().serviceClient().getTopics()
-                .getAuthorizationRuleAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.topicName(),
-                        this.name());
+        return this.manager()
+            .serviceClient()
+            .getTopics()
+            .getAuthorizationRuleAsync(this.resourceGroupName(), this.namespaceName(), this.topicName(), this.name());
     }
 
     @Override
     protected Mono<TopicAuthorizationRule> createChildResourceAsync() {
         final TopicAuthorizationRule self = this;
-        return this.manager().serviceClient().getTopics().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
-                this.namespaceName(),
-                this.topicName(),
-                this.name(),
-                this.innerModel())
+        return this.manager()
+            .serviceClient()
+            .getTopics()
+            .createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(), this.namespaceName(), this.topicName(),
+                this.name(), this.innerModel())
             .map(inner -> {
                 setInner(inner);
                 return self;
@@ -71,19 +59,19 @@ class TopicAuthorizationRuleImpl
 
     @Override
     protected Mono<AccessKeysInner> getKeysInnerAsync() {
-        return this.manager().serviceClient().getTopics()
-                .listKeysAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.topicName(),
-                        this.name());
+        return this.manager()
+            .serviceClient()
+            .getTopics()
+            .listKeysAsync(this.resourceGroupName(), this.namespaceName(), this.topicName(), this.name());
     }
 
     @Override
-    protected Mono<AccessKeysInner> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
-        return this.manager().serviceClient().getTopics().regenerateKeysAsync(this.resourceGroupName(),
-            this.namespaceName(),
-            this.topicName(),
-            this.name(),
-            regenerateAccessKeyParameters);
+    protected Mono<AccessKeysInner>
+        regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
+        return this.manager()
+            .serviceClient()
+            .getTopics()
+            .regenerateKeysAsync(this.resourceGroupName(), this.namespaceName(), this.topicName(), this.name(),
+                regenerateAccessKeyParameters);
     }
 }

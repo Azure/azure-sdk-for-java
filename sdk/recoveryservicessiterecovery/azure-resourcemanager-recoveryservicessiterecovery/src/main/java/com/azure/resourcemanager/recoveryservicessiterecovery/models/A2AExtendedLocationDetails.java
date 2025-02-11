@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * ExtendedLocation details data.
  */
 @Fluent
-public final class A2AExtendedLocationDetails {
+public final class A2AExtendedLocationDetails implements JsonSerializable<A2AExtendedLocationDetails> {
     /*
      * The primary ExtendedLocation.
      */
-    @JsonProperty(value = "primaryExtendedLocation")
     private ExtendedLocation primaryExtendedLocation;
 
     /*
      * The recovery ExtendedLocation.
      */
-    @JsonProperty(value = "recoveryExtendedLocation")
     private ExtendedLocation recoveryExtendedLocation;
 
     /**
@@ -82,5 +84,44 @@ public final class A2AExtendedLocationDetails {
         if (recoveryExtendedLocation() != null) {
             recoveryExtendedLocation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("primaryExtendedLocation", this.primaryExtendedLocation);
+        jsonWriter.writeJsonField("recoveryExtendedLocation", this.recoveryExtendedLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AExtendedLocationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AExtendedLocationDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AExtendedLocationDetails.
+     */
+    public static A2AExtendedLocationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AExtendedLocationDetails deserializedA2AExtendedLocationDetails = new A2AExtendedLocationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryExtendedLocation".equals(fieldName)) {
+                    deserializedA2AExtendedLocationDetails.primaryExtendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("recoveryExtendedLocation".equals(fieldName)) {
+                    deserializedA2AExtendedLocationDetails.recoveryExtendedLocation = ExtendedLocation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AExtendedLocationDetails;
+        });
     }
 }

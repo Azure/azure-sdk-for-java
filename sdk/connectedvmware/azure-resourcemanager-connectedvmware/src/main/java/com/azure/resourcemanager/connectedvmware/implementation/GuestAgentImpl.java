@@ -20,8 +20,8 @@ public final class GuestAgentImpl implements GuestAgent {
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    GuestAgentImpl(
-        GuestAgentInner innerObject, com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
+    GuestAgentImpl(GuestAgentInner innerObject,
+        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

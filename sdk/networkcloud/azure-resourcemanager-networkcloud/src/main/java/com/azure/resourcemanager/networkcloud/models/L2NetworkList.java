@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.L2NetworkInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** L2NetworkList represents a list of L2 networks. */
+/**
+ * L2NetworkList represents a list of L2 networks.
+ */
 @Fluent
-public final class L2NetworkList {
+public final class L2NetworkList implements JsonSerializable<L2NetworkList> {
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of L2 networks.
      */
-    @JsonProperty(value = "value")
     private List<L2NetworkInner> value;
 
-    /** Creates an instance of L2NetworkList class. */
+    /**
+     * Creates an instance of L2NetworkList class.
+     */
     public L2NetworkList() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class L2NetworkList {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the L2NetworkList object itself.
      */
@@ -50,7 +56,7 @@ public final class L2NetworkList {
 
     /**
      * Get the value property: The list of L2 networks.
-     *
+     * 
      * @return the value value.
      */
     public List<L2NetworkInner> value() {
@@ -59,7 +65,7 @@ public final class L2NetworkList {
 
     /**
      * Set the value property: The list of L2 networks.
-     *
+     * 
      * @param value the value value to set.
      * @return the L2NetworkList object itself.
      */
@@ -70,12 +76,52 @@ public final class L2NetworkList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of L2NetworkList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of L2NetworkList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the L2NetworkList.
+     */
+    public static L2NetworkList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            L2NetworkList deserializedL2NetworkList = new L2NetworkList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedL2NetworkList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<L2NetworkInner> value = reader.readArray(reader1 -> L2NetworkInner.fromJson(reader1));
+                    deserializedL2NetworkList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedL2NetworkList;
+        });
     }
 }

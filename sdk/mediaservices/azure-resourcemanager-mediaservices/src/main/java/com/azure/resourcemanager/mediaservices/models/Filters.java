@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,50 +17,46 @@ import java.util.List;
  * media before encoding.
  */
 @Fluent
-public final class Filters {
+public final class Filters implements JsonSerializable<Filters> {
     /*
      * The de-interlacing settings.
      */
-    @JsonProperty(value = "deinterlace")
     private Deinterlace deinterlace;
 
     /*
      * The rotation, if any, to be applied to the input video, before it is encoded. Default is Auto
      */
-    @JsonProperty(value = "rotation")
     private Rotation rotation;
 
     /*
      * The parameters for the rectangular window with which to crop the input video.
      */
-    @JsonProperty(value = "crop")
     private Rectangle crop;
 
     /*
      * Describes the properties of a Fade effect applied to the input media.
      */
-    @JsonProperty(value = "fadeIn")
     private Fade fadeIn;
 
     /*
      * Describes the properties of a Fade effect applied to the input media.
      */
-    @JsonProperty(value = "fadeOut")
     private Fade fadeOut;
 
     /*
      * The properties of overlays to be applied to the input video. These could be audio, image or video overlays.
      */
-    @JsonProperty(value = "overlays")
     private List<Overlay> overlays;
 
-    /** Creates an instance of Filters class. */
+    /**
+     * Creates an instance of Filters class.
+     */
     public Filters() {
     }
 
     /**
      * Get the deinterlace property: The de-interlacing settings.
-     *
+     * 
      * @return the deinterlace value.
      */
     public Deinterlace deinterlace() {
@@ -65,7 +65,7 @@ public final class Filters {
 
     /**
      * Set the deinterlace property: The de-interlacing settings.
-     *
+     * 
      * @param deinterlace the deinterlace value to set.
      * @return the Filters object itself.
      */
@@ -77,7 +77,7 @@ public final class Filters {
     /**
      * Get the rotation property: The rotation, if any, to be applied to the input video, before it is encoded. Default
      * is Auto.
-     *
+     * 
      * @return the rotation value.
      */
     public Rotation rotation() {
@@ -87,7 +87,7 @@ public final class Filters {
     /**
      * Set the rotation property: The rotation, if any, to be applied to the input video, before it is encoded. Default
      * is Auto.
-     *
+     * 
      * @param rotation the rotation value to set.
      * @return the Filters object itself.
      */
@@ -98,7 +98,7 @@ public final class Filters {
 
     /**
      * Get the crop property: The parameters for the rectangular window with which to crop the input video.
-     *
+     * 
      * @return the crop value.
      */
     public Rectangle crop() {
@@ -107,7 +107,7 @@ public final class Filters {
 
     /**
      * Set the crop property: The parameters for the rectangular window with which to crop the input video.
-     *
+     * 
      * @param crop the crop value to set.
      * @return the Filters object itself.
      */
@@ -118,7 +118,7 @@ public final class Filters {
 
     /**
      * Get the fadeIn property: Describes the properties of a Fade effect applied to the input media.
-     *
+     * 
      * @return the fadeIn value.
      */
     public Fade fadeIn() {
@@ -127,7 +127,7 @@ public final class Filters {
 
     /**
      * Set the fadeIn property: Describes the properties of a Fade effect applied to the input media.
-     *
+     * 
      * @param fadeIn the fadeIn value to set.
      * @return the Filters object itself.
      */
@@ -138,7 +138,7 @@ public final class Filters {
 
     /**
      * Get the fadeOut property: Describes the properties of a Fade effect applied to the input media.
-     *
+     * 
      * @return the fadeOut value.
      */
     public Fade fadeOut() {
@@ -147,7 +147,7 @@ public final class Filters {
 
     /**
      * Set the fadeOut property: Describes the properties of a Fade effect applied to the input media.
-     *
+     * 
      * @param fadeOut the fadeOut value to set.
      * @return the Filters object itself.
      */
@@ -159,7 +159,7 @@ public final class Filters {
     /**
      * Get the overlays property: The properties of overlays to be applied to the input video. These could be audio,
      * image or video overlays.
-     *
+     * 
      * @return the overlays value.
      */
     public List<Overlay> overlays() {
@@ -169,7 +169,7 @@ public final class Filters {
     /**
      * Set the overlays property: The properties of overlays to be applied to the input video. These could be audio,
      * image or video overlays.
-     *
+     * 
      * @param overlays the overlays value to set.
      * @return the Filters object itself.
      */
@@ -180,7 +180,7 @@ public final class Filters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -199,5 +199,57 @@ public final class Filters {
         if (overlays() != null) {
             overlays().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("deinterlace", this.deinterlace);
+        jsonWriter.writeStringField("rotation", this.rotation == null ? null : this.rotation.toString());
+        jsonWriter.writeJsonField("crop", this.crop);
+        jsonWriter.writeJsonField("fadeIn", this.fadeIn);
+        jsonWriter.writeJsonField("fadeOut", this.fadeOut);
+        jsonWriter.writeArrayField("overlays", this.overlays, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Filters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Filters if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Filters.
+     */
+    public static Filters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Filters deserializedFilters = new Filters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deinterlace".equals(fieldName)) {
+                    deserializedFilters.deinterlace = Deinterlace.fromJson(reader);
+                } else if ("rotation".equals(fieldName)) {
+                    deserializedFilters.rotation = Rotation.fromString(reader.getString());
+                } else if ("crop".equals(fieldName)) {
+                    deserializedFilters.crop = Rectangle.fromJson(reader);
+                } else if ("fadeIn".equals(fieldName)) {
+                    deserializedFilters.fadeIn = Fade.fromJson(reader);
+                } else if ("fadeOut".equals(fieldName)) {
+                    deserializedFilters.fadeOut = Fade.fromJson(reader);
+                } else if ("overlays".equals(fieldName)) {
+                    List<Overlay> overlays = reader.readArray(reader1 -> Overlay.fromJson(reader1));
+                    deserializedFilters.overlays = overlays;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFilters;
+        });
     }
 }

@@ -11,7 +11,7 @@ public final class HomeNetworkPrivateKeysProvisioningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HomeNetworkPrivateKeysProvisioning model
-            = BinaryData.fromString("{\"state\":\"Provisioned\"}").toObject(HomeNetworkPrivateKeysProvisioning.class);
+            = BinaryData.fromString("{\"state\":\"Failed\"}").toObject(HomeNetworkPrivateKeysProvisioning.class);
     }
 
     @org.junit.jupiter.api.Test

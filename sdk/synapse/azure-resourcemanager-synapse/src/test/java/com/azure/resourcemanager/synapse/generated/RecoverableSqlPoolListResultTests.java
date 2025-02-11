@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.RecoverableSqlPoolListResult;
 public final class RecoverableSqlPoolListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoverableSqlPoolListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"edition\":\"efojyqdhcupl\",\"serviceLevelObjective\":\"lcwkhihihlhz\",\"elasticPoolName\":\"qtz\",\"lastAvailableBackupDate\":\"2021-02-23T09:25:04Z\"},\"id\":\"gnowcjhfgmveca\",\"name\":\"txmwoteyow\",\"type\":\"luqovekqvg\"},{\"properties\":{\"edition\":\"wifzmp\",\"serviceLevelObjective\":\"yivqikfxcvhrfsp\",\"elasticPoolName\":\"agr\",\"lastAvailableBackupDate\":\"2021-07-10T20:58:35Z\"},\"id\":\"kteusqczk\",\"name\":\"yklxubyjaffmmfbl\",\"type\":\"qcuubgqibrta\"},{\"properties\":{\"edition\":\"tttwgdslqxih\",\"serviceLevelObjective\":\"moo\",\"elasticPoolName\":\"qseypxiutcxa\",\"lastAvailableBackupDate\":\"2021-01-03T05:51:25Z\"},\"id\":\"y\",\"name\":\"petogebjox\",\"type\":\"lhvnhlab\"}],\"nextLink\":\"nk\"}")
-                .toObject(RecoverableSqlPoolListResult.class);
+        RecoverableSqlPoolListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"edition\":\"nixjawrtmjfjmy\",\"serviceLevelObjective\":\"xlzhcoxovnekh\",\"elasticPoolName\":\"lusfnrdtjxtxrdcq\",\"lastAvailableBackupDate\":\"2021-05-25T21:09:17Z\"},\"id\":\"idttgepus\",\"name\":\"vyjtcvu\",\"type\":\"kasizie\"},{\"properties\":{\"edition\":\"ughtuqfecjxeygtu\",\"serviceLevelObjective\":\"uicbuewmrsw\",\"elasticPoolName\":\"lx\",\"lastAvailableBackupDate\":\"2021-07-01T09:20:25Z\"},\"id\":\"hwpusxj\",\"name\":\"aqehg\",\"type\":\"dohzjq\"}],\"nextLink\":\"ucoig\"}")
+            .toObject(RecoverableSqlPoolListResult.class);
     }
 
     @org.junit.jupiter.api.Test

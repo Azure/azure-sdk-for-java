@@ -6,25 +6,26 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.resourcemanager.apimanagement.models.ResolverContract;
 
-/** Samples for GraphQLApiResolver Update. */
+/**
+ * Samples for GraphQLApiResolver Update.
+ */
 public final class GraphQLApiResolverUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateGraphQLApiResolver.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementUpdateGraphQLApiResolver.json
      */
     /**
      * Sample code: ApiManagementUpdateGraphQLApiResolver.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementUpdateGraphQLApiResolver(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        ResolverContract resource =
-            manager
-                .graphQLApiResolvers()
-                .getWithResponse("rg1", "apimService1", "echo-api", "resolverId", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        apiManagementUpdateGraphQLApiResolver(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        ResolverContract resource = manager.graphQLApiResolvers()
+            .getWithResponse("rg1", "apimService1", "echo-api", "resolverId", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withDisplayName("Query AdminUsers")
             .withPath("Query/adminUsers")
             .withDescription("A GraphQL Resolver example")

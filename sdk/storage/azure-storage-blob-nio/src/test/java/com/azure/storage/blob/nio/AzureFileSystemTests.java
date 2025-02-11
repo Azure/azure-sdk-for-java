@@ -49,25 +49,22 @@ public class AzureFileSystemTests extends BlobNioTestBase {
 
     // We do not have a meaningful way of testing the configurations for the ServiceClient.
     @ParameterizedTest
-    @CsvSource(value = {"1,false,false", "3,false,true", "3,true,false", "3,true,true"})
+    @CsvSource(value = { "1,false,false", "3,false,true", "3,true,false", "3,true,true" })
     public void create(int numContainers, boolean createContainers, boolean sasToken) throws IOException {
-        List<String> containerNames = IntStream.range(0, numContainers)
-            .mapToObj(i -> generateContainerName())
-            .collect(Collectors.toList());
+        List<String> containerNames
+            = IntStream.range(0, numContainers).mapToObj(i -> generateContainerName()).collect(Collectors.toList());
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, CoreUtils.stringJoin(",", containerNames));
         if (!sasToken) {
             config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, ENV.getPrimaryAccount().getCredential());
         } else {
-            config.put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL, new AzureSasCredential(
-                primaryBlobServiceClient.generateAccountSas(
-                    new AccountSasSignatureValues(testResourceNamer.now().plusDays(2),
-                        AccountSasPermission.parse("rwcdl"), new AccountSasService().setBlobAccess(true),
-                        new AccountSasResourceType().setContainer(true)))));
+            config.put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL,
+                new AzureSasCredential(primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(
+                    testResourceNamer.now().plusDays(2), AccountSasPermission.parse("rwcdl"),
+                    new AccountSasService().setBlobAccess(true), new AccountSasResourceType().setContainer(true)))));
         }
 
-        AzureFileSystem fileSystem = new AzureFileSystem(new AzureFileSystemProvider(),
-            ENV.getPrimaryAccount().getBlobEndpoint(), config);
-
+        AzureFileSystem fileSystem
+            = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), config);
 
         List<String> actualContainerNames = new ArrayList<>();
         fileSystem.getFileStores().forEach(fs -> actualContainerNames.add(fs.name()));
@@ -81,7 +78,7 @@ public class AzureFileSystemTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"true,false", "false,true"})
+    @CsvSource(value = { "true,false", "false,true" })
     public void createFailIa(boolean credential, boolean containers) {
         if (containers) {
             config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName());
@@ -96,11 +93,11 @@ public class AzureFileSystemTests extends BlobNioTestBase {
 
     @Test
     public void createFailContainerCheck() {
-        config.put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL, new AzureSasCredential(
-            primaryBlobServiceClient.generateAccountSas(
-                new AccountSasSignatureValues(testResourceNamer.now().plusDays(2),
-                    AccountSasPermission.parse("d"), new AccountSasService().setBlobAccess(true),
-                    new AccountSasResourceType().setContainer(true)))));
+        config
+            .put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL,
+                new AzureSasCredential(primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(
+                    testResourceNamer.now().plusDays(2), AccountSasPermission.parse("d"),
+                    new AccountSasService().setBlobAccess(true), new AccountSasResourceType().setContainer(true)))));
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName());
 
         assertThrows(IOException.class, () -> new AzureFileSystem(new AzureFileSystemProvider(),
@@ -109,17 +106,17 @@ public class AzureFileSystemTests extends BlobNioTestBase {
 
     @Test
     public void createSkipContainerCheck() {
-        config.put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL, new AzureSasCredential(
-            primaryBlobServiceClient.generateAccountSas(
-                new AccountSasSignatureValues(testResourceNamer.now().plusDays(2),
-                    AccountSasPermission.parse("d"), new AccountSasService().setBlobAccess(true),
-                    new AccountSasResourceType().setContainer(true)))));
+        config
+            .put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL,
+                new AzureSasCredential(primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(
+                    testResourceNamer.now().plusDays(2), AccountSasPermission.parse("d"),
+                    new AccountSasService().setBlobAccess(true), new AccountSasResourceType().setContainer(true)))));
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName());
         config.put(AzureFileSystem.AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK, true);
 
         // This would fail, but we skipped the check
-        assertDoesNotThrow(() ->
-            new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), config));
+        assertDoesNotThrow(() -> new AzureFileSystem(new AzureFileSystemProvider(),
+            ENV.getPrimaryAccount().getBlobEndpoint(), config));
     }
 
     @Test
@@ -149,11 +146,8 @@ public class AzureFileSystemTests extends BlobNioTestBase {
     }
 
     private static Stream<Arguments> getPathSupplier() {
-        return Stream.of(
-            Arguments.of("foo", null, "foo"),
-            Arguments.of("foo/bar", null, "foo/bar"),
-            Arguments.of("/foo/", null, "foo"),
-            Arguments.of("/foo/bar/", null, "foo/bar"),
+        return Stream.of(Arguments.of("foo", null, "foo"), Arguments.of("foo/bar", null, "foo/bar"),
+            Arguments.of("/foo/", null, "foo"), Arguments.of("/foo/bar/", null, "foo/bar"),
             Arguments.of("foo", Collections.singletonList("bar"), "foo/bar"),
             Arguments.of("foo/bar/fizz/buzz", null, "foo/bar/fizz/buzz"),
             Arguments.of("foo", Arrays.asList("bar", "fizz", "buzz"), "foo/bar/fizz/buzz"),
@@ -162,14 +156,19 @@ public class AzureFileSystemTests extends BlobNioTestBase {
             Arguments.of("root:/foo", null, "root:/foo"),
             Arguments.of("root:/foo", Collections.singletonList("bar"), "root:/foo/bar"),
             Arguments.of("///root:////foo", Arrays.asList("//bar///fizz//", "buzz"), "root:/foo/bar/fizz/buzz"),
-            Arguments.of("root:/", null, "root:"),
-            Arguments.of("", null, "")
-        );
+            Arguments.of("root:/", null, "root:"), Arguments.of("", null, ""));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"root1:/dir1:", "root1:/d:ir", ":root1:/dir", "root1::/dir", "root:1/dir", "root1/dir:",
-        "root1:/foo/bar/dir:"})
+    @ValueSource(
+        strings = {
+            "root1:/dir1:",
+            "root1:/d:ir",
+            ":root1:/dir",
+            "root1::/dir",
+            "root:1/dir",
+            "root1/dir:",
+            "root1:/foo/bar/dir:" })
     public void getPathFail(String path) {
         assertThrows(InvalidPathException.class, () -> createFS(config).getPath(path));
     }
@@ -200,7 +199,7 @@ public class AzureFileSystemTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"basic,true", "azureBasic,true", "azureBlob,true", "posix,false"})
+    @CsvSource(value = { "basic,true", "azureBasic,true", "azureBlob,true", "posix,false" })
     public void supportsFileAttributeView(String view, boolean supports) {
         assertEquals(supports, createFS(config).supportedFileAttributeViews().contains(view));
     }

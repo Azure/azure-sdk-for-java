@@ -22,7 +22,8 @@ public final class EventRoutesListOptions {
     private String tracestate;
 
     /*
-     * The maximum number of items to retrieve per request. The server may choose to return less than the requested number.
+     * The maximum number of items to retrieve per request. The server may choose to return less than the requested
+     * number.
      */
     private Integer maxItemsPerPage;
 

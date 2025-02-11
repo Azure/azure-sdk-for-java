@@ -6,19 +6,22 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import java.util.Arrays;
 
-/** Samples for DataExports CreateOrUpdate. */
+/**
+ * Samples for DataExports CreateOrUpdate.
+ */
 public final class DataExportsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataExportCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataExportCreateOrUpdate.json
      */
     /**
      * Sample code: DataExportCreate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataExportCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .dataExports()
+        manager.dataExports()
             .define("export1")
             .withExistingWorkspace("RgTest1", "DeWnTest1234")
             .withTableNames(Arrays.asList("Heartbeat"))

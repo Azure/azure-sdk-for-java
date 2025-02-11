@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TimeRange. */
+/**
+ * Defines values for TimeRange.
+ */
 public final class TimeRange extends ExpandableStringEnum<TimeRange> {
-    /** Static value 1h for TimeRange. */
+    /**
+     * Static value 1h for TimeRange.
+     */
     public static final TimeRange ONEH = fromString("1h");
 
-    /** Static value 1d for TimeRange. */
+    /**
+     * Static value 1d for TimeRange.
+     */
     public static final TimeRange ONED = fromString("1d");
 
-    /** Static value 7d for TimeRange. */
+    /**
+     * Static value 7d for TimeRange.
+     */
     public static final TimeRange SEVEND = fromString("7d");
 
-    /** Static value 30d for TimeRange. */
+    /**
+     * Static value 30d for TimeRange.
+     */
     public static final TimeRange THREE_ZEROD = fromString("30d");
 
     /**
+     * Creates a new instance of TimeRange value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TimeRange() {
+    }
+
+    /**
      * Creates or finds a TimeRange from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TimeRange.
      */
-    @JsonCreator
     public static TimeRange fromString(String name) {
         return fromString(name, TimeRange.class);
     }
 
     /**
      * Gets known TimeRange values.
-     *
+     * 
      * @return known TimeRange values.
      */
     public static Collection<TimeRange> values() {

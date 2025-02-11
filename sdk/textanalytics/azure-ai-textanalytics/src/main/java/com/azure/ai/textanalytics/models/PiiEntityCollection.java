@@ -38,7 +38,6 @@ public final class PiiEntityCollection extends IterableStream<PiiEntity> {
         return this.warnings;
     }
 
-
     /**
      * Get the property redactedText value. The text of the input document with all of the PII information redacted out.
      * Only returned for API version v3.1 and newer.

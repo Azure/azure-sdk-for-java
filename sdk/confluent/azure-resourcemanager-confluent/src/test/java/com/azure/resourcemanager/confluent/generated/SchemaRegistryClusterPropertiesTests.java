@@ -39,14 +39,20 @@ public final class SchemaRegistryClusterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchemaRegistryClusterProperties model = new SchemaRegistryClusterProperties()
-            .withMetadata(new SCMetadataEntity().withSelf("olbq").withResourceName("uzlm").withCreatedTimestamp("elfk")
-                .withUpdatedTimestamp("plcrpwjxeznoig").withDeletedTimestamp("njwmwkpnbsazejj"))
-            .withSpec(new SchemaRegistryClusterSpecEntity().withName("agfhsxtta").withHttpEndpoint("zxnfaaz")
+            .withMetadata(new SCMetadataEntity().withSelf("olbq")
+                .withResourceName("uzlm")
+                .withCreatedTimestamp("elfk")
+                .withUpdatedTimestamp("plcrpwjxeznoig")
+                .withDeletedTimestamp("njwmwkpnbsazejj"))
+            .withSpec(new SchemaRegistryClusterSpecEntity().withName("agfhsxtta")
+                .withHttpEndpoint("zxnfaaz")
                 .withPackageProperty("dtnkdmkq")
-                .withRegion(new SchemaRegistryClusterEnvironmentRegionEntity().withId("wuenvr").withRelated("yo")
+                .withRegion(new SchemaRegistryClusterEnvironmentRegionEntity().withId("wuenvr")
+                    .withRelated("yo")
                     .withResourceName("ibreb"))
                 .withEnvironment(new SchemaRegistryClusterEnvironmentRegionEntity().withId("ysjkixqtnqttez")
-                    .withRelated("fffiak").withResourceName("pqqmted"))
+                    .withRelated("fffiak")
+                    .withResourceName("pqqmted"))
                 .withCloud("mmji"))
             .withStatus(new SchemaRegistryClusterStatusEntity().withPhase("ozphvwauyqncygu"));
         model = BinaryData.fromObject(model).toObject(SchemaRegistryClusterProperties.class);

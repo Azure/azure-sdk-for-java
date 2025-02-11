@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The VirtualNetworkPropertiesVipPoolItem model.
  */
 @Fluent
-public final class VirtualNetworkPropertiesVipPoolItem {
+public final class VirtualNetworkPropertiesVipPoolItem
+    implements JsonSerializable<VirtualNetworkPropertiesVipPoolItem> {
     /*
      * Ending IP address for the IP Pool
      */
-    @JsonProperty(value = "endIP")
     private String endIp;
 
     /*
      * Starting IP address for the IP Pool
      */
-    @JsonProperty(value = "startIP")
     private String startIp;
 
     /**
@@ -76,5 +79,45 @@ public final class VirtualNetworkPropertiesVipPoolItem {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endIP", this.endIp);
+        jsonWriter.writeStringField("startIP", this.startIp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkPropertiesVipPoolItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkPropertiesVipPoolItem if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkPropertiesVipPoolItem.
+     */
+    public static VirtualNetworkPropertiesVipPoolItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkPropertiesVipPoolItem deserializedVirtualNetworkPropertiesVipPoolItem
+                = new VirtualNetworkPropertiesVipPoolItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endIP".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesVipPoolItem.endIp = reader.getString();
+                } else if ("startIP".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesVipPoolItem.startIp = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkPropertiesVipPoolItem;
+        });
     }
 }

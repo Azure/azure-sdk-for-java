@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Export Route Policy either IPv4 or IPv6. */
+/**
+ * Export Route Policy either IPv4 or IPv6.
+ */
 @Fluent
-public final class ExportRoutePolicy {
+public final class ExportRoutePolicy implements JsonSerializable<ExportRoutePolicy> {
     /*
      * ARM resource ID of RoutePolicy.
      */
-    @JsonProperty(value = "exportIpv4RoutePolicyId")
     private String exportIpv4RoutePolicyId;
 
     /*
      * ARM resource ID of RoutePolicy.
      */
-    @JsonProperty(value = "exportIpv6RoutePolicyId")
     private String exportIpv6RoutePolicyId;
 
-    /** Creates an instance of ExportRoutePolicy class. */
+    /**
+     * Creates an instance of ExportRoutePolicy class.
+     */
     public ExportRoutePolicy() {
     }
 
     /**
      * Get the exportIpv4RoutePolicyId property: ARM resource ID of RoutePolicy.
-     *
+     * 
      * @return the exportIpv4RoutePolicyId value.
      */
     public String exportIpv4RoutePolicyId() {
@@ -37,7 +43,7 @@ public final class ExportRoutePolicy {
 
     /**
      * Set the exportIpv4RoutePolicyId property: ARM resource ID of RoutePolicy.
-     *
+     * 
      * @param exportIpv4RoutePolicyId the exportIpv4RoutePolicyId value to set.
      * @return the ExportRoutePolicy object itself.
      */
@@ -48,7 +54,7 @@ public final class ExportRoutePolicy {
 
     /**
      * Get the exportIpv6RoutePolicyId property: ARM resource ID of RoutePolicy.
-     *
+     * 
      * @return the exportIpv6RoutePolicyId value.
      */
     public String exportIpv6RoutePolicyId() {
@@ -57,7 +63,7 @@ public final class ExportRoutePolicy {
 
     /**
      * Set the exportIpv6RoutePolicyId property: ARM resource ID of RoutePolicy.
-     *
+     * 
      * @param exportIpv6RoutePolicyId the exportIpv6RoutePolicyId value to set.
      * @return the ExportRoutePolicy object itself.
      */
@@ -68,9 +74,48 @@ public final class ExportRoutePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("exportIpv4RoutePolicyId", this.exportIpv4RoutePolicyId);
+        jsonWriter.writeStringField("exportIpv6RoutePolicyId", this.exportIpv6RoutePolicyId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportRoutePolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportRoutePolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExportRoutePolicy.
+     */
+    public static ExportRoutePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportRoutePolicy deserializedExportRoutePolicy = new ExportRoutePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("exportIpv4RoutePolicyId".equals(fieldName)) {
+                    deserializedExportRoutePolicy.exportIpv4RoutePolicyId = reader.getString();
+                } else if ("exportIpv6RoutePolicyId".equals(fieldName)) {
+                    deserializedExportRoutePolicy.exportIpv6RoutePolicyId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportRoutePolicy;
+        });
     }
 }

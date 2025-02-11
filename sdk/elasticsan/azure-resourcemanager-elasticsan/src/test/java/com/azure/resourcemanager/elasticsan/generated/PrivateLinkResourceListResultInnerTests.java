@@ -14,16 +14,18 @@ public final class PrivateLinkResourceListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"xzvlvqhjkbegib\",\"requiredMembers\":[\"xiebwwaloayqcg\",\"rtzju\"],\"requiredZoneNames\":[\"yzm\",\"txon\",\"mtsavjcbpwxqp\"]},\"id\":\"knftguvriuh\",\"name\":\"rwmdyvxqtay\",\"type\":\"iwwroyqbexrmc\"}],\"nextLink\":\"bycnojvkn\"}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"vpycanuzbp\",\"requiredMembers\":[\"fkuwbcrnwbmehhse\",\"v\"],\"requiredZoneNames\":[\"rts\",\"hspkdeemao\",\"mx\",\"gkvtmelmqkrhah\"]},\"id\":\"juahaquhcdhmdual\",\"name\":\"exq\",\"type\":\"vfadmws\"},{\"properties\":{\"groupId\":\"gvxp\",\"requiredMembers\":[\"mzlfmisgwb\",\"b\"],\"requiredZoneNames\":[\"dawkzbali\",\"urqhaka\",\"hashsfwxosow\",\"xcug\"]},\"id\":\"jooxdjebw\",\"name\":\"ucww\",\"type\":\"vo\"}],\"nextLink\":\"vmeueci\"}")
             .toObject(PrivateLinkResourceListResultInner.class);
-        Assertions.assertEquals("yzm", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("rts", model.value().get(0).requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResourceListResultInner model = new PrivateLinkResourceListResultInner().withValue(Arrays
-            .asList(new PrivateLinkResource().withRequiredZoneNames(Arrays.asList("yzm", "txon", "mtsavjcbpwxqp"))));
+        PrivateLinkResourceListResultInner model = new PrivateLinkResourceListResultInner().withValue(Arrays.asList(
+            new PrivateLinkResource().withRequiredZoneNames(Arrays.asList("rts", "hspkdeemao", "mx", "gkvtmelmqkrhah")),
+            new PrivateLinkResource()
+                .withRequiredZoneNames(Arrays.asList("dawkzbali", "urqhaka", "hashsfwxosow", "xcug"))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceListResultInner.class);
-        Assertions.assertEquals("yzm", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("rts", model.value().get(0).requiredZoneNames().get(0));
     }
 }

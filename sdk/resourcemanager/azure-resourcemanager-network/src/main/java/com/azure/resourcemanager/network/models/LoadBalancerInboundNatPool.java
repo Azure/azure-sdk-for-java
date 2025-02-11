@@ -10,17 +10,21 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A client-side representation of an inbound NAT pool. */
 @Fluent()
-public interface LoadBalancerInboundNatPool
-    extends HasFrontend,
-        HasBackendPort,
-        HasProtocol<TransportProtocol>,
-        HasInnerModel<InboundNatPool>,
-        ChildResource<LoadBalancer> {
+public interface LoadBalancerInboundNatPool extends HasFrontend, HasBackendPort, HasProtocol<TransportProtocol>,
+    HasInnerModel<InboundNatPool>, ChildResource<LoadBalancer> {
 
-    /** @return the starting frontend port number */
+    /**
+     * Gets the starting frontend port number.
+     *
+     * @return the starting frontend port number
+     */
     int frontendPortRangeStart();
 
-    /** @return the ending frontend port number */
+    /**
+     * Gets the ending frontend port number.
+     *
+     * @return the ending frontend port number
+     */
     int frontendPortRangeEnd();
 
     /** Grouping of inbound NAT pool definition stages. */
@@ -95,13 +99,9 @@ public interface LoadBalancerInboundNatPool
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithProtocol<ParentT>,
-            DefinitionStages.WithFrontend<ParentT>,
-            DefinitionStages.WithFrontendPortRange<ParentT>,
-            DefinitionStages.WithBackendPort<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithProtocol<ParentT>, DefinitionStages.WithFrontend<ParentT>,
+        DefinitionStages.WithFrontendPortRange<ParentT>, DefinitionStages.WithBackendPort<ParentT> {
     }
 
     /** Grouping of inbound NAT pool update stages. */
@@ -137,12 +137,8 @@ public interface LoadBalancerInboundNatPool
     }
 
     /** The entirety of an inbound NAT pool update as part of a load balancer update. */
-    interface Update
-        extends Settable<LoadBalancer.Update>,
-            UpdateStages.WithProtocol,
-            UpdateStages.WithFrontend,
-            UpdateStages.WithBackendPort,
-            UpdateStages.WithFrontendPortRange {
+    interface Update extends Settable<LoadBalancer.Update>, UpdateStages.WithProtocol, UpdateStages.WithFrontend,
+        UpdateStages.WithBackendPort, UpdateStages.WithFrontendPortRange {
     }
 
     /** Grouping of inbound NAT pool definition stages applicable as part of a load balancer update. */
@@ -217,11 +213,8 @@ public interface LoadBalancerInboundNatPool
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithProtocol<ParentT>,
-            UpdateDefinitionStages.WithFrontend<ParentT>,
-            UpdateDefinitionStages.WithFrontendPortRange<ParentT>,
-            UpdateDefinitionStages.WithBackendPort<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithAttach<ParentT>,
+        UpdateDefinitionStages.WithProtocol<ParentT>, UpdateDefinitionStages.WithFrontend<ParentT>,
+        UpdateDefinitionStages.WithFrontendPortRange<ParentT>, UpdateDefinitionStages.WithBackendPort<ParentT> {
     }
 }

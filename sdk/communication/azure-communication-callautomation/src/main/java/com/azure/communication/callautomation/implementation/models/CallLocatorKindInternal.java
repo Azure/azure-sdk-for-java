@@ -12,6 +12,11 @@ import java.util.Collection;
  */
 public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLocatorKindInternal> {
     /**
+     * Static value unknown for CallLocatorKindInternal.
+     */
+    public static final CallLocatorKindInternal UNKNOWN = fromString("unknown");
+
+    /**
      * Static value groupCallLocator for CallLocatorKindInternal.
      */
     public static final CallLocatorKindInternal GROUP_CALL_LOCATOR = fromString("groupCallLocator");
@@ -20,6 +25,11 @@ public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLoca
      * Static value serverCallLocator for CallLocatorKindInternal.
      */
     public static final CallLocatorKindInternal SERVER_CALL_LOCATOR = fromString("serverCallLocator");
+
+    /**
+     * Static value roomCallLocator for CallLocatorKindInternal.
+     */
+    public static final CallLocatorKindInternal ROOM_CALL_LOCATOR = fromString("roomCallLocator");
 
     /**
      * Creates a new instance of CallLocatorKindInternal value.

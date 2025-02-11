@@ -8,11 +8,28 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DscConfigurations. */
+/**
+ * Resource collection API of DscConfigurations.
+ */
 public interface DscConfigurations {
     /**
      * Delete the dsc configuration identified by configuration name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String configurationName,
+        Context context);
+
+    /**
+     * Delete the dsc configuration identified by configuration name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param configurationName The configuration name.
@@ -23,8 +40,8 @@ public interface DscConfigurations {
     void delete(String resourceGroupName, String automationAccountName, String configurationName);
 
     /**
-     * Delete the dsc configuration identified by configuration name.
-     *
+     * Retrieve the configuration identified by configuration name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param configurationName The configuration name.
@@ -32,14 +49,14 @@ public interface DscConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return definition of the configuration type along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String configurationName, Context context);
+    Response<DscConfiguration> getWithResponse(String resourceGroupName, String automationAccountName,
+        String configurationName, Context context);
 
     /**
      * Retrieve the configuration identified by configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param configurationName The configuration name.
@@ -51,23 +68,24 @@ public interface DscConfigurations {
     DscConfiguration get(String resourceGroupName, String automationAccountName, String configurationName);
 
     /**
-     * Retrieve the configuration identified by configuration name.
-     *
+     * Create the configuration identified by configuration name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param configurationName The configuration name.
+     * @param configurationName The create or update parameters for configuration.
+     * @param parameters The create or update parameters for configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the configuration type along with {@link Response}.
      */
-    Response<DscConfiguration> getWithResponse(
-        String resourceGroupName, String automationAccountName, String configurationName, Context context);
+    Response<DscConfiguration> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        String configurationName, String parameters, Context context);
 
     /**
      * Create the configuration identified by configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param configurationName The create or update parameters for configuration.
@@ -77,12 +95,12 @@ public interface DscConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the configuration type.
      */
-    DscConfiguration createOrUpdate(
-        String resourceGroupName, String automationAccountName, String configurationName, String parameters);
+    DscConfiguration createOrUpdate(String resourceGroupName, String automationAccountName, String configurationName,
+        String parameters);
 
     /**
      * Create the configuration identified by configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param configurationName The create or update parameters for configuration.
@@ -93,36 +111,27 @@ public interface DscConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the configuration type along with {@link Response}.
      */
-    Response<DscConfiguration> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String configurationName,
-        String parameters,
-        Context context);
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @param parameters The create or update parameters for configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type along with {@link Response}.
-     */
-    Response<DscConfiguration> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String configurationName,
-        String parameters,
-        Context context);
+    Response<DscConfiguration> updateWithResponse(String resourceGroupName, String automationAccountName,
+        String configurationName, String parameters, Context context);
 
     /**
      * Retrieve the configuration script identified by configuration name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    Response<String> getContentWithResponse(String resourceGroupName, String automationAccountName,
+        String configurationName, Context context);
+
+    /**
+     * Retrieve the configuration script identified by configuration name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param configurationName The configuration name.
@@ -134,23 +143,8 @@ public interface DscConfigurations {
     String getContent(String resourceGroupName, String automationAccountName, String configurationName);
 
     /**
-     * Retrieve the configuration script identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The configuration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    Response<String> getContentWithResponse(
-        String resourceGroupName, String automationAccountName, String configurationName, Context context);
-
-    /**
      * Retrieve a list of configurations.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,7 +156,7 @@ public interface DscConfigurations {
 
     /**
      * Retrieve a list of configurations.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -175,18 +169,12 @@ public interface DscConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list configuration operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DscConfiguration> listByAutomationAccount(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount,
-        Context context);
+    PagedIterable<DscConfiguration> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Integer skip, Integer top, String inlinecount, Context context);
 
     /**
      * Retrieve the configuration identified by configuration name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,7 +185,7 @@ public interface DscConfigurations {
 
     /**
      * Retrieve the configuration identified by configuration name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,7 +197,7 @@ public interface DscConfigurations {
 
     /**
      * Delete the dsc configuration identified by configuration name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -219,7 +207,7 @@ public interface DscConfigurations {
 
     /**
      * Delete the dsc configuration identified by configuration name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,7 +219,7 @@ public interface DscConfigurations {
 
     /**
      * Begins definition for a new DscConfiguration resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DscConfiguration definition.
      */

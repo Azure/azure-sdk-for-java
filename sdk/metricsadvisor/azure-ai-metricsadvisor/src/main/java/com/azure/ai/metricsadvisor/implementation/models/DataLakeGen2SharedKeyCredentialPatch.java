@@ -16,6 +16,11 @@ import java.io.IOException;
 @Fluent
 public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCredentialPatch {
     /*
+     * Type of data source credential
+     */
+    private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY;
+
+    /*
      * The parameters property.
      */
     private DataLakeGen2SharedKeyParamPatch parameters;
@@ -24,6 +29,16 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
      * Creates an instance of DataLakeGen2SharedKeyCredentialPatch class.
      */
     public DataLakeGen2SharedKeyCredentialPatch() {
+    }
+
+    /**
+     * Get the dataSourceCredentialType property: Type of data source credential.
+     * 
+     * @return the dataSourceCredentialType value.
+     */
+    @Override
+    public DataSourceCredentialType getDataSourceCredentialType() {
+        return this.dataSourceCredentialType;
     }
 
     /**
@@ -65,14 +80,16 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceCredentialType",
-            DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY == null ? null
-                : DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());
+        jsonWriter.writeStringField("dataSourceCredentialType",
+            this.dataSourceCredentialType == null ? null : this.dataSourceCredentialType.toString());
         jsonWriter.writeJsonField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
@@ -83,7 +100,6 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
      * @param jsonReader The JsonReader being read.
      * @return An instance of DataLakeGen2SharedKeyCredentialPatch if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the DataLakeGen2SharedKeyCredentialPatch.
      */
     public static DataLakeGen2SharedKeyCredentialPatch fromJson(JsonReader jsonReader) throws IOException {
@@ -94,18 +110,14 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceCredentialType".equals(fieldName)) {
-                    String dataSourceCredentialType = reader.getString();
-                    if (!"DataLakeGen2SharedKey".equals(dataSourceCredentialType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceCredentialType' was expected to be non-null and equal to 'DataLakeGen2SharedKey'. The found 'dataSourceCredentialType' was '"
-                                + dataSourceCredentialType + "'.");
-                    }
-                } else if ("dataSourceCredentialName".equals(fieldName)) {
+                if ("dataSourceCredentialName".equals(fieldName)) {
                     deserializedDataLakeGen2SharedKeyCredentialPatch.setDataSourceCredentialName(reader.getString());
                 } else if ("dataSourceCredentialDescription".equals(fieldName)) {
                     deserializedDataLakeGen2SharedKeyCredentialPatch
                         .setDataSourceCredentialDescription(reader.getString());
+                } else if ("dataSourceCredentialType".equals(fieldName)) {
+                    deserializedDataLakeGen2SharedKeyCredentialPatch.dataSourceCredentialType
+                        = DataSourceCredentialType.fromString(reader.getString());
                 } else if ("parameters".equals(fieldName)) {
                     deserializedDataLakeGen2SharedKeyCredentialPatch.parameters
                         = DataLakeGen2SharedKeyParamPatch.fromJson(reader);

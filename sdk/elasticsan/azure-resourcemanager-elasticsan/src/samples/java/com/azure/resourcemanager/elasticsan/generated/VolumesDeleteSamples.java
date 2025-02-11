@@ -12,7 +12,8 @@ import com.azure.resourcemanager.elasticsan.models.XMsForceDelete;
  */
 public final class VolumesDeleteSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
+     * x-ms-original-file:
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
      * Volumes_Delete_MinimumSet_Gen.json
      */
     /**
@@ -27,7 +28,8 @@ public final class VolumesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
+     * x-ms-original-file:
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
      * Volumes_Delete_MaximumSet_Gen.json
      */
     /**

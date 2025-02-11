@@ -30,8 +30,14 @@ public final class PrivateEndpointConnectionProxyListResultTests {
         Assertions.assertEquals("exxbczwtr", model.value().get(0).remotePrivateEndpoint().vnetTrafficTag());
         Assertions.assertEquals("zb",
             model.value().get(0).remotePrivateEndpoint().manualPrivateLinkServiceConnections().get(0).name());
-        Assertions.assertEquals("sovmyokacspkwl", model.value().get(0).remotePrivateEndpoint()
-            .manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("sovmyokacspkwl",
+            model.value()
+                .get(0)
+                .remotePrivateEndpoint()
+                .manualPrivateLinkServiceConnections()
+                .get(0)
+                .groupIds()
+                .get(0));
         Assertions.assertEquals("jiwkuofoskghsau",
             model.value().get(0).remotePrivateEndpoint().manualPrivateLinkServiceConnections().get(0).requestMessage());
         Assertions.assertEquals("ev",
@@ -55,53 +61,58 @@ public final class PrivateEndpointConnectionProxyListResultTests {
                         .asList(
                             new PrivateEndpointConnectionProxyInner()
                                 .withRemotePrivateEndpoint(
-                                    new RemotePrivateEndpoint().withId("i").withLocation("rvkdvjsllrm")
-                                        .withImmutableSubscriptionId("d").withImmutableResourceId("atkpnp")
+                                    new RemotePrivateEndpoint().withId("i")
+                                        .withLocation("rvkdvjsllrm")
+                                        .withImmutableSubscriptionId("d")
+                                        .withImmutableResourceId("atkpnp")
                                         .withVnetTrafficTag("exxbczwtr")
                                         .withManualPrivateLinkServiceConnections(Arrays.asList(
                                             new PrivateLinkServiceConnection().withName("zb")
-                                                .withGroupIds(Arrays.asList("sovmyokacspkwl", "zdobpxjmflbvvnch",
-                                                    "kcciwwzjuqkhr"))
+                                                .withGroupIds(Arrays
+                                                    .asList("sovmyokacspkwl", "zdobpxjmflbvvnch", "kcciwwzjuqkhr"))
                                                 .withRequestMessage("jiwkuofoskghsau"),
-                                            new PrivateLinkServiceConnection()
-                                                .withName("mjmvxieduugidyjr").withGroupIds(Arrays.asList("y"))
+                                            new PrivateLinkServiceConnection().withName("mjmvxieduugidyjr")
+                                                .withGroupIds(Arrays.asList("y"))
                                                 .withRequestMessage("svexcsonpclhoco")))
                                         .withPrivateLinkServiceConnections(Arrays.asList(
                                             new PrivateLinkServiceConnection().withName("ev")
                                                 .withGroupIds(Arrays.asList("gz", "buhfmvfaxkffeiit"))
                                                 .withRequestMessage("vmezy"),
-                                            new PrivateLinkServiceConnection().withName("hxmzsbbzoggig")
-                                                .withGroupIds(Arrays.asList("burvjxxjnspy", "ptkoenkoukn", "udwtiukbl",
-                                                    "ngkpocipazy"))
+                                            new PrivateLinkServiceConnection()
+                                                .withName("hxmzsbbzoggig")
+                                                .withGroupIds(Arrays
+                                                    .asList("burvjxxjnspy", "ptkoenkoukn", "udwtiukbl", "ngkpocipazy"))
                                                 .withRequestMessage("egukgjnpiucg")))
-                                        .withPrivateLinkServiceProxies(Arrays.asList(new PrivateLinkServiceProxy()
-                                            .withId("qzntypm")
-                                            .withRemotePrivateLinkServiceConnectionState(
-                                                new PrivateLinkServiceConnectionState())
-                                            .withRemotePrivateEndpointConnection(
-                                                new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
-                                            .withGroupConnectivityInformation(
-                                                Arrays.asList(new GroupConnectivityInformation(),
-                                                    new GroupConnectivityInformation(),
-                                                    new GroupConnectivityInformation(),
-                                                    new GroupConnectivityInformation())),
-                                            new PrivateLinkServiceProxy().withId("drqjsdpy")
-                                                .withRemotePrivateLinkServiceConnectionState(
-                                                    new PrivateLinkServiceConnectionState())
-                                                .withRemotePrivateEndpointConnection(
-                                                    new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
-                                                .withGroupConnectivityInformation(
-                                                    Arrays.asList(new GroupConnectivityInformation(),
-                                                        new GroupConnectivityInformation())),
-                                            new PrivateLinkServiceProxy().withId("de")
-                                                .withRemotePrivateLinkServiceConnectionState(
-                                                    new PrivateLinkServiceConnectionState())
-                                                .withRemotePrivateEndpointConnection(
-                                                    new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
-                                                .withGroupConnectivityInformation(
-                                                    Arrays.asList(new GroupConnectivityInformation(),
-                                                        new GroupConnectivityInformation(),
-                                                        new GroupConnectivityInformation()))))
+                                        .withPrivateLinkServiceProxies(Arrays
+                                            .asList(
+                                                new PrivateLinkServiceProxy()
+                                                    .withId("qzntypm")
+                                                    .withRemotePrivateLinkServiceConnectionState(
+                                                        new PrivateLinkServiceConnectionState())
+                                                    .withRemotePrivateEndpointConnection(
+                                                        new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
+                                                    .withGroupConnectivityInformation(
+                                                        Arrays.asList(new GroupConnectivityInformation(),
+                                                            new GroupConnectivityInformation(),
+                                                            new GroupConnectivityInformation(),
+                                                            new GroupConnectivityInformation())),
+                                                new PrivateLinkServiceProxy().withId("drqjsdpy")
+                                                    .withRemotePrivateLinkServiceConnectionState(
+                                                        new PrivateLinkServiceConnectionState())
+                                                    .withRemotePrivateEndpointConnection(
+                                                        new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
+                                                    .withGroupConnectivityInformation(
+                                                        Arrays.asList(new GroupConnectivityInformation(),
+                                                            new GroupConnectivityInformation())),
+                                                new PrivateLinkServiceProxy().withId("de")
+                                                    .withRemotePrivateLinkServiceConnectionState(
+                                                        new PrivateLinkServiceConnectionState())
+                                                    .withRemotePrivateEndpointConnection(
+                                                        new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
+                                                    .withGroupConnectivityInformation(
+                                                        Arrays.asList(new GroupConnectivityInformation(),
+                                                            new GroupConnectivityInformation(),
+                                                            new GroupConnectivityInformation()))))
                                         .withConnectionDetails(Arrays.asList(new ConnectionDetails())))
                                 .withStatus("mryw")))
                 .withNextLink("qqn");
@@ -113,8 +124,14 @@ public final class PrivateEndpointConnectionProxyListResultTests {
         Assertions.assertEquals("exxbczwtr", model.value().get(0).remotePrivateEndpoint().vnetTrafficTag());
         Assertions.assertEquals("zb",
             model.value().get(0).remotePrivateEndpoint().manualPrivateLinkServiceConnections().get(0).name());
-        Assertions.assertEquals("sovmyokacspkwl", model.value().get(0).remotePrivateEndpoint()
-            .manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("sovmyokacspkwl",
+            model.value()
+                .get(0)
+                .remotePrivateEndpoint()
+                .manualPrivateLinkServiceConnections()
+                .get(0)
+                .groupIds()
+                .get(0));
         Assertions.assertEquals("jiwkuofoskghsau",
             model.value().get(0).remotePrivateEndpoint().manualPrivateLinkServiceConnections().get(0).requestMessage());
         Assertions.assertEquals("ev",

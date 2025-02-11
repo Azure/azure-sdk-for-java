@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomImagePropertiesFromVmTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomImagePropertiesFromVm model =
-            BinaryData
-                .fromString(
-                    "{\"sourceVmId\":\"nwzxltjcv\",\"windowsOsInfo\":{\"windowsOsState\":\"NonSysprepped\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionApplied\"}}")
-                .toObject(CustomImagePropertiesFromVm.class);
+        CustomImagePropertiesFromVm model = BinaryData.fromString(
+            "{\"sourceVmId\":\"nwzxltjcv\",\"windowsOsInfo\":{\"windowsOsState\":\"NonSysprepped\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionApplied\"}}")
+            .toObject(CustomImagePropertiesFromVm.class);
         Assertions.assertEquals("nwzxltjcv", model.sourceVmId());
         Assertions.assertEquals(WindowsOsState.NON_SYSPREPPED, model.windowsOsInfo().windowsOsState());
         Assertions.assertEquals(LinuxOsState.DEPROVISION_APPLIED, model.linuxOsInfo().linuxOsState());
@@ -27,11 +25,9 @@ public final class CustomImagePropertiesFromVmTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomImagePropertiesFromVm model =
-            new CustomImagePropertiesFromVm()
-                .withSourceVmId("nwzxltjcv")
-                .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.NON_SYSPREPPED))
-                .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_APPLIED));
+        CustomImagePropertiesFromVm model = new CustomImagePropertiesFromVm().withSourceVmId("nwzxltjcv")
+            .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.NON_SYSPREPPED))
+            .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_APPLIED));
         model = BinaryData.fromObject(model).toObject(CustomImagePropertiesFromVm.class);
         Assertions.assertEquals("nwzxltjcv", model.sourceVmId());
         Assertions.assertEquals(WindowsOsState.NON_SYSPREPPED, model.windowsOsInfo().windowsOsState());

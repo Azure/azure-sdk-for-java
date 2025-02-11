@@ -23,7 +23,8 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
      */
     public static void approvesOrRejectsAPrivateEndpointConnectionWithAGivenName(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.privateEndpointConnections().define("private-endpoint-connection-name")
+        manager.privateEndpointConnections()
+            .define("private-endpoint-connection-name")
             .withExistingServerGroupsv2("TestGroup", "testcluster")
             .withPrivateLinkServiceConnectionState(
                 new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)

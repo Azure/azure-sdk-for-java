@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationDefinitionPatchableTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationDefinitionPatchable model =
-            BinaryData.fromString("{\"tags\":{\"w\":\"m\"}}").toObject(ApplicationDefinitionPatchable.class);
+        ApplicationDefinitionPatchable model
+            = BinaryData.fromString("{\"tags\":{\"w\":\"m\"}}").toObject(ApplicationDefinitionPatchable.class);
         Assertions.assertEquals("m", model.tags().get("w"));
     }
 

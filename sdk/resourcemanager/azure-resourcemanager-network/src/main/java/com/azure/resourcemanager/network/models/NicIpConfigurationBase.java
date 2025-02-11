@@ -13,34 +13,62 @@ import java.util.List;
  */
 @Fluent
 public interface NicIpConfigurationBase extends HasSubnet, HasPrivateIpAddress {
-    /** @return true if this is the primary IP configuration */
+    /**
+     * Checks whether this is the primary IP configuration.
+     *
+     * @return true if this is the primary IP configuration
+     */
     boolean isPrimary();
 
-    /** @return the virtual network associated with this IP configuration */
+    /**
+     * Gets the virtual network associated with this IP configuration.
+     *
+     * @return the virtual network associated with this IP configuration
+     */
     Network getNetwork();
 
     /**
+     * Gets the network security group.
+     *
      * @return the network security group, if any, associated with the subnet, if any, assigned to this network
      *     interface IP configuration
      *     <p>(Note that this results in additional calls to Azure.)
      */
     NetworkSecurityGroup getNetworkSecurityGroup();
 
-    /** @return private IP address version */
+    /**
+     * Gets private IP address version.
+     *
+     * @return private IP address version
+     */
     IpVersion privateIpAddressVersion();
 
-    /** @return the load balancer backends associated with this network interface IP configuration */
+    /**
+     * Gets the load balancer backends associated with this network interface IP configuration.
+     *
+     * @return the load balancer backends associated with this network interface IP configuration
+     */
     // TODO: This should be a Collection
     List<LoadBalancerBackend> listAssociatedLoadBalancerBackends();
 
-    /** @return the load balancer inbound NAT rules associated with this network interface IP configuration */
+    /**
+     * Gets the load balancer inbound NAT rules associated with this network interface IP configuration.
+     *
+     * @return the load balancer inbound NAT rules associated with this network interface IP configuration
+     */
     // TODO: This should be a Collection
     List<LoadBalancerInboundNatRule> listAssociatedLoadBalancerInboundNatRules();
 
-    /** @return the application gateway backends associated with this network IP configuration */
+    /**
+     * Gets the application gateway backends associated with this network IP configuration.
+     *
+     * @return the application gateway backends associated with this network IP configuration
+     */
     Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends();
 
     /**
+     * Gets the application security groups associated with this network IP configuration.
+     *
      * @return the application security groups associated with this network IP configuration
      */
     List<ApplicationSecurityGroup> listAssociatedApplicationSecurityGroups();

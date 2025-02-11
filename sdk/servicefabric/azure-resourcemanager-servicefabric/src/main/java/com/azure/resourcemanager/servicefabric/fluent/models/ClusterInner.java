@@ -7,6 +7,9 @@ package com.azure.resourcemanager.servicefabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabric.models.AddOnFeatures;
 import com.azure.resourcemanager.servicefabric.models.ApplicationTypeVersionsCleanupPolicy;
 import com.azure.resourcemanager.servicefabric.models.AzureActiveDirectory;
@@ -26,7 +29,7 @@ import com.azure.resourcemanager.servicefabric.models.SettingsSectionDescription
 import com.azure.resourcemanager.servicefabric.models.SfZonalUpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.UpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.VmssZonalUpgradeMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -39,20 +42,32 @@ public final class ClusterInner extends Resource {
     /*
      * The cluster resource properties
      */
-    @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
 
     /*
      * Azure resource etag.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of ClusterInner class.
@@ -85,6 +100,36 @@ public final class ClusterInner extends Resource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -213,8 +258,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the clientCertificateCommonNames property: The list of client certificates referenced by common name that
-     * are allowed to manage the cluster.
+     * Get the clientCertificateCommonNames property: The list of client certificates referenced by common name that are
+     * allowed to manage the cluster.
      * 
      * @return the clientCertificateCommonNames value.
      */
@@ -223,8 +268,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Set the clientCertificateCommonNames property: The list of client certificates referenced by common name that
-     * are allowed to manage the cluster.
+     * Set the clientCertificateCommonNames property: The list of client certificates referenced by common name that are
+     * allowed to manage the cluster.
      * 
      * @param clientCertificateCommonNames the clientCertificateCommonNames value to set.
      * @return the ClusterInner object itself.
@@ -265,10 +310,10 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only
-     * by set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for
-     * new clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list).
-     * To get the list of available version for existing clusters use **availableClusterVersions**.
+     * Get the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only by
+     * set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new
+     * clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list). To
+     * get the list of available version for existing clusters use **availableClusterVersions**.
      * 
      * @return the clusterCodeVersion value.
      */
@@ -277,10 +322,10 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Set the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only
-     * by set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for
-     * new clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list).
-     * To get the list of available version for existing clusters use **availableClusterVersions**.
+     * Set the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only by
+     * set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new
+     * clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list). To
+     * get the list of available version for existing clusters use **availableClusterVersions**.
      * 
      * @param clusterCodeVersion the clusterCodeVersion value to set.
      * @return the ClusterInner object itself.
@@ -530,8 +575,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the reverseProxyCertificateCommonNames property: Describes a list of server certificates referenced by
-     * common name that are used to secure the cluster.
+     * Get the reverseProxyCertificateCommonNames property: Describes a list of server certificates referenced by common
+     * name that are used to secure the cluster.
      * 
      * @return the reverseProxyCertificateCommonNames value.
      */
@@ -540,8 +585,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Set the reverseProxyCertificateCommonNames property: Describes a list of server certificates referenced by
-     * common name that are used to secure the cluster.
+     * Set the reverseProxyCertificateCommonNames property: Describes a list of server certificates referenced by common
+     * name that are used to secure the cluster.
      * 
      * @param reverseProxyCertificateCommonNames the reverseProxyCertificateCommonNames value to set.
      * @return the ClusterInner object itself.
@@ -653,8 +698,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains
-     * (UDs). This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
      * cluster.
      * 
      * @return the sfZonalUpgradeMode value.
@@ -664,8 +709,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains
-     * (UDs). This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
      * cluster.
      * 
      * @param sfZonalUpgradeMode the sfZonalUpgradeMode value to set.
@@ -857,5 +902,59 @@ public final class ClusterInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInner.
+     */
+    public static ClusterInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInner deserializedClusterInner = new ClusterInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedClusterInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedClusterInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedClusterInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedClusterInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedClusterInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInner;
+        });
     }
 }

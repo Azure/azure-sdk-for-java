@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;

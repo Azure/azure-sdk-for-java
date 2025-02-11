@@ -15,8 +15,8 @@ public final class SearchBatchingUtils {
     /**
      * Log message stating that a batch was too large and is being retried as smaller batches.
      */
-    static final String BATCH_SIZE_SCALED_DOWN =
-        "Scaling down batch size due to 413 (Payload too large) response.{}Scaled down from {} to {}";
+    static final String BATCH_SIZE_SCALED_DOWN
+        = "Scaling down batch size due to 413 (Payload too large) response.{}Scaled down from {} to {}";
 
     /**
      * Determines if there is a batch available for processing based on the number of actions and the number of inflight

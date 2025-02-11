@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The LogzSingleSignOnProperties model. */
+/**
+ * The LogzSingleSignOnProperties model.
+ */
 @Fluent
-public final class LogzSingleSignOnProperties {
+public final class LogzSingleSignOnProperties implements JsonSerializable<LogzSingleSignOnProperties> {
     /*
      * Various states of the SSO resource
      */
-    @JsonProperty(value = "singleSignOnState")
     private SingleSignOnStates singleSignOnState;
 
     /*
      * The Id of the Enterprise App used for Single sign-on.
      */
-    @JsonProperty(value = "enterpriseAppId")
     private String enterpriseAppId;
 
     /*
      * The login URL specific to this Logz Organization.
      */
-    @JsonProperty(value = "singleSignOnUrl")
     private String singleSignOnUrl;
 
     /*
      * Flag specifying if the resource provisioning state as tracked by ARM.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of LogzSingleSignOnProperties class. */
+    /**
+     * Creates an instance of LogzSingleSignOnProperties class.
+     */
     public LogzSingleSignOnProperties() {
     }
 
     /**
      * Get the singleSignOnState property: Various states of the SSO resource.
-     *
+     * 
      * @return the singleSignOnState value.
      */
     public SingleSignOnStates singleSignOnState() {
@@ -49,7 +53,7 @@ public final class LogzSingleSignOnProperties {
 
     /**
      * Set the singleSignOnState property: Various states of the SSO resource.
-     *
+     * 
      * @param singleSignOnState the singleSignOnState value to set.
      * @return the LogzSingleSignOnProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class LogzSingleSignOnProperties {
 
     /**
      * Get the enterpriseAppId property: The Id of the Enterprise App used for Single sign-on.
-     *
+     * 
      * @return the enterpriseAppId value.
      */
     public String enterpriseAppId() {
@@ -69,7 +73,7 @@ public final class LogzSingleSignOnProperties {
 
     /**
      * Set the enterpriseAppId property: The Id of the Enterprise App used for Single sign-on.
-     *
+     * 
      * @param enterpriseAppId the enterpriseAppId value to set.
      * @return the LogzSingleSignOnProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class LogzSingleSignOnProperties {
 
     /**
      * Get the singleSignOnUrl property: The login URL specific to this Logz Organization.
-     *
+     * 
      * @return the singleSignOnUrl value.
      */
     public String singleSignOnUrl() {
@@ -89,7 +93,7 @@ public final class LogzSingleSignOnProperties {
 
     /**
      * Set the singleSignOnUrl property: The login URL specific to this Logz Organization.
-     *
+     * 
      * @param singleSignOnUrl the singleSignOnUrl value to set.
      * @return the LogzSingleSignOnProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class LogzSingleSignOnProperties {
 
     /**
      * Get the provisioningState property: Flag specifying if the resource provisioning state as tracked by ARM.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -109,9 +113,56 @@ public final class LogzSingleSignOnProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("singleSignOnState",
+            this.singleSignOnState == null ? null : this.singleSignOnState.toString());
+        jsonWriter.writeStringField("enterpriseAppId", this.enterpriseAppId);
+        jsonWriter.writeStringField("singleSignOnUrl", this.singleSignOnUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogzSingleSignOnProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogzSingleSignOnProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogzSingleSignOnProperties.
+     */
+    public static LogzSingleSignOnProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogzSingleSignOnProperties deserializedLogzSingleSignOnProperties = new LogzSingleSignOnProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("singleSignOnState".equals(fieldName)) {
+                    deserializedLogzSingleSignOnProperties.singleSignOnState
+                        = SingleSignOnStates.fromString(reader.getString());
+                } else if ("enterpriseAppId".equals(fieldName)) {
+                    deserializedLogzSingleSignOnProperties.enterpriseAppId = reader.getString();
+                } else if ("singleSignOnUrl".equals(fieldName)) {
+                    deserializedLogzSingleSignOnProperties.singleSignOnUrl = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLogzSingleSignOnProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogzSingleSignOnProperties;
+        });
     }
 }

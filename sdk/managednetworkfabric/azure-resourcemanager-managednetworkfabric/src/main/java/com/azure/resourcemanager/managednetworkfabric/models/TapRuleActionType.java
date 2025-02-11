@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of actions that can be performed. */
+/**
+ * Type of actions that can be performed.
+ */
 public final class TapRuleActionType extends ExpandableStringEnum<TapRuleActionType> {
-    /** Static value Drop for TapRuleActionType. */
+    /**
+     * Static value Drop for TapRuleActionType.
+     */
     public static final TapRuleActionType DROP = fromString("Drop");
 
-    /** Static value Count for TapRuleActionType. */
+    /**
+     * Static value Count for TapRuleActionType.
+     */
     public static final TapRuleActionType COUNT = fromString("Count");
 
-    /** Static value Log for TapRuleActionType. */
+    /**
+     * Static value Log for TapRuleActionType.
+     */
     public static final TapRuleActionType LOG = fromString("Log");
 
-    /** Static value Replicate for TapRuleActionType. */
+    /**
+     * Static value Replicate for TapRuleActionType.
+     */
     public static final TapRuleActionType REPLICATE = fromString("Replicate");
 
-    /** Static value Goto for TapRuleActionType. */
+    /**
+     * Static value Goto for TapRuleActionType.
+     */
     public static final TapRuleActionType GOTO = fromString("Goto");
 
-    /** Static value Redirect for TapRuleActionType. */
+    /**
+     * Static value Redirect for TapRuleActionType.
+     */
     public static final TapRuleActionType REDIRECT = fromString("Redirect");
 
-    /** Static value Mirror for TapRuleActionType. */
+    /**
+     * Static value Mirror for TapRuleActionType.
+     */
     public static final TapRuleActionType MIRROR = fromString("Mirror");
 
     /**
      * Creates a new instance of TapRuleActionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class TapRuleActionType extends ExpandableStringEnum<TapRuleActionT
 
     /**
      * Creates or finds a TapRuleActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TapRuleActionType.
      */
-    @JsonCreator
     public static TapRuleActionType fromString(String name) {
         return fromString(name, TapRuleActionType.class);
     }
 
     /**
      * Gets known TapRuleActionType values.
-     *
+     * 
      * @return known TapRuleActionType values.
      */
     public static Collection<TapRuleActionType> values() {

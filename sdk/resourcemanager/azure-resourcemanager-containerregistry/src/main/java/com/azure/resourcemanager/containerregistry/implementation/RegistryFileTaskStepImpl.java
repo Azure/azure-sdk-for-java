@@ -16,11 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-class RegistryFileTaskStepImpl extends RegistryTaskStepImpl
-    implements RegistryFileTaskStep,
-        RegistryFileTaskStep.Definition,
-        RegistryFileTaskStep.Update,
-        HasInnerModel<FileTaskStep> {
+class RegistryFileTaskStepImpl extends RegistryTaskStepImpl implements RegistryFileTaskStep,
+    RegistryFileTaskStep.Definition, RegistryFileTaskStep.Update, HasInnerModel<FileTaskStep> {
 
     private FileTaskStep inner;
     private FileTaskStepUpdateParameters fileTaskStepUpdateParameters;

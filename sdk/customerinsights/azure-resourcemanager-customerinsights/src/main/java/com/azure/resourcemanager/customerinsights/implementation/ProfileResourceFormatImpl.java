@@ -163,25 +163,21 @@ public final class ProfileResourceFormatImpl
     }
 
     public ProfileResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProfiles()
-                .createOrUpdate(resourceGroupName, hubName, profileName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getProfiles()
+            .createOrUpdate(resourceGroupName, hubName, profileName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ProfileResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProfiles()
-                .createOrUpdate(resourceGroupName, hubName, profileName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getProfiles()
+            .createOrUpdate(resourceGroupName, hubName, profileName, this.innerModel(), context);
         return this;
     }
 
-    ProfileResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    ProfileResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new ProfileResourceFormatInner();
         this.serviceManager = serviceManager;
         this.profileName = name;
@@ -192,52 +188,43 @@ public final class ProfileResourceFormatImpl
     }
 
     public ProfileResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProfiles()
-                .createOrUpdate(resourceGroupName, hubName, profileName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getProfiles()
+            .createOrUpdate(resourceGroupName, hubName, profileName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ProfileResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProfiles()
-                .createOrUpdate(resourceGroupName, hubName, profileName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getProfiles()
+            .createOrUpdate(resourceGroupName, hubName, profileName, this.innerModel(), context);
         return this;
     }
 
-    ProfileResourceFormatImpl(
-        ProfileResourceFormatInner innerObject,
+    ProfileResourceFormatImpl(ProfileResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.profileName = Utils.getValueFromIdByName(innerObject.id(), "profiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.profileName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "profiles");
     }
 
     public ProfileResourceFormat refresh() {
         String localLocaleCode = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProfiles()
-                .getWithResponse(resourceGroupName, hubName, profileName, localLocaleCode, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProfiles()
+            .getWithResponse(resourceGroupName, hubName, profileName, localLocaleCode, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProfileResourceFormat refresh(Context context) {
         String localLocaleCode = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProfiles()
-                .getWithResponse(resourceGroupName, hubName, profileName, localLocaleCode, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProfiles()
+            .getWithResponse(resourceGroupName, hubName, profileName, localLocaleCode, context)
+            .getValue();
         return this;
     }
 

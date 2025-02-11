@@ -5,35 +5,46 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Represents an AAD identity protection solution which sends logs to an OMS workspace.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = AadExternalSecuritySolution.class,
-    visible = true)
-@JsonTypeName("AAD")
 @Fluent
 public final class AadExternalSecuritySolution extends ExternalSecuritySolutionInner {
     /*
      * The kind of the external solution
      */
-    @JsonTypeId
-    @JsonProperty(value = "kind", required = true)
     private ExternalSecuritySolutionKind kind = ExternalSecuritySolutionKind.AAD;
 
     /*
      * The external security solution properties for AAD solutions
      */
-    @JsonProperty(value = "properties")
     private AadSolutionProperties properties;
+
+    /*
+     * Location where the resource is stored
+     */
+    private String location;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of AadExternalSecuritySolution class.
@@ -72,15 +83,103 @@ public final class AadExternalSecuritySolution extends ExternalSecuritySolutionI
     }
 
     /**
+     * Get the location property: Location where the resource is stored.
+     * 
+     * @return the location value.
+     */
+    @Override
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AadExternalSecuritySolution from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AadExternalSecuritySolution if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AadExternalSecuritySolution.
+     */
+    public static AadExternalSecuritySolution fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AadExternalSecuritySolution deserializedAadExternalSecuritySolution = new AadExternalSecuritySolution();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAadExternalSecuritySolution.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAadExternalSecuritySolution.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAadExternalSecuritySolution.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAadExternalSecuritySolution.location = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAadExternalSecuritySolution.kind
+                        = ExternalSecuritySolutionKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAadExternalSecuritySolution.properties = AadSolutionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAadExternalSecuritySolution;
+        });
     }
 }

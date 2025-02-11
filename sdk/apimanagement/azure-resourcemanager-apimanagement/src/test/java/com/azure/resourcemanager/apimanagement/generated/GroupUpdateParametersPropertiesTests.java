@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GroupUpdateParametersPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupUpdateParametersProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"ptkbvcpxtzhi\",\"description\":\"qbtimpk\",\"type\":\"external\",\"externalId\":\"rnsihqhudsmus\"}")
-                .toObject(GroupUpdateParametersProperties.class);
+        GroupUpdateParametersProperties model = BinaryData.fromString(
+            "{\"displayName\":\"ptkbvcpxtzhi\",\"description\":\"qbtimpk\",\"type\":\"external\",\"externalId\":\"rnsihqhudsmus\"}")
+            .toObject(GroupUpdateParametersProperties.class);
         Assertions.assertEquals("ptkbvcpxtzhi", model.displayName());
         Assertions.assertEquals("qbtimpk", model.description());
         Assertions.assertEquals(GroupType.EXTERNAL, model.type());
@@ -25,12 +23,10 @@ public final class GroupUpdateParametersPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupUpdateParametersProperties model =
-            new GroupUpdateParametersProperties()
-                .withDisplayName("ptkbvcpxtzhi")
-                .withDescription("qbtimpk")
-                .withType(GroupType.EXTERNAL)
-                .withExternalId("rnsihqhudsmus");
+        GroupUpdateParametersProperties model = new GroupUpdateParametersProperties().withDisplayName("ptkbvcpxtzhi")
+            .withDescription("qbtimpk")
+            .withType(GroupType.EXTERNAL)
+            .withExternalId("rnsihqhudsmus");
         model = BinaryData.fromObject(model).toObject(GroupUpdateParametersProperties.class);
         Assertions.assertEquals("ptkbvcpxtzhi", model.displayName());
         Assertions.assertEquals("qbtimpk", model.description());

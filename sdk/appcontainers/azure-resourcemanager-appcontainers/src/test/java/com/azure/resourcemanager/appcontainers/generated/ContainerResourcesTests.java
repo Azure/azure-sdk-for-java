@@ -12,17 +12,17 @@ public final class ContainerResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerResources model
-            = BinaryData.fromString("{\"cpu\":45.36370614352274,\"memory\":\"q\",\"ephemeralStorage\":\"wpmqt\"}")
+            = BinaryData.fromString("{\"cpu\":20.95195509760658,\"memory\":\"wep\",\"ephemeralStorage\":\"pc\"}")
                 .toObject(ContainerResources.class);
-        Assertions.assertEquals(45.36370614352274D, model.cpu());
-        Assertions.assertEquals("q", model.memory());
+        Assertions.assertEquals(20.95195509760658D, model.cpu());
+        Assertions.assertEquals("wep", model.memory());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContainerResources model = new ContainerResources().withCpu(45.36370614352274D).withMemory("q");
+        ContainerResources model = new ContainerResources().withCpu(20.95195509760658D).withMemory("wep");
         model = BinaryData.fromObject(model).toObject(ContainerResources.class);
-        Assertions.assertEquals(45.36370614352274D, model.cpu());
-        Assertions.assertEquals("q", model.memory());
+        Assertions.assertEquals(20.95195509760658D, model.cpu());
+        Assertions.assertEquals("wep", model.memory());
     }
 }

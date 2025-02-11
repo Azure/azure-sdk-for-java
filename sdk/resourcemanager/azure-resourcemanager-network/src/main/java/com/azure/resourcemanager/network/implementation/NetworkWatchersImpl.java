@@ -10,9 +10,8 @@ import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for Network Watchers. */
-public class NetworkWatchersImpl
-    extends TopLevelModifiableResourcesImpl<
-        NetworkWatcher, NetworkWatcherImpl, NetworkWatcherInner, NetworkWatchersClient, NetworkManager>
+public class NetworkWatchersImpl extends
+    TopLevelModifiableResourcesImpl<NetworkWatcher, NetworkWatcherImpl, NetworkWatcherInner, NetworkWatchersClient, NetworkManager>
     implements NetworkWatchers {
 
     public NetworkWatchersImpl(final NetworkManager networkManager) {

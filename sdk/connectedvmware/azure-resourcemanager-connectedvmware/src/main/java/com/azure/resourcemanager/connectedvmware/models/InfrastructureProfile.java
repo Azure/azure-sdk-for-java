@@ -5,78 +5,76 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the vCenter infrastructure specific settings for the virtual machine. */
+/**
+ * Specifies the vCenter infrastructure specific settings for the virtual machine.
+ */
 @Fluent
-public final class InfrastructureProfile {
+public final class InfrastructureProfile implements JsonSerializable<InfrastructureProfile> {
     /*
      * Gets or sets the ARM Id of the template resource to deploy the virtual machine.
      */
-    @JsonProperty(value = "templateId")
     private String templateId;
 
     /*
      * Gets or sets the ARM Id of the vCenter resource in which this resource pool resides.
      */
-    @JsonProperty(value = "vCenterId")
     private String vCenterId;
 
     /*
      * Gets or sets the vCenter MoRef (Managed Object Reference) ID for the virtual machine.
      */
-    @JsonProperty(value = "moRefId", access = JsonProperty.Access.WRITE_ONLY)
     private String moRefId;
 
     /*
      * Gets or sets the inventory Item ID for the virtual machine.
      */
-    @JsonProperty(value = "inventoryItemId")
     private String inventoryItemId;
 
     /*
      * Gets or sets the vCenter Managed Object name for the virtual machine.
      */
-    @JsonProperty(value = "moName", access = JsonProperty.Access.WRITE_ONLY)
     private String moName;
 
     /*
      * Gets or sets the folder path of the vm.
      */
-    @JsonProperty(value = "folderPath", access = JsonProperty.Access.WRITE_ONLY)
     private String folderPath;
 
     /*
      * Gets or sets the instance uuid of the vm.
      */
-    @JsonProperty(value = "instanceUuid", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceUuid;
 
     /*
      * Gets or sets the SMBIOS UUID of the vm.
      */
-    @JsonProperty(value = "smbiosUuid")
     private String smbiosUuid;
 
     /*
      * Firmware type
      */
-    @JsonProperty(value = "firmwareType")
     private FirmwareType firmwareType;
 
     /*
      * Gets the name of the corresponding resource in Kubernetes.
      */
-    @JsonProperty(value = "customResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String customResourceName;
 
-    /** Creates an instance of InfrastructureProfile class. */
+    /**
+     * Creates an instance of InfrastructureProfile class.
+     */
     public InfrastructureProfile() {
     }
 
     /**
      * Get the templateId property: Gets or sets the ARM Id of the template resource to deploy the virtual machine.
-     *
+     * 
      * @return the templateId value.
      */
     public String templateId() {
@@ -85,7 +83,7 @@ public final class InfrastructureProfile {
 
     /**
      * Set the templateId property: Gets or sets the ARM Id of the template resource to deploy the virtual machine.
-     *
+     * 
      * @param templateId the templateId value to set.
      * @return the InfrastructureProfile object itself.
      */
@@ -96,7 +94,7 @@ public final class InfrastructureProfile {
 
     /**
      * Get the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this resource pool resides.
-     *
+     * 
      * @return the vCenterId value.
      */
     public String vCenterId() {
@@ -105,7 +103,7 @@ public final class InfrastructureProfile {
 
     /**
      * Set the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this resource pool resides.
-     *
+     * 
      * @param vCenterId the vCenterId value to set.
      * @return the InfrastructureProfile object itself.
      */
@@ -116,7 +114,7 @@ public final class InfrastructureProfile {
 
     /**
      * Get the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the virtual machine.
-     *
+     * 
      * @return the moRefId value.
      */
     public String moRefId() {
@@ -125,7 +123,7 @@ public final class InfrastructureProfile {
 
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the virtual machine.
-     *
+     * 
      * @return the inventoryItemId value.
      */
     public String inventoryItemId() {
@@ -134,7 +132,7 @@ public final class InfrastructureProfile {
 
     /**
      * Set the inventoryItemId property: Gets or sets the inventory Item ID for the virtual machine.
-     *
+     * 
      * @param inventoryItemId the inventoryItemId value to set.
      * @return the InfrastructureProfile object itself.
      */
@@ -145,7 +143,7 @@ public final class InfrastructureProfile {
 
     /**
      * Get the moName property: Gets or sets the vCenter Managed Object name for the virtual machine.
-     *
+     * 
      * @return the moName value.
      */
     public String moName() {
@@ -154,7 +152,7 @@ public final class InfrastructureProfile {
 
     /**
      * Get the folderPath property: Gets or sets the folder path of the vm.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -163,7 +161,7 @@ public final class InfrastructureProfile {
 
     /**
      * Get the instanceUuid property: Gets or sets the instance uuid of the vm.
-     *
+     * 
      * @return the instanceUuid value.
      */
     public String instanceUuid() {
@@ -172,7 +170,7 @@ public final class InfrastructureProfile {
 
     /**
      * Get the smbiosUuid property: Gets or sets the SMBIOS UUID of the vm.
-     *
+     * 
      * @return the smbiosUuid value.
      */
     public String smbiosUuid() {
@@ -181,7 +179,7 @@ public final class InfrastructureProfile {
 
     /**
      * Set the smbiosUuid property: Gets or sets the SMBIOS UUID of the vm.
-     *
+     * 
      * @param smbiosUuid the smbiosUuid value to set.
      * @return the InfrastructureProfile object itself.
      */
@@ -192,7 +190,7 @@ public final class InfrastructureProfile {
 
     /**
      * Get the firmwareType property: Firmware type.
-     *
+     * 
      * @return the firmwareType value.
      */
     public FirmwareType firmwareType() {
@@ -201,7 +199,7 @@ public final class InfrastructureProfile {
 
     /**
      * Set the firmwareType property: Firmware type.
-     *
+     * 
      * @param firmwareType the firmwareType value to set.
      * @return the InfrastructureProfile object itself.
      */
@@ -212,7 +210,7 @@ public final class InfrastructureProfile {
 
     /**
      * Get the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
-     *
+     * 
      * @return the customResourceName value.
      */
     public String customResourceName() {
@@ -221,9 +219,67 @@ public final class InfrastructureProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("templateId", this.templateId);
+        jsonWriter.writeStringField("vCenterId", this.vCenterId);
+        jsonWriter.writeStringField("inventoryItemId", this.inventoryItemId);
+        jsonWriter.writeStringField("smbiosUuid", this.smbiosUuid);
+        jsonWriter.writeStringField("firmwareType", this.firmwareType == null ? null : this.firmwareType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InfrastructureProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InfrastructureProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InfrastructureProfile.
+     */
+    public static InfrastructureProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InfrastructureProfile deserializedInfrastructureProfile = new InfrastructureProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("templateId".equals(fieldName)) {
+                    deserializedInfrastructureProfile.templateId = reader.getString();
+                } else if ("vCenterId".equals(fieldName)) {
+                    deserializedInfrastructureProfile.vCenterId = reader.getString();
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedInfrastructureProfile.moRefId = reader.getString();
+                } else if ("inventoryItemId".equals(fieldName)) {
+                    deserializedInfrastructureProfile.inventoryItemId = reader.getString();
+                } else if ("moName".equals(fieldName)) {
+                    deserializedInfrastructureProfile.moName = reader.getString();
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedInfrastructureProfile.folderPath = reader.getString();
+                } else if ("instanceUuid".equals(fieldName)) {
+                    deserializedInfrastructureProfile.instanceUuid = reader.getString();
+                } else if ("smbiosUuid".equals(fieldName)) {
+                    deserializedInfrastructureProfile.smbiosUuid = reader.getString();
+                } else if ("firmwareType".equals(fieldName)) {
+                    deserializedInfrastructureProfile.firmwareType = FirmwareType.fromString(reader.getString());
+                } else if ("customResourceName".equals(fieldName)) {
+                    deserializedInfrastructureProfile.customResourceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInfrastructureProfile;
+        });
     }
 }

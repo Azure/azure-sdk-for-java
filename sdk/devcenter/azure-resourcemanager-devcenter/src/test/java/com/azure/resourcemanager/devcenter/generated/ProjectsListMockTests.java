@@ -24,7 +24,7 @@ public final class ProjectsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"devCenterUri\":\"a\",\"devCenterId\":\"cfxwmdbox\",\"description\":\"gsftufqobrjlnacg\",\"maxDevBoxesPerUser\":1670865281,\"displayName\":\"nhxk\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"52899271-9ac6-4b2c-a2ae-63f898298e4e\",\"tenantId\":\"99eabf2e-9e4d-4a89-8a50-73fd77616e97\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"rano\":{\"principalId\":\"b66bec2e-50d0-4214-b204-0032d981d0d0\",\"clientId\":\"262b41c0-7c7f-4ecc-897e-d4a6318f2ed1\"},\"ukkjqnvbroyla\":{\"principalId\":\"1bd54796-e711-4eb0-ba48-a41d441c516b\",\"clientId\":\"9f9e3cc3-5946-49c7-badf-38b3723d0e0a\"},\"lcdisd\":{\"principalId\":\"93f6679e-b81f-4ad5-986b-cd43a975a847\",\"clientId\":\"c6793802-e3f7-4af4-b77e-d2cf404351dd\"},\"jbjsvgjrwh\":{\"principalId\":\"0d21960c-93da-4761-8cb1-248bd7e3243b\",\"clientId\":\"df2a821e-6196-48c0-9dc2-2878f53ddd5b\"}}},\"location\":\"vyc\",\"tags\":{\"xgccknfnw\":\"c\",\"fedxihchrphkm\":\"btmvpdvjdhttza\"},\"id\":\"rjdqnsdfzp\",\"name\":\"gtgkylkdghr\",\"type\":\"euutlwxezwzh\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"devCenterUri\":\"fmmfblcqcu\",\"devCenterId\":\"gqibrtalmetttw\",\"description\":\"slqxi\",\"maxDevBoxesPerUser\":5802151,\"displayName\":\"ooizqseyp\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"d58bb4f7-4c74-426f-afb1-1edd677076ab\",\"tenantId\":\"e0d2dc21-426f-46cc-b267-4e141e874f58\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"g\":{\"principalId\":\"607547a9-b6d4-41f2-afa9-7d25d01f3852\",\"clientId\":\"8c72ed7c-b60d-46af-b87e-6887a4c97d7f\"},\"oxslh\":{\"principalId\":\"d88b24f6-80f5-4415-9cfc-03eefd824181\",\"clientId\":\"a99d9280-7668-4f08-aad5-c54d41e65e32\"}}},\"location\":\"hlabrq\",\"tags\":{\"aehvvibrxjjstoq\":\"zjcjbtr\",\"bklftidgfcwqmpim\":\"eitpkxztmo\",\"yhohujswtwkozzwc\":\"qxzhem\"},\"id\":\"lkb\",\"name\":\"wpfaj\",\"type\":\"jwltlwtjjgu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class ProjectsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Project> response = manager.projects().list(2009658341, com.azure.core.util.Context.NONE);
+        PagedIterable<Project> response = manager.projects().list(148819128, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vyc", response.iterator().next().location());
-        Assertions.assertEquals("c", response.iterator().next().tags().get("xgccknfnw"));
+        Assertions.assertEquals("hlabrq", response.iterator().next().location());
+        Assertions.assertEquals("zjcjbtr", response.iterator().next().tags().get("aehvvibrxjjstoq"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             response.iterator().next().identity().type());
-        Assertions.assertEquals("cfxwmdbox", response.iterator().next().devCenterId());
-        Assertions.assertEquals("gsftufqobrjlnacg", response.iterator().next().description());
-        Assertions.assertEquals(1670865281, response.iterator().next().maxDevBoxesPerUser());
-        Assertions.assertEquals("nhxk", response.iterator().next().displayName());
+        Assertions.assertEquals("gqibrtalmetttw", response.iterator().next().devCenterId());
+        Assertions.assertEquals("slqxi", response.iterator().next().description());
+        Assertions.assertEquals(5802151, response.iterator().next().maxDevBoxesPerUser());
+        Assertions.assertEquals("ooizqseyp", response.iterator().next().displayName());
         Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
             response.iterator().next().catalogSettings().catalogItemSyncTypes().get(0));
     }

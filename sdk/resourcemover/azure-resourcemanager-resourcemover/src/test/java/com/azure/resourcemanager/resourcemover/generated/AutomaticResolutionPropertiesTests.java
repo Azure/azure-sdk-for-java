@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomaticResolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomaticResolutionProperties model =
-            BinaryData.fromString("{\"moveResourceId\":\"gtzxdpn\"}").toObject(AutomaticResolutionProperties.class);
+        AutomaticResolutionProperties model
+            = BinaryData.fromString("{\"moveResourceId\":\"gtzxdpn\"}").toObject(AutomaticResolutionProperties.class);
         Assertions.assertEquals("gtzxdpn", model.moveResourceId());
     }
 

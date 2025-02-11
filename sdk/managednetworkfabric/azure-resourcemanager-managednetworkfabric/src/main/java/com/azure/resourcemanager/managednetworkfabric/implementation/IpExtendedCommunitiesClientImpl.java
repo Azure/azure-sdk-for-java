@@ -40,23 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IpExtendedCommunitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IpExtendedCommunitiesClient.
+ */
 public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunitiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IpExtendedCommunitiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of IpExtendedCommunitiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IpExtendedCommunitiesClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy
-                .create(IpExtendedCommunitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(IpExtendedCommunitiesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,114 +72,87 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface IpExtendedCommunitiesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("ipExtendedCommunityName") String ipExtendedCommunityName,
-            @BodyParam("application/json") IpExtendedCommunityInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") IpExtendedCommunityInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IpExtendedCommunityInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<IpExtendedCommunityInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("ipExtendedCommunityName") String ipExtendedCommunityName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("ipExtendedCommunityName") String ipExtendedCommunityName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") IpExtendedCommunityPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("ipExtendedCommunityName") String ipExtendedCommunityName,
-            @BodyParam("application/json") IpExtendedCommunityPatch body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("ipExtendedCommunityName") String ipExtendedCommunityName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/{ipExtendedCommunityName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<IpExtendedCommunityListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("ipExtendedCommunityName") String ipExtendedCommunityName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IpExtendedCommunityListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IpExtendedCommunityListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<IpExtendedCommunityListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IpExtendedCommunityListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IpExtendedCommunityListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -182,31 +160,26 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP Extended Community resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (ipExtendedCommunityName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -215,26 +188,16 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            ipExtendedCommunityName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), ipExtendedCommunityName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -243,31 +206,26 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP Extended Community resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (ipExtendedCommunityName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -276,23 +234,15 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                ipExtendedCommunityName,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), ipExtendedCommunityName, body, accept, context);
     }
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -302,25 +252,20 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the {@link PollerFlux} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreateAsync(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, ipExtendedCommunityName, body);
-        return this
-            .client
-            .<IpExtendedCommunityInner, IpExtendedCommunityInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                IpExtendedCommunityInner.class,
-                IpExtendedCommunityInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner>
+        beginCreateAsync(String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, ipExtendedCommunityName, body);
+        return this.client.<IpExtendedCommunityInner, IpExtendedCommunityInner>getLroResult(mono,
+            this.client.getHttpPipeline(), IpExtendedCommunityInner.class, IpExtendedCommunityInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -334,23 +279,17 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
     private PollerFlux<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreateAsync(
         String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, ipExtendedCommunityName, body, context);
-        return this
-            .client
-            .<IpExtendedCommunityInner, IpExtendedCommunityInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                IpExtendedCommunityInner.class,
-                IpExtendedCommunityInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, ipExtendedCommunityName, body, context);
+        return this.client.<IpExtendedCommunityInner, IpExtendedCommunityInner>getLroResult(mono,
+            this.client.getHttpPipeline(), IpExtendedCommunityInner.class, IpExtendedCommunityInner.class, context);
     }
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -360,16 +299,16 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreate(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body) {
+    public SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner>
+        beginCreate(String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body) {
         return this.beginCreateAsync(resourceGroupName, ipExtendedCommunityName, body).getSyncPoller();
     }
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -387,9 +326,9 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -399,18 +338,17 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the IP Extended Community resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IpExtendedCommunityInner> createAsync(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body) {
-        return beginCreateAsync(resourceGroupName, ipExtendedCommunityName, body)
-            .last()
+    private Mono<IpExtendedCommunityInner> createAsync(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityInner body) {
+        return beginCreateAsync(resourceGroupName, ipExtendedCommunityName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -421,18 +359,17 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the IP Extended Community resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IpExtendedCommunityInner> createAsync(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, ipExtendedCommunityName, body, context)
-            .last()
+    private Mono<IpExtendedCommunityInner> createAsync(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, ipExtendedCommunityName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -442,16 +379,16 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpExtendedCommunityInner create(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body) {
+    public IpExtendedCommunityInner create(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityInner body) {
         return createAsync(resourceGroupName, ipExtendedCommunityName, body).block();
     }
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -462,69 +399,56 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpExtendedCommunityInner create(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body, Context context) {
+    public IpExtendedCommunityInner create(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityInner body, Context context) {
         return createAsync(resourceGroupName, ipExtendedCommunityName, body, context).block();
     }
 
     /**
      * Gets an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community GET method.
-     *
+     * 
+     * Implements IP Extended Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP Extended Community resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IpExtendedCommunityInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String ipExtendedCommunityName) {
+    private Mono<Response<IpExtendedCommunityInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String ipExtendedCommunityName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (ipExtendedCommunityName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            ipExtendedCommunityName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), ipExtendedCommunityName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community GET method.
-     *
+     * 
+     * Implements IP Extended Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -532,50 +456,38 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP Extended Community resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IpExtendedCommunityInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String ipExtendedCommunityName, Context context) {
+    private Mono<Response<IpExtendedCommunityInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String ipExtendedCommunityName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (ipExtendedCommunityName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                ipExtendedCommunityName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), ipExtendedCommunityName, accept, context);
     }
 
     /**
      * Gets an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community GET method.
-     *
+     * 
+     * Implements IP Extended Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -584,17 +496,17 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the IP Extended Community resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IpExtendedCommunityInner> getByResourceGroupAsync(
-        String resourceGroupName, String ipExtendedCommunityName) {
+    private Mono<IpExtendedCommunityInner> getByResourceGroupAsync(String resourceGroupName,
+        String ipExtendedCommunityName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ipExtendedCommunityName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community GET method.
-     *
+     * 
+     * Implements IP Extended Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -604,16 +516,16 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the IP Extended Community resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IpExtendedCommunityInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String ipExtendedCommunityName, Context context) {
+    public Response<IpExtendedCommunityInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String ipExtendedCommunityName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ipExtendedCommunityName, context).block();
     }
 
     /**
      * Gets an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community GET method.
-     *
+     * 
+     * Implements IP Extended Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -628,9 +540,9 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -638,31 +550,26 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP Extended Community resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (ipExtendedCommunityName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -671,26 +578,16 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            ipExtendedCommunityName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), ipExtendedCommunityName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -699,31 +596,26 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP Extended Community resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (ipExtendedCommunityName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -732,23 +624,15 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                ipExtendedCommunityName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), ipExtendedCommunityName, body, accept, context);
     }
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -758,25 +642,20 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the {@link PollerFlux} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdateAsync(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, ipExtendedCommunityName, body);
-        return this
-            .client
-            .<IpExtendedCommunityInner, IpExtendedCommunityInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                IpExtendedCommunityInner.class,
-                IpExtendedCommunityInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner>
+        beginUpdateAsync(String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, ipExtendedCommunityName, body);
+        return this.client.<IpExtendedCommunityInner, IpExtendedCommunityInner>getLroResult(mono,
+            this.client.getHttpPipeline(), IpExtendedCommunityInner.class, IpExtendedCommunityInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -790,23 +669,17 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
     private PollerFlux<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdateAsync(
         String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, ipExtendedCommunityName, body, context);
-        return this
-            .client
-            .<IpExtendedCommunityInner, IpExtendedCommunityInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                IpExtendedCommunityInner.class,
-                IpExtendedCommunityInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, ipExtendedCommunityName, body, context);
+        return this.client.<IpExtendedCommunityInner, IpExtendedCommunityInner>getLroResult(mono,
+            this.client.getHttpPipeline(), IpExtendedCommunityInner.class, IpExtendedCommunityInner.class, context);
     }
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -816,16 +689,16 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdate(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body) {
+    public SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner>
+        beginUpdate(String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body) {
         return this.beginUpdateAsync(resourceGroupName, ipExtendedCommunityName, body).getSyncPoller();
     }
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -843,9 +716,9 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -855,18 +728,17 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the IP Extended Community resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IpExtendedCommunityInner> updateAsync(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body) {
-        return beginUpdateAsync(resourceGroupName, ipExtendedCommunityName, body)
-            .last()
+    private Mono<IpExtendedCommunityInner> updateAsync(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityPatch body) {
+        return beginUpdateAsync(resourceGroupName, ipExtendedCommunityName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -877,18 +749,17 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the IP Extended Community resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IpExtendedCommunityInner> updateAsync(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, ipExtendedCommunityName, body, context)
-            .last()
+    private Mono<IpExtendedCommunityInner> updateAsync(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, ipExtendedCommunityName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -898,16 +769,16 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpExtendedCommunityInner update(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body) {
+    public IpExtendedCommunityInner update(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityPatch body) {
         return updateAsync(resourceGroupName, ipExtendedCommunityName, body).block();
     }
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -918,16 +789,16 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpExtendedCommunityInner update(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body, Context context) {
+    public IpExtendedCommunityInner update(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityPatch body, Context context) {
         return updateAsync(resourceGroupName, ipExtendedCommunityName, body, context).block();
     }
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -936,50 +807,36 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String ipExtendedCommunityName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String ipExtendedCommunityName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (ipExtendedCommunityName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            ipExtendedCommunityName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), ipExtendedCommunityName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -989,47 +846,35 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String ipExtendedCommunityName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String ipExtendedCommunityName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (ipExtendedCommunityName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter ipExtendedCommunityName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                ipExtendedCommunityName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), ipExtendedCommunityName, accept, context);
     }
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1038,20 +883,18 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String ipExtendedCommunityName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String ipExtendedCommunityName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ipExtendedCommunityName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -1061,21 +904,20 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String ipExtendedCommunityName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String ipExtendedCommunityName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, ipExtendedCommunityName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, ipExtendedCommunityName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1090,9 +932,9 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -1102,16 +944,16 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String ipExtendedCommunityName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ipExtendedCommunityName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, ipExtendedCommunityName, context).getSyncPoller();
     }
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1121,16 +963,15 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String ipExtendedCommunityName) {
-        return beginDeleteAsync(resourceGroupName, ipExtendedCommunityName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, ipExtendedCommunityName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -1141,16 +982,15 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String ipExtendedCommunityName, Context context) {
-        return beginDeleteAsync(resourceGroupName, ipExtendedCommunityName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, ipExtendedCommunityName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1164,9 +1004,9 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -1181,29 +1021,25 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
 
     /**
      * List IpExtendedCommunities by resource group.
-     *
-     * <p>Implements IpExtendedCommunities list by resource group GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpExtendedCommunityInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1211,55 +1047,36 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<IpExtendedCommunityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<IpExtendedCommunityInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List IpExtendedCommunities by resource group.
-     *
-     * <p>Implements IpExtendedCommunities list by resource group GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IpExtendedCommunityInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<IpExtendedCommunityInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1268,29 +1085,17 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List IpExtendedCommunities by resource group.
-     *
-     * <p>Implements IpExtendedCommunities list by resource group GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1299,16 +1104,15 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpExtendedCommunityInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List IpExtendedCommunities by resource group.
-     *
-     * <p>Implements IpExtendedCommunities list by resource group GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1318,16 +1122,15 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpExtendedCommunityInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List IpExtendedCommunities by resource group.
-     *
-     * <p>Implements IpExtendedCommunities list by resource group GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1341,9 +1144,9 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
 
     /**
      * List IpExtendedCommunities by resource group.
-     *
-     * <p>Implements IpExtendedCommunities list by resource group GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1358,117 +1161,84 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
 
     /**
      * List IpExtendedCommunities by subscription.
-     *
-     * <p>Implements IpExtendedCommunities list by subscription GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpExtendedCommunityInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<IpExtendedCommunityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<IpExtendedCommunityInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List IpExtendedCommunities by subscription.
-     *
-     * <p>Implements IpExtendedCommunities list by subscription GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpExtendedCommunityInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List IpExtendedCommunities by subscription.
-     *
-     * <p>Implements IpExtendedCommunities list by subscription GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IP Extended Communities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpExtendedCommunityInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List IpExtendedCommunities by subscription.
-     *
-     * <p>Implements IpExtendedCommunities list by subscription GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1477,15 +1247,15 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpExtendedCommunityInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List IpExtendedCommunities by subscription.
-     *
-     * <p>Implements IpExtendedCommunities list by subscription GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IP Extended Communities as paginated response with {@link PagedIterable}.
@@ -1497,9 +1267,9 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
 
     /**
      * List IpExtendedCommunities by subscription.
-     *
-     * <p>Implements IpExtendedCommunities list by subscription GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1513,14 +1283,13 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpExtendedCommunityInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1528,76 +1297,55 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<IpExtendedCommunityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<IpExtendedCommunityInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IpExtendedCommunityInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<IpExtendedCommunityInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpExtendedCommunityInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1605,63 +1353,43 @@ public final class IpExtendedCommunitiesClientImpl implements IpExtendedCommunit
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<IpExtendedCommunityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<IpExtendedCommunityInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of IP Extended Communities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IpExtendedCommunityInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<IpExtendedCommunityInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

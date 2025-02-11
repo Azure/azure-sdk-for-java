@@ -15,8 +15,7 @@ public final class AzureDevOpsConnectorStatsListResponseImpl implements AzureDev
 
     private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
-    AzureDevOpsConnectorStatsListResponseImpl(
-        AzureDevOpsConnectorStatsListResponseInner innerObject,
+    AzureDevOpsConnectorStatsListResponseImpl(AzureDevOpsConnectorStatsListResponseInner innerObject,
         com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

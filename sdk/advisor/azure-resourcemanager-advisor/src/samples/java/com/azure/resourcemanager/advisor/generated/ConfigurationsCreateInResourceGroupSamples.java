@@ -11,41 +11,33 @@ import com.azure.resourcemanager.advisor.models.DigestConfig;
 import com.azure.resourcemanager.advisor.models.DigestConfigState;
 import java.util.Arrays;
 
-/** Samples for Configurations CreateInResourceGroup. */
+/**
+ * Samples for Configurations CreateInResourceGroup.
+ */
 public final class ConfigurationsCreateInResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/CreateConfiguration.json
+     * x-ms-original-file:
+     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/CreateConfiguration.json
      */
     /**
      * Sample code: PutConfigurations.
-     *
+     * 
      * @param manager Entry point to AdvisorManager.
      */
     public static void putConfigurations(com.azure.resourcemanager.advisor.AdvisorManager manager) {
-        manager
-            .configurations()
+        manager.configurations()
             .define(ConfigurationName.DEFAULT)
             .withExistingResourceGroup("resourceGroup")
             .withExclude(true)
             .withLowCpuThreshold(CpuThreshold.FIVE)
-            .withDigests(
-                Arrays
-                    .asList(
-                        new DigestConfig()
-                            .withName("digestConfigName")
-                            .withActionGroupResourceId(
-                                "/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/microsoft.insights/actionGroups/actionGroupName")
-                            .withFrequency(30)
-                            .withCategories(
-                                Arrays
-                                    .asList(
-                                        Category.HIGH_AVAILABILITY,
-                                        Category.SECURITY,
-                                        Category.PERFORMANCE,
-                                        Category.COST,
-                                        Category.OPERATIONAL_EXCELLENCE))
-                            .withLanguage("en")
-                            .withState(DigestConfigState.ACTIVE)))
+            .withDigests(Arrays.asList(new DigestConfig().withName("digestConfigName")
+                .withActionGroupResourceId(
+                    "/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/microsoft.insights/actionGroups/actionGroupName")
+                .withFrequency(30)
+                .withCategories(Arrays.asList(Category.HIGH_AVAILABILITY, Category.SECURITY, Category.PERFORMANCE,
+                    Category.COST, Category.OPERATIONAL_EXCELLENCE))
+                .withLanguage("en")
+                .withState(DigestConfigState.ACTIVE)))
             .create();
     }
 }

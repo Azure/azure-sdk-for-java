@@ -19,44 +19,54 @@ import java.util.Map;
  * An immutable client-side representation of an Azure policy assignment.
  */
 @Fluent
-public interface PolicyAssignment extends
-        HasName,
-        HasId,
-        Indexable,
-        Refreshable<PolicyAssignment>,
-        HasInnerModel<PolicyAssignmentInner> {
+public interface PolicyAssignment
+    extends HasName, HasId, Indexable, Refreshable<PolicyAssignment>, HasInnerModel<PolicyAssignmentInner> {
 
     /**
+     * Gets display name of the policy assignment.
+     *
      * @return the policy assignment display name
      */
     String displayName();
 
     /**
+     * Gets Id of the policy definition.
+     *
      * @return the policy definition Id
      */
     String policyDefinitionId();
 
     /**
+     * Gets the scope at which the policy assignment exists.
+     *
      * @return the scope at which the policy assignment exists
      */
     String scope();
 
     /**
+     * Gets the type of the policy assignment.
+     *
      * @return the type of the policy assignment
      */
     String type();
 
     /**
+     * Gets the excluded scopes of the policy assignment.
+     *
      * @return the excluded scopes of the policy assignment
      */
     List<String> excludedScopes();
 
     /**
+     * Gets the enforcement mode of the policy assignment.
+     *
      * @return the enforcement mode of the policy assignment
      */
     EnforcementMode enforcementMode();
 
     /**
+     * Gets the parameters of the policy assignment.
+     *
      * @return the parameters of the policy assignment
      */
     Map<String, ParameterValuesValue> parameters();
@@ -64,10 +74,8 @@ public interface PolicyAssignment extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    interface Definition extends
-            PolicyAssignment.DefinitionStages.Blank,
-            PolicyAssignment.DefinitionStages.WithPolicyDefinition,
-            PolicyAssignment.DefinitionStages.WithCreate {
+    interface Definition extends PolicyAssignment.DefinitionStages.Blank,
+        PolicyAssignment.DefinitionStages.WithPolicyDefinition, PolicyAssignment.DefinitionStages.WithCreate {
     }
 
     /**
@@ -188,12 +196,8 @@ public interface PolicyAssignment extends
          * assignment in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends
-                Creatable<PolicyAssignment>,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithExcludedScopes,
-                DefinitionStages.WithParameters,
-                DefinitionStages.WithEnforcementMode {
+        interface WithCreate extends Creatable<PolicyAssignment>, DefinitionStages.WithDisplayName,
+            DefinitionStages.WithExcludedScopes, DefinitionStages.WithParameters, DefinitionStages.WithEnforcementMode {
         }
     }
 }

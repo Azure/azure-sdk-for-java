@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Input to create vault setting.
  */
 @Fluent
-public final class VaultSettingCreationInputProperties {
+public final class VaultSettingCreationInputProperties
+    implements JsonSerializable<VaultSettingCreationInputProperties> {
     /*
      * The migration solution Id.
      */
-    @JsonProperty(value = "migrationSolutionId")
     private String migrationSolutionId;
 
     /*
      * VMware to Azure provider type.
      */
-    @JsonProperty(value = "vmwareToAzureProviderType")
     private String vmwareToAzureProviderType;
 
     /**
@@ -76,5 +79,45 @@ public final class VaultSettingCreationInputProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("migrationSolutionId", this.migrationSolutionId);
+        jsonWriter.writeStringField("vmwareToAzureProviderType", this.vmwareToAzureProviderType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultSettingCreationInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultSettingCreationInputProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VaultSettingCreationInputProperties.
+     */
+    public static VaultSettingCreationInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultSettingCreationInputProperties deserializedVaultSettingCreationInputProperties
+                = new VaultSettingCreationInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("migrationSolutionId".equals(fieldName)) {
+                    deserializedVaultSettingCreationInputProperties.migrationSolutionId = reader.getString();
+                } else if ("vmwareToAzureProviderType".equals(fieldName)) {
+                    deserializedVaultSettingCreationInputProperties.vmwareToAzureProviderType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultSettingCreationInputProperties;
+        });
     }
 }

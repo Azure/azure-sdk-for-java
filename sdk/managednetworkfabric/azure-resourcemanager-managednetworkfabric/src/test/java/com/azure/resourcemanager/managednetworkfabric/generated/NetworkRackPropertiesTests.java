@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkRackPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkRackProperties model =
-            BinaryData
-                .fromString(
-                    "{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"rnminzqplgtkih\",\"networkDevices\":[\"kzsrz\",\"ffjilzfbpnt\",\"gkensckhbmcarmo\"],\"provisioningState\":\"Deleting\",\"annotation\":\"kwykuqdndxl\"}")
-                .toObject(NetworkRackProperties.class);
-        Assertions.assertEquals("kwykuqdndxl", model.annotation());
-        Assertions.assertEquals(NetworkRackType.AGGREGATE, model.networkRackType());
-        Assertions.assertEquals("rnminzqplgtkih", model.networkFabricId());
+        NetworkRackProperties model = BinaryData.fromString(
+            "{\"networkRackType\":\"Compute\",\"networkFabricId\":\"gndj\",\"networkDevices\":[\"r\",\"ggqqyeqfcb\"],\"provisioningState\":\"Updating\",\"annotation\":\"yuf\"}")
+            .toObject(NetworkRackProperties.class);
+        Assertions.assertEquals("yuf", model.annotation());
+        Assertions.assertEquals(NetworkRackType.COMPUTE, model.networkRackType());
+        Assertions.assertEquals("gndj", model.networkFabricId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRackProperties model =
-            new NetworkRackProperties()
-                .withAnnotation("kwykuqdndxl")
-                .withNetworkRackType(NetworkRackType.AGGREGATE)
-                .withNetworkFabricId("rnminzqplgtkih");
+        NetworkRackProperties model = new NetworkRackProperties().withAnnotation("yuf")
+            .withNetworkRackType(NetworkRackType.COMPUTE)
+            .withNetworkFabricId("gndj");
         model = BinaryData.fromObject(model).toObject(NetworkRackProperties.class);
-        Assertions.assertEquals("kwykuqdndxl", model.annotation());
-        Assertions.assertEquals(NetworkRackType.AGGREGATE, model.networkRackType());
-        Assertions.assertEquals("rnminzqplgtkih", model.networkFabricId());
+        Assertions.assertEquals("yuf", model.annotation());
+        Assertions.assertEquals(NetworkRackType.COMPUTE, model.networkRackType());
+        Assertions.assertEquals("gndj", model.networkFabricId());
     }
 }

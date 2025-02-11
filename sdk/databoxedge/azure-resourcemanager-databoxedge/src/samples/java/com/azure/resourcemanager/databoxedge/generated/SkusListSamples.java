@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.databoxedge.generated;
 
-/** Samples for Skus List. */
+/**
+ * Samples for Skus List.
+ */
 public final class SkusListSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ListSkus.json
+     * x-ms-original-file:
+     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ListSkus.json
      */
     /**
      * Sample code: ListSkus.
-     *
+     * 
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void listSkus(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {

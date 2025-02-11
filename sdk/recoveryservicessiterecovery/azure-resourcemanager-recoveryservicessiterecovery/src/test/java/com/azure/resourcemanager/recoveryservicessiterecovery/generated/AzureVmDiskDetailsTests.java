@@ -28,10 +28,16 @@ public final class AzureVmDiskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureVmDiskDetails model = new AzureVmDiskDetails().withVhdType("aqszllrzl").withVhdId("mdqgmihzpimcqr")
-            .withDiskId("xtminklogxsvtzar").withVhdName("vqnsqk").withMaxSizeMB("mbjwzzoslpkyb")
-            .withTargetDiskLocation("lwkzpgajsqjcem").withTargetDiskName("mfuvqarwzxuqr").withLunId("lui")
-            .withDiskEncryptionSetId("bwxsfgtdm").withCustomTargetDiskName("xekr");
+        AzureVmDiskDetails model = new AzureVmDiskDetails().withVhdType("aqszllrzl")
+            .withVhdId("mdqgmihzpimcqr")
+            .withDiskId("xtminklogxsvtzar")
+            .withVhdName("vqnsqk")
+            .withMaxSizeMB("mbjwzzoslpkyb")
+            .withTargetDiskLocation("lwkzpgajsqjcem")
+            .withTargetDiskName("mfuvqarwzxuqr")
+            .withLunId("lui")
+            .withDiskEncryptionSetId("bwxsfgtdm")
+            .withCustomTargetDiskName("xekr");
         model = BinaryData.fromObject(model).toObject(AzureVmDiskDetails.class);
         Assertions.assertEquals("aqszllrzl", model.vhdType());
         Assertions.assertEquals("mdqgmihzpimcqr", model.vhdId());

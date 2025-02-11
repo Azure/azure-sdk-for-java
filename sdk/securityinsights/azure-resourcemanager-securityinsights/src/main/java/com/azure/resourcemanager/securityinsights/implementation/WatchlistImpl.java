@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.WatchlistInner;
-import com.azure.resourcemanager.securityinsights.models.SourceType;
+import com.azure.resourcemanager.securityinsights.models.Source;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
 import com.azure.resourcemanager.securityinsights.models.Watchlist;
 import java.time.Duration;
@@ -52,12 +52,8 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
         return this.innerModel().provider();
     }
 
-    public String source() {
+    public Source source() {
         return this.innerModel().source();
-    }
-
-    public SourceType sourceType() {
-        return this.innerModel().sourceType();
     }
 
     public OffsetDateTime created() {
@@ -154,24 +150,19 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
     }
 
     public Watchlist create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchlists()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, watchlistAlias, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchlists()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, watchlistAlias, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Watchlist create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchlists()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, watchlistAlias, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchlists()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, watchlistAlias, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -186,53 +177,44 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
     }
 
     public Watchlist apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchlists()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, watchlistAlias, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchlists()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, watchlistAlias, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Watchlist apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchlists()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, watchlistAlias, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchlists()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, watchlistAlias, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    WatchlistImpl(
-        WatchlistInner innerObject, com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
+    WatchlistImpl(WatchlistInner innerObject,
+        com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.watchlistAlias = Utils.getValueFromIdByName(innerObject.id(), "watchlists");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.watchlistAlias = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "watchlists");
     }
 
     public Watchlist refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchlists()
-                .getWithResponse(resourceGroupName, workspaceName, watchlistAlias, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchlists()
+            .getWithResponse(resourceGroupName, workspaceName, watchlistAlias, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Watchlist refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchlists()
-                .getWithResponse(resourceGroupName, workspaceName, watchlistAlias, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchlists()
+            .getWithResponse(resourceGroupName, workspaceName, watchlistAlias, context)
+            .getValue();
         return this;
     }
 
@@ -256,13 +238,8 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
         return this;
     }
 
-    public WatchlistImpl withSource(String source) {
+    public WatchlistImpl withSource(Source source) {
         this.innerModel().withSource(source);
-        return this;
-    }
-
-    public WatchlistImpl withSourceType(SourceType sourceType) {
-        this.innerModel().withSourceType(sourceType);
         return this;
     }
 

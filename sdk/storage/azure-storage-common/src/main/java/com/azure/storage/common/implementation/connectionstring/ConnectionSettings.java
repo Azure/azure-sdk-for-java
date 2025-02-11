@@ -66,17 +66,14 @@ final class ConnectionSettings implements Cloneable {
      * @param logger the logger
      * @return the ConnectionSettings
      */
-    public static ConnectionSettings fromConnectionString(final String connString,
-                                                          final ClientLogger logger) {
+    public static ConnectionSettings fromConnectionString(final String connString, final ClientLogger logger) {
         HashMap<String, String> map = new HashMap<>();
         final String[] settings = connString.split(";");
         for (int i = 0; i < settings.length; i++) {
             String setting = settings[i].trim();
             if (setting.length() > 0) {
                 final int idx = setting.indexOf("=");
-                if (idx == -1
-                        || idx == 0
-                        || idx == settings[i].length() - 1) {
+                if (idx == -1 || idx == 0 || idx == settings[i].length() - 1) {
                     // handle no_equal_symbol, "=Bar", "Foo="
                     throw logger.logExceptionAsError(new IllegalArgumentException("Invalid connection string."));
                 }

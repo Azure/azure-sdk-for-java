@@ -11,36 +11,35 @@ import com.azure.resourcemanager.notificationhubs.fluent.models.ResourceListKeys
  */
 public interface ResourceListKeys {
     /**
-     * Gets the primaryConnectionString property: Gets or sets primaryConnectionString of the AuthorizationRule.
+     * Gets the primaryConnectionString property: PrimaryConnectionString of the AuthorizationRule.
      * 
      * @return the primaryConnectionString value.
      */
     String primaryConnectionString();
 
     /**
-     * Gets the secondaryConnectionString property: Gets or sets secondaryConnectionString of the created
-     * AuthorizationRule.
+     * Gets the secondaryConnectionString property: SecondaryConnectionString of the created AuthorizationRule.
      * 
      * @return the secondaryConnectionString value.
      */
     String secondaryConnectionString();
 
     /**
-     * Gets the primaryKey property: Gets or sets primaryKey of the created AuthorizationRule.
+     * Gets the primaryKey property: PrimaryKey of the created AuthorizationRule.
      * 
      * @return the primaryKey value.
      */
     String primaryKey();
 
     /**
-     * Gets the secondaryKey property: Gets or sets secondaryKey of the created AuthorizationRule.
+     * Gets the secondaryKey property: SecondaryKey of the created AuthorizationRule.
      * 
      * @return the secondaryKey value.
      */
     String secondaryKey();
 
     /**
-     * Gets the keyName property: Gets or sets keyName of the created AuthorizationRule.
+     * Gets the keyName property: KeyName of the created AuthorizationRule.
      * 
      * @return the keyName value.
      */

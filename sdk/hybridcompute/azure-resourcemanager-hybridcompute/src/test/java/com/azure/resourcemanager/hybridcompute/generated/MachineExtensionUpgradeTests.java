@@ -14,18 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class MachineExtensionUpgradeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MachineExtensionUpgrade model
-            = BinaryData.fromString("{\"extensionTargets\":{\"qaqtdoqmcbxvwvxy\":{\"targetVersion\":\"t\"}}}")
-                .toObject(MachineExtensionUpgrade.class);
-        Assertions.assertEquals("t", model.extensionTargets().get("qaqtdoqmcbxvwvxy").targetVersion());
+        MachineExtensionUpgrade model = BinaryData.fromString(
+            "{\"extensionTargets\":{\"e\":{\"targetVersion\":\"fqka\"},\"wwiftohqkvpuv\":{\"targetVersion\":\"ipfpubji\"},\"ynl\":{\"targetVersion\":\"gplsaknynf\"},\"zihleosjswsr\":{\"targetVersion\":\"huopxodlqiynto\"}}}")
+            .toObject(MachineExtensionUpgrade.class);
+        Assertions.assertEquals("fqka", model.extensionTargets().get("e").targetVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MachineExtensionUpgrade model = new MachineExtensionUpgrade()
-            .withExtensionTargets(mapOf("qaqtdoqmcbxvwvxy", new ExtensionTargetProperties().withTargetVersion("t")));
+            .withExtensionTargets(mapOf("e", new ExtensionTargetProperties().withTargetVersion("fqka"), "wwiftohqkvpuv",
+                new ExtensionTargetProperties().withTargetVersion("ipfpubji"), "ynl",
+                new ExtensionTargetProperties().withTargetVersion("gplsaknynf"), "zihleosjswsr",
+                new ExtensionTargetProperties().withTargetVersion("huopxodlqiynto")));
         model = BinaryData.fromObject(model).toObject(MachineExtensionUpgrade.class);
-        Assertions.assertEquals("t", model.extensionTargets().get("qaqtdoqmcbxvwvxy").targetVersion());
+        Assertions.assertEquals("fqka", model.extensionTargets().get("e").targetVersion());
     }
 
     // Use "Map.of" if available

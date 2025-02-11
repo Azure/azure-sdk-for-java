@@ -6,65 +6,65 @@ package com.azure.resourcemanager.postgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresql.models.ServerSecurityAlertPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of a security alert policy. */
+/**
+ * Properties of a security alert policy.
+ */
 @Fluent
-public final class SecurityAlertPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityAlertPolicyProperties.class);
-
+public final class SecurityAlertPolicyProperties implements JsonSerializable<SecurityAlertPolicyProperties> {
     /*
      * Specifies the state of the policy, whether it is enabled or disabled.
      */
-    @JsonProperty(value = "state", required = true)
     private ServerSecurityAlertPolicyState state;
 
     /*
-     * Specifies an array of alerts that are disabled. Allowed values are:
-     * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly
+     * Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability,
+     * Access_Anomaly
      */
-    @JsonProperty(value = "disabledAlerts")
     private List<String> disabledAlerts;
 
     /*
      * Specifies an array of e-mail addresses to which the alert is sent.
      */
-    @JsonProperty(value = "emailAddresses")
     private List<String> emailAddresses;
 
     /*
      * Specifies that the alert is sent to the account administrators.
      */
-    @JsonProperty(value = "emailAccountAdmins")
     private Boolean emailAccountAdmins;
 
     /*
-     * Specifies the blob storage endpoint (e.g.
-     * https://MyAccount.blob.core.windows.net). This blob storage will hold
+     * Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold
      * all Threat Detection audit logs.
      */
-    @JsonProperty(value = "storageEndpoint")
     private String storageEndpoint;
 
     /*
-     * Specifies the identifier key of the Threat Detection audit storage
-     * account.
+     * Specifies the identifier key of the Threat Detection audit storage account.
      */
-    @JsonProperty(value = "storageAccountAccessKey")
     private String storageAccountAccessKey;
 
     /*
      * Specifies the number of days to keep in the Threat Detection audit logs.
      */
-    @JsonProperty(value = "retentionDays")
     private Integer retentionDays;
 
     /**
+     * Creates an instance of SecurityAlertPolicyProperties class.
+     */
+    public SecurityAlertPolicyProperties() {
+    }
+
+    /**
      * Get the state property: Specifies the state of the policy, whether it is enabled or disabled.
-     *
+     * 
      * @return the state value.
      */
     public ServerSecurityAlertPolicyState state() {
@@ -73,7 +73,7 @@ public final class SecurityAlertPolicyProperties {
 
     /**
      * Set the state property: Specifies the state of the policy, whether it is enabled or disabled.
-     *
+     * 
      * @param state the state value to set.
      * @return the SecurityAlertPolicyProperties object itself.
      */
@@ -85,7 +85,7 @@ public final class SecurityAlertPolicyProperties {
     /**
      * Get the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
      * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly.
-     *
+     * 
      * @return the disabledAlerts value.
      */
     public List<String> disabledAlerts() {
@@ -95,7 +95,7 @@ public final class SecurityAlertPolicyProperties {
     /**
      * Set the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
      * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly.
-     *
+     * 
      * @param disabledAlerts the disabledAlerts value to set.
      * @return the SecurityAlertPolicyProperties object itself.
      */
@@ -106,7 +106,7 @@ public final class SecurityAlertPolicyProperties {
 
     /**
      * Get the emailAddresses property: Specifies an array of e-mail addresses to which the alert is sent.
-     *
+     * 
      * @return the emailAddresses value.
      */
     public List<String> emailAddresses() {
@@ -115,7 +115,7 @@ public final class SecurityAlertPolicyProperties {
 
     /**
      * Set the emailAddresses property: Specifies an array of e-mail addresses to which the alert is sent.
-     *
+     * 
      * @param emailAddresses the emailAddresses value to set.
      * @return the SecurityAlertPolicyProperties object itself.
      */
@@ -126,7 +126,7 @@ public final class SecurityAlertPolicyProperties {
 
     /**
      * Get the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
-     *
+     * 
      * @return the emailAccountAdmins value.
      */
     public Boolean emailAccountAdmins() {
@@ -135,7 +135,7 @@ public final class SecurityAlertPolicyProperties {
 
     /**
      * Set the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
-     *
+     * 
      * @param emailAccountAdmins the emailAccountAdmins value to set.
      * @return the SecurityAlertPolicyProperties object itself.
      */
@@ -147,7 +147,7 @@ public final class SecurityAlertPolicyProperties {
     /**
      * Get the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
-     *
+     * 
      * @return the storageEndpoint value.
      */
     public String storageEndpoint() {
@@ -157,7 +157,7 @@ public final class SecurityAlertPolicyProperties {
     /**
      * Set the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
-     *
+     * 
      * @param storageEndpoint the storageEndpoint value to set.
      * @return the SecurityAlertPolicyProperties object itself.
      */
@@ -169,7 +169,7 @@ public final class SecurityAlertPolicyProperties {
     /**
      * Get the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
      * account.
-     *
+     * 
      * @return the storageAccountAccessKey value.
      */
     public String storageAccountAccessKey() {
@@ -179,7 +179,7 @@ public final class SecurityAlertPolicyProperties {
     /**
      * Set the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
      * account.
-     *
+     * 
      * @param storageAccountAccessKey the storageAccountAccessKey value to set.
      * @return the SecurityAlertPolicyProperties object itself.
      */
@@ -190,7 +190,7 @@ public final class SecurityAlertPolicyProperties {
 
     /**
      * Get the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -199,7 +199,7 @@ public final class SecurityAlertPolicyProperties {
 
     /**
      * Set the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the SecurityAlertPolicyProperties object itself.
      */
@@ -210,15 +210,78 @@ public final class SecurityAlertPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model SecurityAlertPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model SecurityAlertPolicyProperties"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityAlertPolicyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeArrayField("disabledAlerts", this.disabledAlerts,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("emailAddresses", this.emailAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("emailAccountAdmins", this.emailAccountAdmins);
+        jsonWriter.writeStringField("storageEndpoint", this.storageEndpoint);
+        jsonWriter.writeStringField("storageAccountAccessKey", this.storageAccountAccessKey);
+        jsonWriter.writeNumberField("retentionDays", this.retentionDays);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAlertPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAlertPolicyProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityAlertPolicyProperties.
+     */
+    public static SecurityAlertPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAlertPolicyProperties deserializedSecurityAlertPolicyProperties
+                = new SecurityAlertPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedSecurityAlertPolicyProperties.state
+                        = ServerSecurityAlertPolicyState.fromString(reader.getString());
+                } else if ("disabledAlerts".equals(fieldName)) {
+                    List<String> disabledAlerts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecurityAlertPolicyProperties.disabledAlerts = disabledAlerts;
+                } else if ("emailAddresses".equals(fieldName)) {
+                    List<String> emailAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecurityAlertPolicyProperties.emailAddresses = emailAddresses;
+                } else if ("emailAccountAdmins".equals(fieldName)) {
+                    deserializedSecurityAlertPolicyProperties.emailAccountAdmins
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("storageEndpoint".equals(fieldName)) {
+                    deserializedSecurityAlertPolicyProperties.storageEndpoint = reader.getString();
+                } else if ("storageAccountAccessKey".equals(fieldName)) {
+                    deserializedSecurityAlertPolicyProperties.storageAccountAccessKey = reader.getString();
+                } else if ("retentionDays".equals(fieldName)) {
+                    deserializedSecurityAlertPolicyProperties.retentionDays = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAlertPolicyProperties;
+        });
     }
 }

@@ -7,18 +7,20 @@ package com.azure.resourcemanager.elastic.models;
 import com.azure.resourcemanager.elastic.fluent.models.ElasticTrafficFilterResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of ElasticTrafficFilterResponse. */
+/**
+ * An immutable client-side representation of ElasticTrafficFilterResponse.
+ */
 public interface ElasticTrafficFilterResponse {
     /**
      * Gets the rulesets property: List of elastic traffic filters in the account.
-     *
+     * 
      * @return the rulesets value.
      */
     List<ElasticTrafficFilter> rulesets();
 
     /**
      * Gets the inner com.azure.resourcemanager.elastic.fluent.models.ElasticTrafficFilterResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ElasticTrafficFilterResponseInner innerModel();

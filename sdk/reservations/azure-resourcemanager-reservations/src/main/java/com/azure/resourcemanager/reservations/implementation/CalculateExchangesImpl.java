@@ -19,8 +19,7 @@ public final class CalculateExchangesImpl implements CalculateExchanges {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    public CalculateExchangesImpl(
-        CalculateExchangesClient innerClient,
+    public CalculateExchangesImpl(CalculateExchangesClient innerClient,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

@@ -9,8 +9,14 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancerHealthPerRuleInner;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancingRuleInner;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -117,4 +123,111 @@ public interface LoadBalancerLoadBalancingRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     LoadBalancingRuleInner get(String resourceGroupName, String loadBalancerName, String loadBalancingRuleName);
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health details of a load balancing rule along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> healthWithResponseAsync(String groupName, String loadBalancerName,
+        String loadBalancingRuleName);
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of health details of a load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LoadBalancerHealthPerRuleInner>, LoadBalancerHealthPerRuleInner>
+        beginHealthAsync(String groupName, String loadBalancerName, String loadBalancingRuleName);
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of health details of a load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LoadBalancerHealthPerRuleInner>, LoadBalancerHealthPerRuleInner> beginHealth(String groupName,
+        String loadBalancerName, String loadBalancingRuleName);
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of health details of a load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LoadBalancerHealthPerRuleInner>, LoadBalancerHealthPerRuleInner> beginHealth(String groupName,
+        String loadBalancerName, String loadBalancingRuleName, Context context);
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health details of a load balancing rule on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LoadBalancerHealthPerRuleInner> healthAsync(String groupName, String loadBalancerName,
+        String loadBalancingRuleName);
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health details of a load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LoadBalancerHealthPerRuleInner health(String groupName, String loadBalancerName, String loadBalancingRuleName);
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health details of a load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LoadBalancerHealthPerRuleInner health(String groupName, String loadBalancerName, String loadBalancingRuleName,
+        Context context);
 }

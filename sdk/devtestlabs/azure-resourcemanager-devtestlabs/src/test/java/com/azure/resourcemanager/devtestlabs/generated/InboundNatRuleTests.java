@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InboundNatRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InboundNatRule model =
-            BinaryData
-                .fromString("{\"transportProtocol\":\"Tcp\",\"frontendPort\":1530472980,\"backendPort\":1732171023}")
-                .toObject(InboundNatRule.class);
+        InboundNatRule model = BinaryData
+            .fromString("{\"transportProtocol\":\"Tcp\",\"frontendPort\":1530472980,\"backendPort\":1732171023}")
+            .toObject(InboundNatRule.class);
         Assertions.assertEquals(TransportProtocol.TCP, model.transportProtocol());
         Assertions.assertEquals(1530472980, model.frontendPort());
         Assertions.assertEquals(1732171023, model.backendPort());
@@ -23,11 +22,9 @@ public final class InboundNatRuleTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InboundNatRule model =
-            new InboundNatRule()
-                .withTransportProtocol(TransportProtocol.TCP)
-                .withFrontendPort(1530472980)
-                .withBackendPort(1732171023);
+        InboundNatRule model = new InboundNatRule().withTransportProtocol(TransportProtocol.TCP)
+            .withFrontendPort(1530472980)
+            .withBackendPort(1732171023);
         model = BinaryData.fromObject(model).toObject(InboundNatRule.class);
         Assertions.assertEquals(TransportProtocol.TCP, model.transportProtocol());
         Assertions.assertEquals(1530472980, model.frontendPort());

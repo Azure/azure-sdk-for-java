@@ -8,9 +8,17 @@ import com.azure.core.annotation.Fluent;
 /** The <code>RedisCache.keys()</code> action result. */
 @Fluent
 public interface RedisAccessKeys {
-    /** @return a primary key value. */
+    /**
+     * Gets a primary key value.
+     *
+     * @return a primary key value.
+     */
     String primaryKey();
 
-    /** @return a secondary key value. */
+    /**
+     * Gets a secondary key value.
+     *
+     * @return a secondary key value.
+     */
     String secondaryKey();
 }

@@ -5,43 +5,57 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Gets or sets the availability set resource settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Microsoft.Compute/availabilitySets")
+/**
+ * Gets or sets the availability set resource settings.
+ */
 @Fluent
 public final class AvailabilitySetResourceSettings extends ResourceSettings {
     /*
+     * The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+     */
+    private String resourceType = "Microsoft.Compute/availabilitySets";
+
+    /*
      * Gets or sets the Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Gets or sets the target fault domain.
      */
-    @JsonProperty(value = "faultDomain")
     private Integer faultDomain;
 
     /*
      * Gets or sets the target update domain.
      */
-    @JsonProperty(value = "updateDomain")
     private Integer updateDomain;
 
-    /** Creates an instance of AvailabilitySetResourceSettings class. */
+    /**
+     * Creates an instance of AvailabilitySetResourceSettings class.
+     */
     public AvailabilitySetResourceSettings() {
     }
 
     /**
+     * Get the resourceType property: The resource type. For example, the value can be
+     * Microsoft.Compute/virtualMachines.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
      * Get the tags property: Gets or sets the Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -50,7 +64,7 @@ public final class AvailabilitySetResourceSettings extends ResourceSettings {
 
     /**
      * Set the tags property: Gets or sets the Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AvailabilitySetResourceSettings object itself.
      */
@@ -61,7 +75,7 @@ public final class AvailabilitySetResourceSettings extends ResourceSettings {
 
     /**
      * Get the faultDomain property: Gets or sets the target fault domain.
-     *
+     * 
      * @return the faultDomain value.
      */
     public Integer faultDomain() {
@@ -70,7 +84,7 @@ public final class AvailabilitySetResourceSettings extends ResourceSettings {
 
     /**
      * Set the faultDomain property: Gets or sets the target fault domain.
-     *
+     * 
      * @param faultDomain the faultDomain value to set.
      * @return the AvailabilitySetResourceSettings object itself.
      */
@@ -81,7 +95,7 @@ public final class AvailabilitySetResourceSettings extends ResourceSettings {
 
     /**
      * Get the updateDomain property: Gets or sets the target update domain.
-     *
+     * 
      * @return the updateDomain value.
      */
     public Integer updateDomain() {
@@ -90,7 +104,7 @@ public final class AvailabilitySetResourceSettings extends ResourceSettings {
 
     /**
      * Set the updateDomain property: Gets or sets the target update domain.
-     *
+     * 
      * @param updateDomain the updateDomain value to set.
      * @return the AvailabilitySetResourceSettings object itself.
      */
@@ -99,14 +113,18 @@ public final class AvailabilitySetResourceSettings extends ResourceSettings {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvailabilitySetResourceSettings withTargetResourceName(String targetResourceName) {
         super.withTargetResourceName(targetResourceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvailabilitySetResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
         super.withTargetResourceGroupName(targetResourceGroupName);
@@ -115,11 +133,63 @@ public final class AvailabilitySetResourceSettings extends ResourceSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceName", targetResourceName());
+        jsonWriter.writeStringField("targetResourceGroupName", targetResourceGroupName());
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("faultDomain", this.faultDomain);
+        jsonWriter.writeNumberField("updateDomain", this.updateDomain);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailabilitySetResourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailabilitySetResourceSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailabilitySetResourceSettings.
+     */
+    public static AvailabilitySetResourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailabilitySetResourceSettings deserializedAvailabilitySetResourceSettings
+                = new AvailabilitySetResourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceName".equals(fieldName)) {
+                    deserializedAvailabilitySetResourceSettings.withTargetResourceName(reader.getString());
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedAvailabilitySetResourceSettings.withTargetResourceGroupName(reader.getString());
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedAvailabilitySetResourceSettings.resourceType = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAvailabilitySetResourceSettings.tags = tags;
+                } else if ("faultDomain".equals(fieldName)) {
+                    deserializedAvailabilitySetResourceSettings.faultDomain = reader.getNullable(JsonReader::getInt);
+                } else if ("updateDomain".equals(fieldName)) {
+                    deserializedAvailabilitySetResourceSettings.updateDomain = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailabilitySetResourceSettings;
+        });
     }
 }

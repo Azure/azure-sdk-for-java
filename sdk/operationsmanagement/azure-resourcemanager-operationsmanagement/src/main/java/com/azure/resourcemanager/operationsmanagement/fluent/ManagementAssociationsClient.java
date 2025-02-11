@@ -11,13 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAssociationInner;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAssociationPropertiesListInner;
 
-/** An instance of this class provides access to all the operations defined in ManagementAssociationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementAssociationsClient.
+ */
 public interface ManagementAssociationsClient {
     /**
      * Retrieves the ManagementAssociations list for the subscription
-     *
-     * <p>Retrieves the ManagementAssociations list.
-     *
+     * 
+     * Retrieves the ManagementAssociations list.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,9 +31,9 @@ public interface ManagementAssociationsClient {
 
     /**
      * Retrieves the ManagementAssociations list for the subscription
-     *
-     * <p>Retrieves the ManagementAssociations list.
-     *
+     * 
+     * Retrieves the ManagementAssociations list.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ManagementAssociation response.
@@ -41,9 +43,9 @@ public interface ManagementAssociationsClient {
 
     /**
      * Create/Update ManagementAssociation.
-     *
-     * <p>Creates or updates the ManagementAssociation.
-     *
+     * 
+     * Creates or updates the ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -57,20 +59,15 @@ public interface ManagementAssociationsClient {
      * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagementAssociationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        ManagementAssociationInner parameters,
-        Context context);
+    Response<ManagementAssociationInner> createOrUpdateWithResponse(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String managementAssociationName,
+        ManagementAssociationInner parameters, Context context);
 
     /**
      * Create/Update ManagementAssociation.
-     *
-     * <p>Creates or updates the ManagementAssociation.
-     *
+     * 
+     * Creates or updates the ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -83,19 +80,14 @@ public interface ManagementAssociationsClient {
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagementAssociationInner createOrUpdate(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        ManagementAssociationInner parameters);
+    ManagementAssociationInner createOrUpdate(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName, ManagementAssociationInner parameters);
 
     /**
      * Deletes the ManagementAssociation
-     *
-     * <p>Deletes the ManagementAssociation in the subscription.
-     *
+     * 
+     * Deletes the ManagementAssociation in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -108,19 +100,14 @@ public interface ManagementAssociationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName, Context context);
 
     /**
      * Deletes the ManagementAssociation
-     *
-     * <p>Deletes the ManagementAssociation in the subscription.
-     *
+     * 
+     * Deletes the ManagementAssociation in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -131,18 +118,14 @@ public interface ManagementAssociationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
+    void delete(String resourceGroupName, String providerName, String resourceType, String resourceName,
         String managementAssociationName);
 
     /**
      * Retrieve ManagementAssociation.
-     *
-     * <p>Retrieves the user ManagementAssociation.
-     *
+     * 
+     * Retrieves the user ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -155,19 +138,14 @@ public interface ManagementAssociationsClient {
      * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagementAssociationInner> getWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        Context context);
+    Response<ManagementAssociationInner> getWithResponse(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String managementAssociationName, Context context);
 
     /**
      * Retrieve ManagementAssociation.
-     *
-     * <p>Retrieves the user ManagementAssociation.
-     *
+     * 
+     * Retrieves the user ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -179,10 +157,6 @@ public interface ManagementAssociationsClient {
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagementAssociationInner get(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName);
+    ManagementAssociationInner get(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName);
 }

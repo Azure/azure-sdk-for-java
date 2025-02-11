@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.MigrationValidationDatabas
 public final class MigrationValidationDatabaseSummaryResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationValidationDatabaseSummaryResult model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"cwrwfs\",\"migrationId\":\"fnynszqujizdvoqy\",\"sourceDatabaseName\":\"byowbblgyavutp\",\"targetDatabaseName\":\"joxoism\",\"startedOn\":\"2021-09-03T17:34:04Z\",\"endedOn\":\"2021-08-10T19:53:45Z\",\"status\":\"InProgress\"}")
-                .toObject(MigrationValidationDatabaseSummaryResult.class);
+        MigrationValidationDatabaseSummaryResult model = BinaryData.fromString(
+            "{\"id\":\"tmjlx\",\"migrationId\":\"ilozapeewchpxlk\",\"sourceDatabaseName\":\"kuziycsle\",\"targetDatabaseName\":\"f\",\"startedOn\":\"2021-03-03T22:41:41Z\",\"endedOn\":\"2021-10-09T00:13:12Z\",\"status\":\"CompletedWithIssues\"}")
+            .toObject(MigrationValidationDatabaseSummaryResult.class);
     }
 
     @org.junit.jupiter.api.Test

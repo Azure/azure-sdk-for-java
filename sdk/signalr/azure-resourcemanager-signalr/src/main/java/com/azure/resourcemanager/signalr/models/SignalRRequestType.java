@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The incoming request type to the service. */
+/**
+ * The incoming request type to the service.
+ */
 public final class SignalRRequestType extends ExpandableStringEnum<SignalRRequestType> {
-    /** Static value ClientConnection for SignalRRequestType. */
+    /**
+     * Static value ClientConnection for SignalRRequestType.
+     */
     public static final SignalRRequestType CLIENT_CONNECTION = fromString("ClientConnection");
 
-    /** Static value ServerConnection for SignalRRequestType. */
+    /**
+     * Static value ServerConnection for SignalRRequestType.
+     */
     public static final SignalRRequestType SERVER_CONNECTION = fromString("ServerConnection");
 
-    /** Static value RESTAPI for SignalRRequestType. */
+    /**
+     * Static value RESTAPI for SignalRRequestType.
+     */
     public static final SignalRRequestType RESTAPI = fromString("RESTAPI");
 
-    /** Static value Trace for SignalRRequestType. */
+    /**
+     * Static value Trace for SignalRRequestType.
+     */
     public static final SignalRRequestType TRACE = fromString("Trace");
 
     /**
      * Creates a new instance of SignalRRequestType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class SignalRRequestType extends ExpandableStringEnum<SignalRReques
 
     /**
      * Creates or finds a SignalRRequestType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SignalRRequestType.
      */
-    @JsonCreator
     public static SignalRRequestType fromString(String name) {
         return fromString(name, SignalRRequestType.class);
     }
 
     /**
      * Gets known SignalRRequestType values.
-     *
+     * 
      * @return known SignalRRequestType values.
      */
     public static Collection<SignalRRequestType> values() {

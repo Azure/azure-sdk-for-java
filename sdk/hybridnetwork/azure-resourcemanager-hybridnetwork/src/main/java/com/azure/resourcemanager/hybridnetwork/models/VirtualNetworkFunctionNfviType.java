@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class VirtualNetworkFunctionNfviType extends ExpandableStringEnum<V
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkFunctionNfviType.
      */
-    @JsonCreator
     public static VirtualNetworkFunctionNfviType fromString(String name) {
         return fromString(name, VirtualNetworkFunctionNfviType.class);
     }

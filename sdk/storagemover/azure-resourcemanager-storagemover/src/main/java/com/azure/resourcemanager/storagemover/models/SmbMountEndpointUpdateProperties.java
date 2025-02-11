@@ -5,33 +5,24 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties of SMB share endpoint to update.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "endpointType",
-    defaultImpl = SmbMountEndpointUpdateProperties.class,
-    visible = true)
-@JsonTypeName("SmbMount")
 @Fluent
 public final class SmbMountEndpointUpdateProperties extends EndpointBaseUpdateProperties {
     /*
      * The Endpoint resource type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "endpointType", required = true)
     private EndpointType endpointType = EndpointType.SMB_MOUNT;
 
     /*
      * The Azure Key Vault secret URIs which store the required credentials to access the SMB share.
      */
-    @JsonProperty(value = "credentials")
     private AzureKeyVaultSmbCredentials credentials;
 
     /**
@@ -88,9 +79,53 @@ public final class SmbMountEndpointUpdateProperties extends EndpointBaseUpdatePr
      */
     @Override
     public void validate() {
-        super.validate();
         if (credentials() != null) {
             credentials().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmbMountEndpointUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmbMountEndpointUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SmbMountEndpointUpdateProperties.
+     */
+    public static SmbMountEndpointUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmbMountEndpointUpdateProperties deserializedSmbMountEndpointUpdateProperties
+                = new SmbMountEndpointUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedSmbMountEndpointUpdateProperties.withDescription(reader.getString());
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedSmbMountEndpointUpdateProperties.endpointType
+                        = EndpointType.fromString(reader.getString());
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedSmbMountEndpointUpdateProperties.credentials
+                        = AzureKeyVaultSmbCredentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmbMountEndpointUpdateProperties;
+        });
     }
 }

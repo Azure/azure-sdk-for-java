@@ -9,23 +9,23 @@ import com.azure.resourcemanager.dnsresolver.models.DnsResolverPatch;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DnsResolverPatchTests {
-    @Test
-    public void testDeserialize() {
-        DnsResolverPatch model =
-            BinaryData.fromString("{\"tags\":{\"gdf\":\"ojywifsqesa\"}}").toObject(DnsResolverPatch.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DnsResolverPatch model
+            = BinaryData.fromString("{\"tags\":{\"gdf\":\"ojywifsqesa\"}}").toObject(DnsResolverPatch.class);
         Assertions.assertEquals("ojywifsqesa", model.tags().get("gdf"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DnsResolverPatch model = new DnsResolverPatch().withTags(mapOf("gdf", "ojywifsqesa"));
         model = BinaryData.fromObject(model).toObject(DnsResolverPatch.class);
         Assertions.assertEquals("ojywifsqesa", model.tags().get("gdf"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -23,15 +23,10 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
 
     private final com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager;
 
-    public DnsForwardingRulesetsImpl(
-        DnsForwardingRulesetsClient innerClient,
+    public DnsForwardingRulesetsImpl(DnsForwardingRulesetsClient innerClient,
         com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public void delete(String resourceGroupName, String dnsForwardingRulesetName, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, dnsForwardingRulesetName, ifMatch);
     }
 
     public void delete(String resourceGroupName, String dnsForwardingRulesetName) {
@@ -42,9 +37,21 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
         this.serviceClient().delete(resourceGroupName, dnsForwardingRulesetName, ifMatch, context);
     }
 
+    public Response<DnsForwardingRuleset> getByResourceGroupWithResponse(String resourceGroupName,
+        String dnsForwardingRulesetName, Context context) {
+        Response<DnsForwardingRulesetInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DnsForwardingRulesetImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public DnsForwardingRuleset getByResourceGroup(String resourceGroupName, String dnsForwardingRulesetName) {
-        DnsForwardingRulesetInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, dnsForwardingRulesetName);
+        DnsForwardingRulesetInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, dnsForwardingRulesetName);
         if (inner != null) {
             return new DnsForwardingRulesetImpl(inner, this.manager());
         } else {
@@ -52,144 +59,98 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
         }
     }
 
-    public Response<DnsForwardingRuleset> getByResourceGroupWithResponse(
-        String resourceGroupName, String dnsForwardingRulesetName, Context context) {
-        Response<DnsForwardingRulesetInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DnsForwardingRulesetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<DnsForwardingRuleset> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DnsForwardingRulesetInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DnsForwardingRulesetImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DnsForwardingRulesetImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DnsForwardingRuleset> listByResourceGroup(
-        String resourceGroupName, Integer top, Context context) {
-        PagedIterable<DnsForwardingRulesetInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, top, context);
-        return Utils.mapPage(inner, inner1 -> new DnsForwardingRulesetImpl(inner1, this.manager()));
+    public PagedIterable<DnsForwardingRuleset> listByResourceGroup(String resourceGroupName, Integer top,
+        Context context) {
+        PagedIterable<DnsForwardingRulesetInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DnsForwardingRulesetImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DnsForwardingRuleset> list() {
         PagedIterable<DnsForwardingRulesetInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DnsForwardingRulesetImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DnsForwardingRulesetImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DnsForwardingRuleset> list(Integer top, Context context) {
         PagedIterable<DnsForwardingRulesetInner> inner = this.serviceClient().list(top, context);
-        return Utils.mapPage(inner, inner1 -> new DnsForwardingRulesetImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DnsForwardingRulesetImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VirtualNetworkDnsForwardingRuleset> listByVirtualNetwork(
-        String resourceGroupName, String virtualNetworkName) {
-        PagedIterable<VirtualNetworkDnsForwardingRulesetInner> inner =
-            this.serviceClient().listByVirtualNetwork(resourceGroupName, virtualNetworkName);
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkDnsForwardingRulesetImpl(inner1, this.manager()));
+    public PagedIterable<VirtualNetworkDnsForwardingRuleset> listByVirtualNetwork(String resourceGroupName,
+        String virtualNetworkName) {
+        PagedIterable<VirtualNetworkDnsForwardingRulesetInner> inner
+            = this.serviceClient().listByVirtualNetwork(resourceGroupName, virtualNetworkName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new VirtualNetworkDnsForwardingRulesetImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VirtualNetworkDnsForwardingRuleset> listByVirtualNetwork(
-        String resourceGroupName, String virtualNetworkName, Integer top, Context context) {
-        PagedIterable<VirtualNetworkDnsForwardingRulesetInner> inner =
-            this.serviceClient().listByVirtualNetwork(resourceGroupName, virtualNetworkName, top, context);
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkDnsForwardingRulesetImpl(inner1, this.manager()));
+    public PagedIterable<VirtualNetworkDnsForwardingRuleset> listByVirtualNetwork(String resourceGroupName,
+        String virtualNetworkName, Integer top, Context context) {
+        PagedIterable<VirtualNetworkDnsForwardingRulesetInner> inner
+            = this.serviceClient().listByVirtualNetwork(resourceGroupName, virtualNetworkName, top, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new VirtualNetworkDnsForwardingRulesetImpl(inner1, this.manager()));
     }
 
     public DnsForwardingRuleset getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
+        String dnsForwardingRulesetName = ResourceManagerUtils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, Context.NONE)
             .getValue();
     }
 
     public Response<DnsForwardingRuleset> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
+        String dnsForwardingRulesetName = ResourceManagerUtils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
+        String dnsForwardingRulesetName = ResourceManagerUtils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.", id)));
         }
         String localIfMatch = null;
         this.delete(resourceGroupName, dnsForwardingRulesetName, localIfMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
+        String dnsForwardingRulesetName = ResourceManagerUtils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.", id)));
         }
         this.delete(resourceGroupName, dnsForwardingRulesetName, ifMatch, context);
     }

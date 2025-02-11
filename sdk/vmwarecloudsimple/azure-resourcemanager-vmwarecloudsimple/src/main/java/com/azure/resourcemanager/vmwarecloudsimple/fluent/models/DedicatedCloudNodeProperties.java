@@ -5,106 +5,102 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.NodeStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Properties of dedicated cloud node. */
+/**
+ * Properties of dedicated cloud node.
+ */
 @Fluent
-public final class DedicatedCloudNodeProperties {
+public final class DedicatedCloudNodeProperties implements JsonSerializable<DedicatedCloudNodeProperties> {
     /*
      * Availability Zone id, e.g. "az1"
      */
-    @JsonProperty(value = "availabilityZoneId", required = true)
     private String availabilityZoneId;
 
     /*
      * Availability Zone name, e.g. "Availability Zone 1"
      */
-    @JsonProperty(value = "availabilityZoneName", access = JsonProperty.Access.WRITE_ONLY)
     private String availabilityZoneName;
 
     /*
      * VMWare Cloud Rack Name
      */
-    @JsonProperty(value = "cloudRackName", access = JsonProperty.Access.WRITE_ONLY)
     private String cloudRackName;
 
     /*
      * date time the resource was created
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
 
     /*
      * count of nodes to create
      */
-    @JsonProperty(value = "nodesCount", required = true)
     private int nodesCount;
 
     /*
      * Placement Group id, e.g. "n1"
      */
-    @JsonProperty(value = "placementGroupId", required = true)
     private String placementGroupId;
 
     /*
      * Placement Name, e.g. "Placement Group 1"
      */
-    @JsonProperty(value = "placementGroupName", access = JsonProperty.Access.WRITE_ONLY)
     private String placementGroupName;
 
     /*
      * Private Cloud Id
      */
-    @JsonProperty(value = "privateCloudId", access = JsonProperty.Access.WRITE_ONLY)
     private String privateCloudId;
 
     /*
      * Resource Pool Name
      */
-    @JsonProperty(value = "privateCloudName", access = JsonProperty.Access.WRITE_ONLY)
     private String privateCloudName;
 
     /*
      * The provisioning status of the resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * purchase id
      */
-    @JsonProperty(value = "purchaseId", required = true)
     private UUID purchaseId;
 
     /*
      * Dedicated Cloud Nodes SKU's description
      */
-    @JsonProperty(value = "skuDescription")
     private SkuDescription innerSkuDescription;
 
     /*
      * Node status, indicates is private cloud set up on this node or not
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private NodeStatus status;
 
     /*
      * VMWare Cluster Name
      */
-    @JsonProperty(value = "vmwareClusterName", access = JsonProperty.Access.WRITE_ONLY)
     private String vmwareClusterName;
 
-    /** Creates an instance of DedicatedCloudNodeProperties class. */
+    /**
+     * Creates an instance of DedicatedCloudNodeProperties class.
+     */
     public DedicatedCloudNodeProperties() {
     }
 
     /**
      * Get the availabilityZoneId property: Availability Zone id, e.g. "az1".
-     *
+     * 
      * @return the availabilityZoneId value.
      */
     public String availabilityZoneId() {
@@ -113,7 +109,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Set the availabilityZoneId property: Availability Zone id, e.g. "az1".
-     *
+     * 
      * @param availabilityZoneId the availabilityZoneId value to set.
      * @return the DedicatedCloudNodeProperties object itself.
      */
@@ -124,7 +120,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the availabilityZoneName property: Availability Zone name, e.g. "Availability Zone 1".
-     *
+     * 
      * @return the availabilityZoneName value.
      */
     public String availabilityZoneName() {
@@ -133,7 +129,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the cloudRackName property: VMWare Cloud Rack Name.
-     *
+     * 
      * @return the cloudRackName value.
      */
     public String cloudRackName() {
@@ -142,7 +138,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the created property: date time the resource was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -151,7 +147,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the nodesCount property: count of nodes to create.
-     *
+     * 
      * @return the nodesCount value.
      */
     public int nodesCount() {
@@ -160,7 +156,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Set the nodesCount property: count of nodes to create.
-     *
+     * 
      * @param nodesCount the nodesCount value to set.
      * @return the DedicatedCloudNodeProperties object itself.
      */
@@ -171,7 +167,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the placementGroupId property: Placement Group id, e.g. "n1".
-     *
+     * 
      * @return the placementGroupId value.
      */
     public String placementGroupId() {
@@ -180,7 +176,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Set the placementGroupId property: Placement Group id, e.g. "n1".
-     *
+     * 
      * @param placementGroupId the placementGroupId value to set.
      * @return the DedicatedCloudNodeProperties object itself.
      */
@@ -191,7 +187,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the placementGroupName property: Placement Name, e.g. "Placement Group 1".
-     *
+     * 
      * @return the placementGroupName value.
      */
     public String placementGroupName() {
@@ -200,7 +196,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the privateCloudId property: Private Cloud Id.
-     *
+     * 
      * @return the privateCloudId value.
      */
     public String privateCloudId() {
@@ -209,7 +205,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the privateCloudName property: Resource Pool Name.
-     *
+     * 
      * @return the privateCloudName value.
      */
     public String privateCloudName() {
@@ -218,7 +214,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -227,7 +223,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the purchaseId property: purchase id.
-     *
+     * 
      * @return the purchaseId value.
      */
     public UUID purchaseId() {
@@ -236,7 +232,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Set the purchaseId property: purchase id.
-     *
+     * 
      * @param purchaseId the purchaseId value to set.
      * @return the DedicatedCloudNodeProperties object itself.
      */
@@ -247,7 +243,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the innerSkuDescription property: Dedicated Cloud Nodes SKU's description.
-     *
+     * 
      * @return the innerSkuDescription value.
      */
     private SkuDescription innerSkuDescription() {
@@ -256,7 +252,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the status property: Node status, indicates is private cloud set up on this node or not.
-     *
+     * 
      * @return the status value.
      */
     public NodeStatus status() {
@@ -265,7 +261,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the vmwareClusterName property: VMWare Cluster Name.
-     *
+     * 
      * @return the vmwareClusterName value.
      */
     public String vmwareClusterName() {
@@ -274,7 +270,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the id property: SKU's id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -283,7 +279,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Set the id property: SKU's id.
-     *
+     * 
      * @param id the id value to set.
      * @return the DedicatedCloudNodeProperties object itself.
      */
@@ -297,7 +293,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Get the name property: SKU's name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -306,7 +302,7 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Set the name property: SKU's name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DedicatedCloudNodeProperties object itself.
      */
@@ -320,27 +316,24 @@ public final class DedicatedCloudNodeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (availabilityZoneId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property availabilityZoneId in model DedicatedCloudNodeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property availabilityZoneId in model DedicatedCloudNodeProperties"));
         }
         if (placementGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property placementGroupId in model DedicatedCloudNodeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property placementGroupId in model DedicatedCloudNodeProperties"));
         }
         if (purchaseId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property purchaseId in model DedicatedCloudNodeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property purchaseId in model DedicatedCloudNodeProperties"));
         }
         if (innerSkuDescription() != null) {
             innerSkuDescription().validate();
@@ -348,4 +341,73 @@ public final class DedicatedCloudNodeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DedicatedCloudNodeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("availabilityZoneId", this.availabilityZoneId);
+        jsonWriter.writeIntField("nodesCount", this.nodesCount);
+        jsonWriter.writeStringField("placementGroupId", this.placementGroupId);
+        jsonWriter.writeStringField("purchaseId", Objects.toString(this.purchaseId, null));
+        jsonWriter.writeJsonField("skuDescription", this.innerSkuDescription);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedCloudNodeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedCloudNodeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DedicatedCloudNodeProperties.
+     */
+    public static DedicatedCloudNodeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedCloudNodeProperties deserializedDedicatedCloudNodeProperties = new DedicatedCloudNodeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("availabilityZoneId".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.availabilityZoneId = reader.getString();
+                } else if ("nodesCount".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.nodesCount = reader.getInt();
+                } else if ("placementGroupId".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.placementGroupId = reader.getString();
+                } else if ("purchaseId".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.purchaseId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("availabilityZoneName".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.availabilityZoneName = reader.getString();
+                } else if ("cloudRackName".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.cloudRackName = reader.getString();
+                } else if ("created".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("placementGroupName".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.placementGroupName = reader.getString();
+                } else if ("privateCloudId".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.privateCloudId = reader.getString();
+                } else if ("privateCloudName".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.privateCloudName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.provisioningState = reader.getString();
+                } else if ("skuDescription".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.innerSkuDescription = SkuDescription.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.status = NodeStatus.fromString(reader.getString());
+                } else if ("vmwareClusterName".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeProperties.vmwareClusterName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedCloudNodeProperties;
+        });
+    }
 }

@@ -15,17 +15,27 @@ import java.util.Map;
 
 /** Route filter. */
 @Fluent
-public interface RouteFilter
-    extends GroupableResource<NetworkManager, RouteFilterInner>,
-        Refreshable<RouteFilter>,
-        Updatable<RouteFilter.Update> {
-    /** @return rules associated with this route filter, indexed by their names */
+public interface RouteFilter extends GroupableResource<NetworkManager, RouteFilterInner>, Refreshable<RouteFilter>,
+    Updatable<RouteFilter.Update> {
+    /**
+     * Gets rules associated with this route filter.
+     *
+     * @return rules associated with this route filter, indexed by their names
+     */
     Map<String, RouteFilterRule> rules();
 
-    /** @return express route circuit peerings associated with this route filter, indexed by their names */
+    /**
+     * Gets express route circuit peerings associated with this route filter.
+     *
+     * @return express route circuit peerings associated with this route filter, indexed by their names
+     */
     Map<String, ExpressRouteCircuitPeering> peerings();
 
-    /** @return the provisioning state of the route filter resource */
+    /**
+     * Gets the provisioning state of the route filter resource.
+     *
+     * @return the provisioning state of the route filter resource
+     */
     String provisioningState();
 
     // Fluent interfaces for creating Route Filter

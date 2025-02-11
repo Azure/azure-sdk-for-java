@@ -14,7 +14,7 @@ import com.azure.core.annotation.Fluent;
  * @param <T> the type of the derived class.
  */
 @Fluent
-public abstract class BaseRouteOptions<T extends BaseRouteOptions<T>>  {
+public abstract class BaseRouteOptions<T extends BaseRouteOptions<T>> {
     private OffsetDateTime departAt;
     private Integer vehicleAxleWeight;
     private Double vehicleWidth;

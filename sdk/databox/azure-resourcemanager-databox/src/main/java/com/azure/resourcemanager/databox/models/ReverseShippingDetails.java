@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Reverse Shipping Address and contact details for a job. */
+/**
+ * Reverse Shipping Address and contact details for a job.
+ */
 @Fluent
-public final class ReverseShippingDetails {
+public final class ReverseShippingDetails implements JsonSerializable<ReverseShippingDetails> {
     /*
      * Contact Info.
      */
-    @JsonProperty(value = "contactDetails")
     private ContactInfo contactDetails;
 
     /*
      * Shipping address where customer wishes to receive the device.
      */
-    @JsonProperty(value = "shippingAddress")
     private ShippingAddress shippingAddress;
 
     /*
      * A flag to indicate whether Reverse Shipping details are updated or not after device has been prepared.
      * Read only field
      */
-    @JsonProperty(value = "isUpdated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isUpdated;
 
-    /** Creates an instance of ReverseShippingDetails class. */
+    /**
+     * Creates an instance of ReverseShippingDetails class.
+     */
     public ReverseShippingDetails() {
     }
 
     /**
      * Get the contactDetails property: Contact Info.
-     *
+     * 
      * @return the contactDetails value.
      */
     public ContactInfo contactDetails() {
@@ -44,7 +49,7 @@ public final class ReverseShippingDetails {
 
     /**
      * Set the contactDetails property: Contact Info.
-     *
+     * 
      * @param contactDetails the contactDetails value to set.
      * @return the ReverseShippingDetails object itself.
      */
@@ -55,7 +60,7 @@ public final class ReverseShippingDetails {
 
     /**
      * Get the shippingAddress property: Shipping address where customer wishes to receive the device.
-     *
+     * 
      * @return the shippingAddress value.
      */
     public ShippingAddress shippingAddress() {
@@ -64,7 +69,7 @@ public final class ReverseShippingDetails {
 
     /**
      * Set the shippingAddress property: Shipping address where customer wishes to receive the device.
-     *
+     * 
      * @param shippingAddress the shippingAddress value to set.
      * @return the ReverseShippingDetails object itself.
      */
@@ -75,8 +80,9 @@ public final class ReverseShippingDetails {
 
     /**
      * Get the isUpdated property: A flag to indicate whether Reverse Shipping details are updated or not after device
-     * has been prepared. Read only field.
-     *
+     * has been prepared.
+     * Read only field.
+     * 
      * @return the isUpdated value.
      */
     public Boolean isUpdated() {
@@ -85,7 +91,7 @@ public final class ReverseShippingDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -95,5 +101,46 @@ public final class ReverseShippingDetails {
         if (shippingAddress() != null) {
             shippingAddress().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("contactDetails", this.contactDetails);
+        jsonWriter.writeJsonField("shippingAddress", this.shippingAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReverseShippingDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReverseShippingDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReverseShippingDetails.
+     */
+    public static ReverseShippingDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReverseShippingDetails deserializedReverseShippingDetails = new ReverseShippingDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactDetails".equals(fieldName)) {
+                    deserializedReverseShippingDetails.contactDetails = ContactInfo.fromJson(reader);
+                } else if ("shippingAddress".equals(fieldName)) {
+                    deserializedReverseShippingDetails.shippingAddress = ShippingAddress.fromJson(reader);
+                } else if ("isUpdated".equals(fieldName)) {
+                    deserializedReverseShippingDetails.isUpdated = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReverseShippingDetails;
+        });
     }
 }

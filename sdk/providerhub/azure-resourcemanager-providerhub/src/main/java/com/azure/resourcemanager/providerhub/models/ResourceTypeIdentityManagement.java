@@ -5,15 +5,25 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ResourceTypeIdentityManagement model. */
+/**
+ * The ResourceTypeIdentityManagement model.
+ */
 @Fluent
 public final class ResourceTypeIdentityManagement extends IdentityManagement {
-    /** Creates an instance of ResourceTypeIdentityManagement class. */
+    /**
+     * Creates an instance of ResourceTypeIdentityManagement class.
+     */
     public ResourceTypeIdentityManagement() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceTypeIdentityManagement withType(IdentityManagementTypes type) {
         super.withType(type);
@@ -22,11 +32,48 @@ public final class ResourceTypeIdentityManagement extends IdentityManagement {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceTypeIdentityManagement from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceTypeIdentityManagement if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceTypeIdentityManagement.
+     */
+    public static ResourceTypeIdentityManagement fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceTypeIdentityManagement deserializedResourceTypeIdentityManagement
+                = new ResourceTypeIdentityManagement();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedResourceTypeIdentityManagement
+                        .withType(IdentityManagementTypes.fromString(reader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceTypeIdentityManagement;
+        });
     }
 }

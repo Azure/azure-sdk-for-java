@@ -23,12 +23,8 @@ public interface ServiceUnits {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the service unit along with {@link Response}.
      */
-    Response<ServiceUnitResource> getWithResponse(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        Context context);
+    Response<ServiceUnitResource> getWithResponse(String resourceGroupName, String serviceTopologyName,
+        String serviceName, String serviceUnitName, Context context);
 
     /**
      * Gets the service unit.
@@ -42,8 +38,8 @@ public interface ServiceUnits {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the service unit.
      */
-    ServiceUnitResource get(
-        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName);
+    ServiceUnitResource get(String resourceGroupName, String serviceTopologyName, String serviceName,
+        String serviceUnitName);
 
     /**
      * Deletes the service unit.
@@ -58,12 +54,8 @@ public interface ServiceUnits {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceTopologyName, String serviceName,
+        String serviceUnitName, Context context);
 
     /**
      * Deletes the service unit.
@@ -90,8 +82,8 @@ public interface ServiceUnits {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of service units along with {@link Response}.
      */
-    Response<List<ServiceUnitResource>> listWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
+    Response<List<ServiceUnitResource>> listWithResponse(String resourceGroupName, String serviceTopologyName,
+        String serviceName, Context context);
 
     /**
      * Lists the service units under a service in the service topology.

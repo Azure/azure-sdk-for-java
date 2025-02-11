@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.resourceconnector.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SupportedVersion object for appliance. */
+/**
+ * The SupportedVersion object for appliance.
+ */
 @Immutable
-public final class SupportedVersion {
+public final class SupportedVersion implements JsonSerializable<SupportedVersion> {
     /*
      * This is the metadata of the supported newer version.
      */
-    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private SupportedVersionMetadata metadata;
 
     /*
      * The newer version available for upgrade.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Creates an instance of SupportedVersion class. */
+    /**
+     * Creates an instance of SupportedVersion class.
+     */
     public SupportedVersion() {
     }
 
     /**
      * Get the metadata property: This is the metadata of the supported newer version.
-     *
+     * 
      * @return the metadata value.
      */
     public SupportedVersionMetadata metadata() {
@@ -37,7 +43,7 @@ public final class SupportedVersion {
 
     /**
      * Get the version property: The newer version available for upgrade.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -46,12 +52,49 @@ public final class SupportedVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (metadata() != null) {
             metadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedVersion if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedVersion.
+     */
+    public static SupportedVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedVersion deserializedSupportedVersion = new SupportedVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadata".equals(fieldName)) {
+                    deserializedSupportedVersion.metadata = SupportedVersionMetadata.fromJson(reader);
+                } else if ("version".equals(fieldName)) {
+                    deserializedSupportedVersion.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedVersion;
+        });
     }
 }

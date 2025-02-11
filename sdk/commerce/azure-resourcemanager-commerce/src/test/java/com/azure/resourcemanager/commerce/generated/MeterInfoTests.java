@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MeterInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MeterInfo model =
-            BinaryData
-                .fromString(
-                    "{\"MeterId\":\"02c5a81b-ee19-4c50-bb4c-6805c59050b2\",\"MeterName\":\"gls\",\"MeterCategory\":\"inqpjwnzll\",\"MeterSubCategory\":\"mppeebvmgxs\",\"Unit\":\"kyqduujit\",\"MeterTags\":[\"zdzevndh\",\"rwpdappdsbdkvwrw\"],\"MeterRegion\":\"eusnhutj\",\"MeterRates\":{\"rl\":33.49618,\"ugjzzdatqxhocdge\":86.19471,\"lgphu\":56.39705,\"cndvkaozwyiftyhx\":89.55463},\"EffectiveDate\":\"2021-01-28T13:33:14Z\",\"IncludedQuantity\":5.188751}")
-                .toObject(MeterInfo.class);
+        MeterInfo model = BinaryData.fromString(
+            "{\"MeterId\":\"02c5a81b-ee19-4c50-bb4c-6805c59050b2\",\"MeterName\":\"gls\",\"MeterCategory\":\"inqpjwnzll\",\"MeterSubCategory\":\"mppeebvmgxs\",\"Unit\":\"kyqduujit\",\"MeterTags\":[\"zdzevndh\",\"rwpdappdsbdkvwrw\"],\"MeterRegion\":\"eusnhutj\",\"MeterRates\":{\"rl\":33.49618,\"ugjzzdatqxhocdge\":86.19471,\"lgphu\":56.39705,\"cndvkaozwyiftyhx\":89.55463},\"EffectiveDate\":\"2021-01-28T13:33:14Z\",\"IncludedQuantity\":5.188751}")
+            .toObject(MeterInfo.class);
         Assertions.assertEquals(UUID.fromString("02c5a81b-ee19-4c50-bb4c-6805c59050b2"), model.meterId());
         Assertions.assertEquals("gls", model.meterName());
         Assertions.assertEquals("inqpjwnzll", model.meterCategory());
@@ -35,27 +33,17 @@ public final class MeterInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MeterInfo model =
-            new MeterInfo()
-                .withMeterId(UUID.fromString("02c5a81b-ee19-4c50-bb4c-6805c59050b2"))
-                .withMeterName("gls")
-                .withMeterCategory("inqpjwnzll")
-                .withMeterSubCategory("mppeebvmgxs")
-                .withUnit("kyqduujit")
-                .withMeterTags(Arrays.asList("zdzevndh", "rwpdappdsbdkvwrw"))
-                .withMeterRegion("eusnhutj")
-                .withMeterRates(
-                    mapOf(
-                        "rl",
-                        33.49618f,
-                        "ugjzzdatqxhocdge",
-                        86.19471f,
-                        "lgphu",
-                        56.39705f,
-                        "cndvkaozwyiftyhx",
-                        89.55463f))
-                .withEffectiveDate(OffsetDateTime.parse("2021-01-28T13:33:14Z"))
-                .withIncludedQuantity(5.188751F);
+        MeterInfo model = new MeterInfo().withMeterId(UUID.fromString("02c5a81b-ee19-4c50-bb4c-6805c59050b2"))
+            .withMeterName("gls")
+            .withMeterCategory("inqpjwnzll")
+            .withMeterSubCategory("mppeebvmgxs")
+            .withUnit("kyqduujit")
+            .withMeterTags(Arrays.asList("zdzevndh", "rwpdappdsbdkvwrw"))
+            .withMeterRegion("eusnhutj")
+            .withMeterRates(mapOf("rl", 33.49618f, "ugjzzdatqxhocdge", 86.19471f, "lgphu", 56.39705f,
+                "cndvkaozwyiftyhx", 89.55463f))
+            .withEffectiveDate(OffsetDateTime.parse("2021-01-28T13:33:14Z"))
+            .withIncludedQuantity(5.188751F);
         model = BinaryData.fromObject(model).toObject(MeterInfo.class);
         Assertions.assertEquals(UUID.fromString("02c5a81b-ee19-4c50-bb4c-6805c59050b2"), model.meterId());
         Assertions.assertEquals("gls", model.meterName());

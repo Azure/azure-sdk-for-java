@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AssessmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/DeleteAssessment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/
+     * DeleteAssessment_example.json
      */
     /**
      * Sample code: Delete a security recommendation task on a resource.

@@ -5,20 +5,35 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * ApplyRecoveryPoint input specific to A2ACrossClusterMigration provider.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2ACrossClusterMigration")
 @Immutable
 public final class A2ACrossClusterMigrationApplyRecoveryPointInput extends ApplyRecoveryPointProviderSpecificInput {
+    /*
+     * The class type.
+     */
+    private String instanceType = "A2ACrossClusterMigration";
+
     /**
      * Creates an instance of A2ACrossClusterMigrationApplyRecoveryPointInput class.
      */
     public A2ACrossClusterMigrationApplyRecoveryPointInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -28,6 +43,42 @@ public final class A2ACrossClusterMigrationApplyRecoveryPointInput extends Apply
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2ACrossClusterMigrationApplyRecoveryPointInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2ACrossClusterMigrationApplyRecoveryPointInput if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2ACrossClusterMigrationApplyRecoveryPointInput.
+     */
+    public static A2ACrossClusterMigrationApplyRecoveryPointInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2ACrossClusterMigrationApplyRecoveryPointInput deserializedA2ACrossClusterMigrationApplyRecoveryPointInput
+                = new A2ACrossClusterMigrationApplyRecoveryPointInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedA2ACrossClusterMigrationApplyRecoveryPointInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2ACrossClusterMigrationApplyRecoveryPointInput;
+        });
     }
 }

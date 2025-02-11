@@ -15,8 +15,8 @@ public final class WorkflowTriggerCallbackUrlImpl implements WorkflowTriggerCall
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    WorkflowTriggerCallbackUrlImpl(
-        WorkflowTriggerCallbackUrlInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    WorkflowTriggerCallbackUrlImpl(WorkflowTriggerCallbackUrlInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

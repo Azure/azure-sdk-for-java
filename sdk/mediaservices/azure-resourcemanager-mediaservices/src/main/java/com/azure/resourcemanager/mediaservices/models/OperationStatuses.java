@@ -7,13 +7,15 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of OperationStatuses. */
+/**
+ * Resource collection API of OperationStatuses.
+ */
 public interface OperationStatuses {
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -25,19 +27,14 @@ public interface OperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return asset track operation status along with {@link Response}.
      */
-    Response<AssetTrackOperationStatus> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        String operationId,
-        Context context);
+    Response<AssetTrackOperationStatus> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String trackName, String operationId, Context context);
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -48,6 +45,6 @@ public interface OperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return asset track operation status.
      */
-    AssetTrackOperationStatus get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId);
+    AssetTrackOperationStatus get(String resourceGroupName, String accountName, String assetName, String trackName,
+        String operationId);
 }

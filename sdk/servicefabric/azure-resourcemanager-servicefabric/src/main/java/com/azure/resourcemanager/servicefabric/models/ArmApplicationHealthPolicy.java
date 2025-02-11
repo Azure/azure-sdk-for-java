@@ -5,19 +5,21 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Defines a health policy used to evaluate the health of an application or one of its children entities.
  */
 @Fluent
-public final class ArmApplicationHealthPolicy {
+public final class ArmApplicationHealthPolicy implements JsonSerializable<ArmApplicationHealthPolicy> {
     /*
      * Indicates whether warnings are treated with the same severity as errors.
      */
-    @JsonProperty(value = "considerWarningAsError")
     private Boolean considerWarningAsError;
 
     /*
@@ -28,22 +30,17 @@ public final class ArmApplicationHealthPolicy {
      * This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the
      * application is currently deployed on in the cluster.
      * The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
-     * 
      */
-    @JsonProperty(value = "maxPercentUnhealthyDeployedApplications")
     private Integer maxPercentUnhealthyDeployedApplications;
 
     /*
      * The health policy used by default to evaluate the health of a service type.
      */
-    @JsonProperty(value = "defaultServiceTypeHealthPolicy")
     private ArmServiceTypeHealthPolicy defaultServiceTypeHealthPolicy;
 
     /*
      * The map with service type health policy per service type name. The map is empty by default.
      */
-    @JsonProperty(value = "serviceTypeHealthPolicyMap")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ArmServiceTypeHealthPolicy> serviceTypeHealthPolicyMap;
 
     /**
@@ -53,8 +50,7 @@ public final class ArmApplicationHealthPolicy {
     }
 
     /**
-     * Get the considerWarningAsError property: Indicates whether warnings are treated with the same severity as
-     * errors.
+     * Get the considerWarningAsError property: Indicates whether warnings are treated with the same severity as errors.
      * 
      * @return the considerWarningAsError value.
      */
@@ -63,8 +59,7 @@ public final class ArmApplicationHealthPolicy {
     }
 
     /**
-     * Set the considerWarningAsError property: Indicates whether warnings are treated with the same severity as
-     * errors.
+     * Set the considerWarningAsError property: Indicates whether warnings are treated with the same severity as errors.
      * 
      * @param considerWarningAsError the considerWarningAsError value to set.
      * @return the ArmApplicationHealthPolicy object itself.
@@ -169,5 +164,57 @@ public final class ArmApplicationHealthPolicy {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("considerWarningAsError", this.considerWarningAsError);
+        jsonWriter.writeNumberField("maxPercentUnhealthyDeployedApplications",
+            this.maxPercentUnhealthyDeployedApplications);
+        jsonWriter.writeJsonField("defaultServiceTypeHealthPolicy", this.defaultServiceTypeHealthPolicy);
+        jsonWriter.writeMapField("serviceTypeHealthPolicyMap", this.serviceTypeHealthPolicyMap,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArmApplicationHealthPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArmApplicationHealthPolicy if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmApplicationHealthPolicy.
+     */
+    public static ArmApplicationHealthPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArmApplicationHealthPolicy deserializedArmApplicationHealthPolicy = new ArmApplicationHealthPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("considerWarningAsError".equals(fieldName)) {
+                    deserializedArmApplicationHealthPolicy.considerWarningAsError
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maxPercentUnhealthyDeployedApplications".equals(fieldName)) {
+                    deserializedArmApplicationHealthPolicy.maxPercentUnhealthyDeployedApplications
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("defaultServiceTypeHealthPolicy".equals(fieldName)) {
+                    deserializedArmApplicationHealthPolicy.defaultServiceTypeHealthPolicy
+                        = ArmServiceTypeHealthPolicy.fromJson(reader);
+                } else if ("serviceTypeHealthPolicyMap".equals(fieldName)) {
+                    Map<String, ArmServiceTypeHealthPolicy> serviceTypeHealthPolicyMap
+                        = reader.readMap(reader1 -> ArmServiceTypeHealthPolicy.fromJson(reader1));
+                    deserializedArmApplicationHealthPolicy.serviceTypeHealthPolicyMap = serviceTypeHealthPolicyMap;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArmApplicationHealthPolicy;
+        });
     }
 }

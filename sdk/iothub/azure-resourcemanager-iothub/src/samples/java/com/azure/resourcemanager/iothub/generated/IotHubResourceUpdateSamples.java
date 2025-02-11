@@ -8,22 +8,23 @@ import com.azure.resourcemanager.iothub.models.IotHubDescription;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IotHubResource Update. */
+/**
+ * Samples for IotHubResource Update.
+ */
 public final class IotHubResourceUpdateSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_patch.json
+     * x-ms-original-file:
+     * specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_patch.json
      */
     /**
      * Sample code: IotHubResource_Update.
-     *
+     * 
      * @param manager Entry point to IotHubManager.
      */
     public static void iotHubResourceUpdate(com.azure.resourcemanager.iothub.IotHubManager manager) {
-        IotHubDescription resource =
-            manager
-                .iotHubResources()
-                .getByResourceGroupWithResponse("myResourceGroup", "myHub", com.azure.core.util.Context.NONE)
-                .getValue();
+        IotHubDescription resource = manager.iotHubResources()
+            .getByResourceGroupWithResponse("myResourceGroup", "myHub", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("foo", "bar")).apply();
     }
 

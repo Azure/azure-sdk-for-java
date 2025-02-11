@@ -6,13 +6,13 @@ package com.azure.ai.inference.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.util.serializer.TypeReference;
 
 /**
  * Representation of a single embeddings relatedness comparison.
@@ -84,7 +84,8 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("embedding", this.embedding.toObject(Object.class));
+        jsonWriter.writeFieldName("embedding");
+        this.embedding.writeTo(jsonWriter);
         jsonWriter.writeIntField("index", this.index);
         return jsonWriter.writeEndObject();
     }

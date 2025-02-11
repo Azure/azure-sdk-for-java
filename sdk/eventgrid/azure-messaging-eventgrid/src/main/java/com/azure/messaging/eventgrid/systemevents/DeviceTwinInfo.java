@@ -285,8 +285,8 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
     }
 
     /**
-     * Get the x509Thumbprint property: The thumbprint is a unique value for the x509 certificate, commonly used to
-     * find a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1
+     * Get the x509Thumbprint property: The thumbprint is a unique value for the x509 certificate, commonly used to find
+     * a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1
      * algorithm, and does not physically exist in the certificate.
      * 
      * @return the x509Thumbprint value.
@@ -296,8 +296,8 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
     }
 
     /**
-     * Set the x509Thumbprint property: The thumbprint is a unique value for the x509 certificate, commonly used to
-     * find a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1
+     * Set the x509Thumbprint property: The thumbprint is a unique value for the x509 certificate, commonly used to find
+     * a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1
      * algorithm, and does not physically exist in the certificate.
      * 
      * @param x509Thumbprint the x509Thumbprint value to set.
@@ -308,6 +308,9 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

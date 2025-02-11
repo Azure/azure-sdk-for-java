@@ -9,26 +9,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.fluent.models.DnsForwardingRulesetProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DnsForwardingRulesetPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        DnsForwardingRulesetProperties model =
-            BinaryData
-                .fromString(
-                    "{\"dnsResolverOutboundEndpoints\":[{\"id\":\"i\"},{\"id\":\"eojnxqbzvddn\"}],\"provisioningState\":\"Creating\",\"resourceGuid\":\"eic\"}")
-                .toObject(DnsForwardingRulesetProperties.class);
-        Assertions.assertEquals("i", model.dnsResolverOutboundEndpoints().get(0).id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DnsForwardingRulesetProperties model = BinaryData.fromString(
+            "{\"dnsResolverOutboundEndpoints\":[{\"id\":\"hrzayvvtpgvdf\"}],\"provisioningState\":\"Failed\",\"resourceGuid\":\"kftutqxlngxlefg\"}")
+            .toObject(DnsForwardingRulesetProperties.class);
+        Assertions.assertEquals("hrzayvvtpgvdf", model.dnsResolverOutboundEndpoints().get(0).id());
     }
 
-    @Test
-    public void testSerialize() {
-        DnsForwardingRulesetProperties model =
-            new DnsForwardingRulesetProperties()
-                .withDnsResolverOutboundEndpoints(
-                    Arrays.asList(new SubResource().withId("i"), new SubResource().withId("eojnxqbzvddn")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DnsForwardingRulesetProperties model = new DnsForwardingRulesetProperties()
+            .withDnsResolverOutboundEndpoints(Arrays.asList(new SubResource().withId("hrzayvvtpgvdf")));
         model = BinaryData.fromObject(model).toObject(DnsForwardingRulesetProperties.class);
-        Assertions.assertEquals("i", model.dnsResolverOutboundEndpoints().get(0).id());
+        Assertions.assertEquals("hrzayvvtpgvdf", model.dnsResolverOutboundEndpoints().get(0).id());
     }
 }

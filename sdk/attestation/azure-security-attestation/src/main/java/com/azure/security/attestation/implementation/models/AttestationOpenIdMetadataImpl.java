@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class AttestationOpenIdMetadataImpl implements AttestationOpenIdMetadata,
-    JsonSerializable<AttestationOpenIdMetadataImpl> {
+public class AttestationOpenIdMetadataImpl
+    implements AttestationOpenIdMetadata, JsonSerializable<AttestationOpenIdMetadataImpl> {
     private static final ClientLogger LOGGER = new ClientLogger(AttestationOpenIdMetadataImpl.class);
 
     private String jwksUri;

@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Test;
 public final class ActionableRemediationTests {
     @Test
     public void testDeserialize() {
-        ActionableRemediation model =
-            BinaryData
-                .fromString(
-                    "{\"state\":\"None\",\"severityLevels\":[\"olniwpwcukjf\",\"giawx\",\"lryplwckbasyy\",\"nddhsgcbacph\"],\"categories\":[\"Dependencies\"],\"branchConfiguration\":{\"names\":[\"qgoulznd\",\"i\",\"wyqkgfgibm\"]}}")
-                .toObject(ActionableRemediation.class);
+        ActionableRemediation model = BinaryData.fromString(
+            "{\"state\":\"None\",\"severityLevels\":[\"olniwpwcukjf\",\"giawx\",\"lryplwckbasyy\",\"nddhsgcbacph\"],\"categories\":[\"Dependencies\"],\"branchConfiguration\":{\"names\":[\"qgoulznd\",\"i\",\"wyqkgfgibm\"]}}")
+            .toObject(ActionableRemediation.class);
         Assertions.assertEquals(ActionableRemediationState.NONE, model.state());
         Assertions.assertEquals("olniwpwcukjf", model.severityLevels().get(0));
         Assertions.assertEquals(RuleCategory.DEPENDENCIES, model.categories().get(0));
@@ -29,13 +27,11 @@ public final class ActionableRemediationTests {
 
     @Test
     public void testSerialize() {
-        ActionableRemediation model =
-            new ActionableRemediation()
-                .withState(ActionableRemediationState.NONE)
-                .withSeverityLevels(Arrays.asList("olniwpwcukjf", "giawx", "lryplwckbasyy", "nddhsgcbacph"))
-                .withCategories(Arrays.asList(RuleCategory.DEPENDENCIES))
-                .withBranchConfiguration(
-                    new TargetBranchConfiguration().withNames(Arrays.asList("qgoulznd", "i", "wyqkgfgibm")));
+        ActionableRemediation model = new ActionableRemediation().withState(ActionableRemediationState.NONE)
+            .withSeverityLevels(Arrays.asList("olniwpwcukjf", "giawx", "lryplwckbasyy", "nddhsgcbacph"))
+            .withCategories(Arrays.asList(RuleCategory.DEPENDENCIES))
+            .withBranchConfiguration(
+                new TargetBranchConfiguration().withNames(Arrays.asList("qgoulznd", "i", "wyqkgfgibm")));
         model = BinaryData.fromObject(model).toObject(ActionableRemediation.class);
         Assertions.assertEquals(ActionableRemediationState.NONE, model.state());
         Assertions.assertEquals("olniwpwcukjf", model.severityLevels().get(0));

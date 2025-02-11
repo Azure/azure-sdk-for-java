@@ -13,17 +13,13 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DataSourcesCreateOrUpdate {
     public static void main(String[] args) {
-        DataSourcesClient dataSourcesClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildDataSourcesClient();
+        DataSourcesClient dataSourcesClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildDataSourcesClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.datasourcescreateorupdate.datasourcescreateorupdate
-        RequestOptions requestOptions =
-                new RequestOptions()
-                        .setBody(
-                                BinaryData.fromString(
-                                        "{\"kind\":\"AzureStorage\",\"properties\":{\"collection\":{\"type\":\"CollectionReference\",\"referenceName\":\"Collection-rZX\"},\"endpoint\":\"https://azurestorage.core.windows.net/\"}}"));
+        RequestOptions requestOptions = new RequestOptions().setBody(BinaryData.fromString(
+            "{\"kind\":\"AzureStorage\",\"properties\":{\"collection\":{\"type\":\"CollectionReference\",\"referenceName\":\"Collection-rZX\"},\"endpoint\":\"https://azurestorage.core.windows.net/\"}}"));
         Response<BinaryData> response = dataSourcesClient.createOrUpdateWithResponse("myDataSource", requestOptions);
         // END:com.azure.analytics.purview.scanning.generated.datasourcescreateorupdate.datasourcescreateorupdate
     }

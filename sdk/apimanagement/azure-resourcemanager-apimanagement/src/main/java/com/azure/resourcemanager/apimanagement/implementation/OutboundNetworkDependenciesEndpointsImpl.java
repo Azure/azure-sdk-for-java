@@ -20,22 +20,18 @@ public final class OutboundNetworkDependenciesEndpointsImpl implements OutboundN
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public OutboundNetworkDependenciesEndpointsImpl(
-        OutboundNetworkDependenciesEndpointsClient innerClient,
+    public OutboundNetworkDependenciesEndpointsImpl(OutboundNetworkDependenciesEndpointsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OutboundEnvironmentEndpointList> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
-        Response<OutboundEnvironmentEndpointListInner> inner =
-            this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
+    public Response<OutboundEnvironmentEndpointList> listByServiceWithResponse(String resourceGroupName,
+        String serviceName, Context context) {
+        Response<OutboundEnvironmentEndpointListInner> inner
+            = this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OutboundEnvironmentEndpointListImpl(inner.getValue(), this.manager()));
         } else {
             return null;

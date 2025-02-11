@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CodecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Codec model = BinaryData.fromString("{\"@odata.type\":\"Codec\",\"label\":\"lvxwmyg\"}").toObject(Codec.class);
-        Assertions.assertEquals("lvxwmyg", model.label());
+        Codec model
+            = BinaryData.fromString("{\"@odata.type\":\"Codec\",\"label\":\"aawiuagydwqfb\"}").toObject(Codec.class);
+        Assertions.assertEquals("aawiuagydwqfb", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Codec model = new Codec().withLabel("lvxwmyg");
+        Codec model = new Codec().withLabel("aawiuagydwqfb");
         model = BinaryData.fromObject(model).toObject(Codec.class);
-        Assertions.assertEquals("lvxwmyg", model.label());
+        Assertions.assertEquals("aawiuagydwqfb", model.label());
     }
 }

@@ -120,6 +120,13 @@ public interface Backup {
     String backupPolicyResourceId();
 
     /**
+     * Gets the isLargeVolume property: Specifies if the backup is for a large volume.
+     * 
+     * @return the isLargeVolume value.
+     */
+    Boolean isLargeVolume();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.

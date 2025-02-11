@@ -21,69 +21,69 @@ class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
-    public void getModelsSingleDtmiNoDependencies(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
+    public void getModelsSingleDtmiNoDependencies(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion,
+        String repositoryUri) throws URISyntaxException {
         String dtmi = "dtmi:com:example:Thermostat;1";
 
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion, repositoryUri);
 
-        StepVerifier
-            .create(client.getModels(dtmi))
+        StepVerifier.create(client.getModels(dtmi))
             .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1 && model.containsKey(dtmi)))
             .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
-    public void getModelsSingleDtmiDoesNotExist(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
+    public void getModelsSingleDtmiDoesNotExist(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion,
+        String repositoryUri) throws URISyntaxException {
         final String dtmi = "dtmi:com:example:Thermostatddd;1";
 
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion, repositoryUri);
 
-        StepVerifier
-            .create(client.getModels(dtmi))
+        StepVerifier.create(client.getModels(dtmi))
             .verifyErrorSatisfies(error -> Assertions.assertTrue(error.getClass() == AzureException.class));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
-    public void getModelsSingleDtmiWithDependencies(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
+    public void getModelsSingleDtmiWithDependencies(HttpClient httpClient,
+        ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
         final String dtmi = "dtmi:com:example:TemperatureController;1";
-        List<String> expectedDependencies = Arrays.asList("dtmi:com:example:Thermostat;1", "dtmi:azure:DeviceManagement:DeviceInformation;1");
+        List<String> expectedDependencies
+            = Arrays.asList("dtmi:com:example:Thermostat;1", "dtmi:azure:DeviceManagement:DeviceInformation;1");
         List<String> expectedDtmis = new ArrayList<>(expectedDependencies);
         expectedDtmis.add(dtmi);
 
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion, repositoryUri);
 
-        StepVerifier
-            .create(client.getModels(dtmi))
-            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == expectedDtmis.size() && model.keySet().containsAll(expectedDependencies)))
+        StepVerifier.create(client.getModels(dtmi))
+            .assertNext(model -> Assertions.assertTrue(
+                model.keySet().size() == expectedDtmis.size() && model.keySet().containsAll(expectedDependencies)))
             .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
-    public void getModelsEnsureNoDuplicates(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
-        List<String> inputDtmis = Arrays.asList(
-            "dtmi:azure:DeviceManagement:DeviceInformation;1",
-            "dtmi:azure:DeviceManagement:DeviceInformation;1"
-        );
+    public void getModelsEnsureNoDuplicates(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion,
+        String repositoryUri) throws URISyntaxException {
+        List<String> inputDtmis = Arrays.asList("dtmi:azure:DeviceManagement:DeviceInformation;1",
+            "dtmi:azure:DeviceManagement:DeviceInformation;1");
 
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion, repositoryUri);
 
-        StepVerifier
-            .create(client.getModels(inputDtmis))
+        StepVerifier.create(client.getModels(inputDtmis))
             .assertNext(model -> Assertions.assertEquals(model.keySet().size(), 1))
             .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
-    public void getModelsSingleDtmiWithDepsDisableDependencyResolution(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
+    public void getModelsSingleDtmiWithDepsDisableDependencyResolution(HttpClient httpClient,
+        ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
         final String dtmi = "dtmi:com:example:Thermostat;1";
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion, repositoryUri);
 
-        StepVerifier
-            .create(client.getModels(dtmi, ModelDependencyResolution.DISABLED))
+        StepVerifier.create(client.getModels(dtmi, ModelDependencyResolution.DISABLED))
             .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1 && model.containsKey(dtmi)))
             .verifyComplete();
     }

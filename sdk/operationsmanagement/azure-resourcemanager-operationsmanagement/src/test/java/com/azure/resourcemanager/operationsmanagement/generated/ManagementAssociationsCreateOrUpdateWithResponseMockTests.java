@@ -6,77 +6,40 @@ package com.azure.resourcemanager.operationsmanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.operationsmanagement.OperationsManagementManager;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAssociationInner;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementAssociation;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementAssociationProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ManagementAssociationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"location\":\"tzlcuiywgqywgn\",\"properties\":{\"applicationId\":\"vynhzgpphrcg\"},\"id\":\"nc\",\"name\":\"cpecfvmmcoofs\",\"type\":\"lzevgbmqjqab\"}";
 
-        String responseStr =
-            "{\"location\":\"qbqqwxr\",\"properties\":{\"applicationId\":\"eallnwsubisnj\"},\"id\":\"mpmngnzscxaqwoo\",\"name\":\"hcbonqvpkvlr\",\"type\":\"njeaseipheofloke\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        OperationsManagementManager manager = OperationsManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ManagementAssociation response = manager.managementAssociations()
+            .createOrUpdateWithResponse("hkh", "xuigdtopbobj", "ghmewuam", "uhrzayvvt", "gvdfgiotkftutq",
+                new ManagementAssociationInner().withLocation("ngxlefgugnxkrxdq")
+                    .withProperties(new ManagementAssociationProperties().withApplicationId("dt")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        OperationsManagementManager manager =
-            OperationsManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ManagementAssociation response =
-            manager
-                .managementAssociations()
-                .createOrUpdateWithResponse(
-                    "hjybigehoqfbo",
-                    "skanyk",
-                    "zlcuiywgqywgndrv",
-                    "nhzgpphrcgyn",
-                    "ocpecfvmmco",
-                    new ManagementAssociationInner()
-                        .withLocation("sxlzevgbmqj")
-                        .withProperties(new ManagementAssociationProperties().withApplicationId("bcypmi")),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("qbqqwxr", response.location());
-        Assertions.assertEquals("eallnwsubisnj", response.properties().applicationId());
+        Assertions.assertEquals("tzlcuiywgqywgn", response.location());
+        Assertions.assertEquals("vynhzgpphrcg", response.properties().applicationId());
     }
 }

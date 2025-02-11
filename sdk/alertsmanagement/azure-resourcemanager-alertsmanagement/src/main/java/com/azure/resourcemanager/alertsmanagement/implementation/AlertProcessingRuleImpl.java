@@ -85,27 +85,23 @@ public final class AlertProcessingRuleImpl
     }
 
     public AlertProcessingRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAlertProcessingRules()
-                .createOrUpdateWithResponse(resourceGroupName, alertProcessingRuleName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAlertProcessingRules()
+            .createOrUpdateWithResponse(resourceGroupName, alertProcessingRuleName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public AlertProcessingRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAlertProcessingRules()
-                .createOrUpdateWithResponse(resourceGroupName, alertProcessingRuleName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAlertProcessingRules()
+            .createOrUpdateWithResponse(resourceGroupName, alertProcessingRuleName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    AlertProcessingRuleImpl(
-        String name, com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager) {
+    AlertProcessingRuleImpl(String name,
+        com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager) {
         this.innerObject = new AlertProcessingRuleInner();
         this.serviceManager = serviceManager;
         this.alertProcessingRuleName = name;
@@ -117,52 +113,43 @@ public final class AlertProcessingRuleImpl
     }
 
     public AlertProcessingRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAlertProcessingRules()
-                .updateWithResponse(
-                    resourceGroupName, alertProcessingRuleName, updateAlertProcessingRulePatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAlertProcessingRules()
+            .updateWithResponse(resourceGroupName, alertProcessingRuleName, updateAlertProcessingRulePatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AlertProcessingRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAlertProcessingRules()
-                .updateWithResponse(resourceGroupName, alertProcessingRuleName, updateAlertProcessingRulePatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAlertProcessingRules()
+            .updateWithResponse(resourceGroupName, alertProcessingRuleName, updateAlertProcessingRulePatch, context)
+            .getValue();
         return this;
     }
 
-    AlertProcessingRuleImpl(
-        AlertProcessingRuleInner innerObject,
+    AlertProcessingRuleImpl(AlertProcessingRuleInner innerObject,
         com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.alertProcessingRuleName = Utils.getValueFromIdByName(innerObject.id(), "actionRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.alertProcessingRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "actionRules");
     }
 
     public AlertProcessingRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAlertProcessingRules()
-                .getByResourceGroupWithResponse(resourceGroupName, alertProcessingRuleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAlertProcessingRules()
+            .getByResourceGroupWithResponse(resourceGroupName, alertProcessingRuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AlertProcessingRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAlertProcessingRules()
-                .getByResourceGroupWithResponse(resourceGroupName, alertProcessingRuleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAlertProcessingRules()
+            .getByResourceGroupWithResponse(resourceGroupName, alertProcessingRuleName, context)
+            .getValue();
         return this;
     }
 

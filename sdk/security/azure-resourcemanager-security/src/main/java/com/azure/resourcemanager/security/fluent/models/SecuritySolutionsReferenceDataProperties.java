@@ -6,54 +6,52 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.SecurityFamily;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The SecuritySolutionsReferenceDataProperties model.
  */
 @Fluent
-public final class SecuritySolutionsReferenceDataProperties {
+public final class SecuritySolutionsReferenceDataProperties
+    implements JsonSerializable<SecuritySolutionsReferenceDataProperties> {
     /*
      * The security family of the security solution
      */
-    @JsonProperty(value = "securityFamily", required = true)
     private SecurityFamily securityFamily;
 
     /*
      * The security solutions' vendor name
      */
-    @JsonProperty(value = "alertVendorName", required = true)
     private String alertVendorName;
 
     /*
      * The security solutions' package info url
      */
-    @JsonProperty(value = "packageInfoUrl", required = true)
     private String packageInfoUrl;
 
     /*
      * The security solutions' product name
      */
-    @JsonProperty(value = "productName", required = true)
     private String productName;
 
     /*
      * The security solutions' publisher
      */
-    @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /*
      * The security solutions' publisher display name
      */
-    @JsonProperty(value = "publisherDisplayName", required = true)
     private String publisherDisplayName;
 
     /*
      * The security solutions' template
      */
-    @JsonProperty(value = "template", required = true)
     private String template;
 
     /**
@@ -246,4 +244,62 @@ public final class SecuritySolutionsReferenceDataProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecuritySolutionsReferenceDataProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("securityFamily",
+            this.securityFamily == null ? null : this.securityFamily.toString());
+        jsonWriter.writeStringField("alertVendorName", this.alertVendorName);
+        jsonWriter.writeStringField("packageInfoUrl", this.packageInfoUrl);
+        jsonWriter.writeStringField("productName", this.productName);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("publisherDisplayName", this.publisherDisplayName);
+        jsonWriter.writeStringField("template", this.template);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecuritySolutionsReferenceDataProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecuritySolutionsReferenceDataProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecuritySolutionsReferenceDataProperties.
+     */
+    public static SecuritySolutionsReferenceDataProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecuritySolutionsReferenceDataProperties deserializedSecuritySolutionsReferenceDataProperties
+                = new SecuritySolutionsReferenceDataProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("securityFamily".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.securityFamily
+                        = SecurityFamily.fromString(reader.getString());
+                } else if ("alertVendorName".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.alertVendorName = reader.getString();
+                } else if ("packageInfoUrl".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.packageInfoUrl = reader.getString();
+                } else if ("productName".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.productName = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.publisher = reader.getString();
+                } else if ("publisherDisplayName".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.publisherDisplayName = reader.getString();
+                } else if ("template".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.template = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecuritySolutionsReferenceDataProperties;
+        });
+    }
 }

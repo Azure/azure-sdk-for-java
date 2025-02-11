@@ -38,15 +38,22 @@ public final class AgentPoolPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolProperties model = new AgentPoolProperties().withOsType(OsType.LINUX).withOsSku(Ossku.CBLMARINER)
+        AgentPoolProperties model = new AgentPoolProperties().withOsType(OsType.LINUX)
+            .withOsSku(Ossku.CBLMARINER)
             .withNodeLabels(mapOf("swjdkirso", "ypyqrimzinp", "soifiyipjxsqw", "dqxhcrmnohjtckwh", "bznorcjxvsnby",
                 "gr", "cyshurzafbljjgp", "qabnmoc"))
-            .withNodeTaints(Arrays.asList("qcjm")).withMaxCount(897001974).withMinCount(1217713745)
-            .withEnableAutoScaling(true).withMaxPods(1581174340).withCount(1785230840).withVmSize("ckyfih")
-            .withStatus(new AgentPoolProvisioningStatusStatus().withErrorMessage("tymw").withReadyReplicas(
-                Arrays.asList(new AgentPoolUpdateProfile().withCount(1072165585).withVmSize("hwxmnteiwa"),
-                    new AgentPoolUpdateProfile().withCount(763181495).withVmSize("pymzidnsezcxtbzs"),
-                    new AgentPoolUpdateProfile().withCount(1827996208).withVmSize("wmdwzjeiachboo"))));
+            .withNodeTaints(Arrays.asList("qcjm"))
+            .withMaxCount(897001974)
+            .withMinCount(1217713745)
+            .withEnableAutoScaling(true)
+            .withMaxPods(1581174340)
+            .withCount(1785230840)
+            .withVmSize("ckyfih")
+            .withStatus(new AgentPoolProvisioningStatusStatus().withErrorMessage("tymw")
+                .withReadyReplicas(
+                    Arrays.asList(new AgentPoolUpdateProfile().withCount(1072165585).withVmSize("hwxmnteiwa"),
+                        new AgentPoolUpdateProfile().withCount(763181495).withVmSize("pymzidnsezcxtbzs"),
+                        new AgentPoolUpdateProfile().withCount(1827996208).withVmSize("wmdwzjeiachboo"))));
         model = BinaryData.fromObject(model).toObject(AgentPoolProperties.class);
         Assertions.assertEquals(OsType.LINUX, model.osType());
         Assertions.assertEquals(Ossku.CBLMARINER, model.osSku());

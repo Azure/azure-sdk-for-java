@@ -13,24 +13,13 @@ import com.azure.resourcemanager.automation.fluent.models.WebhookInner;
 import com.azure.resourcemanager.automation.models.WebhookCreateOrUpdateParameters;
 import com.azure.resourcemanager.automation.models.WebhookUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in WebhooksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WebhooksClient.
+ */
 public interface WebhooksClient {
     /**
      * Generates a Uri for use in creating a webhook.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    String generateUri(String resourceGroupName, String automationAccountName);
-
-    /**
-     * Generates a Uri for use in creating a webhook.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -43,8 +32,37 @@ public interface WebhooksClient {
     Response<String> generateUriWithResponse(String resourceGroupName, String automationAccountName, Context context);
 
     /**
+     * Generates a Uri for use in creating a webhook.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String generateUri(String resourceGroupName, String automationAccountName);
+
+    /**
      * Delete the webhook by name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param webhookName The webhook name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String webhookName,
+        Context context);
+
+    /**
+     * Delete the webhook by name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param webhookName The webhook name.
@@ -56,8 +74,8 @@ public interface WebhooksClient {
     void delete(String resourceGroupName, String automationAccountName, String webhookName);
 
     /**
-     * Delete the webhook by name.
-     *
+     * Retrieve the webhook identified by webhook name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param webhookName The webhook name.
@@ -65,15 +83,15 @@ public interface WebhooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return definition of the webhook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String webhookName, Context context);
+    Response<WebhookInner> getWithResponse(String resourceGroupName, String automationAccountName, String webhookName,
+        Context context);
 
     /**
      * Retrieve the webhook identified by webhook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param webhookName The webhook name.
@@ -86,11 +104,12 @@ public interface WebhooksClient {
     WebhookInner get(String resourceGroupName, String automationAccountName, String webhookName);
 
     /**
-     * Retrieve the webhook identified by webhook name.
-     *
+     * Create the webhook identified by webhook name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param webhookName The webhook name.
+     * @param parameters The create or update parameters for webhook.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,12 +117,12 @@ public interface WebhooksClient {
      * @return definition of the webhook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebhookInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String webhookName, Context context);
+    Response<WebhookInner> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        String webhookName, WebhookCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create the webhook identified by webhook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param webhookName The webhook name.
@@ -114,19 +133,16 @@ public interface WebhooksClient {
      * @return definition of the webhook type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WebhookInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String webhookName,
+    WebhookInner createOrUpdate(String resourceGroupName, String automationAccountName, String webhookName,
         WebhookCreateOrUpdateParameters parameters);
 
     /**
-     * Create the webhook identified by webhook name.
-     *
+     * Update the webhook identified by webhook name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param webhookName The webhook name.
-     * @param parameters The create or update parameters for webhook.
+     * @param parameters The update parameters for webhook.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,16 +150,12 @@ public interface WebhooksClient {
      * @return definition of the webhook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebhookInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String webhookName,
-        WebhookCreateOrUpdateParameters parameters,
-        Context context);
+    Response<WebhookInner> updateWithResponse(String resourceGroupName, String automationAccountName,
+        String webhookName, WebhookUpdateParameters parameters, Context context);
 
     /**
      * Update the webhook identified by webhook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param webhookName The webhook name.
@@ -154,33 +166,12 @@ public interface WebhooksClient {
      * @return definition of the webhook type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WebhookInner update(
-        String resourceGroupName, String automationAccountName, String webhookName, WebhookUpdateParameters parameters);
-
-    /**
-     * Update the webhook identified by webhook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param webhookName The webhook name.
-     * @param parameters The update parameters for webhook.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the webhook type along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebhookInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String webhookName,
-        WebhookUpdateParameters parameters,
-        Context context);
+    WebhookInner update(String resourceGroupName, String automationAccountName, String webhookName,
+        WebhookUpdateParameters parameters);
 
     /**
      * Retrieve a list of webhooks.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,7 +184,7 @@ public interface WebhooksClient {
 
     /**
      * Retrieve a list of webhooks.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -204,6 +195,6 @@ public interface WebhooksClient {
      * @return the response model for the list webhook operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WebhookInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context);
+    PagedIterable<WebhookInner> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Context context);
 }

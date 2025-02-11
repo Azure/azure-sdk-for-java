@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.advisor.generated;
 
-/** Samples for Recommendations Generate. */
+/**
+ * Samples for Recommendations Generate.
+ */
 public final class RecommendationsGenerateSamples {
     /*
-     * x-ms-original-file: specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/GenerateRecommendations.json
+     * x-ms-original-file:
+     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/GenerateRecommendations.json
      */
     /**
      * Sample code: GenerateRecommendations.
-     *
+     * 
      * @param manager Entry point to AdvisorManager.
      */
     public static void generateRecommendations(com.azure.resourcemanager.advisor.AdvisorManager manager) {

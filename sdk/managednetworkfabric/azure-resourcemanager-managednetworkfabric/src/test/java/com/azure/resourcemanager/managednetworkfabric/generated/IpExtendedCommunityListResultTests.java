@@ -17,131 +17,79 @@ import org.junit.jupiter.api.Assertions;
 public final class IpExtendedCommunityListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpExtendedCommunityListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"Disabled\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":2785122180998227471,\"routeTargets\":[\"bhtmeplvuk\",\"obrl\",\"pgsn\",\"agnchjhgemuowaky\"]}],\"annotation\":\"lhjym\"},\"location\":\"gqtagd\",\"tags\":{\"vtfycnlbvgjcodk\":\"ssoljom\"},\"id\":\"gjiiytssiki\",\"name\":\"bcufqbvntn\",\"type\":\"gmqsorhcekxg\"},{\"properties\":{\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Disabled\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":3699712802375943107,\"routeTargets\":[\"doksqdtiwlwxlbon\"]},{\"action\":\"Permit\",\"sequenceNumber\":9209057098528955798,\"routeTargets\":[\"qicqchygt\",\"xbyja\",\"epubdp\",\"xyqvg\"]},{\"action\":\"Permit\",\"sequenceNumber\":6297136657290435513,\"routeTargets\":[\"etvohkxdxuwsaifm\"]},{\"action\":\"Deny\",\"sequenceNumber\":4631038867223712223,\"routeTargets\":[\"bzlehgc\"]}],\"annotation\":\"bcknjolgj\"},\"location\":\"xpvelszerqzevxo\",\"tags\":{\"qwaafrqulhm\":\"ntxwaljglzob\",\"afjrqpjiyrqjcrg\":\"yqbhd\"},\"id\":\"xwmzwdfkbnrz\",\"name\":\"rpdltbq\",\"type\":\"tqjfgxxsaet\"},{\"properties\":{\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":938718071879661634,\"routeTargets\":[\"qilzdc\"]},{\"action\":\"Deny\",\"sequenceNumber\":3957593252486957917,\"routeTargets\":[\"edxn\",\"ucaifpaurwwgilf\",\"qqa\",\"dmkxwxdcvjwcy\"]},{\"action\":\"Permit\",\"sequenceNumber\":638144041261070745,\"routeTargets\":[\"ciqchxrtuicd\",\"iw\"]}],\"annotation\":\"m\"},\"location\":\"zhzzwvywrg\",\"tags\":{\"pxncakiqao\":\"ydg\",\"lmf\":\"djrkclamggl\",\"ykglt\":\"jdoq\",\"tlgflwfgz\":\"gxhqfgqkayejs\"},\"id\":\"iucijjcea\",\"name\":\"lijjjrtvam\",\"type\":\"a\"},{\"properties\":{\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":6921489313242944838,\"routeTargets\":[\"yvkunmign\",\"hi\",\"kgqogjw\",\"indedvabbx\"]},{\"action\":\"Deny\",\"sequenceNumber\":6106682011514466217,\"routeTargets\":[\"eilbjywfcf\"]},{\"action\":\"Permit\",\"sequenceNumber\":2338776550669139701,\"routeTargets\":[\"zi\",\"vwypusuvjsl\"]}],\"annotation\":\"wci\"},\"location\":\"jsllfryvd\",\"tags\":{\"gfbktyjmf\":\"adqacfrgnawba\"},\"id\":\"zlfsyqkfrbzgowo\",\"name\":\"qmje\",\"type\":\"jcx\"}],\"nextLink\":\"qg\"}")
-                .toObject(IpExtendedCommunityListResult.class);
-        Assertions.assertEquals("gqtagd", model.value().get(0).location());
-        Assertions.assertEquals("ssoljom", model.value().get(0).tags().get("vtfycnlbvgjcodk"));
-        Assertions
-            .assertEquals(CommunityActionTypes.DENY, model.value().get(0).ipExtendedCommunityRules().get(0).action());
-        Assertions
-            .assertEquals(
-                2785122180998227471L, model.value().get(0).ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions
-            .assertEquals("bhtmeplvuk", model.value().get(0).ipExtendedCommunityRules().get(0).routeTargets().get(0));
-        Assertions.assertEquals("lhjym", model.value().get(0).annotation());
-        Assertions.assertEquals("qg", model.nextLink());
+        IpExtendedCommunityListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"MAT\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":1372777057626285328,\"routeTargets\":[\"upeuknijduyye\",\"pydjfboc\",\"v\"]},{\"action\":\"Deny\",\"sequenceNumber\":2704241280285106932,\"routeTargets\":[\"tywikd\",\"hl\"]},{\"action\":\"Permit\",\"sequenceNumber\":7479528386540707541,\"routeTargets\":[\"gbhgau\",\"cdixmx\",\"f\"]},{\"action\":\"Deny\",\"sequenceNumber\":8950923037770050787,\"routeTargets\":[\"qg\",\"kfnozoeoqbvj\",\"vefgwbmqjchntas\"]}],\"annotation\":\"ymxbulpzealb\"},\"location\":\"kyojwyvfk\",\"tags\":{\"sgxjc\":\"suah\"},\"id\":\"mzrrscubiwsdrn\",\"name\":\"xqw\",\"type\":\"diffjxcjrmmuab\"},{\"properties\":{\"configurationState\":\"Succeeded\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Disabled\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":2828569188008254931,\"routeTargets\":[\"yefoyzbamwineo\",\"vfkakpold\",\"vevboclzh\",\"jknyu\"]},{\"action\":\"Permit\",\"sequenceNumber\":1613523004175535231,\"routeTargets\":[\"xpn\",\"upzaamrdixtre\",\"ids\"]}],\"annotation\":\"skbruffgllukkut\"},\"location\":\"xhrp\",\"tags\":{\"iryr\":\"mblcouqehbhbcds\",\"pmbltoormkfql\":\"ndo\",\"nbmjksibjgsjjxxa\":\"xldykalsygaolnjp\"},\"id\":\"mr\",\"name\":\"ad\",\"type\":\"yqegx\"},{\"properties\":{\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Enabled\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":8159905812934622437,\"routeTargets\":[\"ijkgqxnhm\",\"keznjaujvaa\",\"nggiycwkdtaa\",\"xw\"]},{\"action\":\"Permit\",\"sequenceNumber\":1273993162017075597,\"routeTargets\":[\"mrrqmbzmqkratb\",\"xwbjs\",\"dbirkfpksokdgo\"]},{\"action\":\"Deny\",\"sequenceNumber\":6649960660552995565,\"routeTargets\":[\"ym\",\"hbguzo\"]}],\"annotation\":\"yewnfnzhhhqos\"},\"location\":\"fjkutycyarnroo\",\"tags\":{\"ocnhzqrottjzcfyj\":\"abzoghktdpyczhco\",\"rl\":\"pt\",\"pqinf\":\"h\"},\"id\":\"zpyglqdhmrj\",\"name\":\"ralcxpjbyypsj\",\"type\":\"qcjenkyhf\"}],\"nextLink\":\"vsqxfxjelgcmpzqj\"}")
+            .toObject(IpExtendedCommunityListResult.class);
+        Assertions.assertEquals("kyojwyvfk", model.value().get(0).location());
+        Assertions.assertEquals("suah", model.value().get(0).tags().get("sgxjc"));
+        Assertions.assertEquals(CommunityActionTypes.DENY,
+            model.value().get(0).ipExtendedCommunityRules().get(0).action());
+        Assertions.assertEquals(1372777057626285328L,
+            model.value().get(0).ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("upeuknijduyye",
+            model.value().get(0).ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals("ymxbulpzealb", model.value().get(0).annotation());
+        Assertions.assertEquals("vsqxfxjelgcmpzqj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunityListResult model =
-            new IpExtendedCommunityListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new IpExtendedCommunityInner()
-                                .withLocation("gqtagd")
-                                .withTags(mapOf("vtfycnlbvgjcodk", "ssoljom"))
-                                .withIpExtendedCommunityRules(
-                                    Arrays
-                                        .asList(
-                                            new IpExtendedCommunityRule()
-                                                .withAction(CommunityActionTypes.DENY)
-                                                .withSequenceNumber(2785122180998227471L)
-                                                .withRouteTargets(
-                                                    Arrays.asList("bhtmeplvuk", "obrl", "pgsn", "agnchjhgemuowaky"))))
-                                .withAnnotation("lhjym"),
-                            new IpExtendedCommunityInner()
-                                .withLocation("xpvelszerqzevxo")
-                                .withTags(mapOf("qwaafrqulhm", "ntxwaljglzob", "afjrqpjiyrqjcrg", "yqbhd"))
-                                .withIpExtendedCommunityRules(
-                                    Arrays
-                                        .asList(
-                                            new IpExtendedCommunityRule()
-                                                .withAction(CommunityActionTypes.DENY)
-                                                .withSequenceNumber(3699712802375943107L)
-                                                .withRouteTargets(Arrays.asList("doksqdtiwlwxlbon")),
-                                            new IpExtendedCommunityRule()
-                                                .withAction(CommunityActionTypes.PERMIT)
-                                                .withSequenceNumber(9209057098528955798L)
-                                                .withRouteTargets(
-                                                    Arrays.asList("qicqchygt", "xbyja", "epubdp", "xyqvg")),
-                                            new IpExtendedCommunityRule()
-                                                .withAction(CommunityActionTypes.PERMIT)
-                                                .withSequenceNumber(6297136657290435513L)
-                                                .withRouteTargets(Arrays.asList("etvohkxdxuwsaifm")),
-                                            new IpExtendedCommunityRule()
-                                                .withAction(CommunityActionTypes.DENY)
-                                                .withSequenceNumber(4631038867223712223L)
-                                                .withRouteTargets(Arrays.asList("bzlehgc"))))
-                                .withAnnotation("bcknjolgj"),
-                            new IpExtendedCommunityInner()
-                                .withLocation("zhzzwvywrg")
-                                .withTags(
-                                    mapOf(
-                                        "pxncakiqao",
-                                        "ydg",
-                                        "lmf",
-                                        "djrkclamggl",
-                                        "ykglt",
-                                        "jdoq",
-                                        "tlgflwfgz",
-                                        "gxhqfgqkayejs"))
-                                .withIpExtendedCommunityRules(
-                                    Arrays
-                                        .asList(
-                                            new IpExtendedCommunityRule()
-                                                .withAction(CommunityActionTypes.DENY)
-                                                .withSequenceNumber(938718071879661634L)
-                                                .withRouteTargets(Arrays.asList("qilzdc")),
-                                            new IpExtendedCommunityRule()
-                                                .withAction(CommunityActionTypes.DENY)
-                                                .withSequenceNumber(3957593252486957917L)
-                                                .withRouteTargets(
-                                                    Arrays.asList("edxn", "ucaifpaurwwgilf", "qqa", "dmkxwxdcvjwcy")),
-                                            new IpExtendedCommunityRule()
-                                                .withAction(CommunityActionTypes.PERMIT)
-                                                .withSequenceNumber(638144041261070745L)
-                                                .withRouteTargets(Arrays.asList("ciqchxrtuicd", "iw"))))
-                                .withAnnotation("m"),
-                            new IpExtendedCommunityInner()
-                                .withLocation("jsllfryvd")
-                                .withTags(mapOf("gfbktyjmf", "adqacfrgnawba"))
-                                .withIpExtendedCommunityRules(
-                                    Arrays
-                                        .asList(
-                                            new IpExtendedCommunityRule()
-                                                .withAction(CommunityActionTypes.DENY)
-                                                .withSequenceNumber(6921489313242944838L)
-                                                .withRouteTargets(
-                                                    Arrays.asList("yvkunmign", "hi", "kgqogjw", "indedvabbx")),
-                                            new IpExtendedCommunityRule()
-                                                .withAction(CommunityActionTypes.DENY)
-                                                .withSequenceNumber(6106682011514466217L)
-                                                .withRouteTargets(Arrays.asList("eilbjywfcf")),
-                                            new IpExtendedCommunityRule()
-                                                .withAction(CommunityActionTypes.PERMIT)
-                                                .withSequenceNumber(2338776550669139701L)
-                                                .withRouteTargets(Arrays.asList("zi", "vwypusuvjsl"))))
-                                .withAnnotation("wci")))
-                .withNextLink("qg");
+        IpExtendedCommunityListResult model = new IpExtendedCommunityListResult().withValue(Arrays.asList(
+            new IpExtendedCommunityInner().withLocation("kyojwyvfk")
+                .withTags(mapOf("sgxjc", "suah"))
+                .withIpExtendedCommunityRules(Arrays.asList(
+                    new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                        .withSequenceNumber(1372777057626285328L)
+                        .withRouteTargets(Arrays.asList("upeuknijduyye", "pydjfboc", "v")),
+                    new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                        .withSequenceNumber(2704241280285106932L)
+                        .withRouteTargets(Arrays.asList("tywikd", "hl")),
+                    new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                        .withSequenceNumber(7479528386540707541L)
+                        .withRouteTargets(Arrays.asList("gbhgau", "cdixmx", "f")),
+                    new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                        .withSequenceNumber(8950923037770050787L)
+                        .withRouteTargets(Arrays.asList("qg", "kfnozoeoqbvj", "vefgwbmqjchntas"))))
+                .withAnnotation("ymxbulpzealb"),
+            new IpExtendedCommunityInner().withLocation("xhrp")
+                .withTags(
+                    mapOf("iryr", "mblcouqehbhbcds", "pmbltoormkfql", "ndo", "nbmjksibjgsjjxxa", "xldykalsygaolnjp"))
+                .withIpExtendedCommunityRules(Arrays.asList(
+                    new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                        .withSequenceNumber(2828569188008254931L)
+                        .withRouteTargets(Arrays.asList("yefoyzbamwineo", "vfkakpold", "vevboclzh", "jknyu")),
+                    new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                        .withSequenceNumber(1613523004175535231L)
+                        .withRouteTargets(Arrays.asList("xpn", "upzaamrdixtre", "ids"))))
+                .withAnnotation("skbruffgllukkut"),
+            new IpExtendedCommunityInner().withLocation("fjkutycyarnroo")
+                .withTags(mapOf("ocnhzqrottjzcfyj", "abzoghktdpyczhco", "rl", "pt", "pqinf", "h"))
+                .withIpExtendedCommunityRules(Arrays.asList(
+                    new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                        .withSequenceNumber(8159905812934622437L)
+                        .withRouteTargets(Arrays.asList("ijkgqxnhm", "keznjaujvaa", "nggiycwkdtaa", "xw")),
+                    new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                        .withSequenceNumber(1273993162017075597L)
+                        .withRouteTargets(Arrays.asList("mrrqmbzmqkratb", "xwbjs", "dbirkfpksokdgo")),
+                    new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                        .withSequenceNumber(6649960660552995565L)
+                        .withRouteTargets(Arrays.asList("ym", "hbguzo"))))
+                .withAnnotation("yewnfnzhhhqos")))
+            .withNextLink("vsqxfxjelgcmpzqj");
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityListResult.class);
-        Assertions.assertEquals("gqtagd", model.value().get(0).location());
-        Assertions.assertEquals("ssoljom", model.value().get(0).tags().get("vtfycnlbvgjcodk"));
-        Assertions
-            .assertEquals(CommunityActionTypes.DENY, model.value().get(0).ipExtendedCommunityRules().get(0).action());
-        Assertions
-            .assertEquals(
-                2785122180998227471L, model.value().get(0).ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions
-            .assertEquals("bhtmeplvuk", model.value().get(0).ipExtendedCommunityRules().get(0).routeTargets().get(0));
-        Assertions.assertEquals("lhjym", model.value().get(0).annotation());
-        Assertions.assertEquals("qg", model.nextLink());
+        Assertions.assertEquals("kyojwyvfk", model.value().get(0).location());
+        Assertions.assertEquals("suah", model.value().get(0).tags().get("sgxjc"));
+        Assertions.assertEquals(CommunityActionTypes.DENY,
+            model.value().get(0).ipExtendedCommunityRules().get(0).action());
+        Assertions.assertEquals(1372777057626285328L,
+            model.value().get(0).ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("upeuknijduyye",
+            model.value().get(0).ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals("ymxbulpzealb", model.value().get(0).annotation());
+        Assertions.assertEquals("vsqxfxjelgcmpzqj", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

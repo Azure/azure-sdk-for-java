@@ -11,7 +11,7 @@ public final class ApiCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiCollectionInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"snhpcselqx\",\"discoveredVia\":\"ppqib\",\"baseUrl\":\"klvzrl\",\"numberOfApiEndpoints\":106115275253276674,\"numberOfInactiveApiEndpoints\":5238881792700138972,\"numberOfUnauthenticatedApiEndpoints\":8845842496565245250,\"numberOfExternalApiEndpoints\":5707923166130608827,\"numberOfApiEndpointsWithSensitiveDataExposed\":8138175118626444262,\"sensitivityLabel\":\"qnasdsyenzsieu\"},\"id\":\"cplhyvdgxlyzkxi\",\"name\":\"dshezs\",\"type\":\"kol\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"uporqzdfu\",\"discoveredVia\":\"zvkfv\",\"baseUrl\":\"nq\",\"numberOfApiEndpoints\":8747604723179169845,\"numberOfInactiveApiEndpoints\":3069133497157477777,\"numberOfUnauthenticatedApiEndpoints\":8706926326017174525,\"numberOfExternalApiEndpoints\":1866158858475312478,\"numberOfApiEndpointsWithSensitiveDataExposed\":5449936747239088069,\"sensitivityLabel\":\"bemzqkzszuwi\"},\"id\":\"tglxx\",\"name\":\"ljfp\",\"type\":\"picrmnzhrgmqgjsx\"}")
             .toObject(ApiCollectionInner.class);
     }
 

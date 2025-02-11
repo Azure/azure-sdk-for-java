@@ -275,7 +275,6 @@ public final class RestSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

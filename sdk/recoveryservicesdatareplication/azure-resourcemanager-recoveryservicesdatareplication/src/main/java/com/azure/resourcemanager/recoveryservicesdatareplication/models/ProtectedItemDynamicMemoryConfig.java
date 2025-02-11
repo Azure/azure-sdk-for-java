@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Protected item dynamic memory config. */
+/**
+ * Protected item dynamic memory config.
+ */
 @Fluent
-public final class ProtectedItemDynamicMemoryConfig {
+public final class ProtectedItemDynamicMemoryConfig implements JsonSerializable<ProtectedItemDynamicMemoryConfig> {
     /*
      * Gets or sets maximum memory in MB.
      */
-    @JsonProperty(value = "maximumMemoryInMegaBytes", required = true)
     private long maximumMemoryInMegaBytes;
 
     /*
      * Gets or sets minimum memory in MB.
      */
-    @JsonProperty(value = "minimumMemoryInMegaBytes", required = true)
     private long minimumMemoryInMegaBytes;
 
     /*
      * Gets or sets target memory buffer in %.
      */
-    @JsonProperty(value = "targetMemoryBufferPercentage", required = true)
     private int targetMemoryBufferPercentage;
 
-    /** Creates an instance of ProtectedItemDynamicMemoryConfig class. */
+    /**
+     * Creates an instance of ProtectedItemDynamicMemoryConfig class.
+     */
     public ProtectedItemDynamicMemoryConfig() {
     }
 
     /**
      * Get the maximumMemoryInMegaBytes property: Gets or sets maximum memory in MB.
-     *
+     * 
      * @return the maximumMemoryInMegaBytes value.
      */
     public long maximumMemoryInMegaBytes() {
@@ -43,7 +48,7 @@ public final class ProtectedItemDynamicMemoryConfig {
 
     /**
      * Set the maximumMemoryInMegaBytes property: Gets or sets maximum memory in MB.
-     *
+     * 
      * @param maximumMemoryInMegaBytes the maximumMemoryInMegaBytes value to set.
      * @return the ProtectedItemDynamicMemoryConfig object itself.
      */
@@ -54,7 +59,7 @@ public final class ProtectedItemDynamicMemoryConfig {
 
     /**
      * Get the minimumMemoryInMegaBytes property: Gets or sets minimum memory in MB.
-     *
+     * 
      * @return the minimumMemoryInMegaBytes value.
      */
     public long minimumMemoryInMegaBytes() {
@@ -63,7 +68,7 @@ public final class ProtectedItemDynamicMemoryConfig {
 
     /**
      * Set the minimumMemoryInMegaBytes property: Gets or sets minimum memory in MB.
-     *
+     * 
      * @param minimumMemoryInMegaBytes the minimumMemoryInMegaBytes value to set.
      * @return the ProtectedItemDynamicMemoryConfig object itself.
      */
@@ -74,7 +79,7 @@ public final class ProtectedItemDynamicMemoryConfig {
 
     /**
      * Get the targetMemoryBufferPercentage property: Gets or sets target memory buffer in %.
-     *
+     * 
      * @return the targetMemoryBufferPercentage value.
      */
     public int targetMemoryBufferPercentage() {
@@ -83,7 +88,7 @@ public final class ProtectedItemDynamicMemoryConfig {
 
     /**
      * Set the targetMemoryBufferPercentage property: Gets or sets target memory buffer in %.
-     *
+     * 
      * @param targetMemoryBufferPercentage the targetMemoryBufferPercentage value to set.
      * @return the ProtectedItemDynamicMemoryConfig object itself.
      */
@@ -94,9 +99,53 @@ public final class ProtectedItemDynamicMemoryConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("maximumMemoryInMegaBytes", this.maximumMemoryInMegaBytes);
+        jsonWriter.writeLongField("minimumMemoryInMegaBytes", this.minimumMemoryInMegaBytes);
+        jsonWriter.writeIntField("targetMemoryBufferPercentage", this.targetMemoryBufferPercentage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectedItemDynamicMemoryConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectedItemDynamicMemoryConfig if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProtectedItemDynamicMemoryConfig.
+     */
+    public static ProtectedItemDynamicMemoryConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectedItemDynamicMemoryConfig deserializedProtectedItemDynamicMemoryConfig
+                = new ProtectedItemDynamicMemoryConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maximumMemoryInMegaBytes".equals(fieldName)) {
+                    deserializedProtectedItemDynamicMemoryConfig.maximumMemoryInMegaBytes = reader.getLong();
+                } else if ("minimumMemoryInMegaBytes".equals(fieldName)) {
+                    deserializedProtectedItemDynamicMemoryConfig.minimumMemoryInMegaBytes = reader.getLong();
+                } else if ("targetMemoryBufferPercentage".equals(fieldName)) {
+                    deserializedProtectedItemDynamicMemoryConfig.targetMemoryBufferPercentage = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectedItemDynamicMemoryConfig;
+        });
     }
 }

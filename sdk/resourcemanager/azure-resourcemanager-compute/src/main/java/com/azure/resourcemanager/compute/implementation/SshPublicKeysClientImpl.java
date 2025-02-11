@@ -34,8 +34,8 @@ import com.azure.resourcemanager.compute.fluent.models.SshPublicKeyGenerateKeyPa
 import com.azure.resourcemanager.compute.fluent.models.SshPublicKeyResourceInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.SshGenerateKeyPairInputParameters;
-import com.azure.resourcemanager.compute.models.SshPublicKeysGroupListResult;
 import com.azure.resourcemanager.compute.models.SshPublicKeyUpdateResource;
+import com.azure.resourcemanager.compute.models.SshPublicKeysGroupListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;

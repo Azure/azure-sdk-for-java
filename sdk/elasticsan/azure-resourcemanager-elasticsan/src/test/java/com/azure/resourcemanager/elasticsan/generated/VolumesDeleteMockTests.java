@@ -30,8 +30,8 @@ public final class VolumesDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.volumes()
-            .delete("obqwcsdbnwdcfh", "cqdpfuv", "lsbjjcanvxbv", "vudutncor", XMsDeleteSnapshots.TRUE,
-                XMsForceDelete.FALSE, com.azure.core.util.Context.NONE);
+            .delete("tor", "dsg", "a", "mkycgra", XMsDeleteSnapshots.TRUE, XMsForceDelete.FALSE,
+                com.azure.core.util.Context.NONE);
 
     }
 }

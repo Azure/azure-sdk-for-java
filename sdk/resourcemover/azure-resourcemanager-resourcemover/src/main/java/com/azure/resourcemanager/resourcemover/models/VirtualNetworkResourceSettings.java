@@ -5,58 +5,70 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Defines the virtual network resource settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Microsoft.Network/virtualNetworks")
+/**
+ * Defines the virtual network resource settings.
+ */
 @Fluent
 public final class VirtualNetworkResourceSettings extends ResourceSettings {
     /*
+     * The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+     */
+    private String resourceType = "Microsoft.Network/virtualNetworks";
+
+    /*
      * Gets or sets the Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Gets or sets a value indicating whether gets or sets whether the
      * DDOS protection should be switched on.
      */
-    @JsonProperty(value = "enableDdosProtection")
     private Boolean enableDdosProtection;
 
     /*
      * Gets or sets the address prefixes for the virtual network.
      */
-    @JsonProperty(value = "addressSpace")
     private List<String> addressSpace;
 
     /*
      * Gets or sets DHCPOptions that contains an array of DNS servers available to VMs
      * deployed in the virtual network.
      */
-    @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /*
      * Gets or sets List of subnets in a VirtualNetwork.
      */
-    @JsonProperty(value = "subnets")
     private List<SubnetResourceSettings> subnets;
 
-    /** Creates an instance of VirtualNetworkResourceSettings class. */
+    /**
+     * Creates an instance of VirtualNetworkResourceSettings class.
+     */
     public VirtualNetworkResourceSettings() {
     }
 
     /**
+     * Get the resourceType property: The resource type. For example, the value can be
+     * Microsoft.Compute/virtualMachines.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
      * Get the tags property: Gets or sets the Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -65,7 +77,7 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
 
     /**
      * Set the tags property: Gets or sets the Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the VirtualNetworkResourceSettings object itself.
      */
@@ -75,9 +87,9 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
     }
 
     /**
-     * Get the enableDdosProtection property: Gets or sets a value indicating whether gets or sets whether the DDOS
-     * protection should be switched on.
-     *
+     * Get the enableDdosProtection property: Gets or sets a value indicating whether gets or sets whether the
+     * DDOS protection should be switched on.
+     * 
      * @return the enableDdosProtection value.
      */
     public Boolean enableDdosProtection() {
@@ -85,9 +97,9 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
     }
 
     /**
-     * Set the enableDdosProtection property: Gets or sets a value indicating whether gets or sets whether the DDOS
-     * protection should be switched on.
-     *
+     * Set the enableDdosProtection property: Gets or sets a value indicating whether gets or sets whether the
+     * DDOS protection should be switched on.
+     * 
      * @param enableDdosProtection the enableDdosProtection value to set.
      * @return the VirtualNetworkResourceSettings object itself.
      */
@@ -98,7 +110,7 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
 
     /**
      * Get the addressSpace property: Gets or sets the address prefixes for the virtual network.
-     *
+     * 
      * @return the addressSpace value.
      */
     public List<String> addressSpace() {
@@ -107,7 +119,7 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
 
     /**
      * Set the addressSpace property: Gets or sets the address prefixes for the virtual network.
-     *
+     * 
      * @param addressSpace the addressSpace value to set.
      * @return the VirtualNetworkResourceSettings object itself.
      */
@@ -119,7 +131,7 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
     /**
      * Get the dnsServers property: Gets or sets DHCPOptions that contains an array of DNS servers available to VMs
      * deployed in the virtual network.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -129,7 +141,7 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
     /**
      * Set the dnsServers property: Gets or sets DHCPOptions that contains an array of DNS servers available to VMs
      * deployed in the virtual network.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the VirtualNetworkResourceSettings object itself.
      */
@@ -140,7 +152,7 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
 
     /**
      * Get the subnets property: Gets or sets List of subnets in a VirtualNetwork.
-     *
+     * 
      * @return the subnets value.
      */
     public List<SubnetResourceSettings> subnets() {
@@ -149,7 +161,7 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
 
     /**
      * Set the subnets property: Gets or sets List of subnets in a VirtualNetwork.
-     *
+     * 
      * @param subnets the subnets value to set.
      * @return the VirtualNetworkResourceSettings object itself.
      */
@@ -158,14 +170,18 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkResourceSettings withTargetResourceName(String targetResourceName) {
         super.withTargetResourceName(targetResourceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
         super.withTargetResourceGroupName(targetResourceGroupName);
@@ -174,14 +190,77 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (subnets() != null) {
             subnets().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceName", targetResourceName());
+        jsonWriter.writeStringField("targetResourceGroupName", targetResourceGroupName());
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("enableDdosProtection", this.enableDdosProtection);
+        jsonWriter.writeArrayField("addressSpace", this.addressSpace, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("dnsServers", this.dnsServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("subnets", this.subnets, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkResourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkResourceSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkResourceSettings.
+     */
+    public static VirtualNetworkResourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkResourceSettings deserializedVirtualNetworkResourceSettings
+                = new VirtualNetworkResourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceName".equals(fieldName)) {
+                    deserializedVirtualNetworkResourceSettings.withTargetResourceName(reader.getString());
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedVirtualNetworkResourceSettings.withTargetResourceGroupName(reader.getString());
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedVirtualNetworkResourceSettings.resourceType = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualNetworkResourceSettings.tags = tags;
+                } else if ("enableDdosProtection".equals(fieldName)) {
+                    deserializedVirtualNetworkResourceSettings.enableDdosProtection
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("addressSpace".equals(fieldName)) {
+                    List<String> addressSpace = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualNetworkResourceSettings.addressSpace = addressSpace;
+                } else if ("dnsServers".equals(fieldName)) {
+                    List<String> dnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualNetworkResourceSettings.dnsServers = dnsServers;
+                } else if ("subnets".equals(fieldName)) {
+                    List<SubnetResourceSettings> subnets
+                        = reader.readArray(reader1 -> SubnetResourceSettings.fromJson(reader1));
+                    deserializedVirtualNetworkResourceSettings.subnets = subnets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkResourceSettings;
+        });
     }
 }

@@ -136,7 +136,6 @@ public final class MongoDbSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -20,7 +20,7 @@ public class ChatCompletionsAsyncClientTest extends ChatCompletionsClientTestBas
     private ChatCompletionsAsyncClient getChatCompletionsAsyncClient(HttpClient httpClient) {
         return getChatCompletionsClientBuilder(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .buildAsyncClient();
+                .buildAsyncClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -28,12 +28,10 @@ public class ChatCompletionsAsyncClientTest extends ChatCompletionsClientTestBas
     public void testGetChatCompletions(HttpClient httpClient) {
         client = getChatCompletionsAsyncClient(httpClient);
         getChatCompletionsRunner((prompt) -> {
-            StepVerifier.create(client.complete(prompt))
-                .assertNext(resultCompletions -> {
-                    assertNotNull(resultCompletions.getUsage());
-                    assertCompletions(1, resultCompletions);
-                })
-                .verifyComplete();
+            StepVerifier.create(client.complete(prompt)).assertNext(resultCompletions -> {
+                assertNotNull(resultCompletions.getUsage());
+                assertCompletions(1, resultCompletions);
+            }).verifyComplete();
         });
     }
 
@@ -42,12 +40,10 @@ public class ChatCompletionsAsyncClientTest extends ChatCompletionsClientTestBas
     public void testGetChatCompletionsFromOptions(HttpClient httpClient) {
         client = getChatCompletionsAsyncClient(httpClient);
         getChatCompletionsFromOptionsRunner((options) -> {
-            StepVerifier.create(client.complete(options))
-                .assertNext(resultCompletions -> {
-                    assertNotNull(resultCompletions.getUsage());
-                    assertCompletions(1, resultCompletions);
-                })
-                .verifyComplete();
+            StepVerifier.create(client.complete(options)).assertNext(resultCompletions -> {
+                assertNotNull(resultCompletions.getUsage());
+                assertCompletions(1, resultCompletions);
+            }).verifyComplete();
         });
     }
 

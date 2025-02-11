@@ -6,31 +6,37 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The object that contains details of encryption used on the workspace. */
+/**
+ * The object that contains details of encryption used on the workspace.
+ */
 @Fluent
-public final class EncryptionV2 {
+public final class EncryptionV2 implements JsonSerializable<EncryptionV2> {
     /*
-     * The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Keyvault
+     * The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Keyvault
      */
-    @JsonProperty(value = "keySource", required = true)
     private EncryptionKeySource keySource;
 
     /*
      * Key Vault input properties for encryption.
      */
-    @JsonProperty(value = "keyVaultProperties")
     private EncryptionV2KeyVaultProperties keyVaultProperties;
 
-    /** Creates an instance of EncryptionV2 class. */
+    /**
+     * Creates an instance of EncryptionV2 class.
+     */
     public EncryptionV2() {
     }
 
     /**
      * Get the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
      * Microsoft.Keyvault.
-     *
+     * 
      * @return the keySource value.
      */
     public EncryptionKeySource keySource() {
@@ -40,7 +46,7 @@ public final class EncryptionV2 {
     /**
      * Set the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
      * Microsoft.Keyvault.
-     *
+     * 
      * @param keySource the keySource value to set.
      * @return the EncryptionV2 object itself.
      */
@@ -51,7 +57,7 @@ public final class EncryptionV2 {
 
     /**
      * Get the keyVaultProperties property: Key Vault input properties for encryption.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public EncryptionV2KeyVaultProperties keyVaultProperties() {
@@ -60,7 +66,7 @@ public final class EncryptionV2 {
 
     /**
      * Set the keyVaultProperties property: Key Vault input properties for encryption.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the EncryptionV2 object itself.
      */
@@ -71,14 +77,13 @@ public final class EncryptionV2 {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keySource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keySource in model EncryptionV2"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keySource in model EncryptionV2"));
         }
         if (keyVaultProperties() != null) {
             keyVaultProperties().validate();
@@ -86,4 +91,44 @@ public final class EncryptionV2 {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EncryptionV2.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keySource", this.keySource == null ? null : this.keySource.toString());
+        jsonWriter.writeJsonField("keyVaultProperties", this.keyVaultProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionV2 if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EncryptionV2.
+     */
+    public static EncryptionV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionV2 deserializedEncryptionV2 = new EncryptionV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keySource".equals(fieldName)) {
+                    deserializedEncryptionV2.keySource = EncryptionKeySource.fromString(reader.getString());
+                } else if ("keyVaultProperties".equals(fieldName)) {
+                    deserializedEncryptionV2.keyVaultProperties = EncryptionV2KeyVaultProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionV2;
+        });
+    }
 }

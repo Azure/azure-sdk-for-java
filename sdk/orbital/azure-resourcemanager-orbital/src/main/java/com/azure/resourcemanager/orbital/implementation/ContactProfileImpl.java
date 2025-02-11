@@ -127,20 +127,16 @@ public final class ContactProfileImpl implements ContactProfile, ContactProfile.
     }
 
     public ContactProfile create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .createOrUpdate(resourceGroupName, contactProfileName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .createOrUpdate(resourceGroupName, contactProfileName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ContactProfile create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .createOrUpdate(resourceGroupName, contactProfileName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .createOrUpdate(resourceGroupName, contactProfileName, this.innerModel(), context);
         return this;
     }
 
@@ -156,48 +152,40 @@ public final class ContactProfileImpl implements ContactProfile, ContactProfile.
     }
 
     public ContactProfile apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .updateTags(resourceGroupName, contactProfileName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .updateTags(resourceGroupName, contactProfileName, updateParameters, Context.NONE);
         return this;
     }
 
     public ContactProfile apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .updateTags(resourceGroupName, contactProfileName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .updateTags(resourceGroupName, contactProfileName, updateParameters, context);
         return this;
     }
 
-    ContactProfileImpl(
-        ContactProfileInner innerObject, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
+    ContactProfileImpl(ContactProfileInner innerObject,
+        com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.contactProfileName = Utils.getValueFromIdByName(innerObject.id(), "contactProfiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.contactProfileName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contactProfiles");
     }
 
     public ContactProfile refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .getByResourceGroupWithResponse(resourceGroupName, contactProfileName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .getByResourceGroupWithResponse(resourceGroupName, contactProfileName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContactProfile refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .getByResourceGroupWithResponse(resourceGroupName, contactProfileName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .getByResourceGroupWithResponse(resourceGroupName, contactProfileName, context)
+            .getValue();
         return this;
     }
 
@@ -211,8 +199,8 @@ public final class ContactProfileImpl implements ContactProfile, ContactProfile.
         return this;
     }
 
-    public ContactProfileImpl withNetworkConfiguration(
-        ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
+    public ContactProfileImpl
+        withNetworkConfiguration(ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
         this.innerModel().withNetworkConfiguration(networkConfiguration);
         return this;
     }
@@ -257,8 +245,8 @@ public final class ContactProfileImpl implements ContactProfile, ContactProfile.
         return this;
     }
 
-    public ContactProfileImpl withThirdPartyConfigurations(
-        List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
+    public ContactProfileImpl
+        withThirdPartyConfigurations(List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
         this.innerModel().withThirdPartyConfigurations(thirdPartyConfigurations);
         return this;
     }

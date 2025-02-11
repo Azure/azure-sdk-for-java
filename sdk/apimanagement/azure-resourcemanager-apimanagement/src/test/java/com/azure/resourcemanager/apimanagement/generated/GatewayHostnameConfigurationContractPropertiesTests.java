@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayHostnameConfigurationContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayHostnameConfigurationContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"hostname\":\"fyszzaczsinqbdnd\",\"certificateId\":\"bozsyvr\",\"negotiateClientCertificate\":true,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":true}")
-                .toObject(GatewayHostnameConfigurationContractProperties.class);
+        GatewayHostnameConfigurationContractProperties model = BinaryData.fromString(
+            "{\"hostname\":\"fyszzaczsinqbdnd\",\"certificateId\":\"bozsyvr\",\"negotiateClientCertificate\":true,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":true}")
+            .toObject(GatewayHostnameConfigurationContractProperties.class);
         Assertions.assertEquals("fyszzaczsinqbdnd", model.hostname());
         Assertions.assertEquals("bozsyvr", model.certificateId());
         Assertions.assertEquals(true, model.negotiateClientCertificate());
@@ -26,9 +24,8 @@ public final class GatewayHostnameConfigurationContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayHostnameConfigurationContractProperties model =
-            new GatewayHostnameConfigurationContractProperties()
-                .withHostname("fyszzaczsinqbdnd")
+        GatewayHostnameConfigurationContractProperties model
+            = new GatewayHostnameConfigurationContractProperties().withHostname("fyszzaczsinqbdnd")
                 .withCertificateId("bozsyvr")
                 .withNegotiateClientCertificate(true)
                 .withTls10Enabled(true)

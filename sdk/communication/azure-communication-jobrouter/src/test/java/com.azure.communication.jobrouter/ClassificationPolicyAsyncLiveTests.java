@@ -52,15 +52,13 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
         String distributionPolicyId = String.format("%s-%s-DistributionPolicy", JAVA_LIVE_TESTS, testName);
         String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            distributionPolicyId,
-            Duration.ofSeconds(10),
-            new LongestIdleMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10))
-            .setName(distributionPolicyName);
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(distributionPolicyId, Duration.ofSeconds(10),
+                new LongestIdleMode().setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                    .setName(distributionPolicyName);
 
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
+        DistributionPolicy distributionPolicy
+            = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueId = String.format("%s-%s-Queue", JAVA_LIVE_TESTS, testName);
         String fallbackQueueId = String.format("%s-%s-FallbackQueue", JAVA_LIVE_TESTS, testName);
@@ -69,13 +67,13 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
         Map<String, RouterValue> queueLabels = new HashMap<>();
         queueLabels.put("Label_1", new RouterValue("Value_1"));
 
-        CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
-            .setLabels(queueLabels)
-            .setName(queueName);
+        CreateQueueOptions createQueueOptions
+            = new CreateQueueOptions(queueId, distributionPolicyId).setLabels(queueLabels).setName(queueName);
 
         RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
-        RouterQueue fallbackQueue = administrationAsyncClient.createQueue(
-            new CreateQueueOptions(fallbackQueueId, distributionPolicyId)).block();
+        RouterQueue fallbackQueue
+            = administrationAsyncClient.createQueue(new CreateQueueOptions(fallbackQueueId, distributionPolicyId))
+                .block();
 
         String classificationPolicyId = String.format("%s-%s-ClassificationPolicy", JAVA_LIVE_TESTS, testName);
         String classificationPolicyName = String.format("%s-Name", classificationPolicyId);
@@ -89,32 +87,35 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
             new RouterQueueSelector("Name", LabelOperator.NOT_EQUAL, new RouterValue(true))));
 
         StaticWorkerSelectorAttachment staticWorkerSelector = new StaticWorkerSelectorAttachment(
-            new RouterWorkerSelector("key", LabelOperator.EQUAL, new RouterValue("value"))
-                .setExpedite(true).setExpiresAfter(Duration.ofSeconds(10)));
+            new RouterWorkerSelector("key", LabelOperator.EQUAL, new RouterValue("value")).setExpedite(true)
+                .setExpiresAfter(Duration.ofSeconds(10)));
 
         List<WorkerSelectorAttachment> workerSelectors = new ArrayList<>();
         workerSelectors.add(staticWorkerSelector);
-        workerSelectors.add(new ConditionalWorkerSelectorAttachment(new StaticRouterRule().setValue(new RouterValue(true)),
-            Collections.singletonList(new RouterWorkerSelector("Name", LabelOperator.NOT_EQUAL, new RouterValue(true)))));
+        workerSelectors.add(
+            new ConditionalWorkerSelectorAttachment(new StaticRouterRule().setValue(new RouterValue(true)), Collections
+                .singletonList(new RouterWorkerSelector("Name", LabelOperator.NOT_EQUAL, new RouterValue(true)))));
         workerSelectors.add(new PassThroughWorkerSelectorAttachment("Key", LabelOperator.NOT_EQUAL));
 
-        CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
-            classificationPolicyId)
-            .setName(classificationPolicyName)
-            .setPrioritizationRule(new StaticRouterRule().setValue(new RouterValue(1)))
-            .setWorkerSelectors(workerSelectors)
-            .setQueueSelectors(queueSelectors)
-            .setFallbackQueueId(fallbackQueue.getId());
+        CreateClassificationPolicyOptions createClassificationPolicyOptions
+            = new CreateClassificationPolicyOptions(classificationPolicyId).setName(classificationPolicyName)
+                .setPrioritizationRule(new StaticRouterRule().setValue(new RouterValue(1)))
+                .setWorkerSelectors(workerSelectors)
+                .setQueueSelectors(queueSelectors)
+                .setFallbackQueueId(fallbackQueue.getId());
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
         String channelId = String.format("%s-%s-Channel", JAVA_LIVE_TESTS, testName);
 
         // Action
-        ClassificationPolicy policy = administrationAsyncClient.createClassificationPolicy(createClassificationPolicyOptions).block();
-        RouterJob job = routerAsyncClient.createJobWithClassificationPolicy(
-            new CreateJobWithClassificationPolicyOptions(jobId, channelId, classificationPolicyId)
-                .setLabels(Collections.singletonMap("Key", new RouterValue("abc"))))
-            .block();
+        ClassificationPolicy policy
+            = administrationAsyncClient.createClassificationPolicy(createClassificationPolicyOptions).block();
+        RouterJob job
+            = routerAsyncClient
+                .createJobWithClassificationPolicy(
+                    new CreateJobWithClassificationPolicyOptions(jobId, channelId, classificationPolicyId)
+                        .setLabels(Collections.singletonMap("Key", new RouterValue("abc"))))
+                .block();
 
         sleepIfRunningAgainstService(5000);
 
@@ -125,11 +126,14 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
         assertNotNull(policy.getEtag());
         assertEquals(1, ((StaticRouterRule) policy.getPrioritizationRule()).getValue().getIntValue());
         assertEquals(3, policy.getWorkerSelectorAttachments().size());
-        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment) policy.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
+        assertEquals(Duration.ofSeconds(10),
+            ((StaticWorkerSelectorAttachment) policy.getWorkerSelectorAttachments().get(0)).getWorkerSelector()
+                .getExpiresAfter());
         assertEquals(2, policy.getQueueSelectorAttachments().size());
         assertEquals(fallbackQueueId, policy.getFallbackQueueId());
 
-        Response<BinaryData> binaryData = administrationAsyncClient.getClassificationPolicyWithResponse(policy.getId(), null).block();
+        Response<BinaryData> binaryData
+            = administrationAsyncClient.getClassificationPolicyWithResponse(policy.getId(), null).block();
         ClassificationPolicy deserialized = binaryData.getValue().toObject(ClassificationPolicy.class);
 
         assertEquals(classificationPolicyId, deserialized.getId());
@@ -138,7 +142,9 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
         assertEquals(policy.getEtag(), deserialized.getEtag());
         assertEquals(1, ((StaticRouterRule) deserialized.getPrioritizationRule()).getValue().getIntValue());
         assertEquals(3, deserialized.getWorkerSelectorAttachments().size());
-        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment) deserialized.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
+        assertEquals(Duration.ofSeconds(10),
+            ((StaticWorkerSelectorAttachment) deserialized.getWorkerSelectorAttachments().get(0)).getWorkerSelector()
+                .getExpiresAfter());
         assertEquals(2, deserialized.getQueueSelectorAttachments().size());
         assertEquals(fallbackQueueId, deserialized.getFallbackQueueId());
 
@@ -153,8 +159,8 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
 
         deserialized.setPrioritizationRule(null);
         deserialized.setQueueSelectorAttachments(new ArrayList<>());
-        ClassificationPolicy updatedPolicy = administrationAsyncClient.updateClassificationPolicy(
-            deserialized.getId(), deserialized).block();
+        ClassificationPolicy updatedPolicy
+            = administrationAsyncClient.updateClassificationPolicy(deserialized.getId(), deserialized).block();
 
         assertEquals(classificationPolicyId, updatedPolicy.getId());
         assertEquals(classificationPolicyName, updatedPolicy.getName());
@@ -162,7 +168,9 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
         assertNotEquals(policy.getEtag(), updatedPolicy.getEtag());
         assertEquals(1, ((StaticRouterRule) updatedPolicy.getPrioritizationRule()).getValue().getIntValue());
         assertEquals(3, updatedPolicy.getWorkerSelectorAttachments().size());
-        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment) updatedPolicy.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
+        assertEquals(Duration.ofSeconds(10),
+            ((StaticWorkerSelectorAttachment) updatedPolicy.getWorkerSelectorAttachments().get(0)).getWorkerSelector()
+                .getExpiresAfter());
         assertEquals(0, updatedPolicy.getQueueSelectorAttachments().size());
         assertEquals(fallbackQueueId, updatedPolicy.getFallbackQueueId());
 

@@ -7,25 +7,24 @@ package com.azure.resourcemanager.loadtesting.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.loadtesting.fluent.models.CheckQuotaAvailabilityResponseProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckQuotaAvailabilityResponsePropertiesTests {
-    @Test
+    @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckQuotaAvailabilityResponseProperties model =
-            BinaryData
-                .fromString("{\"isAvailable\":false,\"availabilityStatus\":\"sy\"}")
+        CheckQuotaAvailabilityResponseProperties model
+            = BinaryData.fromString("{\"isAvailable\":false,\"availabilityStatus\":\"ldhugjzzdatqxh\"}")
                 .toObject(CheckQuotaAvailabilityResponseProperties.class);
         Assertions.assertEquals(false, model.isAvailable());
-        Assertions.assertEquals("sy", model.availabilityStatus());
+        Assertions.assertEquals("ldhugjzzdatqxh", model.availabilityStatus());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckQuotaAvailabilityResponseProperties model =
-            new CheckQuotaAvailabilityResponseProperties().withIsAvailable(false).withAvailabilityStatus("sy");
+        CheckQuotaAvailabilityResponseProperties model
+            = new CheckQuotaAvailabilityResponseProperties().withIsAvailable(false)
+                .withAvailabilityStatus("ldhugjzzdatqxh");
         model = BinaryData.fromObject(model).toObject(CheckQuotaAvailabilityResponseProperties.class);
         Assertions.assertEquals(false, model.isAvailable());
-        Assertions.assertEquals("sy", model.availabilityStatus());
+        Assertions.assertEquals("ldhugjzzdatqxh", model.availabilityStatus());
     }
 }

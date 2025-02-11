@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class StandardTierStorageRedundancy extends ExpandableStringEnum<St
      * @param name a name to look for.
      * @return the corresponding StandardTierStorageRedundancy.
      */
-    @JsonCreator
     public static StandardTierStorageRedundancy fromString(String name) {
         return fromString(name, StandardTierStorageRedundancy.class);
     }

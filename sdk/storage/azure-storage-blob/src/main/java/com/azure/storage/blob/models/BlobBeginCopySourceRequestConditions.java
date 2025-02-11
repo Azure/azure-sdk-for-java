@@ -17,6 +17,12 @@ public class BlobBeginCopySourceRequestConditions extends RequestConditions {
     private String tagsConditions;
 
     /**
+     * Creates a new instance of {@link BlobBeginCopySourceRequestConditions}.
+     */
+    public BlobBeginCopySourceRequestConditions() {
+    }
+
+    /**
      * Optionally limit requests to resources that match the passed ETag.
      *
      * @param ifMatch ETag that resources must match.

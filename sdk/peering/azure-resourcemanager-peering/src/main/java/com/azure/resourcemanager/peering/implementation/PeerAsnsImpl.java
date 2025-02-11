@@ -29,10 +29,7 @@ public final class PeerAsnsImpl implements PeerAsns {
     public Response<PeerAsn> getWithResponse(String peerAsnName, Context context) {
         Response<PeerAsnInner> inner = this.serviceClient().getWithResponse(peerAsnName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PeerAsnImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -58,54 +55,46 @@ public final class PeerAsnsImpl implements PeerAsns {
 
     public PagedIterable<PeerAsn> list() {
         PagedIterable<PeerAsnInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PeerAsnImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeerAsnImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PeerAsn> list(Context context) {
         PagedIterable<PeerAsnInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new PeerAsnImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeerAsnImpl(inner1, this.manager()));
     }
 
     public PeerAsn getById(String id) {
-        String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
+        String peerAsnName = ResourceManagerUtils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
         }
         return this.getWithResponse(peerAsnName, Context.NONE).getValue();
     }
 
     public Response<PeerAsn> getByIdWithResponse(String id, Context context) {
-        String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
+        String peerAsnName = ResourceManagerUtils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
         }
         return this.getWithResponse(peerAsnName, context);
     }
 
     public void deleteById(String id) {
-        String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
+        String peerAsnName = ResourceManagerUtils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
         }
         this.deleteWithResponse(peerAsnName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
+        String peerAsnName = ResourceManagerUtils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
         }
         return this.deleteWithResponse(peerAsnName, context);
     }

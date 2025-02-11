@@ -217,13 +217,15 @@ public final class DevCenterClientImpl {
      * Lists all projects.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -247,13 +249,15 @@ public final class DevCenterClientImpl {
      * Lists all projects.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -275,13 +279,15 @@ public final class DevCenterClientImpl {
      * Lists all projects.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -303,13 +309,15 @@ public final class DevCenterClientImpl {
      * Lists all projects.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -331,13 +339,15 @@ public final class DevCenterClientImpl {
      * Gets a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -358,13 +368,15 @@ public final class DevCenterClientImpl {
      * Gets a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -382,18 +394,18 @@ public final class DevCenterClientImpl {
     }
 
     /**
-     * Lists all projects.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -416,18 +428,18 @@ public final class DevCenterClientImpl {
     }
 
     /**
-     * Lists all projects.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

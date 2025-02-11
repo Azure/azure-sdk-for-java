@@ -14,7 +14,9 @@ import java.util.Arrays;
  */
 public final class DomainEventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/DomainEventSubscriptions_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * DomainEventSubscriptions_Update.json
      */
     /**
      * Sample code: DomainEventSubscriptions_Update.

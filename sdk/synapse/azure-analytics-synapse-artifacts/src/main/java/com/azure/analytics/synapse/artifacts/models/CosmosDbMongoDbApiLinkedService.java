@@ -24,12 +24,14 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     private String type = "CosmosDbMongoDbApi";
 
     /*
-     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
      */
     private Object connectionString;
 
     /*
-     * The name of the CosmosDB (MongoDB API) database that you want to access. Type: string (or Expression with resultType string).
+     * The name of the CosmosDB (MongoDB API) database that you want to access. Type: string (or Expression with
+     * resultType string).
      */
     private Object database;
 

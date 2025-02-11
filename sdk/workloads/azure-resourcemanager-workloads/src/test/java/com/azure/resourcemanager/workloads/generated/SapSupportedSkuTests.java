@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SapSupportedSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapSupportedSku model =
-            BinaryData
-                .fromString("{\"vmSku\":\"hdxbmtqio\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false}")
-                .toObject(SapSupportedSku.class);
+        SapSupportedSku model = BinaryData
+            .fromString("{\"vmSku\":\"hdxbmtqio\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false}")
+            .toObject(SapSupportedSku.class);
         Assertions.assertEquals("hdxbmtqio", model.vmSku());
         Assertions.assertEquals(false, model.isAppServerCertified());
         Assertions.assertEquals(false, model.isDatabaseCertified());
@@ -22,8 +21,9 @@ public final class SapSupportedSkuTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapSupportedSku model =
-            new SapSupportedSku().withVmSku("hdxbmtqio").withIsAppServerCertified(false).withIsDatabaseCertified(false);
+        SapSupportedSku model = new SapSupportedSku().withVmSku("hdxbmtqio")
+            .withIsAppServerCertified(false)
+            .withIsDatabaseCertified(false);
         model = BinaryData.fromObject(model).toObject(SapSupportedSku.class);
         Assertions.assertEquals("hdxbmtqio", model.vmSku());
         Assertions.assertEquals(false, model.isAppServerCertified());

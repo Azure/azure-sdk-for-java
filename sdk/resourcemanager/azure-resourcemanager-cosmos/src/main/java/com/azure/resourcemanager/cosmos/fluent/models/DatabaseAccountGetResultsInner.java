@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -982,6 +981,32 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @return the enablePerRegionPerPartitionAutoscale value.
+     */
+    public Boolean enablePerRegionPerPartitionAutoscale() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePerRegionPerPartitionAutoscale();
+    }
+
+    /**
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner
+        withEnablePerRegionPerPartitionAutoscale(Boolean enablePerRegionPerPartitionAutoscale) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnablePerRegionPerPartitionAutoscale(enablePerRegionPerPartitionAutoscale);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -994,14 +1019,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
         if (innerProperties() != null) {
             innerProperties().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property location in model DatabaseAccountGetResultsInner"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DatabaseAccountGetResultsInner.class);
 
     /**
      * {@inheritDoc}

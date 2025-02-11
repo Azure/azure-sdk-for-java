@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class SmartDataActions extends ExpandableStringEnum<SmartDataAction
      * @param name a name to look for.
      * @return the corresponding SmartDataActions.
      */
-    @JsonCreator
     public static SmartDataActions fromString(String name) {
         return fromString(name, SmartDataActions.class);
     }

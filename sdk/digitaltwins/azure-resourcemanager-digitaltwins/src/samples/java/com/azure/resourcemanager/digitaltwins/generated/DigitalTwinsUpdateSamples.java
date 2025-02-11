@@ -12,65 +12,67 @@ import com.azure.resourcemanager.digitaltwins.models.PublicNetworkAccess;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DigitalTwins Update. */
+/**
+ * Samples for DigitalTwins Update.
+ */
 public final class DigitalTwinsUpdateSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsPatch_example.json
+     * x-ms-original-file:
+     * specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/
+     * DigitalTwinsPatch_example.json
      */
     /**
      * Sample code: Patch a DigitalTwinsInstance resource.
-     *
+     * 
      * @param manager Entry point to AzureDigitalTwinsManager.
      */
-    public static void patchADigitalTwinsInstanceResource(
-        com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        DigitalTwinsDescription resource =
-            manager
-                .digitalTwins()
-                .getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        patchADigitalTwinsInstanceResource(com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
+        DigitalTwinsDescription resource = manager.digitalTwins()
+            .getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("purpose", "dev")).apply();
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsPatch_WithPublicNetworkAccess.json
+     * x-ms-original-file:
+     * specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/
+     * DigitalTwinsPatch_WithPublicNetworkAccess.json
      */
     /**
      * Sample code: Patch a DigitalTwinsInstance resource with publicNetworkAccess property.
-     *
+     * 
      * @param manager Entry point to AzureDigitalTwinsManager.
      */
     public static void patchADigitalTwinsInstanceResourceWithPublicNetworkAccessProperty(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        DigitalTwinsDescription resource =
-            manager
-                .digitalTwins()
-                .getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        DigitalTwinsDescription resource = manager.digitalTwins()
+            .getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withProperties(new DigitalTwinsPatchProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsPatch_WithIdentity_example.json
+     * x-ms-original-file:
+     * specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/
+     * DigitalTwinsPatch_WithIdentity_example.json
      */
     /**
      * Sample code: Patch a DigitalTwinsInstance resource with identity.
-     *
+     * 
      * @param manager Entry point to AzureDigitalTwinsManager.
      */
     public static void patchADigitalTwinsInstanceResourceWithIdentity(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        DigitalTwinsDescription resource =
-            manager
-                .digitalTwins()
-                .getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", com.azure.core.util.Context.NONE)
-                .getValue();
+        DigitalTwinsDescription resource = manager.digitalTwins()
+            .getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withIdentity(new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.NONE)).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

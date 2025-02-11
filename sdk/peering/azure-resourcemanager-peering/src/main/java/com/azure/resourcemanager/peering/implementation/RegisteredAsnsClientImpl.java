@@ -33,22 +33,28 @@ import com.azure.resourcemanager.peering.fluent.models.PeeringRegisteredAsnInner
 import com.azure.resourcemanager.peering.models.PeeringRegisteredAsnListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RegisteredAsnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RegisteredAsnsClient.
+ */
 public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RegisteredAsnsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PeeringManagementClientImpl client;
 
     /**
      * Initializes an instance of RegisteredAsnsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RegisteredAsnsClientImpl(PeeringManagementClientImpl client) {
-        this.service =
-            RestProxy.create(RegisteredAsnsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RegisteredAsnsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,84 +65,58 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
     @Host("{$host}")
     @ServiceInterface(name = "PeeringManagementCli")
     public interface RegisteredAsnsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings"
-                + "/{peeringName}/registeredAsns/{registeredAsnName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}/registeredAsns/{registeredAsnName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PeeringRegisteredAsnInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("peeringName") String peeringName,
+        Mono<Response<PeeringRegisteredAsnInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("peeringName") String peeringName,
             @PathParam("registeredAsnName") String registeredAsnName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings"
-                + "/{peeringName}/registeredAsns/{registeredAsnName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}/registeredAsns/{registeredAsnName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PeeringRegisteredAsnInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("peeringName") String peeringName,
+        Mono<Response<PeeringRegisteredAsnInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("peeringName") String peeringName,
             @PathParam("registeredAsnName") String registeredAsnName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PeeringRegisteredAsnInner registeredAsn,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings"
-                + "/{peeringName}/registeredAsns/{registeredAsnName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}/registeredAsns/{registeredAsnName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("peeringName") String peeringName,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("peeringName") String peeringName,
             @PathParam("registeredAsnName") String registeredAsnName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings"
-                + "/{peeringName}/registeredAsns")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}/registeredAsns")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PeeringRegisteredAsnListResult>> listByPeering(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("peeringName") String peeringName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PeeringRegisteredAsnListResult>> listByPeering(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("peeringName") String peeringName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PeeringRegisteredAsnListResult>> listByPeeringNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets an existing registered ASN with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the registered ASN.
@@ -144,16 +124,14 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering along with {@link Response} on successful completion of {@link Mono}.
+     * peering along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PeeringRegisteredAsnInner>> getWithResponseAsync(
-        String resourceGroupName, String peeringName, String registeredAsnName) {
+    private Mono<Response<PeeringRegisteredAsnInner>> getWithResponseAsync(String resourceGroupName, String peeringName,
+        String registeredAsnName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -167,31 +145,19 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
                 .error(new IllegalArgumentException("Parameter registeredAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            peeringName,
-                            registeredAsnName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, peeringName,
+                registeredAsnName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an existing registered ASN with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the registered ASN.
@@ -200,16 +166,14 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering along with {@link Response} on successful completion of {@link Mono}.
+     * peering along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PeeringRegisteredAsnInner>> getWithResponseAsync(
-        String resourceGroupName, String peeringName, String registeredAsnName, Context context) {
+    private Mono<Response<PeeringRegisteredAsnInner>> getWithResponseAsync(String resourceGroupName, String peeringName,
+        String registeredAsnName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -223,28 +187,18 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
                 .error(new IllegalArgumentException("Parameter registeredAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                peeringName,
-                registeredAsnName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, peeringName, registeredAsnName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets an existing registered ASN with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the registered ASN.
@@ -252,18 +206,18 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering on successful completion of {@link Mono}.
+     * peering on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PeeringRegisteredAsnInner> getAsync(
-        String resourceGroupName, String peeringName, String registeredAsnName) {
+    private Mono<PeeringRegisteredAsnInner> getAsync(String resourceGroupName, String peeringName,
+        String registeredAsnName) {
         return getWithResponseAsync(resourceGroupName, peeringName, registeredAsnName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an existing registered ASN with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the registered ASN.
@@ -272,17 +226,17 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering along with {@link Response}.
+     * peering along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PeeringRegisteredAsnInner> getWithResponse(
-        String resourceGroupName, String peeringName, String registeredAsnName, Context context) {
+    public Response<PeeringRegisteredAsnInner> getWithResponse(String resourceGroupName, String peeringName,
+        String registeredAsnName, Context context) {
         return getWithResponseAsync(resourceGroupName, peeringName, registeredAsnName, context).block();
     }
 
     /**
      * Gets an existing registered ASN with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the registered ASN.
@@ -290,7 +244,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering.
+     * peering.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PeeringRegisteredAsnInner get(String resourceGroupName, String peeringName, String registeredAsnName) {
@@ -299,7 +253,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
 
     /**
      * Creates a new registered ASN with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the ASN.
@@ -308,19 +262,14 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the customer's ASN that is registered by the peering service provider along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PeeringRegisteredAsnInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String peeringName,
-        String registeredAsnName,
-        PeeringRegisteredAsnInner registeredAsn) {
+    private Mono<Response<PeeringRegisteredAsnInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String peeringName, String registeredAsnName, PeeringRegisteredAsnInner registeredAsn) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -334,10 +283,8 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
                 .error(new IllegalArgumentException("Parameter registeredAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (registeredAsn == null) {
             return Mono.error(new IllegalArgumentException("Parameter registeredAsn is required and cannot be null."));
@@ -346,25 +293,15 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            peeringName,
-                            registeredAsnName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            registeredAsn,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, peeringName,
+                registeredAsnName, this.client.getSubscriptionId(), this.client.getApiVersion(), registeredAsn, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new registered ASN with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the ASN.
@@ -374,20 +311,14 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the customer's ASN that is registered by the peering service provider along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PeeringRegisteredAsnInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String peeringName,
-        String registeredAsnName,
-        PeeringRegisteredAsnInner registeredAsn,
-        Context context) {
+    private Mono<Response<PeeringRegisteredAsnInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String peeringName, String registeredAsnName, PeeringRegisteredAsnInner registeredAsn, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -401,10 +332,8 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
                 .error(new IllegalArgumentException("Parameter registeredAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (registeredAsn == null) {
             return Mono.error(new IllegalArgumentException("Parameter registeredAsn is required and cannot be null."));
@@ -413,22 +342,13 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                peeringName,
-                registeredAsnName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                registeredAsn,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, peeringName, registeredAsnName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), registeredAsn, accept, context);
     }
 
     /**
      * Creates a new registered ASN with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the ASN.
@@ -436,22 +356,19 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's ASN that is registered by the peering service provider on successful completion of {@link
-     *     Mono}.
+     * @return the customer's ASN that is registered by the peering service provider on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PeeringRegisteredAsnInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String peeringName,
-        String registeredAsnName,
-        PeeringRegisteredAsnInner registeredAsn) {
+    private Mono<PeeringRegisteredAsnInner> createOrUpdateAsync(String resourceGroupName, String peeringName,
+        String registeredAsnName, PeeringRegisteredAsnInner registeredAsn) {
         return createOrUpdateWithResponseAsync(resourceGroupName, peeringName, registeredAsnName, registeredAsn)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new registered ASN with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the ASN.
@@ -463,20 +380,15 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @return the customer's ASN that is registered by the peering service provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PeeringRegisteredAsnInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String peeringName,
-        String registeredAsnName,
-        PeeringRegisteredAsnInner registeredAsn,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, peeringName, registeredAsnName, registeredAsn, context)
-            .block();
+    public Response<PeeringRegisteredAsnInner> createOrUpdateWithResponse(String resourceGroupName, String peeringName,
+        String registeredAsnName, PeeringRegisteredAsnInner registeredAsn, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, peeringName, registeredAsnName, registeredAsn,
+            context).block();
     }
 
     /**
      * Creates a new registered ASN with the specified name under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the ASN.
@@ -487,20 +399,16 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @return the customer's ASN that is registered by the peering service provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PeeringRegisteredAsnInner createOrUpdate(
-        String resourceGroupName,
-        String peeringName,
-        String registeredAsnName,
-        PeeringRegisteredAsnInner registeredAsn) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, peeringName, registeredAsnName, registeredAsn, Context.NONE)
-            .getValue();
+    public PeeringRegisteredAsnInner createOrUpdate(String resourceGroupName, String peeringName,
+        String registeredAsnName, PeeringRegisteredAsnInner registeredAsn) {
+        return createOrUpdateWithResponse(resourceGroupName, peeringName, registeredAsnName, registeredAsn,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes an existing registered ASN with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the registered ASN.
@@ -510,13 +418,11 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String peeringName, String registeredAsnName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String peeringName,
+        String registeredAsnName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -530,32 +436,20 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
                 .error(new IllegalArgumentException("Parameter registeredAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            peeringName,
-                            registeredAsnName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, peeringName,
+                registeredAsnName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing registered ASN with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the registered ASN.
@@ -566,13 +460,11 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String peeringName, String registeredAsnName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String peeringName,
+        String registeredAsnName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -586,29 +478,19 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
                 .error(new IllegalArgumentException("Parameter registeredAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                peeringName,
-                registeredAsnName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, peeringName, registeredAsnName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an existing registered ASN with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the registered ASN.
@@ -626,7 +508,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
     /**
      * Deletes an existing registered ASN with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the registered ASN.
@@ -637,15 +519,15 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String peeringName, String registeredAsnName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String peeringName, String registeredAsnName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, peeringName, registeredAsnName, context).block();
     }
 
     /**
      * Deletes an existing registered ASN with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredAsnName The name of the registered ASN.
@@ -660,23 +542,21 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
 
     /**
      * Lists all registered ASNs under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering registered ASNs along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PeeringRegisteredAsnInner>> listByPeeringSinglePageAsync(
-        String resourceGroupName, String peeringName) {
+    private Mono<PagedResponse<PeeringRegisteredAsnInner>> listByPeeringSinglePageAsync(String resourceGroupName,
+        String peeringName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -686,39 +566,21 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByPeering(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            peeringName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<PeeringRegisteredAsnInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByPeering(this.client.getEndpoint(), resourceGroupName, peeringName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<PeeringRegisteredAsnInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all registered ASNs under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param context The context to associate with this operation.
@@ -726,16 +588,14 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering registered ASNs along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PeeringRegisteredAsnInner>> listByPeeringSinglePageAsync(
-        String resourceGroupName, String peeringName, Context context) {
+    private Mono<PagedResponse<PeeringRegisteredAsnInner>> listByPeeringSinglePageAsync(String resourceGroupName,
+        String peeringName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -745,36 +605,21 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByPeering(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                peeringName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByPeering(this.client.getEndpoint(), resourceGroupName, peeringName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all registered ASNs under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -784,14 +629,13 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringRegisteredAsnInner> listByPeeringAsync(String resourceGroupName, String peeringName) {
-        return new PagedFlux<>(
-            () -> listByPeeringSinglePageAsync(resourceGroupName, peeringName),
+        return new PagedFlux<>(() -> listByPeeringSinglePageAsync(resourceGroupName, peeringName),
             nextLink -> listByPeeringNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all registered ASNs under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param context The context to associate with this operation.
@@ -801,16 +645,15 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @return the paginated list of peering registered ASNs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PeeringRegisteredAsnInner> listByPeeringAsync(
-        String resourceGroupName, String peeringName, Context context) {
-        return new PagedFlux<>(
-            () -> listByPeeringSinglePageAsync(resourceGroupName, peeringName, context),
+    private PagedFlux<PeeringRegisteredAsnInner> listByPeeringAsync(String resourceGroupName, String peeringName,
+        Context context) {
+        return new PagedFlux<>(() -> listByPeeringSinglePageAsync(resourceGroupName, peeringName, context),
             nextLink -> listByPeeringNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all registered ASNs under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -825,7 +668,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
 
     /**
      * Lists all registered ASNs under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param context The context to associate with this operation.
@@ -835,21 +678,20 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @return the paginated list of peering registered ASNs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PeeringRegisteredAsnInner> listByPeering(
-        String resourceGroupName, String peeringName, Context context) {
+    public PagedIterable<PeeringRegisteredAsnInner> listByPeering(String resourceGroupName, String peeringName,
+        Context context) {
         return new PagedIterable<>(listByPeeringAsync(resourceGroupName, peeringName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering registered ASNs along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringRegisteredAsnInner>> listByPeeringNextSinglePageAsync(String nextLink) {
@@ -857,62 +699,42 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByPeeringNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PeeringRegisteredAsnInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PeeringRegisteredAsnInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering registered ASNs along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PeeringRegisteredAsnInner>> listByPeeringNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PeeringRegisteredAsnInner>> listByPeeringNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByPeeringNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByPeeringNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

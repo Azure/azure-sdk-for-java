@@ -14,45 +14,38 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ServiceFabricSchedules CreateOrUpdate. */
+/**
+ * Samples for ServiceFabricSchedules CreateOrUpdate.
+ */
 public final class ServiceFabricSchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabricSchedules_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ServiceFabricSchedules_CreateOrUpdate.json
      */
     /**
      * Sample code: ServiceFabricSchedules_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
-    public static void serviceFabricSchedulesCreateOrUpdate(
-        com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabricSchedules()
-            .createOrUpdateWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "@me",
-                "{serviceFrabicName}",
+    public static void
+        serviceFabricSchedulesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
+        manager.serviceFabricSchedules()
+            .createOrUpdateWithResponse("resourceGroupName", "{labName}", "@me", "{serviceFrabicName}",
                 "{scheduleName}",
-                new ScheduleInner()
-                    .withLocation("{location}")
+                new ScheduleInner().withLocation("{location}")
                     .withTags(mapOf("tagName1", "tagValue1"))
                     .withStatus(EnableStatus.fromString("{Enabled|Disabled}"))
                     .withTaskType(
                         "{Unknown|LabVmsShutdownTask|LabVmsStartupTask|LabVmReclamationTask|ComputeVmShutdownTask}")
-                    .withWeeklyRecurrence(
-                        new WeekDetails()
-                            .withWeekdays(
-                                Arrays
-                                    .asList(
-                                        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
-                            .withTime("19:00"))
+                    .withWeeklyRecurrence(new WeekDetails()
+                        .withWeekdays(
+                            Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+                        .withTime("19:00"))
                     .withDailyRecurrence(new DayDetails().withTime("19:00"))
                     .withHourlyRecurrence(new HourDetails().withMinute(0))
                     .withTimeZoneId("Pacific Standard Time")
                     .withNotificationSettings(
-                        new NotificationSettings()
-                            .withStatus(EnableStatus.fromString("{Enabled|Disabled}"))
+                        new NotificationSettings().withStatus(EnableStatus.fromString("{Enabled|Disabled}"))
                             .withTimeInMinutes(15)
                             .withWebhookUrl("{webhoolUrl}")
                             .withEmailRecipient("{email}")

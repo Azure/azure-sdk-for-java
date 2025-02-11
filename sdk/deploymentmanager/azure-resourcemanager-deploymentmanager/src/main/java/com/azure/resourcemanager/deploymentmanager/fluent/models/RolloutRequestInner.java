@@ -176,17 +176,14 @@ public final class RolloutRequestInner extends Resource {
      */
     public void validate() {
         if (identity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property identity in model RolloutRequestInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property identity in model RolloutRequestInner"));
         } else {
             identity().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model RolloutRequestInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model RolloutRequestInner"));
         } else {
             innerProperties().validate();
         }

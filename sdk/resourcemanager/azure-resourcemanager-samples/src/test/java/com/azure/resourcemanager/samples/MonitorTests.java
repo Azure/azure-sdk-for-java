@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.samples;
 
-
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.monitor.samples.AutoscaleSettingsBasedOnPerformanceOrSchedule;
 import com.azure.resourcemanager.monitor.samples.QueryMetricsAndActivityLogs;

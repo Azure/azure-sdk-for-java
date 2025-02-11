@@ -15,6 +15,7 @@ public final class SemanticSearchResults {
     private final List<QueryAnswerResult> queryAnswers;
     private final SemanticErrorReason errorReason;
     private final SemanticSearchResultsType resultsType;
+    private final SemanticQueryRewritesResultType semanticQueryRewritesResultType;
 
     static {
         SemanticSearchResultsAccessHelper.setAccessor(SemanticSearchResults::new);
@@ -24,6 +25,8 @@ public final class SemanticSearchResults {
         this.queryAnswers = SearchPagedResponseAccessHelper.getQueryAnswers(pagedResponse);
         this.errorReason = SearchPagedResponseAccessHelper.getSemanticErrorReason(pagedResponse);
         this.resultsType = SearchPagedResponseAccessHelper.getSemanticSearchResultsType(pagedResponse);
+        this.semanticQueryRewritesResultType
+            = SearchPagedResponseAccessHelper.getSemanticQueryRewritesResultType(pagedResponse);
     }
 
     /**
@@ -53,5 +56,14 @@ public final class SemanticSearchResults {
      */
     public SemanticSearchResultsType getResultsType() {
         return this.resultsType;
+    }
+
+    /**
+     * Type of query rewrite that was used for this request.
+     *
+     * @return The type of query rewrite that was used for this request.
+     */
+    public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
+        return this.semanticQueryRewritesResultType;
     }
 }

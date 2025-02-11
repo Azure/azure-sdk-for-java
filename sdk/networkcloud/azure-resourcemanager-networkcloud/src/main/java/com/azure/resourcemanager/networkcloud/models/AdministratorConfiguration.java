@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,29 +17,29 @@ import java.util.List;
  * agent pool nodes in Kubernetes clusters.
  */
 @Fluent
-public final class AdministratorConfiguration {
+public final class AdministratorConfiguration implements JsonSerializable<AdministratorConfiguration> {
     /*
      * The user name for the administrator that will be applied to the operating systems that run Kubernetes nodes. If
      * not supplied, a user name will be chosen by the service.
      */
-    @JsonProperty(value = "adminUsername")
     private String adminUsername;
 
     /*
      * The SSH configuration for the operating systems that run the nodes in the Kubernetes cluster. In some cases,
      * specification of public keys may be required to produce a working environment.
      */
-    @JsonProperty(value = "sshPublicKeys")
     private List<SshPublicKey> sshPublicKeys;
 
-    /** Creates an instance of AdministratorConfiguration class. */
+    /**
+     * Creates an instance of AdministratorConfiguration class.
+     */
     public AdministratorConfiguration() {
     }
 
     /**
      * Get the adminUsername property: The user name for the administrator that will be applied to the operating systems
      * that run Kubernetes nodes. If not supplied, a user name will be chosen by the service.
-     *
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -45,7 +49,7 @@ public final class AdministratorConfiguration {
     /**
      * Set the adminUsername property: The user name for the administrator that will be applied to the operating systems
      * that run Kubernetes nodes. If not supplied, a user name will be chosen by the service.
-     *
+     * 
      * @param adminUsername the adminUsername value to set.
      * @return the AdministratorConfiguration object itself.
      */
@@ -57,7 +61,7 @@ public final class AdministratorConfiguration {
     /**
      * Get the sshPublicKeys property: The SSH configuration for the operating systems that run the nodes in the
      * Kubernetes cluster. In some cases, specification of public keys may be required to produce a working environment.
-     *
+     * 
      * @return the sshPublicKeys value.
      */
     public List<SshPublicKey> sshPublicKeys() {
@@ -67,7 +71,7 @@ public final class AdministratorConfiguration {
     /**
      * Set the sshPublicKeys property: The SSH configuration for the operating systems that run the nodes in the
      * Kubernetes cluster. In some cases, specification of public keys may be required to produce a working environment.
-     *
+     * 
      * @param sshPublicKeys the sshPublicKeys value to set.
      * @return the AdministratorConfiguration object itself.
      */
@@ -78,12 +82,52 @@ public final class AdministratorConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sshPublicKeys() != null) {
             sshPublicKeys().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("adminUsername", this.adminUsername);
+        jsonWriter.writeArrayField("sshPublicKeys", this.sshPublicKeys, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdministratorConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdministratorConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdministratorConfiguration.
+     */
+    public static AdministratorConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdministratorConfiguration deserializedAdministratorConfiguration = new AdministratorConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("adminUsername".equals(fieldName)) {
+                    deserializedAdministratorConfiguration.adminUsername = reader.getString();
+                } else if ("sshPublicKeys".equals(fieldName)) {
+                    List<SshPublicKey> sshPublicKeys = reader.readArray(reader1 -> SshPublicKey.fromJson(reader1));
+                    deserializedAdministratorConfiguration.sshPublicKeys = sshPublicKeys;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdministratorConfiguration;
+        });
     }
 }

@@ -13,24 +13,24 @@ public final class TimeWindowCustomAlertRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TimeWindowCustomAlertRule model = BinaryData.fromString(
-            "{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT223H3M55S\",\"minThreshold\":1932910769,\"maxThreshold\":1621545899,\"displayName\":\"vmtygj\",\"description\":\"zyos\",\"isEnabled\":true}")
+            "{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT65H45M11S\",\"minThreshold\":500448783,\"maxThreshold\":676639191,\"displayName\":\"exxbczwtr\",\"description\":\"iqzbq\",\"isEnabled\":true}")
             .toObject(TimeWindowCustomAlertRule.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(1932910769, model.minThreshold());
-        Assertions.assertEquals(1621545899, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT223H3M55S"), model.timeWindowSize());
+        Assertions.assertEquals(500448783, model.minThreshold());
+        Assertions.assertEquals(676639191, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT65H45M11S"), model.timeWindowSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TimeWindowCustomAlertRule model = new TimeWindowCustomAlertRule().withIsEnabled(true)
-            .withMinThreshold(1932910769)
-            .withMaxThreshold(1621545899)
-            .withTimeWindowSize(Duration.parse("PT223H3M55S"));
+            .withMinThreshold(500448783)
+            .withMaxThreshold(676639191)
+            .withTimeWindowSize(Duration.parse("PT65H45M11S"));
         model = BinaryData.fromObject(model).toObject(TimeWindowCustomAlertRule.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(1932910769, model.minThreshold());
-        Assertions.assertEquals(1621545899, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT223H3M55S"), model.timeWindowSize());
+        Assertions.assertEquals(500448783, model.minThreshold());
+        Assertions.assertEquals(676639191, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT65H45M11S"), model.timeWindowSize());
     }
 }

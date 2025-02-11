@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mariadb.fluent.models.AdvisorInner;
 
-/** An instance of this class provides access to all the operations defined in AdvisorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AdvisorsClient.
+ */
 public interface AdvisorsClient {
     /**
      * Get a recommendation action advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -26,12 +28,12 @@ public interface AdvisorsClient {
      * @return a recommendation action advisor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AdvisorInner> getWithResponse(
-        String resourceGroupName, String serverName, String advisorName, Context context);
+    Response<AdvisorInner> getWithResponse(String resourceGroupName, String serverName, String advisorName,
+        Context context);
 
     /**
      * Get a recommendation action advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -45,7 +47,7 @@ public interface AdvisorsClient {
 
     /**
      * List recommendation action advisors.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +60,7 @@ public interface AdvisorsClient {
 
     /**
      * List recommendation action advisors.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.

@@ -56,13 +56,10 @@ import java.util.UUID;
  * @see MixedRealityStsAsyncClient
  * @see MixedRealityStsClient
  */
-@ServiceClientBuilder(serviceClients = {MixedRealityStsClient.class, MixedRealityStsAsyncClient.class})
-public final class MixedRealityStsClientBuilder implements
-    AzureKeyCredentialTrait<MixedRealityStsClientBuilder>,
-    ConfigurationTrait<MixedRealityStsClientBuilder>,
-    EndpointTrait<MixedRealityStsClientBuilder>,
-    HttpTrait<MixedRealityStsClientBuilder>,
-    TokenCredentialTrait<MixedRealityStsClientBuilder> {
+@ServiceClientBuilder(serviceClients = { MixedRealityStsClient.class, MixedRealityStsAsyncClient.class })
+public final class MixedRealityStsClientBuilder implements AzureKeyCredentialTrait<MixedRealityStsClientBuilder>,
+    ConfigurationTrait<MixedRealityStsClientBuilder>, EndpointTrait<MixedRealityStsClientBuilder>,
+    HttpTrait<MixedRealityStsClientBuilder>, TokenCredentialTrait<MixedRealityStsClientBuilder> {
     private static final String MIXED_REALITY_STS_PROPERTIES = "azure-mixedreality-authentication.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
@@ -106,7 +103,8 @@ public final class MixedRealityStsClientBuilder implements
         Objects.requireNonNull(accountDomain, "'accountDomain' cannot be null.");
 
         if (accountDomain.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'accountDomain' cannot be an empty string."));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'accountDomain' cannot be an empty string."));
         }
 
         this.accountDomain = accountDomain;
@@ -183,7 +181,8 @@ public final class MixedRealityStsClientBuilder implements
         try {
             accountId = UUID.fromString(this.accountId);
         } catch (IllegalArgumentException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("The 'accountId' must be a UUID formatted value.", ex));
+            throw logger.logExceptionAsWarning(
+                new IllegalArgumentException("The 'accountId' must be a UUID formatted value.", ex));
         }
 
         String endpoint;
@@ -192,7 +191,8 @@ public final class MixedRealityStsClientBuilder implements
                 new URL(this.endpoint);
                 endpoint = this.endpoint;
             } catch (MalformedURLException ex) {
-                throw logger.logExceptionAsWarning(new IllegalArgumentException("The 'endpoint' must be a valid URL.", ex));
+                throw logger
+                    .logExceptionAsWarning(new IllegalArgumentException("The 'endpoint' must be a valid URL.", ex));
             }
         } else {
             endpoint = AuthenticationEndpoint.constructFromDomain(this.accountDomain);
@@ -222,11 +222,11 @@ public final class MixedRealityStsClientBuilder implements
             version = MixedRealityStsServiceVersion.getLatest();
         }
 
-        MixedRealityStsRestClientImpl serviceClient = new MixedRealityStsRestClientImplBuilder()
-            .apiVersion(version.getVersion())
-            .pipeline(this.pipeline)
-            .host(endpoint)
-            .buildClient();
+        MixedRealityStsRestClientImpl serviceClient
+            = new MixedRealityStsRestClientImplBuilder().apiVersion(version.getVersion())
+                .pipeline(this.pipeline)
+                .host(endpoint)
+                .buildClient();
 
         return new MixedRealityStsAsyncClient(accountId, serviceClient);
     }
@@ -453,8 +453,8 @@ public final class MixedRealityStsClientBuilder implements
         // If client options has headers configured, add a policy for each.
         if (this.clientOptions != null) {
             List<HttpHeader> httpHeaderList = new ArrayList<>();
-            this.clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            this.clientOptions.getHeaders()
+                .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
             policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
         }
 
@@ -463,9 +463,8 @@ public final class MixedRealityStsClientBuilder implements
         policies.add(new HttpLoggingPolicy(this.logOptions));
     }
 
-    private HttpPipeline createHttpPipeline(HttpClient httpClient,
-                                            HttpPipelinePolicy authorizationPolicy,
-                                            List<HttpPipelinePolicy> additionalPolicies) {
+    private HttpPipeline createHttpPipeline(HttpClient httpClient, HttpPipelinePolicy authorizationPolicy,
+        List<HttpPipelinePolicy> additionalPolicies) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
         policies.add(authorizationPolicy);
@@ -475,8 +474,7 @@ public final class MixedRealityStsClientBuilder implements
             policies.addAll(additionalPolicies);
         }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(createTracer())
             .build();
@@ -490,12 +488,10 @@ public final class MixedRealityStsClientBuilder implements
     private UserAgentPolicy getUserAgentPolicy() {
         // Give precedence to applicationId configured in clientOptions over the one configured in httpLogOptions.
         // Azure.Core deprecated setting the applicationId in httpLogOptions, but we should still support it.
-        String applicationId = this.clientOptions == null
-            ? this.logOptions.getApplicationId()
-            : this.clientOptions.getApplicationId();
+        String applicationId
+            = this.clientOptions == null ? this.logOptions.getApplicationId() : this.clientOptions.getApplicationId();
 
-        return new UserAgentPolicy(
-            applicationId, CLIENT_NAME, CLIENT_VERSION, this.configuration);
+        return new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, this.configuration);
     }
 
     private Tracer createTracer() {
@@ -503,7 +499,7 @@ public final class MixedRealityStsClientBuilder implements
         if (clientOptions != null) {
             tracingOptions = clientOptions.getTracingOptions();
         }
-        
+
         return TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, MIXED_REALITY_TRACING_NAMESPACE_VALUE, tracingOptions);
     }

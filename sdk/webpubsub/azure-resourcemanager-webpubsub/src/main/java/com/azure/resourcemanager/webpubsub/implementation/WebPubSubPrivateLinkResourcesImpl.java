@@ -19,8 +19,7 @@ public final class WebPubSubPrivateLinkResourcesImpl implements WebPubSubPrivate
 
     private final com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager;
 
-    public WebPubSubPrivateLinkResourcesImpl(
-        WebPubSubPrivateLinkResourcesClient innerClient,
+    public WebPubSubPrivateLinkResourcesImpl(WebPubSubPrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,13 +27,13 @@ public final class WebPubSubPrivateLinkResourcesImpl implements WebPubSubPrivate
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String resourceName) {
         PagedIterable<PrivateLinkResourceInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String resourceName, Context context) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     private WebPubSubPrivateLinkResourcesClient serviceClient() {

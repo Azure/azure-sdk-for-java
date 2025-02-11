@@ -7,11 +7,13 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateLinkResourceListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of PrivateLinkResourceListResult. */
+/**
+ * An immutable client-side representation of PrivateLinkResourceListResult.
+ */
 public interface PrivateLinkResourceListResult {
     /**
      * Gets the value property: Array of private link resources.
-     *
+     * 
      * @return the value value.
      */
     List<PrivateLinkResource> value();
@@ -19,7 +21,7 @@ public interface PrivateLinkResourceListResult {
     /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateLinkResourceListResultInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateLinkResourceListResultInner innerModel();

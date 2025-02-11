@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.AlertRuleInner;
 
-/** An instance of this class provides access to all the operations defined in AlertRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AlertRulesClient.
+ */
 public interface AlertRulesClient {
     /**
      * Gets all alert rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface AlertRulesClient {
 
     /**
      * Gets all alert rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -42,7 +44,23 @@ public interface AlertRulesClient {
 
     /**
      * Gets the alert rule.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param ruleId Alert rule ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the alert rule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AlertRuleInner> getWithResponse(String resourceGroupName, String workspaceName, String ruleId,
+        Context context);
+
+    /**
+     * Gets the alert rule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -55,40 +73,8 @@ public interface AlertRulesClient {
     AlertRuleInner get(String resourceGroupName, String workspaceName, String ruleId);
 
     /**
-     * Gets the alert rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param ruleId Alert rule ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the alert rule along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AlertRuleInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String ruleId, Context context);
-
-    /**
      * Creates or updates the alert rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param ruleId Alert rule ID.
-     * @param alertRule The alert rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AlertRuleInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String ruleId, AlertRuleInner alertRule);
-
-    /**
-     * Creates or updates the alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -100,25 +86,28 @@ public interface AlertRulesClient {
      * @return alert rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AlertRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String ruleId, AlertRuleInner alertRule, Context context);
+    Response<AlertRuleInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String ruleId,
+        AlertRuleInner alertRule, Context context);
 
     /**
-     * Delete the alert rule.
-     *
+     * Creates or updates the alert rule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
+     * @param alertRule The alert rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return alert rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String ruleId);
+    AlertRuleInner createOrUpdate(String resourceGroupName, String workspaceName, String ruleId,
+        AlertRuleInner alertRule);
 
     /**
      * Delete the alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -130,4 +119,17 @@ public interface AlertRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String ruleId, Context context);
+
+    /**
+     * Delete the alert rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param ruleId Alert rule ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String workspaceName, String ruleId);
 }

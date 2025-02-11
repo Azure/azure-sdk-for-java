@@ -13,7 +13,8 @@ import java.time.OffsetDateTime;
 /** The properties for input to get top query statistics. */
 @Fluent
 public final class TopQueryStatisticsInputProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopQueryStatisticsInputProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TopQueryStatisticsInputProperties.class);
 
     /*
      * Max number of top queries to return.
@@ -178,34 +179,24 @@ public final class TopQueryStatisticsInputProperties {
      */
     public void validate() {
         if (aggregationFunction() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aggregationFunction in model TopQueryStatisticsInputProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property aggregationFunction in model TopQueryStatisticsInputProperties"));
         }
         if (observedMetric() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property observedMetric in model TopQueryStatisticsInputProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property observedMetric in model TopQueryStatisticsInputProperties"));
         }
         if (observationStartTime() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property observationStartTime in model TopQueryStatisticsInputProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property observationStartTime in model TopQueryStatisticsInputProperties"));
         }
         if (observationEndTime() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property observationEndTime in model TopQueryStatisticsInputProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property observationEndTime in model TopQueryStatisticsInputProperties"));
         }
         if (aggregationWindow() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aggregationWindow in model TopQueryStatisticsInputProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property aggregationWindow in model TopQueryStatisticsInputProperties"));
         }
     }
 }

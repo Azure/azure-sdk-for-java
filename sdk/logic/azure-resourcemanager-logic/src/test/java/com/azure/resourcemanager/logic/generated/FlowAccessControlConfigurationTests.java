@@ -9,6 +9,9 @@ import com.azure.resourcemanager.logic.models.FlowAccessControlConfiguration;
 import com.azure.resourcemanager.logic.models.FlowAccessControlConfigurationPolicy;
 import com.azure.resourcemanager.logic.models.IpAddressRange;
 import com.azure.resourcemanager.logic.models.OpenAuthenticationAccessPolicies;
+import com.azure.resourcemanager.logic.models.OpenAuthenticationAccessPolicy;
+import com.azure.resourcemanager.logic.models.OpenAuthenticationPolicyClaim;
+import com.azure.resourcemanager.logic.models.OpenAuthenticationProviderType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,59 +20,103 @@ import org.junit.jupiter.api.Assertions;
 public final class FlowAccessControlConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FlowAccessControlConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"triggers\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"mijcmmxdcufufs\"},{\"addressRange\":\"ymzidn\"},{\"addressRange\":\"zcxtbzsgfyccsn\"},{\"addressRange\":\"mdwzjeiachboo\"}],\"openAuthenticationPolicies\":{\"policies\":{}}},\"contents\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"qpteeh\"},{\"addressRange\":\"vypyqrimzinpv\"},{\"addressRange\":\"jdkirsoodqx\"}],\"openAuthenticationPolicies\":{\"policies\":{}}},\"actions\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"t\"},{\"addressRange\":\"whdsoifiyip\"}],\"openAuthenticationPolicies\":{\"policies\":{}}},\"workflowManagement\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"jbznorc\"}],\"openAuthenticationPolicies\":{\"policies\":{}}}}")
-                .toObject(FlowAccessControlConfiguration.class);
-        Assertions.assertEquals("mijcmmxdcufufs", model.triggers().allowedCallerIpAddresses().get(0).addressRange());
-        Assertions.assertEquals("qpteeh", model.contents().allowedCallerIpAddresses().get(0).addressRange());
-        Assertions.assertEquals("t", model.actions().allowedCallerIpAddresses().get(0).addressRange());
-        Assertions.assertEquals("jbznorc", model.workflowManagement().allowedCallerIpAddresses().get(0).addressRange());
+        FlowAccessControlConfiguration model = BinaryData.fromString(
+            "{\"triggers\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"l\"},{\"addressRange\":\"kx\"},{\"addressRange\":\"skpbhenbtkcxywn\"},{\"addressRange\":\"nrs\"}],\"openAuthenticationPolicies\":{\"policies\":{\"yxczfclh\":{\"type\":\"AAD\",\"claims\":[{}]},\"abphlw\":{\"type\":\"AAD\",\"claims\":[{},{},{}]}}}},\"contents\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"tsthsucocm\"}],\"openAuthenticationPolicies\":{\"policies\":{\"twwrqp\":{\"type\":\"AAD\",\"claims\":[{}]}}}},\"actions\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"zywbiex\"},{\"addressRange\":\"eyueaxibxujwb\"},{\"addressRange\":\"walm\"},{\"addressRange\":\"yoxa\"}],\"openAuthenticationPolicies\":{\"policies\":{\"cuxrhdwbavx\":{\"type\":\"AAD\",\"claims\":[{},{},{}]},\"jswztsdbpg\":{\"type\":\"AAD\",\"claims\":[{},{},{}]},\"hpzxbzpfzab\":{\"type\":\"AAD\",\"claims\":[{}]},\"xwtctyqiklbbovpl\":{\"type\":\"AAD\",\"claims\":[{}]}}}},\"workflowManagement\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"gy\"},{\"addressRange\":\"uosvmkfssxqukk\"},{\"addressRange\":\"l\"}],\"openAuthenticationPolicies\":{\"policies\":{\"zkd\":{\"type\":\"AAD\",\"claims\":[{},{},{},{}]},\"lopwiyig\":{\"type\":\"AAD\",\"claims\":[{},{},{}]},\"wzbaiue\":{\"type\":\"AAD\",\"claims\":[{},{}]},\"nyqupedeojnabck\":{\"type\":\"AAD\",\"claims\":[{}]}}}}}")
+            .toObject(FlowAccessControlConfiguration.class);
+        Assertions.assertEquals("l", model.triggers().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.triggers().openAuthenticationPolicies().policies().get("yxczfclh").type());
+        Assertions.assertEquals("tsthsucocm", model.contents().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.contents().openAuthenticationPolicies().policies().get("twwrqp").type());
+        Assertions.assertEquals("zywbiex", model.actions().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.actions().openAuthenticationPolicies().policies().get("cuxrhdwbavx").type());
+        Assertions.assertEquals("gy", model.workflowManagement().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.workflowManagement().openAuthenticationPolicies().policies().get("zkd").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FlowAccessControlConfiguration model =
-            new FlowAccessControlConfiguration()
-                .withTriggers(
-                    new FlowAccessControlConfigurationPolicy()
-                        .withAllowedCallerIpAddresses(
-                            Arrays
-                                .asList(
-                                    new IpAddressRange().withAddressRange("mijcmmxdcufufs"),
-                                    new IpAddressRange().withAddressRange("ymzidn"),
-                                    new IpAddressRange().withAddressRange("zcxtbzsgfyccsn"),
-                                    new IpAddressRange().withAddressRange("mdwzjeiachboo")))
-                        .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies().withPolicies(mapOf())))
-                .withContents(
-                    new FlowAccessControlConfigurationPolicy()
-                        .withAllowedCallerIpAddresses(
-                            Arrays
-                                .asList(
-                                    new IpAddressRange().withAddressRange("qpteeh"),
-                                    new IpAddressRange().withAddressRange("vypyqrimzinpv"),
-                                    new IpAddressRange().withAddressRange("jdkirsoodqx")))
-                        .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies().withPolicies(mapOf())))
-                .withActions(
-                    new FlowAccessControlConfigurationPolicy()
-                        .withAllowedCallerIpAddresses(
-                            Arrays
-                                .asList(
-                                    new IpAddressRange().withAddressRange("t"),
-                                    new IpAddressRange().withAddressRange("whdsoifiyip")))
-                        .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies().withPolicies(mapOf())))
-                .withWorkflowManagement(
-                    new FlowAccessControlConfigurationPolicy()
-                        .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange().withAddressRange("jbznorc")))
-                        .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies().withPolicies(mapOf())));
+        FlowAccessControlConfiguration model = new FlowAccessControlConfiguration()
+            .withTriggers(new FlowAccessControlConfigurationPolicy()
+                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange().withAddressRange("l"),
+                    new IpAddressRange().withAddressRange("kx"),
+                    new IpAddressRange().withAddressRange("skpbhenbtkcxywn"),
+                    new IpAddressRange().withAddressRange("nrs")))
+                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies().withPolicies(mapOf("yxczfclh",
+                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                        .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim())),
+                    "abphlw",
+                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                        .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim(),
+                            new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim()))))))
+            .withContents(new FlowAccessControlConfigurationPolicy()
+                .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange().withAddressRange("tsthsucocm")))
+                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies().withPolicies(mapOf("twwrqp",
+                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                        .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim()))))))
+            .withActions(
+                new FlowAccessControlConfigurationPolicy()
+                    .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange().withAddressRange("zywbiex"),
+                        new IpAddressRange().withAddressRange("eyueaxibxujwb"),
+                        new IpAddressRange().withAddressRange("walm"), new IpAddressRange().withAddressRange("yoxa")))
+                    .withOpenAuthenticationPolicies(
+                        new OpenAuthenticationAccessPolicies()
+                            .withPolicies(
+                                mapOf("cuxrhdwbavx",
+                                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                        .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim(),
+                                            new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim())),
+                                    "jswztsdbpg",
+                                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                        .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim(),
+                                            new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim())),
+                                    "hpzxbzpfzab",
+                                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                        .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim())),
+                                    "xwtctyqiklbbovpl",
+                                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                        .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim()))))))
+            .withWorkflowManagement(
+                new FlowAccessControlConfigurationPolicy()
+                    .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange().withAddressRange("gy"),
+                        new IpAddressRange().withAddressRange("uosvmkfssxqukk"),
+                        new IpAddressRange().withAddressRange("l")))
+                    .withOpenAuthenticationPolicies(
+                        new OpenAuthenticationAccessPolicies().withPolicies(mapOf("zkd",
+                            new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                .withClaims(Arrays.asList(
+                                    new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim(),
+                                    new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim())),
+                            "lopwiyig",
+                            new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim(),
+                                    new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim())),
+                            "wzbaiue",
+                            new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim(),
+                                    new OpenAuthenticationPolicyClaim())),
+                            "nyqupedeojnabck",
+                            new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim()))))));
         model = BinaryData.fromObject(model).toObject(FlowAccessControlConfiguration.class);
-        Assertions.assertEquals("mijcmmxdcufufs", model.triggers().allowedCallerIpAddresses().get(0).addressRange());
-        Assertions.assertEquals("qpteeh", model.contents().allowedCallerIpAddresses().get(0).addressRange());
-        Assertions.assertEquals("t", model.actions().allowedCallerIpAddresses().get(0).addressRange());
-        Assertions.assertEquals("jbznorc", model.workflowManagement().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals("l", model.triggers().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.triggers().openAuthenticationPolicies().policies().get("yxczfclh").type());
+        Assertions.assertEquals("tsthsucocm", model.contents().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.contents().openAuthenticationPolicies().policies().get("twwrqp").type());
+        Assertions.assertEquals("zywbiex", model.actions().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.actions().openAuthenticationPolicies().policies().get("cuxrhdwbavx").type());
+        Assertions.assertEquals("gy", model.workflowManagement().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.workflowManagement().openAuthenticationPolicies().policies().get("zkd").type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

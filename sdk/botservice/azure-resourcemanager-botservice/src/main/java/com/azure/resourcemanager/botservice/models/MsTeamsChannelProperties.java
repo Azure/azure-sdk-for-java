@@ -5,50 +5,56 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters to provide for the Microsoft Teams channel. */
+/**
+ * The parameters to provide for the Microsoft Teams channel.
+ */
 @Fluent
-public final class MsTeamsChannelProperties {
+public final class MsTeamsChannelProperties implements JsonSerializable<MsTeamsChannelProperties> {
     /*
      * Enable calling for Microsoft Teams channel
      */
-    @JsonProperty(value = "enableCalling")
     private Boolean enableCalling;
 
     /*
      * Webhook for Microsoft Teams channel calls
      */
-    @JsonProperty(value = "callingWebHook")
     private String callingWebhook;
 
     /*
      * Whether this channel is enabled for the bot
      */
-    @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
     /*
      * Webhook for Microsoft Teams channel calls
      */
-    @JsonProperty(value = "incomingCallRoute")
     private String incomingCallRoute;
 
     /*
      * Deployment environment for Microsoft Teams channel calls
      */
-    @JsonProperty(value = "deploymentEnvironment")
     private String deploymentEnvironment;
 
     /*
      * Whether this channel accepted terms
      */
-    @JsonProperty(value = "acceptedTerms")
     private Boolean acceptedTerms;
 
     /**
+     * Creates an instance of MsTeamsChannelProperties class.
+     */
+    public MsTeamsChannelProperties() {
+    }
+
+    /**
      * Get the enableCalling property: Enable calling for Microsoft Teams channel.
-     *
+     * 
      * @return the enableCalling value.
      */
     public Boolean enableCalling() {
@@ -57,7 +63,7 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Set the enableCalling property: Enable calling for Microsoft Teams channel.
-     *
+     * 
      * @param enableCalling the enableCalling value to set.
      * @return the MsTeamsChannelProperties object itself.
      */
@@ -68,7 +74,7 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Get the callingWebhook property: Webhook for Microsoft Teams channel calls.
-     *
+     * 
      * @return the callingWebhook value.
      */
     public String callingWebhook() {
@@ -77,7 +83,7 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Set the callingWebhook property: Webhook for Microsoft Teams channel calls.
-     *
+     * 
      * @param callingWebhook the callingWebhook value to set.
      * @return the MsTeamsChannelProperties object itself.
      */
@@ -88,7 +94,7 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Get the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -97,7 +103,7 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Set the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the MsTeamsChannelProperties object itself.
      */
@@ -108,7 +114,7 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Get the incomingCallRoute property: Webhook for Microsoft Teams channel calls.
-     *
+     * 
      * @return the incomingCallRoute value.
      */
     public String incomingCallRoute() {
@@ -117,7 +123,7 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Set the incomingCallRoute property: Webhook for Microsoft Teams channel calls.
-     *
+     * 
      * @param incomingCallRoute the incomingCallRoute value to set.
      * @return the MsTeamsChannelProperties object itself.
      */
@@ -128,7 +134,7 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Get the deploymentEnvironment property: Deployment environment for Microsoft Teams channel calls.
-     *
+     * 
      * @return the deploymentEnvironment value.
      */
     public String deploymentEnvironment() {
@@ -137,7 +143,7 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Set the deploymentEnvironment property: Deployment environment for Microsoft Teams channel calls.
-     *
+     * 
      * @param deploymentEnvironment the deploymentEnvironment value to set.
      * @return the MsTeamsChannelProperties object itself.
      */
@@ -148,7 +154,7 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Get the acceptedTerms property: Whether this channel accepted terms.
-     *
+     * 
      * @return the acceptedTerms value.
      */
     public Boolean acceptedTerms() {
@@ -157,7 +163,7 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Set the acceptedTerms property: Whether this channel accepted terms.
-     *
+     * 
      * @param acceptedTerms the acceptedTerms value to set.
      * @return the MsTeamsChannelProperties object itself.
      */
@@ -168,9 +174,61 @@ public final class MsTeamsChannelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeBooleanField("enableCalling", this.enableCalling);
+        jsonWriter.writeStringField("callingWebhook", this.callingWebhook);
+        jsonWriter.writeStringField("incomingCallRoute", this.incomingCallRoute);
+        jsonWriter.writeStringField("deploymentEnvironment", this.deploymentEnvironment);
+        jsonWriter.writeBooleanField("acceptedTerms", this.acceptedTerms);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MsTeamsChannelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MsTeamsChannelProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MsTeamsChannelProperties.
+     */
+    public static MsTeamsChannelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MsTeamsChannelProperties deserializedMsTeamsChannelProperties = new MsTeamsChannelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedMsTeamsChannelProperties.isEnabled = reader.getBoolean();
+                } else if ("enableCalling".equals(fieldName)) {
+                    deserializedMsTeamsChannelProperties.enableCalling = reader.getNullable(JsonReader::getBoolean);
+                } else if ("callingWebhook".equals(fieldName)) {
+                    deserializedMsTeamsChannelProperties.callingWebhook = reader.getString();
+                } else if ("incomingCallRoute".equals(fieldName)) {
+                    deserializedMsTeamsChannelProperties.incomingCallRoute = reader.getString();
+                } else if ("deploymentEnvironment".equals(fieldName)) {
+                    deserializedMsTeamsChannelProperties.deploymentEnvironment = reader.getString();
+                } else if ("acceptedTerms".equals(fieldName)) {
+                    deserializedMsTeamsChannelProperties.acceptedTerms = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMsTeamsChannelProperties;
+        });
     }
 }

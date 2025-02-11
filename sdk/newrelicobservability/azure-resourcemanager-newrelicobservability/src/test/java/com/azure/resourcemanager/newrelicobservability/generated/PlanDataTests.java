@@ -25,8 +25,10 @@ public final class PlanDataTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlanData model = new PlanData().withUsageType(UsageType.COMMITTED).withBillingCycle(BillingCycle.WEEKLY)
-            .withPlanDetails("gsntnbybkzgcwr").withEffectiveDate(OffsetDateTime.parse("2021-09-26T22:03:54Z"));
+        PlanData model = new PlanData().withUsageType(UsageType.COMMITTED)
+            .withBillingCycle(BillingCycle.WEEKLY)
+            .withPlanDetails("gsntnbybkzgcwr")
+            .withEffectiveDate(OffsetDateTime.parse("2021-09-26T22:03:54Z"));
         model = BinaryData.fromObject(model).toObject(PlanData.class);
         Assertions.assertEquals(UsageType.COMMITTED, model.usageType());
         Assertions.assertEquals(BillingCycle.WEEKLY, model.billingCycle());

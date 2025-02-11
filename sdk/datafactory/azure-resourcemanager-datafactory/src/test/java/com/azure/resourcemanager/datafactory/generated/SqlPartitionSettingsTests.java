@@ -11,15 +11,15 @@ public final class SqlPartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlPartitionSettings model = BinaryData.fromString(
-            "{\"partitionColumnName\":\"dataadafecwnufldzjc\",\"partitionUpperBound\":\"datahjbzpoh\",\"partitionLowerBound\":\"datajgpe\"}")
+            "{\"partitionColumnName\":\"dataqnwpwrfe\",\"partitionUpperBound\":\"dataggrm\",\"partitionLowerBound\":\"datafhkoe\"}")
             .toObject(SqlPartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPartitionSettings model = new SqlPartitionSettings().withPartitionColumnName("dataadafecwnufldzjc")
-            .withPartitionUpperBound("datahjbzpoh")
-            .withPartitionLowerBound("datajgpe");
+        SqlPartitionSettings model = new SqlPartitionSettings().withPartitionColumnName("dataqnwpwrfe")
+            .withPartitionUpperBound("dataggrm")
+            .withPartitionLowerBound("datafhkoe");
         model = BinaryData.fromObject(model).toObject(SqlPartitionSettings.class);
     }
 }

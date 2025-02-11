@@ -5,71 +5,51 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Base class for backup ProtectionIntent.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "protectionIntentItemType",
-    defaultImpl = ProtectionIntent.class,
-    visible = true)
-@JsonTypeName("ProtectionIntent")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "RecoveryServiceVaultItem", value = AzureRecoveryServiceVaultProtectionIntent.class),
-    @JsonSubTypes.Type(name = "AzureResourceItem", value = AzureResourceProtectionIntent.class),
-    @JsonSubTypes.Type(
-        name = "AzureWorkloadContainerAutoProtectionIntent",
-        value = AzureWorkloadContainerAutoProtectionIntent.class) })
 @Fluent
-public class ProtectionIntent {
+public class ProtectionIntent implements JsonSerializable<ProtectionIntent> {
     /*
      * backup protectionIntent type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "protectionIntentItemType", required = true)
-    private ProtectionIntentItemType protectionIntentItemType;
+    private ProtectionIntentItemType protectionIntentItemType = ProtectionIntentItemType.fromString("ProtectionIntent");
 
     /*
      * Type of backup management for the backed up item.
      */
-    @JsonProperty(value = "backupManagementType")
     private BackupManagementType backupManagementType;
 
     /*
      * ARM ID of the resource to be backed up.
      */
-    @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
     /*
      * ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
      */
-    @JsonProperty(value = "itemId")
     private String itemId;
 
     /*
      * ID of the backup policy with which this item is backed up.
      */
-    @JsonProperty(value = "policyId")
     private String policyId;
 
     /*
      * Backup state of this backup item.
      */
-    @JsonProperty(value = "protectionState")
     private ProtectionStatus protectionState;
 
     /**
      * Creates an instance of ProtectionIntent class.
      */
     public ProtectionIntent() {
-        this.protectionIntentItemType = ProtectionIntentItemType.fromString("ProtectionIntent");
     }
 
     /**
@@ -187,5 +167,94 @@ public class ProtectionIntent {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protectionIntentItemType",
+            this.protectionIntentItemType == null ? null : this.protectionIntentItemType.toString());
+        jsonWriter.writeStringField("backupManagementType",
+            this.backupManagementType == null ? null : this.backupManagementType.toString());
+        jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        jsonWriter.writeStringField("itemId", this.itemId);
+        jsonWriter.writeStringField("policyId", this.policyId);
+        jsonWriter.writeStringField("protectionState",
+            this.protectionState == null ? null : this.protectionState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectionIntent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectionIntent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtectionIntent.
+     */
+    public static ProtectionIntent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("protectionIntentItemType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("RecoveryServiceVaultItem".equals(discriminatorValue)) {
+                    return AzureRecoveryServiceVaultProtectionIntent.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadAutoProtectionIntent".equals(discriminatorValue)) {
+                    return AzureWorkloadAutoProtectionIntent.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadSQLAutoProtectionIntent".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlAutoProtectionIntent.fromJson(readerToUse.reset());
+                } else if ("AzureResourceItem".equals(discriminatorValue)) {
+                    return AzureResourceProtectionIntent.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadContainerAutoProtectionIntent".equals(discriminatorValue)) {
+                    return AzureWorkloadContainerAutoProtectionIntent.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ProtectionIntent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectionIntent deserializedProtectionIntent = new ProtectionIntent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectionIntentItemType".equals(fieldName)) {
+                    deserializedProtectionIntent.protectionIntentItemType
+                        = ProtectionIntentItemType.fromString(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedProtectionIntent.backupManagementType
+                        = BackupManagementType.fromString(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedProtectionIntent.sourceResourceId = reader.getString();
+                } else if ("itemId".equals(fieldName)) {
+                    deserializedProtectionIntent.itemId = reader.getString();
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedProtectionIntent.policyId = reader.getString();
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedProtectionIntent.protectionState = ProtectionStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectionIntent;
+        });
     }
 }

@@ -6,30 +6,38 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.PythonPackageCreateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters supplied to the create or update module operation. */
+/**
+ * The parameters supplied to the create or update module operation.
+ */
 @Fluent
-public final class PythonPackageCreateParameters {
+public final class PythonPackageCreateParameters implements JsonSerializable<PythonPackageCreateParameters> {
     /*
      * Gets or sets the module create properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private PythonPackageCreateProperties innerProperties = new PythonPackageCreateProperties();
 
     /*
      * Gets or sets the tags attached to the resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of PythonPackageCreateParameters class.
+     */
+    public PythonPackageCreateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Gets or sets the module create properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PythonPackageCreateProperties innerProperties() {
@@ -38,7 +46,7 @@ public final class PythonPackageCreateParameters {
 
     /**
      * Get the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -47,7 +55,7 @@ public final class PythonPackageCreateParameters {
 
     /**
      * Set the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PythonPackageCreateParameters object itself.
      */
@@ -58,7 +66,7 @@ public final class PythonPackageCreateParameters {
 
     /**
      * Get the contentLink property: Gets or sets the module content link.
-     *
+     * 
      * @return the contentLink value.
      */
     public ContentLink contentLink() {
@@ -67,7 +75,7 @@ public final class PythonPackageCreateParameters {
 
     /**
      * Set the contentLink property: Gets or sets the module content link.
-     *
+     * 
      * @param contentLink the contentLink value to set.
      * @return the PythonPackageCreateParameters object itself.
      */
@@ -81,19 +89,61 @@ public final class PythonPackageCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model PythonPackageCreateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model PythonPackageCreateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PythonPackageCreateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PythonPackageCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PythonPackageCreateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PythonPackageCreateParameters.
+     */
+    public static PythonPackageCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PythonPackageCreateParameters deserializedPythonPackageCreateParameters
+                = new PythonPackageCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedPythonPackageCreateParameters.innerProperties
+                        = PythonPackageCreateProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPythonPackageCreateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPythonPackageCreateParameters;
+        });
+    }
 }

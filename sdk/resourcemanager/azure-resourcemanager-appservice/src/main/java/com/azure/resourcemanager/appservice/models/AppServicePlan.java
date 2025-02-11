@@ -15,27 +15,46 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /** An immutable client-side representation of an Azure App service plan. */
 @Fluent
-public interface AppServicePlan
-    extends GroupableResource<AppServiceManager, AppServicePlanInner>,
-        HasName,
-        Refreshable<AppServicePlan>,
-        Updatable<AppServicePlan.Update> {
-    /** @return maximum number of instances that can be assigned */
+public interface AppServicePlan extends GroupableResource<AppServiceManager, AppServicePlanInner>, HasName,
+    Refreshable<AppServicePlan>, Updatable<AppServicePlan.Update> {
+    /**
+     * Gets maximum number of instances that can be assigned.
+     *
+     * @return maximum number of instances that can be assigned
+     */
     int maxInstances();
 
-    /** @return maximum number of instances that can be assigned */
+    /**
+     * Gets maximum number of instances that can be assigned.
+     *
+     * @return maximum number of instances that can be assigned */
     int capacity();
 
-    /** @return if apps assigned to this App Service Plan can be scaled independently */
+    /**
+     * Check whether apps assigned to this App Service Plan can be scaled independently.
+     *
+     * @return if apps assigned to this App Service Plan can be scaled independently */
     boolean perSiteScaling();
 
-    /** @return number of web apps assigned to this App Service Plan */
+    /**
+     * Gets number of web apps assigned to this App Service Plan.
+     *
+     * @return number of web apps assigned to this App Service Plan
+     */
     int numberOfWebApps();
 
-    /** @return the pricing tier information of the App Service Plan */
+    /**
+     * Gets the pricing tier information of the App Service Plan
+     *
+     * @return the pricing tier information of the App Service Plan
+     */
     PricingTier pricingTier();
 
-    /** @return the operating system the web app is running on */
+    /**
+     * Gets the operating system the web app is running on.
+     *
+     * @return the operating system the web app is running on
+     */
     OperatingSystem operatingSystem();
 
     /**************************************************************
@@ -43,12 +62,8 @@ public interface AppServicePlan
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithPricingTier,
-            DefinitionStages.WithOperatingSystem,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithPricingTier,
+        DefinitionStages.WithOperatingSystem, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the site definition stages. */
@@ -123,11 +138,8 @@ public interface AppServicePlan
          * An app service plan definition with sufficient inputs to create a new website in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate
-            extends WithPerSiteScaling,
-                WithCapacity,
-                Creatable<AppServicePlan>,
-                GroupableResource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends WithPerSiteScaling, WithCapacity, Creatable<AppServicePlan>,
+            GroupableResource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -168,11 +180,7 @@ public interface AppServicePlan
     }
 
     /** The template for a site update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<AppServicePlan>,
-            UpdateStages.WithCapacity,
-            UpdateStages.WithPerSiteScaling,
-            UpdateStages.WithPricingTier,
-            GroupableResource.UpdateWithTags<Update> {
+    interface Update extends Appliable<AppServicePlan>, UpdateStages.WithCapacity, UpdateStages.WithPerSiteScaling,
+        UpdateStages.WithPricingTier, GroupableResource.UpdateWithTags<Update> {
     }
 }

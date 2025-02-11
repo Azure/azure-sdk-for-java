@@ -5,7 +5,7 @@ package com.azure.resourcemanager.eventhubs.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationKey;
@@ -50,9 +50,8 @@ public class ManageEventHubGeoDisasterRecovery {
             //============================================================
             // Create resource group for the namespaces and recovery pairings
             //
-            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .create();
+            ResourceGroup resourceGroup
+                = azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_SOUTH_CENTRAL).create();
 
             System.out.println("Creating primary event hub namespace " + primaryNamespaceName);
 
@@ -118,7 +117,8 @@ public class ManageEventHubGeoDisasterRecovery {
 
             System.out.println("Retrieving the event hubs in secondary namespace");
 
-            EventHub eventHubInSecondaryNamespace = azureResourceManager.eventHubs().getByName(rgName, secondaryNamespaceName, eventHubName);
+            EventHub eventHubInSecondaryNamespace
+                = azureResourceManager.eventHubs().getByName(rgName, secondaryNamespaceName, eventHubName);
 
             System.out.println("Retrieved the event hubs in secondary namespace");
             Utils.print(eventHubInSecondaryNamespace);
@@ -171,13 +171,12 @@ public class ManageEventHubGeoDisasterRecovery {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

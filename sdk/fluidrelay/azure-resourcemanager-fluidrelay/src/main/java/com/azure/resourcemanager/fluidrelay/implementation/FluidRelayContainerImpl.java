@@ -15,8 +15,8 @@ public final class FluidRelayContainerImpl implements FluidRelayContainer {
 
     private final com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager;
 
-    FluidRelayContainerImpl(
-        FluidRelayContainerInner innerObject, com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
+    FluidRelayContainerImpl(FluidRelayContainerInner innerObject,
+        com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -21,50 +21,42 @@ public final class WorkflowTriggerHistoriesImpl implements WorkflowTriggerHistor
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public WorkflowTriggerHistoriesImpl(
-        WorkflowTriggerHistoriesClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public WorkflowTriggerHistoriesImpl(WorkflowTriggerHistoriesClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkflowTriggerHistory> list(
-        String resourceGroupName, String workflowName, String triggerName) {
-        PagedIterable<WorkflowTriggerHistoryInner> inner =
-            this.serviceClient().list(resourceGroupName, workflowName, triggerName);
-        return Utils.mapPage(inner, inner1 -> new WorkflowTriggerHistoryImpl(inner1, this.manager()));
+    public PagedIterable<WorkflowTriggerHistory> list(String resourceGroupName, String workflowName,
+        String triggerName) {
+        PagedIterable<WorkflowTriggerHistoryInner> inner
+            = this.serviceClient().list(resourceGroupName, workflowName, triggerName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowTriggerHistoryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkflowTriggerHistory> list(
-        String resourceGroupName,
-        String workflowName,
-        String triggerName,
-        Integer top,
-        String filter,
-        Context context) {
-        PagedIterable<WorkflowTriggerHistoryInner> inner =
-            this.serviceClient().list(resourceGroupName, workflowName, triggerName, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new WorkflowTriggerHistoryImpl(inner1, this.manager()));
+    public PagedIterable<WorkflowTriggerHistory> list(String resourceGroupName, String workflowName, String triggerName,
+        Integer top, String filter, Context context) {
+        PagedIterable<WorkflowTriggerHistoryInner> inner
+            = this.serviceClient().list(resourceGroupName, workflowName, triggerName, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowTriggerHistoryImpl(inner1, this.manager()));
     }
 
-    public Response<WorkflowTriggerHistory> getWithResponse(
-        String resourceGroupName, String workflowName, String triggerName, String historyName, Context context) {
-        Response<WorkflowTriggerHistoryInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workflowName, triggerName, historyName, context);
+    public Response<WorkflowTriggerHistory> getWithResponse(String resourceGroupName, String workflowName,
+        String triggerName, String historyName, Context context) {
+        Response<WorkflowTriggerHistoryInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workflowName, triggerName, historyName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WorkflowTriggerHistoryImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public WorkflowTriggerHistory get(
-        String resourceGroupName, String workflowName, String triggerName, String historyName) {
-        WorkflowTriggerHistoryInner inner =
-            this.serviceClient().get(resourceGroupName, workflowName, triggerName, historyName);
+    public WorkflowTriggerHistory get(String resourceGroupName, String workflowName, String triggerName,
+        String historyName) {
+        WorkflowTriggerHistoryInner inner
+            = this.serviceClient().get(resourceGroupName, workflowName, triggerName, historyName);
         if (inner != null) {
             return new WorkflowTriggerHistoryImpl(inner, this.manager());
         } else {
@@ -72,10 +64,9 @@ public final class WorkflowTriggerHistoriesImpl implements WorkflowTriggerHistor
         }
     }
 
-    public Response<Void> resubmitWithResponse(
-        String resourceGroupName, String workflowName, String triggerName, String historyName, Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> resubmitWithResponse(String resourceGroupName, String workflowName, String triggerName,
+        String historyName, Context context) {
+        return this.serviceClient()
             .resubmitWithResponse(resourceGroupName, workflowName, triggerName, historyName, context);
     }
 

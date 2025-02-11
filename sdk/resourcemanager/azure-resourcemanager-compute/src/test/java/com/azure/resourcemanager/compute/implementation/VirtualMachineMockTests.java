@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -29,7 +29,6 @@ import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -54,7 +53,9 @@ public class VirtualMachineMockTests {
 
         ComputeManager computeManager = mockComputeManager();
 
-        PagedIterable<VirtualMachine> virtualMachines = computeManager.virtualMachines().listByVirtualMachineScaleSetId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg97796/providers/Microsoft.Compute/virtualMachineScaleSets/vmss035803b7");
+        PagedIterable<VirtualMachine> virtualMachines = computeManager.virtualMachines()
+            .listByVirtualMachineScaleSetId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg97796/providers/Microsoft.Compute/virtualMachineScaleSets/vmss035803b7");
         // 1 element per page, 2 pages in total
         Assertions.assertEquals(2, virtualMachines.stream().count());
         Assertions.assertTrue(stateHolder.firstPageRequested);
@@ -62,23 +63,22 @@ public class VirtualMachineMockTests {
     }
 
     private ComputeManager mockComputeManager() {
-        HttpClient httpClient
-            = mockHttpClient();
-        AzureProfile mockProfile = new AzureProfile(UUID.randomUUID().toString(), UUID.randomUUID().toString(), AzureEnvironment.AZURE);
-        ComputeManager computeManager = ComputeManager.authenticate(new HttpPipelineBuilder()
-            .httpClient(httpClient).build(),
-            mockProfile);
+        HttpClient httpClient = mockHttpClient();
+        AzureProfile mockProfile = new AzureProfile(UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+            AzureCloud.AZURE_PUBLIC_CLOUD);
+        ComputeManager computeManager
+            = ComputeManager.authenticate(new HttpPipelineBuilder().httpClient(httpClient).build(), mockProfile);
         stateHolder.nextLinkUrl = String.format("%s%s?filter=%s", HOST, NEXT_LINK_PATH, QUERY);
         return computeManager;
     }
 
-    @NotNull
     private HttpClient mockHttpClient() {
         Map<String, Object> responseBody = new HashMap<>();
         Map<String, Object> vm;
         VirtualMachineInner vmInner = mockVmInner();
         try {
-            vm = SERIALIZER.deserialize(SERIALIZER.serialize(vmInner, SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+            vm = SERIALIZER.deserialize(SERIALIZER.serialize(vmInner, SerializerEncoding.JSON), Map.class,
+                SerializerEncoding.JSON);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -110,37 +110,22 @@ public class VirtualMachineMockTests {
     }
 
     private static VirtualMachineInner mockVmInner() {
-        return new VirtualMachineInner()
-            .withLocation("westus")
+        return new VirtualMachineInner().withLocation("westus")
             .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-            .withStorageProfile(
-                new StorageProfile()
-                    .withImageReference(
-                        new ImageReference()
-                            .withSharedGalleryImageId(
-                                "/SharedGalleries/sharedGalleryName/Images/sharedGalleryImageName/Versions/sharedGalleryImageVersionName"))
-                    .withOsDisk(
-                        new OSDisk()
-                            .withName("myVMosdisk")
-                            .withCaching(CachingTypes.READ_WRITE)
-                            .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                            .withManagedDisk(
-                                new ManagedDiskParameters()
-                                    .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-            .withOsProfile(
-                new OSProfile()
-                    .withComputerName("myVM")
-                    .withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-            .withNetworkProfile(
-                new NetworkProfile()
-                    .withNetworkInterfaces(
-                        Arrays
-                            .asList(
-                                new NetworkInterfaceReference()
-                                    .withId(
-                                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                                    .withPrimary(true))));
+            .withStorageProfile(new StorageProfile().withImageReference(new ImageReference().withSharedGalleryImageId(
+                "/SharedGalleries/sharedGalleryName/Images/sharedGalleryImageName/Versions/sharedGalleryImageVersionName"))
+                .withOsDisk(new OSDisk().withName("myVMosdisk")
+                    .withCaching(CachingTypes.READ_WRITE)
+                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                    .withManagedDisk(
+                        new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+            .withOsProfile(new OSProfile().withComputerName("myVM")
+                .withAdminUsername("{your-username}")
+                .withAdminPassword("fakeTokenPlaceholder"))
+            .withNetworkProfile(new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference()
+                .withId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                .withPrimary(true))));
     }
 
     private Mono<HttpResponse> successResponse(HttpRequest request, Map<String, Object> responseBody) {

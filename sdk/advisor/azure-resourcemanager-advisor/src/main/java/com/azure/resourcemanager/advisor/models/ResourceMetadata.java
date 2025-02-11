@@ -5,51 +5,52 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Recommendation resource metadata. */
+/**
+ * Recommendation resource metadata.
+ */
 @Fluent
-public final class ResourceMetadata {
+public final class ResourceMetadata implements JsonSerializable<ResourceMetadata> {
     /*
      * Azure resource Id of the assessed resource
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Source from which recommendation is generated
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * The action to view resource.
      */
-    @JsonProperty(value = "action")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> action;
 
     /*
      * The singular user friendly name of resource type. eg: virtual machine
      */
-    @JsonProperty(value = "singular")
     private String singular;
 
     /*
      * The plural user friendly name of resource type. eg: virtual machines
      */
-    @JsonProperty(value = "plural")
     private String plural;
 
-    /** Creates an instance of ResourceMetadata class. */
+    /**
+     * Creates an instance of ResourceMetadata class.
+     */
     public ResourceMetadata() {
     }
 
     /**
      * Get the resourceId property: Azure resource Id of the assessed resource.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -58,7 +59,7 @@ public final class ResourceMetadata {
 
     /**
      * Set the resourceId property: Azure resource Id of the assessed resource.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ResourceMetadata object itself.
      */
@@ -69,7 +70,7 @@ public final class ResourceMetadata {
 
     /**
      * Get the source property: Source from which recommendation is generated.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -78,7 +79,7 @@ public final class ResourceMetadata {
 
     /**
      * Set the source property: Source from which recommendation is generated.
-     *
+     * 
      * @param source the source value to set.
      * @return the ResourceMetadata object itself.
      */
@@ -89,7 +90,7 @@ public final class ResourceMetadata {
 
     /**
      * Get the action property: The action to view resource.
-     *
+     * 
      * @return the action value.
      */
     public Map<String, Object> action() {
@@ -98,7 +99,7 @@ public final class ResourceMetadata {
 
     /**
      * Set the action property: The action to view resource.
-     *
+     * 
      * @param action the action value to set.
      * @return the ResourceMetadata object itself.
      */
@@ -109,7 +110,7 @@ public final class ResourceMetadata {
 
     /**
      * Get the singular property: The singular user friendly name of resource type. eg: virtual machine.
-     *
+     * 
      * @return the singular value.
      */
     public String singular() {
@@ -118,7 +119,7 @@ public final class ResourceMetadata {
 
     /**
      * Set the singular property: The singular user friendly name of resource type. eg: virtual machine.
-     *
+     * 
      * @param singular the singular value to set.
      * @return the ResourceMetadata object itself.
      */
@@ -129,7 +130,7 @@ public final class ResourceMetadata {
 
     /**
      * Get the plural property: The plural user friendly name of resource type. eg: virtual machines.
-     *
+     * 
      * @return the plural value.
      */
     public String plural() {
@@ -138,7 +139,7 @@ public final class ResourceMetadata {
 
     /**
      * Set the plural property: The plural user friendly name of resource type. eg: virtual machines.
-     *
+     * 
      * @param plural the plural value to set.
      * @return the ResourceMetadata object itself.
      */
@@ -149,9 +150,58 @@ public final class ResourceMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeMapField("action", this.action, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("singular", this.singular);
+        jsonWriter.writeStringField("plural", this.plural);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceMetadata.
+     */
+    public static ResourceMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceMetadata deserializedResourceMetadata = new ResourceMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedResourceMetadata.resourceId = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedResourceMetadata.source = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    Map<String, Object> action = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedResourceMetadata.action = action;
+                } else if ("singular".equals(fieldName)) {
+                    deserializedResourceMetadata.singular = reader.getString();
+                } else if ("plural".equals(fieldName)) {
+                    deserializedResourceMetadata.plural = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceMetadata;
+        });
     }
 }

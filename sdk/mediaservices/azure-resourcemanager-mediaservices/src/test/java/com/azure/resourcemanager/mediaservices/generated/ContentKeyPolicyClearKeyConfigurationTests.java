@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyClearKeyCo
 public final class ContentKeyPolicyClearKeyConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicyClearKeyConfiguration model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyClearKeyConfiguration\"}")
+        ContentKeyPolicyClearKeyConfiguration model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyClearKeyConfiguration\"}")
                 .toObject(ContentKeyPolicyClearKeyConfiguration.class);
     }
 

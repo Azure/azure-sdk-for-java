@@ -21,7 +21,7 @@ public class ImportSettings implements JsonSerializable<ImportSettings> {
     /*
      * The import setting type.
      */
-    private String type;
+    private String type = "ImportSettings";
 
     /*
      * Import command settings.
@@ -32,7 +32,6 @@ public class ImportSettings implements JsonSerializable<ImportSettings> {
      * Creates an instance of ImportSettings class.
      */
     public ImportSettings() {
-        this.type = "ImportSettings";
     }
 
     /**

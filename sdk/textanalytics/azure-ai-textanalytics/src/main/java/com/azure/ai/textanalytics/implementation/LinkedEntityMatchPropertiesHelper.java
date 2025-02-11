@@ -11,13 +11,15 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 public final class LinkedEntityMatchPropertiesHelper {
     private static LinkedEntityMatchAccessor accessor;
 
-    private LinkedEntityMatchPropertiesHelper() { }
+    private LinkedEntityMatchPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link LinkedEntityMatch} instance.
      */
     public interface LinkedEntityMatchAccessor {
         void setLength(LinkedEntityMatch entity, int length);
+
         void setOffset(LinkedEntityMatch entity, int offset);
     }
 

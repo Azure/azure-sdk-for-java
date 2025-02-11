@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The scope and whether it is valid. */
+/**
+ * The scope and whether it is valid.
+ */
 @Fluent
-public final class ScopeProperties {
+public final class ScopeProperties implements JsonSerializable<ScopeProperties> {
     /*
      * The scope property.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * The valid property.
      */
-    @JsonProperty(value = "valid")
     private Boolean valid;
 
-    /** Creates an instance of ScopeProperties class. */
+    /**
+     * Creates an instance of ScopeProperties class.
+     */
     public ScopeProperties() {
     }
 
     /**
      * Get the scope property: The scope property.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -37,7 +43,7 @@ public final class ScopeProperties {
 
     /**
      * Set the scope property: The scope property.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the ScopeProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class ScopeProperties {
 
     /**
      * Get the valid property: The valid property.
-     *
+     * 
      * @return the valid value.
      */
     public Boolean valid() {
@@ -57,7 +63,7 @@ public final class ScopeProperties {
 
     /**
      * Set the valid property: The valid property.
-     *
+     * 
      * @param valid the valid value to set.
      * @return the ScopeProperties object itself.
      */
@@ -68,9 +74,48 @@ public final class ScopeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeBooleanField("valid", this.valid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScopeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScopeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScopeProperties.
+     */
+    public static ScopeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScopeProperties deserializedScopeProperties = new ScopeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    deserializedScopeProperties.scope = reader.getString();
+                } else if ("valid".equals(fieldName)) {
+                    deserializedScopeProperties.valid = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScopeProperties;
+        });
     }
 }

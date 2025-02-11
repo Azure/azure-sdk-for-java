@@ -6,7 +6,7 @@ package com.azure.resourcemanager.compute.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.ComputeResourceType;
@@ -55,22 +55,25 @@ public final class ListComputeSkus {
             } else if (sku.resourceType().equals(ComputeResourceType.SNAPSHOTS)) {
                 size = sku.diskSkuType().toString();
             }
-            System.out.println(String.format(format, sku.name(), sku.resourceType(), size, regionZoneToString(sku.zones())));
+            System.out
+                .println(String.format(format, sku.name(), sku.resourceType(), size, regionZoneToString(sku.zones())));
         }
 
         //=================================================================
         // List compute SKUs for a specific compute resource type (VirtualMachines) in a region
         //
-        System.out.println("Listing compute SKUs for a specific compute resource type (VirtualMachines) in a region (US East2)");
+        System.out.println(
+            "Listing compute SKUs for a specific compute resource type (VirtualMachines) in a region (US East2)");
         format = "%-22s %-22s %s";
 
         System.out.println(String.format(format, "Name", "Size", "Regions [zones]"));
         System.out.println("============================================================================");
 
         skus = azureResourceManager.computeSkus()
-                .listByRegionAndResourceType(Region.US_EAST2, ComputeResourceType.VIRTUALMACHINES);
+            .listByRegionAndResourceType(Region.US_EAST2, ComputeResourceType.VIRTUALMACHINES);
         for (ComputeSku sku : skus) {
-            final String line = String.format(format, sku.name(), sku.virtualMachineSizeType(), regionZoneToString(sku.zones()));
+            final String line
+                = String.format(format, sku.name(), sku.virtualMachineSizeType(), regionZoneToString(sku.zones()));
             System.out.println(line);
         }
 
@@ -83,8 +86,7 @@ public final class ListComputeSkus {
         System.out.println(String.format(format, "Name", "Size", "Regions [zones]"));
         System.out.println("============================================================================");
 
-        skus = azureResourceManager.computeSkus()
-                .listByResourceType(ComputeResourceType.DISKS);
+        skus = azureResourceManager.computeSkus().listByResourceType(ComputeResourceType.DISKS);
         for (ComputeSku sku : skus) {
             final String line = String.format(format, sku.name(), sku.diskSkuType(), regionZoneToString(sku.zones()));
             System.out.println(line);
@@ -98,7 +100,7 @@ public final class ListComputeSkus {
         for (Map.Entry<Region, Set<AvailabilityZoneId>> regionZones : regionZonesMap.entrySet()) {
             builder.append(regionZones.getKey().toString());
             builder.append(" [ ");
-            for (AvailabilityZoneId zone :regionZones.getValue()) {
+            for (AvailabilityZoneId zone : regionZones.getValue()) {
                 builder.append(zone).append(" ");
             }
             builder.append("] ");
@@ -116,13 +118,12 @@ public final class ListComputeSkus {
             //=================================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

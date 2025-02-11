@@ -16,8 +16,8 @@ public final class OrderResourceImpl implements OrderResource {
 
     private final com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager;
 
-    OrderResourceImpl(
-        OrderResourceInner innerObject, com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager) {
+    OrderResourceImpl(OrderResourceInner innerObject,
+        com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

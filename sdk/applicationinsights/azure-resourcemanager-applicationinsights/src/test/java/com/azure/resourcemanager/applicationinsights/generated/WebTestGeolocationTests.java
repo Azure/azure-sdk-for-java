@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class WebTestGeolocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WebTestGeolocation model = BinaryData.fromString("{\"Id\":\"jvnysounqe\"}").toObject(WebTestGeolocation.class);
-        Assertions.assertEquals("jvnysounqe", model.location());
+        WebTestGeolocation model = BinaryData.fromString("{\"Id\":\"c\"}").toObject(WebTestGeolocation.class);
+        Assertions.assertEquals("c", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebTestGeolocation model = new WebTestGeolocation().withLocation("jvnysounqe");
+        WebTestGeolocation model = new WebTestGeolocation().withLocation("c");
         model = BinaryData.fromObject(model).toObject(WebTestGeolocation.class);
-        Assertions.assertEquals("jvnysounqe", model.location());
+        Assertions.assertEquals("c", model.location());
     }
 }

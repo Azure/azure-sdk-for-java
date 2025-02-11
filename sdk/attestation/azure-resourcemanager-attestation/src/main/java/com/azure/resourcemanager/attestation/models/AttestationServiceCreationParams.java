@@ -6,39 +6,42 @@ package com.azure.resourcemanager.attestation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters for creating an attestation provider. */
+/**
+ * Parameters for creating an attestation provider.
+ */
 @Fluent
-public final class AttestationServiceCreationParams {
+public final class AttestationServiceCreationParams implements JsonSerializable<AttestationServiceCreationParams> {
     /*
      * The supported Azure location where the attestation provider should be created.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * The tags that will be assigned to the attestation provider.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Properties of the attestation provider
      */
-    @JsonProperty(value = "properties", required = true)
     private AttestationServiceCreationSpecificParams properties;
 
-    /** Creates an instance of AttestationServiceCreationParams class. */
+    /**
+     * Creates an instance of AttestationServiceCreationParams class.
+     */
     public AttestationServiceCreationParams() {
     }
 
     /**
      * Get the location property: The supported Azure location where the attestation provider should be created.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -47,7 +50,7 @@ public final class AttestationServiceCreationParams {
 
     /**
      * Set the location property: The supported Azure location where the attestation provider should be created.
-     *
+     * 
      * @param location the location value to set.
      * @return the AttestationServiceCreationParams object itself.
      */
@@ -58,7 +61,7 @@ public final class AttestationServiceCreationParams {
 
     /**
      * Get the tags property: The tags that will be assigned to the attestation provider.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -67,7 +70,7 @@ public final class AttestationServiceCreationParams {
 
     /**
      * Set the tags property: The tags that will be assigned to the attestation provider.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AttestationServiceCreationParams object itself.
      */
@@ -78,7 +81,7 @@ public final class AttestationServiceCreationParams {
 
     /**
      * Get the properties property: Properties of the attestation provider.
-     *
+     * 
      * @return the properties value.
      */
     public AttestationServiceCreationSpecificParams properties() {
@@ -87,7 +90,7 @@ public final class AttestationServiceCreationParams {
 
     /**
      * Set the properties property: Properties of the attestation provider.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AttestationServiceCreationParams object itself.
      */
@@ -98,25 +101,69 @@ public final class AttestationServiceCreationParams {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model AttestationServiceCreationParams"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model AttestationServiceCreationParams"));
         }
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model AttestationServiceCreationParams"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model AttestationServiceCreationParams"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AttestationServiceCreationParams.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttestationServiceCreationParams from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttestationServiceCreationParams if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AttestationServiceCreationParams.
+     */
+    public static AttestationServiceCreationParams fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttestationServiceCreationParams deserializedAttestationServiceCreationParams
+                = new AttestationServiceCreationParams();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedAttestationServiceCreationParams.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAttestationServiceCreationParams.properties
+                        = AttestationServiceCreationSpecificParams.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAttestationServiceCreationParams.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttestationServiceCreationParams;
+        });
+    }
 }

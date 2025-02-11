@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Kind/type of the benefit. */
+/**
+ * Kind/type of the benefit.
+ */
 public final class BenefitKind extends ExpandableStringEnum<BenefitKind> {
-    /** Static value IncludedQuantity for BenefitKind. */
+    /**
+     * Static value IncludedQuantity for BenefitKind.
+     */
     public static final BenefitKind INCLUDED_QUANTITY = fromString("IncludedQuantity");
 
-    /** Static value Reservation for BenefitKind. */
+    /**
+     * Static value Reservation for BenefitKind.
+     */
     public static final BenefitKind RESERVATION = fromString("Reservation");
 
-    /** Static value SavingsPlan for BenefitKind. */
+    /**
+     * Static value SavingsPlan for BenefitKind.
+     */
     public static final BenefitKind SAVINGS_PLAN = fromString("SavingsPlan");
 
     /**
      * Creates a new instance of BenefitKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class BenefitKind extends ExpandableStringEnum<BenefitKind> {
 
     /**
      * Creates or finds a BenefitKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BenefitKind.
      */
-    @JsonCreator
     public static BenefitKind fromString(String name) {
         return fromString(name, BenefitKind.class);
     }
 
     /**
      * Gets known BenefitKind values.
-     *
+     * 
      * @return known BenefitKind values.
      */
     public static Collection<BenefitKind> values() {

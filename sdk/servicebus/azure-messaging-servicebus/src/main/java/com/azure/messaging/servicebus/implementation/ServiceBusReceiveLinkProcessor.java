@@ -78,12 +78,11 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     // Opting to use AtomicReferenceFieldUpdater because Project Reactor provides utility methods that calculates
     // backpressure requests, sets the upstream correctly, and reports its state.
     private volatile long requested;
-    private static final AtomicLongFieldUpdater<ServiceBusReceiveLinkProcessor> REQUESTED =
-        AtomicLongFieldUpdater.newUpdater(ServiceBusReceiveLinkProcessor.class, "requested");
+    private static final AtomicLongFieldUpdater<ServiceBusReceiveLinkProcessor> REQUESTED
+        = AtomicLongFieldUpdater.newUpdater(ServiceBusReceiveLinkProcessor.class, "requested");
     private volatile Subscription upstream;
-    private static final AtomicReferenceFieldUpdater<ServiceBusReceiveLinkProcessor, Subscription> UPSTREAM =
-        AtomicReferenceFieldUpdater.newUpdater(ServiceBusReceiveLinkProcessor.class, Subscription.class,
-            "upstream");
+    private static final AtomicReferenceFieldUpdater<ServiceBusReceiveLinkProcessor, Subscription> UPSTREAM
+        = AtomicReferenceFieldUpdater.newUpdater(ServiceBusReceiveLinkProcessor.class, Subscription.class, "upstream");
 
     /**
      * Creates an instance of {@link ServiceBusReceiveLinkProcessor}.
@@ -98,8 +97,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
 
         if (prefetch < 0) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'prefetch' cannot be less than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'prefetch' cannot be less than 0."));
         }
 
         this.prefetch = prefetch;
@@ -114,18 +112,17 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
         if (isDisposed()) {
-            return monoError(LOGGER.atError()
-                    .addKeyValue(LOCK_TOKEN_KEY, lockToken)
-                    .addKeyValue(DELIVERY_STATE_KEY, deliveryState),
-                new IllegalStateException(String.format(
-                    "lockToken[%s]. state[%s]. Cannot update disposition on closed processor.", lockToken, deliveryState)));
+            return monoError(
+                LOGGER.atError().addKeyValue(LOCK_TOKEN_KEY, lockToken).addKeyValue(DELIVERY_STATE_KEY, deliveryState),
+                new IllegalStateException(
+                    String.format("lockToken[%s]. state[%s]. Cannot update disposition on closed processor.", lockToken,
+                        deliveryState)));
         }
 
         final ServiceBusReceiveLink link = currentLink;
         if (link == null) {
-            return monoError(LOGGER.atError()
-                    .addKeyValue(LOCK_TOKEN_KEY, lockToken)
-                    .addKeyValue(DELIVERY_STATE_KEY, deliveryState),
+            return monoError(
+                LOGGER.atError().addKeyValue(LOCK_TOKEN_KEY, lockToken).addKeyValue(DELIVERY_STATE_KEY, deliveryState),
                 new IllegalStateException(String.format(
                     "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
         }
@@ -218,53 +215,46 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             currentLink = next;
             next.setEmptyCreditListener(() -> 0);
 
-            currentLinkSubscriptions = Disposables.composite(
-                next.receive().publishOn(Schedulers.boundedElastic()).subscribe(
-                    message -> {
-                        synchronized (queueLock) {
-                            messageQueue.add(message);
-                            pendingMessages.incrementAndGet();
-                        }
+            currentLinkSubscriptions
+                = Disposables.composite(next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
+                    synchronized (queueLock) {
+                        messageQueue.add(message);
+                        pendingMessages.incrementAndGet();
+                    }
 
-                        drain();
-                    },
-                    error -> {
-                        // When the receive on AmqpReceiveLink (e.g., ServiceBusReactorReceiver) terminates
-                        // with an error, we expect the recovery to happen in response to the terminal events
-                        // in link EndpointState Flux.
-                        LOGGER.atVerbose()
-                            .addKeyValue(LINK_NAME_KEY, linkName)
-                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                            .log("Receiver is terminated.", error);
-                    }),
-                next.getEndpointStates().subscribeOn(Schedulers.boundedElastic()).subscribe(
-                    state -> {
-                        // Connection was successfully opened, we can reset the retry interval.
-                        if (state == AmqpEndpointState.ACTIVE) {
-                            retryAttempts.set(0);
-                        }
-                    },
-                    error -> {
+                    drain();
+                }, error -> {
+                    // When the receive on AmqpReceiveLink (e.g., ServiceBusReactorReceiver) terminates
+                    // with an error, we expect the recovery to happen in response to the terminal events
+                    // in link EndpointState Flux.
+                    LOGGER.atVerbose()
+                        .addKeyValue(LINK_NAME_KEY, linkName)
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .log("Receiver is terminated.", error);
+                }), next.getEndpointStates().subscribeOn(Schedulers.boundedElastic()).subscribe(state -> {
+                    // Connection was successfully opened, we can reset the retry interval.
+                    if (state == AmqpEndpointState.ACTIVE) {
+                        retryAttempts.set(0);
+                    }
+                }, error -> {
+                    currentLink = null;
+                    onError(error);
+                }, () -> {
+                    if (isTerminated()) {
+                        LOGGER.info("Processor is terminated. Disposing of link processor.");
+                        dispose();
+                    } else if (upstream == Operators.cancelledSubscription()) {
+                        LOGGER.info("Upstream has completed. Disposing of link processor.");
+                        dispose();
+                    } else {
+                        LOGGER.info("Receive link endpoint states are closed. Requesting another.");
+                        final AmqpReceiveLink existing = currentLink;
                         currentLink = null;
-                        onError(error);
-                    },
-                    () -> {
-                        if (isTerminated()) {
-                            LOGGER.info("Processor is terminated. Disposing of link processor.");
-                            dispose();
-                        } else if (upstream == Operators.cancelledSubscription()) {
-                            LOGGER.info("Upstream has completed. Disposing of link processor.");
-                            dispose();
-                        } else {
-                            LOGGER.info("Receive link endpoint states are closed. Requesting another.");
-                            final AmqpReceiveLink existing = currentLink;
-                            currentLink = null;
 
-
-                            disposeReceiver(existing);
-                            requestUpstream();
-                        }
-                    }));
+                        disposeReceiver(existing);
+                        requestUpstream();
+                    }
+                }));
         }
 
         checkAndAddCredits(next);
@@ -286,8 +276,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     public void subscribe(CoreSubscriber<? super Message> actual) {
         Objects.requireNonNull(actual, "'actual' cannot be null.");
 
-        final boolean terminateSubscriber = isTerminated()
-            || (currentLink == null && upstream == Operators.cancelledSubscription());
+        final boolean terminateSubscriber
+            = isTerminated() || (currentLink == null && upstream == Operators.cancelledSubscription());
         if (isTerminated()) {
             final AmqpReceiveLink link = currentLink;
             final String linkName = link != null ? link.getLinkName() : "n/a";
@@ -316,8 +306,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             actual.onSubscribe(this);
             drain();
         } else {
-            Operators.error(actual, LOGGER.logExceptionAsError(new IllegalStateException(
-                "There is already one downstream subscriber.'")));
+            Operators.error(actual,
+                LOGGER.logExceptionAsError(new IllegalStateException("There is already one downstream subscriber.'")));
         }
     }
 
@@ -397,9 +387,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     @Override
     public void request(long request) {
         if (!Operators.validate(request)) {
-            LOGGER.atWarning()
-                .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, request)
-                .log("Invalid request");
+            LOGGER.atWarning().addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, request).log("Invalid request");
             return;
         }
 
@@ -526,8 +514,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     }
                 } catch (Exception e) {
                     LOGGER.error("Exception occurred while handling downstream onNext operation.", e);
-                    throw LOGGER.logExceptionAsError(Exceptions.propagate(
-                        Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
+                    throw LOGGER.logExceptionAsError(Exceptions
+                        .propagate(Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
                 }
                 numberEmitted++;
                 isEmpty = messageQueue.isEmpty();
@@ -538,7 +526,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             }
         }
     }
-
 
     private boolean checkAndSetTerminated() {
         if (!isTerminated()) {
@@ -614,9 +601,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 creditsToAdd = Math.max(expectedTotalCredit - pending, 0);
             } else {
                 // If the queue has less than 1/3 of the prefetch, then add the difference to keep the queue full.
-                creditsToAdd = minimumNumberOfMessages >= queuedMessages
-                    ? Math.max(expectedTotalCredit - pending, 0)
-                    : 0;
+                creditsToAdd
+                    = minimumNumberOfMessages >= queuedMessages ? Math.max(expectedTotalCredit - pending, 0) : 0;
             }
 
             LOGGER.atVerbose()

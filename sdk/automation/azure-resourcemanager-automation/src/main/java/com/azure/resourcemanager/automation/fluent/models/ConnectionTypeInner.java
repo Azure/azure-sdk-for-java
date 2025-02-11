@@ -5,41 +5,49 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.FieldDefinition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Definition of the connection type. */
+/**
+ * Definition of the connection type.
+ */
 @Fluent
-public final class ConnectionTypeInner {
+public final class ConnectionTypeInner implements JsonSerializable<ConnectionTypeInner> {
     /*
      * Gets the id of the resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Gets the name of the connection type.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Gets or sets the properties of the connection type.
      */
-    @JsonProperty(value = "properties")
     private ConnectionTypeProperties innerProperties;
 
     /**
+     * Creates an instance of ConnectionTypeInner class.
+     */
+    public ConnectionTypeInner() {
+    }
+
+    /**
      * Get the id property: Gets the id of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -48,7 +56,7 @@ public final class ConnectionTypeInner {
 
     /**
      * Get the name property: Gets the name of the connection type.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +65,7 @@ public final class ConnectionTypeInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -66,7 +74,7 @@ public final class ConnectionTypeInner {
 
     /**
      * Get the innerProperties property: Gets or sets the properties of the connection type.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConnectionTypeProperties innerProperties() {
@@ -75,7 +83,7 @@ public final class ConnectionTypeInner {
 
     /**
      * Get the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
-     *
+     * 
      * @return the isGlobal value.
      */
     public Boolean isGlobal() {
@@ -84,7 +92,7 @@ public final class ConnectionTypeInner {
 
     /**
      * Set the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
-     *
+     * 
      * @param isGlobal the isGlobal value to set.
      * @return the ConnectionTypeInner object itself.
      */
@@ -98,7 +106,7 @@ public final class ConnectionTypeInner {
 
     /**
      * Get the fieldDefinitions property: Gets the field definitions of the connection type.
-     *
+     * 
      * @return the fieldDefinitions value.
      */
     public Map<String, FieldDefinition> fieldDefinitions() {
@@ -107,7 +115,7 @@ public final class ConnectionTypeInner {
 
     /**
      * Get the creationTime property: Gets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -116,7 +124,7 @@ public final class ConnectionTypeInner {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -125,7 +133,7 @@ public final class ConnectionTypeInner {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the ConnectionTypeInner object itself.
      */
@@ -139,7 +147,7 @@ public final class ConnectionTypeInner {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -148,7 +156,7 @@ public final class ConnectionTypeInner {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ConnectionTypeInner object itself.
      */
@@ -162,12 +170,54 @@ public final class ConnectionTypeInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionTypeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionTypeInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionTypeInner.
+     */
+    public static ConnectionTypeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionTypeInner deserializedConnectionTypeInner = new ConnectionTypeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectionTypeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConnectionTypeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConnectionTypeInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConnectionTypeInner.innerProperties = ConnectionTypeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionTypeInner;
+        });
     }
 }

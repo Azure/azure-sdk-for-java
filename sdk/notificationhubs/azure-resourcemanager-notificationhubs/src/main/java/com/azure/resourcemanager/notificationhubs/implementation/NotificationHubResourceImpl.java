@@ -6,24 +6,21 @@ package com.azure.resourcemanager.notificationhubs.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubResourceInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
 import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
 import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
-import com.azure.resourcemanager.notificationhubs.models.BrowserCredential;
 import com.azure.resourcemanager.notificationhubs.models.DebugSendResponse;
-import com.azure.resourcemanager.notificationhubs.models.FcmV1Credential;
 import com.azure.resourcemanager.notificationhubs.models.GcmCredential;
 import com.azure.resourcemanager.notificationhubs.models.MpnsCredential;
+import com.azure.resourcemanager.notificationhubs.models.NotificationHubCreateOrUpdateParameters;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubPatchParameters;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubResource;
 import com.azure.resourcemanager.notificationhubs.models.PnsCredentialsResource;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
 import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
-import com.azure.resourcemanager.notificationhubs.models.XiaomiCredential;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -61,10 +58,6 @@ public final class NotificationHubResourceImpl
 
     public Sku sku() {
         return this.innerModel().sku();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String namePropertiesName() {
@@ -108,22 +101,6 @@ public final class NotificationHubResourceImpl
         return this.innerModel().baiduCredential();
     }
 
-    public BrowserCredential browserCredential() {
-        return this.innerModel().browserCredential();
-    }
-
-    public XiaomiCredential xiaomiCredential() {
-        return this.innerModel().xiaomiCredential();
-    }
-
-    public FcmV1Credential fcmV1Credential() {
-        return this.innerModel().fcmV1Credential();
-    }
-
-    public Long dailyMaxActiveDevices() {
-        return this.innerModel().dailyMaxActiveDevices();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -150,6 +127,8 @@ public final class NotificationHubResourceImpl
 
     private String notificationHubName;
 
+    private NotificationHubCreateOrUpdateParameters createParameters;
+
     private NotificationHubPatchParameters updateParameters;
 
     public NotificationHubResourceImpl withExistingNamespace(String resourceGroupName, String namespaceName) {
@@ -159,16 +138,20 @@ public final class NotificationHubResourceImpl
     }
 
     public NotificationHubResource create() {
-        this.innerObject
-            = serviceManager.serviceClient().getNotificationHubs().createOrUpdateWithResponse(resourceGroupName,
-                namespaceName, notificationHubName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .createOrUpdateWithResponse(resourceGroupName, namespaceName, notificationHubName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationHubResource create(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getNotificationHubs().createOrUpdateWithResponse(resourceGroupName,
-                namespaceName, notificationHubName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .createOrUpdateWithResponse(resourceGroupName, namespaceName, notificationHubName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -177,6 +160,7 @@ public final class NotificationHubResourceImpl
         this.innerObject = new NotificationHubResourceInner();
         this.serviceManager = serviceManager;
         this.notificationHubName = name;
+        this.createParameters = new NotificationHubCreateOrUpdateParameters();
     }
 
     public NotificationHubResourceImpl update() {
@@ -185,15 +169,17 @@ public final class NotificationHubResourceImpl
     }
 
     public NotificationHubResource apply() {
-        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
-            .updateWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, Context.NONE)
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .patchWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, Context.NONE)
             .getValue();
         return this;
     }
 
     public NotificationHubResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
-            .updateWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, context)
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .patchWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, context)
             .getValue();
         return this;
     }
@@ -208,20 +194,24 @@ public final class NotificationHubResourceImpl
     }
 
     public NotificationHubResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
-            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationHubResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
-            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, context)
+            .getValue();
         return this;
     }
 
-    public Response<DebugSendResponse> debugSendWithResponse(Context context) {
-        return serviceManager.notificationHubs().debugSendWithResponse(resourceGroupName, namespaceName,
-            notificationHubName, context);
+    public Response<DebugSendResponse> debugSendWithResponse(Object parameters, Context context) {
+        return serviceManager.notificationHubs()
+            .debugSendWithResponse(resourceGroupName, namespaceName, notificationHubName, parameters, context);
     }
 
     public DebugSendResponse debugSend() {
@@ -229,28 +219,28 @@ public final class NotificationHubResourceImpl
     }
 
     public Response<PnsCredentialsResource> getPnsCredentialsWithResponse(Context context) {
-        return serviceManager.notificationHubs().getPnsCredentialsWithResponse(resourceGroupName, namespaceName,
-            notificationHubName, context);
+        return serviceManager.notificationHubs()
+            .getPnsCredentialsWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
     }
 
     public PnsCredentialsResource getPnsCredentials() {
-        return serviceManager.notificationHubs().getPnsCredentials(resourceGroupName, namespaceName,
-            notificationHubName);
+        return serviceManager.notificationHubs()
+            .getPnsCredentials(resourceGroupName, namespaceName, notificationHubName);
     }
 
     public NotificationHubResourceImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
+        this.createParameters.withLocation(location.toString());
         return this;
     }
 
     public NotificationHubResourceImpl withRegion(String location) {
-        this.innerModel().withLocation(location);
+        this.createParameters.withLocation(location);
         return this;
     }
 
     public NotificationHubResourceImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
+            this.createParameters.withTags(tags);
             return this;
         } else {
             this.updateParameters.withTags(tags);
@@ -260,7 +250,7 @@ public final class NotificationHubResourceImpl
 
     public NotificationHubResourceImpl withSku(Sku sku) {
         if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
+            this.createParameters.withSku(sku);
             return this;
         } else {
             this.updateParameters.withSku(sku);
@@ -269,13 +259,18 @@ public final class NotificationHubResourceImpl
     }
 
     public NotificationHubResourceImpl withNamePropertiesName(String namePropertiesName) {
-        this.innerModel().withNamePropertiesName(namePropertiesName);
-        return this;
+        if (isInCreateMode()) {
+            this.createParameters.withNamePropertiesName(namePropertiesName);
+            return this;
+        } else {
+            this.updateParameters.withNamePropertiesName(namePropertiesName);
+            return this;
+        }
     }
 
     public NotificationHubResourceImpl withRegistrationTtl(String registrationTtl) {
         if (isInCreateMode()) {
-            this.innerModel().withRegistrationTtl(registrationTtl);
+            this.createParameters.withRegistrationTtl(registrationTtl);
             return this;
         } else {
             this.updateParameters.withRegistrationTtl(registrationTtl);
@@ -283,9 +278,20 @@ public final class NotificationHubResourceImpl
         }
     }
 
+    public NotificationHubResourceImpl
+        withAuthorizationRules(List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
+        if (isInCreateMode()) {
+            this.createParameters.withAuthorizationRules(authorizationRules);
+            return this;
+        } else {
+            this.updateParameters.withAuthorizationRules(authorizationRules);
+            return this;
+        }
+    }
+
     public NotificationHubResourceImpl withApnsCredential(ApnsCredential apnsCredential) {
         if (isInCreateMode()) {
-            this.innerModel().withApnsCredential(apnsCredential);
+            this.createParameters.withApnsCredential(apnsCredential);
             return this;
         } else {
             this.updateParameters.withApnsCredential(apnsCredential);
@@ -295,7 +301,7 @@ public final class NotificationHubResourceImpl
 
     public NotificationHubResourceImpl withWnsCredential(WnsCredential wnsCredential) {
         if (isInCreateMode()) {
-            this.innerModel().withWnsCredential(wnsCredential);
+            this.createParameters.withWnsCredential(wnsCredential);
             return this;
         } else {
             this.updateParameters.withWnsCredential(wnsCredential);
@@ -305,7 +311,7 @@ public final class NotificationHubResourceImpl
 
     public NotificationHubResourceImpl withGcmCredential(GcmCredential gcmCredential) {
         if (isInCreateMode()) {
-            this.innerModel().withGcmCredential(gcmCredential);
+            this.createParameters.withGcmCredential(gcmCredential);
             return this;
         } else {
             this.updateParameters.withGcmCredential(gcmCredential);
@@ -315,7 +321,7 @@ public final class NotificationHubResourceImpl
 
     public NotificationHubResourceImpl withMpnsCredential(MpnsCredential mpnsCredential) {
         if (isInCreateMode()) {
-            this.innerModel().withMpnsCredential(mpnsCredential);
+            this.createParameters.withMpnsCredential(mpnsCredential);
             return this;
         } else {
             this.updateParameters.withMpnsCredential(mpnsCredential);
@@ -325,7 +331,7 @@ public final class NotificationHubResourceImpl
 
     public NotificationHubResourceImpl withAdmCredential(AdmCredential admCredential) {
         if (isInCreateMode()) {
-            this.innerModel().withAdmCredential(admCredential);
+            this.createParameters.withAdmCredential(admCredential);
             return this;
         } else {
             this.updateParameters.withAdmCredential(admCredential);
@@ -335,40 +341,10 @@ public final class NotificationHubResourceImpl
 
     public NotificationHubResourceImpl withBaiduCredential(BaiduCredential baiduCredential) {
         if (isInCreateMode()) {
-            this.innerModel().withBaiduCredential(baiduCredential);
+            this.createParameters.withBaiduCredential(baiduCredential);
             return this;
         } else {
             this.updateParameters.withBaiduCredential(baiduCredential);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withBrowserCredential(BrowserCredential browserCredential) {
-        if (isInCreateMode()) {
-            this.innerModel().withBrowserCredential(browserCredential);
-            return this;
-        } else {
-            this.updateParameters.withBrowserCredential(browserCredential);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withXiaomiCredential(XiaomiCredential xiaomiCredential) {
-        if (isInCreateMode()) {
-            this.innerModel().withXiaomiCredential(xiaomiCredential);
-            return this;
-        } else {
-            this.updateParameters.withXiaomiCredential(xiaomiCredential);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withFcmV1Credential(FcmV1Credential fcmV1Credential) {
-        if (isInCreateMode()) {
-            this.innerModel().withFcmV1Credential(fcmV1Credential);
-            return this;
-        } else {
-            this.updateParameters.withFcmV1Credential(fcmV1Credential);
             return this;
         }
     }

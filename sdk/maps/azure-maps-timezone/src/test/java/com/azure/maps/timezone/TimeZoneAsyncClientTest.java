@@ -81,8 +81,8 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     public void testAsyncGetTimezoneByCoordinates(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-122, 47.0);
-        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(
-            TimeZoneOptions.ALL);
+        TimeZoneCoordinateOptions options
+            = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimeZoneOptions.ALL);
         StepVerifier.create(client.getTimezoneByCoordinates(options))
             .assertNext(actualResults -> validateGetTimezoneByCoordinates(TestUtils.getExpectedTimezoneByCoordinates(),
                 actualResults))
@@ -98,12 +98,11 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
         TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-122, 47.0);
-        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(
-            TimeZoneOptions.ALL);
+        TimeZoneCoordinateOptions options
+            = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimeZoneOptions.ALL);
         StepVerifier.create(client.getTimezoneByCoordinatesWithResponse(options, null))
-            .assertNext(
-                response -> validateGetTimezoneByCoordinatesWithResponse(TestUtils.getExpectedTimezoneByCoordinates(),
-                    response))
+            .assertNext(response -> validateGetTimezoneByCoordinatesWithResponse(
+                TestUtils.getExpectedTimezoneByCoordinates(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -115,8 +114,8 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
         TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-10000, 47.0);
-        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(
-            TimeZoneOptions.ALL);
+        TimeZoneCoordinateOptions options
+            = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimeZoneOptions.ALL);
         StepVerifier.create(client.getTimezoneByCoordinatesWithResponse(options, null)).expectErrorSatisfies(ex -> {
             final HttpResponseException httpResponseException = (HttpResponseException) ex;
             assertEquals(400, httpResponseException.getResponse().getStatusCode());

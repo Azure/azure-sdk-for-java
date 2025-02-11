@@ -19,8 +19,8 @@ public final class SkuInformationImpl implements SkuInformation {
 
     private final com.azure.resourcemanager.databox.DataBoxManager serviceManager;
 
-    SkuInformationImpl(
-        SkuInformationInner innerObject, com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
+    SkuInformationImpl(SkuInformationInner innerObject,
+        com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ContentLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentLink model =
-            BinaryData
-                .fromString(
-                    "{\"uri\":\"pkdwzbai\",\"contentVersion\":\"bbaumnyquped\",\"contentSize\":2245881351334058994,\"contentHash\":{\"algorithm\":\"ckhsmtxpsieb\",\"value\":\"hvpesapskrdqm\"},\"metadata\":\"datajdhtldwkyzxu\"}")
-                .toObject(ContentLink.class);
-        Assertions.assertEquals("pkdwzbai", model.uri());
+        ContentLink model = BinaryData.fromString(
+            "{\"uri\":\"p\",\"contentVersion\":\"oamciodh\",\"contentSize\":7478138751380304372,\"contentHash\":{\"algorithm\":\"hnzbonl\",\"value\":\"toego\"},\"metadata\":\"datawbw\"}")
+            .toObject(ContentLink.class);
+        Assertions.assertEquals("p", model.uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentLink model = new ContentLink().withUri("pkdwzbai");
+        ContentLink model = new ContentLink().withUri("p");
         model = BinaryData.fromObject(model).toObject(ContentLink.class);
-        Assertions.assertEquals("pkdwzbai", model.uri());
+        Assertions.assertEquals("p", model.uri());
     }
 }

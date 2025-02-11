@@ -18,7 +18,7 @@ public final class ApisHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apisHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apis().headWithResponse("contoso-resources", "contoso", "default", "echo-api",
-            com.azure.core.util.Context.NONE);
+        manager.apis()
+            .headWithResponse("contoso-resources", "contoso", "default", "echo-api", com.azure.core.util.Context.NONE);
     }
 }

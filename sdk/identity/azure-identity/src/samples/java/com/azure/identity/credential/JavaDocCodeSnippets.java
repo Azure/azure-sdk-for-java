@@ -6,9 +6,15 @@ package com.azure.identity.credential;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
+import com.azure.core.util.Context;
 import com.azure.identity.AuthenticationRecord;
+import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.AuthorizationCodeCredential;
 import com.azure.identity.AuthorizationCodeCredentialBuilder;
 import com.azure.identity.AzureCliCredential;
@@ -54,6 +60,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
+import java.util.function.Supplier;
 
 /**
  * This class contains code samples for generating javadocs through doclets for azure-identity.
@@ -349,4 +356,20 @@ public final class JavaDocCodeSnippets {
 
         // END: com.azure.identity.silentauthentication
     }
+
+    public void bearerTokenProviderSampleSync() {
+        // BEGIN: com.azure.identity.util.getBearerTokenSupplier
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        String scope = "https://cognitiveservices.azure.com/.default";
+        Supplier<String> supplier = AuthenticationUtil.getBearerTokenSupplier(credential, scope);
+
+        // This example simply uses the Azure SDK HTTP library to demonstrate setting the header.
+        // Use the token as is appropriate for your circumstances.
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://www.example.com");
+        request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + supplier.get());
+        HttpClient client = HttpClient.createDefault();
+        client.sendSync(request, Context.NONE);
+        // END: com.azure.identity.util.getBearerTokenSupplier
+    }
+
 }

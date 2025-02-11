@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties of the Failover Process Server request.
  */
 @Fluent
-public final class FailoverProcessServerRequestProperties {
+public final class FailoverProcessServerRequestProperties
+    implements JsonSerializable<FailoverProcessServerRequestProperties> {
     /*
      * The container identifier.
      */
-    @JsonProperty(value = "containerName")
     private String containerName;
 
     /*
      * The source process server.
      */
-    @JsonProperty(value = "sourceProcessServerId")
     private String sourceProcessServerId;
 
     /*
      * The new process server.
      */
-    @JsonProperty(value = "targetProcessServerId")
     private String targetProcessServerId;
 
     /*
      * The VMS to migrate.
      */
-    @JsonProperty(value = "vmsToMigrate")
     private List<String> vmsToMigrate;
 
     /*
      * A value for failover type. It can be systemlevel/serverlevel.
      */
-    @JsonProperty(value = "updateType")
     private String updateType;
 
     /**
@@ -155,5 +155,55 @@ public final class FailoverProcessServerRequestProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("sourceProcessServerId", this.sourceProcessServerId);
+        jsonWriter.writeStringField("targetProcessServerId", this.targetProcessServerId);
+        jsonWriter.writeArrayField("vmsToMigrate", this.vmsToMigrate, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("updateType", this.updateType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailoverProcessServerRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailoverProcessServerRequestProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FailoverProcessServerRequestProperties.
+     */
+    public static FailoverProcessServerRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailoverProcessServerRequestProperties deserializedFailoverProcessServerRequestProperties
+                = new FailoverProcessServerRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("containerName".equals(fieldName)) {
+                    deserializedFailoverProcessServerRequestProperties.containerName = reader.getString();
+                } else if ("sourceProcessServerId".equals(fieldName)) {
+                    deserializedFailoverProcessServerRequestProperties.sourceProcessServerId = reader.getString();
+                } else if ("targetProcessServerId".equals(fieldName)) {
+                    deserializedFailoverProcessServerRequestProperties.targetProcessServerId = reader.getString();
+                } else if ("vmsToMigrate".equals(fieldName)) {
+                    List<String> vmsToMigrate = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFailoverProcessServerRequestProperties.vmsToMigrate = vmsToMigrate;
+                } else if ("updateType".equals(fieldName)) {
+                    deserializedFailoverProcessServerRequestProperties.updateType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailoverProcessServerRequestProperties;
+        });
     }
 }

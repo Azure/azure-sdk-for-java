@@ -6,57 +6,61 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Properties of a Sql pool blob auditing policy. */
+/**
+ * Properties of a Sql pool blob auditing policy.
+ */
 @Fluent
-public final class SqlPoolBlobAuditingPolicyProperties {
+public final class SqlPoolBlobAuditingPolicyProperties
+    implements JsonSerializable<SqlPoolBlobAuditingPolicyProperties> {
     /*
      * Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are
      * required.
      */
-    @JsonProperty(value = "state", required = true)
     private BlobAuditingPolicyState state;
 
     /*
      * Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled,
      * storageEndpoint is required.
      */
-    @JsonProperty(value = "storageEndpoint")
     private String storageEndpoint;
 
     /*
      * Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is
      * specified, storageAccountAccessKey is required.
      */
-    @JsonProperty(value = "storageAccountAccessKey")
     private String storageAccountAccessKey;
 
     /*
      * Specifies the number of days to keep in the audit logs in the storage account.
      */
-    @JsonProperty(value = "retentionDays")
     private Integer retentionDays;
 
     /*
      * Specifies the Actions-Groups and Actions to audit.
-     *
+     * 
      * The recommended set of action groups to use is the following combination - this will audit all the queries and
      * stored procedures executed against the database, as well as successful and failed logins:
-     *
+     * 
      * BATCH_COMPLETED_GROUP,
      * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP,
      * FAILED_DATABASE_AUTHENTICATION_GROUP.
-     *
+     * 
      * This above combination is also the set that is configured by default when enabling auditing from the Azure
      * portal.
-     *
-     * The supported action groups to audit are (note: choose only specific groups that cover your auditing needs.
-     * Using unnecessary groups could lead to very large quantities of audit records):
-     *
+     * 
+     * The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using
+     * unnecessary groups could lead to very large quantities of audit records):
+     * 
      * APPLICATION_ROLE_CHANGE_PASSWORD_GROUP
      * BACKUP_RESTORE_GROUP
      * DATABASE_LOGOUT_GROUP
@@ -77,13 +81,14 @@ public final class SqlPoolBlobAuditingPolicyProperties {
      * USER_CHANGE_PASSWORD_GROUP
      * BATCH_STARTED_GROUP
      * BATCH_COMPLETED_GROUP
-     *
+     * 
      * These are groups that cover all sql statements and stored procedures executed against the database, and should
      * not be used in combination with other groups as this will result in duplicate audit logs.
-     *
+     * 
      * For more information, see [Database-Level Audit Action
-     * Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups).
-     *
+     * Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-
+     * groups-and-actions#database-level-audit-action-groups).
+     * 
      * For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for
      * Server auditing policy). The supported actions to audit are:
      * SELECT
@@ -93,65 +98,65 @@ public final class SqlPoolBlobAuditingPolicyProperties {
      * EXECUTE
      * RECEIVE
      * REFERENCES
-     *
+     * 
      * The general form for defining an action to be audited is:
      * {action} ON {object} BY {principal}
-     *
+     * 
      * Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an
      * entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are
      * used, respectively.
-     *
+     * 
      * For example:
      * SELECT on dbo.myTable by public
      * SELECT on DATABASE::myDatabase by public
      * SELECT on SCHEMA::mySchema by public
-     *
+     * 
      * For more information, see [Database-Level Audit
-     * Actions](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions)
+     * Actions](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-
+     * groups-and-actions#database-level-audit-actions)
      */
-    @JsonProperty(value = "auditActionsAndGroups")
     private List<String> auditActionsAndGroups;
 
     /*
      * Specifies the blob storage subscription Id.
      */
-    @JsonProperty(value = "storageAccountSubscriptionId")
     private UUID storageAccountSubscriptionId;
 
     /*
      * Specifies whether storageAccountAccessKey value is the storage's secondary key.
      */
-    @JsonProperty(value = "isStorageSecondaryKeyInUse")
     private Boolean isStorageSecondaryKeyInUse;
 
     /*
      * Specifies whether audit events are sent to Azure Monitor.
      * In order to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as
      * true.
-     *
+     * 
      * When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs
      * category on the database should be also created.
      * Note that for server level audit you should use the 'master' database as {databaseName}.
-     *
+     * 
      * Diagnostic Settings URI format:
      * PUT
-     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-     *
+     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.
+     * Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?
+     * api-version=2017-05-01-preview
+     * 
      * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
      * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
-     *
      */
-    @JsonProperty(value = "isAzureMonitorTargetEnabled")
     private Boolean isAzureMonitorTargetEnabled;
 
-    /** Creates an instance of SqlPoolBlobAuditingPolicyProperties class. */
+    /**
+     * Creates an instance of SqlPoolBlobAuditingPolicyProperties class.
+     */
     public SqlPoolBlobAuditingPolicyProperties() {
     }
 
     /**
      * Get the state property: Specifies the state of the policy. If state is Enabled, storageEndpoint or
      * isAzureMonitorTargetEnabled are required.
-     *
+     * 
      * @return the state value.
      */
     public BlobAuditingPolicyState state() {
@@ -161,7 +166,7 @@ public final class SqlPoolBlobAuditingPolicyProperties {
     /**
      * Set the state property: Specifies the state of the policy. If state is Enabled, storageEndpoint or
      * isAzureMonitorTargetEnabled are required.
-     *
+     * 
      * @param state the state value to set.
      * @return the SqlPoolBlobAuditingPolicyProperties object itself.
      */
@@ -173,7 +178,7 @@ public final class SqlPoolBlobAuditingPolicyProperties {
     /**
      * Get the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint is required.
-     *
+     * 
      * @return the storageEndpoint value.
      */
     public String storageEndpoint() {
@@ -183,7 +188,7 @@ public final class SqlPoolBlobAuditingPolicyProperties {
     /**
      * Set the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint is required.
-     *
+     * 
      * @param storageEndpoint the storageEndpoint value to set.
      * @return the SqlPoolBlobAuditingPolicyProperties object itself.
      */
@@ -195,7 +200,7 @@ public final class SqlPoolBlobAuditingPolicyProperties {
     /**
      * Get the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account. If state
      * is Enabled and storageEndpoint is specified, storageAccountAccessKey is required.
-     *
+     * 
      * @return the storageAccountAccessKey value.
      */
     public String storageAccountAccessKey() {
@@ -205,7 +210,7 @@ public final class SqlPoolBlobAuditingPolicyProperties {
     /**
      * Set the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account. If state
      * is Enabled and storageEndpoint is specified, storageAccountAccessKey is required.
-     *
+     * 
      * @param storageAccountAccessKey the storageAccountAccessKey value to set.
      * @return the SqlPoolBlobAuditingPolicyProperties object itself.
      */
@@ -216,7 +221,7 @@ public final class SqlPoolBlobAuditingPolicyProperties {
 
     /**
      * Get the retentionDays property: Specifies the number of days to keep in the audit logs in the storage account.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -225,7 +230,7 @@ public final class SqlPoolBlobAuditingPolicyProperties {
 
     /**
      * Set the retentionDays property: Specifies the number of days to keep in the audit logs in the storage account.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the SqlPoolBlobAuditingPolicyProperties object itself.
      */
@@ -236,47 +241,72 @@ public final class SqlPoolBlobAuditingPolicyProperties {
 
     /**
      * Get the auditActionsAndGroups property: Specifies the Actions-Groups and Actions to audit.
-     *
-     * <p>The recommended set of action groups to use is the following combination - this will audit all the queries and
+     * 
+     * The recommended set of action groups to use is the following combination - this will audit all the queries and
      * stored procedures executed against the database, as well as successful and failed logins:
-     *
-     * <p>BATCH_COMPLETED_GROUP, SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP, FAILED_DATABASE_AUTHENTICATION_GROUP.
-     *
-     * <p>This above combination is also the set that is configured by default when enabling auditing from the Azure
+     * 
+     * BATCH_COMPLETED_GROUP,
+     * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP,
+     * FAILED_DATABASE_AUTHENTICATION_GROUP.
+     * 
+     * This above combination is also the set that is configured by default when enabling auditing from the Azure
      * portal.
-     *
-     * <p>The supported action groups to audit are (note: choose only specific groups that cover your auditing needs.
-     * Using unnecessary groups could lead to very large quantities of audit records):
-     *
-     * <p>APPLICATION_ROLE_CHANGE_PASSWORD_GROUP BACKUP_RESTORE_GROUP DATABASE_LOGOUT_GROUP DATABASE_OBJECT_CHANGE_GROUP
-     * DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP DATABASE_OBJECT_PERMISSION_CHANGE_GROUP DATABASE_OPERATION_GROUP
-     * DATABASE_PERMISSION_CHANGE_GROUP DATABASE_PRINCIPAL_CHANGE_GROUP DATABASE_PRINCIPAL_IMPERSONATION_GROUP
-     * DATABASE_ROLE_MEMBER_CHANGE_GROUP FAILED_DATABASE_AUTHENTICATION_GROUP SCHEMA_OBJECT_ACCESS_GROUP
-     * SCHEMA_OBJECT_CHANGE_GROUP SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP
-     * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP USER_CHANGE_PASSWORD_GROUP BATCH_STARTED_GROUP BATCH_COMPLETED_GROUP
-     *
-     * <p>These are groups that cover all sql statements and stored procedures executed against the database, and should
+     * 
+     * The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using
+     * unnecessary groups could lead to very large quantities of audit records):
+     * 
+     * APPLICATION_ROLE_CHANGE_PASSWORD_GROUP
+     * BACKUP_RESTORE_GROUP
+     * DATABASE_LOGOUT_GROUP
+     * DATABASE_OBJECT_CHANGE_GROUP
+     * DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP
+     * DATABASE_OBJECT_PERMISSION_CHANGE_GROUP
+     * DATABASE_OPERATION_GROUP
+     * DATABASE_PERMISSION_CHANGE_GROUP
+     * DATABASE_PRINCIPAL_CHANGE_GROUP
+     * DATABASE_PRINCIPAL_IMPERSONATION_GROUP
+     * DATABASE_ROLE_MEMBER_CHANGE_GROUP
+     * FAILED_DATABASE_AUTHENTICATION_GROUP
+     * SCHEMA_OBJECT_ACCESS_GROUP
+     * SCHEMA_OBJECT_CHANGE_GROUP
+     * SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP
+     * SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP
+     * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP
+     * USER_CHANGE_PASSWORD_GROUP
+     * BATCH_STARTED_GROUP
+     * BATCH_COMPLETED_GROUP
+     * 
+     * These are groups that cover all sql statements and stored procedures executed against the database, and should
      * not be used in combination with other groups as this will result in duplicate audit logs.
-     *
-     * <p>For more information, see [Database-Level Audit Action
+     * 
+     * For more information, see [Database-Level Audit Action
      * Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups).
-     *
-     * <p>For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified
-     * for Server auditing policy). The supported actions to audit are: SELECT UPDATE INSERT DELETE EXECUTE RECEIVE
+     * 
+     * For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for
+     * Server auditing policy). The supported actions to audit are:
+     * SELECT
+     * UPDATE
+     * INSERT
+     * DELETE
+     * EXECUTE
+     * RECEIVE
      * REFERENCES
-     *
-     * <p>The general form for defining an action to be audited is: {action} ON {object} BY {principal}
-     *
-     * <p>Note that &lt;object&gt; in the above format can refer to an object like a table, view, or stored procedure,
-     * or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name}
-     * are used, respectively.
-     *
-     * <p>For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on
-     * SCHEMA::mySchema by public
-     *
-     * <p>For more information, see [Database-Level Audit
+     * 
+     * The general form for defining an action to be audited is:
+     * {action} ON {object} BY {principal}
+     * 
+     * Note that &lt;object&gt; in the above format can refer to an object like a table, view, or stored procedure, or
+     * an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are
+     * used, respectively.
+     * 
+     * For example:
+     * SELECT on dbo.myTable by public
+     * SELECT on DATABASE::myDatabase by public
+     * SELECT on SCHEMA::mySchema by public
+     * 
+     * For more information, see [Database-Level Audit
      * Actions](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions).
-     *
+     * 
      * @return the auditActionsAndGroups value.
      */
     public List<String> auditActionsAndGroups() {
@@ -285,47 +315,72 @@ public final class SqlPoolBlobAuditingPolicyProperties {
 
     /**
      * Set the auditActionsAndGroups property: Specifies the Actions-Groups and Actions to audit.
-     *
-     * <p>The recommended set of action groups to use is the following combination - this will audit all the queries and
+     * 
+     * The recommended set of action groups to use is the following combination - this will audit all the queries and
      * stored procedures executed against the database, as well as successful and failed logins:
-     *
-     * <p>BATCH_COMPLETED_GROUP, SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP, FAILED_DATABASE_AUTHENTICATION_GROUP.
-     *
-     * <p>This above combination is also the set that is configured by default when enabling auditing from the Azure
+     * 
+     * BATCH_COMPLETED_GROUP,
+     * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP,
+     * FAILED_DATABASE_AUTHENTICATION_GROUP.
+     * 
+     * This above combination is also the set that is configured by default when enabling auditing from the Azure
      * portal.
-     *
-     * <p>The supported action groups to audit are (note: choose only specific groups that cover your auditing needs.
-     * Using unnecessary groups could lead to very large quantities of audit records):
-     *
-     * <p>APPLICATION_ROLE_CHANGE_PASSWORD_GROUP BACKUP_RESTORE_GROUP DATABASE_LOGOUT_GROUP DATABASE_OBJECT_CHANGE_GROUP
-     * DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP DATABASE_OBJECT_PERMISSION_CHANGE_GROUP DATABASE_OPERATION_GROUP
-     * DATABASE_PERMISSION_CHANGE_GROUP DATABASE_PRINCIPAL_CHANGE_GROUP DATABASE_PRINCIPAL_IMPERSONATION_GROUP
-     * DATABASE_ROLE_MEMBER_CHANGE_GROUP FAILED_DATABASE_AUTHENTICATION_GROUP SCHEMA_OBJECT_ACCESS_GROUP
-     * SCHEMA_OBJECT_CHANGE_GROUP SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP
-     * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP USER_CHANGE_PASSWORD_GROUP BATCH_STARTED_GROUP BATCH_COMPLETED_GROUP
-     *
-     * <p>These are groups that cover all sql statements and stored procedures executed against the database, and should
+     * 
+     * The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using
+     * unnecessary groups could lead to very large quantities of audit records):
+     * 
+     * APPLICATION_ROLE_CHANGE_PASSWORD_GROUP
+     * BACKUP_RESTORE_GROUP
+     * DATABASE_LOGOUT_GROUP
+     * DATABASE_OBJECT_CHANGE_GROUP
+     * DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP
+     * DATABASE_OBJECT_PERMISSION_CHANGE_GROUP
+     * DATABASE_OPERATION_GROUP
+     * DATABASE_PERMISSION_CHANGE_GROUP
+     * DATABASE_PRINCIPAL_CHANGE_GROUP
+     * DATABASE_PRINCIPAL_IMPERSONATION_GROUP
+     * DATABASE_ROLE_MEMBER_CHANGE_GROUP
+     * FAILED_DATABASE_AUTHENTICATION_GROUP
+     * SCHEMA_OBJECT_ACCESS_GROUP
+     * SCHEMA_OBJECT_CHANGE_GROUP
+     * SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP
+     * SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP
+     * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP
+     * USER_CHANGE_PASSWORD_GROUP
+     * BATCH_STARTED_GROUP
+     * BATCH_COMPLETED_GROUP
+     * 
+     * These are groups that cover all sql statements and stored procedures executed against the database, and should
      * not be used in combination with other groups as this will result in duplicate audit logs.
-     *
-     * <p>For more information, see [Database-Level Audit Action
+     * 
+     * For more information, see [Database-Level Audit Action
      * Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups).
-     *
-     * <p>For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified
-     * for Server auditing policy). The supported actions to audit are: SELECT UPDATE INSERT DELETE EXECUTE RECEIVE
+     * 
+     * For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for
+     * Server auditing policy). The supported actions to audit are:
+     * SELECT
+     * UPDATE
+     * INSERT
+     * DELETE
+     * EXECUTE
+     * RECEIVE
      * REFERENCES
-     *
-     * <p>The general form for defining an action to be audited is: {action} ON {object} BY {principal}
-     *
-     * <p>Note that &lt;object&gt; in the above format can refer to an object like a table, view, or stored procedure,
-     * or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name}
-     * are used, respectively.
-     *
-     * <p>For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on
-     * SCHEMA::mySchema by public
-     *
-     * <p>For more information, see [Database-Level Audit
+     * 
+     * The general form for defining an action to be audited is:
+     * {action} ON {object} BY {principal}
+     * 
+     * Note that &lt;object&gt; in the above format can refer to an object like a table, view, or stored procedure, or
+     * an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are
+     * used, respectively.
+     * 
+     * For example:
+     * SELECT on dbo.myTable by public
+     * SELECT on DATABASE::myDatabase by public
+     * SELECT on SCHEMA::mySchema by public
+     * 
+     * For more information, see [Database-Level Audit
      * Actions](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions).
-     *
+     * 
      * @param auditActionsAndGroups the auditActionsAndGroups value to set.
      * @return the SqlPoolBlobAuditingPolicyProperties object itself.
      */
@@ -336,7 +391,7 @@ public final class SqlPoolBlobAuditingPolicyProperties {
 
     /**
      * Get the storageAccountSubscriptionId property: Specifies the blob storage subscription Id.
-     *
+     * 
      * @return the storageAccountSubscriptionId value.
      */
     public UUID storageAccountSubscriptionId() {
@@ -345,7 +400,7 @@ public final class SqlPoolBlobAuditingPolicyProperties {
 
     /**
      * Set the storageAccountSubscriptionId property: Specifies the blob storage subscription Id.
-     *
+     * 
      * @param storageAccountSubscriptionId the storageAccountSubscriptionId value to set.
      * @return the SqlPoolBlobAuditingPolicyProperties object itself.
      */
@@ -357,7 +412,7 @@ public final class SqlPoolBlobAuditingPolicyProperties {
     /**
      * Get the isStorageSecondaryKeyInUse property: Specifies whether storageAccountAccessKey value is the storage's
      * secondary key.
-     *
+     * 
      * @return the isStorageSecondaryKeyInUse value.
      */
     public Boolean isStorageSecondaryKeyInUse() {
@@ -367,7 +422,7 @@ public final class SqlPoolBlobAuditingPolicyProperties {
     /**
      * Set the isStorageSecondaryKeyInUse property: Specifies whether storageAccountAccessKey value is the storage's
      * secondary key.
-     *
+     * 
      * @param isStorageSecondaryKeyInUse the isStorageSecondaryKeyInUse value to set.
      * @return the SqlPoolBlobAuditingPolicyProperties object itself.
      */
@@ -377,19 +432,21 @@ public final class SqlPoolBlobAuditingPolicyProperties {
     }
 
     /**
-     * Get the isAzureMonitorTargetEnabled property: Specifies whether audit events are sent to Azure Monitor. In order
-     * to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
-     *
-     * <p>When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs
-     * category on the database should be also created. Note that for server level audit you should use the 'master'
-     * database as {databaseName}.
-     *
-     * <p>Diagnostic Settings URI format: PUT
+     * Get the isAzureMonitorTargetEnabled property: Specifies whether audit events are sent to Azure Monitor.
+     * In order to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as
+     * true.
+     * 
+     * When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs
+     * category on the database should be also created.
+     * Note that for server level audit you should use the 'master' database as {databaseName}.
+     * 
+     * Diagnostic Settings URI format:
+     * PUT
      * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-     *
-     * <p>For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207) or
-     * [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
-     *
+     * 
+     * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
+     * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+     * 
      * @return the isAzureMonitorTargetEnabled value.
      */
     public Boolean isAzureMonitorTargetEnabled() {
@@ -397,19 +454,21 @@ public final class SqlPoolBlobAuditingPolicyProperties {
     }
 
     /**
-     * Set the isAzureMonitorTargetEnabled property: Specifies whether audit events are sent to Azure Monitor. In order
-     * to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
-     *
-     * <p>When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs
-     * category on the database should be also created. Note that for server level audit you should use the 'master'
-     * database as {databaseName}.
-     *
-     * <p>Diagnostic Settings URI format: PUT
+     * Set the isAzureMonitorTargetEnabled property: Specifies whether audit events are sent to Azure Monitor.
+     * In order to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as
+     * true.
+     * 
+     * When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs
+     * category on the database should be also created.
+     * Note that for server level audit you should use the 'master' database as {databaseName}.
+     * 
+     * Diagnostic Settings URI format:
+     * PUT
      * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-     *
-     * <p>For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207) or
-     * [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
-     *
+     * 
+     * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
+     * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+     * 
      * @param isAzureMonitorTargetEnabled the isAzureMonitorTargetEnabled value to set.
      * @return the SqlPoolBlobAuditingPolicyProperties object itself.
      */
@@ -420,17 +479,83 @@ public final class SqlPoolBlobAuditingPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model SqlPoolBlobAuditingPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model SqlPoolBlobAuditingPolicyProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlPoolBlobAuditingPolicyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("storageEndpoint", this.storageEndpoint);
+        jsonWriter.writeStringField("storageAccountAccessKey", this.storageAccountAccessKey);
+        jsonWriter.writeNumberField("retentionDays", this.retentionDays);
+        jsonWriter.writeArrayField("auditActionsAndGroups", this.auditActionsAndGroups,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("storageAccountSubscriptionId",
+            Objects.toString(this.storageAccountSubscriptionId, null));
+        jsonWriter.writeBooleanField("isStorageSecondaryKeyInUse", this.isStorageSecondaryKeyInUse);
+        jsonWriter.writeBooleanField("isAzureMonitorTargetEnabled", this.isAzureMonitorTargetEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlPoolBlobAuditingPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlPoolBlobAuditingPolicyProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlPoolBlobAuditingPolicyProperties.
+     */
+    public static SqlPoolBlobAuditingPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlPoolBlobAuditingPolicyProperties deserializedSqlPoolBlobAuditingPolicyProperties
+                = new SqlPoolBlobAuditingPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedSqlPoolBlobAuditingPolicyProperties.state
+                        = BlobAuditingPolicyState.fromString(reader.getString());
+                } else if ("storageEndpoint".equals(fieldName)) {
+                    deserializedSqlPoolBlobAuditingPolicyProperties.storageEndpoint = reader.getString();
+                } else if ("storageAccountAccessKey".equals(fieldName)) {
+                    deserializedSqlPoolBlobAuditingPolicyProperties.storageAccountAccessKey = reader.getString();
+                } else if ("retentionDays".equals(fieldName)) {
+                    deserializedSqlPoolBlobAuditingPolicyProperties.retentionDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("auditActionsAndGroups".equals(fieldName)) {
+                    List<String> auditActionsAndGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSqlPoolBlobAuditingPolicyProperties.auditActionsAndGroups = auditActionsAndGroups;
+                } else if ("storageAccountSubscriptionId".equals(fieldName)) {
+                    deserializedSqlPoolBlobAuditingPolicyProperties.storageAccountSubscriptionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("isStorageSecondaryKeyInUse".equals(fieldName)) {
+                    deserializedSqlPoolBlobAuditingPolicyProperties.isStorageSecondaryKeyInUse
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isAzureMonitorTargetEnabled".equals(fieldName)) {
+                    deserializedSqlPoolBlobAuditingPolicyProperties.isAzureMonitorTargetEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlPoolBlobAuditingPolicyProperties;
+        });
+    }
 }

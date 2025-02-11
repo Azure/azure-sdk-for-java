@@ -15,9 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** The implementation for AppServiceCertificates. */
-public class AppServiceCertificatesImpl
-    extends GroupableResourcesImpl<
-        AppServiceCertificate, AppServiceCertificateImpl, CertificateInner, CertificatesClient, AppServiceManager>
+public class AppServiceCertificatesImpl extends
+    GroupableResourcesImpl<AppServiceCertificate, AppServiceCertificateImpl, CertificateInner, CertificatesClient, AppServiceManager>
     implements AppServiceCertificates {
 
     public AppServiceCertificatesImpl(AppServiceManager manager) {
@@ -42,8 +41,8 @@ public class AppServiceCertificatesImpl
     @Override
     public PagedFlux<AppServiceCertificate> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroupName));
     }

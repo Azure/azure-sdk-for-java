@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.kubernetesconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kubernetesconfiguration.models.AzureBlobDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.BucketDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.FluxComplianceState;
@@ -14,141 +19,123 @@ import com.azure.resourcemanager.kubernetesconfiguration.models.ObjectStatusDefi
 import com.azure.resourcemanager.kubernetesconfiguration.models.ProvisioningState;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ScopeType;
 import com.azure.resourcemanager.kubernetesconfiguration.models.SourceKindType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Properties to create a Flux Configuration resource. */
+/**
+ * Properties to create a Flux Configuration resource.
+ */
 @Fluent
-public final class FluxConfigurationProperties {
+public final class FluxConfigurationProperties implements JsonSerializable<FluxConfigurationProperties> {
     /*
      * Scope at which the operator will be installed.
      */
-    @JsonProperty(value = "scope")
     private ScopeType scope;
 
     /*
      * The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters,
      * hyphen and period only.
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * Source Kind to pull the configuration data from.
      */
-    @JsonProperty(value = "sourceKind")
     private SourceKindType sourceKind;
 
     /*
      * Whether this configuration should suspend its reconciliation of its kustomizations and sources.
      */
-    @JsonProperty(value = "suspend")
     private Boolean suspend;
 
     /*
      * Parameters to reconcile to the GitRepository source kind type.
      */
-    @JsonProperty(value = "gitRepository")
     private GitRepositoryDefinition gitRepository;
 
     /*
      * Parameters to reconcile to the Bucket source kind type.
      */
-    @JsonProperty(value = "bucket")
     private BucketDefinition bucket;
 
     /*
      * Parameters to reconcile to the AzureBlob source kind type.
      */
-    @JsonProperty(value = "azureBlob")
     private AzureBlobDefinition azureBlob;
 
     /*
      * Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster.
      */
-    @JsonProperty(value = "kustomizations")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, KustomizationDefinition> kustomizations;
 
     /*
      * Key-value pairs of protected configuration settings for the configuration
      */
-    @JsonProperty(value = "configurationProtectedSettings")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> configurationProtectedSettings;
 
     /*
      * Statuses of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects
      * provisioned by the fluxConfiguration.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ObjectStatusDefinition> statuses;
 
     /*
      * Public Key associated with this fluxConfiguration (either generated within the cluster or provided by the user).
      */
-    @JsonProperty(value = "repositoryPublicKey", access = JsonProperty.Access.WRITE_ONLY)
     private String repositoryPublicKey;
 
     /*
      * Branch and/or SHA of the source commit synced with the cluster.
      */
-    @JsonProperty(value = "sourceSyncedCommitId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceSyncedCommitId;
 
     /*
      * Datetime the fluxConfiguration synced its source on the cluster.
      */
-    @JsonProperty(value = "sourceUpdatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime sourceUpdatedAt;
 
     /*
      * Datetime the fluxConfiguration synced its status on the cluster with Azure.
      */
-    @JsonProperty(value = "statusUpdatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime statusUpdatedAt;
 
     /*
      * Whether flux configuration deployment should wait for cluster to reconcile the kustomizations.
      */
-    @JsonProperty(value = "waitForReconciliation")
     private Boolean waitForReconciliation;
 
     /*
      * Maximum duration to wait for flux configuration reconciliation. E.g PT1H, PT5M, P1D
      */
-    @JsonProperty(value = "reconciliationWaitDuration")
     private String reconciliationWaitDuration;
 
     /*
      * Combined status of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed
      * objects.
      */
-    @JsonProperty(value = "complianceState", access = JsonProperty.Access.WRITE_ONLY)
     private FluxComplianceState complianceState;
 
     /*
      * Status of the creation of the fluxConfiguration.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Error message returned to the user in the case of provisioning failure.
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /** Creates an instance of FluxConfigurationProperties class. */
+    /**
+     * Creates an instance of FluxConfigurationProperties class.
+     */
     public FluxConfigurationProperties() {
     }
 
     /**
      * Get the scope property: Scope at which the operator will be installed.
-     *
+     * 
      * @return the scope value.
      */
     public ScopeType scope() {
@@ -157,7 +144,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Set the scope property: Scope at which the operator will be installed.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the FluxConfigurationProperties object itself.
      */
@@ -169,7 +156,7 @@ public final class FluxConfigurationProperties {
     /**
      * Get the namespace property: The namespace to which this configuration is installed to. Maximum of 253 lower case
      * alphanumeric characters, hyphen and period only.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -179,7 +166,7 @@ public final class FluxConfigurationProperties {
     /**
      * Set the namespace property: The namespace to which this configuration is installed to. Maximum of 253 lower case
      * alphanumeric characters, hyphen and period only.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the FluxConfigurationProperties object itself.
      */
@@ -190,7 +177,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Get the sourceKind property: Source Kind to pull the configuration data from.
-     *
+     * 
      * @return the sourceKind value.
      */
     public SourceKindType sourceKind() {
@@ -199,7 +186,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Set the sourceKind property: Source Kind to pull the configuration data from.
-     *
+     * 
      * @param sourceKind the sourceKind value to set.
      * @return the FluxConfigurationProperties object itself.
      */
@@ -211,7 +198,7 @@ public final class FluxConfigurationProperties {
     /**
      * Get the suspend property: Whether this configuration should suspend its reconciliation of its kustomizations and
      * sources.
-     *
+     * 
      * @return the suspend value.
      */
     public Boolean suspend() {
@@ -221,7 +208,7 @@ public final class FluxConfigurationProperties {
     /**
      * Set the suspend property: Whether this configuration should suspend its reconciliation of its kustomizations and
      * sources.
-     *
+     * 
      * @param suspend the suspend value to set.
      * @return the FluxConfigurationProperties object itself.
      */
@@ -232,7 +219,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Get the gitRepository property: Parameters to reconcile to the GitRepository source kind type.
-     *
+     * 
      * @return the gitRepository value.
      */
     public GitRepositoryDefinition gitRepository() {
@@ -241,7 +228,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Set the gitRepository property: Parameters to reconcile to the GitRepository source kind type.
-     *
+     * 
      * @param gitRepository the gitRepository value to set.
      * @return the FluxConfigurationProperties object itself.
      */
@@ -252,7 +239,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Get the bucket property: Parameters to reconcile to the Bucket source kind type.
-     *
+     * 
      * @return the bucket value.
      */
     public BucketDefinition bucket() {
@@ -261,7 +248,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Set the bucket property: Parameters to reconcile to the Bucket source kind type.
-     *
+     * 
      * @param bucket the bucket value to set.
      * @return the FluxConfigurationProperties object itself.
      */
@@ -272,7 +259,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Get the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
-     *
+     * 
      * @return the azureBlob value.
      */
     public AzureBlobDefinition azureBlob() {
@@ -281,7 +268,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Set the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
-     *
+     * 
      * @param azureBlob the azureBlob value to set.
      * @return the FluxConfigurationProperties object itself.
      */
@@ -293,7 +280,7 @@ public final class FluxConfigurationProperties {
     /**
      * Get the kustomizations property: Array of kustomizations used to reconcile the artifact pulled by the source type
      * on the cluster.
-     *
+     * 
      * @return the kustomizations value.
      */
     public Map<String, KustomizationDefinition> kustomizations() {
@@ -303,7 +290,7 @@ public final class FluxConfigurationProperties {
     /**
      * Set the kustomizations property: Array of kustomizations used to reconcile the artifact pulled by the source type
      * on the cluster.
-     *
+     * 
      * @param kustomizations the kustomizations value to set.
      * @return the FluxConfigurationProperties object itself.
      */
@@ -315,7 +302,7 @@ public final class FluxConfigurationProperties {
     /**
      * Get the configurationProtectedSettings property: Key-value pairs of protected configuration settings for the
      * configuration.
-     *
+     * 
      * @return the configurationProtectedSettings value.
      */
     public Map<String, String> configurationProtectedSettings() {
@@ -325,12 +312,12 @@ public final class FluxConfigurationProperties {
     /**
      * Set the configurationProtectedSettings property: Key-value pairs of protected configuration settings for the
      * configuration.
-     *
+     * 
      * @param configurationProtectedSettings the configurationProtectedSettings value to set.
      * @return the FluxConfigurationProperties object itself.
      */
-    public FluxConfigurationProperties withConfigurationProtectedSettings(
-        Map<String, String> configurationProtectedSettings) {
+    public FluxConfigurationProperties
+        withConfigurationProtectedSettings(Map<String, String> configurationProtectedSettings) {
         this.configurationProtectedSettings = configurationProtectedSettings;
         return this;
     }
@@ -338,7 +325,7 @@ public final class FluxConfigurationProperties {
     /**
      * Get the statuses property: Statuses of the Flux Kubernetes resources created by the fluxConfiguration or created
      * by the managed objects provisioned by the fluxConfiguration.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ObjectStatusDefinition> statuses() {
@@ -348,7 +335,7 @@ public final class FluxConfigurationProperties {
     /**
      * Get the repositoryPublicKey property: Public Key associated with this fluxConfiguration (either generated within
      * the cluster or provided by the user).
-     *
+     * 
      * @return the repositoryPublicKey value.
      */
     public String repositoryPublicKey() {
@@ -357,7 +344,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Get the sourceSyncedCommitId property: Branch and/or SHA of the source commit synced with the cluster.
-     *
+     * 
      * @return the sourceSyncedCommitId value.
      */
     public String sourceSyncedCommitId() {
@@ -366,7 +353,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Get the sourceUpdatedAt property: Datetime the fluxConfiguration synced its source on the cluster.
-     *
+     * 
      * @return the sourceUpdatedAt value.
      */
     public OffsetDateTime sourceUpdatedAt() {
@@ -375,7 +362,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Get the statusUpdatedAt property: Datetime the fluxConfiguration synced its status on the cluster with Azure.
-     *
+     * 
      * @return the statusUpdatedAt value.
      */
     public OffsetDateTime statusUpdatedAt() {
@@ -385,7 +372,7 @@ public final class FluxConfigurationProperties {
     /**
      * Get the waitForReconciliation property: Whether flux configuration deployment should wait for cluster to
      * reconcile the kustomizations.
-     *
+     * 
      * @return the waitForReconciliation value.
      */
     public Boolean waitForReconciliation() {
@@ -395,7 +382,7 @@ public final class FluxConfigurationProperties {
     /**
      * Set the waitForReconciliation property: Whether flux configuration deployment should wait for cluster to
      * reconcile the kustomizations.
-     *
+     * 
      * @param waitForReconciliation the waitForReconciliation value to set.
      * @return the FluxConfigurationProperties object itself.
      */
@@ -407,7 +394,7 @@ public final class FluxConfigurationProperties {
     /**
      * Get the reconciliationWaitDuration property: Maximum duration to wait for flux configuration reconciliation. E.g
      * PT1H, PT5M, P1D.
-     *
+     * 
      * @return the reconciliationWaitDuration value.
      */
     public String reconciliationWaitDuration() {
@@ -417,7 +404,7 @@ public final class FluxConfigurationProperties {
     /**
      * Set the reconciliationWaitDuration property: Maximum duration to wait for flux configuration reconciliation. E.g
      * PT1H, PT5M, P1D.
-     *
+     * 
      * @param reconciliationWaitDuration the reconciliationWaitDuration value to set.
      * @return the FluxConfigurationProperties object itself.
      */
@@ -429,7 +416,7 @@ public final class FluxConfigurationProperties {
     /**
      * Get the complianceState property: Combined status of the Flux Kubernetes resources created by the
      * fluxConfiguration or created by the managed objects.
-     *
+     * 
      * @return the complianceState value.
      */
     public FluxComplianceState complianceState() {
@@ -438,7 +425,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Get the provisioningState property: Status of the creation of the fluxConfiguration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -447,7 +434,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Get the errorMessage property: Error message returned to the user in the case of provisioning failure.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -456,7 +443,7 @@ public final class FluxConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -470,17 +457,108 @@ public final class FluxConfigurationProperties {
             azureBlob().validate();
         }
         if (kustomizations() != null) {
-            kustomizations()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            kustomizations().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope == null ? null : this.scope.toString());
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeStringField("sourceKind", this.sourceKind == null ? null : this.sourceKind.toString());
+        jsonWriter.writeBooleanField("suspend", this.suspend);
+        jsonWriter.writeJsonField("gitRepository", this.gitRepository);
+        jsonWriter.writeJsonField("bucket", this.bucket);
+        jsonWriter.writeJsonField("azureBlob", this.azureBlob);
+        jsonWriter.writeMapField("kustomizations", this.kustomizations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("configurationProtectedSettings", this.configurationProtectedSettings,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("waitForReconciliation", this.waitForReconciliation);
+        jsonWriter.writeStringField("reconciliationWaitDuration", this.reconciliationWaitDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluxConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluxConfigurationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FluxConfigurationProperties.
+     */
+    public static FluxConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluxConfigurationProperties deserializedFluxConfigurationProperties = new FluxConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.scope = ScopeType.fromString(reader.getString());
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.namespace = reader.getString();
+                } else if ("sourceKind".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.sourceKind = SourceKindType.fromString(reader.getString());
+                } else if ("suspend".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.suspend = reader.getNullable(JsonReader::getBoolean);
+                } else if ("gitRepository".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.gitRepository = GitRepositoryDefinition.fromJson(reader);
+                } else if ("bucket".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.bucket = BucketDefinition.fromJson(reader);
+                } else if ("azureBlob".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.azureBlob = AzureBlobDefinition.fromJson(reader);
+                } else if ("kustomizations".equals(fieldName)) {
+                    Map<String, KustomizationDefinition> kustomizations
+                        = reader.readMap(reader1 -> KustomizationDefinition.fromJson(reader1));
+                    deserializedFluxConfigurationProperties.kustomizations = kustomizations;
+                } else if ("configurationProtectedSettings".equals(fieldName)) {
+                    Map<String, String> configurationProtectedSettings = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFluxConfigurationProperties.configurationProtectedSettings
+                        = configurationProtectedSettings;
+                } else if ("statuses".equals(fieldName)) {
+                    List<ObjectStatusDefinition> statuses
+                        = reader.readArray(reader1 -> ObjectStatusDefinition.fromJson(reader1));
+                    deserializedFluxConfigurationProperties.statuses = statuses;
+                } else if ("repositoryPublicKey".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.repositoryPublicKey = reader.getString();
+                } else if ("sourceSyncedCommitId".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.sourceSyncedCommitId = reader.getString();
+                } else if ("sourceUpdatedAt".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.sourceUpdatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("statusUpdatedAt".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.statusUpdatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("waitForReconciliation".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.waitForReconciliation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reconciliationWaitDuration".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.reconciliationWaitDuration = reader.getString();
+                } else if ("complianceState".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.complianceState
+                        = FluxComplianceState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedFluxConfigurationProperties.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluxConfigurationProperties;
+        });
     }
 }

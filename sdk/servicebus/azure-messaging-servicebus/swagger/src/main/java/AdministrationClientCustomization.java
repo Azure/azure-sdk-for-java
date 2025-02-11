@@ -48,7 +48,7 @@ public class AdministrationClientCustomization extends Customization {
                 continue;
             }
 
-            replaceOffsetDateTimeParse(addImplementationToClassName(classCustomization, logger));
+            addImplementationToClassName(classCustomization, logger);
         }
 
         // Change getCreatedTime modifier on NamespaceProperties.
@@ -62,27 +62,13 @@ public class AdministrationClientCustomization extends Customization {
      * Suffix classes with {@code Impl} to avoid naming collisions where we have to explicitly reference the package
      * name and class.
      */
-    private ClassCustomization addImplementationToClassName(ClassCustomization classCustomization, Logger logger) {
+    private void addImplementationToClassName(ClassCustomization classCustomization, Logger logger) {
         String current = classCustomization.getClassName();
         String renamed = current + "Impl";
 
         logger.info("Rename: '{}' -> '{}'", current, renamed);
 
-        return classCustomization.rename(renamed);
-    }
-
-    private void replaceOffsetDateTimeParse(ClassCustomization classCustomization) {
-        Editor editor = classCustomization.getEditor();
-        String classFileName = classCustomization.getFileName();
-
-        String originalContent = editor.getFileContent(classFileName);
-        String updatedContent = originalContent.replace("OffsetDateTime.parse(dateString)",
-            "EntityHelper.parseOffsetDateTimeBest(dateString)");
-
-        if (!Objects.equals(originalContent, updatedContent)) {
-            editor.replaceFile(classFileName, updatedContent);
-            classCustomization.addImports("com.azure.messaging.servicebus.administration.implementation.EntityHelper");
-        }
+        classCustomization.rename(renamed);
     }
 
     private static void changeNamespaceModifier(LibraryCustomization libraryCustomization, Logger logger) {
@@ -130,7 +116,6 @@ public class AdministrationClientCustomization extends Customization {
 
         if (!Objects.equals(originalContent, updatedContent)) {
             editor.replaceFile(classFileName, updatedContent);
-            classCustomization.addImports("com.azure.messaging.servicebus.administration.implementation.EntityHelper");
         }
     }
 }

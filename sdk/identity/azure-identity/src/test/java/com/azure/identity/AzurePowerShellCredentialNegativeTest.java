@@ -10,7 +10,6 @@ import reactor.test.StepVerifier;
 
 import java.util.stream.Stream;
 
-
 public class AzurePowerShellCredentialNegativeTest {
     static Stream<String> invalidCharacters() {
         return Stream.of("|", "&", "'", ";");
@@ -20,7 +19,6 @@ public class AzurePowerShellCredentialNegativeTest {
     @MethodSource("invalidCharacters")
     public void testInvalidScopeFromRequest(String invalidCharacter) {
         TokenRequestContext request = new TokenRequestContext().addScopes("scope" + invalidCharacter);
-
 
         AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
 

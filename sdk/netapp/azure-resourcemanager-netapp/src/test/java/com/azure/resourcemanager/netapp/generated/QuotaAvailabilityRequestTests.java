@@ -12,24 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"lhzdobp\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes\",\"resourceGroup\":\"mflbv\"}")
+        QuotaAvailabilityRequest model = BinaryData
+            .fromString(
+                "{\"name\":\"rkcciwwzjuqk\",\"type\":\"Microsoft.NetApp/netAppAccounts\",\"resourceGroup\":\"sa\"}")
             .toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("lhzdobp", model.name());
-        Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES,
-            model.type());
-        Assertions.assertEquals("mflbv", model.resourceGroup());
+        Assertions.assertEquals("rkcciwwzjuqk", model.name());
+        Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS, model.type());
+        Assertions.assertEquals("sa", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("lhzdobp")
-            .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES)
-            .withResourceGroup("mflbv");
+        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("rkcciwwzjuqk")
+            .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS)
+            .withResourceGroup("sa");
         model = BinaryData.fromObject(model).toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("lhzdobp", model.name());
-        Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES,
-            model.type());
-        Assertions.assertEquals("mflbv", model.resourceGroup());
+        Assertions.assertEquals("rkcciwwzjuqk", model.name());
+        Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS, model.type());
+        Assertions.assertEquals("sa", model.resourceGroup());
     }
 }

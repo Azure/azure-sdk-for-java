@@ -15,37 +15,33 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicaInner model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"icc\",\"tier\":\"Basic\",\"size\":\"scjfnyns\",\"family\":\"ujiz\",\"capacity\":1473813191},\"properties\":{\"provisioningState\":\"Updating\",\"regionEndpointEnabled\":\"byowbblgyavutp\",\"resourceStopped\":\"joxoism\"},\"location\":\"sbpimlq\",\"tags\":{\"qzdwlvwlyoup\":\"xkcgxxlxsffgcvi\",\"kfm\":\"gfbkjubdyh\",\"ktlahbqa\":\"nsgowzfttst\"},\"id\":\"tx\",\"name\":\"gzukxitmm\",\"type\":\"tg\"}")
-                .toObject(ReplicaInner.class);
-        Assertions.assertEquals("sbpimlq", model.location());
-        Assertions.assertEquals("xkcgxxlxsffgcvi", model.tags().get("qzdwlvwlyoup"));
-        Assertions.assertEquals("icc", model.sku().name());
-        Assertions.assertEquals(WebPubSubSkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals(1473813191, model.sku().capacity());
-        Assertions.assertEquals("byowbblgyavutp", model.regionEndpointEnabled());
-        Assertions.assertEquals("joxoism", model.resourceStopped());
+        ReplicaInner model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"rnxrxcpj\",\"tier\":\"Standard\",\"size\":\"vokqdzfv\",\"family\":\"ivjlfrqttbajlka\",\"capacity\":764088106},\"properties\":{\"provisioningState\":\"Canceled\",\"regionEndpointEnabled\":\"pidkqqfkuvscxkdm\",\"resourceStopped\":\"govibrxkpmloazu\"},\"location\":\"ocbgoorbteoyb\",\"tags\":{\"il\":\"xakvvjgslor\",\"t\":\"yw\"},\"id\":\"gkxnyedabg\",\"name\":\"vudtjuewbcihx\",\"type\":\"uwhcjyxccybv\"}")
+            .toObject(ReplicaInner.class);
+        Assertions.assertEquals("ocbgoorbteoyb", model.location());
+        Assertions.assertEquals("xakvvjgslor", model.tags().get("il"));
+        Assertions.assertEquals("rnxrxcpj", model.sku().name());
+        Assertions.assertEquals(WebPubSubSkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals(764088106, model.sku().capacity());
+        Assertions.assertEquals("pidkqqfkuvscxkdm", model.regionEndpointEnabled());
+        Assertions.assertEquals("govibrxkpmloazu", model.resourceStopped());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicaInner model =
-            new ReplicaInner()
-                .withLocation("sbpimlq")
-                .withTags(mapOf("qzdwlvwlyoup", "xkcgxxlxsffgcvi", "kfm", "gfbkjubdyh", "ktlahbqa", "nsgowzfttst"))
-                .withSku(new ResourceSku().withName("icc").withTier(WebPubSubSkuTier.BASIC).withCapacity(1473813191))
-                .withRegionEndpointEnabled("byowbblgyavutp")
-                .withResourceStopped("joxoism");
+        ReplicaInner model = new ReplicaInner().withLocation("ocbgoorbteoyb")
+            .withTags(mapOf("il", "xakvvjgslor", "t", "yw"))
+            .withSku(new ResourceSku().withName("rnxrxcpj").withTier(WebPubSubSkuTier.STANDARD).withCapacity(764088106))
+            .withRegionEndpointEnabled("pidkqqfkuvscxkdm")
+            .withResourceStopped("govibrxkpmloazu");
         model = BinaryData.fromObject(model).toObject(ReplicaInner.class);
-        Assertions.assertEquals("sbpimlq", model.location());
-        Assertions.assertEquals("xkcgxxlxsffgcvi", model.tags().get("qzdwlvwlyoup"));
-        Assertions.assertEquals("icc", model.sku().name());
-        Assertions.assertEquals(WebPubSubSkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals(1473813191, model.sku().capacity());
-        Assertions.assertEquals("byowbblgyavutp", model.regionEndpointEnabled());
-        Assertions.assertEquals("joxoism", model.resourceStopped());
+        Assertions.assertEquals("ocbgoorbteoyb", model.location());
+        Assertions.assertEquals("xakvvjgslor", model.tags().get("il"));
+        Assertions.assertEquals("rnxrxcpj", model.sku().name());
+        Assertions.assertEquals(WebPubSubSkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals(764088106, model.sku().capacity());
+        Assertions.assertEquals("pidkqqfkuvscxkdm", model.regionEndpointEnabled());
+        Assertions.assertEquals("govibrxkpmloazu", model.resourceStopped());
     }
 
     // Use "Map.of" if available

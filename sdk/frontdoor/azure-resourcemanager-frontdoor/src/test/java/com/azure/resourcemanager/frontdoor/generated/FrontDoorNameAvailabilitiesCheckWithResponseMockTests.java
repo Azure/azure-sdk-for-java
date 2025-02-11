@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class FrontDoorNameAvailabilitiesCheckWithResponseMockTests {
     @Test
     public void testCheckWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailability\":\"Unavailable\",\"reason\":\"ui\",\"message\":\"bsnmfpph\"}";
+        String responseStr = "{\"nameAvailability\":\"Unavailable\",\"reason\":\"z\",\"message\":\"iwbuqny\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class FrontDoorNameAvailabilitiesCheckWithResponseMockTests {
 
         CheckNameAvailabilityOutput response = manager.frontDoorNameAvailabilities()
             .checkWithResponse(
-                new CheckNameAvailabilityInput().withName("fdgugeyzi")
+                new CheckNameAvailabilityInput().withName("nktwfansnvpdibmi")
                     .withType(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS_FRONTEND_ENDPOINTS),
                 com.azure.core.util.Context.NONE)
             .getValue();

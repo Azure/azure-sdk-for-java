@@ -10,8 +10,8 @@ import com.azure.resourcemanager.azurestack.models.DataDiskImage;
 public final class DataDiskImageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataDiskImage model =
-            BinaryData.fromString("{\"lun\":2101673805,\"sourceBlobSasUri\":\"sm\"}").toObject(DataDiskImage.class);
+        DataDiskImage model = BinaryData.fromString("{\"lun\":1792150681,\"sourceBlobSasUri\":\"gbiqylihkaet\"}")
+            .toObject(DataDiskImage.class);
     }
 
     @org.junit.jupiter.api.Test

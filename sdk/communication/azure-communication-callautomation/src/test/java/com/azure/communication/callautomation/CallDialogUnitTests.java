@@ -23,17 +23,13 @@ public class CallDialogUnitTests {
     @Test
     public void startDialogTest() {
         // override callDialog to mock 201 response code
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>(generateDialogStateResponse(), 201)))
-            );
+        CallConnection callConnection = CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+            Collections.singletonList(new AbstractMap.SimpleEntry<>(generateDialogStateResponse(), 201))));
         callDialog = callConnection.getCallDialog();
 
         Map<String, Object> dialogContext = new HashMap<>();
-        StartDialogOptions options = new StartDialogOptions(
-            DIALOG_ID,
-            DialogInputType.POWER_VIRTUAL_AGENTS,
-            dialogContext);
+        StartDialogOptions options
+            = new StartDialogOptions(DIALOG_ID, DialogInputType.POWER_VIRTUAL_AGENTS, dialogContext);
 
         DialogStateResult response = callDialog.startDialog(options);
 
@@ -44,23 +40,17 @@ public class CallDialogUnitTests {
     @Test
     public void startDialogWithResponseTest() {
         // override callDialog to mock 201 response code
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>(generateDialogStateResponse(), 201)))
-            );
+        CallConnection callConnection = CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+            Collections.singletonList(new AbstractMap.SimpleEntry<>(generateDialogStateResponse(), 201))));
         callDialog = callConnection.getCallDialog();
 
         Map<String, Object> dialogContext = new HashMap<>();
-        StartDialogOptions options = new StartDialogOptions(
-            DialogInputType.AZURE_OPEN_AI,
-            dialogContext);
+        StartDialogOptions options = new StartDialogOptions(DialogInputType.AZURE_OPEN_AI, dialogContext);
 
         options.setOperationContext("operationContext");
         options.setBotId(BOT_APP_ID);
 
-        Response<DialogStateResult> response = callDialog.startDialogWithResponse(
-            options,
-            Context.NONE);
+        Response<DialogStateResult> response = callDialog.startDialogWithResponse(options, Context.NONE);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 201);
@@ -69,15 +59,11 @@ public class CallDialogUnitTests {
     @Test
     public void stopDialogWithResponseTest() {
         // override callDialog to mock 204 response code
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 204)))
-            );
+        CallConnection callConnection = CallAutomationUnitTestBase
+            .getCallConnection(new ArrayList<>(Collections.singletonList(new AbstractMap.SimpleEntry<>("", 204))));
         callDialog = callConnection.getCallDialog();
 
-        Response<Void> response = callDialog.stopDialogWithResponse(
-            DIALOG_ID,
-            Context.NONE);
+        Response<Void> response = callDialog.stopDialogWithResponse(DIALOG_ID, Context.NONE);
 
         assertEquals(response.getStatusCode(), 204);
     }

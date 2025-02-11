@@ -5,67 +5,68 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of an artifact. */
+/**
+ * Properties of an artifact.
+ */
 @Immutable
-public final class ArtifactProperties {
+public final class ArtifactProperties implements JsonSerializable<ArtifactProperties> {
     /*
      * The artifact's title.
      */
-    @JsonProperty(value = "title", access = JsonProperty.Access.WRITE_ONLY)
     private String title;
 
     /*
      * The artifact's description.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The artifact's publisher.
      */
-    @JsonProperty(value = "publisher", access = JsonProperty.Access.WRITE_ONLY)
     private String publisher;
 
     /*
      * The file path to the artifact.
      */
-    @JsonProperty(value = "filePath", access = JsonProperty.Access.WRITE_ONLY)
     private String filePath;
 
     /*
      * The URI to the artifact icon.
      */
-    @JsonProperty(value = "icon", access = JsonProperty.Access.WRITE_ONLY)
     private String icon;
 
     /*
      * The artifact's target OS.
      */
-    @JsonProperty(value = "targetOsType", access = JsonProperty.Access.WRITE_ONLY)
     private String targetOsType;
 
     /*
      * The artifact's parameters.
      */
-    @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private Object parameters;
 
     /*
      * The artifact's creation date.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
-    /** Creates an instance of ArtifactProperties class. */
+    /**
+     * Creates an instance of ArtifactProperties class.
+     */
     public ArtifactProperties() {
     }
 
     /**
      * Get the title property: The artifact's title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -74,7 +75,7 @@ public final class ArtifactProperties {
 
     /**
      * Get the description property: The artifact's description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -83,7 +84,7 @@ public final class ArtifactProperties {
 
     /**
      * Get the publisher property: The artifact's publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -92,7 +93,7 @@ public final class ArtifactProperties {
 
     /**
      * Get the filePath property: The file path to the artifact.
-     *
+     * 
      * @return the filePath value.
      */
     public String filePath() {
@@ -101,7 +102,7 @@ public final class ArtifactProperties {
 
     /**
      * Get the icon property: The URI to the artifact icon.
-     *
+     * 
      * @return the icon value.
      */
     public String icon() {
@@ -110,7 +111,7 @@ public final class ArtifactProperties {
 
     /**
      * Get the targetOsType property: The artifact's target OS.
-     *
+     * 
      * @return the targetOsType value.
      */
     public String targetOsType() {
@@ -119,7 +120,7 @@ public final class ArtifactProperties {
 
     /**
      * Get the parameters property: The artifact's parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Object parameters() {
@@ -128,7 +129,7 @@ public final class ArtifactProperties {
 
     /**
      * Get the createdDate property: The artifact's creation date.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -137,9 +138,59 @@ public final class ArtifactProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactProperties.
+     */
+    public static ArtifactProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactProperties deserializedArtifactProperties = new ArtifactProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedArtifactProperties.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedArtifactProperties.description = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedArtifactProperties.publisher = reader.getString();
+                } else if ("filePath".equals(fieldName)) {
+                    deserializedArtifactProperties.filePath = reader.getString();
+                } else if ("icon".equals(fieldName)) {
+                    deserializedArtifactProperties.icon = reader.getString();
+                } else if ("targetOsType".equals(fieldName)) {
+                    deserializedArtifactProperties.targetOsType = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedArtifactProperties.parameters = reader.readUntyped();
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedArtifactProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactProperties;
+        });
     }
 }

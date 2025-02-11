@@ -6,20 +6,23 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.resourcemanager.apimanagement.models.GroupType;
 
-/** Samples for Group CreateOrUpdate. */
+/**
+ * Samples for Group CreateOrUpdate.
+ */
 public final class GroupCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGroupExternal.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateGroupExternal.json
      */
     /**
      * Sample code: ApiManagementCreateGroupExternal.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementCreateGroupExternal(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .groups()
+    public static void
+        apiManagementCreateGroupExternal(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.groups()
             .define("aadGroup")
             .withExistingService("rg1", "apimService1")
             .withDisplayName("NewGroup (samiraad.onmicrosoft.com)")
@@ -30,16 +33,17 @@ public final class GroupCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGroup.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateGroup.json
      */
     /**
      * Sample code: ApiManagementCreateGroup.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementCreateGroup(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .groups()
+        manager.groups()
             .define("tempgroup")
             .withExistingService("rg1", "apimService1")
             .withDisplayName("temp group")

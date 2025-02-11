@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.fluidrelay.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningState. */
+/**
+ * Provision states for FluidRelay RP.
+ */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
-    /** Static value Succeeded for ProvisioningState. */
+    /**
+     * Static value Succeeded for ProvisioningState.
+     */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ProvisioningState. */
+    /**
+     * Static value Failed for ProvisioningState.
+     */
     public static final ProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for ProvisioningState. */
+    /**
+     * Static value Canceled for ProvisioningState.
+     */
     public static final ProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of ProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProvisioningState.
      */
-    @JsonCreator
     public static ProvisioningState fromString(String name) {
         return fromString(name, ProvisioningState.class);
     }
 
     /**
      * Gets known ProvisioningState values.
-     *
+     * 
      * @return known ProvisioningState values.
      */
     public static Collection<ProvisioningState> values() {

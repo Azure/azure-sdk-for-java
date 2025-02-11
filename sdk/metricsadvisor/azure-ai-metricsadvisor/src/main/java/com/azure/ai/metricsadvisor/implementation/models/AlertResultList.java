@@ -35,7 +35,7 @@ public final class AlertResultList implements JsonSerializable<AlertResultList> 
     }
 
     /**
-     * Get the nextLink property: The @nextLink property.
+     * Get the nextLink property: The &#064;nextLink property.
      * 
      * @return the nextLink value.
      */
@@ -63,6 +63,9 @@ public final class AlertResultList implements JsonSerializable<AlertResultList> 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

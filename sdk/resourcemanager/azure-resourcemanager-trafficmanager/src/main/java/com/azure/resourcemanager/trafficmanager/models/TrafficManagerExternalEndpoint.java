@@ -7,9 +7,17 @@ import com.azure.core.management.Region;
 
 /** An immutable client-side representation of an Azure traffic manager profile external endpoint. */
 public interface TrafficManagerExternalEndpoint extends TrafficManagerEndpoint {
-    /** @return the fully qualified DNS name of the external endpoint */
+    /**
+     * Gets the fully qualified DNS name of the external endpoint.
+     *
+     * @return the fully qualified DNS name of the external endpoint
+     */
     String fqdn();
 
-    /** @return the location of the traffic that the endpoint handles */
+    /**
+     * Gets the location of the traffic that the endpoint handles.
+     *
+     * @return the location of the traffic that the endpoint handles
+     */
     Region sourceTrafficLocation();
 }

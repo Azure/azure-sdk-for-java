@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of virtual network rules. */
 @Immutable
 public final class VirtualNetworkRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkRuleListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualNetworkRuleListResult.class);
 
     /*
      * Array of results.

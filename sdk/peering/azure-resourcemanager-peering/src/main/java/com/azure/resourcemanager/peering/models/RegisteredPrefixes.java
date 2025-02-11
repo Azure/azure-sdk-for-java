@@ -8,12 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RegisteredPrefixes. */
+/**
+ * Resource collection API of RegisteredPrefixes.
+ */
 public interface RegisteredPrefixes {
     /**
      * Gets an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredPrefixName The name of the registered prefix.
@@ -22,15 +24,15 @@ public interface RegisteredPrefixes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered prefix with the specified name under the given subscription, resource group and
-     *     peering along with {@link Response}.
+     * peering along with {@link Response}.
      */
-    Response<PeeringRegisteredPrefix> getWithResponse(
-        String resourceGroupName, String peeringName, String registeredPrefixName, Context context);
+    Response<PeeringRegisteredPrefix> getWithResponse(String resourceGroupName, String peeringName,
+        String registeredPrefixName, Context context);
 
     /**
      * Gets an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredPrefixName The name of the registered prefix.
@@ -38,14 +40,14 @@ public interface RegisteredPrefixes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered prefix with the specified name under the given subscription, resource group and
-     *     peering.
+     * peering.
      */
     PeeringRegisteredPrefix get(String resourceGroupName, String peeringName, String registeredPrefixName);
 
     /**
      * Deletes an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredPrefixName The name of the registered prefix.
@@ -55,13 +57,13 @@ public interface RegisteredPrefixes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String peeringName, String registeredPrefixName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String peeringName, String registeredPrefixName,
+        Context context);
 
     /**
      * Deletes an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param registeredPrefixName The name of the registered prefix.
@@ -73,7 +75,7 @@ public interface RegisteredPrefixes {
 
     /**
      * Lists all registered prefixes under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,7 +87,7 @@ public interface RegisteredPrefixes {
 
     /**
      * Lists all registered prefixes under the given subscription, resource group and peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param context The context to associate with this operation.
@@ -99,34 +101,34 @@ public interface RegisteredPrefixes {
     /**
      * Gets an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered prefix with the specified name under the given subscription, resource group and
-     *     peering along with {@link Response}.
+     * peering along with {@link Response}.
      */
     PeeringRegisteredPrefix getById(String id);
 
     /**
      * Gets an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered prefix with the specified name under the given subscription, resource group and
-     *     peering along with {@link Response}.
+     * peering along with {@link Response}.
      */
     Response<PeeringRegisteredPrefix> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +139,7 @@ public interface RegisteredPrefixes {
     /**
      * Deletes an existing registered prefix with the specified name under the given subscription, resource group and
      * peering.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,7 +151,7 @@ public interface RegisteredPrefixes {
 
     /**
      * Begins definition for a new PeeringRegisteredPrefix resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PeeringRegisteredPrefix definition.
      */

@@ -84,25 +84,21 @@ public final class SolutionImpl implements Solution, Solution.Definition, Soluti
     }
 
     public Solution create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSolutions()
-                .createOrUpdate(resourceGroupName, solutionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutions()
+            .createOrUpdate(resourceGroupName, solutionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Solution create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSolutions()
-                .createOrUpdate(resourceGroupName, solutionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutions()
+            .createOrUpdate(resourceGroupName, solutionName, this.innerModel(), context);
         return this;
     }
 
-    SolutionImpl(
-        String name, com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
+    SolutionImpl(String name,
+        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
         this.innerObject = new SolutionInner();
         this.serviceManager = serviceManager;
         this.solutionName = name;
@@ -114,49 +110,40 @@ public final class SolutionImpl implements Solution, Solution.Definition, Soluti
     }
 
     public Solution apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSolutions()
-                .update(resourceGroupName, solutionName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutions()
+            .update(resourceGroupName, solutionName, updateParameters, Context.NONE);
         return this;
     }
 
     public Solution apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSolutions()
-                .update(resourceGroupName, solutionName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutions()
+            .update(resourceGroupName, solutionName, updateParameters, context);
         return this;
     }
 
-    SolutionImpl(
-        SolutionInner innerObject,
+    SolutionImpl(SolutionInner innerObject,
         com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.solutionName = Utils.getValueFromIdByName(innerObject.id(), "solutions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.solutionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "solutions");
     }
 
     public Solution refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSolutions()
-                .getByResourceGroupWithResponse(resourceGroupName, solutionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutions()
+            .getByResourceGroupWithResponse(resourceGroupName, solutionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Solution refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSolutions()
-                .getByResourceGroupWithResponse(resourceGroupName, solutionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutions()
+            .getByResourceGroupWithResponse(resourceGroupName, solutionName, context)
+            .getValue();
         return this;
     }
 

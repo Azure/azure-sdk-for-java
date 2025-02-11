@@ -11,7 +11,7 @@ public final class LatencyMetricTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LatencyMetric model = BinaryData.fromString(
-            "{\"name\":\"dqohmc\",\"endDateTimeUTC\":\"ldrizetpwbra\",\"aValue\":26.893013,\"bValue\":96.48258,\"delta\":95.87588,\"deltaPercent\":34.01791,\"aCLower95CI\":30.984789,\"aHUpper95CI\":71.816055,\"bCLower95CI\":90.2628,\"bUpper95CI\":15.199614}")
+            "{\"name\":\"bzefezr\",\"endDateTimeUTC\":\"czurtlei\",\"aValue\":30.662357,\"bValue\":18.551361,\"delta\":9.448862,\"deltaPercent\":79.282104,\"aCLower95CI\":17.816608,\"aHUpper95CI\":60.011448,\"bCLower95CI\":48.05835,\"bUpper95CI\":4.7126713}")
             .toObject(LatencyMetric.class);
     }
 

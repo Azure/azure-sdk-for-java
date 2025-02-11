@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.storageactions.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Action to be taken when the operation is successful for a object.
  */
@@ -31,7 +28,6 @@ public enum OnSuccess {
      * @param value the serialized value to parse.
      * @return the parsed OnSuccess object, or null if unable to parse.
      */
-    @JsonCreator
     public static OnSuccess fromString(String value) {
         if (value == null) {
             return null;
@@ -48,7 +44,6 @@ public enum OnSuccess {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

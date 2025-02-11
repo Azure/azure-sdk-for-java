@@ -124,7 +124,6 @@ public final class OracleSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

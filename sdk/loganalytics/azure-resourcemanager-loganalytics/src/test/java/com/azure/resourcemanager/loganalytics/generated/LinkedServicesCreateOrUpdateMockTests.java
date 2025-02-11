@@ -6,76 +6,45 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.LinkedService;
 import com.azure.resourcemanager.loganalytics.models.LinkedServiceEntityStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LinkedServicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"resourceId\":\"psw\",\"writeAccessResourceId\":\"mvkhlggd\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"jfpgpicrmn\":\"qkzszuwiwtglxxh\",\"mqgjsxvpq\":\"hr\",\"bakclacjfrnxous\":\"bfrmbodthsqqgvri\"},\"id\":\"au\",\"name\":\"lwvsgm\",\"type\":\"ohqfzizv\"}";
 
-        String responseStr =
-            "{\"properties\":{\"resourceId\":\"qmhhaowj\",\"writeAccessResourceId\":\"zvuporqzdfuydz\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"kmvkhl\":\"cnqmxqpsw\",\"zqkzszuwi\":\"gdhbe\",\"ljfp\":\"tglxx\",\"pqcbfrmbodthsq\":\"picrmnzhrgmqgjsx\"},\"id\":\"gvriibakclac\",\"name\":\"fr\",\"type\":\"xousxauzl\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        LinkedService response = manager.linkedServices()
+            .define("yp")
+            .withExistingWorkspace("aglqivbgkcvkh", "zvuqdflvon")
+            .withTags(mapOf("fgpikqm", "bgqjxgpnrhgo"))
+            .withResourceId("ubcpzgpxti")
+            .withWriteAccessResourceId("j")
+            .withProvisioningState(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT)
+            .create();
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        LinkedService response =
-            manager
-                .linkedServices()
-                .define("ospspshckf")
-                .withExistingWorkspace("hxqszdtmaajquh", "xylrjvmtygjbmz")
-                .withTags(mapOf("paglqivbgk", "njdxvglnkvxl", "iypfp", "vkhpzvuqdflvo"))
-                .withResourceId("jpmspbpssdfppy")
-                .withWriteAccessResourceId("tieyujtvczkcny")
-                .withProvisioningState(LinkedServiceEntityStatus.SUCCEEDED)
-                .create();
-
-        Assertions.assertEquals("cnqmxqpsw", response.tags().get("kmvkhl"));
-        Assertions.assertEquals("qmhhaowj", response.resourceId());
-        Assertions.assertEquals("zvuporqzdfuydz", response.writeAccessResourceId());
+        Assertions.assertEquals("qkzszuwiwtglxxh", response.tags().get("jfpgpicrmn"));
+        Assertions.assertEquals("psw", response.resourceId());
+        Assertions.assertEquals("mvkhlggd", response.writeAccessResourceId());
         Assertions.assertEquals(LinkedServiceEntityStatus.SUCCEEDED, response.provisioningState());
     }
 

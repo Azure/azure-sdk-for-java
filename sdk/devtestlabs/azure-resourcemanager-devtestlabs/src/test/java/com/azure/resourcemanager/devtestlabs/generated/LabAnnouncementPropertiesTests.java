@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LabAnnouncementPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabAnnouncementProperties model =
-            BinaryData
-                .fromString(
-                    "{\"title\":\"pusuesn\",\"markdown\":\"dejbavo\",\"enabled\":\"Disabled\",\"expirationDate\":\"2021-03-31T13:31:51Z\",\"expired\":true,\"provisioningState\":\"tbqvudw\",\"uniqueIdentifier\":\"ndnvo\"}")
-                .toObject(LabAnnouncementProperties.class);
+        LabAnnouncementProperties model = BinaryData.fromString(
+            "{\"title\":\"pusuesn\",\"markdown\":\"dejbavo\",\"enabled\":\"Disabled\",\"expirationDate\":\"2021-03-31T13:31:51Z\",\"expired\":true,\"provisioningState\":\"tbqvudw\",\"uniqueIdentifier\":\"ndnvo\"}")
+            .toObject(LabAnnouncementProperties.class);
         Assertions.assertEquals("pusuesn", model.title());
         Assertions.assertEquals("dejbavo", model.markdown());
         Assertions.assertEquals(EnableStatus.DISABLED, model.enabled());
@@ -27,13 +25,11 @@ public final class LabAnnouncementPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LabAnnouncementProperties model =
-            new LabAnnouncementProperties()
-                .withTitle("pusuesn")
-                .withMarkdown("dejbavo")
-                .withEnabled(EnableStatus.DISABLED)
-                .withExpirationDate(OffsetDateTime.parse("2021-03-31T13:31:51Z"))
-                .withExpired(true);
+        LabAnnouncementProperties model = new LabAnnouncementProperties().withTitle("pusuesn")
+            .withMarkdown("dejbavo")
+            .withEnabled(EnableStatus.DISABLED)
+            .withExpirationDate(OffsetDateTime.parse("2021-03-31T13:31:51Z"))
+            .withExpired(true);
         model = BinaryData.fromObject(model).toObject(LabAnnouncementProperties.class);
         Assertions.assertEquals("pusuesn", model.title());
         Assertions.assertEquals("dejbavo", model.markdown());

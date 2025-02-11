@@ -27,7 +27,6 @@ public class DecryptTest extends CryptographyTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return cryptographyAsyncClient.decrypt(encryptionAlgorithm, plaintext)
-            .then();
+        return cryptographyAsyncClient.decrypt(encryptionAlgorithm, plaintext).then();
     }
 }

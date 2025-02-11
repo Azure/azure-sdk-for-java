@@ -73,7 +73,6 @@ public final class JsonWriteSettings extends FormatWriteSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

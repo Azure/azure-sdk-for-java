@@ -7,20 +7,23 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for NetworkDevices Create. */
+/**
+ * Samples for NetworkDevices Create.
+ */
 public final class NetworkDevicesCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_Create_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkDevices_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkDevices_Create_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkDevicesCreateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .networkDevices()
+        manager.networkDevices()
             .define("example-device")
             .withRegion("eastuseuap")
             .withExistingResourceGroup("example-rg")
@@ -32,6 +35,7 @@ public final class NetworkDevicesCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

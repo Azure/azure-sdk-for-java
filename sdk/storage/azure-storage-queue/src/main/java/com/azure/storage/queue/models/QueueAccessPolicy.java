@@ -149,10 +149,10 @@ public final class QueueAccessPolicy implements XmlSerializable<QueueAccessPolic
 
                 if ("Start".equals(elementName.getLocalPart())) {
                     deserializedQueueAccessPolicy.startsOn
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("Expiry".equals(elementName.getLocalPart())) {
                     deserializedQueueAccessPolicy.expiresOn
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("Permission".equals(elementName.getLocalPart())) {
                     deserializedQueueAccessPolicy.permissions = reader.getStringElement();
                 } else {

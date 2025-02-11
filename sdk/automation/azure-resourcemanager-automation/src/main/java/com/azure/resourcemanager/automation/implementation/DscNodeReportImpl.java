@@ -18,8 +18,8 @@ public final class DscNodeReportImpl implements DscNodeReport {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    DscNodeReportImpl(
-        DscNodeReportInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    DscNodeReportImpl(DscNodeReportInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

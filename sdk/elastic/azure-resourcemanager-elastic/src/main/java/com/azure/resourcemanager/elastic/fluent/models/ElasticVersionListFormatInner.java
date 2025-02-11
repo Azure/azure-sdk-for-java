@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elastic.models.ElasticVersionListProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Elastic Version List Format. */
+/**
+ * Elastic Version List Format.
+ */
 @Fluent
-public final class ElasticVersionListFormatInner {
+public final class ElasticVersionListFormatInner implements JsonSerializable<ElasticVersionListFormatInner> {
     /*
      * Elastic Version Properties
      */
-    @JsonProperty(value = "properties")
     private ElasticVersionListProperties properties;
 
-    /** Creates an instance of ElasticVersionListFormatInner class. */
+    /**
+     * Creates an instance of ElasticVersionListFormatInner class.
+     */
     public ElasticVersionListFormatInner() {
     }
 
     /**
      * Get the properties property: Elastic Version Properties.
-     *
+     * 
      * @return the properties value.
      */
     public ElasticVersionListProperties properties() {
@@ -32,7 +39,7 @@ public final class ElasticVersionListFormatInner {
 
     /**
      * Set the properties property: Elastic Version Properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ElasticVersionListFormatInner object itself.
      */
@@ -43,12 +50,50 @@ public final class ElasticVersionListFormatInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticVersionListFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticVersionListFormatInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticVersionListFormatInner.
+     */
+    public static ElasticVersionListFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticVersionListFormatInner deserializedElasticVersionListFormatInner
+                = new ElasticVersionListFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedElasticVersionListFormatInner.properties
+                        = ElasticVersionListProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticVersionListFormatInner;
+        });
     }
 }

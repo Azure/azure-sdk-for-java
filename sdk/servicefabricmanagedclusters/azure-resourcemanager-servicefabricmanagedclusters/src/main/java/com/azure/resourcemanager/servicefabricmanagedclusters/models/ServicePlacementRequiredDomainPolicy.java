@@ -71,7 +71,6 @@ public final class ServicePlacementRequiredDomainPolicy extends ServicePlacement
      */
     @Override
     public void validate() {
-        super.validate();
         if (domainName() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

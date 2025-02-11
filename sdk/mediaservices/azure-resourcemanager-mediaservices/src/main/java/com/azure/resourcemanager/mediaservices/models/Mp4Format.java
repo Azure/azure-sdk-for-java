@@ -5,27 +5,51 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the properties for an output ISO MP4 file. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.Mp4Format")
+/**
+ * Describes the properties for an output ISO MP4 file.
+ */
 @Fluent
 public final class Mp4Format extends MultiBitrateFormat {
-    /** Creates an instance of Mp4Format class. */
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.Mp4Format";
+
+    /**
+     * Creates an instance of Mp4Format class.
+     */
     public Mp4Format() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mp4Format withOutputFiles(List<OutputFile> outputFiles) {
         super.withOutputFiles(outputFiles);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mp4Format withFilenamePattern(String filenamePattern) {
         super.withFilenamePattern(filenamePattern);
@@ -34,11 +58,63 @@ public final class Mp4Format extends MultiBitrateFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (filenamePattern() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property filenamePattern in model Mp4Format"));
+        }
+        if (outputFiles() != null) {
+            outputFiles().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Mp4Format.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filenamePattern", filenamePattern());
+        jsonWriter.writeArrayField("outputFiles", outputFiles(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Mp4Format from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Mp4Format if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Mp4Format.
+     */
+    public static Mp4Format fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Mp4Format deserializedMp4Format = new Mp4Format();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filenamePattern".equals(fieldName)) {
+                    deserializedMp4Format.withFilenamePattern(reader.getString());
+                } else if ("outputFiles".equals(fieldName)) {
+                    List<OutputFile> outputFiles = reader.readArray(reader1 -> OutputFile.fromJson(reader1));
+                    deserializedMp4Format.withOutputFiles(outputFiles);
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedMp4Format.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMp4Format;
+        });
     }
 }

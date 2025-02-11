@@ -20,7 +20,8 @@ public final class ArtifactManifestsListCredentialSamples {
      */
     public static void
         listACredentialForArtifactManifest(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.artifactManifests().listCredentialWithResponse("rg", "TestPublisher", "TestArtifactStore",
-            "TestArtifactManifestName", com.azure.core.util.Context.NONE);
+        manager.artifactManifests()
+            .listCredentialWithResponse("rg", "TestPublisher", "TestArtifactStore", "TestArtifactManifestName",
+                com.azure.core.util.Context.NONE);
     }
 }

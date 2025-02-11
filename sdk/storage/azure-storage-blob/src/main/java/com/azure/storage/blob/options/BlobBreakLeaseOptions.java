@@ -13,11 +13,18 @@ import java.time.Duration;
  */
 @Fluent
 public class BlobBreakLeaseOptions {
-
     private Duration breakPeriod;
     private BlobLeaseRequestConditions requestConditions;
 
     /**
+     * Creates a new instance of {@link BlobBreakLeaseOptions}.
+     */
+    public BlobBreakLeaseOptions() {
+    }
+
+    /**
+     * Gets the break period of the lease.
+     *
      * @return An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
      * is used. A new lease will not be available before the break period has expired, but the lease may be held for
@@ -28,6 +35,8 @@ public class BlobBreakLeaseOptions {
     }
 
     /**
+     * Sets the break period of the lease.
+     *
      * @param breakPeriod An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
      * is used. A new lease will not be available before the break period has expired, but the lease may be held for
@@ -40,6 +49,8 @@ public class BlobBreakLeaseOptions {
     }
 
     /**
+     * Gets the {@link BlobLeaseRequestConditions}.
+     *
      * @return {@link BlobLeaseRequestConditions}
      */
     public BlobLeaseRequestConditions getRequestConditions() {
@@ -47,6 +58,8 @@ public class BlobBreakLeaseOptions {
     }
 
     /**
+     * Sets the {@link BlobLeaseRequestConditions}.
+     *
      * @param requestConditions {@link BlobLeaseRequestConditions}
      * @return The updated options.
      */

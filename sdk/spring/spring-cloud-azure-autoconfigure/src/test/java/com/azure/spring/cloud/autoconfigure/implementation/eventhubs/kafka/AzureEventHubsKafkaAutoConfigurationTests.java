@@ -38,118 +38,127 @@ class AzureEventHubsKafkaAutoConfigurationTests {
     @Test
     void shouldNotConfigureWhenAzureEventHubsKafkaDisabled() {
         this.contextRunner
-                .withPropertyValues("spring.cloud.azure.eventhubs.kafka.enabled=false")
-                .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaAutoConfiguration.class));
+            .withPropertyValues("spring.cloud.azure.eventhubs.kafka.enabled=false")
+            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaAutoConfiguration.class));
     }
 
     @Test
     void shouldNotConfigureWithoutKafkaTemplate() {
         this.contextRunner
-                .withClassLoader(new FilteredClassLoader(KafkaTemplate.class))
-                .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaAutoConfiguration.class));
+            .withClassLoader(new FilteredClassLoader(KafkaTemplate.class))
+            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaAutoConfiguration.class));
+    }
+
+    @Test
+    void shouldNotConfigureWithEmptyConnectionString() {
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=")
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(StaticConnectionStringProvider.class);
+            });
     }
 
     @Test
     void shouldConfigureWhenStaticConnectionStringProvided() {
         this.contextRunner
-                .withUserConfiguration(StaticConnectionStringProviderConfiguration.class)
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
-                    assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
+            .withUserConfiguration(StaticConnectionStringProviderConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
+                assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(KafkaProperties.class);
 
-                    KafkaProperties bean = context.getBean(KafkaProperties.class);
-                    Map<String, String> properties = bean.getProperties();
-                    assertThat(bean.getBootstrapServers()).isEqualTo(Collections.singletonList("static-namespace.servicebus.windows.net:9093"));
-                    assertThat(properties.get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
-                    assertThat(properties.get(SASL_MECHANISM)).isEqualTo("PLAIN");
-                });
+                KafkaProperties bean = context.getBean(KafkaProperties.class);
+                Map<String, String> properties = bean.getProperties();
+                assertThat(bean.getBootstrapServers()).isEqualTo(Collections.singletonList("static-namespace.servicebus.windows.net:9093"));
+                assertThat(properties.get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
+                assertThat(properties.get(SASL_MECHANISM)).isEqualTo("PLAIN");
+            });
     }
 
     @Test
     void shouldConfigureWhenConnectionStringProvided() {
         this.contextRunner
-                .withPropertyValues(
-                        "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "static-namespace")
-                )
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
-                    assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
+            .withPropertyValues(
+                    "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "static-namespace")
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
+                assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(KafkaProperties.class);
 
-                    KafkaProperties bean = context.getBean(KafkaProperties.class);
-                    Map<String, String> properties = bean.getProperties();
-                    assertThat(bean.getBootstrapServers()).isEqualTo(Collections.singletonList("static-namespace.servicebus.windows.net:9093"));
-                    assertThat(properties.get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
-                    assertThat(properties.get(SASL_MECHANISM)).isEqualTo("PLAIN");
-                });
+                KafkaProperties bean = context.getBean(KafkaProperties.class);
+                Map<String, String> properties = bean.getProperties();
+                assertThat(bean.getBootstrapServers()).isEqualTo(Collections.singletonList("static-namespace.servicebus.windows.net:9093"));
+                assertThat(properties.get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
+                assertThat(properties.get(SASL_MECHANISM)).isEqualTo("PLAIN");
+            });
     }
 
     @Test
     void shouldWorkWithEventHubsAutoConfiguration() {
         this.contextRunner
-                .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-                .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class))
-                .withPropertyValues(
-                        "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "static-namespace")
-                )
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(AzureEventHubsAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
-                    assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class))
+            .withPropertyValues(
+                    "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "static-namespace")
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureEventHubsAutoConfiguration.class);
+                assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
+                assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(KafkaProperties.class);
 
-                    assertThat(context).hasBean("eventHubsStaticConnectionStringProvider");
-                });
+                assertThat(context).hasBean("eventHubsStaticConnectionStringProvider");
+            });
     }
 
     @Test
     void shouldWorkWithAzureEventHubsAndArm() {
         this.contextRunner
-                .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-                .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class, ArmConnectionStringProviderConfiguration.class))
-                .withPropertyValues(
-                        "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "static-namespace")
-                )
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(AzureEventHubsAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
-                    assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
-
-                    assertThat(context).hasBean("eventHubsStaticConnectionStringProvider");
-                });
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class))
+            .withUserConfiguration(ArmConnectionStringProviderConfiguration.class)
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "static-namespace")
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureEventHubsAutoConfiguration.class);
+                assertThat(context).hasSingleBean(ArmConnectionStringProvider.class);
+                assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(KafkaProperties.class);
+            });
     }
 
     @Test
     void shouldNotConfigureWhenServiceBusStaticConnectionStringProvided() {
         this.contextRunner
-                .withUserConfiguration(ServiceBusStaticConnectionStringProviderConfiguration.class)
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
-                    assertThat(context).doesNotHaveBean(KafkaPropertiesBeanPostProcessor.class);
-                });
+            .withUserConfiguration(ServiceBusStaticConnectionStringProviderConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(KafkaPropertiesBeanPostProcessor.class);
+            });
     }
 
     @Test
     void shouldConfigureWhenArmConnectionStringProvided() {
         this.contextRunner
-                .withUserConfiguration(ArmConnectionStringProviderConfiguration.class)
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
+            .withUserConfiguration(ArmConnectionStringProviderConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(KafkaProperties.class);
 
-                    KafkaProperties bean = context.getBean(KafkaProperties.class);
-                    Map<String, String> properties = bean.getProperties();
-                    assertThat(bean.getBootstrapServers()).isEqualTo(Collections.singletonList("arm-namespace.servicebus.windows.net:9093"));
-                    assertThat(properties.get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
-                    assertThat(properties.get(SASL_MECHANISM)).isEqualTo("PLAIN");
-                });
+                KafkaProperties bean = context.getBean(KafkaProperties.class);
+                Map<String, String> properties = bean.getProperties();
+                assertThat(bean.getBootstrapServers()).isEqualTo(Collections.singletonList("arm-namespace.servicebus.windows.net:9093"));
+                assertThat(properties.get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
+                assertThat(properties.get(SASL_MECHANISM)).isEqualTo("PLAIN");
+            });
     }
 
     @Test
@@ -158,20 +167,20 @@ class AzureEventHubsKafkaAutoConfigurationTests {
         defaultProperties.setBootstrapServers(Collections.singletonList("default-namespace.servicebus.windows.net:9093"));
 
         this.contextRunner
-                .withBean(KafkaProperties.class, () -> defaultProperties, beanDefinition -> beanDefinition.setPrimary(true))
-                .withUserConfiguration(StaticConnectionStringProviderConfiguration.class)
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
-                    Map<String, KafkaProperties> kafkaPropertiesMap = context.getBeansOfType(KafkaProperties.class);
-                    assertThat(kafkaPropertiesMap).hasSize(2);
+            .withBean(KafkaProperties.class, () -> defaultProperties, beanDefinition -> beanDefinition.setPrimary(true))
+            .withUserConfiguration(StaticConnectionStringProviderConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
+                Map<String, KafkaProperties> kafkaPropertiesMap = context.getBeansOfType(KafkaProperties.class);
+                assertThat(kafkaPropertiesMap).hasSize(2);
 
-                    KafkaProperties bean = context.getBean(KafkaProperties.class);
-                    Map<String, String> properties = bean.getProperties();
-                    assertThat(bean.getBootstrapServers()).isEqualTo(Collections.singletonList("static-namespace.servicebus.windows.net:9093"));
-                    assertThat(properties.get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
-                    assertThat(properties.get(SASL_MECHANISM)).isEqualTo("PLAIN");
-                });
+                KafkaProperties bean = context.getBean(KafkaProperties.class);
+                Map<String, String> properties = bean.getProperties();
+                assertThat(bean.getBootstrapServers()).isEqualTo(Collections.singletonList("static-namespace.servicebus.windows.net:9093"));
+                assertThat(properties.get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
+                assertThat(properties.get(SASL_MECHANISM)).isEqualTo("PLAIN");
+            });
     }
 
     @Configuration
@@ -180,7 +189,7 @@ class AzureEventHubsKafkaAutoConfigurationTests {
         @Bean
         StaticConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider() {
             return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS,
-                    String.format(CONNECTION_STRING_FORMAT, "static-namespace"));
+                String.format(CONNECTION_STRING_FORMAT, "static-namespace"));
         }
     }
 
@@ -190,7 +199,7 @@ class AzureEventHubsKafkaAutoConfigurationTests {
         @Bean
         StaticConnectionStringProvider<AzureServiceType.ServiceBus> connectionStringProvider() {
             return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
-                    String.format(CONNECTION_STRING_FORMAT, "servicebus-namespace"));
+                String.format(CONNECTION_STRING_FORMAT, "servicebus-namespace"));
         }
     }
 

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SignalRTlsSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SignalRTlsSettings model =
-            BinaryData.fromString("{\"clientCertEnabled\":false}").toObject(SignalRTlsSettings.class);
+        SignalRTlsSettings model
+            = BinaryData.fromString("{\"clientCertEnabled\":false}").toObject(SignalRTlsSettings.class);
         Assertions.assertEquals(false, model.clientCertEnabled());
     }
 

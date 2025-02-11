@@ -5,47 +5,47 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
 import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Properties of a project environment type. These properties can be updated after the resource has been created.
  */
 @Fluent
-public class ProjectEnvironmentTypeUpdateProperties {
+public class ProjectEnvironmentTypeUpdateProperties
+    implements JsonSerializable<ProjectEnvironmentTypeUpdateProperties> {
     /*
-     * Id of a subscription that the environment type will be mapped to. The environment's resources will be deployed into this subscription.
+     * Id of a subscription that the environment type will be mapped to. The environment's resources will be deployed
+     * into this subscription.
      */
-    @JsonProperty(value = "deploymentTargetId")
     private String deploymentTargetId;
 
     /*
      * The display name of the project environment type.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Defines whether this Environment Type can be used in this Project.
      */
-    @JsonProperty(value = "status")
     private EnvironmentTypeEnableStatus status;
 
     /*
      * The role definition assigned to the environment creator on backing resources.
      */
-    @JsonProperty(value = "creatorRoleAssignment")
     private ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment;
 
     /*
-     * Role Assignments created on environment backing resources. This is a mapping from a user object ID to an object of role definition IDs.
+     * Role Assignments created on environment backing resources. This is a mapping from a user object ID to an object
+     * of role definition IDs.
      */
-    @JsonProperty(value = "userRoleAssignments")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserRoleAssignmentValue> userRoleAssignments;
 
     /**
@@ -178,5 +178,59 @@ public class ProjectEnvironmentTypeUpdateProperties {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deploymentTargetId", this.deploymentTargetId);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("creatorRoleAssignment", this.creatorRoleAssignment);
+        jsonWriter.writeMapField("userRoleAssignments", this.userRoleAssignments,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProjectEnvironmentTypeUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProjectEnvironmentTypeUpdateProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProjectEnvironmentTypeUpdateProperties.
+     */
+    public static ProjectEnvironmentTypeUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProjectEnvironmentTypeUpdateProperties deserializedProjectEnvironmentTypeUpdateProperties
+                = new ProjectEnvironmentTypeUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentTargetId".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeUpdateProperties.deploymentTargetId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeUpdateProperties.displayName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeUpdateProperties.status
+                        = EnvironmentTypeEnableStatus.fromString(reader.getString());
+                } else if ("creatorRoleAssignment".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeUpdateProperties.creatorRoleAssignment
+                        = ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.fromJson(reader);
+                } else if ("userRoleAssignments".equals(fieldName)) {
+                    Map<String, UserRoleAssignmentValue> userRoleAssignments
+                        = reader.readMap(reader1 -> UserRoleAssignmentValue.fromJson(reader1));
+                    deserializedProjectEnvironmentTypeUpdateProperties.userRoleAssignments = userRoleAssignments;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProjectEnvironmentTypeUpdateProperties;
+        });
     }
 }

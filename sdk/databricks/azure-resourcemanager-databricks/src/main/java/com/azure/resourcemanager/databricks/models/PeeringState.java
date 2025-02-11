@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the virtual network peering. */
+/**
+ * The status of the virtual network peering.
+ */
 public final class PeeringState extends ExpandableStringEnum<PeeringState> {
-    /** Static value Initiated for PeeringState. */
+    /**
+     * Static value Initiated for PeeringState.
+     */
     public static final PeeringState INITIATED = fromString("Initiated");
 
-    /** Static value Connected for PeeringState. */
+    /**
+     * Static value Connected for PeeringState.
+     */
     public static final PeeringState CONNECTED = fromString("Connected");
 
-    /** Static value Disconnected for PeeringState. */
+    /**
+     * Static value Disconnected for PeeringState.
+     */
     public static final PeeringState DISCONNECTED = fromString("Disconnected");
 
     /**
      * Creates a new instance of PeeringState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class PeeringState extends ExpandableStringEnum<PeeringState> {
 
     /**
      * Creates or finds a PeeringState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PeeringState.
      */
-    @JsonCreator
     public static PeeringState fromString(String name) {
         return fromString(name, PeeringState.class);
     }
 
     /**
      * Gets known PeeringState values.
-     *
+     * 
      * @return known PeeringState values.
      */
     public static Collection<PeeringState> values() {

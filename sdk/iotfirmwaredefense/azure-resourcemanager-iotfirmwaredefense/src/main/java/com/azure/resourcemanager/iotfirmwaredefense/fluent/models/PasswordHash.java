@@ -5,53 +5,50 @@
 package com.azure.resourcemanager.iotfirmwaredefense.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Password hash properties.
  */
 @Fluent
-public final class PasswordHash {
+public final class PasswordHash implements JsonSerializable<PasswordHash> {
     /*
      * ID for password hash
      */
-    @JsonProperty(value = "passwordHashId")
     private String passwordHashId;
 
     /*
      * File path of the password hash
      */
-    @JsonProperty(value = "filePath")
     private String filePath;
 
     /*
      * Salt of the password hash
      */
-    @JsonProperty(value = "salt")
     private String salt;
 
     /*
      * Hash of the password
      */
-    @JsonProperty(value = "hash")
     private String hash;
 
     /*
      * Context of password hash
      */
-    @JsonProperty(value = "context")
     private String context;
 
     /*
      * User name of password hash
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * Algorithm of the password hash
      */
-    @JsonProperty(value = "algorithm")
     private String algorithm;
 
     /**
@@ -206,5 +203,59 @@ public final class PasswordHash {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("passwordHashId", this.passwordHashId);
+        jsonWriter.writeStringField("filePath", this.filePath);
+        jsonWriter.writeStringField("salt", this.salt);
+        jsonWriter.writeStringField("hash", this.hash);
+        jsonWriter.writeStringField("context", this.context);
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("algorithm", this.algorithm);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PasswordHash from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PasswordHash if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PasswordHash.
+     */
+    public static PasswordHash fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PasswordHash deserializedPasswordHash = new PasswordHash();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("passwordHashId".equals(fieldName)) {
+                    deserializedPasswordHash.passwordHashId = reader.getString();
+                } else if ("filePath".equals(fieldName)) {
+                    deserializedPasswordHash.filePath = reader.getString();
+                } else if ("salt".equals(fieldName)) {
+                    deserializedPasswordHash.salt = reader.getString();
+                } else if ("hash".equals(fieldName)) {
+                    deserializedPasswordHash.hash = reader.getString();
+                } else if ("context".equals(fieldName)) {
+                    deserializedPasswordHash.context = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedPasswordHash.username = reader.getString();
+                } else if ("algorithm".equals(fieldName)) {
+                    deserializedPasswordHash.algorithm = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPasswordHash;
+        });
     }
 }

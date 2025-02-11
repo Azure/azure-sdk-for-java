@@ -13,33 +13,32 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringServiceLocationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceLocationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"country\":\"fkuwbcrnwbmehhse\",\"state\":\"jusrtslhspk\",\"azureRegion\":\"emaofmxagkvt\"},\"id\":\"elmqk\",\"name\":\"hahvljuahaq\",\"type\":\"hcdhmdual\"}],\"nextLink\":\"xqpvfadmw\"}")
-                .toObject(PeeringServiceLocationListResult.class);
-        Assertions.assertEquals("fkuwbcrnwbmehhse", model.value().get(0).country());
-        Assertions.assertEquals("jusrtslhspk", model.value().get(0).state());
-        Assertions.assertEquals("emaofmxagkvt", model.value().get(0).azureRegion());
-        Assertions.assertEquals("xqpvfadmw", model.nextLink());
+        PeeringServiceLocationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"country\":\"vbxwyjsflhh\",\"state\":\"aln\",\"azureRegion\":\"xisxyawjoyaqcsl\"},\"id\":\"jpkiidzyexznelix\",\"name\":\"nr\",\"type\":\"tfolhbnx\"},{\"properties\":{\"country\":\"laulppg\",\"state\":\"tpnapnyiropuhpig\",\"azureRegion\":\"gylgqgitxmedjvcs\"},\"id\":\"ynqwwncwzzhxgk\",\"name\":\"rmgucnap\",\"type\":\"t\"},{\"properties\":{\"country\":\"llwptfdy\",\"state\":\"fqbuaceopzf\",\"azureRegion\":\"hhuao\"},\"id\":\"ppcqeqxolz\",\"name\":\"ahzxctobgbk\",\"type\":\"moizpos\"}],\"nextLink\":\"grcfb\"}")
+            .toObject(PeeringServiceLocationListResult.class);
+        Assertions.assertEquals("vbxwyjsflhh", model.value().get(0).country());
+        Assertions.assertEquals("aln", model.value().get(0).state());
+        Assertions.assertEquals("xisxyawjoyaqcsl", model.value().get(0).azureRegion());
+        Assertions.assertEquals("grcfb", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringServiceLocationListResult model =
-            new PeeringServiceLocationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PeeringServiceLocationInner()
-                                .withCountry("fkuwbcrnwbmehhse")
-                                .withState("jusrtslhspk")
-                                .withAzureRegion("emaofmxagkvt")))
-                .withNextLink("xqpvfadmw");
+        PeeringServiceLocationListResult model = new PeeringServiceLocationListResult().withValue(Arrays.asList(
+            new PeeringServiceLocationInner().withCountry("vbxwyjsflhh")
+                .withState("aln")
+                .withAzureRegion("xisxyawjoyaqcsl"),
+            new PeeringServiceLocationInner().withCountry("laulppg")
+                .withState("tpnapnyiropuhpig")
+                .withAzureRegion("gylgqgitxmedjvcs"),
+            new PeeringServiceLocationInner().withCountry("llwptfdy")
+                .withState("fqbuaceopzf")
+                .withAzureRegion("hhuao")))
+            .withNextLink("grcfb");
         model = BinaryData.fromObject(model).toObject(PeeringServiceLocationListResult.class);
-        Assertions.assertEquals("fkuwbcrnwbmehhse", model.value().get(0).country());
-        Assertions.assertEquals("jusrtslhspk", model.value().get(0).state());
-        Assertions.assertEquals("emaofmxagkvt", model.value().get(0).azureRegion());
-        Assertions.assertEquals("xqpvfadmw", model.nextLink());
+        Assertions.assertEquals("vbxwyjsflhh", model.value().get(0).country());
+        Assertions.assertEquals("aln", model.value().get(0).state());
+        Assertions.assertEquals("xisxyawjoyaqcsl", model.value().get(0).azureRegion());
+        Assertions.assertEquals("grcfb", model.nextLink());
     }
 }

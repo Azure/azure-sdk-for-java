@@ -10,10 +10,6 @@ module com.azure.resourcemanager.webpubsub {
     exports com.azure.resourcemanager.webpubsub.fluent.models;
     exports com.azure.resourcemanager.webpubsub.models;
 
-    opens com.azure.resourcemanager.webpubsub.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.webpubsub.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.webpubsub.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.webpubsub.models to com.azure.core;
 }

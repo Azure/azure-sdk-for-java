@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.largeinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the hardware settings for the Azure Large Instance.
  */
 @Immutable
-public final class HardwareProfile {
+public final class HardwareProfile implements JsonSerializable<HardwareProfile> {
     /*
      * Name of the hardware type (vendor and/or their product name)
      */
-    @JsonProperty(value = "hardwareType", access = JsonProperty.Access.WRITE_ONLY)
     private AzureLargeInstanceHardwareTypeNamesEnum hardwareType;
 
     /*
      * Specifies the Azure Large Instance SKU.
      */
-    @JsonProperty(value = "azureLargeInstanceSize", access = JsonProperty.Access.WRITE_ONLY)
     private AzureLargeInstanceSizeNamesEnum azureLargeInstanceSize;
 
     /**
@@ -54,5 +56,44 @@ public final class HardwareProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HardwareProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HardwareProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HardwareProfile.
+     */
+    public static HardwareProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HardwareProfile deserializedHardwareProfile = new HardwareProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hardwareType".equals(fieldName)) {
+                    deserializedHardwareProfile.hardwareType
+                        = AzureLargeInstanceHardwareTypeNamesEnum.fromString(reader.getString());
+                } else if ("azureLargeInstanceSize".equals(fieldName)) {
+                    deserializedHardwareProfile.azureLargeInstanceSize
+                        = AzureLargeInstanceSizeNamesEnum.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHardwareProfile;
+        });
     }
 }

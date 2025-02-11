@@ -6,55 +6,58 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters supplied to the Backup/Restore of an API Management service operation. */
+/**
+ * Parameters supplied to the Backup/Restore of an API Management service operation.
+ */
 @Fluent
-public final class ApiManagementServiceBackupRestoreParameters {
+public final class ApiManagementServiceBackupRestoreParameters
+    implements JsonSerializable<ApiManagementServiceBackupRestoreParameters> {
     /*
      * The name of the Azure storage account (used to place/retrieve the backup).
      */
-    @JsonProperty(value = "storageAccount", required = true)
     private String storageAccount;
 
     /*
      * The name of the blob container (used to place/retrieve the backup).
      */
-    @JsonProperty(value = "containerName", required = true)
     private String containerName;
 
     /*
      * The name of the backup file to create/retrieve.
      */
-    @JsonProperty(value = "backupName", required = true)
     private String backupName;
 
     /*
      * The type of access to be used for the storage account.
      */
-    @JsonProperty(value = "accessType")
     private AccessType accessType;
 
     /*
      * Storage account access key. Required only if `accessType` is set to `AccessKey`.
      */
-    @JsonProperty(value = "accessKey")
     private String accessKey;
 
     /*
      * The Client ID of user assigned managed identity. Required only if `accessType` is set to
      * `UserAssignedManagedIdentity`.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
-    /** Creates an instance of ApiManagementServiceBackupRestoreParameters class. */
+    /**
+     * Creates an instance of ApiManagementServiceBackupRestoreParameters class.
+     */
     public ApiManagementServiceBackupRestoreParameters() {
     }
 
     /**
      * Get the storageAccount property: The name of the Azure storage account (used to place/retrieve the backup).
-     *
+     * 
      * @return the storageAccount value.
      */
     public String storageAccount() {
@@ -63,7 +66,7 @@ public final class ApiManagementServiceBackupRestoreParameters {
 
     /**
      * Set the storageAccount property: The name of the Azure storage account (used to place/retrieve the backup).
-     *
+     * 
      * @param storageAccount the storageAccount value to set.
      * @return the ApiManagementServiceBackupRestoreParameters object itself.
      */
@@ -74,7 +77,7 @@ public final class ApiManagementServiceBackupRestoreParameters {
 
     /**
      * Get the containerName property: The name of the blob container (used to place/retrieve the backup).
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -83,7 +86,7 @@ public final class ApiManagementServiceBackupRestoreParameters {
 
     /**
      * Set the containerName property: The name of the blob container (used to place/retrieve the backup).
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the ApiManagementServiceBackupRestoreParameters object itself.
      */
@@ -94,7 +97,7 @@ public final class ApiManagementServiceBackupRestoreParameters {
 
     /**
      * Get the backupName property: The name of the backup file to create/retrieve.
-     *
+     * 
      * @return the backupName value.
      */
     public String backupName() {
@@ -103,7 +106,7 @@ public final class ApiManagementServiceBackupRestoreParameters {
 
     /**
      * Set the backupName property: The name of the backup file to create/retrieve.
-     *
+     * 
      * @param backupName the backupName value to set.
      * @return the ApiManagementServiceBackupRestoreParameters object itself.
      */
@@ -114,7 +117,7 @@ public final class ApiManagementServiceBackupRestoreParameters {
 
     /**
      * Get the accessType property: The type of access to be used for the storage account.
-     *
+     * 
      * @return the accessType value.
      */
     public AccessType accessType() {
@@ -123,7 +126,7 @@ public final class ApiManagementServiceBackupRestoreParameters {
 
     /**
      * Set the accessType property: The type of access to be used for the storage account.
-     *
+     * 
      * @param accessType the accessType value to set.
      * @return the ApiManagementServiceBackupRestoreParameters object itself.
      */
@@ -134,7 +137,7 @@ public final class ApiManagementServiceBackupRestoreParameters {
 
     /**
      * Get the accessKey property: Storage account access key. Required only if `accessType` is set to `AccessKey`.
-     *
+     * 
      * @return the accessKey value.
      */
     public String accessKey() {
@@ -143,7 +146,7 @@ public final class ApiManagementServiceBackupRestoreParameters {
 
     /**
      * Set the accessKey property: Storage account access key. Required only if `accessType` is set to `AccessKey`.
-     *
+     * 
      * @param accessKey the accessKey value to set.
      * @return the ApiManagementServiceBackupRestoreParameters object itself.
      */
@@ -155,7 +158,7 @@ public final class ApiManagementServiceBackupRestoreParameters {
     /**
      * Get the clientId property: The Client ID of user assigned managed identity. Required only if `accessType` is set
      * to `UserAssignedManagedIdentity`.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -165,7 +168,7 @@ public final class ApiManagementServiceBackupRestoreParameters {
     /**
      * Set the clientId property: The Client ID of user assigned managed identity. Required only if `accessType` is set
      * to `UserAssignedManagedIdentity`.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ApiManagementServiceBackupRestoreParameters object itself.
      */
@@ -176,31 +179,80 @@ public final class ApiManagementServiceBackupRestoreParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageAccount() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccount in model"
-                            + " ApiManagementServiceBackupRestoreParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccount in model ApiManagementServiceBackupRestoreParameters"));
         }
         if (containerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property containerName in model"
-                            + " ApiManagementServiceBackupRestoreParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property containerName in model ApiManagementServiceBackupRestoreParameters"));
         }
         if (backupName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property backupName in model ApiManagementServiceBackupRestoreParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property backupName in model ApiManagementServiceBackupRestoreParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApiManagementServiceBackupRestoreParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccount", this.storageAccount);
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("backupName", this.backupName);
+        jsonWriter.writeStringField("accessType", this.accessType == null ? null : this.accessType.toString());
+        jsonWriter.writeStringField("accessKey", this.accessKey);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementServiceBackupRestoreParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementServiceBackupRestoreParameters if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApiManagementServiceBackupRestoreParameters.
+     */
+    public static ApiManagementServiceBackupRestoreParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementServiceBackupRestoreParameters deserializedApiManagementServiceBackupRestoreParameters
+                = new ApiManagementServiceBackupRestoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccount".equals(fieldName)) {
+                    deserializedApiManagementServiceBackupRestoreParameters.storageAccount = reader.getString();
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedApiManagementServiceBackupRestoreParameters.containerName = reader.getString();
+                } else if ("backupName".equals(fieldName)) {
+                    deserializedApiManagementServiceBackupRestoreParameters.backupName = reader.getString();
+                } else if ("accessType".equals(fieldName)) {
+                    deserializedApiManagementServiceBackupRestoreParameters.accessType
+                        = AccessType.fromString(reader.getString());
+                } else if ("accessKey".equals(fieldName)) {
+                    deserializedApiManagementServiceBackupRestoreParameters.accessKey = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedApiManagementServiceBackupRestoreParameters.clientId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementServiceBackupRestoreParameters;
+        });
+    }
 }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether SSO is enabled or not. */
+/**
+ * Indicates whether SSO is enabled or not.
+ */
 public final class SsoStatus extends ExpandableStringEnum<SsoStatus> {
-    /** Static value Enabled for SsoStatus. */
+    /**
+     * Static value Enabled for SsoStatus.
+     */
     public static final SsoStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for SsoStatus. */
+    /**
+     * Static value Disabled for SsoStatus.
+     */
     public static final SsoStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of SsoStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class SsoStatus extends ExpandableStringEnum<SsoStatus> {
 
     /**
      * Creates or finds a SsoStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SsoStatus.
      */
-    @JsonCreator
     public static SsoStatus fromString(String name) {
         return fromString(name, SsoStatus.class);
     }
 
     /**
      * Gets known SsoStatus values.
-     *
+     * 
      * @return known SsoStatus values.
      */
     public static Collection<SsoStatus> values() {

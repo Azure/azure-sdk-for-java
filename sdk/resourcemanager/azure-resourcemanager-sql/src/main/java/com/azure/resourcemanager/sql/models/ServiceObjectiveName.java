@@ -204,6 +204,15 @@ public final class ServiceObjectiveName extends ExpandableStringEnum<ServiceObje
     public static final ServiceObjectiveName ELASTIC_POOL = fromString("ElasticPool");
 
     /**
+     * Creates a new instance of ServiceObjectiveName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceObjectiveName() {
+    }
+
+    /**
      * Creates or finds a ServiceObjectiveName from its string representation.
      *
      * @param name a name to look for.

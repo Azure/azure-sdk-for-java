@@ -9,30 +9,28 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.ClientSecretContractInner;
 
-/** Contains all response data for the listSecrets operation. */
+/**
+ * Contains all response data for the listSecrets operation.
+ */
 public final class IdentityProvidersListSecretsResponse
     extends ResponseBase<IdentityProvidersListSecretsHeaders, ClientSecretContractInner> {
     /**
      * Creates an instance of IdentityProvidersListSecretsResponse.
-     *
+     * 
      * @param request the request which resulted in this IdentityProvidersListSecretsResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public IdentityProvidersListSecretsResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        ClientSecretContractInner value,
-        IdentityProvidersListSecretsHeaders headers) {
+    public IdentityProvidersListSecretsResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        ClientSecretContractInner value, IdentityProvidersListSecretsHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

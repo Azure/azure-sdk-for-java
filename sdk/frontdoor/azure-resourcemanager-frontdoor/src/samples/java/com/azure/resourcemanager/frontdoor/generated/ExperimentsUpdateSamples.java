@@ -12,7 +12,8 @@ import com.azure.resourcemanager.frontdoor.models.State;
  */
 public final class ExperimentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentUpdateExperiment.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
+     * NetworkExperimentUpdateExperiment.json
      */
     /**
      * Sample code: Updates an Experiment.

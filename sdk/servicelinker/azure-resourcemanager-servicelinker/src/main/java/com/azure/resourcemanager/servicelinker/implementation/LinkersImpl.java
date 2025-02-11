@@ -25,39 +25,36 @@ public final class LinkersImpl implements Linkers {
 
     private final com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager;
 
-    public LinkersImpl(
-        LinkersClient innerClient, com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager) {
+    public LinkersImpl(LinkersClient innerClient,
+        com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<LinkerResource> list(String resourceUri) {
         PagedIterable<LinkerResourceInner> inner = this.serviceClient().list(resourceUri);
-        return Utils.mapPage(inner, inner1 -> new LinkerResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LinkerResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LinkerResource> list(String resourceUri, Context context) {
         PagedIterable<LinkerResourceInner> inner = this.serviceClient().list(resourceUri, context);
-        return Utils.mapPage(inner, inner1 -> new LinkerResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LinkerResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<LinkerResource> getWithResponse(String resourceUri, String linkerName, Context context) {
+        Response<LinkerResourceInner> inner = this.serviceClient().getWithResponse(resourceUri, linkerName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LinkerResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public LinkerResource get(String resourceUri, String linkerName) {
         LinkerResourceInner inner = this.serviceClient().get(resourceUri, linkerName);
         if (inner != null) {
             return new LinkerResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<LinkerResource> getWithResponse(String resourceUri, String linkerName, Context context) {
-        Response<LinkerResourceInner> inner = this.serviceClient().getWithResponse(resourceUri, linkerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new LinkerResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -89,6 +86,18 @@ public final class LinkersImpl implements Linkers {
         }
     }
 
+    public Response<SourceConfigurationResult> listConfigurationsWithResponse(String resourceUri, String linkerName,
+        Context context) {
+        Response<SourceConfigurationResultInner> inner
+            = this.serviceClient().listConfigurationsWithResponse(resourceUri, linkerName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SourceConfigurationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public SourceConfigurationResult listConfigurations(String resourceUri, String linkerName) {
         SourceConfigurationResultInner inner = this.serviceClient().listConfigurations(resourceUri, linkerName);
         if (inner != null) {
@@ -98,113 +107,66 @@ public final class LinkersImpl implements Linkers {
         }
     }
 
-    public Response<SourceConfigurationResult> listConfigurationsWithResponse(
-        String resourceUri, String linkerName, Context context) {
-        Response<SourceConfigurationResultInner> inner =
-            this.serviceClient().listConfigurationsWithResponse(resourceUri, linkerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SourceConfigurationResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public LinkerResource getById(String id) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String linkerName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
+        String linkerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
         if (linkerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
         }
         return this.getWithResponse(resourceUri, linkerName, Context.NONE).getValue();
     }
 
     public Response<LinkerResource> getByIdWithResponse(String id, Context context) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String linkerName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
+        String linkerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
         if (linkerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
         }
         return this.getWithResponse(resourceUri, linkerName, context);
     }
 
     public void deleteById(String id) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String linkerName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
+        String linkerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
         if (linkerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
         }
         this.delete(resourceUri, linkerName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
         if (resourceUri == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String linkerName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
+        String linkerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
         if (linkerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
         }
         this.delete(resourceUri, linkerName, context);
     }

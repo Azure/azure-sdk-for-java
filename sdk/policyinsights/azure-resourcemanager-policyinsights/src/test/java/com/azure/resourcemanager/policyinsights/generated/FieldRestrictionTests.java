@@ -6,20 +6,17 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.FieldRestriction;
-import org.junit.jupiter.api.Test;
 
 public final class FieldRestrictionTests {
-    @Test
-    public void testDeserialize() {
-        FieldRestriction model =
-            BinaryData
-                .fromString(
-                    "{\"result\":\"Required\",\"defaultValue\":\"oruzfgsquyfxrxx\",\"values\":[\"tramxjez\",\"lwnwxuqlcvydyp\"],\"policy\":{\"policyDefinitionId\":\"ooaojkniodkooebw\",\"policySetDefinitionId\":\"jhemms\",\"policyDefinitionReferenceId\":\"dkcrodt\",\"policyAssignmentId\":\"nfwjlfltkacjvefk\"}}")
-                .toObject(FieldRestriction.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        FieldRestriction model = BinaryData.fromString(
+            "{\"result\":\"Removed\",\"defaultValue\":\"p\",\"values\":[\"wxznptgoei\",\"bbabp\"],\"policy\":{\"policyDefinitionId\":\"f\",\"policySetDefinitionId\":\"kvntjlrigjkskyri\",\"policyDefinitionReferenceId\":\"vzidsxwaab\",\"policyAssignmentId\":\"ifrygzn\"}}")
+            .toObject(FieldRestriction.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         FieldRestriction model = new FieldRestriction();
         model = BinaryData.fromObject(model).toObject(FieldRestriction.class);
     }

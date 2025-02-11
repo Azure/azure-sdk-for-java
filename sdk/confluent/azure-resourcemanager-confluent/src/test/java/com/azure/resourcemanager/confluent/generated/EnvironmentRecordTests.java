@@ -27,9 +27,13 @@ public final class EnvironmentRecordTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentRecord model = new EnvironmentRecord().withKind("xnehmpvec").withId("odebfqkkrbmpu")
-            .withMetadata(new MetadataEntity().withSelf("iw").withResourceName("zlfbxzpuzycispnq")
-                .withCreatedAt("hmgkbrpyy").withUpdatedAt("ibnuqqkpik").withDeletedAt("rgvtqag"))
+        EnvironmentRecord model = new EnvironmentRecord().withKind("xnehmpvec")
+            .withId("odebfqkkrbmpu")
+            .withMetadata(new MetadataEntity().withSelf("iw")
+                .withResourceName("zlfbxzpuzycispnq")
+                .withCreatedAt("hmgkbrpyy")
+                .withUpdatedAt("ibnuqqkpik")
+                .withDeletedAt("rgvtqag"))
             .withDisplayName("uynhijg");
         model = BinaryData.fromObject(model).toObject(EnvironmentRecord.class);
         Assertions.assertEquals("xnehmpvec", model.kind());

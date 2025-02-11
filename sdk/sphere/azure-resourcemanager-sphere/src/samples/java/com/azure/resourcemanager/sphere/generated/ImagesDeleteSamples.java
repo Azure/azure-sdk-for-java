@@ -18,7 +18,8 @@ public final class ImagesDeleteSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void imagesDelete(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.images().delete("MyResourceGroup1", "MyCatalog1", "00000000-0000-0000-0000-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.images()
+            .delete("MyResourceGroup1", "MyCatalog1", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

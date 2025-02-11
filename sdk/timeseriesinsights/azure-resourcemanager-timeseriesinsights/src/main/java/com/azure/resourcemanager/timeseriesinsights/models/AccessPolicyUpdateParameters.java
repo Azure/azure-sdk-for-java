@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.AccessPolicyMutableProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The AccessPolicyUpdateParameters model. */
+/**
+ * The AccessPolicyUpdateParameters model.
+ */
 @Fluent
-public final class AccessPolicyUpdateParameters {
+public final class AccessPolicyUpdateParameters implements JsonSerializable<AccessPolicyUpdateParameters> {
     /*
      * An object that represents a set of mutable access policy resource properties.
      */
-    @JsonProperty(value = "properties")
     private AccessPolicyMutableProperties innerProperties;
 
-    /** Creates an instance of AccessPolicyUpdateParameters class. */
+    /**
+     * Creates an instance of AccessPolicyUpdateParameters class.
+     */
     public AccessPolicyUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: An object that represents a set of mutable access policy resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AccessPolicyMutableProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class AccessPolicyUpdateParameters {
 
     /**
      * Get the description property: An description of the access policy.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -42,7 +49,7 @@ public final class AccessPolicyUpdateParameters {
 
     /**
      * Set the description property: An description of the access policy.
-     *
+     * 
      * @param description the description value to set.
      * @return the AccessPolicyUpdateParameters object itself.
      */
@@ -56,7 +63,7 @@ public final class AccessPolicyUpdateParameters {
 
     /**
      * Get the roles property: The list of roles the principal is assigned on the environment.
-     *
+     * 
      * @return the roles value.
      */
     public List<AccessPolicyRole> roles() {
@@ -65,7 +72,7 @@ public final class AccessPolicyUpdateParameters {
 
     /**
      * Set the roles property: The list of roles the principal is assigned on the environment.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the AccessPolicyUpdateParameters object itself.
      */
@@ -79,12 +86,49 @@ public final class AccessPolicyUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessPolicyUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessPolicyUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessPolicyUpdateParameters.
+     */
+    public static AccessPolicyUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessPolicyUpdateParameters deserializedAccessPolicyUpdateParameters = new AccessPolicyUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAccessPolicyUpdateParameters.innerProperties
+                        = AccessPolicyMutableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessPolicyUpdateParameters;
+        });
     }
 }

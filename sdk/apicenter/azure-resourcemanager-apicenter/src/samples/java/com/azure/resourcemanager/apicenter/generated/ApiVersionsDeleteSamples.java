@@ -18,7 +18,8 @@ public final class ApiVersionsDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiVersionsDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiVersions().deleteWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
-            com.azure.core.util.Context.NONE);
+        manager.apiVersions()
+            .deleteWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -7,26 +7,28 @@ package com.azure.resourcemanager.subscription.models;
 import com.azure.resourcemanager.subscription.fluent.models.SubscriptionInner;
 import java.util.Map;
 
-/** An immutable client-side representation of Subscription. */
+/**
+ * An immutable client-side representation of Subscription.
+ */
 public interface Subscription {
     /**
      * Gets the id property: The fully qualified ID for the subscription. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the subscriptionId property: The subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String subscriptionId();
 
     /**
      * Gets the displayName property: The subscription display name.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
@@ -34,28 +36,28 @@ public interface Subscription {
     /**
      * Gets the state property: The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and
      * Deleted.
-     *
+     * 
      * @return the state value.
      */
     SubscriptionState state();
 
     /**
      * Gets the tenantId property: The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the tenantId value.
      */
     String tenantId();
 
     /**
      * Gets the tags property: Tags for the subscription.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the subscriptionPolicies property: The subscription policies.
-     *
+     * 
      * @return the subscriptionPolicies value.
      */
     SubscriptionPolicies subscriptionPolicies();
@@ -63,14 +65,14 @@ public interface Subscription {
     /**
      * Gets the authorizationSource property: The authorization source of the request. Valid values are one or more
      * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
-     *
+     * 
      * @return the authorizationSource value.
      */
     String authorizationSource();
 
     /**
      * Gets the inner com.azure.resourcemanager.subscription.fluent.models.SubscriptionInner object.
-     *
+     * 
      * @return the inner object.
      */
     SubscriptionInner innerModel();

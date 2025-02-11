@@ -3,10 +3,9 @@
 
 package com.azure.resourcemanager.cosmos.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
@@ -49,14 +48,15 @@ public final class ManageHACosmosDB {
             // Create a CosmosDB
 
             System.out.println("Creating a CosmosDB...");
-            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(docDBName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
-                    .withSessionConsistency()
-                    .withWriteReplication(Region.US_WEST)
-                    .withReadReplication(Region.US_WEST3)
-                    .create();
+            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts()
+                .define(docDBName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
+                .withSessionConsistency()
+                .withWriteReplication(Region.US_WEST)
+                .withReadReplication(Region.US_WEST3)
+                .create();
 
             System.out.println("Created CosmosDB");
             Utils.print(cosmosDBAccount);
@@ -66,10 +66,10 @@ public final class ManageHACosmosDB {
 
             System.out.println("Updating CosmosDB with three additional read replication regions");
             cosmosDBAccount = cosmosDBAccount.update()
-                    .withReadReplication(Region.ASIA_EAST)
-                    .withReadReplication(Region.AUSTRALIA_SOUTHEAST)
-                    .withReadReplication(Region.UK_SOUTH)
-                    .apply();
+                .withReadReplication(Region.ASIA_EAST)
+                .withReadReplication(Region.AUSTRALIA_SOUTHEAST)
+                .withReadReplication(Region.UK_SOUTH)
+                .apply();
 
             System.out.println("Updated CosmosDB");
             Utils.print(cosmosDBAccount);
@@ -114,8 +114,7 @@ public final class ManageHACosmosDB {
 
     private static void createDBAndAddCollection(String masterKey, String endPoint) {
         try {
-            CosmosClient cosmosClient = new CosmosClientBuilder()
-                .endpoint(endPoint)
+            CosmosClient cosmosClient = new CosmosClientBuilder().endpoint(endPoint)
                 .key(masterKey)
                 .directMode(DirectConnectionConfig.getDefaultConfig())
                 .consistencyLevel(ConsistencyLevel.SESSION)
@@ -145,13 +144,12 @@ public final class ManageHACosmosDB {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

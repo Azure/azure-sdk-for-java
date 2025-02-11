@@ -6,28 +6,38 @@ package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationOperationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Lists of Custom Locations operations. */
+/**
+ * Lists of Custom Locations operations.
+ */
 @Fluent
-public final class CustomLocationOperationsList {
+public final class CustomLocationOperationsList implements JsonSerializable<CustomLocationOperationsList> {
     /*
      * Next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Array of customLocationOperation
      */
-    @JsonProperty(value = "value", required = true)
     private List<CustomLocationOperationInner> value;
 
     /**
+     * Creates an instance of CustomLocationOperationsList class.
+     */
+    public CustomLocationOperationsList() {
+    }
+
+    /**
      * Get the nextLink property: Next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -36,7 +46,7 @@ public final class CustomLocationOperationsList {
 
     /**
      * Set the nextLink property: Next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CustomLocationOperationsList object itself.
      */
@@ -47,7 +57,7 @@ public final class CustomLocationOperationsList {
 
     /**
      * Get the value property: Array of customLocationOperation.
-     *
+     * 
      * @return the value value.
      */
     public List<CustomLocationOperationInner> value() {
@@ -56,7 +66,7 @@ public final class CustomLocationOperationsList {
 
     /**
      * Set the value property: Array of customLocationOperation.
-     *
+     * 
      * @param value the value value to set.
      * @return the CustomLocationOperationsList object itself.
      */
@@ -67,19 +77,60 @@ public final class CustomLocationOperationsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model CustomLocationOperationsList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model CustomLocationOperationsList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomLocationOperationsList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomLocationOperationsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomLocationOperationsList if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomLocationOperationsList.
+     */
+    public static CustomLocationOperationsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomLocationOperationsList deserializedCustomLocationOperationsList = new CustomLocationOperationsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CustomLocationOperationInner> value
+                        = reader.readArray(reader1 -> CustomLocationOperationInner.fromJson(reader1));
+                    deserializedCustomLocationOperationsList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCustomLocationOperationsList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomLocationOperationsList;
+        });
+    }
 }

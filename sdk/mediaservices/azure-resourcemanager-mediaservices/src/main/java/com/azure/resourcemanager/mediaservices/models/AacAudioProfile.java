@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The encoding profile to be used when encoding audio with AAC. */
+/**
+ * The encoding profile to be used when encoding audio with AAC.
+ */
 public final class AacAudioProfile extends ExpandableStringEnum<AacAudioProfile> {
-    /** Static value AacLc for AacAudioProfile. */
+    /**
+     * Static value AacLc for AacAudioProfile.
+     */
     public static final AacAudioProfile AAC_LC = fromString("AacLc");
 
-    /** Static value HeAacV1 for AacAudioProfile. */
+    /**
+     * Static value HeAacV1 for AacAudioProfile.
+     */
     public static final AacAudioProfile HE_AAC_V1 = fromString("HeAacV1");
 
-    /** Static value HeAacV2 for AacAudioProfile. */
+    /**
+     * Static value HeAacV2 for AacAudioProfile.
+     */
     public static final AacAudioProfile HE_AAC_V2 = fromString("HeAacV2");
 
     /**
      * Creates a new instance of AacAudioProfile value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class AacAudioProfile extends ExpandableStringEnum<AacAudioProfile>
 
     /**
      * Creates or finds a AacAudioProfile from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AacAudioProfile.
      */
-    @JsonCreator
     public static AacAudioProfile fromString(String name) {
         return fromString(name, AacAudioProfile.class);
     }
 
     /**
      * Gets known AacAudioProfile values.
-     *
+     * 
      * @return known AacAudioProfile values.
      */
     public static Collection<AacAudioProfile> values() {

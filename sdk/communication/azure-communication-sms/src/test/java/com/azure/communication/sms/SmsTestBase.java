@@ -25,19 +25,19 @@ public class SmsTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(SmsTestBase.class);
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
+            "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
-    protected static final String TO_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("AZURE_PHONE_NUMBER", "+15551234567");
+    protected static final String TO_PHONE_NUMBER
+        = Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+15551234567");
 
-    protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("AZURE_PHONE_NUMBER", "+15551234567");
+    protected static final String FROM_PHONE_NUMBER
+        = Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+15551234567");
 
-    private static final String SKIP_INT_SMS_TEST = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SKIP_INT_SMS_TEST", "False");
+    private static final String SKIP_INT_SMS_TEST
+        = Configuration.getGlobalConfiguration().get("COMMUNICATION_SKIP_INT_SMS_TEST", "False");
 
     protected static final String MESSAGE = "Hello";
-
 
     protected SmsClientBuilder getSmsClientWithToken(HttpClient httpClient, TokenCredential tokenCredential) {
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -58,8 +58,7 @@ public class SmsTestBase extends TestProxyTestBase {
 
     protected SmsClientBuilder getSmsClientUsingConnectionString(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
-        builder
-            .connectionString(CONNECTION_STRING)
+        builder.connectionString(CONNECTION_STRING)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
@@ -73,18 +72,17 @@ public class SmsTestBase extends TestProxyTestBase {
 
     private void addTestProxySanitizer() {
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("$..to", null,
-                "REDACTED",
-                TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("$..from", null,
-                "REDACTED",
-                TestProxySanitizerType.BODY_KEY)));
+            interceptorManager.addSanitizers(
+                Arrays.asList(new TestProxySanitizer("$..to", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                    new TestProxySanitizer("$..from", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
         }
     }
 
     private void addTestProxyMatcher() {
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64", "Accept"))
+                .setHeadersKeyOnlyMatch(
+                    Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64", "Accept"))
                 .setComparingBodies(false)));
         }
     }
@@ -94,16 +92,16 @@ public class SmsTestBase extends TestProxyTestBase {
     }
 
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
-        return next.process()
-            .flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
+        return next.process().flatMap(httpResponse -> {
+            final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                // Should sanitize printed reponse url
-                LOGGER.log(LogLevel.VERBOSE, () -> ("MS-CV header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV")));
-                return Mono.just(bufferedResponse);
-            });
+            // Should sanitize printed reponse url
+            LOGGER.log(LogLevel.VERBOSE, () -> ("MS-CV header for " + testName + " request "
+                + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV")));
+            return Mono.just(bufferedResponse);
+        });
     }
+
     protected boolean shouldEnableSmsTests() {
         return !Boolean.parseBoolean(SKIP_INT_SMS_TEST);
     }

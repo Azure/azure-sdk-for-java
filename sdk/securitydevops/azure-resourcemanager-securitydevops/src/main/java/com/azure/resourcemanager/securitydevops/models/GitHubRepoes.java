@@ -60,8 +60,8 @@ public interface GitHubRepoes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
-    PagedIterable<GitHubRepo> list(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, Context context);
+    PagedIterable<GitHubRepo> list(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        Context context);
 
     /**
      * Returns a monitored GitHub repository.
@@ -76,12 +76,8 @@ public interface GitHubRepoes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gitHub repo Proxy Resource along with {@link Response}.
      */
-    Response<GitHubRepo> getWithResponse(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        String gitHubRepoName,
-        Context context);
+    Response<GitHubRepo> getWithResponse(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        String gitHubRepoName, Context context);
 
     /**
      * Returns a monitored GitHub repository.

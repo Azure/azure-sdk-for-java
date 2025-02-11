@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SAP Availability Zone Pair. */
+/**
+ * The SAP Availability Zone Pair.
+ */
 @Fluent
-public final class SapAvailabilityZonePair {
+public final class SapAvailabilityZonePair implements JsonSerializable<SapAvailabilityZonePair> {
     /*
      * The zone A.
      */
-    @JsonProperty(value = "zoneA")
     private Long zoneA;
 
     /*
      * The zone B.
      */
-    @JsonProperty(value = "zoneB")
     private Long zoneB;
 
-    /** Creates an instance of SapAvailabilityZonePair class. */
+    /**
+     * Creates an instance of SapAvailabilityZonePair class.
+     */
     public SapAvailabilityZonePair() {
     }
 
     /**
      * Get the zoneA property: The zone A.
-     *
+     * 
      * @return the zoneA value.
      */
     public Long zoneA() {
@@ -37,7 +43,7 @@ public final class SapAvailabilityZonePair {
 
     /**
      * Set the zoneA property: The zone A.
-     *
+     * 
      * @param zoneA the zoneA value to set.
      * @return the SapAvailabilityZonePair object itself.
      */
@@ -48,7 +54,7 @@ public final class SapAvailabilityZonePair {
 
     /**
      * Get the zoneB property: The zone B.
-     *
+     * 
      * @return the zoneB value.
      */
     public Long zoneB() {
@@ -57,7 +63,7 @@ public final class SapAvailabilityZonePair {
 
     /**
      * Set the zoneB property: The zone B.
-     *
+     * 
      * @param zoneB the zoneB value to set.
      * @return the SapAvailabilityZonePair object itself.
      */
@@ -68,9 +74,48 @@ public final class SapAvailabilityZonePair {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("zoneA", this.zoneA);
+        jsonWriter.writeNumberField("zoneB", this.zoneB);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapAvailabilityZonePair from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapAvailabilityZonePair if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapAvailabilityZonePair.
+     */
+    public static SapAvailabilityZonePair fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapAvailabilityZonePair deserializedSapAvailabilityZonePair = new SapAvailabilityZonePair();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("zoneA".equals(fieldName)) {
+                    deserializedSapAvailabilityZonePair.zoneA = reader.getNullable(JsonReader::getLong);
+                } else if ("zoneB".equals(fieldName)) {
+                    deserializedSapAvailabilityZonePair.zoneB = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapAvailabilityZonePair;
+        });
     }
 }

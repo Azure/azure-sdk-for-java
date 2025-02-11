@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ContentTypeContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentTypeContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"cqjkedwqu\",\"name\":\"gojmrvvxwjon\",\"description\":\"se\",\"schema\":\"dataq\",\"version\":\"ilcchskxxkansbvr\"}")
-                .toObject(ContentTypeContractProperties.class);
+        ContentTypeContractProperties model = BinaryData.fromString(
+            "{\"id\":\"cqjkedwqu\",\"name\":\"gojmrvvxwjon\",\"description\":\"se\",\"schema\":\"dataq\",\"version\":\"ilcchskxxkansbvr\"}")
+            .toObject(ContentTypeContractProperties.class);
         Assertions.assertEquals("cqjkedwqu", model.id());
         Assertions.assertEquals("gojmrvvxwjon", model.name());
         Assertions.assertEquals("se", model.description());
@@ -24,13 +22,11 @@ public final class ContentTypeContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentTypeContractProperties model =
-            new ContentTypeContractProperties()
-                .withId("cqjkedwqu")
-                .withName("gojmrvvxwjon")
-                .withDescription("se")
-                .withSchema("dataq")
-                .withVersion("ilcchskxxkansbvr");
+        ContentTypeContractProperties model = new ContentTypeContractProperties().withId("cqjkedwqu")
+            .withName("gojmrvvxwjon")
+            .withDescription("se")
+            .withSchema("dataq")
+            .withVersion("ilcchskxxkansbvr");
         model = BinaryData.fromObject(model).toObject(ContentTypeContractProperties.class);
         Assertions.assertEquals("cqjkedwqu", model.id());
         Assertions.assertEquals("gojmrvvxwjon", model.name());

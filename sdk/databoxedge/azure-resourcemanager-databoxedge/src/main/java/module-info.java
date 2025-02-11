@@ -10,10 +10,6 @@ module com.azure.resourcemanager.databoxedge {
     exports com.azure.resourcemanager.databoxedge.fluent.models;
     exports com.azure.resourcemanager.databoxedge.models;
 
-    opens com.azure.resourcemanager.databoxedge.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.databoxedge.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.databoxedge.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.databoxedge.models to com.azure.core;
 }

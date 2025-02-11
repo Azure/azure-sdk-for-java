@@ -17,8 +17,7 @@ public final class PolicyFragmentCollectionImpl implements PolicyFragmentCollect
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    PolicyFragmentCollectionImpl(
-        PolicyFragmentCollectionInner innerObject,
+    PolicyFragmentCollectionImpl(PolicyFragmentCollectionInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class PolicyFragmentCollectionImpl implements PolicyFragmentCollect
     public List<PolicyFragmentContract> value() {
         List<PolicyFragmentContractInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PolicyFragmentContractImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PolicyFragmentContractImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

@@ -7,12 +7,10 @@ package com.azure.security.confidentialledger;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.models.JsonObject;
+import com.azure.json.models.JsonString;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 public final class UserTests extends ConfidentialLedgerClientTestBase {
     @Test
@@ -26,16 +24,7 @@ public final class UserTests extends ConfidentialLedgerClientTestBase {
 
         Assertions.assertEquals(200, response.getStatusCode());
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseBodyJson = null;
-
-        try {
-            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assertions.assertTrue(false);
-        }
-
-        Assertions.assertEquals(responseBodyJson.get("assignedRole").asText(), "Administrator");
+        JsonObject jsonObject = parsedResponse.toObject(JsonObject.class);
+        Assertions.assertEquals("Administrator", ((JsonString) jsonObject.getProperty("assignedRole")).getValue());
     }
 }

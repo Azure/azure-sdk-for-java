@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -72,7 +71,6 @@ public final class ResourceProvisioningState extends ExpandableStringEnum<Resour
      * @param name a name to look for.
      * @return the corresponding ResourceProvisioningState.
      */
-    @JsonCreator
     public static ResourceProvisioningState fromString(String name) {
         return fromString(name, ResourceProvisioningState.class);
     }

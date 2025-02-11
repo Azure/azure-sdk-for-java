@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Artifact manifest properties.
  */
 @Fluent
-public final class ArtifactManifestPropertiesFormat {
+public final class ArtifactManifestPropertiesFormat implements JsonSerializable<ArtifactManifestPropertiesFormat> {
     /*
      * The provisioning state of the ArtifactManifest resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The artifact manifest state.
      */
-    @JsonProperty(value = "artifactManifestState", access = JsonProperty.Access.WRITE_ONLY)
     private ArtifactManifestState artifactManifestState;
 
     /*
      * The artifacts list.
      */
-    @JsonProperty(value = "artifacts")
     private List<ManifestArtifactFormat> artifacts;
 
     /**
@@ -84,5 +85,50 @@ public final class ArtifactManifestPropertiesFormat {
         if (artifacts() != null) {
             artifacts().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("artifacts", this.artifacts, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactManifestPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactManifestPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactManifestPropertiesFormat.
+     */
+    public static ArtifactManifestPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactManifestPropertiesFormat deserializedArtifactManifestPropertiesFormat
+                = new ArtifactManifestPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedArtifactManifestPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("artifactManifestState".equals(fieldName)) {
+                    deserializedArtifactManifestPropertiesFormat.artifactManifestState
+                        = ArtifactManifestState.fromString(reader.getString());
+                } else if ("artifacts".equals(fieldName)) {
+                    List<ManifestArtifactFormat> artifacts
+                        = reader.readArray(reader1 -> ManifestArtifactFormat.fromJson(reader1));
+                    deserializedArtifactManifestPropertiesFormat.artifacts = artifacts;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactManifestPropertiesFormat;
+        });
     }
 }

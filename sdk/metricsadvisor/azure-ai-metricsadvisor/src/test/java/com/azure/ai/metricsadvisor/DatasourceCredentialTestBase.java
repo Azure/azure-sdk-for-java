@@ -56,7 +56,7 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
     }
 
     void creatDatasourceCredentialRunner(Consumer<DataSourceCredentialEntity> testRunner,
-                                         DataSourceAuthenticationType credentialType) {
+        DataSourceAuthenticationType credentialType) {
         DataSourceCredentialEntity datasourceCredential;
         if (credentialType == DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING) {
             final String name = SQL_CONNECTION_DATASOURCE_CRED_NAME_PREFIX + UUID.randomUUID();
@@ -71,8 +71,7 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
             final String mockSecr = "45389ded-5e07-4e52-b225-4ae8f905afb5";
             datasourceCredential = new DataSourceServicePrincipal(name, cId, tId, mockSecr);
         } else if (credentialType == DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV) {
-            final StringBuilder kvEndpoint = new StringBuilder()
-                .append("https://")
+            final StringBuilder kvEndpoint = new StringBuilder().append("https://")
                 .append(UUID.randomUUID())
                 .append(".vault")
                 .append(".azure.net");
@@ -81,8 +80,7 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
             final String tId = "45389ded-5e07-4e52-b225-4ae8f905afb5";
             final String mockSecr = "45389ded-5e07-4e52-b225-4ae8f905afb5";
 
-            datasourceCredential = new DataSourceServicePrincipalInKeyVault()
-                .setName(name)
+            datasourceCredential = new DataSourceServicePrincipalInKeyVault().setName(name)
                 .setKeyVaultForDataSourceSecrets(kvEndpoint.toString(), cId, mockSecr)
                 .setTenantId(tId)
                 .setSecretNameForDataSourceClientId("DSClientID_1")
@@ -94,8 +92,7 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
     }
 
     void validateCredentialResult(DataSourceCredentialEntity expectedCredential,
-                                  DataSourceCredentialEntity actualCredential,
-                                  DataSourceAuthenticationType credentialType) {
+        DataSourceCredentialEntity actualCredential, DataSourceAuthenticationType credentialType) {
         assertNotNull(actualCredential.getId());
         assertNotNull(actualCredential.getName());
 
@@ -129,11 +126,11 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
                 actualCredentialSPInKV.getKeyVaultClientId());
             assertEquals(((DataSourceServicePrincipalInKeyVault) expectedCredential).getTenantId(),
                 actualCredentialSPInKV.getTenantId());
-            assertEquals(((DataSourceServicePrincipalInKeyVault) expectedCredential)
-                    .getSecretNameForDataSourceClientId(),
+            assertEquals(
+                ((DataSourceServicePrincipalInKeyVault) expectedCredential).getSecretNameForDataSourceClientId(),
                 actualCredentialSPInKV.getSecretNameForDataSourceClientId());
-            assertEquals(((DataSourceServicePrincipalInKeyVault) expectedCredential)
-                    .getSecretNameForDataSourceClientSecret(),
+            assertEquals(
+                ((DataSourceServicePrincipalInKeyVault) expectedCredential).getSecretNameForDataSourceClientSecret(),
                 actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
         } else {
             throw new IllegalStateException("Unexpected value for DataSourceCredentialType: " + credentialType);

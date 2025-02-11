@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Deployment preflight resource. */
+/**
+ * Deployment preflight resource.
+ */
 @Fluent
-public final class DeploymentPreflightResource {
+public final class DeploymentPreflightResource implements JsonSerializable<DeploymentPreflightResource> {
     /*
      * Gets or sets the resource name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the resource type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Gets or sets the location of the resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Gets or sets the Api version.
      */
-    @JsonProperty(value = "apiVersion")
     private String apiVersion;
 
-    /** Creates an instance of DeploymentPreflightResource class. */
+    /**
+     * Creates an instance of DeploymentPreflightResource class.
+     */
     public DeploymentPreflightResource() {
     }
 
     /**
      * Get the name property: Gets or sets the resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class DeploymentPreflightResource {
 
     /**
      * Set the name property: Gets or sets the resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DeploymentPreflightResource object itself.
      */
@@ -60,7 +64,7 @@ public final class DeploymentPreflightResource {
 
     /**
      * Get the type property: Gets or sets the resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -69,7 +73,7 @@ public final class DeploymentPreflightResource {
 
     /**
      * Set the type property: Gets or sets the resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the DeploymentPreflightResource object itself.
      */
@@ -80,7 +84,7 @@ public final class DeploymentPreflightResource {
 
     /**
      * Get the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -89,7 +93,7 @@ public final class DeploymentPreflightResource {
 
     /**
      * Set the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the DeploymentPreflightResource object itself.
      */
@@ -100,7 +104,7 @@ public final class DeploymentPreflightResource {
 
     /**
      * Get the apiVersion property: Gets or sets the Api version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String apiVersion() {
@@ -109,7 +113,7 @@ public final class DeploymentPreflightResource {
 
     /**
      * Set the apiVersion property: Gets or sets the Api version.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the DeploymentPreflightResource object itself.
      */
@@ -120,9 +124,54 @@ public final class DeploymentPreflightResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentPreflightResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentPreflightResource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentPreflightResource.
+     */
+    public static DeploymentPreflightResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentPreflightResource deserializedDeploymentPreflightResource = new DeploymentPreflightResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDeploymentPreflightResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDeploymentPreflightResource.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDeploymentPreflightResource.location = reader.getString();
+                } else if ("apiVersion".equals(fieldName)) {
+                    deserializedDeploymentPreflightResource.apiVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentPreflightResource;
+        });
     }
 }

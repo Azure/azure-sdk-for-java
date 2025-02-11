@@ -25,14 +25,16 @@ public final class ReplicationMigrationItemsCreateSamples {
      */
     public static void
         enablesMigration(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationMigrationItems().define("virtualmachine1")
+        manager.replicationMigrationItems()
+            .define("virtualmachine1")
             .withExistingReplicationProtectionContainer("migrationvault", "resourcegroup1", "vmwarefabric1",
                 "vmwareContainer1")
             .withProperties(new EnableMigrationInputProperties().withPolicyId(
                 "/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationPolicies/vmwarepolicy1")
                 .withProviderSpecificDetails(new VMwareCbtEnableMigrationInput().withVmwareMachineId(
                     "/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.OffAzure/VMwareSites/vmwaresite1/machines/virtualmachine1")
-                    .withDisksToInclude(Arrays.asList(new VMwareCbtDiskInput().withDiskId("disk1").withIsOSDisk("true")
+                    .withDisksToInclude(Arrays.asList(new VMwareCbtDiskInput().withDiskId("disk1")
+                        .withIsOSDisk("true")
                         .withLogStorageAccountId(
                             "/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.Storage/storageAccounts/logStorageAccount1")
                         .withLogStorageAccountSasSecretName("fakeTokenPlaceholder")))

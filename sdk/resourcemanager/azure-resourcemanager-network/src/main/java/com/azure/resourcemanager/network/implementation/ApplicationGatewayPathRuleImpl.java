@@ -18,16 +18,12 @@ import java.util.Collections;
 import java.util.List;
 
 /** Implementation for application gateway path rule. */
-class ApplicationGatewayPathRuleImpl
-    extends ChildResourceImpl<
-        ApplicationGatewayPathRuleInner, ApplicationGatewayUrlPathMapImpl, ApplicationGatewayUrlPathMap>
+class ApplicationGatewayPathRuleImpl extends
+    ChildResourceImpl<ApplicationGatewayPathRuleInner, ApplicationGatewayUrlPathMapImpl, ApplicationGatewayUrlPathMap>
     implements ApplicationGatewayPathRule,
-        ApplicationGatewayPathRule.Definition<
-            ApplicationGatewayUrlPathMap.DefinitionStages.WithAttach<
-                ApplicationGateway.DefinitionStages.WithRequestRoutingRuleOrCreate>>,
-        ApplicationGatewayPathRule.UpdateDefinition<
-            ApplicationGatewayUrlPathMap.UpdateDefinitionStages.WithAttach<ApplicationGateway.Update>>,
-        ApplicationGatewayPathRule.Update {
+    ApplicationGatewayPathRule.Definition<ApplicationGatewayUrlPathMap.DefinitionStages.WithAttach<ApplicationGateway.DefinitionStages.WithRequestRoutingRuleOrCreate>>,
+    ApplicationGatewayPathRule.UpdateDefinition<ApplicationGatewayUrlPathMap.UpdateDefinitionStages.WithAttach<ApplicationGateway.Update>>,
+    ApplicationGatewayPathRule.Update {
 
     ApplicationGatewayPathRuleImpl(ApplicationGatewayPathRuleInner inner, ApplicationGatewayUrlPathMapImpl parent) {
         super(inner, parent);
@@ -45,9 +41,8 @@ class ApplicationGatewayPathRuleImpl
 
     @Override
     public ApplicationGatewayPathRuleImpl toBackendHttpConfiguration(String name) {
-        SubResource httpConfigRef =
-            new SubResource()
-                .withId(this.parent().parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
+        SubResource httpConfigRef = new SubResource()
+            .withId(this.parent().parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
         this.innerModel().withBackendHttpSettings(httpConfigRef);
         return this;
     }
@@ -63,8 +58,8 @@ class ApplicationGatewayPathRuleImpl
         if (name == null) {
             this.innerModel().withRedirectConfiguration(null);
         } else {
-            SubResource ref =
-                new SubResource().withId(this.parent().parent().futureResourceId() + "/redirectConfigurations/" + name);
+            SubResource ref = new SubResource()
+                .withId(this.parent().parent().futureResourceId() + "/redirectConfigurations/" + name);
             this.innerModel().withRedirectConfiguration(ref);
         }
         return this;

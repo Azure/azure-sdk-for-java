@@ -12,15 +12,15 @@ public final class OutboundEnvironmentEndpointCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundEnvironmentEndpointCollection model = BinaryData.fromString(
-            "{\"value\":[{\"category\":\"zdjtxvzflbqv\",\"endpoints\":[{\"domainName\":\"lgafcqusrdve\",\"description\":\"wsdtutnwl\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"vuzhyr\",\"description\":\"wipmvekdxuk\",\"endpointDetails\":[{}]},{\"domainName\":\"jjxundxgke\",\"description\":\"zhhzjhfjmhvvmu\",\"endpointDetails\":[{},{}]},{\"domainName\":\"uneqsxvmhf\",\"description\":\"zjyi\",\"endpointDetails\":[{}]}]},{\"category\":\"bhu\",\"endpoints\":[{\"domainName\":\"hyuemslyn\",\"description\":\"yrpfoobrlttymsj\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"dnfwqzdzg\",\"description\":\"la\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"hqlyvijo\",\"description\":\"iv\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"zunbixx\",\"description\":\"ikvcpwp\",\"endpointDetails\":[{},{},{},{}]}]},{\"category\":\"civtsoxfrkenxp\",\"endpoints\":[{\"domainName\":\"frpmpdnqqskaw\",\"description\":\"qvmmbn\",\"endpointDetails\":[{}]},{\"domainName\":\"tqlkz\",\"description\":\"gnitgvkxlzyq\",\"endpointDetails\":[{},{}]},{\"domainName\":\"gcealzxwh\",\"description\":\"nsymoyqhlwigd\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"bxgomfaj\",\"description\":\"asqvd\",\"endpointDetails\":[{}]}]}],\"nextLink\":\"guxak\"}")
+            "{\"value\":[{\"category\":\"ijf\",\"endpoints\":[{\"domainName\":\"o\",\"description\":\"rsg\",\"endpointDetails\":[{}]}]},{\"category\":\"huzqgn\",\"endpoints\":[{\"domainName\":\"ynscl\",\"description\":\"hzvhxnkomtkubo\",\"endpointDetails\":[{},{}]},{\"domainName\":\"vdxzxhihfrbbc\",\"description\":\"qagt\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"lfkqojpy\",\"description\":\"gtrd\",\"endpointDetails\":[{},{}]}]},{\"category\":\"mzzs\",\"endpoints\":[{\"domainName\":\"rnysux\",\"description\":\"rafwgckhocxvdf\",\"endpointDetails\":[{},{}]}]},{\"category\":\"fqroudas\",\"endpoints\":[{\"domainName\":\"h\",\"description\":\"vkbunzozudh\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"moy\",\"description\":\"dyuib\",\"endpointDetails\":[{}]},{\"domainName\":\"nbzydvfvfcj\",\"description\":\"eoisrvhmgor\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"is\",\"description\":\"w\",\"endpointDetails\":[{},{},{}]}]}],\"nextLink\":\"plef\"}")
             .toObject(OutboundEnvironmentEndpointCollection.class);
-        Assertions.assertEquals("guxak", model.nextLink());
+        Assertions.assertEquals("plef", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutboundEnvironmentEndpointCollection model = new OutboundEnvironmentEndpointCollection().withNextLink("guxak");
+        OutboundEnvironmentEndpointCollection model = new OutboundEnvironmentEndpointCollection().withNextLink("plef");
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointCollection.class);
-        Assertions.assertEquals("guxak", model.nextLink());
+        Assertions.assertEquals("plef", model.nextLink());
     }
 }

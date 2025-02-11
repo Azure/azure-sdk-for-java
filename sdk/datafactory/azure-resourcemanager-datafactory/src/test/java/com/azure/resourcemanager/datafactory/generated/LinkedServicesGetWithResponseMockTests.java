@@ -22,7 +22,7 @@ public final class LinkedServicesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"LinkedService\",\"version\":\"dfvd\",\"connectVia\":{\"referenceName\":\"b\",\"parameters\":{\"dad\":\"databvyuarbycuux\",\"ugmfersbktrei\":\"datalilkmptvmtn\",\"gjrkuepr\":\"datalszpusb\"}},\"description\":\"zbfoldbbli\",\"parameters\":{\"vqbnzrrkmanr\":{\"type\":\"Bool\",\"defaultValue\":\"datapvmaywpra\"},\"keseazgf\":{\"type\":\"Int\",\"defaultValue\":\"dataqojxyabvvbsilah\"}},\"annotations\":[\"datassi\",\"dataelbtgexiwcqeihuy\",\"datazidoyvquufplm\"],\"\":{\"otpvoehs\":\"datazbtrf\"}},\"name\":\"rao\",\"type\":\"r\",\"etag\":\"wdgzfqsreyui\",\"id\":\"rr\"}";
+            = "{\"properties\":{\"type\":\"LinkedService\",\"version\":\"uovkgqtzghtj\",\"connectVia\":{\"referenceName\":\"zywoqmpgvxi\",\"parameters\":{\"qzqdco\":\"datasvykthxudowjwlte\",\"nzsjoxuogyak\":\"datasqufsyih\",\"mngstvn\":\"dataxjzalhun\",\"yinxxgxncoai\":\"datashaulltvlylbo\"}},\"description\":\"l\",\"parameters\":{\"qyeiohanxliojod\":{\"type\":\"Float\",\"defaultValue\":\"datazytaocxak\"}},\"annotations\":[\"databcu\",\"datax\"],\"\":{\"ukxkvgu\":\"dataww\",\"jfrta\":\"datafr\"}},\"name\":\"rxxvzqineqm\",\"type\":\"dvknxjtttk\",\"etag\":\"hqucasfqodcxvd\",\"id\":\"kjghlcfoaabl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class LinkedServicesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         LinkedServiceResource response = manager.linkedServices()
-            .getWithResponse("frisreh", "yfi", "lpiqei", "jboghjdihtc", com.azure.core.util.Context.NONE)
+            .getWithResponse("z", "ufr", "ewqwdglmfsjpl", "dhzltmywy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rr", response.id());
-        Assertions.assertEquals("dfvd", response.properties().version());
-        Assertions.assertEquals("b", response.properties().connectVia().referenceName());
-        Assertions.assertEquals("zbfoldbbli", response.properties().description());
-        Assertions.assertEquals(ParameterType.BOOL, response.properties().parameters().get("vqbnzrrkmanr").type());
+        Assertions.assertEquals("kjghlcfoaabl", response.id());
+        Assertions.assertEquals("uovkgqtzghtj", response.properties().version());
+        Assertions.assertEquals("zywoqmpgvxi", response.properties().connectVia().referenceName());
+        Assertions.assertEquals("l", response.properties().description());
+        Assertions.assertEquals(ParameterType.FLOAT, response.properties().parameters().get("qyeiohanxliojod").type());
     }
 }

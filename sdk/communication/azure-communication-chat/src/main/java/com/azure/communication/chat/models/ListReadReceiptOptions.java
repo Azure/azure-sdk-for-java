@@ -14,6 +14,12 @@ public final class ListReadReceiptOptions {
     private Integer skip;
 
     /**
+     * Creates an instance of {@link ListReadReceiptOptions}.
+     */
+    public ListReadReceiptOptions() {
+    }
+
+    /**
      * Gets the maximum page size. It represents the number of read receipts being requested.
      *
      * @return The maximum page size.

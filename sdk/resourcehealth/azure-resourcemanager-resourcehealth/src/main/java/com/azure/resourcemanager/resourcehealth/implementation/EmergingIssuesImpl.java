@@ -22,8 +22,7 @@ public final class EmergingIssuesImpl implements EmergingIssues {
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    public EmergingIssuesImpl(
-        EmergingIssuesClient innerClient,
+    public EmergingIssuesImpl(EmergingIssuesClient innerClient,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,21 +30,18 @@ public final class EmergingIssuesImpl implements EmergingIssues {
 
     public PagedIterable<EmergingIssuesGetResult> list() {
         PagedIterable<EmergingIssuesGetResultInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new EmergingIssuesGetResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmergingIssuesGetResultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EmergingIssuesGetResult> list(Context context) {
         PagedIterable<EmergingIssuesGetResultInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new EmergingIssuesGetResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmergingIssuesGetResultImpl(inner1, this.manager()));
     }
 
     public Response<EmergingIssuesGetResult> getWithResponse(IssueNameParameter issueName, Context context) {
         Response<EmergingIssuesGetResultInner> inner = this.serviceClient().getWithResponse(issueName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EmergingIssuesGetResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

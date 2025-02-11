@@ -10,9 +10,8 @@ import com.azure.resourcemanager.databox.models.DataLocationToServiceLocationMap
 public final class DataLocationToServiceLocationMapTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataLocationToServiceLocationMap model =
-            BinaryData
-                .fromString("{\"dataLocation\":\"vplwzbhv\",\"serviceLocation\":\"u\"}")
+        DataLocationToServiceLocationMap model
+            = BinaryData.fromString("{\"dataLocation\":\"n\",\"serviceLocation\":\"nxipeil\"}")
                 .toObject(DataLocationToServiceLocationMap.class);
     }
 

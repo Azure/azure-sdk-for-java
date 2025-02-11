@@ -113,6 +113,7 @@ public final class AzureJsonUtils {
         return new GsonJsonWriter(createGsonWriter(json, options));
     }
 
+    @SuppressWarnings("deprecation")
     private static com.google.gson.stream.JsonWriter createGsonWriter(Writer writer, JsonOptions options) {
         boolean lenient = options == null || options.isNonNumericNumbersSupported();
 

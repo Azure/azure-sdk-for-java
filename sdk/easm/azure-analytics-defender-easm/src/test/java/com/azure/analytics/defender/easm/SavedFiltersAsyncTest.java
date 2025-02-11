@@ -38,39 +38,32 @@ public class SavedFiltersAsyncTest extends EasmClientTestBase {
     @Test
     public void testSavedFiltersGetAsync() {
         Mono<SavedFilter> savedFilterMono = easmAsyncClient.getSavedFilter(knownExistingFilter);
-        StepVerifier.create(savedFilterMono)
-            .assertNext(savedFilter -> {
-                assertEquals(knownExistingFilter, savedFilter.getId());
-                assertEquals(knownExistingFilter, savedFilter.getName());
-                assertNotNull(savedFilter.getDisplayName());
-                assertNotNull(savedFilter.getFilter());
-                assertNotNull(savedFilter.getDescription());
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(savedFilterMono).assertNext(savedFilter -> {
+            assertEquals(knownExistingFilter, savedFilter.getId());
+            assertEquals(knownExistingFilter, savedFilter.getName());
+            assertNotNull(savedFilter.getDisplayName());
+            assertNotNull(savedFilter.getFilter());
+            assertNotNull(savedFilter.getDescription());
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void testSavedFiltersCreateOrReplaceAsync() {
         SavedFilterData savedFilterData = new SavedFilterData(filter, "Sample description");
-        Mono<SavedFilter> savedFilterMono = easmAsyncClient.createOrReplaceSavedFilter(putSavedFilterName, savedFilterData);
-        StepVerifier.create(savedFilterMono)
-            .assertNext(savedFilter -> {
-                assertEquals(putSavedFilterName, savedFilter.getName());
-                assertEquals(putSavedFilterName, savedFilter.getId());
-                assertEquals(putSavedFilterName, savedFilter.getDisplayName());
-                assertEquals(savedFilterData.getDescription(), savedFilter.getDescription());
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        Mono<SavedFilter> savedFilterMono
+            = easmAsyncClient.createOrReplaceSavedFilter(putSavedFilterName, savedFilterData);
+        StepVerifier.create(savedFilterMono).assertNext(savedFilter -> {
+            assertEquals(putSavedFilterName, savedFilter.getName());
+            assertEquals(putSavedFilterName, savedFilter.getId());
+            assertEquals(putSavedFilterName, savedFilter.getDisplayName());
+            assertEquals(savedFilterData.getDescription(), savedFilter.getDescription());
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
 
     }
 
     @Test
     public void testSavedFiltersDeleteAsync() {
         Mono<Void> deleteMono = easmAsyncClient.deleteSavedFilter(deleteSavedFilterName);
-        StepVerifier.create(deleteMono)
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(deleteMono).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 }

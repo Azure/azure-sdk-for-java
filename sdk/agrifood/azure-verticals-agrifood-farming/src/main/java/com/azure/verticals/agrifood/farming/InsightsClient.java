@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = InsightsClientBuilder.class)
 public final class InsightsClient {
-    @Generated private final InsightsAsyncClient client;
+    @Generated
+    private final InsightsAsyncClient client;
 
     /**
      * Initializes an instance of InsightsClient class.
@@ -70,18 +71,11 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId,
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId, String modelId,
+        String resourceType, String resourceId, String insightId, RequestOptions requestOptions) {
         return this.client
-                .beginCreateCascadeDeleteJob(
-                        jobId, partyId, modelId, resourceType, resourceId, insightId, requestOptions)
-                .getSyncPoller();
+            .beginCreateCascadeDeleteJob(jobId, partyId, modelId, resourceType, resourceId, insightId, requestOptions)
+            .getSyncPoller();
     }
 
     /**
@@ -198,11 +192,10 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByPartyIdModelIdAndResource(
-            String partyId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listByPartyIdModelIdAndResource(String partyId, String modelId,
+        String resourceType, String resourceId, RequestOptions requestOptions) {
         return new PagedIterable<>(
-                this.client.listByPartyIdModelIdAndResource(
-                        partyId, modelId, resourceType, resourceId, requestOptions));
+            this.client.listByPartyIdModelIdAndResource(partyId, modelId, resourceType, resourceId, requestOptions));
     }
 
     /**
@@ -290,18 +283,12 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            BinaryData insightData,
-            RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String modelId, String resourceType,
+        String resourceId, String insightId, BinaryData insightData, RequestOptions requestOptions) {
         return this.client
-                .createOrUpdateWithResponse(
-                        partyId, modelId, resourceType, resourceId, insightId, insightData, requestOptions)
-                .block();
+            .createOrUpdateWithResponse(partyId, modelId, resourceType, resourceId, insightId, insightData,
+                requestOptions)
+            .block();
     }
 
     /**
@@ -355,16 +342,10 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
-        return this.client
-                .getWithResponse(partyId, modelId, resourceType, resourceId, insightId, requestOptions)
-                .block();
+    public Response<BinaryData> getWithResponse(String partyId, String modelId, String resourceType, String resourceId,
+        String insightId, RequestOptions requestOptions) {
+        return this.client.getWithResponse(partyId, modelId, resourceType, resourceId, insightId, requestOptions)
+            .block();
     }
 
     /**
@@ -385,15 +366,9 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
-        return this.client
-                .deleteWithResponse(partyId, modelId, resourceType, resourceId, insightId, requestOptions)
-                .block();
+    public Response<Void> deleteWithResponse(String partyId, String modelId, String resourceType, String resourceId,
+        String insightId, RequestOptions requestOptions) {
+        return this.client.deleteWithResponse(partyId, modelId, resourceType, resourceId, insightId, requestOptions)
+            .block();
     }
 }

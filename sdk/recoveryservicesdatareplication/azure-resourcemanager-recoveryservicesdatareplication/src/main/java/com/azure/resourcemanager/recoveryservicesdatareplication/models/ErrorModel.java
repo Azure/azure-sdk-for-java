@@ -5,61 +5,63 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Error model. */
+/**
+ * Error model.
+ */
 @Immutable
-public final class ErrorModel {
+public final class ErrorModel implements JsonSerializable<ErrorModel> {
     /*
      * Gets or sets the error code.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Gets or sets the error type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Gets or sets the error severity.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private String severity;
 
     /*
      * Gets or sets the creation time of error.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the error message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Gets or sets the possible causes of error.
      */
-    @JsonProperty(value = "causes", access = JsonProperty.Access.WRITE_ONLY)
     private String causes;
 
     /*
      * Gets or sets the recommended action to resolve error.
      */
-    @JsonProperty(value = "recommendation", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendation;
 
-    /** Creates an instance of ErrorModel class. */
+    /**
+     * Creates an instance of ErrorModel class.
+     */
     public ErrorModel() {
     }
 
     /**
      * Get the code property: Gets or sets the error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -68,7 +70,7 @@ public final class ErrorModel {
 
     /**
      * Get the type property: Gets or sets the error type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -77,7 +79,7 @@ public final class ErrorModel {
 
     /**
      * Get the severity property: Gets or sets the error severity.
-     *
+     * 
      * @return the severity value.
      */
     public String severity() {
@@ -86,7 +88,7 @@ public final class ErrorModel {
 
     /**
      * Get the creationTime property: Gets or sets the creation time of error.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -95,7 +97,7 @@ public final class ErrorModel {
 
     /**
      * Get the message property: Gets or sets the error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -104,7 +106,7 @@ public final class ErrorModel {
 
     /**
      * Get the causes property: Gets or sets the possible causes of error.
-     *
+     * 
      * @return the causes value.
      */
     public String causes() {
@@ -113,7 +115,7 @@ public final class ErrorModel {
 
     /**
      * Get the recommendation property: Gets or sets the recommended action to resolve error.
-     *
+     * 
      * @return the recommendation value.
      */
     public String recommendation() {
@@ -122,9 +124,57 @@ public final class ErrorModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorModel if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorModel.
+     */
+    public static ErrorModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorModel deserializedErrorModel = new ErrorModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedErrorModel.code = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedErrorModel.type = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedErrorModel.severity = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedErrorModel.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("message".equals(fieldName)) {
+                    deserializedErrorModel.message = reader.getString();
+                } else if ("causes".equals(fieldName)) {
+                    deserializedErrorModel.causes = reader.getString();
+                } else if ("recommendation".equals(fieldName)) {
+                    deserializedErrorModel.recommendation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorModel;
+        });
     }
 }

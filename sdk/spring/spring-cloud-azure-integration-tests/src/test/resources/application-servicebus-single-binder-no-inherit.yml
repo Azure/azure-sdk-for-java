@@ -1,0 +1,40 @@
+spring:
+  cloud:
+    function:
+      definition: queueConsume;queueSupply;topicConsume;topicSupply;
+    stream:
+      default-binder: servicebus
+      bindings:
+        topicConsume-in-0:
+          destination: single_binder_no_inherit_topic
+          group: topicSub
+        topicSupply-out-0:
+          destination: single_binder_no_inherit_topic
+        queueConsume-in-0:
+          destination: single_binder_no_inherit_queue
+        queueSupply-out-0:
+          destination: single_binder_no_inherit_queue
+      binders:
+        servicebus:
+          inherit-environment: false
+          environment:
+            spring:
+              cloud:
+                azure:
+                  servicebus:
+                    namespace: ${AZURE_SERVICE_BUS_NAMESPACE1}
+                stream:
+                  servicebus:
+                    bindings:
+                      queueConsume-in-0:
+                        consumer:
+                          entity-type: queue
+                      topicConsume-in-0:
+                        consumer:
+                          entity-type: topic
+                      topicSupply-out-0:
+                        producer:
+                          entity-type: topic
+                      queueSupply-out-0:
+                        producer:
+                          entity-type: queue

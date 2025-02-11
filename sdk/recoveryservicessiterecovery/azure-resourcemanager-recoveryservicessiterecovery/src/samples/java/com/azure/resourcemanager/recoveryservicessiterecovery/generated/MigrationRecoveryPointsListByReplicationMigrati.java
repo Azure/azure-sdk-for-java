@@ -20,7 +20,8 @@ public final class MigrationRecoveryPointsListByReplicationMigrati {
      */
     public static void getsTheRecoveryPointsForAMigrationItem(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.migrationRecoveryPoints().listByReplicationMigrationItems("migrationvault", "resourcegroup1",
-            "vmwarefabric1", "vmwareContainer1", "virtualmachine1", com.azure.core.util.Context.NONE);
+        manager.migrationRecoveryPoints()
+            .listByReplicationMigrationItems("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1",
+                "virtualmachine1", com.azure.core.util.Context.NONE);
     }
 }

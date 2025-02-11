@@ -7,32 +7,34 @@ package com.azure.resourcemanager.webpubsub.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WebPubSubPrivateLinkResources. */
+/**
+ * Resource collection API of WebPubSubPrivateLinkResources.
+ */
 public interface WebPubSubPrivateLinkResources {
     /**
      * Get the private link resources that need to be created for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return the private link resources that need to be created for a resource as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkResource> list(String resourceGroupName, String resourceName);
 
     /**
      * Get the private link resources that need to be created for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return the private link resources that need to be created for a resource as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkResource> list(String resourceGroupName, String resourceName, Context context);
 }

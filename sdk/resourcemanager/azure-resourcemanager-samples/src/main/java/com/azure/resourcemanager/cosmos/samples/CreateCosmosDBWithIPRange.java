@@ -5,7 +5,7 @@ package com.azure.resourcemanager.cosmos.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
@@ -38,17 +38,17 @@ public final class CreateCosmosDBWithIPRange {
             // Create a CosmosDB
 
             System.out.println("Creating a CosmosDB...");
-            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(docDBName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
-                    .withSessionConsistency()
-                    .withWriteReplication(Region.US_WEST)
-                    .withReadReplication(Region.US_WEST3)
-                    .withIpRules(Arrays.asList(
-                        new IpAddressOrRange().withIpAddressOrRange("13.91.6.132"),
-                        new IpAddressOrRange().withIpAddressOrRange("13.91.6.1/24")))
-                    .create();
+            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts()
+                .define(docDBName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
+                .withSessionConsistency()
+                .withWriteReplication(Region.US_WEST)
+                .withReadReplication(Region.US_WEST3)
+                .withIpRules(Arrays.asList(new IpAddressOrRange().withIpAddressOrRange("13.91.6.132"),
+                    new IpAddressOrRange().withIpAddressOrRange("13.91.6.1/24")))
+                .create();
 
             System.out.println("Created CosmosDB");
             Utils.print(cosmosDBAccount);
@@ -87,13 +87,12 @@ public final class CreateCosmosDBWithIPRange {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

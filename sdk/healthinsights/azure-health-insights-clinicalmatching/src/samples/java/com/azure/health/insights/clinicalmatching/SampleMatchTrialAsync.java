@@ -50,7 +50,7 @@ public class SampleMatchTrialAsync {
 
         ClinicalMatchingAsyncClient asyncClient = new ClinicalMatchingClientBuilder()
             .endpoint(endpoint)
-            .serviceVersion(ClinicalMatchingServiceVersion.getLatest())
+            .serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
             .credential(new AzureKeyCredential(apiKey))
             .buildAsyncClient();
         // END: com.azure.health.insights.clinicalmatching.buildasyncclient
@@ -104,17 +104,17 @@ public class SampleMatchTrialAsync {
         TrialMatcherData trialMatcherData = new TrialMatcherData(Arrays.asList(patient1));
         trialMatcherData.setConfiguration(configuration);
 
-        PollerFlux<TrialMatcherResult, TrialMatcherResult> asyncPoller = asyncClient.beginMatchTrials(trialMatcherData);
+        PollerFlux<TrialMatcherResult, TrialMatcherResults> asyncPoller = asyncClient.beginMatchTrials(trialMatcherData);
         // END: com.azure.health.insights.clinicalmatching.findtrials
         asyncPoller
-            .takeUntil(isComplete)
+            .takeUntil(IS_COMPLETE)
             .subscribe(completedResult -> {
                 System.out.println("Completed poll response, status: " + completedResult.getStatus());
                 printResults(completedResult.getValue());
-                latch.countDown();
+                LATCH.countDown();
             });
 
-        latch.await();
+        LATCH.await();
     }
 
     private static void printResults(TrialMatcherResult tmRespone) {
@@ -137,10 +137,9 @@ public class SampleMatchTrialAsync {
         return element;
     }
 
-    private static Predicate<AsyncPollResponse<TrialMatcherResult, TrialMatcherResult>> isComplete = response -> {
-        return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
-            && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
-    };
+    private static final Predicate<AsyncPollResponse<TrialMatcherResult, TrialMatcherResults>> IS_COMPLETE
+        = response -> response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
+        && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
 
-    private static CountDownLatch latch = new CountDownLatch(1);
+    private static final CountDownLatch LATCH = new CountDownLatch(1);
 }

@@ -13,37 +13,34 @@ import org.junit.jupiter.api.Assertions;
 public final class SwaggerXmlTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwaggerXml model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"fkmbtsuahxsgxj\",\"namespace\":\"mzrrscubiwsdrn\",\"prefix\":\"qwodiffjx\",\"attribute\":true,\"wrapped\":true,\"extensions\":{\"vjogjonmcyefo\":\"databwi\",\"fvfkak\":\"datazbamwine\",\"knyuxgvttxpn\":\"dataoldtvevboclzhz\"}}")
-                .toObject(SwaggerXml.class);
-        Assertions.assertEquals("fkmbtsuahxsgxj", model.name());
-        Assertions.assertEquals("mzrrscubiwsdrn", model.namespace());
-        Assertions.assertEquals("qwodiffjx", model.prefix());
-        Assertions.assertEquals(true, model.attribute());
-        Assertions.assertEquals(true, model.wrapped());
+        SwaggerXml model = BinaryData.fromString(
+            "{\"name\":\"nfppkyks\",\"namespace\":\"cyfubg\",\"prefix\":\"lnjdaxio\",\"attribute\":false,\"wrapped\":false,\"extensions\":{\"cokpfyo\":\"datavcutwngfdsztmqqu\",\"vmsf\":\"dataf\",\"qgmoexgnyugsasgh\":\"datasyxthdfqqz\"}}")
+            .toObject(SwaggerXml.class);
+        Assertions.assertEquals("nfppkyks", model.name());
+        Assertions.assertEquals("cyfubg", model.namespace());
+        Assertions.assertEquals("lnjdaxio", model.prefix());
+        Assertions.assertEquals(false, model.attribute());
+        Assertions.assertEquals(false, model.wrapped());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwaggerXml model =
-            new SwaggerXml()
-                .withName("fkmbtsuahxsgxj")
-                .withNamespace("mzrrscubiwsdrn")
-                .withPrefix("qwodiffjx")
-                .withAttribute(true)
-                .withWrapped(true)
-                .withExtensions(
-                    mapOf("vjogjonmcyefo", "databwi", "fvfkak", "datazbamwine", "knyuxgvttxpn", "dataoldtvevboclzhz"));
+        SwaggerXml model = new SwaggerXml().withName("nfppkyks")
+            .withNamespace("cyfubg")
+            .withPrefix("lnjdaxio")
+            .withAttribute(false)
+            .withWrapped(false)
+            .withExtensions(
+                mapOf("cokpfyo", "datavcutwngfdsztmqqu", "vmsf", "dataf", "qgmoexgnyugsasgh", "datasyxthdfqqz"));
         model = BinaryData.fromObject(model).toObject(SwaggerXml.class);
-        Assertions.assertEquals("fkmbtsuahxsgxj", model.name());
-        Assertions.assertEquals("mzrrscubiwsdrn", model.namespace());
-        Assertions.assertEquals("qwodiffjx", model.prefix());
-        Assertions.assertEquals(true, model.attribute());
-        Assertions.assertEquals(true, model.wrapped());
+        Assertions.assertEquals("nfppkyks", model.name());
+        Assertions.assertEquals("cyfubg", model.namespace());
+        Assertions.assertEquals("lnjdaxio", model.prefix());
+        Assertions.assertEquals(false, model.attribute());
+        Assertions.assertEquals(false, model.wrapped());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

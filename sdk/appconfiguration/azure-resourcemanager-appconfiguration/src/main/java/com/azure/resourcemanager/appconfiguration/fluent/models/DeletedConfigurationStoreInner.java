@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Deleted configuration store information with extended details. */
+/**
+ * Deleted configuration store information with extended details.
+ */
 @Immutable
-public final class DeletedConfigurationStoreInner {
+public final class DeletedConfigurationStoreInner implements JsonSerializable<DeletedConfigurationStoreInner> {
     /*
      * The resource ID for the deleted configuration store.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the configuration store.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The resource type of the configuration store.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Properties of the deleted configuration store
      */
-    @JsonProperty(value = "properties")
     private DeletedConfigurationStoreProperties innerProperties;
 
-    /** Creates an instance of DeletedConfigurationStoreInner class. */
+    /**
+     * Creates an instance of DeletedConfigurationStoreInner class.
+     */
     public DeletedConfigurationStoreInner() {
     }
 
     /**
      * Get the id property: The resource ID for the deleted configuration store.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -51,7 +55,7 @@ public final class DeletedConfigurationStoreInner {
 
     /**
      * Get the name property: The name of the configuration store.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +64,7 @@ public final class DeletedConfigurationStoreInner {
 
     /**
      * Get the type property: The resource type of the configuration store.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -69,7 +73,7 @@ public final class DeletedConfigurationStoreInner {
 
     /**
      * Get the innerProperties property: Properties of the deleted configuration store.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeletedConfigurationStoreProperties innerProperties() {
@@ -78,7 +82,7 @@ public final class DeletedConfigurationStoreInner {
 
     /**
      * Get the configurationStoreId property: The resource id of the original configuration store.
-     *
+     * 
      * @return the configurationStoreId value.
      */
     public String configurationStoreId() {
@@ -87,7 +91,7 @@ public final class DeletedConfigurationStoreInner {
 
     /**
      * Get the location property: The location of the original configuration store.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -96,7 +100,7 @@ public final class DeletedConfigurationStoreInner {
 
     /**
      * Get the deletionDate property: The deleted date.
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -105,7 +109,7 @@ public final class DeletedConfigurationStoreInner {
 
     /**
      * Get the scheduledPurgeDate property: The scheduled purged date.
-     *
+     * 
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime scheduledPurgeDate() {
@@ -114,7 +118,7 @@ public final class DeletedConfigurationStoreInner {
 
     /**
      * Get the tags property: Tags of the original configuration store.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -123,7 +127,7 @@ public final class DeletedConfigurationStoreInner {
 
     /**
      * Get the purgeProtectionEnabled property: Purge protection status of the original configuration store.
-     *
+     * 
      * @return the purgeProtectionEnabled value.
      */
     public Boolean purgeProtectionEnabled() {
@@ -132,12 +136,56 @@ public final class DeletedConfigurationStoreInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedConfigurationStoreInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedConfigurationStoreInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedConfigurationStoreInner.
+     */
+    public static DeletedConfigurationStoreInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedConfigurationStoreInner deserializedDeletedConfigurationStoreInner
+                = new DeletedConfigurationStoreInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDeletedConfigurationStoreInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeletedConfigurationStoreInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDeletedConfigurationStoreInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDeletedConfigurationStoreInner.innerProperties
+                        = DeletedConfigurationStoreProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedConfigurationStoreInner;
+        });
     }
 }

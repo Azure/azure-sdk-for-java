@@ -6,114 +6,83 @@ package com.azure.resourcemanager.costmanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.fluent.models.ScheduledActionInner;
+import com.azure.resourcemanager.costmanagement.models.DaysOfWeek;
 import com.azure.resourcemanager.costmanagement.models.FileDestination;
+import com.azure.resourcemanager.costmanagement.models.FileFormat;
 import com.azure.resourcemanager.costmanagement.models.NotificationProperties;
 import com.azure.resourcemanager.costmanagement.models.ScheduleFrequency;
 import com.azure.resourcemanager.costmanagement.models.ScheduleProperties;
 import com.azure.resourcemanager.costmanagement.models.ScheduledAction;
 import com.azure.resourcemanager.costmanagement.models.ScheduledActionKind;
 import com.azure.resourcemanager.costmanagement.models.ScheduledActionStatus;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.costmanagement.models.WeeksOfMonth;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ScheduledActionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"its\",\"fileDestination\":{\"fileFormats\":[\"Csv\",\"Csv\"]},\"notification\":{\"to\":[\"m\",\"k\",\"cauwazcgwdfriwg\"],\"language\":\"jpozoksc\",\"message\":\"llixdgbyfgw\",\"regionalFormat\":\"qkjvxprwpxsoohu\",\"subject\":\"xlcskltez\"},\"notificationEmail\":\"ggg\",\"schedule\":{\"frequency\":\"Daily\",\"hourOfDay\":1713794043,\"daysOfWeek\":[\"Sunday\",\"Tuesday\"],\"weeksOfMonth\":[\"First\",\"First\",\"First\",\"Second\"],\"dayOfMonth\":1703241541,\"startDate\":\"2020-12-23T22:36:03Z\",\"endDate\":\"2021-08-21T23:31:32Z\"},\"scope\":\"erpi\",\"status\":\"Expired\",\"viewId\":\"tjzgczfcm\"},\"eTag\":\"fbodetresrgvts\",\"kind\":\"Email\",\"id\":\"t\",\"name\":\"ai\",\"type\":\"muqkevzgjypanhx\"}";
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"d\",\"fileDestination\":{\"fileFormats\":[]},\"notification\":{\"to\":[],\"language\":\"q\",\"message\":\"odawopqhewjptmcg\",\"regionalFormat\":\"ostzelndlatu\",\"subject\":\"mzlbiojlvfhrb\"},\"notificationEmail\":\"neqvcwwyyurmo\",\"schedule\":{\"frequency\":\"Monthly\",\"hourOfDay\":749241434,\"daysOfWeek\":[],\"weeksOfMonth\":[],\"dayOfMonth\":474630322,\"startDate\":\"2021-02-03T01:21:36Z\",\"endDate\":\"2021-04-15T20:59:55Z\"},\"scope\":\"k\",\"status\":\"Disabled\",\"viewId\":\"zejnhl\"},\"eTag\":\"pbzpcpiljhahz\",\"kind\":\"InsightAlert\",\"id\":\"ndbnwieh\",\"name\":\"lewjwiuubwef\",\"type\":\"sfapaqtferrq\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ScheduledAction response =
-            manager
-                .scheduledActions()
-                .createOrUpdateWithResponse(
-                    "vopvp",
-                    new ScheduledActionInner()
-                        .withKind(ScheduledActionKind.INSIGHT_ALERT)
-                        .withDisplayName("bzqgqqi")
-                        .withFileDestination(new FileDestination().withFileFormats(Arrays.asList()))
-                        .withNotification(
-                            new NotificationProperties()
-                                .withTo(Arrays.asList())
-                                .withLanguage("vqwt")
-                                .withMessage("ky")
-                                .withRegionalFormat("cysihs")
-                                .withSubject("qcwdhoh"))
-                        .withNotificationEmail("tmcdzsufcohd")
-                        .withSchedule(
-                            new ScheduleProperties()
-                                .withFrequency(ScheduleFrequency.WEEKLY)
-                                .withHourOfDay(406689763)
-                                .withDaysOfWeek(Arrays.asList())
-                                .withWeeksOfMonth(Arrays.asList())
-                                .withDayOfMonth(1679543424)
-                                .withStartDate(OffsetDateTime.parse("2021-08-22T15:12:20Z"))
-                                .withEndDate(OffsetDateTime.parse("2021-09-10T02:23:12Z")))
-                        .withScope("vhdbevwqqxey")
-                        .withStatus(ScheduledActionStatus.ENABLED)
-                        .withViewId("onqzinkfkbgbzbow"),
-                    "pqxbkwvzgnzvdf",
-                    com.azure.core.util.Context.NONE)
+        ScheduledAction response
+            = manager.scheduledActions()
+                .createOrUpdateWithResponse("mesrfsvpi", new ScheduledActionInner().withKind(ScheduledActionKind.EMAIL)
+                    .withDisplayName("zpatqtd")
+                    .withFileDestination(new FileDestination()
+                        .withFileFormats(Arrays.asList(FileFormat.CSV, FileFormat.CSV, FileFormat.CSV)))
+                    .withNotification(new NotificationProperties().withTo(Arrays.asList("koj"))
+                        .withLanguage("bbg")
+                        .withMessage("ft")
+                        .withRegionalFormat("ubz")
+                        .withSubject("vpvdylytcovqse"))
+                    .withNotificationEmail("rf")
+                    .withSchedule(new ScheduleProperties().withFrequency(ScheduleFrequency.WEEKLY)
+                        .withHourOfDay(1139866422)
+                        .withDaysOfWeek(Arrays.asList(DaysOfWeek.SUNDAY, DaysOfWeek.MONDAY))
+                        .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.SECOND, WeeksOfMonth.SECOND, WeeksOfMonth.THIRD))
+                        .withDayOfMonth(2144106709)
+                        .withStartDate(OffsetDateTime.parse("2021-03-13T07:11:16Z"))
+                        .withEndDate(OffsetDateTime.parse("2021-04-23T22:54:28Z")))
+                    .withScope("jmdihdcyyyzlw")
+                    .withStatus(ScheduledActionStatus.EXPIRED)
+                    .withViewId("wzjnufz"), "tdp", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(ScheduledActionKind.INSIGHT_ALERT, response.kind());
-        Assertions.assertEquals("d", response.displayName());
-        Assertions.assertEquals("q", response.notification().language());
-        Assertions.assertEquals("odawopqhewjptmcg", response.notification().message());
-        Assertions.assertEquals("ostzelndlatu", response.notification().regionalFormat());
-        Assertions.assertEquals("mzlbiojlvfhrb", response.notification().subject());
-        Assertions.assertEquals("neqvcwwyyurmo", response.notificationEmail());
-        Assertions.assertEquals(ScheduleFrequency.MONTHLY, response.schedule().frequency());
-        Assertions.assertEquals(749241434, response.schedule().hourOfDay());
-        Assertions.assertEquals(474630322, response.schedule().dayOfMonth());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T01:21:36Z"), response.schedule().startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-15T20:59:55Z"), response.schedule().endDate());
-        Assertions.assertEquals("k", response.scope());
-        Assertions.assertEquals(ScheduledActionStatus.DISABLED, response.status());
-        Assertions.assertEquals("zejnhl", response.viewId());
+        Assertions.assertEquals(ScheduledActionKind.EMAIL, response.kind());
+        Assertions.assertEquals("its", response.displayName());
+        Assertions.assertEquals(FileFormat.CSV, response.fileDestination().fileFormats().get(0));
+        Assertions.assertEquals("m", response.notification().to().get(0));
+        Assertions.assertEquals("jpozoksc", response.notification().language());
+        Assertions.assertEquals("llixdgbyfgw", response.notification().message());
+        Assertions.assertEquals("qkjvxprwpxsoohu", response.notification().regionalFormat());
+        Assertions.assertEquals("xlcskltez", response.notification().subject());
+        Assertions.assertEquals("ggg", response.notificationEmail());
+        Assertions.assertEquals(ScheduleFrequency.DAILY, response.schedule().frequency());
+        Assertions.assertEquals(1713794043, response.schedule().hourOfDay());
+        Assertions.assertEquals(DaysOfWeek.SUNDAY, response.schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(WeeksOfMonth.FIRST, response.schedule().weeksOfMonth().get(0));
+        Assertions.assertEquals(1703241541, response.schedule().dayOfMonth());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T22:36:03Z"), response.schedule().startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T23:31:32Z"), response.schedule().endDate());
+        Assertions.assertEquals("erpi", response.scope());
+        Assertions.assertEquals(ScheduledActionStatus.EXPIRED, response.status());
+        Assertions.assertEquals("tjzgczfcm", response.viewId());
     }
 }

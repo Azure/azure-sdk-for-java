@@ -17,8 +17,8 @@ public final class GitHubOAuthListResponseImpl implements GitHubOAuthListRespons
 
     private final com.azure.resourcemanager.devhub.DevHubManager serviceManager;
 
-    GitHubOAuthListResponseImpl(
-        GitHubOAuthListResponseInner innerObject, com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
+    GitHubOAuthListResponseImpl(GitHubOAuthListResponseInner innerObject,
+        com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -26,12 +26,9 @@ public final class GitHubOAuthListResponseImpl implements GitHubOAuthListRespons
     public List<GitHubOAuthResponse> value() {
         List<GitHubOAuthResponseInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new GitHubOAuthResponseImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new GitHubOAuthResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

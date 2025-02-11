@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DescriptionType. */
+/**
+ * Type of description.
+ */
 public final class DescriptionType extends ExpandableStringEnum<DescriptionType> {
-    /** Static value Base for DescriptionType. */
+    /**
+     * Static value Base for DescriptionType.
+     */
     public static final DescriptionType BASE = fromString("Base");
 
     /**
+     * Creates a new instance of DescriptionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DescriptionType() {
+    }
+
+    /**
      * Creates or finds a DescriptionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DescriptionType.
      */
-    @JsonCreator
     public static DescriptionType fromString(String name) {
         return fromString(name, DescriptionType.class);
     }
 
-    /** @return known DescriptionType values. */
+    /**
+     * Gets known DescriptionType values.
+     * 
+     * @return known DescriptionType values.
+     */
     public static Collection<DescriptionType> values() {
         return values(DescriptionType.class);
     }

@@ -6,26 +6,47 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.Language;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Class representing a Kusto sandbox custom image. */
+/**
+ * Class representing a Kusto sandbox custom image.
+ */
 @Fluent
 public final class SandboxCustomImageInner extends ProxyResource {
     /*
      * A sandbox custom image.
      */
-    @JsonProperty(value = "properties")
     private SandboxCustomImageProperties innerProperties;
 
-    /** Creates an instance of SandboxCustomImageInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SandboxCustomImageInner class.
+     */
     public SandboxCustomImageInner() {
     }
 
     /**
      * Get the innerProperties property: A sandbox custom image.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SandboxCustomImageProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class SandboxCustomImageInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the language property: The language name, for example Python.
-     *
+     * 
      * @return the language value.
      */
     public Language language() {
@@ -43,7 +94,7 @@ public final class SandboxCustomImageInner extends ProxyResource {
 
     /**
      * Set the language property: The language name, for example Python.
-     *
+     * 
      * @param language the language value to set.
      * @return the SandboxCustomImageInner object itself.
      */
@@ -56,8 +107,9 @@ public final class SandboxCustomImageInner extends ProxyResource {
     }
 
     /**
-     * Get the languageVersion property: The version of the language.
-     *
+     * Get the languageVersion property: The version of the language. Either this property or baseImageName should be
+     * specified.
+     * 
      * @return the languageVersion value.
      */
     public String languageVersion() {
@@ -65,8 +117,9 @@ public final class SandboxCustomImageInner extends ProxyResource {
     }
 
     /**
-     * Set the languageVersion property: The version of the language.
-     *
+     * Set the languageVersion property: The version of the language. Either this property or baseImageName should be
+     * specified.
+     * 
      * @param languageVersion the languageVersion value to set.
      * @return the SandboxCustomImageInner object itself.
      */
@@ -79,8 +132,35 @@ public final class SandboxCustomImageInner extends ProxyResource {
     }
 
     /**
+     * Get the baseImageName property: The base image name on which the custom image is built on top of. It can be one
+     * of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom
+     * image. Either this property or languageVersion should be specified.
+     * 
+     * @return the baseImageName value.
+     */
+    public String baseImageName() {
+        return this.innerProperties() == null ? null : this.innerProperties().baseImageName();
+    }
+
+    /**
+     * Set the baseImageName property: The base image name on which the custom image is built on top of. It can be one
+     * of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom
+     * image. Either this property or languageVersion should be specified.
+     * 
+     * @param baseImageName the baseImageName value to set.
+     * @return the SandboxCustomImageInner object itself.
+     */
+    public SandboxCustomImageInner withBaseImageName(String baseImageName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SandboxCustomImageProperties();
+        }
+        this.innerProperties().withBaseImageName(baseImageName);
+        return this;
+    }
+
+    /**
      * Get the requirementsFileContent property: The requirements file content.
-     *
+     * 
      * @return the requirementsFileContent value.
      */
     public String requirementsFileContent() {
@@ -89,7 +169,7 @@ public final class SandboxCustomImageInner extends ProxyResource {
 
     /**
      * Set the requirementsFileContent property: The requirements file content.
-     *
+     * 
      * @param requirementsFileContent the requirementsFileContent value to set.
      * @return the SandboxCustomImageInner object itself.
      */
@@ -103,7 +183,7 @@ public final class SandboxCustomImageInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -112,12 +192,55 @@ public final class SandboxCustomImageInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SandboxCustomImageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SandboxCustomImageInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SandboxCustomImageInner.
+     */
+    public static SandboxCustomImageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SandboxCustomImageInner deserializedSandboxCustomImageInner = new SandboxCustomImageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSandboxCustomImageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSandboxCustomImageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSandboxCustomImageInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSandboxCustomImageInner.innerProperties = SandboxCustomImageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSandboxCustomImageInner;
+        });
     }
 }

@@ -57,20 +57,15 @@ import java.util.Map;
 /**
  * The implementation of {@link Deployment} and its nested interfaces.
  */
-public final class DeploymentImpl extends
-        CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>
-        implements
-        Deployment,
-        Deployment.Definition,
-        Deployment.Update,
-        Deployment.Execution {
+public final class DeploymentImpl extends CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>
+    implements Deployment, Deployment.Definition, Deployment.Update, Deployment.Execution {
 
     private final ClientLogger logger = new ClientLogger(DeploymentImpl.class);
 
-    private static final SerializerAdapter SERIALIZER_ADAPTER =
-        SerializerFactory.createDefaultManagementSerializerAdapter();
-    private static final TypeReference<Map<String, DeploymentParameter>> TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER =
-        new TypeReference<Map<String, DeploymentParameter>>() {
+    private static final SerializerAdapter SERIALIZER_ADAPTER
+        = SerializerFactory.createDefaultManagementSerializerAdapter();
+    private static final TypeReference<Map<String, DeploymentParameter>> TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER
+        = new TypeReference<Map<String, DeploymentParameter>>() {
         };
 
     private final ResourceManager resourceManager;
@@ -215,7 +210,6 @@ public final class DeploymentImpl extends
         return this.manager().serviceClient().getDeployments().cancelAsync(resourceGroupName, name());
     }
 
-
     @Override
     public DeploymentExportResult exportTemplate() {
         return this.exportTemplateAsync().block();
@@ -223,7 +217,10 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<DeploymentExportResult> exportTemplateAsync() {
-        return this.manager().serviceClient().getDeployments().exportTemplateAsync(resourceGroupName(), name())
+        return this.manager()
+            .serviceClient()
+            .getDeployments()
+            .exportTemplateAsync(resourceGroupName(), name())
             .map(DeploymentExportResultImpl::new);
     }
 
@@ -236,9 +233,8 @@ public final class DeploymentImpl extends
 
     @Override
     public DeploymentImpl withNewResourceGroup(String resourceGroupName, Region region) {
-        this.creatableResourceGroup = this.resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(region);
+        this.creatableResourceGroup
+            = this.resourceManager.resourceGroups().define(resourceGroupName).withRegion(region);
         this.addDependency(this.creatableResourceGroup);
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -286,8 +282,8 @@ public final class DeploymentImpl extends
         if (this.deploymentCreateUpdateParameters.properties() == null) {
             this.deploymentCreateUpdateParameters.withProperties(new DeploymentProperties());
         }
-        this.deploymentCreateUpdateParameters.properties().withTemplateLink(
-            new TemplateLink().withUri(uri).withContentVersion(contentVersion));
+        this.deploymentCreateUpdateParameters.properties()
+            .withTemplateLink(new TemplateLink().withUri(uri).withContentVersion(contentVersion));
         this.deploymentCreateUpdateParameters.properties().withTemplate(null);
         return this;
     }
@@ -328,8 +324,8 @@ public final class DeploymentImpl extends
         if (this.deploymentCreateUpdateParameters.properties() == null) {
             this.deploymentCreateUpdateParameters.withProperties(new DeploymentProperties());
         }
-        this.deploymentCreateUpdateParameters.properties().withParametersLink(
-            new ParametersLink().withUri(uri).withContentVersion(contentVersion));
+        this.deploymentCreateUpdateParameters.properties()
+            .withParametersLink(new ParametersLink().withUri(uri).withContentVersion(contentVersion));
         this.deploymentCreateUpdateParameters.properties().withParameters(null);
         return this;
     }
@@ -341,25 +337,22 @@ public final class DeploymentImpl extends
 
     @Override
     public Accepted<Deployment> beginCreate(Context context) {
-        return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient().getHttpPipeline(),
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
-            () -> this.manager().serviceClient().getDeployments()
+            () -> this.manager()
+                .serviceClient()
+                .getDeployments()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters)
                 .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
                 .block(),
-            inner -> new DeploymentImpl(inner, inner.name(), resourceManager),
-            DeploymentExtendedInner.class,
-            () -> {
+            inner -> new DeploymentImpl(inner, inner.name(), resourceManager), DeploymentExtendedInner.class, () -> {
                 if (this.creatableResourceGroup != null) {
                     this.creatableResourceGroup.create(context);
                 }
-            },
-            inner -> {
+            }, inner -> {
                 setInner(inner);
                 prepareForUpdate(inner);
-            },
-            context);
+            }, context);
     }
 
     @Override
@@ -371,29 +364,32 @@ public final class DeploymentImpl extends
                 return Mono.just((Indexable) DeploymentImpl.this);
             }
         })
-        .flatMap(indexable -> manager().serviceClient().getDeployments()
-            .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters))
-        .flatMap(activationResponse -> FluxUtil.collectBytesInByteBufferStream(activationResponse.getValue()))
-        .map(response -> {
-            try {
-                return (DeploymentExtendedInner) SerializerFactory.createDefaultManagementSerializerAdapter()
-                    .deserialize(new String(response, StandardCharsets.UTF_8),
-                        DeploymentExtendedInner.class, SerializerEncoding.JSON);
-            } catch (IOException ioe) {
-                throw logger.logExceptionAsError(
-                    new IllegalStateException("Failed to deserialize activation response body", ioe));
-            }
-        })
-        .map(deploymentExtendedInner -> {
-            prepareForUpdate(deploymentExtendedInner);
-            return deploymentExtendedInner;
-        })
-        .map(innerToFluentMap(this));
+            .flatMap(indexable -> manager().serviceClient()
+                .getDeployments()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters))
+            .flatMap(activationResponse -> FluxUtil.collectBytesInByteBufferStream(activationResponse.getValue()))
+            .map(response -> {
+                try {
+                    return (DeploymentExtendedInner) SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize(new String(response, StandardCharsets.UTF_8), DeploymentExtendedInner.class,
+                            SerializerEncoding.JSON);
+                } catch (IOException ioe) {
+                    throw logger.logExceptionAsError(
+                        new IllegalStateException("Failed to deserialize activation response body", ioe));
+                }
+            })
+            .map(deploymentExtendedInner -> {
+                prepareForUpdate(deploymentExtendedInner);
+                return deploymentExtendedInner;
+            })
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<Deployment> createResourceAsync() {
-        return this.manager().serviceClient().getDeployments()
+        return this.manager()
+            .serviceClient()
+            .getDeployments()
             .createOrUpdateAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters)
             .map(deploymentExtendedInner -> {
                 prepareForUpdate(deploymentExtendedInner);
@@ -416,10 +412,12 @@ public final class DeploymentImpl extends
             deploymentCreateUpdateParameters.properties().withTemplateLink(inner.properties().templateLink());
             if (inner.properties().onErrorDeployment() != null) {
                 deploymentCreateUpdateParameters.properties().withOnErrorDeployment(new OnErrorDeployment());
-                deploymentCreateUpdateParameters.properties().onErrorDeployment().withDeploymentName(
-                    inner.properties().onErrorDeployment().deploymentName());
-                deploymentCreateUpdateParameters.properties().onErrorDeployment().withType(
-                    inner.properties().onErrorDeployment().type());
+                deploymentCreateUpdateParameters.properties()
+                    .onErrorDeployment()
+                    .withDeploymentName(inner.properties().onErrorDeployment().deploymentName());
+                deploymentCreateUpdateParameters.properties()
+                    .onErrorDeployment()
+                    .withType(inner.properties().onErrorDeployment().type());
             }
         }
     }
@@ -431,7 +429,9 @@ public final class DeploymentImpl extends
 
     @Override
     protected Mono<DeploymentExtendedInner> getInnerAsync() {
-        return this.manager().serviceClient().getDeployments()
+        return this.manager()
+            .serviceClient()
+            .getDeployments()
             .getAtManagementGroupScopeAsync(resourceGroupName(), name());
     }
 
@@ -557,8 +557,8 @@ public final class DeploymentImpl extends
         if (deploymentWhatIf.properties() == null) {
             deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.properties().withTemplateLink(
-            new TemplateLink().withUri(uri).withContentVersion(contentVersion));
+        deploymentWhatIf.properties()
+            .withTemplateLink(new TemplateLink().withUri(uri).withContentVersion(contentVersion));
         return this;
     }
 
@@ -576,8 +576,8 @@ public final class DeploymentImpl extends
         if (deploymentWhatIf.properties() == null) {
             deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.properties().withParametersLink(
-            new ParametersLink().withUri(uri).withContentVersion(contentVersion));
+        deploymentWhatIf.properties()
+            .withParametersLink(new ParametersLink().withUri(uri).withContentVersion(contentVersion));
         return this;
     }
 
@@ -588,11 +588,12 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<WhatIfOperationResult> whatIfAsync() {
-        return this.manager().serviceClient().getDeployments()
+        return this.manager()
+            .serviceClient()
+            .getDeployments()
             .whatIfAsync(resourceGroupName(), name(), deploymentWhatIf)
             .map(WhatIfOperationResultImpl::new);
     }
-
 
     @Override
     public WhatIfOperationResult whatIfAtSubscriptionScope() {
@@ -601,15 +602,16 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<WhatIfOperationResult> whatIfAtSubscriptionScopeAsync() {
-        return this.manager().serviceClient().getDeployments().whatIfAtSubscriptionScopeAsync(name(), deploymentWhatIf)
+        return this.manager()
+            .serviceClient()
+            .getDeployments()
+            .whatIfAtSubscriptionScopeAsync(name(), deploymentWhatIf)
             .map(WhatIfOperationResultImpl::new);
     }
 
     private Map<String, DeploymentParameter> getParametersFromObject(Object parameters) {
         try {
-            String parametersJson = SERIALIZER_ADAPTER.serialize(
-                parameters,
-                SerializerEncoding.JSON);
+            String parametersJson = SERIALIZER_ADAPTER.serialize(parameters, SerializerEncoding.JSON);
             return getParametersFromJsonString(parametersJson);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
@@ -617,9 +619,7 @@ public final class DeploymentImpl extends
     }
 
     private Map<String, DeploymentParameter> getParametersFromJsonString(String parametersJson) throws IOException {
-        return SERIALIZER_ADAPTER.deserialize(
-            parametersJson,
-            TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER.getJavaType(),
+        return SERIALIZER_ADAPTER.deserialize(parametersJson, TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER.getJavaType(),
             SerializerEncoding.JSON);
     }
 }

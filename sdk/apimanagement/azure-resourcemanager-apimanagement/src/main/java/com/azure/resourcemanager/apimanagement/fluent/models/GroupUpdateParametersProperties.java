@@ -5,28 +5,31 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.GroupType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters supplied to the Update Group operation. */
+/**
+ * Parameters supplied to the Update Group operation.
+ */
 @Fluent
-public final class GroupUpdateParametersProperties {
+public final class GroupUpdateParametersProperties implements JsonSerializable<GroupUpdateParametersProperties> {
     /*
      * Group name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Group description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Group type.
      */
-    @JsonProperty(value = "type")
     private GroupType type;
 
     /*
@@ -34,16 +37,17 @@ public final class GroupUpdateParametersProperties {
      * provider, e.g. for Azure Active Directory `aad://<tenant>.onmicrosoft.com/groups/<group object id>`; otherwise
      * the value is null.
      */
-    @JsonProperty(value = "externalId")
     private String externalId;
 
-    /** Creates an instance of GroupUpdateParametersProperties class. */
+    /**
+     * Creates an instance of GroupUpdateParametersProperties class.
+     */
     public GroupUpdateParametersProperties() {
     }
 
     /**
      * Get the displayName property: Group name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -52,7 +56,7 @@ public final class GroupUpdateParametersProperties {
 
     /**
      * Set the displayName property: Group name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the GroupUpdateParametersProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class GroupUpdateParametersProperties {
 
     /**
      * Get the description property: Group description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -72,7 +76,7 @@ public final class GroupUpdateParametersProperties {
 
     /**
      * Set the description property: Group description.
-     *
+     * 
      * @param description the description value to set.
      * @return the GroupUpdateParametersProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class GroupUpdateParametersProperties {
 
     /**
      * Get the type property: Group type.
-     *
+     * 
      * @return the type value.
      */
     public GroupType type() {
@@ -92,7 +96,7 @@ public final class GroupUpdateParametersProperties {
 
     /**
      * Set the type property: Group type.
-     *
+     * 
      * @param type the type value to set.
      * @return the GroupUpdateParametersProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class GroupUpdateParametersProperties {
      * Get the externalId property: Identifier of the external groups, this property contains the id of the group from
      * the external identity provider, e.g. for Azure Active Directory
      * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
-     *
+     * 
      * @return the externalId value.
      */
     public String externalId() {
@@ -116,7 +120,7 @@ public final class GroupUpdateParametersProperties {
      * Set the externalId property: Identifier of the external groups, this property contains the id of the group from
      * the external identity provider, e.g. for Azure Active Directory
      * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
-     *
+     * 
      * @param externalId the externalId value to set.
      * @return the GroupUpdateParametersProperties object itself.
      */
@@ -127,9 +131,55 @@ public final class GroupUpdateParametersProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("externalId", this.externalId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupUpdateParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupUpdateParametersProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupUpdateParametersProperties.
+     */
+    public static GroupUpdateParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupUpdateParametersProperties deserializedGroupUpdateParametersProperties
+                = new GroupUpdateParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedGroupUpdateParametersProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedGroupUpdateParametersProperties.description = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGroupUpdateParametersProperties.type = GroupType.fromString(reader.getString());
+                } else if ("externalId".equals(fieldName)) {
+                    deserializedGroupUpdateParametersProperties.externalId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupUpdateParametersProperties;
+        });
     }
 }

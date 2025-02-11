@@ -5,46 +5,54 @@
 package com.azure.resourcemanager.fluidrelay.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.fluidrelay.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The properties of a Fluid Relay Container resource. */
+/**
+ * The properties of a Fluid Relay Container resource.
+ */
 @Immutable
-public final class FluidRelayContainerProperties {
+public final class FluidRelayContainerProperties implements JsonSerializable<FluidRelayContainerProperties> {
     /*
      * The Fluid tenantId for this container
      */
-    @JsonProperty(value = "frsTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String frsTenantId;
 
     /*
      * The frsContainerId for this container
      */
-    @JsonProperty(value = "frsContainerId", access = JsonProperty.Access.WRITE_ONLY)
     private String frsContainerId;
 
     /*
      * Provision states for FluidRelay RP
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The creation time of this resource
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Last time when user access this resource
      */
-    @JsonProperty(value = "lastAccessTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastAccessTime;
 
     /**
+     * Creates an instance of FluidRelayContainerProperties class.
+     */
+    public FluidRelayContainerProperties() {
+    }
+
+    /**
      * Get the frsTenantId property: The Fluid tenantId for this container.
-     *
+     * 
      * @return the frsTenantId value.
      */
     public String frsTenantId() {
@@ -53,7 +61,7 @@ public final class FluidRelayContainerProperties {
 
     /**
      * Get the frsContainerId property: The frsContainerId for this container.
-     *
+     * 
      * @return the frsContainerId value.
      */
     public String frsContainerId() {
@@ -62,7 +70,7 @@ public final class FluidRelayContainerProperties {
 
     /**
      * Get the provisioningState property: Provision states for FluidRelay RP.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -71,7 +79,7 @@ public final class FluidRelayContainerProperties {
 
     /**
      * Get the creationTime property: The creation time of this resource.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -80,7 +88,7 @@ public final class FluidRelayContainerProperties {
 
     /**
      * Get the lastAccessTime property: Last time when user access this resource.
-     *
+     * 
      * @return the lastAccessTime value.
      */
     public OffsetDateTime lastAccessTime() {
@@ -89,9 +97,56 @@ public final class FluidRelayContainerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluidRelayContainerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluidRelayContainerProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FluidRelayContainerProperties.
+     */
+    public static FluidRelayContainerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluidRelayContainerProperties deserializedFluidRelayContainerProperties
+                = new FluidRelayContainerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frsTenantId".equals(fieldName)) {
+                    deserializedFluidRelayContainerProperties.frsTenantId = reader.getString();
+                } else if ("frsContainerId".equals(fieldName)) {
+                    deserializedFluidRelayContainerProperties.frsContainerId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFluidRelayContainerProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedFluidRelayContainerProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastAccessTime".equals(fieldName)) {
+                    deserializedFluidRelayContainerProperties.lastAccessTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluidRelayContainerProperties;
+        });
     }
 }

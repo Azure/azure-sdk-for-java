@@ -43,11 +43,8 @@ public final class BlobItem {
     }
 
     private String convertedName;
-
     private BlobItemProperties convertedProperties;
-
     private Map<String, String> convertedTags;
-
     private List<ObjectReplicationPolicy> convertedObjectReplicationSourcePolicies;
 
     /**
@@ -235,8 +232,8 @@ public final class BlobItem {
      */
     public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
         if (convertedObjectReplicationSourcePolicies == null) {
-            convertedObjectReplicationSourcePolicies =
-                transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata());
+            convertedObjectReplicationSourcePolicies
+                = transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata());
         }
 
         return convertedObjectReplicationSourcePolicies;

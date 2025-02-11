@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The InstantRPAdditionalDetails model.
  */
 @Fluent
-public final class InstantRPAdditionalDetails {
+public final class InstantRPAdditionalDetails implements JsonSerializable<InstantRPAdditionalDetails> {
     /*
      * The azureBackupRGNamePrefix property.
      */
-    @JsonProperty(value = "azureBackupRGNamePrefix")
     private String azureBackupRGNamePrefix;
 
     /*
      * The azureBackupRGNameSuffix property.
      */
-    @JsonProperty(value = "azureBackupRGNameSuffix")
     private String azureBackupRGNameSuffix;
 
     /**
@@ -76,5 +78,44 @@ public final class InstantRPAdditionalDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azureBackupRGNamePrefix", this.azureBackupRGNamePrefix);
+        jsonWriter.writeStringField("azureBackupRGNameSuffix", this.azureBackupRGNameSuffix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstantRPAdditionalDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstantRPAdditionalDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InstantRPAdditionalDetails.
+     */
+    public static InstantRPAdditionalDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstantRPAdditionalDetails deserializedInstantRPAdditionalDetails = new InstantRPAdditionalDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureBackupRGNamePrefix".equals(fieldName)) {
+                    deserializedInstantRPAdditionalDetails.azureBackupRGNamePrefix = reader.getString();
+                } else if ("azureBackupRGNameSuffix".equals(fieldName)) {
+                    deserializedInstantRPAdditionalDetails.azureBackupRGNameSuffix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstantRPAdditionalDetails;
+        });
     }
 }

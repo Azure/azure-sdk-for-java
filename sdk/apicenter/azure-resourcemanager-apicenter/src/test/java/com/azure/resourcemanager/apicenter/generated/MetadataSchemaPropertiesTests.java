@@ -27,7 +27,8 @@ public final class MetadataSchemaPropertiesTests {
     public void testSerialize() throws Exception {
         MetadataSchemaProperties model = new MetadataSchemaProperties().withSchema("rtumkdosvq")
             .withAssignedTo(Arrays.asList(new MetadataAssignment().withEntity(MetadataAssignmentEntity.DEPLOYMENT)
-                .withRequired(true).withDeprecated(true)));
+                .withRequired(true)
+                .withDeprecated(true)));
         model = BinaryData.fromObject(model).toObject(MetadataSchemaProperties.class);
         Assertions.assertEquals("rtumkdosvq", model.schema());
         Assertions.assertEquals(MetadataAssignmentEntity.DEPLOYMENT, model.assignedTo().get(0).entity());

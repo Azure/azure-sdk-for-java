@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties for creating a custom image from a virtual machine. */
+/**
+ * Properties for creating a custom image from a virtual machine.
+ */
 @Fluent
-public final class CustomImagePropertiesFromVm {
+public final class CustomImagePropertiesFromVm implements JsonSerializable<CustomImagePropertiesFromVm> {
     /*
      * The source vm identifier.
      */
-    @JsonProperty(value = "sourceVmId")
     private String sourceVmId;
 
     /*
      * The Windows OS information of the VM.
      */
-    @JsonProperty(value = "windowsOsInfo")
     private WindowsOsInfo windowsOsInfo;
 
     /*
      * The Linux OS information of the VM.
      */
-    @JsonProperty(value = "linuxOsInfo")
     private LinuxOsInfo linuxOsInfo;
 
-    /** Creates an instance of CustomImagePropertiesFromVm class. */
+    /**
+     * Creates an instance of CustomImagePropertiesFromVm class.
+     */
     public CustomImagePropertiesFromVm() {
     }
 
     /**
      * Get the sourceVmId property: The source vm identifier.
-     *
+     * 
      * @return the sourceVmId value.
      */
     public String sourceVmId() {
@@ -43,7 +48,7 @@ public final class CustomImagePropertiesFromVm {
 
     /**
      * Set the sourceVmId property: The source vm identifier.
-     *
+     * 
      * @param sourceVmId the sourceVmId value to set.
      * @return the CustomImagePropertiesFromVm object itself.
      */
@@ -54,7 +59,7 @@ public final class CustomImagePropertiesFromVm {
 
     /**
      * Get the windowsOsInfo property: The Windows OS information of the VM.
-     *
+     * 
      * @return the windowsOsInfo value.
      */
     public WindowsOsInfo windowsOsInfo() {
@@ -63,7 +68,7 @@ public final class CustomImagePropertiesFromVm {
 
     /**
      * Set the windowsOsInfo property: The Windows OS information of the VM.
-     *
+     * 
      * @param windowsOsInfo the windowsOsInfo value to set.
      * @return the CustomImagePropertiesFromVm object itself.
      */
@@ -74,7 +79,7 @@ public final class CustomImagePropertiesFromVm {
 
     /**
      * Get the linuxOsInfo property: The Linux OS information of the VM.
-     *
+     * 
      * @return the linuxOsInfo value.
      */
     public LinuxOsInfo linuxOsInfo() {
@@ -83,7 +88,7 @@ public final class CustomImagePropertiesFromVm {
 
     /**
      * Set the linuxOsInfo property: The Linux OS information of the VM.
-     *
+     * 
      * @param linuxOsInfo the linuxOsInfo value to set.
      * @return the CustomImagePropertiesFromVm object itself.
      */
@@ -94,7 +99,7 @@ public final class CustomImagePropertiesFromVm {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -104,5 +109,47 @@ public final class CustomImagePropertiesFromVm {
         if (linuxOsInfo() != null) {
             linuxOsInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceVmId", this.sourceVmId);
+        jsonWriter.writeJsonField("windowsOsInfo", this.windowsOsInfo);
+        jsonWriter.writeJsonField("linuxOsInfo", this.linuxOsInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomImagePropertiesFromVm from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomImagePropertiesFromVm if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomImagePropertiesFromVm.
+     */
+    public static CustomImagePropertiesFromVm fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomImagePropertiesFromVm deserializedCustomImagePropertiesFromVm = new CustomImagePropertiesFromVm();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceVmId".equals(fieldName)) {
+                    deserializedCustomImagePropertiesFromVm.sourceVmId = reader.getString();
+                } else if ("windowsOsInfo".equals(fieldName)) {
+                    deserializedCustomImagePropertiesFromVm.windowsOsInfo = WindowsOsInfo.fromJson(reader);
+                } else if ("linuxOsInfo".equals(fieldName)) {
+                    deserializedCustomImagePropertiesFromVm.linuxOsInfo = LinuxOsInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomImagePropertiesFromVm;
+        });
     }
 }

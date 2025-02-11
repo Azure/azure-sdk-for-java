@@ -15,8 +15,7 @@ public final class ListContentKeysResponseImpl implements ListContentKeysRespons
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    ListContentKeysResponseImpl(
-        ListContentKeysResponseInner innerObject,
+    ListContentKeysResponseImpl(ListContentKeysResponseInner innerObject,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

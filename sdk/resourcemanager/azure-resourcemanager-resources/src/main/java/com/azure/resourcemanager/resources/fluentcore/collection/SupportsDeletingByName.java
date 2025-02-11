@@ -18,7 +18,6 @@ public interface SupportsDeletingByName {
      */
     void deleteByName(String name);
 
-
     /**
      * Asynchronously delete a resource from Azure, identifying it by its resource name.
      *

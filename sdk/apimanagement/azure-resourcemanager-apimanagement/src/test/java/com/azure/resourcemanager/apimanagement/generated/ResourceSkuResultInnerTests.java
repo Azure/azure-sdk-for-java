@@ -10,11 +10,9 @@ import com.azure.resourcemanager.apimanagement.fluent.models.ResourceSkuResultIn
 public final class ResourceSkuResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"kzfzqxjosho\",\"sku\":{\"name\":\"Consumption\"},\"capacity\":{\"minimum\":399794745,\"maximum\":969217353,\"default\":138243164,\"scaleType\":\"none\"}}")
-                .toObject(ResourceSkuResultInner.class);
+        ResourceSkuResultInner model = BinaryData.fromString(
+            "{\"resourceType\":\"kzfzqxjosho\",\"sku\":{\"name\":\"Consumption\"},\"capacity\":{\"minimum\":399794745,\"maximum\":969217353,\"default\":138243164,\"scaleType\":\"none\"}}")
+            .toObject(ResourceSkuResultInner.class);
     }
 
     @org.junit.jupiter.api.Test

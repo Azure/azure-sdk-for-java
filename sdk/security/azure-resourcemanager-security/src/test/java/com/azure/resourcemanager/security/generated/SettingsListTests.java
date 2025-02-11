@@ -13,7 +13,7 @@ public final class SettingsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SettingsList model = BinaryData.fromString(
-            "{\"value\":[{\"kind\":\"Setting\",\"id\":\"atqtdiswxspvckoj\",\"name\":\"zbbgspftesubzpvp\",\"type\":\"dylytcovq\"}],\"nextLink\":\"usrf\"}")
+            "{\"value\":[{\"kind\":\"Setting\",\"id\":\"nugj\",\"name\":\"nfsm\",\"type\":\"cttuxuu\"}],\"nextLink\":\"lflqoiqu\"}")
             .toObject(SettingsList.class);
     }
 

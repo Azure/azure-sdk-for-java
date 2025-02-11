@@ -32,7 +32,8 @@ class EncryptorV2 extends Encryptor {
     private final BlobClientSideEncryptionOptions encryptionOptions;
     private final String encryptionProtocol;
 
-    protected EncryptorV2(SecretKey aesKey, BlobClientSideEncryptionOptions encryptionOptions, String encryptionProtocol) {
+    protected EncryptorV2(SecretKey aesKey, BlobClientSideEncryptionOptions encryptionOptions,
+        String encryptionProtocol) {
         super(aesKey);
         this.encryptionOptions = encryptionOptions;
         this.encryptionProtocol = encryptionProtocol;
@@ -62,9 +63,9 @@ class EncryptorV2 extends Encryptor {
     @Override
     protected EncryptionData buildEncryptionData(Map<String, String> keyWrappingMetadata, WrappedKey wrappedKey) {
         return super.buildEncryptionData(keyWrappingMetadata, wrappedKey)
-            .setEncryptionAgent(new EncryptionAgent(encryptionProtocol,
-                EncryptionAlgorithm.AES_GCM_256))
-            .setEncryptedRegionInfo(new EncryptedRegionInfo(encryptionOptions.getAuthenticatedRegionDataLengthInBytes(), NONCE_LENGTH));
+            .setEncryptionAgent(new EncryptionAgent(encryptionProtocol, EncryptionAlgorithm.AES_GCM_256))
+            .setEncryptedRegionInfo(
+                new EncryptedRegionInfo(encryptionOptions.getAuthenticatedRegionDataLengthInBytes(), NONCE_LENGTH));
     }
 
     private Cipher getCipher(int index) throws GeneralSecurityException {
@@ -79,11 +80,12 @@ class EncryptorV2 extends Encryptor {
     protected Flux<ByteBuffer> encrypt(Flux<ByteBuffer> plainTextFlux) {
         Flux<ByteBuffer> encryptedTextFlux;
         long authenticatedRegionDataLength = encryptionOptions.getAuthenticatedRegionDataLengthInBytes();
-        BufferStagingArea stagingArea =
-            new BufferStagingArea(authenticatedRegionDataLength, authenticatedRegionDataLength);
+        BufferStagingArea stagingArea
+            = new BufferStagingArea(authenticatedRegionDataLength, authenticatedRegionDataLength);
 
-        encryptedTextFlux =
-            UploadUtils.chunkSource(plainTextFlux,
+        encryptedTextFlux
+            = UploadUtils
+                .chunkSource(plainTextFlux,
                     new com.azure.storage.common.ParallelTransferOptions()
                         .setBlockSizeLong(authenticatedRegionDataLength))
                 .flatMapSequential(stagingArea::write, 1, 1)
@@ -101,31 +103,26 @@ class EncryptorV2 extends Encryptor {
 
                     // Expected size of each encryption region after calling doFinal. Last one may
                     // be less, will never be more.
-                    ByteBuffer encryptedRegion = ByteBuffer.allocate(
-                        (int) authenticatedRegionDataLength + TAG_LENGTH);
+                    ByteBuffer encryptedRegion = ByteBuffer.allocate((int) authenticatedRegionDataLength + TAG_LENGTH);
 
                     // Each flux is at most 1 BufferAggregator of 4mb
-                    Flux<ByteBuffer> cipherTextWithTag = tuple.getT2()
-                        .asFlux()
-                        .map(buffer -> {
-                            // Write into the preallocated buffer and always return this buffer.
-                            try {
-                                gcmCipher.update(buffer, encryptedRegion);
-                            } catch (ShortBufferException e) {
-                                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                            }
-                            return encryptedRegion;
-                        })
-                        .then(Mono.fromCallable(() -> {
-                            // We have already written all the data to the cipher. Passing in a final
-                            // empty buffer allows us to force completion and return the filled buffer.
-                            gcmCipher.doFinal(EMPTY_BUFFER, encryptedRegion);
-                            encryptedRegion.flip();
-                            return encryptedRegion;
-                        })).flux();
+                    Flux<ByteBuffer> cipherTextWithTag = tuple.getT2().asFlux().map(buffer -> {
+                        // Write into the preallocated buffer and always return this buffer.
+                        try {
+                            gcmCipher.update(buffer, encryptedRegion);
+                        } catch (ShortBufferException e) {
+                            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+                        }
+                        return encryptedRegion;
+                    }).then(Mono.fromCallable(() -> {
+                        // We have already written all the data to the cipher. Passing in a final
+                        // empty buffer allows us to force completion and return the filled buffer.
+                        gcmCipher.doFinal(EMPTY_BUFFER, encryptedRegion);
+                        encryptedRegion.flip();
+                        return encryptedRegion;
+                    })).flux();
 
-                    return Flux.concat(Flux.just(ByteBuffer.wrap(gcmCipher.getIV())),
-                        cipherTextWithTag);
+                    return Flux.concat(Flux.just(ByteBuffer.wrap(gcmCipher.getIV())), cipherTextWithTag);
                 }, 1, 1);
         return encryptedTextFlux;
     }

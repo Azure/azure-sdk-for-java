@@ -84,10 +84,8 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithPort<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithPort<ParentT> {
     }
 
     /** Grouping of probe update stages. */
@@ -130,11 +128,8 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
     }
 
     /** The entirety of a probe update as part of a load balancer update. */
-    interface Update
-        extends Settable<LoadBalancer.Update>,
-            UpdateStages.WithPort,
-            UpdateStages.WithIntervalInSeconds,
-            UpdateStages.WithNumberOfProbes {
+    interface Update extends Settable<LoadBalancer.Update>, UpdateStages.WithPort, UpdateStages.WithIntervalInSeconds,
+        UpdateStages.WithNumberOfProbes {
     }
 
     /** Grouping of probe definition stages applicable as part of a load balancer update. */
@@ -211,9 +206,7 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithPort<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT>, UpdateDefinitionStages.WithPort<ParentT> {
     }
 }

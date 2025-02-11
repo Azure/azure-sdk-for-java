@@ -30,7 +30,7 @@ public class LastEnqueuedEventProperties {
      *     has not been retrieved, yet.
      */
     public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
-                                       Instant retrievalTime) {
+        Instant retrievalTime) {
         this.lastSequenceNumber = lastSequenceNumber;
         this.lastOffset = lastOffset;
         this.lastEnqueuedTime = lastEnqueuedTime;

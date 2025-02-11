@@ -5,33 +5,42 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The Usage Names. */
+/**
+ * The Usage Names.
+ */
 @Fluent
-public final class UsageName {
+public final class UsageName implements JsonSerializable<UsageName> {
     /*
      * The localized name of the resource.
      */
-    @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
     /*
      * The instances of the resource.
      */
-    @JsonProperty(value = "skuInstances")
     private List<String> skuInstances;
 
     /*
      * The name of the resource.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
+     * Creates an instance of UsageName class.
+     */
+    public UsageName() {
+    }
+
+    /**
      * Get the localizedValue property: The localized name of the resource.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -40,7 +49,7 @@ public final class UsageName {
 
     /**
      * Set the localizedValue property: The localized name of the resource.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the UsageName object itself.
      */
@@ -51,7 +60,7 @@ public final class UsageName {
 
     /**
      * Get the skuInstances property: The instances of the resource.
-     *
+     * 
      * @return the skuInstances value.
      */
     public List<String> skuInstances() {
@@ -60,7 +69,7 @@ public final class UsageName {
 
     /**
      * Set the skuInstances property: The instances of the resource.
-     *
+     * 
      * @param skuInstances the skuInstances value to set.
      * @return the UsageName object itself.
      */
@@ -71,7 +80,7 @@ public final class UsageName {
 
     /**
      * Get the value property: The name of the resource.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -80,7 +89,7 @@ public final class UsageName {
 
     /**
      * Set the value property: The name of the resource.
-     *
+     * 
      * @param value the value value to set.
      * @return the UsageName object itself.
      */
@@ -91,9 +100,52 @@ public final class UsageName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("localizedValue", this.localizedValue);
+        jsonWriter.writeArrayField("skuInstances", this.skuInstances, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageName if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the UsageName.
+     */
+    public static UsageName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageName deserializedUsageName = new UsageName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("localizedValue".equals(fieldName)) {
+                    deserializedUsageName.localizedValue = reader.getString();
+                } else if ("skuInstances".equals(fieldName)) {
+                    List<String> skuInstances = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUsageName.skuInstances = skuInstances;
+                } else if ("value".equals(fieldName)) {
+                    deserializedUsageName.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageName;
+        });
     }
 }

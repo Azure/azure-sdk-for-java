@@ -163,11 +163,6 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
         } else {
             innerProperties().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property location in model TableCreateUpdateParameters"));
-        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TableCreateUpdateParameters.class);

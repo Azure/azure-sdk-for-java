@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** SKU tier. */
+/**
+ * SKU tier.
+ */
 public final class AzureSkuTier extends ExpandableStringEnum<AzureSkuTier> {
-    /** Static value Basic for AzureSkuTier. */
+    /**
+     * Static value Basic for AzureSkuTier.
+     */
     public static final AzureSkuTier BASIC = fromString("Basic");
 
-    /** Static value Standard for AzureSkuTier. */
+    /**
+     * Static value Standard for AzureSkuTier.
+     */
     public static final AzureSkuTier STANDARD = fromString("Standard");
 
     /**
      * Creates a new instance of AzureSkuTier value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AzureSkuTier extends ExpandableStringEnum<AzureSkuTier> {
 
     /**
      * Creates or finds a AzureSkuTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureSkuTier.
      */
-    @JsonCreator
     public static AzureSkuTier fromString(String name) {
         return fromString(name, AzureSkuTier.class);
     }
 
     /**
      * Gets known AzureSkuTier values.
-     *
+     * 
      * @return known AzureSkuTier values.
      */
     public static Collection<AzureSkuTier> values() {

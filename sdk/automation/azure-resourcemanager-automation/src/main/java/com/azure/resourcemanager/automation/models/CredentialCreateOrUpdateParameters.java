@@ -6,27 +6,37 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.CredentialCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters supplied to the create or update credential operation. */
+/**
+ * The parameters supplied to the create or update credential operation.
+ */
 @Fluent
-public final class CredentialCreateOrUpdateParameters {
+public final class CredentialCreateOrUpdateParameters implements JsonSerializable<CredentialCreateOrUpdateParameters> {
     /*
      * Gets or sets the name of the credential.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Gets or sets the properties of the credential.
      */
-    @JsonProperty(value = "properties", required = true)
     private CredentialCreateOrUpdateProperties innerProperties = new CredentialCreateOrUpdateProperties();
 
     /**
+     * Creates an instance of CredentialCreateOrUpdateParameters class.
+     */
+    public CredentialCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the credential.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -35,7 +45,7 @@ public final class CredentialCreateOrUpdateParameters {
 
     /**
      * Set the name property: Gets or sets the name of the credential.
-     *
+     * 
      * @param name the name value to set.
      * @return the CredentialCreateOrUpdateParameters object itself.
      */
@@ -46,7 +56,7 @@ public final class CredentialCreateOrUpdateParameters {
 
     /**
      * Get the innerProperties property: Gets or sets the properties of the credential.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CredentialCreateOrUpdateProperties innerProperties() {
@@ -55,7 +65,7 @@ public final class CredentialCreateOrUpdateParameters {
 
     /**
      * Get the username property: Gets or sets the user name of the credential.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -64,7 +74,7 @@ public final class CredentialCreateOrUpdateParameters {
 
     /**
      * Set the username property: Gets or sets the user name of the credential.
-     *
+     * 
      * @param username the username value to set.
      * @return the CredentialCreateOrUpdateParameters object itself.
      */
@@ -78,7 +88,7 @@ public final class CredentialCreateOrUpdateParameters {
 
     /**
      * Get the password property: Gets or sets the password of the credential.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -87,7 +97,7 @@ public final class CredentialCreateOrUpdateParameters {
 
     /**
      * Set the password property: Gets or sets the password of the credential.
-     *
+     * 
      * @param password the password value to set.
      * @return the CredentialCreateOrUpdateParameters object itself.
      */
@@ -101,7 +111,7 @@ public final class CredentialCreateOrUpdateParameters {
 
     /**
      * Get the description property: Gets or sets the description of the credential.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -110,7 +120,7 @@ public final class CredentialCreateOrUpdateParameters {
 
     /**
      * Set the description property: Gets or sets the description of the credential.
-     *
+     * 
      * @param description the description value to set.
      * @return the CredentialCreateOrUpdateParameters object itself.
      */
@@ -124,25 +134,65 @@ public final class CredentialCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model CredentialCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model CredentialCreateOrUpdateParameters"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model CredentialCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model CredentialCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CredentialCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CredentialCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CredentialCreateOrUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CredentialCreateOrUpdateParameters.
+     */
+    public static CredentialCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CredentialCreateOrUpdateParameters deserializedCredentialCreateOrUpdateParameters
+                = new CredentialCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCredentialCreateOrUpdateParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCredentialCreateOrUpdateParameters.innerProperties
+                        = CredentialCreateOrUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentialCreateOrUpdateParameters;
+        });
+    }
 }

@@ -12,46 +12,66 @@ import java.util.Set;
 
 /** A client-side representation of an application gateway probe. */
 @Fluent()
-public interface ApplicationGatewayProbe
-    extends HasInnerModel<ApplicationGatewayProbeInner>,
-        ChildResource<ApplicationGateway>,
-        HasProtocol<ApplicationGatewayProtocol> {
+public interface ApplicationGatewayProbe extends HasInnerModel<ApplicationGatewayProbeInner>,
+    ChildResource<ApplicationGateway>, HasProtocol<ApplicationGatewayProtocol> {
 
-    /** @return the number of seconds between probe retries */
+    /**
+     * Gets the number of seconds between probe retries.
+     *
+     * @return the number of seconds between probe retries
+     */
     int timeBetweenProbesInSeconds();
 
     /**
+     * Gets HTTP response code ranges in the format ###-### returned by the backend which the probe considers
+     *     healthy.
+     *
      * @return HTTP response code ranges in the format ###-### returned by the backend which the probe considers
      *     healthy.
      */
     Set<String> healthyHttpResponseStatusCodeRanges();
 
     /**
+     * Gets the body contents of an HTTP response to a probe to check for to determine backend health, or null if
+     *     none specified
+     *
      * @return the body contents of an HTTP response to a probe to check for to determine backend health, or null if
      *     none specified
      */
     String healthyHttpResponseBodyContents();
 
-    /** @return the relative path to be called by the probe */
+    /**
+     * Gets the relative path to be called by the probe.
+     *
+     * @return the relative path to be called by the probe
+     */
     String path();
 
     /**
+     * Gets the number of seconds waiting for a response after which the probe times out and it is marked as failed.
+     *
      * @return the number of seconds waiting for a response after which the probe times out and it is marked as failed
      *     <p>Acceptable values are from 1 to 86400 seconds.
      */
     int timeoutInSeconds();
 
     /**
+     * Gets the number of failed retry probes before the backend server is marked as being down.
+     *
      * @return the number of failed retry probes before the backend server is marked as being down
      *     <p>Acceptable values are from 1 second to 20.
      */
     int retriesBeforeUnhealthy();
 
-    /** @return host name to send the probe to */
+    /**
+     * Gets host name to send the probe to.
+     *
+     * @return host name to send the probe to
+     */
     String host();
 
     /**
-     * Whether probe uses the host name from the HTTP settings to which this probe is associated.
+     * Checks whether probe uses the host name from the HTTP settings to which this probe is associated.
      *
      * @return Whether probe uses the host name from the HTTP settings.
      */
@@ -247,11 +267,8 @@ public interface ApplicationGatewayProbe
          *     definition
          */
         interface WithAttach<ReturnT>
-            extends Attachable.InDefinitionAlt<ReturnT>,
-                WithInterval<ReturnT>,
-                WithRetries<ReturnT>,
-                WithHealthyHttpResponseStatusCodeRanges<ReturnT>,
-                WithHealthyHttpResponseBodyContents<ReturnT> {
+            extends Attachable.InDefinitionAlt<ReturnT>, WithInterval<ReturnT>, WithRetries<ReturnT>,
+            WithHealthyHttpResponseStatusCodeRanges<ReturnT>, WithHealthyHttpResponseBodyContents<ReturnT> {
         }
     }
 
@@ -261,13 +278,9 @@ public interface ApplicationGatewayProbe
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithProtocol<ParentT>,
-            DefinitionStages.WithPath<ParentT>,
-            DefinitionStages.WithHost<ParentT>,
-            DefinitionStages.WithTimeout<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithProtocol<ParentT>, DefinitionStages.WithPath<ParentT>, DefinitionStages.WithHost<ParentT>,
+        DefinitionStages.WithTimeout<ParentT> {
     }
 
     /** Grouping of application gateway probe update stages. */
@@ -426,16 +439,9 @@ public interface ApplicationGatewayProbe
     }
 
     /** The entirety of an application gateway probe update as part of an application gateway update. */
-    interface Update
-        extends Settable<ApplicationGateway.Update>,
-            UpdateStages.WithProtocol,
-            UpdateStages.WithPath,
-            UpdateStages.WithHost,
-            UpdateStages.WithTimeout,
-            UpdateStages.WithInterval,
-            UpdateStages.WithRetries,
-            UpdateStages.WithHealthyHttpResponseStatusCodeRanges,
-            UpdateStages.WithHealthyHttpResponseBodyContents {
+    interface Update extends Settable<ApplicationGateway.Update>, UpdateStages.WithProtocol, UpdateStages.WithPath,
+        UpdateStages.WithHost, UpdateStages.WithTimeout, UpdateStages.WithInterval, UpdateStages.WithRetries,
+        UpdateStages.WithHealthyHttpResponseStatusCodeRanges, UpdateStages.WithHealthyHttpResponseBodyContents {
     }
 
     /** Grouping of application gateway probe definition stages applicable as part of an application gateway update. */
@@ -628,11 +634,8 @@ public interface ApplicationGatewayProbe
          *     definition
          */
         interface WithAttach<ParentT>
-            extends Attachable.InUpdateAlt<ParentT>,
-                WithInterval<ParentT>,
-                WithRetries<ParentT>,
-                WithHealthyHttpResponseStatusCodeRanges<ParentT>,
-                WithHealthyHttpResponseBodyContents<ParentT> {
+            extends Attachable.InUpdateAlt<ParentT>, WithInterval<ParentT>, WithRetries<ParentT>,
+            WithHealthyHttpResponseStatusCodeRanges<ParentT>, WithHealthyHttpResponseBodyContents<ParentT> {
         }
     }
 
@@ -642,13 +645,9 @@ public interface ApplicationGatewayProbe
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithProtocol<ParentT>,
-            UpdateDefinitionStages.WithPath<ParentT>,
-            UpdateDefinitionStages.WithHost<ParentT>,
-            UpdateDefinitionStages.WithTimeout<ParentT>,
-            UpdateDefinitionStages.WithInterval<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT>, UpdateDefinitionStages.WithProtocol<ParentT>,
+        UpdateDefinitionStages.WithPath<ParentT>, UpdateDefinitionStages.WithHost<ParentT>,
+        UpdateDefinitionStages.WithTimeout<ParentT>, UpdateDefinitionStages.WithInterval<ParentT> {
     }
 }

@@ -29,14 +29,14 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     public PagedIterable<GroupInformation> listByAccount(String resourceGroupName, String accountName) {
         PagedIterable<GroupInformationInner> inner = this.serviceClient().listByAccount(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new GroupInformationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupInformationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GroupInformation> listByAccount(String resourceGroupName, String accountName,
         Context context) {
         PagedIterable<GroupInformationInner> inner
             = this.serviceClient().listByAccount(resourceGroupName, accountName, context);
-        return Utils.mapPage(inner, inner1 -> new GroupInformationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupInformationImpl(inner1, this.manager()));
     }
 
     public Response<GroupInformation> getWithResponse(String resourceGroupName, String accountName, String groupId,

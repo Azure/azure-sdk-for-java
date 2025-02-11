@@ -22,11 +22,12 @@ public final class MonitorsGetMetricStatusSamples {
      */
     public static void monitorsGetMetricStatusMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().getMetricStatusWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new MetricsStatusRequest().withAzureResourceIds(Arrays.asList(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
-                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .getMetricStatusWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new MetricsStatusRequest().withAzureResourceIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
+                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -40,10 +41,11 @@ public final class MonitorsGetMetricStatusSamples {
      */
     public static void monitorsGetMetricStatusMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().getMetricStatusWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new MetricsStatusRequest().withAzureResourceIds(Arrays.asList(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
-                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .getMetricStatusWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new MetricsStatusRequest().withAzureResourceIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
+                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+                com.azure.core.util.Context.NONE);
     }
 }

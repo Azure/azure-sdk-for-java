@@ -13,36 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class SwaggerCustomDynamicSchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwaggerCustomDynamicSchema model =
-            BinaryData
-                .fromString(
-                    "{\"operationId\":\"sy\",\"valuePath\":\"olnjpnnbmjksibj\",\"parameters\":{\"yqegx\":\"datajxxahmrnad\",\"inbmh\":\"dataiv\",\"bkezn\":\"databjijkgqxnh\",\"nggiycwkdtaa\":\"dataaujvaa\"}}")
-                .toObject(SwaggerCustomDynamicSchema.class);
-        Assertions.assertEquals("sy", model.operationId());
-        Assertions.assertEquals("olnjpnnbmjksibj", model.valuePath());
+        SwaggerCustomDynamicSchema model = BinaryData.fromString(
+            "{\"operationId\":\"xrrf\",\"valuePath\":\"skwujhskxxekzysa\",\"parameters\":{\"icsfaqy\":\"dataimcaxgtwpzqtim\"}}")
+            .toObject(SwaggerCustomDynamicSchema.class);
+        Assertions.assertEquals("xrrf", model.operationId());
+        Assertions.assertEquals("skwujhskxxekzysa", model.valuePath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwaggerCustomDynamicSchema model =
-            new SwaggerCustomDynamicSchema()
-                .withOperationId("sy")
-                .withValuePath("olnjpnnbmjksibj")
-                .withParameters(
-                    mapOf(
-                        "yqegx",
-                        "datajxxahmrnad",
-                        "inbmh",
-                        "dataiv",
-                        "bkezn",
-                        "databjijkgqxnh",
-                        "nggiycwkdtaa",
-                        "dataaujvaa"));
+        SwaggerCustomDynamicSchema model = new SwaggerCustomDynamicSchema().withOperationId("xrrf")
+            .withValuePath("skwujhskxxekzysa")
+            .withParameters(mapOf("icsfaqy", "dataimcaxgtwpzqtim"));
         model = BinaryData.fromObject(model).toObject(SwaggerCustomDynamicSchema.class);
-        Assertions.assertEquals("sy", model.operationId());
-        Assertions.assertEquals("olnjpnnbmjksibj", model.valuePath());
+        Assertions.assertEquals("xrrf", model.operationId());
+        Assertions.assertEquals("skwujhskxxekzysa", model.valuePath());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

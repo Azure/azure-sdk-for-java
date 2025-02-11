@@ -6,18 +6,20 @@ package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.resourcemanager.webpubsub.fluent.models.SignalRServiceUsageInner;
 
-/** An immutable client-side representation of SignalRServiceUsage. */
+/**
+ * An immutable client-side representation of SignalRServiceUsage.
+ */
 public interface SignalRServiceUsage {
     /**
      * Gets the id property: Fully qualified ARM resource id.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the currentValue property: Current value for the usage quota.
-     *
+     * 
      * @return the currentValue value.
      */
     Long currentValue();
@@ -25,14 +27,14 @@ public interface SignalRServiceUsage {
     /**
      * Gets the limit property: The maximum permitted value for the usage quota. If there is no limit, this value will
      * be -1.
-     *
+     * 
      * @return the limit value.
      */
     Long limit();
 
     /**
      * Gets the name property: Localizable String object containing the name and a localized value.
-     *
+     * 
      * @return the name value.
      */
     SignalRServiceUsageName name();
@@ -40,14 +42,14 @@ public interface SignalRServiceUsage {
     /**
      * Gets the unit property: Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds,
      * Percent, CountPerSecond, BytesPerSecond.
-     *
+     * 
      * @return the unit value.
      */
     String unit();
 
     /**
      * Gets the inner com.azure.resourcemanager.webpubsub.fluent.models.SignalRServiceUsageInner object.
-     *
+     * 
      * @return the inner object.
      */
     SignalRServiceUsageInner innerModel();

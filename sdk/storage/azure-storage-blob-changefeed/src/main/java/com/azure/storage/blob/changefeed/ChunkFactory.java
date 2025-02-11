@@ -61,30 +61,29 @@ class ChunkFactory {
            Read events like normal using the simple AvroReader. */
         if (blockOffset == 0) {
             /* Download the whole blob lazily in chunks and use that as the source for the AvroReader. */
-            Flux<ByteBuffer> avro = blobChunkedDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_BODY_SIZE,
-                blockOffset /* Note: this is 0. */)
+            Flux<ByteBuffer> avro = blobChunkedDownloaderFactory
+                .getBlobLazyDownloader(chunkPath, DEFAULT_BODY_SIZE, blockOffset /* Note: this is 0. */)
                 .download();
             avroReader = avroReaderFactory.getAvroReader(avro);
-        /* If blockOffset > 0, that means we are reading the avro file header and body separately.
-           Read events starting at the designated blockOffset and eventIndex. */
+            /* If blockOffset > 0, that means we are reading the avro file header and body separately.
+               Read events starting at the designated blockOffset and eventIndex. */
         } else {
             if (chunkLength > blockOffset) { /* There are more events to read from the chunk. */
                 /* Download the first DEFAULT_HEADER_SIZE bytes from the blob lazily in chunks and use that as the
                 header source for the AvroReader. */
-                Flux<ByteBuffer> avroHeader =
-                    blobChunkedDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_HEADER_SIZE)
-                        .download();
+                Flux<ByteBuffer> avroHeader
+                    = blobChunkedDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_HEADER_SIZE).download();
                 /* Download the rest of the blob starting at the blockOffset lazily in chunks and use that as the body
-               source for the AvroReader. */
-                Flux<ByteBuffer> avroBody =
-                    blobChunkedDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_BODY_SIZE, blockOffset)
+                source for the AvroReader. */
+                Flux<ByteBuffer> avroBody
+                    = blobChunkedDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_BODY_SIZE, blockOffset)
                         .download();
                 avroReader = avroReaderFactory.getAvroReader(avroHeader, avroBody, blockOffset, eventIndex);
             } else if (chunkLength == blockOffset) { /* We hit the end of the chunk, return 0 events. */
                 avroReader = Flux::empty;
             } else {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Cursor contains a blockOffset that"
-                    + " is invalid."));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Cursor contains a blockOffset that" + " is invalid."));
             }
         }
 

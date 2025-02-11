@@ -54,8 +54,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
     }
 
     /**
-     * Get the endpoint property: API address, will be called when alert is triggered, only support POST method via
-     * SSL.
+     * Get the endpoint property: API address, will be called when alert is triggered, only support POST method via SSL.
      * 
      * @return the endpoint value.
      */
@@ -64,8 +63,7 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
     }
 
     /**
-     * Set the endpoint property: API address, will be called when alert is triggered, only support POST method via
-     * SSL.
+     * Set the endpoint property: API address, will be called when alert is triggered, only support POST method via SSL.
      * 
      * @param endpoint the endpoint value to set.
      * @return the WebhookHookParameterPatch object itself.
@@ -175,6 +173,9 @@ public final class WebhookHookParameterPatch implements JsonSerializable<Webhook
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

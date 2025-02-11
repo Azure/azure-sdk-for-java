@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 
 public class AzureCliCredentialTest {
 
-
     @Test
     public void getTokenMockAsync() throws Exception {
         // setup
@@ -31,10 +30,11 @@ public class AzureCliCredentialTest {
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAzureCli(request))
-                .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureCli(request))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+            })) {
             // test
             AzureCliCredential credential = new AzureCliCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))
@@ -51,11 +51,12 @@ public class AzureCliCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotInstalled");
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAzureCli(request))
-                .thenReturn(Mono.error(new Exception("Azure CLI not installed")));
-            when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureCli(request))
+                    .thenReturn(Mono.error(new Exception("Azure CLI not installed")));
+                when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
             // test
             AzureCliCredential credential = new AzureCliCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))
@@ -71,11 +72,12 @@ public class AzureCliCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotLogin");
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAzureCli(request))
-                .thenReturn(Mono.error(new Exception("Azure not Login")));
-            when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureCli(request))
+                    .thenReturn(Mono.error(new Exception("Azure not Login")));
+                when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
             // test
             AzureCliCredential credential = new AzureCliCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))
@@ -91,11 +93,12 @@ public class AzureCliCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureCliCredentialAuthenticationFailed");
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAzureCli(request))
-                .thenReturn(Mono.error(new Exception("other error")));
-            when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureCli(request))
+                    .thenReturn(Mono.error(new Exception("other error")));
+                when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
             // test
             AzureCliCredential credential = new AzureCliCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))
@@ -108,11 +111,10 @@ public class AzureCliCredentialTest {
     @Test
     public void testAdditionalTenantNoImpact() {
         // setup
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        AzureCliCredential credential =
-            new AzureCliCredentialBuilder().additionallyAllowedTenants("RANDOM").build();
+        AzureCliCredential credential = new AzureCliCredentialBuilder().additionallyAllowedTenants("RANDOM").build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(e -> e instanceof ClientAuthenticationException)
             .verify();
@@ -121,13 +123,13 @@ public class AzureCliCredentialTest {
     @Test
     public void testInvalidMultiTenantAuth() {
         // setup
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        AzureCliCredential credential =
-            new AzureCliCredentialBuilder().tenantId("tenant").build();
+        AzureCliCredential credential = new AzureCliCredentialBuilder().tenantId("tenant").build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException
+                && (e.getMessage().startsWith("The current credential is not configured to")))
             .verify();
     }
 
@@ -135,15 +137,15 @@ public class AzureCliCredentialTest {
     public void testValidMultiTenantAuth() {
         // setup
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        AzureCliCredential credential =
-            new AzureCliCredentialBuilder().tenantId("tenant")
-                .additionallyAllowedTenants(IdentityUtil.ALL_TENANTS).build();
+        AzureCliCredential credential = new AzureCliCredentialBuilder().tenantId("tenant")
+            .additionallyAllowedTenants(IdentityUtil.ALL_TENANTS)
+            .build();
 
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e  instanceof ClientAuthenticationException)
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException)
             .verify();
     }
 }

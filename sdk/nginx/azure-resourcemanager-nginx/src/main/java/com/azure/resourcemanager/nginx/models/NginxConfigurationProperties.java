@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The NginxConfigurationProperties model.
  */
 @Fluent
-public final class NginxConfigurationProperties {
+public final class NginxConfigurationProperties implements JsonSerializable<NginxConfigurationProperties> {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The files property.
      */
-    @JsonProperty(value = "files")
     private List<NginxConfigurationFile> files;
 
     /*
      * The protectedFiles property.
      */
-    @JsonProperty(value = "protectedFiles")
     private List<NginxConfigurationFile> protectedFiles;
 
     /*
      * The package property.
      */
-    @JsonProperty(value = "package")
     private NginxConfigurationPackage packageProperty;
 
     /*
      * The rootFile property.
      */
-    @JsonProperty(value = "rootFile")
     private String rootFile;
 
     /**
@@ -153,5 +152,59 @@ public final class NginxConfigurationProperties {
         if (packageProperty() != null) {
             packageProperty().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("files", this.files, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("protectedFiles", this.protectedFiles,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("package", this.packageProperty);
+        jsonWriter.writeStringField("rootFile", this.rootFile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NginxConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NginxConfigurationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NginxConfigurationProperties.
+     */
+    public static NginxConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NginxConfigurationProperties deserializedNginxConfigurationProperties = new NginxConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedNginxConfigurationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("files".equals(fieldName)) {
+                    List<NginxConfigurationFile> files
+                        = reader.readArray(reader1 -> NginxConfigurationFile.fromJson(reader1));
+                    deserializedNginxConfigurationProperties.files = files;
+                } else if ("protectedFiles".equals(fieldName)) {
+                    List<NginxConfigurationFile> protectedFiles
+                        = reader.readArray(reader1 -> NginxConfigurationFile.fromJson(reader1));
+                    deserializedNginxConfigurationProperties.protectedFiles = protectedFiles;
+                } else if ("package".equals(fieldName)) {
+                    deserializedNginxConfigurationProperties.packageProperty
+                        = NginxConfigurationPackage.fromJson(reader);
+                } else if ("rootFile".equals(fieldName)) {
+                    deserializedNginxConfigurationProperties.rootFile = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNginxConfigurationProperties;
+        });
     }
 }

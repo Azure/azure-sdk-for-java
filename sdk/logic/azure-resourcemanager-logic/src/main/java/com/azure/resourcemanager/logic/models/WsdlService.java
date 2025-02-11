@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The WSDL service. */
+/**
+ * The WSDL service.
+ */
 @Fluent
-public final class WsdlService {
+public final class WsdlService implements JsonSerializable<WsdlService> {
     /*
      * The qualified name.
      */
-    @JsonProperty(value = "qualifiedName")
     private String qualifiedName;
 
     /*
      * The list of endpoints' qualified names.
      */
-    @JsonProperty(value = "EndpointQualifiedNames")
     private List<String> endpointQualifiedNames;
 
-    /** Creates an instance of WsdlService class. */
+    /**
+     * Creates an instance of WsdlService class.
+     */
     public WsdlService() {
     }
 
     /**
      * Get the qualifiedName property: The qualified name.
-     *
+     * 
      * @return the qualifiedName value.
      */
     public String qualifiedName() {
@@ -38,7 +44,7 @@ public final class WsdlService {
 
     /**
      * Set the qualifiedName property: The qualified name.
-     *
+     * 
      * @param qualifiedName the qualifiedName value to set.
      * @return the WsdlService object itself.
      */
@@ -49,7 +55,7 @@ public final class WsdlService {
 
     /**
      * Get the endpointQualifiedNames property: The list of endpoints' qualified names.
-     *
+     * 
      * @return the endpointQualifiedNames value.
      */
     public List<String> endpointQualifiedNames() {
@@ -58,7 +64,7 @@ public final class WsdlService {
 
     /**
      * Set the endpointQualifiedNames property: The list of endpoints' qualified names.
-     *
+     * 
      * @param endpointQualifiedNames the endpointQualifiedNames value to set.
      * @return the WsdlService object itself.
      */
@@ -69,9 +75,50 @@ public final class WsdlService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("qualifiedName", this.qualifiedName);
+        jsonWriter.writeArrayField("EndpointQualifiedNames", this.endpointQualifiedNames,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WsdlService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WsdlService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WsdlService.
+     */
+    public static WsdlService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WsdlService deserializedWsdlService = new WsdlService();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("qualifiedName".equals(fieldName)) {
+                    deserializedWsdlService.qualifiedName = reader.getString();
+                } else if ("EndpointQualifiedNames".equals(fieldName)) {
+                    List<String> endpointQualifiedNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWsdlService.endpointQualifiedNames = endpointQualifiedNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWsdlService;
+        });
     }
 }

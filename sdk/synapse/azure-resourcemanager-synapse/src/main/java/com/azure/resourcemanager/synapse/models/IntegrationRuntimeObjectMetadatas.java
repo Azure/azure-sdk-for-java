@@ -7,13 +7,15 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationRuntimeObjectMetadatas. */
+/**
+ * Resource collection API of IntegrationRuntimeObjectMetadatas.
+ */
 public interface IntegrationRuntimeObjectMetadatas {
     /**
      * Get integration runtime object metadata
-     *
-     * <p>Get object metadata from an integration runtime.
-     *
+     * 
+     * Get object metadata from an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -24,18 +26,14 @@ public interface IntegrationRuntimeObjectMetadatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object metadata from an integration runtime along with {@link Response}.
      */
-    Response<SsisObjectMetadataListResponse> listWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        GetSsisObjectMetadataRequest getMetadataRequest,
-        Context context);
+    Response<SsisObjectMetadataListResponse> listWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, GetSsisObjectMetadataRequest getMetadataRequest, Context context);
 
     /**
      * Get integration runtime object metadata
-     *
-     * <p>Get object metadata from an integration runtime.
-     *
+     * 
+     * Get object metadata from an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -48,9 +46,9 @@ public interface IntegrationRuntimeObjectMetadatas {
 
     /**
      * Refresh integration runtime object metadata
-     *
-     * <p>Refresh the object metadata in an integration runtime.
-     *
+     * 
+     * Refresh the object metadata in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -59,14 +57,14 @@ public interface IntegrationRuntimeObjectMetadatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    SsisObjectMetadataStatusResponse refresh(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    SsisObjectMetadataStatusResponse refresh(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 
     /**
      * Refresh integration runtime object metadata
-     *
-     * <p>Refresh the object metadata in an integration runtime.
-     *
+     * 
+     * Refresh the object metadata in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -76,6 +74,6 @@ public interface IntegrationRuntimeObjectMetadatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    SsisObjectMetadataStatusResponse refresh(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    SsisObjectMetadataStatusResponse refresh(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 }

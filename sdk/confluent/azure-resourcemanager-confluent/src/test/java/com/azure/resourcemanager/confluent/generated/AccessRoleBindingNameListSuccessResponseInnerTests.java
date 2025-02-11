@@ -27,10 +27,14 @@ public final class AccessRoleBindingNameListSuccessResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessRoleBindingNameListSuccessResponseInner model = new AccessRoleBindingNameListSuccessResponseInner()
-            .withKind("btkuwhh").withMetadata(new ConfluentListMetadata().withFirst("k").withLast("oxafn")
-                .withPrev("lpichk").withNext("mkcdyhbpkkpwdre").withTotalSize(1405054510))
-            .withData(Arrays.asList("qfovljxywsuws"));
+        AccessRoleBindingNameListSuccessResponseInner model
+            = new AccessRoleBindingNameListSuccessResponseInner().withKind("btkuwhh")
+                .withMetadata(new ConfluentListMetadata().withFirst("k")
+                    .withLast("oxafn")
+                    .withPrev("lpichk")
+                    .withNext("mkcdyhbpkkpwdre")
+                    .withTotalSize(1405054510))
+                .withData(Arrays.asList("qfovljxywsuws"));
         model = BinaryData.fromObject(model).toObject(AccessRoleBindingNameListSuccessResponseInner.class);
         Assertions.assertEquals("btkuwhh", model.kind());
         Assertions.assertEquals("k", model.metadata().first());

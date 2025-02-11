@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringServiceSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceSku model =
-            BinaryData.fromString("{\"name\":\"nduhavhqlkthum\"}").toObject(PeeringServiceSku.class);
-        Assertions.assertEquals("nduhavhqlkthum", model.name());
+        PeeringServiceSku model = BinaryData.fromString("{\"name\":\"eqnovvqfovl\"}").toObject(PeeringServiceSku.class);
+        Assertions.assertEquals("eqnovvqfovl", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringServiceSku model = new PeeringServiceSku().withName("nduhavhqlkthum");
+        PeeringServiceSku model = new PeeringServiceSku().withName("eqnovvqfovl");
         model = BinaryData.fromObject(model).toObject(PeeringServiceSku.class);
-        Assertions.assertEquals("nduhavhqlkthum", model.name());
+        Assertions.assertEquals("eqnovvqfovl", model.name());
     }
 }

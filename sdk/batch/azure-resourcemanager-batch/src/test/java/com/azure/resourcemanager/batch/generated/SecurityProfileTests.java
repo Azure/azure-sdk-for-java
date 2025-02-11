@@ -14,9 +14,9 @@ public final class SecurityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityProfile model = BinaryData.fromString(
-            "{\"securityType\":\"trustedLaunch\",\"encryptionAtHost\":true,\"uefiSettings\":{\"secureBootEnabled\":false,\"vTpmEnabled\":false}}")
+            "{\"securityType\":\"confidentialVM\",\"encryptionAtHost\":true,\"uefiSettings\":{\"secureBootEnabled\":false,\"vTpmEnabled\":false}}")
             .toObject(SecurityProfile.class);
-        Assertions.assertEquals(SecurityTypes.TRUSTED_LAUNCH, model.securityType());
+        Assertions.assertEquals(SecurityTypes.CONFIDENTIAL_VM, model.securityType());
         Assertions.assertEquals(true, model.encryptionAtHost());
         Assertions.assertEquals(false, model.uefiSettings().secureBootEnabled());
         Assertions.assertEquals(false, model.uefiSettings().vTpmEnabled());
@@ -24,11 +24,11 @@ public final class SecurityProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityProfile model
-            = new SecurityProfile().withSecurityType(SecurityTypes.TRUSTED_LAUNCH).withEncryptionAtHost(true)
-                .withUefiSettings(new UefiSettings().withSecureBootEnabled(false).withVTpmEnabled(false));
+        SecurityProfile model = new SecurityProfile().withSecurityType(SecurityTypes.CONFIDENTIAL_VM)
+            .withEncryptionAtHost(true)
+            .withUefiSettings(new UefiSettings().withSecureBootEnabled(false).withVTpmEnabled(false));
         model = BinaryData.fromObject(model).toObject(SecurityProfile.class);
-        Assertions.assertEquals(SecurityTypes.TRUSTED_LAUNCH, model.securityType());
+        Assertions.assertEquals(SecurityTypes.CONFIDENTIAL_VM, model.securityType());
         Assertions.assertEquals(true, model.encryptionAtHost());
         Assertions.assertEquals(false, model.uefiSettings().secureBootEnabled());
         Assertions.assertEquals(false, model.uefiSettings().vTpmEnabled());

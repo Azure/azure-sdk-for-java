@@ -6,8 +6,11 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -15,18 +18,15 @@ import java.util.Map;
  * the new vms which are created after the pool shrinks to 0 will have the updated identities.
  */
 @Fluent
-public final class BatchPoolIdentity {
+public final class BatchPoolIdentity implements JsonSerializable<BatchPoolIdentity> {
     /*
      * The type of identity used for the Batch Pool.
      */
-    @JsonProperty(value = "type", required = true)
     private PoolIdentityType type;
 
     /*
      * The list of user identities associated with the Batch pool.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentities> userAssignedIdentities;
 
     /**
@@ -82,8 +82,8 @@ public final class BatchPoolIdentity {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model BatchPoolIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model BatchPoolIdentity"));
         }
         if (userAssignedIdentities() != null) {
             userAssignedIdentities().values().forEach(e -> {
@@ -95,4 +95,47 @@ public final class BatchPoolIdentity {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BatchPoolIdentity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPoolIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPoolIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchPoolIdentity.
+     */
+    public static BatchPoolIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchPoolIdentity deserializedBatchPoolIdentity = new BatchPoolIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedBatchPoolIdentity.type = PoolIdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedIdentities> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedIdentities.fromJson(reader1));
+                    deserializedBatchPoolIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchPoolIdentity;
+        });
+    }
 }

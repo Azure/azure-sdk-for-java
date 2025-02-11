@@ -22,7 +22,8 @@ public final class ChaosTargetSelectorTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosTargetSelector model = new ChaosTargetSelector().withId("hniskxfbkpyc").withFilter(new ChaosTargetFilter())
+        ChaosTargetSelector model = new ChaosTargetSelector().withId("hniskxfbkpyc")
+            .withFilter(new ChaosTargetFilter())
             .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"));
         model = BinaryData.fromObject(model).toObject(ChaosTargetSelector.class);
         Assertions.assertEquals("hniskxfbkpyc", model.id());

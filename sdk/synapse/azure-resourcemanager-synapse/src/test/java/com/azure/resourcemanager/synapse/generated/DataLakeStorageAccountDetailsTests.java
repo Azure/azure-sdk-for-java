@@ -11,29 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DataLakeStorageAccountDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataLakeStorageAccountDetails model =
-            BinaryData
-                .fromString(
-                    "{\"accountUrl\":\"twzhhzjhfjmhv\",\"filesystem\":\"uvgp\",\"resourceId\":\"neqsxvmh\",\"createManagedPrivateEndpoint\":true}")
+        DataLakeStorageAccountDetails model
+            = BinaryData.fromString("{\"accountUrl\":\"ffdjktsysidfvclg\",\"filesystem\":\"n\"}")
                 .toObject(DataLakeStorageAccountDetails.class);
-        Assertions.assertEquals("twzhhzjhfjmhv", model.accountUrl());
-        Assertions.assertEquals("uvgp", model.filesystem());
-        Assertions.assertEquals("neqsxvmh", model.resourceId());
-        Assertions.assertEquals(true, model.createManagedPrivateEndpoint());
+        Assertions.assertEquals("ffdjktsysidfvclg", model.accountUrl());
+        Assertions.assertEquals("n", model.filesystem());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataLakeStorageAccountDetails model =
-            new DataLakeStorageAccountDetails()
-                .withAccountUrl("twzhhzjhfjmhv")
-                .withFilesystem("uvgp")
-                .withResourceId("neqsxvmh")
-                .withCreateManagedPrivateEndpoint(true);
+        DataLakeStorageAccountDetails model
+            = new DataLakeStorageAccountDetails().withAccountUrl("ffdjktsysidfvclg").withFilesystem("n");
         model = BinaryData.fromObject(model).toObject(DataLakeStorageAccountDetails.class);
-        Assertions.assertEquals("twzhhzjhfjmhv", model.accountUrl());
-        Assertions.assertEquals("uvgp", model.filesystem());
-        Assertions.assertEquals("neqsxvmh", model.resourceId());
-        Assertions.assertEquals(true, model.createManagedPrivateEndpoint());
+        Assertions.assertEquals("ffdjktsysidfvclg", model.accountUrl());
+        Assertions.assertEquals("n", model.filesystem());
     }
 }

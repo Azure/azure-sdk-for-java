@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.UUID;
 
-/** Provides details of the entity that created/updated the workspace. */
+/**
+ * Provides details of the entity that created/updated the workspace.
+ */
 @Immutable
-public final class CreatedBy {
+public final class CreatedBy implements JsonSerializable<CreatedBy> {
     /*
      * The Object ID that created the workspace.
      */
-    @JsonProperty(value = "oid", access = JsonProperty.Access.WRITE_ONLY)
     private UUID oid;
 
     /*
      * The Personal Object ID corresponding to the object ID above
      */
-    @JsonProperty(value = "puid", access = JsonProperty.Access.WRITE_ONLY)
     private String puid;
 
     /*
      * The application ID of the application that initiated the creation of the workspace. For example, Azure Portal.
      */
-    @JsonProperty(value = "applicationId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID applicationId;
 
-    /** Creates an instance of CreatedBy class. */
+    /**
+     * Creates an instance of CreatedBy class.
+     */
     public CreatedBy() {
     }
 
     /**
      * Get the oid property: The Object ID that created the workspace.
-     *
+     * 
      * @return the oid value.
      */
     public UUID oid() {
@@ -44,7 +49,7 @@ public final class CreatedBy {
 
     /**
      * Get the puid property: The Personal Object ID corresponding to the object ID above.
-     *
+     * 
      * @return the puid value.
      */
     public String puid() {
@@ -54,7 +59,7 @@ public final class CreatedBy {
     /**
      * Get the applicationId property: The application ID of the application that initiated the creation of the
      * workspace. For example, Azure Portal.
-     *
+     * 
      * @return the applicationId value.
      */
     public UUID applicationId() {
@@ -63,9 +68,50 @@ public final class CreatedBy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreatedBy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreatedBy if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the CreatedBy.
+     */
+    public static CreatedBy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreatedBy deserializedCreatedBy = new CreatedBy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("oid".equals(fieldName)) {
+                    deserializedCreatedBy.oid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("puid".equals(fieldName)) {
+                    deserializedCreatedBy.puid = reader.getString();
+                } else if ("applicationId".equals(fieldName)) {
+                    deserializedCreatedBy.applicationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreatedBy;
+        });
     }
 }

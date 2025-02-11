@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Capacity Reservation properties. */
+/**
+ * The Capacity Reservation properties.
+ */
 @Immutable
-public final class CapacityReservationProperties {
+public final class CapacityReservationProperties implements JsonSerializable<CapacityReservationProperties> {
     /*
      * The last time Sku was updated.
      */
-    @JsonProperty(value = "lastSkuUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private String lastSkuUpdate;
 
     /*
-     * Minimum CapacityReservation value in GB.
+     * Minimum CapacityReservation value in Gigabytes.
      */
-    @JsonProperty(value = "minCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private Long minCapacity;
 
-    /** Creates an instance of CapacityReservationProperties class. */
+    /**
+     * Creates an instance of CapacityReservationProperties class.
+     */
     public CapacityReservationProperties() {
     }
 
     /**
      * Get the lastSkuUpdate property: The last time Sku was updated.
-     *
+     * 
      * @return the lastSkuUpdate value.
      */
     public String lastSkuUpdate() {
@@ -36,8 +42,8 @@ public final class CapacityReservationProperties {
     }
 
     /**
-     * Get the minCapacity property: Minimum CapacityReservation value in GB.
-     *
+     * Get the minCapacity property: Minimum CapacityReservation value in Gigabytes.
+     * 
      * @return the minCapacity value.
      */
     public Long minCapacity() {
@@ -46,9 +52,47 @@ public final class CapacityReservationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapacityReservationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapacityReservationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapacityReservationProperties.
+     */
+    public static CapacityReservationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapacityReservationProperties deserializedCapacityReservationProperties
+                = new CapacityReservationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastSkuUpdate".equals(fieldName)) {
+                    deserializedCapacityReservationProperties.lastSkuUpdate = reader.getString();
+                } else if ("minCapacity".equals(fieldName)) {
+                    deserializedCapacityReservationProperties.minCapacity = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapacityReservationProperties;
+        });
     }
 }

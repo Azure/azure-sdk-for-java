@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.resourcehealth.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatusProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** availabilityStatus of a resource. */
+/**
+ * availabilityStatus of a resource.
+ */
 @Fluent
-public final class AvailabilityStatusInner {
+public final class AvailabilityStatusInner implements JsonSerializable<AvailabilityStatusInner> {
     /*
      * Azure Resource Manager Identity for the availabilityStatuses resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * current.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Microsoft.ResourceHealth/AvailabilityStatuses.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Azure Resource Manager geo location of the resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Properties of availability state.
      */
-    @JsonProperty(value = "properties")
     private AvailabilityStatusProperties properties;
 
-    /** Creates an instance of AvailabilityStatusInner class. */
+    /**
+     * Creates an instance of AvailabilityStatusInner class.
+     */
     public AvailabilityStatusInner() {
     }
 
     /**
      * Get the id property: Azure Resource Manager Identity for the availabilityStatuses resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +59,7 @@ public final class AvailabilityStatusInner {
 
     /**
      * Set the id property: Azure Resource Manager Identity for the availabilityStatuses resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the AvailabilityStatusInner object itself.
      */
@@ -67,7 +70,7 @@ public final class AvailabilityStatusInner {
 
     /**
      * Get the name property: current.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -76,7 +79,7 @@ public final class AvailabilityStatusInner {
 
     /**
      * Set the name property: current.
-     *
+     * 
      * @param name the name value to set.
      * @return the AvailabilityStatusInner object itself.
      */
@@ -87,7 +90,7 @@ public final class AvailabilityStatusInner {
 
     /**
      * Get the type property: Microsoft.ResourceHealth/AvailabilityStatuses.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -96,7 +99,7 @@ public final class AvailabilityStatusInner {
 
     /**
      * Set the type property: Microsoft.ResourceHealth/AvailabilityStatuses.
-     *
+     * 
      * @param type the type value to set.
      * @return the AvailabilityStatusInner object itself.
      */
@@ -107,7 +110,7 @@ public final class AvailabilityStatusInner {
 
     /**
      * Get the location property: Azure Resource Manager geo location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -116,7 +119,7 @@ public final class AvailabilityStatusInner {
 
     /**
      * Set the location property: Azure Resource Manager geo location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the AvailabilityStatusInner object itself.
      */
@@ -127,7 +130,7 @@ public final class AvailabilityStatusInner {
 
     /**
      * Get the properties property: Properties of availability state.
-     *
+     * 
      * @return the properties value.
      */
     public AvailabilityStatusProperties properties() {
@@ -136,7 +139,7 @@ public final class AvailabilityStatusInner {
 
     /**
      * Set the properties property: Properties of availability state.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AvailabilityStatusInner object itself.
      */
@@ -147,12 +150,60 @@ public final class AvailabilityStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailabilityStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailabilityStatusInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailabilityStatusInner.
+     */
+    public static AvailabilityStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailabilityStatusInner deserializedAvailabilityStatusInner = new AvailabilityStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAvailabilityStatusInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAvailabilityStatusInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAvailabilityStatusInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAvailabilityStatusInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAvailabilityStatusInner.properties = AvailabilityStatusProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailabilityStatusInner;
+        });
     }
 }

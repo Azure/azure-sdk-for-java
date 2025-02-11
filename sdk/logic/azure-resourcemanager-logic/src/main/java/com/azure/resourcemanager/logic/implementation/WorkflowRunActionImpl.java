@@ -19,8 +19,8 @@ public final class WorkflowRunActionImpl implements WorkflowRunAction {
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    WorkflowRunActionImpl(
-        WorkflowRunActionInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    WorkflowRunActionImpl(WorkflowRunActionInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

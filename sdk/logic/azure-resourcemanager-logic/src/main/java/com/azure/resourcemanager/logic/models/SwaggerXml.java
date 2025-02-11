@@ -5,57 +5,57 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The Swagger XML. */
+/**
+ * The Swagger XML.
+ */
 @Fluent
-public final class SwaggerXml {
+public final class SwaggerXml implements JsonSerializable<SwaggerXml> {
     /*
      * The xml element or attribute name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The xml namespace.
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * The name prefix.
      */
-    @JsonProperty(value = "prefix")
     private String prefix;
 
     /*
      * Indicates whether the property should be an attribute instead of an element.
      */
-    @JsonProperty(value = "attribute")
     private Boolean attribute;
 
     /*
      * Indicates whether the array elements are wrapped in a container element.
      */
-    @JsonProperty(value = "wrapped")
     private Boolean wrapped;
 
     /*
      * The vendor extensions.
      */
-    @JsonProperty(value = "extensions")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> extensions;
 
-    /** Creates an instance of SwaggerXml class. */
+    /**
+     * Creates an instance of SwaggerXml class.
+     */
     public SwaggerXml() {
     }
 
     /**
      * Get the name property: The xml element or attribute name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +64,7 @@ public final class SwaggerXml {
 
     /**
      * Set the name property: The xml element or attribute name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SwaggerXml object itself.
      */
@@ -75,7 +75,7 @@ public final class SwaggerXml {
 
     /**
      * Get the namespace property: The xml namespace.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -84,7 +84,7 @@ public final class SwaggerXml {
 
     /**
      * Set the namespace property: The xml namespace.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the SwaggerXml object itself.
      */
@@ -95,7 +95,7 @@ public final class SwaggerXml {
 
     /**
      * Get the prefix property: The name prefix.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
@@ -104,7 +104,7 @@ public final class SwaggerXml {
 
     /**
      * Set the prefix property: The name prefix.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the SwaggerXml object itself.
      */
@@ -115,7 +115,7 @@ public final class SwaggerXml {
 
     /**
      * Get the attribute property: Indicates whether the property should be an attribute instead of an element.
-     *
+     * 
      * @return the attribute value.
      */
     public Boolean attribute() {
@@ -124,7 +124,7 @@ public final class SwaggerXml {
 
     /**
      * Set the attribute property: Indicates whether the property should be an attribute instead of an element.
-     *
+     * 
      * @param attribute the attribute value to set.
      * @return the SwaggerXml object itself.
      */
@@ -135,7 +135,7 @@ public final class SwaggerXml {
 
     /**
      * Get the wrapped property: Indicates whether the array elements are wrapped in a container element.
-     *
+     * 
      * @return the wrapped value.
      */
     public Boolean wrapped() {
@@ -144,7 +144,7 @@ public final class SwaggerXml {
 
     /**
      * Set the wrapped property: Indicates whether the array elements are wrapped in a container element.
-     *
+     * 
      * @param wrapped the wrapped value to set.
      * @return the SwaggerXml object itself.
      */
@@ -155,7 +155,7 @@ public final class SwaggerXml {
 
     /**
      * Get the extensions property: The vendor extensions.
-     *
+     * 
      * @return the extensions value.
      */
     public Map<String, Object> extensions() {
@@ -164,7 +164,7 @@ public final class SwaggerXml {
 
     /**
      * Set the extensions property: The vendor extensions.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the SwaggerXml object itself.
      */
@@ -175,9 +175,61 @@ public final class SwaggerXml {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeStringField("prefix", this.prefix);
+        jsonWriter.writeBooleanField("attribute", this.attribute);
+        jsonWriter.writeBooleanField("wrapped", this.wrapped);
+        jsonWriter.writeMapField("extensions", this.extensions, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwaggerXml from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwaggerXml if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SwaggerXml.
+     */
+    public static SwaggerXml fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwaggerXml deserializedSwaggerXml = new SwaggerXml();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSwaggerXml.name = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedSwaggerXml.namespace = reader.getString();
+                } else if ("prefix".equals(fieldName)) {
+                    deserializedSwaggerXml.prefix = reader.getString();
+                } else if ("attribute".equals(fieldName)) {
+                    deserializedSwaggerXml.attribute = reader.getNullable(JsonReader::getBoolean);
+                } else if ("wrapped".equals(fieldName)) {
+                    deserializedSwaggerXml.wrapped = reader.getNullable(JsonReader::getBoolean);
+                } else if ("extensions".equals(fieldName)) {
+                    Map<String, Object> extensions = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedSwaggerXml.extensions = extensions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwaggerXml;
+        });
     }
 }

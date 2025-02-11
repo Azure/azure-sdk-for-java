@@ -181,7 +181,6 @@ public final class CommonDataServiceForAppsSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
         if (writeBehavior() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.azurearcdata.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The pricing tier for the instance. */
+/**
+ * The pricing tier for the instance.
+ */
 public enum SqlManagedInstanceSkuTier {
-    /** Enum value GeneralPurpose. */
+    /**
+     * Enum value GeneralPurpose.
+     */
     GENERAL_PURPOSE("GeneralPurpose"),
 
-    /** Enum value BusinessCritical. */
+    /**
+     * Enum value BusinessCritical.
+     */
     BUSINESS_CRITICAL("BusinessCritical");
 
-    /** The actual serialized value for a SqlManagedInstanceSkuTier instance. */
+    /**
+     * The actual serialized value for a SqlManagedInstanceSkuTier instance.
+     */
     private final String value;
 
     SqlManagedInstanceSkuTier(String value) {
@@ -24,11 +29,10 @@ public enum SqlManagedInstanceSkuTier {
 
     /**
      * Parses a serialized value to a SqlManagedInstanceSkuTier instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SqlManagedInstanceSkuTier object, or null if unable to parse.
      */
-    @JsonCreator
     public static SqlManagedInstanceSkuTier fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum SqlManagedInstanceSkuTier {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

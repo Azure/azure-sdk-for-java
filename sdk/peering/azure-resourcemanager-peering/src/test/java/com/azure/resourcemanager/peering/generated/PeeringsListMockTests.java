@@ -6,75 +6,60 @@ package com.azure.resourcemanager.peering.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.peering.PeeringManager;
 import com.azure.resourcemanager.peering.models.DirectPeeringType;
 import com.azure.resourcemanager.peering.models.Family;
 import com.azure.resourcemanager.peering.models.Kind;
 import com.azure.resourcemanager.peering.models.Peering;
+import com.azure.resourcemanager.peering.models.SessionAddressProvider;
 import com.azure.resourcemanager.peering.models.Size;
 import com.azure.resourcemanager.peering.models.Tier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PeeringsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"sku\":{\"name\":\"dntwjchrdgo\",\"tier\":\"Basic\",\"family\":\"Exchange\",\"size\":\"Free\"},\"kind\":\"Direct\",\"properties\":{\"direct\":{\"connections\":[{\"bandwidthInMbps\":1559126498,\"provisionedBandwidthInMbps\":2109639729,\"sessionAddressProvider\":\"Microsoft\",\"useForPeeringService\":false,\"microsoftTrackingId\":\"gg\",\"peeringDBFacilityId\":407564287,\"connectionState\":\"ProvisioningCompleted\",\"bgpSession\":{},\"connectionIdentifier\":\"vvt\",\"errorMessage\":\"einqf\"}],\"useForPeeringService\":true,\"peerAsn\":{\"id\":\"knpirgnepttwq\"},\"directPeeringType\":\"Ix\"},\"exchange\":{\"connections\":[{\"peeringDBFacilityId\":584179057,\"connectionState\":\"Active\",\"bgpSession\":{},\"connectionIdentifier\":\"ojlpijnkrxf\",\"errorMessage\":\"dhcrati\"},{\"peeringDBFacilityId\":142407954,\"connectionState\":\"PendingApproval\",\"bgpSession\":{},\"connectionIdentifier\":\"xi\",\"errorMessage\":\"ozqyzh\"},{\"peeringDBFacilityId\":105161174,\"connectionState\":\"ProvisioningCompleted\",\"bgpSession\":{},\"connectionIdentifier\":\"gc\",\"errorMessage\":\"onnxkrlgnyhm\"},{\"peeringDBFacilityId\":1331454733,\"connectionState\":\"Approved\",\"bgpSession\":{},\"connectionIdentifier\":\"thrrgh\",\"errorMessage\":\"bdhqxvcxgf\"}],\"peerAsn\":{\"id\":\"sofbshrn\"}},\"peeringLocation\":\"buswdvzyy\",\"provisioningState\":\"Updating\"},\"location\":\"nu\",\"tags\":{\"nopqgikyzirtx\":\"srtkfa\",\"ilqu\":\"yuxzejntpsewgi\"},\"id\":\"rydxtqm\",\"name\":\"eoxorggufhyao\",\"type\":\"tbghhavgrvkf\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"sku\":{\"name\":\"hmlwpaztzpo\",\"tier\":\"Premium\",\"family\":\"Exchange\",\"size\":\"Unlimited\"},\"kind\":\"Direct\",\"properties\":{\"direct\":{\"connections\":[],\"useForPeeringService\":false,\"directPeeringType\":\"Transit\"},\"exchange\":{\"connections\":[]},\"peeringLocation\":\"zfeqztppri\",\"provisioningState\":\"Failed\"},\"location\":\"or\",\"tags\":{\"sdbnwdcfhucqdpf\":\"tolmncwsobqw\"},\"id\":\"vglsbjjca\",\"name\":\"vxb\",\"type\":\"t\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        PeeringManager manager =
-            PeeringManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PeeringManager manager = PeeringManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Peering> response = manager.peerings().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hmlwpaztzpo", response.iterator().next().sku().name());
-        Assertions.assertEquals(Tier.PREMIUM, response.iterator().next().sku().tier());
+        Assertions.assertEquals("dntwjchrdgo", response.iterator().next().sku().name());
+        Assertions.assertEquals(Tier.BASIC, response.iterator().next().sku().tier());
         Assertions.assertEquals(Family.EXCHANGE, response.iterator().next().sku().family());
-        Assertions.assertEquals(Size.UNLIMITED, response.iterator().next().sku().size());
+        Assertions.assertEquals(Size.FREE, response.iterator().next().sku().size());
         Assertions.assertEquals(Kind.DIRECT, response.iterator().next().kind());
-        Assertions.assertEquals("or", response.iterator().next().location());
-        Assertions.assertEquals("tolmncwsobqw", response.iterator().next().tags().get("sdbnwdcfhucqdpf"));
-        Assertions.assertEquals(DirectPeeringType.TRANSIT, response.iterator().next().direct().directPeeringType());
-        Assertions.assertEquals("zfeqztppri", response.iterator().next().peeringLocation());
+        Assertions.assertEquals("nu", response.iterator().next().location());
+        Assertions.assertEquals("srtkfa", response.iterator().next().tags().get("nopqgikyzirtx"));
+        Assertions.assertEquals(1559126498, response.iterator().next().direct().connections().get(0).bandwidthInMbps());
+        Assertions.assertEquals(SessionAddressProvider.MICROSOFT,
+            response.iterator().next().direct().connections().get(0).sessionAddressProvider());
+        Assertions.assertEquals(false, response.iterator().next().direct().connections().get(0).useForPeeringService());
+        Assertions.assertEquals(407564287,
+            response.iterator().next().direct().connections().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("vvt", response.iterator().next().direct().connections().get(0).connectionIdentifier());
+        Assertions.assertEquals("knpirgnepttwq", response.iterator().next().direct().peerAsn().id());
+        Assertions.assertEquals(DirectPeeringType.IX, response.iterator().next().direct().directPeeringType());
+        Assertions.assertEquals(584179057,
+            response.iterator().next().exchange().connections().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("ojlpijnkrxf",
+            response.iterator().next().exchange().connections().get(0).connectionIdentifier());
+        Assertions.assertEquals("sofbshrn", response.iterator().next().exchange().peerAsn().id());
+        Assertions.assertEquals("buswdvzyy", response.iterator().next().peeringLocation());
     }
 }

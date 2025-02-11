@@ -8,22 +8,24 @@ import com.azure.resourcemanager.networkcloud.models.L2Network;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for L2Networks Update. */
+/**
+ * Samples for L2Networks Update.
+ */
 public final class L2NetworksUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/L2Networks_Patch.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * L2Networks_Patch.json
      */
     /**
      * Sample code: Patch L2 network.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void patchL2Network(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        L2Network resource =
-            manager
-                .l2Networks()
-                .getByResourceGroupWithResponse("resourceGroupName", "l2NetworkName", com.azure.core.util.Context.NONE)
-                .getValue();
+        L2Network resource = manager.l2Networks()
+            .getByResourceGroupWithResponse("resourceGroupName", "l2NetworkName", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")).apply();
     }
 

@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AssessmentsMetadataDeleteInSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/DeleteAssessmentsMetadata_subscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
+     * DeleteAssessmentsMetadata_subscription_example.json
      */
     /**
      * Sample code: Delete a security assessment metadata for subscription.

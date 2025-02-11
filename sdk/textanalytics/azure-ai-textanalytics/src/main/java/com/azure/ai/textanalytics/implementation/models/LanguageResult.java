@@ -147,7 +147,8 @@ public final class LanguageResult implements JsonSerializable<LanguageResult> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("documents".equals(fieldName)) {
-                    deserializedLanguageResult.documents = reader.readArray(reader1 -> DocumentLanguage.fromJson(reader1));
+                    deserializedLanguageResult.documents
+                        = reader.readArray(reader1 -> DocumentLanguage.fromJson(reader1));
                 } else if ("errors".equals(fieldName)) {
                     deserializedLanguageResult.errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
                 } else if ("statistics".equals(fieldName)) {

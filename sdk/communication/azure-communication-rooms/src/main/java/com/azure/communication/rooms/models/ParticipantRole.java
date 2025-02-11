@@ -20,6 +20,15 @@ public final class ParticipantRole extends ExpandableStringEnum<ParticipantRole>
     public static final ParticipantRole CONSUMER = fromString("Consumer");
 
     /**
+     * Creates a new instance of {@link ParticipantRole} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} instead.
+     */
+    @Deprecated
+    public ParticipantRole() {
+    }
+
+    /**
      * Creates or finds a ParticipantRole from its string representation.
      *
      * @param name a name to look for.

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
@@ -72,9 +72,11 @@ public final class ServiceBusQueueAdvanceFeatures {
 
             //============================================================
             // Add a queue in namespace with features session and dead-lettering.
-            System.out.println("Creating first queue " + queue1Name + ", with session, time to live and move to dead-letter queue features...");
+            System.out.println("Creating first queue " + queue1Name
+                + ", with session, time to live and move to dead-letter queue features...");
 
-            Queue firstQueue = serviceBusNamespace.queues().define(queue1Name)
+            Queue firstQueue = serviceBusNamespace.queues()
+                .define(queue1Name)
                 .withSession()
                 .withDefaultMessageTTL(Duration.ofMinutes(10))
                 .withExpiredMessageMovedToDeadLetterQueue()
@@ -85,9 +87,11 @@ public final class ServiceBusQueueAdvanceFeatures {
             //============================================================
             // Create second queue with Deduplication and AutoDeleteOnIdle feature
 
-            System.out.println("Creating second queue " + queue2Name + ", with De-duplication and AutoDeleteOnIdle features...");
+            System.out.println(
+                "Creating second queue " + queue2Name + ", with De-duplication and AutoDeleteOnIdle features...");
 
-            Queue secondQueue = serviceBusNamespace.queues().define(queue2Name)
+            Queue secondQueue = serviceBusNamespace.queues()
+                .define(queue2Name)
                 .withSizeInMB(2048)
                 .withDuplicateMessageDetection(Duration.ofMinutes(10))
                 .withDeleteOnIdleDurationInMinutes(10)
@@ -100,9 +104,7 @@ public final class ServiceBusQueueAdvanceFeatures {
             //============================================================
             // Update second queue to change time for AutoDeleteOnIdle.
 
-            secondQueue = secondQueue.update()
-                .withDeleteOnIdleDurationInMinutes(5)
-                .apply();
+            secondQueue = secondQueue.update().withDeleteOnIdleDurationInMinutes(5).apply();
 
             System.out.println("Updated second queue to change its auto deletion time");
 
@@ -122,11 +124,12 @@ public final class ServiceBusQueueAdvanceFeatures {
             //=============================================================
             // Get connection string for default authorization rule of namespace
 
-            PagedIterable<NamespaceAuthorizationRule> namespaceAuthorizationRules = serviceBusNamespace.authorizationRules().list();
-            System.out.println("Number of authorization rule for namespace :" + Utils.getSize(namespaceAuthorizationRules));
+            PagedIterable<NamespaceAuthorizationRule> namespaceAuthorizationRules
+                = serviceBusNamespace.authorizationRules().list();
+            System.out
+                .println("Number of authorization rule for namespace :" + Utils.getSize(namespaceAuthorizationRules));
 
-
-            for (NamespaceAuthorizationRule namespaceAuthorizationRule: namespaceAuthorizationRules) {
+            for (NamespaceAuthorizationRule namespaceAuthorizationRule : namespaceAuthorizationRules) {
                 Utils.print(namespaceAuthorizationRule);
             }
 
@@ -141,11 +144,11 @@ public final class ServiceBusQueueAdvanceFeatures {
 
             //=============================================================
             // Send a message to queue.
-            ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-                .connectionString(keys.primaryConnectionString())
-                .sender()
-                .queueName(queue1Name)
-                .buildClient();
+            ServiceBusSenderClient sender
+                = new ServiceBusClientBuilder().connectionString(keys.primaryConnectionString())
+                    .sender()
+                    .queueName(queue1Name)
+                    .buildClient();
             sender.sendMessage(new ServiceBusMessage("Hello").setSessionId("23424"));
             sender.close();
 
@@ -181,13 +184,12 @@ public final class ServiceBusQueueAdvanceFeatures {
      */
     public static void main(String[] args) {
         try {
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

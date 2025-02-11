@@ -18,9 +18,7 @@ import java.util.List;
 /**
  * Implementation of {@link IPizza}
  */
-class PizzaImpl
-        extends CreatableUpdatableImpl<IPizza, PizzaInner, PizzaImpl>
-        implements IPizza {
+class PizzaImpl extends CreatableUpdatableImpl<IPizza, PizzaInner, PizzaImpl> implements IPizza {
     private static final ClientLogger LOGGER = new ClientLogger(PizzaImpl.class);
 
     final List<Creatable<IPizza>> delayedPizzas;
@@ -58,7 +56,8 @@ class PizzaImpl
 
     @Override
     public void beforeGroupCreateOrUpdate() {
-        Assertions.assertFalse(this.prepareCalled, "PizzaImpl::beforeGroupCreateOrUpdate() should not be called multiple times");
+        Assertions.assertFalse(this.prepareCalled,
+            "PizzaImpl::beforeGroupCreateOrUpdate() should not be called multiple times");
         prepareCalled = true;
         int oldCount = this.taskGroup().getNode(this.key()).dependencyKeys().size();
         for (Creatable<IPizza> pizza : this.delayedPizzas) {
@@ -72,9 +71,7 @@ class PizzaImpl
     @Override
     public Mono<IPizza> createResourceAsync() {
         LOGGER.log(LogLevel.VERBOSE, () -> "Pizza(" + this.name() + ")::createResourceAsync()");
-        return Mono.just(this)
-                .delayElement(Duration.ofMillis(250))
-                .map(pizza -> pizza);
+        return Mono.just(this).delayElement(Duration.ofMillis(250)).map(pizza -> pizza);
     }
 
     @Override

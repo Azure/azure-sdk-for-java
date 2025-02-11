@@ -8,11 +8,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSigninSettingsInner;
 
-/** Resource collection API of SignInSettings. */
+/**
+ * Resource collection API of SignInSettings.
+ */
 public interface SignInSettings {
     /**
      * Gets the entity state (Etag) version of the SignInSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -21,12 +23,12 @@ public interface SignInSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the SignInSettings.
      */
-    SignInSettingsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    SignInSettingsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the SignInSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface SignInSettings {
 
     /**
      * Get Sign In Settings for the Portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -50,7 +52,7 @@ public interface SignInSettings {
 
     /**
      * Get Sign In Settings for the Portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -62,11 +64,11 @@ public interface SignInSettings {
 
     /**
      * Update Sign-In settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update Sign-In settings.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -74,20 +76,16 @@ public interface SignInSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String ifMatch,
-        PortalSigninSettingsInner parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String serviceName, String ifMatch,
+        PortalSigninSettingsInner parameters, Context context);
 
     /**
      * Update Sign-In settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update Sign-In settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -97,7 +95,7 @@ public interface SignInSettings {
 
     /**
      * Create or Update Sign-In settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
@@ -108,16 +106,12 @@ public interface SignInSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sign-In settings for the Developer Portal along with {@link Response}.
      */
-    Response<PortalSigninSettings> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PortalSigninSettingsInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PortalSigninSettings> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PortalSigninSettingsInner parameters, String ifMatch, Context context);
 
     /**
      * Create or Update Sign-In settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
@@ -126,6 +120,6 @@ public interface SignInSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sign-In settings for the Developer Portal.
      */
-    PortalSigninSettings createOrUpdate(
-        String resourceGroupName, String serviceName, PortalSigninSettingsInner parameters);
+    PortalSigninSettings createOrUpdate(String resourceGroupName, String serviceName,
+        PortalSigninSettingsInner parameters);
 }

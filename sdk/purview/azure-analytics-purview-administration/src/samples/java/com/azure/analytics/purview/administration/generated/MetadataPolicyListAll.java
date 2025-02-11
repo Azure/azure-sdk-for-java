@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class MetadataPolicyListAll {
     public static void main(String[] args) {
-        MetadataPolicyClient metadataPolicyClient =
-                new MetadataPolicyClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildClient();
+        MetadataPolicyClient metadataPolicyClient
+            = new MetadataPolicyClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.administration.generated.metadatapolicylistall.metadatapolicylistall
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = metadataPolicyClient.listAll(requestOptions);

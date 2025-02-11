@@ -41,14 +41,23 @@ public final class SCClusterSpecEntityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SCClusterSpecEntity model = new SCClusterSpecEntity().withName("ytisibir").withAvailability("pikpz")
-            .withCloud("ejzanlfz").withZone("av").withRegion("bzonok").withKafkaBootstrapEndpoint("rjqc")
-            .withHttpEndpoint("gzpfrla").withApiEndpoint("zrnw")
+        SCClusterSpecEntity model = new SCClusterSpecEntity().withName("ytisibir")
+            .withAvailability("pikpz")
+            .withCloud("ejzanlfz")
+            .withZone("av")
+            .withRegion("bzonok")
+            .withKafkaBootstrapEndpoint("rjqc")
+            .withHttpEndpoint("gzpfrla")
+            .withApiEndpoint("zrnw")
             .withConfig(new ClusterConfigEntity().withKind("ndfpwpj"))
-            .withEnvironment(new SCClusterNetworkEnvironmentEntity().withId("bt").withEnvironment("flsjc")
-                .withRelated("szfjvfbgofelja").withResourceName("qmqhldvriii"))
-            .withNetwork(new SCClusterNetworkEnvironmentEntity().withId("al").withEnvironment("fk")
-                .withRelated("vsexsowuelu").withResourceName("hahhxvrhmzkwpj"))
+            .withEnvironment(new SCClusterNetworkEnvironmentEntity().withId("bt")
+                .withEnvironment("flsjc")
+                .withRelated("szfjvfbgofelja")
+                .withResourceName("qmqhldvriii"))
+            .withNetwork(new SCClusterNetworkEnvironmentEntity().withId("al")
+                .withEnvironment("fk")
+                .withRelated("vsexsowuelu")
+                .withResourceName("hahhxvrhmzkwpj"))
             .withByok(
                 new SCClusterByokEntity().withId("spughftqsxhq").withRelated("j").withResourceName("kndxdigrjgu"));
         model = BinaryData.fromObject(model).toObject(SCClusterSpecEntity.class);

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class LimitType extends ExpandableStringEnum<LimitType> {
      * @param name a name to look for.
      * @return the corresponding LimitType.
      */
-    @JsonCreator
     public static LimitType fromString(String name) {
         return fromString(name, LimitType.class);
     }

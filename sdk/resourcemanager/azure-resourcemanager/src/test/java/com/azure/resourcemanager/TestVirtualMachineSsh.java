@@ -21,33 +21,29 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
-        final String sshKey =
-            "ssh-rsa"
-                + " AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD"
-                + " azjava@javalib.com";
+        final String vmName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        final String sshKey = "ssh-rsa"
+            + " AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD"
+            + " azjava@javalib.com";
         final String publicIpDnsLabel = vmName;
-        PublicIpAddress pip =
-            pips
-                .define(publicIpDnsLabel)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup()
-                .withLeafDomainLabel(publicIpDnsLabel)
-                .create();
+        PublicIpAddress pip = pips.define(publicIpDnsLabel)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup()
+            .withLeafDomainLabel(publicIpDnsLabel)
+            .create();
 
-        VirtualMachine vm =
-            virtualMachines
-                .define(vmName)
-                .withRegion(pip.regionName())
-                .withExistingResourceGroup(pip.resourceGroupName())
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withExistingPrimaryPublicIPAddress(pip)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                .withRootUsername("testuser")
-                .withSsh(sshKey)
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .create();
+        VirtualMachine vm = virtualMachines.define(vmName)
+            .withRegion(pip.regionName())
+            .withExistingResourceGroup(pip.resourceGroupName())
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(pip)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("testuser")
+            .withSsh(sshKey)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .create();
 
         pip.refresh();
         Assertions.assertTrue(pip.hasAssignedNetworkInterface());

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DelegatedSubnetServices. */
+/**
+ * Resource collection API of DelegatedSubnetServices.
+ */
 public interface DelegatedSubnetServices {
     /**
      * Gets details about the specified dnc DelegatedSubnet Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
@@ -21,12 +23,12 @@ public interface DelegatedSubnetServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified dnc DelegatedSubnet Link along with {@link Response}.
      */
-    Response<DelegatedSubnet> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<DelegatedSubnet> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets details about the specified dnc DelegatedSubnet Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +40,7 @@ public interface DelegatedSubnetServices {
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +51,7 @@ public interface DelegatedSubnetServices {
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param forceDelete Force delete resource.
@@ -62,7 +64,7 @@ public interface DelegatedSubnetServices {
 
     /**
      * Get all the DelegatedSubnets resources in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DelegatedSubnets resources in a subscription as paginated response with {@link PagedIterable}.
@@ -71,7 +73,7 @@ public interface DelegatedSubnetServices {
 
     /**
      * Get all the DelegatedSubnets resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,7 +84,7 @@ public interface DelegatedSubnetServices {
 
     /**
      * Get all the DelegatedSubnets resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -93,7 +95,7 @@ public interface DelegatedSubnetServices {
 
     /**
      * Get all the DelegatedSubnets resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,7 +107,7 @@ public interface DelegatedSubnetServices {
 
     /**
      * Gets details about the specified dnc DelegatedSubnet Link.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -116,7 +118,7 @@ public interface DelegatedSubnetServices {
 
     /**
      * Gets details about the specified dnc DelegatedSubnet Link.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,7 +130,7 @@ public interface DelegatedSubnetServices {
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -138,7 +140,7 @@ public interface DelegatedSubnetServices {
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param id the resource ID.
      * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
@@ -150,7 +152,7 @@ public interface DelegatedSubnetServices {
 
     /**
      * Begins definition for a new DelegatedSubnet resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DelegatedSubnet definition.
      */

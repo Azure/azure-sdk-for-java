@@ -13,84 +13,35 @@ import com.azure.resourcemanager.synapse.models.LinkedIntegrationRuntime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
 
 public final class SelfHostedIntegrationRuntimeStatusTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelfHostedIntegrationRuntimeStatusTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"createTime\":\"2021-08-26T18:49:19Z\",\"taskQueueId\":\"vlihcvjd\",\"nodeCommunicationChannelEncryptionMode\":\"crjidhftukv\",\"internalChannelEncryption\":\"NotSet\",\"version\":\"wyojbfqzdkfnjyi\",\"nodes\":[{\"nodeName\":\"ratqxmbjro\",\"machineName\":\"zznval\",\"hostServiceUri\":\"rhuzgfxonjtpu\",\"status\":\"Offline\",\"capabilities\":{\"tzbpdbollgry\":\"pvti\",\"c\":\"qiuasigrows\",\"kqevadrmmw\":\"equygdjboqgrmtq\",\"iidisczskoswoqiq\":\"uawvcmjzk\"},\"versionStatus\":\"ugam\",\"version\":\"krrcoiisbamnpp\",\"registerTime\":\"2021-02-16T12:39:32Z\",\"lastConnectTime\":\"2021-01-26T11:50:54Z\",\"expiryTime\":\"2021-06-25T00:19:43Z\",\"lastStartTime\":\"2021-07-04T11:10:13Z\",\"lastStopTime\":\"2021-01-07T18:31:11Z\",\"lastUpdateResult\":\"Succeed\",\"lastStartUpdateTime\":\"2021-10-12T09:23:03Z\",\"lastEndUpdateTime\":\"2021-06-30T10:07:15Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":844556330,\"maxConcurrentJobs\":1620840016,\"\":{\"rx\":\"datahnepkpeti\"}}],\"scheduledUpdateDate\":\"2021-11-06T16:28:06Z\",\"updateDelayOffset\":\"xdukecpxd\",\"localTimeZoneOffset\":\"v\",\"capabilities\":{\"dblnsntrp\":\"tmmkosz\",\"fmhklbnld\":\"aqkiofkb\",\"hez\":\"vcb\"},\"serviceUrls\":[\"wusqx\"],\"autoUpdate\":\"On\",\"versionStatus\":\"brruyuuatv\",\"links\":[{\"name\":\"wcolbmxl\",\"subscriptionId\":\"w\",\"dataFactoryName\":\"cpahprzrvxhm\",\"dataFactoryLocation\":\"hocn\",\"createTime\":\"2021-11-27T20:51:03Z\"},{\"name\":\"jhngxnoq\",\"subscriptionId\":\"tdisnjevhdlmyd\",\"dataFactoryName\":\"whepfww\",\"dataFactoryLocation\":\"f\",\"createTime\":\"2020-12-22T04:54:50Z\"},{\"name\":\"xxhmwcdbc\",\"subscriptionId\":\"oikxkxhnegk\",\"dataFactoryName\":\"z\",\"dataFactoryLocation\":\"h\",\"createTime\":\"2021-03-01T09:51:56Z\"}],\"pushedVersion\":\"lvukaobrlb\",\"latestVersion\":\"snbagnchjhg\",\"autoUpdateETA\":\"2021-04-12T07:19:34Z\",\"serviceRegion\":\"wakywalhjymxcgq\",\"newerVersions\":[\"drclssoljome\",\"tfy\",\"nlbvgjcodkk\"],\"osType\":712624970,\"targetFramework\":1951024208}")
-                .toObject(SelfHostedIntegrationRuntimeStatusTypeProperties.class);
-        Assertions.assertEquals("wakywalhjymxcgq", model.serviceRegion());
-        Assertions.assertEquals("drclssoljome", model.newerVersions().get(0));
+        SelfHostedIntegrationRuntimeStatusTypeProperties model = BinaryData.fromString(
+            "{\"createTime\":\"2021-03-27T14:39:22Z\",\"taskQueueId\":\"dbwdpyqyybxubmdn\",\"nodeCommunicationChannelEncryptionMode\":\"cbq\",\"internalChannelEncryption\":\"SslEncrypted\",\"version\":\"jelaqacigele\",\"nodes\":[{\"nodeName\":\"vqvwzkjopwbe\",\"machineName\":\"r\",\"hostServiceUri\":\"wzdqybxceakxcpts\",\"status\":\"InitializeFailed\",\"capabilities\":{\"zisgykiuemvanb\":\"aseqchkrttzr\",\"jklinh\":\"zohmnrxxbs\",\"nzxojpslsvjgpli\":\"dptysprqs\"},\"versionStatus\":\"iqwoyxqvapcoh\",\"version\":\"ucqpqojxcxzrz\",\"registerTime\":\"2021-06-25T21:59:34Z\",\"lastConnectTime\":\"2021-08-24T03:14:39Z\",\"expiryTime\":\"2021-08-11T20:52:05Z\",\"lastStartTime\":\"2021-06-23T12:05:01Z\",\"lastStopTime\":\"2020-12-27T09:37:41Z\",\"lastUpdateResult\":\"Succeed\",\"lastStartUpdateTime\":\"2021-07-11T04:51:02Z\",\"lastEndUpdateTime\":\"2021-01-06T16:31:43Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":1319773587,\"maxConcurrentJobs\":669321712,\"\":{\"mtuatmzwcjjncqtj\":\"datahzn\"}}],\"scheduledUpdateDate\":\"2021-03-13T06:57:20Z\",\"updateDelayOffset\":\"vgbgatzuuvbxng\",\"localTimeZoneOffset\":\"bwggahtt\",\"capabilities\":{\"utlxjoqzasunwqrj\":\"wvajq\",\"uocnjrohmbpyr\":\"frgqhaohcm\"},\"serviceUrls\":[\"meblyd\"],\"autoUpdate\":\"Off\",\"versionStatus\":\"kmrocxne\",\"links\":[{\"name\":\"tod\",\"subscriptionId\":\"pyapucygvoav\",\"dataFactoryName\":\"nssxlgh\",\"dataFactoryLocation\":\"egjlgvvpa\",\"createTime\":\"2021-03-25T17:51:10Z\"}],\"pushedVersion\":\"gbuxantuygdh\",\"latestVersion\":\"qipir\",\"autoUpdateETA\":\"2021-08-18T16:21:34Z\"}")
+            .toObject(SelfHostedIntegrationRuntimeStatusTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelfHostedIntegrationRuntimeStatusTypeProperties model =
-            new SelfHostedIntegrationRuntimeStatusTypeProperties()
-                .withNodes(
-                    Arrays
-                        .asList(
-                            new SelfHostedIntegrationRuntimeNodeInner()
-                                .withAdditionalProperties(
-                                    mapOf(
-                                        "nodeName",
-                                        "ratqxmbjro",
-                                        "lastStartUpdateTime",
-                                        "2021-10-12T09:23:03Z",
-                                        "lastConnectTime",
-                                        "2021-01-26T11:50:54Z",
-                                        "capabilities",
-                                        JacksonAdapter
-                                            .createDefaultSerializerAdapter()
-                                            .deserialize(
-                                                "{\"tzbpdbollgry\":\"pvti\",\"c\":\"qiuasigrows\",\"kqevadrmmw\":\"equygdjboqgrmtq\",\"iidisczskoswoqiq\":\"uawvcmjzk\"}",
-                                                Object.class,
-                                                SerializerEncoding.JSON),
-                                        "hostServiceUri",
-                                        "rhuzgfxonjtpu",
-                                        "registerTime",
-                                        "2021-02-16T12:39:32Z",
-                                        "maxConcurrentJobs",
-                                        1620840016,
-                                        "lastStopTime",
-                                        "2021-01-07T18:31:11Z",
-                                        "version",
-                                        "krrcoiisbamnpp",
-                                        "machineName",
-                                        "zznval",
-                                        "versionStatus",
-                                        "ugam",
-                                        "concurrentJobsLimit",
-                                        844556330,
-                                        "lastEndUpdateTime",
-                                        "2021-06-30T10:07:15Z",
-                                        "expiryTime",
-                                        "2021-06-25T00:19:43Z",
-                                        "lastStartTime",
-                                        "2021-07-04T11:10:13Z",
-                                        "lastUpdateResult",
-                                        "Succeed",
-                                        "isActiveDispatcher",
-                                        true,
-                                        "status",
-                                        "Offline"))))
-                .withLinks(
-                    Arrays
-                        .asList(
-                            new LinkedIntegrationRuntime(),
-                            new LinkedIntegrationRuntime(),
-                            new LinkedIntegrationRuntime()))
-                .withServiceRegion("wakywalhjymxcgq")
-                .withNewerVersions(Arrays.asList("drclssoljome", "tfy", "nlbvgjcodkk"));
+        SelfHostedIntegrationRuntimeStatusTypeProperties model = new SelfHostedIntegrationRuntimeStatusTypeProperties()
+            .withNodes(Arrays.asList(new SelfHostedIntegrationRuntimeNodeInner().withAdditionalProperties(mapOf(
+                "nodeName", "vqvwzkjopwbe", "lastStartUpdateTime", "2021-07-11T04:51:02Z", "lastConnectTime",
+                "2021-08-24T03:14:39Z", "capabilities",
+                JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserialize(
+                        "{\"zisgykiuemvanb\":\"aseqchkrttzr\",\"jklinh\":\"zohmnrxxbs\",\"nzxojpslsvjgpli\":\"dptysprqs\"}",
+                        Object.class, SerializerEncoding.JSON),
+                "hostServiceUri", "wzdqybxceakxcpts", "registerTime", "2021-06-25T21:59:34Z", "maxConcurrentJobs",
+                669321712, "lastStopTime", "2020-12-27T09:37:41Z", "version", "ucqpqojxcxzrz", "machineName", "r",
+                "versionStatus", "iqwoyxqvapcoh", "concurrentJobsLimit", 1319773587, "lastEndUpdateTime",
+                "2021-01-06T16:31:43Z", "expiryTime", "2021-08-11T20:52:05Z", "lastStartTime", "2021-06-23T12:05:01Z",
+                "lastUpdateResult", "Succeed", "isActiveDispatcher", true, "status", "InitializeFailed"))))
+            .withLinks(Arrays.asList(new LinkedIntegrationRuntime()));
         model = BinaryData.fromObject(model).toObject(SelfHostedIntegrationRuntimeStatusTypeProperties.class);
-        Assertions.assertEquals("wakywalhjymxcgq", model.serviceRegion());
-        Assertions.assertEquals("drclssoljome", model.newerVersions().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

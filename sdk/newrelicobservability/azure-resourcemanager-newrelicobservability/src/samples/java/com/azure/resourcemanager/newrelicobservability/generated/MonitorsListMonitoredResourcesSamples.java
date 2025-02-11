@@ -19,8 +19,8 @@ public final class MonitorsListMonitoredResourcesSamples {
      */
     public static void monitorsListMonitoredResourcesMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +34,7 @@ public final class MonitorsListMonitoredResourcesSamples {
      */
     public static void monitorsListMonitoredResourcesMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
     }
 }

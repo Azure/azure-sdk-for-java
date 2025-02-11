@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks. */
+/**
+ * The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks.
+ */
 public final class AttributeFilter extends ExpandableStringEnum<AttributeFilter> {
-    /** Static value All for AttributeFilter. */
+    /**
+     * Static value All for AttributeFilter.
+     */
     public static final AttributeFilter ALL = fromString("All");
 
-    /** Static value Top for AttributeFilter. */
+    /**
+     * Static value Top for AttributeFilter.
+     */
     public static final AttributeFilter TOP = fromString("Top");
 
-    /** Static value Bottom for AttributeFilter. */
+    /**
+     * Static value Bottom for AttributeFilter.
+     */
     public static final AttributeFilter BOTTOM = fromString("Bottom");
 
-    /** Static value ValueEquals for AttributeFilter. */
+    /**
+     * Static value ValueEquals for AttributeFilter.
+     */
     public static final AttributeFilter VALUE_EQUALS = fromString("ValueEquals");
 
     /**
      * Creates a new instance of AttributeFilter value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class AttributeFilter extends ExpandableStringEnum<AttributeFilter>
 
     /**
      * Creates or finds a AttributeFilter from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AttributeFilter.
      */
-    @JsonCreator
     public static AttributeFilter fromString(String name) {
         return fromString(name, AttributeFilter.class);
     }
 
     /**
      * Gets known AttributeFilter values.
-     *
+     * 
      * @return known AttributeFilter values.
      */
     public static Collection<AttributeFilter> values() {

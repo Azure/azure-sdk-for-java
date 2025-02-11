@@ -12,38 +12,34 @@ import org.junit.jupiter.api.Assertions;
 public final class L3OptionAPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L3OptionAProperties model =
-            BinaryData
-                .fromString(
-                    "{\"mtu\":707174583,\"vlanId\":1454825474,\"fabricASN\":5238881792700138972,\"peerASN\":8845842496565245250,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":1894816551,\"multiplier\":935663672},\"ingressAclId\":\"nasd\",\"egressAclId\":\"enz\"}")
-                .toObject(L3OptionAProperties.class);
-        Assertions.assertEquals(707174583, model.mtu());
-        Assertions.assertEquals(1454825474, model.vlanId());
-        Assertions.assertEquals(8845842496565245250L, model.peerAsn());
-        Assertions.assertEquals(1894816551, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(935663672, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals("nasd", model.ingressAclId());
-        Assertions.assertEquals("enz", model.egressAclId());
+        L3OptionAProperties model = BinaryData.fromString(
+            "{\"mtu\":1884259051,\"vlanId\":58322521,\"fabricASN\":501242553193670995,\"peerASN\":3479899819671117833,\"bfdConfiguration\":{\"administrativeState\":\"Disabled\",\"intervalInMilliSeconds\":2074968961,\"multiplier\":1582406723},\"ingressAclId\":\"ntgxdncaqttie\",\"egressAclId\":\"i\"}")
+            .toObject(L3OptionAProperties.class);
+        Assertions.assertEquals(1884259051, model.mtu());
+        Assertions.assertEquals(58322521, model.vlanId());
+        Assertions.assertEquals(3479899819671117833L, model.peerAsn());
+        Assertions.assertEquals(2074968961, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1582406723, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals("ntgxdncaqttie", model.ingressAclId());
+        Assertions.assertEquals("i", model.egressAclId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3OptionAProperties model =
-            new L3OptionAProperties()
-                .withMtu(707174583)
-                .withVlanId(1454825474)
-                .withPeerAsn(8845842496565245250L)
-                .withBfdConfiguration(
-                    new BfdConfiguration().withIntervalInMilliSeconds(1894816551).withMultiplier(935663672))
-                .withIngressAclId("nasd")
-                .withEgressAclId("enz");
+        L3OptionAProperties model = new L3OptionAProperties().withMtu(1884259051)
+            .withVlanId(58322521)
+            .withPeerAsn(3479899819671117833L)
+            .withBfdConfiguration(
+                new BfdConfiguration().withIntervalInMilliSeconds(2074968961).withMultiplier(1582406723))
+            .withIngressAclId("ntgxdncaqttie")
+            .withEgressAclId("i");
         model = BinaryData.fromObject(model).toObject(L3OptionAProperties.class);
-        Assertions.assertEquals(707174583, model.mtu());
-        Assertions.assertEquals(1454825474, model.vlanId());
-        Assertions.assertEquals(8845842496565245250L, model.peerAsn());
-        Assertions.assertEquals(1894816551, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(935663672, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals("nasd", model.ingressAclId());
-        Assertions.assertEquals("enz", model.egressAclId());
+        Assertions.assertEquals(1884259051, model.mtu());
+        Assertions.assertEquals(58322521, model.vlanId());
+        Assertions.assertEquals(3479899819671117833L, model.peerAsn());
+        Assertions.assertEquals(2074968961, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1582406723, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals("ntgxdncaqttie", model.ingressAclId());
+        Assertions.assertEquals("i", model.egressAclId());
     }
 }

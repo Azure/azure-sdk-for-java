@@ -15,8 +15,7 @@ public final class IncidentBookmarkListImpl implements IncidentBookmarkList {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    IncidentBookmarkListImpl(
-        IncidentBookmarkListInner innerObject,
+    IncidentBookmarkListImpl(IncidentBookmarkListInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -5,58 +5,66 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure specific reprotect input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
 @Fluent
 public final class A2AReprotectInput extends ReverseReplicationProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * The recovery container Id.
      */
-    @JsonProperty(value = "recoveryContainerId")
     private String recoveryContainerId;
 
     /*
      * The list of vm disk details.
      */
-    @JsonProperty(value = "vmDisks")
     private List<A2AVmDiskInputDetails> vmDisks;
 
     /*
      * The recovery resource group Id. Valid for V2 scenarios.
      */
-    @JsonProperty(value = "recoveryResourceGroupId")
     private String recoveryResourceGroupId;
 
     /*
      * The recovery cloud service Id. Valid for V1 scenarios.
      */
-    @JsonProperty(value = "recoveryCloudServiceId")
     private String recoveryCloudServiceId;
 
     /*
      * The recovery availability set.
      */
-    @JsonProperty(value = "recoveryAvailabilitySetId")
     private String recoveryAvailabilitySetId;
 
     /*
      * The Policy Id.
      */
-    @JsonProperty(value = "policyId")
     private String policyId;
 
     /**
      * Creates an instance of A2AReprotectInput class.
      */
     public A2AReprotectInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -186,9 +194,64 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmDisks() != null) {
             vmDisks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("recoveryContainerId", this.recoveryContainerId);
+        jsonWriter.writeArrayField("vmDisks", this.vmDisks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("recoveryResourceGroupId", this.recoveryResourceGroupId);
+        jsonWriter.writeStringField("recoveryCloudServiceId", this.recoveryCloudServiceId);
+        jsonWriter.writeStringField("recoveryAvailabilitySetId", this.recoveryAvailabilitySetId);
+        jsonWriter.writeStringField("policyId", this.policyId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AReprotectInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AReprotectInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AReprotectInput.
+     */
+    public static A2AReprotectInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AReprotectInput deserializedA2AReprotectInput = new A2AReprotectInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedA2AReprotectInput.instanceType = reader.getString();
+                } else if ("recoveryContainerId".equals(fieldName)) {
+                    deserializedA2AReprotectInput.recoveryContainerId = reader.getString();
+                } else if ("vmDisks".equals(fieldName)) {
+                    List<A2AVmDiskInputDetails> vmDisks
+                        = reader.readArray(reader1 -> A2AVmDiskInputDetails.fromJson(reader1));
+                    deserializedA2AReprotectInput.vmDisks = vmDisks;
+                } else if ("recoveryResourceGroupId".equals(fieldName)) {
+                    deserializedA2AReprotectInput.recoveryResourceGroupId = reader.getString();
+                } else if ("recoveryCloudServiceId".equals(fieldName)) {
+                    deserializedA2AReprotectInput.recoveryCloudServiceId = reader.getString();
+                } else if ("recoveryAvailabilitySetId".equals(fieldName)) {
+                    deserializedA2AReprotectInput.recoveryAvailabilitySetId = reader.getString();
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedA2AReprotectInput.policyId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AReprotectInput;
+        });
     }
 }

@@ -187,10 +187,10 @@ More examples can be found at:
 - [Event Grid samples][README-Samples]
 
 <!-- Links -->
-[EventGridPublisherClientBuilder]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherClientBuilder.html
-[EventGridPublisherClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherClient.html
-[EventGridPublisherAsyncClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherAsyncClient.html
-[EventGridEvent]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridEvent.html
+[EventGridPublisherClientBuilder]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherClientBuilder.html
+[EventGridPublisherClient]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherClient.html
+[EventGridPublisherAsyncClient]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherAsyncClient.html
+[EventGridEvent]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridEvent.html
 [Guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
 [GuidelinesJava]: https://azure.github.io/azure-sdk/java_introduction.html
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces
@@ -198,4 +198,5 @@ More examples can be found at:
 [README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/README.md
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-messaging-eventgrid/README.md
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid%2Fmigration-guide.png)
+
+

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * 'Enabled' or 'Disabled'.
  */
 public final class PublicNetworkAccessEnum extends ExpandableStringEnum<PublicNetworkAccessEnum> {
-    /** Static value Enabled for PublicNetworkAccessEnum. */
+    /**
+     * Static value Enabled for PublicNetworkAccessEnum.
+     */
     public static final PublicNetworkAccessEnum ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for PublicNetworkAccessEnum. */
+    /**
+     * Static value Disabled for PublicNetworkAccessEnum.
+     */
     public static final PublicNetworkAccessEnum DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of PublicNetworkAccessEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class PublicNetworkAccessEnum extends ExpandableStringEnum<PublicNe
 
     /**
      * Creates or finds a PublicNetworkAccessEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PublicNetworkAccessEnum.
      */
-    @JsonCreator
     public static PublicNetworkAccessEnum fromString(String name) {
         return fromString(name, PublicNetworkAccessEnum.class);
     }
 
     /**
      * Gets known PublicNetworkAccessEnum values.
-     *
+     * 
      * @return known PublicNetworkAccessEnum values.
      */
     public static Collection<PublicNetworkAccessEnum> values() {

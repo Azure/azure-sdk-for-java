@@ -10,11 +10,9 @@ import com.azure.resourcemanager.azurearcdata.models.OperationListResult;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"hq\",\"display\":{\"provider\":\"vgjxpybczm\",\"resource\":\"hmtzopbsphrup\",\"operation\":\"dgs\",\"description\":\"bb\"},\"origin\":\"user\",\"isDataAction\":false,\"properties\":{\"xaobhdxbmtqioqjz\":\"dataycm\",\"ownoizhw\":\"datahtbmuf\",\"jgkdmbpazlobcu\":\"datarxybqsoq\",\"qgn\":\"datapdznrbtcqqjnqgl\"}},{\"name\":\"foooj\",\"display\":{\"provider\":\"wifsq\",\"resource\":\"saagdf\",\"operation\":\"glzlhjxrifkwmrv\",\"description\":\"tsizntocipaoua\"},\"origin\":\"user\",\"isDataAction\":false,\"properties\":{\"fogknygjofjdde\":\"datampoyfd\",\"deupewnwrei\":\"datas\",\"arhmofcqhsmy\":\"datajzyflu\",\"kuksjtxukcdm\":\"datarkdtmlxh\"}},{\"name\":\"arcryuanzwuxzdxt\",\"display\":{\"provider\":\"yrlhmwhfpmrqobm\",\"resource\":\"u\",\"operation\":\"knryrtihfxtij\",\"description\":\"pzvgnwzsymglzufc\"},\"origin\":\"user\",\"isDataAction\":true,\"properties\":{\"fcbjysagithxqha\":\"databihanuf\",\"cnpqxuhivyqniwby\":\"dataifpikxwczby\",\"grtfwvu\":\"datarkxvdum\",\"h\":\"dataxgaudccs\"}}],\"nextLink\":\"cnyejhkryhtnapcz\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"hq\",\"display\":{\"provider\":\"vgjxpybczm\",\"resource\":\"hmtzopbsphrup\",\"operation\":\"dgs\",\"description\":\"bb\"},\"origin\":\"user\",\"isDataAction\":false,\"properties\":{\"xaobhdxbmtqioqjz\":\"dataycm\",\"ownoizhw\":\"datahtbmuf\",\"jgkdmbpazlobcu\":\"datarxybqsoq\",\"qgn\":\"datapdznrbtcqqjnqgl\"}},{\"name\":\"foooj\",\"display\":{\"provider\":\"wifsq\",\"resource\":\"saagdf\",\"operation\":\"glzlhjxrifkwmrv\",\"description\":\"tsizntocipaoua\"},\"origin\":\"user\",\"isDataAction\":false,\"properties\":{\"fogknygjofjdde\":\"datampoyfd\",\"deupewnwrei\":\"datas\",\"arhmofcqhsmy\":\"datajzyflu\",\"kuksjtxukcdm\":\"datarkdtmlxh\"}},{\"name\":\"arcryuanzwuxzdxt\",\"display\":{\"provider\":\"yrlhmwhfpmrqobm\",\"resource\":\"u\",\"operation\":\"knryrtihfxtij\",\"description\":\"pzvgnwzsymglzufc\"},\"origin\":\"user\",\"isDataAction\":true,\"properties\":{\"fcbjysagithxqha\":\"databihanuf\",\"cnpqxuhivyqniwby\":\"dataifpikxwczby\",\"grtfwvu\":\"datarkxvdum\",\"h\":\"dataxgaudccs\"}}],\"nextLink\":\"cnyejhkryhtnapcz\"}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

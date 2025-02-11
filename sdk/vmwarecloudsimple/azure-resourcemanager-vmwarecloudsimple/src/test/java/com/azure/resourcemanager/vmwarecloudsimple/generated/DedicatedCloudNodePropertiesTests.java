@@ -12,35 +12,31 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedCloudNodePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedCloudNodeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"availabilityZoneId\":\"uj\",\"availabilityZoneName\":\"uhmuouqfprwzwbn\",\"cloudRackName\":\"itnwuizgazxufi\",\"created\":\"2021-07-05T04:35:30Z\",\"nodesCount\":935270600,\"placementGroupId\":\"y\",\"placementGroupName\":\"hr\",\"privateCloudId\":\"dfvzwdzuhty\",\"privateCloudName\":\"isdkfthwxmnteiw\",\"provisioningState\":\"pvkmijcmmxdcuf\",\"purchaseId\":\"78f2fb59-9812-43da-a2c4-0832caf017de\",\"skuDescription\":{\"id\":\"srp\",\"name\":\"mzidnsezcxtb\"},\"status\":\"unused\",\"vmwareClusterName\":\"yc\"}")
-                .toObject(DedicatedCloudNodeProperties.class);
-        Assertions.assertEquals("uj", model.availabilityZoneId());
-        Assertions.assertEquals(935270600, model.nodesCount());
-        Assertions.assertEquals("y", model.placementGroupId());
-        Assertions.assertEquals(UUID.fromString("78f2fb59-9812-43da-a2c4-0832caf017de"), model.purchaseId());
-        Assertions.assertEquals("srp", model.id());
-        Assertions.assertEquals("mzidnsezcxtb", model.name());
+        DedicatedCloudNodeProperties model = BinaryData.fromString(
+            "{\"availabilityZoneId\":\"pmivkwlzu\",\"availabilityZoneName\":\"c\",\"cloudRackName\":\"nfnbacfionlebxe\",\"created\":\"2021-11-29T00:22:10Z\",\"nodesCount\":853562932,\"placementGroupId\":\"zxdpnqbqqw\",\"placementGroupName\":\"jfeallnwsub\",\"privateCloudId\":\"njampm\",\"privateCloudName\":\"nzscxa\",\"provisioningState\":\"ooch\",\"purchaseId\":\"612cf08d-445e-4bbf-ac99-d76e2e28c7df\",\"skuDescription\":{\"id\":\"onq\",\"name\":\"pkvlrxn\"},\"status\":\"unused\",\"vmwareClusterName\":\"eipheoflokeyy\"}")
+            .toObject(DedicatedCloudNodeProperties.class);
+        Assertions.assertEquals("pmivkwlzu", model.availabilityZoneId());
+        Assertions.assertEquals(853562932, model.nodesCount());
+        Assertions.assertEquals("zxdpnqbqqw", model.placementGroupId());
+        Assertions.assertEquals(UUID.fromString("612cf08d-445e-4bbf-ac99-d76e2e28c7df"), model.purchaseId());
+        Assertions.assertEquals("onq", model.id());
+        Assertions.assertEquals("pkvlrxn", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedCloudNodeProperties model =
-            new DedicatedCloudNodeProperties()
-                .withAvailabilityZoneId("uj")
-                .withNodesCount(935270600)
-                .withPlacementGroupId("y")
-                .withPurchaseId(UUID.fromString("78f2fb59-9812-43da-a2c4-0832caf017de"))
-                .withId("srp")
-                .withName("mzidnsezcxtb");
+        DedicatedCloudNodeProperties model = new DedicatedCloudNodeProperties().withAvailabilityZoneId("pmivkwlzu")
+            .withNodesCount(853562932)
+            .withPlacementGroupId("zxdpnqbqqw")
+            .withPurchaseId(UUID.fromString("612cf08d-445e-4bbf-ac99-d76e2e28c7df"))
+            .withId("onq")
+            .withName("pkvlrxn");
         model = BinaryData.fromObject(model).toObject(DedicatedCloudNodeProperties.class);
-        Assertions.assertEquals("uj", model.availabilityZoneId());
-        Assertions.assertEquals(935270600, model.nodesCount());
-        Assertions.assertEquals("y", model.placementGroupId());
-        Assertions.assertEquals(UUID.fromString("78f2fb59-9812-43da-a2c4-0832caf017de"), model.purchaseId());
-        Assertions.assertEquals("srp", model.id());
-        Assertions.assertEquals("mzidnsezcxtb", model.name());
+        Assertions.assertEquals("pmivkwlzu", model.availabilityZoneId());
+        Assertions.assertEquals(853562932, model.nodesCount());
+        Assertions.assertEquals("zxdpnqbqqw", model.placementGroupId());
+        Assertions.assertEquals(UUID.fromString("612cf08d-445e-4bbf-ac99-d76e2e28c7df"), model.purchaseId());
+        Assertions.assertEquals("onq", model.id());
+        Assertions.assertEquals("pkvlrxn", model.name());
     }
 }

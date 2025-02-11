@@ -35,20 +35,19 @@ public class LoadBalancerTests extends NetworkManagementTest {
         String vmName = generateRandomResourceName("vm", 8);
         String lbName = generateRandomResourceName("lb", 8);
 
-        ResourceGroup resourceGroup =
-            resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        ResourceGroup resourceGroup
+            = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
 
-        Network network =
-            networkManager
-                .networks()
-                .define(vmName)
-                .withRegion(resourceGroup.region())
-                .withExistingResourceGroup(resourceGroup.name())
-                .withAddressSpace("172.18.0.0/28")
-                .withSubnet(SUBNET_NAME, "172.18.0.0/28")
-                .create();
+        Network network = networkManager.networks()
+            .define(vmName)
+            .withRegion(resourceGroup.region())
+            .withExistingResourceGroup(resourceGroup.name())
+            .withAddressSpace("172.18.0.0/28")
+            .withSubnet(SUBNET_NAME, "172.18.0.0/28")
+            .create();
 
-        LoadBalancer loadBalancer = createLoadBalancerWithPrivateFrontend(networkManager, resourceGroup, network, lbName);
+        LoadBalancer loadBalancer
+            = createLoadBalancerWithPrivateFrontend(networkManager, resourceGroup, network, lbName);
 
         // verify created probes
         Assertions.assertEquals(2, loadBalancer.loadBalancingRules().size());
@@ -66,8 +65,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
         Assertions.assertEquals("/", httpsProbe.requestPath());
 
         // update probe
-        loadBalancer
-            .update()
+        loadBalancer.update()
             .updateHttpsProbe(PROBE_NAME_2)
             .withIntervalInSeconds(60)
             .withRequestPath("/health")
@@ -115,10 +113,11 @@ public class LoadBalancerTests extends NetworkManagementTest {
         String publicIpName2 = generateRandomResourceName("pip", 15);
         String outboundRuleName = lbName + "-OutboundRule1";
 
-        ResourceGroup resourceGroup =
-            resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        ResourceGroup resourceGroup
+            = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
 
-        LoadBalancer loadBalancer = createLoadBalancerWithPublicFrontendAndOutboundRule(networkManager, resourceGroup, lbName, frontendName1, frontendName2, backendPoolName, publicIpName1, publicIpName2, outboundRuleName);
+        LoadBalancer loadBalancer = createLoadBalancerWithPublicFrontendAndOutboundRule(networkManager, resourceGroup,
+            lbName, frontendName1, frontendName2, backendPoolName, publicIpName1, publicIpName2, outboundRuleName);
 
         // assertions for loadbalancer properties
         Assertions.assertEquals(lbName, loadBalancer.name());
@@ -178,19 +177,13 @@ public class LoadBalancerTests extends NetworkManagementTest {
         String outboundRuleName1 = lbName + "-OutboundRule1";
         String outboundRuleName2 = lbName + "-OutboundRule2";
 
-        ResourceGroup resourceGroup =
-            resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        ResourceGroup resourceGroup
+            = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
 
-
-
-        LoadBalancer loadBalancer = createLoadBalancerWithPublicFrontendAndOutboundRule(networkManager, resourceGroup, lbName, frontendName1, frontendName2, backendPoolName, publicIpName1, publicIpName2, outboundRuleName1);
+        LoadBalancer loadBalancer = createLoadBalancerWithPublicFrontendAndOutboundRule(networkManager, resourceGroup,
+            lbName, frontendName1, frontendName2, backendPoolName, publicIpName1, publicIpName2, outboundRuleName1);
         // 1. update loadbalancer, update outbound rule
-        loadBalancer
-            .update()
-            .updateOutboundRule(outboundRuleName1)
-            .withIdleTimeoutInMinutes(50)
-            .parent()
-            .apply();
+        loadBalancer.update().updateOutboundRule(outboundRuleName1).withIdleTimeoutInMinutes(50).parent().apply();
 
         Map<String, LoadBalancerOutboundRule> outboundRules = loadBalancer.outboundRules();
         Assertions.assertEquals(1, outboundRules.size());
@@ -214,16 +207,12 @@ public class LoadBalancerTests extends NetworkManagementTest {
         Assertions.assertEquals(false, outboundRule.tcpResetEnabled());
 
         // 2. update loadbalancer, remove outbound rule
-        loadBalancer
-            .update()
-            .withoutOutboundRule(outboundRuleName1)
-            .apply();
+        loadBalancer.update().withoutOutboundRule(outboundRuleName1).apply();
 
         Assertions.assertEquals(0, loadBalancer.outboundRules().size());
 
         // 3. update loadbalancer, define a new outbound rule
-        loadBalancer
-            .update()
+        loadBalancer.update()
             .defineOutboundRule(outboundRuleName2)
             .withProtocol(LoadBalancerOutboundRuleProtocol.TCP)
             .fromBackend(backendPoolName)
@@ -240,13 +229,16 @@ public class LoadBalancerTests extends NetworkManagementTest {
         Assertions.assertEquals(1024, outboundRuleOnUpdateDefine.allocatedOutboundPorts());
         Assertions.assertEquals(backendPoolName, outboundRuleOnUpdateDefine.backend().name());
 
-        List<LoadBalancerFrontend> outboundRuleFrontendsOnUpdateDefine = new ArrayList<>(outboundRuleOnUpdateDefine.frontends().values());
+        List<LoadBalancerFrontend> outboundRuleFrontendsOnUpdateDefine
+            = new ArrayList<>(outboundRuleOnUpdateDefine.frontends().values());
         Assertions.assertEquals(1, outboundRuleFrontendsOnUpdateDefine.size());
         Assertions.assertEquals(frontendName2, outboundRuleFrontendsOnUpdateDefine.get(0).name());
         Assertions.assertEquals(1, outboundRuleFrontendsOnUpdateDefine.get(0).outboundRules().size());
-        Assertions.assertTrue(outboundRuleFrontendsOnUpdateDefine.get(0).outboundRules().containsKey(outboundRuleName2));
+        Assertions
+            .assertTrue(outboundRuleFrontendsOnUpdateDefine.get(0).outboundRules().containsKey(outboundRuleName2));
         Assertions.assertEquals(true, outboundRuleFrontendsOnUpdateDefine.get(0).isPublic());
-        LoadBalancerPublicFrontend publicFrontendOnUpdateDefine = (LoadBalancerPublicFrontend) outboundRuleFrontendsOnUpdateDefine.get(0);
+        LoadBalancerPublicFrontend publicFrontendOnUpdateDefine
+            = (LoadBalancerPublicFrontend) outboundRuleFrontendsOnUpdateDefine.get(0);
         Assertions.assertNotNull(publicFrontendOnUpdateDefine.getPublicIpAddress());
         Assertions.assertEquals(publicIpName2, publicFrontendOnUpdateDefine.getPublicIpAddress().name());
 
@@ -255,124 +247,117 @@ public class LoadBalancerTests extends NetworkManagementTest {
 
     }
 
-    private static LoadBalancer createLoadBalancerWithPrivateFrontend(
-        NetworkManager networkManager, ResourceGroup resourceGroup, Network network, String lbName) {
+    private static LoadBalancer createLoadBalancerWithPrivateFrontend(NetworkManager networkManager,
+        ResourceGroup resourceGroup, Network network, String lbName) {
         final String frontendName = lbName + "-FE1";
         final String backendPoolName1 = lbName + "-BAP1";
         final String backendPoolName2 = lbName + "-BAP2";
         final String natPool50XXto22 = lbName + "natPool50XXto22";
         final String natPool60XXto23 = lbName + "natPool60XXto23";
 
-        LoadBalancer loadBalancer1 =
-            networkManager
-                .loadBalancers()
-                .define(lbName)
-                .withRegion(resourceGroup.region())
-                .withExistingResourceGroup(resourceGroup.name())
-                // Add two rules that uses above backend and probe
-                .defineLoadBalancingRule(RULE_NAME_1)
-                .withProtocol(TransportProtocol.TCP)
-                .fromFrontend(frontendName)
-                .fromFrontendPort(80)
-                .toBackend(backendPoolName1)
-                .withProbe(PROBE_NAME_1)
-                .attach()
-                .defineLoadBalancingRule(RULE_NAME_2)
-                .withProtocol(TransportProtocol.TCP)
-                .fromFrontend(frontendName)
-                .fromFrontendPort(443)
-                .toBackend(backendPoolName2)
-                .withProbe(PROBE_NAME_2)
-                .attach()
-                // Add nat pools to enable direct VM connectivity for
-                //  SSH to port 22 and TELNET to port 23
-                .defineInboundNatPool(natPool50XXto22)
-                .withProtocol(TransportProtocol.TCP)
-                .fromFrontend(frontendName)
-                .fromFrontendPortRange(5000, 5099)
-                .toBackendPort(22)
-                .attach()
-                .defineInboundNatPool(natPool60XXto23)
-                .withProtocol(TransportProtocol.TCP)
-                .fromFrontend(frontendName)
-                .fromFrontendPortRange(6000, 6099)
-                .toBackendPort(23)
-                .attach()
-                // Explicitly define the frontend
-                .definePrivateFrontend(frontendName)
-                .withExistingSubnet(network, SUBNET_NAME)
-                .attach()
-                // Add two probes one per rule
-                .defineHttpProbe(PROBE_NAME_1)
-                .withRequestPath("/")
-                .attach()
-                .defineHttpsProbe(PROBE_NAME_2)
-                .withRequestPath("/")
-                .attach()
-                .withSku(LoadBalancerSkuType.STANDARD)
-                .create();
+        LoadBalancer loadBalancer1 = networkManager.loadBalancers()
+            .define(lbName)
+            .withRegion(resourceGroup.region())
+            .withExistingResourceGroup(resourceGroup.name())
+            // Add two rules that uses above backend and probe
+            .defineLoadBalancingRule(RULE_NAME_1)
+            .withProtocol(TransportProtocol.TCP)
+            .fromFrontend(frontendName)
+            .fromFrontendPort(80)
+            .toBackend(backendPoolName1)
+            .withProbe(PROBE_NAME_1)
+            .attach()
+            .defineLoadBalancingRule(RULE_NAME_2)
+            .withProtocol(TransportProtocol.TCP)
+            .fromFrontend(frontendName)
+            .fromFrontendPort(443)
+            .toBackend(backendPoolName2)
+            .withProbe(PROBE_NAME_2)
+            .attach()
+            // Add nat pools to enable direct VM connectivity for
+            //  SSH to port 22 and TELNET to port 23
+            .defineInboundNatPool(natPool50XXto22)
+            .withProtocol(TransportProtocol.TCP)
+            .fromFrontend(frontendName)
+            .fromFrontendPortRange(5000, 5099)
+            .toBackendPort(22)
+            .attach()
+            .defineInboundNatPool(natPool60XXto23)
+            .withProtocol(TransportProtocol.TCP)
+            .fromFrontend(frontendName)
+            .fromFrontendPortRange(6000, 6099)
+            .toBackendPort(23)
+            .attach()
+            // Explicitly define the frontend
+            .definePrivateFrontend(frontendName)
+            .withExistingSubnet(network, SUBNET_NAME)
+            .attach()
+            // Add two probes one per rule
+            .defineHttpProbe(PROBE_NAME_1)
+            .withRequestPath("/")
+            .attach()
+            .defineHttpsProbe(PROBE_NAME_2)
+            .withRequestPath("/")
+            .attach()
+            .withSku(LoadBalancerSkuType.STANDARD)
+            .create();
 
         return loadBalancer1;
     }
 
-    private static LoadBalancer createLoadBalancerWithPublicFrontendAndOutboundRule(
-        NetworkManager networkManager, ResourceGroup resourceGroup, String lbName, String frontendName1, String frontendName2, String backendPoolName, String publicIpName1, String publicIpName2, String outboundRuleName) {
+    private static LoadBalancer createLoadBalancerWithPublicFrontendAndOutboundRule(NetworkManager networkManager,
+        ResourceGroup resourceGroup, String lbName, String frontendName1, String frontendName2, String backendPoolName,
+        String publicIpName1, String publicIpName2, String outboundRuleName) {
 
-        PublicIpAddress pip1 =
-            networkManager
-                .publicIpAddresses()
-                .define(publicIpName1)
-                .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip1 = networkManager.publicIpAddresses()
+            .define(publicIpName1)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(PublicIPSkuType.STANDARD)
+            .withStaticIP()
+            .create();
 
-        PublicIpAddress pip2 =
-            networkManager
-                .publicIpAddresses()
-                .define(publicIpName2)
-                .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip2 = networkManager.publicIpAddresses()
+            .define(publicIpName2)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(PublicIPSkuType.STANDARD)
+            .withStaticIP()
+            .create();
 
-        LoadBalancer loadBalancer1 =
-            networkManager
-                .loadBalancers()
-                .define(lbName)
-                .withRegion(resourceGroup.region())
-                .withExistingResourceGroup(resourceGroup)
-                // Add rule that uses above backend and probe
-                .defineLoadBalancingRule(RULE_NAME_1)
-                .withProtocol(TransportProtocol.TCP)
-                .fromFrontend(frontendName1)
-                .fromFrontendPort(80)
-                .toBackend(backendPoolName)
-                .withProbe(PROBE_NAME_1)
-                .attach()
-                // Explicitly define the frontend
-                .definePublicFrontend(frontendName1)
-                .withExistingPublicIpAddress(pip1)
-                .attach()
-                .definePublicFrontend(frontendName2)
-                .withExistingPublicIpAddress(pip2)
-                .attach()
-                // add outbound rule
-                .defineOutboundRule(outboundRuleName)
-                .withProtocol(LoadBalancerOutboundRuleProtocol.TCP)
-                .fromBackend(backendPoolName)
-                .toFrontend(frontendName2)
-                .withEnableTcpReset(false)
-                .withIdleTimeoutInMinutes(5)
-                .attach()
-                // Add one probe
-                .defineHttpProbe(PROBE_NAME_1)
-                .withRequestPath("/")
-                .attach()
-                .withSku(LoadBalancerSkuType.STANDARD)
-                .create();
+        LoadBalancer loadBalancer1 = networkManager.loadBalancers()
+            .define(lbName)
+            .withRegion(resourceGroup.region())
+            .withExistingResourceGroup(resourceGroup)
+            // Add rule that uses above backend and probe
+            .defineLoadBalancingRule(RULE_NAME_1)
+            .withProtocol(TransportProtocol.TCP)
+            .fromFrontend(frontendName1)
+            .fromFrontendPort(80)
+            .toBackend(backendPoolName)
+            .withProbe(PROBE_NAME_1)
+            .attach()
+            // Explicitly define the frontend
+            .definePublicFrontend(frontendName1)
+            .withExistingPublicIpAddress(pip1)
+            .attach()
+            .definePublicFrontend(frontendName2)
+            .withExistingPublicIpAddress(pip2)
+            .attach()
+            // add outbound rule
+            .defineOutboundRule(outboundRuleName)
+            .withProtocol(LoadBalancerOutboundRuleProtocol.TCP)
+            .fromBackend(backendPoolName)
+            .toFrontend(frontendName2)
+            .withEnableTcpReset(false)
+            .withIdleTimeoutInMinutes(5)
+            .attach()
+            // Add one probe
+            .defineHttpProbe(PROBE_NAME_1)
+            .withRequestPath("/")
+            .attach()
+            .withSku(LoadBalancerSkuType.STANDARD)
+            .create();
 
         return loadBalancer1;
     }

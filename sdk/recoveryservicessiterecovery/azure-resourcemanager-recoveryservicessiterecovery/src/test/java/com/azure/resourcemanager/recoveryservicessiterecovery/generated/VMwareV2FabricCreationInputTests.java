@@ -22,7 +22,8 @@ public final class VMwareV2FabricCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VMwareV2FabricCreationInput model = new VMwareV2FabricCreationInput().withVmwareSiteId("ptchdwyq")
-            .withPhysicalSiteId("dqimlgbbfjm").withMigrationSolutionId("gjvxlhmpmhe");
+            .withPhysicalSiteId("dqimlgbbfjm")
+            .withMigrationSolutionId("gjvxlhmpmhe");
         model = BinaryData.fromObject(model).toObject(VMwareV2FabricCreationInput.class);
         Assertions.assertEquals("ptchdwyq", model.vmwareSiteId());
         Assertions.assertEquals("dqimlgbbfjm", model.physicalSiteId());

@@ -26,8 +26,8 @@ public interface ResourceProvidersClient {
      * @return result of Query Performance Insight data reset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QueryPerformanceInsightResetDataResultInner resetQueryPerformanceInsightData(
-        String resourceGroupName, String serverName);
+    QueryPerformanceInsightResetDataResultInner resetQueryPerformanceInsightData(String resourceGroupName,
+        String serverName);
 
     /**
      * Reset data for Query Performance Insight.
@@ -41,8 +41,8 @@ public interface ResourceProvidersClient {
      * @return result of Query Performance Insight data reset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QueryPerformanceInsightResetDataResultInner> resetQueryPerformanceInsightDataWithResponse(
-        String resourceGroupName, String serverName, Context context);
+    Response<QueryPerformanceInsightResetDataResultInner>
+        resetQueryPerformanceInsightDataWithResponse(String resourceGroupName, String serverName, Context context);
 
     /**
      * Create recommendation action session for the advisor.
@@ -57,8 +57,8 @@ public interface ResourceProvidersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName);
+    SyncPoller<PollResult<Void>, Void> beginCreateRecommendedActionSession(String resourceGroupName, String serverName,
+        String advisorName, String databaseName);
 
     /**
      * Create recommendation action session for the advisor.
@@ -74,8 +74,8 @@ public interface ResourceProvidersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCreateRecommendedActionSession(String resourceGroupName, String serverName,
+        String advisorName, String databaseName, Context context);
 
     /**
      * Create recommendation action session for the advisor.
@@ -89,8 +89,8 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName);
+    void createRecommendedActionSession(String resourceGroupName, String serverName, String advisorName,
+        String databaseName);
 
     /**
      * Create recommendation action session for the advisor.
@@ -105,6 +105,6 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName, Context context);
+    void createRecommendedActionSession(String resourceGroupName, String serverName, String advisorName,
+        String databaseName, Context context);
 }

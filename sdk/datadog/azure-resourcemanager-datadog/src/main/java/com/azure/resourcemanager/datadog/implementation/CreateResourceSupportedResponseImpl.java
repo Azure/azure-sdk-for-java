@@ -13,8 +13,7 @@ public final class CreateResourceSupportedResponseImpl implements CreateResource
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    CreateResourceSupportedResponseImpl(
-        CreateResourceSupportedResponseInner innerObject,
+    CreateResourceSupportedResponseImpl(CreateResourceSupportedResponseInner innerObject,
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

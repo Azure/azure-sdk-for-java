@@ -14,6 +14,15 @@ public class StorageAccountEncryptionKeySource extends ExpandableStringEnum<Stor
     public static final StorageAccountEncryptionKeySource MICROSOFT_KEYVAULT = fromString("Microsoft.Keyvault");
 
     /**
+     * Creates a new instance of StorageAccountEncryptionKeySource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageAccountEncryptionKeySource() {
+    }
+
+    /**
      * Creates or finds an encryption status based on its name.
      *
      * @param name a name to look for
@@ -23,7 +32,11 @@ public class StorageAccountEncryptionKeySource extends ExpandableStringEnum<Stor
         return fromString(name, StorageAccountEncryptionKeySource.class);
     }
 
-    /** @return known storage account encryption sources. */
+    /**
+     * Gets known storage account encryption sources.
+     *
+     * @return known storage account encryption sources.
+     */
     public static Collection<StorageAccountEncryptionKeySource> values() {
         return values(StorageAccountEncryptionKeySource.class);
     }

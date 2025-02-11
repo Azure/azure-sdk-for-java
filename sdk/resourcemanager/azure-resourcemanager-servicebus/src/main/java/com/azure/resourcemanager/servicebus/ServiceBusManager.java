@@ -23,6 +23,7 @@ import java.util.Objects;
 public final class ServiceBusManager extends Manager<ServiceBusManagementClient> {
     // Collections
     private ServiceBusNamespaces namespaces;
+
     /**
      * Get a Configurable instance that can be used to create {@link ServiceBusManager}
      * with optional configuration.
@@ -76,9 +77,7 @@ public final class ServiceBusManager extends Manager<ServiceBusManagementClient>
     /**
      * The implementation for Configurable interface.
      */
-    private static class ConfigurableImpl
-            extends AzureConfigurableImpl<Configurable>
-            implements Configurable {
+    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
 
         public ServiceBusManager authenticate(TokenCredential credential, AzureProfile profile) {
             return ServiceBusManager.authenticate(buildHttpPipeline(credential, profile), profile);
@@ -86,17 +85,16 @@ public final class ServiceBusManager extends Manager<ServiceBusManagementClient>
     }
 
     private ServiceBusManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new ServiceBusManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new ServiceBusManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
     }
 
     /**
+     * Gets the API entry point of the Service Bus namespace management.
+     *
      * @return the Service Bus namespace management API entry point
      */
     public ServiceBusNamespaces namespaces() {

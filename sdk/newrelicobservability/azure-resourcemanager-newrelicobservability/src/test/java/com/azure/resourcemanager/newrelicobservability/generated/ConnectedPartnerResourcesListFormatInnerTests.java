@@ -25,7 +25,9 @@ public final class ConnectedPartnerResourcesListFormatInnerTests {
     public void testSerialize() throws Exception {
         ConnectedPartnerResourcesListFormatInner model = new ConnectedPartnerResourcesListFormatInner()
             .withProperties(new ConnectedPartnerResourceProperties().withAccountName("eupfhyhltrpm")
-                .withAccountId("jmcmatuokthfu").withAzureResourceId("aodsfcpkv").withLocation("dpuozmyz"));
+                .withAccountId("jmcmatuokthfu")
+                .withAzureResourceId("aodsfcpkv")
+                .withLocation("dpuozmyz"));
         model = BinaryData.fromObject(model).toObject(ConnectedPartnerResourcesListFormatInner.class);
         Assertions.assertEquals("eupfhyhltrpm", model.properties().accountName());
         Assertions.assertEquals("jmcmatuokthfu", model.properties().accountId());

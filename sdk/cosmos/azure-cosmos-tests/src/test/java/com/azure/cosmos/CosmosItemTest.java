@@ -59,7 +59,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -140,7 +139,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
         //Keep size as ~ 1.5MB to account for size of other props
         int size = (int) (ONE_MB * 1.5);
-        docDefinition.set("largeString", StringUtils.repeat("x", size), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        docDefinition.set("largeString", StringUtils.repeat("x", size));
 
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition, new CosmosItemRequestOptions());
 
@@ -154,7 +153,7 @@ public class CosmosItemTest extends TestSuiteBase {
         for(int i = 0; i < 100; i++) {
             sb.append(i).append("x");
         }
-        docDefinition.set("mypk", sb.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        docDefinition.set("mypk", sb.toString());
 
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition, new CosmosItemRequestOptions());
 
@@ -168,7 +167,7 @@ public class CosmosItemTest extends TestSuiteBase {
         for(int i = 0; i < 100; i++) {
             sb.append(i).append("x");
         }
-        docDefinition.set("mypk", sb.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        docDefinition.set("mypk", sb.toString());
 
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition);
 
@@ -1100,7 +1099,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
         validateItemResponse(properties, itemResponse);
         String newPropValue = UUID.randomUUID().toString();
-        properties.set("newProp", newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        properties.set("newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         ModelBridgeInternal.setPartitionKey(options, new PartitionKey(properties.get("mypk")));
         // replace document

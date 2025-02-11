@@ -10,7 +10,7 @@ package com.azure.resourcemanager.streamanalytics.generated;
 public final class StreamingJobsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Get_NoExpand.json
      */
     /**
@@ -20,13 +20,13 @@ public final class StreamingJobsGetByResourceGroupSamples {
      */
     public static void getAStreamingJobAndDoNotUseTheExpandODataQueryParameter(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().getByResourceGroupWithResponse("sjrg6936", "sj59", null,
-            com.azure.core.util.Context.NONE);
+        manager.streamingJobs()
+            .getByResourceGroupWithResponse("sjrg6936", "sj59", null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Get_Expand.json
      */
     /**
@@ -38,7 +38,8 @@ public final class StreamingJobsGetByResourceGroupSamples {
     public static void
         getAStreamingJobAndUseTheExpandODataQueryParameterToExpandInputsOutputsTransformationAndFunctions(
             com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().getByResourceGroupWithResponse("sjrg3276", "sj7804",
-            "inputs,outputs,transformation,functions", com.azure.core.util.Context.NONE);
+        manager.streamingJobs()
+            .getByResourceGroupWithResponse("sjrg3276", "sj7804", "inputs,outputs,transformation,functions",
+                com.azure.core.util.Context.NONE);
     }
 }

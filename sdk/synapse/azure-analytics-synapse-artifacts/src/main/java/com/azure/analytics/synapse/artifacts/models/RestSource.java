@@ -23,17 +23,20 @@ public final class RestSource extends CopySource {
     private String type = "RestSource";
 
     /*
-     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType string).
+     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
+     * string).
      */
     private Object requestMethod;
 
     /*
-     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType string).
+     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
+     * string).
      */
     private Object requestBody;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType string).
+     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
+     * string).
      */
     private Object additionalHeaders;
 
@@ -43,17 +46,20 @@ public final class RestSource extends CopySource {
     private Object paginationRules;
 
     /*
-     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read
+     * response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     private Object httpRequestTimeout;
 
     /*
-     * The time to await before sending next page request. 
+     * The time to await before sending next page request.
      */
     private Object requestInterval;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     private Object additionalColumns;
 

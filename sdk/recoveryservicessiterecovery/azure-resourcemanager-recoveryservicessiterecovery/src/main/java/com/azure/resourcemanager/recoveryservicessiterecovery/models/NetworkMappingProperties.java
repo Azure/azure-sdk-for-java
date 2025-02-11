@@ -5,65 +5,60 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Network Mapping Properties.
  */
 @Fluent
-public final class NetworkMappingProperties {
+public final class NetworkMappingProperties implements JsonSerializable<NetworkMappingProperties> {
     /*
      * The pairing state for network mapping.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * The primary network friendly name.
      */
-    @JsonProperty(value = "primaryNetworkFriendlyName")
     private String primaryNetworkFriendlyName;
 
     /*
      * The primary network id for network mapping.
      */
-    @JsonProperty(value = "primaryNetworkId")
     private String primaryNetworkId;
 
     /*
      * The primary fabric friendly name.
      */
-    @JsonProperty(value = "primaryFabricFriendlyName")
     private String primaryFabricFriendlyName;
 
     /*
      * The recovery network friendly name.
      */
-    @JsonProperty(value = "recoveryNetworkFriendlyName")
     private String recoveryNetworkFriendlyName;
 
     /*
      * The recovery network id for network mapping.
      */
-    @JsonProperty(value = "recoveryNetworkId")
     private String recoveryNetworkId;
 
     /*
      * The recovery fabric ARM id.
      */
-    @JsonProperty(value = "recoveryFabricArmId")
     private String recoveryFabricArmId;
 
     /*
      * The recovery fabric friendly name.
      */
-    @JsonProperty(value = "recoveryFabricFriendlyName")
     private String recoveryFabricFriendlyName;
 
     /*
      * The fabric specific settings.
      */
-    @JsonProperty(value = "fabricSpecificSettings")
     private NetworkMappingFabricSpecificSettings fabricSpecificSettings;
 
     /**
@@ -262,5 +257,66 @@ public final class NetworkMappingProperties {
         if (fabricSpecificSettings() != null) {
             fabricSpecificSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("primaryNetworkFriendlyName", this.primaryNetworkFriendlyName);
+        jsonWriter.writeStringField("primaryNetworkId", this.primaryNetworkId);
+        jsonWriter.writeStringField("primaryFabricFriendlyName", this.primaryFabricFriendlyName);
+        jsonWriter.writeStringField("recoveryNetworkFriendlyName", this.recoveryNetworkFriendlyName);
+        jsonWriter.writeStringField("recoveryNetworkId", this.recoveryNetworkId);
+        jsonWriter.writeStringField("recoveryFabricArmId", this.recoveryFabricArmId);
+        jsonWriter.writeStringField("recoveryFabricFriendlyName", this.recoveryFabricFriendlyName);
+        jsonWriter.writeJsonField("fabricSpecificSettings", this.fabricSpecificSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkMappingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkMappingProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkMappingProperties.
+     */
+    public static NetworkMappingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkMappingProperties deserializedNetworkMappingProperties = new NetworkMappingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedNetworkMappingProperties.state = reader.getString();
+                } else if ("primaryNetworkFriendlyName".equals(fieldName)) {
+                    deserializedNetworkMappingProperties.primaryNetworkFriendlyName = reader.getString();
+                } else if ("primaryNetworkId".equals(fieldName)) {
+                    deserializedNetworkMappingProperties.primaryNetworkId = reader.getString();
+                } else if ("primaryFabricFriendlyName".equals(fieldName)) {
+                    deserializedNetworkMappingProperties.primaryFabricFriendlyName = reader.getString();
+                } else if ("recoveryNetworkFriendlyName".equals(fieldName)) {
+                    deserializedNetworkMappingProperties.recoveryNetworkFriendlyName = reader.getString();
+                } else if ("recoveryNetworkId".equals(fieldName)) {
+                    deserializedNetworkMappingProperties.recoveryNetworkId = reader.getString();
+                } else if ("recoveryFabricArmId".equals(fieldName)) {
+                    deserializedNetworkMappingProperties.recoveryFabricArmId = reader.getString();
+                } else if ("recoveryFabricFriendlyName".equals(fieldName)) {
+                    deserializedNetworkMappingProperties.recoveryFabricFriendlyName = reader.getString();
+                } else if ("fabricSpecificSettings".equals(fieldName)) {
+                    deserializedNetworkMappingProperties.fabricSpecificSettings
+                        = NetworkMappingFabricSpecificSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkMappingProperties;
+        });
     }
 }

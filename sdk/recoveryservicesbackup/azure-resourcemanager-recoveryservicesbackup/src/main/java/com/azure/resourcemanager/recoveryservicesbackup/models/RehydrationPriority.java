@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class RehydrationPriority extends ExpandableStringEnum<RehydrationP
      * @param name a name to look for.
      * @return the corresponding RehydrationPriority.
      */
-    @JsonCreator
     public static RehydrationPriority fromString(String name) {
         return fromString(name, RehydrationPriority.class);
     }

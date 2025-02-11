@@ -15,6 +15,7 @@ import com.azure.resourcemanager.networkcloud.models.ClusterManagerPatchParamete
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
+import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,10 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -135,20 +140,16 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
     }
 
     public ClusterManager create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterManagers()
-                .createOrUpdate(resourceGroupName, clusterManagerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusterManagers()
+            .createOrUpdate(resourceGroupName, clusterManagerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ClusterManager create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterManagers()
-                .createOrUpdate(resourceGroupName, clusterManagerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusterManagers()
+            .createOrUpdate(resourceGroupName, clusterManagerName, this.innerModel(), context);
         return this;
     }
 
@@ -164,52 +165,43 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
     }
 
     public ClusterManager apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterManagers()
-                .updateWithResponse(
-                    resourceGroupName, clusterManagerName, updateClusterManagerUpdateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusterManagers()
+            .updateWithResponse(resourceGroupName, clusterManagerName, updateClusterManagerUpdateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ClusterManager apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterManagers()
-                .updateWithResponse(
-                    resourceGroupName, clusterManagerName, updateClusterManagerUpdateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusterManagers()
+            .updateWithResponse(resourceGroupName, clusterManagerName, updateClusterManagerUpdateParameters, context)
+            .getValue();
         return this;
     }
 
-    ClusterManagerImpl(
-        ClusterManagerInner innerObject, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    ClusterManagerImpl(ClusterManagerInner innerObject,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterManagerName = Utils.getValueFromIdByName(innerObject.id(), "clusterManagers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterManagerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusterManagers");
     }
 
     public ClusterManager refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterManagers()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusterManagers()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ClusterManager refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterManagers()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusterManagers()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, context)
+            .getValue();
         return this;
     }
 
@@ -238,6 +230,16 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
         }
     }
 
+    public ClusterManagerImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateClusterManagerUpdateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
     public ClusterManagerImpl withAnalyticsWorkspaceId(String analyticsWorkspaceId) {
         this.innerModel().withAnalyticsWorkspaceId(analyticsWorkspaceId);
         return this;
@@ -248,8 +250,8 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
         return this;
     }
 
-    public ClusterManagerImpl withManagedResourceGroupConfiguration(
-        ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
+    public ClusterManagerImpl
+        withManagedResourceGroupConfiguration(ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
         this.innerModel().withManagedResourceGroupConfiguration(managedResourceGroupConfiguration);
         return this;
     }

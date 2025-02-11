@@ -38,7 +38,8 @@ public class VisualStudioCodeCredential implements TokenCredential {
     private final String cloudInstance;
     private static final ClientLogger LOGGER = new ClientLogger(VisualStudioCodeCredential.class);
 
-    private static final String TROUBLESHOOTING = "VisualStudioCodeCredential is affected by known issues. See https://aka.ms/azsdk/java/identity/troubleshoot#troubleshoot-visualstudiocodecredential-authentication-issues for more information.";
+    private static final String TROUBLESHOOTING
+        = "VisualStudioCodeCredential is affected by known issues. See https://aka.ms/azsdk/java/identity/troubleshoot#troubleshoot-visualstudiocodecredential-authentication-issues for more information.";
 
     /**
      * Creates a public class VisualStudioCodeCredential implements TokenCredential with the given tenant and
@@ -49,8 +50,8 @@ public class VisualStudioCodeCredential implements TokenCredential {
      */
     VisualStudioCodeCredential(String tenantId, IdentityClientOptions identityClientOptions) {
 
-        IdentityClientOptions options = (identityClientOptions == null ? new IdentityClientOptions()
-                                                 : identityClientOptions);
+        IdentityClientOptions options
+            = (identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions);
         String tenant;
 
         VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
@@ -67,11 +68,10 @@ public class VisualStudioCodeCredential implements TokenCredential {
             tenant = userSettings.getOrDefault("tenant", "common");
         }
 
-        identityClient = new IdentityClientBuilder()
-                .tenantId(tenant)
-                .clientId("aebc6443-996d-45c2-90f0-388ff96faa56")
-                .identityClientOptions(options)
-                .build();
+        identityClient = new IdentityClientBuilder().tenantId(tenant)
+            .clientId("aebc6443-996d-45c2-90f0-388ff96faa56")
+            .identityClientOptions(options)
+            .build();
 
         this.cachedToken = new AtomicReference<>();
     }
@@ -81,16 +81,16 @@ public class VisualStudioCodeCredential implements TokenCredential {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
                 return identityClient.authenticateWithPublicClientCache(request, cachedToken.get().getAccount())
-                           .onErrorResume(t -> Mono.empty());
+                    .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(
-            Mono.defer(() -> identityClient.authenticateWithVsCodeCredential(request, cloudInstance)))
-                   .map(msalToken -> {
-                       cachedToken.set(msalToken);
-                       return (AccessToken) msalToken;
-                   })
+        })
+            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithVsCodeCredential(request, cloudInstance)))
+            .map(msalToken -> {
+                cachedToken.set(msalToken);
+                return (AccessToken) msalToken;
+            })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> {
                 Throwable other = null;
@@ -102,8 +102,7 @@ public class VisualStudioCodeCredential implements TokenCredential {
                 } else {
                     other = error;
                 }
-                LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                    request, other);
+                LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, other);
             });
     }
 }

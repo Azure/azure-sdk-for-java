@@ -4,26 +4,22 @@
 
 package com.azure.resourcemanager.reservations.generated;
 
-/** Samples for Reservation ListAll. */
+/**
+ * Samples for Reservation ListAll.
+ */
 public final class ReservationListAllSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/GetReservations.json
+     * x-ms-original-file:
+     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/GetReservations.json
      */
     /**
      * Sample code: ReservationListAll.
-     *
+     * 
      * @param manager Entry point to ReservationsManager.
      */
     public static void reservationListAll(com.azure.resourcemanager.reservations.ReservationsManager manager) {
-        manager
-            .reservations()
-            .listAll(
-                "(properties/archived eq false)",
-                "properties/displayName asc",
-                "true",
-                50.0F,
-                null,
-                1.0F,
+        manager.reservations()
+            .listAll("(properties/archived eq false)", "properties/displayName asc", "true", 50.0F, null, 1.0F,
                 com.azure.core.util.Context.NONE);
     }
 }

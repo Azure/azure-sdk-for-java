@@ -6,24 +6,26 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of custom and predefined url category.
  */
 @Fluent
-public final class AdvSecurityObjectModel {
+public final class AdvSecurityObjectModel implements JsonSerializable<AdvSecurityObjectModel> {
     /*
      * type of object
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * URL entry
      */
-    @JsonProperty(value = "entry", required = true)
     private List<NameDescriptionObject> entry;
 
     /**
@@ -79,12 +81,54 @@ public final class AdvSecurityObjectModel {
      */
     public void validate() {
         if (entry() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property entry in model AdvSecurityObjectModel"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property entry in model AdvSecurityObjectModel"));
         } else {
             entry().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AdvSecurityObjectModel.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("entry", this.entry, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdvSecurityObjectModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdvSecurityObjectModel if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdvSecurityObjectModel.
+     */
+    public static AdvSecurityObjectModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdvSecurityObjectModel deserializedAdvSecurityObjectModel = new AdvSecurityObjectModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entry".equals(fieldName)) {
+                    List<NameDescriptionObject> entry
+                        = reader.readArray(reader1 -> NameDescriptionObject.fromJson(reader1));
+                    deserializedAdvSecurityObjectModel.entry = entry;
+                } else if ("type".equals(fieldName)) {
+                    deserializedAdvSecurityObjectModel.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdvSecurityObjectModel;
+        });
+    }
 }

@@ -217,7 +217,8 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
         jsonWriter.writeNumberField("temperature", this.temperature);
         jsonWriter.writeNumberField("top_p", this.topP);
         if (this.responseFormat != null) {
-            jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
+            jsonWriter.writeFieldName("response_format");
+            this.responseFormat.writeTo(jsonWriter);
         }
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();

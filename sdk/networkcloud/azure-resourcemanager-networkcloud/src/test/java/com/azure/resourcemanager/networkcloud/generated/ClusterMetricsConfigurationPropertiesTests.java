@@ -12,23 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterMetricsConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterMetricsConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"collectionInterval\":8246168361887444991,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"lontacnpq\",\"disabledMetrics\":[\"htuevrhrljy\",\"ogwxhnsduugwb\",\"reur\"],\"enabledMetrics\":[\"fuarenlvhht\",\"lnvnafvvkyfedev\",\"bo\"],\"provisioningState\":\"Provisioning\"}")
-                .toObject(ClusterMetricsConfigurationProperties.class);
-        Assertions.assertEquals(8246168361887444991L, model.collectionInterval());
-        Assertions.assertEquals("fuarenlvhht", model.enabledMetrics().get(0));
+        ClusterMetricsConfigurationProperties model = BinaryData.fromString(
+            "{\"collectionInterval\":2386815230831470756,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ichdlpn\",\"disabledMetrics\":[\"b\",\"tnbatzvi\",\"sowsaael\",\"attcju\"],\"enabledMetrics\":[\"rvkmjcwmjvlgfggc\",\"kyylizr\"],\"provisioningState\":\"Provisioning\"}")
+            .toObject(ClusterMetricsConfigurationProperties.class);
+        Assertions.assertEquals(2386815230831470756L, model.collectionInterval());
+        Assertions.assertEquals("rvkmjcwmjvlgfggc", model.enabledMetrics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterMetricsConfigurationProperties model =
-            new ClusterMetricsConfigurationProperties()
-                .withCollectionInterval(8246168361887444991L)
-                .withEnabledMetrics(Arrays.asList("fuarenlvhht", "lnvnafvvkyfedev", "bo"));
+        ClusterMetricsConfigurationProperties model
+            = new ClusterMetricsConfigurationProperties().withCollectionInterval(2386815230831470756L)
+                .withEnabledMetrics(Arrays.asList("rvkmjcwmjvlgfggc", "kyylizr"));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationProperties.class);
-        Assertions.assertEquals(8246168361887444991L, model.collectionInterval());
-        Assertions.assertEquals("fuarenlvhht", model.enabledMetrics().get(0));
+        Assertions.assertEquals(2386815230831470756L, model.collectionInterval());
+        Assertions.assertEquals("rvkmjcwmjvlgfggc", model.enabledMetrics().get(0));
     }
 }

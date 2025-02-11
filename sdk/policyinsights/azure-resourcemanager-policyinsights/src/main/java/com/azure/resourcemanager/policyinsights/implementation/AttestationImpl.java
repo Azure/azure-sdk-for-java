@@ -106,20 +106,16 @@ public final class AttestationImpl implements Attestation, Attestation.Definitio
     }
 
     public Attestation create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestations()
-                .createOrUpdateAtResourceGroup(resourceGroupName, attestationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestations()
+            .createOrUpdateAtResourceGroup(resourceGroupName, attestationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Attestation create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestations()
-                .createOrUpdateAtResourceGroup(resourceGroupName, attestationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestations()
+            .createOrUpdateAtResourceGroup(resourceGroupName, attestationName, this.innerModel(), context);
         return this;
     }
 
@@ -134,48 +130,40 @@ public final class AttestationImpl implements Attestation, Attestation.Definitio
     }
 
     public Attestation apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestations()
-                .createOrUpdateAtResourceGroup(resourceGroupName, attestationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestations()
+            .createOrUpdateAtResourceGroup(resourceGroupName, attestationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Attestation apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestations()
-                .createOrUpdateAtResourceGroup(resourceGroupName, attestationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestations()
+            .createOrUpdateAtResourceGroup(resourceGroupName, attestationName, this.innerModel(), context);
         return this;
     }
 
-    AttestationImpl(
-        AttestationInner innerObject, com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
+    AttestationImpl(AttestationInner innerObject,
+        com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.attestationName = Utils.getValueFromIdByName(innerObject.id(), "attestations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.attestationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "attestations");
     }
 
     public Attestation refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestations()
-                .getByResourceGroupWithResponse(resourceGroupName, attestationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestations()
+            .getByResourceGroupWithResponse(resourceGroupName, attestationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Attestation refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttestations()
-                .getByResourceGroupWithResponse(resourceGroupName, attestationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttestations()
+            .getByResourceGroupWithResponse(resourceGroupName, attestationName, context)
+            .getValue();
         return this;
     }
 

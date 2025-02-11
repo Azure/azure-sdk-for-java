@@ -6,18 +6,20 @@ package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.resourcemanager.devtestlabs.fluent.models.GenerateUploadUriResponseInner;
 
-/** An immutable client-side representation of GenerateUploadUriResponse. */
+/**
+ * An immutable client-side representation of GenerateUploadUriResponse.
+ */
 public interface GenerateUploadUriResponse {
     /**
      * Gets the uploadUri property: The upload URI for the VHD.
-     *
+     * 
      * @return the uploadUri value.
      */
     String uploadUri();
 
     /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.GenerateUploadUriResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     GenerateUploadUriResponseInner innerModel();

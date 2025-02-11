@@ -7,8 +7,13 @@ package com.azure.storage.file.datalake.models;
  * Defines the input or output JSON serialization for a file query request.
  */
 public class FileQueryJsonSerialization implements FileQuerySerialization {
-
     private char recordSeparator;
+
+    /**
+     * Creates a new instance of {@link FileQueryJsonSerialization}.
+     */
+    public FileQueryJsonSerialization() {
+    }
 
     /**
      * Gets the record separator.

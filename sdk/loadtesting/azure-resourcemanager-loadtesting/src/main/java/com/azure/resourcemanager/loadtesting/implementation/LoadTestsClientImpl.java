@@ -35,29 +35,35 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.loadtesting.fluent.LoadTestsClient;
 import com.azure.resourcemanager.loadtesting.fluent.models.LoadTestResourceInner;
 import com.azure.resourcemanager.loadtesting.fluent.models.OutboundEnvironmentEndpointInner;
-import com.azure.resourcemanager.loadtesting.models.LoadTestResourcePageList;
+import com.azure.resourcemanager.loadtesting.models.LoadTestResourceListResult;
 import com.azure.resourcemanager.loadtesting.models.LoadTestResourcePatchRequestBody;
-import com.azure.resourcemanager.loadtesting.models.OutboundEnvironmentEndpointCollection;
+import com.azure.resourcemanager.loadtesting.models.PagedOutboundEnvironmentEndpoint;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LoadTestsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LoadTestsClient.
+ */
 public final class LoadTestsClientImpl implements LoadTestsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LoadTestsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final LoadTestClientImpl client;
 
     /**
      * Initializes an instance of LoadTestsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LoadTestsClientImpl(LoadTestClientImpl client) {
-        this.service =
-            RestProxy.create(LoadTestsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LoadTestsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,260 +74,186 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     @Host("{$host}")
     @ServiceInterface(name = "LoadTestClientLoadTe")
     public interface LoadTestsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/loadTests")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadTestResourcePageList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<LoadTestResourceListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/loadTests")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<LoadTestResourceListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService"
-                + "/loadTests")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/loadTests/{loadTestName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadTestResourcePageList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<LoadTestResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("loadTestName") String loadTestName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/loadTests/{loadTestName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("loadTestName") String loadTestName,
+            @BodyParam("application/json") LoadTestResourceInner resource, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService"
-                + "/loadTests/{loadTestName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/loadTests/{loadTestName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadTestResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("loadTestName") String loadTestName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("loadTestName") String loadTestName,
+            @BodyParam("application/json") LoadTestResourcePatchRequestBody properties,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService"
-                + "/loadTests/{loadTestName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/loadTests/{loadTestName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("loadTestName") String loadTestName,
-            @BodyParam("application/json") LoadTestResourceInner loadTestResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("loadTestName") String loadTestName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService"
-                + "/loadTests/{loadTestName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/loadTests/{loadTestName}/outboundNetworkDependenciesEndpoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PagedOutboundEnvironmentEndpoint>> listOutboundNetworkDependenciesEndpoints(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("loadTestName") String loadTestName,
-            @BodyParam("application/json") LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("loadTestName") String loadTestName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService"
-                + "/loadTests/{loadTestName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("loadTestName") String loadTestName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService"
-                + "/loadTests/{loadTestName}/outboundNetworkDependenciesEndpoints")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesEndpoints(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("loadTestName") String loadTestName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadTestResourcePageList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<LoadTestResourceListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadTestResourcePageList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<LoadTestResourceListResult>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesEndpointsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PagedOutboundEnvironmentEndpoint>> listOutboundNetworkDependenciesEndpointsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Lists loadtests resources in a subscription.
-     *
+     * List LoadTestResource resources by subscription ID.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a LoadTestResource list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<LoadTestResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<LoadTestResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists loadtests resources in a subscription.
-     *
+     * List LoadTestResource resources by subscription ID.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a LoadTestResource list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Lists loadtests resources in a subscription.
-     *
+     * List LoadTestResource resources by subscription ID.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedFlux}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoadTestResourceInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists loadtests resources in a subscription.
-     *
+     * List LoadTestResource resources by subscription ID.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedFlux}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoadTestResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists loadtests resources in a subscription.
-     *
+     * List LoadTestResource resources by subscription ID.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadTestResourceInner> list() {
@@ -329,13 +261,13 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     }
 
     /**
-     * Lists loadtests resources in a subscription.
-     *
+     * List LoadTestResource resources by subscription ID.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadTestResourceInner> list(Context context) {
@@ -343,27 +275,24 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     }
 
     /**
-     * Lists loadtest resources in a resource group.
-     *
+     * List LoadTestResource resources by resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a LoadTestResource list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -371,52 +300,34 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<LoadTestResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<LoadTestResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists loadtest resources in a resource group.
-     *
+     * List LoadTestResource resources by resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a LoadTestResource list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LoadTestResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<LoadTestResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -425,65 +336,51 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Lists loadtest resources in a resource group.
-     *
+     * List LoadTestResource resources by resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedFlux}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoadTestResourceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists loadtest resources in a resource group.
-     *
+     * List LoadTestResource resources by resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedFlux}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoadTestResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists loadtest resources in a resource group.
-     *
+     * List LoadTestResource resources by resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadTestResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -491,14 +388,14 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     }
 
     /**
-     * Lists loadtest resources in a resource group.
-     *
+     * List LoadTestResource resources by resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadTestResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -506,29 +403,25 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     }
 
     /**
-     * Get a LoadTest resource.
-     *
+     * Get a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a LoadTestResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LoadTestResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String loadTestName) {
+    private Mono<Response<LoadTestResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String loadTestName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -539,45 +432,32 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            loadTestName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, loadTestName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get a LoadTest resource.
-     *
+     * Get a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a LoadTestResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LoadTestResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String loadTestName, Context context) {
+    private Mono<Response<LoadTestResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String loadTestName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -588,26 +468,19 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                loadTestName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, loadTestName, accept, context);
     }
 
     /**
-     * Get a LoadTest resource.
-     *
+     * Get a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource on successful completion of {@link Mono}.
+     * @return a LoadTestResource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoadTestResourceInner> getByResourceGroupAsync(String resourceGroupName, String loadTestName) {
@@ -616,31 +489,31 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     }
 
     /**
-     * Get a LoadTest resource.
-     *
+     * Get a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource along with {@link Response}.
+     * @return a LoadTestResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LoadTestResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String loadTestName, Context context) {
+    public Response<LoadTestResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String loadTestName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, loadTestName, context).block();
     }
 
     /**
-     * Get a LoadTest resource.
-     *
+     * Get a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource.
+     * @return a LoadTestResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadTestResourceInner getByResourceGroup(String resourceGroupName, String loadTestName) {
@@ -648,30 +521,26 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     }
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadTest details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String loadTestName, LoadTestResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -680,35 +549,24 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         if (loadTestName == null) {
             return Mono.error(new IllegalArgumentException("Parameter loadTestName is required and cannot be null."));
         }
-        if (loadTestResource == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadTestResource is required and cannot be null."));
+        if (resource == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
-            loadTestResource.validate();
+            resource.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            loadTestName,
-                            loadTestResource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, loadTestName, resource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -716,19 +574,15 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return loadTest details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String loadTestName, LoadTestResourceInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -737,58 +591,44 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         if (loadTestName == null) {
             return Mono.error(new IllegalArgumentException("Parameter loadTestName is required and cannot be null."));
         }
-        if (loadTestResource == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadTestResource is required and cannot be null."));
+        if (resource == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
-            loadTestResource.validate();
+            resource.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                loadTestName,
-                loadTestResource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, loadTestName, resource, accept, context);
     }
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of loadTest details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, loadTestName, loadTestResource);
-        return this
-            .client
-            .<LoadTestResourceInner, LoadTestResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LoadTestResourceInner.class,
-                LoadTestResourceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<LoadTestResourceInner>, LoadTestResourceInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String loadTestName, LoadTestResourceInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, loadTestName, resource);
+        return this.client.<LoadTestResourceInner, LoadTestResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LoadTestResourceInner.class, LoadTestResourceInner.class,
+            this.client.getContext());
     }
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -797,22 +637,38 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context) {
+        String resourceGroupName, String loadTestName, LoadTestResourceInner resource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, loadTestName, loadTestResource, context);
-        return this
-            .client
-            .<LoadTestResourceInner, LoadTestResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LoadTestResourceInner.class, LoadTestResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, loadTestName, resource, context);
+        return this.client.<LoadTestResourceInner, LoadTestResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LoadTestResourceInner.class, LoadTestResourceInner.class, context);
     }
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String loadTestName, LoadTestResourceInner resource) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, loadTestName, resource).getSyncPoller();
+    }
+
+    /**
+     * Create a LoadTestResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -820,55 +676,34 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource).getSyncPoller();
+        String resourceGroupName, String loadTestName, LoadTestResourceInner resource, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, loadTestName, resource, context).getSyncPoller();
     }
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of loadTest details.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Create or update LoadTest resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadTest details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoadTestResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource)
-            .last()
+    private Mono<LoadTestResourceInner> createOrUpdateAsync(String resourceGroupName, String loadTestName,
+        LoadTestResourceInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, loadTestName, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -876,36 +711,35 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return loadTest details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoadTestResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource, context)
-            .last()
+    private Mono<LoadTestResourceInner> createOrUpdateAsync(String resourceGroupName, String loadTestName,
+        LoadTestResourceInner resource, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, loadTestName, resource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoadTestResourceInner createOrUpdate(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource) {
-        return createOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource).block();
+    public LoadTestResourceInner createOrUpdate(String resourceGroupName, String loadTestName,
+        LoadTestResourceInner resource) {
+        return createOrUpdateAsync(resourceGroupName, loadTestName, resource).block();
     }
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -913,38 +747,32 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoadTestResourceInner createOrUpdate(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource, context).block();
+    public LoadTestResourceInner createOrUpdate(String resourceGroupName, String loadTestName,
+        LoadTestResourceInner resource, Context context) {
+        return createOrUpdateAsync(resourceGroupName, loadTestName, resource, context).block();
     }
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadTest details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String loadTestName,
+        LoadTestResourcePatchRequestBody properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -953,37 +781,24 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         if (loadTestName == null) {
             return Mono.error(new IllegalArgumentException("Parameter loadTestName is required and cannot be null."));
         }
-        if (loadTestResourcePatchRequestBody == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter loadTestResourcePatchRequestBody is required and cannot be null."));
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
-            loadTestResourcePatchRequestBody.validate();
+            properties.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            loadTestName,
-                            loadTestResourcePatchRequestBody,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, loadTestName, properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -991,22 +806,15 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return loadTest details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String loadTestName,
+        LoadTestResourcePatchRequestBody properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1015,62 +823,43 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         if (loadTestName == null) {
             return Mono.error(new IllegalArgumentException("Parameter loadTestName is required and cannot be null."));
         }
-        if (loadTestResourcePatchRequestBody == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter loadTestResourcePatchRequestBody is required and cannot be null."));
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
-            loadTestResourcePatchRequestBody.validate();
+            properties.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                loadTestName,
-                loadTestResourcePatchRequestBody,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, loadTestName, properties, accept, context);
     }
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of loadTest details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody);
-        return this
-            .client
-            .<LoadTestResourceInner, LoadTestResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LoadTestResourceInner.class,
-                LoadTestResourceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<LoadTestResourceInner>, LoadTestResourceInner>
+        beginUpdateAsync(String resourceGroupName, String loadTestName, LoadTestResourcePatchRequestBody properties) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, loadTestName, properties);
+        return this.client.<LoadTestResourceInner, LoadTestResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LoadTestResourceInner.class, LoadTestResourceInner.class,
+            this.client.getContext());
     }
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1079,44 +868,37 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
-        Context context) {
+        String resourceGroupName, String loadTestName, LoadTestResourcePatchRequestBody properties, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, context);
-        return this
-            .client
-            .<LoadTestResourceInner, LoadTestResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LoadTestResourceInner.class, LoadTestResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, loadTestName, properties, context);
+        return this.client.<LoadTestResourceInner, LoadTestResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LoadTestResourceInner.class, LoadTestResourceInner.class, context);
     }
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of loadTest details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody) {
-        return this.beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody).getSyncPoller();
+    public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(String resourceGroupName,
+        String loadTestName, LoadTestResourcePatchRequestBody properties) {
+        return this.beginUpdateAsync(resourceGroupName, loadTestName, properties).getSyncPoller();
     }
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1124,43 +906,35 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return the {@link SyncPoller} for polling of loadTest details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(String resourceGroupName,
+        String loadTestName, LoadTestResourcePatchRequestBody properties, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, loadTestName, properties, context).getSyncPoller();
     }
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadTest details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoadTestResourceInner> updateAsync(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody) {
-        return beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody)
-            .last()
+    private Mono<LoadTestResourceInner> updateAsync(String resourceGroupName, String loadTestName,
+        LoadTestResourcePatchRequestBody properties) {
+        return beginUpdateAsync(resourceGroupName, loadTestName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1168,41 +942,35 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return loadTest details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoadTestResourceInner> updateAsync(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, context)
-            .last()
+    private Mono<LoadTestResourceInner> updateAsync(String resourceGroupName, String loadTestName,
+        LoadTestResourcePatchRequestBody properties, Context context) {
+        return beginUpdateAsync(resourceGroupName, loadTestName, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoadTestResourceInner update(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody) {
-        return updateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody).block();
+    public LoadTestResourceInner update(String resourceGroupName, String loadTestName,
+        LoadTestResourcePatchRequestBody properties) {
+        return updateAsync(resourceGroupName, loadTestName, properties).block();
     }
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1210,17 +978,14 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoadTestResourceInner update(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
-        Context context) {
-        return updateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, context).block();
+    public LoadTestResourceInner update(String resourceGroupName, String loadTestName,
+        LoadTestResourcePatchRequestBody properties, Context context) {
+        return updateAsync(resourceGroupName, loadTestName, properties, context).block();
     }
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1231,16 +996,12 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String loadTestName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1251,23 +1012,14 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            loadTestName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, loadTestName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -1277,19 +1029,15 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String loadTestName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String loadTestName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1300,20 +1048,13 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                loadTestName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, loadTestName, accept, context);
     }
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1324,15 +1065,13 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String loadTestName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, loadTestName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -1342,18 +1081,17 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String loadTestName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String loadTestName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, loadTestName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1367,8 +1105,8 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     }
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -1378,14 +1116,14 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String loadTestName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadTestName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, loadTestName, context).getSyncPoller();
     }
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1399,8 +1137,8 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     }
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -1411,14 +1149,13 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String loadTestName, Context context) {
-        return beginDeleteAsync(resourceGroupName, loadTestName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, loadTestName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1431,8 +1168,8 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     }
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -1447,29 +1184,25 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
 
     /**
      * Lists the endpoints that agents may call as part of load testing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
         listOutboundNetworkDependenciesEndpointsSinglePageAsync(String resourceGroupName, String loadTestName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1480,56 +1213,37 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOutboundNetworkDependenciesEndpoints(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            loadTestName,
-                            accept,
-                            context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, loadTestName, accept,
+                context))
+            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the endpoints that agents may call as part of load testing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
-        listOutboundNetworkDependenciesEndpointsSinglePageAsync(
-            String resourceGroupName, String loadTestName, Context context) {
+        listOutboundNetworkDependenciesEndpointsSinglePageAsync(String resourceGroupName, String loadTestName,
+            Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1541,28 +1255,15 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOutboundNetworkDependenciesEndpoints(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                loadTestName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, loadTestName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the endpoints that agents may call as part of load testing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1571,8 +1272,8 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String loadTestName) {
+    private PagedFlux<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String loadTestName) {
         return new PagedFlux<>(
             () -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, loadTestName),
             nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
@@ -1580,7 +1281,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
 
     /**
      * Lists the endpoints that agents may call as part of load testing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -1590,8 +1291,8 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String loadTestName, Context context) {
+    private PagedFlux<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String loadTestName, Context context) {
         return new PagedFlux<>(
             () -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, loadTestName, context),
             nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink, context));
@@ -1599,7 +1300,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
 
     /**
      * Lists the endpoints that agents may call as part of load testing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1608,14 +1309,14 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String loadTestName) {
+    public PagedIterable<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String loadTestName) {
         return new PagedIterable<>(listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, loadTestName));
     }
 
     /**
      * Lists the endpoints that agents may call as part of load testing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -1625,21 +1326,21 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String loadTestName, Context context) {
+    public PagedIterable<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String loadTestName, Context context) {
         return new PagedIterable<>(
             listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, loadTestName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a LoadTestResource list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1647,74 +1348,55 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LoadTestResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<LoadTestResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a LoadTestResource list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LoadTestResourceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<LoadTestResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a LoadTestResource list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1722,75 +1404,55 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LoadTestResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<LoadTestResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a LoadTestResource list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LoadTestResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<LoadTestResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
@@ -1799,41 +1461,28 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOutboundNetworkDependenciesEndpointsNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOutboundNetworkDependenciesEndpointsNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
@@ -1842,23 +1491,14 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listOutboundNetworkDependenciesEndpointsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

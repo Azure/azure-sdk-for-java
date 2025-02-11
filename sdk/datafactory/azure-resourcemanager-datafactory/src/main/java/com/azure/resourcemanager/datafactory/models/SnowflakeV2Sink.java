@@ -149,7 +149,6 @@ public final class SnowflakeV2Sink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
         if (importSettings() != null) {
             importSettings().validate();
         }

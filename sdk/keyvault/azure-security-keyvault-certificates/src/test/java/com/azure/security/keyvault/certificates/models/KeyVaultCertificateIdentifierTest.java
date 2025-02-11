@@ -13,8 +13,7 @@ class KeyVaultCertificateIdentifierTest {
     @Test
     void parseWithoutVersion() {
         String sourceId = "https://test-key-vault.vault.azure.net/certificates/test-certificate";
-        KeyVaultCertificateIdentifier keyVaultCertificateIdentifier =
-            new KeyVaultCertificateIdentifier(sourceId);
+        KeyVaultCertificateIdentifier keyVaultCertificateIdentifier = new KeyVaultCertificateIdentifier(sourceId);
 
         assertEquals(sourceId, keyVaultCertificateIdentifier.getSourceId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultCertificateIdentifier.getVaultUrl());
@@ -25,8 +24,7 @@ class KeyVaultCertificateIdentifierTest {
     @Test
     void parseWithVersion() {
         String sourceId = "https://test-key-vault.vault.azure.net/certificates/test-certificate/version";
-        KeyVaultCertificateIdentifier keyVaultCertificateIdentifier =
-            new KeyVaultCertificateIdentifier(sourceId);
+        KeyVaultCertificateIdentifier keyVaultCertificateIdentifier = new KeyVaultCertificateIdentifier(sourceId);
 
         assertEquals(sourceId, keyVaultCertificateIdentifier.getSourceId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultCertificateIdentifier.getVaultUrl());

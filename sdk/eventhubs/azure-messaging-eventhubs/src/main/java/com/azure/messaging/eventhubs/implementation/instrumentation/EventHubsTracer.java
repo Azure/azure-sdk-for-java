@@ -53,7 +53,8 @@ public final class EventHubsTracer {
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubsTracer.class);
 
-    private static final boolean IS_TRACING_DISABLED = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED, false);
+    private static final boolean IS_TRACING_DISABLED
+        = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED, false);
 
     protected final Tracer tracer;
     private final String fullyQualifiedName;
@@ -80,9 +81,7 @@ public final class EventHubsTracer {
             return parent;
         }
 
-        return tracer.start(getSpanName(operationName),
-                    createStartOptions(CLIENT, operationName, partitionId),
-                    parent);
+        return tracer.start(getSpanName(operationName), createStartOptions(CLIENT, operationName, partitionId), parent);
     }
 
     /**
@@ -138,7 +137,8 @@ public final class EventHubsTracer {
     private TracingLink createLink(Context linkContext, Instant enqueuedTime) {
         Map<String, Object> linkAttributes = null;
         if (enqueuedTime != null) {
-            linkAttributes = Collections.singletonMap(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
+            linkAttributes = Collections.singletonMap(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME,
+                enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
         }
 
         return new TracingLink(linkContext, linkAttributes);
@@ -185,13 +185,14 @@ public final class EventHubsTracer {
     Context startProcessSpan(Map<String, Object> applicationProperties, Instant enqueuedTime, String partitionId) {
         if (isEnabled()) {
             Context remoteContext = extractContext(applicationProperties);
-            StartSpanOptions startOptions = createStartOptions(CONSUMER, PROCESS, partitionId)
-                .addLink(createLink(remoteContext, null))
-                .setRemoteParent(remoteContext);
+            StartSpanOptions startOptions
+                = createStartOptions(CONSUMER, PROCESS, partitionId).addLink(createLink(remoteContext, null))
+                    .setRemoteParent(remoteContext);
 
             // we could add these attributes only on sampled-in spans, but we don't have the API to check
             if (enqueuedTime != null) {
-                startOptions.setAttribute(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
+                startOptions.setAttribute(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME,
+                    enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
             }
 
             return tracer.start(getSpanName(PROCESS), startOptions, Context.NONE);
@@ -202,8 +203,8 @@ public final class EventHubsTracer {
 
     Context startProcessSpan(EventBatchContext batchContext) {
         if (isEnabled() && batchContext != null && !CoreUtils.isNullOrEmpty(batchContext.getEvents())) {
-            StartSpanOptions startOptions = createStartOptions(CONSUMER, PROCESS,
-                    batchContext.getPartitionContext().getPartitionId());
+            StartSpanOptions startOptions
+                = createStartOptions(CONSUMER, PROCESS, batchContext.getPartitionContext().getPartitionId());
             startOptions.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, batchContext.getEvents().size());
 
             for (EventData event : batchContext.getEvents()) {
@@ -217,8 +218,8 @@ public final class EventHubsTracer {
     }
 
     public StartSpanOptions createStartOptions(SpanKind kind, OperationName operationName, String partitionId) {
-        StartSpanOptions startOptions = new StartSpanOptions(kind)
-                .setAttribute(MESSAGING_SYSTEM, MESSAGING_SYSTEM_VALUE)
+        StartSpanOptions startOptions
+            = new StartSpanOptions(kind).setAttribute(MESSAGING_SYSTEM, MESSAGING_SYSTEM_VALUE)
                 .setAttribute(MESSAGING_DESTINATION_NAME, entityName)
                 .setAttribute(SERVER_ADDRESS, fullyQualifiedName)
                 .setAttribute(MESSAGING_OPERATION_NAME, operationName.toString());
@@ -271,6 +272,7 @@ public final class EventHubsTracer {
     }
 
     private static boolean canModifyApplicationProperties(Map<String, Object> applicationProperties) {
-        return applicationProperties != null && !applicationProperties.getClass().getSimpleName().equals("UnmodifiableMap");
+        return applicationProperties != null
+            && !applicationProperties.getClass().getSimpleName().equals("UnmodifiableMap");
     }
 }

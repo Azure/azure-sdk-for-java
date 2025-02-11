@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The VmSkuProfileProperties model.
  */
 @Fluent
-public final class VmSkuProfileProperties {
+public final class VmSkuProfileProperties implements JsonSerializable<VmSkuProfileProperties> {
     /*
      * Provisioning state of the resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /*
      * List of supported VM SKUs.
      */
-    @JsonProperty(value = "values")
     private List<VmSkuProperties> values;
 
     /**
@@ -69,5 +71,45 @@ public final class VmSkuProfileProperties {
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VmSkuProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VmSkuProfileProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VmSkuProfileProperties.
+     */
+    public static VmSkuProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VmSkuProfileProperties deserializedVmSkuProfileProperties = new VmSkuProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedVmSkuProfileProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("values".equals(fieldName)) {
+                    List<VmSkuProperties> values = reader.readArray(reader1 -> VmSkuProperties.fromJson(reader1));
+                    deserializedVmSkuProfileProperties.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVmSkuProfileProperties;
+        });
     }
 }

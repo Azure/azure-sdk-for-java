@@ -107,10 +107,7 @@ public final class MetastoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetastoreRegistrationResponse>> registerWithResponseAsync(String id,
         MetastoreRegisterObject registerBody) {
-        final String apiVersion = "2021-07-01-preview";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.register(this.client.getEndpoint(), apiVersion, id, registerBody, accept, context));
+        return FluxUtil.withContext(context -> registerWithResponseAsync(id, registerBody, context));
     }
 
     /**
@@ -212,10 +209,7 @@ public final class MetastoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetastoreRequestSuccessResponse>> getDatabaseOperationsWithResponseAsync(String id) {
-        final String apiVersion = "2021-07-01-preview";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getDatabaseOperations(this.client.getEndpoint(), apiVersion, id, accept, context));
+        return FluxUtil.withContext(context -> getDatabaseOperationsWithResponseAsync(id, context));
     }
 
     /**
@@ -307,10 +301,7 @@ public final class MetastoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetastoreUpdationResponse>> updateWithResponseAsync(String id,
         MetastoreUpdateObject updateBody) {
-        final String apiVersion = "2021-07-01-preview";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.update(this.client.getEndpoint(), apiVersion, id, updateBody, accept, context));
+        return FluxUtil.withContext(context -> updateWithResponseAsync(id, updateBody, context));
     }
 
     /**
@@ -406,10 +397,7 @@ public final class MetastoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id) {
-        final String apiVersion = "2021-07-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion, id, accept, context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(id, context));
     }
 
     /**

@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceIdentity model =
-            BinaryData
-                .fromString("{\"userAssignedIdentity\":\"hvpmoue\",\"useSystemAssignedIdentity\":false}")
+        ResourceIdentity model
+            = BinaryData.fromString("{\"userAssignedIdentity\":\"bfs\",\"useSystemAssignedIdentity\":false}")
                 .toObject(ResourceIdentity.class);
-        Assertions.assertEquals("hvpmoue", model.userAssignedIdentity());
+        Assertions.assertEquals("bfs", model.userAssignedIdentity());
         Assertions.assertEquals(false, model.useSystemAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceIdentity model =
-            new ResourceIdentity().withUserAssignedIdentity("hvpmoue").withUseSystemAssignedIdentity(false);
+        ResourceIdentity model
+            = new ResourceIdentity().withUserAssignedIdentity("bfs").withUseSystemAssignedIdentity(false);
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
-        Assertions.assertEquals("hvpmoue", model.userAssignedIdentity());
+        Assertions.assertEquals("bfs", model.userAssignedIdentity());
         Assertions.assertEquals(false, model.useSystemAssignedIdentity());
     }
 }

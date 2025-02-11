@@ -12,12 +12,14 @@ import com.azure.storage.common.implementation.StorageImplUtils;
  */
 @Fluent
 public class BlobChangeLeaseOptions {
-
     private final String proposedId;
     private BlobLeaseRequestConditions requestConditions;
 
     /**
+     * Creates a new instance of {@link BlobChangeLeaseOptions}.
+     *
      * @param proposedId A new lease ID in a valid GUID format.
+     * @throws NullPointerException If {@code proposedId} is null.
      */
     public BlobChangeLeaseOptions(String proposedId) {
         StorageImplUtils.assertNotNull("proposedId", proposedId);
@@ -25,6 +27,8 @@ public class BlobChangeLeaseOptions {
     }
 
     /**
+     * Gets the proposed lease ID.
+     *
      * @return A new lease ID in a valid GUID format.
      */
     public String getProposedId() {
@@ -32,6 +36,8 @@ public class BlobChangeLeaseOptions {
     }
 
     /**
+     * Gets the {@link BlobLeaseRequestConditions}.
+     *
      * @return {@link BlobLeaseRequestConditions}
      */
     public BlobLeaseRequestConditions getRequestConditions() {
@@ -39,6 +45,8 @@ public class BlobChangeLeaseOptions {
     }
 
     /**
+     * Sets the {@link BlobLeaseRequestConditions}.
+     *
      * @param requestConditions {@link BlobLeaseRequestConditions}
      * @return The updated options.
      */

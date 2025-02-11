@@ -16,6 +16,15 @@ public final class NetFrameworkVersion extends ExpandableStringEnum<NetFramework
     public static final NetFrameworkVersion V4_6 = NetFrameworkVersion.fromString("v4.6");
 
     /**
+     * Creates a new instance of NetFrameworkVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetFrameworkVersion() {
+    }
+
+    /**
      * Finds or creates a .NET Framework version based on the name.
      *
      * @param name a name
@@ -25,7 +34,11 @@ public final class NetFrameworkVersion extends ExpandableStringEnum<NetFramework
         return fromString(name, NetFrameworkVersion.class);
     }
 
-    /** @return known .NET framework versions */
+    /**
+     * Gets known .NET framework versions.
+     *
+     * @return known .NET framework versions
+     */
     public static Collection<NetFrameworkVersion> values() {
         return values(NetFrameworkVersion.class);
     }

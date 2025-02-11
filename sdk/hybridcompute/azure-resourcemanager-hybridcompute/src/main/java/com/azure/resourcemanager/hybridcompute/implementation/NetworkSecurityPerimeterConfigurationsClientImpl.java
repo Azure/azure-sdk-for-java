@@ -31,6 +31,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkSecurityPerimeterConfigurationInner;
+import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkSecurityPerimeterConfigurationReconcileResultInner;
 import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeterConfigurationListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -91,7 +92,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}/networkSecurityPerimeterConfigurations/{perimeterName}/reconcile")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> reconcileForPrivateLinkScope(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -405,7 +406,8 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return result of network security perimeter configurations along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reconcileForPrivateLinkScopeWithResponseAsync(String resourceGroupName,
@@ -447,7 +449,8 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return result of network security perimeter configurations along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reconcileForPrivateLinkScopeWithResponseAsync(String resourceGroupName,
@@ -486,15 +489,18 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of result of network security perimeter configurations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReconcileForPrivateLinkScopeAsync(String resourceGroupName,
-        String scopeName, String perimeterName) {
+    private
+        PollerFlux<PollResult<NetworkSecurityPerimeterConfigurationReconcileResultInner>, NetworkSecurityPerimeterConfigurationReconcileResultInner>
+        beginReconcileForPrivateLinkScopeAsync(String resourceGroupName, String scopeName, String perimeterName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = reconcileForPrivateLinkScopeWithResponseAsync(resourceGroupName, scopeName, perimeterName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client
+            .<NetworkSecurityPerimeterConfigurationReconcileResultInner, NetworkSecurityPerimeterConfigurationReconcileResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), NetworkSecurityPerimeterConfigurationReconcileResultInner.class,
+                NetworkSecurityPerimeterConfigurationReconcileResultInner.class, this.client.getContext());
     }
 
     /**
@@ -508,16 +514,20 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of result of network security perimeter configurations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReconcileForPrivateLinkScopeAsync(String resourceGroupName,
-        String scopeName, String perimeterName, Context context) {
+    private
+        PollerFlux<PollResult<NetworkSecurityPerimeterConfigurationReconcileResultInner>, NetworkSecurityPerimeterConfigurationReconcileResultInner>
+        beginReconcileForPrivateLinkScopeAsync(String resourceGroupName, String scopeName, String perimeterName,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = reconcileForPrivateLinkScopeWithResponseAsync(resourceGroupName, scopeName, perimeterName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client
+            .<NetworkSecurityPerimeterConfigurationReconcileResultInner, NetworkSecurityPerimeterConfigurationReconcileResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), NetworkSecurityPerimeterConfigurationReconcileResultInner.class,
+                NetworkSecurityPerimeterConfigurationReconcileResultInner.class, context);
     }
 
     /**
@@ -530,11 +540,12 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of result of network security perimeter configurations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReconcileForPrivateLinkScope(String resourceGroupName,
-        String scopeName, String perimeterName) {
+    public
+        SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationReconcileResultInner>, NetworkSecurityPerimeterConfigurationReconcileResultInner>
+        beginReconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName) {
         return this.beginReconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName).getSyncPoller();
     }
 
@@ -549,11 +560,13 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of result of network security perimeter configurations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReconcileForPrivateLinkScope(String resourceGroupName,
-        String scopeName, String perimeterName, Context context) {
+    public
+        SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationReconcileResultInner>, NetworkSecurityPerimeterConfigurationReconcileResultInner>
+        beginReconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName,
+            Context context) {
         return this.beginReconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName, context)
             .getSyncPoller();
     }
@@ -568,11 +581,11 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return result of network security perimeter configurations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reconcileForPrivateLinkScopeAsync(String resourceGroupName, String scopeName,
-        String perimeterName) {
+    private Mono<NetworkSecurityPerimeterConfigurationReconcileResultInner>
+        reconcileForPrivateLinkScopeAsync(String resourceGroupName, String scopeName, String perimeterName) {
         return beginReconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -588,11 +601,11 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return result of network security perimeter configurations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reconcileForPrivateLinkScopeAsync(String resourceGroupName, String scopeName,
-        String perimeterName, Context context) {
+    private Mono<NetworkSecurityPerimeterConfigurationReconcileResultInner> reconcileForPrivateLinkScopeAsync(
+        String resourceGroupName, String scopeName, String perimeterName, Context context) {
         return beginReconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -607,10 +620,12 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of network security perimeter configurations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName) {
-        reconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName).block();
+    public NetworkSecurityPerimeterConfigurationReconcileResultInner
+        reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName) {
+        return reconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName).block();
     }
 
     /**
@@ -624,11 +639,12 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of network security perimeter configurations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName,
-        Context context) {
-        reconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName, context).block();
+    public NetworkSecurityPerimeterConfigurationReconcileResultInner reconcileForPrivateLinkScope(
+        String resourceGroupName, String scopeName, String perimeterName, Context context) {
+        return reconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName, context).block();
     }
 
     /**

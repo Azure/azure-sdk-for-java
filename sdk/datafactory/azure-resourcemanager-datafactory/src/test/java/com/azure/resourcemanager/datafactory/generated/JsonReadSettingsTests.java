@@ -14,7 +14,7 @@ public final class JsonReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JsonReadSettings model = BinaryData.fromString(
-            "{\"type\":\"JsonReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"gbkzqbomfh\":\"dataoukvin\",\"lmyfhclxwedetawl\":\"datayas\",\"t\":\"dataatvfddqspd\",\"vcvekqjdruml\":\"dataqjtszqexcqcwbx\"}},\"\":{\"lfvmwuyar\":\"datawwqh\",\"dfbdanf\":\"datawsvtzotmwx\",\"qj\":\"dataxlawk\",\"wrtmjskb\":\"dataz\"}}")
+            "{\"type\":\"JsonReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"gcjssqpk\":\"datadiuyqdjk\"}},\"\":{\"h\":\"datayhv\",\"iwuver\":\"datavupbzqwwttqj\",\"co\":\"dataavbjv\",\"djoorbuuhbcck\":\"dataupshoofaskyy\"}}")
             .toObject(JsonReadSettings.class);
     }
 

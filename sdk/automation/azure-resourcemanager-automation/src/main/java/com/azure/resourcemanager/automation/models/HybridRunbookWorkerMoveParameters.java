@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters supplied to move hybrid worker operation. */
+/**
+ * Parameters supplied to move hybrid worker operation.
+ */
 @Fluent
-public final class HybridRunbookWorkerMoveParameters {
+public final class HybridRunbookWorkerMoveParameters implements JsonSerializable<HybridRunbookWorkerMoveParameters> {
     /*
      * Gets or sets the target hybrid runbook worker group.
      */
-    @JsonProperty(value = "hybridRunbookWorkerGroupName")
     private String hybridRunbookWorkerGroupName;
 
     /**
+     * Creates an instance of HybridRunbookWorkerMoveParameters class.
+     */
+    public HybridRunbookWorkerMoveParameters() {
+    }
+
+    /**
      * Get the hybridRunbookWorkerGroupName property: Gets or sets the target hybrid runbook worker group.
-     *
+     * 
      * @return the hybridRunbookWorkerGroupName value.
      */
     public String hybridRunbookWorkerGroupName() {
@@ -27,7 +38,7 @@ public final class HybridRunbookWorkerMoveParameters {
 
     /**
      * Set the hybridRunbookWorkerGroupName property: Gets or sets the target hybrid runbook worker group.
-     *
+     * 
      * @param hybridRunbookWorkerGroupName the hybridRunbookWorkerGroupName value to set.
      * @return the HybridRunbookWorkerMoveParameters object itself.
      */
@@ -38,9 +49,46 @@ public final class HybridRunbookWorkerMoveParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hybridRunbookWorkerGroupName", this.hybridRunbookWorkerGroupName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HybridRunbookWorkerMoveParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HybridRunbookWorkerMoveParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HybridRunbookWorkerMoveParameters.
+     */
+    public static HybridRunbookWorkerMoveParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HybridRunbookWorkerMoveParameters deserializedHybridRunbookWorkerMoveParameters
+                = new HybridRunbookWorkerMoveParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hybridRunbookWorkerGroupName".equals(fieldName)) {
+                    deserializedHybridRunbookWorkerMoveParameters.hybridRunbookWorkerGroupName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHybridRunbookWorkerMoveParameters;
+        });
     }
 }

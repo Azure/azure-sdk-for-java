@@ -23,8 +23,7 @@ public final class AbstractiveSummaryOperationDetail {
         AbstractiveSummaryOperationDetailPropertiesHelper.setAccessor(
             new AbstractiveSummaryOperationDetailPropertiesHelper.AbstractiveSummaryOperationDetailAccessor() {
                 @Override
-                public void setOperationId(AbstractiveSummaryOperationDetail operationResult,
-                                           String operationId) {
+                public void setOperationId(AbstractiveSummaryOperationDetail operationResult, String operationId) {
                     operationResult.setOperationId(operationId);
                 }
 
@@ -34,26 +33,22 @@ public final class AbstractiveSummaryOperationDetail {
                 }
 
                 @Override
-                public void setExpiresAt(AbstractiveSummaryOperationDetail operationDetail,
-                                         OffsetDateTime expiresAt) {
+                public void setExpiresAt(AbstractiveSummaryOperationDetail operationDetail, OffsetDateTime expiresAt) {
                     operationDetail.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(AbstractiveSummaryOperationDetail operationDetail,
-                                         OffsetDateTime createdAt) {
+                public void setCreatedAt(AbstractiveSummaryOperationDetail operationDetail, OffsetDateTime createdAt) {
                     operationDetail.setCreatedAt(createdAt);
                 }
 
                 @Override
                 public void setLastModifiedAt(AbstractiveSummaryOperationDetail operationDetail,
-                                              OffsetDateTime lastModifiedAt) {
+                    OffsetDateTime lastModifiedAt) {
                     operationDetail.setLastModifiedAt(lastModifiedAt);
                 }
-            }
-        );
+            });
     }
-
 
     /**
      * Constructs a {@code AbstractiveSummaryOperationDetail} model.

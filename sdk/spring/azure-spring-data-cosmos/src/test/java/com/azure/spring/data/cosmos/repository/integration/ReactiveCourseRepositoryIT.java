@@ -12,6 +12,8 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Course;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosNotFoundException;
+import com.azure.spring.data.cosmos.exception.CosmosPreconditionFailedException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -192,7 +194,7 @@ public class ReactiveCourseRepositoryIT {
     @Test
     public void testDeleteByIdWithoutPartitionKey() {
         final Mono<Void> deleteMono = repository.deleteById(COURSE_1.getCourseId());
-        StepVerifier.create(deleteMono).expectError(CosmosAccessException.class).verify();
+        StepVerifier.create(deleteMono).expectError(CosmosNotFoundException.class).verify();
     }
 
     @Test
@@ -220,13 +222,13 @@ public class ReactiveCourseRepositoryIT {
     @Test
     public void testDeleteByIdNotFound() {
         final Mono<Void> deleteMono = repository.deleteById(COURSE_ID_5);
-        StepVerifier.create(deleteMono).expectError(CosmosAccessException.class).verify();
+        StepVerifier.create(deleteMono).expectError(CosmosNotFoundException.class).verify();
     }
 
     @Test
     public void testDeleteByEntityNotFound() {
         final Mono<Void> deleteMono = repository.delete(COURSE_5);
-        StepVerifier.create(deleteMono).expectError(CosmosAccessException.class).verify();
+        StepVerifier.create(deleteMono).expectError(CosmosNotFoundException.class).verify();
     }
 
     @Test
@@ -386,7 +388,7 @@ public class ReactiveCourseRepositoryIT {
     public void testPatchPreConditionFail() {
         options.setFilterPredicate("FROM course a WHERE a.department = 'dummy'");
         Mono<Course> patchedCourse = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation, options);
-        StepVerifier.create(patchedCourse).expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
+        StepVerifier.create(patchedCourse).expectErrorMatches(ex -> ex instanceof CosmosPreconditionFailedException &&
             ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.PRECONDITION_FAILED_STATUS_CODE).verify();
     }
 

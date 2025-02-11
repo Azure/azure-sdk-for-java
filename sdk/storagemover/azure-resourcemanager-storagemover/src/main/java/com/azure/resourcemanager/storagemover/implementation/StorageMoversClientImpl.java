@@ -52,25 +52,25 @@ public final class StorageMoversClientImpl implements StorageMoversClient {
     /**
      * The service client containing this operation class.
      */
-    private final StorageMoverClientImpl client;
+    private final StorageMoverManagementClientImpl client;
 
     /**
      * Initializes an instance of StorageMoversClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    StorageMoversClientImpl(StorageMoverClientImpl client) {
+    StorageMoversClientImpl(StorageMoverManagementClientImpl client) {
         this.service
             = RestProxy.create(StorageMoversService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StorageMoverClientStorageMovers to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for StorageMoverManagementClientStorageMovers to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageMoverClientSt")
+    @ServiceInterface(name = "StorageMoverManageme")
     public interface StorageMoversService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.StorageMover/storageMovers")

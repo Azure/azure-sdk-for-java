@@ -16,6 +16,7 @@ import com.azure.maps.geolocation.implementation.models.ErrorResponseException;
 import com.azure.maps.geolocation.implementation.models.JsonFormat;
 import com.azure.maps.geolocation.models.IpAddressToLocationResult;
 import reactor.core.publisher.Mono;
+import java.net.InetAddress;
 
 /** Initializes a new instance of the asynchronous GeolocationClient type.
 * Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
@@ -62,7 +63,7 @@ public final class GeolocationAsyncClient {
      *
      * <!-- src_embed com.azure.maps.geolocation.async.get_ip_to_location -->
      * <pre>
-     * asyncClient.getLocation&#40;&quot;131.107.0.89&quot;&#41;;
+     * asyncClient.getLocation&#40;InetAddress.getByName&#40;&quot;131.107.0.89&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.geolocation.async.get_ip_to_location -->
      *
@@ -78,7 +79,7 @@ public final class GeolocationAsyncClient {
      * @return this object is returned from a successful call to IP Address to country/region API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpAddressToLocationResult> getLocation(String ipAddress) {
+    public Mono<IpAddressToLocationResult> getLocation(InetAddress ipAddress) {
         Mono<Response<IpAddressToLocationResult>> result = this.getLocationWithResponse(ipAddress);
         return result.flatMap(FluxUtil::toMono);
     }
@@ -88,7 +89,7 @@ public final class GeolocationAsyncClient {
      *
      * <!-- src_embed com.azure.maps.geolocation.async.get_ip_to_location -->
      * <pre>
-     * asyncClient.getLocation&#40;&quot;131.107.0.89&quot;&#41;;
+     * asyncClient.getLocation&#40;InetAddress.getByName&#40;&quot;131.107.0.89&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.geolocation.async.get_ip_to_location -->
      *
@@ -104,8 +105,8 @@ public final class GeolocationAsyncClient {
      * @return this object is returned from a successful call to IP Address to country/region API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IpAddressToLocationResult>> getLocationWithResponse(String ipAddress) {
-        return this.getLocationWithResponse(ipAddress, null);
+    public Mono<Response<IpAddressToLocationResult>> getLocationWithResponse(InetAddress ipAddress) {
+        return this.getLocationWithResponse(ipAddress.getHostAddress(), null);
     }
 
     /**
@@ -113,7 +114,7 @@ public final class GeolocationAsyncClient {
      *
      * <!-- src_embed com.azure.maps.geolocation.async.get_ip_to_location -->
      * <pre>
-     * asyncClient.getLocation&#40;&quot;131.107.0.89&quot;&#41;;
+     * asyncClient.getLocation&#40;InetAddress.getByName&#40;&quot;131.107.0.89&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.geolocation.async.get_ip_to_location -->
      *

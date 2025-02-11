@@ -12,11 +12,15 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public interface QueryKey {
     /**
+     * Gets the name of the query API key.
+     *
      * @return the name of the query API key
      */
     String name();
 
     /**
+     * Gets the query key.
+     *
      * @return the key value
      */
     String key();

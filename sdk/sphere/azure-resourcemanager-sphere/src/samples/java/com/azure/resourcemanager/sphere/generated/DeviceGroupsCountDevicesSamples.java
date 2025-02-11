@@ -18,7 +18,8 @@ public final class DeviceGroupsCountDevicesSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deviceGroupsCountDevices(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deviceGroups().countDevicesWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1",
-            "MyDeviceGroup1", com.azure.core.util.Context.NONE);
+        manager.deviceGroups()
+            .countDevicesWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
+                com.azure.core.util.Context.NONE);
     }
 }

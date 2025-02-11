@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The refund properties of reservation. */
+/**
+ * The refund properties of reservation.
+ */
 @Fluent
-public final class RefundResponseProperties {
+public final class RefundResponseProperties implements JsonSerializable<RefundResponseProperties> {
     /*
      * Refund session identifier
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * Quantity to be returned
      */
-    @JsonProperty(value = "quantity")
     private Integer quantity;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "billingRefundAmount")
     private Price billingRefundAmount;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "pricingRefundAmount")
     private Price pricingRefundAmount;
 
     /*
      * Refund policy result
      */
-    @JsonProperty(value = "policyResult")
     private RefundPolicyResult policyResult;
 
     /*
      * billing information
      */
-    @JsonProperty(value = "billingInformation")
     private RefundBillingInformation billingInformation;
 
-    /** Creates an instance of RefundResponseProperties class. */
+    /**
+     * Creates an instance of RefundResponseProperties class.
+     */
     public RefundResponseProperties() {
     }
 
     /**
      * Get the sessionId property: Refund session identifier.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -61,7 +63,7 @@ public final class RefundResponseProperties {
 
     /**
      * Set the sessionId property: Refund session identifier.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the RefundResponseProperties object itself.
      */
@@ -72,7 +74,7 @@ public final class RefundResponseProperties {
 
     /**
      * Get the quantity property: Quantity to be returned.
-     *
+     * 
      * @return the quantity value.
      */
     public Integer quantity() {
@@ -81,7 +83,7 @@ public final class RefundResponseProperties {
 
     /**
      * Set the quantity property: Quantity to be returned.
-     *
+     * 
      * @param quantity the quantity value to set.
      * @return the RefundResponseProperties object itself.
      */
@@ -92,7 +94,7 @@ public final class RefundResponseProperties {
 
     /**
      * Get the billingRefundAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the billingRefundAmount value.
      */
     public Price billingRefundAmount() {
@@ -101,7 +103,7 @@ public final class RefundResponseProperties {
 
     /**
      * Set the billingRefundAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param billingRefundAmount the billingRefundAmount value to set.
      * @return the RefundResponseProperties object itself.
      */
@@ -112,7 +114,7 @@ public final class RefundResponseProperties {
 
     /**
      * Get the pricingRefundAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the pricingRefundAmount value.
      */
     public Price pricingRefundAmount() {
@@ -121,7 +123,7 @@ public final class RefundResponseProperties {
 
     /**
      * Set the pricingRefundAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param pricingRefundAmount the pricingRefundAmount value to set.
      * @return the RefundResponseProperties object itself.
      */
@@ -132,7 +134,7 @@ public final class RefundResponseProperties {
 
     /**
      * Get the policyResult property: Refund policy result.
-     *
+     * 
      * @return the policyResult value.
      */
     public RefundPolicyResult policyResult() {
@@ -141,7 +143,7 @@ public final class RefundResponseProperties {
 
     /**
      * Set the policyResult property: Refund policy result.
-     *
+     * 
      * @param policyResult the policyResult value to set.
      * @return the RefundResponseProperties object itself.
      */
@@ -152,7 +154,7 @@ public final class RefundResponseProperties {
 
     /**
      * Get the billingInformation property: billing information.
-     *
+     * 
      * @return the billingInformation value.
      */
     public RefundBillingInformation billingInformation() {
@@ -161,7 +163,7 @@ public final class RefundResponseProperties {
 
     /**
      * Set the billingInformation property: billing information.
-     *
+     * 
      * @param billingInformation the billingInformation value to set.
      * @return the RefundResponseProperties object itself.
      */
@@ -172,7 +174,7 @@ public final class RefundResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -188,5 +190,56 @@ public final class RefundResponseProperties {
         if (billingInformation() != null) {
             billingInformation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeNumberField("quantity", this.quantity);
+        jsonWriter.writeJsonField("billingRefundAmount", this.billingRefundAmount);
+        jsonWriter.writeJsonField("pricingRefundAmount", this.pricingRefundAmount);
+        jsonWriter.writeJsonField("policyResult", this.policyResult);
+        jsonWriter.writeJsonField("billingInformation", this.billingInformation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RefundResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RefundResponseProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RefundResponseProperties.
+     */
+    public static RefundResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RefundResponseProperties deserializedRefundResponseProperties = new RefundResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sessionId".equals(fieldName)) {
+                    deserializedRefundResponseProperties.sessionId = reader.getString();
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedRefundResponseProperties.quantity = reader.getNullable(JsonReader::getInt);
+                } else if ("billingRefundAmount".equals(fieldName)) {
+                    deserializedRefundResponseProperties.billingRefundAmount = Price.fromJson(reader);
+                } else if ("pricingRefundAmount".equals(fieldName)) {
+                    deserializedRefundResponseProperties.pricingRefundAmount = Price.fromJson(reader);
+                } else if ("policyResult".equals(fieldName)) {
+                    deserializedRefundResponseProperties.policyResult = RefundPolicyResult.fromJson(reader);
+                } else if ("billingInformation".equals(fieldName)) {
+                    deserializedRefundResponseProperties.billingInformation = RefundBillingInformation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRefundResponseProperties;
+        });
     }
 }

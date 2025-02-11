@@ -15,8 +15,7 @@ public final class AuthorizationPolicyImpl implements AuthorizationPolicy {
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    AuthorizationPolicyImpl(
-        AuthorizationPolicyInner innerObject,
+    AuthorizationPolicyImpl(AuthorizationPolicyInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

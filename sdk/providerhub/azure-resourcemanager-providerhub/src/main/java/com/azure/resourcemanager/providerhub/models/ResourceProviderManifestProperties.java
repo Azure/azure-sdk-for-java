@@ -5,91 +5,87 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ResourceProviderManifestProperties model. */
+/**
+ * The ResourceProviderManifestProperties model.
+ */
 @Fluent
-public class ResourceProviderManifestProperties {
+public class ResourceProviderManifestProperties implements JsonSerializable<ResourceProviderManifestProperties> {
     /*
      * The providerAuthentication property.
      */
-    @JsonProperty(value = "providerAuthentication")
     private ResourceProviderManifestPropertiesProviderAuthentication providerAuthentication;
 
     /*
      * The providerAuthorizations property.
      */
-    @JsonProperty(value = "providerAuthorizations")
     private List<ResourceProviderAuthorization> providerAuthorizations;
 
     /*
      * The namespace property.
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * The providerVersion property.
      */
-    @JsonProperty(value = "providerVersion")
     private String providerVersion;
 
     /*
      * The providerType property.
      */
-    @JsonProperty(value = "providerType")
     private ResourceProviderType providerType;
 
     /*
      * The requiredFeatures property.
      */
-    @JsonProperty(value = "requiredFeatures")
     private List<String> requiredFeatures;
 
     /*
      * The featuresRule property.
      */
-    @JsonProperty(value = "featuresRule")
     private ResourceProviderManifestPropertiesFeaturesRule featuresRule;
 
     /*
      * The requestHeaderOptions property.
      */
-    @JsonProperty(value = "requestHeaderOptions")
     private ResourceProviderManifestPropertiesRequestHeaderOptions requestHeaderOptions;
 
     /*
      * The management property.
      */
-    @JsonProperty(value = "management")
     private ResourceProviderManifestPropertiesManagement management;
 
     /*
      * The capabilities property.
      */
-    @JsonProperty(value = "capabilities")
     private List<ResourceProviderCapabilities> capabilities;
 
     /*
      * Anything
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The templateDeploymentOptions property.
      */
-    @JsonProperty(value = "templateDeploymentOptions")
     private ResourceProviderManifestPropertiesTemplateDeploymentOptions templateDeploymentOptions;
 
-    /** Creates an instance of ResourceProviderManifestProperties class. */
+    /**
+     * Creates an instance of ResourceProviderManifestProperties class.
+     */
     public ResourceProviderManifestProperties() {
     }
 
     /**
      * Get the providerAuthentication property: The providerAuthentication property.
-     *
+     * 
      * @return the providerAuthentication value.
      */
     public ResourceProviderManifestPropertiesProviderAuthentication providerAuthentication() {
@@ -98,19 +94,19 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the providerAuthentication property: The providerAuthentication property.
-     *
+     * 
      * @param providerAuthentication the providerAuthentication value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
-    public ResourceProviderManifestProperties withProviderAuthentication(
-        ResourceProviderManifestPropertiesProviderAuthentication providerAuthentication) {
+    public ResourceProviderManifestProperties
+        withProviderAuthentication(ResourceProviderManifestPropertiesProviderAuthentication providerAuthentication) {
         this.providerAuthentication = providerAuthentication;
         return this;
     }
 
     /**
      * Get the providerAuthorizations property: The providerAuthorizations property.
-     *
+     * 
      * @return the providerAuthorizations value.
      */
     public List<ResourceProviderAuthorization> providerAuthorizations() {
@@ -119,19 +115,19 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the providerAuthorizations property: The providerAuthorizations property.
-     *
+     * 
      * @param providerAuthorizations the providerAuthorizations value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
-    public ResourceProviderManifestProperties withProviderAuthorizations(
-        List<ResourceProviderAuthorization> providerAuthorizations) {
+    public ResourceProviderManifestProperties
+        withProviderAuthorizations(List<ResourceProviderAuthorization> providerAuthorizations) {
         this.providerAuthorizations = providerAuthorizations;
         return this;
     }
 
     /**
      * Get the namespace property: The namespace property.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -140,7 +136,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the namespace property: The namespace property.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
@@ -151,7 +147,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Get the providerVersion property: The providerVersion property.
-     *
+     * 
      * @return the providerVersion value.
      */
     public String providerVersion() {
@@ -160,7 +156,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the providerVersion property: The providerVersion property.
-     *
+     * 
      * @param providerVersion the providerVersion value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
@@ -171,7 +167,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Get the providerType property: The providerType property.
-     *
+     * 
      * @return the providerType value.
      */
     public ResourceProviderType providerType() {
@@ -180,7 +176,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the providerType property: The providerType property.
-     *
+     * 
      * @param providerType the providerType value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
@@ -191,7 +187,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Get the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @return the requiredFeatures value.
      */
     public List<String> requiredFeatures() {
@@ -200,7 +196,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
@@ -211,7 +207,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Get the featuresRule property: The featuresRule property.
-     *
+     * 
      * @return the featuresRule value.
      */
     public ResourceProviderManifestPropertiesFeaturesRule featuresRule() {
@@ -220,19 +216,19 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the featuresRule property: The featuresRule property.
-     *
+     * 
      * @param featuresRule the featuresRule value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
-    public ResourceProviderManifestProperties withFeaturesRule(
-        ResourceProviderManifestPropertiesFeaturesRule featuresRule) {
+    public ResourceProviderManifestProperties
+        withFeaturesRule(ResourceProviderManifestPropertiesFeaturesRule featuresRule) {
         this.featuresRule = featuresRule;
         return this;
     }
 
     /**
      * Get the requestHeaderOptions property: The requestHeaderOptions property.
-     *
+     * 
      * @return the requestHeaderOptions value.
      */
     public ResourceProviderManifestPropertiesRequestHeaderOptions requestHeaderOptions() {
@@ -241,19 +237,19 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the requestHeaderOptions property: The requestHeaderOptions property.
-     *
+     * 
      * @param requestHeaderOptions the requestHeaderOptions value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
-    public ResourceProviderManifestProperties withRequestHeaderOptions(
-        ResourceProviderManifestPropertiesRequestHeaderOptions requestHeaderOptions) {
+    public ResourceProviderManifestProperties
+        withRequestHeaderOptions(ResourceProviderManifestPropertiesRequestHeaderOptions requestHeaderOptions) {
         this.requestHeaderOptions = requestHeaderOptions;
         return this;
     }
 
     /**
      * Get the management property: The management property.
-     *
+     * 
      * @return the management value.
      */
     public ResourceProviderManifestPropertiesManagement management() {
@@ -262,7 +258,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the management property: The management property.
-     *
+     * 
      * @param management the management value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
@@ -273,7 +269,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Get the capabilities property: The capabilities property.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<ResourceProviderCapabilities> capabilities() {
@@ -282,7 +278,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the capabilities property: The capabilities property.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
@@ -293,7 +289,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Get the metadata property: Anything.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -302,7 +298,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the metadata property: Anything.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
@@ -313,7 +309,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Get the templateDeploymentOptions property: The templateDeploymentOptions property.
-     *
+     * 
      * @return the templateDeploymentOptions value.
      */
     public ResourceProviderManifestPropertiesTemplateDeploymentOptions templateDeploymentOptions() {
@@ -322,7 +318,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Set the templateDeploymentOptions property: The templateDeploymentOptions property.
-     *
+     * 
      * @param templateDeploymentOptions the templateDeploymentOptions value to set.
      * @return the ResourceProviderManifestProperties object itself.
      */
@@ -334,7 +330,7 @@ public class ResourceProviderManifestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -359,5 +355,88 @@ public class ResourceProviderManifestProperties {
         if (templateDeploymentOptions() != null) {
             templateDeploymentOptions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("providerAuthentication", this.providerAuthentication);
+        jsonWriter.writeArrayField("providerAuthorizations", this.providerAuthorizations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeStringField("providerVersion", this.providerVersion);
+        jsonWriter.writeStringField("providerType", this.providerType == null ? null : this.providerType.toString());
+        jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("featuresRule", this.featuresRule);
+        jsonWriter.writeJsonField("requestHeaderOptions", this.requestHeaderOptions);
+        jsonWriter.writeJsonField("management", this.management);
+        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeJsonField("templateDeploymentOptions", this.templateDeploymentOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderManifestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderManifestProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProviderManifestProperties.
+     */
+    public static ResourceProviderManifestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderManifestProperties deserializedResourceProviderManifestProperties
+                = new ResourceProviderManifestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerAuthentication".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.providerAuthentication
+                        = ResourceProviderManifestPropertiesProviderAuthentication.fromJson(reader);
+                } else if ("providerAuthorizations".equals(fieldName)) {
+                    List<ResourceProviderAuthorization> providerAuthorizations
+                        = reader.readArray(reader1 -> ResourceProviderAuthorization.fromJson(reader1));
+                    deserializedResourceProviderManifestProperties.providerAuthorizations = providerAuthorizations;
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.namespace = reader.getString();
+                } else if ("providerVersion".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.providerVersion = reader.getString();
+                } else if ("providerType".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.providerType
+                        = ResourceProviderType.fromString(reader.getString());
+                } else if ("requiredFeatures".equals(fieldName)) {
+                    List<String> requiredFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManifestProperties.requiredFeatures = requiredFeatures;
+                } else if ("featuresRule".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.featuresRule
+                        = ResourceProviderManifestPropertiesFeaturesRule.fromJson(reader);
+                } else if ("requestHeaderOptions".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.requestHeaderOptions
+                        = ResourceProviderManifestPropertiesRequestHeaderOptions.fromJson(reader);
+                } else if ("management".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.management
+                        = ResourceProviderManifestPropertiesManagement.fromJson(reader);
+                } else if ("capabilities".equals(fieldName)) {
+                    List<ResourceProviderCapabilities> capabilities
+                        = reader.readArray(reader1 -> ResourceProviderCapabilities.fromJson(reader1));
+                    deserializedResourceProviderManifestProperties.capabilities = capabilities;
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.metadata = reader.readUntyped();
+                } else if ("templateDeploymentOptions".equals(fieldName)) {
+                    deserializedResourceProviderManifestProperties.templateDeploymentOptions
+                        = ResourceProviderManifestPropertiesTemplateDeploymentOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderManifestProperties;
+        });
     }
 }

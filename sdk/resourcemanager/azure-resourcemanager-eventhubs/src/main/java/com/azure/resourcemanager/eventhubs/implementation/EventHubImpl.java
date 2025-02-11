@@ -34,8 +34,7 @@ import java.util.UUID;
 /**
  * Implementation for {@link EventHub}.
  */
-class EventHubImpl
-    extends NestedResourceImpl<EventHub, EventhubInner, EventHubImpl>
+class EventHubImpl extends NestedResourceImpl<EventHub, EventhubInner, EventHubImpl>
     implements EventHub, EventHub.Definition, EventHub.Update {
 
     private Ancestors.OneAncestor ancestor;
@@ -170,22 +169,20 @@ class EventHubImpl
     }
 
     @Override
-    public EventHubImpl withNewStorageAccountForCapturedData(
-        Creatable<StorageAccount> storageAccountCreatable, String containerName) {
+    public EventHubImpl withNewStorageAccountForCapturedData(Creatable<StorageAccount> storageAccountCreatable,
+        String containerName) {
         this.captureSettings.withNewStorageAccountForCapturedData(storageAccountCreatable, containerName);
         return this;
     }
 
     @Override
-    public EventHubImpl withExistingStorageAccountForCapturedData(
-        StorageAccount storageAccount, String containerName) {
+    public EventHubImpl withExistingStorageAccountForCapturedData(StorageAccount storageAccount, String containerName) {
         this.captureSettings.withExistingStorageAccountForCapturedData(storageAccount, containerName);
         return this;
     }
 
     @Override
-    public EventHubImpl withExistingStorageAccountForCapturedData(
-        String storageAccountId, String containerName) {
+    public EventHubImpl withExistingStorageAccountForCapturedData(String storageAccountId, String containerName) {
         this.captureSettings.withExistingStorageAccountForCapturedData(storageAccountId, containerName);
         return this;
     }
@@ -335,10 +332,10 @@ class EventHubImpl
 
     @Override
     public Mono<EventHub> createResourceAsync() {
-        return this.manager.serviceClient().getEventHubs()
-                .createOrUpdateAsync(
-                    ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), this.innerModel())
-                .map(innerToFluentMap(this));
+        return this.manager.serviceClient()
+            .getEventHubs()
+            .createOrUpdateAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), this.innerModel())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -349,33 +346,33 @@ class EventHubImpl
 
     @Override
     protected Mono<EventhubInner> getInnerAsync() {
-        return this.manager.serviceClient().getEventHubs().getAsync(this.ancestor().resourceGroupName(),
-                this.ancestor().ancestor1Name(),
-                this.name());
+        return this.manager.serviceClient()
+            .getEventHubs()
+            .getAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor1Name(), this.name());
     }
 
     @Override
     public PagedFlux<EventHubConsumerGroup> listConsumerGroupsAsync() {
         return this.manager.consumerGroups()
-                .listByEventHubAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
+            .listByEventHubAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
     }
 
     @Override
     public PagedFlux<EventHubAuthorizationRule> listAuthorizationRulesAsync() {
         return this.manager.eventHubAuthorizationRules()
-                .listByEventHubAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
+            .listByEventHubAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
     }
 
     @Override
     public PagedIterable<EventHubConsumerGroup> listConsumerGroups() {
         return this.manager.consumerGroups()
-                .listByEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
+            .listByEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
     }
 
     @Override
     public PagedIterable<EventHubAuthorizationRule> listAuthorizationRules() {
         return this.manager.eventHubAuthorizationRules()
-                .listByEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
+            .listByEventHub(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name());
     }
 
     private Ancestors.OneAncestor ancestor() {
@@ -409,18 +406,16 @@ class EventHubImpl
             //
             // Schedule task to create storage account and container.
             //
-            addDependency(context -> creatableStorageAccount
-                .createAsync()
-                .flatMap(indexable -> {
-                    StorageAccount storageAccount = indexable;
-                    ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
-                    return createContainerIfNotExistsAsync(storageAccount, containerName);
-                }));
+            addDependency(context -> creatableStorageAccount.createAsync().flatMap(indexable -> {
+                StorageAccount storageAccount = indexable;
+                ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
+                return createContainerIfNotExistsAsync(storageAccount, containerName);
+            }));
             return this;
         }
 
-        public CaptureSettings withExistingStorageAccountForCapturedData(
-            final StorageAccount storageAccount, final String containerName) {
+        public CaptureSettings withExistingStorageAccountForCapturedData(final StorageAccount storageAccount,
+            final String containerName) {
             this.ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
             this.ensureSettings().destination().withBlobContainer(containerName);
             //
@@ -430,16 +425,15 @@ class EventHubImpl
             return this;
         }
 
-        public CaptureSettings withExistingStorageAccountForCapturedData(
-            final String storageAccountId, final String containerName) {
+        public CaptureSettings withExistingStorageAccountForCapturedData(final String storageAccountId,
+            final String containerName) {
             this.ensureSettings().destination().withStorageAccountResourceId(storageAccountId);
             this.ensureSettings().destination().withBlobContainer(containerName);
             //
             // Schedule task to create container if not exists.
             //
-            addDependency(context -> storageManager.storageAccounts()
-                .getByIdAsync(storageAccountId)
-                .flatMap(storageAccount -> {
+            addDependency(
+                context -> storageManager.storageAccounts().getByIdAsync(storageAccountId).flatMap(storageAccount -> {
                     ensureSettings().destination().withStorageAccountResourceId(storageAccount.id());
                     return createContainerIfNotExistsAsync(storageAccount, containerName);
                 }));
@@ -480,10 +474,10 @@ class EventHubImpl
             if (this.newSettings == null) {
                 return this.currentSettings;
             } else if (this.newSettings.destination() == null
-                    || this.newSettings.destination().storageAccountResourceId() == null
-                    || this.newSettings.destination().blobContainer() == null) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "Setting any of the capture properties requires "
+                || this.newSettings.destination().storageAccountResourceId() == null
+                || this.newSettings.destination().blobContainer() == null) {
+                throw logger
+                    .logExceptionAsError(new IllegalStateException("Setting any of the capture properties requires "
                         + "capture destination [StorageAccount, DataLake] to be specified"));
             }
             if (this.newSettings.destination().name() == null) {
@@ -510,7 +504,7 @@ class EventHubImpl
         }
 
         private Mono<Indexable> createContainerIfNotExistsAsync(final StorageAccount storageAccount,
-                                                                final String containerName) {
+            final String containerName) {
             return storageManager.blobContainers()
                 .getAsync(storageAccount.resourceGroupName(), storageAccount.name(), containerName)
                 .cast(Indexable.class)
@@ -534,8 +528,8 @@ class EventHubImpl
                 clone.destination().withArchiveNameFormat(this.currentSettings.destination().archiveNameFormat());
                 clone.destination().withBlobContainer(this.currentSettings.destination().blobContainer());
                 clone.destination().withName(this.currentSettings.destination().name());
-                clone.destination().withStorageAccountResourceId(
-                    this.currentSettings.destination().storageAccountResourceId());
+                clone.destination()
+                    .withStorageAccountResourceId(this.currentSettings.destination().storageAccountResourceId());
             } else {
                 clone.withDestination(new Destination());
             }

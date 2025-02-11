@@ -19,20 +19,20 @@ public final class ResourceSkusImpl implements ResourceSkus {
 
     private final com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager;
 
-    public ResourceSkusImpl(
-        ResourceSkusClient innerClient, com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
+    public ResourceSkusImpl(ResourceSkusClient innerClient,
+        com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ResourceSkuInfo> list(String location) {
         PagedIterable<ResourceSkuInfoInner> inner = this.serviceClient().list(location);
-        return Utils.mapPage(inner, inner1 -> new ResourceSkuInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceSkuInfoImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourceSkuInfo> list(String location, Context context) {
         PagedIterable<ResourceSkuInfoInner> inner = this.serviceClient().list(location, context);
-        return Utils.mapPage(inner, inner1 -> new ResourceSkuInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceSkuInfoImpl(inner1, this.manager()));
     }
 
     private ResourceSkusClient serviceClient() {

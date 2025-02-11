@@ -41,6 +41,11 @@ public class ChainingTrigger extends Trigger {
      */
     private String runDimension;
 
+    /*
+     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
+     */
+    private TriggerRuntimeState runtimeState;
+
     /**
      * Creates an instance of ChainingTrigger class.
      */
@@ -118,6 +123,17 @@ public class ChainingTrigger extends Trigger {
     }
 
     /**
+     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
+     * the Trigger.
+     * 
+     * @return the runtimeState value.
+     */
+    @Override
+    public TriggerRuntimeState getRuntimeState() {
+        return this.runtimeState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -179,7 +195,7 @@ public class ChainingTrigger extends Trigger {
                 if ("description".equals(fieldName)) {
                     deserializedChainingTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedChainingTrigger.setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                    deserializedChainingTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedChainingTrigger.setAnnotations(annotations);

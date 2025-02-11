@@ -7,12 +7,14 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of TenantConfigurations. */
+/**
+ * Resource collection API of TenantConfigurations.
+ */
 public interface TenantConfigurations {
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -22,16 +24,13 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract deploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
+    OperationResultContract deploy(String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
         DeployConfigurationParameters parameters);
 
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -42,17 +41,13 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract deploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+    OperationResultContract deploy(String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
+        DeployConfigurationParameters parameters, Context context);
 
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -62,16 +57,13 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract save(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
+    OperationResultContract save(String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
         SaveConfigurationParameter parameters);
 
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -82,17 +74,13 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract save(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        SaveConfigurationParameter parameters,
-        Context context);
+    OperationResultContract save(String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
+        SaveConfigurationParameter parameters, Context context);
 
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -102,16 +90,13 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract validate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters);
+    OperationResultContract validate(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters);
 
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -122,16 +107,12 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract validate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+    OperationResultContract validate(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters, Context context);
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -140,14 +121,14 @@ public interface TenantConfigurations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the most recent synchronization between the configuration database and the Git repository
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
-    Response<TenantConfigurationSyncStateContract> getSyncStateWithResponse(
-        String resourceGroupName, String serviceName, ConfigurationIdName configurationName, Context context);
+    Response<TenantConfigurationSyncStateContract> getSyncStateWithResponse(String resourceGroupName,
+        String serviceName, ConfigurationIdName configurationName, Context context);
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -156,6 +137,6 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the most recent synchronization between the configuration database and the Git repository.
      */
-    TenantConfigurationSyncStateContract getSyncState(
-        String resourceGroupName, String serviceName, ConfigurationIdName configurationName);
+    TenantConfigurationSyncStateContract getSyncState(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName);
 }

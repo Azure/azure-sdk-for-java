@@ -6,25 +6,46 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.SchemaType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Global Schema Contract details. */
+/**
+ * Global Schema Contract details.
+ */
 @Fluent
 public final class GlobalSchemaContractInner extends ProxyResource {
     /*
      * Properties of the Global Schema.
      */
-    @JsonProperty(value = "properties")
     private GlobalSchemaContractProperties innerProperties;
 
-    /** Creates an instance of GlobalSchemaContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of GlobalSchemaContractInner class.
+     */
     public GlobalSchemaContractInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Global Schema.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GlobalSchemaContractProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class GlobalSchemaContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the schemaType property: Schema Type. Immutable.
-     *
+     * 
      * @return the schemaType value.
      */
     public SchemaType schemaType() {
@@ -42,7 +93,7 @@ public final class GlobalSchemaContractInner extends ProxyResource {
 
     /**
      * Set the schemaType property: Schema Type. Immutable.
-     *
+     * 
      * @param schemaType the schemaType value to set.
      * @return the GlobalSchemaContractInner object itself.
      */
@@ -56,7 +107,7 @@ public final class GlobalSchemaContractInner extends ProxyResource {
 
     /**
      * Get the description property: Free-form schema entity description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -65,7 +116,7 @@ public final class GlobalSchemaContractInner extends ProxyResource {
 
     /**
      * Set the description property: Free-form schema entity description.
-     *
+     * 
      * @param description the description value to set.
      * @return the GlobalSchemaContractInner object itself.
      */
@@ -79,7 +130,7 @@ public final class GlobalSchemaContractInner extends ProxyResource {
 
     /**
      * Get the value property: Json-encoded string for non json-based schema.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -88,7 +139,7 @@ public final class GlobalSchemaContractInner extends ProxyResource {
 
     /**
      * Set the value property: Json-encoded string for non json-based schema.
-     *
+     * 
      * @param value the value value to set.
      * @return the GlobalSchemaContractInner object itself.
      */
@@ -102,7 +153,7 @@ public final class GlobalSchemaContractInner extends ProxyResource {
 
     /**
      * Get the document property: Global Schema document object for json-based schema formats(e.g. json schema).
-     *
+     * 
      * @return the document value.
      */
     public Object document() {
@@ -111,7 +162,7 @@ public final class GlobalSchemaContractInner extends ProxyResource {
 
     /**
      * Set the document property: Global Schema document object for json-based schema formats(e.g. json schema).
-     *
+     * 
      * @param document the document value to set.
      * @return the GlobalSchemaContractInner object itself.
      */
@@ -125,12 +176,56 @@ public final class GlobalSchemaContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GlobalSchemaContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GlobalSchemaContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GlobalSchemaContractInner.
+     */
+    public static GlobalSchemaContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GlobalSchemaContractInner deserializedGlobalSchemaContractInner = new GlobalSchemaContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGlobalSchemaContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGlobalSchemaContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGlobalSchemaContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGlobalSchemaContractInner.innerProperties
+                        = GlobalSchemaContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGlobalSchemaContractInner;
+        });
     }
 }

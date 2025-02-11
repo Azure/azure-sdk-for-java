@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiReleaseCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiReleaseCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"apiId\":\"tnwu\",\"createdDateTime\":\"2021-10-03T15:35:19Z\",\"updatedDateTime\":\"2021-02-12T15:23:48Z\",\"notes\":\"ufizuckyf\"},\"id\":\"hr\",\"name\":\"idf\",\"type\":\"zwdzuh\"}],\"count\":6116347242940995661,\"nextLink\":\"sdkf\"}")
-                .toObject(ApiReleaseCollection.class);
+        ApiReleaseCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"apiId\":\"tnwu\",\"createdDateTime\":\"2021-10-03T15:35:19Z\",\"updatedDateTime\":\"2021-02-12T15:23:48Z\",\"notes\":\"ufizuckyf\"},\"id\":\"hr\",\"name\":\"idf\",\"type\":\"zwdzuh\"}],\"count\":6116347242940995661,\"nextLink\":\"sdkf\"}")
+            .toObject(ApiReleaseCollection.class);
         Assertions.assertEquals(6116347242940995661L, model.count());
     }
 

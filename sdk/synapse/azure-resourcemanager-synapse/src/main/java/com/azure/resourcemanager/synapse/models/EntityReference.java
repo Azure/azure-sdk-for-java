@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The entity reference. */
+/**
+ * The entity reference.
+ */
 @Fluent
-public final class EntityReference {
+public final class EntityReference implements JsonSerializable<EntityReference> {
     /*
      * The type of this referenced entity.
      */
-    @JsonProperty(value = "type")
     private IntegrationRuntimeEntityReferenceType type;
 
     /*
      * The name of this referenced entity.
      */
-    @JsonProperty(value = "referenceName")
     private String referenceName;
 
-    /** Creates an instance of EntityReference class. */
+    /**
+     * Creates an instance of EntityReference class.
+     */
     public EntityReference() {
     }
 
     /**
      * Get the type property: The type of this referenced entity.
-     *
+     * 
      * @return the type value.
      */
     public IntegrationRuntimeEntityReferenceType type() {
@@ -37,7 +43,7 @@ public final class EntityReference {
 
     /**
      * Set the type property: The type of this referenced entity.
-     *
+     * 
      * @param type the type value to set.
      * @return the EntityReference object itself.
      */
@@ -48,7 +54,7 @@ public final class EntityReference {
 
     /**
      * Get the referenceName property: The name of this referenced entity.
-     *
+     * 
      * @return the referenceName value.
      */
     public String referenceName() {
@@ -57,7 +63,7 @@ public final class EntityReference {
 
     /**
      * Set the referenceName property: The name of this referenced entity.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the EntityReference object itself.
      */
@@ -68,9 +74,49 @@ public final class EntityReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityReference.
+     */
+    public static EntityReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityReference deserializedEntityReference = new EntityReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedEntityReference.type
+                        = IntegrationRuntimeEntityReferenceType.fromString(reader.getString());
+                } else if ("referenceName".equals(fieldName)) {
+                    deserializedEntityReference.referenceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityReference;
+        });
     }
 }

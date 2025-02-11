@@ -6,26 +6,36 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents an incident label. */
+/**
+ * Represents an incident label.
+ */
 @Fluent
-public final class IncidentLabel {
+public final class IncidentLabel implements JsonSerializable<IncidentLabel> {
     /*
      * The name of the label
      */
-    @JsonProperty(value = "labelName", required = true)
     private String labelName;
 
     /*
      * The type of the label
      */
-    @JsonProperty(value = "labelType", access = JsonProperty.Access.WRITE_ONLY)
     private IncidentLabelType labelType;
 
     /**
+     * Creates an instance of IncidentLabel class.
+     */
+    public IncidentLabel() {
+    }
+
+    /**
      * Get the labelName property: The name of the label.
-     *
+     * 
      * @return the labelName value.
      */
     public String labelName() {
@@ -34,7 +44,7 @@ public final class IncidentLabel {
 
     /**
      * Set the labelName property: The name of the label.
-     *
+     * 
      * @param labelName the labelName value to set.
      * @return the IncidentLabel object itself.
      */
@@ -45,7 +55,7 @@ public final class IncidentLabel {
 
     /**
      * Get the labelType property: The type of the label.
-     *
+     * 
      * @return the labelType value.
      */
     public IncidentLabelType labelType() {
@@ -54,16 +64,54 @@ public final class IncidentLabel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (labelName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property labelName in model IncidentLabel"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property labelName in model IncidentLabel"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IncidentLabel.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("labelName", this.labelName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentLabel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentLabel if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IncidentLabel.
+     */
+    public static IncidentLabel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentLabel deserializedIncidentLabel = new IncidentLabel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("labelName".equals(fieldName)) {
+                    deserializedIncidentLabel.labelName = reader.getString();
+                } else if ("labelType".equals(fieldName)) {
+                    deserializedIncidentLabel.labelType = IncidentLabelType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentLabel;
+        });
+    }
 }

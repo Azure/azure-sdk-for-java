@@ -23,7 +23,6 @@ public class ImdsRetryStrategyTest {
         Queue<Long> expectedEntries = new LinkedList<>();
         expectedEntries.addAll(Arrays.asList(800L, 1600L, 3200L, 6400L, 12800L));
 
-
         while (retry < imdsRetryStrategy.getMaxRetries()) {
             long timeout = (imdsRetryStrategy.calculateRetryDelay(retry).toMillis());
             if (expectedEntries.contains(timeout)) {

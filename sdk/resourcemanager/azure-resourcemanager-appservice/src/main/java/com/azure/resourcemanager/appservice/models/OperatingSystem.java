@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-
 /** Defines values for AppServiceOperatingSystem. */
 public enum OperatingSystem {
     /** Enum value Windows. */

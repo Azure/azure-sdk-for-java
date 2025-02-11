@@ -20,64 +20,58 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"administratorLogin\":\"scnpqxuhivy\",\"version\":\"10.3\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLS1_0\",\"userVisibleState\":\"Dropping\",\"fullyQualifiedDomainName\":\"vd\",\"earliestRestoreDate\":\"2021-10-25T02:57:36Z\",\"storageProfile\":{\"backupRetentionDays\":1041852302,\"geoRedundantBackup\":\"Enabled\",\"storageMB\":1656802567,\"storageAutogrow\":\"Enabled\"},\"replicationRole\":\"audccsnhs\",\"masterServerId\":\"nyejhkryhtnap\",\"replicaCapacity\":1978797807,\"publicNetworkAccess\":\"Enabled\",\"privateEndpointConnections\":[{\"id\":\"emkkvnipjox\",\"properties\":{\"provisioningState\":\"Ready\"}}]}")
-                .toObject(ServerProperties.class);
-        Assertions.assertEquals("scnpqxuhivy", model.administratorLogin());
-        Assertions.assertEquals(ServerVersion.ONE_ZERO_THREE, model.version());
+        ServerProperties model = BinaryData.fromString(
+            "{\"administratorLogin\":\"n\",\"version\":\"10.2\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLS1_0\",\"userVisibleState\":\"Dropping\",\"fullyQualifiedDomainName\":\"umjgrtfwvuk\",\"earliestRestoreDate\":\"2021-07-06T14:12:06Z\",\"storageProfile\":{\"backupRetentionDays\":1991761310,\"geoRedundantBackup\":\"Disabled\",\"storageMB\":70776342,\"storageAutogrow\":\"Enabled\"},\"replicationRole\":\"nyejhkryhtnap\",\"masterServerId\":\"wlokjyem\",\"replicaCapacity\":1665801665,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"id\":\"xzjnchgejs\",\"properties\":{\"privateEndpoint\":{\"id\":\"ailzydehojwyahu\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"pmqnja\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Ready\"}},{\"id\":\"prozvcputegjvwmf\",\"properties\":{\"privateEndpoint\":{\"id\":\"cmdv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"u\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Rejecting\"}},{\"id\":\"kjozkrwfnd\",\"properties\":{\"privateEndpoint\":{\"id\":\"pslwejdpvw\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"qpsoacctazak\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Rejecting\"}},{\"id\":\"cr\",\"properties\":{\"privateEndpoint\":{\"id\":\"fdosyg\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"aojakhmsbzjhcrz\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Approving\"}}]}")
+            .toObject(ServerProperties.class);
+        Assertions.assertEquals("n", model.administratorLogin());
+        Assertions.assertEquals(ServerVersion.ONE_ZERO_TWO, model.version());
         Assertions.assertEquals(SslEnforcementEnum.ENABLED, model.sslEnforcement());
         Assertions.assertEquals(MinimalTlsVersionEnum.TLS1_0, model.minimalTlsVersion());
         Assertions.assertEquals(ServerState.DROPPING, model.userVisibleState());
-        Assertions.assertEquals("vd", model.fullyQualifiedDomainName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-25T02:57:36Z"), model.earliestRestoreDate());
-        Assertions.assertEquals(1041852302, model.storageProfile().backupRetentionDays());
-        Assertions.assertEquals(GeoRedundantBackup.ENABLED, model.storageProfile().geoRedundantBackup());
-        Assertions.assertEquals(1656802567, model.storageProfile().storageMB());
+        Assertions.assertEquals("umjgrtfwvuk", model.fullyQualifiedDomainName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-06T14:12:06Z"), model.earliestRestoreDate());
+        Assertions.assertEquals(1991761310, model.storageProfile().backupRetentionDays());
+        Assertions.assertEquals(GeoRedundantBackup.DISABLED, model.storageProfile().geoRedundantBackup());
+        Assertions.assertEquals(70776342, model.storageProfile().storageMB());
         Assertions.assertEquals(StorageAutogrow.ENABLED, model.storageProfile().storageAutogrow());
-        Assertions.assertEquals("audccsnhs", model.replicationRole());
-        Assertions.assertEquals("nyejhkryhtnap", model.masterServerId());
-        Assertions.assertEquals(1978797807, model.replicaCapacity());
-        Assertions.assertEquals(PublicNetworkAccessEnum.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("nyejhkryhtnap", model.replicationRole());
+        Assertions.assertEquals("wlokjyem", model.masterServerId());
+        Assertions.assertEquals(1665801665, model.replicaCapacity());
+        Assertions.assertEquals(PublicNetworkAccessEnum.DISABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerProperties model =
-            new ServerProperties()
-                .withAdministratorLogin("scnpqxuhivy")
-                .withVersion(ServerVersion.ONE_ZERO_THREE)
-                .withSslEnforcement(SslEnforcementEnum.ENABLED)
-                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_0)
-                .withUserVisibleState(ServerState.DROPPING)
-                .withFullyQualifiedDomainName("vd")
-                .withEarliestRestoreDate(OffsetDateTime.parse("2021-10-25T02:57:36Z"))
-                .withStorageProfile(
-                    new StorageProfile()
-                        .withBackupRetentionDays(1041852302)
-                        .withGeoRedundantBackup(GeoRedundantBackup.ENABLED)
-                        .withStorageMB(1656802567)
-                        .withStorageAutogrow(StorageAutogrow.ENABLED))
-                .withReplicationRole("audccsnhs")
-                .withMasterServerId("nyejhkryhtnap")
-                .withReplicaCapacity(1978797807)
-                .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED);
+        ServerProperties model = new ServerProperties().withAdministratorLogin("n")
+            .withVersion(ServerVersion.ONE_ZERO_TWO)
+            .withSslEnforcement(SslEnforcementEnum.ENABLED)
+            .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_0)
+            .withUserVisibleState(ServerState.DROPPING)
+            .withFullyQualifiedDomainName("umjgrtfwvuk")
+            .withEarliestRestoreDate(OffsetDateTime.parse("2021-07-06T14:12:06Z"))
+            .withStorageProfile(new StorageProfile().withBackupRetentionDays(1991761310)
+                .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
+                .withStorageMB(70776342)
+                .withStorageAutogrow(StorageAutogrow.ENABLED))
+            .withReplicationRole("nyejhkryhtnap")
+            .withMasterServerId("wlokjyem")
+            .withReplicaCapacity(1665801665)
+            .withPublicNetworkAccess(PublicNetworkAccessEnum.DISABLED);
         model = BinaryData.fromObject(model).toObject(ServerProperties.class);
-        Assertions.assertEquals("scnpqxuhivy", model.administratorLogin());
-        Assertions.assertEquals(ServerVersion.ONE_ZERO_THREE, model.version());
+        Assertions.assertEquals("n", model.administratorLogin());
+        Assertions.assertEquals(ServerVersion.ONE_ZERO_TWO, model.version());
         Assertions.assertEquals(SslEnforcementEnum.ENABLED, model.sslEnforcement());
         Assertions.assertEquals(MinimalTlsVersionEnum.TLS1_0, model.minimalTlsVersion());
         Assertions.assertEquals(ServerState.DROPPING, model.userVisibleState());
-        Assertions.assertEquals("vd", model.fullyQualifiedDomainName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-25T02:57:36Z"), model.earliestRestoreDate());
-        Assertions.assertEquals(1041852302, model.storageProfile().backupRetentionDays());
-        Assertions.assertEquals(GeoRedundantBackup.ENABLED, model.storageProfile().geoRedundantBackup());
-        Assertions.assertEquals(1656802567, model.storageProfile().storageMB());
+        Assertions.assertEquals("umjgrtfwvuk", model.fullyQualifiedDomainName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-06T14:12:06Z"), model.earliestRestoreDate());
+        Assertions.assertEquals(1991761310, model.storageProfile().backupRetentionDays());
+        Assertions.assertEquals(GeoRedundantBackup.DISABLED, model.storageProfile().geoRedundantBackup());
+        Assertions.assertEquals(70776342, model.storageProfile().storageMB());
         Assertions.assertEquals(StorageAutogrow.ENABLED, model.storageProfile().storageAutogrow());
-        Assertions.assertEquals("audccsnhs", model.replicationRole());
-        Assertions.assertEquals("nyejhkryhtnap", model.masterServerId());
-        Assertions.assertEquals(1978797807, model.replicaCapacity());
-        Assertions.assertEquals(PublicNetworkAccessEnum.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("nyejhkryhtnap", model.replicationRole());
+        Assertions.assertEquals("wlokjyem", model.masterServerId());
+        Assertions.assertEquals(1665801665, model.replicaCapacity());
+        Assertions.assertEquals(PublicNetworkAccessEnum.DISABLED, model.publicNetworkAccess());
     }
 }

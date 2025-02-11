@@ -5,52 +5,41 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TieringCostInfoInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Response parameters for tiering cost info for savings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = TieringCostSavingInfo.class,
-    visible = true)
-@JsonTypeName("TieringCostSavingInfo")
 @Fluent
 public final class TieringCostSavingInfo extends TieringCostInfoInner {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private String objectType = "TieringCostSavingInfo";
 
     /*
      * Source tier size reduction in bytes after moving all the recommended backup points to target tier
      */
-    @JsonProperty(value = "sourceTierSizeReductionInBytes", required = true)
     private long sourceTierSizeReductionInBytes;
 
     /*
      * Target tier size increase in bytes after moving all the recommended backup points to target tier
      */
-    @JsonProperty(value = "targetTierSizeIncreaseInBytes", required = true)
     private long targetTierSizeIncreaseInBytes;
 
     /*
      * Source tier retail cost per GB per month
      */
-    @JsonProperty(value = "retailSourceTierCostPerGBPerMonth", required = true)
     private double retailSourceTierCostPerGBPerMonth;
 
     /*
      * Target tier retail cost per GB per month
      */
-    @JsonProperty(value = "retailTargetTierCostPerGBPerMonth", required = true)
     private double retailTargetTierCostPerGBPerMonth;
 
     /**
@@ -161,6 +150,54 @@ public final class TieringCostSavingInfo extends TieringCostInfoInner {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("sourceTierSizeReductionInBytes", this.sourceTierSizeReductionInBytes);
+        jsonWriter.writeLongField("targetTierSizeIncreaseInBytes", this.targetTierSizeIncreaseInBytes);
+        jsonWriter.writeDoubleField("retailSourceTierCostPerGBPerMonth", this.retailSourceTierCostPerGBPerMonth);
+        jsonWriter.writeDoubleField("retailTargetTierCostPerGBPerMonth", this.retailTargetTierCostPerGBPerMonth);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TieringCostSavingInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TieringCostSavingInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TieringCostSavingInfo.
+     */
+    public static TieringCostSavingInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TieringCostSavingInfo deserializedTieringCostSavingInfo = new TieringCostSavingInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceTierSizeReductionInBytes".equals(fieldName)) {
+                    deserializedTieringCostSavingInfo.sourceTierSizeReductionInBytes = reader.getLong();
+                } else if ("targetTierSizeIncreaseInBytes".equals(fieldName)) {
+                    deserializedTieringCostSavingInfo.targetTierSizeIncreaseInBytes = reader.getLong();
+                } else if ("retailSourceTierCostPerGBPerMonth".equals(fieldName)) {
+                    deserializedTieringCostSavingInfo.retailSourceTierCostPerGBPerMonth = reader.getDouble();
+                } else if ("retailTargetTierCostPerGBPerMonth".equals(fieldName)) {
+                    deserializedTieringCostSavingInfo.retailTargetTierCostPerGBPerMonth = reader.getDouble();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedTieringCostSavingInfo.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTieringCostSavingInfo;
+        });
     }
 }

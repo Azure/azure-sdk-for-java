@@ -29,6 +29,17 @@ pr:
       - sdk/quantum/azure-quantum-jobs/pom.xml
       - sdk/quantum/azure-resourcemanager-quantum/pom.xml
 
+parameters:
+  - name: release_azureresourcemanagerquantum
+    displayName: azure-resourcemanager-quantum
+    type: boolean
+    default: false
+
+  - name: release_azurequantumjobs
+    displayName: azure-quantum-jobs
+    type: boolean
+    default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -37,6 +48,8 @@ extends:
       - name: azure-quantum-jobs
         groupId: com.azure
         safeName: azurequantumjobs
+        releaseInBatch: ${{ parameters.release_azurequantumjobs }}
       - name: azure-resourcemanager-quantum
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerquantum
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerquantum }}

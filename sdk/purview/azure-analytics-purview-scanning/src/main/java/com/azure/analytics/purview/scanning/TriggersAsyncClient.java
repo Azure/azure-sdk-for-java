@@ -18,14 +18,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewScanningClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewScanningClient type.
+ */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class TriggersAsyncClient {
-    @Generated private final TriggersImpl serviceClient;
+    @Generated
+    private final TriggersImpl serviceClient;
 
     /**
      * Initializes an instance of TriggersAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -35,10 +38,10 @@ public final class TriggersAsyncClient {
 
     /**
      * Gets trigger information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -50,7 +53,7 @@ public final class TriggersAsyncClient {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -67,7 +70,7 @@ public final class TriggersAsyncClient {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -84,8 +87,9 @@ public final class TriggersAsyncClient {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -97,17 +101,17 @@ public final class TriggersAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTriggerWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getTriggerWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 
     /**
      * Creates an instance of a trigger.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -119,7 +123,7 @@ public final class TriggersAsyncClient {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -136,7 +140,7 @@ public final class TriggersAsyncClient {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -153,11 +157,13 @@ public final class TriggersAsyncClient {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -169,7 +175,7 @@ public final class TriggersAsyncClient {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -186,7 +192,7 @@ public final class TriggersAsyncClient {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -203,8 +209,9 @@ public final class TriggersAsyncClient {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param body The body parameter.
@@ -217,17 +224,17 @@ public final class TriggersAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTriggerWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createTriggerWithResponse(String dataSourceName, String scanName, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createTriggerWithResponseAsync(dataSourceName, scanName, body, requestOptions);
     }
 
     /**
      * Deletes the trigger associated with the scan.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -239,7 +246,7 @@ public final class TriggersAsyncClient {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -256,7 +263,7 @@ public final class TriggersAsyncClient {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -273,8 +280,9 @@ public final class TriggersAsyncClient {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -286,8 +294,8 @@ public final class TriggersAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteTriggerWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteTriggerWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 }

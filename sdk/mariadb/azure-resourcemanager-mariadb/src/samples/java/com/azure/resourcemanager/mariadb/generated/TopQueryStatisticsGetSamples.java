@@ -4,23 +4,23 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for TopQueryStatistics Get. */
+/**
+ * Samples for TopQueryStatistics Get.
+ */
 public final class TopQueryStatisticsGetSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/TopQueryStatisticsGet.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/TopQueryStatisticsGet.
+     * json
      */
     /**
      * Sample code: TopQueryStatisticsGet.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void topQueryStatisticsGet(com.azure.resourcemanager.mariadb.MariaDBManager manager) {
-        manager
-            .topQueryStatistics()
-            .getWithResponse(
-                "testResourceGroupName",
-                "testServerName",
-                "66-636923268000000000-636923277000000000-avg-duration",
-                com.azure.core.util.Context.NONE);
+        manager.topQueryStatistics()
+            .getWithResponse("testResourceGroupName", "testServerName",
+                "66-636923268000000000-636923277000000000-avg-duration", com.azure.core.util.Context.NONE);
     }
 }

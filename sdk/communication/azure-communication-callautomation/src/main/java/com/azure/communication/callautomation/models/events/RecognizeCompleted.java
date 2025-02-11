@@ -43,6 +43,12 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
     private ChoiceResult collectChoiceResult;
 
     /**
+     * Creates an instance of {@link RecognizeCompleted}.
+     */
+    public RecognizeCompleted() {
+    }
+
+    /**
      * Get the collectToneResult or choiceResult property.
      *
      * @return the recognizeResult value.
@@ -66,7 +72,6 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resultInformation", resultInformation);
         jsonWriter.writeStringField("recognitionType", recognitionType != null ? recognitionType.toString() : null);
         jsonWriter.writeJsonField("dtmfResult", dtmfResult);
         jsonWriter.writeJsonField("speechResult", speechResult);
@@ -89,9 +94,7 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("resultInformation".equals(fieldName)) {
-                    event.resultInformation = ResultInformation.fromJson(reader);
-                } else if ("recognitionType".equals(fieldName)) {
+                if ("recognitionType".equals(fieldName)) {
                     event.recognitionType = CallMediaRecognitionType.fromString(reader.getString());
                 } else if ("dtmfResult".equals(fieldName)) {
                     event.dtmfResult = DtmfResult.fromJson(reader);

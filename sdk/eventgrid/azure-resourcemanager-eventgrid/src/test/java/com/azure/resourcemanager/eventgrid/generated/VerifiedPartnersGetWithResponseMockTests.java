@@ -23,7 +23,7 @@ public final class VerifiedPartnersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"c88e068e-1c95-40ff-a92e-92df8d6491d1\",\"organizationName\":\"lndyclwgycv\",\"partnerDisplayName\":\"nzjcyqqzhembtbw\",\"partnerTopicDetails\":{\"description\":\"ba\",\"longDescription\":\"isj\",\"setupUri\":\"eajvmvvlooubsfx\"},\"partnerDestinationDetails\":{\"description\":\"eopsk\",\"longDescription\":\"cjomlupf\",\"setupUri\":\"usjcd\"},\"provisioningState\":\"Canceled\"},\"id\":\"gdw\",\"name\":\"rgdqyxaj\",\"type\":\"lgrcavqcwyzoqzkm\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"956d353d-d339-4e58-b435-d60464fb55c7\",\"organizationName\":\"lndyclwgycv\",\"partnerDisplayName\":\"nzjcyqqzhembtbw\",\"partnerTopicDetails\":{\"description\":\"ba\",\"longDescription\":\"isj\",\"setupUri\":\"eajvmvvlooubsfx\"},\"partnerDestinationDetails\":{\"description\":\"eopsk\",\"longDescription\":\"cjomlupf\",\"setupUri\":\"usjcd\"},\"provisioningState\":\"Canceled\"},\"id\":\"gdw\",\"name\":\"rgdqyxaj\",\"type\":\"lgrcavqcwyzoqzkm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,7 +35,7 @@ public final class VerifiedPartnersGetWithResponseMockTests {
         VerifiedPartner response
             = manager.verifiedPartners().getWithResponse("wpsibxovuqoq", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(UUID.fromString("c88e068e-1c95-40ff-a92e-92df8d6491d1"),
+        Assertions.assertEquals(UUID.fromString("956d353d-d339-4e58-b435-d60464fb55c7"),
             response.partnerRegistrationImmutableId());
         Assertions.assertEquals("lndyclwgycv", response.organizationName());
         Assertions.assertEquals("nzjcyqqzhembtbw", response.partnerDisplayName());

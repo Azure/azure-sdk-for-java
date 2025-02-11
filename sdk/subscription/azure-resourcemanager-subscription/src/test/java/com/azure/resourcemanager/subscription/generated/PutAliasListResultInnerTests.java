@@ -10,11 +10,9 @@ import com.azure.resourcemanager.subscription.fluent.models.PutAliasListResultIn
 public final class PutAliasListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PutAliasListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"subscriptionId\":\"ypyqrimzinp\",\"provisioningState\":\"Failed\"},\"id\":\"jdkirsoodqx\",\"name\":\"crmnohjtckwhds\",\"type\":\"ifiyipjxsqwpgrj\"},{\"properties\":{\"subscriptionId\":\"orcjxvsnby\",\"provisioningState\":\"Failed\"},\"id\":\"bnmo\",\"name\":\"pcyshu\",\"type\":\"zafb\"},{\"properties\":{\"subscriptionId\":\"gpbtoqcjmklj\",\"provisioningState\":\"Succeeded\"},\"id\":\"qidtqajzyu\",\"name\":\"pku\",\"type\":\"jkrlkhbzhfepg\"},{\"properties\":{\"subscriptionId\":\"e\",\"provisioningState\":\"Accepted\"},\"id\":\"ocxscpaierhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"}],\"nextLink\":\"nbdxk\"}")
-                .toObject(PutAliasListResultInner.class);
+        PutAliasListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"subscriptionId\":\"qux\",\"provisioningState\":\"Succeeded\"},\"id\":\"yjgzjaoyfhrtxiln\",\"name\":\"rkujy\",\"type\":\"vlejuvfqa\"},{\"properties\":{\"subscriptionId\":\"yxwjkcp\",\"provisioningState\":\"Failed\"},\"id\":\"wbxgjvt\",\"name\":\"vpys\",\"type\":\"zdn\"}],\"nextLink\":\"jq\"}")
+            .toObject(PutAliasListResultInner.class);
     }
 
     @org.junit.jupiter.api.Test

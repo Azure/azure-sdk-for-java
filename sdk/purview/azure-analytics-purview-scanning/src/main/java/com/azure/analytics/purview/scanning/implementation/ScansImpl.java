@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.scanning.implementation;
 
+import com.azure.analytics.purview.scanning.PurviewScanningServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -37,22 +38,37 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Scans. */
+/**
+ * An instance of this class provides access to all the operations defined in Scans.
+ */
 public final class ScansImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ScansService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewScanningClientImpl client;
 
     /**
      * Initializes an instance of ScansImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ScansImpl(PurviewScanningClientImpl client) {
         this.service = RestProxy.create(ScansService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewScanningServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -63,221 +79,122 @@ public final class ScansImpl {
     @ServiceInterface(name = "PurviewScanningClien")
     public interface ScansService {
         @Put("/datasources/{dataSourceName}/scans/{scanName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrUpdate(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/datasources/{dataSourceName}/scans/{scanName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> createOrUpdateSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/datasources/{dataSourceName}/scans/{scanName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> get(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/datasources/{dataSourceName}/scans/{scanName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/datasources/{dataSourceName}/scans/{scanName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> delete(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> delete(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/datasources/{dataSourceName}/scans/{scanName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> deleteSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/datasources/{dataSourceName}/scans")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByDataSource(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listByDataSource(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/datasources/{dataSourceName}/scans")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listByDataSourceSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listByDataSourceSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByDataSourceNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listByDataSourceNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listByDataSourceNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listByDataSourceNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
      * Creates an instance of a scan.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -294,7 +211,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -325,14 +242,17 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -349,7 +269,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -380,8 +300,9 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param body The body parameter.
@@ -393,31 +314,23 @@ public final class ScansImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String dataSourceName, String scanName,
+        BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdate(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                this.client.getServiceVersion().getVersion(),
-                                body,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), dataSourceName,
+            scanName, this.client.getServiceVersion().getVersion(), body, accept, requestOptions, context));
     }
 
     /**
      * Creates an instance of a scan.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -434,7 +347,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -465,14 +378,17 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -489,7 +405,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -520,8 +436,9 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param body The body parameter.
@@ -533,29 +450,23 @@ public final class ScansImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String dataSourceName, String scanName, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createOrUpdateSync(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                body,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.createOrUpdateSync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), body, accept, requestOptions, Context.NONE);
     }
 
     /**
      * Gets a scan information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -572,7 +483,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -603,8 +514,9 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -615,30 +527,23 @@ public final class ScansImpl {
      * @return a scan information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponseAsync(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
      * Gets a scan information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -655,7 +560,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -686,8 +591,9 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -700,25 +606,20 @@ public final class ScansImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String dataSourceName, String scanName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getSync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
      * Deletes the scan associated with the data source.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -735,7 +636,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -766,8 +667,9 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -778,30 +680,23 @@ public final class ScansImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteWithResponseAsync(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
      * Deletes the scan associated with the data source.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -818,7 +713,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -849,8 +744,9 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -861,28 +757,23 @@ public final class ScansImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteSync(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteSync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
      * List scans in data source.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -899,7 +790,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -930,8 +821,9 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -941,38 +833,26 @@ public final class ScansImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listByDataSourceSinglePageAsync(
-            String dataSourceName, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listByDataSourceSinglePageAsync(String dataSourceName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listByDataSource(
-                                        this.client.getEndpoint(),
-                                        dataSourceName,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listByDataSource(this.client.getEndpoint(), dataSourceName,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * List scans in data source.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -989,7 +869,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -1020,8 +900,9 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1034,23 +915,21 @@ public final class ScansImpl {
     public PagedFlux<BinaryData> listByDataSourceAsync(String dataSourceName, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listByDataSourceSinglePageAsync(dataSourceName, requestOptions),
-                nextLink -> listByDataSourceNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listByDataSourceSinglePageAsync(dataSourceName, requestOptions),
+            nextLink -> listByDataSourceNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * List scans in data source.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -1067,7 +946,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -1098,8 +977,9 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1111,32 +991,22 @@ public final class ScansImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listByDataSourceSinglePage(String dataSourceName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listByDataSourceSync(
-                        this.client.getEndpoint(),
-                        dataSourceName,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listByDataSourceSync(this.client.getEndpoint(), dataSourceName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
      * List scans in data source.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -1153,7 +1023,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -1184,8 +1054,9 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1198,23 +1069,21 @@ public final class ScansImpl {
     public PagedIterable<BinaryData> listByDataSource(String dataSourceName, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listByDataSourceSinglePage(dataSourceName, requestOptions),
-                nextLink -> listByDataSourceNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listByDataSourceSinglePage(dataSourceName, requestOptions),
+            nextLink -> listByDataSourceNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -1231,7 +1100,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -1262,10 +1131,10 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1274,33 +1143,26 @@ public final class ScansImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listByDataSourceNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listByDataSourceNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listByDataSourceNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listByDataSourceNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *     scanResults (Optional): [
      *          (Optional){
      *             parentId: String (Optional)
@@ -1317,7 +1179,7 @@ public final class ScansImpl {
      *                     }
      *                 ]
      *                 exceptionCountMap (Optional): {
-     *                     String: int (Optional)
+     *                     String: int (Required)
      *                 }
      *             }
      *             startTime: OffsetDateTime (Optional)
@@ -1348,10 +1210,10 @@ public final class ScansImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1362,16 +1224,10 @@ public final class ScansImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listByDataSourceNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listByDataSourceNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listByDataSourceNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

@@ -5,18 +5,27 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ManagedDisk model.
  */
 @Fluent
-public final class ManagedDisk {
+public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
     /*
      * The storage account type for use in creating data disks or OS disk.
      */
-    @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
+
+    /*
+     * Specifies the security profile settings for the managed disk. **Note**: It can only be set for Confidential VMs
+     * and is required when using Confidential VMs.
+     */
+    private VMDiskSecurityProfile securityProfile;
 
     /**
      * Creates an instance of ManagedDisk class.
@@ -45,10 +54,75 @@ public final class ManagedDisk {
     }
 
     /**
+     * Get the securityProfile property: Specifies the security profile settings for the managed disk. **Note**: It can
+     * only be set for Confidential VMs and is required when using Confidential VMs.
+     * 
+     * @return the securityProfile value.
+     */
+    public VMDiskSecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: Specifies the security profile settings for the managed disk. **Note**: It can
+     * only be set for Confidential VMs and is required when using Confidential VMs.
+     * 
+     * @param securityProfile the securityProfile value to set.
+     * @return the ManagedDisk object itself.
+     */
+    public ManagedDisk withSecurityProfile(VMDiskSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (securityProfile() != null) {
+            securityProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccountType",
+            this.storageAccountType == null ? null : this.storageAccountType.toString());
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedDisk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedDisk if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedDisk.
+     */
+    public static ManagedDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedDisk deserializedManagedDisk = new ManagedDisk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountType".equals(fieldName)) {
+                    deserializedManagedDisk.storageAccountType = StorageAccountType.fromString(reader.getString());
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedManagedDisk.securityProfile = VMDiskSecurityProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedDisk;
+        });
     }
 }

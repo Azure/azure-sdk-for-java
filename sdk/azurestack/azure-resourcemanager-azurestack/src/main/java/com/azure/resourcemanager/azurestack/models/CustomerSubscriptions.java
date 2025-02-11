@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of CustomerSubscriptions. */
+/**
+ * Resource collection API of CustomerSubscriptions.
+ */
 public interface CustomerSubscriptions {
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface CustomerSubscriptions {
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface CustomerSubscriptions {
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -47,12 +49,12 @@ public interface CustomerSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer subscription along with {@link Response}.
      */
-    Response<CustomerSubscription> getWithResponse(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context);
+    Response<CustomerSubscription> getWithResponse(String resourceGroup, String registrationName,
+        String customerSubscriptionName, Context context);
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -65,7 +67,7 @@ public interface CustomerSubscriptions {
 
     /**
      * Deletes a customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -75,12 +77,12 @@ public interface CustomerSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroup, String registrationName, String customerSubscriptionName,
+        Context context);
 
     /**
      * Deletes a customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -92,7 +94,7 @@ public interface CustomerSubscriptions {
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface CustomerSubscriptions {
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface CustomerSubscriptions {
 
     /**
      * Deletes a customer subscription under a registration.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +127,7 @@ public interface CustomerSubscriptions {
 
     /**
      * Deletes a customer subscription under a registration.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface CustomerSubscriptions {
 
     /**
      * Begins definition for a new CustomerSubscription resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new CustomerSubscription definition.
      */

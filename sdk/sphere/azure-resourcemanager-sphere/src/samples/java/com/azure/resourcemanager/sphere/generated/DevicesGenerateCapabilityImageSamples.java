@@ -22,10 +22,11 @@ public final class DevicesGenerateCapabilityImageSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void devicesGenerateCapabilityImage(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.devices().generateCapabilityImage("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1",
-            "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            new GenerateCapabilityImageRequest().withCapabilities(
-                Arrays.asList(CapabilityType.APPLICATION_DEVELOPMENT)),
-            com.azure.core.util.Context.NONE);
+        manager.devices()
+            .generateCapabilityImage("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1",
+                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                new GenerateCapabilityImageRequest().withCapabilities(
+                    Arrays.asList(CapabilityType.APPLICATION_DEVELOPMENT)),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,27 +5,21 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Request parameters for tiering cost info for vault.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = FetchTieringCostSavingsInfoForVaultRequest.class,
-    visible = true)
-@JsonTypeName("FetchTieringCostSavingsInfoForVaultRequest")
 @Fluent
 public final class FetchTieringCostSavingsInfoForVaultRequest extends FetchTieringCostInfoRequest {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private String objectType = "FetchTieringCostSavingsInfoForVaultRequest";
 
     /**
@@ -70,6 +64,63 @@ public final class FetchTieringCostSavingsInfoForVaultRequest extends FetchTieri
      */
     @Override
     public void validate() {
-        super.validate();
+        if (sourceTierType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceTierType in model FetchTieringCostSavingsInfoForVaultRequest"));
+        }
+        if (targetTierType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetTierType in model FetchTieringCostSavingsInfoForVaultRequest"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FetchTieringCostSavingsInfoForVaultRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceTierType", sourceTierType() == null ? null : sourceTierType().toString());
+        jsonWriter.writeStringField("targetTierType", targetTierType() == null ? null : targetTierType().toString());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FetchTieringCostSavingsInfoForVaultRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FetchTieringCostSavingsInfoForVaultRequest if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FetchTieringCostSavingsInfoForVaultRequest.
+     */
+    public static FetchTieringCostSavingsInfoForVaultRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FetchTieringCostSavingsInfoForVaultRequest deserializedFetchTieringCostSavingsInfoForVaultRequest
+                = new FetchTieringCostSavingsInfoForVaultRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceTierType".equals(fieldName)) {
+                    deserializedFetchTieringCostSavingsInfoForVaultRequest
+                        .withSourceTierType(RecoveryPointTierType.fromString(reader.getString()));
+                } else if ("targetTierType".equals(fieldName)) {
+                    deserializedFetchTieringCostSavingsInfoForVaultRequest
+                        .withTargetTierType(RecoveryPointTierType.fromString(reader.getString()));
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedFetchTieringCostSavingsInfoForVaultRequest.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFetchTieringCostSavingsInfoForVaultRequest;
+        });
     }
 }

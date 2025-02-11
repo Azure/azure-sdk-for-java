@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Region spec details.
  */
 @Fluent
-public final class RegionSpecEntity {
+public final class RegionSpecEntity implements JsonSerializable<RegionSpecEntity> {
     /*
      * Display Name of the region
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Cloud provider name
      */
-    @JsonProperty(value = "cloud")
     private String cloud;
 
     /*
      * Region name
      */
-    @JsonProperty(value = "regionName")
     private String regionName;
 
     /*
      * The packages property.
      */
-    @JsonProperty(value = "packages")
     private List<String> packages;
 
     /**
@@ -129,5 +129,51 @@ public final class RegionSpecEntity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("cloud", this.cloud);
+        jsonWriter.writeStringField("regionName", this.regionName);
+        jsonWriter.writeArrayField("packages", this.packages, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegionSpecEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegionSpecEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegionSpecEntity.
+     */
+    public static RegionSpecEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegionSpecEntity deserializedRegionSpecEntity = new RegionSpecEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRegionSpecEntity.name = reader.getString();
+                } else if ("cloud".equals(fieldName)) {
+                    deserializedRegionSpecEntity.cloud = reader.getString();
+                } else if ("regionName".equals(fieldName)) {
+                    deserializedRegionSpecEntity.regionName = reader.getString();
+                } else if ("packages".equals(fieldName)) {
+                    List<String> packages = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRegionSpecEntity.packages = packages;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegionSpecEntity;
+        });
     }
 }

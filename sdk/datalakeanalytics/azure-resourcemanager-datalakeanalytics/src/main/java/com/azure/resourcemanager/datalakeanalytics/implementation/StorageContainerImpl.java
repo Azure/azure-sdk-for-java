@@ -13,8 +13,7 @@ public final class StorageContainerImpl implements StorageContainer {
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    StorageContainerImpl(
-        StorageContainerInner innerObject,
+    StorageContainerImpl(StorageContainerInner innerObject,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

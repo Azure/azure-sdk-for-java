@@ -9,6 +9,8 @@ import com.azure.spring.cloud.service.implementation.identity.credential.provide
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertiesBeanPostProcessorTest.MANAGED_IDENTITY_ENABLED_DEFAULT;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertiesBeanPostProcessorTest.SCOPES_DEFAULT;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_AUTHENTICATION_PLUGIN_CLASSNAME;
@@ -70,10 +72,10 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
                     DatabaseType.POSTGRESQL,
                     false,
                     connectionString,
-                    PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
                     PUBLIC_AUTHORITY_HOST_STRING,
+                    MANAGED_IDENTITY_ENABLED_DEFAULT,
+                    SCOPES_DEFAULT,
                     POSTGRESQL_USER_AGENT,
-                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     POSTGRESQL_ASSUME_MIN_SERVER_VERSION
                 );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
@@ -96,10 +98,13 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
                     false,
                     connectionString,
                     PUBLIC_AUTHORITY_HOST_STRING,
-                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
-                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     POSTGRESQL_USER_AGENT,
-                    POSTGRESQL_ASSUME_MIN_SERVER_VERSION
+                    POSTGRESQL_ASSUME_MIN_SERVER_VERSION,
+                    "azure.clientId=fake-clientId",
+                    "azure.clientSecret=fake-clientSecret",
+                    MANAGED_IDENTITY_ENABLED_DEFAULT,
+                    SCOPES_DEFAULT,
+                    "azure.tenantId=fake-tenantId"
                 );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.databricks.generated;
 
-/** Samples for Workspaces List. */
+/**
+ * Samples for Workspaces List.
+ */
 public final class WorkspacesListSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspacesListBySubscription.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
+     * WorkspacesListBySubscription.json
      */
     /**
      * Sample code: Lists workspaces.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void listsWorkspaces(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {

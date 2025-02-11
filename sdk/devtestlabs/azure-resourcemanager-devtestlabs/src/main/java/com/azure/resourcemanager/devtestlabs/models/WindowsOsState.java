@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the Windows OS (i.e. NonSysprepped, SysprepRequested, SysprepApplied). */
+/**
+ * The state of the Windows OS (i.e. NonSysprepped, SysprepRequested, SysprepApplied).
+ */
 public final class WindowsOsState extends ExpandableStringEnum<WindowsOsState> {
-    /** Static value NonSysprepped for WindowsOsState. */
+    /**
+     * Static value NonSysprepped for WindowsOsState.
+     */
     public static final WindowsOsState NON_SYSPREPPED = fromString("NonSysprepped");
 
-    /** Static value SysprepRequested for WindowsOsState. */
+    /**
+     * Static value SysprepRequested for WindowsOsState.
+     */
     public static final WindowsOsState SYSPREP_REQUESTED = fromString("SysprepRequested");
 
-    /** Static value SysprepApplied for WindowsOsState. */
+    /**
+     * Static value SysprepApplied for WindowsOsState.
+     */
     public static final WindowsOsState SYSPREP_APPLIED = fromString("SysprepApplied");
 
     /**
      * Creates a new instance of WindowsOsState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class WindowsOsState extends ExpandableStringEnum<WindowsOsState> {
 
     /**
      * Creates or finds a WindowsOsState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WindowsOsState.
      */
-    @JsonCreator
     public static WindowsOsState fromString(String name) {
         return fromString(name, WindowsOsState.class);
     }
 
     /**
      * Gets known WindowsOsState values.
-     *
+     * 
      * @return known WindowsOsState values.
      */
     public static Collection<WindowsOsState> values() {

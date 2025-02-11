@@ -15,8 +15,8 @@ import reactor.core.publisher.Flux;
 
 public class KuduTests {
 
-    private static final String LOG_STREAM =
-        "2020-02-25T07:19:40  Welcome, you are now connected to log-streaming service. The default timeout is 2 hours."
+    private static final String LOG_STREAM
+        = "2020-02-25T07:19:40  Welcome, you are now connected to log-streaming service. The default timeout is 2 hours."
             + " Change the timeout with the App Setting SCM_LOGSTREAM_TIMEOUT (in seconds).\n"
             + "2020-02-25T07:20:40  No new trace in the past 1 min(s).\n"
             + "2020-02-25T07:21:40  No new trace in the past 2 min(s).\n"
@@ -35,8 +35,7 @@ public class KuduTests {
             + " Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/79.0.3945.130+Safari/537.36"
             + " JSESSIONID=3080AD1F0E745FFB80CE3DC1039A820F;+ARRAffinity=9c45f76fcf2ed72fc0f79776f0387a38a4f53d6739f8aa06a66a120a04466857"
             + " http://wa1-weidxu.azurewebsites.net/coffeeshop/Content/Site.css wa1-weidxu.azurewebsites.net 404 0 0"
-            + " 1405 1099 15\n"
-            + "2020-02-25 07:23:07 WA1-WEIDXU GET /coffeeshop/Images/brand.png"
+            + " 1405 1099 15\n" + "2020-02-25 07:23:07 WA1-WEIDXU GET /coffeeshop/Images/brand.png"
             + " X-ARR-LOG-ID=200dda67-062b-445f-9501-03fd716b3b49 80 - 13.64.92.44"
             + " Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/79.0.3945.130+Safari/537.36"
             + " JSESSIONID=3080AD1F0E745FFB80CE3DC1039A820F;+ARRAffinity=9c45f76fcf2ed72fc0f79776f0387a38a4f53d6739f8aa06a66a120a04466857"

@@ -5,33 +5,25 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Simple policy retention.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "retentionPolicyType",
-    defaultImpl = SimpleRetentionPolicy.class,
-    visible = true)
-@JsonTypeName("SimpleRetentionPolicy")
 @Fluent
 public final class SimpleRetentionPolicy extends RetentionPolicy {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "retentionPolicyType", required = true)
     private String retentionPolicyType = "SimpleRetentionPolicy";
 
     /*
      * Retention duration of the protection policy.
      */
-    @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
     /**
@@ -78,9 +70,47 @@ public final class SimpleRetentionPolicy extends RetentionPolicy {
      */
     @Override
     public void validate() {
-        super.validate();
         if (retentionDuration() != null) {
             retentionDuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("retentionPolicyType", this.retentionPolicyType);
+        jsonWriter.writeJsonField("retentionDuration", this.retentionDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimpleRetentionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimpleRetentionPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SimpleRetentionPolicy.
+     */
+    public static SimpleRetentionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimpleRetentionPolicy deserializedSimpleRetentionPolicy = new SimpleRetentionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("retentionPolicyType".equals(fieldName)) {
+                    deserializedSimpleRetentionPolicy.retentionPolicyType = reader.getString();
+                } else if ("retentionDuration".equals(fieldName)) {
+                    deserializedSimpleRetentionPolicy.retentionDuration = RetentionDuration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimpleRetentionPolicy;
+        });
     }
 }

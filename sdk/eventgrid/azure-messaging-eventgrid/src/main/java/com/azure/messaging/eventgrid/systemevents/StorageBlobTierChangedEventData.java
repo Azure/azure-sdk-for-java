@@ -75,8 +75,8 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     private String identity;
 
     /*
-     * For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should
-     * be ignored by event consumers.
+     * For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be
+     * ignored by event consumers.
      */
     private Object storageDiagnostics;
 
@@ -107,8 +107,8 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     }
 
     /**
-     * Get the clientRequestId property: A request id provided by the client of the storage API operation that
-     * triggered this event.
+     * Get the clientRequestId property: A request id provided by the client of the storage API operation that triggered
+     * this event.
      * 
      * @return the clientRequestId value.
      */
@@ -117,8 +117,8 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     }
 
     /**
-     * Set the clientRequestId property: A request id provided by the client of the storage API operation that
-     * triggered this event.
+     * Set the clientRequestId property: A request id provided by the client of the storage API operation that triggered
+     * this event.
      * 
      * @param clientRequestId the clientRequestId value to set.
      * @return the StorageBlobTierChangedEventData object itself.
@@ -275,9 +275,9 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     }
 
     /**
-     * Get the sequencer property: An opaque string value representing the logical sequence of events for any
-     * particular blob name. Users can use standard string comparison to understand the relative sequence of two events
-     * on the same blob name.
+     * Get the sequencer property: An opaque string value representing the logical sequence of events for any particular
+     * blob name. Users can use standard string comparison to understand the relative sequence of two events on the same
+     * blob name.
      * 
      * @return the sequencer value.
      */
@@ -286,9 +286,9 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     }
 
     /**
-     * Set the sequencer property: An opaque string value representing the logical sequence of events for any
-     * particular blob name. Users can use standard string comparison to understand the relative sequence of two events
-     * on the same blob name.
+     * Set the sequencer property: An opaque string value representing the logical sequence of events for any particular
+     * blob name. Users can use standard string comparison to understand the relative sequence of two events on the same
+     * blob name.
      * 
      * @param sequencer the sequencer value to set.
      * @return the StorageBlobTierChangedEventData object itself.
@@ -340,6 +340,9 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

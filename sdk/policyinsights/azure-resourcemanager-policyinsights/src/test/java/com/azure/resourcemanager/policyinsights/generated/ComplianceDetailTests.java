@@ -7,24 +7,21 @@ package com.azure.resourcemanager.policyinsights.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.ComplianceDetail;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComplianceDetailTests {
-    @Test
-    public void testDeserialize() {
-        ComplianceDetail model =
-            BinaryData
-                .fromString("{\"complianceState\":\"unrmfqjhhkxb\",\"count\":478088407}")
-                .toObject(ComplianceDetail.class);
-        Assertions.assertEquals("unrmfqjhhkxb", model.complianceState());
-        Assertions.assertEquals(478088407, model.count());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ComplianceDetail model = BinaryData.fromString("{\"complianceState\":\"zsdymbrnysuxmpra\",\"count\":117142213}")
+            .toObject(ComplianceDetail.class);
+        Assertions.assertEquals("zsdymbrnysuxmpra", model.complianceState());
+        Assertions.assertEquals(117142213, model.count());
     }
 
-    @Test
-    public void testSerialize() {
-        ComplianceDetail model = new ComplianceDetail().withComplianceState("unrmfqjhhkxb").withCount(478088407);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ComplianceDetail model = new ComplianceDetail().withComplianceState("zsdymbrnysuxmpra").withCount(117142213);
         model = BinaryData.fromObject(model).toObject(ComplianceDetail.class);
-        Assertions.assertEquals("unrmfqjhhkxb", model.complianceState());
-        Assertions.assertEquals(478088407, model.count());
+        Assertions.assertEquals("zsdymbrnysuxmpra", model.complianceState());
+        Assertions.assertEquals(117142213, model.count());
     }
 }

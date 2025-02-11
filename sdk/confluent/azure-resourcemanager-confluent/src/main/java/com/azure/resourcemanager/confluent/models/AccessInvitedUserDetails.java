@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details of the user being invited.
  */
 @Fluent
-public final class AccessInvitedUserDetails {
+public final class AccessInvitedUserDetails implements JsonSerializable<AccessInvitedUserDetails> {
     /*
      * UPN/Email of the user who is being invited
      */
-    @JsonProperty(value = "invitedEmail")
     private String invitedEmail;
 
     /*
      * Auth type of the user
      */
-    @JsonProperty(value = "auth_type")
     private String authType;
 
     /**
@@ -76,5 +78,44 @@ public final class AccessInvitedUserDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("invitedEmail", this.invitedEmail);
+        jsonWriter.writeStringField("auth_type", this.authType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessInvitedUserDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessInvitedUserDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessInvitedUserDetails.
+     */
+    public static AccessInvitedUserDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessInvitedUserDetails deserializedAccessInvitedUserDetails = new AccessInvitedUserDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("invitedEmail".equals(fieldName)) {
+                    deserializedAccessInvitedUserDetails.invitedEmail = reader.getString();
+                } else if ("auth_type".equals(fieldName)) {
+                    deserializedAccessInvitedUserDetails.authType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessInvitedUserDetails;
+        });
     }
 }

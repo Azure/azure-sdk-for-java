@@ -52,7 +52,7 @@ public class HmacAuthenticationPolicyTests {
         LocalDateTime headerDate = LocalDateTime.parse(dateHeaderValue, DateTimeFormatter.RFC_1123_DATE_TIME);
         LocalDateTime current = LocalDateTime.now(ZoneOffset.UTC);
         assertTrue(Duration.between(headerDate, current).toMillis() < 5 * 1000,
-                "Date header no more than five seconds apart from now");
+            "Date header no more than five seconds apart from now");
 
         String hostHeaderValue = request.getHeaders().getValue("host");
         assertEquals("localhost", hostHeaderValue);
@@ -61,7 +61,8 @@ public class HmacAuthenticationPolicyTests {
         assertNotNull("Must contain hash header", hashHeaderValue);
 
         String authHeaderValue = request.getHeaders().getValue("Authorization");
-        assertTrue(authHeaderValue.startsWith("HMAC-SHA256 SignedHeaders=x-ms-date;host;x-ms-content-sha256&Signature="));
+        assertTrue(
+            authHeaderValue.startsWith("HMAC-SHA256 SignedHeaders=x-ms-date;host;x-ms-content-sha256&Signature="));
         return next.process();
     };
 
@@ -96,8 +97,9 @@ public class HmacAuthenticationPolicyTests {
     };
 
     private String getBodyHash(HttpPipelineCallContext context) {
-        Flux<ByteBuffer> contents = context.getHttpRequest().getBody() == null ? Flux.just(ByteBuffer.allocate(0))
-                : context.getHttpRequest().getBody();
+        Flux<ByteBuffer> contents = context.getHttpRequest().getBody() == null
+            ? Flux.just(ByteBuffer.allocate(0))
+            : context.getHttpRequest().getBody();
         MessageDigest messageDigest;
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
@@ -120,131 +122,122 @@ public class HmacAuthenticationPolicyTests {
     public void getRequestTest() throws MalformedURLException {
         final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-                .httpClient(new NoOpHttpClient())
-                .policies(clientPolicy, verifyHeadersPolicy)
-                .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(clientPolicy, verifyHeadersPolicy)
+            .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
-        StepVerifier.create(pipeline.send(request))
-            .verifyComplete();
+        HttpRequest request
+            = new HttpRequest(HttpMethod.GET, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
+        StepVerifier.create(pipeline.send(request)).verifyComplete();
     }
 
     @Test
     public void postRequestTest() throws MalformedURLException {
         final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-                .httpClient(new NoOpHttpClient())
-                .policies(clientPolicy, verifyHeadersPolicy, verifyContentHashPolicy)
-                .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(clientPolicy, verifyHeadersPolicy, verifyContentHashPolicy)
+            .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("{\"propName\":\"name\", \"propValue\": \"value\"}");
-        StepVerifier.create(pipeline.send(request))
-            .verifyComplete();
+        StepVerifier.create(pipeline.send(request)).verifyComplete();
     }
 
     @Test
     public void postRequestWithPortTest() throws MalformedURLException {
         final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-                .httpClient(new NoOpHttpClient())
-                .policies(clientPolicy, verifyHeadersPolicy, verifyContentHashPolicy)
-                .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(clientPolicy, verifyHeadersPolicy, verifyContentHashPolicy)
+            .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("https://localhost:443?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
+        HttpRequest request = new HttpRequest(HttpMethod.POST,
+            new URL("https://localhost:443?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("{\"propName\":\"name\", \"propValue\": \"value\"}");
-        StepVerifier.create(pipeline.send(request))
-            .verifyComplete();
+        StepVerifier.create(pipeline.send(request)).verifyComplete();
     }
 
     @Test
     public void crossLanguageAsciiHashMatchTest() throws MalformedURLException {
         final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-                .httpClient(new NoOpHttpClient())
-                .policies(clientPolicy, verifyHeadersPolicy, verifyExpectedStringHashPolicy)
-                .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(clientPolicy, verifyHeadersPolicy, verifyExpectedStringHashPolicy)
+            .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("banana");
-        StepVerifier.create(pipeline.send(request))
-            .verifyComplete();
+        StepVerifier.create(pipeline.send(request)).verifyComplete();
     }
 
     @Test
     public void crossLanguageUnicodeHashMatchTest() throws MalformedURLException {
         final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-                .httpClient(new NoOpHttpClient())
-                .policies(clientPolicy, verifyHeadersPolicy, verifyUnicodeStringHashPolicy)
-                .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(clientPolicy, verifyHeadersPolicy, verifyUnicodeStringHashPolicy)
+            .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("😀");
-        StepVerifier.create(pipeline.send(request))
-            .verifyComplete();
+        StepVerifier.create(pipeline.send(request)).verifyComplete();
     }
 
     @Test
     public void patchRequestTest() throws MalformedURLException {
         final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-                .httpClient(new NoOpHttpClient())
-                .policies(clientPolicy, verifyHeadersPolicy, verifyContentHashPolicy)
-                .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(clientPolicy, verifyHeadersPolicy, verifyContentHashPolicy)
+            .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.PATCH, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.PATCH, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("{\"propName\":\"name1\", \"propValue\": \"value1\"}");
-        StepVerifier.create(pipeline.send(request))
-            .verifyComplete();
+        StepVerifier.create(pipeline.send(request)).verifyComplete();
     }
 
     @Test
     public void putRequestTest() throws MalformedURLException {
         final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-                .httpClient(new NoOpHttpClient())
-                .policies(clientPolicy, verifyHeadersPolicy, verifyContentHashPolicy)
-                .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(clientPolicy, verifyHeadersPolicy, verifyContentHashPolicy)
+            .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.PUT, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         request.setBody("{\"propName\":\"name2\", \"propValue\": \"value2\"}");
-        StepVerifier.create(pipeline.send(request))
-            .verifyComplete();
+        StepVerifier.create(pipeline.send(request)).verifyComplete();
     }
 
     @Test
     public void deleteRequestTest() throws MalformedURLException {
         final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-                .httpClient(new NoOpHttpClient())
-                .policies(clientPolicy, verifyHeadersPolicy)
-                .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(clientPolicy, verifyHeadersPolicy)
+            .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.DELETE, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
-        StepVerifier.create(pipeline.send(request))
-            .verifyComplete();
+        HttpRequest request
+            = new HttpRequest(HttpMethod.DELETE, new URL("https://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
+        StepVerifier.create(pipeline.send(request)).verifyComplete();
     }
 
     @Test
     public void httpRequestTest() throws MalformedURLException {
         final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-                .httpClient(new NoOpHttpClient())
-                .policies(clientPolicy, verifyHeadersPolicy)
-                .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(clientPolicy, verifyHeadersPolicy)
+            .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
-        StepVerifier.create(pipeline.send(request))
-            .verifyError(RuntimeException.class);
+        HttpRequest request
+            = new HttpRequest(HttpMethod.GET, new URL("http://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
+        StepVerifier.create(pipeline.send(request)).verifyError(RuntimeException.class);
     }
 }

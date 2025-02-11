@@ -20,7 +20,7 @@ public final class ClustersGetByResourceGroupSamples {
      */
     public static void
         getTheCluster(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.clusters().getByResourceGroupWithResponse("TestGroup", "testcluster1",
-            com.azure.core.util.Context.NONE);
+        manager.clusters()
+            .getByResourceGroupWithResponse("TestGroup", "testcluster1", com.azure.core.util.Context.NONE);
     }
 }

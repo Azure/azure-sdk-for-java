@@ -58,6 +58,9 @@ public final class CloudError implements JsonSerializable<CloudError> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

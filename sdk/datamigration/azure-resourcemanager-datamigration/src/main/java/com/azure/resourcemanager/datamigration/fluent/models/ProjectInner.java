@@ -6,46 +6,101 @@ package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datamigration.models.ConnectionInfo;
 import com.azure.resourcemanager.datamigration.models.DatabaseInfo;
 import com.azure.resourcemanager.datamigration.models.ProjectProvisioningState;
 import com.azure.resourcemanager.datamigration.models.ProjectSourcePlatform;
 import com.azure.resourcemanager.datamigration.models.ProjectTargetPlatform;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A project resource. */
+/**
+ * A project resource.
+ */
 @Fluent
 public final class ProjectInner extends Resource {
     /*
      * Project properties
      */
-    @JsonProperty(value = "properties")
     private ProjectProperties innerProperties;
 
-    /** Creates an instance of ProjectInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ProjectInner class.
+     */
     public ProjectInner() {
     }
 
     /**
      * Get the innerProperties property: Project properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProjectProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -54,7 +109,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Get the sourcePlatform property: Source platform for the project.
-     *
+     * 
      * @return the sourcePlatform value.
      */
     public ProjectSourcePlatform sourcePlatform() {
@@ -63,7 +118,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Set the sourcePlatform property: Source platform for the project.
-     *
+     * 
      * @param sourcePlatform the sourcePlatform value to set.
      * @return the ProjectInner object itself.
      */
@@ -77,7 +132,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Get the targetPlatform property: Target platform for the project.
-     *
+     * 
      * @return the targetPlatform value.
      */
     public ProjectTargetPlatform targetPlatform() {
@@ -86,7 +141,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Set the targetPlatform property: Target platform for the project.
-     *
+     * 
      * @param targetPlatform the targetPlatform value to set.
      * @return the ProjectInner object itself.
      */
@@ -100,7 +155,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Get the creationTime property: UTC Date and time when project was created.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -109,7 +164,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Get the sourceConnectionInfo property: Information for connecting to source.
-     *
+     * 
      * @return the sourceConnectionInfo value.
      */
     public ConnectionInfo sourceConnectionInfo() {
@@ -118,7 +173,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Set the sourceConnectionInfo property: Information for connecting to source.
-     *
+     * 
      * @param sourceConnectionInfo the sourceConnectionInfo value to set.
      * @return the ProjectInner object itself.
      */
@@ -132,7 +187,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Get the targetConnectionInfo property: Information for connecting to target.
-     *
+     * 
      * @return the targetConnectionInfo value.
      */
     public ConnectionInfo targetConnectionInfo() {
@@ -141,7 +196,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Set the targetConnectionInfo property: Information for connecting to target.
-     *
+     * 
      * @param targetConnectionInfo the targetConnectionInfo value to set.
      * @return the ProjectInner object itself.
      */
@@ -155,7 +210,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Get the databasesInfo property: List of DatabaseInfo.
-     *
+     * 
      * @return the databasesInfo value.
      */
     public List<DatabaseInfo> databasesInfo() {
@@ -164,7 +219,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Set the databasesInfo property: List of DatabaseInfo.
-     *
+     * 
      * @param databasesInfo the databasesInfo value to set.
      * @return the ProjectInner object itself.
      */
@@ -178,7 +233,7 @@ public final class ProjectInner extends Resource {
 
     /**
      * Get the provisioningState property: The project's provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProjectProvisioningState provisioningState() {
@@ -187,12 +242,62 @@ public final class ProjectInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProjectInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProjectInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProjectInner.
+     */
+    public static ProjectInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProjectInner deserializedProjectInner = new ProjectInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProjectInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProjectInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProjectInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedProjectInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProjectInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProjectInner.innerProperties = ProjectProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProjectInner;
+        });
     }
 }

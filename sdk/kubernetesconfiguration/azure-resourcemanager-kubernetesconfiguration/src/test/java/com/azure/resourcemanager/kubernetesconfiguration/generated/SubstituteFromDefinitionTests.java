@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SubstituteFromDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubstituteFromDefinition model =
-            BinaryData
-                .fromString("{\"kind\":\"ea\",\"name\":\"ipheoflokeyyien\",\"optional\":true}")
+        SubstituteFromDefinition model
+            = BinaryData.fromString("{\"kind\":\"ea\",\"name\":\"ipheoflokeyyien\",\"optional\":true}")
                 .toObject(SubstituteFromDefinition.class);
         Assertions.assertEquals("ea", model.kind());
         Assertions.assertEquals("ipheoflokeyyien", model.name());
@@ -22,8 +21,8 @@ public final class SubstituteFromDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubstituteFromDefinition model =
-            new SubstituteFromDefinition().withKind("ea").withName("ipheoflokeyyien").withOptional(true);
+        SubstituteFromDefinition model
+            = new SubstituteFromDefinition().withKind("ea").withName("ipheoflokeyyien").withOptional(true);
         model = BinaryData.fromObject(model).toObject(SubstituteFromDefinition.class);
         Assertions.assertEquals("ea", model.kind());
         Assertions.assertEquals("ipheoflokeyyien", model.name());

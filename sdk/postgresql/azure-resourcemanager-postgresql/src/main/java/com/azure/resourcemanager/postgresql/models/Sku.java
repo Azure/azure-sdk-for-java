@@ -6,48 +6,51 @@ package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Billing information related properties of a server. */
+/**
+ * Billing information related properties of a server.
+ */
 @Fluent
-public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
+public final class Sku implements JsonSerializable<Sku> {
     /*
-     * The name of the sku, typically, tier + family + cores, e.g. B_Gen4_1,
-     * GP_Gen5_8.
+     * The name of the sku, typically, tier + family + cores, e.g. B_Gen4_1, GP_Gen5_8.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The tier of the particular SKU, e.g. Basic.
      */
-    @JsonProperty(value = "tier")
     private SkuTier tier;
 
     /*
      * The scale up/out capacity, representing server's compute units.
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /*
      * The size code, to be interpreted by resource as appropriate.
      */
-    @JsonProperty(value = "size")
     private String size;
 
     /*
      * The family of hardware.
      */
-    @JsonProperty(value = "family")
     private String family;
 
     /**
+     * Creates an instance of Sku class.
+     */
+    public Sku() {
+    }
+
+    /**
      * Get the name property: The name of the sku, typically, tier + family + cores, e.g. B_Gen4_1, GP_Gen5_8.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +59,7 @@ public final class Sku {
 
     /**
      * Set the name property: The name of the sku, typically, tier + family + cores, e.g. B_Gen4_1, GP_Gen5_8.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -67,7 +70,7 @@ public final class Sku {
 
     /**
      * Get the tier property: The tier of the particular SKU, e.g. Basic.
-     *
+     * 
      * @return the tier value.
      */
     public SkuTier tier() {
@@ -76,7 +79,7 @@ public final class Sku {
 
     /**
      * Set the tier property: The tier of the particular SKU, e.g. Basic.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -87,7 +90,7 @@ public final class Sku {
 
     /**
      * Get the capacity property: The scale up/out capacity, representing server's compute units.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -96,7 +99,7 @@ public final class Sku {
 
     /**
      * Set the capacity property: The scale up/out capacity, representing server's compute units.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -107,7 +110,7 @@ public final class Sku {
 
     /**
      * Get the size property: The size code, to be interpreted by resource as appropriate.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -116,7 +119,7 @@ public final class Sku {
 
     /**
      * Set the size property: The size code, to be interpreted by resource as appropriate.
-     *
+     * 
      * @param size the size value to set.
      * @return the Sku object itself.
      */
@@ -127,7 +130,7 @@ public final class Sku {
 
     /**
      * Get the family property: The family of hardware.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -136,7 +139,7 @@ public final class Sku {
 
     /**
      * Set the family property: The family of hardware.
-     *
+     * 
      * @param family the family value to set.
      * @return the Sku object itself.
      */
@@ -147,13 +150,63 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model Sku"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        jsonWriter.writeStringField("size", this.size);
+        jsonWriter.writeStringField("family", this.family);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Sku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Sku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Sku.
+     */
+    public static Sku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Sku deserializedSku = new Sku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSku.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSku.tier = SkuTier.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else if ("size".equals(fieldName)) {
+                    deserializedSku.size = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedSku.family = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSku;
+        });
     }
 }

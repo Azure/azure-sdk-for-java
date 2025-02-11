@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-mongocluster</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -77,17 +77,12 @@ mongoCluster = mongoClusterManager.mongoClusters()
     .withExistingResourceGroup(resourceGroupName)
     .withProperties(
         new MongoClusterProperties()
-            .withAdministratorLogin(loginUser)
-            .withAdministratorLoginPassword(loginPwd)
+            .withAdministrator(new AdministratorProperties().withUserName(loginUser).withPassword(loginPwd))
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-            .withNodeGroupSpecs(Arrays.asList(
-                new NodeGroupSpec()
-                    .withKind(NodeKind.SHARD)
-                    .withSku("M30")
-                    .withDiskSizeGB(128L)
-                    .withEnableHa(true)
-                    .withNodeCount(1)
-                ))
+            .withStorage(new StorageProperties().withSizeGb(128L))
+            .withCompute(new ComputeProperties().withTier("M30"))
+            .withHighAvailability(new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.DISABLED))
+            .withSharding(new ShardingProperties().withShardCount(1))
             .withServerVersion("7.0")
         )
     .create();
@@ -123,4 +118,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmongocluster%2Fazure-resourcemanager-mongocluster%2FREADME.png)
+

@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabric.models.AddOnFeatures;
 import com.azure.resourcemanager.servicefabric.models.ApplicationTypeVersionsCleanupPolicy;
 import com.azure.resourcemanager.servicefabric.models.AzureActiveDirectory;
@@ -25,77 +30,68 @@ import com.azure.resourcemanager.servicefabric.models.SettingsSectionDescription
 import com.azure.resourcemanager.servicefabric.models.SfZonalUpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.UpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.VmssZonalUpgradeMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Describes the cluster resource properties.
  */
 @Fluent
-public final class ClusterProperties {
+public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
     /*
      * The list of add-on features to enable in the cluster.
      */
-    @JsonProperty(value = "addOnFeatures")
     private List<AddOnFeatures> addOnFeatures;
 
     /*
      * The Service Fabric runtime versions available for this cluster.
      */
-    @JsonProperty(value = "availableClusterVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ClusterVersionDetails> availableClusterVersions;
 
     /*
      * The AAD authentication settings of the cluster.
      */
-    @JsonProperty(value = "azureActiveDirectory")
     private AzureActiveDirectory azureActiveDirectory;
 
     /*
      * The certificate to use for securing the cluster. The certificate provided will be used for node to node security
      * within the cluster, SSL certificate for cluster management endpoint and default admin client.
      */
-    @JsonProperty(value = "certificate")
     private CertificateDescription certificate;
 
     /*
      * Describes a list of server certificates referenced by common name that are used to secure the cluster.
      */
-    @JsonProperty(value = "certificateCommonNames")
     private ServerCertificateCommonNames certificateCommonNames;
 
     /*
      * The list of client certificates referenced by common name that are allowed to manage the cluster.
      */
-    @JsonProperty(value = "clientCertificateCommonNames")
     private List<ClientCertificateCommonName> clientCertificateCommonNames;
 
     /*
      * The list of client certificates referenced by thumbprint that are allowed to manage the cluster.
      */
-    @JsonProperty(value = "clientCertificateThumbprints")
     private List<ClientCertificateThumbprint> clientCertificateThumbprints;
 
     /*
-     * The Service Fabric runtime version of the cluster. This property can only by set the user when **upgradeMode**
-     * is set to 'Manual'. To get list of available Service Fabric versions for new clusters use [ClusterVersion
+     * The Service Fabric runtime version of the cluster. This property can only by set the user when **upgradeMode** is
+     * set to 'Manual'. To get list of available Service Fabric versions for new clusters use [ClusterVersion
      * API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list). To get the list of available
      * version for existing clusters use **availableClusterVersions**.
      */
-    @JsonProperty(value = "clusterCodeVersion")
     private String clusterCodeVersion;
 
     /*
      * The Azure Resource Provider endpoint. A system service in the cluster connects to this endpoint.
      */
-    @JsonProperty(value = "clusterEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterEndpoint;
 
     /*
      * A service generated unique identifier for the cluster resource.
      */
-    @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterId;
 
     /*
@@ -117,45 +113,37 @@ public final class ClusterProperties {
      * Provider. Clusters in this state cannot be managed by the Resource Provider.
      * - AutoScale - Indicates that the ReliabilityLevel of the cluster is being adjusted.
      * - Ready - Indicates that the cluster is in a stable state.
-     * 
      */
-    @JsonProperty(value = "clusterState", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterState clusterState;
 
     /*
      * The storage account information for storing Service Fabric diagnostic logs.
      */
-    @JsonProperty(value = "diagnosticsStorageAccountConfig")
     private DiagnosticsStorageAccountConfig diagnosticsStorageAccountConfig;
 
     /*
      * Indicates if the event store service is enabled.
      */
-    @JsonProperty(value = "eventStoreServiceEnabled")
     private Boolean eventStoreServiceEnabled;
 
     /*
      * The list of custom fabric settings to configure the cluster.
      */
-    @JsonProperty(value = "fabricSettings")
     private List<SettingsSectionDescription> fabricSettings;
 
     /*
      * The http management endpoint of the cluster.
      */
-    @JsonProperty(value = "managementEndpoint", required = true)
     private String managementEndpoint;
 
     /*
      * The list of node types in the cluster.
      */
-    @JsonProperty(value = "nodeTypes", required = true)
     private List<NodeTypeDescription> nodeTypes;
 
     /*
      * The provisioning state of the cluster resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
@@ -169,98 +157,82 @@ public final class ClusterProperties {
      * - Silver - Run the System services with a target replica set count of 5.
      * - Gold - Run the System services with a target replica set count of 7.
      * - Platinum - Run the System services with a target replica set count of 9.
-     * 
      */
-    @JsonProperty(value = "reliabilityLevel")
     private ReliabilityLevel reliabilityLevel;
 
     /*
      * The server certificate used by reverse proxy.
      */
-    @JsonProperty(value = "reverseProxyCertificate")
     private CertificateDescription reverseProxyCertificate;
 
     /*
      * Describes a list of server certificates referenced by common name that are used to secure the cluster.
      */
-    @JsonProperty(value = "reverseProxyCertificateCommonNames")
     private ServerCertificateCommonNames reverseProxyCertificateCommonNames;
 
     /*
      * The policy to use when upgrading the cluster.
      */
-    @JsonProperty(value = "upgradeDescription")
     private ClusterUpgradePolicy upgradeDescription;
 
     /*
      * The upgrade mode of the cluster when new Service Fabric runtime version is available.
      */
-    @JsonProperty(value = "upgradeMode")
     private UpgradeMode upgradeMode;
 
     /*
      * The policy used to clean up unused versions.
      */
-    @JsonProperty(value = "applicationTypeVersionsCleanupPolicy")
     private ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy;
 
     /*
      * The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used.
      */
-    @JsonProperty(value = "vmImage")
     private String vmImage;
 
     /*
-     * This property controls the logical grouping of VMs in upgrade domains (UDs). This property can't be modified if
-     * a node type with multiple Availability Zones is already present in the cluster.
+     * This property controls the logical grouping of VMs in upgrade domains (UDs). This property can't be modified if a
+     * node type with multiple Availability Zones is already present in the cluster.
      */
-    @JsonProperty(value = "sfZonalUpgradeMode")
     private SfZonalUpgradeMode sfZonalUpgradeMode;
 
     /*
      * This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with
      * multiple Availability Zones is added.
      */
-    @JsonProperty(value = "vmssZonalUpgradeMode")
     private VmssZonalUpgradeMode vmssZonalUpgradeMode;
 
     /*
      * Indicates if infrastructure service manager is enabled.
      */
-    @JsonProperty(value = "infrastructureServiceManager")
     private Boolean infrastructureServiceManager;
 
     /*
-     * Indicates when new cluster runtime version upgrades will be applied after they are released. By default is
-     * Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
+     * Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0.
+     * Only applies when **upgradeMode** is set to 'Automatic'.
      */
-    @JsonProperty(value = "upgradeWave")
     private ClusterUpgradeCadence upgradeWave;
 
     /*
      * Indicates the start date and time to pause automatic runtime version upgrades on the cluster for an specific
      * period of time on the cluster (UTC).
      */
-    @JsonProperty(value = "upgradePauseStartTimestampUtc")
     private OffsetDateTime upgradePauseStartTimestampUtc;
 
     /*
-     * Indicates the end date and time to pause automatic runtime version upgrades on the cluster for an specific
-     * period of time on the cluster (UTC).
+     * Indicates the end date and time to pause automatic runtime version upgrades on the cluster for an specific period
+     * of time on the cluster (UTC).
      */
-    @JsonProperty(value = "upgradePauseEndTimestampUtc")
     private OffsetDateTime upgradePauseEndTimestampUtc;
 
     /*
      * Boolean to pause automatic runtime version upgrades to the cluster.
      */
-    @JsonProperty(value = "waveUpgradePaused")
     private Boolean waveUpgradePaused;
 
     /*
      * Indicates a list of notification channels for cluster events.
      */
-    @JsonProperty(value = "notifications")
     private List<Notification> notifications;
 
     /**
@@ -365,8 +337,8 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the clientCertificateCommonNames property: The list of client certificates referenced by common name that
-     * are allowed to manage the cluster.
+     * Get the clientCertificateCommonNames property: The list of client certificates referenced by common name that are
+     * allowed to manage the cluster.
      * 
      * @return the clientCertificateCommonNames value.
      */
@@ -375,8 +347,8 @@ public final class ClusterProperties {
     }
 
     /**
-     * Set the clientCertificateCommonNames property: The list of client certificates referenced by common name that
-     * are allowed to manage the cluster.
+     * Set the clientCertificateCommonNames property: The list of client certificates referenced by common name that are
+     * allowed to manage the cluster.
      * 
      * @param clientCertificateCommonNames the clientCertificateCommonNames value to set.
      * @return the ClusterProperties object itself.
@@ -411,10 +383,10 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only
-     * by set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for
-     * new clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list).
-     * To get the list of available version for existing clusters use **availableClusterVersions**.
+     * Get the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only by
+     * set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new
+     * clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list). To
+     * get the list of available version for existing clusters use **availableClusterVersions**.
      * 
      * @return the clusterCodeVersion value.
      */
@@ -423,10 +395,10 @@ public final class ClusterProperties {
     }
 
     /**
-     * Set the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only
-     * by set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for
-     * new clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list).
-     * To get the list of available version for existing clusters use **availableClusterVersions**.
+     * Set the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only by
+     * set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new
+     * clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list). To
+     * get the list of available version for existing clusters use **availableClusterVersions**.
      * 
      * @param clusterCodeVersion the clusterCodeVersion value to set.
      * @return the ClusterProperties object itself.
@@ -652,8 +624,8 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the reverseProxyCertificateCommonNames property: Describes a list of server certificates referenced by
-     * common name that are used to secure the cluster.
+     * Get the reverseProxyCertificateCommonNames property: Describes a list of server certificates referenced by common
+     * name that are used to secure the cluster.
      * 
      * @return the reverseProxyCertificateCommonNames value.
      */
@@ -662,8 +634,8 @@ public final class ClusterProperties {
     }
 
     /**
-     * Set the reverseProxyCertificateCommonNames property: Describes a list of server certificates referenced by
-     * common name that are used to secure the cluster.
+     * Set the reverseProxyCertificateCommonNames property: Describes a list of server certificates referenced by common
+     * name that are used to secure the cluster.
      * 
      * @param reverseProxyCertificateCommonNames the reverseProxyCertificateCommonNames value to set.
      * @return the ClusterProperties object itself.
@@ -760,8 +732,8 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains
-     * (UDs). This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
      * cluster.
      * 
      * @return the sfZonalUpgradeMode value.
@@ -771,8 +743,8 @@ public final class ClusterProperties {
     }
 
     /**
-     * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains
-     * (UDs). This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
      * cluster.
      * 
      * @param sfZonalUpgradeMode the sfZonalUpgradeMode value to set.
@@ -962,12 +934,13 @@ public final class ClusterProperties {
             fabricSettings().forEach(e -> e.validate());
         }
         if (managementEndpoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property managementEndpoint in model ClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property managementEndpoint in model ClusterProperties"));
         }
         if (nodeTypes() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property nodeTypes in model ClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nodeTypes in model ClusterProperties"));
         } else {
             nodeTypes().forEach(e -> e.validate());
         }
@@ -989,4 +962,164 @@ public final class ClusterProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("managementEndpoint", this.managementEndpoint);
+        jsonWriter.writeArrayField("nodeTypes", this.nodeTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("addOnFeatures", this.addOnFeatures,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("azureActiveDirectory", this.azureActiveDirectory);
+        jsonWriter.writeJsonField("certificate", this.certificate);
+        jsonWriter.writeJsonField("certificateCommonNames", this.certificateCommonNames);
+        jsonWriter.writeArrayField("clientCertificateCommonNames", this.clientCertificateCommonNames,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("clientCertificateThumbprints", this.clientCertificateThumbprints,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("clusterCodeVersion", this.clusterCodeVersion);
+        jsonWriter.writeJsonField("diagnosticsStorageAccountConfig", this.diagnosticsStorageAccountConfig);
+        jsonWriter.writeBooleanField("eventStoreServiceEnabled", this.eventStoreServiceEnabled);
+        jsonWriter.writeArrayField("fabricSettings", this.fabricSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("reliabilityLevel",
+            this.reliabilityLevel == null ? null : this.reliabilityLevel.toString());
+        jsonWriter.writeJsonField("reverseProxyCertificate", this.reverseProxyCertificate);
+        jsonWriter.writeJsonField("reverseProxyCertificateCommonNames", this.reverseProxyCertificateCommonNames);
+        jsonWriter.writeJsonField("upgradeDescription", this.upgradeDescription);
+        jsonWriter.writeStringField("upgradeMode", this.upgradeMode == null ? null : this.upgradeMode.toString());
+        jsonWriter.writeJsonField("applicationTypeVersionsCleanupPolicy", this.applicationTypeVersionsCleanupPolicy);
+        jsonWriter.writeStringField("vmImage", this.vmImage);
+        jsonWriter.writeStringField("sfZonalUpgradeMode",
+            this.sfZonalUpgradeMode == null ? null : this.sfZonalUpgradeMode.toString());
+        jsonWriter.writeStringField("vmssZonalUpgradeMode",
+            this.vmssZonalUpgradeMode == null ? null : this.vmssZonalUpgradeMode.toString());
+        jsonWriter.writeBooleanField("infrastructureServiceManager", this.infrastructureServiceManager);
+        jsonWriter.writeStringField("upgradeWave", this.upgradeWave == null ? null : this.upgradeWave.toString());
+        jsonWriter.writeStringField("upgradePauseStartTimestampUtc",
+            this.upgradePauseStartTimestampUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.upgradePauseStartTimestampUtc));
+        jsonWriter.writeStringField("upgradePauseEndTimestampUtc",
+            this.upgradePauseEndTimestampUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.upgradePauseEndTimestampUtc));
+        jsonWriter.writeBooleanField("waveUpgradePaused", this.waveUpgradePaused);
+        jsonWriter.writeArrayField("notifications", this.notifications, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
+     */
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managementEndpoint".equals(fieldName)) {
+                    deserializedClusterProperties.managementEndpoint = reader.getString();
+                } else if ("nodeTypes".equals(fieldName)) {
+                    List<NodeTypeDescription> nodeTypes
+                        = reader.readArray(reader1 -> NodeTypeDescription.fromJson(reader1));
+                    deserializedClusterProperties.nodeTypes = nodeTypes;
+                } else if ("addOnFeatures".equals(fieldName)) {
+                    List<AddOnFeatures> addOnFeatures
+                        = reader.readArray(reader1 -> AddOnFeatures.fromString(reader1.getString()));
+                    deserializedClusterProperties.addOnFeatures = addOnFeatures;
+                } else if ("availableClusterVersions".equals(fieldName)) {
+                    List<ClusterVersionDetails> availableClusterVersions
+                        = reader.readArray(reader1 -> ClusterVersionDetails.fromJson(reader1));
+                    deserializedClusterProperties.availableClusterVersions = availableClusterVersions;
+                } else if ("azureActiveDirectory".equals(fieldName)) {
+                    deserializedClusterProperties.azureActiveDirectory = AzureActiveDirectory.fromJson(reader);
+                } else if ("certificate".equals(fieldName)) {
+                    deserializedClusterProperties.certificate = CertificateDescription.fromJson(reader);
+                } else if ("certificateCommonNames".equals(fieldName)) {
+                    deserializedClusterProperties.certificateCommonNames
+                        = ServerCertificateCommonNames.fromJson(reader);
+                } else if ("clientCertificateCommonNames".equals(fieldName)) {
+                    List<ClientCertificateCommonName> clientCertificateCommonNames
+                        = reader.readArray(reader1 -> ClientCertificateCommonName.fromJson(reader1));
+                    deserializedClusterProperties.clientCertificateCommonNames = clientCertificateCommonNames;
+                } else if ("clientCertificateThumbprints".equals(fieldName)) {
+                    List<ClientCertificateThumbprint> clientCertificateThumbprints
+                        = reader.readArray(reader1 -> ClientCertificateThumbprint.fromJson(reader1));
+                    deserializedClusterProperties.clientCertificateThumbprints = clientCertificateThumbprints;
+                } else if ("clusterCodeVersion".equals(fieldName)) {
+                    deserializedClusterProperties.clusterCodeVersion = reader.getString();
+                } else if ("clusterEndpoint".equals(fieldName)) {
+                    deserializedClusterProperties.clusterEndpoint = reader.getString();
+                } else if ("clusterId".equals(fieldName)) {
+                    deserializedClusterProperties.clusterId = reader.getString();
+                } else if ("clusterState".equals(fieldName)) {
+                    deserializedClusterProperties.clusterState = ClusterState.fromString(reader.getString());
+                } else if ("diagnosticsStorageAccountConfig".equals(fieldName)) {
+                    deserializedClusterProperties.diagnosticsStorageAccountConfig
+                        = DiagnosticsStorageAccountConfig.fromJson(reader);
+                } else if ("eventStoreServiceEnabled".equals(fieldName)) {
+                    deserializedClusterProperties.eventStoreServiceEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("fabricSettings".equals(fieldName)) {
+                    List<SettingsSectionDescription> fabricSettings
+                        = reader.readArray(reader1 -> SettingsSectionDescription.fromJson(reader1));
+                    deserializedClusterProperties.fabricSettings = fabricSettings;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("reliabilityLevel".equals(fieldName)) {
+                    deserializedClusterProperties.reliabilityLevel = ReliabilityLevel.fromString(reader.getString());
+                } else if ("reverseProxyCertificate".equals(fieldName)) {
+                    deserializedClusterProperties.reverseProxyCertificate = CertificateDescription.fromJson(reader);
+                } else if ("reverseProxyCertificateCommonNames".equals(fieldName)) {
+                    deserializedClusterProperties.reverseProxyCertificateCommonNames
+                        = ServerCertificateCommonNames.fromJson(reader);
+                } else if ("upgradeDescription".equals(fieldName)) {
+                    deserializedClusterProperties.upgradeDescription = ClusterUpgradePolicy.fromJson(reader);
+                } else if ("upgradeMode".equals(fieldName)) {
+                    deserializedClusterProperties.upgradeMode = UpgradeMode.fromString(reader.getString());
+                } else if ("applicationTypeVersionsCleanupPolicy".equals(fieldName)) {
+                    deserializedClusterProperties.applicationTypeVersionsCleanupPolicy
+                        = ApplicationTypeVersionsCleanupPolicy.fromJson(reader);
+                } else if ("vmImage".equals(fieldName)) {
+                    deserializedClusterProperties.vmImage = reader.getString();
+                } else if ("sfZonalUpgradeMode".equals(fieldName)) {
+                    deserializedClusterProperties.sfZonalUpgradeMode
+                        = SfZonalUpgradeMode.fromString(reader.getString());
+                } else if ("vmssZonalUpgradeMode".equals(fieldName)) {
+                    deserializedClusterProperties.vmssZonalUpgradeMode
+                        = VmssZonalUpgradeMode.fromString(reader.getString());
+                } else if ("infrastructureServiceManager".equals(fieldName)) {
+                    deserializedClusterProperties.infrastructureServiceManager
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("upgradeWave".equals(fieldName)) {
+                    deserializedClusterProperties.upgradeWave = ClusterUpgradeCadence.fromString(reader.getString());
+                } else if ("upgradePauseStartTimestampUtc".equals(fieldName)) {
+                    deserializedClusterProperties.upgradePauseStartTimestampUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("upgradePauseEndTimestampUtc".equals(fieldName)) {
+                    deserializedClusterProperties.upgradePauseEndTimestampUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("waveUpgradePaused".equals(fieldName)) {
+                    deserializedClusterProperties.waveUpgradePaused = reader.getNullable(JsonReader::getBoolean);
+                } else if ("notifications".equals(fieldName)) {
+                    List<Notification> notifications = reader.readArray(reader1 -> Notification.fromJson(reader1));
+                    deserializedClusterProperties.notifications = notifications;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProperties;
+        });
+    }
 }

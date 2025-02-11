@@ -10,19 +10,22 @@ import com.azure.resourcemanager.devspaces.models.SkuTier;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Controllers Create. */
+/**
+ * Samples for Controllers Create.
+ */
 public final class ControllersCreateSamples {
     /*
-     * x-ms-original-file: specification/devspaces/resource-manager/Microsoft.DevSpaces/stable/2019-04-01/examples/ControllersCreate_example.json
+     * x-ms-original-file:
+     * specification/devspaces/resource-manager/Microsoft.DevSpaces/stable/2019-04-01/examples/ControllersCreate_example
+     * .json
      */
     /**
      * Sample code: ControllersCreate.
-     *
+     * 
      * @param manager Entry point to DevSpacesManager.
      */
     public static void controllersCreate(com.azure.resourcemanager.devspaces.DevSpacesManager manager) {
-        manager
-            .controllers()
+        manager.controllers()
             .define("myControllerResource")
             .withRegion("eastus")
             .withExistingResourceGroup("myResourceGroup")
@@ -34,6 +37,7 @@ public final class ControllersCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

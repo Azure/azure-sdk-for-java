@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.subscription.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The subscription spending limit. */
+/**
+ * The subscription spending limit.
+ */
 public enum SpendingLimit {
-    /** Enum value On. */
+    /**
+     * Enum value On.
+     */
     ON("On"),
 
-    /** Enum value Off. */
+    /**
+     * Enum value Off.
+     */
     OFF("Off"),
 
-    /** Enum value CurrentPeriodOff. */
+    /**
+     * Enum value CurrentPeriodOff.
+     */
     CURRENT_PERIOD_OFF("CurrentPeriodOff");
 
-    /** The actual serialized value for a SpendingLimit instance. */
+    /**
+     * The actual serialized value for a SpendingLimit instance.
+     */
     private final String value;
 
     SpendingLimit(String value) {
@@ -27,11 +34,10 @@ public enum SpendingLimit {
 
     /**
      * Parses a serialized value to a SpendingLimit instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SpendingLimit object, or null if unable to parse.
      */
-    @JsonCreator
     public static SpendingLimit fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum SpendingLimit {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

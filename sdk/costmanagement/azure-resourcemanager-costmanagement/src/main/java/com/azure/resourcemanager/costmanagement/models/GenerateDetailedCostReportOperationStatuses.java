@@ -8,53 +8,55 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.costmanagement.fluent.models.GenerateDetailedCostReportOperationStatusesInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of GenerateDetailedCostReportOperationStatuses. */
+/**
+ * An immutable client-side representation of GenerateDetailedCostReportOperationStatuses.
+ */
 public interface GenerateDetailedCostReportOperationStatuses {
     /**
      * Gets the id property: The ID of the long running operation.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the long running operation.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the status property: The status of the long running operation.
-     *
+     * 
      * @return the status value.
      */
     Status status();
 
     /**
      * Gets the startTime property: The startTime of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     String startTime();
 
     /**
      * Gets the endTime property: The endTime of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     String endTime();
 
     /**
      * Gets the type property: The type of the long running operation.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the error property: The details of the error.
-     *
+     * 
      * @return the error value.
      */
     ManagementError error();
@@ -62,7 +64,7 @@ public interface GenerateDetailedCostReportOperationStatuses {
     /**
      * Gets the expiryTime property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @return the expiryTime value.
      */
     OffsetDateTime expiryTime();
@@ -70,14 +72,14 @@ public interface GenerateDetailedCostReportOperationStatuses {
     /**
      * Gets the validTill property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @return the validTill value.
      */
     OffsetDateTime validTill();
 
     /**
      * Gets the downloadUrl property: The URL to download the generated report.
-     *
+     * 
      * @return the downloadUrl value.
      */
     String downloadUrl();
@@ -85,7 +87,7 @@ public interface GenerateDetailedCostReportOperationStatuses {
     /**
      * Gets the inner
      * com.azure.resourcemanager.costmanagement.fluent.models.GenerateDetailedCostReportOperationStatusesInner object.
-     *
+     * 
      * @return the inner object.
      */
     GenerateDetailedCostReportOperationStatusesInner innerModel();

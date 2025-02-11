@@ -11,25 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ShareablePrivateLinkResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ShareablePrivateLinkResourceProperties model =
-            BinaryData
-                .fromString("{\"description\":\"mxho\",\"groupId\":\"ynhdwdigum\",\"type\":\"raauzzpt\"}")
+        ShareablePrivateLinkResourceProperties model
+            = BinaryData.fromString("{\"description\":\"xuuwhcj\",\"groupId\":\"ccybvp\",\"type\":\"akkud\"}")
                 .toObject(ShareablePrivateLinkResourceProperties.class);
-        Assertions.assertEquals("mxho", model.description());
-        Assertions.assertEquals("ynhdwdigum", model.groupId());
-        Assertions.assertEquals("raauzzpt", model.type());
+        Assertions.assertEquals("xuuwhcj", model.description());
+        Assertions.assertEquals("ccybvp", model.groupId());
+        Assertions.assertEquals("akkud", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShareablePrivateLinkResourceProperties model =
-            new ShareablePrivateLinkResourceProperties()
-                .withDescription("mxho")
-                .withGroupId("ynhdwdigum")
-                .withType("raauzzpt");
+        ShareablePrivateLinkResourceProperties model
+            = new ShareablePrivateLinkResourceProperties().withDescription("xuuwhcj")
+                .withGroupId("ccybvp")
+                .withType("akkud");
         model = BinaryData.fromObject(model).toObject(ShareablePrivateLinkResourceProperties.class);
-        Assertions.assertEquals("mxho", model.description());
-        Assertions.assertEquals("ynhdwdigum", model.groupId());
-        Assertions.assertEquals("raauzzpt", model.type());
+        Assertions.assertEquals("xuuwhcj", model.description());
+        Assertions.assertEquals("ccybvp", model.groupId());
+        Assertions.assertEquals("akkud", model.type());
     }
 }

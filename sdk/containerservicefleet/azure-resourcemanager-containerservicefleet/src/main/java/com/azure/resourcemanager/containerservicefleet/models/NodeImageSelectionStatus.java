@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The node image upgrade specs for the update run.
  */
 @Immutable
-public final class NodeImageSelectionStatus {
+public final class NodeImageSelectionStatus implements JsonSerializable<NodeImageSelectionStatus> {
     /*
      * The image versions to upgrade the nodes to.
      */
-    @JsonProperty(value = "selectedNodeImageVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<NodeImageVersion> selectedNodeImageVersions;
 
     /**
@@ -43,5 +46,42 @@ public final class NodeImageSelectionStatus {
         if (selectedNodeImageVersions() != null) {
             selectedNodeImageVersions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NodeImageSelectionStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NodeImageSelectionStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NodeImageSelectionStatus.
+     */
+    public static NodeImageSelectionStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NodeImageSelectionStatus deserializedNodeImageSelectionStatus = new NodeImageSelectionStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("selectedNodeImageVersions".equals(fieldName)) {
+                    List<NodeImageVersion> selectedNodeImageVersions
+                        = reader.readArray(reader1 -> NodeImageVersion.fromJson(reader1));
+                    deserializedNodeImageSelectionStatus.selectedNodeImageVersions = selectedNodeImageVersions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNodeImageSelectionStatus;
+        });
     }
 }

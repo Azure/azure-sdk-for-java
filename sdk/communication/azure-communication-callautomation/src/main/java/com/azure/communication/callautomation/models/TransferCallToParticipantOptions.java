@@ -39,7 +39,7 @@ public final class TransferCallToParticipantOptions {
      * Required only when this is an incoming voip call and there will be a transfer call request to a PSTN target.
      */
     private PhoneNumberIdentifier sourceCallerIdNumber;
-    
+
     /**
      * Constructor
      *
@@ -89,13 +89,13 @@ public final class TransferCallToParticipantOptions {
         this.targetParticipant = targetParticipant;
         this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
-    
+
     /**
      * Get the operationContext.
      *
      * @return the operationContext
      */
-    public String  getOperationContext() {
+    public String getOperationContext() {
         return operationContext;
     }
 
@@ -166,16 +166,16 @@ public final class TransferCallToParticipantOptions {
         this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
-    
-     /**
-     * Get the sourceCallerIdNumber.
-     *
-     * @return the sourceCallerIdNumber
-     */
+
+    /**
+    * Get the sourceCallerIdNumber.
+    *
+    * @return the sourceCallerIdNumber
+    */
     public PhoneNumberIdentifier getSourceCallerIdNumber() {
         return sourceCallerIdNumber;
     }
-    
+
     /**
      * Set the sourceCallerIdNumber.
      *

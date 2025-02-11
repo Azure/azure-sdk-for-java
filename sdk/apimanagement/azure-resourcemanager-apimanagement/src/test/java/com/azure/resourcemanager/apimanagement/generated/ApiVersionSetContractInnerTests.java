@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiVersionSetContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiVersionSetContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"wbeqrkuor\",\"versioningScheme\":\"Query\",\"description\":\"sruqnmdvha\",\"versionQueryName\":\"vjytiqswbq\",\"versionHeaderName\":\"zwxiytx\"},\"id\":\"dgukvlbpktgds\",\"name\":\"youambewr\",\"type\":\"swmowegmmuteyxe\"}")
-                .toObject(ApiVersionSetContractInner.class);
+        ApiVersionSetContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"wbeqrkuor\",\"versioningScheme\":\"Query\",\"description\":\"sruqnmdvha\",\"versionQueryName\":\"vjytiqswbq\",\"versionHeaderName\":\"zwxiytx\"},\"id\":\"dgukvlbpktgds\",\"name\":\"youambewr\",\"type\":\"swmowegmmuteyxe\"}")
+            .toObject(ApiVersionSetContractInner.class);
         Assertions.assertEquals("wbeqrkuor", model.displayName());
         Assertions.assertEquals(VersioningScheme.QUERY, model.versioningScheme());
         Assertions.assertEquals("sruqnmdvha", model.description());
@@ -26,13 +24,11 @@ public final class ApiVersionSetContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiVersionSetContractInner model =
-            new ApiVersionSetContractInner()
-                .withDisplayName("wbeqrkuor")
-                .withVersioningScheme(VersioningScheme.QUERY)
-                .withDescription("sruqnmdvha")
-                .withVersionQueryName("vjytiqswbq")
-                .withVersionHeaderName("zwxiytx");
+        ApiVersionSetContractInner model = new ApiVersionSetContractInner().withDisplayName("wbeqrkuor")
+            .withVersioningScheme(VersioningScheme.QUERY)
+            .withDescription("sruqnmdvha")
+            .withVersionQueryName("vjytiqswbq")
+            .withVersionHeaderName("zwxiytx");
         model = BinaryData.fromObject(model).toObject(ApiVersionSetContractInner.class);
         Assertions.assertEquals("wbeqrkuor", model.displayName());
         Assertions.assertEquals(VersioningScheme.QUERY, model.versioningScheme());

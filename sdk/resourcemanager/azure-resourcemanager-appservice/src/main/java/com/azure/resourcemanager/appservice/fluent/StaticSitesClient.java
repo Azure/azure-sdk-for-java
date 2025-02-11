@@ -22,10 +22,10 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildArmReso
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainOverviewArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteFunctionOverviewArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBackendArmResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StaticSitesWorkflowPreviewInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserInvitationResponseResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvidedFunctionAppArmResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSitesWorkflowPreviewInner;
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.StringListInner;
 import com.azure.resourcemanager.appservice.models.BasicAuthName;
@@ -33,9 +33,9 @@ import com.azure.resourcemanager.appservice.models.DatabaseConnectionPatchReques
 import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequestPropertiesArmResource;
 import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;
-import com.azure.resourcemanager.appservice.models.StaticSitesWorkflowPreviewRequest;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserInvitationRequestResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteZipDeploymentArmResource;
+import com.azure.resourcemanager.appservice.models.StaticSitesWorkflowPreviewRequest;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;

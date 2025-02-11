@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.sphere.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Signed device capability image response.
  */
 @Immutable
-public final class SignedCapabilityImageResponseInner {
+public final class SignedCapabilityImageResponseInner implements JsonSerializable<SignedCapabilityImageResponseInner> {
     /*
      * The signed device capability image as a UTF-8 encoded base 64 string.
      */
-    @JsonProperty(value = "image", access = JsonProperty.Access.WRITE_ONLY)
     private String image;
 
     /**
@@ -39,5 +42,41 @@ public final class SignedCapabilityImageResponseInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SignedCapabilityImageResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SignedCapabilityImageResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SignedCapabilityImageResponseInner.
+     */
+    public static SignedCapabilityImageResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SignedCapabilityImageResponseInner deserializedSignedCapabilityImageResponseInner
+                = new SignedCapabilityImageResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("image".equals(fieldName)) {
+                    deserializedSignedCapabilityImageResponseInner.image = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSignedCapabilityImageResponseInner;
+        });
     }
 }

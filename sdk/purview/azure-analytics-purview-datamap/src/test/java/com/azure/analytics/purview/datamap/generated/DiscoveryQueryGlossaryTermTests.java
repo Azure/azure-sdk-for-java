@@ -12,9 +12,8 @@ import com.azure.analytics.purview.datamap.models.SearchFacetResultValue;
 import com.azure.analytics.purview.datamap.models.SearchFacetSort;
 import com.azure.analytics.purview.datamap.models.SearchResultValue;
 import com.azure.analytics.purview.datamap.models.SearchSortOrder;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -25,14 +24,13 @@ import org.junit.jupiter.api.Test;
 public final class DiscoveryQueryGlossaryTermTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testDiscoveryQueryGlossaryTermTests() throws IOException {
+    public void testDiscoveryQueryGlossaryTermTests() {
         // method invocation
         QueryResult response = discoveryClient.query(new QueryOptions().setKeywords("fakeTokenPlaceholder")
             .setLimit(10)
-            .setFilter(JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(
-                    "{\"and\":[{\"objectType\":\"Glossary terms\"},{\"or\":[{\"glossaryType\":\"AtlasGlossary\"},{\"glossaryType\":\"AtlasGlossaryTerm\"}]}]}",
-                    Object.class, SerializerEncoding.JSON))
+            .setFilter(BinaryData.fromBytes(
+                "{and=[{objectType=Glossary terms}, {or=[{glossaryType=AtlasGlossary}, {glossaryType=AtlasGlossaryTerm}]}]}"
+                    .getBytes(StandardCharsets.UTF_8)))
             .setFacets(Arrays.asList(
                 new SearchFacetItem().setCount(10)
                     .setFacet("termStatus")

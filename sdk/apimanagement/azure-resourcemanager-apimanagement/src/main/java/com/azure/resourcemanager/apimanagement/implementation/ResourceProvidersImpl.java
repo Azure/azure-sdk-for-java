@@ -19,19 +19,16 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public ConnectivityCheckResponse performConnectivityCheckAsync(
-        String resourceGroupName, String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams) {
-        ConnectivityCheckResponseInner inner =
-            this
-                .serviceClient()
-                .performConnectivityCheckAsync(resourceGroupName, serviceName, connectivityCheckRequestParams);
+    public ConnectivityCheckResponse performConnectivityCheckAsync(String resourceGroupName, String serviceName,
+        ConnectivityCheckRequest connectivityCheckRequestParams) {
+        ConnectivityCheckResponseInner inner = this.serviceClient()
+            .performConnectivityCheckAsync(resourceGroupName, serviceName, connectivityCheckRequestParams);
         if (inner != null) {
             return new ConnectivityCheckResponseImpl(inner, this.manager());
         } else {
@@ -39,15 +36,10 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public ConnectivityCheckResponse performConnectivityCheckAsync(
-        String resourceGroupName,
-        String serviceName,
-        ConnectivityCheckRequest connectivityCheckRequestParams,
-        Context context) {
-        ConnectivityCheckResponseInner inner =
-            this
-                .serviceClient()
-                .performConnectivityCheckAsync(resourceGroupName, serviceName, connectivityCheckRequestParams, context);
+    public ConnectivityCheckResponse performConnectivityCheckAsync(String resourceGroupName, String serviceName,
+        ConnectivityCheckRequest connectivityCheckRequestParams, Context context) {
+        ConnectivityCheckResponseInner inner = this.serviceClient()
+            .performConnectivityCheckAsync(resourceGroupName, serviceName, connectivityCheckRequestParams, context);
         if (inner != null) {
             return new ConnectivityCheckResponseImpl(inner, this.manager());
         } else {

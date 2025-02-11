@@ -5,43 +5,32 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStorageConfigOperationResultResponseInner;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Prepare DataMove Response.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = PrepareDataMoveResponse.class,
-    visible = true)
-@JsonTypeName("PrepareDataMoveResponse")
 @Fluent
 public final class PrepareDataMoveResponse extends VaultStorageConfigOperationResultResponseInner {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private String objectType = "PrepareDataMoveResponse";
 
     /*
      * Co-relationId for move operation
      */
-    @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
      * Source Vault Properties
      */
-    @JsonProperty(value = "sourceVaultProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> sourceVaultProperties;
 
     /**
@@ -108,6 +97,49 @@ public final class PrepareDataMoveResponse extends VaultStorageConfigOperationRe
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("correlationId", this.correlationId);
+        jsonWriter.writeMapField("sourceVaultProperties", this.sourceVaultProperties,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrepareDataMoveResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrepareDataMoveResponse if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrepareDataMoveResponse.
+     */
+    public static PrepareDataMoveResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrepareDataMoveResponse deserializedPrepareDataMoveResponse = new PrepareDataMoveResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedPrepareDataMoveResponse.objectType = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedPrepareDataMoveResponse.correlationId = reader.getString();
+                } else if ("sourceVaultProperties".equals(fieldName)) {
+                    Map<String, String> sourceVaultProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPrepareDataMoveResponse.sourceVaultProperties = sourceVaultProperties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrepareDataMoveResponse;
+        });
     }
 }

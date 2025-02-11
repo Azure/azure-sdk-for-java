@@ -14,18 +14,18 @@ public final class ServerConfigurationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerConfigurationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"duqkt\",\"source\":\"spwgcuertumkdosv\",\"description\":\"hbmdgbbjfdd\",\"defaultValue\":\"bmbexppbhtqqro\",\"dataType\":\"Boolean\",\"allowedValues\":\"psalgbqux\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"zjaoyfhrtxil\",\"name\":\"erkujys\",\"type\":\"l\"},{\"properties\":{\"value\":\"uvfqawrlyxwj\",\"source\":\"prbnwbxgjvtbv\",\"description\":\"sszdnru\",\"defaultValue\":\"guhmuouqfpr\",\"dataType\":\"Integer\",\"allowedValues\":\"nguitnwuizgazxu\",\"requiresRestart\":false,\"provisioningState\":\"Canceled\"},\"id\":\"y\",\"name\":\"i\",\"type\":\"rfidfvzwdz\"},{\"properties\":{\"value\":\"tymw\",\"source\":\"dkfthwxmnt\",\"description\":\"waopvkmijcmmxd\",\"defaultValue\":\"fufsrpymzi\",\"dataType\":\"Numeric\",\"allowedValues\":\"zcxtbzsgfyccsn\",\"requiresRestart\":true,\"provisioningState\":\"Canceled\"},\"id\":\"jeiachboosfl\",\"name\":\"ro\",\"type\":\"fqpte\"},{\"properties\":{\"value\":\"zzvypyqrimzinp\",\"source\":\"wjdk\",\"description\":\"soodqxhcrmnoh\",\"defaultValue\":\"ckwhds\",\"dataType\":\"Enumeration\",\"allowedValues\":\"yip\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"gr\",\"name\":\"bznorcjxvsnby\",\"type\":\"qabnmoc\"}],\"nextLink\":\"ysh\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"ckbasyypndd\",\"source\":\"gcbacphejkot\",\"description\":\"qgoulznd\",\"defaultValue\":\"kwy\",\"dataType\":\"Numeric\",\"allowedValues\":\"gibma\",\"requiresRestart\":false,\"provisioningState\":\"Failed\"},\"id\":\"s\",\"name\":\"xybz\",\"type\":\"qedqytbciqfoufl\"},{\"properties\":{\"value\":\"nkzsmodmglou\",\"source\":\"b\",\"description\":\"tmut\",\"defaultValue\":\"qktapspwgcuert\",\"dataType\":\"Numeric\",\"allowedValues\":\"o\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"mdgbbjfdd\",\"name\":\"mbmbexppbh\",\"type\":\"q\"},{\"properties\":{\"value\":\"ol\",\"source\":\"fpsalgbqu\",\"description\":\"gjyjgzjaoyfhrtxi\",\"defaultValue\":\"erkujys\",\"dataType\":\"Boolean\",\"allowedValues\":\"uvfqawrlyxwj\",\"requiresRestart\":true,\"provisioningState\":\"Failed\"},\"id\":\"wbxgjvt\",\"name\":\"vpys\",\"type\":\"zdn\"},{\"properties\":{\"value\":\"jq\",\"source\":\"hmuouqfprwzwbn\",\"description\":\"itnwuizgazxufi\",\"defaultValue\":\"ckyfih\",\"dataType\":\"Boolean\",\"allowedValues\":\"fvzwdzuhty\",\"requiresRestart\":true,\"provisioningState\":\"InProgress\"},\"id\":\"fthwxmnteiwa\",\"name\":\"pvkmijcmmxdcuf\",\"type\":\"fsrpymzidnse\"}],\"nextLink\":\"xtbzsgfyccsne\"}")
             .toObject(ServerConfigurationListResult.class);
-        Assertions.assertEquals("duqkt", model.value().get(0).value());
+        Assertions.assertEquals("ckbasyypndd", model.value().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerConfigurationListResult model = new ServerConfigurationListResult().withValue(Arrays.asList(
-            new ServerConfigurationInner().withValue("duqkt"), new ServerConfigurationInner().withValue("uvfqawrlyxwj"),
-            new ServerConfigurationInner().withValue("tymw"),
-            new ServerConfigurationInner().withValue("zzvypyqrimzinp")));
+        ServerConfigurationListResult model = new ServerConfigurationListResult()
+            .withValue(Arrays.asList(new ServerConfigurationInner().withValue("ckbasyypndd"),
+                new ServerConfigurationInner().withValue("nkzsmodmglou"),
+                new ServerConfigurationInner().withValue("ol"), new ServerConfigurationInner().withValue("jq")));
         model = BinaryData.fromObject(model).toObject(ServerConfigurationListResult.class);
-        Assertions.assertEquals("duqkt", model.value().get(0).value());
+        Assertions.assertEquals("ckbasyypndd", model.value().get(0).value());
     }
 }

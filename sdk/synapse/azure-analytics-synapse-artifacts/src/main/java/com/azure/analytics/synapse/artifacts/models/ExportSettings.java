@@ -21,7 +21,7 @@ public class ExportSettings implements JsonSerializable<ExportSettings> {
     /*
      * The export setting type.
      */
-    private String type;
+    private String type = "ExportSettings";
 
     /*
      * Export command settings.
@@ -32,7 +32,6 @@ public class ExportSettings implements JsonSerializable<ExportSettings> {
      * Creates an instance of ExportSettings class.
      */
     public ExportSettings() {
-        this.type = "ExportSettings";
     }
 
     /**

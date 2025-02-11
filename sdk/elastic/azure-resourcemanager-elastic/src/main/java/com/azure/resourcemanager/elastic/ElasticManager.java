@@ -23,21 +23,24 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.elastic.fluent.MicrosoftElastic;
+import com.azure.resourcemanager.elastic.fluent.ElasticManagementClient;
 import com.azure.resourcemanager.elastic.implementation.AllTrafficFiltersImpl;
 import com.azure.resourcemanager.elastic.implementation.AssociateTrafficFiltersImpl;
+import com.azure.resourcemanager.elastic.implementation.BillingInfoesImpl;
+import com.azure.resourcemanager.elastic.implementation.ConnectedPartnerResourcesImpl;
 import com.azure.resourcemanager.elastic.implementation.CreateAndAssociateIpFiltersImpl;
 import com.azure.resourcemanager.elastic.implementation.CreateAndAssociatePLFiltersImpl;
 import com.azure.resourcemanager.elastic.implementation.DeploymentInfoesImpl;
 import com.azure.resourcemanager.elastic.implementation.DetachAndDeleteTrafficFiltersImpl;
 import com.azure.resourcemanager.elastic.implementation.DetachTrafficFiltersImpl;
+import com.azure.resourcemanager.elastic.implementation.ElasticManagementClientBuilder;
 import com.azure.resourcemanager.elastic.implementation.ElasticVersionsImpl;
 import com.azure.resourcemanager.elastic.implementation.ExternalUsersImpl;
 import com.azure.resourcemanager.elastic.implementation.ListAssociatedTrafficFiltersImpl;
-import com.azure.resourcemanager.elastic.implementation.MicrosoftElasticBuilder;
 import com.azure.resourcemanager.elastic.implementation.MonitorOperationsImpl;
 import com.azure.resourcemanager.elastic.implementation.MonitoredResourcesImpl;
 import com.azure.resourcemanager.elastic.implementation.MonitorsImpl;
+import com.azure.resourcemanager.elastic.implementation.OpenAIsImpl;
 import com.azure.resourcemanager.elastic.implementation.OperationsImpl;
 import com.azure.resourcemanager.elastic.implementation.OrganizationsImpl;
 import com.azure.resourcemanager.elastic.implementation.TagRulesImpl;
@@ -48,6 +51,8 @@ import com.azure.resourcemanager.elastic.implementation.VMHostsImpl;
 import com.azure.resourcemanager.elastic.implementation.VMIngestionsImpl;
 import com.azure.resourcemanager.elastic.models.AllTrafficFilters;
 import com.azure.resourcemanager.elastic.models.AssociateTrafficFilters;
+import com.azure.resourcemanager.elastic.models.BillingInfoes;
+import com.azure.resourcemanager.elastic.models.ConnectedPartnerResources;
 import com.azure.resourcemanager.elastic.models.CreateAndAssociateIpFilters;
 import com.azure.resourcemanager.elastic.models.CreateAndAssociatePLFilters;
 import com.azure.resourcemanager.elastic.models.DeploymentInfoes;
@@ -59,6 +64,7 @@ import com.azure.resourcemanager.elastic.models.ListAssociatedTrafficFilters;
 import com.azure.resourcemanager.elastic.models.MonitorOperations;
 import com.azure.resourcemanager.elastic.models.MonitoredResources;
 import com.azure.resourcemanager.elastic.models.Monitors;
+import com.azure.resourcemanager.elastic.models.OpenAIs;
 import com.azure.resourcemanager.elastic.models.Operations;
 import com.azure.resourcemanager.elastic.models.Organizations;
 import com.azure.resourcemanager.elastic.models.TagRules;
@@ -74,7 +80,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ElasticManager. */
+/**
+ * Entry point to ElasticManager.
+ */
 public final class ElasticManager {
     private Operations operations;
 
@@ -87,6 +95,12 @@ public final class ElasticManager {
     private DeploymentInfoes deploymentInfoes;
 
     private ExternalUsers externalUsers;
+
+    private BillingInfoes billingInfoes;
+
+    private ConnectedPartnerResources connectedPartnerResources;
+
+    private OpenAIs openAIs;
 
     private TagRules tagRules;
 
@@ -118,26 +132,24 @@ public final class ElasticManager {
 
     private Organizations organizations;
 
-    private final MicrosoftElastic clientObject;
+    private final ElasticManagementClient clientObject;
 
     private ElasticManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new MicrosoftElasticBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new ElasticManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
-     * Creates an instance of elastic service API entry point.
-     *
+     * Creates an instance of Elastic service API entry point.
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the elastic service API instance.
+     * @return the Elastic service API instance.
      */
     public static ElasticManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -146,11 +158,11 @@ public final class ElasticManager {
     }
 
     /**
-     * Creates an instance of elastic service API entry point.
-     *
+     * Creates an instance of Elastic service API entry point.
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the elastic service API instance.
+     * @return the Elastic service API instance.
      */
     public static ElasticManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
@@ -160,14 +172,16 @@ public final class ElasticManager {
 
     /**
      * Gets a Configurable instance that can be used to create ElasticManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ElasticManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -239,8 +253,8 @@ public final class ElasticManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -257,8 +271,8 @@ public final class ElasticManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -267,26 +281,24 @@ public final class ElasticManager {
         }
 
         /**
-         * Creates an instance of elastic service API entry point.
+         * Creates an instance of Elastic service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the elastic service API instance.
+         * @return the Elastic service API instance.
          */
         public ElasticManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.elastic")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -311,38 +323,28 @@ public final class ElasticManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new ElasticManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -354,7 +356,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of Monitors. It manages ElasticMonitorResource.
-     *
+     * 
      * @return Resource collection API of Monitors.
      */
     public Monitors monitors() {
@@ -366,7 +368,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of ElasticVersions.
-     *
+     * 
      * @return Resource collection API of ElasticVersions.
      */
     public ElasticVersions elasticVersions() {
@@ -378,7 +380,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of MonitoredResources.
-     *
+     * 
      * @return Resource collection API of MonitoredResources.
      */
     public MonitoredResources monitoredResources() {
@@ -390,7 +392,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of DeploymentInfoes.
-     *
+     * 
      * @return Resource collection API of DeploymentInfoes.
      */
     public DeploymentInfoes deploymentInfoes() {
@@ -402,7 +404,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of ExternalUsers.
-     *
+     * 
      * @return Resource collection API of ExternalUsers.
      */
     public ExternalUsers externalUsers() {
@@ -413,8 +415,45 @@ public final class ElasticManager {
     }
 
     /**
+     * Gets the resource collection API of BillingInfoes.
+     * 
+     * @return Resource collection API of BillingInfoes.
+     */
+    public BillingInfoes billingInfoes() {
+        if (this.billingInfoes == null) {
+            this.billingInfoes = new BillingInfoesImpl(clientObject.getBillingInfoes(), this);
+        }
+        return billingInfoes;
+    }
+
+    /**
+     * Gets the resource collection API of ConnectedPartnerResources.
+     * 
+     * @return Resource collection API of ConnectedPartnerResources.
+     */
+    public ConnectedPartnerResources connectedPartnerResources() {
+        if (this.connectedPartnerResources == null) {
+            this.connectedPartnerResources
+                = new ConnectedPartnerResourcesImpl(clientObject.getConnectedPartnerResources(), this);
+        }
+        return connectedPartnerResources;
+    }
+
+    /**
+     * Gets the resource collection API of OpenAIs. It manages OpenAIIntegrationRPModel.
+     * 
+     * @return Resource collection API of OpenAIs.
+     */
+    public OpenAIs openAIs() {
+        if (this.openAIs == null) {
+            this.openAIs = new OpenAIsImpl(clientObject.getOpenAIs(), this);
+        }
+        return openAIs;
+    }
+
+    /**
      * Gets the resource collection API of TagRules. It manages MonitoringTagRules.
-     *
+     * 
      * @return Resource collection API of TagRules.
      */
     public TagRules tagRules() {
@@ -426,7 +465,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of VMHosts.
-     *
+     * 
      * @return Resource collection API of VMHosts.
      */
     public VMHosts vMHosts() {
@@ -438,7 +477,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of VMIngestions.
-     *
+     * 
      * @return Resource collection API of VMIngestions.
      */
     public VMIngestions vMIngestions() {
@@ -450,7 +489,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of VMCollections.
-     *
+     * 
      * @return Resource collection API of VMCollections.
      */
     public VMCollections vMCollections() {
@@ -462,7 +501,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of UpgradableVersions.
-     *
+     * 
      * @return Resource collection API of UpgradableVersions.
      */
     public UpgradableVersions upgradableVersions() {
@@ -474,7 +513,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of MonitorOperations.
-     *
+     * 
      * @return Resource collection API of MonitorOperations.
      */
     public MonitorOperations monitorOperations() {
@@ -486,7 +525,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of AllTrafficFilters.
-     *
+     * 
      * @return Resource collection API of AllTrafficFilters.
      */
     public AllTrafficFilters allTrafficFilters() {
@@ -498,72 +537,72 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of ListAssociatedTrafficFilters.
-     *
+     * 
      * @return Resource collection API of ListAssociatedTrafficFilters.
      */
     public ListAssociatedTrafficFilters listAssociatedTrafficFilters() {
         if (this.listAssociatedTrafficFilters == null) {
-            this.listAssociatedTrafficFilters =
-                new ListAssociatedTrafficFiltersImpl(clientObject.getListAssociatedTrafficFilters(), this);
+            this.listAssociatedTrafficFilters
+                = new ListAssociatedTrafficFiltersImpl(clientObject.getListAssociatedTrafficFilters(), this);
         }
         return listAssociatedTrafficFilters;
     }
 
     /**
      * Gets the resource collection API of CreateAndAssociateIpFilters.
-     *
+     * 
      * @return Resource collection API of CreateAndAssociateIpFilters.
      */
     public CreateAndAssociateIpFilters createAndAssociateIpFilters() {
         if (this.createAndAssociateIpFilters == null) {
-            this.createAndAssociateIpFilters =
-                new CreateAndAssociateIpFiltersImpl(clientObject.getCreateAndAssociateIpFilters(), this);
+            this.createAndAssociateIpFilters
+                = new CreateAndAssociateIpFiltersImpl(clientObject.getCreateAndAssociateIpFilters(), this);
         }
         return createAndAssociateIpFilters;
     }
 
     /**
      * Gets the resource collection API of CreateAndAssociatePLFilters.
-     *
+     * 
      * @return Resource collection API of CreateAndAssociatePLFilters.
      */
     public CreateAndAssociatePLFilters createAndAssociatePLFilters() {
         if (this.createAndAssociatePLFilters == null) {
-            this.createAndAssociatePLFilters =
-                new CreateAndAssociatePLFiltersImpl(clientObject.getCreateAndAssociatePLFilters(), this);
+            this.createAndAssociatePLFilters
+                = new CreateAndAssociatePLFiltersImpl(clientObject.getCreateAndAssociatePLFilters(), this);
         }
         return createAndAssociatePLFilters;
     }
 
     /**
      * Gets the resource collection API of AssociateTrafficFilters.
-     *
+     * 
      * @return Resource collection API of AssociateTrafficFilters.
      */
     public AssociateTrafficFilters associateTrafficFilters() {
         if (this.associateTrafficFilters == null) {
-            this.associateTrafficFilters =
-                new AssociateTrafficFiltersImpl(clientObject.getAssociateTrafficFilters(), this);
+            this.associateTrafficFilters
+                = new AssociateTrafficFiltersImpl(clientObject.getAssociateTrafficFilters(), this);
         }
         return associateTrafficFilters;
     }
 
     /**
      * Gets the resource collection API of DetachAndDeleteTrafficFilters.
-     *
+     * 
      * @return Resource collection API of DetachAndDeleteTrafficFilters.
      */
     public DetachAndDeleteTrafficFilters detachAndDeleteTrafficFilters() {
         if (this.detachAndDeleteTrafficFilters == null) {
-            this.detachAndDeleteTrafficFilters =
-                new DetachAndDeleteTrafficFiltersImpl(clientObject.getDetachAndDeleteTrafficFilters(), this);
+            this.detachAndDeleteTrafficFilters
+                = new DetachAndDeleteTrafficFiltersImpl(clientObject.getDetachAndDeleteTrafficFilters(), this);
         }
         return detachAndDeleteTrafficFilters;
     }
 
     /**
      * Gets the resource collection API of DetachTrafficFilters.
-     *
+     * 
      * @return Resource collection API of DetachTrafficFilters.
      */
     public DetachTrafficFilters detachTrafficFilters() {
@@ -575,7 +614,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of TrafficFilters.
-     *
+     * 
      * @return Resource collection API of TrafficFilters.
      */
     public TrafficFilters trafficFilters() {
@@ -587,7 +626,7 @@ public final class ElasticManager {
 
     /**
      * Gets the resource collection API of Organizations.
-     *
+     * 
      * @return Resource collection API of Organizations.
      */
     public Organizations organizations() {
@@ -598,10 +637,12 @@ public final class ElasticManager {
     }
 
     /**
-     * @return Wrapped service client MicrosoftElastic providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client ElasticManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client ElasticManagementClient.
      */
-    public MicrosoftElastic serviceClient() {
+    public ElasticManagementClient serviceClient() {
         return this.clientObject;
     }
 }

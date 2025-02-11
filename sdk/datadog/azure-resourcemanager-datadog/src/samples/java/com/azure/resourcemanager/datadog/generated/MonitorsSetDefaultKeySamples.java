@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.datadog.generated;
 
-/** Samples for Monitors SetDefaultKey. */
+import com.azure.resourcemanager.datadog.fluent.models.DatadogApiKeyInner;
+
+/**
+ * Samples for Monitors SetDefaultKey.
+ */
 public final class MonitorsSetDefaultKeySamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/ApiKeys_SetDefaultKey.json
+     * x-ms-original-file:
+     * specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/ApiKeys_SetDefaultKey.json
      */
     /**
      * Sample code: Monitors_SetDefaultKey.
-     *
+     * 
      * @param manager Entry point to MicrosoftDatadogManager.
      */
     public static void monitorsSetDefaultKey(com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
-        manager
-            .monitors()
-            .setDefaultKeyWithResponse("myResourceGroup", "myMonitor", null, com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .setDefaultKeyWithResponse("myResourceGroup", "myMonitor",
+                new DatadogApiKeyInner().withKey("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
     }
 }

@@ -25,7 +25,9 @@ public final class SbomComponentResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SbomComponentResourceInner model = new SbomComponentResourceInner().withComponentId("dckzywbiexz")
-            .withComponentName("yueaxibxujwb").withVersion("walm").withLicense("yoxa")
+            .withComponentName("yueaxibxujwb")
+            .withVersion("walm")
+            .withLicense("yoxa")
             .withFilePaths(Arrays.asList("kzjancuxrhdwbav", "bniwdj", "wz"));
         model = BinaryData.fromObject(model).toObject(SbomComponentResourceInner.class);
         Assertions.assertEquals("dckzywbiexz", model.componentId());

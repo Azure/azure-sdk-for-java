@@ -17,17 +17,14 @@ import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_STAR
 
 public abstract class AnomalyDimensionValuesTestBase extends MetricsAdvisorClientTestBase {
     @Test
-    public abstract void listAnomalyDimensionValues(HttpClient httpClient,
-                                                    MetricsAdvisorServiceVersion serviceVersion);
+    public abstract void listAnomalyDimensionValues(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     // Pre-configured test resource.
     protected static class ListAnomalyDimensionValuesInput {
         static final ListAnomalyDimensionValuesInput INSTANCE = new ListAnomalyDimensionValuesInput();
         final OffsetDateTime startTime = TIME_SERIES_START_TIME;
         final OffsetDateTime endTime = TIME_SERIES_END_TIME;
-        final ListAnomalyDimensionValuesOptions options
-            = new ListAnomalyDimensionValuesOptions()
-            .setMaxPageSize(10);
+        final ListAnomalyDimensionValuesOptions options = new ListAnomalyDimensionValuesOptions().setMaxPageSize(10);
         final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;
         final String dimensionName = DIMENSION_NAME;
     }

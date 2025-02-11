@@ -14,12 +14,12 @@ import java.util.Collection;
  */
 public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
     /**
-     * Static value TrustedLaunch for SecurityTypes.
+     * TrustedLaunch security type.
      */
     public static final SecurityTypes TRUSTED_LAUNCH = fromString("TrustedLaunch");
 
     /**
-     * Static value ConfidentialVM for SecurityTypes.
+     * ConfidentialVM security type.
      */
     public static final SecurityTypes CONFIDENTIAL_VM = fromString("ConfidentialVM");
 

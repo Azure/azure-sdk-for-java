@@ -13,33 +13,69 @@ public final class VirtualMachineDiskOptions {
     private StorageAccountTypes storageAccountType;
     private CachingTypes cachingTypes;
     private DeleteOptions deleteOptions;
+    private Boolean writeAcceleratorEnabled;
+
+    /**
+     * Creates a new instance of VirtualMachineDiskOptions.
+     */
+    public VirtualMachineDiskOptions() {
+    }
 
     // DiskEncryptionSetParameters instance without ID means do not configure.
     // If disk is already encrypted with CMK, it remains so when attached.
     private DiskEncryptionSetParameters diskEncryptionSetOptions;
 
-    /** @return the disk storage account type */
+    /**
+     * Gets the disk storage account type.
+     *
+     * @return the disk storage account type
+     */
     public StorageAccountTypes storageAccountType() {
         return storageAccountType;
     }
 
-    /** @return the disk caching type */
+    /**
+     * Gets the disk caching type.
+     *
+     * @return the disk caching type
+     */
     public CachingTypes cachingTypes() {
         return cachingTypes;
     }
 
-    /** @return the disk delete options */
+    /**
+     * Gets the disk delete options.
+     *
+     * @return the disk delete options
+     */
     public DeleteOptions deleteOptions() {
         return deleteOptions;
     }
 
-    /** @return whether disk encryption set is configured,
-     * either as the ID of disk encryption set, or as {@code null} to override default configuration. */
+    /**
+     * Gets whether the write accelerator is enabled. {@literal null} if no change.
+     *
+     * @return whether the write accelerator is enabled
+     */
+    public Boolean writeAcceleratorEnabled() {
+        return writeAcceleratorEnabled;
+    }
+
+    /**
+     * Checks whether disk encryption set is configured.
+     *
+     * @return whether disk encryption set is configured,
+     * either as the ID of disk encryption set, or as {@code null} to override default configuration.
+     */
     public boolean isDiskEncryptionSetConfigured() {
         return diskEncryptionSetOptions != null;
     }
 
-    /** @return the ID of disk encryption set */
+    /**
+     * Gets the ID of disk encryption set.
+     *
+     * @return the ID of disk encryption set
+     */
     public String diskEncryptionSetId() {
         if (diskEncryptionSetOptions == null) {
             return null;
@@ -49,7 +85,7 @@ public final class VirtualMachineDiskOptions {
 
     /**
      * Sets the storage account type.
-     *
+     * <p>
      * Storage account type configured here will not work when attaching a disk.
      *
      * @param storageAccountType the storage account type
@@ -79,6 +115,21 @@ public final class VirtualMachineDiskOptions {
      */
     public VirtualMachineDiskOptions withDeleteOptions(DeleteOptions deleteOptions) {
         this.deleteOptions = deleteOptions;
+        return this;
+    }
+
+    /**
+     * Enables/disables the write accelerator.
+     * <p>
+     * Write Accelerator is generally available for M-series VMs in the Public Cloud.
+     * Enabling write accelerator for the operating system disk of the VM will reboot the VM.
+     * The Premium disk caching must be set to 'None' or 'Read Only'. All other caching modes are not supported.
+     *
+     * @param writeAcceleratorEnabled whether to enable the write accelerator
+     * @return self
+     */
+    public VirtualMachineDiskOptions withWriteAcceleratorEnabled(boolean writeAcceleratorEnabled) {
+        this.writeAcceleratorEnabled = writeAcceleratorEnabled;
         return this;
     }
 

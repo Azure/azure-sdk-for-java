@@ -23,7 +23,7 @@ public final class PreconfiguredEndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"qsg\",\"endpoint\":\"yuuzivens\",\"endpointType\":\"CDN\",\"backend\":\"yyvpkpatlb\"},\"location\":\"jp\",\"tags\":{\"fvolmknbnxwcd\":\"ksrf\",\"awz\":\"mmpvf\",\"uiaclkiexhajlfn\":\"gbrt\",\"b\":\"hiqfyuttdiy\"},\"id\":\"vnwsw\",\"name\":\"txkyctwwgzwxjlm\",\"type\":\"cvogygzyvne\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"lykwphvxz\",\"endpoint\":\"xhmpejtlkex\",\"endpointType\":\"CDN\",\"backend\":\"ivkcqh\"},\"location\":\"xhxknlc\",\"tags\":{\"qjfkakfqfrkemyi\":\"mkyupijub\",\"dxphlk\":\"dudxjascowvfdjk\"},\"id\":\"snmgzvyfi\",\"name\":\"dkz\",\"type\":\"qnwsithuqolyah\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class PreconfiguredEndpointsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PreconfiguredEndpoint> response = manager.preconfiguredEndpoints()
-            .list("mlghktuidvrmazlp", "wwexymzvlazipbh", com.azure.core.util.Context.NONE);
+        PagedIterable<PreconfiguredEndpoint> response
+            = manager.preconfiguredEndpoints().list("noakiz", "oaiknaqlnuwig", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jp", response.iterator().next().location());
-        Assertions.assertEquals("ksrf", response.iterator().next().tags().get("fvolmknbnxwcd"));
-        Assertions.assertEquals("qsg", response.iterator().next().description());
-        Assertions.assertEquals("yuuzivens", response.iterator().next().endpoint());
+        Assertions.assertEquals("xhxknlc", response.iterator().next().location());
+        Assertions.assertEquals("mkyupijub", response.iterator().next().tags().get("qjfkakfqfrkemyi"));
+        Assertions.assertEquals("lykwphvxz", response.iterator().next().description());
+        Assertions.assertEquals("xhmpejtlkex", response.iterator().next().endpoint());
         Assertions.assertEquals(EndpointType.CDN, response.iterator().next().endpointType());
-        Assertions.assertEquals("yyvpkpatlb", response.iterator().next().backend());
+        Assertions.assertEquals("ivkcqh", response.iterator().next().backend());
     }
 }

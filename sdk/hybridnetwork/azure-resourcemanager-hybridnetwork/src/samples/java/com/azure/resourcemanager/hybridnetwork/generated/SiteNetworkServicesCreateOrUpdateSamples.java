@@ -28,7 +28,9 @@ public final class SiteNetworkServicesCreateOrUpdateSamples {
      * @param manager Entry point to HybridNetworkManager.
      */
     public static void createSiteNetworkService(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.siteNetworkServices().define("testSiteNetworkServiceName").withRegion("westUs2")
+        manager.siteNetworkServices()
+            .define("testSiteNetworkServiceName")
+            .withRegion("westUs2")
             .withExistingResourceGroup("rg1")
             .withProperties(new SiteNetworkServicePropertiesFormat()
                 .withSiteReference(new ReferencedResource().withId(
@@ -38,7 +40,8 @@ public final class SiteNetworkServicesCreateOrUpdateSamples {
                 .withDesiredStateConfigurationGroupValueReferences(mapOf("MyVM_Configuration",
                     new ReferencedResource().withId(
                         "/subscriptions/subid/resourcegroups/contosorg1/providers/microsoft.hybridnetwork/configurationgroupvalues/MyVM_Configuration1"))))
-            .withSku(new Sku().withName(SkuName.STANDARD)).create();
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
     }
 
     /*
@@ -53,7 +56,9 @@ public final class SiteNetworkServicesCreateOrUpdateSamples {
      */
     public static void
         createFirstPartySiteNetworkService(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.siteNetworkServices().define("testSiteNetworkServiceName").withRegion("westUs2")
+        manager.siteNetworkServices()
+            .define("testSiteNetworkServiceName")
+            .withRegion("westUs2")
             .withExistingResourceGroup("rg1")
             .withProperties(new SiteNetworkServicePropertiesFormat()
                 .withSiteReference(new ReferencedResource().withId(
@@ -63,7 +68,8 @@ public final class SiteNetworkServicesCreateOrUpdateSamples {
                 .withDesiredStateConfigurationGroupValueReferences(mapOf("MyVM_Configuration",
                     new ReferencedResource().withId(
                         "/subscriptions/subid/resourcegroups/contosorg1/providers/microsoft.hybridnetwork/configurationgroupvalues/MyVM_Configuration1"))))
-            .withSku(new Sku().withName(SkuName.STANDARD)).create();
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
     }
 
     // Use "Map.of" if available

@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayCertificateAuthorityContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayCertificateAuthorityContractProperties model =
-            BinaryData.fromString("{\"isTrusted\":true}").toObject(GatewayCertificateAuthorityContractProperties.class);
+        GatewayCertificateAuthorityContractProperties model = BinaryData.fromString("{\"isTrusted\":true}")
+            .toObject(GatewayCertificateAuthorityContractProperties.class);
         Assertions.assertEquals(true, model.isTrusted());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayCertificateAuthorityContractProperties model =
-            new GatewayCertificateAuthorityContractProperties().withIsTrusted(true);
+        GatewayCertificateAuthorityContractProperties model
+            = new GatewayCertificateAuthorityContractProperties().withIsTrusted(true);
         model = BinaryData.fromObject(model).toObject(GatewayCertificateAuthorityContractProperties.class);
         Assertions.assertEquals(true, model.isTrusted());
     }

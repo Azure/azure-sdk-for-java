@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,24 +18,20 @@ import java.util.Map;
  * Parameters for updating an Azure Batch account.
  */
 @Fluent
-public final class BatchAccountUpdateParameters {
+public final class BatchAccountUpdateParameters implements JsonSerializable<BatchAccountUpdateParameters> {
     /*
      * The user-specified tags associated with the account.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The properties of the account.
      */
-    @JsonProperty(value = "properties")
     private BatchAccountUpdateProperties innerProperties;
 
     /*
      * The identity of the Batch account.
      */
-    @JsonProperty(value = "identity")
     private BatchAccountIdentity identity;
 
     /**
@@ -224,5 +223,49 @@ public final class BatchAccountUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchAccountUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchAccountUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchAccountUpdateParameters.
+     */
+    public static BatchAccountUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchAccountUpdateParameters deserializedBatchAccountUpdateParameters = new BatchAccountUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBatchAccountUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBatchAccountUpdateParameters.innerProperties
+                        = BatchAccountUpdateProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedBatchAccountUpdateParameters.identity = BatchAccountIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchAccountUpdateParameters;
+        });
     }
 }

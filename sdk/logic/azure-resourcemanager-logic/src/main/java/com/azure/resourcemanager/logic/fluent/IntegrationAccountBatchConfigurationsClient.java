@@ -18,7 +18,7 @@ import com.azure.resourcemanager.logic.fluent.models.BatchConfigurationInner;
 public interface IntegrationAccountBatchConfigurationsClient {
     /**
      * List the batch configurations for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +31,7 @@ public interface IntegrationAccountBatchConfigurationsClient {
 
     /**
      * List the batch configurations for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param context The context to associate with this operation.
@@ -41,12 +41,12 @@ public interface IntegrationAccountBatchConfigurationsClient {
      * @return a collection of batch configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchConfigurationInner> list(
-        String resourceGroupName, String integrationAccountName, Context context);
+    PagedIterable<BatchConfigurationInner> list(String resourceGroupName, String integrationAccountName,
+        Context context);
 
     /**
      * Get a batch configuration for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -57,12 +57,12 @@ public interface IntegrationAccountBatchConfigurationsClient {
      * @return a batch configuration for an integration account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BatchConfigurationInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context);
+    Response<BatchConfigurationInner> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String batchConfigurationName, Context context);
 
     /**
      * Get a batch configuration for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -76,7 +76,7 @@ public interface IntegrationAccountBatchConfigurationsClient {
 
     /**
      * Create or update a batch configuration for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -88,16 +88,13 @@ public interface IntegrationAccountBatchConfigurationsClient {
      * @return the batch configuration resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BatchConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String batchConfigurationName,
-        BatchConfigurationInner batchConfiguration,
+    Response<BatchConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
+        String integrationAccountName, String batchConfigurationName, BatchConfigurationInner batchConfiguration,
         Context context);
 
     /**
      * Create or update a batch configuration for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -108,15 +105,12 @@ public interface IntegrationAccountBatchConfigurationsClient {
      * @return the batch configuration resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String integrationAccountName,
-        String batchConfigurationName,
-        BatchConfigurationInner batchConfiguration);
+    BatchConfigurationInner createOrUpdate(String resourceGroupName, String integrationAccountName,
+        String batchConfigurationName, BatchConfigurationInner batchConfiguration);
 
     /**
      * Delete a batch configuration for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -127,12 +121,12 @@ public interface IntegrationAccountBatchConfigurationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName,
+        String batchConfigurationName, Context context);
 
     /**
      * Delete a batch configuration for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.

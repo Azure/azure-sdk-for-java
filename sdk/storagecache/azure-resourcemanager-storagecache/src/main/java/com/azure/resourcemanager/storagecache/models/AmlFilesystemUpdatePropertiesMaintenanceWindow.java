@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Start time of a 30-minute weekly maintenance window.
  */
 @Fluent
-public final class AmlFilesystemUpdatePropertiesMaintenanceWindow {
+public final class AmlFilesystemUpdatePropertiesMaintenanceWindow
+    implements JsonSerializable<AmlFilesystemUpdatePropertiesMaintenanceWindow> {
     /*
      * Day of the week on which the maintenance window will occur.
      */
-    @JsonProperty(value = "dayOfWeek")
     private MaintenanceDayOfWeekType dayOfWeek;
 
     /*
      * The time of day (in UTC) to start the maintenance window.
      */
-    @JsonProperty(value = "timeOfDayUTC")
     private String timeOfDayUtc;
 
     /**
@@ -76,5 +79,46 @@ public final class AmlFilesystemUpdatePropertiesMaintenanceWindow {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dayOfWeek", this.dayOfWeek == null ? null : this.dayOfWeek.toString());
+        jsonWriter.writeStringField("timeOfDayUTC", this.timeOfDayUtc);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemUpdatePropertiesMaintenanceWindow from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemUpdatePropertiesMaintenanceWindow if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemUpdatePropertiesMaintenanceWindow.
+     */
+    public static AmlFilesystemUpdatePropertiesMaintenanceWindow fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemUpdatePropertiesMaintenanceWindow deserializedAmlFilesystemUpdatePropertiesMaintenanceWindow
+                = new AmlFilesystemUpdatePropertiesMaintenanceWindow();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dayOfWeek".equals(fieldName)) {
+                    deserializedAmlFilesystemUpdatePropertiesMaintenanceWindow.dayOfWeek
+                        = MaintenanceDayOfWeekType.fromString(reader.getString());
+                } else if ("timeOfDayUTC".equals(fieldName)) {
+                    deserializedAmlFilesystemUpdatePropertiesMaintenanceWindow.timeOfDayUtc = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemUpdatePropertiesMaintenanceWindow;
+        });
     }
 }

@@ -71,8 +71,8 @@ public final class Utils {
     }
 
     // Internal utility function
-    static Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends(
-        NetworkManager manager, List<ApplicationGatewayBackendAddressPool> backendRefs) {
+    static Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends(NetworkManager manager,
+        List<ApplicationGatewayBackendAddressPool> backendRefs) {
         final Map<String, ApplicationGateway> appGateways = new HashMap<>();
         final List<ApplicationGatewayBackend> backends = new ArrayList<>();
 

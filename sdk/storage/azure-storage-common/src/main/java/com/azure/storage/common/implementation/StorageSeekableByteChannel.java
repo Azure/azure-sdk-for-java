@@ -158,8 +158,8 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         assertOpen();
         assertCanRead();
         if (dst.isReadOnly()) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'dst' is read-only and cannot be written to."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'dst' is read-only and cannot be written to."));
         }
 
         if (buffer.remaining() == 0) {
@@ -263,7 +263,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         if (newPosition < bufferAbsolutePosition || newPosition > bufferAbsolutePosition + buffer.limit()) {
             buffer.clear();
             buffer.limit(0);
-        // seek is within the internal buffer, just adjust buffer position
+            // seek is within the internal buffer, just adjust buffer position
         } else {
             buffer.position((int) (newPosition - bufferAbsolutePosition));
         }

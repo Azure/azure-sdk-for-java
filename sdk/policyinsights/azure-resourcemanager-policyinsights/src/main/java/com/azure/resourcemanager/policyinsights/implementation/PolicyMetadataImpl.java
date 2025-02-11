@@ -12,8 +12,7 @@ public final class PolicyMetadataImpl implements PolicyMetadata {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    PolicyMetadataImpl(
-        PolicyMetadataInner innerObject,
+    PolicyMetadataImpl(PolicyMetadataInner innerObject,
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

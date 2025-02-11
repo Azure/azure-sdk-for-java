@@ -10,13 +10,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.UsageInner;
 
-/** An instance of this class provides access to all the operations defined in UsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UsagesClient.
+ */
 public interface UsagesClient {
     /**
      * Implements Usages List method
-     *
-     * <p>Returns list of usage in region.
-     *
+     * 
+     * Returns list of usage in region.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -28,12 +30,12 @@ public interface UsagesClient {
 
     /**
      * Implements Usages List method
-     *
-     * <p>Returns list of usage in region.
-     *
+     * 
+     * Returns list of usage in region.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param filter The filter to apply on the list operation. only name.value is allowed here as a filter e.g.
-     *     $filter=name.value eq 'xxxx'.
+     * $filter=name.value eq 'xxxx'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

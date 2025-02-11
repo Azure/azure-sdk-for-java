@@ -6,36 +6,52 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes a built-in preset for encoding the input video with the Standard Encoder. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.BuiltInStandardEncoderPreset")
+/**
+ * Describes a built-in preset for encoding the input video with the Standard Encoder.
+ */
 @Fluent
 public final class BuiltInStandardEncoderPreset extends Preset {
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.BuiltInStandardEncoderPreset";
+
     /*
      * Optional configuration settings for encoder. Configurations is only supported for ContentAwareEncoding and
      * H265ContentAwareEncoding BuiltInStandardEncoderPreset.
      */
-    @JsonProperty(value = "configurations")
     private PresetConfigurations configurations;
 
     /*
      * The built-in preset to be used for encoding videos.
      */
-    @JsonProperty(value = "presetName", required = true)
     private EncoderNamedPreset presetName;
 
-    /** Creates an instance of BuiltInStandardEncoderPreset class. */
+    /**
+     * Creates an instance of BuiltInStandardEncoderPreset class.
+     */
     public BuiltInStandardEncoderPreset() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
      * Get the configurations property: Optional configuration settings for encoder. Configurations is only supported
      * for ContentAwareEncoding and H265ContentAwareEncoding BuiltInStandardEncoderPreset.
-     *
+     * 
      * @return the configurations value.
      */
     public PresetConfigurations configurations() {
@@ -45,7 +61,7 @@ public final class BuiltInStandardEncoderPreset extends Preset {
     /**
      * Set the configurations property: Optional configuration settings for encoder. Configurations is only supported
      * for ContentAwareEncoding and H265ContentAwareEncoding BuiltInStandardEncoderPreset.
-     *
+     * 
      * @param configurations the configurations value to set.
      * @return the BuiltInStandardEncoderPreset object itself.
      */
@@ -56,7 +72,7 @@ public final class BuiltInStandardEncoderPreset extends Preset {
 
     /**
      * Get the presetName property: The built-in preset to be used for encoding videos.
-     *
+     * 
      * @return the presetName value.
      */
     public EncoderNamedPreset presetName() {
@@ -65,7 +81,7 @@ public final class BuiltInStandardEncoderPreset extends Preset {
 
     /**
      * Set the presetName property: The built-in preset to be used for encoding videos.
-     *
+     * 
      * @param presetName the presetName value to set.
      * @return the BuiltInStandardEncoderPreset object itself.
      */
@@ -76,22 +92,64 @@ public final class BuiltInStandardEncoderPreset extends Preset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (configurations() != null) {
             configurations().validate();
         }
         if (presetName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property presetName in model BuiltInStandardEncoderPreset"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property presetName in model BuiltInStandardEncoderPreset"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BuiltInStandardEncoderPreset.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("presetName", this.presetName == null ? null : this.presetName.toString());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeJsonField("configurations", this.configurations);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuiltInStandardEncoderPreset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuiltInStandardEncoderPreset if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BuiltInStandardEncoderPreset.
+     */
+    public static BuiltInStandardEncoderPreset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuiltInStandardEncoderPreset deserializedBuiltInStandardEncoderPreset = new BuiltInStandardEncoderPreset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("presetName".equals(fieldName)) {
+                    deserializedBuiltInStandardEncoderPreset.presetName
+                        = EncoderNamedPreset.fromString(reader.getString());
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedBuiltInStandardEncoderPreset.odataType = reader.getString();
+                } else if ("configurations".equals(fieldName)) {
+                    deserializedBuiltInStandardEncoderPreset.configurations = PresetConfigurations.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuiltInStandardEncoderPreset;
+        });
+    }
 }

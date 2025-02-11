@@ -8,24 +8,21 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.fluent.models.OutboundEndpointProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OutboundEndpointPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        OutboundEndpointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"subnet\":{\"id\":\"wckbasyypnd\"},\"provisioningState\":\"Updating\",\"resourceGuid\":\"cbacphejkotynqg\"}")
-                .toObject(OutboundEndpointProperties.class);
-        Assertions.assertEquals("wckbasyypnd", model.subnet().id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OutboundEndpointProperties model = BinaryData.fromString(
+            "{\"subnet\":{\"id\":\"ypyqrimzinp\"},\"provisioningState\":\"Deleting\",\"resourceGuid\":\"dkirsoodqxhcr\"}")
+            .toObject(OutboundEndpointProperties.class);
+        Assertions.assertEquals("ypyqrimzinp", model.subnet().id());
     }
 
-    @Test
-    public void testSerialize() {
-        OutboundEndpointProperties model =
-            new OutboundEndpointProperties().withSubnet(new SubResource().withId("wckbasyypnd"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OutboundEndpointProperties model
+            = new OutboundEndpointProperties().withSubnet(new SubResource().withId("ypyqrimzinp"));
         model = BinaryData.fromObject(model).toObject(OutboundEndpointProperties.class);
-        Assertions.assertEquals("wckbasyypnd", model.subnet().id());
+        Assertions.assertEquals("ypyqrimzinp", model.subnet().id());
     }
 }

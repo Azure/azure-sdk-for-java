@@ -11,20 +11,20 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.computeschedule.fluent.ComputeScheduleClient;
-import com.azure.resourcemanager.computeschedule.implementation.ComputeScheduleClientBuilder;
+import com.azure.resourcemanager.computeschedule.fluent.ComputeScheduleMgmtClient;
+import com.azure.resourcemanager.computeschedule.implementation.ComputeScheduleMgmtClientBuilder;
 import com.azure.resourcemanager.computeschedule.implementation.OperationsImpl;
 import com.azure.resourcemanager.computeschedule.implementation.ScheduledActionsImpl;
 import com.azure.resourcemanager.computeschedule.models.Operations;
@@ -45,12 +45,12 @@ public final class ComputeScheduleManager {
 
     private ScheduledActions scheduledActions;
 
-    private final ComputeScheduleClient clientObject;
+    private final ComputeScheduleMgmtClient clientObject;
 
     private ComputeScheduleManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new ComputeScheduleClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new ComputeScheduleMgmtClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -242,7 +242,7 @@ public final class ComputeScheduleManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -280,12 +280,12 @@ public final class ComputeScheduleManager {
     }
 
     /**
-     * Gets wrapped service client ComputeScheduleClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets wrapped service client ComputeScheduleMgmtClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client ComputeScheduleClient.
+     * @return Wrapped service client ComputeScheduleMgmtClient.
      */
-    public ComputeScheduleClient serviceClient() {
+    public ComputeScheduleMgmtClient serviceClient() {
         return this.clientObject;
     }
 }

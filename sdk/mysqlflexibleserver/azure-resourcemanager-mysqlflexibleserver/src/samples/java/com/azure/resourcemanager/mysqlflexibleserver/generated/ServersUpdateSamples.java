@@ -9,10 +9,9 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryptionType;
 import com.azure.resourcemanager.mysqlflexibleserver.models.EnableStatusEnum;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Identity;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.mysqlflexibleserver.models.MySqlServerIdentity;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
 import java.io.IOException;
@@ -24,7 +23,8 @@ import java.util.Map;
  */
 public final class ServersUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerUpdateWithCustomerMaintenanceWindow.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * ServerUpdateWithCustomerMaintenanceWindow.json
      */
     /**
      * Sample code: Update server customer maintenance window.
@@ -45,7 +45,9 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerUpdateWithBYOK.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerUpdateWithBYOK.
+     * json
      */
     /**
      * Sample code: Update server with byok.
@@ -58,7 +60,7 @@ public final class ServersUpdateSamples {
             .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withIdentity(new MySqlServerIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+            .withIdentity(new Identity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
                     SerializerFactory.createDefaultManagementSerializerAdapter()
@@ -74,7 +76,8 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerUpdate.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerUpdate.json
      */
     /**
      * Sample code: Update a server.
@@ -86,11 +89,7 @@ public final class ServersUpdateSamples {
             .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withStorage(new Storage().withStorageSizeGB(30)
-                .withIops(200)
-                .withAutoGrow(EnableStatusEnum.DISABLED)
-                .withAutoIoScaling(EnableStatusEnum.DISABLED))
-            .withNetwork(new Network().withPublicNetworkAccess(EnableStatusEnum.DISABLED))
+            .withStorage(new Storage().withStorageSizeGB(30).withIops(200).withAutoGrow(EnableStatusEnum.DISABLED))
             .apply();
     }
 

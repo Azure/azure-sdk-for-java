@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information of orphaned users on the SQL server database. */
+/**
+ * Information of orphaned users on the SQL server database.
+ */
 @Fluent
-public final class OrphanedUserInfo {
+public final class OrphanedUserInfo implements JsonSerializable<OrphanedUserInfo> {
     /*
      * Name of the orphaned user
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Parent database of the user
      */
-    @JsonProperty(value = "databaseName")
     private String databaseName;
 
-    /** Creates an instance of OrphanedUserInfo class. */
+    /**
+     * Creates an instance of OrphanedUserInfo class.
+     */
     public OrphanedUserInfo() {
     }
 
     /**
      * Get the name property: Name of the orphaned user.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class OrphanedUserInfo {
 
     /**
      * Set the name property: Name of the orphaned user.
-     *
+     * 
      * @param name the name value to set.
      * @return the OrphanedUserInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class OrphanedUserInfo {
 
     /**
      * Get the databaseName property: Parent database of the user.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -57,7 +63,7 @@ public final class OrphanedUserInfo {
 
     /**
      * Set the databaseName property: Parent database of the user.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the OrphanedUserInfo object itself.
      */
@@ -68,9 +74,48 @@ public final class OrphanedUserInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrphanedUserInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrphanedUserInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OrphanedUserInfo.
+     */
+    public static OrphanedUserInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrphanedUserInfo deserializedOrphanedUserInfo = new OrphanedUserInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOrphanedUserInfo.name = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedOrphanedUserInfo.databaseName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrphanedUserInfo;
+        });
     }
 }

@@ -35,15 +35,17 @@ public final class AzureArcKubernetesDeployMappingRuleProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureArcKubernetesDeployMappingRuleProfile model
-            = new AzureArcKubernetesDeployMappingRuleProfile().withApplicationEnablement(ApplicationEnablement.UNKNOWN)
-                .withHelmMappingRuleProfile(new HelmMappingRuleProfile().withReleaseNamespace("ao")
-                    .withReleaseName("mmbnpqfrtql").withHelmPackageVersion("megni").withValues("vkxlz")
-                    .withOptions(new HelmMappingRuleProfileOptions()
-                        .withInstallOptions(new HelmInstallOptions().withAtomic("fegcea").withWaitOption("xwh")
-                            .withTimeout("nsymoyqhlwigd"))
-                        .withUpgradeOptions(new HelmUpgradeOptions().withAtomic("kbxgom")
-                            .withWaitOption("juwasqvdaeyyguxa").withTimeout("sqzhzbezkg"))));
+        AzureArcKubernetesDeployMappingRuleProfile model = new AzureArcKubernetesDeployMappingRuleProfile()
+            .withApplicationEnablement(ApplicationEnablement.UNKNOWN)
+            .withHelmMappingRuleProfile(new HelmMappingRuleProfile().withReleaseNamespace("ao")
+                .withReleaseName("mmbnpqfrtql")
+                .withHelmPackageVersion("megni")
+                .withValues("vkxlz")
+                .withOptions(new HelmMappingRuleProfileOptions().withInstallOptions(
+                    new HelmInstallOptions().withAtomic("fegcea").withWaitOption("xwh").withTimeout("nsymoyqhlwigd"))
+                    .withUpgradeOptions(new HelmUpgradeOptions().withAtomic("kbxgom")
+                        .withWaitOption("juwasqvdaeyyguxa")
+                        .withTimeout("sqzhzbezkg"))));
         model = BinaryData.fromObject(model).toObject(AzureArcKubernetesDeployMappingRuleProfile.class);
         Assertions.assertEquals(ApplicationEnablement.UNKNOWN, model.applicationEnablement());
         Assertions.assertEquals("ao", model.helmMappingRuleProfile().releaseNamespace());

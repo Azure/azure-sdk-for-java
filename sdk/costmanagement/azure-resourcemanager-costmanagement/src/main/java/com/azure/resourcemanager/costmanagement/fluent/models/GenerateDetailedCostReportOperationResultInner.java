@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The result of the long running operation for cost detailed report. */
+/**
+ * The result of the long running operation for cost detailed report.
+ */
 @Fluent
-public final class GenerateDetailedCostReportOperationResultInner {
+public final class GenerateDetailedCostReportOperationResultInner
+    implements JsonSerializable<GenerateDetailedCostReportOperationResultInner> {
     /*
      * The ARM resource id of the long running operation.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the long running operation.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type of the long running operation.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The properties of the resource generated.
      */
-    @JsonProperty(value = "properties")
     private DownloadUrlInner innerProperties;
 
-    /** Creates an instance of GenerateDetailedCostReportOperationResultInner class. */
+    /**
+     * Creates an instance of GenerateDetailedCostReportOperationResultInner class.
+     */
     public GenerateDetailedCostReportOperationResultInner() {
     }
 
     /**
      * Get the id property: The ARM resource id of the long running operation.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +55,7 @@ public final class GenerateDetailedCostReportOperationResultInner {
 
     /**
      * Set the id property: The ARM resource id of the long running operation.
-     *
+     * 
      * @param id the id value to set.
      * @return the GenerateDetailedCostReportOperationResultInner object itself.
      */
@@ -61,7 +66,7 @@ public final class GenerateDetailedCostReportOperationResultInner {
 
     /**
      * Get the name property: The name of the long running operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +75,7 @@ public final class GenerateDetailedCostReportOperationResultInner {
 
     /**
      * Set the name property: The name of the long running operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the GenerateDetailedCostReportOperationResultInner object itself.
      */
@@ -81,7 +86,7 @@ public final class GenerateDetailedCostReportOperationResultInner {
 
     /**
      * Get the type property: The type of the long running operation.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -90,7 +95,7 @@ public final class GenerateDetailedCostReportOperationResultInner {
 
     /**
      * Set the type property: The type of the long running operation.
-     *
+     * 
      * @param type the type value to set.
      * @return the GenerateDetailedCostReportOperationResultInner object itself.
      */
@@ -101,7 +106,7 @@ public final class GenerateDetailedCostReportOperationResultInner {
 
     /**
      * Get the innerProperties property: The properties of the resource generated.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DownloadUrlInner innerProperties() {
@@ -111,7 +116,7 @@ public final class GenerateDetailedCostReportOperationResultInner {
     /**
      * Get the expiryTime property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -121,7 +126,7 @@ public final class GenerateDetailedCostReportOperationResultInner {
     /**
      * Get the validTill property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @return the validTill value.
      */
     public OffsetDateTime validTill() {
@@ -131,7 +136,7 @@ public final class GenerateDetailedCostReportOperationResultInner {
     /**
      * Set the validTill property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @param validTill the validTill value to set.
      * @return the GenerateDetailedCostReportOperationResultInner object itself.
      */
@@ -145,7 +150,7 @@ public final class GenerateDetailedCostReportOperationResultInner {
 
     /**
      * Get the downloadUrl property: The URL to download the generated report.
-     *
+     * 
      * @return the downloadUrl value.
      */
     public String downloadUrl() {
@@ -154,7 +159,7 @@ public final class GenerateDetailedCostReportOperationResultInner {
 
     /**
      * Set the downloadUrl property: The URL to download the generated report.
-     *
+     * 
      * @param downloadUrl the downloadUrl value to set.
      * @return the GenerateDetailedCostReportOperationResultInner object itself.
      */
@@ -168,12 +173,59 @@ public final class GenerateDetailedCostReportOperationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateDetailedCostReportOperationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateDetailedCostReportOperationResultInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenerateDetailedCostReportOperationResultInner.
+     */
+    public static GenerateDetailedCostReportOperationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateDetailedCostReportOperationResultInner deserializedGenerateDetailedCostReportOperationResultInner
+                = new GenerateDetailedCostReportOperationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationResultInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationResultInner.innerProperties
+                        = DownloadUrlInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateDetailedCostReportOperationResultInner;
+        });
     }
 }

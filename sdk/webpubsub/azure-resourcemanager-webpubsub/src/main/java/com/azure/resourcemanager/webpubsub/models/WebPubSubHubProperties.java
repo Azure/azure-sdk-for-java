@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of a hub. */
+/**
+ * Properties of a hub.
+ */
 @Fluent
-public final class WebPubSubHubProperties {
+public final class WebPubSubHubProperties implements JsonSerializable<WebPubSubHubProperties> {
     /*
      * Event handler of a hub.
      */
-    @JsonProperty(value = "eventHandlers")
     private List<EventHandler> eventHandlers;
 
     /*
@@ -25,23 +30,29 @@ public final class WebPubSubHubProperties {
      * the array elements doesn't matter.
      * Maximum count of event listeners among all hubs is 10.
      */
-    @JsonProperty(value = "eventListeners")
     private List<EventListener> eventListeners;
 
     /*
      * The settings for configuring if anonymous connections are allowed for this hub: "allow" or "deny". Default to
      * "deny".
      */
-    @JsonProperty(value = "anonymousConnectPolicy")
     private String anonymousConnectPolicy;
 
-    /** Creates an instance of WebPubSubHubProperties class. */
+    /*
+     * The settings for configuring the WebSocket ping-pong interval in seconds for all clients in the hub. Valid range:
+     * 1 to 120. Default to 20 seconds.
+     */
+    private Integer webSocketKeepAliveIntervalInSeconds;
+
+    /**
+     * Creates an instance of WebPubSubHubProperties class.
+     */
     public WebPubSubHubProperties() {
     }
 
     /**
      * Get the eventHandlers property: Event handler of a hub.
-     *
+     * 
      * @return the eventHandlers value.
      */
     public List<EventHandler> eventHandlers() {
@@ -50,7 +61,7 @@ public final class WebPubSubHubProperties {
 
     /**
      * Set the eventHandlers property: Event handler of a hub.
-     *
+     * 
      * @param eventHandlers the eventHandlers value to set.
      * @return the WebPubSubHubProperties object itself.
      */
@@ -60,11 +71,13 @@ public final class WebPubSubHubProperties {
     }
 
     /**
-     * Get the eventListeners property: Event listener settings for forwarding your client events to listeners. Event
-     * listener is transparent to Web PubSub clients, and it doesn't return any result to clients nor interrupt the
-     * lifetime of clients. One event can be sent to multiple listeners, as long as it matches the filters in those
-     * listeners. The order of the array elements doesn't matter. Maximum count of event listeners among all hubs is 10.
-     *
+     * Get the eventListeners property: Event listener settings for forwarding your client events to listeners.
+     * Event listener is transparent to Web PubSub clients, and it doesn't return any result to clients nor interrupt
+     * the lifetime of clients.
+     * One event can be sent to multiple listeners, as long as it matches the filters in those listeners. The order of
+     * the array elements doesn't matter.
+     * Maximum count of event listeners among all hubs is 10.
+     * 
      * @return the eventListeners value.
      */
     public List<EventListener> eventListeners() {
@@ -72,11 +85,13 @@ public final class WebPubSubHubProperties {
     }
 
     /**
-     * Set the eventListeners property: Event listener settings for forwarding your client events to listeners. Event
-     * listener is transparent to Web PubSub clients, and it doesn't return any result to clients nor interrupt the
-     * lifetime of clients. One event can be sent to multiple listeners, as long as it matches the filters in those
-     * listeners. The order of the array elements doesn't matter. Maximum count of event listeners among all hubs is 10.
-     *
+     * Set the eventListeners property: Event listener settings for forwarding your client events to listeners.
+     * Event listener is transparent to Web PubSub clients, and it doesn't return any result to clients nor interrupt
+     * the lifetime of clients.
+     * One event can be sent to multiple listeners, as long as it matches the filters in those listeners. The order of
+     * the array elements doesn't matter.
+     * Maximum count of event listeners among all hubs is 10.
+     * 
      * @param eventListeners the eventListeners value to set.
      * @return the WebPubSubHubProperties object itself.
      */
@@ -88,7 +103,7 @@ public final class WebPubSubHubProperties {
     /**
      * Get the anonymousConnectPolicy property: The settings for configuring if anonymous connections are allowed for
      * this hub: "allow" or "deny". Default to "deny".
-     *
+     * 
      * @return the anonymousConnectPolicy value.
      */
     public String anonymousConnectPolicy() {
@@ -98,7 +113,7 @@ public final class WebPubSubHubProperties {
     /**
      * Set the anonymousConnectPolicy property: The settings for configuring if anonymous connections are allowed for
      * this hub: "allow" or "deny". Default to "deny".
-     *
+     * 
      * @param anonymousConnectPolicy the anonymousConnectPolicy value to set.
      * @return the WebPubSubHubProperties object itself.
      */
@@ -108,8 +123,30 @@ public final class WebPubSubHubProperties {
     }
 
     /**
+     * Get the webSocketKeepAliveIntervalInSeconds property: The settings for configuring the WebSocket ping-pong
+     * interval in seconds for all clients in the hub. Valid range: 1 to 120. Default to 20 seconds.
+     * 
+     * @return the webSocketKeepAliveIntervalInSeconds value.
+     */
+    public Integer webSocketKeepAliveIntervalInSeconds() {
+        return this.webSocketKeepAliveIntervalInSeconds;
+    }
+
+    /**
+     * Set the webSocketKeepAliveIntervalInSeconds property: The settings for configuring the WebSocket ping-pong
+     * interval in seconds for all clients in the hub. Valid range: 1 to 120. Default to 20 seconds.
+     * 
+     * @param webSocketKeepAliveIntervalInSeconds the webSocketKeepAliveIntervalInSeconds value to set.
+     * @return the WebPubSubHubProperties object itself.
+     */
+    public WebPubSubHubProperties withWebSocketKeepAliveIntervalInSeconds(Integer webSocketKeepAliveIntervalInSeconds) {
+        this.webSocketKeepAliveIntervalInSeconds = webSocketKeepAliveIntervalInSeconds;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -119,5 +156,54 @@ public final class WebPubSubHubProperties {
         if (eventListeners() != null) {
             eventListeners().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("eventHandlers", this.eventHandlers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("eventListeners", this.eventListeners,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("anonymousConnectPolicy", this.anonymousConnectPolicy);
+        jsonWriter.writeNumberField("webSocketKeepAliveIntervalInSeconds", this.webSocketKeepAliveIntervalInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebPubSubHubProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebPubSubHubProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebPubSubHubProperties.
+     */
+    public static WebPubSubHubProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebPubSubHubProperties deserializedWebPubSubHubProperties = new WebPubSubHubProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventHandlers".equals(fieldName)) {
+                    List<EventHandler> eventHandlers = reader.readArray(reader1 -> EventHandler.fromJson(reader1));
+                    deserializedWebPubSubHubProperties.eventHandlers = eventHandlers;
+                } else if ("eventListeners".equals(fieldName)) {
+                    List<EventListener> eventListeners = reader.readArray(reader1 -> EventListener.fromJson(reader1));
+                    deserializedWebPubSubHubProperties.eventListeners = eventListeners;
+                } else if ("anonymousConnectPolicy".equals(fieldName)) {
+                    deserializedWebPubSubHubProperties.anonymousConnectPolicy = reader.getString();
+                } else if ("webSocketKeepAliveIntervalInSeconds".equals(fieldName)) {
+                    deserializedWebPubSubHubProperties.webSocketKeepAliveIntervalInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebPubSubHubProperties;
+        });
     }
 }

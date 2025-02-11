@@ -259,10 +259,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResourceInfo>> flushWithResponseAsync(String libraryName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.flush(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
+        return FluxUtil.withContext(context -> flushWithResponseAsync(libraryName, context));
     }
 
     /**
@@ -356,10 +353,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResource>> getOperationResultWithResponseAsync(String operationId) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getOperationResult(this.client.getEndpoint(), apiVersion, operationId, accept, context));
+        return FluxUtil.withContext(context -> getOperationResultWithResponseAsync(operationId, context));
     }
 
     /**
@@ -450,10 +444,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResourceInfo>> deleteWithResponseAsync(String libraryName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.delete(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(libraryName, context));
     }
 
     /**
@@ -548,10 +539,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResource>> getWithResponseAsync(String libraryName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(libraryName, context));
     }
 
     /**
@@ -646,10 +634,7 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResourceInfo>> createWithResponseAsync(String libraryName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.create(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
+        return FluxUtil.withContext(context -> createWithResponseAsync(libraryName, context));
     }
 
     /**
@@ -751,11 +736,8 @@ public final class LibrariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendWithResponseAsync(String libraryName, Flux<ByteBuffer> content,
         long contentLength, Long blobConditionAppendPosition) {
-        final String comp = "appendblock";
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.append(this.client.getEndpoint(), comp, apiVersion, libraryName,
-            blobConditionAppendPosition, content, contentLength, accept, context));
+        return FluxUtil.withContext(context -> appendWithResponseAsync(libraryName, content, contentLength,
+            blobConditionAppendPosition, context));
     }
 
     /**
@@ -934,11 +916,8 @@ public final class LibrariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendWithResponseAsync(String libraryName, BinaryData content, long contentLength,
         Long blobConditionAppendPosition) {
-        final String comp = "appendblock";
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.append(this.client.getEndpoint(), comp, apiVersion, libraryName,
-            blobConditionAppendPosition, content, contentLength, accept, context));
+        return FluxUtil.withContext(context -> appendWithResponseAsync(libraryName, content, contentLength,
+            blobConditionAppendPosition, context));
     }
 
     /**
@@ -1100,9 +1079,7 @@ public final class LibrariesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1119,9 +1096,7 @@ public final class LibrariesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1139,9 +1114,7 @@ public final class LibrariesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1155,9 +1128,7 @@ public final class LibrariesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the sync job stream. */
+/**
+ * The type of the sync job stream.
+ */
 public final class StreamType extends ExpandableStringEnum<StreamType> {
-    /** Static value Error for StreamType. */
+    /**
+     * Static value Error for StreamType.
+     */
     public static final StreamType ERROR = fromString("Error");
 
-    /** Static value Output for StreamType. */
+    /**
+     * Static value Output for StreamType.
+     */
     public static final StreamType OUTPUT = fromString("Output");
 
     /**
+     * Creates a new instance of StreamType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StreamType() {
+    }
+
+    /**
      * Creates or finds a StreamType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StreamType.
      */
-    @JsonCreator
     public static StreamType fromString(String name) {
         return fromString(name, StreamType.class);
     }
 
     /**
      * Gets known StreamType values.
-     *
+     * 
      * @return known StreamType values.
      */
     public static Collection<StreamType> values() {

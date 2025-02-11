@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.models.ManagedRGConfiguration;
 import com.azure.resourcemanager.workloads.models.SapConfiguration;
 import com.azure.resourcemanager.workloads.models.SapEnvironmentType;
@@ -18,39 +21,55 @@ import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioning
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
 import com.azure.resourcemanager.workloads.models.UserAssignedServiceIdentity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Define the Virtual Instance for SAP solutions resource. */
+/**
+ * Define the Virtual Instance for SAP solutions resource.
+ */
 @Fluent
 public final class SapVirtualInstanceInner extends Resource {
     /*
      * A pre-created user assigned identity with appropriate roles assigned. To learn more on identity and roles
      * required, visit the ACSS how-to-guide.
      */
-    @JsonProperty(value = "identity")
     private UserAssignedServiceIdentity identity;
 
     /*
      * Defines the Virtual Instance for SAP solutions resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private SapVirtualInstanceProperties innerProperties = new SapVirtualInstanceProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SapVirtualInstanceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SapVirtualInstanceInner class.
+     */
     public SapVirtualInstanceInner() {
     }
 
     /**
      * Get the identity property: A pre-created user assigned identity with appropriate roles assigned. To learn more on
      * identity and roles required, visit the ACSS how-to-guide.
-     *
+     * 
      * @return the identity value.
      */
     public UserAssignedServiceIdentity identity() {
@@ -60,7 +79,7 @@ public final class SapVirtualInstanceInner extends Resource {
     /**
      * Set the identity property: A pre-created user assigned identity with appropriate roles assigned. To learn more on
      * identity and roles required, visit the ACSS how-to-guide.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the SapVirtualInstanceInner object itself.
      */
@@ -71,7 +90,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Get the innerProperties property: Defines the Virtual Instance for SAP solutions resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SapVirtualInstanceProperties innerProperties() {
@@ -80,21 +99,55 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapVirtualInstanceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapVirtualInstanceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -103,7 +156,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Get the environment property: Defines the environment type - Production/Non Production.
-     *
+     * 
      * @return the environment value.
      */
     public SapEnvironmentType environment() {
@@ -112,7 +165,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Set the environment property: Defines the environment type - Production/Non Production.
-     *
+     * 
      * @param environment the environment value to set.
      * @return the SapVirtualInstanceInner object itself.
      */
@@ -126,7 +179,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Get the sapProduct property: Defines the SAP Product type.
-     *
+     * 
      * @return the sapProduct value.
      */
     public SapProductType sapProduct() {
@@ -135,7 +188,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Set the sapProduct property: Defines the SAP Product type.
-     *
+     * 
      * @param sapProduct the sapProduct value to set.
      * @return the SapVirtualInstanceInner object itself.
      */
@@ -150,7 +203,7 @@ public final class SapVirtualInstanceInner extends Resource {
     /**
      * Get the configuration property: Defines if the SAP system is being created using Azure Center for SAP solutions
      * (ACSS) or if an existing SAP system is being registered with ACSS.
-     *
+     * 
      * @return the configuration value.
      */
     public SapConfiguration configuration() {
@@ -160,7 +213,7 @@ public final class SapVirtualInstanceInner extends Resource {
     /**
      * Set the configuration property: Defines if the SAP system is being created using Azure Center for SAP solutions
      * (ACSS) or if an existing SAP system is being registered with ACSS.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the SapVirtualInstanceInner object itself.
      */
@@ -174,7 +227,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Get the managedResourceGroupConfiguration property: Managed resource group configuration.
-     *
+     * 
      * @return the managedResourceGroupConfiguration value.
      */
     public ManagedRGConfiguration managedResourceGroupConfiguration() {
@@ -183,12 +236,12 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Set the managedResourceGroupConfiguration property: Managed resource group configuration.
-     *
+     * 
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the SapVirtualInstanceInner object itself.
      */
-    public SapVirtualInstanceInner withManagedResourceGroupConfiguration(
-        ManagedRGConfiguration managedResourceGroupConfiguration) {
+    public SapVirtualInstanceInner
+        withManagedResourceGroupConfiguration(ManagedRGConfiguration managedResourceGroupConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SapVirtualInstanceProperties();
         }
@@ -198,7 +251,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Get the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     public SapVirtualInstanceStatus status() {
@@ -207,7 +260,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Get the health property: Defines the health of SAP Instances.
-     *
+     * 
      * @return the health value.
      */
     public SapHealthState health() {
@@ -216,7 +269,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Get the state property: Defines the Virtual Instance for SAP state.
-     *
+     * 
      * @return the state value.
      */
     public SapVirtualInstanceState state() {
@@ -225,7 +278,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Get the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SapVirtualInstanceProvisioningState provisioningState() {
@@ -234,7 +287,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Get the errors property: Indicates any errors on the Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @return the errors value.
      */
     public SapVirtualInstanceError errors() {
@@ -243,7 +296,7 @@ public final class SapVirtualInstanceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -251,14 +304,68 @@ public final class SapVirtualInstanceInner extends Resource {
             identity().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SapVirtualInstanceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model SapVirtualInstanceInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SapVirtualInstanceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapVirtualInstanceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapVirtualInstanceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapVirtualInstanceInner.
+     */
+    public static SapVirtualInstanceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapVirtualInstanceInner deserializedSapVirtualInstanceInner = new SapVirtualInstanceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSapVirtualInstanceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSapVirtualInstanceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapVirtualInstanceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSapVirtualInstanceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSapVirtualInstanceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSapVirtualInstanceInner.innerProperties = SapVirtualInstanceProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSapVirtualInstanceInner.identity = UserAssignedServiceIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSapVirtualInstanceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapVirtualInstanceInner;
+        });
+    }
 }

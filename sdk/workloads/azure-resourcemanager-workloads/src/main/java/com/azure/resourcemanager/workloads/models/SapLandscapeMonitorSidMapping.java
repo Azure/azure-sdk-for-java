@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Gets or sets the mapping for SID to Environment/Applications. */
+/**
+ * Gets or sets the mapping for SID to Environment/Applications.
+ */
 @Fluent
-public final class SapLandscapeMonitorSidMapping {
+public final class SapLandscapeMonitorSidMapping implements JsonSerializable<SapLandscapeMonitorSidMapping> {
     /*
      * Gets or sets the name of the grouping.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the list of SID's.
      */
-    @JsonProperty(value = "topSid")
     private List<String> topSid;
 
-    /** Creates an instance of SapLandscapeMonitorSidMapping class. */
+    /**
+     * Creates an instance of SapLandscapeMonitorSidMapping class.
+     */
     public SapLandscapeMonitorSidMapping() {
     }
 
     /**
      * Get the name property: Gets or sets the name of the grouping.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class SapLandscapeMonitorSidMapping {
 
     /**
      * Set the name property: Gets or sets the name of the grouping.
-     *
+     * 
      * @param name the name value to set.
      * @return the SapLandscapeMonitorSidMapping object itself.
      */
@@ -49,7 +55,7 @@ public final class SapLandscapeMonitorSidMapping {
 
     /**
      * Get the topSid property: Gets or sets the list of SID's.
-     *
+     * 
      * @return the topSid value.
      */
     public List<String> topSid() {
@@ -58,7 +64,7 @@ public final class SapLandscapeMonitorSidMapping {
 
     /**
      * Set the topSid property: Gets or sets the list of SID's.
-     *
+     * 
      * @param topSid the topSid value to set.
      * @return the SapLandscapeMonitorSidMapping object itself.
      */
@@ -69,9 +75,50 @@ public final class SapLandscapeMonitorSidMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("topSid", this.topSid, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapLandscapeMonitorSidMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapLandscapeMonitorSidMapping if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapLandscapeMonitorSidMapping.
+     */
+    public static SapLandscapeMonitorSidMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapLandscapeMonitorSidMapping deserializedSapLandscapeMonitorSidMapping
+                = new SapLandscapeMonitorSidMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSapLandscapeMonitorSidMapping.name = reader.getString();
+                } else if ("topSid".equals(fieldName)) {
+                    List<String> topSid = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSapLandscapeMonitorSidMapping.topSid = topSid;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapLandscapeMonitorSidMapping;
+        });
     }
 }

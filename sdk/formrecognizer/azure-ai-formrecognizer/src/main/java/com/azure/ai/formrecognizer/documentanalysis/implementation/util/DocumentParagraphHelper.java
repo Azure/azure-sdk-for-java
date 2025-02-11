@@ -24,8 +24,11 @@ public final class DocumentParagraphHelper {
      */
     public interface DocumentParagraphAccessor {
         void setBoundingRegions(DocumentParagraph documentParagraph, List<BoundingRegion> boundingRegions);
+
         void setSpans(DocumentParagraph documentParagraph, List<DocumentSpan> spans);
+
         void setContent(DocumentParagraph documentParagraph, String content);
+
         void setRole(DocumentParagraph documentParagraph, ParagraphRole role);
     }
 
@@ -42,7 +45,7 @@ public final class DocumentParagraphHelper {
         accessor.setContent(documentParagraph, content);
     }
 
-    static void setSpans(DocumentParagraph documentParagraph,  List<DocumentSpan> spans) {
+    static void setSpans(DocumentParagraph documentParagraph, List<DocumentSpan> spans) {
         accessor.setSpans(documentParagraph, spans);
     }
 

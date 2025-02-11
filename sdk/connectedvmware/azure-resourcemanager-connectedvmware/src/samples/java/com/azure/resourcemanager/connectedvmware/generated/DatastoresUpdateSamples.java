@@ -8,22 +8,24 @@ import com.azure.resourcemanager.connectedvmware.models.Datastore;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Datastores Update. */
+/**
+ * Samples for Datastores Update.
+ */
 public final class DatastoresUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateDatastore.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateDatastore.json
      */
     /**
      * Sample code: UpdateDatastore.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateDatastore(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        Datastore resource =
-            manager
-                .datastores()
-                .getByResourceGroupWithResponse("testrg", "HRDatastore", com.azure.core.util.Context.NONE)
-                .getValue();
+        Datastore resource = manager.datastores()
+            .getByResourceGroupWithResponse("testrg", "HRDatastore", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

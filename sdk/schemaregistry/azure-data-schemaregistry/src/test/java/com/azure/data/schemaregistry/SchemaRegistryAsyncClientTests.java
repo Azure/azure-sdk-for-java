@@ -47,8 +47,8 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
         TokenCredential tokenCredential;
         String endpoint;
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = tokenRequestContext ->
-                Mono.fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
+            tokenCredential = tokenRequestContext -> Mono
+                .fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
             schemaGroup = PLAYBACK_TEST_GROUP;
             endpoint = PLAYBACK_ENDPOINT;
         } else {
@@ -60,9 +60,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
         }
 
-        builder = new SchemaRegistryClientBuilder()
-            .credential(tokenCredential)
-            .fullyQualifiedNamespace(endpoint);
+        builder = new SchemaRegistryClientBuilder().credential(tokenCredential).fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
@@ -79,8 +77,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
+        return new AssertingHttpClientBuilder(httpClient).assertAsync()
             .skipRequest((httpRequest, context) -> false)
             .build();
     }
@@ -143,8 +140,8 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
         final SchemaFormat unknownSchemaFormat = SchemaFormat.fromString("protobuf");
 
         // Act & Assert
-        StepVerifier.create(client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT,
-                unknownSchemaFormat))
+        StepVerifier
+            .create(client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof HttpResponseException);
 
@@ -166,8 +163,9 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
         final SchemaRegistryAsyncClient client2 = builder.buildAsyncClient();
         final SchemaFormat invalidFormat = SchemaFormat.fromString("protobuf");
 
-        final SchemaProperties schemaProperties = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            SchemaFormat.AVRO).block(Duration.ofSeconds(10));
+        final SchemaProperties schemaProperties
+            = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO)
+                .block(Duration.ofSeconds(10));
 
         assertNotNull(schemaProperties);
 
@@ -178,7 +176,8 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
 
                 final HttpResponseException responseException = ((HttpResponseException) error);
                 assertEquals(404, responseException.getResponse().getStatusCode());
-            }).verify();
+            })
+            .verify();
     }
 
     /**
@@ -207,12 +206,10 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client1.getSchema(schemaId))
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof ResourceNotFoundException);
-                assertEquals(404, ((ResourceNotFoundException) error).getResponse().getStatusCode());
-            })
-            .verify();
+        StepVerifier.create(client1.getSchema(schemaId)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof ResourceNotFoundException);
+            assertEquals(404, ((ResourceNotFoundException) error).getResponse().getStatusCode());
+        }).verify();
     }
 
     /**
@@ -239,8 +236,9 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
 
         // Register a schema first.
-        final SchemaProperties registeredSchema = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            SchemaFormat.AVRO).block(Duration.ofSeconds(10));
+        final SchemaProperties registeredSchema
+            = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO)
+                .block(Duration.ofSeconds(10));
 
         assertNotNull(registeredSchema);
 

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The IP version to be used. Only IPv4 is supported for now. */
+/**
+ * The IP version to be used. Only IPv4 is supported for now.
+ */
 public final class PreferredIpVersion extends ExpandableStringEnum<PreferredIpVersion> {
-    /** Static value IPv4 for PreferredIpVersion. */
+    /**
+     * Static value IPv4 for PreferredIpVersion.
+     */
     public static final PreferredIpVersion IPV4 = fromString("IPv4");
 
     /**
      * Creates a new instance of PreferredIpVersion value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class PreferredIpVersion extends ExpandableStringEnum<PreferredIpVe
 
     /**
      * Creates or finds a PreferredIpVersion from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PreferredIpVersion.
      */
-    @JsonCreator
     public static PreferredIpVersion fromString(String name) {
         return fromString(name, PreferredIpVersion.class);
     }
 
     /**
      * Gets known PreferredIpVersion values.
-     *
+     * 
      * @return known PreferredIpVersion values.
      */
     public static Collection<PreferredIpVersion> values() {

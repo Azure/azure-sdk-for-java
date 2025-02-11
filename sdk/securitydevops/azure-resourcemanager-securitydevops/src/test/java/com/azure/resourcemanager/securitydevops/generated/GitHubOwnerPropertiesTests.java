@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Test;
 public final class GitHubOwnerPropertiesTests {
     @Test
     public void testDeserialize() {
-        GitHubOwnerProperties model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Canceled\",\"ownerUrl\":\"ipheoflokeyyien\"}")
+        GitHubOwnerProperties model
+            = BinaryData.fromString("{\"provisioningState\":\"Canceled\",\"ownerUrl\":\"ipheoflokeyyien\"}")
                 .toObject(GitHubOwnerProperties.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.provisioningState());
         Assertions.assertEquals("ipheoflokeyyien", model.ownerUrl());
@@ -23,10 +22,8 @@ public final class GitHubOwnerPropertiesTests {
 
     @Test
     public void testSerialize() {
-        GitHubOwnerProperties model =
-            new GitHubOwnerProperties()
-                .withProvisioningState(ProvisioningState.CANCELED)
-                .withOwnerUrl("ipheoflokeyyien");
+        GitHubOwnerProperties model = new GitHubOwnerProperties().withProvisioningState(ProvisioningState.CANCELED)
+            .withOwnerUrl("ipheoflokeyyien");
         model = BinaryData.fromObject(model).toObject(GitHubOwnerProperties.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.provisioningState());
         Assertions.assertEquals("ipheoflokeyyien", model.ownerUrl());

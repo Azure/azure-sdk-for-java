@@ -30,8 +30,10 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
-        final String publicIpDnsLabel = virtualMachines.manager().resourceManager().internalContext().randomResourceName("abc", 16);
+        final String vmName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        final String publicIpDnsLabel
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("abc", 16);
         final String password = ResourceManagerTestProxyTestBase.password();
 
         // Prepare the custom data
@@ -42,28 +44,24 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
         byte[] cloudInitEncoded = Base64.getEncoder().encode(cloudInitAsBytes);
         String cloudInitEncodedString = new String(cloudInitEncoded);
 
-        PublicIpAddress pip =
-            pips
-                .define(publicIpDnsLabel)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup()
-                .withLeafDomainLabel(publicIpDnsLabel)
-                .create();
+        PublicIpAddress pip = pips.define(publicIpDnsLabel)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup()
+            .withLeafDomainLabel(publicIpDnsLabel)
+            .create();
 
-        VirtualMachine vm =
-            virtualMachines
-                .define(vmName)
-                .withRegion(pip.regionName())
-                .withExistingResourceGroup(pip.resourceGroupName())
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withExistingPrimaryPublicIPAddress(pip)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("testuser")
-                .withRootPassword(password)
-                .withCustomData(cloudInitEncodedString)
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .create();
+        VirtualMachine vm = virtualMachines.define(vmName)
+            .withRegion(pip.regionName())
+            .withExistingResourceGroup(pip.resourceGroupName())
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(pip)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("testuser")
+            .withRootPassword(password)
+            .withCustomData(cloudInitEncodedString)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .create();
 
         pip.refresh();
         Assertions.assertTrue(pip.hasAssignedNetworkInterface());

@@ -1008,7 +1008,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                         Optional<Object> partitionKeyValue) {
         containerName = getContainerNameOverride(containerName);
         Slice<T> response = sliceQuery(querySpec, pageable, sort, returnType, containerName, partitionKeyValue);
-        final long total = getCountValue(countQuerySpec, containerName);
+        final long total = getNumericValue(countQuerySpec, containerName);
         return new CosmosPageImpl<>(response.getContent(), response.getPageable(), total);
     }
 
@@ -1132,12 +1132,21 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public <T> long count(SqlQuerySpec querySpec, String containerName) {
+        return this.numeric(querySpec, containerName);
+    }
+
+    @Override
+    public long sum(SqlQuerySpec querySpec, String containerName) {
+        return this.numeric(querySpec, containerName);
+    }
+
+    private <T> long numeric(SqlQuerySpec querySpec, String containerName) {
         containerName = getContainerNameOverride(containerName);
         Assert.hasText(containerName, "container name should not be empty");
 
-        final Long count = getCountValue(querySpec, containerName);
-        assert count != null;
-        return count;
+        final Long numericResult = getNumericValue(querySpec, containerName);
+        assert numericResult != null;
+        return numericResult;
     }
 
     @Override
@@ -1167,10 +1176,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     private Long getCountValue(CosmosQuery query, String containerName) {
         final SqlQuerySpec querySpec = new CountQueryGenerator().generateCosmos(query);
-        return getCountValue(querySpec, containerName);
+        return getNumericValue(querySpec, containerName);
     }
 
-    private Long getCountValue(SqlQuerySpec querySpec, String containerName) {
+    private Long getNumericValue(SqlQuerySpec querySpec, String containerName) {
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);
         options.setIndexMetricsEnabled(this.indexMetricsEnabled);
@@ -1182,7 +1191,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return executeQuery(querySpec, containerName, options)
             .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to get count value", throwable,
+                CosmosExceptionUtils.exceptionHandler("Failed to get numeric value", throwable,
                     this.responseDiagnosticsProcessor))
             .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                 response.getCosmosDiagnostics(), response))

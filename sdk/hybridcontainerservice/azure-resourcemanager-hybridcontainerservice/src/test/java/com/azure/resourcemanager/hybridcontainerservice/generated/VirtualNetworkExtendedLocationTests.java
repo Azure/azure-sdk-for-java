@@ -21,8 +21,9 @@ public final class VirtualNetworkExtendedLocationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkExtendedLocation model = new VirtualNetworkExtendedLocation()
-            .withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("lvithhqzonosgg");
+        VirtualNetworkExtendedLocation model
+            = new VirtualNetworkExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION)
+                .withName("lvithhqzonosgg");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkExtendedLocation.class);
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.type());
         Assertions.assertEquals("lvithhqzonosgg", model.name());

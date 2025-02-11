@@ -20,77 +20,64 @@ public final class BenefitUtilizationSummariesImpl implements BenefitUtilization
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public BenefitUtilizationSummariesImpl(
-        BenefitUtilizationSummariesClient innerClient,
+    public BenefitUtilizationSummariesImpl(BenefitUtilizationSummariesClient innerClient,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<BenefitUtilizationSummary> listByBillingAccountId(String billingAccountId) {
-        PagedIterable<BenefitUtilizationSummaryInner> inner =
-            this.serviceClient().listByBillingAccountId(billingAccountId);
-        return Utils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
+        PagedIterable<BenefitUtilizationSummaryInner> inner
+            = this.serviceClient().listByBillingAccountId(billingAccountId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BenefitUtilizationSummary> listByBillingAccountId(
-        String billingAccountId, GrainParameter grainParameter, String filter, Context context) {
-        PagedIterable<BenefitUtilizationSummaryInner> inner =
-            this.serviceClient().listByBillingAccountId(billingAccountId, grainParameter, filter, context);
-        return Utils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
+    public PagedIterable<BenefitUtilizationSummary> listByBillingAccountId(String billingAccountId,
+        GrainParameter grainParameter, String filter, Context context) {
+        PagedIterable<BenefitUtilizationSummaryInner> inner
+            = this.serviceClient().listByBillingAccountId(billingAccountId, grainParameter, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BenefitUtilizationSummary> listByBillingProfileId(
-        String billingAccountId, String billingProfileId) {
-        PagedIterable<BenefitUtilizationSummaryInner> inner =
-            this.serviceClient().listByBillingProfileId(billingAccountId, billingProfileId);
-        return Utils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
+    public PagedIterable<BenefitUtilizationSummary> listByBillingProfileId(String billingAccountId,
+        String billingProfileId) {
+        PagedIterable<BenefitUtilizationSummaryInner> inner
+            = this.serviceClient().listByBillingProfileId(billingAccountId, billingProfileId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BenefitUtilizationSummary> listByBillingProfileId(
-        String billingAccountId,
-        String billingProfileId,
-        GrainParameter grainParameter,
-        String filter,
-        Context context) {
-        PagedIterable<BenefitUtilizationSummaryInner> inner =
-            this
-                .serviceClient()
-                .listByBillingProfileId(billingAccountId, billingProfileId, grainParameter, filter, context);
-        return Utils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
+    public PagedIterable<BenefitUtilizationSummary> listByBillingProfileId(String billingAccountId,
+        String billingProfileId, GrainParameter grainParameter, String filter, Context context) {
+        PagedIterable<BenefitUtilizationSummaryInner> inner = this.serviceClient()
+            .listByBillingProfileId(billingAccountId, billingProfileId, grainParameter, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
     }
 
     public PagedIterable<BenefitUtilizationSummary> listBySavingsPlanOrder(String savingsPlanOrderId) {
-        PagedIterable<BenefitUtilizationSummaryInner> inner =
-            this.serviceClient().listBySavingsPlanOrder(savingsPlanOrderId);
-        return Utils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
+        PagedIterable<BenefitUtilizationSummaryInner> inner
+            = this.serviceClient().listBySavingsPlanOrder(savingsPlanOrderId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BenefitUtilizationSummary> listBySavingsPlanOrder(
-        String savingsPlanOrderId, String filter, GrainParameter grainParameter, Context context) {
-        PagedIterable<BenefitUtilizationSummaryInner> inner =
-            this.serviceClient().listBySavingsPlanOrder(savingsPlanOrderId, filter, grainParameter, context);
-        return Utils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
+    public PagedIterable<BenefitUtilizationSummary> listBySavingsPlanOrder(String savingsPlanOrderId, String filter,
+        GrainParameter grainParameter, Context context) {
+        PagedIterable<BenefitUtilizationSummaryInner> inner
+            = this.serviceClient().listBySavingsPlanOrder(savingsPlanOrderId, filter, grainParameter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BenefitUtilizationSummary> listBySavingsPlanId(
-        String savingsPlanOrderId, String savingsPlanId) {
-        PagedIterable<BenefitUtilizationSummaryInner> inner =
-            this.serviceClient().listBySavingsPlanId(savingsPlanOrderId, savingsPlanId);
-        return Utils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
+    public PagedIterable<BenefitUtilizationSummary> listBySavingsPlanId(String savingsPlanOrderId,
+        String savingsPlanId) {
+        PagedIterable<BenefitUtilizationSummaryInner> inner
+            = this.serviceClient().listBySavingsPlanId(savingsPlanOrderId, savingsPlanId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BenefitUtilizationSummary> listBySavingsPlanId(
-        String savingsPlanOrderId,
-        String savingsPlanId,
-        String filter,
-        GrainParameter grainParameter,
-        Context context) {
-        PagedIterable<BenefitUtilizationSummaryInner> inner =
-            this
-                .serviceClient()
-                .listBySavingsPlanId(savingsPlanOrderId, savingsPlanId, filter, grainParameter, context);
-        return Utils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
+    public PagedIterable<BenefitUtilizationSummary> listBySavingsPlanId(String savingsPlanOrderId, String savingsPlanId,
+        String filter, GrainParameter grainParameter, Context context) {
+        PagedIterable<BenefitUtilizationSummaryInner> inner = this.serviceClient()
+            .listBySavingsPlanId(savingsPlanOrderId, savingsPlanId, filter, grainParameter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BenefitUtilizationSummaryImpl(inner1, this.manager()));
     }
 
     private BenefitUtilizationSummariesClient serviceClient() {

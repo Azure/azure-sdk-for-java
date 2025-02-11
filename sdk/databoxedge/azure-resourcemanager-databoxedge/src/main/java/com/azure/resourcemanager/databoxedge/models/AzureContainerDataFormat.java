@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Storage format used for the file represented by the share. */
+/**
+ * Storage format used for the file represented by the share.
+ */
 public final class AzureContainerDataFormat extends ExpandableStringEnum<AzureContainerDataFormat> {
-    /** Static value BlockBlob for AzureContainerDataFormat. */
+    /**
+     * Static value BlockBlob for AzureContainerDataFormat.
+     */
     public static final AzureContainerDataFormat BLOCK_BLOB = fromString("BlockBlob");
 
-    /** Static value PageBlob for AzureContainerDataFormat. */
+    /**
+     * Static value PageBlob for AzureContainerDataFormat.
+     */
     public static final AzureContainerDataFormat PAGE_BLOB = fromString("PageBlob");
 
-    /** Static value AzureFile for AzureContainerDataFormat. */
+    /**
+     * Static value AzureFile for AzureContainerDataFormat.
+     */
     public static final AzureContainerDataFormat AZURE_FILE = fromString("AzureFile");
 
     /**
      * Creates a new instance of AzureContainerDataFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class AzureContainerDataFormat extends ExpandableStringEnum<AzureCo
 
     /**
      * Creates or finds a AzureContainerDataFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureContainerDataFormat.
      */
-    @JsonCreator
     public static AzureContainerDataFormat fromString(String name) {
         return fromString(name, AzureContainerDataFormat.class);
     }
 
     /**
      * Gets known AzureContainerDataFormat values.
-     *
+     * 
      * @return known AzureContainerDataFormat values.
      */
     public static Collection<AzureContainerDataFormat> values() {

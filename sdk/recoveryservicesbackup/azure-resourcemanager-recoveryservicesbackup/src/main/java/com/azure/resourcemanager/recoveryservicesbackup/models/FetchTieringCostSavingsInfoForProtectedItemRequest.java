@@ -6,39 +6,30 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Request parameters for tiering cost info for protected item.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = FetchTieringCostSavingsInfoForProtectedItemRequest.class,
-    visible = true)
-@JsonTypeName("FetchTieringCostSavingsInfoForProtectedItemRequest")
 @Fluent
 public final class FetchTieringCostSavingsInfoForProtectedItemRequest extends FetchTieringCostInfoRequest {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private String objectType = "FetchTieringCostSavingsInfoForProtectedItemRequest";
 
     /*
      * Name of the protected item container
      */
-    @JsonProperty(value = "containerName", required = true)
     private String containerName;
 
     /*
      * Name of the protectedItemName
      */
-    @JsonProperty(value = "protectedItemName", required = true)
     private String protectedItemName;
 
     /**
@@ -123,7 +114,6 @@ public final class FetchTieringCostSavingsInfoForProtectedItemRequest extends Fe
      */
     @Override
     public void validate() {
-        super.validate();
         if (containerName() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -134,8 +124,72 @@ public final class FetchTieringCostSavingsInfoForProtectedItemRequest extends Fe
                 .log(new IllegalArgumentException(
                     "Missing required property protectedItemName in model FetchTieringCostSavingsInfoForProtectedItemRequest"));
         }
+        if (sourceTierType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceTierType in model FetchTieringCostSavingsInfoForProtectedItemRequest"));
+        }
+        if (targetTierType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetTierType in model FetchTieringCostSavingsInfoForProtectedItemRequest"));
+        }
     }
 
     private static final ClientLogger LOGGER
         = new ClientLogger(FetchTieringCostSavingsInfoForProtectedItemRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceTierType", sourceTierType() == null ? null : sourceTierType().toString());
+        jsonWriter.writeStringField("targetTierType", targetTierType() == null ? null : targetTierType().toString());
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("protectedItemName", this.protectedItemName);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FetchTieringCostSavingsInfoForProtectedItemRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FetchTieringCostSavingsInfoForProtectedItemRequest if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FetchTieringCostSavingsInfoForProtectedItemRequest.
+     */
+    public static FetchTieringCostSavingsInfoForProtectedItemRequest fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            FetchTieringCostSavingsInfoForProtectedItemRequest deserializedFetchTieringCostSavingsInfoForProtectedItemRequest
+                = new FetchTieringCostSavingsInfoForProtectedItemRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceTierType".equals(fieldName)) {
+                    deserializedFetchTieringCostSavingsInfoForProtectedItemRequest
+                        .withSourceTierType(RecoveryPointTierType.fromString(reader.getString()));
+                } else if ("targetTierType".equals(fieldName)) {
+                    deserializedFetchTieringCostSavingsInfoForProtectedItemRequest
+                        .withTargetTierType(RecoveryPointTierType.fromString(reader.getString()));
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedFetchTieringCostSavingsInfoForProtectedItemRequest.containerName = reader.getString();
+                } else if ("protectedItemName".equals(fieldName)) {
+                    deserializedFetchTieringCostSavingsInfoForProtectedItemRequest.protectedItemName
+                        = reader.getString();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedFetchTieringCostSavingsInfoForProtectedItemRequest.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFetchTieringCostSavingsInfoForProtectedItemRequest;
+        });
+    }
 }

@@ -7,58 +7,87 @@ package com.azure.containers.containerregistry.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** The artifact platform's architecture. */
+/**
+ * The artifact platform's architecture.
+ */
 public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArchitecture> {
-    /** i386. */
+    /**
+     * i386.
+     */
     public static final ArtifactArchitecture I386 = fromString("386");
 
-    /** AMD64. */
+    /**
+     * AMD64.
+     */
     public static final ArtifactArchitecture AMD64 = fromString("amd64");
 
-    /** ARM. */
+    /**
+     * ARM.
+     */
     public static final ArtifactArchitecture ARM = fromString("arm");
 
-    /** ARM64. */
+    /**
+     * ARM64.
+     */
     public static final ArtifactArchitecture ARM64 = fromString("arm64");
 
-    /** MIPS. */
+    /**
+     * MIPS.
+     */
     public static final ArtifactArchitecture MIPS = fromString("mips");
 
-    /** MIPSLE. */
+    /**
+     * MIPSLE.
+     */
     public static final ArtifactArchitecture MIPS_LE = fromString("mipsle");
 
-    /** MIPS64. */
+    /**
+     * MIPS64.
+     */
     public static final ArtifactArchitecture MIPS64 = fromString("mips64");
 
-    /** MIPS64LE. */
+    /**
+     * MIPS64LE.
+     */
     public static final ArtifactArchitecture MIPS64LE = fromString("mips64le");
 
-    /** PPC64. */
+    /**
+     * PPC64.
+     */
     public static final ArtifactArchitecture PPC64 = fromString("ppc64");
 
-    /** PPC64LE. */
+    /**
+     * PPC64LE.
+     */
     public static final ArtifactArchitecture PPC64LE = fromString("ppc64le");
 
-    /** RISCv64. */
+    /**
+     * RISCv64.
+     */
     public static final ArtifactArchitecture RISC_V64 = fromString("riscv64");
 
-    /** s390x. */
+    /**
+     * s390x.
+     */
     public static final ArtifactArchitecture S390X = fromString("s390x");
 
-    /** Wasm. */
+    /**
+     * Wasm.
+     */
     public static final ArtifactArchitecture WASM = fromString("wasm");
 
     /**
      * Creates a new instance of ArtifactArchitecture value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ArtifactArchitecture() {}
+    public ArtifactArchitecture() {
+    }
 
     /**
      * Creates or finds a ArtifactArchitecture from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ArtifactArchitecture.
      */
@@ -68,7 +97,7 @@ public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArc
 
     /**
      * Gets known ArtifactArchitecture values.
-     *
+     * 
      * @return known ArtifactArchitecture values.
      */
     public static Collection<ArtifactArchitecture> values() {

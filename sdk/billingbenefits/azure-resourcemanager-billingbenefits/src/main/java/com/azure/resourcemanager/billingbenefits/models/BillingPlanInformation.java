@@ -5,45 +5,49 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
-/** Information describing the type of billing plan for this savings plan. */
+/**
+ * Information describing the type of billing plan for this savings plan.
+ */
 @Fluent
-public final class BillingPlanInformation {
+public final class BillingPlanInformation implements JsonSerializable<BillingPlanInformation> {
     /*
      * Amount of money to be paid for the Order. Tax is not included.
      */
-    @JsonProperty(value = "pricingCurrencyTotal")
     private Price pricingCurrencyTotal;
 
     /*
      * Date when the billing plan has started.
      */
-    @JsonProperty(value = "startDate")
     private LocalDate startDate;
 
     /*
-     * For recurring billing plans, indicates the date when next payment will be processed. Null when total is paid
-     * off.
+     * For recurring billing plans, indicates the date when next payment will be processed. Null when total is paid off.
      */
-    @JsonProperty(value = "nextPaymentDueDate")
     private LocalDate nextPaymentDueDate;
 
     /*
      * The transactions property.
      */
-    @JsonProperty(value = "transactions")
     private List<PaymentDetail> transactions;
 
-    /** Creates an instance of BillingPlanInformation class. */
+    /**
+     * Creates an instance of BillingPlanInformation class.
+     */
     public BillingPlanInformation() {
     }
 
     /**
      * Get the pricingCurrencyTotal property: Amount of money to be paid for the Order. Tax is not included.
-     *
+     * 
      * @return the pricingCurrencyTotal value.
      */
     public Price pricingCurrencyTotal() {
@@ -52,7 +56,7 @@ public final class BillingPlanInformation {
 
     /**
      * Set the pricingCurrencyTotal property: Amount of money to be paid for the Order. Tax is not included.
-     *
+     * 
      * @param pricingCurrencyTotal the pricingCurrencyTotal value to set.
      * @return the BillingPlanInformation object itself.
      */
@@ -63,7 +67,7 @@ public final class BillingPlanInformation {
 
     /**
      * Get the startDate property: Date when the billing plan has started.
-     *
+     * 
      * @return the startDate value.
      */
     public LocalDate startDate() {
@@ -72,7 +76,7 @@ public final class BillingPlanInformation {
 
     /**
      * Set the startDate property: Date when the billing plan has started.
-     *
+     * 
      * @param startDate the startDate value to set.
      * @return the BillingPlanInformation object itself.
      */
@@ -84,7 +88,7 @@ public final class BillingPlanInformation {
     /**
      * Get the nextPaymentDueDate property: For recurring billing plans, indicates the date when next payment will be
      * processed. Null when total is paid off.
-     *
+     * 
      * @return the nextPaymentDueDate value.
      */
     public LocalDate nextPaymentDueDate() {
@@ -94,7 +98,7 @@ public final class BillingPlanInformation {
     /**
      * Set the nextPaymentDueDate property: For recurring billing plans, indicates the date when next payment will be
      * processed. Null when total is paid off.
-     *
+     * 
      * @param nextPaymentDueDate the nextPaymentDueDate value to set.
      * @return the BillingPlanInformation object itself.
      */
@@ -105,7 +109,7 @@ public final class BillingPlanInformation {
 
     /**
      * Get the transactions property: The transactions property.
-     *
+     * 
      * @return the transactions value.
      */
     public List<PaymentDetail> transactions() {
@@ -114,7 +118,7 @@ public final class BillingPlanInformation {
 
     /**
      * Set the transactions property: The transactions property.
-     *
+     * 
      * @param transactions the transactions value to set.
      * @return the BillingPlanInformation object itself.
      */
@@ -125,7 +129,7 @@ public final class BillingPlanInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -135,5 +139,53 @@ public final class BillingPlanInformation {
         if (transactions() != null) {
             transactions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("pricingCurrencyTotal", this.pricingCurrencyTotal);
+        jsonWriter.writeStringField("startDate", Objects.toString(this.startDate, null));
+        jsonWriter.writeStringField("nextPaymentDueDate", Objects.toString(this.nextPaymentDueDate, null));
+        jsonWriter.writeArrayField("transactions", this.transactions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingPlanInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingPlanInformation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BillingPlanInformation.
+     */
+    public static BillingPlanInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingPlanInformation deserializedBillingPlanInformation = new BillingPlanInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pricingCurrencyTotal".equals(fieldName)) {
+                    deserializedBillingPlanInformation.pricingCurrencyTotal = Price.fromJson(reader);
+                } else if ("startDate".equals(fieldName)) {
+                    deserializedBillingPlanInformation.startDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("nextPaymentDueDate".equals(fieldName)) {
+                    deserializedBillingPlanInformation.nextPaymentDueDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("transactions".equals(fieldName)) {
+                    List<PaymentDetail> transactions = reader.readArray(reader1 -> PaymentDetail.fromJson(reader1));
+                    deserializedBillingPlanInformation.transactions = transactions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingPlanInformation;
+        });
     }
 }

@@ -15,34 +15,26 @@ import org.junit.jupiter.api.Assertions;
 public final class TrackSelectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrackSelection model =
-            BinaryData
-                .fromString(
-                    "{\"trackSelections\":[{\"property\":\"FourCC\",\"operation\":\"Unknown\",\"value\":\"bjf\"},{\"property\":\"Unknown\",\"operation\":\"Unknown\",\"value\":\"sotftpvj\"}]}")
-                .toObject(TrackSelection.class);
-        Assertions.assertEquals(TrackPropertyType.FOUR_CC, model.trackSelections().get(0).property());
-        Assertions.assertEquals(TrackPropertyCompareOperation.UNKNOWN, model.trackSelections().get(0).operation());
-        Assertions.assertEquals("bjf", model.trackSelections().get(0).value());
+        TrackSelection model = BinaryData.fromString(
+            "{\"trackSelections\":[{\"property\":\"Unknown\",\"operation\":\"Equal\",\"value\":\"jqbjhhy\"},{\"property\":\"Unknown\",\"operation\":\"Unknown\",\"value\":\"lyc\"}]}")
+            .toObject(TrackSelection.class);
+        Assertions.assertEquals(TrackPropertyType.UNKNOWN, model.trackSelections().get(0).property());
+        Assertions.assertEquals(TrackPropertyCompareOperation.EQUAL, model.trackSelections().get(0).operation());
+        Assertions.assertEquals("jqbjhhy", model.trackSelections().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrackSelection model =
-            new TrackSelection()
-                .withTrackSelections(
-                    Arrays
-                        .asList(
-                            new TrackPropertyCondition()
-                                .withProperty(TrackPropertyType.FOUR_CC)
-                                .withOperation(TrackPropertyCompareOperation.UNKNOWN)
-                                .withValue("bjf"),
-                            new TrackPropertyCondition()
-                                .withProperty(TrackPropertyType.UNKNOWN)
-                                .withOperation(TrackPropertyCompareOperation.UNKNOWN)
-                                .withValue("sotftpvj")));
+        TrackSelection model = new TrackSelection().withTrackSelections(Arrays.asList(
+            new TrackPropertyCondition().withProperty(TrackPropertyType.UNKNOWN)
+                .withOperation(TrackPropertyCompareOperation.EQUAL)
+                .withValue("jqbjhhy"),
+            new TrackPropertyCondition().withProperty(TrackPropertyType.UNKNOWN)
+                .withOperation(TrackPropertyCompareOperation.UNKNOWN)
+                .withValue("lyc")));
         model = BinaryData.fromObject(model).toObject(TrackSelection.class);
-        Assertions.assertEquals(TrackPropertyType.FOUR_CC, model.trackSelections().get(0).property());
-        Assertions.assertEquals(TrackPropertyCompareOperation.UNKNOWN, model.trackSelections().get(0).operation());
-        Assertions.assertEquals("bjf", model.trackSelections().get(0).value());
+        Assertions.assertEquals(TrackPropertyType.UNKNOWN, model.trackSelections().get(0).property());
+        Assertions.assertEquals(TrackPropertyCompareOperation.EQUAL, model.trackSelections().get(0).operation());
+        Assertions.assertEquals("jqbjhhy", model.trackSelections().get(0).value());
     }
 }

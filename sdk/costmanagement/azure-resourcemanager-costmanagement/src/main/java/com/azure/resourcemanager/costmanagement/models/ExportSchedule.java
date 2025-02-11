@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The schedule associated with the export. */
+/**
+ * The schedule associated with the export.
+ */
 @Fluent
-public final class ExportSchedule {
+public final class ExportSchedule implements JsonSerializable<ExportSchedule> {
     /*
      * The status of the export's schedule. If 'Inactive', the export's schedule is paused.
      */
-    @JsonProperty(value = "status")
     private StatusType status;
 
     /*
      * The schedule recurrence.
      */
-    @JsonProperty(value = "recurrence")
     private RecurrenceType recurrence;
 
     /*
      * Has start and end date of the recurrence. The start date must be in future. If present, the end date must be
      * greater than start date.
      */
-    @JsonProperty(value = "recurrencePeriod")
     private ExportRecurrencePeriod recurrencePeriod;
 
-    /** Creates an instance of ExportSchedule class. */
+    /**
+     * Creates an instance of ExportSchedule class.
+     */
     public ExportSchedule() {
     }
 
     /**
      * Get the status property: The status of the export's schedule. If 'Inactive', the export's schedule is paused.
-     *
+     * 
      * @return the status value.
      */
     public StatusType status() {
@@ -44,7 +49,7 @@ public final class ExportSchedule {
 
     /**
      * Set the status property: The status of the export's schedule. If 'Inactive', the export's schedule is paused.
-     *
+     * 
      * @param status the status value to set.
      * @return the ExportSchedule object itself.
      */
@@ -55,7 +60,7 @@ public final class ExportSchedule {
 
     /**
      * Get the recurrence property: The schedule recurrence.
-     *
+     * 
      * @return the recurrence value.
      */
     public RecurrenceType recurrence() {
@@ -64,7 +69,7 @@ public final class ExportSchedule {
 
     /**
      * Set the recurrence property: The schedule recurrence.
-     *
+     * 
      * @param recurrence the recurrence value to set.
      * @return the ExportSchedule object itself.
      */
@@ -76,7 +81,7 @@ public final class ExportSchedule {
     /**
      * Get the recurrencePeriod property: Has start and end date of the recurrence. The start date must be in future. If
      * present, the end date must be greater than start date.
-     *
+     * 
      * @return the recurrencePeriod value.
      */
     public ExportRecurrencePeriod recurrencePeriod() {
@@ -86,7 +91,7 @@ public final class ExportSchedule {
     /**
      * Set the recurrencePeriod property: Has start and end date of the recurrence. The start date must be in future. If
      * present, the end date must be greater than start date.
-     *
+     * 
      * @param recurrencePeriod the recurrencePeriod value to set.
      * @return the ExportSchedule object itself.
      */
@@ -97,12 +102,54 @@ public final class ExportSchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recurrencePeriod() != null) {
             recurrencePeriod().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("recurrence", this.recurrence == null ? null : this.recurrence.toString());
+        jsonWriter.writeJsonField("recurrencePeriod", this.recurrencePeriod);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportSchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportSchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExportSchedule.
+     */
+    public static ExportSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportSchedule deserializedExportSchedule = new ExportSchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedExportSchedule.status = StatusType.fromString(reader.getString());
+                } else if ("recurrence".equals(fieldName)) {
+                    deserializedExportSchedule.recurrence = RecurrenceType.fromString(reader.getString());
+                } else if ("recurrencePeriod".equals(fieldName)) {
+                    deserializedExportSchedule.recurrencePeriod = ExportRecurrencePeriod.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportSchedule;
+        });
     }
 }

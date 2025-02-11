@@ -6,6 +6,8 @@ package com.azure.identity;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
+import java.util.concurrent.ExecutorService;
+
 /**
  * <p>Fluent credential builder for instantiating a {@link ManagedIdentityCredential}.</p>
  *
@@ -103,6 +105,27 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
      */
     public ManagedIdentityCredentialBuilder objectId(String objectId) {
         this.objectId = objectId;
+        return this;
+    }
+
+    /**
+     * Specifies the ExecutorService to be used to execute the authentication requests.
+     * Developer is responsible for maintaining the lifecycle of the ExecutorService.
+     *
+     * <p>
+     * If this is not configured, the {@link com.azure.core.util.SharedExecutorService} will be used which is
+     * also shared with other SDK libraries. If there are many concurrent SDK tasks occurring, authentication
+     * requests might starve and configuring a separate executor service should be considered.
+     * </p>
+     *
+     * <p> The executor service and can be safely shutdown if the TokenCredential is no longer being used by the
+     * Azure SDK clients and should be shutdown before the application exits. </p>
+     *
+     * @param executorService the executor service to use for executing authentication requests.
+     * @return the ManagedIdentityCredentialBuilder itself
+     */
+    public ManagedIdentityCredentialBuilder executorService(ExecutorService executorService) {
+        this.identityClientOptions.setExecutorService(executorService);
         return this;
     }
 

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.reservations.fluent.models.QuotaRequestStatusDe
 public final class QuotaRequestStatusDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaRequestStatusDetails model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Failed\",\"message\":\"zikywgg\"}")
+        QuotaRequestStatusDetails model
+            = BinaryData.fromString("{\"provisioningState\":\"Invalid\",\"message\":\"iccjzkzivgvvcna\"}")
                 .toObject(QuotaRequestStatusDetails.class);
     }
 

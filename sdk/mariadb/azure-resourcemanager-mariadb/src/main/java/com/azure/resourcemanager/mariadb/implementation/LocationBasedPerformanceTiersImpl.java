@@ -19,8 +19,7 @@ public final class LocationBasedPerformanceTiersImpl implements LocationBasedPer
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    public LocationBasedPerformanceTiersImpl(
-        LocationBasedPerformanceTiersClient innerClient,
+    public LocationBasedPerformanceTiersImpl(LocationBasedPerformanceTiersClient innerClient,
         com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class LocationBasedPerformanceTiersImpl implements LocationBasedPer
 
     public PagedIterable<PerformanceTierProperties> list(String locationName) {
         PagedIterable<PerformanceTierPropertiesInner> inner = this.serviceClient().list(locationName);
-        return Utils.mapPage(inner, inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PerformanceTierProperties> list(String locationName, Context context) {
         PagedIterable<PerformanceTierPropertiesInner> inner = this.serviceClient().list(locationName, context);
-        return Utils.mapPage(inner, inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PerformanceTierPropertiesImpl(inner1, this.manager()));
     }
 
     private LocationBasedPerformanceTiersClient serviceClient() {

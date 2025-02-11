@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyFragment model =
-            BinaryData
-                .fromString("{\"tags\":{\"sqtzbsrg\":\"lcwkhihihlhz\",\"cjhfgmvecactxmw\":\"o\"}}")
+        PolicyFragment model
+            = BinaryData.fromString("{\"tags\":{\"sqtzbsrg\":\"lcwkhihihlhz\",\"cjhfgmvecactxmw\":\"o\"}}")
                 .toObject(PolicyFragment.class);
         Assertions.assertEquals("lcwkhihihlhz", model.tags().get("sqtzbsrg"));
     }

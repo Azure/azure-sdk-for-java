@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CloudManifestFileEnvironmentEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CloudManifestFileEnvironmentEndpoints model =
-            BinaryData
-                .fromString("{\"customCloudArmEndpoint\":\"pikxwczbyscnpqxu\",\"externalDsmsEndpoint\":\"vyq\"}")
-                .toObject(CloudManifestFileEnvironmentEndpoints.class);
+        CloudManifestFileEnvironmentEndpoints model = BinaryData
+            .fromString("{\"customCloudArmEndpoint\":\"pikxwczbyscnpqxu\",\"externalDsmsEndpoint\":\"vyq\"}")
+            .toObject(CloudManifestFileEnvironmentEndpoints.class);
         Assertions.assertEquals("pikxwczbyscnpqxu", model.customCloudArmEndpoint());
         Assertions.assertEquals("vyq", model.externalDsmsEndpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudManifestFileEnvironmentEndpoints model =
-            new CloudManifestFileEnvironmentEndpoints()
-                .withCustomCloudArmEndpoint("pikxwczbyscnpqxu")
+        CloudManifestFileEnvironmentEndpoints model
+            = new CloudManifestFileEnvironmentEndpoints().withCustomCloudArmEndpoint("pikxwczbyscnpqxu")
                 .withExternalDsmsEndpoint("vyq");
         model = BinaryData.fromObject(model).toObject(CloudManifestFileEnvironmentEndpoints.class);
         Assertions.assertEquals("pikxwczbyscnpqxu", model.customCloudArmEndpoint());

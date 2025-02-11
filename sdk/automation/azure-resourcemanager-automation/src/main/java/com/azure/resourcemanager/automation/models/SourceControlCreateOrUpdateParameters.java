@@ -6,21 +6,33 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.SourceControlCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters supplied to the create or update source control operation. */
+/**
+ * The parameters supplied to the create or update source control operation.
+ */
 @Fluent
-public final class SourceControlCreateOrUpdateParameters {
+public final class SourceControlCreateOrUpdateParameters
+    implements JsonSerializable<SourceControlCreateOrUpdateParameters> {
     /*
      * The properties of the source control.
      */
-    @JsonProperty(value = "properties", required = true)
     private SourceControlCreateOrUpdateProperties innerProperties = new SourceControlCreateOrUpdateProperties();
 
     /**
+     * Creates an instance of SourceControlCreateOrUpdateParameters class.
+     */
+    public SourceControlCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: The properties of the source control.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SourceControlCreateOrUpdateProperties innerProperties() {
@@ -29,7 +41,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Get the repoUrl property: The repo url of the source control.
-     *
+     * 
      * @return the repoUrl value.
      */
     public String repoUrl() {
@@ -38,7 +50,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Set the repoUrl property: The repo url of the source control.
-     *
+     * 
      * @param repoUrl the repoUrl value to set.
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
@@ -52,7 +64,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Get the branch property: The repo branch of the source control. Include branch as empty string for VsoTfvc.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -61,7 +73,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Set the branch property: The repo branch of the source control. Include branch as empty string for VsoTfvc.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
@@ -75,7 +87,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Get the folderPath property: The folder path of the source control. Path must be relative.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -84,7 +96,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Set the folderPath property: The folder path of the source control. Path must be relative.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
@@ -98,7 +110,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Get the autoSync property: The auto async of the source control. Default is false.
-     *
+     * 
      * @return the autoSync value.
      */
     public Boolean autoSync() {
@@ -107,7 +119,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Set the autoSync property: The auto async of the source control. Default is false.
-     *
+     * 
      * @param autoSync the autoSync value to set.
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
@@ -121,7 +133,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Get the publishRunbook property: The auto publish of the source control. Default is true.
-     *
+     * 
      * @return the publishRunbook value.
      */
     public Boolean publishRunbook() {
@@ -130,7 +142,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Set the publishRunbook property: The auto publish of the source control. Default is true.
-     *
+     * 
      * @param publishRunbook the publishRunbook value to set.
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
@@ -144,7 +156,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Get the sourceType property: The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive.
-     *
+     * 
      * @return the sourceType value.
      */
     public SourceType sourceType() {
@@ -153,7 +165,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Set the sourceType property: The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive.
-     *
+     * 
      * @param sourceType the sourceType value to set.
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
@@ -167,7 +179,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Get the securityToken property: The authorization token for the repo of the source control.
-     *
+     * 
      * @return the securityToken value.
      */
     public SourceControlSecurityTokenProperties securityToken() {
@@ -176,7 +188,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Set the securityToken property: The authorization token for the repo of the source control.
-     *
+     * 
      * @param securityToken the securityToken value to set.
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
@@ -190,7 +202,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Get the description property: The user description of the source control.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -199,7 +211,7 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Set the description property: The user description of the source control.
-     *
+     * 
      * @param description the description value to set.
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
@@ -213,19 +225,57 @@ public final class SourceControlCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SourceControlCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model SourceControlCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SourceControlCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceControlCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceControlCreateOrUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SourceControlCreateOrUpdateParameters.
+     */
+    public static SourceControlCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceControlCreateOrUpdateParameters deserializedSourceControlCreateOrUpdateParameters
+                = new SourceControlCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSourceControlCreateOrUpdateParameters.innerProperties
+                        = SourceControlCreateOrUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceControlCreateOrUpdateParameters;
+        });
+    }
 }

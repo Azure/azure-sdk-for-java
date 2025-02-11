@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The MigrateMySqlAzureDbForMySqlSyncTaskOutputError model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("ErrorOutput")
+/**
+ * The MigrateMySqlAzureDbForMySqlSyncTaskOutputError model.
+ */
 @Immutable
 public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputError extends MigrateMySqlAzureDbForMySqlSyncTaskOutput {
     /*
+     * Result type
+     */
+    private String resultType = "ErrorOutput";
+
+    /*
      * Migration error
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ReportableException error;
 
-    /** Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputError class. */
+    /**
+     * Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputError class.
+     */
     public MigrateMySqlAzureDbForMySqlSyncTaskOutputError() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the error property: Migration error.
-     *
+     * 
      * @return the error value.
      */
     public ReportableException error() {
@@ -35,14 +52,55 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputError extends Migrat
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputError if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateMySqlAzureDbForMySqlSyncTaskOutputError.
+     */
+    public static MigrateMySqlAzureDbForMySqlSyncTaskOutputError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateMySqlAzureDbForMySqlSyncTaskOutputError deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputError
+                = new MigrateMySqlAzureDbForMySqlSyncTaskOutputError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputError.withId(reader.getString());
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputError.resultType = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputError.error
+                        = ReportableException.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputError;
+        });
     }
 }

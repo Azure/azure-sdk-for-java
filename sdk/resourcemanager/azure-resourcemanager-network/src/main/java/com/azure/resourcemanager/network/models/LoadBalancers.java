@@ -18,14 +18,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to load balancer management API in Azure. */
 @Fluent()
 public interface LoadBalancers
-    extends SupportsCreating<LoadBalancer.DefinitionStages.Blank>,
-        SupportsListing<LoadBalancer>,
-        SupportsListingByResourceGroup<LoadBalancer>,
-        SupportsGettingByResourceGroup<LoadBalancer>,
-        SupportsGettingById<LoadBalancer>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<LoadBalancer>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+    extends SupportsCreating<LoadBalancer.DefinitionStages.Blank>, SupportsListing<LoadBalancer>,
+    SupportsListingByResourceGroup<LoadBalancer>, SupportsGettingByResourceGroup<LoadBalancer>,
+    SupportsGettingById<LoadBalancer>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<LoadBalancer>, SupportsBatchDeletion, HasManager<NetworkManager> {
 }

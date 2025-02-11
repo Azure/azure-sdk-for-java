@@ -7,32 +7,34 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionForPrivateLinkHubInner;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionProperties;
 
-/** An immutable client-side representation of PrivateEndpointConnectionForPrivateLinkHub. */
+/**
+ * An immutable client-side representation of PrivateEndpointConnectionForPrivateLinkHub.
+ */
 public interface PrivateEndpointConnectionForPrivateLinkHub {
     /**
      * Gets the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the properties property: Properties of a private endpoint connection.
-     *
+     * 
      * @return the properties value.
      */
     PrivateEndpointConnectionProperties properties();
 
     /**
      * Gets the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     String type();
@@ -40,7 +42,7 @@ public interface PrivateEndpointConnectionForPrivateLinkHub {
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionForPrivateLinkHubInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateEndpointConnectionForPrivateLinkHubInner innerModel();

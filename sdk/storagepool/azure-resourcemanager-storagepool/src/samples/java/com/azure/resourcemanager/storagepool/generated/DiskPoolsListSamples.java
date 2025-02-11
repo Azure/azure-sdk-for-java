@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-/** Samples for DiskPools List. */
+/**
+ * Samples for DiskPools List.
+ */
 public final class DiskPoolsListSamples {
     /*
-     * x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/DiskPools_ListBySubscription.json
+     * x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/
+     * DiskPools_ListBySubscription.json
      */
     /**
      * Sample code: List Disk Pools by subscription.
-     *
+     * 
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listDiskPoolsBySubscription(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {

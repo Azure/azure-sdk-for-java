@@ -19,8 +19,8 @@ public final class LabServicesSkuImpl implements LabServicesSku {
 
     private final com.azure.resourcemanager.labservices.LabServicesManager serviceManager;
 
-    LabServicesSkuImpl(
-        LabServicesSkuInner innerObject, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
+    LabServicesSkuImpl(LabServicesSkuInner innerObject,
+        com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

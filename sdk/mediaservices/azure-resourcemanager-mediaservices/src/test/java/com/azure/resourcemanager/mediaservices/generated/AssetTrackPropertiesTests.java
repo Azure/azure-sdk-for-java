@@ -11,9 +11,8 @@ import com.azure.resourcemanager.mediaservices.models.TrackBase;
 public final class AssetTrackPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetTrackProperties model =
-            BinaryData
-                .fromString("{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"InProgress\"}")
+        AssetTrackProperties model
+            = BinaryData.fromString("{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"Failed\"}")
                 .toObject(AssetTrackProperties.class);
     }
 

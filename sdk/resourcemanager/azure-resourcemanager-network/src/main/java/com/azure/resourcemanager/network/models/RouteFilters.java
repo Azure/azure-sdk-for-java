@@ -18,14 +18,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to application security group management. */
 @Fluent
 public interface RouteFilters
-    extends SupportsCreating<RouteFilter.DefinitionStages.Blank>,
-        SupportsListing<RouteFilter>,
-        SupportsListingByResourceGroup<RouteFilter>,
-        SupportsGettingByResourceGroup<RouteFilter>,
-        SupportsGettingById<RouteFilter>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<RouteFilter>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+    extends SupportsCreating<RouteFilter.DefinitionStages.Blank>, SupportsListing<RouteFilter>,
+    SupportsListingByResourceGroup<RouteFilter>, SupportsGettingByResourceGroup<RouteFilter>,
+    SupportsGettingById<RouteFilter>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<RouteFilter>, SupportsBatchDeletion, HasManager<NetworkManager> {
 }

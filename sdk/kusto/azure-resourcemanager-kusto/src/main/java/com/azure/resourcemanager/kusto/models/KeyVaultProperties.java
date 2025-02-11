@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the key vault. */
+/**
+ * Properties of the key vault.
+ */
 @Fluent
-public final class KeyVaultProperties {
+public final class KeyVaultProperties implements JsonSerializable<KeyVaultProperties> {
     /*
      * The name of the key vault key.
      */
-    @JsonProperty(value = "keyName")
     private String keyName;
 
     /*
      * The version of the key vault key.
      */
-    @JsonProperty(value = "keyVersion")
     private String keyVersion;
 
     /*
      * The Uri of the key vault.
      */
-    @JsonProperty(value = "keyVaultUri")
     private String keyVaultUri;
 
     /*
      * The user assigned identity (ARM resource id) that has access to the key.
      */
-    @JsonProperty(value = "userIdentity")
     private String userIdentity;
 
-    /** Creates an instance of KeyVaultProperties class. */
+    /**
+     * Creates an instance of KeyVaultProperties class.
+     */
     public KeyVaultProperties() {
     }
 
     /**
      * Get the keyName property: The name of the key vault key.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -49,7 +53,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyName property: The name of the key vault key.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVersion property: The version of the key vault key.
-     *
+     * 
      * @return the keyVersion value.
      */
     public String keyVersion() {
@@ -69,7 +73,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVersion property: The version of the key vault key.
-     *
+     * 
      * @param keyVersion the keyVersion value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVaultUri property: The Uri of the key vault.
-     *
+     * 
      * @return the keyVaultUri value.
      */
     public String keyVaultUri() {
@@ -89,7 +93,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVaultUri property: The Uri of the key vault.
-     *
+     * 
      * @param keyVaultUri the keyVaultUri value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the userIdentity property: The user assigned identity (ARM resource id) that has access to the key.
-     *
+     * 
      * @return the userIdentity value.
      */
     public String userIdentity() {
@@ -109,7 +113,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the userIdentity property: The user assigned identity (ARM resource id) that has access to the key.
-     *
+     * 
      * @param userIdentity the userIdentity value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -120,9 +124,54 @@ public final class KeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyName", this.keyName);
+        jsonWriter.writeStringField("keyVersion", this.keyVersion);
+        jsonWriter.writeStringField("keyVaultUri", this.keyVaultUri);
+        jsonWriter.writeStringField("userIdentity", this.userIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultProperties.
+     */
+    public static KeyVaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultProperties deserializedKeyVaultProperties = new KeyVaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyName".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyName = reader.getString();
+                } else if ("keyVersion".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyVersion = reader.getString();
+                } else if ("keyVaultUri".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyVaultUri = reader.getString();
+                } else if ("userIdentity".equals(fieldName)) {
+                    deserializedKeyVaultProperties.userIdentity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultProperties;
+        });
     }
 }

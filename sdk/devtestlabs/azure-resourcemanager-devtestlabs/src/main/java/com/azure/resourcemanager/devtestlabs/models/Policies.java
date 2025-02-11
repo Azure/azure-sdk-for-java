@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Policies. */
+/**
+ * Resource collection API of Policies.
+ */
 public interface Policies {
     /**
      * List policies in a given policy set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -25,7 +27,7 @@ public interface Policies {
 
     /**
      * List policies in a given policy set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -39,19 +41,12 @@ public interface Policies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Policy> list(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<Policy> list(String resourceGroupName, String labName, String policySetName, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -63,12 +58,12 @@ public interface Policies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy along with {@link Response}.
      */
-    Response<Policy> getWithResponse(
-        String resourceGroupName, String labName, String policySetName, String name, String expand, Context context);
+    Response<Policy> getWithResponse(String resourceGroupName, String labName, String policySetName, String name,
+        String expand, Context context);
 
     /**
      * Get policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -82,7 +77,7 @@ public interface Policies {
 
     /**
      * Delete policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -93,12 +88,12 @@ public interface Policies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String labName, String policySetName, String name, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String labName, String policySetName, String name,
+        Context context);
 
     /**
      * Delete policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -111,7 +106,7 @@ public interface Policies {
 
     /**
      * Get policy.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +117,7 @@ public interface Policies {
 
     /**
      * Get policy.
-     *
+     * 
      * @param id the resource ID.
      * @param expand Specify the $expand query. Example: 'properties($select=description)'.
      * @param context The context to associate with this operation.
@@ -135,7 +130,7 @@ public interface Policies {
 
     /**
      * Delete policy.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -145,7 +140,7 @@ public interface Policies {
 
     /**
      * Delete policy.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,7 +152,7 @@ public interface Policies {
 
     /**
      * Begins definition for a new Policy resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Policy definition.
      */

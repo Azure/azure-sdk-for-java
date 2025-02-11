@@ -122,7 +122,7 @@ public class TypedDocumentField<T> {
 
             @Override
             public <T> void setBoundingRegions(TypedDocumentField<T> typedDocumentField,
-                                               List<BoundingRegion> boundingRegions) {
+                List<BoundingRegion> boundingRegions) {
                 typedDocumentField.setBoundingRegions(boundingRegions);
             }
 

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NodeReports. */
+/**
+ * Resource collection API of NodeReports.
+ */
 public interface NodeReports {
     /**
      * Retrieve the Dsc node report list by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The parameters supplied to the list operation.
@@ -25,7 +27,7 @@ public interface NodeReports {
 
     /**
      * Retrieve the Dsc node report list by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The parameters supplied to the list operation.
@@ -36,12 +38,28 @@ public interface NodeReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DscNodeReport> listByNode(
-        String resourceGroupName, String automationAccountName, String nodeId, String filter, Context context);
+    PagedIterable<DscNodeReport> listByNode(String resourceGroupName, String automationAccountName, String nodeId,
+        String filter, Context context);
 
     /**
      * Retrieve the Dsc node report data by node id and report id.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId The Dsc node id.
+     * @param reportId The report id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the dsc node report type along with {@link Response}.
+     */
+    Response<DscNodeReport> getWithResponse(String resourceGroupName, String automationAccountName, String nodeId,
+        String reportId, Context context);
+
+    /**
+     * Retrieve the Dsc node report data by node id and report id.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
@@ -54,38 +72,8 @@ public interface NodeReports {
     DscNodeReport get(String resourceGroupName, String automationAccountName, String nodeId, String reportId);
 
     /**
-     * Retrieve the Dsc node report data by node id and report id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The Dsc node id.
-     * @param reportId The report id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node report type along with {@link Response}.
-     */
-    Response<DscNodeReport> getWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context);
-
-    /**
      * Retrieve the Dsc node reports by node id and report id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The Dsc node id.
-     * @param reportId The report id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    Object getContent(String resourceGroupName, String automationAccountName, String nodeId, String reportId);
-
-    /**
-     * Retrieve the Dsc node reports by node id and report id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The Dsc node id.
@@ -96,6 +84,20 @@ public interface NodeReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object along with {@link Response}.
      */
-    Response<Object> getContentWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context);
+    Response<Object> getContentWithResponse(String resourceGroupName, String automationAccountName, String nodeId,
+        String reportId, Context context);
+
+    /**
+     * Retrieve the Dsc node reports by node id and report id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId The Dsc node id.
+     * @param reportId The report id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    Object getContent(String resourceGroupName, String automationAccountName, String nodeId, String reportId);
 }

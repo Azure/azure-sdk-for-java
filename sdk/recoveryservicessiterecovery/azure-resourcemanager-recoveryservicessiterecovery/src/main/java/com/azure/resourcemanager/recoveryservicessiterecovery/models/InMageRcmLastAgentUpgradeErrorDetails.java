@@ -5,51 +5,47 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * InMageRcm last source agent upgrade error details.
  */
 @Immutable
-public final class InMageRcmLastAgentUpgradeErrorDetails {
+public final class InMageRcmLastAgentUpgradeErrorDetails
+    implements JsonSerializable<InMageRcmLastAgentUpgradeErrorDetails> {
     /*
      * The error code.
      */
-    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private String errorCode;
 
     /*
      * The error message.
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
     /*
      * The possible causes.
      */
-    @JsonProperty(value = "possibleCauses", access = JsonProperty.Access.WRITE_ONLY)
     private String possibleCauses;
 
     /*
      * The recommended action.
      */
-    @JsonProperty(value = "recommendedAction", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendedAction;
 
     /*
      * The error message parameters.
      */
-    @JsonProperty(value = "errorMessageParameters", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> errorMessageParameters;
 
     /*
      * The error tags.
      */
-    @JsonProperty(value = "errorTags", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> errorTags;
 
     /**
@@ -118,5 +114,53 @@ public final class InMageRcmLastAgentUpgradeErrorDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmLastAgentUpgradeErrorDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmLastAgentUpgradeErrorDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmLastAgentUpgradeErrorDetails.
+     */
+    public static InMageRcmLastAgentUpgradeErrorDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmLastAgentUpgradeErrorDetails deserializedInMageRcmLastAgentUpgradeErrorDetails
+                = new InMageRcmLastAgentUpgradeErrorDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorCode".equals(fieldName)) {
+                    deserializedInMageRcmLastAgentUpgradeErrorDetails.errorCode = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedInMageRcmLastAgentUpgradeErrorDetails.errorMessage = reader.getString();
+                } else if ("possibleCauses".equals(fieldName)) {
+                    deserializedInMageRcmLastAgentUpgradeErrorDetails.possibleCauses = reader.getString();
+                } else if ("recommendedAction".equals(fieldName)) {
+                    deserializedInMageRcmLastAgentUpgradeErrorDetails.recommendedAction = reader.getString();
+                } else if ("errorMessageParameters".equals(fieldName)) {
+                    Map<String, String> errorMessageParameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInMageRcmLastAgentUpgradeErrorDetails.errorMessageParameters = errorMessageParameters;
+                } else if ("errorTags".equals(fieldName)) {
+                    Map<String, String> errorTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInMageRcmLastAgentUpgradeErrorDetails.errorTags = errorTags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmLastAgentUpgradeErrorDetails;
+        });
     }
 }

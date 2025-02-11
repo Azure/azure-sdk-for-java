@@ -134,7 +134,6 @@ public final class AvroSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (storeSettings() != null) {
             storeSettings().validate();
         }

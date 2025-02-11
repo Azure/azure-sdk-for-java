@@ -7,21 +7,21 @@ package com.azure.resourcemanager.logz.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SubAccountTagRulesDeleteHeaders model. */
+/**
+ * The SubAccountTagRulesDeleteHeaders model.
+ */
 @Fluent
 public final class SubAccountTagRulesDeleteHeaders {
     /*
      * The location property.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of SubAccountTagRulesDeleteHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SubAccountTagRulesDeleteHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +30,7 @@ public final class SubAccountTagRulesDeleteHeaders {
 
     /**
      * Get the location property: The location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -39,7 +39,7 @@ public final class SubAccountTagRulesDeleteHeaders {
 
     /**
      * Set the location property: The location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the SubAccountTagRulesDeleteHeaders object itself.
      */
@@ -50,7 +50,7 @@ public final class SubAccountTagRulesDeleteHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -48,6 +48,8 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
+     * Gets this node's unique id.
+     *
      * @return this node's unique id
      */
     public String key() {
@@ -55,6 +57,8 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
+     * Gets data stored in this node.
+     *
      * @return data stored in this node
      */
     public DataT data() {
@@ -62,6 +66,8 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
+     * Check whether the node has any children.
+     *
      * @return true if this node has any children
      */
     public boolean hasChildren() {
@@ -69,6 +75,8 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
+     * Gets children (neighbours) of this node.
+     *
      * @return children (neighbours) of this node
      */
     public List<String> children() {
@@ -76,6 +84,8 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
+     * Adds child (neighbour) to this node.
+     *
      * @param childKey add a child (neighbour) of this node
      */
     public void addChild(String childKey) {
@@ -83,6 +93,8 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
+     * Removes child (neighbour) from this node.
+     *
      * @param childKey remove child (neighbour) of this node
      */
     public void removeChild(String childKey) {
@@ -102,6 +114,8 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
+     * Gets the owner (container) graph of this node.
+     *
      * @return the owner (container) graph of this node.
      */
     public Graph<DataT, NodeT> owner() {

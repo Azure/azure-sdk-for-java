@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Events. */
+/**
+ * Resource collection API of Events.
+ */
 public interface Events {
     /**
      * Gets the event.
-     *
-     * <p>Gets the details of the event.
-     *
+     * 
+     * Gets the details of the event.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param eventName The event name.
@@ -28,9 +30,9 @@ public interface Events {
 
     /**
      * Gets the event.
-     *
-     * <p>Gets the details of the event.
-     *
+     * 
+     * Gets the details of the event.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param eventName The event name.
@@ -43,9 +45,9 @@ public interface Events {
 
     /**
      * Lists the events.
-     *
-     * <p>Gets the list of events in the given vault.
-     *
+     * 
+     * Gets the list of events in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -57,9 +59,9 @@ public interface Events {
 
     /**
      * Lists the events.
-     *
-     * <p>Gets the list of events in the given vault.
-     *
+     * 
+     * Gets the list of events in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -70,6 +72,6 @@ public interface Events {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of events in the given vault as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EventModel> list(
-        String resourceGroupName, String vaultName, String filter, String continuationToken, Context context);
+    PagedIterable<EventModel> list(String resourceGroupName, String vaultName, String filter, String continuationToken,
+        Context context);
 }

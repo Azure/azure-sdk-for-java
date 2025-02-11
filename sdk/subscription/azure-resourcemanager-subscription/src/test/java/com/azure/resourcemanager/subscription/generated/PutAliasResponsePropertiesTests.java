@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PutAliasResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PutAliasResponseProperties model =
-            BinaryData
-                .fromString("{\"subscriptionId\":\"lnrosfqp\",\"provisioningState\":\"Failed\"}")
+        PutAliasResponseProperties model
+            = BinaryData.fromString("{\"subscriptionId\":\"htqqrolfp\",\"provisioningState\":\"Failed\"}")
                 .toObject(PutAliasResponseProperties.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PutAliasResponseProperties model =
-            new PutAliasResponseProperties().withProvisioningState(ProvisioningState.FAILED);
+        PutAliasResponseProperties model
+            = new PutAliasResponseProperties().withProvisioningState(ProvisioningState.FAILED);
         model = BinaryData.fromObject(model).toObject(PutAliasResponseProperties.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
     }

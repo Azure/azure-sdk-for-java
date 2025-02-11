@@ -9,7 +9,8 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class CachesFlushSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/Caches_Flush.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/Caches_Flush.json
      */
     /**
      * Sample code: Caches_Flush.

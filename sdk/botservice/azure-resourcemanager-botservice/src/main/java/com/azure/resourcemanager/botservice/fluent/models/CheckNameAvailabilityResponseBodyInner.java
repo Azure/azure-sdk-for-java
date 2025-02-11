@@ -5,27 +5,42 @@
 package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The response body returned for a request to Bot Service Management to check availability of a bot name. */
+/**
+ * The response body returned for a request to Bot Service Management to check availability of a bot name.
+ */
 @Fluent
-public final class CheckNameAvailabilityResponseBodyInner {
+public final class CheckNameAvailabilityResponseBodyInner
+    implements JsonSerializable<CheckNameAvailabilityResponseBodyInner> {
     /*
      * indicates if the bot name is valid.
      */
-    @JsonProperty(value = "valid")
     private Boolean valid;
 
     /*
-     * additional message from the bot management api showing why a bot name is
-     * not available
+     * additional message from the bot management api showing why a bot name is not available
      */
-    @JsonProperty(value = "message")
     private String message;
+
+    /*
+     * response code from ABS
+     */
+    private String absCode;
+
+    /**
+     * Creates an instance of CheckNameAvailabilityResponseBodyInner class.
+     */
+    public CheckNameAvailabilityResponseBodyInner() {
+    }
 
     /**
      * Get the valid property: indicates if the bot name is valid.
-     *
+     * 
      * @return the valid value.
      */
     public Boolean valid() {
@@ -34,7 +49,7 @@ public final class CheckNameAvailabilityResponseBodyInner {
 
     /**
      * Set the valid property: indicates if the bot name is valid.
-     *
+     * 
      * @param valid the valid value to set.
      * @return the CheckNameAvailabilityResponseBodyInner object itself.
      */
@@ -45,7 +60,7 @@ public final class CheckNameAvailabilityResponseBodyInner {
 
     /**
      * Get the message property: additional message from the bot management api showing why a bot name is not available.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -54,7 +69,7 @@ public final class CheckNameAvailabilityResponseBodyInner {
 
     /**
      * Set the message property: additional message from the bot management api showing why a bot name is not available.
-     *
+     * 
      * @param message the message value to set.
      * @return the CheckNameAvailabilityResponseBodyInner object itself.
      */
@@ -64,10 +79,74 @@ public final class CheckNameAvailabilityResponseBodyInner {
     }
 
     /**
+     * Get the absCode property: response code from ABS.
+     * 
+     * @return the absCode value.
+     */
+    public String absCode() {
+        return this.absCode;
+    }
+
+    /**
+     * Set the absCode property: response code from ABS.
+     * 
+     * @param absCode the absCode value to set.
+     * @return the CheckNameAvailabilityResponseBodyInner object itself.
+     */
+    public CheckNameAvailabilityResponseBodyInner withAbsCode(String absCode) {
+        this.absCode = absCode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("valid", this.valid);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("absCode", this.absCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameAvailabilityResponseBodyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameAvailabilityResponseBodyInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckNameAvailabilityResponseBodyInner.
+     */
+    public static CheckNameAvailabilityResponseBodyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameAvailabilityResponseBodyInner deserializedCheckNameAvailabilityResponseBodyInner
+                = new CheckNameAvailabilityResponseBodyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("valid".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResponseBodyInner.valid
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("message".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResponseBodyInner.message = reader.getString();
+                } else if ("absCode".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResponseBodyInner.absCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameAvailabilityResponseBodyInner;
+        });
     }
 }

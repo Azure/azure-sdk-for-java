@@ -5,39 +5,46 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.LiveEventTrackEventData;
 import com.azure.resourcemanager.mediaservices.models.LiveEventTrackEventType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The live event track event. */
+/**
+ * The live event track event.
+ */
 @Fluent
-public final class LiveEventTrackEventInner {
+public final class LiveEventTrackEventInner implements JsonSerializable<LiveEventTrackEventInner> {
     /*
      * The type of the track event.
      */
-    @JsonProperty(value = "eventType")
     private LiveEventTrackEventType eventType;
 
     /*
      * The time event raised.
      */
-    @JsonProperty(value = "eventTime")
     private OffsetDateTime eventTime;
 
     /*
      * Event data.
      */
-    @JsonProperty(value = "data")
     private LiveEventTrackEventData data;
 
-    /** Creates an instance of LiveEventTrackEventInner class. */
+    /**
+     * Creates an instance of LiveEventTrackEventInner class.
+     */
     public LiveEventTrackEventInner() {
     }
 
     /**
      * Get the eventType property: The type of the track event.
-     *
+     * 
      * @return the eventType value.
      */
     public LiveEventTrackEventType eventType() {
@@ -46,7 +53,7 @@ public final class LiveEventTrackEventInner {
 
     /**
      * Set the eventType property: The type of the track event.
-     *
+     * 
      * @param eventType the eventType value to set.
      * @return the LiveEventTrackEventInner object itself.
      */
@@ -57,7 +64,7 @@ public final class LiveEventTrackEventInner {
 
     /**
      * Get the eventTime property: The time event raised.
-     *
+     * 
      * @return the eventTime value.
      */
     public OffsetDateTime eventTime() {
@@ -66,7 +73,7 @@ public final class LiveEventTrackEventInner {
 
     /**
      * Set the eventTime property: The time event raised.
-     *
+     * 
      * @param eventTime the eventTime value to set.
      * @return the LiveEventTrackEventInner object itself.
      */
@@ -77,7 +84,7 @@ public final class LiveEventTrackEventInner {
 
     /**
      * Get the data property: Event data.
-     *
+     * 
      * @return the data value.
      */
     public LiveEventTrackEventData data() {
@@ -86,7 +93,7 @@ public final class LiveEventTrackEventInner {
 
     /**
      * Set the data property: Event data.
-     *
+     * 
      * @param data the data value to set.
      * @return the LiveEventTrackEventInner object itself.
      */
@@ -97,12 +104,57 @@ public final class LiveEventTrackEventInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (data() != null) {
             data().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eventType", this.eventType == null ? null : this.eventType.toString());
+        jsonWriter.writeStringField("eventTime",
+            this.eventTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.eventTime));
+        jsonWriter.writeJsonField("data", this.data);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiveEventTrackEventInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiveEventTrackEventInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LiveEventTrackEventInner.
+     */
+    public static LiveEventTrackEventInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiveEventTrackEventInner deserializedLiveEventTrackEventInner = new LiveEventTrackEventInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventType".equals(fieldName)) {
+                    deserializedLiveEventTrackEventInner.eventType
+                        = LiveEventTrackEventType.fromString(reader.getString());
+                } else if ("eventTime".equals(fieldName)) {
+                    deserializedLiveEventTrackEventInner.eventTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("data".equals(fieldName)) {
+                    deserializedLiveEventTrackEventInner.data = LiveEventTrackEventData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiveEventTrackEventInner;
+        });
     }
 }

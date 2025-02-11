@@ -12,24 +12,33 @@ public final class ImageReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageReference model = BinaryData.fromString(
-            "{\"publisher\":\"lmpewwwfbkr\",\"offer\":\"nsvs\",\"sku\":\"johxcrsb\",\"version\":\"vasrruvwb\",\"id\":\"qfsubcgjbirx\"}")
+            "{\"publisher\":\"dneu\",\"offer\":\"fphsdyhtozfikdow\",\"sku\":\"uuvxz\",\"version\":\"lvithhqzonosgg\",\"id\":\"c\",\"sharedGalleryImageId\":\"fwdsj\",\"communityGalleryImageId\":\"aljutiiswac\"}")
             .toObject(ImageReference.class);
-        Assertions.assertEquals("lmpewwwfbkr", model.publisher());
-        Assertions.assertEquals("nsvs", model.offer());
-        Assertions.assertEquals("johxcrsb", model.sku());
-        Assertions.assertEquals("vasrruvwb", model.version());
-        Assertions.assertEquals("qfsubcgjbirx", model.id());
+        Assertions.assertEquals("dneu", model.publisher());
+        Assertions.assertEquals("fphsdyhtozfikdow", model.offer());
+        Assertions.assertEquals("uuvxz", model.sku());
+        Assertions.assertEquals("lvithhqzonosgg", model.version());
+        Assertions.assertEquals("c", model.id());
+        Assertions.assertEquals("fwdsj", model.sharedGalleryImageId());
+        Assertions.assertEquals("aljutiiswac", model.communityGalleryImageId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageReference model = new ImageReference().withPublisher("lmpewwwfbkr").withOffer("nsvs").withSku("johxcrsb")
-            .withVersion("vasrruvwb").withId("qfsubcgjbirx");
+        ImageReference model = new ImageReference().withPublisher("dneu")
+            .withOffer("fphsdyhtozfikdow")
+            .withSku("uuvxz")
+            .withVersion("lvithhqzonosgg")
+            .withId("c")
+            .withSharedGalleryImageId("fwdsj")
+            .withCommunityGalleryImageId("aljutiiswac");
         model = BinaryData.fromObject(model).toObject(ImageReference.class);
-        Assertions.assertEquals("lmpewwwfbkr", model.publisher());
-        Assertions.assertEquals("nsvs", model.offer());
-        Assertions.assertEquals("johxcrsb", model.sku());
-        Assertions.assertEquals("vasrruvwb", model.version());
-        Assertions.assertEquals("qfsubcgjbirx", model.id());
+        Assertions.assertEquals("dneu", model.publisher());
+        Assertions.assertEquals("fphsdyhtozfikdow", model.offer());
+        Assertions.assertEquals("uuvxz", model.sku());
+        Assertions.assertEquals("lvithhqzonosgg", model.version());
+        Assertions.assertEquals("c", model.id());
+        Assertions.assertEquals("fwdsj", model.sharedGalleryImageId());
+        Assertions.assertEquals("aljutiiswac", model.communityGalleryImageId());
     }
 }

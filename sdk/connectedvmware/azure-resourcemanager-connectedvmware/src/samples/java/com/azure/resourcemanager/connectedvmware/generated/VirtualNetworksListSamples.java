@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-/** Samples for VirtualNetworks List. */
+/**
+ * Samples for VirtualNetworks List.
+ */
 public final class VirtualNetworksListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListVirtualNetworks.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListVirtualNetworks.json
      */
     /**
      * Sample code: ListVirtualNetworks.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listVirtualNetworks(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {

@@ -8,7 +8,6 @@ import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
 import com.azure.ai.vision.face.models.LivenessSession;
 
-
 class LivenessSessionSyncCommands implements ILivenessSessionSyncCommands {
     private final FaceSessionClient mSyncClient;
 

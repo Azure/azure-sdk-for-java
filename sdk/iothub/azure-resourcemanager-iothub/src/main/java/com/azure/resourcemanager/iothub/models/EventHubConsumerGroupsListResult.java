@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iothub.fluent.models.EventHubConsumerGroupInfoInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The JSON-serialized array of Event Hub-compatible consumer group names with a next link. */
+/**
+ * The JSON-serialized array of Event Hub-compatible consumer group names with a next link.
+ */
 @Fluent
-public final class EventHubConsumerGroupsListResult {
+public final class EventHubConsumerGroupsListResult implements JsonSerializable<EventHubConsumerGroupsListResult> {
     /*
      * List of consumer groups objects
      */
-    @JsonProperty(value = "value")
     private List<EventHubConsumerGroupInfoInner> value;
 
     /*
      * The next link.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of EventHubConsumerGroupsListResult class. */
+    /**
+     * Creates an instance of EventHubConsumerGroupsListResult class.
+     */
     public EventHubConsumerGroupsListResult() {
     }
 
     /**
      * Get the value property: List of consumer groups objects.
-     *
+     * 
      * @return the value value.
      */
     public List<EventHubConsumerGroupInfoInner> value() {
@@ -39,7 +45,7 @@ public final class EventHubConsumerGroupsListResult {
 
     /**
      * Set the value property: List of consumer groups objects.
-     *
+     * 
      * @param value the value value to set.
      * @return the EventHubConsumerGroupsListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class EventHubConsumerGroupsListResult {
 
     /**
      * Get the nextLink property: The next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,53 @@ public final class EventHubConsumerGroupsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubConsumerGroupsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubConsumerGroupsListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventHubConsumerGroupsListResult.
+     */
+    public static EventHubConsumerGroupsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubConsumerGroupsListResult deserializedEventHubConsumerGroupsListResult
+                = new EventHubConsumerGroupsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<EventHubConsumerGroupInfoInner> value
+                        = reader.readArray(reader1 -> EventHubConsumerGroupInfoInner.fromJson(reader1));
+                    deserializedEventHubConsumerGroupsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedEventHubConsumerGroupsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubConsumerGroupsListResult;
+        });
     }
 }

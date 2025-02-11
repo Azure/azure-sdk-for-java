@@ -11,6 +11,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMa
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListsListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.IpAddressType;
 import com.azure.resourcemanager.managednetworkfabric.models.IpGroupProperties;
@@ -24,138 +25,204 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessControlListsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessControlListsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"lastSyncedTime\":\"2021-08-20T21:04:40Z\",\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Failed\",\"administrativeState\":\"Enabled\",\"configurationType\":\"File\",\"aclsUrl\":\"aiancznvodr\",\"matchConfigurations\":[{\"matchConfigurationName\":\"lxydkxrxv\",\"sequenceNumber\":731559020622365295,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{},{},{},{}]},{\"matchConfigurationName\":\"jnqkhy\",\"sequenceNumber\":7281626165756330252,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{}]},{\"matchConfigurationName\":\"rqlrqffawe\",\"sequenceNumber\":49967768153129763,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{},{}],\"actions\":[{}]},{\"matchConfigurationName\":\"av\",\"sequenceNumber\":1106225492612051465,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{}],\"vlanGroups\":[{}],\"portGroups\":[{},{},{},{}]},{\"ipGroups\":[{},{}],\"vlanGroups\":[{}],\"portGroups\":[{},{},{},{}]},{\"ipGroups\":[{},{}],\"vlanGroups\":[{}],\"portGroups\":[{},{}]}],\"annotation\":\"duusioycblevpmcl\"},\"location\":\"yxkyxlz\",\"tags\":{\"taf\":\"gkzz\"},\"id\":\"bzf\",\"name\":\"ovwmbjlzqsczpgvd\",\"type\":\"napfdqwowftpt\"}],\"nextLink\":\"wjtkschgcgqyhl\"}")
-                .toObject(AccessControlListsListResult.class);
-        Assertions.assertEquals("yxkyxlz", model.value().get(0).location());
-        Assertions.assertEquals("gkzz", model.value().get(0).tags().get("taf"));
-        Assertions.assertEquals(ConfigurationType.FILE, model.value().get(0).configurationType());
-        Assertions.assertEquals("aiancznvodr", model.value().get(0).aclsUrl());
-        Assertions
-            .assertEquals("lxydkxrxv", model.value().get(0).matchConfigurations().get(0).matchConfigurationName());
-        Assertions
-            .assertEquals(731559020622365295L, model.value().get(0).matchConfigurations().get(0).sequenceNumber());
-        Assertions.assertEquals(IpAddressType.IPV6, model.value().get(0).matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals("duusioycblevpmcl", model.value().get(0).annotation());
-        Assertions.assertEquals("wjtkschgcgqyhl", model.nextLink());
+        AccessControlListsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"lastSyncedTime\":\"2021-06-01T23:38:48Z\",\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Failed\",\"administrativeState\":\"RMA\",\"configurationType\":\"Inline\",\"aclsUrl\":\"myccx\",\"defaultAction\":\"Permit\",\"matchConfigurations\":[{\"matchConfigurationName\":\"ovne\",\"sequenceNumber\":7587304831403189204,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{}],\"actions\":[{}]},{\"matchConfigurationName\":\"tjxtxr\",\"sequenceNumber\":2960888766726834281,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{},{},{}]},{\"matchConfigurationName\":\"epu\",\"sequenceNumber\":7392352189892774319,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{},{}]},{\"matchConfigurationName\":\"asiz\",\"sequenceNumber\":6533192365973677613,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{}],\"vlanGroups\":[{},{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{}],\"vlanGroups\":[{},{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{},{}]}],\"annotation\":\"rswnjlxuzrhwp\"},\"location\":\"xjbaqehgpdohzjq\",\"tags\":{\"e\":\"coi\",\"bnwgfmxj\":\"xncnwfe\"},\"id\":\"cgbjbgdlfgt\",\"name\":\"y\",\"type\":\"naquflq\"},{\"properties\":{\"lastSyncedTime\":\"2021-05-03T03:00:46Z\",\"configurationState\":\"Succeeded\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Disabled\",\"configurationType\":\"File\",\"aclsUrl\":\"kqzeqyjleziunjx\",\"defaultAction\":\"Deny\",\"matchConfigurations\":[{\"matchConfigurationName\":\"kwcegyamlbn\",\"sequenceNumber\":1472551635473753949,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{}],\"actions\":[{},{},{},{}]},{\"matchConfigurationName\":\"guooqjagmdit\",\"sequenceNumber\":1873486568020601508,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{}],\"actions\":[{},{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{}],\"vlanGroups\":[{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{}],\"vlanGroups\":[{},{}],\"portGroups\":[{},{},{}]}],\"annotation\":\"nfxofvcj\"},\"location\":\"dirazf\",\"tags\":{\"jtmvc\":\"jwabmd\",\"kyqltqsrogt\":\"pexcmjurbuhh\",\"ysidfvclgl\":\"wkffdjkt\",\"uijtkbu\":\"n\"},\"id\":\"qogsfikayian\",\"name\":\"haru\",\"type\":\"t\"},{\"properties\":{\"lastSyncedTime\":\"2021-09-02T16:26Z\",\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Enabled\",\"configurationType\":\"Inline\",\"aclsUrl\":\"wkpqhjpenuygbq\",\"defaultAction\":\"Deny\",\"matchConfigurations\":[{\"matchConfigurationName\":\"wv\",\"sequenceNumber\":5031872996137755111,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{}],\"actions\":[{},{}]},{\"matchConfigurationName\":\"mfdjwn\",\"sequenceNumber\":7067033284012194422,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{},{}]},{\"ipGroups\":[{}],\"vlanGroups\":[{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{}],\"portGroups\":[{},{},{}]}],\"annotation\":\"ntsj\"},\"location\":\"rsxypruuu\",\"tags\":{\"oyuelyetn\":\"chrszi\",\"qyggagfl\":\"nb\",\"byrplrohkpig\":\"lgmtrwahzjmucf\"},\"id\":\"fusuckzmkwklsno\",\"name\":\"axmqeqal\",\"type\":\"hjnhgwydyynfsvk\"},{\"properties\":{\"lastSyncedTime\":\"2020-12-23T07:31:38Z\",\"configurationState\":\"Failed\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"configurationType\":\"Inline\",\"aclsUrl\":\"lpu\",\"defaultAction\":\"Permit\",\"matchConfigurations\":[{\"matchConfigurationName\":\"eizjcpeogkhnmg\",\"sequenceNumber\":7213187921154412641,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{},{}],\"actions\":[{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{}]},{\"ipGroups\":[{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{}],\"vlanGroups\":[{}],\"portGroups\":[{},{},{}]}],\"annotation\":\"tehtuevrhrljyoog\"},\"location\":\"hnsduugwbsreur\",\"tags\":{\"lnvnafvvkyfedev\":\"fuarenlvhht\",\"lcqxypokk\":\"bo\",\"zng\":\"minqcym\"},\"id\":\"bdxxe\",\"name\":\"unin\",\"type\":\"udbchaqdtv\"}],\"nextLink\":\"crqctmxxdtddmflh\"}")
+            .toObject(AccessControlListsListResult.class);
+        Assertions.assertEquals("xjbaqehgpdohzjq", model.value().get(0).location());
+        Assertions.assertEquals("coi", model.value().get(0).tags().get("e"));
+        Assertions.assertEquals(ConfigurationType.INLINE, model.value().get(0).configurationType());
+        Assertions.assertEquals("myccx", model.value().get(0).aclsUrl());
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.value().get(0).defaultAction());
+        Assertions.assertEquals("ovne", model.value().get(0).matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(7587304831403189204L,
+            model.value().get(0).matchConfigurations().get(0).sequenceNumber());
+        Assertions.assertEquals(IpAddressType.IPV4, model.value().get(0).matchConfigurations().get(0).ipAddressType());
+        Assertions.assertEquals("rswnjlxuzrhwp", model.value().get(0).annotation());
+        Assertions.assertEquals("crqctmxxdtddmflh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessControlListsListResult model =
-            new AccessControlListsListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AccessControlListInner()
-                                .withLocation("yxkyxlz")
-                                .withTags(mapOf("taf", "gkzz"))
-                                .withConfigurationType(ConfigurationType.FILE)
-                                .withAclsUrl("aiancznvodr")
-                                .withMatchConfigurations(
-                                    Arrays
-                                        .asList(
-                                            new AccessControlListMatchConfiguration()
-                                                .withMatchConfigurationName("lxydkxrxv")
-                                                .withSequenceNumber(731559020622365295L)
-                                                .withIpAddressType(IpAddressType.IPV6)
-                                                .withMatchConditions(
-                                                    Arrays
-                                                        .asList(
-                                                            new AccessControlListMatchCondition(),
-                                                            new AccessControlListMatchCondition(),
-                                                            new AccessControlListMatchCondition()))
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(
-                                                            new AccessControlListAction(),
-                                                            new AccessControlListAction(),
-                                                            new AccessControlListAction(),
-                                                            new AccessControlListAction())),
-                                            new AccessControlListMatchConfiguration()
-                                                .withMatchConfigurationName("jnqkhy")
-                                                .withSequenceNumber(7281626165756330252L)
-                                                .withIpAddressType(IpAddressType.IPV6)
-                                                .withMatchConditions(
-                                                    Arrays.asList(new AccessControlListMatchCondition()))
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(
-                                                            new AccessControlListAction(),
-                                                            new AccessControlListAction())),
-                                            new AccessControlListMatchConfiguration()
-                                                .withMatchConfigurationName("rqlrqffawe")
-                                                .withSequenceNumber(49967768153129763L)
-                                                .withIpAddressType(IpAddressType.IPV4)
-                                                .withMatchConditions(
-                                                    Arrays
-                                                        .asList(
-                                                            new AccessControlListMatchCondition(),
-                                                            new AccessControlListMatchCondition(),
-                                                            new AccessControlListMatchCondition(),
-                                                            new AccessControlListMatchCondition()))
-                                                .withActions(Arrays.asList(new AccessControlListAction())),
-                                            new AccessControlListMatchConfiguration()
-                                                .withMatchConfigurationName("av")
-                                                .withSequenceNumber(1106225492612051465L)
-                                                .withIpAddressType(IpAddressType.IPV6)
-                                                .withMatchConditions(
-                                                    Arrays.asList(new AccessControlListMatchCondition()))
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(
-                                                            new AccessControlListAction(),
-                                                            new AccessControlListAction(),
-                                                            new AccessControlListAction()))))
-                                .withDynamicMatchConfigurations(
-                                    Arrays
-                                        .asList(
-                                            new CommonDynamicMatchConfiguration()
-                                                .withIpGroups(Arrays.asList(new IpGroupProperties()))
-                                                .withVlanGroups(Arrays.asList(new VlanGroupProperties()))
-                                                .withPortGroups(
-                                                    Arrays
-                                                        .asList(
-                                                            new PortGroupProperties(),
-                                                            new PortGroupProperties(),
-                                                            new PortGroupProperties(),
-                                                            new PortGroupProperties())),
-                                            new CommonDynamicMatchConfiguration()
-                                                .withIpGroups(
-                                                    Arrays.asList(new IpGroupProperties(), new IpGroupProperties()))
-                                                .withVlanGroups(Arrays.asList(new VlanGroupProperties()))
-                                                .withPortGroups(
-                                                    Arrays
-                                                        .asList(
-                                                            new PortGroupProperties(),
-                                                            new PortGroupProperties(),
-                                                            new PortGroupProperties(),
-                                                            new PortGroupProperties())),
-                                            new CommonDynamicMatchConfiguration()
-                                                .withIpGroups(
-                                                    Arrays.asList(new IpGroupProperties(), new IpGroupProperties()))
-                                                .withVlanGroups(Arrays.asList(new VlanGroupProperties()))
-                                                .withPortGroups(
-                                                    Arrays
-                                                        .asList(new PortGroupProperties(), new PortGroupProperties()))))
-                                .withAnnotation("duusioycblevpmcl")))
-                .withNextLink("wjtkschgcgqyhl");
+        AccessControlListsListResult model = new AccessControlListsListResult()
+            .withValue(Arrays.asList(
+                new AccessControlListInner().withLocation("xjbaqehgpdohzjq")
+                    .withTags(mapOf("e", "coi", "bnwgfmxj", "xncnwfe"))
+                    .withConfigurationType(ConfigurationType.INLINE)
+                    .withAclsUrl("myccx")
+                    .withDefaultAction(CommunityActionTypes.PERMIT)
+                    .withMatchConfigurations(Arrays.asList(
+                        new AccessControlListMatchConfiguration().withMatchConfigurationName("ovne")
+                            .withSequenceNumber(7587304831403189204L)
+                            .withIpAddressType(IpAddressType.IPV4)
+                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition(), new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction())),
+                        new AccessControlListMatchConfiguration().withMatchConfigurationName("tjxtxr")
+                            .withSequenceNumber(2960888766726834281L)
+                            .withIpAddressType(IpAddressType.IPV6)
+                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction(),
+                                new AccessControlListAction(), new AccessControlListAction())),
+                        new AccessControlListMatchConfiguration().withMatchConfigurationName("epu")
+                            .withSequenceNumber(7392352189892774319L)
+                            .withIpAddressType(IpAddressType.IPV4)
+                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition(), new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction(),
+                                new AccessControlListAction())),
+                        new AccessControlListMatchConfiguration().withMatchConfigurationName("asiz")
+                            .withSequenceNumber(6533192365973677613L)
+                            .withIpAddressType(IpAddressType.IPV6)
+                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition(), new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction()))))
+                    .withDynamicMatchConfigurations(Arrays.asList(
+                        new CommonDynamicMatchConfiguration()
+                            .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties(),
+                                new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties())),
+                        new CommonDynamicMatchConfiguration()
+                            .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties(),
+                                new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties(),
+                                new PortGroupProperties())),
+                        new CommonDynamicMatchConfiguration()
+                            .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties(),
+                                new IpGroupProperties(), new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties(),
+                                new VlanGroupProperties(), new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties(),
+                                new PortGroupProperties(), new PortGroupProperties()))))
+                    .withAnnotation("rswnjlxuzrhwp"),
+                new AccessControlListInner().withLocation("dirazf")
+                    .withTags(mapOf("jtmvc", "jwabmd", "kyqltqsrogt", "pexcmjurbuhh", "ysidfvclgl", "wkffdjkt",
+                        "uijtkbu", "n"))
+                    .withConfigurationType(ConfigurationType.FILE)
+                    .withAclsUrl("kqzeqyjleziunjx")
+                    .withDefaultAction(CommunityActionTypes.DENY)
+                    .withMatchConfigurations(Arrays.asList(
+                        new AccessControlListMatchConfiguration().withMatchConfigurationName("kwcegyamlbn")
+                            .withSequenceNumber(1472551635473753949L)
+                            .withIpAddressType(IpAddressType.IPV6)
+                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction(),
+                                new AccessControlListAction(), new AccessControlListAction())),
+                        new AccessControlListMatchConfiguration().withMatchConfigurationName("guooqjagmdit")
+                            .withSequenceNumber(1873486568020601508L)
+                            .withIpAddressType(IpAddressType.IPV4)
+                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition(), new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction(),
+                                new AccessControlListAction()))))
+                    .withDynamicMatchConfigurations(Arrays.asList(
+                        new CommonDynamicMatchConfiguration()
+                            .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties(),
+                                new IpGroupProperties(), new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties(),
+                                new PortGroupProperties())),
+                        new CommonDynamicMatchConfiguration().withIpGroups(Arrays.asList(new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties())),
+                        new CommonDynamicMatchConfiguration().withIpGroups(Arrays.asList(new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties(),
+                                new PortGroupProperties()))))
+                    .withAnnotation("nfxofvcj"),
+                new AccessControlListInner().withLocation("rsxypruuu")
+                    .withTags(mapOf("oyuelyetn", "chrszi", "qyggagfl", "nb", "byrplrohkpig", "lgmtrwahzjmucf"))
+                    .withConfigurationType(ConfigurationType.INLINE)
+                    .withAclsUrl("wkpqhjpenuygbq")
+                    .withDefaultAction(CommunityActionTypes.DENY)
+                    .withMatchConfigurations(Arrays.asList(
+                        new AccessControlListMatchConfiguration().withMatchConfigurationName("wv")
+                            .withSequenceNumber(5031872996137755111L)
+                            .withIpAddressType(IpAddressType.IPV4)
+                            .withMatchConditions(Arrays
+                                .asList(new AccessControlListMatchCondition(), new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction())),
+                        new AccessControlListMatchConfiguration().withMatchConfigurationName("mfdjwn")
+                            .withSequenceNumber(7067033284012194422L)
+                            .withIpAddressType(IpAddressType.IPV4)
+                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition(), new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction()))))
+                    .withDynamicMatchConfigurations(Arrays.asList(new CommonDynamicMatchConfiguration()
+                        .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties()))
+                        .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties()))
+                        .withPortGroups(Arrays.asList(new PortGroupProperties())),
+                        new CommonDynamicMatchConfiguration()
+                            .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties(),
+                                new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties(),
+                                new VlanGroupProperties(), new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties(),
+                                new PortGroupProperties(), new PortGroupProperties())),
+                        new CommonDynamicMatchConfiguration().withIpGroups(Arrays.asList(new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties(),
+                                new PortGroupProperties())),
+                        new CommonDynamicMatchConfiguration()
+                            .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties(),
+                                new IpGroupProperties(), new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties(),
+                                new PortGroupProperties()))))
+                    .withAnnotation("ntsj"),
+                new AccessControlListInner().withLocation("hnsduugwbsreur")
+                    .withTags(mapOf("lnvnafvvkyfedev", "fuarenlvhht", "lcqxypokk", "bo", "zng", "minqcym"))
+                    .withConfigurationType(ConfigurationType.INLINE)
+                    .withAclsUrl("lpu")
+                    .withDefaultAction(CommunityActionTypes.PERMIT)
+                    .withMatchConfigurations(Arrays
+                        .asList(new AccessControlListMatchConfiguration().withMatchConfigurationName("eizjcpeogkhnmg")
+                            .withSequenceNumber(7213187921154412641L)
+                            .withIpAddressType(IpAddressType.IPV4)
+                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition(), new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction()))))
+                    .withDynamicMatchConfigurations(Arrays.asList(
+                        new CommonDynamicMatchConfiguration().withIpGroups(Arrays.asList(new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties(),
+                                new VlanGroupProperties(), new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties())),
+                        new CommonDynamicMatchConfiguration()
+                            .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties(),
+                                new VlanGroupProperties(), new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties())),
+                        new CommonDynamicMatchConfiguration()
+                            .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties(),
+                                new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties(),
+                                new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties())),
+                        new CommonDynamicMatchConfiguration().withIpGroups(Arrays.asList(new IpGroupProperties()))
+                            .withVlanGroups(Arrays.asList(new VlanGroupProperties()))
+                            .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties(),
+                                new PortGroupProperties()))))
+                    .withAnnotation("tehtuevrhrljyoog")))
+            .withNextLink("crqctmxxdtddmflh");
         model = BinaryData.fromObject(model).toObject(AccessControlListsListResult.class);
-        Assertions.assertEquals("yxkyxlz", model.value().get(0).location());
-        Assertions.assertEquals("gkzz", model.value().get(0).tags().get("taf"));
-        Assertions.assertEquals(ConfigurationType.FILE, model.value().get(0).configurationType());
-        Assertions.assertEquals("aiancznvodr", model.value().get(0).aclsUrl());
-        Assertions
-            .assertEquals("lxydkxrxv", model.value().get(0).matchConfigurations().get(0).matchConfigurationName());
-        Assertions
-            .assertEquals(731559020622365295L, model.value().get(0).matchConfigurations().get(0).sequenceNumber());
-        Assertions.assertEquals(IpAddressType.IPV6, model.value().get(0).matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals("duusioycblevpmcl", model.value().get(0).annotation());
-        Assertions.assertEquals("wjtkschgcgqyhl", model.nextLink());
+        Assertions.assertEquals("xjbaqehgpdohzjq", model.value().get(0).location());
+        Assertions.assertEquals("coi", model.value().get(0).tags().get("e"));
+        Assertions.assertEquals(ConfigurationType.INLINE, model.value().get(0).configurationType());
+        Assertions.assertEquals("myccx", model.value().get(0).aclsUrl());
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.value().get(0).defaultAction());
+        Assertions.assertEquals("ovne", model.value().get(0).matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(7587304831403189204L,
+            model.value().get(0).matchConfigurations().get(0).sequenceNumber());
+        Assertions.assertEquals(IpAddressType.IPV4, model.value().get(0).matchConfigurations().get(0).ipAddressType());
+        Assertions.assertEquals("rswnjlxuzrhwp", model.value().get(0).annotation());
+        Assertions.assertEquals("crqctmxxdtddmflh", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

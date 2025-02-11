@@ -6,73 +6,42 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSchema;
 import com.azure.resourcemanager.logic.models.SchemaType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationAccountSchemasListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"schemaType\":\"NotSpecified\",\"targetNamespace\":\"ngymbzawdwtzx\",\"documentName\":\"qzplzyjktc\",\"fileName\":\"wvhiaxkmditcz\",\"createdTime\":\"2021-08-13T07:31:46Z\",\"changedTime\":\"2021-07-26T00:43:32Z\",\"metadata\":\"dataujfxyf\",\"content\":\"wgkaaxpwkmbdh\",\"contentType\":\"mjotccbduwswfb\",\"contentLink\":{\"uri\":\"ubmeih\",\"contentVersion\":\"mewdm\",\"contentSize\":1591045162864053326,\"contentHash\":{\"algorithm\":\"slbi\",\"value\":\"s\"},\"metadata\":\"datacwaobuimfda\"}},\"location\":\"unjegomegma\",\"tags\":{\"ffdeogm\":\"eablknqnqqcgi\"},\"id\":\"lpopjl\",\"name\":\"tcswqxev\",\"type\":\"zpoxm\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"schemaType\":\"NotSpecified\",\"targetNamespace\":\"agsqta\",\"documentName\":\"usrexxf\",\"fileName\":\"sqwudohzilfmnli\",\"createdTime\":\"2021-10-25T06:45:33Z\",\"changedTime\":\"2021-01-29T21:29:34Z\",\"metadata\":\"datafeypofqpmb\",\"content\":\"qgsdr\",\"contentType\":\"ttjxophgerhsmvgo\",\"contentLink\":{\"uri\":\"zmqilrixysfnim\",\"contentVersion\":\"y\",\"contentSize\":9195971983193911105,\"metadata\":\"dataruwaedry\"}},\"location\":\"pmlqoinhzduew\",\"tags\":{\"jh\":\"pfjiiknjdiqfli\",\"iedfsbwcei\":\"cl\"},\"id\":\"bv\",\"name\":\"ipbwxgooo\",\"type\":\"zp\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<IntegrationAccountSchema> response = manager.integrationAccountSchemas()
+            .list("ftcinj", "rayoask", 1244597189, "lqweo", com.azure.core.util.Context.NONE);
 
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<IntegrationAccountSchema> response =
-            manager
-                .integrationAccountSchemas()
-                .list("yszekbhwlka", "ggkrehbf", 220884022, "uybffljfiim", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("pmlqoinhzduew", response.iterator().next().location());
-        Assertions.assertEquals("pfjiiknjdiqfli", response.iterator().next().tags().get("jh"));
+        Assertions.assertEquals("unjegomegma", response.iterator().next().location());
+        Assertions.assertEquals("eablknqnqqcgi", response.iterator().next().tags().get("ffdeogm"));
         Assertions.assertEquals(SchemaType.NOT_SPECIFIED, response.iterator().next().schemaType());
-        Assertions.assertEquals("agsqta", response.iterator().next().targetNamespace());
-        Assertions.assertEquals("usrexxf", response.iterator().next().documentName());
-        Assertions.assertEquals("sqwudohzilfmnli", response.iterator().next().fileName());
-        Assertions.assertEquals("qgsdr", response.iterator().next().content());
-        Assertions.assertEquals("ttjxophgerhsmvgo", response.iterator().next().contentType());
+        Assertions.assertEquals("ngymbzawdwtzx", response.iterator().next().targetNamespace());
+        Assertions.assertEquals("qzplzyjktc", response.iterator().next().documentName());
+        Assertions.assertEquals("wvhiaxkmditcz", response.iterator().next().fileName());
+        Assertions.assertEquals("wgkaaxpwkmbdh", response.iterator().next().content());
+        Assertions.assertEquals("mjotccbduwswfb", response.iterator().next().contentType());
     }
 }

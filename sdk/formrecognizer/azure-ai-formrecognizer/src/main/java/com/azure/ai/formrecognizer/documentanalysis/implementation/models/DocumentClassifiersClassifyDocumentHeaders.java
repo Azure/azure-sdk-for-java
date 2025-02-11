@@ -18,8 +18,6 @@ public final class DocumentClassifiersClassifyDocumentHeaders {
      */
     private String operationLocation;
 
-    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of DocumentClassifiersClassifyDocumentHeaders class.
@@ -27,7 +25,7 @@ public final class DocumentClassifiersClassifyDocumentHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public DocumentClassifiersClassifyDocumentHeaders(HttpHeaders rawHeaders) {
-        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
+        this.operationLocation = rawHeaders.getValue(HttpHeaderName.OPERATION_LOCATION);
     }
 
     /**

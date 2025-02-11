@@ -6,33 +6,39 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ExpressRoute circuit ID and the Auth Key are required for you to successfully deploy NFC service. */
+/**
+ * The ExpressRoute circuit ID and the Auth Key are required for you to successfully deploy NFC service.
+ */
 @Fluent
-public final class ExpressRouteConnectionInformation {
+public final class ExpressRouteConnectionInformation implements JsonSerializable<ExpressRouteConnectionInformation> {
     /*
      * The express route circuit Azure resource ID, must be of type Microsoft.Network/expressRouteCircuits/circuitName.
      * The ExpressRoute Circuit is a mandatory attribute.
      */
-    @JsonProperty(value = "expressRouteCircuitId", required = true)
     private String expressRouteCircuitId;
 
     /*
      * Authorization key for the circuit, must be of type Microsoft.Network/expressRouteCircuits/authorizations. The
      * Auth Key is a mandatory attribute.
      */
-    @JsonProperty(value = "expressRouteAuthorizationKey")
     private String expressRouteAuthorizationKey;
 
-    /** Creates an instance of ExpressRouteConnectionInformation class. */
+    /**
+     * Creates an instance of ExpressRouteConnectionInformation class.
+     */
     public ExpressRouteConnectionInformation() {
     }
 
     /**
      * Get the expressRouteCircuitId property: The express route circuit Azure resource ID, must be of type
      * Microsoft.Network/expressRouteCircuits/circuitName. The ExpressRoute Circuit is a mandatory attribute.
-     *
+     * 
      * @return the expressRouteCircuitId value.
      */
     public String expressRouteCircuitId() {
@@ -42,7 +48,7 @@ public final class ExpressRouteConnectionInformation {
     /**
      * Set the expressRouteCircuitId property: The express route circuit Azure resource ID, must be of type
      * Microsoft.Network/expressRouteCircuits/circuitName. The ExpressRoute Circuit is a mandatory attribute.
-     *
+     * 
      * @param expressRouteCircuitId the expressRouteCircuitId value to set.
      * @return the ExpressRouteConnectionInformation object itself.
      */
@@ -54,7 +60,7 @@ public final class ExpressRouteConnectionInformation {
     /**
      * Get the expressRouteAuthorizationKey property: Authorization key for the circuit, must be of type
      * Microsoft.Network/expressRouteCircuits/authorizations. The Auth Key is a mandatory attribute.
-     *
+     * 
      * @return the expressRouteAuthorizationKey value.
      */
     public String expressRouteAuthorizationKey() {
@@ -64,7 +70,7 @@ public final class ExpressRouteConnectionInformation {
     /**
      * Set the expressRouteAuthorizationKey property: Authorization key for the circuit, must be of type
      * Microsoft.Network/expressRouteCircuits/authorizations. The Auth Key is a mandatory attribute.
-     *
+     * 
      * @param expressRouteAuthorizationKey the expressRouteAuthorizationKey value to set.
      * @return the ExpressRouteConnectionInformation object itself.
      */
@@ -75,24 +81,62 @@ public final class ExpressRouteConnectionInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (expressRouteCircuitId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expressRouteCircuitId in model ExpressRouteConnectionInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property expressRouteCircuitId in model ExpressRouteConnectionInformation"));
         }
         if (expressRouteAuthorizationKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expressRouteAuthorizationKey in model"
-                            + " ExpressRouteConnectionInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property expressRouteAuthorizationKey in model ExpressRouteConnectionInformation"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteConnectionInformation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("expressRouteCircuitId", this.expressRouteCircuitId);
+        jsonWriter.writeStringField("expressRouteAuthorizationKey", this.expressRouteAuthorizationKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteConnectionInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteConnectionInformation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExpressRouteConnectionInformation.
+     */
+    public static ExpressRouteConnectionInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteConnectionInformation deserializedExpressRouteConnectionInformation
+                = new ExpressRouteConnectionInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expressRouteCircuitId".equals(fieldName)) {
+                    deserializedExpressRouteConnectionInformation.expressRouteCircuitId = reader.getString();
+                } else if ("expressRouteAuthorizationKey".equals(fieldName)) {
+                    deserializedExpressRouteConnectionInformation.expressRouteAuthorizationKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteConnectionInformation;
+        });
+    }
 }

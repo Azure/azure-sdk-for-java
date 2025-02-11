@@ -21,7 +21,8 @@ public final class MonitoredSubscriptionsGetSamples {
      */
     public static void monitorsGetMonitoredSubscriptions(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitoredSubscriptions().getWithResponse("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT,
-            com.azure.core.util.Context.NONE);
+        manager.monitoredSubscriptions()
+            .getWithResponse("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

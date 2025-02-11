@@ -15,43 +15,54 @@ import java.time.OffsetDateTime;
  * An immutable client-side representation of a deployment operation.
  */
 @Fluent
-public interface DeploymentOperation extends
-        Indexable,
-        Refreshable<DeploymentOperation>,
-        HasInnerModel<DeploymentOperationInner> {
+public interface DeploymentOperation
+    extends Indexable, Refreshable<DeploymentOperation>, HasInnerModel<DeploymentOperationInner> {
 
     /**
+     * Gets the deployment operation id.
+     *
      * @return the deployment operation id
      */
     String operationId();
 
     /**
+     * Gets the state of the provisioning resource being deployed.
+     *
      * @return the state of the provisioning resource being deployed
      */
     String provisioningState();
 
     /**
+     * Gets the name of the current provisioning operation.
      *
      * @return the name of the current provisioning operation
      */
     ProvisioningOperation provisioningOperation();
 
     /**
+     * Gets the date and time of the operation.
+     *
      * @return the date and time of the operation
      */
     OffsetDateTime timestamp();
 
     /**
-     * @return the operation status code.=
+     * Gets the operation status code.
+     *
+     * @return the operation status code.
      */
     String statusCode();
 
     /**
+     * Gets the operation status message.
+     *
      * @return the operation status message
      */
     Object statusMessage();
 
     /**
+     * Gets the target resource.
+     *
      * @return the target resource
      */
     TargetResource targetResource();

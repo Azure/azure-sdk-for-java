@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Single entity mapping for the alert rule. */
+/**
+ * Single entity mapping for the alert rule.
+ */
 @Fluent
-public final class EntityMapping {
+public final class EntityMapping implements JsonSerializable<EntityMapping> {
     /*
      * The V3 type of the mapped entity
      */
-    @JsonProperty(value = "entityType")
     private EntityMappingType entityType;
 
     /*
      * array of field mappings for the given entity mapping
      */
-    @JsonProperty(value = "fieldMappings")
     private List<FieldMapping> fieldMappings;
 
     /**
+     * Creates an instance of EntityMapping class.
+     */
+    public EntityMapping() {
+    }
+
+    /**
      * Get the entityType property: The V3 type of the mapped entity.
-     *
+     * 
      * @return the entityType value.
      */
     public EntityMappingType entityType() {
@@ -34,7 +44,7 @@ public final class EntityMapping {
 
     /**
      * Set the entityType property: The V3 type of the mapped entity.
-     *
+     * 
      * @param entityType the entityType value to set.
      * @return the EntityMapping object itself.
      */
@@ -45,7 +55,7 @@ public final class EntityMapping {
 
     /**
      * Get the fieldMappings property: array of field mappings for the given entity mapping.
-     *
+     * 
      * @return the fieldMappings value.
      */
     public List<FieldMapping> fieldMappings() {
@@ -54,7 +64,7 @@ public final class EntityMapping {
 
     /**
      * Set the fieldMappings property: array of field mappings for the given entity mapping.
-     *
+     * 
      * @param fieldMappings the fieldMappings value to set.
      * @return the EntityMapping object itself.
      */
@@ -65,12 +75,52 @@ public final class EntityMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fieldMappings() != null) {
             fieldMappings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entityType", this.entityType == null ? null : this.entityType.toString());
+        jsonWriter.writeArrayField("fieldMappings", this.fieldMappings, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityMapping if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityMapping.
+     */
+    public static EntityMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityMapping deserializedEntityMapping = new EntityMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityType".equals(fieldName)) {
+                    deserializedEntityMapping.entityType = EntityMappingType.fromString(reader.getString());
+                } else if ("fieldMappings".equals(fieldName)) {
+                    List<FieldMapping> fieldMappings = reader.readArray(reader1 -> FieldMapping.fromJson(reader1));
+                    deserializedEntityMapping.fieldMappings = fieldMappings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityMapping;
+        });
     }
 }

@@ -53,9 +53,8 @@ abstract class ManagedIdentityServiceCredential {
 
     void validateEndpointProtocol(String endpoint, String endpointName, ClientLogger logger) {
         if (!(endpoint.startsWith("https") || endpoint.startsWith("http"))) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException(
-                    String.format("%s endpoint should start with 'https' or 'http' scheme.", endpointName)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("%s endpoint should start with 'https' or 'http' scheme.", endpointName)));
         }
     }
 }

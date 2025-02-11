@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the hardware settings for the virtual machine. */
+/**
+ * Specifies the hardware settings for the virtual machine.
+ */
 @Fluent
-public final class HardwareProfile {
+public final class HardwareProfile implements JsonSerializable<HardwareProfile> {
     /*
      * Gets or sets memory size in MBs for the vm.
      */
-    @JsonProperty(value = "memorySizeMB")
     private Integer memorySizeMB;
 
     /*
      * Gets or sets the number of vCPUs for the vm.
      */
-    @JsonProperty(value = "numCPUs")
     private Integer numCPUs;
 
     /*
      * Gets or sets the number of cores per socket for the vm. Defaults to 1 if unspecified.
      */
-    @JsonProperty(value = "numCoresPerSocket")
     private Integer numCoresPerSocket;
 
     /*
      * Gets or sets a value indicating whether virtual processors can be added while this virtual machine is running.
      */
-    @JsonProperty(value = "cpuHotAddEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean cpuHotAddEnabled;
 
     /*
      * Gets or sets a value indicating whether virtual processors can be removed while this virtual machine is running.
      */
-    @JsonProperty(value = "cpuHotRemoveEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean cpuHotRemoveEnabled;
 
     /*
      * Gets or sets a value indicating whether memory can be added while this virtual machine is running.
      */
-    @JsonProperty(value = "memoryHotAddEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean memoryHotAddEnabled;
 
-    /** Creates an instance of HardwareProfile class. */
+    /**
+     * Creates an instance of HardwareProfile class.
+     */
     public HardwareProfile() {
     }
 
     /**
      * Get the memorySizeMB property: Gets or sets memory size in MBs for the vm.
-     *
+     * 
      * @return the memorySizeMB value.
      */
     public Integer memorySizeMB() {
@@ -61,7 +63,7 @@ public final class HardwareProfile {
 
     /**
      * Set the memorySizeMB property: Gets or sets memory size in MBs for the vm.
-     *
+     * 
      * @param memorySizeMB the memorySizeMB value to set.
      * @return the HardwareProfile object itself.
      */
@@ -72,7 +74,7 @@ public final class HardwareProfile {
 
     /**
      * Get the numCPUs property: Gets or sets the number of vCPUs for the vm.
-     *
+     * 
      * @return the numCPUs value.
      */
     public Integer numCPUs() {
@@ -81,7 +83,7 @@ public final class HardwareProfile {
 
     /**
      * Set the numCPUs property: Gets or sets the number of vCPUs for the vm.
-     *
+     * 
      * @param numCPUs the numCPUs value to set.
      * @return the HardwareProfile object itself.
      */
@@ -93,7 +95,7 @@ public final class HardwareProfile {
     /**
      * Get the numCoresPerSocket property: Gets or sets the number of cores per socket for the vm. Defaults to 1 if
      * unspecified.
-     *
+     * 
      * @return the numCoresPerSocket value.
      */
     public Integer numCoresPerSocket() {
@@ -103,7 +105,7 @@ public final class HardwareProfile {
     /**
      * Set the numCoresPerSocket property: Gets or sets the number of cores per socket for the vm. Defaults to 1 if
      * unspecified.
-     *
+     * 
      * @param numCoresPerSocket the numCoresPerSocket value to set.
      * @return the HardwareProfile object itself.
      */
@@ -115,7 +117,7 @@ public final class HardwareProfile {
     /**
      * Get the cpuHotAddEnabled property: Gets or sets a value indicating whether virtual processors can be added while
      * this virtual machine is running.
-     *
+     * 
      * @return the cpuHotAddEnabled value.
      */
     public Boolean cpuHotAddEnabled() {
@@ -125,7 +127,7 @@ public final class HardwareProfile {
     /**
      * Get the cpuHotRemoveEnabled property: Gets or sets a value indicating whether virtual processors can be removed
      * while this virtual machine is running.
-     *
+     * 
      * @return the cpuHotRemoveEnabled value.
      */
     public Boolean cpuHotRemoveEnabled() {
@@ -135,7 +137,7 @@ public final class HardwareProfile {
     /**
      * Get the memoryHotAddEnabled property: Gets or sets a value indicating whether memory can be added while this
      * virtual machine is running.
-     *
+     * 
      * @return the memoryHotAddEnabled value.
      */
     public Boolean memoryHotAddEnabled() {
@@ -144,9 +146,57 @@ public final class HardwareProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("memorySizeMB", this.memorySizeMB);
+        jsonWriter.writeNumberField("numCPUs", this.numCPUs);
+        jsonWriter.writeNumberField("numCoresPerSocket", this.numCoresPerSocket);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HardwareProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HardwareProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HardwareProfile.
+     */
+    public static HardwareProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HardwareProfile deserializedHardwareProfile = new HardwareProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("memorySizeMB".equals(fieldName)) {
+                    deserializedHardwareProfile.memorySizeMB = reader.getNullable(JsonReader::getInt);
+                } else if ("numCPUs".equals(fieldName)) {
+                    deserializedHardwareProfile.numCPUs = reader.getNullable(JsonReader::getInt);
+                } else if ("numCoresPerSocket".equals(fieldName)) {
+                    deserializedHardwareProfile.numCoresPerSocket = reader.getNullable(JsonReader::getInt);
+                } else if ("cpuHotAddEnabled".equals(fieldName)) {
+                    deserializedHardwareProfile.cpuHotAddEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cpuHotRemoveEnabled".equals(fieldName)) {
+                    deserializedHardwareProfile.cpuHotRemoveEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("memoryHotAddEnabled".equals(fieldName)) {
+                    deserializedHardwareProfile.memoryHotAddEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHardwareProfile;
+        });
     }
 }

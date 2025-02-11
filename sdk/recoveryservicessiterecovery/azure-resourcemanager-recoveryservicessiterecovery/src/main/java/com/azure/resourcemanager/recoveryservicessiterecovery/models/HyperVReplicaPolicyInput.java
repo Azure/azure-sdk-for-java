@@ -5,87 +5,85 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Hyper-V Replica specific policy Input.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = HyperVReplicaPolicyInput.class)
-@JsonTypeName("HyperVReplica2012")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "HyperVReplica2012R2", value = HyperVReplicaBluePolicyInput.class) })
 @Fluent
 public class HyperVReplicaPolicyInput extends PolicyProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "HyperVReplica2012";
+
+    /*
      * A value indicating the number of recovery points.
      */
-    @JsonProperty(value = "recoveryPoints")
     private Integer recoveryPoints;
 
     /*
      * A value indicating the application consistent frequency.
      */
-    @JsonProperty(value = "applicationConsistentSnapshotFrequencyInHours")
     private Integer applicationConsistentSnapshotFrequencyInHours;
 
     /*
      * A value indicating whether compression has to be enabled.
      */
-    @JsonProperty(value = "compression")
     private String compression;
 
     /*
      * A value indicating whether IR is online.
      */
-    @JsonProperty(value = "initialReplicationMethod")
     private String initialReplicationMethod;
 
     /*
      * A value indicating the online IR start time.
      */
-    @JsonProperty(value = "onlineReplicationStartTime")
     private String onlineReplicationStartTime;
 
     /*
      * A value indicating the offline IR import path.
      */
-    @JsonProperty(value = "offlineReplicationImportPath")
     private String offlineReplicationImportPath;
 
     /*
      * A value indicating the offline IR export path.
      */
-    @JsonProperty(value = "offlineReplicationExportPath")
     private String offlineReplicationExportPath;
 
     /*
      * A value indicating the recovery HTTPS port.
      */
-    @JsonProperty(value = "replicationPort")
     private Integer replicationPort;
 
     /*
      * A value indicating the authentication type.
      */
-    @JsonProperty(value = "allowedAuthenticationType")
     private Integer allowedAuthenticationType;
 
     /*
      * A value indicating whether the VM has to be auto deleted.
      */
-    @JsonProperty(value = "replicaDeletion")
     private String replicaDeletion;
 
     /**
      * Creates an instance of HyperVReplicaPolicyInput class.
      */
     public HyperVReplicaPolicyInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -299,6 +297,99 @@ public class HyperVReplicaPolicyInput extends PolicyProviderSpecificInput {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeNumberField("recoveryPoints", this.recoveryPoints);
+        jsonWriter.writeNumberField("applicationConsistentSnapshotFrequencyInHours",
+            this.applicationConsistentSnapshotFrequencyInHours);
+        jsonWriter.writeStringField("compression", this.compression);
+        jsonWriter.writeStringField("initialReplicationMethod", this.initialReplicationMethod);
+        jsonWriter.writeStringField("onlineReplicationStartTime", this.onlineReplicationStartTime);
+        jsonWriter.writeStringField("offlineReplicationImportPath", this.offlineReplicationImportPath);
+        jsonWriter.writeStringField("offlineReplicationExportPath", this.offlineReplicationExportPath);
+        jsonWriter.writeNumberField("replicationPort", this.replicationPort);
+        jsonWriter.writeNumberField("allowedAuthenticationType", this.allowedAuthenticationType);
+        jsonWriter.writeStringField("replicaDeletion", this.replicaDeletion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVReplicaPolicyInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVReplicaPolicyInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVReplicaPolicyInput.
+     */
+    public static HyperVReplicaPolicyInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("HyperVReplica2012R2".equals(discriminatorValue)) {
+                    return HyperVReplicaBluePolicyInput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static HyperVReplicaPolicyInput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVReplicaPolicyInput deserializedHyperVReplicaPolicyInput = new HyperVReplicaPolicyInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVReplicaPolicyInput.instanceType = reader.getString();
+                } else if ("recoveryPoints".equals(fieldName)) {
+                    deserializedHyperVReplicaPolicyInput.recoveryPoints = reader.getNullable(JsonReader::getInt);
+                } else if ("applicationConsistentSnapshotFrequencyInHours".equals(fieldName)) {
+                    deserializedHyperVReplicaPolicyInput.applicationConsistentSnapshotFrequencyInHours
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("compression".equals(fieldName)) {
+                    deserializedHyperVReplicaPolicyInput.compression = reader.getString();
+                } else if ("initialReplicationMethod".equals(fieldName)) {
+                    deserializedHyperVReplicaPolicyInput.initialReplicationMethod = reader.getString();
+                } else if ("onlineReplicationStartTime".equals(fieldName)) {
+                    deserializedHyperVReplicaPolicyInput.onlineReplicationStartTime = reader.getString();
+                } else if ("offlineReplicationImportPath".equals(fieldName)) {
+                    deserializedHyperVReplicaPolicyInput.offlineReplicationImportPath = reader.getString();
+                } else if ("offlineReplicationExportPath".equals(fieldName)) {
+                    deserializedHyperVReplicaPolicyInput.offlineReplicationExportPath = reader.getString();
+                } else if ("replicationPort".equals(fieldName)) {
+                    deserializedHyperVReplicaPolicyInput.replicationPort = reader.getNullable(JsonReader::getInt);
+                } else if ("allowedAuthenticationType".equals(fieldName)) {
+                    deserializedHyperVReplicaPolicyInput.allowedAuthenticationType
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("replicaDeletion".equals(fieldName)) {
+                    deserializedHyperVReplicaPolicyInput.replicaDeletion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVReplicaPolicyInput;
+        });
     }
 }

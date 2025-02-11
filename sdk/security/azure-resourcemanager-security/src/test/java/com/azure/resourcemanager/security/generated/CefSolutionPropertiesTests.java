@@ -13,30 +13,30 @@ public final class CefSolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CefSolutionProperties model = BinaryData.fromString(
-            "{\"hostname\":\"iwm\",\"agent\":\"mqr\",\"lastEventReceived\":\"zqv\",\"deviceVendor\":\"czyayubtgmbxi\",\"deviceType\":\"hragpxmib\",\"workspace\":{\"id\":\"upoyryefqm\"},\"\":{\"fpbjc\":\"datayztxlno\",\"llukkreh\":\"dataegvyieztkutnj\"}}")
+            "{\"hostname\":\"jchcsrlzknmzla\",\"agent\":\"updwv\",\"lastEventReceived\":\"hcnzqt\",\"deviceVendor\":\"hmqrhvthlaiwdc\",\"deviceType\":\"mlzzhzdtxetlgyd\",\"workspace\":{\"id\":\"vlnnpx\"},\"\":{\"gjekglklby\":\"datafiqgeaar\",\"hj\":\"datalidwcwvmzegjon\",\"zhzmtksjci\":\"datarwgdnqzbrfks\",\"plkeuachtomflryt\":\"datadigsxcdgl\"}}")
             .toObject(CefSolutionProperties.class);
-        Assertions.assertEquals("czyayubtgmbxi", model.deviceVendor());
-        Assertions.assertEquals("hragpxmib", model.deviceType());
-        Assertions.assertEquals("upoyryefqm", model.workspace().id());
-        Assertions.assertEquals("iwm", model.hostname());
-        Assertions.assertEquals("mqr", model.agent());
-        Assertions.assertEquals("zqv", model.lastEventReceived());
+        Assertions.assertEquals("hmqrhvthlaiwdc", model.deviceVendor());
+        Assertions.assertEquals("mlzzhzdtxetlgyd", model.deviceType());
+        Assertions.assertEquals("vlnnpx", model.workspace().id());
+        Assertions.assertEquals("jchcsrlzknmzla", model.hostname());
+        Assertions.assertEquals("updwv", model.agent());
+        Assertions.assertEquals("hcnzqt", model.lastEventReceived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CefSolutionProperties model = new CefSolutionProperties().withDeviceVendor("czyayubtgmbxi")
-            .withDeviceType("hragpxmib")
-            .withWorkspace(new ConnectedWorkspace().withId("upoyryefqm"))
-            .withHostname("iwm")
-            .withAgent("mqr")
-            .withLastEventReceived("zqv");
+        CefSolutionProperties model = new CefSolutionProperties().withDeviceVendor("hmqrhvthlaiwdc")
+            .withDeviceType("mlzzhzdtxetlgyd")
+            .withWorkspace(new ConnectedWorkspace().withId("vlnnpx"))
+            .withHostname("jchcsrlzknmzla")
+            .withAgent("updwv")
+            .withLastEventReceived("hcnzqt");
         model = BinaryData.fromObject(model).toObject(CefSolutionProperties.class);
-        Assertions.assertEquals("czyayubtgmbxi", model.deviceVendor());
-        Assertions.assertEquals("hragpxmib", model.deviceType());
-        Assertions.assertEquals("upoyryefqm", model.workspace().id());
-        Assertions.assertEquals("iwm", model.hostname());
-        Assertions.assertEquals("mqr", model.agent());
-        Assertions.assertEquals("zqv", model.lastEventReceived());
+        Assertions.assertEquals("hmqrhvthlaiwdc", model.deviceVendor());
+        Assertions.assertEquals("mlzzhzdtxetlgyd", model.deviceType());
+        Assertions.assertEquals("vlnnpx", model.workspace().id());
+        Assertions.assertEquals("jchcsrlzknmzla", model.hostname());
+        Assertions.assertEquals("updwv", model.agent());
+        Assertions.assertEquals("hcnzqt", model.lastEventReceived());
     }
 }

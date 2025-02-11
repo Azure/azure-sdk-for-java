@@ -29,7 +29,7 @@ public final class FleetsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"ao\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":false},\"agentProfile\":{\"subnetId\":\"qxolzdahzx\",\"vmSize\":\"obgbkdmoizp\"},\"fqdn\":\"tmgrcfbun\",\"kubernetesVersion\":\"fqjhhkxbpvjymj\",\"portalFqdn\":\"xjyngudivk\"}},\"eTag\":\"swbxqz\",\"identity\":{\"principalId\":\"41a20a01-732d-4f37-841c-39db9ff058ab\",\"tenantId\":\"3e0ee808-71d2-45ec-8369-92d14c51ce8f\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fdxxivetvtcqaqtd\":{\"principalId\":\"c7d6a9c7-48b0-4f13-b971-25cb6d972878\",\"clientId\":\"f47d9ea3-1a88-4b8a-97ed-66ee21afbfd5\"},\"cbxvwvxyslqbh\":{\"principalId\":\"549fa4b8-4d59-4e96-92af-c7d085aee006\",\"clientId\":\"6a6cd03b-0578-40ed-96f1-52b79a6db8f4\"},\"obl\":{\"principalId\":\"3b38db3d-1856-4f0d-848d-226c8e32e45f\",\"clientId\":\"58edabf8-854e-4262-8397-49c6bd0bc7f8\"}}},\"location\":\"k\",\"tags\":{\"wwfbkrvrnsvshq\":\"pe\"},\"id\":\"ohxcrsbfova\",\"name\":\"rruvwbhsq\",\"type\":\"sub\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"khfxobbcswsrt\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":true,\"subnetId\":\"pbewtghfgblcgwx\"},\"agentProfile\":{\"subnetId\":\"v\",\"vmSize\":\"jkbegibtnmxiebww\"},\"fqdn\":\"oayqc\",\"kubernetesVersion\":\"rtzju\",\"portalFqdn\":\"wyzmhtxon\"}},\"eTag\":\"ts\",\"identity\":{\"principalId\":\"65620d2e-ee7e-4495-96b8-eae86e5e34dd\",\"tenantId\":\"913b5639-5f19-45ad-8f1b-055e411c8598\",\"type\":\"None\",\"userAssignedIdentities\":{\"p\":{\"principalId\":\"8c8c964c-88f1-4858-a093-8cd04594ff46\",\"clientId\":\"fe03f9f0-c184-4723-8857-f4b4f39e3b6f\"},\"nftguvriuhpr\":{\"principalId\":\"0bffe560-81b8-4b1b-b785-3468e85107cb\",\"clientId\":\"89710c0a-2153-4106-8c8a-d9e7b6764584\"},\"yvxqtayriwwroy\":{\"principalId\":\"63fcb7cc-004e-4898-84f8-935f5d60187f\",\"clientId\":\"9c4cb0d1-0c2d-412c-8dc9-b7b494f09d7f\"},\"xrmcqibycnojvk\":{\"principalId\":\"900dc570-cabd-4dba-b8d4-e8681b3a80a2\",\"clientId\":\"3109917e-ec88-4f77-b488-6ff8b69a1a75\"}}},\"location\":\"e\",\"tags\":{\"apj\":\"gzva\",\"zlmwlxkvugfhz\":\"zhpvgqzcjrvxd\",\"hnnpr\":\"vawjvzunlu\",\"ultskzbbtdz\":\"xipeilpjzuaejx\"},\"id\":\"mv\",\"name\":\"ekg\",\"type\":\"wozuhkf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,28 +39,30 @@ public final class FleetsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Fleet response = manager.fleets()
-            .define("qzcjrvxdj")
-            .withRegion("jixisxyawjoyaqcs")
-            .withExistingResourceGroup("pjyzhpv")
-            .withTags(mapOf("zyexzn", "pkii", "bnxknalaulppg", "lixhnrztfol", "gvpgy", "dtpnapnyiropuhp", "n",
-                "gqgitxmedjvcsl"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("ekqvkeln", new UserAssignedIdentity(), "bxwyjsflhhcaa", new UserAssignedIdentity())))
-            .withHubProfile(new FleetHubProfile().withDnsPrefix("kvugfhzovawjvzun")
-                .withApiServerAccessProfile(new ApiServerAccessProfile().withEnablePrivateCluster(false))
-                .withAgentProfile(new AgentProfile().withSubnetId("prnxipeil").withVmSize("zuaejxd")))
-            .withIfMatch("oellwp")
-            .withIfNoneMatch("fdygpfqbuaceopz")
+            .define("mqkrhahvljuahaqu")
+            .withRegion("uecivyhz")
+            .withExistingResourceGroup("eemaofmxagkvtme")
+            .withTags(mapOf("ytdxwit", "ojgjrwjueiotwmc", "hniskxfbkpyc", "nrjawgqwg"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("wpucwwfvovbv", new UserAssignedIdentity())))
+            .withHubProfile(new FleetHubProfile().withDnsPrefix("ualaexqpvfadmw")
+                .withApiServerAccessProfile(new ApiServerAccessProfile().withEnablePrivateCluster(false)
+                    .withEnableVnetIntegration(false)
+                    .withSubnetId("pv"))
+                .withAgentProfile(new AgentProfile().withSubnetId("zlfmisgwbnbbeld").withVmSize("k")))
+            .withIfMatch("xujznbmpowu")
+            .withIfNoneMatch("przqlveu")
             .create();
 
-        Assertions.assertEquals("k", response.location());
-        Assertions.assertEquals("pe", response.tags().get("wwfbkrvrnsvshq"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("ao", response.hubProfile().dnsPrefix());
-        Assertions.assertEquals(false, response.hubProfile().apiServerAccessProfile().enablePrivateCluster());
-        Assertions.assertEquals("qxolzdahzx", response.hubProfile().agentProfile().subnetId());
-        Assertions.assertEquals("obgbkdmoizp", response.hubProfile().agentProfile().vmSize());
+        Assertions.assertEquals("e", response.location());
+        Assertions.assertEquals("gzva", response.tags().get("apj"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("khfxobbcswsrt", response.hubProfile().dnsPrefix());
+        Assertions.assertEquals(true, response.hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals(true, response.hubProfile().apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertEquals("pbewtghfgblcgwx", response.hubProfile().apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("v", response.hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("jkbegibtnmxiebww", response.hubProfile().agentProfile().vmSize());
     }
 
     // Use "Map.of" if available

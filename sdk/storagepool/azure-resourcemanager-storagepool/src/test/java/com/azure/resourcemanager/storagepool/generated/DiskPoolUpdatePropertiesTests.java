@@ -13,22 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskPoolUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskPoolUpdateProperties model =
-            BinaryData
-                .fromString("{\"disks\":[{\"id\":\"cbonqvpk\"},{\"id\":\"lrxnjeaseiphe\"},{\"id\":\"f\"}]}")
-                .toObject(DiskPoolUpdateProperties.class);
-        Assertions.assertEquals("cbonqvpk", model.disks().get(0).id());
+        DiskPoolUpdateProperties model
+            = BinaryData.fromString("{\"disks\":[{\"id\":\"jbavorxzdm\"}]}").toObject(DiskPoolUpdateProperties.class);
+        Assertions.assertEquals("jbavorxzdm", model.disks().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskPoolUpdateProperties model =
-            new DiskPoolUpdateProperties()
-                .withDisks(
-                    Arrays
-                        .asList(
-                            new Disk().withId("cbonqvpk"), new Disk().withId("lrxnjeaseiphe"), new Disk().withId("f")));
+        DiskPoolUpdateProperties model
+            = new DiskPoolUpdateProperties().withDisks(Arrays.asList(new Disk().withId("jbavorxzdm")));
         model = BinaryData.fromObject(model).toObject(DiskPoolUpdateProperties.class);
-        Assertions.assertEquals("cbonqvpk", model.disks().get(0).id());
+        Assertions.assertEquals("jbavorxzdm", model.disks().get(0).id());
     }
 }

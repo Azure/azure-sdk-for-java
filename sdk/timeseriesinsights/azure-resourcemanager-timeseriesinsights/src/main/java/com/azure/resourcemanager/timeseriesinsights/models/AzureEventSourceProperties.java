@@ -5,25 +5,49 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.IngressStartAtProperties;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** Properties of an event source that reads events from an event broker in Azure. */
+/**
+ * Properties of an event source that reads events from an event broker in Azure.
+ */
 @Fluent
 public class AzureEventSourceProperties extends EventSourceCommonProperties {
     /*
      * The resource id of the event source in Azure Resource Manager.
      */
-    @JsonProperty(value = "eventSourceResourceId", required = true)
     private String eventSourceResourceId;
 
-    /** Creates an instance of AzureEventSourceProperties class. */
+    /*
+     * An object that contains the details about the starting point in time to ingest events.
+     */
+    private IngressStartAtProperties innerIngressStartAt;
+
+    /*
+     * The time the resource was created.
+     */
+    private OffsetDateTime creationTime;
+
+    /*
+     * Provisioning state of the resource.
+     */
+    private ProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of AzureEventSourceProperties class.
+     */
     public AzureEventSourceProperties() {
     }
 
     /**
      * Get the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
-     *
+     * 
      * @return the eventSourceResourceId value.
      */
     public String eventSourceResourceId() {
@@ -32,7 +56,7 @@ public class AzureEventSourceProperties extends EventSourceCommonProperties {
 
     /**
      * Set the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
-     *
+     * 
      * @param eventSourceResourceId the eventSourceResourceId value to set.
      * @return the AzureEventSourceProperties object itself.
      */
@@ -41,49 +65,176 @@ public class AzureEventSourceProperties extends EventSourceCommonProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the innerIngressStartAt property: An object that contains the details about the starting point in time to
+     * ingest events.
+     * 
+     * @return the innerIngressStartAt value.
+     */
+    private IngressStartAtProperties innerIngressStartAt() {
+        return this.innerIngressStartAt;
+    }
+
+    /**
+     * Get the creationTime property: The time the resource was created.
+     * 
+     * @return the creationTime value.
+     */
+    @Override
+    public OffsetDateTime creationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureEventSourceProperties withTimestampPropertyName(String timestampPropertyName) {
         super.withTimestampPropertyName(timestampPropertyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureEventSourceProperties withLocalTimestamp(LocalTimestamp localTimestamp) {
         super.withLocalTimestamp(localTimestamp);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
+     * "CustomEnqueuedTime".
+     * 
+     * @return the type value.
+     */
+    public IngressStartAtType type() {
+        return this.innerIngressStartAt() == null ? null : this.innerIngressStartAt().type();
+    }
+
+    /**
+     * Set the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
+     * "CustomEnqueuedTime".
+     * 
+     * @param type the type value to set.
+     * @return the AzureEventSourceProperties object itself.
+     */
     public AzureEventSourceProperties withType(IngressStartAtType type) {
-        super.withType(type);
+        if (this.innerIngressStartAt() == null) {
+            this.innerIngressStartAt = new IngressStartAtProperties();
+        }
+        this.innerIngressStartAt().withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
+     * date and time that will be the starting point for Events to be consumed.
+     * 
+     * @return the time value.
+     */
+    public String time() {
+        return this.innerIngressStartAt() == null ? null : this.innerIngressStartAt().time();
+    }
+
+    /**
+     * Set the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
+     * date and time that will be the starting point for Events to be consumed.
+     * 
+     * @param time the time value to set.
+     * @return the AzureEventSourceProperties object itself.
+     */
     public AzureEventSourceProperties withTime(String time) {
-        super.withTime(time);
+        if (this.innerIngressStartAt() == null) {
+            this.innerIngressStartAt = new IngressStartAtProperties();
+        }
+        this.innerIngressStartAt().withTime(time);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (eventSourceResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventSourceResourceId in model AzureEventSourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property eventSourceResourceId in model AzureEventSourceProperties"));
+        }
+        if (localTimestamp() != null) {
+            localTimestamp().validate();
+        }
+        if (innerIngressStartAt() != null) {
+            innerIngressStartAt().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureEventSourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timestampPropertyName", timestampPropertyName());
+        jsonWriter.writeJsonField("localTimestamp", localTimestamp());
+        jsonWriter.writeJsonField("ingressStartAt", innerIngressStartAt());
+        jsonWriter.writeStringField("eventSourceResourceId", this.eventSourceResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureEventSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureEventSourceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureEventSourceProperties.
+     */
+    public static AzureEventSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureEventSourceProperties deserializedAzureEventSourceProperties = new AzureEventSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedAzureEventSourceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedAzureEventSourceProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timestampPropertyName".equals(fieldName)) {
+                    deserializedAzureEventSourceProperties.withTimestampPropertyName(reader.getString());
+                } else if ("localTimestamp".equals(fieldName)) {
+                    deserializedAzureEventSourceProperties.withLocalTimestamp(LocalTimestamp.fromJson(reader));
+                } else if ("ingressStartAt".equals(fieldName)) {
+                    deserializedAzureEventSourceProperties.innerIngressStartAt
+                        = IngressStartAtProperties.fromJson(reader);
+                } else if ("eventSourceResourceId".equals(fieldName)) {
+                    deserializedAzureEventSourceProperties.eventSourceResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureEventSourceProperties;
+        });
+    }
 }

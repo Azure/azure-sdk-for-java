@@ -50,10 +50,13 @@ public enum ServiceBusMessageState {
         switch (value) {
             case 0:
                 return ServiceBusMessageState.ACTIVE;
+
             case 1:
                 return ServiceBusMessageState.DEFERRED;
+
             case 2:
                 return ServiceBusMessageState.SCHEDULED;
+
             default:
                 throw new UnsupportedOperationException(
                     "Value is not supported. Should be 0(ACTIVE), 1(DEFERRED), or 2(SCHEDULED). Actual: " + value);

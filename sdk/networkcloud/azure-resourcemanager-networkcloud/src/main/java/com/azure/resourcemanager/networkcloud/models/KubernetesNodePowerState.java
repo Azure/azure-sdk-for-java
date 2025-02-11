@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The power state of this node. */
+/**
+ * The power state of this node.
+ */
 public final class KubernetesNodePowerState extends ExpandableStringEnum<KubernetesNodePowerState> {
-    /** Static value On for KubernetesNodePowerState. */
+    /**
+     * Static value On for KubernetesNodePowerState.
+     */
     public static final KubernetesNodePowerState ON = fromString("On");
 
-    /** Static value Off for KubernetesNodePowerState. */
+    /**
+     * Static value Off for KubernetesNodePowerState.
+     */
     public static final KubernetesNodePowerState OFF = fromString("Off");
 
-    /** Static value Unknown for KubernetesNodePowerState. */
+    /**
+     * Static value Unknown for KubernetesNodePowerState.
+     */
     public static final KubernetesNodePowerState UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of KubernetesNodePowerState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class KubernetesNodePowerState extends ExpandableStringEnum<Kuberne
 
     /**
      * Creates or finds a KubernetesNodePowerState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KubernetesNodePowerState.
      */
-    @JsonCreator
     public static KubernetesNodePowerState fromString(String name) {
         return fromString(name, KubernetesNodePowerState.class);
     }
 
     /**
      * Gets known KubernetesNodePowerState values.
-     *
+     * 
      * @return known KubernetesNodePowerState values.
      */
     public static Collection<KubernetesNodePowerState> values() {

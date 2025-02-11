@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class IotSecuritySolutionGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/GetIoTSecuritySolution.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * GetIoTSecuritySolution.json
      */
     /**
      * Sample code: Get a IoT security solution.

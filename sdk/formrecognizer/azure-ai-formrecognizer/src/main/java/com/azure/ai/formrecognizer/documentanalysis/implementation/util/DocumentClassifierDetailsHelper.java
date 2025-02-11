@@ -23,11 +23,17 @@ public final class DocumentClassifierDetailsHelper {
      */
     public interface DocumentClassifierDetailsAccessor {
         void setClassifierId(DocumentClassifierDetails documentClassifierDetails, String modelId);
+
         void setDescription(DocumentClassifierDetails documentClassifierDetails, String description);
+
         void setServiceVersion(DocumentClassifierDetails documentClassifierDetails, String serviceVersion);
+
         void setCreatedOn(DocumentClassifierDetails documentClassifierDetails, OffsetDateTime createdDateTime);
+
         void setExpiresOn(DocumentClassifierDetails documentClassifierDetails, OffsetDateTime expirationDateTime);
-        void setDocTypes(DocumentClassifierDetails documentClassifierDetails, Map<String, ClassifierDocumentTypeDetails> docTypes);
+
+        void setDocTypes(DocumentClassifierDetails documentClassifierDetails,
+            Map<String, ClassifierDocumentTypeDetails> docTypes);
     }
 
     /**
@@ -59,7 +65,8 @@ public final class DocumentClassifierDetailsHelper {
         accessor.setExpiresOn(documentClassifierDetails, expirationDateTime);
     }
 
-    static void setDocTypes(DocumentClassifierDetails documentClassifierDetails, Map<String, ClassifierDocumentTypeDetails> docTypes) {
+    static void setDocTypes(DocumentClassifierDetails documentClassifierDetails,
+        Map<String, ClassifierDocumentTypeDetails> docTypes) {
         accessor.setDocTypes(documentClassifierDetails, docTypes);
     }
 }

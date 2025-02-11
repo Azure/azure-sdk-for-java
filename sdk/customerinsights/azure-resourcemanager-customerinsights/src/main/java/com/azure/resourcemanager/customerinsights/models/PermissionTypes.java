@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Supported permission types. */
+/**
+ * Supported permission types.
+ */
 public enum PermissionTypes {
-    /** Enum value Read. */
+    /**
+     * Enum value Read.
+     */
     READ("Read"),
 
-    /** Enum value Write. */
+    /**
+     * Enum value Write.
+     */
     WRITE("Write"),
 
-    /** Enum value Manage. */
+    /**
+     * Enum value Manage.
+     */
     MANAGE("Manage");
 
-    /** The actual serialized value for a PermissionTypes instance. */
+    /**
+     * The actual serialized value for a PermissionTypes instance.
+     */
     private final String value;
 
     PermissionTypes(String value) {
@@ -27,11 +34,10 @@ public enum PermissionTypes {
 
     /**
      * Parses a serialized value to a PermissionTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PermissionTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static PermissionTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum PermissionTypes {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

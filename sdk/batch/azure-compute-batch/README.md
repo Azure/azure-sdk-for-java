@@ -26,7 +26,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-compute-batch</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 
@@ -55,7 +55,7 @@ BatchSharedKeyCredentials sharedKeyCred = new BatchSharedKeyCredentials(batchEnd
 batchClientBuilder.credential(sharedKeyCred);
 ```
 
-- The other way is using Entra ID authentication to create the client. See this [document](https://docs.microsoft.com/azure/batch/batch-aad-auth) for details on authenticating to Batch with Entra ID.
+- The other way is using Entra ID authentication to create the client. See this [document](https://learn.microsoft.com/azure/batch/batch-aad-auth) for details on authenticating to Batch with Entra ID.
 For example:
 
 ```java
@@ -250,6 +250,6 @@ mvn test -DAZURE_TEST_MODE=Playback -Dtest=JobScheduleTests
 <!-- LINKS -->
 [product_documentation]: https://azure.microsoft.com/services/
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [java_building_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/Building

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.GalleryUpdate;
 public final class GalleriesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * Gallery_Update.json
      */
     /**

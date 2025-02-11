@@ -6,9 +6,13 @@ package com.azure.analytics.purview.administration;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of PurviewMetadata. */
+/**
+ * Service version of PurviewMetadata.
+ */
 public enum PurviewMetadataServiceVersion implements ServiceVersion {
-    /** Enum value 2021-07-01-preview. */
+    /**
+     * Enum value 2021-07-01-preview.
+     */
     V2021_07_01_PREVIEW("2021-07-01-preview");
 
     private final String version;
@@ -17,7 +21,9 @@ public enum PurviewMetadataServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
         return this.version;
@@ -25,7 +31,7 @@ public enum PurviewMetadataServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link PurviewMetadataServiceVersion}.
      */
     public static PurviewMetadataServiceVersion getLatest() {

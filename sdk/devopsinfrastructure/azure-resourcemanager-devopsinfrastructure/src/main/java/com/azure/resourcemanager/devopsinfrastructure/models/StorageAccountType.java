@@ -12,29 +12,29 @@ import java.util.Collection;
  */
 public final class StorageAccountType extends ExpandableStringEnum<StorageAccountType> {
     /**
-     * Static value Standard_LRS for StorageAccountType.
+     * The data disk should use standard locally redundant storage.
      */
     public static final StorageAccountType STANDARD_LRS = fromString("Standard_LRS");
 
     /**
-     * Static value Premium_LRS for StorageAccountType.
+     * The data disk should use premium locally redundant storage.
      */
     public static final StorageAccountType PREMIUM_LRS = fromString("Premium_LRS");
 
     /**
-     * Static value StandardSSD_LRS for StorageAccountType.
+     * The data disk should use standard SSD locally redundant storage.
      */
-    public static final StorageAccountType STANDARD_SSD_LRS = fromString("StandardSSD_LRS");
+    public static final StorageAccountType STANDARD_SSDLRS = fromString("StandardSSD_LRS");
 
     /**
-     * Static value Premium_ZRS for StorageAccountType.
+     * The data disk should use premium SSD zonal redundant storage.
      */
     public static final StorageAccountType PREMIUM_ZRS = fromString("Premium_ZRS");
 
     /**
-     * Static value StandardSSD_ZRS for StorageAccountType.
+     * The data disk should use standard SSD zonal redundant storage.
      */
-    public static final StorageAccountType STANDARD_SSD_ZRS = fromString("StandardSSD_ZRS");
+    public static final StorageAccountType STANDARD_SSDZRS = fromString("StandardSSD_ZRS");
 
     /**
      * Creates a new instance of StorageAccountType value.

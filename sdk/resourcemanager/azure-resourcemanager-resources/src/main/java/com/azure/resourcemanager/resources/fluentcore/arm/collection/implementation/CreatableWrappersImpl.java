@@ -12,11 +12,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletin
  * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
  */
-public abstract class CreatableWrappersImpl<T, ImplT extends T, InnerT>
-        extends ReadableWrappersImpl<T, ImplT, InnerT>
-        implements
-        // Assume anything creatable is deletable
-        SupportsDeletingById {
+public abstract class CreatableWrappersImpl<T, ImplT extends T, InnerT> extends ReadableWrappersImpl<T, ImplT, InnerT>
+    implements
+    // Assume anything creatable is deletable
+    SupportsDeletingById {
 
     protected CreatableWrappersImpl() {
     }

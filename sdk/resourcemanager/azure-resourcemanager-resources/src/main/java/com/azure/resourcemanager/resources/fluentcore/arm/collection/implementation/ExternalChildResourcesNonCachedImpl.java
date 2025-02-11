@@ -23,14 +23,10 @@ import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
  * @param <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
  * @param <ParentT> the parent interface
  */
-public abstract class ExternalChildResourcesNonCachedImpl<
-        FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT>,
-        FluentModelT extends ExternalChildResource<FluentModelT, ParentT>,
-        InnerModelT,
-        ParentImplT extends ParentT,
-        ParentT>
-        extends ExternalChildResourceCollectionImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT, ParentT> {
+public abstract class ExternalChildResourcesNonCachedImpl<FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT>, FluentModelT extends ExternalChildResource<FluentModelT, ParentT>, InnerModelT, ParentImplT extends ParentT, ParentT>
+    extends ExternalChildResourceCollectionImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT, ParentT> {
     private ClientLogger logger = new ClientLogger(this.getClass());
+
     /**
      * Creates a new ExternalNonInlineChildResourcesImpl.
      *
@@ -38,8 +34,8 @@ public abstract class ExternalChildResourcesNonCachedImpl<
      * @param parentTaskGroup the TaskGroup the parent Azure resource belongs to
      * @param childResourceName the child resource name
      */
-    protected ExternalChildResourcesNonCachedImpl(ParentImplT parent,
-                                                  TaskGroup parentTaskGroup, String childResourceName) {
+    protected ExternalChildResourcesNonCachedImpl(ParentImplT parent, TaskGroup parentTaskGroup,
+        String childResourceName) {
         super(parent, parentTaskGroup, childResourceName);
     }
 

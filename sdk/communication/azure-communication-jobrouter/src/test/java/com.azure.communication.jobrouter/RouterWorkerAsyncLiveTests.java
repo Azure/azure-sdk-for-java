@@ -43,21 +43,19 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
         String distributionPolicyId = String.format("%s-CreateWorkerAsync-DistributionPolicy", JAVA_LIVE_TESTS);
         String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            distributionPolicyId, Duration.ofSeconds(10),
-            new LongestIdleMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10))
-            .setName(distributionPolicyName);
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(distributionPolicyId, Duration.ofSeconds(10),
+                new LongestIdleMode().setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                    .setName(distributionPolicyName);
+        DistributionPolicy distributionPolicy
+            = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueId = String.format("%s-CreateWorker-Queue", JAVA_LIVE_TESTS);
         String queueName = String.format("%s-Name", queueId);
         Map<String, RouterValue> queueLabels = Collections.singletonMap("Label_1", new RouterValue("Value_1"));
 
-        CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
-            .setLabels(queueLabels)
-            .setName(queueName);
+        CreateQueueOptions createQueueOptions
+            = new CreateQueueOptions(queueId, distributionPolicyId).setLabels(queueLabels).setName(queueName);
         RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
 
         /**
@@ -72,8 +70,7 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
         List<RouterChannel> channels = Collections.singletonList(channel);
         List<String> queues = Collections.singletonList(jobQueue.getId());
 
-        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
-            .setLabels(labels)
+        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10).setLabels(labels)
             .setTags(tags)
             .setAvailableForOffers(false)
             .setChannels(channels)
@@ -119,16 +116,15 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
         assertEquals(deserialized.getChannels().size(), updatedWorker.getChannels().size());
         assertNotEquals(deserialized.getEtag(), updatedWorker.getEtag());
 
-        routerAsyncClient.listWorkers(null, channel.getChannelId(), queueId, null)
-            .subscribe(listWorker -> {
-                assertEquals(workerId, listWorker.getId());
-                assertEquals(listWorker.isAvailableForOffers(), true);
-                assertEquals(labels.size() + 1, listWorker.getLabels().size());
-                assertEquals(tags.size(), listWorker.getTags().size());
-                assertArrayEquals(queues.toArray(), listWorker.getQueues().toArray());
-                assertEquals(channels.size(), listWorker.getChannels().size());
-                assertEquals(updatedWorker.getEtag(), listWorker.getEtag());
-            });
+        routerAsyncClient.listWorkers(null, channel.getChannelId(), queueId, null).subscribe(listWorker -> {
+            assertEquals(workerId, listWorker.getId());
+            assertEquals(listWorker.isAvailableForOffers(), true);
+            assertEquals(labels.size() + 1, listWorker.getLabels().size());
+            assertEquals(tags.size(), listWorker.getTags().size());
+            assertArrayEquals(queues.toArray(), listWorker.getQueues().toArray());
+            assertEquals(channels.size(), listWorker.getChannels().size());
+            assertEquals(updatedWorker.getEtag(), listWorker.getEtag());
+        });
 
         // Cleanup
         routerAsyncClient.deleteWorker(workerId).block();

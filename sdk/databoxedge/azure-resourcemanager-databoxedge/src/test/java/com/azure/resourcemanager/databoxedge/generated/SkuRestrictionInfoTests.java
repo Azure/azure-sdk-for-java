@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databoxedge.models.SkuRestrictionInfo;
 public final class SkuRestrictionInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuRestrictionInfo model =
-            BinaryData
-                .fromString(
-                    "{\"locations\":[\"uukzclewyhmlw\",\"aztz\",\"ofncckwyfzqwhxxb\",\"yq\"],\"zones\":[\"feqztppriol\",\"or\",\"altol\"]}")
-                .toObject(SkuRestrictionInfo.class);
+        SkuRestrictionInfo model = BinaryData.fromString(
+            "{\"locations\":[\"gicccnxqhuex\",\"ktt\",\"stvlzywemhzrnc\"],\"zones\":[\"clusiy\",\"bsfgytguslfea\",\"cy\",\"qukyhejhzi\"]}")
+            .toObject(SkuRestrictionInfo.class);
     }
 
     @org.junit.jupiter.api.Test

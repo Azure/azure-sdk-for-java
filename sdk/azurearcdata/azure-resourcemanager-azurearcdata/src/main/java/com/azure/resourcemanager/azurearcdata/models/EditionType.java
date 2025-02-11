@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** SQL Server edition. */
+/**
+ * SQL Server edition.
+ */
 public final class EditionType extends ExpandableStringEnum<EditionType> {
-    /** Static value Evaluation for EditionType. */
+    /**
+     * Static value Evaluation for EditionType.
+     */
     public static final EditionType EVALUATION = fromString("Evaluation");
 
-    /** Static value Enterprise for EditionType. */
+    /**
+     * Static value Enterprise for EditionType.
+     */
     public static final EditionType ENTERPRISE = fromString("Enterprise");
 
-    /** Static value Standard for EditionType. */
+    /**
+     * Static value Standard for EditionType.
+     */
     public static final EditionType STANDARD = fromString("Standard");
 
-    /** Static value Web for EditionType. */
+    /**
+     * Static value Web for EditionType.
+     */
     public static final EditionType WEB = fromString("Web");
 
-    /** Static value Developer for EditionType. */
+    /**
+     * Static value Developer for EditionType.
+     */
     public static final EditionType DEVELOPER = fromString("Developer");
 
-    /** Static value Express for EditionType. */
+    /**
+     * Static value Express for EditionType.
+     */
     public static final EditionType EXPRESS = fromString("Express");
 
     /**
      * Creates a new instance of EditionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class EditionType extends ExpandableStringEnum<EditionType> {
 
     /**
      * Creates or finds a EditionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EditionType.
      */
-    @JsonCreator
     public static EditionType fromString(String name) {
         return fromString(name, EditionType.class);
     }
 
     /**
      * Gets known EditionType values.
-     *
+     * 
      * @return known EditionType values.
      */
     public static Collection<EditionType> values() {

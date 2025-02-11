@@ -10,11 +10,9 @@ import com.azure.resourcemanager.azurestack.fluent.models.ProductLogInner;
 public final class ProductLogInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductLogInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"f\",\"productId\":\"t\",\"subscriptionId\":\"n\",\"registrationName\":\"lexxbczwtru\",\"resourceGroupName\":\"qzbqjvsov\",\"operation\":\"okacspk\",\"startDate\":\"hzdobpxjmflbvvnc\",\"endDate\":\"kcciwwzjuqkhr\",\"status\":\"jiwkuofoskghsau\",\"error\":\"mjmvxieduugidyjr\",\"details\":\"byao\"}")
-                .toObject(ProductLogInner.class);
+        ProductLogInner model = BinaryData.fromString(
+            "{\"id\":\"qxj\",\"productId\":\"ujqgidok\",\"subscriptionId\":\"ljyoxgvcltb\",\"registrationName\":\"ncghkje\",\"resourceGroupName\":\"zhbijhtxfv\",\"operation\":\"bfs\",\"startDate\":\"nehmpvecx\",\"endDate\":\"debfqkkrbmpukgri\",\"status\":\"lzlfbxzpuz\",\"error\":\"ispnqzahmgkbrp\",\"details\":\"dhibnuq\"}")
+            .toObject(ProductLogInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -22,8 +22,10 @@ public final class AccountResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountResourceInner model = new AccountResourceInner().withOrganizationId("s").withAccountId("nyejhkryhtnap")
-            .withAccountName("wlokjyem").withRegion("vnipjox");
+        AccountResourceInner model = new AccountResourceInner().withOrganizationId("s")
+            .withAccountId("nyejhkryhtnap")
+            .withAccountName("wlokjyem")
+            .withRegion("vnipjox");
         model = BinaryData.fromObject(model).toObject(AccountResourceInner.class);
         Assertions.assertEquals("s", model.organizationId());
         Assertions.assertEquals("nyejhkryhtnap", model.accountId());

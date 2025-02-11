@@ -17,12 +17,14 @@ import java.io.IOException;
 @Fluent
 public final class SkipErrorFile implements JsonSerializable<SkipErrorFile> {
     /*
-     * Skip if file is deleted by other client during copy. Default is true. Type: boolean (or Expression with resultType boolean).
+     * Skip if file is deleted by other client during copy. Default is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     private Object fileMissing;
 
     /*
-     * Skip if source/sink file changed by other concurrent write. Default is false. Type: boolean (or Expression with resultType boolean).
+     * Skip if source/sink file changed by other concurrent write. Default is false. Type: boolean (or Expression with
+     * resultType boolean).
      */
     private Object dataInconsistency;
 

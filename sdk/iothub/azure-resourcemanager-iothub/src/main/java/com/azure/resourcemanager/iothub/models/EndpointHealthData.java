@@ -7,11 +7,13 @@ package com.azure.resourcemanager.iothub.models;
 import com.azure.resourcemanager.iothub.fluent.models.EndpointHealthDataInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of EndpointHealthData. */
+/**
+ * An immutable client-side representation of EndpointHealthData.
+ */
 public interface EndpointHealthData {
     /**
      * Gets the endpointId property: Id of the endpoint.
-     *
+     * 
      * @return the endpointId value.
      */
     String endpointId();
@@ -25,42 +27,42 @@ public interface EndpointHealthData {
      * period. See IoT Hub metrics to identify errors and monitor issues with endpoints. The 'unknown' status shows that
      * the IoT Hub has not established a connection with the endpoint. No messages have been delivered to or rejected
      * from this endpoint.
-     *
+     * 
      * @return the healthStatus value.
      */
     EndpointHealthStatus healthStatus();
 
     /**
      * Gets the lastKnownError property: Last error obtained when a message failed to be delivered to iot hub.
-     *
+     * 
      * @return the lastKnownError value.
      */
     String lastKnownError();
 
     /**
      * Gets the lastKnownErrorTime property: Time at which the last known error occurred.
-     *
+     * 
      * @return the lastKnownErrorTime value.
      */
     OffsetDateTime lastKnownErrorTime();
 
     /**
      * Gets the lastSuccessfulSendAttemptTime property: Last time iot hub successfully sent a message to the endpoint.
-     *
+     * 
      * @return the lastSuccessfulSendAttemptTime value.
      */
     OffsetDateTime lastSuccessfulSendAttemptTime();
 
     /**
      * Gets the lastSendAttemptTime property: Last time iot hub tried to send a message to the endpoint.
-     *
+     * 
      * @return the lastSendAttemptTime value.
      */
     OffsetDateTime lastSendAttemptTime();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.EndpointHealthDataInner object.
-     *
+     * 
      * @return the inner object.
      */
     EndpointHealthDataInner innerModel();

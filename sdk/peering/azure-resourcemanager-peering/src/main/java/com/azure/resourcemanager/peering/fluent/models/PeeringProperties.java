@@ -5,45 +5,49 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.models.PeeringPropertiesDirect;
 import com.azure.resourcemanager.peering.models.PeeringPropertiesExchange;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties that define connectivity to the Microsoft Cloud Edge. */
+/**
+ * The properties that define connectivity to the Microsoft Cloud Edge.
+ */
 @Fluent
-public final class PeeringProperties {
+public final class PeeringProperties implements JsonSerializable<PeeringProperties> {
     /*
      * The properties that define a direct peering.
      */
-    @JsonProperty(value = "direct")
     private PeeringPropertiesDirect direct;
 
     /*
      * The properties that define an exchange peering.
      */
-    @JsonProperty(value = "exchange")
     private PeeringPropertiesExchange exchange;
 
     /*
      * The location of the peering.
      */
-    @JsonProperty(value = "peeringLocation")
     private String peeringLocation;
 
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of PeeringProperties class. */
+    /**
+     * Creates an instance of PeeringProperties class.
+     */
     public PeeringProperties() {
     }
 
     /**
      * Get the direct property: The properties that define a direct peering.
-     *
+     * 
      * @return the direct value.
      */
     public PeeringPropertiesDirect direct() {
@@ -52,7 +56,7 @@ public final class PeeringProperties {
 
     /**
      * Set the direct property: The properties that define a direct peering.
-     *
+     * 
      * @param direct the direct value to set.
      * @return the PeeringProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class PeeringProperties {
 
     /**
      * Get the exchange property: The properties that define an exchange peering.
-     *
+     * 
      * @return the exchange value.
      */
     public PeeringPropertiesExchange exchange() {
@@ -72,7 +76,7 @@ public final class PeeringProperties {
 
     /**
      * Set the exchange property: The properties that define an exchange peering.
-     *
+     * 
      * @param exchange the exchange value to set.
      * @return the PeeringProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class PeeringProperties {
 
     /**
      * Get the peeringLocation property: The location of the peering.
-     *
+     * 
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -92,7 +96,7 @@ public final class PeeringProperties {
 
     /**
      * Set the peeringLocation property: The location of the peering.
-     *
+     * 
      * @param peeringLocation the peeringLocation value to set.
      * @return the PeeringProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class PeeringProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -112,7 +116,7 @@ public final class PeeringProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -122,5 +126,49 @@ public final class PeeringProperties {
         if (exchange() != null) {
             exchange().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("direct", this.direct);
+        jsonWriter.writeJsonField("exchange", this.exchange);
+        jsonWriter.writeStringField("peeringLocation", this.peeringLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringProperties.
+     */
+    public static PeeringProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringProperties deserializedPeeringProperties = new PeeringProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("direct".equals(fieldName)) {
+                    deserializedPeeringProperties.direct = PeeringPropertiesDirect.fromJson(reader);
+                } else if ("exchange".equals(fieldName)) {
+                    deserializedPeeringProperties.exchange = PeeringPropertiesExchange.fromJson(reader);
+                } else if ("peeringLocation".equals(fieldName)) {
+                    deserializedPeeringProperties.peeringLocation = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPeeringProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringProperties;
+        });
     }
 }

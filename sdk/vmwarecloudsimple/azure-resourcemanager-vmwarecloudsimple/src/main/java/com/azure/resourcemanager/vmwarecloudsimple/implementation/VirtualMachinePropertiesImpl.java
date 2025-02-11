@@ -24,8 +24,7 @@ public final class VirtualMachinePropertiesImpl implements VirtualMachinePropert
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    VirtualMachinePropertiesImpl(
-        VirtualMachinePropertiesInner innerObject,
+    VirtualMachinePropertiesImpl(VirtualMachinePropertiesInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -80,12 +79,8 @@ public final class VirtualMachinePropertiesImpl implements VirtualMachinePropert
     public List<VirtualNic> nics() {
         List<VirtualNicInner> inner = this.innerModel().nics();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new VirtualNicImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new VirtualNicImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

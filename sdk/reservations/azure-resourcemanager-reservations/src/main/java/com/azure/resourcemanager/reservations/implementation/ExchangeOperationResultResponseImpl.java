@@ -15,8 +15,7 @@ public final class ExchangeOperationResultResponseImpl implements ExchangeOperat
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    ExchangeOperationResultResponseImpl(
-        ExchangeOperationResultResponseInner innerObject,
+    ExchangeOperationResultResponseImpl(ExchangeOperationResultResponseInner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

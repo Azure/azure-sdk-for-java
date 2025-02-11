@@ -5,29 +5,47 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DoubleEncryptionStatus. */
+/**
+ * Double encryption status as entered by the customer. It is compulsory to give this parameter if the 'Deny' or
+ * 'Disabled' policy is configured.
+ */
 public final class DoubleEncryptionStatus extends ExpandableStringEnum<DoubleEncryptionStatus> {
-    /** Static value Disabled for DoubleEncryptionStatus. */
+    /**
+     * Static value Disabled for DoubleEncryptionStatus.
+     */
     public static final DoubleEncryptionStatus DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for DoubleEncryptionStatus. */
+    /**
+     * Static value Enabled for DoubleEncryptionStatus.
+     */
     public static final DoubleEncryptionStatus ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of DoubleEncryptionStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DoubleEncryptionStatus() {
+    }
+
+    /**
      * Creates or finds a DoubleEncryptionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DoubleEncryptionStatus.
      */
-    @JsonCreator
     public static DoubleEncryptionStatus fromString(String name) {
         return fromString(name, DoubleEncryptionStatus.class);
     }
 
-    /** @return known DoubleEncryptionStatus values. */
+    /**
+     * Gets known DoubleEncryptionStatus values.
+     * 
+     * @return known DoubleEncryptionStatus values.
+     */
     public static Collection<DoubleEncryptionStatus> values() {
         return values(DoubleEncryptionStatus.class);
     }

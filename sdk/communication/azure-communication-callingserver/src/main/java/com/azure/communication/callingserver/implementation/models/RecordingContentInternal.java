@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for RecordingContentInternal. */
@@ -17,12 +17,21 @@ public final class RecordingContentInternal extends ExpandableStringEnum<Recordi
     public static final RecordingContentInternal AUDIO_VIDEO = fromString("audioVideo");
 
     /**
+     * Creates an instance of {@link RecordingContentInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link RecordingContentInternal}
+     * instead.
+     */
+    @Deprecated
+    public RecordingContentInternal() {
+    }
+
+    /**
      * Creates or finds a RecordingContentInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding RecordingContentInternal.
      */
-    @JsonCreator
     public static RecordingContentInternal fromString(String name) {
         return fromString(name, RecordingContentInternal.class);
     }

@@ -5,81 +5,80 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Event model properties. */
+/**
+ * Event model properties.
+ */
 @Fluent
-public final class EventModelProperties {
+public final class EventModelProperties implements JsonSerializable<EventModelProperties> {
     /*
      * Gets or sets the resource type.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * Gets or sets the resource name.
      */
-    @JsonProperty(value = "resourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceName;
 
     /*
      * Gets or sets the event type.
      */
-    @JsonProperty(value = "eventType", access = JsonProperty.Access.WRITE_ONLY)
     private String eventType;
 
     /*
      * Gets or sets the event name.
      */
-    @JsonProperty(value = "eventName", access = JsonProperty.Access.WRITE_ONLY)
     private String eventName;
 
     /*
      * Gets or sets the time at which the event occurred at source.
      */
-    @JsonProperty(value = "timeOfOccurrence", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeOfOccurrence;
 
     /*
      * Gets or sets the event severity.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private String severity;
 
     /*
      * Gets or sets the event description.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Gets or sets the event correlation Id.
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /*
      * Gets or sets the errors associated with this event.
      */
-    @JsonProperty(value = "healthErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthErrorModel> healthErrors;
 
     /*
      * Event model custom properties.
      */
-    @JsonProperty(value = "customProperties", required = true)
     private EventModelCustomProperties customProperties;
 
-    /** Creates an instance of EventModelProperties class. */
+    /**
+     * Creates an instance of EventModelProperties class.
+     */
     public EventModelProperties() {
     }
 
     /**
      * Get the resourceType property: Gets or sets the resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -88,7 +87,7 @@ public final class EventModelProperties {
 
     /**
      * Get the resourceName property: Gets or sets the resource name.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -97,7 +96,7 @@ public final class EventModelProperties {
 
     /**
      * Get the eventType property: Gets or sets the event type.
-     *
+     * 
      * @return the eventType value.
      */
     public String eventType() {
@@ -106,7 +105,7 @@ public final class EventModelProperties {
 
     /**
      * Get the eventName property: Gets or sets the event name.
-     *
+     * 
      * @return the eventName value.
      */
     public String eventName() {
@@ -115,7 +114,7 @@ public final class EventModelProperties {
 
     /**
      * Get the timeOfOccurrence property: Gets or sets the time at which the event occurred at source.
-     *
+     * 
      * @return the timeOfOccurrence value.
      */
     public OffsetDateTime timeOfOccurrence() {
@@ -124,7 +123,7 @@ public final class EventModelProperties {
 
     /**
      * Get the severity property: Gets or sets the event severity.
-     *
+     * 
      * @return the severity value.
      */
     public String severity() {
@@ -133,7 +132,7 @@ public final class EventModelProperties {
 
     /**
      * Get the description property: Gets or sets the event description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -142,7 +141,7 @@ public final class EventModelProperties {
 
     /**
      * Get the correlationId property: Gets or sets the event correlation Id.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -151,7 +150,7 @@ public final class EventModelProperties {
 
     /**
      * Get the healthErrors property: Gets or sets the errors associated with this event.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthErrorModel> healthErrors() {
@@ -160,7 +159,7 @@ public final class EventModelProperties {
 
     /**
      * Get the customProperties property: Event model custom properties.
-     *
+     * 
      * @return the customProperties value.
      */
     public EventModelCustomProperties customProperties() {
@@ -169,7 +168,7 @@ public final class EventModelProperties {
 
     /**
      * Set the customProperties property: Event model custom properties.
-     *
+     * 
      * @param customProperties the customProperties value to set.
      * @return the EventModelProperties object itself.
      */
@@ -180,7 +179,7 @@ public final class EventModelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -188,14 +187,71 @@ public final class EventModelProperties {
             healthErrors().forEach(e -> e.validate());
         }
         if (customProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customProperties in model EventModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customProperties in model EventModelProperties"));
         } else {
             customProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventModelProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("customProperties", this.customProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventModelProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventModelProperties.
+     */
+    public static EventModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventModelProperties deserializedEventModelProperties = new EventModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customProperties".equals(fieldName)) {
+                    deserializedEventModelProperties.customProperties = EventModelCustomProperties.fromJson(reader);
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedEventModelProperties.resourceType = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedEventModelProperties.resourceName = reader.getString();
+                } else if ("eventType".equals(fieldName)) {
+                    deserializedEventModelProperties.eventType = reader.getString();
+                } else if ("eventName".equals(fieldName)) {
+                    deserializedEventModelProperties.eventName = reader.getString();
+                } else if ("timeOfOccurrence".equals(fieldName)) {
+                    deserializedEventModelProperties.timeOfOccurrence = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("severity".equals(fieldName)) {
+                    deserializedEventModelProperties.severity = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedEventModelProperties.description = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedEventModelProperties.correlationId = reader.getString();
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthErrorModel> healthErrors
+                        = reader.readArray(reader1 -> HealthErrorModel.fromJson(reader1));
+                    deserializedEventModelProperties.healthErrors = healthErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventModelProperties;
+        });
+    }
 }

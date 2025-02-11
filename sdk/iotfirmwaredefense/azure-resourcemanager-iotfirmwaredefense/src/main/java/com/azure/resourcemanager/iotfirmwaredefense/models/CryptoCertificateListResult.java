@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.CryptoCertificateResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of crypto certificates.
  */
 @Fluent
-public final class CryptoCertificateListResult {
+public final class CryptoCertificateListResult implements JsonSerializable<CryptoCertificateListResult> {
     /*
      * The list of crypto certificate results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CryptoCertificateResourceInner> value;
 
     /*
      * The uri to fetch the next page of resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -70,5 +72,45 @@ public final class CryptoCertificateListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CryptoCertificateListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CryptoCertificateListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CryptoCertificateListResult.
+     */
+    public static CryptoCertificateListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CryptoCertificateListResult deserializedCryptoCertificateListResult = new CryptoCertificateListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CryptoCertificateResourceInner> value
+                        = reader.readArray(reader1 -> CryptoCertificateResourceInner.fromJson(reader1));
+                    deserializedCryptoCertificateListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCryptoCertificateListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCryptoCertificateListResult;
+        });
     }
 }

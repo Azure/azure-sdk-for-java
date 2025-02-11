@@ -16,24 +16,23 @@ public final class FunctionConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FunctionConfiguration model = BinaryData.fromString(
-            "{\"inputs\":[{\"dataType\":\"ifsqesaagdfmg\",\"isConfigurationParameter\":false},{\"dataType\":\"j\",\"isConfigurationParameter\":true},{\"dataType\":\"kwm\",\"isConfigurationParameter\":true}],\"output\":{\"dataType\":\"izntocipao\"},\"binding\":{\"type\":\"FunctionBinding\"}}")
+            "{\"inputs\":[{\"dataType\":\"appd\",\"isConfigurationParameter\":true},{\"dataType\":\"vwrwj\",\"isConfigurationParameter\":false}],\"output\":{\"dataType\":\"hutje\"},\"binding\":{\"type\":\"FunctionBinding\"}}")
             .toObject(FunctionConfiguration.class);
-        Assertions.assertEquals("ifsqesaagdfmg", model.inputs().get(0).dataType());
-        Assertions.assertEquals(false, model.inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("izntocipao", model.output().dataType());
+        Assertions.assertEquals("appd", model.inputs().get(0).dataType());
+        Assertions.assertEquals(true, model.inputs().get(0).isConfigurationParameter());
+        Assertions.assertEquals("hutje", model.output().dataType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FunctionConfiguration model = new FunctionConfiguration()
-            .withInputs(
-                Arrays.asList(new FunctionInput().withDataType("ifsqesaagdfmg").withIsConfigurationParameter(false),
-                    new FunctionInput().withDataType("j").withIsConfigurationParameter(true),
-                    new FunctionInput().withDataType("kwm").withIsConfigurationParameter(true)))
-            .withOutput(new FunctionOutput().withDataType("izntocipao")).withBinding(new FunctionBinding());
+            .withInputs(Arrays.asList(new FunctionInput().withDataType("appd").withIsConfigurationParameter(true),
+                new FunctionInput().withDataType("vwrwj").withIsConfigurationParameter(false)))
+            .withOutput(new FunctionOutput().withDataType("hutje"))
+            .withBinding(new FunctionBinding());
         model = BinaryData.fromObject(model).toObject(FunctionConfiguration.class);
-        Assertions.assertEquals("ifsqesaagdfmg", model.inputs().get(0).dataType());
-        Assertions.assertEquals(false, model.inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("izntocipao", model.output().dataType());
+        Assertions.assertEquals("appd", model.inputs().get(0).dataType());
+        Assertions.assertEquals(true, model.inputs().get(0).isConfigurationParameter());
+        Assertions.assertEquals("hutje", model.output().dataType());
     }
 }

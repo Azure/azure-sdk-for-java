@@ -127,25 +127,21 @@ public final class RelationshipResourceFormatImpl
     }
 
     public RelationshipResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationships()
-                .createOrUpdate(resourceGroupName, hubName, relationshipName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationships()
+            .createOrUpdate(resourceGroupName, hubName, relationshipName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public RelationshipResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationships()
-                .createOrUpdate(resourceGroupName, hubName, relationshipName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationships()
+            .createOrUpdate(resourceGroupName, hubName, relationshipName, this.innerModel(), context);
         return this;
     }
 
-    RelationshipResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    RelationshipResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new RelationshipResourceFormatInner();
         this.serviceManager = serviceManager;
         this.relationshipName = name;
@@ -156,50 +152,41 @@ public final class RelationshipResourceFormatImpl
     }
 
     public RelationshipResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationships()
-                .createOrUpdate(resourceGroupName, hubName, relationshipName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationships()
+            .createOrUpdate(resourceGroupName, hubName, relationshipName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public RelationshipResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationships()
-                .createOrUpdate(resourceGroupName, hubName, relationshipName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationships()
+            .createOrUpdate(resourceGroupName, hubName, relationshipName, this.innerModel(), context);
         return this;
     }
 
-    RelationshipResourceFormatImpl(
-        RelationshipResourceFormatInner innerObject,
+    RelationshipResourceFormatImpl(RelationshipResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.relationshipName = Utils.getValueFromIdByName(innerObject.id(), "relationships");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.relationshipName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "relationships");
     }
 
     public RelationshipResourceFormat refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationships()
-                .getWithResponse(resourceGroupName, hubName, relationshipName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationships()
+            .getWithResponse(resourceGroupName, hubName, relationshipName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public RelationshipResourceFormat refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationships()
-                .getWithResponse(resourceGroupName, hubName, relationshipName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationships()
+            .getWithResponse(resourceGroupName, hubName, relationshipName, context)
+            .getValue();
         return this;
     }
 

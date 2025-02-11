@@ -20,8 +20,8 @@ public final class DigitalTwinsModelDataConverter {
      * Maps from {@link com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData} to
      * {@link DigitalTwinsModelData}. If the input is null, then the output will be null as well.
      */
-    public static DigitalTwinsModelData map(
-        com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData input) {
+    public static DigitalTwinsModelData
+        map(com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData input) {
         if (input == null) {
             return null;
         }

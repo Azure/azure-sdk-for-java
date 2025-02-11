@@ -5,52 +5,49 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
+import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
 import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
-import com.azure.resourcemanager.notificationhubs.models.BrowserCredential;
-import com.azure.resourcemanager.notificationhubs.models.FcmV1Credential;
 import com.azure.resourcemanager.notificationhubs.models.GcmCredential;
 import com.azure.resourcemanager.notificationhubs.models.MpnsCredential;
+import com.azure.resourcemanager.notificationhubs.models.Sku;
 import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
-import com.azure.resourcemanager.notificationhubs.models.XiaomiCredential;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
- * Description of a NotificationHub PNS Credentials. This is a response of the POST requests that return namespace or
- * hubs
- * PNS credentials.
+ * Description of a NotificationHub PNS Credentials.
  */
 @Fluent
-public final class PnsCredentialsResourceInner extends ProxyResource {
+public final class PnsCredentialsResourceInner extends Resource {
     /*
-     * Collection of Notification Hub or Notification Hub Namespace PNS credentials.
+     * NotificationHub PNS Credentials.
      */
-    @JsonProperty(value = "properties")
-    private PnsCredentials innerProperties;
+    private PnsCredentialsProperties innerProperties;
 
     /*
-     * Deprecated - only for compatibility.
+     * The sku of the created namespace
      */
-    @JsonProperty(value = "location")
-    private String location;
+    private Sku sku;
 
     /*
-     * Deprecated - only for compatibility.
+     * The type of the resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    private String type;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The name of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of PnsCredentialsResourceInner class.
@@ -59,88 +56,84 @@ public final class PnsCredentialsResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: Collection of Notification Hub or Notification Hub Namespace PNS credentials.
+     * Get the innerProperties property: NotificationHub PNS Credentials.
      * 
      * @return the innerProperties value.
      */
-    private PnsCredentials innerProperties() {
+    private PnsCredentialsProperties innerProperties() {
         return this.innerProperties;
     }
 
     /**
-     * Get the location property: Deprecated - only for compatibility.
+     * Get the sku property: The sku of the created namespace.
      * 
-     * @return the location value.
+     * @return the sku value.
      */
-    public String location() {
-        return this.location;
+    public Sku sku() {
+        return this.sku;
     }
 
     /**
-     * Set the location property: Deprecated - only for compatibility.
+     * Set the sku property: The sku of the created namespace.
      * 
-     * @param location the location value to set.
+     * @param sku the sku value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
+    public PnsCredentialsResourceInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public PnsCredentialsResourceInner withLocation(String location) {
-        this.location = location;
+        super.withLocation(location);
         return this;
     }
 
     /**
-     * Get the tags property: Deprecated - only for compatibility.
-     * 
-     * @return the tags value.
+     * {@inheritDoc}
      */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Deprecated - only for compatibility.
-     * 
-     * @param tags the tags value to set.
-     * @return the PnsCredentialsResourceInner object itself.
-     */
+    @Override
     public PnsCredentialsResourceInner withTags(Map<String, String> tags) {
-        this.tags = tags;
+        super.withTags(tags);
         return this;
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
-     * Get the admCredential property: Description of a NotificationHub AdmCredential.
-     * 
-     * @return the admCredential value.
-     */
-    public AdmCredential admCredential() {
-        return this.innerProperties() == null ? null : this.innerProperties().admCredential();
-    }
-
-    /**
-     * Set the admCredential property: Description of a NotificationHub AdmCredential.
-     * 
-     * @param admCredential the admCredential value to set.
-     * @return the PnsCredentialsResourceInner object itself.
-     */
-    public PnsCredentialsResourceInner withAdmCredential(AdmCredential admCredential) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PnsCredentials();
-        }
-        this.innerProperties().withAdmCredential(admCredential);
-        return this;
-    }
-
-    /**
-     * Get the apnsCredential property: Description of a NotificationHub ApnsCredential.
+     * Get the apnsCredential property: The ApnsCredential of the created NotificationHub.
      * 
      * @return the apnsCredential value.
      */
@@ -149,113 +142,21 @@ public final class PnsCredentialsResourceInner extends ProxyResource {
     }
 
     /**
-     * Set the apnsCredential property: Description of a NotificationHub ApnsCredential.
+     * Set the apnsCredential property: The ApnsCredential of the created NotificationHub.
      * 
      * @param apnsCredential the apnsCredential value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
     public PnsCredentialsResourceInner withApnsCredential(ApnsCredential apnsCredential) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PnsCredentials();
+            this.innerProperties = new PnsCredentialsProperties();
         }
         this.innerProperties().withApnsCredential(apnsCredential);
         return this;
     }
 
     /**
-     * Get the baiduCredential property: Description of a NotificationHub BaiduCredential.
-     * 
-     * @return the baiduCredential value.
-     */
-    public BaiduCredential baiduCredential() {
-        return this.innerProperties() == null ? null : this.innerProperties().baiduCredential();
-    }
-
-    /**
-     * Set the baiduCredential property: Description of a NotificationHub BaiduCredential.
-     * 
-     * @param baiduCredential the baiduCredential value to set.
-     * @return the PnsCredentialsResourceInner object itself.
-     */
-    public PnsCredentialsResourceInner withBaiduCredential(BaiduCredential baiduCredential) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PnsCredentials();
-        }
-        this.innerProperties().withBaiduCredential(baiduCredential);
-        return this;
-    }
-
-    /**
-     * Get the browserCredential property: Description of a NotificationHub BrowserCredential.
-     * 
-     * @return the browserCredential value.
-     */
-    public BrowserCredential browserCredential() {
-        return this.innerProperties() == null ? null : this.innerProperties().browserCredential();
-    }
-
-    /**
-     * Set the browserCredential property: Description of a NotificationHub BrowserCredential.
-     * 
-     * @param browserCredential the browserCredential value to set.
-     * @return the PnsCredentialsResourceInner object itself.
-     */
-    public PnsCredentialsResourceInner withBrowserCredential(BrowserCredential browserCredential) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PnsCredentials();
-        }
-        this.innerProperties().withBrowserCredential(browserCredential);
-        return this;
-    }
-
-    /**
-     * Get the gcmCredential property: Description of a NotificationHub GcmCredential.
-     * 
-     * @return the gcmCredential value.
-     */
-    public GcmCredential gcmCredential() {
-        return this.innerProperties() == null ? null : this.innerProperties().gcmCredential();
-    }
-
-    /**
-     * Set the gcmCredential property: Description of a NotificationHub GcmCredential.
-     * 
-     * @param gcmCredential the gcmCredential value to set.
-     * @return the PnsCredentialsResourceInner object itself.
-     */
-    public PnsCredentialsResourceInner withGcmCredential(GcmCredential gcmCredential) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PnsCredentials();
-        }
-        this.innerProperties().withGcmCredential(gcmCredential);
-        return this;
-    }
-
-    /**
-     * Get the mpnsCredential property: Description of a NotificationHub MpnsCredential.
-     * 
-     * @return the mpnsCredential value.
-     */
-    public MpnsCredential mpnsCredential() {
-        return this.innerProperties() == null ? null : this.innerProperties().mpnsCredential();
-    }
-
-    /**
-     * Set the mpnsCredential property: Description of a NotificationHub MpnsCredential.
-     * 
-     * @param mpnsCredential the mpnsCredential value to set.
-     * @return the PnsCredentialsResourceInner object itself.
-     */
-    public PnsCredentialsResourceInner withMpnsCredential(MpnsCredential mpnsCredential) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PnsCredentials();
-        }
-        this.innerProperties().withMpnsCredential(mpnsCredential);
-        return this;
-    }
-
-    /**
-     * Get the wnsCredential property: Description of a NotificationHub WnsCredential.
+     * Get the wnsCredential property: The WnsCredential of the created NotificationHub.
      * 
      * @return the wnsCredential value.
      */
@@ -264,62 +165,108 @@ public final class PnsCredentialsResourceInner extends ProxyResource {
     }
 
     /**
-     * Set the wnsCredential property: Description of a NotificationHub WnsCredential.
+     * Set the wnsCredential property: The WnsCredential of the created NotificationHub.
      * 
      * @param wnsCredential the wnsCredential value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
     public PnsCredentialsResourceInner withWnsCredential(WnsCredential wnsCredential) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PnsCredentials();
+            this.innerProperties = new PnsCredentialsProperties();
         }
         this.innerProperties().withWnsCredential(wnsCredential);
         return this;
     }
 
     /**
-     * Get the xiaomiCredential property: Description of a NotificationHub XiaomiCredential.
+     * Get the gcmCredential property: The GcmCredential of the created NotificationHub.
      * 
-     * @return the xiaomiCredential value.
+     * @return the gcmCredential value.
      */
-    public XiaomiCredential xiaomiCredential() {
-        return this.innerProperties() == null ? null : this.innerProperties().xiaomiCredential();
+    public GcmCredential gcmCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().gcmCredential();
     }
 
     /**
-     * Set the xiaomiCredential property: Description of a NotificationHub XiaomiCredential.
+     * Set the gcmCredential property: The GcmCredential of the created NotificationHub.
      * 
-     * @param xiaomiCredential the xiaomiCredential value to set.
+     * @param gcmCredential the gcmCredential value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
-    public PnsCredentialsResourceInner withXiaomiCredential(XiaomiCredential xiaomiCredential) {
+    public PnsCredentialsResourceInner withGcmCredential(GcmCredential gcmCredential) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PnsCredentials();
+            this.innerProperties = new PnsCredentialsProperties();
         }
-        this.innerProperties().withXiaomiCredential(xiaomiCredential);
+        this.innerProperties().withGcmCredential(gcmCredential);
         return this;
     }
 
     /**
-     * Get the fcmV1Credential property: Description of a NotificationHub FcmV1Credential.
+     * Get the mpnsCredential property: The MpnsCredential of the created NotificationHub.
      * 
-     * @return the fcmV1Credential value.
+     * @return the mpnsCredential value.
      */
-    public FcmV1Credential fcmV1Credential() {
-        return this.innerProperties() == null ? null : this.innerProperties().fcmV1Credential();
+    public MpnsCredential mpnsCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().mpnsCredential();
     }
 
     /**
-     * Set the fcmV1Credential property: Description of a NotificationHub FcmV1Credential.
+     * Set the mpnsCredential property: The MpnsCredential of the created NotificationHub.
      * 
-     * @param fcmV1Credential the fcmV1Credential value to set.
+     * @param mpnsCredential the mpnsCredential value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
-    public PnsCredentialsResourceInner withFcmV1Credential(FcmV1Credential fcmV1Credential) {
+    public PnsCredentialsResourceInner withMpnsCredential(MpnsCredential mpnsCredential) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PnsCredentials();
+            this.innerProperties = new PnsCredentialsProperties();
         }
-        this.innerProperties().withFcmV1Credential(fcmV1Credential);
+        this.innerProperties().withMpnsCredential(mpnsCredential);
+        return this;
+    }
+
+    /**
+     * Get the admCredential property: The AdmCredential of the created NotificationHub.
+     * 
+     * @return the admCredential value.
+     */
+    public AdmCredential admCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().admCredential();
+    }
+
+    /**
+     * Set the admCredential property: The AdmCredential of the created NotificationHub.
+     * 
+     * @param admCredential the admCredential value to set.
+     * @return the PnsCredentialsResourceInner object itself.
+     */
+    public PnsCredentialsResourceInner withAdmCredential(AdmCredential admCredential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PnsCredentialsProperties();
+        }
+        this.innerProperties().withAdmCredential(admCredential);
+        return this;
+    }
+
+    /**
+     * Get the baiduCredential property: The BaiduCredential of the created NotificationHub.
+     * 
+     * @return the baiduCredential value.
+     */
+    public BaiduCredential baiduCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().baiduCredential();
+    }
+
+    /**
+     * Set the baiduCredential property: The BaiduCredential of the created NotificationHub.
+     * 
+     * @param baiduCredential the baiduCredential value to set.
+     * @return the PnsCredentialsResourceInner object itself.
+     */
+    public PnsCredentialsResourceInner withBaiduCredential(BaiduCredential baiduCredential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PnsCredentialsProperties();
+        }
+        this.innerProperties().withBaiduCredential(baiduCredential);
         return this;
     }
 
@@ -332,5 +279,61 @@ public final class PnsCredentialsResourceInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (sku() != null) {
+            sku().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PnsCredentialsResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PnsCredentialsResourceInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PnsCredentialsResourceInner.
+     */
+    public static PnsCredentialsResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PnsCredentialsResourceInner deserializedPnsCredentialsResourceInner = new PnsCredentialsResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPnsCredentialsResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.innerProperties = PnsCredentialsProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPnsCredentialsResourceInner;
+        });
     }
 }

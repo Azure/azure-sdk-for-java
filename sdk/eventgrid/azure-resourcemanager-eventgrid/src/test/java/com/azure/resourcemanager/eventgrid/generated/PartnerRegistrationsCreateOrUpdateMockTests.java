@@ -24,7 +24,7 @@ public final class PartnerRegistrationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"dd65077b-34b5-45e1-9751-e0faabce068d\"},\"location\":\"hggabqbgamklil\",\"tags\":{\"ffhsdpzouhk\":\"d\",\"dfddtullygtav\":\"qrxqwqnjx\",\"phraspifleim\":\"zcxdfweapyfmlxrl\",\"mdbgi\":\"x\"},\"id\":\"ehfgsm\",\"name\":\"rjuqbpxtokl\",\"type\":\"mtznpaxwfqtyyqi\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"487da261-ad88-4664-9348-6c29828b1c3c\"},\"location\":\"hggabqbgamklil\",\"tags\":{\"ffhsdpzouhk\":\"d\",\"dfddtullygtav\":\"qrxqwqnjx\",\"phraspifleim\":\"zcxdfweapyfmlxrl\",\"mdbgi\":\"x\"},\"id\":\"ehfgsm\",\"name\":\"rjuqbpxtokl\",\"type\":\"mtznpaxwfqtyyqi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,12 +38,12 @@ public final class PartnerRegistrationsCreateOrUpdateMockTests {
             .withRegion("zobuzmsxgamtdtk")
             .withExistingResourceGroup("loqd")
             .withTags(mapOf("mrljdpoqfxye", "thuzdprm"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("0cfa7164-4cc2-4b34-827c-61964056cf15"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("33204f09-c7e4-49cd-9c30-38bd60191425"))
             .create();
 
         Assertions.assertEquals("hggabqbgamklil", response.location());
         Assertions.assertEquals("d", response.tags().get("ffhsdpzouhk"));
-        Assertions.assertEquals(UUID.fromString("dd65077b-34b5-45e1-9751-e0faabce068d"),
+        Assertions.assertEquals(UUID.fromString("487da261-ad88-4664-9348-6c29828b1c3c"),
             response.partnerRegistrationImmutableId());
     }
 

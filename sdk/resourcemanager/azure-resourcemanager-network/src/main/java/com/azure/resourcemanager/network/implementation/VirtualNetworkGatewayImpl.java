@@ -39,9 +39,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /** Implementation for VirtualNetworkGateway and its create and update interfaces. */
-class VirtualNetworkGatewayImpl
-    extends GroupableParentResourceWithTagsImpl<
-        VirtualNetworkGateway, VirtualNetworkGatewayInner, VirtualNetworkGatewayImpl, NetworkManager>
+class VirtualNetworkGatewayImpl extends
+    GroupableParentResourceWithTagsImpl<VirtualNetworkGateway, VirtualNetworkGatewayInner, VirtualNetworkGatewayImpl, NetworkManager>
     implements VirtualNetworkGateway, VirtualNetworkGateway.Definition, VirtualNetworkGateway.Update {
     private static final String GATEWAY_SUBNET = "GatewaySubnet";
     private final ClientLogger logger = new ClientLogger(getClass());
@@ -51,8 +50,8 @@ class VirtualNetworkGatewayImpl
     private Creatable<Network> creatableNetwork;
     private Creatable<PublicIpAddress> creatablePip;
 
-    VirtualNetworkGatewayImpl(
-        String name, final VirtualNetworkGatewayInner innerModel, final NetworkManager networkManager) {
+    VirtualNetworkGatewayImpl(String name, final VirtualNetworkGatewayInner innerModel,
+        final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
@@ -78,11 +77,9 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public VirtualNetworkGatewayImpl withSku(VirtualNetworkGatewaySkuName skuName) {
-        VirtualNetworkGatewaySku sku =
-            new VirtualNetworkGatewaySku()
-                .withName(skuName)
-                // same sku tier as sku name
-                .withTier(VirtualNetworkGatewaySkuTier.fromString(skuName.toString()));
+        VirtualNetworkGatewaySku sku = new VirtualNetworkGatewaySku().withName(skuName)
+            // same sku tier as sku name
+            .withTier(VirtualNetworkGatewaySkuTier.fromString(skuName.toString()));
         this.innerModel().withSku(sku);
         return this;
     }
@@ -95,8 +92,8 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public VirtualNetworkGatewayImpl withNewNetwork(String name, String addressSpace, String subnetAddressSpaceCidr) {
-        Network.DefinitionStages.WithGroup definitionWithGroup =
-            this.manager().networks().define(name).withRegion(this.regionName());
+        Network.DefinitionStages.WithGroup definitionWithGroup
+            = this.manager().networks().define(name).withRegion(this.regionName());
 
         Network.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.newGroup() != null) {
@@ -104,17 +101,15 @@ class VirtualNetworkGatewayImpl
         } else {
             definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
-        Creatable<Network> network =
-            definitionAfterGroup.withAddressSpace(addressSpace).withSubnet(GATEWAY_SUBNET, subnetAddressSpaceCidr);
+        Creatable<Network> network
+            = definitionAfterGroup.withAddressSpace(addressSpace).withSubnet(GATEWAY_SUBNET, subnetAddressSpaceCidr);
         return withNewNetwork(network);
     }
 
     @Override
     public VirtualNetworkGatewayImpl withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr) {
-        withNewNetwork(
-            this.manager().resourceManager().internalContext().randomResourceName("vnet", 8),
-            addressSpaceCidr,
-            subnetAddressSpaceCidr);
+        withNewNetwork(this.manager().resourceManager().internalContext().randomResourceName("vnet", 8),
+            addressSpaceCidr, subnetAddressSpaceCidr);
         return this;
     }
 
@@ -145,13 +140,11 @@ class VirtualNetworkGatewayImpl
     @Override
     public VirtualNetworkGatewayImpl withNewPublicIpAddress() {
         final String pipName = this.manager().resourceManager().internalContext().randomResourceName("pip", 9);
-        this.creatablePip =
-            this
-                .manager()
-                .publicIpAddresses()
-                .define(pipName)
-                .withRegion(this.regionName())
-                .withExistingResourceGroup(this.resourceGroupName());
+        this.creatablePip = this.manager()
+            .publicIpAddresses()
+            .define(pipName)
+            .withRegion(this.regionName())
+            .withExistingResourceGroup(this.resourceGroupName());
         return this;
     }
 
@@ -180,16 +173,14 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public Mono<Void> resetAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getVirtualNetworkGateways()
             .resetAsync(resourceGroupName(), name())
-            .map(
-                inner -> {
-                    VirtualNetworkGatewayImpl.this.setInner(inner);
-                    return Mono.empty();
-                })
+            .map(inner -> {
+                VirtualNetworkGatewayImpl.this.setInner(inner);
+                return Mono.empty();
+            })
             .then();
     }
 
@@ -200,20 +191,17 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listConnectionsAsync() {
-        PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> connectionInners =
-            this
-                .manager()
-                .serviceClient()
-                .getVirtualNetworkGateways()
-                .listConnectionsAsync(this.resourceGroupName(), this.name());
-        return PagedConverter
-            .flatMapPage(connectionInners, connectionInner -> connections().getByIdAsync(connectionInner.id()));
+        PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> connectionInners = this.manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
+            .listConnectionsAsync(this.resourceGroupName(), this.name());
+        return PagedConverter.flatMapPage(connectionInners,
+            connectionInner -> connections().getByIdAsync(connectionInner.id()));
     }
 
     @Override
     public String generateVpnProfile() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getVirtualNetworkGateways()
             .generateVpnProfile(resourceGroupName(), name(), new VpnClientParameters());
@@ -221,8 +209,7 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public Mono<String> generateVpnProfileAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getVirtualNetworkGateways()
             .generateVpnProfileAsync(resourceGroupName(), name(), new VpnClientParameters());
@@ -230,8 +217,7 @@ class VirtualNetworkGatewayImpl
 
     @Override
     protected Mono<VirtualNetworkGatewayInner> applyTagsToInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getVirtualNetworkGateways()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
@@ -300,20 +286,16 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public Mono<VirtualNetworkGateway> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                virtualNetworkGateway -> {
-                    VirtualNetworkGatewayImpl impl = (VirtualNetworkGatewayImpl) virtualNetworkGateway;
-                    impl.initializeChildrenFromInner();
-                    return impl;
-                });
+        return super.refreshAsync().map(virtualNetworkGateway -> {
+            VirtualNetworkGatewayImpl impl = (VirtualNetworkGatewayImpl) virtualNetworkGateway;
+            impl.initializeChildrenFromInner();
+            return impl;
+        });
     }
 
     @Override
     protected Mono<VirtualNetworkGatewayInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getVirtualNetworkGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -329,8 +311,8 @@ class VirtualNetworkGatewayImpl
     private VirtualNetworkGatewayIpConfigurationImpl defineIPConfiguration(String name) {
         VirtualNetworkGatewayIpConfiguration ipConfig = this.ipConfigs.get(name);
         if (ipConfig == null) {
-            VirtualNetworkGatewayIpConfigurationInner inner =
-                new VirtualNetworkGatewayIpConfigurationInner().withName(name);
+            VirtualNetworkGatewayIpConfigurationInner inner
+                = new VirtualNetworkGatewayIpConfigurationInner().withName(name);
             return new VirtualNetworkGatewayIpConfigurationImpl(inner, this);
         } else {
             return (VirtualNetworkGatewayIpConfigurationImpl) ipConfig;
@@ -342,8 +324,8 @@ class VirtualNetworkGatewayImpl
         List<VirtualNetworkGatewayIpConfigurationInner> inners = this.innerModel().ipConfigurations();
         if (inners != null) {
             for (VirtualNetworkGatewayIpConfigurationInner inner : inners) {
-                VirtualNetworkGatewayIpConfigurationImpl config =
-                    new VirtualNetworkGatewayIpConfigurationImpl(inner, this);
+                VirtualNetworkGatewayIpConfigurationImpl config
+                    = new VirtualNetworkGatewayIpConfigurationImpl(inner, this);
                 this.ipConfigs.put(inner.name(), config);
             }
         }
@@ -364,8 +346,8 @@ class VirtualNetworkGatewayImpl
     }
 
     private VirtualNetworkGatewayIpConfigurationImpl ensureDefaultIPConfig() {
-        VirtualNetworkGatewayIpConfigurationImpl ipConfig =
-            (VirtualNetworkGatewayIpConfigurationImpl) defaultIPConfiguration();
+        VirtualNetworkGatewayIpConfigurationImpl ipConfig
+            = (VirtualNetworkGatewayIpConfigurationImpl) defaultIPConfiguration();
         if (ipConfig == null) {
             String name = this.manager().resourceManager().internalContext().randomResourceName("ipcfg", 11);
             ipConfig = this.defineIPConfiguration(name);
@@ -377,13 +359,11 @@ class VirtualNetworkGatewayImpl
     private Creatable<PublicIpAddress> ensureDefaultPipDefinition() {
         if (this.creatablePip == null) {
             final String pipName = this.manager().resourceManager().internalContext().randomResourceName("pip", 9);
-            this.creatablePip =
-                this
-                    .manager()
-                    .publicIpAddresses()
-                    .define(pipName)
-                    .withRegion(this.regionName())
-                    .withExistingResourceGroup(this.resourceGroupName());
+            this.creatablePip = this.manager()
+                .publicIpAddresses()
+                .define(pipName)
+                .withRegion(this.regionName())
+                .withExistingResourceGroup(this.resourceGroupName());
         }
         return this.creatablePip;
     }
@@ -404,14 +384,10 @@ class VirtualNetworkGatewayImpl
         final Mono<Resource> pipObservable;
         if (defaultIPConfig.publicIpAddressId() == null) {
             // If public ip not specified, then create a default PIP
-            pipObservable =
-                ensureDefaultPipDefinition()
-                    .createAsync()
-                    .map(
-                        publicIPAddress -> {
-                            defaultIPConfig.withExistingPublicIpAddress(publicIPAddress);
-                            return publicIPAddress;
-                        });
+            pipObservable = ensureDefaultPipDefinition().createAsync().map(publicIPAddress -> {
+                defaultIPConfig.withExistingPublicIpAddress(publicIPAddress);
+                return publicIPAddress;
+            });
         } else {
             // If existing public ip address specified, skip creating the PIP
             pipObservable = Mono.empty();
@@ -424,30 +400,21 @@ class VirtualNetworkGatewayImpl
             networkObservable = Mono.empty(); // ...and don't create another VNet
         } else if (creatableNetwork != null) {
             // But if default IP config does not have a subnet specified, then create a VNet
-            networkObservable =
-                creatableNetwork
-                    .createAsync()
-                    .map(
-                        network -> {
-                            // ... and assign the created VNet to the default IP config
-                            defaultIPConfig.withExistingSubnet(network, GATEWAY_SUBNET);
-                            return network;
-                        });
+            networkObservable = creatableNetwork.createAsync().map(network -> {
+                // ... and assign the created VNet to the default IP config
+                defaultIPConfig.withExistingSubnet(network, GATEWAY_SUBNET);
+                return network;
+            });
         } else {
             throw logger.logExceptionAsError(new IllegalStateException("Creatable Network should not be null"));
         }
 
-        return Flux
-            .merge(networkObservable, pipObservable)
+        return Flux.merge(networkObservable, pipObservable)
             .last(Resource.DUMMY)
-            .flatMap(
-                resource ->
-                    VirtualNetworkGatewayImpl
-                        .this
-                        .manager()
-                        .serviceClient()
-                        .getVirtualNetworkGateways()
-                        .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
+            .flatMap(resource -> VirtualNetworkGatewayImpl.this.manager()
+                .serviceClient()
+                .getVirtualNetworkGateways()
+                .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
     }
 
     @Override

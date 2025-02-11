@@ -47,8 +47,8 @@ public final class StorageAuthenticationSettings {
     public static StorageAuthenticationSettings fromConnectionSettings(final ConnectionSettings settings) {
         final String accountName = settings.getSettingValue(Constants.ConnectionStringConstants.ACCOUNT_NAME);
         final String accountKey = settings.getSettingValue(Constants.ConnectionStringConstants.ACCOUNT_KEY_NAME);
-        final String sasSignature =
-                settings.getSettingValue(Constants.ConnectionStringConstants.SHARED_ACCESS_SIGNATURE_NAME);
+        final String sasSignature
+            = settings.getSettingValue(Constants.ConnectionStringConstants.SHARED_ACCESS_SIGNATURE_NAME);
 
         if (accountName != null && accountKey != null && sasSignature == null) {
             return new StorageAuthenticationSettings(new Account(accountName, accountKey));
@@ -64,7 +64,7 @@ public final class StorageAuthenticationSettings {
      */
     public static StorageAuthenticationSettings forEmulator() {
         return new StorageAuthenticationSettings(new Account(Constants.ConnectionStringConstants.EMULATOR_ACCOUNT_NAME,
-                Constants.ConnectionStringConstants.EMULATOR_ACCOUNT_KEY));
+            Constants.ConnectionStringConstants.EMULATOR_ACCOUNT_KEY));
     }
 
     /**
@@ -86,8 +86,8 @@ public final class StorageAuthenticationSettings {
     private StorageAuthenticationSettings(String sasToken) {
         this.type = Type.SAS_TOKEN;
         // sanitize SAS
-        this.sasToken = new CommonSasQueryParameters(
-            SasImplUtils.parseQueryString(Objects.requireNonNull(sasToken)), /*remove from map*/ false).encode();
+        this.sasToken = new CommonSasQueryParameters(SasImplUtils.parseQueryString(Objects.requireNonNull(sasToken)),
+            /*remove from map*/ false).encode();
         this.account = null;
     }
 
@@ -154,4 +154,3 @@ public final class StorageAuthenticationSettings {
         }
     }
 }
-

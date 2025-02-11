@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The DatadogHostMetadata model. */
+/**
+ * The DatadogHostMetadata model.
+ */
 @Fluent
-public final class DatadogHostMetadata {
+public final class DatadogHostMetadata implements JsonSerializable<DatadogHostMetadata> {
     /*
      * The agent version.
      */
-    @JsonProperty(value = "agentVersion")
     private String agentVersion;
 
     /*
      * The installMethod property.
      */
-    @JsonProperty(value = "installMethod")
     private DatadogInstallMethod installMethod;
 
     /*
      * The logsAgent property.
      */
-    @JsonProperty(value = "logsAgent")
     private DatadogLogsAgent logsAgent;
 
-    /** Creates an instance of DatadogHostMetadata class. */
+    /**
+     * Creates an instance of DatadogHostMetadata class.
+     */
     public DatadogHostMetadata() {
     }
 
     /**
      * Get the agentVersion property: The agent version.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -43,7 +48,7 @@ public final class DatadogHostMetadata {
 
     /**
      * Set the agentVersion property: The agent version.
-     *
+     * 
      * @param agentVersion the agentVersion value to set.
      * @return the DatadogHostMetadata object itself.
      */
@@ -54,7 +59,7 @@ public final class DatadogHostMetadata {
 
     /**
      * Get the installMethod property: The installMethod property.
-     *
+     * 
      * @return the installMethod value.
      */
     public DatadogInstallMethod installMethod() {
@@ -63,7 +68,7 @@ public final class DatadogHostMetadata {
 
     /**
      * Set the installMethod property: The installMethod property.
-     *
+     * 
      * @param installMethod the installMethod value to set.
      * @return the DatadogHostMetadata object itself.
      */
@@ -74,7 +79,7 @@ public final class DatadogHostMetadata {
 
     /**
      * Get the logsAgent property: The logsAgent property.
-     *
+     * 
      * @return the logsAgent value.
      */
     public DatadogLogsAgent logsAgent() {
@@ -83,7 +88,7 @@ public final class DatadogHostMetadata {
 
     /**
      * Set the logsAgent property: The logsAgent property.
-     *
+     * 
      * @param logsAgent the logsAgent value to set.
      * @return the DatadogHostMetadata object itself.
      */
@@ -94,7 +99,7 @@ public final class DatadogHostMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -104,5 +109,47 @@ public final class DatadogHostMetadata {
         if (logsAgent() != null) {
             logsAgent().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeJsonField("installMethod", this.installMethod);
+        jsonWriter.writeJsonField("logsAgent", this.logsAgent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatadogHostMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatadogHostMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatadogHostMetadata.
+     */
+    public static DatadogHostMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatadogHostMetadata deserializedDatadogHostMetadata = new DatadogHostMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("agentVersion".equals(fieldName)) {
+                    deserializedDatadogHostMetadata.agentVersion = reader.getString();
+                } else if ("installMethod".equals(fieldName)) {
+                    deserializedDatadogHostMetadata.installMethod = DatadogInstallMethod.fromJson(reader);
+                } else if ("logsAgent".equals(fieldName)) {
+                    deserializedDatadogHostMetadata.logsAgent = DatadogLogsAgent.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatadogHostMetadata;
+        });
     }
 }

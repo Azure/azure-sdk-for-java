@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class EdifactMessageIdentifierTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EdifactMessageIdentifier model =
-            BinaryData.fromString("{\"messageId\":\"dxzxhi\"}").toObject(EdifactMessageIdentifier.class);
-        Assertions.assertEquals("dxzxhi", model.messageId());
+        EdifactMessageIdentifier model
+            = BinaryData.fromString("{\"messageId\":\"gehkfkimrtixokff\"}").toObject(EdifactMessageIdentifier.class);
+        Assertions.assertEquals("gehkfkimrtixokff", model.messageId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EdifactMessageIdentifier model = new EdifactMessageIdentifier().withMessageId("dxzxhi");
+        EdifactMessageIdentifier model = new EdifactMessageIdentifier().withMessageId("gehkfkimrtixokff");
         model = BinaryData.fromObject(model).toObject(EdifactMessageIdentifier.class);
-        Assertions.assertEquals("dxzxhi", model.messageId());
+        Assertions.assertEquals("gehkfkimrtixokff", model.messageId());
     }
 }

@@ -7,25 +7,27 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionContractInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of SubscriptionContract. */
+/**
+ * An immutable client-side representation of SubscriptionContract.
+ */
 public interface SubscriptionContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
@@ -33,21 +35,21 @@ public interface SubscriptionContract {
     /**
      * Gets the ownerId property: The user resource identifier of the subscription owner. The value is a valid relative
      * URL in the format of /users/{userId} where {userId} is a user identifier.
-     *
+     * 
      * @return the ownerId value.
      */
     String ownerId();
 
     /**
      * Gets the scope property: Scope like /products/{productId} or /apis or /apis/{apiId}.
-     *
+     * 
      * @return the scope value.
      */
     String scope();
 
     /**
      * Gets the displayName property: The name of the subscription, or null if the subscription has no name.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
@@ -58,7 +60,7 @@ public interface SubscriptionContract {
      * the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected –
      * the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled
      * by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated.
-     *
+     * 
      * @return the state value.
      */
     SubscriptionState state();
@@ -66,7 +68,7 @@ public interface SubscriptionContract {
     /**
      * Gets the createdDate property: Subscription creation date. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the createdDate value.
      */
     OffsetDateTime createdDate();
@@ -76,7 +78,7 @@ public interface SubscriptionContract {
      * subscription is not automatically activated. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @return the startDate value.
      */
     OffsetDateTime startDate();
@@ -86,7 +88,7 @@ public interface SubscriptionContract {
      * subscription is not automatically expired. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @return the expirationDate value.
      */
     OffsetDateTime expirationDate();
@@ -96,7 +98,7 @@ public interface SubscriptionContract {
      * only and the subscription is not automatically cancelled. The subscription lifecycle can be managed by using the
      * `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @return the endDate value.
      */
     OffsetDateTime endDate();
@@ -104,7 +106,7 @@ public interface SubscriptionContract {
     /**
      * Gets the notificationDate property: Upcoming subscription expiration notification date. The date conforms to the
      * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the notificationDate value.
      */
     OffsetDateTime notificationDate();
@@ -112,7 +114,7 @@ public interface SubscriptionContract {
     /**
      * Gets the primaryKey property: Subscription primary key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the primaryKey value.
      */
     String primaryKey();
@@ -120,7 +122,7 @@ public interface SubscriptionContract {
     /**
      * Gets the secondaryKey property: Subscription secondary key. This property will not be filled on 'GET' operations!
      * Use '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the secondaryKey value.
      */
     String secondaryKey();
@@ -128,21 +130,21 @@ public interface SubscriptionContract {
     /**
      * Gets the stateComment property: Optional subscription comment added by an administrator when the state is changed
      * to the 'rejected'.
-     *
+     * 
      * @return the stateComment value.
      */
     String stateComment();
 
     /**
      * Gets the allowTracing property: Determines whether tracing is enabled.
-     *
+     * 
      * @return the allowTracing value.
      */
     Boolean allowTracing();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     SubscriptionContractInner innerModel();

@@ -11,36 +11,32 @@ import org.junit.jupiter.api.Assertions;
 public final class TaskResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TaskResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"startedAt\":\"q\",\"completedAt\":\"ol\",\"lastPolledAt\":\"fpsalgbqu\",\"state\":\"gjyjgzjaoyfhrtxi\",\"phase\":\"erkujys\",\"reason\":\"eju\",\"metadata\":\"dataqawrlyxwj\",\"provisioningState\":\"Creating\"}")
-                .toObject(TaskResourceProperties.class);
-        Assertions.assertEquals("q", model.startedAt());
-        Assertions.assertEquals("ol", model.completedAt());
-        Assertions.assertEquals("fpsalgbqu", model.lastPolledAt());
-        Assertions.assertEquals("gjyjgzjaoyfhrtxi", model.state());
-        Assertions.assertEquals("erkujys", model.phase());
-        Assertions.assertEquals("eju", model.reason());
+        TaskResourceProperties model = BinaryData.fromString(
+            "{\"startedAt\":\"qrolfpf\",\"completedAt\":\"algbquxigjyjg\",\"lastPolledAt\":\"aoyfhrtxilnerkuj\",\"state\":\"vlejuvfqa\",\"phase\":\"lyxwjkcprbnwbx\",\"reason\":\"vtb\",\"metadata\":\"dataysszdnrujqguh\",\"provisioningState\":\"InstallingApplication\"}")
+            .toObject(TaskResourceProperties.class);
+        Assertions.assertEquals("qrolfpf", model.startedAt());
+        Assertions.assertEquals("algbquxigjyjg", model.completedAt());
+        Assertions.assertEquals("aoyfhrtxilnerkuj", model.lastPolledAt());
+        Assertions.assertEquals("vlejuvfqa", model.state());
+        Assertions.assertEquals("lyxwjkcprbnwbx", model.phase());
+        Assertions.assertEquals("vtb", model.reason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TaskResourceProperties model =
-            new TaskResourceProperties()
-                .withStartedAt("q")
-                .withCompletedAt("ol")
-                .withLastPolledAt("fpsalgbqu")
-                .withState("gjyjgzjaoyfhrtxi")
-                .withPhase("erkujys")
-                .withReason("eju")
-                .withMetadata("dataqawrlyxwj");
+        TaskResourceProperties model = new TaskResourceProperties().withStartedAt("qrolfpf")
+            .withCompletedAt("algbquxigjyjg")
+            .withLastPolledAt("aoyfhrtxilnerkuj")
+            .withState("vlejuvfqa")
+            .withPhase("lyxwjkcprbnwbx")
+            .withReason("vtb")
+            .withMetadata("dataysszdnrujqguh");
         model = BinaryData.fromObject(model).toObject(TaskResourceProperties.class);
-        Assertions.assertEquals("q", model.startedAt());
-        Assertions.assertEquals("ol", model.completedAt());
-        Assertions.assertEquals("fpsalgbqu", model.lastPolledAt());
-        Assertions.assertEquals("gjyjgzjaoyfhrtxi", model.state());
-        Assertions.assertEquals("erkujys", model.phase());
-        Assertions.assertEquals("eju", model.reason());
+        Assertions.assertEquals("qrolfpf", model.startedAt());
+        Assertions.assertEquals("algbquxigjyjg", model.completedAt());
+        Assertions.assertEquals("aoyfhrtxilnerkuj", model.lastPolledAt());
+        Assertions.assertEquals("vlejuvfqa", model.state());
+        Assertions.assertEquals("lyxwjkcprbnwbx", model.phase());
+        Assertions.assertEquals("vtb", model.reason());
     }
 }

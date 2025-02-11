@@ -84,12 +84,12 @@ public class AzureChatExtensionConfiguration implements JsonSerializable<AzureCh
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("azure_search".equals(discriminatorValue)) {
                     return AzureSearchChatExtensionConfiguration.fromJson(readerToUse.reset());
-                } else if ("azure_ml_index".equals(discriminatorValue)) {
-                    return AzureMachineLearningIndexChatExtensionConfiguration.fromJson(readerToUse.reset());
                 } else if ("azure_cosmos_db".equals(discriminatorValue)) {
                     return AzureCosmosDBChatExtensionConfiguration.fromJson(readerToUse.reset());
                 } else if ("elasticsearch".equals(discriminatorValue)) {
                     return ElasticsearchChatExtensionConfiguration.fromJson(readerToUse.reset());
+                } else if ("mongo_db".equals(discriminatorValue)) {
+                    return MongoDBChatExtensionConfiguration.fromJson(readerToUse.reset());
                 } else if ("pinecone".equals(discriminatorValue)) {
                     return PineconeChatExtensionConfiguration.fromJson(readerToUse.reset());
                 } else {

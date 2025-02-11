@@ -21,8 +21,9 @@ public final class ListFirewallsResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListFirewallsResponseInner model = new ListFirewallsResponseInner()
-            .withValue(Arrays.asList("sicohoqqnwvlry", "vwhheunmmqhgyx", "konocu")).withNextLink("klyaxuconu");
+        ListFirewallsResponseInner model
+            = new ListFirewallsResponseInner().withValue(Arrays.asList("sicohoqqnwvlry", "vwhheunmmqhgyx", "konocu"))
+                .withNextLink("klyaxuconu");
         model = BinaryData.fromObject(model).toObject(ListFirewallsResponseInner.class);
         Assertions.assertEquals("sicohoqqnwvlry", model.value().get(0));
         Assertions.assertEquals("klyaxuconu", model.nextLink());

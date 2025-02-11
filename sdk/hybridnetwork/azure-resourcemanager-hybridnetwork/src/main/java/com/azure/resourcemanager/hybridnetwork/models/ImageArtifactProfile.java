@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Image artifact profile.
  */
 @Fluent
-public final class ImageArtifactProfile {
+public final class ImageArtifactProfile implements JsonSerializable<ImageArtifactProfile> {
     /*
      * Image name.
      */
-    @JsonProperty(value = "imageName")
     private String imageName;
 
     /*
      * Image version.
      */
-    @JsonProperty(value = "imageVersion")
     private String imageVersion;
 
     /**
@@ -76,5 +78,44 @@ public final class ImageArtifactProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("imageName", this.imageName);
+        jsonWriter.writeStringField("imageVersion", this.imageVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageArtifactProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageArtifactProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageArtifactProfile.
+     */
+    public static ImageArtifactProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageArtifactProfile deserializedImageArtifactProfile = new ImageArtifactProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("imageName".equals(fieldName)) {
+                    deserializedImageArtifactProfile.imageName = reader.getString();
+                } else if ("imageVersion".equals(fieldName)) {
+                    deserializedImageArtifactProfile.imageVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageArtifactProfile;
+        });
     }
 }

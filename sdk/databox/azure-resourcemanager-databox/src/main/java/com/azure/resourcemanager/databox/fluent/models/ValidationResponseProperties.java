@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databox.models.OverallValidationStatus;
 import com.azure.resourcemanager.databox.models.ValidationInputResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of pre job creation validation response. */
+/**
+ * Properties of pre job creation validation response.
+ */
 @Immutable
-public final class ValidationResponseProperties {
+public final class ValidationResponseProperties implements JsonSerializable<ValidationResponseProperties> {
     /*
      * Overall validation status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private OverallValidationStatus status;
 
     /*
      * List of response details contain validationType and its response as key and value respectively.
      */
-    @JsonProperty(value = "individualResponseDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<ValidationInputResponse> individualResponseDetails;
 
-    /** Creates an instance of ValidationResponseProperties class. */
+    /**
+     * Creates an instance of ValidationResponseProperties class.
+     */
     public ValidationResponseProperties() {
     }
 
     /**
      * Get the status property: Overall validation status.
-     *
+     * 
      * @return the status value.
      */
     public OverallValidationStatus status() {
@@ -41,7 +47,7 @@ public final class ValidationResponseProperties {
     /**
      * Get the individualResponseDetails property: List of response details contain validationType and its response as
      * key and value respectively.
-     *
+     * 
      * @return the individualResponseDetails value.
      */
     public List<ValidationInputResponse> individualResponseDetails() {
@@ -50,12 +56,52 @@ public final class ValidationResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (individualResponseDetails() != null) {
             individualResponseDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationResponseProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidationResponseProperties.
+     */
+    public static ValidationResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationResponseProperties deserializedValidationResponseProperties = new ValidationResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedValidationResponseProperties.status
+                        = OverallValidationStatus.fromString(reader.getString());
+                } else if ("individualResponseDetails".equals(fieldName)) {
+                    List<ValidationInputResponse> individualResponseDetails
+                        = reader.readArray(reader1 -> ValidationInputResponse.fromJson(reader1));
+                    deserializedValidationResponseProperties.individualResponseDetails = individualResponseDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidationResponseProperties;
+        });
     }
 }

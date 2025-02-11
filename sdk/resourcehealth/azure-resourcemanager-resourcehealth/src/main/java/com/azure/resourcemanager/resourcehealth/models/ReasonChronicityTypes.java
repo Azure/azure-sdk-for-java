@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Chronicity of the availability transition. */
+/**
+ * Chronicity of the availability transition.
+ */
 public final class ReasonChronicityTypes extends ExpandableStringEnum<ReasonChronicityTypes> {
-    /** Static value Transient for ReasonChronicityTypes. */
+    /**
+     * Static value Transient for ReasonChronicityTypes.
+     */
     public static final ReasonChronicityTypes TRANSIENT = fromString("Transient");
 
-    /** Static value Persistent for ReasonChronicityTypes. */
+    /**
+     * Static value Persistent for ReasonChronicityTypes.
+     */
     public static final ReasonChronicityTypes PERSISTENT = fromString("Persistent");
 
     /**
      * Creates a new instance of ReasonChronicityTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ReasonChronicityTypes extends ExpandableStringEnum<ReasonChro
 
     /**
      * Creates or finds a ReasonChronicityTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReasonChronicityTypes.
      */
-    @JsonCreator
     public static ReasonChronicityTypes fromString(String name) {
         return fromString(name, ReasonChronicityTypes.class);
     }
 
     /**
      * Gets known ReasonChronicityTypes values.
-     *
+     * 
      * @return known ReasonChronicityTypes values.
      */
     public static Collection<ReasonChronicityTypes> values() {

@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for StopTonesInternal. */
@@ -59,12 +59,20 @@ public final class StopTonesInternal extends ExpandableStringEnum<StopTonesInter
     public static final StopTonesInternal ASTERISK = fromString("asterisk");
 
     /**
+     * Creates an instance of {@link StopTonesInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link StopTonesInternal} instead.
+     */
+    @Deprecated
+    public StopTonesInternal() {
+    }
+
+    /**
      * Creates or finds a StopTonesInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding StopTonesInternal.
      */
-    @JsonCreator
     public static StopTonesInternal fromString(String name) {
         return fromString(name, StopTonesInternal.class);
     }

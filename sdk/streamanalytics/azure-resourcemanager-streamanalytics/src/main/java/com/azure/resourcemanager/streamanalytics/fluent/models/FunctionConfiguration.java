@@ -5,34 +5,35 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.FunctionBinding;
 import com.azure.resourcemanager.streamanalytics.models.FunctionInput;
 import com.azure.resourcemanager.streamanalytics.models.FunctionOutput;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The FunctionConfiguration model.
  */
 @Fluent
-public final class FunctionConfiguration {
+public final class FunctionConfiguration implements JsonSerializable<FunctionConfiguration> {
     /*
      * The inputs property.
      */
-    @JsonProperty(value = "inputs")
     private List<FunctionInput> inputs;
 
     /*
      * Describes the output of a function.
      */
-    @JsonProperty(value = "output")
     private FunctionOutput output;
 
     /*
      * The physical binding of the function. For example, in the Azure Machine Learning web service’s case, this
      * describes the endpoint.
      */
-    @JsonProperty(value = "binding")
     private FunctionBinding binding;
 
     /**
@@ -118,5 +119,48 @@ public final class FunctionConfiguration {
         if (binding() != null) {
             binding().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("output", this.output);
+        jsonWriter.writeJsonField("binding", this.binding);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FunctionConfiguration.
+     */
+    public static FunctionConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FunctionConfiguration deserializedFunctionConfiguration = new FunctionConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inputs".equals(fieldName)) {
+                    List<FunctionInput> inputs = reader.readArray(reader1 -> FunctionInput.fromJson(reader1));
+                    deserializedFunctionConfiguration.inputs = inputs;
+                } else if ("output".equals(fieldName)) {
+                    deserializedFunctionConfiguration.output = FunctionOutput.fromJson(reader);
+                } else if ("binding".equals(fieldName)) {
+                    deserializedFunctionConfiguration.binding = FunctionBinding.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFunctionConfiguration;
+        });
     }
 }

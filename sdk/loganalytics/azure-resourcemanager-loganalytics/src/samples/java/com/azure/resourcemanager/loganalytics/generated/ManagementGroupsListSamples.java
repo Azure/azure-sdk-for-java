@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for ManagementGroups List. */
+/**
+ * Samples for ManagementGroups List.
+ */
 public final class ManagementGroupsListSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesListManagementGroups.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesListManagementGroups.json
      */
     /**
      * Sample code: WorkspacesListManagementGroups.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
-    public static void workspacesListManagementGroups(
-        com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+    public static void
+        workspacesListManagementGroups(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager.managementGroups().list("rg1", "TestLinkWS", com.azure.core.util.Context.NONE);
     }
 }

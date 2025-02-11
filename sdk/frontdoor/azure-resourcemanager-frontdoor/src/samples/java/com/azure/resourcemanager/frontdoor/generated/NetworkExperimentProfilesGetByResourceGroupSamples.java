@@ -9,7 +9,9 @@ package com.azure.resourcemanager.frontdoor.generated;
  */
 public final class NetworkExperimentProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentGetProfile.json
+     * x-ms-original-file:
+     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentGetProfile
+     * .json
      */
     /**
      * Sample code: Gets an NetworkExperiment Profile by Profile Id.

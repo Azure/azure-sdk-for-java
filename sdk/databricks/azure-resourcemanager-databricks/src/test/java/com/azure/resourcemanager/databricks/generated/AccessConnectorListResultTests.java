@@ -10,6 +10,7 @@ import com.azure.resourcemanager.databricks.models.AccessConnectorListResult;
 import com.azure.resourcemanager.databricks.models.AccessConnectorProperties;
 import com.azure.resourcemanager.databricks.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.databricks.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.databricks.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,56 +19,54 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessConnectorListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessConnectorListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"identity\":{\"principalId\":\"89510fc0-1456-4c4f-9e2c-b4ff51a0a0fb\",\"tenantId\":\"4bd764c1-2bb9-4057-9a1b-7a0f5ce42ec7\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Updating\"},\"location\":\"nhijggmebfsi\",\"tags\":{\"pnazzm\":\"utrc\"},\"id\":\"jrunmpxtt\",\"name\":\"bh\",\"type\":\"bnlankxmyskpb\"},{\"identity\":{\"principalId\":\"00613ad4-f0d7-4ffa-a440-e9570fab7430\",\"tenantId\":\"33ee25bb-dbe2-4360-a7c5-a72475458984\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Creating\"},\"location\":\"ny\",\"tags\":{\"haaxdbabphl\":\"synlqidybyxczfc\"},\"id\":\"rqlfktsthsucocmn\",\"name\":\"yazttbtwwrqpue\",\"type\":\"ckzywbiexzfeyue\"},{\"identity\":{\"principalId\":\"42426329-5d6a-4e8c-a848-2008d200015e\",\"tenantId\":\"63cf7029-3723-49aa-9800-7b671e7394de\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Created\"},\"location\":\"qwalmuzyoxaepd\",\"tags\":{\"bavxbniwdjswzt\":\"ancuxrhd\",\"xbzpfzab\":\"dbpgnxytxhp\"},\"id\":\"lcuhxwtctyqiklb\",\"name\":\"ovplw\",\"type\":\"bhvgy\"}],\"nextLink\":\"uosvmkfssxqukk\"}")
-                .toObject(AccessConnectorListResult.class);
-        Assertions.assertEquals("nhijggmebfsi", model.value().get(0).location());
-        Assertions.assertEquals("utrc", model.value().get(0).tags().get("pnazzm"));
+        AccessConnectorListResult model = BinaryData.fromString(
+            "{\"value\":[{\"identity\":{\"principalId\":\"58e56ee6-1c32-43f2-80ef-1c0dff914207\",\"tenantId\":\"03db1339-b9de-433b-906d-6adab620cb53\",\"type\":\"None\",\"userAssignedIdentities\":{\"injep\":{\"principalId\":\"52c6b6d6-23e1-4b7c-8ea6-97fdebd9fc48\",\"clientId\":\"de7c4968-3907-4f80-8a69-3930ee7b968a\"},\"mryw\":{\"principalId\":\"a8978ced-9f9c-4b1d-855d-cbcadcc02c54\",\"clientId\":\"fc9442bf-840c-43c3-8f4d-018717403a14\"},\"oqftiyqzrnkcq\":{\"principalId\":\"fa22478f-9c2e-4b6c-9210-3880a271c920\",\"clientId\":\"cdbb3d53-54b2-45b7-8b12-c43919a15e6c\"}}},\"properties\":{\"provisioningState\":\"Deleted\"},\"location\":\"hzls\",\"tags\":{\"avwhheunm\":\"hoqqnwvlr\",\"yaxuconuqszfkb\":\"qhgyxzkonocukok\",\"xsenhwlr\":\"ypewrmjmwvvjekt\",\"ihkaetcktvfc\":\"ffrzpwvlqdqgbiqy\"},\"id\":\"vf\",\"name\":\"nkymuctqhjfbebrj\",\"type\":\"xerf\"},{\"identity\":{\"principalId\":\"7a0b7f4a-6b97-4c50-8779-ad5a0edd6a83\",\"tenantId\":\"e052eb19-82e5-40ec-989d-c589de7522f5\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"jrbirphxepcyv\":{\"principalId\":\"6ed33997-4bb1-4ba4-9bbb-3f33b40868ad\",\"clientId\":\"fce303ec-7323-4fa2-befb-5815b572c59a\"},\"nljky\":{\"principalId\":\"7790d89a-9337-4f7e-b052-adb2a99db63e\",\"clientId\":\"bb32538f-80a0-4d48-bf5c-85bf3e756061\"},\"vuujq\":{\"principalId\":\"e482e8aa-e477-43e5-a2a9-ca277cf1948c\",\"clientId\":\"098b70cb-cdc3-41ec-9061-96171b7dac75\"}}},\"properties\":{\"provisioningState\":\"Failed\"},\"location\":\"gjljyoxgvc\",\"tags\":{\"bijhtxfvgxbf\":\"gsncghkjeszz\",\"ec\":\"mxnehmp\",\"gr\":\"godebfqkkrbmpu\",\"ispnqzahmgkbrp\":\"wflzlfbxzpuzy\"},\"id\":\"y\",\"name\":\"hibnuqqkpika\",\"type\":\"rgvtqag\"},{\"identity\":{\"principalId\":\"3907f8b6-db04-4668-bdaf-83b021d84bb1\",\"tenantId\":\"0db3313c-8573-41b9-a972-71d45bba250c\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"gmebfsiarbutrcv\":{\"principalId\":\"957069c3-2ff6-4feb-ab0c-b54fb9457ac6\",\"clientId\":\"aa99ca34-cb8c-4039-9124-f4b5b21fe32d\"},\"zzmhjrunmpxttd\":{\"principalId\":\"efcc70d1-744a-4340-b1bb-f84f5c2fb63d\",\"clientId\":\"11878665-d9b6-4ecc-aa3a-8af8e1839471\"},\"bnlankxmyskpb\":{\"principalId\":\"8d93f807-1c52-4da4-a9ab-c8bd2140b650\",\"clientId\":\"be15804c-0481-4734-88e8-7f798640e83d\"}}},\"properties\":{\"provisioningState\":\"Deleted\"},\"location\":\"kcxywnyt\",\"tags\":{\"qidybyx\":\"yn\",\"aaxdbabphlwrq\":\"zfcl\",\"hsucoc\":\"fkts\",\"ckzywbiexzfeyue\":\"nyyazttbtwwrqpue\"},\"id\":\"xibxujwbhqwalm\",\"name\":\"zyoxaepdkzjan\",\"type\":\"ux\"},{\"identity\":{\"principalId\":\"5617e200-7bcc-4e7f-8f80-9006271d881f\",\"tenantId\":\"1a63d9ab-85e4-4581-ad62-948dc32e1655\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"niwdjsw\":{\"principalId\":\"dda02fdd-7ec0-4438-ad33-18b7a77069fa\",\"clientId\":\"67c8713e-13e1-4272-a89d-32dcae1faaa3\"}}},\"properties\":{\"provisioningState\":\"Deleted\"},\"location\":\"pgn\",\"tags\":{\"pzxbz\":\"x\"},\"id\":\"fzab\",\"name\":\"lcuhxwtctyqiklb\",\"type\":\"ovplw\"}],\"nextLink\":\"hvgyuguosvmk\"}")
+            .toObject(AccessConnectorListResult.class);
+        Assertions.assertEquals("hzls", model.value().get(0).location());
+        Assertions.assertEquals("hoqqnwvlr", model.value().get(0).tags().get("avwhheunm"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("uosvmkfssxqukk", model.nextLink());
+        Assertions.assertEquals("hvgyuguosvmk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessConnectorListResult model =
-            new AccessConnectorListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AccessConnectorInner()
-                                .withLocation("nhijggmebfsi")
-                                .withTags(mapOf("pnazzm", "utrc"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.NONE)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withProperties(new AccessConnectorProperties()),
-                            new AccessConnectorInner()
-                                .withLocation("ny")
-                                .withTags(mapOf("haaxdbabphl", "synlqidybyxczfc"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withProperties(new AccessConnectorProperties()),
-                            new AccessConnectorInner()
-                                .withLocation("qwalmuzyoxaepd")
-                                .withTags(mapOf("bavxbniwdjswzt", "ancuxrhd", "xbzpfzab", "dbpgnxytxhp"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withProperties(new AccessConnectorProperties())))
-                .withNextLink("uosvmkfssxqukk");
+        AccessConnectorListResult model = new AccessConnectorListResult().withValue(Arrays.asList(
+            new AccessConnectorInner().withLocation("hzls")
+                .withTags(mapOf("avwhheunm", "hoqqnwvlr", "yaxuconuqszfkb", "qhgyxzkonocukok", "xsenhwlr",
+                    "ypewrmjmwvvjekt", "ihkaetcktvfc", "ffrzpwvlqdqgbiqy"))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf("injep", new UserAssignedIdentity(), "mryw",
+                        new UserAssignedIdentity(), "oqftiyqzrnkcq", new UserAssignedIdentity())))
+                .withProperties(new AccessConnectorProperties()),
+            new AccessConnectorInner().withLocation("gjljyoxgvc")
+                .withTags(mapOf("bijhtxfvgxbf", "gsncghkjeszz", "ec", "mxnehmp", "gr", "godebfqkkrbmpu",
+                    "ispnqzahmgkbrp", "wflzlfbxzpuzy"))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("jrbirphxepcyv", new UserAssignedIdentity(), "nljky",
+                        new UserAssignedIdentity(), "vuujq", new UserAssignedIdentity())))
+                .withProperties(new AccessConnectorProperties()),
+            new AccessConnectorInner().withLocation("kcxywnyt")
+                .withTags(mapOf("qidybyx", "yn", "aaxdbabphlwrq", "zfcl", "hsucoc", "fkts", "ckzywbiexzfeyue",
+                    "nyyazttbtwwrqpue"))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("gmebfsiarbutrcv", new UserAssignedIdentity(), "zzmhjrunmpxttd",
+                        new UserAssignedIdentity(), "bnlankxmyskpb", new UserAssignedIdentity())))
+                .withProperties(new AccessConnectorProperties()),
+            new AccessConnectorInner().withLocation("pgn")
+                .withTags(mapOf("pzxbz", "x"))
+                .withIdentity(
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("niwdjsw", new UserAssignedIdentity())))
+                .withProperties(new AccessConnectorProperties())))
+            .withNextLink("hvgyuguosvmk");
         model = BinaryData.fromObject(model).toObject(AccessConnectorListResult.class);
-        Assertions.assertEquals("nhijggmebfsi", model.value().get(0).location());
-        Assertions.assertEquals("utrc", model.value().get(0).tags().get("pnazzm"));
+        Assertions.assertEquals("hzls", model.value().get(0).location());
+        Assertions.assertEquals("hoqqnwvlr", model.value().get(0).tags().get("avwhheunm"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("uosvmkfssxqukk", model.nextLink());
+        Assertions.assertEquals("hvgyuguosvmk", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -23,19 +23,31 @@ public final class ModulesImpl implements Modules {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public ModulesImpl(
-        ModulesClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public ModulesImpl(ModulesClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String moduleName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, moduleName, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String moduleName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, moduleName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String moduleName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, moduleName, context);
+    public Response<Module> getWithResponse(String resourceGroupName, String automationAccountName, String moduleName,
+        Context context) {
+        Response<ModuleInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, moduleName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ModuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Module get(String resourceGroupName, String automationAccountName, String moduleName) {
@@ -47,28 +59,22 @@ public final class ModulesImpl implements Modules {
         }
     }
 
-    public Response<Module> getWithResponse(
-        String resourceGroupName, String automationAccountName, String moduleName, Context context) {
-        Response<ModuleInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, moduleName, context);
+    public Response<Module> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        String moduleName, ModuleCreateOrUpdateParameters parameters, Context context) {
+        Response<ModuleInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, moduleName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ModuleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Module createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String moduleName,
+    public Module createOrUpdate(String resourceGroupName, String automationAccountName, String moduleName,
         ModuleCreateOrUpdateParameters parameters) {
-        ModuleInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, automationAccountName, moduleName, parameters);
+        ModuleInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, automationAccountName, moduleName, parameters);
         if (inner != null) {
             return new ModuleImpl(inner, this.manager());
         } else {
@@ -76,70 +82,40 @@ public final class ModulesImpl implements Modules {
         }
     }
 
-    public Response<Module> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String moduleName,
-        ModuleCreateOrUpdateParameters parameters,
-        Context context) {
-        Response<ModuleInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(resourceGroupName, automationAccountName, moduleName, parameters, context);
+    public Response<Module> updateWithResponse(String resourceGroupName, String automationAccountName,
+        String moduleName, ModuleUpdateParameters parameters, Context context) {
+        Response<ModuleInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, automationAccountName, moduleName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ModuleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Module update(
-        String resourceGroupName, String automationAccountName, String moduleName, ModuleUpdateParameters parameters) {
-        ModuleInner inner =
-            this.serviceClient().update(resourceGroupName, automationAccountName, moduleName, parameters);
+    public Module update(String resourceGroupName, String automationAccountName, String moduleName,
+        ModuleUpdateParameters parameters) {
+        ModuleInner inner
+            = this.serviceClient().update(resourceGroupName, automationAccountName, moduleName, parameters);
         if (inner != null) {
             return new ModuleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Module> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String moduleName,
-        ModuleUpdateParameters parameters,
-        Context context) {
-        Response<ModuleInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, automationAccountName, moduleName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ModuleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
     public PagedIterable<Module> listByAutomationAccount(String resourceGroupName, String automationAccountName) {
-        PagedIterable<ModuleInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new ModuleImpl(inner1, this.manager()));
+        PagedIterable<ModuleInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ModuleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Module> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context) {
-        PagedIterable<ModuleInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new ModuleImpl(inner1, this.manager()));
+    public PagedIterable<Module> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context) {
+        PagedIterable<ModuleInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ModuleImpl(inner1, this.manager()));
     }
 
     private ModulesClient serviceClient() {

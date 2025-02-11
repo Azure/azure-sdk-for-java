@@ -14,44 +14,38 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Operation model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"aqwi\",\"display\":{\"provider\":\"prozvcputegjvwmf\",\"resource\":\"t\",\"operation\":\"mdvpjhulsu\",\"description\":\"mkjozkrwf\"},\"origin\":\"iodjp\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[],\"metricSpecifications\":[]}},\"isDataAction\":true,\"actionType\":\"Internal\"}")
-                .toObject(Operation.class);
-        Assertions.assertEquals("aqwi", model.name());
-        Assertions.assertEquals("prozvcputegjvwmf", model.display().provider());
-        Assertions.assertEquals("t", model.display().resource());
-        Assertions.assertEquals("mdvpjhulsu", model.display().operation());
-        Assertions.assertEquals("mkjozkrwf", model.display().description());
-        Assertions.assertEquals("iodjp", model.origin());
-        Assertions.assertEquals(true, model.isDataAction());
+        Operation model = BinaryData.fromString(
+            "{\"name\":\"uujitcjc\",\"display\":{\"provider\":\"evndh\",\"resource\":\"wpdappdsbdkv\",\"operation\":\"wjfeusnhutjel\",\"description\":\"rl\"},\"origin\":\"ugjzzdatqxhocdge\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"uticndvkaozwyif\",\"displayName\":\"hxh\",\"blobDuration\":\"okftyxolniwpwcuk\"}],\"metricSpecifications\":[{\"name\":\"iawxklry\",\"displayName\":\"wckbasyypnd\",\"displayDescription\":\"sgcbac\",\"unit\":\"Milliseconds\",\"aggregationType\":\"Average\",\"lockAggregationType\":\"Total\",\"supportedAggregationTypes\":[\"qgoulznd\",\"i\",\"wyqkgfgibm\"],\"dimensions\":[{},{}],\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"qsrxybzqqed\",\"sourceMdmNamespace\":\"tbciqfouflmm\",\"supportedTimeGrainTypes\":[\"smodmgloug\"]},{\"name\":\"kwtmutduqktapspw\",\"displayName\":\"uertumk\",\"displayDescription\":\"svqwhbmdgbbjfd\",\"unit\":\"Milliseconds\",\"aggregationType\":\"Count\",\"lockAggregationType\":\"Total\",\"supportedAggregationTypes\":[\"pbhtqqrolfpfpsa\",\"gbquxigj\",\"jgzjaoyfhrtx\"],\"dimensions\":[{}],\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"ujysvle\",\"sourceMdmNamespace\":\"vfqawrlyxwjkcpr\",\"supportedTimeGrainTypes\":[\"b\",\"gjvtbv\"]},{\"name\":\"sszdnru\",\"displayName\":\"guhmuouqfpr\",\"displayDescription\":\"wbnguitnwui\",\"unit\":\"Bytes\",\"aggregationType\":\"Total\",\"lockAggregationType\":\"Count\",\"supportedAggregationTypes\":[\"uckyf\",\"hr\"],\"dimensions\":[{},{},{}],\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"wdzuhtymwisd\",\"sourceMdmNamespace\":\"thwxmnteiwaopvkm\",\"supportedTimeGrainTypes\":[\"mmxdcu\"]},{\"name\":\"fsrpymzidnse\",\"displayName\":\"xtbzsgfyccsne\",\"displayDescription\":\"dwzjeiach\",\"unit\":\"Count\",\"aggregationType\":\"Total\",\"lockAggregationType\":\"Total\",\"supportedAggregationTypes\":[\"sfqpteehz\",\"vypyqrimzinpv\",\"wjdk\"],\"dimensions\":[{},{},{},{}],\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"qxhcrmn\",\"sourceMdmNamespace\":\"jtckwhdso\",\"supportedTimeGrainTypes\":[\"yip\"]}]}},\"isDataAction\":false,\"actionType\":\"Internal\"}")
+            .toObject(Operation.class);
+        Assertions.assertEquals("uujitcjc", model.name());
+        Assertions.assertEquals("evndh", model.display().provider());
+        Assertions.assertEquals("wpdappdsbdkv", model.display().resource());
+        Assertions.assertEquals("wjfeusnhutjel", model.display().operation());
+        Assertions.assertEquals("rl", model.display().description());
+        Assertions.assertEquals("ugjzzdatqxhocdge", model.origin());
+        Assertions.assertEquals(false, model.isDataAction());
         Assertions.assertEquals(ActionType.INTERNAL, model.actionType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Operation model =
-            new Operation()
-                .withName("aqwi")
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("prozvcputegjvwmf")
-                        .withResource("t")
-                        .withOperation("mdvpjhulsu")
-                        .withDescription("mkjozkrwf"))
-                .withOrigin("iodjp")
-                .withProperties(new Properties())
-                .withIsDataAction(true)
-                .withActionType(ActionType.INTERNAL);
+        Operation model = new Operation().withName("uujitcjc")
+            .withDisplay(new OperationDisplay().withProvider("evndh")
+                .withResource("wpdappdsbdkv")
+                .withOperation("wjfeusnhutjel")
+                .withDescription("rl"))
+            .withOrigin("ugjzzdatqxhocdge")
+            .withProperties(new Properties())
+            .withIsDataAction(false)
+            .withActionType(ActionType.INTERNAL);
         model = BinaryData.fromObject(model).toObject(Operation.class);
-        Assertions.assertEquals("aqwi", model.name());
-        Assertions.assertEquals("prozvcputegjvwmf", model.display().provider());
-        Assertions.assertEquals("t", model.display().resource());
-        Assertions.assertEquals("mdvpjhulsu", model.display().operation());
-        Assertions.assertEquals("mkjozkrwf", model.display().description());
-        Assertions.assertEquals("iodjp", model.origin());
-        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertEquals("uujitcjc", model.name());
+        Assertions.assertEquals("evndh", model.display().provider());
+        Assertions.assertEquals("wpdappdsbdkv", model.display().resource());
+        Assertions.assertEquals("wjfeusnhutjel", model.display().operation());
+        Assertions.assertEquals("rl", model.display().description());
+        Assertions.assertEquals("ugjzzdatqxhocdge", model.origin());
+        Assertions.assertEquals(false, model.isDataAction());
         Assertions.assertEquals(ActionType.INTERNAL, model.actionType());
     }
 }

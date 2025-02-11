@@ -26,23 +26,28 @@ import com.azure.resourcemanager.devspaces.fluent.ContainerHostMappingsClient;
 import com.azure.resourcemanager.devspaces.fluent.models.ContainerHostMappingInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ContainerHostMappingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContainerHostMappingsClient.
+ */
 public final class ContainerHostMappingsClientImpl implements ContainerHostMappingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ContainerHostMappingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevSpacesManagementClientImpl client;
 
     /**
      * Initializes an instance of ContainerHostMappingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ContainerHostMappingsClientImpl(DevSpacesManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ContainerHostMappingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ContainerHostMappingsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,50 +58,39 @@ public final class ContainerHostMappingsClientImpl implements ContainerHostMappi
     @Host("{$host}")
     @ServiceInterface(name = "DevSpacesManagementC")
     public interface ContainerHostMappingsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevSpaces/locations"
-                + "/{location}/checkContainerHostMapping")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevSpaces/locations/{location}/checkContainerHostMapping")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerHostMappingInner>> getContainerHostMapping(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("location") String location,
+        Mono<Response<ContainerHostMappingInner>> getContainerHostMapping(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
             @BodyParam("application/json") ContainerHostMappingInner containerHostMapping,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Returns container host mapping object for a container host resource ID if an associated controller exists.
-     *
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param location Location of the container host.
-     * @param containerHostMapping Container host mapping object specifying the Container host resource ID and its
-     *     associated Controller resource.
+     * @param containerHostMapping The containerHostMapping parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container host mapping object specifying the Container host resource ID and its associated Controller
-     *     resource along with {@link Response} on successful completion of {@link Mono}.
+     * resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContainerHostMappingInner>> getContainerHostMappingWithResponseAsync(
-        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping) {
+    private Mono<Response<ContainerHostMappingInner>> getContainerHostMappingWithResponseAsync(String resourceGroupName,
+        String location, ContainerHostMappingInner containerHostMapping) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -113,49 +107,35 @@ public final class ContainerHostMappingsClientImpl implements ContainerHostMappi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getContainerHostMapping(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            location,
-                            containerHostMapping,
-                            accept,
-                            context))
+            .withContext(context -> service.getContainerHostMapping(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, location,
+                containerHostMapping, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns container host mapping object for a container host resource ID if an associated controller exists.
-     *
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param location Location of the container host.
-     * @param containerHostMapping Container host mapping object specifying the Container host resource ID and its
-     *     associated Controller resource.
+     * @param containerHostMapping The containerHostMapping parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container host mapping object specifying the Container host resource ID and its associated Controller
-     *     resource along with {@link Response} on successful completion of {@link Mono}.
+     * resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContainerHostMappingInner>> getContainerHostMappingWithResponseAsync(
-        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping, Context context) {
+    private Mono<Response<ContainerHostMappingInner>> getContainerHostMappingWithResponseAsync(String resourceGroupName,
+        String location, ContainerHostMappingInner containerHostMapping, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -172,75 +152,64 @@ public final class ContainerHostMappingsClientImpl implements ContainerHostMappi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getContainerHostMapping(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                location,
-                containerHostMapping,
-                accept,
-                context);
+        return service.getContainerHostMapping(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, location, containerHostMapping, accept, context);
     }
 
     /**
      * Returns container host mapping object for a container host resource ID if an associated controller exists.
-     *
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param location Location of the container host.
-     * @param containerHostMapping Container host mapping object specifying the Container host resource ID and its
-     *     associated Controller resource.
+     * @param containerHostMapping The containerHostMapping parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container host mapping object specifying the Container host resource ID and its associated Controller
-     *     resource on successful completion of {@link Mono}.
+     * resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContainerHostMappingInner> getContainerHostMappingAsync(
-        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping) {
+    private Mono<ContainerHostMappingInner> getContainerHostMappingAsync(String resourceGroupName, String location,
+        ContainerHostMappingInner containerHostMapping) {
         return getContainerHostMappingWithResponseAsync(resourceGroupName, location, containerHostMapping)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns container host mapping object for a container host resource ID if an associated controller exists.
-     *
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param location Location of the container host.
-     * @param containerHostMapping Container host mapping object specifying the Container host resource ID and its
-     *     associated Controller resource.
+     * @param containerHostMapping The containerHostMapping parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container host mapping object specifying the Container host resource ID and its associated Controller
-     *     resource along with {@link Response}.
+     * resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerHostMappingInner> getContainerHostMappingWithResponse(
-        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping, Context context) {
+    public Response<ContainerHostMappingInner> getContainerHostMappingWithResponse(String resourceGroupName,
+        String location, ContainerHostMappingInner containerHostMapping, Context context) {
         return getContainerHostMappingWithResponseAsync(resourceGroupName, location, containerHostMapping, context)
             .block();
     }
 
     /**
      * Returns container host mapping object for a container host resource ID if an associated controller exists.
-     *
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param location Location of the container host.
-     * @param containerHostMapping Container host mapping object specifying the Container host resource ID and its
-     *     associated Controller resource.
+     * @param containerHostMapping The containerHostMapping parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container host mapping object specifying the Container host resource ID and its associated Controller
-     *     resource.
+     * resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerHostMappingInner getContainerHostMapping(
-        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping) {
+    public ContainerHostMappingInner getContainerHostMapping(String resourceGroupName, String location,
+        ContainerHostMappingInner containerHostMapping) {
         return getContainerHostMappingWithResponse(resourceGroupName, location, containerHostMapping, Context.NONE)
             .getValue();
     }

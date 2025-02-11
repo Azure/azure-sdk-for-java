@@ -9,31 +9,28 @@ import com.azure.resourcemanager.managedapplications.models.JitRequestMetadata;
 import com.azure.resourcemanager.managedapplications.models.Status;
 import com.azure.resourcemanager.managedapplications.models.Substatus;
 
-/** Samples for Applications UpdateAccess. */
+/**
+ * Samples for Applications UpdateAccess.
+ */
 public final class ApplicationsUpdateAccessSamples {
     /*
-     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateAccess.json
+     * x-ms-original-file:
+     * specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateAccess.json
      */
     /**
      * Sample code: Update access for application.
-     *
+     * 
      * @param manager Entry point to ApplicationManager.
      */
-    public static void updateAccessForApplication(
-        com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
-        manager
-            .applications()
-            .updateAccess(
-                "rg",
-                "myManagedApplication",
-                new UpdateAccessDefinitionInner()
-                    .withApprover("amauser")
-                    .withMetadata(
-                        new JitRequestMetadata()
-                            .withOriginRequestId("originRequestId")
-                            .withRequestorId("RequestorId")
-                            .withTenantDisplayName("TenantDisplayName")
-                            .withSubjectDisplayName("SubjectDisplayName"))
+    public static void
+        updateAccessForApplication(com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
+        manager.applications()
+            .updateAccess("rg", "myManagedApplication",
+                new UpdateAccessDefinitionInner().withApprover("amauser")
+                    .withMetadata(new JitRequestMetadata().withOriginRequestId("originRequestId")
+                        .withRequestorId("RequestorId")
+                        .withTenantDisplayName("TenantDisplayName")
+                        .withSubjectDisplayName("SubjectDisplayName"))
                     .withStatus(Status.ELEVATE)
                     .withSubStatus(Substatus.APPROVED),
                 com.azure.core.util.Context.NONE);

@@ -102,12 +102,8 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
     public List<VirtualNic> nics() {
         List<VirtualNicInner> inner = this.innerModel().nics();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new VirtualNicImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new VirtualNicImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -205,25 +201,21 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
     }
 
     public VirtualMachine create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .createOrUpdate(resourceGroupName, createReferer, virtualMachineName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .createOrUpdate(resourceGroupName, createReferer, virtualMachineName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VirtualMachine create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .createOrUpdate(resourceGroupName, createReferer, virtualMachineName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .createOrUpdate(resourceGroupName, createReferer, virtualMachineName, this.innerModel(), context);
         return this;
     }
 
-    VirtualMachineImpl(
-        String name, com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
+    VirtualMachineImpl(String name,
+        com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = new VirtualMachineInner();
         this.serviceManager = serviceManager;
         this.virtualMachineName = name;
@@ -236,49 +228,40 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
     }
 
     public VirtualMachine apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .update(resourceGroupName, virtualMachineName, updateVirtualMachineRequest, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .update(resourceGroupName, virtualMachineName, updateVirtualMachineRequest, Context.NONE);
         return this;
     }
 
     public VirtualMachine apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .update(resourceGroupName, virtualMachineName, updateVirtualMachineRequest, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .update(resourceGroupName, virtualMachineName, updateVirtualMachineRequest, context);
         return this;
     }
 
-    VirtualMachineImpl(
-        VirtualMachineInner innerObject,
+    VirtualMachineImpl(VirtualMachineInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualMachineName = Utils.getValueFromIdByName(innerObject.id(), "virtualMachines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.virtualMachineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualMachines");
     }
 
     public VirtualMachine refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VirtualMachine refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, context)
+            .getValue();
         return this;
     }
 

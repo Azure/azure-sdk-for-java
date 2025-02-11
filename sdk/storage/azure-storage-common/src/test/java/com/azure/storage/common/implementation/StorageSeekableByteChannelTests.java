@@ -65,8 +65,7 @@ public class StorageSeekableByteChannelTests {
 
     private static Stream<Arguments> readSequentiallySupplier() {
         // dataSize, chunkSize, readLength
-        return Stream.of(
-            Arguments.of(8 * Constants.KB, Constants.KB, Constants.KB), // easy path
+        return Stream.of(Arguments.of(8 * Constants.KB, Constants.KB, Constants.KB), // easy path
             Arguments.of(8 * Constants.KB, Constants.KB, 100),          // reads unaligned (smaller)
             Arguments.of(8 * Constants.KB, Constants.KB, 1500),         // reads unaligned (larger)
             Arguments.of(8 * Constants.KB, 1000, 1000),                 // buffer unaligned
@@ -95,8 +94,7 @@ public class StorageSeekableByteChannelTests {
         StorageSeekableByteChannel channel = new StorageSeekableByteChannel(bufferLength, behavior, 0L);
 
         ByteBuffer temp = ByteBuffer.allocate(100);
-        for (long seekIndex : Arrays.asList(
-            0,                  // initial read at 0 to control buffer location
+        for (long seekIndex : Arrays.asList(0,                  // initial read at 0 to control buffer location
             bufferLength / 2,   // seek somewhere in middle
             bufferLength / 2,   // seek back to that same spot
             0,                  // seek back to beginning
@@ -114,7 +112,7 @@ public class StorageSeekableByteChannelTests {
         int bufferLength = 5;
         byte[] data = getRandomData(Constants.KB);
         // each index should be outside the previous buffer
-        long[] seekIndices = new long[] {20, 500, 1, 6, 5};
+        long[] seekIndices = new long[] { 20, 500, 1, 6, 5 };
 
         Set<Long> seekIndexMap = new HashSet<>();
         StorageSeekableByteChannel.ReadBehavior behavior = new MockReadBehavior(data.length, (dst, sourceOffset) -> {
@@ -194,8 +192,7 @@ public class StorageSeekableByteChannelTests {
 
     private static Stream<Arguments> readPastResourceEndSupplier() {
         // resourceSize, offset, expectedReadLength
-        return Stream.of(
-            Arguments.of(Constants.KB, 500, Constants.KB - 500), // overlap on end of resource
+        return Stream.of(Arguments.of(Constants.KB, 500, Constants.KB - 500), // overlap on end of resource
             Arguments.of(Constants.KB, Constants.KB, -1),         // starts at end of resource
             Arguments.of(Constants.KB, Constants.KB + 20, -1)     // completely past resource
         );
@@ -224,8 +221,7 @@ public class StorageSeekableByteChannelTests {
 
     private static Stream<Arguments> writeSupplier() {
         // dataSize, chunkSize, writeSize
-        return Stream.of(
-            Arguments.of(8 * Constants.KB, Constants.KB, Constants.KB), // easy path
+        return Stream.of(Arguments.of(8 * Constants.KB, Constants.KB, Constants.KB), // easy path
             Arguments.of(8 * Constants.KB, Constants.KB, 100),          // writes unaligned (smaller)
             Arguments.of(8 * Constants.KB, Constants.KB, 1500),         // writes unaligned (larger)
             Arguments.of(8 * Constants.KB, 1000, 1000),                 // buffer unaligned
@@ -341,13 +337,15 @@ public class StorageSeekableByteChannelTests {
 
     @Test
     public void writeModeCannotRead() {
-        assertThrows(NonReadableChannelException.class, () -> new StorageSeekableByteChannel(Constants.KB,
-            new MockWriteBehavior(), 0L).read(ByteBuffer.allocate(Constants.KB)));
+        assertThrows(NonReadableChannelException.class,
+            () -> new StorageSeekableByteChannel(Constants.KB, new MockWriteBehavior(), 0L)
+                .read(ByteBuffer.allocate(Constants.KB)));
     }
 
     @Test
     public void readModeCannotWrite() {
-        assertThrows(NonWritableChannelException.class, () -> new StorageSeekableByteChannel(Constants.KB,
-            new MockReadBehavior(), 0L).write(ByteBuffer.allocate(Constants.KB)));
+        assertThrows(NonWritableChannelException.class,
+            () -> new StorageSeekableByteChannel(Constants.KB, new MockReadBehavior(), 0L)
+                .write(ByteBuffer.allocate(Constants.KB)));
     }
 }

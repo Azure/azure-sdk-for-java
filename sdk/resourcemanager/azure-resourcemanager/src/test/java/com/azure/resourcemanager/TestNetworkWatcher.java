@@ -56,8 +56,11 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
             }
         }
         // create Network Watcher
-        NetworkWatcher nw =
-            networkWatchers.define(nwName).withRegion(REGION).withNewResourceGroup().withTag("tag1", "value1").create();
+        NetworkWatcher nw = networkWatchers.define(nwName)
+            .withRegion(REGION)
+            .withNewResourceGroup()
+            .withTag("tag1", "value1")
+            .create();
         return nw;
     }
 
@@ -78,48 +81,41 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
     VirtualMachine[] ensureNetwork(Networks networks, VirtualMachines vms, NetworkInterfaces networkInterfaces)
         throws Exception {
         // Create an NSG
-        NetworkSecurityGroup nsg =
-            networks
-                .manager()
-                .networkSecurityGroups()
-                .define("nsg" + testId)
-                .withRegion(REGION)
-                .withNewResourceGroup(groupName)
-                .create();
+        NetworkSecurityGroup nsg = networks.manager()
+            .networkSecurityGroups()
+            .define("nsg" + testId)
+            .withRegion(REGION)
+            .withNewResourceGroup(groupName)
+            .create();
 
         // Create a network for the VMs
-        Network network =
-            networks
-                .define("net" + testId)
-                .withRegion(REGION)
-                .withExistingResourceGroup(groupName)
-                .withAddressSpace("10.0.0.0/28")
-                .defineSubnet("subnet1")
-                .withAddressPrefix("10.0.0.0/29")
-                .withExistingNetworkSecurityGroup(nsg)
-                .attach()
-                .withSubnet("subnet2", "10.0.0.8/29")
-                .create();
+        Network network = networks.define("net" + testId)
+            .withRegion(REGION)
+            .withExistingResourceGroup(groupName)
+            .withAddressSpace("10.0.0.0/28")
+            .defineSubnet("subnet1")
+            .withAddressPrefix("10.0.0.0/29")
+            .withExistingNetworkSecurityGroup(nsg)
+            .attach()
+            .withSubnet("subnet2", "10.0.0.8/29")
+            .create();
 
-        NetworkInterface nic =
-            networkInterfaces
-                .define("ni" + testId)
-                .withRegion(REGION)
-                .withExistingResourceGroup(groupName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withNewPrimaryPublicIPAddress("pipdns" + testId)
-                .withIPForwarding()
-                .withExistingNetworkSecurityGroup(nsg)
-                .create();
+        NetworkInterface nic = networkInterfaces.define("ni" + testId)
+            .withRegion(REGION)
+            .withExistingResourceGroup(groupName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress("pipdns" + testId)
+            .withIPForwarding()
+            .withExistingNetworkSecurityGroup(nsg)
+            .create();
 
         // Create the requested number of VM definitions
         String userName = "testuser" + testId;
         List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
 
-        Creatable<VirtualMachine> vm1 =
-            vms
-                .define(networks.manager().resourceManager().internalContext().randomResourceName("vm", 15))
+        Creatable<VirtualMachine> vm1
+            = vms.define(networks.manager().resourceManager().internalContext().randomResourceName("vm", 15))
                 .withRegion(REGION)
                 .withExistingResourceGroup(groupName)
                 .withExistingPrimaryNetworkInterface(nic)
@@ -136,19 +132,17 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
 
         String vmName = networks.manager().resourceManager().internalContext().randomResourceName("vm", 15);
 
-        Creatable<VirtualMachine> vm2 =
-            vms
-                .define(vmName)
-                .withRegion(REGION)
-                .withExistingResourceGroup(groupName)
-                .withExistingPrimaryNetwork(network)
-                .withSubnet(network.subnets().values().iterator().next().name())
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                .withRootUsername(userName)
-                .withRootPassword(ResourceManagerTestProxyTestBase.password())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
+        Creatable<VirtualMachine> vm2 = vms.define(vmName)
+            .withRegion(REGION)
+            .withExistingResourceGroup(groupName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet(network.subnets().values().iterator().next().name())
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername(userName)
+            .withRootPassword(ResourceManagerTestProxyTestBase.password())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
 
         vmDefinitions.add(vm1);
         vmDefinitions.add(vm2);
@@ -163,8 +157,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
 
     // create a storage account
     StorageAccount ensureStorageAccount(StorageAccounts storageAccounts) {
-        return storageAccounts
-            .define("sa" + testId)
+        return storageAccounts.define("sa" + testId)
             .withRegion(REGION)
             .withExistingResourceGroup(groupName)
             .withGeneralPurposeAccountKindV2()
@@ -173,9 +166,9 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
 
     @Override
     public void print(NetworkWatcher nw) {
-        LOGGER.log(LogLevel.VERBOSE, () -> "Network Watcher: " + nw.id() + "\n\tName: " + nw.name()
-            + "\n\tResource group: " + nw.resourceGroupName() + "\n\tRegion: " + nw.regionName() + "\n\tTags: "
-            + nw.tags());
+        LOGGER.log(LogLevel.VERBOSE,
+            () -> "Network Watcher: " + nw.id() + "\n\tName: " + nw.name() + "\n\tResource group: "
+                + nw.resourceGroupName() + "\n\tRegion: " + nw.regionName() + "\n\tTags: " + nw.tags());
     }
 
     public String groupName() {

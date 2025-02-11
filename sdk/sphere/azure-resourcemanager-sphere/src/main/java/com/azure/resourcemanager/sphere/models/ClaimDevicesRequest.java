@@ -6,18 +6,21 @@ package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Request to the action call to bulk claim devices.
  */
 @Fluent
-public final class ClaimDevicesRequest {
+public final class ClaimDevicesRequest implements JsonSerializable<ClaimDevicesRequest> {
     /*
      * Device identifiers of the devices to be claimed.
      */
-    @JsonProperty(value = "deviceIdentifiers", required = true)
     private List<String> deviceIdentifiers;
 
     /**
@@ -53,10 +56,50 @@ public final class ClaimDevicesRequest {
      */
     public void validate() {
         if (deviceIdentifiers() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property deviceIdentifiers in model ClaimDevicesRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property deviceIdentifiers in model ClaimDevicesRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClaimDevicesRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("deviceIdentifiers", this.deviceIdentifiers,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClaimDevicesRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClaimDevicesRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClaimDevicesRequest.
+     */
+    public static ClaimDevicesRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClaimDevicesRequest deserializedClaimDevicesRequest = new ClaimDevicesRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceIdentifiers".equals(fieldName)) {
+                    List<String> deviceIdentifiers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClaimDevicesRequest.deviceIdentifiers = deviceIdentifiers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClaimDevicesRequest;
+        });
+    }
 }

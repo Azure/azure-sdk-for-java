@@ -143,13 +143,13 @@ public final class AcsChatMemberAddedToThreadWithUserEventData extends AcsChatTh
                 } else if ("version".equals(fieldName)) {
                     acsChatMemberAddedToThreadWithUserEventData.setVersion(reader.getNullable(JsonReader::getLong));
                 } else if ("time".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData.setTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    acsChatMemberAddedToThreadWithUserEventData
+                        .setTime(reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("addedBy".equals(fieldName)) {
                     acsChatMemberAddedToThreadWithUserEventData.setAddedBy(reader.getString());
                 } else if ("memberAdded".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData.setMemberAdded(
-                        AcsChatThreadMemberProperties.fromJson(reader));
+                    acsChatMemberAddedToThreadWithUserEventData
+                        .setMemberAdded(AcsChatThreadMemberProperties.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }

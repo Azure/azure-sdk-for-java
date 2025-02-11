@@ -12,7 +12,9 @@ import java.util.Arrays;
  */
 public final class SimsBulkDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimBulkDelete.json
+     * x-ms-original-file:
+     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimBulkDelete.
+     * json
      */
     /**
      * Sample code: Bulk delete SIMs from a SIM group.

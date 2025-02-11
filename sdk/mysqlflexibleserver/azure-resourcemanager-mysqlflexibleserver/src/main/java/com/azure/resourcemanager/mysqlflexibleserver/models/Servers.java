@@ -7,7 +7,6 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.HighAvailabilityValidationEstimationInner;
 
 /**
  * Resource collection API of Servers.
@@ -128,36 +127,6 @@ public interface Servers {
     void failover(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Validate a deployment of high availability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for validation of high availability deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return high availability validation properties of a server along with {@link Response}.
-     */
-    Response<HighAvailabilityValidationEstimation> validateEstimateHighAvailabilityWithResponse(
-        String resourceGroupName, String serverName, HighAvailabilityValidationEstimationInner parameters,
-        Context context);
-
-    /**
-     * Validate a deployment of high availability.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for validation of high availability deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return high availability validation properties of a server.
-     */
-    HighAvailabilityValidationEstimation validateEstimateHighAvailability(String resourceGroupName, String serverName,
-        HighAvailabilityValidationEstimationInner parameters);
-
-    /**
      * Restarts a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -227,31 +196,6 @@ public interface Servers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void stop(String resourceGroupName, String serverName, Context context);
-
-    /**
-     * Resets GTID on a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for resetting GTID on a server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void resetGtid(String resourceGroupName, String serverName, ServerGtidSetParameter parameters);
-
-    /**
-     * Resets GTID on a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for resetting GTID on a server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void resetGtid(String resourceGroupName, String serverName, ServerGtidSetParameter parameters, Context context);
 
     /**
      * Gets information about a server.

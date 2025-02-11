@@ -20,13 +20,15 @@ public final class InstrumentedMessageFlux extends FluxOperator<Message, Message
     private final EventHubsConsumerInstrumentation instrumentation;
     private final String partitionId;
 
-    private InstrumentedMessageFlux(MessageFlux upstream, String partitionId, EventHubsConsumerInstrumentation instrumentation) {
+    private InstrumentedMessageFlux(MessageFlux upstream, String partitionId,
+        EventHubsConsumerInstrumentation instrumentation) {
         super(upstream);
         this.instrumentation = instrumentation;
         this.partitionId = partitionId;
     }
 
-    public static Flux<Message> instrument(MessageFlux source, String partitionId, EventHubsConsumerInstrumentation instrumentation) {
+    public static Flux<Message> instrument(MessageFlux source, String partitionId,
+        EventHubsConsumerInstrumentation instrumentation) {
         if (instrumentation.isEnabled()) {
             return new InstrumentedMessageFlux(source, partitionId, instrumentation);
         }
@@ -47,7 +49,8 @@ public final class InstrumentedMessageFlux extends FluxOperator<Message, Message
         private final EventHubsConsumerInstrumentation instrumentation;
         private final String partitionId;
 
-        TracingSubscriber(CoreSubscriber<? super Message> downstream, String partitionId, EventHubsConsumerInstrumentation instrumentation) {
+        TracingSubscriber(CoreSubscriber<? super Message> downstream, String partitionId,
+            EventHubsConsumerInstrumentation instrumentation) {
             this.downstream = downstream;
             this.instrumentation = instrumentation;
             this.partitionId = partitionId;

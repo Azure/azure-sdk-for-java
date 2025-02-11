@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.hybridkubernetes.generated;
 
-/** Samples for ConnectedCluster GetByResourceGroup. */
+/**
+ * Samples for ConnectedCluster GetByResourceGroup.
+ */
 public final class ConnectedClusterGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/GetClusterExample.json
+     * x-ms-original-file:
+     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/GetClusterExample
+     * .json
      */
     /**
      * Sample code: GetClusterExample.
-     *
+     * 
      * @param manager Entry point to HybridKubernetesManager.
      */
     public static void getClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
-        manager
-            .connectedClusters()
+        manager.connectedClusters()
             .getByResourceGroupWithResponse("k8sc-rg", "testCluster", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,25 +7,22 @@ package com.azure.resourcemanager.loadtesting.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.loadtesting.fluent.models.QuotaResourceInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class QuotaResourceInnerTests {
-    @Test
+    @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"limit\":143848779,\"usage\":519347031,\"provisioningState\":\"Canceled\"},\"id\":\"jgrtfwvukxga\",\"name\":\"dcc\",\"type\":\"nhsjcnyej\"}")
-                .toObject(QuotaResourceInner.class);
-        Assertions.assertEquals(143848779, model.limit());
-        Assertions.assertEquals(519347031, model.usage());
+        QuotaResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"limit\":283529548,\"usage\":1437097866,\"provisioningState\":\"Failed\"},\"id\":\"qeof\",\"name\":\"aeqjhqjbasvms\",\"type\":\"jqul\"}")
+            .toObject(QuotaResourceInner.class);
+        Assertions.assertEquals(283529548, model.limit());
+        Assertions.assertEquals(1437097866, model.usage());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaResourceInner model = new QuotaResourceInner().withLimit(143848779).withUsage(519347031);
+        QuotaResourceInner model = new QuotaResourceInner().withLimit(283529548).withUsage(1437097866);
         model = BinaryData.fromObject(model).toObject(QuotaResourceInner.class);
-        Assertions.assertEquals(143848779, model.limit());
-        Assertions.assertEquals(519347031, model.usage());
+        Assertions.assertEquals(283529548, model.limit());
+        Assertions.assertEquals(1437097866, model.usage());
     }
 }

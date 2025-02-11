@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the NewRelic account.
  */
 @Fluent
-public final class NewRelicAccountProperties {
+public final class NewRelicAccountProperties implements JsonSerializable<NewRelicAccountProperties> {
     /*
      * User id
      */
-    @JsonProperty(value = "userId")
     private String userId;
 
     /*
      * NewRelic Account Information
      */
-    @JsonProperty(value = "accountInfo")
     private AccountInfo accountInfo;
 
     /*
      * NewRelic Organization Information
      */
-    @JsonProperty(value = "organizationInfo")
     private OrganizationInfo organizationInfo;
 
     /*
      * date when plan was applied
      */
-    @JsonProperty(value = "singleSignOnProperties")
     private NewRelicSingleSignOnProperties singleSignOnProperties;
 
     /**
@@ -137,5 +137,51 @@ public final class NewRelicAccountProperties {
         if (singleSignOnProperties() != null) {
             singleSignOnProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userId", this.userId);
+        jsonWriter.writeJsonField("accountInfo", this.accountInfo);
+        jsonWriter.writeJsonField("organizationInfo", this.organizationInfo);
+        jsonWriter.writeJsonField("singleSignOnProperties", this.singleSignOnProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NewRelicAccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NewRelicAccountProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NewRelicAccountProperties.
+     */
+    public static NewRelicAccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NewRelicAccountProperties deserializedNewRelicAccountProperties = new NewRelicAccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userId".equals(fieldName)) {
+                    deserializedNewRelicAccountProperties.userId = reader.getString();
+                } else if ("accountInfo".equals(fieldName)) {
+                    deserializedNewRelicAccountProperties.accountInfo = AccountInfo.fromJson(reader);
+                } else if ("organizationInfo".equals(fieldName)) {
+                    deserializedNewRelicAccountProperties.organizationInfo = OrganizationInfo.fromJson(reader);
+                } else if ("singleSignOnProperties".equals(fieldName)) {
+                    deserializedNewRelicAccountProperties.singleSignOnProperties
+                        = NewRelicSingleSignOnProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNewRelicAccountProperties;
+        });
     }
 }

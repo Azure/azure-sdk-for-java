@@ -47,12 +47,13 @@ public class CPKTests extends BlobTestBase {
     @BeforeEach
     public void setup() {
         key = new CustomerProvidedKey(getRandomKey());
-        BlobContainerClientBuilder builder = instrument(new BlobContainerClientBuilder()
-            .endpoint(cc.getBlobContainerUrl().toString())
-            .customerProvidedKey(key)
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential()));
+        BlobContainerClientBuilder builder
+            = instrument(new BlobContainerClientBuilder().endpoint(cc.getBlobContainerUrl())
+                .customerProvidedKey(key)
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential()));
 
         cpkContainer = builder.buildClient();
+
         cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient();
         cpkPageBlob = cpkContainer.getBlobClient(generateBlobName()).getPageBlobClient();
         cpkAppendBlob = cpkContainer.getBlobClient(generateBlobName()).getAppendBlobClient();
@@ -64,6 +65,11 @@ public class CPKTests extends BlobTestBase {
     }
 
     @Test
+    public void getCPK() {
+        assertEquals(key.getKey(), cpkContainer.getCustomerProvidedKey().getEncryptionKey());
+    }
+
+    @Test
     public void putBlobWithCPK() {
         Response<BlockBlobItem> response = cpkBlockBlob.uploadWithResponse(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize(), null, null, null, null, null, null, null);
@@ -72,13 +78,14 @@ public class CPKTests extends BlobTestBase {
         assertEquals(key.getKeySha256(), response.getValue().getEncryptionKeySha256());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getBlobWithCPK() {
         cpkBlockBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
 
-        BlobDownloadResponse response = cpkBlockBlob.downloadWithResponse(dataStream, null, null, null, false, null,
-            null);
+        BlobDownloadResponse response
+            = cpkBlockBlob.downloadWithResponse(dataStream, null, null, null, false, null, null);
 
         assertResponseStatusCode(response, 200);
         TestUtils.assertArraysEqual(dataStream.toByteArray(), DATA.getDefaultBytes());
@@ -115,8 +122,8 @@ public class CPKTests extends BlobTestBase {
             cpkBlockBlob.stageBlock(blockId, DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         }
 
-        Response<BlockBlobItem> response = cpkBlockBlob.commitBlockListWithResponse(blockIDList, null, null, null, null,
-            null, null);
+        Response<BlockBlobItem> response
+            = cpkBlockBlob.commitBlockListWithResponse(blockIDList, null, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         assertTrue(response.getValue().isServerEncrypted());
@@ -127,9 +134,9 @@ public class CPKTests extends BlobTestBase {
     public void putPageWithCPK() {
         cpkPageBlob.create(PageBlobClient.PAGE_BYTES);
 
-        Response<PageBlobItem> response = cpkPageBlob.uploadPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
+        Response<PageBlobItem> response
+            = cpkPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+                new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         assertTrue(response.getValue().isServerEncrypted());
@@ -149,8 +156,8 @@ public class CPKTests extends BlobTestBase {
             new BlobSasPermission().setReadPermission(true)));
 
         Response<PageBlobItem> response = cpkPageBlob.uploadPagesFromUrlWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            sourceBlob.getBlobUrl() + "?" + sas, null, null, null, null, null, null);
+            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), sourceBlob.getBlobUrl() + "?" + sas,
+            null, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         assertTrue(response.getValue().isServerEncrypted());
@@ -161,9 +168,9 @@ public class CPKTests extends BlobTestBase {
     public void putMultiplePagesWithCPK() {
         cpkPageBlob.create(PageBlobClient.PAGE_BYTES * 2);
 
-        Response<PageBlobItem> response = cpkPageBlob.uploadPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2)), null, null, null, null);
+        Response<PageBlobItem> response
+            = cpkPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
+                new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2)), null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         assertTrue(response.getValue().isServerEncrypted());
@@ -192,8 +199,8 @@ public class CPKTests extends BlobTestBase {
         String sas = cc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
             new BlobSasPermission().setReadPermission(true)));
 
-        Response<AppendBlobItem> response = cpkAppendBlob.appendBlockFromUrlWithResponse(
-            sourceBlob.getBlobUrl() + "?" + sas, null, null, null, null, null, null);
+        Response<AppendBlobItem> response = cpkAppendBlob
+            .appendBlockFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas, null, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         assertTrue(response.getValue().isServerEncrypted());
@@ -221,14 +228,14 @@ public class CPKTests extends BlobTestBase {
         assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
     }
 
-//    @Test
-//    public void setBlobTierWithCPK() {
-//        Response<Void> response = cpkExistingBlob.setAccessTierWithResponse(AccessTier.COOL, null, null, null, null);
-//
-//        assertResponseStatusCode(response, 200);
-//        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_SERVER_ENCRYPTED)));
-//        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
-//    }
+    //    @Test
+    //    public void setBlobTierWithCPK() {
+    //        Response<Void> response = cpkExistingBlob.setAccessTierWithResponse(AccessTier.COOL, null, null, null, null);
+    //
+    //        assertResponseStatusCode(response, 200);
+    //        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_SERVER_ENCRYPTED)));
+    //        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+    //    }
 
     @Test
     public void snapshotBlobWithCPK() {

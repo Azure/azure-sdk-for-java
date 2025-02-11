@@ -38,8 +38,7 @@ public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(dataLakeFileAsyncClient.create())
+        return super.globalSetupAsync().then(dataLakeFileAsyncClient.create())
             .then(dataLakeFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null, true))
             .then();
     }
@@ -52,23 +51,20 @@ public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return dataLakeFileAsyncClient.read()
-            .map(b -> {
-                int readCount = 0;
-                int remaining = b.remaining();
-                while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, bufferSize);
-                    b.get(buffer, 0, expectedReadCount);
-                    readCount += expectedReadCount;
-                }
-                return 1;
-            }).then();
+        return dataLakeFileAsyncClient.read().map(b -> {
+            int readCount = 0;
+            int remaining = b.remaining();
+            while (readCount < remaining) {
+                int expectedReadCount = Math.min(remaining - readCount, bufferSize);
+                b.get(buffer, 0, expectedReadCount);
+                readCount += expectedReadCount;
+            }
+            return 1;
+        }).then();
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
     public Mono<Void> globalCleanupAsync() {
-        return dataLakeFileAsyncClient.delete()
-            .then(super.globalCleanupAsync())
-            .then();
+        return dataLakeFileAsyncClient.delete().then(super.globalCleanupAsync()).then();
     }
 }

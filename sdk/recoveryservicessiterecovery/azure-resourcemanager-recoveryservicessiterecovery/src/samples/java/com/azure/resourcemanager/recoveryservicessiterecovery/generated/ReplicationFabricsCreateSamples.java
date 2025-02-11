@@ -23,7 +23,9 @@ public final class ReplicationFabricsCreateSamples {
      */
     public static void createsAnAzureSiteRecoveryFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().define("cloud1").withExistingVault("vault1", "resourceGroupPS1")
+        manager.replicationFabrics()
+            .define("cloud1")
+            .withExistingVault("vault1", "resourceGroupPS1")
             .withProperties(new FabricCreationInputProperties().withCustomDetails(new FabricSpecificCreationInput()))
             .create();
     }

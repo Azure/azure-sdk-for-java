@@ -25,15 +25,12 @@ public final class LibrariesImpl implements Libraries {
         this.serviceManager = serviceManager;
     }
 
-    public Response<LibraryResource> getWithResponse(
-        String resourceGroupName, String libraryName, String workspaceName, Context context) {
-        Response<LibraryResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, libraryName, workspaceName, context);
+    public Response<LibraryResource> getWithResponse(String resourceGroupName, String libraryName, String workspaceName,
+        Context context) {
+        Response<LibraryResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, libraryName, workspaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LibraryResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

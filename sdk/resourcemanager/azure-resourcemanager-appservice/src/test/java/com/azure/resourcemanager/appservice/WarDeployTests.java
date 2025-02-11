@@ -40,16 +40,14 @@ public class WarDeployTests extends AppServiceTest {
             // https://api.travis-ci.org/v3/job/427936160/log.txt
             //
             // Create web app
-            WebApp webApp =
-                appServiceManager
-                    .webApps()
-                    .define(webappName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
-                    .create();
+            WebApp webApp = appServiceManager.webApps()
+                .define(webappName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withNewWindowsPlan(PricingTier.STANDARD_S1)
+                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
+                .create();
             Assertions.assertNotNull(webApp);
 
             webApp.warDeploy(warFile);
@@ -69,16 +67,14 @@ public class WarDeployTests extends AppServiceTest {
     @Test
     public void canDeployMultipleWars() throws Exception {
         // Create web app
-        WebApp webApp =
-            appServiceManager
-                .webApps()
-                .define(webappName)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
-                .create();
+        WebApp webApp = appServiceManager.webApps()
+            .define(webappName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .withNewWindowsPlan(PricingTier.STANDARD_S1)
+            .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+            .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
+            .create();
         Assertions.assertNotNull(webApp);
 
         if (!isPlaybackMode()) {

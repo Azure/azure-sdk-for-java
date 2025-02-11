@@ -10,28 +10,30 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkfunction.fluent.models.OperationInner;
 
-/** An instance of this class provides access to all the operations defined in NetworkFunctionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkFunctionsClient.
+ */
 public interface NetworkFunctionsClient {
     /**
      * Lists all of the available NetworkFunction Rest API operations.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Azure Traffic Collector operations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list Azure Traffic Collector operations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationInner> listOperations();
 
     /**
      * Lists all of the available NetworkFunction Rest API operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Azure Traffic Collector operations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list Azure Traffic Collector operations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationInner> listOperations(Context context);

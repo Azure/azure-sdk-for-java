@@ -21,8 +21,10 @@ public final class VirtualNetworkPropertiesInfraVnetProfileHciTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkPropertiesInfraVnetProfileHci model = new VirtualNetworkPropertiesInfraVnetProfileHci()
-            .withMocGroup("tgqr").withMocLocation("tmuwlauwzi").withMocVnetName("bm");
+        VirtualNetworkPropertiesInfraVnetProfileHci model
+            = new VirtualNetworkPropertiesInfraVnetProfileHci().withMocGroup("tgqr")
+                .withMocLocation("tmuwlauwzi")
+                .withMocVnetName("bm");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkPropertiesInfraVnetProfileHci.class);
         Assertions.assertEquals("tgqr", model.mocGroup());
         Assertions.assertEquals("tmuwlauwzi", model.mocLocation());

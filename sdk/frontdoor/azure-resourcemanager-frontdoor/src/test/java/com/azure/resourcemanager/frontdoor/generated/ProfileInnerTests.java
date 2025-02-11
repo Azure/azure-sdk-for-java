@@ -15,24 +15,24 @@ public final class ProfileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProfileInner model = BinaryData.fromString(
-            "{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Disabled\"},\"etag\":\"ttijfybvpoekrs\",\"location\":\"sgbdhuz\",\"tags\":{\"gkynscliqh\":\"j\",\"mtk\":\"vhxnk\",\"ppnvdxz\":\"bo\"},\"id\":\"hihfrbbcevqagtlt\",\"name\":\"hlfkqojpy\",\"type\":\"vgtrdcnifmzzs\"}")
+            "{\"properties\":{\"resourceState\":\"Disabled\",\"enabledState\":\"Disabled\"},\"etag\":\"fwqzdz\",\"location\":\"tilaxh\",\"tags\":{\"wivkxo\":\"qlyvijo\",\"ti\":\"zunbixx\"},\"id\":\"vcpwpgclrc\",\"name\":\"vtsoxf\",\"type\":\"kenx\"}")
             .toObject(ProfileInner.class);
-        Assertions.assertEquals("sgbdhuz", model.location());
-        Assertions.assertEquals("j", model.tags().get("gkynscliqh"));
-        Assertions.assertEquals("ttijfybvpoekrs", model.etag());
+        Assertions.assertEquals("tilaxh", model.location());
+        Assertions.assertEquals("qlyvijo", model.tags().get("wivkxo"));
+        Assertions.assertEquals("fwqzdz", model.etag());
         Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProfileInner model = new ProfileInner().withLocation("sgbdhuz")
-            .withTags(mapOf("gkynscliqh", "j", "mtk", "vhxnk", "ppnvdxz", "bo"))
-            .withEtag("ttijfybvpoekrs")
+        ProfileInner model = new ProfileInner().withLocation("tilaxh")
+            .withTags(mapOf("wivkxo", "qlyvijo", "ti", "zunbixx"))
+            .withEtag("fwqzdz")
             .withEnabledState(State.DISABLED);
         model = BinaryData.fromObject(model).toObject(ProfileInner.class);
-        Assertions.assertEquals("sgbdhuz", model.location());
-        Assertions.assertEquals("j", model.tags().get("gkynscliqh"));
-        Assertions.assertEquals("ttijfybvpoekrs", model.etag());
+        Assertions.assertEquals("tilaxh", model.location());
+        Assertions.assertEquals("qlyvijo", model.tags().get("wivkxo"));
+        Assertions.assertEquals("fwqzdz", model.etag());
         Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 

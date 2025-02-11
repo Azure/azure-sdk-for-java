@@ -29,23 +29,28 @@ import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementCo
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementConfigurationPropertiesListInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagementConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementConfigurationsClient.
+ */
 public final class ManagementConfigurationsClientImpl implements ManagementConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagementConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationsManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagementConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagementConfigurationsClientImpl(OperationsManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ManagementConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ManagementConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,145 +61,107 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     @Host("{$host}")
     @ServiceInterface(name = "OperationsManagement")
     public interface ManagementConfigurationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.OperationsManagement/ManagementConfigurations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagementConfigurationPropertiesListInner>> listBySubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/Microsoft.OperationsManagement/ManagementConfigurations/{managementConfigurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationsManagement/ManagementConfigurations/{managementConfigurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementConfigurationInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagementConfigurationInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("managementConfigurationName") String managementConfigurationName,
             @BodyParam("application/json") ManagementConfigurationInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/Microsoft.OperationsManagement/ManagementConfigurations/{managementConfigurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationsManagement/ManagementConfigurations/{managementConfigurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managementConfigurationName") String managementConfigurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/Microsoft.OperationsManagement/ManagementConfigurations/{managementConfigurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationsManagement/ManagementConfigurations/{managementConfigurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementConfigurationInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagementConfigurationInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managementConfigurationName") String managementConfigurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieves the ManagementConfigurations list for the subscription
-     *
-     * <p>Retrieves the ManagementConfigurations list.
-     *
+     * 
+     * Retrieves the ManagementConfigurations list.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ManagementConfiguration response along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementConfigurationPropertiesListInner>> listBySubscriptionWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscription(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listBySubscription(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the ManagementConfigurations list for the subscription
-     *
-     * <p>Retrieves the ManagementConfigurations list.
-     *
+     * 
+     * Retrieves the ManagementConfigurations list.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ManagementConfiguration response along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementConfigurationPropertiesListInner>> listBySubscriptionWithResponseAsync(
-        Context context) {
+    private Mono<Response<ManagementConfigurationPropertiesListInner>>
+        listBySubscriptionWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscription(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listBySubscription(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieves the ManagementConfigurations list for the subscription
-     *
-     * <p>Retrieves the ManagementConfigurations list.
-     *
+     * 
+     * Retrieves the ManagementConfigurations list.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ManagementConfiguration response on successful completion of {@link Mono}.
@@ -206,9 +173,9 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
 
     /**
      * Retrieves the ManagementConfigurations list for the subscription
-     *
-     * <p>Retrieves the ManagementConfigurations list.
-     *
+     * 
+     * Retrieves the ManagementConfigurations list.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -222,9 +189,9 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
 
     /**
      * Retrieves the ManagementConfigurations list for the subscription
-     *
-     * <p>Retrieves the ManagementConfigurations list.
-     *
+     * 
+     * Retrieves the ManagementConfigurations list.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ManagementConfiguration response.
@@ -236,9 +203,9 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
 
     /**
      * Create/Update ManagementConfiguration.
-     *
-     * <p>Creates or updates the ManagementConfiguration.
-     *
+     * 
+     * Creates or updates the ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -248,29 +215,23 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String managementConfigurationName, ManagementConfigurationInner parameters) {
+    private Mono<Response<ManagementConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managementConfigurationName, ManagementConfigurationInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (managementConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementConfigurationName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -279,26 +240,17 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            managementConfigurationName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), managementConfigurationName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create/Update ManagementConfiguration.
-     *
-     * <p>Creates or updates the ManagementConfiguration.
-     *
+     * 
+     * Creates or updates the ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -309,32 +261,23 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managementConfigurationName,
-        ManagementConfigurationInner parameters,
-        Context context) {
+    private Mono<Response<ManagementConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managementConfigurationName, ManagementConfigurationInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (managementConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementConfigurationName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -343,23 +286,15 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                managementConfigurationName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), managementConfigurationName, parameters, accept, context);
     }
 
     /**
      * Create/Update ManagementConfiguration.
-     *
-     * <p>Creates or updates the ManagementConfiguration.
-     *
+     * 
+     * Creates or updates the ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -369,17 +304,17 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the container for solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagementConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName, String managementConfigurationName, ManagementConfigurationInner parameters) {
+    private Mono<ManagementConfigurationInner> createOrUpdateAsync(String resourceGroupName,
+        String managementConfigurationName, ManagementConfigurationInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, managementConfigurationName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create/Update ManagementConfiguration.
-     *
-     * <p>Creates or updates the ManagementConfiguration.
-     *
+     * 
+     * Creates or updates the ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -390,20 +325,17 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String managementConfigurationName,
-        ManagementConfigurationInner parameters,
-        Context context) {
+    public Response<ManagementConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
+        String managementConfigurationName, ManagementConfigurationInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, managementConfigurationName, parameters, context)
             .block();
     }
 
     /**
      * Create/Update ManagementConfiguration.
-     *
-     * <p>Creates or updates the ManagementConfiguration.
-     *
+     * 
+     * Creates or updates the ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -413,17 +345,17 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementConfigurationInner createOrUpdate(
-        String resourceGroupName, String managementConfigurationName, ManagementConfigurationInner parameters) {
+    public ManagementConfigurationInner createOrUpdate(String resourceGroupName, String managementConfigurationName,
+        ManagementConfigurationInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, managementConfigurationName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Deletes the ManagementConfiguration
-     *
-     * <p>Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,48 +366,33 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String managementConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (managementConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementConfigurationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            managementConfigurationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, managementConfigurationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the ManagementConfiguration
-     *
-     * <p>Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param context The context to associate with this operation.
@@ -485,48 +402,35 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String managementConfigurationName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String managementConfigurationName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (managementConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementConfigurationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                managementConfigurationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            managementConfigurationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the ManagementConfiguration
-     *
-     * <p>Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -541,9 +445,9 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
 
     /**
      * Deletes the ManagementConfiguration
-     *
-     * <p>Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param context The context to associate with this operation.
@@ -553,16 +457,16 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String managementConfigurationName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String managementConfigurationName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, managementConfigurationName, context).block();
     }
 
     /**
      * Deletes the ManagementConfiguration
-     *
-     * <p>Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -576,9 +480,9 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
 
     /**
      * Retrieve ManagementConfiguration.
-     *
-     * <p>Retrieves the user ManagementConfiguration.
-     *
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -587,51 +491,37 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementConfigurationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String managementConfigurationName) {
+    private Mono<Response<ManagementConfigurationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String managementConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (managementConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementConfigurationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            managementConfigurationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, managementConfigurationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve ManagementConfiguration.
-     *
-     * <p>Retrieves the user ManagementConfiguration.
-     *
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param context The context to associate with this operation.
@@ -641,48 +531,35 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementConfigurationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String managementConfigurationName, Context context) {
+    private Mono<Response<ManagementConfigurationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String managementConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (managementConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementConfigurationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                managementConfigurationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            managementConfigurationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieve ManagementConfiguration.
-     *
-     * <p>Retrieves the user ManagementConfiguration.
-     *
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -691,17 +568,17 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the container for solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagementConfigurationInner> getByResourceGroupAsync(
-        String resourceGroupName, String managementConfigurationName) {
+    private Mono<ManagementConfigurationInner> getByResourceGroupAsync(String resourceGroupName,
+        String managementConfigurationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, managementConfigurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve ManagementConfiguration.
-     *
-     * <p>Retrieves the user ManagementConfiguration.
-     *
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param context The context to associate with this operation.
@@ -711,16 +588,16 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementConfigurationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String managementConfigurationName, Context context) {
+    public Response<ManagementConfigurationInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String managementConfigurationName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, managementConfigurationName, context).block();
     }
 
     /**
      * Retrieve ManagementConfiguration.
-     *
-     * <p>Retrieves the user ManagementConfiguration.
-     *
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -729,8 +606,8 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementConfigurationInner getByResourceGroup(
-        String resourceGroupName, String managementConfigurationName) {
+    public ManagementConfigurationInner getByResourceGroup(String resourceGroupName,
+        String managementConfigurationName) {
         return getByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, Context.NONE).getValue();
     }
 }

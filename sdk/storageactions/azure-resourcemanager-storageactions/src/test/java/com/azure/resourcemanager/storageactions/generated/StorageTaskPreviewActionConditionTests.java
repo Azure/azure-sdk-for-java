@@ -13,18 +13,19 @@ public final class StorageTaskPreviewActionConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTaskPreviewActionCondition model
-            = BinaryData.fromString("{\"if\":{\"condition\":\"k\"},\"elseBlockExists\":true}")
+            = BinaryData.fromString("{\"if\":{\"condition\":\"ttgzfbis\"},\"elseBlockExists\":true}")
                 .toObject(StorageTaskPreviewActionCondition.class);
-        Assertions.assertEquals("k", model.ifProperty().condition());
+        Assertions.assertEquals("ttgzfbis", model.ifProperty().condition());
         Assertions.assertEquals(true, model.elseBlockExists());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageTaskPreviewActionCondition model = new StorageTaskPreviewActionCondition()
-            .withIfProperty(new StorageTaskPreviewActionIfCondition().withCondition("k")).withElseBlockExists(true);
+            .withIfProperty(new StorageTaskPreviewActionIfCondition().withCondition("ttgzfbis"))
+            .withElseBlockExists(true);
         model = BinaryData.fromObject(model).toObject(StorageTaskPreviewActionCondition.class);
-        Assertions.assertEquals("k", model.ifProperty().condition());
+        Assertions.assertEquals("ttgzfbis", model.ifProperty().condition());
         Assertions.assertEquals(true, model.elseBlockExists());
     }
 }

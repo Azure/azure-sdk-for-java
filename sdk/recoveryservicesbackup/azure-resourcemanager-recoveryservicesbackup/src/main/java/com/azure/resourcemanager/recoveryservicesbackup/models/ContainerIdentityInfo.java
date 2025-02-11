@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Container identity information.
  */
 @Fluent
-public final class ContainerIdentityInfo {
+public final class ContainerIdentityInfo implements JsonSerializable<ContainerIdentityInfo> {
     /*
      * Unique name of the container
      */
-    @JsonProperty(value = "uniqueName")
     private String uniqueName;
 
     /*
      * Protection container identity - AAD Tenant
      */
-    @JsonProperty(value = "aadTenantId")
     private String aadTenantId;
 
     /*
      * Protection container identity - AAD Service Principal
      */
-    @JsonProperty(value = "servicePrincipalClientId")
     private String servicePrincipalClientId;
 
     /*
      * Protection container identity - Audience
      */
-    @JsonProperty(value = "audience")
     private String audience;
 
     /**
@@ -128,5 +128,50 @@ public final class ContainerIdentityInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("uniqueName", this.uniqueName);
+        jsonWriter.writeStringField("aadTenantId", this.aadTenantId);
+        jsonWriter.writeStringField("servicePrincipalClientId", this.servicePrincipalClientId);
+        jsonWriter.writeStringField("audience", this.audience);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerIdentityInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerIdentityInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerIdentityInfo.
+     */
+    public static ContainerIdentityInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerIdentityInfo deserializedContainerIdentityInfo = new ContainerIdentityInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uniqueName".equals(fieldName)) {
+                    deserializedContainerIdentityInfo.uniqueName = reader.getString();
+                } else if ("aadTenantId".equals(fieldName)) {
+                    deserializedContainerIdentityInfo.aadTenantId = reader.getString();
+                } else if ("servicePrincipalClientId".equals(fieldName)) {
+                    deserializedContainerIdentityInfo.servicePrincipalClientId = reader.getString();
+                } else if ("audience".equals(fieldName)) {
+                    deserializedContainerIdentityInfo.audience = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerIdentityInfo;
+        });
     }
 }

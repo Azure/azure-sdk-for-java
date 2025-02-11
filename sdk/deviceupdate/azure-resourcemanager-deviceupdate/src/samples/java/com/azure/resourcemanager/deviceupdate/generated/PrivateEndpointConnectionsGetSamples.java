@@ -20,7 +20,7 @@ public final class PrivateEndpointConnectionsGetSamples {
      */
     public static void
         privateEndpointConnectionGet(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnections().getWithResponse("test-rg", "contoso", "peexample01",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("test-rg", "contoso", "peexample01", com.azure.core.util.Context.NONE);
     }
 }

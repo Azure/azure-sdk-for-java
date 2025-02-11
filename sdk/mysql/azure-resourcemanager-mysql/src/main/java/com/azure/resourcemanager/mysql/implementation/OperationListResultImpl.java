@@ -15,8 +15,8 @@ public final class OperationListResultImpl implements OperationListResult {
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    OperationListResultImpl(
-        OperationListResultInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    OperationListResultImpl(OperationListResultInner innerObject,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

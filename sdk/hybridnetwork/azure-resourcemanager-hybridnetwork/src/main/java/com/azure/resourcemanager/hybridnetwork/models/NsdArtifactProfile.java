@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Artifact profile properties.
  */
 @Fluent
-public final class NsdArtifactProfile {
+public final class NsdArtifactProfile implements JsonSerializable<NsdArtifactProfile> {
     /*
      * The artifact store resource id
      */
-    @JsonProperty(value = "artifactStoreReference")
     private ReferencedResource artifactStoreReference;
 
     /*
      * Artifact name.
      */
-    @JsonProperty(value = "artifactName")
     private String artifactName;
 
     /*
      * Artifact version.
      */
-    @JsonProperty(value = "artifactVersion")
     private String artifactVersion;
 
     /**
@@ -105,5 +106,47 @@ public final class NsdArtifactProfile {
         if (artifactStoreReference() != null) {
             artifactStoreReference().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("artifactStoreReference", this.artifactStoreReference);
+        jsonWriter.writeStringField("artifactName", this.artifactName);
+        jsonWriter.writeStringField("artifactVersion", this.artifactVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NsdArtifactProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NsdArtifactProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NsdArtifactProfile.
+     */
+    public static NsdArtifactProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NsdArtifactProfile deserializedNsdArtifactProfile = new NsdArtifactProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("artifactStoreReference".equals(fieldName)) {
+                    deserializedNsdArtifactProfile.artifactStoreReference = ReferencedResource.fromJson(reader);
+                } else if ("artifactName".equals(fieldName)) {
+                    deserializedNsdArtifactProfile.artifactName = reader.getString();
+                } else if ("artifactVersion".equals(fieldName)) {
+                    deserializedNsdArtifactProfile.artifactVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNsdArtifactProfile;
+        });
     }
 }

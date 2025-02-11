@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.fluent.models.TableInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list tables operation response. */
+/**
+ * The list tables operation response.
+ */
 @Fluent
-public final class TablesListResult {
+public final class TablesListResult implements JsonSerializable<TablesListResult> {
     /*
      * A list of data tables.
      */
-    @JsonProperty(value = "value")
     private List<TableInner> value;
 
-    /** Creates an instance of TablesListResult class. */
+    /**
+     * Creates an instance of TablesListResult class.
+     */
     public TablesListResult() {
     }
 
     /**
      * Get the value property: A list of data tables.
-     *
+     * 
      * @return the value value.
      */
     public List<TableInner> value() {
@@ -33,7 +40,7 @@ public final class TablesListResult {
 
     /**
      * Set the value property: A list of data tables.
-     *
+     * 
      * @param value the value value to set.
      * @return the TablesListResult object itself.
      */
@@ -44,12 +51,49 @@ public final class TablesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TablesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TablesListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TablesListResult.
+     */
+    public static TablesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TablesListResult deserializedTablesListResult = new TablesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<TableInner> value = reader.readArray(reader1 -> TableInner.fromJson(reader1));
+                    deserializedTablesListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTablesListResult;
+        });
     }
 }

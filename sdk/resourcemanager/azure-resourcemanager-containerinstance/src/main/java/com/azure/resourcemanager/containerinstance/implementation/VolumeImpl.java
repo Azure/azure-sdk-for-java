@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 /** Implementation for container group's volume definition stages interface. */
-class VolumeImpl
-    implements ContainerGroup.DefinitionStages.VolumeDefinitionStages.VolumeDefinition<
-        ContainerGroup.DefinitionStages.WithVolume> {
+class VolumeImpl implements
+    ContainerGroup.DefinitionStages.VolumeDefinitionStages.VolumeDefinition<ContainerGroup.DefinitionStages.WithVolume> {
     private Volume innerVolume;
     private ContainerGroupImpl parent;
 

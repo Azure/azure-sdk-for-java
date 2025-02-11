@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.informaticadatamanagement {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.informaticadatamanagement;
     exports com.azure.resourcemanager.informaticadatamanagement.fluent;
     exports com.azure.resourcemanager.informaticadatamanagement.fluent.models;
     exports com.azure.resourcemanager.informaticadatamanagement.models;
+
     opens com.azure.resourcemanager.informaticadatamanagement.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.informaticadatamanagement.models to com.azure.core;
 }

@@ -9,7 +9,9 @@ package com.azure.resourcemanager.frontdoor.generated;
  */
 public final class RulesEnginesDeleteSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineDelete.json
+     * x-ms-original-file:
+     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineDelete.
+     * json
      */
     /**
      * Sample code: Delete Rules Engine Configuration.

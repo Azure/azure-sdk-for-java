@@ -5,57 +5,59 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.RegistrationDelegationSettingsProperties;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionsDelegationSettingsProperties;
 import com.azure.resourcemanager.apimanagement.models.TermsOfServiceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Sign-in settings contract properties. */
+/**
+ * Sign-in settings contract properties.
+ */
 @Fluent
-public final class PortalSettingsContractProperties {
+public final class PortalSettingsContractProperties implements JsonSerializable<PortalSettingsContractProperties> {
     /*
      * A delegation Url.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * A base64-encoded validation key to validate, that a request is coming from Azure API Management.
      */
-    @JsonProperty(value = "validationKey")
     private String validationKey;
 
     /*
      * Subscriptions delegation settings.
      */
-    @JsonProperty(value = "subscriptions")
     private SubscriptionsDelegationSettingsProperties subscriptions;
 
     /*
      * User registration delegation settings.
      */
-    @JsonProperty(value = "userRegistration")
     private RegistrationDelegationSettingsProperties userRegistration;
 
     /*
      * Redirect Anonymous users to the Sign-In page.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Terms of service contract properties.
      */
-    @JsonProperty(value = "termsOfService")
     private TermsOfServiceProperties termsOfService;
 
-    /** Creates an instance of PortalSettingsContractProperties class. */
+    /**
+     * Creates an instance of PortalSettingsContractProperties class.
+     */
     public PortalSettingsContractProperties() {
     }
 
     /**
      * Get the url property: A delegation Url.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -64,7 +66,7 @@ public final class PortalSettingsContractProperties {
 
     /**
      * Set the url property: A delegation Url.
-     *
+     * 
      * @param url the url value to set.
      * @return the PortalSettingsContractProperties object itself.
      */
@@ -76,7 +78,7 @@ public final class PortalSettingsContractProperties {
     /**
      * Get the validationKey property: A base64-encoded validation key to validate, that a request is coming from Azure
      * API Management.
-     *
+     * 
      * @return the validationKey value.
      */
     public String validationKey() {
@@ -86,7 +88,7 @@ public final class PortalSettingsContractProperties {
     /**
      * Set the validationKey property: A base64-encoded validation key to validate, that a request is coming from Azure
      * API Management.
-     *
+     * 
      * @param validationKey the validationKey value to set.
      * @return the PortalSettingsContractProperties object itself.
      */
@@ -97,7 +99,7 @@ public final class PortalSettingsContractProperties {
 
     /**
      * Get the subscriptions property: Subscriptions delegation settings.
-     *
+     * 
      * @return the subscriptions value.
      */
     public SubscriptionsDelegationSettingsProperties subscriptions() {
@@ -106,7 +108,7 @@ public final class PortalSettingsContractProperties {
 
     /**
      * Set the subscriptions property: Subscriptions delegation settings.
-     *
+     * 
      * @param subscriptions the subscriptions value to set.
      * @return the PortalSettingsContractProperties object itself.
      */
@@ -117,7 +119,7 @@ public final class PortalSettingsContractProperties {
 
     /**
      * Get the userRegistration property: User registration delegation settings.
-     *
+     * 
      * @return the userRegistration value.
      */
     public RegistrationDelegationSettingsProperties userRegistration() {
@@ -126,19 +128,19 @@ public final class PortalSettingsContractProperties {
 
     /**
      * Set the userRegistration property: User registration delegation settings.
-     *
+     * 
      * @param userRegistration the userRegistration value to set.
      * @return the PortalSettingsContractProperties object itself.
      */
-    public PortalSettingsContractProperties withUserRegistration(
-        RegistrationDelegationSettingsProperties userRegistration) {
+    public PortalSettingsContractProperties
+        withUserRegistration(RegistrationDelegationSettingsProperties userRegistration) {
         this.userRegistration = userRegistration;
         return this;
     }
 
     /**
      * Get the enabled property: Redirect Anonymous users to the Sign-In page.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -147,7 +149,7 @@ public final class PortalSettingsContractProperties {
 
     /**
      * Set the enabled property: Redirect Anonymous users to the Sign-In page.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the PortalSettingsContractProperties object itself.
      */
@@ -158,7 +160,7 @@ public final class PortalSettingsContractProperties {
 
     /**
      * Get the termsOfService property: Terms of service contract properties.
-     *
+     * 
      * @return the termsOfService value.
      */
     public TermsOfServiceProperties termsOfService() {
@@ -167,7 +169,7 @@ public final class PortalSettingsContractProperties {
 
     /**
      * Set the termsOfService property: Terms of service contract properties.
-     *
+     * 
      * @param termsOfService the termsOfService value to set.
      * @return the PortalSettingsContractProperties object itself.
      */
@@ -178,7 +180,7 @@ public final class PortalSettingsContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -191,5 +193,60 @@ public final class PortalSettingsContractProperties {
         if (termsOfService() != null) {
             termsOfService().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("validationKey", this.validationKey);
+        jsonWriter.writeJsonField("subscriptions", this.subscriptions);
+        jsonWriter.writeJsonField("userRegistration", this.userRegistration);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("termsOfService", this.termsOfService);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalSettingsContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalSettingsContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortalSettingsContractProperties.
+     */
+    public static PortalSettingsContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalSettingsContractProperties deserializedPortalSettingsContractProperties
+                = new PortalSettingsContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedPortalSettingsContractProperties.url = reader.getString();
+                } else if ("validationKey".equals(fieldName)) {
+                    deserializedPortalSettingsContractProperties.validationKey = reader.getString();
+                } else if ("subscriptions".equals(fieldName)) {
+                    deserializedPortalSettingsContractProperties.subscriptions
+                        = SubscriptionsDelegationSettingsProperties.fromJson(reader);
+                } else if ("userRegistration".equals(fieldName)) {
+                    deserializedPortalSettingsContractProperties.userRegistration
+                        = RegistrationDelegationSettingsProperties.fromJson(reader);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedPortalSettingsContractProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("termsOfService".equals(fieldName)) {
+                    deserializedPortalSettingsContractProperties.termsOfService
+                        = TermsOfServiceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalSettingsContractProperties;
+        });
     }
 }

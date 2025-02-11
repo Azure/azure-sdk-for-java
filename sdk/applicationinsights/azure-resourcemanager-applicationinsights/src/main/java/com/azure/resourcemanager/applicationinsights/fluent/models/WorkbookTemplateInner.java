@@ -5,43 +5,98 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateGallery;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateLocalizedGallery;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** An Application Insights workbook template definition. */
+/**
+ * An Application Insights workbook template definition.
+ */
 @Fluent
 public final class WorkbookTemplateInner extends WorkbookTemplateResource {
     /*
      * Metadata describing a workbook template for an Azure resource.
      */
-    @JsonProperty(value = "properties")
     private WorkbookTemplateProperties innerProperties;
 
-    /** Creates an instance of WorkbookTemplateInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WorkbookTemplateInner class.
+     */
     public WorkbookTemplateInner() {
     }
 
     /**
      * Get the innerProperties property: Metadata describing a workbook template for an Azure resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkbookTemplateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkbookTemplateInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkbookTemplateInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -51,7 +106,7 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
     /**
      * Get the priority property: Priority of the template. Determines which template to open when a workbook gallery is
      * opened in viewer mode.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -61,7 +116,7 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
     /**
      * Set the priority property: Priority of the template. Determines which template to open when a workbook gallery is
      * opened in viewer mode.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the WorkbookTemplateInner object itself.
      */
@@ -75,7 +130,7 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
 
     /**
      * Get the author property: Information about the author of the workbook template.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -84,7 +139,7 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
 
     /**
      * Set the author property: Information about the author of the workbook template.
-     *
+     * 
      * @param author the author value to set.
      * @return the WorkbookTemplateInner object itself.
      */
@@ -98,7 +153,7 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
 
     /**
      * Get the templateData property: Valid JSON object containing workbook template payload.
-     *
+     * 
      * @return the templateData value.
      */
     public Object templateData() {
@@ -107,7 +162,7 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
 
     /**
      * Set the templateData property: Valid JSON object containing workbook template payload.
-     *
+     * 
      * @param templateData the templateData value to set.
      * @return the WorkbookTemplateInner object itself.
      */
@@ -121,7 +176,7 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
 
     /**
      * Get the galleries property: Workbook galleries supported by the template.
-     *
+     * 
      * @return the galleries value.
      */
     public List<WorkbookTemplateGallery> galleries() {
@@ -130,7 +185,7 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
 
     /**
      * Set the galleries property: Workbook galleries supported by the template.
-     *
+     * 
      * @param galleries the galleries value to set.
      * @return the WorkbookTemplateInner object itself.
      */
@@ -145,7 +200,7 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
     /**
      * Get the localized property: Key value pair of localized gallery. Each key is the locale code of languages
      * supported by the Azure portal.
-     *
+     * 
      * @return the localized value.
      */
     public Map<String, List<WorkbookTemplateLocalizedGallery>> localized() {
@@ -155,7 +210,7 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
     /**
      * Set the localized property: Key value pair of localized gallery. Each key is the locale code of languages
      * supported by the Azure portal.
-     *
+     * 
      * @param localized the localized value to set.
      * @return the WorkbookTemplateInner object itself.
      */
@@ -169,14 +224,63 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkbookTemplateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkbookTemplateInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkbookTemplateInner.
+     */
+    public static WorkbookTemplateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkbookTemplateInner deserializedWorkbookTemplateInner = new WorkbookTemplateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkbookTemplateInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkbookTemplateInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkbookTemplateInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWorkbookTemplateInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkbookTemplateInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkbookTemplateInner.innerProperties = WorkbookTemplateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkbookTemplateInner;
+        });
     }
 }

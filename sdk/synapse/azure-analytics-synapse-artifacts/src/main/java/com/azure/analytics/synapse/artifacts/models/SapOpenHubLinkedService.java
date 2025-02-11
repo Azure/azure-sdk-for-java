@@ -24,22 +24,26 @@ public class SapOpenHubLinkedService extends LinkedService {
     private String type = "SapOpenHub";
 
     /*
-     * Host name of the SAP BW instance where the open hub destination is located. Type: string (or Expression with resultType string).
+     * Host name of the SAP BW instance where the open hub destination is located. Type: string (or Expression with
+     * resultType string).
      */
     private Object server;
 
     /*
-     * System number of the BW system where the open hub destination is located. (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
+     * System number of the BW system where the open hub destination is located. (Usually a two-digit decimal number
+     * represented as a string.) Type: string (or Expression with resultType string).
      */
     private Object systemNumber;
 
     /*
-     * Client ID of the client on the BW system where the open hub destination is located. (Usually a three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
+     * Client ID of the client on the BW system where the open hub destination is located. (Usually a three-digit
+     * decimal number represented as a string) Type: string (or Expression with resultType string).
      */
     private Object clientId;
 
     /*
-     * Language of the BW system where the open hub destination is located. The default value is EN. Type: string (or Expression with resultType string).
+     * Language of the BW system where the open hub destination is located. The default value is EN. Type: string (or
+     * Expression with resultType string).
      */
     private Object language;
 
@@ -49,7 +53,8 @@ public class SapOpenHubLinkedService extends LinkedService {
     private Object systemId;
 
     /*
-     * Username to access the SAP BW server where the open hub destination is located. Type: string (or Expression with resultType string).
+     * Username to access the SAP BW server where the open hub destination is located. Type: string (or Expression with
+     * resultType string).
      */
     private Object userName;
 
@@ -74,7 +79,8 @@ public class SapOpenHubLinkedService extends LinkedService {
     private Object logonGroup;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

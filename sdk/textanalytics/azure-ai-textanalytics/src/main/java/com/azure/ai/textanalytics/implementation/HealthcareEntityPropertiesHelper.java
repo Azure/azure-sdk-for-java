@@ -15,20 +15,29 @@ import com.azure.core.util.IterableStream;
 public final class HealthcareEntityPropertiesHelper {
     private static HealthcareEntityAccessor accessor;
 
-    private HealthcareEntityPropertiesHelper() { }
+    private HealthcareEntityPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link HealthcareEntity} instance.
      */
     public interface HealthcareEntityAccessor {
         void setText(HealthcareEntity healthcareEntity, String text);
+
         void setNormalizedText(HealthcareEntity healthcareEntity, String normalizedText);
+
         void setCategory(HealthcareEntity healthcareEntity, HealthcareEntityCategory category);
+
         void setSubcategory(HealthcareEntity healthcareEntity, String subcategory);
+
         void setConfidenceScore(HealthcareEntity healthcareEntity, double confidenceScore);
+
         void setDataSources(HealthcareEntity healthcareEntity, IterableStream<EntityDataSource> dataSources);
+
         void setAssertion(HealthcareEntity healthcareEntity, HealthcareEntityAssertion assertion);
+
         void setOffset(HealthcareEntity healthcareEntity, int offset);
+
         void setLength(HealthcareEntity healthcareEntity, int length);
     }
 
@@ -57,8 +66,7 @@ public final class HealthcareEntityPropertiesHelper {
         accessor.setConfidenceScore(healthcareEntity, confidenceScore);
     }
 
-    public static void setDataSources(HealthcareEntity healthcareEntity,
-        IterableStream<EntityDataSource> dataSources) {
+    public static void setDataSources(HealthcareEntity healthcareEntity, IterableStream<EntityDataSource> dataSources) {
         accessor.setDataSources(healthcareEntity, dataSources);
     }
 

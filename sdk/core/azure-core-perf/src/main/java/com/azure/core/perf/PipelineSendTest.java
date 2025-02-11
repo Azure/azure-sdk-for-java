@@ -3,6 +3,7 @@
 
 package com.azure.core.perf;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -48,7 +49,7 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
     public Mono<Void> runAsync() {
         return Mono.fromSupplier(binaryDataSupplier).flatMap(data -> {
             HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Length", contentLengthHeaderValue);
+            headers.set(HttpHeaderName.CONTENT_LENGTH, contentLengthHeaderValue);
             HttpRequest httpRequest = new HttpRequest(HttpMethod.PUT, targetURL, headers, data);
             // Context with azure-eagerly-read-response=true makes sure
             // that response is disposed to prevent connection leak.

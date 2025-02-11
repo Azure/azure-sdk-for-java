@@ -10,38 +10,31 @@ import com.azure.resourcemanager.agrifood.models.PrivateEndpoint;
 import com.azure.resourcemanager.agrifood.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.agrifood.models.PrivateLinkServiceConnectionState;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        PrivateEndpointConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"privateEndpoint\":{\"id\":\"oodqxhcrm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"t\",\"actionsRequired\":\"whdsoifiyip\"},\"provisioningState\":\"Creating\"}")
-                .toObject(PrivateEndpointConnectionProperties.class);
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("t", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("whdsoifiyip", model.privateLinkServiceConnectionState().actionsRequired());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateEndpointConnectionProperties model = BinaryData.fromString(
+            "{\"groupIds\":[\"rolfpfp\",\"algbquxigjyjg\"],\"privateEndpoint\":{\"id\":\"o\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"txilnerkujy\",\"actionsRequired\":\"l\"},\"provisioningState\":\"Deleting\"}")
+            .toObject(PrivateEndpointConnectionProperties.class);
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("txilnerkujy", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("l", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateEndpointConnectionProperties model =
-            new PrivateEndpointConnectionProperties()
-                .withPrivateEndpoint(new PrivateEndpoint())
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateEndpointConnectionProperties model
+            = new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                        .withDescription("t")
-                        .withActionsRequired("whdsoifiyip"));
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("txilnerkujy")
+                        .withActionsRequired("l"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("t", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("whdsoifiyip", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("txilnerkujy", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("l", model.privateLinkServiceConnectionState().actionsRequired());
     }
 }

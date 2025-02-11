@@ -12,18 +12,17 @@ public final class VaultCertificateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VaultCertificate model
-            = BinaryData.fromString("{\"certificateUrl\":\"hejkotynqgou\",\"certificateStore\":\"ndlik\"}")
+            = BinaryData.fromString("{\"certificateUrl\":\"cpc\",\"certificateStore\":\"hurzafblj\"}")
                 .toObject(VaultCertificate.class);
-        Assertions.assertEquals("hejkotynqgou", model.certificateUrl());
-        Assertions.assertEquals("ndlik", model.certificateStore());
+        Assertions.assertEquals("cpc", model.certificateUrl());
+        Assertions.assertEquals("hurzafblj", model.certificateStore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VaultCertificate model
-            = new VaultCertificate().withCertificateUrl("hejkotynqgou").withCertificateStore("ndlik");
+        VaultCertificate model = new VaultCertificate().withCertificateUrl("cpc").withCertificateStore("hurzafblj");
         model = BinaryData.fromObject(model).toObject(VaultCertificate.class);
-        Assertions.assertEquals("hejkotynqgou", model.certificateUrl());
-        Assertions.assertEquals("ndlik", model.certificateStore());
+        Assertions.assertEquals("cpc", model.certificateUrl());
+        Assertions.assertEquals("hurzafblj", model.certificateStore());
     }
 }

@@ -17,18 +17,17 @@ import java.util.ArrayList;
 
 class MetricDynamicAlertConditionImpl
     extends MetricAlertConditionBaseImpl<DynamicMetricCriteria, MetricDynamicAlertConditionImpl>
-    implements MetricDynamicAlertCondition,
-        MetricDynamicAlertCondition.DefinitionStages,
-        MetricDynamicAlertCondition.DefinitionStages.Blank.MetricName<MetricAlert.DefinitionStages.WithCreate>,
-        MetricDynamicAlertCondition.DefinitionStages.WithCriteriaOperator<MetricAlert.DefinitionStages.WithCreate>,
-        MetricDynamicAlertCondition.DefinitionStages.WithFailingPeriods<MetricAlert.DefinitionStages.WithCreate>,
-        MetricDynamicAlertCondition.DefinitionStages.WithConditionAttach<MetricAlert.DefinitionStages.WithCreate>,
-        MetricDynamicAlertCondition.UpdateDefinitionStages,
-        MetricDynamicAlertCondition.UpdateDefinitionStages.Blank.MetricName<MetricAlert.Update>,
-        MetricDynamicAlertCondition.UpdateDefinitionStages.WithCriteriaOperator<MetricAlert.Update>,
-        MetricDynamicAlertCondition.UpdateDefinitionStages.WithFailingPeriods<MetricAlert.Update>,
-        MetricDynamicAlertCondition.UpdateDefinitionStages.WithConditionAttach<MetricAlert.Update>,
-        MetricDynamicAlertCondition.UpdateStages {
+    implements MetricDynamicAlertCondition, MetricDynamicAlertCondition.DefinitionStages,
+    MetricDynamicAlertCondition.DefinitionStages.Blank.MetricName<MetricAlert.DefinitionStages.WithCreate>,
+    MetricDynamicAlertCondition.DefinitionStages.WithCriteriaOperator<MetricAlert.DefinitionStages.WithCreate>,
+    MetricDynamicAlertCondition.DefinitionStages.WithFailingPeriods<MetricAlert.DefinitionStages.WithCreate>,
+    MetricDynamicAlertCondition.DefinitionStages.WithConditionAttach<MetricAlert.DefinitionStages.WithCreate>,
+    MetricDynamicAlertCondition.UpdateDefinitionStages,
+    MetricDynamicAlertCondition.UpdateDefinitionStages.Blank.MetricName<MetricAlert.Update>,
+    MetricDynamicAlertCondition.UpdateDefinitionStages.WithCriteriaOperator<MetricAlert.Update>,
+    MetricDynamicAlertCondition.UpdateDefinitionStages.WithFailingPeriods<MetricAlert.Update>,
+    MetricDynamicAlertCondition.UpdateDefinitionStages.WithConditionAttach<MetricAlert.Update>,
+    MetricDynamicAlertCondition.UpdateStages {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
@@ -63,10 +62,8 @@ class MetricDynamicAlertConditionImpl
     }
 
     @Override
-    public MetricDynamicAlertConditionImpl withCondition(
-        MetricAlertRuleTimeAggregation timeAggregation,
-        DynamicThresholdOperator condition,
-        DynamicThresholdSensitivity alertSensitivity) {
+    public MetricDynamicAlertConditionImpl withCondition(MetricAlertRuleTimeAggregation timeAggregation,
+        DynamicThresholdOperator condition, DynamicThresholdSensitivity alertSensitivity) {
         this.innerModel().withOperator(condition);
         this.innerModel().withTimeAggregation(AggregationTypeEnum.fromString(timeAggregation.toString()));
         this.innerModel().withAlertSensitivity(alertSensitivity);

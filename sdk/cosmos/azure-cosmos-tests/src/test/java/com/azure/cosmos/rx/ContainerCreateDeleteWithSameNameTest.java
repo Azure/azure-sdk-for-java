@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -59,6 +60,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     private final static int COLLECTION_RECREATION_TIME_DELAY = 5000;
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase createdDatabase;
+    private String testDatabaseId = CosmosDatabaseForTest.generateId();
 
     @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public ContainerCreateDeleteWithSameNameTest(CosmosClientBuilder clientBuilder) {
@@ -322,14 +324,15 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
-    public void before_ContainerCreateDeleteWithSameNameTest() throws Exception {
+    public void before_ContainerCreateDeleteWithSameNameTest() {
         client = getClientBuilder().buildAsyncClient();
-        createdDatabase = getSharedCosmosDatabase(client);
+        createdDatabase = createDatabase(client, testDatabaseId);
     }
 
     @AfterClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
-    public void after_ContainerCreateDeleteWithSameNameTest() throws Exception {
-        safeDeleteAllCollections(createdDatabase);
+    public void after_ContainerCreateDeleteWithSameNameTest() {
+        safeDeleteDatabase(createdDatabase);
+        safeClose(client);
     }
 
     private <T> void createDeleteContainerWithSameName(Consumer<CosmosAsyncContainer> validateFunc) throws InterruptedException {

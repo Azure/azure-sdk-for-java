@@ -6,24 +6,30 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Connected Subnet properties. */
+/**
+ * Connected Subnet properties.
+ */
 @Fluent
 public final class ConnectedSubnet extends AnnotationResource {
     /*
      * Prefix of the Connected Subnet.
      */
-    @JsonProperty(value = "prefix", required = true)
     private String prefix;
 
-    /** Creates an instance of ConnectedSubnet class. */
+    /**
+     * Creates an instance of ConnectedSubnet class.
+     */
     public ConnectedSubnet() {
     }
 
     /**
      * Get the prefix property: Prefix of the Connected Subnet.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
@@ -32,7 +38,7 @@ public final class ConnectedSubnet extends AnnotationResource {
 
     /**
      * Set the prefix property: Prefix of the Connected Subnet.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the ConnectedSubnet object itself.
      */
@@ -41,7 +47,9 @@ public final class ConnectedSubnet extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectedSubnet withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -50,18 +58,56 @@ public final class ConnectedSubnet extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (prefix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property prefix in model ConnectedSubnet"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property prefix in model ConnectedSubnet"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectedSubnet.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("prefix", this.prefix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectedSubnet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectedSubnet if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectedSubnet.
+     */
+    public static ConnectedSubnet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectedSubnet deserializedConnectedSubnet = new ConnectedSubnet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedConnectedSubnet.withAnnotation(reader.getString());
+                } else if ("prefix".equals(fieldName)) {
+                    deserializedConnectedSubnet.prefix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectedSubnet;
+        });
+    }
 }

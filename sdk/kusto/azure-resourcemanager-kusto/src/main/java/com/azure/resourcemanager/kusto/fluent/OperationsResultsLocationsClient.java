@@ -9,11 +9,13 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.models.OperationsResultsLocationsGetResponse;
 
-/** An instance of this class provides access to all the operations defined in OperationsResultsLocationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsResultsLocationsClient.
+ */
 public interface OperationsResultsLocationsClient {
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
@@ -27,7 +29,7 @@ public interface OperationsResultsLocationsClient {
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

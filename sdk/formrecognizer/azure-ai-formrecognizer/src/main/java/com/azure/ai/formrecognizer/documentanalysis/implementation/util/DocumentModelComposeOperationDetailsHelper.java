@@ -20,7 +20,8 @@ public final class DocumentModelComposeOperationDetailsHelper {
      *
      * @param addressValueAccessor The accessor.
      */
-    public static void setAccessor(final DocumentModelComposeOperationDetailsHelper.DocumentModelComposeOperationDetailsAccessor addressValueAccessor) {
+    public static void setAccessor(
+        final DocumentModelComposeOperationDetailsHelper.DocumentModelComposeOperationDetailsAccessor addressValueAccessor) {
         accessor = addressValueAccessor;
     }
 

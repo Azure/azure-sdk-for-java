@@ -6,6 +6,7 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
@@ -21,17 +22,20 @@ public abstract class PipelinedQueryExecutionContextBase<T>
 
     protected final int actualPageSize;
     private final QueryInfo queryInfo;
+    private final HybridSearchQueryInfo hybridSearchQueryInfo;
     protected final CosmosItemSerializer itemSerializer;
     protected final Class<T> classOfT;
 
     protected PipelinedQueryExecutionContextBase(
         int actualPageSize,
         QueryInfo queryInfo,
+        HybridSearchQueryInfo hybridSearchQueryInfo,
         CosmosItemSerializer itemSerializer,
         Class<T> classOfT) {
 
         this.actualPageSize = actualPageSize;
         this.queryInfo = queryInfo;
+        this.hybridSearchQueryInfo = hybridSearchQueryInfo;
         this.itemSerializer = itemSerializer;
         this.classOfT = classOfT;
     }
@@ -44,6 +48,8 @@ public abstract class PipelinedQueryExecutionContextBase<T>
         DocumentCollection collection) {
 
         QueryInfo queryInfo = initParams.getQueryInfo();
+        HybridSearchQueryInfo hybridSearchQueryInfo = initParams.getHybridSearchQueryInfo();
+
         CosmosQueryRequestOptions cosmosQueryRequestOptions = initParams.getCosmosQueryRequestOptions();
         int actualPageSize = Utils.getValueOrDefault(ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(cosmosQueryRequestOptions),
             ParallelQueryConfig.ClientInternalPageSize);
@@ -52,9 +58,22 @@ public abstract class PipelinedQueryExecutionContextBase<T>
             actualPageSize = Integer.MAX_VALUE;
         }
 
+        CosmosItemSerializer candidateSerializer = client.getEffectiveItemSerializer(cosmosQueryRequestOptions);
+
+        if (hybridSearchQueryInfo != null) {
+            return PipelinedDocumentQueryExecutionContext.createHybridAsyncCore(
+                diagnosticsClientContext,
+                client,
+                initParams,
+                actualPageSize,
+                candidateSerializer,
+                classOfT,
+                collection);
+        }
+
+
         int pageSize = Math.min(actualPageSize, Utils.getValueOrDefault(queryInfo.getTop(), (actualPageSize)));
 
-        CosmosItemSerializer candidateSerializer = client.getEffectiveItemSerializer(cosmosQueryRequestOptions);
         final CosmosItemSerializer itemSerializer  = candidateSerializer != CosmosItemSerializer.DEFAULT_SERIALIZER
             ? candidateSerializer
             : ValueUnwrapCosmosItemSerializer.create(queryInfo.hasSelectValue());
@@ -127,7 +146,52 @@ public abstract class PipelinedQueryExecutionContextBase<T>
         }
     }
 
+    protected static <T> BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createCommonHybridPipelineComponentFunction(
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createBaseComponent,
+        HybridSearchQueryInfo hybridSearchQueryInfo) {
+
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSkipComponentFunction;
+        if (hybridSearchQueryInfo.hasSkip()) {
+            createSkipComponentFunction =
+                (continuationToken, documentQueryParams) ->
+                    SkipDocumentQueryExecutionContext.createAsync(createBaseComponent,
+                        hybridSearchQueryInfo.getSkip(),
+                        continuationToken,
+                        documentQueryParams);
+        } else {
+            createSkipComponentFunction = createBaseComponent;
+        }
+
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createLimitComponentFunction;
+        if (hybridSearchQueryInfo.hasTake() && hybridSearchQueryInfo.hasSkip()) {
+            createLimitComponentFunction =
+                (continuationToken, documentQueryParams) ->
+                    TakeDocumentQueryExecutionContext.createAsync(createSkipComponentFunction,
+                        hybridSearchQueryInfo.getTake(),
+                        continuationToken,
+                        documentQueryParams,
+                        TakeDocumentQueryExecutionContext.TakeEnum.LIMIT);
+        } else {
+            createLimitComponentFunction = createSkipComponentFunction;
+        }
+
+        if (hybridSearchQueryInfo.hasTake()) {
+            return (continuationToken, documentQueryParams) ->
+                TakeDocumentQueryExecutionContext.createAsync(createLimitComponentFunction,
+                    hybridSearchQueryInfo.getTake(),
+                    continuationToken,
+                    documentQueryParams,
+                    TakeDocumentQueryExecutionContext.TakeEnum.TOP);
+        } else {
+            return createLimitComponentFunction;
+        }
+    }
+
     public QueryInfo getQueryInfo() {
         return this.queryInfo;
+    }
+
+    public HybridSearchQueryInfo getHybridSearchQueryInfo() {
+        return this.hybridSearchQueryInfo;
     }
 }

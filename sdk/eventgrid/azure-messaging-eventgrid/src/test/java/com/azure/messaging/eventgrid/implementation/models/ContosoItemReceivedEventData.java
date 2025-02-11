@@ -49,4 +49,3 @@ public class ContosoItemReceivedEventData implements JsonSerializable<ContosoIte
         });
     }
 }
-

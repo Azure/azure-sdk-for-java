@@ -12,21 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class RolePropertiesExternalIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RolePropertiesExternalIdentity model = BinaryData
-            .fromString("{\"objectId\":\"vvnchrkcc\",\"principalType\":\"user\",\"tenantId\":\"zjuqkhrsaj\"}")
-            .toObject(RolePropertiesExternalIdentity.class);
-        Assertions.assertEquals("vvnchrkcc", model.objectId());
+        RolePropertiesExternalIdentity model
+            = BinaryData.fromString("{\"objectId\":\"ovm\",\"principalType\":\"user\",\"tenantId\":\"acspkwl\"}")
+                .toObject(RolePropertiesExternalIdentity.class);
+        Assertions.assertEquals("ovm", model.objectId());
         Assertions.assertEquals(PrincipalType.USER, model.principalType());
-        Assertions.assertEquals("zjuqkhrsaj", model.tenantId());
+        Assertions.assertEquals("acspkwl", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RolePropertiesExternalIdentity model = new RolePropertiesExternalIdentity().withObjectId("vvnchrkcc")
-            .withPrincipalType(PrincipalType.USER).withTenantId("zjuqkhrsaj");
+        RolePropertiesExternalIdentity model = new RolePropertiesExternalIdentity().withObjectId("ovm")
+            .withPrincipalType(PrincipalType.USER)
+            .withTenantId("acspkwl");
         model = BinaryData.fromObject(model).toObject(RolePropertiesExternalIdentity.class);
-        Assertions.assertEquals("vvnchrkcc", model.objectId());
+        Assertions.assertEquals("ovm", model.objectId());
         Assertions.assertEquals(PrincipalType.USER, model.principalType());
-        Assertions.assertEquals("zjuqkhrsaj", model.tenantId());
+        Assertions.assertEquals("acspkwl", model.tenantId());
     }
 }

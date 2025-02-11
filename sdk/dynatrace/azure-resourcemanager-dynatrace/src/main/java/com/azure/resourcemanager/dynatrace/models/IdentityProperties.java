@@ -6,45 +6,47 @@ package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The properties of the managed service identities assigned to this resource. */
+/**
+ * The properties of the managed service identities assigned to this resource.
+ */
 @Fluent
-public final class IdentityProperties {
+public final class IdentityProperties implements JsonSerializable<IdentityProperties> {
     /*
      * The Active Directory tenant id of the principal.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * The active directory identifier of this principal.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The type of managed identity assigned to this resource.
      */
-    @JsonProperty(value = "type", required = true)
     private ManagedIdentityType type;
 
     /*
      * The identities assigned to this resource by the user.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
-    /** Creates an instance of IdentityProperties class. */
+    /**
+     * Creates an instance of IdentityProperties class.
+     */
     public IdentityProperties() {
     }
 
     /**
      * Get the tenantId property: The Active Directory tenant id of the principal.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -53,7 +55,7 @@ public final class IdentityProperties {
 
     /**
      * Get the principalId property: The active directory identifier of this principal.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -62,7 +64,7 @@ public final class IdentityProperties {
 
     /**
      * Get the type property: The type of managed identity assigned to this resource.
-     *
+     * 
      * @return the type value.
      */
     public ManagedIdentityType type() {
@@ -71,7 +73,7 @@ public final class IdentityProperties {
 
     /**
      * Set the type property: The type of managed identity assigned to this resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the IdentityProperties object itself.
      */
@@ -82,7 +84,7 @@ public final class IdentityProperties {
 
     /**
      * Get the userAssignedIdentities property: The identities assigned to this resource by the user.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserAssignedIdentity> userAssignedIdentities() {
@@ -91,7 +93,7 @@ public final class IdentityProperties {
 
     /**
      * Set the userAssignedIdentities property: The identities assigned to this resource by the user.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the IdentityProperties object itself.
      */
@@ -102,26 +104,69 @@ public final class IdentityProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model IdentityProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model IdentityProperties"));
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IdentityProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IdentityProperties.
+     */
+    public static IdentityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityProperties deserializedIdentityProperties = new IdentityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedIdentityProperties.type = ManagedIdentityType.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedIdentityProperties.tenantId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedIdentityProperties.principalId = reader.getString();
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));
+                    deserializedIdentityProperties.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityProperties;
+        });
+    }
 }

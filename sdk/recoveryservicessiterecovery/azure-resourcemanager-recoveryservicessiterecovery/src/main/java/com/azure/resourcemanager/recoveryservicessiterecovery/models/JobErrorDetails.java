@@ -5,42 +5,43 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * This class contains the error details per object.
  */
 @Fluent
-public final class JobErrorDetails {
+public final class JobErrorDetails implements JsonSerializable<JobErrorDetails> {
     /*
      * The Service error details.
      */
-    @JsonProperty(value = "serviceErrorDetails")
     private ServiceError serviceErrorDetails;
 
     /*
      * The Provider error details.
      */
-    @JsonProperty(value = "providerErrorDetails")
     private ProviderError providerErrorDetails;
 
     /*
      * Error level of error.
      */
-    @JsonProperty(value = "errorLevel")
     private String errorLevel;
 
     /*
      * The creation time of job error.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * The Id of the task.
      */
-    @JsonProperty(value = "taskId")
     private String taskId;
 
     /**
@@ -161,5 +162,55 @@ public final class JobErrorDetails {
         if (providerErrorDetails() != null) {
             providerErrorDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("serviceErrorDetails", this.serviceErrorDetails);
+        jsonWriter.writeJsonField("providerErrorDetails", this.providerErrorDetails);
+        jsonWriter.writeStringField("errorLevel", this.errorLevel);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("taskId", this.taskId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobErrorDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobErrorDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobErrorDetails.
+     */
+    public static JobErrorDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobErrorDetails deserializedJobErrorDetails = new JobErrorDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceErrorDetails".equals(fieldName)) {
+                    deserializedJobErrorDetails.serviceErrorDetails = ServiceError.fromJson(reader);
+                } else if ("providerErrorDetails".equals(fieldName)) {
+                    deserializedJobErrorDetails.providerErrorDetails = ProviderError.fromJson(reader);
+                } else if ("errorLevel".equals(fieldName)) {
+                    deserializedJobErrorDetails.errorLevel = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedJobErrorDetails.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("taskId".equals(fieldName)) {
+                    deserializedJobErrorDetails.taskId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobErrorDetails;
+        });
     }
 }

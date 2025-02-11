@@ -38,13 +38,15 @@ public final class EnterpriseDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnterpriseDetailsInner model = new EnterpriseDetailsInner()
-            .withSaasSubscriptionDetails(
-                new SaasSubscriptionDetails().withPlanId("sycbkbfk").withOfferId("kdkexxp").withPublisherId("fmxa")
-                    .withTerm(new SubscriptionTerm().withTermUnit("jpgd")
-                        .withStartDate(OffsetDateTime.parse("2021-10-14T19:32:33Z"))
-                        .withEndDate(OffsetDateTime.parse("2021-05-05T12:18:06Z"))))
+            .withSaasSubscriptionDetails(new SaasSubscriptionDetails().withPlanId("sycbkbfk")
+                .withOfferId("kdkexxp")
+                .withPublisherId("fmxa")
+                .withTerm(new SubscriptionTerm().withTermUnit("jpgd")
+                    .withStartDate(OffsetDateTime.parse("2021-10-14T19:32:33Z"))
+                    .withEndDate(OffsetDateTime.parse("2021-05-05T12:18:06Z"))))
             .withMarketplaceTrialQuota(new MarketplaceTrialQuota().withAvailablePromotion(AvailablePromotion.NONE)
-                .withGrafanaResourceId("pmouexhdz").withTrialStartAt(OffsetDateTime.parse("2020-12-20T15:16:48Z"))
+                .withGrafanaResourceId("pmouexhdz")
+                .withTrialStartAt(OffsetDateTime.parse("2020-12-20T15:16:48Z"))
                 .withTrialEndAt(OffsetDateTime.parse("2021-01-24T12:51:28Z")));
         model = BinaryData.fromObject(model).toObject(EnterpriseDetailsInner.class);
         Assertions.assertEquals("sycbkbfk", model.saasSubscriptionDetails().planId());

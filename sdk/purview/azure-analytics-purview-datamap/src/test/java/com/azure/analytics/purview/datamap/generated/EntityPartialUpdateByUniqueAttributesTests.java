@@ -9,9 +9,8 @@ import com.azure.analytics.purview.datamap.models.AtlasEntityHeader;
 import com.azure.analytics.purview.datamap.models.AtlasEntityWithExtInfo;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
 import com.azure.analytics.purview.datamap.models.EntityStatus;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,29 +22,32 @@ import org.junit.jupiter.api.Test;
 public final class EntityPartialUpdateByUniqueAttributesTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testEntityPartialUpdateByUniqueAttributesTests() throws IOException {
+    public void testEntityPartialUpdateByUniqueAttributesTests() {
         // method invocation
-        EntityMutationResult response = entityClient.updateByUniqueAttribute("azure_storage_account",
-            new AtlasEntityWithExtInfo().setReferredEntities(mapOf())
-                .setEntity(new AtlasEntity()
-                    .setAttributes(mapOf("owner", "ExampleOwner", "qualifiedName",
-                        "https://exampleaccount.core.windows.net", "createTime", 0, "name", "ExampleNewName"))
-                    .setTypeName("azure_storage_account")
-                    .setLastModifiedTS("1")
-                    .setCreateTime(1605766397985L)
-                    .setCreatedBy("8c062c84-5d25-449f-a990-9d8ab70b8ec7")
-                    .setGuid("dc507ccf-0c57-4165-9327-f37b0d13fda0")
-                    .setRelationshipAttributes(mapOf("services",
-                        JacksonAdapter.createDefaultSerializerAdapter()
-                            .deserialize("[]", Object.class, SerializerEncoding.JSON),
-                        "meanings",
-                        JacksonAdapter.createDefaultSerializerAdapter()
-                            .deserialize("[]", Object.class, SerializerEncoding.JSON)))
-                    .setStatus(EntityStatus.ACTIVE)
-                    .setUpdateTime(1605766397985L)
-                    .setUpdatedBy("8c062c84-5d25-449f-a990-9d8ab70b8ec7")
-                    .setVersion(0L)),
-            "https://exampleaccount.core.windows.net");
+        EntityMutationResult response
+            = entityClient
+                .updateByUniqueAttribute("azure_storage_account",
+                    new AtlasEntityWithExtInfo().setReferredEntities(mapOf())
+                        .setEntity(new AtlasEntity()
+                            .setAttributes(mapOf("owner",
+                                BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)), "qualifiedName",
+                                BinaryData.fromBytes(
+                                    "https://exampleaccount.core.windows.net".getBytes(StandardCharsets.UTF_8)),
+                                "createTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "name",
+                                BinaryData.fromBytes("ExampleNewName".getBytes(StandardCharsets.UTF_8))))
+                            .setTypeName("azure_storage_account")
+                            .setLastModifiedTS("1")
+                            .setCreateTime(1605766397985L)
+                            .setCreatedBy("8c062c84-5d25-449f-a990-9d8ab70b8ec7")
+                            .setGuid("dc507ccf-0c57-4165-9327-f37b0d13fda0")
+                            .setRelationshipAttributes(
+                                mapOf("services", BinaryData.fromBytes("[]".getBytes(StandardCharsets.UTF_8)),
+                                    "meanings", BinaryData.fromBytes("[]".getBytes(StandardCharsets.UTF_8))))
+                            .setStatus(EntityStatus.ACTIVE)
+                            .setUpdateTime(1605766397985L)
+                            .setUpdatedBy("8c062c84-5d25-449f-a990-9d8ab70b8ec7")
+                            .setVersion(0L)),
+                    "https://exampleaccount.core.windows.net");
 
         // response assertion
         Assertions.assertNotNull(response);

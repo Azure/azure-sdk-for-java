@@ -6,35 +6,35 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * InMageRcm disk input.
  */
 @Fluent
-public final class InMageRcmDiskInput {
+public final class InMageRcmDiskInput implements JsonSerializable<InMageRcmDiskInput> {
     /*
      * The disk Id.
      */
-    @JsonProperty(value = "diskId", required = true)
     private String diskId;
 
     /*
      * The log storage account ARM Id.
      */
-    @JsonProperty(value = "logStorageAccountId", required = true)
     private String logStorageAccountId;
 
     /*
      * The disk type.
      */
-    @JsonProperty(value = "diskType", required = true)
     private DiskAccountType diskType;
 
     /*
      * The DiskEncryptionSet ARM Id.
      */
-    @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
     /**
@@ -130,18 +130,65 @@ public final class InMageRcmDiskInput {
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property diskId in model InMageRcmDiskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property diskId in model InMageRcmDiskInput"));
         }
         if (logStorageAccountId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property logStorageAccountId in model InMageRcmDiskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property logStorageAccountId in model InMageRcmDiskInput"));
         }
         if (diskType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property diskType in model InMageRcmDiskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property diskType in model InMageRcmDiskInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InMageRcmDiskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("logStorageAccountId", this.logStorageAccountId);
+        jsonWriter.writeStringField("diskType", this.diskType == null ? null : this.diskType.toString());
+        jsonWriter.writeStringField("diskEncryptionSetId", this.diskEncryptionSetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmDiskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmDiskInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InMageRcmDiskInput.
+     */
+    public static InMageRcmDiskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmDiskInput deserializedInMageRcmDiskInput = new InMageRcmDiskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedInMageRcmDiskInput.diskId = reader.getString();
+                } else if ("logStorageAccountId".equals(fieldName)) {
+                    deserializedInMageRcmDiskInput.logStorageAccountId = reader.getString();
+                } else if ("diskType".equals(fieldName)) {
+                    deserializedInMageRcmDiskInput.diskType = DiskAccountType.fromString(reader.getString());
+                } else if ("diskEncryptionSetId".equals(fieldName)) {
+                    deserializedInMageRcmDiskInput.diskEncryptionSetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmDiskInput;
+        });
+    }
 }

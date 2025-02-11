@@ -13,18 +13,28 @@ import java.util.Map;
 
 /** An immutable client-side representation of an Azure SQL Server automatic tuning object. */
 @Fluent
-public interface SqlServerAutomaticTuning
-    extends HasInnerModel<ServerAutomaticTuningInner>,
-        Refreshable<SqlServerAutomaticTuning>,
-        Updatable<SqlServerAutomaticTuning.Update> {
+public interface SqlServerAutomaticTuning extends HasInnerModel<ServerAutomaticTuningInner>,
+    Refreshable<SqlServerAutomaticTuning>, Updatable<SqlServerAutomaticTuning.Update> {
 
-    /** @return the server automatic tuning desired state */
+    /**
+     * Gets the server automatic tuning desired state.
+     *
+     * @return the server automatic tuning desired state
+     */
     AutomaticTuningServerMode desiredState();
 
-    /** @return the server automatic tuning actual state */
+    /**
+     * Gets the server automatic tuning actual state.
+     *
+     * @return the server automatic tuning actual state
+     */
     AutomaticTuningServerMode actualState();
 
-    /** @return the server automatic tuning individual options */
+    /**
+     * Gets the server automatic tuning individual options.
+     *
+     * @return the server automatic tuning individual options
+     */
     Map<String, AutomaticTuningServerOptions> tuningOptions();
 
     /**************************************************************
@@ -34,10 +44,8 @@ public interface SqlServerAutomaticTuning
     /**
      * The template for a SqlServerAutomaticTuning update operation, containing all the settings that can be modified.
      */
-    interface Update
-        extends SqlServerAutomaticTuning.UpdateStages.WithAutomaticTuningMode,
-            SqlServerAutomaticTuning.UpdateStages.WithAutomaticTuningOptions,
-            Appliable<SqlServerAutomaticTuning> {
+    interface Update extends SqlServerAutomaticTuning.UpdateStages.WithAutomaticTuningMode,
+        SqlServerAutomaticTuning.UpdateStages.WithAutomaticTuningOptions, Appliable<SqlServerAutomaticTuning> {
     }
 
     /** Grouping of all the SqlServerAutomaticTuning update stages. */

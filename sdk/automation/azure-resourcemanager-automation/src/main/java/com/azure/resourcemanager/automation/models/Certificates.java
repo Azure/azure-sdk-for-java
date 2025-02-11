@@ -8,11 +8,28 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Certificates. */
+/**
+ * Resource collection API of Certificates.
+ */
 public interface Certificates {
     /**
      * Delete the certificate.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param certificateName The name of certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String certificateName,
+        Context context);
+
+    /**
+     * Delete the certificate.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
@@ -23,8 +40,8 @@ public interface Certificates {
     void delete(String resourceGroupName, String automationAccountName, String certificateName);
 
     /**
-     * Delete the certificate.
-     *
+     * Retrieve the certificate identified by certificate name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
@@ -32,14 +49,14 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return definition of the certificate along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String certificateName, Context context);
+    Response<Certificate> getWithResponse(String resourceGroupName, String automationAccountName,
+        String certificateName, Context context);
 
     /**
      * Retrieve the certificate identified by certificate name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
@@ -51,23 +68,8 @@ public interface Certificates {
     Certificate get(String resourceGroupName, String automationAccountName, String certificateName);
 
     /**
-     * Retrieve the certificate identified by certificate name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param certificateName The name of certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the certificate along with {@link Response}.
-     */
-    Response<Certificate> getWithResponse(
-        String resourceGroupName, String automationAccountName, String certificateName, Context context);
-
-    /**
      * Retrieve a list of certificates.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,7 +81,7 @@ public interface Certificates {
 
     /**
      * Retrieve a list of certificates.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -88,12 +90,12 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list certificate operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Certificate> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context);
+    PagedIterable<Certificate> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context);
 
     /**
      * Retrieve the certificate identified by certificate name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,7 +106,7 @@ public interface Certificates {
 
     /**
      * Retrieve the certificate identified by certificate name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,7 +118,7 @@ public interface Certificates {
 
     /**
      * Delete the certificate.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -126,7 +128,7 @@ public interface Certificates {
 
     /**
      * Delete the certificate.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +140,7 @@ public interface Certificates {
 
     /**
      * Begins definition for a new Certificate resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Certificate definition.
      */

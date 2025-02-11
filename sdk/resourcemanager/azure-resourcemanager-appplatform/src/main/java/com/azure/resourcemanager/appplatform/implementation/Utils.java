@@ -103,10 +103,8 @@ class Utils {
         static CpuMatcher create(String cpu) {
             Matcher integerMatcher = CPU_INTEGER.matcher(cpu);
             Matcher fractionMatcher = CPU_FRACTION.matcher(cpu);
-            return new CpuMatcher(
-                integerMatcher.matches() ? integerMatcher : null,
-                fractionMatcher.matches() ? fractionMatcher : null
-            );
+            return new CpuMatcher(integerMatcher.matches() ? integerMatcher : null,
+                fractionMatcher.matches() ? fractionMatcher : null);
         }
 
         boolean noMatch() {
@@ -136,10 +134,7 @@ class Utils {
         static MemoryMatcher create(String memory) {
             Matcher gbMatcher = MEMORY_GB.matcher(memory);
             Matcher mbMatcher = MEMORY_MB.matcher(memory);
-            return new MemoryMatcher(
-                gbMatcher.matches() ? gbMatcher : null,
-                mbMatcher.matches() ? mbMatcher : null
-            );
+            return new MemoryMatcher(gbMatcher.matches() ? gbMatcher : null, mbMatcher.matches() ? mbMatcher : null);
         }
 
         boolean noMatch() {

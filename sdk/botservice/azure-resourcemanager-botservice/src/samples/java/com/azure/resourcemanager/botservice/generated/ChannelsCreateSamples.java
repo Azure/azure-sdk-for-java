@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.botservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.botservice.fluent.models.BotChannelInner;
 import com.azure.resourcemanager.botservice.models.AlexaChannel;
 import com.azure.resourcemanager.botservice.models.AlexaChannelProperties;
@@ -12,119 +11,112 @@ import com.azure.resourcemanager.botservice.models.ChannelName;
 import com.azure.resourcemanager.botservice.models.DirectLineSpeechChannel;
 import com.azure.resourcemanager.botservice.models.DirectLineSpeechChannelProperties;
 import com.azure.resourcemanager.botservice.models.EmailChannel;
+import com.azure.resourcemanager.botservice.models.EmailChannelAuthMethod;
 import com.azure.resourcemanager.botservice.models.EmailChannelProperties;
 import com.azure.resourcemanager.botservice.models.LineChannel;
 import com.azure.resourcemanager.botservice.models.LineChannelProperties;
 import com.azure.resourcemanager.botservice.models.LineRegistration;
 import java.util.Arrays;
 
-/** Samples for Channels Create. */
+/**
+ * Samples for Channels Create.
+ */
 public final class ChannelsCreateSamples {
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutDirectLineSpeechChannel.json
+     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
+     * PutDirectLineSpeechChannel.json
      */
     /**
-     * Sample code: Create DirectLine Speech Bot.
-     *
+     * Sample code: Create DirectLine Speech Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void createDirectLineSpeechBot(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .channels()
-            .createWithResponse(
-                "OneResourceGroupName",
-                "samplebotname",
-                ChannelName.DIRECT_LINE_SPEECH_CHANNEL,
-                new BotChannelInner()
-                    .withLocation("global")
-                    .withProperties(
-                        new DirectLineSpeechChannel()
-                            .withProperties(
-                                new DirectLineSpeechChannelProperties()
-                                    .withCognitiveServiceRegion("XcognitiveServiceRegionX")
-                                    .withCognitiveServiceSubscriptionKey("XcognitiveServiceSubscriptionKeyX")
-                                    .withIsEnabled(true))),
-                Context.NONE);
+    public static void createDirectLineSpeechChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .createWithResponse("OneResourceGroupName", "samplebotname", ChannelName.DIRECT_LINE_SPEECH_CHANNEL,
+                new BotChannelInner().withLocation("global")
+                    .withProperties(new DirectLineSpeechChannel().withProperties(
+                        new DirectLineSpeechChannelProperties().withCognitiveServiceRegion("XcognitiveServiceRegionX")
+                            .withCognitiveServiceSubscriptionKey("fakeTokenPlaceholder")
+                            .withIsEnabled(true))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutChannel.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutEmailChannel.json
      */
     /**
-     * Sample code: Create Bot.
-     *
+     * Sample code: Create Email Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void createBot(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .channels()
-            .createWithResponse(
-                "OneResourceGroupName",
-                "samplebotname",
-                ChannelName.EMAIL_CHANNEL,
-                new BotChannelInner()
-                    .withLocation("global")
+    public static void createEmailChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .createWithResponse("OneResourceGroupName", "samplebotname", ChannelName.EMAIL_CHANNEL,
+                new BotChannelInner().withLocation("global")
                     .withProperties(
-                        new EmailChannel()
-                            .withProperties(
-                                new EmailChannelProperties()
-                                    .withEmailAddress("a@b.com")
-                                    .withPassword("pwd")
-                                    .withIsEnabled(true))),
-                Context.NONE);
+                        new EmailChannel().withProperties(new EmailChannelProperties().withEmailAddress("a@b.com")
+                            .withAuthMethod(EmailChannelAuthMethod.ONE)
+                            .withMagicCode("fakeTokenPlaceholder")
+                            .withIsEnabled(true))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutAlexaChannel.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutAlexaChannel.json
      */
     /**
-     * Sample code: Create Alexa Bot.
-     *
+     * Sample code: Create Alexa Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void createAlexaBot(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .channels()
-            .createWithResponse(
-                "OneResourceGroupName",
-                "samplebotname",
-                ChannelName.ALEXA_CHANNEL,
-                new BotChannelInner()
-                    .withLocation("global")
-                    .withProperties(
-                        new AlexaChannel()
-                            .withProperties(
-                                new AlexaChannelProperties().withAlexaSkillId("XAlexaSkillIdX").withIsEnabled(true))),
-                Context.NONE);
+    public static void createAlexaChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .createWithResponse("OneResourceGroupName", "samplebotname", ChannelName.ALEXA_CHANNEL,
+                new BotChannelInner().withLocation("global")
+                    .withProperties(new AlexaChannel().withProperties(
+                        new AlexaChannelProperties().withAlexaSkillId("XAlexaSkillIdX").withIsEnabled(true))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutLineChannel.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutChannel.json
      */
     /**
-     * Sample code: Create Line Bot.
-     *
+     * Sample code: Create Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void createLineBot(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .channels()
-            .createWithResponse(
-                "OneResourceGroupName",
-                "samplebotname",
-                ChannelName.LINE_CHANNEL,
-                new BotChannelInner()
-                    .withLocation("global")
+    public static void createChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .createWithResponse("OneResourceGroupName", "samplebotname", ChannelName.EMAIL_CHANNEL,
+                new BotChannelInner().withLocation("global")
                     .withProperties(
-                        new LineChannel()
-                            .withProperties(
-                                new LineChannelProperties()
-                                    .withLineRegistrations(
-                                        Arrays
-                                            .asList(
-                                                new LineRegistration()
-                                                    .withChannelSecret("channelSecret")
-                                                    .withChannelAccessToken("channelAccessToken"))))),
-                Context.NONE);
+                        new EmailChannel().withProperties(new EmailChannelProperties().withEmailAddress("a@b.com")
+                            .withPassword("fakeTokenPlaceholder")
+                            .withIsEnabled(true))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutLineChannel.json
+     */
+    /**
+     * Sample code: Create Line Channel.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void createLineChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .createWithResponse("OneResourceGroupName", "samplebotname", ChannelName.LINE_CHANNEL,
+                new BotChannelInner().withLocation("global")
+                    .withProperties(new LineChannel().withProperties(new LineChannelProperties().withLineRegistrations(
+                        Arrays.asList(new LineRegistration().withChannelSecret("fakeTokenPlaceholder")
+                            .withChannelAccessToken("fakeTokenPlaceholder"))))),
+                com.azure.core.util.Context.NONE);
     }
 }

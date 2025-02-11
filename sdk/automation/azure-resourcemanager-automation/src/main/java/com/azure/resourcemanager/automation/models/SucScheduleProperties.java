@@ -5,99 +5,99 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Definition of schedule parameters. */
+/**
+ * Definition of schedule parameters.
+ */
 @Fluent
-public final class SucScheduleProperties {
+public final class SucScheduleProperties implements JsonSerializable<SucScheduleProperties> {
     /*
      * Gets or sets the start time of the schedule.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Gets the start time's offset in minutes.
      */
-    @JsonProperty(value = "startTimeOffsetMinutes", access = JsonProperty.Access.WRITE_ONLY)
     private Double startTimeOffsetMinutes;
 
     /*
      * Gets or sets the end time of the schedule.
      */
-    @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
     /*
      * Gets or sets the expiry time's offset in minutes.
      */
-    @JsonProperty(value = "expiryTimeOffsetMinutes")
     private Double expiryTimeOffsetMinutes;
 
     /*
      * Gets or sets a value indicating whether this schedule is enabled.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * Gets or sets the next run time of the schedule.
      */
-    @JsonProperty(value = "nextRun")
     private OffsetDateTime nextRun;
 
     /*
      * Gets or sets the next run time's offset in minutes.
      */
-    @JsonProperty(value = "nextRunOffsetMinutes")
     private Double nextRunOffsetMinutes;
 
     /*
      * Gets or sets the interval of the schedule.
      */
-    @JsonProperty(value = "interval")
     private Long interval;
 
     /*
      * Gets or sets the frequency of the schedule.
      */
-    @JsonProperty(value = "frequency")
     private ScheduleFrequency frequency;
 
     /*
      * Gets or sets the time zone of the schedule.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * Gets or sets the advanced schedule.
      */
-    @JsonProperty(value = "advancedSchedule")
     private AdvancedSchedule advancedSchedule;
 
     /*
      * Gets or sets the creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of SucScheduleProperties class.
+     */
+    public SucScheduleProperties() {
+    }
+
+    /**
      * Get the startTime property: Gets or sets the start time of the schedule.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -106,7 +106,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the startTime property: Gets or sets the start time of the schedule.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -117,7 +117,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the startTimeOffsetMinutes property: Gets the start time's offset in minutes.
-     *
+     * 
      * @return the startTimeOffsetMinutes value.
      */
     public Double startTimeOffsetMinutes() {
@@ -126,7 +126,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the expiryTime property: Gets or sets the end time of the schedule.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -135,7 +135,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the expiryTime property: Gets or sets the end time of the schedule.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -146,7 +146,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the expiryTimeOffsetMinutes property: Gets or sets the expiry time's offset in minutes.
-     *
+     * 
      * @return the expiryTimeOffsetMinutes value.
      */
     public Double expiryTimeOffsetMinutes() {
@@ -155,7 +155,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the expiryTimeOffsetMinutes property: Gets or sets the expiry time's offset in minutes.
-     *
+     * 
      * @param expiryTimeOffsetMinutes the expiryTimeOffsetMinutes value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -166,7 +166,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the isEnabled property: Gets or sets a value indicating whether this schedule is enabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -175,7 +175,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the isEnabled property: Gets or sets a value indicating whether this schedule is enabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -186,7 +186,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the nextRun property: Gets or sets the next run time of the schedule.
-     *
+     * 
      * @return the nextRun value.
      */
     public OffsetDateTime nextRun() {
@@ -195,7 +195,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the nextRun property: Gets or sets the next run time of the schedule.
-     *
+     * 
      * @param nextRun the nextRun value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -206,7 +206,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the nextRunOffsetMinutes property: Gets or sets the next run time's offset in minutes.
-     *
+     * 
      * @return the nextRunOffsetMinutes value.
      */
     public Double nextRunOffsetMinutes() {
@@ -215,7 +215,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the nextRunOffsetMinutes property: Gets or sets the next run time's offset in minutes.
-     *
+     * 
      * @param nextRunOffsetMinutes the nextRunOffsetMinutes value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -226,7 +226,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the interval property: Gets or sets the interval of the schedule.
-     *
+     * 
      * @return the interval value.
      */
     public Long interval() {
@@ -235,7 +235,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the interval property: Gets or sets the interval of the schedule.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -246,7 +246,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the frequency property: Gets or sets the frequency of the schedule.
-     *
+     * 
      * @return the frequency value.
      */
     public ScheduleFrequency frequency() {
@@ -255,7 +255,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the frequency property: Gets or sets the frequency of the schedule.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -266,7 +266,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the timeZone property: Gets or sets the time zone of the schedule.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -275,7 +275,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the timeZone property: Gets or sets the time zone of the schedule.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -286,7 +286,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the advancedSchedule property: Gets or sets the advanced schedule.
-     *
+     * 
      * @return the advancedSchedule value.
      */
     public AdvancedSchedule advancedSchedule() {
@@ -295,7 +295,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the advancedSchedule property: Gets or sets the advanced schedule.
-     *
+     * 
      * @param advancedSchedule the advancedSchedule value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -306,7 +306,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -315,7 +315,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -326,7 +326,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -335,7 +335,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -346,7 +346,7 @@ public final class SucScheduleProperties {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -355,7 +355,7 @@ public final class SucScheduleProperties {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SucScheduleProperties object itself.
      */
@@ -366,12 +366,100 @@ public final class SucScheduleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (advancedSchedule() != null) {
             advancedSchedule().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("expiryTime",
+            this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
+        jsonWriter.writeNumberField("expiryTimeOffsetMinutes", this.expiryTimeOffsetMinutes);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("nextRun",
+            this.nextRun == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.nextRun));
+        jsonWriter.writeNumberField("nextRunOffsetMinutes", this.nextRunOffsetMinutes);
+        jsonWriter.writeNumberField("interval", this.interval);
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeJsonField("advancedSchedule", this.advancedSchedule);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SucScheduleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SucScheduleProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SucScheduleProperties.
+     */
+    public static SucScheduleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SucScheduleProperties deserializedSucScheduleProperties = new SucScheduleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedSucScheduleProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startTimeOffsetMinutes".equals(fieldName)) {
+                    deserializedSucScheduleProperties.startTimeOffsetMinutes
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedSucScheduleProperties.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiryTimeOffsetMinutes".equals(fieldName)) {
+                    deserializedSucScheduleProperties.expiryTimeOffsetMinutes
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedSucScheduleProperties.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("nextRun".equals(fieldName)) {
+                    deserializedSucScheduleProperties.nextRun = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("nextRunOffsetMinutes".equals(fieldName)) {
+                    deserializedSucScheduleProperties.nextRunOffsetMinutes = reader.getNullable(JsonReader::getDouble);
+                } else if ("interval".equals(fieldName)) {
+                    deserializedSucScheduleProperties.interval = reader.getNullable(JsonReader::getLong);
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedSucScheduleProperties.frequency = ScheduleFrequency.fromString(reader.getString());
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedSucScheduleProperties.timeZone = reader.getString();
+                } else if ("advancedSchedule".equals(fieldName)) {
+                    deserializedSucScheduleProperties.advancedSchedule = AdvancedSchedule.fromJson(reader);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedSucScheduleProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedSucScheduleProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSucScheduleProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSucScheduleProperties;
+        });
     }
 }

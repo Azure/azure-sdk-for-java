@@ -5,30 +5,24 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
 /**
  * IaaS VM workload-specific backup item representing the Azure Resource Manager VM.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "protectedItemType",
-    defaultImpl = AzureIaaSComputeVMProtectedItem.class,
-    visible = true)
-@JsonTypeName("Microsoft.Compute/virtualMachines")
 @Fluent
 public final class AzureIaaSComputeVMProtectedItem extends AzureIaaSvmProtectedItem {
     /*
      * backup item type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "protectedItemType", required = true)
     private String protectedItemType = "Microsoft.Compute/virtualMachines";
 
     /**
@@ -254,6 +248,166 @@ public final class AzureIaaSComputeVMProtectedItem extends AzureIaaSvmProtectedI
      */
     @Override
     public void validate() {
-        super.validate();
+        if (healthDetails() != null) {
+            healthDetails().forEach(e -> e.validate());
+        }
+        if (kpisHealths() != null) {
+            kpisHealths().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (extendedInfo() != null) {
+            extendedInfo().validate();
+        }
+        if (extendedProperties() != null) {
+            extendedProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerName", containerName());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("policyId", policyId());
+        jsonWriter.writeStringField("lastRecoveryPoint",
+            lastRecoveryPoint() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastRecoveryPoint()));
+        jsonWriter.writeStringField("backupSetName", backupSetName());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeStringField("deferredDeleteTimeInUTC",
+            deferredDeleteTimeInUtc() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deferredDeleteTimeInUtc()));
+        jsonWriter.writeBooleanField("isScheduledForDeferredDelete", isScheduledForDeferredDelete());
+        jsonWriter.writeStringField("deferredDeleteTimeRemaining", deferredDeleteTimeRemaining());
+        jsonWriter.writeBooleanField("isDeferredDeleteScheduleUpcoming", isDeferredDeleteScheduleUpcoming());
+        jsonWriter.writeBooleanField("isRehydrate", isRehydrate());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchiveEnabled", isArchiveEnabled());
+        jsonWriter.writeStringField("policyName", policyName());
+        jsonWriter.writeNumberField("softDeleteRetentionPeriodInDays", softDeleteRetentionPeriod());
+        jsonWriter.writeStringField("protectionStatus", protectionStatus());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeArrayField("healthDetails", healthDetails(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("kpisHealths", kpisHealths(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("lastBackupStatus", lastBackupStatus());
+        jsonWriter.writeJsonField("extendedInfo", extendedInfo());
+        jsonWriter.writeJsonField("extendedProperties", extendedProperties());
+        jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureIaaSComputeVMProtectedItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureIaaSComputeVMProtectedItem if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureIaaSComputeVMProtectedItem.
+     */
+    public static AzureIaaSComputeVMProtectedItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureIaaSComputeVMProtectedItem deserializedAzureIaaSComputeVMProtectedItem
+                = new AzureIaaSComputeVMProtectedItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withWorkloadType(DataSourceType.fromString(reader.getString()));
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withContainerName(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withSourceResourceId(reader.getString());
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withPolicyId(reader.getString());
+                } else if ("lastRecoveryPoint".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withLastRecoveryPoint(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("backupSetName".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withBackupSetName(reader.getString());
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("deferredDeleteTimeInUTC".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withDeferredDeleteTimeInUtc(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("isScheduledForDeferredDelete".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withIsScheduledForDeferredDelete(reader.getNullable(JsonReader::getBoolean));
+                } else if ("deferredDeleteTimeRemaining".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withDeferredDeleteTimeRemaining(reader.getString());
+                } else if ("isDeferredDeleteScheduleUpcoming".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withIsDeferredDeleteScheduleUpcoming(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isRehydrate".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withIsRehydrate(reader.getNullable(JsonReader::getBoolean));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withIsArchiveEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withPolicyName(reader.getString());
+                } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withSoftDeleteRetentionPeriod(reader.getNullable(JsonReader::getInt));
+                } else if ("vaultId".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withVaultId(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withFriendlyName(reader.getString());
+                } else if ("virtualMachineId".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withVirtualMachineId(reader.getString());
+                } else if ("protectionStatus".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withProtectionStatus(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withProtectionState(ProtectionState.fromString(reader.getString()));
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withHealthStatus(HealthStatus.fromString(reader.getString()));
+                } else if ("healthDetails".equals(fieldName)) {
+                    List<AzureIaaSvmHealthDetails> healthDetails
+                        = reader.readArray(reader1 -> AzureIaaSvmHealthDetails.fromJson(reader1));
+                    deserializedAzureIaaSComputeVMProtectedItem.withHealthDetails(healthDetails);
+                } else if ("kpisHealths".equals(fieldName)) {
+                    Map<String, KpiResourceHealthDetails> kpisHealths
+                        = reader.readMap(reader1 -> KpiResourceHealthDetails.fromJson(reader1));
+                    deserializedAzureIaaSComputeVMProtectedItem.withKpisHealths(kpisHealths);
+                } else if ("lastBackupStatus".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withLastBackupStatus(reader.getString());
+                } else if ("lastBackupTime".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withLastBackupTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("protectedItemDataId".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withProtectedItemDataId(reader.getString());
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withExtendedInfo(AzureIaaSvmProtectedItemExtendedInfo.fromJson(reader));
+                } else if ("extendedProperties".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem
+                        .withExtendedProperties(ExtendedProperties.fromJson(reader));
+                } else if ("protectedItemType".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.protectedItemType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureIaaSComputeVMProtectedItem;
+        });
     }
 }

@@ -5,7 +5,6 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -82,7 +81,6 @@ public final class ObservationStatusCodeType extends ExpandableStringEnum<Observ
      * @return the corresponding ObservationStatusCodeType.
      */
     @Generated
-    @JsonCreator
     public static ObservationStatusCodeType fromString(String name) {
         return fromString(name, ObservationStatusCodeType.class);
     }

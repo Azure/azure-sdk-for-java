@@ -6,31 +6,37 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Input for the task that collects user tables for the given list of databases. */
+/**
+ * Input for the task that collects user tables for the given list of databases.
+ */
 @Fluent
-public final class GetUserTablesSqlTaskInput {
+public final class GetUserTablesSqlTaskInput implements JsonSerializable<GetUserTablesSqlTaskInput> {
     /*
      * Connection information for SQL Server
      */
-    @JsonProperty(value = "connectionInfo", required = true)
     private SqlConnectionInfo connectionInfo;
 
     /*
      * List of database names to collect tables for
      */
-    @JsonProperty(value = "selectedDatabases", required = true)
     private List<String> selectedDatabases;
 
-    /** Creates an instance of GetUserTablesSqlTaskInput class. */
+    /**
+     * Creates an instance of GetUserTablesSqlTaskInput class.
+     */
     public GetUserTablesSqlTaskInput() {
     }
 
     /**
      * Get the connectionInfo property: Connection information for SQL Server.
-     *
+     * 
      * @return the connectionInfo value.
      */
     public SqlConnectionInfo connectionInfo() {
@@ -39,7 +45,7 @@ public final class GetUserTablesSqlTaskInput {
 
     /**
      * Set the connectionInfo property: Connection information for SQL Server.
-     *
+     * 
      * @param connectionInfo the connectionInfo value to set.
      * @return the GetUserTablesSqlTaskInput object itself.
      */
@@ -50,7 +56,7 @@ public final class GetUserTablesSqlTaskInput {
 
     /**
      * Get the selectedDatabases property: List of database names to collect tables for.
-     *
+     * 
      * @return the selectedDatabases value.
      */
     public List<String> selectedDatabases() {
@@ -59,7 +65,7 @@ public final class GetUserTablesSqlTaskInput {
 
     /**
      * Set the selectedDatabases property: List of database names to collect tables for.
-     *
+     * 
      * @param selectedDatabases the selectedDatabases value to set.
      * @return the GetUserTablesSqlTaskInput object itself.
      */
@@ -70,25 +76,65 @@ public final class GetUserTablesSqlTaskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionInfo in model GetUserTablesSqlTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionInfo in model GetUserTablesSqlTaskInput"));
         } else {
             connectionInfo().validate();
         }
         if (selectedDatabases() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectedDatabases in model GetUserTablesSqlTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectedDatabases in model GetUserTablesSqlTaskInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GetUserTablesSqlTaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectionInfo", this.connectionInfo);
+        jsonWriter.writeArrayField("selectedDatabases", this.selectedDatabases,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetUserTablesSqlTaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetUserTablesSqlTaskInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GetUserTablesSqlTaskInput.
+     */
+    public static GetUserTablesSqlTaskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetUserTablesSqlTaskInput deserializedGetUserTablesSqlTaskInput = new GetUserTablesSqlTaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionInfo".equals(fieldName)) {
+                    deserializedGetUserTablesSqlTaskInput.connectionInfo = SqlConnectionInfo.fromJson(reader);
+                } else if ("selectedDatabases".equals(fieldName)) {
+                    List<String> selectedDatabases = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGetUserTablesSqlTaskInput.selectedDatabases = selectedDatabases;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetUserTablesSqlTaskInput;
+        });
+    }
 }

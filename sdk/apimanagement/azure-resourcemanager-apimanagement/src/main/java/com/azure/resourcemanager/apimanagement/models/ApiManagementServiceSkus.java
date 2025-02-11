@@ -7,13 +7,15 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ApiManagementServiceSkus. */
+/**
+ * Resource collection API of ApiManagementServiceSkus.
+ */
 public interface ApiManagementServiceSkus {
     /**
      * Gets available SKUs for API Management service
-     *
-     * <p>Gets all available SKU for a given API Management service.
-     *
+     * 
+     * Gets all available SKU for a given API Management service.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,9 +27,9 @@ public interface ApiManagementServiceSkus {
 
     /**
      * Gets available SKUs for API Management service
-     *
-     * <p>Gets all available SKU for a given API Management service.
-     *
+     * 
+     * Gets all available SKU for a given API Management service.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -36,6 +38,6 @@ public interface ApiManagementServiceSkus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available SKU for a given API Management service as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ResourceSkuResult> listAvailableServiceSkus(
-        String resourceGroupName, String serviceName, Context context);
+    PagedIterable<ResourceSkuResult> listAvailableServiceSkus(String resourceGroupName, String serviceName,
+        Context context);
 }

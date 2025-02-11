@@ -10,11 +10,9 @@ import com.azure.resourcemanager.networkcloud.models.Nic;
 public final class NicTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Nic model =
-            BinaryData
-                .fromString(
-                    "{\"lldpNeighbor\":{\"portDescription\":\"jfeusnh\",\"portName\":\"je\",\"systemDescription\":\"mrldhu\",\"systemName\":\"zzd\"},\"macAddress\":\"qxhocdgeablgphut\",\"name\":\"ndv\"}")
-                .toObject(Nic.class);
+        Nic model = BinaryData.fromString(
+            "{\"lldpNeighbor\":{\"portDescription\":\"jfeusnh\",\"portName\":\"je\",\"systemDescription\":\"mrldhu\",\"systemName\":\"zzd\"},\"macAddress\":\"qxhocdgeablgphut\",\"name\":\"ndv\"}")
+            .toObject(Nic.class);
     }
 
     @org.junit.jupiter.api.Test

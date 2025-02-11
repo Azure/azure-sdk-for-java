@@ -29,7 +29,8 @@ public class Office365LinkedService extends LinkedService {
     private Object office365TenantId;
 
     /*
-     * Specify the tenant information under which your Azure AD web application resides. Type: string (or Expression with resultType string).
+     * Specify the tenant information under which your Azure AD web application resides. Type: string (or Expression
+     * with resultType string).
      */
     private Object servicePrincipalTenantId;
 
@@ -44,7 +45,8 @@ public class Office365LinkedService extends LinkedService {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

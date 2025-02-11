@@ -13,23 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DatadogSingleSignOnResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatadogSingleSignOnResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"singleSignOnState\":\"Existing\",\"enterpriseAppId\":\"jmflbvvnch\",\"singleSignOnUrl\":\"cciw\"},\"id\":\"juqk\",\"name\":\"rsa\",\"type\":\"iwkuofos\"}")
-                .toObject(DatadogSingleSignOnResourceInner.class);
+        DatadogSingleSignOnResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"singleSignOnState\":\"Existing\",\"enterpriseAppId\":\"jmflbvvnch\",\"singleSignOnUrl\":\"cciw\"},\"id\":\"juqk\",\"name\":\"rsa\",\"type\":\"iwkuofos\"}")
+            .toObject(DatadogSingleSignOnResourceInner.class);
         Assertions.assertEquals(SingleSignOnStates.EXISTING, model.properties().singleSignOnState());
         Assertions.assertEquals("jmflbvvnch", model.properties().enterpriseAppId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatadogSingleSignOnResourceInner model =
-            new DatadogSingleSignOnResourceInner()
-                .withProperties(
-                    new DatadogSingleSignOnProperties()
-                        .withSingleSignOnState(SingleSignOnStates.EXISTING)
-                        .withEnterpriseAppId("jmflbvvnch"));
+        DatadogSingleSignOnResourceInner model = new DatadogSingleSignOnResourceInner()
+            .withProperties(new DatadogSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.EXISTING)
+                .withEnterpriseAppId("jmflbvvnch"));
         model = BinaryData.fromObject(model).toObject(DatadogSingleSignOnResourceInner.class);
         Assertions.assertEquals(SingleSignOnStates.EXISTING, model.properties().singleSignOnState());
         Assertions.assertEquals("jmflbvvnch", model.properties().enterpriseAppId());

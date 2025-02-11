@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -245,11 +246,11 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
                 } else if ("interval".equals(fieldName)) {
                     deserializedScheduleTriggerRecurrence.interval = reader.getNullable(JsonReader::getInt);
                 } else if ("startTime".equals(fieldName)) {
-                    deserializedScheduleTriggerRecurrence.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedScheduleTriggerRecurrence.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedScheduleTriggerRecurrence.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedScheduleTriggerRecurrence.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("timeZone".equals(fieldName)) {
                     deserializedScheduleTriggerRecurrence.timeZone = reader.getString();
                 } else if ("schedule".equals(fieldName)) {

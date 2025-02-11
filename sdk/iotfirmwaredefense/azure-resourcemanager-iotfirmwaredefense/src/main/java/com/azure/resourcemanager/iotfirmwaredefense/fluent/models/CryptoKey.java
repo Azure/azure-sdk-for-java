@@ -5,61 +5,57 @@
 package com.azure.resourcemanager.iotfirmwaredefense.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.models.PairedKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Crypto key properties.
  */
 @Fluent
-public final class CryptoKey {
+public final class CryptoKey implements JsonSerializable<CryptoKey> {
     /*
      * ID for the key result.
      */
-    @JsonProperty(value = "cryptoKeyId")
     private String cryptoKeyId;
 
     /*
      * Type of the key (public or private).
      */
-    @JsonProperty(value = "keyType")
     private String keyType;
 
     /*
      * Size of the key in bits.
      */
-    @JsonProperty(value = "keySize")
     private Long keySize;
 
     /*
      * Key algorithm name.
      */
-    @JsonProperty(value = "keyAlgorithm")
     private String keyAlgorithm;
 
     /*
      * Functions the key can fulfill.
      */
-    @JsonProperty(value = "usage")
     private List<String> usage;
 
     /*
      * List of files where this key was found.
      */
-    @JsonProperty(value = "filePaths", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> filePaths;
 
     /*
      * A matching paired key or certificate.
      */
-    @JsonProperty(value = "pairedKey")
     private PairedKey pairedKey;
 
     /*
      * Indicates the key size is considered too small to be secure for the algorithm.
      */
-    @JsonProperty(value = "isShortKeySize")
     private Boolean isShortKeySize;
 
     /**
@@ -226,5 +222,63 @@ public final class CryptoKey {
         if (pairedKey() != null) {
             pairedKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cryptoKeyId", this.cryptoKeyId);
+        jsonWriter.writeStringField("keyType", this.keyType);
+        jsonWriter.writeNumberField("keySize", this.keySize);
+        jsonWriter.writeStringField("keyAlgorithm", this.keyAlgorithm);
+        jsonWriter.writeArrayField("usage", this.usage, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("pairedKey", this.pairedKey);
+        jsonWriter.writeBooleanField("isShortKeySize", this.isShortKeySize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CryptoKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CryptoKey if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the CryptoKey.
+     */
+    public static CryptoKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CryptoKey deserializedCryptoKey = new CryptoKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cryptoKeyId".equals(fieldName)) {
+                    deserializedCryptoKey.cryptoKeyId = reader.getString();
+                } else if ("keyType".equals(fieldName)) {
+                    deserializedCryptoKey.keyType = reader.getString();
+                } else if ("keySize".equals(fieldName)) {
+                    deserializedCryptoKey.keySize = reader.getNullable(JsonReader::getLong);
+                } else if ("keyAlgorithm".equals(fieldName)) {
+                    deserializedCryptoKey.keyAlgorithm = reader.getString();
+                } else if ("usage".equals(fieldName)) {
+                    List<String> usage = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCryptoKey.usage = usage;
+                } else if ("filePaths".equals(fieldName)) {
+                    List<String> filePaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCryptoKey.filePaths = filePaths;
+                } else if ("pairedKey".equals(fieldName)) {
+                    deserializedCryptoKey.pairedKey = PairedKey.fromJson(reader);
+                } else if ("isShortKeySize".equals(fieldName)) {
+                    deserializedCryptoKey.isShortKeySize = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCryptoKey;
+        });
     }
 }

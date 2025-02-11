@@ -40,12 +40,11 @@ public class AccessPolicyTests extends BlobTestBase {
 
     @Test
     public void setAccessPolicyMinIds() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier().setId("0000")
             .setAccessPolicy(new BlobAccessPolicy()
                 .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                    .plusDays(1))
+                .setExpiresOn(
+                    testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime().plusDays(1))
                 .setPermissions("r"));
 
         List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
@@ -64,16 +63,13 @@ public class AccessPolicyTests extends BlobTestBase {
     @Test
     @PlaybackOnly
     public void getAccessPolicy() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(testResourceNamer.now())
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier().setId("0000")
+            .setAccessPolicy(new BlobAccessPolicy().setStartsOn(testResourceNamer.now())
                 .setExpiresOn(testResourceNamer.now().plusDays(1))
                 .setPermissions("r"));
         List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
         setAccessPolicySleep(cc, PublicAccessType.BLOB, ids);
-        Response<BlobContainerAccessPolicies> response = cc.getAccessPolicyWithResponse(null, null,
-            null);
+        Response<BlobContainerAccessPolicies> response = cc.getAccessPolicyWithResponse(null, null, null);
 
         assertResponseStatusCode(response, 200);
         assertEquals(PublicAccessType.BLOB, response.getValue().getBlobAccessType());
@@ -82,20 +78,19 @@ public class AccessPolicyTests extends BlobTestBase {
             response.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn());
         assertEquals(identifier.getAccessPolicy().getStartsOn(),
             response.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn());
-        assertEquals(identifier.getAccessPolicy().getPermissions(), response.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions());
+        assertEquals(identifier.getAccessPolicy().getPermissions(),
+            response.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions());
     }
 
     //ServiceApiTests
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void sasSanitization(boolean unsanitize) {
         String identifier = "id with spaces";
         String blobName = generateBlobName();
-        setAccessPolicySleep(cc, null, Collections.singletonList(new BlobSignedIdentifier()
-            .setId(identifier)
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setPermissions("racwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1)))));
+        setAccessPolicySleep(cc, null, Collections.singletonList(new BlobSignedIdentifier().setId(identifier)
+            .setAccessPolicy(
+                new BlobAccessPolicy().setPermissions("racwdl").setExpiresOn(testResourceNamer.now().plusDays(1)))));
         cc.getBlobClient(blobName).upload(BinaryData.fromBytes("test".getBytes()));
         String sas = cc.generateSas(new BlobServiceSasSignatureValues(identifier));
         if (unsanitize) {
@@ -106,34 +101,28 @@ public class AccessPolicyTests extends BlobTestBase {
 
         // when: "Endpoint with SAS built in, works as expected"
         String finalSas = sas;
-        assertDoesNotThrow(() -> instrument(new BlobContainerClientBuilder()
-            .endpoint(cc.getBlobContainerUrl() + "?" + finalSas))
-            .buildClient()
-            .getBlobClient(blobName)
-            .downloadContent());
+        assertDoesNotThrow(
+            () -> instrument(new BlobContainerClientBuilder().endpoint(cc.getBlobContainerUrl() + "?" + finalSas))
+                .buildClient()
+                .getBlobClient(blobName)
+                .downloadContent());
 
         String connectionString = "AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).getAccountName()
             + ";SharedAccessSignature=" + sas;
-        assertDoesNotThrow(() -> instrument(new BlobContainerClientBuilder()
-            .connectionString(connectionString)
-            .containerName(cc.getBlobContainerName()))
-            .buildClient()
-            .getBlobClient(blobName)
-            .downloadContent());
+        assertDoesNotThrow(() -> instrument(new BlobContainerClientBuilder().connectionString(connectionString)
+            .containerName(cc.getBlobContainerName())).buildClient().getBlobClient(blobName).downloadContent());
     }
 
     //sasClientTests
     @Test
     public void containerSasIdentifierAndPermissions() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy().setPermissions("racwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1)));
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier().setId("0000")
+            .setAccessPolicy(
+                new BlobAccessPolicy().setPermissions("racwdl").setExpiresOn(testResourceNamer.now().plusDays(1)));
         setAccessPolicySleep(cc, null, Arrays.asList(identifier));
 
         // Check containerSASPermissions
-        BlobContainerSasPermission permissions = new BlobContainerSasPermission()
-            .setReadPermission(true)
+        BlobContainerSasPermission permissions = new BlobContainerSasPermission().setReadPermission(true)
             .setWritePermission(true)
             .setListPermission(true)
             .setCreatePermission(true)

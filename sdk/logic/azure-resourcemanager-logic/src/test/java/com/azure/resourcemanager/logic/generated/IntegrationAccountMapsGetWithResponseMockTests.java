@@ -6,71 +6,40 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
 import com.azure.resourcemanager.logic.models.IntegrationAccountMap;
 import com.azure.resourcemanager.logic.models.MapType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationAccountMapsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"mapType\":\"Liquid\",\"parametersSchema\":{\"ref\":\"qnpnpggbuajw\"},\"createdTime\":\"2021-05-04T16:43:49Z\",\"changedTime\":\"2021-07-03T08:31:30Z\",\"content\":\"nmuir\",\"contentType\":\"qztkxfhixfuuzacz\",\"contentLink\":{\"uri\":\"fiiegpdhitytke\",\"contentVersion\":\"dsk\",\"contentSize\":5798826643204227320,\"contentHash\":{\"algorithm\":\"yswchbvejgfx\",\"value\":\"qevmzhkocyngdgk\"},\"metadata\":\"datanxy\"},\"metadata\":\"datarlbohdxlndlvcbcx\"},\"location\":\"iisnhq\",\"tags\":{\"etmqzuenbll\":\"edgwghqqiu\",\"axk\":\"vroopksmjpopi\",\"feupacah\":\"wqspnrcuvlfzdk\",\"oorabspfinyij\":\"savi\"},\"id\":\"wqgmhfvlbdzdhed\",\"name\":\"fidropfpuc\",\"type\":\"mdmbysvqbgndfzh\"}";
 
-        String responseStr =
-            "{\"properties\":{\"mapType\":\"Liquid\",\"parametersSchema\":{\"ref\":\"pynwlslrcigtzjcv\"},\"createdTime\":\"2021-06-29T16:13:51Z\",\"changedTime\":\"2021-03-10T01:51:25Z\",\"content\":\"snsso\",\"contentType\":\"xpavid\",\"contentLink\":{\"uri\":\"vwffcvvyezslp\",\"contentVersion\":\"gcbdsvalpnptw\",\"contentSize\":1547153884427099456,\"metadata\":\"dataazwu\"},\"metadata\":\"datayqvnjobfe\"},\"location\":\"hldiuhzzgqlm\",\"tags\":{\"iudjp\":\"wz\",\"qhnmhk\":\"pqht\"},\"id\":\"ezsdsuxheq\",\"name\":\"gcruxspinym\",\"type\":\"qgwokmikp\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        IntegrationAccountMap response = manager.integrationAccountMaps()
+            .getWithResponse("bkdhwadnccunrviq", "z", "sliou", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IntegrationAccountMap response =
-            manager
-                .integrationAccountMaps()
-                .getWithResponse("wtltngvmreuptrk", "zmijajwo", "xfsv", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("hldiuhzzgqlm", response.location());
-        Assertions.assertEquals("wz", response.tags().get("iudjp"));
+        Assertions.assertEquals("iisnhq", response.location());
+        Assertions.assertEquals("edgwghqqiu", response.tags().get("etmqzuenbll"));
         Assertions.assertEquals(MapType.LIQUID, response.mapType());
-        Assertions.assertEquals("pynwlslrcigtzjcv", response.parametersSchema().ref());
-        Assertions.assertEquals("snsso", response.content());
-        Assertions.assertEquals("xpavid", response.contentType());
+        Assertions.assertEquals("qnpnpggbuajw", response.parametersSchema().ref());
+        Assertions.assertEquals("nmuir", response.content());
+        Assertions.assertEquals("qztkxfhixfuuzacz", response.contentType());
     }
 }

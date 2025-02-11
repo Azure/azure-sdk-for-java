@@ -16,22 +16,20 @@ public final class LatencyScorecardInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LatencyScorecardInner model = BinaryData.fromString(
-            "{\"properties\":{\"id\":\"ahhvjhhna\",\"name\":\"ybbjjidjksyx\",\"description\":\"xvxevblbjednljla\",\"endpointA\":\"uaulxunsm\",\"endpointB\":\"nkppxynen\",\"startDateTimeUTC\":\"2021-03-25T10:54:56Z\",\"endDateTimeUTC\":\"2021-08-03T19:56:39Z\",\"country\":\"zzgwklnsrm\",\"latencyMetrics\":[{\"name\":\"cxcktpi\",\"endDateTimeUTC\":\"erteeammxqiekk\",\"aValue\":59.703384,\"bValue\":96.93083,\"delta\":26.63849,\"deltaPercent\":12.828475,\"aCLower95CI\":55.168236,\"aHUpper95CI\":68.03398,\"bCLower95CI\":61.51553,\"bUpper95CI\":51.644337},{\"name\":\"efdeesve\",\"endDateTimeUTC\":\"ijpxtx\",\"aValue\":25.637108,\"bValue\":90.25361,\"delta\":98.42054,\"deltaPercent\":84.732414,\"aCLower95CI\":55.696815,\"aHUpper95CI\":28.99242,\"bCLower95CI\":93.74711,\"bUpper95CI\":53.828697},{\"name\":\"bxv\",\"endDateTimeUTC\":\"itvtzeexavo\",\"aValue\":68.84001,\"bValue\":53.85332,\"delta\":9.79231,\"deltaPercent\":0.8543253,\"aCLower95CI\":13.757277,\"aHUpper95CI\":61.999382,\"bCLower95CI\":14.225859,\"bUpper95CI\":3.4114003},{\"name\":\"gsfjac\",\"endDateTimeUTC\":\"lhhxudbxvodhtnsi\",\"aValue\":69.404366,\"bValue\":0.56890845,\"delta\":13.827729,\"deltaPercent\":31.628572,\"aCLower95CI\":25.156885,\"aHUpper95CI\":47.039097,\"bCLower95CI\":47.95568,\"bUpper95CI\":96.791}]},\"location\":\"rcxfailcfxwmdb\",\"tags\":{\"jln\":\"fgsftufqob\",\"rzvul\":\"cgcckknhxkizvyt\",\"aeranokqgukkjqnv\":\"r\",\"cdisd\":\"roylaxxu\"},\"id\":\"sfjbjsvg\",\"name\":\"rwhryvycytd\",\"type\":\"lxgccknfnwmbtm\"}")
+            "{\"properties\":{\"id\":\"tngfdgugeyzihgr\",\"name\":\"ui\",\"description\":\"bsnmfpph\",\"endpointA\":\"eevy\",\"endpointB\":\"hsgz\",\"startDateTimeUTC\":\"2021-09-04T20:31:38Z\",\"endDateTimeUTC\":\"2021-04-26T23:03:25Z\",\"country\":\"mfg\",\"latencyMetrics\":[{\"name\":\"qgleohibetnluank\",\"endDateTimeUTC\":\"fxeeebtijvacvbm\",\"aValue\":39.060837,\"bValue\":0.7475734,\"delta\":82.000725,\"deltaPercent\":54.551792,\"aCLower95CI\":9.691727,\"aHUpper95CI\":32.127506,\"bCLower95CI\":83.196625,\"bUpper95CI\":15.094423},{\"name\":\"h\",\"endDateTimeUTC\":\"uyxoaf\",\"aValue\":43.28481,\"bValue\":12.039203,\"delta\":22.252481,\"deltaPercent\":12.664461,\"aCLower95CI\":42.13147,\"aHUpper95CI\":6.4531984,\"bCLower95CI\":98.56035,\"bUpper95CI\":70.414665}]},\"location\":\"xirpghriy\",\"tags\":{\"yznuciqd\":\"eyhlqhykprl\"},\"id\":\"mexiitdfuxt\",\"name\":\"asiibmiybnnust\",\"type\":\"nlj\"}")
             .toObject(LatencyScorecardInner.class);
-        Assertions.assertEquals("rcxfailcfxwmdb", model.location());
-        Assertions.assertEquals("fgsftufqob", model.tags().get("jln"));
+        Assertions.assertEquals("xirpghriy", model.location());
+        Assertions.assertEquals("eyhlqhykprl", model.tags().get("yznuciqd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LatencyScorecardInner model = new LatencyScorecardInner().withLocation("rcxfailcfxwmdb")
-            .withTags(
-                mapOf("jln", "fgsftufqob", "rzvul", "cgcckknhxkizvyt", "aeranokqgukkjqnv", "r", "cdisd", "roylaxxu"))
-            .withLatencyMetrics(
-                Arrays.asList(new LatencyMetric(), new LatencyMetric(), new LatencyMetric(), new LatencyMetric()));
+        LatencyScorecardInner model = new LatencyScorecardInner().withLocation("xirpghriy")
+            .withTags(mapOf("yznuciqd", "eyhlqhykprl"))
+            .withLatencyMetrics(Arrays.asList(new LatencyMetric(), new LatencyMetric()));
         model = BinaryData.fromObject(model).toObject(LatencyScorecardInner.class);
-        Assertions.assertEquals("rcxfailcfxwmdb", model.location());
-        Assertions.assertEquals("fgsftufqob", model.tags().get("jln"));
+        Assertions.assertEquals("xirpghriy", model.location());
+        Assertions.assertEquals("eyhlqhykprl", model.tags().get("yznuciqd"));
     }
 
     // Use "Map.of" if available

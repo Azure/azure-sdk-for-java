@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The operator to use for comparison. */
+/**
+ * The operator to use for comparison.
+ */
 public final class ForecastOperatorType extends ExpandableStringEnum<ForecastOperatorType> {
-    /** Static value In for ForecastOperatorType. */
+    /**
+     * Static value In for ForecastOperatorType.
+     */
     public static final ForecastOperatorType IN = fromString("In");
 
     /**
      * Creates a new instance of ForecastOperatorType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class ForecastOperatorType extends ExpandableStringEnum<ForecastOpe
 
     /**
      * Creates or finds a ForecastOperatorType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ForecastOperatorType.
      */
-    @JsonCreator
     public static ForecastOperatorType fromString(String name) {
         return fromString(name, ForecastOperatorType.class);
     }
 
     /**
      * Gets known ForecastOperatorType values.
-     *
+     * 
      * @return known ForecastOperatorType values.
      */
     public static Collection<ForecastOperatorType> values() {

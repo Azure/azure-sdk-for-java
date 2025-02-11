@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Kind of the Maps Account. */
+/**
+ * The Kind of the Maps Account.
+ */
 public final class Kind extends ExpandableStringEnum<Kind> {
-    /** Static value Gen1 for Kind. */
+    /**
+     * Static value Gen1 for Kind.
+     */
     public static final Kind GEN1 = fromString("Gen1");
 
-    /** Static value Gen2 for Kind. */
+    /**
+     * Static value Gen2 for Kind.
+     */
     public static final Kind GEN2 = fromString("Gen2");
 
     /**
      * Creates a new instance of Kind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class Kind extends ExpandableStringEnum<Kind> {
 
     /**
      * Creates or finds a Kind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Kind.
      */
-    @JsonCreator
     public static Kind fromString(String name) {
         return fromString(name, Kind.class);
     }
 
     /**
      * Gets known Kind values.
-     *
+     * 
      * @return known Kind values.
      */
     public static Collection<Kind> values() {

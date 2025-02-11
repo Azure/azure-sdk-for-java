@@ -26,7 +26,7 @@ public final class PacketCoreControlPlaneVersionsListBySubscriptionMockTests {
     @Test
     public void testListBySubscription() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"platforms\":[{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"kyhfqzvsqxfxj\",\"maximumPlatformSoftwareVersion\":\"gcm\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\",\"haUpgradesAvailable\":[\"qxuwyvca\"]}]},\"id\":\"yv\",\"name\":\"vbsizusjszlbscm\",\"type\":\"lzijiufehgmvflnw\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"foknubnoitp\",\"maximumPlatformSoftwareVersion\":\"ztrgdgxvcoq\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\",\"haUpgradesAvailable\":[\"xpqitweialwvs\"]}]},\"id\":\"uhz\",\"name\":\"caqt\",\"type\":\"ltcoqc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,17 +38,18 @@ public final class PacketCoreControlPlaneVersionsListBySubscriptionMockTests {
         PagedIterable<PacketCoreControlPlaneVersion> response
             = manager.packetCoreControlPlaneVersions().listBySubscription(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI,
-            response.iterator().next().platforms().get(0).platformType());
+        Assertions.assertEquals(PlatformType.AKS_HCI, response.iterator().next().platforms().get(0).platformType());
         Assertions.assertEquals(VersionState.VALIDATION_FAILED,
             response.iterator().next().platforms().get(0).versionState());
-        Assertions.assertEquals("kyhfqzvsqxfxj",
+        Assertions.assertEquals("foknubnoitp",
             response.iterator().next().platforms().get(0).minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("gcm", response.iterator().next().platforms().get(0).maximumPlatformSoftwareVersion());
-        Assertions.assertEquals(RecommendedVersion.NOT_RECOMMENDED,
+        Assertions.assertEquals("ztrgdgxvcoq",
+            response.iterator().next().platforms().get(0).maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(RecommendedVersion.RECOMMENDED,
             response.iterator().next().platforms().get(0).recommendedVersion());
-        Assertions.assertEquals(ObsoleteVersion.NOT_OBSOLETE,
+        Assertions.assertEquals(ObsoleteVersion.OBSOLETE,
             response.iterator().next().platforms().get(0).obsoleteVersion());
-        Assertions.assertEquals("qxuwyvca", response.iterator().next().platforms().get(0).haUpgradesAvailable().get(0));
+        Assertions.assertEquals("xpqitweialwvs",
+            response.iterator().next().platforms().get(0).haUpgradesAvailable().get(0));
     }
 }

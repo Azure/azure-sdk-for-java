@@ -6,11 +6,9 @@ package com.azure.resourcemanager.logz.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logz.LogzManager;
 import com.azure.resourcemanager.logz.models.IdentityProperties;
 import com.azure.resourcemanager.logz.models.LogzMonitorResource;
@@ -21,107 +19,71 @@ import com.azure.resourcemanager.logz.models.MonitorProperties;
 import com.azure.resourcemanager.logz.models.MonitoringStatus;
 import com.azure.resourcemanager.logz.models.PlanData;
 import com.azure.resourcemanager.logz.models.UserInfo;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class MonitorsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"monitoringStatus\":\"Enabled\",\"marketplaceSubscriptionStatus\":\"Suspended\",\"logzOrganizationProperties\":{\"companyName\":\"seyvj\",\"id\":\"rts\",\"enterpriseAppId\":\"spkdee\",\"singleSignOnUrl\":\"ofmxagkvtmelmqkr\"},\"userInfo\":{\"firstName\":\"vljua\",\"lastName\":\"quhcdhmduala\",\"emailAddress\":\"qpv\",\"phoneNumber\":\"dmwsrcrgvxpvgomz\"},\"planData\":{\"usageType\":\"isgwbnbbeldawkz\",\"billingCycle\":\"liourqhak\",\"planDetails\":\"hashsfwxosow\",\"effectiveDate\":\"2021-06-30T00:10:41Z\"},\"liftrResourceCategory\":\"MonitorLogs\",\"liftrResourcePreference\":1879830205},\"identity\":{\"principalId\":\"oxdjebwpuc\",\"tenantId\":\"fvovbvmeuecivy\",\"type\":\"SystemAssigned\"},\"location\":\"euojgjrwju\",\"tags\":{\"dytdxwitx\":\"twm\",\"qwgxhniskx\":\"rjaw\"},\"id\":\"bkpyc\",\"name\":\"klwndnhjdauwhv\",\"type\":\"l\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"monitoringStatus\":\"Enabled\",\"marketplaceSubscriptionStatus\":\"Active\",\"logzOrganizationProperties\":{\"companyName\":\"wd\",\"id\":\"wz\",\"enterpriseAppId\":\"dbpgnxytxhp\",\"singleSignOnUrl\":\"bzpfzab\"},\"userInfo\":{\"firstName\":\"uhxwtctyqiklbbov\",\"lastName\":\"wzbhvgyugu\",\"emailAddress\":\"vmkfssxqu\",\"phoneNumber\":\"fpl\"},\"planData\":{\"usageType\":\"sxnkjzkdeslpvlo\",\"billingCycle\":\"i\",\"planDetails\":\"ghxpkdw\",\"effectiveDate\":\"2021-11-18T13:59:23Z\"},\"liftrResourceCategory\":\"MonitorLogs\",\"liftrResourcePreference\":830727700},\"identity\":{\"principalId\":\"umnyqu\",\"tenantId\":\"deoj\",\"type\":\"UserAssigned\"},\"location\":\"ckhsmtxpsieb\",\"tags\":{\"tldwkyzxuutk\":\"vpesapskrdqmhjjd\",\"togt\":\"cwscwsvlx\",\"vce\":\"rupqsxvnmicy\",\"ovnotyfjfcnjbkcn\":\"vei\"},\"id\":\"dhbt\",\"name\":\"kphywpnvjto\",\"type\":\"nermcl\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogzManager manager = LogzManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        LogzMonitorResource response = manager.monitors()
+            .define("lpvlopw")
+            .withRegion("gyepsbjt")
+            .withExistingResourceGroup("gmgsxnkjzkde")
+            .withTags(mapOf("zwfqkqujidsuyon", "ugxywpmueef", "yudxytlmoy", "bglaocqxtccm", "fudwpznt", "xv",
+                "hckfrlhrx", "hdzhlrqj"))
+            .withProperties(new MonitorProperties().withMonitoringStatus(MonitoringStatus.ENABLED)
+                .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.ACTIVE)
+                .withLogzOrganizationProperties(new LogzOrganizationProperties().withCompanyName("baiuebbaumny")
+                    .withEnterpriseAppId("jn")
+                    .withSingleSignOnUrl("ckhsmtxpsieb"))
+                .withUserInfo(new UserInfo().withFirstName("vpesapskrdqmhjjd")
+                    .withLastName("ldwkyzxuutkn")
+                    .withEmailAddress("scwsv")
+                    .withPhoneNumber("otogtwrupqs"))
+                .withPlanData(new PlanData().withUsageType("micykvceoveilo")
+                    .withBillingCycle("oty")
+                    .withPlanDetails("fcnj")
+                    .withEffectiveDate(OffsetDateTime.parse("2021-08-21T09:13:10Z"))))
+            .withIdentity(new IdentityProperties().withType(ManagedIdentityTypes.SYSTEM_ASSIGNED))
+            .create();
 
-        LogzManager manager =
-            LogzManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        LogzMonitorResource response =
-            manager
-                .monitors()
-                .define("idokgjlj")
-                .withRegion("nbtkcxywnytnr")
-                .withExistingResourceGroup("vuujq")
-                .withTags(
-                    mapOf("czfc", "lqidyby", "rqlfktsthsucocmn", "haaxdbabphl", "ckzywbiexzfeyue", "yazttbtwwrqpue"))
-                .withProperties(
-                    new MonitorProperties()
-                        .withMonitoringStatus(MonitoringStatus.DISABLED)
-                        .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.SUSPENDED)
-                        .withLogzOrganizationProperties(
-                            new LogzOrganizationProperties()
-                                .withCompanyName("ncghkje")
-                                .withEnterpriseAppId("bfs")
-                                .withSingleSignOnUrl("nehmpvecx"))
-                        .withUserInfo(
-                            new UserInfo()
-                                .withFirstName("ebfqkkrbm")
-                                .withLastName("kgriwflzlfbx")
-                                .withEmailAddress("uzycispnqza")
-                                .withPhoneNumber("gkbrpyyd"))
-                        .withPlanData(
-                            new PlanData()
-                                .withUsageType("nuqqkpikadrgvt")
-                                .withBillingCycle("gnbuy")
-                                .withPlanDetails("ijggmebfsiar")
-                                .withEffectiveDate(OffsetDateTime.parse("2021-08-14T22:49:32Z"))))
-                .withIdentity(new IdentityProperties().withType(ManagedIdentityTypes.USER_ASSIGNED))
-                .create();
-
-        Assertions.assertEquals("ckhsmtxpsieb", response.location());
-        Assertions.assertEquals("vpesapskrdqmhjjd", response.tags().get("tldwkyzxuutk"));
+        Assertions.assertEquals("euojgjrwju", response.location());
+        Assertions.assertEquals("twm", response.tags().get("dytdxwitx"));
         Assertions.assertEquals(MonitoringStatus.ENABLED, response.properties().monitoringStatus());
-        Assertions
-            .assertEquals(MarketplaceSubscriptionStatus.ACTIVE, response.properties().marketplaceSubscriptionStatus());
-        Assertions.assertEquals("wd", response.properties().logzOrganizationProperties().companyName());
-        Assertions.assertEquals("dbpgnxytxhp", response.properties().logzOrganizationProperties().enterpriseAppId());
-        Assertions.assertEquals("bzpfzab", response.properties().logzOrganizationProperties().singleSignOnUrl());
-        Assertions.assertEquals("uhxwtctyqiklbbov", response.properties().userInfo().firstName());
-        Assertions.assertEquals("wzbhvgyugu", response.properties().userInfo().lastName());
-        Assertions.assertEquals("vmkfssxqu", response.properties().userInfo().emailAddress());
-        Assertions.assertEquals("fpl", response.properties().userInfo().phoneNumber());
-        Assertions.assertEquals("sxnkjzkdeslpvlo", response.properties().planData().usageType());
-        Assertions.assertEquals("i", response.properties().planData().billingCycle());
-        Assertions.assertEquals("ghxpkdw", response.properties().planData().planDetails());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-11-18T13:59:23Z"), response.properties().planData().effectiveDate());
-        Assertions.assertEquals(ManagedIdentityTypes.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.SUSPENDED,
+            response.properties().marketplaceSubscriptionStatus());
+        Assertions.assertEquals("seyvj", response.properties().logzOrganizationProperties().companyName());
+        Assertions.assertEquals("spkdee", response.properties().logzOrganizationProperties().enterpriseAppId());
+        Assertions.assertEquals("ofmxagkvtmelmqkr",
+            response.properties().logzOrganizationProperties().singleSignOnUrl());
+        Assertions.assertEquals("vljua", response.properties().userInfo().firstName());
+        Assertions.assertEquals("quhcdhmduala", response.properties().userInfo().lastName());
+        Assertions.assertEquals("qpv", response.properties().userInfo().emailAddress());
+        Assertions.assertEquals("dmwsrcrgvxpvgomz", response.properties().userInfo().phoneNumber());
+        Assertions.assertEquals("isgwbnbbeldawkz", response.properties().planData().usageType());
+        Assertions.assertEquals("liourqhak", response.properties().planData().billingCycle());
+        Assertions.assertEquals("hashsfwxosow", response.properties().planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-30T00:10:41Z"),
+            response.properties().planData().effectiveDate());
+        Assertions.assertEquals(ManagedIdentityTypes.SYSTEM_ASSIGNED, response.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

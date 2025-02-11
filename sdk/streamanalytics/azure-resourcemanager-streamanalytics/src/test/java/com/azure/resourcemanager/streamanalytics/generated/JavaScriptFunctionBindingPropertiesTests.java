@@ -12,14 +12,14 @@ public final class JavaScriptFunctionBindingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JavaScriptFunctionBindingProperties model
-            = BinaryData.fromString("{\"script\":\"v\"}").toObject(JavaScriptFunctionBindingProperties.class);
-        Assertions.assertEquals("v", model.script());
+            = BinaryData.fromString("{\"script\":\"hyrnxxmu\"}").toObject(JavaScriptFunctionBindingProperties.class);
+        Assertions.assertEquals("hyrnxxmu", model.script());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JavaScriptFunctionBindingProperties model = new JavaScriptFunctionBindingProperties().withScript("v");
+        JavaScriptFunctionBindingProperties model = new JavaScriptFunctionBindingProperties().withScript("hyrnxxmu");
         model = BinaryData.fromObject(model).toObject(JavaScriptFunctionBindingProperties.class);
-        Assertions.assertEquals("v", model.script());
+        Assertions.assertEquals("hyrnxxmu", model.script());
     }
 }

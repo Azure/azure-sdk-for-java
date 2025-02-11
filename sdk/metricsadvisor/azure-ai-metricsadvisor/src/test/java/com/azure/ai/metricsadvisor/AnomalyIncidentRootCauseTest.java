@@ -22,13 +22,12 @@ public class AnomalyIncidentRootCauseTest extends IncidentRootCauseTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void listIncidentRootCauses(HttpClient httpClient,
-        MetricsAdvisorServiceVersion serviceVersion) {
+    public void listIncidentRootCauses(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
-        List<IncidentRootCause> actualIncidentRootCauses = client.listIncidentRootCauses(
-            INCIDENT_ROOT_CAUSE_CONFIGURATION_ID, INCIDENT_ROOT_CAUSE_ID)
-            .stream()
-            .collect(Collectors.toList());
+        List<IncidentRootCause> actualIncidentRootCauses
+            = client.listIncidentRootCauses(INCIDENT_ROOT_CAUSE_CONFIGURATION_ID, INCIDENT_ROOT_CAUSE_ID)
+                .stream()
+                .collect(Collectors.toList());
 
         assertNotNull(actualIncidentRootCauses);
         assertEquals(1, actualIncidentRootCauses.size());

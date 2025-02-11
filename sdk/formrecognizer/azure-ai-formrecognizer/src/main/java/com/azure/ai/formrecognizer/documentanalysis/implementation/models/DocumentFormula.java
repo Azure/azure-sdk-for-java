@@ -115,6 +115,9 @@ public final class DocumentFormula implements JsonSerializable<DocumentFormula> 
         return this.confidence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

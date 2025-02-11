@@ -86,6 +86,8 @@ public final class BulkExecutor<TContext> implements Disposable {
     private final static AtomicLong instanceCount = new AtomicLong(0);
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+    private static final ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor =
+        ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
 
     private final CosmosAsyncContainer container;
     private final int maxMicroBatchPayloadSizeInBytes;
@@ -602,7 +604,7 @@ public final class BulkExecutor<TContext> implements Disposable {
             serverRequest.getPartitionKeyRangeId(),
             batchTrackingId);
 
-        return this.executeBatchRequest(serverRequest)
+        return this.executeBatchRequest(serverRequest, thresholds)
             .subscribeOn(this.executionScheduler)
             .flatMapMany(response -> {
 
@@ -838,7 +840,10 @@ public final class BulkExecutor<TContext> implements Disposable {
         });
     }
 
-    private Mono<CosmosBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
+    private Mono<CosmosBatchResponse> executeBatchRequest(
+        PartitionKeyRangeServerBatchRequest serverRequest,
+        PartitionScopeThresholds partitionScopeThresholds) {
+
         RequestOptions options = new RequestOptions();
         options.setThroughputControlGroupName(cosmosBulkExecutionOptions.getThroughputControlGroupName());
         options.setExcludedRegions(cosmosBulkExecutionOptions.getExcludedRegions());
@@ -887,7 +892,24 @@ public final class BulkExecutor<TContext> implements Disposable {
 
         return withContext(context -> {
             final Mono<CosmosBatchResponse> responseMono = this.docClientWrapper.executeBatchRequest(
-                BridgeInternal.getLink(this.container), serverRequest, options, false);
+                BridgeInternal.getLink(this.container), serverRequest, options, false)
+                .flatMap(cosmosBatchResponse -> {
+
+                    cosmosBatchResponseAccessor.setGlobalOpCount(
+                        cosmosBatchResponse, partitionScopeThresholds.getTotalOperationCountSnapshot());
+
+                    PartitionScopeThresholds.CurrentIntervalThresholds currentIntervalThresholdsSnapshot
+                        = partitionScopeThresholds.getCurrentThresholds();
+
+                    cosmosBatchResponseAccessor.setOpCountPerEvaluation(
+                        cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentOperationCount.get());
+                    cosmosBatchResponseAccessor.setRetriedOpCountPerEvaluation(
+                        cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentRetriedOperationCount.get());
+                    cosmosBatchResponseAccessor.setTargetMaxMicroBatchSize(
+                        cosmosBatchResponse, partitionScopeThresholds.getTargetMicroBatchSizeSnapshot());
+
+                    return Mono.just(cosmosBatchResponse);
+                });
 
             return clientAccessor.getDiagnosticsProvider(this.cosmosClient)
                 .traceEnabledBatchResponsePublisher(

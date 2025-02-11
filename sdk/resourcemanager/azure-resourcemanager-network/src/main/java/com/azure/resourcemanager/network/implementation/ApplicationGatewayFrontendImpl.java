@@ -15,12 +15,10 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import reactor.core.publisher.Mono;
 
 /** Implementation for ApplicationGatewayFrontend. */
-class ApplicationGatewayFrontendImpl
-    extends ChildResourceImpl<ApplicationGatewayFrontendIpConfiguration, ApplicationGatewayImpl, ApplicationGateway>
-    implements ApplicationGatewayFrontend,
-        ApplicationGatewayFrontend.Definition<ApplicationGateway.DefinitionStages.WithListener>,
-        ApplicationGatewayFrontend.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayFrontend.Update {
+class ApplicationGatewayFrontendImpl extends
+    ChildResourceImpl<ApplicationGatewayFrontendIpConfiguration, ApplicationGatewayImpl, ApplicationGateway> implements
+    ApplicationGatewayFrontend, ApplicationGatewayFrontend.Definition<ApplicationGateway.DefinitionStages.WithListener>,
+    ApplicationGatewayFrontend.UpdateDefinition<ApplicationGateway.Update>, ApplicationGatewayFrontend.Update {
 
     ApplicationGatewayFrontendImpl(ApplicationGatewayFrontendIpConfiguration inner, ApplicationGatewayImpl parent) {
         super(inner, parent);

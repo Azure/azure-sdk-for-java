@@ -42,22 +42,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SandboxCustomImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SandboxCustomImagesClient.
+ */
 public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SandboxCustomImagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KustoManagementClientImpl client;
 
     /**
      * Initializes an instance of SandboxCustomImagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SandboxCustomImagesClientImpl(KustoManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SandboxCustomImagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SandboxCustomImagesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,117 +74,87 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
     public interface SandboxCustomImagesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SandboxCustomImagesListResult>> listByCluster(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SandboxCustomImagesListResult>> listByCluster(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SandboxCustomImageInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SandboxCustomImageInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("sandboxCustomImageName") String sandboxCustomImageName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("sandboxCustomImageName") String sandboxCustomImageName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SandboxCustomImageInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("sandboxCustomImageName") String sandboxCustomImageName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SandboxCustomImageInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SandboxCustomImageInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("sandboxCustomImageName") String sandboxCustomImageName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SandboxCustomImageInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImages/{sandboxCustomImageName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImagesCheckNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("sandboxCustomImageName") String sandboxCustomImageName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/sandboxCustomImagesCheckNameAvailability")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") SandboxCustomImagesCheckNameRequest resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto sandbox custom images operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SandboxCustomImageInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<PagedResponse<SandboxCustomImageInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -188,34 +164,21 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByCluster(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SandboxCustomImageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByCluster(this.client.getEndpoint(), resourceGroupName, clusterName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SandboxCustomImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -223,16 +186,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto sandbox custom images operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SandboxCustomImageInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<PagedResponse<SandboxCustomImageInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -242,31 +203,21 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCluster(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByCluster(this.client.getEndpoint(), resourceGroupName, clusterName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,7 +232,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -291,14 +242,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return the list Kusto sandbox custom images operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SandboxCustomImageInner> listByClusterAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private PagedFlux<SandboxCustomImageInner> listByClusterAsync(String resourceGroupName, String clusterName,
+        Context context) {
         return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context));
     }
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -313,7 +264,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -323,14 +274,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return the list Kusto sandbox custom images operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SandboxCustomImageInner> listByCluster(
-        String resourceGroupName, String clusterName, Context context) {
+    public PagedIterable<SandboxCustomImageInner> listByCluster(String resourceGroupName, String clusterName,
+        Context context) {
         return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName, context));
     }
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -338,22 +289,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SandboxCustomImageInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName) {
+    private Mono<Response<SandboxCustomImageInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -363,30 +310,19 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (sandboxCustomImageName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            sandboxCustomImageName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, sandboxCustomImageName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -395,22 +331,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SandboxCustomImageInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName, Context context) {
+    private Mono<Response<SandboxCustomImageInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -420,27 +352,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (sandboxCustomImageName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                sandboxCustomImageName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName,
+            sandboxCustomImageName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -450,15 +373,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return class representing a Kusto sandbox custom image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SandboxCustomImageInner> getAsync(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName) {
+    private Mono<SandboxCustomImageInner> getAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName) {
         return getWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -469,14 +392,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return class representing a Kusto sandbox custom image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SandboxCustomImageInner> getWithResponse(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName, Context context) {
+    public Response<SandboxCustomImageInner> getWithResponse(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName, context).block();
     }
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -492,7 +415,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -501,25 +424,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String sandboxCustomImageName, SandboxCustomImageInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -529,9 +445,8 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (sandboxCustomImageName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -540,25 +455,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            sandboxCustomImageName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, sandboxCustomImageName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -568,26 +473,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String sandboxCustomImageName, SandboxCustomImageInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -597,9 +494,8 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (sandboxCustomImageName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -608,22 +504,13 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                sandboxCustomImageName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, sandboxCustomImageName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -635,25 +522,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
+        String resourceGroupName, String clusterName, String sandboxCustomImageName,
         SandboxCustomImageInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters);
-        return this
-            .client
-            .<SandboxCustomImageInner, SandboxCustomImageInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SandboxCustomImageInner.class,
-                SandboxCustomImageInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters);
+        return this.client.<SandboxCustomImageInner, SandboxCustomImageInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SandboxCustomImageInner.class, SandboxCustomImageInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -666,28 +546,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
+        String resourceGroupName, String clusterName, String sandboxCustomImageName, SandboxCustomImageInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, sandboxCustomImageName, parameters, context);
-        return this
-            .client
-            .<SandboxCustomImageInner, SandboxCustomImageInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SandboxCustomImageInner.class,
-                SandboxCustomImageInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            sandboxCustomImageName, parameters, context);
+        return this.client.<SandboxCustomImageInner, SandboxCustomImageInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SandboxCustomImageInner.class, SandboxCustomImageInner.class, context);
     }
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -699,18 +569,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
+        String resourceGroupName, String clusterName, String sandboxCustomImageName,
         SandboxCustomImageInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -723,10 +590,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
+        String resourceGroupName, String clusterName, String sandboxCustomImageName, SandboxCustomImageInner parameters,
         Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters, context)
@@ -735,7 +599,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -746,19 +610,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return class representing a Kusto sandbox custom image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SandboxCustomImageInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters)
-            .last()
+    private Mono<SandboxCustomImageInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, SandboxCustomImageInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -770,12 +630,8 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return class representing a Kusto sandbox custom image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SandboxCustomImageInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
-        Context context) {
+    private Mono<SandboxCustomImageInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, SandboxCustomImageInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -783,7 +639,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -794,17 +650,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return class representing a Kusto sandbox custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SandboxCustomImageInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters) {
+    public SandboxCustomImageInner createOrUpdate(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, SandboxCustomImageInner parameters) {
         return createOrUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters).block();
     }
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -816,18 +669,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return class representing a Kusto sandbox custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SandboxCustomImageInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
-        Context context) {
+    public SandboxCustomImageInner createOrUpdate(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, SandboxCustomImageInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters, context).block();
     }
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -836,25 +685,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, SandboxCustomImageInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -864,9 +706,8 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (sandboxCustomImageName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -876,24 +717,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            sandboxCustomImageName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    clusterName, sandboxCustomImageName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -903,26 +734,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, SandboxCustomImageInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -932,9 +755,8 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (sandboxCustomImageName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -943,22 +765,13 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                sandboxCustomImageName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, sandboxCustomImageName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -970,25 +783,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
+        String resourceGroupName, String clusterName, String sandboxCustomImageName,
         SandboxCustomImageInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters);
-        return this
-            .client
-            .<SandboxCustomImageInner, SandboxCustomImageInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SandboxCustomImageInner.class,
-                SandboxCustomImageInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters);
+        return this.client.<SandboxCustomImageInner, SandboxCustomImageInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SandboxCustomImageInner.class, SandboxCustomImageInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1001,27 +807,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
+        String resourceGroupName, String clusterName, String sandboxCustomImageName, SandboxCustomImageInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters, context);
-        return this
-            .client
-            .<SandboxCustomImageInner, SandboxCustomImageInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SandboxCustomImageInner.class,
-                SandboxCustomImageInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters, context);
+        return this.client.<SandboxCustomImageInner, SandboxCustomImageInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SandboxCustomImageInner.class, SandboxCustomImageInner.class, context);
     }
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1033,18 +830,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
+        String resourceGroupName, String clusterName, String sandboxCustomImageName,
         SandboxCustomImageInner parameters) {
-        return this
-            .beginUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters)
+        return this.beginUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1057,19 +851,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SandboxCustomImageInner>, SandboxCustomImageInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
+        String resourceGroupName, String clusterName, String sandboxCustomImageName, SandboxCustomImageInner parameters,
         Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters, context)
+        return this.beginUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1080,19 +870,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return class representing a Kusto sandbox custom image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SandboxCustomImageInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters)
-            .last()
+    private Mono<SandboxCustomImageInner> updateAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, SandboxCustomImageInner parameters) {
+        return beginUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1104,20 +890,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return class representing a Kusto sandbox custom image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SandboxCustomImageInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters, context)
-            .last()
+    private Mono<SandboxCustomImageInner> updateAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, SandboxCustomImageInner parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1128,17 +909,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return class representing a Kusto sandbox custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SandboxCustomImageInner update(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
+    public SandboxCustomImageInner update(String resourceGroupName, String clusterName, String sandboxCustomImageName,
         SandboxCustomImageInner parameters) {
         return updateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters).block();
     }
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1150,18 +928,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return class representing a Kusto sandbox custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SandboxCustomImageInner update(
-        String resourceGroupName,
-        String clusterName,
-        String sandboxCustomImageName,
-        SandboxCustomImageInner parameters,
-        Context context) {
+    public SandboxCustomImageInner update(String resourceGroupName, String clusterName, String sandboxCustomImageName,
+        SandboxCustomImageInner parameters, Context context) {
         return updateAsync(resourceGroupName, clusterName, sandboxCustomImageName, parameters, context).block();
     }
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1171,19 +945,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1193,30 +963,19 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (sandboxCustomImageName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            sandboxCustomImageName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, sandboxCustomImageName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1227,19 +986,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1249,27 +1004,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (sandboxCustomImageName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sandboxCustomImageName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                sandboxCustomImageName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, sandboxCustomImageName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1279,19 +1025,17 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1302,19 +1046,18 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, sandboxCustomImageName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1324,14 +1067,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, sandboxCustomImageName).getSyncPoller();
     }
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1342,14 +1085,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, sandboxCustomImageName, context).getSyncPoller();
     }
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1360,14 +1103,13 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String sandboxCustomImageName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, sandboxCustomImageName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, sandboxCustomImageName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1378,16 +1120,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, sandboxCustomImageName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String sandboxCustomImageName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterName, sandboxCustomImageName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1402,7 +1143,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1418,7 +1159,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -1426,16 +1167,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName, String clusterName, SandboxCustomImagesCheckNameRequest resourceName) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
+        String clusterName, SandboxCustomImagesCheckNameRequest resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1445,10 +1184,8 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1458,23 +1195,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            accept,
-                            context))
+                context -> service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName, clusterName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -1483,19 +1211,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        SandboxCustomImagesCheckNameRequest resourceName,
-        Context context) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
+        String clusterName, SandboxCustomImagesCheckNameRequest resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1505,10 +1228,8 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1517,21 +1238,13 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceName,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName, clusterName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceName, accept, context);
     }
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -1541,15 +1254,15 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return the result returned from a check name availability request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
-        String resourceGroupName, String clusterName, SandboxCustomImagesCheckNameRequest resourceName) {
+    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName,
+        SandboxCustomImagesCheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -1560,17 +1273,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        SandboxCustomImagesCheckNameRequest resourceName,
-        Context context) {
+    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String clusterName, SandboxCustomImagesCheckNameRequest resourceName, Context context) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName, context).block();
     }
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -1580,8 +1290,8 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, SandboxCustomImagesCheckNameRequest resourceName) {
+    public CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName,
+        SandboxCustomImagesCheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponse(resourceGroupName, clusterName, resourceName, Context.NONE).getValue();
     }
 }

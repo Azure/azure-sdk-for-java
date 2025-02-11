@@ -20,86 +20,116 @@ import java.util.Set;
  * An immutable client-side representation of an Azure CDN endpoint.
  */
 @Fluent
-public interface CdnEndpoint extends
-    ExternalChildResource<CdnEndpoint, CdnProfile>,
-        HasInnerModel<EndpointInner> {
+public interface CdnEndpoint extends ExternalChildResource<CdnEndpoint, CdnProfile>, HasInnerModel<EndpointInner> {
 
     /**
+     * Gets origin host header.
+     *
      * @return origin host header
      */
     String originHostHeader();
 
     /**
+     * Gets origin path.
+     *
      * @return origin path
      */
     String originPath();
 
     /**
+     * Gets content types to be compressed.
+     *
      * @return content types to be compressed
      */
     Set<String> contentTypesToCompress();
 
     /**
+     * Check whether content compression is enabled.
+     *
      * @return true if content compression is enabled, otherwise false
      */
     boolean isCompressionEnabled();
 
     /**
+     * Check whether HTTP traffic is allowed.
+     *
      * @return true if HTTP traffic is allowed, otherwise false.
      */
     boolean isHttpAllowed();
 
     /**
+     * Check whether HTTPS traffic is allowed.
+     *
      * @return true if HTTPS traffic is allowed, otherwise false
      */
     boolean isHttpsAllowed();
 
     /**
+     * Gets query string caching behavior.
+     *
      * @return query string caching behavior
      */
     QueryStringCachingBehavior queryStringCachingBehavior();
 
     /**
+     * Gets optimization type.
+     *
      * @return optimization type
      */
     String optimizationType();
 
     /**
+     * Gets list of Geo filters.
+     *
      * @return list of Geo filters
      */
     Collection<GeoFilter> geoFilters();
 
     /**
+     * Gets endpoint host name.
+     *
      * @return endpoint host name
      */
     String hostname();
 
     /**
+     * Gets endpoint state.
+     *
      * @return endpoint state
      */
     EndpointResourceState resourceState();
 
     /**
+     * Gets endpoint provisioning state.
+     *
      * @return endpoint provisioning state
      */
     String provisioningState();
 
     /**
+     * Gets origin host nam.
+     *
      * @return origin host name
      */
     String originHostName();
 
     /**
+     * Gets HTTP port value.
+     *
      * @return HTTP port value
      */
     int httpPort();
 
     /**
+     * Gets HTTPS port value.
+     *
      * @return HTTPS port value
      */
     int httpsPort();
 
     /**
+     * Gets custom domains associated with this endpoint.
+     *
      * @return custom domains associated with this endpoint
      */
     Set<String> customDomains();
@@ -187,6 +217,8 @@ public interface CdnEndpoint extends
     PagedIterable<ResourceUsage> listResourceUsage();
 
     /**
+     * Gets the map of the Standard rules engine rules.
+     *
      * @return the map of the Standard rules engine rules, indexed by rule name
      *         (note: this is only available for Standard Microsoft CDN Sku endpoints)
      */
@@ -357,8 +389,8 @@ public interface CdnEndpoint extends
              * @param countryCode an ISO 2 letter country code
              * @return the next stage of the definition
              */
-            WithStandardAttach<ParentT> withGeoFilter(
-                String relativePath, GeoFilterActions action, CountryIsoCode countryCode);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action,
+                CountryIsoCode countryCode);
 
             /**
              * Sets the geo filters list for the specified countries list.
@@ -368,8 +400,8 @@ public interface CdnEndpoint extends
              * @param countryCodes a list of the ISO 2 letter country codes.
              * @return the next stage of the definition
              */
-            WithStandardAttach<ParentT> withGeoFilter(
-                String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action,
+                Collection<CountryIsoCode> countryCodes);
 
             /**
              * Adds a new CDN custom domain within an endpoint.
@@ -387,7 +419,8 @@ public interface CdnEndpoint extends
              * @param <T> the next stage of the endpoint definition
              * @return the first stage of the rule definition
              */
-            <T extends WithStandardAttach<ParentT>> CdnStandardRulesEngineRule.DefinitionStage.Blank<T> defineNewStandardRulesEngineRule(String name);
+            <T extends WithStandardAttach<ParentT>> CdnStandardRulesEngineRule.DefinitionStage.Blank<T>
+                defineNewStandardRulesEngineRule(String name);
         }
 
         /** The final stage of the CDN profile Premium Verizon endpoint definition.
@@ -396,8 +429,7 @@ public interface CdnEndpoint extends
          * definition can be attached to the parent CDN profile definition.
          * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
-        interface WithPremiumAttach<ParentT>
-                extends AttachablePremium<ParentT> {
+        interface WithPremiumAttach<ParentT> extends AttachablePremium<ParentT> {
             /**
              * Specifies the origin path.
              *
@@ -529,8 +561,8 @@ public interface CdnEndpoint extends
                  * @param originHostName origin host name
                  * @return the next stage of the definition
                  */
-                UpdateDefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(
-                    String originName, String originHostName);
+                UpdateDefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String originName,
+                    String originHostName);
 
                 /**
                  * Specifies the origin of the CDN endpoint.
@@ -549,8 +581,7 @@ public interface CdnEndpoint extends
          * definition can be attached to the parent CDN profile definition
          * @param <ParentT> the stage of the parent CDN profile update to return to after attaching this definition
          */
-        interface WithStandardAttach<ParentT>
-                extends AttachableStandard<ParentT> {
+        interface WithStandardAttach<ParentT> extends AttachableStandard<ParentT> {
             /**
              * Specifies the origin path.
              *
@@ -648,8 +679,8 @@ public interface CdnEndpoint extends
              * @param countryCode an ISO 2 letter country code
              * @return the next stage of the definition
              */
-            WithStandardAttach<ParentT> withGeoFilter(
-                String relativePath, GeoFilterActions action, CountryIsoCode countryCode);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action,
+                CountryIsoCode countryCode);
 
             /**
              * Sets the geo filters list for the specified countries list.
@@ -659,8 +690,8 @@ public interface CdnEndpoint extends
              * @param countryCodes a list of ISO 2 letter country codes
              * @return the next stage of the definition
              */
-            WithStandardAttach<ParentT> withGeoFilter(
-                String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action,
+                Collection<CountryIsoCode> countryCodes);
 
             /**
              * Adds a new CDN custom domain within an endpoint.
@@ -678,7 +709,8 @@ public interface CdnEndpoint extends
              * @param <T> the next stage of the endpoint definition
              * @return the first stage of the delivery rule definition
              */
-            <T extends WithStandardAttach<ParentT>> CdnStandardRulesEngineRule.DefinitionStage.Blank<T> defineNewStandardRulesEngineRule(String name);
+            <T extends WithStandardAttach<ParentT>> CdnStandardRulesEngineRule.DefinitionStage.Blank<T>
+                defineNewStandardRulesEngineRule(String name);
         }
 
         /**
@@ -688,8 +720,7 @@ public interface CdnEndpoint extends
          * definition can be attached to the parent CDN profile definition
          * @param <ParentT> the stage of the parent CDN profile update to return to after attaching this definition
          */
-        interface WithPremiumAttach<ParentT>
-                extends AttachablePremium<ParentT> {
+        interface WithPremiumAttach<ParentT> extends AttachablePremium<ParentT> {
             /**
              * Specifies the origin path.
              *
@@ -908,8 +939,8 @@ public interface CdnEndpoint extends
          * @param countryCodes a list of ISO 2 letter country codes
          * @return the next stage of the definition
          */
-        UpdateStandardEndpoint withGeoFilter(
-            String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes);
+        UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action,
+            Collection<CountryIsoCode> countryCodes);
 
         /**
          * Removes an entry from the geo filters list.
@@ -943,7 +974,8 @@ public interface CdnEndpoint extends
          * @param <T> the next stage of the endpoint update
          * @return the first stage of the delivery rule update
          */
-        <T extends UpdateStandardEndpoint> CdnStandardRulesEngineRule.DefinitionStage.Blank<T> defineNewStandardRulesEngineRule(String name);
+        <T extends UpdateStandardEndpoint> CdnStandardRulesEngineRule.DefinitionStage.Blank<T>
+            defineNewStandardRulesEngineRule(String name);
 
         /**
          * Begins the update of the Standard rules engine rule.
@@ -953,7 +985,8 @@ public interface CdnEndpoint extends
          * @param <T> the next stage of the endpoint update
          * @return the first stage of the delivery rule update
          */
-        <T extends UpdateStandardEndpoint> CdnStandardRulesEngineRule.Update<T> updateStandardRulesEngineRule(String name);
+        <T extends UpdateStandardEndpoint> CdnStandardRulesEngineRule.Update<T>
+            updateStandardRulesEngineRule(String name);
 
         /**
          * Removes the rule from the endpoint's Standard rules engine.
@@ -1038,7 +1071,6 @@ public interface CdnEndpoint extends
     /**
      * The entirety of a CDN endpoint update as part of a CDN profile update.
      */
-    interface Update extends
-        Settable<CdnProfile.Update> {
+    interface Update extends Settable<CdnProfile.Update> {
     }
 }

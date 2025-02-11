@@ -46,22 +46,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatabasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabasesClient.
+ */
 public final class DatabasesClientImpl implements DatabasesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DatabasesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KustoManagementClientImpl client;
 
     /**
      * Initializes an instance of DatabasesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DatabasesClientImpl(KustoManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DatabasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DatabasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,162 +78,109 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
     public interface DatabasesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") CheckNameRequest resourceName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") CheckNameRequest resourceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseListResult>> listByCluster(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skiptoken") String skiptoken,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<DatabaseListResult>> listByCluster(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$top") Integer top, @QueryParam("$skiptoken") String skiptoken,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DatabaseInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @QueryParam("callerRole") CallerRole callerRole,
+            @BodyParam("application/json") DatabaseInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @QueryParam("callerRole") CallerRole callerRole,
+            @BodyParam("application/json") DatabaseInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("callerRole") CallerRole callerRole,
-            @BodyParam("application/json") DatabaseInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/listPrincipals")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("callerRole") CallerRole callerRole,
-            @BodyParam("application/json") DatabaseInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DatabasePrincipalListResultInner>> listPrincipals(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/addPrincipals")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/listPrincipals")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabasePrincipalListResultInner>> listPrincipals(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/addPrincipals")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabasePrincipalListResultInner>> addPrincipals(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<DatabasePrincipalListResultInner>> addPrincipals(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabasePrincipalListRequest databasePrincipalsToAdd,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/removePrincipals")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/removePrincipals")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabasePrincipalListResultInner>> removePrincipals(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<DatabasePrincipalListResultInner>> removePrincipals(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabasePrincipalListRequest databasePrincipalsToRemove,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseListResult>> listByClusterNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Checks that the databases resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -235,16 +188,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
+        String clusterName, CheckNameRequest resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -254,10 +205,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -267,23 +216,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            accept,
-                            context))
+                context -> service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName, clusterName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks that the databases resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -292,16 +232,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName, Context context) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
+        String clusterName, CheckNameRequest resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -311,10 +249,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -323,21 +259,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceName,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName, clusterName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceName, accept, context);
     }
 
     /**
      * Checks that the databases resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -347,15 +275,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the result returned from a check name availability request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
+    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName,
+        CheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks that the databases resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -366,14 +294,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName, Context context) {
+    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String clusterName, CheckNameRequest resourceName, Context context) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName, context).block();
     }
 
     /**
      * Checks that the databases resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -383,34 +311,32 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
+    public CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName,
+        CheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponse(resourceGroupName, clusterName, resourceName, Context.NONE).getValue();
     }
 
     /**
      * Returns the list of databases of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param top limit the number of results.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto databases operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName, Integer top, String skiptoken) {
+    private Mono<PagedResponse<DatabaseInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName, Integer top, String skiptoken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -420,62 +346,40 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByCluster(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            top,
-                            skiptoken,
-                            accept,
-                            context))
-            .<PagedResponse<DatabaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByCluster(this.client.getEndpoint(), resourceGroupName, clusterName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), top, skiptoken, accept, context))
+            .<PagedResponse<DatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the list of databases of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param top limit the number of results.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto databases operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName, Integer top, String skiptoken, Context context) {
+    private Mono<PagedResponse<DatabaseInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName, Integer top, String skiptoken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -485,60 +389,42 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCluster(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                top,
-                skiptoken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByCluster(this.client.getEndpoint(), resourceGroupName, clusterName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), top, skiptoken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Returns the list of databases of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param top limit the number of results.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto databases operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseInner> listByClusterAsync(
-        String resourceGroupName, String clusterName, Integer top, String skiptoken) {
-        return new PagedFlux<>(
-            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName, top, skiptoken),
+    private PagedFlux<DatabaseInner> listByClusterAsync(String resourceGroupName, String clusterName, Integer top,
+        String skiptoken) {
+        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, top, skiptoken),
             nextLink -> listByClusterNextSinglePageAsync(nextLink));
     }
 
     /**
      * Returns the list of databases of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -550,20 +436,19 @@ public final class DatabasesClientImpl implements DatabasesClient {
     private PagedFlux<DatabaseInner> listByClusterAsync(String resourceGroupName, String clusterName) {
         final Integer top = null;
         final String skiptoken = null;
-        return new PagedFlux<>(
-            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName, top, skiptoken),
+        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, top, skiptoken),
             nextLink -> listByClusterNextSinglePageAsync(nextLink));
     }
 
     /**
      * Returns the list of databases of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param top limit the number of results.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -571,8 +456,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto databases operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseInner> listByClusterAsync(
-        String resourceGroupName, String clusterName, Integer top, String skiptoken, Context context) {
+    private PagedFlux<DatabaseInner> listByClusterAsync(String resourceGroupName, String clusterName, Integer top,
+        String skiptoken, Context context) {
         return new PagedFlux<>(
             () -> listByClusterSinglePageAsync(resourceGroupName, clusterName, top, skiptoken, context),
             nextLink -> listByClusterNextSinglePageAsync(nextLink, context));
@@ -580,7 +465,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
     /**
      * Returns the list of databases of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -597,13 +482,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
     /**
      * Returns the list of databases of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param top limit the number of results.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -611,14 +496,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseInner> listByCluster(
-        String resourceGroupName, String clusterName, Integer top, String skiptoken, Context context) {
+    public PagedIterable<DatabaseInner> listByCluster(String resourceGroupName, String clusterName, Integer top,
+        String skiptoken, Context context) {
         return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName, top, skiptoken, context));
     }
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -628,13 +513,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private Mono<Response<DatabaseInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -647,31 +530,19 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -682,13 +553,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private Mono<Response<DatabaseInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -701,28 +570,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -739,7 +598,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -750,14 +609,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    public Response<DatabaseInner> getWithResponse(String resourceGroupName, String clusterName, String databaseName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName, context).block();
     }
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -773,30 +632,24 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, CallerRole callerRole) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -809,10 +662,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -821,32 +672,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            callerRole,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), callerRole, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -854,18 +694,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, CallerRole callerRole, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -878,10 +711,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -890,56 +721,36 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                callerRole,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), callerRole, parameters, accept, context);
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatabaseInner.class,
-                DatabaseInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, CallerRole callerRole) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -950,30 +761,24 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters) {
         final CallerRole callerRole = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatabaseInner.class,
-                DatabaseInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -981,26 +786,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context) {
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, CallerRole callerRole, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, parameters, callerRole, context);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DatabaseInner.class, DatabaseInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            databaseName, parameters, callerRole, context);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, context);
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1011,23 +808,22 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters) {
         final CallerRole callerRole = null;
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1035,13 +831,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context) {
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, CallerRole callerRole, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
             .getSyncPoller();
@@ -1049,33 +840,28 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole)
-            .last()
+    private Mono<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters, CallerRole callerRole) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1086,23 +872,22 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> createOrUpdateAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+    private Mono<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters) {
         final CallerRole callerRole = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1110,13 +895,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context) {
+    private Mono<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters, CallerRole callerRole, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1124,7 +904,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1135,21 +915,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner createOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+    public DatabaseInner createOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters) {
         final CallerRole callerRole = null;
         return createOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole).block();
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1157,43 +937,32 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context) {
+    public DatabaseInner createOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters, CallerRole callerRole, Context context) {
         return createOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
             .block();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInner parameters, CallerRole callerRole) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1206,10 +975,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1218,32 +985,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            callerRole,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), callerRole, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1251,18 +1007,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInner parameters, CallerRole callerRole, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1275,10 +1024,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1287,56 +1034,36 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                callerRole,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), callerRole, parameters, accept, context);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatabaseInner.class,
-                DatabaseInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, CallerRole callerRole) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1347,30 +1074,24 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters) {
         final CallerRole callerRole = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatabaseInner.class,
-                DatabaseInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1378,25 +1099,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context) {
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, CallerRole callerRole, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DatabaseInner.class, DatabaseInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, context);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1407,23 +1121,22 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters) {
         final CallerRole callerRole = null;
-        return this
-            .beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole)
+        return this.beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole)
             .getSyncPoller();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1431,47 +1144,36 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, CallerRole callerRole, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
             .getSyncPoller();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole)
-            .last()
+    private Mono<DatabaseInner> updateAsync(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters, CallerRole callerRole) {
+        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1482,23 +1184,22 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> updateAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+    private Mono<DatabaseInner> updateAsync(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters) {
         final CallerRole callerRole = null;
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole)
-            .last()
+        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1506,21 +1207,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
-            .last()
+    private Mono<DatabaseInner> updateAsync(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters, CallerRole callerRole, Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1531,21 +1226,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner update(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+    public DatabaseInner update(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters) {
         final CallerRole callerRole = null;
         return updateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole).block();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1553,19 +1248,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner update(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context) {
+    public DatabaseInner update(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters, CallerRole callerRole, Context context) {
         return updateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context).block();
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1575,13 +1265,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1594,31 +1282,19 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1629,13 +1305,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1648,28 +1322,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1679,18 +1343,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String databaseName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, databaseName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1701,19 +1363,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1723,14 +1384,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String databaseName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String databaseName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName).getSyncPoller();
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1741,14 +1402,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName, context).getSyncPoller();
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1759,14 +1420,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String databaseName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, databaseName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1778,14 +1438,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String databaseName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1800,7 +1459,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1816,7 +1475,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1824,16 +1483,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabasePrincipalInner>> listPrincipalsSinglePageAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private Mono<PagedResponse<DatabasePrincipalInner>> listPrincipalsSinglePageAsync(String resourceGroupName,
+        String clusterName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1846,35 +1503,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listPrincipals(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DatabasePrincipalInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listPrincipals(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DatabasePrincipalInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1883,16 +1526,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabasePrincipalInner>> listPrincipalsSinglePageAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private Mono<PagedResponse<DatabasePrincipalInner>> listPrincipalsSinglePageAsync(String resourceGroupName,
+        String clusterName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1905,32 +1546,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listPrincipals(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listPrincipals(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1940,14 +1570,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabasePrincipalInner> listPrincipalsAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private PagedFlux<DatabasePrincipalInner> listPrincipalsAsync(String resourceGroupName, String clusterName,
+        String databaseName) {
         return new PagedFlux<>(() -> listPrincipalsSinglePageAsync(resourceGroupName, clusterName, databaseName));
     }
 
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1958,15 +1588,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabasePrincipalInner> listPrincipalsAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private PagedFlux<DatabasePrincipalInner> listPrincipalsAsync(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         return new PagedFlux<>(
             () -> listPrincipalsSinglePageAsync(resourceGroupName, clusterName, databaseName, context));
     }
 
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1976,14 +1606,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabasePrincipalInner> listPrincipals(
-        String resourceGroupName, String clusterName, String databaseName) {
+    public PagedIterable<DatabasePrincipalInner> listPrincipals(String resourceGroupName, String clusterName,
+        String databaseName) {
         return new PagedIterable<>(listPrincipalsAsync(resourceGroupName, clusterName, databaseName));
     }
 
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1994,14 +1624,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabasePrincipalInner> listPrincipals(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    public PagedIterable<DatabasePrincipalInner> listPrincipals(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         return new PagedIterable<>(listPrincipalsAsync(resourceGroupName, clusterName, databaseName, context));
     }
 
     /**
      * Add Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -2010,19 +1640,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabasePrincipalListResultInner>> addPrincipalsWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToAdd) {
+    private Mono<Response<DatabasePrincipalListResultInner>> addPrincipalsWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabasePrincipalListRequest databasePrincipalsToAdd) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2035,39 +1660,26 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (databasePrincipalsToAdd == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter databasePrincipalsToAdd is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter databasePrincipalsToAdd is required and cannot be null."));
         } else {
             databasePrincipalsToAdd.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .addPrincipals(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            databasePrincipalsToAdd,
-                            accept,
-                            context))
+            .withContext(context -> service.addPrincipals(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), databasePrincipalsToAdd,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Add Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -2077,20 +1689,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabasePrincipalListResultInner>> addPrincipalsWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToAdd,
+    private Mono<Response<DatabasePrincipalListResultInner>> addPrincipalsWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabasePrincipalListRequest databasePrincipalsToAdd,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2103,36 +1710,24 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (databasePrincipalsToAdd == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter databasePrincipalsToAdd is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter databasePrincipalsToAdd is required and cannot be null."));
         } else {
             databasePrincipalsToAdd.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .addPrincipals(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                databasePrincipalsToAdd,
-                accept,
-                context);
+        return service.addPrincipals(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), databasePrincipalsToAdd, accept, context);
     }
 
     /**
      * Add Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -2143,18 +1738,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto database principals operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabasePrincipalListResultInner> addPrincipalsAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToAdd) {
+    private Mono<DatabasePrincipalListResultInner> addPrincipalsAsync(String resourceGroupName, String clusterName,
+        String databaseName, DatabasePrincipalListRequest databasePrincipalsToAdd) {
         return addPrincipalsWithResponseAsync(resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Add Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -2166,20 +1758,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto database principals operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatabasePrincipalListResultInner> addPrincipalsWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToAdd,
+    public Response<DatabasePrincipalListResultInner> addPrincipalsWithResponse(String resourceGroupName,
+        String clusterName, String databaseName, DatabasePrincipalListRequest databasePrincipalsToAdd,
         Context context) {
-        return addPrincipalsWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd, context)
-            .block();
+        return addPrincipalsWithResponseAsync(resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd,
+            context).block();
     }
 
     /**
      * Add Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -2190,19 +1778,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto database principals operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabasePrincipalListResultInner addPrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToAdd) {
-        return addPrincipalsWithResponse(
-                resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd, Context.NONE)
-            .getValue();
+    public DatabasePrincipalListResultInner addPrincipals(String resourceGroupName, String clusterName,
+        String databaseName, DatabasePrincipalListRequest databasePrincipalsToAdd) {
+        return addPrincipalsWithResponse(resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd,
+            Context.NONE).getValue();
     }
 
     /**
      * Remove Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -2211,19 +1795,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabasePrincipalListResultInner>> removePrincipalsWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToRemove) {
+    private Mono<Response<DatabasePrincipalListResultInner>> removePrincipalsWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabasePrincipalListRequest databasePrincipalsToRemove) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2236,40 +1815,26 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (databasePrincipalsToRemove == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter databasePrincipalsToRemove is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter databasePrincipalsToRemove is required and cannot be null."));
         } else {
             databasePrincipalsToRemove.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .removePrincipals(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            databasePrincipalsToRemove,
-                            accept,
-                            context))
+            .withContext(context -> service.removePrincipals(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), databasePrincipalsToRemove,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Remove Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -2279,20 +1844,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabasePrincipalListResultInner>> removePrincipalsWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToRemove,
+    private Mono<Response<DatabasePrincipalListResultInner>> removePrincipalsWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabasePrincipalListRequest databasePrincipalsToRemove,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2305,37 +1865,24 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (databasePrincipalsToRemove == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter databasePrincipalsToRemove is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter databasePrincipalsToRemove is required and cannot be null."));
         } else {
             databasePrincipalsToRemove.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .removePrincipals(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                databasePrincipalsToRemove,
-                accept,
-                context);
+        return service.removePrincipals(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), databasePrincipalsToRemove, accept, context);
     }
 
     /**
      * Remove Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -2346,19 +1893,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto database principals operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabasePrincipalListResultInner> removePrincipalsAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToRemove) {
-        return removePrincipalsWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, databasePrincipalsToRemove)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<DatabasePrincipalListResultInner> removePrincipalsAsync(String resourceGroupName, String clusterName,
+        String databaseName, DatabasePrincipalListRequest databasePrincipalsToRemove) {
+        return removePrincipalsWithResponseAsync(resourceGroupName, clusterName, databaseName,
+            databasePrincipalsToRemove).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Remove Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -2370,20 +1913,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto database principals operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatabasePrincipalListResultInner> removePrincipalsWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToRemove,
+    public Response<DatabasePrincipalListResultInner> removePrincipalsWithResponse(String resourceGroupName,
+        String clusterName, String databaseName, DatabasePrincipalListRequest databasePrincipalsToRemove,
         Context context) {
-        return removePrincipalsWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, databasePrincipalsToRemove, context)
-            .block();
+        return removePrincipalsWithResponseAsync(resourceGroupName, clusterName, databaseName,
+            databasePrincipalsToRemove, context).block();
     }
 
     /**
      * Remove Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -2394,26 +1933,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the list Kusto database principals operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabasePrincipalListResultInner removePrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToRemove) {
-        return removePrincipalsWithResponse(
-                resourceGroupName, clusterName, databaseName, databasePrincipalsToRemove, Context.NONE)
-            .getValue();
+    public DatabasePrincipalListResultInner removePrincipals(String resourceGroupName, String clusterName,
+        String databaseName, DatabasePrincipalListRequest databasePrincipalsToRemove) {
+        return removePrincipalsWithResponse(resourceGroupName, clusterName, databaseName, databasePrincipalsToRemove,
+            Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto databases operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByClusterNextSinglePageAsync(String nextLink) {
@@ -2421,37 +1955,27 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByClusterNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DatabaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto databases operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByClusterNextSinglePageAsync(String nextLink, Context context) {
@@ -2459,23 +1983,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByClusterNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByClusterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

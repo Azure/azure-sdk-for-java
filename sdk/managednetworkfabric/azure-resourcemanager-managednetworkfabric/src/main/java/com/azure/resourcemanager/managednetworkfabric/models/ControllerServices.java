@@ -5,26 +5,32 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Network Fabric Controller services. */
+/**
+ * Network Fabric Controller services.
+ */
 @Fluent
-public final class ControllerServices {
+public final class ControllerServices implements JsonSerializable<ControllerServices> {
     /*
      * The IPv4 Address space is optional, if the value is not defined at the time of NFC creation, then the default
      * value 10.0.0.0/19 is considered. The IPV4 address subnet is an optional attribute.
      */
-    @JsonProperty(value = "ipv4AddressSpaces")
     private List<String> ipv4AddressSpaces;
 
     /*
      * The IPv6 is not supported right now.
      */
-    @JsonProperty(value = "ipv6AddressSpaces")
     private List<String> ipv6AddressSpaces;
 
-    /** Creates an instance of ControllerServices class. */
+    /**
+     * Creates an instance of ControllerServices class.
+     */
     public ControllerServices() {
     }
 
@@ -32,7 +38,7 @@ public final class ControllerServices {
      * Get the ipv4AddressSpaces property: The IPv4 Address space is optional, if the value is not defined at the time
      * of NFC creation, then the default value 10.0.0.0/19 is considered. The IPV4 address subnet is an optional
      * attribute.
-     *
+     * 
      * @return the ipv4AddressSpaces value.
      */
     public List<String> ipv4AddressSpaces() {
@@ -43,7 +49,7 @@ public final class ControllerServices {
      * Set the ipv4AddressSpaces property: The IPv4 Address space is optional, if the value is not defined at the time
      * of NFC creation, then the default value 10.0.0.0/19 is considered. The IPV4 address subnet is an optional
      * attribute.
-     *
+     * 
      * @param ipv4AddressSpaces the ipv4AddressSpaces value to set.
      * @return the ControllerServices object itself.
      */
@@ -54,7 +60,7 @@ public final class ControllerServices {
 
     /**
      * Get the ipv6AddressSpaces property: The IPv6 is not supported right now.
-     *
+     * 
      * @return the ipv6AddressSpaces value.
      */
     public List<String> ipv6AddressSpaces() {
@@ -63,7 +69,7 @@ public final class ControllerServices {
 
     /**
      * Set the ipv6AddressSpaces property: The IPv6 is not supported right now.
-     *
+     * 
      * @param ipv6AddressSpaces the ipv6AddressSpaces value to set.
      * @return the ControllerServices object itself.
      */
@@ -74,9 +80,52 @@ public final class ControllerServices {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipv4AddressSpaces", this.ipv4AddressSpaces,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ipv6AddressSpaces", this.ipv6AddressSpaces,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControllerServices from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControllerServices if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ControllerServices.
+     */
+    public static ControllerServices fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControllerServices deserializedControllerServices = new ControllerServices();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipv4AddressSpaces".equals(fieldName)) {
+                    List<String> ipv4AddressSpaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedControllerServices.ipv4AddressSpaces = ipv4AddressSpaces;
+                } else if ("ipv6AddressSpaces".equals(fieldName)) {
+                    List<String> ipv6AddressSpaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedControllerServices.ipv6AddressSpaces = ipv6AddressSpaces;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControllerServices;
+        });
     }
 }

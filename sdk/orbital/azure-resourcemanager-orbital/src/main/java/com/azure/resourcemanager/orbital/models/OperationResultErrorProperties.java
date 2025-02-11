@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Operation result error properties. */
+/**
+ * Operation result error properties.
+ */
 @Immutable
-public final class OperationResultErrorProperties {
+public final class OperationResultErrorProperties implements JsonSerializable<OperationResultErrorProperties> {
     /*
      * The code of the error.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * The error message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of OperationResultErrorProperties class. */
+    /**
+     * Creates an instance of OperationResultErrorProperties class.
+     */
     public OperationResultErrorProperties() {
     }
 
     /**
      * Get the code property: The code of the error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +43,7 @@ public final class OperationResultErrorProperties {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -46,9 +52,47 @@ public final class OperationResultErrorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultErrorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultErrorProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultErrorProperties.
+     */
+    public static OperationResultErrorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultErrorProperties deserializedOperationResultErrorProperties
+                = new OperationResultErrorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedOperationResultErrorProperties.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedOperationResultErrorProperties.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultErrorProperties;
+        });
     }
 }

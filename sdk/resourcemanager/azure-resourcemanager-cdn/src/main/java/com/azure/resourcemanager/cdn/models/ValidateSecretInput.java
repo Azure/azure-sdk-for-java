@@ -24,10 +24,10 @@ public final class ValidateSecretInput implements JsonSerializable<ValidateSecre
 
     /*
      * Resource reference to the Azure Key Vault secret. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}
+     * /providers/Microsoft.KeyVault/vaults/{vaultName}
+     * /secrets/{secretName}
+     *
      */
     private ResourceReference secretSource;
 
@@ -44,7 +44,7 @@ public final class ValidateSecretInput implements JsonSerializable<ValidateSecre
 
     /**
      * Get the secretType property: The secret type.
-     * 
+     *
      * @return the secretType value.
      */
     public SecretType secretType() {
@@ -53,7 +53,7 @@ public final class ValidateSecretInput implements JsonSerializable<ValidateSecre
 
     /**
      * Set the secretType property: The secret type.
-     * 
+     *
      * @param secretType the secretType value to set.
      * @return the ValidateSecretInput object itself.
      */
@@ -64,8 +64,8 @@ public final class ValidateSecretInput implements JsonSerializable<ValidateSecre
 
     /**
      * Get the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     * 
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}.
+     *
      * @return the secretSource value.
      */
     public ResourceReference secretSource() {
@@ -74,8 +74,8 @@ public final class ValidateSecretInput implements JsonSerializable<ValidateSecre
 
     /**
      * Set the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     * 
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}.
+     *
      * @param secretSource the secretSource value to set.
      * @return the ValidateSecretInput object itself.
      */
@@ -86,7 +86,7 @@ public final class ValidateSecretInput implements JsonSerializable<ValidateSecre
 
     /**
      * Get the secretVersion property: Secret version, if customer is using a specific version.
-     * 
+     *
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -95,7 +95,7 @@ public final class ValidateSecretInput implements JsonSerializable<ValidateSecre
 
     /**
      * Set the secretVersion property: Secret version, if customer is using a specific version.
-     * 
+     *
      * @param secretVersion the secretVersion value to set.
      * @return the ValidateSecretInput object itself.
      */
@@ -106,7 +106,7 @@ public final class ValidateSecretInput implements JsonSerializable<ValidateSecre
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -139,7 +139,7 @@ public final class ValidateSecretInput implements JsonSerializable<ValidateSecre
 
     /**
      * Reads an instance of ValidateSecretInput from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ValidateSecretInput if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

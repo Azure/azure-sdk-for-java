@@ -5,52 +5,61 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure Fabric Specific Details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("Azure")
 @Fluent
 public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "Azure";
+
+    /*
      * The Location for the Azure fabric.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The container Ids for the Azure fabric.
      */
-    @JsonProperty(value = "containerIds")
     private List<String> containerIds;
 
     /*
      * The zones.
      */
-    @JsonProperty(value = "zones")
     private List<A2AZoneDetails> zones;
 
     /*
      * The ExtendedLocations.
      */
-    @JsonProperty(value = "extendedLocations")
     private List<A2AExtendedLocationDetails> extendedLocations;
 
     /*
      * The location details.
      */
-    @JsonProperty(value = "locationDetails")
     private List<A2AFabricSpecificLocationDetails> locationDetails;
 
     /**
      * Creates an instance of AzureFabricSpecificDetails class.
      */
     public AzureFabricSpecificDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -160,7 +169,6 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
      */
     @Override
     public void validate() {
-        super.validate();
         if (zones() != null) {
             zones().forEach(e -> e.validate());
         }
@@ -170,5 +178,64 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
         if (locationDetails() != null) {
             locationDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeArrayField("containerIds", this.containerIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extendedLocations", this.extendedLocations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("locationDetails", this.locationDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFabricSpecificDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFabricSpecificDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFabricSpecificDetails.
+     */
+    public static AzureFabricSpecificDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFabricSpecificDetails deserializedAzureFabricSpecificDetails = new AzureFabricSpecificDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedAzureFabricSpecificDetails.instanceType = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAzureFabricSpecificDetails.location = reader.getString();
+                } else if ("containerIds".equals(fieldName)) {
+                    List<String> containerIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFabricSpecificDetails.containerIds = containerIds;
+                } else if ("zones".equals(fieldName)) {
+                    List<A2AZoneDetails> zones = reader.readArray(reader1 -> A2AZoneDetails.fromJson(reader1));
+                    deserializedAzureFabricSpecificDetails.zones = zones;
+                } else if ("extendedLocations".equals(fieldName)) {
+                    List<A2AExtendedLocationDetails> extendedLocations
+                        = reader.readArray(reader1 -> A2AExtendedLocationDetails.fromJson(reader1));
+                    deserializedAzureFabricSpecificDetails.extendedLocations = extendedLocations;
+                } else if ("locationDetails".equals(fieldName)) {
+                    List<A2AFabricSpecificLocationDetails> locationDetails
+                        = reader.readArray(reader1 -> A2AFabricSpecificLocationDetails.fromJson(reader1));
+                    deserializedAzureFabricSpecificDetails.locationDetails = locationDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFabricSpecificDetails;
+        });
     }
 }

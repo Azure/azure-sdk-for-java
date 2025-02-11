@@ -5,34 +5,25 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.WebhookPartnerDestinationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Information about the update of the WebHook of the partner destination.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "endpointType",
-    defaultImpl = WebhookUpdatePartnerDestinationInfo.class,
-    visible = true)
-@JsonTypeName("WebHook")
 @Fluent
 public final class WebhookUpdatePartnerDestinationInfo extends PartnerUpdateDestinationInfo {
     /*
      * Type of the endpoint for the partner destination
      */
-    @JsonTypeId
-    @JsonProperty(value = "endpointType", required = true)
     private PartnerEndpointType endpointType = PartnerEndpointType.WEB_HOOK;
 
     /*
      * WebHook Properties of the partner destination.
      */
-    @JsonProperty(value = "properties")
     private WebhookPartnerDestinationProperties innerProperties;
 
     /**
@@ -137,9 +128,50 @@ public final class WebhookUpdatePartnerDestinationInfo extends PartnerUpdateDest
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookUpdatePartnerDestinationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookUpdatePartnerDestinationInfo if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebhookUpdatePartnerDestinationInfo.
+     */
+    public static WebhookUpdatePartnerDestinationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookUpdatePartnerDestinationInfo deserializedWebhookUpdatePartnerDestinationInfo
+                = new WebhookUpdatePartnerDestinationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedWebhookUpdatePartnerDestinationInfo.endpointType
+                        = PartnerEndpointType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebhookUpdatePartnerDestinationInfo.innerProperties
+                        = WebhookPartnerDestinationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookUpdatePartnerDestinationInfo;
+        });
     }
 }

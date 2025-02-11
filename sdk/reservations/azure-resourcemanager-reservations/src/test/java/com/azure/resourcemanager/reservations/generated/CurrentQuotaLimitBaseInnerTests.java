@@ -14,32 +14,27 @@ import org.junit.jupiter.api.Assertions;
 public final class CurrentQuotaLimitBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CurrentQuotaLimitBaseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"limit\":2001921074,\"currentValue\":1823399080,\"unit\":\"e\",\"name\":{\"value\":\"pfpubjibww\",\"localizedValue\":\"tohqkvpuvksgp\"},\"resourceType\":\"dedicated\",\"quotaPeriod\":\"nynfsynljphuo\",\"properties\":\"dataodlqiyntor\"},\"id\":\"ihleos\",\"name\":\"swsrms\",\"type\":\"yzrpzbchckqqzq\"}")
-                .toObject(CurrentQuotaLimitBaseInner.class);
-        Assertions.assertEquals(2001921074, model.properties().limit());
-        Assertions.assertEquals("e", model.properties().unit());
-        Assertions.assertEquals("pfpubjibww", model.properties().name().value());
-        Assertions.assertEquals(ResourceType.DEDICATED, model.properties().resourceType());
+        CurrentQuotaLimitBaseInner model = BinaryData.fromString(
+            "{\"properties\":{\"limit\":288092317,\"currentValue\":1703781779,\"unit\":\"bjibwwiftohq\",\"name\":{\"value\":\"uvksgplsaknynfsy\",\"localizedValue\":\"jphuopxodlqi\"},\"resourceType\":\"shared\",\"quotaPeriod\":\"rz\",\"properties\":\"dataleosjswsrms\"},\"id\":\"yzrpzbchckqqzq\",\"name\":\"ox\",\"type\":\"ysuiizynkedya\"}")
+            .toObject(CurrentQuotaLimitBaseInner.class);
+        Assertions.assertEquals(288092317, model.properties().limit());
+        Assertions.assertEquals("bjibwwiftohq", model.properties().unit());
+        Assertions.assertEquals("uvksgplsaknynfsy", model.properties().name().value());
+        Assertions.assertEquals(ResourceType.SHARED, model.properties().resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CurrentQuotaLimitBaseInner model =
-            new CurrentQuotaLimitBaseInner()
-                .withProperties(
-                    new QuotaProperties()
-                        .withLimit(2001921074)
-                        .withUnit("e")
-                        .withName(new ResourceName().withValue("pfpubjibww"))
-                        .withResourceType(ResourceType.DEDICATED)
-                        .withProperties("dataodlqiyntor"));
+        CurrentQuotaLimitBaseInner model
+            = new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(288092317)
+                .withUnit("bjibwwiftohq")
+                .withName(new ResourceName().withValue("uvksgplsaknynfsy"))
+                .withResourceType(ResourceType.SHARED)
+                .withProperties("dataleosjswsrms"));
         model = BinaryData.fromObject(model).toObject(CurrentQuotaLimitBaseInner.class);
-        Assertions.assertEquals(2001921074, model.properties().limit());
-        Assertions.assertEquals("e", model.properties().unit());
-        Assertions.assertEquals("pfpubjibww", model.properties().name().value());
-        Assertions.assertEquals(ResourceType.DEDICATED, model.properties().resourceType());
+        Assertions.assertEquals(288092317, model.properties().limit());
+        Assertions.assertEquals("bjibwwiftohq", model.properties().unit());
+        Assertions.assertEquals("uvksgplsaknynfsy", model.properties().name().value());
+        Assertions.assertEquals(ResourceType.SHARED, model.properties().resourceType());
     }
 }

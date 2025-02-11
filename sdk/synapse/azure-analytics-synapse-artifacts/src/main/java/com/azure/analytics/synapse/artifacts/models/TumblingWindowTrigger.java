@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -42,17 +43,21 @@ public class TumblingWindowTrigger extends Trigger {
     private int interval;
 
     /*
-     * The start time for the time period for the trigger during which events are fired for windows that are ready. Only UTC time is currently supported.
+     * The start time for the time period for the trigger during which events are fired for windows that are ready. Only
+     * UTC time is currently supported.
      */
     private OffsetDateTime startTime;
 
     /*
-     * The end time for the time period for the trigger during which events are fired for windows that are ready. Only UTC time is currently supported.
+     * The end time for the time period for the trigger during which events are fired for windows that are ready. Only
+     * UTC time is currently supported.
      */
     private OffsetDateTime endTime;
 
     /*
-     * Specifies how long the trigger waits past due time before triggering new run. It doesn't alter window start and end time. The default is 0. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies how long the trigger waits past due time before triggering new run. It doesn't alter window start and
+     * end time. The default is 0. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     private Object delay;
 
@@ -70,6 +75,11 @@ public class TumblingWindowTrigger extends Trigger {
      * Triggers that this trigger depends on. Only tumbling window triggers are supported.
      */
     private List<DependencyReference> dependsOn;
+
+    /*
+     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
+     */
+    private TriggerRuntimeState runtimeState;
 
     /**
      * Creates an instance of TumblingWindowTrigger class.
@@ -280,6 +290,17 @@ public class TumblingWindowTrigger extends Trigger {
     }
 
     /**
+     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
+     * the Trigger.
+     * 
+     * @return the runtimeState value.
+     */
+    @Override
+    public TriggerRuntimeState getRuntimeState() {
+        return this.runtimeState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -347,8 +368,7 @@ public class TumblingWindowTrigger extends Trigger {
                 if ("description".equals(fieldName)) {
                     deserializedTumblingWindowTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedTumblingWindowTrigger
-                        .setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                    deserializedTumblingWindowTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedTumblingWindowTrigger.setAnnotations(annotations);
@@ -367,11 +387,11 @@ public class TumblingWindowTrigger extends Trigger {
                         } else if ("interval".equals(fieldName)) {
                             deserializedTumblingWindowTrigger.interval = reader.getInt();
                         } else if ("startTime".equals(fieldName)) {
-                            deserializedTumblingWindowTrigger.startTime
-                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            deserializedTumblingWindowTrigger.startTime = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                         } else if ("endTime".equals(fieldName)) {
-                            deserializedTumblingWindowTrigger.endTime
-                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            deserializedTumblingWindowTrigger.endTime = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                         } else if ("delay".equals(fieldName)) {
                             deserializedTumblingWindowTrigger.delay = reader.readUntyped();
                         } else if ("maxConcurrency".equals(fieldName)) {

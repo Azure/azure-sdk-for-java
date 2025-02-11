@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class RcmComponentStatus extends ExpandableStringEnum<RcmComponentS
      * @param name a name to look for.
      * @return the corresponding RcmComponentStatus.
      */
-    @JsonCreator
     public static RcmComponentStatus fromString(String name) {
         return fromString(name, RcmComponentStatus.class);
     }

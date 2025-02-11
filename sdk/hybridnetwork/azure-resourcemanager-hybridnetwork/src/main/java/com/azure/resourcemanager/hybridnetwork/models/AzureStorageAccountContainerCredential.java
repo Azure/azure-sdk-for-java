@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The azure storage account container credential definition.
  */
 @Fluent
-public final class AzureStorageAccountContainerCredential {
+public final class AzureStorageAccountContainerCredential
+    implements JsonSerializable<AzureStorageAccountContainerCredential> {
     /*
      * The storage account container name
      */
-    @JsonProperty(value = "containerName")
     private String containerName;
 
     /*
      * The storage account container sas uri
      */
-    @JsonProperty(value = "containerSasUri")
     private String containerSasUri;
 
     /**
@@ -76,5 +79,45 @@ public final class AzureStorageAccountContainerCredential {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("containerSasUri", this.containerSasUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureStorageAccountContainerCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureStorageAccountContainerCredential if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureStorageAccountContainerCredential.
+     */
+    public static AzureStorageAccountContainerCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureStorageAccountContainerCredential deserializedAzureStorageAccountContainerCredential
+                = new AzureStorageAccountContainerCredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("containerName".equals(fieldName)) {
+                    deserializedAzureStorageAccountContainerCredential.containerName = reader.getString();
+                } else if ("containerSasUri".equals(fieldName)) {
+                    deserializedAzureStorageAccountContainerCredential.containerSasUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureStorageAccountContainerCredential;
+        });
     }
 }

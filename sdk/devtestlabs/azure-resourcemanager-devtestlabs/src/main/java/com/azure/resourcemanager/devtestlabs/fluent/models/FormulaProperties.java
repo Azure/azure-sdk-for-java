@@ -5,69 +5,70 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.FormulaPropertiesFromVm;
 import com.azure.resourcemanager.devtestlabs.models.LabVirtualMachineCreationParameter;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of a formula. */
+/**
+ * Properties of a formula.
+ */
 @Fluent
-public final class FormulaProperties {
+public final class FormulaProperties implements JsonSerializable<FormulaProperties> {
     /*
      * The description of the formula.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The author of the formula.
      */
-    @JsonProperty(value = "author", access = JsonProperty.Access.WRITE_ONLY)
     private String author;
 
     /*
      * The OS type of the formula.
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * The creation date of the formula.
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * The content of the formula.
      */
-    @JsonProperty(value = "formulaContent")
     private LabVirtualMachineCreationParameter formulaContent;
 
     /*
      * Information about a VM from which a formula is to be created.
      */
-    @JsonProperty(value = "vm")
     private FormulaPropertiesFromVm vm;
 
     /*
      * The provisioning status of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique immutable identifier of a resource (Guid).
      */
-    @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
 
-    /** Creates an instance of FormulaProperties class. */
+    /**
+     * Creates an instance of FormulaProperties class.
+     */
     public FormulaProperties() {
     }
 
     /**
      * Get the description property: The description of the formula.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -76,7 +77,7 @@ public final class FormulaProperties {
 
     /**
      * Set the description property: The description of the formula.
-     *
+     * 
      * @param description the description value to set.
      * @return the FormulaProperties object itself.
      */
@@ -87,7 +88,7 @@ public final class FormulaProperties {
 
     /**
      * Get the author property: The author of the formula.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -96,7 +97,7 @@ public final class FormulaProperties {
 
     /**
      * Get the osType property: The OS type of the formula.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -105,7 +106,7 @@ public final class FormulaProperties {
 
     /**
      * Set the osType property: The OS type of the formula.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the FormulaProperties object itself.
      */
@@ -116,7 +117,7 @@ public final class FormulaProperties {
 
     /**
      * Get the creationDate property: The creation date of the formula.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -125,7 +126,7 @@ public final class FormulaProperties {
 
     /**
      * Get the formulaContent property: The content of the formula.
-     *
+     * 
      * @return the formulaContent value.
      */
     public LabVirtualMachineCreationParameter formulaContent() {
@@ -134,7 +135,7 @@ public final class FormulaProperties {
 
     /**
      * Set the formulaContent property: The content of the formula.
-     *
+     * 
      * @param formulaContent the formulaContent value to set.
      * @return the FormulaProperties object itself.
      */
@@ -145,7 +146,7 @@ public final class FormulaProperties {
 
     /**
      * Get the vm property: Information about a VM from which a formula is to be created.
-     *
+     * 
      * @return the vm value.
      */
     public FormulaPropertiesFromVm vm() {
@@ -154,7 +155,7 @@ public final class FormulaProperties {
 
     /**
      * Set the vm property: Information about a VM from which a formula is to be created.
-     *
+     * 
      * @param vm the vm value to set.
      * @return the FormulaProperties object itself.
      */
@@ -165,7 +166,7 @@ public final class FormulaProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -174,7 +175,7 @@ public final class FormulaProperties {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -183,7 +184,7 @@ public final class FormulaProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -193,5 +194,59 @@ public final class FormulaProperties {
         if (vm() != null) {
             vm().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeJsonField("formulaContent", this.formulaContent);
+        jsonWriter.writeJsonField("vm", this.vm);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FormulaProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FormulaProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FormulaProperties.
+     */
+    public static FormulaProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FormulaProperties deserializedFormulaProperties = new FormulaProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedFormulaProperties.description = reader.getString();
+                } else if ("author".equals(fieldName)) {
+                    deserializedFormulaProperties.author = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedFormulaProperties.osType = reader.getString();
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedFormulaProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("formulaContent".equals(fieldName)) {
+                    deserializedFormulaProperties.formulaContent = LabVirtualMachineCreationParameter.fromJson(reader);
+                } else if ("vm".equals(fieldName)) {
+                    deserializedFormulaProperties.vm = FormulaPropertiesFromVm.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFormulaProperties.provisioningState = reader.getString();
+                } else if ("uniqueIdentifier".equals(fieldName)) {
+                    deserializedFormulaProperties.uniqueIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFormulaProperties;
+        });
     }
 }

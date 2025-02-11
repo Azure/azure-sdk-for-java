@@ -5,43 +5,42 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** May be used to filter budgets by resource group, resource, or meter. */
+/**
+ * May be used to filter budgets by resource group, resource, or meter.
+ */
 @Fluent
-public final class BudgetFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BudgetFilter.class);
-
+public final class BudgetFilter implements JsonSerializable<BudgetFilter> {
     /*
      * The logical "AND" expression. Must have at least 2 items.
      */
-    @JsonProperty(value = "and")
     private List<BudgetFilterProperties> and;
-
-    /*
-     * The logical "NOT" expression.
-     */
-    @JsonProperty(value = "not")
-    private BudgetFilterProperties not;
 
     /*
      * Has comparison expression for a dimension
      */
-    @JsonProperty(value = "dimensions")
     private BudgetComparisonExpression dimensions;
 
     /*
      * Has comparison expression for a tag
      */
-    @JsonProperty(value = "tags")
     private BudgetComparisonExpression tags;
 
     /**
+     * Creates an instance of BudgetFilter class.
+     */
+    public BudgetFilter() {
+    }
+
+    /**
      * Get the and property: The logical "AND" expression. Must have at least 2 items.
-     *
+     * 
      * @return the and value.
      */
     public List<BudgetFilterProperties> and() {
@@ -50,7 +49,7 @@ public final class BudgetFilter {
 
     /**
      * Set the and property: The logical "AND" expression. Must have at least 2 items.
-     *
+     * 
      * @param and the and value to set.
      * @return the BudgetFilter object itself.
      */
@@ -60,28 +59,8 @@ public final class BudgetFilter {
     }
 
     /**
-     * Get the not property: The logical "NOT" expression.
-     *
-     * @return the not value.
-     */
-    public BudgetFilterProperties not() {
-        return this.not;
-    }
-
-    /**
-     * Set the not property: The logical "NOT" expression.
-     *
-     * @param not the not value to set.
-     * @return the BudgetFilter object itself.
-     */
-    public BudgetFilter withNot(BudgetFilterProperties not) {
-        this.not = not;
-        return this;
-    }
-
-    /**
      * Get the dimensions property: Has comparison expression for a dimension.
-     *
+     * 
      * @return the dimensions value.
      */
     public BudgetComparisonExpression dimensions() {
@@ -90,7 +69,7 @@ public final class BudgetFilter {
 
     /**
      * Set the dimensions property: Has comparison expression for a dimension.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the BudgetFilter object itself.
      */
@@ -101,7 +80,7 @@ public final class BudgetFilter {
 
     /**
      * Get the tags property: Has comparison expression for a tag.
-     *
+     * 
      * @return the tags value.
      */
     public BudgetComparisonExpression tags() {
@@ -110,7 +89,7 @@ public final class BudgetFilter {
 
     /**
      * Set the tags property: Has comparison expression for a tag.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the BudgetFilter object itself.
      */
@@ -121,15 +100,12 @@ public final class BudgetFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (and() != null) {
             and().forEach(e -> e.validate());
-        }
-        if (not() != null) {
-            not().validate();
         }
         if (dimensions() != null) {
             dimensions().validate();
@@ -137,5 +113,49 @@ public final class BudgetFilter {
         if (tags() != null) {
             tags().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("and", this.and, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dimensions", this.dimensions);
+        jsonWriter.writeJsonField("tags", this.tags);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BudgetFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BudgetFilter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BudgetFilter.
+     */
+    public static BudgetFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BudgetFilter deserializedBudgetFilter = new BudgetFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("and".equals(fieldName)) {
+                    List<BudgetFilterProperties> and
+                        = reader.readArray(reader1 -> BudgetFilterProperties.fromJson(reader1));
+                    deserializedBudgetFilter.and = and;
+                } else if ("dimensions".equals(fieldName)) {
+                    deserializedBudgetFilter.dimensions = BudgetComparisonExpression.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    deserializedBudgetFilter.tags = BudgetComparisonExpression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBudgetFilter;
+        });
     }
 }

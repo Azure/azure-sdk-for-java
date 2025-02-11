@@ -13,26 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class IpExtendedCommunityRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpExtendedCommunityRule model =
-            BinaryData
-                .fromString(
-                    "{\"action\":\"Permit\",\"sequenceNumber\":411122355974604115,\"routeTargets\":[\"v\",\"hctmmkosz\",\"dblnsntrp\"]}")
-                .toObject(IpExtendedCommunityRule.class);
+        IpExtendedCommunityRule model = BinaryData.fromString(
+            "{\"action\":\"Permit\",\"sequenceNumber\":4121428237576255143,\"routeTargets\":[\"avfqnvhnqoewdogi\",\"etesypvidbztjhqt\"]}")
+            .toObject(IpExtendedCommunityRule.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.action());
-        Assertions.assertEquals(411122355974604115L, model.sequenceNumber());
-        Assertions.assertEquals("v", model.routeTargets().get(0));
+        Assertions.assertEquals(4121428237576255143L, model.sequenceNumber());
+        Assertions.assertEquals("avfqnvhnqoewdogi", model.routeTargets().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunityRule model =
-            new IpExtendedCommunityRule()
-                .withAction(CommunityActionTypes.PERMIT)
-                .withSequenceNumber(411122355974604115L)
-                .withRouteTargets(Arrays.asList("v", "hctmmkosz", "dblnsntrp"));
+        IpExtendedCommunityRule model = new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+            .withSequenceNumber(4121428237576255143L)
+            .withRouteTargets(Arrays.asList("avfqnvhnqoewdogi", "etesypvidbztjhqt"));
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityRule.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.action());
-        Assertions.assertEquals(411122355974604115L, model.sequenceNumber());
-        Assertions.assertEquals("v", model.routeTargets().get(0));
+        Assertions.assertEquals(4121428237576255143L, model.sequenceNumber());
+        Assertions.assertEquals("avfqnvhnqoewdogi", model.routeTargets().get(0));
     }
 }

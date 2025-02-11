@@ -33,6 +33,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.RacksClient;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.RackInner;
 import com.azure.resourcemanager.networkcloud.models.RackList;
 import com.azure.resourcemanager.networkcloud.models.RackPatchParameters;
@@ -40,17 +41,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RacksClient.
+ */
 public final class RacksClientImpl implements RacksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RacksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of RacksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RacksClientImpl(NetworkCloudImpl client) {
@@ -65,222 +72,155 @@ public final class RacksClientImpl implements RacksClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetworkCloudRacks")
     public interface RacksService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/racks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RackList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<RackList>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RackList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RackList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<RackInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("rackName") String rackName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("rackName") String rackName,
+            @BodyParam("application/json") RackInner rackParameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RackInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("rackName") String rackName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("rackName") String rackName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("rackName") String rackName,
-            @BodyParam("application/json") RackInner rackParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("rackName") String rackName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("rackName") String rackName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("rackName") String rackName,
             @BodyParam("application/json") RackPatchParameters rackUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RackList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RackList>> listBySubscriptionNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RackList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RackList>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List racks in the subscription.
-     *
-     * <p>Get a list of racks in the provided subscription.
-     *
+     * 
+     * Get a list of racks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of racks in the provided subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<RackInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<RackInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List racks in the subscription.
-     *
-     * <p>Get a list of racks in the provided subscription.
-     *
+     * 
+     * Get a list of racks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of racks in the provided subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List racks in the subscription.
-     *
-     * <p>Get a list of racks in the provided subscription.
-     *
+     * 
+     * Get a list of racks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of racks in the provided subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RackInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List racks in the subscription.
-     *
-     * <p>Get a list of racks in the provided subscription.
-     *
+     * 
+     * Get a list of racks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -289,15 +229,15 @@ public final class RacksClientImpl implements RacksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RackInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List racks in the subscription.
-     *
-     * <p>Get a list of racks in the provided subscription.
-     *
+     * 
+     * Get a list of racks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of racks in the provided subscription as paginated response with {@link PagedIterable}.
@@ -309,9 +249,9 @@ public final class RacksClientImpl implements RacksClient {
 
     /**
      * List racks in the subscription.
-     *
-     * <p>Get a list of racks in the provided subscription.
-     *
+     * 
+     * Get a list of racks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -325,29 +265,25 @@ public final class RacksClientImpl implements RacksClient {
 
     /**
      * List racks in the resource group.
-     *
-     * <p>Get a list of racks in the provided resource group.
-     *
+     * 
+     * Get a list of racks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of racks in the provided resource group along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -355,55 +291,36 @@ public final class RacksClientImpl implements RacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<RackInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<RackInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List racks in the resource group.
-     *
-     * <p>Get a list of racks in the provided resource group.
-     *
+     * 
+     * Get a list of racks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of racks in the provided resource group along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RackInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<RackInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -412,29 +329,17 @@ public final class RacksClientImpl implements RacksClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List racks in the resource group.
-     *
-     * <p>Get a list of racks in the provided resource group.
-     *
+     * 
+     * Get a list of racks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -443,16 +348,15 @@ public final class RacksClientImpl implements RacksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RackInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List racks in the resource group.
-     *
-     * <p>Get a list of racks in the provided resource group.
-     *
+     * 
+     * Get a list of racks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -462,16 +366,15 @@ public final class RacksClientImpl implements RacksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RackInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List racks in the resource group.
-     *
-     * <p>Get a list of racks in the provided resource group.
-     *
+     * 
+     * Get a list of racks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -485,9 +388,9 @@ public final class RacksClientImpl implements RacksClient {
 
     /**
      * List racks in the resource group.
-     *
-     * <p>Get a list of racks in the provided resource group.
-     *
+     * 
+     * Get a list of racks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -502,9 +405,9 @@ public final class RacksClientImpl implements RacksClient {
 
     /**
      * Retrieve the rack.
-     *
-     * <p>Get properties of the provided rack.
-     *
+     * 
+     * Get properties of the provided rack.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -515,16 +418,12 @@ public final class RacksClientImpl implements RacksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RackInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String rackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -535,25 +434,16 @@ public final class RacksClientImpl implements RacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            rackName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, rackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the rack.
-     *
-     * <p>Get properties of the provided rack.
-     *
+     * 
+     * Get properties of the provided rack.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
@@ -563,19 +453,15 @@ public final class RacksClientImpl implements RacksClient {
      * @return properties of the provided rack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RackInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String rackName, Context context) {
+    private Mono<Response<RackInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String rackName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -586,22 +472,15 @@ public final class RacksClientImpl implements RacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                rackName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, rackName, accept, context);
     }
 
     /**
      * Retrieve the rack.
-     *
-     * <p>Get properties of the provided rack.
-     *
+     * 
+     * Get properties of the provided rack.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -617,9 +496,9 @@ public final class RacksClientImpl implements RacksClient {
 
     /**
      * Retrieve the rack.
-     *
-     * <p>Get properties of the provided rack.
-     *
+     * 
+     * Get properties of the provided rack.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
@@ -629,16 +508,16 @@ public final class RacksClientImpl implements RacksClient {
      * @return properties of the provided rack along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RackInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String rackName, Context context) {
+    public Response<RackInner> getByResourceGroupWithResponse(String resourceGroupName, String rackName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, rackName, context).block();
     }
 
     /**
      * Retrieve the rack.
-     *
-     * <p>Get properties of the provided rack.
-     *
+     * 
+     * Get properties of the provided rack.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -653,10 +532,10 @@ public final class RacksClientImpl implements RacksClient {
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -664,22 +543,18 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String rackName, RackInner rackParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String rackName,
+        RackInner rackParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -695,27 +570,17 @@ public final class RacksClientImpl implements RacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            rackName,
-                            rackParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, rackName, rackParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -724,22 +589,18 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String rackName, RackInner rackParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String rackName,
+        RackInner rackParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -755,24 +616,16 @@ public final class RacksClientImpl implements RacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                rackName,
-                rackParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, rackName, rackParameters, accept, context);
     }
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -780,25 +633,23 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RackInner>, RackInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String rackName, RackInner rackParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, rackName, rackParameters);
-        return this
-            .client
-            .<RackInner, RackInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RackInner.class, RackInner.class, this.client.getContext());
+    private PollerFlux<PollResult<RackInner>, RackInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String rackName, RackInner rackParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, rackName, rackParameters);
+        return this.client.<RackInner, RackInner>getLroResult(mono, this.client.getHttpPipeline(), RackInner.class,
+            RackInner.class, this.client.getContext());
     }
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -807,26 +658,24 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RackInner>, RackInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String rackName, RackInner rackParameters, Context context) {
+    private PollerFlux<PollResult<RackInner>, RackInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String rackName, RackInner rackParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, rackName, rackParameters, context);
-        return this
-            .client
-            .<RackInner, RackInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RackInner.class, RackInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, rackName, rackParameters, context);
+        return this.client.<RackInner, RackInner>getLroResult(mono, this.client.getHttpPipeline(), RackInner.class,
+            RackInner.class, context);
     }
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -834,20 +683,20 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(
-        String resourceGroupName, String rackName, RackInner rackParameters) {
+    public SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(String resourceGroupName, String rackName,
+        RackInner rackParameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, rackName, rackParameters).getSyncPoller();
     }
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -856,20 +705,20 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(
-        String resourceGroupName, String rackName, RackInner rackParameters, Context context) {
+    public SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(String resourceGroupName, String rackName,
+        RackInner rackParameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, rackName, rackParameters, context).getSyncPoller();
     }
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -877,21 +726,20 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RackInner> createOrUpdateAsync(String resourceGroupName, String rackName, RackInner rackParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, rackName, rackParameters)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, rackName, rackParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -900,22 +748,21 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RackInner> createOrUpdateAsync(
-        String resourceGroupName, String rackName, RackInner rackParameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, rackName, rackParameters, context)
-            .last()
+    private Mono<RackInner> createOrUpdateAsync(String resourceGroupName, String rackName, RackInner rackParameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, rackName, rackParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -931,10 +778,10 @@ public final class RacksClientImpl implements RacksClient {
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -945,37 +792,34 @@ public final class RacksClientImpl implements RacksClient {
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RackInner createOrUpdate(
-        String resourceGroupName, String rackName, RackInner rackParameters, Context context) {
+    public RackInner createOrUpdate(String resourceGroupName, String rackName, RackInner rackParameters,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, rackName, rackParameters, context).block();
     }
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String rackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -986,48 +830,36 @@ public final class RacksClientImpl implements RacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            rackName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, rackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String rackName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String rackName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1038,180 +870,175 @@ public final class RacksClientImpl implements RacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                rackName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, rackName, accept, context);
     }
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String rackName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String rackName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, rackName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
     }
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String rackName, Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String rackName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, rackName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String rackName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String rackName) {
         return this.beginDeleteAsync(resourceGroupName, rackName).getSyncPoller();
     }
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String rackName, Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String rackName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, rackName, context).getSyncPoller();
     }
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String rackName) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String rackName) {
         return beginDeleteAsync(resourceGroupName, rackName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String rackName, Context context) {
-        return beginDeleteAsync(resourceGroupName, rackName, context)
-            .last()
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String rackName, Context context) {
+        return beginDeleteAsync(resourceGroupName, rackName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String rackName) {
-        deleteAsync(resourceGroupName, rackName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String rackName) {
+        return deleteAsync(resourceGroupName, rackName).block();
     }
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String rackName, Context context) {
-        deleteAsync(resourceGroupName, rackName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String rackName, Context context) {
+        return deleteAsync(resourceGroupName, rackName, context).block();
     }
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackUpdateParameters The request body.
@@ -1219,22 +1046,18 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String rackName,
+        RackPatchParameters rackUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1248,27 +1071,17 @@ public final class RacksClientImpl implements RacksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            rackName,
-                            rackUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, rackName, rackUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackUpdateParameters The request body.
@@ -1277,22 +1090,18 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String rackName,
+        RackPatchParameters rackUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1306,24 +1115,16 @@ public final class RacksClientImpl implements RacksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                rackName,
-                rackUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, rackName, rackUpdateParameters, accept, context);
     }
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackUpdateParameters The request body.
@@ -1331,50 +1132,46 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RackInner>, RackInner> beginUpdateAsync(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, rackName, rackUpdateParameters);
-        return this
-            .client
-            .<RackInner, RackInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RackInner.class, RackInner.class, this.client.getContext());
+    private PollerFlux<PollResult<RackInner>, RackInner> beginUpdateAsync(String resourceGroupName, String rackName,
+        RackPatchParameters rackUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, rackName, rackUpdateParameters);
+        return this.client.<RackInner, RackInner>getLroResult(mono, this.client.getHttpPipeline(), RackInner.class,
+            RackInner.class, this.client.getContext());
     }
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RackInner>, RackInner> beginUpdateAsync(String resourceGroupName, String rackName) {
         final RackPatchParameters rackUpdateParameters = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, rackName, rackUpdateParameters);
-        return this
-            .client
-            .<RackInner, RackInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RackInner.class, RackInner.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, rackName, rackUpdateParameters);
+        return this.client.<RackInner, RackInner>getLroResult(mono, this.client.getHttpPipeline(), RackInner.class,
+            RackInner.class, this.client.getContext());
     }
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackUpdateParameters The request body.
@@ -1383,33 +1180,31 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RackInner>, RackInner> beginUpdateAsync(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters, Context context) {
+    private PollerFlux<PollResult<RackInner>, RackInner> beginUpdateAsync(String resourceGroupName, String rackName,
+        RackPatchParameters rackUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, rackName, rackUpdateParameters, context);
-        return this
-            .client
-            .<RackInner, RackInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RackInner.class, RackInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, rackName, rackUpdateParameters, context);
+        return this.client.<RackInner, RackInner>getLroResult(mono, this.client.getHttpPipeline(), RackInner.class,
+            RackInner.class, context);
     }
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RackInner>, RackInner> beginUpdate(String resourceGroupName, String rackName) {
@@ -1419,10 +1214,10 @@ public final class RacksClientImpl implements RacksClient {
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackUpdateParameters The request body.
@@ -1431,20 +1226,20 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RackInner>, RackInner> beginUpdate(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters, Context context) {
+    public SyncPoller<PollResult<RackInner>, RackInner> beginUpdate(String resourceGroupName, String rackName,
+        RackPatchParameters rackUpdateParameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, rackName, rackUpdateParameters, context).getSyncPoller();
     }
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackUpdateParameters The request body.
@@ -1452,44 +1247,42 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RackInner> updateAsync(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, rackName, rackUpdateParameters)
-            .last()
+    private Mono<RackInner> updateAsync(String resourceGroupName, String rackName,
+        RackPatchParameters rackUpdateParameters) {
+        return beginUpdateAsync(resourceGroupName, rackName, rackUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RackInner> updateAsync(String resourceGroupName, String rackName) {
         final RackPatchParameters rackUpdateParameters = null;
-        return beginUpdateAsync(resourceGroupName, rackName, rackUpdateParameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, rackName, rackUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackUpdateParameters The request body.
@@ -1498,22 +1291,21 @@ public final class RacksClientImpl implements RacksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RackInner> updateAsync(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, rackName, rackUpdateParameters, context)
-            .last()
+    private Mono<RackInner> updateAsync(String resourceGroupName, String rackName,
+        RackPatchParameters rackUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, rackName, rackUpdateParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1529,10 +1321,10 @@ public final class RacksClientImpl implements RacksClient {
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackUpdateParameters The request body.
@@ -1543,21 +1335,20 @@ public final class RacksClientImpl implements RacksClient {
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RackInner update(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters, Context context) {
+    public RackInner update(String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters,
+        Context context) {
         return updateAsync(resourceGroupName, rackName, rackUpdateParameters, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rackList represents a list of racks along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return rackList represents a list of racks along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1565,38 +1356,28 @@ public final class RacksClientImpl implements RacksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RackInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RackInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rackList represents a list of racks along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return rackList represents a list of racks along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -1604,36 +1385,25 @@ public final class RacksClientImpl implements RacksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rackList represents a list of racks along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return rackList represents a list of racks along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1641,38 +1411,28 @@ public final class RacksClientImpl implements RacksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RackInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RackInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rackList represents a list of racks along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return rackList represents a list of racks along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RackInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -1680,23 +1440,13 @@ public final class RacksClientImpl implements RacksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

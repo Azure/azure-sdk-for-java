@@ -11,7 +11,9 @@ import com.azure.resourcemanager.security.models.ExpandControlsEnum;
  */
 public final class SecureScoreControlsListBySecureScoreSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/ListSecureScoreControlsForNameWithExpand_builtin_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/
+     * ListSecureScoreControlsForNameWithExpand_builtin_example.json
      */
     /**
      * Sample code: Get security controls and their current score for the specified initiative with the expand
@@ -26,7 +28,9 @@ public final class SecureScoreControlsListBySecureScoreSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/ListSecureScoreControlsForName_builtin_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/
+     * ListSecureScoreControlsForName_builtin_example.json
      */
     /**
      * Sample code: Get security controls and their current score for the specified initiative.

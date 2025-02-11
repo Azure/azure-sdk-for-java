@@ -212,35 +212,15 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final Config config,
         final ClientTelemetry clientTelemetry,
         final RntbdConnectionStateListener connectionStateListener,
-        final RntbdServerErrorInjector faultInjectionInterceptors,
-        final RntbdDurableEndpointMetrics durableEndpointMetrics) {
-        this(
-            endpoint,
-            bootstrap,
-            config,
-            new RntbdClientChannelHealthChecker(config),
-            clientTelemetry,
-            connectionStateListener,
-            faultInjectionInterceptors,
-            durableEndpointMetrics);
-    }
-
-    private RntbdClientChannelPool(
-        final RntbdServiceEndpoint endpoint,
-        final Bootstrap bootstrap,
-        final Config config,
-        final RntbdClientChannelHealthChecker healthChecker,
-        final ClientTelemetry clientTelemetry,
-        final RntbdConnectionStateListener connectionStateListener,
         final RntbdServerErrorInjector serverErrorInjector,
         final RntbdDurableEndpointMetrics durableEndpointMetrics) {
 
         checkNotNull(endpoint, "expected non-null endpoint");
         checkNotNull(bootstrap, "expected non-null bootstrap");
         checkNotNull(config, "expected non-null config");
-        checkNotNull(healthChecker, "expected non-null healthChecker");
         checkNotNull(durableEndpointMetrics, "expected non-null durableEndpointMetrics");
 
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetry);
         this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener, serverErrorInjector);
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
@@ -1204,7 +1184,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
 
                 if (promise.trySuccess(channel)) {
-  
                     if (logger.isDebugEnabled()) {
                         logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
                     }

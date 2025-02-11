@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Spacecrafts. */
+/**
+ * Resource collection API of Spacecrafts.
+ */
 public interface Spacecrafts {
     /**
      * Returns list of spacecrafts by subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call as paginated response with {@link PagedIterable}.
@@ -21,11 +23,11 @@ public interface Spacecrafts {
 
     /**
      * Returns list of spacecrafts by subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,7 +38,7 @@ public interface Spacecrafts {
 
     /**
      * Returns list of spacecrafts by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -47,12 +49,12 @@ public interface Spacecrafts {
 
     /**
      * Returns list of spacecrafts by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -63,7 +65,7 @@ public interface Spacecrafts {
 
     /**
      * Gets the specified spacecraft in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -72,12 +74,12 @@ public interface Spacecrafts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified spacecraft in a specified resource group along with {@link Response}.
      */
-    Response<Spacecraft> getByResourceGroupWithResponse(
-        String resourceGroupName, String spacecraftName, Context context);
+    Response<Spacecraft> getByResourceGroupWithResponse(String resourceGroupName, String spacecraftName,
+        Context context);
 
     /**
      * Gets the specified spacecraft in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +91,7 @@ public interface Spacecrafts {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,7 +102,7 @@ public interface Spacecrafts {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -113,7 +115,7 @@ public interface Spacecrafts {
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
      * for more than the minimum viable contact duration provided in the contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the contacts.
@@ -122,13 +124,13 @@ public interface Spacecrafts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListAvailableContacts API service call as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AvailableContacts> listAvailableContacts(
-        String resourceGroupName, String spacecraftName, ContactParameters parameters);
+    PagedIterable<AvailableContacts> listAvailableContacts(String resourceGroupName, String spacecraftName,
+        ContactParameters parameters);
 
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
      * for more than the minimum viable contact duration provided in the contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the contacts.
@@ -138,12 +140,12 @@ public interface Spacecrafts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListAvailableContacts API service call as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AvailableContacts> listAvailableContacts(
-        String resourceGroupName, String spacecraftName, ContactParameters parameters, Context context);
+    PagedIterable<AvailableContacts> listAvailableContacts(String resourceGroupName, String spacecraftName,
+        ContactParameters parameters, Context context);
 
     /**
      * Gets the specified spacecraft in a specified resource group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -154,7 +156,7 @@ public interface Spacecrafts {
 
     /**
      * Gets the specified spacecraft in a specified resource group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,7 +168,7 @@ public interface Spacecrafts {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -176,7 +178,7 @@ public interface Spacecrafts {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,7 +189,7 @@ public interface Spacecrafts {
 
     /**
      * Begins definition for a new Spacecraft resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Spacecraft definition.
      */

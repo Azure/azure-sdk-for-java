@@ -23,8 +23,9 @@ public final class ConfigurationGroupSchemasUpdateStateSamples {
      */
     public static void
         updateNetworkServiceDesignVersionState(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.configurationGroupSchemas().updateState("rg1", "testPublisher", "testConfigurationGroupSchema",
-            new ConfigurationGroupSchemaVersionUpdateStateInner().withVersionState(VersionState.ACTIVE),
-            com.azure.core.util.Context.NONE);
+        manager.configurationGroupSchemas()
+            .updateState("rg1", "testPublisher", "testConfigurationGroupSchema",
+                new ConfigurationGroupSchemaVersionUpdateStateInner().withVersionState(VersionState.ACTIVE),
+                com.azure.core.util.Context.NONE);
     }
 }

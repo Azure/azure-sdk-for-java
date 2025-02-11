@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceOperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in MediaServicesOperationStatusesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MediaServicesOperationStatusesClient.
+ */
 public interface MediaServicesOperationStatusesClient {
     /**
      * Get operation status.
-     *
-     * <p>Get media service operation status.
-     *
+     * 
+     * Get media service operation status.
+     * 
      * @param locationName Location name.
      * @param operationId Operation ID.
      * @param context The context to associate with this operation.
@@ -26,14 +28,14 @@ public interface MediaServicesOperationStatusesClient {
      * @return media service operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MediaServiceOperationStatusInner> getWithResponse(
-        String locationName, String operationId, Context context);
+    Response<MediaServiceOperationStatusInner> getWithResponse(String locationName, String operationId,
+        Context context);
 
     /**
      * Get operation status.
-     *
-     * <p>Get media service operation status.
-     *
+     * 
+     * Get media service operation status.
+     * 
      * @param locationName Location name.
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

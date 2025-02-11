@@ -5,33 +5,41 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The available data types for office data connector. */
+/**
+ * The available data types for office data connector.
+ */
 @Fluent
-public final class OfficeDataConnectorDataTypes {
+public final class OfficeDataConnectorDataTypes implements JsonSerializable<OfficeDataConnectorDataTypes> {
     /*
      * Exchange data type connection.
      */
-    @JsonProperty(value = "exchange", required = true)
     private OfficeDataConnectorDataTypesExchange exchange;
 
     /*
      * SharePoint data type connection.
      */
-    @JsonProperty(value = "sharePoint", required = true)
     private OfficeDataConnectorDataTypesSharePoint sharePoint;
 
     /*
      * Teams data type connection.
      */
-    @JsonProperty(value = "teams", required = true)
     private OfficeDataConnectorDataTypesTeams teams;
 
     /**
+     * Creates an instance of OfficeDataConnectorDataTypes class.
+     */
+    public OfficeDataConnectorDataTypes() {
+    }
+
+    /**
      * Get the exchange property: Exchange data type connection.
-     *
+     * 
      * @return the exchange value.
      */
     public OfficeDataConnectorDataTypesExchange exchange() {
@@ -40,7 +48,7 @@ public final class OfficeDataConnectorDataTypes {
 
     /**
      * Set the exchange property: Exchange data type connection.
-     *
+     * 
      * @param exchange the exchange value to set.
      * @return the OfficeDataConnectorDataTypes object itself.
      */
@@ -51,7 +59,7 @@ public final class OfficeDataConnectorDataTypes {
 
     /**
      * Get the sharePoint property: SharePoint data type connection.
-     *
+     * 
      * @return the sharePoint value.
      */
     public OfficeDataConnectorDataTypesSharePoint sharePoint() {
@@ -60,7 +68,7 @@ public final class OfficeDataConnectorDataTypes {
 
     /**
      * Set the sharePoint property: SharePoint data type connection.
-     *
+     * 
      * @param sharePoint the sharePoint value to set.
      * @return the OfficeDataConnectorDataTypes object itself.
      */
@@ -71,7 +79,7 @@ public final class OfficeDataConnectorDataTypes {
 
     /**
      * Get the teams property: Teams data type connection.
-     *
+     * 
      * @return the teams value.
      */
     public OfficeDataConnectorDataTypesTeams teams() {
@@ -80,7 +88,7 @@ public final class OfficeDataConnectorDataTypes {
 
     /**
      * Set the teams property: Teams data type connection.
-     *
+     * 
      * @param teams the teams value to set.
      * @return the OfficeDataConnectorDataTypes object itself.
      */
@@ -91,35 +99,62 @@ public final class OfficeDataConnectorDataTypes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (exchange() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property exchange in model OfficeDataConnectorDataTypes"));
-        } else {
+        if (exchange() != null) {
             exchange().validate();
         }
-        if (sharePoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sharePoint in model OfficeDataConnectorDataTypes"));
-        } else {
+        if (sharePoint() != null) {
             sharePoint().validate();
         }
-        if (teams() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property teams in model OfficeDataConnectorDataTypes"));
-        } else {
+        if (teams() != null) {
             teams().validate();
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(OfficeDataConnectorDataTypes.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("exchange", this.exchange);
+        jsonWriter.writeJsonField("sharePoint", this.sharePoint);
+        jsonWriter.writeJsonField("teams", this.teams);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OfficeDataConnectorDataTypes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OfficeDataConnectorDataTypes if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OfficeDataConnectorDataTypes.
+     */
+    public static OfficeDataConnectorDataTypes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OfficeDataConnectorDataTypes deserializedOfficeDataConnectorDataTypes = new OfficeDataConnectorDataTypes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("exchange".equals(fieldName)) {
+                    deserializedOfficeDataConnectorDataTypes.exchange
+                        = OfficeDataConnectorDataTypesExchange.fromJson(reader);
+                } else if ("sharePoint".equals(fieldName)) {
+                    deserializedOfficeDataConnectorDataTypes.sharePoint
+                        = OfficeDataConnectorDataTypesSharePoint.fromJson(reader);
+                } else if ("teams".equals(fieldName)) {
+                    deserializedOfficeDataConnectorDataTypes.teams = OfficeDataConnectorDataTypesTeams.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOfficeDataConnectorDataTypes;
+        });
+    }
 }

@@ -21,7 +21,7 @@ public final class VolumeSnapshotsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"creationData\":{\"sourceId\":\"gplcrpwjxeznoigb\"},\"provisioningState\":\"Pending\",\"sourceVolumeSizeGiB\":2186486162242158404,\"volumeName\":\"pn\"},\"id\":\"azej\",\"name\":\"oqkag\",\"type\":\"hsxttaugzxnf\"}";
+            = "{\"properties\":{\"creationData\":{\"sourceId\":\"tmmjihyeozph\"},\"provisioningState\":\"Creating\",\"sourceVolumeSizeGiB\":227084746082206788,\"volumeName\":\"c\"},\"id\":\"upkvipmdsc\",\"name\":\"xqupevzhf\",\"type\":\"totxhojujb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class VolumeSnapshotsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Snapshot response = manager.volumeSnapshots()
-            .getWithResponse("fxtsgum", "jglikkxwslolb", "pvuzlmv", "elfk", com.azure.core.util.Context.NONE)
+            .getWithResponse("ixqtn", "ttezlw", "ffiakp", "pqqmted", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gplcrpwjxeznoigb", response.creationData().sourceId());
+        Assertions.assertEquals("tmmjihyeozph", response.creationData().sourceId());
     }
 }

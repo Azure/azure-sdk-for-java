@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for SavedSearches Delete. */
+/**
+ * Samples for SavedSearches Delete.
+ */
 public final class SavedSearchesDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesDeleteSavedSearches.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesDeleteSavedSearches.json
      */
     /**
      * Sample code: SavedSearchesDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void savedSearchesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .savedSearches()
-            .deleteWithResponse(
-                "TestRG", "TestWS", "00000000-0000-0000-0000-00000000000", com.azure.core.util.Context.NONE);
+        manager.savedSearches()
+            .deleteWithResponse("TestRG", "TestWS", "00000000-0000-0000-0000-00000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

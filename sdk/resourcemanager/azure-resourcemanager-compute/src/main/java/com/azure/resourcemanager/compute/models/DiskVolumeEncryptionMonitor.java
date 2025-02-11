@@ -9,19 +9,45 @@ import reactor.core.publisher.Mono;
 
 /** Type that can be used to monitor encryption enable and disable status of a virtual machine. */
 public interface DiskVolumeEncryptionMonitor extends Refreshable<DiskVolumeEncryptionMonitor> {
-    /** @return operating system type of the virtual machine */
+    /**
+     * Gets operating system type of the virtual machine.
+     *
+     * @return operating system type of the virtual machine
+     */
     OperatingSystemTypes osType();
-    /** @return the encryption progress message */
+
+    /**
+     * Gets the encryption progress message.
+     *
+     * @return the encryption progress message
+     */
     String progressMessage();
-    /** @return operating system disk encryption status */
+
+    /**
+     * Gets operating system disk encryption status.
+     *
+     * @return operating system disk encryption status
+     */
     EncryptionStatus osDiskStatus();
-    /** @return data disks encryption status */
+
+    /**
+     * Gets data disks encryption status.
+     *
+     * @return data disks encryption status
+     */
     EncryptionStatus dataDiskStatus();
 
-    /** @return disks encryption status from instance view level. */
+    /**
+     * Gets disks encryption status from instance view level.
+     *
+     * @return disks encryption status from instance view level.
+     */
     Map<String, InstanceViewStatus> diskInstanceViewEncryptionStatuses();
 
     /**
+     * Gets a representation of the deferred computation of this call returning the encryption status once the
+     *     refresh is done.
+     *
      * @return a representation of the deferred computation of this call returning the encryption status once the
      *     refresh is done
      */

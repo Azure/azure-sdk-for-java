@@ -963,6 +963,17 @@ public final class CountryIsoCode extends ExpandableStringEnum<CountryIsoCode> {
     public static final CountryIsoCode ZIMBABWE = fromString("ZW");
 
     /**
+     * Creates a new instance of CountryIsoCode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CountryIsoCode() {
+    }
+
+    /**
+     * Gets known CountryIsoCode values.
+     *
      * @return known country ISO codes
      */
     public static Collection<CountryIsoCode> values() {

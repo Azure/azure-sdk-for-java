@@ -34,48 +34,36 @@ public final class AzureDevOpsRepoesListByConnectorMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"repoId\":\"bczw\",\"repoUrl\":\"uwiqzb\",\"orgName\":\"vsovmyokac\",\"projectName\":\"kwlhzdo\",\"visibility\":\"xjmflbvv\",\"actionableRemediation\":{\"state\":\"Enabled\",\"severityLevels\":[],\"categories\":[]}},\"id\":\"wwzjuqkhrsajiwku\",\"name\":\"foskghsauuimj\",\"type\":\"vxieduugidyj\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"repoId\":\"bczw\",\"repoUrl\":\"uwiqzb\",\"orgName\":\"vsovmyokac\",\"projectName\":\"kwlhzdo\",\"visibility\":\"xjmflbvv\",\"actionableRemediation\":{\"state\":\"Enabled\",\"severityLevels\":[],\"categories\":[]}},\"id\":\"wwzjuqkhrsajiwku\",\"name\":\"foskghsauuimj\",\"type\":\"vxieduugidyj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityDevOpsManager manager =
-            SecurityDevOpsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityDevOpsManager manager = SecurityDevOpsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AzureDevOpsRepo> response =
-            manager.azureDevOpsRepoes().listByConnector("dvjsllrmvvdf", "atkpnp", Context.NONE);
+        PagedIterable<AzureDevOpsRepo> response
+            = manager.azureDevOpsRepoes().listByConnector("dvjsllrmvvdf", "atkpnp", Context.NONE);
 
-        Assertions
-            .assertEquals(ProvisioningState.CANCELED, response.iterator().next().properties().provisioningState());
+        Assertions.assertEquals(ProvisioningState.CANCELED,
+            response.iterator().next().properties().provisioningState());
         Assertions.assertEquals("bczw", response.iterator().next().properties().repoId());
         Assertions.assertEquals("uwiqzb", response.iterator().next().properties().repoUrl());
         Assertions.assertEquals("vsovmyokac", response.iterator().next().properties().orgName());
         Assertions.assertEquals("kwlhzdo", response.iterator().next().properties().projectName());
         Assertions.assertEquals("xjmflbvv", response.iterator().next().properties().visibility());
-        Assertions
-            .assertEquals(
-                ActionableRemediationState.ENABLED,
-                response.iterator().next().properties().actionableRemediation().state());
+        Assertions.assertEquals(ActionableRemediationState.ENABLED,
+            response.iterator().next().properties().actionableRemediation().state());
     }
 }

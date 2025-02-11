@@ -10,11 +10,9 @@ import com.azure.resourcemanager.azurestack.models.VirtualMachineExtensionProduc
 public final class VirtualMachineExtensionProductPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineExtensionProductProperties model =
-            BinaryData
-                .fromString(
-                    "{\"computeRole\":\"None\",\"isSystemExtension\":true,\"sourceBlob\":{\"uri\":\"pkc\"},\"supportMultipleExtensions\":true,\"version\":\"ngj\",\"vmOsType\":\"None\",\"vmScaleSetEnabled\":true}")
-                .toObject(VirtualMachineExtensionProductProperties.class);
+        VirtualMachineExtensionProductProperties model = BinaryData.fromString(
+            "{\"computeRole\":\"None\",\"isSystemExtension\":true,\"sourceBlob\":{\"uri\":\"xzbinjeputt\"},\"supportMultipleExtensions\":false,\"version\":\"nuzo\",\"vmOsType\":\"Windows\",\"vmScaleSetEnabled\":true}")
+            .toObject(VirtualMachineExtensionProductProperties.class);
     }
 
     @org.junit.jupiter.api.Test

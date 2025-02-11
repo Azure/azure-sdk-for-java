@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.recoveryservicesdatareplication.generated;
 
-/** Samples for Policy Delete. */
+/**
+ * Samples for Policy Delete.
+ */
 public final class PolicyDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Policy_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Policy_Delete.json
      */
     /**
      * Sample code: Policy_Delete.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void policyDelete(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .policies()
+        manager.policies()
             .delete("rgrecoveryservicesdatareplication", "4", "wqfscsdv", com.azure.core.util.Context.NONE);
     }
 }

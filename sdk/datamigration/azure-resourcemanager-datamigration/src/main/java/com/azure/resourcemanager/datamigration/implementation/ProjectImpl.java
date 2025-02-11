@@ -114,22 +114,18 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .createOrUpdateWithResponse(groupName, serviceName, projectName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .createOrUpdateWithResponse(groupName, serviceName, projectName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Project create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .createOrUpdateWithResponse(groupName, serviceName, projectName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .createOrUpdateWithResponse(groupName, serviceName, projectName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -144,50 +140,42 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .updateWithResponse(groupName, serviceName, projectName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .updateWithResponse(groupName, serviceName, projectName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Project apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .updateWithResponse(groupName, serviceName, projectName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .updateWithResponse(groupName, serviceName, projectName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
     ProjectImpl(ProjectInner innerObject, com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.groupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "services");
-        this.projectName = Utils.getValueFromIdByName(innerObject.id(), "projects");
+        this.groupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "services");
+        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
     }
 
     public Project refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .getWithResponse(groupName, serviceName, projectName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .getWithResponse(groupName, serviceName, projectName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Project refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .getWithResponse(groupName, serviceName, projectName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .getWithResponse(groupName, serviceName, projectName, context)
+            .getValue();
         return this;
     }
 

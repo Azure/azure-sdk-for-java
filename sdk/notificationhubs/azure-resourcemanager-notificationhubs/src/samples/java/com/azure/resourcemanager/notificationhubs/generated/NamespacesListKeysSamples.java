@@ -10,16 +10,18 @@ package com.azure.resourcemanager.notificationhubs.generated;
 public final class NamespacesListKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * Namespaces/AuthorizationRuleListKeys.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/Namespaces/
+     * NHNameSpaceAuthorizationRuleListKey.json
      */
     /**
-     * Sample code: Namespaces_ListKeys.
+     * Sample code: NameSpaceAuthorizationRuleListKey.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void namespacesListKeys(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().listKeysWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
-            com.azure.core.util.Context.NONE);
+    public static void
+        nameSpaceAuthorizationRuleListKey(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        manager.namespaces()
+            .listKeysWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
+                com.azure.core.util.Context.NONE);
     }
 }

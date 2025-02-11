@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Frequency of the schedule. */
+/**
+ * Frequency of the schedule.
+ */
 public final class ScheduleFrequency extends ExpandableStringEnum<ScheduleFrequency> {
-    /** Static value Daily for ScheduleFrequency. */
+    /**
+     * Static value Daily for ScheduleFrequency.
+     */
     public static final ScheduleFrequency DAILY = fromString("Daily");
 
-    /** Static value Weekly for ScheduleFrequency. */
+    /**
+     * Static value Weekly for ScheduleFrequency.
+     */
     public static final ScheduleFrequency WEEKLY = fromString("Weekly");
 
-    /** Static value Monthly for ScheduleFrequency. */
+    /**
+     * Static value Monthly for ScheduleFrequency.
+     */
     public static final ScheduleFrequency MONTHLY = fromString("Monthly");
 
     /**
      * Creates a new instance of ScheduleFrequency value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ScheduleFrequency extends ExpandableStringEnum<ScheduleFreque
 
     /**
      * Creates or finds a ScheduleFrequency from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScheduleFrequency.
      */
-    @JsonCreator
     public static ScheduleFrequency fromString(String name) {
         return fromString(name, ScheduleFrequency.class);
     }
 
     /**
      * Gets known ScheduleFrequency values.
-     *
+     * 
      * @return known ScheduleFrequency values.
      */
     public static Collection<ScheduleFrequency> values() {

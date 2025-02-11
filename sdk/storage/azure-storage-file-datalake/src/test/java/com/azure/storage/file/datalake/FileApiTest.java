@@ -16,6 +16,7 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReceiver;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -125,13 +126,14 @@ public class FileApiTest extends DataLakeTestBase {
         .setOwner(new RolePermissions().setReadPermission(true).setWritePermission(true).setExecutePermission(true))
         .setGroup(new RolePermissions().setReadPermission(true).setExecutePermission(true))
         .setOther(new RolePermissions().setReadPermission(true));
-    private static final List<PathAccessControlEntry> PATH_ACCESS_CONTROL_ENTRIES =
-        PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
+    private static final List<PathAccessControlEntry> PATH_ACCESS_CONTROL_ENTRIES
+        = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
     private static final String GROUP = null;
     private static final String OWNER = null;
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-request-server-encrypted");
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
+        = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
     private DataLakeFileClient fc;
     private final List<File> createdFiles = new ArrayList<>();
@@ -157,7 +159,6 @@ public class FileApiTest extends DataLakeTestBase {
     public void createDefaults() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
         Response<?> createResponse = fc.createWithResponse(null, null, null, null, null, null, null);
-
 
         assertEquals(201, createResponse.getStatusCode());
         validateBasicHeaders(createResponse.getHeaders());
@@ -192,7 +193,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,null", "control,disposition,encoding,language,type"})
+    @CsvSource(value = { "null,null,null,null,null", "control,disposition,encoding,language,type" })
     public void createHeaders(String cacheControl, String contentDisposition, String contentEncoding,
         String contentLanguage, String contentType) {
         // Create does not set md5
@@ -208,11 +209,12 @@ public class FileApiTest extends DataLakeTestBase {
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
 
-        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType);
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null,
+            contentType);
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null", "foo,bar,fizz,buzz" }, nullValues = "null")
     public void createMetadata(String key1, String value1, String key2, String value2) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null) {
@@ -243,11 +245,14 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(encryptionContext, fc.getProperties().getEncryptionContext());
 
         // testing encryption context with read()
-        assertEquals(encryptionContext, fc.readWithResponse(new ByteArrayOutputStream(), null, null, null, false, null,
-            Context.NONE).getDeserializedHeaders().getEncryptionContext());
+        assertEquals(encryptionContext,
+            fc.readWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, Context.NONE)
+                .getDeserializedHeaders()
+                .getEncryptionContext());
 
         // testing encryption context with listPaths()
-        Iterator<PathItem> response = dataLakeFileSystemClient.listPaths(new ListPathsOptions().setRecursive(true), null).iterator();
+        Iterator<PathItem> response
+            = dataLakeFileSystemClient.listPaths(new ListPathsOptions().setRecursive(true), null).iterator();
 
         response.next();
         assertTrue(response.hasNext());
@@ -260,8 +265,7 @@ public class FileApiTest extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void createAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -273,13 +277,10 @@ public class FileApiTest extends DataLakeTestBase {
     private static Stream<Arguments> modifiedMatchAndLeaseIdSupplier() {
         return Stream.of(
             // modified | unmodified | match        | noneMatch   | leaseID
-            Arguments.of(null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null, null),
+            Arguments.of(null, null, null, null, null), Arguments.of(OLD_DATE, null, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null, null), Arguments.of(null, null, RECEIVED_ETAG, null, null),
             Arguments.of(null, null, null, GARBAGE_ETAG, null),
-            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID)
-        );
+            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID));
     }
 
     @ParameterizedTest
@@ -287,8 +288,7 @@ public class FileApiTest extends DataLakeTestBase {
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
@@ -301,12 +301,9 @@ public class FileApiTest extends DataLakeTestBase {
     private static Stream<Arguments> invalidModifiedMatchAndLeaseIdSupplier() {
         return Stream.of(
             // modified | unmodified | match        | noneMatch   | leaseID
-            Arguments.of(NEW_DATE, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null),
-            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID)
-        );
+            Arguments.of(NEW_DATE, null, null, null, null), Arguments.of(null, OLD_DATE, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null), Arguments.of(null, null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID));
     }
 
     @Test
@@ -317,8 +314,10 @@ public class FileApiTest extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createOptionsWithACL() {
-        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries);
+        List<PathAccessControlEntry> pathAccessControlEntries
+            = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
+        DataLakePathCreateOptions options
+            = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries);
         fc.createWithResponse(options, null, null);
 
         List<PathAccessControlEntry> acl = fc.getAccessControl().getAccessControlList();
@@ -347,12 +346,14 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,null,application/octet-stream", "control,disposition,encoding,language,null,type"},
-               nullValues = "null")
+    @CsvSource(
+        value = {
+            "null,null,null,null,null,application/octet-stream",
+            "control,disposition,encoding,language,null,type" },
+        nullValues = "null")
     public void createOptionsWithPathHttpHeaders(String cacheControl, String contentDisposition, String contentEncoding,
         String contentLanguage, byte[] contentMD5, String contentType) {
-        PathHttpHeaders putHeaders = new PathHttpHeaders()
-            .setCacheControl(cacheControl)
+        PathHttpHeaders putHeaders = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -366,7 +367,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null", "foo,bar,fizz,buzz" }, nullValues = "null")
     public void createOptionsWithMetadata(String key1, String value1, String key2, String value2) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null && value1 != null) {
@@ -401,7 +402,8 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void createOptionsWithLeaseId() {
         String leaseId = CoreUtils.randomUuid().toString();
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15);
+        DataLakePathCreateOptions options
+            = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15);
 
         assertEquals(201, fc.createWithResponse(options, null, null).getStatusCode());
     }
@@ -419,7 +421,8 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void createOptionsWithLeaseDuration() {
         String leaseId = CoreUtils.randomUuid().toString();
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId);
+        DataLakePathCreateOptions options
+            = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId);
 
         assertEquals(201, fc.createWithResponse(options, null, null).getStatusCode());
 
@@ -446,9 +449,9 @@ public class FileApiTest extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createOptionsWithTimeToExpireRelativeToNow() {
-        DataLakePathScheduleDeletionOptions deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6));
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setScheduleDeletionOptions(deletionOptions);
+        DataLakePathScheduleDeletionOptions deletionOptions
+            = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6));
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setScheduleDeletionOptions(deletionOptions);
 
         assertEquals(201, fc.createWithResponse(options, null, null).getStatusCode());
 
@@ -478,11 +481,13 @@ public class FileApiTest extends DataLakeTestBase {
     public void createIfNotExistsOverwrite() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
 
-        assertEquals(201, fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null).getStatusCode());
+        assertEquals(201,
+            fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null).getStatusCode());
         assertTrue(fc.exists());
 
         // Try to create the resource again
-        assertEquals(409, fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null).getStatusCode());
+        assertEquals(409,
+            fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null).getStatusCode());
     }
 
     @Test
@@ -494,7 +499,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,null", "control,disposition,encoding,language,type"})
+    @CsvSource(value = { "null,null,null,null,null", "control,disposition,encoding,language,type" })
     public void createIfNotExistsHeaders(String cacheControl, String contentDisposition, String contentEncoding,
         String contentLanguage, String contentType) {
         // Create does not set md5
@@ -511,11 +516,12 @@ public class FileApiTest extends DataLakeTestBase {
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
 
-        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType);
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null,
+            contentType);
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null", "foo,bar,fizz,buzz" }, nullValues = "null")
     public void createIfNotExistsMetadata(String key1, String value1, String key2, String value2) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null) {
@@ -535,8 +541,11 @@ public class FileApiTest extends DataLakeTestBase {
     public void createIfNotExistsPermissionsAndUmask() {
         DataLakeFileClient client = dataLakeFileSystemClient.getFileClient(generatePathName());
 
-        assertEquals(201, client.createIfNotExistsWithResponse(new DataLakePathCreateOptions()
-            .setPermissions("0777").setUmask("0057"), null, Context.NONE).getStatusCode());
+        assertEquals(201,
+            client
+                .createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057"),
+                    null, Context.NONE)
+                .getStatusCode());
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-04-10")
@@ -557,8 +566,10 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void createIfNotExistsOptionsWithACL() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
-        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries);
+        List<PathAccessControlEntry> pathAccessControlEntries
+            = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
+        DataLakePathCreateOptions options
+            = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries);
         fc.createIfNotExistsWithResponse(options, null, null);
 
         List<PathAccessControlEntry> acl = fc.getAccessControl().getAccessControlList();
@@ -590,13 +601,15 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,null,application/octet-stream", "control,disposition,encoding,language,null,type"},
-               nullValues = "null")
+    @CsvSource(
+        value = {
+            "null,null,null,null,null,application/octet-stream",
+            "control,disposition,encoding,language,null,type" },
+        nullValues = "null")
     public void createIfNotExistsOptionsWithPathHttpHeaders(String cacheControl, String contentDisposition,
         String contentEncoding, String contentLanguage, byte[] contentMD5, String contentType) {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
-        PathHttpHeaders putHeaders = new PathHttpHeaders()
-            .setCacheControl(cacheControl)
+        PathHttpHeaders putHeaders = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -609,7 +622,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null", "foo,bar,fizz,buzz" }, nullValues = "null")
     public void createIfNotExistsOptionsWithMetadata(String key1, String value1, String key2, String value2) {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
         Map<String, String> metadata = new HashMap<>();
@@ -648,7 +661,8 @@ public class FileApiTest extends DataLakeTestBase {
     public void createIfNotExistsOptionsWithLeaseId() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
         String leaseId = CoreUtils.randomUuid().toString();
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15);
+        DataLakePathCreateOptions options
+            = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15);
 
         assertEquals(201, fc.createIfNotExistsWithResponse(options, null, null).getStatusCode());
     }
@@ -668,7 +682,8 @@ public class FileApiTest extends DataLakeTestBase {
     public void createIfNotExistsOptionsWithLeaseDuration() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
         String leaseId = CoreUtils.randomUuid().toString();
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId);
+        DataLakePathCreateOptions options
+            = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId);
 
         assertEquals(201, fc.createIfNotExistsWithResponse(options, null, null).getStatusCode());
 
@@ -684,8 +699,7 @@ public class FileApiTest extends DataLakeTestBase {
     @MethodSource("timeExpiresOnOptionsSupplier")
     public void createIfNotExistsOptionsWithTimeExpiresOn(DataLakePathScheduleDeletionOptions deletionOptions) {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setScheduleDeletionOptions(deletionOptions);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setScheduleDeletionOptions(deletionOptions);
 
         assertEquals(201, fc.createIfNotExistsWithResponse(options, null, null).getStatusCode());
     }
@@ -694,9 +708,9 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void createIfNotExistsOptionsWithTimeToExpireRelativeToNow() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
-        DataLakePathScheduleDeletionOptions deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6));
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setScheduleDeletionOptions(deletionOptions);
+        DataLakePathScheduleDeletionOptions deletionOptions
+            = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6));
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setScheduleDeletionOptions(deletionOptions);
 
         assertEquals(201, fc.createIfNotExistsWithResponse(options, null, null).getStatusCode());
 
@@ -713,8 +727,8 @@ public class FileApiTest extends DataLakeTestBase {
     public void deleteFileDoesNotExistAnymore() {
         fc.deleteWithResponse(null, null, null);
 
-        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
-            () -> fc.getPropertiesWithResponse(null, null, null));
+        DataLakeStorageException e
+            = assertThrows(DataLakeStorageException.class, () -> fc.getPropertiesWithResponse(null, null, null));
 
         assertEquals(404, e.getResponse().getStatusCode());
         assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
@@ -724,8 +738,7 @@ public class FileApiTest extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -739,8 +752,7 @@ public class FileApiTest extends DataLakeTestBase {
     public void deleteACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
@@ -775,13 +787,13 @@ public class FileApiTest extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
-        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false).setRequestConditions(drc);
+        DataLakePathDeleteOptions options
+            = new DataLakePathDeleteOptions().setIsRecursive(false).setRequestConditions(drc);
 
         assertEquals(200, fc.deleteIfExistsWithResponse(options, null, null).getStatusCode());
     }
@@ -791,8 +803,7 @@ public class FileApiTest extends DataLakeTestBase {
     public void deleteIfExistsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
@@ -812,21 +823,22 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void setPermissionsWithResponse() {
-        assertEquals(200, fc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, null, null, Context.NONE).getStatusCode());
+        assertEquals(200,
+            fc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, null, null, Context.NONE).getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setPermissionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertEquals(200, fc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc, null, Context.NONE).getStatusCode());
+        assertEquals(200,
+            fc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc, null, Context.NONE).getStatusCode());
     }
 
     @ParameterizedTest
@@ -834,8 +846,7 @@ public class FileApiTest extends DataLakeTestBase {
     public void setPermissionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
@@ -863,21 +874,24 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void setACLWithResponse() {
-        assertEquals(200, fc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, null, null, Context.NONE).getStatusCode());
+        assertEquals(200,
+            fc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, null, null, Context.NONE)
+                .getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setAclAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertEquals(200, fc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc, null, Context.NONE).getStatusCode());
+        assertEquals(200,
+            fc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc, null, Context.NONE)
+                .getStatusCode());
     }
 
     @ParameterizedTest
@@ -885,15 +899,14 @@ public class FileApiTest extends DataLakeTestBase {
     public void setAclACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertThrows(DataLakeStorageException.class,
-            () -> fc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc, null, Context.NONE));
+        assertThrows(DataLakeStorageException.class, () -> fc
+            .setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc, null, Context.NONE));
     }
 
     @Test
@@ -927,10 +940,10 @@ public class FileApiTest extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursive() {
-        List<PathRemoveAccessControlEntry> removeAccessControlEntries = PathRemoveAccessControlEntry.parseList(
-            "mask,default:user,default:group,user:ec3595d6-2c17-4696-8caa-7e139758d24a,"
-            + "group:ec3595d6-2c17-4696-8caa-7e139758d24a,default:user:ec3595d6-2c17-4696-8caa-7e139758d24a,"
-            + "default:group:ec3595d6-2c17-4696-8caa-7e139758d24a");
+        List<PathRemoveAccessControlEntry> removeAccessControlEntries = PathRemoveAccessControlEntry
+            .parseList("mask,default:user,default:group,user:ec3595d6-2c17-4696-8caa-7e139758d24a,"
+                + "group:ec3595d6-2c17-4696-8caa-7e139758d24a,default:user:ec3595d6-2c17-4696-8caa-7e139758d24a,"
+                + "default:group:ec3595d6-2c17-4696-8caa-7e139758d24a");
 
         AccessControlChangeResult response = fc.removeAccessControlRecursive(removeAccessControlEntries);
 
@@ -963,8 +976,7 @@ public class FileApiTest extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void getAccessControlAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -982,8 +994,7 @@ public class FileApiTest extends DataLakeTestBase {
         }
 
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
@@ -1038,8 +1049,7 @@ public class FileApiTest extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void getPropertiesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -1052,8 +1062,7 @@ public class FileApiTest extends DataLakeTestBase {
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void getPropertiesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
@@ -1081,8 +1090,7 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void setHTTPHeadersMin() throws NoSuchAlgorithmException {
         PathProperties properties = fc.getProperties();
-        PathHttpHeaders headers = new PathHttpHeaders()
-            .setContentEncoding(properties.getContentEncoding())
+        PathHttpHeaders headers = new PathHttpHeaders().setContentEncoding(properties.getContentEncoding())
             .setContentDisposition(properties.getContentDisposition())
             .setContentType("type")
             .setCacheControl(properties.getCacheControl())
@@ -1101,8 +1109,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         fc.append(DATA.getDefaultBinaryData(), 0);
         fc.flush(DATA.getDefaultDataSizeLong(), true);
-        PathHttpHeaders putHeaders = new PathHttpHeaders()
-            .setCacheControl(cacheControl)
+        PathHttpHeaders putHeaders = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -1120,16 +1127,14 @@ public class FileApiTest extends DataLakeTestBase {
             // cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType
             Arguments.of(null, null, null, null, null, null),
             Arguments.of("control", "disposition", "encoding", "language",
-                Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes())), "type")
-        );
+                Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes())), "type"));
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setHttpHeadersAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -1143,8 +1148,7 @@ public class FileApiTest extends DataLakeTestBase {
     public void setHttpHeadersACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
@@ -1169,7 +1173,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,200", "foo,bar,fizz,buzz,200"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null,200", "foo,bar,fizz,buzz,200" }, nullValues = "null")
     public void setMetadataMetadata(String key1, String value1, String key2, String value2, int statusCode) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null && value1 != null) {
@@ -1187,8 +1191,7 @@ public class FileApiTest extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setMetadataAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -1202,8 +1205,7 @@ public class FileApiTest extends DataLakeTestBase {
     public void setMetadataACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
@@ -1275,17 +1277,17 @@ public class FileApiTest extends DataLakeTestBase {
         // don't need to check the data here, but we want to ensure that the correct range is set each time. This will
         // test the correction of a bug that was found which caused HttpGetterInfo to have an incorrect offset when it
         // was constructed in BlobClient.download().
-        DataLakeFileClient fileClient = getFileClient(getDataLakeCredential(), fc.getPathUrl(),
-            new MockRetryRangeResponsePolicy("bytes=2-6"));
+        DataLakeFileClient fileClient
+            = getFileClient(getDataLakeCredential(), fc.getPathUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"));
 
         fc.append(DATA.getDefaultBinaryData(), 0);
         fc.flush(DATA.getDefaultDataSizeLong(), true);
 
         // Because the dummy Flux always throws an error. This will also validate that an IllegalArgumentException is
         // NOT thrown because the types would not match.
-        RuntimeException e = assertThrows(RuntimeException.class, () -> fileClient.readWithResponse(
-            new ByteArrayOutputStream(), new FileRange(2, 5L), new DownloadRetryOptions().setMaxRetryRequests(3), null,
-            false, null, null));
+        RuntimeException e
+            = assertThrows(RuntimeException.class, () -> fileClient.readWithResponse(new ByteArrayOutputStream(),
+                new FileRange(2, 5L), new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null));
 
         assertInstanceOf(IOException.class, e.getCause());
     }
@@ -1317,25 +1319,22 @@ public class FileApiTest extends DataLakeTestBase {
     private static Stream<Arguments> readRangeSupplier() {
         return Stream.of(
             // offset | count || expectedData
-            Arguments.of(0L, null, DATA.getDefaultText()),
-            Arguments.of(0L, 5L, DATA.getDefaultText().substring(0, 5)),
-            Arguments.of(3L, 2L, DATA.getDefaultText().substring(3, 3 + 2))
-        );
+            Arguments.of(0L, null, DATA.getDefaultText()), Arguments.of(0L, 5L, DATA.getDefaultText().substring(0, 5)),
+            Arguments.of(3L, 2L, DATA.getDefaultText().substring(3, 3 + 2)));
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void readAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertEquals(200, fc.readWithResponse(new ByteArrayOutputStream(), null, null, drc, false, null, null)
-            .getStatusCode());
+        assertEquals(200,
+            fc.readWithResponse(new ByteArrayOutputStream(), null, null, drc, false, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -1343,8 +1342,7 @@ public class FileApiTest extends DataLakeTestBase {
     public void readACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
@@ -1359,12 +1357,15 @@ public class FileApiTest extends DataLakeTestBase {
         fc.append(DATA.getDefaultBinaryData(), 0);
         fc.flush(DATA.getDefaultDataSizeLong(), true);
 
-        byte[] contentMD5 = fc.readWithResponse(new ByteArrayOutputStream(), new FileRange(0, 3L), null, null, true, null, null)
-            .getHeaders().getValue(HttpHeaderName.CONTENT_MD5)
-            .getBytes();
+        byte[] contentMD5
+            = fc.readWithResponse(new ByteArrayOutputStream(), new FileRange(0, 3L), null, null, true, null, null)
+                .getHeaders()
+                .getValue(HttpHeaderName.CONTENT_MD5)
+                .getBytes();
 
         TestUtils.assertArraysEqual(
-            Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultText().substring(0, 3).getBytes())),
+            Base64.getEncoder()
+                .encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultText().substring(0, 3).getBytes())),
             contentMD5);
     }
 
@@ -1372,8 +1373,8 @@ public class FileApiTest extends DataLakeTestBase {
     public void readRetryDefault() {
         fc.append(DATA.getDefaultBinaryData(), 0);
         fc.flush(DATA.getDefaultDataSizeLong(), true);
-        DataLakeFileClient failureFileClient = getFileClient(getDataLakeCredential(), fc.getFileUrl(),
-            new MockFailureResponsePolicy(5));
+        DataLakeFileClient failureFileClient
+            = getFileClient(getDataLakeCredential(), fc.getFileUrl(), new MockFailureResponsePolicy(5));
 
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         failureFileClient.read(outStream);
@@ -1455,8 +1456,8 @@ public class FileApiTest extends DataLakeTestBase {
         fc.append(DATA.getDefaultBinaryData(), 0);
         fc.flush(DATA.getDefaultDataSizeLong(), true);
 
-        Set<OpenOption> openOptions = new HashSet<>(Arrays.asList(
-            StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE));
+        Set<OpenOption> openOptions = new HashSet<>(
+            Arrays.asList(StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE));
         fc.readToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null);
 
         assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8));
@@ -1499,8 +1500,9 @@ public class FileApiTest extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        PathProperties properties = fc.readToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024), null, null, false, null, null, null)
+        PathProperties properties = fc
+            .readToFileWithResponse(outFile.toPath().toString(), null,
+                new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024), null, null, false, null, null, null)
             .getValue();
 
         compareFiles(file, outFile, 0, fileSize);
@@ -1522,13 +1524,13 @@ public class FileApiTest extends DataLakeTestBase {
     @MethodSource("downloadFileSupplier")
     public void downloadFileSyncBufferCopy(int fileSize) {
         String fileSystemName = generateFileSystemName();
-        DataLakeServiceClient datalakeServiceClient = new DataLakeServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
-            .credential(getDataLakeCredential())
-            .buildClient();
+        DataLakeServiceClient datalakeServiceClient
+            = new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .credential(getDataLakeCredential())
+                .buildClient();
 
-        DataLakeFileClient fileClient = datalakeServiceClient.createFileSystem(fileSystemName)
-            .getFileClient(generatePathName());
+        DataLakeFileClient fileClient
+            = datalakeServiceClient.createFileSystem(fileSystemName).getFileClient(generatePathName());
 
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
@@ -1543,10 +1545,10 @@ public class FileApiTest extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        PathProperties properties = fileClient.readToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024), null, null, false, null, null, null)
+        PathProperties properties = fileClient
+            .readToFileWithResponse(outFile.toPath().toString(), null,
+                new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024), null, null, false, null, null, null)
             .getValue();
-
 
         compareFiles(file, outFile, 0, fileSize);
         assertEquals(fileSize, properties.getFileSize());
@@ -1577,8 +1579,7 @@ public class FileApiTest extends DataLakeTestBase {
     private static Stream<FileRange> downloadFileRangeSupplier() {
         // The last case is to test a range much larger than the size of the file to ensure we don't accidentally
         // send off parallel requests with invalid ranges.
-        return Stream.of(
-            new FileRange(0, DATA.getDefaultDataSizeLong()), // Exact count
+        return Stream.of(new FileRange(0, DATA.getDefaultDataSizeLong()), // Exact count
             new FileRange(1, DATA.getDefaultDataSizeLong() - 1), // Offset and exact count
             new FileRange(3, 2L), // Narrow range in middle
             new FileRange(0, DATA.getDefaultDataSizeLong() - 1), // Count that is less than total
@@ -1622,7 +1623,8 @@ public class FileApiTest extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        fc.readToFileWithResponse(outFile.toPath().toString(), new FileRange(0), null, null, null, false, null, null, null);
+        fc.readToFileWithResponse(outFile.toPath().toString(), new FileRange(0), null, null, null, false, null, null,
+            null);
 
         compareFiles(file, outFile, 0, DATA.getDefaultDataSizeLong());
     }
@@ -1645,8 +1647,7 @@ public class FileApiTest extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        DataLakeRequestConditions bro = new DataLakeRequestConditions()
-            .setIfModifiedSince(modified)
+        DataLakeRequestConditions bro = new DataLakeRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
@@ -1675,28 +1676,23 @@ public class FileApiTest extends DataLakeTestBase {
         }
 
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions bro = new DataLakeRequestConditions()
-            .setIfModifiedSince(modified)
+        DataLakeRequestConditions bro = new DataLakeRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setLeaseId(leaseID);
 
-        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, () -> fc.readToFileWithResponse(
-            outFile.toPath().toString(), null, null, null, bro, false, null, null, null));
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, () -> fc
+            .readToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null, null));
 
-        assertTrue(Objects.equals(e.getErrorCode(), "ConditionNotMet") || Objects.equals(e.getErrorCode(), "LeaseIdMismatchWithBlobOperation"));
+        assertTrue(Objects.equals(e.getErrorCode(), "ConditionNotMet")
+            || Objects.equals(e.getErrorCode(), "LeaseIdMismatchWithBlobOperation"));
     }
-
-
 
     @SuppressWarnings("deprecation")
     @LiveOnly
     @ParameterizedTest
-    @ValueSource(ints = {
-        100,
-        8 * 1026 * 1024 + 10
-    })
+    @ValueSource(ints = { 100, 8 * 1026 * 1024 + 10 })
     public void downloadFileProgressReceiver(int fileSize) {
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
@@ -1747,7 +1743,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     @LiveOnly
     @ParameterizedTest
-    @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
+    @ValueSource(ints = { 100, 8 * 1026 * 1024 + 10 })
     public void downloadFileProgressListener(int fileSize) {
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
@@ -1802,7 +1798,8 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void renameWithResponse() {
-        DataLakeFileClient renamedClient = fc.renameWithResponse(null, generatePathName(), null, null, null, null).getValue();
+        DataLakeFileClient renamedClient
+            = fc.renameWithResponse(null, generatePathName(), null, null, null, null).getValue();
 
         assertDoesNotThrow(() -> renamedClient.getProperties());
         assertThrows(DataLakeStorageException.class, fc::getProperties);
@@ -1810,10 +1807,12 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void renameFilesystemWithResponse() {
-        DataLakeFileSystemClient newFileSystem = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName());
+        DataLakeFileSystemClient newFileSystem
+            = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName());
 
-        DataLakeFileClient renamedClient = fc.renameWithResponse(newFileSystem.getFileSystemName(), generatePathName(),
-            null, null, null, null).getValue();
+        DataLakeFileClient renamedClient
+            = fc.renameWithResponse(newFileSystem.getFileSystemName(), generatePathName(), null, null, null, null)
+                .getValue();
 
         assertDoesNotThrow(() -> renamedClient.getProperties());
         assertThrows(DataLakeStorageException.class, fc::getProperties);
@@ -1828,22 +1827,22 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource({",", "%20%25,%20%25", "%20%25,", ",%20%25"})
+    @CsvSource({ ",", "%20%25,%20%25", "%20%25,", ",%20%25" })
     public void renameUrlEncoded(String source, String destination) {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName() + source);
         fc.create();
-        Response<DataLakeFileClient> response = fc.renameWithResponse(null, generatePathName() + destination, null, null, null, null);
+        Response<DataLakeFileClient> response
+            = fc.renameWithResponse(null, generatePathName() + destination, null, null, null, null);
 
         assertEquals(201, response.getStatusCode());
-        assertEquals(200,  response.getValue().getPropertiesWithResponse(null, null, null).getStatusCode());
+        assertEquals(200, response.getValue().getPropertiesWithResponse(null, null, null).getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void renameSourceAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -1859,8 +1858,7 @@ public class FileApiTest extends DataLakeTestBase {
         fc = dataLakeFileSystemClient.createFile(generatePathName());
 
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
@@ -1877,12 +1875,12 @@ public class FileApiTest extends DataLakeTestBase {
         String pathName = generatePathName();
         DataLakeFileClient destFile = dataLakeFileSystemClient.createFile(pathName);
 
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(destFile, leaseID))
-            .setIfMatch(setupPathMatchCondition(destFile, match))
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        DataLakeRequestConditions drc
+            = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(destFile, leaseID))
+                .setIfMatch(setupPathMatchCondition(destFile, match))
+                .setIfNoneMatch(noneMatch)
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified);
 
         assertEquals(201, fc.renameWithResponse(null, pathName, null, drc, null, null).getStatusCode());
     }
@@ -1895,28 +1893,27 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeFileClient destFile = dataLakeFileSystemClient.createFile(pathName);
 
         setupPathLeaseCondition(destFile, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(destFile, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertThrows(DataLakeStorageException.class, () -> fc.renameWithResponse(null, pathName, null, drc, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> fc.renameWithResponse(null, pathName, null, drc, null, null));
     }
 
     @Test
     public void renameSasToken() {
-        FileSystemSasPermission permissions = new FileSystemSasPermission()
-            .setReadPermission(true)
+        FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true)
             .setMovePermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
             .setAddPermission(true)
             .setDeletePermission(true);
 
-        String sas = dataLakeFileSystemClient.generateSas(
-            new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
+        String sas = dataLakeFileSystemClient
+            .generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
         DataLakeFileClient client = getFileClient(sas, dataLakeFileSystemClient.getFileSystemUrl(), fc.getFilePath());
 
         DataLakeFileClient destClient = client.rename(dataLakeFileSystemClient.getFileSystemName(), generatePathName());
@@ -1926,16 +1923,15 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void renameSasTokenWithLeadingQuestionMark() {
-        FileSystemSasPermission permissions = new FileSystemSasPermission()
-            .setReadPermission(true)
+        FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true)
             .setMovePermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
             .setAddPermission(true)
             .setDeletePermission(true);
 
-        String sas = "?" + dataLakeFileSystemClient.generateSas(
-            new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
+        String sas = "?" + dataLakeFileSystemClient
+            .generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
         DataLakeFileClient client = getFileClient(sas, dataLakeFileSystemClient.getFileSystemUrl(), fc.getFilePath());
 
         DataLakeFileClient destClient = client.rename(dataLakeFileSystemClient.getFileSystemName(), generatePathName());
@@ -1984,9 +1980,10 @@ public class FileApiTest extends DataLakeTestBase {
         return Stream.of(
             // is | dataSize || exceptionType
             Arguments.of(null, DATA.getDefaultDataSizeLong(), NullPointerException.class),
-            Arguments.of(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong() + 1, UnexpectedLengthException.class),
-            Arguments.of(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong() - 1, UnexpectedLengthException.class)
-        );
+            Arguments.of(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong() + 1,
+                UnexpectedLengthException.class),
+            Arguments.of(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong() - 1,
+                UnexpectedLengthException.class));
     }
 
     @Test
@@ -2005,8 +2002,11 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void appendDataLease() {
-        assertEquals(202, fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, null,
-            setupPathLeaseCondition(fc, RECEIVED_LEASE_ID), null, null).getStatusCode());
+        assertEquals(
+            202, fc
+                .appendWithResponse(DATA.getDefaultBinaryData(), 0, null,
+                    setupPathLeaseCondition(fc, RECEIVED_LEASE_ID), null, null)
+                .getStatusCode());
     }
 
     @Test
@@ -2023,12 +2023,12 @@ public class FileApiTest extends DataLakeTestBase {
     public void appendDataLeaseAcquire() {
         fc = dataLakeFileSystemClient.createFileIfNotExists(generatePathName());
 
-        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
-            .setLeaseAction(LeaseAction.ACQUIRE)
+        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions().setLeaseAction(LeaseAction.ACQUIRE)
             .setProposedLeaseId(CoreUtils.randomUuid().toString())
             .setLeaseDuration(15);
 
-        assertEquals(202, fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions, null, null).getStatusCode());
+        assertEquals(202,
+            fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions, null, null).getStatusCode());
 
         PathProperties fileProperties = fc.getProperties();
         assertEquals(LeaseStatusType.LOCKED, fileProperties.getLeaseStatus());
@@ -2045,11 +2045,11 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeLeaseClient leaseClient = createLeaseClient(fc, leaseId);
         leaseClient.acquireLease(15);
 
-        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
-            .setLeaseAction(LeaseAction.AUTO_RENEW)
-            .setLeaseId(leaseId);
+        DataLakeFileAppendOptions appendOptions
+            = new DataLakeFileAppendOptions().setLeaseAction(LeaseAction.AUTO_RENEW).setLeaseId(leaseId);
 
-        assertEquals(202, fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions, null, null).getStatusCode());
+        assertEquals(202,
+            fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions, null, null).getStatusCode());
 
         PathProperties fileProperties = fc.getProperties();
         assertEquals(LeaseStatusType.LOCKED, fileProperties.getLeaseStatus());
@@ -2067,12 +2067,11 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeLeaseClient leaseClient = createLeaseClient(fc, leaseId);
         leaseClient.acquireLease(15);
 
-        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
-            .setLeaseAction(LeaseAction.RELEASE)
-            .setLeaseId(leaseId)
-            .setFlush(true);
+        DataLakeFileAppendOptions appendOptions
+            = new DataLakeFileAppendOptions().setLeaseAction(LeaseAction.RELEASE).setLeaseId(leaseId).setFlush(true);
 
-        assertEquals(202, fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions, null, null).getStatusCode());
+        assertEquals(202,
+            fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions, null, null).getStatusCode());
 
         PathProperties fileProperties = fc.getProperties();
         assertEquals(LeaseStatusType.UNLOCKED, fileProperties.getLeaseStatus());
@@ -2084,13 +2083,14 @@ public class FileApiTest extends DataLakeTestBase {
     public void appendDataLeaseAcquireRelease() {
         fc = dataLakeFileSystemClient.createFileIfNotExists(generatePathName());
 
-        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
-            .setLeaseAction(LeaseAction.ACQUIRE_RELEASE)
-            .setProposedLeaseId(CoreUtils.randomUuid().toString())
-            .setLeaseDuration(15)
-            .setFlush(true);
+        DataLakeFileAppendOptions appendOptions
+            = new DataLakeFileAppendOptions().setLeaseAction(LeaseAction.ACQUIRE_RELEASE)
+                .setProposedLeaseId(CoreUtils.randomUuid().toString())
+                .setLeaseDuration(15)
+                .setFlush(true);
 
-        assertEquals(202, fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions, null, null).getStatusCode());
+        assertEquals(202,
+            fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions, null, null).getStatusCode());
 
         PathProperties fileProperties = fc.getProperties();
         assertEquals(LeaseStatusType.UNLOCKED, fileProperties.getLeaseStatus());
@@ -2156,8 +2156,6 @@ public class FileApiTest extends DataLakeTestBase {
         assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
     }
 
-
-
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void appendBinaryDataFlush() {
@@ -2185,7 +2183,8 @@ public class FileApiTest extends DataLakeTestBase {
         fc.create();
         fc.append(DATA.getDefaultBinaryData(), 0);
 
-        assertDoesNotThrow(() -> fc.flushWithResponse(DATA.getDefaultDataSizeLong(), false, true, null, null, null, null));
+        assertDoesNotThrow(
+            () -> fc.flushWithResponse(DATA.getDefaultDataSizeLong(), false, true, null, null, null, null));
     }
 
     @Test
@@ -2194,7 +2193,8 @@ public class FileApiTest extends DataLakeTestBase {
         fc.create();
         fc.append(DATA.getDefaultBinaryData(), 0);
 
-        assertDoesNotThrow(() -> fc.flushWithResponse(DATA.getDefaultDataSizeLong(), true, false, null, null, null, null));
+        assertDoesNotThrow(
+            () -> fc.flushWithResponse(DATA.getDefaultDataSizeLong(), true, false, null, null, null, null));
     }
 
     @Test
@@ -2203,11 +2203,12 @@ public class FileApiTest extends DataLakeTestBase {
         fc.create();
         fc.append(DATA.getDefaultBinaryData(), 0);
 
-        assertThrows(DataLakeStorageException.class, () -> fc.flushWithResponse(4, false, false, null, null, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> fc.flushWithResponse(4, false, false, null, null, null, null));
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,null", "control,disposition,encoding,language,type"})
+    @CsvSource(value = { "null,null,null,null,null", "control,disposition,encoding,language,type" })
     public void flushHeaders(String cacheControl, String contentDisposition, String contentEncoding,
         String contentLanguage, String contentType) {
         fc = dataLakeFileSystemClient.createFile(generatePathName());
@@ -2225,9 +2226,9 @@ public class FileApiTest extends DataLakeTestBase {
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
 
-        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType);
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null,
+            contentType);
     }
-
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
@@ -2236,14 +2237,14 @@ public class FileApiTest extends DataLakeTestBase {
         fc = dataLakeFileSystemClient.createFile(generatePathName());
         fc.append(DATA.getDefaultBinaryData(), 0);
 
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertEquals(200, fc.flushWithResponse(DATA.getDefaultDataSizeLong(), false, false, null, drc, null, null).getStatusCode());
+        assertEquals(200,
+            fc.flushWithResponse(DATA.getDefaultDataSizeLong(), false, false, null, drc, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -2254,8 +2255,7 @@ public class FileApiTest extends DataLakeTestBase {
         fc.append(DATA.getDefaultBinaryData(), 0);
 
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
@@ -2285,8 +2285,12 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource({"file,file", "path/to]a file,path/to]a file", "path%2Fto%5Da%20file,path%2Fto%5Da%20file", "斑點,斑點",
-        "%E6%96%91%E9%BB%9E,%E6%96%91%E9%BB%9E"})
+    @CsvSource({
+        "file,file",
+        "path/to]a file,path/to]a file",
+        "path%2Fto%5Da%20file,path%2Fto%5Da%20file",
+        "斑點,斑點",
+        "%E6%96%91%E9%BB%9E,%E6%96%91%E9%BB%9E" })
     public void getFileNameAndBuildClient(String originalFileName, String finalFileName) {
         DataLakeFileClient client = dataLakeFileSystemClient.getFileClient(originalFileName);
 
@@ -2295,14 +2299,29 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @Test
+    public void getNonEncodedPathName() {
+        String pathName = "foo/bar";
+        String urlEncodedPathName = Utility.encodeUrlPath(pathName);
+
+        DataLakeFileClient client
+            = getPathClientBuilder(getDataLakeCredential(), ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .fileSystemName(generateFileSystemName())
+                .pathName(urlEncodedPathName)
+                .buildFileClient();
+
+        assertEquals(pathName, client.getFilePath());
+        assertTrue(client.getFileUrl().contains(Utility.urlEncode(pathName)));
+    }
+
+    @Test
     public void builderBearerTokenValidation() {
         // Technically no additional checks need to be added to datalake builder since the corresponding blob builder fails
         String endpoint = BlobUrlParts.parse(fc.getFileUrl()).setScheme("http").toUrl().toString();
 
-        assertThrows(IllegalArgumentException.class, () -> new DataLakePathClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .buildFileClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> new DataLakePathClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(endpoint)
+                .buildFileClient());
     }
 
     @Test
@@ -2349,7 +2368,8 @@ public class FileApiTest extends DataLakeTestBase {
         createdFiles.add(file);
 
         fc.uploadFromFile(file.toPath().toString(),
-            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null, null);
+            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize),
+            null, null, null, null);
 
         assertEquals(dataSize, fc.getProperties().getFileSize());
     }
@@ -2370,7 +2390,8 @@ public class FileApiTest extends DataLakeTestBase {
         createdFiles.add(file);
 
         Response<PathInfo> response = fc.uploadFromFileWithResponse(file.toPath().toString(),
-            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null, null, null);
+            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize),
+            null, null, null, null, null);
 
         assertEquals(200, response.getStatusCode());
         assertNotNull(response.getValue().getETag());
@@ -2385,8 +2406,8 @@ public class FileApiTest extends DataLakeTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
-        Response<PathInfo> response = fc.uploadFromFileWithResponse(file.toPath().toString(), null, null, null, null,
-            null, null);
+        Response<PathInfo> response
+            = fc.uploadFromFileWithResponse(file.toPath().toString(), null, null, null, null, null, null);
         // uploadFromFileWithResponse will return 200 for a non-empty file, but since we are uploading an empty file,
         // it will return 201 since only createWithResponse gets called
         assertEquals(201, response.getStatusCode());
@@ -2430,7 +2451,7 @@ public class FileApiTest extends DataLakeTestBase {
     @SuppressWarnings("deprecation")
     @LiveOnly
     @ParameterizedTest
-    @ValueSource(ints = {11110, 2 * Constants.MB + 11})
+    @ValueSource(ints = { 11110, 2 * Constants.MB + 11 })
     public void bufferedUploadSyncHandlePathingWithTransientFailure(int dataSize) {
         // This test ensures that although we no longer mark and reset the source stream for buffered upload, it still
         // supports retries in all cases for the sync client.
@@ -2440,7 +2461,8 @@ public class FileApiTest extends DataLakeTestBase {
         byte[] data = getRandomByteArray(dataSize);
         clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(new ByteArrayInputStream(data), dataSize)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(2L * Constants.MB)
-                .setBlockSizeLong(2L * Constants.MB)), null, null);
+                .setBlockSizeLong(2L * Constants.MB)),
+            null, null);
 
         ByteArrayOutputStream os = new ByteArrayOutputStream(dataSize);
         fc.read(os);
@@ -2467,8 +2489,8 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void uploadInputStreamNoLength() {
-        assertDoesNotThrow(() ->
-            fc.uploadWithResponse(new FileParallelUploadOptions(DATA.getDefaultInputStream()), null, null));
+        assertDoesNotThrow(
+            () -> fc.uploadWithResponse(new FileParallelUploadOptions(DATA.getDefaultInputStream()), null, null));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         fc.read(os);
@@ -2480,8 +2502,8 @@ public class FileApiTest extends DataLakeTestBase {
     @ParameterizedTest
     @MethodSource("uploadInputStreamBadLengthSupplier")
     public void uploadInputStreamBadLength(long length) {
-        assertThrows(Exception.class, () -> fc.uploadWithResponse(
-            new FileParallelUploadOptions(DATA.getDefaultInputStream(), length), null, null));
+        assertThrows(Exception.class, () -> fc
+            .uploadWithResponse(new FileParallelUploadOptions(DATA.getDefaultInputStream(), length), null, null));
     }
 
     private static Stream<Long> uploadInputStreamBadLengthSupplier() {
@@ -2493,8 +2515,8 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeFileClient clientWithFailure = getFileClient(getDataLakeCredential(), fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy());
 
-        assertDoesNotThrow(() -> clientWithFailure.uploadWithResponse(
-            new FileParallelUploadOptions(DATA.getDefaultInputStream()), null, null));
+        assertDoesNotThrow(() -> clientWithFailure
+            .uploadWithResponse(new FileParallelUploadOptions(DATA.getDefaultInputStream()), null, null));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         fc.read(os);
@@ -2531,8 +2553,8 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void uploadEncryptionContext() {
         String encryptionContext = "encryptionContext";
-        FileParallelUploadOptions options = new FileParallelUploadOptions(DATA.getDefaultInputStream())
-            .setEncryptionContext(encryptionContext);
+        FileParallelUploadOptions options
+            = new FileParallelUploadOptions(DATA.getDefaultInputStream()).setEncryptionContext(encryptionContext);
 
         fc.uploadWithResponse(options, null, Context.NONE);
 
@@ -2570,7 +2592,6 @@ public class FileApiTest extends DataLakeTestBase {
         fc.flush(data.length, true);
     }
 
-
     private void uploadSmallJson(int numCopies) {
         StringBuilder b = new StringBuilder();
         b.append("{\n");
@@ -2594,12 +2615,12 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient(pathName);
         fileClient.createIfNotExists();
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong((long) Constants.MB)
-            .setMaxSingleUploadSizeLong(2L * Constants.MB)
-            .setMaxConcurrency(5);
-        FileParallelUploadOptions parallelUploadOptions = new FileParallelUploadOptions(input)
-            .setParallelTransferOptions(parallelTransferOptions);
+        ParallelTransferOptions parallelTransferOptions
+            = new ParallelTransferOptions().setBlockSizeLong((long) Constants.MB)
+                .setMaxSingleUploadSizeLong(2L * Constants.MB)
+                .setMaxConcurrency(5);
+        FileParallelUploadOptions parallelUploadOptions
+            = new FileParallelUploadOptions(input).setParallelTransferOptions(parallelTransferOptions);
 
         fileClient.uploadWithResponse(parallelUploadOptions, null, null);
 
@@ -2636,16 +2657,16 @@ public class FileApiTest extends DataLakeTestBase {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
-    @ValueSource(ints = {
-        1, // 32 bytes
-        32, // 1 KB
-        256, // 8 KB
-        400, // 12 ish KB
-        4000 // 125 KB
-    })
+    @ValueSource(
+        ints = {
+            1, // 32 bytes
+            32, // 1 KB
+            256, // 8 KB
+            400, // 12 ish KB
+            4000 // 125 KB
+        })
     public void queryMin(int numCopies) {
-        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization().setRecordSeparator('\n')
             .setColumnSeparator(',')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
@@ -2676,18 +2697,18 @@ public class FileApiTest extends DataLakeTestBase {
     @MethodSource("queryCsvSerializationSeparatorSupplier")
     public void queryCsvSerializationSeparator(char recordSeparator, char columnSeparator, boolean headersPresentIn,
         boolean headersPresentOut) {
-        FileQueryDelimitedSerialization serIn = new FileQueryDelimitedSerialization()
-            .setRecordSeparator(recordSeparator)
-            .setColumnSeparator(columnSeparator)
-            .setEscapeChar('\0')
-            .setFieldQuote('\0')
-            .setHeadersPresent(headersPresentIn);
-        FileQueryDelimitedSerialization serOut = new FileQueryDelimitedSerialization()
-            .setRecordSeparator(recordSeparator)
-            .setColumnSeparator(columnSeparator)
-            .setEscapeChar('\0')
-            .setFieldQuote('\0')
-            .setHeadersPresent(headersPresentOut);
+        FileQueryDelimitedSerialization serIn
+            = new FileQueryDelimitedSerialization().setRecordSeparator(recordSeparator)
+                .setColumnSeparator(columnSeparator)
+                .setEscapeChar('\0')
+                .setFieldQuote('\0')
+                .setHeadersPresent(headersPresentIn);
+        FileQueryDelimitedSerialization serOut
+            = new FileQueryDelimitedSerialization().setRecordSeparator(recordSeparator)
+                .setColumnSeparator(columnSeparator)
+                .setEscapeChar('\0')
+                .setFieldQuote('\0')
+                .setHeadersPresent(headersPresentOut);
         uploadCsv(serIn, 32);
         String expression = "SELECT * from BlobStorage";
 
@@ -2696,8 +2717,9 @@ public class FileApiTest extends DataLakeTestBase {
         byte[] downloadedData = downloadData.toByteArray();
 
         liveTestScenarioWithRetry(() -> {
-            InputStream qqStream = fc.openQueryInputStreamWithResponse(
-                new FileQueryOptions(expression).setInputSerialization(serIn).setOutputSerialization(serOut))
+            InputStream qqStream = fc
+                .openQueryInputStreamWithResponse(
+                    new FileQueryOptions(expression).setInputSerialization(serIn).setOutputSerialization(serOut))
                 .getValue();
             byte[] queryData = assertDoesNotThrow(() -> readFromInputStream(qqStream, downloadedData.length));
 
@@ -2713,8 +2735,9 @@ public class FileApiTest extends DataLakeTestBase {
             }
 
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            assertDoesNotThrow(() -> fc.queryWithResponse(new FileQueryOptions(expression, os)
-                .setInputSerialization(serIn).setOutputSerialization(serOut), null, null));
+            assertDoesNotThrow(() -> fc.queryWithResponse(
+                new FileQueryOptions(expression, os).setInputSerialization(serIn).setOutputSerialization(serOut), null,
+                null));
             byte[] osData = os.toByteArray();
 
             if (headersPresentIn && !headersPresentOut) {
@@ -2735,31 +2758,23 @@ public class FileApiTest extends DataLakeTestBase {
             Arguments.of('\n', ',', true, true), // Headers.
             Arguments.of('\n', ',', true, false), // Headers.
             Arguments.of('\t', ',', false, false), // Record separator.
-            Arguments.of('\r', ',', false, false),
-            Arguments.of('<', ',', false, false),
-            Arguments.of('>', ',', false, false),
-            Arguments.of('&', ',', false, false),
-            Arguments.of('\\', ',', false, false),
-            Arguments.of(',', '.', false, false), // Column separator.
-//            Arguments.of(',', '\n', false, false), // Keep getting a qq error: Field delimiter and record delimiter must be different characters.
-            Arguments.of(',', ';', false, false),
-            Arguments.of('\n', '\t', false, false),
-//            Arguments.of('\n', '\r', false, false), // Keep getting a qq error: Field delimiter and record delimiter must be different characters.
-            Arguments.of('\n', '<', false, false),
-            Arguments.of('\n', '>', false, false),
-            Arguments.of('\n', '&', false, false),
-            Arguments.of('\n', '\\', false, false)
-        );
+            Arguments.of('\r', ',', false, false), Arguments.of('<', ',', false, false),
+            Arguments.of('>', ',', false, false), Arguments.of('&', ',', false, false),
+            Arguments.of('\\', ',', false, false), Arguments.of(',', '.', false, false), // Column separator.
+            //            Arguments.of(',', '\n', false, false), // Keep getting a qq error: Field delimiter and record delimiter must be different characters.
+            Arguments.of(',', ';', false, false), Arguments.of('\n', '\t', false, false),
+            //            Arguments.of('\n', '\r', false, false), // Keep getting a qq error: Field delimiter and record delimiter must be different characters.
+            Arguments.of('\n', '<', false, false), Arguments.of('\n', '>', false, false),
+            Arguments.of('\n', '&', false, false), Arguments.of('\n', '\\', false, false));
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryCsvSerializationEscapeAndFieldQuote() {
-        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization().setRecordSeparator('\n')
             .setColumnSeparator(',')
             .setEscapeChar('\\') /* Escape set here. */
-            .setFieldQuote('"')  /* Field quote set here*/
+            .setFieldQuote('"') /* Field quote set here*/
             .setHeadersPresent(false);
         uploadCsv(ser, 32);
 
@@ -2770,14 +2785,15 @@ public class FileApiTest extends DataLakeTestBase {
         byte[] downloadedData = downloadData.toByteArray();
 
         liveTestScenarioWithRetry(() -> {
-            InputStream qqStream = fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser))
-                .getValue();
+            InputStream qqStream = fc.openQueryInputStreamWithResponse(
+                new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)).getValue();
             byte[] queryData = assertDoesNotThrow(() -> readFromInputStream(qqStream, downloadedData.length));
             TestUtils.assertArraysEqual(downloadedData, queryData);
 
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            assertDoesNotThrow(() -> fc.queryWithResponse(new FileQueryOptions(expression, os)
-                .setInputSerialization(ser).setOutputSerialization(ser), null, null));
+            assertDoesNotThrow(() -> fc.queryWithResponse(
+                new FileQueryOptions(expression, os).setInputSerialization(ser).setOutputSerialization(ser), null,
+                null));
             TestUtils.assertArraysEqual(downloadedData, os.toByteArray());
         });
     }
@@ -2787,8 +2803,7 @@ public class FileApiTest extends DataLakeTestBase {
     @ParameterizedTest
     @MethodSource("queryInputJsonSupplier")
     public void queryInputJson(int numCopies, char recordSeparator) {
-        FileQueryJsonSerialization ser = new FileQueryJsonSerialization()
-            .setRecordSeparator(recordSeparator);
+        FileQueryJsonSerialization ser = new FileQueryJsonSerialization().setRecordSeparator(recordSeparator);
         uploadSmallJson(numCopies);
         String expression = "SELECT * from BlobStorage";
 
@@ -2798,9 +2813,11 @@ public class FileApiTest extends DataLakeTestBase {
         byte[] downloadedData = downloadData.toByteArray();
 
         liveTestScenarioWithRetry(() -> {
-            FileQueryOptions optionsIs = new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser);
+            FileQueryOptions optionsIs
+                = new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser);
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            FileQueryOptions optionsOs = new FileQueryOptions(expression, os).setInputSerialization(ser).setOutputSerialization(ser);
+            FileQueryOptions optionsOs
+                = new FileQueryOptions(expression, os).setInputSerialization(ser).setOutputSerialization(ser);
 
             InputStream qqStream = fc.openQueryInputStreamWithResponse(optionsIs).getValue();
             byte[] queryData = assertDoesNotThrow(() -> readFromInputStream(qqStream, downloadedData.length));
@@ -2814,11 +2831,7 @@ public class FileApiTest extends DataLakeTestBase {
     private static Stream<Arguments> queryInputJsonSupplier() {
         return Stream.of(
             // numCopies | recordSeparator
-            Arguments.of(0, '\n'),
-            Arguments.of(10, '\n'),
-            Arguments.of(100, '\n'),
-            Arguments.of(1000, '\n')
-        );
+            Arguments.of(0, '\n'), Arguments.of(10, '\n'), Arguments.of(100, '\n'), Arguments.of(1000, '\n'));
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -2852,8 +2865,7 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void queryInputCsvOutputJson() {
         liveTestScenarioWithRetry(() -> {
-            FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
-                .setRecordSeparator('\n')
+            FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization().setRecordSeparator('\n')
                 .setColumnSeparator(',')
                 .setEscapeChar('\0')
                 .setFieldQuote('\0')
@@ -2862,11 +2874,11 @@ public class FileApiTest extends DataLakeTestBase {
             FileQueryJsonSerialization outSer = new FileQueryJsonSerialization().setRecordSeparator('\n');
             String expression = "SELECT * from BlobStorage";
             byte[] expectedData = "{\"_1\":\"100\",\"_2\":\"200\",\"_3\":\"300\",\"_4\":\"400\"}".getBytes();
-            FileQueryOptions optionsIs = new FileQueryOptions(expression).setInputSerialization(inSer)
-                .setOutputSerialization(outSer);
+            FileQueryOptions optionsIs
+                = new FileQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer);
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            FileQueryOptions optionsOs = new FileQueryOptions(expression, os).setInputSerialization(inSer)
-                .setOutputSerialization(outSer);
+            FileQueryOptions optionsOs
+                = new FileQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer);
 
             InputStream qqStream = fc.openQueryInputStreamWithResponse(optionsIs).getValue();
             byte[] queryData = assertDoesNotThrow(() -> readFromInputStream(qqStream, expectedData.length));
@@ -2884,19 +2896,18 @@ public class FileApiTest extends DataLakeTestBase {
             FileQueryJsonSerialization inSer = new FileQueryJsonSerialization().setRecordSeparator('\n');
             uploadSmallJson(2);
 
-            FileQueryDelimitedSerialization outSer = new FileQueryDelimitedSerialization()
-                .setRecordSeparator('\n')
+            FileQueryDelimitedSerialization outSer = new FileQueryDelimitedSerialization().setRecordSeparator('\n')
                 .setColumnSeparator(',')
                 .setEscapeChar('\0')
                 .setFieldQuote('\0')
                 .setHeadersPresent(false);
             String expression = "SELECT * from BlobStorage";
             byte[] expectedData = "owner0,owner1\n".getBytes();
-            FileQueryOptions optionsIs = new FileQueryOptions(expression).setInputSerialization(inSer)
-                .setOutputSerialization(outSer);
+            FileQueryOptions optionsIs
+                = new FileQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer);
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            FileQueryOptions optionsOs = new FileQueryOptions(expression, os).setInputSerialization(inSer)
-                .setOutputSerialization(outSer);
+            FileQueryOptions optionsOs
+                = new FileQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer);
 
             InputStream qqStream = fc.openQueryInputStreamWithResponse(optionsIs).getValue();
             byte[] queryData = assertDoesNotThrow(() -> readFromInputStream(qqStream, expectedData.length));
@@ -2911,8 +2922,7 @@ public class FileApiTest extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryInputCsvOutputArrow() {
-        FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization().setRecordSeparator('\n')
             .setColumnSeparator(',')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
@@ -2936,8 +2946,7 @@ public class FileApiTest extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryNonFatalError() {
-        FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization().setRecordSeparator('\n')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(false);
@@ -2946,10 +2955,11 @@ public class FileApiTest extends DataLakeTestBase {
 
         liveTestScenarioWithRetry(() -> {
             MockErrorReceiver receiver1 = new MockErrorReceiver("InvalidColumnOrdinal");
-            InputStream qqStream = fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression)
-                .setInputSerialization(base.setColumnSeparator(','))
-                .setOutputSerialization(base.setColumnSeparator(','))
-                .setErrorConsumer(receiver1)).getValue();
+            InputStream qqStream = fc.openQueryInputStreamWithResponse(
+                new FileQueryOptions(expression).setInputSerialization(base.setColumnSeparator(','))
+                    .setOutputSerialization(base.setColumnSeparator(','))
+                    .setErrorConsumer(receiver1))
+                .getValue();
 
             assertDoesNotThrow(() -> readFromInputStream(qqStream, Constants.KB));
             assertTrue(receiver1.numErrors > 0);
@@ -2967,8 +2977,7 @@ public class FileApiTest extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryFatalError() {
-        FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization().setRecordSeparator('\n')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(true);
@@ -2976,20 +2985,22 @@ public class FileApiTest extends DataLakeTestBase {
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            InputStream qqStream = fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression)
-                .setInputSerialization(new FileQueryJsonSerialization())).getValue();
+            InputStream qqStream = fc
+                .openQueryInputStreamWithResponse(
+                    new FileQueryOptions(expression).setInputSerialization(new FileQueryJsonSerialization()))
+                .getValue();
             assertThrows(UncheckedIOException.class, () -> readFromInputStream(qqStream, Constants.KB));
 
-            assertThrows(RuntimeException.class, () -> fc.queryWithResponse(new FileQueryOptions(expression,
-                new ByteArrayOutputStream()).setInputSerialization(new FileQueryJsonSerialization()), null, null));
+            assertThrows(RuntimeException.class,
+                () -> fc.queryWithResponse(new FileQueryOptions(expression, new ByteArrayOutputStream())
+                    .setInputSerialization(new FileQueryJsonSerialization()), null, null));
         });
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryProgressReceiver() {
-        FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization().setRecordSeparator('\n')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(false);
@@ -3017,7 +3028,6 @@ public class FileApiTest extends DataLakeTestBase {
             // At least the size of blob to read will be in the progress list
             assertTrue(mockReceiver.progressList.contains(sizeofBlobToRead));
 
-
             mockReceiver = new com.azure.storage.file.datalake.FileApiTest.MockProgressReceiver();
             options = new FileQueryOptions(expression, new ByteArrayOutputStream()).setProgressConsumer(mockReceiver);
             fc.queryWithResponse(options, null, null);
@@ -3031,8 +3041,7 @@ public class FileApiTest extends DataLakeTestBase {
     @LiveOnly // Large amount of data.
     @Test
     public void queryMultipleRecordsWithProgressReceiver() {
-        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization().setRecordSeparator('\n')
             .setColumnSeparator(',')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
@@ -3078,7 +3087,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
-    @CsvSource(value = {"true,false", "false,true"})
+    @CsvSource(value = { "true,false", "false,true" })
     public void queryInputOutputIA(boolean input, boolean output) {
         /* Mock random impl of QQ Serialization*/
         FileQuerySerialization ser = new RandomOtherSerialization();
@@ -3088,15 +3097,17 @@ public class FileApiTest extends DataLakeTestBase {
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            assertThrows(IllegalArgumentException.class, () -> fc.openQueryInputStreamWithResponse(
-                new FileQueryOptions(expression)
-                    .setInputSerialization(inSer)
-                    .setOutputSerialization(outSer)).getValue());  /* Don't need to call read. */
+            assertThrows(IllegalArgumentException.class,
+                () -> fc
+                    .openQueryInputStreamWithResponse(
+                        new FileQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer))
+                    .getValue()); /* Don't need to call read. */
 
-            assertThrows(IllegalArgumentException.class, () -> fc.queryWithResponse(
-                new FileQueryOptions(expression, new ByteArrayOutputStream())
-                    .setInputSerialization(inSer)
-                    .setOutputSerialization(outSer), null, null));
+            assertThrows(IllegalArgumentException.class,
+                () -> fc.queryWithResponse(
+                    new FileQueryOptions(expression, new ByteArrayOutputStream()).setInputSerialization(inSer)
+                        .setOutputSerialization(outSer),
+                    null, null));
         });
     }
 
@@ -3107,13 +3118,14 @@ public class FileApiTest extends DataLakeTestBase {
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            assertThrows(IllegalArgumentException.class, () -> fc
-                .openQueryInputStreamWithResponse(new FileQueryOptions(expression).setInputSerialization(inSer))
-                .getValue());  /* Don't need to call read. */
+            assertThrows(IllegalArgumentException.class,
+                () -> fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression).setInputSerialization(inSer))
+                    .getValue()); /* Don't need to call read. */
 
-            assertThrows(IllegalArgumentException.class, () -> fc.queryWithResponse(
-                new FileQueryOptions(expression, new ByteArrayOutputStream()).setInputSerialization(inSer), null,
-                null));
+            assertThrows(IllegalArgumentException.class,
+                () -> fc.queryWithResponse(
+                    new FileQueryOptions(expression, new ByteArrayOutputStream()).setInputSerialization(inSer), null,
+                    null));
         });
     }
 
@@ -3124,13 +3136,15 @@ public class FileApiTest extends DataLakeTestBase {
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            assertThrows(IllegalArgumentException.class, () -> fc
-                .openQueryInputStreamWithResponse(new FileQueryOptions(expression).setOutputSerialization(outSer))
-                .getValue());  /* Don't need to call read. */
+            assertThrows(IllegalArgumentException.class,
+                () -> fc
+                    .openQueryInputStreamWithResponse(new FileQueryOptions(expression).setOutputSerialization(outSer))
+                    .getValue()); /* Don't need to call read. */
 
-            assertThrows(IllegalArgumentException.class, () -> fc.queryWithResponse(
-                new FileQueryOptions(expression, new ByteArrayOutputStream()).setOutputSerialization(outSer), null,
-                null));
+            assertThrows(IllegalArgumentException.class,
+                () -> fc.queryWithResponse(
+                    new FileQueryOptions(expression, new ByteArrayOutputStream()).setOutputSerialization(outSer), null,
+                    null));
         });
     }
 
@@ -3155,8 +3169,7 @@ public class FileApiTest extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void queryAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions bac = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(fc, leaseID))
+        DataLakeRequestConditions bac = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
             .setIfMatch(setupPathMatchCondition(fc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -3165,14 +3178,15 @@ public class FileApiTest extends DataLakeTestBase {
 
         liveTestScenarioWithRetry(() -> {
             assertDoesNotThrow(() -> {
-                InputStream stream = fc.openQueryInputStreamWithResponse(
-                    new FileQueryOptions(expression).setRequestConditions(bac)).getValue();
+                InputStream stream
+                    = fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression).setRequestConditions(bac))
+                        .getValue();
                 stream.read();
                 stream.close();
             });
 
-            assertDoesNotThrow(() -> fc.queryWithResponse(new FileQueryOptions(expression, new ByteArrayOutputStream())
-                .setRequestConditions(bac), null, null));
+            assertDoesNotThrow(() -> fc.queryWithResponse(
+                new FileQueryOptions(expression, new ByteArrayOutputStream()).setRequestConditions(bac), null, null));
         });
     }
 
@@ -3200,16 +3214,16 @@ public class FileApiTest extends DataLakeTestBase {
     public void queryACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(fc, leaseID);
-        DataLakeRequestConditions bac = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions bac = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
         String expression = "SELECT * from BlobStorage";
 
-        assertThrows(DataLakeStorageException.class, () -> fc.openQueryInputStreamWithResponse(
-            new FileQueryOptions(expression).setRequestConditions(bac)).getValue()); /* Don't need to call read. */
+        assertThrows(DataLakeStorageException.class,
+            () -> fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression).setRequestConditions(bac))
+                .getValue()); /* Don't need to call read. */
 
         assertThrows(DataLakeStorageException.class, () -> fc.queryWithResponse(
             new FileQueryOptions(expression, new ByteArrayOutputStream()).setRequestConditions(bac), null, null));
@@ -3232,9 +3246,7 @@ public class FileApiTest extends DataLakeTestBase {
             // fileScheduleDeletionOptions | hasExpiry
             Arguments.of(new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.CREATION_TIME), true),
             Arguments.of(new FileScheduleDeletionOptions(Duration.ofDays(1), FileExpirationOffset.NOW), true),
-            Arguments.of(new FileScheduleDeletionOptions(), false),
-            Arguments.of(null, false)
-        );
+            Arguments.of(new FileScheduleDeletionOptions(), false), Arguments.of(null, false));
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
@@ -3252,7 +3264,8 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void scheduleDeletionError() {
-        FileScheduleDeletionOptions fileScheduleDeletionOptions = new FileScheduleDeletionOptions(testResourceNamer.now().plusDays(1));
+        FileScheduleDeletionOptions fileScheduleDeletionOptions
+            = new FileScheduleDeletionOptions(testResourceNamer.now().plusDays(1));
         DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient(generatePathName());
 
         assertThrows(DataLakeStorageException.class,
@@ -3338,8 +3351,8 @@ public class FileApiTest extends DataLakeTestBase {
         ParallelTransferOptions pto = new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB);
 
         // Uses blob output stream under the hood.
-        assertDoesNotThrow(() -> fc.uploadWithResponse(new FileParallelUploadOptions(input, 20 * Constants.MB)
-            .setParallelTransferOptions(pto), null, null));
+        assertDoesNotThrow(() -> fc.uploadWithResponse(
+            new FileParallelUploadOptions(input, 20 * Constants.MB).setParallelTransferOptions(pto), null, null));
     }
 
     @Test
@@ -3354,9 +3367,11 @@ public class FileApiTest extends DataLakeTestBase {
     @SuppressWarnings("deprecation")
     @Test
     public void uploadReturnValue() {
-        assertNotNull(fc.uploadWithResponse(
-            new FileParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong()), null, null)
-            .getValue().getETag());
+        assertNotNull(fc
+            .uploadWithResponse(
+                new FileParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong()), null, null)
+            .getValue()
+            .getETag());
     }
 
     // Reading from recordings will not allow for the timing of the test to work correctly.
@@ -3376,38 +3391,39 @@ public class FileApiTest extends DataLakeTestBase {
     // and auth would fail because we changed a signed header.
     @Test
     public void perCallPolicy() {
-        DataLakeFileClient fileClient = getPathClientBuilder(getDataLakeCredential(), fc.getFileUrl())
-            .addPolicy(getPerCallVersionPolicy())
-            .buildFileClient();
+        DataLakeFileClient fileClient
+            = getPathClientBuilder(getDataLakeCredential(), fc.getFileUrl()).addPolicy(getPerCallVersionPolicy())
+                .buildFileClient();
 
         // blob endpoint
-        assertEquals("2019-02-02", fileClient.getPropertiesWithResponse(null, null, null).getHeaders()
-            .getValue(X_MS_VERSION));
+        assertEquals("2019-02-02",
+            fileClient.getPropertiesWithResponse(null, null, null).getHeaders().getValue(X_MS_VERSION));
 
         // dfs endpoint
-        assertEquals("2019-02-02", fileClient.getAccessControlWithResponse(false, null, null, null).getHeaders()
-            .getValue(X_MS_VERSION));
+        assertEquals("2019-02-02",
+            fileClient.getAccessControlWithResponse(false, null, null, null).getHeaders().getValue(X_MS_VERSION));
     }
 
     @Test
     public void defaultAudience() {
-        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            dataLakeFileSystemClient.getFileSystemUrl(), fc.getFilePath())
-            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(null) // should default to "https://storage.azure.com/"
-            .buildFileClient();
+        DataLakeFileClient aadFileClient
+            = getPathClientBuilderWithTokenCredential(dataLakeFileSystemClient.getFileSystemUrl(), fc.getFilePath())
+                .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+                .audience(null) // should default to "https://storage.azure.com/"
+                .buildFileClient();
 
         assertTrue(aadFileClient.exists());
     }
 
-
     @Test
     public void storageAccountAudience() {
-        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
-            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
-            .buildFileClient();
+        DataLakeFileClient aadFileClient
+            = getPathClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(),
+                fc.getFilePath())
+                    .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+                    .audience(DataLakeAudience
+                        .createDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
+                    .buildFileClient();
 
         assertTrue(aadFileClient.exists());
     }
@@ -3419,11 +3435,11 @@ public class FileApiTest extends DataLakeTestBase {
     the default audience, and the request gets retried with this default audience, making the call function as expected.
      */
     public void audienceErrorBearerChallengeRetry() {
-        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
-            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
-            .buildFileClient();
+        DataLakeFileClient aadFileClient
+            = getPathClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(),
+                fc.getFilePath()).fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+                    .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
+                    .buildFileClient();
 
         assertTrue(aadFileClient.exists());
     }
@@ -3433,11 +3449,11 @@ public class FileApiTest extends DataLakeTestBase {
         String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemClient.getAccountName());
         DataLakeAudience audience = DataLakeAudience.fromString(url);
 
-        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
-            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(audience)
-            .buildFileClient();
+        DataLakeFileClient aadFileClient
+            = getPathClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(),
+                fc.getFilePath()).fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+                    .audience(audience)
+                    .buildFileClient();
 
         assertTrue(aadFileClient.exists());
     }
@@ -3450,8 +3466,8 @@ public class FileApiTest extends DataLakeTestBase {
         dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
 
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
+        DataLakePathCreateOptions options
+            = new DataLakePathCreateOptions().setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
         fc.createWithResponse(options, null, Context.NONE);
 
         //getProperties
@@ -3459,9 +3475,10 @@ public class FileApiTest extends DataLakeTestBase {
         assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(getPropertiesResponse.getAccessControlList()));
 
         //readWithResponse
-        FileReadResponse readWithResponse = fc.readWithResponse(new ByteArrayOutputStream(), null,
-            null, null, false, null, Context.NONE);
-        assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(readWithResponse.getDeserializedHeaders().getAccessControlList()));
+        FileReadResponse readWithResponse
+            = fc.readWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, Context.NONE);
+        assertTrue(
+            PATH_ACCESS_CONTROL_ENTRIES.containsAll(readWithResponse.getDeserializedHeaders().getAccessControlList()));
 
         //readToFileWithResponse
         File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
@@ -3472,9 +3489,8 @@ public class FileApiTest extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
 
-        Response<PathProperties> readToFileResponse = fc.readToFileWithResponse(outFile.getPath(), null,
-            null, null, null, false, null, null,
-            null);
+        Response<PathProperties> readToFileResponse
+            = fc.readToFileWithResponse(outFile.getPath(), null, null, null, null, false, null, null, null);
         assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(readToFileResponse.getValue().getAccessControlList()));
     }
 
@@ -3489,8 +3505,8 @@ public class FileApiTest extends DataLakeTestBase {
         dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
 
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
+        DataLakePathCreateOptions options
+            = new DataLakePathCreateOptions().setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
         fc.createWithResponse(options, null, Context.NONE);
 
         //getProperties
@@ -3508,9 +3524,13 @@ public class FileApiTest extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
         ReadToFileOptions readToFileOptions = new ReadToFileOptions(outFile.getPath());
-        readToFileOptions.setUserPrincipalName(upnHeader).setRange(null).setParallelTransferOptions(null)
-            .setDownloadRetryOptions(null).setDataLakeRequestConditions(null)
-            .setRangeGetContentMd5(false).setOpenOptions(null);
+        readToFileOptions.setUserPrincipalName(upnHeader)
+            .setRange(null)
+            .setParallelTransferOptions(null)
+            .setDownloadRetryOptions(null)
+            .setDataLakeRequestConditions(null)
+            .setRangeGetContentMd5(false)
+            .setOpenOptions(null);
 
         PathProperties readToFileResponse = fc.readToFile(readToFileOptions);
         assertNotNull(readToFileResponse.getAccessControlList());
@@ -3522,7 +3542,8 @@ public class FileApiTest extends DataLakeTestBase {
         assertNotNull(readToFileWithResponse.getValue().getAccessControlList());
 
         //openInputStream
-        DataLakeFileInputStreamOptions openInputStreamOptions = new DataLakeFileInputStreamOptions().setUserPrincipalName(upnHeader);
+        DataLakeFileInputStreamOptions openInputStreamOptions
+            = new DataLakeFileInputStreamOptions().setUserPrincipalName(upnHeader);
 
         DataLakeFileOpenInputStreamResult openInputStreamResponse = fc.openInputStream(openInputStreamOptions);
         //no way to pull acl from properties in openInputStream
@@ -3531,9 +3552,6 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     private static Stream<Arguments> upnHeaderTestSupplier() {
-        return Stream.of(
-            Arguments.of(true),
-            Arguments.of(true),
-            Arguments.of((Boolean) null));
+        return Stream.of(Arguments.of(true), Arguments.of(true), Arguments.of((Boolean) null));
     }
 }

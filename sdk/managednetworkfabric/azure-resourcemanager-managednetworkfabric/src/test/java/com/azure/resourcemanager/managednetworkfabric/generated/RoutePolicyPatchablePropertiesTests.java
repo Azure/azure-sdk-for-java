@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyPatchableProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ActionIpCommunityProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ActionIpExtendedCommunityProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityIdList;
 import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityIdList;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyActionType;
@@ -21,206 +22,115 @@ import org.junit.jupiter.api.Assertions;
 public final class RoutePolicyPatchablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoutePolicyPatchableProperties model =
-            BinaryData
-                .fromString(
-                    "{\"statements\":[{\"sequenceNumber\":7397290611576295769,\"condition\":{\"type\":\"And\",\"ipPrefixId\":\"hgku\",\"ipExtendedCommunityIds\":[\"zo\"],\"ipCommunityIds\":[\"cfqoyxryqycymz\"]},\"action\":{\"localPreference\":1120552790433937388,\"actionType\":\"Deny\",\"ipCommunityProperties\":{\"delete\":{\"ipCommunityIds\":[\"uzfdh\"]},\"set\":{\"ipCommunityIds\":[\"yciwzkil\"]},\"add\":{\"ipCommunityIds\":[\"dfgesvzohab\",\"rizmadjrsbgail\",\"qovqm\",\"qsxofxqnkiuok\"]}},\"ipExtendedCommunityProperties\":{\"delete\":{\"ipExtendedCommunityIds\":[\"ooiobhiebruptl\"]},\"set\":{\"ipExtendedCommunityIds\":[\"z\",\"aqsos\",\"njlvgrghnh\",\"oxrqhjninpeswv\"]},\"add\":{\"ipExtendedCommunityIds\":[\"gebzqzmcsviujo\"]}}},\"annotation\":\"dvmsnaosxsx\"},{\"sequenceNumber\":4593331377507398475,\"condition\":{\"type\":\"Or\",\"ipPrefixId\":\"vetqhdbitqsbyujs\",\"ipExtendedCommunityIds\":[\"rihumgrmsdbvq\",\"gfygfkgxbdpb\"],\"ipCommunityIds\":[\"wbdpsesboynpy\",\"porrvkxtfctane\",\"inqxdhnpjnezj\",\"g\"]},\"action\":{\"localPreference\":1233192271680973560,\"actionType\":\"Deny\",\"ipCommunityProperties\":{\"delete\":{\"ipCommunityIds\":[\"zwvwetqf\",\"uxvf\",\"uqhngqqxjbsoto\"]},\"set\":{\"ipCommunityIds\":[\"ttujydeatwxp\",\"bx\",\"dhxbboceksramqc\",\"l\"]},\"add\":{\"ipCommunityIds\":[\"lvvkswurx\"]}},\"ipExtendedCommunityProperties\":{\"delete\":{\"ipExtendedCommunityIds\":[\"auimnntf\",\"q\"]},\"set\":{\"ipExtendedCommunityIds\":[\"nbnwi\",\"lqcw\"]},\"add\":{\"ipExtendedCommunityIds\":[\"dqkzstzpzecdl\",\"eirta\"]}}},\"annotation\":\"u\"}]}")
-                .toObject(RoutePolicyPatchableProperties.class);
-        Assertions.assertEquals("dvmsnaosxsx", model.statements().get(0).annotation());
-        Assertions.assertEquals(7397290611576295769L, model.statements().get(0).sequenceNumber());
-        Assertions.assertEquals("cfqoyxryqycymz", model.statements().get(0).condition().ipCommunityIds().get(0));
-        Assertions.assertEquals(RoutePolicyConditionType.AND, model.statements().get(0).condition().type());
-        Assertions.assertEquals("hgku", model.statements().get(0).condition().ipPrefixId());
-        Assertions.assertEquals("zo", model.statements().get(0).condition().ipExtendedCommunityIds().get(0));
-        Assertions.assertEquals(1120552790433937388L, model.statements().get(0).action().localPreference());
+        RoutePolicyPatchableProperties model = BinaryData.fromString(
+            "{\"defaultAction\":\"Permit\",\"statements\":[{\"sequenceNumber\":449688958623242350,\"condition\":{\"type\":\"Or\",\"ipPrefixId\":\"fgi\",\"ipExtendedCommunityIds\":[\"gg\",\"wdqbxexfyznv\",\"ssuqksl\",\"sfx\"],\"ipCommunityIds\":[\"qbyeywpmoh\",\"rtlikff\",\"dzt\",\"qrf\"]},\"action\":{\"localPreference\":8955635498046885793,\"actionType\":\"Deny\",\"ipCommunityProperties\":{\"delete\":{\"ipCommunityIds\":[\"dteqjmyqxuhg\",\"axnyprijyoxxjxbs\",\"wrrlccklyf\",\"jmspauemqomxoa\"]},\"set\":{\"ipCommunityIds\":[\"yapvibzic\",\"vic\",\"captkhjxnrkbnvf\",\"cklzhznfgvlxy\"]},\"add\":{\"ipCommunityIds\":[\"tigpksywicklktg\",\"dprtqjytdcfe\"]}},\"ipExtendedCommunityProperties\":{\"delete\":{\"ipExtendedCommunityIds\":[\"wbvjsbgmlamoa\",\"caytnpkvbpbltcws\",\"xheeocnqo\",\"bvepvlryszfhd\"]},\"set\":{\"ipExtendedCommunityIds\":[\"xohzb\",\"hhavzfuxnvk\",\"slcof\",\"vtf\"]},\"add\":{\"ipExtendedCommunityIds\":[\"uisaklhjfddxqfu\",\"subzsspmj\"]}}},\"annotation\":\"ilfauyvxpq\"},{\"sequenceNumber\":3891325791370492170,\"condition\":{\"type\":\"Or\",\"ipPrefixId\":\"wbztrt\",\"ipExtendedCommunityIds\":[\"wvoglff\",\"dhg\"],\"ipCommunityIds\":[\"rmhbtofcv\"]},\"action\":{\"localPreference\":2118422597275895008,\"actionType\":\"Permit\",\"ipCommunityProperties\":{\"delete\":{\"ipCommunityIds\":[\"ylmnqunkygb\",\"tmsgkwedwl\"]},\"set\":{\"ipCommunityIds\":[\"gbg\",\"hudhrpj\",\"mvrrqfibpk\"]},\"add\":{\"ipCommunityIds\":[\"rlfizju\",\"dndihupngy\",\"ylqya\",\"ewcmodxwuuytxnxr\"]}},\"ipExtendedCommunityProperties\":{\"delete\":{\"ipExtendedCommunityIds\":[\"eargvfvkhbjh\",\"vpjxsdhweignybff\",\"cwwynepktvmw\"]},\"set\":{\"ipExtendedCommunityIds\":[\"ny\",\"eb\",\"ijfhpxnikouoxfal\",\"kbskkypo\"]},\"add\":{\"ipExtendedCommunityIds\":[\"ieunbydlgfaphwuu\"]}}},\"annotation\":\"tsaynr\"}]}")
+            .toObject(RoutePolicyPatchableProperties.class);
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.defaultAction());
+        Assertions.assertEquals("ilfauyvxpq", model.statements().get(0).annotation());
+        Assertions.assertEquals(449688958623242350L, model.statements().get(0).sequenceNumber());
+        Assertions.assertEquals("qbyeywpmoh", model.statements().get(0).condition().ipCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.OR, model.statements().get(0).condition().type());
+        Assertions.assertEquals("fgi", model.statements().get(0).condition().ipPrefixId());
+        Assertions.assertEquals("gg", model.statements().get(0).condition().ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals(8955635498046885793L, model.statements().get(0).action().localPreference());
         Assertions.assertEquals(RoutePolicyActionType.DENY, model.statements().get(0).action().actionType());
-        Assertions
-            .assertEquals(
-                "dfgesvzohab",
-                model.statements().get(0).action().ipCommunityProperties().add().ipCommunityIds().get(0));
-        Assertions
-            .assertEquals(
-                "uzfdh", model.statements().get(0).action().ipCommunityProperties().delete().ipCommunityIds().get(0));
-        Assertions
-            .assertEquals(
-                "yciwzkil", model.statements().get(0).action().ipCommunityProperties().set().ipCommunityIds().get(0));
-        Assertions
-            .assertEquals(
-                "gebzqzmcsviujo",
-                model
-                    .statements()
-                    .get(0)
-                    .action()
-                    .ipExtendedCommunityProperties()
-                    .add()
-                    .ipExtendedCommunityIds()
-                    .get(0));
-        Assertions
-            .assertEquals(
-                "ooiobhiebruptl",
-                model
-                    .statements()
-                    .get(0)
-                    .action()
-                    .ipExtendedCommunityProperties()
-                    .delete()
-                    .ipExtendedCommunityIds()
-                    .get(0));
-        Assertions
-            .assertEquals(
-                "z",
-                model
-                    .statements()
-                    .get(0)
-                    .action()
-                    .ipExtendedCommunityProperties()
-                    .set()
-                    .ipExtendedCommunityIds()
-                    .get(0));
+        Assertions.assertEquals("tigpksywicklktg",
+            model.statements().get(0).action().ipCommunityProperties().add().ipCommunityIds().get(0));
+        Assertions.assertEquals("dteqjmyqxuhg",
+            model.statements().get(0).action().ipCommunityProperties().delete().ipCommunityIds().get(0));
+        Assertions.assertEquals("yapvibzic",
+            model.statements().get(0).action().ipCommunityProperties().set().ipCommunityIds().get(0));
+        Assertions.assertEquals("uisaklhjfddxqfu",
+            model.statements().get(0).action().ipExtendedCommunityProperties().add().ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals("wbvjsbgmlamoa",
+            model.statements()
+                .get(0)
+                .action()
+                .ipExtendedCommunityProperties()
+                .delete()
+                .ipExtendedCommunityIds()
+                .get(0));
+        Assertions.assertEquals("xohzb",
+            model.statements().get(0).action().ipExtendedCommunityProperties().set().ipExtendedCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutePolicyPatchableProperties model =
-            new RoutePolicyPatchableProperties()
-                .withStatements(
-                    Arrays
-                        .asList(
-                            new RoutePolicyStatementProperties()
-                                .withAnnotation("dvmsnaosxsx")
-                                .withSequenceNumber(7397290611576295769L)
-                                .withCondition(
-                                    new StatementConditionProperties()
-                                        .withIpCommunityIds(Arrays.asList("cfqoyxryqycymz"))
-                                        .withType(RoutePolicyConditionType.AND)
-                                        .withIpPrefixId("hgku")
-                                        .withIpExtendedCommunityIds(Arrays.asList("zo")))
-                                .withAction(
-                                    new StatementActionProperties()
-                                        .withLocalPreference(1120552790433937388L)
-                                        .withActionType(RoutePolicyActionType.DENY)
-                                        .withIpCommunityProperties(
-                                            new ActionIpCommunityProperties()
-                                                .withAdd(
-                                                    new IpCommunityIdList()
-                                                        .withIpCommunityIds(
-                                                            Arrays
-                                                                .asList(
-                                                                    "dfgesvzohab",
-                                                                    "rizmadjrsbgail",
-                                                                    "qovqm",
-                                                                    "qsxofxqnkiuok")))
-                                                .withDelete(
-                                                    new IpCommunityIdList().withIpCommunityIds(Arrays.asList("uzfdh")))
-                                                .withSet(
-                                                    new IpCommunityIdList()
-                                                        .withIpCommunityIds(Arrays.asList("yciwzkil"))))
-                                        .withIpExtendedCommunityProperties(
-                                            new ActionIpExtendedCommunityProperties()
-                                                .withAdd(
-                                                    new IpExtendedCommunityIdList()
-                                                        .withIpExtendedCommunityIds(Arrays.asList("gebzqzmcsviujo")))
-                                                .withDelete(
-                                                    new IpExtendedCommunityIdList()
-                                                        .withIpExtendedCommunityIds(Arrays.asList("ooiobhiebruptl")))
-                                                .withSet(
-                                                    new IpExtendedCommunityIdList()
-                                                        .withIpExtendedCommunityIds(
-                                                            Arrays
-                                                                .asList(
-                                                                    "z", "aqsos", "njlvgrghnh", "oxrqhjninpeswv"))))),
-                            new RoutePolicyStatementProperties()
-                                .withAnnotation("u")
-                                .withSequenceNumber(4593331377507398475L)
-                                .withCondition(
-                                    new StatementConditionProperties()
-                                        .withIpCommunityIds(
-                                            Arrays.asList("wbdpsesboynpy", "porrvkxtfctane", "inqxdhnpjnezj", "g"))
-                                        .withType(RoutePolicyConditionType.OR)
-                                        .withIpPrefixId("vetqhdbitqsbyujs")
-                                        .withIpExtendedCommunityIds(Arrays.asList("rihumgrmsdbvq", "gfygfkgxbdpb")))
-                                .withAction(
-                                    new StatementActionProperties()
-                                        .withLocalPreference(1233192271680973560L)
-                                        .withActionType(RoutePolicyActionType.DENY)
-                                        .withIpCommunityProperties(
-                                            new ActionIpCommunityProperties()
-                                                .withAdd(
-                                                    new IpCommunityIdList()
-                                                        .withIpCommunityIds(Arrays.asList("lvvkswurx")))
-                                                .withDelete(
-                                                    new IpCommunityIdList()
-                                                        .withIpCommunityIds(
-                                                            Arrays.asList("zwvwetqf", "uxvf", "uqhngqqxjbsoto")))
-                                                .withSet(
-                                                    new IpCommunityIdList()
-                                                        .withIpCommunityIds(
-                                                            Arrays
-                                                                .asList("ttujydeatwxp", "bx", "dhxbboceksramqc", "l"))))
-                                        .withIpExtendedCommunityProperties(
-                                            new ActionIpExtendedCommunityProperties()
-                                                .withAdd(
-                                                    new IpExtendedCommunityIdList()
-                                                        .withIpExtendedCommunityIds(
-                                                            Arrays.asList("dqkzstzpzecdl", "eirta")))
-                                                .withDelete(
-                                                    new IpExtendedCommunityIdList()
-                                                        .withIpExtendedCommunityIds(Arrays.asList("auimnntf", "q")))
-                                                .withSet(
-                                                    new IpExtendedCommunityIdList()
-                                                        .withIpExtendedCommunityIds(
-                                                            Arrays.asList("nbnwi", "lqcw")))))));
+        RoutePolicyPatchableProperties model = new RoutePolicyPatchableProperties()
+            .withDefaultAction(CommunityActionTypes.PERMIT)
+            .withStatements(Arrays.asList(
+                new RoutePolicyStatementProperties().withAnnotation("ilfauyvxpq")
+                    .withSequenceNumber(449688958623242350L)
+                    .withCondition(new StatementConditionProperties()
+                        .withIpCommunityIds(Arrays.asList("qbyeywpmoh", "rtlikff", "dzt", "qrf"))
+                        .withType(RoutePolicyConditionType.OR)
+                        .withIpPrefixId("fgi")
+                        .withIpExtendedCommunityIds(Arrays.asList("gg", "wdqbxexfyznv", "ssuqksl", "sfx")))
+                    .withAction(new StatementActionProperties().withLocalPreference(8955635498046885793L)
+                        .withActionType(RoutePolicyActionType.DENY)
+                        .withIpCommunityProperties(new ActionIpCommunityProperties()
+                            .withAdd(new IpCommunityIdList()
+                                .withIpCommunityIds(Arrays.asList("tigpksywicklktg", "dprtqjytdcfe")))
+                            .withDelete(new IpCommunityIdList().withIpCommunityIds(
+                                Arrays.asList("dteqjmyqxuhg", "axnyprijyoxxjxbs", "wrrlccklyf", "jmspauemqomxoa")))
+                            .withSet(new IpCommunityIdList().withIpCommunityIds(
+                                Arrays.asList("yapvibzic", "vic", "captkhjxnrkbnvf", "cklzhznfgvlxy"))))
+                        .withIpExtendedCommunityProperties(new ActionIpExtendedCommunityProperties()
+                            .withAdd(new IpExtendedCommunityIdList()
+                                .withIpExtendedCommunityIds(Arrays.asList("uisaklhjfddxqfu", "subzsspmj")))
+                            .withDelete(new IpExtendedCommunityIdList().withIpExtendedCommunityIds(
+                                Arrays.asList("wbvjsbgmlamoa", "caytnpkvbpbltcws", "xheeocnqo", "bvepvlryszfhd")))
+                            .withSet(new IpExtendedCommunityIdList()
+                                .withIpExtendedCommunityIds(Arrays.asList("xohzb", "hhavzfuxnvk", "slcof", "vtf"))))),
+                new RoutePolicyStatementProperties().withAnnotation("tsaynr")
+                    .withSequenceNumber(3891325791370492170L)
+                    .withCondition(new StatementConditionProperties().withIpCommunityIds(Arrays.asList("rmhbtofcv"))
+                        .withType(RoutePolicyConditionType.OR)
+                        .withIpPrefixId("wbztrt")
+                        .withIpExtendedCommunityIds(Arrays.asList("wvoglff", "dhg")))
+                    .withAction(new StatementActionProperties().withLocalPreference(2118422597275895008L)
+                        .withActionType(RoutePolicyActionType.PERMIT)
+                        .withIpCommunityProperties(new ActionIpCommunityProperties()
+                            .withAdd(new IpCommunityIdList().withIpCommunityIds(
+                                Arrays.asList("rlfizju", "dndihupngy", "ylqya", "ewcmodxwuuytxnxr")))
+                            .withDelete(
+                                new IpCommunityIdList().withIpCommunityIds(Arrays.asList("ylmnqunkygb", "tmsgkwedwl")))
+                            .withSet(new IpCommunityIdList()
+                                .withIpCommunityIds(Arrays.asList("gbg", "hudhrpj", "mvrrqfibpk"))))
+                        .withIpExtendedCommunityProperties(new ActionIpExtendedCommunityProperties()
+                            .withAdd(new IpExtendedCommunityIdList()
+                                .withIpExtendedCommunityIds(Arrays.asList("ieunbydlgfaphwuu")))
+                            .withDelete(new IpExtendedCommunityIdList().withIpExtendedCommunityIds(
+                                Arrays.asList("eargvfvkhbjh", "vpjxsdhweignybff", "cwwynepktvmw")))
+                            .withSet(new IpExtendedCommunityIdList().withIpExtendedCommunityIds(
+                                Arrays.asList("ny", "eb", "ijfhpxnikouoxfal", "kbskkypo")))))));
         model = BinaryData.fromObject(model).toObject(RoutePolicyPatchableProperties.class);
-        Assertions.assertEquals("dvmsnaosxsx", model.statements().get(0).annotation());
-        Assertions.assertEquals(7397290611576295769L, model.statements().get(0).sequenceNumber());
-        Assertions.assertEquals("cfqoyxryqycymz", model.statements().get(0).condition().ipCommunityIds().get(0));
-        Assertions.assertEquals(RoutePolicyConditionType.AND, model.statements().get(0).condition().type());
-        Assertions.assertEquals("hgku", model.statements().get(0).condition().ipPrefixId());
-        Assertions.assertEquals("zo", model.statements().get(0).condition().ipExtendedCommunityIds().get(0));
-        Assertions.assertEquals(1120552790433937388L, model.statements().get(0).action().localPreference());
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.defaultAction());
+        Assertions.assertEquals("ilfauyvxpq", model.statements().get(0).annotation());
+        Assertions.assertEquals(449688958623242350L, model.statements().get(0).sequenceNumber());
+        Assertions.assertEquals("qbyeywpmoh", model.statements().get(0).condition().ipCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.OR, model.statements().get(0).condition().type());
+        Assertions.assertEquals("fgi", model.statements().get(0).condition().ipPrefixId());
+        Assertions.assertEquals("gg", model.statements().get(0).condition().ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals(8955635498046885793L, model.statements().get(0).action().localPreference());
         Assertions.assertEquals(RoutePolicyActionType.DENY, model.statements().get(0).action().actionType());
-        Assertions
-            .assertEquals(
-                "dfgesvzohab",
-                model.statements().get(0).action().ipCommunityProperties().add().ipCommunityIds().get(0));
-        Assertions
-            .assertEquals(
-                "uzfdh", model.statements().get(0).action().ipCommunityProperties().delete().ipCommunityIds().get(0));
-        Assertions
-            .assertEquals(
-                "yciwzkil", model.statements().get(0).action().ipCommunityProperties().set().ipCommunityIds().get(0));
-        Assertions
-            .assertEquals(
-                "gebzqzmcsviujo",
-                model
-                    .statements()
-                    .get(0)
-                    .action()
-                    .ipExtendedCommunityProperties()
-                    .add()
-                    .ipExtendedCommunityIds()
-                    .get(0));
-        Assertions
-            .assertEquals(
-                "ooiobhiebruptl",
-                model
-                    .statements()
-                    .get(0)
-                    .action()
-                    .ipExtendedCommunityProperties()
-                    .delete()
-                    .ipExtendedCommunityIds()
-                    .get(0));
-        Assertions
-            .assertEquals(
-                "z",
-                model
-                    .statements()
-                    .get(0)
-                    .action()
-                    .ipExtendedCommunityProperties()
-                    .set()
-                    .ipExtendedCommunityIds()
-                    .get(0));
+        Assertions.assertEquals("tigpksywicklktg",
+            model.statements().get(0).action().ipCommunityProperties().add().ipCommunityIds().get(0));
+        Assertions.assertEquals("dteqjmyqxuhg",
+            model.statements().get(0).action().ipCommunityProperties().delete().ipCommunityIds().get(0));
+        Assertions.assertEquals("yapvibzic",
+            model.statements().get(0).action().ipCommunityProperties().set().ipCommunityIds().get(0));
+        Assertions.assertEquals("uisaklhjfddxqfu",
+            model.statements().get(0).action().ipExtendedCommunityProperties().add().ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals("wbvjsbgmlamoa",
+            model.statements()
+                .get(0)
+                .action()
+                .ipExtendedCommunityProperties()
+                .delete()
+                .ipExtendedCommunityIds()
+                .get(0));
+        Assertions.assertEquals("xohzb",
+            model.statements().get(0).action().ipExtendedCommunityProperties().set().ipExtendedCommunityIds().get(0));
     }
 }

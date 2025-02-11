@@ -8,12 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Accounts. */
+/**
+ * Resource collection API of Accounts.
+ */
 public interface Accounts {
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
      * results, if any.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
@@ -23,30 +25,29 @@ public interface Accounts {
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
      * results, if any.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataLakeStoreAccountBasic> list(
-        String filter, Integer top, Integer skip, String select, String orderby, Boolean count, Context context);
+    PagedIterable<DataLakeStoreAccountBasic> list(String filter, Integer top, Integer skip, String select,
+        String orderby, Boolean count, Context context);
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next
      * page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,37 +59,29 @@ public interface Accounts {
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next
      * page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataLakeStoreAccountBasic> listByResourceGroup(
-        String resourceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String select,
-        String orderby,
-        Boolean count,
-        Context context);
+    PagedIterable<DataLakeStoreAccountBasic> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        Integer skip, String select, String orderby, Boolean count, Context context);
 
     /**
      * Gets the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -97,12 +90,12 @@ public interface Accounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Data Lake Store account along with {@link Response}.
      */
-    Response<DataLakeStoreAccount> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<DataLakeStoreAccount> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Gets the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +107,7 @@ public interface Accounts {
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,7 +118,7 @@ public interface Accounts {
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -137,7 +130,7 @@ public interface Accounts {
 
     /**
      * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -150,7 +143,7 @@ public interface Accounts {
 
     /**
      * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,7 +154,7 @@ public interface Accounts {
 
     /**
      * Checks whether the specified account name is available or taken.
-     *
+     * 
      * @param location The resource location without whitespace.
      * @param parameters Parameters supplied to check the Data Lake Store account name availability.
      * @param context The context to associate with this operation.
@@ -170,12 +163,12 @@ public interface Accounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store account name availability result information along with {@link Response}.
      */
-    Response<NameAvailabilityInformation> checkNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityParameters parameters, Context context);
+    Response<NameAvailabilityInformation> checkNameAvailabilityWithResponse(String location,
+        CheckNameAvailabilityParameters parameters, Context context);
 
     /**
      * Checks whether the specified account name is available or taken.
-     *
+     * 
      * @param location The resource location without whitespace.
      * @param parameters Parameters supplied to check the Data Lake Store account name availability.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,7 +180,7 @@ public interface Accounts {
 
     /**
      * Gets the specified Data Lake Store account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -198,7 +191,7 @@ public interface Accounts {
 
     /**
      * Gets the specified Data Lake Store account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +203,7 @@ public interface Accounts {
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -220,7 +213,7 @@ public interface Accounts {
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,7 +224,7 @@ public interface Accounts {
 
     /**
      * Begins definition for a new DataLakeStoreAccount resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DataLakeStoreAccount definition.
      */

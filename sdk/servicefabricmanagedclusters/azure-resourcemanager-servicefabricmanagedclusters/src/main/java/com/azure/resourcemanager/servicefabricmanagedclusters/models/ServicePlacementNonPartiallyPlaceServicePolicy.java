@@ -44,7 +44,6 @@ public final class ServicePlacementNonPartiallyPlaceServicePolicy extends Servic
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

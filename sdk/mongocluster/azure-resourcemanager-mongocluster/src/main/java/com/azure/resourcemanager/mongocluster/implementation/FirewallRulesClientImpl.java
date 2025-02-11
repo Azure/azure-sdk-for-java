@@ -50,25 +50,25 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * The service client containing this operation class.
      */
-    private final DocumentDBClientImpl client;
+    private final MongoClusterManagementClientImpl client;
 
     /**
      * Initializes an instance of FirewallRulesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    FirewallRulesClientImpl(DocumentDBClientImpl client) {
+    FirewallRulesClientImpl(MongoClusterManagementClientImpl client) {
         this.service
             = RestProxy.create(FirewallRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DocumentDBClientFirewallRules to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for MongoClusterManagementClientFirewallRules to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DocumentDBClientFire")
+    @ServiceInterface(name = "MongoClusterManageme")
     public interface FirewallRulesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}")
@@ -888,8 +888,6 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * List all the firewall rules in a given mongo cluster.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -918,8 +916,6 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
-     * List all the firewall rules in a given mongo cluster.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

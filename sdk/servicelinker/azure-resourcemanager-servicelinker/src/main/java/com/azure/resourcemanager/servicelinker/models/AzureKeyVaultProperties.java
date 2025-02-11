@@ -5,24 +5,45 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The resource properties when type is Azure Key Vault. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("KeyVault")
+/**
+ * The resource properties when type is Azure Key Vault.
+ */
 @Fluent
 public final class AzureKeyVaultProperties extends AzureResourcePropertiesBase {
     /*
+     * The azure resource type.
+     */
+    private AzureResourceType type = AzureResourceType.KEY_VAULT;
+
+    /*
      * True if connect via Kubernetes CSI Driver.
      */
-    @JsonProperty(value = "connectAsKubernetesCsiDriver")
     private Boolean connectAsKubernetesCsiDriver;
 
     /**
+     * Creates an instance of AzureKeyVaultProperties class.
+     */
+    public AzureKeyVaultProperties() {
+    }
+
+    /**
+     * Get the type property: The azure resource type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public AzureResourceType type() {
+        return this.type;
+    }
+
+    /**
      * Get the connectAsKubernetesCsiDriver property: True if connect via Kubernetes CSI Driver.
-     *
+     * 
      * @return the connectAsKubernetesCsiDriver value.
      */
     public Boolean connectAsKubernetesCsiDriver() {
@@ -31,7 +52,7 @@ public final class AzureKeyVaultProperties extends AzureResourcePropertiesBase {
 
     /**
      * Set the connectAsKubernetesCsiDriver property: True if connect via Kubernetes CSI Driver.
-     *
+     * 
      * @param connectAsKubernetesCsiDriver the connectAsKubernetesCsiDriver value to set.
      * @return the AzureKeyVaultProperties object itself.
      */
@@ -42,11 +63,50 @@ public final class AzureKeyVaultProperties extends AzureResourcePropertiesBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("connectAsKubernetesCsiDriver", this.connectAsKubernetesCsiDriver);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureKeyVaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureKeyVaultProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureKeyVaultProperties.
+     */
+    public static AzureKeyVaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureKeyVaultProperties deserializedAzureKeyVaultProperties = new AzureKeyVaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureKeyVaultProperties.type = AzureResourceType.fromString(reader.getString());
+                } else if ("connectAsKubernetesCsiDriver".equals(fieldName)) {
+                    deserializedAzureKeyVaultProperties.connectAsKubernetesCsiDriver
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureKeyVaultProperties;
+        });
     }
 }

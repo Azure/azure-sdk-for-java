@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.models.RelationshipLinkResourceFormatInner;
 
-/** An instance of this class provides access to all the operations defined in RelationshipLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RelationshipLinksClient.
+ */
 public interface RelationshipLinksClient {
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -29,15 +31,12 @@ public interface RelationshipLinksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RelationshipLinkResourceFormatInner>, RelationshipLinkResourceFormatInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String hubName,
-            String relationshipLinkName,
+        beginCreateOrUpdate(String resourceGroupName, String hubName, String relationshipLinkName,
             RelationshipLinkResourceFormatInner parameters);
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -50,16 +49,12 @@ public interface RelationshipLinksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RelationshipLinkResourceFormatInner>, RelationshipLinkResourceFormatInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String hubName,
-            String relationshipLinkName,
-            RelationshipLinkResourceFormatInner parameters,
-            Context context);
+        beginCreateOrUpdate(String resourceGroupName, String hubName, String relationshipLinkName,
+            RelationshipLinkResourceFormatInner parameters, Context context);
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -70,15 +65,12 @@ public interface RelationshipLinksClient {
      * @return the relationship link resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RelationshipLinkResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String relationshipLinkName,
-        RelationshipLinkResourceFormatInner parameters);
+    RelationshipLinkResourceFormatInner createOrUpdate(String resourceGroupName, String hubName,
+        String relationshipLinkName, RelationshipLinkResourceFormatInner parameters);
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -90,16 +82,12 @@ public interface RelationshipLinksClient {
      * @return the relationship link resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RelationshipLinkResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String relationshipLinkName,
-        RelationshipLinkResourceFormatInner parameters,
-        Context context);
+    RelationshipLinkResourceFormatInner createOrUpdate(String resourceGroupName, String hubName,
+        String relationshipLinkName, RelationshipLinkResourceFormatInner parameters, Context context);
 
     /**
      * Gets information about the specified relationship Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -110,12 +98,12 @@ public interface RelationshipLinksClient {
      * @return information about the specified relationship Link along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RelationshipLinkResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String relationshipLinkName, Context context);
+    Response<RelationshipLinkResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String relationshipLinkName, Context context);
 
     /**
      * Gets information about the specified relationship Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -129,7 +117,7 @@ public interface RelationshipLinksClient {
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -139,12 +127,12 @@ public interface RelationshipLinksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hubName, String relationshipLinkName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName,
+        String relationshipLinkName);
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -155,12 +143,12 @@ public interface RelationshipLinksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hubName, String relationshipLinkName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName,
+        String relationshipLinkName, Context context);
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -173,7 +161,7 @@ public interface RelationshipLinksClient {
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -187,7 +175,7 @@ public interface RelationshipLinksClient {
 
     /**
      * Gets all relationship links in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,7 +188,7 @@ public interface RelationshipLinksClient {
 
     /**
      * Gets all relationship links in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -210,6 +198,6 @@ public interface RelationshipLinksClient {
      * @return all relationship links in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RelationshipLinkResourceFormatInner> listByHub(
-        String resourceGroupName, String hubName, Context context);
+    PagedIterable<RelationshipLinkResourceFormatInner> listByHub(String resourceGroupName, String hubName,
+        Context context);
 }

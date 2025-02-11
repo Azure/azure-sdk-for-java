@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogSingleSignOnResourceInner;
 
-/** An instance of this class provides access to all the operations defined in SingleSignOnConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SingleSignOnConfigurationsClient.
+ */
 public interface SingleSignOnConfigurationsClient {
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface SingleSignOnConfigurationsClient {
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface SingleSignOnConfigurationsClient {
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -54,12 +56,12 @@ public interface SingleSignOnConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName);
+    SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, String configurationName);
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -72,15 +74,12 @@ public interface SingleSignOnConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DatadogSingleSignOnResourceInner body,
+        String resourceGroupName, String monitorName, String configurationName, DatadogSingleSignOnResourceInner body,
         Context context);
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -90,12 +89,12 @@ public interface SingleSignOnConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatadogSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName);
+    DatadogSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName);
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -107,16 +106,12 @@ public interface SingleSignOnConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatadogSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DatadogSingleSignOnResourceInner body,
-        Context context);
+    DatadogSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName, DatadogSingleSignOnResourceInner body, Context context);
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -127,12 +122,12 @@ public interface SingleSignOnConfigurationsClient {
      * @return the datadog single sign-on resource for the given Monitor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatadogSingleSignOnResourceInner> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    Response<DatadogSingleSignOnResourceInner> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context);
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.

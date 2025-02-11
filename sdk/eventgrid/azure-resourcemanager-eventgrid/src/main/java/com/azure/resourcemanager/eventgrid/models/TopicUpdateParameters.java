@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,30 +18,25 @@ import java.util.Map;
  * Properties of the Topic update.
  */
 @Fluent
-public final class TopicUpdateParameters {
+public final class TopicUpdateParameters implements JsonSerializable<TopicUpdateParameters> {
     /*
      * Tags of the Topic resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Topic resource identity information.
      */
-    @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
     /*
      * Properties of the Topic resource.
      */
-    @JsonProperty(value = "properties")
     private TopicUpdateParameterProperties innerProperties;
 
     /*
      * The Sku pricing tier for the topic.
      */
-    @JsonProperty(value = "sku")
     private ResourceSku sku;
 
     /**
@@ -285,5 +283,51 @@ public final class TopicUpdateParameters {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopicUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopicUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopicUpdateParameters.
+     */
+    public static TopicUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopicUpdateParameters deserializedTopicUpdateParameters = new TopicUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTopicUpdateParameters.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedTopicUpdateParameters.identity = IdentityInfo.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTopicUpdateParameters.innerProperties = TopicUpdateParameterProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedTopicUpdateParameters.sku = ResourceSku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopicUpdateParameters;
+        });
     }
 }

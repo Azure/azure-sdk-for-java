@@ -47,8 +47,8 @@ public class SchemaRegistryAsyncClientPlaybackTests {
                 "Expected testInfo.getTestMethod() not be empty since we need a method for TestContextManager.");
         }
 
-        this.tokenCredential = tokenRequestContext ->
-            Mono.fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
+        this.tokenCredential = tokenRequestContext -> Mono
+            .fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
         this.endpoint = PLAYBACK_ENDPOINT;
 
         final String resourceName = "/compat/" + testInfo.getTestMethod().get().getName() + ".json";
@@ -71,8 +71,7 @@ public class SchemaRegistryAsyncClientPlaybackTests {
 
         // Arrange
         final HttpClient httpClientMock = setupHttpClient(recordedData);
-        final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
-            .fullyQualifiedNamespace(endpoint)
+        final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder().fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
             .httpClient(httpClientMock)
             .serviceVersion(SchemaRegistryVersion.V2021_10)
@@ -80,13 +79,11 @@ public class SchemaRegistryAsyncClientPlaybackTests {
         final String schemaId = "f45b841fcb88401e961ca45477906be9";
 
         // Act & Assert
-        StepVerifier.create(client.getSchema(schemaId))
-            .assertNext(schema -> {
-                assertNotNull(schema.getProperties());
-                assertEquals(schemaId, schema.getProperties().getId());
-                assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
-            })
-            .verifyComplete();
+        StepVerifier.create(client.getSchema(schemaId)).assertNext(schema -> {
+            assertNotNull(schema.getProperties());
+            assertEquals(schemaId, schema.getProperties().getId());
+            assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
+        }).verifyComplete();
     }
 
     /**
@@ -98,8 +95,7 @@ public class SchemaRegistryAsyncClientPlaybackTests {
         // Arrange
         final HttpClient httpClientMock = setupHttpClient(recordedData);
 
-        final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
-            .fullyQualifiedNamespace(endpoint)
+        final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder().fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
             .httpClient(httpClientMock)
             .serviceVersion(SchemaRegistryVersion.V2021_10)
@@ -107,15 +103,12 @@ public class SchemaRegistryAsyncClientPlaybackTests {
         final String schemaId = "e5691f79e3964309ac712ec52abcccca";
 
         // Act & Assert
-        StepVerifier.create(client.getSchema(schemaId))
-            .assertNext(schema -> {
-                assertNotNull(schema.getProperties());
-                assertEquals(schemaId, schema.getProperties().getId());
-                assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
-            })
-            .verifyComplete();
+        StepVerifier.create(client.getSchema(schemaId)).assertNext(schema -> {
+            assertNotNull(schema.getProperties());
+            assertEquals(schemaId, schema.getProperties().getId());
+            assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
+        }).verifyComplete();
     }
-
 
     private static HttpClient setupHttpClient(RecordedData recordedData) {
         final NetworkCallRecord networkRecord = recordedData.findFirstAndRemoveNetworkCall(e -> true);

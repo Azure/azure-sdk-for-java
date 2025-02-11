@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class DomainProvisioningState extends ExpandableStringEnum<DomainPr
      * @param name a name to look for.
      * @return the corresponding DomainProvisioningState.
      */
-    @JsonCreator
     public static DomainProvisioningState fromString(String name) {
         return fromString(name, DomainProvisioningState.class);
     }

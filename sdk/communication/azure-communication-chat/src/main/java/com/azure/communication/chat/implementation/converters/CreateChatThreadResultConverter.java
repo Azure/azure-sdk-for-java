@@ -22,8 +22,8 @@ public final class CreateChatThreadResultConverter {
      * Maps from {@link com.azure.communication.chat.implementation.models.CreateChatThreadResult} to
      * {@link CreateChatThreadResult}.
      */
-    public static CreateChatThreadResult convert(
-        com.azure.communication.chat.implementation.models.CreateChatThreadResult obj) {
+    public static CreateChatThreadResult
+        convert(com.azure.communication.chat.implementation.models.CreateChatThreadResult obj) {
 
         if (obj == null) {
             return null;

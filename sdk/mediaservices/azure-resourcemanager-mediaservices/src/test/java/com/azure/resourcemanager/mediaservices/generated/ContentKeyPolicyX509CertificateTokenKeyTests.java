@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyX509Certif
 public final class ContentKeyPolicyX509CertificateTokenKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicyX509CertificateTokenKey model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyX509CertificateTokenKey\"}")
+        ContentKeyPolicyX509CertificateTokenKey model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyX509CertificateTokenKey\"}")
                 .toObject(ContentKeyPolicyX509CertificateTokenKey.class);
     }
 

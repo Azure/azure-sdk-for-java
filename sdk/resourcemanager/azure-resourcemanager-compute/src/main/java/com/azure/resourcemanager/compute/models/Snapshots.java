@@ -19,17 +19,10 @@ import reactor.core.publisher.Mono;
 
 /** Entry point to managed snapshot management API in Azure. */
 @Fluent
-public interface Snapshots
-    extends SupportsCreating<Snapshot.DefinitionStages.Blank>,
-        SupportsListing<Snapshot>,
-        SupportsListingByResourceGroup<Snapshot>,
-        SupportsGettingByResourceGroup<Snapshot>,
-        SupportsGettingById<Snapshot>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<Snapshot>,
-        SupportsBatchDeletion,
-        HasManager<ComputeManager> {
+public interface Snapshots extends SupportsCreating<Snapshot.DefinitionStages.Blank>, SupportsListing<Snapshot>,
+    SupportsListingByResourceGroup<Snapshot>, SupportsGettingByResourceGroup<Snapshot>, SupportsGettingById<Snapshot>,
+    SupportsDeletingById, SupportsDeletingByResourceGroup, SupportsBatchCreation<Snapshot>, SupportsBatchDeletion,
+    HasManager<ComputeManager> {
     /**
      * Grants access to the snapshot asynchronously.
      *
@@ -39,8 +32,8 @@ public interface Snapshots
      * @param accessDuration access duration
      * @return a representation of the deferred computation of this call returning a read-only SAS URI to the snapshot
      */
-    Mono<String> grantAccessAsync(
-        String resourceGroupName, String snapshotName, AccessLevel accessLevel, int accessDuration);
+    Mono<String> grantAccessAsync(String resourceGroupName, String snapshotName, AccessLevel accessLevel,
+        int accessDuration);
 
     /**
      * Grants access to a snapshot.

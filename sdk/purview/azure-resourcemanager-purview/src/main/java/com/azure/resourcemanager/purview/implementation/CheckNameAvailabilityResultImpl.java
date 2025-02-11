@@ -13,8 +13,8 @@ public final class CheckNameAvailabilityResultImpl implements CheckNameAvailabil
 
     private final com.azure.resourcemanager.purview.PurviewManager serviceManager;
 
-    CheckNameAvailabilityResultImpl(
-        CheckNameAvailabilityResultInner innerObject, com.azure.resourcemanager.purview.PurviewManager serviceManager) {
+    CheckNameAvailabilityResultImpl(CheckNameAvailabilityResultInner innerObject,
+        com.azure.resourcemanager.purview.PurviewManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

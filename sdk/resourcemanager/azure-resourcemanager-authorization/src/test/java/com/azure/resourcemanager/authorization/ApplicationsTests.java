@@ -19,20 +19,18 @@ public class ApplicationsTests extends GraphRbacManagementTest {
 
         ActiveDirectoryApplication application = null;
         try {
-            application =
-                authorizationManager
-                    .applications()
-                    .define(name)
-                    .withSignOnUrl("http://easycreate.azure.com/" + name)
-                    .definePasswordCredential("passwd")
-                    .withDuration(Duration.ofDays(700))
-                    .attach()
-                    .defineCertificateCredential("cert")
-                    .withAsymmetricX509Certificate()
-                    .withPublicKey(replaceCRLF(readAllBytes(this.getClass().getResourceAsStream("/myTest.cer"))))
-                    .withDuration(Duration.ofDays(100))
-                    .attach()
-                    .create();
+            application = authorizationManager.applications()
+                .define(name)
+                .withSignOnUrl("http://easycreate.azure.com/" + name)
+                .definePasswordCredential("passwd")
+                .withDuration(Duration.ofDays(700))
+                .attach()
+                .defineCertificateCredential("cert")
+                .withAsymmetricX509Certificate()
+                .withPublicKey(replaceCRLF(readAllBytes(this.getClass().getResourceAsStream("/myTest.cer"))))
+                .withDuration(Duration.ofDays(100))
+                .attach()
+                .create();
             System.out.println(application.id() + " - " + application.applicationId());
             Assertions.assertNotNull(application.id());
             Assertions.assertNotNull(application.applicationId());

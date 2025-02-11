@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Api Operation Annotation. */
+/**
+ * The Api Operation Annotation.
+ */
 @Fluent
-public final class ApiOperationAnnotation {
+public final class ApiOperationAnnotation implements JsonSerializable<ApiOperationAnnotation> {
     /*
      * The status annotation.
      */
-    @JsonProperty(value = "status")
     private StatusAnnotation status;
 
     /*
      * The family.
      */
-    @JsonProperty(value = "family")
     private String family;
 
     /*
      * The revision.
      */
-    @JsonProperty(value = "revision")
     private Integer revision;
 
-    /** Creates an instance of ApiOperationAnnotation class. */
+    /**
+     * Creates an instance of ApiOperationAnnotation class.
+     */
     public ApiOperationAnnotation() {
     }
 
     /**
      * Get the status property: The status annotation.
-     *
+     * 
      * @return the status value.
      */
     public StatusAnnotation status() {
@@ -43,7 +48,7 @@ public final class ApiOperationAnnotation {
 
     /**
      * Set the status property: The status annotation.
-     *
+     * 
      * @param status the status value to set.
      * @return the ApiOperationAnnotation object itself.
      */
@@ -54,7 +59,7 @@ public final class ApiOperationAnnotation {
 
     /**
      * Get the family property: The family.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -63,7 +68,7 @@ public final class ApiOperationAnnotation {
 
     /**
      * Set the family property: The family.
-     *
+     * 
      * @param family the family value to set.
      * @return the ApiOperationAnnotation object itself.
      */
@@ -74,7 +79,7 @@ public final class ApiOperationAnnotation {
 
     /**
      * Get the revision property: The revision.
-     *
+     * 
      * @return the revision value.
      */
     public Integer revision() {
@@ -83,7 +88,7 @@ public final class ApiOperationAnnotation {
 
     /**
      * Set the revision property: The revision.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the ApiOperationAnnotation object itself.
      */
@@ -94,9 +99,51 @@ public final class ApiOperationAnnotation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeNumberField("revision", this.revision);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiOperationAnnotation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiOperationAnnotation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiOperationAnnotation.
+     */
+    public static ApiOperationAnnotation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiOperationAnnotation deserializedApiOperationAnnotation = new ApiOperationAnnotation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedApiOperationAnnotation.status = StatusAnnotation.fromString(reader.getString());
+                } else if ("family".equals(fieldName)) {
+                    deserializedApiOperationAnnotation.family = reader.getString();
+                } else if ("revision".equals(fieldName)) {
+                    deserializedApiOperationAnnotation.revision = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiOperationAnnotation;
+        });
     }
 }

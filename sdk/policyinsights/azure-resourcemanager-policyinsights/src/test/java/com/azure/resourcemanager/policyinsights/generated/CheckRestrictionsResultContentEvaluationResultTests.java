@@ -8,26 +8,20 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.CheckRestrictionsResultContentEvaluationResult;
 import com.azure.resourcemanager.policyinsights.models.PolicyEvaluationResult;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class CheckRestrictionsResultContentEvaluationResultTests {
-    @Test
-    public void testDeserialize() {
-        CheckRestrictionsResultContentEvaluationResult model =
-            BinaryData
-                .fromString(
-                    "{\"policyEvaluations\":[{\"policyInfo\":{\"policyDefinitionId\":\"mpsbzkfzbeyv\",\"policySetDefinitionId\":\"qi\",\"policyDefinitionReferenceId\":\"invkjjxdxrbuu\",\"policyAssignmentId\":\"clewyhm\"},\"evaluationResult\":\"paztzpofncck\",\"evaluationDetails\":{\"evaluatedExpressions\":[]}},{\"policyInfo\":{\"policyDefinitionId\":\"hxx\",\"policySetDefinitionId\":\"yq\",\"policyDefinitionReferenceId\":\"zfeqztppri\",\"policyAssignmentId\":\"xorjaltolmncwsob\"},\"evaluationResult\":\"csdbnwdcfhuc\",\"evaluationDetails\":{\"evaluatedExpressions\":[]}},{\"policyInfo\":{\"policyDefinitionId\":\"glsbjjc\",\"policySetDefinitionId\":\"vxb\",\"policyDefinitionReferenceId\":\"vudutncor\",\"policyAssignmentId\":\"lxqtvcofudfl\"},\"evaluationResult\":\"gj\",\"evaluationDetails\":{\"evaluatedExpressions\":[]}}]}")
-                .toObject(CheckRestrictionsResultContentEvaluationResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CheckRestrictionsResultContentEvaluationResult model = BinaryData.fromString(
+            "{\"policyEvaluations\":[{\"policyInfo\":{\"policyDefinitionId\":\"crojp\",\"policySetDefinitionId\":\"lhc\",\"policyDefinitionReferenceId\":\"jutifdwfmvigorqj\",\"policyAssignmentId\":\"tzh\"},\"evaluationResult\":\"glka\",\"evaluationDetails\":{\"evaluatedExpressions\":[{\"result\":\"juj\",\"expression\":\"ckpzvcpopmxeln\",\"expressionKind\":\"ltyjedexxmlfmk\",\"path\":\"cazuaw\",\"expressionValue\":\"dataz\",\"targetValue\":\"datauamwabzxrvxc\",\"operator\":\"hsphaivmxyas\"}],\"ifNotExistsDetails\":{\"resourceId\":\"gsgzwywakoihk\",\"totalResources\":639113448}}},{\"policyInfo\":{\"policyDefinitionId\":\"lmljhlnymzotq\",\"policySetDefinitionId\":\"yuzcbmqqvxmvw\",\"policyDefinitionReferenceId\":\"tayx\",\"policyAssignmentId\":\"supe\"},\"evaluationResult\":\"lzqnhcvs\",\"evaluationDetails\":{\"evaluatedExpressions\":[{\"result\":\"oibgsxg\",\"expression\":\"fyq\",\"expressionKind\":\"mpqoxw\",\"path\":\"fdbxiqxeiiqbim\",\"expressionValue\":\"datamwwinhehfqpofv\",\"targetValue\":\"datacblembnkbwv\",\"operator\":\"xk\"},{\"result\":\"vqihebwtswbzuwf\",\"expression\":\"urageg\",\"expressionKind\":\"vcjfelisdjubggb\",\"path\":\"gkxkbsazgakg\",\"expressionValue\":\"datayrcmjdmspofap\",\"targetValue\":\"datahryl\",\"operator\":\"ofrzgb\"},{\"result\":\"edm\",\"expression\":\"kvnlvxbcuiiznkt\",\"expressionKind\":\"ansnvp\",\"path\":\"bmikost\",\"expressionValue\":\"databkiw\",\"targetValue\":\"dataqnyophzfyls\",\"operator\":\"rpfbcunezz\"}],\"ifNotExistsDetails\":{\"resourceId\":\"elfwy\",\"totalResources\":2072196821}}},{\"policyInfo\":{\"policyDefinitionId\":\"jwetnpsihcla\",\"policySetDefinitionId\":\"va\",\"policyDefinitionReferenceId\":\"pt\",\"policyAssignmentId\":\"qqwzt\"},\"evaluationResult\":\"w\",\"evaluationDetails\":{\"evaluatedExpressions\":[{\"result\":\"xwaxfewzjkj\",\"expression\":\"fdeqvhpsyl\",\"expressionKind\":\"shk\",\"path\":\"f\",\"expressionValue\":\"datamxzjrgywwpgjx\",\"targetValue\":\"dataptfujgicgaaoept\",\"operator\":\"qutdewemxs\"},{\"result\":\"ruunzzjgehkf\",\"expression\":\"m\",\"expressionKind\":\"ixokffqyin\",\"path\":\"qepqwhixmon\",\"expressionValue\":\"datashiy\",\"targetValue\":\"datavelfcldu\",\"operator\":\"birdsvuwcobiegs\"},{\"result\":\"ninwjizc\",\"expression\":\"nghgshej\",\"expressionKind\":\"bxqmu\",\"path\":\"xlxqzvn\",\"expressionValue\":\"datasbycucrwnamikz\",\"targetValue\":\"datarqbsmswziq\",\"operator\":\"uhok\"}],\"ifNotExistsDetails\":{\"resourceId\":\"swhvhczznvfbycj\",\"totalResources\":728305495}}},{\"policyInfo\":{\"policyDefinitionId\":\"i\",\"policySetDefinitionId\":\"vumwmxqh\",\"policyDefinitionReferenceId\":\"vnoamldseha\",\"policyAssignmentId\":\"djh\"},\"evaluationResult\":\"lzok\",\"evaluationDetails\":{\"evaluatedExpressions\":[{\"result\":\"e\",\"expression\":\"jetagltsxoatft\",\"expressionKind\":\"pnpbswveflocc\",\"path\":\"mozi\",\"expressionValue\":\"dataipgawtxx\",\"targetValue\":\"datay\",\"operator\":\"xcjxgrytfmpcy\"},{\"result\":\"lrmcaykg\",\"expression\":\"oxuztrksx\",\"expressionKind\":\"ndfcpfn\",\"path\":\"thjtwk\",\"expressionValue\":\"dataosrxuzvoa\",\"targetValue\":\"datatcqiosmg\",\"operator\":\"ahgx\"},{\"result\":\"lyrtltlaprlt\",\"expression\":\"atbhjmznn\",\"expressionKind\":\"oqeq\",\"path\":\"arvlagunbt\",\"expressionValue\":\"dataebwlnbmhyreeudzq\",\"targetValue\":\"databpdqmjxlyy\",\"operator\":\"lgouwtlmjj\"},{\"result\":\"ojqtobaxk\",\"expression\":\"ytunlbfjkwr\",\"expressionKind\":\"nkqbhsyrq\",\"path\":\"jqhden\",\"expressionValue\":\"dataulkpakd\",\"targetValue\":\"datafmjnnawtqa\",\"operator\":\"xuckpggqoweyir\"}],\"ifNotExistsDetails\":{\"resourceId\":\"isngwflqqmpizru\",\"totalResources\":1136622059}}}]}")
+            .toObject(CheckRestrictionsResultContentEvaluationResult.class);
     }
 
-    @Test
-    public void testSerialize() {
-        CheckRestrictionsResultContentEvaluationResult model =
-            new CheckRestrictionsResultContentEvaluationResult()
-                .withPolicyEvaluations(
-                    Arrays
-                        .asList(
-                            new PolicyEvaluationResult(), new PolicyEvaluationResult(), new PolicyEvaluationResult()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CheckRestrictionsResultContentEvaluationResult model = new CheckRestrictionsResultContentEvaluationResult()
+            .withPolicyEvaluations(Arrays.asList(new PolicyEvaluationResult(), new PolicyEvaluationResult(),
+                new PolicyEvaluationResult(), new PolicyEvaluationResult()));
         model = BinaryData.fromObject(model).toObject(CheckRestrictionsResultContentEvaluationResult.class);
     }
 }

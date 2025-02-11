@@ -8,25 +8,27 @@ import com.azure.resourcemanager.orbital.models.ContactProfile;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ContactProfiles UpdateTags. */
+/**
+ * Samples for ContactProfiles UpdateTags.
+ */
 public final class ContactProfilesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/ContactProfileUpdateTag.json
+     * x-ms-original-file:
+     * specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/ContactProfileUpdateTag.json
      */
     /**
      * Sample code: Update Contact Profile tags.
-     *
+     * 
      * @param manager Entry point to OrbitalManager.
      */
     public static void updateContactProfileTags(com.azure.resourcemanager.orbital.OrbitalManager manager) {
-        ContactProfile resource =
-            manager
-                .contactProfiles()
-                .getByResourceGroupWithResponse("contoso-Rgp", "CONTOSO-CP", com.azure.core.util.Context.NONE)
-                .getValue();
+        ContactProfile resource = manager.contactProfiles()
+            .getByResourceGroupWithResponse("contoso-Rgp", "CONTOSO-CP", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

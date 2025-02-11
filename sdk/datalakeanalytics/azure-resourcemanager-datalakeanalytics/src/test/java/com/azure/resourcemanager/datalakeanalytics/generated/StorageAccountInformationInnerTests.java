@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageAccountInformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageAccountInformationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"suffix\":\"menevfyexfwh\"},\"name\":\"cibvyvdcsitynn\",\"type\":\"mdectehfiqscjey\",\"id\":\"hezrkgq\"}")
-                .toObject(StorageAccountInformationInner.class);
-        Assertions.assertEquals("hezrkgq", model.id());
+        StorageAccountInformationInner model = BinaryData.fromString(
+            "{\"properties\":{\"suffix\":\"m\"},\"name\":\"hrzayvvtpgvdf\",\"type\":\"otkftutqxlngx\",\"id\":\"fgugnxkrxdqmid\"}")
+            .toObject(StorageAccountInformationInner.class);
+        Assertions.assertEquals("fgugnxkrxdqmid", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageAccountInformationInner model = new StorageAccountInformationInner().withId("hezrkgq");
+        StorageAccountInformationInner model = new StorageAccountInformationInner().withId("fgugnxkrxdqmid");
         model = BinaryData.fromObject(model).toObject(StorageAccountInformationInner.class);
-        Assertions.assertEquals("hezrkgq", model.id());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.id());
     }
 }

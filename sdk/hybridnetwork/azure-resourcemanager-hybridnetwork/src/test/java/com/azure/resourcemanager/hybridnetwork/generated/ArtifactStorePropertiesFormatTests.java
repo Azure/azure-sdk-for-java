@@ -25,11 +25,12 @@ public final class ArtifactStorePropertiesFormatTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactStorePropertiesFormat model = new ArtifactStorePropertiesFormat()
-            .withStoreType(ArtifactStoreType.AZURE_CONTAINER_REGISTRY)
-            .withReplicationStrategy(ArtifactReplicationStrategy.SINGLE_REPLICATION)
-            .withManagedResourceGroupConfiguration(new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration()
-                .withName("ixbjx").withLocation("w"));
+        ArtifactStorePropertiesFormat model
+            = new ArtifactStorePropertiesFormat().withStoreType(ArtifactStoreType.AZURE_CONTAINER_REGISTRY)
+                .withReplicationStrategy(ArtifactReplicationStrategy.SINGLE_REPLICATION)
+                .withManagedResourceGroupConfiguration(
+                    new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration().withName("ixbjx")
+                        .withLocation("w"));
         model = BinaryData.fromObject(model).toObject(ArtifactStorePropertiesFormat.class);
         Assertions.assertEquals(ArtifactStoreType.AZURE_CONTAINER_REGISTRY, model.storeType());
         Assertions.assertEquals(ArtifactReplicationStrategy.SINGLE_REPLICATION, model.replicationStrategy());

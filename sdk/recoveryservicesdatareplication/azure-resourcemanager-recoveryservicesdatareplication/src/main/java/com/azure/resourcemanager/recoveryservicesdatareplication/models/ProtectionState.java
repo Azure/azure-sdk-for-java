@@ -5,185 +5,290 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the protection state. */
+/**
+ * Gets or sets the protection state.
+ */
 public final class ProtectionState extends ExpandableStringEnum<ProtectionState> {
-    /** Static value UnprotectedStatesBegin for ProtectionState. */
+    /**
+     * Static value UnprotectedStatesBegin for ProtectionState.
+     */
     public static final ProtectionState UNPROTECTED_STATES_BEGIN = fromString("UnprotectedStatesBegin");
 
-    /** Static value EnablingProtection for ProtectionState. */
+    /**
+     * Static value EnablingProtection for ProtectionState.
+     */
     public static final ProtectionState ENABLING_PROTECTION = fromString("EnablingProtection");
 
-    /** Static value EnablingFailed for ProtectionState. */
+    /**
+     * Static value EnablingFailed for ProtectionState.
+     */
     public static final ProtectionState ENABLING_FAILED = fromString("EnablingFailed");
 
-    /** Static value DisablingProtection for ProtectionState. */
+    /**
+     * Static value DisablingProtection for ProtectionState.
+     */
     public static final ProtectionState DISABLING_PROTECTION = fromString("DisablingProtection");
 
-    /** Static value MarkedForDeletion for ProtectionState. */
+    /**
+     * Static value MarkedForDeletion for ProtectionState.
+     */
     public static final ProtectionState MARKED_FOR_DELETION = fromString("MarkedForDeletion");
 
-    /** Static value DisablingFailed for ProtectionState. */
+    /**
+     * Static value DisablingFailed for ProtectionState.
+     */
     public static final ProtectionState DISABLING_FAILED = fromString("DisablingFailed");
 
-    /** Static value UnprotectedStatesEnd for ProtectionState. */
+    /**
+     * Static value UnprotectedStatesEnd for ProtectionState.
+     */
     public static final ProtectionState UNPROTECTED_STATES_END = fromString("UnprotectedStatesEnd");
 
-    /** Static value InitialReplicationStatesBegin for ProtectionState. */
+    /**
+     * Static value InitialReplicationStatesBegin for ProtectionState.
+     */
     public static final ProtectionState INITIAL_REPLICATION_STATES_BEGIN = fromString("InitialReplicationStatesBegin");
 
-    /** Static value InitialReplicationInProgress for ProtectionState. */
+    /**
+     * Static value InitialReplicationInProgress for ProtectionState.
+     */
     public static final ProtectionState INITIAL_REPLICATION_IN_PROGRESS = fromString("InitialReplicationInProgress");
 
-    /** Static value InitialReplicationCompletedOnPrimary for ProtectionState. */
-    public static final ProtectionState INITIAL_REPLICATION_COMPLETED_ON_PRIMARY =
-        fromString("InitialReplicationCompletedOnPrimary");
+    /**
+     * Static value InitialReplicationCompletedOnPrimary for ProtectionState.
+     */
+    public static final ProtectionState INITIAL_REPLICATION_COMPLETED_ON_PRIMARY
+        = fromString("InitialReplicationCompletedOnPrimary");
 
-    /** Static value InitialReplicationCompletedOnRecovery for ProtectionState. */
-    public static final ProtectionState INITIAL_REPLICATION_COMPLETED_ON_RECOVERY =
-        fromString("InitialReplicationCompletedOnRecovery");
+    /**
+     * Static value InitialReplicationCompletedOnRecovery for ProtectionState.
+     */
+    public static final ProtectionState INITIAL_REPLICATION_COMPLETED_ON_RECOVERY
+        = fromString("InitialReplicationCompletedOnRecovery");
 
-    /** Static value InitialReplicationFailed for ProtectionState. */
+    /**
+     * Static value InitialReplicationFailed for ProtectionState.
+     */
     public static final ProtectionState INITIAL_REPLICATION_FAILED = fromString("InitialReplicationFailed");
 
-    /** Static value InitialReplicationStatesEnd for ProtectionState. */
+    /**
+     * Static value InitialReplicationStatesEnd for ProtectionState.
+     */
     public static final ProtectionState INITIAL_REPLICATION_STATES_END = fromString("InitialReplicationStatesEnd");
 
-    /** Static value ProtectedStatesBegin for ProtectionState. */
+    /**
+     * Static value ProtectedStatesBegin for ProtectionState.
+     */
     public static final ProtectionState PROTECTED_STATES_BEGIN = fromString("ProtectedStatesBegin");
 
-    /** Static value Protected for ProtectionState. */
+    /**
+     * Static value Protected for ProtectionState.
+     */
     public static final ProtectionState PROTECTED = fromString("Protected");
 
-    /** Static value ProtectedStatesEnd for ProtectionState. */
+    /**
+     * Static value ProtectedStatesEnd for ProtectionState.
+     */
     public static final ProtectionState PROTECTED_STATES_END = fromString("ProtectedStatesEnd");
 
-    /** Static value PlannedFailoverTransitionStatesBegin for ProtectionState. */
-    public static final ProtectionState PLANNED_FAILOVER_TRANSITION_STATES_BEGIN =
-        fromString("PlannedFailoverTransitionStatesBegin");
+    /**
+     * Static value PlannedFailoverTransitionStatesBegin for ProtectionState.
+     */
+    public static final ProtectionState PLANNED_FAILOVER_TRANSITION_STATES_BEGIN
+        = fromString("PlannedFailoverTransitionStatesBegin");
 
-    /** Static value PlannedFailoverInitiated for ProtectionState. */
+    /**
+     * Static value PlannedFailoverInitiated for ProtectionState.
+     */
     public static final ProtectionState PLANNED_FAILOVER_INITIATED = fromString("PlannedFailoverInitiated");
 
-    /** Static value PlannedFailoverCompleting for ProtectionState. */
+    /**
+     * Static value PlannedFailoverCompleting for ProtectionState.
+     */
     public static final ProtectionState PLANNED_FAILOVER_COMPLETING = fromString("PlannedFailoverCompleting");
 
-    /** Static value PlannedFailoverCompleted for ProtectionState. */
+    /**
+     * Static value PlannedFailoverCompleted for ProtectionState.
+     */
     public static final ProtectionState PLANNED_FAILOVER_COMPLETED = fromString("PlannedFailoverCompleted");
 
-    /** Static value PlannedFailoverFailed for ProtectionState. */
+    /**
+     * Static value PlannedFailoverFailed for ProtectionState.
+     */
     public static final ProtectionState PLANNED_FAILOVER_FAILED = fromString("PlannedFailoverFailed");
 
-    /** Static value PlannedFailoverCompletionFailed for ProtectionState. */
-    public static final ProtectionState PLANNED_FAILOVER_COMPLETION_FAILED =
-        fromString("PlannedFailoverCompletionFailed");
+    /**
+     * Static value PlannedFailoverCompletionFailed for ProtectionState.
+     */
+    public static final ProtectionState PLANNED_FAILOVER_COMPLETION_FAILED
+        = fromString("PlannedFailoverCompletionFailed");
 
-    /** Static value PlannedFailoverTransitionStatesEnd for ProtectionState. */
-    public static final ProtectionState PLANNED_FAILOVER_TRANSITION_STATES_END =
-        fromString("PlannedFailoverTransitionStatesEnd");
+    /**
+     * Static value PlannedFailoverTransitionStatesEnd for ProtectionState.
+     */
+    public static final ProtectionState PLANNED_FAILOVER_TRANSITION_STATES_END
+        = fromString("PlannedFailoverTransitionStatesEnd");
 
-    /** Static value UnplannedFailoverTransitionStatesBegin for ProtectionState. */
-    public static final ProtectionState UNPLANNED_FAILOVER_TRANSITION_STATES_BEGIN =
-        fromString("UnplannedFailoverTransitionStatesBegin");
+    /**
+     * Static value UnplannedFailoverTransitionStatesBegin for ProtectionState.
+     */
+    public static final ProtectionState UNPLANNED_FAILOVER_TRANSITION_STATES_BEGIN
+        = fromString("UnplannedFailoverTransitionStatesBegin");
 
-    /** Static value UnplannedFailoverInitiated for ProtectionState. */
+    /**
+     * Static value UnplannedFailoverInitiated for ProtectionState.
+     */
     public static final ProtectionState UNPLANNED_FAILOVER_INITIATED = fromString("UnplannedFailoverInitiated");
 
-    /** Static value UnplannedFailoverCompleting for ProtectionState. */
+    /**
+     * Static value UnplannedFailoverCompleting for ProtectionState.
+     */
     public static final ProtectionState UNPLANNED_FAILOVER_COMPLETING = fromString("UnplannedFailoverCompleting");
 
-    /** Static value UnplannedFailoverCompleted for ProtectionState. */
+    /**
+     * Static value UnplannedFailoverCompleted for ProtectionState.
+     */
     public static final ProtectionState UNPLANNED_FAILOVER_COMPLETED = fromString("UnplannedFailoverCompleted");
 
-    /** Static value UnplannedFailoverFailed for ProtectionState. */
+    /**
+     * Static value UnplannedFailoverFailed for ProtectionState.
+     */
     public static final ProtectionState UNPLANNED_FAILOVER_FAILED = fromString("UnplannedFailoverFailed");
 
-    /** Static value UnplannedFailoverCompletionFailed for ProtectionState. */
-    public static final ProtectionState UNPLANNED_FAILOVER_COMPLETION_FAILED =
-        fromString("UnplannedFailoverCompletionFailed");
+    /**
+     * Static value UnplannedFailoverCompletionFailed for ProtectionState.
+     */
+    public static final ProtectionState UNPLANNED_FAILOVER_COMPLETION_FAILED
+        = fromString("UnplannedFailoverCompletionFailed");
 
-    /** Static value UnplannedFailoverTransitionStatesEnd for ProtectionState. */
-    public static final ProtectionState UNPLANNED_FAILOVER_TRANSITION_STATES_END =
-        fromString("UnplannedFailoverTransitionStatesEnd");
+    /**
+     * Static value UnplannedFailoverTransitionStatesEnd for ProtectionState.
+     */
+    public static final ProtectionState UNPLANNED_FAILOVER_TRANSITION_STATES_END
+        = fromString("UnplannedFailoverTransitionStatesEnd");
 
-    /** Static value CommitFailoverStatesBegin for ProtectionState. */
+    /**
+     * Static value CommitFailoverStatesBegin for ProtectionState.
+     */
     public static final ProtectionState COMMIT_FAILOVER_STATES_BEGIN = fromString("CommitFailoverStatesBegin");
 
-    /** Static value CommitFailoverInProgressOnPrimary for ProtectionState. */
-    public static final ProtectionState COMMIT_FAILOVER_IN_PROGRESS_ON_PRIMARY =
-        fromString("CommitFailoverInProgressOnPrimary");
+    /**
+     * Static value CommitFailoverInProgressOnPrimary for ProtectionState.
+     */
+    public static final ProtectionState COMMIT_FAILOVER_IN_PROGRESS_ON_PRIMARY
+        = fromString("CommitFailoverInProgressOnPrimary");
 
-    /** Static value CommitFailoverInProgressOnRecovery for ProtectionState. */
-    public static final ProtectionState COMMIT_FAILOVER_IN_PROGRESS_ON_RECOVERY =
-        fromString("CommitFailoverInProgressOnRecovery");
+    /**
+     * Static value CommitFailoverInProgressOnRecovery for ProtectionState.
+     */
+    public static final ProtectionState COMMIT_FAILOVER_IN_PROGRESS_ON_RECOVERY
+        = fromString("CommitFailoverInProgressOnRecovery");
 
-    /** Static value CommitFailoverCompleted for ProtectionState. */
+    /**
+     * Static value CommitFailoverCompleted for ProtectionState.
+     */
     public static final ProtectionState COMMIT_FAILOVER_COMPLETED = fromString("CommitFailoverCompleted");
 
-    /** Static value CommitFailoverFailedOnPrimary for ProtectionState. */
+    /**
+     * Static value CommitFailoverFailedOnPrimary for ProtectionState.
+     */
     public static final ProtectionState COMMIT_FAILOVER_FAILED_ON_PRIMARY = fromString("CommitFailoverFailedOnPrimary");
 
-    /** Static value CommitFailoverFailedOnRecovery for ProtectionState. */
-    public static final ProtectionState COMMIT_FAILOVER_FAILED_ON_RECOVERY =
-        fromString("CommitFailoverFailedOnRecovery");
+    /**
+     * Static value CommitFailoverFailedOnRecovery for ProtectionState.
+     */
+    public static final ProtectionState COMMIT_FAILOVER_FAILED_ON_RECOVERY
+        = fromString("CommitFailoverFailedOnRecovery");
 
-    /** Static value CommitFailoverStatesEnd for ProtectionState. */
+    /**
+     * Static value CommitFailoverStatesEnd for ProtectionState.
+     */
     public static final ProtectionState COMMIT_FAILOVER_STATES_END = fromString("CommitFailoverStatesEnd");
 
-    /** Static value CancelFailoverStatesBegin for ProtectionState. */
+    /**
+     * Static value CancelFailoverStatesBegin for ProtectionState.
+     */
     public static final ProtectionState CANCEL_FAILOVER_STATES_BEGIN = fromString("CancelFailoverStatesBegin");
 
-    /** Static value CancelFailoverInProgressOnPrimary for ProtectionState. */
-    public static final ProtectionState CANCEL_FAILOVER_IN_PROGRESS_ON_PRIMARY =
-        fromString("CancelFailoverInProgressOnPrimary");
+    /**
+     * Static value CancelFailoverInProgressOnPrimary for ProtectionState.
+     */
+    public static final ProtectionState CANCEL_FAILOVER_IN_PROGRESS_ON_PRIMARY
+        = fromString("CancelFailoverInProgressOnPrimary");
 
-    /** Static value CancelFailoverInProgressOnRecovery for ProtectionState. */
-    public static final ProtectionState CANCEL_FAILOVER_IN_PROGRESS_ON_RECOVERY =
-        fromString("CancelFailoverInProgressOnRecovery");
+    /**
+     * Static value CancelFailoverInProgressOnRecovery for ProtectionState.
+     */
+    public static final ProtectionState CANCEL_FAILOVER_IN_PROGRESS_ON_RECOVERY
+        = fromString("CancelFailoverInProgressOnRecovery");
 
-    /** Static value CancelFailoverFailedOnPrimary for ProtectionState. */
+    /**
+     * Static value CancelFailoverFailedOnPrimary for ProtectionState.
+     */
     public static final ProtectionState CANCEL_FAILOVER_FAILED_ON_PRIMARY = fromString("CancelFailoverFailedOnPrimary");
 
-    /** Static value CancelFailoverFailedOnRecovery for ProtectionState. */
-    public static final ProtectionState CANCEL_FAILOVER_FAILED_ON_RECOVERY =
-        fromString("CancelFailoverFailedOnRecovery");
+    /**
+     * Static value CancelFailoverFailedOnRecovery for ProtectionState.
+     */
+    public static final ProtectionState CANCEL_FAILOVER_FAILED_ON_RECOVERY
+        = fromString("CancelFailoverFailedOnRecovery");
 
-    /** Static value CancelFailoverStatesEnd for ProtectionState. */
+    /**
+     * Static value CancelFailoverStatesEnd for ProtectionState.
+     */
     public static final ProtectionState CANCEL_FAILOVER_STATES_END = fromString("CancelFailoverStatesEnd");
 
-    /** Static value ChangeRecoveryPointStatesBegin for ProtectionState. */
-    public static final ProtectionState CHANGE_RECOVERY_POINT_STATES_BEGIN =
-        fromString("ChangeRecoveryPointStatesBegin");
+    /**
+     * Static value ChangeRecoveryPointStatesBegin for ProtectionState.
+     */
+    public static final ProtectionState CHANGE_RECOVERY_POINT_STATES_BEGIN
+        = fromString("ChangeRecoveryPointStatesBegin");
 
-    /** Static value ChangeRecoveryPointInitiated for ProtectionState. */
+    /**
+     * Static value ChangeRecoveryPointInitiated for ProtectionState.
+     */
     public static final ProtectionState CHANGE_RECOVERY_POINT_INITIATED = fromString("ChangeRecoveryPointInitiated");
 
-    /** Static value ChangeRecoveryPointCompleted for ProtectionState. */
+    /**
+     * Static value ChangeRecoveryPointCompleted for ProtectionState.
+     */
     public static final ProtectionState CHANGE_RECOVERY_POINT_COMPLETED = fromString("ChangeRecoveryPointCompleted");
 
-    /** Static value ChangeRecoveryPointFailed for ProtectionState. */
+    /**
+     * Static value ChangeRecoveryPointFailed for ProtectionState.
+     */
     public static final ProtectionState CHANGE_RECOVERY_POINT_FAILED = fromString("ChangeRecoveryPointFailed");
 
-    /** Static value ChangeRecoveryPointStatesEnd for ProtectionState. */
+    /**
+     * Static value ChangeRecoveryPointStatesEnd for ProtectionState.
+     */
     public static final ProtectionState CHANGE_RECOVERY_POINT_STATES_END = fromString("ChangeRecoveryPointStatesEnd");
 
-    /** Static value ReprotectStatesBegin for ProtectionState. */
+    /**
+     * Static value ReprotectStatesBegin for ProtectionState.
+     */
     public static final ProtectionState REPROTECT_STATES_BEGIN = fromString("ReprotectStatesBegin");
 
-    /** Static value ReprotectInitiated for ProtectionState. */
+    /**
+     * Static value ReprotectInitiated for ProtectionState.
+     */
     public static final ProtectionState REPROTECT_INITIATED = fromString("ReprotectInitiated");
 
-    /** Static value ReprotectFailed for ProtectionState. */
+    /**
+     * Static value ReprotectFailed for ProtectionState.
+     */
     public static final ProtectionState REPROTECT_FAILED = fromString("ReprotectFailed");
 
-    /** Static value ReprotectStatesEnd for ProtectionState. */
+    /**
+     * Static value ReprotectStatesEnd for ProtectionState.
+     */
     public static final ProtectionState REPROTECT_STATES_END = fromString("ReprotectStatesEnd");
 
     /**
      * Creates a new instance of ProtectionState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -192,18 +297,17 @@ public final class ProtectionState extends ExpandableStringEnum<ProtectionState>
 
     /**
      * Creates or finds a ProtectionState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProtectionState.
      */
-    @JsonCreator
     public static ProtectionState fromString(String name) {
         return fromString(name, ProtectionState.class);
     }
 
     /**
      * Gets known ProtectionState values.
-     *
+     * 
      * @return known ProtectionState values.
      */
     public static Collection<ProtectionState> values() {

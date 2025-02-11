@@ -60,17 +60,12 @@ public final class EventHubsImpl extends WrapperImpl<EventHubsClient> implements
     public Mono<EventHub> getByIdAsync(String id) {
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
-        return getByNameAsync(resourceId.resourceGroupName(),
-                resourceId.parent().name(),
-                resourceId.name());
+        return getByNameAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
     }
 
     @Override
     public Mono<EventHub> getByNameAsync(String resourceGroupName, String namespaceName, String name) {
-        return this.innerModel().getAsync(resourceGroupName,
-            namespaceName,
-            name)
-            .map(this::wrapModel);
+        return this.innerModel().getAsync(resourceGroupName, namespaceName, name).map(this::wrapModel);
     }
 
     @Override
@@ -80,15 +75,12 @@ public final class EventHubsImpl extends WrapperImpl<EventHubsClient> implements
 
     @Override
     public PagedIterable<EventHub> listByNamespace(String resourceGroupName, String namespaceName) {
-        return PagedConverter.mapPage(innerModel()
-            .listByNamespace(resourceGroupName, namespaceName),
-            this::wrapModel);
+        return PagedConverter.mapPage(innerModel().listByNamespace(resourceGroupName, namespaceName), this::wrapModel);
     }
 
     @Override
     public PagedFlux<EventHub> listByNamespaceAsync(String resourceGroupName, String namespaceName) {
-        return PagedConverter.mapPage(innerModel()
-            .listByNamespaceAsync(resourceGroupName, namespaceName),
+        return PagedConverter.mapPage(innerModel().listByNamespaceAsync(resourceGroupName, namespaceName),
             this::wrapModel);
     }
 
@@ -101,16 +93,12 @@ public final class EventHubsImpl extends WrapperImpl<EventHubsClient> implements
     public Mono<Void> deleteByIdAsync(String id) {
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
-        return deleteByNameAsync(resourceId.resourceGroupName(),
-                resourceId.parent().name(),
-                resourceId.name());
+        return deleteByNameAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
     }
 
     @Override
     public Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String name) {
-        return this.innerModel().deleteAsync(resourceGroupName,
-            namespaceName,
-            name);
+        return this.innerModel().deleteAsync(resourceGroupName, namespaceName, name);
     }
 
     @Override

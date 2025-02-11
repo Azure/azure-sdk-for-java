@@ -13,11 +13,13 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateInfoInner;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ArtifactInner;
 import com.azure.resourcemanager.devtestlabs.models.GenerateArmTemplateRequest;
 
-/** An instance of this class provides access to all the operations defined in ArtifactsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ArtifactsClient.
+ */
 public interface ArtifactsClient {
     /**
      * List artifacts in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -31,7 +33,7 @@ public interface ArtifactsClient {
 
     /**
      * List artifacts in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -46,19 +48,12 @@ public interface ArtifactsClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ArtifactInner> list(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<ArtifactInner> list(String resourceGroupName, String labName, String artifactSourceName,
+        String expand, String filter, Integer top, String orderby, Context context);
 
     /**
      * Get artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -71,17 +66,12 @@ public interface ArtifactsClient {
      * @return artifact along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArtifactInner> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        String expand,
-        Context context);
+    Response<ArtifactInner> getWithResponse(String resourceGroupName, String labName, String artifactSourceName,
+        String name, String expand, Context context);
 
     /**
      * Get artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -97,7 +87,7 @@ public interface ArtifactsClient {
     /**
      * Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates
      * the generated artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -110,18 +100,13 @@ public interface ArtifactsClient {
      * @return information about a generated ARM template along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArmTemplateInfoInner> generateArmTemplateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        GenerateArmTemplateRequest generateArmTemplateRequest,
-        Context context);
+    Response<ArmTemplateInfoInner> generateArmTemplateWithResponse(String resourceGroupName, String labName,
+        String artifactSourceName, String name, GenerateArmTemplateRequest generateArmTemplateRequest, Context context);
 
     /**
      * Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates
      * the generated artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -133,10 +118,6 @@ public interface ArtifactsClient {
      * @return information about a generated ARM template.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArmTemplateInfoInner generateArmTemplate(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        GenerateArmTemplateRequest generateArmTemplateRequest);
+    ArmTemplateInfoInner generateArmTemplate(String resourceGroupName, String labName, String artifactSourceName,
+        String name, GenerateArmTemplateRequest generateArmTemplateRequest);
 }

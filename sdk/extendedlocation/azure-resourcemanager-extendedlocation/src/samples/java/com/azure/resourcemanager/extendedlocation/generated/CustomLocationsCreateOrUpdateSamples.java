@@ -9,30 +9,31 @@ import com.azure.resourcemanager.extendedlocation.models.Identity;
 import com.azure.resourcemanager.extendedlocation.models.ResourceIdentityType;
 import java.util.Arrays;
 
-/** Samples for CustomLocations CreateOrUpdate. */
+/**
+ * Samples for CustomLocations CreateOrUpdate.
+ */
 public final class CustomLocationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsCreate_Update.json
+     * x-ms-original-file:
+     * specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/
+     * CustomLocationsCreate_Update.json
      */
     /**
      * Sample code: Create/Update Custom Location.
-     *
+     * 
      * @param manager Entry point to CustomLocationsManager.
      */
-    public static void createUpdateCustomLocation(
-        com.azure.resourcemanager.extendedlocation.CustomLocationsManager manager) {
-        manager
-            .customLocations()
+    public static void
+        createUpdateCustomLocation(com.azure.resourcemanager.extendedlocation.CustomLocationsManager manager) {
+        manager.customLocations()
             .define("customLocation01")
             .withRegion("West US")
             .withExistingResourceGroup("testresourcegroup")
             .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .withAuthentication(
                 new CustomLocationPropertiesAuthentication().withType("KubeConfig").withValue("<base64 KubeConfig>"))
-            .withClusterExtensionIds(
-                Arrays
-                    .asList(
-                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kubernetes/connectedCluster/someCluster/Microsoft.KubernetesConfiguration/clusterExtensions/fooExtension"))
+            .withClusterExtensionIds(Arrays.asList(
+                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kubernetes/connectedCluster/someCluster/Microsoft.KubernetesConfiguration/clusterExtensions/fooExtension"))
             .withDisplayName("customLocationLocation01")
             .withHostResourceId(
                 "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ContainerService/managedClusters/cluster01")

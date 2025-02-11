@@ -11,13 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SelfHostedIntegrationRuntimeNodeInner;
 import com.azure.resourcemanager.synapse.models.UpdateIntegrationRuntimeNodeRequest;
 
-/** An instance of this class provides access to all the operations defined in IntegrationRuntimeNodesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationRuntimeNodesClient.
+ */
 public interface IntegrationRuntimeNodesClient {
     /**
      * Get integration runtime node
-     *
-     * <p>Get an integration runtime node.
-     *
+     * 
+     * Get an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -29,18 +31,14 @@ public interface IntegrationRuntimeNodesClient {
      * @return an integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SelfHostedIntegrationRuntimeNodeInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context);
+    Response<SelfHostedIntegrationRuntimeNodeInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName, Context context);
 
     /**
      * Get integration runtime node
-     *
-     * <p>Get an integration runtime node.
-     *
+     * 
+     * Get an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -51,14 +49,14 @@ public interface IntegrationRuntimeNodesClient {
      * @return an integration runtime node.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SelfHostedIntegrationRuntimeNodeInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName);
+    SelfHostedIntegrationRuntimeNodeInner get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName);
 
     /**
      * Create integration runtime node
-     *
-     * <p>Create an integration runtime node.
-     *
+     * 
+     * Create an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -71,19 +69,15 @@ public interface IntegrationRuntimeNodesClient {
      * @return properties of Self-hosted integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SelfHostedIntegrationRuntimeNodeInner> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest,
-        Context context);
+    Response<SelfHostedIntegrationRuntimeNodeInner> updateWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName,
+        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest, Context context);
 
     /**
      * Create integration runtime node
-     *
-     * <p>Create an integration runtime node.
-     *
+     * 
+     * Create an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -95,18 +89,15 @@ public interface IntegrationRuntimeNodesClient {
      * @return properties of Self-hosted integration runtime node.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SelfHostedIntegrationRuntimeNodeInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
+    SelfHostedIntegrationRuntimeNodeInner update(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName,
         UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest);
 
     /**
      * Delete integration runtime node
-     *
-     * <p>Delete an integration runtime node.
-     *
+     * 
+     * Delete an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -118,18 +109,14 @@ public interface IntegrationRuntimeNodesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        String nodeName, Context context);
 
     /**
      * Delete integration runtime node
-     *
-     * <p>Delete an integration runtime node.
-     *
+     * 
+     * Delete an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

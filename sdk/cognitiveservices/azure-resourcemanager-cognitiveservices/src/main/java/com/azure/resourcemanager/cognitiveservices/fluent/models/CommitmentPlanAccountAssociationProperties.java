@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The commitment plan account association properties. */
+/**
+ * The commitment plan account association properties.
+ */
 @Fluent
-public final class CommitmentPlanAccountAssociationProperties {
+public final class CommitmentPlanAccountAssociationProperties
+    implements JsonSerializable<CommitmentPlanAccountAssociationProperties> {
     /*
      * The Azure resource id of the account.
      */
-    @JsonProperty(value = "accountId")
     private String accountId;
 
-    /** Creates an instance of CommitmentPlanAccountAssociationProperties class. */
+    /**
+     * Creates an instance of CommitmentPlanAccountAssociationProperties class.
+     */
     public CommitmentPlanAccountAssociationProperties() {
     }
 
     /**
      * Get the accountId property: The Azure resource id of the account.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -31,7 +39,7 @@ public final class CommitmentPlanAccountAssociationProperties {
 
     /**
      * Set the accountId property: The Azure resource id of the account.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the CommitmentPlanAccountAssociationProperties object itself.
      */
@@ -42,9 +50,46 @@ public final class CommitmentPlanAccountAssociationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountId", this.accountId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommitmentPlanAccountAssociationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommitmentPlanAccountAssociationProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommitmentPlanAccountAssociationProperties.
+     */
+    public static CommitmentPlanAccountAssociationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommitmentPlanAccountAssociationProperties deserializedCommitmentPlanAccountAssociationProperties
+                = new CommitmentPlanAccountAssociationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountId".equals(fieldName)) {
+                    deserializedCommitmentPlanAccountAssociationProperties.accountId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommitmentPlanAccountAssociationProperties;
+        });
     }
 }

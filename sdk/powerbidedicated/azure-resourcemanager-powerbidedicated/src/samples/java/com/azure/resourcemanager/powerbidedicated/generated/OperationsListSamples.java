@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.powerbidedicated.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/operations.json
+     * x-ms-original-file:
+     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/operations.
+     * json
      */
     /**
      * Sample code: List operations.
-     *
+     * 
      * @param manager Entry point to PowerBIDedicatedManager.
      */
     public static void listOperations(com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager manager) {

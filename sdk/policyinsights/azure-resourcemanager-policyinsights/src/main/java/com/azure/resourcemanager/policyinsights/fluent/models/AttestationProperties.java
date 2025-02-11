@@ -5,93 +5,92 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.policyinsights.models.AttestationEvidence;
 import com.azure.resourcemanager.policyinsights.models.ComplianceState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The properties of an attestation resource. */
+/**
+ * The properties of an attestation resource.
+ */
 @Fluent
-public final class AttestationProperties {
+public final class AttestationProperties implements JsonSerializable<AttestationProperties> {
     /*
      * The resource ID of the policy assignment that the attestation is setting the state for.
      */
-    @JsonProperty(value = "policyAssignmentId", required = true)
     private String policyAssignmentId;
 
     /*
-     * The policy definition reference ID from a policy set definition that the attestation is setting the state for.
-     * If the policy assignment assigns a policy set definition the attestation can choose a definition within the set
+     * The policy definition reference ID from a policy set definition that the attestation is setting the state for. If
+     * the policy assignment assigns a policy set definition the attestation can choose a definition within the set
      * definition with this property or omit this and set the state for the entire set definition.
      */
-    @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
 
     /*
      * The compliance state that should be set on the resource.
      */
-    @JsonProperty(value = "complianceState")
     private ComplianceState complianceState;
 
     /*
      * The time the compliance state should expire.
      */
-    @JsonProperty(value = "expiresOn")
     private OffsetDateTime expiresOn;
 
     /*
      * The person responsible for setting the state of the resource. This value is typically an Azure Active Directory
      * object ID.
      */
-    @JsonProperty(value = "owner")
     private String owner;
 
     /*
      * Comments describing why this attestation was created.
      */
-    @JsonProperty(value = "comments")
     private String comments;
 
     /*
      * The evidence supporting the compliance state set in this attestation.
      */
-    @JsonProperty(value = "evidence")
     private List<AttestationEvidence> evidence;
 
     /*
      * The status of the attestation.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The time the compliance state was last changed in this attestation.
      */
-    @JsonProperty(value = "lastComplianceStateChangeAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastComplianceStateChangeAt;
 
     /*
      * The time the evidence was assessed
      */
-    @JsonProperty(value = "assessmentDate")
     private OffsetDateTime assessmentDate;
 
     /*
      * Additional metadata for this attestation
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
-    /** Creates an instance of AttestationProperties class. */
+    /**
+     * Creates an instance of AttestationProperties class.
+     */
     public AttestationProperties() {
     }
 
     /**
      * Get the policyAssignmentId property: The resource ID of the policy assignment that the attestation is setting the
      * state for.
-     *
+     * 
      * @return the policyAssignmentId value.
      */
     public String policyAssignmentId() {
@@ -101,7 +100,7 @@ public final class AttestationProperties {
     /**
      * Set the policyAssignmentId property: The resource ID of the policy assignment that the attestation is setting the
      * state for.
-     *
+     * 
      * @param policyAssignmentId the policyAssignmentId value to set.
      * @return the AttestationProperties object itself.
      */
@@ -115,7 +114,7 @@ public final class AttestationProperties {
      * that the attestation is setting the state for. If the policy assignment assigns a policy set definition the
      * attestation can choose a definition within the set definition with this property or omit this and set the state
      * for the entire set definition.
-     *
+     * 
      * @return the policyDefinitionReferenceId value.
      */
     public String policyDefinitionReferenceId() {
@@ -127,7 +126,7 @@ public final class AttestationProperties {
      * that the attestation is setting the state for. If the policy assignment assigns a policy set definition the
      * attestation can choose a definition within the set definition with this property or omit this and set the state
      * for the entire set definition.
-     *
+     * 
      * @param policyDefinitionReferenceId the policyDefinitionReferenceId value to set.
      * @return the AttestationProperties object itself.
      */
@@ -138,7 +137,7 @@ public final class AttestationProperties {
 
     /**
      * Get the complianceState property: The compliance state that should be set on the resource.
-     *
+     * 
      * @return the complianceState value.
      */
     public ComplianceState complianceState() {
@@ -147,7 +146,7 @@ public final class AttestationProperties {
 
     /**
      * Set the complianceState property: The compliance state that should be set on the resource.
-     *
+     * 
      * @param complianceState the complianceState value to set.
      * @return the AttestationProperties object itself.
      */
@@ -158,7 +157,7 @@ public final class AttestationProperties {
 
     /**
      * Get the expiresOn property: The time the compliance state should expire.
-     *
+     * 
      * @return the expiresOn value.
      */
     public OffsetDateTime expiresOn() {
@@ -167,7 +166,7 @@ public final class AttestationProperties {
 
     /**
      * Set the expiresOn property: The time the compliance state should expire.
-     *
+     * 
      * @param expiresOn the expiresOn value to set.
      * @return the AttestationProperties object itself.
      */
@@ -179,7 +178,7 @@ public final class AttestationProperties {
     /**
      * Get the owner property: The person responsible for setting the state of the resource. This value is typically an
      * Azure Active Directory object ID.
-     *
+     * 
      * @return the owner value.
      */
     public String owner() {
@@ -189,7 +188,7 @@ public final class AttestationProperties {
     /**
      * Set the owner property: The person responsible for setting the state of the resource. This value is typically an
      * Azure Active Directory object ID.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the AttestationProperties object itself.
      */
@@ -200,7 +199,7 @@ public final class AttestationProperties {
 
     /**
      * Get the comments property: Comments describing why this attestation was created.
-     *
+     * 
      * @return the comments value.
      */
     public String comments() {
@@ -209,7 +208,7 @@ public final class AttestationProperties {
 
     /**
      * Set the comments property: Comments describing why this attestation was created.
-     *
+     * 
      * @param comments the comments value to set.
      * @return the AttestationProperties object itself.
      */
@@ -220,7 +219,7 @@ public final class AttestationProperties {
 
     /**
      * Get the evidence property: The evidence supporting the compliance state set in this attestation.
-     *
+     * 
      * @return the evidence value.
      */
     public List<AttestationEvidence> evidence() {
@@ -229,7 +228,7 @@ public final class AttestationProperties {
 
     /**
      * Set the evidence property: The evidence supporting the compliance state set in this attestation.
-     *
+     * 
      * @param evidence the evidence value to set.
      * @return the AttestationProperties object itself.
      */
@@ -240,7 +239,7 @@ public final class AttestationProperties {
 
     /**
      * Get the provisioningState property: The status of the attestation.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -249,7 +248,7 @@ public final class AttestationProperties {
 
     /**
      * Get the lastComplianceStateChangeAt property: The time the compliance state was last changed in this attestation.
-     *
+     * 
      * @return the lastComplianceStateChangeAt value.
      */
     public OffsetDateTime lastComplianceStateChangeAt() {
@@ -258,7 +257,7 @@ public final class AttestationProperties {
 
     /**
      * Get the assessmentDate property: The time the evidence was assessed.
-     *
+     * 
      * @return the assessmentDate value.
      */
     public OffsetDateTime assessmentDate() {
@@ -267,7 +266,7 @@ public final class AttestationProperties {
 
     /**
      * Set the assessmentDate property: The time the evidence was assessed.
-     *
+     * 
      * @param assessmentDate the assessmentDate value to set.
      * @return the AttestationProperties object itself.
      */
@@ -278,7 +277,7 @@ public final class AttestationProperties {
 
     /**
      * Get the metadata property: Additional metadata for this attestation.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -287,7 +286,7 @@ public final class AttestationProperties {
 
     /**
      * Set the metadata property: Additional metadata for this attestation.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the AttestationProperties object itself.
      */
@@ -298,15 +297,14 @@ public final class AttestationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policyAssignmentId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property policyAssignmentId in model AttestationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property policyAssignmentId in model AttestationProperties"));
         }
         if (evidence() != null) {
             evidence().forEach(e -> e.validate());
@@ -314,4 +312,77 @@ public final class AttestationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AttestationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyAssignmentId", this.policyAssignmentId);
+        jsonWriter.writeStringField("policyDefinitionReferenceId", this.policyDefinitionReferenceId);
+        jsonWriter.writeStringField("complianceState",
+            this.complianceState == null ? null : this.complianceState.toString());
+        jsonWriter.writeStringField("expiresOn",
+            this.expiresOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresOn));
+        jsonWriter.writeStringField("owner", this.owner);
+        jsonWriter.writeStringField("comments", this.comments);
+        jsonWriter.writeArrayField("evidence", this.evidence, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("assessmentDate",
+            this.assessmentDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.assessmentDate));
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttestationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttestationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AttestationProperties.
+     */
+    public static AttestationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttestationProperties deserializedAttestationProperties = new AttestationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyAssignmentId".equals(fieldName)) {
+                    deserializedAttestationProperties.policyAssignmentId = reader.getString();
+                } else if ("policyDefinitionReferenceId".equals(fieldName)) {
+                    deserializedAttestationProperties.policyDefinitionReferenceId = reader.getString();
+                } else if ("complianceState".equals(fieldName)) {
+                    deserializedAttestationProperties.complianceState = ComplianceState.fromString(reader.getString());
+                } else if ("expiresOn".equals(fieldName)) {
+                    deserializedAttestationProperties.expiresOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("owner".equals(fieldName)) {
+                    deserializedAttestationProperties.owner = reader.getString();
+                } else if ("comments".equals(fieldName)) {
+                    deserializedAttestationProperties.comments = reader.getString();
+                } else if ("evidence".equals(fieldName)) {
+                    List<AttestationEvidence> evidence
+                        = reader.readArray(reader1 -> AttestationEvidence.fromJson(reader1));
+                    deserializedAttestationProperties.evidence = evidence;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAttestationProperties.provisioningState = reader.getString();
+                } else if ("lastComplianceStateChangeAt".equals(fieldName)) {
+                    deserializedAttestationProperties.lastComplianceStateChangeAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("assessmentDate".equals(fieldName)) {
+                    deserializedAttestationProperties.assessmentDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedAttestationProperties.metadata = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttestationProperties;
+        });
+    }
 }

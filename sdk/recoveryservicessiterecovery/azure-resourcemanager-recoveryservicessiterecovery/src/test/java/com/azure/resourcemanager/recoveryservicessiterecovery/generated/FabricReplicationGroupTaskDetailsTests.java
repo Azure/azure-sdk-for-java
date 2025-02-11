@@ -27,10 +27,13 @@ public final class FabricReplicationGroupTaskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FabricReplicationGroupTaskDetails model = new FabricReplicationGroupTaskDetails().withJobTask(
-            new JobEntity().withJobId("vqkxiuxqggvq").withJobFriendlyName("hyhlwcjsqg").withTargetObjectId("hffbxrq")
-                .withTargetObjectName("ijpeuql").withTargetInstanceType("x").withJobScenarioName("ztv"))
-            .withSkippedReason("nmfbc").withSkippedReasonString("qktkrumzuedkyzbf");
+        FabricReplicationGroupTaskDetails model
+            = new FabricReplicationGroupTaskDetails().withJobTask(new JobEntity().withJobId("vqkxiuxqggvq")
+                .withJobFriendlyName("hyhlwcjsqg")
+                .withTargetObjectId("hffbxrq")
+                .withTargetObjectName("ijpeuql")
+                .withTargetInstanceType("x")
+                .withJobScenarioName("ztv")).withSkippedReason("nmfbc").withSkippedReasonString("qktkrumzuedkyzbf");
         model = BinaryData.fromObject(model).toObject(FabricReplicationGroupTaskDetails.class);
         Assertions.assertEquals("vqkxiuxqggvq", model.jobTask().jobId());
         Assertions.assertEquals("hyhlwcjsqg", model.jobTask().jobFriendlyName());

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ExternalNetworks. */
+/**
+ * Resource collection API of ExternalNetworks.
+ */
 public interface ExternalNetworks {
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -24,14 +26,14 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the External Network resource along with {@link Response}.
      */
-    Response<ExternalNetwork> getWithResponse(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context);
+    Response<ExternalNetwork> getWithResponse(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, Context context);
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -44,9 +46,9 @@ public interface ExternalNetworks {
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -58,9 +60,9 @@ public interface ExternalNetworks {
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -73,9 +75,9 @@ public interface ExternalNetworks {
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,9 +89,9 @@ public interface ExternalNetworks {
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -98,14 +100,14 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of External Networks as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ExternalNetwork> listByL3IsolationDomain(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
+    PagedIterable<ExternalNetwork> listByL3IsolationDomain(String resourceGroupName, String l3IsolationDomainName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -115,17 +117,14 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -136,18 +135,14 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body, Context context);
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -157,17 +152,14 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -178,18 +170,14 @@ public interface ExternalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body, Context context);
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -200,9 +188,9 @@ public interface ExternalNetworks {
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,9 +202,9 @@ public interface ExternalNetworks {
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -226,9 +214,9 @@ public interface ExternalNetworks {
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -239,7 +227,7 @@ public interface ExternalNetworks {
 
     /**
      * Begins definition for a new ExternalNetwork resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ExternalNetwork definition.
      */

@@ -24,8 +24,10 @@ public final class A2APolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         A2APolicyDetails model = new A2APolicyDetails().withRecoveryPointThresholdInMinutes(1604436828)
-            .withRecoveryPointHistory(1284284541).withAppConsistentFrequencyInMinutes(409182858)
-            .withMultiVmSyncStatus("qi").withCrashConsistentFrequencyInMinutes(1105579119);
+            .withRecoveryPointHistory(1284284541)
+            .withAppConsistentFrequencyInMinutes(409182858)
+            .withMultiVmSyncStatus("qi")
+            .withCrashConsistentFrequencyInMinutes(1105579119);
         model = BinaryData.fromObject(model).toObject(A2APolicyDetails.class);
         Assertions.assertEquals(1604436828, model.recoveryPointThresholdInMinutes());
         Assertions.assertEquals(1284284541, model.recoveryPointHistory());

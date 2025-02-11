@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SasAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SasAuthentication model =
-            BinaryData
-                .fromString("{\"type\":\"Sas\",\"properties\":{\"sasUri\":\"shcbkhajdeyeamdp\"}}")
+        SasAuthentication model
+            = BinaryData.fromString("{\"type\":\"Sas\",\"properties\":{\"sasUri\":\"shcbkhajdeyeamdp\"}}")
                 .toObject(SasAuthentication.class);
         Assertions.assertEquals("shcbkhajdeyeamdp", model.sasUri());
     }

@@ -15,9 +15,9 @@ public final class VerifiedPartnerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VerifiedPartnerProperties model = BinaryData.fromString(
-            "{\"partnerRegistrationImmutableId\":\"0d72426b-99e5-47e3-821d-7442e22b0cef\",\"organizationName\":\"xdxuwsaifmc\",\"partnerDisplayName\":\"osbz\",\"partnerTopicDetails\":{\"description\":\"gcv\",\"longDescription\":\"cknjolgj\",\"setupUri\":\"xpvelszerqzevxo\"},\"partnerDestinationDetails\":{\"description\":\"ntxwaljglzob\",\"longDescription\":\"waafrqulh\",\"setupUri\":\"yqbhd\"},\"provisioningState\":\"Canceled\"}")
+            "{\"partnerRegistrationImmutableId\":\"6495b39c-4a28-4566-9d30-eec92bd7994c\",\"organizationName\":\"xdxuwsaifmc\",\"partnerDisplayName\":\"osbz\",\"partnerTopicDetails\":{\"description\":\"gcv\",\"longDescription\":\"cknjolgj\",\"setupUri\":\"xpvelszerqzevxo\"},\"partnerDestinationDetails\":{\"description\":\"ntxwaljglzob\",\"longDescription\":\"waafrqulh\",\"setupUri\":\"yqbhd\"},\"provisioningState\":\"Canceled\"}")
             .toObject(VerifiedPartnerProperties.class);
-        Assertions.assertEquals(UUID.fromString("0d72426b-99e5-47e3-821d-7442e22b0cef"),
+        Assertions.assertEquals(UUID.fromString("6495b39c-4a28-4566-9d30-eec92bd7994c"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("xdxuwsaifmc", model.organizationName());
         Assertions.assertEquals("osbz", model.partnerDisplayName());
@@ -33,7 +33,7 @@ public final class VerifiedPartnerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VerifiedPartnerProperties model = new VerifiedPartnerProperties()
-            .withPartnerRegistrationImmutableId(UUID.fromString("0d72426b-99e5-47e3-821d-7442e22b0cef"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("6495b39c-4a28-4566-9d30-eec92bd7994c"))
             .withOrganizationName("xdxuwsaifmc")
             .withPartnerDisplayName("osbz")
             .withPartnerTopicDetails(new PartnerDetails().withDescription("gcv")
@@ -44,7 +44,7 @@ public final class VerifiedPartnerPropertiesTests {
                 .withSetupUri("yqbhd"))
             .withProvisioningState(VerifiedPartnerProvisioningState.CANCELED);
         model = BinaryData.fromObject(model).toObject(VerifiedPartnerProperties.class);
-        Assertions.assertEquals(UUID.fromString("0d72426b-99e5-47e3-821d-7442e22b0cef"),
+        Assertions.assertEquals(UUID.fromString("6495b39c-4a28-4566-9d30-eec92bd7994c"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("xdxuwsaifmc", model.organizationName());
         Assertions.assertEquals("osbz", model.partnerDisplayName());

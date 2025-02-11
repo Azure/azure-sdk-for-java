@@ -8,28 +8,25 @@ import com.azure.resourcemanager.devtestlabs.models.ServiceFabric;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ServiceFabrics Update. */
+/**
+ * Samples for ServiceFabrics Update.
+ */
 public final class ServiceFabricsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Update.
+     * json
      */
     /**
      * Sample code: ServiceFabrics_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricsUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        ServiceFabric resource =
-            manager
-                .serviceFabrics()
-                .getWithResponse(
-                    "resourceGroupName",
-                    "{labName}",
-                    "{userName}",
-                    "{serviceFabricName}",
-                    null,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        ServiceFabric resource = manager.serviceFabrics()
+            .getWithResponse("resourceGroupName", "{labName}", "{userName}", "{serviceFabricName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 

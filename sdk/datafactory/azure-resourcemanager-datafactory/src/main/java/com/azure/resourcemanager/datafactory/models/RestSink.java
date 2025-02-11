@@ -241,7 +241,6 @@ public final class RestSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

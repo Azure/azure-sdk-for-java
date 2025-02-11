@@ -1,14 +1,48 @@
 # Release History
 
-## 1.2.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.2.0 (2025-02-11)
 
 ### Other Changes
+
+- Release of Number Insight GA.
+- API version `2025-02-11` is the default.
+
+## 1.1.19 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-communication-common` from `1.3.7` to version `1.3.8`.
+
+## 1.1.18 (2024-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+
+## 1.1.17 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-communication-common` from `1.3.5` to version `1.3.7`.
+
+
+## 1.1.16 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.4` to version `1.3.5`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 
 
 ## 1.1.15 (2024-07-26)

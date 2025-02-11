@@ -13,17 +13,17 @@ import java.util.Collection;
  */
 public final class NetworkInterfaceAuxiliaryMode extends ExpandableStringEnum<NetworkInterfaceAuxiliaryMode> {
     /**
-     * Static value None for NetworkInterfaceAuxiliaryMode.
+     * None Mode.
      */
     public static final NetworkInterfaceAuxiliaryMode NONE = fromString("None");
 
     /**
-     * Static value AcceleratedConnections for NetworkInterfaceAuxiliaryMode.
+     * AcceleratedConnections Mode.
      */
     public static final NetworkInterfaceAuxiliaryMode ACCELERATED_CONNECTIONS = fromString("AcceleratedConnections");
 
     /**
-     * Static value Floating for NetworkInterfaceAuxiliaryMode.
+     * Floating Mode.
      */
     public static final NetworkInterfaceAuxiliaryMode FLOATING = fromString("Floating");
 

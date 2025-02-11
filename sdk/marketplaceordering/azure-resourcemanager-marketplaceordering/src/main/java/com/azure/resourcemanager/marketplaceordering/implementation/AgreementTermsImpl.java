@@ -14,8 +14,7 @@ public final class AgreementTermsImpl implements AgreementTerms {
 
     private final com.azure.resourcemanager.marketplaceordering.MarketplaceOrderingManager serviceManager;
 
-    AgreementTermsImpl(
-        AgreementTermsInner innerObject,
+    AgreementTermsImpl(AgreementTermsInner innerObject,
         com.azure.resourcemanager.marketplaceordering.MarketplaceOrderingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

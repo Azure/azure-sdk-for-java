@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The live event endpoint. */
+/**
+ * The live event endpoint.
+ */
 @Fluent
-public final class LiveEventEndpoint {
+public final class LiveEventEndpoint implements JsonSerializable<LiveEventEndpoint> {
     /*
      * The endpoint protocol.
      */
-    @JsonProperty(value = "protocol")
     private String protocol;
 
     /*
      * The endpoint URL.
      */
-    @JsonProperty(value = "url")
     private String url;
 
-    /** Creates an instance of LiveEventEndpoint class. */
+    /**
+     * Creates an instance of LiveEventEndpoint class.
+     */
     public LiveEventEndpoint() {
     }
 
     /**
      * Get the protocol property: The endpoint protocol.
-     *
+     * 
      * @return the protocol value.
      */
     public String protocol() {
@@ -37,7 +43,7 @@ public final class LiveEventEndpoint {
 
     /**
      * Set the protocol property: The endpoint protocol.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the LiveEventEndpoint object itself.
      */
@@ -48,7 +54,7 @@ public final class LiveEventEndpoint {
 
     /**
      * Get the url property: The endpoint URL.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -57,7 +63,7 @@ public final class LiveEventEndpoint {
 
     /**
      * Set the url property: The endpoint URL.
-     *
+     * 
      * @param url the url value to set.
      * @return the LiveEventEndpoint object itself.
      */
@@ -68,9 +74,48 @@ public final class LiveEventEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protocol", this.protocol);
+        jsonWriter.writeStringField("url", this.url);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiveEventEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiveEventEndpoint if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LiveEventEndpoint.
+     */
+    public static LiveEventEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiveEventEndpoint deserializedLiveEventEndpoint = new LiveEventEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocol".equals(fieldName)) {
+                    deserializedLiveEventEndpoint.protocol = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedLiveEventEndpoint.url = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiveEventEndpoint;
+        });
     }
 }

@@ -35,7 +35,7 @@ general and for an overview of Event Hubs Client for Java.
   events.
 
 For more concepts and deeper discussion, see: 
-[Event Hubs Features](https://docs.microsoft.com/azure/event-hubs/event-hubs-features). Also, the concepts for AMQP
+[Event Hubs Features](https://learn.microsoft.com/azure/event-hubs/event-hubs-features). Also, the concepts for AMQP
 are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version 
 1.0](https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html).
 
@@ -121,12 +121,12 @@ Set the following two Environment variables to be able to run unit tests targeti
   connection string is:
   `Endpoint=----NAMESPACE_ENDPOINT------;EntityPath=----EVENTHUB_NAME----;SharedAccessKeyName=----KEY_NAME----;SharedAccessKey=----KEY_VALUE----`.
   [Here's how to create an Event Hub on Azure Portal and get the connection
-  string](https://docs.microsoft.com/azure/event-hubs/event-hubs-create).
+  string](https://learn.microsoft.com/azure/event-hubs/event-hubs-create).
 
 * EPHTESTSTORAGE - the Microsoft Azure Storage account connection string to use while running EPH tests. The format of
   the connection string is:
   `DefaultEndpointsProtocol=https;AccountName=---STORAGE_ACCOUNT_NAME---;AccountKey=---ACCOUNT_KEY---;EndpointSuffix=---ENPOINT_SUFFIX---`.
   For more details on this visit - [how to create an Azure Storage account connection
-  string](https://docs.microsoft.com/azure/storage/common/storage-configure-connection-string#create-a-connection-string-for-an-azure-storage-account).
+  string](https://learn.microsoft.com/azure/storage/common/storage-configure-connection-string#create-a-connection-string-for-an-azure-storage-account).
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fmicrosoft-azure-eventhubs%2FREADME.png)
+

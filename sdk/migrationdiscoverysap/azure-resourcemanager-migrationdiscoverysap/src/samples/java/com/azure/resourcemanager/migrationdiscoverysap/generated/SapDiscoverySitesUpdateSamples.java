@@ -25,7 +25,8 @@ public final class SapDiscoverySitesUpdateSamples {
     public static void updatesASAPMigrationDiscoverySiteResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
         SapDiscoverySite resource = manager.sapDiscoverySites()
-            .getByResourceGroupWithResponse("test-rg", "SampleSite", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("test-rg", "SampleSite", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1")).apply();
     }
 

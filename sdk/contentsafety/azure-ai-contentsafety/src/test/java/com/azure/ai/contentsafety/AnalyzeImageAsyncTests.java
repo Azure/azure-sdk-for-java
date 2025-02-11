@@ -26,9 +26,7 @@ public final class AnalyzeImageAsyncTests extends ContentSafetyClientTestBase {
         String source = "/src/samples/resources/image.png";
         image.setContent(BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source))));
 
-        AnalyzeImageResult response =
-            contentSafetyClient.analyzeImage(
-                new AnalyzeImageOptions(image));
+        AnalyzeImageResult response = contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -50,8 +48,7 @@ public final class AnalyzeImageAsyncTests extends ContentSafetyClientTestBase {
         String source = "/src/samples/resources/image.png";
         BinaryData content = BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source)));
 
-        AnalyzeImageResult response =
-            contentSafetyClient.analyzeImage(content);
+        AnalyzeImageResult response = contentSafetyClient.analyzeImage(content);
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -72,9 +69,7 @@ public final class AnalyzeImageAsyncTests extends ContentSafetyClientTestBase {
         ContentSafetyImageData image = new ContentSafetyImageData();
         image.setBlobUrl("https://cmbugbashsampledata.blob.core.windows.net/image-sdk-test/image.png");
 
-        AnalyzeImageResult response =
-            contentSafetyClient.analyzeImage(
-                new AnalyzeImageOptions(image));
+        AnalyzeImageResult response = contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -94,8 +89,7 @@ public final class AnalyzeImageAsyncTests extends ContentSafetyClientTestBase {
         // method invocation
         String blobUrl = "https://cmbugbashsampledata.blob.core.windows.net/image-sdk-test/image.png";
 
-        AnalyzeImageResult response =
-            contentSafetyClient.analyzeImage(blobUrl);
+        AnalyzeImageResult response = contentSafetyClient.analyzeImage(blobUrl);
 
         // response assertion
         Assertions.assertNotNull(response);

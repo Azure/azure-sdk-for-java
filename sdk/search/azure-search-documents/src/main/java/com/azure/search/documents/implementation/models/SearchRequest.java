@@ -195,7 +195,9 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * pipe character `|` followed by the `count-<number of answers>` option after the answers parameter value, such as
      * `extractive|count-3`. Default count is 1. The confidence threshold can be configured by appending the pipe
      * character `|` followed by the `threshold-<confidence threshold>` option after the answers parameter value, such
-     * as `extractive|threshold-0.9`. Default threshold is 0.7.
+     * as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum character length of answers can be
+     * configured by appending the pipe character '|' followed by the 'count-<number of maximum character length>', such
+     * as 'extractive|maxcharlength-600'.
      */
     private String answers;
 
@@ -203,9 +205,19 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * This parameter is only valid if the query type is `semantic`. If set, the query returns captions extracted from
      * key passages in the highest ranked documents. When Captions is set to `extractive`, highlighting is enabled by
      * default, and can be configured by appending the pipe character `|` followed by the `highlight-<true/false>`
-     * option, such as `extractive|highlight-true`. Defaults to `None`.
+     * option, such as `extractive|highlight-true`. Defaults to `None`. The maximum character length of captions can be
+     * configured by appending the pipe character '|' followed by the 'count-<number of maximum character length>', such
+     * as 'extractive|maxcharlength-600'.
      */
     private String captions;
+
+    /*
+     * This parameter is only valid if the query type is `semantic`. When QueryRewrites is set to `generative`, the
+     * query terms are sent to a generate model which will produce 10 (default) rewrites to help increase the recall of
+     * the request. The requested count can be configured by appending the pipe character `|` followed by the
+     * `count-<number of rewrites>` option, such as `generative|count-3`. Defaults to `None`.
+     */
+    private String queryRewrites;
 
     /*
      * The comma-separated list of field names used for semantic ranking.
@@ -836,7 +848,9 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
      * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
      * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
-     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum
+     * character length of answers can be configured by appending the pipe character '|' followed by the
+     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
      * 
      * @return the answers value.
      */
@@ -850,7 +864,9 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
      * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
      * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
-     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum
+     * character length of answers can be configured by appending the pipe character '|' followed by the
+     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
      * 
      * @param answers the answers value to set.
      * @return the SearchRequest object itself.
@@ -865,6 +881,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
      * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
+     * The maximum character length of captions can be configured by appending the pipe character '|' followed by the
+     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
      * 
      * @return the captions value.
      */
@@ -877,12 +895,40 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
      * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
+     * The maximum character length of captions can be configured by appending the pipe character '|' followed by the
+     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
      * 
      * @param captions the captions value to set.
      * @return the SearchRequest object itself.
      */
     public SearchRequest setCaptions(String captions) {
         this.captions = captions;
+        return this;
+    }
+
+    /**
+     * Get the queryRewrites property: This parameter is only valid if the query type is `semantic`. When QueryRewrites
+     * is set to `generative`, the query terms are sent to a generate model which will produce 10 (default) rewrites to
+     * help increase the recall of the request. The requested count can be configured by appending the pipe character
+     * `|` followed by the `count-&lt;number of rewrites&gt;` option, such as `generative|count-3`. Defaults to `None`.
+     * 
+     * @return the queryRewrites value.
+     */
+    public String getQueryRewrites() {
+        return this.queryRewrites;
+    }
+
+    /**
+     * Set the queryRewrites property: This parameter is only valid if the query type is `semantic`. When QueryRewrites
+     * is set to `generative`, the query terms are sent to a generate model which will produce 10 (default) rewrites to
+     * help increase the recall of the request. The requested count can be configured by appending the pipe character
+     * `|` followed by the `count-&lt;number of rewrites&gt;` option, such as `generative|count-3`. Defaults to `None`.
+     * 
+     * @param queryRewrites the queryRewrites value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setQueryRewrites(String queryRewrites) {
+        this.queryRewrites = queryRewrites;
         return this;
     }
 
@@ -1005,6 +1051,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeStringField("semanticQuery", this.semanticQuery);
         jsonWriter.writeStringField("answers", this.answers);
         jsonWriter.writeStringField("captions", this.captions);
+        jsonWriter.writeStringField("queryRewrites", this.queryRewrites);
         jsonWriter.writeStringField("semanticFields", this.semanticFields);
         jsonWriter.writeArrayField("vectorQueries", this.vectorQueries, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("vectorFilterMode",
@@ -1086,6 +1133,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                     deserializedSearchRequest.answers = reader.getString();
                 } else if ("captions".equals(fieldName)) {
                     deserializedSearchRequest.captions = reader.getString();
+                } else if ("queryRewrites".equals(fieldName)) {
+                    deserializedSearchRequest.queryRewrites = reader.getString();
                 } else if ("semanticFields".equals(fieldName)) {
                     deserializedSearchRequest.semanticFields = reader.getString();
                 } else if ("vectorQueries".equals(fieldName)) {

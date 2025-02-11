@@ -365,15 +365,18 @@ public final class FaceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     url: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         faceId: String (Optional)
@@ -471,7 +474,8 @@ public final class FaceClientImpl {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param detectFromUrlRequest The detectFromUrlRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -524,15 +528,18 @@ public final class FaceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     url: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         faceId: String (Optional)
@@ -630,7 +637,8 @@ public final class FaceClientImpl {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param detectFromUrlRequest The detectFromUrlRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -682,13 +690,16 @@ public final class FaceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         faceId: String (Optional)
@@ -786,7 +797,8 @@ public final class FaceClientImpl {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param imageContent The input image binary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -838,13 +850,16 @@ public final class FaceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         faceId: String (Optional)
@@ -942,7 +957,8 @@ public final class FaceClientImpl {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param imageContent The input image binary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -968,7 +984,8 @@ public final class FaceClientImpl {
      * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceId: String (Required)
      *     maxNumOfCandidatesReturned: Integer (Optional)
@@ -977,11 +994,13 @@ public final class FaceClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         confidence: double (Required)
@@ -989,7 +1008,8 @@ public final class FaceClientImpl {
      *         persistedFaceId: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param findSimilarRequest The findSimilarRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1016,7 +1036,8 @@ public final class FaceClientImpl {
      * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceId: String (Required)
      *     maxNumOfCandidatesReturned: Integer (Optional)
@@ -1025,11 +1046,13 @@ public final class FaceClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         confidence: double (Required)
@@ -1037,7 +1060,8 @@ public final class FaceClientImpl {
      *         persistedFaceId: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param findSimilarRequest The findSimilarRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1062,21 +1086,25 @@ public final class FaceClientImpl {
      * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceId1: String (Required)
      *     faceId2: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     isIdentical: boolean (Required)
      *     confidence: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param verifyFaceToFaceRequest The verifyFaceToFaceRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1103,21 +1131,25 @@ public final class FaceClientImpl {
      * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceId1: String (Required)
      *     faceId2: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     isIdentical: boolean (Required)
      *     confidence: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param verifyFaceToFaceRequest The verifyFaceToFaceRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1142,17 +1174,20 @@ public final class FaceClientImpl {
      * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/group for more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceIds (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     groups (Required): [
      *          (Required)[
@@ -1163,7 +1198,8 @@ public final class FaceClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupRequest The groupRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1188,17 +1224,20 @@ public final class FaceClientImpl {
      * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/group for more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceIds (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     groups (Required): [
      *          (Required)[
@@ -1209,7 +1248,8 @@ public final class FaceClientImpl {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupRequest The groupRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1236,18 +1276,21 @@ public final class FaceClientImpl {
      * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceId: String (Required)
      *     maxNumOfCandidatesReturned: Integer (Optional)
      *     mode: String(matchPerson/matchFace) (Optional)
      *     largeFaceListId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         confidence: double (Required)
@@ -1255,7 +1298,8 @@ public final class FaceClientImpl {
      *         persistedFaceId: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param findSimilarFromLargeFaceListRequest The findSimilarFromLargeFaceListRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1284,18 +1328,21 @@ public final class FaceClientImpl {
      * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceId: String (Required)
      *     maxNumOfCandidatesReturned: Integer (Optional)
      *     mode: String(matchPerson/matchFace) (Optional)
      *     largeFaceListId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         confidence: double (Required)
@@ -1303,7 +1350,8 @@ public final class FaceClientImpl {
      *         persistedFaceId: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param findSimilarFromLargeFaceListRequest The findSimilarFromLargeFaceListRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1329,7 +1377,8 @@ public final class FaceClientImpl {
      * for more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceIds (Required): [
      *         String (Required)
@@ -1338,11 +1387,13 @@ public final class FaceClientImpl {
      *     maxNumOfCandidatesReturned: Integer (Optional)
      *     confidenceThreshold: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         faceId: String (Required)
@@ -1354,7 +1405,8 @@ public final class FaceClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param identifyFromLargePersonGroupRequest The identifyFromLargePersonGroupRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1381,7 +1433,8 @@ public final class FaceClientImpl {
      * for more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceIds (Required): [
      *         String (Required)
@@ -1390,11 +1443,13 @@ public final class FaceClientImpl {
      *     maxNumOfCandidatesReturned: Integer (Optional)
      *     confidenceThreshold: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         faceId: String (Required)
@@ -1406,7 +1461,8 @@ public final class FaceClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param identifyFromLargePersonGroupRequest The identifyFromLargePersonGroupRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1433,22 +1489,26 @@ public final class FaceClientImpl {
      * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceId: String (Required)
      *     largePersonGroupId: String (Required)
      *     personId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     isIdentical: boolean (Required)
      *     confidence: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param verifyFromLargePersonGroupRequest The verifyFromLargePersonGroupRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1476,22 +1536,26 @@ public final class FaceClientImpl {
      * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     faceId: String (Required)
      *     largePersonGroupId: String (Required)
      *     personId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     isIdentical: boolean (Required)
      *     confidence: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param verifyFromLargePersonGroupRequest The verifyFromLargePersonGroupRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

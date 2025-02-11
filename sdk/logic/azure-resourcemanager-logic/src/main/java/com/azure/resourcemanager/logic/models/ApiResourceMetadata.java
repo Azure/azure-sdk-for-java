@@ -5,81 +5,77 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The api resource metadata. */
+/**
+ * The api resource metadata.
+ */
 @Fluent
-public final class ApiResourceMetadata {
+public final class ApiResourceMetadata implements JsonSerializable<ApiResourceMetadata> {
     /*
      * The source.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * The brand color.
      */
-    @JsonProperty(value = "brandColor")
     private String brandColor;
 
     /*
      * The hide key.
      */
-    @JsonProperty(value = "hideKey")
     private String hideKey;
 
     /*
      * The tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The api type.
      */
-    @JsonProperty(value = "ApiType")
     private ApiType apiType;
 
     /*
      * The WSDL service.
      */
-    @JsonProperty(value = "wsdlService")
     private WsdlService wsdlService;
 
     /*
      * The WSDL import method.
      */
-    @JsonProperty(value = "wsdlImportMethod")
     private WsdlImportMethod wsdlImportMethod;
 
     /*
      * The connection type.
      */
-    @JsonProperty(value = "connectionType")
     private String connectionType;
 
     /*
      * The provisioning state.
      */
-    @JsonProperty(value = "provisioningState")
     private WorkflowProvisioningState provisioningState;
 
     /*
      * The connector deployment parameters metadata.
      */
-    @JsonProperty(value = "deploymentParameters")
     private ApiDeploymentParameterMetadataSet deploymentParameters;
 
-    /** Creates an instance of ApiResourceMetadata class. */
+    /**
+     * Creates an instance of ApiResourceMetadata class.
+     */
     public ApiResourceMetadata() {
     }
 
     /**
      * Get the source property: The source.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -88,7 +84,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Set the source property: The source.
-     *
+     * 
      * @param source the source value to set.
      * @return the ApiResourceMetadata object itself.
      */
@@ -99,7 +95,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Get the brandColor property: The brand color.
-     *
+     * 
      * @return the brandColor value.
      */
     public String brandColor() {
@@ -108,7 +104,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Set the brandColor property: The brand color.
-     *
+     * 
      * @param brandColor the brandColor value to set.
      * @return the ApiResourceMetadata object itself.
      */
@@ -119,7 +115,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Get the hideKey property: The hide key.
-     *
+     * 
      * @return the hideKey value.
      */
     public String hideKey() {
@@ -128,7 +124,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Set the hideKey property: The hide key.
-     *
+     * 
      * @param hideKey the hideKey value to set.
      * @return the ApiResourceMetadata object itself.
      */
@@ -139,7 +135,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Get the tags property: The tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -148,7 +144,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Set the tags property: The tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ApiResourceMetadata object itself.
      */
@@ -159,7 +155,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Get the apiType property: The api type.
-     *
+     * 
      * @return the apiType value.
      */
     public ApiType apiType() {
@@ -168,7 +164,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Set the apiType property: The api type.
-     *
+     * 
      * @param apiType the apiType value to set.
      * @return the ApiResourceMetadata object itself.
      */
@@ -179,7 +175,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Get the wsdlService property: The WSDL service.
-     *
+     * 
      * @return the wsdlService value.
      */
     public WsdlService wsdlService() {
@@ -188,7 +184,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Set the wsdlService property: The WSDL service.
-     *
+     * 
      * @param wsdlService the wsdlService value to set.
      * @return the ApiResourceMetadata object itself.
      */
@@ -199,7 +195,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Get the wsdlImportMethod property: The WSDL import method.
-     *
+     * 
      * @return the wsdlImportMethod value.
      */
     public WsdlImportMethod wsdlImportMethod() {
@@ -208,7 +204,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Set the wsdlImportMethod property: The WSDL import method.
-     *
+     * 
      * @param wsdlImportMethod the wsdlImportMethod value to set.
      * @return the ApiResourceMetadata object itself.
      */
@@ -219,7 +215,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Get the connectionType property: The connection type.
-     *
+     * 
      * @return the connectionType value.
      */
     public String connectionType() {
@@ -228,7 +224,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Set the connectionType property: The connection type.
-     *
+     * 
      * @param connectionType the connectionType value to set.
      * @return the ApiResourceMetadata object itself.
      */
@@ -239,7 +235,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkflowProvisioningState provisioningState() {
@@ -248,7 +244,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Set the provisioningState property: The provisioning state.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ApiResourceMetadata object itself.
      */
@@ -259,7 +255,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Get the deploymentParameters property: The connector deployment parameters metadata.
-     *
+     * 
      * @return the deploymentParameters value.
      */
     public ApiDeploymentParameterMetadataSet deploymentParameters() {
@@ -268,7 +264,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Set the deploymentParameters property: The connector deployment parameters metadata.
-     *
+     * 
      * @param deploymentParameters the deploymentParameters value to set.
      * @return the ApiResourceMetadata object itself.
      */
@@ -279,7 +275,7 @@ public final class ApiResourceMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -289,5 +285,73 @@ public final class ApiResourceMetadata {
         if (deploymentParameters() != null) {
             deploymentParameters().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeStringField("brandColor", this.brandColor);
+        jsonWriter.writeStringField("hideKey", this.hideKey);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("ApiType", this.apiType == null ? null : this.apiType.toString());
+        jsonWriter.writeJsonField("wsdlService", this.wsdlService);
+        jsonWriter.writeStringField("wsdlImportMethod",
+            this.wsdlImportMethod == null ? null : this.wsdlImportMethod.toString());
+        jsonWriter.writeStringField("connectionType", this.connectionType);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeJsonField("deploymentParameters", this.deploymentParameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiResourceMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiResourceMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiResourceMetadata.
+     */
+    public static ApiResourceMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiResourceMetadata deserializedApiResourceMetadata = new ApiResourceMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedApiResourceMetadata.source = reader.getString();
+                } else if ("brandColor".equals(fieldName)) {
+                    deserializedApiResourceMetadata.brandColor = reader.getString();
+                } else if ("hideKey".equals(fieldName)) {
+                    deserializedApiResourceMetadata.hideKey = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApiResourceMetadata.tags = tags;
+                } else if ("ApiType".equals(fieldName)) {
+                    deserializedApiResourceMetadata.apiType = ApiType.fromString(reader.getString());
+                } else if ("wsdlService".equals(fieldName)) {
+                    deserializedApiResourceMetadata.wsdlService = WsdlService.fromJson(reader);
+                } else if ("wsdlImportMethod".equals(fieldName)) {
+                    deserializedApiResourceMetadata.wsdlImportMethod = WsdlImportMethod.fromString(reader.getString());
+                } else if ("connectionType".equals(fieldName)) {
+                    deserializedApiResourceMetadata.connectionType = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApiResourceMetadata.provisioningState
+                        = WorkflowProvisioningState.fromString(reader.getString());
+                } else if ("deploymentParameters".equals(fieldName)) {
+                    deserializedApiResourceMetadata.deploymentParameters
+                        = ApiDeploymentParameterMetadataSet.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiResourceMetadata;
+        });
     }
 }

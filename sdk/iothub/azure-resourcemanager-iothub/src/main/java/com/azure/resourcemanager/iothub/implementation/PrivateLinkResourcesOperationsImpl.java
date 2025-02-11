@@ -22,22 +22,18 @@ public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkReso
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    public PrivateLinkResourcesOperationsImpl(
-        PrivateLinkResourcesOperationsClient innerClient,
+    public PrivateLinkResourcesOperationsImpl(PrivateLinkResourcesOperationsClient innerClient,
         com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PrivateLinkResources> listWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<PrivateLinkResourcesInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
+    public Response<PrivateLinkResources> listWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<PrivateLinkResourcesInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkResourcesImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,15 +49,12 @@ public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkReso
         }
     }
 
-    public Response<GroupIdInformation> getWithResponse(
-        String resourceGroupName, String resourceName, String groupId, Context context) {
-        Response<GroupIdInformationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, groupId, context);
+    public Response<GroupIdInformation> getWithResponse(String resourceGroupName, String resourceName, String groupId,
+        Context context) {
+        Response<GroupIdInformationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, groupId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GroupIdInformationImpl(inner.getValue(), this.manager()));
         } else {
             return null;

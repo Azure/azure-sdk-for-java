@@ -13,8 +13,8 @@ import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkScopesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.HybridComputePrivateLinkScopeInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.PrivateLinkScopeValidationDetailsInner;
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScope;
-import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopes;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopeValidationDetails;
+import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopes;
 
 public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
     private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkScopesImpl.class);

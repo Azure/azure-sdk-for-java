@@ -5,47 +5,38 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Azure SQL workload-specific backup item.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "protectedItemType",
-    defaultImpl = AzureSqlProtectedItem.class,
-    visible = true)
-@JsonTypeName("Microsoft.Sql/servers/databases")
 @Fluent
 public final class AzureSqlProtectedItem extends ProtectedItem {
     /*
      * backup item type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "protectedItemType", required = true)
     private String protectedItemType = "Microsoft.Sql/servers/databases";
 
     /*
      * Internal ID of a backup item. Used by Azure SQL Backup engine to contact Recovery Services.
      */
-    @JsonProperty(value = "protectedItemDataId")
     private String protectedItemDataId;
 
     /*
      * Backup state of the backed up item.
      */
-    @JsonProperty(value = "protectionState")
     private ProtectedItemState protectionState;
 
     /*
      * Additional information for this backup item.
      */
-    @JsonProperty(value = "extendedInfo")
     private AzureSqlProtectedItemExtendedInfo extendedInfo;
 
     /**
@@ -268,9 +259,119 @@ public final class AzureSqlProtectedItem extends ProtectedItem {
      */
     @Override
     public void validate() {
-        super.validate();
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerName", containerName());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("policyId", policyId());
+        jsonWriter.writeStringField("lastRecoveryPoint",
+            lastRecoveryPoint() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastRecoveryPoint()));
+        jsonWriter.writeStringField("backupSetName", backupSetName());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeStringField("deferredDeleteTimeInUTC",
+            deferredDeleteTimeInUtc() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deferredDeleteTimeInUtc()));
+        jsonWriter.writeBooleanField("isScheduledForDeferredDelete", isScheduledForDeferredDelete());
+        jsonWriter.writeStringField("deferredDeleteTimeRemaining", deferredDeleteTimeRemaining());
+        jsonWriter.writeBooleanField("isDeferredDeleteScheduleUpcoming", isDeferredDeleteScheduleUpcoming());
+        jsonWriter.writeBooleanField("isRehydrate", isRehydrate());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchiveEnabled", isArchiveEnabled());
+        jsonWriter.writeStringField("policyName", policyName());
+        jsonWriter.writeNumberField("softDeleteRetentionPeriodInDays", softDeleteRetentionPeriod());
+        jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
+        jsonWriter.writeStringField("protectedItemDataId", this.protectedItemDataId);
+        jsonWriter.writeStringField("protectionState",
+            this.protectionState == null ? null : this.protectionState.toString());
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlProtectedItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlProtectedItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlProtectedItem.
+     */
+    public static AzureSqlProtectedItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlProtectedItem deserializedAzureSqlProtectedItem = new AzureSqlProtectedItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withWorkloadType(DataSourceType.fromString(reader.getString()));
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withContainerName(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withSourceResourceId(reader.getString());
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withPolicyId(reader.getString());
+                } else if ("lastRecoveryPoint".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withLastRecoveryPoint(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("backupSetName".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withBackupSetName(reader.getString());
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("deferredDeleteTimeInUTC".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withDeferredDeleteTimeInUtc(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("isScheduledForDeferredDelete".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem
+                        .withIsScheduledForDeferredDelete(reader.getNullable(JsonReader::getBoolean));
+                } else if ("deferredDeleteTimeRemaining".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withDeferredDeleteTimeRemaining(reader.getString());
+                } else if ("isDeferredDeleteScheduleUpcoming".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem
+                        .withIsDeferredDeleteScheduleUpcoming(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isRehydrate".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withIsRehydrate(reader.getNullable(JsonReader::getBoolean));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureSqlProtectedItem
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withIsArchiveEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withPolicyName(reader.getString());
+                } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem
+                        .withSoftDeleteRetentionPeriod(reader.getNullable(JsonReader::getInt));
+                } else if ("vaultId".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.withVaultId(reader.getString());
+                } else if ("protectedItemType".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.protectedItemType = reader.getString();
+                } else if ("protectedItemDataId".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.protectedItemDataId = reader.getString();
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.protectionState
+                        = ProtectedItemState.fromString(reader.getString());
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedAzureSqlProtectedItem.extendedInfo = AzureSqlProtectedItemExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlProtectedItem;
+        });
     }
 }

@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the network configuration type for SAP system infrastructure that is being deployed. */
+/**
+ * Defines the network configuration type for SAP system infrastructure that is being deployed.
+ */
 @Fluent
-public final class NetworkConfiguration {
+public final class NetworkConfiguration implements JsonSerializable<NetworkConfiguration> {
     /*
      * Specifies whether a secondary IP address should be added to the network interface on all VMs of the SAP system
      * being deployed
      */
-    @JsonProperty(value = "isSecondaryIpEnabled")
     private Boolean isSecondaryIpEnabled;
 
-    /** Creates an instance of NetworkConfiguration class. */
+    /**
+     * Creates an instance of NetworkConfiguration class.
+     */
     public NetworkConfiguration() {
     }
 
     /**
      * Get the isSecondaryIpEnabled property: Specifies whether a secondary IP address should be added to the network
      * interface on all VMs of the SAP system being deployed.
-     *
+     * 
      * @return the isSecondaryIpEnabled value.
      */
     public Boolean isSecondaryIpEnabled() {
@@ -34,7 +41,7 @@ public final class NetworkConfiguration {
     /**
      * Set the isSecondaryIpEnabled property: Specifies whether a secondary IP address should be added to the network
      * interface on all VMs of the SAP system being deployed.
-     *
+     * 
      * @param isSecondaryIpEnabled the isSecondaryIpEnabled value to set.
      * @return the NetworkConfiguration object itself.
      */
@@ -45,9 +52,45 @@ public final class NetworkConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isSecondaryIpEnabled", this.isSecondaryIpEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkConfiguration.
+     */
+    public static NetworkConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkConfiguration deserializedNetworkConfiguration = new NetworkConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isSecondaryIpEnabled".equals(fieldName)) {
+                    deserializedNetworkConfiguration.isSecondaryIpEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkConfiguration;
+        });
     }
 }

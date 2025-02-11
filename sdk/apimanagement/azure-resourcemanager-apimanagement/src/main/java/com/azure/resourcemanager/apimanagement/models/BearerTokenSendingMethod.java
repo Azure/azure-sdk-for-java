@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BearerTokenSendingMethod. */
+/**
+ * Defines values for BearerTokenSendingMethod.
+ */
 public final class BearerTokenSendingMethod extends ExpandableStringEnum<BearerTokenSendingMethod> {
-    /** Static value authorizationHeader for BearerTokenSendingMethod. */
+    /**
+     * Static value authorizationHeader for BearerTokenSendingMethod.
+     */
     public static final BearerTokenSendingMethod AUTHORIZATION_HEADER = fromString("authorizationHeader");
 
-    /** Static value query for BearerTokenSendingMethod. */
+    /**
+     * Static value query for BearerTokenSendingMethod.
+     */
     public static final BearerTokenSendingMethod QUERY = fromString("query");
 
     /**
      * Creates a new instance of BearerTokenSendingMethod value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class BearerTokenSendingMethod extends ExpandableStringEnum<BearerT
 
     /**
      * Creates or finds a BearerTokenSendingMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BearerTokenSendingMethod.
      */
-    @JsonCreator
     public static BearerTokenSendingMethod fromString(String name) {
         return fromString(name, BearerTokenSendingMethod.class);
     }
 
     /**
      * Gets known BearerTokenSendingMethod values.
-     *
+     * 
      * @return known BearerTokenSendingMethod values.
      */
     public static Collection<BearerTokenSendingMethod> values() {

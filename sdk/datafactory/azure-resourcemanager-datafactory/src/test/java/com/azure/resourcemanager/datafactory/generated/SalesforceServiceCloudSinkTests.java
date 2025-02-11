@@ -13,22 +13,22 @@ public final class SalesforceServiceCloudSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceServiceCloudSink model = BinaryData.fromString(
-            "{\"type\":\"SalesforceServiceCloudSink\",\"writeBehavior\":\"Upsert\",\"externalIdFieldName\":\"datawriihwxc\",\"ignoreNullValues\":\"datayfgkrpjon\",\"writeBatchSize\":\"datansqjnuiiytyarp\",\"writeBatchTimeout\":\"dataigfdpp\",\"sinkRetryCount\":\"datakgdyg\",\"sinkRetryWait\":\"datadljgdy\",\"maxConcurrentConnections\":\"datartseznowzfxkofm\",\"disableMetricsCollection\":\"datawculsbn\",\"\":{\"ljx\":\"datafdzmrlprb\",\"jbasmrdpb\":\"datajaawnzzlfvefs\"}}")
+            "{\"type\":\"SalesforceServiceCloudSink\",\"writeBehavior\":\"Upsert\",\"externalIdFieldName\":\"datafl\",\"ignoreNullValues\":\"datagrnh\",\"writeBatchSize\":\"datasdmovbvnjyqqofdg\",\"writeBatchTimeout\":\"dataykc\",\"sinkRetryCount\":\"dataln\",\"sinkRetryWait\":\"datarggytyvox\",\"maxConcurrentConnections\":\"databyjg\",\"disableMetricsCollection\":\"datazjmukfwmhzarrft\",\"\":{\"vvab\":\"dataifrjgvhone\"}}")
             .toObject(SalesforceServiceCloudSink.class);
         Assertions.assertEquals(SalesforceSinkWriteBehavior.UPSERT, model.writeBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceServiceCloudSink model = new SalesforceServiceCloudSink().withWriteBatchSize("datansqjnuiiytyarp")
-            .withWriteBatchTimeout("dataigfdpp")
-            .withSinkRetryCount("datakgdyg")
-            .withSinkRetryWait("datadljgdy")
-            .withMaxConcurrentConnections("datartseznowzfxkofm")
-            .withDisableMetricsCollection("datawculsbn")
+        SalesforceServiceCloudSink model = new SalesforceServiceCloudSink().withWriteBatchSize("datasdmovbvnjyqqofdg")
+            .withWriteBatchTimeout("dataykc")
+            .withSinkRetryCount("dataln")
+            .withSinkRetryWait("datarggytyvox")
+            .withMaxConcurrentConnections("databyjg")
+            .withDisableMetricsCollection("datazjmukfwmhzarrft")
             .withWriteBehavior(SalesforceSinkWriteBehavior.UPSERT)
-            .withExternalIdFieldName("datawriihwxc")
-            .withIgnoreNullValues("datayfgkrpjon");
+            .withExternalIdFieldName("datafl")
+            .withIgnoreNullValues("datagrnh");
         model = BinaryData.fromObject(model).toObject(SalesforceServiceCloudSink.class);
         Assertions.assertEquals(SalesforceSinkWriteBehavior.UPSERT, model.writeBehavior());
     }

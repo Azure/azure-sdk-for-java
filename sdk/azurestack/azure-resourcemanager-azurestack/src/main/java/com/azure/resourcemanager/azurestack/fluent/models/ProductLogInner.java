@@ -5,84 +5,81 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Product action log. */
+/**
+ * Product action log.
+ */
 @Immutable
-public final class ProductLogInner {
+public final class ProductLogInner implements JsonSerializable<ProductLogInner> {
     /*
      * Log ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Logged product ID.
      */
-    @JsonProperty(value = "productId", access = JsonProperty.Access.WRITE_ONLY)
     private String productId;
 
     /*
      * Logged subscription ID.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * Logged registration name.
      */
-    @JsonProperty(value = "registrationName", access = JsonProperty.Access.WRITE_ONLY)
     private String registrationName;
 
     /*
      * Logged resource group name.
      */
-    @JsonProperty(value = "resourceGroupName", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroupName;
 
     /*
      * Logged operation.
      */
-    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
      * Operation start datetime.
      */
-    @JsonProperty(value = "startDate", access = JsonProperty.Access.WRITE_ONLY)
     private String startDate;
 
     /*
      * Operation end datetime.
      */
-    @JsonProperty(value = "endDate", access = JsonProperty.Access.WRITE_ONLY)
     private String endDate;
 
     /*
      * Operation status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Operation error data.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private String error;
 
     /*
      * Operation error details.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private String details;
 
-    /** Creates an instance of ProductLogInner class. */
+    /**
+     * Creates an instance of ProductLogInner class.
+     */
     public ProductLogInner() {
     }
 
     /**
      * Get the id property: Log ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -91,7 +88,7 @@ public final class ProductLogInner {
 
     /**
      * Get the productId property: Logged product ID.
-     *
+     * 
      * @return the productId value.
      */
     public String productId() {
@@ -100,7 +97,7 @@ public final class ProductLogInner {
 
     /**
      * Get the subscriptionId property: Logged subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -109,7 +106,7 @@ public final class ProductLogInner {
 
     /**
      * Get the registrationName property: Logged registration name.
-     *
+     * 
      * @return the registrationName value.
      */
     public String registrationName() {
@@ -118,7 +115,7 @@ public final class ProductLogInner {
 
     /**
      * Get the resourceGroupName property: Logged resource group name.
-     *
+     * 
      * @return the resourceGroupName value.
      */
     public String resourceGroupName() {
@@ -127,7 +124,7 @@ public final class ProductLogInner {
 
     /**
      * Get the operation property: Logged operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -136,7 +133,7 @@ public final class ProductLogInner {
 
     /**
      * Get the startDate property: Operation start datetime.
-     *
+     * 
      * @return the startDate value.
      */
     public String startDate() {
@@ -145,7 +142,7 @@ public final class ProductLogInner {
 
     /**
      * Get the endDate property: Operation end datetime.
-     *
+     * 
      * @return the endDate value.
      */
     public String endDate() {
@@ -154,7 +151,7 @@ public final class ProductLogInner {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -163,7 +160,7 @@ public final class ProductLogInner {
 
     /**
      * Get the error property: Operation error data.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -172,7 +169,7 @@ public final class ProductLogInner {
 
     /**
      * Get the details property: Operation error details.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -181,9 +178,64 @@ public final class ProductLogInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductLogInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductLogInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProductLogInner.
+     */
+    public static ProductLogInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductLogInner deserializedProductLogInner = new ProductLogInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProductLogInner.id = reader.getString();
+                } else if ("productId".equals(fieldName)) {
+                    deserializedProductLogInner.productId = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedProductLogInner.subscriptionId = reader.getString();
+                } else if ("registrationName".equals(fieldName)) {
+                    deserializedProductLogInner.registrationName = reader.getString();
+                } else if ("resourceGroupName".equals(fieldName)) {
+                    deserializedProductLogInner.resourceGroupName = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedProductLogInner.operation = reader.getString();
+                } else if ("startDate".equals(fieldName)) {
+                    deserializedProductLogInner.startDate = reader.getString();
+                } else if ("endDate".equals(fieldName)) {
+                    deserializedProductLogInner.endDate = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedProductLogInner.status = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedProductLogInner.error = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    deserializedProductLogInner.details = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductLogInner;
+        });
     }
 }

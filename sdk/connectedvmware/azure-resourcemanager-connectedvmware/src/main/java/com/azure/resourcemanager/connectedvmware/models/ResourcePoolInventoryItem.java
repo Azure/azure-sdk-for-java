@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The resource pool inventory item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "inventoryType")
-@JsonTypeName("ResourcePool")
+/**
+ * The resource pool inventory item.
+ */
 @Fluent
 public final class ResourcePoolInventoryItem extends InventoryItemProperties {
     /*
+     * They inventory type.
+     */
+    private InventoryType inventoryType = InventoryType.RESOURCE_POOL;
+
+    /*
      * Parent resourcePool inventory resource details.
      */
-    @JsonProperty(value = "parent")
     private InventoryItemDetails parent;
 
-    /** Creates an instance of ResourcePoolInventoryItem class. */
+    /**
+     * Creates an instance of ResourcePoolInventoryItem class.
+     */
     public ResourcePoolInventoryItem() {
     }
 
     /**
+     * Get the inventoryType property: They inventory type.
+     * 
+     * @return the inventoryType value.
+     */
+    @Override
+    public InventoryType inventoryType() {
+        return this.inventoryType;
+    }
+
+    /**
      * Get the parent property: Parent resourcePool inventory resource details.
-     *
+     * 
      * @return the parent value.
      */
     public InventoryItemDetails parent() {
@@ -35,7 +52,7 @@ public final class ResourcePoolInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the parent property: Parent resourcePool inventory resource details.
-     *
+     * 
      * @param parent the parent value to set.
      * @return the ResourcePoolInventoryItem object itself.
      */
@@ -44,21 +61,27 @@ public final class ResourcePoolInventoryItem extends InventoryItemProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourcePoolInventoryItem withManagedResourceId(String managedResourceId) {
         super.withManagedResourceId(managedResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourcePoolInventoryItem withMoRefId(String moRefId) {
         super.withMoRefId(moRefId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourcePoolInventoryItem withMoName(String moName) {
         super.withMoName(moName);
@@ -67,14 +90,64 @@ public final class ResourcePoolInventoryItem extends InventoryItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (parent() != null) {
             parent().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("managedResourceId", managedResourceId());
+        jsonWriter.writeStringField("moRefId", moRefId());
+        jsonWriter.writeStringField("moName", moName());
+        jsonWriter.writeStringField("inventoryType", this.inventoryType == null ? null : this.inventoryType.toString());
+        jsonWriter.writeJsonField("parent", this.parent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourcePoolInventoryItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourcePoolInventoryItem if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourcePoolInventoryItem.
+     */
+    public static ResourcePoolInventoryItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourcePoolInventoryItem deserializedResourcePoolInventoryItem = new ResourcePoolInventoryItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedResourceId".equals(fieldName)) {
+                    deserializedResourcePoolInventoryItem.withManagedResourceId(reader.getString());
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedResourcePoolInventoryItem.withMoRefId(reader.getString());
+                } else if ("moName".equals(fieldName)) {
+                    deserializedResourcePoolInventoryItem.withMoName(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedResourcePoolInventoryItem
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("inventoryType".equals(fieldName)) {
+                    deserializedResourcePoolInventoryItem.inventoryType = InventoryType.fromString(reader.getString());
+                } else if ("parent".equals(fieldName)) {
+                    deserializedResourcePoolInventoryItem.parent = InventoryItemDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourcePoolInventoryItem;
+        });
     }
 }

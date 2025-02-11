@@ -11,13 +11,13 @@ public final class WebLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebLinkedServiceTypeProperties model
-            = BinaryData.fromString("{\"authenticationType\":\"WebLinkedServiceTypeProperties\",\"url\":\"datafd\"}")
+            = BinaryData.fromString("{\"authenticationType\":\"WebLinkedServiceTypeProperties\",\"url\":\"datasohwn\"}")
                 .toObject(WebLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebLinkedServiceTypeProperties model = new WebLinkedServiceTypeProperties().withUrl("datafd");
+        WebLinkedServiceTypeProperties model = new WebLinkedServiceTypeProperties().withUrl("datasohwn");
         model = BinaryData.fromObject(model).toObject(WebLinkedServiceTypeProperties.class);
     }
 }

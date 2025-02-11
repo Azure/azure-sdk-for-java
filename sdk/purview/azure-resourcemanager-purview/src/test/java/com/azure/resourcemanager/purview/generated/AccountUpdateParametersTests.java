@@ -19,47 +19,34 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"principalId\":\"ddglm\",\"tenantId\":\"hjq\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"e\":{\"clientId\":\"cxmqciwqvhkhix\",\"principalId\":\"gdtopbobjogh\"},\"gvdfgiotkftutq\":{\"clientId\":\"a\",\"principalId\":\"uhrzayvvt\"},\"hzrvqd\":{\"clientId\":\"ngxlefgugnxkrxdq\",\"principalId\":\"dt\"},\"fbowskanyk\":{\"clientId\":\"bhj\",\"principalId\":\"igeho\"}}},\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"u\"},\"createdAt\":\"2021-06-25T19:06:32Z\",\"createdBy\":\"qyw\",\"createdByObjectId\":\"drvyn\",\"endpoints\":{\"catalog\":\"pphrcgynco\",\"guardian\":\"ecfvmm\",\"scan\":\"ofsx\"},\"friendlyName\":\"evgbmqjq\",\"managedResourceGroupName\":\"c\",\"managedResources\":{\"eventHubNamespace\":\"ivkwlzuvccfwnfnb\",\"resourceGroup\":\"fionl\",\"storageAccount\":\"x\"},\"privateEndpointConnections\":[{\"id\":\"tzxdpnqbqqwx\",\"name\":\"jfeallnwsub\",\"type\":\"snjampmng\"}],\"provisioningState\":\"Moving\",\"publicNetworkAccess\":\"Disabled\"},\"tags\":{\"cbonqvpk\":\"wooc\",\"f\":\"lrxnjeaseiphe\",\"dlwtgrhpdj\":\"okeyyienj\"}}")
-                .toObject(AccountUpdateParameters.class);
+        AccountUpdateParameters model = BinaryData.fromString(
+            "{\"identity\":{\"principalId\":\"ajiwkuo\",\"tenantId\":\"skghsauuimj\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"slkevle\":{\"clientId\":\"uugidyjrrfby\",\"principalId\":\"svexcsonpclhoco\"},\"hl\":{\"clientId\":\"zfbuhf\",\"principalId\":\"faxkffeii\"}}},\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"yvshxmz\"},\"createdAt\":\"2021-11-21T10:52:55Z\",\"createdBy\":\"oggigrxwburv\",\"createdByObjectId\":\"xjnspy\",\"endpoints\":{\"catalog\":\"koen\",\"guardian\":\"uknvudwti\",\"scan\":\"bldngkpoc\"},\"friendlyName\":\"azyxoegukg\",\"managedResourceGroupName\":\"piu\",\"managedResources\":{\"eventHubNamespace\":\"gevqznty\",\"resourceGroup\":\"rbpizc\",\"storageAccount\":\"qjsdpydnfyhxdeo\"},\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"ifsjttgzfbishcb\"},\"privateLinkServiceConnectionState\":{\"actionsRequired\":\"jdeyeamdpha\",\"description\":\"lpbuxwgipwhonowk\",\"status\":\"Approved\"},\"provisioningState\":\"ankixzbinjeput\"},\"id\":\"mryw\",\"name\":\"uzoqft\",\"type\":\"yqzrnkcqvyxlw\"}],\"provisioningState\":\"Unknown\",\"publicNetworkAccess\":\"NotSpecified\"},\"tags\":{\"avwhheunm\":\"hoqqnwvlr\",\"yaxuconuqszfkb\":\"qhgyxzkonocukok\",\"xsenhwlr\":\"ypewrmjmwvvjekt\",\"ihkaetcktvfc\":\"ffrzpwvlqdqgbiqy\"}}")
+            .toObject(AccountUpdateParameters.class);
         Assertions.assertEquals(Type.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("c", model.properties().managedResourceGroupName());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
-        Assertions.assertEquals("wooc", model.tags().get("cbonqvpk"));
+        Assertions.assertEquals("piu", model.properties().managedResourceGroupName());
+        Assertions.assertEquals(PublicNetworkAccess.NOT_SPECIFIED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("hoqqnwvlr", model.tags().get("avwhheunm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountUpdateParameters model =
-            new AccountUpdateParameters()
-                .withIdentity(
-                    new Identity()
-                        .withType(Type.USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "e",
-                                new UserAssignedIdentity(),
-                                "gvdfgiotkftutq",
-                                new UserAssignedIdentity(),
-                                "hzrvqd",
-                                new UserAssignedIdentity(),
-                                "fbowskanyk",
-                                new UserAssignedIdentity())))
-                .withProperties(
-                    new AccountProperties()
-                        .withCloudConnectors(new CloudConnectors())
-                        .withManagedResourceGroupName("c")
-                        .withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
-                .withTags(mapOf("cbonqvpk", "wooc", "f", "lrxnjeaseiphe", "dlwtgrhpdj", "okeyyienj"));
+        AccountUpdateParameters model = new AccountUpdateParameters()
+            .withIdentity(new Identity().withType(Type.USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("slkevle", new UserAssignedIdentity(), "hl", new UserAssignedIdentity())))
+            .withProperties(new AccountProperties().withCloudConnectors(new CloudConnectors())
+                .withManagedResourceGroupName("piu")
+                .withPublicNetworkAccess(PublicNetworkAccess.NOT_SPECIFIED))
+            .withTags(mapOf("avwhheunm", "hoqqnwvlr", "yaxuconuqszfkb", "qhgyxzkonocukok", "xsenhwlr",
+                "ypewrmjmwvvjekt", "ihkaetcktvfc", "ffrzpwvlqdqgbiqy"));
         model = BinaryData.fromObject(model).toObject(AccountUpdateParameters.class);
         Assertions.assertEquals(Type.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("c", model.properties().managedResourceGroupName());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
-        Assertions.assertEquals("wooc", model.tags().get("cbonqvpk"));
+        Assertions.assertEquals("piu", model.properties().managedResourceGroupName());
+        Assertions.assertEquals(PublicNetworkAccess.NOT_SPECIFIED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("hoqqnwvlr", model.tags().get("avwhheunm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

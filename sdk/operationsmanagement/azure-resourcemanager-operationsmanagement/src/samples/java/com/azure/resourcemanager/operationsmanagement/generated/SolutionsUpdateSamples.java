@@ -8,26 +8,29 @@ import com.azure.resourcemanager.operationsmanagement.models.Solution;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Solutions Update. */
+/**
+ * Samples for Solutions Update.
+ */
 public final class SolutionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/SolutionUpdate.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/SolutionUpdate.json
      */
     /**
      * Sample code: SolutionUpdate.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionUpdate(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
-        Solution resource =
-            manager
-                .solutions()
-                .getByResourceGroupWithResponse("rg1", "solution1", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        solutionUpdate(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+        Solution resource = manager.solutions()
+            .getByResourceGroupWithResponse("rg1", "solution1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("Dept", "IT", "Environment", "Test")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

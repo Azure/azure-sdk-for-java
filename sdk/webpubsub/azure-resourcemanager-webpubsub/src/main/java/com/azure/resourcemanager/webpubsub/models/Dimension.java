@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifications of the Dimension of metrics. */
+/**
+ * Specifications of the Dimension of metrics.
+ */
 @Fluent
-public final class Dimension {
+public final class Dimension implements JsonSerializable<Dimension> {
     /*
      * The public facing name of the dimension.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Localized friendly display name of the dimension.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Name of the dimension as it appears in MDM.
      */
-    @JsonProperty(value = "internalName")
     private String internalName;
 
     /*
      * A Boolean flag indicating whether this dimension should be included for the shoebox export scenario.
      */
-    @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;
 
-    /** Creates an instance of Dimension class. */
+    /**
+     * Creates an instance of Dimension class.
+     */
     public Dimension() {
     }
 
     /**
      * Get the name property: The public facing name of the dimension.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class Dimension {
 
     /**
      * Set the name property: The public facing name of the dimension.
-     *
+     * 
      * @param name the name value to set.
      * @return the Dimension object itself.
      */
@@ -60,7 +64,7 @@ public final class Dimension {
 
     /**
      * Get the displayName property: Localized friendly display name of the dimension.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -69,7 +73,7 @@ public final class Dimension {
 
     /**
      * Set the displayName property: Localized friendly display name of the dimension.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the Dimension object itself.
      */
@@ -80,7 +84,7 @@ public final class Dimension {
 
     /**
      * Get the internalName property: Name of the dimension as it appears in MDM.
-     *
+     * 
      * @return the internalName value.
      */
     public String internalName() {
@@ -89,7 +93,7 @@ public final class Dimension {
 
     /**
      * Set the internalName property: Name of the dimension as it appears in MDM.
-     *
+     * 
      * @param internalName the internalName value to set.
      * @return the Dimension object itself.
      */
@@ -101,7 +105,7 @@ public final class Dimension {
     /**
      * Get the toBeExportedForShoebox property: A Boolean flag indicating whether this dimension should be included for
      * the shoebox export scenario.
-     *
+     * 
      * @return the toBeExportedForShoebox value.
      */
     public Boolean toBeExportedForShoebox() {
@@ -111,7 +115,7 @@ public final class Dimension {
     /**
      * Set the toBeExportedForShoebox property: A Boolean flag indicating whether this dimension should be included for
      * the shoebox export scenario.
-     *
+     * 
      * @param toBeExportedForShoebox the toBeExportedForShoebox value to set.
      * @return the Dimension object itself.
      */
@@ -122,9 +126,54 @@ public final class Dimension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("internalName", this.internalName);
+        jsonWriter.writeBooleanField("toBeExportedForShoebox", this.toBeExportedForShoebox);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Dimension from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Dimension if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Dimension.
+     */
+    public static Dimension fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Dimension deserializedDimension = new Dimension();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDimension.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDimension.displayName = reader.getString();
+                } else if ("internalName".equals(fieldName)) {
+                    deserializedDimension.internalName = reader.getString();
+                } else if ("toBeExportedForShoebox".equals(fieldName)) {
+                    deserializedDimension.toBeExportedForShoebox = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDimension;
+        });
     }
 }

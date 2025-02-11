@@ -15,26 +15,39 @@ import java.util.Map;
 
 /** Entry point for Express Route Circuit management API in Azure. */
 @Fluent
-public interface ExpressRouteCircuit
-    extends GroupableResource<NetworkManager, ExpressRouteCircuitInner>,
-        Refreshable<ExpressRouteCircuit>,
-        Updatable<ExpressRouteCircuit.Update>,
-        UpdatableWithTags<ExpressRouteCircuit> {
+public interface ExpressRouteCircuit extends GroupableResource<NetworkManager, ExpressRouteCircuitInner>,
+    Refreshable<ExpressRouteCircuit>, Updatable<ExpressRouteCircuit.Update>, UpdatableWithTags<ExpressRouteCircuit> {
 
     // Actions
 
-    /** @return entry point to manage express route peerings associated with express route circuit */
+    /**
+     * Gets entry point to manage express route peerings associated with express route circuit.
+     *
+     * @return entry point to manage express route peerings associated with express route circuit
+     */
     ExpressRouteCircuitPeerings peerings();
 
     // Getters
 
-    /** @return the SKU type */
+    /**
+     * Gets the SKU type.
+     *
+     * @return the SKU type
+     */
     ExpressRouteCircuitSkuType sku();
 
-    /** @return the flag indicating if classic operations allowed */
+    /**
+     * Checks whether classic operations allowed.
+     *
+     * @return the flag indicating if classic operations allowed
+     */
     boolean isAllowClassicOperations();
 
-    /** @return the CircuitProvisioningState state of the resource */
+    /**
+     * Gets the CircuitProvisioningState state of the resource.
+     *
+     * @return the CircuitProvisioningState state of the resource
+     */
     String circuitProvisioningState();
 
     /**
@@ -44,16 +57,32 @@ public interface ExpressRouteCircuit
      */
     ServiceProviderProvisioningState serviceProviderProvisioningState();
 
-    /** @return the peerings associated with this express route circuit, indexed by name */
+    /**
+     * Gets the peerings associated with this express route circuit.
+     *
+     * @return the peerings associated with this express route circuit, indexed by name
+     */
     Map<String, ExpressRouteCircuitPeering> peeringsMap();
 
-    /** @return the ServiceKey */
+    /**
+     * gets the service key.
+     *
+     * @return the ServiceKey
+     */
     String serviceKey();
 
-    /** @return the ServiceProviderNotes */
+    /**
+     * Gets the service provider notes.
+     *
+     * @return the ServiceProviderNotes
+     */
     String serviceProviderNotes();
 
-    /** @return the ServiceProviderProperties */
+    /**
+     * Gets the service provider properties.
+     *
+     * @return the ServiceProviderProperties
+     */
     ExpressRouteCircuitServiceProviderProperties serviceProviderProperties();
 
     /**
@@ -64,14 +93,9 @@ public interface ExpressRouteCircuit
     String provisioningState();
 
     /** The entirety of the express route circuit definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithServiceProvider,
-            DefinitionStages.WithPeeringLocation,
-            DefinitionStages.WithBandwidth,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup,
+        DefinitionStages.WithServiceProvider, DefinitionStages.WithPeeringLocation, DefinitionStages.WithBandwidth,
+        DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
 
     /** Grouping of express route circuit definition stages. */
@@ -153,11 +177,8 @@ public interface ExpressRouteCircuit
          * The stage of the express route circuit definition which contains all the minimum required inputs for the
          * resource to be created, but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<ExpressRouteCircuit>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithAllowClassicOperations,
-                WithAuthorization {
+        interface WithCreate extends Creatable<ExpressRouteCircuit>, Resource.DefinitionWithTags<WithCreate>,
+            WithAllowClassicOperations, WithAuthorization {
         }
     }
 
@@ -216,11 +237,7 @@ public interface ExpressRouteCircuit
 
     /** The template for a express route circuit update operation, containing all the settings that can be modified. */
     interface Update
-        extends Appliable<ExpressRouteCircuit>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithBandwidth,
-            UpdateStages.WithSku,
-            UpdateStages.WithAllowClassicOperations,
-            UpdateStages.WithAuthorization {
+        extends Appliable<ExpressRouteCircuit>, Resource.UpdateWithTags<Update>, UpdateStages.WithBandwidth,
+        UpdateStages.WithSku, UpdateStages.WithAllowClassicOperations, UpdateStages.WithAuthorization {
     }
 }

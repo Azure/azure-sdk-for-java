@@ -25,7 +25,7 @@ public final class PartnerDestinationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"efca1567-a126-4313-a61e-739836fcd077\",\"endpointServiceContext\":\"glskakddi\",\"expirationTimeIfNotActivatedUtc\":\"2021-04-14T05:06:40Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"mtlpbyxro\",\"messageForActivation\":\"uyqyp\"},\"location\":\"mnoiicsudy\",\"tags\":{\"h\":\"jjtalxrdsj\",\"dp\":\"luqwgusxxhd\",\"bdmvsby\":\"wyblv\",\"kmkwjfbo\":\"daelqpv\"},\"id\":\"loggdusxursu\",\"name\":\"v\",\"type\":\"xcjkcoqwczsy\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"c3750bf6-e923-47ce-8663-4f4bf815b3d2\",\"endpointServiceContext\":\"glskakddi\",\"expirationTimeIfNotActivatedUtc\":\"2021-04-14T05:06:40Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"mtlpbyxro\",\"messageForActivation\":\"uyqyp\"},\"location\":\"mnoiicsudy\",\"tags\":{\"h\":\"jjtalxrdsj\",\"dp\":\"luqwgusxxhd\",\"bdmvsby\":\"wyblv\",\"kmkwjfbo\":\"daelqpv\"},\"id\":\"loggdusxursu\",\"name\":\"v\",\"type\":\"xcjkcoqwczsy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,7 +39,7 @@ public final class PartnerDestinationsCreateOrUpdateMockTests {
             .withRegion("rdmvxyrxdhgv")
             .withExistingResourceGroup("s")
             .withTags(mapOf("gbzxmbtplefoioy", "bxaot", "gvdtmuuv", "doxzn", "erxrzutylcurza", "awsxmrszbknimxlp"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("94b5cdff-fc55-44aa-bb87-6abfb7cafbbf"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("f698d12f-27dc-4285-aa96-73a985f9d33f"))
             .withEndpointServiceContext("zvtyevjhubn")
             .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-10-07T07:25:43Z"))
             .withActivationState(PartnerDestinationActivationState.ACTIVATED)
@@ -49,7 +49,7 @@ public final class PartnerDestinationsCreateOrUpdateMockTests {
 
         Assertions.assertEquals("mnoiicsudy", response.location());
         Assertions.assertEquals("jjtalxrdsj", response.tags().get("h"));
-        Assertions.assertEquals(UUID.fromString("efca1567-a126-4313-a61e-739836fcd077"),
+        Assertions.assertEquals(UUID.fromString("c3750bf6-e923-47ce-8663-4f4bf815b3d2"),
             response.partnerRegistrationImmutableId());
         Assertions.assertEquals("glskakddi", response.endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T05:06:40Z"),

@@ -5,59 +5,55 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * security services.
  */
 @Fluent
-public final class SecurityServices {
+public final class SecurityServices implements JsonSerializable<SecurityServices> {
     /*
      * IPs Vulnerability Profile Data
      */
-    @JsonProperty(value = "vulnerabilityProfile")
     private String vulnerabilityProfile;
 
     /*
      * Anti spyware Profile data
      */
-    @JsonProperty(value = "antiSpywareProfile")
     private String antiSpywareProfile;
 
     /*
      * anti virus profile data
      */
-    @JsonProperty(value = "antiVirusProfile")
     private String antiVirusProfile;
 
     /*
      * URL filtering profile data
      */
-    @JsonProperty(value = "urlFilteringProfile")
     private String urlFilteringProfile;
 
     /*
      * File blocking profile data
      */
-    @JsonProperty(value = "fileBlockingProfile")
     private String fileBlockingProfile;
 
     /*
      * DNS Subscription profile data
      */
-    @JsonProperty(value = "dnsSubscription")
     private String dnsSubscription;
 
     /*
      * Untrusted Egress Decryption profile data
      */
-    @JsonProperty(value = "outboundUnTrustCertificate")
     private String outboundUnTrustCertificate;
 
     /*
      * Trusted Egress Decryption profile data
      */
-    @JsonProperty(value = "outboundTrustCertificate")
     private String outboundTrustCertificate;
 
     /**
@@ -232,5 +228,62 @@ public final class SecurityServices {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vulnerabilityProfile", this.vulnerabilityProfile);
+        jsonWriter.writeStringField("antiSpywareProfile", this.antiSpywareProfile);
+        jsonWriter.writeStringField("antiVirusProfile", this.antiVirusProfile);
+        jsonWriter.writeStringField("urlFilteringProfile", this.urlFilteringProfile);
+        jsonWriter.writeStringField("fileBlockingProfile", this.fileBlockingProfile);
+        jsonWriter.writeStringField("dnsSubscription", this.dnsSubscription);
+        jsonWriter.writeStringField("outboundUnTrustCertificate", this.outboundUnTrustCertificate);
+        jsonWriter.writeStringField("outboundTrustCertificate", this.outboundTrustCertificate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityServices from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityServices if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityServices.
+     */
+    public static SecurityServices fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityServices deserializedSecurityServices = new SecurityServices();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vulnerabilityProfile".equals(fieldName)) {
+                    deserializedSecurityServices.vulnerabilityProfile = reader.getString();
+                } else if ("antiSpywareProfile".equals(fieldName)) {
+                    deserializedSecurityServices.antiSpywareProfile = reader.getString();
+                } else if ("antiVirusProfile".equals(fieldName)) {
+                    deserializedSecurityServices.antiVirusProfile = reader.getString();
+                } else if ("urlFilteringProfile".equals(fieldName)) {
+                    deserializedSecurityServices.urlFilteringProfile = reader.getString();
+                } else if ("fileBlockingProfile".equals(fieldName)) {
+                    deserializedSecurityServices.fileBlockingProfile = reader.getString();
+                } else if ("dnsSubscription".equals(fieldName)) {
+                    deserializedSecurityServices.dnsSubscription = reader.getString();
+                } else if ("outboundUnTrustCertificate".equals(fieldName)) {
+                    deserializedSecurityServices.outboundUnTrustCertificate = reader.getString();
+                } else if ("outboundTrustCertificate".equals(fieldName)) {
+                    deserializedSecurityServices.outboundTrustCertificate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityServices;
+        });
     }
 }

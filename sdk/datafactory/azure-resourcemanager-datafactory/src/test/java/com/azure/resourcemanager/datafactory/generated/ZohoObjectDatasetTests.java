@@ -19,34 +19,33 @@ public final class ZohoObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ZohoObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"ZohoObject\",\"typeProperties\":{\"tableName\":\"datamrslwknrd\"},\"description\":\"mbjern\",\"structure\":\"datazywx\",\"schema\":\"dataaq\",\"linkedServiceName\":{\"referenceName\":\"tkdeetnnef\",\"parameters\":{\"fwqjzybmfqdnpp\":\"datalkszuxjmrzsxwa\",\"vamuvkgd\":\"datacfguam\",\"spjvsyydjlhd\":\"datapjbblukgctv\"}},\"parameters\":{\"ulojwumfjdymeq\":{\"type\":\"Array\",\"defaultValue\":\"datavyeegx\"},\"nxemhqpzhnatw\":{\"type\":\"Bool\",\"defaultValue\":\"datapfyxdjspn\"}},\"annotations\":[\"datamcvdjlwwefevtwll\",\"dataypmjc\",\"datay\",\"datafwgkzuhk\"],\"folder\":{\"name\":\"jkckwbqwjyfmmk\"},\"\":{\"oerohextigukfk\":\"datarooyzhobnvyuepa\",\"enlqtqyvlfbs\":\"datasycbdymbnp\"}}")
+            "{\"type\":\"ZohoObject\",\"typeProperties\":{\"tableName\":\"dataotmmxlmxejwyv\"},\"description\":\"b\",\"structure\":\"datavtuekbb\",\"schema\":\"dataqsm\",\"linkedServiceName\":{\"referenceName\":\"sbeqieiuxhj\",\"parameters\":{\"lzyxvtajfjatoid\":\"datadalnjjhrgkjjpcpi\",\"gnpuelrnanbrpkoc\":\"dataekurdgcpzanaqve\"}},\"parameters\":{\"gijxmdboe\":{\"type\":\"Int\",\"defaultValue\":\"datagegjtjltckiwxggf\"},\"u\":{\"type\":\"Float\",\"defaultValue\":\"dataxha\"}},\"annotations\":[\"datanvzsodmokrqd\",\"datasgkq\"],\"folder\":{\"name\":\"otypcjxh\"},\"\":{\"p\":\"datalocjhz\",\"xbofpr\":\"databrbm\",\"wwsfvtgh\":\"datamivapesbfzllej\"}}")
             .toObject(ZohoObjectDataset.class);
-        Assertions.assertEquals("mbjern", model.description());
-        Assertions.assertEquals("tkdeetnnef", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("ulojwumfjdymeq").type());
-        Assertions.assertEquals("jkckwbqwjyfmmk", model.folder().name());
+        Assertions.assertEquals("b", model.description());
+        Assertions.assertEquals("sbeqieiuxhj", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("gijxmdboe").type());
+        Assertions.assertEquals("otypcjxh", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ZohoObjectDataset model = new ZohoObjectDataset().withDescription("mbjern")
-            .withStructure("datazywx")
-            .withSchema("dataaq")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tkdeetnnef")
-                .withParameters(mapOf("fwqjzybmfqdnpp", "datalkszuxjmrzsxwa", "vamuvkgd", "datacfguam", "spjvsyydjlhd",
-                    "datapjbblukgctv")))
-            .withParameters(mapOf("ulojwumfjdymeq",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datavyeegx"),
-                "nxemhqpzhnatw",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datapfyxdjspn")))
-            .withAnnotations(Arrays.asList("datamcvdjlwwefevtwll", "dataypmjc", "datay", "datafwgkzuhk"))
-            .withFolder(new DatasetFolder().withName("jkckwbqwjyfmmk"))
-            .withTableName("datamrslwknrd");
+        ZohoObjectDataset model = new ZohoObjectDataset().withDescription("b")
+            .withStructure("datavtuekbb")
+            .withSchema("dataqsm")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("sbeqieiuxhj")
+                .withParameters(
+                    mapOf("lzyxvtajfjatoid", "datadalnjjhrgkjjpcpi", "gnpuelrnanbrpkoc", "dataekurdgcpzanaqve")))
+            .withParameters(mapOf("gijxmdboe",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datagegjtjltckiwxggf"), "u",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataxha")))
+            .withAnnotations(Arrays.asList("datanvzsodmokrqd", "datasgkq"))
+            .withFolder(new DatasetFolder().withName("otypcjxh"))
+            .withTableName("dataotmmxlmxejwyv");
         model = BinaryData.fromObject(model).toObject(ZohoObjectDataset.class);
-        Assertions.assertEquals("mbjern", model.description());
-        Assertions.assertEquals("tkdeetnnef", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("ulojwumfjdymeq").type());
-        Assertions.assertEquals("jkckwbqwjyfmmk", model.folder().name());
+        Assertions.assertEquals("b", model.description());
+        Assertions.assertEquals("sbeqieiuxhj", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("gijxmdboe").type());
+        Assertions.assertEquals("otypcjxh", model.folder().name());
     }
 
     // Use "Map.of" if available

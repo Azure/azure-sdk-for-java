@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <Match>
+    <Bug pattern="BC_UNCONFIRMED_CAST" />
+    <Or>
+      <Class name="io.clientcore.http.stress.HttpGet" />
+      <Class name="io.clientcore.http.stress.HttpPatch" />
+      <Class name="io.clientcore.http.stress.ScenarioBase" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
+    <Class name="io.clientcore.http.stress.HttpPatch" />
+  </Match>
+  <Match>
+    <Bug pattern="CT_CONSTRUCTOR_THROW" />
+    <Or>
+      <Class name="io.clientcore.http.stress.HttpGet" />
+      <Class name="io.clientcore.http.stress.HttpPatch" />
+    </Or>
+  </Match>
+</FindBugsFilter>

@@ -5,49 +5,86 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.azurestack.models.ComputeRole;
 import com.azure.resourcemanager.azurestack.models.DataDiskImage;
+import com.azure.resourcemanager.azurestack.models.OperatingSystem;
 import com.azure.resourcemanager.azurestack.models.OsDiskImage;
 import com.azure.resourcemanager.azurestack.models.VirtualMachineExtensionProductProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Product information. */
+/**
+ * Product information.
+ */
 @Immutable
 public final class ExtendedProductProperties extends VirtualMachineExtensionProductProperties {
     /*
      * Specifies product version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * OS disk image used by product.
      */
-    @JsonProperty(value = "osDiskImage", access = JsonProperty.Access.WRITE_ONLY)
     private OsDiskImage osDiskImage;
 
     /*
      * List of attached data disks.
      */
-    @JsonProperty(value = "dataDiskImages", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataDiskImage> dataDiskImages;
 
-    /** Creates an instance of ExtendedProductProperties class. */
+    /*
+     * Indicates if virtual machine Scale Set is enabled in the specified product.
+     */
+    private Boolean vmScaleSetEnabled;
+
+    /*
+     * Specifies operating system used by the product.
+     */
+    private OperatingSystem vmOsType;
+
+    /*
+     * Indicates if specified product supports multiple extensions.
+     */
+    private Boolean supportMultipleExtensions;
+
+    /*
+     * Specifies a download location where content can be downloaded from.
+     */
+    private Uri innerSourceBlob;
+
+    /*
+     * Specifies if product is a Virtual Machine Extension.
+     */
+    private Boolean isSystemExtension;
+
+    /*
+     * Specifies kind of compute role included in the package.
+     */
+    private ComputeRole computeRole;
+
+    /**
+     * Creates an instance of ExtendedProductProperties class.
+     */
     public ExtendedProductProperties() {
     }
 
     /**
      * Get the version property: Specifies product version.
-     *
+     * 
      * @return the version value.
      */
+    @Override
     public String version() {
         return this.version;
     }
 
     /**
      * Get the osDiskImage property: OS disk image used by product.
-     *
+     * 
      * @return the osDiskImage value.
      */
     public OsDiskImage osDiskImage() {
@@ -56,7 +93,7 @@ public final class ExtendedProductProperties extends VirtualMachineExtensionProd
 
     /**
      * Get the dataDiskImages property: List of attached data disks.
-     *
+     * 
      * @return the dataDiskImages value.
      */
     public List<DataDiskImage> dataDiskImages() {
@@ -64,18 +101,143 @@ public final class ExtendedProductProperties extends VirtualMachineExtensionProd
     }
 
     /**
+     * Get the vmScaleSetEnabled property: Indicates if virtual machine Scale Set is enabled in the specified product.
+     * 
+     * @return the vmScaleSetEnabled value.
+     */
+    @Override
+    public Boolean vmScaleSetEnabled() {
+        return this.vmScaleSetEnabled;
+    }
+
+    /**
+     * Get the vmOsType property: Specifies operating system used by the product.
+     * 
+     * @return the vmOsType value.
+     */
+    @Override
+    public OperatingSystem vmOsType() {
+        return this.vmOsType;
+    }
+
+    /**
+     * Get the supportMultipleExtensions property: Indicates if specified product supports multiple extensions.
+     * 
+     * @return the supportMultipleExtensions value.
+     */
+    @Override
+    public Boolean supportMultipleExtensions() {
+        return this.supportMultipleExtensions;
+    }
+
+    /**
+     * Get the innerSourceBlob property: Specifies a download location where content can be downloaded from.
+     * 
+     * @return the innerSourceBlob value.
+     */
+    private Uri innerSourceBlob() {
+        return this.innerSourceBlob;
+    }
+
+    /**
+     * Get the isSystemExtension property: Specifies if product is a Virtual Machine Extension.
+     * 
+     * @return the isSystemExtension value.
+     */
+    @Override
+    public Boolean isSystemExtension() {
+        return this.isSystemExtension;
+    }
+
+    /**
+     * Get the computeRole property: Specifies kind of compute role included in the package.
+     * 
+     * @return the computeRole value.
+     */
+    @Override
+    public ComputeRole computeRole() {
+        return this.computeRole;
+    }
+
+    /**
+     * Get the uri property: The URI.
+     * 
+     * @return the uri value.
+     */
+    public String uri() {
+        return this.innerSourceBlob() == null ? null : this.innerSourceBlob().uri();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (osDiskImage() != null) {
             osDiskImage().validate();
         }
         if (dataDiskImages() != null) {
             dataDiskImages().forEach(e -> e.validate());
         }
+        if (innerSourceBlob() != null) {
+            innerSourceBlob().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtendedProductProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtendedProductProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExtendedProductProperties.
+     */
+    public static ExtendedProductProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtendedProductProperties deserializedExtendedProductProperties = new ExtendedProductProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeRole".equals(fieldName)) {
+                    deserializedExtendedProductProperties.computeRole = ComputeRole.fromString(reader.getString());
+                } else if ("isSystemExtension".equals(fieldName)) {
+                    deserializedExtendedProductProperties.isSystemExtension
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourceBlob".equals(fieldName)) {
+                    deserializedExtendedProductProperties.innerSourceBlob = Uri.fromJson(reader);
+                } else if ("supportMultipleExtensions".equals(fieldName)) {
+                    deserializedExtendedProductProperties.supportMultipleExtensions
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("vmOsType".equals(fieldName)) {
+                    deserializedExtendedProductProperties.vmOsType = OperatingSystem.fromString(reader.getString());
+                } else if ("vmScaleSetEnabled".equals(fieldName)) {
+                    deserializedExtendedProductProperties.vmScaleSetEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("version".equals(fieldName)) {
+                    deserializedExtendedProductProperties.version = reader.getString();
+                } else if ("osDiskImage".equals(fieldName)) {
+                    deserializedExtendedProductProperties.osDiskImage = OsDiskImage.fromJson(reader);
+                } else if ("dataDiskImages".equals(fieldName)) {
+                    List<DataDiskImage> dataDiskImages = reader.readArray(reader1 -> DataDiskImage.fromJson(reader1));
+                    deserializedExtendedProductProperties.dataDiskImages = dataDiskImages;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtendedProductProperties;
+        });
     }
 }

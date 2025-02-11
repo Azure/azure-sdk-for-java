@@ -26,9 +26,13 @@ public class DAGraphTests {
          *   |-------->[H]-------------------->[I]
          */
         List<String> expectedOrder = new ArrayList<>();
-        expectedOrder.add("A"); expectedOrder.add("I"); // Level 0
-        expectedOrder.add("B"); expectedOrder.add("C"); expectedOrder.add("H"); // Level 1
-        expectedOrder.add("D"); expectedOrder.add("G"); // Level 2
+        expectedOrder.add("A");
+        expectedOrder.add("I"); // Level 0
+        expectedOrder.add("B");
+        expectedOrder.add("C");
+        expectedOrder.add("H"); // Level 1
+        expectedOrder.add("D");
+        expectedOrder.add("G"); // Level 2
         expectedOrder.add("E"); // Level 3
         expectedOrder.add("F"); // Level 4
 
@@ -53,7 +57,6 @@ public class DAGraphTests {
 
         ItemHolder nodeD = new ItemHolder("D", "dataD");
         nodeD.addDependency(nodeB.key());
-
 
         ItemHolder nodeF = new ItemHolder("F", "dataF");
         nodeF.addDependency(nodeD.key());
@@ -96,9 +99,13 @@ public class DAGraphTests {
          *   |-------->[H]-------------------->[I]
          */
         List<String> expectedOrder = new ArrayList<>();
-        expectedOrder.add("A"); expectedOrder.add("I"); // Level 0
-        expectedOrder.add("B"); expectedOrder.add("C"); expectedOrder.add("H"); // Level 1
-        expectedOrder.add("D"); expectedOrder.add("G"); // Level 2
+        expectedOrder.add("A");
+        expectedOrder.add("I"); // Level 0
+        expectedOrder.add("B");
+        expectedOrder.add("C");
+        expectedOrder.add("H"); // Level 1
+        expectedOrder.add("D");
+        expectedOrder.add("G"); // Level 2
         expectedOrder.add("E"); // Level 3
         expectedOrder.add("F"); // Level 4
 
@@ -294,79 +301,78 @@ public class DAGraphTests {
          *  |-----------------[F]  (graph4Root1)
          */
 
-
         //======================================================
         // Validate nodeTables (graph1Root)
 
         ItemHolder nodeAWithG1 = graph1Root.getNode("A");
         Assertions.assertEquals(1, nodeAWithG1.owner().nodeTable.size());
-        assertExactMatch(nodeAWithG1.owner().nodeTable.keySet(), new String[] {"A"});
+        assertExactMatch(nodeAWithG1.owner().nodeTable.keySet(), new String[] { "A" });
 
         ItemHolder nodeBWithG1 = graph1Root.getNode("B");
         Assertions.assertEquals(2, nodeBWithG1.owner().nodeTable.size());
-        assertExactMatch(nodeBWithG1.owner().nodeTable.keySet(), new String[] {"A", "B"});
+        assertExactMatch(nodeBWithG1.owner().nodeTable.keySet(), new String[] { "A", "B" });
 
         ItemHolder nodeCWithG1 = graph1Root.getNode("C");
         Assertions.assertEquals(3, nodeCWithG1.owner().nodeTable.size());
-        assertExactMatch(nodeCWithG1.owner().nodeTable.keySet(), new String[] {"A", "B", "C"});
+        assertExactMatch(nodeCWithG1.owner().nodeTable.keySet(), new String[] { "A", "B", "C" });
 
         //======================================================
         // Validate nodeTables (graph4Root1)
 
         ItemHolder nodeAWithG41 = graph4Root1.getNode("A");
         Assertions.assertEquals(1, nodeAWithG41.owner().nodeTable.size());
-        assertExactMatch(nodeAWithG41.owner().nodeTable.keySet(), new String[] {"A"});
+        assertExactMatch(nodeAWithG41.owner().nodeTable.keySet(), new String[] { "A" });
 
         ItemHolder nodeBWithG41 = graph4Root1.getNode("B");
         Assertions.assertEquals(2, nodeBWithG41.owner().nodeTable.size());
-        assertExactMatch(nodeBWithG41.owner().nodeTable.keySet(), new String[] {"A", "B"});
+        assertExactMatch(nodeBWithG41.owner().nodeTable.keySet(), new String[] { "A", "B" });
 
         ItemHolder nodeCWithG41 = graph4Root1.getNode("C");
         Assertions.assertEquals(3, nodeCWithG41.owner().nodeTable.size());
-        assertExactMatch(nodeCWithG41.owner().nodeTable.keySet(), new String[] {"A", "B", "C"});
+        assertExactMatch(nodeCWithG41.owner().nodeTable.keySet(), new String[] { "A", "B", "C" });
 
         ItemHolder nodeGWithG41 = graph4Root1.getNode("G");
         Assertions.assertEquals(1, nodeGWithG41.owner().nodeTable.size());
-        assertExactMatch(nodeGWithG41.owner().nodeTable.keySet(), new String[] {"G"});
+        assertExactMatch(nodeGWithG41.owner().nodeTable.keySet(), new String[] { "G" });
 
         ItemHolder nodeDWithG41 = graph4Root1.getNode("D");
         Assertions.assertEquals(2, nodeDWithG41.owner().nodeTable.size());
-        assertExactMatch(nodeDWithG41.owner().nodeTable.keySet(), new String[] {"D", "G"});
+        assertExactMatch(nodeDWithG41.owner().nodeTable.keySet(), new String[] { "D", "G" });
 
         ItemHolder nodeEWithG41 = graph4Root1.getNode("E");
         Assertions.assertEquals(3, nodeEWithG41.owner().nodeTable.size());
-        assertExactMatch(nodeEWithG41.owner().nodeTable.keySet(), new String[] {"E", "D", "G"});
+        assertExactMatch(nodeEWithG41.owner().nodeTable.keySet(), new String[] { "E", "D", "G" });
 
         ItemHolder nodeFWithG41 = graph4Root1.getNode("F");
         Assertions.assertEquals(7, nodeFWithG41.owner().nodeTable.size());
-        assertExactMatch(nodeFWithG41.owner().nodeTable.keySet(), new String[] {"E", "F", "D", "G", "A", "B", "C"});
+        assertExactMatch(nodeFWithG41.owner().nodeTable.keySet(), new String[] { "E", "F", "D", "G", "A", "B", "C" });
 
         //======================================================
         // Validate nodeTables (graph4Root2)
 
         ItemHolder nodeAWithG42 = graph4Root2.getNode("A");
         Assertions.assertEquals(1, nodeAWithG42.owner().nodeTable.size());
-        assertExactMatch(nodeAWithG42.owner().nodeTable.keySet(), new String[] {"A"});
+        assertExactMatch(nodeAWithG42.owner().nodeTable.keySet(), new String[] { "A" });
 
         ItemHolder nodeBWithG42 = graph4Root2.getNode("B");
         Assertions.assertEquals(2, nodeBWithG42.owner().nodeTable.size());
-        assertExactMatch(nodeBWithG42.owner().nodeTable.keySet(), new String[] {"A", "B"});
+        assertExactMatch(nodeBWithG42.owner().nodeTable.keySet(), new String[] { "A", "B" });
 
         ItemHolder nodeCWithG42 = graph4Root2.getNode("C");
         Assertions.assertEquals(3, nodeCWithG42.owner().nodeTable.size());
-        assertExactMatch(nodeCWithG42.owner().nodeTable.keySet(), new String[] {"A", "B", "C"});
+        assertExactMatch(nodeCWithG42.owner().nodeTable.keySet(), new String[] { "A", "B", "C" });
 
         ItemHolder nodeIWithG42 = graph4Root2.getNode("I");
         Assertions.assertEquals(1, nodeIWithG42.owner().nodeTable.size());
-        assertExactMatch(nodeIWithG42.owner().nodeTable.keySet(), new String[] {"I"});
+        assertExactMatch(nodeIWithG42.owner().nodeTable.keySet(), new String[] { "I" });
 
         ItemHolder nodeHWithG42 = graph4Root2.getNode("H");
         Assertions.assertEquals(2, nodeHWithG42.owner().nodeTable.size());
-        assertExactMatch(nodeHWithG42.owner().nodeTable.keySet(), new String[] {"I", "H"});
+        assertExactMatch(nodeHWithG42.owner().nodeTable.keySet(), new String[] { "I", "H" });
 
         ItemHolder nodeJWithG42 = graph4Root2.getNode("J");
         Assertions.assertEquals(6, nodeJWithG42.owner().nodeTable.size());
-        assertExactMatch(nodeJWithG42.owner().nodeTable.keySet(), new String[] {"I", "H", "J", "A", "B", "C"});
+        assertExactMatch(nodeJWithG42.owner().nodeTable.keySet(), new String[] { "I", "H", "J", "A", "B", "C" });
 
         // System.out.println(combinedGraphRoot.nodeTable.keySet());
 
@@ -385,11 +391,9 @@ public class DAGraphTests {
         DAGraph<String, ItemHolder> graphL = createGraph("L");
         DAGraph<String, ItemHolder> graphM = createGraph("M");
 
-
         graphL.addDependencyGraph(graphK);
         graphM.addDependencyGraph(graphL);
         graphM.addDependencyGraph(graphK);
-
 
         // Add a non-root node in this graph as dependency of a non-root node in the first graph.
         //
@@ -425,39 +429,40 @@ public class DAGraphTests {
 
         ItemHolder nodeKWithG41 = graph4Root1.getNode("K");
         Assertions.assertEquals(1, nodeKWithG41.owner().nodeTable.size());
-        assertExactMatch(nodeKWithG41.owner().nodeTable.keySet(), new String[] {"K"});
+        assertExactMatch(nodeKWithG41.owner().nodeTable.keySet(), new String[] { "K" });
 
         ItemHolder nodeLWithG41 = graph4Root1.getNode("L");
         Assertions.assertEquals(2, nodeLWithG41.owner().nodeTable.size());
-        assertExactMatch(nodeLWithG41.owner().nodeTable.keySet(), new String[] {"K", "L"});
+        assertExactMatch(nodeLWithG41.owner().nodeTable.keySet(), new String[] { "K", "L" });
 
         ItemHolder nodeAWithG41Updated = graph4Root1.getNode("A");
         Assertions.assertEquals(3, nodeAWithG41Updated.owner().nodeTable.size());
-        assertExactMatch(nodeAWithG41Updated.owner().nodeTable.keySet(), new String[] {"K", "L", "A"});
+        assertExactMatch(nodeAWithG41Updated.owner().nodeTable.keySet(), new String[] { "K", "L", "A" });
 
         ItemHolder nodeBWithG41Updated = graph4Root1.getNode("B");
         Assertions.assertEquals(4, nodeBWithG41Updated.owner().nodeTable.size());
-        assertExactMatch(nodeBWithG41Updated.owner().nodeTable.keySet(), new String[] {"K", "L", "A", "B"});
+        assertExactMatch(nodeBWithG41Updated.owner().nodeTable.keySet(), new String[] { "K", "L", "A", "B" });
 
         ItemHolder nodeCWithG41Updated = graph4Root1.getNode("C");
         Assertions.assertEquals(5, nodeCWithG41Updated.owner().nodeTable.size());
-        assertExactMatch(nodeCWithG41Updated.owner().nodeTable.keySet(), new String[] {"K", "L", "A", "B", "C"});
+        assertExactMatch(nodeCWithG41Updated.owner().nodeTable.keySet(), new String[] { "K", "L", "A", "B", "C" });
 
         ItemHolder nodeFWithG41Updated = graph4Root1.getNode("F");
         Assertions.assertEquals(9, nodeFWithG41Updated.owner().nodeTable.size());
-        assertExactMatch(nodeFWithG41Updated.owner().nodeTable.keySet(), new String[] {"K", "L", "A", "B", "C", "F", "E", "D", "G"});
+        assertExactMatch(nodeFWithG41Updated.owner().nodeTable.keySet(),
+            new String[] { "K", "L", "A", "B", "C", "F", "E", "D", "G" });
 
         ItemHolder nodeGWithG41NoUpdate = graph4Root1.getNode("G");
         Assertions.assertEquals(1, nodeGWithG41NoUpdate.owner().nodeTable.size());
-        assertExactMatch(nodeGWithG41NoUpdate.owner().nodeTable.keySet(), new String[] {"G"});
+        assertExactMatch(nodeGWithG41NoUpdate.owner().nodeTable.keySet(), new String[] { "G" });
 
         ItemHolder nodeDWithG41NoUpdate = graph4Root1.getNode("D");
         Assertions.assertEquals(2, nodeDWithG41NoUpdate.owner().nodeTable.size());
-        assertExactMatch(nodeDWithG41NoUpdate.owner().nodeTable.keySet(), new String[] {"D", "G"});
+        assertExactMatch(nodeDWithG41NoUpdate.owner().nodeTable.keySet(), new String[] { "D", "G" });
 
         ItemHolder nodeEWithG41NoUpdate = graph4Root1.getNode("E");
         Assertions.assertEquals(3, nodeEWithG41NoUpdate.owner().nodeTable.size());
-        assertExactMatch(nodeEWithG41NoUpdate.owner().nodeTable.keySet(), new String[] {"E", "D", "G"});
+        assertExactMatch(nodeEWithG41NoUpdate.owner().nodeTable.keySet(), new String[] { "E", "D", "G" });
     }
 
     private DAGraph<String, ItemHolder> createGraph(String resourceName) {

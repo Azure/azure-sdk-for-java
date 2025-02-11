@@ -6,24 +6,31 @@ package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the Azure Stack registration resource. */
+/**
+ * Properties of the Azure Stack registration resource.
+ */
 @Fluent
-public final class RegistrationParameterProperties {
+public final class RegistrationParameterProperties implements JsonSerializable<RegistrationParameterProperties> {
     /*
      * The token identifying registered Azure Stack
      */
-    @JsonProperty(value = "registrationToken", required = true)
     private String registrationToken;
 
-    /** Creates an instance of RegistrationParameterProperties class. */
+    /**
+     * Creates an instance of RegistrationParameterProperties class.
+     */
     public RegistrationParameterProperties() {
     }
 
     /**
      * Get the registrationToken property: The token identifying registered Azure Stack.
-     *
+     * 
      * @return the registrationToken value.
      */
     public String registrationToken() {
@@ -32,7 +39,7 @@ public final class RegistrationParameterProperties {
 
     /**
      * Set the registrationToken property: The token identifying registered Azure Stack.
-     *
+     * 
      * @param registrationToken the registrationToken value to set.
      * @return the RegistrationParameterProperties object itself.
      */
@@ -43,17 +50,54 @@ public final class RegistrationParameterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (registrationToken() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property registrationToken in model RegistrationParameterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property registrationToken in model RegistrationParameterProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RegistrationParameterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("registrationToken", this.registrationToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistrationParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistrationParameterProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RegistrationParameterProperties.
+     */
+    public static RegistrationParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistrationParameterProperties deserializedRegistrationParameterProperties
+                = new RegistrationParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("registrationToken".equals(fieldName)) {
+                    deserializedRegistrationParameterProperties.registrationToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistrationParameterProperties;
+        });
+    }
 }

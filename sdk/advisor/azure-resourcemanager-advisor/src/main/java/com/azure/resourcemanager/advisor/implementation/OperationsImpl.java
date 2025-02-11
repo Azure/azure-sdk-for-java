@@ -19,20 +19,20 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.advisor.AdvisorManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<OperationEntity> list() {
         PagedIterable<OperationEntityInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationEntityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationEntityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationEntity> list(Context context) {
         PagedIterable<OperationEntityInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationEntityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationEntityImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

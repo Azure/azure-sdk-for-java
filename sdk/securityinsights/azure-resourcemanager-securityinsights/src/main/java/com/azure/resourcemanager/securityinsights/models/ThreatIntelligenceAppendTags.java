@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Array of tags to be appended to the threat intelligence indicator. */
+/**
+ * Array of tags to be appended to the threat intelligence indicator.
+ */
 @Fluent
-public final class ThreatIntelligenceAppendTags {
+public final class ThreatIntelligenceAppendTags implements JsonSerializable<ThreatIntelligenceAppendTags> {
     /*
      * List of tags to be appended.
      */
-    @JsonProperty(value = "threatIntelligenceTags")
     private List<String> threatIntelligenceTags;
 
     /**
+     * Creates an instance of ThreatIntelligenceAppendTags class.
+     */
+    public ThreatIntelligenceAppendTags() {
+    }
+
+    /**
      * Get the threatIntelligenceTags property: List of tags to be appended.
-     *
+     * 
      * @return the threatIntelligenceTags value.
      */
     public List<String> threatIntelligenceTags() {
@@ -28,7 +39,7 @@ public final class ThreatIntelligenceAppendTags {
 
     /**
      * Set the threatIntelligenceTags property: List of tags to be appended.
-     *
+     * 
      * @param threatIntelligenceTags the threatIntelligenceTags value to set.
      * @return the ThreatIntelligenceAppendTags object itself.
      */
@@ -39,9 +50,47 @@ public final class ThreatIntelligenceAppendTags {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("threatIntelligenceTags", this.threatIntelligenceTags,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreatIntelligenceAppendTags from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreatIntelligenceAppendTags if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThreatIntelligenceAppendTags.
+     */
+    public static ThreatIntelligenceAppendTags fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThreatIntelligenceAppendTags deserializedThreatIntelligenceAppendTags = new ThreatIntelligenceAppendTags();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("threatIntelligenceTags".equals(fieldName)) {
+                    List<String> threatIntelligenceTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedThreatIntelligenceAppendTags.threatIntelligenceTags = threatIntelligenceTags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThreatIntelligenceAppendTags;
+        });
     }
 }

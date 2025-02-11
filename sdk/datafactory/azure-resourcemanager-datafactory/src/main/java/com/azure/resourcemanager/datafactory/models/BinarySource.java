@@ -131,7 +131,6 @@ public final class BinarySource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (storeSettings() != null) {
             storeSettings().validate();
         }

@@ -5,60 +5,48 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure Storage Account workload-specific container.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "containerType",
-    defaultImpl = AzureStorageContainer.class,
-    visible = true)
-@JsonTypeName("StorageContainer")
 @Fluent
 public final class AzureStorageContainer extends ProtectionContainer {
     /*
-     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines 2.
+     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+     * 2.
      * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
      * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
      * Backup is VMAppContainer
      */
-    @JsonTypeId
-    @JsonProperty(value = "containerType", required = true)
     private ProtectableContainerType containerType = ProtectableContainerType.STORAGE_CONTAINER;
 
     /*
      * Fully qualified ARM url.
      */
-    @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
     /*
      * Storage account version.
      */
-    @JsonProperty(value = "storageAccountVersion")
     private String storageAccountVersion;
 
     /*
      * Resource group name of Recovery Services Vault.
      */
-    @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
 
     /*
      * Number of items backed up in this container.
      */
-    @JsonProperty(value = "protectedItemCount")
     private Long protectedItemCount;
 
     /*
      * Whether storage account lock is to be acquired for this container or not.
      */
-    @JsonProperty(value = "acquireStorageAccountLock")
     private AcquireStorageAccountLock acquireStorageAccountLock;
 
     /**
@@ -235,6 +223,76 @@ public final class AzureStorageContainer extends ProtectionContainer {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("registrationStatus", registrationStatus());
+        jsonWriter.writeStringField("healthStatus", healthStatus());
+        jsonWriter.writeStringField("protectableObjectType", protectableObjectType());
+        jsonWriter.writeStringField("containerType", this.containerType == null ? null : this.containerType.toString());
+        jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        jsonWriter.writeStringField("storageAccountVersion", this.storageAccountVersion);
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        jsonWriter.writeNumberField("protectedItemCount", this.protectedItemCount);
+        jsonWriter.writeStringField("acquireStorageAccountLock",
+            this.acquireStorageAccountLock == null ? null : this.acquireStorageAccountLock.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureStorageContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureStorageContainer if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureStorageContainer.
+     */
+    public static AzureStorageContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureStorageContainer deserializedAzureStorageContainer = new AzureStorageContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureStorageContainer.withFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureStorageContainer
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedAzureStorageContainer.withRegistrationStatus(reader.getString());
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedAzureStorageContainer.withHealthStatus(reader.getString());
+                } else if ("protectableObjectType".equals(fieldName)) {
+                    deserializedAzureStorageContainer.withProtectableObjectType(reader.getString());
+                } else if ("containerType".equals(fieldName)) {
+                    deserializedAzureStorageContainer.containerType
+                        = ProtectableContainerType.fromString(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureStorageContainer.sourceResourceId = reader.getString();
+                } else if ("storageAccountVersion".equals(fieldName)) {
+                    deserializedAzureStorageContainer.storageAccountVersion = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedAzureStorageContainer.resourceGroup = reader.getString();
+                } else if ("protectedItemCount".equals(fieldName)) {
+                    deserializedAzureStorageContainer.protectedItemCount = reader.getNullable(JsonReader::getLong);
+                } else if ("acquireStorageAccountLock".equals(fieldName)) {
+                    deserializedAzureStorageContainer.acquireStorageAccountLock
+                        = AcquireStorageAccountLock.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureStorageContainer;
+        });
     }
 }

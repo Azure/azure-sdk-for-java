@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerProperties;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties of a server in cluster.
@@ -17,44 +20,52 @@ public final class ClusterServerProperties extends ServerProperties {
     /*
      * The fully qualified domain name of a server.
      */
-    @JsonProperty(value = "fullyQualifiedDomainName", access = JsonProperty.Access.WRITE_ONLY)
     private String fullyQualifiedDomainName;
 
     /*
      * The role of server in the cluster.
      */
-    @JsonProperty(value = "role")
     private ServerRole role;
 
     /*
      * A state of a cluster/server that is visible to user.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
     /*
      * A state of HA feature for the cluster.
      */
-    @JsonProperty(value = "haState", access = JsonProperty.Access.WRITE_ONLY)
     private String haState;
 
     /*
      * Availability Zone information of the server.
      */
-    @JsonProperty(value = "availabilityZone")
     private String availabilityZone;
 
     /*
      * The major PostgreSQL version of server.
      */
-    @JsonProperty(value = "postgresqlVersion")
     private String postgresqlVersion;
 
     /*
      * The Citus extension version of server.
      */
-    @JsonProperty(value = "citusVersion")
     private String citusVersion;
+
+    /*
+     * The administrator's login name of the servers in the cluster.
+     */
+    private String administratorLogin;
+
+    /*
+     * If server database is set to read-only by system maintenance depending on high disk space usage.
+     */
+    private Boolean isReadOnly;
+
+    /*
+     * If public access is enabled on server.
+     */
+    private Boolean enablePublicIpAccess;
 
     /**
      * Creates an instance of ClusterServerProperties class.
@@ -170,6 +181,37 @@ public final class ClusterServerProperties extends ServerProperties {
     }
 
     /**
+     * Get the administratorLogin property: The administrator's login name of the servers in the cluster.
+     * 
+     * @return the administratorLogin value.
+     */
+    @Override
+    public String administratorLogin() {
+        return this.administratorLogin;
+    }
+
+    /**
+     * Get the isReadOnly property: If server database is set to read-only by system maintenance depending on high disk
+     * space usage.
+     * 
+     * @return the isReadOnly value.
+     */
+    @Override
+    public Boolean isReadOnly() {
+        return this.isReadOnly;
+    }
+
+    /**
+     * Get the enablePublicIpAccess property: If public access is enabled on server.
+     * 
+     * @return the enablePublicIpAccess value.
+     */
+    @Override
+    public Boolean enablePublicIpAccess() {
+        return this.enablePublicIpAccess;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -212,6 +254,75 @@ public final class ClusterServerProperties extends ServerProperties {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serverEdition", serverEdition());
+        jsonWriter.writeNumberField("storageQuotaInMb", storageQuotaInMb());
+        jsonWriter.writeNumberField("vCores", vCores());
+        jsonWriter.writeBooleanField("enableHa", enableHa());
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("availabilityZone", this.availabilityZone);
+        jsonWriter.writeStringField("postgresqlVersion", this.postgresqlVersion);
+        jsonWriter.writeStringField("citusVersion", this.citusVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterServerProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterServerProperties.
+     */
+    public static ClusterServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterServerProperties deserializedClusterServerProperties = new ClusterServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverEdition".equals(fieldName)) {
+                    deserializedClusterServerProperties.withServerEdition(reader.getString());
+                } else if ("storageQuotaInMb".equals(fieldName)) {
+                    deserializedClusterServerProperties.withStorageQuotaInMb(reader.getNullable(JsonReader::getInt));
+                } else if ("vCores".equals(fieldName)) {
+                    deserializedClusterServerProperties.withVCores(reader.getNullable(JsonReader::getInt));
+                } else if ("enableHa".equals(fieldName)) {
+                    deserializedClusterServerProperties.withEnableHa(reader.getNullable(JsonReader::getBoolean));
+                } else if ("enablePublicIpAccess".equals(fieldName)) {
+                    deserializedClusterServerProperties.enablePublicIpAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isReadOnly".equals(fieldName)) {
+                    deserializedClusterServerProperties.isReadOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("administratorLogin".equals(fieldName)) {
+                    deserializedClusterServerProperties.administratorLogin = reader.getString();
+                } else if ("fullyQualifiedDomainName".equals(fieldName)) {
+                    deserializedClusterServerProperties.fullyQualifiedDomainName = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    deserializedClusterServerProperties.role = ServerRole.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedClusterServerProperties.state = reader.getString();
+                } else if ("haState".equals(fieldName)) {
+                    deserializedClusterServerProperties.haState = reader.getString();
+                } else if ("availabilityZone".equals(fieldName)) {
+                    deserializedClusterServerProperties.availabilityZone = reader.getString();
+                } else if ("postgresqlVersion".equals(fieldName)) {
+                    deserializedClusterServerProperties.postgresqlVersion = reader.getString();
+                } else if ("citusVersion".equals(fieldName)) {
+                    deserializedClusterServerProperties.citusVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterServerProperties;
+        });
     }
 }

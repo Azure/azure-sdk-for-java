@@ -11,25 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.NodeCountsInner;
 import com.azure.resourcemanager.automation.models.CountType;
 
-/** An instance of this class provides access to all the operations defined in NodeCountInformationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NodeCountInformationsClient.
+ */
 public interface NodeCountInformationsClient {
     /**
      * Retrieve counts for Dsc Nodes.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param countType The type of counts to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets the count of nodes by count type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NodeCountsInner get(String resourceGroupName, String automationAccountName, CountType countType);
-
-    /**
-     * Retrieve counts for Dsc Nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param countType The type of counts to retrieve.
@@ -40,6 +28,20 @@ public interface NodeCountInformationsClient {
      * @return gets the count of nodes by count type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NodeCountsInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, CountType countType, Context context);
+    Response<NodeCountsInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        CountType countType, Context context);
+
+    /**
+     * Retrieve counts for Dsc Nodes.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param countType The type of counts to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gets the count of nodes by count type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NodeCountsInner get(String resourceGroupName, String automationAccountName, CountType countType);
 }

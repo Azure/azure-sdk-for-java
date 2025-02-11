@@ -25,6 +25,19 @@ if ($Directory) {
   $path = $Directory
 }
 
+$swaggers = Get-ChildItem -Path $path -Filter "Update-Codegeneration.ps1" -Recurse
+if ($swaggers.Count -eq 0) {
+  Write-Host "
+
+  ===========================================
+  No Swagger files to regenerate
+  ===========================================
+
+  "
+  exit 0
+}
+
+
 Write-Host "
 
 ===================================
@@ -33,7 +46,7 @@ Invoking Autorest code regeneration
 
 "
 
-foreach ($script in (Get-ChildItem -Path $path -Filter "Update-Codegeneration.ps1" -Recurse)) {
+foreach ($script in $swaggers) {
   Invoke-Expression $script.FullName
 }
 

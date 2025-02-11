@@ -31,10 +31,11 @@ import com.azure.resourcemanager.compute.models.IpVersion;
 import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.compute.models.LinuxConfiguration;
 import com.azure.resourcemanager.compute.models.Mode;
+import com.azure.resourcemanager.compute.models.NetworkApiVersion;
 import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliaryMode;
 import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliarySku;
-import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.OSImageNotificationProfile;
+import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ProxyAgentSettings;
@@ -63,6 +64,9 @@ import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.UserInitiatedReboot;
 import com.azure.resourcemanager.compute.models.UserInitiatedRedeploy;
+import com.azure.resourcemanager.compute.models.VMDiskSecurityProfile;
+import com.azure.resourcemanager.compute.models.VMGalleryApplication;
+import com.azure.resourcemanager.compute.models.VMSizeProperties;
 import com.azure.resourcemanager.compute.models.VirtualHardDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
@@ -80,9 +84,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAd
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetScaleInRules;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetStorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
-import com.azure.resourcemanager.compute.models.VMDiskSecurityProfile;
-import com.azure.resourcemanager.compute.models.VMGalleryApplication;
-import com.azure.resourcemanager.compute.models.VMSizeProperties;
 import com.azure.resourcemanager.compute.models.ZonalPlatformFaultDomainAlignMode;
 import java.io.IOException;
 import java.util.Arrays;
@@ -2159,36 +2160,43 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
             .getVirtualMachineScaleSets()
             .createOrUpdate("myResourceGroup", "{vmss-name}",
                 new VirtualMachineScaleSetInner().withLocation("westus")
-                    .withSku(new Sku().withName("Standard_A8m_v2").withTier("Standard").withCapacity(10L))
+                    .withSku(new Sku().withName("Standard_A8m_v2").withTier("Standard").withCapacity(2L))
                     .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
                         .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
                             .withAdminUsername("{your-username}")
                             .withAdminPassword("fakeTokenPlaceholder"))
                         .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
-                            .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                                .withOffer("WindowsServer")
-                                .withSku("2016-Datacenter")
+                            .withImageReference(new ImageReference().withPublisher("Canonical")
+                                .withOffer("0001-com-ubuntu-server-focal")
+                                .withSku("20_04-lts-gen2")
                                 .withVersion("latest"))
                             .withOsDisk(new VirtualMachineScaleSetOSDisk()
                                 .withCaching(CachingTypes.READ_WRITE)
                                 .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
                                 .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
                                     .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                        .withNetworkProfile(
-                            new VirtualMachineScaleSetNetworkProfile().withNetworkInterfaceConfigurations(
+                        .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile()
+                            .withNetworkInterfaceConfigurations(
                                 Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")
                                     .withPrimary(true)
+                                    .withEnableAcceleratedNetworking(false)
                                     .withIpConfigurations(Arrays.asList(new VirtualMachineScaleSetIpConfiguration()
                                         .withName("{vmss-name}")
                                         .withSubnet(new ApiEntityReference().withId(
-                                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))))
-                                    .withEnableIpForwarding(true))))
-                        .withPriority(VirtualMachinePriorityTypes.SPOT)
-                        .withEvictionPolicy(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
-                        .withBillingProfile(new BillingProfile().withMaxPrice(-1.0D)))
-                    .withSinglePlacementGroup(false)
+                                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))
+                                        .withPrimary(true)
+                                        .withPublicIpAddressConfiguration(
+                                            new VirtualMachineScaleSetPublicIpAddressConfiguration()
+                                                .withName("{vmss-name}")
+                                                .withIdleTimeoutInMinutes(15))
+                                        .withApplicationGatewayBackendAddressPools(Arrays.asList())
+                                        .withLoadBalancerBackendAddressPools(Arrays.asList())))
+                                    .withEnableIpForwarding(true)))
+                            .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE))
+                        .withPriority(VirtualMachinePriorityTypes.SPOT))
+                    .withPlatformFaultDomainCount(1)
                     .withOrchestrationMode(OrchestrationMode.FLEXIBLE)
-                    .withPriorityMixPolicy(new PriorityMixPolicy().withBaseRegularPriorityCount(4)
+                    .withPriorityMixPolicy(new PriorityMixPolicy().withBaseRegularPriorityCount(10)
                         .withRegularPriorityPercentageAboveBase(50)),
                 null, null, com.azure.core.util.Context.NONE);
     }

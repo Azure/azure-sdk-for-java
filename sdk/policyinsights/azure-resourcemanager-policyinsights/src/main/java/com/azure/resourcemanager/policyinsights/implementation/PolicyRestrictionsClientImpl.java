@@ -28,22 +28,28 @@ import com.azure.resourcemanager.policyinsights.models.CheckManagementGroupRestr
 import com.azure.resourcemanager.policyinsights.models.CheckRestrictionsRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PolicyRestrictionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PolicyRestrictionsClient.
+ */
 public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PolicyRestrictionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PolicyInsightsClientImpl client;
 
     /**
      * Initializes an instance of PolicyRestrictionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PolicyRestrictionsClientImpl(PolicyInsightsClientImpl client) {
-        this.service =
-            RestProxy.create(PolicyRestrictionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PolicyRestrictionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,74 +59,57 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "PolicyInsightsClient")
-    private interface PolicyRestrictionsService {
-        @Headers({"Content-Type: application/json"})
+    public interface PolicyRestrictionsService {
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/checkPolicyRestrictions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckRestrictionsResultInner>> checkAtSubscriptionScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CheckRestrictionsRequest parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CheckRestrictionsResultInner>> checkAtSubscriptionScope(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CheckRestrictionsRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights"
-                + "/checkPolicyRestrictions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/checkPolicyRestrictions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckRestrictionsResultInner>> checkAtResourceGroupScope(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CheckRestrictionsResultInner>> checkAtResourceGroupScope(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CheckRestrictionsRequest parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CheckRestrictionsRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers"
-                + "/Microsoft.PolicyInsights/checkPolicyRestrictions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/checkPolicyRestrictions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckRestrictionsResultInner>> checkAtManagementGroupScope(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CheckRestrictionsResultInner>> checkAtManagementGroupScope(@HostParam("$host") String endpoint,
             @PathParam("managementGroupsNamespace") String managementGroupsNamespace,
-            @PathParam("managementGroupId") String managementGroupId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("managementGroupId") String managementGroupId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckManagementGroupRestrictionsRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Checks what restrictions Azure Policy will place on a resource within a subscription.
-     *
+     * 
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckRestrictionsResultInner>> checkAtSubscriptionScopeWithResponseAsync(
-        CheckRestrictionsRequest parameters) {
+    private Mono<Response<CheckRestrictionsResultInner>>
+        checkAtSubscriptionScopeWithResponseAsync(CheckRestrictionsRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -130,44 +119,32 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
         final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkAtSubscriptionScope(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkAtSubscriptionScope(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks what restrictions Azure Policy will place on a resource within a subscription.
-     *
+     * 
      * @param parameters The check policy restrictions parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckRestrictionsResultInner>> checkAtSubscriptionScopeWithResponseAsync(
-        CheckRestrictionsRequest parameters, Context context) {
+    private Mono<Response<CheckRestrictionsResultInner>>
+        checkAtSubscriptionScopeWithResponseAsync(CheckRestrictionsRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -177,20 +154,19 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
         final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkAtSubscriptionScope(
-                this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
+        return service.checkAtSubscriptionScope(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+            parameters, accept, context);
     }
 
     /**
      * Checks what restrictions Azure Policy will place on a resource within a subscription.
-     *
+     * 
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a check policy restrictions evaluation on a resource on successful completion of {@link
-     *     Mono}.
+     * @return the result of a check policy restrictions evaluation on a resource on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckRestrictionsResultInner> checkAtSubscriptionScopeAsync(CheckRestrictionsRequest parameters) {
@@ -199,7 +175,7 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
 
     /**
      * Checks what restrictions Azure Policy will place on a resource within a subscription.
-     *
+     * 
      * @param parameters The check policy restrictions parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,14 +184,14 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckRestrictionsResultInner> checkAtSubscriptionScopeWithResponse(
-        CheckRestrictionsRequest parameters, Context context) {
+    public Response<CheckRestrictionsResultInner>
+        checkAtSubscriptionScopeWithResponse(CheckRestrictionsRequest parameters, Context context) {
         return checkAtSubscriptionScopeWithResponseAsync(parameters, context).block();
     }
 
     /**
      * Checks what restrictions Azure Policy will place on a resource within a subscription.
-     *
+     * 
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -230,29 +206,25 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
     /**
      * Checks what restrictions Azure Policy will place on a resource within a resource group. Use this when the
      * resource group the resource will be created in is already known.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckRestrictionsResultInner>> checkAtResourceGroupScopeWithResponseAsync(
-        String resourceGroupName, CheckRestrictionsRequest parameters) {
+    private Mono<Response<CheckRestrictionsResultInner>>
+        checkAtResourceGroupScopeWithResponseAsync(String resourceGroupName, CheckRestrictionsRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -266,24 +238,15 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
         final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkAtResourceGroupScope(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkAtResourceGroupScope(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks what restrictions Azure Policy will place on a resource within a resource group. Use this when the
      * resource group the resource will be created in is already known.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The check policy restrictions parameters.
      * @param context The context to associate with this operation.
@@ -291,22 +254,18 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckRestrictionsResultInner>> checkAtResourceGroupScopeWithResponseAsync(
         String resourceGroupName, CheckRestrictionsRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -320,32 +279,25 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
         final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkAtResourceGroupScope(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.checkAtResourceGroupScope(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, apiVersion, parameters, accept, context);
     }
 
     /**
      * Checks what restrictions Azure Policy will place on a resource within a resource group. Use this when the
      * resource group the resource will be created in is already known.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a check policy restrictions evaluation on a resource on successful completion of {@link
-     *     Mono}.
+     * @return the result of a check policy restrictions evaluation on a resource on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckRestrictionsResultInner> checkAtResourceGroupScopeAsync(
-        String resourceGroupName, CheckRestrictionsRequest parameters) {
+    private Mono<CheckRestrictionsResultInner> checkAtResourceGroupScopeAsync(String resourceGroupName,
+        CheckRestrictionsRequest parameters) {
         return checkAtResourceGroupScopeWithResponseAsync(resourceGroupName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -353,7 +305,7 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
     /**
      * Checks what restrictions Azure Policy will place on a resource within a resource group. Use this when the
      * resource group the resource will be created in is already known.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The check policy restrictions parameters.
      * @param context The context to associate with this operation.
@@ -363,15 +315,15 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckRestrictionsResultInner> checkAtResourceGroupScopeWithResponse(
-        String resourceGroupName, CheckRestrictionsRequest parameters, Context context) {
+    public Response<CheckRestrictionsResultInner> checkAtResourceGroupScopeWithResponse(String resourceGroupName,
+        CheckRestrictionsRequest parameters, Context context) {
         return checkAtResourceGroupScopeWithResponseAsync(resourceGroupName, parameters, context).block();
     }
 
     /**
      * Checks what restrictions Azure Policy will place on a resource within a resource group. Use this when the
      * resource group the resource will be created in is already known.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -380,30 +332,28 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
      * @return the result of a check policy restrictions evaluation on a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckRestrictionsResultInner checkAtResourceGroupScope(
-        String resourceGroupName, CheckRestrictionsRequest parameters) {
+    public CheckRestrictionsResultInner checkAtResourceGroupScope(String resourceGroupName,
+        CheckRestrictionsRequest parameters) {
         return checkAtResourceGroupScopeWithResponse(resourceGroupName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Checks what restrictions Azure Policy will place on resources within a management group.
-     *
+     * 
      * @param managementGroupId Management group ID.
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckRestrictionsResultInner>> checkAtManagementGroupScopeWithResponseAsync(
         String managementGroupId, CheckManagementGroupRestrictionsRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (managementGroupId == null) {
             return Mono
@@ -418,23 +368,14 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
         final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkAtManagementGroupScope(
-                            this.client.getEndpoint(),
-                            managementGroupsNamespace,
-                            managementGroupId,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkAtManagementGroupScope(this.client.getEndpoint(),
+                managementGroupsNamespace, managementGroupId, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks what restrictions Azure Policy will place on resources within a management group.
-     *
+     * 
      * @param managementGroupId Management group ID.
      * @param parameters The check policy restrictions parameters.
      * @param context The context to associate with this operation.
@@ -442,16 +383,14 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckRestrictionsResultInner>> checkAtManagementGroupScopeWithResponseAsync(
         String managementGroupId, CheckManagementGroupRestrictionsRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (managementGroupId == null) {
             return Mono
@@ -466,38 +405,31 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
         final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkAtManagementGroupScope(
-                this.client.getEndpoint(),
-                managementGroupsNamespace,
-                managementGroupId,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.checkAtManagementGroupScope(this.client.getEndpoint(), managementGroupsNamespace,
+            managementGroupId, apiVersion, parameters, accept, context);
     }
 
     /**
      * Checks what restrictions Azure Policy will place on resources within a management group.
-     *
+     * 
      * @param managementGroupId Management group ID.
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a check policy restrictions evaluation on a resource on successful completion of {@link
-     *     Mono}.
+     * @return the result of a check policy restrictions evaluation on a resource on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckRestrictionsResultInner> checkAtManagementGroupScopeAsync(
-        String managementGroupId, CheckManagementGroupRestrictionsRequest parameters) {
+    private Mono<CheckRestrictionsResultInner> checkAtManagementGroupScopeAsync(String managementGroupId,
+        CheckManagementGroupRestrictionsRequest parameters) {
         return checkAtManagementGroupScopeWithResponseAsync(managementGroupId, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks what restrictions Azure Policy will place on resources within a management group.
-     *
+     * 
      * @param managementGroupId Management group ID.
      * @param parameters The check policy restrictions parameters.
      * @param context The context to associate with this operation.
@@ -507,14 +439,14 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckRestrictionsResultInner> checkAtManagementGroupScopeWithResponse(
-        String managementGroupId, CheckManagementGroupRestrictionsRequest parameters, Context context) {
+    public Response<CheckRestrictionsResultInner> checkAtManagementGroupScopeWithResponse(String managementGroupId,
+        CheckManagementGroupRestrictionsRequest parameters, Context context) {
         return checkAtManagementGroupScopeWithResponseAsync(managementGroupId, parameters, context).block();
     }
 
     /**
      * Checks what restrictions Azure Policy will place on resources within a management group.
-     *
+     * 
      * @param managementGroupId Management group ID.
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -523,8 +455,8 @@ public final class PolicyRestrictionsClientImpl implements PolicyRestrictionsCli
      * @return the result of a check policy restrictions evaluation on a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckRestrictionsResultInner checkAtManagementGroupScope(
-        String managementGroupId, CheckManagementGroupRestrictionsRequest parameters) {
+    public CheckRestrictionsResultInner checkAtManagementGroupScope(String managementGroupId,
+        CheckManagementGroupRestrictionsRequest parameters) {
         return checkAtManagementGroupScopeWithResponse(managementGroupId, parameters, Context.NONE).getValue();
     }
 }

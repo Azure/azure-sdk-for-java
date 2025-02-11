@@ -11,25 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetaLogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetaLogSpecification model =
-            BinaryData
-                .fromString("{\"displayName\":\"toqcjmklja\",\"blobDuration\":\"qidtqajzyu\",\"name\":\"kudjkrlkhb\"}")
-                .toObject(OperationMetaLogSpecification.class);
-        Assertions.assertEquals("toqcjmklja", model.displayName());
-        Assertions.assertEquals("qidtqajzyu", model.blobDuration());
-        Assertions.assertEquals("kudjkrlkhb", model.name());
+        OperationMetaLogSpecification model = BinaryData
+            .fromString("{\"displayName\":\"jhhyxxrwlycoduhp\",\"blobDuration\":\"kgymareqnajxqug\",\"name\":\"ky\"}")
+            .toObject(OperationMetaLogSpecification.class);
+        Assertions.assertEquals("jhhyxxrwlycoduhp", model.displayName());
+        Assertions.assertEquals("kgymareqnajxqug", model.blobDuration());
+        Assertions.assertEquals("ky", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetaLogSpecification model =
-            new OperationMetaLogSpecification()
-                .withDisplayName("toqcjmklja")
-                .withBlobDuration("qidtqajzyu")
-                .withName("kudjkrlkhb");
+        OperationMetaLogSpecification model = new OperationMetaLogSpecification().withDisplayName("jhhyxxrwlycoduhp")
+            .withBlobDuration("kgymareqnajxqug")
+            .withName("ky");
         model = BinaryData.fromObject(model).toObject(OperationMetaLogSpecification.class);
-        Assertions.assertEquals("toqcjmklja", model.displayName());
-        Assertions.assertEquals("qidtqajzyu", model.blobDuration());
-        Assertions.assertEquals("kudjkrlkhb", model.name());
+        Assertions.assertEquals("jhhyxxrwlycoduhp", model.displayName());
+        Assertions.assertEquals("kgymareqnajxqug", model.blobDuration());
+        Assertions.assertEquals("ky", model.name());
     }
 }

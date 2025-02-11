@@ -19,16 +19,10 @@ import reactor.core.publisher.Mono;
 /** Entry point to private DNS zone management API in Azure. */
 @Fluent
 public interface PrivateDnsZones
-    extends SupportsCreating<PrivateDnsZone.DefinitionStages.Blank>,
-        SupportsListing<PrivateDnsZone>,
-        SupportsListingByResourceGroup<PrivateDnsZone>,
-        SupportsGettingById<PrivateDnsZone>,
-        SupportsGettingByResourceGroup<PrivateDnsZone>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<PrivateDnsZone>,
-        SupportsBatchDeletion,
-        HasManager<PrivateDnsZoneManager> {
+    extends SupportsCreating<PrivateDnsZone.DefinitionStages.Blank>, SupportsListing<PrivateDnsZone>,
+    SupportsListingByResourceGroup<PrivateDnsZone>, SupportsGettingById<PrivateDnsZone>,
+    SupportsGettingByResourceGroup<PrivateDnsZone>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<PrivateDnsZone>, SupportsBatchDeletion, HasManager<PrivateDnsZoneManager> {
     /**
      * Deletes a resource from Azure, identifying it by its resource ID.
      *

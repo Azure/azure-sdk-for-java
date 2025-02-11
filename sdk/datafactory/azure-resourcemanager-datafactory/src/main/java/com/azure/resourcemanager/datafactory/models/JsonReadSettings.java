@@ -70,7 +70,6 @@ public final class JsonReadSettings extends FormatReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
         if (compressionProperties() != null) {
             compressionProperties().validate();
         }

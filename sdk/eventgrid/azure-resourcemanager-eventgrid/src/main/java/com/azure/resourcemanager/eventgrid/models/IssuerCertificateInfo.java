@@ -6,23 +6,26 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about the certificate that is used for token validation.
  */
 @Fluent
-public final class IssuerCertificateInfo {
+public final class IssuerCertificateInfo implements JsonSerializable<IssuerCertificateInfo> {
     /*
-     * Keyvault certificate URL in https://keyvaultname.vault.azure.net/certificates/certificateName/certificateVersion format.
+     * Keyvault certificate URL in https://keyvaultname.vault.azure.net/certificates/certificateName/certificateVersion
+     * format.
      */
-    @JsonProperty(value = "certificateUrl", required = true)
     private String certificateUrl;
 
     /*
      * The identity that will be used to access the certificate.
      */
-    @JsonProperty(value = "identity")
     private CustomJwtAuthenticationManagedIdentity identity;
 
     /**
@@ -90,4 +93,45 @@ public final class IssuerCertificateInfo {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IssuerCertificateInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("certificateUrl", this.certificateUrl);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IssuerCertificateInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IssuerCertificateInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IssuerCertificateInfo.
+     */
+    public static IssuerCertificateInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IssuerCertificateInfo deserializedIssuerCertificateInfo = new IssuerCertificateInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificateUrl".equals(fieldName)) {
+                    deserializedIssuerCertificateInfo.certificateUrl = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedIssuerCertificateInfo.identity
+                        = CustomJwtAuthenticationManagedIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIssuerCertificateInfo;
+        });
+    }
 }

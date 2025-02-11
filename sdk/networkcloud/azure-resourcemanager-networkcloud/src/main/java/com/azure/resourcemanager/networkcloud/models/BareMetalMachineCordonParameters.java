@@ -5,28 +5,33 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * BareMetalMachineCordonParameters represents the body of the request to evacuate workloads from node on a bare metal
  * machine.
  */
 @Fluent
-public final class BareMetalMachineCordonParameters {
+public final class BareMetalMachineCordonParameters implements JsonSerializable<BareMetalMachineCordonParameters> {
     /*
      * The indicator of whether to evacuate the node workload when the bare metal machine is cordoned.
      */
-    @JsonProperty(value = "evacuate")
     private BareMetalMachineEvacuate evacuate;
 
-    /** Creates an instance of BareMetalMachineCordonParameters class. */
+    /**
+     * Creates an instance of BareMetalMachineCordonParameters class.
+     */
     public BareMetalMachineCordonParameters() {
     }
 
     /**
      * Get the evacuate property: The indicator of whether to evacuate the node workload when the bare metal machine is
      * cordoned.
-     *
+     * 
      * @return the evacuate value.
      */
     public BareMetalMachineEvacuate evacuate() {
@@ -36,7 +41,7 @@ public final class BareMetalMachineCordonParameters {
     /**
      * Set the evacuate property: The indicator of whether to evacuate the node workload when the bare metal machine is
      * cordoned.
-     *
+     * 
      * @param evacuate the evacuate value to set.
      * @return the BareMetalMachineCordonParameters object itself.
      */
@@ -47,9 +52,47 @@ public final class BareMetalMachineCordonParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("evacuate", this.evacuate == null ? null : this.evacuate.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BareMetalMachineCordonParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BareMetalMachineCordonParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BareMetalMachineCordonParameters.
+     */
+    public static BareMetalMachineCordonParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BareMetalMachineCordonParameters deserializedBareMetalMachineCordonParameters
+                = new BareMetalMachineCordonParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("evacuate".equals(fieldName)) {
+                    deserializedBareMetalMachineCordonParameters.evacuate
+                        = BareMetalMachineEvacuate.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBareMetalMachineCordonParameters;
+        });
     }
 }

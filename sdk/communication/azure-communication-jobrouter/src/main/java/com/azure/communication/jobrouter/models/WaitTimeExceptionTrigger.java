@@ -4,16 +4,16 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
+import com.azure.communication.jobrouter.implementation.utils.CustomizationHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
-import java.time.Duration;
-import com.azure.communication.jobrouter.implementation.utils.CustomizationHelper;
 
 /**
  * Trigger for an exception action on exceeding wait time.

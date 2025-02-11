@@ -5,339 +5,301 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
  * InMageRcm provider specific details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcm")
 @Fluent
 public final class InMageRcmReplicationDetails extends ReplicationProviderSpecificSettings {
     /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "InMageRcm";
+
+    /*
      * The virtual machine internal identifier.
      */
-    @JsonProperty(value = "internalIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String internalIdentifier;
 
     /*
      * The ARM Id of the discovered VM.
      */
-    @JsonProperty(value = "fabricDiscoveryMachineId", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricDiscoveryMachineId;
 
     /*
      * The multi VM group name.
      */
-    @JsonProperty(value = "multiVmGroupName", access = JsonProperty.Access.WRITE_ONLY)
     private String multiVmGroupName;
 
     /*
      * The type of the discovered VM.
      */
-    @JsonProperty(value = "discoveryType", access = JsonProperty.Access.WRITE_ONLY)
     private String discoveryType;
 
     /*
      * The process server Id.
      */
-    @JsonProperty(value = "processServerId", access = JsonProperty.Access.WRITE_ONLY)
     private String processServerId;
 
     /*
      * The processor core count.
      */
-    @JsonProperty(value = "processorCoreCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer processorCoreCount;
 
     /*
      * The allocated memory in MB.
      */
-    @JsonProperty(value = "allocatedMemoryInMB", access = JsonProperty.Access.WRITE_ONLY)
     private Double allocatedMemoryInMB;
 
     /*
      * The process server name.
      */
-    @JsonProperty(value = "processServerName", access = JsonProperty.Access.WRITE_ONLY)
     private String processServerName;
 
     /*
      * The run-as account Id.
      */
-    @JsonProperty(value = "runAsAccountId", access = JsonProperty.Access.WRITE_ONLY)
     private String runAsAccountId;
 
     /*
      * The type of the OS on the VM.
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private String osType;
 
     /*
      * The firmware type.
      */
-    @JsonProperty(value = "firmwareType", access = JsonProperty.Access.WRITE_ONLY)
     private String firmwareType;
 
     /*
      * The IP address of the primary network interface.
      */
-    @JsonProperty(value = "primaryNicIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryNicIpAddress;
 
     /*
      * The target generation.
      */
-    @JsonProperty(value = "targetGeneration", access = JsonProperty.Access.WRITE_ONLY)
     private String targetGeneration;
 
     /*
      * License Type of the VM to be used.
      */
-    @JsonProperty(value = "licenseType")
     private String licenseType;
 
     /*
      * The replication storage account ARM Id. This is applicable only for the blob based replication test hook.
      */
-    @JsonProperty(value = "storageAccountId", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccountId;
 
     /*
      * Target VM name.
      */
-    @JsonProperty(value = "targetVmName")
     private String targetVmName;
 
     /*
      * The target VM size.
      */
-    @JsonProperty(value = "targetVmSize")
     private String targetVmSize;
 
     /*
      * The target resource group Id.
      */
-    @JsonProperty(value = "targetResourceGroupId")
     private String targetResourceGroupId;
 
     /*
      * The target location.
      */
-    @JsonProperty(value = "targetLocation")
     private String targetLocation;
 
     /*
      * The target availability set Id.
      */
-    @JsonProperty(value = "targetAvailabilitySetId")
     private String targetAvailabilitySetId;
 
     /*
      * The target availability zone.
      */
-    @JsonProperty(value = "targetAvailabilityZone")
     private String targetAvailabilityZone;
 
     /*
      * The target proximity placement group Id.
      */
-    @JsonProperty(value = "targetProximityPlacementGroupId")
     private String targetProximityPlacementGroupId;
 
     /*
      * The target boot diagnostics storage account ARM Id.
      */
-    @JsonProperty(value = "targetBootDiagnosticsStorageAccountId")
     private String targetBootDiagnosticsStorageAccountId;
 
     /*
      * The target network Id.
      */
-    @JsonProperty(value = "targetNetworkId")
     private String targetNetworkId;
 
     /*
      * The test network Id.
      */
-    @JsonProperty(value = "testNetworkId")
     private String testNetworkId;
 
     /*
      * The recovery point Id to which the VM was failed over.
      */
-    @JsonProperty(value = "failoverRecoveryPointId", access = JsonProperty.Access.WRITE_ONLY)
     private String failoverRecoveryPointId;
 
     /*
      * The last recovery point received time.
      */
-    @JsonProperty(value = "lastRecoveryPointReceived", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastRecoveryPointReceived;
 
     /*
      * The last recovery point objective value.
      */
-    @JsonProperty(value = "lastRpoInSeconds", access = JsonProperty.Access.WRITE_ONLY)
     private Long lastRpoInSeconds;
 
     /*
      * The last recovery point objective calculated time.
      */
-    @JsonProperty(value = "lastRpoCalculatedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastRpoCalculatedTime;
 
     /*
      * The last recovery point Id.
      */
-    @JsonProperty(value = "lastRecoveryPointId", access = JsonProperty.Access.WRITE_ONLY)
     private String lastRecoveryPointId;
 
     /*
      * The initial replication progress percentage. This is calculated based on total bytes processed for all disks in
      * the source VM.
      */
-    @JsonProperty(value = "initialReplicationProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer initialReplicationProgressPercentage;
 
     /*
      * The initial replication processed bytes. This includes sum of total bytes transferred and matched bytes on all
      * selected disks in source VM.
      */
-    @JsonProperty(value = "initialReplicationProcessedBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long initialReplicationProcessedBytes;
 
     /*
      * The initial replication transferred bytes from source VM to azure for all selected disks on source VM.
      */
-    @JsonProperty(value = "initialReplicationTransferredBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long initialReplicationTransferredBytes;
 
     /*
      * The initial replication progress health.
      */
-    @JsonProperty(value = "initialReplicationProgressHealth", access = JsonProperty.Access.WRITE_ONLY)
     private VmReplicationProgressHealth initialReplicationProgressHealth;
 
     /*
-     * The resync progress percentage. This is calculated based on total bytes processed for all disks in the source
-     * VM.
+     * The resync progress percentage. This is calculated based on total bytes processed for all disks in the source VM.
      */
-    @JsonProperty(value = "resyncProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer resyncProgressPercentage;
 
     /*
      * The resync processed bytes. This includes sum of total bytes transferred and matched bytes on all selected disks
      * in source VM.
      */
-    @JsonProperty(value = "resyncProcessedBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long resyncProcessedBytes;
 
     /*
      * The resync transferred bytes from source VM to azure for all selected disks on source VM.
      */
-    @JsonProperty(value = "resyncTransferredBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long resyncTransferredBytes;
 
     /*
      * The resync progress health.
      */
-    @JsonProperty(value = "resyncProgressHealth", access = JsonProperty.Access.WRITE_ONLY)
     private VmReplicationProgressHealth resyncProgressHealth;
 
     /*
      * A value indicating whether resync is required.
      */
-    @JsonProperty(value = "resyncRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String resyncRequired;
 
     /*
      * The resync state.
      */
-    @JsonProperty(value = "resyncState", access = JsonProperty.Access.WRITE_ONLY)
     private ResyncState resyncState;
 
     /*
      * The agent auto upgrade state.
      */
-    @JsonProperty(value = "agentUpgradeState", access = JsonProperty.Access.WRITE_ONLY)
     private MobilityAgentUpgradeState agentUpgradeState;
 
     /*
      * The last agent upgrade type.
      */
-    @JsonProperty(value = "lastAgentUpgradeType", access = JsonProperty.Access.WRITE_ONLY)
     private String lastAgentUpgradeType;
 
     /*
      * The agent upgrade job Id.
      */
-    @JsonProperty(value = "agentUpgradeJobId", access = JsonProperty.Access.WRITE_ONLY)
     private String agentUpgradeJobId;
 
     /*
      * The agent version to which last agent upgrade was attempted.
      */
-    @JsonProperty(value = "agentUpgradeAttemptToVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String agentUpgradeAttemptToVersion;
 
     /*
      * The list of protected disks.
      */
-    @JsonProperty(value = "protectedDisks")
     private List<InMageRcmProtectedDiskDetails> protectedDisks;
 
     /*
      * A value indicating whether last agent upgrade was successful or not.
      */
-    @JsonProperty(value = "isLastUpgradeSuccessful", access = JsonProperty.Access.WRITE_ONLY)
     private String isLastUpgradeSuccessful;
 
     /*
      * A value indicating whether agent registration was successful after failover.
      */
-    @JsonProperty(value = "isAgentRegistrationSuccessfulAfterFailover", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isAgentRegistrationSuccessfulAfterFailover;
 
     /*
      * The mobility agent information.
      */
-    @JsonProperty(value = "mobilityAgentDetails")
     private InMageRcmMobilityAgentDetails mobilityAgentDetails;
 
     /*
      * The last agent upgrade error information.
      */
-    @JsonProperty(value = "lastAgentUpgradeErrorDetails")
     private List<InMageRcmLastAgentUpgradeErrorDetails> lastAgentUpgradeErrorDetails;
 
     /*
      * The agent upgrade blocking error information.
      */
-    @JsonProperty(value = "agentUpgradeBlockingErrorDetails")
     private List<InMageRcmAgentUpgradeBlockingErrorDetails> agentUpgradeBlockingErrorDetails;
 
     /*
      * The network details.
      */
-    @JsonProperty(value = "vmNics")
     private List<InMageRcmNicDetails> vmNics;
 
     /*
      * The discovered VM details.
      */
-    @JsonProperty(value = "discoveredVmDetails")
     private InMageRcmDiscoveredProtectedVmDetails discoveredVmDetails;
 
     /**
      * Creates an instance of InMageRcmReplicationDetails class.
      */
     public InMageRcmReplicationDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -1014,7 +976,6 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
      */
     @Override
     public void validate() {
-        super.validate();
         if (protectedDisks() != null) {
             protectedDisks().forEach(e -> e.validate());
         }
@@ -1033,5 +994,190 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
         if (discoveredVmDetails() != null) {
             discoveredVmDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("licenseType", this.licenseType);
+        jsonWriter.writeStringField("targetVmName", this.targetVmName);
+        jsonWriter.writeStringField("targetVmSize", this.targetVmSize);
+        jsonWriter.writeStringField("targetResourceGroupId", this.targetResourceGroupId);
+        jsonWriter.writeStringField("targetLocation", this.targetLocation);
+        jsonWriter.writeStringField("targetAvailabilitySetId", this.targetAvailabilitySetId);
+        jsonWriter.writeStringField("targetAvailabilityZone", this.targetAvailabilityZone);
+        jsonWriter.writeStringField("targetProximityPlacementGroupId", this.targetProximityPlacementGroupId);
+        jsonWriter.writeStringField("targetBootDiagnosticsStorageAccountId",
+            this.targetBootDiagnosticsStorageAccountId);
+        jsonWriter.writeStringField("targetNetworkId", this.targetNetworkId);
+        jsonWriter.writeStringField("testNetworkId", this.testNetworkId);
+        jsonWriter.writeArrayField("protectedDisks", this.protectedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("mobilityAgentDetails", this.mobilityAgentDetails);
+        jsonWriter.writeArrayField("lastAgentUpgradeErrorDetails", this.lastAgentUpgradeErrorDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("agentUpgradeBlockingErrorDetails", this.agentUpgradeBlockingErrorDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("discoveredVmDetails", this.discoveredVmDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmReplicationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmReplicationDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmReplicationDetails.
+     */
+    public static InMageRcmReplicationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmReplicationDetails deserializedInMageRcmReplicationDetails = new InMageRcmReplicationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.instanceType = reader.getString();
+                } else if ("internalIdentifier".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.internalIdentifier = reader.getString();
+                } else if ("fabricDiscoveryMachineId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.fabricDiscoveryMachineId = reader.getString();
+                } else if ("multiVmGroupName".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.multiVmGroupName = reader.getString();
+                } else if ("discoveryType".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.discoveryType = reader.getString();
+                } else if ("processServerId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.processServerId = reader.getString();
+                } else if ("processorCoreCount".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.processorCoreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("allocatedMemoryInMB".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.allocatedMemoryInMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("processServerName".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.processServerName = reader.getString();
+                } else if ("runAsAccountId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.runAsAccountId = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.osType = reader.getString();
+                } else if ("firmwareType".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.firmwareType = reader.getString();
+                } else if ("primaryNicIpAddress".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.primaryNicIpAddress = reader.getString();
+                } else if ("targetGeneration".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.targetGeneration = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.licenseType = reader.getString();
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.storageAccountId = reader.getString();
+                } else if ("targetVmName".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.targetVmName = reader.getString();
+                } else if ("targetVmSize".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.targetVmSize = reader.getString();
+                } else if ("targetResourceGroupId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.targetResourceGroupId = reader.getString();
+                } else if ("targetLocation".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.targetLocation = reader.getString();
+                } else if ("targetAvailabilitySetId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.targetAvailabilitySetId = reader.getString();
+                } else if ("targetAvailabilityZone".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.targetAvailabilityZone = reader.getString();
+                } else if ("targetProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.targetProximityPlacementGroupId = reader.getString();
+                } else if ("targetBootDiagnosticsStorageAccountId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.targetBootDiagnosticsStorageAccountId = reader.getString();
+                } else if ("targetNetworkId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.targetNetworkId = reader.getString();
+                } else if ("testNetworkId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.testNetworkId = reader.getString();
+                } else if ("failoverRecoveryPointId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.failoverRecoveryPointId = reader.getString();
+                } else if ("lastRecoveryPointReceived".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.lastRecoveryPointReceived = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastRpoInSeconds".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.lastRpoInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("lastRpoCalculatedTime".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.lastRpoCalculatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastRecoveryPointId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.lastRecoveryPointId = reader.getString();
+                } else if ("initialReplicationProgressPercentage".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.initialReplicationProgressPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("initialReplicationProcessedBytes".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.initialReplicationProcessedBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("initialReplicationTransferredBytes".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.initialReplicationTransferredBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("initialReplicationProgressHealth".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.initialReplicationProgressHealth
+                        = VmReplicationProgressHealth.fromString(reader.getString());
+                } else if ("resyncProgressPercentage".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.resyncProgressPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("resyncProcessedBytes".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.resyncProcessedBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncTransferredBytes".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.resyncTransferredBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncProgressHealth".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.resyncProgressHealth
+                        = VmReplicationProgressHealth.fromString(reader.getString());
+                } else if ("resyncRequired".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.resyncRequired = reader.getString();
+                } else if ("resyncState".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.resyncState = ResyncState.fromString(reader.getString());
+                } else if ("agentUpgradeState".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.agentUpgradeState
+                        = MobilityAgentUpgradeState.fromString(reader.getString());
+                } else if ("lastAgentUpgradeType".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.lastAgentUpgradeType = reader.getString();
+                } else if ("agentUpgradeJobId".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.agentUpgradeJobId = reader.getString();
+                } else if ("agentUpgradeAttemptToVersion".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.agentUpgradeAttemptToVersion = reader.getString();
+                } else if ("protectedDisks".equals(fieldName)) {
+                    List<InMageRcmProtectedDiskDetails> protectedDisks
+                        = reader.readArray(reader1 -> InMageRcmProtectedDiskDetails.fromJson(reader1));
+                    deserializedInMageRcmReplicationDetails.protectedDisks = protectedDisks;
+                } else if ("isLastUpgradeSuccessful".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.isLastUpgradeSuccessful = reader.getString();
+                } else if ("isAgentRegistrationSuccessfulAfterFailover".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.isAgentRegistrationSuccessfulAfterFailover
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("mobilityAgentDetails".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.mobilityAgentDetails
+                        = InMageRcmMobilityAgentDetails.fromJson(reader);
+                } else if ("lastAgentUpgradeErrorDetails".equals(fieldName)) {
+                    List<InMageRcmLastAgentUpgradeErrorDetails> lastAgentUpgradeErrorDetails
+                        = reader.readArray(reader1 -> InMageRcmLastAgentUpgradeErrorDetails.fromJson(reader1));
+                    deserializedInMageRcmReplicationDetails.lastAgentUpgradeErrorDetails = lastAgentUpgradeErrorDetails;
+                } else if ("agentUpgradeBlockingErrorDetails".equals(fieldName)) {
+                    List<InMageRcmAgentUpgradeBlockingErrorDetails> agentUpgradeBlockingErrorDetails
+                        = reader.readArray(reader1 -> InMageRcmAgentUpgradeBlockingErrorDetails.fromJson(reader1));
+                    deserializedInMageRcmReplicationDetails.agentUpgradeBlockingErrorDetails
+                        = agentUpgradeBlockingErrorDetails;
+                } else if ("vmNics".equals(fieldName)) {
+                    List<InMageRcmNicDetails> vmNics
+                        = reader.readArray(reader1 -> InMageRcmNicDetails.fromJson(reader1));
+                    deserializedInMageRcmReplicationDetails.vmNics = vmNics;
+                } else if ("discoveredVmDetails".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.discoveredVmDetails
+                        = InMageRcmDiscoveredProtectedVmDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmReplicationDetails;
+        });
     }
 }

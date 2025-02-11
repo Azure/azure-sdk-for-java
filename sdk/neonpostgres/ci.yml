@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/neonpostgres/ci.yml
+      - sdk/neonpostgres/azure-resourcemanager-neonpostgres/
+    exclude:
+      - sdk/neonpostgres/pom.xml
+      - sdk/neonpostgres/azure-resourcemanager-neonpostgres/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/neonpostgres/ci.yml
+      - sdk/neonpostgres/azure-resourcemanager-neonpostgres/
+    exclude:
+      - sdk/neonpostgres/pom.xml
+      - sdk/neonpostgres/azure-resourcemanager-neonpostgres/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerneonpostgres
+    displayName: azure-resourcemanager-neonpostgres
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: neonpostgres
+    Artifacts:
+      - name: azure-resourcemanager-neonpostgres
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerneonpostgres
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerneonpostgres }}

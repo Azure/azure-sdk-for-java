@@ -920,7 +920,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public Mono<Long> count(CosmosQuery query, String containerName) {
         final SqlQuerySpec querySpec = new CountQueryGenerator().generateCosmos(query);
-        return getCountValue(querySpec, containerName);
+        return getNumericValue(querySpec, containerName);
     }
 
     /**
@@ -932,7 +932,19 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public Mono<Long> count(SqlQuerySpec querySpec, String containerName) {
-        return getCountValue(querySpec, containerName);
+        return getNumericValue(querySpec, containerName);
+    }
+
+    /**
+     * Sum
+     *
+     * @param querySpec the document query spec
+     * @param containerName the container name
+     * @return Mono with sum or error
+     */
+    @Override
+    public Mono<Long> sum(SqlQuerySpec querySpec, String containerName) {
+        return getNumericValue(querySpec, containerName);
     }
 
     @Override
@@ -975,7 +987,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                           this.responseDiagnosticsProcessor));
     }
 
-    private Mono<Long> getCountValue(SqlQuerySpec querySpec, String containerName) {
+    private Mono<Long> getNumericValue(SqlQuerySpec querySpec, String containerName) {
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);
         options.setIndexMetricsEnabled(this.indexMetricsEnabled);
@@ -987,7 +999,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .doOnNext(feedResponse -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                 feedResponse.getCosmosDiagnostics(), feedResponse))
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to get count value", throwable,
+                CosmosExceptionUtils.exceptionHandler("Failed to get numeric value", throwable,
                     this.responseDiagnosticsProcessor))
             .next()
             .map(r -> r.getResults().get(0).asLong());

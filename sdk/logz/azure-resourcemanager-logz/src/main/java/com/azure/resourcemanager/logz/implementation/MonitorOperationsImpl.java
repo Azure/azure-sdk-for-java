@@ -24,21 +24,18 @@ public final class MonitorOperationsImpl implements MonitorOperations {
 
     private final com.azure.resourcemanager.logz.LogzManager serviceManager;
 
-    public MonitorOperationsImpl(
-        MonitorOperationsClient innerClient, com.azure.resourcemanager.logz.LogzManager serviceManager) {
+    public MonitorOperationsImpl(MonitorOperationsClient innerClient,
+        com.azure.resourcemanager.logz.LogzManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<VMExtensionPayload> vMHostPayloadWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<VMExtensionPayloadInner> inner =
-            this.serviceClient().vMHostPayloadWithResponse(resourceGroupName, monitorName, context);
+    public Response<VMExtensionPayload> vMHostPayloadWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<VMExtensionPayloadInner> inner
+            = this.serviceClient().vMHostPayloadWithResponse(resourceGroupName, monitorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VMExtensionPayloadImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -56,25 +53,25 @@ public final class MonitorOperationsImpl implements MonitorOperations {
 
     public PagedIterable<VMResources> listVmHostUpdate(String resourceGroupName, String monitorName) {
         PagedIterable<VMResourcesInner> inner = this.serviceClient().listVmHostUpdate(resourceGroupName, monitorName);
-        return Utils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VMResources> listVmHostUpdate(
-        String resourceGroupName, String monitorName, VMHostUpdateRequest body, Context context) {
-        PagedIterable<VMResourcesInner> inner =
-            this.serviceClient().listVmHostUpdate(resourceGroupName, monitorName, body, context);
-        return Utils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
+    public PagedIterable<VMResources> listVmHostUpdate(String resourceGroupName, String monitorName,
+        VMHostUpdateRequest body, Context context) {
+        PagedIterable<VMResourcesInner> inner
+            = this.serviceClient().listVmHostUpdate(resourceGroupName, monitorName, body, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VMResources> listVMHosts(String resourceGroupName, String monitorName) {
         PagedIterable<VMResourcesInner> inner = this.serviceClient().listVMHosts(resourceGroupName, monitorName);
-        return Utils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VMResources> listVMHosts(String resourceGroupName, String monitorName, Context context) {
-        PagedIterable<VMResourcesInner> inner =
-            this.serviceClient().listVMHosts(resourceGroupName, monitorName, context);
-        return Utils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
+        PagedIterable<VMResourcesInner> inner
+            = this.serviceClient().listVMHosts(resourceGroupName, monitorName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
     }
 
     private MonitorOperationsClient serviceClient() {

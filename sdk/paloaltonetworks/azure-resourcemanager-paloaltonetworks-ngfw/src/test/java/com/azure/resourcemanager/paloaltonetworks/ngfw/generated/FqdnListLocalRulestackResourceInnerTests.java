@@ -24,7 +24,9 @@ public final class FqdnListLocalRulestackResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FqdnListLocalRulestackResourceInner model = new FqdnListLocalRulestackResourceInner().withDescription("ff")
-            .withFqdnList(Arrays.asList("qitmhheioqaqhv")).withEtag("ufuqyrx").withAuditComment("lcgqlsismj");
+            .withFqdnList(Arrays.asList("qitmhheioqaqhv"))
+            .withEtag("ufuqyrx")
+            .withAuditComment("lcgqlsismj");
         model = BinaryData.fromObject(model).toObject(FqdnListLocalRulestackResourceInner.class);
         Assertions.assertEquals("ff", model.description());
         Assertions.assertEquals("qitmhheioqaqhv", model.fqdnList().get(0));

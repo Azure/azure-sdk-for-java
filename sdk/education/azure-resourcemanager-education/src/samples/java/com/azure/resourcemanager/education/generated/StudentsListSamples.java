@@ -4,21 +4,22 @@
 
 package com.azure.resourcemanager.education.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Students List. */
+/**
+ * Samples for Students List.
+ */
 public final class StudentsListSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentList.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentList.json
      */
     /**
      * Sample code: StudentList.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void studentList(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .students()
-            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", null, Context.NONE);
+        manager.students()
+            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", null,
+                com.azure.core.util.Context.NONE);
     }
 }

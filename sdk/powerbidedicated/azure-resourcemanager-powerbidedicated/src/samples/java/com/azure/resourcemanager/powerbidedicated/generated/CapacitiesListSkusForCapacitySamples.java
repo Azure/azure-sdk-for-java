@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.powerbidedicated.generated;
 
-/** Samples for Capacities ListSkusForCapacity. */
+/**
+ * Samples for Capacities ListSkusForCapacity.
+ */
 public final class CapacitiesListSkusForCapacitySamples {
     /*
-     * x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/listSKUsForExisting.json
+     * x-ms-original-file:
+     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
+     * listSKUsForExisting.json
      */
     /**
      * Sample code: List eligible SKUs for an existing capacity.
-     *
+     * 
      * @param manager Entry point to PowerBIDedicatedManager.
      */
     public static void listEligibleSKUsForAnExistingCapacity(

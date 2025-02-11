@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The type of message. Supports text, image, template.
+ * The type of message.
  */
 public final class CommunicationMessageKind extends ExpandableStringEnum<CommunicationMessageKind> {
 
@@ -60,4 +60,47 @@ public final class CommunicationMessageKind extends ExpandableStringEnum<Communi
     public static Collection<CommunicationMessageKind> values() {
         return values(CommunicationMessageKind.class);
     }
+
+    /**
+     * Document message type.
+     */
+    @Generated
+    public static final CommunicationMessageKind DOCUMENT = fromString("document");
+
+    /**
+     * Video message type.
+     */
+    @Generated
+    public static final CommunicationMessageKind VIDEO = fromString("video");
+
+    /**
+     * Audio message type.
+     */
+    @Generated
+    public static final CommunicationMessageKind AUDIO = fromString("audio");
+
+    /**
+     * @deprecated Legacy image type for `MediaNotificationContent` which is being deprecated.
+     */
+    @Generated
+    @Deprecated()
+    public static final CommunicationMessageKind IMAGE_V0 = fromString("image_v0");
+
+    /**
+     * Sticker message type.
+     */
+    @Generated
+    public static final CommunicationMessageKind STICKER = fromString("sticker");
+
+    /**
+     * Reaction message type.
+     */
+    @Generated
+    public static final CommunicationMessageKind REACTION = fromString("reaction");
+
+    /**
+     * Interactive Actionable message type.
+     */
+    @Generated
+    public static final CommunicationMessageKind INTERACTIVE = fromString("interactive");
 }

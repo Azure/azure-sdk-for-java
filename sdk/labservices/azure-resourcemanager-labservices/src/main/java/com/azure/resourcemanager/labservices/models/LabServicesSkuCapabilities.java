@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The array of capabilities of a lab services SKU. */
+/**
+ * The array of capabilities of a lab services SKU.
+ */
 @Immutable
-public final class LabServicesSkuCapabilities {
+public final class LabServicesSkuCapabilities implements JsonSerializable<LabServicesSkuCapabilities> {
     /*
      * The name of the capability for a SKU.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The value of the capability for a SKU.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**
+     * Creates an instance of LabServicesSkuCapabilities class.
+     */
+    public LabServicesSkuCapabilities() {
+    }
+
+    /**
      * Get the name property: The name of the capability for a SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +43,7 @@ public final class LabServicesSkuCapabilities {
 
     /**
      * Get the value property: The value of the capability for a SKU.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -42,9 +52,46 @@ public final class LabServicesSkuCapabilities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabServicesSkuCapabilities from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabServicesSkuCapabilities if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabServicesSkuCapabilities.
+     */
+    public static LabServicesSkuCapabilities fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabServicesSkuCapabilities deserializedLabServicesSkuCapabilities = new LabServicesSkuCapabilities();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLabServicesSkuCapabilities.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedLabServicesSkuCapabilities.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabServicesSkuCapabilities;
+        });
     }
 }

@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The name of the column to aggregate. */
+/**
+ * The name of the column to aggregate.
+ */
 public final class FunctionName extends ExpandableStringEnum<FunctionName> {
-    /** Static value PreTaxCostUSD for FunctionName. */
+    /**
+     * Static value PreTaxCostUSD for FunctionName.
+     */
     public static final FunctionName PRE_TAX_COST_USD = fromString("PreTaxCostUSD");
 
-    /** Static value Cost for FunctionName. */
+    /**
+     * Static value Cost for FunctionName.
+     */
     public static final FunctionName COST = fromString("Cost");
 
-    /** Static value CostUSD for FunctionName. */
+    /**
+     * Static value CostUSD for FunctionName.
+     */
     public static final FunctionName COST_USD = fromString("CostUSD");
 
-    /** Static value PreTaxCost for FunctionName. */
+    /**
+     * Static value PreTaxCost for FunctionName.
+     */
     public static final FunctionName PRE_TAX_COST = fromString("PreTaxCost");
 
     /**
      * Creates a new instance of FunctionName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class FunctionName extends ExpandableStringEnum<FunctionName> {
 
     /**
      * Creates or finds a FunctionName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FunctionName.
      */
-    @JsonCreator
     public static FunctionName fromString(String name) {
         return fromString(name, FunctionName.class);
     }
 
     /**
      * Gets known FunctionName values.
-     *
+     * 
      * @return known FunctionName values.
      */
     public static Collection<FunctionName> values() {

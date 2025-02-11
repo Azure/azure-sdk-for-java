@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceMoveRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceMoveRequest model =
-            BinaryData
-                .fromString(
-                    "{\"validateOnly\":false,\"moveResources\":[\"guhmuouqfpr\",\"zw\"],\"moveResourceInputType\":\"MoveResourceId\"}")
-                .toObject(ResourceMoveRequest.class);
+        ResourceMoveRequest model = BinaryData.fromString(
+            "{\"validateOnly\":false,\"moveResources\":[\"guhmuouqfpr\",\"zw\"],\"moveResourceInputType\":\"MoveResourceId\"}")
+            .toObject(ResourceMoveRequest.class);
         Assertions.assertEquals(false, model.validateOnly());
         Assertions.assertEquals("guhmuouqfpr", model.moveResources().get(0));
         Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
@@ -25,11 +23,9 @@ public final class ResourceMoveRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceMoveRequest model =
-            new ResourceMoveRequest()
-                .withValidateOnly(false)
-                .withMoveResources(Arrays.asList("guhmuouqfpr", "zw"))
-                .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_ID);
+        ResourceMoveRequest model = new ResourceMoveRequest().withValidateOnly(false)
+            .withMoveResources(Arrays.asList("guhmuouqfpr", "zw"))
+            .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_ID);
         model = BinaryData.fromObject(model).toObject(ResourceMoveRequest.class);
         Assertions.assertEquals(false, model.validateOnly());
         Assertions.assertEquals("guhmuouqfpr", model.moveResources().get(0));

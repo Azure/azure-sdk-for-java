@@ -11,133 +11,139 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkRackI
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of NetworkRack. */
+/**
+ * An immutable client-side representation of NetworkRack.
+ */
 public interface NetworkRack {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the networkRackType property: Network Rack SKU name.
-     *
+     * 
      * @return the networkRackType value.
      */
     NetworkRackType networkRackType();
 
     /**
      * Gets the networkFabricId property: ARM resource ID of the Network Fabric.
-     *
+     * 
      * @return the networkFabricId value.
      */
     String networkFabricId();
 
     /**
      * Gets the networkDevices property: List of network device ARM resource IDs.
-     *
+     * 
      * @return the networkDevices value.
      */
     List<String> networkDevices();
 
     /**
      * Gets the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     String annotation();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkRackInner object.
-     *
+     * 
      * @return the inner object.
      */
     NetworkRackInner innerModel();
 
-    /** The entirety of the NetworkRack definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithNetworkFabricId,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the NetworkRack definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithNetworkFabricId, DefinitionStages.WithCreate {
     }
 
-    /** The NetworkRack definition stages. */
+    /**
+     * The NetworkRack definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the NetworkRack definition. */
+        /**
+         * The first stage of the NetworkRack definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the NetworkRack definition allowing to specify location. */
+        /**
+         * The stage of the NetworkRack definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -145,29 +151,33 @@ public interface NetworkRack {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the NetworkRack definition allowing to specify parent resource. */
+        /**
+         * The stage of the NetworkRack definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithNetworkFabricId withExistingResourceGroup(String resourceGroupName);
         }
 
-        /** The stage of the NetworkRack definition allowing to specify networkFabricId. */
+        /**
+         * The stage of the NetworkRack definition allowing to specify networkFabricId.
+         */
         interface WithNetworkFabricId {
             /**
              * Specifies the networkFabricId property: ARM resource ID of the Network Fabric..
-             *
+             * 
              * @param networkFabricId ARM resource ID of the Network Fabric.
              * @return the next definition stage.
              */
@@ -182,47 +192,53 @@ public interface NetworkRack {
             extends DefinitionStages.WithTags, DefinitionStages.WithNetworkRackType, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             NetworkRack create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             NetworkRack create(Context context);
         }
 
-        /** The stage of the NetworkRack definition allowing to specify tags. */
+        /**
+         * The stage of the NetworkRack definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the NetworkRack definition allowing to specify networkRackType. */
+        /**
+         * The stage of the NetworkRack definition allowing to specify networkRackType.
+         */
         interface WithNetworkRackType {
             /**
              * Specifies the networkRackType property: Network Rack SKU name..
-             *
+             * 
              * @param networkRackType Network Rack SKU name.
              * @return the next definition stage.
              */
             WithCreate withNetworkRackType(NetworkRackType networkRackType);
         }
 
-        /** The stage of the NetworkRack definition allowing to specify annotation. */
+        /**
+         * The stage of the NetworkRack definition allowing to specify annotation.
+         */
         interface WithAnnotation {
             /**
              * Specifies the annotation property: Switch configuration description..
-             *
+             * 
              * @param annotation Switch configuration description.
              * @return the next definition stage.
              */
@@ -232,36 +248,42 @@ public interface NetworkRack {
 
     /**
      * Begins update for the NetworkRack resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     NetworkRack.Update update();
 
-    /** The template for NetworkRack update. */
+    /**
+     * The template for NetworkRack update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         NetworkRack apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         NetworkRack apply(Context context);
     }
 
-    /** The NetworkRack update stages. */
+    /**
+     * The NetworkRack update stages.
+     */
     interface UpdateStages {
-        /** The stage of the NetworkRack update allowing to specify tags. */
+        /**
+         * The stage of the NetworkRack update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags.
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -271,14 +293,14 @@ public interface NetworkRack {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     NetworkRack refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

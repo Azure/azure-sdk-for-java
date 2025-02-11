@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datamigration.models.AvailableServiceSkuCapacity;
 import com.azure.resourcemanager.datamigration.models.AvailableServiceSkuSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the available service SKU. */
+/**
+ * Describes the available service SKU.
+ */
 @Fluent
-public final class AvailableServiceSkuInner {
+public final class AvailableServiceSkuInner implements JsonSerializable<AvailableServiceSkuInner> {
     /*
      * The resource type, including the provider namespace
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * SKU name, tier, etc.
      */
-    @JsonProperty(value = "sku")
     private AvailableServiceSkuSku sku;
 
     /*
      * A description of the scaling capacities of the SKU
      */
-    @JsonProperty(value = "capacity")
     private AvailableServiceSkuCapacity capacity;
 
-    /** Creates an instance of AvailableServiceSkuInner class. */
+    /**
+     * Creates an instance of AvailableServiceSkuInner class.
+     */
     public AvailableServiceSkuInner() {
     }
 
     /**
      * Get the resourceType property: The resource type, including the provider namespace.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -45,7 +50,7 @@ public final class AvailableServiceSkuInner {
 
     /**
      * Set the resourceType property: The resource type, including the provider namespace.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the AvailableServiceSkuInner object itself.
      */
@@ -56,7 +61,7 @@ public final class AvailableServiceSkuInner {
 
     /**
      * Get the sku property: SKU name, tier, etc.
-     *
+     * 
      * @return the sku value.
      */
     public AvailableServiceSkuSku sku() {
@@ -65,7 +70,7 @@ public final class AvailableServiceSkuInner {
 
     /**
      * Set the sku property: SKU name, tier, etc.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AvailableServiceSkuInner object itself.
      */
@@ -76,7 +81,7 @@ public final class AvailableServiceSkuInner {
 
     /**
      * Get the capacity property: A description of the scaling capacities of the SKU.
-     *
+     * 
      * @return the capacity value.
      */
     public AvailableServiceSkuCapacity capacity() {
@@ -85,7 +90,7 @@ public final class AvailableServiceSkuInner {
 
     /**
      * Set the capacity property: A description of the scaling capacities of the SKU.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the AvailableServiceSkuInner object itself.
      */
@@ -96,7 +101,7 @@ public final class AvailableServiceSkuInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -106,5 +111,47 @@ public final class AvailableServiceSkuInner {
         if (capacity() != null) {
             capacity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableServiceSkuInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableServiceSkuInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableServiceSkuInner.
+     */
+    public static AvailableServiceSkuInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableServiceSkuInner deserializedAvailableServiceSkuInner = new AvailableServiceSkuInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedAvailableServiceSkuInner.resourceType = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAvailableServiceSkuInner.sku = AvailableServiceSkuSku.fromJson(reader);
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedAvailableServiceSkuInner.capacity = AvailableServiceSkuCapacity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableServiceSkuInner;
+        });
     }
 }

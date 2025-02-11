@@ -7,12 +7,14 @@ package com.azure.resourcemanager.costmanagement.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BenefitUtilizationSummaries. */
+/**
+ * Resource collection API of BenefitUtilizationSummaries.
+ */
 public interface BenefitUtilizationSummaries {
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -24,7 +26,7 @@ public interface BenefitUtilizationSummaries {
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
@@ -34,12 +36,12 @@ public interface BenefitUtilizationSummaries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BenefitUtilizationSummary> listByBillingAccountId(
-        String billingAccountId, GrainParameter grainParameter, String filter, Context context);
+    PagedIterable<BenefitUtilizationSummary> listByBillingAccountId(String billingAccountId,
+        GrainParameter grainParameter, String filter, Context context);
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,7 +53,7 @@ public interface BenefitUtilizationSummaries {
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -62,16 +64,12 @@ public interface BenefitUtilizationSummaries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BenefitUtilizationSummary> listByBillingProfileId(
-        String billingAccountId,
-        String billingProfileId,
-        GrainParameter grainParameter,
-        String filter,
-        Context context);
+    PagedIterable<BenefitUtilizationSummary> listByBillingProfileId(String billingAccountId, String billingProfileId,
+        GrainParameter grainParameter, String filter, Context context);
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,7 +80,7 @@ public interface BenefitUtilizationSummaries {
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
@@ -92,12 +90,12 @@ public interface BenefitUtilizationSummaries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BenefitUtilizationSummary> listBySavingsPlanOrder(
-        String savingsPlanOrderId, String filter, GrainParameter grainParameter, Context context);
+    PagedIterable<BenefitUtilizationSummary> listBySavingsPlanOrder(String savingsPlanOrderId, String filter,
+        GrainParameter grainParameter, Context context);
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,7 +107,7 @@ public interface BenefitUtilizationSummaries {
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.
@@ -120,6 +118,6 @@ public interface BenefitUtilizationSummaries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BenefitUtilizationSummary> listBySavingsPlanId(
-        String savingsPlanOrderId, String savingsPlanId, String filter, GrainParameter grainParameter, Context context);
+    PagedIterable<BenefitUtilizationSummary> listBySavingsPlanId(String savingsPlanOrderId, String savingsPlanId,
+        String filter, GrainParameter grainParameter, Context context);
 }

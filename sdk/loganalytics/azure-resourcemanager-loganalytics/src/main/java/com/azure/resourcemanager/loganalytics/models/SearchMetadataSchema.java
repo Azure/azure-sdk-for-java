@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema metadata for search. */
+/**
+ * Schema metadata for search.
+ */
 @Fluent
-public final class SearchMetadataSchema {
+public final class SearchMetadataSchema implements JsonSerializable<SearchMetadataSchema> {
     /*
      * The name of the metadata schema.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The version of the metadata schema.
      */
-    @JsonProperty(value = "version")
     private Integer version;
 
-    /** Creates an instance of SearchMetadataSchema class. */
+    /**
+     * Creates an instance of SearchMetadataSchema class.
+     */
     public SearchMetadataSchema() {
     }
 
     /**
      * Get the name property: The name of the metadata schema.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class SearchMetadataSchema {
 
     /**
      * Set the name property: The name of the metadata schema.
-     *
+     * 
      * @param name the name value to set.
      * @return the SearchMetadataSchema object itself.
      */
@@ -48,7 +54,7 @@ public final class SearchMetadataSchema {
 
     /**
      * Get the version property: The version of the metadata schema.
-     *
+     * 
      * @return the version value.
      */
     public Integer version() {
@@ -57,7 +63,7 @@ public final class SearchMetadataSchema {
 
     /**
      * Set the version property: The version of the metadata schema.
-     *
+     * 
      * @param version the version value to set.
      * @return the SearchMetadataSchema object itself.
      */
@@ -68,9 +74,48 @@ public final class SearchMetadataSchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchMetadataSchema from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchMetadataSchema if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchMetadataSchema.
+     */
+    public static SearchMetadataSchema fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchMetadataSchema deserializedSearchMetadataSchema = new SearchMetadataSchema();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSearchMetadataSchema.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSearchMetadataSchema.version = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchMetadataSchema;
+        });
     }
 }

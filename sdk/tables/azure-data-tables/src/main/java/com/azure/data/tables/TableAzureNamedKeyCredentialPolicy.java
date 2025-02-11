@@ -44,8 +44,8 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      * @return A reactive result containing the HTTP response.
      */
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String authorizationValue =
-            generateAuthorizationHeader(context.getHttpRequest().getUrl(), context.getHttpRequest().getHeaders());
+        String authorizationValue
+            = generateAuthorizationHeader(context.getHttpRequest().getUrl(), context.getHttpRequest().getHeaders());
 
         context.getHttpRequest().setHeader("Authorization", authorizationValue);
 
@@ -77,9 +77,7 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      */
     private static String buildStringToSign(URL requestUrl, HttpHeaders headers, AzureNamedKeyCredential credential) {
         // If the x-ms-header exists ignore the Date header.
-        String dateHeader = headers.get("x-ms-date") != null
-            ? ""
-            : getStandardHeaderValue(headers, "Date");
+        String dateHeader = headers.get("x-ms-date") != null ? "" : getStandardHeaderValue(headers, "Date");
 
         return String.join("\n", dateHeader, getCanonicalizedResource(requestUrl, credential));
     }
@@ -97,7 +95,6 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
 
         return header == null ? "" : header.getValue();
     }
-
 
     /**
      * Returns the canonicalized resource needed for a request.
@@ -121,8 +118,7 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
 
             if (queryParamValues != null) {
                 Arrays.sort(queryParamValues);
-                canonicalizedResource.append("?comp=")
-                    .append(String.join(",", queryParamValues));
+                canonicalizedResource.append("?comp=").append(String.join(",", queryParamValues));
             }
         }
 

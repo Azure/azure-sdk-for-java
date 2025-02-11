@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databox.models.DataBoxAccountCopyLogDetails;
 public final class DataBoxAccountCopyLogDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataBoxAccountCopyLogDetails model =
-            BinaryData
-                .fromString(
-                    "{\"copyLogDetailsType\":\"DataBox\",\"accountName\":\"zksmondj\",\"copyLogLink\":\"uxvypomgkopkwh\",\"copyVerboseLogLink\":\"v\"}")
-                .toObject(DataBoxAccountCopyLogDetails.class);
+        DataBoxAccountCopyLogDetails model = BinaryData.fromString(
+            "{\"copyLogDetailsType\":\"DataBox\",\"accountName\":\"uvarmywdmjsjq\",\"copyLogLink\":\"hhyxxrw\",\"copyVerboseLogLink\":\"co\"}")
+            .toObject(DataBoxAccountCopyLogDetails.class);
     }
 
     @org.junit.jupiter.api.Test

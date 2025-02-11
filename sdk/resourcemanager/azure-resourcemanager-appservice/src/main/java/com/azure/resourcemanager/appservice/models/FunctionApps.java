@@ -17,15 +17,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for web app management API. */
 @Fluent
-public interface FunctionApps
-    extends SupportsCreating<FunctionApp.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsListing<FunctionAppBasic>,
-        SupportsListingByResourceGroup<FunctionAppBasic>,
-        SupportsGettingByResourceGroup<FunctionApp>,
-        SupportsGettingById<FunctionApp>,
-        SupportsDeletingByResourceGroup,
-        HasManager<AppServiceManager> {
+public interface FunctionApps extends SupportsCreating<FunctionApp.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsListing<FunctionAppBasic>, SupportsListingByResourceGroup<FunctionAppBasic>,
+    SupportsGettingByResourceGroup<FunctionApp>, SupportsGettingById<FunctionApp>, SupportsDeletingByResourceGroup,
+    HasManager<AppServiceManager> {
 
     /**
      * List function information elements.

@@ -5,61 +5,64 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Parameters of the search job that initiated this table. */
+/**
+ * Parameters of the search job that initiated this table.
+ */
 @Fluent
-public final class SearchResults {
+public final class SearchResults implements JsonSerializable<SearchResults> {
     /*
      * Search job query.
      */
-    @JsonProperty(value = "query")
     private String query;
 
     /*
      * Search job Description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Limit the search job to return up to specified number of rows.
      */
-    @JsonProperty(value = "limit")
     private Integer limit;
 
     /*
      * The timestamp to start the search from (UTC)
      */
-    @JsonProperty(value = "startSearchTime")
     private OffsetDateTime startSearchTime;
 
     /*
      * The timestamp to end the search by (UTC)
      */
-    @JsonProperty(value = "endSearchTime")
     private OffsetDateTime endSearchTime;
 
     /*
      * The table used in the search job.
      */
-    @JsonProperty(value = "sourceTable", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceTable;
 
     /*
      * Search results table async operation id.
      */
-    @JsonProperty(value = "azureAsyncOperationId", access = JsonProperty.Access.WRITE_ONLY)
     private String azureAsyncOperationId;
 
-    /** Creates an instance of SearchResults class. */
+    /**
+     * Creates an instance of SearchResults class.
+     */
     public SearchResults() {
     }
 
     /**
      * Get the query property: Search job query.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -68,7 +71,7 @@ public final class SearchResults {
 
     /**
      * Set the query property: Search job query.
-     *
+     * 
      * @param query the query value to set.
      * @return the SearchResults object itself.
      */
@@ -79,7 +82,7 @@ public final class SearchResults {
 
     /**
      * Get the description property: Search job Description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -88,7 +91,7 @@ public final class SearchResults {
 
     /**
      * Set the description property: Search job Description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SearchResults object itself.
      */
@@ -99,7 +102,7 @@ public final class SearchResults {
 
     /**
      * Get the limit property: Limit the search job to return up to specified number of rows.
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -108,7 +111,7 @@ public final class SearchResults {
 
     /**
      * Set the limit property: Limit the search job to return up to specified number of rows.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the SearchResults object itself.
      */
@@ -119,7 +122,7 @@ public final class SearchResults {
 
     /**
      * Get the startSearchTime property: The timestamp to start the search from (UTC).
-     *
+     * 
      * @return the startSearchTime value.
      */
     public OffsetDateTime startSearchTime() {
@@ -128,7 +131,7 @@ public final class SearchResults {
 
     /**
      * Set the startSearchTime property: The timestamp to start the search from (UTC).
-     *
+     * 
      * @param startSearchTime the startSearchTime value to set.
      * @return the SearchResults object itself.
      */
@@ -139,7 +142,7 @@ public final class SearchResults {
 
     /**
      * Get the endSearchTime property: The timestamp to end the search by (UTC).
-     *
+     * 
      * @return the endSearchTime value.
      */
     public OffsetDateTime endSearchTime() {
@@ -148,7 +151,7 @@ public final class SearchResults {
 
     /**
      * Set the endSearchTime property: The timestamp to end the search by (UTC).
-     *
+     * 
      * @param endSearchTime the endSearchTime value to set.
      * @return the SearchResults object itself.
      */
@@ -159,7 +162,7 @@ public final class SearchResults {
 
     /**
      * Get the sourceTable property: The table used in the search job.
-     *
+     * 
      * @return the sourceTable value.
      */
     public String sourceTable() {
@@ -168,7 +171,7 @@ public final class SearchResults {
 
     /**
      * Get the azureAsyncOperationId property: Search results table async operation id.
-     *
+     * 
      * @return the azureAsyncOperationId value.
      */
     public String azureAsyncOperationId() {
@@ -177,9 +180,65 @@ public final class SearchResults {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeStringField("startSearchTime",
+            this.startSearchTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startSearchTime));
+        jsonWriter.writeStringField("endSearchTime",
+            this.endSearchTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endSearchTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchResults from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchResults if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchResults.
+     */
+    public static SearchResults fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchResults deserializedSearchResults = new SearchResults();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("query".equals(fieldName)) {
+                    deserializedSearchResults.query = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSearchResults.description = reader.getString();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedSearchResults.limit = reader.getNullable(JsonReader::getInt);
+                } else if ("startSearchTime".equals(fieldName)) {
+                    deserializedSearchResults.startSearchTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endSearchTime".equals(fieldName)) {
+                    deserializedSearchResults.endSearchTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sourceTable".equals(fieldName)) {
+                    deserializedSearchResults.sourceTable = reader.getString();
+                } else if ("azureAsyncOperationId".equals(fieldName)) {
+                    deserializedSearchResults.azureAsyncOperationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchResults;
+        });
     }
 }

@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.synapse.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The unit of measurement. */
+/**
+ * The unit of measurement.
+ */
 public enum QueryMetricUnit {
-    /** Enum value percentage. */
+    /**
+     * Enum value percentage.
+     */
     PERCENTAGE("percentage"),
 
-    /** Enum value KB. */
+    /**
+     * Enum value KB.
+     */
     KB("KB"),
 
-    /** Enum value microseconds. */
+    /**
+     * Enum value microseconds.
+     */
     MICROSECONDS("microseconds");
 
-    /** The actual serialized value for a QueryMetricUnit instance. */
+    /**
+     * The actual serialized value for a QueryMetricUnit instance.
+     */
     private final String value;
 
     QueryMetricUnit(String value) {
@@ -27,11 +34,10 @@ public enum QueryMetricUnit {
 
     /**
      * Parses a serialized value to a QueryMetricUnit instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed QueryMetricUnit object, or null if unable to parse.
      */
-    @JsonCreator
     public static QueryMetricUnit fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum QueryMetricUnit {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

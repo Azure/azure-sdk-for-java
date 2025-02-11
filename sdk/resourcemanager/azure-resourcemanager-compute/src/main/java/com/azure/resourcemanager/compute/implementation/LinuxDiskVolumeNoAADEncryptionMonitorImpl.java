@@ -99,26 +99,23 @@ class LinuxDiskVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionM
     public Mono<DiskVolumeEncryptionMonitor> refreshAsync() {
         final LinuxDiskVolumeNoAADEncryptionMonitorImpl self = this;
         // Refreshes the cached virtual machine and installed encryption extension
-        return retrieveVirtualMachineAsync()
-            .flatMap(
-                virtualMachine -> {
-                    self.virtualMachine = virtualMachine;
-                    if (virtualMachine.instanceView() != null && virtualMachine.instanceView().extensions() != null) {
-                        for (VirtualMachineExtensionInstanceView eiv : virtualMachine.instanceView().extensions()) {
-                            if (eiv.type() != null
-                                && eiv
-                                    .type()
-                                    .toLowerCase(Locale.ROOT)
-                                    .startsWith(EncryptionExtensionIdentifier.publisherName().toLowerCase(Locale.ROOT))
-                                && eiv.name() != null
-                                && EncryptionExtensionIdentifier.isEncryptionTypeName(eiv.name(), osType())) {
-                                self.extensionInstanceView = eiv;
-                                break;
-                            }
-                        }
+        return retrieveVirtualMachineAsync().flatMap(virtualMachine -> {
+            self.virtualMachine = virtualMachine;
+            if (virtualMachine.instanceView() != null && virtualMachine.instanceView().extensions() != null) {
+                for (VirtualMachineExtensionInstanceView eiv : virtualMachine.instanceView().extensions()) {
+                    if (eiv.type() != null
+                        && eiv.type()
+                            .toLowerCase(Locale.ROOT)
+                            .startsWith(EncryptionExtensionIdentifier.publisherName().toLowerCase(Locale.ROOT))
+                        && eiv.name() != null
+                        && EncryptionExtensionIdentifier.isEncryptionTypeName(eiv.name(), osType())) {
+                        self.extensionInstanceView = eiv;
+                        break;
                     }
-                    return Mono.just(self);
-                });
+                }
+            }
+            return Mono.just(self);
+        });
     }
 
     /**
@@ -127,7 +124,8 @@ class LinuxDiskVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionM
      * @return the retrieved virtual machine
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
-        return computeManager.serviceClient().getVirtualMachines()
+        return computeManager.serviceClient()
+            .getVirtualMachines()
             .getByResourceGroupWithResponseAsync(rgName, vmName, InstanceViewTypes.INSTANCE_VIEW)
             .map(Response::getValue);
         // Exception if vm not found

@@ -28,7 +28,8 @@ public final class SalesforceV2Source extends TabularSource {
     private Object soqlQuery;
 
     /*
-     * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or Expression with resultType boolean).
+     * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     private Object includeDeletedObjects;
 

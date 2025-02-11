@@ -25,17 +25,20 @@ public class SwitchActivity extends ControlActivity {
     private String type = "Switch";
 
     /*
-     * An expression that would evaluate to a string or integer. This is used to determine the block of activities in cases that will be executed.
+     * An expression that would evaluate to a string or integer. This is used to determine the block of activities in
+     * cases that will be executed.
      */
     private Expression on;
 
     /*
-     * List of cases that correspond to expected values of the 'on' property. This is an optional property and if not provided, the activity will execute activities provided in defaultActivities.
+     * List of cases that correspond to expected values of the 'on' property. This is an optional property and if not
+     * provided, the activity will execute activities provided in defaultActivities.
      */
     private List<SwitchCase> cases;
 
     /*
-     * List of activities to execute if no case condition is satisfied. This is an optional property and if not provided, the activity will exit without any action.
+     * List of activities to execute if no case condition is satisfied. This is an optional property and if not
+     * provided, the activity will exit without any action.
      */
     private List<Activity> defaultActivities;
 

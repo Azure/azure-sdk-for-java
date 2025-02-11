@@ -18,46 +18,40 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerPropertiesForReplicaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerPropertiesForReplica model =
-            BinaryData
-                .fromString(
-                    "{\"createMode\":\"Replica\",\"sourceServerId\":\"qlpqwcciuq\",\"version\":\"10.3\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLSEnforcementDisabled\",\"publicNetworkAccess\":\"Enabled\",\"storageProfile\":{\"backupRetentionDays\":1305719459,\"geoRedundantBackup\":\"Disabled\",\"storageMB\":752172532,\"storageAutogrow\":\"Disabled\"}}")
-                .toObject(ServerPropertiesForReplica.class);
+        ServerPropertiesForReplica model = BinaryData.fromString(
+            "{\"createMode\":\"Replica\",\"sourceServerId\":\"xg\",\"version\":\"10.3\",\"sslEnforcement\":\"Disabled\",\"minimalTlsVersion\":\"TLSEnforcementDisabled\",\"publicNetworkAccess\":\"Disabled\",\"storageProfile\":{\"backupRetentionDays\":812348156,\"geoRedundantBackup\":\"Enabled\",\"storageMB\":101100234,\"storageAutogrow\":\"Enabled\"}}")
+            .toObject(ServerPropertiesForReplica.class);
         Assertions.assertEquals(ServerVersion.ONE_ZERO_THREE, model.version());
-        Assertions.assertEquals(SslEnforcementEnum.ENABLED, model.sslEnforcement());
+        Assertions.assertEquals(SslEnforcementEnum.DISABLED, model.sslEnforcement());
         Assertions.assertEquals(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED, model.minimalTlsVersion());
-        Assertions.assertEquals(PublicNetworkAccessEnum.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(1305719459, model.storageProfile().backupRetentionDays());
-        Assertions.assertEquals(GeoRedundantBackup.DISABLED, model.storageProfile().geoRedundantBackup());
-        Assertions.assertEquals(752172532, model.storageProfile().storageMB());
-        Assertions.assertEquals(StorageAutogrow.DISABLED, model.storageProfile().storageAutogrow());
-        Assertions.assertEquals("qlpqwcciuq", model.sourceServerId());
+        Assertions.assertEquals(PublicNetworkAccessEnum.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(812348156, model.storageProfile().backupRetentionDays());
+        Assertions.assertEquals(GeoRedundantBackup.ENABLED, model.storageProfile().geoRedundantBackup());
+        Assertions.assertEquals(101100234, model.storageProfile().storageMB());
+        Assertions.assertEquals(StorageAutogrow.ENABLED, model.storageProfile().storageAutogrow());
+        Assertions.assertEquals("xg", model.sourceServerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerPropertiesForReplica model =
-            new ServerPropertiesForReplica()
-                .withVersion(ServerVersion.ONE_ZERO_THREE)
-                .withSslEnforcement(SslEnforcementEnum.ENABLED)
-                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED)
-                .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED)
-                .withStorageProfile(
-                    new StorageProfile()
-                        .withBackupRetentionDays(1305719459)
-                        .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
-                        .withStorageMB(752172532)
-                        .withStorageAutogrow(StorageAutogrow.DISABLED))
-                .withSourceServerId("qlpqwcciuq");
+        ServerPropertiesForReplica model = new ServerPropertiesForReplica().withVersion(ServerVersion.ONE_ZERO_THREE)
+            .withSslEnforcement(SslEnforcementEnum.DISABLED)
+            .withMinimalTlsVersion(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED)
+            .withPublicNetworkAccess(PublicNetworkAccessEnum.DISABLED)
+            .withStorageProfile(new StorageProfile().withBackupRetentionDays(812348156)
+                .withGeoRedundantBackup(GeoRedundantBackup.ENABLED)
+                .withStorageMB(101100234)
+                .withStorageAutogrow(StorageAutogrow.ENABLED))
+            .withSourceServerId("xg");
         model = BinaryData.fromObject(model).toObject(ServerPropertiesForReplica.class);
         Assertions.assertEquals(ServerVersion.ONE_ZERO_THREE, model.version());
-        Assertions.assertEquals(SslEnforcementEnum.ENABLED, model.sslEnforcement());
+        Assertions.assertEquals(SslEnforcementEnum.DISABLED, model.sslEnforcement());
         Assertions.assertEquals(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED, model.minimalTlsVersion());
-        Assertions.assertEquals(PublicNetworkAccessEnum.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(1305719459, model.storageProfile().backupRetentionDays());
-        Assertions.assertEquals(GeoRedundantBackup.DISABLED, model.storageProfile().geoRedundantBackup());
-        Assertions.assertEquals(752172532, model.storageProfile().storageMB());
-        Assertions.assertEquals(StorageAutogrow.DISABLED, model.storageProfile().storageAutogrow());
-        Assertions.assertEquals("qlpqwcciuq", model.sourceServerId());
+        Assertions.assertEquals(PublicNetworkAccessEnum.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(812348156, model.storageProfile().backupRetentionDays());
+        Assertions.assertEquals(GeoRedundantBackup.ENABLED, model.storageProfile().geoRedundantBackup());
+        Assertions.assertEquals(101100234, model.storageProfile().storageMB());
+        Assertions.assertEquals(StorageAutogrow.ENABLED, model.storageProfile().storageAutogrow());
+        Assertions.assertEquals("xg", model.sourceServerId());
     }
 }

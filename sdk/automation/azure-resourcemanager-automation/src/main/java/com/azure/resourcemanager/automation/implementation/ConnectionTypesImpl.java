@@ -21,26 +21,37 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public ConnectionTypesImpl(
-        ConnectionTypesClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public ConnectionTypesImpl(ConnectionTypesClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String connectionTypeName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, automationAccountName, connectionTypeName, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String connectionTypeName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, connectionTypeName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String connectionTypeName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, automationAccountName, connectionTypeName, context);
+    public Response<ConnectionType> getWithResponse(String resourceGroupName, String automationAccountName,
+        String connectionTypeName, Context context) {
+        Response<ConnectionTypeInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, automationAccountName, connectionTypeName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConnectionTypeImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ConnectionType get(String resourceGroupName, String automationAccountName, String connectionTypeName) {
-        ConnectionTypeInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, connectionTypeName);
+        ConnectionTypeInner inner
+            = this.serviceClient().get(resourceGroupName, automationAccountName, connectionTypeName);
         if (inner != null) {
             return new ConnectionTypeImpl(inner, this.manager());
         } else {
@@ -48,149 +59,93 @@ public final class ConnectionTypesImpl implements ConnectionTypes {
         }
     }
 
-    public Response<ConnectionType> getWithResponse(
-        String resourceGroupName, String automationAccountName, String connectionTypeName, Context context) {
-        Response<ConnectionTypeInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, connectionTypeName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ConnectionTypeImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<ConnectionType> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
+        PagedIterable<ConnectionTypeInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectionTypeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ConnectionType> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
-        PagedIterable<ConnectionTypeInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new ConnectionTypeImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<ConnectionType> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context) {
-        PagedIterable<ConnectionTypeInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new ConnectionTypeImpl(inner1, this.manager()));
+    public PagedIterable<ConnectionType> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context) {
+        PagedIterable<ConnectionTypeInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectionTypeImpl(inner1, this.manager()));
     }
 
     public ConnectionType getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String connectionTypeName = Utils.getValueFromIdByName(id, "connectionTypes");
+        String connectionTypeName = ResourceManagerUtils.getValueFromIdByName(id, "connectionTypes");
         if (connectionTypeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'connectionTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectionTypes'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, automationAccountName, connectionTypeName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, automationAccountName, connectionTypeName, Context.NONE)
             .getValue();
     }
 
     public Response<ConnectionType> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String connectionTypeName = Utils.getValueFromIdByName(id, "connectionTypes");
+        String connectionTypeName = ResourceManagerUtils.getValueFromIdByName(id, "connectionTypes");
         if (connectionTypeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'connectionTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectionTypes'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, connectionTypeName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String connectionTypeName = Utils.getValueFromIdByName(id, "connectionTypes");
+        String connectionTypeName = ResourceManagerUtils.getValueFromIdByName(id, "connectionTypes");
         if (connectionTypeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'connectionTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectionTypes'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, automationAccountName, connectionTypeName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String connectionTypeName = Utils.getValueFromIdByName(id, "connectionTypes");
+        String connectionTypeName = ResourceManagerUtils.getValueFromIdByName(id, "connectionTypes");
         if (connectionTypeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'connectionTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectionTypes'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, automationAccountName, connectionTypeName, context);
     }

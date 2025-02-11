@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationSettings model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Disabled\",\"timeInMinutes\":528280521,\"webhookUrl\":\"dxyt\",\"emailRecipient\":\"oyrxvwfudwpzntxh\",\"notificationLocale\":\"hl\"}")
-                .toObject(NotificationSettings.class);
+        NotificationSettings model = BinaryData.fromString(
+            "{\"status\":\"Disabled\",\"timeInMinutes\":528280521,\"webhookUrl\":\"dxyt\",\"emailRecipient\":\"oyrxvwfudwpzntxh\",\"notificationLocale\":\"hl\"}")
+            .toObject(NotificationSettings.class);
         Assertions.assertEquals(EnableStatus.DISABLED, model.status());
         Assertions.assertEquals(528280521, model.timeInMinutes());
         Assertions.assertEquals("dxyt", model.webhookUrl());
@@ -26,13 +24,11 @@ public final class NotificationSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationSettings model =
-            new NotificationSettings()
-                .withStatus(EnableStatus.DISABLED)
-                .withTimeInMinutes(528280521)
-                .withWebhookUrl("dxyt")
-                .withEmailRecipient("oyrxvwfudwpzntxh")
-                .withNotificationLocale("hl");
+        NotificationSettings model = new NotificationSettings().withStatus(EnableStatus.DISABLED)
+            .withTimeInMinutes(528280521)
+            .withWebhookUrl("dxyt")
+            .withEmailRecipient("oyrxvwfudwpzntxh")
+            .withNotificationLocale("hl");
         model = BinaryData.fromObject(model).toObject(NotificationSettings.class);
         Assertions.assertEquals(EnableStatus.DISABLED, model.status());
         Assertions.assertEquals(528280521, model.timeInMinutes());

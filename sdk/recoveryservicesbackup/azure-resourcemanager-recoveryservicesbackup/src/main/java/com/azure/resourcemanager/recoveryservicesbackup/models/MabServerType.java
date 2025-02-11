@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -102,7 +101,6 @@ public final class MabServerType extends ExpandableStringEnum<MabServerType> {
      * @param name a name to look for.
      * @return the corresponding MabServerType.
      */
-    @JsonCreator
     public static MabServerType fromString(String name) {
         return fromString(name, MabServerType.class);
     }

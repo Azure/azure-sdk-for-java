@@ -5,23 +5,57 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.OfficeDataConnectorDataTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Office data connector properties. */
+/**
+ * Office data connector properties.
+ */
 @Fluent
-public final class OfficeDataConnectorProperties extends DataConnectorTenantId {
+public final class OfficeDataConnectorProperties implements JsonSerializable<OfficeDataConnectorProperties> {
+    /*
+     * The tenant id to connect to, and get the data from.
+     */
+    private String tenantId;
+
     /*
      * The available data types for the connector.
      */
-    @JsonProperty(value = "dataTypes", required = true)
     private OfficeDataConnectorDataTypes dataTypes;
 
     /**
+     * Creates an instance of OfficeDataConnectorProperties class.
+     */
+    public OfficeDataConnectorProperties() {
+    }
+
+    /**
+     * Get the tenantId property: The tenant id to connect to, and get the data from.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: The tenant id to connect to, and get the data from.
+     * 
+     * @param tenantId the tenantId value to set.
+     * @return the OfficeDataConnectorProperties object itself.
+     */
+    public OfficeDataConnectorProperties withTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
      * Get the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @return the dataTypes value.
      */
     public OfficeDataConnectorDataTypes dataTypes() {
@@ -30,7 +64,7 @@ public final class OfficeDataConnectorProperties extends DataConnectorTenantId {
 
     /**
      * Set the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the OfficeDataConnectorProperties object itself.
      */
@@ -39,30 +73,54 @@ public final class OfficeDataConnectorProperties extends DataConnectorTenantId {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public OfficeDataConnectorProperties withTenantId(String tenantId) {
-        super.withTenantId(tenantId);
-        return this;
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
-        if (dataTypes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataTypes in model OfficeDataConnectorProperties"));
-        } else {
+        if (dataTypes() != null) {
             dataTypes().validate();
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(OfficeDataConnectorProperties.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeJsonField("dataTypes", this.dataTypes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OfficeDataConnectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OfficeDataConnectorProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OfficeDataConnectorProperties.
+     */
+    public static OfficeDataConnectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OfficeDataConnectorProperties deserializedOfficeDataConnectorProperties
+                = new OfficeDataConnectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedOfficeDataConnectorProperties.tenantId = reader.getString();
+                } else if ("dataTypes".equals(fieldName)) {
+                    deserializedOfficeDataConnectorProperties.dataTypes = OfficeDataConnectorDataTypes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOfficeDataConnectorProperties;
+        });
+    }
 }

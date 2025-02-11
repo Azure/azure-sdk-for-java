@@ -18,7 +18,9 @@ import java.util.Arrays;
  */
 public final class SupportTicketsNoSubscriptionCreateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateBillingSupportTicket.json
+     * x-ms-original-file:
+     * specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateBillingSupportTicket.
+     * json
      */
     /**
      * Sample code: Create a ticket for Billing related issues.
@@ -48,7 +50,9 @@ public final class SupportTicketsNoSubscriptionCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateSubMgmtSupportTicket.json
+     * x-ms-original-file:
+     * specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateSubMgmtSupportTicket.
+     * json
      */
     /**
      * Sample code: Create a ticket for Subscription Management related issues.
@@ -79,7 +83,9 @@ public final class SupportTicketsNoSubscriptionCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateTechnicalSupportTicket.json
+     * x-ms-original-file:
+     * specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateTechnicalSupportTicket.
+     * json
      */
     /**
      * Sample code: Create a ticket for Technical issue related to a specific resource.

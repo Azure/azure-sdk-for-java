@@ -5,67 +5,57 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * A task which is run when a compute node joins a pool in the Azure Batch service, or when the compute node is
- * rebooted or reimaged.
+ * A task which is run when a compute node joins a pool in the Azure Batch service, or when the compute node is rebooted
+ * or reimaged.
  * 
  * In some cases the start task may be re-run even though the node was not rebooted. Due to this, start tasks should be
- * idempotent and exit gracefully if the setup they're performing has already been done. Special care should be taken
- * to avoid start tasks which create breakaway process or install/launch services from the start task working
- * directory, as this will block Batch from being able to re-run the start task.
+ * idempotent and exit gracefully if the setup they're performing has already been done. Special care should be taken to
+ * avoid start tasks which create breakaway process or install/launch services from the start task working directory, as
+ * this will block Batch from being able to re-run the start task.
  */
 @Fluent
-public final class StartTask {
+public final class StartTask implements JsonSerializable<StartTask> {
     /*
-     * The command line of the start task.
-     * 
      * The command line does not run under a shell, and therefore cannot take advantage of shell features such as
      * environment variable expansion. If you want to take advantage of such features, you should invoke the shell in
-     * the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. Required
-     * if any other properties of the startTask are specified.
+     * the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. Required if
+     * any other properties of the startTask are specified.
      */
-    @JsonProperty(value = "commandLine")
     private String commandLine;
 
     /*
      * A list of files that the Batch service will download to the compute node before running the command line.
      */
-    @JsonProperty(value = "resourceFiles")
     private List<ResourceFile> resourceFiles;
 
     /*
      * A list of environment variable settings for the start task.
      */
-    @JsonProperty(value = "environmentSettings")
     private List<EnvironmentSetting> environmentSettings;
 
     /*
-     * The definition of the user identity under which the task is run.
-     * 
      * If omitted, the task runs as a non-administrative user unique to the task.
      */
-    @JsonProperty(value = "userIdentity")
     private UserIdentity userIdentity;
 
     /*
-     * The maximum number of times the task may be retried.
-     * 
      * The Batch service retries a task if its exit code is nonzero. Note that this value specifically controls the
-     * number of retries. The Batch service will try the task once, and may then retry up to this limit. For example,
-     * if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the
-     * maximum retry count is 0, the Batch service does not retry the task. If the maximum retry count is -1, the Batch
-     * service retries the task without limit. Default is 0
+     * number of retries. The Batch service will try the task once, and may then retry up to this limit. For example, if
+     * the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum
+     * retry count is 0, the Batch service does not retry the task. If the maximum retry count is -1, the Batch service
+     * retries the task without limit. Default is 0
      */
-    @JsonProperty(value = "maxTaskRetryCount")
     private Integer maxTaskRetryCount;
 
     /*
-     * Whether the Batch service should wait for the start task to complete successfully (that is, to exit with exit
-     * code 0) before scheduling any tasks on the compute node.
-     * 
      * If true and the start task fails on a compute node, the Batch service retries the start task up to its maximum
      * retry count (maxTaskRetryCount). If the task has still not completed successfully after all retries, then the
      * Batch service marks the compute node unusable, and will not schedule tasks to it. This condition can be detected
@@ -74,17 +64,13 @@ public final class StartTask {
      * running; and even if the start task fails, new tasks will continue to be scheduled on the node. The default is
      * true.
      */
-    @JsonProperty(value = "waitForSuccess")
     private Boolean waitForSuccess;
 
     /*
-     * The container settings for a task.
-     * 
      * When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch
      * directories on the node) are mapped into the container, all task environment variables are mapped into the
      * container, and the task command line is executed in the container.
      */
-    @JsonProperty(value = "containerSettings")
     private TaskContainerSettings containerSettings;
 
     /**
@@ -94,12 +80,10 @@ public final class StartTask {
     }
 
     /**
-     * Get the commandLine property: The command line of the start task.
-     * 
-     * The command line does not run under a shell, and therefore cannot take advantage of shell features such as
-     * environment variable expansion. If you want to take advantage of such features, you should invoke the shell in
-     * the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. Required
-     * if any other properties of the startTask are specified.
+     * Get the commandLine property: The command line does not run under a shell, and therefore cannot take advantage of
+     * shell features such as environment variable expansion. If you want to take advantage of such features, you should
+     * invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand"
+     * in Linux. Required if any other properties of the startTask are specified.
      * 
      * @return the commandLine value.
      */
@@ -108,12 +92,10 @@ public final class StartTask {
     }
 
     /**
-     * Set the commandLine property: The command line of the start task.
-     * 
-     * The command line does not run under a shell, and therefore cannot take advantage of shell features such as
-     * environment variable expansion. If you want to take advantage of such features, you should invoke the shell in
-     * the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. Required
-     * if any other properties of the startTask are specified.
+     * Set the commandLine property: The command line does not run under a shell, and therefore cannot take advantage of
+     * shell features such as environment variable expansion. If you want to take advantage of such features, you should
+     * invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand"
+     * in Linux. Required if any other properties of the startTask are specified.
      * 
      * @param commandLine the commandLine value to set.
      * @return the StartTask object itself.
@@ -166,9 +148,7 @@ public final class StartTask {
     }
 
     /**
-     * Get the userIdentity property: The definition of the user identity under which the task is run.
-     * 
-     * If omitted, the task runs as a non-administrative user unique to the task.
+     * Get the userIdentity property: If omitted, the task runs as a non-administrative user unique to the task.
      * 
      * @return the userIdentity value.
      */
@@ -177,9 +157,7 @@ public final class StartTask {
     }
 
     /**
-     * Set the userIdentity property: The definition of the user identity under which the task is run.
-     * 
-     * If omitted, the task runs as a non-administrative user unique to the task.
+     * Set the userIdentity property: If omitted, the task runs as a non-administrative user unique to the task.
      * 
      * @param userIdentity the userIdentity value to set.
      * @return the StartTask object itself.
@@ -190,13 +168,11 @@ public final class StartTask {
     }
 
     /**
-     * Get the maxTaskRetryCount property: The maximum number of times the task may be retried.
-     * 
-     * The Batch service retries a task if its exit code is nonzero. Note that this value specifically controls the
-     * number of retries. The Batch service will try the task once, and may then retry up to this limit. For example,
-     * if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the
-     * maximum retry count is 0, the Batch service does not retry the task. If the maximum retry count is -1, the Batch
-     * service retries the task without limit. Default is 0.
+     * Get the maxTaskRetryCount property: The Batch service retries a task if its exit code is nonzero. Note that this
+     * value specifically controls the number of retries. The Batch service will try the task once, and may then retry
+     * up to this limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial
+     * try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the task. If the maximum
+     * retry count is -1, the Batch service retries the task without limit. Default is 0.
      * 
      * @return the maxTaskRetryCount value.
      */
@@ -205,13 +181,11 @@ public final class StartTask {
     }
 
     /**
-     * Set the maxTaskRetryCount property: The maximum number of times the task may be retried.
-     * 
-     * The Batch service retries a task if its exit code is nonzero. Note that this value specifically controls the
-     * number of retries. The Batch service will try the task once, and may then retry up to this limit. For example,
-     * if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the
-     * maximum retry count is 0, the Batch service does not retry the task. If the maximum retry count is -1, the Batch
-     * service retries the task without limit. Default is 0.
+     * Set the maxTaskRetryCount property: The Batch service retries a task if its exit code is nonzero. Note that this
+     * value specifically controls the number of retries. The Batch service will try the task once, and may then retry
+     * up to this limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial
+     * try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the task. If the maximum
+     * retry count is -1, the Batch service retries the task without limit. Default is 0.
      * 
      * @param maxTaskRetryCount the maxTaskRetryCount value to set.
      * @return the StartTask object itself.
@@ -222,16 +196,13 @@ public final class StartTask {
     }
 
     /**
-     * Get the waitForSuccess property: Whether the Batch service should wait for the start task to complete
-     * successfully (that is, to exit with exit code 0) before scheduling any tasks on the compute node.
-     * 
-     * If true and the start task fails on a compute node, the Batch service retries the start task up to its maximum
-     * retry count (maxTaskRetryCount). If the task has still not completed successfully after all retries, then the
-     * Batch service marks the compute node unusable, and will not schedule tasks to it. This condition can be detected
-     * via the node state and scheduling error detail. If false, the Batch service will not wait for the start task to
-     * complete. In this case, other tasks can start executing on the compute node while the start task is still
-     * running; and even if the start task fails, new tasks will continue to be scheduled on the node. The default is
-     * true.
+     * Get the waitForSuccess property: If true and the start task fails on a compute node, the Batch service retries
+     * the start task up to its maximum retry count (maxTaskRetryCount). If the task has still not completed
+     * successfully after all retries, then the Batch service marks the compute node unusable, and will not schedule
+     * tasks to it. This condition can be detected via the node state and scheduling error detail. If false, the Batch
+     * service will not wait for the start task to complete. In this case, other tasks can start executing on the
+     * compute node while the start task is still running; and even if the start task fails, new tasks will continue to
+     * be scheduled on the node. The default is true.
      * 
      * @return the waitForSuccess value.
      */
@@ -240,16 +211,13 @@ public final class StartTask {
     }
 
     /**
-     * Set the waitForSuccess property: Whether the Batch service should wait for the start task to complete
-     * successfully (that is, to exit with exit code 0) before scheduling any tasks on the compute node.
-     * 
-     * If true and the start task fails on a compute node, the Batch service retries the start task up to its maximum
-     * retry count (maxTaskRetryCount). If the task has still not completed successfully after all retries, then the
-     * Batch service marks the compute node unusable, and will not schedule tasks to it. This condition can be detected
-     * via the node state and scheduling error detail. If false, the Batch service will not wait for the start task to
-     * complete. In this case, other tasks can start executing on the compute node while the start task is still
-     * running; and even if the start task fails, new tasks will continue to be scheduled on the node. The default is
-     * true.
+     * Set the waitForSuccess property: If true and the start task fails on a compute node, the Batch service retries
+     * the start task up to its maximum retry count (maxTaskRetryCount). If the task has still not completed
+     * successfully after all retries, then the Batch service marks the compute node unusable, and will not schedule
+     * tasks to it. This condition can be detected via the node state and scheduling error detail. If false, the Batch
+     * service will not wait for the start task to complete. In this case, other tasks can start executing on the
+     * compute node while the start task is still running; and even if the start task fails, new tasks will continue to
+     * be scheduled on the node. The default is true.
      * 
      * @param waitForSuccess the waitForSuccess value to set.
      * @return the StartTask object itself.
@@ -260,11 +228,9 @@ public final class StartTask {
     }
 
     /**
-     * Get the containerSettings property: The container settings for a task.
-     * 
-     * When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch
-     * directories on the node) are mapped into the container, all task environment variables are mapped into the
-     * container, and the task command line is executed in the container.
+     * Get the containerSettings property: When this is specified, all directories recursively below the
+     * AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task
+     * environment variables are mapped into the container, and the task command line is executed in the container.
      * 
      * @return the containerSettings value.
      */
@@ -273,11 +239,9 @@ public final class StartTask {
     }
 
     /**
-     * Set the containerSettings property: The container settings for a task.
-     * 
-     * When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch
-     * directories on the node) are mapped into the container, all task environment variables are mapped into the
-     * container, and the task command line is executed in the container.
+     * Set the containerSettings property: When this is specified, all directories recursively below the
+     * AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task
+     * environment variables are mapped into the container, and the task command line is executed in the container.
      * 
      * @param containerSettings the containerSettings value to set.
      * @return the StartTask object itself.
@@ -305,5 +269,63 @@ public final class StartTask {
         if (containerSettings() != null) {
             containerSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commandLine", this.commandLine);
+        jsonWriter.writeArrayField("resourceFiles", this.resourceFiles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("environmentSettings", this.environmentSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("userIdentity", this.userIdentity);
+        jsonWriter.writeNumberField("maxTaskRetryCount", this.maxTaskRetryCount);
+        jsonWriter.writeBooleanField("waitForSuccess", this.waitForSuccess);
+        jsonWriter.writeJsonField("containerSettings", this.containerSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StartTask from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StartTask if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the StartTask.
+     */
+    public static StartTask fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StartTask deserializedStartTask = new StartTask();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commandLine".equals(fieldName)) {
+                    deserializedStartTask.commandLine = reader.getString();
+                } else if ("resourceFiles".equals(fieldName)) {
+                    List<ResourceFile> resourceFiles = reader.readArray(reader1 -> ResourceFile.fromJson(reader1));
+                    deserializedStartTask.resourceFiles = resourceFiles;
+                } else if ("environmentSettings".equals(fieldName)) {
+                    List<EnvironmentSetting> environmentSettings
+                        = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
+                    deserializedStartTask.environmentSettings = environmentSettings;
+                } else if ("userIdentity".equals(fieldName)) {
+                    deserializedStartTask.userIdentity = UserIdentity.fromJson(reader);
+                } else if ("maxTaskRetryCount".equals(fieldName)) {
+                    deserializedStartTask.maxTaskRetryCount = reader.getNullable(JsonReader::getInt);
+                } else if ("waitForSuccess".equals(fieldName)) {
+                    deserializedStartTask.waitForSuccess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("containerSettings".equals(fieldName)) {
+                    deserializedStartTask.containerSettings = TaskContainerSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStartTask;
+        });
     }
 }

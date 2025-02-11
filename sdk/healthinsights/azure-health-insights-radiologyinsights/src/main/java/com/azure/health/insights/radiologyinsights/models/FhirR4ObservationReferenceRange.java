@@ -5,7 +5,11 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,48 +17,42 @@ import java.util.List;
  * Based on [FHIR Observation.referenceRange](https://www.hl7.org/fhir/R4/observation.html).
  */
 @Immutable
-public final class FhirR4ObservationReferenceRange {
+public final class FhirR4ObservationReferenceRange implements JsonSerializable<FhirR4ObservationReferenceRange> {
 
     /*
      * Low Range, if relevant
      */
     @Generated
-    @JsonProperty(value = "low")
     private FhirR4Quantity low;
 
     /*
      * High Range, if relevant
      */
     @Generated
-    @JsonProperty(value = "high")
     private FhirR4Quantity high;
 
     /*
      * Reference range qualifier
      */
     @Generated
-    @JsonProperty(value = "type")
     private FhirR4CodeableConcept type;
 
     /*
      * Reference range population
      */
     @Generated
-    @JsonProperty(value = "appliesTo")
     private List<FhirR4CodeableConcept> appliesTo;
 
     /*
      * Applicable age range, if relevant
      */
     @Generated
-    @JsonProperty(value = "age")
     private FhirR4Range age;
 
     /*
      * Text based reference range in an observation
      */
     @Generated
-    @JsonProperty(value = "text")
     private String text;
 
     /**
@@ -122,5 +120,59 @@ public final class FhirR4ObservationReferenceRange {
     @Generated
     public String getText() {
         return this.text;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("low", this.low);
+        jsonWriter.writeJsonField("high", this.high);
+        jsonWriter.writeJsonField("type", this.type);
+        jsonWriter.writeArrayField("appliesTo", this.appliesTo, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("age", this.age);
+        jsonWriter.writeStringField("text", this.text);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4ObservationReferenceRange from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4ObservationReferenceRange if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FhirR4ObservationReferenceRange.
+     */
+    @Generated
+    public static FhirR4ObservationReferenceRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirR4ObservationReferenceRange deserializedFhirR4ObservationReferenceRange
+                = new FhirR4ObservationReferenceRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("low".equals(fieldName)) {
+                    deserializedFhirR4ObservationReferenceRange.low = FhirR4Quantity.fromJson(reader);
+                } else if ("high".equals(fieldName)) {
+                    deserializedFhirR4ObservationReferenceRange.high = FhirR4Quantity.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedFhirR4ObservationReferenceRange.type = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("appliesTo".equals(fieldName)) {
+                    List<FhirR4CodeableConcept> appliesTo
+                        = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                    deserializedFhirR4ObservationReferenceRange.appliesTo = appliesTo;
+                } else if ("age".equals(fieldName)) {
+                    deserializedFhirR4ObservationReferenceRange.age = FhirR4Range.fromJson(reader);
+                } else if ("text".equals(fieldName)) {
+                    deserializedFhirR4ObservationReferenceRange.text = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedFhirR4ObservationReferenceRange;
+        });
     }
 }

@@ -15,7 +15,8 @@ import java.util.Map;
 /** The properties of a recommendation action. */
 @Fluent
 public final class RecommendationActionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationActionProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RecommendationActionProperties.class);
 
     /*
      * Advisor name.

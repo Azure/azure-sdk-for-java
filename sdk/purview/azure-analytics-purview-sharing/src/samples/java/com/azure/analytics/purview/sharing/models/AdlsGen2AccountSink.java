@@ -5,42 +5,26 @@
 package com.azure.analytics.purview.sharing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * AdlsGen2 Sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "storeKind")
-@JsonTypeName("AdlsGen2Account")
-@JsonFlatten
 @Fluent
-public class AdlsGen2AccountSink extends Sink {
+public final class AdlsGen2AccountSink extends Sink {
     /*
-     * Adls Gen 2 Container Name
+     * The types of asset.
      */
-    @JsonProperty(value = "properties.containerName", required = true)
-    private String containerName;
+    private StoreKind storeKind = StoreKind.ADLS_GEN2STORAGE_ACCOUNT_STORE_KIND;
 
     /*
-     * Adls Gen 2 Folder
+     * Properties for AdlsGen2 storage account
      */
-    @JsonProperty(value = "properties.folder", required = true)
-    private String folder;
-
-    /*
-     * Adls Gen 2 Location
-     */
-    @JsonProperty(value = "properties.location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
-
-    /*
-     * Adls Gen 2 Mount Path
-     */
-    @JsonProperty(value = "properties.mountPath")
-    private String mountPath;
+    private AdlsGen2AccountSinkProperties properties;
 
     /**
      * Creates an instance of AdlsGen2AccountSink class.
@@ -49,71 +33,32 @@ public class AdlsGen2AccountSink extends Sink {
     }
 
     /**
-     * Get the containerName property: Adls Gen 2 Container Name.
-     * 
-     * @return the containerName value.
+     * Get the storeKind property: The types of asset.
+     *
+     * @return the storeKind value.
      */
-    public String getContainerName() {
-        return this.containerName;
+    @Override
+    public StoreKind getStoreKind() {
+        return this.storeKind;
     }
 
     /**
-     * Set the containerName property: Adls Gen 2 Container Name.
-     * 
-     * @param containerName the containerName value to set.
+     * Get the properties property: Properties for AdlsGen2 storage account.
+     *
+     * @return the properties value.
+     */
+    public AdlsGen2AccountSinkProperties getProperties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties for AdlsGen2 storage account.
+     *
+     * @param properties the properties value to set.
      * @return the AdlsGen2AccountSink object itself.
      */
-    public AdlsGen2AccountSink setContainerName(String containerName) {
-        this.containerName = containerName;
-        return this;
-    }
-
-    /**
-     * Get the folder property: Adls Gen 2 Folder.
-     * 
-     * @return the folder value.
-     */
-    public String getFolder() {
-        return this.folder;
-    }
-
-    /**
-     * Set the folder property: Adls Gen 2 Folder.
-     * 
-     * @param folder the folder value to set.
-     * @return the AdlsGen2AccountSink object itself.
-     */
-    public AdlsGen2AccountSink setFolder(String folder) {
-        this.folder = folder;
-        return this;
-    }
-
-    /**
-     * Get the location property: Adls Gen 2 Location.
-     * 
-     * @return the location value.
-     */
-    public String getLocation() {
-        return this.location;
-    }
-
-    /**
-     * Get the mountPath property: Adls Gen 2 Mount Path.
-     * 
-     * @return the mountPath value.
-     */
-    public String getMountPath() {
-        return this.mountPath;
-    }
-
-    /**
-     * Set the mountPath property: Adls Gen 2 Mount Path.
-     * 
-     * @param mountPath the mountPath value to set.
-     * @return the AdlsGen2AccountSink object itself.
-     */
-    public AdlsGen2AccountSink setMountPath(String mountPath) {
-        this.mountPath = mountPath;
+    public AdlsGen2AccountSink setProperties(AdlsGen2AccountSinkProperties properties) {
+        this.properties = properties;
         return this;
     }
 
@@ -124,5 +69,48 @@ public class AdlsGen2AccountSink extends Sink {
     public AdlsGen2AccountSink setStoreReference(StoreReference storeReference) {
         super.setStoreReference(storeReference);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storeReference", getStoreReference());
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("storeKind", this.storeKind == null ? null : this.storeKind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdlsGen2AccountSink from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdlsGen2AccountSink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdlsGen2AccountSink.
+     */
+    public static AdlsGen2AccountSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdlsGen2AccountSink deserializedAdlsGen2AccountSink = new AdlsGen2AccountSink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storeReference".equals(fieldName)) {
+                    deserializedAdlsGen2AccountSink.setStoreReference(StoreReference.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAdlsGen2AccountSink.properties = AdlsGen2AccountSinkProperties.fromJson(reader);
+                } else if ("storeKind".equals(fieldName)) {
+                    deserializedAdlsGen2AccountSink.storeKind = StoreKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdlsGen2AccountSink;
+        });
     }
 }

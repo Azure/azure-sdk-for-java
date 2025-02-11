@@ -5,81 +5,79 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the properties of a Datastore. */
+/**
+ * Describes the properties of a Datastore.
+ */
 @Fluent
-public final class DatastoreProperties {
+public final class DatastoreProperties implements JsonSerializable<DatastoreProperties> {
     /*
      * Gets or sets a unique identifier for this resource.
      */
-    @JsonProperty(value = "uuid", access = JsonProperty.Access.WRITE_ONLY)
     private String uuid;
 
     /*
      * Gets or sets the ARM Id of the vCenter resource in which this datastore resides.
      */
-    @JsonProperty(value = "vCenterId")
     private String vCenterId;
 
     /*
      * Gets or sets the vCenter MoRef (Managed Object Reference) ID for the datastore.
      */
-    @JsonProperty(value = "moRefId")
     private String moRefId;
 
     /*
      * Gets or sets the inventory Item ID for the datastore.
      */
-    @JsonProperty(value = "inventoryItemId")
     private String inventoryItemId;
 
     /*
      * Gets or sets the vCenter Managed Object name for the datastore.
      */
-    @JsonProperty(value = "moName", access = JsonProperty.Access.WRITE_ONLY)
     private String moName;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceStatus> statuses;
 
     /*
      * Gets the name of the corresponding resource in Kubernetes.
      */
-    @JsonProperty(value = "customResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String customResourceName;
 
     /*
      * Gets or sets Maximum capacity of this datastore in GBs.
      */
-    @JsonProperty(value = "capacityGB", access = JsonProperty.Access.WRITE_ONLY)
     private Long capacityGB;
 
     /*
      * Gets or sets Available space of this datastore in GBs.
      */
-    @JsonProperty(value = "freeSpaceGB", access = JsonProperty.Access.WRITE_ONLY)
     private Long freeSpaceGB;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of DatastoreProperties class. */
+    /**
+     * Creates an instance of DatastoreProperties class.
+     */
     public DatastoreProperties() {
     }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
-     *
+     * 
      * @return the uuid value.
      */
     public String uuid() {
@@ -88,7 +86,7 @@ public final class DatastoreProperties {
 
     /**
      * Get the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this datastore resides.
-     *
+     * 
      * @return the vCenterId value.
      */
     public String vCenterId() {
@@ -97,7 +95,7 @@ public final class DatastoreProperties {
 
     /**
      * Set the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this datastore resides.
-     *
+     * 
      * @param vCenterId the vCenterId value to set.
      * @return the DatastoreProperties object itself.
      */
@@ -108,7 +106,7 @@ public final class DatastoreProperties {
 
     /**
      * Get the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the datastore.
-     *
+     * 
      * @return the moRefId value.
      */
     public String moRefId() {
@@ -117,7 +115,7 @@ public final class DatastoreProperties {
 
     /**
      * Set the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the datastore.
-     *
+     * 
      * @param moRefId the moRefId value to set.
      * @return the DatastoreProperties object itself.
      */
@@ -128,7 +126,7 @@ public final class DatastoreProperties {
 
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the datastore.
-     *
+     * 
      * @return the inventoryItemId value.
      */
     public String inventoryItemId() {
@@ -137,7 +135,7 @@ public final class DatastoreProperties {
 
     /**
      * Set the inventoryItemId property: Gets or sets the inventory Item ID for the datastore.
-     *
+     * 
      * @param inventoryItemId the inventoryItemId value to set.
      * @return the DatastoreProperties object itself.
      */
@@ -148,7 +146,7 @@ public final class DatastoreProperties {
 
     /**
      * Get the moName property: Gets or sets the vCenter Managed Object name for the datastore.
-     *
+     * 
      * @return the moName value.
      */
     public String moName() {
@@ -157,7 +155,7 @@ public final class DatastoreProperties {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceStatus> statuses() {
@@ -166,7 +164,7 @@ public final class DatastoreProperties {
 
     /**
      * Get the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
-     *
+     * 
      * @return the customResourceName value.
      */
     public String customResourceName() {
@@ -175,7 +173,7 @@ public final class DatastoreProperties {
 
     /**
      * Get the capacityGB property: Gets or sets Maximum capacity of this datastore in GBs.
-     *
+     * 
      * @return the capacityGB value.
      */
     public Long capacityGB() {
@@ -184,7 +182,7 @@ public final class DatastoreProperties {
 
     /**
      * Get the freeSpaceGB property: Gets or sets Available space of this datastore in GBs.
-     *
+     * 
      * @return the freeSpaceGB value.
      */
     public Long freeSpaceGB() {
@@ -193,7 +191,7 @@ public final class DatastoreProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -202,12 +200,70 @@ public final class DatastoreProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vCenterId", this.vCenterId);
+        jsonWriter.writeStringField("moRefId", this.moRefId);
+        jsonWriter.writeStringField("inventoryItemId", this.inventoryItemId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatastoreProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatastoreProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatastoreProperties.
+     */
+    public static DatastoreProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatastoreProperties deserializedDatastoreProperties = new DatastoreProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uuid".equals(fieldName)) {
+                    deserializedDatastoreProperties.uuid = reader.getString();
+                } else if ("vCenterId".equals(fieldName)) {
+                    deserializedDatastoreProperties.vCenterId = reader.getString();
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedDatastoreProperties.moRefId = reader.getString();
+                } else if ("inventoryItemId".equals(fieldName)) {
+                    deserializedDatastoreProperties.inventoryItemId = reader.getString();
+                } else if ("moName".equals(fieldName)) {
+                    deserializedDatastoreProperties.moName = reader.getString();
+                } else if ("statuses".equals(fieldName)) {
+                    List<ResourceStatus> statuses = reader.readArray(reader1 -> ResourceStatus.fromJson(reader1));
+                    deserializedDatastoreProperties.statuses = statuses;
+                } else if ("customResourceName".equals(fieldName)) {
+                    deserializedDatastoreProperties.customResourceName = reader.getString();
+                } else if ("capacityGB".equals(fieldName)) {
+                    deserializedDatastoreProperties.capacityGB = reader.getNullable(JsonReader::getLong);
+                } else if ("freeSpaceGB".equals(fieldName)) {
+                    deserializedDatastoreProperties.freeSpaceGB = reader.getNullable(JsonReader::getLong);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDatastoreProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatastoreProperties;
+        });
     }
 }

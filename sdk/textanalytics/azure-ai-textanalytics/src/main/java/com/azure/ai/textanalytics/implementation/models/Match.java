@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class Match implements JsonSerializable<Match> {
     /*
-     * If a well known item is recognized, a decimal number denoting the confidence level between 0 and 1 will be returned.
+     * If a well known item is recognized, a decimal number denoting the confidence level between 0 and 1 will be
+     * returned.
      */
     private double confidenceScore;
 

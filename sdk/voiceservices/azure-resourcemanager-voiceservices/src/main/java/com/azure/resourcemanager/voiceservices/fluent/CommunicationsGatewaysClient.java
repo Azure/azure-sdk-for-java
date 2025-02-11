@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.voiceservices.fluent.models.CommunicationsGatewayInner;
 import com.azure.resourcemanager.voiceservices.models.CommunicationsGatewayUpdate;
 
-/** An instance of this class provides access to all the operations defined in CommunicationsGatewaysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CommunicationsGatewaysClient.
+ */
 public interface CommunicationsGatewaysClient {
     /**
      * List CommunicationsGateway resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface CommunicationsGatewaysClient {
 
     /**
      * List CommunicationsGateway resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface CommunicationsGatewaysClient {
 
     /**
      * List CommunicationsGateway resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,7 +54,7 @@ public interface CommunicationsGatewaysClient {
 
     /**
      * List CommunicationsGateway resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +67,7 @@ public interface CommunicationsGatewaysClient {
 
     /**
      * Get a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -75,12 +77,12 @@ public interface CommunicationsGatewaysClient {
      * @return a CommunicationsGateway along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CommunicationsGatewayInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String communicationsGatewayName, Context context);
+    Response<CommunicationsGatewayInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String communicationsGatewayName, Context context);
 
     /**
      * Get a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,7 +95,7 @@ public interface CommunicationsGatewaysClient {
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -108,7 +110,7 @@ public interface CommunicationsGatewaysClient {
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -120,14 +122,12 @@ public interface CommunicationsGatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommunicationsGatewayInner>, CommunicationsGatewayInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        CommunicationsGatewayInner resource,
+        String resourceGroupName, String communicationsGatewayName, CommunicationsGatewayInner resource,
         Context context);
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -137,12 +137,12 @@ public interface CommunicationsGatewaysClient {
      * @return a CommunicationsGateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationsGatewayInner createOrUpdate(
-        String resourceGroupName, String communicationsGatewayName, CommunicationsGatewayInner resource);
+    CommunicationsGatewayInner createOrUpdate(String resourceGroupName, String communicationsGatewayName,
+        CommunicationsGatewayInner resource);
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -153,15 +153,12 @@ public interface CommunicationsGatewaysClient {
      * @return a CommunicationsGateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationsGatewayInner createOrUpdate(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        CommunicationsGatewayInner resource,
-        Context context);
+    CommunicationsGatewayInner createOrUpdate(String resourceGroupName, String communicationsGatewayName,
+        CommunicationsGatewayInner resource, Context context);
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +171,7 @@ public interface CommunicationsGatewaysClient {
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -184,12 +181,12 @@ public interface CommunicationsGatewaysClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String communicationsGatewayName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationsGatewayName,
+        Context context);
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,7 +198,7 @@ public interface CommunicationsGatewaysClient {
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -214,7 +211,7 @@ public interface CommunicationsGatewaysClient {
 
     /**
      * Update a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param properties The resource properties to be updated.
@@ -225,15 +222,12 @@ public interface CommunicationsGatewaysClient {
      * @return a CommunicationsGateway resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CommunicationsGatewayInner> updateWithResponse(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        CommunicationsGatewayUpdate properties,
-        Context context);
+    Response<CommunicationsGatewayInner> updateWithResponse(String resourceGroupName, String communicationsGatewayName,
+        CommunicationsGatewayUpdate properties, Context context);
 
     /**
      * Update a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param properties The resource properties to be updated.
@@ -243,6 +237,6 @@ public interface CommunicationsGatewaysClient {
      * @return a CommunicationsGateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationsGatewayInner update(
-        String resourceGroupName, String communicationsGatewayName, CommunicationsGatewayUpdate properties);
+    CommunicationsGatewayInner update(String resourceGroupName, String communicationsGatewayName,
+        CommunicationsGatewayUpdate properties);
 }

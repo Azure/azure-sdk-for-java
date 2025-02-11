@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
@@ -59,6 +60,13 @@ public final class CreateGroupCallOptions {
      * Custom Context
      */
     private final CustomCallingContext customContext;
+
+    /**
+     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
+     * Required for creating call with Teams resource account ID.
+     * This is per-operation setting and does not change the client's default source.
+     */
+    private MicrosoftTeamsAppIdentifier teamsAppSource;
 
     /**
      * Constructor
@@ -131,10 +139,10 @@ public final class CreateGroupCallOptions {
     /**
      * Set the media streaming configuration.
      *
-     * @param mediaStreamingOptions The media streaming configuration.
+     * @param mediaStreamingOptions The media streaming options.
      * @return the CreateGroupCallOptions object itself.
      */
-    public CreateGroupCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+    public CreateGroupCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
@@ -142,10 +150,10 @@ public final class CreateGroupCallOptions {
     /**
      * Set the transcription configuration.
      *
-     * @param transcriptionOptions The transcription configuration.
+     * @param transcriptionOptions The transcription options.
      * @return the CreateGroupCallOptions object itself.
      */
-    public CreateGroupCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+    public CreateGroupCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
         this.transcriptionOptions = transcriptionOptions;
         return this;
     }
@@ -191,20 +199,20 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Get the Media Streaming configuration.
+     * Get the Media Streaming Options.
      *
-     * @return the mediaStreamingConfiguration.
+     * @return the mediaStreamingOptions.
      */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
+    public MediaStreamingOptions getMediaStreamingOptions() {
         return mediaStreamingOptions;
     }
 
     /**
-     * Get the Transcription configuration.
+     * Get the Transcription Options.
      *
-     * @return the transcriptionConfiguration.
+     * @return the transcriptionOptions.
      */
-    public TranscriptionOptions getTranscriptionConfiguration() {
+    public TranscriptionOptions getTranscriptionOptions() {
         return transcriptionOptions;
     }
 
@@ -214,5 +222,27 @@ public final class CreateGroupCallOptions {
      */
     public CustomCallingContext getCustomContext() {
         return customContext;
+    }
+
+    /**
+     * Get the TeamsAppSource property: it overrides default client source by a MicrosoftTeamsAppIdentifier type source.
+     *
+     * @return the teamsAppSource.
+     */
+    public MicrosoftTeamsAppIdentifier getTeamsAppSource() {
+        return teamsAppSource;
+    }
+
+    /**
+     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
+     * Required for creating call with Teams resource account ID.
+     * This is per-operation setting and does not change the client's default source.
+     *
+     * @param teamsAppSource The MicrosoftTeamsAppIdentifier type source for overriding default client source.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateGroupCallOptions setTeamsAppSource(MicrosoftTeamsAppIdentifier teamsAppSource) {
+        this.teamsAppSource = teamsAppSource;
+        return this;
     }
 }

@@ -20,7 +20,7 @@ public final class ConfigurationsListByServerSamples {
      */
     public static void listConfigurationsOfTheServerThatInTheCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.configurations().listByServer("TestResourceGroup", "testcluster", "testserver",
-            com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .listByServer("TestResourceGroup", "testcluster", "testserver", com.azure.core.util.Context.NONE);
     }
 }

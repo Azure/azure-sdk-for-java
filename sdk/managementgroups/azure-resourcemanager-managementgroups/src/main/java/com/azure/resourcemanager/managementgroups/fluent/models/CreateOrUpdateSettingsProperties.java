@@ -5,28 +5,34 @@
 package com.azure.resourcemanager.managementgroups.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the request to create or update Management Group settings. */
+/**
+ * The properties of the request to create or update Management Group settings.
+ */
 @Fluent
-public final class CreateOrUpdateSettingsProperties {
+public final class CreateOrUpdateSettingsProperties implements JsonSerializable<CreateOrUpdateSettingsProperties> {
     /*
      * Indicates whether RBAC access is required upon group creation under the root Management Group. If set to true,
      * user will require Microsoft.Management/managementGroups/write action on the root Management Group scope in order
      * to create new Groups directly under the root. This will prevent new users from creating new Management Groups,
      * unless they are given access.
      */
-    @JsonProperty(value = "requireAuthorizationForGroupCreation")
     private Boolean requireAuthorizationForGroupCreation;
 
     /*
      * Settings that sets the default Management Group under which new subscriptions get added in this tenant. For
      * example, /providers/Microsoft.Management/managementGroups/defaultGroup
      */
-    @JsonProperty(value = "defaultManagementGroup")
     private String defaultManagementGroup;
 
-    /** Creates an instance of CreateOrUpdateSettingsProperties class. */
+    /**
+     * Creates an instance of CreateOrUpdateSettingsProperties class.
+     */
     public CreateOrUpdateSettingsProperties() {
     }
 
@@ -36,7 +42,7 @@ public final class CreateOrUpdateSettingsProperties {
      * Microsoft.Management/managementGroups/write action on the root Management Group scope in order to create new
      * Groups directly under the root. This will prevent new users from creating new Management Groups, unless they are
      * given access.
-     *
+     * 
      * @return the requireAuthorizationForGroupCreation value.
      */
     public Boolean requireAuthorizationForGroupCreation() {
@@ -49,12 +55,12 @@ public final class CreateOrUpdateSettingsProperties {
      * Microsoft.Management/managementGroups/write action on the root Management Group scope in order to create new
      * Groups directly under the root. This will prevent new users from creating new Management Groups, unless they are
      * given access.
-     *
+     * 
      * @param requireAuthorizationForGroupCreation the requireAuthorizationForGroupCreation value to set.
      * @return the CreateOrUpdateSettingsProperties object itself.
      */
-    public CreateOrUpdateSettingsProperties withRequireAuthorizationForGroupCreation(
-        Boolean requireAuthorizationForGroupCreation) {
+    public CreateOrUpdateSettingsProperties
+        withRequireAuthorizationForGroupCreation(Boolean requireAuthorizationForGroupCreation) {
         this.requireAuthorizationForGroupCreation = requireAuthorizationForGroupCreation;
         return this;
     }
@@ -63,7 +69,7 @@ public final class CreateOrUpdateSettingsProperties {
      * Get the defaultManagementGroup property: Settings that sets the default Management Group under which new
      * subscriptions get added in this tenant. For example,
      * /providers/Microsoft.Management/managementGroups/defaultGroup.
-     *
+     * 
      * @return the defaultManagementGroup value.
      */
     public String defaultManagementGroup() {
@@ -74,7 +80,7 @@ public final class CreateOrUpdateSettingsProperties {
      * Set the defaultManagementGroup property: Settings that sets the default Management Group under which new
      * subscriptions get added in this tenant. For example,
      * /providers/Microsoft.Management/managementGroups/defaultGroup.
-     *
+     * 
      * @param defaultManagementGroup the defaultManagementGroup value to set.
      * @return the CreateOrUpdateSettingsProperties object itself.
      */
@@ -85,9 +91,50 @@ public final class CreateOrUpdateSettingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("requireAuthorizationForGroupCreation", this.requireAuthorizationForGroupCreation);
+        jsonWriter.writeStringField("defaultManagementGroup", this.defaultManagementGroup);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateOrUpdateSettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateOrUpdateSettingsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateOrUpdateSettingsProperties.
+     */
+    public static CreateOrUpdateSettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateOrUpdateSettingsProperties deserializedCreateOrUpdateSettingsProperties
+                = new CreateOrUpdateSettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requireAuthorizationForGroupCreation".equals(fieldName)) {
+                    deserializedCreateOrUpdateSettingsProperties.requireAuthorizationForGroupCreation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultManagementGroup".equals(fieldName)) {
+                    deserializedCreateOrUpdateSettingsProperties.defaultManagementGroup = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateOrUpdateSettingsProperties;
+        });
     }
 }

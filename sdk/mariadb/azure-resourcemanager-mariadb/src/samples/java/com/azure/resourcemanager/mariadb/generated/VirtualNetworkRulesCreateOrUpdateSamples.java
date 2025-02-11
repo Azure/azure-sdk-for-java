@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for VirtualNetworkRules CreateOrUpdate. */
+/**
+ * Samples for VirtualNetworkRules CreateOrUpdate.
+ */
 public final class VirtualNetworkRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/VirtualNetworkRulesCreateOrUpdate.json
+     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/
+     * VirtualNetworkRulesCreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a virtual network rule.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void createOrUpdateAVirtualNetworkRule(com.azure.resourcemanager.mariadb.MariaDBManager manager) {
-        manager
-            .virtualNetworkRules()
+        manager.virtualNetworkRules()
             .define("vnet-firewall-rule")
             .withExistingServer("TestGroup", "vnet-test-svr")
             .withVirtualNetworkSubnetId(

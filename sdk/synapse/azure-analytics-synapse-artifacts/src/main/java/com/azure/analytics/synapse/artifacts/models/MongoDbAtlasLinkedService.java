@@ -24,17 +24,20 @@ public class MongoDbAtlasLinkedService extends LinkedService {
     private String type = "MongoDbAtlas";
 
     /*
-     * The MongoDB Atlas connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The MongoDB Atlas connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     private Object connectionString;
 
     /*
-     * The name of the MongoDB Atlas database that you want to access. Type: string (or Expression with resultType string).
+     * The name of the MongoDB Atlas database that you want to access. Type: string (or Expression with resultType
+     * string).
      */
     private Object database;
 
     /*
-     * The driver version that you want to choose. Allowed value are v1 and v2. Type: string (or Expression with resultType string).
+     * The driver version that you want to choose. Allowed value are v1 and v2. Type: string (or Expression with
+     * resultType string).
      */
     private Object driverVersion;
 

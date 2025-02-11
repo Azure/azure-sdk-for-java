@@ -11,7 +11,7 @@ public final class HealthCheckTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthCheck model = BinaryData.fromString(
-            "{\"status\":\"Pending\",\"displayName\":\"r\",\"startDateTime\":\"2021-11-12T08:33:33Z\",\"endDateTime\":\"2021-02-25T05:01:16Z\",\"errorType\":\"mghfcfiwrxgkne\",\"recommendedAction\":\"yinzqodfvpgs\",\"additionalDetails\":\"xgsg\"}")
+            "{\"status\":\"Unknown\",\"displayName\":\"vv\",\"startDateTime\":\"2021-01-13T03:13:58Z\",\"endDateTime\":\"2021-08-29T14:10:38Z\",\"errorType\":\"hqyikvy\",\"recommendedAction\":\"uyav\",\"additionalDetails\":\"wmn\"}")
             .toObject(HealthCheck.class);
     }
 

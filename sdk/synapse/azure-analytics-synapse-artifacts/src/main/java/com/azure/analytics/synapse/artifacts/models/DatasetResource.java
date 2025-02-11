@@ -20,6 +20,28 @@ public final class DatasetResource extends SubResource {
      */
     private Dataset properties;
 
+    /*
+     * Resource Etag.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
     /**
      * Creates an instance of DatasetResource class.
      */
@@ -44,6 +66,48 @@ public final class DatasetResource extends SubResource {
     public DatasetResource setProperties(Dataset properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -73,13 +137,13 @@ public final class DatasetResource extends SubResource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedDatasetResource.setId(reader.getString());
+                    deserializedDatasetResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedDatasetResource.setName(reader.getString());
+                    deserializedDatasetResource.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedDatasetResource.setType(reader.getString());
+                    deserializedDatasetResource.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedDatasetResource.setEtag(reader.getString());
+                    deserializedDatasetResource.etag = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedDatasetResource.properties = Dataset.fromJson(reader);
                 } else {

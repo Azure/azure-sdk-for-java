@@ -6,80 +6,46 @@ package com.azure.resourcemanager.purview.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.purview.PurviewManager;
 import com.azure.resourcemanager.purview.fluent.models.DefaultAccountPayloadInner;
 import com.azure.resourcemanager.purview.models.DefaultAccountPayload;
 import com.azure.resourcemanager.purview.models.ScopeType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DefaultAccountsSetWithResponseMockTests {
     @Test
     public void testSetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"accountName\":\"ikdgszywkbir\",\"resourceGroupName\":\"uzhlhkjoqrv\",\"scope\":\"aatjinrvgoupmfi\",\"scopeTenantId\":\"fggjioolvr\",\"scopeType\":\"Tenant\",\"subscriptionId\":\"tkkgllqwjy\"}";
 
-        String responseStr =
-            "{\"accountName\":\"yiba\",\"resourceGroupName\":\"fluszdtm\",\"scope\":\"kwofyyvoq\",\"scopeTenantId\":\"piexpbtgiw\",\"scopeType\":\"Tenant\",\"subscriptionId\":\"nwashrtd\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PurviewManager manager = PurviewManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        DefaultAccountPayload response = manager.defaultAccounts()
+            .setWithResponse(new DefaultAccountPayloadInner().withAccountName("bopgxedkowepbqp")
+                .withResourceGroupName("fkbw")
+                .withScope("snjvcdwxlpqekftn")
+                .withScopeTenantId("tjsyin")
+                .withScopeType(ScopeType.TENANT)
+                .withSubscriptionId("atmtdhtmdvy"), com.azure.core.util.Context.NONE)
+            .getValue();
 
-        PurviewManager manager =
-            PurviewManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DefaultAccountPayload response =
-            manager
-                .defaultAccounts()
-                .setWithResponse(
-                    new DefaultAccountPayloadInner()
-                        .withAccountName("glyatddckcbcuej")
-                        .withResourceGroupName("xgc")
-                        .withScope("ibrhosxsdqr")
-                        .withScopeTenantId("o")
-                        .withScopeType(ScopeType.TENANT)
-                        .withSubscriptionId("m"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("yiba", response.accountName());
-        Assertions.assertEquals("fluszdtm", response.resourceGroupName());
-        Assertions.assertEquals("kwofyyvoq", response.scope());
-        Assertions.assertEquals("piexpbtgiw", response.scopeTenantId());
+        Assertions.assertEquals("ikdgszywkbir", response.accountName());
+        Assertions.assertEquals("uzhlhkjoqrv", response.resourceGroupName());
+        Assertions.assertEquals("aatjinrvgoupmfi", response.scope());
+        Assertions.assertEquals("fggjioolvr", response.scopeTenantId());
         Assertions.assertEquals(ScopeType.TENANT, response.scopeType());
-        Assertions.assertEquals("nwashrtd", response.subscriptionId());
+        Assertions.assertEquals("tkkgllqwjy", response.subscriptionId());
     }
 }

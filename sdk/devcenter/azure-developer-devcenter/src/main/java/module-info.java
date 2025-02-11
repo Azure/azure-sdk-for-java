@@ -4,7 +4,9 @@
 
 module com.azure.developer.devcenter {
     requires transitive com.azure.core;
+
     exports com.azure.developer.devcenter;
     exports com.azure.developer.devcenter.models;
+
     opens com.azure.developer.devcenter.models to com.azure.core;
 }

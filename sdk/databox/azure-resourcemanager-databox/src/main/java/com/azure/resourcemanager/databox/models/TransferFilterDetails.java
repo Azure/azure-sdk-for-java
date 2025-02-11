@@ -6,43 +6,47 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Details of the filtering the transfer of data. */
+/**
+ * Details of the filtering the transfer of data.
+ */
 @Fluent
-public final class TransferFilterDetails {
+public final class TransferFilterDetails implements JsonSerializable<TransferFilterDetails> {
     /*
      * Type of the account of data.
      */
-    @JsonProperty(value = "dataAccountType", required = true)
     private DataAccountType dataAccountType;
 
     /*
      * Filter details to transfer blobs.
      */
-    @JsonProperty(value = "blobFilterDetails")
     private BlobFilterDetails blobFilterDetails;
 
     /*
      * Filter details to transfer Azure files.
      */
-    @JsonProperty(value = "azureFileFilterDetails")
     private AzureFileFilterDetails azureFileFilterDetails;
 
     /*
      * Details of the filter files to be used for data transfer.
      */
-    @JsonProperty(value = "filterFileDetails")
     private List<FilterFileDetails> filterFileDetails;
 
-    /** Creates an instance of TransferFilterDetails class. */
+    /**
+     * Creates an instance of TransferFilterDetails class.
+     */
     public TransferFilterDetails() {
     }
 
     /**
      * Get the dataAccountType property: Type of the account of data.
-     *
+     * 
      * @return the dataAccountType value.
      */
     public DataAccountType dataAccountType() {
@@ -51,7 +55,7 @@ public final class TransferFilterDetails {
 
     /**
      * Set the dataAccountType property: Type of the account of data.
-     *
+     * 
      * @param dataAccountType the dataAccountType value to set.
      * @return the TransferFilterDetails object itself.
      */
@@ -62,7 +66,7 @@ public final class TransferFilterDetails {
 
     /**
      * Get the blobFilterDetails property: Filter details to transfer blobs.
-     *
+     * 
      * @return the blobFilterDetails value.
      */
     public BlobFilterDetails blobFilterDetails() {
@@ -71,7 +75,7 @@ public final class TransferFilterDetails {
 
     /**
      * Set the blobFilterDetails property: Filter details to transfer blobs.
-     *
+     * 
      * @param blobFilterDetails the blobFilterDetails value to set.
      * @return the TransferFilterDetails object itself.
      */
@@ -82,7 +86,7 @@ public final class TransferFilterDetails {
 
     /**
      * Get the azureFileFilterDetails property: Filter details to transfer Azure files.
-     *
+     * 
      * @return the azureFileFilterDetails value.
      */
     public AzureFileFilterDetails azureFileFilterDetails() {
@@ -91,7 +95,7 @@ public final class TransferFilterDetails {
 
     /**
      * Set the azureFileFilterDetails property: Filter details to transfer Azure files.
-     *
+     * 
      * @param azureFileFilterDetails the azureFileFilterDetails value to set.
      * @return the TransferFilterDetails object itself.
      */
@@ -102,7 +106,7 @@ public final class TransferFilterDetails {
 
     /**
      * Get the filterFileDetails property: Details of the filter files to be used for data transfer.
-     *
+     * 
      * @return the filterFileDetails value.
      */
     public List<FilterFileDetails> filterFileDetails() {
@@ -111,7 +115,7 @@ public final class TransferFilterDetails {
 
     /**
      * Set the filterFileDetails property: Details of the filter files to be used for data transfer.
-     *
+     * 
      * @param filterFileDetails the filterFileDetails value to set.
      * @return the TransferFilterDetails object itself.
      */
@@ -122,15 +126,14 @@ public final class TransferFilterDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataAccountType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataAccountType in model TransferFilterDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataAccountType in model TransferFilterDetails"));
         }
         if (blobFilterDetails() != null) {
             blobFilterDetails().validate();
@@ -144,4 +147,54 @@ public final class TransferFilterDetails {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TransferFilterDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataAccountType",
+            this.dataAccountType == null ? null : this.dataAccountType.toString());
+        jsonWriter.writeJsonField("blobFilterDetails", this.blobFilterDetails);
+        jsonWriter.writeJsonField("azureFileFilterDetails", this.azureFileFilterDetails);
+        jsonWriter.writeArrayField("filterFileDetails", this.filterFileDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransferFilterDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransferFilterDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TransferFilterDetails.
+     */
+    public static TransferFilterDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransferFilterDetails deserializedTransferFilterDetails = new TransferFilterDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataAccountType".equals(fieldName)) {
+                    deserializedTransferFilterDetails.dataAccountType = DataAccountType.fromString(reader.getString());
+                } else if ("blobFilterDetails".equals(fieldName)) {
+                    deserializedTransferFilterDetails.blobFilterDetails = BlobFilterDetails.fromJson(reader);
+                } else if ("azureFileFilterDetails".equals(fieldName)) {
+                    deserializedTransferFilterDetails.azureFileFilterDetails = AzureFileFilterDetails.fromJson(reader);
+                } else if ("filterFileDetails".equals(fieldName)) {
+                    List<FilterFileDetails> filterFileDetails
+                        = reader.readArray(reader1 -> FilterFileDetails.fromJson(reader1));
+                    deserializedTransferFilterDetails.filterFileDetails = filterFileDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransferFilterDetails;
+        });
+    }
 }

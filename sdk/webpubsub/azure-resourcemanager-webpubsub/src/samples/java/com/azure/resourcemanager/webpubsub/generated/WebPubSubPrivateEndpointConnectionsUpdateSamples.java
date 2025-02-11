@@ -9,29 +9,27 @@ import com.azure.resourcemanager.webpubsub.models.PrivateEndpoint;
 import com.azure.resourcemanager.webpubsub.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.webpubsub.models.PrivateLinkServiceConnectionStatus;
 
-/** Samples for WebPubSubPrivateEndpointConnections Update. */
+/**
+ * Samples for WebPubSubPrivateEndpointConnections Update.
+ */
 public final class WebPubSubPrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubPrivateEndpointConnections_Update.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2024-03-01/examples/
+     * WebPubSubPrivateEndpointConnections_Update.json
      */
     /**
      * Sample code: WebPubSubPrivateEndpointConnections_Update.
-     *
+     * 
      * @param manager Entry point to WebPubSubManager.
      */
-    public static void webPubSubPrivateEndpointConnectionsUpdate(
-        com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager
-            .webPubSubPrivateEndpointConnections()
-            .updateWithResponse(
-                "mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e",
-                "myResourceGroup",
+    public static void
+        webPubSubPrivateEndpointConnectionsUpdate(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
+        manager.webPubSubPrivateEndpointConnections()
+            .updateWithResponse("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e", "myResourceGroup",
                 "myWebPubSubService",
-                new PrivateEndpointConnectionInner()
-                    .withPrivateEndpoint(new PrivateEndpoint())
+                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(
-                        new PrivateLinkServiceConnectionState()
-                            .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                        new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
                             .withActionsRequired("None")),
                 com.azure.core.util.Context.NONE);
     }

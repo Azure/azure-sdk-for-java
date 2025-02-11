@@ -10,11 +10,9 @@ import com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPac
 public final class LogAnalyticsQueryPackPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogAnalyticsQueryPackProperties model =
-            BinaryData
-                .fromString(
-                    "{\"queryPackId\":\"tfwvukxgaudc\",\"timeCreated\":\"2021-06-07T10:34:36Z\",\"timeModified\":\"2021-03-15T16:07:05Z\",\"provisioningState\":\"cnyejhkryhtnapcz\"}")
-                .toObject(LogAnalyticsQueryPackProperties.class);
+        LogAnalyticsQueryPackProperties model = BinaryData.fromString(
+            "{\"queryPackId\":\"tfwvukxgaudc\",\"timeCreated\":\"2021-06-07T10:34:36Z\",\"timeModified\":\"2021-03-15T16:07:05Z\",\"provisioningState\":\"cnyejhkryhtnapcz\"}")
+            .toObject(LogAnalyticsQueryPackProperties.class);
     }
 
     @org.junit.jupiter.api.Test

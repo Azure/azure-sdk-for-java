@@ -21,7 +21,7 @@ public final class EnvironmentTypesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updated\",\"displayName\":\"turmlmuow\"},\"tags\":{\"ropions\":\"au\",\"innixjawrtmjfj\":\"onwpnga\"},\"id\":\"ccxlzhcoxovnek\",\"name\":\"enlusfn\",\"type\":\"dtjxtxrdcqt\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"mkzjvkviir\"},\"tags\":{\"ra\":\"grwsdp\",\"ctctbrxkjz\":\"zvzbglbyv\",\"bkgozxwopdbydpi\":\"rgxffmshkw\",\"nugj\":\"qaclnapxbiy\"},\"id\":\"fsmfcttuxuuyi\",\"name\":\"flqo\",\"type\":\"quvre\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class EnvironmentTypesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         EnvironmentType response = manager.environmentTypes()
-            .getWithResponse("fugsnnfhyetefy", "oc", "ctfjgtixr", com.azure.core.util.Context.NONE)
+            .getWithResponse("qmp", "zruwn", "qxpxiwfcngjsaa", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("au", response.tags().get("ropions"));
-        Assertions.assertEquals("turmlmuow", response.displayName());
+        Assertions.assertEquals("grwsdp", response.tags().get("ra"));
+        Assertions.assertEquals("mkzjvkviir", response.displayName());
     }
 }

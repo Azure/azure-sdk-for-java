@@ -5,61 +5,57 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.LinkOrganization;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.ProvisionState;
 import com.azure.resourcemanager.confluent.models.UserDetail;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Organization resource property.
  */
 @Fluent
-public final class OrganizationResourceProperties {
+public final class OrganizationResourceProperties implements JsonSerializable<OrganizationResourceProperties> {
     /*
      * The creation time of the resource.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
-     * ProvisioningState
-     * 
      * Provision states for confluent RP
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisionState provisioningState;
 
     /*
      * Id of the Confluent organization.
      */
-    @JsonProperty(value = "organizationId", access = JsonProperty.Access.WRITE_ONLY)
     private String organizationId;
 
     /*
      * SSO url for the Confluent organization.
      */
-    @JsonProperty(value = "ssoUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String ssoUrl;
 
     /*
      * Confluent offer detail
      */
-    @JsonProperty(value = "offerDetail", required = true)
     private OfferDetail offerDetail;
 
     /*
      * Subscriber detail
      */
-    @JsonProperty(value = "userDetail", required = true)
     private UserDetail userDetail;
 
     /*
      * Link an existing Confluent organization
      */
-    @JsonProperty(value = "linkOrganization")
     private LinkOrganization linkOrganization;
 
     /**
@@ -78,9 +74,7 @@ public final class OrganizationResourceProperties {
     }
 
     /**
-     * Get the provisioningState property: ProvisioningState
-     * 
-     * Provision states for confluent RP.
+     * Get the provisioningState property: Provision states for confluent RP.
      * 
      * @return the provisioningState value.
      */
@@ -173,14 +167,16 @@ public final class OrganizationResourceProperties {
      */
     public void validate() {
         if (offerDetail() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property offerDetail in model OrganizationResourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property offerDetail in model OrganizationResourceProperties"));
         } else {
             offerDetail().validate();
         }
         if (userDetail() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property userDetail in model OrganizationResourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property userDetail in model OrganizationResourceProperties"));
         } else {
             userDetail().validate();
         }
@@ -190,4 +186,58 @@ public final class OrganizationResourceProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OrganizationResourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("offerDetail", this.offerDetail);
+        jsonWriter.writeJsonField("userDetail", this.userDetail);
+        jsonWriter.writeJsonField("linkOrganization", this.linkOrganization);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrganizationResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrganizationResourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrganizationResourceProperties.
+     */
+    public static OrganizationResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrganizationResourceProperties deserializedOrganizationResourceProperties
+                = new OrganizationResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("offerDetail".equals(fieldName)) {
+                    deserializedOrganizationResourceProperties.offerDetail = OfferDetail.fromJson(reader);
+                } else if ("userDetail".equals(fieldName)) {
+                    deserializedOrganizationResourceProperties.userDetail = UserDetail.fromJson(reader);
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedOrganizationResourceProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedOrganizationResourceProperties.provisioningState
+                        = ProvisionState.fromString(reader.getString());
+                } else if ("organizationId".equals(fieldName)) {
+                    deserializedOrganizationResourceProperties.organizationId = reader.getString();
+                } else if ("ssoUrl".equals(fieldName)) {
+                    deserializedOrganizationResourceProperties.ssoUrl = reader.getString();
+                } else if ("linkOrganization".equals(fieldName)) {
+                    deserializedOrganizationResourceProperties.linkOrganization = LinkOrganization.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrganizationResourceProperties;
+        });
+    }
 }

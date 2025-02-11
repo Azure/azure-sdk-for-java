@@ -28,26 +28,28 @@ import com.azure.resourcemanager.automation.fluent.models.AgentRegistrationInner
 import com.azure.resourcemanager.automation.models.AgentRegistrationRegenerateKeyParameter;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AgentRegistrationInformationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AgentRegistrationInformationsClient.
+ */
 public final class AgentRegistrationInformationsClientImpl implements AgentRegistrationInformationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AgentRegistrationInformationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of AgentRegistrationInformationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AgentRegistrationInformationsClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    AgentRegistrationInformationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(AgentRegistrationInformationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,64 +59,51 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientAgen")
-    private interface AgentRegistrationInformationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/agentRegistrationInformation")
-        @ExpectedResponses({200})
+    public interface AgentRegistrationInformationsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/agentRegistrationInformation")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentRegistrationInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AgentRegistrationInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/agentRegistrationInformation/regenerateKey")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/agentRegistrationInformation/regenerateKey")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentRegistrationInner>> regenerateKey(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AgentRegistrationInner>> regenerateKey(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AgentRegistrationRegenerateKeyParameter parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieve the automation agent registration information.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the agent registration information type along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentRegistrationInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName) {
+    private Mono<Response<AgentRegistrationInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -127,23 +116,14 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            automationAccountName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, automationAccountName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the automation agent registration information.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -151,22 +131,18 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the agent registration information type along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentRegistrationInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, Context context) {
+    private Mono<Response<AgentRegistrationInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,20 +155,13 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                automationAccountName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            automationAccountName, apiVersion, accept, context);
     }
 
     /**
      * Retrieve the automation agent registration information.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,22 +177,7 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
 
     /**
      * Retrieve the automation agent registration information.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentRegistrationInner get(String resourceGroupName, String automationAccountName) {
-        return getAsync(resourceGroupName, automationAccountName).block();
-    }
-
-    /**
-     * Retrieve the automation agent registration information.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -233,14 +187,29 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @return definition of the agent registration information type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgentRegistrationInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, Context context) {
+    public Response<AgentRegistrationInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, context).block();
     }
 
     /**
+     * Retrieve the automation agent registration information.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the agent registration information type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentRegistrationInner get(String resourceGroupName, String automationAccountName) {
+        return getWithResponse(resourceGroupName, automationAccountName, Context.NONE).getValue();
+    }
+
+    /**
      * Regenerate a primary or secondary agent registration key.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters The name of the agent registration key to be regenerated.
@@ -248,22 +217,18 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the agent registration information type along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentRegistrationInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters) {
+    private Mono<Response<AgentRegistrationInner>> regenerateKeyWithResponseAsync(String resourceGroupName,
+        String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -281,24 +246,14 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateKey(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            automationAccountName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.regenerateKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, automationAccountName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerate a primary or secondary agent registration key.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters The name of the agent registration key to be regenerated.
@@ -307,25 +262,18 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the agent registration information type along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentRegistrationInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        AgentRegistrationRegenerateKeyParameter parameters,
-        Context context) {
+    private Mono<Response<AgentRegistrationInner>> regenerateKeyWithResponseAsync(String resourceGroupName,
+        String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -343,21 +291,13 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerateKey(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                automationAccountName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.regenerateKey(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            automationAccountName, apiVersion, parameters, accept, context);
     }
 
     /**
      * Regenerate a primary or secondary agent registration key.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters The name of the agent registration key to be regenerated.
@@ -367,32 +307,15 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @return definition of the agent registration information type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgentRegistrationInner> regenerateKeyAsync(
-        String resourceGroupName, String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters) {
+    private Mono<AgentRegistrationInner> regenerateKeyAsync(String resourceGroupName, String automationAccountName,
+        AgentRegistrationRegenerateKeyParameter parameters) {
         return regenerateKeyWithResponseAsync(resourceGroupName, automationAccountName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Regenerate a primary or secondary agent registration key.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param parameters The name of the agent registration key to be regenerated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the agent registration information type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentRegistrationInner regenerateKey(
-        String resourceGroupName, String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters) {
-        return regenerateKeyAsync(resourceGroupName, automationAccountName, parameters).block();
-    }
-
-    /**
-     * Regenerate a primary or secondary agent registration key.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters The name of the agent registration key to be regenerated.
@@ -403,11 +326,25 @@ public final class AgentRegistrationInformationsClientImpl implements AgentRegis
      * @return definition of the agent registration information type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgentRegistrationInner> regenerateKeyWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        AgentRegistrationRegenerateKeyParameter parameters,
-        Context context) {
+    public Response<AgentRegistrationInner> regenerateKeyWithResponse(String resourceGroupName,
+        String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters, Context context) {
         return regenerateKeyWithResponseAsync(resourceGroupName, automationAccountName, parameters, context).block();
+    }
+
+    /**
+     * Regenerate a primary or secondary agent registration key.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param parameters The name of the agent registration key to be regenerated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the agent registration information type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentRegistrationInner regenerateKey(String resourceGroupName, String automationAccountName,
+        AgentRegistrationRegenerateKeyParameter parameters) {
+        return regenerateKeyWithResponse(resourceGroupName, automationAccountName, parameters, Context.NONE).getValue();
     }
 }

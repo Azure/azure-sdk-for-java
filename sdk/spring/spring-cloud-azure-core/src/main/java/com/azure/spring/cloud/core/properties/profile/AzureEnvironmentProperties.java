@@ -61,11 +61,11 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
      */
     private String galleryEndpoint;
     /**
-     * The Azure Active Directory endpoint to connect to.
+     * The Microsoft Entra endpoint to connect to.
      */
     private String activeDirectoryEndpoint;
     /**
-     * The Azure Active Directory resource id.
+     * The Microsoft Entra resource id.
      */
     private String activeDirectoryResourceId;
     /**

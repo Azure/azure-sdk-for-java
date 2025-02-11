@@ -6,32 +6,38 @@ package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.fluent.models.InventoryItemInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of InventoryItems. */
+/**
+ * List of InventoryItems.
+ */
 @Fluent
-public final class InventoryItemsList {
+public final class InventoryItemsList implements JsonSerializable<InventoryItemsList> {
     /*
      * Url to follow for getting next page of InventoryItems.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Array of InventoryItems
      */
-    @JsonProperty(value = "value", required = true)
     private List<InventoryItemInner> value;
 
-    /** Creates an instance of InventoryItemsList class. */
+    /**
+     * Creates an instance of InventoryItemsList class.
+     */
     public InventoryItemsList() {
     }
 
     /**
      * Get the nextLink property: Url to follow for getting next page of InventoryItems.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -40,7 +46,7 @@ public final class InventoryItemsList {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of InventoryItems.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the InventoryItemsList object itself.
      */
@@ -51,7 +57,7 @@ public final class InventoryItemsList {
 
     /**
      * Get the value property: Array of InventoryItems.
-     *
+     * 
      * @return the value value.
      */
     public List<InventoryItemInner> value() {
@@ -60,7 +66,7 @@ public final class InventoryItemsList {
 
     /**
      * Set the value property: Array of InventoryItems.
-     *
+     * 
      * @param value the value value to set.
      * @return the InventoryItemsList object itself.
      */
@@ -71,18 +77,58 @@ public final class InventoryItemsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model InventoryItemsList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model InventoryItemsList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InventoryItemsList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InventoryItemsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InventoryItemsList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InventoryItemsList.
+     */
+    public static InventoryItemsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InventoryItemsList deserializedInventoryItemsList = new InventoryItemsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<InventoryItemInner> value = reader.readArray(reader1 -> InventoryItemInner.fromJson(reader1));
+                    deserializedInventoryItemsList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedInventoryItemsList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInventoryItemsList;
+        });
+    }
 }

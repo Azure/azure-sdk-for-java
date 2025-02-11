@@ -12,25 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            BinaryData
-                .fromString("{\"status\":\"Rejected\",\"description\":\"cpecfvmmcoofs\",\"actionsRequired\":\"zevgb\"}")
-                .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("cpecfvmmcoofs", model.description());
-        Assertions.assertEquals("zevgb", model.actionsRequired());
+        PrivateLinkServiceConnectionState model = BinaryData
+            .fromString("{\"status\":\"Approved\",\"description\":\"rhdwbavxbniw\",\"actionsRequired\":\"swzts\"}")
+            .toObject(PrivateLinkServiceConnectionState.class);
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("rhdwbavxbniw", model.description());
+        Assertions.assertEquals("swzts", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                .withDescription("cpecfvmmcoofs")
-                .withActionsRequired("zevgb");
+        PrivateLinkServiceConnectionState model
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                .withDescription("rhdwbavxbniw")
+                .withActionsRequired("swzts");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("cpecfvmmcoofs", model.description());
-        Assertions.assertEquals("zevgb", model.actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("rhdwbavxbniw", model.description());
+        Assertions.assertEquals("swzts", model.actionsRequired());
     }
 }

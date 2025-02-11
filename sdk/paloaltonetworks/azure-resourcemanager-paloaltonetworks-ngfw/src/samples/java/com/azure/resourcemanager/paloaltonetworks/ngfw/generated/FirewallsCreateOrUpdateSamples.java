@@ -48,7 +48,10 @@ public final class FirewallsCreateOrUpdateSamples {
      */
     public static void firewallsCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.firewalls().define("firewall1").withRegion("eastus").withExistingResourceGroup("firewall-rg")
+        manager.firewalls()
+            .define("firewall1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("firewall-rg")
             .withNetworkProfile(new NetworkProfile().withVnetConfiguration(new VnetConfiguration()
                 .withVnet(new IpAddressSpace().withResourceId(
                     "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet")
@@ -90,17 +93,19 @@ public final class FirewallsCreateOrUpdateSamples {
                 .withDnsServers(Arrays.asList(new IpAddress().withResourceId(
                     "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1")
                     .withAddress("20.22.92.111"))))
-            .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.MONTHLY)
+            .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
+                .withBillingCycle(BillingCycle.MONTHLY)
                 .withPlanId("liftrpantestplan"))
-            .withMarketplaceDetails(
-                new MarketplaceDetails().withOfferId("liftr-pan-ame-test").withPublisherId("isvtestuklegacy")
-                    .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START))
+            .withMarketplaceDetails(new MarketplaceDetails().withOfferId("liftr-pan-ame-test")
+                .withPublisherId("isvtestuklegacy")
+                .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START))
             .withTags(mapOf("tagName", "value"))
             .withIdentity(new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf("key16",
                     new AzureResourceManagerUserAssignedIdentity().withClientId("aaaa")
                         .withPrincipalId("aaaaaaaaaaaaaaa"))))
-            .withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12").withIsPanoramaManaged(BooleanEnum.TRUE)
+            .withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12")
+            .withIsPanoramaManaged(BooleanEnum.TRUE)
             .withPanoramaConfig(new PanoramaConfig().withConfigString("bas64EncodedString"))
             .withAssociatedRulestack(
                 new RulestackDetails().withResourceId("lrs1").withRulestackId("PANRSID").withLocation("eastus"))
@@ -129,7 +134,10 @@ public final class FirewallsCreateOrUpdateSamples {
      */
     public static void firewallsCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.firewalls().define("firewall1").withRegion("eastus").withExistingResourceGroup("firewall-rg")
+        manager.firewalls()
+            .define("firewall1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("firewall-rg")
             .withNetworkProfile(new NetworkProfile().withNetworkType(NetworkType.VNET)
                 .withPublicIps(Arrays.asList(new IpAddress().withResourceId(
                     "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1")

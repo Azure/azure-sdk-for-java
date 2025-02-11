@@ -18,7 +18,8 @@ public final class ApiVersionsGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiVersionsGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiVersions().getWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
-            com.azure.core.util.Context.NONE);
+        manager.apiVersions()
+            .getWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Images. */
+/**
+ * Resource collection API of Images.
+ */
 public interface Images {
     /**
      * Gets entity type (profile or interaction) image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForEntityType operation.
@@ -21,12 +23,12 @@ public interface Images {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity type (profile or interaction) image upload URL along with {@link Response}.
      */
-    Response<ImageDefinition> getUploadUrlForEntityTypeWithResponse(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters, Context context);
+    Response<ImageDefinition> getUploadUrlForEntityTypeWithResponse(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters, Context context);
 
     /**
      * Gets entity type (profile or interaction) image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForEntityType operation.
@@ -35,12 +37,12 @@ public interface Images {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity type (profile or interaction) image upload URL.
      */
-    ImageDefinition getUploadUrlForEntityType(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters);
+    ImageDefinition getUploadUrlForEntityType(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters);
 
     /**
      * Gets data image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForData operation.
@@ -50,12 +52,12 @@ public interface Images {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data image upload URL along with {@link Response}.
      */
-    Response<ImageDefinition> getUploadUrlForDataWithResponse(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters, Context context);
+    Response<ImageDefinition> getUploadUrlForDataWithResponse(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters, Context context);
 
     /**
      * Gets data image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForData operation.

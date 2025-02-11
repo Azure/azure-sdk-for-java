@@ -4,15 +4,14 @@
 
 package com.azure.storage.blob.models;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * Represents a single block in a block blob. It describes the block's ID and size.
@@ -127,7 +126,6 @@ public final class Block implements XmlSerializable<Block> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of Block if the XmlReader was pointing to an instance of it, or null if it was pointing to
      * XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the Block.
      */
     public static Block fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -142,7 +140,6 @@ public final class Block implements XmlSerializable<Block> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of Block if the XmlReader was pointing to an instance of it, or null if it was pointing to
      * XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the Block.
      */
     public static Block fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

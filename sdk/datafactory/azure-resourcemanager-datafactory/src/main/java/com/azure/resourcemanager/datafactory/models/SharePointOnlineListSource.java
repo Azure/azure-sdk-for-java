@@ -139,7 +139,6 @@ public final class SharePointOnlineListSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

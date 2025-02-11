@@ -23,22 +23,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MultiSlots. */
+/**
+ * An instance of this class provides access to all the operations defined in MultiSlots.
+ */
 public final class MultiSlotsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MultiSlotsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PersonalizerClientV1Preview3Impl client;
 
     /**
      * Initializes an instance of MultiSlotsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MultiSlotsImpl(PersonalizerClientV1Preview3Impl client) {
-        this.service =
-                RestProxy.create(MultiSlotsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MultiSlotsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,22 +56,20 @@ public final class MultiSlotsImpl {
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface MultiSlotsService {
         @Post("/multislot/rank")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<PersonalizerRankMultiSlotResult>> rank(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @BodyParam("application/json") PersonalizerRankMultiSlotOptions body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PersonalizerRankMultiSlotResult>> rank(@HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @BodyParam("application/json") PersonalizerRankMultiSlotOptions body, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Post multi-slot Rank.
-     *
-     * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
+     * 
+     * Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
      * Returns which of the provided actions should be used in each slot, in each rewardActionId.
-     *
+     * 
      * @param body A Personalizer multi-slot Rank request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -73,19 +77,17 @@ public final class MultiSlotsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerRankMultiSlotResult>> rankWithResponseAsync(
-            PersonalizerRankMultiSlotOptions body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.rank(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
+    public Mono<Response<PersonalizerRankMultiSlotResult>>
+        rankWithResponseAsync(PersonalizerRankMultiSlotOptions body) {
+        return FluxUtil.withContext(context -> rankWithResponseAsync(body, context));
     }
 
     /**
      * Post multi-slot Rank.
-     *
-     * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
+     * 
+     * Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
      * Returns which of the provided actions should be used in each slot, in each rewardActionId.
-     *
+     * 
      * @param body A Personalizer multi-slot Rank request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -94,18 +96,18 @@ public final class MultiSlotsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerRankMultiSlotResult>> rankWithResponseAsync(
-            PersonalizerRankMultiSlotOptions body, Context context) {
+    public Mono<Response<PersonalizerRankMultiSlotResult>> rankWithResponseAsync(PersonalizerRankMultiSlotOptions body,
+        Context context) {
         final String accept = "application/json";
         return service.rank(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Post multi-slot Rank.
-     *
-     * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
+     * 
+     * Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
      * Returns which of the provided actions should be used in each slot, in each rewardActionId.
-     *
+     * 
      * @param body A Personalizer multi-slot Rank request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -119,10 +121,10 @@ public final class MultiSlotsImpl {
 
     /**
      * Post multi-slot Rank.
-     *
-     * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
+     * 
+     * Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
      * Returns which of the provided actions should be used in each slot, in each rewardActionId.
-     *
+     * 
      * @param body A Personalizer multi-slot Rank request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,27 +139,10 @@ public final class MultiSlotsImpl {
 
     /**
      * Post multi-slot Rank.
-     *
-     * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
+     * 
+     * Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
      * Returns which of the provided actions should be used in each slot, in each rewardActionId.
-     *
-     * @param body A Personalizer multi-slot Rank request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerRankMultiSlotResult rank(PersonalizerRankMultiSlotOptions body) {
-        return rankAsync(body).block();
-    }
-
-    /**
-     * Post multi-slot Rank.
-     *
-     * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
-     * Returns which of the provided actions should be used in each slot, in each rewardActionId.
-     *
+     * 
      * @param body A Personalizer multi-slot Rank request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,8 +151,25 @@ public final class MultiSlotsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PersonalizerRankMultiSlotResult> rankWithResponse(
-            PersonalizerRankMultiSlotOptions body, Context context) {
+    public Response<PersonalizerRankMultiSlotResult> rankWithResponse(PersonalizerRankMultiSlotOptions body,
+        Context context) {
         return rankWithResponseAsync(body, context).block();
+    }
+
+    /**
+     * Post multi-slot Rank.
+     * 
+     * Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
+     * Returns which of the provided actions should be used in each slot, in each rewardActionId.
+     * 
+     * @param body A Personalizer multi-slot Rank request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PersonalizerRankMultiSlotResult rank(PersonalizerRankMultiSlotOptions body) {
+        return rankWithResponse(body, Context.NONE).getValue();
     }
 }

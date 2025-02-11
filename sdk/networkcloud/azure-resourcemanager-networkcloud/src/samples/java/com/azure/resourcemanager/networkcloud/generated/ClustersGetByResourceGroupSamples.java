@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for Clusters GetByResourceGroup. */
+/**
+ * Samples for Clusters GetByResourceGroup.
+ */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Clusters_Get.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * Clusters_Get.json
      */
     /**
      * Sample code: Get cluster.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void getCluster(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .clusters()
+        manager.clusters()
             .getByResourceGroupWithResponse("resourceGroupName", "clusterName", com.azure.core.util.Context.NONE);
     }
 }

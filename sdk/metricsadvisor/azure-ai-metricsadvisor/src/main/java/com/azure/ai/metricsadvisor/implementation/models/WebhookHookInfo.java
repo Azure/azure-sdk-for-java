@@ -18,14 +18,34 @@ import java.util.UUID;
 @Fluent
 public final class WebhookHookInfo extends HookInfo {
     /*
+     * hook type
+     */
+    private HookType hookType = HookType.WEBHOOK;
+
+    /*
      * The hookParameter property.
      */
     private WebhookHookParameter hookParameter;
+
+    /*
+     * Hook unique id
+     */
+    private UUID hookId;
 
     /**
      * Creates an instance of WebhookHookInfo class.
      */
     public WebhookHookInfo() {
+    }
+
+    /**
+     * Get the hookType property: hook type.
+     * 
+     * @return the hookType value.
+     */
+    @Override
+    public HookType getHookType() {
+        return this.hookType;
     }
 
     /**
@@ -46,6 +66,16 @@ public final class WebhookHookInfo extends HookInfo {
     public WebhookHookInfo setHookParameter(WebhookHookParameter hookParameter) {
         this.hookParameter = hookParameter;
         return this;
+    }
+
+    /**
+     * Get the hookId property: Hook unique id.
+     * 
+     * @return the hookId value.
+     */
+    @Override
+    public UUID getHookId() {
+        return this.hookId;
     }
 
     /**
@@ -84,15 +114,18 @@ public final class WebhookHookInfo extends HookInfo {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("hookType", HookType.WEBHOOK == null ? null : HookType.WEBHOOK.toString());
         jsonWriter.writeStringField("hookName", getHookName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("externalLink", getExternalLink());
         jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("hookParameter", this.hookParameter);
+        jsonWriter.writeStringField("hookType", this.hookType == null ? null : this.hookType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -102,8 +135,7 @@ public final class WebhookHookInfo extends HookInfo {
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebhookHookInfo if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebhookHookInfo.
      */
     public static WebhookHookInfo fromJson(JsonReader jsonReader) throws IOException {
@@ -113,18 +145,11 @@ public final class WebhookHookInfo extends HookInfo {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("hookType".equals(fieldName)) {
-                    String hookType = reader.getString();
-                    if (!"Webhook".equals(hookType)) {
-                        throw new IllegalStateException(
-                            "'hookType' was expected to be non-null and equal to 'Webhook'. The found 'hookType' was '"
-                                + hookType + "'.");
-                    }
-                } else if ("hookName".equals(fieldName)) {
+                if ("hookName".equals(fieldName)) {
                     deserializedWebhookHookInfo.setHookName(reader.getString());
                 } else if ("hookId".equals(fieldName)) {
-                    deserializedWebhookHookInfo
-                        .setHookId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedWebhookHookInfo.hookId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("description".equals(fieldName)) {
                     deserializedWebhookHookInfo.setDescription(reader.getString());
                 } else if ("externalLink".equals(fieldName)) {
@@ -134,6 +159,8 @@ public final class WebhookHookInfo extends HookInfo {
                     deserializedWebhookHookInfo.setAdmins(admins);
                 } else if ("hookParameter".equals(fieldName)) {
                     deserializedWebhookHookInfo.hookParameter = WebhookHookParameter.fromJson(reader);
+                } else if ("hookType".equals(fieldName)) {
+                    deserializedWebhookHookInfo.hookType = HookType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

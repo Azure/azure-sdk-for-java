@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.databoxedge.generated;
 
-/** Samples for Devices ListByResourceGroup. */
+/**
+ * Samples for Devices ListByResourceGroup.
+ */
 public final class DevicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/DataBoxEdgeDeviceGetByResourceGroup.json
+     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
+     * DataBoxEdgeDeviceGetByResourceGroup.json
      */
     /**
      * Sample code: DataBoxEdgeDeviceGetByResourceGroup.
-     *
+     * 
      * @param manager Entry point to DataBoxEdgeManager.
      */
-    public static void dataBoxEdgeDeviceGetByResourceGroup(
-        com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+    public static void
+        dataBoxEdgeDeviceGetByResourceGroup(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.devices().listByResourceGroup("GroupForEdgeAutomation", null, com.azure.core.util.Context.NONE);
     }
 }

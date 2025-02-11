@@ -5,39 +5,46 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The JIT scheduling policies. */
+/**
+ * The JIT scheduling policies.
+ */
 @Fluent
-public final class JitSchedulingPolicy {
+public final class JitSchedulingPolicy implements JsonSerializable<JitSchedulingPolicy> {
     /*
      * The type of JIT schedule.
      */
-    @JsonProperty(value = "type", required = true)
     private JitSchedulingType type;
 
     /*
      * The required duration of the JIT request.
      */
-    @JsonProperty(value = "duration", required = true)
     private Duration duration;
 
     /*
      * The start time of the request.
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
-    /** Creates an instance of JitSchedulingPolicy class. */
+    /**
+     * Creates an instance of JitSchedulingPolicy class.
+     */
     public JitSchedulingPolicy() {
     }
 
     /**
      * Get the type property: The type of JIT schedule.
-     *
+     * 
      * @return the type value.
      */
     public JitSchedulingType type() {
@@ -46,7 +53,7 @@ public final class JitSchedulingPolicy {
 
     /**
      * Set the type property: The type of JIT schedule.
-     *
+     * 
      * @param type the type value to set.
      * @return the JitSchedulingPolicy object itself.
      */
@@ -57,7 +64,7 @@ public final class JitSchedulingPolicy {
 
     /**
      * Get the duration property: The required duration of the JIT request.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -66,7 +73,7 @@ public final class JitSchedulingPolicy {
 
     /**
      * Set the duration property: The required duration of the JIT request.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the JitSchedulingPolicy object itself.
      */
@@ -77,7 +84,7 @@ public final class JitSchedulingPolicy {
 
     /**
      * Get the startTime property: The start time of the request.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -86,7 +93,7 @@ public final class JitSchedulingPolicy {
 
     /**
      * Set the startTime property: The start time of the request.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the JitSchedulingPolicy object itself.
      */
@@ -97,26 +104,69 @@ public final class JitSchedulingPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model JitSchedulingPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model JitSchedulingPolicy"));
         }
         if (duration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property duration in model JitSchedulingPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property duration in model JitSchedulingPolicy"));
         }
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startTime in model JitSchedulingPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property startTime in model JitSchedulingPolicy"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JitSchedulingPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("duration", CoreUtils.durationToStringWithDays(this.duration));
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JitSchedulingPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JitSchedulingPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JitSchedulingPolicy.
+     */
+    public static JitSchedulingPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JitSchedulingPolicy deserializedJitSchedulingPolicy = new JitSchedulingPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedJitSchedulingPolicy.type = JitSchedulingType.fromString(reader.getString());
+                } else if ("duration".equals(fieldName)) {
+                    deserializedJitSchedulingPolicy.duration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedJitSchedulingPolicy.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJitSchedulingPolicy;
+        });
+    }
 }

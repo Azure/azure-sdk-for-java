@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -257,6 +258,9 @@ public class ContainerRegistryEventData implements JsonSerializable<ContainerReg
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -291,8 +295,8 @@ public class ContainerRegistryEventData implements JsonSerializable<ContainerReg
                 if ("id".equals(fieldName)) {
                     deserializedContainerRegistryEventData.id = reader.getString();
                 } else if ("timestamp".equals(fieldName)) {
-                    deserializedContainerRegistryEventData.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedContainerRegistryEventData.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("action".equals(fieldName)) {
                     deserializedContainerRegistryEventData.action = reader.getString();
                 } else if ("location".equals(fieldName)) {

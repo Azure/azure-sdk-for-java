@@ -58,6 +58,9 @@ public final class AzureBlobFileListContentSource implements JsonSerializable<Az
         return this.fileList;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

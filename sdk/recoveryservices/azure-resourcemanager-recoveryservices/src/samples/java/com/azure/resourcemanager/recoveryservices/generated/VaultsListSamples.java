@@ -9,7 +9,9 @@ package com.azure.resourcemanager.recoveryservices.generated;
  */
 public final class VaultsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ListBySubscriptionIds.json
+     * x-ms-original-file:
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * ListBySubscriptionIds.json
      */
     /**
      * Sample code: List of Recovery Services Resources in SubscriptionId.

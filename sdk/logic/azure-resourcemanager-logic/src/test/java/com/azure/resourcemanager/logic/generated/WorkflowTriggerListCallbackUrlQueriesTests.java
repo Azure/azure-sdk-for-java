@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowTriggerListCallbackUrlQueriesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowTriggerListCallbackUrlQueries model =
-            BinaryData
-                .fromString(
-                    "{\"api-version\":\"jqabcypmivkwlzuv\",\"sp\":\"fwnfnb\",\"sv\":\"fionl\",\"sig\":\"x\",\"se\":\"qgtz\"}")
-                .toObject(WorkflowTriggerListCallbackUrlQueries.class);
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.apiVersion());
-        Assertions.assertEquals("fwnfnb", model.sp());
-        Assertions.assertEquals("fionl", model.sv());
-        Assertions.assertEquals("x", model.sig());
-        Assertions.assertEquals("qgtz", model.se());
+        WorkflowTriggerListCallbackUrlQueries model = BinaryData.fromString(
+            "{\"api-version\":\"n\",\"sp\":\"wncwzzhxgktrmg\",\"sv\":\"napkteoellw\",\"sig\":\"fdygpfqbuaceopz\",\"se\":\"rhhuaopppcqeqx\"}")
+            .toObject(WorkflowTriggerListCallbackUrlQueries.class);
+        Assertions.assertEquals("n", model.apiVersion());
+        Assertions.assertEquals("wncwzzhxgktrmg", model.sp());
+        Assertions.assertEquals("napkteoellw", model.sv());
+        Assertions.assertEquals("fdygpfqbuaceopz", model.sig());
+        Assertions.assertEquals("rhhuaopppcqeqx", model.se());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowTriggerListCallbackUrlQueries model =
-            new WorkflowTriggerListCallbackUrlQueries()
-                .withApiVersion("jqabcypmivkwlzuv")
-                .withSp("fwnfnb")
-                .withSv("fionl")
-                .withSig("x")
-                .withSe("qgtz");
+        WorkflowTriggerListCallbackUrlQueries model = new WorkflowTriggerListCallbackUrlQueries().withApiVersion("n")
+            .withSp("wncwzzhxgktrmg")
+            .withSv("napkteoellw")
+            .withSig("fdygpfqbuaceopz")
+            .withSe("rhhuaopppcqeqx");
         model = BinaryData.fromObject(model).toObject(WorkflowTriggerListCallbackUrlQueries.class);
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.apiVersion());
-        Assertions.assertEquals("fwnfnb", model.sp());
-        Assertions.assertEquals("fionl", model.sv());
-        Assertions.assertEquals("x", model.sig());
-        Assertions.assertEquals("qgtz", model.se());
+        Assertions.assertEquals("n", model.apiVersion());
+        Assertions.assertEquals("wncwzzhxgktrmg", model.sp());
+        Assertions.assertEquals("napkteoellw", model.sv());
+        Assertions.assertEquals("fdygpfqbuaceopz", model.sig());
+        Assertions.assertEquals("rhhuaopppcqeqx", model.se());
     }
 }

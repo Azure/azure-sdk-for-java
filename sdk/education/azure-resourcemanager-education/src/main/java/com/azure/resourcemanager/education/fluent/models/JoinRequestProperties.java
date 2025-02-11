@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.education.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.education.models.JoinRequestStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Join request properties. */
+/**
+ * Join request properties.
+ */
 @Fluent
-public final class JoinRequestProperties {
+public final class JoinRequestProperties implements JsonSerializable<JoinRequestProperties> {
     /*
      * First Name
      */
-    @JsonProperty(value = "firstName")
     private String firstName;
 
     /*
      * Last Name
      */
-    @JsonProperty(value = "lastName")
     private String lastName;
 
     /*
      * join request email
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /*
      * Join request status
      */
-    @JsonProperty(value = "status")
     private JoinRequestStatus status;
 
-    /** Creates an instance of JoinRequestProperties class. */
+    /**
+     * Creates an instance of JoinRequestProperties class.
+     */
     public JoinRequestProperties() {
     }
 
     /**
      * Get the firstName property: First Name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -50,7 +54,7 @@ public final class JoinRequestProperties {
 
     /**
      * Set the firstName property: First Name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the JoinRequestProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class JoinRequestProperties {
 
     /**
      * Get the lastName property: Last Name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -70,7 +74,7 @@ public final class JoinRequestProperties {
 
     /**
      * Set the lastName property: Last Name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the JoinRequestProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class JoinRequestProperties {
 
     /**
      * Get the email property: join request email.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -90,7 +94,7 @@ public final class JoinRequestProperties {
 
     /**
      * Set the email property: join request email.
-     *
+     * 
      * @param email the email value to set.
      * @return the JoinRequestProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class JoinRequestProperties {
 
     /**
      * Get the status property: Join request status.
-     *
+     * 
      * @return the status value.
      */
     public JoinRequestStatus status() {
@@ -110,7 +114,7 @@ public final class JoinRequestProperties {
 
     /**
      * Set the status property: Join request status.
-     *
+     * 
      * @param status the status value to set.
      * @return the JoinRequestProperties object itself.
      */
@@ -121,9 +125,54 @@ public final class JoinRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("firstName", this.firstName);
+        jsonWriter.writeStringField("lastName", this.lastName);
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JoinRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JoinRequestProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JoinRequestProperties.
+     */
+    public static JoinRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JoinRequestProperties deserializedJoinRequestProperties = new JoinRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("firstName".equals(fieldName)) {
+                    deserializedJoinRequestProperties.firstName = reader.getString();
+                } else if ("lastName".equals(fieldName)) {
+                    deserializedJoinRequestProperties.lastName = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedJoinRequestProperties.email = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedJoinRequestProperties.status = JoinRequestStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJoinRequestProperties;
+        });
     }
 }

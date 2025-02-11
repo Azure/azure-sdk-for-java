@@ -107,17 +107,16 @@ public final class ControllerImpl implements Controller, Controller.Definition, 
     }
 
     public Controller create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getControllers()
-                .create(resourceGroupName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .create(resourceGroupName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Controller create(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getControllers().create(resourceGroupName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .create(resourceGroupName, name, this.innerModel(), context);
         return this;
     }
 
@@ -133,63 +132,53 @@ public final class ControllerImpl implements Controller, Controller.Definition, 
     }
 
     public Controller apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getControllers()
-                .updateWithResponse(resourceGroupName, name, updateControllerUpdateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .updateWithResponse(resourceGroupName, name, updateControllerUpdateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Controller apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getControllers()
-                .updateWithResponse(resourceGroupName, name, updateControllerUpdateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .updateWithResponse(resourceGroupName, name, updateControllerUpdateParameters, context)
+            .getValue();
         return this;
     }
 
     ControllerImpl(ControllerInner innerObject, com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "controllers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "controllers");
     }
 
     public Controller refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getControllers()
-                .getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Controller refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getControllers()
-                .getByResourceGroupWithResponse(resourceGroupName, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getControllers()
+            .getByResourceGroupWithResponse(resourceGroupName, name, context)
+            .getValue();
         return this;
     }
 
     public Response<ControllerConnectionDetailsList> listConnectionDetailsWithResponse(
         ListConnectionDetailsParameters listConnectionDetailsParameters, Context context) {
-        return serviceManager
-            .controllers()
+        return serviceManager.controllers()
             .listConnectionDetailsWithResponse(resourceGroupName, name, listConnectionDetailsParameters, context);
     }
 
-    public ControllerConnectionDetailsList listConnectionDetails(
-        ListConnectionDetailsParameters listConnectionDetailsParameters) {
-        return serviceManager
-            .controllers()
+    public ControllerConnectionDetailsList
+        listConnectionDetails(ListConnectionDetailsParameters listConnectionDetailsParameters) {
+        return serviceManager.controllers()
             .listConnectionDetails(resourceGroupName, name, listConnectionDetailsParameters);
     }
 
@@ -218,8 +207,7 @@ public final class ControllerImpl implements Controller, Controller.Definition, 
             this.innerModel().withTargetContainerHostCredentialsBase64(targetContainerHostCredentialsBase64);
             return this;
         } else {
-            this
-                .updateControllerUpdateParameters
+            this.updateControllerUpdateParameters
                 .withTargetContainerHostCredentialsBase64(targetContainerHostCredentialsBase64);
             return this;
         }

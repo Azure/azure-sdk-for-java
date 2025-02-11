@@ -43,15 +43,15 @@ public class WindowsCredentialAccessor {
         WindowsCredentialApi.PCREDENTIAL pcredential = new WindowsCredentialApi.PCREDENTIAL();
         try {
             boolean readOk = accessor.CredRead(String.format("%s/%s", serviceName, accountName),
-                    WindowsCredentialApi.CRED_TYPE_GENERIC, 0, pcredential);
+                WindowsCredentialApi.CRED_TYPE_GENERIC, 0, pcredential);
 
             if (!readOk) {
                 int rc = Kernel32.INSTANCE.GetLastError();
                 String errMsg = Kernel32Util.formatMessage(rc);
                 throw LOGGER.logExceptionAsError(new RuntimeException(errMsg));
             }
-            final WindowsCredentialApi.CREDENTIAL credential =
-                    new WindowsCredentialApi.CREDENTIAL(pcredential.credential);
+            final WindowsCredentialApi.CREDENTIAL credential
+                = new WindowsCredentialApi.CREDENTIAL(pcredential.credential);
 
             byte[] secretBytes = credential.CredentialBlob.getByteArray(0, credential.CredentialBlobSize);
             return new String(secretBytes, StandardCharsets.UTF_8);

@@ -15,40 +15,29 @@ import org.junit.jupiter.api.Assertions;
 public final class EnvironmentCreateOrUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentCreateOrUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"EnvironmentCreateOrUpdateParameters\",\"sku\":{\"name\":\"L1\",\"capacity\":900623903},\"location\":\"lniwpwcukjfkgiaw\",\"tags\":{\"dhsgcba\":\"ryplwckbasyypn\",\"dlikwyqkgfgibma\":\"phejkotynqgoulz\",\"yb\":\"gakeqsr\",\"lmmnkzsmodmglo\":\"qqedqytbciqfou\"}}")
-                .toObject(EnvironmentCreateOrUpdateParameters.class);
-        Assertions.assertEquals("lniwpwcukjfkgiaw", model.location());
-        Assertions.assertEquals("ryplwckbasyypn", model.tags().get("dhsgcba"));
-        Assertions.assertEquals(SkuName.L1, model.sku().name());
-        Assertions.assertEquals(900623903, model.sku().capacity());
+        EnvironmentCreateOrUpdateParameters model = BinaryData.fromString(
+            "{\"kind\":\"EnvironmentCreateOrUpdateParameters\",\"sku\":{\"name\":\"P1\",\"capacity\":974943815},\"location\":\"ktzlcuiywg\",\"tags\":{\"gpphrcgyn\":\"gndrvynh\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\",\"pmivkwlzu\":\"c\",\"ebxetqgtzxdp\":\"ccfwnfnbacfion\"}}")
+            .toObject(EnvironmentCreateOrUpdateParameters.class);
+        Assertions.assertEquals("ktzlcuiywg", model.location());
+        Assertions.assertEquals("gndrvynh", model.tags().get("gpphrcgyn"));
+        Assertions.assertEquals(SkuName.P1, model.sku().name());
+        Assertions.assertEquals(974943815, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentCreateOrUpdateParameters model =
-            new EnvironmentCreateOrUpdateParameters()
-                .withLocation("lniwpwcukjfkgiaw")
-                .withTags(
-                    mapOf(
-                        "dhsgcba",
-                        "ryplwckbasyypn",
-                        "dlikwyqkgfgibma",
-                        "phejkotynqgoulz",
-                        "yb",
-                        "gakeqsr",
-                        "lmmnkzsmodmglo",
-                        "qqedqytbciqfou"))
-                .withSku(new Sku().withName(SkuName.L1).withCapacity(900623903));
+        EnvironmentCreateOrUpdateParameters model = new EnvironmentCreateOrUpdateParameters().withLocation("ktzlcuiywg")
+            .withTags(mapOf("gpphrcgyn", "gndrvynh", "fsxlzevgbmqjqa", "ocpecfvmmco", "pmivkwlzu", "c", "ebxetqgtzxdp",
+                "ccfwnfnbacfion"))
+            .withSku(new Sku().withName(SkuName.P1).withCapacity(974943815));
         model = BinaryData.fromObject(model).toObject(EnvironmentCreateOrUpdateParameters.class);
-        Assertions.assertEquals("lniwpwcukjfkgiaw", model.location());
-        Assertions.assertEquals("ryplwckbasyypn", model.tags().get("dhsgcba"));
-        Assertions.assertEquals(SkuName.L1, model.sku().name());
-        Assertions.assertEquals(900623903, model.sku().capacity());
+        Assertions.assertEquals("ktzlcuiywg", model.location());
+        Assertions.assertEquals("gndrvynh", model.tags().get("gpphrcgyn"));
+        Assertions.assertEquals(SkuName.P1, model.sku().name());
+        Assertions.assertEquals(974943815, model.sku().capacity());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

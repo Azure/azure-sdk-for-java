@@ -44,8 +44,8 @@ public final class DeploymentsImpl implements Deployments {
 
     public Response<Deployment> getWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String deploymentName, Context context) {
-        DeploymentsGetResponse inner = this.serviceClient().getWithResponse(resourceGroupName, serviceName,
-            workspaceName, apiName, deploymentName, context);
+        DeploymentsGetResponse inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, deploymentName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DeploymentImpl(inner.getValue(), this.manager()));
@@ -67,8 +67,8 @@ public final class DeploymentsImpl implements Deployments {
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String deploymentName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, workspaceName, apiName,
-            deploymentName, context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, serviceName, workspaceName, apiName, deploymentName, context);
     }
 
     public void delete(String resourceGroupName, String serviceName, String workspaceName, String apiName,
@@ -78,8 +78,8 @@ public final class DeploymentsImpl implements Deployments {
 
     public Response<Void> headWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String deploymentName, Context context) {
-        return this.serviceClient().headWithResponse(resourceGroupName, serviceName, workspaceName, apiName,
-            deploymentName, context);
+        return this.serviceClient()
+            .headWithResponse(resourceGroupName, serviceName, workspaceName, apiName, deploymentName, context);
     }
 
     public void head(String resourceGroupName, String serviceName, String workspaceName, String apiName,

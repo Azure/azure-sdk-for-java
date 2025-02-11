@@ -23,8 +23,8 @@ public interface SqlSyncMemberOperations
      * @param name the name of the child resource
      * @return an immutable representation of the resource
      */
-    SqlSyncMember getBySqlServer(
-        String resourceGroupName, String sqlServerName, String databaseName, String syncGroupName, String name);
+    SqlSyncMember getBySqlServer(String resourceGroupName, String sqlServerName, String databaseName,
+        String syncGroupName, String name);
 
     /**
      * Asynchronously gets the information about a child resource from Azure SQL server, identifying it by its name and
@@ -37,21 +37,20 @@ public interface SqlSyncMemberOperations
      * @param name the name of the child resource
      * @return a representation of the deferred computation of this call returning the found resource
      */
-    Mono<SqlSyncMember> getBySqlServerAsync(
-        String resourceGroupName, String sqlServerName, String databaseName, String syncGroupName, String name);
+    Mono<SqlSyncMember> getBySqlServerAsync(String resourceGroupName, String sqlServerName, String databaseName,
+        String syncGroupName, String name);
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface SqlSyncMemberOperationsDefinition
-        extends SqlSyncMemberOperations.DefinitionStages.WithSqlServer,
-            SqlSyncMemberOperations.DefinitionStages.WithSyncMemberDatabase,
-            SqlSyncMemberOperations.DefinitionStages.WithSyncGroupName,
-            SqlSyncMemberOperations.DefinitionStages.WithMemberSqlServer,
-            SqlSyncMemberOperations.DefinitionStages.WithMemberSqlDatabase,
-            SqlSyncMemberOperations.DefinitionStages.WithMemberUserName,
-            SqlSyncMemberOperations.DefinitionStages.WithMemberPassword,
-            SqlSyncMemberOperations.DefinitionStages.WithMemberDatabaseType,
-            SqlSyncMemberOperations.DefinitionStages.WithSyncDirection,
-            SqlSyncMemberOperations.DefinitionStages.WithCreate {
+    interface SqlSyncMemberOperationsDefinition extends SqlSyncMemberOperations.DefinitionStages.WithSqlServer,
+        SqlSyncMemberOperations.DefinitionStages.WithSyncMemberDatabase,
+        SqlSyncMemberOperations.DefinitionStages.WithSyncGroupName,
+        SqlSyncMemberOperations.DefinitionStages.WithMemberSqlServer,
+        SqlSyncMemberOperations.DefinitionStages.WithMemberSqlDatabase,
+        SqlSyncMemberOperations.DefinitionStages.WithMemberUserName,
+        SqlSyncMemberOperations.DefinitionStages.WithMemberPassword,
+        SqlSyncMemberOperations.DefinitionStages.WithMemberDatabaseType,
+        SqlSyncMemberOperations.DefinitionStages.WithSyncDirection,
+        SqlSyncMemberOperations.DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the SQL Sync Member definition stages. */
@@ -65,8 +64,8 @@ public interface SqlSyncMemberOperations
              * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
-            SqlSyncMemberOperations.DefinitionStages.WithSyncMemberDatabase withExistingSqlServer(
-                String resourceGroupName, String sqlServerName);
+            SqlSyncMemberOperations.DefinitionStages.WithSyncMemberDatabase
+                withExistingSqlServer(String resourceGroupName, String sqlServerName);
 
             /**
              * Sets the parent SQL server for the new Sync Member.
@@ -74,8 +73,8 @@ public interface SqlSyncMemberOperations
              * @param sqlSyncGroup the parent SQL Sync Group
              * @return The next stage of the definition.
              */
-            SqlSyncMemberOperations.DefinitionStages.WithMemberSqlServer withExistingSyncGroup(
-                SqlSyncGroup sqlSyncGroup);
+            SqlSyncMemberOperations.DefinitionStages.WithMemberSqlServer
+                withExistingSyncGroup(SqlSyncGroup sqlSyncGroup);
         }
 
         /** The SQL Sync Member definition to set the parent database name. */
@@ -97,8 +96,8 @@ public interface SqlSyncMemberOperations
              * @param syncGroupName the name of the sync group on which the Sync Member is hosted
              * @return The next stage of the definition.
              */
-            SqlSyncMemberOperations.DefinitionStages.WithMemberSqlServer withExistingSyncGroupName(
-                String syncGroupName);
+            SqlSyncMemberOperations.DefinitionStages.WithMemberSqlServer
+                withExistingSyncGroupName(String syncGroupName);
         }
 
         /** The SQL Sync Member definition to set the member server and database. */
@@ -109,8 +108,8 @@ public interface SqlSyncMemberOperations
              * @param sqlServerName the member SQL server name value to set
              * @return The next stage of the definition.
              */
-            SqlSyncMemberOperations.DefinitionStages.WithMemberSqlDatabase withMemberSqlServerName(
-                String sqlServerName);
+            SqlSyncMemberOperations.DefinitionStages.WithMemberSqlDatabase
+                withMemberSqlServerName(String sqlServerName);
 
             /**
              * Sets the member SQL Database.
@@ -129,8 +128,8 @@ public interface SqlSyncMemberOperations
              * @param sqlDatabaseName the member SQL Database name value to set
              * @return The next stage of the definition.
              */
-            SqlSyncMemberOperations.DefinitionStages.WithMemberUserName withMemberSqlDatabaseName(
-                String sqlDatabaseName);
+            SqlSyncMemberOperations.DefinitionStages.WithMemberUserName
+                withMemberSqlDatabaseName(String sqlDatabaseName);
         }
 
         /** The SQL Sync Member definition to set the member database user name. */
@@ -163,8 +162,8 @@ public interface SqlSyncMemberOperations
              * @param databaseType the database type value to set
              * @return The next stage of the definition.
              */
-            SqlSyncMemberOperations.DefinitionStages.WithSyncDirection withMemberDatabaseType(
-                SyncMemberDbType databaseType);
+            SqlSyncMemberOperations.DefinitionStages.WithSyncDirection
+                withMemberDatabaseType(SyncMemberDbType databaseType);
         }
 
         /** The SQL Sync Member definition to set the sync direction. */

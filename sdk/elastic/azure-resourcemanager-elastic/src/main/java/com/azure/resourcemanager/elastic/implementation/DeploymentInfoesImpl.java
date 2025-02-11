@@ -20,21 +20,18 @@ public final class DeploymentInfoesImpl implements DeploymentInfoes {
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public DeploymentInfoesImpl(
-        DeploymentInfoesClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    public DeploymentInfoesImpl(DeploymentInfoesClient innerClient,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<DeploymentInfoResponse> listWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<DeploymentInfoResponseInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, monitorName, context);
+    public Response<DeploymentInfoResponse> listWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<DeploymentInfoResponseInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, monitorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DeploymentInfoResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

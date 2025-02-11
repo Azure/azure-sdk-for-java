@@ -9,20 +9,18 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import reactor.core.publisher.Mono;
 
 /** Implementation for ApplicationSecurityGroup and its create and update interfaces. */
-class ApplicationSecurityGroupImpl
-    extends GroupableResourceImpl<
-        ApplicationSecurityGroup, ApplicationSecurityGroupInner, ApplicationSecurityGroupImpl, NetworkManager>
+class ApplicationSecurityGroupImpl extends
+    GroupableResourceImpl<ApplicationSecurityGroup, ApplicationSecurityGroupInner, ApplicationSecurityGroupImpl, NetworkManager>
     implements ApplicationSecurityGroup, ApplicationSecurityGroup.Definition, ApplicationSecurityGroup.Update {
 
-    ApplicationSecurityGroupImpl(
-        final String name, final ApplicationSecurityGroupInner innerModel, final NetworkManager networkManager) {
+    ApplicationSecurityGroupImpl(final String name, final ApplicationSecurityGroupInner innerModel,
+        final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
     @Override
     protected Mono<ApplicationSecurityGroupInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getApplicationSecurityGroups()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -30,8 +28,7 @@ class ApplicationSecurityGroupImpl
 
     @Override
     public Mono<ApplicationSecurityGroup> createResourceAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getApplicationSecurityGroups()
             .createOrUpdateAsync(resourceGroupName(), name(), innerModel())

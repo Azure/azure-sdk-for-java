@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationTagResourceContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationTagResourceContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"kj\",\"name\":\"eslabnsmjkwynq\",\"apiName\":\"ekqsykvwjtqpkev\",\"apiRevision\":\"ltjcrspxk\",\"apiVersion\":\"r\",\"description\":\"lfg\",\"method\":\"nnnoytz\",\"urlTemplate\":\"sewxigpxvkqm\"}")
-                .toObject(OperationTagResourceContractProperties.class);
+        OperationTagResourceContractProperties model = BinaryData.fromString(
+            "{\"id\":\"kj\",\"name\":\"eslabnsmjkwynq\",\"apiName\":\"ekqsykvwjtqpkev\",\"apiRevision\":\"ltjcrspxk\",\"apiVersion\":\"r\",\"description\":\"lfg\",\"method\":\"nnnoytz\",\"urlTemplate\":\"sewxigpxvkqm\"}")
+            .toObject(OperationTagResourceContractProperties.class);
         Assertions.assertEquals("kj", model.id());
     }
 

@@ -5,39 +5,46 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Shipment pick up request details. */
+/**
+ * Shipment pick up request details.
+ */
 @Fluent
-public final class ShipmentPickUpRequest {
+public final class ShipmentPickUpRequest implements JsonSerializable<ShipmentPickUpRequest> {
     /*
      * Minimum date after which the pick up should commence, this must be in local time of pick up area.
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * Maximum date before which the pick up should commence, this must be in local time of pick up area.
      */
-    @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
      * Shipment Location in the pickup place. Eg.front desk
      */
-    @JsonProperty(value = "shipmentLocation", required = true)
     private String shipmentLocation;
 
-    /** Creates an instance of ShipmentPickUpRequest class. */
+    /**
+     * Creates an instance of ShipmentPickUpRequest class.
+     */
     public ShipmentPickUpRequest() {
     }
 
     /**
      * Get the startTime property: Minimum date after which the pick up should commence, this must be in local time of
      * pick up area.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -47,7 +54,7 @@ public final class ShipmentPickUpRequest {
     /**
      * Set the startTime property: Minimum date after which the pick up should commence, this must be in local time of
      * pick up area.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ShipmentPickUpRequest object itself.
      */
@@ -59,7 +66,7 @@ public final class ShipmentPickUpRequest {
     /**
      * Get the endTime property: Maximum date before which the pick up should commence, this must be in local time of
      * pick up area.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -69,7 +76,7 @@ public final class ShipmentPickUpRequest {
     /**
      * Set the endTime property: Maximum date before which the pick up should commence, this must be in local time of
      * pick up area.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the ShipmentPickUpRequest object itself.
      */
@@ -80,7 +87,7 @@ public final class ShipmentPickUpRequest {
 
     /**
      * Get the shipmentLocation property: Shipment Location in the pickup place. Eg.front desk.
-     *
+     * 
      * @return the shipmentLocation value.
      */
     public String shipmentLocation() {
@@ -89,7 +96,7 @@ public final class ShipmentPickUpRequest {
 
     /**
      * Set the shipmentLocation property: Shipment Location in the pickup place. Eg.front desk.
-     *
+     * 
      * @param shipmentLocation the shipmentLocation value to set.
      * @return the ShipmentPickUpRequest object itself.
      */
@@ -100,27 +107,72 @@ public final class ShipmentPickUpRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property startTime in model ShipmentPickUpRequest"));
         }
         if (endTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endTime in model ShipmentPickUpRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property endTime in model ShipmentPickUpRequest"));
         }
         if (shipmentLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property shipmentLocation in model ShipmentPickUpRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property shipmentLocation in model ShipmentPickUpRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ShipmentPickUpRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("shipmentLocation", this.shipmentLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ShipmentPickUpRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ShipmentPickUpRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ShipmentPickUpRequest.
+     */
+    public static ShipmentPickUpRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ShipmentPickUpRequest deserializedShipmentPickUpRequest = new ShipmentPickUpRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedShipmentPickUpRequest.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedShipmentPickUpRequest.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("shipmentLocation".equals(fieldName)) {
+                    deserializedShipmentPickUpRequest.shipmentLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedShipmentPickUpRequest;
+        });
+    }
 }

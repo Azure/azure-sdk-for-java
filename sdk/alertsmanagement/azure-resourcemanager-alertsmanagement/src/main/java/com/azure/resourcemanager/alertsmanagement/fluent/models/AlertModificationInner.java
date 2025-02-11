@@ -6,21 +6,46 @@ package com.azure.resourcemanager.alertsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.alertsmanagement.models.AlertModificationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Alert Modification details. */
+/**
+ * Alert Modification details.
+ */
 @Fluent
 public final class AlertModificationInner extends ProxyResource {
     /*
      * Properties of the alert modification item.
      */
-    @JsonProperty(value = "properties")
     private AlertModificationProperties properties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AlertModificationInner class.
+     */
+    public AlertModificationInner() {
+    }
 
     /**
      * Get the properties property: Properties of the alert modification item.
-     *
+     * 
      * @return the properties value.
      */
     public AlertModificationProperties properties() {
@@ -29,7 +54,7 @@ public final class AlertModificationInner extends ProxyResource {
 
     /**
      * Set the properties property: Properties of the alert modification item.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AlertModificationInner object itself.
      */
@@ -39,13 +64,86 @@ public final class AlertModificationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertModificationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertModificationInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AlertModificationInner.
+     */
+    public static AlertModificationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertModificationInner deserializedAlertModificationInner = new AlertModificationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAlertModificationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAlertModificationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAlertModificationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAlertModificationInner.properties = AlertModificationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertModificationInner;
+        });
     }
 }

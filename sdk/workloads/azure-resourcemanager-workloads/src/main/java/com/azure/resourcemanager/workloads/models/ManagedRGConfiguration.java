@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Managed resource group configuration. */
+/**
+ * Managed resource group configuration.
+ */
 @Fluent
-public final class ManagedRGConfiguration {
+public final class ManagedRGConfiguration implements JsonSerializable<ManagedRGConfiguration> {
     /*
      * Managed resource group name
      */
-    @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of ManagedRGConfiguration class. */
+    /**
+     * Creates an instance of ManagedRGConfiguration class.
+     */
     public ManagedRGConfiguration() {
     }
 
     /**
      * Get the name property: Managed resource group name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -31,7 +38,7 @@ public final class ManagedRGConfiguration {
 
     /**
      * Set the name property: Managed resource group name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ManagedRGConfiguration object itself.
      */
@@ -42,9 +49,45 @@ public final class ManagedRGConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedRGConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedRGConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedRGConfiguration.
+     */
+    public static ManagedRGConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedRGConfiguration deserializedManagedRGConfiguration = new ManagedRGConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedManagedRGConfiguration.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedRGConfiguration;
+        });
     }
 }

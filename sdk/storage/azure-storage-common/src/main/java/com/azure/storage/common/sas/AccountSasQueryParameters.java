@@ -35,10 +35,9 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
     @Deprecated
     AccountSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSasParameters) {
         super(queryParamsMap, removeSasParameters);
-        this.resourceTypes = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_RESOURCES_TYPES,
-            removeSasParameters);
-        this.services = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICES,
-            removeSasParameters);
+        this.resourceTypes
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_RESOURCES_TYPES, removeSasParameters);
+        this.services = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICES, removeSasParameters);
     }
 
     /**
@@ -60,8 +59,8 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
      */
     @Deprecated
     AccountSasQueryParameters(String version, String services, String resourceTypes, SasProtocol protocol,
-                              OffsetDateTime startTime, OffsetDateTime expiryTime, SasIpRange sasIpRange,
-                              String permissions, String signature) {
+        OffsetDateTime startTime, OffsetDateTime expiryTime, SasIpRange sasIpRange, String permissions,
+        String signature) {
         super(version, protocol, startTime, expiryTime, sasIpRange, permissions, signature);
         this.services = services;
         this.resourceTypes = resourceTypes;

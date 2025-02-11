@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class PatchOperation extends ExpandableStringEnum<PatchOperation> {
      * @param name a name to look for.
      * @return the corresponding PatchOperation.
      */
-    @JsonCreator
     public static PatchOperation fromString(String name) {
         return fromString(name, PatchOperation.class);
     }

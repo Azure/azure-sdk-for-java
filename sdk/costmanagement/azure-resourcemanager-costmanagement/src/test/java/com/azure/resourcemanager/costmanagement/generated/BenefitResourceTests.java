@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class BenefitResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BenefitResource model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"IncludedQuantity\",\"id\":\"kkbnu\",\"name\":\"rywvtylbfpn\",\"type\":\"urdoi\"}")
-                .toObject(BenefitResource.class);
+        BenefitResource model = BinaryData
+            .fromString(
+                "{\"kind\":\"IncludedQuantity\",\"id\":\"nlzafwxudgnh\",\"name\":\"ookrtalvnbw\",\"type\":\"pbeme\"}")
+            .toObject(BenefitResource.class);
         Assertions.assertEquals(BenefitKind.INCLUDED_QUANTITY, model.kind());
     }
 

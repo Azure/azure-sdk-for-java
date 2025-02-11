@@ -19,80 +19,131 @@ import java.time.OffsetDateTime;
  * Type representing service bus topic subscription.
  */
 @Fluent
-public interface ServiceBusSubscription extends
-    IndependentChildResource<ServiceBusManager, SBSubscriptionInner>,
-    Refreshable<ServiceBusSubscription>,
-    Updatable<ServiceBusSubscription.Update> {
+public interface ServiceBusSubscription extends IndependentChildResource<ServiceBusManager, SBSubscriptionInner>,
+    Refreshable<ServiceBusSubscription>, Updatable<ServiceBusSubscription.Update> {
     /**
+     * Gets the exact time the message was created.
+     *
      * @return the exact time the message was created
      */
     OffsetDateTime createdAt();
+
     /**
+     * Gets last time there was a receive request to this subscription.
+     *
      * @return last time there was a receive request to this subscription
      */
     OffsetDateTime accessedAt();
+
     /**
+     * Gets the exact time the message was updated.
+     *
      * @return the exact time the message was updated
      */
     OffsetDateTime updatedAt();
+
     /**
+     * Checks whether server-side batched operations are enabled.
+     *
      * @return indicates whether server-side batched operations are enabled
      */
     boolean isBatchedOperationsEnabled();
+
     /**
+     * Checks whether this subscription has dead letter support when a message expires.
+     *
      * @return indicates whether this subscription has dead letter support when a message expires
      */
     boolean isDeadLetteringEnabledForExpiredMessages();
+
     /**
+     * Checks whether the subscription supports sessions.
+     *
      * @return indicates whether the subscription supports sessions
      */
     boolean isSessionEnabled();
+
     /**
+     * Gets the duration of peek-lock which is the amount of time that the message is locked for other receivers.
+     *
      * @return the duration of peek-lock which is the amount of time that the message is locked for other receivers
      */
     long lockDurationInSeconds();
+
     /**
+     * Gets the idle duration after which the subscription is automatically deleted.
+     *
      * @return the idle duration after which the subscription is automatically deleted.
      */
     long deleteOnIdleDurationInMinutes();
+
     /**
+     * Gets the duration after which the message expires.
+     *
      * @return the duration after which the message expires, starting from when the message is sent to subscription.
      */
     Duration defaultMessageTtlDuration();
+
     /**
+     * Gets the maximum number of a message delivery before marking it as dead-lettered.
+     *
      * @return the maximum number of a message delivery before marking it as dead-lettered
      */
     int maxDeliveryCountBeforeDeadLetteringMessage();
+
     /**
+     * Gets the number of messages in the subscription.
+     *
      * @return the number of messages in the subscription
      */
     long messageCount();
+
     /**
+     * Gets number of active messages in the subscription.
+     *
      * @return number of active messages in the subscription
      */
     long activeMessageCount();
+
     /**
+     * Gets number of messages in the dead-letter subscription.
+     *
      * @return number of messages in the dead-letter subscription
      */
     long deadLetterMessageCount();
+
     /**
+     * Gets number of messages sent to the subscription that are yet to be released for consumption.
+     *
      * @return number of messages sent to the subscription that are yet to be released
      * for consumption
      */
     long scheduledMessageCount();
+
     /**
+     * Gets number of messages transferred into dead letters.
+     *
      * @return number of messages transferred into dead letters
      */
     long transferDeadLetterMessageCount();
+
     /**
+     * Gets number of messages transferred to another queue, topic, or subscription.
+     *
      * @return number of messages transferred to another queue, topic, or subscription
      */
     long transferMessageCount();
+
     /**
+     * Gets the current status of the subscription.
+     *
      * @return the current status of the subscription
      */
     EntityStatus status();
+
     /**
+     * Checks whether subscription has dead letter support on filter evaluation exceptions.
+     *
      * @return indicates whether subscription has dead letter support on filter evaluation exceptions
      */
     boolean isDeadLetteringEnabledForFilterEvaluationFailedMessages();
@@ -100,9 +151,8 @@ public interface ServiceBusSubscription extends
     /**
      * The entirety of the subscription definition.
      */
-    interface Definition extends
-            ServiceBusSubscription.DefinitionStages.Blank,
-            ServiceBusSubscription.DefinitionStages.WithCreate {
+    interface Definition
+        extends ServiceBusSubscription.DefinitionStages.Blank, ServiceBusSubscription.DefinitionStages.WithCreate {
     }
 
     /**
@@ -253,29 +303,24 @@ public interface ServiceBusSubscription extends
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends
-            Creatable<ServiceBusSubscription>,
-            ServiceBusSubscription.DefinitionStages.WithDeleteOnIdle,
+        interface WithCreate
+            extends Creatable<ServiceBusSubscription>, ServiceBusSubscription.DefinitionStages.WithDeleteOnIdle,
             ServiceBusSubscription.DefinitionStages.WithMessageLockDuration,
             ServiceBusSubscription.DefinitionStages.WithDefaultMessageTTL,
             ServiceBusSubscription.DefinitionStages.WithSession,
             ServiceBusSubscription.DefinitionStages.WithMessageBatching,
             ServiceBusSubscription.DefinitionStages.WithExpiredMessageMovedToDeadLetterSubscription,
             ServiceBusSubscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount,
-            ServiceBusSubscription.DefinitionStages.
-                WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
+            ServiceBusSubscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
         }
     }
 
     /**
      * The template for a subscription update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-        Appliable<ServiceBusSubscription>,
-        ServiceBusSubscription.UpdateStages.WithDeleteOnIdle,
+    interface Update extends Appliable<ServiceBusSubscription>, ServiceBusSubscription.UpdateStages.WithDeleteOnIdle,
         ServiceBusSubscription.UpdateStages.WithMessageLockDuration,
-        ServiceBusSubscription.UpdateStages.WithDefaultMessageTTL,
-        ServiceBusSubscription.UpdateStages.WithSession,
+        ServiceBusSubscription.UpdateStages.WithDefaultMessageTTL, ServiceBusSubscription.UpdateStages.WithSession,
         ServiceBusSubscription.UpdateStages.WithMessageBatching,
         ServiceBusSubscription.UpdateStages.WithExpiredMessageMovedToDeadLetterSubscription,
         ServiceBusSubscription.UpdateStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,

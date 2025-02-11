@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class BulkCreationParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BulkCreationParameters model =
-            BinaryData.fromString("{\"instanceCount\":84302397}").toObject(BulkCreationParameters.class);
+        BulkCreationParameters model
+            = BinaryData.fromString("{\"instanceCount\":84302397}").toObject(BulkCreationParameters.class);
         Assertions.assertEquals(84302397, model.instanceCount());
     }
 

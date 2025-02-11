@@ -5,19 +5,25 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Describes the properties of a Fade effect applied to the input media. */
+/**
+ * Describes the properties of a Fade effect applied to the input media.
+ */
 @Fluent
-public final class Fade {
+public final class Fade implements JsonSerializable<Fade> {
     /*
      * The Duration of the fade effect in the video. The value can be in ISO 8601 format (For example, PT05S to fade
      * In/Out a color during 5 seconds), or a frame count (For example, 10 to fade 10 frames from the start time), or a
      * relative value to stream duration (For example, 10% to fade 10% of stream duration)
      */
-    @JsonProperty(value = "duration", required = true)
     private Duration duration;
 
     /*
@@ -25,18 +31,18 @@ public final class Fade {
      * https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color_keywords or an RGB/hex value: e.g:
      * rgb(255,0,0), 0xFF0000 or #FF0000
      */
-    @JsonProperty(value = "fadeColor", required = true)
     private String fadeColor;
 
     /*
-     * The position in the input video from where to start fade. The value can be in ISO 8601 format (For example,
-     * PT05S to start at 5 seconds), or a frame count (For example, 10 to start at the 10th frame), or a relative value
-     * to stream duration (For example, 10% to start at 10% of stream duration). Default is 0
+     * The position in the input video from where to start fade. The value can be in ISO 8601 format (For example, PT05S
+     * to start at 5 seconds), or a frame count (For example, 10 to start at the 10th frame), or a relative value to
+     * stream duration (For example, 10% to start at 10% of stream duration). Default is 0
      */
-    @JsonProperty(value = "start")
     private String start;
 
-    /** Creates an instance of Fade class. */
+    /**
+     * Creates an instance of Fade class.
+     */
     public Fade() {
     }
 
@@ -44,7 +50,7 @@ public final class Fade {
      * Get the duration property: The Duration of the fade effect in the video. The value can be in ISO 8601 format (For
      * example, PT05S to fade In/Out a color during 5 seconds), or a frame count (For example, 10 to fade 10 frames from
      * the start time), or a relative value to stream duration (For example, 10% to fade 10% of stream duration).
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -55,7 +61,7 @@ public final class Fade {
      * Set the duration property: The Duration of the fade effect in the video. The value can be in ISO 8601 format (For
      * example, PT05S to fade In/Out a color during 5 seconds), or a frame count (For example, 10 to fade 10 frames from
      * the start time), or a relative value to stream duration (For example, 10% to fade 10% of stream duration).
-     *
+     * 
      * @param duration the duration value to set.
      * @return the Fade object itself.
      */
@@ -68,7 +74,7 @@ public final class Fade {
      * Get the fadeColor property: The Color for the fade In/Out. it can be on the CSS Level1 colors
      * https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color_keywords or an RGB/hex value: e.g:
      * rgb(255,0,0), 0xFF0000 or #FF0000.
-     *
+     * 
      * @return the fadeColor value.
      */
     public String fadeColor() {
@@ -79,7 +85,7 @@ public final class Fade {
      * Set the fadeColor property: The Color for the fade In/Out. it can be on the CSS Level1 colors
      * https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color_keywords or an RGB/hex value: e.g:
      * rgb(255,0,0), 0xFF0000 or #FF0000.
-     *
+     * 
      * @param fadeColor the fadeColor value to set.
      * @return the Fade object itself.
      */
@@ -92,7 +98,7 @@ public final class Fade {
      * Get the start property: The position in the input video from where to start fade. The value can be in ISO 8601
      * format (For example, PT05S to start at 5 seconds), or a frame count (For example, 10 to start at the 10th frame),
      * or a relative value to stream duration (For example, 10% to start at 10% of stream duration). Default is 0.
-     *
+     * 
      * @return the start value.
      */
     public String start() {
@@ -103,7 +109,7 @@ public final class Fade {
      * Set the start property: The position in the input video from where to start fade. The value can be in ISO 8601
      * format (For example, PT05S to start at 5 seconds), or a frame count (For example, 10 to start at the 10th frame),
      * or a relative value to stream duration (For example, 10% to start at 10% of stream duration). Default is 0.
-     *
+     * 
      * @param start the start value to set.
      * @return the Fade object itself.
      */
@@ -114,19 +120,63 @@ public final class Fade {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (duration() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property duration in model Fade"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property duration in model Fade"));
         }
         if (fadeColor() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property fadeColor in model Fade"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property fadeColor in model Fade"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Fade.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("duration", CoreUtils.durationToStringWithDays(this.duration));
+        jsonWriter.writeStringField("fadeColor", this.fadeColor);
+        jsonWriter.writeStringField("start", this.start);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Fade from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Fade if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Fade.
+     */
+    public static Fade fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Fade deserializedFade = new Fade();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("duration".equals(fieldName)) {
+                    deserializedFade.duration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("fadeColor".equals(fieldName)) {
+                    deserializedFade.fadeColor = reader.getString();
+                } else if ("start".equals(fieldName)) {
+                    deserializedFade.start = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFade;
+        });
+    }
 }

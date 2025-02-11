@@ -5,13 +5,15 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Base for all elements
- * Based on [FHIR Element](https://www.hl7.org/fhir/datatypes.html#Element).
+ * Based on [FHIR Element](https://www.hl7.org/fhir/R4/element.html).
  */
 @Fluent
 public final class FhirR4Extension extends FhirR4Element {
@@ -20,91 +22,78 @@ public final class FhirR4Extension extends FhirR4Element {
      * Source of the definition for the extension code - a logical name or a URL.
      */
     @Generated
-    @JsonProperty(value = "url")
     private final String url;
 
     /*
      * Value as Quantity
      */
     @Generated
-    @JsonProperty(value = "valueQuantity")
     private FhirR4Quantity valueQuantity;
 
     /*
      * Value as CodeableConcept
      */
     @Generated
-    @JsonProperty(value = "valueCodeableConcept")
     private FhirR4CodeableConcept valueCodeableConcept;
 
     /*
      * Value as string
      */
     @Generated
-    @JsonProperty(value = "valueString")
     private String valueString;
 
     /*
      * Value as boolean
      */
     @Generated
-    @JsonProperty(value = "valueBoolean")
     private Boolean valueBoolean;
 
     /*
      * Value as integer
      */
     @Generated
-    @JsonProperty(value = "valueInteger")
     private Integer valueInteger;
 
     /*
      * Value as Range.
      */
     @Generated
-    @JsonProperty(value = "valueRange")
     private FhirR4Range valueRange;
 
     /*
      * Value as Ratio.
      */
     @Generated
-    @JsonProperty(value = "valueRatio")
     private FhirR4Ratio valueRatio;
 
     /*
      * Value as SampledData.
      */
     @Generated
-    @JsonProperty(value = "valueSampledData")
     private FhirR4SampledData valueSampledData;
 
     /*
      * Value as time (hh:mm:ss)
      */
     @Generated
-    @JsonProperty(value = "valueTime")
     private String valueTime;
 
     /*
      * Value as dateTime.
      */
     @Generated
-    @JsonProperty(value = "valueDateTime")
     private String valueDateTime;
 
     /*
      * Value as Period.
      */
     @Generated
-    @JsonProperty(value = "valuePeriod")
     private FhirR4Period valuePeriod;
 
     /*
      * Value as reference.
      */
     @Generated
-    @JsonProperty(value = "valueReference")
     private FhirR4Reference valueReference;
 
     /**
@@ -113,8 +102,7 @@ public final class FhirR4Extension extends FhirR4Element {
      * @param url the url value to set.
      */
     @Generated
-    @JsonCreator
-    public FhirR4Extension(@JsonProperty(value = "url") String url) {
+    public FhirR4Extension(String url) {
         this.url = url;
     }
 
@@ -410,5 +398,113 @@ public final class FhirR4Extension extends FhirR4Element {
     public FhirR4Extension setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeJsonField("valueQuantity", this.valueQuantity);
+        jsonWriter.writeJsonField("valueCodeableConcept", this.valueCodeableConcept);
+        jsonWriter.writeStringField("valueString", this.valueString);
+        jsonWriter.writeBooleanField("valueBoolean", this.valueBoolean);
+        jsonWriter.writeNumberField("valueInteger", this.valueInteger);
+        jsonWriter.writeJsonField("valueRange", this.valueRange);
+        jsonWriter.writeJsonField("valueRatio", this.valueRatio);
+        jsonWriter.writeJsonField("valueSampledData", this.valueSampledData);
+        jsonWriter.writeStringField("valueTime", this.valueTime);
+        jsonWriter.writeStringField("valueDateTime", this.valueDateTime);
+        jsonWriter.writeJsonField("valuePeriod", this.valuePeriod);
+        jsonWriter.writeJsonField("valueReference", this.valueReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4Extension from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4Extension if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirR4Extension.
+     */
+    @Generated
+    public static FhirR4Extension fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            List<FhirR4Extension> extension = null;
+            String url = null;
+            FhirR4Quantity valueQuantity = null;
+            FhirR4CodeableConcept valueCodeableConcept = null;
+            String valueString = null;
+            Boolean valueBoolean = null;
+            Integer valueInteger = null;
+            FhirR4Range valueRange = null;
+            FhirR4Ratio valueRatio = null;
+            FhirR4SampledData valueSampledData = null;
+            String valueTime = null;
+            String valueDateTime = null;
+            FhirR4Period valuePeriod = null;
+            FhirR4Reference valueReference = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                } else if ("valueQuantity".equals(fieldName)) {
+                    valueQuantity = FhirR4Quantity.fromJson(reader);
+                } else if ("valueCodeableConcept".equals(fieldName)) {
+                    valueCodeableConcept = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("valueString".equals(fieldName)) {
+                    valueString = reader.getString();
+                } else if ("valueBoolean".equals(fieldName)) {
+                    valueBoolean = reader.getNullable(JsonReader::getBoolean);
+                } else if ("valueInteger".equals(fieldName)) {
+                    valueInteger = reader.getNullable(JsonReader::getInt);
+                } else if ("valueRange".equals(fieldName)) {
+                    valueRange = FhirR4Range.fromJson(reader);
+                } else if ("valueRatio".equals(fieldName)) {
+                    valueRatio = FhirR4Ratio.fromJson(reader);
+                } else if ("valueSampledData".equals(fieldName)) {
+                    valueSampledData = FhirR4SampledData.fromJson(reader);
+                } else if ("valueTime".equals(fieldName)) {
+                    valueTime = reader.getString();
+                } else if ("valueDateTime".equals(fieldName)) {
+                    valueDateTime = reader.getString();
+                } else if ("valuePeriod".equals(fieldName)) {
+                    valuePeriod = FhirR4Period.fromJson(reader);
+                } else if ("valueReference".equals(fieldName)) {
+                    valueReference = FhirR4Reference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FhirR4Extension deserializedFhirR4Extension = new FhirR4Extension(url);
+            deserializedFhirR4Extension.setId(id);
+            deserializedFhirR4Extension.setExtension(extension);
+            deserializedFhirR4Extension.valueQuantity = valueQuantity;
+            deserializedFhirR4Extension.valueCodeableConcept = valueCodeableConcept;
+            deserializedFhirR4Extension.valueString = valueString;
+            deserializedFhirR4Extension.valueBoolean = valueBoolean;
+            deserializedFhirR4Extension.valueInteger = valueInteger;
+            deserializedFhirR4Extension.valueRange = valueRange;
+            deserializedFhirR4Extension.valueRatio = valueRatio;
+            deserializedFhirR4Extension.valueSampledData = valueSampledData;
+            deserializedFhirR4Extension.valueTime = valueTime;
+            deserializedFhirR4Extension.valueDateTime = valueDateTime;
+            deserializedFhirR4Extension.valuePeriod = valuePeriod;
+            deserializedFhirR4Extension.valueReference = valueReference;
+            return deserializedFhirR4Extension;
+        });
     }
 }

@@ -9,8 +9,7 @@ import reactor.core.publisher.Mono;
 
 /** Type representing ManagementPolicies. */
 @Fluent
-public interface ManagementPolicies
-    extends SupportsCreating<ManagementPolicy.DefinitionStages.Blank> {
+public interface ManagementPolicies extends SupportsCreating<ManagementPolicy.DefinitionStages.Blank> {
     /**
      * Gets the managementpolicy associated with the specified storage account.
      *

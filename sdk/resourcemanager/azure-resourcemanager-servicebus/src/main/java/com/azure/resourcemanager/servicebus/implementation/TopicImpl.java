@@ -25,27 +25,15 @@ import java.util.List;
  * Implementation for Topic.
  */
 class TopicImpl
-    extends IndependentChildResourceImpl<
-        Topic,
-        ServiceBusNamespaceImpl,
-        SBTopicInner,
-        TopicImpl,
-        ServiceBusManager>
-    implements
-        Topic,
-        Topic.Definition,
-        Topic.Update {
+    extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceImpl, SBTopicInner, TopicImpl, ServiceBusManager>
+    implements Topic, Topic.Definition, Topic.Update {
     private List<Creatable<ServiceBusSubscription>> subscriptionsToCreate;
     private List<Creatable<TopicAuthorizationRule>> rulesToCreate;
     private List<String> subscriptionsToDelete;
     private List<String> rulesToDelete;
 
-    TopicImpl(String resourceGroupName,
-              String namespaceName,
-              String name,
-              Region region,
-              SBTopicInner inner,
-              ServiceBusManager manager) {
+    TopicImpl(String resourceGroupName, String namespaceName, String name, Region region, SBTopicInner inner,
+        ServiceBusManager manager) {
         super(name, inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
         initChildrenOperationsCache();
@@ -122,8 +110,7 @@ class TopicImpl
 
     @Override
     public long activeMessageCount() {
-        if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().activeMessageCount() == null) {
+        if (this.innerModel().countDetails() == null || this.innerModel().countDetails().activeMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().activeMessageCount());
@@ -132,7 +119,7 @@ class TopicImpl
     @Override
     public long deadLetterMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().deadLetterMessageCount() == null) {
+            || this.innerModel().countDetails().deadLetterMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().deadLetterMessageCount());
@@ -141,7 +128,7 @@ class TopicImpl
     @Override
     public long scheduledMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().scheduledMessageCount() == null) {
+            || this.innerModel().countDetails().scheduledMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().scheduledMessageCount());
@@ -150,7 +137,7 @@ class TopicImpl
     @Override
     public long transferDeadLetterMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().transferDeadLetterMessageCount() == null) {
+            || this.innerModel().countDetails().transferDeadLetterMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().transferDeadLetterMessageCount());
@@ -159,7 +146,7 @@ class TopicImpl
     @Override
     public long transferMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().transferMessageCount() == null) {
+            || this.innerModel().countDetails().transferMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().transferMessageCount());
@@ -180,20 +167,14 @@ class TopicImpl
 
     @Override
     public ServiceBusSubscriptionsImpl subscriptions() {
-        return new ServiceBusSubscriptionsImpl(this.resourceGroupName(),
-                this.parentName,
-                this.name(),
-                this.region(),
-                manager());
+        return new ServiceBusSubscriptionsImpl(this.resourceGroupName(), this.parentName, this.name(), this.region(),
+            manager());
     }
 
     @Override
     public TopicAuthorizationRulesImpl authorizationRules() {
-        return new TopicAuthorizationRulesImpl(this.resourceGroupName(),
-                this.parentName,
-                this.name(),
-                this.region(),
-                manager());
+        return new TopicAuthorizationRulesImpl(this.resourceGroupName(), this.parentName, this.name(), this.region(),
+            manager());
     }
 
     @Override
@@ -310,19 +291,18 @@ class TopicImpl
 
     @Override
     protected Mono<SBTopicInner> getInnerAsync() {
-        return this.manager().serviceClient().getTopics()
-                .getAsync(this.resourceGroupName(),
-                        this.parentName,
-                        this.name());
+        return this.manager()
+            .serviceClient()
+            .getTopics()
+            .getAsync(this.resourceGroupName(), this.parentName, this.name());
     }
 
     @Override
     protected Mono<Topic> createChildResourceAsync() {
-        Mono<SBTopicInner> createTask = this.manager().serviceClient().getTopics()
-            .createOrUpdateAsync(this.resourceGroupName(),
-                    this.parentName,
-                    this.name(),
-                    this.innerModel())
+        Mono<SBTopicInner> createTask = this.manager()
+            .serviceClient()
+            .getTopics()
+            .createOrUpdateAsync(this.resourceGroupName(), this.parentName, this.name(), this.innerModel())
             .map(inner -> {
                 setInner(inner);
                 return inner;
@@ -358,10 +338,7 @@ class TopicImpl
         if (this.rulesToDelete.size() > 0) {
             rulesDeleteStream = this.authorizationRules().deleteByNameAsync(this.rulesToDelete);
         }
-        return Flux.mergeDelayError(32,
-            subscriptionsCreateStream,
-            rulesCreateStream,
-            subscriptionsDeleteStream,
+        return Flux.mergeDelayError(32, subscriptionsCreateStream, rulesCreateStream, subscriptionsDeleteStream,
             rulesDeleteStream);
     }
 }

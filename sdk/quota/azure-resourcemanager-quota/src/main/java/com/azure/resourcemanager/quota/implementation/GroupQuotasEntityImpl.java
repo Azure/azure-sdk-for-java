@@ -7,7 +7,7 @@ package com.azure.resourcemanager.quota.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.quota.fluent.models.GroupQuotasEntityInner;
 import com.azure.resourcemanager.quota.models.GroupQuotasEntity;
-import com.azure.resourcemanager.quota.models.GroupQuotasEntityBase;
+import com.azure.resourcemanager.quota.models.GroupQuotasEntityProperties;
 
 public final class GroupQuotasEntityImpl implements GroupQuotasEntity {
     private GroupQuotasEntityInner innerObject;
@@ -32,7 +32,7 @@ public final class GroupQuotasEntityImpl implements GroupQuotasEntity {
         return this.innerModel().type();
     }
 
-    public GroupQuotasEntityBase properties() {
+    public GroupQuotasEntityProperties properties() {
         return this.innerModel().properties();
     }
 

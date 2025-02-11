@@ -6,33 +6,39 @@ package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPackInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the list of Log Analytics QueryPack resources. */
+/**
+ * Describes the list of Log Analytics QueryPack resources.
+ */
 @Fluent
-public final class LogAnalyticsQueryPackListResult {
+public final class LogAnalyticsQueryPackListResult implements JsonSerializable<LogAnalyticsQueryPackListResult> {
     /*
      * List of Log Analytics QueryPack definitions.
      */
-    @JsonProperty(value = "value", required = true)
     private List<LogAnalyticsQueryPackInner> value;
 
     /*
      * The URI to get the next set of Log Analytics QueryPack definitions if too many QueryPacks where returned in the
      * result set.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LogAnalyticsQueryPackListResult class. */
+    /**
+     * Creates an instance of LogAnalyticsQueryPackListResult class.
+     */
     public LogAnalyticsQueryPackListResult() {
     }
 
     /**
      * Get the value property: List of Log Analytics QueryPack definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<LogAnalyticsQueryPackInner> value() {
@@ -41,7 +47,7 @@ public final class LogAnalyticsQueryPackListResult {
 
     /**
      * Set the value property: List of Log Analytics QueryPack definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the LogAnalyticsQueryPackListResult object itself.
      */
@@ -53,7 +59,7 @@ public final class LogAnalyticsQueryPackListResult {
     /**
      * Get the nextLink property: The URI to get the next set of Log Analytics QueryPack definitions if too many
      * QueryPacks where returned in the result set.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +69,7 @@ public final class LogAnalyticsQueryPackListResult {
     /**
      * Set the nextLink property: The URI to get the next set of Log Analytics QueryPack definitions if too many
      * QueryPacks where returned in the result set.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LogAnalyticsQueryPackListResult object itself.
      */
@@ -74,19 +80,61 @@ public final class LogAnalyticsQueryPackListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model LogAnalyticsQueryPackListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model LogAnalyticsQueryPackListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LogAnalyticsQueryPackListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogAnalyticsQueryPackListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogAnalyticsQueryPackListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogAnalyticsQueryPackListResult.
+     */
+    public static LogAnalyticsQueryPackListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogAnalyticsQueryPackListResult deserializedLogAnalyticsQueryPackListResult
+                = new LogAnalyticsQueryPackListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LogAnalyticsQueryPackInner> value
+                        = reader.readArray(reader1 -> LogAnalyticsQueryPackInner.fromJson(reader1));
+                    deserializedLogAnalyticsQueryPackListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogAnalyticsQueryPackListResult;
+        });
+    }
 }

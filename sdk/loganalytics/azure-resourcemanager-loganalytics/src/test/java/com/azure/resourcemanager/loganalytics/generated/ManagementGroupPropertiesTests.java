@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementGroupProperties model =
-            BinaryData
-                .fromString(
-                    "{\"serverCount\":741975656,\"isGateway\":true,\"name\":\"alupjm\",\"id\":\"fxobbcsws\",\"created\":\"2021-04-25T18:58:37Z\",\"dataReceived\":\"2021-09-18T23:40:57Z\",\"version\":\"lrbpbewtghfgbl\",\"sku\":\"wxzvlvqhjkb\"}")
-                .toObject(ManagementGroupProperties.class);
+        ManagementGroupProperties model = BinaryData.fromString(
+            "{\"serverCount\":741975656,\"isGateway\":true,\"name\":\"alupjm\",\"id\":\"fxobbcsws\",\"created\":\"2021-04-25T18:58:37Z\",\"dataReceived\":\"2021-09-18T23:40:57Z\",\"version\":\"lrbpbewtghfgbl\",\"sku\":\"wxzvlvqhjkb\"}")
+            .toObject(ManagementGroupProperties.class);
         Assertions.assertEquals(741975656, model.serverCount());
         Assertions.assertEquals(true, model.isGateway());
         Assertions.assertEquals("alupjm", model.name());
@@ -29,16 +27,14 @@ public final class ManagementGroupPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementGroupProperties model =
-            new ManagementGroupProperties()
-                .withServerCount(741975656)
-                .withIsGateway(true)
-                .withName("alupjm")
-                .withId("fxobbcsws")
-                .withCreated(OffsetDateTime.parse("2021-04-25T18:58:37Z"))
-                .withDataReceived(OffsetDateTime.parse("2021-09-18T23:40:57Z"))
-                .withVersion("lrbpbewtghfgbl")
-                .withSku("wxzvlvqhjkb");
+        ManagementGroupProperties model = new ManagementGroupProperties().withServerCount(741975656)
+            .withIsGateway(true)
+            .withName("alupjm")
+            .withId("fxobbcsws")
+            .withCreated(OffsetDateTime.parse("2021-04-25T18:58:37Z"))
+            .withDataReceived(OffsetDateTime.parse("2021-09-18T23:40:57Z"))
+            .withVersion("lrbpbewtghfgbl")
+            .withSku("wxzvlvqhjkb");
         model = BinaryData.fromObject(model).toObject(ManagementGroupProperties.class);
         Assertions.assertEquals(741975656, model.serverCount());
         Assertions.assertEquals(true, model.isGateway());

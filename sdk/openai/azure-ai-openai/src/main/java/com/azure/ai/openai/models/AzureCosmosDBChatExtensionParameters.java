@@ -51,14 +51,6 @@ public final class AzureCosmosDBChatExtensionParameters
     private Integer strictness;
 
     /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a
-     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
-     * limit for it, and it counts against the overall token limit.
-     */
-    @Generated
-    private String roleInformation;
-
-    /*
      * The MongoDB vCore database name to use with Azure Cosmos DB.
      */
     @Generated
@@ -189,32 +181,6 @@ public final class AzureCosmosDBChatExtensionParameters
     }
 
     /**
-     * Get the roleInformation property: Give the model instructions about how it should behave and any context it
-     * should reference when generating a response. You can describe the assistant's personality and tell it how to
-     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
-     *
-     * @return the roleInformation value.
-     */
-    @Generated
-    public String getRoleInformation() {
-        return this.roleInformation;
-    }
-
-    /**
-     * Set the roleInformation property: Give the model instructions about how it should behave and any context it
-     * should reference when generating a response. You can describe the assistant's personality and tell it how to
-     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
-     *
-     * @param roleInformation the roleInformation value to set.
-     * @return the AzureCosmosDBChatExtensionParameters object itself.
-     */
-    @Generated
-    public AzureCosmosDBChatExtensionParameters setRoleInformation(String roleInformation) {
-        this.roleInformation = roleInformation;
-        return this;
-    }
-
-    /**
      * Get the databaseName property: The MongoDB vCore database name to use with Azure Cosmos DB.
      *
      * @return the databaseName value.
@@ -295,15 +261,14 @@ public final class AzureCosmosDBChatExtensionParameters
         jsonWriter.writeStringField("index_name", this.indexName);
         jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
         jsonWriter.writeJsonField("embedding_dependency", this.embeddingDependency);
-        jsonWriter.writeJsonField("authentication", this.authentication);
         jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
         jsonWriter.writeBooleanField("in_scope", this.inScope);
         jsonWriter.writeNumberField("strictness", this.strictness);
-        jsonWriter.writeStringField("role_information", this.roleInformation);
         jsonWriter.writeNumberField("max_search_queries", this.maxSearchQueries);
         jsonWriter.writeBooleanField("allow_partial_result", this.allowPartialResult);
         jsonWriter.writeArrayField("include_contexts", this.includeContexts,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("authentication", this.authentication);
         return jsonWriter.writeEndObject();
     }
 
@@ -324,14 +289,13 @@ public final class AzureCosmosDBChatExtensionParameters
             String indexName = null;
             AzureCosmosDBFieldMappingOptions fieldsMapping = null;
             OnYourDataVectorizationSource embeddingDependency = null;
-            OnYourDataAuthenticationOptions authentication = null;
             Integer topNDocuments = null;
             Boolean inScope = null;
             Integer strictness = null;
-            String roleInformation = null;
             Integer maxSearchQueries = null;
             Boolean allowPartialResult = null;
             List<OnYourDataContextProperty> includeContexts = null;
+            OnYourDataAuthenticationOptions authentication = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -345,16 +309,12 @@ public final class AzureCosmosDBChatExtensionParameters
                     fieldsMapping = AzureCosmosDBFieldMappingOptions.fromJson(reader);
                 } else if ("embedding_dependency".equals(fieldName)) {
                     embeddingDependency = OnYourDataVectorizationSource.fromJson(reader);
-                } else if ("authentication".equals(fieldName)) {
-                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
                 } else if ("top_n_documents".equals(fieldName)) {
                     topNDocuments = reader.getNullable(JsonReader::getInt);
                 } else if ("in_scope".equals(fieldName)) {
                     inScope = reader.getNullable(JsonReader::getBoolean);
                 } else if ("strictness".equals(fieldName)) {
                     strictness = reader.getNullable(JsonReader::getInt);
-                } else if ("role_information".equals(fieldName)) {
-                    roleInformation = reader.getString();
                 } else if ("max_search_queries".equals(fieldName)) {
                     maxSearchQueries = reader.getNullable(JsonReader::getInt);
                 } else if ("allow_partial_result".equals(fieldName)) {
@@ -362,6 +322,8 @@ public final class AzureCosmosDBChatExtensionParameters
                 } else if ("include_contexts".equals(fieldName)) {
                     includeContexts
                         = reader.readArray(reader1 -> OnYourDataContextProperty.fromString(reader1.getString()));
+                } else if ("authentication".equals(fieldName)) {
+                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -369,14 +331,13 @@ public final class AzureCosmosDBChatExtensionParameters
             AzureCosmosDBChatExtensionParameters deserializedAzureCosmosDBChatExtensionParameters
                 = new AzureCosmosDBChatExtensionParameters(databaseName, containerName, indexName, fieldsMapping,
                     embeddingDependency);
-            deserializedAzureCosmosDBChatExtensionParameters.authentication = authentication;
             deserializedAzureCosmosDBChatExtensionParameters.topNDocuments = topNDocuments;
             deserializedAzureCosmosDBChatExtensionParameters.inScope = inScope;
             deserializedAzureCosmosDBChatExtensionParameters.strictness = strictness;
-            deserializedAzureCosmosDBChatExtensionParameters.roleInformation = roleInformation;
             deserializedAzureCosmosDBChatExtensionParameters.maxSearchQueries = maxSearchQueries;
             deserializedAzureCosmosDBChatExtensionParameters.allowPartialResult = allowPartialResult;
             deserializedAzureCosmosDBChatExtensionParameters.includeContexts = includeContexts;
+            deserializedAzureCosmosDBChatExtensionParameters.authentication = authentication;
             return deserializedAzureCosmosDBChatExtensionParameters;
         });
     }

@@ -5,62 +5,63 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties specific to the monitor resource. */
+/**
+ * Properties specific to the monitor resource.
+ */
 @Fluent
-public final class MonitorProperties {
+public final class MonitorProperties implements JsonSerializable<MonitorProperties> {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Flag specifying if the resource monitoring is enabled or disabled.
      */
-    @JsonProperty(value = "monitoringStatus")
     private MonitoringStatus monitoringStatus;
 
     /*
-     * Flag specifying the Marketplace Subscription Status of the resource. If payment is not made in time, the
-     * resource will go in Suspended state.
+     * Flag specifying the Marketplace Subscription Status of the resource. If payment is not made in time, the resource
+     * will go in Suspended state.
      */
-    @JsonProperty(value = "marketplaceSubscriptionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private MarketplaceSubscriptionStatus marketplaceSubscriptionStatus;
 
     /*
      * Specify the Datadog organization name. In the case of linking to existing organizations, Id, ApiKey, and
      * Applicationkey is required as well.
      */
-    @JsonProperty(value = "datadogOrganizationProperties")
     private DatadogOrganizationProperties datadogOrganizationProperties;
 
     /*
      * Includes name, email and optionally, phone number. User Information can't be null.
      */
-    @JsonProperty(value = "userInfo")
     private UserInfo userInfo;
 
     /*
      * The liftrResourceCategory property.
      */
-    @JsonProperty(value = "liftrResourceCategory", access = JsonProperty.Access.WRITE_ONLY)
     private LiftrResourceCategories liftrResourceCategory;
 
     /*
      * The priority of the resource.
      */
-    @JsonProperty(value = "liftrResourcePreference", access = JsonProperty.Access.WRITE_ONLY)
     private Integer liftrResourcePreference;
 
-    /** Creates an instance of MonitorProperties class. */
+    /**
+     * Creates an instance of MonitorProperties class.
+     */
     public MonitorProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -69,7 +70,7 @@ public final class MonitorProperties {
 
     /**
      * Get the monitoringStatus property: Flag specifying if the resource monitoring is enabled or disabled.
-     *
+     * 
      * @return the monitoringStatus value.
      */
     public MonitoringStatus monitoringStatus() {
@@ -78,7 +79,7 @@ public final class MonitorProperties {
 
     /**
      * Set the monitoringStatus property: Flag specifying if the resource monitoring is enabled or disabled.
-     *
+     * 
      * @param monitoringStatus the monitoringStatus value to set.
      * @return the MonitorProperties object itself.
      */
@@ -90,7 +91,7 @@ public final class MonitorProperties {
     /**
      * Get the marketplaceSubscriptionStatus property: Flag specifying the Marketplace Subscription Status of the
      * resource. If payment is not made in time, the resource will go in Suspended state.
-     *
+     * 
      * @return the marketplaceSubscriptionStatus value.
      */
     public MarketplaceSubscriptionStatus marketplaceSubscriptionStatus() {
@@ -100,7 +101,7 @@ public final class MonitorProperties {
     /**
      * Get the datadogOrganizationProperties property: Specify the Datadog organization name. In the case of linking to
      * existing organizations, Id, ApiKey, and Applicationkey is required as well.
-     *
+     * 
      * @return the datadogOrganizationProperties value.
      */
     public DatadogOrganizationProperties datadogOrganizationProperties() {
@@ -110,19 +111,19 @@ public final class MonitorProperties {
     /**
      * Set the datadogOrganizationProperties property: Specify the Datadog organization name. In the case of linking to
      * existing organizations, Id, ApiKey, and Applicationkey is required as well.
-     *
+     * 
      * @param datadogOrganizationProperties the datadogOrganizationProperties value to set.
      * @return the MonitorProperties object itself.
      */
-    public MonitorProperties withDatadogOrganizationProperties(
-        DatadogOrganizationProperties datadogOrganizationProperties) {
+    public MonitorProperties
+        withDatadogOrganizationProperties(DatadogOrganizationProperties datadogOrganizationProperties) {
         this.datadogOrganizationProperties = datadogOrganizationProperties;
         return this;
     }
 
     /**
      * Get the userInfo property: Includes name, email and optionally, phone number. User Information can't be null.
-     *
+     * 
      * @return the userInfo value.
      */
     public UserInfo userInfo() {
@@ -131,7 +132,7 @@ public final class MonitorProperties {
 
     /**
      * Set the userInfo property: Includes name, email and optionally, phone number. User Information can't be null.
-     *
+     * 
      * @param userInfo the userInfo value to set.
      * @return the MonitorProperties object itself.
      */
@@ -142,7 +143,7 @@ public final class MonitorProperties {
 
     /**
      * Get the liftrResourceCategory property: The liftrResourceCategory property.
-     *
+     * 
      * @return the liftrResourceCategory value.
      */
     public LiftrResourceCategories liftrResourceCategory() {
@@ -151,7 +152,7 @@ public final class MonitorProperties {
 
     /**
      * Get the liftrResourcePreference property: The priority of the resource.
-     *
+     * 
      * @return the liftrResourcePreference value.
      */
     public Integer liftrResourcePreference() {
@@ -160,7 +161,7 @@ public final class MonitorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -170,5 +171,59 @@ public final class MonitorProperties {
         if (userInfo() != null) {
             userInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("monitoringStatus",
+            this.monitoringStatus == null ? null : this.monitoringStatus.toString());
+        jsonWriter.writeJsonField("datadogOrganizationProperties", this.datadogOrganizationProperties);
+        jsonWriter.writeJsonField("userInfo", this.userInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitorProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitorProperties.
+     */
+    public static MonitorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitorProperties deserializedMonitorProperties = new MonitorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedMonitorProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("monitoringStatus".equals(fieldName)) {
+                    deserializedMonitorProperties.monitoringStatus = MonitoringStatus.fromString(reader.getString());
+                } else if ("marketplaceSubscriptionStatus".equals(fieldName)) {
+                    deserializedMonitorProperties.marketplaceSubscriptionStatus
+                        = MarketplaceSubscriptionStatus.fromString(reader.getString());
+                } else if ("datadogOrganizationProperties".equals(fieldName)) {
+                    deserializedMonitorProperties.datadogOrganizationProperties
+                        = DatadogOrganizationProperties.fromJson(reader);
+                } else if ("userInfo".equals(fieldName)) {
+                    deserializedMonitorProperties.userInfo = UserInfo.fromJson(reader);
+                } else if ("liftrResourceCategory".equals(fieldName)) {
+                    deserializedMonitorProperties.liftrResourceCategory
+                        = LiftrResourceCategories.fromString(reader.getString());
+                } else if ("liftrResourcePreference".equals(fieldName)) {
+                    deserializedMonitorProperties.liftrResourcePreference = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitorProperties;
+        });
     }
 }

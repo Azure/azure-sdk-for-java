@@ -42,29 +42,33 @@ public final class ExperimentPropertiesTests {
                                 new ChaosExperimentAction().withName("yqupedeojnabckh"),
                                 new ChaosExperimentAction().withName("mtxpsiebtfh"))),
                         new ChaosExperimentBranch().withName("pesapskrdqmhjj")
-                            .withActions(
-                                Arrays.asList(new ChaosExperimentAction().withName("tldwkyzxuutk"),
-                                    new ChaosExperimentAction().withName("cwscwsvlx"))))),
+                            .withActions(Arrays.asList(new ChaosExperimentAction().withName("tldwkyzxuutk"),
+                                new ChaosExperimentAction().withName("cwscwsvlx"))))),
                 new ChaosExperimentStep().withName("togt")
                     .withBranches(Arrays.asList(
-                        new ChaosExperimentBranch().withName("upqsx").withActions(
-                            Arrays.asList(new ChaosExperimentAction().withName("micykvceoveilo"))),
+                        new ChaosExperimentBranch().withName("upqsx")
+                            .withActions(Arrays.asList(new ChaosExperimentAction().withName("micykvceoveilo"))),
                         new ChaosExperimentBranch().withName("notyfjfcnjbkcn")
                             .withActions(Arrays.asList(new ChaosExperimentAction().withName("hbttkphyw"))),
                         new ChaosExperimentBranch().withName("nv")
                             .withActions(Arrays.asList(new ChaosExperimentAction().withName("oqnermclfpl"))))),
-                new ChaosExperimentStep().withName("hoxus").withBranches(Arrays.asList(
-                    new ChaosExperimentBranch().withName("pabgyeps")
+                new ChaosExperimentStep().withName("hoxus")
+                    .withBranches(Arrays.asList(new ChaosExperimentBranch()
+                        .withName("pabgyeps")
                         .withActions(Arrays.asList(new ChaosExperimentAction().withName("tazqugxywpmueefj"))),
-                    new ChaosExperimentBranch().withName("wfqkquj")
-                        .withActions(Arrays.asList(new ChaosExperimentAction().withName("suyonobglaocq"),
-                            new ChaosExperimentAction().withName("tcc"), new ChaosExperimentAction().withName("g")))))))
+                        new ChaosExperimentBranch().withName("wfqkquj")
+                            .withActions(Arrays.asList(new ChaosExperimentAction().withName("suyonobglaocq"),
+                                new ChaosExperimentAction().withName("tcc"),
+                                new ChaosExperimentAction().withName("g")))))))
             .withSelectors(Arrays.asList(
-                new ChaosTargetSelector().withId("dxyt").withFilter(new ChaosTargetFilter())
+                new ChaosTargetSelector().withId("dxyt")
+                    .withFilter(new ChaosTargetFilter())
                     .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
-                new ChaosTargetSelector().withId("rnwb").withFilter(new ChaosTargetFilter())
+                new ChaosTargetSelector().withId("rnwb")
+                    .withFilter(new ChaosTargetFilter())
                     .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
-                new ChaosTargetSelector().withId("uhcdhm").withFilter(new ChaosTargetFilter())
+                new ChaosTargetSelector().withId("uhcdhm")
+                    .withFilter(new ChaosTargetFilter())
                     .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"))));
         model = BinaryData.fromObject(model).toObject(ExperimentProperties.class);
         Assertions.assertEquals("mg", model.steps().get(0).name());

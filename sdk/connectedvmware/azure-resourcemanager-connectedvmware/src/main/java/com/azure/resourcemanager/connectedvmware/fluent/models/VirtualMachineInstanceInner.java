@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 import com.azure.resourcemanager.connectedvmware.models.HardwareProfile;
 import com.azure.resourcemanager.connectedvmware.models.InfrastructureProfile;
@@ -18,37 +21,53 @@ import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.azure.resourcemanager.connectedvmware.models.SecurityProfile;
 import com.azure.resourcemanager.connectedvmware.models.StorageProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Define the virtualMachineInstance. */
+/**
+ * Define the virtualMachineInstance.
+ */
 @Fluent
 public final class VirtualMachineInstanceInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private VirtualMachineInstanceProperties innerProperties = new VirtualMachineInstanceProperties();
 
     /*
      * Gets or sets the extended location.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of VirtualMachineInstanceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VirtualMachineInstanceInner class.
+     */
     public VirtualMachineInstanceInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineInstanceProperties innerProperties() {
@@ -57,7 +76,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the extendedLocation property: Gets or sets the extended location.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -66,7 +85,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Set the extendedLocation property: Gets or sets the extended location.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the VirtualMachineInstanceInner object itself.
      */
@@ -77,7 +96,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -85,8 +104,38 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the placementProfile property: Placement properties.
-     *
+     * 
      * @return the placementProfile value.
      */
     public PlacementProfile placementProfile() {
@@ -95,7 +144,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Set the placementProfile property: Placement properties.
-     *
+     * 
      * @param placementProfile the placementProfile value to set.
      * @return the VirtualMachineInstanceInner object itself.
      */
@@ -109,7 +158,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the osProfile property: OS properties.
-     *
+     * 
      * @return the osProfile value.
      */
     public OsProfileForVMInstance osProfile() {
@@ -118,7 +167,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Set the osProfile property: OS properties.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineInstanceInner object itself.
      */
@@ -132,7 +181,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the hardwareProfile property: Hardware properties.
-     *
+     * 
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -141,7 +190,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Set the hardwareProfile property: Hardware properties.
-     *
+     * 
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the VirtualMachineInstanceInner object itself.
      */
@@ -155,7 +204,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the networkProfile property: Network properties.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -164,7 +213,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Set the networkProfile property: Network properties.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the VirtualMachineInstanceInner object itself.
      */
@@ -178,7 +227,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the storageProfile property: Storage properties.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -187,7 +236,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Set the storageProfile property: Storage properties.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the VirtualMachineInstanceInner object itself.
      */
@@ -201,7 +250,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the securityProfile property: Gets the security profile.
-     *
+     * 
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -210,7 +259,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Set the securityProfile property: Gets the security profile.
-     *
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachineInstanceInner object itself.
      */
@@ -224,7 +273,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the infrastructureProfile property: Gets the infrastructure profile.
-     *
+     * 
      * @return the infrastructureProfile value.
      */
     public InfrastructureProfile infrastructureProfile() {
@@ -233,7 +282,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Set the infrastructureProfile property: Gets the infrastructure profile.
-     *
+     * 
      * @param infrastructureProfile the infrastructureProfile value to set.
      * @return the VirtualMachineInstanceInner object itself.
      */
@@ -247,7 +296,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the powerState property: Gets the power state of the virtual machine.
-     *
+     * 
      * @return the powerState value.
      */
     public String powerState() {
@@ -256,7 +305,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceStatus> statuses() {
@@ -265,7 +314,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -274,7 +323,7 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Get the resourceUid property: Gets or sets a unique identifier for the vm resource.
-     *
+     * 
      * @return the resourceUid value.
      */
     public String resourceUid() {
@@ -283,15 +332,14 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model VirtualMachineInstanceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model VirtualMachineInstanceInner"));
         } else {
             innerProperties().validate();
         }
@@ -301,4 +349,53 @@ public final class VirtualMachineInstanceInner extends ProxyResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineInstanceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineInstanceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineInstanceInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineInstanceInner.
+     */
+    public static VirtualMachineInstanceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineInstanceInner deserializedVirtualMachineInstanceInner = new VirtualMachineInstanceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceInner.innerProperties
+                        = VirtualMachineInstanceProperties.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineInstanceInner;
+        });
+    }
 }

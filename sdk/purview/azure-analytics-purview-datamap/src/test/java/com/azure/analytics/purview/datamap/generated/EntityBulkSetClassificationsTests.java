@@ -7,6 +7,8 @@ package com.azure.analytics.purview.datamap.generated;
 import com.azure.analytics.purview.datamap.models.AtlasClassification;
 import com.azure.analytics.purview.datamap.models.AtlasEntityHeader;
 import com.azure.analytics.purview.datamap.models.AtlasEntityHeaders;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -20,16 +22,28 @@ public final class EntityBulkSetClassificationsTests extends DataMapClientTestBa
     @Disabled
     public void testEntityBulkSetClassificationsTests() {
         // method invocation
-        List<String> response = entityClient.batchSetClassifications(new AtlasEntityHeaders().setGuidHeaderMap(mapOf(
-            "9fb74c11-ac48-4650-95bc-760665c5bd92",
-            new AtlasEntityHeader().setAttributes(mapOf("qualifiedName", "https://exampleaccount1.core.windows.net"))
-                .setTypeName("azure_storage_account")
-                .setClassifications(Arrays.asList(new AtlasClassification().setTypeName("MICROSOFT.PERSONAL.EMAIL"))),
-            "7fcc43ab-55ea-45d4-9971-ce0443cb10bb",
-            new AtlasEntityHeader().setAttributes(mapOf("qualifiedName", "https://exampleaccount2.core.windows.net"))
-                .setTypeName("azure_storage_account")
-                .setClassifications(
-                    Arrays.asList(new AtlasClassification().setTypeName("MICROSOFT.PERSONAL.IPADDRESS"))))));
+        List<String> response
+            = entityClient
+                .batchSetClassifications(
+                    new AtlasEntityHeaders()
+                        .setGuidHeaderMap(
+                            mapOf("9fb74c11-ac48-4650-95bc-760665c5bd92",
+                                new AtlasEntityHeader()
+                                    .setAttributes(
+                                        mapOf("qualifiedName",
+                                            BinaryData.fromBytes("https://exampleaccount1.core.windows.net"
+                                                .getBytes(StandardCharsets.UTF_8))))
+                                    .setTypeName("azure_storage_account")
+                                    .setClassifications(Arrays
+                                        .asList(new AtlasClassification().setTypeName("MICROSOFT.PERSONAL.EMAIL"))),
+                                "7fcc43ab-55ea-45d4-9971-ce0443cb10bb",
+                                new AtlasEntityHeader()
+                                    .setAttributes(mapOf("qualifiedName",
+                                        BinaryData.fromBytes("https://exampleaccount2.core.windows.net"
+                                            .getBytes(StandardCharsets.UTF_8))))
+                                    .setTypeName("azure_storage_account")
+                                    .setClassifications(Arrays.asList(
+                                        new AtlasClassification().setTypeName("MICROSOFT.PERSONAL.IPADDRESS"))))));
     }
 
     // Use "Map.of" if available

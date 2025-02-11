@@ -40,23 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkPacketBrokersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkPacketBrokersClient.
+ */
 public final class NetworkPacketBrokersClientImpl implements NetworkPacketBrokersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkPacketBrokersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkPacketBrokersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkPacketBrokersClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy
-                .create(NetworkPacketBrokersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(NetworkPacketBrokersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,114 +72,87 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface NetworkPacketBrokersService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkPacketBrokerName") String networkPacketBrokerName,
-            @BodyParam("application/json") NetworkPacketBrokerInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NetworkPacketBrokerInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkPacketBrokerInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkPacketBrokerInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkPacketBrokerName") String networkPacketBrokerName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkPacketBrokerName") String networkPacketBrokerName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NetworkPacketBrokerPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkPacketBrokerName") String networkPacketBrokerName,
-            @BodyParam("application/json") NetworkPacketBrokerPatch body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkPacketBrokerName") String networkPacketBrokerName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkPacketBrokersListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkPacketBrokerName") String networkPacketBrokerName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkPacketBrokersListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkPacketBrokersListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkPacketBrokersListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkPacketBrokersListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkPacketBrokersListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -182,31 +160,26 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkPacketBrokerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -215,26 +188,16 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkPacketBrokerName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkPacketBrokerName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -243,31 +206,26 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkPacketBrokerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -276,23 +234,15 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkPacketBrokerName,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkPacketBrokerName, body, accept, context);
     }
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -302,25 +252,20 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the {@link PollerFlux} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreateAsync(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, networkPacketBrokerName, body);
-        return this
-            .client
-            .<NetworkPacketBrokerInner, NetworkPacketBrokerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkPacketBrokerInner.class,
-                NetworkPacketBrokerInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner>
+        beginCreateAsync(String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, networkPacketBrokerName, body);
+        return this.client.<NetworkPacketBrokerInner, NetworkPacketBrokerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkPacketBrokerInner.class, NetworkPacketBrokerInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -334,23 +279,17 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
     private PollerFlux<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreateAsync(
         String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, networkPacketBrokerName, body, context);
-        return this
-            .client
-            .<NetworkPacketBrokerInner, NetworkPacketBrokerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkPacketBrokerInner.class,
-                NetworkPacketBrokerInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, networkPacketBrokerName, body, context);
+        return this.client.<NetworkPacketBrokerInner, NetworkPacketBrokerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkPacketBrokerInner.class, NetworkPacketBrokerInner.class, context);
     }
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -360,16 +299,16 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreate(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body) {
+    public SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner>
+        beginCreate(String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body) {
         return this.beginCreateAsync(resourceGroupName, networkPacketBrokerName, body).getSyncPoller();
     }
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -387,9 +326,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -399,18 +338,17 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the NetworkPacketBroker resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkPacketBrokerInner> createAsync(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body) {
-        return beginCreateAsync(resourceGroupName, networkPacketBrokerName, body)
-            .last()
+    private Mono<NetworkPacketBrokerInner> createAsync(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerInner body) {
+        return beginCreateAsync(resourceGroupName, networkPacketBrokerName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -421,18 +359,17 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the NetworkPacketBroker resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkPacketBrokerInner> createAsync(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, networkPacketBrokerName, body, context)
-            .last()
+    private Mono<NetworkPacketBrokerInner> createAsync(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, networkPacketBrokerName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -442,16 +379,16 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkPacketBrokerInner create(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body) {
+    public NetworkPacketBrokerInner create(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerInner body) {
         return createAsync(resourceGroupName, networkPacketBrokerName, body).block();
     }
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -462,69 +399,56 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkPacketBrokerInner create(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context) {
+    public NetworkPacketBrokerInner create(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerInner body, Context context) {
         return createAsync(resourceGroupName, networkPacketBrokerName, body, context).block();
     }
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkPacketBrokerInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkPacketBrokerName) {
+    private Mono<Response<NetworkPacketBrokerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkPacketBrokerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkPacketBrokerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkPacketBrokerName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), networkPacketBrokerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -532,50 +456,38 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkPacketBrokerInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkPacketBrokerName, Context context) {
+    private Mono<Response<NetworkPacketBrokerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkPacketBrokerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkPacketBrokerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkPacketBrokerName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkPacketBrokerName, accept, context);
     }
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -584,17 +496,17 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the NetworkPacketBroker resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkPacketBrokerInner> getByResourceGroupAsync(
-        String resourceGroupName, String networkPacketBrokerName) {
+    private Mono<NetworkPacketBrokerInner> getByResourceGroupAsync(String resourceGroupName,
+        String networkPacketBrokerName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkPacketBrokerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -604,16 +516,16 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the NetworkPacketBroker resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkPacketBrokerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkPacketBrokerName, Context context) {
+    public Response<NetworkPacketBrokerInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkPacketBrokerName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkPacketBrokerName, context).block();
     }
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -628,9 +540,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -638,31 +550,26 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkPacketBrokerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -671,26 +578,16 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkPacketBrokerName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkPacketBrokerName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -699,31 +596,26 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkPacketBrokerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -732,23 +624,15 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkPacketBrokerName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkPacketBrokerName, body, accept, context);
     }
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -758,25 +642,20 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the {@link PollerFlux} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdateAsync(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, networkPacketBrokerName, body);
-        return this
-            .client
-            .<NetworkPacketBrokerInner, NetworkPacketBrokerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkPacketBrokerInner.class,
-                NetworkPacketBrokerInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner>
+        beginUpdateAsync(String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, networkPacketBrokerName, body);
+        return this.client.<NetworkPacketBrokerInner, NetworkPacketBrokerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkPacketBrokerInner.class, NetworkPacketBrokerInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -790,23 +669,17 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
     private PollerFlux<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdateAsync(
         String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, networkPacketBrokerName, body, context);
-        return this
-            .client
-            .<NetworkPacketBrokerInner, NetworkPacketBrokerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkPacketBrokerInner.class,
-                NetworkPacketBrokerInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, networkPacketBrokerName, body, context);
+        return this.client.<NetworkPacketBrokerInner, NetworkPacketBrokerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkPacketBrokerInner.class, NetworkPacketBrokerInner.class, context);
     }
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -816,16 +689,16 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdate(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body) {
+    public SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner>
+        beginUpdate(String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body) {
         return this.beginUpdateAsync(resourceGroupName, networkPacketBrokerName, body).getSyncPoller();
     }
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -843,9 +716,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -855,18 +728,17 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the NetworkPacketBroker resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkPacketBrokerInner> updateAsync(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body) {
-        return beginUpdateAsync(resourceGroupName, networkPacketBrokerName, body)
-            .last()
+    private Mono<NetworkPacketBrokerInner> updateAsync(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerPatch body) {
+        return beginUpdateAsync(resourceGroupName, networkPacketBrokerName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -877,18 +749,17 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the NetworkPacketBroker resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkPacketBrokerInner> updateAsync(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, networkPacketBrokerName, body, context)
-            .last()
+    private Mono<NetworkPacketBrokerInner> updateAsync(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, networkPacketBrokerName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -898,16 +769,16 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkPacketBrokerInner update(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body) {
+    public NetworkPacketBrokerInner update(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerPatch body) {
         return updateAsync(resourceGroupName, networkPacketBrokerName, body).block();
     }
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -918,16 +789,16 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the NetworkPacketBroker resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkPacketBrokerInner update(
-        String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context) {
+    public NetworkPacketBrokerInner update(String resourceGroupName, String networkPacketBrokerName,
+        NetworkPacketBrokerPatch body, Context context) {
         return updateAsync(resourceGroupName, networkPacketBrokerName, body, context).block();
     }
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -936,50 +807,36 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkPacketBrokerName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkPacketBrokerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkPacketBrokerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkPacketBrokerName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkPacketBrokerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -989,47 +846,35 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkPacketBrokerName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkPacketBrokerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkPacketBrokerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkPacketBrokerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkPacketBrokerName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkPacketBrokerName, accept, context);
     }
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1038,20 +883,18 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkPacketBrokerName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String networkPacketBrokerName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkPacketBrokerName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -1061,21 +904,20 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkPacketBrokerName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String networkPacketBrokerName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkPacketBrokerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkPacketBrokerName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1090,9 +932,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -1102,16 +944,16 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkPacketBrokerName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkPacketBrokerName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkPacketBrokerName, context).getSyncPoller();
     }
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1121,16 +963,15 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkPacketBrokerName) {
-        return beginDeleteAsync(resourceGroupName, networkPacketBrokerName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkPacketBrokerName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -1141,16 +982,15 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkPacketBrokerName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkPacketBrokerName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkPacketBrokerName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1164,9 +1004,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -1181,9 +1021,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1193,16 +1033,12 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkPacketBrokerInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1210,33 +1046,18 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkPacketBrokerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NetworkPacketBrokerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1245,19 +1066,15 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return list of NetworkPacketBrokers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkPacketBrokerInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<NetworkPacketBrokerInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1266,29 +1083,17 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1297,16 +1102,15 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkPacketBrokerInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1316,16 +1120,15 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkPacketBrokerInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1339,9 +1142,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1356,9 +1159,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkPacketBrokers along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1366,45 +1169,27 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkPacketBrokerInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkPacketBrokerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NetworkPacketBrokerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1414,57 +1199,42 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkPacketBrokerInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkPacketBrokers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkPacketBrokerInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1473,15 +1243,15 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkPacketBrokerInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkPacketBrokers as paginated response with {@link PagedIterable}.
@@ -1493,9 +1263,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1509,9 +1279,8 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1523,32 +1292,22 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkPacketBrokerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkPacketBrokerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1556,37 +1315,26 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return list of NetworkPacketBrokers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkPacketBrokerInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkPacketBrokerInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1598,32 +1346,22 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkPacketBrokerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkPacketBrokerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1631,29 +1369,19 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @return list of NetworkPacketBrokers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkPacketBrokerInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkPacketBrokerInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

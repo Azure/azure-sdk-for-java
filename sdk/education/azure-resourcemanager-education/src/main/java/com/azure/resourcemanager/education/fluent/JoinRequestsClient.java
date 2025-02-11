@@ -11,29 +11,31 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.education.fluent.models.JoinRequestDetailsInner;
 
-/** An instance of this class provides access to all the operations defined in JoinRequestsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JoinRequestsClient.
+ */
 public interface JoinRequestsClient {
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student join requests as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JoinRequestDetailsInner> list(
-        String billingAccountName, String billingProfileName, String invoiceSectionName);
+    PagedIterable<JoinRequestDetailsInner> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName);
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDenied Include denied.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,20 +44,16 @@ public interface JoinRequestsClient {
      * @return student join requests as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JoinRequestDetailsInner> list(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeDenied,
-        Context context);
+    PagedIterable<JoinRequestDetailsInner> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDenied, Context context);
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -63,36 +61,32 @@ public interface JoinRequestsClient {
      * @return student join requests along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JoinRequestDetailsInner> getWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context);
+    Response<JoinRequestDetailsInner> getWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName, Context context);
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student join requests.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JoinRequestDetailsInner get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
+    JoinRequestDetailsInner get(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName);
 
     /**
      * Approve student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -100,35 +94,31 @@ public interface JoinRequestsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> approveWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context);
+    Response<Void> approveWithResponse(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName, Context context);
 
     /**
      * Approve student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void approve(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
+    void approve(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName);
 
     /**
      * Deny student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -136,20 +126,16 @@ public interface JoinRequestsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> denyWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context);
+    Response<Void> denyWithResponse(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName, Context context);
 
     /**
      * Deny student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

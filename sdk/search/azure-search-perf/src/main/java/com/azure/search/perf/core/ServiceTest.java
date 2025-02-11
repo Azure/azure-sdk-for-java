@@ -30,8 +30,8 @@ import java.util.Random;
  * Base class for Azure Search performance tests.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    private static final String CONFIGURATION_ERROR = "Configuration %s must be set in either environment variables "
-        + "or system properties.%n";
+    private static final String CONFIGURATION_ERROR
+        = "Configuration %s must be set in either environment variables " + "or system properties.%n";
     private static final String ALLOWED_INDEX_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789";
     private static final int INDEX_NAME_LENGTH = 24;
 
@@ -73,8 +73,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             System.exit(1);
         }
 
-        SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
-            .endpoint(searchEndpoint)
+        SearchIndexClientBuilder builder = new SearchIndexClientBuilder().endpoint(searchEndpoint)
             .credential(new AzureKeyCredential(searchApiKey))
             .httpClient(new NettyAsyncHttpClientBuilder()
                 .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
@@ -122,13 +121,14 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
             return Flux.range(0, (int) Math.ceil(hotels.size() / 100D))
                 .map(i -> hotels.subList(i * 100, Math.min((i + 1) * 100, hotels.size())))
-                .flatMap(hotelDocuments -> searchAsyncClient.indexDocuments(new IndexDocumentsBatch<Hotel>()
-                    .addUploadActions(hotelDocuments)))
+                .flatMap(hotelDocuments -> searchAsyncClient
+                    .indexDocuments(new IndexDocumentsBatch<Hotel>().addUploadActions(hotelDocuments)))
                 .then();
-        }).then(Mono.defer(() -> searchAsyncClient.getDocumentCount()
-            .delaySubscription(Duration.ofSeconds(1))
-            .filter(count -> count == documentCount)
-            .repeatWhenEmpty(Flux::repeat)
-            .then()));
+        })
+            .then(Mono.defer(() -> searchAsyncClient.getDocumentCount()
+                .delaySubscription(Duration.ofSeconds(1))
+                .filter(count -> count == documentCount)
+                .repeatWhenEmpty(Flux::repeat)
+                .then()));
     }
 }

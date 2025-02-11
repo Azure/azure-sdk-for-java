@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Network function application definition.
  */
 @Fluent
-public class NetworkFunctionApplication {
+public class NetworkFunctionApplication implements JsonSerializable<NetworkFunctionApplication> {
     /*
      * The name of the network function application.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Depends on profile definition.
      */
-    @JsonProperty(value = "dependsOnProfile")
     private DependsOnProfile dependsOnProfile;
 
     /**
@@ -79,5 +81,44 @@ public class NetworkFunctionApplication {
         if (dependsOnProfile() != null) {
             dependsOnProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("dependsOnProfile", this.dependsOnProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkFunctionApplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkFunctionApplication if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkFunctionApplication.
+     */
+    public static NetworkFunctionApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkFunctionApplication deserializedNetworkFunctionApplication = new NetworkFunctionApplication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNetworkFunctionApplication.name = reader.getString();
+                } else if ("dependsOnProfile".equals(fieldName)) {
+                    deserializedNetworkFunctionApplication.dependsOnProfile = DependsOnProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkFunctionApplication;
+        });
     }
 }

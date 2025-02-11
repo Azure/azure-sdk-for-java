@@ -5,133 +5,128 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.DscMetaConfiguration;
 import com.azure.resourcemanager.automation.models.DscReportError;
 import com.azure.resourcemanager.automation.models.DscReportResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Definition of the dsc node report type. */
+/**
+ * Definition of the dsc node report type.
+ */
 @Fluent
-public final class DscNodeReportInner {
+public final class DscNodeReportInner implements JsonSerializable<DscNodeReportInner> {
     /*
      * Gets or sets the end time of the node report.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Gets or sets the lastModifiedTime of the node report.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the start time of the node report.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Gets or sets the type of the node report.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Gets or sets the id of the node report.
      */
-    @JsonProperty(value = "reportId")
     private String reportId;
 
     /*
      * Gets or sets the status of the node report.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Gets or sets the refreshMode of the node report.
      */
-    @JsonProperty(value = "refreshMode")
     private String refreshMode;
 
     /*
      * Gets or sets the rebootRequested of the node report.
      */
-    @JsonProperty(value = "rebootRequested")
     private String rebootRequested;
 
     /*
      * Gets or sets the reportFormatVersion of the node report.
      */
-    @JsonProperty(value = "reportFormatVersion")
     private String reportFormatVersion;
 
     /*
      * Gets or sets the configurationVersion of the node report.
      */
-    @JsonProperty(value = "configurationVersion")
     private String configurationVersion;
 
     /*
      * Gets or sets the id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Gets or sets the errors for the node report.
      */
-    @JsonProperty(value = "errors")
     private List<DscReportError> errors;
 
     /*
      * Gets or sets the resource for the node report.
      */
-    @JsonProperty(value = "resources")
     private List<DscReportResource> resources;
 
     /*
      * Gets or sets the metaConfiguration of the node at the time of the report.
      */
-    @JsonProperty(value = "metaConfiguration")
     private DscMetaConfiguration metaConfiguration;
 
     /*
      * Gets or sets the hostname of the node that sent the report.
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
      * Gets or sets the IPv4 address of the node that sent the report.
      */
-    @JsonProperty(value = "iPV4Addresses")
     private List<String> iPV4Addresses;
 
     /*
      * Gets or sets the IPv6 address of the node that sent the report.
      */
-    @JsonProperty(value = "iPV6Addresses")
     private List<String> iPV6Addresses;
 
     /*
      * Gets or sets the number of resource in the node report.
      */
-    @JsonProperty(value = "numberOfResources")
     private Integer numberOfResources;
 
     /*
      * Gets or sets the unparsed errors for the node report.
      */
-    @JsonProperty(value = "rawErrors")
     private String rawErrors;
 
     /**
+     * Creates an instance of DscNodeReportInner class.
+     */
+    public DscNodeReportInner() {
+    }
+
+    /**
      * Get the endTime property: Gets or sets the end time of the node report.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -140,7 +135,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the endTime property: Gets or sets the end time of the node report.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -151,7 +146,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the lastModifiedTime of the node report.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -160,7 +155,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the lastModifiedTime of the node report.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -171,7 +166,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the startTime property: Gets or sets the start time of the node report.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -180,7 +175,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the startTime property: Gets or sets the start time of the node report.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -191,7 +186,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the type property: Gets or sets the type of the node report.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -200,7 +195,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the type property: Gets or sets the type of the node report.
-     *
+     * 
      * @param type the type value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -211,7 +206,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the reportId property: Gets or sets the id of the node report.
-     *
+     * 
      * @return the reportId value.
      */
     public String reportId() {
@@ -220,7 +215,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the reportId property: Gets or sets the id of the node report.
-     *
+     * 
      * @param reportId the reportId value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -231,7 +226,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the status property: Gets or sets the status of the node report.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -240,7 +235,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the status property: Gets or sets the status of the node report.
-     *
+     * 
      * @param status the status value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -251,7 +246,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the refreshMode property: Gets or sets the refreshMode of the node report.
-     *
+     * 
      * @return the refreshMode value.
      */
     public String refreshMode() {
@@ -260,7 +255,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the refreshMode property: Gets or sets the refreshMode of the node report.
-     *
+     * 
      * @param refreshMode the refreshMode value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -271,7 +266,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the rebootRequested property: Gets or sets the rebootRequested of the node report.
-     *
+     * 
      * @return the rebootRequested value.
      */
     public String rebootRequested() {
@@ -280,7 +275,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the rebootRequested property: Gets or sets the rebootRequested of the node report.
-     *
+     * 
      * @param rebootRequested the rebootRequested value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -291,7 +286,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the reportFormatVersion property: Gets or sets the reportFormatVersion of the node report.
-     *
+     * 
      * @return the reportFormatVersion value.
      */
     public String reportFormatVersion() {
@@ -300,7 +295,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the reportFormatVersion property: Gets or sets the reportFormatVersion of the node report.
-     *
+     * 
      * @param reportFormatVersion the reportFormatVersion value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -311,7 +306,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the configurationVersion property: Gets or sets the configurationVersion of the node report.
-     *
+     * 
      * @return the configurationVersion value.
      */
     public String configurationVersion() {
@@ -320,7 +315,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the configurationVersion property: Gets or sets the configurationVersion of the node report.
-     *
+     * 
      * @param configurationVersion the configurationVersion value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -331,7 +326,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the id property: Gets or sets the id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -340,7 +335,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the id property: Gets or sets the id.
-     *
+     * 
      * @param id the id value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -351,7 +346,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the errors property: Gets or sets the errors for the node report.
-     *
+     * 
      * @return the errors value.
      */
     public List<DscReportError> errors() {
@@ -360,7 +355,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the errors property: Gets or sets the errors for the node report.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -371,7 +366,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the resources property: Gets or sets the resource for the node report.
-     *
+     * 
      * @return the resources value.
      */
     public List<DscReportResource> resources() {
@@ -380,7 +375,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the resources property: Gets or sets the resource for the node report.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -391,7 +386,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the metaConfiguration property: Gets or sets the metaConfiguration of the node at the time of the report.
-     *
+     * 
      * @return the metaConfiguration value.
      */
     public DscMetaConfiguration metaConfiguration() {
@@ -400,7 +395,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the metaConfiguration property: Gets or sets the metaConfiguration of the node at the time of the report.
-     *
+     * 
      * @param metaConfiguration the metaConfiguration value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -411,7 +406,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the hostname property: Gets or sets the hostname of the node that sent the report.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -420,7 +415,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the hostname property: Gets or sets the hostname of the node that sent the report.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -431,7 +426,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the iPV4Addresses property: Gets or sets the IPv4 address of the node that sent the report.
-     *
+     * 
      * @return the iPV4Addresses value.
      */
     public List<String> iPV4Addresses() {
@@ -440,7 +435,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the iPV4Addresses property: Gets or sets the IPv4 address of the node that sent the report.
-     *
+     * 
      * @param iPV4Addresses the iPV4Addresses value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -451,7 +446,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the iPV6Addresses property: Gets or sets the IPv6 address of the node that sent the report.
-     *
+     * 
      * @return the iPV6Addresses value.
      */
     public List<String> iPV6Addresses() {
@@ -460,7 +455,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the iPV6Addresses property: Gets or sets the IPv6 address of the node that sent the report.
-     *
+     * 
      * @param iPV6Addresses the iPV6Addresses value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -471,7 +466,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the numberOfResources property: Gets or sets the number of resource in the node report.
-     *
+     * 
      * @return the numberOfResources value.
      */
     public Integer numberOfResources() {
@@ -480,7 +475,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the numberOfResources property: Gets or sets the number of resource in the node report.
-     *
+     * 
      * @param numberOfResources the numberOfResources value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -491,7 +486,7 @@ public final class DscNodeReportInner {
 
     /**
      * Get the rawErrors property: Gets or sets the unparsed errors for the node report.
-     *
+     * 
      * @return the rawErrors value.
      */
     public String rawErrors() {
@@ -500,7 +495,7 @@ public final class DscNodeReportInner {
 
     /**
      * Set the rawErrors property: Gets or sets the unparsed errors for the node report.
-     *
+     * 
      * @param rawErrors the rawErrors value to set.
      * @return the DscNodeReportInner object itself.
      */
@@ -511,7 +506,7 @@ public final class DscNodeReportInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -524,5 +519,110 @@ public final class DscNodeReportInner {
         if (metaConfiguration() != null) {
             metaConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("reportId", this.reportId);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("refreshMode", this.refreshMode);
+        jsonWriter.writeStringField("rebootRequested", this.rebootRequested);
+        jsonWriter.writeStringField("reportFormatVersion", this.reportFormatVersion);
+        jsonWriter.writeStringField("configurationVersion", this.configurationVersion);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("metaConfiguration", this.metaConfiguration);
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeArrayField("iPV4Addresses", this.iPV4Addresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("iPV6Addresses", this.iPV6Addresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("numberOfResources", this.numberOfResources);
+        jsonWriter.writeStringField("rawErrors", this.rawErrors);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscNodeReportInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscNodeReportInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscNodeReportInner.
+     */
+    public static DscNodeReportInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscNodeReportInner deserializedDscNodeReportInner = new DscNodeReportInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endTime".equals(fieldName)) {
+                    deserializedDscNodeReportInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedDscNodeReportInner.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedDscNodeReportInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedDscNodeReportInner.type = reader.getString();
+                } else if ("reportId".equals(fieldName)) {
+                    deserializedDscNodeReportInner.reportId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedDscNodeReportInner.status = reader.getString();
+                } else if ("refreshMode".equals(fieldName)) {
+                    deserializedDscNodeReportInner.refreshMode = reader.getString();
+                } else if ("rebootRequested".equals(fieldName)) {
+                    deserializedDscNodeReportInner.rebootRequested = reader.getString();
+                } else if ("reportFormatVersion".equals(fieldName)) {
+                    deserializedDscNodeReportInner.reportFormatVersion = reader.getString();
+                } else if ("configurationVersion".equals(fieldName)) {
+                    deserializedDscNodeReportInner.configurationVersion = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedDscNodeReportInner.id = reader.getString();
+                } else if ("errors".equals(fieldName)) {
+                    List<DscReportError> errors = reader.readArray(reader1 -> DscReportError.fromJson(reader1));
+                    deserializedDscNodeReportInner.errors = errors;
+                } else if ("resources".equals(fieldName)) {
+                    List<DscReportResource> resources
+                        = reader.readArray(reader1 -> DscReportResource.fromJson(reader1));
+                    deserializedDscNodeReportInner.resources = resources;
+                } else if ("metaConfiguration".equals(fieldName)) {
+                    deserializedDscNodeReportInner.metaConfiguration = DscMetaConfiguration.fromJson(reader);
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedDscNodeReportInner.hostname = reader.getString();
+                } else if ("iPV4Addresses".equals(fieldName)) {
+                    List<String> iPV4Addresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDscNodeReportInner.iPV4Addresses = iPV4Addresses;
+                } else if ("iPV6Addresses".equals(fieldName)) {
+                    List<String> iPV6Addresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDscNodeReportInner.iPV6Addresses = iPV6Addresses;
+                } else if ("numberOfResources".equals(fieldName)) {
+                    deserializedDscNodeReportInner.numberOfResources = reader.getNullable(JsonReader::getInt);
+                } else if ("rawErrors".equals(fieldName)) {
+                    deserializedDscNodeReportInner.rawErrors = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscNodeReportInner;
+        });
     }
 }

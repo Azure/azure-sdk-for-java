@@ -5,30 +5,33 @@
 package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The current billing term of the SaaS Subscription.
  */
 @Fluent
-public final class SubscriptionTerm {
+public final class SubscriptionTerm implements JsonSerializable<SubscriptionTerm> {
     /*
      * The unit of the billing term.
      */
-    @JsonProperty(value = "termUnit")
     private String termUnit;
 
     /*
      * The date and time in UTC of when the billing term starts.
      */
-    @JsonProperty(value = "startDate")
     private OffsetDateTime startDate;
 
     /*
      * The date and time in UTC of when the billing term ends.
      */
-    @JsonProperty(value = "endDate")
     private OffsetDateTime endDate;
 
     /**
@@ -103,5 +106,51 @@ public final class SubscriptionTerm {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("termUnit", this.termUnit);
+        jsonWriter.writeStringField("startDate",
+            this.startDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDate));
+        jsonWriter.writeStringField("endDate",
+            this.endDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionTerm from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionTerm if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionTerm.
+     */
+    public static SubscriptionTerm fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionTerm deserializedSubscriptionTerm = new SubscriptionTerm();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("termUnit".equals(fieldName)) {
+                    deserializedSubscriptionTerm.termUnit = reader.getString();
+                } else if ("startDate".equals(fieldName)) {
+                    deserializedSubscriptionTerm.startDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endDate".equals(fieldName)) {
+                    deserializedSubscriptionTerm.endDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionTerm;
+        });
     }
 }

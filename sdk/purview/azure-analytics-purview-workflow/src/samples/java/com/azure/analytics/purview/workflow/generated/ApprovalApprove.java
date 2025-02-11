@@ -14,17 +14,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ApprovalApprove {
     public static void main(String[] args) {
-        ApprovalClient approvalClient =
-                new ApprovalClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                        .buildClient();
+        ApprovalClient approvalClient
+            = new ApprovalClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.workflow.generated.approvalapprove.approvalapprove
         BinaryData approvalResponseComment = BinaryData.fromString("{\"comment\":\"Thanks for raising this!\"}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<Void> response =
-                approvalClient.approveWithResponse(
-                        "98d98e2c-23fa-4157-a3f8-ff8ce5cc095c", approvalResponseComment, requestOptions);
+        Response<Void> response = approvalClient.approveWithResponse("98d98e2c-23fa-4157-a3f8-ff8ce5cc095c",
+            approvalResponseComment, requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.approvalapprove.approvalapprove
     }
 }

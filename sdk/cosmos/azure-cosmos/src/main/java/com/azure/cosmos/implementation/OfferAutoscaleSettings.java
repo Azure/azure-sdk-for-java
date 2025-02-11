@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class OfferAutoscaleSettings extends JsonSerializable {
@@ -13,12 +12,12 @@ public class OfferAutoscaleSettings extends JsonSerializable {
         offerAutoscaleAutoUpgradeProperties = new OfferAutoscaleAutoUpgradeProperties(maxThroughputIncrementPercentage);
         super.set(
             Constants.Properties.AUTOPILOT_MAX_THROUGHPUT,
-            maxThroughput,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            maxThroughput
+        );
         super.set(
             Constants.Properties.AUTOPILOT_AUTO_UPGRADE_POLICY,
-            offerAutoscaleAutoUpgradeProperties,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            offerAutoscaleAutoUpgradeProperties
+        );
     }
 
     OfferAutoscaleSettings(String json) {
@@ -41,8 +40,8 @@ public class OfferAutoscaleSettings extends JsonSerializable {
     void setMaxThroughput(int maxAutoscaleThroughput) {
         super.set(
             Constants.Properties.AUTOPILOT_MAX_THROUGHPUT,
-            maxAutoscaleThroughput,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            maxAutoscaleThroughput
+        );
     }
 
     /**

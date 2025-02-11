@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The subject alternate names of a X509 object. */
+/**
+ * The subject alternate names of a X509 object.
+ */
 @Fluent
 public final class SubjectAlternativeNames implements JsonSerializable<SubjectAlternativeNames> {
     /*
@@ -30,12 +32,15 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
      */
     private List<String> userPrincipalNames;
 
-    /** Creates an instance of SubjectAlternativeNames class. */
-    public SubjectAlternativeNames() {}
+    /**
+     * Creates an instance of SubjectAlternativeNames class.
+     */
+    public SubjectAlternativeNames() {
+    }
 
     /**
      * Get the emails property: Email addresses.
-     *
+     * 
      * @return the emails value.
      */
     public List<String> getEmails() {
@@ -44,7 +49,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
 
     /**
      * Set the emails property: Email addresses.
-     *
+     * 
      * @param emails the emails value to set.
      * @return the SubjectAlternativeNames object itself.
      */
@@ -55,7 +60,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
 
     /**
      * Get the dnsNames property: Domain names.
-     *
+     * 
      * @return the dnsNames value.
      */
     public List<String> getDnsNames() {
@@ -64,7 +69,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
 
     /**
      * Set the dnsNames property: Domain names.
-     *
+     * 
      * @param dnsNames the dnsNames value to set.
      * @return the SubjectAlternativeNames object itself.
      */
@@ -75,7 +80,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
 
     /**
      * Get the userPrincipalNames property: User principal names.
-     *
+     * 
      * @return the userPrincipalNames value.
      */
     public List<String> getUserPrincipalNames() {
@@ -84,7 +89,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
 
     /**
      * Set the userPrincipalNames property: User principal names.
-     *
+     * 
      * @param userPrincipalNames the userPrincipalNames value to set.
      * @return the SubjectAlternativeNames object itself.
      */
@@ -93,6 +98,9 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -104,35 +112,34 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
 
     /**
      * Reads an instance of SubjectAlternativeNames from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SubjectAlternativeNames if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SubjectAlternativeNames.
      */
     public static SubjectAlternativeNames fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SubjectAlternativeNames deserializedSubjectAlternativeNames = new SubjectAlternativeNames();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SubjectAlternativeNames deserializedSubjectAlternativeNames = new SubjectAlternativeNames();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("emails".equals(fieldName)) {
-                            List<String> emails = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSubjectAlternativeNames.emails = emails;
-                        } else if ("dns_names".equals(fieldName)) {
-                            List<String> dnsNames = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSubjectAlternativeNames.dnsNames = dnsNames;
-                        } else if ("upns".equals(fieldName)) {
-                            List<String> userPrincipalNames = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSubjectAlternativeNames.userPrincipalNames = userPrincipalNames;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("emails".equals(fieldName)) {
+                    List<String> emails = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSubjectAlternativeNames.emails = emails;
+                } else if ("dns_names".equals(fieldName)) {
+                    List<String> dnsNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSubjectAlternativeNames.dnsNames = dnsNames;
+                } else if ("upns".equals(fieldName)) {
+                    List<String> userPrincipalNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSubjectAlternativeNames.userPrincipalNames = userPrincipalNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSubjectAlternativeNames;
-                });
+            return deserializedSubjectAlternativeNames;
+        });
     }
 }

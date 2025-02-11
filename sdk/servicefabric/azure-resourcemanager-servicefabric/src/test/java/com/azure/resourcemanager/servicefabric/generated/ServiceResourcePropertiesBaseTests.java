@@ -43,10 +43,16 @@ public final class ServiceResourcePropertiesBaseTests {
                 new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.ALIGNED_AFFINITY)
                     .withServiceName("sdszue")))
             .withServiceLoadMetrics(Arrays.asList(
-                new ServiceLoadMetricDescription().withName("bzkfzbeyvpn").withWeight(ServiceLoadMetricWeight.HIGH)
-                    .withPrimaryDefaultLoad(1110186498).withSecondaryDefaultLoad(242850063).withDefaultLoad(887231612),
-                new ServiceLoadMetricDescription().withName("jxdxrbuukz").withWeight(ServiceLoadMetricWeight.LOW)
-                    .withPrimaryDefaultLoad(553106392).withSecondaryDefaultLoad(1827391658).withDefaultLoad(460922562)))
+                new ServiceLoadMetricDescription().withName("bzkfzbeyvpn")
+                    .withWeight(ServiceLoadMetricWeight.HIGH)
+                    .withPrimaryDefaultLoad(1110186498)
+                    .withSecondaryDefaultLoad(242850063)
+                    .withDefaultLoad(887231612),
+                new ServiceLoadMetricDescription().withName("jxdxrbuukz")
+                    .withWeight(ServiceLoadMetricWeight.LOW)
+                    .withPrimaryDefaultLoad(553106392)
+                    .withSecondaryDefaultLoad(1827391658)
+                    .withDefaultLoad(460922562)))
             .withServicePlacementPolicies(Arrays.asList(new ServicePlacementPolicyDescription()))
             .withDefaultMoveCost(MoveCost.HIGH);
         model = BinaryData.fromObject(model).toObject(ServiceResourcePropertiesBase.class);

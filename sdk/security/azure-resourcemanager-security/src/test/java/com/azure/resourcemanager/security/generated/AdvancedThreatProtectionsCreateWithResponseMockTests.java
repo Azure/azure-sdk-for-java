@@ -20,8 +20,7 @@ import reactor.core.publisher.Mono;
 public final class AdvancedThreatProtectionsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
-        String responseStr
-            = "{\"properties\":{\"isEnabled\":false},\"id\":\"fopkyll\",\"name\":\"ey\",\"type\":\"nj\"}";
+        String responseStr = "{\"properties\":{\"isEnabled\":false},\"id\":\"blml\",\"name\":\"owxih\",\"type\":\"p\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +31,7 @@ public final class AdvancedThreatProtectionsCreateWithResponseMockTests {
 
         AdvancedThreatProtectionSetting response = manager.advancedThreatProtections()
             .define()
-            .withExistingResourceId("cjiuhcxyveh")
+            .withExistingResourceId("urnnqbnqbpiz")
             .withIsEnabled(true)
             .create();
 

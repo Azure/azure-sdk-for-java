@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EasmClientTestBase extends TestProxyTestBase {
-    private final String sanitizedRequestUri =  "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED/workspaces/REDACTED/";
+    private final String sanitizedRequestUri
+        = "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED/workspaces/REDACTED/";
     private final String requestUriRegex = "https://.*/subscriptions/.*/resourceGroups/.*/workspaces/.*?/";
     protected final String uuidRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
     private final String sanitizedUuid = "00000000-0000-0000-0000-000000000000";
@@ -36,24 +37,23 @@ public class EasmClientTestBase extends TestProxyTestBase {
     @Override
     protected void beforeTest() {
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-        EasmClientBuilder easmClientbuilder =
-                new EasmClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED/workspaces/REDACTED"))
-                        .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        EasmClientBuilder easmClientbuilder = new EasmClientBuilder().endpoint(Configuration.getGlobalConfiguration()
+            .get("ENDPOINT",
+                "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED/workspaces/REDACTED"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            easmClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            easmClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            easmClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            easmClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             easmClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         customSanitizers.add(new TestProxySanitizer(requestUriRegex, sanitizedRequestUri, TestProxySanitizerType.URL));
-        customSanitizers.add(new TestProxySanitizer("$..uuid", uuidRegex, sanitizedUuid, TestProxySanitizerType.BODY_KEY));
+        customSanitizers
+            .add(new TestProxySanitizer("$..uuid", uuidRegex, sanitizedUuid, TestProxySanitizerType.BODY_KEY));
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(customSanitizers);
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");

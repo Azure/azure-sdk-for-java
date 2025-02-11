@@ -28,17 +28,16 @@ public class MetadataValidationPolicyTests {
             new HttpHeaders().add("x-ms-meta-valuetrailspace", "value "));
     }
 
-
     @Test
     public void emptyMetadataNameIsValid() { // sort of, this is passed to be handled by the service
-        assertDoesNotThrow(() -> MetadataValidationPolicy.validateMetadataHeaders(
-            new HttpHeaders().add("x-ms-meta-", "emptyname")));
+        assertDoesNotThrow(
+            () -> MetadataValidationPolicy.validateMetadataHeaders(new HttpHeaders().add("x-ms-meta-", "emptyname")));
     }
 
     @Test
     public void emptyMetadataValueIsValid() {
-        assertDoesNotThrow(() -> MetadataValidationPolicy.validateMetadataHeaders(
-            new HttpHeaders().add("x-ms-meta-emptyvalue", "")));
+        assertDoesNotThrow(
+            () -> MetadataValidationPolicy.validateMetadataHeaders(new HttpHeaders().add("x-ms-meta-emptyvalue", "")));
     }
 
     @ParameterizedTest

@@ -22,7 +22,7 @@ public final class AttachedNetworksListByProjectMockTests {
     @Test
     public void testListByProject() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"MovingResources\",\"networkConnectionId\":\"ihrraiouaub\",\"networkConnectionLocation\":\"tloqxfuojrn\",\"healthCheckStatus\":\"Running\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"pasccbi\",\"name\":\"imzdlyj\",\"type\":\"fqwmkyoquf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"MovingResources\",\"networkConnectionId\":\"ft\",\"networkConnectionLocation\":\"qobr\",\"healthCheckStatus\":\"Failed\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"cc\",\"name\":\"knh\",\"type\":\"kizvytn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class AttachedNetworksListByProjectMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AttachedNetworkConnection> response = manager.attachedNetworks()
-            .listByProject("qbnj", "rcgegydcwboxjum", 1314460255, com.azure.core.util.Context.NONE);
+            .listByProject("kdlpa", "zrcxfailcfxwmdbo", 1074201202, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ihrraiouaub", response.iterator().next().networkConnectionId());
+        Assertions.assertEquals("ft", response.iterator().next().networkConnectionId());
     }
 }

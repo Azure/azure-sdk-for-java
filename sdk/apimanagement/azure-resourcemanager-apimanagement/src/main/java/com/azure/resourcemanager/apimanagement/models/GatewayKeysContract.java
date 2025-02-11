@@ -6,25 +6,27 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayKeysContractInner;
 
-/** An immutable client-side representation of GatewayKeysContract. */
+/**
+ * An immutable client-side representation of GatewayKeysContract.
+ */
 public interface GatewayKeysContract {
     /**
      * Gets the primary property: Primary gateway key.
-     *
+     * 
      * @return the primary value.
      */
     String primary();
 
     /**
      * Gets the secondary property: Secondary gateway key.
-     *
+     * 
      * @return the secondary value.
      */
     String secondary();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.GatewayKeysContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     GatewayKeysContractInner innerModel();

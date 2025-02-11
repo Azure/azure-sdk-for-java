@@ -34,15 +34,21 @@ public final class IpConfigDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpConfigDetails model
-            = new IpConfigDetails().withName("r").withIsPrimary(true).withSubnetName("gaxwmzwdfkbnrzo")
-                .withStaticIpAddress("dltb").withIpAddressType("tqjfgxxsaet").withIsSeletedForFailover(false)
-                .withRecoverySubnetName("vpyigdaqq").withRecoveryStaticIpAddress("zdcduwjoedxng")
-                .withRecoveryIpAddressType("aifpaurwwgil").withRecoveryPublicIpAddressId("qqa")
-                .withRecoveryLBBackendAddressPoolIds(Arrays.asList("kxwxdcvjwcyziake", "iqch", "rtui", "dsiwdfmmp"))
-                .withTfoSubnetName("zzwvywrgyng").withTfoStaticIpAddress("grpxncakiqaondjr")
-                .withTfoPublicIpAddressId("lamgglvlmfejdo")
-                .withTfoLBBackendAddressPoolIds(Arrays.asList("kgltyg", "hqfgqkayejsx"));
+        IpConfigDetails model = new IpConfigDetails().withName("r")
+            .withIsPrimary(true)
+            .withSubnetName("gaxwmzwdfkbnrzo")
+            .withStaticIpAddress("dltb")
+            .withIpAddressType("tqjfgxxsaet")
+            .withIsSeletedForFailover(false)
+            .withRecoverySubnetName("vpyigdaqq")
+            .withRecoveryStaticIpAddress("zdcduwjoedxng")
+            .withRecoveryIpAddressType("aifpaurwwgil")
+            .withRecoveryPublicIpAddressId("qqa")
+            .withRecoveryLBBackendAddressPoolIds(Arrays.asList("kxwxdcvjwcyziake", "iqch", "rtui", "dsiwdfmmp"))
+            .withTfoSubnetName("zzwvywrgyng")
+            .withTfoStaticIpAddress("grpxncakiqaondjr")
+            .withTfoPublicIpAddressId("lamgglvlmfejdo")
+            .withTfoLBBackendAddressPoolIds(Arrays.asList("kgltyg", "hqfgqkayejsx"));
         model = BinaryData.fromObject(model).toObject(IpConfigDetails.class);
         Assertions.assertEquals("r", model.name());
         Assertions.assertEquals(true, model.isPrimary());

@@ -5,51 +5,51 @@
 package com.azure.resourcemanager.maintenance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.maintenance.models.ImpactType;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
 import com.azure.resourcemanager.maintenance.models.UpdateStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Maintenance update on a resource.
  */
 @Fluent
-public final class UpdateInner {
+public final class UpdateInner implements JsonSerializable<UpdateInner> {
     /*
      * The impact area
      */
-    @JsonProperty(value = "maintenanceScope")
     private MaintenanceScope maintenanceScope;
 
     /*
      * The impact type
      */
-    @JsonProperty(value = "impactType")
     private ImpactType impactType;
 
     /*
      * The status
      */
-    @JsonProperty(value = "status")
     private UpdateStatus status;
 
     /*
      * Duration of impact in seconds
      */
-    @JsonProperty(value = "impactDurationInSec")
     private Integer impactDurationInSec;
 
     /*
      * Time when Azure will start force updates if not self-updated by customer before this time
      */
-    @JsonProperty(value = "notBefore")
     private OffsetDateTime notBefore;
 
     /*
      * Properties of the apply update
      */
-    @JsonProperty(value = "properties")
     private UpdateProperties innerProperties;
 
     /**
@@ -201,5 +201,59 @@ public final class UpdateInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("maintenanceScope",
+            this.maintenanceScope == null ? null : this.maintenanceScope.toString());
+        jsonWriter.writeStringField("impactType", this.impactType == null ? null : this.impactType.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeNumberField("impactDurationInSec", this.impactDurationInSec);
+        jsonWriter.writeStringField("notBefore",
+            this.notBefore == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.notBefore));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateInner.
+     */
+    public static UpdateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateInner deserializedUpdateInner = new UpdateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maintenanceScope".equals(fieldName)) {
+                    deserializedUpdateInner.maintenanceScope = MaintenanceScope.fromString(reader.getString());
+                } else if ("impactType".equals(fieldName)) {
+                    deserializedUpdateInner.impactType = ImpactType.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedUpdateInner.status = UpdateStatus.fromString(reader.getString());
+                } else if ("impactDurationInSec".equals(fieldName)) {
+                    deserializedUpdateInner.impactDurationInSec = reader.getNullable(JsonReader::getInt);
+                } else if ("notBefore".equals(fieldName)) {
+                    deserializedUpdateInner.notBefore = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpdateInner.innerProperties = UpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateInner;
+        });
     }
 }

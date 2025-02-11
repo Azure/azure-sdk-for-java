@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The complete operation. */
+/**
+ * The complete operation.
+ */
 @Fluent
-public final class ConnectorMappingCompleteOperation {
+public final class ConnectorMappingCompleteOperation implements JsonSerializable<ConnectorMappingCompleteOperation> {
     /*
      * The type of completion operation.
      */
-    @JsonProperty(value = "completionOperationType")
     private CompletionOperationTypes completionOperationType;
 
     /*
      * The destination folder where files will be moved to once the import is done.
      */
-    @JsonProperty(value = "destinationFolder")
     private String destinationFolder;
 
-    /** Creates an instance of ConnectorMappingCompleteOperation class. */
+    /**
+     * Creates an instance of ConnectorMappingCompleteOperation class.
+     */
     public ConnectorMappingCompleteOperation() {
     }
 
     /**
      * Get the completionOperationType property: The type of completion operation.
-     *
+     * 
      * @return the completionOperationType value.
      */
     public CompletionOperationTypes completionOperationType() {
@@ -37,19 +43,19 @@ public final class ConnectorMappingCompleteOperation {
 
     /**
      * Set the completionOperationType property: The type of completion operation.
-     *
+     * 
      * @param completionOperationType the completionOperationType value to set.
      * @return the ConnectorMappingCompleteOperation object itself.
      */
-    public ConnectorMappingCompleteOperation withCompletionOperationType(
-        CompletionOperationTypes completionOperationType) {
+    public ConnectorMappingCompleteOperation
+        withCompletionOperationType(CompletionOperationTypes completionOperationType) {
         this.completionOperationType = completionOperationType;
         return this;
     }
 
     /**
      * Get the destinationFolder property: The destination folder where files will be moved to once the import is done.
-     *
+     * 
      * @return the destinationFolder value.
      */
     public String destinationFolder() {
@@ -58,7 +64,7 @@ public final class ConnectorMappingCompleteOperation {
 
     /**
      * Set the destinationFolder property: The destination folder where files will be moved to once the import is done.
-     *
+     * 
      * @param destinationFolder the destinationFolder value to set.
      * @return the ConnectorMappingCompleteOperation object itself.
      */
@@ -69,9 +75,51 @@ public final class ConnectorMappingCompleteOperation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("completionOperationType",
+            this.completionOperationType == null ? null : this.completionOperationType.toString());
+        jsonWriter.writeStringField("destinationFolder", this.destinationFolder);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectorMappingCompleteOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectorMappingCompleteOperation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectorMappingCompleteOperation.
+     */
+    public static ConnectorMappingCompleteOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectorMappingCompleteOperation deserializedConnectorMappingCompleteOperation
+                = new ConnectorMappingCompleteOperation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("completionOperationType".equals(fieldName)) {
+                    deserializedConnectorMappingCompleteOperation.completionOperationType
+                        = CompletionOperationTypes.fromString(reader.getString());
+                } else if ("destinationFolder".equals(fieldName)) {
+                    deserializedConnectorMappingCompleteOperation.destinationFolder = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectorMappingCompleteOperation;
+        });
     }
 }

@@ -67,22 +67,35 @@ public final class OrganizationsCreateOrUpdateSamples {
      */
     public static void
         organizationsCreateOrUpdateGeneratedByMaximumSetRule(com.azure.resourcemanager.astro.AstroManager manager) {
-        manager.organizations().define("U.1-:7").withRegion("mhqthlsatwvqkl").withExistingResourceGroup("rgastronomer")
+        manager.organizations()
+            .define("U.1-:7")
+            .withRegion("mhqthlsatwvqkl")
+            .withExistingResourceGroup("rgastronomer")
             .withTags(mapOf())
             .withProperties(new LiftrBaseDataOrganizationProperties()
-                .withMarketplace(new LiftrBaseMarketplaceDetails().withSubscriptionId("ntthclydlpqmasr")
+                .withMarketplace(new LiftrBaseMarketplaceDetails()
                     .withSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)
-                    .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("gfsqxygpnerxmvols")
-                        .withOfferId("krzkefmpxztqyusidzgpchfaswuyce").withPlanId("kndxzygsanuiqzwbfbbvoipv")
-                        .withPlanName("pwqjwlq").withTermUnit("xyygyzcazkuelz").withTermId("pwds")))
-                .withUser(new LiftrBaseUserDetails().withFirstName("nfh").withLastName("lazfbstcccykibvcrxpmglqam")
-                    .withEmailAddress(".K_@e7N-g1.xjqnbPs").withUpn("xtutvycpxjrtoftx").withPhoneNumber("inxkscllh"))
+                    .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("astronomer1591719760654")
+                        .withOfferId("astro")
+                        .withPlanId("astro-paygo")
+                        .withPlanName("Monthly Pay-As-You-Go")
+                        .withTermUnit("Monthly")
+                        .withTermId("gmz7xq9ge3py")))
+                .withUser(new LiftrBaseUserDetails().withFirstName("nfh")
+                    .withLastName("lazfbstcccykibvcrxpmglqam")
+                    .withEmailAddress(".K_@e7N-g1.xjqnbPs")
+                    .withUpn("xtutvycpxjrtoftx")
+                    .withPhoneNumber("inxkscllh"))
                 .withPartnerOrganizationProperties(
                     new LiftrBaseDataPartnerOrganizationProperties().withOrganizationId("lskgzdmziusgrsucv")
-                        .withWorkspaceId("vcrupxwpaba").withOrganizationName("3-").withWorkspaceName("9.:06")
-                        .withSingleSignOnProperties(new LiftrBaseSingleSignOnProperties()
-                            .withSingleSignOnState(SingleSignOnStates.INITIAL).withEnterpriseAppId("mklfypyujwumgwdzae")
-                            .withSingleSignOnUrl("ymmtzkyghvinvhgnqlzwrr").withAadDomains(Arrays.asList("kfbleh")))))
+                        .withWorkspaceId("vcrupxwpaba")
+                        .withOrganizationName("3-")
+                        .withWorkspaceName("9.:06")
+                        .withSingleSignOnProperties(
+                            new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                                .withEnterpriseAppId("mklfypyujwumgwdzae")
+                                .withSingleSignOnUrl("ymmtzkyghvinvhgnqlzwrr")
+                                .withAadDomains(Arrays.asList("kfbleh")))))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf()))
             .create();
@@ -142,8 +155,8 @@ public final class OrganizationsGetByResourceGroupSamples {
      * @param manager Entry point to AstroManager.
      */
     public static void organizationsGetGeneratedByMaximumSetRule(com.azure.resourcemanager.astro.AstroManager manager) {
-        manager.organizations().getByResourceGroupWithResponse("rgastronomer", "S PS",
-            com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .getByResourceGroupWithResponse("rgastronomer", "S PS", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -198,10 +211,13 @@ public final class OrganizationsListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.astro.models.LiftrBaseDataPartnerOrganizationPropertiesUpdate;
+import com.azure.resourcemanager.astro.models.LiftrBaseMarketplaceDetailsUpdate;
+import com.azure.resourcemanager.astro.models.LiftrBaseOfferDetailsUpdate;
 import com.azure.resourcemanager.astro.models.LiftrBaseSingleSignOnProperties;
 import com.azure.resourcemanager.astro.models.LiftrBaseUserDetailsUpdate;
 import com.azure.resourcemanager.astro.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.astro.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.astro.models.MarketplaceSubscriptionStatus;
 import com.azure.resourcemanager.astro.models.OrganizationResource;
 import com.azure.resourcemanager.astro.models.OrganizationResourceUpdateProperties;
 import com.azure.resourcemanager.astro.models.SingleSignOnStates;
@@ -224,20 +240,36 @@ public final class OrganizationsUpdateSamples {
      */
     public static void organizationsUpdate(com.azure.resourcemanager.astro.AstroManager manager) {
         OrganizationResource resource = manager.organizations()
-            .getByResourceGroupWithResponse("rgastronomer", "6.", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("key1474", "fakeTokenPlaceholder"))
+            .getByResourceGroupWithResponse("rgastronomer", "6.", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key1474", "fakeTokenPlaceholder"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf()))
             .withProperties(new OrganizationResourceUpdateProperties()
-                .withUser(new LiftrBaseUserDetailsUpdate().withFirstName("qeuofehzypzljgcuysugefbgxde")
-                    .withLastName("g").withEmailAddress(".K_@e7N-g1.xjqnbPs").withUpn("uwtprzdfpsqmktx")
-                    .withPhoneNumber("aqpyxznvqpgkzohevynofrjdfgoo"))
-                .withPartnerOrganizationProperties(new LiftrBaseDataPartnerOrganizationPropertiesUpdate()
-                    .withOrganizationId("lrtmbkvyvvoszhjevohkmyjhfyty").withWorkspaceId("xsepuskdhejaadusyxq")
-                    .withOrganizationName("U2P_").withWorkspaceName("L.-y_--:")
-                    .withSingleSignOnProperties(new LiftrBaseSingleSignOnProperties()
-                        .withSingleSignOnState(SingleSignOnStates.INITIAL).withEnterpriseAppId("mklfypyujwumgwdzae")
-                        .withSingleSignOnUrl("ymmtzkyghvinvhgnqlzwrr").withAadDomains(Arrays.asList("kfbleh")))))
+                .withMarketplace(new LiftrBaseMarketplaceDetailsUpdate().withSubscriptionId("bpoiahcvraqjhwpqcyvmxl")
+                    .withSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)
+                    .withOfferDetails(new LiftrBaseOfferDetailsUpdate().withPublisherId("zhnlxf")
+                        .withOfferId("rh")
+                        .withPlanId("uqlecfuht")
+                        .withPlanName("secxe")
+                        .withTermUnit("skbmivxsechzkyuxvd")
+                        .withTermId("qvnaspsilt")))
+                .withUser(new LiftrBaseUserDetailsUpdate().withFirstName("pantcaqwknzxnjs")
+                    .withLastName("loytwkjq")
+                    .withEmailAddress(".K_@e7N-g1.xjqnbPs")
+                    .withUpn("sbfjcucbtwvnnhyzpfycykerzqjvo")
+                    .withPhoneNumber("smwcipwxoxdmzgj"))
+                .withPartnerOrganizationProperties(
+                    new LiftrBaseDataPartnerOrganizationPropertiesUpdate().withOrganizationId("ugyxg")
+                        .withWorkspaceId("jbpphzsonkhnaxbwlpmgrwuklcx")
+                        .withOrganizationName("6.")
+                        .withWorkspaceName("L.-y_--:")
+                        .withSingleSignOnProperties(
+                            new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                                .withEnterpriseAppId("hkqosvz")
+                                .withSingleSignOnUrl("mgr")
+                                .withAadDomains(Arrays.asList("ynmjdshvcxpusrtv")))))
             .apply();
     }
 

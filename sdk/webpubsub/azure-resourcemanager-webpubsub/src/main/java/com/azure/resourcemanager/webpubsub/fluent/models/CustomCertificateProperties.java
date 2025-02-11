@@ -6,43 +6,47 @@ package com.azure.resourcemanager.webpubsub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Custom certificate properties. */
+/**
+ * Custom certificate properties.
+ */
 @Fluent
-public final class CustomCertificateProperties {
+public final class CustomCertificateProperties implements JsonSerializable<CustomCertificateProperties> {
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Base uri of the KeyVault that stores certificate.
      */
-    @JsonProperty(value = "keyVaultBaseUri", required = true)
     private String keyVaultBaseUri;
 
     /*
      * Certificate secret name.
      */
-    @JsonProperty(value = "keyVaultSecretName", required = true)
     private String keyVaultSecretName;
 
     /*
      * Certificate secret version.
      */
-    @JsonProperty(value = "keyVaultSecretVersion")
     private String keyVaultSecretVersion;
 
-    /** Creates an instance of CustomCertificateProperties class. */
+    /**
+     * Creates an instance of CustomCertificateProperties class.
+     */
     public CustomCertificateProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -51,7 +55,7 @@ public final class CustomCertificateProperties {
 
     /**
      * Get the keyVaultBaseUri property: Base uri of the KeyVault that stores certificate.
-     *
+     * 
      * @return the keyVaultBaseUri value.
      */
     public String keyVaultBaseUri() {
@@ -60,7 +64,7 @@ public final class CustomCertificateProperties {
 
     /**
      * Set the keyVaultBaseUri property: Base uri of the KeyVault that stores certificate.
-     *
+     * 
      * @param keyVaultBaseUri the keyVaultBaseUri value to set.
      * @return the CustomCertificateProperties object itself.
      */
@@ -71,7 +75,7 @@ public final class CustomCertificateProperties {
 
     /**
      * Get the keyVaultSecretName property: Certificate secret name.
-     *
+     * 
      * @return the keyVaultSecretName value.
      */
     public String keyVaultSecretName() {
@@ -80,7 +84,7 @@ public final class CustomCertificateProperties {
 
     /**
      * Set the keyVaultSecretName property: Certificate secret name.
-     *
+     * 
      * @param keyVaultSecretName the keyVaultSecretName value to set.
      * @return the CustomCertificateProperties object itself.
      */
@@ -91,7 +95,7 @@ public final class CustomCertificateProperties {
 
     /**
      * Get the keyVaultSecretVersion property: Certificate secret version.
-     *
+     * 
      * @return the keyVaultSecretVersion value.
      */
     public String keyVaultSecretVersion() {
@@ -100,7 +104,7 @@ public final class CustomCertificateProperties {
 
     /**
      * Set the keyVaultSecretVersion property: Certificate secret version.
-     *
+     * 
      * @param keyVaultSecretVersion the keyVaultSecretVersion value to set.
      * @return the CustomCertificateProperties object itself.
      */
@@ -111,23 +115,67 @@ public final class CustomCertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyVaultBaseUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultBaseUri in model CustomCertificateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVaultBaseUri in model CustomCertificateProperties"));
         }
         if (keyVaultSecretName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultSecretName in model CustomCertificateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVaultSecretName in model CustomCertificateProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomCertificateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyVaultBaseUri", this.keyVaultBaseUri);
+        jsonWriter.writeStringField("keyVaultSecretName", this.keyVaultSecretName);
+        jsonWriter.writeStringField("keyVaultSecretVersion", this.keyVaultSecretVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomCertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomCertificateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomCertificateProperties.
+     */
+    public static CustomCertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomCertificateProperties deserializedCustomCertificateProperties = new CustomCertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVaultBaseUri".equals(fieldName)) {
+                    deserializedCustomCertificateProperties.keyVaultBaseUri = reader.getString();
+                } else if ("keyVaultSecretName".equals(fieldName)) {
+                    deserializedCustomCertificateProperties.keyVaultSecretName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCustomCertificateProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("keyVaultSecretVersion".equals(fieldName)) {
+                    deserializedCustomCertificateProperties.keyVaultSecretVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomCertificateProperties;
+        });
+    }
 }

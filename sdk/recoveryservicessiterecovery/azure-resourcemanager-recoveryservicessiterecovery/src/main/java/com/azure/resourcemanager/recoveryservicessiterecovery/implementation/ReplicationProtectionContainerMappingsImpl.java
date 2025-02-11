@@ -30,8 +30,8 @@ public final class ReplicationProtectionContainerMappingsImpl implements Replica
 
     public PagedIterable<ProtectionContainerMapping> listByReplicationProtectionContainers(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName) {
-        PagedIterable<ProtectionContainerMappingInner> inner
-            = this.serviceClient().listByReplicationProtectionContainers(resourceName, resourceGroupName, fabricName,
+        PagedIterable<ProtectionContainerMappingInner> inner = this.serviceClient()
+            .listByReplicationProtectionContainers(resourceName, resourceGroupName, fabricName,
                 protectionContainerName);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new ProtectionContainerMappingImpl(inner1, this.manager()));
@@ -39,17 +39,18 @@ public final class ReplicationProtectionContainerMappingsImpl implements Replica
 
     public PagedIterable<ProtectionContainerMapping> listByReplicationProtectionContainers(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, Context context) {
-        PagedIterable<ProtectionContainerMappingInner> inner
-            = this.serviceClient().listByReplicationProtectionContainers(resourceName, resourceGroupName, fabricName,
-                protectionContainerName, context);
+        PagedIterable<ProtectionContainerMappingInner> inner = this.serviceClient()
+            .listByReplicationProtectionContainers(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new ProtectionContainerMappingImpl(inner1, this.manager()));
     }
 
     public Response<ProtectionContainerMapping> getWithResponse(String resourceName, String resourceGroupName,
         String fabricName, String protectionContainerName, String mappingName, Context context) {
-        Response<ProtectionContainerMappingInner> inner = this.serviceClient().getWithResponse(resourceName,
-            resourceGroupName, fabricName, protectionContainerName, mappingName, context);
+        Response<ProtectionContainerMappingInner> inner = this.serviceClient()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProtectionContainerMappingImpl(inner.getValue(), this.manager()));
@@ -60,8 +61,8 @@ public final class ReplicationProtectionContainerMappingsImpl implements Replica
 
     public ProtectionContainerMapping get(String resourceName, String resourceGroupName, String fabricName,
         String protectionContainerName, String mappingName) {
-        ProtectionContainerMappingInner inner = this.serviceClient().get(resourceName, resourceGroupName, fabricName,
-            protectionContainerName, mappingName);
+        ProtectionContainerMappingInner inner = this.serviceClient()
+            .get(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName);
         if (inner != null) {
             return new ProtectionContainerMappingImpl(inner, this.manager());
         } else {
@@ -76,20 +77,21 @@ public final class ReplicationProtectionContainerMappingsImpl implements Replica
 
     public void purge(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String mappingName, Context context) {
-        this.serviceClient().purge(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
-            context);
+        this.serviceClient()
+            .purge(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, context);
     }
 
     public void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String mappingName, RemoveProtectionContainerMappingInput removalInput) {
-        this.serviceClient().delete(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
-            removalInput);
+        this.serviceClient()
+            .delete(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput);
     }
 
     public void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String mappingName, RemoveProtectionContainerMappingInput removalInput, Context context) {
-        this.serviceClient().delete(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
-            removalInput, context);
+        this.serviceClient()
+            .delete(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput,
+                context);
     }
 
     public PagedIterable<ProtectionContainerMapping> list(String resourceName, String resourceGroupName) {
@@ -135,8 +137,10 @@ public final class ReplicationProtectionContainerMappingsImpl implements Replica
                 "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionContainerMappings'.",
                 id)));
         }
-        return this.getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
-            Context.NONE).getValue();
+        return this
+            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+                Context.NONE)
+            .getValue();
     }
 
     public Response<ProtectionContainerMapping> getByIdWithResponse(String id, Context context) {

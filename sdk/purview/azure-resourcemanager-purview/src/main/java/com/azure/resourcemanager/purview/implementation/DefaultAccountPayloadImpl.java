@@ -13,8 +13,8 @@ public final class DefaultAccountPayloadImpl implements DefaultAccountPayload {
 
     private final com.azure.resourcemanager.purview.PurviewManager serviceManager;
 
-    DefaultAccountPayloadImpl(
-        DefaultAccountPayloadInner innerObject, com.azure.resourcemanager.purview.PurviewManager serviceManager) {
+    DefaultAccountPayloadImpl(DefaultAccountPayloadInner innerObject,
+        com.azure.resourcemanager.purview.PurviewManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

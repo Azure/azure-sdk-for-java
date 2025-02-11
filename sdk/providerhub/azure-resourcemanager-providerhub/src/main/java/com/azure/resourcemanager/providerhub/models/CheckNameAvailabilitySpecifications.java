@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The CheckNameAvailabilitySpecifications model. */
+/**
+ * The CheckNameAvailabilitySpecifications model.
+ */
 @Fluent
-public class CheckNameAvailabilitySpecifications {
+public class CheckNameAvailabilitySpecifications implements JsonSerializable<CheckNameAvailabilitySpecifications> {
     /*
      * The enableDefaultValidation property.
      */
-    @JsonProperty(value = "enableDefaultValidation")
     private Boolean enableDefaultValidation;
 
     /*
      * The resourceTypesWithCustomValidation property.
      */
-    @JsonProperty(value = "resourceTypesWithCustomValidation")
     private List<String> resourceTypesWithCustomValidation;
 
-    /** Creates an instance of CheckNameAvailabilitySpecifications class. */
+    /**
+     * Creates an instance of CheckNameAvailabilitySpecifications class.
+     */
     public CheckNameAvailabilitySpecifications() {
     }
 
     /**
      * Get the enableDefaultValidation property: The enableDefaultValidation property.
-     *
+     * 
      * @return the enableDefaultValidation value.
      */
     public Boolean enableDefaultValidation() {
@@ -38,7 +44,7 @@ public class CheckNameAvailabilitySpecifications {
 
     /**
      * Set the enableDefaultValidation property: The enableDefaultValidation property.
-     *
+     * 
      * @param enableDefaultValidation the enableDefaultValidation value to set.
      * @return the CheckNameAvailabilitySpecifications object itself.
      */
@@ -49,7 +55,7 @@ public class CheckNameAvailabilitySpecifications {
 
     /**
      * Get the resourceTypesWithCustomValidation property: The resourceTypesWithCustomValidation property.
-     *
+     * 
      * @return the resourceTypesWithCustomValidation value.
      */
     public List<String> resourceTypesWithCustomValidation() {
@@ -58,21 +64,65 @@ public class CheckNameAvailabilitySpecifications {
 
     /**
      * Set the resourceTypesWithCustomValidation property: The resourceTypesWithCustomValidation property.
-     *
+     * 
      * @param resourceTypesWithCustomValidation the resourceTypesWithCustomValidation value to set.
      * @return the CheckNameAvailabilitySpecifications object itself.
      */
-    public CheckNameAvailabilitySpecifications withResourceTypesWithCustomValidation(
-        List<String> resourceTypesWithCustomValidation) {
+    public CheckNameAvailabilitySpecifications
+        withResourceTypesWithCustomValidation(List<String> resourceTypesWithCustomValidation) {
         this.resourceTypesWithCustomValidation = resourceTypesWithCustomValidation;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enableDefaultValidation", this.enableDefaultValidation);
+        jsonWriter.writeArrayField("resourceTypesWithCustomValidation", this.resourceTypesWithCustomValidation,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameAvailabilitySpecifications from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameAvailabilitySpecifications if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckNameAvailabilitySpecifications.
+     */
+    public static CheckNameAvailabilitySpecifications fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameAvailabilitySpecifications deserializedCheckNameAvailabilitySpecifications
+                = new CheckNameAvailabilitySpecifications();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enableDefaultValidation".equals(fieldName)) {
+                    deserializedCheckNameAvailabilitySpecifications.enableDefaultValidation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resourceTypesWithCustomValidation".equals(fieldName)) {
+                    List<String> resourceTypesWithCustomValidation = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCheckNameAvailabilitySpecifications.resourceTypesWithCustomValidation
+                        = resourceTypesWithCustomValidation;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameAvailabilitySpecifications;
+        });
     }
 }

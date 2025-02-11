@@ -22,7 +22,8 @@ public final class ImagePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageProperties model = new ImageProperties().withImage("inpvswjdkirsoodq").withImageId("crmnohjtckwhds")
+        ImageProperties model = new ImageProperties().withImage("inpvswjdkirsoodq")
+            .withImageId("crmnohjtckwhds")
             .withRegionalDataBoundary(RegionalDataBoundary.EU);
         model = BinaryData.fromObject(model).toObject(ImageProperties.class);
         Assertions.assertEquals("inpvswjdkirsoodq", model.image());

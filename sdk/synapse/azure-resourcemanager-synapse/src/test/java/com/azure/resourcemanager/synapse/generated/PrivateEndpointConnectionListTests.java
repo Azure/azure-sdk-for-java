@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionList;
 public final class PrivateEndpointConnectionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"khixuigdtopbo\"},\"id\":\"joghmewuama\",\"name\":\"hrzayvvtpgvdf\",\"type\":\"iotkftutqxl\"},{\"properties\":{\"provisioningState\":\"fgugnxkrxdqmid\"},\"id\":\"thz\",\"name\":\"vqdra\",\"type\":\"hjybigehoqfbo\"}],\"nextLink\":\"kanyktzlcuiywg\"}")
-                .toObject(PrivateEndpointConnectionList.class);
+        PrivateEndpointConnectionList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"owpulpq\"},\"privateLinkServiceConnectionState\":{\"status\":\"lsyxkqjnsjervt\",\"description\":\"gxsds\",\"actionsRequired\":\"e\"},\"provisioningState\":\"sbzkf\"},\"id\":\"beyvpnqicvinvkjj\",\"name\":\"dxrbuukzcle\",\"type\":\"yhmlwpaztzp\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"ckw\"},\"privateLinkServiceConnectionState\":{\"status\":\"qwhxxbuyqaxzfeqz\",\"description\":\"priolx\",\"actionsRequired\":\"jaltolmnc\"},\"provisioningState\":\"obqwcsdbnwdcfh\"},\"id\":\"cqdpfuv\",\"name\":\"lsbjjcanvxbv\",\"type\":\"vudutncor\"}],\"nextLink\":\"lxqtvcofudfl\"}")
+            .toObject(PrivateEndpointConnectionList.class);
     }
 
     @org.junit.jupiter.api.Test

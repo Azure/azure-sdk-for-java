@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The private link scope resource reference. */
+/**
+ * The private link scope resource reference.
+ */
 @Fluent
-public final class PrivateLinkScopedResource {
+public final class PrivateLinkScopedResource implements JsonSerializable<PrivateLinkScopedResource> {
     /*
      * The full resource Id of the private link scope resource.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The private link scope unique Identifier.
      */
-    @JsonProperty(value = "scopeId")
     private String scopeId;
 
-    /** Creates an instance of PrivateLinkScopedResource class. */
+    /**
+     * Creates an instance of PrivateLinkScopedResource class.
+     */
     public PrivateLinkScopedResource() {
     }
 
     /**
      * Get the resourceId property: The full resource Id of the private link scope resource.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -37,7 +43,7 @@ public final class PrivateLinkScopedResource {
 
     /**
      * Set the resourceId property: The full resource Id of the private link scope resource.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the PrivateLinkScopedResource object itself.
      */
@@ -48,7 +54,7 @@ public final class PrivateLinkScopedResource {
 
     /**
      * Get the scopeId property: The private link scope unique Identifier.
-     *
+     * 
      * @return the scopeId value.
      */
     public String scopeId() {
@@ -57,7 +63,7 @@ public final class PrivateLinkScopedResource {
 
     /**
      * Set the scopeId property: The private link scope unique Identifier.
-     *
+     * 
      * @param scopeId the scopeId value to set.
      * @return the PrivateLinkScopedResource object itself.
      */
@@ -68,9 +74,48 @@ public final class PrivateLinkScopedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("scopeId", this.scopeId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkScopedResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkScopedResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkScopedResource.
+     */
+    public static PrivateLinkScopedResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkScopedResource deserializedPrivateLinkScopedResource = new PrivateLinkScopedResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedPrivateLinkScopedResource.resourceId = reader.getString();
+                } else if ("scopeId".equals(fieldName)) {
+                    deserializedPrivateLinkScopedResource.scopeId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkScopedResource;
+        });
     }
 }

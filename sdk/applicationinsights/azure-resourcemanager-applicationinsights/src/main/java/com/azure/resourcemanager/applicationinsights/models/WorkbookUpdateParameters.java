@@ -5,41 +5,44 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WorkbookPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The parameters that can be provided when updating workbook properties properties. */
+/**
+ * The parameters that can be provided when updating workbook properties properties.
+ */
 @Fluent
-public final class WorkbookUpdateParameters {
+public final class WorkbookUpdateParameters implements JsonSerializable<WorkbookUpdateParameters> {
     /*
      * The kind of workbook. Only valid value is shared.
      */
-    @JsonProperty(value = "kind")
     private WorkbookUpdateSharedTypeKind kind;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Metadata describing a workbook for an Azure resource.
      */
-    @JsonProperty(value = "properties")
     private WorkbookPropertiesUpdateParameters innerProperties;
 
-    /** Creates an instance of WorkbookUpdateParameters class. */
+    /**
+     * Creates an instance of WorkbookUpdateParameters class.
+     */
     public WorkbookUpdateParameters() {
     }
 
     /**
      * Get the kind property: The kind of workbook. Only valid value is shared.
-     *
+     * 
      * @return the kind value.
      */
     public WorkbookUpdateSharedTypeKind kind() {
@@ -48,7 +51,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Set the kind property: The kind of workbook. Only valid value is shared.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
@@ -59,7 +62,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -68,7 +71,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
@@ -79,7 +82,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Get the innerProperties property: Metadata describing a workbook for an Azure resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkbookPropertiesUpdateParameters innerProperties() {
@@ -88,7 +91,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Get the displayName property: The user-defined name (display name) of the workbook.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -97,7 +100,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Set the displayName property: The user-defined name (display name) of the workbook.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
@@ -112,7 +115,7 @@ public final class WorkbookUpdateParameters {
     /**
      * Get the serializedData property: Configuration of this particular workbook. Configuration data is a string
      * containing valid JSON.
-     *
+     * 
      * @return the serializedData value.
      */
     public String serializedData() {
@@ -122,7 +125,7 @@ public final class WorkbookUpdateParameters {
     /**
      * Set the serializedData property: Configuration of this particular workbook. Configuration data is a string
      * containing valid JSON.
-     *
+     * 
      * @param serializedData the serializedData value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
@@ -136,7 +139,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Get the category property: Workbook category, as defined by the user at creation time.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -145,7 +148,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Set the category property: Workbook category, as defined by the user at creation time.
-     *
+     * 
      * @param category the category value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
@@ -159,7 +162,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Get the tags property: A list of 0 or more tags that are associated with this workbook definition.
-     *
+     * 
      * @return the tags value.
      */
     public List<String> tagsPropertiesTags() {
@@ -168,7 +171,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Set the tags property: A list of 0 or more tags that are associated with this workbook definition.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
@@ -182,7 +185,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Get the description property: The description of the workbook.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -191,7 +194,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Set the description property: The description of the workbook.
-     *
+     * 
      * @param description the description value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
@@ -205,7 +208,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Get the revision property: The unique revision id for this workbook definition.
-     *
+     * 
      * @return the revision value.
      */
     public String revision() {
@@ -214,7 +217,7 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Set the revision property: The unique revision id for this workbook definition.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
@@ -228,12 +231,57 @@ public final class WorkbookUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkbookUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkbookUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkbookUpdateParameters.
+     */
+    public static WorkbookUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkbookUpdateParameters deserializedWorkbookUpdateParameters = new WorkbookUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedWorkbookUpdateParameters.kind
+                        = WorkbookUpdateSharedTypeKind.fromString(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkbookUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkbookUpdateParameters.innerProperties
+                        = WorkbookPropertiesUpdateParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkbookUpdateParameters;
+        });
     }
 }

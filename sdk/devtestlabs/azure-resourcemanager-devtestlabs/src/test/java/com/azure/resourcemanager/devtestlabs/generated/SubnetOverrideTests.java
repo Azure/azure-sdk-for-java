@@ -16,55 +16,41 @@ import org.junit.jupiter.api.Assertions;
 public final class SubnetOverrideTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubnetOverride model =
-            BinaryData
-                .fromString(
-                    "{\"resourceId\":\"q\",\"labSubnetName\":\"izxqltgrd\",\"useInVmCreationPermission\":\"Deny\",\"usePublicIpAddressPermission\":\"Default\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{\"transportProtocol\":\"Tcp\",\"backendPort\":47041637},{\"transportProtocol\":\"Tcp\",\"backendPort\":2094013650},{\"transportProtocol\":\"Udp\",\"backendPort\":875349489},{\"transportProtocol\":\"Udp\",\"backendPort\":1159894455}]},\"virtualNetworkPoolName\":\"blml\"}")
-                .toObject(SubnetOverride.class);
+        SubnetOverride model = BinaryData.fromString(
+            "{\"resourceId\":\"q\",\"labSubnetName\":\"izxqltgrd\",\"useInVmCreationPermission\":\"Deny\",\"usePublicIpAddressPermission\":\"Default\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{\"transportProtocol\":\"Tcp\",\"backendPort\":47041637},{\"transportProtocol\":\"Tcp\",\"backendPort\":2094013650},{\"transportProtocol\":\"Udp\",\"backendPort\":875349489},{\"transportProtocol\":\"Udp\",\"backendPort\":1159894455}]},\"virtualNetworkPoolName\":\"blml\"}")
+            .toObject(SubnetOverride.class);
         Assertions.assertEquals("q", model.resourceId());
         Assertions.assertEquals("izxqltgrd", model.labSubnetName());
         Assertions.assertEquals(UsagePermissionType.DENY, model.useInVmCreationPermission());
         Assertions.assertEquals(UsagePermissionType.DEFAULT, model.usePublicIpAddressPermission());
-        Assertions
-            .assertEquals(
-                TransportProtocol.TCP,
-                model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).transportProtocol());
-        Assertions
-            .assertEquals(47041637, model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).backendPort());
+        Assertions.assertEquals(TransportProtocol.TCP,
+            model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).transportProtocol());
+        Assertions.assertEquals(47041637,
+            model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).backendPort());
         Assertions.assertEquals("blml", model.virtualNetworkPoolName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubnetOverride model =
-            new SubnetOverride()
-                .withResourceId("q")
-                .withLabSubnetName("izxqltgrd")
-                .withUseInVmCreationPermission(UsagePermissionType.DENY)
-                .withUsePublicIpAddressPermission(UsagePermissionType.DEFAULT)
-                .withSharedPublicIpAddressConfiguration(
-                    new SubnetSharedPublicIpAddressConfiguration()
-                        .withAllowedPorts(
-                            Arrays
-                                .asList(
-                                    new Port().withTransportProtocol(TransportProtocol.TCP).withBackendPort(47041637),
-                                    new Port().withTransportProtocol(TransportProtocol.TCP).withBackendPort(2094013650),
-                                    new Port().withTransportProtocol(TransportProtocol.UDP).withBackendPort(875349489),
-                                    new Port()
-                                        .withTransportProtocol(TransportProtocol.UDP)
-                                        .withBackendPort(1159894455))))
-                .withVirtualNetworkPoolName("blml");
+        SubnetOverride model = new SubnetOverride().withResourceId("q")
+            .withLabSubnetName("izxqltgrd")
+            .withUseInVmCreationPermission(UsagePermissionType.DENY)
+            .withUsePublicIpAddressPermission(UsagePermissionType.DEFAULT)
+            .withSharedPublicIpAddressConfiguration(new SubnetSharedPublicIpAddressConfiguration().withAllowedPorts(
+                Arrays.asList(new Port().withTransportProtocol(TransportProtocol.TCP).withBackendPort(47041637),
+                    new Port().withTransportProtocol(TransportProtocol.TCP).withBackendPort(2094013650),
+                    new Port().withTransportProtocol(TransportProtocol.UDP).withBackendPort(875349489),
+                    new Port().withTransportProtocol(TransportProtocol.UDP).withBackendPort(1159894455))))
+            .withVirtualNetworkPoolName("blml");
         model = BinaryData.fromObject(model).toObject(SubnetOverride.class);
         Assertions.assertEquals("q", model.resourceId());
         Assertions.assertEquals("izxqltgrd", model.labSubnetName());
         Assertions.assertEquals(UsagePermissionType.DENY, model.useInVmCreationPermission());
         Assertions.assertEquals(UsagePermissionType.DEFAULT, model.usePublicIpAddressPermission());
-        Assertions
-            .assertEquals(
-                TransportProtocol.TCP,
-                model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).transportProtocol());
-        Assertions
-            .assertEquals(47041637, model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).backendPort());
+        Assertions.assertEquals(TransportProtocol.TCP,
+            model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).transportProtocol());
+        Assertions.assertEquals(47041637,
+            model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).backendPort());
         Assertions.assertEquals("blml", model.virtualNetworkPoolName());
     }
 }

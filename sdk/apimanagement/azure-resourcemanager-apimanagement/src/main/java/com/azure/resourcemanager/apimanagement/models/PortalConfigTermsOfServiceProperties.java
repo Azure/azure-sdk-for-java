@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Terms of service contract properties. */
+/**
+ * Terms of service contract properties.
+ */
 @Fluent
-public final class PortalConfigTermsOfServiceProperties {
+public final class PortalConfigTermsOfServiceProperties
+    implements JsonSerializable<PortalConfigTermsOfServiceProperties> {
     /*
      * A terms of service text.
      */
-    @JsonProperty(value = "text")
     private String text;
 
     /*
      * Ask user for consent to the terms of service.
      */
-    @JsonProperty(value = "requireConsent")
     private Boolean requireConsent;
 
-    /** Creates an instance of PortalConfigTermsOfServiceProperties class. */
+    /**
+     * Creates an instance of PortalConfigTermsOfServiceProperties class.
+     */
     public PortalConfigTermsOfServiceProperties() {
     }
 
     /**
      * Get the text property: A terms of service text.
-     *
+     * 
      * @return the text value.
      */
     public String text() {
@@ -37,7 +44,7 @@ public final class PortalConfigTermsOfServiceProperties {
 
     /**
      * Set the text property: A terms of service text.
-     *
+     * 
      * @param text the text value to set.
      * @return the PortalConfigTermsOfServiceProperties object itself.
      */
@@ -48,7 +55,7 @@ public final class PortalConfigTermsOfServiceProperties {
 
     /**
      * Get the requireConsent property: Ask user for consent to the terms of service.
-     *
+     * 
      * @return the requireConsent value.
      */
     public Boolean requireConsent() {
@@ -57,7 +64,7 @@ public final class PortalConfigTermsOfServiceProperties {
 
     /**
      * Set the requireConsent property: Ask user for consent to the terms of service.
-     *
+     * 
      * @param requireConsent the requireConsent value to set.
      * @return the PortalConfigTermsOfServiceProperties object itself.
      */
@@ -68,9 +75,50 @@ public final class PortalConfigTermsOfServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeBooleanField("requireConsent", this.requireConsent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalConfigTermsOfServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalConfigTermsOfServiceProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortalConfigTermsOfServiceProperties.
+     */
+    public static PortalConfigTermsOfServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalConfigTermsOfServiceProperties deserializedPortalConfigTermsOfServiceProperties
+                = new PortalConfigTermsOfServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("text".equals(fieldName)) {
+                    deserializedPortalConfigTermsOfServiceProperties.text = reader.getString();
+                } else if ("requireConsent".equals(fieldName)) {
+                    deserializedPortalConfigTermsOfServiceProperties.requireConsent
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalConfigTermsOfServiceProperties;
+        });
     }
 }

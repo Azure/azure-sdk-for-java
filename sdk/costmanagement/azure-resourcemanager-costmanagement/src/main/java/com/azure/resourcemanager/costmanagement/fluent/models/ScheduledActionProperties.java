@@ -6,52 +6,53 @@ package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.FileDestination;
 import com.azure.resourcemanager.costmanagement.models.NotificationProperties;
 import com.azure.resourcemanager.costmanagement.models.ScheduleProperties;
 import com.azure.resourcemanager.costmanagement.models.ScheduledActionStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of the scheduled action. */
+/**
+ * The properties of the scheduled action.
+ */
 @Fluent
-public final class ScheduledActionProperties {
+public final class ScheduledActionProperties implements JsonSerializable<ScheduledActionProperties> {
     /*
      * Scheduled action name.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Destination format of the view data. This is optional.
      */
-    @JsonProperty(value = "fileDestination")
     private FileDestination fileDestination;
 
     /*
      * Notification properties based on scheduled action kind.
      */
-    @JsonProperty(value = "notification", required = true)
     private NotificationProperties notification;
 
     /*
      * Email address of the point of contact that should get the unsubscribe requests and notification emails.
      */
-    @JsonProperty(value = "notificationEmail")
     private String notificationEmail;
 
     /*
      * Schedule of the scheduled action.
      */
-    @JsonProperty(value = "schedule", required = true)
     private ScheduleProperties schedule;
 
     /*
      * Cost Management scope like 'subscriptions/{subscriptionId}' for subscription scope,
      * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
      * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     * scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-     * for EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
      * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
      * BillingProfile scope,
      * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
@@ -60,29 +61,28 @@ public final class ScheduledActionProperties {
      * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription
      * scope.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * Status of the scheduled action.
      */
-    @JsonProperty(value = "status", required = true)
     private ScheduledActionStatus status;
 
     /*
      * Cost analysis viewId used for scheduled action. For example,
      * '/providers/Microsoft.CostManagement/views/swaggerExample'
      */
-    @JsonProperty(value = "viewId", required = true)
     private String viewId;
 
-    /** Creates an instance of ScheduledActionProperties class. */
+    /**
+     * Creates an instance of ScheduledActionProperties class.
+     */
     public ScheduledActionProperties() {
     }
 
     /**
      * Get the displayName property: Scheduled action name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -91,7 +91,7 @@ public final class ScheduledActionProperties {
 
     /**
      * Set the displayName property: Scheduled action name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ScheduledActionProperties object itself.
      */
@@ -102,7 +102,7 @@ public final class ScheduledActionProperties {
 
     /**
      * Get the fileDestination property: Destination format of the view data. This is optional.
-     *
+     * 
      * @return the fileDestination value.
      */
     public FileDestination fileDestination() {
@@ -111,7 +111,7 @@ public final class ScheduledActionProperties {
 
     /**
      * Set the fileDestination property: Destination format of the view data. This is optional.
-     *
+     * 
      * @param fileDestination the fileDestination value to set.
      * @return the ScheduledActionProperties object itself.
      */
@@ -122,7 +122,7 @@ public final class ScheduledActionProperties {
 
     /**
      * Get the notification property: Notification properties based on scheduled action kind.
-     *
+     * 
      * @return the notification value.
      */
     public NotificationProperties notification() {
@@ -131,7 +131,7 @@ public final class ScheduledActionProperties {
 
     /**
      * Set the notification property: Notification properties based on scheduled action kind.
-     *
+     * 
      * @param notification the notification value to set.
      * @return the ScheduledActionProperties object itself.
      */
@@ -143,7 +143,7 @@ public final class ScheduledActionProperties {
     /**
      * Get the notificationEmail property: Email address of the point of contact that should get the unsubscribe
      * requests and notification emails.
-     *
+     * 
      * @return the notificationEmail value.
      */
     public String notificationEmail() {
@@ -153,7 +153,7 @@ public final class ScheduledActionProperties {
     /**
      * Set the notificationEmail property: Email address of the point of contact that should get the unsubscribe
      * requests and notification emails.
-     *
+     * 
      * @param notificationEmail the notificationEmail value to set.
      * @return the ScheduledActionProperties object itself.
      */
@@ -164,7 +164,7 @@ public final class ScheduledActionProperties {
 
     /**
      * Get the schedule property: Schedule of the scheduled action.
-     *
+     * 
      * @return the schedule value.
      */
     public ScheduleProperties schedule() {
@@ -173,7 +173,7 @@ public final class ScheduledActionProperties {
 
     /**
      * Set the schedule property: Schedule of the scheduled action.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the ScheduledActionProperties object itself.
      */
@@ -196,7 +196,7 @@ public final class ScheduledActionProperties {
      * for ExternalBillingAccount scope, and
      * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription
      * scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -217,7 +217,7 @@ public final class ScheduledActionProperties {
      * for ExternalBillingAccount scope, and
      * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription
      * scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the ScheduledActionProperties object itself.
      */
@@ -228,7 +228,7 @@ public final class ScheduledActionProperties {
 
     /**
      * Get the status property: Status of the scheduled action.
-     *
+     * 
      * @return the status value.
      */
     public ScheduledActionStatus status() {
@@ -237,7 +237,7 @@ public final class ScheduledActionProperties {
 
     /**
      * Set the status property: Status of the scheduled action.
-     *
+     * 
      * @param status the status value to set.
      * @return the ScheduledActionProperties object itself.
      */
@@ -249,7 +249,7 @@ public final class ScheduledActionProperties {
     /**
      * Get the viewId property: Cost analysis viewId used for scheduled action. For example,
      * '/providers/Microsoft.CostManagement/views/swaggerExample'.
-     *
+     * 
      * @return the viewId value.
      */
     public String viewId() {
@@ -259,7 +259,7 @@ public final class ScheduledActionProperties {
     /**
      * Set the viewId property: Cost analysis viewId used for scheduled action. For example,
      * '/providers/Microsoft.CostManagement/views/swaggerExample'.
-     *
+     * 
      * @param viewId the viewId value to set.
      * @return the ScheduledActionProperties object itself.
      */
@@ -270,48 +270,101 @@ public final class ScheduledActionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model ScheduledActionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model ScheduledActionProperties"));
         }
         if (fileDestination() != null) {
             fileDestination().validate();
         }
         if (notification() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property notification in model ScheduledActionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property notification in model ScheduledActionProperties"));
         } else {
             notification().validate();
         }
         if (schedule() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schedule in model ScheduledActionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schedule in model ScheduledActionProperties"));
         } else {
             schedule().validate();
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model ScheduledActionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model ScheduledActionProperties"));
         }
         if (viewId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property viewId in model ScheduledActionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property viewId in model ScheduledActionProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduledActionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("notification", this.notification);
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("viewId", this.viewId);
+        jsonWriter.writeJsonField("fileDestination", this.fileDestination);
+        jsonWriter.writeStringField("notificationEmail", this.notificationEmail);
+        jsonWriter.writeStringField("scope", this.scope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledActionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledActionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduledActionProperties.
+     */
+    public static ScheduledActionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledActionProperties deserializedScheduledActionProperties = new ScheduledActionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedScheduledActionProperties.displayName = reader.getString();
+                } else if ("notification".equals(fieldName)) {
+                    deserializedScheduledActionProperties.notification = NotificationProperties.fromJson(reader);
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedScheduledActionProperties.schedule = ScheduleProperties.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedScheduledActionProperties.status = ScheduledActionStatus.fromString(reader.getString());
+                } else if ("viewId".equals(fieldName)) {
+                    deserializedScheduledActionProperties.viewId = reader.getString();
+                } else if ("fileDestination".equals(fieldName)) {
+                    deserializedScheduledActionProperties.fileDestination = FileDestination.fromJson(reader);
+                } else if ("notificationEmail".equals(fieldName)) {
+                    deserializedScheduledActionProperties.notificationEmail = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedScheduledActionProperties.scope = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledActionProperties;
+        });
+    }
 }

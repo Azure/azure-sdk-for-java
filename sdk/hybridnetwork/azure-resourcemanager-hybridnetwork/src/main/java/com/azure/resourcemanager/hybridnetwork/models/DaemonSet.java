@@ -5,60 +5,58 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Helm DaemonSet status properties.
  */
 @Fluent
-public final class DaemonSet {
+public final class DaemonSet implements JsonSerializable<DaemonSet> {
     /*
      * The name of the daemonSet.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The namespace of the daemonSet.
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * Desired number of pods
      */
-    @JsonProperty(value = "desired")
     private Integer desired;
 
     /*
      * Current number of pods
      */
-    @JsonProperty(value = "current")
     private Integer current;
 
     /*
      * Number of Ready pods
      */
-    @JsonProperty(value = "ready")
     private Integer ready;
 
     /*
      * Number of upto date pods
      */
-    @JsonProperty(value = "upToDate")
     private Integer upToDate;
 
     /*
      * Number of available pods.
      */
-    @JsonProperty(value = "available")
     private Integer available;
 
     /*
      * Creation Time of daemonSet.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /**
@@ -233,5 +231,64 @@ public final class DaemonSet {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeNumberField("desired", this.desired);
+        jsonWriter.writeNumberField("current", this.current);
+        jsonWriter.writeNumberField("ready", this.ready);
+        jsonWriter.writeNumberField("upToDate", this.upToDate);
+        jsonWriter.writeNumberField("available", this.available);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DaemonSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DaemonSet if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the DaemonSet.
+     */
+    public static DaemonSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DaemonSet deserializedDaemonSet = new DaemonSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDaemonSet.name = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedDaemonSet.namespace = reader.getString();
+                } else if ("desired".equals(fieldName)) {
+                    deserializedDaemonSet.desired = reader.getNullable(JsonReader::getInt);
+                } else if ("current".equals(fieldName)) {
+                    deserializedDaemonSet.current = reader.getNullable(JsonReader::getInt);
+                } else if ("ready".equals(fieldName)) {
+                    deserializedDaemonSet.ready = reader.getNullable(JsonReader::getInt);
+                } else if ("upToDate".equals(fieldName)) {
+                    deserializedDaemonSet.upToDate = reader.getNullable(JsonReader::getInt);
+                } else if ("available".equals(fieldName)) {
+                    deserializedDaemonSet.available = reader.getNullable(JsonReader::getInt);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedDaemonSet.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDaemonSet;
+        });
     }
 }

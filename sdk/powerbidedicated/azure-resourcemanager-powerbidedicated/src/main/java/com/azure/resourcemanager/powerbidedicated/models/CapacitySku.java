@@ -6,36 +6,41 @@ package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents the SKU name and Azure pricing tier for PowerBI Dedicated capacity resource. */
+/**
+ * Represents the SKU name and Azure pricing tier for PowerBI Dedicated capacity resource.
+ */
 @Fluent
-public final class CapacitySku {
+public final class CapacitySku implements JsonSerializable<CapacitySku> {
     /*
      * Name of the SKU level.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The name of the Azure pricing tier to which the SKU applies.
      */
-    @JsonProperty(value = "tier")
     private CapacitySkuTier tier;
 
     /*
      * The capacity of the SKU.
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
-    /** Creates an instance of CapacitySku class. */
+    /**
+     * Creates an instance of CapacitySku class.
+     */
     public CapacitySku() {
     }
 
     /**
      * Get the name property: Name of the SKU level.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +49,7 @@ public final class CapacitySku {
 
     /**
      * Set the name property: Name of the SKU level.
-     *
+     * 
      * @param name the name value to set.
      * @return the CapacitySku object itself.
      */
@@ -55,7 +60,7 @@ public final class CapacitySku {
 
     /**
      * Get the tier property: The name of the Azure pricing tier to which the SKU applies.
-     *
+     * 
      * @return the tier value.
      */
     public CapacitySkuTier tier() {
@@ -64,7 +69,7 @@ public final class CapacitySku {
 
     /**
      * Set the tier property: The name of the Azure pricing tier to which the SKU applies.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the CapacitySku object itself.
      */
@@ -75,7 +80,7 @@ public final class CapacitySku {
 
     /**
      * Get the capacity property: The capacity of the SKU.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -84,7 +89,7 @@ public final class CapacitySku {
 
     /**
      * Set the capacity property: The capacity of the SKU.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the CapacitySku object itself.
      */
@@ -95,16 +100,58 @@ public final class CapacitySku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model CapacitySku"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model CapacitySku"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CapacitySku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapacitySku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapacitySku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CapacitySku.
+     */
+    public static CapacitySku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapacitySku deserializedCapacitySku = new CapacitySku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCapacitySku.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedCapacitySku.tier = CapacitySkuTier.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedCapacitySku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapacitySku;
+        });
+    }
 }

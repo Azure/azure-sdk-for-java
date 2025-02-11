@@ -60,46 +60,58 @@ public final class AccountSasPermission {
                 case 'r':
                     permissions.readPermission = true;
                     break;
+
                 case 'w':
                     permissions.writePermission = true;
                     break;
+
                 case 'd':
                     permissions.deletePermission = true;
                     break;
+
                 case 'x':
                     permissions.deleteVersionPermission = true;
                     break;
+
                 case 'y':
                     permissions.permanentDeletePermission = true;
                     break;
+
                 case 'l':
                     permissions.listPermission = true;
                     break;
+
                 case 'a':
                     permissions.addPermission = true;
                     break;
+
                 case 'c':
                     permissions.createPermission = true;
                     break;
+
                 case 'u':
                     permissions.updatePermission = true;
                     break;
+
                 case 'p':
                     permissions.processMessagesPermission = true;
                     break;
+
                 case 't':
                     permissions.tagsPermission = true;
                     break;
+
                 case 'f':
                     permissions.filterTagsPermission = true;
                     break;
+
                 case 'i':
                     permissions.immutabilityPolicyPermission = true;
                     break;
+
                 default:
-                    throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions",
-                            permissionString, c));
+                    throw new IllegalArgumentException(String.format(Locale.ROOT,
+                        Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permissionString, c));
             }
         }
         return permissions;

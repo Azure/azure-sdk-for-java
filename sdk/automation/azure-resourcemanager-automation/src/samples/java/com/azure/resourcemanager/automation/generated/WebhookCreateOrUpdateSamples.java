@@ -7,19 +7,22 @@ package com.azure.resourcemanager.automation.generated;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
 import java.time.OffsetDateTime;
 
-/** Samples for Webhook CreateOrUpdate. */
+/**
+ * Samples for Webhook CreateOrUpdate.
+ */
 public final class WebhookCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/createOrUpdateWebhook.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/createOrUpdateWebhook.
+     * json
      */
     /**
      * Sample code: Create or update webhook.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateWebhook(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .webhooks()
+        manager.webhooks()
             .define("TestWebhook")
             .withExistingAutomationAccount("rg", "myAutomationAccount33")
             .withName("TestWebhook")

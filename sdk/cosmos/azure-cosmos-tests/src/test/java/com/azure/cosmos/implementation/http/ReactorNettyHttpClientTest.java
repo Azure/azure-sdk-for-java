@@ -14,21 +14,22 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests that partition manager correctly resolves addresses for requests and does appropriate number of cache refreshes.
+ * Tests that partition manager correctly resolves addresses for requests and does appropriate number of cache
+ * refreshes.
  */
 public class ReactorNettyHttpClientTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ReactorNettyHttpClientTest.class);
-    private Configs configs;
     private HttpClient reactorNettyHttpClient;
 
     @BeforeClass(groups = "unit")
     public void before_ReactorNettyHttpClientTest() {
-        this.configs = new Configs();
-        this.reactorNettyHttpClient = HttpClient.createFixed(new HttpClientConfig(this.configs));
+        this.reactorNettyHttpClient = HttpClient.createFixed(new HttpClientConfig(new Configs()));
     }
 
     @AfterClass(groups = "unit")
@@ -40,21 +41,21 @@ public class ReactorNettyHttpClientTest {
     public void httpClientWithMaxHeaderSize() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
-        assertThat(httpClient.configuration().decoder().maxHeaderSize()).isEqualTo(this.configs.getMaxHttpHeaderSize());
+        assertThat(httpClient.configuration().decoder().maxHeaderSize()).isEqualTo(Configs.getMaxHttpHeaderSize());
     }
 
     @Test(groups = "unit")
     public void httpClientWithMaxChunkSize() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
-        assertThat(httpClient.configuration().decoder().maxChunkSize()).isEqualTo(this.configs.getMaxHttpChunkSize());
+        assertThat(httpClient.configuration().decoder().maxChunkSize()).isEqualTo(Configs.getMaxHttpChunkSize());
     }
 
     @Test(groups = "unit")
     public void httpClientWithMaxInitialLineLength() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
-        assertThat(httpClient.configuration().decoder().maxInitialLineLength()).isEqualTo(this.configs.getMaxHttpInitialLineLength());
+        assertThat(httpClient.configuration().decoder().maxInitialLineLength()).isEqualTo(Configs.getMaxHttpInitialLineLength());
     }
 
     @Test(groups = "unit")
@@ -65,10 +66,36 @@ public class ReactorNettyHttpClientTest {
     }
 
     @Test(groups = "unit")
-    public void httpClientWithOptions() {
+    public void httpClientWithConnectionAcquireTimeout() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
-        Integer connectionTimeoutInMillis = (Integer) httpClient.configuration().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
-        assertThat(connectionTimeoutInMillis).isEqualTo((int) this.configs.getConnectionAcquireTimeout().toMillis());
+        Integer connectionTimeoutInMillis =
+            (Integer) httpClient.configuration().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
+        assertThat(connectionTimeoutInMillis).isEqualTo((int) Configs.getConnectionAcquireTimeout().toMillis());
+    }
+
+    @Test(groups = "unit")
+    public void httpClientWithMaxPoolSize() {
+        reactor.netty.http.client.HttpClient httpClient =
+            ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
+        int maxConnectionPoolSize = httpClient.configuration().connectionProvider().maxConnections();
+        assertThat(maxConnectionPoolSize).isEqualTo(Configs.getDefaultHttpPoolSize());
+    }
+
+    @Test(groups = "unit")
+    //  We don't set any default response timeout to http client
+    public void httpClientWithResponseTimeout() {
+        reactor.netty.http.client.HttpClient httpClient =
+            ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
+        Duration responseTimeout = httpClient.configuration().responseTimeout();
+        assertThat(responseTimeout).isNull();
+    }
+
+    @Test(groups = "unit")
+    public void httpClientWithConnectionProviderName() {
+        reactor.netty.http.client.HttpClient httpClient =
+            ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
+        String name = httpClient.configuration().connectionProvider().name();
+        assertThat(name).isEqualTo(Configs.getReactorNettyConnectionPoolName());
     }
 }

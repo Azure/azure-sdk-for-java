@@ -5,14 +5,13 @@ package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 /**
  * Ensure that code is not using words or abbreviations that are deny listed by this Checkstyle. denyListedWords: the
@@ -21,7 +20,9 @@ import java.util.Set;
  * Prints out a message stating the location and the class, method or variable as well as the list of deny listed words.
  */
 public class DenyListedWordsCheck extends AbstractCheck {
-    private final Set<String> denyListedWords = new HashSet<>();
+    private String[] denyListedWords = new String[0];
+
+    private boolean implementationPackage = false;
 
     static final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow "
         + "Camelcase standards for the following words: %s.";
@@ -33,7 +34,7 @@ public class DenyListedWordsCheck extends AbstractCheck {
      */
     public final void setDenyListedWords(String... denyListedWords) {
         if (denyListedWords != null) {
-            Collections.addAll(this.denyListedWords, denyListedWords);
+            this.denyListedWords = Arrays.copyOf(denyListedWords, denyListedWords.length);
         }
     }
 
@@ -49,14 +50,35 @@ public class DenyListedWordsCheck extends AbstractCheck {
 
     @Override
     public int[] getRequiredTokens() {
-        return new int[]{TokenTypes.CLASS_DEF,
-            TokenTypes.METHOD_DEF,
-            TokenTypes.VARIABLE_DEF};
+        return new int[] {
+            TokenTypes.PACKAGE_DEF, TokenTypes.CLASS_DEF, TokenTypes.METHOD_DEF, TokenTypes.VARIABLE_DEF };
+    }
+
+    @Override
+    public void beginTree(DetailAST rootAST) {
+        implementationPackage = false;
+    }
+
+    @Override
+    public void finishTree(DetailAST rootAST) {
+        implementationPackage = false;
     }
 
     @Override
     public void visitToken(DetailAST token) {
+        // If we're in an implementation package ignore this check.
+        // If a PACKAGE_DEF is not found, then assume it's not an implementation package.
+        if (implementationPackage) {
+            return;
+        }
+
         switch (token.getType()) {
+            case TokenTypes.PACKAGE_DEF:
+                // Check if we're in an implementation package.
+                final String packageName = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
+                implementationPackage = packageName.contains("implementation");
+                break;
+
             case TokenTypes.CLASS_DEF:
             case TokenTypes.METHOD_DEF:
             case TokenTypes.VARIABLE_DEF:
@@ -69,7 +91,7 @@ public class DenyListedWordsCheck extends AbstractCheck {
                     break;
                 }
 
-                // In an interface all the fields (variables) are by default public, static and final.
+                // In an interface all the fields (variables) are by default public, static, and final.
                 if (token.getType() == TokenTypes.VARIABLE_DEF && ScopeUtil.isInInterfaceBlock(token)) {
                     break;
                 }
@@ -93,7 +115,8 @@ public class DenyListedWordsCheck extends AbstractCheck {
         final DetailAST modifiersAST = token.findFirstToken(TokenTypes.MODIFIERS);
         final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(token);
         final boolean isStatic = modifiersAST.findFirstToken(TokenTypes.LITERAL_STATIC) != null;
-        return (accessModifier.equals(AccessModifierOption.PUBLIC) || accessModifier.equals(AccessModifierOption.PROTECTED)) && !isStatic;
+        return (accessModifier.equals(AccessModifierOption.PUBLIC) || accessModifier.equals(
+            AccessModifierOption.PROTECTED)) && !isStatic;
     }
 
     /**

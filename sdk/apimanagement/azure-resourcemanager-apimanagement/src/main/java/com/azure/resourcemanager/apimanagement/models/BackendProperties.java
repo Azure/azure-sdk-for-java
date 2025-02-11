@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties specific to the Backend Type. */
+/**
+ * Properties specific to the Backend Type.
+ */
 @Fluent
-public final class BackendProperties {
+public final class BackendProperties implements JsonSerializable<BackendProperties> {
     /*
      * Backend Service Fabric Cluster Properties
      */
-    @JsonProperty(value = "serviceFabricCluster")
     private BackendServiceFabricClusterProperties serviceFabricCluster;
 
-    /** Creates an instance of BackendProperties class. */
+    /**
+     * Creates an instance of BackendProperties class.
+     */
     public BackendProperties() {
     }
 
     /**
      * Get the serviceFabricCluster property: Backend Service Fabric Cluster Properties.
-     *
+     * 
      * @return the serviceFabricCluster value.
      */
     public BackendServiceFabricClusterProperties serviceFabricCluster() {
@@ -31,7 +38,7 @@ public final class BackendProperties {
 
     /**
      * Set the serviceFabricCluster property: Backend Service Fabric Cluster Properties.
-     *
+     * 
      * @param serviceFabricCluster the serviceFabricCluster value to set.
      * @return the BackendProperties object itself.
      */
@@ -42,12 +49,49 @@ public final class BackendProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceFabricCluster() != null) {
             serviceFabricCluster().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("serviceFabricCluster", this.serviceFabricCluster);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackendProperties.
+     */
+    public static BackendProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendProperties deserializedBackendProperties = new BackendProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceFabricCluster".equals(fieldName)) {
+                    deserializedBackendProperties.serviceFabricCluster
+                        = BackendServiceFabricClusterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendProperties;
+        });
     }
 }

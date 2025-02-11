@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Index;
@@ -402,7 +403,12 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ByteBuffer serializeJsonToByteBuffer(SqlQuerySpec sqlQuerySpec) {
         sqlQuerySpec.populatePropertyBag();
-        return sqlQuerySpec.getJsonSerializable().serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
+        return sqlQuerySpec
+            .getJsonSerializable()
+            .serializeJsonToByteBuffer(
+                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                null,
+                false);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -436,6 +442,8 @@ public final class ModelBridgeInternal {
             ((SpatialSpec) t).populatePropertyBag();
         } else if (t instanceof CosmosVectorIndexSpec) {
             ((CosmosVectorIndexSpec) t).populatePropertyBag();
+        } else if (t instanceof CosmosFullTextIndex) {
+            ((CosmosFullTextIndex) t).populatePropertyBag();
         } else if (t instanceof SqlParameter) {
             ((SqlParameter) t).populatePropertyBag();
         } else if (t instanceof SqlQuerySpec) {
@@ -471,6 +479,8 @@ public final class ModelBridgeInternal {
             return ((SpatialSpec) t).getJsonSerializable();
         } else if (t instanceof CosmosVectorIndexSpec) {
             return ((CosmosVectorIndexSpec) t).getJsonSerializable();
+        } else if (t instanceof CosmosFullTextIndex) {
+            return ((CosmosFullTextIndex) t).getJsonSerializable();
         } else if (t instanceof SqlParameter) {
             return ((SqlParameter) t).getJsonSerializable();
         } else if (t instanceof SqlQuerySpec) {

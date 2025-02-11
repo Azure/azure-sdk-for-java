@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request details for generating a deployment license. */
+/**
+ * Request details for generating a deployment license.
+ */
 @Fluent
-public final class DeploymentLicenseRequest {
+public final class DeploymentLicenseRequest implements JsonSerializable<DeploymentLicenseRequest> {
     /*
      * Signing verification public key version.
      */
-    @JsonProperty(value = "verificationVersion")
     private String verificationVersion;
 
-    /** Creates an instance of DeploymentLicenseRequest class. */
+    /**
+     * Creates an instance of DeploymentLicenseRequest class.
+     */
     public DeploymentLicenseRequest() {
     }
 
     /**
      * Get the verificationVersion property: Signing verification public key version.
-     *
+     * 
      * @return the verificationVersion value.
      */
     public String verificationVersion() {
@@ -31,7 +38,7 @@ public final class DeploymentLicenseRequest {
 
     /**
      * Set the verificationVersion property: Signing verification public key version.
-     *
+     * 
      * @param verificationVersion the verificationVersion value to set.
      * @return the DeploymentLicenseRequest object itself.
      */
@@ -42,9 +49,45 @@ public final class DeploymentLicenseRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("verificationVersion", this.verificationVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentLicenseRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentLicenseRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentLicenseRequest.
+     */
+    public static DeploymentLicenseRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentLicenseRequest deserializedDeploymentLicenseRequest = new DeploymentLicenseRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("verificationVersion".equals(fieldName)) {
+                    deserializedDeploymentLicenseRequest.verificationVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentLicenseRequest;
+        });
     }
 }

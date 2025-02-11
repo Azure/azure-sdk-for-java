@@ -63,14 +63,20 @@ public final class ApiImpl implements Api, Api.Definition, Api.Update {
     }
 
     public Api create() {
-        this.innerObject = serviceManager.serviceClient().getApis().createOrUpdateWithResponse(resourceGroupName,
-            serviceName, workspaceName, apiName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Api create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApis().createOrUpdateWithResponse(resourceGroupName,
-            serviceName, workspaceName, apiName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -85,14 +91,20 @@ public final class ApiImpl implements Api, Api.Definition, Api.Update {
     }
 
     public Api apply() {
-        this.innerObject = serviceManager.serviceClient().getApis().createOrUpdateWithResponse(resourceGroupName,
-            serviceName, workspaceName, apiName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Api apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApis().createOrUpdateWithResponse(resourceGroupName,
-            serviceName, workspaceName, apiName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, workspaceName, apiName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -106,14 +118,18 @@ public final class ApiImpl implements Api, Api.Definition, Api.Update {
     }
 
     public Api refresh() {
-        this.innerObject = serviceManager.serviceClient().getApis()
-            .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Api refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApis()
-            .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, context)
+            .getValue();
         return this;
     }
 

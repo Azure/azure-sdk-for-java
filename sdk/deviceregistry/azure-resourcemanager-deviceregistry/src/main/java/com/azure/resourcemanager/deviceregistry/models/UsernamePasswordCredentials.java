@@ -18,14 +18,14 @@ import java.io.IOException;
 @Fluent
 public final class UsernamePasswordCredentials implements JsonSerializable<UsernamePasswordCredentials> {
     /*
-     * A reference to secret containing the username.
+     * The name of the secret containing the username.
      */
-    private String usernameReference;
+    private String usernameSecretName;
 
     /*
-     * A reference to secret containing the password.
+     * The name of the secret containing the password.
      */
-    private String passwordReference;
+    private String passwordSecretName;
 
     /**
      * Creates an instance of UsernamePasswordCredentials class.
@@ -34,42 +34,42 @@ public final class UsernamePasswordCredentials implements JsonSerializable<Usern
     }
 
     /**
-     * Get the usernameReference property: A reference to secret containing the username.
+     * Get the usernameSecretName property: The name of the secret containing the username.
      * 
-     * @return the usernameReference value.
+     * @return the usernameSecretName value.
      */
-    public String usernameReference() {
-        return this.usernameReference;
+    public String usernameSecretName() {
+        return this.usernameSecretName;
     }
 
     /**
-     * Set the usernameReference property: A reference to secret containing the username.
+     * Set the usernameSecretName property: The name of the secret containing the username.
      * 
-     * @param usernameReference the usernameReference value to set.
+     * @param usernameSecretName the usernameSecretName value to set.
      * @return the UsernamePasswordCredentials object itself.
      */
-    public UsernamePasswordCredentials withUsernameReference(String usernameReference) {
-        this.usernameReference = usernameReference;
+    public UsernamePasswordCredentials withUsernameSecretName(String usernameSecretName) {
+        this.usernameSecretName = usernameSecretName;
         return this;
     }
 
     /**
-     * Get the passwordReference property: A reference to secret containing the password.
+     * Get the passwordSecretName property: The name of the secret containing the password.
      * 
-     * @return the passwordReference value.
+     * @return the passwordSecretName value.
      */
-    public String passwordReference() {
-        return this.passwordReference;
+    public String passwordSecretName() {
+        return this.passwordSecretName;
     }
 
     /**
-     * Set the passwordReference property: A reference to secret containing the password.
+     * Set the passwordSecretName property: The name of the secret containing the password.
      * 
-     * @param passwordReference the passwordReference value to set.
+     * @param passwordSecretName the passwordSecretName value to set.
      * @return the UsernamePasswordCredentials object itself.
      */
-    public UsernamePasswordCredentials withPasswordReference(String passwordReference) {
-        this.passwordReference = passwordReference;
+    public UsernamePasswordCredentials withPasswordSecretName(String passwordSecretName) {
+        this.passwordSecretName = passwordSecretName;
         return this;
     }
 
@@ -79,15 +79,15 @@ public final class UsernamePasswordCredentials implements JsonSerializable<Usern
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (usernameReference() == null) {
+        if (usernameSecretName() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property usernameReference in model UsernamePasswordCredentials"));
+                    "Missing required property usernameSecretName in model UsernamePasswordCredentials"));
         }
-        if (passwordReference() == null) {
+        if (passwordSecretName() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property passwordReference in model UsernamePasswordCredentials"));
+                    "Missing required property passwordSecretName in model UsernamePasswordCredentials"));
         }
     }
 
@@ -99,8 +99,8 @@ public final class UsernamePasswordCredentials implements JsonSerializable<Usern
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("usernameReference", this.usernameReference);
-        jsonWriter.writeStringField("passwordReference", this.passwordReference);
+        jsonWriter.writeStringField("usernameSecretName", this.usernameSecretName);
+        jsonWriter.writeStringField("passwordSecretName", this.passwordSecretName);
         return jsonWriter.writeEndObject();
     }
 
@@ -120,10 +120,10 @@ public final class UsernamePasswordCredentials implements JsonSerializable<Usern
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("usernameReference".equals(fieldName)) {
-                    deserializedUsernamePasswordCredentials.usernameReference = reader.getString();
-                } else if ("passwordReference".equals(fieldName)) {
-                    deserializedUsernamePasswordCredentials.passwordReference = reader.getString();
+                if ("usernameSecretName".equals(fieldName)) {
+                    deserializedUsernamePasswordCredentials.usernameSecretName = reader.getString();
+                } else if ("passwordSecretName".equals(fieldName)) {
+                    deserializedUsernamePasswordCredentials.passwordSecretName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

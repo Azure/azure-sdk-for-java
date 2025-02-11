@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The power state of the virtual machine. */
+/**
+ * The power state of the virtual machine.
+ */
 public final class VirtualMachinePowerState extends ExpandableStringEnum<VirtualMachinePowerState> {
-    /** Static value On for VirtualMachinePowerState. */
+    /**
+     * Static value On for VirtualMachinePowerState.
+     */
     public static final VirtualMachinePowerState ON = fromString("On");
 
-    /** Static value Off for VirtualMachinePowerState. */
+    /**
+     * Static value Off for VirtualMachinePowerState.
+     */
     public static final VirtualMachinePowerState OFF = fromString("Off");
 
-    /** Static value Unknown for VirtualMachinePowerState. */
+    /**
+     * Static value Unknown for VirtualMachinePowerState.
+     */
     public static final VirtualMachinePowerState UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of VirtualMachinePowerState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class VirtualMachinePowerState extends ExpandableStringEnum<Virtual
 
     /**
      * Creates or finds a VirtualMachinePowerState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VirtualMachinePowerState.
      */
-    @JsonCreator
     public static VirtualMachinePowerState fromString(String name) {
         return fromString(name, VirtualMachinePowerState.class);
     }
 
     /**
      * Gets known VirtualMachinePowerState values.
-     *
+     * 
      * @return known VirtualMachinePowerState values.
      */
     public static Collection<VirtualMachinePowerState> values() {

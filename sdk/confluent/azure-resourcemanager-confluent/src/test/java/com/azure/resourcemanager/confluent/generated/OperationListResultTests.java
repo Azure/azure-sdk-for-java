@@ -28,12 +28,13 @@ public final class OperationListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model = new OperationListResult()
-            .withValue(Arrays.asList(new OperationResultInner().withName("h")
-                .withDisplay(new OperationDisplay().withProvider("yahux").withResource("pmqnja")
-                    .withOperation("ixjsprozvcputeg").withDescription("wmfdatscmdvpjhul"))
-                .withIsDataAction(false)))
-            .withNextLink("mkjozkrwf");
+        OperationListResult model
+            = new OperationListResult().withValue(Arrays.asList(new OperationResultInner().withName("h")
+                .withDisplay(new OperationDisplay().withProvider("yahux")
+                    .withResource("pmqnja")
+                    .withOperation("ixjsprozvcputeg")
+                    .withDescription("wmfdatscmdvpjhul"))
+                .withIsDataAction(false))).withNextLink("mkjozkrwf");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
         Assertions.assertEquals("h", model.value().get(0).name());
         Assertions.assertEquals("yahux", model.value().get(0).display().provider());

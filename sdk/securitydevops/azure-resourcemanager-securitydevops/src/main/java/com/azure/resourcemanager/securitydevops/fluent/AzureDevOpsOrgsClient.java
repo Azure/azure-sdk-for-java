@@ -55,8 +55,8 @@ public interface AzureDevOpsOrgsClient {
      * @return azure DevOps Org Proxy Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureDevOpsOrgInner> getWithResponse(
-        String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName, Context context);
+    Response<AzureDevOpsOrgInner> getWithResponse(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, Context context);
 
     /**
      * Returns a monitored AzureDevOps Org resource for a given ID.
@@ -85,11 +85,8 @@ public interface AzureDevOpsOrgsClient {
      * @return the {@link SyncPoller} for polling of azure DevOps Org Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureDevOpsOrgInner>, AzureDevOpsOrgInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        AzureDevOpsOrgInner azureDevOpsOrg);
+    SyncPoller<PollResult<AzureDevOpsOrgInner>, AzureDevOpsOrgInner> beginCreateOrUpdate(String resourceGroupName,
+        String azureDevOpsConnectorName, String azureDevOpsOrgName, AzureDevOpsOrgInner azureDevOpsOrg);
 
     /**
      * Creates or updates an Azure DevOps Org.
@@ -105,11 +102,8 @@ public interface AzureDevOpsOrgsClient {
      * @return the {@link SyncPoller} for polling of azure DevOps Org Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureDevOpsOrgInner>, AzureDevOpsOrgInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        AzureDevOpsOrgInner azureDevOpsOrg,
+    SyncPoller<PollResult<AzureDevOpsOrgInner>, AzureDevOpsOrgInner> beginCreateOrUpdate(String resourceGroupName,
+        String azureDevOpsConnectorName, String azureDevOpsOrgName, AzureDevOpsOrgInner azureDevOpsOrg,
         Context context);
 
     /**
@@ -125,11 +119,8 @@ public interface AzureDevOpsOrgsClient {
      * @return azure DevOps Org Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureDevOpsOrgInner createOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        AzureDevOpsOrgInner azureDevOpsOrg);
+    AzureDevOpsOrgInner createOrUpdate(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, AzureDevOpsOrgInner azureDevOpsOrg);
 
     /**
      * Creates or updates an Azure DevOps Org.
@@ -145,12 +136,8 @@ public interface AzureDevOpsOrgsClient {
      * @return azure DevOps Org Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureDevOpsOrgInner createOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        AzureDevOpsOrgInner azureDevOpsOrg,
-        Context context);
+    AzureDevOpsOrgInner createOrUpdate(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, AzureDevOpsOrgInner azureDevOpsOrg, Context context);
 
     /**
      * Update monitored AzureDevOps Org details.
@@ -164,8 +151,8 @@ public interface AzureDevOpsOrgsClient {
      * @return the {@link SyncPoller} for polling of azure DevOps Org Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureDevOpsOrgInner>, AzureDevOpsOrgInner> beginUpdate(
-        String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName);
+    SyncPoller<PollResult<AzureDevOpsOrgInner>, AzureDevOpsOrgInner> beginUpdate(String resourceGroupName,
+        String azureDevOpsConnectorName, String azureDevOpsOrgName);
 
     /**
      * Update monitored AzureDevOps Org details.
@@ -181,11 +168,8 @@ public interface AzureDevOpsOrgsClient {
      * @return the {@link SyncPoller} for polling of azure DevOps Org Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureDevOpsOrgInner>, AzureDevOpsOrgInner> beginUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        AzureDevOpsOrgInner azureDevOpsOrg,
+    SyncPoller<PollResult<AzureDevOpsOrgInner>, AzureDevOpsOrgInner> beginUpdate(String resourceGroupName,
+        String azureDevOpsConnectorName, String azureDevOpsOrgName, AzureDevOpsOrgInner azureDevOpsOrg,
         Context context);
 
     /**
@@ -216,10 +200,6 @@ public interface AzureDevOpsOrgsClient {
      * @return azure DevOps Org Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureDevOpsOrgInner update(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        AzureDevOpsOrgInner azureDevOpsOrg,
-        Context context);
+    AzureDevOpsOrgInner update(String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName,
+        AzureDevOpsOrgInner azureDevOpsOrg, Context context);
 }

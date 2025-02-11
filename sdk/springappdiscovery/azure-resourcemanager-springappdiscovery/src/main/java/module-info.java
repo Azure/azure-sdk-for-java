@@ -10,6 +10,6 @@ module com.azure.resourcemanager.springappdiscovery {
     exports com.azure.resourcemanager.springappdiscovery.fluent.models;
     exports com.azure.resourcemanager.springappdiscovery.models;
 
-    opens com.azure.resourcemanager.springappdiscovery.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.springappdiscovery.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.springappdiscovery.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.springappdiscovery.models to com.azure.core;
 }

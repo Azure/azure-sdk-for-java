@@ -6,25 +6,46 @@ package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The customer's ASN that is registered by the peering service provider. */
+/**
+ * The customer's ASN that is registered by the peering service provider.
+ */
 @Fluent
 public final class PeeringRegisteredAsnInner extends ProxyResource {
     /*
      * The properties that define a registered ASN.
      */
-    @JsonProperty(value = "properties")
     private PeeringRegisteredAsnProperties innerProperties;
 
-    /** Creates an instance of PeeringRegisteredAsnInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PeeringRegisteredAsnInner class.
+     */
     public PeeringRegisteredAsnInner() {
     }
 
     /**
      * Get the innerProperties property: The properties that define a registered ASN.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PeeringRegisteredAsnProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class PeeringRegisteredAsnInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the asn property: The customer's ASN from which traffic originates.
-     *
+     * 
      * @return the asn value.
      */
     public Integer asn() {
@@ -42,7 +93,7 @@ public final class PeeringRegisteredAsnInner extends ProxyResource {
 
     /**
      * Set the asn property: The customer's ASN from which traffic originates.
-     *
+     * 
      * @param asn the asn value to set.
      * @return the PeeringRegisteredAsnInner object itself.
      */
@@ -56,7 +107,7 @@ public final class PeeringRegisteredAsnInner extends ProxyResource {
 
     /**
      * Get the peeringServicePrefixKey property: The peering service prefix key that is to be shared with the customer.
-     *
+     * 
      * @return the peeringServicePrefixKey value.
      */
     public String peeringServicePrefixKey() {
@@ -65,7 +116,7 @@ public final class PeeringRegisteredAsnInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -74,12 +125,56 @@ public final class PeeringRegisteredAsnInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringRegisteredAsnInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringRegisteredAsnInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PeeringRegisteredAsnInner.
+     */
+    public static PeeringRegisteredAsnInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringRegisteredAsnInner deserializedPeeringRegisteredAsnInner = new PeeringRegisteredAsnInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPeeringRegisteredAsnInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPeeringRegisteredAsnInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPeeringRegisteredAsnInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPeeringRegisteredAsnInner.innerProperties
+                        = PeeringRegisteredAsnProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringRegisteredAsnInner;
+        });
     }
 }

@@ -36,13 +36,13 @@ public final class SubAccountsImpl implements SubAccounts {
 
     public PagedIterable<LogzMonitorResource> list(String resourceGroupName, String monitorName) {
         PagedIterable<LogzMonitorResourceInner> inner = this.serviceClient().list(resourceGroupName, monitorName);
-        return Utils.mapPage(inner, inner1 -> new LogzMonitorResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogzMonitorResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LogzMonitorResource> list(String resourceGroupName, String monitorName, Context context) {
-        PagedIterable<LogzMonitorResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, monitorName, context);
-        return Utils.mapPage(inner, inner1 -> new LogzMonitorResourceImpl(inner1, this.manager()));
+        PagedIterable<LogzMonitorResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, monitorName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogzMonitorResourceImpl(inner1, this.manager()));
     }
 
     public LogzMonitorResource create(String resourceGroupName, String monitorName, String subAccountName) {
@@ -54,14 +54,10 @@ public final class SubAccountsImpl implements SubAccounts {
         }
     }
 
-    public LogzMonitorResource create(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceInner body,
-        Context context) {
-        LogzMonitorResourceInner inner =
-            this.serviceClient().create(resourceGroupName, monitorName, subAccountName, body, context);
+    public LogzMonitorResource create(String resourceGroupName, String monitorName, String subAccountName,
+        LogzMonitorResourceInner body, Context context) {
+        LogzMonitorResourceInner inner
+            = this.serviceClient().create(resourceGroupName, monitorName, subAccountName, body, context);
         if (inner != null) {
             return new LogzMonitorResourceImpl(inner, this.manager());
         } else {
@@ -69,15 +65,12 @@ public final class SubAccountsImpl implements SubAccounts {
         }
     }
 
-    public Response<LogzMonitorResource> getWithResponse(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
-        Response<LogzMonitorResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, monitorName, subAccountName, context);
+    public Response<LogzMonitorResource> getWithResponse(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
+        Response<LogzMonitorResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, monitorName, subAccountName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LogzMonitorResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -101,19 +94,12 @@ public final class SubAccountsImpl implements SubAccounts {
         this.serviceClient().delete(resourceGroupName, monitorName, subAccountName, context);
     }
 
-    public Response<LogzMonitorResource> updateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceUpdateParameters body,
-        Context context) {
-        Response<LogzMonitorResourceInner> inner =
-            this.serviceClient().updateWithResponse(resourceGroupName, monitorName, subAccountName, body, context);
+    public Response<LogzMonitorResource> updateWithResponse(String resourceGroupName, String monitorName,
+        String subAccountName, LogzMonitorResourceUpdateParameters body, Context context) {
+        Response<LogzMonitorResourceInner> inner
+            = this.serviceClient().updateWithResponse(resourceGroupName, monitorName, subAccountName, body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LogzMonitorResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -129,29 +115,26 @@ public final class SubAccountsImpl implements SubAccounts {
         }
     }
 
-    public PagedIterable<MonitoredResource> listMonitoredResources(
-        String resourceGroupName, String monitorName, String subAccountName) {
-        PagedIterable<MonitoredResourceInner> inner =
-            this.serviceClient().listMonitoredResources(resourceGroupName, monitorName, subAccountName);
-        return Utils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
+    public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName,
+        String subAccountName) {
+        PagedIterable<MonitoredResourceInner> inner
+            = this.serviceClient().listMonitoredResources(resourceGroupName, monitorName, subAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<MonitoredResource> listMonitoredResources(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
-        PagedIterable<MonitoredResourceInner> inner =
-            this.serviceClient().listMonitoredResources(resourceGroupName, monitorName, subAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
+    public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
+        PagedIterable<MonitoredResourceInner> inner
+            = this.serviceClient().listMonitoredResources(resourceGroupName, monitorName, subAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
     }
 
-    public Response<VMExtensionPayload> vMHostPayloadWithResponse(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
-        Response<VMExtensionPayloadInner> inner =
-            this.serviceClient().vMHostPayloadWithResponse(resourceGroupName, monitorName, subAccountName, context);
+    public Response<VMExtensionPayload> vMHostPayloadWithResponse(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
+        Response<VMExtensionPayloadInner> inner
+            = this.serviceClient().vMHostPayloadWithResponse(resourceGroupName, monitorName, subAccountName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VMExtensionPayloadImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -159,8 +142,8 @@ public final class SubAccountsImpl implements SubAccounts {
     }
 
     public VMExtensionPayload vMHostPayload(String resourceGroupName, String monitorName, String subAccountName) {
-        VMExtensionPayloadInner inner =
-            this.serviceClient().vMHostPayload(resourceGroupName, monitorName, subAccountName);
+        VMExtensionPayloadInner inner
+            = this.serviceClient().vMHostPayload(resourceGroupName, monitorName, subAccountName);
         if (inner != null) {
             return new VMExtensionPayloadImpl(inner, this.manager());
         } else {
@@ -168,35 +151,31 @@ public final class SubAccountsImpl implements SubAccounts {
         }
     }
 
-    public PagedIterable<VMResources> listVmHostUpdate(
-        String resourceGroupName, String monitorName, String subAccountName) {
-        PagedIterable<VMResourcesInner> inner =
-            this.serviceClient().listVmHostUpdate(resourceGroupName, monitorName, subAccountName);
-        return Utils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
+    public PagedIterable<VMResources> listVmHostUpdate(String resourceGroupName, String monitorName,
+        String subAccountName) {
+        PagedIterable<VMResourcesInner> inner
+            = this.serviceClient().listVmHostUpdate(resourceGroupName, monitorName, subAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VMResources> listVmHostUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        VMHostUpdateRequest body,
-        Context context) {
-        PagedIterable<VMResourcesInner> inner =
-            this.serviceClient().listVmHostUpdate(resourceGroupName, monitorName, subAccountName, body, context);
-        return Utils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
+    public PagedIterable<VMResources> listVmHostUpdate(String resourceGroupName, String monitorName,
+        String subAccountName, VMHostUpdateRequest body, Context context) {
+        PagedIterable<VMResourcesInner> inner
+            = this.serviceClient().listVmHostUpdate(resourceGroupName, monitorName, subAccountName, body, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VMResources> listVMHosts(String resourceGroupName, String monitorName, String subAccountName) {
-        PagedIterable<VMResourcesInner> inner =
-            this.serviceClient().listVMHosts(resourceGroupName, monitorName, subAccountName);
-        return Utils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
+        PagedIterable<VMResourcesInner> inner
+            = this.serviceClient().listVMHosts(resourceGroupName, monitorName, subAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VMResources> listVMHosts(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
-        PagedIterable<VMResourcesInner> inner =
-            this.serviceClient().listVMHosts(resourceGroupName, monitorName, subAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
+    public PagedIterable<VMResources> listVMHosts(String resourceGroupName, String monitorName, String subAccountName,
+        Context context) {
+        PagedIterable<VMResourcesInner> inner
+            = this.serviceClient().listVMHosts(resourceGroupName, monitorName, subAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMResourcesImpl(inner1, this.manager()));
     }
 
     private SubAccountsClient serviceClient() {

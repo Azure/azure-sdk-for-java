@@ -4,7 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,12 +14,12 @@ import java.io.IOException;
 /**
  * Identity properties of the workspace resource.
  */
-@Fluent
+@Immutable
 public final class WorkspaceIdentity implements JsonSerializable<WorkspaceIdentity> {
     /*
      * The identity type. Currently the only supported type is 'SystemAssigned'.
      */
-    private String type = "SystemAssigned";
+    private final String type = "SystemAssigned";
 
     /*
      * The principal id of the identity.
@@ -44,17 +44,6 @@ public final class WorkspaceIdentity implements JsonSerializable<WorkspaceIdenti
      */
     public String getType() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The identity type. Currently the only supported type is 'SystemAssigned'.
-     * 
-     * @param type the type value to set.
-     * @return the WorkspaceIdentity object itself.
-     */
-    public WorkspaceIdentity setType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

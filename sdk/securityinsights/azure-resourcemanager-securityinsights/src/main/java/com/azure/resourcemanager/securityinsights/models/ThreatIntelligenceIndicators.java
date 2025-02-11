@@ -8,25 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ThreatIntelligenceIndicators. */
+/**
+ * Resource collection API of ThreatIntelligenceIndicators.
+ */
 public interface ThreatIntelligenceIndicators {
     /**
      * Create a new threat intelligence indicator.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object.
-     */
-    ThreatIntelligenceInformation createIndicator(
-        String resourceGroupName, String workspaceName, ThreatIntelligenceIndicatorModel threatIntelligenceProperties);
-
-    /**
-     * Create a new threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
@@ -36,15 +24,41 @@ public interface ThreatIntelligenceIndicators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return threat intelligence information object along with {@link Response}.
      */
-    Response<ThreatIntelligenceInformation> createIndicatorWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
+    Response<ThreatIntelligenceInformation> createIndicatorWithResponse(String resourceGroupName, String workspaceName,
+        ThreatIntelligenceIndicatorModel threatIntelligenceProperties, Context context);
+
+    /**
+     * Create a new threat intelligence indicator.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return threat intelligence information object.
+     */
+    ThreatIntelligenceInformation createIndicator(String resourceGroupName, String workspaceName,
+        ThreatIntelligenceIndicatorModel threatIntelligenceProperties);
+
+    /**
+     * View a threat intelligence indicator by name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param name Threat intelligence indicator name field.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return threat intelligence information object along with {@link Response}.
+     */
+    Response<ThreatIntelligenceInformation> getWithResponse(String resourceGroupName, String workspaceName, String name,
         Context context);
 
     /**
      * View a threat intelligence indicator by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -56,23 +70,24 @@ public interface ThreatIntelligenceIndicators {
     ThreatIntelligenceInformation get(String resourceGroupName, String workspaceName, String name);
 
     /**
-     * View a threat intelligence indicator by name.
-     *
+     * Update a threat Intelligence indicator.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
+     * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return threat intelligence information object along with {@link Response}.
      */
-    Response<ThreatIntelligenceInformation> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context);
+    Response<ThreatIntelligenceInformation> createWithResponse(String resourceGroupName, String workspaceName,
+        String name, ThreatIntelligenceIndicatorModel threatIntelligenceProperties, Context context);
 
     /**
      * Update a threat Intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -82,47 +97,12 @@ public interface ThreatIntelligenceIndicators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return threat intelligence information object.
      */
-    ThreatIntelligenceInformation create(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
+    ThreatIntelligenceInformation create(String resourceGroupName, String workspaceName, String name,
         ThreatIntelligenceIndicatorModel threatIntelligenceProperties);
 
     /**
-     * Update a threat Intelligence indicator.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param name Threat intelligence indicator name field.
-     * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object along with {@link Response}.
-     */
-    Response<ThreatIntelligenceInformation> createWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
-        Context context);
-
-    /**
      * Delete a threat intelligence indicator.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param name Threat intelligence indicator name field.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String workspaceName, String name);
-
-    /**
-     * Delete a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -135,8 +115,20 @@ public interface ThreatIntelligenceIndicators {
     Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
+     * Delete a threat intelligence indicator.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param name Threat intelligence indicator name field.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String workspaceName, String name);
+
+    /**
      * Query threat intelligence indicators as per filtering criteria.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceFilteringCriteria Filtering criteria for querying threat intelligence indicators.
@@ -145,14 +137,12 @@ public interface ThreatIntelligenceIndicators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the threat intelligence information objects as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ThreatIntelligenceInformation> queryIndicators(
-        String resourceGroupName,
-        String workspaceName,
+    PagedIterable<ThreatIntelligenceInformation> queryIndicators(String resourceGroupName, String workspaceName,
         ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria);
 
     /**
      * Query threat intelligence indicators as per filtering criteria.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceFilteringCriteria Filtering criteria for querying threat intelligence indicators.
@@ -162,32 +152,12 @@ public interface ThreatIntelligenceIndicators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the threat intelligence information objects as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ThreatIntelligenceInformation> queryIndicators(
-        String resourceGroupName,
-        String workspaceName,
-        ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria,
-        Context context);
+    PagedIterable<ThreatIntelligenceInformation> queryIndicators(String resourceGroupName, String workspaceName,
+        ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria, Context context);
 
     /**
      * Append tags to a threat intelligence indicator.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param name Threat intelligence indicator name field.
-     * @param threatIntelligenceAppendTags The threat intelligence append tags request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void appendTags(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceAppendTags threatIntelligenceAppendTags);
-
-    /**
-     * Append tags to a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -198,34 +168,26 @@ public interface ThreatIntelligenceIndicators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> appendTagsWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceAppendTags threatIntelligenceAppendTags,
-        Context context);
+    Response<Void> appendTagsWithResponse(String resourceGroupName, String workspaceName, String name,
+        ThreatIntelligenceAppendTags threatIntelligenceAppendTags, Context context);
 
     /**
-     * Replace tags added to a threat intelligence indicator.
-     *
+     * Append tags to a threat intelligence indicator.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
-     * @param threatIntelligenceReplaceTags Tags in the threat intelligence indicator to be replaced.
+     * @param threatIntelligenceAppendTags The threat intelligence append tags request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object.
      */
-    ThreatIntelligenceInformation replaceTags(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags);
+    void appendTags(String resourceGroupName, String workspaceName, String name,
+        ThreatIntelligenceAppendTags threatIntelligenceAppendTags);
 
     /**
      * Replace tags added to a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -236,10 +198,21 @@ public interface ThreatIntelligenceIndicators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return threat intelligence information object along with {@link Response}.
      */
-    Response<ThreatIntelligenceInformation> replaceTagsWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags,
-        Context context);
+    Response<ThreatIntelligenceInformation> replaceTagsWithResponse(String resourceGroupName, String workspaceName,
+        String name, ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags, Context context);
+
+    /**
+     * Replace tags added to a threat intelligence indicator.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param name Threat intelligence indicator name field.
+     * @param threatIntelligenceReplaceTags Tags in the threat intelligence indicator to be replaced.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return threat intelligence information object.
+     */
+    ThreatIntelligenceInformation replaceTags(String resourceGroupName, String workspaceName, String name,
+        ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags);
 }

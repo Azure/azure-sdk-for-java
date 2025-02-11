@@ -35,8 +35,7 @@ public class WebAppConfigTests extends AppServiceTest {
     @Test
     public void canCRUDWebAppConfig() throws Exception {
         // Create with new app service plan
-        appServiceManager
-            .webApps()
+        appServiceManager.webApps()
             .define(webappName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
@@ -78,8 +77,7 @@ public class WebAppConfigTests extends AppServiceTest {
         Assertions.assertEquals(true, appSettingMap.get("stickykey").sticky());
 
         // Connection strings
-        webApp
-            .update()
+        webApp.update()
             .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)
             .withStickyConnectionString("stickyName", "stickyValue", ConnectionStringType.CUSTOM)
             .apply();
@@ -114,8 +112,7 @@ public class WebAppConfigTests extends AppServiceTest {
     @Test
     public void canCRUDWebAppConfigJava11() throws Exception {
         // Create with new app service plan
-        appServiceManager
-            .webApps()
+        appServiceManager.webApps()
             .define(webappName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
@@ -155,8 +152,7 @@ public class WebAppConfigTests extends AppServiceTest {
         Assertions.assertEquals(true, appSettingMap.get("stickykey").sticky());
 
         // Connection strings
-        webApp
-            .update()
+        webApp.update()
             .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)
             .withStickyConnectionString("stickyName", "stickyValue", ConnectionStringType.CUSTOM)
             .apply();

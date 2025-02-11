@@ -9,7 +9,9 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class DataNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DataNetworkGet.json
+     * x-ms-original-file:
+     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DataNetworkGet.
+     * json
      */
     /**
      * Sample code: Get data network.

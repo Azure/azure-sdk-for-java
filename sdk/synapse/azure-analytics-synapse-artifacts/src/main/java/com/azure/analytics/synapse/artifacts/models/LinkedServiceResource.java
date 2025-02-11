@@ -20,6 +20,28 @@ public final class LinkedServiceResource extends SubResource {
      */
     private LinkedService properties;
 
+    /*
+     * Resource Etag.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
     /**
      * Creates an instance of LinkedServiceResource class.
      */
@@ -44,6 +66,48 @@ public final class LinkedServiceResource extends SubResource {
     public LinkedServiceResource setProperties(LinkedService properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -73,13 +137,13 @@ public final class LinkedServiceResource extends SubResource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedLinkedServiceResource.setId(reader.getString());
+                    deserializedLinkedServiceResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedLinkedServiceResource.setName(reader.getString());
+                    deserializedLinkedServiceResource.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedLinkedServiceResource.setType(reader.getString());
+                    deserializedLinkedServiceResource.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedLinkedServiceResource.setEtag(reader.getString());
+                    deserializedLinkedServiceResource.etag = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedLinkedServiceResource.properties = LinkedService.fromJson(reader);
                 } else {

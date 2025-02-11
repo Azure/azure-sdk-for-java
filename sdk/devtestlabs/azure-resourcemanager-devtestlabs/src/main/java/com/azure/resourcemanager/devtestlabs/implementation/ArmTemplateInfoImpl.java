@@ -12,8 +12,8 @@ public final class ArmTemplateInfoImpl implements ArmTemplateInfo {
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    ArmTemplateInfoImpl(
-        ArmTemplateInfoInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    ArmTemplateInfoImpl(ArmTemplateInfoInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

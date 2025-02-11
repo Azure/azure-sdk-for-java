@@ -13,31 +13,67 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 @Fluent
 public interface DomainContact extends HasInnerModel<Contact>, ChildResource<AppServiceDomain> {
 
-    /** @return contact's mailing address */
+    /**
+     * Gets contact's mailing address.
+     *
+     * @return contact's mailing address
+     */
     Address addressMailing();
 
-    /** @return contact's email address */
+    /**
+     * Gets contact's email address.
+     *
+     * @return contact's email address
+     */
     String email();
 
-    /** @return contact's fax number */
+    /**
+     * Gets contact's fax number.
+     *
+     * @return contact's fax number
+     */
     String fax();
 
-    /** @return contact's job title */
+    /**
+     * Gets contact's job title.
+     *
+     * @return contact's job title
+     */
     String jobTitle();
 
-    /** @return contact's first name */
+    /**
+     * Gets contact's first name.
+     *
+     * @return contact's first name
+     */
     String firstName();
 
-    /** @return contact's last name */
+    /**
+     * Gets contact's last name.
+     *
+     * @return contact's last name
+     */
     String lastName();
 
-    /** @return contact's middle name */
+    /**
+     * Gets contact's middle name.
+     *
+     * @return contact's middle name
+     */
     String middleName();
 
-    /** @return contact's organization */
+    /**
+     * Gets contact's organization.
+     *
+     * @return contact's organization
+     */
     String organization();
 
-    /** @return contact's phone number */
+    /**
+     * Gets contact's phone number.
+     *
+     * @return contact's phone number
+     */
     String phone();
 
     /**
@@ -45,20 +81,13 @@ public interface DomainContact extends HasInnerModel<Contact>, ChildResource<App
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithFirstName<ParentT>,
-            DefinitionStages.WithMiddleName<ParentT>,
-            DefinitionStages.WithAddressLine1<ParentT>,
-            DefinitionStages.WithAddressLine2<ParentT>,
-            DefinitionStages.WithCity<ParentT>,
-            DefinitionStages.WithStateOrProvince<ParentT>,
-            DefinitionStages.WithCountry<ParentT>,
-            DefinitionStages.WithPostalCode<ParentT>,
-            DefinitionStages.WithEmail<ParentT>,
-            DefinitionStages.WithPhoneCountryCode<ParentT>,
-            DefinitionStages.WithPhoneNumber<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithFirstName<ParentT>,
+        DefinitionStages.WithMiddleName<ParentT>, DefinitionStages.WithAddressLine1<ParentT>,
+        DefinitionStages.WithAddressLine2<ParentT>, DefinitionStages.WithCity<ParentT>,
+        DefinitionStages.WithStateOrProvince<ParentT>, DefinitionStages.WithCountry<ParentT>,
+        DefinitionStages.WithPostalCode<ParentT>, DefinitionStages.WithEmail<ParentT>,
+        DefinitionStages.WithPhoneCountryCode<ParentT>, DefinitionStages.WithPhoneNumber<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of domain contact stages applicable as part of a domain creation. */
@@ -305,11 +334,11 @@ public interface DomainContact extends HasInnerModel<Contact>, ChildResource<App
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                DefinitionStages.WithOrganization<ParentT>,
-                DefinitionStages.WithJobTitle<ParentT>,
-                DefinitionStages.WithFaxNumber<ParentT> {
+            extends Attachable.InDefinition<ParentT>, DefinitionStages.WithOrganization<ParentT>,
+            DefinitionStages.WithJobTitle<ParentT>, DefinitionStages.WithFaxNumber<ParentT> {
             /**
+             * Builds a contact instance.
+             *
              * @return the contact
              */
             Contact build();

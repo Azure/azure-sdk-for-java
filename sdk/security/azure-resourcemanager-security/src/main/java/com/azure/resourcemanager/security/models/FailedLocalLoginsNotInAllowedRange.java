@@ -5,28 +5,22 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * Number of failed local logins is not in allowed range.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "ruleType",
-    defaultImpl = FailedLocalLoginsNotInAllowedRange.class,
-    visible = true)
-@JsonTypeName("FailedLocalLoginsNotInAllowedRange")
 @Fluent
 public final class FailedLocalLoginsNotInAllowedRange extends TimeWindowCustomAlertRule {
     /*
      * The type of the custom alert rule.
      */
-    @JsonTypeId
-    @JsonProperty(value = "ruleType", required = true)
     private String ruleType = "FailedLocalLoginsNotInAllowedRange";
 
     /**
@@ -88,6 +82,67 @@ public final class FailedLocalLoginsNotInAllowedRange extends TimeWindowCustomAl
      */
     @Override
     public void validate() {
-        super.validate();
+        if (timeWindowSize() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeWindowSize in model FailedLocalLoginsNotInAllowedRange"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FailedLocalLoginsNotInAllowedRange.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeIntField("minThreshold", minThreshold());
+        jsonWriter.writeIntField("maxThreshold", maxThreshold());
+        jsonWriter.writeStringField("timeWindowSize", CoreUtils.durationToStringWithDays(timeWindowSize()));
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailedLocalLoginsNotInAllowedRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailedLocalLoginsNotInAllowedRange if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FailedLocalLoginsNotInAllowedRange.
+     */
+    public static FailedLocalLoginsNotInAllowedRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailedLocalLoginsNotInAllowedRange deserializedFailedLocalLoginsNotInAllowedRange
+                = new FailedLocalLoginsNotInAllowedRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedFailedLocalLoginsNotInAllowedRange.withIsEnabled(reader.getBoolean());
+                } else if ("minThreshold".equals(fieldName)) {
+                    deserializedFailedLocalLoginsNotInAllowedRange.withMinThreshold(reader.getInt());
+                } else if ("maxThreshold".equals(fieldName)) {
+                    deserializedFailedLocalLoginsNotInAllowedRange.withMaxThreshold(reader.getInt());
+                } else if ("timeWindowSize".equals(fieldName)) {
+                    deserializedFailedLocalLoginsNotInAllowedRange.withTimeWindowSize(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedFailedLocalLoginsNotInAllowedRange.withDisplayName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedFailedLocalLoginsNotInAllowedRange.withDescription(reader.getString());
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedFailedLocalLoginsNotInAllowedRange.ruleType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailedLocalLoginsNotInAllowedRange;
+        });
     }
 }

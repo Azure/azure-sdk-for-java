@@ -30,16 +30,16 @@ public final class ReservationsImpl implements Reservations {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    public ReservationsImpl(
-        ReservationsClient innerClient, com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
+    public ReservationsImpl(ReservationsClient innerClient,
+        com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public AvailableScopeProperties availableScopes(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body) {
-        AvailableScopePropertiesInner inner =
-            this.serviceClient().availableScopes(reservationOrderId, reservationId, body);
+    public AvailableScopeProperties availableScopes(String reservationOrderId, String reservationId,
+        AvailableScopeRequest body) {
+        AvailableScopePropertiesInner inner
+            = this.serviceClient().availableScopes(reservationOrderId, reservationId, body);
         if (inner != null) {
             return new AvailableScopePropertiesImpl(inner, this.manager());
         } else {
@@ -47,10 +47,10 @@ public final class ReservationsImpl implements Reservations {
         }
     }
 
-    public AvailableScopeProperties availableScopes(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body, Context context) {
-        AvailableScopePropertiesInner inner =
-            this.serviceClient().availableScopes(reservationOrderId, reservationId, body, context);
+    public AvailableScopeProperties availableScopes(String reservationOrderId, String reservationId,
+        AvailableScopeRequest body, Context context) {
+        AvailableScopePropertiesInner inner
+            = this.serviceClient().availableScopes(reservationOrderId, reservationId, body, context);
         if (inner != null) {
             return new AvailableScopePropertiesImpl(inner, this.manager());
         } else {
@@ -61,12 +61,9 @@ public final class ReservationsImpl implements Reservations {
     public List<ReservationResponse> split(String reservationOrderId, SplitRequest body) {
         List<ReservationResponseInner> inner = this.serviceClient().split(reservationOrderId, body);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ReservationResponseImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ReservationResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -75,12 +72,9 @@ public final class ReservationsImpl implements Reservations {
     public List<ReservationResponse> split(String reservationOrderId, SplitRequest body, Context context) {
         List<ReservationResponseInner> inner = this.serviceClient().split(reservationOrderId, body, context);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ReservationResponseImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ReservationResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -89,12 +83,9 @@ public final class ReservationsImpl implements Reservations {
     public List<ReservationResponse> merge(String reservationOrderId, MergeRequest body) {
         List<ReservationResponseInner> inner = this.serviceClient().merge(reservationOrderId, body);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ReservationResponseImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ReservationResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -103,12 +94,9 @@ public final class ReservationsImpl implements Reservations {
     public List<ReservationResponse> merge(String reservationOrderId, MergeRequest body, Context context) {
         List<ReservationResponseInner> inner = this.serviceClient().merge(reservationOrderId, body, context);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ReservationResponseImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ReservationResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -116,23 +104,20 @@ public final class ReservationsImpl implements Reservations {
 
     public PagedIterable<ReservationResponse> list(String reservationOrderId) {
         PagedIterable<ReservationResponseInner> inner = this.serviceClient().list(reservationOrderId);
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReservationResponse> list(String reservationOrderId, Context context) {
         PagedIterable<ReservationResponseInner> inner = this.serviceClient().list(reservationOrderId, context);
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
-    public Response<ReservationResponse> getWithResponse(
-        String reservationOrderId, String reservationId, String expand, Context context) {
-        Response<ReservationResponseInner> inner =
-            this.serviceClient().getWithResponse(reservationOrderId, reservationId, expand, context);
+    public Response<ReservationResponse> getWithResponse(String reservationOrderId, String reservationId, String expand,
+        Context context) {
+        Response<ReservationResponseInner> inner
+            = this.serviceClient().getWithResponse(reservationOrderId, reservationId, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReservationResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -157,10 +142,10 @@ public final class ReservationsImpl implements Reservations {
         }
     }
 
-    public ReservationResponse update(
-        String reservationOrderId, String reservationId, PatchModel parameters, Context context) {
-        ReservationResponseInner inner =
-            this.serviceClient().update(reservationOrderId, reservationId, parameters, context);
+    public ReservationResponse update(String reservationOrderId, String reservationId, PatchModel parameters,
+        Context context) {
+        ReservationResponseInner inner
+            = this.serviceClient().update(reservationOrderId, reservationId, parameters, context);
         if (inner != null) {
             return new ReservationResponseImpl(inner, this.manager());
         } else {
@@ -185,34 +170,28 @@ public final class ReservationsImpl implements Reservations {
     }
 
     public PagedIterable<ReservationResponse> listRevisions(String reservationOrderId, String reservationId) {
-        PagedIterable<ReservationResponseInner> inner =
-            this.serviceClient().listRevisions(reservationOrderId, reservationId);
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+        PagedIterable<ReservationResponseInner> inner
+            = this.serviceClient().listRevisions(reservationOrderId, reservationId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ReservationResponse> listRevisions(
-        String reservationOrderId, String reservationId, Context context) {
-        PagedIterable<ReservationResponseInner> inner =
-            this.serviceClient().listRevisions(reservationOrderId, reservationId, context);
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+    public PagedIterable<ReservationResponse> listRevisions(String reservationOrderId, String reservationId,
+        Context context) {
+        PagedIterable<ReservationResponseInner> inner
+            = this.serviceClient().listRevisions(reservationOrderId, reservationId, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReservationResponse> listAll() {
         PagedIterable<ReservationResponseInner> inner = this.serviceClient().listAll();
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ReservationResponse> listAll(
-        String filter,
-        String orderby,
-        String refreshSummary,
-        Float skiptoken,
-        String selectedState,
-        Float take,
-        Context context) {
-        PagedIterable<ReservationResponseInner> inner =
-            this.serviceClient().listAll(filter, orderby, refreshSummary, skiptoken, selectedState, take, context);
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+    public PagedIterable<ReservationResponse> listAll(String filter, String orderby, String refreshSummary,
+        Float skiptoken, String selectedState, Float take, Context context) {
+        PagedIterable<ReservationResponseInner> inner
+            = this.serviceClient().listAll(filter, orderby, refreshSummary, skiptoken, selectedState, take, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
     private ReservationsClient serviceClient() {

@@ -5,53 +5,80 @@
 package com.azure.resourcemanager.devhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The programming language used. */
+/**
+ * The programming language used.
+ */
 public final class GenerationLanguage extends ExpandableStringEnum<GenerationLanguage> {
-    /** Static value clojure for GenerationLanguage. */
+    /**
+     * Static value clojure for GenerationLanguage.
+     */
     public static final GenerationLanguage CLOJURE = fromString("clojure");
 
-    /** Static value csharp for GenerationLanguage. */
+    /**
+     * Static value csharp for GenerationLanguage.
+     */
     public static final GenerationLanguage CSHARP = fromString("csharp");
 
-    /** Static value erlang for GenerationLanguage. */
+    /**
+     * Static value erlang for GenerationLanguage.
+     */
     public static final GenerationLanguage ERLANG = fromString("erlang");
 
-    /** Static value go for GenerationLanguage. */
+    /**
+     * Static value go for GenerationLanguage.
+     */
     public static final GenerationLanguage GO = fromString("go");
 
-    /** Static value gomodule for GenerationLanguage. */
+    /**
+     * Static value gomodule for GenerationLanguage.
+     */
     public static final GenerationLanguage GOMODULE = fromString("gomodule");
 
-    /** Static value gradle for GenerationLanguage. */
+    /**
+     * Static value gradle for GenerationLanguage.
+     */
     public static final GenerationLanguage GRADLE = fromString("gradle");
 
-    /** Static value java for GenerationLanguage. */
+    /**
+     * Static value java for GenerationLanguage.
+     */
     public static final GenerationLanguage JAVA = fromString("java");
 
-    /** Static value javascript for GenerationLanguage. */
+    /**
+     * Static value javascript for GenerationLanguage.
+     */
     public static final GenerationLanguage JAVASCRIPT = fromString("javascript");
 
-    /** Static value php for GenerationLanguage. */
+    /**
+     * Static value php for GenerationLanguage.
+     */
     public static final GenerationLanguage PHP = fromString("php");
 
-    /** Static value python for GenerationLanguage. */
+    /**
+     * Static value python for GenerationLanguage.
+     */
     public static final GenerationLanguage PYTHON = fromString("python");
 
-    /** Static value ruby for GenerationLanguage. */
+    /**
+     * Static value ruby for GenerationLanguage.
+     */
     public static final GenerationLanguage RUBY = fromString("ruby");
 
-    /** Static value rust for GenerationLanguage. */
+    /**
+     * Static value rust for GenerationLanguage.
+     */
     public static final GenerationLanguage RUST = fromString("rust");
 
-    /** Static value swift for GenerationLanguage. */
+    /**
+     * Static value swift for GenerationLanguage.
+     */
     public static final GenerationLanguage SWIFT = fromString("swift");
 
     /**
      * Creates a new instance of GenerationLanguage value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -60,18 +87,17 @@ public final class GenerationLanguage extends ExpandableStringEnum<GenerationLan
 
     /**
      * Creates or finds a GenerationLanguage from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GenerationLanguage.
      */
-    @JsonCreator
     public static GenerationLanguage fromString(String name) {
         return fromString(name, GenerationLanguage.class);
     }
 
     /**
      * Gets known GenerationLanguage values.
-     *
+     * 
      * @return known GenerationLanguage values.
      */
     public static Collection<GenerationLanguage> values() {

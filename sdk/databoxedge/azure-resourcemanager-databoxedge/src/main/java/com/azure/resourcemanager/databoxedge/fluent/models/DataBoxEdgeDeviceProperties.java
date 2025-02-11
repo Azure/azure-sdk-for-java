@@ -5,106 +5,100 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDeviceStatus;
 import com.azure.resourcemanager.databoxedge.models.DeviceType;
 import com.azure.resourcemanager.databoxedge.models.RoleTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of the Data Box Edge/Gateway device. */
+/**
+ * The properties of the Data Box Edge/Gateway device.
+ */
 @Fluent
-public final class DataBoxEdgeDeviceProperties {
+public final class DataBoxEdgeDeviceProperties implements JsonSerializable<DataBoxEdgeDeviceProperties> {
     /*
      * The status of the Data Box Edge/Gateway device.
      */
-    @JsonProperty(value = "dataBoxEdgeDeviceStatus")
     private DataBoxEdgeDeviceStatus dataBoxEdgeDeviceStatus;
 
     /*
      * The Serial Number of Data Box Edge/Gateway device.
      */
-    @JsonProperty(value = "serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /*
      * The Description of the Data Box Edge/Gateway device.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The description of the Data Box Edge/Gateway device model.
      */
-    @JsonProperty(value = "modelDescription")
     private String modelDescription;
 
     /*
      * The type of the Data Box Edge/Gateway device.
      */
-    @JsonProperty(value = "deviceType", access = JsonProperty.Access.WRITE_ONLY)
     private DeviceType deviceType;
 
     /*
      * The Data Box Edge/Gateway device name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The Data Box Edge/Gateway device culture.
      */
-    @JsonProperty(value = "culture", access = JsonProperty.Access.WRITE_ONLY)
     private String culture;
 
     /*
      * The Data Box Edge/Gateway device model.
      */
-    @JsonProperty(value = "deviceModel", access = JsonProperty.Access.WRITE_ONLY)
     private String deviceModel;
 
     /*
      * The Data Box Edge/Gateway device software version.
      */
-    @JsonProperty(value = "deviceSoftwareVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String deviceSoftwareVersion;
 
     /*
      * The Data Box Edge/Gateway device local capacity in MB.
      */
-    @JsonProperty(value = "deviceLocalCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private Long deviceLocalCapacity;
 
     /*
      * The Data Box Edge/Gateway device timezone.
      */
-    @JsonProperty(value = "timeZone", access = JsonProperty.Access.WRITE_ONLY)
     private String timeZone;
 
     /*
      * The device software version number of the device (eg: 1.2.18105.6).
      */
-    @JsonProperty(value = "deviceHcsVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String deviceHcsVersion;
 
     /*
      * Type of compute roles configured.
      */
-    @JsonProperty(value = "configuredRoleTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<RoleTypes> configuredRoleTypes;
 
     /*
      * The number of nodes in the cluster.
      */
-    @JsonProperty(value = "nodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer nodeCount;
 
-    /** Creates an instance of DataBoxEdgeDeviceProperties class. */
+    /**
+     * Creates an instance of DataBoxEdgeDeviceProperties class.
+     */
     public DataBoxEdgeDeviceProperties() {
     }
 
     /**
      * Get the dataBoxEdgeDeviceStatus property: The status of the Data Box Edge/Gateway device.
-     *
+     * 
      * @return the dataBoxEdgeDeviceStatus value.
      */
     public DataBoxEdgeDeviceStatus dataBoxEdgeDeviceStatus() {
@@ -113,7 +107,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Set the dataBoxEdgeDeviceStatus property: The status of the Data Box Edge/Gateway device.
-     *
+     * 
      * @param dataBoxEdgeDeviceStatus the dataBoxEdgeDeviceStatus value to set.
      * @return the DataBoxEdgeDeviceProperties object itself.
      */
@@ -124,7 +118,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the serialNumber property: The Serial Number of Data Box Edge/Gateway device.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -133,7 +127,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the description property: The Description of the Data Box Edge/Gateway device.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -142,7 +136,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Set the description property: The Description of the Data Box Edge/Gateway device.
-     *
+     * 
      * @param description the description value to set.
      * @return the DataBoxEdgeDeviceProperties object itself.
      */
@@ -153,7 +147,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the modelDescription property: The description of the Data Box Edge/Gateway device model.
-     *
+     * 
      * @return the modelDescription value.
      */
     public String modelDescription() {
@@ -162,7 +156,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Set the modelDescription property: The description of the Data Box Edge/Gateway device model.
-     *
+     * 
      * @param modelDescription the modelDescription value to set.
      * @return the DataBoxEdgeDeviceProperties object itself.
      */
@@ -173,7 +167,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the deviceType property: The type of the Data Box Edge/Gateway device.
-     *
+     * 
      * @return the deviceType value.
      */
     public DeviceType deviceType() {
@@ -182,7 +176,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the friendlyName property: The Data Box Edge/Gateway device name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -191,7 +185,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Set the friendlyName property: The Data Box Edge/Gateway device name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the DataBoxEdgeDeviceProperties object itself.
      */
@@ -202,7 +196,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the culture property: The Data Box Edge/Gateway device culture.
-     *
+     * 
      * @return the culture value.
      */
     public String culture() {
@@ -211,7 +205,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the deviceModel property: The Data Box Edge/Gateway device model.
-     *
+     * 
      * @return the deviceModel value.
      */
     public String deviceModel() {
@@ -220,7 +214,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the deviceSoftwareVersion property: The Data Box Edge/Gateway device software version.
-     *
+     * 
      * @return the deviceSoftwareVersion value.
      */
     public String deviceSoftwareVersion() {
@@ -229,7 +223,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the deviceLocalCapacity property: The Data Box Edge/Gateway device local capacity in MB.
-     *
+     * 
      * @return the deviceLocalCapacity value.
      */
     public Long deviceLocalCapacity() {
@@ -238,7 +232,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the timeZone property: The Data Box Edge/Gateway device timezone.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -247,7 +241,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the deviceHcsVersion property: The device software version number of the device (eg: 1.2.18105.6).
-     *
+     * 
      * @return the deviceHcsVersion value.
      */
     public String deviceHcsVersion() {
@@ -256,7 +250,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the configuredRoleTypes property: Type of compute roles configured.
-     *
+     * 
      * @return the configuredRoleTypes value.
      */
     public List<RoleTypes> configuredRoleTypes() {
@@ -265,7 +259,7 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Get the nodeCount property: The number of nodes in the cluster.
-     *
+     * 
      * @return the nodeCount value.
      */
     public Integer nodeCount() {
@@ -274,9 +268,79 @@ public final class DataBoxEdgeDeviceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataBoxEdgeDeviceStatus",
+            this.dataBoxEdgeDeviceStatus == null ? null : this.dataBoxEdgeDeviceStatus.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("modelDescription", this.modelDescription);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxEdgeDeviceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxEdgeDeviceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataBoxEdgeDeviceProperties.
+     */
+    public static DataBoxEdgeDeviceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxEdgeDeviceProperties deserializedDataBoxEdgeDeviceProperties = new DataBoxEdgeDeviceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataBoxEdgeDeviceStatus".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.dataBoxEdgeDeviceStatus
+                        = DataBoxEdgeDeviceStatus.fromString(reader.getString());
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.serialNumber = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.description = reader.getString();
+                } else if ("modelDescription".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.modelDescription = reader.getString();
+                } else if ("deviceType".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.deviceType = DeviceType.fromString(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.friendlyName = reader.getString();
+                } else if ("culture".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.culture = reader.getString();
+                } else if ("deviceModel".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.deviceModel = reader.getString();
+                } else if ("deviceSoftwareVersion".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.deviceSoftwareVersion = reader.getString();
+                } else if ("deviceLocalCapacity".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.deviceLocalCapacity
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.timeZone = reader.getString();
+                } else if ("deviceHcsVersion".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.deviceHcsVersion = reader.getString();
+                } else if ("configuredRoleTypes".equals(fieldName)) {
+                    List<RoleTypes> configuredRoleTypes
+                        = reader.readArray(reader1 -> RoleTypes.fromString(reader1.getString()));
+                    deserializedDataBoxEdgeDeviceProperties.configuredRoleTypes = configuredRoleTypes;
+                } else if ("nodeCount".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceProperties.nodeCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxEdgeDeviceProperties;
+        });
     }
 }

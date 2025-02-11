@@ -53,8 +53,9 @@ public class AssistantApiToolChoiceSerializerTests {
 
     @Test
     public void threadRunFunctionCallToolChoice() {
-        ThreadRun threadRun = BinaryData.fromString("{\"tool_choice\":{\"type\":\"function\",\"function\":{\"name\":\"my_function\"}}}")
-            .toObject(ThreadRun.class);
+        ThreadRun threadRun
+            = BinaryData.fromString("{\"tool_choice\":{\"type\":\"function\",\"function\":{\"name\":\"my_function\"}}}")
+                .toObject(ThreadRun.class);
         AssistantsApiToolChoiceOption toolChoice = threadRun.getToolChoice();
 
         assertNull(toolChoice.getMode());
@@ -65,7 +66,8 @@ public class AssistantApiToolChoiceSerializerTests {
 
     @Test
     public void threadRunFileSearchToolChoice() {
-        ThreadRun threadRun = BinaryData.fromString("{\"tool_choice\":{\"type\":\"file_search\"}}").toObject(ThreadRun.class);
+        ThreadRun threadRun
+            = BinaryData.fromString("{\"tool_choice\":{\"type\":\"file_search\"}}").toObject(ThreadRun.class);
         AssistantsApiToolChoiceOption toolChoice = threadRun.getToolChoice();
 
         assertNull(toolChoice.getMode());
@@ -75,7 +77,8 @@ public class AssistantApiToolChoiceSerializerTests {
 
     @Test
     public void threadRunCodeInterpreterToolChoice() {
-        ThreadRun threadRun = BinaryData.fromString("{\"tool_choice\":{\"type\":\"code_interpreter\"}}").toObject(ThreadRun.class);
+        ThreadRun threadRun
+            = BinaryData.fromString("{\"tool_choice\":{\"type\":\"code_interpreter\"}}").toObject(ThreadRun.class);
         AssistantsApiToolChoiceOption toolChoice = threadRun.getToolChoice();
 
         assertNull(toolChoice.getMode());
@@ -114,8 +117,8 @@ public class AssistantApiToolChoiceSerializerTests {
     @Test
     public void createAndRunThreadOptionsFunctionCallToolChoice() {
         CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
-        options.setToolChoice(new AssistantsApiToolChoiceOption(
-            new AssistantsNamedToolChoice(AssistantsNamedToolChoiceType.FUNCTION)
+        options.setToolChoice(
+            new AssistantsApiToolChoiceOption(new AssistantsNamedToolChoice(AssistantsNamedToolChoiceType.FUNCTION)
                 .setFunction(new FunctionName("my_function"))));
         AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
 
@@ -195,8 +198,8 @@ public class AssistantApiToolChoiceSerializerTests {
     @Test
     public void createRunOptionsFunctionCallToolChoice() {
         CreateRunOptions options = new CreateRunOptions("abc123");
-        options.setToolChoice(new AssistantsApiToolChoiceOption(
-            new AssistantsNamedToolChoice(AssistantsNamedToolChoiceType.FUNCTION)
+        options.setToolChoice(
+            new AssistantsApiToolChoiceOption(new AssistantsNamedToolChoice(AssistantsNamedToolChoiceType.FUNCTION)
                 .setFunction(new FunctionName("my_function"))));
         AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
 

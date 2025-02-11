@@ -6,31 +6,52 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.EntityType;
 import com.azure.resourcemanager.customerinsights.models.InstanceOperationType;
 import com.azure.resourcemanager.customerinsights.models.ParticipantPropertyReference;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.TypePropertiesMapping;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The link resource format. */
+/**
+ * The link resource format.
+ */
 @Fluent
 public final class LinkResourceFormatInner extends ProxyResource {
     /*
      * The definition of Link.
      */
-    @JsonProperty(value = "properties")
     private LinkDefinition innerProperties;
 
-    /** Creates an instance of LinkResourceFormatInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LinkResourceFormatInner class.
+     */
     public LinkResourceFormatInner() {
     }
 
     /**
      * Get the innerProperties property: The definition of Link.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LinkDefinition innerProperties() {
@@ -38,8 +59,38 @@ public final class LinkResourceFormatInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -48,7 +99,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the linkName property: The link name.
-     *
+     * 
      * @return the linkName value.
      */
     public String linkName() {
@@ -57,7 +108,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the sourceEntityType property: Type of source entity.
-     *
+     * 
      * @return the sourceEntityType value.
      */
     public EntityType sourceEntityType() {
@@ -66,7 +117,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the sourceEntityType property: Type of source entity.
-     *
+     * 
      * @param sourceEntityType the sourceEntityType value to set.
      * @return the LinkResourceFormatInner object itself.
      */
@@ -80,7 +131,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the targetEntityType property: Type of target entity.
-     *
+     * 
      * @return the targetEntityType value.
      */
     public EntityType targetEntityType() {
@@ -89,7 +140,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the targetEntityType property: Type of target entity.
-     *
+     * 
      * @param targetEntityType the targetEntityType value to set.
      * @return the LinkResourceFormatInner object itself.
      */
@@ -103,7 +154,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the sourceEntityTypeName property: Name of the source Entity Type.
-     *
+     * 
      * @return the sourceEntityTypeName value.
      */
     public String sourceEntityTypeName() {
@@ -112,7 +163,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the sourceEntityTypeName property: Name of the source Entity Type.
-     *
+     * 
      * @param sourceEntityTypeName the sourceEntityTypeName value to set.
      * @return the LinkResourceFormatInner object itself.
      */
@@ -126,7 +177,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the targetEntityTypeName property: Name of the target Entity Type.
-     *
+     * 
      * @return the targetEntityTypeName value.
      */
     public String targetEntityTypeName() {
@@ -135,7 +186,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the targetEntityTypeName property: Name of the target Entity Type.
-     *
+     * 
      * @param targetEntityTypeName the targetEntityTypeName value to set.
      * @return the LinkResourceFormatInner object itself.
      */
@@ -149,7 +200,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the displayName property: Localized display name for the Link.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -158,7 +209,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the displayName property: Localized display name for the Link.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the LinkResourceFormatInner object itself.
      */
@@ -172,7 +223,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the description property: Localized descriptions for the Link.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -181,7 +232,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the description property: Localized descriptions for the Link.
-     *
+     * 
      * @param description the description value to set.
      * @return the LinkResourceFormatInner object itself.
      */
@@ -195,7 +246,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the mappings property: The set of properties mappings between the source and target Types.
-     *
+     * 
      * @return the mappings value.
      */
     public List<TypePropertiesMapping> mappings() {
@@ -204,7 +255,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the mappings property: The set of properties mappings between the source and target Types.
-     *
+     * 
      * @param mappings the mappings value to set.
      * @return the LinkResourceFormatInner object itself.
      */
@@ -218,7 +269,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the participantPropertyReferences property: The properties that represent the participating profile.
-     *
+     * 
      * @return the participantPropertyReferences value.
      */
     public List<ParticipantPropertyReference> participantPropertyReferences() {
@@ -227,12 +278,12 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Set the participantPropertyReferences property: The properties that represent the participating profile.
-     *
+     * 
      * @param participantPropertyReferences the participantPropertyReferences value to set.
      * @return the LinkResourceFormatInner object itself.
      */
-    public LinkResourceFormatInner withParticipantPropertyReferences(
-        List<ParticipantPropertyReference> participantPropertyReferences) {
+    public LinkResourceFormatInner
+        withParticipantPropertyReferences(List<ParticipantPropertyReference> participantPropertyReferences) {
         if (this.innerProperties() == null) {
             this.innerProperties = new LinkDefinition();
         }
@@ -242,7 +293,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -253,7 +304,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
      * Get the referenceOnly property: Indicating whether the link is reference only link. This flag is ignored if the
      * Mappings are defined. If the mappings are not defined and it is set to true, links processing will not create or
      * update profiles.
-     *
+     * 
      * @return the referenceOnly value.
      */
     public Boolean referenceOnly() {
@@ -264,7 +315,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
      * Set the referenceOnly property: Indicating whether the link is reference only link. This flag is ignored if the
      * Mappings are defined. If the mappings are not defined and it is set to true, links processing will not create or
      * update profiles.
-     *
+     * 
      * @param referenceOnly the referenceOnly value to set.
      * @return the LinkResourceFormatInner object itself.
      */
@@ -279,7 +330,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
     /**
      * Get the operationType property: Determines whether this link is supposed to create or delete instances if Link is
      * NOT Reference Only.
-     *
+     * 
      * @return the operationType value.
      */
     public InstanceOperationType operationType() {
@@ -289,7 +340,7 @@ public final class LinkResourceFormatInner extends ProxyResource {
     /**
      * Set the operationType property: Determines whether this link is supposed to create or delete instances if Link is
      * NOT Reference Only.
-     *
+     * 
      * @param operationType the operationType value to set.
      * @return the LinkResourceFormatInner object itself.
      */
@@ -303,12 +354,55 @@ public final class LinkResourceFormatInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkResourceFormatInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LinkResourceFormatInner.
+     */
+    public static LinkResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkResourceFormatInner deserializedLinkResourceFormatInner = new LinkResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLinkResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLinkResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLinkResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLinkResourceFormatInner.innerProperties = LinkDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkResourceFormatInner;
+        });
     }
 }

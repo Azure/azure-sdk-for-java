@@ -48,22 +48,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MoveCollectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MoveCollectionsClient.
+ */
 public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MoveCollectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ResourceMoverServiceApiImpl client;
 
     /**
      * Initializes an instance of MoveCollectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MoveCollectionsClientImpl(ResourceMoverServiceApiImpl client) {
-        this.service =
-            RestProxy.create(MoveCollectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MoveCollectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -74,238 +80,175 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ResourceMoverService")
     public interface MoveCollectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MoveCollectionInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MoveCollectionInner>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") MoveCollectionInner body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("moveCollectionName") String moveCollectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MoveCollectionInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MoveCollectionInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MoveCollectionInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") UpdateMoveCollectionRequest body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("moveCollectionName") String moveCollectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") UpdateMoveCollectionRequest body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("moveCollectionName") String moveCollectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MoveCollectionInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MoveCollectionInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("moveCollectionName") String moveCollectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/prepare")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/prepare")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> prepare(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> prepare(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PrepareRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("moveCollectionName") String moveCollectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PrepareRequest body, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/initiateMove")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/initiateMove")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> initiateMove(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> initiateMove(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ResourceMoveRequest body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("moveCollectionName") String moveCollectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ResourceMoveRequest body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/commit")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/commit")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> commit(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> commit(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CommitRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("moveCollectionName") String moveCollectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CommitRequest body, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/discard")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/discard")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> discard(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> discard(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DiscardRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("moveCollectionName") String moveCollectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DiscardRequest body, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/resolveDependencies")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/resolveDependencies")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> resolveDependencies(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> resolveDependencies(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("moveCollectionName") String moveCollectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/bulkRemove")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/bulkRemove")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> bulkRemove(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> bulkRemove(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BulkRemoveRequest body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("moveCollectionName") String moveCollectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BulkRemoveRequest body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Migrate/moveCollections")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MoveCollectionResultList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MoveCollectionResultList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MoveCollectionResultList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MoveCollectionResultList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/requiredFor")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/requiredFor")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RequiredForResourcesCollectionInner>> listRequiredFor(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RequiredForResourcesCollectionInner>> listRequiredFor(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("moveCollectionName") String moveCollectionName,
-            @QueryParam("sourceId") String sourceId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("moveCollectionName") String moveCollectionName, @QueryParam("sourceId") String sourceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MoveCollectionResultList>> listMoveCollectionsBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MoveCollectionResultList>> listMoveCollectionsByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Define the move collection.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return define the move collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MoveCollectionInner>> createWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, MoveCollectionInner body) {
+    private Mono<Response<MoveCollectionInner>> createWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, MoveCollectionInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -320,27 +263,17 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, moveCollectionName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Define the move collection.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -348,19 +281,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return define the move collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MoveCollectionInner>> createWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, MoveCollectionInner body, Context context) {
+    private Mono<Response<MoveCollectionInner>> createWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, MoveCollectionInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -375,21 +304,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            moveCollectionName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -406,10 +327,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Define the move collection.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -417,14 +338,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return define the move collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MoveCollectionInner> createWithResponse(
-        String resourceGroupName, String moveCollectionName, MoveCollectionInner body, Context context) {
+    public Response<MoveCollectionInner> createWithResponse(String resourceGroupName, String moveCollectionName,
+        MoveCollectionInner body, Context context) {
         return createWithResponseAsync(resourceGroupName, moveCollectionName, body, context).block();
     }
 
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -440,29 +361,25 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for updating move collection.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return define the move collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MoveCollectionInner>> updateWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, UpdateMoveCollectionRequest body) {
+    private Mono<Response<MoveCollectionInner>> updateWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, UpdateMoveCollectionRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -477,27 +394,17 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, moveCollectionName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for updating move collection.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -505,19 +412,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return define the move collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MoveCollectionInner>> updateWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, UpdateMoveCollectionRequest body, Context context) {
+    private Mono<Response<MoveCollectionInner>> updateWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, UpdateMoveCollectionRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -532,21 +435,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            moveCollectionName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -563,10 +458,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for updating move collection.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -574,14 +469,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return define the move collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MoveCollectionInner> updateWithResponse(
-        String resourceGroupName, String moveCollectionName, UpdateMoveCollectionRequest body, Context context) {
+    public Response<MoveCollectionInner> updateWithResponse(String resourceGroupName, String moveCollectionName,
+        UpdateMoveCollectionRequest body, Context context) {
         return updateWithResponseAsync(resourceGroupName, moveCollectionName, body, context).block();
     }
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -597,7 +492,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -606,19 +501,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String moveCollectionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String moveCollectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -630,23 +521,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, moveCollectionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -656,19 +538,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -680,20 +558,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            moveCollectionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -702,22 +573,16 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginDeleteAsync(
-        String resourceGroupName, String moveCollectionName) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginDeleteAsync(String resourceGroupName, String moveCollectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, moveCollectionName);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -727,19 +592,17 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginDeleteAsync(
-        String resourceGroupName, String moveCollectionName, Context context) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginDeleteAsync(String resourceGroupName, String moveCollectionName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, moveCollectionName, context);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OperationStatusInner.class, OperationStatusInner.class, context);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, context);
     }
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -748,14 +611,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
-        String resourceGroupName, String moveCollectionName) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(String resourceGroupName,
+        String moveCollectionName) {
         return this.beginDeleteAsync(resourceGroupName, moveCollectionName).getSyncPoller();
     }
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -765,14 +628,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
-        String resourceGroupName, String moveCollectionName, Context context) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(String resourceGroupName,
+        String moveCollectionName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, moveCollectionName, context).getSyncPoller();
     }
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -782,14 +645,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> deleteAsync(String resourceGroupName, String moveCollectionName) {
-        return beginDeleteAsync(resourceGroupName, moveCollectionName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, moveCollectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -799,16 +661,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> deleteAsync(
-        String resourceGroupName, String moveCollectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, moveCollectionName, context)
-            .last()
+    private Mono<OperationStatusInner> deleteAsync(String resourceGroupName, String moveCollectionName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, moveCollectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -823,7 +684,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -839,7 +700,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -848,19 +709,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the move collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MoveCollectionInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String moveCollectionName) {
+    private Mono<Response<MoveCollectionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String moveCollectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -873,22 +730,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, moveCollectionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -898,19 +747,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the move collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MoveCollectionInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, Context context) {
+    private Mono<Response<MoveCollectionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -922,20 +767,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            moveCollectionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -951,7 +789,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -961,14 +799,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the move collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MoveCollectionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String moveCollectionName, Context context) {
+    public Response<MoveCollectionInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String moveCollectionName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, moveCollectionName, context).block();
     }
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -986,29 +824,25 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> prepareWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, PrepareRequest body) {
+    private Mono<Response<Flux<ByteBuffer>>> prepareWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, PrepareRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1023,18 +857,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .prepare(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.prepare(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, moveCollectionName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1043,10 +867,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1054,19 +878,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> prepareWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> prepareWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, PrepareRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1081,16 +901,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .prepare(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.prepare(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            moveCollectionName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -1098,27 +910,21 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepareAsync(
-        String resourceGroupName, String moveCollectionName, PrepareRequest body) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginPrepareAsync(String resourceGroupName, String moveCollectionName, PrepareRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = prepareWithResponseAsync(resourceGroupName, moveCollectionName, body);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
@@ -1126,7 +932,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1135,18 +941,12 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepareAsync(
-        String resourceGroupName, String moveCollectionName) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginPrepareAsync(String resourceGroupName, String moveCollectionName) {
         final PrepareRequest body = null;
         Mono<Response<Flux<ByteBuffer>>> mono = prepareWithResponseAsync(resourceGroupName, moveCollectionName, body);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
@@ -1154,10 +954,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1165,15 +965,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepareAsync(
-        String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginPrepareAsync(String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            prepareWithResponseAsync(resourceGroupName, moveCollectionName, body, context);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OperationStatusInner.class, OperationStatusInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = prepareWithResponseAsync(resourceGroupName, moveCollectionName, body, context);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, context);
     }
 
     /**
@@ -1181,7 +979,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1190,8 +988,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepare(
-        String resourceGroupName, String moveCollectionName) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepare(String resourceGroupName,
+        String moveCollectionName) {
         final PrepareRequest body = null;
         return this.beginPrepareAsync(resourceGroupName, moveCollectionName, body).getSyncPoller();
     }
@@ -1201,10 +999,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1212,8 +1010,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepare(
-        String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepare(String resourceGroupName,
+        String moveCollectionName, PrepareRequest body, Context context) {
         return this.beginPrepareAsync(resourceGroupName, moveCollectionName, body, context).getSyncPoller();
     }
 
@@ -1222,20 +1020,19 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> prepareAsync(
-        String resourceGroupName, String moveCollectionName, PrepareRequest body) {
-        return beginPrepareAsync(resourceGroupName, moveCollectionName, body)
-            .last()
+    private Mono<OperationStatusInner> prepareAsync(String resourceGroupName, String moveCollectionName,
+        PrepareRequest body) {
+        return beginPrepareAsync(resourceGroupName, moveCollectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1244,7 +1041,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1255,8 +1052,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> prepareAsync(String resourceGroupName, String moveCollectionName) {
         final PrepareRequest body = null;
-        return beginPrepareAsync(resourceGroupName, moveCollectionName, body)
-            .last()
+        return beginPrepareAsync(resourceGroupName, moveCollectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1265,10 +1061,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1276,10 +1072,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> prepareAsync(
-        String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context) {
-        return beginPrepareAsync(resourceGroupName, moveCollectionName, body, context)
-            .last()
+    private Mono<OperationStatusInner> prepareAsync(String resourceGroupName, String moveCollectionName,
+        PrepareRequest body, Context context) {
+        return beginPrepareAsync(resourceGroupName, moveCollectionName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1288,7 +1083,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1307,10 +1102,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1318,8 +1113,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner prepare(
-        String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context) {
+    public OperationStatusInner prepare(String resourceGroupName, String moveCollectionName, PrepareRequest body,
+        Context context) {
         return prepareAsync(resourceGroupName, moveCollectionName, body, context).block();
     }
 
@@ -1328,29 +1123,25 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> initiateMoveWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, ResourceMoveRequest body) {
+    private Mono<Response<Flux<ByteBuffer>>> initiateMoveWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, ResourceMoveRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1365,18 +1156,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .initiateMove(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.initiateMove(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, moveCollectionName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1385,10 +1166,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1396,19 +1177,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> initiateMoveWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, ResourceMoveRequest body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> initiateMoveWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, ResourceMoveRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1423,16 +1200,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .initiateMove(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.initiateMove(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            moveCollectionName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -1440,28 +1209,22 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMoveAsync(
-        String resourceGroupName, String moveCollectionName, ResourceMoveRequest body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            initiateMoveWithResponseAsync(resourceGroupName, moveCollectionName, body);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginInitiateMoveAsync(String resourceGroupName, String moveCollectionName, ResourceMoveRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = initiateMoveWithResponseAsync(resourceGroupName, moveCollectionName, body);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
@@ -1469,7 +1232,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1478,19 +1241,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMoveAsync(
-        String resourceGroupName, String moveCollectionName) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginInitiateMoveAsync(String resourceGroupName, String moveCollectionName) {
         final ResourceMoveRequest body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            initiateMoveWithResponseAsync(resourceGroupName, moveCollectionName, body);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = initiateMoveWithResponseAsync(resourceGroupName, moveCollectionName, body);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
@@ -1498,10 +1255,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1512,12 +1269,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMoveAsync(
         String resourceGroupName, String moveCollectionName, ResourceMoveRequest body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            initiateMoveWithResponseAsync(resourceGroupName, moveCollectionName, body, context);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OperationStatusInner.class, OperationStatusInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = initiateMoveWithResponseAsync(resourceGroupName, moveCollectionName, body, context);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, context);
     }
 
     /**
@@ -1525,7 +1280,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1534,8 +1289,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMove(
-        String resourceGroupName, String moveCollectionName) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginInitiateMove(String resourceGroupName, String moveCollectionName) {
         final ResourceMoveRequest body = null;
         return this.beginInitiateMoveAsync(resourceGroupName, moveCollectionName, body).getSyncPoller();
     }
@@ -1545,10 +1300,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1566,20 +1321,19 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> initiateMoveAsync(
-        String resourceGroupName, String moveCollectionName, ResourceMoveRequest body) {
-        return beginInitiateMoveAsync(resourceGroupName, moveCollectionName, body)
-            .last()
+    private Mono<OperationStatusInner> initiateMoveAsync(String resourceGroupName, String moveCollectionName,
+        ResourceMoveRequest body) {
+        return beginInitiateMoveAsync(resourceGroupName, moveCollectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1588,7 +1342,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1599,8 +1353,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> initiateMoveAsync(String resourceGroupName, String moveCollectionName) {
         final ResourceMoveRequest body = null;
-        return beginInitiateMoveAsync(resourceGroupName, moveCollectionName, body)
-            .last()
+        return beginInitiateMoveAsync(resourceGroupName, moveCollectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1609,10 +1362,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1620,10 +1373,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> initiateMoveAsync(
-        String resourceGroupName, String moveCollectionName, ResourceMoveRequest body, Context context) {
-        return beginInitiateMoveAsync(resourceGroupName, moveCollectionName, body, context)
-            .last()
+    private Mono<OperationStatusInner> initiateMoveAsync(String resourceGroupName, String moveCollectionName,
+        ResourceMoveRequest body, Context context) {
+        return beginInitiateMoveAsync(resourceGroupName, moveCollectionName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1632,7 +1384,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1651,10 +1403,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1662,8 +1414,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner initiateMove(
-        String resourceGroupName, String moveCollectionName, ResourceMoveRequest body, Context context) {
+    public OperationStatusInner initiateMove(String resourceGroupName, String moveCollectionName,
+        ResourceMoveRequest body, Context context) {
         return initiateMoveAsync(resourceGroupName, moveCollectionName, body, context).block();
     }
 
@@ -1672,29 +1424,25 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> commitWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, CommitRequest body) {
+    private Mono<Response<Flux<ByteBuffer>>> commitWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, CommitRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1709,18 +1457,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .commit(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.commit(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, moveCollectionName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1729,10 +1467,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1740,19 +1478,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> commitWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, CommitRequest body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> commitWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, CommitRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1767,16 +1501,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .commit(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.commit(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            moveCollectionName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -1784,27 +1510,21 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginCommitAsync(
-        String resourceGroupName, String moveCollectionName, CommitRequest body) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginCommitAsync(String resourceGroupName, String moveCollectionName, CommitRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = commitWithResponseAsync(resourceGroupName, moveCollectionName, body);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
@@ -1812,7 +1532,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1821,18 +1541,12 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginCommitAsync(
-        String resourceGroupName, String moveCollectionName) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginCommitAsync(String resourceGroupName, String moveCollectionName) {
         final CommitRequest body = null;
         Mono<Response<Flux<ByteBuffer>>> mono = commitWithResponseAsync(resourceGroupName, moveCollectionName, body);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
@@ -1840,10 +1554,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1851,15 +1565,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginCommitAsync(
-        String resourceGroupName, String moveCollectionName, CommitRequest body, Context context) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginCommitAsync(String resourceGroupName, String moveCollectionName, CommitRequest body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            commitWithResponseAsync(resourceGroupName, moveCollectionName, body, context);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OperationStatusInner.class, OperationStatusInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = commitWithResponseAsync(resourceGroupName, moveCollectionName, body, context);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, context);
     }
 
     /**
@@ -1867,7 +1579,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1876,8 +1588,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginCommit(
-        String resourceGroupName, String moveCollectionName) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginCommit(String resourceGroupName,
+        String moveCollectionName) {
         final CommitRequest body = null;
         return this.beginCommitAsync(resourceGroupName, moveCollectionName, body).getSyncPoller();
     }
@@ -1887,10 +1599,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1898,8 +1610,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginCommit(
-        String resourceGroupName, String moveCollectionName, CommitRequest body, Context context) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginCommit(String resourceGroupName,
+        String moveCollectionName, CommitRequest body, Context context) {
         return this.beginCommitAsync(resourceGroupName, moveCollectionName, body, context).getSyncPoller();
     }
 
@@ -1908,20 +1620,19 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> commitAsync(
-        String resourceGroupName, String moveCollectionName, CommitRequest body) {
-        return beginCommitAsync(resourceGroupName, moveCollectionName, body)
-            .last()
+    private Mono<OperationStatusInner> commitAsync(String resourceGroupName, String moveCollectionName,
+        CommitRequest body) {
+        return beginCommitAsync(resourceGroupName, moveCollectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1930,7 +1641,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1941,8 +1652,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> commitAsync(String resourceGroupName, String moveCollectionName) {
         final CommitRequest body = null;
-        return beginCommitAsync(resourceGroupName, moveCollectionName, body)
-            .last()
+        return beginCommitAsync(resourceGroupName, moveCollectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1951,10 +1661,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1962,10 +1672,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> commitAsync(
-        String resourceGroupName, String moveCollectionName, CommitRequest body, Context context) {
-        return beginCommitAsync(resourceGroupName, moveCollectionName, body, context)
-            .last()
+    private Mono<OperationStatusInner> commitAsync(String resourceGroupName, String moveCollectionName,
+        CommitRequest body, Context context) {
+        return beginCommitAsync(resourceGroupName, moveCollectionName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1974,7 +1683,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1993,10 +1702,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2004,8 +1713,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner commit(
-        String resourceGroupName, String moveCollectionName, CommitRequest body, Context context) {
+    public OperationStatusInner commit(String resourceGroupName, String moveCollectionName, CommitRequest body,
+        Context context) {
         return commitAsync(resourceGroupName, moveCollectionName, body, context).block();
     }
 
@@ -2014,29 +1723,25 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> discardWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, DiscardRequest body) {
+    private Mono<Response<Flux<ByteBuffer>>> discardWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, DiscardRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2051,18 +1756,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .discard(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.discard(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, moveCollectionName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2071,10 +1766,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2082,19 +1777,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> discardWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, DiscardRequest body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> discardWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, DiscardRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2109,16 +1800,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .discard(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.discard(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            moveCollectionName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -2126,27 +1809,21 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscardAsync(
-        String resourceGroupName, String moveCollectionName, DiscardRequest body) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginDiscardAsync(String resourceGroupName, String moveCollectionName, DiscardRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = discardWithResponseAsync(resourceGroupName, moveCollectionName, body);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
@@ -2154,7 +1831,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2163,18 +1840,12 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscardAsync(
-        String resourceGroupName, String moveCollectionName) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginDiscardAsync(String resourceGroupName, String moveCollectionName) {
         final DiscardRequest body = null;
         Mono<Response<Flux<ByteBuffer>>> mono = discardWithResponseAsync(resourceGroupName, moveCollectionName, body);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
@@ -2182,10 +1853,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2193,15 +1864,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscardAsync(
-        String resourceGroupName, String moveCollectionName, DiscardRequest body, Context context) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginDiscardAsync(String resourceGroupName, String moveCollectionName, DiscardRequest body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            discardWithResponseAsync(resourceGroupName, moveCollectionName, body, context);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OperationStatusInner.class, OperationStatusInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = discardWithResponseAsync(resourceGroupName, moveCollectionName, body, context);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, context);
     }
 
     /**
@@ -2209,7 +1878,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2218,8 +1887,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscard(
-        String resourceGroupName, String moveCollectionName) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscard(String resourceGroupName,
+        String moveCollectionName) {
         final DiscardRequest body = null;
         return this.beginDiscardAsync(resourceGroupName, moveCollectionName, body).getSyncPoller();
     }
@@ -2229,10 +1898,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2240,8 +1909,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscard(
-        String resourceGroupName, String moveCollectionName, DiscardRequest body, Context context) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscard(String resourceGroupName,
+        String moveCollectionName, DiscardRequest body, Context context) {
         return this.beginDiscardAsync(resourceGroupName, moveCollectionName, body, context).getSyncPoller();
     }
 
@@ -2250,20 +1919,19 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> discardAsync(
-        String resourceGroupName, String moveCollectionName, DiscardRequest body) {
-        return beginDiscardAsync(resourceGroupName, moveCollectionName, body)
-            .last()
+    private Mono<OperationStatusInner> discardAsync(String resourceGroupName, String moveCollectionName,
+        DiscardRequest body) {
+        return beginDiscardAsync(resourceGroupName, moveCollectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2272,7 +1940,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2283,8 +1951,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> discardAsync(String resourceGroupName, String moveCollectionName) {
         final DiscardRequest body = null;
-        return beginDiscardAsync(resourceGroupName, moveCollectionName, body)
-            .last()
+        return beginDiscardAsync(resourceGroupName, moveCollectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2293,10 +1960,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2304,10 +1971,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> discardAsync(
-        String resourceGroupName, String moveCollectionName, DiscardRequest body, Context context) {
-        return beginDiscardAsync(resourceGroupName, moveCollectionName, body, context)
-            .last()
+    private Mono<OperationStatusInner> discardAsync(String resourceGroupName, String moveCollectionName,
+        DiscardRequest body, Context context) {
+        return beginDiscardAsync(resourceGroupName, moveCollectionName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2316,7 +1982,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2335,10 +2001,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2346,14 +2012,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner discard(
-        String resourceGroupName, String moveCollectionName, DiscardRequest body, Context context) {
+    public OperationStatusInner discard(String resourceGroupName, String moveCollectionName, DiscardRequest body,
+        Context context) {
         return discardAsync(resourceGroupName, moveCollectionName, body, context).block();
     }
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2362,19 +2028,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resolveDependenciesWithResponseAsync(
-        String resourceGroupName, String moveCollectionName) {
+    private Mono<Response<Flux<ByteBuffer>>> resolveDependenciesWithResponseAsync(String resourceGroupName,
+        String moveCollectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2387,22 +2049,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .resolveDependencies(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.resolveDependencies(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, moveCollectionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -2412,19 +2066,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resolveDependenciesWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> resolveDependenciesWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2436,20 +2086,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .resolveDependencies(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.resolveDependencies(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, moveCollectionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2458,23 +2101,17 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginResolveDependenciesAsync(
-        String resourceGroupName, String moveCollectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resolveDependenciesWithResponseAsync(resourceGroupName, moveCollectionName);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginResolveDependenciesAsync(String resourceGroupName, String moveCollectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = resolveDependenciesWithResponseAsync(resourceGroupName, moveCollectionName);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -2484,20 +2121,18 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginResolveDependenciesAsync(
-        String resourceGroupName, String moveCollectionName, Context context) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginResolveDependenciesAsync(String resourceGroupName, String moveCollectionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resolveDependenciesWithResponseAsync(resourceGroupName, moveCollectionName, context);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OperationStatusInner.class, OperationStatusInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = resolveDependenciesWithResponseAsync(resourceGroupName, moveCollectionName, context);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, context);
     }
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2506,14 +2141,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginResolveDependencies(
-        String resourceGroupName, String moveCollectionName) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginResolveDependencies(String resourceGroupName, String moveCollectionName) {
         return this.beginResolveDependenciesAsync(resourceGroupName, moveCollectionName).getSyncPoller();
     }
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -2523,14 +2158,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginResolveDependencies(
-        String resourceGroupName, String moveCollectionName, Context context) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginResolveDependencies(String resourceGroupName, String moveCollectionName, Context context) {
         return this.beginResolveDependenciesAsync(resourceGroupName, moveCollectionName, context).getSyncPoller();
     }
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2540,14 +2175,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> resolveDependenciesAsync(String resourceGroupName, String moveCollectionName) {
-        return beginResolveDependenciesAsync(resourceGroupName, moveCollectionName)
-            .last()
+        return beginResolveDependenciesAsync(resourceGroupName, moveCollectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -2557,16 +2191,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> resolveDependenciesAsync(
-        String resourceGroupName, String moveCollectionName, Context context) {
-        return beginResolveDependenciesAsync(resourceGroupName, moveCollectionName, context)
-            .last()
+    private Mono<OperationStatusInner> resolveDependenciesAsync(String resourceGroupName, String moveCollectionName,
+        Context context) {
+        return beginResolveDependenciesAsync(resourceGroupName, moveCollectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2581,7 +2214,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -2591,8 +2224,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner resolveDependencies(
-        String resourceGroupName, String moveCollectionName, Context context) {
+    public OperationStatusInner resolveDependencies(String resourceGroupName, String moveCollectionName,
+        Context context) {
         return resolveDependenciesAsync(resourceGroupName, moveCollectionName, context).block();
     }
 
@@ -2600,29 +2233,25 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> bulkRemoveWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, BulkRemoveRequest body) {
+    private Mono<Response<Flux<ByteBuffer>>> bulkRemoveWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, BulkRemoveRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2637,18 +2266,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .bulkRemove(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.bulkRemove(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, moveCollectionName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2656,10 +2275,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2667,19 +2286,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> bulkRemoveWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, BulkRemoveRequest body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> bulkRemoveWithResponseAsync(String resourceGroupName,
+        String moveCollectionName, BulkRemoveRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2694,51 +2309,37 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .bulkRemove(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.bulkRemove(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            moveCollectionName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemoveAsync(
-        String resourceGroupName, String moveCollectionName, BulkRemoveRequest body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            bulkRemoveWithResponseAsync(resourceGroupName, moveCollectionName, body);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginBulkRemoveAsync(String resourceGroupName, String moveCollectionName, BulkRemoveRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = bulkRemoveWithResponseAsync(resourceGroupName, moveCollectionName, body);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2747,29 +2348,23 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link PollerFlux} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemoveAsync(
-        String resourceGroupName, String moveCollectionName) {
+    private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginBulkRemoveAsync(String resourceGroupName, String moveCollectionName) {
         final BulkRemoveRequest body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            bulkRemoveWithResponseAsync(resourceGroupName, moveCollectionName, body);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusInner.class,
-                OperationStatusInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = bulkRemoveWithResponseAsync(resourceGroupName, moveCollectionName, body);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, this.client.getContext());
     }
 
     /**
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2780,19 +2375,17 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemoveAsync(
         String resourceGroupName, String moveCollectionName, BulkRemoveRequest body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            bulkRemoveWithResponseAsync(resourceGroupName, moveCollectionName, body, context);
-        return this
-            .client
-            .<OperationStatusInner, OperationStatusInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OperationStatusInner.class, OperationStatusInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = bulkRemoveWithResponseAsync(resourceGroupName, moveCollectionName, body, context);
+        return this.client.<OperationStatusInner, OperationStatusInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationStatusInner.class, OperationStatusInner.class, context);
     }
 
     /**
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2801,8 +2394,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemove(
-        String resourceGroupName, String moveCollectionName) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemove(String resourceGroupName,
+        String moveCollectionName) {
         final BulkRemoveRequest body = null;
         return this.beginBulkRemoveAsync(resourceGroupName, moveCollectionName, body).getSyncPoller();
     }
@@ -2811,10 +2404,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2822,8 +2415,8 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemove(
-        String resourceGroupName, String moveCollectionName, BulkRemoveRequest body, Context context) {
+    public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemove(String resourceGroupName,
+        String moveCollectionName, BulkRemoveRequest body, Context context) {
         return this.beginBulkRemoveAsync(resourceGroupName, moveCollectionName, body, context).getSyncPoller();
     }
 
@@ -2831,20 +2424,19 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> bulkRemoveAsync(
-        String resourceGroupName, String moveCollectionName, BulkRemoveRequest body) {
-        return beginBulkRemoveAsync(resourceGroupName, moveCollectionName, body)
-            .last()
+    private Mono<OperationStatusInner> bulkRemoveAsync(String resourceGroupName, String moveCollectionName,
+        BulkRemoveRequest body) {
+        return beginBulkRemoveAsync(resourceGroupName, moveCollectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2852,7 +2444,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2863,8 +2455,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> bulkRemoveAsync(String resourceGroupName, String moveCollectionName) {
         final BulkRemoveRequest body = null;
-        return beginBulkRemoveAsync(resourceGroupName, moveCollectionName, body)
-            .last()
+        return beginBulkRemoveAsync(resourceGroupName, moveCollectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2872,10 +2463,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2883,10 +2474,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> bulkRemoveAsync(
-        String resourceGroupName, String moveCollectionName, BulkRemoveRequest body, Context context) {
-        return beginBulkRemoveAsync(resourceGroupName, moveCollectionName, body, context)
-            .last()
+    private Mono<OperationStatusInner> bulkRemoveAsync(String resourceGroupName, String moveCollectionName,
+        BulkRemoveRequest body, Context context) {
+        return beginBulkRemoveAsync(resourceGroupName, moveCollectionName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2894,7 +2484,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2912,10 +2502,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2923,124 +2513,91 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner bulkRemove(
-        String resourceGroupName, String moveCollectionName, BulkRemoveRequest body, Context context) {
+    public OperationStatusInner bulkRemove(String resourceGroupName, String moveCollectionName, BulkRemoveRequest body,
+        Context context) {
         return bulkRemoveAsync(resourceGroupName, moveCollectionName, body, context).block();
     }
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MoveCollectionInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<MoveCollectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<MoveCollectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MoveCollectionInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MoveCollectionInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listMoveCollectionsBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listMoveCollectionsBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3049,16 +2606,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MoveCollectionInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context),
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
             nextLink -> listMoveCollectionsBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the subscription as paginated response with {@link PagedIterable}.
@@ -3070,9 +2626,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3086,29 +2642,25 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the resource group along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MoveCollectionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3116,55 +2668,36 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<MoveCollectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<MoveCollectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the resource group along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MoveCollectionInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<MoveCollectionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3173,29 +2706,17 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3204,16 +2725,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MoveCollectionInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listMoveCollectionsByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3223,16 +2743,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MoveCollectionInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listMoveCollectionsByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3246,9 +2765,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3263,7 +2782,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.
@@ -3273,19 +2792,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return required for resources collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RequiredForResourcesCollectionInner>> listRequiredForWithResponseAsync(
-        String resourceGroupName, String moveCollectionName, String sourceId) {
+    private Mono<Response<RequiredForResourcesCollectionInner>>
+        listRequiredForWithResponseAsync(String resourceGroupName, String moveCollectionName, String sourceId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3300,24 +2815,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRequiredFor(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            moveCollectionName,
-                            sourceId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listRequiredFor(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, moveCollectionName, sourceId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.
@@ -3331,16 +2836,12 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
     private Mono<Response<RequiredForResourcesCollectionInner>> listRequiredForWithResponseAsync(
         String resourceGroupName, String moveCollectionName, String sourceId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3355,21 +2856,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listRequiredFor(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                moveCollectionName,
-                sourceId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listRequiredFor(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            moveCollectionName, sourceId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.
@@ -3379,15 +2872,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return required for resources collection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RequiredForResourcesCollectionInner> listRequiredForAsync(
-        String resourceGroupName, String moveCollectionName, String sourceId) {
+    private Mono<RequiredForResourcesCollectionInner> listRequiredForAsync(String resourceGroupName,
+        String moveCollectionName, String sourceId) {
         return listRequiredForWithResponseAsync(resourceGroupName, moveCollectionName, sourceId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.
@@ -3398,14 +2891,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return required for resources collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RequiredForResourcesCollectionInner> listRequiredForWithResponse(
-        String resourceGroupName, String moveCollectionName, String sourceId, Context context) {
+    public Response<RequiredForResourcesCollectionInner> listRequiredForWithResponse(String resourceGroupName,
+        String moveCollectionName, String sourceId, Context context) {
         return listRequiredForWithResponseAsync(resourceGroupName, moveCollectionName, sourceId, context).block();
     }
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.
@@ -3415,167 +2908,122 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * @return required for resources collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RequiredForResourcesCollectionInner listRequiredFor(
-        String resourceGroupName, String moveCollectionName, String sourceId) {
+    public RequiredForResourcesCollectionInner listRequiredFor(String resourceGroupName, String moveCollectionName,
+        String sourceId) {
         return listRequiredForWithResponse(resourceGroupName, moveCollectionName, sourceId, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of move collections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MoveCollectionInner>> listMoveCollectionsBySubscriptionNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<MoveCollectionInner>>
+        listMoveCollectionsBySubscriptionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.listMoveCollectionsBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MoveCollectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listMoveCollectionsBySubscriptionNext(nextLink, this.client.getEndpoint(),
+                accept, context))
+            .<PagedResponse<MoveCollectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of move collections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MoveCollectionInner>> listMoveCollectionsBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<MoveCollectionInner>>
+        listMoveCollectionsBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listMoveCollectionsBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listMoveCollectionsBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of move collections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MoveCollectionInner>> listMoveCollectionsByResourceGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<MoveCollectionInner>>
+        listMoveCollectionsByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listMoveCollectionsByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MoveCollectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listMoveCollectionsByResourceGroupNext(nextLink, this.client.getEndpoint(),
+                accept, context))
+            .<PagedResponse<MoveCollectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of move collections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MoveCollectionInner>> listMoveCollectionsByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<MoveCollectionInner>>
+        listMoveCollectionsByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listMoveCollectionsByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listMoveCollectionsByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

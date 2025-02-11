@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The sort parameters for search. */
+/**
+ * The sort parameters for search.
+ */
 @Fluent
-public final class SearchSort {
+public final class SearchSort implements JsonSerializable<SearchSort> {
     /*
      * The name of the field the search query is sorted on.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The sort order of the search.
      */
-    @JsonProperty(value = "order")
     private SearchSortEnum order;
 
-    /** Creates an instance of SearchSort class. */
+    /**
+     * Creates an instance of SearchSort class.
+     */
     public SearchSort() {
     }
 
     /**
      * Get the name property: The name of the field the search query is sorted on.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class SearchSort {
 
     /**
      * Set the name property: The name of the field the search query is sorted on.
-     *
+     * 
      * @param name the name value to set.
      * @return the SearchSort object itself.
      */
@@ -48,7 +54,7 @@ public final class SearchSort {
 
     /**
      * Get the order property: The sort order of the search.
-     *
+     * 
      * @return the order value.
      */
     public SearchSortEnum order() {
@@ -57,7 +63,7 @@ public final class SearchSort {
 
     /**
      * Set the order property: The sort order of the search.
-     *
+     * 
      * @param order the order value to set.
      * @return the SearchSort object itself.
      */
@@ -68,9 +74,48 @@ public final class SearchSort {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("order", this.order == null ? null : this.order.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchSort from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchSort if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SearchSort.
+     */
+    public static SearchSort fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchSort deserializedSearchSort = new SearchSort();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSearchSort.name = reader.getString();
+                } else if ("order".equals(fieldName)) {
+                    deserializedSearchSort.order = SearchSortEnum.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchSort;
+        });
     }
 }

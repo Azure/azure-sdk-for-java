@@ -5,36 +5,38 @@
 package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The allocation details of the per subscription free trial slot of the subscription.
  */
 @Fluent
-public final class MarketplaceTrialQuota {
+public final class MarketplaceTrialQuota implements JsonSerializable<MarketplaceTrialQuota> {
     /*
      * Available enterprise promotion for the subscription
      */
-    @JsonProperty(value = "availablePromotion")
     private AvailablePromotion availablePromotion;
 
     /*
      * Resource Id of the Grafana resource which is doing the trial.
      */
-    @JsonProperty(value = "grafanaResourceId")
     private String grafanaResourceId;
 
     /*
      * The date and time in UTC of when the trial starts.
      */
-    @JsonProperty(value = "trialStartAt")
     private OffsetDateTime trialStartAt;
 
     /*
      * The date and time in UTC of when the trial ends.
      */
-    @JsonProperty(value = "trialEndAt")
     private OffsetDateTime trialEndAt;
 
     /**
@@ -129,5 +131,56 @@ public final class MarketplaceTrialQuota {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("availablePromotion",
+            this.availablePromotion == null ? null : this.availablePromotion.toString());
+        jsonWriter.writeStringField("grafanaResourceId", this.grafanaResourceId);
+        jsonWriter.writeStringField("trialStartAt",
+            this.trialStartAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.trialStartAt));
+        jsonWriter.writeStringField("trialEndAt",
+            this.trialEndAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.trialEndAt));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MarketplaceTrialQuota from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MarketplaceTrialQuota if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MarketplaceTrialQuota.
+     */
+    public static MarketplaceTrialQuota fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MarketplaceTrialQuota deserializedMarketplaceTrialQuota = new MarketplaceTrialQuota();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("availablePromotion".equals(fieldName)) {
+                    deserializedMarketplaceTrialQuota.availablePromotion
+                        = AvailablePromotion.fromString(reader.getString());
+                } else if ("grafanaResourceId".equals(fieldName)) {
+                    deserializedMarketplaceTrialQuota.grafanaResourceId = reader.getString();
+                } else if ("trialStartAt".equals(fieldName)) {
+                    deserializedMarketplaceTrialQuota.trialStartAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("trialEndAt".equals(fieldName)) {
+                    deserializedMarketplaceTrialQuota.trialEndAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMarketplaceTrialQuota;
+        });
     }
 }

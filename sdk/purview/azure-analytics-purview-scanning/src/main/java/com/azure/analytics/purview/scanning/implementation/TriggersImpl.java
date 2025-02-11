@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.scanning.implementation;
 
+import com.azure.analytics.purview.scanning.PurviewScanningServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -30,22 +31,37 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Triggers. */
+/**
+ * An instance of this class provides access to all the operations defined in Triggers.
+ */
 public final class TriggersImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TriggersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewScanningClientImpl client;
 
     /**
      * Initializes an instance of TriggersImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TriggersImpl(PurviewScanningClientImpl client) {
         this.service = RestProxy.create(TriggersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewScanningServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -56,140 +72,78 @@ public final class TriggersImpl {
     @ServiceInterface(name = "PurviewScanningClien")
     public interface TriggersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTrigger(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getTrigger(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTriggerSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getTriggerSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createTrigger(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createTrigger(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createTriggerSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> createTriggerSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData body,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteTrigger(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> deleteTrigger(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteTriggerSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> deleteTriggerSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
      * Gets trigger information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -201,7 +155,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -218,7 +172,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -235,8 +189,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -247,27 +202,19 @@ public final class TriggersImpl {
      * @return trigger information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTriggerWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTriggerWithResponseAsync(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getTrigger(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getTrigger(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
      * Gets trigger information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -279,7 +226,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -296,7 +243,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -313,8 +260,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -325,25 +273,19 @@ public final class TriggersImpl {
      * @return trigger information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Response<BinaryData> getTriggerWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getTriggerSync(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getTriggerSync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
      * Creates an instance of a trigger.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -355,7 +297,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -372,7 +314,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -389,11 +331,13 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -405,7 +349,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -422,7 +366,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -439,8 +383,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param body The body parameter.
@@ -452,28 +397,19 @@ public final class TriggersImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTriggerWithResponseAsync(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createTriggerWithResponseAsync(String dataSourceName, String scanName,
+        BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createTrigger(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                this.client.getServiceVersion().getVersion(),
-                                body,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createTrigger(this.client.getEndpoint(), dataSourceName,
+            scanName, this.client.getServiceVersion().getVersion(), body, accept, requestOptions, context));
     }
 
     /**
      * Creates an instance of a trigger.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -485,7 +421,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -502,7 +438,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -519,11 +455,13 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -535,7 +473,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -552,7 +490,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -569,8 +507,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param body The body parameter.
@@ -582,26 +521,19 @@ public final class TriggersImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTriggerWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createTriggerWithResponse(String dataSourceName, String scanName, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createTriggerSync(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                body,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.createTriggerSync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), body, accept, requestOptions, Context.NONE);
     }
 
     /**
      * Deletes the trigger associated with the scan.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -613,7 +545,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -630,7 +562,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -647,8 +579,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -659,27 +592,19 @@ public final class TriggersImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteTrigger(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteTrigger(this.client.getEndpoint(), dataSourceName,
+            scanName, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
      * Deletes the trigger associated with the scan.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -691,7 +616,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -708,7 +633,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -725,8 +650,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -737,16 +663,10 @@ public final class TriggersImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteTriggerWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteTriggerSync(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteTriggerSync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 }

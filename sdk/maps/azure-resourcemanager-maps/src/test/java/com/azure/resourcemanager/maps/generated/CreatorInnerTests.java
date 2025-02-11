@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CreatorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreatorInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"jn\",\"storageUnits\":746279797},\"location\":\"khsmtxpsiebt\",\"tags\":{\"htldwk\":\"pesapskrdqmhjj\",\"otogtwrupqs\":\"zxuutkncwscwsvl\",\"cykvceo\":\"vnm\",\"vnotyfjfcnj\":\"eil\"},\"id\":\"k\",\"name\":\"nxdhbt\",\"type\":\"kphywpnvjto\"}")
-                .toObject(CreatorInner.class);
+        CreatorInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"jn\",\"storageUnits\":746279797},\"location\":\"khsmtxpsiebt\",\"tags\":{\"htldwk\":\"pesapskrdqmhjj\",\"otogtwrupqs\":\"zxuutkncwscwsvl\",\"cykvceo\":\"vnm\",\"vnotyfjfcnj\":\"eil\"},\"id\":\"k\",\"name\":\"nxdhbt\",\"type\":\"kphywpnvjto\"}")
+            .toObject(CreatorInner.class);
         Assertions.assertEquals("khsmtxpsiebt", model.location());
         Assertions.assertEquals("pesapskrdqmhjj", model.tags().get("htldwk"));
         Assertions.assertEquals(746279797, model.properties().storageUnits());
@@ -26,20 +24,10 @@ public final class CreatorInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreatorInner model =
-            new CreatorInner()
-                .withLocation("khsmtxpsiebt")
-                .withTags(
-                    mapOf(
-                        "htldwk",
-                        "pesapskrdqmhjj",
-                        "otogtwrupqs",
-                        "zxuutkncwscwsvl",
-                        "cykvceo",
-                        "vnm",
-                        "vnotyfjfcnj",
-                        "eil"))
-                .withProperties(new CreatorProperties().withStorageUnits(746279797));
+        CreatorInner model = new CreatorInner().withLocation("khsmtxpsiebt")
+            .withTags(mapOf("htldwk", "pesapskrdqmhjj", "otogtwrupqs", "zxuutkncwscwsvl", "cykvceo", "vnm",
+                "vnotyfjfcnj", "eil"))
+            .withProperties(new CreatorProperties().withStorageUnits(746279797));
         model = BinaryData.fromObject(model).toObject(CreatorInner.class);
         Assertions.assertEquals("khsmtxpsiebt", model.location());
         Assertions.assertEquals("pesapskrdqmhjj", model.tags().get("htldwk"));

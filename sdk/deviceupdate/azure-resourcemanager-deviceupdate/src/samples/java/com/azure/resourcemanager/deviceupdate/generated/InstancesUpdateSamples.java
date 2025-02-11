@@ -24,7 +24,8 @@ public final class InstancesUpdateSamples {
      */
     public static void updatesInstance(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
         Instance resource = manager.instances()
-            .getWithResponse("test-rg", "contoso", "blue", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("test-rg", "contoso", "blue", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagKey", "fakeTokenPlaceholder")).apply();
     }
 

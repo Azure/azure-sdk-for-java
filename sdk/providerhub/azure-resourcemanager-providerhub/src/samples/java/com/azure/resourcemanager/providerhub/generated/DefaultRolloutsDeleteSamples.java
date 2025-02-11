@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.providerhub.generated;
 
-/** Samples for DefaultRollouts Delete. */
+/**
+ * Samples for DefaultRollouts Delete.
+ */
 public final class DefaultRolloutsDeleteSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_Delete.json
+     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/
+     * DefaultRollouts_Delete.json
      */
     /**
      * Sample code: DefaultRollouts_Delete.
-     *
+     * 
      * @param manager Entry point to ProviderHubManager.
      */
     public static void defaultRolloutsDelete(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
-        manager
-            .defaultRollouts()
+        manager.defaultRollouts()
             .deleteByResourceGroupWithResponse("Microsoft.Contoso", "2020week10", com.azure.core.util.Context.NONE);
     }
 }

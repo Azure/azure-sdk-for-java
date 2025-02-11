@@ -19,6 +19,15 @@ public class ComputeSkuTier extends ExpandableStringEnum<ComputeSkuTier> {
     public static final ComputeSkuTier PREMIUM = fromString("Premium");
 
     /**
+     * Creates a new instance of ComputeSkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComputeSkuTier() {
+    }
+
+    /**
      * Creates or finds a ComputeSkuTier from its string representation.
      *
      * @param name a name to look for
@@ -28,7 +37,11 @@ public class ComputeSkuTier extends ExpandableStringEnum<ComputeSkuTier> {
         return fromString(name, ComputeSkuTier.class);
     }
 
-    /** @return known ComputeSkuTier values */
+    /**
+     * Gets known ComputeSkuTier values.
+     *
+     * @return known ComputeSkuTier values
+     */
     public static Collection<ComputeSkuTier> values() {
         return values(ComputeSkuTier.class);
     }

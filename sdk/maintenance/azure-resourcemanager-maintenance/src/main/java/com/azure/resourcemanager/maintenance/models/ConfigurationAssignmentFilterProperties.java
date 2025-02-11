@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure query for the update configuration.
  */
 @Fluent
-public final class ConfigurationAssignmentFilterProperties {
+public final class ConfigurationAssignmentFilterProperties
+    implements JsonSerializable<ConfigurationAssignmentFilterProperties> {
     /*
      * List of allowed resources.
      */
-    @JsonProperty(value = "resourceTypes")
     private List<String> resourceTypes;
 
     /*
      * List of allowed resource groups.
      */
-    @JsonProperty(value = "resourceGroups")
     private List<String> resourceGroups;
 
     /*
      * List of allowed operating systems.
      */
-    @JsonProperty(value = "osTypes")
     private List<String> osTypes;
 
     /*
      * List of locations to scope the query to.
      */
-    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /*
      * Tag settings for the VM.
      */
-    @JsonProperty(value = "tagSettings")
     private TagSettingsProperties tagSettings;
 
     /**
@@ -158,5 +158,61 @@ public final class ConfigurationAssignmentFilterProperties {
         if (tagSettings() != null) {
             tagSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceTypes", this.resourceTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("resourceGroups", this.resourceGroups,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("osTypes", this.osTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("tagSettings", this.tagSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationAssignmentFilterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationAssignmentFilterProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationAssignmentFilterProperties.
+     */
+    public static ConfigurationAssignmentFilterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationAssignmentFilterProperties deserializedConfigurationAssignmentFilterProperties
+                = new ConfigurationAssignmentFilterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceTypes".equals(fieldName)) {
+                    List<String> resourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConfigurationAssignmentFilterProperties.resourceTypes = resourceTypes;
+                } else if ("resourceGroups".equals(fieldName)) {
+                    List<String> resourceGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConfigurationAssignmentFilterProperties.resourceGroups = resourceGroups;
+                } else if ("osTypes".equals(fieldName)) {
+                    List<String> osTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConfigurationAssignmentFilterProperties.osTypes = osTypes;
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConfigurationAssignmentFilterProperties.locations = locations;
+                } else if ("tagSettings".equals(fieldName)) {
+                    deserializedConfigurationAssignmentFilterProperties.tagSettings
+                        = TagSettingsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationAssignmentFilterProperties;
+        });
     }
 }

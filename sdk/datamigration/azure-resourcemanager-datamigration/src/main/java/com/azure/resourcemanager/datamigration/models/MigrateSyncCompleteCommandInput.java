@@ -5,32 +5,40 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Input for command that completes sync migration for a database. */
+/**
+ * Input for command that completes sync migration for a database.
+ */
 @Fluent
-public final class MigrateSyncCompleteCommandInput {
+public final class MigrateSyncCompleteCommandInput implements JsonSerializable<MigrateSyncCompleteCommandInput> {
     /*
      * Name of database
      */
-    @JsonProperty(value = "databaseName", required = true)
     private String databaseName;
 
     /*
      * Time stamp to complete
      */
-    @JsonProperty(value = "commitTimeStamp")
     private OffsetDateTime commitTimestamp;
 
-    /** Creates an instance of MigrateSyncCompleteCommandInput class. */
+    /**
+     * Creates an instance of MigrateSyncCompleteCommandInput class.
+     */
     public MigrateSyncCompleteCommandInput() {
     }
 
     /**
      * Get the databaseName property: Name of database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -39,7 +47,7 @@ public final class MigrateSyncCompleteCommandInput {
 
     /**
      * Set the databaseName property: Name of database.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the MigrateSyncCompleteCommandInput object itself.
      */
@@ -50,7 +58,7 @@ public final class MigrateSyncCompleteCommandInput {
 
     /**
      * Get the commitTimestamp property: Time stamp to complete.
-     *
+     * 
      * @return the commitTimestamp value.
      */
     public OffsetDateTime commitTimestamp() {
@@ -59,7 +67,7 @@ public final class MigrateSyncCompleteCommandInput {
 
     /**
      * Set the commitTimestamp property: Time stamp to complete.
-     *
+     * 
      * @param commitTimestamp the commitTimestamp value to set.
      * @return the MigrateSyncCompleteCommandInput object itself.
      */
@@ -70,17 +78,59 @@ public final class MigrateSyncCompleteCommandInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (databaseName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseName in model MigrateSyncCompleteCommandInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property databaseName in model MigrateSyncCompleteCommandInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MigrateSyncCompleteCommandInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeStringField("commitTimeStamp",
+            this.commitTimestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.commitTimestamp));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSyncCompleteCommandInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSyncCompleteCommandInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MigrateSyncCompleteCommandInput.
+     */
+    public static MigrateSyncCompleteCommandInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSyncCompleteCommandInput deserializedMigrateSyncCompleteCommandInput
+                = new MigrateSyncCompleteCommandInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseName".equals(fieldName)) {
+                    deserializedMigrateSyncCompleteCommandInput.databaseName = reader.getString();
+                } else if ("commitTimeStamp".equals(fieldName)) {
+                    deserializedMigrateSyncCompleteCommandInput.commitTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSyncCompleteCommandInput;
+        });
+    }
 }

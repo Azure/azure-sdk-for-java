@@ -959,6 +959,15 @@ public final class CountryPhoneCode extends ExpandableStringEnum<CountryPhoneCod
     public static final CountryPhoneCode ZIMBABWE = fromString("+263");
 
     /**
+     * Creates a new instance of CountryPhoneCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CountryPhoneCode() {
+    }
+
+    /**
      * Creates or finds a country phone code from its string representation.
      *
      * @param code a country phone code
@@ -969,6 +978,8 @@ public final class CountryPhoneCode extends ExpandableStringEnum<CountryPhoneCod
     }
 
     /**
+     * Gets known CountryPhoneCode values.
+     *
      * @return known country phone codes
      */
     public static Collection<CountryPhoneCode> values() {

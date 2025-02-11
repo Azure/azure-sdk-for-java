@@ -5,40 +5,46 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** The properties of the messaging endpoints used by this IoT hub. */
+/**
+ * The properties of the messaging endpoints used by this IoT hub.
+ */
 @Fluent
-public final class MessagingEndpointProperties {
+public final class MessagingEndpointProperties implements JsonSerializable<MessagingEndpointProperties> {
     /*
      * The lock duration. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
      */
-    @JsonProperty(value = "lockDurationAsIso8601")
     private Duration lockDurationAsIso8601;
 
     /*
      * The period of time for which a message is available to consume before it is expired by the IoT hub. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
      */
-    @JsonProperty(value = "ttlAsIso8601")
     private Duration ttlAsIso8601;
 
     /*
      * The number of times the IoT hub attempts to deliver a message. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
      */
-    @JsonProperty(value = "maxDeliveryCount")
     private Integer maxDeliveryCount;
 
-    /** Creates an instance of MessagingEndpointProperties class. */
+    /**
+     * Creates an instance of MessagingEndpointProperties class.
+     */
     public MessagingEndpointProperties() {
     }
 
     /**
      * Get the lockDurationAsIso8601 property: The lock duration. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     *
+     * 
      * @return the lockDurationAsIso8601 value.
      */
     public Duration lockDurationAsIso8601() {
@@ -48,7 +54,7 @@ public final class MessagingEndpointProperties {
     /**
      * Set the lockDurationAsIso8601 property: The lock duration. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     *
+     * 
      * @param lockDurationAsIso8601 the lockDurationAsIso8601 value to set.
      * @return the MessagingEndpointProperties object itself.
      */
@@ -60,7 +66,7 @@ public final class MessagingEndpointProperties {
     /**
      * Get the ttlAsIso8601 property: The period of time for which a message is available to consume before it is
      * expired by the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     *
+     * 
      * @return the ttlAsIso8601 value.
      */
     public Duration ttlAsIso8601() {
@@ -70,7 +76,7 @@ public final class MessagingEndpointProperties {
     /**
      * Set the ttlAsIso8601 property: The period of time for which a message is available to consume before it is
      * expired by the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     *
+     * 
      * @param ttlAsIso8601 the ttlAsIso8601 value to set.
      * @return the MessagingEndpointProperties object itself.
      */
@@ -82,7 +88,7 @@ public final class MessagingEndpointProperties {
     /**
      * Get the maxDeliveryCount property: The number of times the IoT hub attempts to deliver a message. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     *
+     * 
      * @return the maxDeliveryCount value.
      */
     public Integer maxDeliveryCount() {
@@ -92,7 +98,7 @@ public final class MessagingEndpointProperties {
     /**
      * Set the maxDeliveryCount property: The number of times the IoT hub attempts to deliver a message. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     *
+     * 
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the MessagingEndpointProperties object itself.
      */
@@ -103,9 +109,54 @@ public final class MessagingEndpointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lockDurationAsIso8601",
+            CoreUtils.durationToStringWithDays(this.lockDurationAsIso8601));
+        jsonWriter.writeStringField("ttlAsIso8601", CoreUtils.durationToStringWithDays(this.ttlAsIso8601));
+        jsonWriter.writeNumberField("maxDeliveryCount", this.maxDeliveryCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessagingEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessagingEndpointProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MessagingEndpointProperties.
+     */
+    public static MessagingEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MessagingEndpointProperties deserializedMessagingEndpointProperties = new MessagingEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lockDurationAsIso8601".equals(fieldName)) {
+                    deserializedMessagingEndpointProperties.lockDurationAsIso8601
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("ttlAsIso8601".equals(fieldName)) {
+                    deserializedMessagingEndpointProperties.ttlAsIso8601
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("maxDeliveryCount".equals(fieldName)) {
+                    deserializedMessagingEndpointProperties.maxDeliveryCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMessagingEndpointProperties;
+        });
     }
 }

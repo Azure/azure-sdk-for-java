@@ -11,67 +11,69 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabri
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of NetworkFabricController. */
+/**
+ * An immutable client-side representation of NetworkFabricController.
+ */
 public interface NetworkFabricController {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the infrastructureServices property: InfrastructureServices IP ranges.
-     *
+     * 
      * @return the infrastructureServices value.
      */
     ControllerServices infrastructureServices();
 
     /**
      * Gets the workloadServices property: WorkloadServices IP ranges.
-     *
+     * 
      * @return the workloadServices value.
      */
     ControllerServices workloadServices();
 
     /**
      * Gets the managedResourceGroupConfiguration property: Managed Resource Group configuration properties.
-     *
+     * 
      * @return the managedResourceGroupConfiguration value.
      */
     ManagedResourceGroupConfiguration managedResourceGroupConfiguration();
@@ -79,7 +81,7 @@ public interface NetworkFabricController {
     /**
      * Gets the networkFabricIds property: The NF-ID will be an input parameter used by the NF to link and get
      * associated with the parent NFC Service.
-     *
+     * 
      * @return the networkFabricIds value.
      */
     List<String> networkFabricIds();
@@ -88,7 +90,7 @@ public interface NetworkFabricController {
      * Gets the workloadManagementNetwork property: A workload management network is required for all the tenant
      * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access internet or
      * any other MSFT/Public endpoints. This is used for the backward compatibility.
-     *
+     * 
      * @return the workloadManagementNetwork value.
      */
     Boolean workloadManagementNetwork();
@@ -97,35 +99,35 @@ public interface NetworkFabricController {
      * Gets the isWorkloadManagementNetworkEnabled property: A workload management network is required for all the
      * tenant (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access
      * internet or any other MSFT/Public endpoints.
-     *
+     * 
      * @return the isWorkloadManagementNetworkEnabled value.
      */
     IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled();
 
     /**
      * Gets the tenantInternetGatewayIds property: List of tenant InternetGateway resource IDs.
-     *
+     * 
      * @return the tenantInternetGatewayIds value.
      */
     List<String> tenantInternetGatewayIds();
 
     /**
      * Gets the ipv4AddressSpace property: IPv4 Network Fabric Controller Address Space.
-     *
+     * 
      * @return the ipv4AddressSpace value.
      */
     String ipv4AddressSpace();
 
     /**
      * Gets the ipv6AddressSpace property: IPv6 Network Fabric Controller Address Space.
-     *
+     * 
      * @return the ipv6AddressSpace value.
      */
     String ipv6AddressSpace();
 
     /**
      * Gets the nfcSku property: Network Fabric Controller SKU.
-     *
+     * 
      * @return the nfcSku value.
      */
     NfcSku nfcSku();
@@ -134,7 +136,7 @@ public interface NetworkFabricController {
      * Gets the provisioningState property: Provides you the latest status of the NFC service, whether it is Accepted,
      * updating, Succeeded or Failed. During this process, the states keep changing based on the status of NFC
      * provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -143,7 +145,7 @@ public interface NetworkFabricController {
      * Gets the infrastructureExpressRouteConnections property: As part of an update, the Infrastructure ExpressRoute
      * CircuitID should be provided to create and Provision a NFC. This Express route is dedicated for Infrastructure
      * services. (This is a Mandatory attribute).
-     *
+     * 
      * @return the infrastructureExpressRouteConnections value.
      */
     List<ExpressRouteConnectionInformation> infrastructureExpressRouteConnections();
@@ -152,65 +154,70 @@ public interface NetworkFabricController {
      * Gets the workloadExpressRouteConnections property: As part of an update, the workload ExpressRoute CircuitID
      * should be provided to create and Provision a NFC. This Express route is dedicated for Workload services. (This is
      * a Mandatory attribute).
-     *
+     * 
      * @return the workloadExpressRouteConnections value.
      */
     List<ExpressRouteConnectionInformation> workloadExpressRouteConnections();
 
     /**
      * Gets the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     String annotation();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricControllerInner object.
-     *
+     * 
      * @return the inner object.
      */
     NetworkFabricControllerInner innerModel();
 
-    /** The entirety of the NetworkFabricController definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the NetworkFabricController definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
-    /** The NetworkFabricController definition stages. */
+    /**
+     * The NetworkFabricController definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the NetworkFabricController definition. */
+        /**
+         * The first stage of the NetworkFabricController definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the NetworkFabricController definition allowing to specify location. */
+        /**
+         * The stage of the NetworkFabricController definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -218,18 +225,20 @@ public interface NetworkFabricController {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the NetworkFabricController definition allowing to specify parent resource. */
+        /**
+         * The stage of the NetworkFabricController definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
@@ -240,37 +249,34 @@ public interface NetworkFabricController {
          * The stage of the NetworkFabricController definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithManagedResourceGroupConfiguration,
-                DefinitionStages.WithIsWorkloadManagementNetworkEnabled,
-                DefinitionStages.WithIpv4AddressSpace,
-                DefinitionStages.WithIpv6AddressSpace,
-                DefinitionStages.WithNfcSku,
-                DefinitionStages.WithInfrastructureExpressRouteConnections,
-                DefinitionStages.WithWorkloadExpressRouteConnections,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithManagedResourceGroupConfiguration,
+            DefinitionStages.WithIsWorkloadManagementNetworkEnabled, DefinitionStages.WithIpv4AddressSpace,
+            DefinitionStages.WithIpv6AddressSpace, DefinitionStages.WithNfcSku,
+            DefinitionStages.WithInfrastructureExpressRouteConnections,
+            DefinitionStages.WithWorkloadExpressRouteConnections, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             NetworkFabricController create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             NetworkFabricController create(Context context);
         }
 
-        /** The stage of the NetworkFabricController definition allowing to specify tags. */
+        /**
+         * The stage of the NetworkFabricController definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -284,7 +290,7 @@ public interface NetworkFabricController {
             /**
              * Specifies the managedResourceGroupConfiguration property: Managed Resource Group configuration
              * properties..
-             *
+             * 
              * @param managedResourceGroupConfiguration Managed Resource Group configuration properties.
              * @return the next definition stage.
              */
@@ -300,43 +306,49 @@ public interface NetworkFabricController {
              * Specifies the isWorkloadManagementNetworkEnabled property: A workload management network is required for
              * all the tenant (workload) traffic. This traffic is only dedicated for Tenant workloads which are required
              * to access internet or any other MSFT/Public endpoints..
-             *
+             * 
              * @param isWorkloadManagementNetworkEnabled A workload management network is required for all the tenant
-             *     (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access
-             *     internet or any other MSFT/Public endpoints.
+             * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access
+             * internet or any other MSFT/Public endpoints.
              * @return the next definition stage.
              */
             WithCreate withIsWorkloadManagementNetworkEnabled(
                 IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled);
         }
 
-        /** The stage of the NetworkFabricController definition allowing to specify ipv4AddressSpace. */
+        /**
+         * The stage of the NetworkFabricController definition allowing to specify ipv4AddressSpace.
+         */
         interface WithIpv4AddressSpace {
             /**
              * Specifies the ipv4AddressSpace property: IPv4 Network Fabric Controller Address Space..
-             *
+             * 
              * @param ipv4AddressSpace IPv4 Network Fabric Controller Address Space.
              * @return the next definition stage.
              */
             WithCreate withIpv4AddressSpace(String ipv4AddressSpace);
         }
 
-        /** The stage of the NetworkFabricController definition allowing to specify ipv6AddressSpace. */
+        /**
+         * The stage of the NetworkFabricController definition allowing to specify ipv6AddressSpace.
+         */
         interface WithIpv6AddressSpace {
             /**
              * Specifies the ipv6AddressSpace property: IPv6 Network Fabric Controller Address Space..
-             *
+             * 
              * @param ipv6AddressSpace IPv6 Network Fabric Controller Address Space.
              * @return the next definition stage.
              */
             WithCreate withIpv6AddressSpace(String ipv6AddressSpace);
         }
 
-        /** The stage of the NetworkFabricController definition allowing to specify nfcSku. */
+        /**
+         * The stage of the NetworkFabricController definition allowing to specify nfcSku.
+         */
         interface WithNfcSku {
             /**
              * Specifies the nfcSku property: Network Fabric Controller SKU..
-             *
+             * 
              * @param nfcSku Network Fabric Controller SKU.
              * @return the next definition stage.
              */
@@ -352,37 +364,41 @@ public interface NetworkFabricController {
              * Specifies the infrastructureExpressRouteConnections property: As part of an update, the Infrastructure
              * ExpressRoute CircuitID should be provided to create and Provision a NFC. This Express route is dedicated
              * for Infrastructure services. (This is a Mandatory attribute).
-             *
+             * 
              * @param infrastructureExpressRouteConnections As part of an update, the Infrastructure ExpressRoute
-             *     CircuitID should be provided to create and Provision a NFC. This Express route is dedicated for
-             *     Infrastructure services. (This is a Mandatory attribute).
+             * CircuitID should be provided to create and Provision a NFC. This Express route is dedicated for
+             * Infrastructure services. (This is a Mandatory attribute).
              * @return the next definition stage.
              */
             WithCreate withInfrastructureExpressRouteConnections(
                 List<ExpressRouteConnectionInformation> infrastructureExpressRouteConnections);
         }
 
-        /** The stage of the NetworkFabricController definition allowing to specify workloadExpressRouteConnections. */
+        /**
+         * The stage of the NetworkFabricController definition allowing to specify workloadExpressRouteConnections.
+         */
         interface WithWorkloadExpressRouteConnections {
             /**
              * Specifies the workloadExpressRouteConnections property: As part of an update, the workload ExpressRoute
              * CircuitID should be provided to create and Provision a NFC. This Express route is dedicated for Workload
              * services. (This is a Mandatory attribute)..
-             *
+             * 
              * @param workloadExpressRouteConnections As part of an update, the workload ExpressRoute CircuitID should
-             *     be provided to create and Provision a NFC. This Express route is dedicated for Workload services.
-             *     (This is a Mandatory attribute).
+             * be provided to create and Provision a NFC. This Express route is dedicated for Workload services. (This
+             * is a Mandatory attribute).
              * @return the next definition stage.
              */
             WithCreate withWorkloadExpressRouteConnections(
                 List<ExpressRouteConnectionInformation> workloadExpressRouteConnections);
         }
 
-        /** The stage of the NetworkFabricController definition allowing to specify annotation. */
+        /**
+         * The stage of the NetworkFabricController definition allowing to specify annotation.
+         */
         interface WithAnnotation {
             /**
              * Specifies the annotation property: Switch configuration description..
-             *
+             * 
              * @param annotation Switch configuration description.
              * @return the next definition stage.
              */
@@ -392,39 +408,43 @@ public interface NetworkFabricController {
 
     /**
      * Begins update for the NetworkFabricController resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     NetworkFabricController.Update update();
 
-    /** The template for NetworkFabricController update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithInfrastructureExpressRouteConnections,
-            UpdateStages.WithWorkloadExpressRouteConnections {
+    /**
+     * The template for NetworkFabricController update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithInfrastructureExpressRouteConnections,
+        UpdateStages.WithWorkloadExpressRouteConnections {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         NetworkFabricController apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         NetworkFabricController apply(Context context);
     }
 
-    /** The NetworkFabricController update stages. */
+    /**
+     * The NetworkFabricController update stages.
+     */
     interface UpdateStages {
-        /** The stage of the NetworkFabricController update allowing to specify tags. */
+        /**
+         * The stage of the NetworkFabricController update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags.
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -439,26 +459,28 @@ public interface NetworkFabricController {
              * Specifies the infrastructureExpressRouteConnections property: As part of an update, the Infrastructure
              * ExpressRoute CircuitID should be provided to create and Provision a NFC. This Express route is dedicated
              * for Infrastructure services. (This is a Mandatory attribute).
-             *
+             * 
              * @param infrastructureExpressRouteConnections As part of an update, the Infrastructure ExpressRoute
-             *     CircuitID should be provided to create and Provision a NFC. This Express route is dedicated for
-             *     Infrastructure services. (This is a Mandatory attribute).
+             * CircuitID should be provided to create and Provision a NFC. This Express route is dedicated for
+             * Infrastructure services. (This is a Mandatory attribute).
              * @return the next definition stage.
              */
             Update withInfrastructureExpressRouteConnections(
                 List<ExpressRouteConnectionInformation> infrastructureExpressRouteConnections);
         }
 
-        /** The stage of the NetworkFabricController update allowing to specify workloadExpressRouteConnections. */
+        /**
+         * The stage of the NetworkFabricController update allowing to specify workloadExpressRouteConnections.
+         */
         interface WithWorkloadExpressRouteConnections {
             /**
              * Specifies the workloadExpressRouteConnections property: As part of an update, the workload ExpressRoute
              * CircuitID should be provided to create and Provision a NFC. This Express route is dedicated for Workload
              * services. (This is a Mandatory attribute)..
-             *
+             * 
              * @param workloadExpressRouteConnections As part of an update, the workload ExpressRoute CircuitID should
-             *     be provided to create and Provision a NFC. This Express route is dedicated for Workload services.
-             *     (This is a Mandatory attribute).
+             * be provided to create and Provision a NFC. This Express route is dedicated for Workload services. (This
+             * is a Mandatory attribute).
              * @return the next definition stage.
              */
             Update withWorkloadExpressRouteConnections(
@@ -468,14 +490,14 @@ public interface NetworkFabricController {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     NetworkFabricController refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

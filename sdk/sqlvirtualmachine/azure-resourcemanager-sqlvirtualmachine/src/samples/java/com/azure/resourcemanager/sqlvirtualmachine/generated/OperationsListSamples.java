@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/ListOperation.json
+     * x-ms-original-file:
+     * specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/
+     * ListOperation.json
      */
     /**
      * Sample code: Lists all of the available SQL Virtual Machine Rest API operations.
-     *
+     * 
      * @param manager Entry point to SqlVirtualMachineManager.
      */
     public static void listsAllOfTheAvailableSQLVirtualMachineRestAPIOperations(

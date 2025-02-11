@@ -145,25 +145,21 @@ public final class NetworkTapRuleImpl implements NetworkTapRule, NetworkTapRule.
     }
 
     public NetworkTapRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTapRules()
-                .create(resourceGroupName, networkTapRuleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTapRules()
+            .create(resourceGroupName, networkTapRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetworkTapRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTapRules()
-                .create(resourceGroupName, networkTapRuleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTapRules()
+            .create(resourceGroupName, networkTapRuleName, this.innerModel(), context);
         return this;
     }
 
-    NetworkTapRuleImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    NetworkTapRuleImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new NetworkTapRuleInner();
         this.serviceManager = serviceManager;
         this.networkTapRuleName = name;
@@ -175,49 +171,40 @@ public final class NetworkTapRuleImpl implements NetworkTapRule, NetworkTapRule.
     }
 
     public NetworkTapRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTapRules()
-                .update(resourceGroupName, networkTapRuleName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTapRules()
+            .update(resourceGroupName, networkTapRuleName, updateBody, Context.NONE);
         return this;
     }
 
     public NetworkTapRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTapRules()
-                .update(resourceGroupName, networkTapRuleName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTapRules()
+            .update(resourceGroupName, networkTapRuleName, updateBody, context);
         return this;
     }
 
-    NetworkTapRuleImpl(
-        NetworkTapRuleInner innerObject,
+    NetworkTapRuleImpl(NetworkTapRuleInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkTapRuleName = Utils.getValueFromIdByName(innerObject.id(), "networkTapRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkTapRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkTapRules");
     }
 
     public NetworkTapRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTapRules()
-                .getByResourceGroupWithResponse(resourceGroupName, networkTapRuleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTapRules()
+            .getByResourceGroupWithResponse(resourceGroupName, networkTapRuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkTapRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkTapRules()
-                .getByResourceGroupWithResponse(resourceGroupName, networkTapRuleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkTapRules()
+            .getByResourceGroupWithResponse(resourceGroupName, networkTapRuleName, context)
+            .getValue();
         return this;
     }
 
@@ -225,10 +212,9 @@ public final class NetworkTapRuleImpl implements NetworkTapRule, NetworkTapRule.
         return serviceManager.networkTapRules().updateAdministrativeState(resourceGroupName, networkTapRuleName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .networkTapRules()
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body,
+        Context context) {
+        return serviceManager.networkTapRules()
             .updateAdministrativeState(resourceGroupName, networkTapRuleName, body, context);
     }
 
@@ -303,8 +289,8 @@ public final class NetworkTapRuleImpl implements NetworkTapRule, NetworkTapRule.
         }
     }
 
-    public NetworkTapRuleImpl withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public NetworkTapRuleImpl
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         if (isInCreateMode()) {
             this.innerModel().withDynamicMatchConfigurations(dynamicMatchConfigurations);
             return this;

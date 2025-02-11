@@ -103,22 +103,18 @@ public final class PeeringImpl implements Peering, Peering.Definition, Peering.U
     }
 
     public Peering create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPeerings()
-                .createOrUpdateWithResponse(resourceGroupName, peeringName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPeerings()
+            .createOrUpdateWithResponse(resourceGroupName, peeringName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Peering create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPeerings()
-                .createOrUpdateWithResponse(resourceGroupName, peeringName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPeerings()
+            .createOrUpdateWithResponse(resourceGroupName, peeringName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -134,49 +130,41 @@ public final class PeeringImpl implements Peering, Peering.Definition, Peering.U
     }
 
     public Peering apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPeerings()
-                .updateWithResponse(resourceGroupName, peeringName, updateTags, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPeerings()
+            .updateWithResponse(resourceGroupName, peeringName, updateTags, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Peering apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPeerings()
-                .updateWithResponse(resourceGroupName, peeringName, updateTags, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPeerings()
+            .updateWithResponse(resourceGroupName, peeringName, updateTags, context)
+            .getValue();
         return this;
     }
 
     PeeringImpl(PeeringInner innerObject, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.peeringName = Utils.getValueFromIdByName(innerObject.id(), "peerings");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.peeringName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "peerings");
     }
 
     public Peering refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPeerings()
-                .getByResourceGroupWithResponse(resourceGroupName, peeringName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPeerings()
+            .getByResourceGroupWithResponse(resourceGroupName, peeringName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Peering refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPeerings()
-                .getByResourceGroupWithResponse(resourceGroupName, peeringName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPeerings()
+            .getByResourceGroupWithResponse(resourceGroupName, peeringName, context)
+            .getValue();
         return this;
     }
 

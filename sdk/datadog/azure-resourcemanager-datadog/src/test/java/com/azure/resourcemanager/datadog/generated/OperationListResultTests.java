@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"bnmo\",\"display\":{\"provider\":\"ysh\",\"resource\":\"zafb\",\"operation\":\"j\",\"description\":\"btoqcjmkljavbqid\"},\"isDataAction\":false},{\"name\":\"zyulp\",\"display\":{\"provider\":\"jkrlkhbzhfepg\",\"resource\":\"qex\",\"operation\":\"ocxscpaierhhbcs\",\"description\":\"ummajtjaod\"},\"isDataAction\":true}],\"nextLink\":\"bdxkqpxokaj\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"bnmo\",\"display\":{\"provider\":\"ysh\",\"resource\":\"zafb\",\"operation\":\"j\",\"description\":\"btoqcjmkljavbqid\"},\"isDataAction\":false},{\"name\":\"zyulp\",\"display\":{\"provider\":\"jkrlkhbzhfepg\",\"resource\":\"qex\",\"operation\":\"ocxscpaierhhbcs\",\"description\":\"ummajtjaod\"},\"isDataAction\":true}],\"nextLink\":\"bdxkqpxokaj\"}")
+            .toObject(OperationListResult.class);
         Assertions.assertEquals("bnmo", model.value().get(0).name());
         Assertions.assertEquals("ysh", model.value().get(0).display().provider());
         Assertions.assertEquals("zafb", model.value().get(0).display().resource());
@@ -30,30 +28,20 @@ public final class OperationListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model =
-            new OperationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationResultInner()
-                                .withName("bnmo")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("ysh")
-                                        .withResource("zafb")
-                                        .withOperation("j")
-                                        .withDescription("btoqcjmkljavbqid"))
-                                .withIsDataAction(false),
-                            new OperationResultInner()
-                                .withName("zyulp")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("jkrlkhbzhfepg")
-                                        .withResource("qex")
-                                        .withOperation("ocxscpaierhhbcs")
-                                        .withDescription("ummajtjaod"))
-                                .withIsDataAction(true)))
-                .withNextLink("bdxkqpxokaj");
+        OperationListResult model = new OperationListResult().withValue(Arrays.asList(
+            new OperationResultInner().withName("bnmo")
+                .withDisplay(new OperationDisplay().withProvider("ysh")
+                    .withResource("zafb")
+                    .withOperation("j")
+                    .withDescription("btoqcjmkljavbqid"))
+                .withIsDataAction(false),
+            new OperationResultInner().withName("zyulp")
+                .withDisplay(new OperationDisplay().withProvider("jkrlkhbzhfepg")
+                    .withResource("qex")
+                    .withOperation("ocxscpaierhhbcs")
+                    .withDescription("ummajtjaod"))
+                .withIsDataAction(true)))
+            .withNextLink("bdxkqpxokaj");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
         Assertions.assertEquals("bnmo", model.value().get(0).name());
         Assertions.assertEquals("ysh", model.value().get(0).display().provider());

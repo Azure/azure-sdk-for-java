@@ -58,6 +58,13 @@ import static com.azure.messaging.eventhubs.checkpointstore.jedis.ClientConstant
  *     .eventHubName&#40;&quot;&lt;YOUR_EVENT_HUB_NAME&gt;&quot;&#41;
  *     .credential&#40;credential&#41;
  *     .consumerGroup&#40;&quot;&lt;YOUR_CONSUMER_GROUP_NAME&gt;&quot;&#41;
+ *     .processEvent&#40;eventContext -&gt; &#123;
+ *         System.out.println&#40;&quot;Partition id = &quot; + eventContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41; + &quot; and &quot;
+ *             + &quot;sequence number of event = &quot; + eventContext.getEventData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .processError&#40;context -&gt; &#123;
+ *         System.out.println&#40;&quot;Error occurred while processing events &quot; + context.getThrowable&#40;&#41;.getMessage&#40;&#41;&#41;;
+ *     &#125;&#41;
  *     .buildEventProcessorClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.jedischeckpointstore.instantiation -->
@@ -84,8 +91,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
     public JedisCheckpointStore(JedisPool jedisPool) {
         if (jedisPool == null) {
             throw LOGGER.logExceptionAsError(Exceptions
-                .propagate(new IllegalArgumentException(
-                    "JedisPool object supplied to constructor is null.")));
+                .propagate(new IllegalArgumentException("JedisPool object supplied to constructor is null.")));
         }
         this.jedisPool = jedisPool;
     }
@@ -205,7 +211,8 @@ public final class JedisCheckpointStore implements CheckpointStore {
      * @return Flux of PartitionOwnership objects
      */
     @Override
-    public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+    public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
+        String consumerGroup) {
         return Flux.create(sink -> {
             try (Jedis jedis = jedisPool.getResource()) {
                 byte[] prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
@@ -224,12 +231,13 @@ public final class JedisCheckpointStore implements CheckpointStore {
                         byte[] partitionOwnershipJson = partitionOwnershipJsonList.get(0);
                         // if PARTITION_OWNERSHIP field does not exist for member we will get a null
                         if (partitionOwnershipJson == null) {
-                            addEventHubInformation(LOGGER.atVerbose(), fullyQualifiedNamespace, eventHubName, consumerGroup)
-                                .log("No partition ownership records exist for this checkpoint yet.");
+                            addEventHubInformation(LOGGER.atVerbose(), fullyQualifiedNamespace, eventHubName,
+                                consumerGroup).log("No partition ownership records exist for this checkpoint yet.");
 
                             continue;
                         }
-                        PartitionOwnership partitionOwnership = DEFAULT_SERIALIZER.deserializeFromBytes(partitionOwnershipJson, TypeReference.createInstance(PartitionOwnership.class));
+                        PartitionOwnership partitionOwnership = DEFAULT_SERIALIZER.deserializeFromBytes(
+                            partitionOwnershipJson, TypeReference.createInstance(PartitionOwnership.class));
                         sink.next(partitionOwnership);
                     }
                 }
@@ -257,10 +265,12 @@ public final class JedisCheckpointStore implements CheckpointStore {
         }
 
         if (!isCheckpointValid(checkpoint)) {
-            return FluxUtil.monoError(addEventHubInformation(LOGGER.atError(), checkpoint.getFullyQualifiedNamespace(),
-                    checkpoint.getEventHubName(), checkpoint.getConsumerGroup())
-                    .addKeyValue(PARTITION_ID_KEY, checkpoint.getPartitionId()),
-                new IllegalArgumentException("Checkpoint is either null, or both the offset and the sequence number are null."));
+            return FluxUtil.monoError(
+                addEventHubInformation(LOGGER.atError(), checkpoint.getFullyQualifiedNamespace(),
+                    checkpoint.getEventHubName(), checkpoint.getConsumerGroup()).addKeyValue(PARTITION_ID_KEY,
+                        checkpoint.getPartitionId()),
+                new IllegalArgumentException(
+                    "Checkpoint is either null, or both the offset and the sequence number are null."));
         }
 
         return Mono.fromRunnable(() -> {
@@ -277,8 +287,10 @@ public final class JedisCheckpointStore implements CheckpointStore {
         return (fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup).getBytes(StandardCharsets.UTF_8);
     }
 
-    static byte[] keyBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId) {
-        return (fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup + "/" + partitionId).getBytes(StandardCharsets.UTF_8);
+    static byte[] keyBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
+        String partitionId) {
+        return (fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup + "/" + partitionId)
+            .getBytes(StandardCharsets.UTF_8);
     }
 
     private static Boolean isCheckpointValid(Checkpoint checkpoint) {
@@ -296,7 +308,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
     private static AzureException createClaimPartitionException(String fullyQualifiedNamespace, String eventHubName,
         String consumerGroup, String partitionId, String message) {
 
-        AzureException exception = new AzureException("Unable to claim partition: " + partitionId +  ". " + message);
+        AzureException exception = new AzureException("Unable to claim partition: " + partitionId + ". " + message);
         addEventHubInformation(LOGGER.atInfo(), fullyQualifiedNamespace, eventHubName, consumerGroup)
             .addKeyValue(PARTITION_ID_KEY, partitionId)
             .log("Unable to claim partition.", exception);

@@ -21,7 +21,7 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsGetWithResponseMo
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"recommendationName\":\"ynoy\",\"recommendationDisplayName\":\"flsmsbnlyoifg\",\"description\":\"zjqthykcvo\",\"recommendationTypeId\":\"cwfzotkxxl\",\"detectedBy\":\"ooxgbsd\",\"remediationSteps\":\"gcvypjhu\",\"reportedSeverity\":\"High\",\"healthyDevices\":4186193399949006969,\"unhealthyDeviceCount\":3588661982854941532,\"logAnalyticsQuery\":\"jcqgzwvxwi\"},\"tags\":{\"qrljdcukylaxrj\":\"ibmjk\"},\"id\":\"qoqovqhgphgx\",\"name\":\"wudgcyqruv\",\"type\":\"mryddnqivahfcq\"}";
+            = "{\"properties\":{\"recommendationName\":\"em\",\"recommendationDisplayName\":\"ldudxjascowv\",\"description\":\"jkpdxphlkksnm\",\"recommendationTypeId\":\"vyfijdkzuqnw\",\"detectedBy\":\"thuqolyahluq\",\"remediationSteps\":\"ulsutrjbhxy\",\"reportedSeverity\":\"Low\",\"healthyDevices\":3856695077628753405,\"unhealthyDeviceCount\":4363100729700765974,\"logAnalyticsQuery\":\"ugdrftbc\"},\"tags\":{\"hreagk\":\"reuquowtljvf\",\"dgglmepjpfs\":\"yxvrqtvbczsul\",\"fpgylkve\":\"ykgsangpszng\"},\"id\":\"jujcngoad\",\"name\":\"edmzrgjfoknub\",\"type\":\"oitpkpztrgdgx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsGetWithResponseMo
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IoTSecurityAggregatedRecommendation response = manager.iotSecuritySolutionsAnalyticsRecommendations()
-            .getWithResponse("orwp", "b", "tweobptscruykkie", com.azure.core.util.Context.NONE)
+            .getWithResponse("rxhxkn", "ccrmmk", "upijubyqjfkakfq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ibmjk", response.tags().get("qrljdcukylaxrj"));
-        Assertions.assertEquals("ynoy", response.recommendationName());
+        Assertions.assertEquals("reuquowtljvf", response.tags().get("hreagk"));
+        Assertions.assertEquals("em", response.recommendationName());
     }
 }

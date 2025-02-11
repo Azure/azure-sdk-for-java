@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"value\":\"efgugnxk\",\"description\":\"dqmidtt\",\"defaultValue\":\"rvqdra\",\"dataType\":\"jybige\",\"allowedValues\":\"qfbow\",\"source\":\"anyktzlcuiywg\"},\"id\":\"ywgndrv\",\"name\":\"nhzgpphrcgyn\",\"type\":\"ocpecfvmmco\"}")
-                .toObject(ConfigurationInner.class);
-        Assertions.assertEquals("efgugnxk", model.value());
-        Assertions.assertEquals("anyktzlcuiywg", model.source());
+        ConfigurationInner model = BinaryData.fromString(
+            "{\"properties\":{\"value\":\"hkh\",\"description\":\"uigdtopbobjog\",\"defaultValue\":\"e\",\"dataType\":\"a\",\"allowedValues\":\"uhrzayvvt\",\"source\":\"vdfgiotk\"},\"id\":\"tutqxlngxlefgug\",\"name\":\"xkrxdqmi\",\"type\":\"tthzrvqd\"}")
+            .toObject(ConfigurationInner.class);
+        Assertions.assertEquals("hkh", model.value());
+        Assertions.assertEquals("vdfgiotk", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationInner model = new ConfigurationInner().withValue("efgugnxk").withSource("anyktzlcuiywg");
+        ConfigurationInner model = new ConfigurationInner().withValue("hkh").withSource("vdfgiotk");
         model = BinaryData.fromObject(model).toObject(ConfigurationInner.class);
-        Assertions.assertEquals("efgugnxk", model.value());
-        Assertions.assertEquals("anyktzlcuiywg", model.source());
+        Assertions.assertEquals("hkh", model.value());
+        Assertions.assertEquals("vdfgiotk", model.source());
     }
 }

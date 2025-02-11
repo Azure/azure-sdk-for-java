@@ -5,7 +5,11 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.models.ModeCopyMode;
+import com.azure.storage.file.share.models.OwnerCopyMode;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
+import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
@@ -18,12 +22,16 @@ import java.util.Map;
 public final class ShareFileCopyOptions {
     private FileSmbProperties smbProperties;
     private String filePermission;
+    private FilePermissionFormat filePermissionFormat;
     private PermissionCopyModeType permissionCopyModeType;
     private Boolean ignoreReadOnly;
     private Boolean setArchiveAttribute;
     private Map<String, String> metadata;
     private ShareRequestConditions destinationRequestConditions;
     private CopyableFileSmbPropertiesList smbPropertiesToCopy;
+    private FilePosixProperties posixProperties;
+    private ModeCopyMode modeCopyMode;
+    private OwnerCopyMode ownerCopyMode;
 
     /**
      * Creates a new instance of {@link ShareFileCopyOptions}.
@@ -205,6 +213,96 @@ public final class ShareFileCopyOptions {
      */
     public ShareFileCopyOptions setSmbPropertiesToCopy(CopyableFileSmbPropertiesList smbProperties) {
         smbPropertiesToCopy = smbProperties;
+        return this;
+    }
+
+    /**
+     * Gets the file permission format.
+     *
+     * @return file permission format.
+     */
+    public FilePermissionFormat getFilePermissionFormat() {
+        return filePermissionFormat;
+    }
+
+    /**
+     * Sets the file permission format.
+     *
+     * @param filePermissionFormat the file permission format.
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        this.filePermissionFormat = filePermissionFormat;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @return {@link FilePosixProperties}
+     */
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @param posixProperties {@link FilePosixProperties}
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setPosixProperties(FilePosixProperties posixProperties) {
+        this.posixProperties = posixProperties;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated, the destination file will have the default File Mode.
+     *
+     * @return The destination file's FileMode.
+     */
+    public ModeCopyMode getModeCopyMode() {
+        return modeCopyMode;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated, the destination file will have the default File Mode.
+     *
+     * @param modeCopyMode The destination file's FileMode.
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setModeCopyMode(ModeCopyMode modeCopyMode) {
+        this.modeCopyMode = modeCopyMode;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated,the destination file will have the default Owner and Group.
+     *
+     * @return The destination file's Owner and Group.
+     */
+    public OwnerCopyMode getOwnerCopyMode() {
+        return ownerCopyMode;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated,the destination file will have the default Owner and Group.
+     *
+     * @param ownerCopyMode The destination file's Owner and Group.
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setOwnerCopyMode(OwnerCopyMode ownerCopyMode) {
+        this.ownerCopyMode = ownerCopyMode;
         return this;
     }
 }

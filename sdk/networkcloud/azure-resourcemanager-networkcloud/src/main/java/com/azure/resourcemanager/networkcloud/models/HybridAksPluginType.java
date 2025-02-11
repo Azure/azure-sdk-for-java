@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,18 +12,24 @@ import java.util.Collection;
  * network plugin type for Hybrid AKS.
  */
 public final class HybridAksPluginType extends ExpandableStringEnum<HybridAksPluginType> {
-    /** Static value DPDK for HybridAksPluginType. */
+    /**
+     * Static value DPDK for HybridAksPluginType.
+     */
     public static final HybridAksPluginType DPDK = fromString("DPDK");
 
-    /** Static value SRIOV for HybridAksPluginType. */
+    /**
+     * Static value SRIOV for HybridAksPluginType.
+     */
     public static final HybridAksPluginType SRIOV = fromString("SRIOV");
 
-    /** Static value OSDevice for HybridAksPluginType. */
+    /**
+     * Static value OSDevice for HybridAksPluginType.
+     */
     public static final HybridAksPluginType OSDEVICE = fromString("OSDevice");
 
     /**
      * Creates a new instance of HybridAksPluginType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +38,17 @@ public final class HybridAksPluginType extends ExpandableStringEnum<HybridAksPlu
 
     /**
      * Creates or finds a HybridAksPluginType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HybridAksPluginType.
      */
-    @JsonCreator
     public static HybridAksPluginType fromString(String name) {
         return fromString(name, HybridAksPluginType.class);
     }
 
     /**
      * Gets known HybridAksPluginType values.
-     *
+     * 
      * @return known HybridAksPluginType values.
      */
     public static Collection<HybridAksPluginType> values() {

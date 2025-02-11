@@ -13,22 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"xrjfeallnwsub\",\"description\":\"njampm\",\"defaultValue\":\"nzscxa\",\"dataType\":\"ooch\",\"allowedValues\":\"onq\",\"source\":\"kvlrxnj\"},\"id\":\"ase\",\"name\":\"pheoflokeyy\",\"type\":\"enjbdlwtgrhp\"}]}")
-                .toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("xrjfeallnwsub", model.value().get(0).value());
-        Assertions.assertEquals("kvlrxnj", model.value().get(0).source());
+        ConfigurationListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"value\":\"ynhz\",\"description\":\"phrcgyncoc\",\"defaultValue\":\"cfvmmco\",\"dataType\":\"sxlzevgbmqj\",\"allowedValues\":\"bcypmi\",\"source\":\"w\"},\"id\":\"zuvccfwnfnbacfio\",\"name\":\"l\",\"type\":\"bxetqgtzxdpn\"},{\"properties\":{\"value\":\"qwxrjfeallnw\",\"description\":\"bisnja\",\"defaultValue\":\"mngnzscxaqw\",\"dataType\":\"chcbonqvpkvlrxnj\",\"allowedValues\":\"seiphe\",\"source\":\"lokeyy\"},\"id\":\"enjbdlwtgrhp\",\"name\":\"jp\",\"type\":\"umasxazjpq\"}]}")
+            .toObject(ConfigurationListResultInner.class);
+        Assertions.assertEquals("ynhz", model.value().get(0).value());
+        Assertions.assertEquals("w", model.value().get(0).source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationListResultInner model =
-            new ConfigurationListResultInner()
-                .withValue(Arrays.asList(new ConfigurationInner().withValue("xrjfeallnwsub").withSource("kvlrxnj")));
+        ConfigurationListResultInner model = new ConfigurationListResultInner()
+            .withValue(Arrays.asList(new ConfigurationInner().withValue("ynhz").withSource("w"),
+                new ConfigurationInner().withValue("qwxrjfeallnw").withSource("lokeyy")));
         model = BinaryData.fromObject(model).toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("xrjfeallnwsub", model.value().get(0).value());
-        Assertions.assertEquals("kvlrxnj", model.value().get(0).source());
+        Assertions.assertEquals("ynhz", model.value().get(0).value());
+        Assertions.assertEquals("w", model.value().get(0).source());
     }
 }

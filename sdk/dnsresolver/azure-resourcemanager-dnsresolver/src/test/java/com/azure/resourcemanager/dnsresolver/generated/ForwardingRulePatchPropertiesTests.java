@@ -12,41 +12,36 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ForwardingRulePatchPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ForwardingRulePatchProperties model =
-            BinaryData
-                .fromString(
-                    "{\"targetDnsServers\":[{\"ipAddress\":\"dkcglhsl\",\"port\":3147535},{\"ipAddress\":\"dyggdtjixhbku\",\"port\":621346946},{\"ipAddress\":\"wey\",\"port\":1047075786}],\"metadata\":{\"yvdcsitynnaa\":\"evfyexfwhybcib\"},\"forwardingRuleState\":\"Enabled\"}")
-                .toObject(ForwardingRulePatchProperties.class);
-        Assertions.assertEquals("dkcglhsl", model.targetDnsServers().get(0).ipAddress());
-        Assertions.assertEquals(3147535, model.targetDnsServers().get(0).port());
-        Assertions.assertEquals("evfyexfwhybcib", model.metadata().get("yvdcsitynnaa"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ForwardingRulePatchProperties model = BinaryData.fromString(
+            "{\"targetDnsServers\":[{\"ipAddress\":\"nqecanoaeup\",\"port\":1111397810},{\"ipAddress\":\"hltrpmopjmcmatuo\",\"port\":607140678},{\"ipAddress\":\"fu\",\"port\":94424945}],\"metadata\":{\"zydagfuaxbezyiuo\":\"sfcpkvxodpuozm\",\"dxwzywqsmbsurexi\":\"ktwh\",\"yocf\":\"o\",\"uxh\":\"fksymddystki\"},\"forwardingRuleState\":\"Enabled\"}")
+            .toObject(ForwardingRulePatchProperties.class);
+        Assertions.assertEquals("nqecanoaeup", model.targetDnsServers().get(0).ipAddress());
+        Assertions.assertEquals(1111397810, model.targetDnsServers().get(0).port());
+        Assertions.assertEquals("sfcpkvxodpuozm", model.metadata().get("zydagfuaxbezyiuo"));
         Assertions.assertEquals(ForwardingRuleState.ENABLED, model.forwardingRuleState());
     }
 
-    @Test
-    public void testSerialize() {
-        ForwardingRulePatchProperties model =
-            new ForwardingRulePatchProperties()
-                .withTargetDnsServers(
-                    Arrays
-                        .asList(
-                            new TargetDnsServer().withIpAddress("dkcglhsl").withPort(3147535),
-                            new TargetDnsServer().withIpAddress("dyggdtjixhbku").withPort(621346946),
-                            new TargetDnsServer().withIpAddress("wey").withPort(1047075786)))
-                .withMetadata(mapOf("yvdcsitynnaa", "evfyexfwhybcib"))
-                .withForwardingRuleState(ForwardingRuleState.ENABLED);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ForwardingRulePatchProperties model = new ForwardingRulePatchProperties()
+            .withTargetDnsServers(Arrays.asList(new TargetDnsServer().withIpAddress("nqecanoaeup").withPort(1111397810),
+                new TargetDnsServer().withIpAddress("hltrpmopjmcmatuo").withPort(607140678),
+                new TargetDnsServer().withIpAddress("fu").withPort(94424945)))
+            .withMetadata(mapOf("zydagfuaxbezyiuo", "sfcpkvxodpuozm", "dxwzywqsmbsurexi", "ktwh", "yocf", "o", "uxh",
+                "fksymddystki"))
+            .withForwardingRuleState(ForwardingRuleState.ENABLED);
         model = BinaryData.fromObject(model).toObject(ForwardingRulePatchProperties.class);
-        Assertions.assertEquals("dkcglhsl", model.targetDnsServers().get(0).ipAddress());
-        Assertions.assertEquals(3147535, model.targetDnsServers().get(0).port());
-        Assertions.assertEquals("evfyexfwhybcib", model.metadata().get("yvdcsitynnaa"));
+        Assertions.assertEquals("nqecanoaeup", model.targetDnsServers().get(0).ipAddress());
+        Assertions.assertEquals(1111397810, model.targetDnsServers().get(0).port());
+        Assertions.assertEquals("sfcpkvxodpuozm", model.metadata().get("zydagfuaxbezyiuo"));
         Assertions.assertEquals(ForwardingRuleState.ENABLED, model.forwardingRuleState());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

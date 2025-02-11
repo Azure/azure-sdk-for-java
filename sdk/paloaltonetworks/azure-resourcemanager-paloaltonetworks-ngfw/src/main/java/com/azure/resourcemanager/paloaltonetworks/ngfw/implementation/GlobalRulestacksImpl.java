@@ -46,12 +46,12 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
 
     public PagedIterable<GlobalRulestackResource> list() {
         PagedIterable<GlobalRulestackResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new GlobalRulestackResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GlobalRulestackResource> list(Context context) {
         PagedIterable<GlobalRulestackResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new GlobalRulestackResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
     public Response<GlobalRulestackResource> getWithResponse(String globalRulestackName, Context context) {
@@ -175,8 +175,8 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
 
     public Response<ListAppIdResponse> listAppIdsWithResponse(String globalRulestackName, String appIdVersion,
         String appPrefix, String skip, Integer top, Context context) {
-        Response<ListAppIdResponseInner> inner = this.serviceClient().listAppIdsWithResponse(globalRulestackName,
-            appIdVersion, appPrefix, skip, top, context);
+        Response<ListAppIdResponseInner> inner = this.serviceClient()
+            .listAppIdsWithResponse(globalRulestackName, appIdVersion, appPrefix, skip, top, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ListAppIdResponseImpl(inner.getValue(), this.manager()));

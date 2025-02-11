@@ -18,8 +18,7 @@ public final class VirtualNicImpl implements VirtualNic {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    VirtualNicImpl(
-        VirtualNicInner innerObject,
+    VirtualNicImpl(VirtualNicInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

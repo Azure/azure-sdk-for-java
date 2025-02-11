@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Identity model =
-            BinaryData
-                .fromString("{\"type\":\"UserAssigned\",\"principalId\":\"pazlobcufpdz\",\"tenantId\":\"btcqq\"}")
-                .toObject(Identity.class);
+        Identity model = BinaryData
+            .fromString("{\"type\":\"UserAssigned\",\"principalId\":\"pazlobcufpdz\",\"tenantId\":\"btcqq\"}")
+            .toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
         Assertions.assertEquals("pazlobcufpdz", model.principalId());
         Assertions.assertEquals("btcqq", model.tenantId());
@@ -23,11 +22,9 @@ public final class IdentityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Identity model =
-            new Identity()
-                .withType(ResourceIdentityType.USER_ASSIGNED)
-                .withPrincipalId("pazlobcufpdz")
-                .withTenantId("btcqq");
+        Identity model = new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
+            .withPrincipalId("pazlobcufpdz")
+            .withTenantId("btcqq");
         model = BinaryData.fromObject(model).toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
         Assertions.assertEquals("pazlobcufpdz", model.principalId());

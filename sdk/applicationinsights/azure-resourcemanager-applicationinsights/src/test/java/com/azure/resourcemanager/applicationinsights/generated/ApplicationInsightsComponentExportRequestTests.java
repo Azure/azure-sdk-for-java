@@ -11,44 +11,41 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInsightsComponentExportRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentExportRequest model =
-            BinaryData
-                .fromString(
-                    "{\"RecordTypes\":\"nmayhuybb\",\"DestinationType\":\"odepoogin\",\"DestinationAddress\":\"amiheognarxz\",\"IsEnabled\":\"heotusiv\",\"NotificationQueueEnabled\":\"v\",\"NotificationQueueUri\":\"iqihn\",\"DestinationStorageSubscriptionId\":\"ngbwjz\",\"DestinationStorageLocationId\":\"fygxgispemvtzfk\",\"DestinationAccountId\":\"ubljofxqe\"}")
-                .toObject(ApplicationInsightsComponentExportRequest.class);
-        Assertions.assertEquals("nmayhuybb", model.recordTypes());
-        Assertions.assertEquals("odepoogin", model.destinationType());
-        Assertions.assertEquals("amiheognarxz", model.destinationAddress());
-        Assertions.assertEquals("heotusiv", model.isEnabled());
-        Assertions.assertEquals("v", model.notificationQueueEnabled());
-        Assertions.assertEquals("iqihn", model.notificationQueueUri());
-        Assertions.assertEquals("ngbwjz", model.destinationStorageSubscriptionId());
-        Assertions.assertEquals("fygxgispemvtzfk", model.destinationStorageLocationId());
-        Assertions.assertEquals("ubljofxqe", model.destinationAccountId());
+        ApplicationInsightsComponentExportRequest model = BinaryData.fromString(
+            "{\"RecordTypes\":\"evcciqihnhun\",\"DestinationType\":\"wjzrnfygxgisp\",\"DestinationAddress\":\"vtz\",\"IsEnabled\":\"ufubl\",\"NotificationQueueEnabled\":\"fxqeof\",\"NotificationQueueUri\":\"e\",\"DestinationStorageSubscriptionId\":\"hqjbasvmsmj\",\"DestinationStorageLocationId\":\"lngsntnbybkzgcwr\",\"DestinationAccountId\":\"lxxwrljdouskc\"}")
+            .toObject(ApplicationInsightsComponentExportRequest.class);
+        Assertions.assertEquals("evcciqihnhun", model.recordTypes());
+        Assertions.assertEquals("wjzrnfygxgisp", model.destinationType());
+        Assertions.assertEquals("vtz", model.destinationAddress());
+        Assertions.assertEquals("ufubl", model.isEnabled());
+        Assertions.assertEquals("fxqeof", model.notificationQueueEnabled());
+        Assertions.assertEquals("e", model.notificationQueueUri());
+        Assertions.assertEquals("hqjbasvmsmj", model.destinationStorageSubscriptionId());
+        Assertions.assertEquals("lngsntnbybkzgcwr", model.destinationStorageLocationId());
+        Assertions.assertEquals("lxxwrljdouskc", model.destinationAccountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentExportRequest model =
-            new ApplicationInsightsComponentExportRequest()
-                .withRecordTypes("nmayhuybb")
-                .withDestinationType("odepoogin")
-                .withDestinationAddress("amiheognarxz")
-                .withIsEnabled("heotusiv")
-                .withNotificationQueueEnabled("v")
-                .withNotificationQueueUri("iqihn")
-                .withDestinationStorageSubscriptionId("ngbwjz")
-                .withDestinationStorageLocationId("fygxgispemvtzfk")
-                .withDestinationAccountId("ubljofxqe");
+        ApplicationInsightsComponentExportRequest model
+            = new ApplicationInsightsComponentExportRequest().withRecordTypes("evcciqihnhun")
+                .withDestinationType("wjzrnfygxgisp")
+                .withDestinationAddress("vtz")
+                .withIsEnabled("ufubl")
+                .withNotificationQueueEnabled("fxqeof")
+                .withNotificationQueueUri("e")
+                .withDestinationStorageSubscriptionId("hqjbasvmsmj")
+                .withDestinationStorageLocationId("lngsntnbybkzgcwr")
+                .withDestinationAccountId("lxxwrljdouskc");
         model = BinaryData.fromObject(model).toObject(ApplicationInsightsComponentExportRequest.class);
-        Assertions.assertEquals("nmayhuybb", model.recordTypes());
-        Assertions.assertEquals("odepoogin", model.destinationType());
-        Assertions.assertEquals("amiheognarxz", model.destinationAddress());
-        Assertions.assertEquals("heotusiv", model.isEnabled());
-        Assertions.assertEquals("v", model.notificationQueueEnabled());
-        Assertions.assertEquals("iqihn", model.notificationQueueUri());
-        Assertions.assertEquals("ngbwjz", model.destinationStorageSubscriptionId());
-        Assertions.assertEquals("fygxgispemvtzfk", model.destinationStorageLocationId());
-        Assertions.assertEquals("ubljofxqe", model.destinationAccountId());
+        Assertions.assertEquals("evcciqihnhun", model.recordTypes());
+        Assertions.assertEquals("wjzrnfygxgisp", model.destinationType());
+        Assertions.assertEquals("vtz", model.destinationAddress());
+        Assertions.assertEquals("ufubl", model.isEnabled());
+        Assertions.assertEquals("fxqeof", model.notificationQueueEnabled());
+        Assertions.assertEquals("e", model.notificationQueueUri());
+        Assertions.assertEquals("hqjbasvmsmj", model.destinationStorageSubscriptionId());
+        Assertions.assertEquals("lngsntnbybkzgcwr", model.destinationStorageLocationId());
+        Assertions.assertEquals("lxxwrljdouskc", model.destinationAccountId());
     }
 }

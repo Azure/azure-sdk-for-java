@@ -7,18 +7,20 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.resourcemanager.mediaservices.fluent.models.AssetContainerSasInner;
 import java.util.List;
 
-/** An immutable client-side representation of AssetContainerSas. */
+/**
+ * An immutable client-side representation of AssetContainerSas.
+ */
 public interface AssetContainerSas {
     /**
      * Gets the assetContainerSasUrls property: The list of Asset container SAS URLs.
-     *
+     * 
      * @return the assetContainerSasUrls value.
      */
     List<String> assetContainerSasUrls();
 
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.AssetContainerSasInner object.
-     *
+     * 
      * @return the inner object.
      */
     AssetContainerSasInner innerModel();

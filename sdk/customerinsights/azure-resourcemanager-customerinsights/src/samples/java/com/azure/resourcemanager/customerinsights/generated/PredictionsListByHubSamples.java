@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.customerinsights.generated;
 
-/** Samples for Predictions ListByHub. */
+/**
+ * Samples for Predictions ListByHub.
+ */
 public final class PredictionsListByHubSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/PredictionsListByHub.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/
+     * PredictionsListByHub.json
      */
     /**
      * Sample code: Predictions_ListByHub.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
-    public static void predictionsListByHub(
-        com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
+    public static void
+        predictionsListByHub(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
         manager.predictions().listByHub("TestHubRG", "sdkTestHub", com.azure.core.util.Context.NONE);
     }
 }

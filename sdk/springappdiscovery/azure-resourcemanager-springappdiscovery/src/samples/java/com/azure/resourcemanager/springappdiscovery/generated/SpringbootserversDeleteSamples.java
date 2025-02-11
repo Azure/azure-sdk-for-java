@@ -20,9 +20,9 @@ public final class SpringbootserversDeleteSamples {
      */
     public static void springbootserversDeleteMinimumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootservers().delete("rgspringbootservers",
-            "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn",
-            com.azure.core.util.Context.NONE);
+        manager.springbootservers()
+            .delete("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj",
+                "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -37,8 +37,8 @@ public final class SpringbootserversDeleteSamples {
      */
     public static void springbootserversDeleteMaximumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootservers().delete("rgspringbootservers",
-            "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn",
-            com.azure.core.util.Context.NONE);
+        manager.springbootservers()
+            .delete("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj",
+                "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn", com.azure.core.util.Context.NONE);
     }
 }

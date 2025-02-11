@@ -25,22 +25,28 @@ import com.azure.resourcemanager.automation.fluent.LinkedWorkspacesClient;
 import com.azure.resourcemanager.automation.fluent.models.LinkedWorkspaceInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LinkedWorkspacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LinkedWorkspacesClient.
+ */
 public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LinkedWorkspacesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of LinkedWorkspacesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LinkedWorkspacesClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy.create(LinkedWorkspacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LinkedWorkspacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,26 +56,21 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientLink")
-    private interface LinkedWorkspacesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/linkedWorkspace")
-        @ExpectedResponses({200})
+    public interface LinkedWorkspacesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/linkedWorkspace")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LinkedWorkspaceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LinkedWorkspaceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieve the linked workspace for the account id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,13 +79,11 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
      * @return definition of the linked workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LinkedWorkspaceInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName) {
+    private Mono<Response<LinkedWorkspaceInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -95,31 +94,20 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the linked workspace for the account id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -129,13 +117,11 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
      * @return definition of the linked workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LinkedWorkspaceInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, Context context) {
+    private Mono<Response<LinkedWorkspaceInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -146,28 +132,19 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieve the linked workspace for the account id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,22 +160,7 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
 
     /**
      * Retrieve the linked workspace for the account id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the linked workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkedWorkspaceInner get(String resourceGroupName, String automationAccountName) {
-        return getAsync(resourceGroupName, automationAccountName).block();
-    }
-
-    /**
-     * Retrieve the linked workspace for the account id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -208,8 +170,23 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
      * @return definition of the linked workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkedWorkspaceInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, Context context) {
+    public Response<LinkedWorkspaceInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, context).block();
+    }
+
+    /**
+     * Retrieve the linked workspace for the account id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the linked workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LinkedWorkspaceInner get(String resourceGroupName, String automationAccountName) {
+        return getWithResponse(resourceGroupName, automationAccountName, Context.NONE).getValue();
     }
 }

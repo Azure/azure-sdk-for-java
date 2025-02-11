@@ -22,7 +22,7 @@ public final class VolumesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"volumeId\":\"dknnqvsazn\",\"creationData\":{\"createSource\":\"DiskRestorePoint\",\"sourceId\":\"udsgs\"},\"sizeGiB\":3267053393250008871,\"storageTarget\":{\"targetIqn\":\"c\",\"targetPortalHostname\":\"auwjuetaebu\",\"targetPortalPort\":1406520561,\"provisioningState\":\"Deleting\",\"status\":\"Updating\"},\"managedBy\":{\"resourceId\":\"zlxwabmqoefkifr\"},\"provisioningState\":\"Updating\"},\"id\":\"qujmqlgkf\",\"name\":\"tndoaongbjc\",\"type\":\"tujitcjedft\"}";
+            = "{\"properties\":{\"volumeId\":\"tpuqujmq\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"tndoaongbjc\"},\"sizeGiB\":2689638360669448219,\"storageTarget\":{\"targetIqn\":\"tcje\",\"targetPortalHostname\":\"twwaezkojvdcpzf\",\"targetPortalPort\":1481847492,\"provisioningState\":\"Invalid\",\"status\":\"Updating\"},\"managedBy\":{\"resourceId\":\"arz\"},\"provisioningState\":\"Succeeded\"},\"id\":\"foxciq\",\"name\":\"p\",\"type\":\"doamciodhkha\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class VolumesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Volume response = manager.volumes()
-            .getWithResponse("xqtvcofu", "f", "vkg", "u", com.azure.core.util.Context.NONE)
+            .getWithResponse("uetae", "uruv", "movsmzlxwabmqoe", "kif", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(VolumeCreateOption.DISK_RESTORE_POINT, response.creationData().createSource());
-        Assertions.assertEquals("udsgs", response.creationData().sourceId());
-        Assertions.assertEquals(3267053393250008871L, response.sizeGiB());
-        Assertions.assertEquals("zlxwabmqoefkifr", response.managedBy().resourceId());
+        Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, response.creationData().createSource());
+        Assertions.assertEquals("tndoaongbjc", response.creationData().sourceId());
+        Assertions.assertEquals(2689638360669448219L, response.sizeGiB());
+        Assertions.assertEquals("arz", response.managedBy().resourceId());
     }
 }

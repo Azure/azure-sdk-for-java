@@ -22,17 +22,11 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
  * Entry point to management lock management.
  */
 @Fluent
-public interface ManagementLocks extends
-    SupportsListing<ManagementLock>,
-    SupportsCreating<ManagementLock.DefinitionStages.Blank>,
-    SupportsDeletingById,
-    SupportsListingByResourceGroup<ManagementLock>,
-    SupportsGettingByResourceGroup<ManagementLock>,
-    SupportsGettingById<ManagementLock>,
-    SupportsDeletingByResourceGroup,
-    SupportsBatchCreation<ManagementLock>,
-    SupportsBatchDeletion,
-    HasManager<ResourceManager> {
+public interface ManagementLocks extends SupportsListing<ManagementLock>,
+    SupportsCreating<ManagementLock.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsListingByResourceGroup<ManagementLock>, SupportsGettingByResourceGroup<ManagementLock>,
+    SupportsGettingById<ManagementLock>, SupportsDeletingByResourceGroup, SupportsBatchCreation<ManagementLock>,
+    SupportsBatchDeletion, HasManager<ResourceManager> {
 
     /**
      * Lists management locks associated with the specified resource, its resource group

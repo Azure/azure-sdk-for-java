@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.chaos.fluent.models.CapabilityInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Model that represents a list of Capability resources and a link for pagination.
  */
 @Immutable
-public final class CapabilityListResult {
+public final class CapabilityListResult implements JsonSerializable<CapabilityListResult> {
     /*
      * List of Capability resources.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CapabilityInner> value;
 
     /*
      * URL to retrieve the next page of Capability resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -59,5 +61,43 @@ public final class CapabilityListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilityListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilityListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapabilityListResult.
+     */
+    public static CapabilityListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilityListResult deserializedCapabilityListResult = new CapabilityListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CapabilityInner> value = reader.readArray(reader1 -> CapabilityInner.fromJson(reader1));
+                    deserializedCapabilityListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCapabilityListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilityListResult;
+        });
     }
 }

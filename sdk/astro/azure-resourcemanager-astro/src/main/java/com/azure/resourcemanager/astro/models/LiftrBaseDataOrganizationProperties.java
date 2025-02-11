@@ -6,35 +6,36 @@ package com.azure.resourcemanager.astro.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties specific to Data Organization resource.
  */
 @Fluent
-public final class LiftrBaseDataOrganizationProperties {
+public final class LiftrBaseDataOrganizationProperties
+    implements JsonSerializable<LiftrBaseDataOrganizationProperties> {
     /*
      * Marketplace details of the resource.
      */
-    @JsonProperty(value = "marketplace", required = true)
     private LiftrBaseMarketplaceDetails marketplace;
 
     /*
      * Details of the user.
      */
-    @JsonProperty(value = "user", required = true)
     private LiftrBaseUserDetails user;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /*
      * Organization properties
      */
-    @JsonProperty(value = "partnerOrganizationProperties")
     private LiftrBaseDataPartnerOrganizationProperties partnerOrganizationProperties;
 
     /**
@@ -120,14 +121,16 @@ public final class LiftrBaseDataOrganizationProperties {
      */
     public void validate() {
         if (marketplace() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property marketplace in model LiftrBaseDataOrganizationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property marketplace in model LiftrBaseDataOrganizationProperties"));
         } else {
             marketplace().validate();
         }
         if (user() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property user in model LiftrBaseDataOrganizationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property user in model LiftrBaseDataOrganizationProperties"));
         } else {
             user().validate();
         }
@@ -137,4 +140,53 @@ public final class LiftrBaseDataOrganizationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LiftrBaseDataOrganizationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("marketplace", this.marketplace);
+        jsonWriter.writeJsonField("user", this.user);
+        jsonWriter.writeJsonField("partnerOrganizationProperties", this.partnerOrganizationProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiftrBaseDataOrganizationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiftrBaseDataOrganizationProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LiftrBaseDataOrganizationProperties.
+     */
+    public static LiftrBaseDataOrganizationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiftrBaseDataOrganizationProperties deserializedLiftrBaseDataOrganizationProperties
+                = new LiftrBaseDataOrganizationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("marketplace".equals(fieldName)) {
+                    deserializedLiftrBaseDataOrganizationProperties.marketplace
+                        = LiftrBaseMarketplaceDetails.fromJson(reader);
+                } else if ("user".equals(fieldName)) {
+                    deserializedLiftrBaseDataOrganizationProperties.user = LiftrBaseUserDetails.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLiftrBaseDataOrganizationProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("partnerOrganizationProperties".equals(fieldName)) {
+                    deserializedLiftrBaseDataOrganizationProperties.partnerOrganizationProperties
+                        = LiftrBaseDataPartnerOrganizationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiftrBaseDataOrganizationProperties;
+        });
+    }
 }

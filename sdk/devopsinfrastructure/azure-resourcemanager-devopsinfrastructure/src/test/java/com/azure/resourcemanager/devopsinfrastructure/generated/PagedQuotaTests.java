@@ -12,12 +12,12 @@ public final class PagedQuotaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PagedQuota model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"gx\",\"unit\":\"xrslpm\",\"currentValue\":6715322214265854823,\"limit\":7040134278923407185},{\"id\":\"egrpkhj\",\"unit\":\"niyqslui\",\"currentValue\":1509856375818766415,\"limit\":4481689603688625357},{\"id\":\"kzzlvmbmpaxmodf\",\"unit\":\"uefywsbpfvmwy\",\"currentValue\":4618118068298322402,\"limit\":98342047801553484}],\"nextLink\":\"ft\"}")
+            "{\"value\":[{\"name\":{\"value\":\"cxrslpmutwuoe\",\"localizedValue\":\"pkhjwni\"},\"id\":\"qsluicp\",\"unit\":\"ggkzzlvmbmpa\",\"currentValue\":9089515784990551600,\"limit\":5163043580727063666},{\"name\":{\"value\":\"efyw\",\"localizedValue\":\"pfvmwyhrfou\"},\"id\":\"ft\",\"unit\":\"akcp\",\"currentValue\":1587260248401579893,\"limit\":4470731468497230822},{\"name\":{\"value\":\"mnubexkpzksmond\",\"localizedValue\":\"quxvypomgkop\"},\"id\":\"whojvp\",\"unit\":\"jqg\",\"currentValue\":8997316824402958697,\"limit\":2615560217287873521}],\"nextLink\":\"mbqfqvmk\"}")
             .toObject(PagedQuota.class);
-        Assertions.assertEquals("gx", model.value().get(0).id());
-        Assertions.assertEquals("xrslpm", model.value().get(0).unit());
-        Assertions.assertEquals(6715322214265854823L, model.value().get(0).currentValue());
-        Assertions.assertEquals(7040134278923407185L, model.value().get(0).limit());
-        Assertions.assertEquals("ft", model.nextLink());
+        Assertions.assertEquals("qsluicp", model.value().get(0).id());
+        Assertions.assertEquals("ggkzzlvmbmpa", model.value().get(0).unit());
+        Assertions.assertEquals(9089515784990551600L, model.value().get(0).currentValue());
+        Assertions.assertEquals(5163043580727063666L, model.value().get(0).limit());
+        Assertions.assertEquals("mbqfqvmk", model.nextLink());
     }
 }

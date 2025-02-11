@@ -6,7 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 /**
  * Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 -
- * InternalOutbound.
+ * InternalOutbound, 5 - InternalInbound.
  */
 public enum FirewallPolicyIdpsSignatureDirection {
     /**
@@ -32,7 +32,12 @@ public enum FirewallPolicyIdpsSignatureDirection {
     /**
      * Enum value 4.
      */
-    FOUR(4);
+    FOUR(4),
+
+    /**
+     * Enum value 5.
+     */
+    FIVE(5);
 
     /**
      * The actual serialized value for a FirewallPolicyIdpsSignatureDirection instance.

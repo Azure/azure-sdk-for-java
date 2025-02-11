@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationServiceEnvironmentSkuDefinitionSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationServiceEnvironmentSkuDefinitionSku model =
-            BinaryData
-                .fromString("{\"name\":\"Developer\",\"tier\":\"xdza\"}")
+        IntegrationServiceEnvironmentSkuDefinitionSku model
+            = BinaryData.fromString("{\"name\":\"NotSpecified\",\"tier\":\"f\"}")
                 .toObject(IntegrationServiceEnvironmentSkuDefinitionSku.class);
-        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.DEVELOPER, model.name());
-        Assertions.assertEquals("xdza", model.tier());
+        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.NOT_SPECIFIED, model.name());
+        Assertions.assertEquals("f", model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationServiceEnvironmentSkuDefinitionSku model =
-            new IntegrationServiceEnvironmentSkuDefinitionSku()
-                .withName(IntegrationServiceEnvironmentSkuName.DEVELOPER)
-                .withTier("xdza");
+        IntegrationServiceEnvironmentSkuDefinitionSku model = new IntegrationServiceEnvironmentSkuDefinitionSku()
+            .withName(IntegrationServiceEnvironmentSkuName.NOT_SPECIFIED)
+            .withTier("f");
         model = BinaryData.fromObject(model).toObject(IntegrationServiceEnvironmentSkuDefinitionSku.class);
-        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.DEVELOPER, model.name());
-        Assertions.assertEquals("xdza", model.tier());
+        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.NOT_SPECIFIED, model.name());
+        Assertions.assertEquals("f", model.tier());
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Restore request parameters for Secured VMs.
  */
 @Fluent
-public final class SecuredVMDetails {
+public final class SecuredVMDetails implements JsonSerializable<SecuredVMDetails> {
     /*
      * Gets or Sets Disk Encryption Set Id for Secured VM OS Disk
      */
-    @JsonProperty(value = "securedVMOsDiskEncryptionSetId")
     private String securedVmosDiskEncryptionSetId;
 
     /**
@@ -50,5 +53,41 @@ public final class SecuredVMDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("securedVMOsDiskEncryptionSetId", this.securedVmosDiskEncryptionSetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecuredVMDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecuredVMDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecuredVMDetails.
+     */
+    public static SecuredVMDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecuredVMDetails deserializedSecuredVMDetails = new SecuredVMDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("securedVMOsDiskEncryptionSetId".equals(fieldName)) {
+                    deserializedSecuredVMDetails.securedVmosDiskEncryptionSetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecuredVMDetails;
+        });
     }
 }

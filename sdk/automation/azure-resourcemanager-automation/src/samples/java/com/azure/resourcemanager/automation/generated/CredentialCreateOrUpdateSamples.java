@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-/** Samples for Credential CreateOrUpdate. */
+/**
+ * Samples for Credential CreateOrUpdate.
+ */
 public final class CredentialCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateCredential.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateCredential.json
      */
     /**
      * Sample code: Create a credential.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createACredential(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .credentials()
+        manager.credentials()
             .define("myCredential")
             .withExistingAutomationAccount("rg", "myAutomationAccount18")
             .withName("myCredential")

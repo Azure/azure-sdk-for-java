@@ -137,22 +137,17 @@ public final class IscsiTargetImpl implements IscsiTarget, IscsiTarget.Definitio
     }
 
     public IscsiTarget create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIscsiTargets()
-                .createOrUpdate(
-                    resourceGroupName, diskPoolName, iscsiTargetName, createIscsiTargetCreatePayload, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiTargets()
+            .createOrUpdate(resourceGroupName, diskPoolName, iscsiTargetName, createIscsiTargetCreatePayload,
+                Context.NONE);
         return this;
     }
 
     public IscsiTarget create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIscsiTargets()
-                .createOrUpdate(
-                    resourceGroupName, diskPoolName, iscsiTargetName, createIscsiTargetCreatePayload, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiTargets()
+            .createOrUpdate(resourceGroupName, diskPoolName, iscsiTargetName, createIscsiTargetCreatePayload, context);
         return this;
     }
 
@@ -169,49 +164,41 @@ public final class IscsiTargetImpl implements IscsiTarget, IscsiTarget.Definitio
     }
 
     public IscsiTarget apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIscsiTargets()
-                .update(resourceGroupName, diskPoolName, iscsiTargetName, updateIscsiTargetUpdatePayload, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiTargets()
+            .update(resourceGroupName, diskPoolName, iscsiTargetName, updateIscsiTargetUpdatePayload, Context.NONE);
         return this;
     }
 
     public IscsiTarget apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIscsiTargets()
-                .update(resourceGroupName, diskPoolName, iscsiTargetName, updateIscsiTargetUpdatePayload, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiTargets()
+            .update(resourceGroupName, diskPoolName, iscsiTargetName, updateIscsiTargetUpdatePayload, context);
         return this;
     }
 
-    IscsiTargetImpl(
-        IscsiTargetInner innerObject, com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
+    IscsiTargetImpl(IscsiTargetInner innerObject,
+        com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.diskPoolName = Utils.getValueFromIdByName(innerObject.id(), "diskPools");
-        this.iscsiTargetName = Utils.getValueFromIdByName(innerObject.id(), "iscsiTargets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.diskPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "diskPools");
+        this.iscsiTargetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "iscsiTargets");
     }
 
     public IscsiTarget refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIscsiTargets()
-                .getWithResponse(resourceGroupName, diskPoolName, iscsiTargetName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiTargets()
+            .getWithResponse(resourceGroupName, diskPoolName, iscsiTargetName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IscsiTarget refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIscsiTargets()
-                .getWithResponse(resourceGroupName, diskPoolName, iscsiTargetName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiTargets()
+            .getWithResponse(resourceGroupName, diskPoolName, iscsiTargetName, context)
+            .getValue();
         return this;
     }
 

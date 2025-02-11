@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class SystemScanRulesetsListVersionsByDataSource {
     public static void main(String[] args) {
-        SystemScanRulesetsClient systemScanRulesetsClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildSystemScanRulesetsClient();
+        SystemScanRulesetsClient systemScanRulesetsClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildSystemScanRulesetsClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.systemscanrulesetslistversionsbydatasource.systemscanrulesetslistversionsbydatasource
         RequestOptions requestOptions = new RequestOptions().addQueryParam("dataSourceType", "AzureStorage");
         PagedIterable<BinaryData> response = systemScanRulesetsClient.listVersionsByDataSource(requestOptions);

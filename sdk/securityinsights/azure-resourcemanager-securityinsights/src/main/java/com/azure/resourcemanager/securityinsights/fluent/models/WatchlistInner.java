@@ -5,33 +5,106 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.azure.resourcemanager.securityinsights.models.SourceType;
+import com.azure.resourcemanager.securityinsights.models.Source;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Represents a Watchlist in Azure Security Insights. */
+/**
+ * Represents a Watchlist in Azure Security Insights.
+ */
 @Fluent
 public final class WatchlistInner extends ResourceWithEtag {
     /*
      * Watchlist properties
      */
-    @JsonProperty(value = "properties")
     private WatchlistProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WatchlistInner class.
+     */
+    public WatchlistInner() {
+    }
 
     /**
      * Get the innerProperties property: Watchlist properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WatchlistProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WatchlistInner withEtag(String etag) {
         super.withEtag(etag);
@@ -40,7 +113,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the watchlistId property: The id (a Guid) of the watchlist.
-     *
+     * 
      * @return the watchlistId value.
      */
     public String watchlistId() {
@@ -49,7 +122,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the watchlistId property: The id (a Guid) of the watchlist.
-     *
+     * 
      * @param watchlistId the watchlistId value to set.
      * @return the WatchlistInner object itself.
      */
@@ -63,7 +136,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the displayName property: The display name of the watchlist.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -72,7 +145,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the displayName property: The display name of the watchlist.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WatchlistInner object itself.
      */
@@ -86,7 +159,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the provider property: The provider of the watchlist.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -95,7 +168,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the provider property: The provider of the watchlist.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the WatchlistInner object itself.
      */
@@ -108,21 +181,21 @@ public final class WatchlistInner extends ResourceWithEtag {
     }
 
     /**
-     * Get the source property: The filename of the watchlist, called 'source'.
-     *
+     * Get the source property: The source of the watchlist.
+     * 
      * @return the source value.
      */
-    public String source() {
+    public Source source() {
         return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
-     * Set the source property: The filename of the watchlist, called 'source'.
-     *
+     * Set the source property: The source of the watchlist.
+     * 
      * @param source the source value to set.
      * @return the WatchlistInner object itself.
      */
-    public WatchlistInner withSource(String source) {
+    public WatchlistInner withSource(Source source) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WatchlistProperties();
         }
@@ -131,31 +204,8 @@ public final class WatchlistInner extends ResourceWithEtag {
     }
 
     /**
-     * Get the sourceType property: The sourceType of the watchlist.
-     *
-     * @return the sourceType value.
-     */
-    public SourceType sourceType() {
-        return this.innerProperties() == null ? null : this.innerProperties().sourceType();
-    }
-
-    /**
-     * Set the sourceType property: The sourceType of the watchlist.
-     *
-     * @param sourceType the sourceType value to set.
-     * @return the WatchlistInner object itself.
-     */
-    public WatchlistInner withSourceType(SourceType sourceType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WatchlistProperties();
-        }
-        this.innerProperties().withSourceType(sourceType);
-        return this;
-    }
-
-    /**
      * Get the created property: The time the watchlist was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -164,7 +214,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the created property: The time the watchlist was created.
-     *
+     * 
      * @param created the created value to set.
      * @return the WatchlistInner object itself.
      */
@@ -178,7 +228,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the updated property: The last time the watchlist was updated.
-     *
+     * 
      * @return the updated value.
      */
     public OffsetDateTime updated() {
@@ -187,7 +237,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the updated property: The last time the watchlist was updated.
-     *
+     * 
      * @param updated the updated value to set.
      * @return the WatchlistInner object itself.
      */
@@ -201,7 +251,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the createdBy property: Describes a user that created the watchlist.
-     *
+     * 
      * @return the createdBy value.
      */
     public UserInfo createdBy() {
@@ -210,7 +260,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the createdBy property: Describes a user that created the watchlist.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the WatchlistInner object itself.
      */
@@ -224,7 +274,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the updatedBy property: Describes a user that updated the watchlist.
-     *
+     * 
      * @return the updatedBy value.
      */
     public UserInfo updatedBy() {
@@ -233,7 +283,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the updatedBy property: Describes a user that updated the watchlist.
-     *
+     * 
      * @param updatedBy the updatedBy value to set.
      * @return the WatchlistInner object itself.
      */
@@ -247,7 +297,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the description property: A description of the watchlist.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -256,7 +306,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the description property: A description of the watchlist.
-     *
+     * 
      * @param description the description value to set.
      * @return the WatchlistInner object itself.
      */
@@ -270,7 +320,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the watchlistType property: The type of the watchlist.
-     *
+     * 
      * @return the watchlistType value.
      */
     public String watchlistType() {
@@ -279,7 +329,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the watchlistType property: The type of the watchlist.
-     *
+     * 
      * @param watchlistType the watchlistType value to set.
      * @return the WatchlistInner object itself.
      */
@@ -293,7 +343,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the watchlistAlias property: The alias of the watchlist.
-     *
+     * 
      * @return the watchlistAlias value.
      */
     public String watchlistAlias() {
@@ -302,7 +352,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the watchlistAlias property: The alias of the watchlist.
-     *
+     * 
      * @param watchlistAlias the watchlistAlias value to set.
      * @return the WatchlistInner object itself.
      */
@@ -316,7 +366,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the isDeleted property: A flag that indicates if the watchlist is deleted or not.
-     *
+     * 
      * @return the isDeleted value.
      */
     public Boolean isDeleted() {
@@ -325,7 +375,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the isDeleted property: A flag that indicates if the watchlist is deleted or not.
-     *
+     * 
      * @param isDeleted the isDeleted value to set.
      * @return the WatchlistInner object itself.
      */
@@ -339,7 +389,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the labels property: List of labels relevant to this watchlist.
-     *
+     * 
      * @return the labels value.
      */
     public List<String> labels() {
@@ -348,7 +398,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the labels property: List of labels relevant to this watchlist.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the WatchlistInner object itself.
      */
@@ -362,7 +412,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the defaultDuration property: The default duration of a watchlist (in ISO 8601 duration format).
-     *
+     * 
      * @return the defaultDuration value.
      */
     public Duration defaultDuration() {
@@ -371,7 +421,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the defaultDuration property: The default duration of a watchlist (in ISO 8601 duration format).
-     *
+     * 
      * @param defaultDuration the defaultDuration value to set.
      * @return the WatchlistInner object itself.
      */
@@ -385,7 +435,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Get the tenantId property: The tenantId where the watchlist belongs to.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -394,7 +444,7 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Set the tenantId property: The tenantId where the watchlist belongs to.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the WatchlistInner object itself.
      */
@@ -407,8 +457,8 @@ public final class WatchlistInner extends ResourceWithEtag {
     }
 
     /**
-     * Get the numberOfLinesToSkip property: The number of lines in a csv/tsv content to skip before the header.
-     *
+     * Get the numberOfLinesToSkip property: The number of lines in a csv content to skip before the header.
+     * 
      * @return the numberOfLinesToSkip value.
      */
     public Integer numberOfLinesToSkip() {
@@ -416,8 +466,8 @@ public final class WatchlistInner extends ResourceWithEtag {
     }
 
     /**
-     * Set the numberOfLinesToSkip property: The number of lines in a csv/tsv content to skip before the header.
-     *
+     * Set the numberOfLinesToSkip property: The number of lines in a csv content to skip before the header.
+     * 
      * @param numberOfLinesToSkip the numberOfLinesToSkip value to set.
      * @return the WatchlistInner object itself.
      */
@@ -430,9 +480,11 @@ public final class WatchlistInner extends ResourceWithEtag {
     }
 
     /**
-     * Get the rawContent property: The raw content that represents to watchlist items to create. In case of csv/tsv
-     * content type, it's the content of the file that will parsed by the endpoint.
-     *
+     * Get the rawContent property: The raw content that represents to watchlist items to create. Example : This line
+     * will be skipped
+     * header1,header2
+     * value1,value2.
+     * 
      * @return the rawContent value.
      */
     public String rawContent() {
@@ -440,9 +492,11 @@ public final class WatchlistInner extends ResourceWithEtag {
     }
 
     /**
-     * Set the rawContent property: The raw content that represents to watchlist items to create. In case of csv/tsv
-     * content type, it's the content of the file that will parsed by the endpoint.
-     *
+     * Set the rawContent property: The raw content that represents to watchlist items to create. Example : This line
+     * will be skipped
+     * header1,header2
+     * value1,value2.
+     * 
      * @param rawContent the rawContent value to set.
      * @return the WatchlistInner object itself.
      */
@@ -458,7 +512,7 @@ public final class WatchlistInner extends ResourceWithEtag {
      * Get the itemsSearchKey property: The search key is used to optimize query performance when using watchlists for
      * joins with other data. For example, enable a column with IP addresses to be the designated SearchKey field, then
      * use this field as the key field when joining to other event data by IP address.
-     *
+     * 
      * @return the itemsSearchKey value.
      */
     public String itemsSearchKey() {
@@ -469,7 +523,7 @@ public final class WatchlistInner extends ResourceWithEtag {
      * Set the itemsSearchKey property: The search key is used to optimize query performance when using watchlists for
      * joins with other data. For example, enable a column with IP addresses to be the designated SearchKey field, then
      * use this field as the key field when joining to other event data by IP address.
-     *
+     * 
      * @param itemsSearchKey the itemsSearchKey value to set.
      * @return the WatchlistInner object itself.
      */
@@ -482,8 +536,8 @@ public final class WatchlistInner extends ResourceWithEtag {
     }
 
     /**
-     * Get the contentType property: The content type of the raw content. Example : text/csv or text/tsv.
-     *
+     * Get the contentType property: The content type of the raw content. For now, only text/csv is valid.
+     * 
      * @return the contentType value.
      */
     public String contentType() {
@@ -491,8 +545,8 @@ public final class WatchlistInner extends ResourceWithEtag {
     }
 
     /**
-     * Set the contentType property: The content type of the raw content. Example : text/csv or text/tsv.
-     *
+     * Set the contentType property: The content type of the raw content. For now, only text/csv is valid.
+     * 
      * @param contentType the contentType value to set.
      * @return the WatchlistInner object itself.
      */
@@ -505,9 +559,9 @@ public final class WatchlistInner extends ResourceWithEtag {
     }
 
     /**
-     * Get the uploadStatus property: The status of the Watchlist upload : New, InProgress or Complete. Pls note : When
-     * a Watchlist upload status is equal to InProgress, the Watchlist cannot be deleted.
-     *
+     * Get the uploadStatus property: The status of the Watchlist upload : New, InProgress or Complete. **Note** : When
+     * a Watchlist upload status is InProgress, the Watchlist cannot be deleted.
+     * 
      * @return the uploadStatus value.
      */
     public String uploadStatus() {
@@ -515,9 +569,9 @@ public final class WatchlistInner extends ResourceWithEtag {
     }
 
     /**
-     * Set the uploadStatus property: The status of the Watchlist upload : New, InProgress or Complete. Pls note : When
-     * a Watchlist upload status is equal to InProgress, the Watchlist cannot be deleted.
-     *
+     * Set the uploadStatus property: The status of the Watchlist upload : New, InProgress or Complete. **Note** : When
+     * a Watchlist upload status is InProgress, the Watchlist cannot be deleted.
+     * 
      * @param uploadStatus the uploadStatus value to set.
      * @return the WatchlistInner object itself.
      */
@@ -531,14 +585,61 @@ public final class WatchlistInner extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WatchlistInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WatchlistInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WatchlistInner.
+     */
+    public static WatchlistInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WatchlistInner deserializedWatchlistInner = new WatchlistInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWatchlistInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWatchlistInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWatchlistInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedWatchlistInner.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWatchlistInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWatchlistInner.innerProperties = WatchlistProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWatchlistInner;
+        });
     }
 }

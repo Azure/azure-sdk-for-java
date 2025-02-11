@@ -40,12 +40,10 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
     }
 
     CertificateCredentialImpl(String name, HasCredential<T> parent) {
-        super(
-            new MicrosoftGraphKeyCredentialInner()
-                .withUsage("Verify")
-                .withDisplayName(name)
-                .withStartDateTime(OffsetDateTime.now())
-                .withEndDateTime(OffsetDateTime.now().plusYears(1)));
+        super(new MicrosoftGraphKeyCredentialInner().withUsage("Verify")
+            .withDisplayName(name)
+            .withStartDateTime(OffsetDateTime.now())
+            .withEndDateTime(OffsetDateTime.now().plusYears(1)));
         this.name = name;
         this.parent = parent;
     }
@@ -120,17 +118,13 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
     }
 
     void exportAuthFile(ServicePrincipalImpl servicePrincipal) {
-        exportAuthFile(servicePrincipal.manager().environment(),
-            servicePrincipal.applicationId(),
-            servicePrincipal.manager().tenantId(),
-            servicePrincipal.assignedSubscription);
+        exportAuthFile(servicePrincipal.manager().environment(), servicePrincipal.applicationId(),
+            servicePrincipal.manager().tenantId(), servicePrincipal.assignedSubscription);
     }
 
     void exportAuthFile(ActiveDirectoryApplicationImpl activeDirectoryApplication) {
-        exportAuthFile(activeDirectoryApplication.manager().environment(),
-            activeDirectoryApplication.applicationId(),
-            activeDirectoryApplication.manager().tenantId(),
-            null);
+        exportAuthFile(activeDirectoryApplication.manager().environment(), activeDirectoryApplication.applicationId(),
+            activeDirectoryApplication.manager().tenantId(), null);
     }
 
     void exportAuthFile(AzureEnvironment environment, String clientId, String tenantId, String subscriptionId) {
@@ -138,45 +132,29 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
             return;
         }
         StringBuilder builder = new StringBuilder("{\n");
-        builder
-            .append("  ")
-            .append(String.format("\"clientId\": \"%s\",", clientId))
-            .append("\n");
-        builder
-            .append("  ")
+        builder.append("  ").append(String.format("\"clientId\": \"%s\",", clientId)).append("\n");
+        builder.append("  ")
             .append(String.format("\"clientCertificate\": \"%s\",", privateKeyPath.replace("\\", "\\\\")))
             .append("\n");
-        builder
-            .append("  ")
+        builder.append("  ")
             .append(String.format("\"clientCertificatePassword\": \"%s\",", privateKeyPassword))
             .append("\n");
-        builder
-            .append("  ")
-            .append(String.format("\"tenantId\": \"%s\",", tenantId))
-            .append("\n");
-        builder
-            .append("  ")
-            .append(String.format("\"subscriptionId\": \"%s\",", subscriptionId))
-            .append("\n");
-        builder
-            .append("  ")
+        builder.append("  ").append(String.format("\"tenantId\": \"%s\",", tenantId)).append("\n");
+        builder.append("  ").append(String.format("\"subscriptionId\": \"%s\",", subscriptionId)).append("\n");
+        builder.append("  ")
             .append(String.format("\"activeDirectoryEndpointUrl\": \"%s\",", environment.getActiveDirectoryEndpoint()))
             .append("\n");
-        builder
-            .append("  ")
+        builder.append("  ")
             .append(String.format("\"resourceManagerEndpointUrl\": \"%s\",", environment.getResourceManagerEndpoint()))
             .append("\n");
-        builder
-            .append("  ")
+        builder.append("  ")
             .append(String.format("\"activeDirectoryGraphResourceId\": \"%s\",", environment.getGraphEndpoint()))
             .append("\n");
-        builder
-            .append("  ")
-            .append(String.format("\"%s\": \"%s\",",
-                AzureEnvironment.Endpoint.MICROSOFT_GRAPH.identifier(), environment.getMicrosoftGraphEndpoint()))
+        builder.append("  ")
+            .append(String.format("\"%s\": \"%s\",", AzureEnvironment.Endpoint.MICROSOFT_GRAPH.identifier(),
+                environment.getMicrosoftGraphEndpoint()))
             .append("\n");
-        builder
-            .append("  ")
+        builder.append("  ")
             .append(String.format("\"managementEndpointUrl\": \"%s\"", environment.getManagementEndpoint()))
             .append("\n");
         builder.append("}");

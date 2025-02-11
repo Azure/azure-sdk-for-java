@@ -6,17 +6,14 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPackQuery;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPackQuerySearchProperties;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPackQuerySearchPropertiesRelated;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -24,81 +21,40 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class QueriesSearchMockTests {
     @Test
     public void testSearch() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"id\":\"heioqa\",\"displayName\":\"hvseufuqyrx\",\"timeCreated\":\"2021-03-18T00:27:23Z\",\"timeModified\":\"2020-12-31T00:49:04Z\",\"author\":\"lsismjqfrd\",\"description\":\"amqu\",\"body\":\"iosrsjuivfcdis\",\"related\":{\"categories\":[\"xzhczexrxz\",\"ujrtrhqvwr\"],\"resourceTypes\":[\"h\"],\"solutions\":[\"nzonzl\",\"piqywnc\",\"jtszcof\",\"zehtdhgb\"]},\"tags\":{\"bccxjmonfdgn\":[\"eljeamurvzmlovua\",\"ashcxlpmjerbdk\",\"lvidizozs\"],\"uqj\":[\"cypuuwwlt\"]},\"properties\":\"datazenkeifzzhmkd\"},\"id\":\"vflyhbxcu\",\"name\":\"hxgsrboldfor\",\"type\":\"wjlvizbfhfov\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"id\":\"drizetpwbr\",\"displayName\":\"lllibph\",\"timeCreated\":\"2021-03-09T02:07:34Z\",\"timeModified\":\"2021-08-01T19:55:34Z\",\"author\":\"aka\",\"description\":\"nkjpdnjzha\",\"body\":\"oylhjlmuoyxprimr\",\"related\":{\"categories\":[\"eecjmeis\",\"stvasylwxdzaumw\",\"oohgu\"],\"resourceTypes\":[\"zboyjathwt\",\"olbaemwmdx\",\"ebwjscjpahlxvea\"],\"solutions\":[\"xnmwmqtibxyijddt\",\"qcttadijaeukmrsi\"]},\"tags\":{\"qwyxebeybpm\":[\"ndzaapmudq\",\"eqw\",\"gp\",\"bu\"]},\"properties\":\"datanrtffyaqi\"},\"id\":\"hheioqaqhvseuf\",\"name\":\"yrxpdlcgqls\",\"type\":\"mjqfrddgamquhio\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<LogAnalyticsQueryPackQuery> response = manager.queries()
+            .search("jzhajoy", "hjlmu",
+                new LogAnalyticsQueryPackQuerySearchProperties()
+                    .withRelated(new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
+                        .withCategories(Arrays.asList("rimrs", "pteecjme"))
+                        .withResourceTypes(Arrays.asList("stvasylwxdzaumw"))
+                        .withSolutions(Arrays.asList("hguuf", "zboyjathwt")))
+                    .withTags(mapOf("mwmdxmebwjscjpa", Arrays.asList("a"), "ekpndzaapmudq",
+                        Arrays.asList("xveabf", "xnmwmqtibxyijddt", "qcttadijaeukmrsi"), "e",
+                        Arrays.asList("qwigpibudqwyxe"))),
+                5927921282145979607L, true, "zznrtffyaqi", com.azure.core.util.Context.NONE);
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<LogAnalyticsQueryPackQuery> response =
-            manager
-                .queries()
-                .search(
-                    "hhxud",
-                    "xvodhtnsir",
-                    new LogAnalyticsQueryPackQuerySearchProperties()
-                        .withRelated(
-                            new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
-                                .withCategories(Arrays.asList("m"))
-                                .withResourceTypes(Arrays.asList("ckdlpag", "rcxfailcfxwmdb"))
-                                .withSolutions(Arrays.asList("fgsftufqob", "jln", "cgcckknhxkizvyt", "rzvul")))
-                        .withTags(
-                            mapOf(
-                                "rwhryvycytd",
-                                Arrays.asList("eranokqgukkjqnv", "roylaxxu", "cdisd", "sfjbjsvg"),
-                                "gtgkylkdghr",
-                                Arrays.asList("xgccknfnw", "btmvpdvjdhttza", "fedxihchrphkm", "rjdqnsdfzp"),
-                                "pifhpfeoajvgcxtx",
-                                Arrays.asList("uutlwxezwzhok", "bwnhhtql", "ehgpp"),
-                                "ucb",
-                                Arrays.asList("sheafid", "tugsresmkssjh", "iftxfkf", "egprhptil"))),
-                    3657497619392778161L,
-                    false,
-                    "dqohmc",
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("lllibph", response.iterator().next().displayName());
-        Assertions.assertEquals("nkjpdnjzha", response.iterator().next().description());
-        Assertions.assertEquals("oylhjlmuoyxprimr", response.iterator().next().body());
-        Assertions.assertEquals("eecjmeis", response.iterator().next().related().categories().get(0));
-        Assertions.assertEquals("zboyjathwt", response.iterator().next().related().resourceTypes().get(0));
-        Assertions.assertEquals("xnmwmqtibxyijddt", response.iterator().next().related().solutions().get(0));
-        Assertions.assertEquals("ndzaapmudq", response.iterator().next().tags().get("qwyxebeybpm").get(0));
+        Assertions.assertEquals("hvseufuqyrx", response.iterator().next().displayName());
+        Assertions.assertEquals("amqu", response.iterator().next().description());
+        Assertions.assertEquals("iosrsjuivfcdis", response.iterator().next().body());
+        Assertions.assertEquals("xzhczexrxz", response.iterator().next().related().categories().get(0));
+        Assertions.assertEquals("h", response.iterator().next().related().resourceTypes().get(0));
+        Assertions.assertEquals("nzonzl", response.iterator().next().related().solutions().get(0));
+        Assertions.assertEquals("eljeamurvzmlovua", response.iterator().next().tags().get("bccxjmonfdgn").get(0));
     }
 
     // Use "Map.of" if available

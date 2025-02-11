@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.NamedValueUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** NamedValue update Parameters. */
+/**
+ * NamedValue update Parameters.
+ */
 @Fluent
-public final class NamedValueUpdateParameters {
+public final class NamedValueUpdateParameters implements JsonSerializable<NamedValueUpdateParameters> {
     /*
      * NamedValue entity Update contract properties.
      */
-    @JsonProperty(value = "properties")
     private NamedValueUpdateParameterProperties innerProperties;
 
-    /** Creates an instance of NamedValueUpdateParameters class. */
+    /**
+     * Creates an instance of NamedValueUpdateParameters class.
+     */
     public NamedValueUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: NamedValue entity Update contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NamedValueUpdateParameterProperties innerProperties() {
@@ -34,7 +41,7 @@ public final class NamedValueUpdateParameters {
     /**
      * Get the displayName property: Unique name of NamedValue. It may contain only letters, digits, period, dash, and
      * underscore characters.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -44,7 +51,7 @@ public final class NamedValueUpdateParameters {
     /**
      * Set the displayName property: Unique name of NamedValue. It may contain only letters, digits, period, dash, and
      * underscore characters.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the NamedValueUpdateParameters object itself.
      */
@@ -59,7 +66,7 @@ public final class NamedValueUpdateParameters {
     /**
      * Get the value property: Value of the NamedValue. Can contain policy expressions. It may not be empty or consist
      * only of whitespace.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -69,7 +76,7 @@ public final class NamedValueUpdateParameters {
     /**
      * Set the value property: Value of the NamedValue. Can contain policy expressions. It may not be empty or consist
      * only of whitespace.
-     *
+     * 
      * @param value the value value to set.
      * @return the NamedValueUpdateParameters object itself.
      */
@@ -83,7 +90,7 @@ public final class NamedValueUpdateParameters {
 
     /**
      * Get the keyVault property: KeyVault location details of the namedValue.
-     *
+     * 
      * @return the keyVault value.
      */
     public KeyVaultContractCreateProperties keyVault() {
@@ -92,7 +99,7 @@ public final class NamedValueUpdateParameters {
 
     /**
      * Set the keyVault property: KeyVault location details of the namedValue.
-     *
+     * 
      * @param keyVault the keyVault value to set.
      * @return the NamedValueUpdateParameters object itself.
      */
@@ -106,7 +113,7 @@ public final class NamedValueUpdateParameters {
 
     /**
      * Get the tags property: Optional tags that when provided can be used to filter the NamedValue list.
-     *
+     * 
      * @return the tags value.
      */
     public List<String> tags() {
@@ -115,7 +122,7 @@ public final class NamedValueUpdateParameters {
 
     /**
      * Set the tags property: Optional tags that when provided can be used to filter the NamedValue list.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the NamedValueUpdateParameters object itself.
      */
@@ -130,7 +137,7 @@ public final class NamedValueUpdateParameters {
     /**
      * Get the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
      * is false.
-     *
+     * 
      * @return the secret value.
      */
     public Boolean secret() {
@@ -140,7 +147,7 @@ public final class NamedValueUpdateParameters {
     /**
      * Set the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
      * is false.
-     *
+     * 
      * @param secret the secret value to set.
      * @return the NamedValueUpdateParameters object itself.
      */
@@ -154,12 +161,49 @@ public final class NamedValueUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamedValueUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamedValueUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NamedValueUpdateParameters.
+     */
+    public static NamedValueUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamedValueUpdateParameters deserializedNamedValueUpdateParameters = new NamedValueUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedNamedValueUpdateParameters.innerProperties
+                        = NamedValueUpdateParameterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamedValueUpdateParameters;
+        });
     }
 }

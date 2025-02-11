@@ -14,31 +14,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ElasticVersionsListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticVersionsListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"version\":\"zndlikwy\"}},{\"properties\":{\"version\":\"fgibmadgakeq\"}},{\"properties\":{\"version\":\"yb\"}}],\"nextLink\":\"qedqytbciqfoufl\"}")
-                .toObject(ElasticVersionsListResponse.class);
-        Assertions.assertEquals("zndlikwy", model.value().get(0).properties().version());
-        Assertions.assertEquals("qedqytbciqfoufl", model.nextLink());
+        ElasticVersionsListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"version\":\"ukdkexxppofmxa\"}},{\"properties\":{\"version\":\"jpgd\"}},{\"properties\":{\"version\":\"c\"}},{\"properties\":{\"version\":\"hvpmoue\"}}],\"nextLink\":\"dzxibqeojnxqbzvd\"}")
+            .toObject(ElasticVersionsListResponse.class);
+        Assertions.assertEquals("ukdkexxppofmxa", model.value().get(0).properties().version());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticVersionsListResponse model =
-            new ElasticVersionsListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ElasticVersionListFormatInner()
-                                .withProperties(new ElasticVersionListProperties().withVersion("zndlikwy")),
-                            new ElasticVersionListFormatInner()
-                                .withProperties(new ElasticVersionListProperties().withVersion("fgibmadgakeq")),
-                            new ElasticVersionListFormatInner()
-                                .withProperties(new ElasticVersionListProperties().withVersion("yb"))))
-                .withNextLink("qedqytbciqfoufl");
+        ElasticVersionsListResponse model = new ElasticVersionsListResponse().withValue(Arrays.asList(
+            new ElasticVersionListFormatInner()
+                .withProperties(new ElasticVersionListProperties().withVersion("ukdkexxppofmxa")),
+            new ElasticVersionListFormatInner().withProperties(new ElasticVersionListProperties().withVersion("jpgd")),
+            new ElasticVersionListFormatInner().withProperties(new ElasticVersionListProperties().withVersion("c")),
+            new ElasticVersionListFormatInner()
+                .withProperties(new ElasticVersionListProperties().withVersion("hvpmoue"))))
+            .withNextLink("dzxibqeojnxqbzvd");
         model = BinaryData.fromObject(model).toObject(ElasticVersionsListResponse.class);
-        Assertions.assertEquals("zndlikwy", model.value().get(0).properties().version());
-        Assertions.assertEquals("qedqytbciqfoufl", model.nextLink());
+        Assertions.assertEquals("ukdkexxppofmxa", model.value().get(0).properties().version());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.nextLink());
     }
 }

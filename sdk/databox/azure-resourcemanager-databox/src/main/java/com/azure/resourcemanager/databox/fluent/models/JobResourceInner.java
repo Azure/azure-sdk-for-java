@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databox.models.CloudError;
 import com.azure.resourcemanager.databox.models.JobDeliveryInfo;
 import com.azure.resourcemanager.databox.models.JobDeliveryType;
@@ -18,62 +21,59 @@ import com.azure.resourcemanager.databox.models.ReverseTransportPreferenceEditSt
 import com.azure.resourcemanager.databox.models.Sku;
 import com.azure.resourcemanager.databox.models.StageName;
 import com.azure.resourcemanager.databox.models.TransferType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Job Resource. */
+/**
+ * Job Resource.
+ */
 @Fluent
 public final class JobResourceInner extends Resource {
     /*
      * Properties of a job.
      */
-    @JsonProperty(value = "properties", required = true)
     private JobProperties innerProperties = new JobProperties();
 
     /*
      * Name of the object.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Id of the object.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Type of the object.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The sku type.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * Msi identity of the resource
      */
-    @JsonProperty(value = "identity")
     private ResourceIdentity identity;
 
-    /** Creates an instance of JobResourceInner class. */
+    /**
+     * Creates an instance of JobResourceInner class.
+     */
     public JobResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of a job.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobProperties innerProperties() {
@@ -82,34 +82,37 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the name property: Name of the object.
-     *
+     * 
      * @return the name value.
      */
+    @Override
     public String name() {
         return this.name;
     }
 
     /**
      * Get the id property: Id of the object.
-     *
+     * 
      * @return the id value.
      */
+    @Override
     public String id() {
         return this.id;
     }
 
     /**
      * Get the type property: Type of the object.
-     *
+     * 
      * @return the type value.
      */
+    @Override
     public String type() {
         return this.type;
     }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -118,7 +121,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the sku property: The sku type.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -127,7 +130,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Set the sku property: The sku type.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the JobResourceInner object itself.
      */
@@ -138,7 +141,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the identity property: Msi identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public ResourceIdentity identity() {
@@ -147,7 +150,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Set the identity property: Msi identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the JobResourceInner object itself.
      */
@@ -156,14 +159,18 @@ public final class JobResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -172,7 +179,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the transferType property: Type of the data transfer.
-     *
+     * 
      * @return the transferType value.
      */
     public TransferType transferType() {
@@ -181,7 +188,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Set the transferType property: Type of the data transfer.
-     *
+     * 
      * @param transferType the transferType value to set.
      * @return the JobResourceInner object itself.
      */
@@ -195,7 +202,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the isCancellable property: Describes whether the job is cancellable or not.
-     *
+     * 
      * @return the isCancellable value.
      */
     public Boolean isCancellable() {
@@ -204,7 +211,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the isDeletable property: Describes whether the job is deletable or not.
-     *
+     * 
      * @return the isDeletable value.
      */
     public Boolean isDeletable() {
@@ -213,7 +220,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the isShippingAddressEditable property: Describes whether the shipping address is editable or not.
-     *
+     * 
      * @return the isShippingAddressEditable value.
      */
     public Boolean isShippingAddressEditable() {
@@ -222,7 +229,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the reverseShippingDetailsUpdate property: The Editable status for Reverse Shipping Address and Contact Info.
-     *
+     * 
      * @return the reverseShippingDetailsUpdate value.
      */
     public ReverseShippingDetailsEditStatus reverseShippingDetailsUpdate() {
@@ -231,7 +238,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the reverseTransportPreferenceUpdate property: The Editable status for Reverse Transport preferences.
-     *
+     * 
      * @return the reverseTransportPreferenceUpdate value.
      */
     public ReverseTransportPreferenceEditStatus reverseTransportPreferenceUpdate() {
@@ -240,7 +247,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the isPrepareToShipEnabled property: Is Prepare To Ship Enabled on this job.
-     *
+     * 
      * @return the isPrepareToShipEnabled value.
      */
     public Boolean isPrepareToShipEnabled() {
@@ -249,7 +256,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the status property: Name of the stage which is in progress.
-     *
+     * 
      * @return the status value.
      */
     public StageName status() {
@@ -258,7 +265,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the startTime property: Time at which the job was started in UTC ISO 8601 format.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -267,7 +274,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the error property: Top level error for the job.
-     *
+     * 
      * @return the error value.
      */
     public CloudError error() {
@@ -276,7 +283,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the details property: Details of a job run. This field will only be sent for expand details filter.
-     *
+     * 
      * @return the details value.
      */
     public JobDetails details() {
@@ -285,7 +292,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Set the details property: Details of a job run. This field will only be sent for expand details filter.
-     *
+     * 
      * @param details the details value to set.
      * @return the JobResourceInner object itself.
      */
@@ -299,7 +306,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the cancellationReason property: Reason for cancellation.
-     *
+     * 
      * @return the cancellationReason value.
      */
     public String cancellationReason() {
@@ -308,7 +315,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the deliveryType property: Delivery type of Job.
-     *
+     * 
      * @return the deliveryType value.
      */
     public JobDeliveryType deliveryType() {
@@ -317,7 +324,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Set the deliveryType property: Delivery type of Job.
-     *
+     * 
      * @param deliveryType the deliveryType value to set.
      * @return the JobResourceInner object itself.
      */
@@ -331,7 +338,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the deliveryInfo property: Delivery Info of Job.
-     *
+     * 
      * @return the deliveryInfo value.
      */
     public JobDeliveryInfo deliveryInfo() {
@@ -340,7 +347,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Set the deliveryInfo property: Delivery Info of Job.
-     *
+     * 
      * @param deliveryInfo the deliveryInfo value to set.
      * @return the JobResourceInner object itself.
      */
@@ -354,7 +361,7 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Get the isCancellableWithoutFee property: Flag to indicate cancellation of scheduled job.
-     *
+     * 
      * @return the isCancellableWithoutFee value.
      */
     public Boolean isCancellableWithoutFee() {
@@ -363,22 +370,20 @@ public final class JobResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model JobResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model JobResourceInner"));
         } else {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model JobResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model JobResourceInner"));
         } else {
             sku().validate();
         }
@@ -388,4 +393,62 @@ public final class JobResourceInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobResourceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobResourceInner.
+     */
+    public static JobResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobResourceInner deserializedJobResourceInner = new JobResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedJobResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedJobResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobResourceInner.innerProperties = JobProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedJobResourceInner.sku = Sku.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobResourceInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedJobResourceInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobResourceInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedJobResourceInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedJobResourceInner.identity = ResourceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobResourceInner;
+        });
+    }
 }

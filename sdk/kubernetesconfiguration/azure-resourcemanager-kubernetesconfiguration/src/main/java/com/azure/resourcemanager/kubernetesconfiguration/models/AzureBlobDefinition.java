@@ -5,73 +5,72 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters to reconcile to the AzureBlob source kind type. */
+/**
+ * Parameters to reconcile to the AzureBlob source kind type.
+ */
 @Fluent
-public final class AzureBlobDefinition {
+public final class AzureBlobDefinition implements JsonSerializable<AzureBlobDefinition> {
     /*
      * The URL to sync for the flux configuration Azure Blob storage account.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The Azure Blob container name to sync from the url endpoint for the flux configuration.
      */
-    @JsonProperty(value = "containerName")
     private String containerName;
 
     /*
      * The maximum time to attempt to reconcile the cluster Azure Blob source with the remote.
      */
-    @JsonProperty(value = "timeoutInSeconds")
     private Long timeoutInSeconds;
 
     /*
      * The interval at which to re-reconcile the cluster Azure Blob source with the remote.
      */
-    @JsonProperty(value = "syncIntervalInSeconds")
     private Long syncIntervalInSeconds;
 
     /*
      * Parameters to authenticate using Service Principal.
      */
-    @JsonProperty(value = "servicePrincipal")
     private ServicePrincipalDefinition servicePrincipal;
 
     /*
      * The account key (shared key) to access the storage account
      */
-    @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /*
      * The Shared Access token to access the storage container
      */
-    @JsonProperty(value = "sasToken")
     private String sasToken;
 
     /*
      * Parameters to authenticate using a Managed Identity.
      */
-    @JsonProperty(value = "managedIdentity")
     private ManagedIdentityDefinition managedIdentity;
 
     /*
      * Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or
      * user-provided configuration secrets.
      */
-    @JsonProperty(value = "localAuthRef")
     private String localAuthRef;
 
-    /** Creates an instance of AzureBlobDefinition class. */
+    /**
+     * Creates an instance of AzureBlobDefinition class.
+     */
     public AzureBlobDefinition() {
     }
 
     /**
      * Get the url property: The URL to sync for the flux configuration Azure Blob storage account.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -80,7 +79,7 @@ public final class AzureBlobDefinition {
 
     /**
      * Set the url property: The URL to sync for the flux configuration Azure Blob storage account.
-     *
+     * 
      * @param url the url value to set.
      * @return the AzureBlobDefinition object itself.
      */
@@ -92,7 +91,7 @@ public final class AzureBlobDefinition {
     /**
      * Get the containerName property: The Azure Blob container name to sync from the url endpoint for the flux
      * configuration.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -102,7 +101,7 @@ public final class AzureBlobDefinition {
     /**
      * Set the containerName property: The Azure Blob container name to sync from the url endpoint for the flux
      * configuration.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the AzureBlobDefinition object itself.
      */
@@ -114,7 +113,7 @@ public final class AzureBlobDefinition {
     /**
      * Get the timeoutInSeconds property: The maximum time to attempt to reconcile the cluster Azure Blob source with
      * the remote.
-     *
+     * 
      * @return the timeoutInSeconds value.
      */
     public Long timeoutInSeconds() {
@@ -124,7 +123,7 @@ public final class AzureBlobDefinition {
     /**
      * Set the timeoutInSeconds property: The maximum time to attempt to reconcile the cluster Azure Blob source with
      * the remote.
-     *
+     * 
      * @param timeoutInSeconds the timeoutInSeconds value to set.
      * @return the AzureBlobDefinition object itself.
      */
@@ -136,7 +135,7 @@ public final class AzureBlobDefinition {
     /**
      * Get the syncIntervalInSeconds property: The interval at which to re-reconcile the cluster Azure Blob source with
      * the remote.
-     *
+     * 
      * @return the syncIntervalInSeconds value.
      */
     public Long syncIntervalInSeconds() {
@@ -146,7 +145,7 @@ public final class AzureBlobDefinition {
     /**
      * Set the syncIntervalInSeconds property: The interval at which to re-reconcile the cluster Azure Blob source with
      * the remote.
-     *
+     * 
      * @param syncIntervalInSeconds the syncIntervalInSeconds value to set.
      * @return the AzureBlobDefinition object itself.
      */
@@ -157,7 +156,7 @@ public final class AzureBlobDefinition {
 
     /**
      * Get the servicePrincipal property: Parameters to authenticate using Service Principal.
-     *
+     * 
      * @return the servicePrincipal value.
      */
     public ServicePrincipalDefinition servicePrincipal() {
@@ -166,7 +165,7 @@ public final class AzureBlobDefinition {
 
     /**
      * Set the servicePrincipal property: Parameters to authenticate using Service Principal.
-     *
+     * 
      * @param servicePrincipal the servicePrincipal value to set.
      * @return the AzureBlobDefinition object itself.
      */
@@ -177,7 +176,7 @@ public final class AzureBlobDefinition {
 
     /**
      * Get the accountKey property: The account key (shared key) to access the storage account.
-     *
+     * 
      * @return the accountKey value.
      */
     public String accountKey() {
@@ -186,7 +185,7 @@ public final class AzureBlobDefinition {
 
     /**
      * Set the accountKey property: The account key (shared key) to access the storage account.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the AzureBlobDefinition object itself.
      */
@@ -197,7 +196,7 @@ public final class AzureBlobDefinition {
 
     /**
      * Get the sasToken property: The Shared Access token to access the storage container.
-     *
+     * 
      * @return the sasToken value.
      */
     public String sasToken() {
@@ -206,7 +205,7 @@ public final class AzureBlobDefinition {
 
     /**
      * Set the sasToken property: The Shared Access token to access the storage container.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the AzureBlobDefinition object itself.
      */
@@ -217,7 +216,7 @@ public final class AzureBlobDefinition {
 
     /**
      * Get the managedIdentity property: Parameters to authenticate using a Managed Identity.
-     *
+     * 
      * @return the managedIdentity value.
      */
     public ManagedIdentityDefinition managedIdentity() {
@@ -226,7 +225,7 @@ public final class AzureBlobDefinition {
 
     /**
      * Set the managedIdentity property: Parameters to authenticate using a Managed Identity.
-     *
+     * 
      * @param managedIdentity the managedIdentity value to set.
      * @return the AzureBlobDefinition object itself.
      */
@@ -238,7 +237,7 @@ public final class AzureBlobDefinition {
     /**
      * Get the localAuthRef property: Name of a local secret on the Kubernetes cluster to use as the authentication
      * secret rather than the managed or user-provided configuration secrets.
-     *
+     * 
      * @return the localAuthRef value.
      */
     public String localAuthRef() {
@@ -248,7 +247,7 @@ public final class AzureBlobDefinition {
     /**
      * Set the localAuthRef property: Name of a local secret on the Kubernetes cluster to use as the authentication
      * secret rather than the managed or user-provided configuration secrets.
-     *
+     * 
      * @param localAuthRef the localAuthRef value to set.
      * @return the AzureBlobDefinition object itself.
      */
@@ -259,7 +258,7 @@ public final class AzureBlobDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -269,5 +268,65 @@ public final class AzureBlobDefinition {
         if (managedIdentity() != null) {
             managedIdentity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeNumberField("timeoutInSeconds", this.timeoutInSeconds);
+        jsonWriter.writeNumberField("syncIntervalInSeconds", this.syncIntervalInSeconds);
+        jsonWriter.writeJsonField("servicePrincipal", this.servicePrincipal);
+        jsonWriter.writeStringField("accountKey", this.accountKey);
+        jsonWriter.writeStringField("sasToken", this.sasToken);
+        jsonWriter.writeJsonField("managedIdentity", this.managedIdentity);
+        jsonWriter.writeStringField("localAuthRef", this.localAuthRef);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBlobDefinition.
+     */
+    public static AzureBlobDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobDefinition deserializedAzureBlobDefinition = new AzureBlobDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedAzureBlobDefinition.url = reader.getString();
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedAzureBlobDefinition.containerName = reader.getString();
+                } else if ("timeoutInSeconds".equals(fieldName)) {
+                    deserializedAzureBlobDefinition.timeoutInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("syncIntervalInSeconds".equals(fieldName)) {
+                    deserializedAzureBlobDefinition.syncIntervalInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("servicePrincipal".equals(fieldName)) {
+                    deserializedAzureBlobDefinition.servicePrincipal = ServicePrincipalDefinition.fromJson(reader);
+                } else if ("accountKey".equals(fieldName)) {
+                    deserializedAzureBlobDefinition.accountKey = reader.getString();
+                } else if ("sasToken".equals(fieldName)) {
+                    deserializedAzureBlobDefinition.sasToken = reader.getString();
+                } else if ("managedIdentity".equals(fieldName)) {
+                    deserializedAzureBlobDefinition.managedIdentity = ManagedIdentityDefinition.fromJson(reader);
+                } else if ("localAuthRef".equals(fieldName)) {
+                    deserializedAzureBlobDefinition.localAuthRef = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBlobDefinition;
+        });
     }
 }

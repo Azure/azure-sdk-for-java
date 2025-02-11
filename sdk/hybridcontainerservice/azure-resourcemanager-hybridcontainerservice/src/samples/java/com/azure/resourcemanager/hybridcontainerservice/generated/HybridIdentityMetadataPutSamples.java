@@ -23,10 +23,12 @@ public final class HybridIdentityMetadataPutSamples {
      */
     public static void createHybridIdentityMetadata(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.hybridIdentityMetadatas().putWithResponse(
-            "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
-            new HybridIdentityMetadataInner().withProperties(new HybridIdentityMetadataProperties()
-                .withResourceUid("f8b82dff-38ef-4220-99ef-d3a3f86ddc6c").withPublicKey("fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+        manager.hybridIdentityMetadatas()
+            .putWithResponse(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
+                new HybridIdentityMetadataInner().withProperties(
+                    new HybridIdentityMetadataProperties().withResourceUid("f8b82dff-38ef-4220-99ef-d3a3f86ddc6c")
+                        .withPublicKey("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 }

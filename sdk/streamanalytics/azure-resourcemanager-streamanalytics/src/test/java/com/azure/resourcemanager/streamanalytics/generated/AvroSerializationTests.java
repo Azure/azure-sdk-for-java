@@ -10,13 +10,13 @@ import com.azure.resourcemanager.streamanalytics.models.AvroSerialization;
 public final class AvroSerializationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvroSerialization model = BinaryData.fromString("{\"type\":\"Avro\",\"properties\":\"dataltdtbnnhad\"}")
-            .toObject(AvroSerialization.class);
+        AvroSerialization model
+            = BinaryData.fromString("{\"type\":\"Avro\",\"properties\":\"dataeli\"}").toObject(AvroSerialization.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvroSerialization model = new AvroSerialization().withProperties("dataltdtbnnhad");
+        AvroSerialization model = new AvroSerialization().withProperties("dataeli");
         model = BinaryData.fromObject(model).toObject(AvroSerialization.class);
     }
 }

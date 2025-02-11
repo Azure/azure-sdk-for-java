@@ -5,44 +5,46 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.DayDetails;
 import com.azure.resourcemanager.devtestlabs.models.EnableStatus;
 import com.azure.resourcemanager.devtestlabs.models.HourDetails;
 import com.azure.resourcemanager.devtestlabs.models.NotificationSettings;
 import com.azure.resourcemanager.devtestlabs.models.WeekDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties for schedule creation. */
+/**
+ * Properties for schedule creation.
+ */
 @Fluent
-public final class ScheduleCreationParameterProperties {
+public final class ScheduleCreationParameterProperties
+    implements JsonSerializable<ScheduleCreationParameterProperties> {
     /*
      * The status of the schedule (i.e. Enabled, Disabled)
      */
-    @JsonProperty(value = "status")
     private EnableStatus status;
 
     /*
      * The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
      */
-    @JsonProperty(value = "taskType")
     private String taskType;
 
     /*
      * If the schedule will occur only some days of the week, specify the weekly recurrence.
      */
-    @JsonProperty(value = "weeklyRecurrence")
     private WeekDetails weeklyRecurrence;
 
     /*
      * If the schedule will occur once each day of the week, specify the daily recurrence.
      */
-    @JsonProperty(value = "dailyRecurrence")
     private DayDetails dailyRecurrence;
 
     /*
      * If the schedule will occur multiple times a day, specify the hourly recurrence.
      */
-    @JsonProperty(value = "hourlyRecurrence")
     private HourDetails hourlyRecurrence;
 
     /*
@@ -51,28 +53,27 @@ public final class ScheduleCreationParameterProperties {
      * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
      * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md)
      */
-    @JsonProperty(value = "timeZoneId")
     private String timeZoneId;
 
     /*
      * Notification settings.
      */
-    @JsonProperty(value = "notificationSettings")
     private NotificationSettings notificationSettings;
 
     /*
      * The resource ID to which the schedule belongs
      */
-    @JsonProperty(value = "targetResourceId")
     private String targetResourceId;
 
-    /** Creates an instance of ScheduleCreationParameterProperties class. */
+    /**
+     * Creates an instance of ScheduleCreationParameterProperties class.
+     */
     public ScheduleCreationParameterProperties() {
     }
 
     /**
      * Get the status property: The status of the schedule (i.e. Enabled, Disabled).
-     *
+     * 
      * @return the status value.
      */
     public EnableStatus status() {
@@ -81,7 +82,7 @@ public final class ScheduleCreationParameterProperties {
 
     /**
      * Set the status property: The status of the schedule (i.e. Enabled, Disabled).
-     *
+     * 
      * @param status the status value to set.
      * @return the ScheduleCreationParameterProperties object itself.
      */
@@ -92,7 +93,7 @@ public final class ScheduleCreationParameterProperties {
 
     /**
      * Get the taskType property: The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
-     *
+     * 
      * @return the taskType value.
      */
     public String taskType() {
@@ -101,7 +102,7 @@ public final class ScheduleCreationParameterProperties {
 
     /**
      * Set the taskType property: The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
-     *
+     * 
      * @param taskType the taskType value to set.
      * @return the ScheduleCreationParameterProperties object itself.
      */
@@ -113,7 +114,7 @@ public final class ScheduleCreationParameterProperties {
     /**
      * Get the weeklyRecurrence property: If the schedule will occur only some days of the week, specify the weekly
      * recurrence.
-     *
+     * 
      * @return the weeklyRecurrence value.
      */
     public WeekDetails weeklyRecurrence() {
@@ -123,7 +124,7 @@ public final class ScheduleCreationParameterProperties {
     /**
      * Set the weeklyRecurrence property: If the schedule will occur only some days of the week, specify the weekly
      * recurrence.
-     *
+     * 
      * @param weeklyRecurrence the weeklyRecurrence value to set.
      * @return the ScheduleCreationParameterProperties object itself.
      */
@@ -135,7 +136,7 @@ public final class ScheduleCreationParameterProperties {
     /**
      * Get the dailyRecurrence property: If the schedule will occur once each day of the week, specify the daily
      * recurrence.
-     *
+     * 
      * @return the dailyRecurrence value.
      */
     public DayDetails dailyRecurrence() {
@@ -145,7 +146,7 @@ public final class ScheduleCreationParameterProperties {
     /**
      * Set the dailyRecurrence property: If the schedule will occur once each day of the week, specify the daily
      * recurrence.
-     *
+     * 
      * @param dailyRecurrence the dailyRecurrence value to set.
      * @return the ScheduleCreationParameterProperties object itself.
      */
@@ -157,7 +158,7 @@ public final class ScheduleCreationParameterProperties {
     /**
      * Get the hourlyRecurrence property: If the schedule will occur multiple times a day, specify the hourly
      * recurrence.
-     *
+     * 
      * @return the hourlyRecurrence value.
      */
     public HourDetails hourlyRecurrence() {
@@ -167,7 +168,7 @@ public final class ScheduleCreationParameterProperties {
     /**
      * Set the hourlyRecurrence property: If the schedule will occur multiple times a day, specify the hourly
      * recurrence.
-     *
+     * 
      * @param hourlyRecurrence the hourlyRecurrence value to set.
      * @return the ScheduleCreationParameterProperties object itself.
      */
@@ -181,7 +182,7 @@ public final class ScheduleCreationParameterProperties {
      * Standard time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
      * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
      * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
-     *
+     * 
      * @return the timeZoneId value.
      */
     public String timeZoneId() {
@@ -193,7 +194,7 @@ public final class ScheduleCreationParameterProperties {
      * Standard time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
      * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
      * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
-     *
+     * 
      * @param timeZoneId the timeZoneId value to set.
      * @return the ScheduleCreationParameterProperties object itself.
      */
@@ -204,7 +205,7 @@ public final class ScheduleCreationParameterProperties {
 
     /**
      * Get the notificationSettings property: Notification settings.
-     *
+     * 
      * @return the notificationSettings value.
      */
     public NotificationSettings notificationSettings() {
@@ -213,7 +214,7 @@ public final class ScheduleCreationParameterProperties {
 
     /**
      * Set the notificationSettings property: Notification settings.
-     *
+     * 
      * @param notificationSettings the notificationSettings value to set.
      * @return the ScheduleCreationParameterProperties object itself.
      */
@@ -224,7 +225,7 @@ public final class ScheduleCreationParameterProperties {
 
     /**
      * Get the targetResourceId property: The resource ID to which the schedule belongs.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -233,7 +234,7 @@ public final class ScheduleCreationParameterProperties {
 
     /**
      * Set the targetResourceId property: The resource ID to which the schedule belongs.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the ScheduleCreationParameterProperties object itself.
      */
@@ -244,7 +245,7 @@ public final class ScheduleCreationParameterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -260,5 +261,65 @@ public final class ScheduleCreationParameterProperties {
         if (notificationSettings() != null) {
             notificationSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeJsonField("weeklyRecurrence", this.weeklyRecurrence);
+        jsonWriter.writeJsonField("dailyRecurrence", this.dailyRecurrence);
+        jsonWriter.writeJsonField("hourlyRecurrence", this.hourlyRecurrence);
+        jsonWriter.writeStringField("timeZoneId", this.timeZoneId);
+        jsonWriter.writeJsonField("notificationSettings", this.notificationSettings);
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleCreationParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleCreationParameterProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleCreationParameterProperties.
+     */
+    public static ScheduleCreationParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleCreationParameterProperties deserializedScheduleCreationParameterProperties
+                = new ScheduleCreationParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedScheduleCreationParameterProperties.status
+                        = EnableStatus.fromString(reader.getString());
+                } else if ("taskType".equals(fieldName)) {
+                    deserializedScheduleCreationParameterProperties.taskType = reader.getString();
+                } else if ("weeklyRecurrence".equals(fieldName)) {
+                    deserializedScheduleCreationParameterProperties.weeklyRecurrence = WeekDetails.fromJson(reader);
+                } else if ("dailyRecurrence".equals(fieldName)) {
+                    deserializedScheduleCreationParameterProperties.dailyRecurrence = DayDetails.fromJson(reader);
+                } else if ("hourlyRecurrence".equals(fieldName)) {
+                    deserializedScheduleCreationParameterProperties.hourlyRecurrence = HourDetails.fromJson(reader);
+                } else if ("timeZoneId".equals(fieldName)) {
+                    deserializedScheduleCreationParameterProperties.timeZoneId = reader.getString();
+                } else if ("notificationSettings".equals(fieldName)) {
+                    deserializedScheduleCreationParameterProperties.notificationSettings
+                        = NotificationSettings.fromJson(reader);
+                } else if ("targetResourceId".equals(fieldName)) {
+                    deserializedScheduleCreationParameterProperties.targetResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleCreationParameterProperties;
+        });
     }
 }

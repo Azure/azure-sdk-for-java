@@ -12,24 +12,16 @@ import java.util.Arrays;
 public final class IotHubQuotaMetricInfoListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IotHubQuotaMetricInfoListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"bp\",\"currentValue\":5410192401023595008,\"maxValue\":8746825901777553134},{\"name\":\"ftguv\",\"currentValue\":4239243194073786564,\"maxValue\":3324276712333747571},{\"name\":\"dyvxqtayriww\",\"currentValue\":7269998904219193773,\"maxValue\":6962652464609703517},{\"name\":\"mcqibycnojv\",\"currentValue\":9109864718473817445,\"maxValue\":1560146384184244309}],\"nextLink\":\"zvahapjy\"}")
-                .toObject(IotHubQuotaMetricInfoListResult.class);
+        IotHubQuotaMetricInfoListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"bp\",\"currentValue\":5410192401023595008,\"maxValue\":8746825901777553134},{\"name\":\"ftguv\",\"currentValue\":4239243194073786564,\"maxValue\":3324276712333747571},{\"name\":\"dyvxqtayriww\",\"currentValue\":7269998904219193773,\"maxValue\":6962652464609703517},{\"name\":\"mcqibycnojv\",\"currentValue\":9109864718473817445,\"maxValue\":1560146384184244309}],\"nextLink\":\"zvahapjy\"}")
+            .toObject(IotHubQuotaMetricInfoListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotHubQuotaMetricInfoListResult model =
-            new IotHubQuotaMetricInfoListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new IotHubQuotaMetricInfoInner(),
-                            new IotHubQuotaMetricInfoInner(),
-                            new IotHubQuotaMetricInfoInner(),
-                            new IotHubQuotaMetricInfoInner()));
+        IotHubQuotaMetricInfoListResult model
+            = new IotHubQuotaMetricInfoListResult().withValue(Arrays.asList(new IotHubQuotaMetricInfoInner(),
+                new IotHubQuotaMetricInfoInner(), new IotHubQuotaMetricInfoInner(), new IotHubQuotaMetricInfoInner()));
         model = BinaryData.fromObject(model).toObject(IotHubQuotaMetricInfoListResult.class);
     }
 }

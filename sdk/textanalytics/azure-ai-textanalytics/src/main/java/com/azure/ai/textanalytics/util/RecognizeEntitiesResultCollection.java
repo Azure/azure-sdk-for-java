@@ -14,6 +14,7 @@ import com.azure.core.util.IterableStream;
 public class RecognizeEntitiesResultCollection extends IterableStream<RecognizeEntitiesResult> {
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
+
     /**
      * Creates a {@code RecognizeEntitiesResultCollection} model that maintains a list of {@link RecognizeEntitiesResult}
      * along with model version and batch's statistics.

@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceProperties model =
-            BinaryData
-                .fromString("{\"targetLocation\":\"urkdtmlx\",\"targetSubscriptionId\":\"ekuksjtx\"}")
+        ServiceProperties model
+            = BinaryData.fromString("{\"targetLocation\":\"urkdtmlx\",\"targetSubscriptionId\":\"ekuksjtx\"}")
                 .toObject(ServiceProperties.class);
         Assertions.assertEquals("urkdtmlx", model.targetLocation());
         Assertions.assertEquals("ekuksjtx", model.targetSubscriptionId());
@@ -21,8 +20,8 @@ public final class ServicePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceProperties model =
-            new ServiceProperties().withTargetLocation("urkdtmlx").withTargetSubscriptionId("ekuksjtx");
+        ServiceProperties model
+            = new ServiceProperties().withTargetLocation("urkdtmlx").withTargetSubscriptionId("ekuksjtx");
         model = BinaryData.fromObject(model).toObject(ServiceProperties.class);
         Assertions.assertEquals("urkdtmlx", model.targetLocation());
         Assertions.assertEquals("ekuksjtx", model.targetSubscriptionId());

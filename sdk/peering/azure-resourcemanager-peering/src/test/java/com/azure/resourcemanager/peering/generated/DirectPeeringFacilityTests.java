@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class DirectPeeringFacilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DirectPeeringFacility model =
-            BinaryData
-                .fromString(
-                    "{\"address\":\"ihkaetcktvfc\",\"directPeeringType\":\"Cdn\",\"peeringDBFacilityId\":1960016252,\"peeringDBFacilityLink\":\"ymuctqhjfbebrj\"}")
-                .toObject(DirectPeeringFacility.class);
-        Assertions.assertEquals("ihkaetcktvfc", model.address());
-        Assertions.assertEquals(DirectPeeringType.CDN, model.directPeeringType());
-        Assertions.assertEquals(1960016252, model.peeringDBFacilityId());
-        Assertions.assertEquals("ymuctqhjfbebrj", model.peeringDBFacilityLink());
+        DirectPeeringFacility model = BinaryData.fromString(
+            "{\"address\":\"jn\",\"directPeeringType\":\"IxRs\",\"peeringDBFacilityId\":1650881541,\"peeringDBFacilityLink\":\"mtxpsiebtfh\"}")
+            .toObject(DirectPeeringFacility.class);
+        Assertions.assertEquals("jn", model.address());
+        Assertions.assertEquals(DirectPeeringType.IX_RS, model.directPeeringType());
+        Assertions.assertEquals(1650881541, model.peeringDBFacilityId());
+        Assertions.assertEquals("mtxpsiebtfh", model.peeringDBFacilityLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DirectPeeringFacility model =
-            new DirectPeeringFacility()
-                .withAddress("ihkaetcktvfc")
-                .withDirectPeeringType(DirectPeeringType.CDN)
-                .withPeeringDBFacilityId(1960016252)
-                .withPeeringDBFacilityLink("ymuctqhjfbebrj");
+        DirectPeeringFacility model = new DirectPeeringFacility().withAddress("jn")
+            .withDirectPeeringType(DirectPeeringType.IX_RS)
+            .withPeeringDBFacilityId(1650881541)
+            .withPeeringDBFacilityLink("mtxpsiebtfh");
         model = BinaryData.fromObject(model).toObject(DirectPeeringFacility.class);
-        Assertions.assertEquals("ihkaetcktvfc", model.address());
-        Assertions.assertEquals(DirectPeeringType.CDN, model.directPeeringType());
-        Assertions.assertEquals(1960016252, model.peeringDBFacilityId());
-        Assertions.assertEquals("ymuctqhjfbebrj", model.peeringDBFacilityLink());
+        Assertions.assertEquals("jn", model.address());
+        Assertions.assertEquals(DirectPeeringType.IX_RS, model.directPeeringType());
+        Assertions.assertEquals(1650881541, model.peeringDBFacilityId());
+        Assertions.assertEquals("mtxpsiebtfh", model.peeringDBFacilityLink());
     }
 }

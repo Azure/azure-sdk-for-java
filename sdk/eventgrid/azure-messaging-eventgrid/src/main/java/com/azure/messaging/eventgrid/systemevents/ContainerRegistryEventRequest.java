@@ -92,8 +92,8 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
     }
 
     /**
-     * Get the host property: The externally accessible hostname of the registry instance, as specified by the http
-     * host header on incoming requests.
+     * Get the host property: The externally accessible hostname of the registry instance, as specified by the http host
+     * header on incoming requests.
      * 
      * @return the host value.
      */
@@ -102,8 +102,8 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
     }
 
     /**
-     * Set the host property: The externally accessible hostname of the registry instance, as specified by the http
-     * host header on incoming requests.
+     * Set the host property: The externally accessible hostname of the registry instance, as specified by the http host
+     * header on incoming requests.
      * 
      * @param host the host value to set.
      * @return the ContainerRegistryEventRequest object itself.
@@ -153,6 +153,9 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

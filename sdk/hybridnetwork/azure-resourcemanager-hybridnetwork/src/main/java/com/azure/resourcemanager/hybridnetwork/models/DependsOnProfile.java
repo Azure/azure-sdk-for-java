@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Depends on profile definition.
  */
 @Fluent
-public final class DependsOnProfile {
+public final class DependsOnProfile implements JsonSerializable<DependsOnProfile> {
     /*
      * Application installation operation dependency.
      */
-    @JsonProperty(value = "installDependsOn")
     private List<String> installDependsOn;
 
     /*
      * Application deletion operation dependency.
      */
-    @JsonProperty(value = "uninstallDependsOn")
     private List<String> uninstallDependsOn;
 
     /*
      * Application update operation dependency.
      */
-    @JsonProperty(value = "updateDependsOn")
     private List<String> updateDependsOn;
 
     /**
@@ -103,5 +104,53 @@ public final class DependsOnProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("installDependsOn", this.installDependsOn,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("uninstallDependsOn", this.uninstallDependsOn,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("updateDependsOn", this.updateDependsOn,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DependsOnProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DependsOnProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DependsOnProfile.
+     */
+    public static DependsOnProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DependsOnProfile deserializedDependsOnProfile = new DependsOnProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("installDependsOn".equals(fieldName)) {
+                    List<String> installDependsOn = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDependsOnProfile.installDependsOn = installDependsOn;
+                } else if ("uninstallDependsOn".equals(fieldName)) {
+                    List<String> uninstallDependsOn = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDependsOnProfile.uninstallDependsOn = uninstallDependsOn;
+                } else if ("updateDependsOn".equals(fieldName)) {
+                    List<String> updateDependsOn = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDependsOnProfile.updateDependsOn = updateDependsOn;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDependsOnProfile;
+        });
     }
 }

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.operationsmanagement.models;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementConfigurationPropertiesListInner;
 import java.util.List;
 
-/** An immutable client-side representation of ManagementConfigurationPropertiesList. */
+/**
+ * An immutable client-side representation of ManagementConfigurationPropertiesList.
+ */
 public interface ManagementConfigurationPropertiesList {
     /**
      * Gets the value property: List of Management Configuration properties within the subscription.
-     *
+     * 
      * @return the value value.
      */
     List<ManagementConfiguration> value();
@@ -19,7 +21,7 @@ public interface ManagementConfigurationPropertiesList {
     /**
      * Gets the inner
      * com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementConfigurationPropertiesListInner object.
-     *
+     * 
      * @return the inner object.
      */
     ManagementConfigurationPropertiesListInner innerModel();

@@ -6,34 +6,31 @@ package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.models.DataPoint;
-import com.azure.resourcemanager.deviceregistry.models.DataPointsObservabilityMode;
+import com.azure.resourcemanager.deviceregistry.models.DataPointObservabilityMode;
 import org.junit.jupiter.api.Assertions;
 
 public final class DataPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataPoint model = BinaryData.fromString(
-            "{\"name\":\"zidnsezcxtbzsgfy\",\"dataSource\":\"cs\",\"capabilityId\":\"wmdwzjeiachboo\",\"observabilityMode\":\"gauge\",\"dataPointConfiguration\":\"ro\"}")
+            "{\"observabilityMode\":\"Log\",\"name\":\"xxwr\",\"dataSource\":\"jdous\",\"dataPointConfiguration\":\"qvkoc\"}")
             .toObject(DataPoint.class);
-        Assertions.assertEquals("zidnsezcxtbzsgfy", model.name());
-        Assertions.assertEquals("cs", model.dataSource());
-        Assertions.assertEquals("wmdwzjeiachboo", model.capabilityId());
-        Assertions.assertEquals(DataPointsObservabilityMode.GAUGE, model.observabilityMode());
-        Assertions.assertEquals("ro", model.dataPointConfiguration());
+        Assertions.assertEquals("xxwr", model.name());
+        Assertions.assertEquals("jdous", model.dataSource());
+        Assertions.assertEquals("qvkoc", model.dataPointConfiguration());
+        Assertions.assertEquals(DataPointObservabilityMode.LOG, model.observabilityMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataPoint model = new DataPoint().withName("zidnsezcxtbzsgfy")
-            .withDataSource("cs")
-            .withCapabilityId("wmdwzjeiachboo")
-            .withObservabilityMode(DataPointsObservabilityMode.GAUGE)
-            .withDataPointConfiguration("ro");
+        DataPoint model = new DataPoint().withName("xxwr")
+            .withDataSource("jdous")
+            .withDataPointConfiguration("qvkoc")
+            .withObservabilityMode(DataPointObservabilityMode.LOG);
         model = BinaryData.fromObject(model).toObject(DataPoint.class);
-        Assertions.assertEquals("zidnsezcxtbzsgfy", model.name());
-        Assertions.assertEquals("cs", model.dataSource());
-        Assertions.assertEquals("wmdwzjeiachboo", model.capabilityId());
-        Assertions.assertEquals(DataPointsObservabilityMode.GAUGE, model.observabilityMode());
-        Assertions.assertEquals("ro", model.dataPointConfiguration());
+        Assertions.assertEquals("xxwr", model.name());
+        Assertions.assertEquals("jdous", model.dataSource());
+        Assertions.assertEquals("qvkoc", model.dataPointConfiguration());
+        Assertions.assertEquals(DataPointObservabilityMode.LOG, model.observabilityMode());
     }
 }

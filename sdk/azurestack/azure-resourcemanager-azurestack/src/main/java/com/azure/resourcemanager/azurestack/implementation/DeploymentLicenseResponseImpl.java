@@ -14,8 +14,7 @@ public final class DeploymentLicenseResponseImpl implements DeploymentLicenseRes
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    DeploymentLicenseResponseImpl(
-        DeploymentLicenseResponseInner innerObject,
+    DeploymentLicenseResponseImpl(DeploymentLicenseResponseInner innerObject,
         com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

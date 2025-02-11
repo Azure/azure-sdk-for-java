@@ -123,7 +123,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the jti value.
      */
-    @Override public String getUniqueIdentifier() {
+    @Override
+    public String getUniqueIdentifier() {
         return this.jti;
     }
 
@@ -132,7 +133,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the iss value.
      */
-    @Override public String getIssuer() {
+    @Override
+    public String getIssuer() {
         return this.iss;
     }
 
@@ -142,7 +144,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the iat value.
      */
-    @Override public OffsetDateTime getIssuedAt() {
+    @Override
+    public OffsetDateTime getIssuedAt() {
         return this.iat;
     }
 
@@ -152,10 +155,10 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the exp value.
      */
-    @Override public OffsetDateTime getExpiresOn() {
+    @Override
+    public OffsetDateTime getExpiresOn() {
         return this.exp;
     }
-
 
     /**
      * Get the nbf property: The "not before" time before which the token cannot be considered valid, in the number of
@@ -163,7 +166,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the nbf value.
      */
-    @Override public OffsetDateTime getNotBefore() {
+    @Override
+    public OffsetDateTime getNotBefore() {
         return this.nbf;
     }
 
@@ -172,7 +176,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the nonce value.
      */
-    @Override public String getNonce() {
+    @Override
+    public String getNonce() {
         return this.nonce;
     }
 
@@ -181,7 +186,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the version value.
      */
-    @Override public String getVersion() {
+    @Override
+    public String getVersion() {
         return this.version;
     }
 
@@ -190,7 +196,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the runtimeClaims value.
      */
-    @Override public Object getRuntimeClaims() {
+    @Override
+    public Object getRuntimeClaims() {
         return this.runtimeClaims;
     }
 
@@ -199,7 +206,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the inittimeClaims value.
      */
-    @Override public Object getInitTimeClaims() {
+    @Override
+    public Object getInitTimeClaims() {
         return this.inittimeClaims;
     }
 
@@ -208,7 +216,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the policyClaims value.
      */
-    @Override public Object getPolicyClaims() {
+    @Override
+    public Object getPolicyClaims() {
         return this.policyClaims;
     }
 
@@ -217,7 +226,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the verifierType value.
      */
-    @Override public String getVerifierType() {
+    @Override
+    public String getVerifierType() {
         return this.verifierType;
     }
 
@@ -226,7 +236,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the policySigner value.
      */
-    @Override public AttestationSigner getPolicySigner() {
+    @Override
+    public AttestationSigner getPolicySigner() {
         return this.policySigner;
     }
 
@@ -235,7 +246,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the policyHash value.
      */
-    @Override public BinaryData getPolicyHash() {
+    @Override
+    public BinaryData getPolicyHash() {
         return BinaryData.fromBytes(this.policyHash);
     }
 
@@ -244,7 +256,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the isDebuggable value.
      */
-    @Override public Boolean isDebuggable() {
+    @Override
+    public Boolean isDebuggable() {
         return this.isDebuggable;
     }
 
@@ -253,7 +266,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the productId value.
      */
-    @Override public int getProductId() {
+    @Override
+    public int getProductId() {
         return this.productId;
     }
 
@@ -262,7 +276,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the mrEnclave value.
      */
-    @Override public String getMrEnclave() {
+    @Override
+    public String getMrEnclave() {
         return this.mrEnclave;
     }
 
@@ -271,7 +286,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the mrSigner value.
      */
-    @Override public String getMrSigner() {
+    @Override
+    public String getMrSigner() {
         return this.mrSigner;
     }
 
@@ -280,7 +296,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the svn value.
      */
-    @Override public int getSvn() {
+    @Override
+    public int getSvn() {
         return this.svn;
     }
 
@@ -289,7 +306,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the enclaveHeldData value.
      */
-    @Override public BinaryData getEnclaveHeldData() {
+    @Override
+    public BinaryData getEnclaveHeldData() {
         return BinaryData.fromBytes(this.enclaveHeldData);
     }
 
@@ -298,17 +316,18 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the sgxCollateral value.
      */
-    @Override public Object getSgxCollateral() {
+    @Override
+    public Object getSgxCollateral() {
         return this.sgxCollateral;
     }
-
 
     /**
      * Return a public attestation result from the generated result.
      * @param generated - Generated result.
      * @return Public result.
      */
-    public static AttestationResult fromGeneratedAttestationResult(com.azure.security.attestation.implementation.models.AttestationResult generated) {
+    public static AttestationResult fromGeneratedAttestationResult(
+        com.azure.security.attestation.implementation.models.AttestationResult generated) {
         AttestationResultImpl result = new AttestationResultImpl();
         // MAA Claims:
         result.enclaveHeldData = generated.getEnclaveHeldData();
@@ -325,8 +344,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
 
         // RFC 7515 Claims
         result.exp = OffsetDateTime.ofInstant(Instant.ofEpochSecond(generated.getExp().longValue()), ZoneOffset.UTC);
-        result.iat =  OffsetDateTime.ofInstant(Instant.ofEpochSecond(generated.getIat().longValue()), ZoneOffset.UTC);
-        result.nbf  =  OffsetDateTime.ofInstant(Instant.ofEpochSecond(generated.getNbf().longValue()), ZoneOffset.UTC);
+        result.iat = OffsetDateTime.ofInstant(Instant.ofEpochSecond(generated.getIat().longValue()), ZoneOffset.UTC);
+        result.nbf = OffsetDateTime.ofInstant(Instant.ofEpochSecond(generated.getNbf().longValue()), ZoneOffset.UTC);
 
         // SGX properties.
         result.mrEnclave = generated.getMrEnclave();

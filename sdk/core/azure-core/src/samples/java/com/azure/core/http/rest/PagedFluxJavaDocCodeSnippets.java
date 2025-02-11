@@ -125,7 +125,7 @@ public final class PagedFluxJavaDocCodeSnippets {
     public void byPageSnippet() {
         PagedFlux<Integer> pagedFlux = createAnInstance();
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.bypage
+        // BEGIN: com.azure.core.http.rest.PagedFlux.byPage
         // Start processing the results from first page
         pagedFlux.byPage()
             .log()
@@ -135,9 +135,9 @@ public final class PagedFluxJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedflux.bypage
+        // END: com.azure.core.http.rest.PagedFlux.byPage
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.bypage#String
+        // BEGIN: com.azure.core.http.rest.PagedFlux.byPage#String
         // Start processing the results from a page associated with the continuation token
         String continuationToken = getContinuationToken();
         pagedFlux.byPage(continuationToken)
@@ -148,7 +148,7 @@ public final class PagedFluxJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedflux.bypage#String
+        // END: com.azure.core.http.rest.PagedFlux.byPage#String
     }
 
     /**
@@ -210,14 +210,14 @@ public final class PagedFluxJavaDocCodeSnippets {
 
         // Create a PagedFlux from a PagedFlux with all exceptions mapped to a specific exception.
         final PagedFlux<Integer> pagedFlux = createAnInstance();
-        final Supplier<PageRetriever<String, PagedResponse<Integer>>> eprovider = () ->
+        final Supplier<PageRetriever<String, PagedResponse<Integer>>> exceptionProvider = () ->
             (continuationToken, pageSize) -> {
                 Flux<PagedResponse<Integer>> flux = (continuationToken == null)
                     ? pagedFlux.byPage()
                     : pagedFlux.byPage(continuationToken);
                 return flux.onErrorMap(Exception.class, PaginationException::new);
             };
-        final PagedFlux<Integer> exceptionMappedPagedFlux = PagedFlux.create(eprovider);
+        final PagedFlux<Integer> exceptionMappedPagedFlux = PagedFlux.create(exceptionProvider);
         // END: com.azure.core.http.rest.pagedflux.create.decoration
     }
 

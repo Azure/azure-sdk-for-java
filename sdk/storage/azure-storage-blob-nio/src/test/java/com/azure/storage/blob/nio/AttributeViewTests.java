@@ -202,11 +202,9 @@ public class AttributeViewTests extends BlobNioTestBase {
 
     private static Stream<Arguments> azureBlobFileAttributeViewSetBlobHttpHeadersSupplier()
         throws NoSuchAlgorithmException {
-        return Stream.of(
-            Arguments.of(null, null, null, null, null, null),
+        return Stream.of(Arguments.of(null, null, null, null, null, null),
             Arguments.of("control", "disposition", "encoding", "language",
-                Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes())), "typr")
-        );
+                Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes())), "typr"));
     }
 
     @Test
@@ -219,8 +217,9 @@ public class AttributeViewTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz",
-        "i0,a,i_,a" /* Test culture sensitive word sort */}, nullValues = "null")
+    @CsvSource(
+        value = { "null,null,null,null", "foo,bar,fizz,buzz", "i0,a,i_,a" /* Test culture sensitive word sort */ },
+        nullValues = "null")
     public void azureBlobFileAttributeViewSetMetadata(String key1, String value1, String key2, String value2)
         throws IOException {
         AzureBlobFileAttributeView view = new AzureBlobFileAttributeView(fs.getPath(bc.getBlobName()));
@@ -281,10 +280,8 @@ public class AttributeViewTests extends BlobNioTestBase {
     }
 
     private static Stream<Arguments> attributeViewSetTimesUnsupportedSupplier() {
-        return Stream.of(
-            Arguments.of(FileTime.fromMillis(System.currentTimeMillis()), null, null),
+        return Stream.of(Arguments.of(FileTime.fromMillis(System.currentTimeMillis()), null, null),
             Arguments.of(null, FileTime.fromMillis(System.currentTimeMillis()), null),
-            Arguments.of(null, null, FileTime.fromMillis(System.currentTimeMillis()))
-        );
+            Arguments.of(null, null, FileTime.fromMillis(System.currentTimeMillis())));
     }
 }

@@ -5,13 +5,14 @@ package com.azure.communication.callingserver.models;
 
 import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callingserver.implementation.models.CommunicationError;
-import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponse;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,21 +51,20 @@ public final class CallingServerErrorException extends HttpResponseException {
     }
 
     static {
-        ErrorConstructorProxy.setAccessor(
-            new ErrorConstructorProxy.ErrorConstructorAccessor() {
-                @Override
-                public CallingServerErrorException create(HttpResponseException internalHeaders) {
-                    CallingServerError error = null;
-                    if (internalHeaders.getValue() != null) {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-                        CommunicationErrorResponse communicationErrorResponse = objectMapper.convertValue(
-                            internalHeaders.getValue(), CommunicationErrorResponse.class);
-                        error = convert(communicationErrorResponse.getError());
-                    }
-                    return new CallingServerErrorException(internalHeaders.getMessage(), internalHeaders.getResponse(), error);
+        ErrorConstructorProxy.setAccessor(internalHeaders -> {
+            CallingServerError error = null;
+            if (internalHeaders.getValue() != null) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+                    writer.writeUntyped(internalHeaders.getValue()).flush();
                 }
-            });
+
+                try (JsonReader jsonReader = JsonProviders.createReader(outputStream.toByteArray())) {
+                    error = convert(CommunicationError.fromJson(jsonReader));
+                }
+            }
+            return new CallingServerErrorException(internalHeaders.getMessage(), internalHeaders.getResponse(), error);
+        });
     }
 
     /**
@@ -78,20 +78,14 @@ public final class CallingServerErrorException extends HttpResponseException {
         List<CallingServerError> details = new ArrayList<>();
 
         if (communicationError.getDetails() != null) {
-            details = communicationError
-                .getDetails()
+            details = communicationError.getDetails()
                 .stream()
                 .map(CallingServerErrorException::convert)
                 .collect(Collectors.toList());
         }
 
-        return new CallingServerError(
-            communicationError.getMessage(),
-            communicationError.getCode(),
-            communicationError.getTarget(),
-            details,
-            convert(communicationError.getInnererror())
-        );
+        return new CallingServerError(communicationError.getMessage(), communicationError.getCode(),
+            communicationError.getTarget(), details, convert(communicationError.getInnererror()));
     }
 
     @Override

@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billingbenefits.fluent.models.SavingsPlanOrderAliasModelInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The SavingsPlanPurchaseValidateRequest model. */
+/**
+ * The SavingsPlanPurchaseValidateRequest model.
+ */
 @Fluent
-public final class SavingsPlanPurchaseValidateRequest {
+public final class SavingsPlanPurchaseValidateRequest implements JsonSerializable<SavingsPlanPurchaseValidateRequest> {
     /*
      * The benefits property.
      */
-    @JsonProperty(value = "benefits")
     private List<SavingsPlanOrderAliasModelInner> benefits;
 
-    /** Creates an instance of SavingsPlanPurchaseValidateRequest class. */
+    /**
+     * Creates an instance of SavingsPlanPurchaseValidateRequest class.
+     */
     public SavingsPlanPurchaseValidateRequest() {
     }
 
     /**
      * Get the benefits property: The benefits property.
-     *
+     * 
      * @return the benefits value.
      */
     public List<SavingsPlanOrderAliasModelInner> benefits() {
@@ -33,7 +40,7 @@ public final class SavingsPlanPurchaseValidateRequest {
 
     /**
      * Set the benefits property: The benefits property.
-     *
+     * 
      * @param benefits the benefits value to set.
      * @return the SavingsPlanPurchaseValidateRequest object itself.
      */
@@ -44,12 +51,51 @@ public final class SavingsPlanPurchaseValidateRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (benefits() != null) {
             benefits().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("benefits", this.benefits, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanPurchaseValidateRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanPurchaseValidateRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SavingsPlanPurchaseValidateRequest.
+     */
+    public static SavingsPlanPurchaseValidateRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanPurchaseValidateRequest deserializedSavingsPlanPurchaseValidateRequest
+                = new SavingsPlanPurchaseValidateRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("benefits".equals(fieldName)) {
+                    List<SavingsPlanOrderAliasModelInner> benefits
+                        = reader.readArray(reader1 -> SavingsPlanOrderAliasModelInner.fromJson(reader1));
+                    deserializedSavingsPlanPurchaseValidateRequest.benefits = benefits;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanPurchaseValidateRequest;
+        });
     }
 }

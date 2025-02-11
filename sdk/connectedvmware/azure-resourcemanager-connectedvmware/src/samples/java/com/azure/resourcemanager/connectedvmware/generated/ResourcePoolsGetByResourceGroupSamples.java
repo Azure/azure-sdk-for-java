@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-/** Samples for ResourcePools GetByResourceGroup. */
+/**
+ * Samples for ResourcePools GetByResourceGroup.
+ */
 public final class ResourcePoolsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetResourcePool.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetResourcePool.json
      */
     /**
      * Sample code: GetResourcePool.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getResourcePool(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {

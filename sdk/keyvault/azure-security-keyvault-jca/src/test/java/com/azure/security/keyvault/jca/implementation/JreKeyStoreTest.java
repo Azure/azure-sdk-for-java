@@ -21,5 +21,4 @@ public class JreKeyStoreTest {
         assertNotNull(jreCertificates.getCertificateKeys());
     }
 
-
 }

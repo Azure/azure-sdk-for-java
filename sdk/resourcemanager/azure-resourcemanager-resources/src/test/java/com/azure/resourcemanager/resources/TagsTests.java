@@ -17,16 +17,20 @@ public class TagsTests extends ResourceManagementTest {
     @Test
     public void canUpdateTag() throws Exception {
         // assume there is a resource
-        ResourceGroup resource = resourceClient.resourceGroups().list().stream()
+        ResourceGroup resource = resourceClient.resourceGroups()
+            .list()
+            .stream()
             .filter(resourceGroup -> "Succeeded".equalsIgnoreCase(resourceGroup.provisioningState()))
-            .findFirst().get();
+            .findFirst()
+            .get();
 
         Map<String, String> originalTags = resource.tags();
         if (originalTags == null) {
             originalTags = new HashMap<>();
         }
 
-        TagResource updatedTags = resourceClient.tagOperations().updateTags(resource, new TypeSerializationTests.Map1<>("tag.1", "value.1"));
+        TagResource updatedTags = resourceClient.tagOperations()
+            .updateTags(resource, new TypeSerializationTests.Map1<>("tag.1", "value.1"));
         Assertions.assertNotNull(updatedTags.tags());
         Assertions.assertEquals(1, updatedTags.tags().size());
         Assertions.assertTrue(updatedTags.tags().containsKey("tag.1"));

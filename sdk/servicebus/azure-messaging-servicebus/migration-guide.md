@@ -494,7 +494,7 @@ the transaction is committed because it cannot route a receive operation through
         });
 ``` 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fservice-bus%2FMIGRATIONGUIDE.png)
+
 
 ## Additional samples
 

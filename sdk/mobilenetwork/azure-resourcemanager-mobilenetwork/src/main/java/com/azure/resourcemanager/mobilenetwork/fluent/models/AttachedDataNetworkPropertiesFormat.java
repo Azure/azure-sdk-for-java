@@ -6,56 +6,62 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.NaptConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Data network properties.
  */
 @Fluent
-public final class AttachedDataNetworkPropertiesFormat {
+public final class AttachedDataNetworkPropertiesFormat
+    implements JsonSerializable<AttachedDataNetworkPropertiesFormat> {
     /*
      * The provisioning state of the attached data network resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * The user plane interface on the data network. For 5G networks, this is the N6 interface. For 4G networks, this is the SGi interface.
+     * The user plane interface on the data network. For 5G networks, this is the N6 interface. For 4G networks, this is
+     * the SGi interface.
      */
-    @JsonProperty(value = "userPlaneDataInterface", required = true)
     private InterfaceProperties userPlaneDataInterface;
 
     /*
-     * The DNS servers to signal to UEs to use for this attached data network. This configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
+     * The DNS servers to signal to UEs to use for this attached data network. This configuration is mandatory - if you
+     * don't want DNS servers, you must provide an empty array.
      */
-    @JsonProperty(value = "dnsAddresses", required = true)
     private List<String> dnsAddresses;
 
     /*
      * The network address and port translation (NAPT) configuration.
      * If this is not specified, the attached data network will use a default NAPT configuration with NAPT enabled.
      */
-    @JsonProperty(value = "naptConfiguration")
     private NaptConfiguration naptConfiguration;
 
     /*
-     * The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance will dynamically assign IP addresses to UEs.
+     * The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance
+     * will dynamically assign IP addresses to UEs.
      * The packet core instance assigns an IP address to a UE when the UE sets up a PDU session.
-     *  You must define at least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix. If you define both, they must be of the same size.
+     * You must define at least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix. If you
+     * define both, they must be of the same size.
      */
-    @JsonProperty(value = "userEquipmentAddressPoolPrefix")
     private List<String> userEquipmentAddressPoolPrefix;
 
     /*
-     * The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance will assign static IP addresses to UEs.
-     * The packet core instance assigns an IP address to a UE when the UE sets up a PDU session. The static IP address for a specific UE is set in StaticIPConfiguration on the corresponding SIM resource.
-     * At least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined, they must be of the same size.
+     * The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance
+     * will assign static IP addresses to UEs.
+     * The packet core instance assigns an IP address to a UE when the UE sets up a PDU session. The static IP address
+     * for a specific UE is set in StaticIPConfiguration on the corresponding SIM resource.
+     * At least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both
+     * are defined, they must be of the same size.
      */
-    @JsonProperty(value = "userEquipmentStaticAddressPoolPrefix")
     private List<String> userEquipmentStaticAddressPoolPrefix;
 
     /**
@@ -223,4 +229,67 @@ public final class AttachedDataNetworkPropertiesFormat {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AttachedDataNetworkPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("userPlaneDataInterface", this.userPlaneDataInterface);
+        jsonWriter.writeArrayField("dnsAddresses", this.dnsAddresses, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("naptConfiguration", this.naptConfiguration);
+        jsonWriter.writeArrayField("userEquipmentAddressPoolPrefix", this.userEquipmentAddressPoolPrefix,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("userEquipmentStaticAddressPoolPrefix", this.userEquipmentStaticAddressPoolPrefix,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttachedDataNetworkPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttachedDataNetworkPropertiesFormat if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AttachedDataNetworkPropertiesFormat.
+     */
+    public static AttachedDataNetworkPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttachedDataNetworkPropertiesFormat deserializedAttachedDataNetworkPropertiesFormat
+                = new AttachedDataNetworkPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userPlaneDataInterface".equals(fieldName)) {
+                    deserializedAttachedDataNetworkPropertiesFormat.userPlaneDataInterface
+                        = InterfaceProperties.fromJson(reader);
+                } else if ("dnsAddresses".equals(fieldName)) {
+                    List<String> dnsAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAttachedDataNetworkPropertiesFormat.dnsAddresses = dnsAddresses;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAttachedDataNetworkPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("naptConfiguration".equals(fieldName)) {
+                    deserializedAttachedDataNetworkPropertiesFormat.naptConfiguration
+                        = NaptConfiguration.fromJson(reader);
+                } else if ("userEquipmentAddressPoolPrefix".equals(fieldName)) {
+                    List<String> userEquipmentAddressPoolPrefix = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAttachedDataNetworkPropertiesFormat.userEquipmentAddressPoolPrefix
+                        = userEquipmentAddressPoolPrefix;
+                } else if ("userEquipmentStaticAddressPoolPrefix".equals(fieldName)) {
+                    List<String> userEquipmentStaticAddressPoolPrefix
+                        = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAttachedDataNetworkPropertiesFormat.userEquipmentStaticAddressPoolPrefix
+                        = userEquipmentStaticAddressPoolPrefix;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttachedDataNetworkPropertiesFormat;
+        });
+    }
 }

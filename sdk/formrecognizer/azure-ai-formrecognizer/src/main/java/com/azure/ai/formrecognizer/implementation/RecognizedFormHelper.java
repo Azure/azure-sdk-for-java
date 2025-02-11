@@ -11,13 +11,15 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 public final class RecognizedFormHelper {
     private static RecognizedFormAccessor accessor;
 
-    private RecognizedFormHelper() { }
+    private RecognizedFormHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link RecognizedForm} instance.
      */
     public interface RecognizedFormAccessor {
         void setFormTypeConfidence(RecognizedForm form, Float formTypeConfidence);
+
         void setModelId(RecognizedForm form, String modelId);
     }
 

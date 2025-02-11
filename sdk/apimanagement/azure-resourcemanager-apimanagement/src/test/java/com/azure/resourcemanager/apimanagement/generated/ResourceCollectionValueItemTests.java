@@ -10,9 +10,8 @@ import com.azure.resourcemanager.apimanagement.models.ResourceCollectionValueIte
 public final class ResourceCollectionValueItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceCollectionValueItem model =
-            BinaryData
-                .fromString("{\"id\":\"fwtgdfkkauigvmua\",\"name\":\"mczfedyuepsvplt\",\"type\":\"dajjvywe\"}")
+        ResourceCollectionValueItem model
+            = BinaryData.fromString("{\"id\":\"fwtgdfkkauigvmua\",\"name\":\"mczfedyuepsvplt\",\"type\":\"dajjvywe\"}")
                 .toObject(ResourceCollectionValueItem.class);
     }
 

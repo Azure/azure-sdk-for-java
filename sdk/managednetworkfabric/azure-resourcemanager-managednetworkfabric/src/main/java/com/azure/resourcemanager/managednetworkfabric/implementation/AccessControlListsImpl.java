@@ -26,22 +26,18 @@ public final class AccessControlListsImpl implements AccessControlLists {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    public AccessControlListsImpl(
-        AccessControlListsClient innerClient,
+    public AccessControlListsImpl(AccessControlListsClient innerClient,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<AccessControlList> getByResourceGroupWithResponse(
-        String resourceGroupName, String accessControlListName, Context context) {
-        Response<AccessControlListInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accessControlListName, context);
+    public Response<AccessControlList> getByResourceGroupWithResponse(String resourceGroupName,
+        String accessControlListName, Context context) {
+        Response<AccessControlListInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accessControlListName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AccessControlListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -49,8 +45,8 @@ public final class AccessControlListsImpl implements AccessControlLists {
     }
 
     public AccessControlList getByResourceGroup(String resourceGroupName, String accessControlListName) {
-        AccessControlListInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, accessControlListName);
+        AccessControlListInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, accessControlListName);
         if (inner != null) {
             return new AccessControlListImpl(inner, this.manager());
         } else {
@@ -68,29 +64,29 @@ public final class AccessControlListsImpl implements AccessControlLists {
 
     public PagedIterable<AccessControlList> listByResourceGroup(String resourceGroupName) {
         PagedIterable<AccessControlListInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AccessControlListImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccessControlListImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AccessControlList> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<AccessControlListInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AccessControlListImpl(inner1, this.manager()));
+        PagedIterable<AccessControlListInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccessControlListImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AccessControlList> list() {
         PagedIterable<AccessControlListInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AccessControlListImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccessControlListImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AccessControlList> list(Context context) {
         PagedIterable<AccessControlListInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AccessControlListImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccessControlListImpl(inner1, this.manager()));
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body) {
-        CommonPostActionResponseForStateUpdateInner inner =
-            this.serviceClient().updateAdministrativeState(resourceGroupName, accessControlListName, body);
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String accessControlListName, UpdateAdministrativeState body) {
+        CommonPostActionResponseForStateUpdateInner inner
+            = this.serviceClient().updateAdministrativeState(resourceGroupName, accessControlListName, body);
         if (inner != null) {
             return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
@@ -98,10 +94,10 @@ public final class AccessControlListsImpl implements AccessControlLists {
         }
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context) {
-        CommonPostActionResponseForStateUpdateInner inner =
-            this.serviceClient().updateAdministrativeState(resourceGroupName, accessControlListName, body, context);
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String accessControlListName, UpdateAdministrativeState body, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner
+            = this.serviceClient().updateAdministrativeState(resourceGroupName, accessControlListName, body, context);
         if (inner != null) {
             return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
@@ -110,8 +106,8 @@ public final class AccessControlListsImpl implements AccessControlLists {
     }
 
     public CommonPostActionResponseForStateUpdate resync(String resourceGroupName, String accessControlListName) {
-        CommonPostActionResponseForStateUpdateInner inner =
-            this.serviceClient().resync(resourceGroupName, accessControlListName);
+        CommonPostActionResponseForStateUpdateInner inner
+            = this.serviceClient().resync(resourceGroupName, accessControlListName);
         if (inner != null) {
             return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
@@ -119,10 +115,10 @@ public final class AccessControlListsImpl implements AccessControlLists {
         }
     }
 
-    public CommonPostActionResponseForStateUpdate resync(
-        String resourceGroupName, String accessControlListName, Context context) {
-        CommonPostActionResponseForStateUpdateInner inner =
-            this.serviceClient().resync(resourceGroupName, accessControlListName, context);
+    public CommonPostActionResponseForStateUpdate resync(String resourceGroupName, String accessControlListName,
+        Context context) {
+        CommonPostActionResponseForStateUpdateInner inner
+            = this.serviceClient().resync(resourceGroupName, accessControlListName, context);
         if (inner != null) {
             return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
@@ -131,8 +127,8 @@ public final class AccessControlListsImpl implements AccessControlLists {
     }
 
     public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String accessControlListName) {
-        ValidateConfigurationResponseInner inner =
-            this.serviceClient().validateConfiguration(resourceGroupName, accessControlListName);
+        ValidateConfigurationResponseInner inner
+            = this.serviceClient().validateConfiguration(resourceGroupName, accessControlListName);
         if (inner != null) {
             return new ValidateConfigurationResponseImpl(inner, this.manager());
         } else {
@@ -140,10 +136,10 @@ public final class AccessControlListsImpl implements AccessControlLists {
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String accessControlListName, Context context) {
-        ValidateConfigurationResponseInner inner =
-            this.serviceClient().validateConfiguration(resourceGroupName, accessControlListName, context);
+    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String accessControlListName,
+        Context context) {
+        ValidateConfigurationResponseInner inner
+            = this.serviceClient().validateConfiguration(resourceGroupName, accessControlListName, context);
         if (inner != null) {
             return new ValidateConfigurationResponseImpl(inner, this.manager());
         } else {
@@ -152,85 +148,57 @@ public final class AccessControlListsImpl implements AccessControlLists {
     }
 
     public AccessControlList getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accessControlListName = Utils.getValueFromIdByName(id, "accessControlLists");
+        String accessControlListName = ResourceManagerUtils.getValueFromIdByName(id, "accessControlLists");
         if (accessControlListName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'accessControlLists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accessControlLists'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accessControlListName, Context.NONE).getValue();
     }
 
     public Response<AccessControlList> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accessControlListName = Utils.getValueFromIdByName(id, "accessControlLists");
+        String accessControlListName = ResourceManagerUtils.getValueFromIdByName(id, "accessControlLists");
         if (accessControlListName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'accessControlLists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accessControlLists'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accessControlListName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accessControlListName = Utils.getValueFromIdByName(id, "accessControlLists");
+        String accessControlListName = ResourceManagerUtils.getValueFromIdByName(id, "accessControlLists");
         if (accessControlListName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'accessControlLists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accessControlLists'.", id)));
         }
         this.delete(resourceGroupName, accessControlListName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accessControlListName = Utils.getValueFromIdByName(id, "accessControlLists");
+        String accessControlListName = ResourceManagerUtils.getValueFromIdByName(id, "accessControlLists");
         if (accessControlListName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'accessControlLists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accessControlLists'.", id)));
         }
         this.delete(resourceGroupName, accessControlListName, context);
     }

@@ -5,84 +5,76 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the provisioned cluster.
  */
 @Fluent
-public final class ProvisionedClusterProperties {
+public final class ProvisionedClusterProperties implements JsonSerializable<ProvisionedClusterProperties> {
     /*
      * The profile for Linux VMs in the provisioned cluster.
      */
-    @JsonProperty(value = "linuxProfile")
     private LinuxProfileProperties linuxProfile;
 
     /*
      * The profile for control plane of the provisioned cluster.
      */
-    @JsonProperty(value = "controlPlane")
     private ControlPlaneProfile controlPlane;
 
     /*
      * The version of Kubernetes in use by the provisioned cluster.
      */
-    @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
 
     /*
      * The network configuration profile for the provisioned cluster.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
      * The storage configuration profile for the provisioned cluster.
      */
-    @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /*
      * The SSH restricted access profile for the VMs in the provisioned cluster.
      */
-    @JsonProperty(value = "clusterVMAccessProfile")
     private ClusterVMAccessProfile clusterVMAccessProfile;
 
     /*
      * The agent pool properties for the provisioned cluster.
      */
-    @JsonProperty(value = "agentPoolProfiles")
     private List<NamedAgentPoolProfile> agentPoolProfiles;
 
     /*
      * The profile for the underlying cloud infrastructure provider for the provisioned cluster.
      */
-    @JsonProperty(value = "cloudProviderProfile")
     private CloudProviderProfile cloudProviderProfile;
 
     /*
      * The status of the latest long running operation for the provisioned cluster.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /*
      * The observed status of the provisioned cluster.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisionedClusterPropertiesStatus status;
 
     /*
      * The license profile of the provisioned cluster.
      */
-    @JsonProperty(value = "licenseProfile")
     private ProvisionedClusterLicenseProfile licenseProfile;
 
     /*
      * Parameters to be applied to the cluster-autoscaler when auto scaling is enabled for the provisioned cluster.
      */
-    @JsonProperty(value = "autoScalerProfile")
     private ProvisionedClusterPropertiesAutoScalerProfile autoScalerProfile;
 
     /**
@@ -352,5 +344,81 @@ public final class ProvisionedClusterProperties {
         if (autoScalerProfile() != null) {
             autoScalerProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linuxProfile", this.linuxProfile);
+        jsonWriter.writeJsonField("controlPlane", this.controlPlane);
+        jsonWriter.writeStringField("kubernetesVersion", this.kubernetesVersion);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("clusterVMAccessProfile", this.clusterVMAccessProfile);
+        jsonWriter.writeArrayField("agentPoolProfiles", this.agentPoolProfiles,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("cloudProviderProfile", this.cloudProviderProfile);
+        jsonWriter.writeJsonField("licenseProfile", this.licenseProfile);
+        jsonWriter.writeJsonField("autoScalerProfile", this.autoScalerProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProvisionedClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProvisionedClusterProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProvisionedClusterProperties.
+     */
+    public static ProvisionedClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProvisionedClusterProperties deserializedProvisionedClusterProperties = new ProvisionedClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linuxProfile".equals(fieldName)) {
+                    deserializedProvisionedClusterProperties.linuxProfile = LinuxProfileProperties.fromJson(reader);
+                } else if ("controlPlane".equals(fieldName)) {
+                    deserializedProvisionedClusterProperties.controlPlane = ControlPlaneProfile.fromJson(reader);
+                } else if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedProvisionedClusterProperties.kubernetesVersion = reader.getString();
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedProvisionedClusterProperties.networkProfile = NetworkProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedProvisionedClusterProperties.storageProfile = StorageProfile.fromJson(reader);
+                } else if ("clusterVMAccessProfile".equals(fieldName)) {
+                    deserializedProvisionedClusterProperties.clusterVMAccessProfile
+                        = ClusterVMAccessProfile.fromJson(reader);
+                } else if ("agentPoolProfiles".equals(fieldName)) {
+                    List<NamedAgentPoolProfile> agentPoolProfiles
+                        = reader.readArray(reader1 -> NamedAgentPoolProfile.fromJson(reader1));
+                    deserializedProvisionedClusterProperties.agentPoolProfiles = agentPoolProfiles;
+                } else if ("cloudProviderProfile".equals(fieldName)) {
+                    deserializedProvisionedClusterProperties.cloudProviderProfile
+                        = CloudProviderProfile.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedProvisionedClusterProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedProvisionedClusterProperties.status
+                        = ProvisionedClusterPropertiesStatus.fromJson(reader);
+                } else if ("licenseProfile".equals(fieldName)) {
+                    deserializedProvisionedClusterProperties.licenseProfile
+                        = ProvisionedClusterLicenseProfile.fromJson(reader);
+                } else if ("autoScalerProfile".equals(fieldName)) {
+                    deserializedProvisionedClusterProperties.autoScalerProfile
+                        = ProvisionedClusterPropertiesAutoScalerProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProvisionedClusterProperties;
+        });
     }
 }

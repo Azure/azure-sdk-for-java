@@ -5,27 +5,60 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * ControlPlaneNodePatchConfiguration represents the properties of the control plane that can be patched for this
  * Kubernetes cluster.
  */
 @Fluent
-public final class ControlPlaneNodePatchConfiguration {
+public final class ControlPlaneNodePatchConfiguration implements JsonSerializable<ControlPlaneNodePatchConfiguration> {
+    /*
+     * The configuration of administrator credentials for the control plane nodes.
+     */
+    private AdministratorConfigurationPatch administratorConfiguration;
+
     /*
      * The number of virtual machines that use this configuration.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
-    /** Creates an instance of ControlPlaneNodePatchConfiguration class. */
+    /**
+     * Creates an instance of ControlPlaneNodePatchConfiguration class.
+     */
     public ControlPlaneNodePatchConfiguration() {
     }
 
     /**
+     * Get the administratorConfiguration property: The configuration of administrator credentials for the control plane
+     * nodes.
+     * 
+     * @return the administratorConfiguration value.
+     */
+    public AdministratorConfigurationPatch administratorConfiguration() {
+        return this.administratorConfiguration;
+    }
+
+    /**
+     * Set the administratorConfiguration property: The configuration of administrator credentials for the control plane
+     * nodes.
+     * 
+     * @param administratorConfiguration the administratorConfiguration value to set.
+     * @return the ControlPlaneNodePatchConfiguration object itself.
+     */
+    public ControlPlaneNodePatchConfiguration
+        withAdministratorConfiguration(AdministratorConfigurationPatch administratorConfiguration) {
+        this.administratorConfiguration = administratorConfiguration;
+        return this;
+    }
+
+    /**
      * Get the count property: The number of virtual machines that use this configuration.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -34,7 +67,7 @@ public final class ControlPlaneNodePatchConfiguration {
 
     /**
      * Set the count property: The number of virtual machines that use this configuration.
-     *
+     * 
      * @param count the count value to set.
      * @return the ControlPlaneNodePatchConfiguration object itself.
      */
@@ -45,9 +78,53 @@ public final class ControlPlaneNodePatchConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (administratorConfiguration() != null) {
+            administratorConfiguration().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("administratorConfiguration", this.administratorConfiguration);
+        jsonWriter.writeNumberField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControlPlaneNodePatchConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControlPlaneNodePatchConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ControlPlaneNodePatchConfiguration.
+     */
+    public static ControlPlaneNodePatchConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControlPlaneNodePatchConfiguration deserializedControlPlaneNodePatchConfiguration
+                = new ControlPlaneNodePatchConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administratorConfiguration".equals(fieldName)) {
+                    deserializedControlPlaneNodePatchConfiguration.administratorConfiguration
+                        = AdministratorConfigurationPatch.fromJson(reader);
+                } else if ("count".equals(fieldName)) {
+                    deserializedControlPlaneNodePatchConfiguration.count = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControlPlaneNodePatchConfiguration;
+        });
     }
 }

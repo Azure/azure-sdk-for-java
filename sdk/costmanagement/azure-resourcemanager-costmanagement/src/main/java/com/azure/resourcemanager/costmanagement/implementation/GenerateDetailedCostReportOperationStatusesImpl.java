@@ -16,8 +16,7 @@ public final class GenerateDetailedCostReportOperationStatusesImpl
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    GenerateDetailedCostReportOperationStatusesImpl(
-        GenerateDetailedCostReportOperationStatusesInner innerObject,
+    GenerateDetailedCostReportOperationStatusesImpl(GenerateDetailedCostReportOperationStatusesInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -5,73 +5,73 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Basic summary of a data item migration. */
+/**
+ * Basic summary of a data item migration.
+ */
 @Immutable
-public class DataItemMigrationSummaryResult {
+public class DataItemMigrationSummaryResult implements JsonSerializable<DataItemMigrationSummaryResult> {
     /*
      * Name of the item
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Migration start time
      */
-    @JsonProperty(value = "startedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedOn;
 
     /*
      * Migration end time
      */
-    @JsonProperty(value = "endedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endedOn;
 
     /*
      * Current state of migration
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState state;
 
     /*
      * Status message
      */
-    @JsonProperty(value = "statusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String statusMessage;
 
     /*
      * Number of items
      */
-    @JsonProperty(value = "itemsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long itemsCount;
 
     /*
      * Number of successfully completed items
      */
-    @JsonProperty(value = "itemsCompletedCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long itemsCompletedCount;
 
     /*
      * Wildcard string prefix to use for querying all errors of the item
      */
-    @JsonProperty(value = "errorPrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String errorPrefix;
 
     /*
      * Wildcard string prefix to use for querying all sub-tem results of the item
      */
-    @JsonProperty(value = "resultPrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String resultPrefix;
 
-    /** Creates an instance of DataItemMigrationSummaryResult class. */
+    /**
+     * Creates an instance of DataItemMigrationSummaryResult class.
+     */
     public DataItemMigrationSummaryResult() {
     }
 
     /**
      * Get the name property: Name of the item.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -79,8 +79,19 @@ public class DataItemMigrationSummaryResult {
     }
 
     /**
+     * Set the name property: Name of the item.
+     * 
+     * @param name the name value to set.
+     * @return the DataItemMigrationSummaryResult object itself.
+     */
+    DataItemMigrationSummaryResult withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the startedOn property: Migration start time.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -88,8 +99,19 @@ public class DataItemMigrationSummaryResult {
     }
 
     /**
+     * Set the startedOn property: Migration start time.
+     * 
+     * @param startedOn the startedOn value to set.
+     * @return the DataItemMigrationSummaryResult object itself.
+     */
+    DataItemMigrationSummaryResult withStartedOn(OffsetDateTime startedOn) {
+        this.startedOn = startedOn;
+        return this;
+    }
+
+    /**
      * Get the endedOn property: Migration end time.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -97,8 +119,19 @@ public class DataItemMigrationSummaryResult {
     }
 
     /**
+     * Set the endedOn property: Migration end time.
+     * 
+     * @param endedOn the endedOn value to set.
+     * @return the DataItemMigrationSummaryResult object itself.
+     */
+    DataItemMigrationSummaryResult withEndedOn(OffsetDateTime endedOn) {
+        this.endedOn = endedOn;
+        return this;
+    }
+
+    /**
      * Get the state property: Current state of migration.
-     *
+     * 
      * @return the state value.
      */
     public MigrationState state() {
@@ -106,8 +139,19 @@ public class DataItemMigrationSummaryResult {
     }
 
     /**
+     * Set the state property: Current state of migration.
+     * 
+     * @param state the state value to set.
+     * @return the DataItemMigrationSummaryResult object itself.
+     */
+    DataItemMigrationSummaryResult withState(MigrationState state) {
+        this.state = state;
+        return this;
+    }
+
+    /**
      * Get the statusMessage property: Status message.
-     *
+     * 
      * @return the statusMessage value.
      */
     public String statusMessage() {
@@ -115,8 +159,19 @@ public class DataItemMigrationSummaryResult {
     }
 
     /**
+     * Set the statusMessage property: Status message.
+     * 
+     * @param statusMessage the statusMessage value to set.
+     * @return the DataItemMigrationSummaryResult object itself.
+     */
+    DataItemMigrationSummaryResult withStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
+        return this;
+    }
+
+    /**
      * Get the itemsCount property: Number of items.
-     *
+     * 
      * @return the itemsCount value.
      */
     public Long itemsCount() {
@@ -124,8 +179,19 @@ public class DataItemMigrationSummaryResult {
     }
 
     /**
+     * Set the itemsCount property: Number of items.
+     * 
+     * @param itemsCount the itemsCount value to set.
+     * @return the DataItemMigrationSummaryResult object itself.
+     */
+    DataItemMigrationSummaryResult withItemsCount(Long itemsCount) {
+        this.itemsCount = itemsCount;
+        return this;
+    }
+
+    /**
      * Get the itemsCompletedCount property: Number of successfully completed items.
-     *
+     * 
      * @return the itemsCompletedCount value.
      */
     public Long itemsCompletedCount() {
@@ -133,8 +199,19 @@ public class DataItemMigrationSummaryResult {
     }
 
     /**
+     * Set the itemsCompletedCount property: Number of successfully completed items.
+     * 
+     * @param itemsCompletedCount the itemsCompletedCount value to set.
+     * @return the DataItemMigrationSummaryResult object itself.
+     */
+    DataItemMigrationSummaryResult withItemsCompletedCount(Long itemsCompletedCount) {
+        this.itemsCompletedCount = itemsCompletedCount;
+        return this;
+    }
+
+    /**
      * Get the errorPrefix property: Wildcard string prefix to use for querying all errors of the item.
-     *
+     * 
      * @return the errorPrefix value.
      */
     public String errorPrefix() {
@@ -142,8 +219,19 @@ public class DataItemMigrationSummaryResult {
     }
 
     /**
+     * Set the errorPrefix property: Wildcard string prefix to use for querying all errors of the item.
+     * 
+     * @param errorPrefix the errorPrefix value to set.
+     * @return the DataItemMigrationSummaryResult object itself.
+     */
+    DataItemMigrationSummaryResult withErrorPrefix(String errorPrefix) {
+        this.errorPrefix = errorPrefix;
+        return this;
+    }
+
+    /**
      * Get the resultPrefix property: Wildcard string prefix to use for querying all sub-tem results of the item.
-     *
+     * 
      * @return the resultPrefix value.
      */
     public String resultPrefix() {
@@ -151,10 +239,76 @@ public class DataItemMigrationSummaryResult {
     }
 
     /**
+     * Set the resultPrefix property: Wildcard string prefix to use for querying all sub-tem results of the item.
+     * 
+     * @param resultPrefix the resultPrefix value to set.
+     * @return the DataItemMigrationSummaryResult object itself.
+     */
+    DataItemMigrationSummaryResult withResultPrefix(String resultPrefix) {
+        this.resultPrefix = resultPrefix;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataItemMigrationSummaryResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataItemMigrationSummaryResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataItemMigrationSummaryResult.
+     */
+    public static DataItemMigrationSummaryResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataItemMigrationSummaryResult deserializedDataItemMigrationSummaryResult
+                = new DataItemMigrationSummaryResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDataItemMigrationSummaryResult.name = reader.getString();
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedDataItemMigrationSummaryResult.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedDataItemMigrationSummaryResult.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedDataItemMigrationSummaryResult.state = MigrationState.fromString(reader.getString());
+                } else if ("statusMessage".equals(fieldName)) {
+                    deserializedDataItemMigrationSummaryResult.statusMessage = reader.getString();
+                } else if ("itemsCount".equals(fieldName)) {
+                    deserializedDataItemMigrationSummaryResult.itemsCount = reader.getNullable(JsonReader::getLong);
+                } else if ("itemsCompletedCount".equals(fieldName)) {
+                    deserializedDataItemMigrationSummaryResult.itemsCompletedCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("errorPrefix".equals(fieldName)) {
+                    deserializedDataItemMigrationSummaryResult.errorPrefix = reader.getString();
+                } else if ("resultPrefix".equals(fieldName)) {
+                    deserializedDataItemMigrationSummaryResult.resultPrefix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataItemMigrationSummaryResult;
+        });
     }
 }

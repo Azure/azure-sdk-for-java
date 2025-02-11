@@ -12,15 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class EnableDisableOnResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnableDisableOnResources model =
-            BinaryData.fromString("{\"resourceIds\":[\"v\"]}").toObject(EnableDisableOnResources.class);
-        Assertions.assertEquals("v", model.resourceIds().get(0));
+        EnableDisableOnResources model
+            = BinaryData.fromString("{\"resourceIds\":[\"bannovvoxczytp\",\"wnwvroevytlyokr\",\"rouuxvnsasbcry\"]}")
+                .toObject(EnableDisableOnResources.class);
+        Assertions.assertEquals("bannovvoxczytp", model.resourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnableDisableOnResources model = new EnableDisableOnResources().withResourceIds(Arrays.asList("v"));
+        EnableDisableOnResources model = new EnableDisableOnResources()
+            .withResourceIds(Arrays.asList("bannovvoxczytp", "wnwvroevytlyokr", "rouuxvnsasbcry"));
         model = BinaryData.fromObject(model).toObject(EnableDisableOnResources.class);
-        Assertions.assertEquals("v", model.resourceIds().get(0));
+        Assertions.assertEquals("bannovvoxczytp", model.resourceIds().get(0));
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -125,6 +126,9 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
         return this.expirationDateTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -133,8 +137,10 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
         jsonWriter.writeStringField("targetModelId", this.targetModelId);
         jsonWriter.writeStringField("targetModelLocation", this.targetModelLocation);
         jsonWriter.writeStringField("accessToken", this.accessToken);
-        jsonWriter.writeStringField("expirationDateTime", this.expirationDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
         return jsonWriter.writeEndObject();
     }
 
@@ -181,15 +187,19 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
                     accessToken = reader.getString();
                     accessTokenFound = true;
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    expirationDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                     expirationDateTimeFound = true;
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (targetResourceIdFound && targetResourceRegionFound && targetModelIdFound && targetModelLocationFound
-                && accessTokenFound && expirationDateTimeFound) {
+            if (targetResourceIdFound
+                && targetResourceRegionFound
+                && targetModelIdFound
+                && targetModelLocationFound
+                && accessTokenFound
+                && expirationDateTimeFound) {
                 return new CopyAuthorization(targetResourceId, targetResourceRegion, targetModelId, targetModelLocation,
                     accessToken, expirationDateTime);
             }

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties for generating an upload URI. */
+/**
+ * Properties for generating an upload URI.
+ */
 @Fluent
-public final class GenerateUploadUriParameter {
+public final class GenerateUploadUriParameter implements JsonSerializable<GenerateUploadUriParameter> {
     /*
      * The blob name of the upload URI.
      */
-    @JsonProperty(value = "blobName")
     private String blobName;
 
-    /** Creates an instance of GenerateUploadUriParameter class. */
+    /**
+     * Creates an instance of GenerateUploadUriParameter class.
+     */
     public GenerateUploadUriParameter() {
     }
 
     /**
      * Get the blobName property: The blob name of the upload URI.
-     *
+     * 
      * @return the blobName value.
      */
     public String blobName() {
@@ -31,7 +38,7 @@ public final class GenerateUploadUriParameter {
 
     /**
      * Set the blobName property: The blob name of the upload URI.
-     *
+     * 
      * @param blobName the blobName value to set.
      * @return the GenerateUploadUriParameter object itself.
      */
@@ -42,9 +49,45 @@ public final class GenerateUploadUriParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("blobName", this.blobName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateUploadUriParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateUploadUriParameter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenerateUploadUriParameter.
+     */
+    public static GenerateUploadUriParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateUploadUriParameter deserializedGenerateUploadUriParameter = new GenerateUploadUriParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("blobName".equals(fieldName)) {
+                    deserializedGenerateUploadUriParameter.blobName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateUploadUriParameter;
+        });
     }
 }

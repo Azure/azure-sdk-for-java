@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.maps.search.models.GeoJsonGeometry;
+import com.azure.maps.search.models.GeoJsonObjectType;
 import java.io.IOException;
 import java.util.List;
 
@@ -73,8 +75,18 @@ public final class GeoJsonPoint extends GeoJsonGeometry {
      * {@inheritDoc}
      */
     @Override
+    public GeoJsonPoint setBbox(List<Double> bbox) {
+        super.setBbox(bbox);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("bbox", getBbox(), (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeArrayField("coordinates", this.coordinates, (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
@@ -96,7 +108,10 @@ public final class GeoJsonPoint extends GeoJsonGeometry {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("coordinates".equals(fieldName)) {
+                if ("bbox".equals(fieldName)) {
+                    List<Double> bbox = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedGeoJsonPoint.setBbox(bbox);
+                } else if ("coordinates".equals(fieldName)) {
                     List<Double> coordinates = reader.readArray(reader1 -> reader1.getDouble());
                     deserializedGeoJsonPoint.coordinates = coordinates;
                 } else if ("type".equals(fieldName)) {

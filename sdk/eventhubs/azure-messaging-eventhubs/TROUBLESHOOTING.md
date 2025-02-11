@@ -25,4 +25,4 @@ When filing GitHub issues, the following details are requested:
 <!-- repo links -->
 [SUPPORT]: https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FTROUBLESHOOTING.png)
+

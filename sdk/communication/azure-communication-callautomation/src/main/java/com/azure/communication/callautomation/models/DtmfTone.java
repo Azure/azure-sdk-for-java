@@ -58,6 +58,15 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
     public static final DtmfTone ASTERISK = fromString("asterisk");
 
     /**
+     * Creates an instance of {@link DtmfTone} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of DtmfTone.
+     */
+    @Deprecated
+    public DtmfTone() {
+    }
+
+    /**
      * Creates or finds a Tone from its string representation.
      *
      * @param name a name to look for.
@@ -67,12 +76,18 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
         return fromString(name, DtmfTone.class);
     }
 
-    /** @return known Tone values. */
+    /**
+     * Get the collection of Tone values.
+     * @return known Tone values.
+     */
     public static Collection<DtmfTone> values() {
         return values(DtmfTone.class);
     }
 
-    /** @return known Tone values in char. */
+    /**
+     * Get the string representation of the Tone.
+     * @return known Tone values in char.
+     */
     public String convertToString() {
         String toneValue = this.toString().toLowerCase(Locale.getDefault());
         String toneStringValue = "";
@@ -80,51 +95,67 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
             case "zero":
                 toneStringValue = "0";
                 break;
+
             case "one":
                 toneStringValue = "1";
                 break;
+
             case "two":
                 toneStringValue = "2";
                 break;
+
             case "three":
                 toneStringValue = "3";
                 break;
+
             case "four":
                 toneStringValue = "4";
                 break;
+
             case "five":
                 toneStringValue = "5";
                 break;
+
             case "six":
                 toneStringValue = "6";
                 break;
+
             case "seven":
                 toneStringValue = "7";
                 break;
+
             case "eight":
                 toneStringValue = "8";
                 break;
+
             case "nine":
                 toneStringValue = "9";
                 break;
+
             case "a":
                 toneStringValue = "a";
                 break;
+
             case "b":
                 toneStringValue = "b";
                 break;
+
             case "c":
                 toneStringValue = "c";
                 break;
+
             case "d":
                 toneStringValue = "d";
                 break;
+
             case "pound":
                 toneStringValue = "#";
                 break;
+
             case "asterisk":
                 toneStringValue = "*";
                 break;
+
             default:
                 break;
         }

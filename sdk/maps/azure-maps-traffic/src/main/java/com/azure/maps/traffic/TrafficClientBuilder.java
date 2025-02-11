@@ -60,10 +60,10 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.maps.traffic.sync.builder.key.instantiation -->
 */
-@ServiceClientBuilder(serviceClients = {TrafficClient.class, TrafficAsyncClient.class})
-public final class TrafficClientBuilder implements AzureKeyCredentialTrait<TrafficClientBuilder>,
-    TokenCredentialTrait<TrafficClientBuilder>, HttpTrait<TrafficClientBuilder>,
-    ConfigurationTrait<TrafficClientBuilder>, EndpointTrait<TrafficClientBuilder> {
+@ServiceClientBuilder(serviceClients = { TrafficClient.class, TrafficAsyncClient.class })
+public final class TrafficClientBuilder
+    implements AzureKeyCredentialTrait<TrafficClientBuilder>, TokenCredentialTrait<TrafficClientBuilder>,
+    HttpTrait<TrafficClientBuilder>, ConfigurationTrait<TrafficClientBuilder>, EndpointTrait<TrafficClientBuilder> {
 
     // constants
     private static final ClientLogger LOGGER = new ClientLogger(TrafficClientBuilder.class);
@@ -75,7 +75,7 @@ public final class TrafficClientBuilder implements AzureKeyCredentialTrait<Traff
     // subscription-key
     static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
     // auth scope
-    static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
+    static final String[] DEFAULT_SCOPES = new String[] { "https://atlas.microsoft.com/.default" };
 
     // instance fields
     private String endpoint;
@@ -268,7 +268,7 @@ public final class TrafficClientBuilder implements AzureKeyCredentialTrait<Traff
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public TrafficClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public TrafficClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
@@ -312,8 +312,8 @@ public final class TrafficClientBuilder implements AzureKeyCredentialTrait<Traff
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -337,8 +337,8 @@ public final class TrafficClientBuilder implements AzureKeyCredentialTrait<Traff
         // Authentications
         if (tokenCredential != null) {
             if (this.trafficClientId == null) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Missing 'timezoneClientId' parameter required for Azure AD Authentication"));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "Missing 'timezoneClientId' parameter required for Azure AD Authentication"));
             }
             // we need the x-ms-client header
             HttpHeaders clientHeader = new HttpHeaders();
@@ -364,8 +364,7 @@ public final class TrafficClientBuilder implements AzureKeyCredentialTrait<Traff
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // build the http pipeline
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }

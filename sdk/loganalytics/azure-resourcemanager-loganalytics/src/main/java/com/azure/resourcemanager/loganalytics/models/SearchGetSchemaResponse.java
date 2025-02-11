@@ -7,25 +7,27 @@ package com.azure.resourcemanager.loganalytics.models;
 import com.azure.resourcemanager.loganalytics.fluent.models.SearchGetSchemaResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of SearchGetSchemaResponse. */
+/**
+ * An immutable client-side representation of SearchGetSchemaResponse.
+ */
 public interface SearchGetSchemaResponse {
     /**
      * Gets the metadata property: The metadata from search results.
-     *
+     * 
      * @return the metadata value.
      */
     SearchMetadata metadata();
 
     /**
      * Gets the value property: The array of result values.
-     *
+     * 
      * @return the value value.
      */
     List<SearchSchemaValue> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.loganalytics.fluent.models.SearchGetSchemaResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     SearchGetSchemaResponseInner innerModel();

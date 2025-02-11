@@ -13,32 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class EnvironmentUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"EnvironmentUpdateParameters\",\"tags\":{\"uvfqawrlyxwj\":\"ujysvle\",\"nwbxgjvtbvpyssz\":\"cpr\",\"guhmuouqfpr\":\"nruj\",\"nguitnwuizgazxu\":\"zw\"}}")
-                .toObject(EnvironmentUpdateParameters.class);
-        Assertions.assertEquals("ujysvle", model.tags().get("uvfqawrlyxwj"));
+        EnvironmentUpdateParameters model = BinaryData.fromString(
+            "{\"kind\":\"EnvironmentUpdateParameters\",\"tags\":{\"jbavorxzdm\":\"wd\",\"nvowgujju\":\"hctbqvudwxdn\",\"zj\":\"wdkcglhsl\"}}")
+            .toObject(EnvironmentUpdateParameters.class);
+        Assertions.assertEquals("wd", model.tags().get("jbavorxzdm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentUpdateParameters model =
-            new EnvironmentUpdateParameters()
-                .withTags(
-                    mapOf(
-                        "uvfqawrlyxwj",
-                        "ujysvle",
-                        "nwbxgjvtbvpyssz",
-                        "cpr",
-                        "guhmuouqfpr",
-                        "nruj",
-                        "nguitnwuizgazxu",
-                        "zw"));
+        EnvironmentUpdateParameters model = new EnvironmentUpdateParameters()
+            .withTags(mapOf("jbavorxzdm", "wd", "nvowgujju", "hctbqvudwxdn", "zj", "wdkcglhsl"));
         model = BinaryData.fromObject(model).toObject(EnvironmentUpdateParameters.class);
-        Assertions.assertEquals("ujysvle", model.tags().get("uvfqawrlyxwj"));
+        Assertions.assertEquals("wd", model.tags().get("jbavorxzdm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -34,16 +34,14 @@ public class SnapshotOptionsTests extends ComputeManagementTest {
         final String diskName1 = generateRandomResourceName("md-1", 20);
         ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Disk disk =
-            computeManager
-                .disks()
-                .define(diskName1)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup.name())
-                .withData()
-                .withSizeInGB(100)
-                .disablePublicNetworkAccess()
-                .create();
+        Disk disk = computeManager.disks()
+            .define(diskName1)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup.name())
+            .withData()
+            .withSizeInGB(100)
+            .disablePublicNetworkAccess()
+            .create();
 
         Snapshot snapshot = computeManager.snapshots()
             .define(snapshotName)

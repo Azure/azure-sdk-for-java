@@ -12,8 +12,8 @@ public final class WebPubSubKeysImpl implements WebPubSubKeys {
 
     private final com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager;
 
-    WebPubSubKeysImpl(
-        WebPubSubKeysInner innerObject, com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
+    WebPubSubKeysImpl(WebPubSubKeysInner innerObject,
+        com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

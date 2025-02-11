@@ -5,39 +5,44 @@
 package com.azure.resourcemanager.managementgroups.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managementgroups.models.EntityHierarchyItem;
 import com.azure.resourcemanager.managementgroups.models.Permissions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The generic properties of a management group. */
+/**
+ * The generic properties of a management group.
+ */
 @Fluent
-public final class EntityHierarchyItemProperties {
+public final class EntityHierarchyItemProperties implements JsonSerializable<EntityHierarchyItemProperties> {
     /*
      * The friendly name of the management group.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The users specific permissions to this item.
      */
-    @JsonProperty(value = "permissions")
     private Permissions permissions;
 
     /*
      * The list of children.
      */
-    @JsonProperty(value = "children")
     private List<EntityHierarchyItem> children;
 
-    /** Creates an instance of EntityHierarchyItemProperties class. */
+    /**
+     * Creates an instance of EntityHierarchyItemProperties class.
+     */
     public EntityHierarchyItemProperties() {
     }
 
     /**
      * Get the displayName property: The friendly name of the management group.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -46,7 +51,7 @@ public final class EntityHierarchyItemProperties {
 
     /**
      * Set the displayName property: The friendly name of the management group.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the EntityHierarchyItemProperties object itself.
      */
@@ -57,7 +62,7 @@ public final class EntityHierarchyItemProperties {
 
     /**
      * Get the permissions property: The users specific permissions to this item.
-     *
+     * 
      * @return the permissions value.
      */
     public Permissions permissions() {
@@ -66,7 +71,7 @@ public final class EntityHierarchyItemProperties {
 
     /**
      * Set the permissions property: The users specific permissions to this item.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the EntityHierarchyItemProperties object itself.
      */
@@ -77,7 +82,7 @@ public final class EntityHierarchyItemProperties {
 
     /**
      * Get the children property: The list of children.
-     *
+     * 
      * @return the children value.
      */
     public List<EntityHierarchyItem> children() {
@@ -86,7 +91,7 @@ public final class EntityHierarchyItemProperties {
 
     /**
      * Set the children property: The list of children.
-     *
+     * 
      * @param children the children value to set.
      * @return the EntityHierarchyItemProperties object itself.
      */
@@ -97,12 +102,57 @@ public final class EntityHierarchyItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (children() != null) {
             children().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("permissions", this.permissions == null ? null : this.permissions.toString());
+        jsonWriter.writeArrayField("children", this.children, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityHierarchyItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityHierarchyItemProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityHierarchyItemProperties.
+     */
+    public static EntityHierarchyItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityHierarchyItemProperties deserializedEntityHierarchyItemProperties
+                = new EntityHierarchyItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedEntityHierarchyItemProperties.displayName = reader.getString();
+                } else if ("permissions".equals(fieldName)) {
+                    deserializedEntityHierarchyItemProperties.permissions = Permissions.fromString(reader.getString());
+                } else if ("children".equals(fieldName)) {
+                    List<EntityHierarchyItem> children
+                        = reader.readArray(reader1 -> EntityHierarchyItem.fromJson(reader1));
+                    deserializedEntityHierarchyItemProperties.children = children;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityHierarchyItemProperties;
+        });
     }
 }

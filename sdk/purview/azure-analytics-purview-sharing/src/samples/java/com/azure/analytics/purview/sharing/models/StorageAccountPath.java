@@ -5,29 +5,31 @@
 package com.azure.analytics.purview.sharing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * Defines a single StorageAccountPath path.
  */
 @Fluent
-public final class StorageAccountPath {
+public final class StorageAccountPath implements JsonSerializable<StorageAccountPath> {
     /*
      * Gets or sets the container name
      */
-    @JsonProperty(value = "containerName", required = true)
     private String containerName;
 
     /*
      * Gets or sets the path on the receiver side where the artifact is to be mapped
      */
-    @JsonProperty(value = "receiverPath")
     private String receiverPath;
 
     /*
      * Gets or sets the path to file/folder within the container to be shared
      */
-    @JsonProperty(value = "senderPath")
     private String senderPath;
 
     /**
@@ -38,7 +40,7 @@ public final class StorageAccountPath {
 
     /**
      * Get the containerName property: Gets or sets the container name.
-     * 
+     *
      * @return the containerName value.
      */
     public String getContainerName() {
@@ -47,7 +49,7 @@ public final class StorageAccountPath {
 
     /**
      * Set the containerName property: Gets or sets the container name.
-     * 
+     *
      * @param containerName the containerName value to set.
      * @return the StorageAccountPath object itself.
      */
@@ -58,7 +60,7 @@ public final class StorageAccountPath {
 
     /**
      * Get the receiverPath property: Gets or sets the path on the receiver side where the artifact is to be mapped.
-     * 
+     *
      * @return the receiverPath value.
      */
     public String getReceiverPath() {
@@ -67,7 +69,7 @@ public final class StorageAccountPath {
 
     /**
      * Set the receiverPath property: Gets or sets the path on the receiver side where the artifact is to be mapped.
-     * 
+     *
      * @param receiverPath the receiverPath value to set.
      * @return the StorageAccountPath object itself.
      */
@@ -78,7 +80,7 @@ public final class StorageAccountPath {
 
     /**
      * Get the senderPath property: Gets or sets the path to file/folder within the container to be shared.
-     * 
+     *
      * @return the senderPath value.
      */
     public String getSenderPath() {
@@ -87,12 +89,55 @@ public final class StorageAccountPath {
 
     /**
      * Set the senderPath property: Gets or sets the path to file/folder within the container to be shared.
-     * 
+     *
      * @param senderPath the senderPath value to set.
      * @return the StorageAccountPath object itself.
      */
     public StorageAccountPath setSenderPath(String senderPath) {
         this.senderPath = senderPath;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("receiverPath", this.receiverPath);
+        jsonWriter.writeStringField("senderPath", this.senderPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountPath from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountPath if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountPath.
+     */
+    public static StorageAccountPath fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountPath deserializedStorageAccountPath = new StorageAccountPath();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("containerName".equals(fieldName)) {
+                    deserializedStorageAccountPath.containerName = reader.getString();
+                } else if ("receiverPath".equals(fieldName)) {
+                    deserializedStorageAccountPath.receiverPath = reader.getString();
+                } else if ("senderPath".equals(fieldName)) {
+                    deserializedStorageAccountPath.senderPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountPath;
+        });
     }
 }

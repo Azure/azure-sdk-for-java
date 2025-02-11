@@ -36,8 +36,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storagecache.fluent.AmlFilesystemsClient;
 import com.azure.resourcemanager.storagecache.fluent.models.AmlFilesystemInner;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemArchiveInfo;
-import com.azure.resourcemanager.storagecache.models.AmlFilesystemsListResult;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemUpdate;
+import com.azure.resourcemanager.storagecache.models.AmlFilesystemsListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1513,9 +1513,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1541,9 +1539,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1570,9 +1566,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1600,9 +1594,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -28,7 +28,8 @@ public final class DocumentDbCollectionSink extends CopySink {
     private Object nestingSeparator;
 
     /*
-     * Describes how to write data to Azure Cosmos DB. Type: string (or Expression with resultType string). Allowed values: insert and upsert.
+     * Describes how to write data to Azure Cosmos DB. Type: string (or Expression with resultType string). Allowed
+     * values: insert and upsert.
      */
     private Object writeBehavior;
 

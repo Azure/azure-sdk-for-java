@@ -8,7 +8,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.jedis.AzureJedisClientBuilder;
 import redis.clients.jedis.Jedis;
 
+/**
+ * Sample of a simple Azure Jedis wrapper.
+ */
 public class AzureJedisWrapperSample {
+    /**
+     * The runnable sample.
+     *
+     * @param args Ignored.
+     */
     public static void main(String[] args) {
 
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
@@ -20,7 +28,7 @@ public class AzureJedisWrapperSample {
             .port(6380) // Port is requried.
             .useSSL(true) // SSL Connection is required.
             .credential(defaultAzureCredential) // A Token Credential is required to fetch Microsoft Entra access tokens.
-            .build();
+            .buildClient();
 
         // Set a value against your key in the Redis cache.
         jedisClient.set("Az:key", "sample");

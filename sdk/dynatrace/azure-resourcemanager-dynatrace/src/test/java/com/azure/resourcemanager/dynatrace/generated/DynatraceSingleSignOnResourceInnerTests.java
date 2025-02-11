@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DynatraceSingleSignOnResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynatraceSingleSignOnResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"pxokajionp\",\"singleSignOnUrl\":\"ex\",\"aadDomains\":[\"xgcp\",\"dg\",\"aajrm\",\"djwzrlov\"],\"provisioningState\":\"Failed\"},\"id\":\"hijco\",\"name\":\"jctbza\",\"type\":\"s\"}")
-                .toObject(DynatraceSingleSignOnResourceInner.class);
+        DynatraceSingleSignOnResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"pxokajionp\",\"singleSignOnUrl\":\"ex\",\"aadDomains\":[\"xgcp\",\"dg\",\"aajrm\",\"djwzrlov\"],\"provisioningState\":\"Failed\"},\"id\":\"hijco\",\"name\":\"jctbza\",\"type\":\"s\"}")
+            .toObject(DynatraceSingleSignOnResourceInner.class);
         Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
         Assertions.assertEquals("pxokajionp", model.enterpriseAppId());
         Assertions.assertEquals("ex", model.singleSignOnUrl());
@@ -26,9 +24,8 @@ public final class DynatraceSingleSignOnResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynatraceSingleSignOnResourceInner model =
-            new DynatraceSingleSignOnResourceInner()
-                .withSingleSignOnState(SingleSignOnStates.INITIAL)
+        DynatraceSingleSignOnResourceInner model
+            = new DynatraceSingleSignOnResourceInner().withSingleSignOnState(SingleSignOnStates.INITIAL)
                 .withEnterpriseAppId("pxokajionp")
                 .withSingleSignOnUrl("ex")
                 .withAadDomains(Arrays.asList("xgcp", "dg", "aajrm", "djwzrlov"));

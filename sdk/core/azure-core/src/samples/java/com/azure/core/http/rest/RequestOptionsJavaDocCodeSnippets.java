@@ -6,10 +6,10 @@ package com.azure.core.http.rest;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.util.BinaryData;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
+import com.azure.json.models.JsonArray;
+import com.azure.json.models.JsonNumber;
+import com.azure.json.models.JsonObject;
+import com.azure.json.models.JsonString;
 
 /**
  * JavaDoc code snippets for {@link RequestOptions}.
@@ -36,32 +36,29 @@ public class RequestOptionsJavaDocCodeSnippets {
      */
     public RequestOptions setJsonRequestBodyInRequestOptions() {
         // BEGIN: com.azure.core.http.rest.requestoptions.createjsonrequest
-        JsonArray photoUrls = Json.createArrayBuilder()
-            .add("https://imgur.com/pet1")
-            .add("https://imgur.com/pet2")
-            .build();
+        JsonArray photoUrls = new JsonArray()
+            .addElement(new JsonString("https://imgur.com/pet1"))
+            .addElement(new JsonString("https://imgur.com/pet2"));
 
-        JsonArray tags = Json.createArrayBuilder()
-            .add(Json.createObjectBuilder()
-                .add("id", 0)
-                .add("name", "Labrador")
-                .build())
-            .add(Json.createObjectBuilder()
-                .add("id", 1)
-                .add("name", "2021")
-                .build())
-            .build();
+        JsonArray tags = new JsonArray()
+            .addElement(new JsonObject()
+                .setProperty("id", new JsonNumber(0))
+                .setProperty("name", new JsonString("Labrador")))
+            .addElement(new JsonObject()
+                .setProperty("id", new JsonNumber(1))
+                .setProperty("name", new JsonString("2021")));
 
-        JsonObject requestBody = Json.createObjectBuilder()
-            .add("id", 0)
-            .add("name", "foo")
-            .add("status", "available")
-            .add("category", Json.createObjectBuilder().add("id", 0).add("name", "dog"))
-            .add("photoUrls", photoUrls)
-            .add("tags", tags)
-            .build();
+        JsonObject requestBody = new JsonObject()
+            .setProperty("id", new JsonNumber(0))
+            .setProperty("name", new JsonString("foo"))
+            .setProperty("status", new JsonString("available"))
+            .setProperty("category", new JsonObject()
+                .setProperty("id", new JsonNumber(0))
+                .setProperty("name", new JsonString("dog")))
+            .setProperty("photoUrls", photoUrls)
+            .setProperty("tags", tags);
 
-        String requestBodyStr = requestBody.toString();
+        BinaryData requestBodyData = BinaryData.fromObject(requestBody);
         // END: com.azure.core.http.rest.requestoptions.createjsonrequest
 
         // BEGIN: com.azure.core.http.rest.requestoptions.postrequest
@@ -70,7 +67,7 @@ public class RequestOptionsJavaDocCodeSnippets {
                 // may already be set if request is created from a client
                 .setUrl("https://petstore.example.com/pet")
                 .setHttpMethod(HttpMethod.POST)
-                .setBody(requestBodyStr)
+                .setBody(requestBodyData)
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json"));
         // END: com.azure.core.http.rest.requestoptions.postrequest
         return options;

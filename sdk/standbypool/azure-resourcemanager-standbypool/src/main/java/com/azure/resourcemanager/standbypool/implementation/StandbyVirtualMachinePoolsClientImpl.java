@@ -1114,8 +1114,6 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
     }
 
     /**
-     * List StandbyVirtualMachinePoolResource resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1145,8 +1143,6 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
     }
 
     /**
-     * List StandbyVirtualMachinePoolResource resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1175,8 +1171,6 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
     }
 
     /**
-     * List StandbyVirtualMachinePoolResource resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1206,8 +1200,6 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
     }
 
     /**
-     * List StandbyVirtualMachinePoolResource resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

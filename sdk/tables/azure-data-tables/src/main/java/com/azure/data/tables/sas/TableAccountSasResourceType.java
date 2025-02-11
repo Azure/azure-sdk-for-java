@@ -49,12 +49,15 @@ public final class TableAccountSasResourceType {
                 case 's':
                     resourceType.service = true;
                     break;
+
                 case 'c':
                     resourceType.container = true;
                     break;
+
                 case 'o':
                     resourceType.object = true;
                     break;
+
                 default:
                     throw new IllegalArgumentException(
                         String.format(Locale.ROOT, StorageConstants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,

@@ -16,8 +16,8 @@ public final class SubscriptionImpl implements Subscription {
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    SubscriptionImpl(
-        SubscriptionInner innerObject, com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
+    SubscriptionImpl(SubscriptionInner innerObject,
+        com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

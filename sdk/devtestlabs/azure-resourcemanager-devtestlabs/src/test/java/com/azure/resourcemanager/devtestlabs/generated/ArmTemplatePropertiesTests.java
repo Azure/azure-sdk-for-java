@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateProperties
 public final class ArmTemplatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmTemplateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"j\",\"description\":\"xxivetv\",\"publisher\":\"qaqtdoqmcbxvwvxy\",\"icon\":\"qbhsfxobl\",\"contents\":\"datak\",\"createdDate\":\"2021-11-17T19:10:27Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"wwfbkrvrnsvshq\",\"parametersValueInfo\":\"datahxcr\"},{\"fileName\":\"fovasr\",\"parametersValueInfo\":\"datav\"},{\"fileName\":\"hsqfsubcgjbirxbp\",\"parametersValueInfo\":\"datasrfbjfdtwss\"},{\"fileName\":\"ftpvjzbexil\",\"parametersValueInfo\":\"datanfqqnvwp\"}],\"enabled\":true}")
-                .toObject(ArmTemplateProperties.class);
+        ArmTemplateProperties model = BinaryData.fromString(
+            "{\"displayName\":\"j\",\"description\":\"xxivetv\",\"publisher\":\"qaqtdoqmcbxvwvxy\",\"icon\":\"qbhsfxobl\",\"contents\":\"datak\",\"createdDate\":\"2021-11-17T19:10:27Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"wwfbkrvrnsvshq\",\"parametersValueInfo\":\"datahxcr\"},{\"fileName\":\"fovasr\",\"parametersValueInfo\":\"datav\"},{\"fileName\":\"hsqfsubcgjbirxbp\",\"parametersValueInfo\":\"datasrfbjfdtwss\"},{\"fileName\":\"ftpvjzbexil\",\"parametersValueInfo\":\"datanfqqnvwp\"}],\"enabled\":true}")
+            .toObject(ArmTemplateProperties.class);
     }
 
     @org.junit.jupiter.api.Test

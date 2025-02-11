@@ -76,22 +76,18 @@ public final class StepResourceImpl implements StepResource, StepResource.Defini
     }
 
     public StepResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSteps()
-                .createOrUpdateWithResponse(resourceGroupName, stepName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSteps()
+            .createOrUpdateWithResponse(resourceGroupName, stepName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public StepResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSteps()
-                .createOrUpdateWithResponse(resourceGroupName, stepName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSteps()
+            .createOrUpdateWithResponse(resourceGroupName, stepName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -106,27 +102,23 @@ public final class StepResourceImpl implements StepResource, StepResource.Defini
     }
 
     public StepResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSteps()
-                .createOrUpdateWithResponse(resourceGroupName, stepName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSteps()
+            .createOrUpdateWithResponse(resourceGroupName, stepName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public StepResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSteps()
-                .createOrUpdateWithResponse(resourceGroupName, stepName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSteps()
+            .createOrUpdateWithResponse(resourceGroupName, stepName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    StepResourceImpl(
-        StepResourceInner innerObject, com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
+    StepResourceImpl(StepResourceInner innerObject,
+        com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -134,22 +126,18 @@ public final class StepResourceImpl implements StepResource, StepResource.Defini
     }
 
     public StepResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSteps()
-                .getByResourceGroupWithResponse(resourceGroupName, stepName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSteps()
+            .getByResourceGroupWithResponse(resourceGroupName, stepName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public StepResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSteps()
-                .getByResourceGroupWithResponse(resourceGroupName, stepName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSteps()
+            .getByResourceGroupWithResponse(resourceGroupName, stepName, context)
+            .getValue();
         return this;
     }
 

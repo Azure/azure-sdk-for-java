@@ -23,7 +23,7 @@ public final class ExperimentsListByProfileMockTests {
     @Test
     public void testListByProfile() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"javfqn\",\"endpointA\":{\"name\":\"qoewdogiyetesy\",\"endpoint\":\"idbz\"},\"endpointB\":{\"name\":\"qtfbovn\",\"endpoint\":\"kbwetnj\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Creating\",\"status\":\"kzyaup\",\"scriptFileUri\":\"ccxnafbwqroohtuo\"},\"location\":\"maonurj\",\"tags\":{\"clbl\":\"ghihpvecms\",\"bsjuscvsfx\":\"jxl\"},\"id\":\"gctmgxuupbezq\",\"name\":\"cydrtceukdqkk\",\"type\":\"ihztgeqmgqzgwldo\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"rftb\",\"endpointA\":{\"name\":\"xreuquowtlj\",\"endpoint\":\"whreagkhyxvrq\"},\"endpointB\":{\"name\":\"czsulmdggl\",\"endpoint\":\"pjpfseykgs\"},\"enabledState\":\"Disabled\",\"resourceState\":\"Enabling\",\"status\":\"n\",\"scriptFileUri\":\"fpgylkve\"},\"location\":\"jujcngoad\",\"tags\":{\"jfoknubnoitpkp\":\"mzr\"},\"id\":\"trgdgxvc\",\"name\":\"qraswugyxpqitwei\",\"type\":\"l\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class ExperimentsListByProfileMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Experiment> response
-            = manager.experiments().listByProfile("zaifghtmoqqtlff", "zbkr", com.azure.core.util.Context.NONE);
+            = manager.experiments().listByProfile("uqwqulsutrjbhxyk", "hyqezvqq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("maonurj", response.iterator().next().location());
-        Assertions.assertEquals("ghihpvecms", response.iterator().next().tags().get("clbl"));
-        Assertions.assertEquals("javfqn", response.iterator().next().description());
-        Assertions.assertEquals("qoewdogiyetesy", response.iterator().next().endpointA().name());
-        Assertions.assertEquals("idbz", response.iterator().next().endpointA().endpoint());
-        Assertions.assertEquals("qtfbovn", response.iterator().next().endpointB().name());
-        Assertions.assertEquals("kbwetnj", response.iterator().next().endpointB().endpoint());
-        Assertions.assertEquals(State.ENABLED, response.iterator().next().enabledState());
+        Assertions.assertEquals("jujcngoad", response.iterator().next().location());
+        Assertions.assertEquals("mzr", response.iterator().next().tags().get("jfoknubnoitpkp"));
+        Assertions.assertEquals("rftb", response.iterator().next().description());
+        Assertions.assertEquals("xreuquowtlj", response.iterator().next().endpointA().name());
+        Assertions.assertEquals("whreagkhyxvrq", response.iterator().next().endpointA().endpoint());
+        Assertions.assertEquals("czsulmdggl", response.iterator().next().endpointB().name());
+        Assertions.assertEquals("pjpfseykgs", response.iterator().next().endpointB().endpoint());
+        Assertions.assertEquals(State.DISABLED, response.iterator().next().enabledState());
     }
 }

@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.labservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The lab user invitation state. */
+/**
+ * The lab user invitation state.
+ */
 public enum InvitationState {
-    /** Enum value NotSent. */
+    /**
+     * Enum value NotSent.
+     */
     NOT_SENT("NotSent"),
 
-    /** Enum value Sending. */
+    /**
+     * Enum value Sending.
+     */
     SENDING("Sending"),
 
-    /** Enum value Sent. */
+    /**
+     * Enum value Sent.
+     */
     SENT("Sent"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed");
 
-    /** The actual serialized value for a InvitationState instance. */
+    /**
+     * The actual serialized value for a InvitationState instance.
+     */
     private final String value;
 
     InvitationState(String value) {
@@ -30,11 +39,10 @@ public enum InvitationState {
 
     /**
      * Parses a serialized value to a InvitationState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed InvitationState object, or null if unable to parse.
      */
-    @JsonCreator
     public static InvitationState fromString(String value) {
         if (value == null) {
             return null;
@@ -48,8 +56,9 @@ public enum InvitationState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

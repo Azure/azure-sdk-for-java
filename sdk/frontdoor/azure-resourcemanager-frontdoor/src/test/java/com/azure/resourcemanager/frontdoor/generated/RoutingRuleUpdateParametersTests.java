@@ -18,34 +18,33 @@ public final class RoutingRuleUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingRuleUpdateParameters model = BinaryData.fromString(
-            "{\"frontendEndpoints\":[{\"id\":\"cvpa\"},{\"id\":\"sreuzvxurisjnh\"}],\"acceptedProtocols\":[\"Https\",\"Http\"],\"patternsToMatch\":[\"jzgxmrhublwp\",\"esutrgjupauutpw\",\"qhih\"],\"enabledState\":\"Enabled\",\"routeConfiguration\":{\"@odata.type\":\"zpnfqntcypsxj\"},\"rulesEngine\":{\"id\":\"imwkslircizj\"},\"webApplicationFirewallPolicyLink\":{\"id\":\"dfcea\"}}")
+            "{\"frontendEndpoints\":[{\"id\":\"vlp\"},{\"id\":\"xkzb\"}],\"acceptedProtocols\":[\"Https\",\"Https\"],\"patternsToMatch\":[\"siykzkdncjdxonbz\",\"ggcula\",\"z\",\"y\"],\"enabledState\":\"Disabled\",\"routeConfiguration\":{\"@odata.type\":\"RouteConfiguration\"},\"rulesEngine\":{\"id\":\"qxepnylbfuaj\"},\"webApplicationFirewallPolicyLink\":{\"id\":\"tlvofq\"}}")
             .toObject(RoutingRuleUpdateParameters.class);
-        Assertions.assertEquals("cvpa", model.frontendEndpoints().get(0).id());
+        Assertions.assertEquals("vlp", model.frontendEndpoints().get(0).id());
         Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.acceptedProtocols().get(0));
-        Assertions.assertEquals("jzgxmrhublwp", model.patternsToMatch().get(0));
-        Assertions.assertEquals(RoutingRuleEnabledState.ENABLED, model.enabledState());
-        Assertions.assertEquals("imwkslircizj", model.rulesEngine().id());
-        Assertions.assertEquals("dfcea", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals("siykzkdncjdxonbz", model.patternsToMatch().get(0));
+        Assertions.assertEquals(RoutingRuleEnabledState.DISABLED, model.enabledState());
+        Assertions.assertEquals("qxepnylbfuaj", model.rulesEngine().id());
+        Assertions.assertEquals("tlvofq", model.webApplicationFirewallPolicyLink().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutingRuleUpdateParameters model = new RoutingRuleUpdateParameters()
-            .withFrontendEndpoints(
-                Arrays.asList(new SubResource().withId("cvpa"), new SubResource().withId("sreuzvxurisjnh")))
-            .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTPS, FrontDoorProtocol.HTTP))
-            .withPatternsToMatch(Arrays.asList("jzgxmrhublwp", "esutrgjupauutpw", "qhih"))
-            .withEnabledState(RoutingRuleEnabledState.ENABLED)
+            .withFrontendEndpoints(Arrays.asList(new SubResource().withId("vlp"), new SubResource().withId("xkzb")))
+            .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTPS, FrontDoorProtocol.HTTPS))
+            .withPatternsToMatch(Arrays.asList("siykzkdncjdxonbz", "ggcula", "z", "y"))
+            .withEnabledState(RoutingRuleEnabledState.DISABLED)
             .withRouteConfiguration(new RouteConfiguration())
-            .withRulesEngine(new SubResource().withId("imwkslircizj"))
+            .withRulesEngine(new SubResource().withId("qxepnylbfuaj"))
             .withWebApplicationFirewallPolicyLink(
-                new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("dfcea"));
+                new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("tlvofq"));
         model = BinaryData.fromObject(model).toObject(RoutingRuleUpdateParameters.class);
-        Assertions.assertEquals("cvpa", model.frontendEndpoints().get(0).id());
+        Assertions.assertEquals("vlp", model.frontendEndpoints().get(0).id());
         Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.acceptedProtocols().get(0));
-        Assertions.assertEquals("jzgxmrhublwp", model.patternsToMatch().get(0));
-        Assertions.assertEquals(RoutingRuleEnabledState.ENABLED, model.enabledState());
-        Assertions.assertEquals("imwkslircizj", model.rulesEngine().id());
-        Assertions.assertEquals("dfcea", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals("siykzkdncjdxonbz", model.patternsToMatch().get(0));
+        Assertions.assertEquals(RoutingRuleEnabledState.DISABLED, model.enabledState());
+        Assertions.assertEquals("qxepnylbfuaj", model.rulesEngine().id());
+        Assertions.assertEquals("tlvofq", model.webApplicationFirewallPolicyLink().id());
     }
 }

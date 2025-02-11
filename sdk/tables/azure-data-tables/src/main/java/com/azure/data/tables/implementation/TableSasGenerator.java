@@ -46,7 +46,7 @@ public class TableSasGenerator {
      * @param azureNamedKeyCredential An {@link AzureNamedKeyCredential} whose key will be used to sign the SAS.
      */
     public TableSasGenerator(TableSasSignatureValues sasValues, String tableName,
-                             AzureNamedKeyCredential azureNamedKeyCredential) {
+        AzureNamedKeyCredential azureNamedKeyCredential) {
         Objects.requireNonNull(sasValues, "'sasValues' cannot be null.");
         Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
 
@@ -122,8 +122,8 @@ public class TableSasGenerator {
 
         if (identifier == null) {
             if (expiryTime == null || permissions == null) {
-                throw logger.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
-                    + "and permissions must be set"));
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "If identifier is not set, expiry time " + "and permissions must be set"));
             }
         }
 
@@ -156,23 +156,17 @@ public class TableSasGenerator {
      */
     private String getCanonicalName(String account) {
         // Table: "/table/account/tablename"
-        return String.join("/", new String[]{"/table", account, tableName});
+        return String.join("/", new String[] { "/table", account, tableName });
     }
 
     private String stringToSign(String canonicalName) {
-        return String.join("\n",
-            this.permissions == null ? "" : this.permissions,
+        return String.join("\n", this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : StorageConstants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : StorageConstants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            canonicalName.toLowerCase(Locale.ROOT),
-            this.identifier == null ? "" : this.identifier,
-            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : protocol.toString(),
-            this.version == null ? "" : this.version,
-            this.startPartitionKey == null ? "" : this.startPartitionKey,
-            this.startRowKey == null ? "" : this.startRowKey,
-            this.endPartitionKey == null ? "" : this.endPartitionKey,
-            this.endRowKey == null ? "" : this.endRowKey
-        );
+            canonicalName.toLowerCase(Locale.ROOT), this.identifier == null ? "" : this.identifier,
+            this.sasIpRange == null ? "" : this.sasIpRange.toString(), this.protocol == null ? "" : protocol.toString(),
+            this.version == null ? "" : this.version, this.startPartitionKey == null ? "" : this.startPartitionKey,
+            this.startRowKey == null ? "" : this.startRowKey, this.endPartitionKey == null ? "" : this.endPartitionKey,
+            this.endRowKey == null ? "" : this.endRowKey);
     }
 }

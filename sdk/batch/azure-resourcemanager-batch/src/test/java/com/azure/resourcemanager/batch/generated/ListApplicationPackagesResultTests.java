@@ -8,23 +8,40 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationPackageInner;
 import com.azure.resourcemanager.batch.models.ListApplicationPackagesResult;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class ListApplicationPackagesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListApplicationPackagesResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"Pending\",\"format\":\"ckyfih\",\"storageUrl\":\"idf\",\"storageUrlExpiry\":\"2021-05-02T03:10:17Z\",\"lastActivationTime\":\"2021-09-09T05:52:09Z\"},\"etag\":\"tymw\",\"id\":\"sdkf\",\"name\":\"hwxmnteiwa\",\"type\":\"pvkmijcmmxdcuf\"},{\"properties\":{\"state\":\"Active\",\"format\":\"ymzidn\",\"storageUrl\":\"zcxtbzsgfyccsn\",\"storageUrlExpiry\":\"2021-11-18T18:16Z\",\"lastActivationTime\":\"2021-09-22T20:17:09Z\"},\"etag\":\"jeiachboosfl\",\"id\":\"ro\",\"name\":\"fqpte\",\"type\":\"hzzvypyq\"},{\"properties\":{\"state\":\"Pending\",\"format\":\"npvswjdkirso\",\"storageUrl\":\"qxhcrmn\",\"storageUrlExpiry\":\"2021-05-15T08:21:17Z\",\"lastActivationTime\":\"2021-01-19T09:55:19Z\"},\"etag\":\"whdsoifiyip\",\"id\":\"xsqwpgrjbznorc\",\"name\":\"xv\",\"type\":\"nb\"}],\"nextLink\":\"qabnmoc\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"Pending\",\"format\":\"jrmvdjwzrlo\",\"storageUrl\":\"clwhijcoejctbz\",\"storageUrlExpiry\":\"2021-04-25T10:37:50Z\",\"lastActivationTime\":\"2021-02-04T17:33:10Z\"},\"etag\":\"cbkbfkg\",\"tags\":{\"xaxcfjpgddtocjjx\":\"kexxppof\",\"eojnxqbzvddn\":\"vpmouexhdzxib\",\"aoqvuh\":\"wndeicbtwnp\"},\"id\":\"hcffcyddglmjthjq\",\"name\":\"wpyeicxmqciwqvh\",\"type\":\"hix\"}],\"nextLink\":\"gdtopbobjogh\"}")
             .toObject(ListApplicationPackagesResult.class);
-        Assertions.assertEquals("qabnmoc", model.nextLink());
+        Assertions.assertEquals("kexxppof", model.value().get(0).tags().get("xaxcfjpgddtocjjx"));
+        Assertions.assertEquals("gdtopbobjogh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListApplicationPackagesResult model = new ListApplicationPackagesResult().withValue(
-            Arrays.asList(new ApplicationPackageInner(), new ApplicationPackageInner(), new ApplicationPackageInner()))
-            .withNextLink("qabnmoc");
+        ListApplicationPackagesResult model = new ListApplicationPackagesResult()
+            .withValue(Arrays.asList(new ApplicationPackageInner().withTags(
+                mapOf("xaxcfjpgddtocjjx", "kexxppof", "eojnxqbzvddn", "vpmouexhdzxib", "aoqvuh", "wndeicbtwnp"))))
+            .withNextLink("gdtopbobjogh");
         model = BinaryData.fromObject(model).toObject(ListApplicationPackagesResult.class);
-        Assertions.assertEquals("qabnmoc", model.nextLink());
+        Assertions.assertEquals("kexxppof", model.value().get(0).tags().get("xaxcfjpgddtocjjx"));
+        Assertions.assertEquals("gdtopbobjogh", model.nextLink());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

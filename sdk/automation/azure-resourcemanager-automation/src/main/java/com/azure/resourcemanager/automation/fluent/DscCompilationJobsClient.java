@@ -16,11 +16,13 @@ import com.azure.resourcemanager.automation.fluent.models.JobStreamInner;
 import com.azure.resourcemanager.automation.models.DscCompilationJobCreateParameters;
 import java.util.UUID;
 
-/** An instance of this class provides access to all the operations defined in DscCompilationJobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DscCompilationJobsClient.
+ */
 public interface DscCompilationJobsClient {
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -31,15 +33,12 @@ public interface DscCompilationJobsClient {
      * @return the {@link SyncPoller} for polling of definition of the Dsc Compilation job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters);
+    SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(String resourceGroupName,
+        String automationAccountName, String compilationJobName, DscCompilationJobCreateParameters parameters);
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -51,16 +50,13 @@ public interface DscCompilationJobsClient {
      * @return the {@link SyncPoller} for polling of definition of the Dsc Compilation job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters,
+    SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(String resourceGroupName,
+        String automationAccountName, String compilationJobName, DscCompilationJobCreateParameters parameters,
         Context context);
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -71,15 +67,12 @@ public interface DscCompilationJobsClient {
      * @return definition of the Dsc Compilation job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DscCompilationJobInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
+    DscCompilationJobInner create(String resourceGroupName, String automationAccountName, String compilationJobName,
         DscCompilationJobCreateParameters parameters);
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -91,16 +84,28 @@ public interface DscCompilationJobsClient {
      * @return definition of the Dsc Compilation job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DscCompilationJobInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters,
-        Context context);
+    DscCompilationJobInner create(String resourceGroupName, String automationAccountName, String compilationJobName,
+        DscCompilationJobCreateParameters parameters, Context context);
 
     /**
      * Retrieve the Dsc configuration compilation job identified by job id.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param compilationJobName The DSC configuration Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the Dsc Compilation job along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DscCompilationJobInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String compilationJobName, Context context);
+
+    /**
+     * Retrieve the Dsc configuration compilation job identified by job id.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -113,24 +118,8 @@ public interface DscCompilationJobsClient {
     DscCompilationJobInner get(String resourceGroupName, String automationAccountName, String compilationJobName);
 
     /**
-     * Retrieve the Dsc configuration compilation job identified by job id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param compilationJobName The DSC configuration Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DscCompilationJobInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String compilationJobName, Context context);
-
-    /**
      * Retrieve a list of dsc compilation jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,12 +128,12 @@ public interface DscCompilationJobsClient {
      * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DscCompilationJobInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName);
+    PagedIterable<DscCompilationJobInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName);
 
     /**
      * Retrieve a list of dsc compilation jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -155,27 +144,12 @@ public interface DscCompilationJobsClient {
      * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DscCompilationJobInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context);
+    PagedIterable<DscCompilationJobInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String filter, Context context);
 
     /**
      * Retrieve the job stream identified by job stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobId The job id.
-     * @param jobStreamId The job stream id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobStreamInner getStream(String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId);
-
-    /**
-     * Retrieve the job stream identified by job stream id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobId The job id.
@@ -187,6 +161,21 @@ public interface DscCompilationJobsClient {
      * @return definition of the job stream along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobStreamInner> getStreamWithResponse(
-        String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId, Context context);
+    Response<JobStreamInner> getStreamWithResponse(String resourceGroupName, String automationAccountName, UUID jobId,
+        String jobStreamId, Context context);
+
+    /**
+     * Retrieve the job stream identified by job stream id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobId The job id.
+     * @param jobStreamId The job stream id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job stream.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobStreamInner getStream(String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId);
 }

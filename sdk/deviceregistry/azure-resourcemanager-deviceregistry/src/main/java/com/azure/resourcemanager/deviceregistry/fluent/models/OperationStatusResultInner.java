@@ -62,6 +62,11 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      */
     private ManagementError error;
 
+    /*
+     * Fully qualified ID of the resource against which the original async operation was started.
+     */
+    private String resourceId;
+
     /**
      * Creates an instance of OperationStatusResultInner class.
      */
@@ -141,6 +146,16 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
     }
 
     /**
+     * Get the resourceId property: Fully qualified ID of the resource against which the original async operation was
+     * started.
+     * 
+     * @return the resourceId value.
+     */
+    public String resourceId() {
+        return this.resourceId;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -213,6 +228,8 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
                     deserializedOperationStatusResultInner.operations = operations;
                 } else if ("error".equals(fieldName)) {
                     deserializedOperationStatusResultInner.error = ManagementError.fromJson(reader);
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.resourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

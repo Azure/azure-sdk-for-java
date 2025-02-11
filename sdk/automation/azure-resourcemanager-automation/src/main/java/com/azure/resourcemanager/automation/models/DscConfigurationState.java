@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the state of the configuration. */
+/**
+ * Gets or sets the state of the configuration.
+ */
 public final class DscConfigurationState extends ExpandableStringEnum<DscConfigurationState> {
-    /** Static value New for DscConfigurationState. */
+    /**
+     * Static value New for DscConfigurationState.
+     */
     public static final DscConfigurationState NEW = fromString("New");
 
-    /** Static value Edit for DscConfigurationState. */
+    /**
+     * Static value Edit for DscConfigurationState.
+     */
     public static final DscConfigurationState EDIT = fromString("Edit");
 
-    /** Static value Published for DscConfigurationState. */
+    /**
+     * Static value Published for DscConfigurationState.
+     */
     public static final DscConfigurationState PUBLISHED = fromString("Published");
 
     /**
+     * Creates a new instance of DscConfigurationState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DscConfigurationState() {
+    }
+
+    /**
      * Creates or finds a DscConfigurationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DscConfigurationState.
      */
-    @JsonCreator
     public static DscConfigurationState fromString(String name) {
         return fromString(name, DscConfigurationState.class);
     }
 
     /**
      * Gets known DscConfigurationState values.
-     *
+     * 
      * @return known DscConfigurationState values.
      */
     public static Collection<DscConfigurationState> values() {

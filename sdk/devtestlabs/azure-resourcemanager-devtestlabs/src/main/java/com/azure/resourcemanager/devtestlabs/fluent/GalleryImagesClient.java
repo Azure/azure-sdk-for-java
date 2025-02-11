@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devtestlabs.fluent.models.GalleryImageInner;
 
-/** An instance of this class provides access to all the operations defined in GalleryImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GalleryImagesClient.
+ */
 public interface GalleryImagesClient {
     /**
      * List gallery images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface GalleryImagesClient {
 
     /**
      * List gallery images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=author)'.
@@ -41,12 +43,6 @@ public interface GalleryImagesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GalleryImageInner> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<GalleryImageInner> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 }

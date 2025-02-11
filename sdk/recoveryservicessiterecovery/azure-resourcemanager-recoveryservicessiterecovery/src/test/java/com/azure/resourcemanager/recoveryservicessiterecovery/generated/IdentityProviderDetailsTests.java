@@ -23,8 +23,11 @@ public final class IdentityProviderDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityProviderDetails model = new IdentityProviderDetails().withTenantId("brn").withApplicationId("u")
-            .withObjectId("prafwgckhoc").withAudience("d").withAadAuthority("fwafqrouda");
+        IdentityProviderDetails model = new IdentityProviderDetails().withTenantId("brn")
+            .withApplicationId("u")
+            .withObjectId("prafwgckhoc")
+            .withAudience("d")
+            .withAadAuthority("fwafqrouda");
         model = BinaryData.fromObject(model).toObject(IdentityProviderDetails.class);
         Assertions.assertEquals("brn", model.tenantId());
         Assertions.assertEquals("u", model.applicationId());

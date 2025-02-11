@@ -9,23 +9,25 @@ import com.azure.resourcemanager.dnsresolver.models.OutboundEndpointPatch;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OutboundEndpointPatchTests {
-    @Test
-    public void testDeserialize() {
-        OutboundEndpointPatch model =
-            BinaryData.fromString("{\"tags\":{\"kgfg\":\"zndlikwy\"}}").toObject(OutboundEndpointPatch.class);
-        Assertions.assertEquals("zndlikwy", model.tags().get("kgfg"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OutboundEndpointPatch model
+            = BinaryData.fromString("{\"tags\":{\"oifiyipjxsqwpgr\":\"hjtckwhd\",\"qabnmoc\":\"bznorcjxvsnby\"}}")
+                .toObject(OutboundEndpointPatch.class);
+        Assertions.assertEquals("hjtckwhd", model.tags().get("oifiyipjxsqwpgr"));
     }
 
-    @Test
-    public void testSerialize() {
-        OutboundEndpointPatch model = new OutboundEndpointPatch().withTags(mapOf("kgfg", "zndlikwy"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OutboundEndpointPatch model
+            = new OutboundEndpointPatch().withTags(mapOf("oifiyipjxsqwpgr", "hjtckwhd", "qabnmoc", "bznorcjxvsnby"));
         model = BinaryData.fromObject(model).toObject(OutboundEndpointPatch.class);
-        Assertions.assertEquals("zndlikwy", model.tags().get("kgfg"));
+        Assertions.assertEquals("hjtckwhd", model.tags().get("oifiyipjxsqwpgr"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

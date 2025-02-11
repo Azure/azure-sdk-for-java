@@ -6,44 +6,48 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The definition of an export. */
+/**
+ * The definition of an export.
+ */
 @Fluent
-public final class ExportDefinition {
+public final class ExportDefinition implements JsonSerializable<ExportDefinition> {
     /*
      * The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable to exports that do not
      * yet provide data for charges or amortization for service reservations.
      */
-    @JsonProperty(value = "type", required = true)
     private ExportType type;
 
     /*
      * The time frame for pulling data for the export. If custom, then a specific time period must be provided.
      */
-    @JsonProperty(value = "timeframe", required = true)
     private TimeframeType timeframe;
 
     /*
      * Has time period for pulling data for the export.
      */
-    @JsonProperty(value = "timePeriod")
     private ExportTimePeriod timePeriod;
 
     /*
      * The definition for data in the export.
      */
-    @JsonProperty(value = "dataSet")
     private ExportDataset dataSet;
 
-    /** Creates an instance of ExportDefinition class. */
+    /**
+     * Creates an instance of ExportDefinition class.
+     */
     public ExportDefinition() {
     }
 
     /**
      * Get the type property: The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable
      * to exports that do not yet provide data for charges or amortization for service reservations.
-     *
+     * 
      * @return the type value.
      */
     public ExportType type() {
@@ -53,7 +57,7 @@ public final class ExportDefinition {
     /**
      * Set the type property: The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable
      * to exports that do not yet provide data for charges or amortization for service reservations.
-     *
+     * 
      * @param type the type value to set.
      * @return the ExportDefinition object itself.
      */
@@ -65,7 +69,7 @@ public final class ExportDefinition {
     /**
      * Get the timeframe property: The time frame for pulling data for the export. If custom, then a specific time
      * period must be provided.
-     *
+     * 
      * @return the timeframe value.
      */
     public TimeframeType timeframe() {
@@ -75,7 +79,7 @@ public final class ExportDefinition {
     /**
      * Set the timeframe property: The time frame for pulling data for the export. If custom, then a specific time
      * period must be provided.
-     *
+     * 
      * @param timeframe the timeframe value to set.
      * @return the ExportDefinition object itself.
      */
@@ -86,7 +90,7 @@ public final class ExportDefinition {
 
     /**
      * Get the timePeriod property: Has time period for pulling data for the export.
-     *
+     * 
      * @return the timePeriod value.
      */
     public ExportTimePeriod timePeriod() {
@@ -95,7 +99,7 @@ public final class ExportDefinition {
 
     /**
      * Set the timePeriod property: Has time period for pulling data for the export.
-     *
+     * 
      * @param timePeriod the timePeriod value to set.
      * @return the ExportDefinition object itself.
      */
@@ -106,7 +110,7 @@ public final class ExportDefinition {
 
     /**
      * Get the dataSet property: The definition for data in the export.
-     *
+     * 
      * @return the dataSet value.
      */
     public ExportDataset dataSet() {
@@ -115,7 +119,7 @@ public final class ExportDefinition {
 
     /**
      * Set the dataSet property: The definition for data in the export.
-     *
+     * 
      * @param dataSet the dataSet value to set.
      * @return the ExportDefinition object itself.
      */
@@ -126,19 +130,17 @@ public final class ExportDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ExportDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ExportDefinition"));
         }
         if (timeframe() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeframe in model ExportDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timeframe in model ExportDefinition"));
         }
         if (timePeriod() != null) {
             timePeriod().validate();
@@ -149,4 +151,50 @@ public final class ExportDefinition {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExportDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("timeframe", this.timeframe == null ? null : this.timeframe.toString());
+        jsonWriter.writeJsonField("timePeriod", this.timePeriod);
+        jsonWriter.writeJsonField("dataSet", this.dataSet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExportDefinition.
+     */
+    public static ExportDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportDefinition deserializedExportDefinition = new ExportDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedExportDefinition.type = ExportType.fromString(reader.getString());
+                } else if ("timeframe".equals(fieldName)) {
+                    deserializedExportDefinition.timeframe = TimeframeType.fromString(reader.getString());
+                } else if ("timePeriod".equals(fieldName)) {
+                    deserializedExportDefinition.timePeriod = ExportTimePeriod.fromJson(reader);
+                } else if ("dataSet".equals(fieldName)) {
+                    deserializedExportDefinition.dataSet = ExportDataset.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportDefinition;
+        });
+    }
 }

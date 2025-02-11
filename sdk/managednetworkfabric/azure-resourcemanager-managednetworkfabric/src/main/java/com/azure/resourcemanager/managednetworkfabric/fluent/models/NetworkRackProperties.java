@@ -6,46 +6,49 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Network Rack Properties defines the properties of the resource. */
+/**
+ * Network Rack Properties defines the properties of the resource.
+ */
 @Fluent
 public final class NetworkRackProperties extends AnnotationResource {
     /*
      * Network Rack SKU name.
      */
-    @JsonProperty(value = "networkRackType")
     private NetworkRackType networkRackType;
 
     /*
      * ARM resource ID of the Network Fabric.
      */
-    @JsonProperty(value = "networkFabricId", required = true)
     private String networkFabricId;
 
     /*
      * List of network device ARM resource IDs.
      */
-    @JsonProperty(value = "networkDevices", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> networkDevices;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of NetworkRackProperties class. */
+    /**
+     * Creates an instance of NetworkRackProperties class.
+     */
     public NetworkRackProperties() {
     }
 
     /**
      * Get the networkRackType property: Network Rack SKU name.
-     *
+     * 
      * @return the networkRackType value.
      */
     public NetworkRackType networkRackType() {
@@ -54,7 +57,7 @@ public final class NetworkRackProperties extends AnnotationResource {
 
     /**
      * Set the networkRackType property: Network Rack SKU name.
-     *
+     * 
      * @param networkRackType the networkRackType value to set.
      * @return the NetworkRackProperties object itself.
      */
@@ -65,7 +68,7 @@ public final class NetworkRackProperties extends AnnotationResource {
 
     /**
      * Get the networkFabricId property: ARM resource ID of the Network Fabric.
-     *
+     * 
      * @return the networkFabricId value.
      */
     public String networkFabricId() {
@@ -74,7 +77,7 @@ public final class NetworkRackProperties extends AnnotationResource {
 
     /**
      * Set the networkFabricId property: ARM resource ID of the Network Fabric.
-     *
+     * 
      * @param networkFabricId the networkFabricId value to set.
      * @return the NetworkRackProperties object itself.
      */
@@ -85,7 +88,7 @@ public final class NetworkRackProperties extends AnnotationResource {
 
     /**
      * Get the networkDevices property: List of network device ARM resource IDs.
-     *
+     * 
      * @return the networkDevices value.
      */
     public List<String> networkDevices() {
@@ -94,14 +97,16 @@ public final class NetworkRackProperties extends AnnotationResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkRackProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -110,19 +115,67 @@ public final class NetworkRackProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (networkFabricId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricId in model NetworkRackProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkFabricId in model NetworkRackProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkRackProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("networkFabricId", this.networkFabricId);
+        jsonWriter.writeStringField("networkRackType",
+            this.networkRackType == null ? null : this.networkRackType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkRackProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkRackProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkRackProperties.
+     */
+    public static NetworkRackProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkRackProperties deserializedNetworkRackProperties = new NetworkRackProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedNetworkRackProperties.withAnnotation(reader.getString());
+                } else if ("networkFabricId".equals(fieldName)) {
+                    deserializedNetworkRackProperties.networkFabricId = reader.getString();
+                } else if ("networkRackType".equals(fieldName)) {
+                    deserializedNetworkRackProperties.networkRackType = NetworkRackType.fromString(reader.getString());
+                } else if ("networkDevices".equals(fieldName)) {
+                    List<String> networkDevices = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkRackProperties.networkDevices = networkDevices;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkRackProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkRackProperties;
+        });
+    }
 }

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.customerinsights.generated;
 
-/** Samples for Hubs List. */
+/**
+ * Samples for Hubs List.
+ */
 public final class HubsListSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/HubsList.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/HubsList.
+     * json
      */
     /**
      * Sample code: Hubs_List.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
     public static void hubsList(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {

@@ -23,15 +23,11 @@ import java.util.TreeMap;
 /**
  * Implementation for {@link PolicyDefinition}.
  */
-final class PolicyDefinitionImpl extends
-        CreatableUpdatableImpl<PolicyDefinition, PolicyDefinitionInner, PolicyDefinitionImpl>
-        implements
-        PolicyDefinition,
-        PolicyDefinition.Definition,
-        PolicyDefinition.Update {
+final class PolicyDefinitionImpl
+    extends CreatableUpdatableImpl<PolicyDefinition, PolicyDefinitionInner, PolicyDefinitionImpl>
+    implements PolicyDefinition, PolicyDefinition.Definition, PolicyDefinition.Update {
     private final PolicyDefinitionsClient innerCollection;
     private final ClientLogger logger = new ClientLogger(getClass());
-
 
     PolicyDefinitionImpl(String name, PolicyDefinitionInner innerModel, PolicyDefinitionsClient innerCollection) {
         super(name, innerModel);
@@ -122,8 +118,7 @@ final class PolicyDefinitionImpl extends
 
     @Override
     public Mono<PolicyDefinition> createResourceAsync() {
-        return innerCollection.createOrUpdateAsync(name(), innerModel())
-                .map(innerToFluentMap(this));
+        return innerCollection.createOrUpdateAsync(name(), innerModel()).map(innerToFluentMap(this));
     }
 
     @Override
@@ -145,10 +140,8 @@ final class PolicyDefinitionImpl extends
         if (innerModel().parameters() == null) {
             innerModel().withParameters(new TreeMap<>());
         }
-        innerModel().parameters().put(name,
-            new ParameterDefinitionsValue()
-                .withType(parameterType)
-                .withDefaultValue(defaultValue));
+        innerModel().parameters()
+            .put(name, new ParameterDefinitionsValue().withType(parameterType).withDefaultValue(defaultValue));
         return this;
     }
 

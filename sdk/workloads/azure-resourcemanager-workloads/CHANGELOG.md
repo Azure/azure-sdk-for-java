@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,169 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2024-12-06)
+
+- Azure Resource Manager Workloads client library for Java. This package contains Microsoft Azure SDK for Workloads Management SDK. Workloads client provides access to various workload operations. Package tag package-2023-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.ServiceInitiatedSoftwareConfiguration` was modified
+
+* `softwareInstallationType()` was added
+
+#### `models.ProviderSpecificProperties` was modified
+
+* `providerType()` was added
+
+#### `models.DiscoveryConfiguration` was modified
+
+* `configurationType()` was added
+
+#### `models.SoftwareConfiguration` was modified
+
+* `softwareInstallationType()` was added
+
+#### `models.ProviderInstancePropertiesErrors` was modified
+
+* `innerError()` was added
+* `code()` was added
+* `details()` was added
+* `message()` was added
+* `target()` was added
+
+#### `models.OSConfiguration` was modified
+
+* `osType()` was added
+
+#### `models.DeploymentWithOSConfiguration` was modified
+
+* `configurationType()` was added
+
+#### `models.SingleServerCustomResourceNames` was modified
+
+* `namingPatternType()` was added
+
+#### `models.SingleServerRecommendationResult` was modified
+
+* `deploymentType()` was added
+
+#### `models.SkipFileShareConfiguration` was modified
+
+* `configurationType()` was added
+
+#### `models.ThreeTierConfiguration` was modified
+
+* `deploymentType()` was added
+
+#### `models.ExternalInstallationSoftwareConfiguration` was modified
+
+* `softwareInstallationType()` was added
+
+#### `models.SapNetWeaverProviderInstanceProperties` was modified
+
+* `providerType()` was added
+
+#### `models.LinuxConfiguration` was modified
+
+* `osType()` was added
+
+#### `models.MonitorPropertiesErrors` was modified
+
+* `target()` was added
+* `details()` was added
+* `code()` was added
+* `innerError()` was added
+* `message()` was added
+
+#### `models.DeploymentConfiguration` was modified
+
+* `configurationType()` was added
+
+#### `models.DB2ProviderInstanceProperties` was modified
+
+* `providerType()` was added
+
+#### `models.SingleServerConfiguration` was modified
+
+* `deploymentType()` was added
+
+#### `models.PrometheusHaClusterProviderInstanceProperties` was modified
+
+* `providerType()` was added
+
+#### `models.CreateAndMountFileShareConfiguration` was modified
+
+* `configurationType()` was added
+
+#### `models.MsSqlServerProviderInstanceProperties` was modified
+
+* `providerType()` was added
+
+#### `models.WindowsConfiguration` was modified
+
+* `osType()` was added
+
+#### `models.ThreeTierCustomResourceNames` was modified
+
+* `namingPatternType()` was added
+
+#### `models.PrometheusOSProviderInstanceProperties` was modified
+
+* `providerType()` was added
+
+#### `models.ThreeTierRecommendationResult` was modified
+
+* `deploymentType()` was added
+
+#### `models.HanaDbProviderInstanceProperties` was modified
+
+* `providerType()` was added
+
+#### `models.ThreeTierFullResourceNames` was modified
+
+* `namingPatternType()` was added
+
+#### `models.InfrastructureConfiguration` was modified
+
+* `deploymentType()` was added
+
+#### `models.SapConfiguration` was modified
+
+* `configurationType()` was added
+
+#### `models.MountFileShareConfiguration` was modified
+
+* `configurationType()` was added
+
+#### `models.FileShareConfiguration` was modified
+
+* `configurationType()` was added
+
+#### `models.SingleServerFullResourceNames` was modified
+
+* `namingPatternType()` was added
+
+#### `models.SapSizingRecommendationResult` was modified
+
+* `deploymentType()` was added
+
+#### `models.SapInstallWithoutOSConfigSoftwareConfiguration` was modified
+
+* `softwareInstallationType()` was added
 
 ## 1.0.0 (2023-04-17)
 

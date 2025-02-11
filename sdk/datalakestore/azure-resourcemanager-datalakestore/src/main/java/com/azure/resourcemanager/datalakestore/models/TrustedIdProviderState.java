@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.datalakestore.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The current state of the trusted identity provider feature for this Data Lake Store account. */
+/**
+ * The current state of the trusted identity provider feature for this Data Lake Store account.
+ */
 public enum TrustedIdProviderState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a TrustedIdProviderState instance. */
+    /**
+     * The actual serialized value for a TrustedIdProviderState instance.
+     */
     private final String value;
 
     TrustedIdProviderState(String value) {
@@ -24,11 +29,10 @@ public enum TrustedIdProviderState {
 
     /**
      * Parses a serialized value to a TrustedIdProviderState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed TrustedIdProviderState object, or null if unable to parse.
      */
-    @JsonCreator
     public static TrustedIdProviderState fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum TrustedIdProviderState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

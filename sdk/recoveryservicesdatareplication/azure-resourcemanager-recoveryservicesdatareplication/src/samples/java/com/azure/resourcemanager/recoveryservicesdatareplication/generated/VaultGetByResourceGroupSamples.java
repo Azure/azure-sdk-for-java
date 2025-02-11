@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.recoveryservicesdatareplication.generated;
 
-/** Samples for Vault GetByResourceGroup. */
+/**
+ * Samples for Vault GetByResourceGroup.
+ */
 public final class VaultGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Vault_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Vault_Get.json
      */
     /**
      * Sample code: Vault_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .getByResourceGroupWithResponse("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);
     }
 }

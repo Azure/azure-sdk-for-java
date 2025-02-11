@@ -8,39 +8,35 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.Operation;
 import com.azure.resourcemanager.policyinsights.models.OperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationTests {
-    @Test
-    public void testDeserialize() {
-        Operation model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"afcnih\",\"display\":{\"provider\":\"apnedgfbcvkc\",\"resource\":\"vpk\",\"operation\":\"dcvd\",\"description\":\"vo\"}}")
-                .toObject(Operation.class);
-        Assertions.assertEquals("afcnih", model.name());
-        Assertions.assertEquals("apnedgfbcvkc", model.display().provider());
-        Assertions.assertEquals("vpk", model.display().resource());
-        Assertions.assertEquals("dcvd", model.display().operation());
-        Assertions.assertEquals("vo", model.display().description());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Operation model = BinaryData.fromString(
+            "{\"name\":\"c\",\"isDataAction\":true,\"display\":{\"provider\":\"ksrl\",\"resource\":\"desqplpvmjcdo\",\"operation\":\"bidyv\",\"description\":\"owx\"}}")
+            .toObject(Operation.class);
+        Assertions.assertEquals("c", model.name());
+        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertEquals("ksrl", model.display().provider());
+        Assertions.assertEquals("desqplpvmjcdo", model.display().resource());
+        Assertions.assertEquals("bidyv", model.display().operation());
+        Assertions.assertEquals("owx", model.display().description());
     }
 
-    @Test
-    public void testSerialize() {
-        Operation model =
-            new Operation()
-                .withName("afcnih")
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("apnedgfbcvkc")
-                        .withResource("vpk")
-                        .withOperation("dcvd")
-                        .withDescription("vo"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Operation model = new Operation().withName("c")
+            .withIsDataAction(true)
+            .withDisplay(new OperationDisplay().withProvider("ksrl")
+                .withResource("desqplpvmjcdo")
+                .withOperation("bidyv")
+                .withDescription("owx"));
         model = BinaryData.fromObject(model).toObject(Operation.class);
-        Assertions.assertEquals("afcnih", model.name());
-        Assertions.assertEquals("apnedgfbcvkc", model.display().provider());
-        Assertions.assertEquals("vpk", model.display().resource());
-        Assertions.assertEquals("dcvd", model.display().operation());
-        Assertions.assertEquals("vo", model.display().description());
+        Assertions.assertEquals("c", model.name());
+        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertEquals("ksrl", model.display().provider());
+        Assertions.assertEquals("desqplpvmjcdo", model.display().resource());
+        Assertions.assertEquals("bidyv", model.display().operation());
+        Assertions.assertEquals("owx", model.display().description());
     }
 }

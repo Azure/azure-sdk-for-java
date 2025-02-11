@@ -21,39 +21,42 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.automation.fluent.RunbookDraftsClient;
 import com.azure.resourcemanager.automation.fluent.models.RunbookDraftInner;
 import com.azure.resourcemanager.automation.fluent.models.RunbookDraftUndoEditResultInner;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
 import java.nio.ByteBuffer;
-import java.util.Enumeration;
-import java.util.Iterator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RunbookDraftsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RunbookDraftsClient.
+ */
 public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RunbookDraftsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of RunbookDraftsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RunbookDraftsClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy.create(RunbookDraftsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RunbookDraftsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,95 +66,68 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientRunb")
-    private interface RunbookDraftsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content")
-        @ExpectedResponses({200})
+    public interface RunbookDraftsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getContent(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> getContent(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("runbookName") String runbookName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("runbookName") String runbookName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: text/powershell"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: text/powershell" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<StreamResponse> replaceContent(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> replaceContent(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("runbookName") String runbookName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("runbookName") String runbookName, @QueryParam("api-version") String apiVersion,
             @BodyParam("text/powershell") Flux<ByteBuffer> runbookContent,
-            @HeaderParam("Content-Length") long contentLength,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: text/powershell"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: text/powershell" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<StreamResponse> replaceContent(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> replaceContent(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("runbookName") String runbookName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("text/powershell") BinaryData runbookContent,
-            @HeaderParam("Content-Length") long contentLength,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("runbookName") String runbookName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("text/powershell") BinaryData runbookContent, @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunbookDraftInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RunbookDraftInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("runbookName") String runbookName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("runbookName") String runbookName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/undoEdit")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/undoEdit")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunbookDraftUndoEditResultInner>> undoEdit(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RunbookDraftUndoEditResultInner>> undoEdit(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("runbookName") String runbookName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("runbookName") String runbookName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieve the content of runbook draft identified by runbook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -161,19 +137,15 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getContentWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String runbookName) {
+    private Mono<Response<Flux<ByteBuffer>>> getContentWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String runbookName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -189,24 +161,14 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
         final String apiVersion = "2018-06-30";
         final String accept = "text/powershell";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getContent(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            automationAccountName,
-                            runbookName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.getContent(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, automationAccountName, runbookName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the content of runbook draft identified by runbook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -217,19 +179,15 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getContentWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String runbookName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> getContentWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String runbookName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -245,21 +203,13 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
         final String apiVersion = "2018-06-30";
         final String accept = "text/powershell";
         context = this.client.mergeContext(context);
-        return service
-            .getContent(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                automationAccountName,
-                runbookName,
-                apiVersion,
-                accept,
-                context);
+        return service.getContent(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            automationAccountName, runbookName, apiVersion, accept, context);
     }
 
     /**
      * Retrieve the content of runbook draft identified by runbook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -269,15 +219,33 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Flux<ByteBuffer>> getContentAsync(
-        String resourceGroupName, String automationAccountName, String runbookName) {
+    private Mono<Flux<ByteBuffer>> getContentAsync(String resourceGroupName, String automationAccountName,
+        String runbookName) {
         return getContentWithResponseAsync(resourceGroupName, automationAccountName, runbookName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve the content of runbook draft identified by runbook name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Flux<ByteBuffer>> getContentWithResponse(String resourceGroupName, String automationAccountName,
+        String runbookName, Context context) {
+        return getContentWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
+    }
+
+    /**
+     * Retrieve the content of runbook draft identified by runbook name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -288,12 +256,604 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName) {
-        return getContentAsync(resourceGroupName, automationAccountName, runbookName).block();
+        return getContentWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE).getValue();
     }
 
     /**
-     * Retrieve the content of runbook draft identified by runbook name.
-     *
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> replaceContentWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String runbookName, Flux<ByteBuffer> runbookContent, long contentLength) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (automationAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
+        }
+        if (runbookName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
+        }
+        if (runbookContent == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runbookContent is required and cannot be null."));
+        }
+        final String apiVersion = "2018-06-30";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.replaceContent(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, automationAccountName, runbookName, apiVersion, runbookContent, contentLength,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> replaceContentWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String runbookName, Flux<ByteBuffer> runbookContent, long contentLength,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (automationAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
+        }
+        if (runbookName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
+        }
+        if (runbookContent == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runbookContent is required and cannot be null."));
+        }
+        final String apiVersion = "2018-06-30";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.replaceContent(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            automationAccountName, runbookName, apiVersion, runbookContent, contentLength, accept, context);
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BinaryData>, BinaryData> beginReplaceContentAsync(String resourceGroupName,
+        String automationAccountName, String runbookName, Flux<ByteBuffer> runbookContent, long contentLength) {
+        Mono<Response<Flux<ByteBuffer>>> mono = replaceContentWithResponseAsync(resourceGroupName,
+            automationAccountName, runbookName, runbookContent, contentLength);
+        return this.client.<BinaryData, BinaryData>getLroResult(mono, this.client.getHttpPipeline(), BinaryData.class,
+            BinaryData.class, this.client.getContext());
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BinaryData>, BinaryData> beginReplaceContentAsync(String resourceGroupName,
+        String automationAccountName, String runbookName, Flux<ByteBuffer> runbookContent, long contentLength,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = replaceContentWithResponseAsync(resourceGroupName,
+            automationAccountName, runbookName, runbookContent, contentLength, context);
+        return this.client.<BinaryData, BinaryData>getLroResult(mono, this.client.getHttpPipeline(), BinaryData.class,
+            BinaryData.class, context);
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BinaryData> replaceContentAsync(String resourceGroupName, String automationAccountName,
+        String runbookName, Flux<ByteBuffer> runbookContent, long contentLength) {
+        return beginReplaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent,
+            contentLength).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BinaryData> replaceContentAsync(String resourceGroupName, String automationAccountName,
+        String runbookName, Flux<ByteBuffer> runbookContent, long contentLength, Context context) {
+        return beginReplaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent,
+            contentLength, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData replaceContent(String resourceGroupName, String automationAccountName, String runbookName,
+        Flux<ByteBuffer> runbookContent, long contentLength) {
+        return replaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength)
+            .block();
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData replaceContent(String resourceGroupName, String automationAccountName, String runbookName,
+        Flux<ByteBuffer> runbookContent, long contentLength, Context context) {
+        return replaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength,
+            context).block();
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> replaceContentWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String runbookName, BinaryData runbookContent, long contentLength) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (automationAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
+        }
+        if (runbookName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
+        }
+        if (runbookContent == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runbookContent is required and cannot be null."));
+        }
+        final String apiVersion = "2018-06-30";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.replaceContent(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, automationAccountName, runbookName, apiVersion, runbookContent, contentLength,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> replaceContentWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String runbookName, BinaryData runbookContent, long contentLength,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (automationAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
+        }
+        if (runbookName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
+        }
+        if (runbookContent == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runbookContent is required and cannot be null."));
+        }
+        final String apiVersion = "2018-06-30";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.replaceContent(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            automationAccountName, runbookName, apiVersion, runbookContent, contentLength, accept, context);
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BinaryData>, BinaryData> beginReplaceContentAsync(String resourceGroupName,
+        String automationAccountName, String runbookName, BinaryData runbookContent, long contentLength) {
+        Mono<Response<Flux<ByteBuffer>>> mono = replaceContentWithResponseAsync(resourceGroupName,
+            automationAccountName, runbookName, runbookContent, contentLength);
+        return this.client.<BinaryData, BinaryData>getLroResult(mono, this.client.getHttpPipeline(), BinaryData.class,
+            BinaryData.class, this.client.getContext());
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BinaryData>, BinaryData> beginReplaceContentAsync(String resourceGroupName,
+        String automationAccountName, String runbookName, BinaryData runbookContent, long contentLength,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = replaceContentWithResponseAsync(resourceGroupName,
+            automationAccountName, runbookName, runbookContent, contentLength, context);
+        return this.client.<BinaryData, BinaryData>getLroResult(mono, this.client.getHttpPipeline(), BinaryData.class,
+            BinaryData.class, context);
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BinaryData>, BinaryData> beginReplaceContent(String resourceGroupName,
+        String automationAccountName, String runbookName, BinaryData runbookContent, long contentLength) {
+        return this
+            .beginReplaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent,
+                contentLength)
+            .getSyncPoller();
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BinaryData>, BinaryData> beginReplaceContent(String resourceGroupName,
+        String automationAccountName, String runbookName, BinaryData runbookContent, long contentLength,
+        Context context) {
+        return this
+            .beginReplaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent,
+                contentLength, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BinaryData> replaceContentAsync(String resourceGroupName, String automationAccountName,
+        String runbookName, BinaryData runbookContent, long contentLength) {
+        return beginReplaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent,
+            contentLength).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BinaryData> replaceContentAsync(String resourceGroupName, String automationAccountName,
+        String runbookName, BinaryData runbookContent, long contentLength, Context context) {
+        return beginReplaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent,
+            contentLength, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData replaceContent(String resourceGroupName, String automationAccountName, String runbookName,
+        BinaryData runbookContent, long contentLength) {
+        return replaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength)
+            .block();
+    }
+
+    /**
+     * Replaces the runbook draft content.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param runbookContent The runbook draft content.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData replaceContent(String resourceGroupName, String automationAccountName, String runbookName,
+        BinaryData runbookContent, long contentLength, Context context) {
+        return replaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength,
+            context).block();
+    }
+
+    /**
+     * Retrieve the runbook draft identified by runbook name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RunbookDraftInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String runbookName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (automationAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
+        }
+        if (runbookName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
+        }
+        final String apiVersion = "2018-06-30";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, automationAccountName, runbookName, apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieve the runbook draft identified by runbook name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RunbookDraftInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String runbookName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (automationAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
+        }
+        if (runbookName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
+        }
+        final String apiVersion = "2018-06-30";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            automationAccountName, runbookName, apiVersion, accept, context);
+    }
+
+    /**
+     * Retrieve the runbook draft identified by runbook name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RunbookDraftInner> getAsync(String resourceGroupName, String automationAccountName,
+        String runbookName) {
+        return getWithResponseAsync(resourceGroupName, automationAccountName, runbookName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieve the runbook draft identified by runbook name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -304,586 +864,14 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Flux<ByteBuffer>> getContentWithResponse(
-        String resourceGroupName, String automationAccountName, String runbookName, Context context) {
-        return getContentWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
-    }
-
-    /**
-     * Replaces the runbook draft content.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamResponse> replaceContentWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        Flux<ByteBuffer> runbookContent,
-        long contentLength) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (automationAccountName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
-        }
-        if (runbookName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
-        }
-        if (runbookContent == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runbookContent is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-30";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .replaceContent(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            automationAccountName,
-                            runbookName,
-                            apiVersion,
-                            runbookContent,
-                            contentLength,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Replaces the runbook draft content.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamResponse> replaceContentWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        Flux<ByteBuffer> runbookContent,
-        long contentLength,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (automationAccountName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
-        }
-        if (runbookName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
-        }
-        if (runbookContent == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runbookContent is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-30";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .replaceContent(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                automationAccountName,
-                runbookName,
-                apiVersion,
-                runbookContent,
-                contentLength,
-                accept,
-                context);
-    }
-
-    /**
-     * Replaces the runbook draft content.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Flux<ByteBuffer> replaceContentAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        Flux<ByteBuffer> runbookContent,
-        long contentLength) {
-        return replaceContentWithResponseAsync(
-                resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength)
-            .flatMapMany(StreamResponse::getValue);
-    }
-
-    /**
-     * Replaces the runbook draft content.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InputStream replaceContent(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        Flux<ByteBuffer> runbookContent,
-        long contentLength) {
-        Iterator<ByteBufferBackedInputStream> iterator =
-            replaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength)
-                .map(ByteBufferBackedInputStream::new)
-                .toStream()
-                .iterator();
-        Enumeration<InputStream> enumeration =
-            new Enumeration<InputStream>() {
-                @Override
-                public boolean hasMoreElements() {
-                    return iterator.hasNext();
-                }
-
-                @Override
-                public InputStream nextElement() {
-                    return iterator.next();
-                }
-            };
-        return new SequenceInputStream(enumeration);
-    }
-
-    /**
-     * Replaces the runbook draft content.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamResponse replaceContentWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        Flux<ByteBuffer> runbookContent,
-        long contentLength,
-        Context context) {
-        return replaceContentWithResponseAsync(
-                resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength, context)
-            .block();
-    }
-
-    /**
-     * Replaces the runbook draft content.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamResponse> replaceContentWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        BinaryData runbookContent,
-        long contentLength) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (automationAccountName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
-        }
-        if (runbookName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
-        }
-        if (runbookContent == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runbookContent is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-30";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .replaceContent(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            automationAccountName,
-                            runbookName,
-                            apiVersion,
-                            runbookContent,
-                            contentLength,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Replaces the runbook draft content.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamResponse> replaceContentWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        BinaryData runbookContent,
-        long contentLength,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (automationAccountName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
-        }
-        if (runbookName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
-        }
-        if (runbookContent == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runbookContent is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-30";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .replaceContent(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                automationAccountName,
-                runbookName,
-                apiVersion,
-                runbookContent,
-                contentLength,
-                accept,
-                context);
-    }
-
-    /**
-     * Replaces the runbook draft content.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Flux<ByteBuffer> replaceContentAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        BinaryData runbookContent,
-        long contentLength) {
-        return replaceContentWithResponseAsync(
-                resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength)
-            .flatMapMany(StreamResponse::getValue);
-    }
-
-    /**
-     * Replaces the runbook draft content.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InputStream replaceContent(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        BinaryData runbookContent,
-        long contentLength) {
-        Iterator<ByteBufferBackedInputStream> iterator =
-            replaceContentAsync(resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength)
-                .map(ByteBufferBackedInputStream::new)
-                .toStream()
-                .iterator();
-        Enumeration<InputStream> enumeration =
-            new Enumeration<InputStream>() {
-                @Override
-                public boolean hasMoreElements() {
-                    return iterator.hasNext();
-                }
-
-                @Override
-                public InputStream nextElement() {
-                    return iterator.next();
-                }
-            };
-        return new SequenceInputStream(enumeration);
-    }
-
-    /**
-     * Replaces the runbook draft content.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param runbookContent The runbook draft content.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamResponse replaceContentWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        BinaryData runbookContent,
-        long contentLength,
-        Context context) {
-        return replaceContentWithResponseAsync(
-                resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength, context)
-            .block();
+    public Response<RunbookDraftInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String runbookName, Context context) {
+        return getWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
     }
 
     /**
      * Retrieve the runbook draft identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RunbookDraftInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String runbookName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (automationAccountName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
-        }
-        if (runbookName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-30";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            automationAccountName,
-                            runbookName,
-                            apiVersion,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Retrieve the runbook draft identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RunbookDraftInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String runbookName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (automationAccountName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
-        }
-        if (runbookName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-30";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                automationAccountName,
-                runbookName,
-                apiVersion,
-                accept,
-                context);
-    }
-
-    /**
-     * Retrieve the runbook draft identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RunbookDraftInner> getAsync(
-        String resourceGroupName, String automationAccountName, String runbookName) {
-        return getWithResponseAsync(resourceGroupName, automationAccountName, runbookName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieve the runbook draft identified by runbook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -894,30 +882,12 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunbookDraftInner get(String resourceGroupName, String automationAccountName, String runbookName) {
-        return getAsync(resourceGroupName, automationAccountName, runbookName).block();
-    }
-
-    /**
-     * Retrieve the runbook draft identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RunbookDraftInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String runbookName, Context context) {
-        return getWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
+        return getWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE).getValue();
     }
 
     /**
      * Undo draft edit to last known published state identified by runbook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -925,22 +895,18 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the undo edit runbook operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RunbookDraftUndoEditResultInner>> undoEditWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String runbookName) {
+    private Mono<Response<RunbookDraftUndoEditResultInner>> undoEditWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String runbookName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -956,24 +922,14 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
         final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .undoEdit(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            automationAccountName,
-                            runbookName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.undoEdit(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, automationAccountName, runbookName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Undo draft edit to last known published state identified by runbook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -982,22 +938,18 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the undo edit runbook operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RunbookDraftUndoEditResultInner>> undoEditWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String runbookName, Context context) {
+    private Mono<Response<RunbookDraftUndoEditResultInner>> undoEditWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String runbookName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1013,21 +965,13 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
         final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .undoEdit(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                automationAccountName,
-                runbookName,
-                apiVersion,
-                accept,
-                context);
+        return service.undoEdit(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            automationAccountName, runbookName, apiVersion, accept, context);
     }
 
     /**
      * Undo draft edit to last known published state identified by runbook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -1037,32 +981,15 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
      * @return the response model for the undo edit runbook operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RunbookDraftUndoEditResultInner> undoEditAsync(
-        String resourceGroupName, String automationAccountName, String runbookName) {
+    private Mono<RunbookDraftUndoEditResultInner> undoEditAsync(String resourceGroupName, String automationAccountName,
+        String runbookName) {
         return undoEditWithResponseAsync(resourceGroupName, automationAccountName, runbookName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Undo draft edit to last known published state identified by runbook name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the undo edit runbook operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunbookDraftUndoEditResultInner undoEdit(
-        String resourceGroupName, String automationAccountName, String runbookName) {
-        return undoEditAsync(resourceGroupName, automationAccountName, runbookName).block();
-    }
-
-    /**
-     * Undo draft edit to last known published state identified by runbook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -1073,8 +1000,25 @@ public final class RunbookDraftsClientImpl implements RunbookDraftsClient {
      * @return the response model for the undo edit runbook operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RunbookDraftUndoEditResultInner> undoEditWithResponse(
-        String resourceGroupName, String automationAccountName, String runbookName, Context context) {
+    public Response<RunbookDraftUndoEditResultInner> undoEditWithResponse(String resourceGroupName,
+        String automationAccountName, String runbookName, Context context) {
         return undoEditWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
+    }
+
+    /**
+     * Undo draft edit to last known published state identified by runbook name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for the undo edit runbook operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunbookDraftUndoEditResultInner undoEdit(String resourceGroupName, String automationAccountName,
+        String runbookName) {
+        return undoEditWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE).getValue();
     }
 }

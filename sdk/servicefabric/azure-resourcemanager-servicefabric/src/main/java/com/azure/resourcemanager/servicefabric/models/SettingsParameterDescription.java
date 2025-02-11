@@ -6,23 +6,25 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a parameter in fabric settings of the cluster.
  */
 @Fluent
-public final class SettingsParameterDescription {
+public final class SettingsParameterDescription implements JsonSerializable<SettingsParameterDescription> {
     /*
      * The parameter name of fabric setting.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The parameter value of fabric setting.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
@@ -78,14 +80,56 @@ public final class SettingsParameterDescription {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model SettingsParameterDescription"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model SettingsParameterDescription"));
         }
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model SettingsParameterDescription"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model SettingsParameterDescription"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SettingsParameterDescription.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SettingsParameterDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SettingsParameterDescription if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SettingsParameterDescription.
+     */
+    public static SettingsParameterDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SettingsParameterDescription deserializedSettingsParameterDescription = new SettingsParameterDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSettingsParameterDescription.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedSettingsParameterDescription.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSettingsParameterDescription;
+        });
+    }
 }

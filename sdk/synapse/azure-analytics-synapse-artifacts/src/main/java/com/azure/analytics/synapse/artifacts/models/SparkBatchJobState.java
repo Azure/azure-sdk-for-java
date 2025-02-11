@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -290,26 +291,26 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
                 reader.nextToken();
 
                 if ("notStartedAt".equals(fieldName)) {
-                    deserializedSparkBatchJobState.notStartedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkBatchJobState.notStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("startingAt".equals(fieldName)) {
-                    deserializedSparkBatchJobState.startingAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkBatchJobState.startingAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("runningAt".equals(fieldName)) {
-                    deserializedSparkBatchJobState.runningAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkBatchJobState.runningAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("deadAt".equals(fieldName)) {
-                    deserializedSparkBatchJobState.deadAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkBatchJobState.deadAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("successAt".equals(fieldName)) {
-                    deserializedSparkBatchJobState.successAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkBatchJobState.successAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("killedAt".equals(fieldName)) {
-                    deserializedSparkBatchJobState.terminatedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkBatchJobState.terminatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("recoveringAt".equals(fieldName)) {
-                    deserializedSparkBatchJobState.recoveringAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkBatchJobState.recoveringAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("currentState".equals(fieldName)) {
                     deserializedSparkBatchJobState.currentState = reader.getString();
                 } else if ("jobCreationRequest".equals(fieldName)) {

@@ -11,11 +11,9 @@ import com.azure.resourcemanager.azureadexternalidentities.models.NameAvailabili
 public final class NameAvailabilityResponseImpl implements NameAvailabilityResponse {
     private NameAvailabilityResponseInner innerObject;
 
-    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager
-        serviceManager;
+    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager;
 
-    NameAvailabilityResponseImpl(
-        NameAvailabilityResponseInner innerObject,
+    NameAvailabilityResponseImpl(NameAvailabilityResponseInner innerObject,
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

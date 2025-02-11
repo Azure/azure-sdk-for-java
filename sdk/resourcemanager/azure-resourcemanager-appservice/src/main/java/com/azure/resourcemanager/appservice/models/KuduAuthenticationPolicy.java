@@ -35,26 +35,14 @@ public final class KuduAuthenticationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Mono<String> basicTokenMono =
-            basicToken == null
-                ? webApp
-                    .getPublishingProfileAsync()
-                    .map(
-                        profile -> {
-                            basicToken =
-                                Base64
-                                    .getEncoder()
-                                    .encodeToString(
-                                        (profile.gitUsername() + ":" + profile.gitPassword())
-                                            .getBytes(StandardCharsets.UTF_8));
-                            return basicToken;
-                        })
-                : Mono.just(basicToken);
-        return basicTokenMono
-            .flatMap(
-                key -> {
-                    context.getHttpRequest().setHeader(HEADER_NAME, "Basic " + basicToken);
-                    return next.process();
-                });
+        Mono<String> basicTokenMono = basicToken == null ? webApp.getPublishingProfileAsync().map(profile -> {
+            basicToken = Base64.getEncoder()
+                .encodeToString((profile.gitUsername() + ":" + profile.gitPassword()).getBytes(StandardCharsets.UTF_8));
+            return basicToken;
+        }) : Mono.just(basicToken);
+        return basicTokenMono.flatMap(key -> {
+            context.getHttpRequest().setHeader(HEADER_NAME, "Basic " + basicToken);
+            return next.process();
+        });
     }
 }

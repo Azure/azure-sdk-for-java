@@ -16,9 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /** Represents a Redis firewall rules collection associated with a Redis cache instance. */
-class RedisFirewallRulesImpl
-    extends ExternalChildResourcesCachedImpl<
-        RedisFirewallRuleImpl, RedisFirewallRule, RedisFirewallRuleInner, RedisCacheImpl, RedisCache> {
+class RedisFirewallRulesImpl extends
+    ExternalChildResourcesCachedImpl<RedisFirewallRuleImpl, RedisFirewallRule, RedisFirewallRuleInner, RedisCacheImpl, RedisCache> {
     private boolean load = false;
 
     RedisFirewallRulesImpl(RedisCacheImpl parent) {
@@ -59,15 +58,13 @@ class RedisFirewallRulesImpl
 
     @Override
     protected Flux<RedisFirewallRuleImpl> listChildResourcesAsync() {
-        return this
-            .getParent()
+        return this.getParent()
             .manager()
             .serviceClient()
             .getFirewallRules()
             .listAsync(this.getParent().resourceGroupName(), this.getParent().name())
-            .map(
-                firewallRuleInner ->
-                    new RedisFirewallRuleImpl(firewallRuleInner.name(), this.getParent(), firewallRuleInner))
+            .map(firewallRuleInner -> new RedisFirewallRuleImpl(firewallRuleInner.name(), this.getParent(),
+                firewallRuleInner))
             .onErrorResume(e -> Mono.empty());
     }
 

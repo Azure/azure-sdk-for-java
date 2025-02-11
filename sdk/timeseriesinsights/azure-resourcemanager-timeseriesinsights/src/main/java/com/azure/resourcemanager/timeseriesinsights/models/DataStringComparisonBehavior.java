@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,15 +13,19 @@ import java.util.Collection;
  * new reference data. When 'OrdinalIgnoreCase' is set, case insensitive comparison will be used.
  */
 public final class DataStringComparisonBehavior extends ExpandableStringEnum<DataStringComparisonBehavior> {
-    /** Static value Ordinal for DataStringComparisonBehavior. */
+    /**
+     * Static value Ordinal for DataStringComparisonBehavior.
+     */
     public static final DataStringComparisonBehavior ORDINAL = fromString("Ordinal");
 
-    /** Static value OrdinalIgnoreCase for DataStringComparisonBehavior. */
+    /**
+     * Static value OrdinalIgnoreCase for DataStringComparisonBehavior.
+     */
     public static final DataStringComparisonBehavior ORDINAL_IGNORE_CASE = fromString("OrdinalIgnoreCase");
 
     /**
      * Creates a new instance of DataStringComparisonBehavior value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +34,17 @@ public final class DataStringComparisonBehavior extends ExpandableStringEnum<Dat
 
     /**
      * Creates or finds a DataStringComparisonBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataStringComparisonBehavior.
      */
-    @JsonCreator
     public static DataStringComparisonBehavior fromString(String name) {
         return fromString(name, DataStringComparisonBehavior.class);
     }
 
     /**
      * Gets known DataStringComparisonBehavior values.
-     *
+     * 
      * @return known DataStringComparisonBehavior values.
      */
     public static Collection<DataStringComparisonBehavior> values() {

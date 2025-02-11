@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubHubInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Hub setting list. */
+/**
+ * Hub setting list.
+ */
 @Fluent
-public final class WebPubSubHubList {
+public final class WebPubSubHubList implements JsonSerializable<WebPubSubHubList> {
     /*
      * List of hub settings to this resource.
      */
-    @JsonProperty(value = "value")
     private List<WebPubSubHubInner> value;
 
     /*
      * The URL the client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of WebPubSubHubList class. */
+    /**
+     * Creates an instance of WebPubSubHubList class.
+     */
     public WebPubSubHubList() {
     }
 
     /**
      * Get the value property: List of hub settings to this resource.
-     *
+     * 
      * @return the value value.
      */
     public List<WebPubSubHubInner> value() {
@@ -40,7 +46,7 @@ public final class WebPubSubHubList {
 
     /**
      * Set the value property: List of hub settings to this resource.
-     *
+     * 
      * @param value the value value to set.
      * @return the WebPubSubHubList object itself.
      */
@@ -50,9 +56,9 @@ public final class WebPubSubHubList {
     }
 
     /**
-     * Get the nextLink property: The URL the client should use to fetch the next page (per server side paging). It's
-     * null for now, added for future use.
-     *
+     * Get the nextLink property: The URL the client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,12 +67,51 @@ public final class WebPubSubHubList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebPubSubHubList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebPubSubHubList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebPubSubHubList.
+     */
+    public static WebPubSubHubList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebPubSubHubList deserializedWebPubSubHubList = new WebPubSubHubList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<WebPubSubHubInner> value = reader.readArray(reader1 -> WebPubSubHubInner.fromJson(reader1));
+                    deserializedWebPubSubHubList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWebPubSubHubList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebPubSubHubList;
+        });
     }
 }

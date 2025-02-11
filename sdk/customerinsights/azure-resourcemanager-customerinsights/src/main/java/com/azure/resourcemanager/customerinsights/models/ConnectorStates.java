@@ -4,30 +4,43 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** State of connector. */
+/**
+ * State of connector.
+ */
 public enum ConnectorStates {
-    /** Enum value Creating. */
+    /**
+     * Enum value Creating.
+     */
     CREATING("Creating"),
 
-    /** Enum value Created. */
+    /**
+     * Enum value Created.
+     */
     CREATED("Created"),
 
-    /** Enum value Ready. */
+    /**
+     * Enum value Ready.
+     */
     READY("Ready"),
 
-    /** Enum value Expiring. */
+    /**
+     * Enum value Expiring.
+     */
     EXPIRING("Expiring"),
 
-    /** Enum value Deleting. */
+    /**
+     * Enum value Deleting.
+     */
     DELETING("Deleting"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed");
 
-    /** The actual serialized value for a ConnectorStates instance. */
+    /**
+     * The actual serialized value for a ConnectorStates instance.
+     */
     private final String value;
 
     ConnectorStates(String value) {
@@ -36,11 +49,10 @@ public enum ConnectorStates {
 
     /**
      * Parses a serialized value to a ConnectorStates instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ConnectorStates object, or null if unable to parse.
      */
-    @JsonCreator
     public static ConnectorStates fromString(String value) {
         if (value == null) {
             return null;
@@ -54,8 +66,9 @@ public enum ConnectorStates {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

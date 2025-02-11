@@ -5,23 +5,24 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the ephemeral Disk Settings for the operating system disk used by the virtual machine.
  */
 @Fluent
-public final class DiffDiskSettings {
+public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings> {
     /*
-     * Specifies the ephemeral disk placement for operating system disk for all VMs in the pool.
-     * 
      * This property can be used by user in the request to choose which location the operating system should be in.
      * e.g., cache disk space for Ephemeral OS disk provisioning. For more information on Ephemeral OS disk size
      * requirements, please refer to Ephemeral OS disk size requirements for Windows VMs at
      * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux
      * VMs at https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
      */
-    @JsonProperty(value = "placement")
     private DiffDiskPlacement placement;
 
     /**
@@ -31,12 +32,9 @@ public final class DiffDiskSettings {
     }
 
     /**
-     * Get the placement property: Specifies the ephemeral disk placement for operating system disk for all VMs in the
-     * pool.
-     * 
-     * This property can be used by user in the request to choose which location the operating system should be in.
-     * e.g., cache disk space for Ephemeral OS disk provisioning. For more information on Ephemeral OS disk size
-     * requirements, please refer to Ephemeral OS disk size requirements for Windows VMs at
+     * Get the placement property: This property can be used by user in the request to choose which location the
+     * operating system should be in. e.g., cache disk space for Ephemeral OS disk provisioning. For more information on
+     * Ephemeral OS disk size requirements, please refer to Ephemeral OS disk size requirements for Windows VMs at
      * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux
      * VMs at https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
      * 
@@ -47,12 +45,9 @@ public final class DiffDiskSettings {
     }
 
     /**
-     * Set the placement property: Specifies the ephemeral disk placement for operating system disk for all VMs in the
-     * pool.
-     * 
-     * This property can be used by user in the request to choose which location the operating system should be in.
-     * e.g., cache disk space for Ephemeral OS disk provisioning. For more information on Ephemeral OS disk size
-     * requirements, please refer to Ephemeral OS disk size requirements for Windows VMs at
+     * Set the placement property: This property can be used by user in the request to choose which location the
+     * operating system should be in. e.g., cache disk space for Ephemeral OS disk provisioning. For more information on
+     * Ephemeral OS disk size requirements, please refer to Ephemeral OS disk size requirements for Windows VMs at
      * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux
      * VMs at https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
      * 
@@ -70,5 +65,41 @@ public final class DiffDiskSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("placement", this.placement == null ? null : this.placement.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiffDiskSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiffDiskSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiffDiskSettings.
+     */
+    public static DiffDiskSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiffDiskSettings deserializedDiffDiskSettings = new DiffDiskSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("placement".equals(fieldName)) {
+                    deserializedDiffDiskSettings.placement = DiffDiskPlacement.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiffDiskSettings;
+        });
     }
 }

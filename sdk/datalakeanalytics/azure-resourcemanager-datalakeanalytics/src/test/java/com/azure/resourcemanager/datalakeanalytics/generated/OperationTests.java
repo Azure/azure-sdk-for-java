@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakeanalytics.models.Operation;
 public final class OperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Operation model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"iplrbpbewtghfgb\",\"display\":{\"provider\":\"wxzvlvqhjkb\",\"resource\":\"ibtnmxiebwwaloay\",\"operation\":\"gwrtzju\",\"description\":\"wyzmhtxon\"},\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}},\"origin\":\"user,system\"}")
-                .toObject(Operation.class);
+        Operation model = BinaryData.fromString(
+            "{\"name\":\"cuh\",\"display\":{\"provider\":\"ctyqik\",\"resource\":\"bovpl\",\"operation\":\"bhvgy\",\"description\":\"uosvmkfssxqukk\"},\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"sxnkjzkdeslpvlo\",\"displayDescription\":\"i\",\"displayName\":\"ghxpkdw\",\"unit\":\"aiuebbaumnyqu\",\"aggregationType\":\"deoj\",\"availabilities\":[{},{},{}]}],\"logSpecifications\":[{\"name\":\"smtxpsieb\",\"displayName\":\"hvpesapskrdqm\",\"blobDuration\":\"jdhtldwkyzxu\"},{\"name\":\"kn\",\"displayName\":\"scwsv\",\"blobDuration\":\"otogtwrupqs\"},{\"name\":\"nmic\",\"displayName\":\"vce\",\"blobDuration\":\"eil\"}]}},\"origin\":\"system\"}")
+            .toObject(Operation.class);
     }
 
     @org.junit.jupiter.api.Test

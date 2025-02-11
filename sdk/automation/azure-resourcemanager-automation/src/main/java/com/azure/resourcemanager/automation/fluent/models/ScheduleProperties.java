@@ -5,101 +5,101 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.AdvancedSchedule;
 import com.azure.resourcemanager.automation.models.ScheduleFrequency;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Definition of schedule parameters. */
+/**
+ * Definition of schedule parameters.
+ */
 @Fluent
-public final class ScheduleProperties {
+public final class ScheduleProperties implements JsonSerializable<ScheduleProperties> {
     /*
      * Gets or sets the start time of the schedule.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Gets the start time's offset in minutes.
      */
-    @JsonProperty(value = "startTimeOffsetMinutes", access = JsonProperty.Access.WRITE_ONLY)
     private Double startTimeOffsetMinutes;
 
     /*
      * Gets or sets the end time of the schedule.
      */
-    @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
     /*
      * Gets or sets the expiry time's offset in minutes.
      */
-    @JsonProperty(value = "expiryTimeOffsetMinutes")
     private Double expiryTimeOffsetMinutes;
 
     /*
      * Gets or sets a value indicating whether this schedule is enabled.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * Gets or sets the next run time of the schedule.
      */
-    @JsonProperty(value = "nextRun")
     private OffsetDateTime nextRun;
 
     /*
      * Gets or sets the next run time's offset in minutes.
      */
-    @JsonProperty(value = "nextRunOffsetMinutes")
     private Double nextRunOffsetMinutes;
 
     /*
      * Gets or sets the interval of the schedule.
      */
-    @JsonProperty(value = "interval")
     private Object interval;
 
     /*
      * Gets or sets the frequency of the schedule.
      */
-    @JsonProperty(value = "frequency")
     private ScheduleFrequency frequency;
 
     /*
      * Gets or sets the time zone of the schedule.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * Gets or sets the advanced schedule.
      */
-    @JsonProperty(value = "advancedSchedule")
     private AdvancedSchedule advancedSchedule;
 
     /*
      * Gets or sets the creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of ScheduleProperties class.
+     */
+    public ScheduleProperties() {
+    }
+
+    /**
      * Get the startTime property: Gets or sets the start time of the schedule.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -108,7 +108,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the startTime property: Gets or sets the start time of the schedule.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -119,7 +119,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the startTimeOffsetMinutes property: Gets the start time's offset in minutes.
-     *
+     * 
      * @return the startTimeOffsetMinutes value.
      */
     public Double startTimeOffsetMinutes() {
@@ -128,7 +128,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the expiryTime property: Gets or sets the end time of the schedule.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -137,7 +137,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the expiryTime property: Gets or sets the end time of the schedule.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -148,7 +148,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the expiryTimeOffsetMinutes property: Gets or sets the expiry time's offset in minutes.
-     *
+     * 
      * @return the expiryTimeOffsetMinutes value.
      */
     public Double expiryTimeOffsetMinutes() {
@@ -157,7 +157,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the expiryTimeOffsetMinutes property: Gets or sets the expiry time's offset in minutes.
-     *
+     * 
      * @param expiryTimeOffsetMinutes the expiryTimeOffsetMinutes value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -168,7 +168,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the isEnabled property: Gets or sets a value indicating whether this schedule is enabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -177,7 +177,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the isEnabled property: Gets or sets a value indicating whether this schedule is enabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -188,7 +188,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the nextRun property: Gets or sets the next run time of the schedule.
-     *
+     * 
      * @return the nextRun value.
      */
     public OffsetDateTime nextRun() {
@@ -197,7 +197,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the nextRun property: Gets or sets the next run time of the schedule.
-     *
+     * 
      * @param nextRun the nextRun value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -208,7 +208,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the nextRunOffsetMinutes property: Gets or sets the next run time's offset in minutes.
-     *
+     * 
      * @return the nextRunOffsetMinutes value.
      */
     public Double nextRunOffsetMinutes() {
@@ -217,7 +217,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the nextRunOffsetMinutes property: Gets or sets the next run time's offset in minutes.
-     *
+     * 
      * @param nextRunOffsetMinutes the nextRunOffsetMinutes value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -228,7 +228,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the interval property: Gets or sets the interval of the schedule.
-     *
+     * 
      * @return the interval value.
      */
     public Object interval() {
@@ -237,7 +237,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the interval property: Gets or sets the interval of the schedule.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -248,7 +248,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the frequency property: Gets or sets the frequency of the schedule.
-     *
+     * 
      * @return the frequency value.
      */
     public ScheduleFrequency frequency() {
@@ -257,7 +257,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the frequency property: Gets or sets the frequency of the schedule.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -268,7 +268,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the timeZone property: Gets or sets the time zone of the schedule.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -277,7 +277,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the timeZone property: Gets or sets the time zone of the schedule.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -288,7 +288,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the advancedSchedule property: Gets or sets the advanced schedule.
-     *
+     * 
      * @return the advancedSchedule value.
      */
     public AdvancedSchedule advancedSchedule() {
@@ -297,7 +297,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the advancedSchedule property: Gets or sets the advanced schedule.
-     *
+     * 
      * @param advancedSchedule the advancedSchedule value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -308,7 +308,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -317,7 +317,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -328,7 +328,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -337,7 +337,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -348,7 +348,7 @@ public final class ScheduleProperties {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -357,7 +357,7 @@ public final class ScheduleProperties {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -368,12 +368,98 @@ public final class ScheduleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (advancedSchedule() != null) {
             advancedSchedule().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("expiryTime",
+            this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
+        jsonWriter.writeNumberField("expiryTimeOffsetMinutes", this.expiryTimeOffsetMinutes);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("nextRun",
+            this.nextRun == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.nextRun));
+        jsonWriter.writeNumberField("nextRunOffsetMinutes", this.nextRunOffsetMinutes);
+        jsonWriter.writeUntypedField("interval", this.interval);
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeJsonField("advancedSchedule", this.advancedSchedule);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleProperties.
+     */
+    public static ScheduleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleProperties deserializedScheduleProperties = new ScheduleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedScheduleProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startTimeOffsetMinutes".equals(fieldName)) {
+                    deserializedScheduleProperties.startTimeOffsetMinutes = reader.getNullable(JsonReader::getDouble);
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedScheduleProperties.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiryTimeOffsetMinutes".equals(fieldName)) {
+                    deserializedScheduleProperties.expiryTimeOffsetMinutes = reader.getNullable(JsonReader::getDouble);
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedScheduleProperties.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("nextRun".equals(fieldName)) {
+                    deserializedScheduleProperties.nextRun = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("nextRunOffsetMinutes".equals(fieldName)) {
+                    deserializedScheduleProperties.nextRunOffsetMinutes = reader.getNullable(JsonReader::getDouble);
+                } else if ("interval".equals(fieldName)) {
+                    deserializedScheduleProperties.interval = reader.readUntyped();
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedScheduleProperties.frequency = ScheduleFrequency.fromString(reader.getString());
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedScheduleProperties.timeZone = reader.getString();
+                } else if ("advancedSchedule".equals(fieldName)) {
+                    deserializedScheduleProperties.advancedSchedule = AdvancedSchedule.fromJson(reader);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedScheduleProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedScheduleProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedScheduleProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleProperties;
+        });
     }
 }

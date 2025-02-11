@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureResourceReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureResourceReference model =
-            BinaryData.fromString("{\"sourceArmResourceId\":\"ebrjcxe\"}").toObject(AzureResourceReference.class);
+        AzureResourceReference model
+            = BinaryData.fromString("{\"sourceArmResourceId\":\"ebrjcxe\"}").toObject(AzureResourceReference.class);
         Assertions.assertEquals("ebrjcxe", model.sourceArmResourceId());
     }
 

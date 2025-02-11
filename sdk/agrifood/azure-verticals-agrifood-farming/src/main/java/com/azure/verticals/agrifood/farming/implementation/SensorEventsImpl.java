@@ -40,8 +40,8 @@ public final class SensorEventsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     SensorEventsImpl(FarmBeatsClientImpl client) {
-        this.service =
-                RestProxy.create(SensorEventsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SensorEventsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,25 +53,14 @@ public final class SensorEventsImpl {
     @ServiceInterface(name = "FarmBeatsClientSenso")
     public interface SensorEventsService {
         @Get("/sensor-events")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("sensorId") String sensorId,
-                @QueryParam("sensorPartnerId") String sensorPartnerId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint, @QueryParam("sensorId") String sensorId,
+            @QueryParam("sensorPartnerId") String sensorPartnerId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -125,19 +114,11 @@ public final class SensorEventsImpl {
      *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listWithResponseAsync(
-            String sensorId, String sensorPartnerId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listWithResponseAsync(String sensorId, String sensorPartnerId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.list(
-                                this.client.getEndpoint(),
-                                sensorId,
-                                sensorPartnerId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), sensorId, sensorPartnerId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -191,8 +172,8 @@ public final class SensorEventsImpl {
      *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listWithResponse(
-            String sensorId, String sensorPartnerId, RequestOptions requestOptions) {
+    public Response<BinaryData> listWithResponse(String sensorId, String sensorPartnerId,
+        RequestOptions requestOptions) {
         return listWithResponseAsync(sensorId, sensorPartnerId, requestOptions).block();
     }
 }

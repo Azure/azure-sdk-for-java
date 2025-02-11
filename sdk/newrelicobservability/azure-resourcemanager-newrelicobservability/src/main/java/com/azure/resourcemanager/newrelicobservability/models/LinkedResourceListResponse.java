@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.LinkedResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response of a list operation.
  */
 @Fluent
-public final class LinkedResourceListResponse {
+public final class LinkedResourceListResponse implements JsonSerializable<LinkedResourceListResponse> {
     /*
      * Results of a list operation.
      */
-    @JsonProperty(value = "value")
     private List<LinkedResourceInner> value;
 
     /*
      * Link to the next set of results, if any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,46 @@ public final class LinkedResourceListResponse {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkedResourceListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkedResourceListResponse if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkedResourceListResponse.
+     */
+    public static LinkedResourceListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkedResourceListResponse deserializedLinkedResourceListResponse = new LinkedResourceListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LinkedResourceInner> value
+                        = reader.readArray(reader1 -> LinkedResourceInner.fromJson(reader1));
+                    deserializedLinkedResourceListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLinkedResourceListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkedResourceListResponse;
+        });
     }
 }

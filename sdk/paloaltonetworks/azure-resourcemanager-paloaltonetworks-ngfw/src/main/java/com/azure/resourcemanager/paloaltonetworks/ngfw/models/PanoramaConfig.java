@@ -6,60 +6,56 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Panorama Config.
  */
 @Fluent
-public final class PanoramaConfig {
+public final class PanoramaConfig implements JsonSerializable<PanoramaConfig> {
     /*
-     * Base64 encoded string representing Panorama parameters to be used by Firewall to connect to Panorama. This
-     * string is generated via azure plugin in Panorama
+     * Base64 encoded string representing Panorama parameters to be used by Firewall to connect to Panorama. This string
+     * is generated via azure plugin in Panorama
      */
-    @JsonProperty(value = "configString", required = true)
     private String configString;
 
     /*
      * VM auth key for panorama connectivity
      */
-    @JsonProperty(value = "vmAuthKey", access = JsonProperty.Access.WRITE_ONLY)
     private String vmAuthKey;
 
     /*
      * Primary Panorama Server IP address value in dotted format for IPv4
      */
-    @JsonProperty(value = "panoramaServer", access = JsonProperty.Access.WRITE_ONLY)
     private String panoramaServer;
 
     /*
      * Secondary Panorama Server IP address value in dotted format for IPv4
      */
-    @JsonProperty(value = "panoramaServer2", access = JsonProperty.Access.WRITE_ONLY)
     private String panoramaServer2;
 
     /*
      * Panorama Device Group to join
      */
-    @JsonProperty(value = "dgName", access = JsonProperty.Access.WRITE_ONLY)
     private String dgName;
 
     /*
      * Panorama Template Stack to join - (Once configured we can not edit the value)
      */
-    @JsonProperty(value = "tplName", access = JsonProperty.Access.WRITE_ONLY)
     private String tplName;
 
     /*
      * Panorama Collector Group to join - (Once configured we can not edit the value)
      */
-    @JsonProperty(value = "cgName", access = JsonProperty.Access.WRITE_ONLY)
     private String cgName;
 
     /*
      * Resource name(may be unique) for PN admin
      */
-    @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /**
@@ -160,10 +156,61 @@ public final class PanoramaConfig {
      */
     public void validate() {
         if (configString() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property configString in model PanoramaConfig"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property configString in model PanoramaConfig"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PanoramaConfig.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("configString", this.configString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PanoramaConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PanoramaConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PanoramaConfig.
+     */
+    public static PanoramaConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PanoramaConfig deserializedPanoramaConfig = new PanoramaConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configString".equals(fieldName)) {
+                    deserializedPanoramaConfig.configString = reader.getString();
+                } else if ("vmAuthKey".equals(fieldName)) {
+                    deserializedPanoramaConfig.vmAuthKey = reader.getString();
+                } else if ("panoramaServer".equals(fieldName)) {
+                    deserializedPanoramaConfig.panoramaServer = reader.getString();
+                } else if ("panoramaServer2".equals(fieldName)) {
+                    deserializedPanoramaConfig.panoramaServer2 = reader.getString();
+                } else if ("dgName".equals(fieldName)) {
+                    deserializedPanoramaConfig.dgName = reader.getString();
+                } else if ("tplName".equals(fieldName)) {
+                    deserializedPanoramaConfig.tplName = reader.getString();
+                } else if ("cgName".equals(fieldName)) {
+                    deserializedPanoramaConfig.cgName = reader.getString();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedPanoramaConfig.hostname = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPanoramaConfig;
+        });
+    }
 }

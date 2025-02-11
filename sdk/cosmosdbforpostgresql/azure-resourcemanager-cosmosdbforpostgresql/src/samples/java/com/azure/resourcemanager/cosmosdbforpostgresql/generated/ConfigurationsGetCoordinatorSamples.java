@@ -20,7 +20,8 @@ public final class ConfigurationsGetCoordinatorSamples {
      */
     public static void getConfigurationDetailsForCoordinator(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.configurations().getCoordinatorWithResponse("TestResourceGroup", "testcluster", "array_nulls",
-            com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .getCoordinatorWithResponse("TestResourceGroup", "testcluster", "array_nulls",
+                com.azure.core.util.Context.NONE);
     }
 }

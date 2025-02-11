@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SecretInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecretInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"value\":\"oqltfae\",\"provisioningState\":\"inmfgvxirp\",\"uniqueIdentifier\":\"riypoqeyhlqhyk\"},\"location\":\"rlpyznuciqdsmexi\",\"tags\":{\"stgnl\":\"fuxtyasiibmiybnn\",\"vmqfoud\":\"hnmgixhcm\"},\"id\":\"rhc\",\"name\":\"yyprotwyp\",\"type\":\"ndm\"}")
-                .toObject(SecretInner.class);
+        SecretInner model = BinaryData.fromString(
+            "{\"properties\":{\"value\":\"oqltfae\",\"provisioningState\":\"inmfgvxirp\",\"uniqueIdentifier\":\"riypoqeyhlqhyk\"},\"location\":\"rlpyznuciqdsmexi\",\"tags\":{\"stgnl\":\"fuxtyasiibmiybnn\",\"vmqfoud\":\"hnmgixhcm\"},\"id\":\"rhc\",\"name\":\"yyprotwyp\",\"type\":\"ndm\"}")
+            .toObject(SecretInner.class);
         Assertions.assertEquals("rlpyznuciqdsmexi", model.location());
         Assertions.assertEquals("fuxtyasiibmiybnn", model.tags().get("stgnl"));
         Assertions.assertEquals("oqltfae", model.value());
@@ -25,11 +23,9 @@ public final class SecretInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecretInner model =
-            new SecretInner()
-                .withLocation("rlpyznuciqdsmexi")
-                .withTags(mapOf("stgnl", "fuxtyasiibmiybnn", "vmqfoud", "hnmgixhcm"))
-                .withValue("oqltfae");
+        SecretInner model = new SecretInner().withLocation("rlpyznuciqdsmexi")
+            .withTags(mapOf("stgnl", "fuxtyasiibmiybnn", "vmqfoud", "hnmgixhcm"))
+            .withValue("oqltfae");
         model = BinaryData.fromObject(model).toObject(SecretInner.class);
         Assertions.assertEquals("rlpyznuciqdsmexi", model.location());
         Assertions.assertEquals("fuxtyasiibmiybnn", model.tags().get("stgnl"));

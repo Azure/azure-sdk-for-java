@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dynatrace.models.DynatraceEnvironmentProperties;
 import com.azure.resourcemanager.dynatrace.models.IdentityProperties;
 import com.azure.resourcemanager.dynatrace.models.LiftrResourceCategories;
@@ -16,37 +19,53 @@ import com.azure.resourcemanager.dynatrace.models.MonitoringStatus;
 import com.azure.resourcemanager.dynatrace.models.PlanData;
 import com.azure.resourcemanager.dynatrace.models.ProvisioningState;
 import com.azure.resourcemanager.dynatrace.models.UserInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Dynatrace Monitor Resource. */
+/**
+ * Dynatrace Monitor Resource.
+ */
 @Fluent
 public final class MonitorResourceInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private MonitorProperties innerProperties = new MonitorProperties();
 
     /*
      * System metadata for this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The managed service identities assigned to this resource.
      */
-    @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
-    /** Creates an instance of MonitorResourceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MonitorResourceInner class.
+     */
     public MonitorResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MonitorProperties innerProperties() {
@@ -55,7 +74,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Get the systemData property: System metadata for this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -64,7 +83,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Get the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -73,7 +92,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Set the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the MonitorResourceInner object itself.
      */
@@ -82,14 +101,48 @@ public final class MonitorResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MonitorResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MonitorResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -98,7 +151,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Get the monitoringStatus property: Status of the monitor.
-     *
+     * 
      * @return the monitoringStatus value.
      */
     public MonitoringStatus monitoringStatus() {
@@ -107,7 +160,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Set the monitoringStatus property: Status of the monitor.
-     *
+     * 
      * @param monitoringStatus the monitoringStatus value to set.
      * @return the MonitorResourceInner object itself.
      */
@@ -121,7 +174,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Get the marketplaceSubscriptionStatus property: Marketplace subscription status.
-     *
+     * 
      * @return the marketplaceSubscriptionStatus value.
      */
     public MarketplaceSubscriptionStatus marketplaceSubscriptionStatus() {
@@ -130,12 +183,12 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Set the marketplaceSubscriptionStatus property: Marketplace subscription status.
-     *
+     * 
      * @param marketplaceSubscriptionStatus the marketplaceSubscriptionStatus value to set.
      * @return the MonitorResourceInner object itself.
      */
-    public MonitorResourceInner withMarketplaceSubscriptionStatus(
-        MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
+    public MonitorResourceInner
+        withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MonitorProperties();
         }
@@ -145,7 +198,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Get the dynatraceEnvironmentProperties property: Properties of the Dynatrace environment.
-     *
+     * 
      * @return the dynatraceEnvironmentProperties value.
      */
     public DynatraceEnvironmentProperties dynatraceEnvironmentProperties() {
@@ -154,12 +207,12 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Set the dynatraceEnvironmentProperties property: Properties of the Dynatrace environment.
-     *
+     * 
      * @param dynatraceEnvironmentProperties the dynatraceEnvironmentProperties value to set.
      * @return the MonitorResourceInner object itself.
      */
-    public MonitorResourceInner withDynatraceEnvironmentProperties(
-        DynatraceEnvironmentProperties dynatraceEnvironmentProperties) {
+    public MonitorResourceInner
+        withDynatraceEnvironmentProperties(DynatraceEnvironmentProperties dynatraceEnvironmentProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MonitorProperties();
         }
@@ -169,7 +222,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Get the userInfo property: User info.
-     *
+     * 
      * @return the userInfo value.
      */
     public UserInfo userInfo() {
@@ -178,7 +231,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Set the userInfo property: User info.
-     *
+     * 
      * @param userInfo the userInfo value to set.
      * @return the MonitorResourceInner object itself.
      */
@@ -192,7 +245,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Get the planData property: Billing plan information.
-     *
+     * 
      * @return the planData value.
      */
     public PlanData planData() {
@@ -201,7 +254,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Set the planData property: Billing plan information.
-     *
+     * 
      * @param planData the planData value to set.
      * @return the MonitorResourceInner object itself.
      */
@@ -215,7 +268,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Get the liftrResourceCategory property: Liftr Resource category.
-     *
+     * 
      * @return the liftrResourceCategory value.
      */
     public LiftrResourceCategories liftrResourceCategory() {
@@ -224,7 +277,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Get the liftrResourcePreference property: The priority of the resource.
-     *
+     * 
      * @return the liftrResourcePreference value.
      */
     public Integer liftrResourcePreference() {
@@ -233,7 +286,7 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -242,15 +295,14 @@ public final class MonitorResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model MonitorResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model MonitorResourceInner"));
         } else {
             innerProperties().validate();
         }
@@ -260,4 +312,59 @@ public final class MonitorResourceInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MonitorResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitorResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitorResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MonitorResourceInner.
+     */
+    public static MonitorResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitorResourceInner deserializedMonitorResourceInner = new MonitorResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMonitorResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMonitorResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMonitorResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedMonitorResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMonitorResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMonitorResourceInner.innerProperties = MonitorProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMonitorResourceInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedMonitorResourceInner.identity = IdentityProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitorResourceInner;
+        });
+    }
 }

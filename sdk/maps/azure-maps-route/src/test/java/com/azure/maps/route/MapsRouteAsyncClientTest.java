@@ -44,15 +44,16 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     public void testAsyncBeginRequestRouteMatrix(HttpClient httpClient, MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
-        GeoPointCollection origins = new GeoPointCollection(
-            Arrays.asList(new GeoPoint(4.85106, 52.36006), new GeoPoint(4.85056, 52.36187)));
-        GeoPointCollection destinations = new GeoPointCollection(
-            Arrays.asList(new GeoPoint(4.85003, 52.36241), new GeoPoint(13.42937, 52.50931)));
+        GeoPointCollection origins
+            = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006), new GeoPoint(4.85056, 52.36187)));
+        GeoPointCollection destinations
+            = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241), new GeoPoint(13.42937, 52.50931)));
         matrixQuery.setDestinations(destinations);
         matrixQuery.setOrigins(origins);
         RouteMatrixOptions options = new RouteMatrixOptions(matrixQuery);
 
-        StepVerifier.create(client.beginGetRouteMatrix(options)
+        StepVerifier
+            .create(client.beginGetRouteMatrix(options)
                 .setPollInterval(durationTestMode)
                 .last()
                 .flatMap(AsyncPollResponse::getFinalResult))
@@ -67,15 +68,16 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     public void testAsyncBeginGetRouteMatrix(HttpClient httpClient, MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
-        GeoPointCollection origins = new GeoPointCollection(
-            Arrays.asList(new GeoPoint(4.85106, 52.36006), new GeoPoint(4.85056, 52.36187)));
-        GeoPointCollection destinations = new GeoPointCollection(
-            Arrays.asList(new GeoPoint(4.85003, 52.36241), new GeoPoint(13.42937, 52.50931)));
+        GeoPointCollection origins
+            = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006), new GeoPoint(4.85056, 52.36187)));
+        GeoPointCollection destinations
+            = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241), new GeoPoint(13.42937, 52.50931)));
         matrixQuery.setDestinations(destinations);
         matrixQuery.setOrigins(origins);
         RouteMatrixOptions options = new RouteMatrixOptions(matrixQuery);
 
-        StepVerifier.create(client.beginGetRouteMatrix(options)
+        StepVerifier
+            .create(client.beginGetRouteMatrix(options)
                 .setPollInterval(durationTestMode)
                 .last()
                 .flatMap(AsyncPollResponse::getFinalResult))
@@ -90,15 +92,16 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     public void testAsyncBeginGetRouteMatrixWithContext(HttpClient httpClient, MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
-        GeoPointCollection origins = new GeoPointCollection(
-            Arrays.asList(new GeoPoint(4.85106, 52.36006), new GeoPoint(4.85056, 52.36187)));
-        GeoPointCollection destinations = new GeoPointCollection(
-            Arrays.asList(new GeoPoint(4.85003, 52.36241), new GeoPoint(13.42937, 52.50931)));
+        GeoPointCollection origins
+            = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006), new GeoPoint(4.85056, 52.36187)));
+        GeoPointCollection destinations
+            = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241), new GeoPoint(13.42937, 52.50931)));
         matrixQuery.setDestinations(destinations);
         matrixQuery.setOrigins(origins);
         RouteMatrixOptions options = new RouteMatrixOptions(matrixQuery);
 
-        StepVerifier.create(client.beginGetRouteMatrix(options, null)
+        StepVerifier
+            .create(client.beginGetRouteMatrix(options, null)
                 .setPollInterval(durationTestMode)
                 .last()
                 .flatMap(AsyncPollResponse::getFinalResult))
@@ -112,8 +115,8 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
     public void testAsyncGetRouteDirections(HttpClient httpClient, MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        List<GeoPosition> routePoints = Arrays.asList(new GeoPosition(13.42936, 52.50931),
-            new GeoPosition(13.43872, 52.50274));
+        List<GeoPosition> routePoints
+            = Arrays.asList(new GeoPosition(13.42936, 52.50931), new GeoPosition(13.43872, 52.50274));
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
         StepVerifier.create(client.getRouteDirections(routeOptions))
             .assertNext(
@@ -128,8 +131,8 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
     public void testAsyncGetRouteDirectionsWithResponse(HttpClient httpClient, MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        List<GeoPosition> routePoints = Arrays.asList(new GeoPosition(13.42936, 52.50931),
-            new GeoPosition(13.43872, 52.50274));
+        List<GeoPosition> routePoints
+            = Arrays.asList(new GeoPosition(13.42936, 52.50931), new GeoPosition(13.43872, 52.50274));
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
         StepVerifier.create(client.getRouteDirectionsWithResponse(routeOptions))
             .assertNext(
@@ -144,8 +147,8 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     public void testAsyncInvalidGetRouteDirectionsWithResponse(HttpClient httpClient,
         MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        List<GeoPosition> routePoints = Arrays.asList(new GeoPosition(-1000000, 13.42936),
-            new GeoPosition(52.50274, 13.43872));
+        List<GeoPosition> routePoints
+            = Arrays.asList(new GeoPosition(-1000000, 13.42936), new GeoPosition(52.50274, 13.43872));
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
         StepVerifier.create(client.getRouteDirectionsWithContextWithResponse(routeOptions, null))
             .expectErrorSatisfies(ex -> {
@@ -161,19 +164,19 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     public void testAsyncGetRouteDirectionsWithAdditionalParameters(HttpClient httpClient,
         MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        List<GeoPosition> routePoints = Arrays.asList(new GeoPosition(13.42936, 52.50931),
-            new GeoPosition(13.43872, 52.50274));
+        List<GeoPosition> routePoints
+            = Arrays.asList(new GeoPosition(13.42936, 52.50931), new GeoPosition(13.43872, 52.50274));
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
-        GeoCollection supportingPoints = new GeoCollection(
-            Arrays.asList(new GeoPoint(13.42936, 52.5093), new GeoPoint(13.42859, 52.50844)));
-        List<GeoPolygon> polygons = Arrays.asList(new GeoPolygon(new GeoLinearRing(
-            Arrays.asList(new GeoPosition(-122.39456176757811, 47.489368981370724),
+        GeoCollection supportingPoints
+            = new GeoCollection(Arrays.asList(new GeoPoint(13.42936, 52.5093), new GeoPoint(13.42859, 52.50844)));
+        List<GeoPolygon> polygons = Arrays.asList(
+            new GeoPolygon(new GeoLinearRing(Arrays.asList(new GeoPosition(-122.39456176757811, 47.489368981370724),
                 new GeoPosition(-122.00454711914061, 47.489368981370724),
                 new GeoPosition(-122.00454711914061, 47.65151268066222),
                 new GeoPosition(-122.39456176757811, 47.65151268066222),
-                new GeoPosition(-122.39456176757811, 47.489368981370724)))), new GeoPolygon(new GeoLinearRing(
-            Arrays.asList(new GeoPosition(100.0, 0.0), new GeoPosition(101.0, 0.0), new GeoPosition(101.0, 1.0),
-                new GeoPosition(100.0, 1.0), new GeoPosition(100.0, 0.0)))));
+                new GeoPosition(-122.39456176757811, 47.489368981370724)))),
+            new GeoPolygon(new GeoLinearRing(Arrays.asList(new GeoPosition(100.0, 0.0), new GeoPosition(101.0, 0.0),
+                new GeoPosition(101.0, 1.0), new GeoPosition(100.0, 1.0), new GeoPosition(100.0, 0.0)))));
         GeoPolygonCollection avoidAreas = new GeoPolygonCollection(polygons);
         RouteDirectionsParameters parameters = new RouteDirectionsParameters().setSupportingPoints(supportingPoints)
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
@@ -192,19 +195,19 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     public void testAsyncGetRouteDirectionsWithAdditionalParametersWithResponse(HttpClient httpClient,
         MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        List<GeoPosition> routePoints = Arrays.asList(new GeoPosition(13.42936, 52.50931),
-            new GeoPosition(13.43872, 52.50274));
+        List<GeoPosition> routePoints
+            = Arrays.asList(new GeoPosition(13.42936, 52.50931), new GeoPosition(13.43872, 52.50274));
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
-        GeoCollection supportingPoints = new GeoCollection(
-            Arrays.asList(new GeoPoint(13.42936, 52.5093), new GeoPoint(13.42859, 52.50844)));
-        List<GeoPolygon> polygons = Arrays.asList(new GeoPolygon(new GeoLinearRing(
-            Arrays.asList(new GeoPosition(-122.39456176757811, 47.489368981370724),
+        GeoCollection supportingPoints
+            = new GeoCollection(Arrays.asList(new GeoPoint(13.42936, 52.5093), new GeoPoint(13.42859, 52.50844)));
+        List<GeoPolygon> polygons = Arrays.asList(
+            new GeoPolygon(new GeoLinearRing(Arrays.asList(new GeoPosition(-122.39456176757811, 47.489368981370724),
                 new GeoPosition(-122.00454711914061, 47.489368981370724),
                 new GeoPosition(-122.00454711914061, 47.65151268066222),
                 new GeoPosition(-122.39456176757811, 47.65151268066222),
-                new GeoPosition(-122.39456176757811, 47.489368981370724)))), new GeoPolygon(new GeoLinearRing(
-            Arrays.asList(new GeoPosition(100.0, 0.0), new GeoPosition(101.0, 0.0), new GeoPosition(101.0, 1.0),
-                new GeoPosition(100.0, 1.0), new GeoPosition(100.0, 0.0)))));
+                new GeoPosition(-122.39456176757811, 47.489368981370724)))),
+            new GeoPolygon(new GeoLinearRing(Arrays.asList(new GeoPosition(100.0, 0.0), new GeoPosition(101.0, 0.0),
+                new GeoPosition(101.0, 1.0), new GeoPosition(100.0, 1.0), new GeoPosition(100.0, 0.0)))));
         GeoPolygonCollection avoidAreas = new GeoPolygonCollection(polygons);
         RouteDirectionsParameters parameters = new RouteDirectionsParameters().setSupportingPoints(supportingPoints)
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
@@ -222,19 +225,19 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     public void testAsyncInvalidGetRouteDirectionsWithAdditionalParametersWithResponse(HttpClient httpClient,
         MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        List<GeoPosition> routePoints = Arrays.asList(new GeoPosition(-1000000, 13.42936),
-            new GeoPosition(52.50274, 13.43872));
+        List<GeoPosition> routePoints
+            = Arrays.asList(new GeoPosition(-1000000, 13.42936), new GeoPosition(52.50274, 13.43872));
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
-        GeoCollection supportingPoints = new GeoCollection(
-            Arrays.asList(new GeoPoint(13.42936, 52.5093), new GeoPoint(13.42859, 52.50844)));
-        List<GeoPolygon> polygons = Arrays.asList(new GeoPolygon(new GeoLinearRing(
-            Arrays.asList(new GeoPosition(-122.39456176757811, 47.489368981370724),
+        GeoCollection supportingPoints
+            = new GeoCollection(Arrays.asList(new GeoPoint(13.42936, 52.5093), new GeoPoint(13.42859, 52.50844)));
+        List<GeoPolygon> polygons = Arrays.asList(
+            new GeoPolygon(new GeoLinearRing(Arrays.asList(new GeoPosition(-122.39456176757811, 47.489368981370724),
                 new GeoPosition(-122.00454711914061, 47.489368981370724),
                 new GeoPosition(-122.00454711914061, 47.65151268066222),
                 new GeoPosition(-122.39456176757811, 47.65151268066222),
-                new GeoPosition(-122.39456176757811, 47.489368981370724)))), new GeoPolygon(new GeoLinearRing(
-            Arrays.asList(new GeoPosition(100.0, 0.0), new GeoPosition(101.0, 0.0), new GeoPosition(101.0, 1.0),
-                new GeoPosition(100.0, 1.0), new GeoPosition(100.0, 0.0)))));
+                new GeoPosition(-122.39456176757811, 47.489368981370724)))),
+            new GeoPolygon(new GeoLinearRing(Arrays.asList(new GeoPosition(100.0, 0.0), new GeoPosition(101.0, 0.0),
+                new GeoPosition(101.0, 1.0), new GeoPosition(100.0, 1.0), new GeoPosition(100.0, 0.0)))));
         GeoPolygonCollection avoidAreas = new GeoPolygonCollection(polygons);
         RouteDirectionsParameters parameters = new RouteDirectionsParameters().setSupportingPoints(supportingPoints)
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
@@ -252,8 +255,8 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
     public void testAsyncGetRouteRange(HttpClient httpClient, MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605),
-            Duration.ofSeconds(6000));
+        RouteRangeOptions rangeOptions
+            = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605), Duration.ofSeconds(6000));
         StepVerifier.create(client.getRouteRange(rangeOptions))
             .assertNext(actualResults -> validateGetRouteRange(TestUtils.getExpectedRouteRange(), actualResults))
             .expectComplete()
@@ -266,8 +269,8 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
     public void testAsyncGetRouteRangeWithResponse(HttpClient httpClient, MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605),
-            Duration.ofSeconds(6000));
+        RouteRangeOptions rangeOptions
+            = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605), Duration.ofSeconds(6000));
         StepVerifier.create(client.getRouteRangeWithResponse(rangeOptions))
             .assertNext(response -> validateGetRouteRangeWithResponse(TestUtils.getExpectedRouteRange(), response))
             .expectComplete()
@@ -280,8 +283,8 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     public void testAsyncInvalidGetRouteRangeWithResponse(HttpClient httpClient,
         MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(-1000000, 5.86605),
-            Duration.ofSeconds(6000));
+        RouteRangeOptions rangeOptions
+            = new RouteRangeOptions(new GeoPosition(-1000000, 5.86605), Duration.ofSeconds(6000));
         StepVerifier.create(client.getRouteRangeWithResponse(rangeOptions)).expectErrorSatisfies(ex -> {
             final HttpResponseException httpResponseException = (HttpResponseException) ex;
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -294,22 +297,25 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     public void testAsyncBeginRequestRouteDirectionsBatch(HttpClient httpClient,
         MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        RouteDirectionsOptions options1 = new RouteDirectionsOptions(
-            Arrays.asList(new GeoPosition(47.639987, -122.128384), new GeoPosition(47.621252, -122.184408),
-                new GeoPosition(47.596437, -122.332000))).setRouteType(RouteType.FASTEST)
-            .setTravelMode(TravelMode.CAR)
-            .setMaxAlternatives(5);
+        RouteDirectionsOptions options1
+            = new RouteDirectionsOptions(Arrays.asList(new GeoPosition(47.639987, -122.128384),
+                new GeoPosition(47.621252, -122.184408), new GeoPosition(47.596437, -122.332000)))
+                    .setRouteType(RouteType.FASTEST)
+                    .setTravelMode(TravelMode.CAR)
+                    .setMaxAlternatives(5);
         RouteDirectionsOptions options2 = new RouteDirectionsOptions(
-            Arrays.asList(new GeoPosition(47.620659, -122.348934),
-                new GeoPosition(47.610101, -122.342015))).setRouteType(RouteType.ECONOMY)
-            .setTravelMode(TravelMode.BICYCLE)
-            .setUseTrafficData(false);
+            Arrays.asList(new GeoPosition(47.620659, -122.348934), new GeoPosition(47.610101, -122.342015)))
+                .setRouteType(RouteType.ECONOMY)
+                .setTravelMode(TravelMode.BICYCLE)
+                .setUseTrafficData(false);
         RouteDirectionsOptions options3 = new RouteDirectionsOptions(
-            Arrays.asList(new GeoPosition(40.759856, -73.985108), new GeoPosition(40.771136, -73.973506))).setRouteType(
-            RouteType.SHORTEST).setTravelMode(TravelMode.PEDESTRIAN);
+            Arrays.asList(new GeoPosition(40.759856, -73.985108), new GeoPosition(40.771136, -73.973506)))
+                .setRouteType(RouteType.SHORTEST)
+                .setTravelMode(TravelMode.PEDESTRIAN);
         List<RouteDirectionsOptions> optionsList = Arrays.asList(options1, options2, options3);
 
-        StepVerifier.create(client.beginRequestRouteDirectionsBatch(optionsList)
+        StepVerifier
+            .create(client.beginRequestRouteDirectionsBatch(optionsList)
                 .setPollInterval(durationTestMode)
                 .last()
                 .flatMap(AsyncPollResponse::getFinalResult))
@@ -324,22 +330,25 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     public void testAsyncBeginRequestRouteDirectionsBatchWithContext(HttpClient httpClient,
         MapsRouteServiceVersion serviceVersion) {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        RouteDirectionsOptions options1 = new RouteDirectionsOptions(
-            Arrays.asList(new GeoPosition(47.639987, -122.128384), new GeoPosition(47.621252, -122.184408),
-                new GeoPosition(47.596437, -122.332000))).setRouteType(RouteType.FASTEST)
-            .setTravelMode(TravelMode.CAR)
-            .setMaxAlternatives(5);
+        RouteDirectionsOptions options1
+            = new RouteDirectionsOptions(Arrays.asList(new GeoPosition(47.639987, -122.128384),
+                new GeoPosition(47.621252, -122.184408), new GeoPosition(47.596437, -122.332000)))
+                    .setRouteType(RouteType.FASTEST)
+                    .setTravelMode(TravelMode.CAR)
+                    .setMaxAlternatives(5);
         RouteDirectionsOptions options2 = new RouteDirectionsOptions(
-            Arrays.asList(new GeoPosition(47.620659, -122.348934),
-                new GeoPosition(47.610101, -122.342015))).setRouteType(RouteType.ECONOMY)
-            .setTravelMode(TravelMode.BICYCLE)
-            .setUseTrafficData(false);
+            Arrays.asList(new GeoPosition(47.620659, -122.348934), new GeoPosition(47.610101, -122.342015)))
+                .setRouteType(RouteType.ECONOMY)
+                .setTravelMode(TravelMode.BICYCLE)
+                .setUseTrafficData(false);
         RouteDirectionsOptions options3 = new RouteDirectionsOptions(
-            Arrays.asList(new GeoPosition(40.759856, -73.985108), new GeoPosition(40.771136, -73.973506))).setRouteType(
-            RouteType.SHORTEST).setTravelMode(TravelMode.PEDESTRIAN);
+            Arrays.asList(new GeoPosition(40.759856, -73.985108), new GeoPosition(40.771136, -73.973506)))
+                .setRouteType(RouteType.SHORTEST)
+                .setTravelMode(TravelMode.PEDESTRIAN);
         List<RouteDirectionsOptions> optionsList = Arrays.asList(options1, options2, options3);
 
-        StepVerifier.create(client.beginRequestRouteDirectionsBatch(optionsList, null)
+        StepVerifier
+            .create(client.beginRequestRouteDirectionsBatch(optionsList, null)
                 .setPollInterval(durationTestMode)
                 .last()
                 .flatMap(AsyncPollResponse::getFinalResult))

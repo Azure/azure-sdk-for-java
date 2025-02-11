@@ -16,8 +16,7 @@ public final class ApplicationInsightsComponentBillingFeaturesImpl
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    ApplicationInsightsComponentBillingFeaturesImpl(
-        ApplicationInsightsComponentBillingFeaturesInner innerObject,
+    ApplicationInsightsComponentBillingFeaturesImpl(ApplicationInsightsComponentBillingFeaturesInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

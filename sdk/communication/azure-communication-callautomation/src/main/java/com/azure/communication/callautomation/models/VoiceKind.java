@@ -16,6 +16,15 @@ public final class VoiceKind extends ExpandableStringEnum<VoiceKind> {
     public static final VoiceKind FEMALE = fromString("female");
 
     /**
+     * Creates an instance of {@link VoiceKind} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of VoiceKind.
+     */
+    @Deprecated
+    public VoiceKind() {
+    }
+
+    /**
      * Creates or finds a VoiceKind from its string representation.
      *
      * @param name a name to look for.

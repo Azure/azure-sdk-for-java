@@ -6,69 +6,36 @@ package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databox.DataBoxManager;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpRequest;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpResponse;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class JobsBookShipmentPickUpWithResponseMockTests {
     @Test
     public void testBookShipmentPickUpWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr = "{\"confirmationNumber\":\"ejvegrhbpnaixex\",\"readyByTime\":\"2021-02-01T22:21:46Z\"}";
 
-        String responseStr = "{\"confirmationNumber\":\"dmovsm\",\"readyByTime\":\"2020-12-25T04:12:31Z\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataBoxManager manager = DataBoxManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ShipmentPickUpResponse response = manager.jobs()
+            .bookShipmentPickUpWithResponse("uvwzfbnh", "mctlpdngitv",
+                new ShipmentPickUpRequest().withStartTime(OffsetDateTime.parse("2021-02-05T15:31:44Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-01-22T05:21:03Z"))
+                    .withShipmentLocation("hrixkwmy"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        DataBoxManager manager =
-            DataBoxManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ShipmentPickUpResponse response =
-            manager
-                .jobs()
-                .bookShipmentPickUpWithResponse(
-                    "aznqntoru",
-                    "sgsahmkycgr",
-                    new ShipmentPickUpRequest()
-                        .withStartTime(OffsetDateTime.parse("2021-08-02T01:55:50Z"))
-                        .withEndTime(OffsetDateTime.parse("2021-04-05T08:15:46Z"))
-                        .withShipmentLocation("juetaebur"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
     }
 }

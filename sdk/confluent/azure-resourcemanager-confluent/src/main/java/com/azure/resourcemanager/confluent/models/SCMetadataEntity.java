@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Metadata of the data record.
  */
 @Fluent
-public final class SCMetadataEntity {
+public final class SCMetadataEntity implements JsonSerializable<SCMetadataEntity> {
     /*
      * Self lookup url
      */
-    @JsonProperty(value = "self")
     private String self;
 
     /*
      * Resource name of the record
      */
-    @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /*
      * Created Date Time
      */
-    @JsonProperty(value = "createdTimestamp")
     private String createdTimestamp;
 
     /*
      * Updated Date time
      */
-    @JsonProperty(value = "updatedTimestamp")
     private String updatedTimestamp;
 
     /*
      * Deleted Date time
      */
-    @JsonProperty(value = "deletedTimestamp")
     private String deletedTimestamp;
 
     /**
@@ -154,5 +153,53 @@ public final class SCMetadataEntity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("self", this.self);
+        jsonWriter.writeStringField("resourceName", this.resourceName);
+        jsonWriter.writeStringField("createdTimestamp", this.createdTimestamp);
+        jsonWriter.writeStringField("updatedTimestamp", this.updatedTimestamp);
+        jsonWriter.writeStringField("deletedTimestamp", this.deletedTimestamp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SCMetadataEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SCMetadataEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SCMetadataEntity.
+     */
+    public static SCMetadataEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SCMetadataEntity deserializedSCMetadataEntity = new SCMetadataEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("self".equals(fieldName)) {
+                    deserializedSCMetadataEntity.self = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedSCMetadataEntity.resourceName = reader.getString();
+                } else if ("createdTimestamp".equals(fieldName)) {
+                    deserializedSCMetadataEntity.createdTimestamp = reader.getString();
+                } else if ("updatedTimestamp".equals(fieldName)) {
+                    deserializedSCMetadataEntity.updatedTimestamp = reader.getString();
+                } else if ("deletedTimestamp".equals(fieldName)) {
+                    deserializedSCMetadataEntity.deletedTimestamp = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSCMetadataEntity;
+        });
     }
 }

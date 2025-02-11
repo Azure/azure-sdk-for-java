@@ -25,6 +25,15 @@ public final class PhpVersion extends ExpandableStringEnum<PhpVersion> {
     public static final PhpVersion PHP7_1 = PhpVersion.fromString("7.1");
 
     /**
+     * Creates a new instance of PhpVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PhpVersion() {
+    }
+
+    /**
      * Finds or creates a PHP version based on the specified name.
      *
      * @param name a name
@@ -34,7 +43,11 @@ public final class PhpVersion extends ExpandableStringEnum<PhpVersion> {
         return fromString(name, PhpVersion.class);
     }
 
-    /** @return known PHP versions */
+    /**
+     * Gets known PHP versions.
+     *
+     * @return known PHP versions
+     */
     public static Collection<PhpVersion> values() {
         return values(PhpVersion.class);
     }

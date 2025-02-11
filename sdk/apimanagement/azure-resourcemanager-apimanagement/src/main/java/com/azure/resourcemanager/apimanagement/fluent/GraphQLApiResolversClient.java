@@ -16,15 +16,17 @@ import com.azure.resourcemanager.apimanagement.models.GraphQLApiResolversGetResp
 import com.azure.resourcemanager.apimanagement.models.GraphQLApiResolversUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.ResolverUpdateContract;
 
-/** An instance of this class provides access to all the operations defined in GraphQLApiResolversClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GraphQLApiResolversClient.
+ */
 public interface GraphQLApiResolversClient {
     /**
      * Lists a collection of the resolvers for the specified GraphQL API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -35,17 +37,17 @@ public interface GraphQLApiResolversClient {
 
     /**
      * Lists a collection of the resolvers for the specified GraphQL API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq, ne, gt,
-     *     lt | substringof, contains, startswith, endswith |&lt;/br&gt;| path | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| path | filter | ge, le, eq, ne, gt, lt | substringof,
+     * contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -55,24 +57,18 @@ public interface GraphQLApiResolversClient {
      * @return paged Resolver list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResolverContractInner> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<ResolverContractInner> listByApi(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -80,18 +76,18 @@ public interface GraphQLApiResolversClient {
      * @return the entity state (Etag) version of the GraphQL API resolver specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphQLApiResolversGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context);
+    GraphQLApiResolversGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String resolverId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -101,13 +97,13 @@ public interface GraphQLApiResolversClient {
 
     /**
      * Gets the details of the GraphQL API Resolver specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,18 +111,18 @@ public interface GraphQLApiResolversClient {
      * @return the details of the GraphQL API Resolver specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphQLApiResolversGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context);
+    GraphQLApiResolversGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, Context context);
 
     /**
      * Gets the details of the GraphQL API Resolver specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -137,13 +133,13 @@ public interface GraphQLApiResolversClient {
 
     /**
      * Creates a new resolver in the GraphQL API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param parameters Create parameters.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param context The context to associate with this operation.
@@ -153,24 +149,18 @@ public interface GraphQLApiResolversClient {
      * @return graphQL API Resolver details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphQLApiResolversCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        ResolverContractInner parameters,
-        String ifMatch,
-        Context context);
+    GraphQLApiResolversCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String resolverId, ResolverContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new resolver in the GraphQL API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param parameters Create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -178,24 +168,20 @@ public interface GraphQLApiResolversClient {
      * @return graphQL API Resolver details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResolverContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
+    ResolverContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId, String resolverId,
         ResolverContractInner parameters);
 
     /**
      * Updates the details of the resolver in the GraphQL API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters GraphQL API Resolver Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,26 +190,20 @@ public interface GraphQLApiResolversClient {
      * @return graphQL API Resolver details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphQLApiResolversUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        String ifMatch,
-        ResolverUpdateContract parameters,
-        Context context);
+    GraphQLApiResolversUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, String ifMatch, ResolverUpdateContract parameters, Context context);
 
     /**
      * Updates the details of the resolver in the GraphQL API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters GraphQL API Resolver Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -231,25 +211,20 @@ public interface GraphQLApiResolversClient {
      * @return graphQL API Resolver details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResolverContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        String ifMatch,
-        ResolverUpdateContract parameters);
+    ResolverContractInner update(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        String ifMatch, ResolverUpdateContract parameters);
 
     /**
      * Deletes the specified resolver in the GraphQL API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -257,20 +232,20 @@ public interface GraphQLApiResolversClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified resolver in the GraphQL API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

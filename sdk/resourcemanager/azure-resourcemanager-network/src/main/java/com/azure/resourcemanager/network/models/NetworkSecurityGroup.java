@@ -18,21 +18,30 @@ import java.util.Set;
 /** Network security group. */
 @Fluent()
 public interface NetworkSecurityGroup
-    extends GroupableResource<NetworkManager, NetworkSecurityGroupInner>,
-        Refreshable<NetworkSecurityGroup>,
-        Updatable<NetworkSecurityGroup.Update>,
-        UpdatableWithTags<NetworkSecurityGroup>,
-        HasAssociatedSubnets {
+    extends GroupableResource<NetworkManager, NetworkSecurityGroupInner>, Refreshable<NetworkSecurityGroup>,
+    Updatable<NetworkSecurityGroup.Update>, UpdatableWithTags<NetworkSecurityGroup>, HasAssociatedSubnets {
 
     // Getters
 
-    /** @return security rules associated with this network security group, indexed by their names */
+    /**
+     * Gets security rules associated with this network security group.
+     *
+     * @return security rules associated with this network security group, indexed by their names
+     */
     Map<String, NetworkSecurityRule> securityRules();
 
-    /** @return default security rules associated with this network security group, indexed by their name */
+    /**
+     * Gets default security rules associated with this network security group.
+     *
+     * @return default security rules associated with this network security group, indexed by their name
+     */
     Map<String, NetworkSecurityRule> defaultSecurityRules();
 
-    /** @return the IDs of the network interfaces associated with this network security group */
+    /**
+     * Gets the IDs of the network interfaces associated with this network security group.
+     *
+     * @return the IDs of the network interfaces associated with this network security group
+     */
     Set<String> networkInterfaceIds();
 
     // Fluent interfaces for creating NSGs
@@ -71,10 +80,8 @@ public interface NetworkSecurityGroup
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<NetworkSecurityGroup>,
-                Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithRule {
+        interface WithCreate extends Creatable<NetworkSecurityGroup>, Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithRule {
         }
     }
 

@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.ResourcePoolInner;
 
-/** An instance of this class provides access to all the operations defined in ResourcePoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourcePoolsClient.
+ */
 public interface ResourcePoolsClient {
     /**
      * Implements get of resource pools list
-     *
-     * <p>Returns list of resource pools in region for private cloud.
-     *
+     * 
+     * Returns list of resource pools in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,9 +32,9 @@ public interface ResourcePoolsClient {
 
     /**
      * Implements get of resource pools list
-     *
-     * <p>Returns list of resource pools in region for private cloud.
-     *
+     * 
+     * Returns list of resource pools in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param context The context to associate with this operation.
@@ -46,9 +48,9 @@ public interface ResourcePoolsClient {
 
     /**
      * Implements get of resource pool
-     *
-     * <p>Returns resource pool templates by its name.
-     *
+     * 
+     * Returns resource pool templates by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName resource pool id (vsphereId).
@@ -59,14 +61,14 @@ public interface ResourcePoolsClient {
      * @return resource pool model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourcePoolInner> getWithResponse(
-        String regionId, String pcName, String resourcePoolName, Context context);
+    Response<ResourcePoolInner> getWithResponse(String regionId, String pcName, String resourcePoolName,
+        Context context);
 
     /**
      * Implements get of resource pool
-     *
-     * <p>Returns resource pool templates by its name.
-     *
+     * 
+     * Returns resource pool templates by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName resource pool id (vsphereId).

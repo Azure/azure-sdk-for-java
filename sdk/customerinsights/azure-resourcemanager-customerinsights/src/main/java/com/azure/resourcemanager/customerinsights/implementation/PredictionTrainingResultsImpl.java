@@ -16,8 +16,7 @@ public final class PredictionTrainingResultsImpl implements PredictionTrainingRe
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    PredictionTrainingResultsImpl(
-        PredictionTrainingResultsInner innerObject,
+    PredictionTrainingResultsImpl(PredictionTrainingResultsInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

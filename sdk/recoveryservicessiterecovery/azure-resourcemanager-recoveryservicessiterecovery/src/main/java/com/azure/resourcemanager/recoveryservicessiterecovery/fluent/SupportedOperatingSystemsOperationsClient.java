@@ -11,8 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.SupportedOperatingSystemsInner;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * SupportedOperatingSystemsOperationsClient.
+ * An instance of this class provides access to all the operations defined in SupportedOperatingSystemsOperationsClient.
  */
 public interface SupportedOperatingSystemsOperationsClient {
     /**

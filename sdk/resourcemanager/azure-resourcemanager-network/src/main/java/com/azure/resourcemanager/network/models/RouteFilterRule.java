@@ -14,10 +14,18 @@ import java.util.List;
 @Fluent
 public interface RouteFilterRule extends HasInnerModel<RouteFilterRuleInner>, ChildResource<RouteFilter> {
 
-    /** @return the access type of the rule */
+    /**
+     * Gets the access type of the rule.
+     *
+     * @return the access type of the rule
+     */
     Access access();
 
-    /** @return the rule type of the rule */
+    /**
+     * Gets the rule type of the rule.
+     *
+     * @return the rule type of the rule
+     */
     RouteFilterRuleType routeFilterRuleType();
 
     /**
@@ -27,10 +35,18 @@ public interface RouteFilterRule extends HasInnerModel<RouteFilterRuleInner>, Ch
      */
     List<String> communities();
 
-    /** @return the provisioning state of the resource */
+    /**
+     * Gets the provisioning state of the resource.
+     *
+     * @return the provisioning state of the resource
+     */
     String provisioningState();
 
-    /** @return resource location */
+    /**
+     * Gets resource location.
+     *
+     * @return resource location
+     */
     String location();
 
     /**
@@ -38,10 +54,8 @@ public interface RouteFilterRule extends HasInnerModel<RouteFilterRuleInner>, Ch
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithBgpCommunities<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithBgpCommunities<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of route filter rule definition stages applicable as part of a route filter group creation. */
@@ -54,7 +68,11 @@ public interface RouteFilterRule extends HasInnerModel<RouteFilterRuleInner>, Ch
         interface Blank<ParentT> extends WithBgpCommunities<ParentT> {
         }
 
-        /** The stage of the route filter rule definition allowing bgp service communities to be specified. */
+        /**
+         * The stage of the route filter rule definition allowing bgp service communities to be specified.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithBgpCommunities<ParentT> {
             /**
              * Set the collection for bgp community values to filter on. e.g. ['12076:5010','12076:5020'].
@@ -81,7 +99,11 @@ public interface RouteFilterRule extends HasInnerModel<RouteFilterRuleInner>, Ch
             Update withoutBgpCommunity(String community);
         }
 
-        /** The stage of the route filter rule definition allowing access type of the rule. */
+        /**
+         * The stage of the route filter rule definition allowing access type of the rule.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithAccessType<ParentT> {
             /**
              * Set 'Allow' acces type of the rule.
@@ -129,7 +151,11 @@ public interface RouteFilterRule extends HasInnerModel<RouteFilterRuleInner>, Ch
         interface Blank<ParentT> extends UpdateDefinitionStages.WithBgpCommunities<ParentT> {
         }
 
-        /** The stage of the route filter rule definition allowing bgp service communities to be specified. */
+        /**
+         * The stage of the route filter rule definition allowing bgp service communities to be specified.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithBgpCommunities<ParentT> {
             /**
              * Set the collection for bgp community values to filter on. e.g. ['12076:5010','12076:5020'].
@@ -156,7 +182,11 @@ public interface RouteFilterRule extends HasInnerModel<RouteFilterRuleInner>, Ch
             Update withoutBgpCommunity(String community);
         }
 
-        /** The stage of the route filter rule definition allowing access type of the rule. */
+        /**
+         * The stage of the route filter rule definition allowing access type of the rule.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithAccessType<ParentT> {
             /**
              * Set 'Allow' acces type of the rule.

@@ -18,7 +18,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
      * @param manager Entry point to DashboardManager.
      */
     public static void privateEndpointConnectionsDelete(com.azure.resourcemanager.dashboard.DashboardManager manager) {
-        manager.privateEndpointConnections().delete("myResourceGroup", "myWorkspace", "myConnection",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .delete("myResourceGroup", "myWorkspace", "myConnection", com.azure.core.util.Context.NONE);
     }
 }

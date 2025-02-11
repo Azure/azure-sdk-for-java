@@ -4,33 +4,35 @@
 
 package com.azure.resourcemanager.dynatrace.generated;
 
-/** Samples for Monitors GetByResourceGroup. */
+/**
+ * Samples for Monitors GetByResourceGroup.
+ */
 public final class MonitorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Get_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
     public static void monitorsGetMinimumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager
-            .monitors()
+        manager.monitors()
             .getByResourceGroupWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Get_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
     public static void monitorsGetMaximumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager
-            .monitors()
+        manager.monitors()
             .getByResourceGroupWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,25 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of InboundEndpoints. */
+/**
+ * Resource collection API of InboundEndpoints.
+ */
 public interface InboundEndpoints {
     /**
      * Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String dnsResolverName, String inboundEndpointName, String ifMatch);
-
-    /**
-     * Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
@@ -38,23 +26,38 @@ public interface InboundEndpoints {
 
     /**
      * Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String dnsResolverName, String inboundEndpointName, String ifMatch, Context context);
+    void delete(String resourceGroupName, String dnsResolverName, String inboundEndpointName, String ifMatch,
+        Context context);
 
     /**
      * Gets properties of an inbound endpoint for a DNS resolver.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsResolverName The name of the DNS resolver.
+     * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of an inbound endpoint for a DNS resolver along with {@link Response}.
+     */
+    Response<InboundEndpoint> getWithResponse(String resourceGroupName, String dnsResolverName,
+        String inboundEndpointName, Context context);
+
+    /**
+     * Gets properties of an inbound endpoint for a DNS resolver.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
@@ -66,36 +69,21 @@ public interface InboundEndpoints {
     InboundEndpoint get(String resourceGroupName, String dnsResolverName, String inboundEndpointName);
 
     /**
-     * Gets properties of an inbound endpoint for a DNS resolver.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an inbound endpoint for a DNS resolver along with {@link Response}.
-     */
-    Response<InboundEndpoint> getWithResponse(
-        String resourceGroupName, String dnsResolverName, String inboundEndpointName, Context context);
-
-    /**
      * Lists inbound endpoints for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on inbound endpoints for a DNS resolver as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<InboundEndpoint> list(String resourceGroupName, String dnsResolverName);
 
     /**
      * Lists inbound endpoints for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -104,13 +92,13 @@ public interface InboundEndpoints {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on inbound endpoints for a DNS resolver as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<InboundEndpoint> list(String resourceGroupName, String dnsResolverName, Integer top, Context context);
 
     /**
      * Gets properties of an inbound endpoint for a DNS resolver.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -121,7 +109,7 @@ public interface InboundEndpoints {
 
     /**
      * Gets properties of an inbound endpoint for a DNS resolver.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,7 +121,7 @@ public interface InboundEndpoints {
 
     /**
      * Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,10 +131,10 @@ public interface InboundEndpoints {
 
     /**
      * Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -156,7 +144,7 @@ public interface InboundEndpoints {
 
     /**
      * Begins definition for a new InboundEndpoint resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new InboundEndpoint definition.
      */

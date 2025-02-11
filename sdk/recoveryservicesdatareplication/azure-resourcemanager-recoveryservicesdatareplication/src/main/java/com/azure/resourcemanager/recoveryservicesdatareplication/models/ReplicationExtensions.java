@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationExtensions. */
+/**
+ * Resource collection API of ReplicationExtensions.
+ */
 public interface ReplicationExtensions {
     /**
      * Gets the replication extension.
-     *
-     * <p>Gets the details of the replication extension.
-     *
+     * 
+     * Gets the details of the replication extension.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -24,14 +26,14 @@ public interface ReplicationExtensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the replication extension along with {@link Response}.
      */
-    Response<ReplicationExtensionModel> getWithResponse(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context);
+    Response<ReplicationExtensionModel> getWithResponse(String resourceGroupName, String vaultName,
+        String replicationExtensionName, Context context);
 
     /**
      * Gets the replication extension.
-     *
-     * <p>Gets the details of the replication extension.
-     *
+     * 
+     * Gets the details of the replication extension.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -44,9 +46,9 @@ public interface ReplicationExtensions {
 
     /**
      * Deletes the replication extension.
-     *
-     * <p>Deletes the replication extension in the given vault.
-     *
+     * 
+     * Deletes the replication extension in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -58,9 +60,9 @@ public interface ReplicationExtensions {
 
     /**
      * Deletes the replication extension.
-     *
-     * <p>Deletes the replication extension in the given vault.
-     *
+     * 
+     * Deletes the replication extension in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -73,9 +75,9 @@ public interface ReplicationExtensions {
 
     /**
      * Lists the replication extensions.
-     *
-     * <p>Gets the list of replication extensions in the given vault.
-     *
+     * 
+     * Gets the list of replication extensions in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,9 +89,9 @@ public interface ReplicationExtensions {
 
     /**
      * Lists the replication extensions.
-     *
-     * <p>Gets the list of replication extensions in the given vault.
-     *
+     * 
+     * Gets the list of replication extensions in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -102,9 +104,9 @@ public interface ReplicationExtensions {
 
     /**
      * Gets the replication extension.
-     *
-     * <p>Gets the details of the replication extension.
-     *
+     * 
+     * Gets the details of the replication extension.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,9 +117,9 @@ public interface ReplicationExtensions {
 
     /**
      * Gets the replication extension.
-     *
-     * <p>Gets the details of the replication extension.
-     *
+     * 
+     * Gets the details of the replication extension.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,9 +131,9 @@ public interface ReplicationExtensions {
 
     /**
      * Deletes the replication extension.
-     *
-     * <p>Deletes the replication extension in the given vault.
-     *
+     * 
+     * Deletes the replication extension in the given vault.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,9 +143,9 @@ public interface ReplicationExtensions {
 
     /**
      * Deletes the replication extension.
-     *
-     * <p>Deletes the replication extension in the given vault.
-     *
+     * 
+     * Deletes the replication extension in the given vault.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +156,7 @@ public interface ReplicationExtensions {
 
     /**
      * Begins definition for a new ReplicationExtensionModel resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ReplicationExtensionModel definition.
      */

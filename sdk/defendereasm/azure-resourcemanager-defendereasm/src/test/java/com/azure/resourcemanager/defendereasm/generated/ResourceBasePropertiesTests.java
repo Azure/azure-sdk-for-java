@@ -10,8 +10,8 @@ import com.azure.resourcemanager.defendereasm.models.ResourceBaseProperties;
 public final class ResourceBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceBaseProperties model =
-            BinaryData.fromString("{\"provisioningState\":\"Failed\"}").toObject(ResourceBaseProperties.class);
+        ResourceBaseProperties model
+            = BinaryData.fromString("{\"provisioningState\":\"Failed\"}").toObject(ResourceBaseProperties.class);
     }
 
     @org.junit.jupiter.api.Test

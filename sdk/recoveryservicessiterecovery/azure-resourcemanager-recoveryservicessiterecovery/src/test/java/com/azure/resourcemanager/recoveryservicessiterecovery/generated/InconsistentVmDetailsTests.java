@@ -23,7 +23,8 @@ public final class InconsistentVmDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InconsistentVmDetails model = new InconsistentVmDetails().withVmName("laimouxwk").withCloudName("mud")
+        InconsistentVmDetails model = new InconsistentVmDetails().withVmName("laimouxwk")
+            .withCloudName("mud")
             .withDetails(Arrays.asList("oibi", "ziuswsw", "rk", "qsj"))
             .withErrorIds(Arrays.asList("qqvyfscyrfw", "iv"));
         model = BinaryData.fromObject(model).toObject(InconsistentVmDetails.class);

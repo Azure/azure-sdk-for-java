@@ -5,20 +5,26 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.StorageLimitExceededBehavior;
 import com.azure.resourcemanager.timeseriesinsights.models.TimeSeriesIdProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** Properties used to create a Gen1 environment. */
+/**
+ * Properties used to create a Gen1 environment.
+ */
 @Fluent
-public class Gen1EnvironmentCreationProperties {
+public class Gen1EnvironmentCreationProperties implements JsonSerializable<Gen1EnvironmentCreationProperties> {
     /*
      * ISO8601 timespan specifying the minimum number of days the environment's events will be available for query.
      */
-    @JsonProperty(value = "dataRetentionTime", required = true)
     private Duration dataRetentionTime;
 
     /*
@@ -27,24 +33,24 @@ public class Gen1EnvironmentCreationProperties {
      * new events will continue to be read and old events will be deleted from the environment. The default behavior is
      * PurgeOldData.
      */
-    @JsonProperty(value = "storageLimitExceededBehavior")
     private StorageLimitExceededBehavior storageLimitExceededBehavior;
 
     /*
      * The list of event properties which will be used to partition data in the environment. Currently, only a single
      * partition key property is supported.
      */
-    @JsonProperty(value = "partitionKeyProperties")
     private List<TimeSeriesIdProperty> partitionKeyProperties;
 
-    /** Creates an instance of Gen1EnvironmentCreationProperties class. */
+    /**
+     * Creates an instance of Gen1EnvironmentCreationProperties class.
+     */
     public Gen1EnvironmentCreationProperties() {
     }
 
     /**
      * Get the dataRetentionTime property: ISO8601 timespan specifying the minimum number of days the environment's
      * events will be available for query.
-     *
+     * 
      * @return the dataRetentionTime value.
      */
     public Duration dataRetentionTime() {
@@ -54,7 +60,7 @@ public class Gen1EnvironmentCreationProperties {
     /**
      * Set the dataRetentionTime property: ISO8601 timespan specifying the minimum number of days the environment's
      * events will be available for query.
-     *
+     * 
      * @param dataRetentionTime the dataRetentionTime value to set.
      * @return the Gen1EnvironmentCreationProperties object itself.
      */
@@ -68,7 +74,7 @@ public class Gen1EnvironmentCreationProperties {
      * environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the
      * event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted
      * from the environment. The default behavior is PurgeOldData.
-     *
+     * 
      * @return the storageLimitExceededBehavior value.
      */
     public StorageLimitExceededBehavior storageLimitExceededBehavior() {
@@ -80,12 +86,12 @@ public class Gen1EnvironmentCreationProperties {
      * environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the
      * event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted
      * from the environment. The default behavior is PurgeOldData.
-     *
+     * 
      * @param storageLimitExceededBehavior the storageLimitExceededBehavior value to set.
      * @return the Gen1EnvironmentCreationProperties object itself.
      */
-    public Gen1EnvironmentCreationProperties withStorageLimitExceededBehavior(
-        StorageLimitExceededBehavior storageLimitExceededBehavior) {
+    public Gen1EnvironmentCreationProperties
+        withStorageLimitExceededBehavior(StorageLimitExceededBehavior storageLimitExceededBehavior) {
         this.storageLimitExceededBehavior = storageLimitExceededBehavior;
         return this;
     }
@@ -93,7 +99,7 @@ public class Gen1EnvironmentCreationProperties {
     /**
      * Get the partitionKeyProperties property: The list of event properties which will be used to partition data in the
      * environment. Currently, only a single partition key property is supported.
-     *
+     * 
      * @return the partitionKeyProperties value.
      */
     public List<TimeSeriesIdProperty> partitionKeyProperties() {
@@ -103,27 +109,26 @@ public class Gen1EnvironmentCreationProperties {
     /**
      * Set the partitionKeyProperties property: The list of event properties which will be used to partition data in the
      * environment. Currently, only a single partition key property is supported.
-     *
+     * 
      * @param partitionKeyProperties the partitionKeyProperties value to set.
      * @return the Gen1EnvironmentCreationProperties object itself.
      */
-    public Gen1EnvironmentCreationProperties withPartitionKeyProperties(
-        List<TimeSeriesIdProperty> partitionKeyProperties) {
+    public Gen1EnvironmentCreationProperties
+        withPartitionKeyProperties(List<TimeSeriesIdProperty> partitionKeyProperties) {
         this.partitionKeyProperties = partitionKeyProperties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataRetentionTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataRetentionTime in model Gen1EnvironmentCreationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataRetentionTime in model Gen1EnvironmentCreationProperties"));
         }
         if (partitionKeyProperties() != null) {
             partitionKeyProperties().forEach(e -> e.validate());
@@ -131,4 +136,54 @@ public class Gen1EnvironmentCreationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Gen1EnvironmentCreationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataRetentionTime", CoreUtils.durationToStringWithDays(this.dataRetentionTime));
+        jsonWriter.writeStringField("storageLimitExceededBehavior",
+            this.storageLimitExceededBehavior == null ? null : this.storageLimitExceededBehavior.toString());
+        jsonWriter.writeArrayField("partitionKeyProperties", this.partitionKeyProperties,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Gen1EnvironmentCreationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Gen1EnvironmentCreationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Gen1EnvironmentCreationProperties.
+     */
+    public static Gen1EnvironmentCreationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Gen1EnvironmentCreationProperties deserializedGen1EnvironmentCreationProperties
+                = new Gen1EnvironmentCreationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataRetentionTime".equals(fieldName)) {
+                    deserializedGen1EnvironmentCreationProperties.dataRetentionTime
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("storageLimitExceededBehavior".equals(fieldName)) {
+                    deserializedGen1EnvironmentCreationProperties.storageLimitExceededBehavior
+                        = StorageLimitExceededBehavior.fromString(reader.getString());
+                } else if ("partitionKeyProperties".equals(fieldName)) {
+                    List<TimeSeriesIdProperty> partitionKeyProperties
+                        = reader.readArray(reader1 -> TimeSeriesIdProperty.fromJson(reader1));
+                    deserializedGen1EnvironmentCreationProperties.partitionKeyProperties = partitionKeyProperties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGen1EnvironmentCreationProperties;
+        });
+    }
 }

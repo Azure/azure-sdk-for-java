@@ -17,8 +17,8 @@ import java.util.stream.Stream;
  * interfaces.
  */
 @Immutable
-public final class ClassifyDocumentPagedIterable extends ContinuablePagedIterable<String,
-    ClassifyDocumentResultCollection, PagedResponse<ClassifyDocumentResultCollection>> {
+public final class ClassifyDocumentPagedIterable extends
+    ContinuablePagedIterable<String, ClassifyDocumentResultCollection, PagedResponse<ClassifyDocumentResultCollection>> {
 
     /**
      * Creates instance given {@code ClassifyDocumentPagedIterable}.

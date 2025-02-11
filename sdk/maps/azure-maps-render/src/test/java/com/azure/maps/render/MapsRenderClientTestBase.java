@@ -34,8 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class MapsRenderClientTestBase extends TestProxyTestBase {
     MapsRenderClientBuilder getRenderAsyncClientBuilder(HttpClient httpClient,
         MapsRenderServiceVersion serviceVersion) {
-        MapsRenderClientBuilder builder = modifyBuilder(httpClient, new MapsRenderClientBuilder()).serviceVersion(
-            serviceVersion);
+        MapsRenderClientBuilder builder
+            = modifyBuilder(httpClient, new MapsRenderClientBuilder()).serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.endpoint("https://localhost:8080");
@@ -57,8 +57,8 @@ public class MapsRenderClientTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
 
-            customMatchers.add(
-                new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
+            customMatchers
+                .add(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
             interceptorManager.addMatchers(customMatchers);
         }
 
@@ -74,8 +74,8 @@ public class MapsRenderClientTestBase extends TestProxyTestBase {
             builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("SUBSCRIPTION_KEY")));
         }
 
-        return builder.httpClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        return builder
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
     }
 
     static void validateGetMapTile(byte[] actual) {

@@ -47,8 +47,8 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
     /** the network client. */
     private final NetworkManager networkManager;
 
-    protected NicIpConfigurationBaseImpl(
-        NetworkInterfaceIpConfigurationInner inner, ParentImplT parent, NetworkManager networkManager) {
+    protected NicIpConfigurationBaseImpl(NetworkInterfaceIpConfigurationInner inner, ParentImplT parent,
+        NetworkManager networkManager) {
         super(inner, parent);
         this.networkManager = networkManager;
     }
@@ -123,14 +123,8 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
     @Override
     public Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends() {
-        return com
-            .azure
-            .resourcemanager
-            .network
-            .implementation
-            .Utils
-            .listAssociatedApplicationGatewayBackends(
-                this.parent().manager(), this.innerModel().applicationGatewayBackendAddressPools());
+        return com.azure.resourcemanager.network.implementation.Utils.listAssociatedApplicationGatewayBackends(
+            this.parent().manager(), this.innerModel().applicationGatewayBackendAddressPools());
     }
 
     @Override
@@ -184,7 +178,8 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
         List<ApplicationSecurityGroup> applicationSecurityGroups = Flux
             .fromStream(this.innerModel().applicationSecurityGroups().stream().map(ApplicationSecurityGroupInner::id))
             .flatMapSequential(id -> this.networkManager.applicationSecurityGroups().getByIdAsync(id))
-            .collectList().block();
+            .collectList()
+            .block();
         return applicationSecurityGroups == null
             ? Collections.emptyList()
             : Collections.unmodifiableList(applicationSecurityGroups);

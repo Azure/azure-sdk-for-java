@@ -7,24 +7,23 @@ package com.azure.resourcemanager.mariadb.generated;
 import com.azure.resourcemanager.mariadb.models.WaitStatisticsInput;
 import java.time.OffsetDateTime;
 
-/** Samples for WaitStatistics ListByServer. */
+/**
+ * Samples for WaitStatistics ListByServer.
+ */
 public final class WaitStatisticsListByServerSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/WaitStatisticsListByServer.json
+     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/
+     * WaitStatisticsListByServer.json
      */
     /**
      * Sample code: WaitStatisticsListByServer.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void waitStatisticsListByServer(com.azure.resourcemanager.mariadb.MariaDBManager manager) {
-        manager
-            .waitStatistics()
-            .listByServer(
-                "testResourceGroupName",
-                "testServerName",
-                new WaitStatisticsInput()
-                    .withObservationStartTime(OffsetDateTime.parse("2019-05-01T20:00:00.000Z"))
+        manager.waitStatistics()
+            .listByServer("testResourceGroupName", "testServerName",
+                new WaitStatisticsInput().withObservationStartTime(OffsetDateTime.parse("2019-05-01T20:00:00.000Z"))
                     .withObservationEndTime(OffsetDateTime.parse("2019-05-07T20:00:00.000Z"))
                     .withAggregationWindow("PT15M"),
                 com.azure.core.util.Context.NONE);

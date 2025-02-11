@@ -10,24 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.KeyListResultInner;
 
-/** An instance of this class provides access to all the operations defined in KeysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KeysClient.
+ */
 public interface KeysClient {
     /**
      * Retrieve the automation keys for an account.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KeyListResultInner listByAutomationAccount(String resourceGroupName, String automationAccountName);
-
-    /**
-     * Retrieve the automation keys for an account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -37,6 +26,19 @@ public interface KeysClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KeyListResultInner> listByAutomationAccountWithResponse(
-        String resourceGroupName, String automationAccountName, Context context);
+    Response<KeyListResultInner> listByAutomationAccountWithResponse(String resourceGroupName,
+        String automationAccountName, Context context);
+
+    /**
+     * Retrieve the automation keys for an account.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KeyListResultInner listByAutomationAccount(String resourceGroupName, String automationAccountName);
 }

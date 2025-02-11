@@ -44,21 +44,10 @@ public class VirtualNetworkLinkETagTests extends ResourceManagerTestProxyTestBas
     protected NetworkManager networkManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -118,9 +107,9 @@ public class VirtualNetworkLinkETagTests extends ResourceManagerTestProxyTestBas
         try {
             privateDnsZone.update()
                 .updateVirtualNetworkLink(vnetLinkName)
-                    .enableAutoRegistration()
-                    .withETagCheck(virtualNetworkLink.etag() + "-foo")
-                    .parent()
+                .enableAutoRegistration()
+                .withETagCheck(virtualNetworkLink.etag() + "-foo")
+                .parent()
                 .apply();
         } catch (Exception exception) {
             compositeException = exception;
@@ -129,9 +118,9 @@ public class VirtualNetworkLinkETagTests extends ResourceManagerTestProxyTestBas
 
         privateDnsZone.update()
             .updateVirtualNetworkLink(vnetLinkName)
-                .enableAutoRegistration()
-                .withETagCheck(virtualNetworkLink.etag())
-                .parent()
+            .enableAutoRegistration()
+            .withETagCheck(virtualNetworkLink.etag())
+            .parent()
             .apply();
 
         virtualNetworkLinks = privateDnsZone.virtualNetworkLinks().list();
@@ -155,31 +144,29 @@ public class VirtualNetworkLinkETagTests extends ResourceManagerTestProxyTestBas
 
         Exception compositeException = null;
         try {
-            privateDnsZone.update()
-                .withoutVirtualNetworkLink(vnetLinkName, virtualNetworkLink.etag() + "-foo")
-                .apply();
+            privateDnsZone.update().withoutVirtualNetworkLink(vnetLinkName, virtualNetworkLink.etag() + "-foo").apply();
         } catch (Exception exception) {
             compositeException = exception;
         }
         validateAggregateException(compositeException);
 
-        privateDnsZone.update()
-            .withoutVirtualNetworkLink(vnetLinkName, virtualNetworkLink.etag())
-            .apply();
+        privateDnsZone.update().withoutVirtualNetworkLink(vnetLinkName, virtualNetworkLink.etag()).apply();
 
         virtualNetworkLinks = privateDnsZone.virtualNetworkLinks().list();
         Assertions.assertTrue(TestUtilities.getSize(virtualNetworkLinks) == 0);
     }
 
     private NetworkSecurityGroup createNetworkSecurityGroup() {
-        return networkManager.networkSecurityGroups().define(nsgName)
+        return networkManager.networkSecurityGroups()
+            .define(nsgName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .create();
     }
 
     private Network createNetwork(NetworkSecurityGroup nsg) {
-        return networkManager.networks().define(vnetName)
+        return networkManager.networks()
+            .define(vnetName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withAddressSpace("10.0.0.0/28")
@@ -193,7 +180,8 @@ public class VirtualNetworkLinkETagTests extends ResourceManagerTestProxyTestBas
     }
 
     private PrivateDnsZone createPrivateDnsZone(Network network) {
-        return privateZoneManager.privateZones().define(topLevelDomain)
+        return privateZoneManager.privateZones()
+            .define(topLevelDomain)
             .withExistingResourceGroup(rgName)
             .defineVirtualNetworkLink(vnetLinkName)
             .disableAutoRegistration()

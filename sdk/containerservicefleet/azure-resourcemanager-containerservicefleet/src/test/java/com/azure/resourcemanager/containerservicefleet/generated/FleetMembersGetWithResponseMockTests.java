@@ -21,7 +21,7 @@ public final class FleetMembersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"clusterResourceId\":\"ayqigynduhav\",\"group\":\"lkthu\",\"provisioningState\":\"Leaving\"},\"eTag\":\"lbg\",\"id\":\"duiertgcc\",\"name\":\"mvaolps\",\"type\":\"lqlfm\"}";
+            = "{\"properties\":{\"clusterResourceId\":\"hin\",\"group\":\"ygmi\",\"provisioningState\":\"Failed\"},\"eTag\":\"zdnds\",\"id\":\"nayqi\",\"name\":\"ynduha\",\"type\":\"hqlkthumaqo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class FleetMembersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         FleetMember response = manager.fleetMembers()
-            .getWithResponse("eh", "ndoygmifthnzdnd", "l", com.azure.core.util.Context.NONE)
+            .getWithResponse("bnw", "ewgdrjervn", "enq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ayqigynduhav", response.clusterResourceId());
-        Assertions.assertEquals("lkthu", response.group());
+        Assertions.assertEquals("hin", response.clusterResourceId());
+        Assertions.assertEquals("ygmi", response.group());
     }
 }

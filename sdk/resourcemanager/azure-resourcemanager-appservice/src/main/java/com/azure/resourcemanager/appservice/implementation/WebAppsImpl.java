@@ -33,8 +33,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /** The implementation for WebApps. */
-public class WebAppsImpl
-    extends GroupableResourcesImpl<WebApp, WebAppImpl, SiteInner, WebAppsClient, AppServiceManager>
+public class WebAppsImpl extends GroupableResourcesImpl<WebApp, WebAppImpl, SiteInner, WebAppsClient, AppServiceManager>
     implements WebApps, SupportsBatchDeletion {
 
     public WebAppsImpl(final AppServiceManager manager) {
@@ -44,23 +43,17 @@ public class WebAppsImpl
     @Override
     public Mono<WebApp> getByResourceGroupAsync(final String resourceGroupName, final String name) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
         }
         if (CoreUtils.isNullOrEmpty(name)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
-        return this
-            .getInnerAsync(resourceGroupName, name)
-            .flatMap(
-                siteInner ->
-                    Mono
-                        .zip(
-                            this.inner().getConfigurationAsync(resourceGroupName, name),
-                            this.inner().getDiagnosticLogsConfigurationAsync(resourceGroupName, name),
-                            (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) ->
-                                wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
+        return this.getInnerAsync(resourceGroupName, name)
+            .flatMap(siteInner -> Mono.zip(this.inner().getConfigurationAsync(resourceGroupName, name),
+                this.inner().getDiagnosticLogsConfigurationAsync(resourceGroupName, name),
+                (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) -> wrapModel(
+                    siteInner, siteConfigResourceInner, logsConfigInner)));
     }
 
     @Override
@@ -125,8 +118,8 @@ public class WebAppsImpl
     @Override
     public PagedFlux<WebAppBasic> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return PagedConverter.flatMapPage(inner().listByResourceGroupAsync(resourceGroupName),
             inner -> isWebApp(inner) ? Mono.just(new WebAppBasicImpl(inner, this.manager())) : Mono.empty());
@@ -174,12 +167,12 @@ public class WebAppsImpl
     }
 
     @Override
-    public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type, boolean isFqdn) {
-        return manager().serviceClient().getResourceProviders()
-            .checkNameAvailabilityAsync(new ResourceNameAvailabilityRequest()
-                .withName(name)
-                .withType(type)
-                .withIsFqdn(isFqdn))
+    public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type,
+        boolean isFqdn) {
+        return manager().serviceClient()
+            .getResourceProviders()
+            .checkNameAvailabilityAsync(
+                new ResourceNameAvailabilityRequest().withName(name).withType(type).withIsFqdn(isFqdn))
             .map(CheckNameAvailabilityResultImpl::new);
     }
 

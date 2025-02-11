@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.advisor.fluent.models.ConfigDataInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of Advisor configurations. */
+/**
+ * The list of Advisor configurations.
+ */
 @Fluent
-public final class ConfigurationListResult {
+public final class ConfigurationListResult implements JsonSerializable<ConfigurationListResult> {
     /*
      * The list of configurations.
      */
-    @JsonProperty(value = "value")
     private List<ConfigDataInner> value;
 
     /*
      * The link used to get the next page of configurations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ConfigurationListResult class. */
+    /**
+     * Creates an instance of ConfigurationListResult class.
+     */
     public ConfigurationListResult() {
     }
 
     /**
      * Get the value property: The list of configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<ConfigDataInner> value() {
@@ -39,7 +45,7 @@ public final class ConfigurationListResult {
 
     /**
      * Set the value property: The list of configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ConfigurationListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of configurations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ConfigurationListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of configurations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ConfigurationListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class ConfigurationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationListResult.
+     */
+    public static ConfigurationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationListResult deserializedConfigurationListResult = new ConfigurationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ConfigDataInner> value = reader.readArray(reader1 -> ConfigDataInner.fromJson(reader1));
+                    deserializedConfigurationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedConfigurationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationListResult;
+        });
     }
 }

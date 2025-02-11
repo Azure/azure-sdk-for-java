@@ -6,71 +6,56 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A inbound NAT pool that can be used to address specific ports on compute nodes in a Batch pool externally.
  */
 @Fluent
-public final class InboundNatPool {
+public final class InboundNatPool implements JsonSerializable<InboundNatPool> {
     /*
-     * The name of the endpoint.
-     * 
      * The name must be unique within a Batch pool, can contain letters, numbers, underscores, periods, and hyphens.
      * Names must start with a letter or number, must end with a letter, number, or underscore, and cannot exceed 77
      * characters. If any invalid values are provided the request fails with HTTP status code 400.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The protocol of the endpoint.
      */
-    @JsonProperty(value = "protocol", required = true)
     private InboundEndpointProtocol protocol;
 
     /*
-     * The port number on the compute node.
-     * 
-     * This must be unique within a Batch pool. Acceptable values are between 1 and 65535 except for 22, 3389, 29876
-     * and 29877 as these are reserved. If any reserved values are provided the request fails with HTTP status code
-     * 400.
+     * This must be unique within a Batch pool. Acceptable values are between 1 and 65535 except for 22, 3389, 29876 and
+     * 29877 as these are reserved. If any reserved values are provided the request fails with HTTP status code 400.
      */
-    @JsonProperty(value = "backendPort", required = true)
     private int backendPort;
 
     /*
-     * The first port number in the range of external ports that will be used to provide inbound access to the
-     * backendPort on individual compute nodes.
-     * 
      * Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved. All ranges
-     * within a pool must be distinct and cannot overlap. If any reserved or overlapping values are provided the
-     * request fails with HTTP status code 400.
+     * within a pool must be distinct and cannot overlap. If any reserved or overlapping values are provided the request
+     * fails with HTTP status code 400.
      */
-    @JsonProperty(value = "frontendPortRangeStart", required = true)
     private int frontendPortRangeStart;
 
     /*
-     * The last port number in the range of external ports that will be used to provide inbound access to the
-     * backendPort on individual compute nodes.
-     * 
      * Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved by the Batch
      * service. All ranges within a pool must be distinct and cannot overlap. If any reserved or overlapping values are
      * provided the request fails with HTTP status code 400.
      */
-    @JsonProperty(value = "frontendPortRangeEnd", required = true)
     private int frontendPortRangeEnd;
 
     /*
-     * A list of network security group rules that will be applied to the endpoint.
-     * 
      * The maximum number of rules that can be specified across all the endpoints on a Batch pool is 25. If no network
      * security group rules are specified, a default rule will be created to allow inbound access to the specified
-     * backendPort. If the maximum number of network security group rules is exceeded the request fails with HTTP
-     * status code 400.
+     * backendPort. If the maximum number of network security group rules is exceeded the request fails with HTTP status
+     * code 400.
      */
-    @JsonProperty(value = "networkSecurityGroupRules")
     private List<NetworkSecurityGroupRule> networkSecurityGroupRules;
 
     /**
@@ -80,11 +65,9 @@ public final class InboundNatPool {
     }
 
     /**
-     * Get the name property: The name of the endpoint.
-     * 
-     * The name must be unique within a Batch pool, can contain letters, numbers, underscores, periods, and hyphens.
-     * Names must start with a letter or number, must end with a letter, number, or underscore, and cannot exceed 77
-     * characters. If any invalid values are provided the request fails with HTTP status code 400.
+     * Get the name property: The name must be unique within a Batch pool, can contain letters, numbers, underscores,
+     * periods, and hyphens. Names must start with a letter or number, must end with a letter, number, or underscore,
+     * and cannot exceed 77 characters. If any invalid values are provided the request fails with HTTP status code 400.
      * 
      * @return the name value.
      */
@@ -93,11 +76,9 @@ public final class InboundNatPool {
     }
 
     /**
-     * Set the name property: The name of the endpoint.
-     * 
-     * The name must be unique within a Batch pool, can contain letters, numbers, underscores, periods, and hyphens.
-     * Names must start with a letter or number, must end with a letter, number, or underscore, and cannot exceed 77
-     * characters. If any invalid values are provided the request fails with HTTP status code 400.
+     * Set the name property: The name must be unique within a Batch pool, can contain letters, numbers, underscores,
+     * periods, and hyphens. Names must start with a letter or number, must end with a letter, number, or underscore,
+     * and cannot exceed 77 characters. If any invalid values are provided the request fails with HTTP status code 400.
      * 
      * @param name the name value to set.
      * @return the InboundNatPool object itself.
@@ -128,11 +109,9 @@ public final class InboundNatPool {
     }
 
     /**
-     * Get the backendPort property: The port number on the compute node.
-     * 
-     * This must be unique within a Batch pool. Acceptable values are between 1 and 65535 except for 22, 3389, 29876
-     * and 29877 as these are reserved. If any reserved values are provided the request fails with HTTP status code
-     * 400.
+     * Get the backendPort property: This must be unique within a Batch pool. Acceptable values are between 1 and 65535
+     * except for 22, 3389, 29876 and 29877 as these are reserved. If any reserved values are provided the request fails
+     * with HTTP status code 400.
      * 
      * @return the backendPort value.
      */
@@ -141,11 +120,9 @@ public final class InboundNatPool {
     }
 
     /**
-     * Set the backendPort property: The port number on the compute node.
-     * 
-     * This must be unique within a Batch pool. Acceptable values are between 1 and 65535 except for 22, 3389, 29876
-     * and 29877 as these are reserved. If any reserved values are provided the request fails with HTTP status code
-     * 400.
+     * Set the backendPort property: This must be unique within a Batch pool. Acceptable values are between 1 and 65535
+     * except for 22, 3389, 29876 and 29877 as these are reserved. If any reserved values are provided the request fails
+     * with HTTP status code 400.
      * 
      * @param backendPort the backendPort value to set.
      * @return the InboundNatPool object itself.
@@ -156,12 +133,9 @@ public final class InboundNatPool {
     }
 
     /**
-     * Get the frontendPortRangeStart property: The first port number in the range of external ports that will be used
-     * to provide inbound access to the backendPort on individual compute nodes.
-     * 
-     * Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved. All ranges
-     * within a pool must be distinct and cannot overlap. If any reserved or overlapping values are provided the
-     * request fails with HTTP status code 400.
+     * Get the frontendPortRangeStart property: Acceptable values range between 1 and 65534 except ports from 50000 to
+     * 55000 which are reserved. All ranges within a pool must be distinct and cannot overlap. If any reserved or
+     * overlapping values are provided the request fails with HTTP status code 400.
      * 
      * @return the frontendPortRangeStart value.
      */
@@ -170,12 +144,9 @@ public final class InboundNatPool {
     }
 
     /**
-     * Set the frontendPortRangeStart property: The first port number in the range of external ports that will be used
-     * to provide inbound access to the backendPort on individual compute nodes.
-     * 
-     * Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved. All ranges
-     * within a pool must be distinct and cannot overlap. If any reserved or overlapping values are provided the
-     * request fails with HTTP status code 400.
+     * Set the frontendPortRangeStart property: Acceptable values range between 1 and 65534 except ports from 50000 to
+     * 55000 which are reserved. All ranges within a pool must be distinct and cannot overlap. If any reserved or
+     * overlapping values are provided the request fails with HTTP status code 400.
      * 
      * @param frontendPortRangeStart the frontendPortRangeStart value to set.
      * @return the InboundNatPool object itself.
@@ -186,12 +157,9 @@ public final class InboundNatPool {
     }
 
     /**
-     * Get the frontendPortRangeEnd property: The last port number in the range of external ports that will be used to
-     * provide inbound access to the backendPort on individual compute nodes.
-     * 
-     * Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved by the Batch
-     * service. All ranges within a pool must be distinct and cannot overlap. If any reserved or overlapping values are
-     * provided the request fails with HTTP status code 400.
+     * Get the frontendPortRangeEnd property: Acceptable values range between 1 and 65534 except ports from 50000 to
+     * 55000 which are reserved by the Batch service. All ranges within a pool must be distinct and cannot overlap. If
+     * any reserved or overlapping values are provided the request fails with HTTP status code 400.
      * 
      * @return the frontendPortRangeEnd value.
      */
@@ -200,12 +168,9 @@ public final class InboundNatPool {
     }
 
     /**
-     * Set the frontendPortRangeEnd property: The last port number in the range of external ports that will be used to
-     * provide inbound access to the backendPort on individual compute nodes.
-     * 
-     * Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved by the Batch
-     * service. All ranges within a pool must be distinct and cannot overlap. If any reserved or overlapping values are
-     * provided the request fails with HTTP status code 400.
+     * Set the frontendPortRangeEnd property: Acceptable values range between 1 and 65534 except ports from 50000 to
+     * 55000 which are reserved by the Batch service. All ranges within a pool must be distinct and cannot overlap. If
+     * any reserved or overlapping values are provided the request fails with HTTP status code 400.
      * 
      * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
      * @return the InboundNatPool object itself.
@@ -216,13 +181,10 @@ public final class InboundNatPool {
     }
 
     /**
-     * Get the networkSecurityGroupRules property: A list of network security group rules that will be applied to the
-     * endpoint.
-     * 
-     * The maximum number of rules that can be specified across all the endpoints on a Batch pool is 25. If no network
-     * security group rules are specified, a default rule will be created to allow inbound access to the specified
-     * backendPort. If the maximum number of network security group rules is exceeded the request fails with HTTP
-     * status code 400.
+     * Get the networkSecurityGroupRules property: The maximum number of rules that can be specified across all the
+     * endpoints on a Batch pool is 25. If no network security group rules are specified, a default rule will be created
+     * to allow inbound access to the specified backendPort. If the maximum number of network security group rules is
+     * exceeded the request fails with HTTP status code 400.
      * 
      * @return the networkSecurityGroupRules value.
      */
@@ -231,13 +193,10 @@ public final class InboundNatPool {
     }
 
     /**
-     * Set the networkSecurityGroupRules property: A list of network security group rules that will be applied to the
-     * endpoint.
-     * 
-     * The maximum number of rules that can be specified across all the endpoints on a Batch pool is 25. If no network
-     * security group rules are specified, a default rule will be created to allow inbound access to the specified
-     * backendPort. If the maximum number of network security group rules is exceeded the request fails with HTTP
-     * status code 400.
+     * Set the networkSecurityGroupRules property: The maximum number of rules that can be specified across all the
+     * endpoints on a Batch pool is 25. If no network security group rules are specified, a default rule will be created
+     * to allow inbound access to the specified backendPort. If the maximum number of network security group rules is
+     * exceeded the request fails with HTTP status code 400.
      * 
      * @param networkSecurityGroupRules the networkSecurityGroupRules value to set.
      * @return the InboundNatPool object itself.
@@ -254,12 +213,12 @@ public final class InboundNatPool {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model InboundNatPool"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model InboundNatPool"));
         }
         if (protocol() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property protocol in model InboundNatPool"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property protocol in model InboundNatPool"));
         }
         if (networkSecurityGroupRules() != null) {
             networkSecurityGroupRules().forEach(e -> e.validate());
@@ -267,4 +226,59 @@ public final class InboundNatPool {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InboundNatPool.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeIntField("backendPort", this.backendPort);
+        jsonWriter.writeIntField("frontendPortRangeStart", this.frontendPortRangeStart);
+        jsonWriter.writeIntField("frontendPortRangeEnd", this.frontendPortRangeEnd);
+        jsonWriter.writeArrayField("networkSecurityGroupRules", this.networkSecurityGroupRules,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InboundNatPool from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InboundNatPool if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InboundNatPool.
+     */
+    public static InboundNatPool fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InboundNatPool deserializedInboundNatPool = new InboundNatPool();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedInboundNatPool.name = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedInboundNatPool.protocol = InboundEndpointProtocol.fromString(reader.getString());
+                } else if ("backendPort".equals(fieldName)) {
+                    deserializedInboundNatPool.backendPort = reader.getInt();
+                } else if ("frontendPortRangeStart".equals(fieldName)) {
+                    deserializedInboundNatPool.frontendPortRangeStart = reader.getInt();
+                } else if ("frontendPortRangeEnd".equals(fieldName)) {
+                    deserializedInboundNatPool.frontendPortRangeEnd = reader.getInt();
+                } else if ("networkSecurityGroupRules".equals(fieldName)) {
+                    List<NetworkSecurityGroupRule> networkSecurityGroupRules
+                        = reader.readArray(reader1 -> NetworkSecurityGroupRule.fromJson(reader1));
+                    deserializedInboundNatPool.networkSecurityGroupRules = networkSecurityGroupRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInboundNatPool;
+        });
+    }
 }

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IotDpsSku. */
+/**
+ * Sku name.
+ */
 public final class IotDpsSku extends ExpandableStringEnum<IotDpsSku> {
-    /** Static value S1 for IotDpsSku. */
+    /**
+     * Static value S1 for IotDpsSku.
+     */
     public static final IotDpsSku S1 = fromString("S1");
 
     /**
+     * Creates a new instance of IotDpsSku value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IotDpsSku() {
+    }
+
+    /**
      * Creates or finds a IotDpsSku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IotDpsSku.
      */
-    @JsonCreator
     public static IotDpsSku fromString(String name) {
         return fromString(name, IotDpsSku.class);
     }
 
     /**
      * Gets known IotDpsSku values.
-     *
+     * 
      * @return known IotDpsSku values.
      */
     public static Collection<IotDpsSku> values() {

@@ -11,133 +11,139 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpExtendedCo
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of IpExtendedCommunity. */
+/**
+ * An immutable client-side representation of IpExtendedCommunity.
+ */
 public interface IpExtendedCommunity {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     ConfigurationState configurationState();
 
     /**
      * Gets the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     AdministrativeState administrativeState();
 
     /**
      * Gets the ipExtendedCommunityRules property: List of IP Extended Community Rules.
-     *
+     * 
      * @return the ipExtendedCommunityRules value.
      */
     List<IpExtendedCommunityRule> ipExtendedCommunityRules();
 
     /**
      * Gets the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     String annotation();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.managednetworkfabric.fluent.models.IpExtendedCommunityInner object.
-     *
+     * 
      * @return the inner object.
      */
     IpExtendedCommunityInner innerModel();
 
-    /** The entirety of the IpExtendedCommunity definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithIpExtendedCommunityRules,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the IpExtendedCommunity definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithIpExtendedCommunityRules, DefinitionStages.WithCreate {
     }
 
-    /** The IpExtendedCommunity definition stages. */
+    /**
+     * The IpExtendedCommunity definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the IpExtendedCommunity definition. */
+        /**
+         * The first stage of the IpExtendedCommunity definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the IpExtendedCommunity definition allowing to specify location. */
+        /**
+         * The stage of the IpExtendedCommunity definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -145,29 +151,33 @@ public interface IpExtendedCommunity {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the IpExtendedCommunity definition allowing to specify parent resource. */
+        /**
+         * The stage of the IpExtendedCommunity definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithIpExtendedCommunityRules withExistingResourceGroup(String resourceGroupName);
         }
 
-        /** The stage of the IpExtendedCommunity definition allowing to specify ipExtendedCommunityRules. */
+        /**
+         * The stage of the IpExtendedCommunity definition allowing to specify ipExtendedCommunityRules.
+         */
         interface WithIpExtendedCommunityRules {
             /**
              * Specifies the ipExtendedCommunityRules property: List of IP Extended Community Rules..
-             *
+             * 
              * @param ipExtendedCommunityRules List of IP Extended Community Rules.
              * @return the next definition stage.
              */
@@ -181,36 +191,40 @@ public interface IpExtendedCommunity {
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             IpExtendedCommunity create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             IpExtendedCommunity create(Context context);
         }
 
-        /** The stage of the IpExtendedCommunity definition allowing to specify tags. */
+        /**
+         * The stage of the IpExtendedCommunity definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the IpExtendedCommunity definition allowing to specify annotation. */
+        /**
+         * The stage of the IpExtendedCommunity definition allowing to specify annotation.
+         */
         interface WithAnnotation {
             /**
              * Specifies the annotation property: Switch configuration description..
-             *
+             * 
              * @param annotation Switch configuration description.
              * @return the next definition stage.
              */
@@ -220,59 +234,69 @@ public interface IpExtendedCommunity {
 
     /**
      * Begins update for the IpExtendedCommunity resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     IpExtendedCommunity.Update update();
 
-    /** The template for IpExtendedCommunity update. */
+    /**
+     * The template for IpExtendedCommunity update.
+     */
     interface Update
         extends UpdateStages.WithTags, UpdateStages.WithAnnotation, UpdateStages.WithIpExtendedCommunityRules {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         IpExtendedCommunity apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         IpExtendedCommunity apply(Context context);
     }
 
-    /** The IpExtendedCommunity update stages. */
+    /**
+     * The IpExtendedCommunity update stages.
+     */
     interface UpdateStages {
-        /** The stage of the IpExtendedCommunity update allowing to specify tags. */
+        /**
+         * The stage of the IpExtendedCommunity update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags.
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the IpExtendedCommunity update allowing to specify annotation. */
+        /**
+         * The stage of the IpExtendedCommunity update allowing to specify annotation.
+         */
         interface WithAnnotation {
             /**
              * Specifies the annotation property: Switch configuration description..
-             *
+             * 
              * @param annotation Switch configuration description.
              * @return the next definition stage.
              */
             Update withAnnotation(String annotation);
         }
 
-        /** The stage of the IpExtendedCommunity update allowing to specify ipExtendedCommunityRules. */
+        /**
+         * The stage of the IpExtendedCommunity update allowing to specify ipExtendedCommunityRules.
+         */
         interface WithIpExtendedCommunityRules {
             /**
              * Specifies the ipExtendedCommunityRules property: List of IP Extended Community Rules..
-             *
+             * 
              * @param ipExtendedCommunityRules List of IP Extended Community Rules.
              * @return the next definition stage.
              */
@@ -282,14 +306,14 @@ public interface IpExtendedCommunity {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     IpExtendedCommunity refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

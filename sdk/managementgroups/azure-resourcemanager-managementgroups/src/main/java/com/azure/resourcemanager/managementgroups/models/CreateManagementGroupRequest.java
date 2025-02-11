@@ -6,32 +6,47 @@ package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managementgroups.fluent.models.CreateManagementGroupProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Management group creation parameters. */
+/**
+ * Management group creation parameters.
+ */
 @Fluent
 public final class CreateManagementGroupRequest extends ProxyResource {
     /*
      * The name of the management group. For example, 00000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The generic properties of a management group used during creation.
      */
-    @JsonProperty(value = "properties")
     private CreateManagementGroupProperties innerProperties;
 
-    /** Creates an instance of CreateManagementGroupRequest class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CreateManagementGroupRequest class.
+     */
     public CreateManagementGroupRequest() {
     }
 
     /**
      * Get the name property: The name of the management group. For example, 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +55,7 @@ public final class CreateManagementGroupRequest extends ProxyResource {
 
     /**
      * Set the name property: The name of the management group. For example, 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @param name the name value to set.
      * @return the CreateManagementGroupRequest object itself.
      */
@@ -51,7 +66,7 @@ public final class CreateManagementGroupRequest extends ProxyResource {
 
     /**
      * Get the innerProperties property: The generic properties of a management group used during creation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CreateManagementGroupProperties innerProperties() {
@@ -59,9 +74,29 @@ public final class CreateManagementGroupRequest extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the tenantId property: The AAD Tenant ID associated with the management group. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -71,7 +106,7 @@ public final class CreateManagementGroupRequest extends ProxyResource {
     /**
      * Get the displayName property: The friendly name of the management group. If no value is passed then this field
      * will be set to the groupId.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -81,7 +116,7 @@ public final class CreateManagementGroupRequest extends ProxyResource {
     /**
      * Set the displayName property: The friendly name of the management group. If no value is passed then this field
      * will be set to the groupId.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the CreateManagementGroupRequest object itself.
      */
@@ -95,7 +130,7 @@ public final class CreateManagementGroupRequest extends ProxyResource {
 
     /**
      * Get the details property: The details of a management group used during creation.
-     *
+     * 
      * @return the details value.
      */
     public CreateManagementGroupDetails details() {
@@ -104,7 +139,7 @@ public final class CreateManagementGroupRequest extends ProxyResource {
 
     /**
      * Set the details property: The details of a management group used during creation.
-     *
+     * 
      * @param details the details value to set.
      * @return the CreateManagementGroupRequest object itself.
      */
@@ -118,7 +153,7 @@ public final class CreateManagementGroupRequest extends ProxyResource {
 
     /**
      * Get the children property: The list of children.
-     *
+     * 
      * @return the children value.
      */
     public List<CreateManagementGroupChildInfo> children() {
@@ -127,12 +162,57 @@ public final class CreateManagementGroupRequest extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateManagementGroupRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateManagementGroupRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateManagementGroupRequest.
+     */
+    public static CreateManagementGroupRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateManagementGroupRequest deserializedCreateManagementGroupRequest = new CreateManagementGroupRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCreateManagementGroupRequest.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCreateManagementGroupRequest.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCreateManagementGroupRequest.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCreateManagementGroupRequest.innerProperties
+                        = CreateManagementGroupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateManagementGroupRequest;
+        });
     }
 }

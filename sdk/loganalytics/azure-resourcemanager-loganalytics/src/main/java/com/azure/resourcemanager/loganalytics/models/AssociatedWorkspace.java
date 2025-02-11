@@ -5,42 +5,48 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The list of Log Analytics workspaces associated with the cluster. */
+/**
+ * The list of Log Analytics workspaces associated with the cluster.
+ */
 @Immutable
-public final class AssociatedWorkspace {
+public final class AssociatedWorkspace implements JsonSerializable<AssociatedWorkspace> {
     /*
-     * The id of the assigned workspace.
+     * Associated workspace immutable id.
      */
-    @JsonProperty(value = "workspaceId", access = JsonProperty.Access.WRITE_ONLY)
     private String workspaceId;
 
     /*
-     * The name id the assigned workspace.
+     * Associated workspace resource name.
      */
-    @JsonProperty(value = "workspaceName", access = JsonProperty.Access.WRITE_ONLY)
     private String workspaceName;
 
     /*
-     * The ResourceId id the assigned workspace.
+     * Associated workspace arm resource id, in the form of:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/
+     * workspaces/{workspaceName}.
      */
-    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
     /*
      * The time of workspace association.
      */
-    @JsonProperty(value = "associateDate", access = JsonProperty.Access.WRITE_ONLY)
     private String associateDate;
 
-    /** Creates an instance of AssociatedWorkspace class. */
+    /**
+     * Creates an instance of AssociatedWorkspace class.
+     */
     public AssociatedWorkspace() {
     }
 
     /**
-     * Get the workspaceId property: The id of the assigned workspace.
-     *
+     * Get the workspaceId property: Associated workspace immutable id.
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -48,8 +54,8 @@ public final class AssociatedWorkspace {
     }
 
     /**
-     * Get the workspaceName property: The name id the assigned workspace.
-     *
+     * Get the workspaceName property: Associated workspace resource name.
+     * 
      * @return the workspaceName value.
      */
     public String workspaceName() {
@@ -57,8 +63,9 @@ public final class AssociatedWorkspace {
     }
 
     /**
-     * Get the resourceId property: The ResourceId id the assigned workspace.
-     *
+     * Get the resourceId property: Associated workspace arm resource id, in the form of:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}.
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -67,7 +74,7 @@ public final class AssociatedWorkspace {
 
     /**
      * Get the associateDate property: The time of workspace association.
-     *
+     * 
      * @return the associateDate value.
      */
     public String associateDate() {
@@ -76,9 +83,50 @@ public final class AssociatedWorkspace {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssociatedWorkspace from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssociatedWorkspace if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AssociatedWorkspace.
+     */
+    public static AssociatedWorkspace fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssociatedWorkspace deserializedAssociatedWorkspace = new AssociatedWorkspace();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspaceId".equals(fieldName)) {
+                    deserializedAssociatedWorkspace.workspaceId = reader.getString();
+                } else if ("workspaceName".equals(fieldName)) {
+                    deserializedAssociatedWorkspace.workspaceName = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedAssociatedWorkspace.resourceId = reader.getString();
+                } else if ("associateDate".equals(fieldName)) {
+                    deserializedAssociatedWorkspace.associateDate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAssociatedWorkspace;
+        });
     }
 }

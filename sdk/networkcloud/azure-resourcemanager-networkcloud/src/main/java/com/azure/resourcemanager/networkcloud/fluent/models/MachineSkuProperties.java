@@ -5,88 +5,85 @@
 package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.BootstrapProtocol;
 import com.azure.resourcemanager.networkcloud.models.MachineDisk;
 import com.azure.resourcemanager.networkcloud.models.NetworkInterface;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** MachineSkuProperties represents the properties of the machine SKU. */
+/**
+ * MachineSkuProperties represents the properties of the machine SKU.
+ */
 @Immutable
-public final class MachineSkuProperties {
+public final class MachineSkuProperties implements JsonSerializable<MachineSkuProperties> {
     /*
      * The type of bootstrap protocol used.
      */
-    @JsonProperty(value = "bootstrapProtocol", access = JsonProperty.Access.WRITE_ONLY)
     private BootstrapProtocol bootstrapProtocol;
 
     /*
      * The count of CPU cores for this machine.
      */
-    @JsonProperty(value = "cpuCores", access = JsonProperty.Access.WRITE_ONLY)
     private Long cpuCores;
 
     /*
      * The count of CPU sockets for this machine.
      */
-    @JsonProperty(value = "cpuSockets", access = JsonProperty.Access.WRITE_ONLY)
     private Long cpuSockets;
 
     /*
      * The list of disks.
      */
-    @JsonProperty(value = "disks", access = JsonProperty.Access.WRITE_ONLY)
     private List<MachineDisk> disks;
 
     /*
      * The generation of the architecture.
      */
-    @JsonProperty(value = "generation", access = JsonProperty.Access.WRITE_ONLY)
     private String generation;
 
     /*
      * The hardware version of the machine.
      */
-    @JsonProperty(value = "hardwareVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String hardwareVersion;
 
     /*
-     * The maximum amount of memory in GB.
+     * The maximum amount of memory. Measured in gibibytes.
      */
-    @JsonProperty(value = "memoryCapacityGB", access = JsonProperty.Access.WRITE_ONLY)
     private Long memoryCapacityGB;
 
     /*
      * The model of the machine.
      */
-    @JsonProperty(value = "model", access = JsonProperty.Access.WRITE_ONLY)
     private String model;
 
     /*
      * The list of network interfaces.
      */
-    @JsonProperty(value = "networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterface> networkInterfaces;
 
     /*
      * The count of SMT and physical core threads for this machine.
      */
-    @JsonProperty(value = "totalThreads", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalThreads;
 
     /*
      * The make of the machine.
      */
-    @JsonProperty(value = "vendor", access = JsonProperty.Access.WRITE_ONLY)
     private String vendor;
 
-    /** Creates an instance of MachineSkuProperties class. */
+    /**
+     * Creates an instance of MachineSkuProperties class.
+     */
     public MachineSkuProperties() {
     }
 
     /**
      * Get the bootstrapProtocol property: The type of bootstrap protocol used.
-     *
+     * 
      * @return the bootstrapProtocol value.
      */
     public BootstrapProtocol bootstrapProtocol() {
@@ -95,7 +92,7 @@ public final class MachineSkuProperties {
 
     /**
      * Get the cpuCores property: The count of CPU cores for this machine.
-     *
+     * 
      * @return the cpuCores value.
      */
     public Long cpuCores() {
@@ -104,7 +101,7 @@ public final class MachineSkuProperties {
 
     /**
      * Get the cpuSockets property: The count of CPU sockets for this machine.
-     *
+     * 
      * @return the cpuSockets value.
      */
     public Long cpuSockets() {
@@ -113,7 +110,7 @@ public final class MachineSkuProperties {
 
     /**
      * Get the disks property: The list of disks.
-     *
+     * 
      * @return the disks value.
      */
     public List<MachineDisk> disks() {
@@ -122,7 +119,7 @@ public final class MachineSkuProperties {
 
     /**
      * Get the generation property: The generation of the architecture.
-     *
+     * 
      * @return the generation value.
      */
     public String generation() {
@@ -131,7 +128,7 @@ public final class MachineSkuProperties {
 
     /**
      * Get the hardwareVersion property: The hardware version of the machine.
-     *
+     * 
      * @return the hardwareVersion value.
      */
     public String hardwareVersion() {
@@ -139,8 +136,8 @@ public final class MachineSkuProperties {
     }
 
     /**
-     * Get the memoryCapacityGB property: The maximum amount of memory in GB.
-     *
+     * Get the memoryCapacityGB property: The maximum amount of memory. Measured in gibibytes.
+     * 
      * @return the memoryCapacityGB value.
      */
     public Long memoryCapacityGB() {
@@ -149,7 +146,7 @@ public final class MachineSkuProperties {
 
     /**
      * Get the model property: The model of the machine.
-     *
+     * 
      * @return the model value.
      */
     public String model() {
@@ -158,7 +155,7 @@ public final class MachineSkuProperties {
 
     /**
      * Get the networkInterfaces property: The list of network interfaces.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterface> networkInterfaces() {
@@ -167,7 +164,7 @@ public final class MachineSkuProperties {
 
     /**
      * Get the totalThreads property: The count of SMT and physical core threads for this machine.
-     *
+     * 
      * @return the totalThreads value.
      */
     public Long totalThreads() {
@@ -176,7 +173,7 @@ public final class MachineSkuProperties {
 
     /**
      * Get the vendor property: The make of the machine.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -185,7 +182,7 @@ public final class MachineSkuProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -195,5 +192,64 @@ public final class MachineSkuProperties {
         if (networkInterfaces() != null) {
             networkInterfaces().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineSkuProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineSkuProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineSkuProperties.
+     */
+    public static MachineSkuProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineSkuProperties deserializedMachineSkuProperties = new MachineSkuProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bootstrapProtocol".equals(fieldName)) {
+                    deserializedMachineSkuProperties.bootstrapProtocol
+                        = BootstrapProtocol.fromString(reader.getString());
+                } else if ("cpuCores".equals(fieldName)) {
+                    deserializedMachineSkuProperties.cpuCores = reader.getNullable(JsonReader::getLong);
+                } else if ("cpuSockets".equals(fieldName)) {
+                    deserializedMachineSkuProperties.cpuSockets = reader.getNullable(JsonReader::getLong);
+                } else if ("disks".equals(fieldName)) {
+                    List<MachineDisk> disks = reader.readArray(reader1 -> MachineDisk.fromJson(reader1));
+                    deserializedMachineSkuProperties.disks = disks;
+                } else if ("generation".equals(fieldName)) {
+                    deserializedMachineSkuProperties.generation = reader.getString();
+                } else if ("hardwareVersion".equals(fieldName)) {
+                    deserializedMachineSkuProperties.hardwareVersion = reader.getString();
+                } else if ("memoryCapacityGB".equals(fieldName)) {
+                    deserializedMachineSkuProperties.memoryCapacityGB = reader.getNullable(JsonReader::getLong);
+                } else if ("model".equals(fieldName)) {
+                    deserializedMachineSkuProperties.model = reader.getString();
+                } else if ("networkInterfaces".equals(fieldName)) {
+                    List<NetworkInterface> networkInterfaces
+                        = reader.readArray(reader1 -> NetworkInterface.fromJson(reader1));
+                    deserializedMachineSkuProperties.networkInterfaces = networkInterfaces;
+                } else if ("totalThreads".equals(fieldName)) {
+                    deserializedMachineSkuProperties.totalThreads = reader.getNullable(JsonReader::getLong);
+                } else if ("vendor".equals(fieldName)) {
+                    deserializedMachineSkuProperties.vendor = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineSkuProperties;
+        });
     }
 }

@@ -5,29 +5,105 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An endpoint specifying where Web PubSub should send events to. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = EventListenerEndpoint.class)
-@JsonTypeName("EventListenerEndpoint")
-@JsonSubTypes({@JsonSubTypes.Type(name = "EventHub", value = EventHubEndpoint.class)})
+/**
+ * An endpoint specifying where Web PubSub should send events to.
+ */
 @Immutable
-public class EventListenerEndpoint {
-    /** Creates an instance of EventListenerEndpoint class. */
+public class EventListenerEndpoint implements JsonSerializable<EventListenerEndpoint> {
+    /*
+     * The type property.
+     */
+    private EventListenerEndpointDiscriminator type
+        = EventListenerEndpointDiscriminator.fromString("EventListenerEndpoint");
+
+    /**
+     * Creates an instance of EventListenerEndpoint class.
+     */
     public EventListenerEndpoint() {
     }
 
     /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    public EventListenerEndpointDiscriminator type() {
+        return this.type;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventListenerEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventListenerEndpoint if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventListenerEndpoint.
+     */
+    public static EventListenerEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("EventHub".equals(discriminatorValue)) {
+                    return EventHubEndpoint.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EventListenerEndpoint fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventListenerEndpoint deserializedEventListenerEndpoint = new EventListenerEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedEventListenerEndpoint.type
+                        = EventListenerEndpointDiscriminator.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventListenerEndpoint;
+        });
     }
 }

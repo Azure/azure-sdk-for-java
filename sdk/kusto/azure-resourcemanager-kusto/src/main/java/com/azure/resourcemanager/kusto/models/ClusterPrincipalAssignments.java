@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ClusterPrincipalAssignments. */
+/**
+ * Resource collection API of ClusterPrincipalAssignments.
+ */
 public interface ClusterPrincipalAssignments {
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the principal assignment.
@@ -22,15 +24,12 @@ public interface ClusterPrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName, Context context);
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the principal assignment.
@@ -39,14 +38,12 @@ public interface ClusterPrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
+    CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName,
         ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
      * Gets a Kusto cluster principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -56,12 +53,12 @@ public interface ClusterPrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kusto cluster principalAssignment along with {@link Response}.
      */
-    Response<ClusterPrincipalAssignment> getWithResponse(
-        String resourceGroupName, String clusterName, String principalAssignmentName, Context context);
+    Response<ClusterPrincipalAssignment> getWithResponse(String resourceGroupName, String clusterName,
+        String principalAssignmentName, Context context);
 
     /**
      * Gets a Kusto cluster principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -74,7 +71,7 @@ public interface ClusterPrincipalAssignments {
 
     /**
      * Deletes a Kusto cluster principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -86,7 +83,7 @@ public interface ClusterPrincipalAssignments {
 
     /**
      * Deletes a Kusto cluster principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -99,34 +96,34 @@ public interface ClusterPrincipalAssignments {
 
     /**
      * Lists all Kusto cluster principalAssignments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<ClusterPrincipalAssignment> list(String resourceGroupName, String clusterName);
 
     /**
      * Lists all Kusto cluster principalAssignments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<ClusterPrincipalAssignment> list(String resourceGroupName, String clusterName, Context context);
 
     /**
      * Gets a Kusto cluster principalAssignment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +134,7 @@ public interface ClusterPrincipalAssignments {
 
     /**
      * Gets a Kusto cluster principalAssignment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,7 +146,7 @@ public interface ClusterPrincipalAssignments {
 
     /**
      * Deletes a Kusto cluster principalAssignment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,7 +156,7 @@ public interface ClusterPrincipalAssignments {
 
     /**
      * Deletes a Kusto cluster principalAssignment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +167,7 @@ public interface ClusterPrincipalAssignments {
 
     /**
      * Begins definition for a new ClusterPrincipalAssignment resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ClusterPrincipalAssignment definition.
      */

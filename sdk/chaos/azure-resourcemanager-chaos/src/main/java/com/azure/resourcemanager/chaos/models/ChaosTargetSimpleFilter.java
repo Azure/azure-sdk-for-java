@@ -5,27 +5,40 @@
 package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Model that represents a simple target filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Simple")
 @Fluent
 public final class ChaosTargetSimpleFilter extends ChaosTargetFilter {
     /*
+     * Enum that discriminates between filter types. Currently only `Simple` type is supported.
+     */
+    private FilterType type = FilterType.SIMPLE;
+
+    /*
      * Model that represents the Simple filter parameters.
      */
-    @JsonProperty(value = "parameters")
     private ChaosTargetSimpleFilterParameters parameters;
 
     /**
      * Creates an instance of ChaosTargetSimpleFilter class.
      */
     public ChaosTargetSimpleFilter() {
+    }
+
+    /**
+     * Get the type property: Enum that discriminates between filter types. Currently only `Simple` type is supported.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public FilterType type() {
+        return this.type;
     }
 
     /**
@@ -55,9 +68,47 @@ public final class ChaosTargetSimpleFilter extends ChaosTargetFilter {
      */
     @Override
     public void validate() {
-        super.validate();
         if (parameters() != null) {
             parameters().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("parameters", this.parameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChaosTargetSimpleFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChaosTargetSimpleFilter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChaosTargetSimpleFilter.
+     */
+    public static ChaosTargetSimpleFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChaosTargetSimpleFilter deserializedChaosTargetSimpleFilter = new ChaosTargetSimpleFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedChaosTargetSimpleFilter.type = FilterType.fromString(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedChaosTargetSimpleFilter.parameters = ChaosTargetSimpleFilterParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChaosTargetSimpleFilter;
+        });
     }
 }

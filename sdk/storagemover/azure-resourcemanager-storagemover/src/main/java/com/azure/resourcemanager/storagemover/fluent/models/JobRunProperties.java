@@ -5,184 +5,161 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.JobRunError;
 import com.azure.resourcemanager.storagemover.models.JobRunScanStatus;
 import com.azure.resourcemanager.storagemover.models.JobRunStatus;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Job run properties.
  */
 @Immutable
-public final class JobRunProperties {
+public final class JobRunProperties implements JsonSerializable<JobRunProperties> {
     /*
      * The state of the job execution.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private JobRunStatus status;
 
     /*
      * The status of Agent's scanning of source.
      */
-    @JsonProperty(value = "scanStatus", access = JsonProperty.Access.WRITE_ONLY)
     private JobRunScanStatus scanStatus;
 
     /*
      * Name of the Agent assigned to this run.
      */
-    @JsonProperty(value = "agentName", access = JsonProperty.Access.WRITE_ONLY)
     private String agentName;
 
     /*
      * Fully qualified resource id of the Agent assigned to this run.
      */
-    @JsonProperty(value = "agentResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String agentResourceId;
 
     /*
      * Start time of the run. Null if no Agent reported that the job has started.
      */
-    @JsonProperty(value = "executionStartTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime executionStartTime;
 
     /*
      * End time of the run. Null if Agent has not reported that the job has ended.
      */
-    @JsonProperty(value = "executionEndTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime executionEndTime;
 
     /*
      * The last updated time of the Job Run.
      */
-    @JsonProperty(value = "lastStatusUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastStatusUpdate;
 
     /*
      * Number of items scanned so far in source.
      */
-    @JsonProperty(value = "itemsScanned", access = JsonProperty.Access.WRITE_ONLY)
     private Long itemsScanned;
 
     /*
      * Number of items that will not be transferred, as they are excluded by user configuration.
      */
-    @JsonProperty(value = "itemsExcluded", access = JsonProperty.Access.WRITE_ONLY)
     private Long itemsExcluded;
 
     /*
      * Number of items that will not be transferred, as they are unsupported on target.
      */
-    @JsonProperty(value = "itemsUnsupported", access = JsonProperty.Access.WRITE_ONLY)
     private Long itemsUnsupported;
 
     /*
      * Number of items that will not be transferred, as they are already found on target (e.g. mirror mode).
      */
-    @JsonProperty(value = "itemsNoTransferNeeded", access = JsonProperty.Access.WRITE_ONLY)
     private Long itemsNoTransferNeeded;
 
     /*
      * Number of items that were attempted to transfer and failed.
      */
-    @JsonProperty(value = "itemsFailed", access = JsonProperty.Access.WRITE_ONLY)
     private Long itemsFailed;
 
     /*
      * Number of items successfully transferred to target.
      */
-    @JsonProperty(value = "itemsTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long itemsTransferred;
 
     /*
      * Bytes of data scanned so far in source.
      */
-    @JsonProperty(value = "bytesScanned", access = JsonProperty.Access.WRITE_ONLY)
     private Long bytesScanned;
 
     /*
      * Bytes of data that will not be transferred, as they are excluded by user configuration.
      */
-    @JsonProperty(value = "bytesExcluded", access = JsonProperty.Access.WRITE_ONLY)
     private Long bytesExcluded;
 
     /*
      * Bytes of data that will not be transferred, as they are unsupported on target.
      */
-    @JsonProperty(value = "bytesUnsupported", access = JsonProperty.Access.WRITE_ONLY)
     private Long bytesUnsupported;
 
     /*
      * Bytes of data that will not be transferred, as they are already found on target (e.g. mirror mode).
      */
-    @JsonProperty(value = "bytesNoTransferNeeded", access = JsonProperty.Access.WRITE_ONLY)
     private Long bytesNoTransferNeeded;
 
     /*
      * Bytes of data that were attempted to transfer and failed.
      */
-    @JsonProperty(value = "bytesFailed", access = JsonProperty.Access.WRITE_ONLY)
     private Long bytesFailed;
 
     /*
      * Bytes of data successfully transferred to target.
      */
-    @JsonProperty(value = "bytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long bytesTransferred;
 
     /*
      * Name of source Endpoint resource. This resource may no longer exist.
      */
-    @JsonProperty(value = "sourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceName;
 
     /*
      * Fully qualified resource id of source Endpoint. This id may no longer exist.
      */
-    @JsonProperty(value = "sourceResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceResourceId;
 
     /*
      * Copy of source Endpoint resource's properties at time of Job Run creation.
      */
-    @JsonProperty(value = "sourceProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Object sourceProperties;
 
     /*
      * Name of target Endpoint resource. This resource may no longer exist.
      */
-    @JsonProperty(value = "targetName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetName;
 
     /*
      * Fully qualified resource id of of Endpoint. This id may no longer exist.
      */
-    @JsonProperty(value = "targetResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceId;
 
     /*
      * Copy of Endpoint resource's properties at time of Job Run creation.
      */
-    @JsonProperty(value = "targetProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Object targetProperties;
 
     /*
      * Copy of parent Job Definition's properties at time of Job Run creation.
      */
-    @JsonProperty(value = "jobDefinitionProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Object jobDefinitionProperties;
 
     /*
      * Error details.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private JobRunError error;
 
     /*
      * The provisioning state of this resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -457,5 +434,97 @@ public final class JobRunProperties {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobRunProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobRunProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobRunProperties.
+     */
+    public static JobRunProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobRunProperties deserializedJobRunProperties = new JobRunProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedJobRunProperties.status = JobRunStatus.fromString(reader.getString());
+                } else if ("scanStatus".equals(fieldName)) {
+                    deserializedJobRunProperties.scanStatus = JobRunScanStatus.fromString(reader.getString());
+                } else if ("agentName".equals(fieldName)) {
+                    deserializedJobRunProperties.agentName = reader.getString();
+                } else if ("agentResourceId".equals(fieldName)) {
+                    deserializedJobRunProperties.agentResourceId = reader.getString();
+                } else if ("executionStartTime".equals(fieldName)) {
+                    deserializedJobRunProperties.executionStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("executionEndTime".equals(fieldName)) {
+                    deserializedJobRunProperties.executionEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastStatusUpdate".equals(fieldName)) {
+                    deserializedJobRunProperties.lastStatusUpdate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("itemsScanned".equals(fieldName)) {
+                    deserializedJobRunProperties.itemsScanned = reader.getNullable(JsonReader::getLong);
+                } else if ("itemsExcluded".equals(fieldName)) {
+                    deserializedJobRunProperties.itemsExcluded = reader.getNullable(JsonReader::getLong);
+                } else if ("itemsUnsupported".equals(fieldName)) {
+                    deserializedJobRunProperties.itemsUnsupported = reader.getNullable(JsonReader::getLong);
+                } else if ("itemsNoTransferNeeded".equals(fieldName)) {
+                    deserializedJobRunProperties.itemsNoTransferNeeded = reader.getNullable(JsonReader::getLong);
+                } else if ("itemsFailed".equals(fieldName)) {
+                    deserializedJobRunProperties.itemsFailed = reader.getNullable(JsonReader::getLong);
+                } else if ("itemsTransferred".equals(fieldName)) {
+                    deserializedJobRunProperties.itemsTransferred = reader.getNullable(JsonReader::getLong);
+                } else if ("bytesScanned".equals(fieldName)) {
+                    deserializedJobRunProperties.bytesScanned = reader.getNullable(JsonReader::getLong);
+                } else if ("bytesExcluded".equals(fieldName)) {
+                    deserializedJobRunProperties.bytesExcluded = reader.getNullable(JsonReader::getLong);
+                } else if ("bytesUnsupported".equals(fieldName)) {
+                    deserializedJobRunProperties.bytesUnsupported = reader.getNullable(JsonReader::getLong);
+                } else if ("bytesNoTransferNeeded".equals(fieldName)) {
+                    deserializedJobRunProperties.bytesNoTransferNeeded = reader.getNullable(JsonReader::getLong);
+                } else if ("bytesFailed".equals(fieldName)) {
+                    deserializedJobRunProperties.bytesFailed = reader.getNullable(JsonReader::getLong);
+                } else if ("bytesTransferred".equals(fieldName)) {
+                    deserializedJobRunProperties.bytesTransferred = reader.getNullable(JsonReader::getLong);
+                } else if ("sourceName".equals(fieldName)) {
+                    deserializedJobRunProperties.sourceName = reader.getString();
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedJobRunProperties.sourceResourceId = reader.getString();
+                } else if ("sourceProperties".equals(fieldName)) {
+                    deserializedJobRunProperties.sourceProperties = reader.readUntyped();
+                } else if ("targetName".equals(fieldName)) {
+                    deserializedJobRunProperties.targetName = reader.getString();
+                } else if ("targetResourceId".equals(fieldName)) {
+                    deserializedJobRunProperties.targetResourceId = reader.getString();
+                } else if ("targetProperties".equals(fieldName)) {
+                    deserializedJobRunProperties.targetProperties = reader.readUntyped();
+                } else if ("jobDefinitionProperties".equals(fieldName)) {
+                    deserializedJobRunProperties.jobDefinitionProperties = reader.readUntyped();
+                } else if ("error".equals(fieldName)) {
+                    deserializedJobRunProperties.error = JobRunError.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedJobRunProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobRunProperties;
+        });
     }
 }

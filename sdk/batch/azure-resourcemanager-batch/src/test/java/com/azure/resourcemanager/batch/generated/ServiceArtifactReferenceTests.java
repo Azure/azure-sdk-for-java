@@ -12,14 +12,14 @@ public final class ServiceArtifactReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceArtifactReference model
-            = BinaryData.fromString("{\"id\":\"zbn\"}").toObject(ServiceArtifactReference.class);
-        Assertions.assertEquals("zbn", model.id());
+            = BinaryData.fromString("{\"id\":\"mquxvypo\"}").toObject(ServiceArtifactReference.class);
+        Assertions.assertEquals("mquxvypo", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceArtifactReference model = new ServiceArtifactReference().withId("zbn");
+        ServiceArtifactReference model = new ServiceArtifactReference().withId("mquxvypo");
         model = BinaryData.fromObject(model).toObject(ServiceArtifactReference.class);
-        Assertions.assertEquals("zbn", model.id());
+        Assertions.assertEquals("mquxvypo", model.id());
     }
 }

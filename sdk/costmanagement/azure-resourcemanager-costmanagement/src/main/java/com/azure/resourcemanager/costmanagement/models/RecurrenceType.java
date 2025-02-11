@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The schedule recurrence. */
+/**
+ * The schedule recurrence.
+ */
 public final class RecurrenceType extends ExpandableStringEnum<RecurrenceType> {
-    /** Static value Daily for RecurrenceType. */
+    /**
+     * Static value Daily for RecurrenceType.
+     */
     public static final RecurrenceType DAILY = fromString("Daily");
 
-    /** Static value Weekly for RecurrenceType. */
+    /**
+     * Static value Weekly for RecurrenceType.
+     */
     public static final RecurrenceType WEEKLY = fromString("Weekly");
 
-    /** Static value Monthly for RecurrenceType. */
+    /**
+     * Static value Monthly for RecurrenceType.
+     */
     public static final RecurrenceType MONTHLY = fromString("Monthly");
 
-    /** Static value Annually for RecurrenceType. */
+    /**
+     * Static value Annually for RecurrenceType.
+     */
     public static final RecurrenceType ANNUALLY = fromString("Annually");
 
     /**
      * Creates a new instance of RecurrenceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class RecurrenceType extends ExpandableStringEnum<RecurrenceType> {
 
     /**
      * Creates or finds a RecurrenceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecurrenceType.
      */
-    @JsonCreator
     public static RecurrenceType fromString(String name) {
         return fromString(name, RecurrenceType.class);
     }
 
     /**
      * Gets known RecurrenceType values.
-     *
+     * 
      * @return known RecurrenceType values.
      */
     public static Collection<RecurrenceType> values() {

@@ -7,53 +7,57 @@ package com.azure.resourcemanager.loadtesting.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.loadtesting.fluent.models.CheckQuotaAvailabilityResponseInner;
 
-/** An immutable client-side representation of CheckQuotaAvailabilityResponse. */
+/**
+ * An immutable client-side representation of CheckQuotaAvailabilityResponse.
+ */
 public interface CheckQuotaAvailabilityResponse {
     /**
-     * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * Gets the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
      * @return the id value.
      */
     String id();
 
     /**
-     * Gets the name property: The name of the resource.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: The type of the resource.
-     *
+     * Gets the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
+     * Gets the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    String name();
+
+    /**
      * Gets the isAvailable property: True/False indicating whether the quota request be granted based on availability.
-     *
+     * 
      * @return the isAvailable value.
      */
     Boolean isAvailable();
 
     /**
      * Gets the availabilityStatus property: Message indicating additional details to add to quota support request.
-     *
+     * 
      * @return the availabilityStatus value.
      */
     String availabilityStatus();
 
     /**
      * Gets the inner com.azure.resourcemanager.loadtesting.fluent.models.CheckQuotaAvailabilityResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     CheckQuotaAvailabilityResponseInner innerModel();

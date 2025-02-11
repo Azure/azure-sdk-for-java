@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request body for detaching data disk from a virtual machine. */
+/**
+ * Request body for detaching data disk from a virtual machine.
+ */
 @Fluent
-public final class DetachDataDiskProperties {
+public final class DetachDataDiskProperties implements JsonSerializable<DetachDataDiskProperties> {
     /*
      * Specifies the disk resource ID to detach from virtual machine.
      */
-    @JsonProperty(value = "existingLabDiskId")
     private String existingLabDiskId;
 
-    /** Creates an instance of DetachDataDiskProperties class. */
+    /**
+     * Creates an instance of DetachDataDiskProperties class.
+     */
     public DetachDataDiskProperties() {
     }
 
     /**
      * Get the existingLabDiskId property: Specifies the disk resource ID to detach from virtual machine.
-     *
+     * 
      * @return the existingLabDiskId value.
      */
     public String existingLabDiskId() {
@@ -31,7 +38,7 @@ public final class DetachDataDiskProperties {
 
     /**
      * Set the existingLabDiskId property: Specifies the disk resource ID to detach from virtual machine.
-     *
+     * 
      * @param existingLabDiskId the existingLabDiskId value to set.
      * @return the DetachDataDiskProperties object itself.
      */
@@ -42,9 +49,45 @@ public final class DetachDataDiskProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("existingLabDiskId", this.existingLabDiskId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetachDataDiskProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetachDataDiskProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DetachDataDiskProperties.
+     */
+    public static DetachDataDiskProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DetachDataDiskProperties deserializedDetachDataDiskProperties = new DetachDataDiskProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("existingLabDiskId".equals(fieldName)) {
+                    deserializedDetachDataDiskProperties.existingLabDiskId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDetachDataDiskProperties;
+        });
     }
 }

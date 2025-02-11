@@ -4,22 +4,25 @@
 
 package com.azure.resourcemanager.datalakestore.generated;
 
-/** Samples for TrustedIdProviders CreateOrUpdate. */
+/**
+ * Samples for TrustedIdProviders CreateOrUpdate.
+ */
 public final class TrustedIdProvidersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/TrustedIdProviders_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/
+     * TrustedIdProviders_CreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates the specified trusted identity provider. During update, the trusted identity
      * provider with the specified name will be replaced with this new provider.
-     *
+     * 
      * @param manager Entry point to DataLakeStoreManager.
      */
     public static void
         createsOrUpdatesTheSpecifiedTrustedIdentityProviderDuringUpdateTheTrustedIdentityProviderWithTheSpecifiedNameWillBeReplacedWithThisNewProvider(
             com.azure.resourcemanager.datalakestore.DataLakeStoreManager manager) {
-        manager
-            .trustedIdProviders()
+        manager.trustedIdProviders()
             .define("test_trusted_id_provider_name")
             .withExistingAccount("contosorg", "contosoadla")
             .withIdProvider("https://sts.windows.net/ea9ec534-a3e3-4e45-ad36-3afc5bb291c1")

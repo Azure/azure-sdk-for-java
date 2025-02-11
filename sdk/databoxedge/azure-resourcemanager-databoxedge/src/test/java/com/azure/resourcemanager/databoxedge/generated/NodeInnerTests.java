@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databoxedge.fluent.models.NodeInner;
 public final class NodeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"nodeStatus\":\"Up\",\"nodeChassisSerialNumber\":\"cq\",\"nodeSerialNumber\":\"ccm\",\"nodeDisplayName\":\"udxytlmoyrx\",\"nodeFriendlySoftwareVersion\":\"fudwpznt\",\"nodeHcsVersion\":\"dzhlrq\",\"nodeInstanceId\":\"hckfrlhrx\"},\"id\":\"bkyvp\",\"name\":\"ca\",\"type\":\"uzbpzkafku\"}")
-                .toObject(NodeInner.class);
+        NodeInner model = BinaryData.fromString(
+            "{\"properties\":{\"nodeStatus\":\"Up\",\"nodeChassisSerialNumber\":\"slyjpkiid\",\"nodeSerialNumber\":\"exznelixhnr\",\"nodeDisplayName\":\"folhbnxknal\",\"nodeFriendlySoftwareVersion\":\"lp\",\"nodeHcsVersion\":\"gdtpnapnyiro\",\"nodeInstanceId\":\"hpigv\"},\"id\":\"gylgqgitxmedjvcs\",\"name\":\"ynqwwncwzzhxgk\",\"type\":\"rmgucnap\"}")
+            .toObject(NodeInner.class);
     }
 
     @org.junit.jupiter.api.Test

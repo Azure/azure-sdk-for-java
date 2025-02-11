@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Policies. */
+/**
+ * Resource collection API of Policies.
+ */
 public interface Policies {
     /**
      * Gets the policy.
-     *
-     * <p>Gets the details of the policy.
-     *
+     * 
+     * Gets the details of the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -24,14 +26,14 @@ public interface Policies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the policy along with {@link Response}.
      */
-    Response<PolicyModel> getWithResponse(
-        String resourceGroupName, String vaultName, String policyName, Context context);
+    Response<PolicyModel> getWithResponse(String resourceGroupName, String vaultName, String policyName,
+        Context context);
 
     /**
      * Gets the policy.
-     *
-     * <p>Gets the details of the policy.
-     *
+     * 
+     * Gets the details of the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -44,9 +46,9 @@ public interface Policies {
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -58,9 +60,9 @@ public interface Policies {
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -73,9 +75,9 @@ public interface Policies {
 
     /**
      * Lists the policies.
-     *
-     * <p>Gets the list of policies in the given vault.
-     *
+     * 
+     * Gets the list of policies in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,9 +89,9 @@ public interface Policies {
 
     /**
      * Lists the policies.
-     *
-     * <p>Gets the list of policies in the given vault.
-     *
+     * 
+     * Gets the list of policies in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -102,9 +104,9 @@ public interface Policies {
 
     /**
      * Gets the policy.
-     *
-     * <p>Gets the details of the policy.
-     *
+     * 
+     * Gets the details of the policy.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,9 +117,9 @@ public interface Policies {
 
     /**
      * Gets the policy.
-     *
-     * <p>Gets the details of the policy.
-     *
+     * 
+     * Gets the details of the policy.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,9 +131,9 @@ public interface Policies {
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,9 +143,9 @@ public interface Policies {
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +156,7 @@ public interface Policies {
 
     /**
      * Begins definition for a new PolicyModel resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PolicyModel definition.
      */

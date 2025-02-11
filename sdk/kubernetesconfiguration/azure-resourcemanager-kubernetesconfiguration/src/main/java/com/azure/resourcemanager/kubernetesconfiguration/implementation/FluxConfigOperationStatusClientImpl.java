@@ -25,24 +25,28 @@ import com.azure.resourcemanager.kubernetesconfiguration.fluent.FluxConfigOperat
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.OperationStatusResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FluxConfigOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FluxConfigOperationStatusClient.
+ */
 public final class FluxConfigOperationStatusClientImpl implements FluxConfigOperationStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FluxConfigOperationStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SourceControlConfigurationClientImpl client;
 
     /**
      * Initializes an instance of FluxConfigOperationStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FluxConfigOperationStatusClientImpl(SourceControlConfigurationClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    FluxConfigOperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(FluxConfigOperationStatusService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,33 +57,27 @@ public final class FluxConfigOperationStatusClientImpl implements FluxConfigOper
     @Host("{$host}")
     @ServiceInterface(name = "SourceControlConfigu")
     public interface FluxConfigOperationStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}/operations/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/{fluxConfigurationName}/operations/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusResultInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OperationStatusResultInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterRp") String clusterRp,
-            @PathParam("clusterResourceName") String clusterResourceName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterRp") String clusterRp,
+            @PathParam("clusterResourceName") String clusterResourceName, @PathParam("clusterName") String clusterName,
             @PathParam("fluxConfigurationName") String fluxConfigurationName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Async Operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param fluxConfigurationName Name of the Flux Configuration.
      * @param operationId operation Id.
@@ -89,24 +87,15 @@ public final class FluxConfigOperationStatusClientImpl implements FluxConfigOper
      * @return async Operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId) {
+    private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -131,32 +120,20 @@ public final class FluxConfigOperationStatusClientImpl implements FluxConfigOper
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterRp,
-                            clusterResourceName,
-                            clusterName,
-                            fluxConfigurationName,
-                            this.client.getApiVersion(),
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+                this.client.getApiVersion(), operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get Async Operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param fluxConfigurationName Name of the Flux Configuration.
      * @param operationId operation Id.
@@ -167,25 +144,16 @@ public final class FluxConfigOperationStatusClientImpl implements FluxConfigOper
      * @return async Operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId,
+    private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, String operationId,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -210,29 +178,19 @@ public final class FluxConfigOperationStatusClientImpl implements FluxConfigOper
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                this.client.getApiVersion(),
-                operationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, fluxConfigurationName, this.client.getApiVersion(), operationId, accept,
+            context);
     }
 
     /**
      * Get Async Operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param fluxConfigurationName Name of the Flux Configuration.
      * @param operationId operation Id.
@@ -242,26 +200,20 @@ public final class FluxConfigOperationStatusClientImpl implements FluxConfigOper
      * @return async Operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> getAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId) {
-        return getWithResponseAsync(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, operationId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<OperationStatusResultInner> getAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, String operationId) {
+        return getWithResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+            fluxConfigurationName, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Async Operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param fluxConfigurationName Name of the Flux Configuration.
      * @param operationId operation Id.
@@ -272,33 +224,21 @@ public final class FluxConfigOperationStatusClientImpl implements FluxConfigOper
      * @return async Operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusResultInner> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId,
+    public Response<OperationStatusResultInner> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, String operationId,
         Context context) {
-        return getWithResponseAsync(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                operationId,
-                context)
-            .block();
+        return getWithResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+            fluxConfigurationName, operationId, context).block();
     }
 
     /**
      * Get Async Operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param fluxConfigurationName Name of the Flux Configuration.
      * @param operationId operation Id.
@@ -308,21 +248,9 @@ public final class FluxConfigOperationStatusClientImpl implements FluxConfigOper
      * @return async Operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId) {
-        return getWithResponse(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                fluxConfigurationName,
-                operationId,
-                Context.NONE)
-            .getValue();
+    public OperationStatusResultInner get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, String operationId) {
+        return getWithResponse(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+            operationId, Context.NONE).getValue();
     }
 }

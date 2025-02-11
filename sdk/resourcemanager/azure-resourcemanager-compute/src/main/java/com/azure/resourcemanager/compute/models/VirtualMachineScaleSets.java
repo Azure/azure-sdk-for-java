@@ -24,17 +24,11 @@ import reactor.core.publisher.Mono;
 
 /** Entry point to virtual machine scale set management API. */
 @Fluent
-public interface VirtualMachineScaleSets
-    extends SupportsListing<VirtualMachineScaleSet>,
-        SupportsListingByResourceGroup<VirtualMachineScaleSet>,
-        SupportsGettingByResourceGroup<VirtualMachineScaleSet>,
-        SupportsGettingById<VirtualMachineScaleSet>,
-        SupportsCreating<VirtualMachineScaleSet.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<VirtualMachineScaleSet>,
-        SupportsBatchDeletion,
-        HasManager<ComputeManager> {
+public interface VirtualMachineScaleSets extends SupportsListing<VirtualMachineScaleSet>,
+    SupportsListingByResourceGroup<VirtualMachineScaleSet>, SupportsGettingByResourceGroup<VirtualMachineScaleSet>,
+    SupportsGettingById<VirtualMachineScaleSet>, SupportsCreating<VirtualMachineScaleSet.DefinitionStages.Blank>,
+    SupportsDeletingById, SupportsDeletingByResourceGroup, SupportsBatchCreation<VirtualMachineScaleSet>,
+    SupportsBatchDeletion, HasManager<ComputeManager> {
     /**
      * Shuts down the virtual machines in the scale set and releases the compute resources.
      *
@@ -146,12 +140,8 @@ public interface VirtualMachineScaleSets
      * @param scriptParameters script parameters
      * @return result of PowerShell script execution
      */
-    RunCommandResult runPowerShellScriptInVMInstance(
-        String groupName,
-        String scaleSetName,
-        String vmId,
-        List<String> scriptLines,
-        List<RunCommandInputParameter> scriptParameters);
+    RunCommandResult runPowerShellScriptInVMInstance(String groupName, String scaleSetName, String vmId,
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run PowerShell in a virtual machine instance in a scale set asynchronously.
@@ -163,12 +153,8 @@ public interface VirtualMachineScaleSets
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(
-        String groupName,
-        String scaleSetName,
-        String vmId,
-        List<String> scriptLines,
-        List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(String groupName, String scaleSetName, String vmId,
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine instance in a scale set.
@@ -180,12 +166,8 @@ public interface VirtualMachineScaleSets
      * @param scriptParameters script parameters
      * @return result of shell script execution
      */
-    RunCommandResult runShellScriptInVMInstance(
-        String groupName,
-        String scaleSetName,
-        String vmId,
-        List<String> scriptLines,
-        List<RunCommandInputParameter> scriptParameters);
+    RunCommandResult runShellScriptInVMInstance(String groupName, String scaleSetName, String vmId,
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine instance in a scale set asynchronously.
@@ -197,12 +179,8 @@ public interface VirtualMachineScaleSets
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runShellScriptInVMInstanceAsync(
-        String groupName,
-        String scaleSetName,
-        String vmId,
-        List<String> scriptLines,
-        List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runShellScriptInVMInstanceAsync(String groupName, String scaleSetName, String vmId,
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run commands in a virtual machine instance in a scale set.
@@ -213,8 +191,8 @@ public interface VirtualMachineScaleSets
      * @param inputCommand command input
      * @return result of execution
      */
-    RunCommandResult runCommandInVMInstance(
-        String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand);
+    RunCommandResult runCommandInVMInstance(String groupName, String scaleSetName, String vmId,
+        RunCommandInput inputCommand);
 
     /**
      * Run commands in a virtual machine instance in a scale set asynchronously.
@@ -225,8 +203,8 @@ public interface VirtualMachineScaleSets
      * @param inputCommand command input
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runCommandVMInstanceAsync(
-        String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand);
+    Mono<RunCommandResult> runCommandVMInstanceAsync(String groupName, String scaleSetName, String vmId,
+        RunCommandInput inputCommand);
 
     /**
      * Delete virtual machine instances.
@@ -236,8 +214,7 @@ public interface VirtualMachineScaleSets
      * @param instanceIds instance IDs
      * @param forceDeletion force delete without graceful shutdown
      */
-    void deleteInstances(String groupName, String scaleSetName,
-                         Collection<String> instanceIds, boolean forceDeletion);
+    void deleteInstances(String groupName, String scaleSetName, Collection<String> instanceIds, boolean forceDeletion);
 
     /**
      * Delete virtual machine instances.
@@ -248,8 +225,8 @@ public interface VirtualMachineScaleSets
      * @param forceDeletion force delete without graceful shutdown
      * @return a representation of the deferred computation of this call
      */
-    Mono<Void> deleteInstancesAsync(String groupName, String scaleSetName,
-                                    Collection<String> instanceIds, boolean forceDeletion);
+    Mono<Void> deleteInstancesAsync(String groupName, String scaleSetName, Collection<String> instanceIds,
+        boolean forceDeletion);
 
     /**
      * Force delete a resource from Azure, identifying it by its resource ID.

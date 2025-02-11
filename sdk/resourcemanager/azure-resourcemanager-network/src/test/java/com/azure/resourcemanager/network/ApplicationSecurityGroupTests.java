@@ -16,14 +16,12 @@ public class ApplicationSecurityGroupTests extends NetworkManagementTest {
     public void canCRUDApplicationSecurityGroup() throws Exception {
         String asgName = generateRandomResourceName("asg", 15);
 
-        ApplicationSecurityGroup applicationSecurityGroup =
-            networkManager
-                .applicationSecurityGroups()
-                .define(asgName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withTag("tag1", "value1")
-                .create();
+        ApplicationSecurityGroup applicationSecurityGroup = networkManager.applicationSecurityGroups()
+            .define(asgName)
+            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withTag("tag1", "value1")
+            .create();
         Assertions.assertEquals("value1", applicationSecurityGroup.tags().get("tag1"));
 
         PagedIterable<ApplicationSecurityGroup> asgList = networkManager.applicationSecurityGroups().list();

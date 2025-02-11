@@ -55,27 +55,19 @@ public interface StreamingJob {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
-     * 
-     * @return the sku value.
-     */
-    Sku sku();
-
-    /**
-     * Gets the identity property: Describes the managed identity assigned to this job that can be used to authenticate
-     * with inputs and outputs.
+     * Gets the identity property: Describes the system-assigned managed identity assigned to this job that can be used
+     * to authenticate with inputs and outputs.
      * 
      * @return the identity value.
      */
     Identity identity();
 
     /**
-     * Gets the skuPropertiesSku property: Describes the SKU of the streaming job. Required on PUT (CreateOrReplace)
-     * requests.
+     * Gets the sku property: Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
      * 
-     * @return the skuPropertiesSku value.
+     * @return the sku value.
      */
-    Sku skuPropertiesSku();
+    Sku sku();
 
     /**
      * Gets the jobId property: A GUID uniquely identifying the streaming job. This GUID is generated upon creation of
@@ -255,13 +247,6 @@ public interface StreamingJob {
     ContentStoragePolicy contentStoragePolicy();
 
     /**
-     * Gets the externals property: The storage account where the custom code artifacts are located.
-     * 
-     * @return the externals value.
-     */
-    External externals();
-
-    /**
      * Gets the cluster property: The cluster which streaming jobs will run on.
      * 
      * @return the cluster value.
@@ -351,15 +336,15 @@ public interface StreamingJob {
          * The stage of the StreamingJob definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku, DefinitionStages.WithIdentity,
-            DefinitionStages.WithSkuPropertiesSku, DefinitionStages.WithJobType, DefinitionStages.WithOutputStartMode,
-            DefinitionStages.WithOutputStartTime, DefinitionStages.WithEventsOutOfOrderPolicy,
-            DefinitionStages.WithOutputErrorPolicy, DefinitionStages.WithEventsOutOfOrderMaxDelayInSeconds,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithSku,
+            DefinitionStages.WithJobType, DefinitionStages.WithOutputStartMode, DefinitionStages.WithOutputStartTime,
+            DefinitionStages.WithEventsOutOfOrderPolicy, DefinitionStages.WithOutputErrorPolicy,
+            DefinitionStages.WithEventsOutOfOrderMaxDelayInSeconds,
             DefinitionStages.WithEventsLateArrivalMaxDelayInSeconds, DefinitionStages.WithDataLocale,
             DefinitionStages.WithCompatibilityLevel, DefinitionStages.WithInputs, DefinitionStages.WithTransformation,
             DefinitionStages.WithOutputs, DefinitionStages.WithFunctions, DefinitionStages.WithJobStorageAccount,
-            DefinitionStages.WithContentStoragePolicy, DefinitionStages.WithExternals, DefinitionStages.WithCluster,
-            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
+            DefinitionStages.WithContentStoragePolicy, DefinitionStages.WithCluster, DefinitionStages.WithIfMatch,
+            DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -390,6 +375,21 @@ public interface StreamingJob {
         }
 
         /**
+         * The stage of the StreamingJob definition allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Describes the system-assigned managed identity assigned to this job that
+             * can be used to authenticate with inputs and outputs..
+             * 
+             * @param identity Describes the system-assigned managed identity assigned to this job that can be used to
+             * authenticate with inputs and outputs.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(Identity identity);
+        }
+
+        /**
          * The stage of the StreamingJob definition allowing to specify sku.
          */
         interface WithSku {
@@ -401,36 +401,6 @@ public interface StreamingJob {
              * @return the next definition stage.
              */
             WithCreate withSku(Sku sku);
-        }
-
-        /**
-         * The stage of the StreamingJob definition allowing to specify identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: Describes the managed identity assigned to this job that can be used to
-             * authenticate with inputs and outputs..
-             * 
-             * @param identity Describes the managed identity assigned to this job that can be used to authenticate with
-             * inputs and outputs.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentity(Identity identity);
-        }
-
-        /**
-         * The stage of the StreamingJob definition allowing to specify skuPropertiesSku.
-         */
-        interface WithSkuPropertiesSku {
-            /**
-             * Specifies the skuPropertiesSku property: Describes the SKU of the streaming job. Required on PUT
-             * (CreateOrReplace) requests..
-             * 
-             * @param skuPropertiesSku Describes the SKU of the streaming job. Required on PUT (CreateOrReplace)
-             * requests.
-             * @return the next definition stage.
-             */
-            WithCreate withSkuPropertiesSku(Sku skuPropertiesSku);
         }
 
         /**
@@ -682,19 +652,6 @@ public interface StreamingJob {
         }
 
         /**
-         * The stage of the StreamingJob definition allowing to specify externals.
-         */
-        interface WithExternals {
-            /**
-             * Specifies the externals property: The storage account where the custom code artifacts are located..
-             * 
-             * @param externals The storage account where the custom code artifacts are located.
-             * @return the next definition stage.
-             */
-            WithCreate withExternals(External externals);
-        }
-
-        /**
          * The stage of the StreamingJob definition allowing to specify cluster.
          */
         interface WithCluster {
@@ -749,14 +706,14 @@ public interface StreamingJob {
     /**
      * The template for StreamingJob update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity,
-        UpdateStages.WithSkuPropertiesSku, UpdateStages.WithJobType, UpdateStages.WithOutputStartMode,
-        UpdateStages.WithOutputStartTime, UpdateStages.WithEventsOutOfOrderPolicy, UpdateStages.WithOutputErrorPolicy,
-        UpdateStages.WithEventsOutOfOrderMaxDelayInSeconds, UpdateStages.WithEventsLateArrivalMaxDelayInSeconds,
-        UpdateStages.WithDataLocale, UpdateStages.WithCompatibilityLevel, UpdateStages.WithInputs,
-        UpdateStages.WithTransformation, UpdateStages.WithOutputs, UpdateStages.WithFunctions,
-        UpdateStages.WithJobStorageAccount, UpdateStages.WithContentStoragePolicy, UpdateStages.WithExternals,
-        UpdateStages.WithCluster, UpdateStages.WithIfMatch {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithSku, UpdateStages.WithJobType,
+        UpdateStages.WithOutputStartMode, UpdateStages.WithOutputStartTime, UpdateStages.WithEventsOutOfOrderPolicy,
+        UpdateStages.WithOutputErrorPolicy, UpdateStages.WithEventsOutOfOrderMaxDelayInSeconds,
+        UpdateStages.WithEventsLateArrivalMaxDelayInSeconds, UpdateStages.WithDataLocale,
+        UpdateStages.WithCompatibilityLevel, UpdateStages.WithInputs, UpdateStages.WithTransformation,
+        UpdateStages.WithOutputs, UpdateStages.WithFunctions, UpdateStages.WithJobStorageAccount,
+        UpdateStages.WithContentStoragePolicy, UpdateStages.WithCluster, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          * 
@@ -791,6 +748,21 @@ public interface StreamingJob {
         }
 
         /**
+         * The stage of the StreamingJob update allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Describes the system-assigned managed identity assigned to this job that
+             * can be used to authenticate with inputs and outputs..
+             * 
+             * @param identity Describes the system-assigned managed identity assigned to this job that can be used to
+             * authenticate with inputs and outputs.
+             * @return the next definition stage.
+             */
+            Update withIdentity(Identity identity);
+        }
+
+        /**
          * The stage of the StreamingJob update allowing to specify sku.
          */
         interface WithSku {
@@ -802,36 +774,6 @@ public interface StreamingJob {
              * @return the next definition stage.
              */
             Update withSku(Sku sku);
-        }
-
-        /**
-         * The stage of the StreamingJob update allowing to specify identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: Describes the managed identity assigned to this job that can be used to
-             * authenticate with inputs and outputs..
-             * 
-             * @param identity Describes the managed identity assigned to this job that can be used to authenticate with
-             * inputs and outputs.
-             * @return the next definition stage.
-             */
-            Update withIdentity(Identity identity);
-        }
-
-        /**
-         * The stage of the StreamingJob update allowing to specify skuPropertiesSku.
-         */
-        interface WithSkuPropertiesSku {
-            /**
-             * Specifies the skuPropertiesSku property: Describes the SKU of the streaming job. Required on PUT
-             * (CreateOrReplace) requests..
-             * 
-             * @param skuPropertiesSku Describes the SKU of the streaming job. Required on PUT (CreateOrReplace)
-             * requests.
-             * @return the next definition stage.
-             */
-            Update withSkuPropertiesSku(Sku skuPropertiesSku);
         }
 
         /**
@@ -1080,19 +1022,6 @@ public interface StreamingJob {
              * @return the next definition stage.
              */
             Update withContentStoragePolicy(ContentStoragePolicy contentStoragePolicy);
-        }
-
-        /**
-         * The stage of the StreamingJob update allowing to specify externals.
-         */
-        interface WithExternals {
-            /**
-             * Specifies the externals property: The storage account where the custom code artifacts are located..
-             * 
-             * @param externals The storage account where the custom code artifacts are located.
-             * @return the next definition stage.
-             */
-            Update withExternals(External externals);
         }
 
         /**

@@ -4,40 +4,37 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Connection Update. */
+/**
+ * Samples for Connection Update.
+ */
 public final class ConnectionUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateConnection.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * updateConnection.json
      */
     /**
      * Sample code: Update a connection.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateAConnection(com.azure.resourcemanager.automation.AutomationManager manager) {
-        Connection resource =
-            manager
-                .connections()
-                .getWithResponse("rg", "myAutomationAccount28", "myConnection", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Connection resource = manager.connections()
+            .getWithResponse("rg", "myAutomationAccount28", "myConnection", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withName("myConnection")
             .withDescription("my description goes here")
-            .withFieldDefinitionValues(
-                mapOf(
-                    "AutomationCertificateName",
-                    "myCertificateName",
-                    "SubscriptionID",
-                    "b5e4748c-f69a-467c-8749-e2f9c8cd3009"))
+            .withFieldDefinitionValues(mapOf("AutomationCertificateName", "myCertificateName", "SubscriptionID",
+                "b5e4748c-f69a-467c-8749-e2f9c8cd3009"))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

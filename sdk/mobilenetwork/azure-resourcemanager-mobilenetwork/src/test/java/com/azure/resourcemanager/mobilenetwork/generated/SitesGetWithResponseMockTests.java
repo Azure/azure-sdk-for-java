@@ -21,7 +21,7 @@ public final class SitesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"networkFunctions\":[{\"id\":\"w\"},{\"id\":\"edenrexkxbhxv\"}]},\"location\":\"nul\",\"tags\":{\"znfaj\":\"hjevd\"},\"id\":\"vkskmqozzk\",\"name\":\"vyhjrl\",\"type\":\"izjixlq\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"networkFunctions\":[{\"id\":\"cziu\"},{\"id\":\"s\"},{\"id\":\"rk\"}]},\"location\":\"sjhbtq\",\"tags\":{\"yrfwbivq\":\"fs\",\"yqe\":\"ogfuyzwvbhlim\",\"odlikcdrdaasax\":\"r\",\"wiyjvzuko\":\"obsmf\"},\"id\":\"r\",\"name\":\"awn\",\"type\":\"zm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class SitesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Site response = manager.sites()
-            .getWithResponse("wnjkgvfn", "xaurs", "ftibtyibuyvpirfq", com.azure.core.util.Context.NONE)
+            .getWithResponse("imwbzxpdcldpk", "wnsnlaimouxwks", "mud", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nul", response.location());
-        Assertions.assertEquals("hjevd", response.tags().get("znfaj"));
+        Assertions.assertEquals("sjhbtq", response.location());
+        Assertions.assertEquals("fs", response.tags().get("yrfwbivq"));
     }
 }

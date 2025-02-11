@@ -16,89 +16,73 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountSchemaListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountSchemaListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"schemaType\":\"NotSpecified\",\"targetNamespace\":\"ujmqlgkfbtndoa\",\"documentName\":\"gbjcntujitcjed\",\"fileName\":\"wwa\",\"createdTime\":\"2020-12-30T10:34:47Z\",\"changedTime\":\"2021-01-12T06:35:18Z\",\"metadata\":\"datadcpzfoqo\",\"content\":\"cybxa\",\"contentType\":\"gszufoxciqopid\"},\"location\":\"mciodhkhazxkhn\",\"tags\":{\"okdwb\":\"nlwntoe\",\"cmrvexzt\":\"hksz\",\"gsfraoyzkoow\":\"bt\"},\"id\":\"lmnguxaw\",\"name\":\"aldsy\",\"type\":\"uximerqfobw\"},{\"properties\":{\"schemaType\":\"Xml\",\"targetNamespace\":\"kby\",\"documentName\":\"t\",\"fileName\":\"fhpagmhrskdsnf\",\"createdTime\":\"2021-10-10T07:52:18Z\",\"changedTime\":\"2020-12-22T21:30:22Z\",\"metadata\":\"datagtdlmk\",\"content\":\"evdlh\",\"contentType\":\"pusdstt\"},\"location\":\"ogvbbejdcngq\",\"tags\":{\"wr\":\"akufgmjz\",\"u\":\"grtwae\"},\"id\":\"zkopb\",\"name\":\"inrfdwoyu\",\"type\":\"hziuiefozbhdms\"},{\"properties\":{\"schemaType\":\"NotSpecified\",\"targetNamespace\":\"zqhof\",\"documentName\":\"maequiahxicslfa\",\"fileName\":\"z\",\"createdTime\":\"2021-10-29T12:24:36Z\",\"changedTime\":\"2021-07-09T22:00:16Z\",\"metadata\":\"dataalnswhccsphk\",\"content\":\"vwitqscyw\",\"contentType\":\"gwol\"},\"location\":\"czbwemhairsbr\",\"tags\":{\"ggicccnxqhue\":\"wmsweypqwd\",\"zrncsdt\":\"mkttlstvlzywem\",\"bsfgytguslfea\":\"lusiy\"},\"id\":\"cy\",\"name\":\"qukyhejhzi\",\"type\":\"xgfpelolppv\"},{\"properties\":{\"schemaType\":\"NotSpecified\",\"targetNamespace\":\"pqvujzraehtwdwrf\",\"documentName\":\"wib\",\"fileName\":\"cdl\",\"createdTime\":\"2021-11-13T01:36:21Z\",\"changedTime\":\"2021-05-15T13:33:35Z\",\"metadata\":\"datap\",\"content\":\"cstwity\",\"contentType\":\"evxccedcp\"},\"location\":\"dyodnwzxltj\",\"tags\":{\"ugcxnavvwxq\":\"hlt\",\"wlmdjrkv\":\"byqunyow\",\"vfvpdbodaciz\":\"g\"},\"id\":\"j\",\"name\":\"lhkrribdeibqipqk\",\"type\":\"hvxndzwmkrefajpj\"}],\"nextLink\":\"wkqnyhg\"}")
-                .toObject(IntegrationAccountSchemaListResult.class);
-        Assertions.assertEquals("mciodhkhazxkhn", model.value().get(0).location());
-        Assertions.assertEquals("nlwntoe", model.value().get(0).tags().get("okdwb"));
-        Assertions.assertEquals(SchemaType.NOT_SPECIFIED, model.value().get(0).schemaType());
-        Assertions.assertEquals("ujmqlgkfbtndoa", model.value().get(0).targetNamespace());
-        Assertions.assertEquals("gbjcntujitcjed", model.value().get(0).documentName());
-        Assertions.assertEquals("wwa", model.value().get(0).fileName());
-        Assertions.assertEquals("cybxa", model.value().get(0).content());
-        Assertions.assertEquals("gszufoxciqopid", model.value().get(0).contentType());
-        Assertions.assertEquals("wkqnyhg", model.nextLink());
+        IntegrationAccountSchemaListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"schemaType\":\"Xml\",\"targetNamespace\":\"ystuluqyp\",\"documentName\":\"vlerchpqbmfpjba\",\"fileName\":\"idfcxsspuunnoxyh\",\"createdTime\":\"2021-03-12T10:30:45Z\",\"changedTime\":\"2021-04-25T04:29:16Z\",\"metadata\":\"datarihpfhoq\",\"content\":\"a\",\"contentType\":\"dao\",\"contentLink\":{\"uri\":\"vlp\",\"contentVersion\":\"xkzb\",\"contentSize\":8619272980248621233,\"contentHash\":{\"algorithm\":\"vsiykzkdncjdxon\",\"value\":\"oggculapz\"},\"metadata\":\"datarpgogtqxep\"}},\"location\":\"ylbf\",\"tags\":{\"vofqzhvfc\":\"lyjt\",\"jpvd\":\"byfmowuxr\",\"vwzjbhyz\":\"xfzwi\"},\"id\":\"xjrk\",\"name\":\"mbtrnegvmnvu\",\"type\":\"eqvldspast\"},{\"properties\":{\"schemaType\":\"NotSpecified\",\"targetNamespace\":\"kdmflvestmjlx\",\"documentName\":\"ilozapeewchpxlk\",\"fileName\":\"kuziycsle\",\"createdTime\":\"2021-05-20T02:11:38Z\",\"changedTime\":\"2021-06-26T17:11:18Z\",\"metadata\":\"datacktyh\",\"content\":\"qedcgzulwm\",\"contentType\":\"qzz\",\"contentLink\":{\"uri\":\"vpglydz\",\"contentVersion\":\"rvqeevtoepryutn\",\"contentSize\":8783304466016166730,\"contentHash\":{\"algorithm\":\"mov\",\"value\":\"fvaawzqa\"},\"metadata\":\"datalgzurig\"}},\"location\":\"aecxndtic\",\"tags\":{\"qtmldgxo\":\"vzm\"},\"id\":\"firclnpkciayz\",\"name\":\"iykhy\",\"type\":\"wf\"},{\"properties\":{\"schemaType\":\"NotSpecified\",\"targetNamespace\":\"b\",\"documentName\":\"qvkjlmxho\",\"fileName\":\"ynhdwdigum\",\"createdTime\":\"2021-03-28T12:44:51Z\",\"changedTime\":\"2021-03-20T04:48:06Z\",\"metadata\":\"datazzp\",\"content\":\"a\",\"contentType\":\"sdzhezww\",\"contentLink\":{\"uri\":\"qyuvvfonkp\",\"contentVersion\":\"qyikvy\",\"contentSize\":4524825461883558353,\"contentHash\":{\"algorithm\":\"luwmncst\",\"value\":\"jfybvpoekrsgsgb\"},\"metadata\":\"datauzqgnjdgkynsc\"}},\"location\":\"i\",\"tags\":{\"mtk\":\"vhxnk\",\"ppnvdxz\":\"bo\"},\"id\":\"hihfrbbcevqagtlt\",\"name\":\"hlfkqojpy\",\"type\":\"vgtrdcnifmzzs\"},{\"properties\":{\"schemaType\":\"Xml\",\"targetNamespace\":\"brn\",\"documentName\":\"u\",\"fileName\":\"prafwgckhoc\",\"createdTime\":\"2021-09-07T04:54:29Z\",\"changedTime\":\"2021-04-09T15:38:49Z\",\"metadata\":\"datawafqroud\",\"content\":\"pavehhr\",\"contentType\":\"bunzozudh\",\"contentLink\":{\"uri\":\"kmoyxcdyuibh\",\"contentVersion\":\"dnbzydvfvfcjn\",\"contentSize\":4632765238458680948,\"contentHash\":{\"algorithm\":\"vhmgorffukis\",\"value\":\"w\"},\"metadata\":\"datahwplefaxvx\"}},\"location\":\"l\",\"tags\":{\"tjj\":\"gnhnzeyq\"},\"id\":\"zqlqhyc\",\"name\":\"vodggxdbee\",\"type\":\"mieknlraria\"}],\"nextLink\":\"iuagydwqfbylyrfg\"}")
+            .toObject(IntegrationAccountSchemaListResult.class);
+        Assertions.assertEquals("ylbf", model.value().get(0).location());
+        Assertions.assertEquals("lyjt", model.value().get(0).tags().get("vofqzhvfc"));
+        Assertions.assertEquals(SchemaType.XML, model.value().get(0).schemaType());
+        Assertions.assertEquals("ystuluqyp", model.value().get(0).targetNamespace());
+        Assertions.assertEquals("vlerchpqbmfpjba", model.value().get(0).documentName());
+        Assertions.assertEquals("idfcxsspuunnoxyh", model.value().get(0).fileName());
+        Assertions.assertEquals("a", model.value().get(0).content());
+        Assertions.assertEquals("dao", model.value().get(0).contentType());
+        Assertions.assertEquals("iuagydwqfbylyrfg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountSchemaListResult model =
-            new IntegrationAccountSchemaListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new IntegrationAccountSchemaInner()
-                                .withLocation("mciodhkhazxkhn")
-                                .withTags(mapOf("okdwb", "nlwntoe", "cmrvexzt", "hksz", "gsfraoyzkoow", "bt"))
-                                .withSchemaType(SchemaType.NOT_SPECIFIED)
-                                .withTargetNamespace("ujmqlgkfbtndoa")
-                                .withDocumentName("gbjcntujitcjed")
-                                .withFileName("wwa")
-                                .withMetadata("datadcpzfoqo")
-                                .withContent("cybxa")
-                                .withContentType("gszufoxciqopid"),
-                            new IntegrationAccountSchemaInner()
-                                .withLocation("ogvbbejdcngq")
-                                .withTags(mapOf("wr", "akufgmjz", "u", "grtwae"))
-                                .withSchemaType(SchemaType.XML)
-                                .withTargetNamespace("kby")
-                                .withDocumentName("t")
-                                .withFileName("fhpagmhrskdsnf")
-                                .withMetadata("datagtdlmk")
-                                .withContent("evdlh")
-                                .withContentType("pusdstt"),
-                            new IntegrationAccountSchemaInner()
-                                .withLocation("czbwemhairsbr")
-                                .withTags(
-                                    mapOf(
-                                        "ggicccnxqhue",
-                                        "wmsweypqwd",
-                                        "zrncsdt",
-                                        "mkttlstvlzywem",
-                                        "bsfgytguslfea",
-                                        "lusiy"))
-                                .withSchemaType(SchemaType.NOT_SPECIFIED)
-                                .withTargetNamespace("zqhof")
-                                .withDocumentName("maequiahxicslfa")
-                                .withFileName("z")
-                                .withMetadata("dataalnswhccsphk")
-                                .withContent("vwitqscyw")
-                                .withContentType("gwol"),
-                            new IntegrationAccountSchemaInner()
-                                .withLocation("dyodnwzxltj")
-                                .withTags(mapOf("ugcxnavvwxq", "hlt", "wlmdjrkv", "byqunyow", "vfvpdbodaciz", "g"))
-                                .withSchemaType(SchemaType.NOT_SPECIFIED)
-                                .withTargetNamespace("pqvujzraehtwdwrf")
-                                .withDocumentName("wib")
-                                .withFileName("cdl")
-                                .withMetadata("datap")
-                                .withContent("cstwity")
-                                .withContentType("evxccedcp")))
-                .withNextLink("wkqnyhg");
+        IntegrationAccountSchemaListResult model = new IntegrationAccountSchemaListResult().withValue(Arrays.asList(
+            new IntegrationAccountSchemaInner().withLocation("ylbf")
+                .withTags(mapOf("vofqzhvfc", "lyjt", "jpvd", "byfmowuxr", "vwzjbhyz", "xfzwi"))
+                .withSchemaType(SchemaType.XML)
+                .withTargetNamespace("ystuluqyp")
+                .withDocumentName("vlerchpqbmfpjba")
+                .withFileName("idfcxsspuunnoxyh")
+                .withMetadata("datarihpfhoq")
+                .withContent("a")
+                .withContentType("dao"),
+            new IntegrationAccountSchemaInner().withLocation("aecxndtic")
+                .withTags(mapOf("qtmldgxo", "vzm"))
+                .withSchemaType(SchemaType.NOT_SPECIFIED)
+                .withTargetNamespace("kdmflvestmjlx")
+                .withDocumentName("ilozapeewchpxlk")
+                .withFileName("kuziycsle")
+                .withMetadata("datacktyh")
+                .withContent("qedcgzulwm")
+                .withContentType("qzz"),
+            new IntegrationAccountSchemaInner().withLocation("i")
+                .withTags(mapOf("mtk", "vhxnk", "ppnvdxz", "bo"))
+                .withSchemaType(SchemaType.NOT_SPECIFIED)
+                .withTargetNamespace("b")
+                .withDocumentName("qvkjlmxho")
+                .withFileName("ynhdwdigum")
+                .withMetadata("datazzp")
+                .withContent("a")
+                .withContentType("sdzhezww"),
+            new IntegrationAccountSchemaInner().withLocation("l")
+                .withTags(mapOf("tjj", "gnhnzeyq"))
+                .withSchemaType(SchemaType.XML)
+                .withTargetNamespace("brn")
+                .withDocumentName("u")
+                .withFileName("prafwgckhoc")
+                .withMetadata("datawafqroud")
+                .withContent("pavehhr")
+                .withContentType("bunzozudh")))
+            .withNextLink("iuagydwqfbylyrfg");
         model = BinaryData.fromObject(model).toObject(IntegrationAccountSchemaListResult.class);
-        Assertions.assertEquals("mciodhkhazxkhn", model.value().get(0).location());
-        Assertions.assertEquals("nlwntoe", model.value().get(0).tags().get("okdwb"));
-        Assertions.assertEquals(SchemaType.NOT_SPECIFIED, model.value().get(0).schemaType());
-        Assertions.assertEquals("ujmqlgkfbtndoa", model.value().get(0).targetNamespace());
-        Assertions.assertEquals("gbjcntujitcjed", model.value().get(0).documentName());
-        Assertions.assertEquals("wwa", model.value().get(0).fileName());
-        Assertions.assertEquals("cybxa", model.value().get(0).content());
-        Assertions.assertEquals("gszufoxciqopid", model.value().get(0).contentType());
-        Assertions.assertEquals("wkqnyhg", model.nextLink());
+        Assertions.assertEquals("ylbf", model.value().get(0).location());
+        Assertions.assertEquals("lyjt", model.value().get(0).tags().get("vofqzhvfc"));
+        Assertions.assertEquals(SchemaType.XML, model.value().get(0).schemaType());
+        Assertions.assertEquals("ystuluqyp", model.value().get(0).targetNamespace());
+        Assertions.assertEquals("vlerchpqbmfpjba", model.value().get(0).documentName());
+        Assertions.assertEquals("idfcxsspuunnoxyh", model.value().get(0).fileName());
+        Assertions.assertEquals("a", model.value().get(0).content());
+        Assertions.assertEquals("dao", model.value().get(0).contentType());
+        Assertions.assertEquals("iuagydwqfbylyrfg", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -10,33 +10,33 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ForwardingRules CreateOrUpdate. */
+/**
+ * Samples for ForwardingRules CreateOrUpdate.
+ */
 public final class ForwardingRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Put.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Put.json
      */
     /**
      * Sample code: Upsert forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void upsertForwardingRuleInADNSForwardingRuleset(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .forwardingRules()
+    public static void
+        upsertForwardingRuleInADNSForwardingRuleset(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.forwardingRules()
             .define("sampleForwardingRule")
             .withExistingDnsForwardingRuleset("sampleResourceGroup", "sampleDnsForwardingRuleset")
             .withDomainName("contoso.com.")
-            .withTargetDnsServers(
-                Arrays
-                    .asList(
-                        new TargetDnsServer().withIpAddress("10.0.0.1").withPort(53),
-                        new TargetDnsServer().withIpAddress("10.0.0.2").withPort(53)))
+            .withTargetDnsServers(Arrays.asList(new TargetDnsServer().withIpAddress("10.0.0.1").withPort(53),
+                new TargetDnsServer().withIpAddress("10.0.0.2").withPort(53)))
             .withMetadata(mapOf("additionalProp1", "value1"))
             .withForwardingRuleState(ForwardingRuleState.ENABLED)
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

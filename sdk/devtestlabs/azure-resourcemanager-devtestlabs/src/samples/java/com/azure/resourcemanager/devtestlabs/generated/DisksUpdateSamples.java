@@ -8,23 +8,24 @@ import com.azure.resourcemanager.devtestlabs.models.Disk;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Disks Update. */
+/**
+ * Samples for Disks Update.
+ */
 public final class DisksUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Update.json
      */
     /**
      * Sample code: Disks_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void disksUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        Disk resource =
-            manager
-                .disks()
-                .getWithResponse(
-                    "resourceGroupName", "{labName}", "@me", "diskName", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        Disk resource = manager.disks()
+            .getWithResponse("resourceGroupName", "{labName}", "@me", "diskName", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 

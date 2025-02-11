@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.ApiExportResultValue;
 import com.azure.resourcemanager.apimanagement.models.ExportResultFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** API Export result. */
+/**
+ * API Export result.
+ */
 @Fluent
-public final class ApiExportResultInner {
+public final class ApiExportResultInner implements JsonSerializable<ApiExportResultInner> {
     /*
      * ResourceId of the API which was exported.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Format in which the API Details are exported to the Storage Blob with Sas Key valid for 5 minutes.
      */
-    @JsonProperty(value = "format")
     private ExportResultFormat exportResultFormat;
 
     /*
      * The object defining the schema of the exported API Detail
      */
-    @JsonProperty(value = "value")
     private ApiExportResultValue value;
 
-    /** Creates an instance of ApiExportResultInner class. */
+    /**
+     * Creates an instance of ApiExportResultInner class.
+     */
     public ApiExportResultInner() {
     }
 
     /**
      * Get the id property: ResourceId of the API which was exported.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -45,7 +50,7 @@ public final class ApiExportResultInner {
 
     /**
      * Set the id property: ResourceId of the API which was exported.
-     *
+     * 
      * @param id the id value to set.
      * @return the ApiExportResultInner object itself.
      */
@@ -57,7 +62,7 @@ public final class ApiExportResultInner {
     /**
      * Get the exportResultFormat property: Format in which the API Details are exported to the Storage Blob with Sas
      * Key valid for 5 minutes.
-     *
+     * 
      * @return the exportResultFormat value.
      */
     public ExportResultFormat exportResultFormat() {
@@ -67,7 +72,7 @@ public final class ApiExportResultInner {
     /**
      * Set the exportResultFormat property: Format in which the API Details are exported to the Storage Blob with Sas
      * Key valid for 5 minutes.
-     *
+     * 
      * @param exportResultFormat the exportResultFormat value to set.
      * @return the ApiExportResultInner object itself.
      */
@@ -78,7 +83,7 @@ public final class ApiExportResultInner {
 
     /**
      * Get the value property: The object defining the schema of the exported API Detail.
-     *
+     * 
      * @return the value value.
      */
     public ApiExportResultValue value() {
@@ -87,7 +92,7 @@ public final class ApiExportResultInner {
 
     /**
      * Set the value property: The object defining the schema of the exported API Detail.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApiExportResultInner object itself.
      */
@@ -98,12 +103,56 @@ public final class ApiExportResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("format",
+            this.exportResultFormat == null ? null : this.exportResultFormat.toString());
+        jsonWriter.writeJsonField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiExportResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiExportResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiExportResultInner.
+     */
+    public static ApiExportResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiExportResultInner deserializedApiExportResultInner = new ApiExportResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApiExportResultInner.id = reader.getString();
+                } else if ("format".equals(fieldName)) {
+                    deserializedApiExportResultInner.exportResultFormat
+                        = ExportResultFormat.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedApiExportResultInner.value = ApiExportResultValue.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiExportResultInner;
+        });
     }
 }

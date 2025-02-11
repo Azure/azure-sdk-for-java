@@ -189,15 +189,14 @@ class AnalyzeActionsUtilClient {
     private static final String ENTITY_LINKING_TASKS = "entityLinkingTasks";
     private static final String SENTIMENT_ANALYSIS_TASKS = "sentimentAnalysisTasks";
     private static final String EXTRACTIVE_SUMMARIZATION_TASKS = "extractiveSummarizationTasks";
-    private static final String CUSTOM_ENTITY_RECOGNITION_TASKS =  "customEntityRecognitionTasks";
+    private static final String CUSTOM_ENTITY_RECOGNITION_TASKS = "customEntityRecognitionTasks";
     private static final String CUSTOM_SINGLE_CLASSIFICATION_TASKS = "customClassificationTasks";
     private static final String CUSTOM_MULTI_CLASSIFICATION_TASKS = "customMultiClassificationTasks";
 
-    private static final String REGEX_ACTION_ERROR_TARGET =
-        String.format("#/tasks/(%s|%s|%s|%s|%s|%s|%s|%s|%s)/(\\d+)", KEY_PHRASE_EXTRACTION_TASKS,
-            ENTITY_RECOGNITION_PII_TASKS, ENTITY_RECOGNITION_TASKS, ENTITY_LINKING_TASKS, SENTIMENT_ANALYSIS_TASKS,
-            EXTRACTIVE_SUMMARIZATION_TASKS, CUSTOM_ENTITY_RECOGNITION_TASKS, CUSTOM_SINGLE_CLASSIFICATION_TASKS,
-            CUSTOM_MULTI_CLASSIFICATION_TASKS);
+    private static final String REGEX_ACTION_ERROR_TARGET = String.format("#/tasks/(%s|%s|%s|%s|%s|%s|%s|%s|%s)/(\\d+)",
+        KEY_PHRASE_EXTRACTION_TASKS, ENTITY_RECOGNITION_PII_TASKS, ENTITY_RECOGNITION_TASKS, ENTITY_LINKING_TASKS,
+        SENTIMENT_ANALYSIS_TASKS, EXTRACTIVE_SUMMARIZATION_TASKS, CUSTOM_ENTITY_RECOGNITION_TASKS,
+        CUSTOM_SINGLE_CLASSIFICATION_TASKS, CUSTOM_MULTI_CLASSIFICATION_TASKS);
 
     // Language Tasks
     private static final String ABSTRACTIVE_SUMMARIZATION = "AbstractiveSummarization";
@@ -208,15 +207,14 @@ class AnalyzeActionsUtilClient {
     private static final String SENTIMENT_ANALYSIS = "SentimentAnalysis";
     private static final String EXTRACTIVE_SUMMARIZATION = "ExtractiveSummarization";
     private static final String HEALTHCARE = "Healthcare";
-    private static final String CUSTOM_ENTITY_RECOGNITION =  "CustomEntityRecognition";
+    private static final String CUSTOM_ENTITY_RECOGNITION = "CustomEntityRecognition";
     private static final String CUSTOM_SINGLE_LABEL_CLASSIFICATION = "CustomSingleLabelClassification";
     private static final String CUSTOM_MULTI_LABEL_CLASSIFICATION = "CustomMultiLabelClassification";
 
-    private static final String REGEX_ACTION_ERROR_TARGET_LANGUAGE_API =
-        String.format("#/tasks/(%s|%s|%s|%s|%s|%s|%s|%s|%s)/(\\d+)", ABSTRACTIVE_SUMMARIZATION,
-            ENTITY_RECOGNITION, PII_ENTITY_RECOGNITION, KEY_PHRASE_EXTRACTION, ENTITY_LINKING,
-            SENTIMENT_ANALYSIS, EXTRACTIVE_SUMMARIZATION, HEALTHCARE,
-            CUSTOM_ENTITY_RECOGNITION, CUSTOM_SINGLE_LABEL_CLASSIFICATION, CUSTOM_MULTI_LABEL_CLASSIFICATION);
+    private static final String REGEX_ACTION_ERROR_TARGET_LANGUAGE_API = String.format(
+        "#/tasks/(%s|%s|%s|%s|%s|%s|%s|%s|%s)/(\\d+)", ABSTRACTIVE_SUMMARIZATION, ENTITY_RECOGNITION,
+        PII_ENTITY_RECOGNITION, KEY_PHRASE_EXTRACTION, ENTITY_LINKING, SENTIMENT_ANALYSIS, EXTRACTIVE_SUMMARIZATION,
+        HEALTHCARE, CUSTOM_ENTITY_RECOGNITION, CUSTOM_SINGLE_LABEL_CLASSIFICATION, CUSTOM_MULTI_LABEL_CLASSIFICATION);
 
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     private static final ClientLogger LOGGER = new ClientLogger(AnalyzeActionsUtilClient.class);
@@ -259,60 +257,46 @@ class AnalyzeActionsUtilClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
             if (service != null) {
-                final AnalyzeTextJobsInput analyzeTextJobsInput =
-                    new AnalyzeTextJobsInput()
-                        .setDisplayName(actions.getDisplayName())
+                final AnalyzeTextJobsInput analyzeTextJobsInput
+                    = new AnalyzeTextJobsInput().setDisplayName(actions.getDisplayName())
                         .setAnalysisInput(
                             new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                         .setTasks(getAnalyzeTextLROTasks(actions));
-                return new PollerFlux<>(
-                    DEFAULT_POLL_INTERVAL,
-                    activationOperation(
-                        service.submitJobWithResponseAsync(analyzeTextJobsInput, finalContext)
-                            .map(analyzeResponse -> {
-                                final AnalyzeActionsOperationDetail textAnalyticsOperationResult =
-                                    new AnalyzeActionsOperationDetail();
-                                AnalyzeActionsOperationDetailPropertiesHelper
-                                    .setOperationId(textAnalyticsOperationResult,
-                                        parseOperationId(
-                                            analyzeResponse.getDeserializedHeaders().getOperationLocation()));
-                                return textAnalyticsOperationResult;
-                            })),
+                return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(
+                    service.submitJobWithResponseAsync(analyzeTextJobsInput, finalContext).map(analyzeResponse -> {
+                        final AnalyzeActionsOperationDetail textAnalyticsOperationResult
+                            = new AnalyzeActionsOperationDetail();
+                        AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(textAnalyticsOperationResult,
+                            parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+                        return textAnalyticsOperationResult;
+                    })),
                     pollingOperationLanguageApi(operationId -> service.jobStatusWithResponseAsync(operationId,
                         finalIncludeStatistics, null, null, finalContext)),
                     (pollingContext, pollResponse) -> Mono.just(pollingContext.getLatestResponse().getValue()),
-                    fetchingOperation(
-                        operationId -> Mono.just(getAnalyzeOperationFluxPage(
-                            operationId, null, null, finalIncludeStatistics, finalContext)))
-                );
+                    fetchingOperation(operationId -> Mono.just(
+                        getAnalyzeOperationFluxPage(operationId, null, null, finalIncludeStatistics, finalContext))));
             }
 
             throwIfTargetServiceVersionFoundForActions(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1), actions);
-            final AnalyzeBatchInput analyzeBatchInput =
-                new AnalyzeBatchInput()
-                    .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
-                    .setTasks(getJobManifestTasks(actions));
+            final AnalyzeBatchInput analyzeBatchInput = new AnalyzeBatchInput()
+                .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
+                .setTasks(getJobManifestTasks(actions));
             analyzeBatchInput.setDisplayName(actions.getDisplayName());
-            return new PollerFlux<>(
-                DEFAULT_POLL_INTERVAL,
-                activationOperation(
-                    legacyService.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
-                        .map(analyzeResponse -> {
-                            final AnalyzeActionsOperationDetail textAnalyticsOperationResult =
-                                new AnalyzeActionsOperationDetail();
-                            AnalyzeActionsOperationDetailPropertiesHelper
-                                .setOperationId(textAnalyticsOperationResult,
-                                    parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
-                            return textAnalyticsOperationResult;
-                        })),
+            return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(
+                legacyService.analyzeWithResponseAsync(analyzeBatchInput, finalContext).map(analyzeResponse -> {
+                    final AnalyzeActionsOperationDetail textAnalyticsOperationResult
+                        = new AnalyzeActionsOperationDetail();
+                    AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(textAnalyticsOperationResult,
+                        parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+                    return textAnalyticsOperationResult;
+                })),
                 pollingOperation(operationId -> legacyService.analyzeStatusWithResponseAsync(operationId.toString(),
                     finalIncludeStatistics, null, null, finalContext)),
-                (pollingContext, activationResponse) ->
-                    Mono.error(new RuntimeException("Cancellation is not supported.")),
-                fetchingOperation(operationId -> Mono.just(getAnalyzeOperationFluxPage(
-                    operationId, null, null, finalIncludeStatistics, finalContext)))
-            );
+                (pollingContext, activationResponse) -> Mono
+                    .error(new RuntimeException("Cancellation is not supported.")),
+                fetchingOperation(operationId -> Mono
+                    .just(getAnalyzeOperationFluxPage(operationId, null, null, finalIncludeStatistics, finalContext))));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -329,47 +313,42 @@ class AnalyzeActionsUtilClient {
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = enableSyncRestProxy(getNotNullContext(context));
-            final AnalyzeBatchInput analyzeBatchInput =
-                new AnalyzeBatchInput()
-                    .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
-                    .setTasks(getJobManifestTasks(actions));
+            final AnalyzeBatchInput analyzeBatchInput = new AnalyzeBatchInput()
+                .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
+                .setTasks(getJobManifestTasks(actions));
             analyzeBatchInput.setDisplayName(actions.getDisplayName());
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
             if (service != null) {
-                return SyncPoller.createPoller(
-                    DEFAULT_POLL_INTERVAL,
+                return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
                     cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                         activationOperationLanguageApiSync(documents, actions, finalContext).apply(cxt)),
                     pollingOperationLanguageApiSync(operationId -> service.jobStatusWithResponse(operationId,
                         finalIncludeStatistics, null, null, finalContext)),
                     getCancellationIsNotSupported(),
-                    fetchingOperationIterable(
-                        operationId -> getAnalyzeOperationPageIterable(
-                            operationId, null, null, finalIncludeStatistics, finalContext))
-                );
+                    fetchingOperationIterable(operationId -> getAnalyzeOperationPageIterable(operationId, null, null,
+                        finalIncludeStatistics, finalContext)));
             }
 
             throwIfTargetServiceVersionFoundForActions(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1), actions);
-            return SyncPoller.createPoller(
-                DEFAULT_POLL_INTERVAL,
+            return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
                 cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     activationOperationLegacyApiSync(documents, actions, finalContext).apply(cxt)),
-                pollingOperationLegacyApiSync(operationId -> legacyService.analyzeStatusWithResponseSync(
-                    operationId.toString(),
-                    finalIncludeStatistics, null, null, finalContext)),
+                pollingOperationLegacyApiSync(
+                    operationId -> legacyService.analyzeStatusWithResponseSync(operationId.toString(),
+                        finalIncludeStatistics, null, null, finalContext)),
                 getCancellationIsNotSupported(),
-                fetchingOperationIterable(
-                    operationId -> getAnalyzeOperationPageIterable(
-                        operationId, null, null, finalIncludeStatistics, finalContext)));
+                fetchingOperationIterable(operationId -> getAnalyzeOperationPageIterable(operationId, null, null,
+                    finalIncludeStatistics, finalContext)));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
-    private BiFunction<PollingContext<AnalyzeActionsOperationDetail>,
-        PollResponse<AnalyzeActionsOperationDetail>, AnalyzeActionsOperationDetail> getCancellationIsNotSupported() {
+    private
+        BiFunction<PollingContext<AnalyzeActionsOperationDetail>, PollResponse<AnalyzeActionsOperationDetail>, AnalyzeActionsOperationDetail>
+        getCancellationIsNotSupported() {
         return (pollingContext, activationResponse) -> {
             throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
         };
@@ -382,22 +361,20 @@ class AnalyzeActionsUtilClient {
 
         final List<AnalyzeTextLROTask> tasks = new ArrayList<>();
         final Iterable<RecognizeEntitiesAction> recognizeEntitiesActions = actions.getRecognizeEntitiesActions();
-        final Iterable<RecognizePiiEntitiesAction> recognizePiiEntitiesActions =
-            actions.getRecognizePiiEntitiesActions();
+        final Iterable<RecognizePiiEntitiesAction> recognizePiiEntitiesActions
+            = actions.getRecognizePiiEntitiesActions();
         final Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions = actions.getExtractKeyPhrasesActions();
-        final Iterable<RecognizeLinkedEntitiesAction> recognizeLinkedEntitiesActions =
-            actions.getRecognizeLinkedEntitiesActions();
-        final Iterable<AnalyzeHealthcareEntitiesAction> analyzeHealthcareEntitiesActions =
-            actions.getAnalyzeHealthcareEntitiesActions();
+        final Iterable<RecognizeLinkedEntitiesAction> recognizeLinkedEntitiesActions
+            = actions.getRecognizeLinkedEntitiesActions();
+        final Iterable<AnalyzeHealthcareEntitiesAction> analyzeHealthcareEntitiesActions
+            = actions.getAnalyzeHealthcareEntitiesActions();
         final Iterable<AnalyzeSentimentAction> analyzeSentimentActions = actions.getAnalyzeSentimentActions();
-        final Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions =
-            actions.getRecognizeCustomEntitiesActions();
-        final Iterable<SingleLabelClassifyAction> singleLabelClassificationActions =
-            actions.getSingleLabelClassifyActions();
-        final Iterable<MultiLabelClassifyAction> multiCategoryClassifyActions =
-            actions.getMultiLabelClassifyActions();
-        final Iterable<AbstractiveSummaryAction> abstractiveSummaryActions =
-            actions.getAbstractiveSummaryActions();
+        final Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions
+            = actions.getRecognizeCustomEntitiesActions();
+        final Iterable<SingleLabelClassifyAction> singleLabelClassificationActions
+            = actions.getSingleLabelClassifyActions();
+        final Iterable<MultiLabelClassifyAction> multiCategoryClassifyActions = actions.getMultiLabelClassifyActions();
+        final Iterable<AbstractiveSummaryAction> abstractiveSummaryActions = actions.getAbstractiveSummaryActions();
         final Iterable<ExtractiveSummaryAction> extractiveSummaryActions = actions.getExtractiveSummaryActions();
 
         if (recognizeEntitiesActions != null) {
@@ -429,8 +406,8 @@ class AnalyzeActionsUtilClient {
         }
 
         if (singleLabelClassificationActions != null) {
-            singleLabelClassificationActions.forEach(action -> tasks.add(
-                toCustomSingleLabelClassificationLROTask(action)));
+            singleLabelClassificationActions
+                .forEach(action -> tasks.add(toCustomSingleLabelClassificationLROTask(action)));
         }
 
         if (multiCategoryClassifyActions != null) {
@@ -501,21 +478,18 @@ class AnalyzeActionsUtilClient {
     private List<EntitiesTask> toEntitiesTasks(TextAnalyticsActions actions) {
         final List<EntitiesTask> entitiesTasks = new ArrayList<>();
         for (RecognizeEntitiesAction action : actions.getRecognizeEntitiesActions()) {
-            entitiesTasks.add(
-                action == null
-                    ? null
-                    : new EntitiesTask()
-                        .setTaskName(action.getActionName())
-                        .setParameters(getEntitiesTaskParameters(action)));
+            entitiesTasks.add(action == null
+                ? null
+                : new EntitiesTask().setTaskName(action.getActionName())
+                    .setParameters(getEntitiesTaskParameters(action)));
         }
         return entitiesTasks;
     }
 
     private EntitiesTaskParameters getEntitiesTaskParameters(RecognizeEntitiesAction action) {
-        return new EntitiesTaskParameters()
-                                         .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                                         .setModelVersion(action.getModelVersion())
-                                         .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new EntitiesTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+            .setModelVersion(action.getModelVersion())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private PiiLROTask toPiiLROTask(RecognizePiiEntitiesAction action) {
@@ -530,25 +504,20 @@ class AnalyzeActionsUtilClient {
     private List<PiiTask> toPiiTasks(TextAnalyticsActions actions) {
         final List<PiiTask> piiTasks = new ArrayList<>();
         for (RecognizePiiEntitiesAction action : actions.getRecognizePiiEntitiesActions()) {
-            piiTasks.add(
-                action == null
-                    ? null
-                    : new PiiTask()
-                          .setTaskName(action.getActionName())
-                          .setParameters(getPiiTaskParameters(action)));
+            piiTasks.add(action == null
+                ? null
+                : new PiiTask().setTaskName(action.getActionName()).setParameters(getPiiTaskParameters(action)));
         }
         return piiTasks;
     }
 
     private PiiTaskParameters getPiiTaskParameters(RecognizePiiEntitiesAction action) {
-        return new PiiTaskParameters()
-                                       .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                                       .setDomain(PiiDomain.fromString(
-                                           action.getDomainFilter() == null
-                                               ? null : action.getDomainFilter().toString()))
-                                       .setPiiCategories(toCategoriesFilter(action.getCategoriesFilter()))
-                                       .setModelVersion(action.getModelVersion())
-                                       .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new PiiTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+            .setDomain(
+                PiiDomain.fromString(action.getDomainFilter() == null ? null : action.getDomainFilter().toString()))
+            .setPiiCategories(toCategoriesFilter(action.getCategoriesFilter()))
+            .setModelVersion(action.getModelVersion())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private HealthcareLROTask toHealthcareLROTask(AnalyzeHealthcareEntitiesAction action) {
@@ -561,8 +530,7 @@ class AnalyzeActionsUtilClient {
     }
 
     private HealthcareTaskParameters getHealthcareTaskParameters(AnalyzeHealthcareEntitiesAction action) {
-        return new HealthcareTaskParameters()
-            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+        return new HealthcareTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());
     }
@@ -579,19 +547,16 @@ class AnalyzeActionsUtilClient {
     private List<KeyPhrasesTask> toKeyPhrasesTasks(TextAnalyticsActions actions) {
         final List<KeyPhrasesTask> keyPhrasesTasks = new ArrayList<>();
         for (ExtractKeyPhrasesAction action : actions.getExtractKeyPhrasesActions()) {
-            keyPhrasesTasks.add(
-                action == null
-                    ? null
-                    : new KeyPhrasesTask()
-                          .setTaskName(action.getActionName())
-                          .setParameters(getKeyPhraseTaskParameters(action)));
+            keyPhrasesTasks.add(action == null
+                ? null
+                : new KeyPhrasesTask().setTaskName(action.getActionName())
+                    .setParameters(getKeyPhraseTaskParameters(action)));
         }
         return keyPhrasesTasks;
     }
 
     private KeyPhraseTaskParameters getKeyPhraseTaskParameters(ExtractKeyPhrasesAction action) {
-        return new KeyPhraseTaskParameters()
-            .setModelVersion(action.getModelVersion())
+        return new KeyPhraseTaskParameters().setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
@@ -607,19 +572,16 @@ class AnalyzeActionsUtilClient {
     private List<EntityLinkingTask> toEntityLinkingTasks(TextAnalyticsActions actions) {
         final List<EntityLinkingTask> tasks = new ArrayList<>();
         for (RecognizeLinkedEntitiesAction action : actions.getRecognizeLinkedEntitiesActions()) {
-            tasks.add(
-                action == null
-                    ? null
-                    : new EntityLinkingTask()
-                          .setTaskName(action.getActionName())
-                          .setParameters(getEntityLinkingTaskParameters(action)));
+            tasks.add(action == null
+                ? null
+                : new EntityLinkingTask().setTaskName(action.getActionName())
+                    .setParameters(getEntityLinkingTaskParameters(action)));
         }
         return tasks;
     }
 
     private EntityLinkingTaskParameters getEntityLinkingTaskParameters(RecognizeLinkedEntitiesAction action) {
-        return new EntityLinkingTaskParameters()
-            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+        return new EntityLinkingTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());
     }
@@ -636,19 +598,16 @@ class AnalyzeActionsUtilClient {
     private List<SentimentAnalysisTask> toSentimentAnalysisTasks(TextAnalyticsActions actions) {
         final List<SentimentAnalysisTask> tasks = new ArrayList<>();
         for (AnalyzeSentimentAction action : actions.getAnalyzeSentimentActions()) {
-            tasks.add(
-                action == null
-                    ? null
-                    : new SentimentAnalysisTask()
-                          .setTaskName(action.getActionName())
-                          .setParameters(getSentimentAnalysisTaskParameters(action)));
+            tasks.add(action == null
+                ? null
+                : new SentimentAnalysisTask().setTaskName(action.getActionName())
+                    .setParameters(getSentimentAnalysisTaskParameters(action)));
         }
         return tasks;
     }
 
     private SentimentAnalysisTaskParameters getSentimentAnalysisTaskParameters(AnalyzeSentimentAction action) {
-        return new SentimentAnalysisTaskParameters()
-            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+        return new SentimentAnalysisTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setOpinionMining(action.isIncludeOpinionMining())
             .setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());
@@ -666,26 +625,23 @@ class AnalyzeActionsUtilClient {
     private List<CustomEntitiesTask> toCustomEntitiesTask(TextAnalyticsActions actions) {
         final List<CustomEntitiesTask> tasks = new ArrayList<>();
         for (RecognizeCustomEntitiesAction action : actions.getRecognizeCustomEntitiesActions()) {
-            tasks.add(
-                action == null
-                    ? null
-                    : new CustomEntitiesTask()
-                          .setTaskName(action.getActionName())
-                          .setParameters(getCustomEntitiesTaskParameters(action)));
+            tasks.add(action == null
+                ? null
+                : new CustomEntitiesTask().setTaskName(action.getActionName())
+                    .setParameters(getCustomEntitiesTaskParameters(action)));
         }
         return tasks;
     }
 
     private CustomEntitiesTaskParameters getCustomEntitiesTaskParameters(RecognizeCustomEntitiesAction action) {
-        return new CustomEntitiesTaskParameters()
-            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+        return new CustomEntitiesTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setProjectName(action.getProjectName())
             .setDeploymentName(action.getDeploymentName())
             .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
-    private CustomSingleLabelClassificationLROTask toCustomSingleLabelClassificationLROTask(
-        SingleLabelClassifyAction action) {
+    private CustomSingleLabelClassificationLROTask
+        toCustomSingleLabelClassificationLROTask(SingleLabelClassifyAction action) {
         if (action == null) {
             return null;
         }
@@ -697,26 +653,23 @@ class AnalyzeActionsUtilClient {
     private List<CustomSingleClassificationTask> toCustomSingleClassificationTask(TextAnalyticsActions actions) {
         final List<CustomSingleClassificationTask> tasks = new ArrayList<>();
         for (SingleLabelClassifyAction action : actions.getSingleLabelClassifyActions()) {
-            tasks.add(
-                action == null
-                    ? null
-                    : new CustomSingleClassificationTask()
-                          .setTaskName(action.getActionName())
-                          .setParameters(getCustomSingleClassificationTaskParameters(action)));
+            tasks.add(action == null
+                ? null
+                : new CustomSingleClassificationTask().setTaskName(action.getActionName())
+                    .setParameters(getCustomSingleClassificationTaskParameters(action)));
         }
         return tasks;
     }
 
-    private CustomSingleLabelClassificationTaskParameters getCustomSingleClassificationTaskParameters(
-        SingleLabelClassifyAction action) {
-        return new CustomSingleLabelClassificationTaskParameters()
-            .setProjectName(action.getProjectName())
+    private CustomSingleLabelClassificationTaskParameters
+        getCustomSingleClassificationTaskParameters(SingleLabelClassifyAction action) {
+        return new CustomSingleLabelClassificationTaskParameters().setProjectName(action.getProjectName())
             .setDeploymentName(action.getDeploymentName())
             .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
-    private CustomMultiLabelClassificationLROTask toCustomMultiLabelClassificationLROTask(
-        MultiLabelClassifyAction action) {
+    private CustomMultiLabelClassificationLROTask
+        toCustomMultiLabelClassificationLROTask(MultiLabelClassifyAction action) {
         if (action == null) {
             return null;
         }
@@ -729,37 +682,32 @@ class AnalyzeActionsUtilClient {
         if (action == null) {
             return null;
         }
-        return new ExtractiveSummarizationLROTask()
-            .setParameters(getExtractiveSummarizationTaskParameters(action))
+        return new ExtractiveSummarizationLROTask().setParameters(getExtractiveSummarizationTaskParameters(action))
             .setTaskName(action.getActionName());
     }
 
     private List<CustomMultiClassificationTask> toCustomMultiClassificationTask(TextAnalyticsActions actions) {
         final List<CustomMultiClassificationTask> tasks = new ArrayList<>();
         for (MultiLabelClassifyAction action : actions.getMultiLabelClassifyActions()) {
-            tasks.add(
-                action == null
-                    ? null
-                    : new CustomMultiClassificationTask()
-                          .setTaskName(action.getActionName())
-                          .setParameters(getCustomMultiLabelClassificationTaskParameters(action)));
+            tasks.add(action == null
+                ? null
+                : new CustomMultiClassificationTask().setTaskName(action.getActionName())
+                    .setParameters(getCustomMultiLabelClassificationTaskParameters(action)));
         }
         return tasks;
     }
 
-    private CustomMultiLabelClassificationTaskParameters getCustomMultiLabelClassificationTaskParameters(
-        MultiLabelClassifyAction action) {
-        return new CustomMultiLabelClassificationTaskParameters()
-            .setProjectName(action.getProjectName())
+    private CustomMultiLabelClassificationTaskParameters
+        getCustomMultiLabelClassificationTaskParameters(MultiLabelClassifyAction action) {
+        return new CustomMultiLabelClassificationTaskParameters().setProjectName(action.getProjectName())
             .setDeploymentName(action.getDeploymentName())
             .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
-    private ExtractiveSummarizationTaskParameters getExtractiveSummarizationTaskParameters(
-        ExtractiveSummaryAction action) {
+    private ExtractiveSummarizationTaskParameters
+        getExtractiveSummarizationTaskParameters(ExtractiveSummaryAction action) {
         ExtractiveSummarySentencesOrder orderBy = action.getOrderBy();
-        return new ExtractiveSummarizationTaskParameters()
-            .setLoggingOptOut(action.isServiceLogsDisabled())
+        return new ExtractiveSummarizationTaskParameters().setLoggingOptOut(action.isServiceLogsDisabled())
             .setModelVersion(action.getModelVersion())
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setSentenceCount(action.getMaxSentenceCount())
@@ -775,10 +723,9 @@ class AnalyzeActionsUtilClient {
         return task;
     }
 
-    private AbstractiveSummarizationTaskParameters getAbstractiveSummarizationTaskParameters(
-        AbstractiveSummaryAction action) {
-        return new AbstractiveSummarizationTaskParameters()
-            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+    private AbstractiveSummarizationTaskParameters
+        getAbstractiveSummarizationTaskParameters(AbstractiveSummaryAction action) {
+        return new AbstractiveSummarizationTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setSentenceCount(action.getSentenceCount())
             .setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());
@@ -799,14 +746,10 @@ class AnalyzeActionsUtilClient {
         activationOperationLanguageApiSync(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
             Context context) {
         return pollingContext -> {
-            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
-                service.submitJobWithResponse(
-                    new AnalyzeTextJobsInput()
-                        .setDisplayName(actions.getDisplayName())
-                        .setAnalysisInput(new MultiLanguageAnalysisInput()
-                            .setDocuments(toMultiLanguageInput(documents)))
-                        .setTasks(getAnalyzeTextLROTasks(actions)),
-                    context);
+            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse
+                = service.submitJobWithResponse(new AnalyzeTextJobsInput().setDisplayName(actions.getDisplayName())
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(getAnalyzeTextLROTasks(actions)), context);
             final AnalyzeActionsOperationDetail operationDetail = new AnalyzeActionsOperationDetail();
             AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
                 parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
@@ -818,13 +761,12 @@ class AnalyzeActionsUtilClient {
         activationOperationLegacyApiSync(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
             Context context) {
         return pollingContext -> {
-            final AnalyzeBatchInput analyzeBatchInput =
-                new AnalyzeBatchInput()
-                    .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
-                    .setTasks(getJobManifestTasks(actions));
+            final AnalyzeBatchInput analyzeBatchInput = new AnalyzeBatchInput()
+                .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
+                .setTasks(getJobManifestTasks(actions));
             analyzeBatchInput.setDisplayName(actions.getDisplayName());
-            final ResponseBase<AnalyzeHeaders, Void> analyzeResponse =
-                legacyService.analyzeWithResponseSync(analyzeBatchInput, context);
+            final ResponseBase<AnalyzeHeaders, Void> analyzeResponse
+                = legacyService.analyzeWithResponseSync(analyzeBatchInput, context);
             final AnalyzeActionsOperationDetail operationDetail = new AnalyzeActionsOperationDetail();
             AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
                 parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
@@ -836,12 +778,12 @@ class AnalyzeActionsUtilClient {
         pollingOperation(Function<UUID, Mono<Response<AnalyzeJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(operationId)
-                    .flatMap(modelResponse -> Mono.just(
-                        processAnalyzedModelResponse(modelResponse, operationResultPollResponse)))
+                    .flatMap(modelResponse -> Mono
+                        .just(processAnalyzedModelResponse(modelResponse, operationResultPollResponse)))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
@@ -853,13 +795,13 @@ class AnalyzeActionsUtilClient {
         pollingOperationLanguageApi(Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(operationId)
-                           .flatMap(modelResponse -> Mono.just(processAnalyzedModelResponseLanguageApi(
-                               modelResponse, operationResultPollResponse)))
-                           .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                    .flatMap(modelResponse -> Mono
+                        .just(processAnalyzedModelResponseLanguageApi(modelResponse, operationResultPollResponse)))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
             }
@@ -869,8 +811,8 @@ class AnalyzeActionsUtilClient {
     private Function<PollingContext<AnalyzeActionsOperationDetail>, PollResponse<AnalyzeActionsOperationDetail>>
         pollingOperationLanguageApiSync(Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
         return pollingContext -> {
-            final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
-                pollingContext.getLatestResponse();
+            final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse
+                = pollingContext.getLatestResponse();
             final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
             return processAnalyzedModelResponseLanguageApi(pollingFunction.apply(operationId),
                 operationResultPollResponse);
@@ -880,11 +822,10 @@ class AnalyzeActionsUtilClient {
     private Function<PollingContext<AnalyzeActionsOperationDetail>, PollResponse<AnalyzeActionsOperationDetail>>
         pollingOperationLegacyApiSync(Function<UUID, Response<AnalyzeJobState>> pollingFunction) {
         return pollingContext -> {
-            final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
-                pollingContext.getLatestResponse();
+            final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse
+                = pollingContext.getLatestResponse();
             final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
-            return processAnalyzedModelResponse(pollingFunction.apply(operationId),
-                operationResultPollResponse);
+            return processAnalyzedModelResponse(pollingFunction.apply(operationId), operationResultPollResponse);
         };
     }
 
@@ -892,7 +833,8 @@ class AnalyzeActionsUtilClient {
         fetchingOperation(Function<UUID, Mono<AnalyzeActionsResultPagedFlux>> fetchingFunction) {
         return pollingContext -> {
             try {
-                final UUID operationId = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
+                final UUID operationId
+                    = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
                 return fetchingFunction.apply(operationId);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
@@ -910,16 +852,14 @@ class AnalyzeActionsUtilClient {
 
     AnalyzeActionsResultPagedFlux getAnalyzeOperationFluxPage(UUID operationId, Integer top, Integer skip,
         boolean showStats, Context context) {
-        return new AnalyzeActionsResultPagedFlux(
-            () -> (continuationToken, pageSize) ->
-                      getPage(continuationToken, operationId, top, skip, showStats, context).flux());
+        return new AnalyzeActionsResultPagedFlux(() -> (continuationToken,
+            pageSize) -> getPage(continuationToken, operationId, top, skip, showStats, context).flux());
     }
 
     AnalyzeActionsResultPagedIterable getAnalyzeOperationPageIterable(UUID operationId, Integer top, Integer skip,
         boolean showStats, Context context) {
-        return new AnalyzeActionsResultPagedIterable(
-            () -> (continuationToken, pageSize) ->
-                getPageSync(continuationToken, operationId, top, skip, showStats, context));
+        return new AnalyzeActionsResultPagedIterable(() -> (continuationToken,
+            pageSize) -> getPageSync(continuationToken, operationId, top, skip, showStats, context));
     }
 
     PagedResponse<AnalyzeActionsResult> getPageSync(String continuationToken, UUID operationId, Integer top,
@@ -931,10 +871,10 @@ class AnalyzeActionsUtilClient {
             showStats = getShowStatsContinuesToken(continuationTokenMap);
         }
         return service != null
-            ? toAnalyzeActionsResultPagedResponseLanguageApi(service.jobStatusWithResponse(
-            operationId, showStats, top, skip, context))
-            : toAnalyzeActionsResultPagedResponseLegacyApi(legacyService.analyzeStatusWithResponseSync(
-            operationId.toString(), showStats, top, skip, context));
+            ? toAnalyzeActionsResultPagedResponseLanguageApi(
+                service.jobStatusWithResponse(operationId, showStats, top, skip, context))
+            : toAnalyzeActionsResultPagedResponseLegacyApi(
+                legacyService.analyzeStatusWithResponseSync(operationId.toString(), showStats, top, skip, context));
     }
 
     Mono<PagedResponse<AnalyzeActionsResult>> getPage(String continuationToken, UUID operationId, Integer top,
@@ -950,44 +890,38 @@ class AnalyzeActionsUtilClient {
                 .map(this::toAnalyzeActionsResultPagedResponseLanguageApi)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             : legacyService.analyzeStatusWithResponseAsync(operationId.toString(), showStats, top, skip, context)
-            .map(this::toAnalyzeActionsResultPagedResponseLegacyApi)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                .map(this::toAnalyzeActionsResultPagedResponseLegacyApi)
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 
-    private PagedResponse<AnalyzeActionsResult> toAnalyzeActionsResultPagedResponseLegacyApi(Response<AnalyzeJobState> response) {
+    private PagedResponse<AnalyzeActionsResult>
+        toAnalyzeActionsResultPagedResponseLegacyApi(Response<AnalyzeJobState> response) {
         final AnalyzeJobState analyzeJobState = response.getValue();
-        return new PagedResponseBase<Void, AnalyzeActionsResult>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            Arrays.asList(toAnalyzeActionsResultLegacyApi(analyzeJobState)),
-            analyzeJobState.getNextLink(),
-            null);
+        return new PagedResponseBase<Void, AnalyzeActionsResult>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), Arrays.asList(toAnalyzeActionsResultLegacyApi(analyzeJobState)),
+            analyzeJobState.getNextLink(), null);
     }
 
-    private PagedResponse<AnalyzeActionsResult> toAnalyzeActionsResultPagedResponseLanguageApi(Response<AnalyzeTextJobState> response) {
+    private PagedResponse<AnalyzeActionsResult>
+        toAnalyzeActionsResultPagedResponseLanguageApi(Response<AnalyzeTextJobState> response) {
         final AnalyzeTextJobState analyzeJobState = response.getValue();
-        return new PagedResponseBase<Void, AnalyzeActionsResult>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            Arrays.asList(toAnalyzeActionsResultLanguageApi(analyzeJobState)),
-            analyzeJobState.getNextLink(),
-            null);
+        return new PagedResponseBase<Void, AnalyzeActionsResult>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), Arrays.asList(toAnalyzeActionsResultLanguageApi(analyzeJobState)),
+            analyzeJobState.getNextLink(), null);
     }
 
     private AnalyzeActionsResult toAnalyzeActionsResultLegacyApi(AnalyzeJobState analyzeJobState) {
         TasksStateTasksOld tasksStateTasks = analyzeJobState.getTasks();
-        final List<TasksStateTasksEntityRecognitionPiiTasksItem> piiTasksItems =
-            tasksStateTasks.getEntityRecognitionPiiTasks();
-        final List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasksItems =
-            tasksStateTasks.getEntityRecognitionTasks();
-        final List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks =
-            tasksStateTasks.getKeyPhraseExtractionTasks();
-        final List<TasksStateTasksEntityLinkingTasksItem> linkedEntityRecognitionTasksItems =
-            tasksStateTasks.getEntityLinkingTasks();
-        final List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasksItems =
-            tasksStateTasks.getSentimentAnalysisTasks();
+        final List<TasksStateTasksEntityRecognitionPiiTasksItem> piiTasksItems
+            = tasksStateTasks.getEntityRecognitionPiiTasks();
+        final List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasksItems
+            = tasksStateTasks.getEntityRecognitionTasks();
+        final List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks
+            = tasksStateTasks.getKeyPhraseExtractionTasks();
+        final List<TasksStateTasksEntityLinkingTasksItem> linkedEntityRecognitionTasksItems
+            = tasksStateTasks.getEntityLinkingTasks();
+        final List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasksItems
+            = tasksStateTasks.getSentimentAnalysisTasks();
 
         List<RecognizeEntitiesActionResult> recognizeEntitiesActionResults = new ArrayList<>();
         List<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults = new ArrayList<>();
@@ -1089,15 +1023,15 @@ class AnalyzeActionsUtilClient {
                     } else if (SENTIMENT_ANALYSIS_TASKS.equals(taskName)) {
                         actionResult = analyzeSentimentActionResults.get(taskIndex);
                     } else {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(
-                            "Invalid task name in target reference, " + taskName));
+                        throw LOGGER.logExceptionAsError(
+                            new RuntimeException("Invalid task name in target reference, " + taskName));
                     }
 
                     TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, true);
                     TextAnalyticsActionResultPropertiesHelper.setError(actionResult,
                         new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                            TextAnalyticsErrorCode.fromString(
-                                error.getErrorCode() == null ? null : error.getErrorCode().toString()),
+                            TextAnalyticsErrorCode
+                                .fromString(error.getErrorCode() == null ? null : error.getErrorCode().toString()),
                             error.getMessage(), null));
                 }
             }
@@ -1151,8 +1085,8 @@ class AnalyzeActionsUtilClient {
                     recognizeEntitiesActionResults.add(actionResult);
 
                 } else if (taskResult instanceof CustomEntityRecognitionLROResult) {
-                    final CustomEntityRecognitionLROResult customEntityTaskResult =
-                        (CustomEntityRecognitionLROResult) taskResult;
+                    final CustomEntityRecognitionLROResult customEntityTaskResult
+                        = (CustomEntityRecognitionLROResult) taskResult;
                     final RecognizeCustomEntitiesActionResult actionResult = new RecognizeCustomEntitiesActionResult();
                     final CustomEntitiesResult results = customEntityTaskResult.getResults();
                     if (results != null) {
@@ -1165,12 +1099,10 @@ class AnalyzeActionsUtilClient {
                         customEntityTaskResult.getLastUpdateDateTime());
                     recognizeCustomEntitiesActionResults.add(actionResult);
                 } else if (taskResult instanceof CustomSingleLabelClassificationLROResult) {
-                    final CustomSingleLabelClassificationLROResult customSingleLabelClassificationResult =
-                        (CustomSingleLabelClassificationLROResult) taskResult;
-                    final SingleLabelClassifyActionResult actionResult =
-                        new SingleLabelClassifyActionResult();
-                    final CustomLabelClassificationResult results =
-                        customSingleLabelClassificationResult.getResults();
+                    final CustomSingleLabelClassificationLROResult customSingleLabelClassificationResult
+                        = (CustomSingleLabelClassificationLROResult) taskResult;
+                    final SingleLabelClassifyActionResult actionResult = new SingleLabelClassifyActionResult();
+                    final CustomLabelClassificationResult results = customSingleLabelClassificationResult.getResults();
                     if (results != null) {
                         SingleLabelClassifyActionResultPropertiesHelper.setDocumentsResults(actionResult,
                             toLabelClassificationResultCollection(results));
@@ -1181,11 +1113,11 @@ class AnalyzeActionsUtilClient {
                         customSingleLabelClassificationResult.getLastUpdateDateTime());
                     singleLabelClassifyActionResults.add(actionResult);
                 } else if (taskResult instanceof CustomMultiLabelClassificationLROResult) {
-                    final CustomMultiLabelClassificationLROResult customMultiLabelClassificationLROResult =
-                        (CustomMultiLabelClassificationLROResult) taskResult;
+                    final CustomMultiLabelClassificationLROResult customMultiLabelClassificationLROResult
+                        = (CustomMultiLabelClassificationLROResult) taskResult;
                     final MultiLabelClassifyActionResult actionResult = new MultiLabelClassifyActionResult();
-                    final CustomLabelClassificationResult results =
-                        customMultiLabelClassificationLROResult.getResults();
+                    final CustomLabelClassificationResult results
+                        = customMultiLabelClassificationLROResult.getResults();
                     if (results != null) {
                         MultiLabelClassifyActionResultPropertiesHelper.setDocumentsResults(actionResult,
                             toLabelClassificationResultCollection(results));
@@ -1209,8 +1141,8 @@ class AnalyzeActionsUtilClient {
                         entityLinkingLROResult.getLastUpdateDateTime());
                     recognizeLinkedEntitiesActionResults.add(actionResult);
                 } else if (taskResult instanceof PiiEntityRecognitionLROResult) {
-                    final PiiEntityRecognitionLROResult piiEntityRecognitionLROResult =
-                        (PiiEntityRecognitionLROResult) taskResult;
+                    final PiiEntityRecognitionLROResult piiEntityRecognitionLROResult
+                        = (PiiEntityRecognitionLROResult) taskResult;
                     final RecognizePiiEntitiesActionResult actionResult = new RecognizePiiEntitiesActionResult();
                     final PiiResult results = piiEntityRecognitionLROResult.getResults();
                     if (results != null) {
@@ -1224,8 +1156,8 @@ class AnalyzeActionsUtilClient {
                     recognizePiiEntitiesActionResults.add(actionResult);
                 } else if (taskResult instanceof HealthcareLROResult) {
                     final HealthcareLROResult healthcareLROResult = (HealthcareLROResult) taskResult;
-                    final AnalyzeHealthcareEntitiesActionResult actionResult =
-                        new AnalyzeHealthcareEntitiesActionResult();
+                    final AnalyzeHealthcareEntitiesActionResult actionResult
+                        = new AnalyzeHealthcareEntitiesActionResult();
                     final HealthcareResult results = healthcareLROResult.getResults();
                     if (results != null) {
                         AnalyzeHealthcareEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
@@ -1250,8 +1182,8 @@ class AnalyzeActionsUtilClient {
                         sentimentLROResult.getLastUpdateDateTime());
                     analyzeSentimentActionResults.add(actionResult);
                 } else if (taskResult instanceof KeyPhraseExtractionLROResult) {
-                    final KeyPhraseExtractionLROResult keyPhraseExtractionLROResult =
-                        (KeyPhraseExtractionLROResult) taskResult;
+                    final KeyPhraseExtractionLROResult keyPhraseExtractionLROResult
+                        = (KeyPhraseExtractionLROResult) taskResult;
                     final ExtractKeyPhrasesActionResult actionResult = new ExtractKeyPhrasesActionResult();
                     final KeyPhraseResult results = keyPhraseExtractionLROResult.getResults();
                     if (results != null) {
@@ -1264,8 +1196,8 @@ class AnalyzeActionsUtilClient {
                         keyPhraseExtractionLROResult.getLastUpdateDateTime());
                     extractKeyPhrasesActionResults.add(actionResult);
                 } else if (taskResult instanceof ExtractiveSummarizationLROResult) {
-                    final ExtractiveSummarizationLROResult extractiveSummarizationLROResult =
-                        (ExtractiveSummarizationLROResult) taskResult;
+                    final ExtractiveSummarizationLROResult extractiveSummarizationLROResult
+                        = (ExtractiveSummarizationLROResult) taskResult;
                     final ExtractiveSummaryActionResult actionResult = new ExtractiveSummaryActionResult();
                     final ExtractiveSummarizationResult results = extractiveSummarizationLROResult.getResults();
                     if (results != null) {
@@ -1278,8 +1210,8 @@ class AnalyzeActionsUtilClient {
                         extractiveSummarizationLROResult.getLastUpdateDateTime());
                     extractiveSummaryActionResults.add(actionResult);
                 } else if (taskResult instanceof AbstractiveSummarizationLROResult) {
-                    final AbstractiveSummarizationLROResult abstractiveSummarizationLROResult =
-                        (AbstractiveSummarizationLROResult) taskResult;
+                    final AbstractiveSummarizationLROResult abstractiveSummarizationLROResult
+                        = (AbstractiveSummarizationLROResult) taskResult;
                     final AbstractiveSummaryActionResult actionResult = new AbstractiveSummaryActionResult();
                     final AbstractiveSummarizationResult results = abstractiveSummarizationLROResult.getResults();
                     if (results != null) {
@@ -1292,8 +1224,8 @@ class AnalyzeActionsUtilClient {
                         abstractiveSummarizationLROResult.getLastUpdateDateTime());
                     abstractiveSummaryActionResults.add(actionResult);
                 } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(
-                        "Invalid Long running operation task result: " + taskResult.getClass()));
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException("Invalid Long running operation task result: " + taskResult.getClass()));
                 }
             }
         }
@@ -1304,7 +1236,8 @@ class AnalyzeActionsUtilClient {
         if (!CoreUtils.isNullOrEmpty(errors)) {
             for (Error error : errors) {
                 if (error != null) {
-                    final String[] targetPair = parseActionErrorTargetLanguageApi(error.getTarget(), error.getMessage());
+                    final String[] targetPair
+                        = parseActionErrorTargetLanguageApi(error.getTarget(), error.getMessage());
                     final String taskName = targetPair[0];
                     final Integer taskIndex = Integer.valueOf(targetPair[1]);
                     final TextAnalyticsActionResult actionResult;
@@ -1331,15 +1264,15 @@ class AnalyzeActionsUtilClient {
                     } else if (ABSTRACTIVE_SUMMARIZATION.equals(taskName)) {
                         actionResult = abstractiveSummaryActionResults.get(taskIndex);
                     } else {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(
-                            "Invalid task name in target reference, " + taskName));
+                        throw LOGGER.logExceptionAsError(
+                            new RuntimeException("Invalid task name in target reference, " + taskName));
                     }
 
                     TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, true);
                     TextAnalyticsActionResultPropertiesHelper.setError(actionResult,
                         new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                            TextAnalyticsErrorCode.fromString(
-                                error.getCode() == null ? null : error.getCode().toString()),
+                            TextAnalyticsErrorCode
+                                .fromString(error.getCode() == null ? null : error.getCode().toString()),
                             error.getMessage(), null));
                 }
             }
@@ -1385,8 +1318,8 @@ class AnalyzeActionsUtilClient {
             } else if (CANCELLED.equals(state)) {
                 status = LongRunningOperationStatus.USER_CANCELLED;
             } else {
-                status = LongRunningOperationStatus.fromString(
-                    analyzeJobStateResponse.getValue().getStatus().toString(), true);
+                status = LongRunningOperationStatus
+                    .fromString(analyzeJobStateResponse.getValue().getStatus().toString(), true);
             }
         }
         AnalyzeActionsOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
@@ -1402,8 +1335,8 @@ class AnalyzeActionsUtilClient {
             tasksResult.getFailed());
         AnalyzeActionsOperationDetailPropertiesHelper.setActionsInProgress(operationResultPollResponse.getValue(),
             tasksResult.getInProgress());
-        AnalyzeActionsOperationDetailPropertiesHelper.setActionsSucceeded(
-            operationResultPollResponse.getValue(), tasksResult.getCompleted());
+        AnalyzeActionsOperationDetailPropertiesHelper.setActionsSucceeded(operationResultPollResponse.getValue(),
+            tasksResult.getCompleted());
         AnalyzeActionsOperationDetailPropertiesHelper.setActionsInTotal(operationResultPollResponse.getValue(),
             tasksResult.getTotal());
         return new PollResponse<>(status, operationResultPollResponse.getValue());
@@ -1423,8 +1356,8 @@ class AnalyzeActionsUtilClient {
             } else if (CANCELLED.equals(state)) {
                 status = LongRunningOperationStatus.USER_CANCELLED;
             } else {
-                status = LongRunningOperationStatus.fromString(
-                    analyzeJobStateResponse.getValue().getStatus().toString(), true);
+                status = LongRunningOperationStatus
+                    .fromString(analyzeJobStateResponse.getValue().getStatus().toString(), true);
             }
         }
         AnalyzeActionsOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
@@ -1440,8 +1373,8 @@ class AnalyzeActionsUtilClient {
             tasksResult.getFailed());
         AnalyzeActionsOperationDetailPropertiesHelper.setActionsInProgress(operationResultPollResponse.getValue(),
             tasksResult.getInProgress());
-        AnalyzeActionsOperationDetailPropertiesHelper.setActionsSucceeded(
-            operationResultPollResponse.getValue(), tasksResult.getCompleted());
+        AnalyzeActionsOperationDetailPropertiesHelper.setActionsSucceeded(operationResultPollResponse.getValue(),
+            tasksResult.getCompleted());
         AnalyzeActionsOperationDetailPropertiesHelper.setActionsInTotal(operationResultPollResponse.getValue(),
             tasksResult.getTotal());
         return new PollResponse<>(status, operationResultPollResponse.getValue());
@@ -1491,27 +1424,23 @@ class AnalyzeActionsUtilClient {
     private void throwIfTargetServiceVersionFoundForActions(TextAnalyticsServiceVersion sourceVersion,
         List<TextAnalyticsServiceVersion> targetVersions, TextAnalyticsActions actions) {
         if (actions.getMultiLabelClassifyActions() != null) {
-            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                getUnsupportedServiceApiVersionMessage("MultiLabelClassifyAction", serviceVersion,
-                    TextAnalyticsServiceVersion.V2022_05_01));
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions, getUnsupportedServiceApiVersionMessage(
+                "MultiLabelClassifyAction", serviceVersion, TextAnalyticsServiceVersion.V2022_05_01));
         }
 
         if (actions.getSingleLabelClassifyActions() != null) {
-            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                getUnsupportedServiceApiVersionMessage("SingleLabelClassifyAction", serviceVersion,
-                    TextAnalyticsServiceVersion.V2022_05_01));
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions, getUnsupportedServiceApiVersionMessage(
+                "SingleLabelClassifyAction", serviceVersion, TextAnalyticsServiceVersion.V2022_05_01));
         }
 
         if (actions.getRecognizeCustomEntitiesActions() != null) {
-            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                getUnsupportedServiceApiVersionMessage("RecognizeCustomEntitiesAction", serviceVersion,
-                    TextAnalyticsServiceVersion.V2022_05_01));
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions, getUnsupportedServiceApiVersionMessage(
+                "RecognizeCustomEntitiesAction", serviceVersion, TextAnalyticsServiceVersion.V2022_05_01));
         }
 
         if (actions.getAnalyzeHealthcareEntitiesActions() != null) {
-            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesAction", serviceVersion,
-                    TextAnalyticsServiceVersion.V2022_05_01));
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions, getUnsupportedServiceApiVersionMessage(
+                "AnalyzeHealthcareEntitiesAction", serviceVersion, TextAnalyticsServiceVersion.V2022_05_01));
         }
     }
 }

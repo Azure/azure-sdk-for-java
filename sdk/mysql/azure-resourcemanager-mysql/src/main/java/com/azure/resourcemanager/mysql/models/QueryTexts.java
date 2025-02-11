@@ -63,6 +63,6 @@ public interface QueryTexts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of query texts.
      */
-    PagedIterable<QueryText> listByServer(
-        String resourceGroupName, String serverName, List<String> queryIds, Context context);
+    PagedIterable<QueryText> listByServer(String resourceGroupName, String serverName, List<String> queryIds,
+        Context context);
 }

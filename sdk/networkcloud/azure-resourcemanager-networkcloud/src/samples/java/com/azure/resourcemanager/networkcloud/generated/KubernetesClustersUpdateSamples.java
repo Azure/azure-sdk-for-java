@@ -4,33 +4,42 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
+import com.azure.resourcemanager.networkcloud.models.AdministratorConfigurationPatch;
 import com.azure.resourcemanager.networkcloud.models.ControlPlaneNodePatchConfiguration;
 import com.azure.resourcemanager.networkcloud.models.KubernetesCluster;
+import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for KubernetesClusters Update. */
+/**
+ * Samples for KubernetesClusters Update.
+ */
 public final class KubernetesClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/KubernetesClusters_Patch.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * KubernetesClusters_Patch.json
      */
     /**
      * Sample code: Patch Kubernetes cluster.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void patchKubernetesCluster(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        KubernetesCluster resource =
-            manager
-                .kubernetesClusters()
-                .getByResourceGroupWithResponse(
-                    "resourceGroupName", "kubernetesClusterName", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        KubernetesCluster resource = manager.kubernetesClusters()
+            .getByResourceGroupWithResponse("resourceGroupName", "kubernetesClusterName",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withControlPlaneNodeConfiguration(new ControlPlaneNodePatchConfiguration().withCount(3L))
-            .withKubernetesVersion("1.24.12")
+            .withAdministratorConfiguration(new AdministratorConfigurationPatch()
+                .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))))
+            .withControlPlaneNodeConfiguration(new ControlPlaneNodePatchConfiguration()
+                .withAdministratorConfiguration(new AdministratorConfigurationPatch()
+                    .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))))
+                .withCount(3L))
+            .withKubernetesVersion("1.XX.Y")
             .apply();
     }
 

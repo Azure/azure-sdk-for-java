@@ -21,12 +21,20 @@ public class OverridingArgument {
         this.isSecret = isSecret;
     }
 
-    /** @return the value of the overriding argument. */
+    /**
+     * Gets the value of the overriding argument.
+     *
+     * @return the value of the overriding argument.
+     */
     public String value() {
         return this.value;
     }
 
-    /** @return whether the overriding argument is secret or not. */
+    /**
+     * Checks whether the overriding argument is secret or not.
+     *
+     * @return whether the overriding argument is secret or not.
+     */
     public boolean isSecret() {
         return this.isSecret;
     }

@@ -17,7 +17,8 @@ public final class SipTrunkRouteConverter {
      * Maps from {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute}
      * to {@link com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute}.
      */
-    public static List<SipTrunkRoute> convertFromApi(List<com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute> apiRoutes) {
+    public static List<SipTrunkRoute> convertFromApi(
+        List<com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute> apiRoutes) {
         if (apiRoutes == null) {
             return null;
         }
@@ -42,13 +43,14 @@ public final class SipTrunkRouteConverter {
             return null;
         }
 
-        List<com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute> result = new ArrayList<>();
+        List<com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute> result
+            = new ArrayList<>();
         for (SipTrunkRoute route : routes) {
             result.add(new com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute()
-                    .setName(route.getName())
-                    .setNumberPattern(route.getNumberPattern())
-                    .setDescription(route.getDescription())
-                    .setTrunks(route.getTrunks()));
+                .setName(route.getName())
+                .setNumberPattern(route.getNumberPattern())
+                .setDescription(route.getDescription())
+                .setTrunks(route.getTrunks()));
         }
 
         return result;

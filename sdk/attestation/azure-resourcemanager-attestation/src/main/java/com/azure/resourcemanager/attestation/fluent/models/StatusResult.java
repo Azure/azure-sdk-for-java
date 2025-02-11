@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.attestation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.attestation.models.AttestationServiceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Status of attestation service. */
+/**
+ * Status of attestation service.
+ */
 @Fluent
-public final class StatusResult {
+public final class StatusResult implements JsonSerializable<StatusResult> {
     /*
      * Trust model for the attestation provider.
      */
-    @JsonProperty(value = "trustModel")
     private String trustModel;
 
     /*
      * Status of attestation service.
      */
-    @JsonProperty(value = "status")
     private AttestationServiceStatus status;
 
     /*
      * Gets the uri of attestation service
      */
-    @JsonProperty(value = "attestUri")
     private String attestUri;
 
     /*
      * List of private endpoint connections associated with the attestation provider.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
-    /** Creates an instance of StatusResult class. */
+    /**
+     * Creates an instance of StatusResult class.
+     */
     public StatusResult() {
     }
 
     /**
      * Get the trustModel property: Trust model for the attestation provider.
-     *
+     * 
      * @return the trustModel value.
      */
     public String trustModel() {
@@ -51,7 +55,7 @@ public final class StatusResult {
 
     /**
      * Set the trustModel property: Trust model for the attestation provider.
-     *
+     * 
      * @param trustModel the trustModel value to set.
      * @return the StatusResult object itself.
      */
@@ -62,7 +66,7 @@ public final class StatusResult {
 
     /**
      * Get the status property: Status of attestation service.
-     *
+     * 
      * @return the status value.
      */
     public AttestationServiceStatus status() {
@@ -71,7 +75,7 @@ public final class StatusResult {
 
     /**
      * Set the status property: Status of attestation service.
-     *
+     * 
      * @param status the status value to set.
      * @return the StatusResult object itself.
      */
@@ -82,7 +86,7 @@ public final class StatusResult {
 
     /**
      * Get the attestUri property: Gets the uri of attestation service.
-     *
+     * 
      * @return the attestUri value.
      */
     public String attestUri() {
@@ -91,7 +95,7 @@ public final class StatusResult {
 
     /**
      * Set the attestUri property: Gets the uri of attestation service.
-     *
+     * 
      * @param attestUri the attestUri value to set.
      * @return the StatusResult object itself.
      */
@@ -103,7 +107,7 @@ public final class StatusResult {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the attestation
      * provider.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -112,12 +116,58 @@ public final class StatusResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("trustModel", this.trustModel);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("attestUri", this.attestUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatusResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatusResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatusResult.
+     */
+    public static StatusResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatusResult deserializedStatusResult = new StatusResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trustModel".equals(fieldName)) {
+                    deserializedStatusResult.trustModel = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedStatusResult.status = AttestationServiceStatus.fromString(reader.getString());
+                } else if ("attestUri".equals(fieldName)) {
+                    deserializedStatusResult.attestUri = reader.getString();
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedStatusResult.privateEndpointConnections = privateEndpointConnections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatusResult;
+        });
     }
 }

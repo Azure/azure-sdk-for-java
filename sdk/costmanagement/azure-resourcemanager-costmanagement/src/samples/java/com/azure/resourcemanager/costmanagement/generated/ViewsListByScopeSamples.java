@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for Views ListByScope. */
+/**
+ * Samples for Views ListByScope.
+ */
 public final class ViewsListByScopeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ViewListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ViewListByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupViewList.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void resourceGroupViewList(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .views()
-            .listByScope(
-                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
+        manager.views()
+            .listByScope("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
                 com.azure.core.util.Context.NONE);
     }
 }

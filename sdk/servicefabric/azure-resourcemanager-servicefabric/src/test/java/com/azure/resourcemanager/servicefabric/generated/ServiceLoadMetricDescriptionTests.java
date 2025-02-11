@@ -24,9 +24,11 @@ public final class ServiceLoadMetricDescriptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceLoadMetricDescription model
-            = new ServiceLoadMetricDescription().withName("yfzqwhxxbu").withWeight(ServiceLoadMetricWeight.ZERO)
-                .withPrimaryDefaultLoad(437954475).withSecondaryDefaultLoad(776883338).withDefaultLoad(1924816201);
+        ServiceLoadMetricDescription model = new ServiceLoadMetricDescription().withName("yfzqwhxxbu")
+            .withWeight(ServiceLoadMetricWeight.ZERO)
+            .withPrimaryDefaultLoad(437954475)
+            .withSecondaryDefaultLoad(776883338)
+            .withDefaultLoad(1924816201);
         model = BinaryData.fromObject(model).toObject(ServiceLoadMetricDescription.class);
         Assertions.assertEquals("yfzqwhxxbu", model.name());
         Assertions.assertEquals(ServiceLoadMetricWeight.ZERO, model.weight());

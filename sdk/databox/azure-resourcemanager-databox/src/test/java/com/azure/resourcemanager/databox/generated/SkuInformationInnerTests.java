@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databox.fluent.models.SkuInformationInner;
 public final class SkuInformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuInformationInner model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"DataBox\",\"displayName\":\"kbeype\",\"family\":\"mjmwvvjektcx\"},\"enabled\":true,\"properties\":{\"dataLocationToServiceLocationMap\":[{\"dataLocation\":\"s\",\"serviceLocation\":\"rzpwvlqdqgbiq\"}],\"capacity\":{\"usable\":\"hkaetcktvfc\",\"maximum\":\"fsnkymuctq\"},\"costs\":[{\"meterId\":\"ebrjcxe\",\"meterType\":\"uwutttxfvjrbi\",\"multiplier\":78.79260273148051},{\"meterId\":\"pcyvahfnljkyqx\",\"meterType\":\"uujqgidokgjljyo\",\"multiplier\":65.1236532515971},{\"meterId\":\"tbgsncghkj\",\"meterType\":\"zz\",\"multiplier\":35.789364440261664}],\"apiVersions\":[\"xfvgxbfsmxne\",\"mpvecxgodebfqk\"],\"disabledReason\":\"Country\",\"disabledReasonMessage\":\"pukgriwflzlfb\",\"requiredFeature\":\"puz\",\"countriesWithinCommerceBoundary\":[\"spnqzahmgkb\",\"pyydhi\",\"nuqqkpikadrgvt\",\"agnb\"]}}")
-                .toObject(SkuInformationInner.class);
+        SkuInformationInner model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"DataBoxHeavy\",\"displayName\":\"lhspkdee\",\"family\":\"ofmxagkvtmelmqkr\"},\"enabled\":true,\"properties\":{\"dataLocationToServiceLocationMap\":[{\"dataLocation\":\"ahaquh\",\"serviceLocation\":\"hmdua\"},{\"dataLocation\":\"exq\",\"serviceLocation\":\"fadmws\"},{\"dataLocation\":\"r\",\"serviceLocation\":\"xpvgo\"},{\"dataLocation\":\"lf\",\"serviceLocation\":\"sgwbnbbeld\"}],\"capacity\":{\"usable\":\"zbaliourqha\",\"maximum\":\"uhashsfwx\"},\"costs\":[{\"meterId\":\"z\",\"meterType\":\"ugicjooxdjebw\",\"multiplier\":67.25275119094462},{\"meterId\":\"fvovbvmeuecivy\",\"meterType\":\"ce\",\"multiplier\":81.17821214562933}],\"apiVersions\":[\"wjue\"],\"disabledReason\":\"Region\",\"disabledReasonMessage\":\"mcdytdxwitxnrj\",\"requiredFeature\":\"gqwgxhniskxfbkp\",\"countriesWithinCommerceBoundary\":[\"klwndnhjdauwhv\",\"l\"]}}")
+            .toObject(SkuInformationInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devtestlabs.fluent.models.OperationResultInner;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public interface OperationsClient {
     /**
      * Get operation.
-     *
+     * 
      * @param locationName The name of the location.
      * @param name The name of the operation.
      * @param context The context to associate with this operation.
@@ -28,7 +30,7 @@ public interface OperationsClient {
 
     /**
      * Get operation.
-     *
+     * 
      * @param locationName The name of the location.
      * @param name The name of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

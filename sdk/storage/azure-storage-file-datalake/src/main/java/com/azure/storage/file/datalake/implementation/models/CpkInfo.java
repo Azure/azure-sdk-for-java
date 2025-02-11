@@ -13,7 +13,9 @@ import com.azure.storage.file.datalake.models.EncryptionAlgorithmType;
 @Fluent
 public final class CpkInfo {
     /*
-     * Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption is performed with the root account encryption key.  For more information, see Encryption at Rest for Azure Storage Services.
+     * Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified,
+     * encryption is performed with the root account encryption key. For more information, see Encryption at Rest for
+     * Azure Storage Services.
      */
     private String encryptionKey;
 
@@ -23,7 +25,8 @@ public final class CpkInfo {
     private String encryptionKeySha256;
 
     /*
-     * The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided if the x-ms-encryption-key header is provided.
+     * The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be
+     * provided if the x-ms-encryption-key header is provided.
      */
     private EncryptionAlgorithmType encryptionAlgorithm;
 

@@ -42,8 +42,8 @@ public enum TableSasProtocol {
             return TableSasProtocol.HTTPS_HTTP;
         }
 
-        throw new IllegalArgumentException(String.format(Locale.ROOT,
-            "%s could not be parsed into a SasProtocol value.", str));
+        throw new IllegalArgumentException(
+            String.format(Locale.ROOT, "%s could not be parsed into a SasProtocol value.", str));
     }
 
     @Override

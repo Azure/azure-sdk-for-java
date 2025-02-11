@@ -35,22 +35,29 @@ public final class DataProductsCatalogListResultTests {
                     new PublisherInformation().withPublisherName("w")
                         .withDataProducts(Arrays.asList(
                             new DataProductInformation().withDataProductName("lryplwckbasyy")
-                                .withDescription("nddhsgcbacph").withDataProductVersions(Arrays.asList()),
-                            new DataProductInformation().withDataProductName("jkot").withDescription("nqgoulzndli")
+                                .withDescription("nddhsgcbacph")
                                 .withDataProductVersions(Arrays.asList()),
-                            new DataProductInformation().withDataProductName("wyqkgfgibm").withDescription("dgak")
+                            new DataProductInformation().withDataProductName("jkot")
+                                .withDescription("nqgoulzndli")
+                                .withDataProductVersions(Arrays.asList()),
+                            new DataProductInformation().withDataProductName("wyqkgfgibm")
+                                .withDescription("dgak")
                                 .withDataProductVersions(Arrays.asList()))),
                     new PublisherInformation().withPublisherName("qsrxybzqqed")
                         .withDataProducts(Arrays.asList(new DataProductInformation().withDataProductName("tbciqfouflmm")
-                            .withDescription("kzsmodm").withDataProductVersions(Arrays.asList())))))),
+                            .withDescription("kzsmodm")
+                            .withDataProductVersions(Arrays.asList())))))),
             new DataProductsCatalogInner().withProperties(new DataProductsCatalogProperties()
                 .withPublishers(Arrays.asList(new PublisherInformation().withPublisherName("gbbjfddgmbmbe")
                     .withDataProducts(Arrays.asList(
-                        new DataProductInformation().withDataProductName("pbhtqqrolfpfpsa").withDescription("gbquxigj")
+                        new DataProductInformation().withDataProductName("pbhtqqrolfpfpsa")
+                            .withDescription("gbquxigj")
                             .withDataProductVersions(Arrays.asList()),
                         new DataProductInformation().withDataProductName("jgzjaoyfhrtx")
-                            .withDescription("lnerkujysvleju").withDataProductVersions(Arrays.asList()),
-                        new DataProductInformation().withDataProductName("fqawrlyxw").withDescription("kcprbnw")
+                            .withDescription("lnerkujysvleju")
+                            .withDataProductVersions(Arrays.asList()),
+                        new DataProductInformation().withDataProductName("fqawrlyxw")
+                            .withDescription("kcprbnw")
                             .withDataProductVersions(Arrays.asList()))))))))
             .withNextLink("rwzwbng");
         model = BinaryData.fromObject(model).toObject(DataProductsCatalogListResult.class);

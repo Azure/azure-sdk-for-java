@@ -6,34 +6,25 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A custom alert rule that checks if a value (depends on the custom alert type) is denied.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "ruleType",
-    defaultImpl = DenylistCustomAlertRule.class,
-    visible = true)
-@JsonTypeName("DenylistCustomAlertRule")
 @Fluent
 public final class DenylistCustomAlertRule extends ListCustomAlertRule {
     /*
      * The type of the custom alert rule.
      */
-    @JsonTypeId
-    @JsonProperty(value = "ruleType", required = true)
     private String ruleType = "DenylistCustomAlertRule";
 
     /*
      * The values to deny. The format of the values depends on the rule type.
      */
-    @JsonProperty(value = "denylistValues", required = true)
     private List<String> denylistValues;
 
     /**
@@ -88,7 +79,6 @@ public final class DenylistCustomAlertRule extends ListCustomAlertRule {
      */
     @Override
     public void validate() {
-        super.validate();
         if (denylistValues() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -97,4 +87,55 @@ public final class DenylistCustomAlertRule extends ListCustomAlertRule {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DenylistCustomAlertRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeArrayField("denylistValues", this.denylistValues,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DenylistCustomAlertRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DenylistCustomAlertRule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DenylistCustomAlertRule.
+     */
+    public static DenylistCustomAlertRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DenylistCustomAlertRule deserializedDenylistCustomAlertRule = new DenylistCustomAlertRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedDenylistCustomAlertRule.withIsEnabled(reader.getBoolean());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDenylistCustomAlertRule.withDisplayName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedDenylistCustomAlertRule.withDescription(reader.getString());
+                } else if ("valueType".equals(fieldName)) {
+                    deserializedDenylistCustomAlertRule.withValueType(ValueType.fromString(reader.getString()));
+                } else if ("denylistValues".equals(fieldName)) {
+                    List<String> denylistValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDenylistCustomAlertRule.denylistValues = denylistValues;
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedDenylistCustomAlertRule.ruleType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDenylistCustomAlertRule;
+        });
+    }
 }

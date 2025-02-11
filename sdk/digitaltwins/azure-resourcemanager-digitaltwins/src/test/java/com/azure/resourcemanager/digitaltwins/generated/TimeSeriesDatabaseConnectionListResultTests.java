@@ -6,6 +6,8 @@ package com.azure.resourcemanager.digitaltwins.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.digitaltwins.fluent.models.TimeSeriesDatabaseConnectionInner;
+import com.azure.resourcemanager.digitaltwins.models.IdentityType;
+import com.azure.resourcemanager.digitaltwins.models.ManagedIdentityReference;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnectionListResult;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnectionProperties;
 import java.util.Arrays;
@@ -14,31 +16,31 @@ import org.junit.jupiter.api.Assertions;
 public final class TimeSeriesDatabaseConnectionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TimeSeriesDatabaseConnectionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"lpbuxwgipwhonowk\",\"value\":[{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Suspending\"},\"id\":\"xzbinjeputt\",\"name\":\"rywn\",\"type\":\"zoqftiyqzrnkcqvy\"},{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Failed\"},\"id\":\"sicohoqqnwvlry\",\"name\":\"vwhheunmmqhgyx\",\"type\":\"konocu\"},{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Failed\"},\"id\":\"xuconu\",\"name\":\"szfkbe\",\"type\":\"pewr\"},{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Failed\"},\"id\":\"jektcxsenh\",\"name\":\"lrsf\",\"type\":\"rzpwvlqdqgbiq\"}]}")
-                .toObject(TimeSeriesDatabaseConnectionListResult.class);
-        Assertions.assertEquals("lpbuxwgipwhonowk", model.nextLink());
+        TimeSeriesDatabaseConnectionListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"deyeamdphagalpbu\",\"value\":[{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Restoring\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"wkgshwa\"}},\"id\":\"ixzbinjeputtmryw\",\"name\":\"uzoqft\",\"type\":\"yqzrnkcqvyxlw\"},{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Deleting\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"oqqnwvlryav\"}},\"id\":\"heun\",\"name\":\"mqhgyxzkonocuk\",\"type\":\"klyaxuconu\"},{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Deleting\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"pewr\"}},\"id\":\"mwvvjektcxsenhw\",\"name\":\"rsffrzpwvlqdqgbi\",\"type\":\"ylihkaetckt\"}]}")
+            .toObject(TimeSeriesDatabaseConnectionListResult.class);
+        Assertions.assertEquals("deyeamdphagalpbu", model.nextLink());
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.value().get(0).properties().identity().type());
+        Assertions.assertEquals("wkgshwa", model.value().get(0).properties().identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TimeSeriesDatabaseConnectionListResult model =
-            new TimeSeriesDatabaseConnectionListResult()
-                .withNextLink("lpbuxwgipwhonowk")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new TimeSeriesDatabaseConnectionInner()
-                                .withProperties(new TimeSeriesDatabaseConnectionProperties()),
-                            new TimeSeriesDatabaseConnectionInner()
-                                .withProperties(new TimeSeriesDatabaseConnectionProperties()),
-                            new TimeSeriesDatabaseConnectionInner()
-                                .withProperties(new TimeSeriesDatabaseConnectionProperties()),
-                            new TimeSeriesDatabaseConnectionInner()
-                                .withProperties(new TimeSeriesDatabaseConnectionProperties())));
+        TimeSeriesDatabaseConnectionListResult model
+            = new TimeSeriesDatabaseConnectionListResult().withNextLink("deyeamdphagalpbu")
+                .withValue(Arrays.asList(
+                    new TimeSeriesDatabaseConnectionInner().withProperties(new TimeSeriesDatabaseConnectionProperties()
+                        .withIdentity(new ManagedIdentityReference().withType(IdentityType.SYSTEM_ASSIGNED)
+                            .withUserAssignedIdentity("wkgshwa"))),
+                    new TimeSeriesDatabaseConnectionInner().withProperties(new TimeSeriesDatabaseConnectionProperties()
+                        .withIdentity(new ManagedIdentityReference().withType(IdentityType.USER_ASSIGNED)
+                            .withUserAssignedIdentity("oqqnwvlryav"))),
+                    new TimeSeriesDatabaseConnectionInner().withProperties(new TimeSeriesDatabaseConnectionProperties()
+                        .withIdentity(new ManagedIdentityReference().withType(IdentityType.SYSTEM_ASSIGNED)
+                            .withUserAssignedIdentity("pewr")))));
         model = BinaryData.fromObject(model).toObject(TimeSeriesDatabaseConnectionListResult.class);
-        Assertions.assertEquals("lpbuxwgipwhonowk", model.nextLink());
+        Assertions.assertEquals("deyeamdphagalpbu", model.nextLink());
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.value().get(0).properties().identity().type());
+        Assertions.assertEquals("wkgshwa", model.value().get(0).properties().identity().userAssignedIdentity());
     }
 }

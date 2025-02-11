@@ -6,21 +6,31 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.ActionPropertiesBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Action property bag. */
+/**
+ * Action property bag.
+ */
 @Fluent
 public final class ActionRequestProperties extends ActionPropertiesBase {
     /*
      * Logic App Callback URL for this specific workflow.
      */
-    @JsonProperty(value = "triggerUri", required = true)
     private String triggerUri;
 
     /**
+     * Creates an instance of ActionRequestProperties class.
+     */
+    public ActionRequestProperties() {
+    }
+
+    /**
      * Get the triggerUri property: Logic App Callback URL for this specific workflow.
-     *
+     * 
      * @return the triggerUri value.
      */
     public String triggerUri() {
@@ -29,7 +39,7 @@ public final class ActionRequestProperties extends ActionPropertiesBase {
 
     /**
      * Set the triggerUri property: Logic App Callback URL for this specific workflow.
-     *
+     * 
      * @param triggerUri the triggerUri value to set.
      * @return the ActionRequestProperties object itself.
      */
@@ -38,7 +48,9 @@ public final class ActionRequestProperties extends ActionPropertiesBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActionRequestProperties withLogicAppResourceId(String logicAppResourceId) {
         super.withLogicAppResourceId(logicAppResourceId);
@@ -47,19 +59,62 @@ public final class ActionRequestProperties extends ActionPropertiesBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (triggerUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property triggerUri in model ActionRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property triggerUri in model ActionRequestProperties"));
+        }
+        if (logicAppResourceId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property logicAppResourceId in model ActionRequestProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ActionRequestProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("logicAppResourceId", logicAppResourceId());
+        jsonWriter.writeStringField("triggerUri", this.triggerUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionRequestProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActionRequestProperties.
+     */
+    public static ActionRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionRequestProperties deserializedActionRequestProperties = new ActionRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logicAppResourceId".equals(fieldName)) {
+                    deserializedActionRequestProperties.withLogicAppResourceId(reader.getString());
+                } else if ("triggerUri".equals(fieldName)) {
+                    deserializedActionRequestProperties.triggerUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionRequestProperties;
+        });
+    }
 }

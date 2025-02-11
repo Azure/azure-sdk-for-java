@@ -11,44 +11,43 @@ import com.azure.resourcemanager.consumption.fluent.EventsOperationsClient;
 import com.azure.resourcemanager.consumption.fluent.models.EventSummaryInner;
 import com.azure.resourcemanager.consumption.models.EventSummary;
 import com.azure.resourcemanager.consumption.models.EventsOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EventsOperationsImpl implements EventsOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventsOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventsOperationsImpl.class);
 
     private final EventsOperationsClient innerClient;
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    public EventsOperationsImpl(
-        EventsOperationsClient innerClient, com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
+    public EventsOperationsImpl(EventsOperationsClient innerClient,
+        com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<EventSummary> listByBillingProfile(
-        String billingAccountId, String billingProfileId, String startDate, String endDate) {
-        PagedIterable<EventSummaryInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountId, billingProfileId, startDate, endDate);
-        return Utils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
+    public PagedIterable<EventSummary> listByBillingProfile(String billingAccountId, String billingProfileId,
+        String startDate, String endDate) {
+        PagedIterable<EventSummaryInner> inner
+            = this.serviceClient().listByBillingProfile(billingAccountId, billingProfileId, startDate, endDate);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EventSummary> listByBillingProfile(
-        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context) {
-        PagedIterable<EventSummaryInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountId, billingProfileId, startDate, endDate, context);
-        return Utils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
+    public PagedIterable<EventSummary> listByBillingProfile(String billingAccountId, String billingProfileId,
+        String startDate, String endDate, Context context) {
+        PagedIterable<EventSummaryInner> inner = this.serviceClient()
+            .listByBillingProfile(billingAccountId, billingProfileId, startDate, endDate, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventSummary> listByBillingAccount(String billingAccountId) {
         PagedIterable<EventSummaryInner> inner = this.serviceClient().listByBillingAccount(billingAccountId);
-        return Utils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventSummary> listByBillingAccount(String billingAccountId, String filter, Context context) {
-        PagedIterable<EventSummaryInner> inner =
-            this.serviceClient().listByBillingAccount(billingAccountId, filter, context);
-        return Utils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
+        PagedIterable<EventSummaryInner> inner
+            = this.serviceClient().listByBillingAccount(billingAccountId, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
     }
 
     private EventsOperationsClient serviceClient() {

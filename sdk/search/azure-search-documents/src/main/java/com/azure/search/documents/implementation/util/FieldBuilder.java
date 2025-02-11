@@ -55,10 +55,10 @@ public final class FieldBuilder {
     private static final Set<Type> UNSUPPORTED_TYPES = new HashSet<>();
     private static final Set<SearchFieldDataType> UNSUPPORTED_SERVICE_TYPES = new HashSet<>();
 
-    private static final SearchFieldDataType COLLECTION_STRING = SearchFieldDataType.collection(
-        SearchFieldDataType.STRING);
-    private static final SearchFieldDataType COLLECTION_SINGLE = SearchFieldDataType.collection(
-        SearchFieldDataType.SINGLE);
+    private static final SearchFieldDataType COLLECTION_STRING
+        = SearchFieldDataType.collection(SearchFieldDataType.STRING);
+    private static final SearchFieldDataType COLLECTION_SINGLE
+        = SearchFieldDataType.collection(SearchFieldDataType.SINGLE);
 
     static {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Integer.class, SearchFieldDataType.INT32);
@@ -130,11 +130,11 @@ public final class FieldBuilder {
         }
 
         classChain.push(currentClass);
-        List<SearchField> searchFields = getDeclaredFieldsAndMethods(currentClass).filter(
-                FieldBuilder::fieldOrMethodIgnored)
-            .map(classField -> buildSearchField(classField, classChain, serializer))
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+        List<SearchField> searchFields
+            = getDeclaredFieldsAndMethods(currentClass).filter(FieldBuilder::fieldOrMethodIgnored)
+                .map(classField -> buildSearchField(classField, classChain, serializer))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
         classChain.pop();
         return searchFields;
     }
@@ -248,8 +248,8 @@ public final class FieldBuilder {
             return ((Class<?>) arrayOrListType).getComponentType();
         }
 
-        throw LOGGER.logExceptionAsError(
-            new RuntimeException("Collection type '" + arrayOrListType + "' is not supported."));
+        throw LOGGER
+            .logExceptionAsError(new RuntimeException("Collection type '" + arrayOrListType + "' is not supported."));
     }
 
     private static SearchField convertToBasicSearchField(String fieldName, Type type) {
@@ -304,9 +304,8 @@ public final class FieldBuilder {
             searchAnalyzerName = searchableField.searchAnalyzerName();
             indexAnalyzerName = searchableField.indexAnalyzerName();
             synonymMapNames = searchableField.synonymMapNames();
-            vectorSearchDimensions = searchableField.vectorSearchDimensions() > 0
-                ? searchableField.vectorSearchDimensions()
-                : null;
+            vectorSearchDimensions
+                = searchableField.vectorSearchDimensions() > 0 ? searchableField.vectorSearchDimensions() : null;
             vectorSearchProfileName = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfileName())
                 ? null
                 : searchableField.vectorSearchProfileName();
@@ -316,8 +315,8 @@ public final class FieldBuilder {
         }
 
         StringBuilder errorMessage = new StringBuilder();
-        boolean isStringOrCollectionString = searchField.getType() == SearchFieldDataType.STRING
-            || searchField.getType() == COLLECTION_STRING;
+        boolean isStringOrCollectionString
+            = searchField.getType() == SearchFieldDataType.STRING || searchField.getType() == COLLECTION_STRING;
         boolean isSearchableType = isStringOrCollectionString || searchField.getType() == COLLECTION_SINGLE;
         boolean hasAnalyzerName = !CoreUtils.isNullOrEmpty(analyzerName);
         boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
@@ -325,7 +324,8 @@ public final class FieldBuilder {
         boolean hasVectorEncodingFormat = !CoreUtils.isNullOrEmpty(vectorEncodingFormat);
         if (searchable) {
             if (!isSearchableType) {
-                errorMessage.append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', or "
+                errorMessage
+                    .append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', or "
                         + "'Collection(Edm.Single)' types. Property '")
                     .append(member.getName())
                     .append("' returns a '")
@@ -336,14 +336,14 @@ public final class FieldBuilder {
             // Searchable fields are allowed to have either no analyzer names configure or one of the following
             // analyzerName is set and searchAnalyzerName and indexAnalyzerName are not set
             // searchAnalyzerName and indexAnalyzerName are set and analyzerName is not set
-            if ((!hasAnalyzerName && (hasSearchAnalyzerName != hasIndexAnalyzerName)) || (hasAnalyzerName && (
-                hasSearchAnalyzerName || hasIndexAnalyzerName))) {
+            if ((!hasAnalyzerName && (hasSearchAnalyzerName != hasIndexAnalyzerName))
+                || (hasAnalyzerName && (hasSearchAnalyzerName || hasIndexAnalyzerName))) {
                 errorMessage.append("Please specify either analyzer or both searchAnalyzer and indexAnalyzer. ");
             }
         }
 
-        if (searchField.getType() == COLLECTION_SINGLE && (vectorSearchDimensions == null
-            || vectorSearchProfileName == null)) {
+        if (searchField.getType() == COLLECTION_SINGLE
+            && (vectorSearchDimensions == null || vectorSearchProfileName == null)) {
             errorMessage.append(
                 "Please specify both vectorSearchDimensions and vectorSearchProfileName for Collection(Edm.Single) type. ");
         }
@@ -410,13 +410,13 @@ public final class FieldBuilder {
         }
 
         if (hasArrayOrCollectionWrapped) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Only single-dimensional array is supported."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Only single-dimensional array is supported."));
         }
 
         if (!List.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Collection type '" + type + "' is not supported"));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Collection type '" + type + "' is not supported"));
         }
     }
 

@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MeteringType. */
+/**
+ * Represents Metering type (eg one-time or recurrent).
+ */
 public final class MeteringType extends ExpandableStringEnum<MeteringType> {
-    /** Static value OneTime for MeteringType. */
+    /**
+     * Static value OneTime for MeteringType.
+     */
     public static final MeteringType ONE_TIME = fromString("OneTime");
 
-    /** Static value Recurring for MeteringType. */
+    /**
+     * Static value Recurring for MeteringType.
+     */
     public static final MeteringType RECURRING = fromString("Recurring");
 
-    /** Static value Adhoc for MeteringType. */
+    /**
+     * Static value Adhoc for MeteringType.
+     */
     public static final MeteringType ADHOC = fromString("Adhoc");
 
     /**
+     * Creates a new instance of MeteringType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MeteringType() {
+    }
+
+    /**
      * Creates or finds a MeteringType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MeteringType.
      */
-    @JsonCreator
     public static MeteringType fromString(String name) {
         return fromString(name, MeteringType.class);
     }
 
-    /** @return known MeteringType values. */
+    /**
+     * Gets known MeteringType values.
+     * 
+     * @return known MeteringType values.
+     */
     public static Collection<MeteringType> values() {
         return values(MeteringType.class);
     }

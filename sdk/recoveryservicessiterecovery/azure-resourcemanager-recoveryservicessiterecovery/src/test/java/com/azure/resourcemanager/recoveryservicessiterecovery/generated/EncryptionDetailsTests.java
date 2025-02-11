@@ -22,7 +22,8 @@ public final class EncryptionDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EncryptionDetails model = new EncryptionDetails().withKekState("soodqxhcrmnoh").withKekCertThumbprint("ckwhds")
+        EncryptionDetails model = new EncryptionDetails().withKekState("soodqxhcrmnoh")
+            .withKekCertThumbprint("ckwhds")
             .withKekCertExpiryDate(OffsetDateTime.parse("2021-07-22T01:38:16Z"));
         model = BinaryData.fromObject(model).toObject(EncryptionDetails.class);
         Assertions.assertEquals("soodqxhcrmnoh", model.kekState());

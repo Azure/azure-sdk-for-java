@@ -5,70 +5,77 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Channel settings definition. */
+/**
+ * Channel settings definition.
+ */
 @Fluent
-public final class ChannelSettings {
+public final class ChannelSettings implements JsonSerializable<ChannelSettings> {
     /*
      * The extensionKey1
      */
-    @JsonProperty(value = "extensionKey1")
     private String extensionKey1;
 
     /*
      * The extensionKey2
      */
-    @JsonProperty(value = "extensionKey2")
     private String extensionKey2;
 
     /*
      * The list of sites
      */
-    @JsonProperty(value = "sites")
     private List<Site> sites;
 
     /*
      * The channel id
      */
-    @JsonProperty(value = "channelId")
     private String channelId;
 
     /*
      * The channel display name
      */
-    @JsonProperty(value = "channelDisplayName")
     private String channelDisplayName;
 
     /*
      * The bot id
      */
-    @JsonProperty(value = "botId")
     private String botId;
 
     /*
      * The bot icon url
      */
-    @JsonProperty(value = "botIconUrl")
     private String botIconUrl;
 
     /*
      * Whether this channel is enabled for the bot
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
-     * Opt-out of local authentication and ensure only MSI and AAD can be used
-     * exclusively for authentication.
+     * Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
+
+    /*
+     * Whether customer needs to agree to new terms.
+     */
+    private Boolean requireTermsAgreement;
+
+    /**
+     * Creates an instance of ChannelSettings class.
+     */
+    public ChannelSettings() {
+    }
 
     /**
      * Get the extensionKey1 property: The extensionKey1.
-     *
+     * 
      * @return the extensionKey1 value.
      */
     public String extensionKey1() {
@@ -77,7 +84,7 @@ public final class ChannelSettings {
 
     /**
      * Set the extensionKey1 property: The extensionKey1.
-     *
+     * 
      * @param extensionKey1 the extensionKey1 value to set.
      * @return the ChannelSettings object itself.
      */
@@ -88,7 +95,7 @@ public final class ChannelSettings {
 
     /**
      * Get the extensionKey2 property: The extensionKey2.
-     *
+     * 
      * @return the extensionKey2 value.
      */
     public String extensionKey2() {
@@ -97,7 +104,7 @@ public final class ChannelSettings {
 
     /**
      * Set the extensionKey2 property: The extensionKey2.
-     *
+     * 
      * @param extensionKey2 the extensionKey2 value to set.
      * @return the ChannelSettings object itself.
      */
@@ -108,7 +115,7 @@ public final class ChannelSettings {
 
     /**
      * Get the sites property: The list of sites.
-     *
+     * 
      * @return the sites value.
      */
     public List<Site> sites() {
@@ -117,7 +124,7 @@ public final class ChannelSettings {
 
     /**
      * Set the sites property: The list of sites.
-     *
+     * 
      * @param sites the sites value to set.
      * @return the ChannelSettings object itself.
      */
@@ -128,7 +135,7 @@ public final class ChannelSettings {
 
     /**
      * Get the channelId property: The channel id.
-     *
+     * 
      * @return the channelId value.
      */
     public String channelId() {
@@ -137,7 +144,7 @@ public final class ChannelSettings {
 
     /**
      * Set the channelId property: The channel id.
-     *
+     * 
      * @param channelId the channelId value to set.
      * @return the ChannelSettings object itself.
      */
@@ -148,7 +155,7 @@ public final class ChannelSettings {
 
     /**
      * Get the channelDisplayName property: The channel display name.
-     *
+     * 
      * @return the channelDisplayName value.
      */
     public String channelDisplayName() {
@@ -157,7 +164,7 @@ public final class ChannelSettings {
 
     /**
      * Set the channelDisplayName property: The channel display name.
-     *
+     * 
      * @param channelDisplayName the channelDisplayName value to set.
      * @return the ChannelSettings object itself.
      */
@@ -168,7 +175,7 @@ public final class ChannelSettings {
 
     /**
      * Get the botId property: The bot id.
-     *
+     * 
      * @return the botId value.
      */
     public String botId() {
@@ -177,7 +184,7 @@ public final class ChannelSettings {
 
     /**
      * Set the botId property: The bot id.
-     *
+     * 
      * @param botId the botId value to set.
      * @return the ChannelSettings object itself.
      */
@@ -188,7 +195,7 @@ public final class ChannelSettings {
 
     /**
      * Get the botIconUrl property: The bot icon url.
-     *
+     * 
      * @return the botIconUrl value.
      */
     public String botIconUrl() {
@@ -197,7 +204,7 @@ public final class ChannelSettings {
 
     /**
      * Set the botIconUrl property: The bot icon url.
-     *
+     * 
      * @param botIconUrl the botIconUrl value to set.
      * @return the ChannelSettings object itself.
      */
@@ -208,7 +215,7 @@ public final class ChannelSettings {
 
     /**
      * Get the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -217,7 +224,7 @@ public final class ChannelSettings {
 
     /**
      * Set the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the ChannelSettings object itself.
      */
@@ -229,7 +236,7 @@ public final class ChannelSettings {
     /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -239,7 +246,7 @@ public final class ChannelSettings {
     /**
      * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the ChannelSettings object itself.
      */
@@ -249,13 +256,97 @@ public final class ChannelSettings {
     }
 
     /**
+     * Get the requireTermsAgreement property: Whether customer needs to agree to new terms.
+     * 
+     * @return the requireTermsAgreement value.
+     */
+    public Boolean requireTermsAgreement() {
+        return this.requireTermsAgreement;
+    }
+
+    /**
+     * Set the requireTermsAgreement property: Whether customer needs to agree to new terms.
+     * 
+     * @param requireTermsAgreement the requireTermsAgreement value to set.
+     * @return the ChannelSettings object itself.
+     */
+    public ChannelSettings withRequireTermsAgreement(Boolean requireTermsAgreement) {
+        this.requireTermsAgreement = requireTermsAgreement;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sites() != null) {
             sites().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("extensionKey1", this.extensionKey1);
+        jsonWriter.writeStringField("extensionKey2", this.extensionKey2);
+        jsonWriter.writeArrayField("sites", this.sites, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("channelId", this.channelId);
+        jsonWriter.writeStringField("channelDisplayName", this.channelDisplayName);
+        jsonWriter.writeStringField("botId", this.botId);
+        jsonWriter.writeStringField("botIconUrl", this.botIconUrl);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeBooleanField("requireTermsAgreement", this.requireTermsAgreement);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChannelSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChannelSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChannelSettings.
+     */
+    public static ChannelSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChannelSettings deserializedChannelSettings = new ChannelSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extensionKey1".equals(fieldName)) {
+                    deserializedChannelSettings.extensionKey1 = reader.getString();
+                } else if ("extensionKey2".equals(fieldName)) {
+                    deserializedChannelSettings.extensionKey2 = reader.getString();
+                } else if ("sites".equals(fieldName)) {
+                    List<Site> sites = reader.readArray(reader1 -> Site.fromJson(reader1));
+                    deserializedChannelSettings.sites = sites;
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedChannelSettings.channelId = reader.getString();
+                } else if ("channelDisplayName".equals(fieldName)) {
+                    deserializedChannelSettings.channelDisplayName = reader.getString();
+                } else if ("botId".equals(fieldName)) {
+                    deserializedChannelSettings.botId = reader.getString();
+                } else if ("botIconUrl".equals(fieldName)) {
+                    deserializedChannelSettings.botIconUrl = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedChannelSettings.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedChannelSettings.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("requireTermsAgreement".equals(fieldName)) {
+                    deserializedChannelSettings.requireTermsAgreement = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChannelSettings;
+        });
     }
 }

@@ -12,8 +12,7 @@ public final class RecipientEmailContractImpl implements RecipientEmailContract 
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    RecipientEmailContractImpl(
-        RecipientEmailContractInner innerObject,
+    RecipientEmailContractImpl(RecipientEmailContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

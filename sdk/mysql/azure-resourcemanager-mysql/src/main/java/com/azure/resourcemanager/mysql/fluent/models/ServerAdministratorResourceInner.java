@@ -15,7 +15,8 @@ import java.util.UUID;
 /** Represents a and external administrator to be created. */
 @Fluent
 public final class ServerAdministratorResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerAdministratorResourceInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerAdministratorResourceInner.class);
 
     /*
      * Properties of the server AAD administrator.

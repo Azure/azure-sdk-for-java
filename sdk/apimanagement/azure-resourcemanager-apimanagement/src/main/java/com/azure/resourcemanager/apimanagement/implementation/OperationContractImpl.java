@@ -108,24 +108,20 @@ public final class OperationContractImpl
     }
 
     public OperationContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, apiId, operationId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, operationId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public OperationContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, apiId, operationId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, operationId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -143,55 +139,46 @@ public final class OperationContractImpl
     }
 
     public OperationContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperations()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, apiId, operationId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperations()
+            .updateWithResponse(resourceGroupName, serviceName, apiId, operationId, updateIfMatch, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public OperationContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperations()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, apiId, operationId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperations()
+            .updateWithResponse(resourceGroupName, serviceName, apiId, operationId, updateIfMatch, updateParameters,
+                context)
+            .getValue();
         return this;
     }
 
-    OperationContractImpl(
-        OperationContractInner innerObject,
+    OperationContractImpl(OperationContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.apiId = Utils.getValueFromIdByName(innerObject.id(), "apis");
-        this.operationId = Utils.getValueFromIdByName(innerObject.id(), "operations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.apiId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "apis");
+        this.operationId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "operations");
     }
 
     public OperationContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperations()
-                .getWithResponse(resourceGroupName, serviceName, apiId, operationId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperations()
+            .getWithResponse(resourceGroupName, serviceName, apiId, operationId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public OperationContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperations()
-                .getWithResponse(resourceGroupName, serviceName, apiId, operationId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperations()
+            .getWithResponse(resourceGroupName, serviceName, apiId, operationId, context)
+            .getValue();
         return this;
     }
 

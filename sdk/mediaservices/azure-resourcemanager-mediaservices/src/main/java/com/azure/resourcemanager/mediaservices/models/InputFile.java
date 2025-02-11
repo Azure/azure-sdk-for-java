@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** An InputDefinition for a single file. TrackSelections are scoped to the file specified. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.InputFile")
+/**
+ * An InputDefinition for a single file. TrackSelections are scoped to the file specified.
+ */
 @Fluent
 public final class InputFile extends InputDefinition {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.InputFile";
+
+    /*
      * Name of the file that this input definition applies to.
      */
-    @JsonProperty(value = "filename")
     private String filename;
 
-    /** Creates an instance of InputFile class. */
+    /**
+     * Creates an instance of InputFile class.
+     */
     public InputFile() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the filename property: Name of the file that this input definition applies to.
-     *
+     * 
      * @return the filename value.
      */
     public String filename() {
@@ -36,7 +53,7 @@ public final class InputFile extends InputDefinition {
 
     /**
      * Set the filename property: Name of the file that this input definition applies to.
-     *
+     * 
      * @param filename the filename value to set.
      * @return the InputFile object itself.
      */
@@ -45,7 +62,9 @@ public final class InputFile extends InputDefinition {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InputFile withIncludedTracks(List<TrackDescriptor> includedTracks) {
         super.withIncludedTracks(includedTracks);
@@ -54,11 +73,57 @@ public final class InputFile extends InputDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (includedTracks() != null) {
+            includedTracks().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("includedTracks", includedTracks(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("filename", this.filename);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InputFile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InputFile if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the InputFile.
+     */
+    public static InputFile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InputFile deserializedInputFile = new InputFile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("includedTracks".equals(fieldName)) {
+                    List<TrackDescriptor> includedTracks
+                        = reader.readArray(reader1 -> TrackDescriptor.fromJson(reader1));
+                    deserializedInputFile.withIncludedTracks(includedTracks);
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedInputFile.odataType = reader.getString();
+                } else if ("filename".equals(fieldName)) {
+                    deserializedInputFile.filename = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInputFile;
+        });
     }
 }

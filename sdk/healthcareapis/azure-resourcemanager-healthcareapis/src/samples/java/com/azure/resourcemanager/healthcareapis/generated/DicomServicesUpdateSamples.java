@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public final class DicomServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/DicomServices_Patch.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/
+     * DicomServices_Patch.json
      */
     /**
      * Sample code: Update a dicomservice.

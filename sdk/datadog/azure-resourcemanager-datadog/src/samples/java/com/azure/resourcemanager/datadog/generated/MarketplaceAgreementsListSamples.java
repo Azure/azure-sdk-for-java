@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.datadog.generated;
 
-/** Samples for MarketplaceAgreements List. */
+/**
+ * Samples for MarketplaceAgreements List.
+ */
 public final class MarketplaceAgreementsListSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MarketplaceAgreements_List.json
+     * x-ms-original-file:
+     * specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MarketplaceAgreements_List.
+     * json
      */
     /**
      * Sample code: MarketplaceAgreements_List.
-     *
+     * 
      * @param manager Entry point to MicrosoftDatadogManager.
      */
     public static void marketplaceAgreementsList(com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {

@@ -13,28 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class TenantSettingsContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TenantSettingsContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"settings\":{\"zfffhtjnwo\":\"ctqkmvjanx\",\"xzqfcwr\":\"stfjxtvl\",\"hjmbji\":\"iomxeezw\",\"hpyvdkgdet\":\"egmxdbsohc\"}},\"id\":\"z\",\"name\":\"canzb\",\"type\":\"ekwuyckyvn\"}")
-                .toObject(TenantSettingsContractInner.class);
+        TenantSettingsContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"settings\":{\"zfffhtjnwo\":\"ctqkmvjanx\",\"xzqfcwr\":\"stfjxtvl\",\"hjmbji\":\"iomxeezw\",\"hpyvdkgdet\":\"egmxdbsohc\"}},\"id\":\"z\",\"name\":\"canzb\",\"type\":\"ekwuyckyvn\"}")
+            .toObject(TenantSettingsContractInner.class);
         Assertions.assertEquals("ctqkmvjanx", model.settings().get("zfffhtjnwo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TenantSettingsContractInner model =
-            new TenantSettingsContractInner()
-                .withSettings(
-                    mapOf(
-                        "zfffhtjnwo",
-                        "ctqkmvjanx",
-                        "xzqfcwr",
-                        "stfjxtvl",
-                        "hjmbji",
-                        "iomxeezw",
-                        "hpyvdkgdet",
-                        "egmxdbsohc"));
+        TenantSettingsContractInner model = new TenantSettingsContractInner().withSettings(
+            mapOf("zfffhtjnwo", "ctqkmvjanx", "xzqfcwr", "stfjxtvl", "hjmbji", "iomxeezw", "hpyvdkgdet", "egmxdbsohc"));
         model = BinaryData.fromObject(model).toObject(TenantSettingsContractInner.class);
         Assertions.assertEquals("ctqkmvjanx", model.settings().get("zfffhtjnwo"));
     }

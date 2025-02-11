@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ListIngressGatewayCredentialsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListIngressGatewayCredentialsRequest model =
-            BinaryData.fromString("{\"serviceName\":\"SSH\"}").toObject(ListIngressGatewayCredentialsRequest.class);
+        ListIngressGatewayCredentialsRequest model
+            = BinaryData.fromString("{\"serviceName\":\"SSH\"}").toObject(ListIngressGatewayCredentialsRequest.class);
         Assertions.assertEquals(ServiceName.SSH, model.serviceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListIngressGatewayCredentialsRequest model =
-            new ListIngressGatewayCredentialsRequest().withServiceName(ServiceName.SSH);
+        ListIngressGatewayCredentialsRequest model
+            = new ListIngressGatewayCredentialsRequest().withServiceName(ServiceName.SSH);
         model = BinaryData.fromObject(model).toObject(ListIngressGatewayCredentialsRequest.class);
         Assertions.assertEquals(ServiceName.SSH, model.serviceName());
     }

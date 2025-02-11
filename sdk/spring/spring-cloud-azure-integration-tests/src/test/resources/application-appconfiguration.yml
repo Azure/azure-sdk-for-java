@@ -1,5 +1,7 @@
 spring:
   cloud:
     azure:
+      credential:
+        token-credential-bean-name: integrationTestTokenCredential
       appconfiguration:
         endpoint: ${AZURE_APPCONFIGURATION_ENDPOINT}

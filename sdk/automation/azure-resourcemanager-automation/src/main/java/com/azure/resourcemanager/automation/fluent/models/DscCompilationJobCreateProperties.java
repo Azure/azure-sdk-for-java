@@ -6,36 +6,43 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.DscConfigurationAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters supplied to the create compilation job operation. */
+/**
+ * The parameters supplied to the create compilation job operation.
+ */
 @Fluent
-public final class DscCompilationJobCreateProperties {
+public final class DscCompilationJobCreateProperties implements JsonSerializable<DscCompilationJobCreateProperties> {
     /*
      * Gets or sets the configuration.
      */
-    @JsonProperty(value = "configuration", required = true)
     private DscConfigurationAssociationProperty configuration;
 
     /*
      * Gets or sets the parameters of the job.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * If a new build version of NodeConfiguration is required.
      */
-    @JsonProperty(value = "incrementNodeConfigurationBuild")
     private Boolean incrementNodeConfigurationBuild;
 
     /**
+     * Creates an instance of DscCompilationJobCreateProperties class.
+     */
+    public DscCompilationJobCreateProperties() {
+    }
+
+    /**
      * Get the configuration property: Gets or sets the configuration.
-     *
+     * 
      * @return the configuration value.
      */
     public DscConfigurationAssociationProperty configuration() {
@@ -44,7 +51,7 @@ public final class DscCompilationJobCreateProperties {
 
     /**
      * Set the configuration property: Gets or sets the configuration.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the DscCompilationJobCreateProperties object itself.
      */
@@ -55,7 +62,7 @@ public final class DscCompilationJobCreateProperties {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -64,7 +71,7 @@ public final class DscCompilationJobCreateProperties {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DscCompilationJobCreateProperties object itself.
      */
@@ -75,7 +82,7 @@ public final class DscCompilationJobCreateProperties {
 
     /**
      * Get the incrementNodeConfigurationBuild property: If a new build version of NodeConfiguration is required.
-     *
+     * 
      * @return the incrementNodeConfigurationBuild value.
      */
     public Boolean incrementNodeConfigurationBuild() {
@@ -84,31 +91,77 @@ public final class DscCompilationJobCreateProperties {
 
     /**
      * Set the incrementNodeConfigurationBuild property: If a new build version of NodeConfiguration is required.
-     *
+     * 
      * @param incrementNodeConfigurationBuild the incrementNodeConfigurationBuild value to set.
      * @return the DscCompilationJobCreateProperties object itself.
      */
-    public DscCompilationJobCreateProperties withIncrementNodeConfigurationBuild(
-        Boolean incrementNodeConfigurationBuild) {
+    public DscCompilationJobCreateProperties
+        withIncrementNodeConfigurationBuild(Boolean incrementNodeConfigurationBuild) {
         this.incrementNodeConfigurationBuild = incrementNodeConfigurationBuild;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (configuration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property configuration in model DscCompilationJobCreateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property configuration in model DscCompilationJobCreateProperties"));
         } else {
             configuration().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DscCompilationJobCreateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("incrementNodeConfigurationBuild", this.incrementNodeConfigurationBuild);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscCompilationJobCreateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscCompilationJobCreateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DscCompilationJobCreateProperties.
+     */
+    public static DscCompilationJobCreateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscCompilationJobCreateProperties deserializedDscCompilationJobCreateProperties
+                = new DscCompilationJobCreateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configuration".equals(fieldName)) {
+                    deserializedDscCompilationJobCreateProperties.configuration
+                        = DscConfigurationAssociationProperty.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDscCompilationJobCreateProperties.parameters = parameters;
+                } else if ("incrementNodeConfigurationBuild".equals(fieldName)) {
+                    deserializedDscCompilationJobCreateProperties.incrementNodeConfigurationBuild
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscCompilationJobCreateProperties;
+        });
+    }
 }

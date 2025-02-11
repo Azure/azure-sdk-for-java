@@ -77,24 +77,20 @@ public final class VariableImpl implements Variable, Variable.Definition, Variab
     }
 
     public Variable create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVariables()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, variableName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVariables()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, variableName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Variable create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVariables()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, variableName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVariables()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, variableName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -111,51 +107,42 @@ public final class VariableImpl implements Variable, Variable.Definition, Variab
     }
 
     public Variable apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVariables()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, variableName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVariables()
+            .updateWithResponse(resourceGroupName, automationAccountName, variableName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Variable apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVariables()
-                .updateWithResponse(resourceGroupName, automationAccountName, variableName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVariables()
+            .updateWithResponse(resourceGroupName, automationAccountName, variableName, updateParameters, context)
+            .getValue();
         return this;
     }
 
     VariableImpl(VariableInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.variableName = Utils.getValueFromIdByName(innerObject.id(), "variables");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.variableName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "variables");
     }
 
     public Variable refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVariables()
-                .getWithResponse(resourceGroupName, automationAccountName, variableName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVariables()
+            .getWithResponse(resourceGroupName, automationAccountName, variableName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Variable refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVariables()
-                .getWithResponse(resourceGroupName, automationAccountName, variableName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVariables()
+            .getWithResponse(resourceGroupName, automationAccountName, variableName, context)
+            .getValue();
         return this;
     }
 

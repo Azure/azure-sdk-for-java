@@ -7,21 +7,21 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GroupsCreateOrUpdateHeaders model. */
+/**
+ * The GroupsCreateOrUpdateHeaders model.
+ */
 @Fluent
 public final class GroupsCreateOrUpdateHeaders {
     /*
      * The Etag property.
      */
-    @JsonProperty(value = "Etag")
     private String etag;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of GroupsCreateOrUpdateHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public GroupsCreateOrUpdateHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +30,7 @@ public final class GroupsCreateOrUpdateHeaders {
 
     /**
      * Get the etag property: The Etag property.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -39,7 +39,7 @@ public final class GroupsCreateOrUpdateHeaders {
 
     /**
      * Set the etag property: The Etag property.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the GroupsCreateOrUpdateHeaders object itself.
      */
@@ -50,7 +50,7 @@ public final class GroupsCreateOrUpdateHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

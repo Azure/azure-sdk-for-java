@@ -76,8 +76,7 @@ public final class BasicDigitalTwinMetadata implements JsonSerializable<BasicDig
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject()
-            .writeStringField(DigitalTwinsJsonPropertyNames.METADATA_MODEL, modelId);
+        jsonWriter.writeStartObject().writeStringField(DigitalTwinsJsonPropertyNames.METADATA_MODEL, modelId);
 
         for (Map.Entry<String, DigitalTwinPropertyMetadata> entry : propertyMetadata.entrySet()) {
             jsonWriter.writeJsonField(entry.getKey(), entry.getValue());

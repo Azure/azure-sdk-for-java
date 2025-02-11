@@ -4,62 +4,52 @@
 
 package com.azure.resourcemanager.reservations.generated;
 
-/** Samples for QuotaRequestStatus Get. */
+/**
+ * Samples for QuotaRequestStatus Get.
+ */
 public final class QuotaRequestStatusGetSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/getQuotaRequestStatusFailed.json
+     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/
+     * getQuotaRequestStatusFailed.json
      */
     /**
      * Sample code: QuotaRequestFailed.
-     *
+     * 
      * @param manager Entry point to ReservationsManager.
      */
     public static void quotaRequestFailed(com.azure.resourcemanager.reservations.ReservationsManager manager) {
-        manager
-            .quotaRequestStatus()
-            .getWithResponse(
-                "00000000-0000-0000-0000-000000000000",
-                "Microsoft.Compute",
-                "eastus",
-                "2B5C8515-37D8-4B6A-879B-CD641A2CF605",
-                com.azure.core.util.Context.NONE);
+        manager.quotaRequestStatus()
+            .getWithResponse("00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus",
+                "2B5C8515-37D8-4B6A-879B-CD641A2CF605", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/getQuotaRequestStatusById.json
+     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/
+     * getQuotaRequestStatusById.json
      */
     /**
      * Sample code: QuotaRequestStatus.
-     *
+     * 
      * @param manager Entry point to ReservationsManager.
      */
     public static void quotaRequestStatus(com.azure.resourcemanager.reservations.ReservationsManager manager) {
-        manager
-            .quotaRequestStatus()
-            .getWithResponse(
-                "00000000-0000-0000-0000-000000000000",
-                "Microsoft.Compute",
-                "eastus",
-                "2B5C8515-37D8-4B6A-879B-CD641A2CF605",
-                com.azure.core.util.Context.NONE);
+        manager.quotaRequestStatus()
+            .getWithResponse("00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "eastus",
+                "2B5C8515-37D8-4B6A-879B-CD641A2CF605", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/getQuotaRequestStatusInProgress.json
+     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/
+     * getQuotaRequestStatusInProgress.json
      */
     /**
      * Sample code: QuotaRequestInProgress.
-     *
+     * 
      * @param manager Entry point to ReservationsManager.
      */
     public static void quotaRequestInProgress(com.azure.resourcemanager.reservations.ReservationsManager manager) {
-        manager
-            .quotaRequestStatus()
-            .getWithResponse(
-                "00000000-0000-0000-0000-000000000000",
-                "Microsoft.Compute",
-                "eastus",
-                "2B5C8515-37D8-4B6A-879B-CD641A2CF605",
-                com.azure.core.util.Context.NONE);
+        manager.quotaRequestStatus()
+            .getWithResponse("00000000-0000-0000-0000-000000000000", "Microsoft.Compute", "westus",
+                "2B5C8515-37D8-4B6A-879B-CD641A2CF605", com.azure.core.util.Context.NONE);
     }
 }

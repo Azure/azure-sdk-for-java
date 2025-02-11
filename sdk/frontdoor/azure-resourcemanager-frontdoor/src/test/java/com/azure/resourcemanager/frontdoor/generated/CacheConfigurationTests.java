@@ -15,25 +15,24 @@ public final class CacheConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheConfiguration model = BinaryData.fromString(
-            "{\"queryParameterStripDirective\":\"StripAllExcept\",\"queryParameters\":\"bccxjmonfdgn\",\"dynamicCompression\":\"Disabled\",\"cacheDuration\":\"PT18H22M42S\"}")
+            "{\"queryParameterStripDirective\":\"StripNone\",\"queryParameters\":\"ri\",\"dynamicCompression\":\"Enabled\",\"cacheDuration\":\"PT99H47M36S\"}")
             .toObject(CacheConfiguration.class);
-        Assertions.assertEquals(FrontDoorQuery.STRIP_ALL_EXCEPT, model.queryParameterStripDirective());
-        Assertions.assertEquals("bccxjmonfdgn", model.queryParameters());
-        Assertions.assertEquals(DynamicCompressionEnabled.DISABLED, model.dynamicCompression());
-        Assertions.assertEquals(Duration.parse("PT18H22M42S"), model.cacheDuration());
+        Assertions.assertEquals(FrontDoorQuery.STRIP_NONE, model.queryParameterStripDirective());
+        Assertions.assertEquals("ri", model.queryParameters());
+        Assertions.assertEquals(DynamicCompressionEnabled.ENABLED, model.dynamicCompression());
+        Assertions.assertEquals(Duration.parse("PT99H47M36S"), model.cacheDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheConfiguration model
-            = new CacheConfiguration().withQueryParameterStripDirective(FrontDoorQuery.STRIP_ALL_EXCEPT)
-                .withQueryParameters("bccxjmonfdgn")
-                .withDynamicCompression(DynamicCompressionEnabled.DISABLED)
-                .withCacheDuration(Duration.parse("PT18H22M42S"));
+        CacheConfiguration model = new CacheConfiguration().withQueryParameterStripDirective(FrontDoorQuery.STRIP_NONE)
+            .withQueryParameters("ri")
+            .withDynamicCompression(DynamicCompressionEnabled.ENABLED)
+            .withCacheDuration(Duration.parse("PT99H47M36S"));
         model = BinaryData.fromObject(model).toObject(CacheConfiguration.class);
-        Assertions.assertEquals(FrontDoorQuery.STRIP_ALL_EXCEPT, model.queryParameterStripDirective());
-        Assertions.assertEquals("bccxjmonfdgn", model.queryParameters());
-        Assertions.assertEquals(DynamicCompressionEnabled.DISABLED, model.dynamicCompression());
-        Assertions.assertEquals(Duration.parse("PT18H22M42S"), model.cacheDuration());
+        Assertions.assertEquals(FrontDoorQuery.STRIP_NONE, model.queryParameterStripDirective());
+        Assertions.assertEquals("ri", model.queryParameters());
+        Assertions.assertEquals(DynamicCompressionEnabled.ENABLED, model.dynamicCompression());
+        Assertions.assertEquals(Duration.parse("PT99H47M36S"), model.cacheDuration());
     }
 }

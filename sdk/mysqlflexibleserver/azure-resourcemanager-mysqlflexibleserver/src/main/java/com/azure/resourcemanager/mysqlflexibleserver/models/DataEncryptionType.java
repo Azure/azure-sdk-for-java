@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The key type, AzureKeyVault for enable cmk, SystemManaged for disable cmk.
  */
@@ -36,7 +33,6 @@ public enum DataEncryptionType {
      * @param value the serialized value to parse.
      * @return the parsed DataEncryptionType object, or null if unable to parse.
      */
-    @JsonCreator
     public static DataEncryptionType fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum DataEncryptionType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

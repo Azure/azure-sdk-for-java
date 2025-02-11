@@ -17,13 +17,15 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConf
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
-/** An instance of this class provides access to all the operations defined in AccessControlListsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccessControlListsClient.
+ */
 public interface AccessControlListsClient {
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -33,14 +35,14 @@ public interface AccessControlListsClient {
      * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(
-        String resourceGroupName, String accessControlListName, AccessControlListInner body);
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(String resourceGroupName,
+        String accessControlListName, AccessControlListInner body);
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -51,14 +53,14 @@ public interface AccessControlListsClient {
      * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(
-        String resourceGroupName, String accessControlListName, AccessControlListInner body, Context context);
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(String resourceGroupName,
+        String accessControlListName, AccessControlListInner body, Context context);
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -72,9 +74,9 @@ public interface AccessControlListsClient {
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -85,14 +87,14 @@ public interface AccessControlListsClient {
      * @return the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessControlListInner create(
-        String resourceGroupName, String accessControlListName, AccessControlListInner body, Context context);
+    AccessControlListInner create(String resourceGroupName, String accessControlListName, AccessControlListInner body,
+        Context context);
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -102,14 +104,14 @@ public interface AccessControlListsClient {
      * @return the Access Control List resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessControlListInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accessControlListName, Context context);
+    Response<AccessControlListInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String accessControlListName, Context context);
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,9 +124,9 @@ public interface AccessControlListsClient {
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -134,14 +136,14 @@ public interface AccessControlListsClient {
      * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(
-        String resourceGroupName, String accessControlListName, AccessControlListPatch body);
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(String resourceGroupName,
+        String accessControlListName, AccessControlListPatch body);
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -152,14 +154,14 @@ public interface AccessControlListsClient {
      * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(
-        String resourceGroupName, String accessControlListName, AccessControlListPatch body, Context context);
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(String resourceGroupName,
+        String accessControlListName, AccessControlListPatch body, Context context);
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -173,9 +175,9 @@ public interface AccessControlListsClient {
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -186,14 +188,14 @@ public interface AccessControlListsClient {
      * @return the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessControlListInner update(
-        String resourceGroupName, String accessControlListName, AccessControlListPatch body, Context context);
+    AccessControlListInner update(String resourceGroupName, String accessControlListName, AccessControlListPatch body,
+        Context context);
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,9 +208,9 @@ public interface AccessControlListsClient {
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -218,14 +220,14 @@ public interface AccessControlListsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accessControlListName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accessControlListName,
+        Context context);
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,9 +239,9 @@ public interface AccessControlListsClient {
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -252,9 +254,9 @@ public interface AccessControlListsClient {
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -266,9 +268,9 @@ public interface AccessControlListsClient {
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,9 +283,9 @@ public interface AccessControlListsClient {
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
@@ -293,9 +295,9 @@ public interface AccessControlListsClient {
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -307,9 +309,9 @@ public interface AccessControlListsClient {
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -320,14 +322,14 @@ public interface AccessControlListsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String accessControlListName, UpdateAdministrativeState body);
+        beginUpdateAdministrativeState(String resourceGroupName, String accessControlListName,
+            UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -339,14 +341,14 @@ public interface AccessControlListsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String accessControlListName,
+            UpdateAdministrativeState body, Context context);
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -356,14 +358,14 @@ public interface AccessControlListsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String accessControlListName, UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -374,14 +376,14 @@ public interface AccessControlListsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String accessControlListName, UpdateAdministrativeState body, Context context);
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -395,9 +397,9 @@ public interface AccessControlListsClient {
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -412,9 +414,9 @@ public interface AccessControlListsClient {
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -427,9 +429,9 @@ public interface AccessControlListsClient {
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -439,14 +441,14 @@ public interface AccessControlListsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner resync(
-        String resourceGroupName, String accessControlListName, Context context);
+    CommonPostActionResponseForStateUpdateInner resync(String resourceGroupName, String accessControlListName,
+        Context context);
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,9 +462,9 @@ public interface AccessControlListsClient {
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -477,9 +479,9 @@ public interface AccessControlListsClient {
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,9 +494,9 @@ public interface AccessControlListsClient {
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -504,6 +506,6 @@ public interface AccessControlListsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String accessControlListName, Context context);
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String accessControlListName,
+        Context context);
 }

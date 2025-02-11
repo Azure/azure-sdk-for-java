@@ -5,39 +5,29 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Azure Key Vault secret URIs which store the credentials.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AzureKeyVaultSmbCredentials.class,
-    visible = true)
-@JsonTypeName("AzureKeyVaultSmb")
 @Fluent
 public final class AzureKeyVaultSmbCredentials extends Credentials {
     /*
      * The Credentials type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private CredentialType type = CredentialType.AZURE_KEY_VAULT_SMB;
 
     /*
      * The Azure Key Vault secret URI which stores the username. Use empty string to clean-up existing value.
      */
-    @JsonProperty(value = "usernameUri")
     private String usernameUri;
 
     /*
      * The Azure Key Vault secret URI which stores the password. Use empty string to clean-up existing value.
      */
-    @JsonProperty(value = "passwordUri")
     private String passwordUri;
 
     /**
@@ -107,6 +97,47 @@ public final class AzureKeyVaultSmbCredentials extends Credentials {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("usernameUri", this.usernameUri);
+        jsonWriter.writeStringField("passwordUri", this.passwordUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureKeyVaultSmbCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureKeyVaultSmbCredentials if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureKeyVaultSmbCredentials.
+     */
+    public static AzureKeyVaultSmbCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureKeyVaultSmbCredentials deserializedAzureKeyVaultSmbCredentials = new AzureKeyVaultSmbCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureKeyVaultSmbCredentials.type = CredentialType.fromString(reader.getString());
+                } else if ("usernameUri".equals(fieldName)) {
+                    deserializedAzureKeyVaultSmbCredentials.usernameUri = reader.getString();
+                } else if ("passwordUri".equals(fieldName)) {
+                    deserializedAzureKeyVaultSmbCredentials.passwordUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureKeyVaultSmbCredentials;
+        });
     }
 }

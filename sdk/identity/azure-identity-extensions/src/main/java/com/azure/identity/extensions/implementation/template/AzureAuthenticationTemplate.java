@@ -5,14 +5,18 @@ package com.azure.identity.extensions.implementation.template;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.extensions.implementation.credential.provider.CachingTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolver;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolverOptions;
-import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import reactor.core.publisher.Mono;
+import static com.azure.identity.extensions.implementation.enums.AuthProperty.GET_TOKEN_TIMEOUT;
 
 /**
  * Template class can be extended to get password from access token.
@@ -27,6 +31,7 @@ public class AzureAuthenticationTemplate {
 
     private AccessTokenResolver accessTokenResolver;
 
+    private long accessTokenTimeoutInSeconds;
 
     /**
      * Default constructor for AzureAuthenticationTemplate
@@ -39,11 +44,11 @@ public class AzureAuthenticationTemplate {
     /**
      * AzureAuthenticationTemplate constructor.
      *
-     * @param tokenCredentialProvider An TokenCredentialProvider class instance.
+     * @param tokenCredentialProvider A TokenCredentialProvider class instance.
      * @param accessTokenResolver An AccessTokenResolver class instance.
      */
     public AzureAuthenticationTemplate(TokenCredentialProvider tokenCredentialProvider,
-                                       AccessTokenResolver accessTokenResolver) {
+        AccessTokenResolver accessTokenResolver) {
         this.tokenCredentialProvider = tokenCredentialProvider;
         this.accessTokenResolver = accessTokenResolver;
     }
@@ -58,15 +63,26 @@ public class AzureAuthenticationTemplate {
             LOGGER.verbose("Initializing AzureAuthenticationTemplate.");
 
             if (getTokenCredentialProvider() == null) {
-                this.tokenCredentialProvider = TokenCredentialProvider.createDefault(
-                    new TokenCredentialProviderOptions(properties));
+                TokenCredentialProviderOptions options = new TokenCredentialProviderOptions(properties);
+                this.tokenCredentialProvider = TokenCredentialProvider.createDefault(options);
+
+                if (Boolean.TRUE.equals(AuthProperty.TOKEN_CREDENTIAL_CACHE_ENABLED.getBoolean(properties))) {
+                    this.tokenCredentialProvider
+                        = new CachingTokenCredentialProvider(options, this.tokenCredentialProvider);
+                }
             }
 
             if (getAccessTokenResolver() == null) {
-                this.accessTokenResolver = AccessTokenResolver.createDefault(
-                    new AccessTokenResolverOptions(properties));
+                this.accessTokenResolver
+                    = AccessTokenResolver.createDefault(new AccessTokenResolverOptions(properties));
             }
 
+            if (properties.containsKey(GET_TOKEN_TIMEOUT.getPropertyKey())) {
+                accessTokenTimeoutInSeconds = Long.parseLong(GET_TOKEN_TIMEOUT.get(properties));
+            } else {
+                accessTokenTimeoutInSeconds = 30;
+                LOGGER.verbose("Use default access token timeout: {} seconds.", accessTokenTimeoutInSeconds);
+            }
             LOGGER.verbose("Initialized AzureAuthenticationTemplate.");
         } else {
             LOGGER.info("AzureAuthenticationTemplate has already initialized.");
@@ -83,9 +99,9 @@ public class AzureAuthenticationTemplate {
             throw LOGGER.logExceptionAsError(new IllegalStateException("must call init() first"));
         }
         return Mono.fromSupplier(getTokenCredentialProvider())
-                   .flatMap(getAccessTokenResolver())
-                   .filter(token -> !token.isExpired())
-                   .map(AccessToken::getToken);
+            .flatMap(getAccessTokenResolver())
+            .filter(token -> !token.isExpired())
+            .map(AccessToken::getToken);
     }
 
     /**
@@ -111,11 +127,10 @@ public class AzureAuthenticationTemplate {
     }
 
     Duration getBlockTimeout() {
-        return Duration.ofSeconds(30);
+        return Duration.ofSeconds(accessTokenTimeoutInSeconds);
     }
 
     AtomicBoolean getIsInitialized() {
         return isInitialized;
     }
-
 }

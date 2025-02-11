@@ -6,33 +6,53 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.EndpointDependency;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Endpoints accessed for a common purpose that the Kusto Service Environment requires outbound network access to. */
+/**
+ * Endpoints accessed for a common purpose that the Kusto Service Environment requires outbound network access to.
+ */
 @Fluent
 public final class OutboundNetworkDependenciesEndpointInner extends ProxyResource {
     /*
      * The outbound environment endpoint properties.
      */
-    @JsonProperty(value = "properties")
     private OutboundNetworkDependenciesEndpointProperties innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of OutboundNetworkDependenciesEndpointInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of OutboundNetworkDependenciesEndpointInner class.
+     */
     public OutboundNetworkDependenciesEndpointInner() {
     }
 
     /**
      * Get the innerProperties property: The outbound environment endpoint properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OutboundNetworkDependenciesEndpointProperties innerProperties() {
@@ -41,7 +61,7 @@ public final class OutboundNetworkDependenciesEndpointInner extends ProxyResourc
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -49,9 +69,39 @@ public final class OutboundNetworkDependenciesEndpointInner extends ProxyResourc
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the category property: The type of service accessed by the Kusto Service Environment, e.g., Azure Storage,
      * Azure SQL Database, and Azure Active Directory.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -61,7 +111,7 @@ public final class OutboundNetworkDependenciesEndpointInner extends ProxyResourc
     /**
      * Set the category property: The type of service accessed by the Kusto Service Environment, e.g., Azure Storage,
      * Azure SQL Database, and Azure Active Directory.
-     *
+     * 
      * @param category the category value to set.
      * @return the OutboundNetworkDependenciesEndpointInner object itself.
      */
@@ -75,7 +125,7 @@ public final class OutboundNetworkDependenciesEndpointInner extends ProxyResourc
 
     /**
      * Get the endpoints property: The endpoints that the Kusto Service Environment reaches the service at.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<EndpointDependency> endpoints() {
@@ -84,7 +134,7 @@ public final class OutboundNetworkDependenciesEndpointInner extends ProxyResourc
 
     /**
      * Set the endpoints property: The endpoints that the Kusto Service Environment reaches the service at.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the OutboundNetworkDependenciesEndpointInner object itself.
      */
@@ -98,7 +148,7 @@ public final class OutboundNetworkDependenciesEndpointInner extends ProxyResourc
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -107,12 +157,59 @@ public final class OutboundNetworkDependenciesEndpointInner extends ProxyResourc
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutboundNetworkDependenciesEndpointInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutboundNetworkDependenciesEndpointInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OutboundNetworkDependenciesEndpointInner.
+     */
+    public static OutboundNetworkDependenciesEndpointInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutboundNetworkDependenciesEndpointInner deserializedOutboundNetworkDependenciesEndpointInner
+                = new OutboundNetworkDependenciesEndpointInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOutboundNetworkDependenciesEndpointInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOutboundNetworkDependenciesEndpointInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOutboundNetworkDependenciesEndpointInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOutboundNetworkDependenciesEndpointInner.innerProperties
+                        = OutboundNetworkDependenciesEndpointProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedOutboundNetworkDependenciesEndpointInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutboundNetworkDependenciesEndpointInner;
+        });
     }
 }

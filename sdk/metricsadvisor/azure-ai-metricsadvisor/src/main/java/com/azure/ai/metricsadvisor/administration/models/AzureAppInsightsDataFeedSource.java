@@ -39,8 +39,8 @@ public final class AzureAppInsightsDataFeedSource extends DataFeedSource {
      * @param azureCloud the Azure cloud environment
      * @param query the query
      */
-    public AzureAppInsightsDataFeedSource(final String applicationId, final String apiKey,
-        String azureCloud, final String query) {
+    public AzureAppInsightsDataFeedSource(final String applicationId, final String apiKey, String azureCloud,
+        final String query) {
         this.applicationId = applicationId;
         this.apiKey = apiKey;
         this.query = query;

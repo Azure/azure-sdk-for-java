@@ -99,22 +99,18 @@ public final class MoveCollectionImpl implements MoveCollection, MoveCollection.
     }
 
     public MoveCollection create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveCollections()
-                .createWithResponse(resourceGroupName, moveCollectionName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveCollections()
+            .createWithResponse(resourceGroupName, moveCollectionName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public MoveCollection create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveCollections()
-                .createWithResponse(resourceGroupName, moveCollectionName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveCollections()
+            .createWithResponse(resourceGroupName, moveCollectionName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -130,50 +126,42 @@ public final class MoveCollectionImpl implements MoveCollection, MoveCollection.
     }
 
     public MoveCollection apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveCollections()
-                .updateWithResponse(resourceGroupName, moveCollectionName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveCollections()
+            .updateWithResponse(resourceGroupName, moveCollectionName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MoveCollection apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveCollections()
-                .updateWithResponse(resourceGroupName, moveCollectionName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveCollections()
+            .updateWithResponse(resourceGroupName, moveCollectionName, updateBody, context)
+            .getValue();
         return this;
     }
 
-    MoveCollectionImpl(
-        MoveCollectionInner innerObject, com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
+    MoveCollectionImpl(MoveCollectionInner innerObject,
+        com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.moveCollectionName = Utils.getValueFromIdByName(innerObject.id(), "moveCollections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.moveCollectionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "moveCollections");
     }
 
     public MoveCollection refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveCollections()
-                .getByResourceGroupWithResponse(resourceGroupName, moveCollectionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveCollections()
+            .getByResourceGroupWithResponse(resourceGroupName, moveCollectionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MoveCollection refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveCollections()
-                .getByResourceGroupWithResponse(resourceGroupName, moveCollectionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveCollections()
+            .getByResourceGroupWithResponse(resourceGroupName, moveCollectionName, context)
+            .getValue();
         return this;
     }
 

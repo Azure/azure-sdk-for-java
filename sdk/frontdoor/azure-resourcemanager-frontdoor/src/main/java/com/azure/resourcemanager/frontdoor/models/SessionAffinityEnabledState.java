@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class SessionAffinityEnabledState extends ExpandableStringEnum<Sess
      * @param name a name to look for.
      * @return the corresponding SessionAffinityEnabledState.
      */
-    @JsonCreator
     public static SessionAffinityEnabledState fromString(String name) {
         return fromString(name, SessionAffinityEnabledState.class);
     }

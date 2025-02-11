@@ -11,7 +11,7 @@ public final class StorageTaskAssignmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTaskAssignmentInner model
-            = BinaryData.fromString("{\"id\":\"zi\"}").toObject(StorageTaskAssignmentInner.class);
+            = BinaryData.fromString("{\"id\":\"drvyn\"}").toObject(StorageTaskAssignmentInner.class);
     }
 
     @org.junit.jupiter.api.Test

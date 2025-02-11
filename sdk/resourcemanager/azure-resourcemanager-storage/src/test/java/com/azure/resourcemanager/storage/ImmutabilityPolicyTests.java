@@ -33,18 +33,21 @@ public class ImmutabilityPolicyTests extends StorageManagementTest {
     public void canCRUDImmutabilityPolicy() {
         String saName = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount = storageManager.storageAccounts().define(saName)
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(saName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
             .create();
 
-        BlobContainer container = storageManager.blobContainers().defineContainer("container")
+        BlobContainer container = storageManager.blobContainers()
+            .defineContainer("container")
             .withExistingStorageAccount(storageAccount)
             .withPublicAccess(PublicAccess.NONE)
             .create();
 
         // immutability policy
-        ImmutabilityPolicy policy = storageManager.blobContainers().defineImmutabilityPolicy()
+        ImmutabilityPolicy policy = storageManager.blobContainers()
+            .defineImmutabilityPolicy()
             .withExistingContainer(storageAccount.resourceGroupName(), storageAccount.name(), container.name())
             .withImmutabilityPeriodSinceCreationInDays(7)
             .create();
@@ -55,20 +58,22 @@ public class ImmutabilityPolicyTests extends StorageManagementTest {
         policy.refresh();
         Assertions.assertEquals(ImmutabilityPolicyState.UNLOCKED, policy.state());
 
-        policy = storageManager.blobContainers().getImmutabilityPolicy(storageAccount.resourceGroupName(), storageAccount.name(), container.name());
+        policy = storageManager.blobContainers()
+            .getImmutabilityPolicy(storageAccount.resourceGroupName(), storageAccount.name(), container.name());
 
         // update
-        policy.update()
-            .withImmutabilityPeriodSinceCreationInDays(14)
-            .apply();
+        policy.update().withImmutabilityPeriodSinceCreationInDays(14).apply();
 
         Assertions.assertEquals(14, policy.immutabilityPeriodSinceCreationInDays());
 
         // delete
-        storageManager.blobContainers().deleteImmutabilityPolicy(storageAccount.resourceGroupName(), storageAccount.name(), container.name(), policy.etag());
+        storageManager.blobContainers()
+            .deleteImmutabilityPolicy(storageAccount.resourceGroupName(), storageAccount.name(), container.name(),
+                policy.etag());
 
         // new immutability policy
-        policy = storageManager.blobContainers().defineImmutabilityPolicy()
+        policy = storageManager.blobContainers()
+            .defineImmutabilityPolicy()
             .withExistingContainer(storageAccount.resourceGroupName(), storageAccount.name(), container.name())
             .withImmutabilityPeriodSinceCreationInDays(7)
             .create();

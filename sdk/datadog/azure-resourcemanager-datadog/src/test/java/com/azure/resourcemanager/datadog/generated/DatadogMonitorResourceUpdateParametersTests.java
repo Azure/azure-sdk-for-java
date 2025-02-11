@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatadogMonitorResourceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatadogMonitorResourceUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"monitoringStatus\":\"Enabled\",\"cspm\":true},\"tags\":{\"ebxetqgtzxdp\":\"ccfwnfnbacfion\",\"feallnwsu\":\"qbqqwxr\"},\"sku\":{\"name\":\"snjampmng\"}}")
-                .toObject(DatadogMonitorResourceUpdateParameters.class);
+        DatadogMonitorResourceUpdateParameters model = BinaryData.fromString(
+            "{\"properties\":{\"monitoringStatus\":\"Enabled\",\"cspm\":true},\"tags\":{\"ebxetqgtzxdp\":\"ccfwnfnbacfion\",\"feallnwsu\":\"qbqqwxr\"},\"sku\":{\"name\":\"snjampmng\"}}")
+            .toObject(DatadogMonitorResourceUpdateParameters.class);
         Assertions.assertEquals(MonitoringStatus.ENABLED, model.properties().monitoringStatus());
         Assertions.assertEquals(true, model.properties().cspm());
         Assertions.assertEquals("ccfwnfnbacfion", model.tags().get("ebxetqgtzxdp"));
@@ -29,12 +27,10 @@ public final class DatadogMonitorResourceUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatadogMonitorResourceUpdateParameters model =
-            new DatadogMonitorResourceUpdateParameters()
-                .withProperties(
-                    new MonitorUpdateProperties().withMonitoringStatus(MonitoringStatus.ENABLED).withCspm(true))
-                .withTags(mapOf("ebxetqgtzxdp", "ccfwnfnbacfion", "feallnwsu", "qbqqwxr"))
-                .withSku(new ResourceSku().withName("snjampmng"));
+        DatadogMonitorResourceUpdateParameters model = new DatadogMonitorResourceUpdateParameters()
+            .withProperties(new MonitorUpdateProperties().withMonitoringStatus(MonitoringStatus.ENABLED).withCspm(true))
+            .withTags(mapOf("ebxetqgtzxdp", "ccfwnfnbacfion", "feallnwsu", "qbqqwxr"))
+            .withSku(new ResourceSku().withName("snjampmng"));
         model = BinaryData.fromObject(model).toObject(DatadogMonitorResourceUpdateParameters.class);
         Assertions.assertEquals(MonitoringStatus.ENABLED, model.properties().monitoringStatus());
         Assertions.assertEquals(true, model.properties().cspm());

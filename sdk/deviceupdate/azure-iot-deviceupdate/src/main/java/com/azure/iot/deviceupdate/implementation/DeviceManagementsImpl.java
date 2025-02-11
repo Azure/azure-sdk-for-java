@@ -59,9 +59,8 @@ public final class DeviceManagementsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     DeviceManagementsImpl(DeviceUpdateClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        DeviceManagementsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DeviceManagementsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -73,2150 +72,1120 @@ public final class DeviceManagementsImpl {
     @ServiceInterface(name = "DeviceUpdateClientDe")
     public interface DeviceManagementsService {
         @Get("/deviceUpdate/{instanceId}/management/deviceClasses")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listDeviceClasses(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listDeviceClasses(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceClasses")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeviceClassesSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listDeviceClassesSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDeviceClass(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDeviceClass(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceClassSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getDeviceClassSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> updateDeviceClass(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") BinaryData deviceClassPatch,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> updateDeviceClass(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") BinaryData deviceClassPatch,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> updateDeviceClassSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") BinaryData deviceClassPatch,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> updateDeviceClassSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") BinaryData deviceClassPatch,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteDeviceClass(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteDeviceClass(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteDeviceClassSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> deleteDeviceClassSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}/installableUpdates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listInstallableUpdatesForDeviceClass(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listInstallableUpdatesForDeviceClass(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}/installableUpdates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listInstallableUpdatesForDeviceClassSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listInstallableUpdatesForDeviceClassSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/devices")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listDevices(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listDevices(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/devices")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDevicesSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listDevicesSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/deviceUpdate/{instanceId}/management/devices:import")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> importDevices(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData importType,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> importDevices(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData importType,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/deviceUpdate/{instanceId}/management/devices:import")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> importDevicesSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData importType,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> importDevicesSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData importType,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/devices/{deviceId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDevice(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceId") String deviceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDevice(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("deviceId") String deviceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/devices/{deviceId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceId") String deviceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getDeviceSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("deviceId") String deviceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/devices/{deviceId}/modules/{moduleId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDeviceModule(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceId") String deviceId,
-                @PathParam("moduleId") String moduleId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDeviceModule(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("deviceId") String deviceId,
+            @PathParam("moduleId") String moduleId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/devices/{deviceId}/modules/{moduleId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceModuleSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceId") String deviceId,
-                @PathParam("moduleId") String moduleId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getDeviceModuleSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("deviceId") String deviceId,
+            @PathParam("moduleId") String moduleId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/updateCompliance")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getUpdateCompliance(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getUpdateCompliance(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/updateCompliance")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getUpdateComplianceSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getUpdateComplianceSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listGroups(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listGroups(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listGroupsSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listGroupsSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getGroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getGroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getGroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteGroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteGroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> deleteGroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/updateCompliance")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getUpdateComplianceForGroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getUpdateComplianceForGroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/updateCompliance")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getUpdateComplianceForGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getUpdateComplianceForGroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/bestUpdates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listBestUpdatesForGroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listBestUpdatesForGroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/bestUpdates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listBestUpdatesForGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listBestUpdatesForGroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listDeploymentsForGroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listDeploymentsForGroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeploymentsForGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listDeploymentsForGroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDeployment(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDeployment(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deploymentId") String deploymentId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeploymentSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getDeploymentSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deploymentId") String deploymentId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdateDeployment(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData deployment,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrUpdateDeployment(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deploymentId") String deploymentId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData deployment, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateDeploymentSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData deployment,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> createOrUpdateDeploymentSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deploymentId") String deploymentId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData deployment, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteDeployment(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteDeployment(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deploymentId") String deploymentId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteDeploymentSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> deleteDeploymentSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deploymentId") String deploymentId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}/status")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDeploymentStatus(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDeploymentStatus(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deploymentId") String deploymentId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}/status")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeploymentStatusSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getDeploymentStatusSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deploymentId") String deploymentId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listDeviceClassSubgroupsForGroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listDeviceClassSubgroupsForGroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeviceClassSubgroupsForGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listDeviceClassSubgroupsForGroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDeviceClassSubgroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDeviceClassSubgroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceClassSubgroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getDeviceClassSubgroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteDeviceClassSubgroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteDeviceClassSubgroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteDeviceClassSubgroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> deleteDeviceClassSubgroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/updateCompliance")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/updateCompliance")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDeviceClassSubgroupUpdateCompliance(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDeviceClassSubgroupUpdateCompliance(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/updateCompliance")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/updateCompliance")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceClassSubgroupUpdateComplianceSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getDeviceClassSubgroupUpdateComplianceSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/bestUpdates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getBestUpdatesForDeviceClassSubgroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getBestUpdatesForDeviceClassSubgroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/bestUpdates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getBestUpdatesForDeviceClassSubgroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getBestUpdatesForDeviceClassSubgroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listDeploymentsForDeviceClassSubgroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listDeploymentsForDeviceClassSubgroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeploymentsForDeviceClassSubgroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listDeploymentsForDeviceClassSubgroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDeploymentForDeviceClassSubgroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDeploymentForDeviceClassSubgroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @PathParam("deploymentId") String deploymentId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeploymentForDeviceClassSubgroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getDeploymentForDeviceClassSubgroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @PathParam("deploymentId") String deploymentId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Delete(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteDeploymentForDeviceClassSubgroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteDeploymentForDeviceClassSubgroup(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @PathParam("deploymentId") String deploymentId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Delete(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteDeploymentForDeviceClassSubgroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> deleteDeploymentForDeviceClassSubgroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @PathParam("deploymentId") String deploymentId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Post(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}:cancel")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Post("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}:cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> stopDeployment(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> stopDeployment(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @PathParam("deploymentId") String deploymentId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Post(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}:cancel")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Post("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}:cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> stopDeploymentSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> stopDeploymentSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @PathParam("deploymentId") String deploymentId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Post(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}:retry")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Post("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}:retry")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> retryDeployment(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> retryDeployment(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @PathParam("deploymentId") String deploymentId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Post(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}:retry")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Post("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}:retry")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> retryDeploymentSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> retryDeploymentSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @PathParam("deploymentId") String deploymentId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}/status")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}/status")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDeviceClassSubgroupDeploymentStatus(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDeviceClassSubgroupDeploymentStatus(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @PathParam("deploymentId") String deploymentId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}/status")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}/status")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceClassSubgroupDeploymentStatusSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getDeviceClassSubgroupDeploymentStatusSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId, @PathParam("groupId") String groupId,
+            @PathParam("deviceClassId") String deviceClassId, @PathParam("deploymentId") String deploymentId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}/devicestates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}/devicestates")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeployment(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint, @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("groupId") String groupId, @PathParam("deviceClassId") String deviceClassId,
+            @PathParam("deploymentId") String deploymentId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}/devicestates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}/devicestates")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint, @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("groupId") String groupId, @PathParam("deviceClassId") String deviceClassId,
+            @PathParam("deploymentId") String deploymentId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/operations/{operationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOperationStatus(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String operationId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getOperationStatus(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/operations/{operationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getOperationStatusSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String operationId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getOperationStatusSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/operations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listOperationStatuses(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listOperationStatuses(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/operations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listOperationStatusesSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listOperationStatusesSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections/{operationId}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> startLogCollection(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String logCollectionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData logCollection,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> startLogCollection(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("operationId") String logCollectionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData logCollection, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections/{operationId}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> startLogCollectionSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String logCollectionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData logCollection,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> startLogCollectionSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("operationId") String logCollectionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData logCollection, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections/{operationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getLogCollection(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String logCollectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getLogCollection(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("operationId") String logCollectionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections/{operationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getLogCollectionSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String logCollectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getLogCollectionSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("operationId") String logCollectionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listLogCollections(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listLogCollections(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listLogCollectionsSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listLogCollectionsSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections/{operationId}/detailedStatus")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getLogCollectionDetailedStatus(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String logCollectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getLogCollectionDetailedStatus(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("operationId") String logCollectionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections/{operationId}/detailedStatus")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getLogCollectionDetailedStatusSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String logCollectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getLogCollectionDetailedStatusSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @PathParam("operationId") String logCollectionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/deviceHealth")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listHealthOfDevices(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("filter") String filter,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listHealthOfDevices(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @QueryParam("filter") String filter,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/deviceHealth")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listHealthOfDevicesSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("filter") String filter,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listHealthOfDevicesSync(@HostParam("endpoint") String endpoint,
+            @PathParam(value = "instanceId", encoded = true) String instanceId,
+            @QueryParam("api-version") String apiVersion, @QueryParam("filter") String filter,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listDeviceClassesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listDeviceClassesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeviceClassesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listDeviceClassesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listInstallableUpdatesForDeviceClassNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listInstallableUpdatesForDeviceClassNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listDevicesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listDevicesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDevicesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listDevicesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listGroupsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listGroupsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listGroupsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listGroupsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listBestUpdatesForGroupNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listBestUpdatesForGroupNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDeploymentsForGroupNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDeploymentsForGroupNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDeviceClassSubgroupsForGroupNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDeviceClassSubgroupsForGroupNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDeploymentsForDeviceClassSubgroupNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDeploymentsForDeviceClassSubgroupNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listOperationStatusesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listOperationStatusesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLogCollectionsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listLogCollectionsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listLogCollectionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listHealthOfDevicesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listHealthOfDevicesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listHealthOfDevicesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -2273,24 +1242,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listDeviceClassesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listDeviceClasses(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listDeviceClasses(this.client.getEndpoint(), this.client.getInstanceId(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -2348,12 +1304,9 @@ public final class DeviceManagementsImpl {
     public PagedFlux<BinaryData> listDeviceClassesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listDeviceClassesSinglePageAsync(requestOptions),
-                nextLink -> listDeviceClassesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listDeviceClassesSinglePageAsync(requestOptions),
+            nextLink -> listDeviceClassesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2410,21 +1363,10 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listDeviceClassesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceClassesSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listDeviceClassesSync(this.client.getEndpoint(), this.client.getInstanceId(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -2482,12 +1424,9 @@ public final class DeviceManagementsImpl {
     public PagedIterable<BinaryData> listDeviceClasses(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listDeviceClassesSinglePage(requestOptions),
-                nextLink -> listDeviceClassesNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listDeviceClassesSinglePage(requestOptions),
+            nextLink -> listDeviceClassesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2529,19 +1468,12 @@ public final class DeviceManagementsImpl {
      * @return the properties of a device class along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeviceClassWithResponseAsync(
-            String deviceClassId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeviceClassWithResponseAsync(String deviceClassId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDeviceClass(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                deviceClassId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.getDeviceClass(this.client.getEndpoint(), this.client.getInstanceId(),
+                deviceClassId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2585,14 +1517,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceClassWithResponse(String deviceClassId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeviceClassSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getDeviceClassSync(this.client.getEndpoint(), this.client.getInstanceId(), deviceClassId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2643,20 +1569,12 @@ public final class DeviceManagementsImpl {
      * @return device class metadata along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateDeviceClassWithResponseAsync(
-            String deviceClassId, BinaryData deviceClassPatch, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateDeviceClassWithResponseAsync(String deviceClassId,
+        BinaryData deviceClassPatch, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.updateDeviceClass(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                deviceClassId,
-                                this.client.getServiceVersion().getVersion(),
-                                deviceClassPatch,
-                                accept,
-                                requestOptions,
-                                context));
+            context -> service.updateDeviceClass(this.client.getEndpoint(), this.client.getInstanceId(), deviceClassId,
+                this.client.getServiceVersion().getVersion(), deviceClassPatch, accept, requestOptions, context));
     }
 
     /**
@@ -2707,18 +1625,11 @@ public final class DeviceManagementsImpl {
      * @return device class metadata along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateDeviceClassWithResponse(
-            String deviceClassId, BinaryData deviceClassPatch, RequestOptions requestOptions) {
+    public Response<BinaryData> updateDeviceClassWithResponse(String deviceClassId, BinaryData deviceClassPatch,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateDeviceClassSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                deviceClassPatch,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.updateDeviceClassSync(this.client.getEndpoint(), this.client.getInstanceId(), deviceClassId,
+            this.client.getServiceVersion().getVersion(), deviceClassPatch, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2737,19 +1648,12 @@ public final class DeviceManagementsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDeviceClassWithResponseAsync(
-            String deviceClassId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteDeviceClassWithResponseAsync(String deviceClassId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteDeviceClass(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                deviceClassId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.deleteDeviceClass(this.client.getEndpoint(), this.client.getInstanceId(),
+                deviceClassId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2770,14 +1674,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDeviceClassWithResponse(String deviceClassId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteDeviceClassSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteDeviceClassSync(this.client.getEndpoint(), this.client.getInstanceId(), deviceClassId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2807,28 +1705,15 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassSinglePageAsync(
-            String deviceClassId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassSinglePageAsync(String deviceClassId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listInstallableUpdatesForDeviceClass(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        deviceClassId,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listInstallableUpdatesForDeviceClass(this.client.getEndpoint(),
+                this.client.getInstanceId(), deviceClassId, this.client.getServiceVersion().getVersion(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -2857,17 +1742,13 @@ public final class DeviceManagementsImpl {
      * @return a list of installable updates for a device class as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listInstallableUpdatesForDeviceClassAsync(
-            String deviceClassId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listInstallableUpdatesForDeviceClassAsync(String deviceClassId,
+        RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listInstallableUpdatesForDeviceClassSinglePageAsync(deviceClassId, requestOptions),
-                nextLink ->
-                        listInstallableUpdatesForDeviceClassNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listInstallableUpdatesForDeviceClassSinglePageAsync(deviceClassId, requestOptions),
+            nextLink -> listInstallableUpdatesForDeviceClassNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2896,25 +1777,14 @@ public final class DeviceManagementsImpl {
      * @return a list of installable updates for a device class along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listInstallableUpdatesForDeviceClassSinglePage(
-            String deviceClassId, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listInstallableUpdatesForDeviceClassSinglePage(String deviceClassId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listInstallableUpdatesForDeviceClassSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        deviceClassId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listInstallableUpdatesForDeviceClassSync(this.client.getEndpoint(), this.client.getInstanceId(),
+                deviceClassId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -2943,16 +1813,13 @@ public final class DeviceManagementsImpl {
      * @return a list of installable updates for a device class as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listInstallableUpdatesForDeviceClass(
-            String deviceClassId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listInstallableUpdatesForDeviceClass(String deviceClassId,
+        RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listInstallableUpdatesForDeviceClassSinglePage(deviceClassId, requestOptions),
-                nextLink -> listInstallableUpdatesForDeviceClassNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listInstallableUpdatesForDeviceClassSinglePage(deviceClassId, requestOptions),
+            nextLink -> listInstallableUpdatesForDeviceClassNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -3017,24 +1884,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listDevicesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listDevices(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listDevices(this.client.getEndpoint(), this.client.getInstanceId(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -3099,12 +1953,9 @@ public final class DeviceManagementsImpl {
     public PagedFlux<BinaryData> listDevicesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listDevicesSinglePageAsync(requestOptions),
-                nextLink -> listDevicesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listDevicesSinglePageAsync(requestOptions),
+            nextLink -> listDevicesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -3168,21 +2019,10 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listDevicesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDevicesSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listDevicesSync(this.client.getEndpoint(), this.client.getInstanceId(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -3248,12 +2088,9 @@ public final class DeviceManagementsImpl {
     public PagedIterable<BinaryData> listDevices(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listDevicesSinglePage(requestOptions),
-                nextLink -> listDevicesNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listDevicesSinglePage(requestOptions),
+            nextLink -> listDevicesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -3277,16 +2114,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> importDevicesWithResponseAsync(BinaryData importType, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.importDevices(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                this.client.getServiceVersion().getVersion(),
-                                importType,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.importDevices(this.client.getEndpoint(), this.client.getInstanceId(),
+                this.client.getServiceVersion().getVersion(), importType, accept, requestOptions, context));
     }
 
     /**
@@ -3310,14 +2140,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> importDevicesWithResponse(BinaryData importType, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.importDevicesSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                this.client.getServiceVersion().getVersion(),
-                importType,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.importDevicesSync(this.client.getEndpoint(), this.client.getInstanceId(),
+            this.client.getServiceVersion().getVersion(), importType, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3339,21 +2163,16 @@ public final class DeviceManagementsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginImportDevicesAsync(
-            BinaryData importType, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.importDevicesWithResponseAsync(importType, requestOptions),
-                new OperationResourcePollingStrategyWithEndpoint<>(
-                        this.client.getHttpPipeline(),
-                        "https://" + this.client.getEndpoint(),
-                        null,
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginImportDevicesAsync(BinaryData importType,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.importDevicesWithResponseAsync(importType, requestOptions),
+            new OperationResourcePollingStrategyWithEndpoint<>(this.client.getHttpPipeline(),
+                "https://" + this.client.getEndpoint(), null, null,
+                requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -3376,18 +2195,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportDevices(BinaryData importType, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.importDevicesWithResponse(importType, requestOptions),
-                new SyncDefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.client.getHttpPipeline())
-                                .setEndpoint("https://{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.importDevicesWithResponse(importType, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("https://{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -3443,16 +2258,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceWithResponseAsync(String deviceId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDevice(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                deviceId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getDevice(this.client.getEndpoint(), this.client.getInstanceId(),
+            deviceId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -3508,14 +2315,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceWithResponse(String deviceId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeviceSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                deviceId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getDeviceSync(this.client.getEndpoint(), this.client.getInstanceId(), deviceId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3571,20 +2372,12 @@ public final class DeviceManagementsImpl {
      *     for IoT Hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeviceModuleWithResponseAsync(
-            String deviceId, String moduleId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeviceModuleWithResponseAsync(String deviceId, String moduleId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDeviceModule(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                deviceId,
-                                moduleId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.getDeviceModule(this.client.getEndpoint(), this.client.getInstanceId(),
+                deviceId, moduleId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -3640,18 +2433,11 @@ public final class DeviceManagementsImpl {
      *     for IoT Hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDeviceModuleWithResponse(
-            String deviceId, String moduleId, RequestOptions requestOptions) {
+    public Response<BinaryData> getDeviceModuleWithResponse(String deviceId, String moduleId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeviceModuleSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                deviceId,
-                moduleId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getDeviceModuleSync(this.client.getEndpoint(), this.client.getInstanceId(), deviceId, moduleId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3680,15 +2466,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUpdateComplianceWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getUpdateCompliance(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.getUpdateCompliance(this.client.getEndpoint(), this.client.getInstanceId(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -3717,13 +2497,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUpdateComplianceWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getUpdateComplianceSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getUpdateComplianceSync(this.client.getEndpoint(), this.client.getInstanceId(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3766,24 +2541,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listGroupsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listGroups(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listGroups(this.client.getEndpoint(), this.client.getInstanceId(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -3827,12 +2589,9 @@ public final class DeviceManagementsImpl {
     public PagedFlux<BinaryData> listGroupsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listGroupsSinglePageAsync(requestOptions),
-                nextLink -> listGroupsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listGroupsSinglePageAsync(requestOptions),
+            nextLink -> listGroupsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -3875,21 +2634,10 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listGroupsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listGroupsSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listGroupsSync(this.client.getEndpoint(), this.client.getInstanceId(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -3933,12 +2681,9 @@ public final class DeviceManagementsImpl {
     public PagedIterable<BinaryData> listGroups(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listGroupsSinglePage(requestOptions),
-                nextLink -> listGroupsNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listGroupsSinglePage(requestOptions),
+            nextLink -> listGroupsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -3972,16 +2717,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGroupWithResponseAsync(String groupId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getGroup(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getGroup(this.client.getEndpoint(), this.client.getInstanceId(),
+            groupId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4015,14 +2752,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGroupWithResponse(String groupId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getGroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getGroupSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4043,16 +2774,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGroupWithResponseAsync(String groupId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteGroup(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.deleteGroup(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4073,14 +2797,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGroupWithResponse(String groupId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteGroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteGroupSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4109,19 +2827,12 @@ public final class DeviceManagementsImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getUpdateComplianceForGroupWithResponseAsync(
-            String groupId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getUpdateComplianceForGroupWithResponseAsync(String groupId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getUpdateComplianceForGroup(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+            context -> service.getUpdateComplianceForGroup(this.client.getEndpoint(), this.client.getInstanceId(),
+                groupId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4151,14 +2862,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUpdateComplianceForGroupWithResponse(String groupId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getUpdateComplianceForGroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getUpdateComplianceForGroupSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4193,28 +2898,15 @@ public final class DeviceManagementsImpl {
      *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupSinglePageAsync(
-            String groupId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupSinglePageAsync(String groupId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listBestUpdatesForGroup(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        groupId,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listBestUpdatesForGroup(this.client.getEndpoint(), this.client.getInstanceId(),
+                    groupId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -4252,12 +2944,9 @@ public final class DeviceManagementsImpl {
     public PagedFlux<BinaryData> listBestUpdatesForGroupAsync(String groupId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listBestUpdatesForGroupSinglePageAsync(groupId, requestOptions),
-                nextLink -> listBestUpdatesForGroupNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listBestUpdatesForGroupSinglePageAsync(groupId, requestOptions),
+            nextLink -> listBestUpdatesForGroupNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4294,22 +2983,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listBestUpdatesForGroupSinglePage(String groupId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listBestUpdatesForGroupSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        groupId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listBestUpdatesForGroupSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -4347,12 +3025,9 @@ public final class DeviceManagementsImpl {
     public PagedIterable<BinaryData> listBestUpdatesForGroup(String groupId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listBestUpdatesForGroupSinglePage(groupId, requestOptions),
-                nextLink -> listBestUpdatesForGroupNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listBestUpdatesForGroupSinglePage(groupId, requestOptions),
+            nextLink -> listBestUpdatesForGroupNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4410,28 +3085,15 @@ public final class DeviceManagementsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeploymentsForGroupSinglePageAsync(
-            String groupId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDeploymentsForGroupSinglePageAsync(String groupId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listDeploymentsForGroup(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        groupId,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listDeploymentsForGroup(this.client.getEndpoint(), this.client.getInstanceId(),
+                    groupId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -4491,12 +3153,9 @@ public final class DeviceManagementsImpl {
     public PagedFlux<BinaryData> listDeploymentsForGroupAsync(String groupId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listDeploymentsForGroupSinglePageAsync(groupId, requestOptions),
-                nextLink -> listDeploymentsForGroupNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listDeploymentsForGroupSinglePageAsync(groupId, requestOptions),
+            nextLink -> listDeploymentsForGroupNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4555,22 +3214,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listDeploymentsForGroupSinglePage(String groupId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeploymentsForGroupSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        groupId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listDeploymentsForGroupSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -4630,12 +3278,9 @@ public final class DeviceManagementsImpl {
     public PagedIterable<BinaryData> listDeploymentsForGroup(String groupId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listDeploymentsForGroupSinglePage(groupId, requestOptions),
-                nextLink -> listDeploymentsForGroupNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listDeploymentsForGroupSinglePage(groupId, requestOptions),
+            nextLink -> listDeploymentsForGroupNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4683,20 +3328,12 @@ public final class DeviceManagementsImpl {
      * @return the deployment properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeploymentWithResponseAsync(
-            String groupId, String deploymentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeploymentWithResponseAsync(String groupId, String deploymentId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDeployment(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deploymentId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.getDeployment(this.client.getEndpoint(), this.client.getInstanceId(),
+                groupId, deploymentId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4744,18 +3381,11 @@ public final class DeviceManagementsImpl {
      * @return the deployment properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDeploymentWithResponse(
-            String groupId, String deploymentId, RequestOptions requestOptions) {
+    public Response<BinaryData> getDeploymentWithResponse(String groupId, String deploymentId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeploymentSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getDeploymentSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId, deploymentId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4836,21 +3466,12 @@ public final class DeviceManagementsImpl {
      * @return deployment metadata along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateDeploymentWithResponseAsync(
-            String groupId, String deploymentId, BinaryData deployment, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateDeploymentWithResponseAsync(String groupId, String deploymentId,
+        BinaryData deployment, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdateDeployment(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deploymentId,
-                                this.client.getServiceVersion().getVersion(),
-                                deployment,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrUpdateDeployment(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deploymentId, this.client.getServiceVersion().getVersion(),
+            deployment, accept, requestOptions, context));
     }
 
     /**
@@ -4931,19 +3552,12 @@ public final class DeviceManagementsImpl {
      * @return deployment metadata along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateDeploymentWithResponse(
-            String groupId, String deploymentId, BinaryData deployment, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateDeploymentWithResponse(String groupId, String deploymentId,
+        BinaryData deployment, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createOrUpdateDeploymentSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                deployment,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.createOrUpdateDeploymentSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+            deploymentId, this.client.getServiceVersion().getVersion(), deployment, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -4959,20 +3573,12 @@ public final class DeviceManagementsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDeploymentWithResponseAsync(
-            String groupId, String deploymentId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteDeploymentWithResponseAsync(String groupId, String deploymentId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteDeployment(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deploymentId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.deleteDeployment(this.client.getEndpoint(), this.client.getInstanceId(),
+                groupId, deploymentId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4988,18 +3594,11 @@ public final class DeviceManagementsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDeploymentWithResponse(
-            String groupId, String deploymentId, RequestOptions requestOptions) {
+    public Response<Void> deleteDeploymentWithResponse(String groupId, String deploymentId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteDeploymentSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteDeploymentSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+            deploymentId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -5054,20 +3653,12 @@ public final class DeviceManagementsImpl {
      *     completed, or failed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeploymentStatusWithResponseAsync(
-            String groupId, String deploymentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeploymentStatusWithResponseAsync(String groupId, String deploymentId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDeploymentStatus(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deploymentId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.getDeploymentStatus(this.client.getEndpoint(), this.client.getInstanceId(),
+                groupId, deploymentId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -5122,18 +3713,11 @@ public final class DeviceManagementsImpl {
      *     completed, or failed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDeploymentStatusWithResponse(
-            String groupId, String deploymentId, RequestOptions requestOptions) {
+    public Response<BinaryData> getDeploymentStatusWithResponse(String groupId, String deploymentId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeploymentStatusSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getDeploymentStatusSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+            deploymentId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -5172,28 +3756,15 @@ public final class DeviceManagementsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupSinglePageAsync(
-            String groupId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupSinglePageAsync(String groupId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listDeviceClassSubgroupsForGroup(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        groupId,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listDeviceClassSubgroupsForGroup(this.client.getEndpoint(),
+                this.client.getInstanceId(), groupId, this.client.getServiceVersion().getVersion(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -5234,12 +3805,9 @@ public final class DeviceManagementsImpl {
     public PagedFlux<BinaryData> listDeviceClassSubgroupsForGroupAsync(String groupId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listDeviceClassSubgroupsForGroupSinglePageAsync(groupId, requestOptions),
-                nextLink -> listDeviceClassSubgroupsForGroupNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listDeviceClassSubgroupsForGroupSinglePageAsync(groupId, requestOptions),
+            nextLink -> listDeviceClassSubgroupsForGroupNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5277,25 +3845,14 @@ public final class DeviceManagementsImpl {
      * @return the device class subgroups for the group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeviceClassSubgroupsForGroupSinglePage(
-            String groupId, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDeviceClassSubgroupsForGroupSinglePage(String groupId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceClassSubgroupsForGroupSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        groupId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listDeviceClassSubgroupsForGroupSync(this.client.getEndpoint(), this.client.getInstanceId(),
+                groupId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -5336,12 +3893,9 @@ public final class DeviceManagementsImpl {
     public PagedIterable<BinaryData> listDeviceClassSubgroupsForGroup(String groupId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listDeviceClassSubgroupsForGroupSinglePage(groupId, requestOptions),
-                nextLink -> listDeviceClassSubgroupsForGroupNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listDeviceClassSubgroupsForGroupSinglePage(groupId, requestOptions),
+            nextLink -> listDeviceClassSubgroupsForGroupNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5370,20 +3924,12 @@ public final class DeviceManagementsImpl {
      * @return device class subgroup details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeviceClassSubgroupWithResponseAsync(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeviceClassSubgroupWithResponseAsync(String groupId, String deviceClassId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getDeviceClassSubgroup(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deviceClassId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+            context -> service.getDeviceClassSubgroup(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+                deviceClassId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -5412,18 +3958,11 @@ public final class DeviceManagementsImpl {
      * @return device class subgroup details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDeviceClassSubgroupWithResponse(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    public Response<BinaryData> getDeviceClassSubgroupWithResponse(String groupId, String deviceClassId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeviceClassSubgroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getDeviceClassSubgroupSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+            deviceClassId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -5443,20 +3982,12 @@ public final class DeviceManagementsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDeviceClassSubgroupWithResponseAsync(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteDeviceClassSubgroupWithResponseAsync(String groupId, String deviceClassId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.deleteDeviceClassSubgroup(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deviceClassId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+            context -> service.deleteDeviceClassSubgroup(this.client.getEndpoint(), this.client.getInstanceId(),
+                groupId, deviceClassId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -5476,18 +4007,11 @@ public final class DeviceManagementsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDeviceClassSubgroupWithResponse(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    public Response<Void> deleteDeviceClassSubgroupWithResponse(String groupId, String deviceClassId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteDeviceClassSubgroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteDeviceClassSubgroupSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+            deviceClassId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -5517,20 +4041,12 @@ public final class DeviceManagementsImpl {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeviceClassSubgroupUpdateComplianceWithResponseAsync(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeviceClassSubgroupUpdateComplianceWithResponseAsync(String groupId,
+        String deviceClassId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDeviceClassSubgroupUpdateCompliance(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deviceClassId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getDeviceClassSubgroupUpdateCompliance(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deviceClassId, this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, context));
     }
 
     /**
@@ -5560,18 +4076,12 @@ public final class DeviceManagementsImpl {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDeviceClassSubgroupUpdateComplianceWithResponse(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    public Response<BinaryData> getDeviceClassSubgroupUpdateComplianceWithResponse(String groupId, String deviceClassId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeviceClassSubgroupUpdateComplianceSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getDeviceClassSubgroupUpdateComplianceSync(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deviceClassId, this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -5607,20 +4117,12 @@ public final class DeviceManagementsImpl {
      *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBestUpdatesForDeviceClassSubgroupWithResponseAsync(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getBestUpdatesForDeviceClassSubgroupWithResponseAsync(String groupId,
+        String deviceClassId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getBestUpdatesForDeviceClassSubgroup(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deviceClassId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getBestUpdatesForDeviceClassSubgroup(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deviceClassId, this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, context));
     }
 
     /**
@@ -5656,18 +4158,11 @@ public final class DeviceManagementsImpl {
      *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBestUpdatesForDeviceClassSubgroupWithResponse(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    public Response<BinaryData> getBestUpdatesForDeviceClassSubgroupWithResponse(String groupId, String deviceClassId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getBestUpdatesForDeviceClassSubgroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getBestUpdatesForDeviceClassSubgroupSync(this.client.getEndpoint(), this.client.getInstanceId(),
+            groupId, deviceClassId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -5726,29 +4221,15 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupSinglePageAsync(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupSinglePageAsync(String groupId,
+        String deviceClassId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listDeploymentsForDeviceClassSubgroup(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        groupId,
-                                        deviceClassId,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listDeploymentsForDeviceClassSubgroup(this.client.getEndpoint(),
+                this.client.getInstanceId(), groupId, deviceClassId, this.client.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -5806,17 +4287,14 @@ public final class DeviceManagementsImpl {
      * @return a list of deployments for a device class subgroup as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDeploymentsForDeviceClassSubgroupAsync(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listDeploymentsForDeviceClassSubgroupAsync(String groupId, String deviceClassId,
+        RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
         return new PagedFlux<>(
-                () -> listDeploymentsForDeviceClassSubgroupSinglePageAsync(groupId, deviceClassId, requestOptions),
-                nextLink ->
-                        listDeploymentsForDeviceClassSubgroupNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            () -> listDeploymentsForDeviceClassSubgroupSinglePageAsync(groupId, deviceClassId, requestOptions),
+            nextLink -> listDeploymentsForDeviceClassSubgroupNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5874,26 +4352,14 @@ public final class DeviceManagementsImpl {
      * @return a list of deployments for a device class subgroup along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeploymentsForDeviceClassSubgroupSinglePage(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDeploymentsForDeviceClassSubgroupSinglePage(String groupId,
+        String deviceClassId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeploymentsForDeviceClassSubgroupSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        groupId,
-                        deviceClassId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listDeploymentsForDeviceClassSubgroupSync(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deviceClassId, this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -5951,16 +4417,14 @@ public final class DeviceManagementsImpl {
      * @return a list of deployments for a device class subgroup as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDeploymentsForDeviceClassSubgroup(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listDeploymentsForDeviceClassSubgroup(String groupId, String deviceClassId,
+        RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
         return new PagedIterable<>(
-                () -> listDeploymentsForDeviceClassSubgroupSinglePage(groupId, deviceClassId, requestOptions),
-                nextLink -> listDeploymentsForDeviceClassSubgroupNextSinglePage(nextLink, requestOptionsForNextPage));
+            () -> listDeploymentsForDeviceClassSubgroupSinglePage(groupId, deviceClassId, requestOptions),
+            nextLink -> listDeploymentsForDeviceClassSubgroupNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -6009,21 +4473,12 @@ public final class DeviceManagementsImpl {
      * @return the deployment properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeploymentForDeviceClassSubgroupWithResponseAsync(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeploymentForDeviceClassSubgroupWithResponseAsync(String groupId,
+        String deviceClassId, String deploymentId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDeploymentForDeviceClassSubgroup(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deviceClassId,
-                                deploymentId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getDeploymentForDeviceClassSubgroup(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deviceClassId, deploymentId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -6072,19 +4527,12 @@ public final class DeviceManagementsImpl {
      * @return the deployment properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDeploymentForDeviceClassSubgroupWithResponse(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public Response<BinaryData> getDeploymentForDeviceClassSubgroupWithResponse(String groupId, String deviceClassId,
+        String deploymentId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeploymentForDeviceClassSubgroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getDeploymentForDeviceClassSubgroupSync(this.client.getEndpoint(), this.client.getInstanceId(),
+            groupId, deviceClassId, deploymentId, this.client.getServiceVersion().getVersion(), accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -6101,21 +4549,12 @@ public final class DeviceManagementsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDeploymentForDeviceClassSubgroupWithResponseAsync(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteDeploymentForDeviceClassSubgroupWithResponseAsync(String groupId,
+        String deviceClassId, String deploymentId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteDeploymentForDeviceClassSubgroup(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deviceClassId,
-                                deploymentId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteDeploymentForDeviceClassSubgroup(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deviceClassId, deploymentId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -6132,19 +4571,12 @@ public final class DeviceManagementsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDeploymentForDeviceClassSubgroupWithResponse(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public Response<Void> deleteDeploymentForDeviceClassSubgroupWithResponse(String groupId, String deviceClassId,
+        String deploymentId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteDeploymentForDeviceClassSubgroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteDeploymentForDeviceClassSubgroupSync(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deviceClassId, deploymentId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6193,21 +4625,12 @@ public final class DeviceManagementsImpl {
      * @return deployment metadata along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> stopDeploymentWithResponseAsync(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> stopDeploymentWithResponseAsync(String groupId, String deviceClassId,
+        String deploymentId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.stopDeployment(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deviceClassId,
-                                deploymentId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.stopDeployment(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deviceClassId, deploymentId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -6256,19 +4679,12 @@ public final class DeviceManagementsImpl {
      * @return deployment metadata along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> stopDeploymentWithResponse(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public Response<BinaryData> stopDeploymentWithResponse(String groupId, String deviceClassId, String deploymentId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.stopDeploymentSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.stopDeploymentSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+            deviceClassId, deploymentId, this.client.getServiceVersion().getVersion(), accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -6317,21 +4733,12 @@ public final class DeviceManagementsImpl {
      * @return deployment metadata along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> retryDeploymentWithResponseAsync(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> retryDeploymentWithResponseAsync(String groupId, String deviceClassId,
+        String deploymentId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.retryDeployment(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deviceClassId,
-                                deploymentId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.retryDeployment(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deviceClassId, deploymentId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -6380,19 +4787,12 @@ public final class DeviceManagementsImpl {
      * @return deployment metadata along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> retryDeploymentWithResponse(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public Response<BinaryData> retryDeploymentWithResponse(String groupId, String deviceClassId, String deploymentId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.retryDeploymentSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.retryDeploymentSync(this.client.getEndpoint(), this.client.getInstanceId(), groupId,
+            deviceClassId, deploymentId, this.client.getServiceVersion().getVersion(), accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -6441,21 +4841,12 @@ public final class DeviceManagementsImpl {
      *     completed, or failed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeviceClassSubgroupDeploymentStatusWithResponseAsync(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeviceClassSubgroupDeploymentStatusWithResponseAsync(String groupId,
+        String deviceClassId, String deploymentId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDeviceClassSubgroupDeploymentStatus(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                groupId,
-                                deviceClassId,
-                                deploymentId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getDeviceClassSubgroupDeploymentStatus(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deviceClassId, deploymentId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -6504,19 +4895,12 @@ public final class DeviceManagementsImpl {
      *     completed, or failed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDeviceClassSubgroupDeploymentStatusWithResponse(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public Response<BinaryData> getDeviceClassSubgroupDeploymentStatusWithResponse(String groupId, String deviceClassId,
+        String deploymentId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeviceClassSubgroupDeploymentStatusSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getDeviceClassSubgroupDeploymentStatusSync(this.client.getEndpoint(),
+            this.client.getInstanceId(), groupId, deviceClassId, deploymentId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6557,29 +4941,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentSinglePageAsync(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listDeviceStatesForDeviceClassSubgroupDeployment(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        groupId,
-                                        deviceClassId,
-                                        deploymentId,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listDeviceStatesForDeviceClassSubgroupDeployment(this.client.getEndpoint(),
+                this.client.getInstanceId(), groupId, deviceClassId, deploymentId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -6618,20 +4987,16 @@ public final class DeviceManagementsImpl {
      * @return a list of devices in a deployment along with their state as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentAsync(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentAsync(String groupId,
+        String deviceClassId, String deploymentId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
         return new PagedFlux<>(
-                () ->
-                        listDeviceStatesForDeviceClassSubgroupDeploymentSinglePageAsync(
-                                groupId, deviceClassId, deploymentId, requestOptions),
-                nextLink ->
-                        listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePageAsync(
-                                nextLink, requestOptionsForNextPage));
+            () -> listDeviceStatesForDeviceClassSubgroupDeploymentSinglePageAsync(groupId, deviceClassId, deploymentId,
+                requestOptions),
+            nextLink -> listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePageAsync(nextLink,
+                requestOptionsForNextPage));
     }
 
     /**
@@ -6670,27 +5035,14 @@ public final class DeviceManagementsImpl {
      * @return a list of devices in a deployment along with their state along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentSinglePage(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentSinglePage(String groupId,
+        String deviceClassId, String deploymentId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceStatesForDeviceClassSubgroupDeploymentSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        groupId,
-                        deviceClassId,
-                        deploymentId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listDeviceStatesForDeviceClassSubgroupDeploymentSync(
+            this.client.getEndpoint(), this.client.getInstanceId(), groupId, deviceClassId, deploymentId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -6730,20 +5082,16 @@ public final class DeviceManagementsImpl {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDeviceStatesForDeviceClassSubgroupDeployment(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listDeviceStatesForDeviceClassSubgroupDeployment(String groupId,
+        String deviceClassId, String deploymentId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
         return new PagedIterable<>(
-                () ->
-                        listDeviceStatesForDeviceClassSubgroupDeploymentSinglePage(
-                                groupId, deviceClassId, deploymentId, requestOptions),
-                nextLink ->
-                        listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePage(
-                                nextLink, requestOptionsForNextPage));
+            () -> listDeviceStatesForDeviceClassSubgroupDeploymentSinglePage(groupId, deviceClassId, deploymentId,
+                requestOptions),
+            nextLink -> listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePage(nextLink,
+                requestOptionsForNextPage));
     }
 
     /**
@@ -6796,19 +5144,12 @@ public final class DeviceManagementsImpl {
      * @return operation metadata along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationStatusWithResponseAsync(
-            String operationId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getOperationStatusWithResponseAsync(String operationId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getOperationStatus(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                operationId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.getOperationStatus(this.client.getEndpoint(), this.client.getInstanceId(),
+                operationId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -6863,14 +5204,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getOperationStatusSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                operationId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getOperationStatusSync(this.client.getEndpoint(), this.client.getInstanceId(), operationId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6926,24 +5261,12 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listOperationStatusesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listOperationStatuses(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listOperationStatuses(this.client.getEndpoint(), this.client.getInstanceId(),
+                    this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -6999,12 +5322,9 @@ public final class DeviceManagementsImpl {
     public PagedFlux<BinaryData> listOperationStatusesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listOperationStatusesSinglePageAsync(requestOptions),
-                nextLink -> listOperationStatusesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listOperationStatusesSinglePageAsync(requestOptions),
+            nextLink -> listOperationStatusesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -7059,21 +5379,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listOperationStatusesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listOperationStatusesSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listOperationStatusesSync(this.client.getEndpoint(), this.client.getInstanceId(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -7129,12 +5439,9 @@ public final class DeviceManagementsImpl {
     public PagedIterable<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listOperationStatusesSinglePage(requestOptions),
-                nextLink -> listOperationStatusesNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listOperationStatusesSinglePage(requestOptions),
+            nextLink -> listOperationStatusesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -7186,20 +5493,12 @@ public final class DeviceManagementsImpl {
      * @return diagnostics request body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> startLogCollectionWithResponseAsync(
-            String logCollectionId, BinaryData logCollection, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> startLogCollectionWithResponseAsync(String logCollectionId,
+        BinaryData logCollection, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.startLogCollection(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                logCollectionId,
-                                this.client.getServiceVersion().getVersion(),
-                                logCollection,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.startLogCollection(this.client.getEndpoint(),
+            this.client.getInstanceId(), logCollectionId, this.client.getServiceVersion().getVersion(), logCollection,
+            accept, requestOptions, context));
     }
 
     /**
@@ -7251,18 +5550,11 @@ public final class DeviceManagementsImpl {
      * @return diagnostics request body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> startLogCollectionWithResponse(
-            String logCollectionId, BinaryData logCollection, RequestOptions requestOptions) {
+    public Response<BinaryData> startLogCollectionWithResponse(String logCollectionId, BinaryData logCollection,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.startLogCollectionSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                logCollectionId,
-                this.client.getServiceVersion().getVersion(),
-                logCollection,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.startLogCollectionSync(this.client.getEndpoint(), this.client.getInstanceId(), logCollectionId,
+            this.client.getServiceVersion().getVersion(), logCollection, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -7296,19 +5588,12 @@ public final class DeviceManagementsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLogCollectionWithResponseAsync(
-            String logCollectionId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getLogCollectionWithResponseAsync(String logCollectionId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getLogCollection(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                logCollectionId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.getLogCollection(this.client.getEndpoint(), this.client.getInstanceId(),
+                logCollectionId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -7343,14 +5628,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLogCollectionWithResponse(String logCollectionId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getLogCollectionSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                logCollectionId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getLogCollectionSync(this.client.getEndpoint(), this.client.getInstanceId(), logCollectionId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -7385,24 +5664,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listLogCollectionsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listLogCollections(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listLogCollections(this.client.getEndpoint(), this.client.getInstanceId(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -7437,12 +5703,9 @@ public final class DeviceManagementsImpl {
     public PagedFlux<BinaryData> listLogCollectionsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listLogCollectionsSinglePageAsync(requestOptions),
-                nextLink -> listLogCollectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listLogCollectionsSinglePageAsync(requestOptions),
+            nextLink -> listLogCollectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -7476,21 +5739,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listLogCollectionsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listLogCollectionsSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listLogCollectionsSync(this.client.getEndpoint(), this.client.getInstanceId(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -7525,12 +5778,9 @@ public final class DeviceManagementsImpl {
     public PagedIterable<BinaryData> listLogCollections(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listLogCollectionsSinglePage(requestOptions),
-                nextLink -> listLogCollectionsNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listLogCollectionsSinglePage(requestOptions),
+            nextLink -> listLogCollectionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -7567,19 +5817,12 @@ public final class DeviceManagementsImpl {
      * @return log collection with detailed status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLogCollectionDetailedStatusWithResponseAsync(
-            String logCollectionId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getLogCollectionDetailedStatusWithResponseAsync(String logCollectionId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getLogCollectionDetailedStatus(
-                                this.client.getEndpoint(),
-                                this.client.getInstanceId(),
-                                logCollectionId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+            context -> service.getLogCollectionDetailedStatus(this.client.getEndpoint(), this.client.getInstanceId(),
+                logCollectionId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -7616,17 +5859,11 @@ public final class DeviceManagementsImpl {
      * @return log collection with detailed status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLogCollectionDetailedStatusWithResponse(
-            String logCollectionId, RequestOptions requestOptions) {
+    public Response<BinaryData> getLogCollectionDetailedStatusWithResponse(String logCollectionId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getLogCollectionDetailedStatusSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                logCollectionId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getLogCollectionDetailedStatusSync(this.client.getEndpoint(), this.client.getInstanceId(),
+            logCollectionId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -7659,28 +5896,14 @@ public final class DeviceManagementsImpl {
      * @return list of device health along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listHealthOfDevicesSinglePageAsync(
-            String filter, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listHealthOfDevicesSinglePageAsync(String filter,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listHealthOfDevices(
-                                        this.client.getEndpoint(),
-                                        this.client.getInstanceId(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        filter,
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listHealthOfDevices(this.client.getEndpoint(), this.client.getInstanceId(),
+                this.client.getServiceVersion().getVersion(), filter, accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -7716,12 +5939,9 @@ public final class DeviceManagementsImpl {
     public PagedFlux<BinaryData> listHealthOfDevicesAsync(String filter, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listHealthOfDevicesSinglePageAsync(filter, requestOptions),
-                nextLink -> listHealthOfDevicesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listHealthOfDevicesSinglePageAsync(filter, requestOptions),
+            nextLink -> listHealthOfDevicesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -7756,22 +5976,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listHealthOfDevicesSinglePage(String filter, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listHealthOfDevicesSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        filter,
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listHealthOfDevicesSync(this.client.getEndpoint(), this.client.getInstanceId(),
+                this.client.getServiceVersion().getVersion(), filter, accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -7807,12 +6016,9 @@ public final class DeviceManagementsImpl {
     public PagedIterable<BinaryData> listHealthOfDevices(String filter, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listHealthOfDevicesSinglePage(filter, requestOptions),
-                nextLink -> listHealthOfDevicesNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listHealthOfDevicesSinglePage(filter, requestOptions),
+            nextLink -> listHealthOfDevicesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -7855,22 +6061,14 @@ public final class DeviceManagementsImpl {
      * @return the list of device classes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeviceClassesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDeviceClassesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listDeviceClassesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listDeviceClassesNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -7915,16 +6113,10 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listDeviceClassesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceClassesNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listDeviceClassesNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -7954,22 +6146,14 @@ public final class DeviceManagementsImpl {
      * @return list of update information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listInstallableUpdatesForDeviceClassNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listInstallableUpdatesForDeviceClassNext(nextLink,
+                this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -7999,19 +6183,13 @@ public final class DeviceManagementsImpl {
      * @return list of update information along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listInstallableUpdatesForDeviceClassNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listInstallableUpdatesForDeviceClassNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listInstallableUpdatesForDeviceClassNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listInstallableUpdatesForDeviceClassNextSync(nextLink,
+            this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -8065,22 +6243,13 @@ public final class DeviceManagementsImpl {
      * @return the list of devices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDevicesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDevicesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listDevicesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+            context -> service.listDevicesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -8136,15 +6305,10 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listDevicesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDevicesNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listDevicesNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -8177,22 +6341,14 @@ public final class DeviceManagementsImpl {
      * @return the list of groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listGroupsNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listGroupsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listGroupsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listGroupsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -8227,15 +6383,10 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listGroupsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listGroupsNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listGroupsNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -8271,22 +6422,14 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listBestUpdatesForGroupNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listBestUpdatesForGroupNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -8321,19 +6464,13 @@ public final class DeviceManagementsImpl {
      * @return the list of updatable devices for a device class subgroup along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listBestUpdatesForGroupNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listBestUpdatesForGroupNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listBestUpdatesForGroupNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listBestUpdatesForGroupNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -8381,22 +6518,14 @@ public final class DeviceManagementsImpl {
      * @return the list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeploymentsForGroupNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDeploymentsForGroupNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listDeploymentsForGroupNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listDeploymentsForGroupNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -8444,19 +6573,13 @@ public final class DeviceManagementsImpl {
      * @return the list of deployments along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeploymentsForGroupNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDeploymentsForGroupNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeploymentsForGroupNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listDeploymentsForGroupNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -8485,22 +6608,14 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listDeviceClassSubgroupsForGroupNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listDeviceClassSubgroupsForGroupNext(nextLink, this.client.getEndpoint(),
+                accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -8528,19 +6643,13 @@ public final class DeviceManagementsImpl {
      * @return the list of device class subgroups within a group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeviceClassSubgroupsForGroupNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDeviceClassSubgroupsForGroupNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceClassSubgroupsForGroupNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listDeviceClassSubgroupsForGroupNextSync(nextLink, this.client.getEndpoint(),
+            accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -8588,22 +6697,14 @@ public final class DeviceManagementsImpl {
      * @return the list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listDeploymentsForDeviceClassSubgroupNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listDeploymentsForDeviceClassSubgroupNext(nextLink,
+                this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -8651,19 +6752,13 @@ public final class DeviceManagementsImpl {
      * @return the list of deployments along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeploymentsForDeviceClassSubgroupNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDeploymentsForDeviceClassSubgroupNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeploymentsForDeviceClassSubgroupNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listDeploymentsForDeviceClassSubgroupNextSync(nextLink,
+            this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -8693,21 +6788,13 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+        String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listDeviceStatesForDeviceClassSubgroupDeploymentNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listDeviceStatesForDeviceClassSubgroupDeploymentNext(nextLink,
+                this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -8735,19 +6822,13 @@ public final class DeviceManagementsImpl {
      * @return the list of deployment device states along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceStatesForDeviceClassSubgroupDeploymentNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listDeviceStatesForDeviceClassSubgroupDeploymentNextSync(nextLink,
+            this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -8792,22 +6873,14 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listOperationStatusesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listOperationStatusesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listOperationStatusesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listOperationStatusesNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -8851,19 +6924,13 @@ public final class DeviceManagementsImpl {
      * @return the list of device operations with server paging support along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listOperationStatusesNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listOperationStatusesNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listOperationStatusesNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listOperationStatusesNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -8898,22 +6965,14 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listLogCollectionsNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listLogCollectionsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listLogCollectionsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listLogCollectionsNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -8949,16 +7008,10 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listLogCollectionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listLogCollectionsNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listLogCollectionsNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -8992,22 +7045,14 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listHealthOfDevicesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listHealthOfDevicesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listHealthOfDevicesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listHealthOfDevicesNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -9040,19 +7085,13 @@ public final class DeviceManagementsImpl {
      * @return array of Device Health, with server paging support along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listHealthOfDevicesNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listHealthOfDevicesNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listHealthOfDevicesNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listHealthOfDevicesNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

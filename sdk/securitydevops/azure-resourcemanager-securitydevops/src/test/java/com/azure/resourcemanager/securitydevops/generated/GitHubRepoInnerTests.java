@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Test;
 public final class GitHubRepoInnerTests {
     @Test
     public void testDeserialize() {
-        GitHubRepoInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"accountId\":5545667230906831510,\"repoUrl\":\"nbdxk\",\"ownerName\":\"xo\"},\"id\":\"jionpimexgstxgc\",\"name\":\"odgmaajrmvdjwz\",\"type\":\"lovmclwhijcoe\"}")
-                .toObject(GitHubRepoInner.class);
+        GitHubRepoInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"accountId\":5545667230906831510,\"repoUrl\":\"nbdxk\",\"ownerName\":\"xo\"},\"id\":\"jionpimexgstxgc\",\"name\":\"odgmaajrmvdjwz\",\"type\":\"lovmclwhijcoe\"}")
+            .toObject(GitHubRepoInner.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
         Assertions.assertEquals(5545667230906831510L, model.properties().accountId());
         Assertions.assertEquals("nbdxk", model.properties().repoUrl());
@@ -27,14 +25,11 @@ public final class GitHubRepoInnerTests {
 
     @Test
     public void testSerialize() {
-        GitHubRepoInner model =
-            new GitHubRepoInner()
-                .withProperties(
-                    new GitHubRepoProperties()
-                        .withProvisioningState(ProvisioningState.CANCELED)
-                        .withAccountId(5545667230906831510L)
-                        .withRepoUrl("nbdxk")
-                        .withOwnerName("xo"));
+        GitHubRepoInner model = new GitHubRepoInner()
+            .withProperties(new GitHubRepoProperties().withProvisioningState(ProvisioningState.CANCELED)
+                .withAccountId(5545667230906831510L)
+                .withRepoUrl("nbdxk")
+                .withOwnerName("xo"));
         model = BinaryData.fromObject(model).toObject(GitHubRepoInner.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
         Assertions.assertEquals(5545667230906831510L, model.properties().accountId());

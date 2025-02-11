@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,32 +20,27 @@ public final class AgentPoolProperties extends AgentPoolProfile {
     /*
      * Number of nodes in the agent pool. The default value is 1.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * The VM sku size of the agent pool node VMs.
      */
-    @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
      * Version of Kubernetes in use by the agent pool. This is inherited from the kubernetesVersion of the provisioned
      * cluster.
      */
-    @JsonProperty(value = "kubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kubernetesVersion;
 
     /*
      * The status of the latest long running operation for the agent pool.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /*
      * The observed status of the agent pool.
      */
-    @JsonProperty(value = "status")
     private AgentPoolProvisioningStatusStatus status;
 
     /**
@@ -209,9 +207,81 @@ public final class AgentPoolProperties extends AgentPoolProfile {
      */
     @Override
     public void validate() {
-        super.validate();
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osType", osType() == null ? null : osType().toString());
+        jsonWriter.writeStringField("osSKU", osSku() == null ? null : osSku().toString());
+        jsonWriter.writeMapField("nodeLabels", nodeLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("nodeTaints", nodeTaints(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("maxCount", maxCount());
+        jsonWriter.writeNumberField("minCount", minCount());
+        jsonWriter.writeBooleanField("enableAutoScaling", enableAutoScaling());
+        jsonWriter.writeNumberField("maxPods", maxPods());
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeJsonField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolProperties.
+     */
+    public static AgentPoolProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolProperties deserializedAgentPoolProperties = new AgentPoolProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osType".equals(fieldName)) {
+                    deserializedAgentPoolProperties.withOsType(OsType.fromString(reader.getString()));
+                } else if ("osSKU".equals(fieldName)) {
+                    deserializedAgentPoolProperties.withOsSku(Ossku.fromString(reader.getString()));
+                } else if ("nodeLabels".equals(fieldName)) {
+                    Map<String, String> nodeLabels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAgentPoolProperties.withNodeLabels(nodeLabels);
+                } else if ("nodeTaints".equals(fieldName)) {
+                    List<String> nodeTaints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAgentPoolProperties.withNodeTaints(nodeTaints);
+                } else if ("maxCount".equals(fieldName)) {
+                    deserializedAgentPoolProperties.withMaxCount(reader.getNullable(JsonReader::getInt));
+                } else if ("minCount".equals(fieldName)) {
+                    deserializedAgentPoolProperties.withMinCount(reader.getNullable(JsonReader::getInt));
+                } else if ("enableAutoScaling".equals(fieldName)) {
+                    deserializedAgentPoolProperties.withEnableAutoScaling(reader.getNullable(JsonReader::getBoolean));
+                } else if ("maxPods".equals(fieldName)) {
+                    deserializedAgentPoolProperties.withMaxPods(reader.getNullable(JsonReader::getInt));
+                } else if ("count".equals(fieldName)) {
+                    deserializedAgentPoolProperties.count = reader.getNullable(JsonReader::getInt);
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedAgentPoolProperties.vmSize = reader.getString();
+                } else if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedAgentPoolProperties.kubernetesVersion = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAgentPoolProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedAgentPoolProperties.status = AgentPoolProvisioningStatusStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolProperties;
+        });
     }
 }

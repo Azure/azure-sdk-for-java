@@ -6,29 +6,46 @@ package com.azure.resourcemanager.resourcegraph.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A facet whose execution resulted in an error. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("FacetError")
+/**
+ * A facet whose execution resulted in an error.
+ */
 @Fluent
 public final class FacetError extends Facet {
     /*
+     * Result type
+     */
+    private String resultType = "FacetError";
+
+    /*
      * An array containing detected facet errors with details.
      */
-    @JsonProperty(value = "errors", required = true)
     private List<ErrorDetails> errors;
 
-    /** Creates an instance of FacetError class. */
+    /**
+     * Creates an instance of FacetError class.
+     */
     public FacetError() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the errors property: An array containing detected facet errors with details.
-     *
+     * 
      * @return the errors value.
      */
     public List<ErrorDetails> errors() {
@@ -37,7 +54,7 @@ public final class FacetError extends Facet {
 
     /**
      * Set the errors property: An array containing detected facet errors with details.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the FacetError object itself.
      */
@@ -46,7 +63,9 @@ public final class FacetError extends Facet {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FacetError withExpression(String expression) {
         super.withExpression(expression);
@@ -55,20 +74,66 @@ public final class FacetError extends Facet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (errors() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property errors in model FacetError"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property errors in model FacetError"));
         } else {
             errors().forEach(e -> e.validate());
+        }
+        if (expression() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property expression in model FacetError"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FacetError.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("expression", expression());
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FacetError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FacetError if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FacetError.
+     */
+    public static FacetError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FacetError deserializedFacetError = new FacetError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expression".equals(fieldName)) {
+                    deserializedFacetError.withExpression(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    List<ErrorDetails> errors = reader.readArray(reader1 -> ErrorDetails.fromJson(reader1));
+                    deserializedFacetError.errors = errors;
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedFacetError.resultType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFacetError;
+        });
+    }
 }

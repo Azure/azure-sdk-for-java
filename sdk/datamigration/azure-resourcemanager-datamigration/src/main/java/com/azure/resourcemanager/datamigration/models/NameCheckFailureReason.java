@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The reason why the name is not available, if nameAvailable is false. */
+/**
+ * The reason why the name is not available, if nameAvailable is false.
+ */
 public final class NameCheckFailureReason extends ExpandableStringEnum<NameCheckFailureReason> {
-    /** Static value AlreadyExists for NameCheckFailureReason. */
+    /**
+     * Static value AlreadyExists for NameCheckFailureReason.
+     */
     public static final NameCheckFailureReason ALREADY_EXISTS = fromString("AlreadyExists");
 
-    /** Static value Invalid for NameCheckFailureReason. */
+    /**
+     * Static value Invalid for NameCheckFailureReason.
+     */
     public static final NameCheckFailureReason INVALID = fromString("Invalid");
 
     /**
      * Creates a new instance of NameCheckFailureReason value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class NameCheckFailureReason extends ExpandableStringEnum<NameCheck
 
     /**
      * Creates or finds a NameCheckFailureReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NameCheckFailureReason.
      */
-    @JsonCreator
     public static NameCheckFailureReason fromString(String name) {
         return fromString(name, NameCheckFailureReason.class);
     }
 
     /**
      * Gets known NameCheckFailureReason values.
-     *
+     * 
      * @return known NameCheckFailureReason values.
      */
     public static Collection<NameCheckFailureReason> values() {

@@ -10,36 +10,30 @@ import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOpenRestri
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOption;
 import java.util.Arrays;
 
-/** Samples for ContentKeyPolicies Update. */
+/**
+ * Samples for ContentKeyPolicies Update.
+ */
 public final class ContentKeyPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/content-key-policies-update.json
+     * x-ms-original-file:
+     * specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/content-key-
+     * policies-update.json
      */
     /**
      * Sample code: Update a Content Key Policy.
-     *
+     * 
      * @param manager Entry point to MediaServicesManager.
      */
     public static void updateAContentKeyPolicy(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        ContentKeyPolicy resource =
-            manager
-                .contentKeyPolicies()
-                .getWithResponse(
-                    "contosorg",
-                    "contosomedia",
-                    "PolicyWithClearKeyOptionAndTokenRestriction",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        ContentKeyPolicy resource = manager.contentKeyPolicies()
+            .getWithResponse("contosorg", "contosomedia", "PolicyWithClearKeyOptionAndTokenRestriction",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withDescription("Updated Policy")
-            .withOptions(
-                Arrays
-                    .asList(
-                        new ContentKeyPolicyOption()
-                            .withName("ClearKeyOption")
-                            .withConfiguration(new ContentKeyPolicyClearKeyConfiguration())
-                            .withRestriction(new ContentKeyPolicyOpenRestriction())))
+            .withOptions(Arrays.asList(new ContentKeyPolicyOption().withName("ClearKeyOption")
+                .withConfiguration(new ContentKeyPolicyClearKeyConfiguration())
+                .withRestriction(new ContentKeyPolicyOpenRestriction())))
             .apply();
     }
 }

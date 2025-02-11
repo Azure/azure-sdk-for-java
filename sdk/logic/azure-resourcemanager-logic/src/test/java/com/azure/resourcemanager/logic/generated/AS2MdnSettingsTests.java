@@ -12,44 +12,40 @@ import org.junit.jupiter.api.Assertions;
 public final class AS2MdnSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AS2MdnSettings model =
-            BinaryData
-                .fromString(
-                    "{\"needMDN\":false,\"signMDN\":false,\"sendMDNAsynchronously\":true,\"receiptDeliveryUrl\":\"qujizdvo\",\"dispositionNotificationTo\":\"tiby\",\"signOutboundMDNIfOptional\":false,\"mdnText\":\"blgyavutpthj\",\"sendInboundMDNToMessageBox\":false,\"micHashingAlgorithm\":\"SHA2256\"}")
-                .toObject(AS2MdnSettings.class);
+        AS2MdnSettings model = BinaryData.fromString(
+            "{\"needMDN\":false,\"signMDN\":true,\"sendMDNAsynchronously\":true,\"receiptDeliveryUrl\":\"vkzqk\",\"dispositionNotificationTo\":\"eokbze\",\"signOutboundMDNIfOptional\":true,\"mdnText\":\"rx\",\"sendInboundMDNToMessageBox\":false,\"micHashingAlgorithm\":\"SHA1\"}")
+            .toObject(AS2MdnSettings.class);
         Assertions.assertEquals(false, model.needMdn());
-        Assertions.assertEquals(false, model.signMdn());
+        Assertions.assertEquals(true, model.signMdn());
         Assertions.assertEquals(true, model.sendMdnAsynchronously());
-        Assertions.assertEquals("qujizdvo", model.receiptDeliveryUrl());
-        Assertions.assertEquals("tiby", model.dispositionNotificationTo());
-        Assertions.assertEquals(false, model.signOutboundMdnIfOptional());
-        Assertions.assertEquals("blgyavutpthj", model.mdnText());
+        Assertions.assertEquals("vkzqk", model.receiptDeliveryUrl());
+        Assertions.assertEquals("eokbze", model.dispositionNotificationTo());
+        Assertions.assertEquals(true, model.signOutboundMdnIfOptional());
+        Assertions.assertEquals("rx", model.mdnText());
         Assertions.assertEquals(false, model.sendInboundMdnToMessageBox());
-        Assertions.assertEquals(HashingAlgorithm.SHA2256, model.micHashingAlgorithm());
+        Assertions.assertEquals(HashingAlgorithm.SHA1, model.micHashingAlgorithm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AS2MdnSettings model =
-            new AS2MdnSettings()
-                .withNeedMdn(false)
-                .withSignMdn(false)
-                .withSendMdnAsynchronously(true)
-                .withReceiptDeliveryUrl("qujizdvo")
-                .withDispositionNotificationTo("tiby")
-                .withSignOutboundMdnIfOptional(false)
-                .withMdnText("blgyavutpthj")
-                .withSendInboundMdnToMessageBox(false)
-                .withMicHashingAlgorithm(HashingAlgorithm.SHA2256);
+        AS2MdnSettings model = new AS2MdnSettings().withNeedMdn(false)
+            .withSignMdn(true)
+            .withSendMdnAsynchronously(true)
+            .withReceiptDeliveryUrl("vkzqk")
+            .withDispositionNotificationTo("eokbze")
+            .withSignOutboundMdnIfOptional(true)
+            .withMdnText("rx")
+            .withSendInboundMdnToMessageBox(false)
+            .withMicHashingAlgorithm(HashingAlgorithm.SHA1);
         model = BinaryData.fromObject(model).toObject(AS2MdnSettings.class);
         Assertions.assertEquals(false, model.needMdn());
-        Assertions.assertEquals(false, model.signMdn());
+        Assertions.assertEquals(true, model.signMdn());
         Assertions.assertEquals(true, model.sendMdnAsynchronously());
-        Assertions.assertEquals("qujizdvo", model.receiptDeliveryUrl());
-        Assertions.assertEquals("tiby", model.dispositionNotificationTo());
-        Assertions.assertEquals(false, model.signOutboundMdnIfOptional());
-        Assertions.assertEquals("blgyavutpthj", model.mdnText());
+        Assertions.assertEquals("vkzqk", model.receiptDeliveryUrl());
+        Assertions.assertEquals("eokbze", model.dispositionNotificationTo());
+        Assertions.assertEquals(true, model.signOutboundMdnIfOptional());
+        Assertions.assertEquals("rx", model.mdnText());
         Assertions.assertEquals(false, model.sendInboundMdnToMessageBox());
-        Assertions.assertEquals(HashingAlgorithm.SHA2256, model.micHashingAlgorithm());
+        Assertions.assertEquals(HashingAlgorithm.SHA1, model.micHashingAlgorithm());
     }
 }

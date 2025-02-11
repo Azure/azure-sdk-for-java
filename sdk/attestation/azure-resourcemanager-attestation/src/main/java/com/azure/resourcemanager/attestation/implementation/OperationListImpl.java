@@ -16,8 +16,8 @@ public final class OperationListImpl implements OperationList {
 
     private final com.azure.resourcemanager.attestation.AttestationManager serviceManager;
 
-    OperationListImpl(
-        OperationListInner innerObject, com.azure.resourcemanager.attestation.AttestationManager serviceManager) {
+    OperationListImpl(OperationListInner innerObject,
+        com.azure.resourcemanager.attestation.AttestationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

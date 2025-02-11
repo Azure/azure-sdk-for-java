@@ -14,19 +14,20 @@ public final class PrivateLinkServiceConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionProperties model = BinaryData.fromString(
-            "{\"privateLinkServiceId\":\"xrmcqibycnojvk\",\"groupIds\":[\"fqsgzvahapjy\"],\"requestMessage\":\"pvgqzcjrvxdjzlm\",\"privateLinkServiceConnectionState\":{\"status\":\"kvugfhzovawjvzun\",\"description\":\"thnnpr\",\"actionsRequired\":\"i\"}}")
+            "{\"privateLinkServiceId\":\"pkdwzbai\",\"groupIds\":[\"baumnyqupedeoj\",\"a\",\"ckhsmtxpsieb\"],\"requestMessage\":\"hvpesapskrdqm\",\"privateLinkServiceConnectionState\":{\"status\":\"dhtldwkyz\",\"description\":\"utknc\",\"actionsRequired\":\"cwsvlxotog\"}}")
             .toObject(PrivateLinkServiceConnectionProperties.class);
-        Assertions.assertEquals("xrmcqibycnojvk", model.privateLinkServiceId());
-        Assertions.assertEquals("fqsgzvahapjy", model.groupIds().get(0));
+        Assertions.assertEquals("pkdwzbai", model.privateLinkServiceId());
+        Assertions.assertEquals("baumnyqupedeoj", model.groupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkServiceConnectionProperties model = new PrivateLinkServiceConnectionProperties()
-            .withPrivateLinkServiceId("xrmcqibycnojvk").withGroupIds(Arrays.asList("fqsgzvahapjy"))
-            .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState());
+        PrivateLinkServiceConnectionProperties model
+            = new PrivateLinkServiceConnectionProperties().withPrivateLinkServiceId("pkdwzbai")
+                .withGroupIds(Arrays.asList("baumnyqupedeoj", "a", "ckhsmtxpsieb"))
+                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState());
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionProperties.class);
-        Assertions.assertEquals("xrmcqibycnojvk", model.privateLinkServiceId());
-        Assertions.assertEquals("fqsgzvahapjy", model.groupIds().get(0));
+        Assertions.assertEquals("pkdwzbai", model.privateLinkServiceId());
+        Assertions.assertEquals("baumnyqupedeoj", model.groupIds().get(0));
     }
 }

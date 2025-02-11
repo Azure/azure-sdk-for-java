@@ -6,23 +6,25 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Vault retention policy for AzureFileShare.
  */
 @Fluent
-public final class VaultRetentionPolicy {
+public final class VaultRetentionPolicy implements JsonSerializable<VaultRetentionPolicy> {
     /*
      * Base class for retention policy.
      */
-    @JsonProperty(value = "vaultRetention", required = true)
     private RetentionPolicy vaultRetention;
 
     /*
      * The snapshotRetentionInDays property.
      */
-    @JsonProperty(value = "snapshotRetentionInDays", required = true)
     private int snapshotRetentionInDays;
 
     /**
@@ -87,4 +89,44 @@ public final class VaultRetentionPolicy {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VaultRetentionPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("vaultRetention", this.vaultRetention);
+        jsonWriter.writeIntField("snapshotRetentionInDays", this.snapshotRetentionInDays);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultRetentionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultRetentionPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VaultRetentionPolicy.
+     */
+    public static VaultRetentionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultRetentionPolicy deserializedVaultRetentionPolicy = new VaultRetentionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vaultRetention".equals(fieldName)) {
+                    deserializedVaultRetentionPolicy.vaultRetention = RetentionPolicy.fromJson(reader);
+                } else if ("snapshotRetentionInDays".equals(fieldName)) {
+                    deserializedVaultRetentionPolicy.snapshotRetentionInDays = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultRetentionPolicy;
+        });
+    }
 }

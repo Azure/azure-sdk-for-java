@@ -6,36 +6,45 @@ package com.azure.resourcemanager.dnsresolver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.models.IpConfiguration;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents the properties of an inbound endpoint for a DNS resolver. */
+/**
+ * Represents the properties of an inbound endpoint for a DNS resolver.
+ */
 @Fluent
-public final class InboundEndpointProperties {
+public final class InboundEndpointProperties implements JsonSerializable<InboundEndpointProperties> {
     /*
      * IP configurations for the inbound endpoint.
      */
-    @JsonProperty(value = "ipConfigurations", required = true)
     private List<IpConfiguration> ipConfigurations;
 
     /*
      * The current provisioning state of the inbound endpoint. This is a read-only property and any attempt to set this
      * value will be ignored.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The resourceGuid property of the inbound endpoint resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /**
+     * Creates an instance of InboundEndpointProperties class.
+     */
+    public InboundEndpointProperties() {
+    }
+
+    /**
      * Get the ipConfigurations property: IP configurations for the inbound endpoint.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<IpConfiguration> ipConfigurations() {
@@ -44,7 +53,7 @@ public final class InboundEndpointProperties {
 
     /**
      * Set the ipConfigurations property: IP configurations for the inbound endpoint.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the InboundEndpointProperties object itself.
      */
@@ -56,7 +65,7 @@ public final class InboundEndpointProperties {
     /**
      * Get the provisioningState property: The current provisioning state of the inbound endpoint. This is a read-only
      * property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -65,7 +74,7 @@ public final class InboundEndpointProperties {
 
     /**
      * Get the resourceGuid property: The resourceGuid property of the inbound endpoint resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -74,19 +83,63 @@ public final class InboundEndpointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipConfigurations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipConfigurations in model InboundEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ipConfigurations in model InboundEndpointProperties"));
         } else {
             ipConfigurations().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InboundEndpointProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InboundEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InboundEndpointProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InboundEndpointProperties.
+     */
+    public static InboundEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InboundEndpointProperties deserializedInboundEndpointProperties = new InboundEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipConfigurations".equals(fieldName)) {
+                    List<IpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> IpConfiguration.fromJson(reader1));
+                    deserializedInboundEndpointProperties.ipConfigurations = ipConfigurations;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedInboundEndpointProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedInboundEndpointProperties.resourceGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInboundEndpointProperties;
+        });
+    }
 }

@@ -18,8 +18,8 @@ public final class PrivateEndpointConnectionImpl implements PrivateEndpointConne
 
     private final com.azure.resourcemanager.signalr.SignalRManager serviceManager;
 
-    PrivateEndpointConnectionImpl(
-        PrivateEndpointConnectionInner innerObject, com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
+    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject,
+        com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

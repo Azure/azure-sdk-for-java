@@ -34,8 +34,7 @@ public class WebhooksImpl
     }
 
     void withoutWebhook(String name) {
-        prepareInlineRemove(
-            new WebhookImpl(name, this.getParent(), new WebhookInner(), this.getParent().manager())
-                .setCreateMode(false));
+        prepareInlineRemove(new WebhookImpl(name, this.getParent(), new WebhookInner(), this.getParent().manager())
+            .setCreateMode(false));
     }
 }

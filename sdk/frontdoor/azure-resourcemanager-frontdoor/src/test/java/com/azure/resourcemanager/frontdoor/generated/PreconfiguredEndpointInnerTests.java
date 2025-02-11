@@ -15,31 +15,31 @@ public final class PreconfiguredEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PreconfiguredEndpointInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"zuxylfsbtkadpyso\",\"endpoint\":\"btgkbugrjqctoj\",\"endpointType\":\"ATM\",\"backend\":\"of\"},\"location\":\"eypefojyqd\",\"tags\":{\"ihlhzdsqtzb\":\"plcplcwkhi\"},\"id\":\"rgnowcjhfgm\",\"name\":\"ecactx\",\"type\":\"wotey\"}")
+            "{\"properties\":{\"description\":\"zrcxfailcfxwmdbo\",\"endpoint\":\"fgsftufqob\",\"endpointType\":\"AzureRegion\",\"backend\":\"acgcckknhx\"},\"location\":\"izvy\",\"tags\":{\"aaeranokqgukk\":\"zvulj\",\"oylaxxul\":\"qnvb\"},\"id\":\"disdosfjbjsvgj\",\"name\":\"whryvycytdcl\",\"type\":\"gc\"}")
             .toObject(PreconfiguredEndpointInner.class);
-        Assertions.assertEquals("eypefojyqd", model.location());
-        Assertions.assertEquals("plcplcwkhi", model.tags().get("ihlhzdsqtzb"));
-        Assertions.assertEquals("zuxylfsbtkadpyso", model.description());
-        Assertions.assertEquals("btgkbugrjqctoj", model.endpoint());
-        Assertions.assertEquals(EndpointType.ATM, model.endpointType());
-        Assertions.assertEquals("of", model.backend());
+        Assertions.assertEquals("izvy", model.location());
+        Assertions.assertEquals("zvulj", model.tags().get("aaeranokqgukk"));
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.description());
+        Assertions.assertEquals("fgsftufqob", model.endpoint());
+        Assertions.assertEquals(EndpointType.AZURE_REGION, model.endpointType());
+        Assertions.assertEquals("acgcckknhx", model.backend());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PreconfiguredEndpointInner model = new PreconfiguredEndpointInner().withLocation("eypefojyqd")
-            .withTags(mapOf("ihlhzdsqtzb", "plcplcwkhi"))
-            .withDescription("zuxylfsbtkadpyso")
-            .withEndpoint("btgkbugrjqctoj")
-            .withEndpointType(EndpointType.ATM)
-            .withBackend("of");
+        PreconfiguredEndpointInner model = new PreconfiguredEndpointInner().withLocation("izvy")
+            .withTags(mapOf("aaeranokqgukk", "zvulj", "oylaxxul", "qnvb"))
+            .withDescription("zrcxfailcfxwmdbo")
+            .withEndpoint("fgsftufqob")
+            .withEndpointType(EndpointType.AZURE_REGION)
+            .withBackend("acgcckknhx");
         model = BinaryData.fromObject(model).toObject(PreconfiguredEndpointInner.class);
-        Assertions.assertEquals("eypefojyqd", model.location());
-        Assertions.assertEquals("plcplcwkhi", model.tags().get("ihlhzdsqtzb"));
-        Assertions.assertEquals("zuxylfsbtkadpyso", model.description());
-        Assertions.assertEquals("btgkbugrjqctoj", model.endpoint());
-        Assertions.assertEquals(EndpointType.ATM, model.endpointType());
-        Assertions.assertEquals("of", model.backend());
+        Assertions.assertEquals("izvy", model.location());
+        Assertions.assertEquals("zvulj", model.tags().get("aaeranokqgukk"));
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.description());
+        Assertions.assertEquals("fgsftufqob", model.endpoint());
+        Assertions.assertEquals(EndpointType.AZURE_REGION, model.endpointType());
+        Assertions.assertEquals("acgcckknhx", model.backend());
     }
 
     // Use "Map.of" if available

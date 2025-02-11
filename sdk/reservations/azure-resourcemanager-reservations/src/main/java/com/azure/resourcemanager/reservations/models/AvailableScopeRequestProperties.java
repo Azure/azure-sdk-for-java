@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Available scope request properties. */
+/**
+ * Available scope request properties.
+ */
 @Fluent
-public final class AvailableScopeRequestProperties {
+public final class AvailableScopeRequestProperties implements JsonSerializable<AvailableScopeRequestProperties> {
     /*
      * The scopes property.
      */
-    @JsonProperty(value = "scopes")
     private List<String> scopes;
 
-    /** Creates an instance of AvailableScopeRequestProperties class. */
+    /**
+     * Creates an instance of AvailableScopeRequestProperties class.
+     */
     public AvailableScopeRequestProperties() {
     }
 
     /**
      * Get the scopes property: The scopes property.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -32,7 +39,7 @@ public final class AvailableScopeRequestProperties {
 
     /**
      * Set the scopes property: The scopes property.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the AvailableScopeRequestProperties object itself.
      */
@@ -43,9 +50,47 @@ public final class AvailableScopeRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableScopeRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableScopeRequestProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableScopeRequestProperties.
+     */
+    public static AvailableScopeRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableScopeRequestProperties deserializedAvailableScopeRequestProperties
+                = new AvailableScopeRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scopes".equals(fieldName)) {
+                    List<String> scopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAvailableScopeRequestProperties.scopes = scopes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableScopeRequestProperties;
+        });
     }
 }

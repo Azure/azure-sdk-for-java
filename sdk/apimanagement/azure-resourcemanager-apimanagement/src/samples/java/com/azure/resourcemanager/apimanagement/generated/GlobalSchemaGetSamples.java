@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for GlobalSchema Get. */
+/**
+ * Samples for GlobalSchema Get.
+ */
 public final class GlobalSchemaGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetGlobalSchema2.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetGlobalSchema2.json
      */
     /**
      * Sample code: ApiManagementGetSchema2.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementGetSchema2(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
@@ -19,11 +23,13 @@ public final class GlobalSchemaGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetGlobalSchema1.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetGlobalSchema1.json
      */
     /**
      * Sample code: ApiManagementGetSchema1.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementGetSchema1(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {

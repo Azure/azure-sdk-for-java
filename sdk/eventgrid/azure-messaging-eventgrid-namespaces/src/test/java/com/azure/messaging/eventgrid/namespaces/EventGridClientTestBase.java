@@ -51,10 +51,10 @@ public class EventGridClientTestBase extends TestProxyTestBase {
     protected void makeBuilders(boolean sync) {
         receiverBuilder = buildReceiverClientBuilder();
         senderBuilder = buildSenderClientBuilder();
-        receiverBuilder.httpClient(buildAssertingClient(getHttpClientOrUsePlayback(getHttpClients().findFirst()
-            .orElse(null)), sync));
-        senderBuilder.httpClient(buildAssertingClient(getHttpClientOrUsePlayback(getHttpClients().findFirst()
-            .orElse(null)), sync));
+        receiverBuilder.httpClient(
+            buildAssertingClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)), sync));
+        senderBuilder.httpClient(
+            buildAssertingClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)), sync));
 
         if (interceptorManager.isRecordMode()) {
             receiverBuilder.addPolicy(interceptorManager.getRecordPolicy()).retryPolicy(new RetryPolicy());

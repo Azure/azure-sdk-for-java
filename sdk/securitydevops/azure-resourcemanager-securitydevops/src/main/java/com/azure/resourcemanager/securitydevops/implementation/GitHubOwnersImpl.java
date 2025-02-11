@@ -21,8 +21,8 @@ public final class GitHubOwnersImpl implements GitHubOwners {
 
     private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
-    public GitHubOwnersImpl(
-        GitHubOwnersClient innerClient, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
+    public GitHubOwnersImpl(GitHubOwnersClient innerClient,
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,20 +33,17 @@ public final class GitHubOwnersImpl implements GitHubOwners {
     }
 
     public PagedIterable<GitHubOwner> list(String resourceGroupName, String gitHubConnectorName, Context context) {
-        PagedIterable<GitHubOwnerInner> inner =
-            this.serviceClient().list(resourceGroupName, gitHubConnectorName, context);
+        PagedIterable<GitHubOwnerInner> inner
+            = this.serviceClient().list(resourceGroupName, gitHubConnectorName, context);
         return Utils.mapPage(inner, inner1 -> new GitHubOwnerImpl(inner1, this.manager()));
     }
 
-    public Response<GitHubOwner> getWithResponse(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, Context context) {
-        Response<GitHubOwnerInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, context);
+    public Response<GitHubOwner> getWithResponse(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName, Context context) {
+        Response<GitHubOwnerInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GitHubOwnerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,27 +62,18 @@ public final class GitHubOwnersImpl implements GitHubOwners {
     public GitHubOwner getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String gitHubConnectorName = Utils.getValueFromIdByName(id, "gitHubConnectors");
         if (gitHubConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
         }
         String gitHubOwnerName = Utils.getValueFromIdByName(id, "owners");
         if (gitHubOwnerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'owners'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'owners'.", id)));
         }
         return this.getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, Context.NONE).getValue();
     }
@@ -93,27 +81,18 @@ public final class GitHubOwnersImpl implements GitHubOwners {
     public Response<GitHubOwner> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String gitHubConnectorName = Utils.getValueFromIdByName(id, "gitHubConnectors");
         if (gitHubConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
         }
         String gitHubOwnerName = Utils.getValueFromIdByName(id, "owners");
         if (gitHubOwnerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'owners'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'owners'.", id)));
         }
         return this.getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, context);
     }

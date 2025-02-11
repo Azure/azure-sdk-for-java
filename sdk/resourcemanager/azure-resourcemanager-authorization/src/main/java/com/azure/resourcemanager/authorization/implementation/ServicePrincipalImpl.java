@@ -29,12 +29,9 @@ import java.util.Map;
 import java.util.Set;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
-class ServicePrincipalImpl
-    extends CreatableUpdatableImpl<ServicePrincipal, MicrosoftGraphServicePrincipalInner, ServicePrincipalImpl>
-    implements ServicePrincipal,
-        ServicePrincipal.Definition,
-        ServicePrincipal.Update,
-        HasCredential<ServicePrincipalImpl> {
+class ServicePrincipalImpl extends
+    CreatableUpdatableImpl<ServicePrincipal, MicrosoftGraphServicePrincipalInner, ServicePrincipalImpl> implements
+    ServicePrincipal, ServicePrincipal.Definition, ServicePrincipal.Update, HasCredential<ServicePrincipalImpl> {
     private AuthorizationManager manager;
 
     private Map<String, PasswordCredential> cachedPasswordCredentials;
@@ -89,7 +86,9 @@ class ServicePrincipalImpl
 
     @Override
     protected Mono<MicrosoftGraphServicePrincipalInner> getInnerAsync() {
-        return manager.serviceClient().getServicePrincipalsServicePrincipals().getServicePrincipalAsync(id())
+        return manager.serviceClient()
+            .getServicePrincipalsServicePrincipals()
+            .getServicePrincipalAsync(id())
             .doOnSuccess(this::refreshCredentials);
     }
 
@@ -104,81 +103,76 @@ class ServicePrincipalImpl
                 ActiveDirectoryApplication application = this.taskResult(applicationCreatable.key());
                 innerModel().withAppId(application.applicationId());
             }
-            sp = manager.serviceClient().getServicePrincipalsServicePrincipals()
-                .createServicePrincipalAsync(innerModel()).map(innerToFluentMap(this));
+            sp = manager.serviceClient()
+                .getServicePrincipalsServicePrincipals()
+                .createServicePrincipalAsync(innerModel())
+                .map(innerToFluentMap(this));
 
             if (applicationCreatable != null) {
                 // retry on 400, if app is created with "withNewApplication"
                 sp = sp.retryWhen(RetryUtils.backoffRetryFor400BadRequest());
             }
         } else {
-            sp = manager().serviceClient().getServicePrincipalsServicePrincipals()
-                .updateServicePrincipalAsync(id(), new MicrosoftGraphServicePrincipalInner()
-                    .withKeyCredentials(innerModel().keyCredentials())
-                    .withPasswordCredentials(innerModel().passwordCredentials())
-                ).then(refreshAsync());
+            sp = manager().serviceClient()
+                .getServicePrincipalsServicePrincipals()
+                .updateServicePrincipalAsync(id(),
+                    new MicrosoftGraphServicePrincipalInner().withKeyCredentials(innerModel().keyCredentials())
+                        .withPasswordCredentials(innerModel().passwordCredentials()))
+                .then(refreshAsync());
         }
-        return sp
-            .flatMap(
-                servicePrincipal ->
-                    submitCredentialsAsync(servicePrincipal, retry)
-                        // retry for Microsoft.Authorization is done in RoleAssignmentImpl
-                        .mergeWith(submitRolesAsync(servicePrincipal))
-                        .last())
-            .map(
-                servicePrincipal -> {
-                    for (PasswordCredentialImpl<?> passwordCredential : passwordCredentialsToCreate) {
-                        passwordCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
-                        passwordCredential.consumeSecret();
-                    }
-                    for (CertificateCredentialImpl<?> certificateCredential : certificateCredentialsToCreate) {
-                        certificateCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
-                    }
-                    passwordCredentialsToCreate.clear();
-                    certificateCredentialsToCreate.clear();
-                    return servicePrincipal;
-                });
+        return sp.flatMap(servicePrincipal -> submitCredentialsAsync(servicePrincipal, retry)
+            // retry for Microsoft.Authorization is done in RoleAssignmentImpl
+            .mergeWith(submitRolesAsync(servicePrincipal))
+            .last()).map(servicePrincipal -> {
+                for (PasswordCredentialImpl<?> passwordCredential : passwordCredentialsToCreate) {
+                    passwordCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
+                    passwordCredential.consumeSecret();
+                }
+                for (CertificateCredentialImpl<?> certificateCredential : certificateCredentialsToCreate) {
+                    certificateCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
+                }
+                passwordCredentialsToCreate.clear();
+                certificateCredentialsToCreate.clear();
+                return servicePrincipal;
+            });
     }
 
     private Mono<ServicePrincipal> submitCredentialsAsync(final ServicePrincipal servicePrincipal, Retry retry) {
         return Flux.defer(() ->
-//                    Flux.fromIterable(certificateCredentialsToCreate)
-//                        .flatMap(certificateCredential ->
-//                            manager().serviceClient().getServicePrincipals()
-//                                .addKeyAsync(id(),
-//                                    new ServicePrincipalsAddKeyRequestBodyInner()
-//                                        .withKeyCredential(certificateCredential.innerModel()))),
-//                    Flux.fromIterable(certificateCredentialsToDelete)
-//                        .flatMap(id -> manager().serviceClient().getServicePrincipals()
-//                            .removeKeyAsync(id(),
-//                                new ServicePrincipalsRemoveKeyRequestBody()
-//                                    .withKeyId(UUID.fromString(id)))),
-                    Flux.fromIterable(passwordCredentialsToCreate)
-                        .flatMap(passwordCredential -> {
-                            Mono<MicrosoftGraphPasswordCredentialInner> monoAddPassword =
-                                manager().serviceClient().getServicePrincipals()
-                                    .addPasswordAsync(id(),
-                                        new ServicePrincipalsAddPasswordRequestBodyInner()
-                                            .withPasswordCredential(passwordCredential.innerModel()));
-                            if (retry != null) {
-                                monoAddPassword = monoAddPassword.retryWhen(retry);
-                            }
-                            monoAddPassword = monoAddPassword.doOnNext(passwordCredential::setInner);
-                            return monoAddPassword;
-                        })
-//                    Flux.fromIterable(passwordCredentialsToDelete)
-//                        .flatMap(id -> manager().serviceClient().getServicePrincipals()
-//                            .removePasswordAsync(id(),
-//                                new ServicePrincipalsRemovePasswordRequestBody()
-//                                    .withKeyId(UUID.fromString(id))))
-            )
-            .then(Mono.defer(() -> {
-                Mono<ServicePrincipal> monoRefresh = refreshAsync();
-                if (retry != null) {
-                    monoRefresh = monoRefresh.retryWhen(retry);
-                }
-                return monoRefresh;
-            }));
+        //                    Flux.fromIterable(certificateCredentialsToCreate)
+        //                        .flatMap(certificateCredential ->
+        //                            manager().serviceClient().getServicePrincipals()
+        //                                .addKeyAsync(id(),
+        //                                    new ServicePrincipalsAddKeyRequestBodyInner()
+        //                                        .withKeyCredential(certificateCredential.innerModel()))),
+        //                    Flux.fromIterable(certificateCredentialsToDelete)
+        //                        .flatMap(id -> manager().serviceClient().getServicePrincipals()
+        //                            .removeKeyAsync(id(),
+        //                                new ServicePrincipalsRemoveKeyRequestBody()
+        //                                    .withKeyId(UUID.fromString(id)))),
+        Flux.fromIterable(passwordCredentialsToCreate).flatMap(passwordCredential -> {
+            Mono<MicrosoftGraphPasswordCredentialInner> monoAddPassword = manager().serviceClient()
+                .getServicePrincipals()
+                .addPasswordAsync(id(), new ServicePrincipalsAddPasswordRequestBodyInner()
+                    .withPasswordCredential(passwordCredential.innerModel()));
+            if (retry != null) {
+                monoAddPassword = monoAddPassword.retryWhen(retry);
+            }
+            monoAddPassword = monoAddPassword.doOnNext(passwordCredential::setInner);
+            return monoAddPassword;
+        })
+        //                    Flux.fromIterable(passwordCredentialsToDelete)
+        //                        .flatMap(id -> manager().serviceClient().getServicePrincipals()
+        //                            .removePasswordAsync(id(),
+        //                                new ServicePrincipalsRemovePasswordRequestBody()
+        //                                    .withKeyId(UUID.fromString(id))))
+        ).then(Mono.defer(() -> {
+            Mono<ServicePrincipal> monoRefresh = refreshAsync();
+            if (retry != null) {
+                monoRefresh = monoRefresh.retryWhen(retry);
+            }
+            return monoRefresh;
+        }));
     }
 
     private Mono<ServicePrincipal> submitRolesAsync(final ServicePrincipal servicePrincipal) {
@@ -186,46 +180,34 @@ class ServicePrincipalImpl
         if (rolesToCreate.isEmpty()) {
             create = Mono.just(servicePrincipal);
         } else {
-            create =
-                Flux
-                    .fromIterable(rolesToCreate.entrySet())
-                    .flatMap(roleEntry -> manager()
-                        .roleAssignments()
-                        .define(this.manager().internalContext().randomUuid())
-                        .forServicePrincipal(servicePrincipal)
-                        .withBuiltInRole(roleEntry.getValue())
-                        .withScope(roleEntry.getKey())
-                        .createAsync())
-                    .doOnNext(
-                        indexable ->
-                            cachedRoleAssignments.put(indexable.id(), indexable))
-                    .last()
-                    .map(
-                        indexable -> {
-                            rolesToCreate.clear();
-                            return servicePrincipal;
-                        });
+            create = Flux.fromIterable(rolesToCreate.entrySet())
+                .flatMap(roleEntry -> manager().roleAssignments()
+                    .define(this.manager().internalContext().randomUuid())
+                    .forServicePrincipal(servicePrincipal)
+                    .withBuiltInRole(roleEntry.getValue())
+                    .withScope(roleEntry.getKey())
+                    .createAsync())
+                .doOnNext(indexable -> cachedRoleAssignments.put(indexable.id(), indexable))
+                .last()
+                .map(indexable -> {
+                    rolesToCreate.clear();
+                    return servicePrincipal;
+                });
         }
         Mono<ServicePrincipal> delete;
         if (rolesToDelete.isEmpty()) {
             delete = Mono.just(servicePrincipal);
         } else {
-            delete =
-                Flux
-                    .fromIterable(rolesToDelete)
-                    .flatMap(
-                        role ->
-                            manager()
-                                .roleAssignments()
-                                .deleteByIdAsync(cachedRoleAssignments.get(role).id())
-                                .thenReturn(role))
-                    .doOnNext(s -> cachedRoleAssignments.remove(s))
-                    .last()
-                    .map(
-                        s -> {
-                            rolesToDelete.clear();
-                            return servicePrincipal;
-                        });
+            delete = Flux.fromIterable(rolesToDelete)
+                .flatMap(role -> manager().roleAssignments()
+                    .deleteByIdAsync(cachedRoleAssignments.get(role).id())
+                    .thenReturn(role))
+                .doOnNext(s -> cachedRoleAssignments.remove(s))
+                .last()
+                .map(s -> {
+                    rolesToDelete.clear();
+                    return servicePrincipal;
+                });
         }
         return create.mergeWith(delete).last();
     }
@@ -322,8 +304,7 @@ class ServicePrincipalImpl
 
     @Override
     public ServicePrincipalImpl withNewApplication() {
-        return withNewApplication(
-            manager.applications().define(name()));
+        return withNewApplication(manager.applications().define(name()));
     }
 
     @Override

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -113,7 +112,6 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
      * @param name a name to look for.
      * @return the corresponding MigrationState.
      */
-    @JsonCreator
     public static MigrationState fromString(String name) {
         return fromString(name, MigrationState.class);
     }

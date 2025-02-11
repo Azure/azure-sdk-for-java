@@ -13,8 +13,8 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
 
     private final com.azure.resourcemanager.purview.PurviewManager serviceManager;
 
-    PrivateLinkResourceImpl(
-        PrivateLinkResourceInner innerObject, com.azure.resourcemanager.purview.PurviewManager serviceManager) {
+    PrivateLinkResourceImpl(PrivateLinkResourceInner innerObject,
+        com.azure.resourcemanager.purview.PurviewManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

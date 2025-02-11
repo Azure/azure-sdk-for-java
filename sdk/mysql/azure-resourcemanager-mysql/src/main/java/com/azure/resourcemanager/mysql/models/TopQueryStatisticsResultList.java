@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of query statistics. */
 @Immutable
 public final class TopQueryStatisticsResultList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopQueryStatisticsResultList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TopQueryStatisticsResultList.class);
 
     /*
      * The list of top query statistics.

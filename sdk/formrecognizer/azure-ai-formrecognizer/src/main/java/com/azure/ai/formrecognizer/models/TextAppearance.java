@@ -24,6 +24,7 @@ public final class TextAppearance {
      */
     public TextAppearance() {
     }
+
     static {
         TextAppearanceHelper.setAccessor(new TextAppearanceHelper.TextAppearanceAccessor() {
             @Override

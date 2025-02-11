@@ -22,6 +22,11 @@ public final class AddressSpace implements JsonSerializable<AddressSpace> {
      */
     private List<String> addressPrefixes;
 
+    /*
+     * A list of IPAM Pools allocating IP address prefixes.
+     */
+    private List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations;
+
     /**
      * Creates an instance of AddressSpace class.
      */
@@ -49,11 +54,34 @@ public final class AddressSpace implements JsonSerializable<AddressSpace> {
     }
 
     /**
+     * Get the ipamPoolPrefixAllocations property: A list of IPAM Pools allocating IP address prefixes.
+     * 
+     * @return the ipamPoolPrefixAllocations value.
+     */
+    public List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations() {
+        return this.ipamPoolPrefixAllocations;
+    }
+
+    /**
+     * Set the ipamPoolPrefixAllocations property: A list of IPAM Pools allocating IP address prefixes.
+     * 
+     * @param ipamPoolPrefixAllocations the ipamPoolPrefixAllocations value to set.
+     * @return the AddressSpace object itself.
+     */
+    public AddressSpace withIpamPoolPrefixAllocations(List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations) {
+        this.ipamPoolPrefixAllocations = ipamPoolPrefixAllocations;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (ipamPoolPrefixAllocations() != null) {
+            ipamPoolPrefixAllocations().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -64,6 +92,8 @@ public final class AddressSpace implements JsonSerializable<AddressSpace> {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("addressPrefixes", this.addressPrefixes,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ipamPoolPrefixAllocations", this.ipamPoolPrefixAllocations,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -85,6 +115,10 @@ public final class AddressSpace implements JsonSerializable<AddressSpace> {
                 if ("addressPrefixes".equals(fieldName)) {
                     List<String> addressPrefixes = reader.readArray(reader1 -> reader1.getString());
                     deserializedAddressSpace.addressPrefixes = addressPrefixes;
+                } else if ("ipamPoolPrefixAllocations".equals(fieldName)) {
+                    List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations
+                        = reader.readArray(reader1 -> IpamPoolPrefixAllocation.fromJson(reader1));
+                    deserializedAddressSpace.ipamPoolPrefixAllocations = ipamPoolPrefixAllocations;
                 } else {
                     reader.skipChildren();
                 }

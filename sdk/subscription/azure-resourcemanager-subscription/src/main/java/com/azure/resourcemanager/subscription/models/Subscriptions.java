@@ -8,14 +8,16 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Subscriptions. */
+/**
+ * Resource collection API of Subscriptions.
+ */
 public interface Subscriptions {
     /**
      * Gets all available geo-locations.
-     *
-     * <p>This operation provides all the locations that are available for resource providers; however, each resource
+     * 
+     * This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
-     *
+     * 
      * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,10 +28,10 @@ public interface Subscriptions {
 
     /**
      * Gets all available geo-locations.
-     *
-     * <p>This operation provides all the locations that are available for resource providers; however, each resource
+     * 
+     * This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
-     *
+     * 
      * @param subscriptionId The ID of the target subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,7 +43,7 @@ public interface Subscriptions {
 
     /**
      * Gets details about a specified subscription.
-     *
+     * 
      * @param subscriptionId The ID of the target subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +55,7 @@ public interface Subscriptions {
 
     /**
      * Gets details about a specified subscription.
-     *
+     * 
      * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,7 +66,7 @@ public interface Subscriptions {
 
     /**
      * Gets all subscriptions for a tenant.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
@@ -73,7 +75,7 @@ public interface Subscriptions {
 
     /**
      * Gets all subscriptions for a tenant.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class EnvironmentVariableSetupTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentVariableSetupTypeProperties model =
-            BinaryData
-                .fromString("{\"variableName\":\"xls\",\"variableValue\":\"ihmxrfdsajredn\"}")
+        EnvironmentVariableSetupTypeProperties model
+            = BinaryData.fromString("{\"variableName\":\"xvgpiude\",\"variableValue\":\"gfsxzec\"}")
                 .toObject(EnvironmentVariableSetupTypeProperties.class);
-        Assertions.assertEquals("xls", model.variableName());
-        Assertions.assertEquals("ihmxrfdsajredn", model.variableValue());
+        Assertions.assertEquals("xvgpiude", model.variableName());
+        Assertions.assertEquals("gfsxzec", model.variableValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentVariableSetupTypeProperties model =
-            new EnvironmentVariableSetupTypeProperties().withVariableName("xls").withVariableValue("ihmxrfdsajredn");
+        EnvironmentVariableSetupTypeProperties model
+            = new EnvironmentVariableSetupTypeProperties().withVariableName("xvgpiude").withVariableValue("gfsxzec");
         model = BinaryData.fromObject(model).toObject(EnvironmentVariableSetupTypeProperties.class);
-        Assertions.assertEquals("xls", model.variableName());
-        Assertions.assertEquals("ihmxrfdsajredn", model.variableValue());
+        Assertions.assertEquals("xvgpiude", model.variableName());
+        Assertions.assertEquals("gfsxzec", model.variableValue());
     }
 }

@@ -31,27 +31,32 @@ public final class PrivateEndpointConnectionListResultTests {
         PrivateEndpointConnectionListResult model
             = new PrivateEndpointConnectionListResult()
                 .withValue(
-                    Arrays.asList(
-                        new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                                .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                                .withDescription("jdkirsoodqx").withActionsRequired("rmnohj"))
-                            .withGroupIds(Arrays.asList("whdsoifiyip")),
-                        new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                                .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                                .withDescription("pbtoqcjmkl").withActionsRequired("vbqid"))
-                            .withGroupIds(Arrays.asList("jzyulpk", "dj")),
-                        new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                                .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                                .withDescription("odxobnbdxkqpxok").withActionsRequired("ionpimexg"))
-                            .withGroupIds(Arrays.asList("gcpo")),
-                        new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                                .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                                .withDescription("exxppofmxaxcfjp").withActionsRequired("dtocj"))
-                            .withGroupIds(Arrays.asList("vpmouexhdzxib", "eojnxqbzvddn"))));
+                    Arrays
+                        .asList(
+                            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                                    .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                                    .withDescription("jdkirsoodqx")
+                                    .withActionsRequired("rmnohj"))
+                                .withGroupIds(Arrays.asList("whdsoifiyip")),
+                            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                                    .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                                    .withDescription("pbtoqcjmkl")
+                                    .withActionsRequired("vbqid"))
+                                .withGroupIds(Arrays.asList("jzyulpk", "dj")),
+                            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                                    .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                                    .withDescription("odxobnbdxkqpxok")
+                                    .withActionsRequired("ionpimexg"))
+                                .withGroupIds(Arrays.asList("gcpo")),
+                            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                                    .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                                    .withDescription("exxppofmxaxcfjp")
+                                    .withActionsRequired("dtocj"))
+                                .withGroupIds(Arrays.asList("vpmouexhdzxib", "eojnxqbzvddn"))));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionListResult.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             model.value().get(0).privateLinkServiceConnectionState().status());

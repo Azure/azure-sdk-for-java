@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
@@ -12,6 +11,9 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.callautomation.models.ConnectCallOptions;
+import com.azure.communication.callautomation.models.ConnectCallResult;
+import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -67,8 +69,7 @@ public final class CallAutomationClient {
      * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(CallInvite targetParticipant,
-                                       String callbackUrl) {
+    public CreateCallResult createCall(CallInvite targetParticipant, String callbackUrl) {
         return callAutomationAsyncClient.createCall(targetParticipant, callbackUrl).block();
     }
 
@@ -82,8 +83,7 @@ public final class CallAutomationClient {
      * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createGroupCall(List<CommunicationIdentifier> targetParticipants,
-                                            String callbackUrl) {
+    public CreateCallResult createGroupCall(List<CommunicationIdentifier> targetParticipants, String callbackUrl) {
         return callAutomationAsyncClient.createGroupCall(targetParticipants, callbackUrl).block();
     }
 
@@ -111,7 +111,8 @@ public final class CallAutomationClient {
      * @return Response with result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateCallResult> createGroupCallWithResponse(CreateGroupCallOptions createGroupCallOptions, Context context) {
+    public Response<CreateCallResult> createGroupCallWithResponse(CreateGroupCallOptions createGroupCallOptions,
+        Context context) {
         return callAutomationAsyncClient.createGroupCallWithResponseInternal(createGroupCallOptions, context).block();
     }
 
@@ -195,6 +196,35 @@ public final class CallAutomationClient {
     public Response<Void> rejectCallWithResponse(RejectCallOptions rejectCallOptions, Context context) {
         return callAutomationAsyncClient.rejectCallWithResponseInternal(rejectCallOptions, context).block();
     }
+
+    /**
+     * Create a connect request
+     *
+     * @param callLocator call locator.
+     * @param callbackUrl The call back url for receiving events.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result of connect.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectCallResult connectCall(CallLocator callLocator, String callbackUrl) {
+        return callAutomationAsyncClient.connectCall(callLocator, callbackUrl).block();
+    }
+
+    /**
+     * Create a connect request.
+     *
+     * @param connectCallOptions Options for connect request.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of connect.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectCallResult> connectCallWithResponse(ConnectCallOptions connectCallOptions, Context context) {
+        return callAutomationAsyncClient.connectCallWithResponseInternal(connectCallOptions, context).block();
+    }
+
     //endregion
 
     //region Mid-call Actions

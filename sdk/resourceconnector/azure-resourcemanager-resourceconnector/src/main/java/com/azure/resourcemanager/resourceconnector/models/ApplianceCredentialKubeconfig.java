@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.resourceconnector.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cluster User Credential appliance. */
+/**
+ * Cluster User Credential appliance.
+ */
 @Immutable
-public final class ApplianceCredentialKubeconfig {
+public final class ApplianceCredentialKubeconfig implements JsonSerializable<ApplianceCredentialKubeconfig> {
     /*
      * Name which contains the role of the kubeconfig.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private AccessProfileType name;
 
     /*
      * Contains the kubeconfig value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
-    /** Creates an instance of ApplianceCredentialKubeconfig class. */
+    /**
+     * Creates an instance of ApplianceCredentialKubeconfig class.
+     */
     public ApplianceCredentialKubeconfig() {
     }
 
     /**
      * Get the name property: Name which contains the role of the kubeconfig.
-     *
+     * 
      * @return the name value.
      */
     public AccessProfileType name() {
@@ -37,7 +43,7 @@ public final class ApplianceCredentialKubeconfig {
 
     /**
      * Get the value property: Contains the kubeconfig value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -46,9 +52,47 @@ public final class ApplianceCredentialKubeconfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplianceCredentialKubeconfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplianceCredentialKubeconfig if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplianceCredentialKubeconfig.
+     */
+    public static ApplianceCredentialKubeconfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplianceCredentialKubeconfig deserializedApplianceCredentialKubeconfig
+                = new ApplianceCredentialKubeconfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplianceCredentialKubeconfig.name = AccessProfileType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedApplianceCredentialKubeconfig.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplianceCredentialKubeconfig;
+        });
     }
 }

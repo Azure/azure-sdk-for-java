@@ -154,6 +154,9 @@ public final class ChangeThresholdConditionPatch implements JsonSerializable<Cha
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

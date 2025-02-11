@@ -5,50 +5,75 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state. */
+/**
+ * The provisioning state.
+ */
 public final class EndpointProvisioningState extends ExpandableStringEnum<EndpointProvisioningState> {
-    /** Static value Provisioning for EndpointProvisioningState. */
+    /**
+     * Static value Provisioning for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState PROVISIONING = fromString("Provisioning");
 
-    /** Static value Deleting for EndpointProvisioningState. */
+    /**
+     * Static value Deleting for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Updating for EndpointProvisioningState. */
+    /**
+     * Static value Updating for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Succeeded for EndpointProvisioningState. */
+    /**
+     * Static value Succeeded for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for EndpointProvisioningState. */
+    /**
+     * Static value Failed for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for EndpointProvisioningState. */
+    /**
+     * Static value Canceled for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Deleted for EndpointProvisioningState. */
+    /**
+     * Static value Deleted for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState DELETED = fromString("Deleted");
 
-    /** Static value Warning for EndpointProvisioningState. */
+    /**
+     * Static value Warning for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState WARNING = fromString("Warning");
 
-    /** Static value Suspending for EndpointProvisioningState. */
+    /**
+     * Static value Suspending for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState SUSPENDING = fromString("Suspending");
 
-    /** Static value Restoring for EndpointProvisioningState. */
+    /**
+     * Static value Restoring for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState RESTORING = fromString("Restoring");
 
-    /** Static value Moving for EndpointProvisioningState. */
+    /**
+     * Static value Moving for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState MOVING = fromString("Moving");
 
-    /** Static value Disabled for EndpointProvisioningState. */
+    /**
+     * Static value Disabled for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of EndpointProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -57,18 +82,17 @@ public final class EndpointProvisioningState extends ExpandableStringEnum<Endpoi
 
     /**
      * Creates or finds a EndpointProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndpointProvisioningState.
      */
-    @JsonCreator
     public static EndpointProvisioningState fromString(String name) {
         return fromString(name, EndpointProvisioningState.class);
     }
 
     /**
      * Gets known EndpointProvisioningState values.
-     *
+     * 
      * @return known EndpointProvisioningState values.
      */
     public static Collection<EndpointProvisioningState> values() {

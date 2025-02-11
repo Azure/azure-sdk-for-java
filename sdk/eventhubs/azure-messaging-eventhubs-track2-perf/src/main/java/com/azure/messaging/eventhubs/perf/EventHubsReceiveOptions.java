@@ -12,13 +12,14 @@ import com.beust.jcommander.Parameter;
  * @see ReceiveEventsTest
  */
 public class EventHubsReceiveOptions extends EventHubsPartitionOptions {
-    @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
+    @Parameter(names = { "-cg", "--consumerGroup" }, description = "Name of the consumer group.")
     private String consumerGroup;
 
     @Parameter(names = { "--prefetch" }, description = "Prefetch for the receiver.")
     private int prefetch = 500;
 
-    @Parameter(names = { "--credits" },
+    @Parameter(
+        names = { "--credits" },
         description = "Used in ReactorReceiverTest. Number of credits to add when link is empty.")
     private int creditsAfterPrefetch = 500;
 

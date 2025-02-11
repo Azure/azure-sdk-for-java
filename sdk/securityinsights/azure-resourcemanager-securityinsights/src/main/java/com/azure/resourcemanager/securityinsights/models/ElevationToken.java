@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.securityinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The elevation token associated with the process. */
+/**
+ * The elevation token associated with the process.
+ */
 public enum ElevationToken {
-    /** Enum value Default. */
+    /**
+     * Enum value Default.
+     */
     DEFAULT("Default"),
 
-    /** Enum value Full. */
+    /**
+     * Enum value Full.
+     */
     FULL("Full"),
 
-    /** Enum value Limited. */
+    /**
+     * Enum value Limited.
+     */
     LIMITED("Limited");
 
-    /** The actual serialized value for a ElevationToken instance. */
+    /**
+     * The actual serialized value for a ElevationToken instance.
+     */
     private final String value;
 
     ElevationToken(String value) {
@@ -27,11 +34,10 @@ public enum ElevationToken {
 
     /**
      * Parses a serialized value to a ElevationToken instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ElevationToken object, or null if unable to parse.
      */
-    @JsonCreator
     public static ElevationToken fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum ElevationToken {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

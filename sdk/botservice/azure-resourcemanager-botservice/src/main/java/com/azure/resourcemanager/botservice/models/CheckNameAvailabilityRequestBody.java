@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The request body for a request to Bot Service Management to check availability of a bot name. */
+/**
+ * The request body for a request to Bot Service Management to check availability of a bot name.
+ */
 @Fluent
-public final class CheckNameAvailabilityRequestBody {
+public final class CheckNameAvailabilityRequestBody implements JsonSerializable<CheckNameAvailabilityRequestBody> {
     /*
      * the name of the bot for which availability needs to be checked.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * the type of the bot for which availability needs to be checked
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /**
+     * Creates an instance of CheckNameAvailabilityRequestBody class.
+     */
+    public CheckNameAvailabilityRequestBody() {
+    }
+
+    /**
      * Get the name property: the name of the bot for which availability needs to be checked.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +43,7 @@ public final class CheckNameAvailabilityRequestBody {
 
     /**
      * Set the name property: the name of the bot for which availability needs to be checked.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckNameAvailabilityRequestBody object itself.
      */
@@ -44,7 +54,7 @@ public final class CheckNameAvailabilityRequestBody {
 
     /**
      * Get the type property: the type of the bot for which availability needs to be checked.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -53,7 +63,7 @@ public final class CheckNameAvailabilityRequestBody {
 
     /**
      * Set the type property: the type of the bot for which availability needs to be checked.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckNameAvailabilityRequestBody object itself.
      */
@@ -64,9 +74,49 @@ public final class CheckNameAvailabilityRequestBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameAvailabilityRequestBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameAvailabilityRequestBody if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckNameAvailabilityRequestBody.
+     */
+    public static CheckNameAvailabilityRequestBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameAvailabilityRequestBody deserializedCheckNameAvailabilityRequestBody
+                = new CheckNameAvailabilityRequestBody();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityRequestBody.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityRequestBody.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameAvailabilityRequestBody;
+        });
     }
 }

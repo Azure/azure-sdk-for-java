@@ -10,8 +10,8 @@ import com.azure.resourcemanager.webpubsub.models.EventListenerEndpoint;
 public final class EventListenerEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventListenerEndpoint model =
-            BinaryData.fromString("{\"type\":\"EventListenerEndpoint\"}").toObject(EventListenerEndpoint.class);
+        EventListenerEndpoint model
+            = BinaryData.fromString("{\"type\":\"EventListenerEndpoint\"}").toObject(EventListenerEndpoint.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -15,8 +15,7 @@ public final class CostManagementOperationImpl implements CostManagementOperatio
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    CostManagementOperationImpl(
-        CostManagementOperationInner innerObject,
+    CostManagementOperationImpl(CostManagementOperationInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

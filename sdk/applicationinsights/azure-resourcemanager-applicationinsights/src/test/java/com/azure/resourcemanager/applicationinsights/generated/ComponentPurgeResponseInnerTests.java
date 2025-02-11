@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ComponentPurgeResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComponentPurgeResponseInner model =
-            BinaryData.fromString("{\"operationId\":\"zw\"}").toObject(ComponentPurgeResponseInner.class);
+        ComponentPurgeResponseInner model
+            = BinaryData.fromString("{\"operationId\":\"zw\"}").toObject(ComponentPurgeResponseInner.class);
         Assertions.assertEquals("zw", model.operationId());
     }
 

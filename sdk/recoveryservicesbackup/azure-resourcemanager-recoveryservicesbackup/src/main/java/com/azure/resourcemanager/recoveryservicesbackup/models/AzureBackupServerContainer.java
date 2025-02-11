@@ -5,31 +5,24 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * AzureBackupServer (DPMVenus) workload-specific protection container.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "containerType",
-    defaultImpl = AzureBackupServerContainer.class,
-    visible = true)
-@JsonTypeName("AzureBackupServerContainer")
 @Fluent
 public final class AzureBackupServerContainer extends DpmContainer {
     /*
-     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines 2.
+     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+     * 2.
      * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
      * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
      * Backup is VMAppContainer
      */
-    @JsonTypeId
-    @JsonProperty(value = "containerType", required = true)
     private ProtectableContainerType containerType = ProtectableContainerType.AZURE_BACKUP_SERVER_CONTAINER;
 
     /**
@@ -176,6 +169,90 @@ public final class AzureBackupServerContainer extends DpmContainer {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (extendedInfo() != null) {
+            extendedInfo().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("registrationStatus", registrationStatus());
+        jsonWriter.writeStringField("healthStatus", healthStatus());
+        jsonWriter.writeStringField("protectableObjectType", protectableObjectType());
+        jsonWriter.writeBooleanField("canReRegister", canReRegister());
+        jsonWriter.writeStringField("containerId", containerId());
+        jsonWriter.writeNumberField("protectedItemCount", protectedItemCount());
+        jsonWriter.writeStringField("dpmAgentVersion", dpmAgentVersion());
+        jsonWriter.writeArrayField("dpmServers", dpmServers(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("upgradeAvailable", upgradeAvailable());
+        jsonWriter.writeStringField("protectionStatus", protectionStatus());
+        jsonWriter.writeJsonField("extendedInfo", extendedInfo());
+        jsonWriter.writeStringField("containerType", this.containerType == null ? null : this.containerType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupServerContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupServerContainer if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBackupServerContainer.
+     */
+    public static AzureBackupServerContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupServerContainer deserializedAzureBackupServerContainer = new AzureBackupServerContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer.withFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer.withRegistrationStatus(reader.getString());
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer.withHealthStatus(reader.getString());
+                } else if ("protectableObjectType".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer.withProtectableObjectType(reader.getString());
+                } else if ("canReRegister".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer
+                        .withCanReRegister(reader.getNullable(JsonReader::getBoolean));
+                } else if ("containerId".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer.withContainerId(reader.getString());
+                } else if ("protectedItemCount".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer
+                        .withProtectedItemCount(reader.getNullable(JsonReader::getLong));
+                } else if ("dpmAgentVersion".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer.withDpmAgentVersion(reader.getString());
+                } else if ("dpmServers".equals(fieldName)) {
+                    List<String> dpmServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureBackupServerContainer.withDpmServers(dpmServers);
+                } else if ("upgradeAvailable".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer
+                        .withUpgradeAvailable(reader.getNullable(JsonReader::getBoolean));
+                } else if ("protectionStatus".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer.withProtectionStatus(reader.getString());
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer.withExtendedInfo(DpmContainerExtendedInfo.fromJson(reader));
+                } else if ("containerType".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer.containerType
+                        = ProtectableContainerType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupServerContainer;
+        });
     }
 }

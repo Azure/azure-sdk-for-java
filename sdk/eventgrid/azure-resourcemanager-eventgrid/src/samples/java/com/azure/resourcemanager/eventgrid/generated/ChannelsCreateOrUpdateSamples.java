@@ -13,7 +13,9 @@ import java.time.OffsetDateTime;
  */
 public final class ChannelsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Channels_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * Channels_CreateOrUpdate.json
      */
     /**
      * Sample code: Channels_CreateOrUpdate.

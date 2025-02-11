@@ -23,8 +23,10 @@ public final class AddonStatusProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddonStatusProfile model = new AddonStatusProfile().withName("h").withPhase(AddonPhase.UPGRADING)
-            .withReady(false).withErrorMessage("j");
+        AddonStatusProfile model = new AddonStatusProfile().withName("h")
+            .withPhase(AddonPhase.UPGRADING)
+            .withReady(false)
+            .withErrorMessage("j");
         model = BinaryData.fromObject(model).toObject(AddonStatusProfile.class);
         Assertions.assertEquals("h", model.name());
         Assertions.assertEquals(AddonPhase.UPGRADING, model.phase());

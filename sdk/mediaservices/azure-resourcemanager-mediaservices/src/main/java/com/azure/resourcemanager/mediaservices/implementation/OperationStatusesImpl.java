@@ -20,39 +20,28 @@ public final class OperationStatusesImpl implements OperationStatuses {
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public OperationStatusesImpl(
-        OperationStatusesClient innerClient,
+    public OperationStatusesImpl(OperationStatusesClient innerClient,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<AssetTrackOperationStatus> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        String operationId,
-        Context context) {
-        Response<AssetTrackOperationStatusInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, accountName, assetName, trackName, operationId, context);
+    public Response<AssetTrackOperationStatus> getWithResponse(String resourceGroupName, String accountName,
+        String assetName, String trackName, String operationId, Context context) {
+        Response<AssetTrackOperationStatusInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, accountName, assetName, trackName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AssetTrackOperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AssetTrackOperationStatus get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
-        AssetTrackOperationStatusInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, assetName, trackName, operationId);
+    public AssetTrackOperationStatus get(String resourceGroupName, String accountName, String assetName,
+        String trackName, String operationId) {
+        AssetTrackOperationStatusInner inner
+            = this.serviceClient().get(resourceGroupName, accountName, assetName, trackName, operationId);
         if (inner != null) {
             return new AssetTrackOperationStatusImpl(inner, this.manager());
         } else {

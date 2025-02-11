@@ -11,15 +11,19 @@ import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
 public final class ExtractiveSummarySentencePropertiesHelper {
     private static ExtractiveSummarySentenceAccessor accessor;
 
-    private ExtractiveSummarySentencePropertiesHelper() { }
+    private ExtractiveSummarySentencePropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ExtractiveSummarySentence} instance.
      */
     public interface ExtractiveSummarySentenceAccessor {
         void setText(ExtractiveSummarySentence extractiveSummarySentence, String text);
+
         void setRankScore(ExtractiveSummarySentence extractiveSummarySentence, double rankScore);
+
         void setOffset(ExtractiveSummarySentence extractiveSummarySentence, int offset);
+
         void setLength(ExtractiveSummarySentence extractiveSummarySentence, int length);
     }
 

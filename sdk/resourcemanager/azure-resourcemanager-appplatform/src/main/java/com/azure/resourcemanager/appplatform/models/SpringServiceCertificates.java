@@ -15,12 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for Spring Service Certificates API. */
 @Fluent
-public interface SpringServiceCertificates
-    extends HasManager<AppPlatformManager>,
-    HasParent<SpringService>,
-    SupportsGettingById<SpringServiceCertificate>,
-    SupportsGettingByName<SpringServiceCertificate>,
-    SupportsListing<SpringServiceCertificate>,
-    SupportsDeletingById,
-    SupportsDeletingByName {
+public interface SpringServiceCertificates extends HasManager<AppPlatformManager>, HasParent<SpringService>,
+    SupportsGettingById<SpringServiceCertificate>, SupportsGettingByName<SpringServiceCertificate>,
+    SupportsListing<SpringServiceCertificate>, SupportsDeletingById, SupportsDeletingByName {
 }

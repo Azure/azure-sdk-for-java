@@ -5,54 +5,51 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Replication protected item custom data details.
  */
 @Fluent
-public final class ProtectableItemProperties {
+public final class ProtectableItemProperties implements JsonSerializable<ProtectableItemProperties> {
     /*
      * The name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The protection status.
      */
-    @JsonProperty(value = "protectionStatus")
     private String protectionStatus;
 
     /*
      * The ARM resource of protected items.
      */
-    @JsonProperty(value = "replicationProtectedItemId")
     private String replicationProtectedItemId;
 
     /*
      * The recovery provider ARM Id.
      */
-    @JsonProperty(value = "recoveryServicesProviderId")
     private String recoveryServicesProviderId;
 
     /*
      * The Current protection readiness errors.
      */
-    @JsonProperty(value = "protectionReadinessErrors")
     private List<String> protectionReadinessErrors;
 
     /*
      * The list of replication providers supported for the protectable item.
      */
-    @JsonProperty(value = "supportedReplicationProviders")
     private List<String> supportedReplicationProviders;
 
     /*
      * The Replication provider custom settings.
      */
-    @JsonProperty(value = "customDetails")
     private ConfigurationSettings customDetails;
 
     /**
@@ -212,5 +209,63 @@ public final class ProtectableItemProperties {
         if (customDetails() != null) {
             customDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("protectionStatus", this.protectionStatus);
+        jsonWriter.writeStringField("replicationProtectedItemId", this.replicationProtectedItemId);
+        jsonWriter.writeStringField("recoveryServicesProviderId", this.recoveryServicesProviderId);
+        jsonWriter.writeArrayField("protectionReadinessErrors", this.protectionReadinessErrors,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("supportedReplicationProviders", this.supportedReplicationProviders,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("customDetails", this.customDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectableItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectableItemProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtectableItemProperties.
+     */
+    public static ProtectableItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectableItemProperties deserializedProtectableItemProperties = new ProtectableItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedProtectableItemProperties.friendlyName = reader.getString();
+                } else if ("protectionStatus".equals(fieldName)) {
+                    deserializedProtectableItemProperties.protectionStatus = reader.getString();
+                } else if ("replicationProtectedItemId".equals(fieldName)) {
+                    deserializedProtectableItemProperties.replicationProtectedItemId = reader.getString();
+                } else if ("recoveryServicesProviderId".equals(fieldName)) {
+                    deserializedProtectableItemProperties.recoveryServicesProviderId = reader.getString();
+                } else if ("protectionReadinessErrors".equals(fieldName)) {
+                    List<String> protectionReadinessErrors = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProtectableItemProperties.protectionReadinessErrors = protectionReadinessErrors;
+                } else if ("supportedReplicationProviders".equals(fieldName)) {
+                    List<String> supportedReplicationProviders = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProtectableItemProperties.supportedReplicationProviders = supportedReplicationProviders;
+                } else if ("customDetails".equals(fieldName)) {
+                    deserializedProtectableItemProperties.customDetails = ConfigurationSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectableItemProperties;
+        });
     }
 }

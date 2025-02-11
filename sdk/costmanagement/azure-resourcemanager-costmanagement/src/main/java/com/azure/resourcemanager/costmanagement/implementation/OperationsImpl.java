@@ -19,20 +19,20 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<CostManagementOperation> list() {
         PagedIterable<CostManagementOperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new CostManagementOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CostManagementOperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CostManagementOperation> list(Context context) {
         PagedIterable<CostManagementOperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new CostManagementOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CostManagementOperationImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

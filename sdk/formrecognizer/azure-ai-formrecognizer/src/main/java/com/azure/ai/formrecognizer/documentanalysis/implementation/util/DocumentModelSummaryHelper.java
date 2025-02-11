@@ -22,8 +22,11 @@ public final class DocumentModelSummaryHelper {
      */
     public interface DocumentModelSummaryAccessor {
         void setModelId(DocumentModelSummary documentModelSummary, String modelId);
+
         void setDescription(DocumentModelSummary documentModelSummary, String description);
+
         void setCreatedOn(DocumentModelSummary documentModelSummary, OffsetDateTime createdDateTime);
+
         void setTags(DocumentModelSummary documentModelSummary, Map<String, String> tags);
 
         void setExpiresOn(DocumentModelSummary documentModelSummary, OffsetDateTime expiresOn);

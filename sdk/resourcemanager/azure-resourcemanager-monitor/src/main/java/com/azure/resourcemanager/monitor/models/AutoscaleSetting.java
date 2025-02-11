@@ -17,10 +17,8 @@ import java.util.Map;
 
 /** An immutable client-side representation of an Azure autoscale setting. */
 @Fluent
-public interface AutoscaleSetting
-    extends GroupableResource<MonitorManager, AutoscaleSettingResourceInner>,
-        Refreshable<AutoscaleSetting>,
-        Updatable<AutoscaleSetting.Update> {
+public interface AutoscaleSetting extends GroupableResource<MonitorManager, AutoscaleSettingResourceInner>,
+    Refreshable<AutoscaleSetting>, Updatable<AutoscaleSetting.Update> {
 
     /**
      * Get the resource identifier of the resource that the autoscale setting should be added to.
@@ -73,13 +71,10 @@ public interface AutoscaleSetting
     String webhookNotification();
 
     /** The entirety of an autoscale setting definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate,
-            DefinitionStages.DefineAutoscaleSettingResourceProfiles,
-            DefinitionStages.WithAutoscaleSettingResourceTargetResourceUri,
-            DefinitionStages.WithAutoscaleSettingResourceEnabled {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate,
+        DefinitionStages.DefineAutoscaleSettingResourceProfiles,
+        DefinitionStages.WithAutoscaleSettingResourceTargetResourceUri,
+        DefinitionStages.WithAutoscaleSettingResourceEnabled {
     }
 
     /** Grouping of autoscale setting definition stages. */
@@ -164,11 +159,8 @@ public interface AutoscaleSetting
         }
 
         /** The stage of the definition which allows autoscale setting creation. */
-        interface WithCreate
-            extends Creatable<AutoscaleSetting>,
-                DefineAutoscaleSettingResourceProfiles,
-                DefineAutoscaleSettingResourceNotifications,
-                WithAutoscaleSettingResourceEnabled {
+        interface WithCreate extends Creatable<AutoscaleSetting>, DefineAutoscaleSettingResourceProfiles,
+            DefineAutoscaleSettingResourceNotifications, WithAutoscaleSettingResourceEnabled {
         }
     }
 
@@ -279,10 +271,7 @@ public interface AutoscaleSetting
     }
 
     /** Grouping of autoscale setting update stages. */
-    interface Update
-        extends Appliable<AutoscaleSetting>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.DefineAutoscaleSettingProfiles,
-            UpdateStages.UpdateAutoscaleSettings {
+    interface Update extends Appliable<AutoscaleSetting>, Resource.UpdateWithTags<Update>,
+        UpdateStages.DefineAutoscaleSettingProfiles, UpdateStages.UpdateAutoscaleSettings {
     }
 }

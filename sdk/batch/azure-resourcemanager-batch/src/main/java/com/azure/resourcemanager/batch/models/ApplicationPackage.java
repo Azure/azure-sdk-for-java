@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationPackageInner;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of ApplicationPackage.
@@ -40,6 +41,13 @@ public interface ApplicationPackage {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the tags property: The tags of the resource.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
 
     /**
      * Gets the state property: The current state of the application package.
@@ -119,7 +127,7 @@ public interface ApplicationPackage {
          * The stage of the ApplicationPackage definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate {
+        interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
              * 
@@ -134,6 +142,19 @@ public interface ApplicationPackage {
              * @return the created resource.
              */
             ApplicationPackage create(Context context);
+        }
+
+        /**
+         * The stage of the ApplicationPackage definition allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: The tags of the resource..
+             * 
+             * @param tags The tags of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
         }
     }
 

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The cordon status of the bare metal machine. */
+/**
+ * The cordon status of the bare metal machine.
+ */
 public final class BareMetalMachineCordonStatus extends ExpandableStringEnum<BareMetalMachineCordonStatus> {
-    /** Static value Cordoned for BareMetalMachineCordonStatus. */
+    /**
+     * Static value Cordoned for BareMetalMachineCordonStatus.
+     */
     public static final BareMetalMachineCordonStatus CORDONED = fromString("Cordoned");
 
-    /** Static value Uncordoned for BareMetalMachineCordonStatus. */
+    /**
+     * Static value Uncordoned for BareMetalMachineCordonStatus.
+     */
     public static final BareMetalMachineCordonStatus UNCORDONED = fromString("Uncordoned");
 
     /**
      * Creates a new instance of BareMetalMachineCordonStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class BareMetalMachineCordonStatus extends ExpandableStringEnum<Bar
 
     /**
      * Creates or finds a BareMetalMachineCordonStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BareMetalMachineCordonStatus.
      */
-    @JsonCreator
     public static BareMetalMachineCordonStatus fromString(String name) {
         return fromString(name, BareMetalMachineCordonStatus.class);
     }
 
     /**
      * Gets known BareMetalMachineCordonStatus values.
-     *
+     * 
      * @return known BareMetalMachineCordonStatus values.
      */
     public static Collection<BareMetalMachineCordonStatus> values() {

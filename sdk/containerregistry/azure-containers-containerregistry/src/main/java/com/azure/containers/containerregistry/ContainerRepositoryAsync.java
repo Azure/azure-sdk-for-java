@@ -240,7 +240,8 @@ public final class ContainerRepositoryAsync {
             (token, pageSize) -> withContext(context -> listManifestPropertiesNextSinglePageAsync(token, context)));
     }
 
-    private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize, ArtifactManifestOrder order, Context context) {
+    private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize,
+        ArtifactManifestOrder order, Context context) {
         if (pageSize != null && pageSize < 0) {
             return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
         }
@@ -248,16 +249,15 @@ public final class ContainerRepositoryAsync {
         final String orderString = order == ArtifactManifestOrder.NONE ? null : order.toString();
         return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderString, context)
             .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
-                baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName,
-                    registryLoginServer)))
+                baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName, registryLoginServer)))
             .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
-    private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesNextSinglePageAsync(String nextLink,
+        Context context) {
         return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context)
             .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
-                baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName,
-                    registryLoginServer)))
+                baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName, registryLoginServer)))
             .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
@@ -334,21 +334,23 @@ public final class ContainerRepositoryAsync {
      * @throws NullPointerException thrown if {@code repositoryProperties} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties) {
+    public Mono<Response<ContainerRepositoryProperties>>
+        updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties) {
         return withContext(context -> this.updatePropertiesWithResponse(repositoryProperties, context));
     }
 
-    private Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties, Context context) {
+    private Mono<Response<ContainerRepositoryProperties>>
+        updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties, Context context) {
         if (repositoryProperties == null) {
             return monoError(LOGGER, new NullPointerException("'value' cannot be null."));
         }
 
-        RepositoryWriteableProperties writableProperties = new RepositoryWriteableProperties()
-            .setDeleteEnabled(repositoryProperties.isDeleteEnabled())
-            .setListEnabled(repositoryProperties.isListEnabled())
-            .setWriteEnabled(repositoryProperties.isWriteEnabled())
-            .setReadEnabled(repositoryProperties.isReadEnabled());
-//                .setTeleportEnabled(repositoryProperties.isTeleportEnabled());
+        RepositoryWriteableProperties writableProperties
+            = new RepositoryWriteableProperties().setDeleteEnabled(repositoryProperties.isDeleteEnabled())
+                .setListEnabled(repositoryProperties.isListEnabled())
+                .setWriteEnabled(repositoryProperties.isWriteEnabled())
+                .setReadEnabled(repositoryProperties.isReadEnabled());
+        //                .setTeleportEnabled(repositoryProperties.isTeleportEnabled());
 
         return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context)
             .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);

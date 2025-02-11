@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class MarketplaceAutoRenew extends ExpandableStringEnum<Marketplace
      * @param name a name to look for.
      * @return the corresponding MarketplaceAutoRenew.
      */
-    @JsonCreator
     public static MarketplaceAutoRenew fromString(String name) {
         return fromString(name, MarketplaceAutoRenew.class);
     }

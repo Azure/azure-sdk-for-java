@@ -13,53 +13,46 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiDeploymentParameterMetadataSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiDeploymentParameterMetadataSet model =
-            BinaryData
-                .fromString(
-                    "{\"packageContentLink\":{\"type\":\"sdaultxij\",\"isRequired\":false,\"displayName\":\"qwazlnqnmcjngzq\",\"description\":\"xtbjwgnyfusfzsv\",\"visibility\":\"Internal\"},\"redisCacheConnectionString\":{\"type\":\"hajqglcfh\",\"isRequired\":true,\"displayName\":\"ryxynqnzrd\",\"description\":\"ovw\",\"visibility\":\"Internal\"}}")
-                .toObject(ApiDeploymentParameterMetadataSet.class);
-        Assertions.assertEquals("sdaultxij", model.packageContentLink().type());
-        Assertions.assertEquals(false, model.packageContentLink().isRequired());
-        Assertions.assertEquals("qwazlnqnmcjngzq", model.packageContentLink().displayName());
-        Assertions.assertEquals("xtbjwgnyfusfzsv", model.packageContentLink().description());
-        Assertions.assertEquals(ApiDeploymentParameterVisibility.INTERNAL, model.packageContentLink().visibility());
-        Assertions.assertEquals("hajqglcfh", model.redisCacheConnectionString().type());
+        ApiDeploymentParameterMetadataSet model = BinaryData.fromString(
+            "{\"packageContentLink\":{\"type\":\"fo\",\"isRequired\":true,\"displayName\":\"vopwndyqleallk\",\"description\":\"tkhlowkxxpvbr\",\"visibility\":\"Default\"},\"redisCacheConnectionString\":{\"type\":\"syzfhotlhikcyych\",\"isRequired\":true,\"displayName\":\"lpjrtwsz\",\"description\":\"vuicp\",\"visibility\":\"Default\"}}")
+            .toObject(ApiDeploymentParameterMetadataSet.class);
+        Assertions.assertEquals("fo", model.packageContentLink().type());
+        Assertions.assertEquals(true, model.packageContentLink().isRequired());
+        Assertions.assertEquals("vopwndyqleallk", model.packageContentLink().displayName());
+        Assertions.assertEquals("tkhlowkxxpvbr", model.packageContentLink().description());
+        Assertions.assertEquals(ApiDeploymentParameterVisibility.DEFAULT, model.packageContentLink().visibility());
+        Assertions.assertEquals("syzfhotlhikcyych", model.redisCacheConnectionString().type());
         Assertions.assertEquals(true, model.redisCacheConnectionString().isRequired());
-        Assertions.assertEquals("ryxynqnzrd", model.redisCacheConnectionString().displayName());
-        Assertions.assertEquals("ovw", model.redisCacheConnectionString().description());
-        Assertions
-            .assertEquals(ApiDeploymentParameterVisibility.INTERNAL, model.redisCacheConnectionString().visibility());
+        Assertions.assertEquals("lpjrtwsz", model.redisCacheConnectionString().displayName());
+        Assertions.assertEquals("vuicp", model.redisCacheConnectionString().description());
+        Assertions.assertEquals(ApiDeploymentParameterVisibility.DEFAULT,
+            model.redisCacheConnectionString().visibility());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiDeploymentParameterMetadataSet model =
-            new ApiDeploymentParameterMetadataSet()
-                .withPackageContentLink(
-                    new ApiDeploymentParameterMetadata()
-                        .withType("sdaultxij")
-                        .withIsRequired(false)
-                        .withDisplayName("qwazlnqnmcjngzq")
-                        .withDescription("xtbjwgnyfusfzsv")
-                        .withVisibility(ApiDeploymentParameterVisibility.INTERNAL))
-                .withRedisCacheConnectionString(
-                    new ApiDeploymentParameterMetadata()
-                        .withType("hajqglcfh")
-                        .withIsRequired(true)
-                        .withDisplayName("ryxynqnzrd")
-                        .withDescription("ovw")
-                        .withVisibility(ApiDeploymentParameterVisibility.INTERNAL));
+        ApiDeploymentParameterMetadataSet model = new ApiDeploymentParameterMetadataSet()
+            .withPackageContentLink(new ApiDeploymentParameterMetadata().withType("fo")
+                .withIsRequired(true)
+                .withDisplayName("vopwndyqleallk")
+                .withDescription("tkhlowkxxpvbr")
+                .withVisibility(ApiDeploymentParameterVisibility.DEFAULT))
+            .withRedisCacheConnectionString(new ApiDeploymentParameterMetadata().withType("syzfhotlhikcyych")
+                .withIsRequired(true)
+                .withDisplayName("lpjrtwsz")
+                .withDescription("vuicp")
+                .withVisibility(ApiDeploymentParameterVisibility.DEFAULT));
         model = BinaryData.fromObject(model).toObject(ApiDeploymentParameterMetadataSet.class);
-        Assertions.assertEquals("sdaultxij", model.packageContentLink().type());
-        Assertions.assertEquals(false, model.packageContentLink().isRequired());
-        Assertions.assertEquals("qwazlnqnmcjngzq", model.packageContentLink().displayName());
-        Assertions.assertEquals("xtbjwgnyfusfzsv", model.packageContentLink().description());
-        Assertions.assertEquals(ApiDeploymentParameterVisibility.INTERNAL, model.packageContentLink().visibility());
-        Assertions.assertEquals("hajqglcfh", model.redisCacheConnectionString().type());
+        Assertions.assertEquals("fo", model.packageContentLink().type());
+        Assertions.assertEquals(true, model.packageContentLink().isRequired());
+        Assertions.assertEquals("vopwndyqleallk", model.packageContentLink().displayName());
+        Assertions.assertEquals("tkhlowkxxpvbr", model.packageContentLink().description());
+        Assertions.assertEquals(ApiDeploymentParameterVisibility.DEFAULT, model.packageContentLink().visibility());
+        Assertions.assertEquals("syzfhotlhikcyych", model.redisCacheConnectionString().type());
         Assertions.assertEquals(true, model.redisCacheConnectionString().isRequired());
-        Assertions.assertEquals("ryxynqnzrd", model.redisCacheConnectionString().displayName());
-        Assertions.assertEquals("ovw", model.redisCacheConnectionString().description());
-        Assertions
-            .assertEquals(ApiDeploymentParameterVisibility.INTERNAL, model.redisCacheConnectionString().visibility());
+        Assertions.assertEquals("lpjrtwsz", model.redisCacheConnectionString().displayName());
+        Assertions.assertEquals("vuicp", model.redisCacheConnectionString().description());
+        Assertions.assertEquals(ApiDeploymentParameterVisibility.DEFAULT,
+            model.redisCacheConnectionString().visibility());
     }
 }

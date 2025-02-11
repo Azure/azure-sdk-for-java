@@ -15,9 +15,7 @@ import com.azure.resourcemanager.confidentialledger.models.CertBasedSecurityPrin
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedger;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
 import com.azure.resourcemanager.confidentialledger.models.LedgerRoleName;
-import com.azure.resourcemanager.confidentialledger.models.LedgerSku;
 import com.azure.resourcemanager.confidentialledger.models.LedgerType;
-import com.azure.resourcemanager.confidentialledger.models.RunningState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -31,7 +29,7 @@ public final class LedgersCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ledgerName\":\"pnq\",\"ledgerUri\":\"hmgkbrpyy\",\"identityServiceUri\":\"ibnuqqkpik\",\"ledgerInternalNamespace\":\"rgvtqag\",\"runningState\":\"Paused\",\"ledgerType\":\"Private\",\"provisioningState\":\"Succeeded\",\"ledgerSku\":\"Unknown\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"bfs\",\"tenantId\":\"rbu\",\"ledgerRoleName\":\"Reader\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"azzmhjrunmpxt\",\"ledgerRoleName\":\"Administrator\"},{\"cert\":\"rbnlankxmyskp\",\"ledgerRoleName\":\"Reader\"}]},\"location\":\"btkcxywnytnrsyn\",\"tags\":{\"dbabp\":\"dybyxczfclhaa\",\"fkts\":\"lwrq\",\"nyyazttbtwwrqpue\":\"hsucoc\"},\"id\":\"ckzywbiexzfeyue\",\"name\":\"xibxujwbhqwalm\",\"type\":\"zyoxaepdkzjan\"}";
+            = "{\"properties\":{\"ledgerName\":\"leyyvx\",\"ledgerUri\":\"jpkcattpng\",\"identityServiceUri\":\"rcczsqpjhvmd\",\"ledgerInternalNamespace\":\"v\",\"ledgerType\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"canoaeupf\",\"tenantId\":\"hltrpmopjmcmatuo\",\"ledgerRoleName\":\"Contributor\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"uaodsfcpk\",\"ledgerRoleName\":\"Contributor\"},{\"cert\":\"puozmyzydag\",\"ledgerRoleName\":\"Contributor\"},{\"cert\":\"bezy\",\"ledgerRoleName\":\"Reader\"},{\"cert\":\"ktwh\",\"ledgerRoleName\":\"Reader\"}]},\"location\":\"ywqsmbsurexim\",\"tags\":{\"ksymd\":\"ocfs\"},\"id\":\"ys\",\"name\":\"kiiuxhqyudxor\",\"type\":\"qn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -41,41 +39,44 @@ public final class LedgersCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ConfidentialLedger response = manager.ledgers()
-            .define("yqzrnkcqvyxlw")
-            .withRegion("wutttxfvjrbi")
-            .withExistingResourceGroup("uzoqft")
-            .withTags(mapOf("jky", "xepcyvahfn", "ljyoxgvcltb", "xjvuujqgidokg", "bijhtxfvgxbf", "sncghkjeszz", "ec",
-                "mxnehmp"))
-            .withProperties(new LedgerProperties().withRunningState(RunningState.PAUSING)
-                .withLedgerType(LedgerType.UNKNOWN)
-                .withLedgerSku(LedgerSku.STANDARD)
+            .define("ebxetqgtzxdp")
+            .withExistingResourceGroup("ccfwnfnbacfion")
+            .withRegion("lhslazjdyggdtj")
+            .withTags(mapOf("uofqwe", "b", "enevfyexfwhybci", "kh", "tynnaamdectehfi", "vyvdcs"))
+            .withProperties(new LedgerProperties().withLedgerType(LedgerType.PRIVATE)
                 .withAadBasedSecurityPrincipals(Arrays.asList(
-                    new AadBasedSecurityPrincipal().withPrincipalId("fkbey")
-                        .withTenantId("wrmjmwvvjektc")
-                        .withLedgerRoleName(LedgerRoleName.READER),
-                    new AadBasedSecurityPrincipal().withPrincipalId("hwlrsf")
-                        .withTenantId("zpwv")
-                        .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR)))
-                .withCertBasedSecurityPrincipals(Arrays.asList(
-                    new CertBasedSecurityPrincipal().withCert("iqylihkaetck").withLedgerRoleName(LedgerRoleName.READER),
-                    new CertBasedSecurityPrincipal().withCert("ivfsnk")
+                    new AadBasedSecurityPrincipal().withPrincipalId("nqvpkvlrxnje")
+                        .withTenantId("eipheoflokeyy")
                         .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
-                    new CertBasedSecurityPrincipal().withCert("tqhjfbebrjcx")
+                    new AadBasedSecurityPrincipal().withPrincipalId("bdlwtgrhpdjpj")
+                        .withTenantId("asxazjpqyegualhb")
+                        .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                    new AadBasedSecurityPrincipal().withPrincipalId("jj")
+                        .withTenantId("v")
+                        .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                    new AadBasedSecurityPrincipal().withPrincipalId("wdslfhotwmcy")
+                        .withTenantId("wlbjnpgacftade")
+                        .withLedgerRoleName(LedgerRoleName.READER)))
+                .withCertBasedSecurityPrincipals(Arrays.asList(
+                    new CertBasedSecurityPrincipal().withCert("fsoppusuesnzw")
+                        .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
+                    new CertBasedSecurityPrincipal().withCert("avo").withLedgerRoleName(LedgerRoleName.READER),
+                    new CertBasedSecurityPrincipal().withCert("mohctb").withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                    new CertBasedSecurityPrincipal().withCert("wxdndnvowgujjug")
                         .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR))))
             .create();
 
-        Assertions.assertEquals("btkcxywnytnrsyn", response.location());
-        Assertions.assertEquals("dybyxczfclhaa", response.tags().get("dbabp"));
-        Assertions.assertEquals(RunningState.PAUSED, response.properties().runningState());
-        Assertions.assertEquals(LedgerType.PRIVATE, response.properties().ledgerType());
-        Assertions.assertEquals(LedgerSku.UNKNOWN, response.properties().ledgerSku());
-        Assertions.assertEquals("bfs", response.properties().aadBasedSecurityPrincipals().get(0).principalId());
-        Assertions.assertEquals("rbu", response.properties().aadBasedSecurityPrincipals().get(0).tenantId());
-        Assertions.assertEquals(LedgerRoleName.READER,
+        Assertions.assertEquals(LedgerType.UNKNOWN, response.properties().ledgerType());
+        Assertions.assertEquals("canoaeupf", response.properties().aadBasedSecurityPrincipals().get(0).principalId());
+        Assertions.assertEquals("hltrpmopjmcmatuo",
+            response.properties().aadBasedSecurityPrincipals().get(0).tenantId());
+        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR,
             response.properties().aadBasedSecurityPrincipals().get(0).ledgerRoleName());
-        Assertions.assertEquals("azzmhjrunmpxt", response.properties().certBasedSecurityPrincipals().get(0).cert());
-        Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR,
+        Assertions.assertEquals("uaodsfcpk", response.properties().certBasedSecurityPrincipals().get(0).cert());
+        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR,
             response.properties().certBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("ywqsmbsurexim", response.location());
+        Assertions.assertEquals("ocfs", response.tags().get("ksymd"));
     }
 
     // Use "Map.of" if available

@@ -11,40 +11,34 @@ import com.azure.resourcemanager.providerhub.models.RoutingType;
 import com.azure.resourcemanager.providerhub.models.SwaggerSpecification;
 import java.util.Arrays;
 
-/** Samples for ResourceTypeRegistrations CreateOrUpdate. */
+/**
+ * Samples for ResourceTypeRegistrations CreateOrUpdate.
+ */
 public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ResourceTypeRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/
+     * ResourceTypeRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to ProviderHubManager.
      */
-    public static void resourceTypeRegistrationsCreateOrUpdate(
-        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
-        manager
-            .resourceTypeRegistrations()
+    public static void
+        resourceTypeRegistrationsCreateOrUpdate(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.resourceTypeRegistrations()
             .define("employees")
             .withExistingProviderRegistration("Microsoft.Contoso")
-            .withProperties(
-                new ResourceTypeRegistrationProperties()
-                    .withRoutingType(RoutingType.DEFAULT)
-                    .withRegionality(Regionality.REGIONAL)
-                    .withEndpoints(
-                        Arrays
-                            .asList(
-                                new ResourceTypeEndpoint()
-                                    .withApiVersions(Arrays.asList("2020-06-01-preview"))
-                                    .withLocations(Arrays.asList("West US", "East US", "North Europe"))
-                                    .withRequiredFeatures(Arrays.asList("<feature flag>"))))
-                    .withSwaggerSpecifications(
-                        Arrays
-                            .asList(
-                                new SwaggerSpecification()
-                                    .withApiVersions(Arrays.asList("2020-06-01-preview"))
-                                    .withSwaggerSpecFolderUri(
-                                        "https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/"))))
+            .withProperties(new ResourceTypeRegistrationProperties().withRoutingType(RoutingType.DEFAULT)
+                .withRegionality(Regionality.REGIONAL)
+                .withEndpoints(
+                    Arrays.asList(new ResourceTypeEndpoint().withApiVersions(Arrays.asList("2020-06-01-preview"))
+                        .withLocations(Arrays.asList("West US", "East US", "North Europe"))
+                        .withRequiredFeatures(Arrays.asList("<feature flag>"))))
+                .withSwaggerSpecifications(Arrays.asList(new SwaggerSpecification()
+                    .withApiVersions(Arrays.asList("2020-06-01-preview"))
+                    .withSwaggerSpecFolderUri(
+                        "https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/"))))
             .create();
     }
 }

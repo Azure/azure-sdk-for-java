@@ -6,61 +6,71 @@ package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Gets or sets the single server configuration. For prerequisites for creating the infrastructure, please see
  * [here](https://go.microsoft.com/fwlink/?linkid=2212611&amp;clcid=0x409).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "deploymentType")
-@JsonTypeName("SingleServer")
 @Fluent
 public final class SingleServerConfiguration extends InfrastructureConfiguration {
     /*
+     * The type of SAP deployment, single server or Three tier.
+     */
+    private SapDeploymentType deploymentType = SapDeploymentType.SINGLE_SERVER;
+
+    /*
      * Network configuration for the server
      */
-    @JsonProperty(value = "networkConfiguration")
     private NetworkConfiguration networkConfiguration;
 
     /*
      * The database type.
      */
-    @JsonProperty(value = "databaseType")
     private SapDatabaseType databaseType;
 
     /*
      * The subnet id.
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
      * Gets or sets the virtual machine configuration.
      */
-    @JsonProperty(value = "virtualMachineConfiguration", required = true)
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /*
      * Gets or sets the disk configuration.
      */
-    @JsonProperty(value = "dbDiskConfiguration")
     private DiskConfiguration dbDiskConfiguration;
 
     /*
      * The set of custom names to be used for underlying azure resources that are part of the SAP system.
      */
-    @JsonProperty(value = "customResourceNames")
     private SingleServerCustomResourceNames customResourceNames;
 
-    /** Creates an instance of SingleServerConfiguration class. */
+    /**
+     * Creates an instance of SingleServerConfiguration class.
+     */
     public SingleServerConfiguration() {
     }
 
     /**
+     * Get the deploymentType property: The type of SAP deployment, single server or Three tier.
+     * 
+     * @return the deploymentType value.
+     */
+    @Override
+    public SapDeploymentType deploymentType() {
+        return this.deploymentType;
+    }
+
+    /**
      * Get the networkConfiguration property: Network configuration for the server.
-     *
+     * 
      * @return the networkConfiguration value.
      */
     public NetworkConfiguration networkConfiguration() {
@@ -69,7 +79,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Set the networkConfiguration property: Network configuration for the server.
-     *
+     * 
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the SingleServerConfiguration object itself.
      */
@@ -80,7 +90,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Get the databaseType property: The database type.
-     *
+     * 
      * @return the databaseType value.
      */
     public SapDatabaseType databaseType() {
@@ -89,7 +99,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Set the databaseType property: The database type.
-     *
+     * 
      * @param databaseType the databaseType value to set.
      * @return the SingleServerConfiguration object itself.
      */
@@ -100,7 +110,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Get the subnetId property: The subnet id.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -109,7 +119,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Set the subnetId property: The subnet id.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the SingleServerConfiguration object itself.
      */
@@ -120,7 +130,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Get the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     *
+     * 
      * @return the virtualMachineConfiguration value.
      */
     public VirtualMachineConfiguration virtualMachineConfiguration() {
@@ -129,19 +139,19 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Set the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     *
+     * 
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the SingleServerConfiguration object itself.
      */
-    public SingleServerConfiguration withVirtualMachineConfiguration(
-        VirtualMachineConfiguration virtualMachineConfiguration) {
+    public SingleServerConfiguration
+        withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
 
     /**
      * Get the dbDiskConfiguration property: Gets or sets the disk configuration.
-     *
+     * 
      * @return the dbDiskConfiguration value.
      */
     public DiskConfiguration dbDiskConfiguration() {
@@ -150,7 +160,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Set the dbDiskConfiguration property: Gets or sets the disk configuration.
-     *
+     * 
      * @param dbDiskConfiguration the dbDiskConfiguration value to set.
      * @return the SingleServerConfiguration object itself.
      */
@@ -162,7 +172,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
     /**
      * Get the customResourceNames property: The set of custom names to be used for underlying azure resources that are
      * part of the SAP system.
-     *
+     * 
      * @return the customResourceNames value.
      */
     public SingleServerCustomResourceNames customResourceNames() {
@@ -172,7 +182,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
     /**
      * Set the customResourceNames property: The set of custom names to be used for underlying azure resources that are
      * part of the SAP system.
-     *
+     * 
      * @param customResourceNames the customResourceNames value to set.
      * @return the SingleServerConfiguration object itself.
      */
@@ -181,7 +191,9 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SingleServerConfiguration withAppResourceGroup(String appResourceGroup) {
         super.withAppResourceGroup(appResourceGroup);
@@ -190,26 +202,23 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (networkConfiguration() != null) {
             networkConfiguration().validate();
         }
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnetId in model SingleServerConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnetId in model SingleServerConfiguration"));
         }
         if (virtualMachineConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualMachineConfiguration in model SingleServerConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualMachineConfiguration in model SingleServerConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
         }
@@ -219,7 +228,74 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
         if (customResourceNames() != null) {
             customResourceNames().validate();
         }
+        if (appResourceGroup() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property appResourceGroup in model SingleServerConfiguration"));
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SingleServerConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appResourceGroup", appResourceGroup());
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeJsonField("virtualMachineConfiguration", this.virtualMachineConfiguration);
+        jsonWriter.writeStringField("deploymentType",
+            this.deploymentType == null ? null : this.deploymentType.toString());
+        jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
+        jsonWriter.writeStringField("databaseType", this.databaseType == null ? null : this.databaseType.toString());
+        jsonWriter.writeJsonField("dbDiskConfiguration", this.dbDiskConfiguration);
+        jsonWriter.writeJsonField("customResourceNames", this.customResourceNames);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SingleServerConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SingleServerConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SingleServerConfiguration.
+     */
+    public static SingleServerConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SingleServerConfiguration deserializedSingleServerConfiguration = new SingleServerConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appResourceGroup".equals(fieldName)) {
+                    deserializedSingleServerConfiguration.withAppResourceGroup(reader.getString());
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedSingleServerConfiguration.subnetId = reader.getString();
+                } else if ("virtualMachineConfiguration".equals(fieldName)) {
+                    deserializedSingleServerConfiguration.virtualMachineConfiguration
+                        = VirtualMachineConfiguration.fromJson(reader);
+                } else if ("deploymentType".equals(fieldName)) {
+                    deserializedSingleServerConfiguration.deploymentType
+                        = SapDeploymentType.fromString(reader.getString());
+                } else if ("networkConfiguration".equals(fieldName)) {
+                    deserializedSingleServerConfiguration.networkConfiguration = NetworkConfiguration.fromJson(reader);
+                } else if ("databaseType".equals(fieldName)) {
+                    deserializedSingleServerConfiguration.databaseType = SapDatabaseType.fromString(reader.getString());
+                } else if ("dbDiskConfiguration".equals(fieldName)) {
+                    deserializedSingleServerConfiguration.dbDiskConfiguration = DiskConfiguration.fromJson(reader);
+                } else if ("customResourceNames".equals(fieldName)) {
+                    deserializedSingleServerConfiguration.customResourceNames
+                        = SingleServerCustomResourceNames.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSingleServerConfiguration;
+        });
+    }
 }

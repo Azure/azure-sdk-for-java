@@ -5,6 +5,7 @@ package io.clientcore.core.util;
 
 import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.util.InternalContext;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Map;
 

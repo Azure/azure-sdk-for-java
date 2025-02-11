@@ -20,7 +20,7 @@ public final class ReplicationMigrationItemsListSamples {
      */
     public static void getsTheListOfMigrationItemsInTheVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationMigrationItems().list("migrationvault", "resourcegroup1", null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.replicationMigrationItems()
+            .list("migrationvault", "resourcegroup1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

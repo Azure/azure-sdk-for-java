@@ -15,8 +15,7 @@ public final class AccountSkuListResultImpl implements AccountSkuListResult {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    AccountSkuListResultImpl(
-        AccountSkuListResultInner innerObject,
+    AccountSkuListResultImpl(AccountSkuListResultInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

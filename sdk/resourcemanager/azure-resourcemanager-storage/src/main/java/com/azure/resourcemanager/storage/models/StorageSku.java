@@ -12,20 +12,59 @@ import java.util.List;
 /** Type representing sku for an Azure storage resource. */
 @Fluent
 public interface StorageSku extends HasInnerModel<SkuInformationInner> {
-    /** @return the sku name */
+    /**
+     * Gets the sku name.
+     *
+     * @return the sku name
+     */
     SkuName name();
-    /** @return the sku tier */
+
+    /**
+     * Gets the sku tier.
+     *
+     * @return the sku tier
+     */
     SkuTier tier();
-    /** @return the storage resource type that the sku describes */
+
+    /**
+     * Gets the storage resource type that the sku describes.
+     *
+     * @return the storage resource type that the sku describes
+     */
     StorageResourceType resourceType();
-    /** @return the regions that the sku is available */
+
+    /**
+     * Gets the regions that the sku is available.
+     *
+     * @return the regions that the sku is available
+     */
     List<Region> regions();
-    /** @return the capability information in the specified sku */
+
+    /**
+     * Gets the capability information in the specified sku.
+     *
+     * @return the capability information in the specified sku
+     */
     List<SkuCapability> capabilities();
-    /** @return restrictions because of which sku cannot be used */
+
+    /**
+     * Gets restrictions because of which sku cannot be used.
+     *
+     * @return restrictions because of which sku cannot be used
+     */
     List<Restriction> restrictions();
-    /** @return the storage account kind if the sku describes a storage account resource */
+
+    /**
+     * Gets the storage account kind if the sku describes a storage account resource.
+     *
+     * @return the storage account kind if the sku describes a storage account resource
+     */
     Kind storageAccountKind();
-    /** @return the storage account sku type if the sku describes a storage account resource */
+
+    /**
+     * Gets the storage account sku type.
+     *
+     * @return the storage account sku type if the sku describes a storage account resource
+     */
     StorageAccountSkuType storageAccountSku();
 }

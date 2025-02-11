@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = FarmsClientBuilder.class, isAsync = true)
 public final class FarmsAsyncClient {
-    @Generated private final FarmsImpl serviceClient;
+    @Generated
+    private final FarmsImpl serviceClient;
 
     /**
      * Initializes an instance of FarmsAsyncClient class.
@@ -128,8 +129,8 @@ public final class FarmsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String farmId, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId, String farmId,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, farmId, requestOptions);
     }
 
@@ -166,8 +167,8 @@ public final class FarmsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -328,8 +329,8 @@ public final class FarmsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId, String farmId, BinaryData farm, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String farmId, BinaryData farm,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(partyId, farmId, farm, requestOptions);
     }
 

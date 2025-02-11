@@ -177,25 +177,15 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
 
     @Override
     public Mono<MetricCollection> executeAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getMetrics()
-            .listWithResponseAsync(
-                ResourceUtils.encodeResourceId(this.inner.resourceId()),
-                String
-                    .format(
-                        "%s/%s",
-                        DateTimeFormatter.ISO_INSTANT.format(this.queryStartTime.atZoneSameInstant(ZoneOffset.UTC)),
-                        DateTimeFormatter.ISO_INSTANT.format(this.queryEndTime.atZoneSameInstant(ZoneOffset.UTC))),
-                this.interval,
-                this.inner.name().value(),
-                this.aggreagation,
-                this.top,
-                this.orderBy,
-                this.odataFilter,
-                this.resultType,
-                this.namespaceFilter)
+            .listWithResponseAsync(ResourceUtils.encodeResourceId(this.inner.resourceId()),
+                String.format("%s/%s",
+                    DateTimeFormatter.ISO_INSTANT.format(this.queryStartTime.atZoneSameInstant(ZoneOffset.UTC)),
+                    DateTimeFormatter.ISO_INSTANT.format(this.queryEndTime.atZoneSameInstant(ZoneOffset.UTC))),
+                this.interval, this.inner.name().value(), this.aggreagation, this.top, this.orderBy, this.odataFilter,
+                this.resultType, this.namespaceFilter)
             .map(Response::getValue)
             .map(MetricCollectionImpl::new);
     }

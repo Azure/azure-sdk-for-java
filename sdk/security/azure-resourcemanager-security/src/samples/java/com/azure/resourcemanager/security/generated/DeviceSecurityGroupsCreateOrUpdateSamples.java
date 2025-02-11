@@ -13,7 +13,9 @@ import java.util.Arrays;
  */
 public final class DeviceSecurityGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/PutDeviceSecurityGroups_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/
+     * PutDeviceSecurityGroups_example.json
      */
     /**
      * Sample code: Create or update a device security group for the specified IoT hub resource.

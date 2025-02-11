@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SAP Central Services Instance VM details. */
+/**
+ * The SAP Central Services Instance VM details.
+ */
 @Immutable
-public final class CentralServerVmDetails {
+public final class CentralServerVmDetails implements JsonSerializable<CentralServerVmDetails> {
     /*
      * Defines the type of central server VM.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private CentralServerVirtualMachineType type;
 
     /*
      * The virtualMachineId property.
      */
-    @JsonProperty(value = "virtualMachineId", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualMachineId;
 
     /*
      * Storage details of all the Storage Accounts attached to the ASCS Virtual Machine. For e.g. NFS on AFS Shared
      * Storage.
      */
-    @JsonProperty(value = "storageDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageInformation> storageDetails;
 
-    /** Creates an instance of CentralServerVmDetails class. */
+    /**
+     * Creates an instance of CentralServerVmDetails class.
+     */
     public CentralServerVmDetails() {
     }
 
     /**
      * Get the type property: Defines the type of central server VM.
-     *
+     * 
      * @return the type value.
      */
     public CentralServerVirtualMachineType type() {
@@ -45,7 +50,7 @@ public final class CentralServerVmDetails {
 
     /**
      * Get the virtualMachineId property: The virtualMachineId property.
-     *
+     * 
      * @return the virtualMachineId value.
      */
     public String virtualMachineId() {
@@ -55,7 +60,7 @@ public final class CentralServerVmDetails {
     /**
      * Get the storageDetails property: Storage details of all the Storage Accounts attached to the ASCS Virtual
      * Machine. For e.g. NFS on AFS Shared Storage.
-     *
+     * 
      * @return the storageDetails value.
      */
     public List<StorageInformation> storageDetails() {
@@ -64,12 +69,54 @@ public final class CentralServerVmDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageDetails() != null) {
             storageDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CentralServerVmDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CentralServerVmDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CentralServerVmDetails.
+     */
+    public static CentralServerVmDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CentralServerVmDetails deserializedCentralServerVmDetails = new CentralServerVmDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedCentralServerVmDetails.type
+                        = CentralServerVirtualMachineType.fromString(reader.getString());
+                } else if ("virtualMachineId".equals(fieldName)) {
+                    deserializedCentralServerVmDetails.virtualMachineId = reader.getString();
+                } else if ("storageDetails".equals(fieldName)) {
+                    List<StorageInformation> storageDetails
+                        = reader.readArray(reader1 -> StorageInformation.fromJson(reader1));
+                    deserializedCentralServerVmDetails.storageDetails = storageDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCentralServerVmDetails;
+        });
     }
 }

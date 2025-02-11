@@ -49,8 +49,7 @@ public class UploadUtils {
 
         PayloadSizeGate gate = new PayloadSizeGate(parallelTransferOptions.getMaxSingleUploadSizeLong());
 
-        return data
-            .filter(ByteBuffer::hasRemaining)
+        return data.filter(ByteBuffer::hasRemaining)
             // The gate buffers data until threshold is breached.
             .concatMap(gate::write, 0)
             // First buffer is emitted after threshold is breached or there's no more data.
@@ -93,25 +92,22 @@ public class UploadUtils {
     public static Flux<ByteBuffer> chunkSource(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         if (parallelTransferOptions.getBlockSizeLong() <= Integer.MAX_VALUE) {
             int chunkSize = parallelTransferOptions.getBlockSizeLong().intValue();
-            return data
-                .flatMapSequential(buffer -> {
-                    if (buffer.remaining() <= chunkSize) {
-                        return Flux.just(buffer);
-                    }
-                    int numSplits = (int) Math.ceil(buffer.remaining() / (double) chunkSize);
-                    return Flux.range(0, numSplits)
-                        .map(i -> {
-                            ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                            duplicate.position(i * chunkSize);
-                            duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));
-                            return duplicate;
-                        });
-                }, 1, 1);
+            return data.flatMapSequential(buffer -> {
+                if (buffer.remaining() <= chunkSize) {
+                    return Flux.just(buffer);
+                }
+                int numSplits = (int) Math.ceil(buffer.remaining() / (double) chunkSize);
+                return Flux.range(0, numSplits).map(i -> {
+                    ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                    duplicate.position(i * chunkSize);
+                    duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));
+                    return duplicate;
+                });
+            }, 1, 1);
         } else {
             return data;
         }
     }
-
 
     public static boolean shouldUploadInChunks(String filePath, Long maxSingleUploadSize, ClientLogger logger) {
         AsynchronousFileChannel channel = uploadFileResourceSupplier(filePath, logger);

@@ -7,20 +7,23 @@ package com.azure.resourcemanager.datalakeanalytics.generated;
 import com.azure.resourcemanager.datalakeanalytics.models.AadObjectType;
 import java.util.UUID;
 
-/** Samples for ComputePolicies CreateOrUpdate. */
+/**
+ * Samples for ComputePolicies CreateOrUpdate.
+ */
 public final class ComputePoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/stable/2016-11-01/examples/ComputePolicies_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/stable/2016-11-01/examples/
+     * ComputePolicies_CreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates the specified compute policy.
-     *
+     * 
      * @param manager Entry point to DataLakeAnalyticsManager.
      */
     public static void createsOrUpdatesTheSpecifiedComputePolicy(
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager manager) {
-        manager
-            .computePolicies()
+        manager.computePolicies()
             .define("test_policy")
             .withExistingAccount("contosorg", "contosoadla")
             .withObjectId(UUID.fromString("776b9091-8916-4638-87f7-9c989a38da98"))

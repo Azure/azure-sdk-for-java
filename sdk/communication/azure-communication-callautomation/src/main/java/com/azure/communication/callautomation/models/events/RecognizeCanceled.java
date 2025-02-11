@@ -14,6 +14,12 @@ import java.io.IOException;
 @Fluent
 public final class RecognizeCanceled extends CallAutomationEventBase {
     /**
+     * Creates an instance of {@link RecognizeCanceled}.
+     */
+    public RecognizeCanceled() {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

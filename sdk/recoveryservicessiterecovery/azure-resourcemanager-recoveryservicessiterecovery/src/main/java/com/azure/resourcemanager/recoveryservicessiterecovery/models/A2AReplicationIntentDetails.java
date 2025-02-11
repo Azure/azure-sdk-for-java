@@ -6,154 +6,146 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A2A provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
 @Fluent
 public final class A2AReplicationIntentDetails extends ReplicationProtectionIntentProviderSpecificSettings {
     /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * The fabric specific object Id of the virtual machine.
      */
-    @JsonProperty(value = "fabricObjectId")
     private String fabricObjectId;
 
     /*
      * The primary location for the virtual machine.
      */
-    @JsonProperty(value = "primaryLocation")
     private String primaryLocation;
 
     /*
      * The recovery location for the virtual machine.
      */
-    @JsonProperty(value = "recoveryLocation")
     private String recoveryLocation;
 
     /*
      * The recovery subscription Id of the virtual machine.
      */
-    @JsonProperty(value = "recoverySubscriptionId")
     private String recoverySubscriptionId;
 
     /*
      * The list of vm disk details.
      */
-    @JsonProperty(value = "vmDisks")
     private List<A2AProtectionIntentDiskInputDetails> vmDisks;
 
     /*
      * The list of vm managed disk details.
      */
-    @JsonProperty(value = "vmManagedDisks")
     private List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks;
 
     /*
      * The recovery resource group id.
      */
-    @JsonProperty(value = "recoveryResourceGroupId")
     private String recoveryResourceGroupId;
 
     /*
      * The protection profile custom details.
      */
-    @JsonProperty(value = "protectionProfile")
     private ProtectionProfileCustomDetails protectionProfile;
 
     /*
      * The primary staging storage account details.
      */
-    @JsonProperty(value = "primaryStagingStorageAccount")
     private StorageAccountCustomDetails primaryStagingStorageAccount;
 
     /*
      * The recovery availability set details.
      */
-    @JsonProperty(value = "recoveryAvailabilitySet")
     private RecoveryAvailabilitySetCustomDetails recoveryAvailabilitySet;
 
     /*
      * The recovery virtual network details.
      */
-    @JsonProperty(value = "recoveryVirtualNetwork")
     private RecoveryVirtualNetworkCustomDetails recoveryVirtualNetwork;
 
     /*
      * The recovery proximity placement group custom details.
      */
-    @JsonProperty(value = "recoveryProximityPlacementGroup")
     private RecoveryProximityPlacementGroupCustomDetails recoveryProximityPlacementGroup;
 
     /*
      * A value indicating whether the auto protection is enabled.
      */
-    @JsonProperty(value = "autoProtectionOfDataDisk")
     private AutoProtectionOfDataDisk autoProtectionOfDataDisk;
 
     /*
      * The multi vm group name.
      */
-    @JsonProperty(value = "multiVmGroupName")
     private String multiVmGroupName;
 
     /*
      * The multi vm group id.
      */
-    @JsonProperty(value = "multiVmGroupId")
     private String multiVmGroupId;
 
     /*
      * The boot diagnostic storage account.
      */
-    @JsonProperty(value = "recoveryBootDiagStorageAccount")
     private StorageAccountCustomDetails recoveryBootDiagStorageAccount;
 
     /*
      * The recovery disk encryption information (for two pass flows).
      */
-    @JsonProperty(value = "diskEncryptionInfo")
     private DiskEncryptionInfo diskEncryptionInfo;
 
     /*
      * The recovery availability zone.
      */
-    @JsonProperty(value = "recoveryAvailabilityZone")
     private String recoveryAvailabilityZone;
 
     /*
      * The recovery availability type of the virtual machine.
      */
-    @JsonProperty(value = "recoveryAvailabilityType", required = true)
     private String recoveryAvailabilityType;
 
     /*
      * A value indicating whether the auto update is enabled.
      */
-    @JsonProperty(value = "agentAutoUpdateStatus")
     private AgentAutoUpdateStatus agentAutoUpdateStatus;
 
     /*
      * The automation account arm id.
      */
-    @JsonProperty(value = "automationAccountArmId")
     private String automationAccountArmId;
 
     /*
      * A value indicating the type authentication to use for automation Account.
      */
-    @JsonProperty(value = "automationAccountAuthenticationType")
     private AutomationAccountAuthenticationType automationAccountAuthenticationType;
 
     /**
      * Creates an instance of A2AReplicationIntentDetails class.
      */
     public A2AReplicationIntentDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -612,7 +604,6 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmDisks() != null) {
             vmDisks().forEach(e -> e.validate());
         }
@@ -641,10 +632,133 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
             diskEncryptionInfo().validate();
         }
         if (recoveryAvailabilityType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recoveryAvailabilityType in model A2AReplicationIntentDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryAvailabilityType in model A2AReplicationIntentDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(A2AReplicationIntentDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryAvailabilityType", this.recoveryAvailabilityType);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("fabricObjectId", this.fabricObjectId);
+        jsonWriter.writeStringField("primaryLocation", this.primaryLocation);
+        jsonWriter.writeStringField("recoveryLocation", this.recoveryLocation);
+        jsonWriter.writeStringField("recoverySubscriptionId", this.recoverySubscriptionId);
+        jsonWriter.writeArrayField("vmDisks", this.vmDisks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vmManagedDisks", this.vmManagedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("recoveryResourceGroupId", this.recoveryResourceGroupId);
+        jsonWriter.writeJsonField("protectionProfile", this.protectionProfile);
+        jsonWriter.writeJsonField("primaryStagingStorageAccount", this.primaryStagingStorageAccount);
+        jsonWriter.writeJsonField("recoveryAvailabilitySet", this.recoveryAvailabilitySet);
+        jsonWriter.writeJsonField("recoveryVirtualNetwork", this.recoveryVirtualNetwork);
+        jsonWriter.writeJsonField("recoveryProximityPlacementGroup", this.recoveryProximityPlacementGroup);
+        jsonWriter.writeStringField("autoProtectionOfDataDisk",
+            this.autoProtectionOfDataDisk == null ? null : this.autoProtectionOfDataDisk.toString());
+        jsonWriter.writeStringField("multiVmGroupName", this.multiVmGroupName);
+        jsonWriter.writeStringField("multiVmGroupId", this.multiVmGroupId);
+        jsonWriter.writeJsonField("recoveryBootDiagStorageAccount", this.recoveryBootDiagStorageAccount);
+        jsonWriter.writeJsonField("diskEncryptionInfo", this.diskEncryptionInfo);
+        jsonWriter.writeStringField("recoveryAvailabilityZone", this.recoveryAvailabilityZone);
+        jsonWriter.writeStringField("agentAutoUpdateStatus",
+            this.agentAutoUpdateStatus == null ? null : this.agentAutoUpdateStatus.toString());
+        jsonWriter.writeStringField("automationAccountArmId", this.automationAccountArmId);
+        jsonWriter.writeStringField("automationAccountAuthenticationType",
+            this.automationAccountAuthenticationType == null
+                ? null
+                : this.automationAccountAuthenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AReplicationIntentDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AReplicationIntentDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the A2AReplicationIntentDetails.
+     */
+    public static A2AReplicationIntentDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AReplicationIntentDetails deserializedA2AReplicationIntentDetails = new A2AReplicationIntentDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryAvailabilityType".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryAvailabilityType = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.instanceType = reader.getString();
+                } else if ("fabricObjectId".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.fabricObjectId = reader.getString();
+                } else if ("primaryLocation".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.primaryLocation = reader.getString();
+                } else if ("recoveryLocation".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryLocation = reader.getString();
+                } else if ("recoverySubscriptionId".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoverySubscriptionId = reader.getString();
+                } else if ("vmDisks".equals(fieldName)) {
+                    List<A2AProtectionIntentDiskInputDetails> vmDisks
+                        = reader.readArray(reader1 -> A2AProtectionIntentDiskInputDetails.fromJson(reader1));
+                    deserializedA2AReplicationIntentDetails.vmDisks = vmDisks;
+                } else if ("vmManagedDisks".equals(fieldName)) {
+                    List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks
+                        = reader.readArray(reader1 -> A2AProtectionIntentManagedDiskInputDetails.fromJson(reader1));
+                    deserializedA2AReplicationIntentDetails.vmManagedDisks = vmManagedDisks;
+                } else if ("recoveryResourceGroupId".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryResourceGroupId = reader.getString();
+                } else if ("protectionProfile".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.protectionProfile
+                        = ProtectionProfileCustomDetails.fromJson(reader);
+                } else if ("primaryStagingStorageAccount".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.primaryStagingStorageAccount
+                        = StorageAccountCustomDetails.fromJson(reader);
+                } else if ("recoveryAvailabilitySet".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryAvailabilitySet
+                        = RecoveryAvailabilitySetCustomDetails.fromJson(reader);
+                } else if ("recoveryVirtualNetwork".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryVirtualNetwork
+                        = RecoveryVirtualNetworkCustomDetails.fromJson(reader);
+                } else if ("recoveryProximityPlacementGroup".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryProximityPlacementGroup
+                        = RecoveryProximityPlacementGroupCustomDetails.fromJson(reader);
+                } else if ("autoProtectionOfDataDisk".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.autoProtectionOfDataDisk
+                        = AutoProtectionOfDataDisk.fromString(reader.getString());
+                } else if ("multiVmGroupName".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.multiVmGroupName = reader.getString();
+                } else if ("multiVmGroupId".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.multiVmGroupId = reader.getString();
+                } else if ("recoveryBootDiagStorageAccount".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryBootDiagStorageAccount
+                        = StorageAccountCustomDetails.fromJson(reader);
+                } else if ("diskEncryptionInfo".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.diskEncryptionInfo = DiskEncryptionInfo.fromJson(reader);
+                } else if ("recoveryAvailabilityZone".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryAvailabilityZone = reader.getString();
+                } else if ("agentAutoUpdateStatus".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.agentAutoUpdateStatus
+                        = AgentAutoUpdateStatus.fromString(reader.getString());
+                } else if ("automationAccountArmId".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.automationAccountArmId = reader.getString();
+                } else if ("automationAccountAuthenticationType".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.automationAccountAuthenticationType
+                        = AutomationAccountAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AReplicationIntentDetails;
+        });
+    }
 }

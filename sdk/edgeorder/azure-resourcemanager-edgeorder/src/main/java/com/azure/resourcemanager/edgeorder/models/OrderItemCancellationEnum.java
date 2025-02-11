@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OrderItemCancellationEnum. */
+/**
+ * Describes whether the order item is cancellable or not.
+ */
 public final class OrderItemCancellationEnum extends ExpandableStringEnum<OrderItemCancellationEnum> {
-    /** Static value Cancellable for OrderItemCancellationEnum. */
+    /**
+     * Static value Cancellable for OrderItemCancellationEnum.
+     */
     public static final OrderItemCancellationEnum CANCELLABLE = fromString("Cancellable");
 
-    /** Static value CancellableWithFee for OrderItemCancellationEnum. */
+    /**
+     * Static value CancellableWithFee for OrderItemCancellationEnum.
+     */
     public static final OrderItemCancellationEnum CANCELLABLE_WITH_FEE = fromString("CancellableWithFee");
 
-    /** Static value NotCancellable for OrderItemCancellationEnum. */
+    /**
+     * Static value NotCancellable for OrderItemCancellationEnum.
+     */
     public static final OrderItemCancellationEnum NOT_CANCELLABLE = fromString("NotCancellable");
 
     /**
+     * Creates a new instance of OrderItemCancellationEnum value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OrderItemCancellationEnum() {
+    }
+
+    /**
      * Creates or finds a OrderItemCancellationEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OrderItemCancellationEnum.
      */
-    @JsonCreator
     public static OrderItemCancellationEnum fromString(String name) {
         return fromString(name, OrderItemCancellationEnum.class);
     }
 
-    /** @return known OrderItemCancellationEnum values. */
+    /**
+     * Gets known OrderItemCancellationEnum values.
+     * 
+     * @return known OrderItemCancellationEnum values.
+     */
     public static Collection<OrderItemCancellationEnum> values() {
         return values(OrderItemCancellationEnum.class);
     }

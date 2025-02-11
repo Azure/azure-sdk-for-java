@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databox.models.AddressValidationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Output of the address validation api. */
+/**
+ * Output of the address validation api.
+ */
 @Immutable
-public final class AddressValidationOutputInner {
+public final class AddressValidationOutputInner implements JsonSerializable<AddressValidationOutputInner> {
     /*
      * The address validation properties.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private AddressValidationProperties properties;
 
-    /** Creates an instance of AddressValidationOutputInner class. */
+    /**
+     * Creates an instance of AddressValidationOutputInner class.
+     */
     public AddressValidationOutputInner() {
     }
 
     /**
      * Get the properties property: The address validation properties.
-     *
+     * 
      * @return the properties value.
      */
     public AddressValidationProperties properties() {
@@ -32,12 +39,47 @@ public final class AddressValidationOutputInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddressValidationOutputInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddressValidationOutputInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddressValidationOutputInner.
+     */
+    public static AddressValidationOutputInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddressValidationOutputInner deserializedAddressValidationOutputInner = new AddressValidationOutputInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAddressValidationOutputInner.properties = AddressValidationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddressValidationOutputInner;
+        });
     }
 }

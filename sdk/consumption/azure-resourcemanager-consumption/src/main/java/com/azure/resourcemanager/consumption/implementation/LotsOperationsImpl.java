@@ -11,43 +11,54 @@ import com.azure.resourcemanager.consumption.fluent.LotsOperationsClient;
 import com.azure.resourcemanager.consumption.fluent.models.LotSummaryInner;
 import com.azure.resourcemanager.consumption.models.LotSummary;
 import com.azure.resourcemanager.consumption.models.LotsOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LotsOperationsImpl implements LotsOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LotsOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LotsOperationsImpl.class);
 
     private final LotsOperationsClient innerClient;
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    public LotsOperationsImpl(
-        LotsOperationsClient innerClient, com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
+    public LotsOperationsImpl(LotsOperationsClient innerClient,
+        com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<LotSummary> listByBillingProfile(String billingAccountId, String billingProfileId) {
-        PagedIterable<LotSummaryInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountId, billingProfileId);
-        return Utils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
+        PagedIterable<LotSummaryInner> inner
+            = this.serviceClient().listByBillingProfile(billingAccountId, billingProfileId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<LotSummary> listByBillingProfile(
-        String billingAccountId, String billingProfileId, Context context) {
-        PagedIterable<LotSummaryInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountId, billingProfileId, context);
-        return Utils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
+    public PagedIterable<LotSummary> listByBillingProfile(String billingAccountId, String billingProfileId,
+        Context context) {
+        PagedIterable<LotSummaryInner> inner
+            = this.serviceClient().listByBillingProfile(billingAccountId, billingProfileId, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LotSummary> listByBillingAccount(String billingAccountId) {
         PagedIterable<LotSummaryInner> inner = this.serviceClient().listByBillingAccount(billingAccountId);
-        return Utils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LotSummary> listByBillingAccount(String billingAccountId, String filter, Context context) {
-        PagedIterable<LotSummaryInner> inner =
-            this.serviceClient().listByBillingAccount(billingAccountId, filter, context);
-        return Utils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
+        PagedIterable<LotSummaryInner> inner
+            = this.serviceClient().listByBillingAccount(billingAccountId, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<LotSummary> listByCustomer(String billingAccountId, String customerId) {
+        PagedIterable<LotSummaryInner> inner = this.serviceClient().listByCustomer(billingAccountId, customerId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<LotSummary> listByCustomer(String billingAccountId, String customerId, String filter,
+        Context context) {
+        PagedIterable<LotSummaryInner> inner
+            = this.serviceClient().listByCustomer(billingAccountId, customerId, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
     }
 
     private LotsOperationsClient serviceClient() {

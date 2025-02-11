@@ -18,7 +18,8 @@ public final class ApiDefinitionsImportSpecificationSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiDefinitionsImportSpecification(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiDefinitions().importSpecification("contoso-resources", "contoso", "default", "echo-api",
-            "2023-01-01", "openapi", null, com.azure.core.util.Context.NONE);
+        manager.apiDefinitions()
+            .importSpecification("contoso-resources", "contoso", "default", "echo-api", "2023-01-01", "openapi", null,
+                com.azure.core.util.Context.NONE);
     }
 }

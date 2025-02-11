@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the properties for automatic resolution. */
+/**
+ * Defines the properties for automatic resolution.
+ */
 @Fluent
-public final class AutomaticResolutionProperties {
+public final class AutomaticResolutionProperties implements JsonSerializable<AutomaticResolutionProperties> {
     /*
      * Gets the MoveResource ARM ID of
      * the dependent resource if the resolution type is Automatic.
      */
-    @JsonProperty(value = "moveResourceId")
     private String moveResourceId;
 
-    /** Creates an instance of AutomaticResolutionProperties class. */
+    /**
+     * Creates an instance of AutomaticResolutionProperties class.
+     */
     public AutomaticResolutionProperties() {
     }
 
     /**
-     * Get the moveResourceId property: Gets the MoveResource ARM ID of the dependent resource if the resolution type is
-     * Automatic.
-     *
+     * Get the moveResourceId property: Gets the MoveResource ARM ID of
+     * the dependent resource if the resolution type is Automatic.
+     * 
      * @return the moveResourceId value.
      */
     public String moveResourceId() {
@@ -32,9 +39,9 @@ public final class AutomaticResolutionProperties {
     }
 
     /**
-     * Set the moveResourceId property: Gets the MoveResource ARM ID of the dependent resource if the resolution type is
-     * Automatic.
-     *
+     * Set the moveResourceId property: Gets the MoveResource ARM ID of
+     * the dependent resource if the resolution type is Automatic.
+     * 
      * @param moveResourceId the moveResourceId value to set.
      * @return the AutomaticResolutionProperties object itself.
      */
@@ -45,9 +52,46 @@ public final class AutomaticResolutionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("moveResourceId", this.moveResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomaticResolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomaticResolutionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomaticResolutionProperties.
+     */
+    public static AutomaticResolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomaticResolutionProperties deserializedAutomaticResolutionProperties
+                = new AutomaticResolutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("moveResourceId".equals(fieldName)) {
+                    deserializedAutomaticResolutionProperties.moveResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomaticResolutionProperties;
+        });
     }
 }

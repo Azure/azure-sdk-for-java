@@ -13,95 +13,97 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of ApiManagementServiceResource. */
+/**
+ * An immutable client-side representation of ApiManagementServiceResource.
+ */
 public interface ApiManagementServiceResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the sku property: SKU properties of the API Management service.
-     *
+     * 
      * @return the sku value.
      */
     ApiManagementServiceSkuProperties sku();
 
     /**
      * Gets the identity property: Managed service identity of the Api Management service.
-     *
+     * 
      * @return the identity value.
      */
     ApiManagementServiceIdentity identity();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the etag property: ETag of the resource.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the zones property: A list of availability zones denoting where the resource needs to come from.
-     *
+     * 
      * @return the zones value.
      */
     List<String> zones();
 
     /**
      * Gets the publisherEmail property: Publisher email.
-     *
+     * 
      * @return the publisherEmail value.
      */
     String publisherEmail();
 
     /**
      * Gets the publisherName property: Publisher name.
-     *
+     * 
      * @return the publisherName value.
      */
     String publisherName();
 
     /**
      * Gets the notificationSenderEmail property: Email address from which the notification will be sent.
-     *
+     * 
      * @return the notificationSenderEmail value.
      */
     String notificationSenderEmail();
@@ -109,7 +111,7 @@ public interface ApiManagementServiceResource {
     /**
      * Gets the provisioningState property: The current provisioning state of the API Management service which can be
      * one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
@@ -117,7 +119,7 @@ public interface ApiManagementServiceResource {
     /**
      * Gets the targetProvisioningState property: The provisioning state of the API Management service, which is
      * targeted by the long running operation started on the service.
-     *
+     * 
      * @return the targetProvisioningState value.
      */
     String targetProvisioningState();
@@ -125,56 +127,56 @@ public interface ApiManagementServiceResource {
     /**
      * Gets the createdAtUtc property: Creation UTC date of the API Management service.The date conforms to the
      * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the createdAtUtc value.
      */
     OffsetDateTime createdAtUtc();
 
     /**
      * Gets the gatewayUrl property: Gateway URL of the API Management service.
-     *
+     * 
      * @return the gatewayUrl value.
      */
     String gatewayUrl();
 
     /**
      * Gets the gatewayRegionalUrl property: Gateway URL of the API Management service in the Default Region.
-     *
+     * 
      * @return the gatewayRegionalUrl value.
      */
     String gatewayRegionalUrl();
 
     /**
      * Gets the portalUrl property: Publisher portal endpoint Url of the API Management service.
-     *
+     * 
      * @return the portalUrl value.
      */
     String portalUrl();
 
     /**
      * Gets the managementApiUrl property: Management API endpoint URL of the API Management service.
-     *
+     * 
      * @return the managementApiUrl value.
      */
     String managementApiUrl();
 
     /**
      * Gets the scmUrl property: SCM endpoint URL of the API Management service.
-     *
+     * 
      * @return the scmUrl value.
      */
     String scmUrl();
 
     /**
      * Gets the developerPortalUrl property: DEveloper Portal endpoint URL of the API Management service.
-     *
+     * 
      * @return the developerPortalUrl value.
      */
     String developerPortalUrl();
 
     /**
      * Gets the hostnameConfigurations property: Custom hostname configuration of the API Management service.
-     *
+     * 
      * @return the hostnameConfigurations value.
      */
     List<HostnameConfiguration> hostnameConfigurations();
@@ -182,7 +184,7 @@ public interface ApiManagementServiceResource {
     /**
      * Gets the publicIpAddresses property: Public Static Load Balanced IP addresses of the API Management service in
      * Primary region. Available only for Basic, Standard, Premium and Isolated SKU.
-     *
+     * 
      * @return the publicIpAddresses value.
      */
     List<String> publicIpAddresses();
@@ -191,7 +193,7 @@ public interface ApiManagementServiceResource {
      * Gets the privateIpAddresses property: Private Static Load Balanced IP addresses of the API Management service in
      * Primary region which is deployed in an Internal Virtual Network. Available only for Basic, Standard, Premium and
      * Isolated SKU.
-     *
+     * 
      * @return the privateIpAddresses value.
      */
     List<String> privateIpAddresses();
@@ -200,7 +202,7 @@ public interface ApiManagementServiceResource {
      * Gets the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
      * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
      * Network.
-     *
+     * 
      * @return the publicIpAddressId value.
      */
     String publicIpAddressId();
@@ -209,21 +211,21 @@ public interface ApiManagementServiceResource {
      * Gets the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
      * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
      * are the exclusive access method. Default value is 'Enabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     PublicNetworkAccess publicNetworkAccess();
 
     /**
      * Gets the virtualNetworkConfiguration property: Virtual network configuration of the API Management service.
-     *
+     * 
      * @return the virtualNetworkConfiguration value.
      */
     VirtualNetworkConfiguration virtualNetworkConfiguration();
 
     /**
      * Gets the additionalLocations property: Additional datacenter locations of the API Management service.
-     *
+     * 
      * @return the additionalLocations value.
      */
     List<AdditionalLocation> additionalLocations();
@@ -252,7 +254,7 @@ public interface ApiManagementServiceResource {
      * default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they are
      * required by internal platform components:
      * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
-     *
+     * 
      * @return the customProperties value.
      */
     Map<String, String> customProperties();
@@ -260,7 +262,7 @@ public interface ApiManagementServiceResource {
     /**
      * Gets the certificates property: List of Certificates that need to be installed in the API Management service. Max
      * supported certificates that can be installed is 10.
-     *
+     * 
      * @return the certificates value.
      */
     List<CertificateConfiguration> certificates();
@@ -269,14 +271,14 @@ public interface ApiManagementServiceResource {
      * Gets the enableClientCertificate property: Property only meant to be used for Consumption SKU Service. This
      * enforces a client certificate to be presented on each request to the gateway. This also enables the ability to
      * authenticate the certificate in the policy on the gateway.
-     *
+     * 
      * @return the enableClientCertificate value.
      */
     Boolean enableClientCertificate();
 
     /**
      * Gets the natGatewayState property: Property can be used to enable NAT Gateway for this API Management service.
-     *
+     * 
      * @return the natGatewayState value.
      */
     NatGatewayState natGatewayState();
@@ -284,7 +286,7 @@ public interface ApiManagementServiceResource {
     /**
      * Gets the outboundPublicIpAddresses property: Outbound public IPV4 address prefixes associated with NAT Gateway
      * deployed service. Available only for Premium SKU on stv2 platform.
-     *
+     * 
      * @return the outboundPublicIpAddresses value.
      */
     List<String> outboundPublicIpAddresses();
@@ -292,7 +294,7 @@ public interface ApiManagementServiceResource {
     /**
      * Gets the disableGateway property: Property only valid for an Api Management service deployed in multiple
      * locations. This can be used to disable the gateway in master region.
-     *
+     * 
      * @return the disableGateway value.
      */
     Boolean disableGateway();
@@ -302,14 +304,14 @@ public interface ApiManagementServiceResource {
      * None (Default Value) means the API Management service is not part of any Virtual Network, External means the API
      * Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means
      * that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.
-     *
+     * 
      * @return the virtualNetworkType value.
      */
     VirtualNetworkType virtualNetworkType();
 
     /**
      * Gets the apiVersionConstraint property: Control Plane Apis version constraint for the API Management service.
-     *
+     * 
      * @return the apiVersionConstraint value.
      */
     ApiVersionConstraint apiVersionConstraint();
@@ -317,75 +319,78 @@ public interface ApiManagementServiceResource {
     /**
      * Gets the restore property: Undelete Api Management Service if it was previously soft-deleted. If this flag is
      * specified and set to True all other properties will be ignored.
-     *
+     * 
      * @return the restore value.
      */
     Boolean restore();
 
     /**
      * Gets the privateEndpointConnections property: List of Private Endpoint Connections of this service.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections();
 
     /**
      * Gets the platformVersion property: Compute Platform Version running the service in this location.
-     *
+     * 
      * @return the platformVersion value.
      */
     PlatformVersion platformVersion();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ApiManagementServiceResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     ApiManagementServiceResourceInner innerModel();
 
-    /** The entirety of the ApiManagementServiceResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithPublisherEmail,
-            DefinitionStages.WithPublisherName,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the ApiManagementServiceResource definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithSku, DefinitionStages.WithPublisherEmail,
+        DefinitionStages.WithPublisherName, DefinitionStages.WithCreate {
     }
 
-    /** The ApiManagementServiceResource definition stages. */
+    /**
+     * The ApiManagementServiceResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the ApiManagementServiceResource definition. */
+        /**
+         * The first stage of the ApiManagementServiceResource definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify location. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location Resource location.
              * @return the next definition stage.
              */
@@ -393,51 +398,59 @@ public interface ApiManagementServiceResource {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location Resource location.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify parent resource. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithSku withExistingResourceGroup(String resourceGroupName);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify sku. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: SKU properties of the API Management service..
-             *
+             * 
              * @param sku SKU properties of the API Management service.
              * @return the next definition stage.
              */
             WithPublisherEmail withSku(ApiManagementServiceSkuProperties sku);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify publisherEmail. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify publisherEmail.
+         */
         interface WithPublisherEmail {
             /**
              * Specifies the publisherEmail property: Publisher email..
-             *
+             * 
              * @param publisherEmail Publisher email.
              * @return the next definition stage.
              */
             WithPublisherName withPublisherEmail(String publisherEmail);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify publisherName. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify publisherName.
+         */
         interface WithPublisherName {
             /**
              * Specifies the publisherName property: Publisher name..
-             *
+             * 
              * @param publisherName Publisher name.
              * @return the next definition stage.
              */
@@ -448,153 +461,163 @@ public interface ApiManagementServiceResource {
          * The stage of the ApiManagementServiceResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithZones,
-                DefinitionStages.WithNotificationSenderEmail,
-                DefinitionStages.WithHostnameConfigurations,
-                DefinitionStages.WithPublicIpAddressId,
-                DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithVirtualNetworkConfiguration,
-                DefinitionStages.WithAdditionalLocations,
-                DefinitionStages.WithCustomProperties,
-                DefinitionStages.WithCertificates,
-                DefinitionStages.WithEnableClientCertificate,
-                DefinitionStages.WithNatGatewayState,
-                DefinitionStages.WithDisableGateway,
-                DefinitionStages.WithVirtualNetworkType,
-                DefinitionStages.WithApiVersionConstraint,
-                DefinitionStages.WithRestore,
-                DefinitionStages.WithPrivateEndpointConnections {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithZones, DefinitionStages.WithNotificationSenderEmail,
+            DefinitionStages.WithHostnameConfigurations, DefinitionStages.WithPublicIpAddressId,
+            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithVirtualNetworkConfiguration,
+            DefinitionStages.WithAdditionalLocations, DefinitionStages.WithCustomProperties,
+            DefinitionStages.WithCertificates, DefinitionStages.WithEnableClientCertificate,
+            DefinitionStages.WithNatGatewayState, DefinitionStages.WithDisableGateway,
+            DefinitionStages.WithVirtualNetworkType, DefinitionStages.WithApiVersionConstraint,
+            DefinitionStages.WithRestore, DefinitionStages.WithPrivateEndpointConnections {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             ApiManagementServiceResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             ApiManagementServiceResource create(Context context);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify tags. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify identity. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: Managed service identity of the Api Management service..
-             *
+             * 
              * @param identity Managed service identity of the Api Management service.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ApiManagementServiceIdentity identity);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify zones. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify zones.
+         */
         interface WithZones {
             /**
              * Specifies the zones property: A list of availability zones denoting where the resource needs to come
              * from..
-             *
+             * 
              * @param zones A list of availability zones denoting where the resource needs to come from.
              * @return the next definition stage.
              */
             WithCreate withZones(List<String> zones);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify notificationSenderEmail. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify notificationSenderEmail.
+         */
         interface WithNotificationSenderEmail {
             /**
              * Specifies the notificationSenderEmail property: Email address from which the notification will be sent..
-             *
+             * 
              * @param notificationSenderEmail Email address from which the notification will be sent.
              * @return the next definition stage.
              */
             WithCreate withNotificationSenderEmail(String notificationSenderEmail);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify hostnameConfigurations. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify hostnameConfigurations.
+         */
         interface WithHostnameConfigurations {
             /**
              * Specifies the hostnameConfigurations property: Custom hostname configuration of the API Management
              * service..
-             *
+             * 
              * @param hostnameConfigurations Custom hostname configuration of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify publicIpAddressId. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify publicIpAddressId.
+         */
         interface WithPublicIpAddressId {
             /**
              * Specifies the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated
              * with Virtual Network deployed service in the region. Supported only for Developer and Premium SKU being
              * deployed in Virtual Network..
-             *
+             * 
              * @param publicIpAddressId Public Standard SKU IP V4 based IP address to be associated with Virtual Network
-             *     deployed service in the region. Supported only for Developer and Premium SKU being deployed in
-             *     Virtual Network.
+             * deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
+             * Network.
              * @return the next definition stage.
              */
             WithCreate withPublicIpAddressId(String publicIpAddressId);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify publicNetworkAccess. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify publicNetworkAccess.
+         */
         interface WithPublicNetworkAccess {
             /**
              * Specifies the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API
              * Management service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled',
              * private endpoints are the exclusive access method. Default value is 'Enabled'.
-             *
+             * 
              * @param publicNetworkAccess Whether or not public endpoint access is allowed for this API Management
-             *     service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private
-             *     endpoints are the exclusive access method. Default value is 'Enabled'.
+             * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private
+             * endpoints are the exclusive access method. Default value is 'Enabled'.
              * @return the next definition stage.
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify virtualNetworkConfiguration. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify virtualNetworkConfiguration.
+         */
         interface WithVirtualNetworkConfiguration {
             /**
              * Specifies the virtualNetworkConfiguration property: Virtual network configuration of the API Management
              * service..
-             *
+             * 
              * @param virtualNetworkConfiguration Virtual network configuration of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify additionalLocations. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify additionalLocations.
+         */
         interface WithAdditionalLocations {
             /**
              * Specifies the additionalLocations property: Additional datacenter locations of the API Management
              * service..
-             *
+             * 
              * @param additionalLocations Additional datacenter locations of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withAdditionalLocations(List<AdditionalLocation> additionalLocations);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify customProperties. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify customProperties.
+         */
         interface WithCustomProperties {
             /**
              * Specifies the customProperties property: Custom properties of the API Management
@@ -621,91 +644,100 @@ public interface ApiManagementServiceResource {
              * The default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they
              * are required by internal platform components:
              * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
-             *
+             * 
              * @param customProperties Custom properties of the API Management service.&lt;/br&gt;Setting
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168` will disable the cipher
-             *     TLS_RSA_WITH_3DES_EDE_CBC_SHA for all TLS(1.0, 1.1 and 1.2).&lt;/br&gt;Setting
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11` can be used to disable just
-             *     TLS 1.1.&lt;/br&gt;Setting `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10`
-             *     can be used to disable TLS 1.0 on an API Management service.&lt;/br&gt;Setting
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11` can be used to
-             *     disable just TLS 1.1 for communications with backends.&lt;/br&gt;Setting
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10` can be used to
-             *     disable TLS 1.0 for communications with backends.&lt;/br&gt;Setting
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2` can be used to enable HTTP2
-             *     protocol on an API Management service.&lt;/br&gt;Not specifying any of these properties on PATCH
-             *     operation will reset omitted properties' values to their defaults. For all the settings except Http2
-             *     the default value is `True` if the service was created on or before April 1, 2018 and `False`
-             *     otherwise. Http2 setting's default value is `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of the
-             *     following ciphers by using settings
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]`:
-             *     TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-             *     TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-             *     TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA256,
-             *     TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA. For example,
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`.
-             *     The default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since
-             *     they are required by internal platform components:
-             *     TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168` will disable the cipher
+             * TLS_RSA_WITH_3DES_EDE_CBC_SHA for all TLS(1.0, 1.1 and 1.2).&lt;/br&gt;Setting
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11` can be used to disable just TLS
+             * 1.1.&lt;/br&gt;Setting `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10` can be
+             * used to disable TLS 1.0 on an API Management service.&lt;/br&gt;Setting
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11` can be used to disable
+             * just TLS 1.1 for communications with backends.&lt;/br&gt;Setting
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10` can be used to disable
+             * TLS 1.0 for communications with backends.&lt;/br&gt;Setting
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2` can be used to enable HTTP2
+             * protocol on an API Management service.&lt;/br&gt;Not specifying any of these properties on PATCH
+             * operation will reset omitted properties' values to their defaults. For all the settings except Http2 the
+             * default value is `True` if the service was created on or before April 1, 2018 and `False` otherwise.
+             * Http2 setting's default value is `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of the following
+             * ciphers by using settings `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]`:
+             * TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+             * TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_GCM_SHA256,
+             * TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA,
+             * TLS_RSA_WITH_AES_128_CBC_SHA. For example,
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`.
+             * The default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they
+             * are required by internal platform components:
+             * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
              * @return the next definition stage.
              */
             WithCreate withCustomProperties(Map<String, String> customProperties);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify certificates. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify certificates.
+         */
         interface WithCertificates {
             /**
              * Specifies the certificates property: List of Certificates that need to be installed in the API Management
              * service. Max supported certificates that can be installed is 10..
-             *
+             * 
              * @param certificates List of Certificates that need to be installed in the API Management service. Max
-             *     supported certificates that can be installed is 10.
+             * supported certificates that can be installed is 10.
              * @return the next definition stage.
              */
             WithCreate withCertificates(List<CertificateConfiguration> certificates);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify enableClientCertificate. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify enableClientCertificate.
+         */
         interface WithEnableClientCertificate {
             /**
              * Specifies the enableClientCertificate property: Property only meant to be used for Consumption SKU
              * Service. This enforces a client certificate to be presented on each request to the gateway. This also
              * enables the ability to authenticate the certificate in the policy on the gateway..
-             *
+             * 
              * @param enableClientCertificate Property only meant to be used for Consumption SKU Service. This enforces
-             *     a client certificate to be presented on each request to the gateway. This also enables the ability to
-             *     authenticate the certificate in the policy on the gateway.
+             * a client certificate to be presented on each request to the gateway. This also enables the ability to
+             * authenticate the certificate in the policy on the gateway.
              * @return the next definition stage.
              */
             WithCreate withEnableClientCertificate(Boolean enableClientCertificate);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify natGatewayState. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify natGatewayState.
+         */
         interface WithNatGatewayState {
             /**
              * Specifies the natGatewayState property: Property can be used to enable NAT Gateway for this API
              * Management service..
-             *
+             * 
              * @param natGatewayState Property can be used to enable NAT Gateway for this API Management service.
              * @return the next definition stage.
              */
             WithCreate withNatGatewayState(NatGatewayState natGatewayState);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify disableGateway. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify disableGateway.
+         */
         interface WithDisableGateway {
             /**
              * Specifies the disableGateway property: Property only valid for an Api Management service deployed in
              * multiple locations. This can be used to disable the gateway in master region..
-             *
+             * 
              * @param disableGateway Property only valid for an Api Management service deployed in multiple locations.
-             *     This can be used to disable the gateway in master region.
+             * This can be used to disable the gateway in master region.
              * @return the next definition stage.
              */
             WithCreate withDisableGateway(Boolean disableGateway);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify virtualNetworkType. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify virtualNetworkType.
+         */
         interface WithVirtualNetworkType {
             /**
              * Specifies the virtualNetworkType property: The type of VPN in which API Management service needs to be
@@ -713,248 +745,270 @@ public interface ApiManagementServiceResource {
              * External means the API Management deployment is set up inside a Virtual Network having an Internet Facing
              * Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an
              * Intranet Facing Endpoint only..
-             *
+             * 
              * @param virtualNetworkType The type of VPN in which API Management service needs to be configured in. None
-             *     (Default Value) means the API Management service is not part of any Virtual Network, External means
-             *     the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint,
-             *     and Internal means that API Management deployment is setup inside a Virtual Network having an
-             *     Intranet Facing Endpoint only.
+             * (Default Value) means the API Management service is not part of any Virtual Network, External means the
+             * API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and
+             * Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing
+             * Endpoint only.
              * @return the next definition stage.
              */
             WithCreate withVirtualNetworkType(VirtualNetworkType virtualNetworkType);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify apiVersionConstraint. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify apiVersionConstraint.
+         */
         interface WithApiVersionConstraint {
             /**
              * Specifies the apiVersionConstraint property: Control Plane Apis version constraint for the API Management
              * service..
-             *
+             * 
              * @param apiVersionConstraint Control Plane Apis version constraint for the API Management service.
              * @return the next definition stage.
              */
             WithCreate withApiVersionConstraint(ApiVersionConstraint apiVersionConstraint);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify restore. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify restore.
+         */
         interface WithRestore {
             /**
              * Specifies the restore property: Undelete Api Management Service if it was previously soft-deleted. If
              * this flag is specified and set to True all other properties will be ignored..
-             *
+             * 
              * @param restore Undelete Api Management Service if it was previously soft-deleted. If this flag is
-             *     specified and set to True all other properties will be ignored.
+             * specified and set to True all other properties will be ignored.
              * @return the next definition stage.
              */
             WithCreate withRestore(Boolean restore);
         }
 
-        /** The stage of the ApiManagementServiceResource definition allowing to specify privateEndpointConnections. */
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify privateEndpointConnections.
+         */
         interface WithPrivateEndpointConnections {
             /**
              * Specifies the privateEndpointConnections property: List of Private Endpoint Connections of this service..
-             *
+             * 
              * @param privateEndpointConnections List of Private Endpoint Connections of this service.
              * @return the next definition stage.
              */
-            WithCreate withPrivateEndpointConnections(
-                List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
+            WithCreate
+                withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
         }
     }
 
     /**
      * Begins update for the ApiManagementServiceResource resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     ApiManagementServiceResource.Update update();
 
-    /** The template for ApiManagementServiceResource update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithSku,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithZones,
-            UpdateStages.WithPublisherEmail,
-            UpdateStages.WithPublisherName,
-            UpdateStages.WithNotificationSenderEmail,
-            UpdateStages.WithHostnameConfigurations,
-            UpdateStages.WithPublicIpAddressId,
-            UpdateStages.WithPublicNetworkAccess,
-            UpdateStages.WithVirtualNetworkConfiguration,
-            UpdateStages.WithAdditionalLocations,
-            UpdateStages.WithCustomProperties,
-            UpdateStages.WithCertificates,
-            UpdateStages.WithEnableClientCertificate,
-            UpdateStages.WithNatGatewayState,
-            UpdateStages.WithDisableGateway,
-            UpdateStages.WithVirtualNetworkType,
-            UpdateStages.WithApiVersionConstraint,
-            UpdateStages.WithRestore,
-            UpdateStages.WithPrivateEndpointConnections {
+    /**
+     * The template for ApiManagementServiceResource update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity,
+        UpdateStages.WithZones, UpdateStages.WithPublisherEmail, UpdateStages.WithPublisherName,
+        UpdateStages.WithNotificationSenderEmail, UpdateStages.WithHostnameConfigurations,
+        UpdateStages.WithPublicIpAddressId, UpdateStages.WithPublicNetworkAccess,
+        UpdateStages.WithVirtualNetworkConfiguration, UpdateStages.WithAdditionalLocations,
+        UpdateStages.WithCustomProperties, UpdateStages.WithCertificates, UpdateStages.WithEnableClientCertificate,
+        UpdateStages.WithNatGatewayState, UpdateStages.WithDisableGateway, UpdateStages.WithVirtualNetworkType,
+        UpdateStages.WithApiVersionConstraint, UpdateStages.WithRestore, UpdateStages.WithPrivateEndpointConnections {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         ApiManagementServiceResource apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         ApiManagementServiceResource apply(Context context);
     }
 
-    /** The ApiManagementServiceResource update stages. */
+    /**
+     * The ApiManagementServiceResource update stages.
+     */
     interface UpdateStages {
-        /** The stage of the ApiManagementServiceResource update allowing to specify tags. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify sku. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: SKU properties of the API Management service..
-             *
+             * 
              * @param sku SKU properties of the API Management service.
              * @return the next definition stage.
              */
             Update withSku(ApiManagementServiceSkuProperties sku);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify identity. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: Managed service identity of the Api Management service..
-             *
+             * 
              * @param identity Managed service identity of the Api Management service.
              * @return the next definition stage.
              */
             Update withIdentity(ApiManagementServiceIdentity identity);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify zones. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify zones.
+         */
         interface WithZones {
             /**
              * Specifies the zones property: A list of availability zones denoting where the resource needs to come
              * from..
-             *
+             * 
              * @param zones A list of availability zones denoting where the resource needs to come from.
              * @return the next definition stage.
              */
             Update withZones(List<String> zones);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify publisherEmail. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify publisherEmail.
+         */
         interface WithPublisherEmail {
             /**
              * Specifies the publisherEmail property: Publisher email..
-             *
+             * 
              * @param publisherEmail Publisher email.
              * @return the next definition stage.
              */
             Update withPublisherEmail(String publisherEmail);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify publisherName. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify publisherName.
+         */
         interface WithPublisherName {
             /**
              * Specifies the publisherName property: Publisher name..
-             *
+             * 
              * @param publisherName Publisher name.
              * @return the next definition stage.
              */
             Update withPublisherName(String publisherName);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify notificationSenderEmail. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify notificationSenderEmail.
+         */
         interface WithNotificationSenderEmail {
             /**
              * Specifies the notificationSenderEmail property: Email address from which the notification will be sent..
-             *
+             * 
              * @param notificationSenderEmail Email address from which the notification will be sent.
              * @return the next definition stage.
              */
             Update withNotificationSenderEmail(String notificationSenderEmail);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify hostnameConfigurations. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify hostnameConfigurations.
+         */
         interface WithHostnameConfigurations {
             /**
              * Specifies the hostnameConfigurations property: Custom hostname configuration of the API Management
              * service..
-             *
+             * 
              * @param hostnameConfigurations Custom hostname configuration of the API Management service.
              * @return the next definition stage.
              */
             Update withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify publicIpAddressId. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify publicIpAddressId.
+         */
         interface WithPublicIpAddressId {
             /**
              * Specifies the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated
              * with Virtual Network deployed service in the region. Supported only for Developer and Premium SKU being
              * deployed in Virtual Network..
-             *
+             * 
              * @param publicIpAddressId Public Standard SKU IP V4 based IP address to be associated with Virtual Network
-             *     deployed service in the region. Supported only for Developer and Premium SKU being deployed in
-             *     Virtual Network.
+             * deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
+             * Network.
              * @return the next definition stage.
              */
             Update withPublicIpAddressId(String publicIpAddressId);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify publicNetworkAccess. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify publicNetworkAccess.
+         */
         interface WithPublicNetworkAccess {
             /**
              * Specifies the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API
              * Management service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled',
              * private endpoints are the exclusive access method. Default value is 'Enabled'.
-             *
+             * 
              * @param publicNetworkAccess Whether or not public endpoint access is allowed for this API Management
-             *     service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private
-             *     endpoints are the exclusive access method. Default value is 'Enabled'.
+             * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private
+             * endpoints are the exclusive access method. Default value is 'Enabled'.
              * @return the next definition stage.
              */
             Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify virtualNetworkConfiguration. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify virtualNetworkConfiguration.
+         */
         interface WithVirtualNetworkConfiguration {
             /**
              * Specifies the virtualNetworkConfiguration property: Virtual network configuration of the API Management
              * service..
-             *
+             * 
              * @param virtualNetworkConfiguration Virtual network configuration of the API Management service.
              * @return the next definition stage.
              */
             Update withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify additionalLocations. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify additionalLocations.
+         */
         interface WithAdditionalLocations {
             /**
              * Specifies the additionalLocations property: Additional datacenter locations of the API Management
              * service..
-             *
+             * 
              * @param additionalLocations Additional datacenter locations of the API Management service.
              * @return the next definition stage.
              */
             Update withAdditionalLocations(List<AdditionalLocation> additionalLocations);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify customProperties. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify customProperties.
+         */
         interface WithCustomProperties {
             /**
              * Specifies the customProperties property: Custom properties of the API Management
@@ -981,91 +1035,100 @@ public interface ApiManagementServiceResource {
              * The default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they
              * are required by internal platform components:
              * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
-             *
+             * 
              * @param customProperties Custom properties of the API Management service.&lt;/br&gt;Setting
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168` will disable the cipher
-             *     TLS_RSA_WITH_3DES_EDE_CBC_SHA for all TLS(1.0, 1.1 and 1.2).&lt;/br&gt;Setting
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11` can be used to disable just
-             *     TLS 1.1.&lt;/br&gt;Setting `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10`
-             *     can be used to disable TLS 1.0 on an API Management service.&lt;/br&gt;Setting
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11` can be used to
-             *     disable just TLS 1.1 for communications with backends.&lt;/br&gt;Setting
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10` can be used to
-             *     disable TLS 1.0 for communications with backends.&lt;/br&gt;Setting
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2` can be used to enable HTTP2
-             *     protocol on an API Management service.&lt;/br&gt;Not specifying any of these properties on PATCH
-             *     operation will reset omitted properties' values to their defaults. For all the settings except Http2
-             *     the default value is `True` if the service was created on or before April 1, 2018 and `False`
-             *     otherwise. Http2 setting's default value is `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of the
-             *     following ciphers by using settings
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]`:
-             *     TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-             *     TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-             *     TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA256,
-             *     TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA. For example,
-             *     `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`.
-             *     The default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since
-             *     they are required by internal platform components:
-             *     TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168` will disable the cipher
+             * TLS_RSA_WITH_3DES_EDE_CBC_SHA for all TLS(1.0, 1.1 and 1.2).&lt;/br&gt;Setting
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11` can be used to disable just TLS
+             * 1.1.&lt;/br&gt;Setting `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10` can be
+             * used to disable TLS 1.0 on an API Management service.&lt;/br&gt;Setting
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11` can be used to disable
+             * just TLS 1.1 for communications with backends.&lt;/br&gt;Setting
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10` can be used to disable
+             * TLS 1.0 for communications with backends.&lt;/br&gt;Setting
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2` can be used to enable HTTP2
+             * protocol on an API Management service.&lt;/br&gt;Not specifying any of these properties on PATCH
+             * operation will reset omitted properties' values to their defaults. For all the settings except Http2 the
+             * default value is `True` if the service was created on or before April 1, 2018 and `False` otherwise.
+             * Http2 setting's default value is `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of the following
+             * ciphers by using settings `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]`:
+             * TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+             * TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_GCM_SHA256,
+             * TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA,
+             * TLS_RSA_WITH_AES_128_CBC_SHA. For example,
+             * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`.
+             * The default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they
+             * are required by internal platform components:
+             * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
              * @return the next definition stage.
              */
             Update withCustomProperties(Map<String, String> customProperties);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify certificates. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify certificates.
+         */
         interface WithCertificates {
             /**
              * Specifies the certificates property: List of Certificates that need to be installed in the API Management
              * service. Max supported certificates that can be installed is 10..
-             *
+             * 
              * @param certificates List of Certificates that need to be installed in the API Management service. Max
-             *     supported certificates that can be installed is 10.
+             * supported certificates that can be installed is 10.
              * @return the next definition stage.
              */
             Update withCertificates(List<CertificateConfiguration> certificates);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify enableClientCertificate. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify enableClientCertificate.
+         */
         interface WithEnableClientCertificate {
             /**
              * Specifies the enableClientCertificate property: Property only meant to be used for Consumption SKU
              * Service. This enforces a client certificate to be presented on each request to the gateway. This also
              * enables the ability to authenticate the certificate in the policy on the gateway..
-             *
+             * 
              * @param enableClientCertificate Property only meant to be used for Consumption SKU Service. This enforces
-             *     a client certificate to be presented on each request to the gateway. This also enables the ability to
-             *     authenticate the certificate in the policy on the gateway.
+             * a client certificate to be presented on each request to the gateway. This also enables the ability to
+             * authenticate the certificate in the policy on the gateway.
              * @return the next definition stage.
              */
             Update withEnableClientCertificate(Boolean enableClientCertificate);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify natGatewayState. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify natGatewayState.
+         */
         interface WithNatGatewayState {
             /**
              * Specifies the natGatewayState property: Property can be used to enable NAT Gateway for this API
              * Management service..
-             *
+             * 
              * @param natGatewayState Property can be used to enable NAT Gateway for this API Management service.
              * @return the next definition stage.
              */
             Update withNatGatewayState(NatGatewayState natGatewayState);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify disableGateway. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify disableGateway.
+         */
         interface WithDisableGateway {
             /**
              * Specifies the disableGateway property: Property only valid for an Api Management service deployed in
              * multiple locations. This can be used to disable the gateway in master region..
-             *
+             * 
              * @param disableGateway Property only valid for an Api Management service deployed in multiple locations.
-             *     This can be used to disable the gateway in master region.
+             * This can be used to disable the gateway in master region.
              * @return the next definition stage.
              */
             Update withDisableGateway(Boolean disableGateway);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify virtualNetworkType. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify virtualNetworkType.
+         */
         interface WithVirtualNetworkType {
             /**
              * Specifies the virtualNetworkType property: The type of VPN in which API Management service needs to be
@@ -1073,65 +1136,71 @@ public interface ApiManagementServiceResource {
              * External means the API Management deployment is set up inside a Virtual Network having an Internet Facing
              * Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an
              * Intranet Facing Endpoint only..
-             *
+             * 
              * @param virtualNetworkType The type of VPN in which API Management service needs to be configured in. None
-             *     (Default Value) means the API Management service is not part of any Virtual Network, External means
-             *     the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint,
-             *     and Internal means that API Management deployment is setup inside a Virtual Network having an
-             *     Intranet Facing Endpoint only.
+             * (Default Value) means the API Management service is not part of any Virtual Network, External means the
+             * API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and
+             * Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing
+             * Endpoint only.
              * @return the next definition stage.
              */
             Update withVirtualNetworkType(VirtualNetworkType virtualNetworkType);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify apiVersionConstraint. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify apiVersionConstraint.
+         */
         interface WithApiVersionConstraint {
             /**
              * Specifies the apiVersionConstraint property: Control Plane Apis version constraint for the API Management
              * service..
-             *
+             * 
              * @param apiVersionConstraint Control Plane Apis version constraint for the API Management service.
              * @return the next definition stage.
              */
             Update withApiVersionConstraint(ApiVersionConstraint apiVersionConstraint);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify restore. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify restore.
+         */
         interface WithRestore {
             /**
              * Specifies the restore property: Undelete Api Management Service if it was previously soft-deleted. If
              * this flag is specified and set to True all other properties will be ignored..
-             *
+             * 
              * @param restore Undelete Api Management Service if it was previously soft-deleted. If this flag is
-             *     specified and set to True all other properties will be ignored.
+             * specified and set to True all other properties will be ignored.
              * @return the next definition stage.
              */
             Update withRestore(Boolean restore);
         }
 
-        /** The stage of the ApiManagementServiceResource update allowing to specify privateEndpointConnections. */
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify privateEndpointConnections.
+         */
         interface WithPrivateEndpointConnections {
             /**
              * Specifies the privateEndpointConnections property: List of Private Endpoint Connections of this service..
-             *
+             * 
              * @param privateEndpointConnections List of Private Endpoint Connections of this service.
              * @return the next definition stage.
              */
-            Update withPrivateEndpointConnections(
-                List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
+            Update
+                withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
         }
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     ApiManagementServiceResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -1140,7 +1209,7 @@ public interface ApiManagementServiceResource {
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
+     * 
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1152,7 +1221,7 @@ public interface ApiManagementServiceResource {
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
+     * 
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1165,7 +1234,7 @@ public interface ApiManagementServiceResource {
     /**
      * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
      * This change is not reversible. This is long running operation and could take several minutes to complete.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response.
@@ -1175,7 +1244,7 @@ public interface ApiManagementServiceResource {
     /**
      * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
      * This change is not reversible. This is long running operation and could take several minutes to complete.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1186,19 +1255,19 @@ public interface ApiManagementServiceResource {
 
     /**
      * Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes along with {@link
-     *     Response}.
+     * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes along with
+     * {@link Response}.
      */
     Response<ApiManagementServiceGetSsoTokenResult> getSsoTokenWithResponse(Context context);
 
     /**
      * Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
@@ -1207,7 +1276,7 @@ public interface ApiManagementServiceResource {
 
     /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response.
@@ -1216,10 +1285,10 @@ public interface ApiManagementServiceResource {
 
     /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
+     * 
      * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
-     *     all the regions in which the Api Management service is deployed will be updated sequentially without
-     *     incurring downtime in the region.
+     * all the regions in which the Api Management service is deployed will be updated sequentially without incurring
+     * downtime in the region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

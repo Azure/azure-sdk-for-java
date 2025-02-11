@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.DataWarehouseUserActiviti
 public final class DataWarehouseUserActivitiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataWarehouseUserActivitiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"activeQueriesCount\":297001975},\"id\":\"nalaulppg\",\"name\":\"dtpnapnyiropuhp\",\"type\":\"gvpgy\"}")
-                .toObject(DataWarehouseUserActivitiesInner.class);
+        DataWarehouseUserActivitiesInner model = BinaryData.fromString(
+            "{\"properties\":{\"activeQueriesCount\":1264679400},\"id\":\"zaofjchvcyy\",\"name\":\"s\",\"type\":\"gdotcubiipuipwo\"}")
+            .toObject(DataWarehouseUserActivitiesInner.class);
     }
 
     @org.junit.jupiter.api.Test

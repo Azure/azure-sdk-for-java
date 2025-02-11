@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class Visibility extends ExpandableStringEnum<Visibility> {
      * @param name a name to look for.
      * @return the corresponding Visibility.
      */
-    @JsonCreator
     public static Visibility fromString(String name) {
         return fromString(name, Visibility.class);
     }

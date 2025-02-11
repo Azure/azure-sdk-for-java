@@ -18,8 +18,8 @@ public final class ProviderInstanceImpl implements ProviderInstance, ProviderIns
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    ProviderInstanceImpl(
-        ProviderInstanceInner innerObject, com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
+    ProviderInstanceImpl(ProviderInstanceInner innerObject,
+        com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -77,20 +77,16 @@ public final class ProviderInstanceImpl implements ProviderInstance, ProviderIns
     }
 
     public ProviderInstance create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProviderInstances()
-                .create(resourceGroupName, monitorName, providerInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getProviderInstances()
+            .create(resourceGroupName, monitorName, providerInstanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ProviderInstance create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProviderInstances()
-                .create(resourceGroupName, monitorName, providerInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getProviderInstances()
+            .create(resourceGroupName, monitorName, providerInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -101,22 +97,18 @@ public final class ProviderInstanceImpl implements ProviderInstance, ProviderIns
     }
 
     public ProviderInstance refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProviderInstances()
-                .getWithResponse(resourceGroupName, monitorName, providerInstanceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProviderInstances()
+            .getWithResponse(resourceGroupName, monitorName, providerInstanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProviderInstance refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProviderInstances()
-                .getWithResponse(resourceGroupName, monitorName, providerInstanceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProviderInstances()
+            .getWithResponse(resourceGroupName, monitorName, providerInstanceName, context)
+            .getValue();
         return this;
     }
 

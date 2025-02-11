@@ -23,7 +23,9 @@ public final class SCClusterNetworkEnvironmentEntityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SCClusterNetworkEnvironmentEntity model = new SCClusterNetworkEnvironmentEntity().withId("zdmsyqtfi")
-            .withEnvironment("hbotzingamvppho").withRelated("qzudphq").withResourceName("vdkfwynwcvtbvk");
+            .withEnvironment("hbotzingamvppho")
+            .withRelated("qzudphq")
+            .withResourceName("vdkfwynwcvtbvk");
         model = BinaryData.fromObject(model).toObject(SCClusterNetworkEnvironmentEntity.class);
         Assertions.assertEquals("zdmsyqtfi", model.id());
         Assertions.assertEquals("hbotzingamvppho", model.environment());

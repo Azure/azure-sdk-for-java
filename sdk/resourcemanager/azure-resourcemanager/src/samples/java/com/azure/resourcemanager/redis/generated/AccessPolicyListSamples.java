@@ -10,7 +10,7 @@ package com.azure.resourcemanager.redis.generated;
 public final class AccessPolicyListSamples {
     /*
      * x-ms-original-file:
-     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheAccessPolicyList.json
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheAccessPolicyList.json
      */
     /**
      * Sample code: RedisCacheAccessPolicyList.

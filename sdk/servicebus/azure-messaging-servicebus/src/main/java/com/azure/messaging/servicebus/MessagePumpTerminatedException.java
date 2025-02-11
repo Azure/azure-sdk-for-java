@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-
 import com.azure.core.util.logging.ClientLogger;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
@@ -44,7 +43,8 @@ final class MessagePumpTerminatedException extends RuntimeException {
      * @param detectedAt debug-string indicating where in the async chain the termination occurred or identified.
      * @param terminationCause The reason for the termination of the pump.
      */
-    MessagePumpTerminatedException(long pumpId, String fullyQualifiedNamespace, String entityPath, String detectedAt, Throwable terminationCause) {
+    MessagePumpTerminatedException(long pumpId, String fullyQualifiedNamespace, String entityPath, String detectedAt,
+        Throwable terminationCause) {
         super(detectedAt, terminationCause);
         this.pumpId = pumpId;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
@@ -60,8 +60,10 @@ final class MessagePumpTerminatedException extends RuntimeException {
      * @param entityPath The path to the messaging entity within the Service Bus namespace streaming message.
      * @return the {@link MessagePumpTerminatedException}.
      */
-    static MessagePumpTerminatedException forCompletion(long pumpId, String fullyQualifiedNamespace, String entityPath) {
-        return new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "pumping#reached-completion");
+    static MessagePumpTerminatedException forCompletion(long pumpId, String fullyQualifiedNamespace,
+        String entityPath) {
+        return new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath,
+            "pumping#reached-completion");
     }
 
     /**

@@ -13,26 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ControllerResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ControllerResource model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"pa\",\"tags\":{\"cmpoyfdkfogkny\":\"jpsq\",\"eqsrdeupewnwreit\":\"jofjd\"},\"id\":\"zyf\",\"name\":\"usarhmofc\",\"type\":\"hs\"}")
-                .toObject(ControllerResource.class);
+        ControllerResource model = BinaryData.fromString(
+            "{\"location\":\"pa\",\"tags\":{\"cmpoyfdkfogkny\":\"jpsq\",\"eqsrdeupewnwreit\":\"jofjd\"},\"id\":\"zyf\",\"name\":\"usarhmofc\",\"type\":\"hs\"}")
+            .toObject(ControllerResource.class);
         Assertions.assertEquals("pa", model.location());
         Assertions.assertEquals("jpsq", model.tags().get("cmpoyfdkfogkny"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ControllerResource model =
-            new ControllerResource()
-                .withLocation("pa")
-                .withTags(mapOf("cmpoyfdkfogkny", "jpsq", "eqsrdeupewnwreit", "jofjd"));
+        ControllerResource model = new ControllerResource().withLocation("pa")
+            .withTags(mapOf("cmpoyfdkfogkny", "jpsq", "eqsrdeupewnwreit", "jofjd"));
         model = BinaryData.fromObject(model).toObject(ControllerResource.class);
         Assertions.assertEquals("pa", model.location());
         Assertions.assertEquals("jpsq", model.tags().get("cmpoyfdkfogkny"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

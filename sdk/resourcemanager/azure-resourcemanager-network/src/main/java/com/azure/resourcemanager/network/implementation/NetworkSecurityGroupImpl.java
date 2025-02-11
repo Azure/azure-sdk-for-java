@@ -20,16 +20,15 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /** Implementation for NetworkSecurityGroup and its create and update interfaces. */
-class NetworkSecurityGroupImpl
-    extends GroupableParentResourceWithTagsImpl<
-        NetworkSecurityGroup, NetworkSecurityGroupInner, NetworkSecurityGroupImpl, NetworkManager>
+class NetworkSecurityGroupImpl extends
+    GroupableParentResourceWithTagsImpl<NetworkSecurityGroup, NetworkSecurityGroupInner, NetworkSecurityGroupImpl, NetworkManager>
     implements NetworkSecurityGroup, NetworkSecurityGroup.Definition, NetworkSecurityGroup.Update {
 
     private Map<String, NetworkSecurityRule> rules;
     private Map<String, NetworkSecurityRule> defaultRules;
 
-    NetworkSecurityGroupImpl(
-        final String name, final NetworkSecurityGroupInner innerModel, final NetworkManager networkManager) {
+    NetworkSecurityGroupImpl(final String name, final NetworkSecurityGroupInner innerModel,
+        final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
@@ -69,21 +68,17 @@ class NetworkSecurityGroupImpl
 
     @Override
     public Mono<NetworkSecurityGroup> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                networkSecurityGroup -> {
-                    NetworkSecurityGroupImpl impl = (NetworkSecurityGroupImpl) networkSecurityGroup;
+        return super.refreshAsync().map(networkSecurityGroup -> {
+            NetworkSecurityGroupImpl impl = (NetworkSecurityGroupImpl) networkSecurityGroup;
 
-                    impl.initializeChildrenFromInner();
-                    return impl;
-                });
+            impl.initializeChildrenFromInner();
+            return impl;
+        });
     }
 
     @Override
     protected Mono<NetworkSecurityGroupInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getNetworkSecurityGroups()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -91,8 +86,7 @@ class NetworkSecurityGroupImpl
 
     @Override
     protected Mono<NetworkSecurityGroupInner> applyTagsToInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getNetworkSecurityGroups()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
@@ -147,8 +141,7 @@ class NetworkSecurityGroupImpl
 
     @Override
     protected Mono<NetworkSecurityGroupInner> createInner() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getNetworkSecurityGroups()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());

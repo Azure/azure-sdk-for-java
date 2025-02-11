@@ -13,40 +13,27 @@ import org.junit.jupiter.api.Assertions;
 public final class DeviceInterfacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceInterfaceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"identifier\":\"gzkheubanl\",\"interfaceType\":\"npqcc\",\"supportedConnectorTypes\":[{\"connectorType\":\"wzlzklasl\",\"maxSpeedInMbps\":749818941},{\"connectorType\":\"zuxlrarwpewsau\",\"maxSpeedInMbps\":1198933921},{\"connectorType\":\"tighsxjpy\",\"maxSpeedInMbps\":1790305531},{\"connectorType\":\"bala\",\"maxSpeedInMbps\":76421440}]}")
-                .toObject(DeviceInterfaceProperties.class);
-        Assertions.assertEquals("gzkheubanl", model.identifier());
-        Assertions.assertEquals("npqcc", model.interfaceType());
-        Assertions.assertEquals("wzlzklasl", model.supportedConnectorTypes().get(0).connectorType());
-        Assertions.assertEquals(749818941, model.supportedConnectorTypes().get(0).maxSpeedInMbps());
+        DeviceInterfaceProperties model = BinaryData.fromString(
+            "{\"identifier\":\"tbhpjhxpcvrdnye\",\"interfaceType\":\"aneqadynzja\",\"supportedConnectorTypes\":[{\"connectorType\":\"uomzczfki\",\"maxSpeedInMbps\":1238351045},{\"connectorType\":\"saaxwspca\",\"maxSpeedInMbps\":1087934112},{\"connectorType\":\"fjqebglcxkx\",\"maxSpeedInMbps\":133600558}]}")
+            .toObject(DeviceInterfaceProperties.class);
+        Assertions.assertEquals("tbhpjhxpcvrdnye", model.identifier());
+        Assertions.assertEquals("aneqadynzja", model.interfaceType());
+        Assertions.assertEquals("uomzczfki", model.supportedConnectorTypes().get(0).connectorType());
+        Assertions.assertEquals(1238351045, model.supportedConnectorTypes().get(0).maxSpeedInMbps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceInterfaceProperties model =
-            new DeviceInterfaceProperties()
-                .withIdentifier("gzkheubanl")
-                .withInterfaceType("npqcc")
-                .withSupportedConnectorTypes(
-                    Arrays
-                        .asList(
-                            new SupportedConnectorProperties()
-                                .withConnectorType("wzlzklasl")
-                                .withMaxSpeedInMbps(749818941),
-                            new SupportedConnectorProperties()
-                                .withConnectorType("zuxlrarwpewsau")
-                                .withMaxSpeedInMbps(1198933921),
-                            new SupportedConnectorProperties()
-                                .withConnectorType("tighsxjpy")
-                                .withMaxSpeedInMbps(1790305531),
-                            new SupportedConnectorProperties().withConnectorType("bala").withMaxSpeedInMbps(76421440)));
+        DeviceInterfaceProperties model = new DeviceInterfaceProperties().withIdentifier("tbhpjhxpcvrdnye")
+            .withInterfaceType("aneqadynzja")
+            .withSupportedConnectorTypes(Arrays.asList(
+                new SupportedConnectorProperties().withConnectorType("uomzczfki").withMaxSpeedInMbps(1238351045),
+                new SupportedConnectorProperties().withConnectorType("saaxwspca").withMaxSpeedInMbps(1087934112),
+                new SupportedConnectorProperties().withConnectorType("fjqebglcxkx").withMaxSpeedInMbps(133600558)));
         model = BinaryData.fromObject(model).toObject(DeviceInterfaceProperties.class);
-        Assertions.assertEquals("gzkheubanl", model.identifier());
-        Assertions.assertEquals("npqcc", model.interfaceType());
-        Assertions.assertEquals("wzlzklasl", model.supportedConnectorTypes().get(0).connectorType());
-        Assertions.assertEquals(749818941, model.supportedConnectorTypes().get(0).maxSpeedInMbps());
+        Assertions.assertEquals("tbhpjhxpcvrdnye", model.identifier());
+        Assertions.assertEquals("aneqadynzja", model.interfaceType());
+        Assertions.assertEquals("uomzczfki", model.supportedConnectorTypes().get(0).connectorType());
+        Assertions.assertEquals(1238351045, model.supportedConnectorTypes().get(0).maxSpeedInMbps());
     }
 }

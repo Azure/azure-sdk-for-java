@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databoxedge.models.BandwidthSchedulesList;
 public final class BandwidthSchedulesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BandwidthSchedulesList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"start\":\"jrefovgmkqsle\",\"stop\":\"yvxyqjp\",\"rateInMbps\":1744021341,\"days\":[]},\"id\":\"attpngjcrcczsq\",\"name\":\"jh\",\"type\":\"mdajv\"}],\"nextLink\":\"sounqecanoaeu\"}")
-                .toObject(BandwidthSchedulesList.class);
+        BandwidthSchedulesList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"start\":\"eupfhyhltrpm\",\"stop\":\"pjmcmatuokthfuiu\",\"rateInMbps\":1958511129,\"days\":[\"Tuesday\",\"Thursday\",\"Thursday\",\"Sunday\"]},\"id\":\"kvxod\",\"name\":\"uozmyzydagfua\",\"type\":\"bezy\"}],\"nextLink\":\"okktwhrdxw\"}")
+            .toObject(BandwidthSchedulesList.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -6,70 +6,43 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
+import com.azure.resourcemanager.synapse.models.DayOfWeek;
 import com.azure.resourcemanager.synapse.models.MaintenanceWindowOptions;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SqlPoolMaintenanceWindowOptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"isEnabled\":true,\"maintenanceWindowCycles\":[{\"dayOfWeek\":\"Sunday\",\"startTime\":\"jrthcfjzhx\",\"duration\":\"ubqjro\"},{\"dayOfWeek\":\"Monday\",\"startTime\":\"jeqmtzzbeqrzt\",\"duration\":\"alx\"},{\"dayOfWeek\":\"Thursday\",\"startTime\":\"bsrwrsnrhpqat\",\"duration\":\"kkvyanxk\"},{\"dayOfWeek\":\"Wednesday\",\"startTime\":\"ems\",\"duration\":\"v\"}],\"minDurationInMinutes\":769444047,\"defaultDurationInMinutes\":1509454369,\"minCycles\":964046312,\"timeGranularityInMinutes\":692508605,\"allowMultipleMaintenanceWindowsPerCycle\":true},\"id\":\"ivrjjxnwxdc\",\"name\":\"p\",\"type\":\"jxlehzlx\"}";
 
-        String responseStr =
-            "{\"properties\":{\"isEnabled\":false,\"maintenanceWindowCycles\":[],\"minDurationInMinutes\":1450032317,\"defaultDurationInMinutes\":2139767173,\"minCycles\":316800252,\"timeGranularityInMinutes\":522253905,\"allowMultipleMaintenanceWindowsPerCycle\":true},\"id\":\"zltg\",\"name\":\"omqo\",\"type\":\"pepiaeapfs\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        MaintenanceWindowOptions response = manager.sqlPoolMaintenanceWindowOptions()
+            .getWithResponse("qqrsil", "chskxxka", "sbvr", "aqgvto", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        MaintenanceWindowOptions response =
-            manager
-                .sqlPoolMaintenanceWindowOptions()
-                .getWithResponse("xcjzlquze", "okjxebjvb", "inzabwmvoglj", "v", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(false, response.isEnabled());
-        Assertions.assertEquals(1450032317, response.minDurationInMinutes());
-        Assertions.assertEquals(2139767173, response.defaultDurationInMinutes());
-        Assertions.assertEquals(316800252, response.minCycles());
-        Assertions.assertEquals(522253905, response.timeGranularityInMinutes());
+        Assertions.assertEquals(true, response.isEnabled());
+        Assertions.assertEquals(DayOfWeek.SUNDAY, response.maintenanceWindowCycles().get(0).dayOfWeek());
+        Assertions.assertEquals("jrthcfjzhx", response.maintenanceWindowCycles().get(0).startTime());
+        Assertions.assertEquals("ubqjro", response.maintenanceWindowCycles().get(0).duration());
+        Assertions.assertEquals(769444047, response.minDurationInMinutes());
+        Assertions.assertEquals(1509454369, response.defaultDurationInMinutes());
+        Assertions.assertEquals(964046312, response.minCycles());
+        Assertions.assertEquals(692508605, response.timeGranularityInMinutes());
         Assertions.assertEquals(true, response.allowMultipleMaintenanceWindowsPerCycle());
     }
 }

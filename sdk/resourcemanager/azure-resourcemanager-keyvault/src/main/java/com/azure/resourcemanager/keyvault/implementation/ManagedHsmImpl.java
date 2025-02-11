@@ -35,8 +35,7 @@ import java.util.stream.Collectors;
 /**
  * Implementation for Managed Hardware Security Module and its parent interfaces.
  */
-class ManagedHsmImpl
-    extends GroupableResourceImpl<ManagedHsm, ManagedHsmInner, ManagedHsmImpl, KeyVaultManager>
+class ManagedHsmImpl extends GroupableResourceImpl<ManagedHsm, ManagedHsmInner, ManagedHsmImpl, KeyVaultManager>
     implements ManagedHsm {
     private KeyAsyncClient keyClient;
     private final HttpPipeline mhsmHttpPipeline;
@@ -45,8 +44,7 @@ class ManagedHsmImpl
         super(name, innerObject, manager);
         mhsmHttpPipeline = manager().httpPipeline();
         if (innerModel().properties() != null && innerModel().properties().hsmUri() != null) {
-            keyClient = new KeyClientBuilder()
-                .pipeline(mhsmHttpPipeline)
+            keyClient = new KeyClientBuilder().pipeline(mhsmHttpPipeline)
                 .vaultUrl(innerModel().properties().hsmUri())
                 .serviceVersion(KeyServiceVersion.V7_2)
                 .buildAsyncClient();
@@ -59,7 +57,8 @@ class ManagedHsmImpl
      */
     @Override
     public Mono<ManagedHsm> createResourceAsync() {
-        throw new UnsupportedOperationException("method [createResourceAsync] not implemented in class [com.azure.resourcemanager.keyvault.implementation.ManagedHsmImpl]");
+        throw new UnsupportedOperationException(
+            "method [createResourceAsync] not implemented in class [com.azure.resourcemanager.keyvault.implementation.ManagedHsmImpl]");
     }
 
     @Override
@@ -156,11 +155,16 @@ class ManagedHsmImpl
 
     @Override
     public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
-        Mono<Response<List<PrivateLinkResource>>> retList = this.manager().serviceClient().getPrivateLinkResources()
+        Mono<Response<List<PrivateLinkResource>>> retList = this.manager()
+            .serviceClient()
+            .getPrivateLinkResources()
             .listByVaultWithResponseAsync(this.resourceGroupName(), this.name())
-            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
-                .map(ManagedHsmImpl.PrivateLinkResourceImpl::new)
-                .collect(Collectors.toList())));
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue()
+                    .value()
+                    .stream()
+                    .map(ManagedHsmImpl.PrivateLinkResourceImpl::new)
+                    .collect(Collectors.toList())));
         return PagedConverter.convertListToPagedFlux(retList);
     }
 
@@ -171,10 +175,12 @@ class ManagedHsmImpl
 
     @Override
     public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return manager().serviceClient().getPrivateEndpointConnections().putAsync(
-            this.resourceGroupName(), this.name(), privateEndpointConnectionName,
-            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)))
+        return manager().serviceClient()
+            .getPrivateEndpointConnections()
+            .putAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                new PrivateEndpointConnectionInner()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)))
             .then();
     }
 
@@ -185,10 +191,12 @@ class ManagedHsmImpl
 
     @Override
     public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return manager().serviceClient().getPrivateEndpointConnections().putAsync(
-            this.resourceGroupName(), this.name(), privateEndpointConnectionName,
-            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)))
+        return manager().serviceClient()
+            .getPrivateEndpointConnections()
+            .putAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                new PrivateEndpointConnectionInner()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)))
             .then();
     }
 

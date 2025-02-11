@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class IaasVMSnapshotConsistencyType extends ExpandableStringEnum<Ia
      * @param name a name to look for.
      * @return the corresponding IaasVMSnapshotConsistencyType.
      */
-    @JsonCreator
     public static IaasVMSnapshotConsistencyType fromString(String name) {
         return fromString(name, IaasVMSnapshotConsistencyType.class);
     }

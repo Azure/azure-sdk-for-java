@@ -27,7 +27,7 @@ public final class SimGroupsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.simGroups().delete("ytxtdgu", "vlbpktgdstyou", com.azure.core.util.Context.NONE);
+        manager.simGroups().delete("uifr", "vka", com.azure.core.util.Context.NONE);
 
     }
 }

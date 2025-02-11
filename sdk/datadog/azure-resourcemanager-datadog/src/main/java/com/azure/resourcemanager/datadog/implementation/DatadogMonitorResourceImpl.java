@@ -104,20 +104,16 @@ public final class DatadogMonitorResourceImpl
     }
 
     public DatadogMonitorResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .create(resourceGroupName, monitorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .create(resourceGroupName, monitorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DatadogMonitorResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .create(resourceGroupName, monitorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .create(resourceGroupName, monitorName, this.innerModel(), context);
         return this;
     }
 
@@ -133,46 +129,39 @@ public final class DatadogMonitorResourceImpl
     }
 
     public DatadogMonitorResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .update(resourceGroupName, monitorName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .update(resourceGroupName, monitorName, updateBody, Context.NONE);
         return this;
     }
 
     public DatadogMonitorResource apply(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getMonitors().update(resourceGroupName, monitorName, updateBody, context);
+        this.innerObject
+            = serviceManager.serviceClient().getMonitors().update(resourceGroupName, monitorName, updateBody, context);
         return this;
     }
 
-    DatadogMonitorResourceImpl(
-        DatadogMonitorResourceInner innerObject,
+    DatadogMonitorResourceImpl(DatadogMonitorResourceInner innerObject,
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = Utils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
     }
 
     public DatadogMonitorResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DatadogMonitorResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .getByResourceGroupWithResponse(resourceGroupName, monitorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .getByResourceGroupWithResponse(resourceGroupName, monitorName, context)
+            .getValue();
         return this;
     }
 

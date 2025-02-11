@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SimGroupResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SimGroupResourceId model = BinaryData.fromString("{\"id\":\"igovi\"}").toObject(SimGroupResourceId.class);
-        Assertions.assertEquals("igovi", model.id());
+        SimGroupResourceId model = BinaryData.fromString("{\"id\":\"tjb\"}").toObject(SimGroupResourceId.class);
+        Assertions.assertEquals("tjb", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SimGroupResourceId model = new SimGroupResourceId().withId("igovi");
+        SimGroupResourceId model = new SimGroupResourceId().withId("tjb");
         model = BinaryData.fromObject(model).toObject(SimGroupResourceId.class);
-        Assertions.assertEquals("igovi", model.id());
+        Assertions.assertEquals("tjb", model.id());
     }
 }

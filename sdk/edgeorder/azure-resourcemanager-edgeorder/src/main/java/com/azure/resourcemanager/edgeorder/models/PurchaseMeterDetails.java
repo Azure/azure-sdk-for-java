@@ -5,40 +5,55 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Billing type Purchase meter details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "billingType")
-@JsonTypeName("Purchase")
+/**
+ * Billing type Purchase meter details.
+ */
 @Immutable
 public final class PurchaseMeterDetails extends MeterDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PurchaseMeterDetails.class);
+    /*
+     * Represents billing type.
+     */
+    private BillingType billingType = BillingType.PURCHASE;
 
     /*
      * Product Id
      */
-    @JsonProperty(value = "productId", access = JsonProperty.Access.WRITE_ONLY)
     private String productId;
 
     /*
      * Sku Id
      */
-    @JsonProperty(value = "skuId", access = JsonProperty.Access.WRITE_ONLY)
     private String skuId;
 
     /*
      * Term Id
      */
-    @JsonProperty(value = "termId", access = JsonProperty.Access.WRITE_ONLY)
     private String termId;
 
     /**
+     * Creates an instance of PurchaseMeterDetails class.
+     */
+    public PurchaseMeterDetails() {
+    }
+
+    /**
+     * Get the billingType property: Represents billing type.
+     * 
+     * @return the billingType value.
+     */
+    @Override
+    public BillingType billingType() {
+        return this.billingType;
+    }
+
+    /**
      * Get the productId property: Product Id.
-     *
+     * 
      * @return the productId value.
      */
     public String productId() {
@@ -47,7 +62,7 @@ public final class PurchaseMeterDetails extends MeterDetails {
 
     /**
      * Get the skuId property: Sku Id.
-     *
+     * 
      * @return the skuId value.
      */
     public String skuId() {
@@ -56,7 +71,7 @@ public final class PurchaseMeterDetails extends MeterDetails {
 
     /**
      * Get the termId property: Term Id.
-     *
+     * 
      * @return the termId value.
      */
     public String termId() {
@@ -65,11 +80,56 @@ public final class PurchaseMeterDetails extends MeterDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("billingType", this.billingType == null ? null : this.billingType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PurchaseMeterDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PurchaseMeterDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PurchaseMeterDetails.
+     */
+    public static PurchaseMeterDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PurchaseMeterDetails deserializedPurchaseMeterDetails = new PurchaseMeterDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("multiplier".equals(fieldName)) {
+                    deserializedPurchaseMeterDetails.withMultiplier(reader.getNullable(JsonReader::getDouble));
+                } else if ("chargingType".equals(fieldName)) {
+                    deserializedPurchaseMeterDetails.withChargingType(ChargingType.fromString(reader.getString()));
+                } else if ("billingType".equals(fieldName)) {
+                    deserializedPurchaseMeterDetails.billingType = BillingType.fromString(reader.getString());
+                } else if ("productId".equals(fieldName)) {
+                    deserializedPurchaseMeterDetails.productId = reader.getString();
+                } else if ("skuId".equals(fieldName)) {
+                    deserializedPurchaseMeterDetails.skuId = reader.getString();
+                } else if ("termId".equals(fieldName)) {
+                    deserializedPurchaseMeterDetails.termId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPurchaseMeterDetails;
+        });
     }
 }

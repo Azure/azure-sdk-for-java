@@ -25,10 +25,10 @@ import java.util.Map;
  * BlobBatchClients} and {@link BlobBatchAsyncClient BlobBatchAsyncClients} when {@link #buildClient() buildClient} and
  * {@link #buildAsyncClient() buildAsyncClient} as called respectively.
  */
-@ServiceClientBuilder(serviceClients = {BlobBatchClient.class, BlobBatchAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { BlobBatchClient.class, BlobBatchAsyncClient.class })
 public final class BlobBatchClientBuilder {
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-storage-blob-batch.properties");
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-storage-blob-batch.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
@@ -141,8 +141,7 @@ public final class BlobBatchClientBuilder {
             }
         }
 
-        return new HttpPipelineBuilder()
-            .httpClient(pipeline.getHttpClient())
+        return new HttpPipelineBuilder().httpClient(pipeline.getHttpClient())
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .tracer(pipeline.getTracer())
             .build();

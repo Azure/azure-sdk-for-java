@@ -4,33 +4,48 @@
 
 package com.azure.resourcemanager.labservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Days of the week. */
+/**
+ * Days of the week.
+ */
 public enum WeekDay {
-    /** Enum value Sunday. */
+    /**
+     * Enum value Sunday.
+     */
     SUNDAY("Sunday"),
 
-    /** Enum value Monday. */
+    /**
+     * Enum value Monday.
+     */
     MONDAY("Monday"),
 
-    /** Enum value Tuesday. */
+    /**
+     * Enum value Tuesday.
+     */
     TUESDAY("Tuesday"),
 
-    /** Enum value Wednesday. */
+    /**
+     * Enum value Wednesday.
+     */
     WEDNESDAY("Wednesday"),
 
-    /** Enum value Thursday. */
+    /**
+     * Enum value Thursday.
+     */
     THURSDAY("Thursday"),
 
-    /** Enum value Friday. */
+    /**
+     * Enum value Friday.
+     */
     FRIDAY("Friday"),
 
-    /** Enum value Saturday. */
+    /**
+     * Enum value Saturday.
+     */
     SATURDAY("Saturday");
 
-    /** The actual serialized value for a WeekDay instance. */
+    /**
+     * The actual serialized value for a WeekDay instance.
+     */
     private final String value;
 
     WeekDay(String value) {
@@ -39,11 +54,10 @@ public enum WeekDay {
 
     /**
      * Parses a serialized value to a WeekDay instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed WeekDay object, or null if unable to parse.
      */
-    @JsonCreator
     public static WeekDay fromString(String value) {
         if (value == null) {
             return null;
@@ -57,8 +71,9 @@ public enum WeekDay {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

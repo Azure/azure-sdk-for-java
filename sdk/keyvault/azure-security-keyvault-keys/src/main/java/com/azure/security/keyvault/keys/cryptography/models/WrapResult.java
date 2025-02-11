@@ -21,12 +21,10 @@ public final class WrapResult {
      */
     private final String keyId;
 
-
     /**
      * The key wrap algorithm used to wrap the key content.
      */
     private final KeyWrapAlgorithm algorithm;
-
 
     /**
      * Creates the instance of KeyWrapResult holding the key wrap operation response details.

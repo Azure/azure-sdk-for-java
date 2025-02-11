@@ -6,26 +6,36 @@ package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes a server to forward the DNS queries to. */
+/**
+ * Describes a server to forward the DNS queries to.
+ */
 @Fluent
-public final class TargetDnsServer {
+public final class TargetDnsServer implements JsonSerializable<TargetDnsServer> {
     /*
      * DNS server IP address.
      */
-    @JsonProperty(value = "ipAddress", required = true)
     private String ipAddress;
 
     /*
      * DNS server port.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /**
+     * Creates an instance of TargetDnsServer class.
+     */
+    public TargetDnsServer() {
+    }
+
+    /**
      * Get the ipAddress property: DNS server IP address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -34,7 +44,7 @@ public final class TargetDnsServer {
 
     /**
      * Set the ipAddress property: DNS server IP address.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the TargetDnsServer object itself.
      */
@@ -45,7 +55,7 @@ public final class TargetDnsServer {
 
     /**
      * Get the port property: DNS server port.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -54,7 +64,7 @@ public final class TargetDnsServer {
 
     /**
      * Set the port property: DNS server port.
-     *
+     * 
      * @param port the port value to set.
      * @return the TargetDnsServer object itself.
      */
@@ -65,16 +75,55 @@ public final class TargetDnsServer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ipAddress in model TargetDnsServer"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ipAddress in model TargetDnsServer"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TargetDnsServer.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeNumberField("port", this.port);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetDnsServer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetDnsServer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TargetDnsServer.
+     */
+    public static TargetDnsServer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetDnsServer deserializedTargetDnsServer = new TargetDnsServer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipAddress".equals(fieldName)) {
+                    deserializedTargetDnsServer.ipAddress = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedTargetDnsServer.port = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetDnsServer;
+        });
+    }
 }

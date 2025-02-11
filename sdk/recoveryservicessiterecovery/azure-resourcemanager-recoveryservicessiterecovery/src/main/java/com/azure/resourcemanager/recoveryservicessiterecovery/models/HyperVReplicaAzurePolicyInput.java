@@ -5,53 +5,62 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Hyper-V Replica Azure specific input for creating a protection profile.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVReplicaAzure")
 @Fluent
 public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "HyperVReplicaAzure";
+
+    /*
      * The duration (in hours) to which point the recovery history needs to be maintained.
      */
-    @JsonProperty(value = "recoveryPointHistoryDuration")
     private Integer recoveryPointHistoryDuration;
 
     /*
      * The interval (in hours) at which Hyper-V Replica should create an application consistent snapshot within the VM.
      */
-    @JsonProperty(value = "applicationConsistentSnapshotFrequencyInHours")
     private Integer applicationConsistentSnapshotFrequencyInHours;
 
     /*
      * The replication interval.
      */
-    @JsonProperty(value = "replicationInterval")
     private Integer replicationInterval;
 
     /*
      * The scheduled start time for the initial replication. If this parameter is Null, the initial replication starts
      * immediately.
      */
-    @JsonProperty(value = "onlineReplicationStartTime")
     private String onlineReplicationStartTime;
 
     /*
      * The list of storage accounts to which the VMs in the primary cloud can replicate to.
      */
-    @JsonProperty(value = "storageAccounts")
     private List<String> storageAccounts;
 
     /**
      * Creates an instance of HyperVReplicaAzurePolicyInput class.
      */
     public HyperVReplicaAzurePolicyInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -171,6 +180,63 @@ public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificI
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeNumberField("recoveryPointHistoryDuration", this.recoveryPointHistoryDuration);
+        jsonWriter.writeNumberField("applicationConsistentSnapshotFrequencyInHours",
+            this.applicationConsistentSnapshotFrequencyInHours);
+        jsonWriter.writeNumberField("replicationInterval", this.replicationInterval);
+        jsonWriter.writeStringField("onlineReplicationStartTime", this.onlineReplicationStartTime);
+        jsonWriter.writeArrayField("storageAccounts", this.storageAccounts,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVReplicaAzurePolicyInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVReplicaAzurePolicyInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVReplicaAzurePolicyInput.
+     */
+    public static HyperVReplicaAzurePolicyInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVReplicaAzurePolicyInput deserializedHyperVReplicaAzurePolicyInput
+                = new HyperVReplicaAzurePolicyInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyInput.instanceType = reader.getString();
+                } else if ("recoveryPointHistoryDuration".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyInput.recoveryPointHistoryDuration
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("applicationConsistentSnapshotFrequencyInHours".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyInput.applicationConsistentSnapshotFrequencyInHours
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("replicationInterval".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyInput.replicationInterval
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("onlineReplicationStartTime".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyInput.onlineReplicationStartTime = reader.getString();
+                } else if ("storageAccounts".equals(fieldName)) {
+                    List<String> storageAccounts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHyperVReplicaAzurePolicyInput.storageAccounts = storageAccounts;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVReplicaAzurePolicyInput;
+        });
     }
 }

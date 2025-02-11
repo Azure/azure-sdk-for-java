@@ -10,7 +10,7 @@ package com.azure.resourcemanager.streamanalytics.generated;
 public final class StreamingJobsListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_List_ByResourceGroup_Expand.json
      */
     /**
@@ -22,13 +22,14 @@ public final class StreamingJobsListByResourceGroupSamples {
     public static void
         listAllStreamingJobsInAResourceGroupAndUseTheExpandODataQueryParameterToExpandInputsOutputsTransformationAndFunctions(
             com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().listByResourceGroup("sjrg3276", "inputs,outputs,transformation,functions",
-            com.azure.core.util.Context.NONE);
+        manager.streamingJobs()
+            .listByResourceGroup("sjrg3276", "inputs,outputs,transformation,functions",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_List_ByResourceGroup_NoExpand.json
      */
     /**

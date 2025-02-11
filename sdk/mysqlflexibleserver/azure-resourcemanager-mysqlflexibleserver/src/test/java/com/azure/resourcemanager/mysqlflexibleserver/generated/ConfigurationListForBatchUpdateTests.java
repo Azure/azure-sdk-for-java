@@ -7,7 +7,6 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationForBatchUpdate;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationListForBatchUpdate;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ResetAllToDefault;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,25 +14,23 @@ public final class ConfigurationListForBatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationListForBatchUpdate model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"ktapspwgcuertu\",\"properties\":{\"value\":\"o\",\"source\":\"qw\"}},{\"name\":\"mdgbbjfdd\",\"properties\":{\"value\":\"mbe\",\"source\":\"pbhtqqrolfpfpsa\"}}],\"resetAllToDefault\":\"True\"}")
+            "{\"value\":[{\"name\":\"dnsezcxtbzs\",\"properties\":{\"value\":\"c\",\"source\":\"newmdwzjeiachbo\"}},{\"name\":\"flnrosfqpteehzz\",\"properties\":{\"value\":\"yqrimzin\",\"source\":\"swjdkirso\"}},{\"name\":\"qxhcrmn\",\"properties\":{\"value\":\"t\",\"source\":\"whdsoifiyip\"}},{\"name\":\"sqwpgrjb\",\"properties\":{\"value\":\"rcjxvsnbyxqabn\",\"source\":\"cpc\"}}]}")
             .toObject(ConfigurationListForBatchUpdate.class);
-        Assertions.assertEquals("ktapspwgcuertu", model.value().get(0).name());
-        Assertions.assertEquals("o", model.value().get(0).value());
-        Assertions.assertEquals("qw", model.value().get(0).source());
-        Assertions.assertEquals(ResetAllToDefault.TRUE, model.resetAllToDefault());
+        Assertions.assertEquals("dnsezcxtbzs", model.value().get(0).name());
+        Assertions.assertEquals("c", model.value().get(0).value());
+        Assertions.assertEquals("newmdwzjeiachbo", model.value().get(0).source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationListForBatchUpdate model = new ConfigurationListForBatchUpdate()
-            .withValue(Arrays.asList(
-                new ConfigurationForBatchUpdate().withName("ktapspwgcuertu").withValue("o").withSource("qw"),
-                new ConfigurationForBatchUpdate().withName("mdgbbjfdd").withValue("mbe").withSource("pbhtqqrolfpfpsa")))
-            .withResetAllToDefault(ResetAllToDefault.TRUE);
+        ConfigurationListForBatchUpdate model = new ConfigurationListForBatchUpdate().withValue(Arrays.asList(
+            new ConfigurationForBatchUpdate().withName("dnsezcxtbzs").withValue("c").withSource("newmdwzjeiachbo"),
+            new ConfigurationForBatchUpdate().withName("flnrosfqpteehzz").withValue("yqrimzin").withSource("swjdkirso"),
+            new ConfigurationForBatchUpdate().withName("qxhcrmn").withValue("t").withSource("whdsoifiyip"),
+            new ConfigurationForBatchUpdate().withName("sqwpgrjb").withValue("rcjxvsnbyxqabn").withSource("cpc")));
         model = BinaryData.fromObject(model).toObject(ConfigurationListForBatchUpdate.class);
-        Assertions.assertEquals("ktapspwgcuertu", model.value().get(0).name());
-        Assertions.assertEquals("o", model.value().get(0).value());
-        Assertions.assertEquals("qw", model.value().get(0).source());
-        Assertions.assertEquals(ResetAllToDefault.TRUE, model.resetAllToDefault());
+        Assertions.assertEquals("dnsezcxtbzs", model.value().get(0).name());
+        Assertions.assertEquals("c", model.value().get(0).value());
+        Assertions.assertEquals("newmdwzjeiachbo", model.value().get(0).source());
     }
 }

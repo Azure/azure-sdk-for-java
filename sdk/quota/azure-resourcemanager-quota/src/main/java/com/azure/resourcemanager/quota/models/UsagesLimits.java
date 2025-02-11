@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quota.fluent.models.CurrentUsagesBaseInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Quota limits.
  */
 @Fluent
-public final class UsagesLimits {
+public final class UsagesLimits implements JsonSerializable<UsagesLimits> {
     /*
      * List of quota limits.
      */
-    @JsonProperty(value = "value")
     private List<CurrentUsagesBaseInner> value;
 
     /*
      * The URI used to fetch the next page of quota limits. When there are no more pages, this is null.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -83,5 +85,46 @@ public final class UsagesLimits {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsagesLimits from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsagesLimits if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UsagesLimits.
+     */
+    public static UsagesLimits fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsagesLimits deserializedUsagesLimits = new UsagesLimits();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CurrentUsagesBaseInner> value
+                        = reader.readArray(reader1 -> CurrentUsagesBaseInner.fromJson(reader1));
+                    deserializedUsagesLimits.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedUsagesLimits.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsagesLimits;
+        });
     }
 }

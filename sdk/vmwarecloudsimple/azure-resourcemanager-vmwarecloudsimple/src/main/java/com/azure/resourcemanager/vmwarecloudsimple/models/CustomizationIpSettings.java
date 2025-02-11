@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The CustomizationIpSettings model. */
+/**
+ * The CustomizationIpSettings model.
+ */
 @Fluent
-public final class CustomizationIpSettings {
+public final class CustomizationIpSettings implements JsonSerializable<CustomizationIpSettings> {
     /*
      * The list of gateways
      */
-    @JsonProperty(value = "gateway")
     private List<String> gateway;
 
     /*
      * Ip address customization settings
      */
-    @JsonProperty(value = "ip")
     private CustomizationIpAddress ip;
 
     /*
      * Adapter subnet mask
      */
-    @JsonProperty(value = "subnetMask")
     private String subnetMask;
 
-    /** Creates an instance of CustomizationIpSettings class. */
+    /**
+     * Creates an instance of CustomizationIpSettings class.
+     */
     public CustomizationIpSettings() {
     }
 
     /**
      * Get the gateway property: The list of gateways.
-     *
+     * 
      * @return the gateway value.
      */
     public List<String> gateway() {
@@ -44,7 +49,7 @@ public final class CustomizationIpSettings {
 
     /**
      * Set the gateway property: The list of gateways.
-     *
+     * 
      * @param gateway the gateway value to set.
      * @return the CustomizationIpSettings object itself.
      */
@@ -55,7 +60,7 @@ public final class CustomizationIpSettings {
 
     /**
      * Get the ip property: Ip address customization settings.
-     *
+     * 
      * @return the ip value.
      */
     public CustomizationIpAddress ip() {
@@ -64,7 +69,7 @@ public final class CustomizationIpSettings {
 
     /**
      * Set the ip property: Ip address customization settings.
-     *
+     * 
      * @param ip the ip value to set.
      * @return the CustomizationIpSettings object itself.
      */
@@ -75,7 +80,7 @@ public final class CustomizationIpSettings {
 
     /**
      * Get the subnetMask property: Adapter subnet mask.
-     *
+     * 
      * @return the subnetMask value.
      */
     public String subnetMask() {
@@ -84,7 +89,7 @@ public final class CustomizationIpSettings {
 
     /**
      * Set the subnetMask property: Adapter subnet mask.
-     *
+     * 
      * @param subnetMask the subnetMask value to set.
      * @return the CustomizationIpSettings object itself.
      */
@@ -95,12 +100,55 @@ public final class CustomizationIpSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ip() != null) {
             ip().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("gateway", this.gateway, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("ip", this.ip);
+        jsonWriter.writeStringField("subnetMask", this.subnetMask);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomizationIpSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomizationIpSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomizationIpSettings.
+     */
+    public static CustomizationIpSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomizationIpSettings deserializedCustomizationIpSettings = new CustomizationIpSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gateway".equals(fieldName)) {
+                    List<String> gateway = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomizationIpSettings.gateway = gateway;
+                } else if ("ip".equals(fieldName)) {
+                    deserializedCustomizationIpSettings.ip = CustomizationIpAddress.fromJson(reader);
+                } else if ("subnetMask".equals(fieldName)) {
+                    deserializedCustomizationIpSettings.subnetMask = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomizationIpSettings;
+        });
     }
 }

@@ -15,37 +15,34 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IntegrationAccountPartners CreateOrUpdate. */
+/**
+ * Samples for IntegrationAccountPartners CreateOrUpdate.
+ */
 public final class IntegrationAccountPartnersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccountPartners_CreateOrUpdate.json
+     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/
+     * IntegrationAccountPartners_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a partner.
-     *
+     * 
      * @param manager Entry point to LogicManager.
      */
     public static void createOrUpdateAPartner(com.azure.resourcemanager.logic.LogicManager manager) throws IOException {
-        manager
-            .integrationAccountPartners()
+        manager.integrationAccountPartners()
             .define("testPartner")
             .withRegion("westus")
             .withExistingIntegrationAccount("testResourceGroup", "testIntegrationAccount")
             .withPartnerType(PartnerType.B2B)
-            .withContent(
-                new PartnerContent()
-                    .withB2B(
-                        new B2BPartnerContent()
-                            .withBusinessIdentities(
-                                Arrays.asList(new BusinessIdentity().withQualifier("AA").withValue("ZZ")))))
+            .withContent(new PartnerContent().withB2B(new B2BPartnerContent()
+                .withBusinessIdentities(Arrays.asList(new BusinessIdentity().withQualifier("AA").withValue("ZZ")))))
             .withTags(mapOf())
-            .withMetadata(
-                SerializerFactory
-                    .createDefaultManagementSerializerAdapter()
-                    .deserialize("{}", Object.class, SerializerEncoding.JSON))
+            .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
+                .deserialize("{}", Object.class, SerializerEncoding.JSON))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AddDataLakeStoreWithAccountParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddDataLakeStoreWithAccountParameters model =
-            BinaryData
-                .fromString("{\"name\":\"zxtheotusivyevcc\",\"properties\":{\"suffix\":\"hn\"}}")
+        AddDataLakeStoreWithAccountParameters model
+            = BinaryData.fromString("{\"name\":\"np\",\"properties\":{\"suffix\":\"pjkjlxofpdv\"}}")
                 .toObject(AddDataLakeStoreWithAccountParameters.class);
-        Assertions.assertEquals("zxtheotusivyevcc", model.name());
-        Assertions.assertEquals("hn", model.suffix());
+        Assertions.assertEquals("np", model.name());
+        Assertions.assertEquals("pjkjlxofpdv", model.suffix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddDataLakeStoreWithAccountParameters model =
-            new AddDataLakeStoreWithAccountParameters().withName("zxtheotusivyevcc").withSuffix("hn");
+        AddDataLakeStoreWithAccountParameters model
+            = new AddDataLakeStoreWithAccountParameters().withName("np").withSuffix("pjkjlxofpdv");
         model = BinaryData.fromObject(model).toObject(AddDataLakeStoreWithAccountParameters.class);
-        Assertions.assertEquals("zxtheotusivyevcc", model.name());
-        Assertions.assertEquals("hn", model.suffix());
+        Assertions.assertEquals("np", model.name());
+        Assertions.assertEquals("pjkjlxofpdv", model.suffix());
     }
 }

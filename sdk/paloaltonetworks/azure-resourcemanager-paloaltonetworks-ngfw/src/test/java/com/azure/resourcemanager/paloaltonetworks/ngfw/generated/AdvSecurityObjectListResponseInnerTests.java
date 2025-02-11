@@ -25,10 +25,12 @@ public final class AdvSecurityObjectListResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdvSecurityObjectListResponseInner model = new AdvSecurityObjectListResponseInner()
-            .withValue(new AdvSecurityObjectModel().withType("sbbzo").withEntry(
-                Arrays.asList(new NameDescriptionObject().withName("igrxwburvjxxjn").withDescription("ydptkoen"))))
-            .withNextLink("uknvudwti");
+        AdvSecurityObjectListResponseInner model
+            = new AdvSecurityObjectListResponseInner()
+                .withValue(new AdvSecurityObjectModel().withType("sbbzo")
+                    .withEntry(Arrays
+                        .asList(new NameDescriptionObject().withName("igrxwburvjxxjn").withDescription("ydptkoen"))))
+                .withNextLink("uknvudwti");
         model = BinaryData.fromObject(model).toObject(AdvSecurityObjectListResponseInner.class);
         Assertions.assertEquals("sbbzo", model.value().type());
         Assertions.assertEquals("igrxwburvjxxjn", model.value().entry().get(0).name());

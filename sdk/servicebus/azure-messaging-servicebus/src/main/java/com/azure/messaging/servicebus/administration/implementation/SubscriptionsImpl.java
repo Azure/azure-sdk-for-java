@@ -124,9 +124,7 @@ public final class SubscriptionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionDescriptionEntryImpl>> getWithResponseAsync(String topicName,
         String subscriptionName, Boolean enrich) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), topicName, subscriptionName,
-            enrich, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(topicName, subscriptionName, enrich, context));
     }
 
     /**
@@ -251,9 +249,8 @@ public final class SubscriptionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionDescriptionEntryImpl>> putWithResponseAsync(String topicName,
         String subscriptionName, Object requestBody, String ifMatch) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.put(this.client.getEndpoint(), topicName, subscriptionName,
-            this.client.getApiVersion(), ifMatch, requestBody, accept, context));
+        return FluxUtil
+            .withContext(context -> putWithResponseAsync(topicName, subscriptionName, requestBody, ifMatch, context));
     }
 
     /**
@@ -387,9 +384,7 @@ public final class SubscriptionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionDescriptionEntryImpl>> deleteWithResponseAsync(String topicName,
         String subscriptionName) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), topicName, subscriptionName,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(topicName, subscriptionName, context));
     }
 
     /**

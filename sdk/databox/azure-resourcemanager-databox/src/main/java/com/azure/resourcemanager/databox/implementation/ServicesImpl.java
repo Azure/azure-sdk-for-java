@@ -36,31 +36,26 @@ public final class ServicesImpl implements Services {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(
-        String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest) {
-        PagedIterable<SkuInformationInner> inner =
-            this.serviceClient().listAvailableSkusByResourceGroup(resourceGroupName, location, availableSkuRequest);
-        return Utils.mapPage(inner, inner1 -> new SkuInformationImpl(inner1, this.manager()));
+    public PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(String resourceGroupName, String location,
+        AvailableSkuRequest availableSkuRequest) {
+        PagedIterable<SkuInformationInner> inner
+            = this.serviceClient().listAvailableSkusByResourceGroup(resourceGroupName, location, availableSkuRequest);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuInformationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(
-        String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest, Context context) {
-        PagedIterable<SkuInformationInner> inner =
-            this
-                .serviceClient()
-                .listAvailableSkusByResourceGroup(resourceGroupName, location, availableSkuRequest, context);
-        return Utils.mapPage(inner, inner1 -> new SkuInformationImpl(inner1, this.manager()));
+    public PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(String resourceGroupName, String location,
+        AvailableSkuRequest availableSkuRequest, Context context) {
+        PagedIterable<SkuInformationInner> inner = this.serviceClient()
+            .listAvailableSkusByResourceGroup(resourceGroupName, location, availableSkuRequest, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuInformationImpl(inner1, this.manager()));
     }
 
-    public Response<AddressValidationOutput> validateAddressWithResponse(
-        String location, ValidateAddress validateAddress, Context context) {
-        Response<AddressValidationOutputInner> inner =
-            this.serviceClient().validateAddressWithResponse(location, validateAddress, context);
+    public Response<AddressValidationOutput> validateAddressWithResponse(String location,
+        ValidateAddress validateAddress, Context context) {
+        Response<AddressValidationOutputInner> inner
+            = this.serviceClient().validateAddressWithResponse(location, validateAddress, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AddressValidationOutputImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -76,27 +71,22 @@ public final class ServicesImpl implements Services {
         }
     }
 
-    public Response<ValidationResponse> validateInputsByResourceGroupWithResponse(
-        String resourceGroupName, String location, ValidationRequest validationRequest, Context context) {
-        Response<ValidationResponseInner> inner =
-            this
-                .serviceClient()
-                .validateInputsByResourceGroupWithResponse(resourceGroupName, location, validationRequest, context);
+    public Response<ValidationResponse> validateInputsByResourceGroupWithResponse(String resourceGroupName,
+        String location, ValidationRequest validationRequest, Context context) {
+        Response<ValidationResponseInner> inner = this.serviceClient()
+            .validateInputsByResourceGroupWithResponse(resourceGroupName, location, validationRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ValidationResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ValidationResponse validateInputsByResourceGroup(
-        String resourceGroupName, String location, ValidationRequest validationRequest) {
-        ValidationResponseInner inner =
-            this.serviceClient().validateInputsByResourceGroup(resourceGroupName, location, validationRequest);
+    public ValidationResponse validateInputsByResourceGroup(String resourceGroupName, String location,
+        ValidationRequest validationRequest) {
+        ValidationResponseInner inner
+            = this.serviceClient().validateInputsByResourceGroup(resourceGroupName, location, validationRequest);
         if (inner != null) {
             return new ValidationResponseImpl(inner, this.manager());
         } else {
@@ -104,15 +94,12 @@ public final class ServicesImpl implements Services {
         }
     }
 
-    public Response<ValidationResponse> validateInputsWithResponse(
-        String location, ValidationRequest validationRequest, Context context) {
-        Response<ValidationResponseInner> inner =
-            this.serviceClient().validateInputsWithResponse(location, validationRequest, context);
+    public Response<ValidationResponse> validateInputsWithResponse(String location, ValidationRequest validationRequest,
+        Context context) {
+        Response<ValidationResponseInner> inner
+            = this.serviceClient().validateInputsWithResponse(location, validationRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ValidationResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -128,25 +115,22 @@ public final class ServicesImpl implements Services {
         }
     }
 
-    public Response<RegionConfigurationResponse> regionConfigurationWithResponse(
-        String location, RegionConfigurationRequest regionConfigurationRequest, Context context) {
-        Response<RegionConfigurationResponseInner> inner =
-            this.serviceClient().regionConfigurationWithResponse(location, regionConfigurationRequest, context);
+    public Response<RegionConfigurationResponse> regionConfigurationWithResponse(String location,
+        RegionConfigurationRequest regionConfigurationRequest, Context context) {
+        Response<RegionConfigurationResponseInner> inner
+            = this.serviceClient().regionConfigurationWithResponse(location, regionConfigurationRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RegionConfigurationResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RegionConfigurationResponse regionConfiguration(
-        String location, RegionConfigurationRequest regionConfigurationRequest) {
-        RegionConfigurationResponseInner inner =
-            this.serviceClient().regionConfiguration(location, regionConfigurationRequest);
+    public RegionConfigurationResponse regionConfiguration(String location,
+        RegionConfigurationRequest regionConfigurationRequest) {
+        RegionConfigurationResponseInner inner
+            = this.serviceClient().regionConfiguration(location, regionConfigurationRequest);
         if (inner != null) {
             return new RegionConfigurationResponseImpl(inner, this.manager());
         } else {
@@ -155,32 +139,23 @@ public final class ServicesImpl implements Services {
     }
 
     public Response<RegionConfigurationResponse> regionConfigurationByResourceGroupWithResponse(
-        String resourceGroupName,
-        String location,
-        RegionConfigurationRequest regionConfigurationRequest,
+        String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest,
         Context context) {
-        Response<RegionConfigurationResponseInner> inner =
-            this
-                .serviceClient()
-                .regionConfigurationByResourceGroupWithResponse(
-                    resourceGroupName, location, regionConfigurationRequest, context);
+        Response<RegionConfigurationResponseInner> inner = this.serviceClient()
+            .regionConfigurationByResourceGroupWithResponse(resourceGroupName, location, regionConfigurationRequest,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RegionConfigurationResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RegionConfigurationResponse regionConfigurationByResourceGroup(
-        String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest) {
-        RegionConfigurationResponseInner inner =
-            this
-                .serviceClient()
-                .regionConfigurationByResourceGroup(resourceGroupName, location, regionConfigurationRequest);
+    public RegionConfigurationResponse regionConfigurationByResourceGroup(String resourceGroupName, String location,
+        RegionConfigurationRequest regionConfigurationRequest) {
+        RegionConfigurationResponseInner inner = this.serviceClient()
+            .regionConfigurationByResourceGroup(resourceGroupName, location, regionConfigurationRequest);
         if (inner != null) {
             return new RegionConfigurationResponseImpl(inner, this.manager());
         } else {

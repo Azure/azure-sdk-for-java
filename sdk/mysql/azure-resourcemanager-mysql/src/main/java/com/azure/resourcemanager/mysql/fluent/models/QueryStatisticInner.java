@@ -15,7 +15,8 @@ import java.util.List;
 /** Represents a Query Statistic. */
 @Fluent
 public final class QueryStatisticInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryStatisticInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(QueryStatisticInner.class);
 
     /*
      * The properties of a query statistic.

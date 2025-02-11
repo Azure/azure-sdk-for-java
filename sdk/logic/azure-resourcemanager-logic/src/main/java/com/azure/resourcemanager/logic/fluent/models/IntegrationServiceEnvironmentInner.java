@@ -6,40 +6,59 @@ package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentProperties;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSku;
 import com.azure.resourcemanager.logic.models.ManagedServiceIdentity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The integration service environment. */
+/**
+ * The integration service environment.
+ */
 @Fluent
 public final class IntegrationServiceEnvironmentInner extends Resource {
     /*
      * The integration service environment properties.
      */
-    @JsonProperty(value = "properties")
     private IntegrationServiceEnvironmentProperties properties;
 
     /*
      * The sku.
      */
-    @JsonProperty(value = "sku")
     private IntegrationServiceEnvironmentSku sku;
 
     /*
      * Managed service identity properties.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
-    /** Creates an instance of IntegrationServiceEnvironmentInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IntegrationServiceEnvironmentInner class.
+     */
     public IntegrationServiceEnvironmentInner() {
     }
 
     /**
      * Get the properties property: The integration service environment properties.
-     *
+     * 
      * @return the properties value.
      */
     public IntegrationServiceEnvironmentProperties properties() {
@@ -48,7 +67,7 @@ public final class IntegrationServiceEnvironmentInner extends Resource {
 
     /**
      * Set the properties property: The integration service environment properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the IntegrationServiceEnvironmentInner object itself.
      */
@@ -59,7 +78,7 @@ public final class IntegrationServiceEnvironmentInner extends Resource {
 
     /**
      * Get the sku property: The sku.
-     *
+     * 
      * @return the sku value.
      */
     public IntegrationServiceEnvironmentSku sku() {
@@ -68,7 +87,7 @@ public final class IntegrationServiceEnvironmentInner extends Resource {
 
     /**
      * Set the sku property: The sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the IntegrationServiceEnvironmentInner object itself.
      */
@@ -79,7 +98,7 @@ public final class IntegrationServiceEnvironmentInner extends Resource {
 
     /**
      * Get the identity property: Managed service identity properties.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -88,7 +107,7 @@ public final class IntegrationServiceEnvironmentInner extends Resource {
 
     /**
      * Set the identity property: Managed service identity properties.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the IntegrationServiceEnvironmentInner object itself.
      */
@@ -97,14 +116,48 @@ public final class IntegrationServiceEnvironmentInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationServiceEnvironmentInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationServiceEnvironmentInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -113,7 +166,7 @@ public final class IntegrationServiceEnvironmentInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -126,5 +179,64 @@ public final class IntegrationServiceEnvironmentInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationServiceEnvironmentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationServiceEnvironmentInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationServiceEnvironmentInner.
+     */
+    public static IntegrationServiceEnvironmentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationServiceEnvironmentInner deserializedIntegrationServiceEnvironmentInner
+                = new IntegrationServiceEnvironmentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIntegrationServiceEnvironmentInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentInner.properties
+                        = IntegrationServiceEnvironmentProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentInner.sku
+                        = IntegrationServiceEnvironmentSku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationServiceEnvironmentInner;
+        });
     }
 }

@@ -8,15 +8,31 @@ import com.azure.core.annotation.Fluent;
 /** An immutable client-side representation of a connection string on a web app. */
 @Fluent
 public interface ConnectionString {
-    /** @return the key of the setting */
+    /**
+     * Gets the key of the setting.
+     *
+     * @return the key of the setting
+     */
     String name();
 
-    /** @return the value of the connection string */
+    /**
+     * Gets the value of the connection string.
+     *
+     * @return the value of the connection string
+     */
     String value();
 
-    /** @return the type of the connection string */
+    /**
+     * Gets the type of the connection string.
+     *
+     * @return the type of the connection string
+     */
     ConnectionStringType type();
 
-    /** @return if the connection string sticks to the slot during a swap */
+    /**
+     * Check whether the connection string sticks to the slot during a swap.
+     *
+     * @return if the connection string sticks to the slot during a swap
+     */
     boolean sticky();
 }

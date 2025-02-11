@@ -17,29 +17,29 @@ public final class WarehouseSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WarehouseSink model = BinaryData.fromString(
-            "{\"type\":\"WarehouseSink\",\"preCopyScript\":\"datangguucp\",\"allowCopyCommand\":\"datasxnujwffthbzii\",\"copyCommandSettings\":{\"defaultValues\":[{\"columnName\":\"dataccccr\",\"defaultValue\":\"dataabdevjrbgcdxqgst\"}],\"additionalOptions\":{\"uqwljmzp\":\"sbksvvyvoibv\",\"go\":\"ukrwvvhcgtctnqd\"}},\"tableOption\":\"datace\",\"writeBehavior\":\"datartputmtjsklkw\",\"writeBatchSize\":\"dataqqiqckmfxldqtman\",\"writeBatchTimeout\":\"dataj\",\"sinkRetryCount\":\"datamrfq\",\"sinkRetryWait\":\"datacdpwlezbfgullq\",\"maxConcurrentConnections\":\"dataijyxcmqcggksrorx\",\"disableMetricsCollection\":\"datafhar\",\"\":{\"ftraylxzdujpuhb\":\"datat\",\"smlbz\":\"dataogfwbkxdhavegys\",\"wyrioqwmhcpuj\":\"dataxpdatvndvwwejvq\"}}")
+            "{\"type\":\"WarehouseSink\",\"preCopyScript\":\"dataamshqvku\",\"allowCopyCommand\":\"datazvzqhvzjdsn\",\"copyCommandSettings\":{\"defaultValues\":[{\"columnName\":\"dataani\",\"defaultValue\":\"dataz\"}],\"additionalOptions\":{\"vwwvznp\":\"xaqugjalmzpfylq\"}},\"tableOption\":\"datacizropzgjleecffb\",\"writeBehavior\":\"datakvb\",\"writeBatchSize\":\"datastqwnpegoupdq\",\"writeBatchTimeout\":\"datalvd\",\"sinkRetryCount\":\"dataqcqlexobeekzy\",\"sinkRetryWait\":\"datapatwbbf\",\"maxConcurrentConnections\":\"dataflhnwohlc\",\"disableMetricsCollection\":\"datahfuydgdhitavga\",\"\":{\"zeebdefepwkhr\":\"datapzlcvibpd\",\"qvnlhsxea\":\"datazzwgbbozivfo\",\"km\":\"dataxsqquvvscb\",\"ibwuzvmorsyi\":\"datahdukprq\"}}")
             .toObject(WarehouseSink.class);
-        Assertions.assertEquals("sbksvvyvoibv", model.copyCommandSettings().additionalOptions().get("uqwljmzp"));
+        Assertions.assertEquals("xaqugjalmzpfylq", model.copyCommandSettings().additionalOptions().get("vwwvznp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WarehouseSink model = new WarehouseSink().withWriteBatchSize("dataqqiqckmfxldqtman")
-            .withWriteBatchTimeout("dataj")
-            .withSinkRetryCount("datamrfq")
-            .withSinkRetryWait("datacdpwlezbfgullq")
-            .withMaxConcurrentConnections("dataijyxcmqcggksrorx")
-            .withDisableMetricsCollection("datafhar")
-            .withPreCopyScript("datangguucp")
-            .withAllowCopyCommand("datasxnujwffthbzii")
+        WarehouseSink model = new WarehouseSink().withWriteBatchSize("datastqwnpegoupdq")
+            .withWriteBatchTimeout("datalvd")
+            .withSinkRetryCount("dataqcqlexobeekzy")
+            .withSinkRetryWait("datapatwbbf")
+            .withMaxConcurrentConnections("dataflhnwohlc")
+            .withDisableMetricsCollection("datahfuydgdhitavga")
+            .withPreCopyScript("dataamshqvku")
+            .withAllowCopyCommand("datazvzqhvzjdsn")
             .withCopyCommandSettings(new DWCopyCommandSettings()
-                .withDefaultValues(Arrays.asList(new DWCopyCommandDefaultValue().withColumnName("dataccccr")
-                    .withDefaultValue("dataabdevjrbgcdxqgst")))
-                .withAdditionalOptions(mapOf("uqwljmzp", "sbksvvyvoibv", "go", "ukrwvvhcgtctnqd")))
-            .withTableOption("datace")
-            .withWriteBehavior("datartputmtjsklkw");
+                .withDefaultValues(
+                    Arrays.asList(new DWCopyCommandDefaultValue().withColumnName("dataani").withDefaultValue("dataz")))
+                .withAdditionalOptions(mapOf("vwwvznp", "xaqugjalmzpfylq")))
+            .withTableOption("datacizropzgjleecffb")
+            .withWriteBehavior("datakvb");
         model = BinaryData.fromObject(model).toObject(WarehouseSink.class);
-        Assertions.assertEquals("sbksvvyvoibv", model.copyCommandSettings().additionalOptions().get("uqwljmzp"));
+        Assertions.assertEquals("xaqugjalmzpfylq", model.copyCommandSettings().additionalOptions().get("vwwvznp"));
     }
 
     // Use "Map.of" if available

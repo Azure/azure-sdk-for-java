@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationChannelFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationChannelFragment model =
-            BinaryData.fromString("{\"tags\":{\"rb\":\"zuruocbgo\"}}").toObject(NotificationChannelFragment.class);
+        NotificationChannelFragment model
+            = BinaryData.fromString("{\"tags\":{\"rb\":\"zuruocbgo\"}}").toObject(NotificationChannelFragment.class);
         Assertions.assertEquals("zuruocbgo", model.tags().get("rb"));
     }
 

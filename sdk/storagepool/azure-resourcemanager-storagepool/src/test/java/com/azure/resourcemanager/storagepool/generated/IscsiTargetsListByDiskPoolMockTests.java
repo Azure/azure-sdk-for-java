@@ -6,69 +6,44 @@ package com.azure.resourcemanager.storagepool.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagepool.StoragePoolManager;
 import com.azure.resourcemanager.storagepool.models.IscsiTarget;
 import com.azure.resourcemanager.storagepool.models.IscsiTargetAclMode;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IscsiTargetsListByDiskPoolMockTests {
     @Test
     public void testListByDiskPool() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"aclMode\":\"Dynamic\",\"staticAcls\":[{\"initiatorIqn\":\"nvrk\",\"mappedLuns\":[\"ou\"]},{\"initiatorIqn\":\"ibreb\",\"mappedLuns\":[\"aysjkixqtnqttez\"]},{\"initiatorIqn\":\"wfff\",\"mappedLuns\":[\"kpj\",\"qqmtedltmmji\",\"yeozphvwauyqncy\",\"upkvipmdsc\"]},{\"initiatorIqn\":\"xqupevzhf\",\"mappedLuns\":[\"otxhojujby\",\"elmcuvhixbjxyfw\",\"yl\"]}],\"luns\":[{\"name\":\"o\",\"managedDiskAzureResourceId\":\"sttp\",\"lun\":156092628}],\"targetIqn\":\"kkbnu\",\"provisioningState\":\"Creating\",\"status\":\"Running\",\"endpoints\":[\"tylbfpncurdoiw\",\"ithtywu\",\"xcbihw\"],\"port\":821207264,\"sessions\":[\"ntwjch\",\"dgoihxumwctondzj\",\"uu\"]},\"systemData\":{\"createdBy\":\"lwg\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-08-12T18:38:44Z\",\"lastModifiedBy\":\"tov\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-03-02T03:24:34Z\"},\"managedBy\":\"nqfiufxqknpi\",\"managedByExtended\":[\"epttwqmsniff\",\"dmqnrojlpij\",\"k\"],\"id\":\"xfrdd\",\"name\":\"c\",\"type\":\"atiz\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"aclMode\":\"Static\",\"staticAcls\":[],\"luns\":[],\"targetIqn\":\"gsquyfxrxxlept\",\"provisioningState\":\"Pending\",\"status\":\"Unhealthy\",\"endpoints\":[\"ezw\",\"wnwxuqlcvyd\"],\"port\":1148696906,\"sessions\":[\"ooaojkniodkooebw\",\"ujhemmsbvdkcrodt\",\"infwjlfltkacjve\",\"kdlfoa\"]},\"systemData\":{\"createdBy\":\"kfpagao\",\"createdByType\":\"Key\",\"createdAt\":\"2021-11-09T20:51:35Z\",\"lastModifiedBy\":\"blylsyxkqjnsj\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-03-30T12:46:09Z\"},\"managedBy\":\"gxsds\",\"managedByExtended\":[\"mpsbzkfzbeyv\"],\"id\":\"nqicvinvkjjxdxrb\",\"name\":\"ukzclewyhmlwpaz\",\"type\":\"zpof\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StoragePoolManager manager = StoragePoolManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<IscsiTarget> response
+            = manager.iscsiTargets().listByDiskPool("gzxnfaazpxdtnk", "mkqjj", com.azure.core.util.Context.NONE);
 
-        StoragePoolManager manager =
-            StoragePoolManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<IscsiTarget> response =
-            manager.iscsiTargets().listByDiskPool("livpdt", "irqtdqoa", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(IscsiTargetAclMode.STATIC, response.iterator().next().aclMode());
-        Assertions.assertEquals("gsquyfxrxxlept", response.iterator().next().targetIqn());
-        Assertions.assertEquals(OperationalStatus.UNHEALTHY, response.iterator().next().status());
-        Assertions.assertEquals("ezw", response.iterator().next().endpoints().get(0));
-        Assertions.assertEquals(1148696906, response.iterator().next().port());
+        Assertions.assertEquals(IscsiTargetAclMode.DYNAMIC, response.iterator().next().aclMode());
+        Assertions.assertEquals("nvrk", response.iterator().next().staticAcls().get(0).initiatorIqn());
+        Assertions.assertEquals("ou", response.iterator().next().staticAcls().get(0).mappedLuns().get(0));
+        Assertions.assertEquals("o", response.iterator().next().luns().get(0).name());
+        Assertions.assertEquals("sttp", response.iterator().next().luns().get(0).managedDiskAzureResourceId());
+        Assertions.assertEquals("kkbnu", response.iterator().next().targetIqn());
+        Assertions.assertEquals(OperationalStatus.RUNNING, response.iterator().next().status());
+        Assertions.assertEquals("tylbfpncurdoiw", response.iterator().next().endpoints().get(0));
+        Assertions.assertEquals(821207264, response.iterator().next().port());
     }
 }

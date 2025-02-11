@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.logic.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The segment terminator suffix. */
+/**
+ * The segment terminator suffix.
+ */
 public enum SegmentTerminatorSuffix {
-    /** Enum value NotSpecified. */
+    /**
+     * Enum value NotSpecified.
+     */
     NOT_SPECIFIED("NotSpecified"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value CR. */
+    /**
+     * Enum value CR.
+     */
     CR("CR"),
 
-    /** Enum value LF. */
+    /**
+     * Enum value LF.
+     */
     LF("LF"),
 
-    /** Enum value CRLF. */
+    /**
+     * Enum value CRLF.
+     */
     CRLF("CRLF");
 
-    /** The actual serialized value for a SegmentTerminatorSuffix instance. */
+    /**
+     * The actual serialized value for a SegmentTerminatorSuffix instance.
+     */
     private final String value;
 
     SegmentTerminatorSuffix(String value) {
@@ -33,11 +44,10 @@ public enum SegmentTerminatorSuffix {
 
     /**
      * Parses a serialized value to a SegmentTerminatorSuffix instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SegmentTerminatorSuffix object, or null if unable to parse.
      */
-    @JsonCreator
     public static SegmentTerminatorSuffix fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +61,9 @@ public enum SegmentTerminatorSuffix {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

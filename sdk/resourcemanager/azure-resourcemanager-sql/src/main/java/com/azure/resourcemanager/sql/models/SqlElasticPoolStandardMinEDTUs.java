@@ -53,7 +53,11 @@ public enum SqlElasticPoolStandardMinEDTUs {
         this.value = eDTU;
     }
 
-    /** @return the reserved minimum eDTU for each database in the SQL Elastic Pool */
+    /**
+     * Gets the reserved minimum eDTU for each database in the SQL Elastic Pool.
+     *
+     * @return the reserved minimum eDTU for each database in the SQL Elastic Pool
+     */
     public int value() {
         return this.value;
     }

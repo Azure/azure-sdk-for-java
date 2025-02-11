@@ -6,6 +6,9 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mediaservices.models.StreamingPolicyContentKey;
+import com.azure.resourcemanager.mediaservices.models.TrackPropertyCompareOperation;
+import com.azure.resourcemanager.mediaservices.models.TrackPropertyCondition;
+import com.azure.resourcemanager.mediaservices.models.TrackPropertyType;
 import com.azure.resourcemanager.mediaservices.models.TrackSelection;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -13,30 +16,34 @@ import org.junit.jupiter.api.Assertions;
 public final class StreamingPolicyContentKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StreamingPolicyContentKey model =
-            BinaryData
-                .fromString(
-                    "{\"label\":\"doy\",\"policyName\":\"ifthnz\",\"tracks\":[{\"trackSelections\":[]},{\"trackSelections\":[]},{\"trackSelections\":[]},{\"trackSelections\":[]}]}")
-                .toObject(StreamingPolicyContentKey.class);
-        Assertions.assertEquals("doy", model.label());
-        Assertions.assertEquals("ifthnz", model.policyName());
+        StreamingPolicyContentKey model = BinaryData.fromString(
+            "{\"label\":\"mnjijpxacqqudf\",\"policyName\":\"yxbaaabjyvayf\",\"tracks\":[{\"trackSelections\":[{\"property\":\"Unknown\",\"operation\":\"Equal\",\"value\":\"zqogse\"},{\"property\":\"Unknown\",\"operation\":\"Equal\",\"value\":\"fdnw\"}]}]}")
+            .toObject(StreamingPolicyContentKey.class);
+        Assertions.assertEquals("mnjijpxacqqudf", model.label());
+        Assertions.assertEquals("yxbaaabjyvayf", model.policyName());
+        Assertions.assertEquals(TrackPropertyType.UNKNOWN, model.tracks().get(0).trackSelections().get(0).property());
+        Assertions.assertEquals(TrackPropertyCompareOperation.EQUAL,
+            model.tracks().get(0).trackSelections().get(0).operation());
+        Assertions.assertEquals("zqogse", model.tracks().get(0).trackSelections().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StreamingPolicyContentKey model =
-            new StreamingPolicyContentKey()
-                .withLabel("doy")
-                .withPolicyName("ifthnz")
-                .withTracks(
-                    Arrays
-                        .asList(
-                            new TrackSelection().withTrackSelections(Arrays.asList()),
-                            new TrackSelection().withTrackSelections(Arrays.asList()),
-                            new TrackSelection().withTrackSelections(Arrays.asList()),
-                            new TrackSelection().withTrackSelections(Arrays.asList())));
+        StreamingPolicyContentKey model = new StreamingPolicyContentKey().withLabel("mnjijpxacqqudf")
+            .withPolicyName("yxbaaabjyvayf")
+            .withTracks(Arrays.asList(new TrackSelection().withTrackSelections(Arrays.asList(
+                new TrackPropertyCondition().withProperty(TrackPropertyType.UNKNOWN)
+                    .withOperation(TrackPropertyCompareOperation.EQUAL)
+                    .withValue("zqogse"),
+                new TrackPropertyCondition().withProperty(TrackPropertyType.UNKNOWN)
+                    .withOperation(TrackPropertyCompareOperation.EQUAL)
+                    .withValue("fdnw")))));
         model = BinaryData.fromObject(model).toObject(StreamingPolicyContentKey.class);
-        Assertions.assertEquals("doy", model.label());
-        Assertions.assertEquals("ifthnz", model.policyName());
+        Assertions.assertEquals("mnjijpxacqqudf", model.label());
+        Assertions.assertEquals("yxbaaabjyvayf", model.policyName());
+        Assertions.assertEquals(TrackPropertyType.UNKNOWN, model.tracks().get(0).trackSelections().get(0).property());
+        Assertions.assertEquals(TrackPropertyCompareOperation.EQUAL,
+            model.tracks().get(0).trackSelections().get(0).operation());
+        Assertions.assertEquals("zqogse", model.tracks().get(0).trackSelections().get(0).value());
     }
 }

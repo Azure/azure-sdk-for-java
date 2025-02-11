@@ -18,10 +18,8 @@ import java.util.Map;
 
 /** An immutable client-side representation of an Azure Activity Log Alert. */
 @Fluent
-public interface ActivityLogAlert
-    extends GroupableResource<MonitorManager, ActivityLogAlertResourceInner>,
-        Refreshable<ActivityLogAlert>,
-        Updatable<ActivityLogAlert.Update> {
+public interface ActivityLogAlert extends GroupableResource<MonitorManager, ActivityLogAlertResourceInner>,
+    Refreshable<ActivityLogAlert>, Updatable<ActivityLogAlert.Update> {
 
     /**
      * Get a list of resourceIds that will be used as prefixes. The alert will only apply to activityLogs with
@@ -61,14 +59,9 @@ public interface ActivityLogAlert
     String description();
 
     /** The entirety of a activity log alerts definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithScopes,
-            DefinitionStages.WithDescription,
-            DefinitionStages.WithAlertEnabled,
-            DefinitionStages.WithActionGroup,
-            DefinitionStages.WithCriteriaDefinition {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate, DefinitionStages.WithScopes,
+        DefinitionStages.WithDescription, DefinitionStages.WithAlertEnabled, DefinitionStages.WithActionGroup,
+        DefinitionStages.WithCriteriaDefinition {
     }
 
     /** Grouping of activity log alerts definition stages. */

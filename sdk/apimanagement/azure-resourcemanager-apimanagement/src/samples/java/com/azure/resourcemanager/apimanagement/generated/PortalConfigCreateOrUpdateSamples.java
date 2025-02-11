@@ -13,38 +13,36 @@ import com.azure.resourcemanager.apimanagement.models.PortalConfigTermsOfService
 import com.azure.resourcemanager.apimanagement.models.PortalSettingsCspMode;
 import java.util.Arrays;
 
-/** Samples for PortalConfig CreateOrUpdate. */
+/**
+ * Samples for PortalConfig CreateOrUpdate.
+ */
 public final class PortalConfigCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreatePortalConfig.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreatePortalConfig.json
      */
     /**
      * Sample code: ApiManagementCreatePortalConfig.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementCreatePortalConfig(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .portalConfigs()
+    public static void
+        apiManagementCreatePortalConfig(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.portalConfigs()
             .define("default")
             .withExistingService("rg1", "apimService1")
             .withEnableBasicAuth(true)
             .withSignin(new PortalConfigPropertiesSignin().withRequire(false))
-            .withSignup(
-                new PortalConfigPropertiesSignup()
-                    .withTermsOfService(
-                        new PortalConfigTermsOfServiceProperties()
-                            .withText("I agree to the service terms and conditions.")
-                            .withRequireConsent(false)))
+            .withSignup(new PortalConfigPropertiesSignup().withTermsOfService(
+                new PortalConfigTermsOfServiceProperties().withText("I agree to the service terms and conditions.")
+                    .withRequireConsent(false)))
             .withDelegation(
                 new PortalConfigDelegationProperties().withDelegateRegistration(false).withDelegateSubscription(false))
             .withCors(new PortalConfigCorsProperties().withAllowedOrigins(Arrays.asList("https://contoso.com")))
-            .withCsp(
-                new PortalConfigCspProperties()
-                    .withMode(PortalSettingsCspMode.REPORT_ONLY)
-                    .withReportUri(Arrays.asList("https://report.contoso.com"))
-                    .withAllowedSources(Arrays.asList("*.contoso.com")))
+            .withCsp(new PortalConfigCspProperties().withMode(PortalSettingsCspMode.REPORT_ONLY)
+                .withReportUri(Arrays.asList("https://report.contoso.com"))
+                .withAllowedSources(Arrays.asList("*.contoso.com")))
             .withIfMatch("*")
             .create();
     }

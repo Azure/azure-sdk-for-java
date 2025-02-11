@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Properties of a private endpoint connection. */
 @Fluent
 public final class ServerPrivateEndpointConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPrivateEndpointConnectionProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerPrivateEndpointConnectionProperties.class);
 
     /*
      * Private endpoint which the connection belongs to.

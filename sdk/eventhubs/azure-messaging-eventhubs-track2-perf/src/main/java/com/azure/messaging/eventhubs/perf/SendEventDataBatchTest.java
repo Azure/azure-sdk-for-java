@@ -27,8 +27,7 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
     @Override
     public void run() {
         if (producer == null) {
-            producer = createEventHubClientBuilder()
-                .buildProducerClient();
+            producer = createEventHubClientBuilder().buildProducerClient();
         }
 
         final EventDataBatch batch = producer.createBatch();

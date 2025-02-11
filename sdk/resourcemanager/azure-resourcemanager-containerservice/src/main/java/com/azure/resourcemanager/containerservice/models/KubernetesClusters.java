@@ -24,15 +24,10 @@ import java.util.Set;
 /** Entry point to managed Kubernetes service management API. */
 @Fluent
 public interface KubernetesClusters
-    extends HasManager<ContainerServiceManager>,
-        SupportsCreating<KubernetesCluster.DefinitionStages.Blank>,
-        SupportsBatchCreation<KubernetesCluster>,
-        SupportsListing<KubernetesCluster>,
-        SupportsGettingById<KubernetesCluster>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsListingByResourceGroup<KubernetesCluster>,
-        SupportsGettingByResourceGroup<KubernetesCluster> {
+    extends HasManager<ContainerServiceManager>, SupportsCreating<KubernetesCluster.DefinitionStages.Blank>,
+    SupportsBatchCreation<KubernetesCluster>, SupportsListing<KubernetesCluster>,
+    SupportsGettingById<KubernetesCluster>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsListingByResourceGroup<KubernetesCluster>, SupportsGettingByResourceGroup<KubernetesCluster> {
 
     /**
      * Returns the list of available Kubernetes versions available for the given Azure region.
@@ -63,7 +58,7 @@ public interface KubernetesClusters
      * @return a list of orchestrators which can be used when creating a service in this region
      */
     PagedIterable<OrchestratorVersionProfile> listOrchestrators(Region region,
-                                                                ContainerServiceResourceTypes resourceTypes);
+        ContainerServiceResourceTypes resourceTypes);
 
     /**
      * Returns the list of available orchestrators for the given Azure region.
@@ -73,7 +68,7 @@ public interface KubernetesClusters
      * @return a list of orchestrators which can be used when creating a service in this region
      */
     PagedFlux<OrchestratorVersionProfile> listOrchestratorsAsync(Region region,
-                                                                 ContainerServiceResourceTypes resourceTypes);
+        ContainerServiceResourceTypes resourceTypes);
 
     /**
      * Returns the admin Kube.config content which can be used with a Kubernetes client.
@@ -91,8 +86,8 @@ public interface KubernetesClusters
      * @param kubernetesClusterName the managed cluster name
      * @return a future representation of the Kube.config content which can be used with a Kubernetes client
      */
-    Mono<List<CredentialResult>> listAdminKubeConfigContentAsync(
-        String resourceGroupName, String kubernetesClusterName);
+    Mono<List<CredentialResult>> listAdminKubeConfigContentAsync(String resourceGroupName,
+        String kubernetesClusterName);
 
     /**
      * Returns the user Kube.config content which can be used with a Kubernetes client.
@@ -111,7 +106,8 @@ public interface KubernetesClusters
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
      * @return the Kube.config content which can be used with a Kubernetes client
      */
-    List<CredentialResult> listUserKubeConfigContent(String resourceGroupName, String kubernetesClusterName, Format format);
+    List<CredentialResult> listUserKubeConfigContent(String resourceGroupName, String kubernetesClusterName,
+        Format format);
 
     /**
      * Returns asynchronously the user Kube.config content which can be used with a Kubernetes client.
@@ -130,7 +126,8 @@ public interface KubernetesClusters
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
      * @return a future representation of the Kube.config content which can be used with a Kubernetes client
      */
-    Mono<List<CredentialResult>> listUserKubeConfigContentAsync(String resourceGroupName, String kubernetesClusterName, Format format);
+    Mono<List<CredentialResult>> listUserKubeConfigContentAsync(String resourceGroupName, String kubernetesClusterName,
+        Format format);
 
     /**
      * Starts a stopped Kubernetes cluster.

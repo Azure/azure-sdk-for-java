@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerPropertiesForCreateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerPropertiesForCreate model =
-            BinaryData
-                .fromString(
-                    "{\"createMode\":\"ServerPropertiesForCreate\",\"version\":\"10.2\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLSEnforcementDisabled\",\"publicNetworkAccess\":\"Enabled\",\"storageProfile\":{\"backupRetentionDays\":1604398792,\"geoRedundantBackup\":\"Disabled\",\"storageMB\":280766823,\"storageAutogrow\":\"Disabled\"}}")
-                .toObject(ServerPropertiesForCreate.class);
+        ServerPropertiesForCreate model = BinaryData.fromString(
+            "{\"createMode\":\"ServerPropertiesForCreate\",\"version\":\"10.2\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLSEnforcementDisabled\",\"publicNetworkAccess\":\"Enabled\",\"storageProfile\":{\"backupRetentionDays\":1604398792,\"geoRedundantBackup\":\"Disabled\",\"storageMB\":280766823,\"storageAutogrow\":\"Disabled\"}}")
+            .toObject(ServerPropertiesForCreate.class);
         Assertions.assertEquals(ServerVersion.ONE_ZERO_TWO, model.version());
         Assertions.assertEquals(SslEnforcementEnum.ENABLED, model.sslEnforcement());
         Assertions.assertEquals(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED, model.minimalTlsVersion());
@@ -35,18 +33,14 @@ public final class ServerPropertiesForCreateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerPropertiesForCreate model =
-            new ServerPropertiesForCreate()
-                .withVersion(ServerVersion.ONE_ZERO_TWO)
-                .withSslEnforcement(SslEnforcementEnum.ENABLED)
-                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED)
-                .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED)
-                .withStorageProfile(
-                    new StorageProfile()
-                        .withBackupRetentionDays(1604398792)
-                        .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
-                        .withStorageMB(280766823)
-                        .withStorageAutogrow(StorageAutogrow.DISABLED));
+        ServerPropertiesForCreate model = new ServerPropertiesForCreate().withVersion(ServerVersion.ONE_ZERO_TWO)
+            .withSslEnforcement(SslEnforcementEnum.ENABLED)
+            .withMinimalTlsVersion(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED)
+            .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED)
+            .withStorageProfile(new StorageProfile().withBackupRetentionDays(1604398792)
+                .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
+                .withStorageMB(280766823)
+                .withStorageAutogrow(StorageAutogrow.DISABLED));
         model = BinaryData.fromObject(model).toObject(ServerPropertiesForCreate.class);
         Assertions.assertEquals(ServerVersion.ONE_ZERO_TWO, model.version());
         Assertions.assertEquals(SslEnforcementEnum.ENABLED, model.sslEnforcement());

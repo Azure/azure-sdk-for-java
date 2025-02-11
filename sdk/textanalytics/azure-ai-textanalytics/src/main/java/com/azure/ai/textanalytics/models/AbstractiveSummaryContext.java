@@ -22,8 +22,8 @@ public final class AbstractiveSummaryContext {
     private int length;
 
     static {
-        AbstractiveSummaryContextPropertiesHelper.setAccessor(
-            new AbstractiveSummaryContextPropertiesHelper.AbstractiveSummaryContextAccessor() {
+        AbstractiveSummaryContextPropertiesHelper
+            .setAccessor(new AbstractiveSummaryContextPropertiesHelper.AbstractiveSummaryContextAccessor() {
                 @Override
                 public void setOffset(AbstractiveSummaryContext abstractiveSummaryContext, int offset) {
                     abstractiveSummaryContext.setOffset(offset);
@@ -33,8 +33,7 @@ public final class AbstractiveSummaryContext {
                 public void setLength(AbstractiveSummaryContext abstractiveSummaryContext, int length) {
                     abstractiveSummaryContext.setLength(length);
                 }
-            }
-        );
+            });
     }
 
     /**

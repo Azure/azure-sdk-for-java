@@ -20,7 +20,8 @@ public final class ReplicationRecoveryServicesProvidersGetSamples {
      */
     public static void getsTheDetailsOfARecoveryServicesProvider(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryServicesProviders().getWithResponse("vault1", "resourceGroupPS1", "cloud1",
-            "241641e6-ee7b-4ee4-8141-821fadda43fa", com.azure.core.util.Context.NONE);
+        manager.replicationRecoveryServicesProviders()
+            .getWithResponse("vault1", "resourceGroupPS1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa",
+                com.azure.core.util.Context.NONE);
     }
 }

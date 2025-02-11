@@ -6,79 +6,50 @@ package com.azure.resourcemanager.logz.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logz.LogzManager;
+import com.azure.resourcemanager.logz.models.FilteringTag;
 import com.azure.resourcemanager.logz.models.LogRules;
 import com.azure.resourcemanager.logz.models.MonitoringTagRules;
 import com.azure.resourcemanager.logz.models.MonitoringTagRulesProperties;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.logz.models.TagAction;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TagRulesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":true,\"filteringTags\":[{\"name\":\"apnyiropuhpig\",\"value\":\"gylgqgitxmedjvcs\",\"action\":\"Include\"},{\"name\":\"wwncwzzhxgk\",\"value\":\"mgucna\",\"action\":\"Include\"},{\"name\":\"oellwp\",\"value\":\"d\",\"action\":\"Exclude\"}]}},\"id\":\"qbuaceopzfqr\",\"name\":\"huaoppp\",\"type\":\"qeqxo\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":false,\"filteringTags\":[]}},\"id\":\"xcug\",\"name\":\"cjooxdjebwpucwwf\",\"type\":\"ovbvmeueciv\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogzManager manager = LogzManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        MonitoringTagRules response = manager.tagRules()
+            .define("oekqvk")
+            .withExistingMonitor("bsjyofdx", "uusdttouwa")
+            .withProperties(new MonitoringTagRulesProperties().withLogRules(new LogRules().withSendAadLogs(true)
+                .withSendSubscriptionLogs(true)
+                .withSendActivityLogs(false)
+                .withFilteringTags(Arrays.asList(
+                    new FilteringTag().withName("hcaalnjix").withValue("xyawj").withAction(TagAction.INCLUDE)))))
+            .create();
 
-        LogzManager manager =
-            LogzManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        MonitoringTagRules response =
-            manager
-                .tagRules()
-                .define("vgomz")
-                .withExistingMonitor("ualaexqpvfadmw", "rcrgvx")
-                .withProperties(
-                    new MonitoringTagRulesProperties()
-                        .withLogRules(
-                            new LogRules()
-                                .withSendAadLogs(true)
-                                .withSendSubscriptionLogs(false)
-                                .withSendActivityLogs(false)
-                                .withFilteringTags(Arrays.asList())))
-                .create();
-
-        Assertions.assertEquals(true, response.properties().logRules().sendAadLogs());
-        Assertions.assertEquals(false, response.properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(false, response.properties().logRules().sendActivityLogs());
+        Assertions.assertEquals(false, response.properties().logRules().sendAadLogs());
+        Assertions.assertEquals(true, response.properties().logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(true, response.properties().logRules().sendActivityLogs());
+        Assertions.assertEquals("apnyiropuhpig", response.properties().logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("gylgqgitxmedjvcs", response.properties().logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.INCLUDE, response.properties().logRules().filteringTags().get(0).action());
     }
 }

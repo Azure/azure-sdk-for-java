@@ -6,23 +6,25 @@ package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The schedule recurrence.
  */
 @Fluent
-public class Recurrence {
+public class Recurrence implements JsonSerializable<Recurrence> {
     /*
      * The start time of the schedule recurrence. Full hour and 30-minute intervals are supported.
      */
-    @JsonProperty(value = "startTime", required = true)
     private Time startTime;
 
     /*
      * The end time of the schedule recurrence. Full hour and 30-minute intervals are supported.
      */
-    @JsonProperty(value = "endTime", required = true)
     private Time endTime;
 
     /**
@@ -96,4 +98,44 @@ public class Recurrence {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Recurrence.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("startTime", this.startTime);
+        jsonWriter.writeJsonField("endTime", this.endTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Recurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Recurrence if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Recurrence.
+     */
+    public static Recurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Recurrence deserializedRecurrence = new Recurrence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedRecurrence.startTime = Time.fromJson(reader);
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedRecurrence.endTime = Time.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecurrence;
+        });
+    }
 }

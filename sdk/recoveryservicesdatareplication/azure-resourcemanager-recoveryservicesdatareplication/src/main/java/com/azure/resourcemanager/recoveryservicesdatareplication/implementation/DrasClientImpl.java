@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DrasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DrasClient.
+ */
 public final class DrasClientImpl implements DrasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DrasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of DrasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DrasClientImpl(DataReplicationMgmtClientImpl client) {
@@ -63,82 +69,58 @@ public final class DrasClientImpl implements DrasClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataReplicationMgmtC")
     public interface DrasService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DraModelInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DraModelInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("fabricAgentName") String fabricAgentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fabricName") String fabricName,
+            @PathParam("fabricAgentName") String fabricAgentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("fabricAgentName") String fabricAgentName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DraModelInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fabricName") String fabricName,
+            @PathParam("fabricAgentName") String fabricAgentName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DraModelInner body, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("fabricAgentName") String fabricAgentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fabricName") String fabricName,
+            @PathParam("fabricAgentName") String fabricAgentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DraModelCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DraModelCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("fabricName") String fabricName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DraModelCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DraModelCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the fabric agent (Dra).
-     *
-     * <p>Gets the details of the fabric agent.
-     *
+     * 
+     * Gets the details of the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -148,19 +130,15 @@ public final class DrasClientImpl implements DrasClient {
      * @return the details of the fabric agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DraModelInner>> getWithResponseAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName) {
+    private Mono<Response<DraModelInner>> getWithResponseAsync(String resourceGroupName, String fabricName,
+        String fabricAgentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -175,26 +153,16 @@ public final class DrasClientImpl implements DrasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            fabricName,
-                            fabricAgentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, fabricName, fabricAgentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the fabric agent (Dra).
-     *
-     * <p>Gets the details of the fabric agent.
-     *
+     * 
+     * Gets the details of the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -205,19 +173,15 @@ public final class DrasClientImpl implements DrasClient {
      * @return the details of the fabric agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DraModelInner>> getWithResponseAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, Context context) {
+    private Mono<Response<DraModelInner>> getWithResponseAsync(String resourceGroupName, String fabricName,
+        String fabricAgentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -232,23 +196,15 @@ public final class DrasClientImpl implements DrasClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                fabricName,
-                fabricAgentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, fabricName,
+            fabricAgentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the fabric agent (Dra).
-     *
-     * <p>Gets the details of the fabric agent.
-     *
+     * 
+     * Gets the details of the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -265,9 +221,9 @@ public final class DrasClientImpl implements DrasClient {
 
     /**
      * Gets the fabric agent (Dra).
-     *
-     * <p>Gets the details of the fabric agent.
-     *
+     * 
+     * Gets the details of the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -278,16 +234,16 @@ public final class DrasClientImpl implements DrasClient {
      * @return the details of the fabric agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DraModelInner> getWithResponse(
-        String resourceGroupName, String fabricName, String fabricAgentName, Context context) {
+    public Response<DraModelInner> getWithResponse(String resourceGroupName, String fabricName, String fabricAgentName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, fabricName, fabricAgentName, context).block();
     }
 
     /**
      * Gets the fabric agent (Dra).
-     *
-     * <p>Gets the details of the fabric agent.
-     *
+     * 
+     * Gets the details of the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -303,9 +259,9 @@ public final class DrasClientImpl implements DrasClient {
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -316,19 +272,15 @@ public final class DrasClientImpl implements DrasClient {
      * @return dra model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String fabricName,
+        String fabricAgentName, DraModelInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -346,27 +298,16 @@ public final class DrasClientImpl implements DrasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            fabricName,
-                            fabricAgentName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, fabricName, fabricAgentName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -378,19 +319,15 @@ public final class DrasClientImpl implements DrasClient {
      * @return dra model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String fabricName,
+        String fabricAgentName, DraModelInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -408,24 +345,15 @@ public final class DrasClientImpl implements DrasClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                fabricName,
-                fabricAgentName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, fabricName,
+            fabricAgentName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -436,25 +364,19 @@ public final class DrasClientImpl implements DrasClient {
      * @return the {@link PollerFlux} for polling of dra model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DraModelInner>, DraModelInner> beginCreateAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, fabricName, fabricAgentName, body);
-        return this
-            .client
-            .<DraModelInner, DraModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DraModelInner.class,
-                DraModelInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DraModelInner>, DraModelInner> beginCreateAsync(String resourceGroupName,
+        String fabricName, String fabricAgentName, DraModelInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, fabricName, fabricAgentName, body);
+        return this.client.<DraModelInner, DraModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DraModelInner.class, DraModelInner.class, this.client.getContext());
     }
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -464,26 +386,20 @@ public final class DrasClientImpl implements DrasClient {
      * @return the {@link PollerFlux} for polling of dra model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DraModelInner>, DraModelInner> beginCreateAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName) {
+    private PollerFlux<PollResult<DraModelInner>, DraModelInner> beginCreateAsync(String resourceGroupName,
+        String fabricName, String fabricAgentName) {
         final DraModelInner body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, fabricName, fabricAgentName, body);
-        return this
-            .client
-            .<DraModelInner, DraModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DraModelInner.class,
-                DraModelInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, fabricName, fabricAgentName, body);
+        return this.client.<DraModelInner, DraModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DraModelInner.class, DraModelInner.class, this.client.getContext());
     }
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -495,22 +411,20 @@ public final class DrasClientImpl implements DrasClient {
      * @return the {@link PollerFlux} for polling of dra model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DraModelInner>, DraModelInner> beginCreateAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body, Context context) {
+    private PollerFlux<PollResult<DraModelInner>, DraModelInner> beginCreateAsync(String resourceGroupName,
+        String fabricName, String fabricAgentName, DraModelInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, fabricName, fabricAgentName, body, context);
-        return this
-            .client
-            .<DraModelInner, DraModelInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DraModelInner.class, DraModelInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, fabricName, fabricAgentName, body, context);
+        return this.client.<DraModelInner, DraModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DraModelInner.class, DraModelInner.class, context);
     }
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -520,17 +434,17 @@ public final class DrasClientImpl implements DrasClient {
      * @return the {@link SyncPoller} for polling of dra model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DraModelInner>, DraModelInner> beginCreate(
-        String resourceGroupName, String fabricName, String fabricAgentName) {
+    public SyncPoller<PollResult<DraModelInner>, DraModelInner> beginCreate(String resourceGroupName, String fabricName,
+        String fabricAgentName) {
         final DraModelInner body = null;
         return this.beginCreateAsync(resourceGroupName, fabricName, fabricAgentName, body).getSyncPoller();
     }
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -542,16 +456,16 @@ public final class DrasClientImpl implements DrasClient {
      * @return the {@link SyncPoller} for polling of dra model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DraModelInner>, DraModelInner> beginCreate(
-        String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body, Context context) {
+    public SyncPoller<PollResult<DraModelInner>, DraModelInner> beginCreate(String resourceGroupName, String fabricName,
+        String fabricAgentName, DraModelInner body, Context context) {
         return this.beginCreateAsync(resourceGroupName, fabricName, fabricAgentName, body, context).getSyncPoller();
     }
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -562,18 +476,17 @@ public final class DrasClientImpl implements DrasClient {
      * @return dra model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DraModelInner> createAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body) {
-        return beginCreateAsync(resourceGroupName, fabricName, fabricAgentName, body)
-            .last()
+    private Mono<DraModelInner> createAsync(String resourceGroupName, String fabricName, String fabricAgentName,
+        DraModelInner body) {
+        return beginCreateAsync(resourceGroupName, fabricName, fabricAgentName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -585,16 +498,15 @@ public final class DrasClientImpl implements DrasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DraModelInner> createAsync(String resourceGroupName, String fabricName, String fabricAgentName) {
         final DraModelInner body = null;
-        return beginCreateAsync(resourceGroupName, fabricName, fabricAgentName, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, fabricName, fabricAgentName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -606,18 +518,17 @@ public final class DrasClientImpl implements DrasClient {
      * @return dra model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DraModelInner> createAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, fabricName, fabricAgentName, body, context)
-            .last()
+    private Mono<DraModelInner> createAsync(String resourceGroupName, String fabricName, String fabricAgentName,
+        DraModelInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, fabricName, fabricAgentName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -634,9 +545,9 @@ public final class DrasClientImpl implements DrasClient {
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -648,16 +559,16 @@ public final class DrasClientImpl implements DrasClient {
      * @return dra model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DraModelInner create(
-        String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body, Context context) {
+    public DraModelInner create(String resourceGroupName, String fabricName, String fabricAgentName, DraModelInner body,
+        Context context) {
         return createAsync(resourceGroupName, fabricName, fabricAgentName, body, context).block();
     }
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -667,19 +578,15 @@ public final class DrasClientImpl implements DrasClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String fabricName,
+        String fabricAgentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -694,26 +601,16 @@ public final class DrasClientImpl implements DrasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            fabricName,
-                            fabricAgentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, fabricName, fabricAgentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -724,19 +621,15 @@ public final class DrasClientImpl implements DrasClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String fabricName,
+        String fabricAgentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -751,23 +644,15 @@ public final class DrasClientImpl implements DrasClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                fabricName,
-                fabricAgentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, fabricName,
+            fabricAgentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -777,20 +662,18 @@ public final class DrasClientImpl implements DrasClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String fabricName,
+        String fabricAgentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, fabricName, fabricAgentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -801,21 +684,20 @@ public final class DrasClientImpl implements DrasClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String fabricName,
+        String fabricAgentName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, fabricName, fabricAgentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, fabricName, fabricAgentName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -825,16 +707,16 @@ public final class DrasClientImpl implements DrasClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String fabricName, String fabricAgentName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fabricName,
+        String fabricAgentName) {
         return this.beginDeleteAsync(resourceGroupName, fabricName, fabricAgentName).getSyncPoller();
     }
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -845,16 +727,16 @@ public final class DrasClientImpl implements DrasClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String fabricName, String fabricAgentName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fabricName,
+        String fabricAgentName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, fabricName, fabricAgentName, context).getSyncPoller();
     }
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -865,16 +747,15 @@ public final class DrasClientImpl implements DrasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String fabricName, String fabricAgentName) {
-        return beginDeleteAsync(resourceGroupName, fabricName, fabricAgentName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, fabricName, fabricAgentName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -885,18 +766,17 @@ public final class DrasClientImpl implements DrasClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String fabricName, String fabricAgentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, fabricName, fabricAgentName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String fabricName, String fabricAgentName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, fabricName, fabricAgentName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -911,9 +791,9 @@ public final class DrasClientImpl implements DrasClient {
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -929,30 +809,26 @@ public final class DrasClientImpl implements DrasClient {
 
     /**
      * Lists the fabric agents (Dras).
-     *
-     * <p>Gets the list of fabric agents in the given fabric.
-     *
+     * 
+     * Gets the list of fabric agents in the given fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of fabric agents in the given fabric along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DraModelInner>> listSinglePageAsync(String resourceGroupName, String fabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -963,34 +839,18 @@ public final class DrasClientImpl implements DrasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            fabricName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DraModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, fabricName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DraModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the fabric agents (Dras).
-     *
-     * <p>Gets the list of fabric agents in the given fabric.
-     *
+     * 
+     * Gets the list of fabric agents in the given fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param context The context to associate with this operation.
@@ -998,22 +858,18 @@ public final class DrasClientImpl implements DrasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of fabric agents in the given fabric along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DraModelInner>> listSinglePageAsync(
-        String resourceGroupName, String fabricName, Context context) {
+    private Mono<PagedResponse<DraModelInner>> listSinglePageAsync(String resourceGroupName, String fabricName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1025,30 +881,17 @@ public final class DrasClientImpl implements DrasClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                fabricName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, fabricName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the fabric agents (Dras).
-     *
-     * <p>Gets the list of fabric agents in the given fabric.
-     *
+     * 
+     * Gets the list of fabric agents in the given fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1058,15 +901,15 @@ public final class DrasClientImpl implements DrasClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DraModelInner> listAsync(String resourceGroupName, String fabricName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, fabricName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, fabricName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the fabric agents (Dras).
-     *
-     * <p>Gets the list of fabric agents in the given fabric.
-     *
+     * 
+     * Gets the list of fabric agents in the given fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param context The context to associate with this operation.
@@ -1077,16 +920,15 @@ public final class DrasClientImpl implements DrasClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DraModelInner> listAsync(String resourceGroupName, String fabricName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, fabricName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, fabricName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the fabric agents (Dras).
-     *
-     * <p>Gets the list of fabric agents in the given fabric.
-     *
+     * 
+     * Gets the list of fabric agents in the given fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1101,9 +943,9 @@ public final class DrasClientImpl implements DrasClient {
 
     /**
      * Lists the fabric agents (Dras).
-     *
-     * <p>Gets the list of fabric agents in the given fabric.
-     *
+     * 
+     * Gets the list of fabric agents in the given fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param context The context to associate with this operation.
@@ -1119,9 +961,8 @@ public final class DrasClientImpl implements DrasClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1133,31 +974,20 @@ public final class DrasClientImpl implements DrasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DraModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DraModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1170,23 +1000,13 @@ public final class DrasClientImpl implements DrasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

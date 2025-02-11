@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameRequest model = BinaryData.fromString("{\"name\":\"t\"}").toObject(CheckNameRequest.class);
-        Assertions.assertEquals("t", model.name());
+        CheckNameRequest model = BinaryData.fromString("{\"name\":\"cftadeh\"}").toObject(CheckNameRequest.class);
+        Assertions.assertEquals("cftadeh", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameRequest model = new CheckNameRequest().withName("t");
+        CheckNameRequest model = new CheckNameRequest().withName("cftadeh");
         model = BinaryData.fromObject(model).toObject(CheckNameRequest.class);
-        Assertions.assertEquals("t", model.name());
+        Assertions.assertEquals("cftadeh", model.name());
     }
 }

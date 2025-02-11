@@ -63,7 +63,7 @@ public class CosmosQueryRequestOptions {
 
     /**
      * Sets the consistency level required for the request. The effective consistency level
-     * can only be reduce for read/query requests. So when the Account's default consistency level
+     * can only be reduced for read/query requests. So when the Account's default consistency level
      * is for example Session you can specify on a request-by-request level for individual requests
      * that Eventual consistency is sufficient - which could reduce the latency and RU charges for this
      * request but will not guarantee session consistency (read-your-own-write) anymore
@@ -265,6 +265,15 @@ public class CosmosQueryRequestOptions {
      */
     Integer getMaxItemCountForVectorSearch() {
         return this.actualRequestOptions.getMaxItemCountForVectorSearch();
+    }
+
+    /**
+     * Gets the maximum item size to fetch during hybrid search queries.
+     *
+     * @return the max number of items for full text search.
+     */
+    Integer getMaxItemCountForHybridSearch() {
+        return this.actualRequestOptions.getMaxItemCountForHybridSearch();
     }
 
     /**
@@ -638,6 +647,11 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options) {
                     return options.getMaxItemCountForVectorSearch();
+                }
+
+                @Override
+                public Integer getMaxItemCountForHybridSearch(CosmosQueryRequestOptions options) {
+                    return options.getMaxItemCountForHybridSearch();
                 }
 
                 @Override

@@ -12,17 +12,23 @@ import com.azure.ai.textanalytics.models.PiiEntityCategory;
 public final class PiiEntityPropertiesHelper {
     private static PiiEntityAccessor accessor;
 
-    private PiiEntityPropertiesHelper() { }
+    private PiiEntityPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link PiiEntity} instance.
      */
     public interface PiiEntityAccessor {
         void setText(PiiEntity entity, String text);
+
         void setCategory(PiiEntity entity, PiiEntityCategory category);
+
         void setSubcategory(PiiEntity entity, String subcategory);
+
         void setConfidenceScore(PiiEntity entity, double confidenceScore);
+
         void setOffset(PiiEntity entity, int offset);
+
         void setLength(PiiEntity entity, int length);
     }
 

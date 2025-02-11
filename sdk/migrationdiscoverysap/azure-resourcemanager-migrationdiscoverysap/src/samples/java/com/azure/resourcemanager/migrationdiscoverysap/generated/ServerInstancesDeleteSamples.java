@@ -20,7 +20,7 @@ public final class ServerInstancesDeleteSamples {
      */
     public static void deletesTheServerInstanceResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.serverInstances().delete("test-rg", "SampleSite", "MPP_MPP", "APP_SapServer1",
-            com.azure.core.util.Context.NONE);
+        manager.serverInstances()
+            .delete("test-rg", "SampleSite", "MPP_MPP", "APP_SapServer1", com.azure.core.util.Context.NONE);
     }
 }

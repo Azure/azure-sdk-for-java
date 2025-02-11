@@ -5,32 +5,36 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Update VM resource collection. */
+/**
+ * Update VM resource collection.
+ */
 @Fluent
-public final class VMCollectionUpdate {
+public final class VMCollectionUpdate implements JsonSerializable<VMCollectionUpdate> {
     /*
      * ARM id of the VM resource.
      */
-    @JsonProperty(value = "vmResourceId")
     private String vmResourceId;
 
     /*
-     * OperationName
-     *
      * Operation to be performed for given VM.
      */
-    @JsonProperty(value = "operationName")
     private OperationName operationName;
 
-    /** Creates an instance of VMCollectionUpdate class. */
+    /**
+     * Creates an instance of VMCollectionUpdate class.
+     */
     public VMCollectionUpdate() {
     }
 
     /**
      * Get the vmResourceId property: ARM id of the VM resource.
-     *
+     * 
      * @return the vmResourceId value.
      */
     public String vmResourceId() {
@@ -39,7 +43,7 @@ public final class VMCollectionUpdate {
 
     /**
      * Set the vmResourceId property: ARM id of the VM resource.
-     *
+     * 
      * @param vmResourceId the vmResourceId value to set.
      * @return the VMCollectionUpdate object itself.
      */
@@ -49,10 +53,8 @@ public final class VMCollectionUpdate {
     }
 
     /**
-     * Get the operationName property: OperationName
-     *
-     * <p>Operation to be performed for given VM.
-     *
+     * Get the operationName property: Operation to be performed for given VM.
+     * 
      * @return the operationName value.
      */
     public OperationName operationName() {
@@ -60,10 +62,8 @@ public final class VMCollectionUpdate {
     }
 
     /**
-     * Set the operationName property: OperationName
-     *
-     * <p>Operation to be performed for given VM.
-     *
+     * Set the operationName property: Operation to be performed for given VM.
+     * 
      * @param operationName the operationName value to set.
      * @return the VMCollectionUpdate object itself.
      */
@@ -74,9 +74,48 @@ public final class VMCollectionUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmResourceId", this.vmResourceId);
+        jsonWriter.writeStringField("operationName", this.operationName == null ? null : this.operationName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMCollectionUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMCollectionUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMCollectionUpdate.
+     */
+    public static VMCollectionUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMCollectionUpdate deserializedVMCollectionUpdate = new VMCollectionUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmResourceId".equals(fieldName)) {
+                    deserializedVMCollectionUpdate.vmResourceId = reader.getString();
+                } else if ("operationName".equals(fieldName)) {
+                    deserializedVMCollectionUpdate.operationName = OperationName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMCollectionUpdate;
+        });
     }
 }

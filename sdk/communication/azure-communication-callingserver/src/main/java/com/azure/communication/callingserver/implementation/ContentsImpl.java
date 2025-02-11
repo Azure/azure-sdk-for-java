@@ -53,43 +53,33 @@ public final class ContentsImpl {
     @ServiceInterface(name = "AzureCommunicationCa")
     public interface ContentsService {
         @Post("/calling/callConnections/{callConnectionId}:play")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> play(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") PlayRequest playRequest,
-                Context context);
+        Mono<Response<Void>> play(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PlayRequest playRequest, Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:cancelAllMediaOperations")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> cancelAllMediaOperations(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
+        Mono<Response<Void>> cancelAllMediaOperations(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:recognize")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> recognize(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") RecognizeRequest recognizeRequest,
-                Context context);
+        Mono<Response<Void>> recognize(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RecognizeRequest recognizeRequest, Context context);
 
         @Post("/calling/recordings")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<RecordingStateResponseInternal>> recording(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") StartCallRecordingRequestInternal startCallRecording,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<RecordingStateResponseInternal>> recording(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StartCallRecordingRequestInternal startCallRecording,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -104,14 +94,8 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> playWithResponseAsync(String callConnectionId, PlayRequest playRequest) {
-        return FluxUtil.withContext(
-                context ->
-                        service.play(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                this.client.getApiVersion(),
-                                playRequest,
-                                context));
+        return FluxUtil.withContext(context -> service.play(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), playRequest, context));
     }
 
     /**
@@ -126,10 +110,10 @@ public final class ContentsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playWithResponseAsync(
-            String callConnectionId, PlayRequest playRequest, Context context) {
-        return service.play(
-                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), playRequest, context);
+    public Mono<Response<Void>> playWithResponseAsync(String callConnectionId, PlayRequest playRequest,
+        Context context) {
+        return service.play(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), playRequest,
+            context);
     }
 
     /**
@@ -161,7 +145,7 @@ public final class ContentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> playAsync(String callConnectionId, PlayRequest playRequest, Context context) {
         return playWithResponseAsync(callConnectionId, playRequest, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -205,10 +189,8 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId) {
-        return FluxUtil.withContext(
-                context ->
-                        service.cancelAllMediaOperations(
-                                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), context));
+        return FluxUtil.withContext(context -> service.cancelAllMediaOperations(this.client.getEndpoint(),
+            callConnectionId, this.client.getApiVersion(), context));
     }
 
     /**
@@ -223,8 +205,8 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId, Context context) {
-        return service.cancelAllMediaOperations(
-                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), context);
+        return service.cancelAllMediaOperations(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), context);
     }
 
     /**
@@ -239,7 +221,7 @@ public final class ContentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAllMediaOperationsAsync(String callConnectionId) {
         return cancelAllMediaOperationsWithResponseAsync(callConnectionId)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -255,7 +237,7 @@ public final class ContentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAllMediaOperationsAsync(String callConnectionId, Context context) {
         return cancelAllMediaOperationsWithResponseAsync(callConnectionId, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -298,14 +280,8 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> recognizeWithResponseAsync(String callConnectionId, RecognizeRequest recognizeRequest) {
-        return FluxUtil.withContext(
-                context ->
-                        service.recognize(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                this.client.getApiVersion(),
-                                recognizeRequest,
-                                context));
+        return FluxUtil.withContext(context -> service.recognize(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), recognizeRequest, context));
     }
 
     /**
@@ -320,10 +296,10 @@ public final class ContentsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> recognizeWithResponseAsync(
-            String callConnectionId, RecognizeRequest recognizeRequest, Context context) {
-        return service.recognize(
-                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), recognizeRequest, context);
+    public Mono<Response<Void>> recognizeWithResponseAsync(String callConnectionId, RecognizeRequest recognizeRequest,
+        Context context) {
+        return service.recognize(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+            recognizeRequest, context);
     }
 
     /**
@@ -339,7 +315,7 @@ public final class ContentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> recognizeAsync(String callConnectionId, RecognizeRequest recognizeRequest) {
         return recognizeWithResponseAsync(callConnectionId, recognizeRequest)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -356,7 +332,7 @@ public final class ContentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> recognizeAsync(String callConnectionId, RecognizeRequest recognizeRequest, Context context) {
         return recognizeWithResponseAsync(callConnectionId, recognizeRequest, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -385,8 +361,8 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> recognizeWithResponse(
-            String callConnectionId, RecognizeRequest recognizeRequest, Context context) {
+    public Response<Void> recognizeWithResponse(String callConnectionId, RecognizeRequest recognizeRequest,
+        Context context) {
         return recognizeWithResponseAsync(callConnectionId, recognizeRequest, context).block();
     }
 
@@ -400,17 +376,11 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStateResponseInternal>> recordingWithResponseAsync(
-            StartCallRecordingRequestInternal startCallRecording) {
+    public Mono<Response<RecordingStateResponseInternal>>
+        recordingWithResponseAsync(StartCallRecordingRequestInternal startCallRecording) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.recording(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                startCallRecording,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.recording(this.client.getEndpoint(), this.client.getApiVersion(),
+            startCallRecording, accept, context));
     }
 
     /**
@@ -424,11 +394,11 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStateResponseInternal>> recordingWithResponseAsync(
-            StartCallRecordingRequestInternal startCallRecording, Context context) {
+    public Mono<Response<RecordingStateResponseInternal>>
+        recordingWithResponseAsync(StartCallRecordingRequestInternal startCallRecording, Context context) {
         final String accept = "application/json";
-        return service.recording(
-                this.client.getEndpoint(), this.client.getApiVersion(), startCallRecording, accept, context);
+        return service.recording(this.client.getEndpoint(), this.client.getApiVersion(), startCallRecording, accept,
+            context);
     }
 
     /**
@@ -443,14 +413,13 @@ public final class ContentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStateResponseInternal> recordingAsync(StartCallRecordingRequestInternal startCallRecording) {
         return recordingWithResponseAsync(startCallRecording)
-                .flatMap(
-                        (Response<RecordingStateResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<RecordingStateResponseInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -464,17 +433,16 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStateResponseInternal> recordingAsync(
-            StartCallRecordingRequestInternal startCallRecording, Context context) {
+    public Mono<RecordingStateResponseInternal> recordingAsync(StartCallRecordingRequestInternal startCallRecording,
+        Context context) {
         return recordingWithResponseAsync(startCallRecording, context)
-                .flatMap(
-                        (Response<RecordingStateResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<RecordingStateResponseInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -502,8 +470,8 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStateResponseInternal> recordingWithResponse(
-            StartCallRecordingRequestInternal startCallRecording, Context context) {
+    public Response<RecordingStateResponseInternal>
+        recordingWithResponse(StartCallRecordingRequestInternal startCallRecording, Context context) {
         return recordingWithResponseAsync(startCallRecording, context).block();
     }
 }

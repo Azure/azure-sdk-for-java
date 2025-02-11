@@ -15,7 +15,8 @@ import java.util.Map;
 /** Represents a Recommendation Action. */
 @Fluent
 public final class RecommendationActionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationActionInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RecommendationActionInner.class);
 
     /*
      * The properties of a recommendation action.

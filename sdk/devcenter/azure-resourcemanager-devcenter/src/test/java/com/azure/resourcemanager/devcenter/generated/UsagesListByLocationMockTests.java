@@ -23,7 +23,7 @@ public final class UsagesListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"currentValue\":8699353472291566676,\"limit\":2498968605221615188,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"vapcoh\",\"value\":\"ucqpqojxcxzrz\"},\"id\":\"gdzbenr\"}]}";
+            = "{\"value\":[{\"currentValue\":831872911038436770,\"limit\":6597084071377063219,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"htomflrytswfp\",\"value\":\"dgycxnmskwhqjjy\"},\"id\":\"urlpshh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class UsagesListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Usage> response
-            = manager.usages().listByLocation("xojpslsvjgp", com.azure.core.util.Context.NONE);
+            = manager.usages().listByLocation("sjcitdigsxc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(8699353472291566676L, response.iterator().next().currentValue());
-        Assertions.assertEquals(2498968605221615188L, response.iterator().next().limit());
+        Assertions.assertEquals(831872911038436770L, response.iterator().next().currentValue());
+        Assertions.assertEquals(6597084071377063219L, response.iterator().next().limit());
         Assertions.assertEquals(UsageUnit.COUNT, response.iterator().next().unit());
-        Assertions.assertEquals("vapcoh", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("ucqpqojxcxzrz", response.iterator().next().name().value());
-        Assertions.assertEquals("gdzbenr", response.iterator().next().id());
+        Assertions.assertEquals("htomflrytswfp", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("dgycxnmskwhqjjy", response.iterator().next().name().value());
+        Assertions.assertEquals("urlpshh", response.iterator().next().id());
     }
 }

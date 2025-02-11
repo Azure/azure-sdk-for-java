@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.fluent.models.PeerAsnInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The paginated list of peer ASNs. */
+/**
+ * The paginated list of peer ASNs.
+ */
 @Fluent
-public final class PeerAsnListResult {
+public final class PeerAsnListResult implements JsonSerializable<PeerAsnListResult> {
     /*
      * The list of peer ASNs.
      */
-    @JsonProperty(value = "value")
     private List<PeerAsnInner> value;
 
     /*
      * The link to fetch the next page of peer ASNs.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PeerAsnListResult class. */
+    /**
+     * Creates an instance of PeerAsnListResult class.
+     */
     public PeerAsnListResult() {
     }
 
     /**
      * Get the value property: The list of peer ASNs.
-     *
+     * 
      * @return the value value.
      */
     public List<PeerAsnInner> value() {
@@ -39,7 +45,7 @@ public final class PeerAsnListResult {
 
     /**
      * Set the value property: The list of peer ASNs.
-     *
+     * 
      * @param value the value value to set.
      * @return the PeerAsnListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class PeerAsnListResult {
 
     /**
      * Get the nextLink property: The link to fetch the next page of peer ASNs.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class PeerAsnListResult {
 
     /**
      * Set the nextLink property: The link to fetch the next page of peer ASNs.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PeerAsnListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class PeerAsnListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeerAsnListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeerAsnListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeerAsnListResult.
+     */
+    public static PeerAsnListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeerAsnListResult deserializedPeerAsnListResult = new PeerAsnListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PeerAsnInner> value = reader.readArray(reader1 -> PeerAsnInner.fromJson(reader1));
+                    deserializedPeerAsnListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPeerAsnListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeerAsnListResult;
+        });
     }
 }

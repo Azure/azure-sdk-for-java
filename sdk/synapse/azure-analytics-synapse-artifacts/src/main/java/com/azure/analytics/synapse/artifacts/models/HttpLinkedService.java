@@ -24,7 +24,8 @@ public class HttpLinkedService extends LinkedService {
     private String type = "HttpServer";
 
     /*
-     * The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or Expression with resultType string).
+     * The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or Expression with resultType
+     * string).
      */
     private Object url;
 
@@ -44,22 +45,28 @@ public class HttpLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
+     * Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with ClientCertificate
+     * authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type: string (or
+     * Expression with resultType string).
      */
     private Object embeddedCertData;
 
     /*
-     * Thumbprint of certificate for ClientCertificate authentication. Only valid for on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
+     * Thumbprint of certificate for ClientCertificate authentication. Only valid for on-premises copy. For on-premises
+     * copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be
+     * specified. Type: string (or Expression with resultType string).
      */
     private Object certThumbprint;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 
     /*
-     * If true, validate the HTTPS server SSL certificate. Default value is true. Type: boolean (or Expression with resultType boolean).
+     * If true, validate the HTTPS server SSL certificate. Default value is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     private Object enableServerCertificateValidation;
 

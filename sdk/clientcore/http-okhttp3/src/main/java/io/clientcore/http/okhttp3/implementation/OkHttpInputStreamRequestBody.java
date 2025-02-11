@@ -3,7 +3,7 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.binarydata.InputStreamBinaryData;
 import okhttp3.MediaType;
 import okio.BufferedSink;

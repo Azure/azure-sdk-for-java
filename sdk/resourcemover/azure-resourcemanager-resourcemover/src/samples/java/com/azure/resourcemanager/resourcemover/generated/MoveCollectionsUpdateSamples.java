@@ -10,24 +10,25 @@ import com.azure.resourcemanager.resourcemover.models.ResourceIdentityType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for MoveCollections Update. */
+/**
+ * Samples for MoveCollections Update.
+ */
 public final class MoveCollectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_Update.json
+     * x-ms-original-file:
+     * specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_Update.
+     * json
      */
     /**
      * Sample code: MoveCollections_Update.
-     *
+     * 
      * @param manager Entry point to ResourceMoverManager.
      */
     public static void moveCollectionsUpdate(com.azure.resourcemanager.resourcemover.ResourceMoverManager manager) {
-        MoveCollection resource =
-            manager
-                .moveCollections()
-                .getByResourceGroupWithResponse("rg1", "movecollection1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        MoveCollection resource = manager.moveCollections()
+            .getByResourceGroupWithResponse("rg1", "movecollection1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .apply();

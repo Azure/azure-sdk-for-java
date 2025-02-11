@@ -40,8 +40,8 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         AttestationClient attestationClient = getAttestationBuilder(client, clientUri).buildClient();
 
-        Response<AttestationSignerCollection> signers = attestationClient
-            .listAttestationSignersWithResponse(Context.NONE);
+        Response<AttestationSignerCollection> signers
+            = attestationClient.listAttestationSignersWithResponse(Context.NONE);
 
         verifySigningCertificatesResponse(clientUri, signers.getValue());
     }
@@ -53,7 +53,8 @@ public class AttestationSignersTest extends AttestationClientTestBase {
         AttestationAsyncClient attestationClient = getAttestationBuilder(client, clientUri).buildAsyncClient();
 
         StepVerifier.create(attestationClient.listAttestationSigners())
-            .assertNext(signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers)))
+            .assertNext(
+                signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers)))
             .expectComplete()
             .verify();
     }
@@ -65,11 +66,11 @@ public class AttestationSignersTest extends AttestationClientTestBase {
         AttestationAsyncClient attestationClient = getAttestationBuilder(client, clientUri).buildAsyncClient();
 
         StepVerifier.create(attestationClient.listAttestationSignersWithResponse())
-            .assertNext(signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers.getValue())))
+            .assertNext(signers -> Assertions
+                .assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers.getValue())))
             .expectComplete()
             .verify();
     }
-
 
     /**
      * Verifies the response to the GetSigningCertificates (/certs) API.
@@ -110,4 +111,3 @@ public class AttestationSignersTest extends AttestationClientTestBase {
         }
     }
 }
-

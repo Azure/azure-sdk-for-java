@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
-/** Samples for SqlVirtualMachineGroups List. */
+/**
+ * Samples for SqlVirtualMachineGroups List.
+ */
 public final class SqlVirtualMachineGroupsListSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/ListSubscriptionSqlVirtualMachineGroup.json
+     * x-ms-original-file:
+     * specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/
+     * ListSubscriptionSqlVirtualMachineGroup.json
      */
     /**
      * Sample code: Gets all SQL virtual machine groups in a subscription.
-     *
+     * 
      * @param manager Entry point to SqlVirtualMachineManager.
      */
     public static void getsAllSQLVirtualMachineGroupsInASubscription(

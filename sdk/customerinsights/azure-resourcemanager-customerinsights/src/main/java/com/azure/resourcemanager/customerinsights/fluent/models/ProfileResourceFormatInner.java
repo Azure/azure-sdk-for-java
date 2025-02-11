@@ -6,31 +6,52 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
 import com.azure.resourcemanager.customerinsights.models.PropertyDefinition;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.StrongId;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The profile resource format. */
+/**
+ * The profile resource format.
+ */
 @Fluent
 public final class ProfileResourceFormatInner extends ProxyResource {
     /*
      * The profile type definition.
      */
-    @JsonProperty(value = "properties")
     private ProfileTypeDefinition innerProperties;
 
-    /** Creates an instance of ProfileResourceFormatInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ProfileResourceFormatInner class.
+     */
     public ProfileResourceFormatInner() {
     }
 
     /**
      * Get the innerProperties property: The profile type definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProfileTypeDefinition innerProperties() {
@@ -38,8 +59,38 @@ public final class ProfileResourceFormatInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the strongIds property: The strong IDs.
-     *
+     * 
      * @return the strongIds value.
      */
     public List<StrongId> strongIds() {
@@ -48,7 +99,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the strongIds property: The strong IDs.
-     *
+     * 
      * @param strongIds the strongIds value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -63,7 +114,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
     /**
      * Get the apiEntitySetName property: The api entity set name. This becomes the odata entity set name for the entity
      * Type being referred in this object.
-     *
+     * 
      * @return the apiEntitySetName value.
      */
     public String apiEntitySetName() {
@@ -73,7 +124,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
     /**
      * Set the apiEntitySetName property: The api entity set name. This becomes the odata entity set name for the entity
      * Type being referred in this object.
-     *
+     * 
      * @param apiEntitySetName the apiEntitySetName value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -87,7 +138,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the entityType property: Type of entity.
-     *
+     * 
      * @return the entityType value.
      */
     public EntityTypes entityType() {
@@ -96,7 +147,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the entityType property: Type of entity.
-     *
+     * 
      * @param entityType the entityType value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -110,7 +161,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the fields property: The properties of the Profile.
-     *
+     * 
      * @return the fields value.
      */
     public List<PropertyDefinition> fields() {
@@ -119,7 +170,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the fields property: The properties of the Profile.
-     *
+     * 
      * @param fields the fields value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -133,7 +184,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the instancesCount property: The instance count.
-     *
+     * 
      * @return the instancesCount value.
      */
     public Integer instancesCount() {
@@ -142,7 +193,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the instancesCount property: The instance count.
-     *
+     * 
      * @param instancesCount the instancesCount value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -156,7 +207,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the lastChangedUtc property: The last changed time for the type definition.
-     *
+     * 
      * @return the lastChangedUtc value.
      */
     public OffsetDateTime lastChangedUtc() {
@@ -165,7 +216,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -174,7 +225,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the schemaItemTypeLink property: The schema org link. This helps ACI identify and suggest semantic models.
-     *
+     * 
      * @return the schemaItemTypeLink value.
      */
     public String schemaItemTypeLink() {
@@ -183,7 +234,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the schemaItemTypeLink property: The schema org link. This helps ACI identify and suggest semantic models.
-     *
+     * 
      * @param schemaItemTypeLink the schemaItemTypeLink value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -197,7 +248,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -207,7 +258,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
     /**
      * Get the timestampFieldName property: The timestamp property name. Represents the time when the interaction or
      * profile update happened.
-     *
+     * 
      * @return the timestampFieldName value.
      */
     public String timestampFieldName() {
@@ -217,7 +268,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
     /**
      * Set the timestampFieldName property: The timestamp property name. Represents the time when the interaction or
      * profile update happened.
-     *
+     * 
      * @param timestampFieldName the timestampFieldName value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -231,7 +282,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the typeName property: The name of the entity.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -240,7 +291,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the typeName property: The name of the entity.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -254,7 +305,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the attributes property: The attributes for the Type.
-     *
+     * 
      * @return the attributes value.
      */
     public Map<String, List<String>> attributes() {
@@ -263,7 +314,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the attributes property: The attributes for the Type.
-     *
+     * 
      * @param attributes the attributes value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -277,7 +328,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the description property: Localized descriptions for the property.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -286,7 +337,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the description property: Localized descriptions for the property.
-     *
+     * 
      * @param description the description value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -300,7 +351,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the displayName property: Localized display names for the property.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -309,7 +360,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the displayName property: Localized display names for the property.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -323,7 +374,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the localizedAttributes property: Any custom localized attributes for the Type.
-     *
+     * 
      * @return the localizedAttributes value.
      */
     public Map<String, Map<String, String>> localizedAttributes() {
@@ -332,7 +383,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the localizedAttributes property: Any custom localized attributes for the Type.
-     *
+     * 
      * @param localizedAttributes the localizedAttributes value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -346,7 +397,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the smallImage property: Small Image associated with the Property or EntityType.
-     *
+     * 
      * @return the smallImage value.
      */
     public String smallImage() {
@@ -355,7 +406,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the smallImage property: Small Image associated with the Property or EntityType.
-     *
+     * 
      * @param smallImage the smallImage value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -369,7 +420,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the mediumImage property: Medium Image associated with the Property or EntityType.
-     *
+     * 
      * @return the mediumImage value.
      */
     public String mediumImage() {
@@ -378,7 +429,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the mediumImage property: Medium Image associated with the Property or EntityType.
-     *
+     * 
      * @param mediumImage the mediumImage value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -392,7 +443,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Get the largeImage property: Large Image associated with the Property or EntityType.
-     *
+     * 
      * @return the largeImage value.
      */
     public String largeImage() {
@@ -401,7 +452,7 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Set the largeImage property: Large Image associated with the Property or EntityType.
-     *
+     * 
      * @param largeImage the largeImage value to set.
      * @return the ProfileResourceFormatInner object itself.
      */
@@ -415,12 +466,55 @@ public final class ProfileResourceFormatInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileResourceFormatInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProfileResourceFormatInner.
+     */
+    public static ProfileResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileResourceFormatInner deserializedProfileResourceFormatInner = new ProfileResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProfileResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProfileResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProfileResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProfileResourceFormatInner.innerProperties = ProfileTypeDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileResourceFormatInner;
+        });
     }
 }

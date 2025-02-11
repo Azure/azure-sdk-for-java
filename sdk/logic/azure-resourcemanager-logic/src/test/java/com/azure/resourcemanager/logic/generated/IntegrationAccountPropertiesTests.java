@@ -13,23 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountProperties model =
-            BinaryData
-                .fromString(
-                    "{\"integrationServiceEnvironment\":{\"id\":\"ahwfluszdtmhrk\",\"name\":\"fyyvoq\",\"type\":\"piexpbtgiw\"},\"state\":\"NotSpecified\"}")
-                .toObject(IntegrationAccountProperties.class);
-        Assertions.assertEquals("ahwfluszdtmhrk", model.integrationServiceEnvironment().id());
+        IntegrationAccountProperties model = BinaryData.fromString(
+            "{\"integrationServiceEnvironment\":{\"id\":\"czu\",\"name\":\"ejwcwwqiok\",\"type\":\"sx\"},\"state\":\"NotSpecified\"}")
+            .toObject(IntegrationAccountProperties.class);
+        Assertions.assertEquals("czu", model.integrationServiceEnvironment().id());
         Assertions.assertEquals(WorkflowState.NOT_SPECIFIED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountProperties model =
-            new IntegrationAccountProperties()
-                .withIntegrationServiceEnvironment(new ResourceReference().withId("ahwfluszdtmhrk"))
-                .withState(WorkflowState.NOT_SPECIFIED);
+        IntegrationAccountProperties model = new IntegrationAccountProperties()
+            .withIntegrationServiceEnvironment(new ResourceReference().withId("czu"))
+            .withState(WorkflowState.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(IntegrationAccountProperties.class);
-        Assertions.assertEquals("ahwfluszdtmhrk", model.integrationServiceEnvironment().id());
+        Assertions.assertEquals("czu", model.integrationServiceEnvironment().id());
         Assertions.assertEquals(WorkflowState.NOT_SPECIFIED, model.state());
     }
 }

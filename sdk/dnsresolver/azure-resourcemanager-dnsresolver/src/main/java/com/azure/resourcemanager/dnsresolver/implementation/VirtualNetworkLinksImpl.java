@@ -21,37 +21,38 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
 
     private final com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager;
 
-    public VirtualNetworkLinksImpl(
-        VirtualNetworkLinksClient innerClient,
+    public VirtualNetworkLinksImpl(VirtualNetworkLinksClient innerClient,
         com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public void delete(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch);
     }
 
     public void delete(String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName) {
         this.serviceClient().delete(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String virtualNetworkLinkName,
-        String ifMatch,
-        Context context) {
-        this
-            .serviceClient()
+    public void delete(String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
+        String ifMatch, Context context) {
+        this.serviceClient()
             .delete(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, context);
     }
 
-    public VirtualNetworkLink get(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName) {
-        VirtualNetworkLinkInner inner =
-            this.serviceClient().get(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName);
+    public Response<VirtualNetworkLink> getWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName, Context context) {
+        Response<VirtualNetworkLinkInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VirtualNetworkLinkImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VirtualNetworkLink get(String resourceGroupName, String dnsForwardingRulesetName,
+        String virtualNetworkLinkName) {
+        VirtualNetworkLinkInner inner
+            = this.serviceClient().get(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName);
         if (inner != null) {
             return new VirtualNetworkLinkImpl(inner, this.manager());
         } else {
@@ -59,159 +60,93 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
         }
     }
 
-    public Response<VirtualNetworkLink> getWithResponse(
-        String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName, Context context) {
-        Response<VirtualNetworkLinkInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new VirtualNetworkLinkImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<VirtualNetworkLink> list(String resourceGroupName, String dnsForwardingRulesetName) {
-        PagedIterable<VirtualNetworkLinkInner> inner =
-            this.serviceClient().list(resourceGroupName, dnsForwardingRulesetName);
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkLinkImpl(inner1, this.manager()));
+        PagedIterable<VirtualNetworkLinkInner> inner
+            = this.serviceClient().list(resourceGroupName, dnsForwardingRulesetName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualNetworkLinkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VirtualNetworkLink> list(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top, Context context) {
-        PagedIterable<VirtualNetworkLinkInner> inner =
-            this.serviceClient().list(resourceGroupName, dnsForwardingRulesetName, top, context);
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkLinkImpl(inner1, this.manager()));
+    public PagedIterable<VirtualNetworkLink> list(String resourceGroupName, String dnsForwardingRulesetName,
+        Integer top, Context context) {
+        PagedIterable<VirtualNetworkLinkInner> inner
+            = this.serviceClient().list(resourceGroupName, dnsForwardingRulesetName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualNetworkLinkImpl(inner1, this.manager()));
     }
 
     public VirtualNetworkLink getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
+        String dnsForwardingRulesetName = ResourceManagerUtils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.", id)));
         }
-        String virtualNetworkLinkName = Utils.getValueFromIdByName(id, "virtualNetworkLinks");
+        String virtualNetworkLinkName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkLinks");
         if (virtualNetworkLinkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, Context.NONE)
             .getValue();
     }
 
     public Response<VirtualNetworkLink> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
+        String dnsForwardingRulesetName = ResourceManagerUtils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.", id)));
         }
-        String virtualNetworkLinkName = Utils.getValueFromIdByName(id, "virtualNetworkLinks");
+        String virtualNetworkLinkName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkLinks");
         if (virtualNetworkLinkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));
         }
         return this.getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
+        String dnsForwardingRulesetName = ResourceManagerUtils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.", id)));
         }
-        String virtualNetworkLinkName = Utils.getValueFromIdByName(id, "virtualNetworkLinks");
+        String virtualNetworkLinkName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkLinks");
         if (virtualNetworkLinkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));
         }
         String localIfMatch = null;
         this.delete(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, localIfMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
+        String dnsForwardingRulesetName = ResourceManagerUtils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsForwardingRulesets'.", id)));
         }
-        String virtualNetworkLinkName = Utils.getValueFromIdByName(id, "virtualNetworkLinks");
+        String virtualNetworkLinkName = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkLinks");
         if (virtualNetworkLinkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));
         }
         this.delete(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch, context);
     }

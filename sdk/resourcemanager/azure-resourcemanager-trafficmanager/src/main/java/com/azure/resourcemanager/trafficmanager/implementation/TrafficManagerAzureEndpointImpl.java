@@ -11,8 +11,8 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoi
 
 /** Implementation for {@link TrafficManagerAzureEndpoint}. */
 class TrafficManagerAzureEndpointImpl extends TrafficManagerEndpointImpl implements TrafficManagerAzureEndpoint {
-    TrafficManagerAzureEndpointImpl(
-        String name, TrafficManagerProfileImpl parent, EndpointInner inner, EndpointsClient client) {
+    TrafficManagerAzureEndpointImpl(String name, TrafficManagerProfileImpl parent, EndpointInner inner,
+        EndpointsClient client) {
         super(name, parent, inner, client);
     }
 
@@ -23,8 +23,7 @@ class TrafficManagerAzureEndpointImpl extends TrafficManagerEndpointImpl impleme
 
     @Override
     public TargetAzureResourceType targetResourceType() {
-        return new TargetAzureResourceType(
-            ResourceUtils.resourceProviderFromResourceId(targetAzureResourceId()),
+        return new TargetAzureResourceType(ResourceUtils.resourceProviderFromResourceId(targetAzureResourceId()),
             ResourceUtils.resourceTypeFromResourceId(targetAzureResourceId()));
     }
 }

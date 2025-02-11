@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Quotas associated with a Batch region for a particular subscription.
  */
 @Immutable
-public final class BatchLocationQuotaInner {
+public final class BatchLocationQuotaInner implements JsonSerializable<BatchLocationQuotaInner> {
     /*
      * The number of Batch accounts that may be created under the subscription in the specified region.
      */
-    @JsonProperty(value = "accountQuota", access = JsonProperty.Access.WRITE_ONLY)
     private Integer accountQuota;
 
     /**
@@ -40,5 +43,40 @@ public final class BatchLocationQuotaInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchLocationQuotaInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchLocationQuotaInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchLocationQuotaInner.
+     */
+    public static BatchLocationQuotaInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchLocationQuotaInner deserializedBatchLocationQuotaInner = new BatchLocationQuotaInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountQuota".equals(fieldName)) {
+                    deserializedBatchLocationQuotaInner.accountQuota = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchLocationQuotaInner;
+        });
     }
 }

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for Servers GetByResourceGroup. */
+/**
+ * Samples for Servers GetByResourceGroup.
+ */
 public final class ServersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerGet.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerGet.json
      */
     /**
      * Sample code: ServerGet.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void serverGet(com.azure.resourcemanager.mariadb.MariaDBManager manager) {

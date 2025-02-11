@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Sku change info of account. */
+/**
+ * Sku change info of account.
+ */
 @Fluent
-public final class SkuChangeInfo {
+public final class SkuChangeInfo implements JsonSerializable<SkuChangeInfo> {
     /*
      * Gets the count of downgrades.
      */
-    @JsonProperty(value = "countOfDowngrades")
     private Float countOfDowngrades;
 
     /*
      * Gets the count of upgrades after downgrades.
      */
-    @JsonProperty(value = "countOfUpgradesAfterDowngrades")
     private Float countOfUpgradesAfterDowngrades;
 
     /*
      * Gets the last change date.
      */
-    @JsonProperty(value = "lastChangeDate")
     private String lastChangeDate;
 
-    /** Creates an instance of SkuChangeInfo class. */
+    /**
+     * Creates an instance of SkuChangeInfo class.
+     */
     public SkuChangeInfo() {
     }
 
     /**
      * Get the countOfDowngrades property: Gets the count of downgrades.
-     *
+     * 
      * @return the countOfDowngrades value.
      */
     public Float countOfDowngrades() {
@@ -43,7 +48,7 @@ public final class SkuChangeInfo {
 
     /**
      * Set the countOfDowngrades property: Gets the count of downgrades.
-     *
+     * 
      * @param countOfDowngrades the countOfDowngrades value to set.
      * @return the SkuChangeInfo object itself.
      */
@@ -54,7 +59,7 @@ public final class SkuChangeInfo {
 
     /**
      * Get the countOfUpgradesAfterDowngrades property: Gets the count of upgrades after downgrades.
-     *
+     * 
      * @return the countOfUpgradesAfterDowngrades value.
      */
     public Float countOfUpgradesAfterDowngrades() {
@@ -63,7 +68,7 @@ public final class SkuChangeInfo {
 
     /**
      * Set the countOfUpgradesAfterDowngrades property: Gets the count of upgrades after downgrades.
-     *
+     * 
      * @param countOfUpgradesAfterDowngrades the countOfUpgradesAfterDowngrades value to set.
      * @return the SkuChangeInfo object itself.
      */
@@ -74,7 +79,7 @@ public final class SkuChangeInfo {
 
     /**
      * Get the lastChangeDate property: Gets the last change date.
-     *
+     * 
      * @return the lastChangeDate value.
      */
     public String lastChangeDate() {
@@ -83,7 +88,7 @@ public final class SkuChangeInfo {
 
     /**
      * Set the lastChangeDate property: Gets the last change date.
-     *
+     * 
      * @param lastChangeDate the lastChangeDate value to set.
      * @return the SkuChangeInfo object itself.
      */
@@ -94,9 +99,51 @@ public final class SkuChangeInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("countOfDowngrades", this.countOfDowngrades);
+        jsonWriter.writeNumberField("countOfUpgradesAfterDowngrades", this.countOfUpgradesAfterDowngrades);
+        jsonWriter.writeStringField("lastChangeDate", this.lastChangeDate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuChangeInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuChangeInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuChangeInfo.
+     */
+    public static SkuChangeInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuChangeInfo deserializedSkuChangeInfo = new SkuChangeInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("countOfDowngrades".equals(fieldName)) {
+                    deserializedSkuChangeInfo.countOfDowngrades = reader.getNullable(JsonReader::getFloat);
+                } else if ("countOfUpgradesAfterDowngrades".equals(fieldName)) {
+                    deserializedSkuChangeInfo.countOfUpgradesAfterDowngrades = reader.getNullable(JsonReader::getFloat);
+                } else if ("lastChangeDate".equals(fieldName)) {
+                    deserializedSkuChangeInfo.lastChangeDate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuChangeInfo;
+        });
     }
 }

@@ -20,7 +20,7 @@ public final class ReplicationvCentersDeleteSamples {
      */
     public static void
         removeVCenterOperation(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationvCenters().delete("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78",
-            com.azure.core.util.Context.NONE);
+        manager.replicationvCenters()
+            .delete("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE);
     }
 }

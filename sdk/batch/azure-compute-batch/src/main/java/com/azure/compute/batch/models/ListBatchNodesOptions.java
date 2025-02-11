@@ -12,6 +12,12 @@ public class ListBatchNodesOptions extends BatchBaseOptions {
     private List<String> select;
 
     /**
+     * Creates an instance of {@link ListBatchNodesOptions}.
+     */
+    public ListBatchNodesOptions() {
+    }
+
+    /**
      * Gets the OData $filter clause used for filtering results.
      *
      * @return The OData $filter clause.

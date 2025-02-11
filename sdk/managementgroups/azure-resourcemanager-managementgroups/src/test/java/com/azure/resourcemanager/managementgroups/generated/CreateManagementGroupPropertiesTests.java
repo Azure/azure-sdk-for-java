@@ -13,24 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateManagementGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateManagementGroupProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tenantId\":\"vkmijcmmxdcuf\",\"displayName\":\"srp\",\"details\":{\"version\":284710114,\"updatedTime\":\"2021-12-09T12:29:37Z\",\"updatedBy\":\"ezcxtbzsgfyccsne\",\"parent\":{\"id\":\"wzjeiach\",\"name\":\"osfln\",\"displayName\":\"sfqpteehz\"}},\"children\":[{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"rimz\",\"name\":\"pvswjdkirso\",\"displayName\":\"qxhcrmn\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"whdsoifiyip\",\"name\":\"sqwpgrjb\",\"displayName\":\"orcjxvsnby\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"ocpcy\",\"name\":\"urzafb\",\"displayName\":\"j\",\"children\":[]}]}")
-                .toObject(CreateManagementGroupProperties.class);
-        Assertions.assertEquals("srp", model.displayName());
-        Assertions.assertEquals("wzjeiach", model.details().parent().id());
+        CreateManagementGroupProperties model = BinaryData.fromString(
+            "{\"tenantId\":\"jiwkuofoskghsau\",\"displayName\":\"mjmvxieduugidyjr\",\"details\":{\"version\":207335442,\"updatedTime\":\"2021-09-15T05:38:02Z\",\"updatedBy\":\"v\",\"parent\":{\"id\":\"sonpclhocohs\",\"name\":\"ev\",\"displayName\":\"ggzfbu\"}},\"children\":[{\"type\":\"/subscriptions\",\"id\":\"x\",\"name\":\"feiithlvmez\",\"displayName\":\"shxmzsbbzoggigrx\",\"children\":[{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"xxjnspydptk\",\"name\":\"nkoukn\",\"displayName\":\"dwtiukbldngkp\",\"children\":[{},{},{},{}]}]},{\"type\":\"/subscriptions\",\"id\":\"yxoegukgjnp\",\"name\":\"cgygev\",\"displayName\":\"ntypmrbpizcdrqj\",\"children\":[{\"type\":\"/subscriptions\",\"id\":\"fyhxde\",\"name\":\"jzicwifsjt\",\"displayName\":\"zfbishcbkhaj\",\"children\":[{},{},{},{}]}]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"dphagalpbuxwgip\",\"name\":\"onowk\",\"displayName\":\"hwankixzbinjepu\",\"children\":[{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"nuzo\",\"name\":\"tiyqzrnkcqv\",\"displayName\":\"lwh\",\"children\":[{},{},{},{}]}]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"hoqqnwvlr\",\"name\":\"vwhheunmmqhgyx\",\"displayName\":\"onocukok\",\"children\":[{\"type\":\"/subscriptions\",\"id\":\"onuq\",\"name\":\"fkbey\",\"displayName\":\"wrmjmwvvjektc\",\"children\":[{},{}]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"lrsf\",\"name\":\"zpwv\",\"displayName\":\"dqgbiqylihkaetc\",\"children\":[{},{},{},{}]}]}]}")
+            .toObject(CreateManagementGroupProperties.class);
+        Assertions.assertEquals("mjmvxieduugidyjr", model.displayName());
+        Assertions.assertEquals("sonpclhocohs", model.details().parent().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateManagementGroupProperties model =
-            new CreateManagementGroupProperties()
-                .withDisplayName("srp")
+        CreateManagementGroupProperties model
+            = new CreateManagementGroupProperties().withDisplayName("mjmvxieduugidyjr")
                 .withDetails(
-                    new CreateManagementGroupDetails().withParent(new CreateParentGroupInfo().withId("wzjeiach")));
+                    new CreateManagementGroupDetails().withParent(new CreateParentGroupInfo().withId("sonpclhocohs")));
         model = BinaryData.fromObject(model).toObject(CreateManagementGroupProperties.class);
-        Assertions.assertEquals("srp", model.displayName());
-        Assertions.assertEquals("wzjeiach", model.details().parent().id());
+        Assertions.assertEquals("mjmvxieduugidyjr", model.displayName());
+        Assertions.assertEquals("sonpclhocohs", model.details().parent().id());
     }
 }

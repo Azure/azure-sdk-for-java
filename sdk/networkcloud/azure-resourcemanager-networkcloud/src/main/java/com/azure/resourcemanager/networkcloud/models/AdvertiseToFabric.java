@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * This field is ignored if fabricPeeringEnabled is set to False.
  */
 public final class AdvertiseToFabric extends ExpandableStringEnum<AdvertiseToFabric> {
-    /** Static value True for AdvertiseToFabric. */
+    /**
+     * Static value True for AdvertiseToFabric.
+     */
     public static final AdvertiseToFabric TRUE = fromString("True");
 
-    /** Static value False for AdvertiseToFabric. */
+    /**
+     * Static value False for AdvertiseToFabric.
+     */
     public static final AdvertiseToFabric FALSE = fromString("False");
 
     /**
      * Creates a new instance of AdvertiseToFabric value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class AdvertiseToFabric extends ExpandableStringEnum<AdvertiseToFab
 
     /**
      * Creates or finds a AdvertiseToFabric from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AdvertiseToFabric.
      */
-    @JsonCreator
     public static AdvertiseToFabric fromString(String name) {
         return fromString(name, AdvertiseToFabric.class);
     }
 
     /**
      * Gets known AdvertiseToFabric values.
-     *
+     * 
      * @return known AdvertiseToFabric values.
      */
     public static Collection<AdvertiseToFabric> values() {

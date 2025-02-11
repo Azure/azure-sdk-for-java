@@ -23,27 +23,27 @@ public final class MoveResourcesImpl implements MoveResources {
 
     private final com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager;
 
-    public MoveResourcesImpl(
-        MoveResourcesClient innerClient, com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
+    public MoveResourcesImpl(MoveResourcesClient innerClient,
+        com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<MoveResource> list(String resourceGroupName, String moveCollectionName) {
         PagedIterable<MoveResourceInner> inner = this.serviceClient().list(resourceGroupName, moveCollectionName);
-        return Utils.mapPage(inner, inner1 -> new MoveResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MoveResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<MoveResource> list(
-        String resourceGroupName, String moveCollectionName, String filter, Context context) {
-        PagedIterable<MoveResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, moveCollectionName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new MoveResourceImpl(inner1, this.manager()));
+    public PagedIterable<MoveResource> list(String resourceGroupName, String moveCollectionName, String filter,
+        Context context) {
+        PagedIterable<MoveResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, moveCollectionName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MoveResourceImpl(inner1, this.manager()));
     }
 
     public OperationStatus delete(String resourceGroupName, String moveCollectionName, String moveResourceName) {
-        OperationStatusInner inner =
-            this.serviceClient().delete(resourceGroupName, moveCollectionName, moveResourceName);
+        OperationStatusInner inner
+            = this.serviceClient().delete(resourceGroupName, moveCollectionName, moveResourceName);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {
@@ -51,10 +51,10 @@ public final class MoveResourcesImpl implements MoveResources {
         }
     }
 
-    public OperationStatus delete(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context) {
-        OperationStatusInner inner =
-            this.serviceClient().delete(resourceGroupName, moveCollectionName, moveResourceName, context);
+    public OperationStatus delete(String resourceGroupName, String moveCollectionName, String moveResourceName,
+        Context context) {
+        OperationStatusInner inner
+            = this.serviceClient().delete(resourceGroupName, moveCollectionName, moveResourceName, context);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {
@@ -62,15 +62,12 @@ public final class MoveResourcesImpl implements MoveResources {
         }
     }
 
-    public Response<MoveResource> getWithResponse(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context) {
-        Response<MoveResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, context);
+    public Response<MoveResource> getWithResponse(String resourceGroupName, String moveCollectionName,
+        String moveResourceName, Context context) {
+        Response<MoveResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MoveResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -87,109 +84,77 @@ public final class MoveResourcesImpl implements MoveResources {
     }
 
     public MoveResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
+        String moveCollectionName = ResourceManagerUtils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
         }
-        String moveResourceName = Utils.getValueFromIdByName(id, "moveResources");
+        String moveResourceName = ResourceManagerUtils.getValueFromIdByName(id, "moveResources");
         if (moveResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'moveResources'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveResources'.", id)));
         }
         return this.getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, Context.NONE).getValue();
     }
 
     public Response<MoveResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
+        String moveCollectionName = ResourceManagerUtils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
         }
-        String moveResourceName = Utils.getValueFromIdByName(id, "moveResources");
+        String moveResourceName = ResourceManagerUtils.getValueFromIdByName(id, "moveResources");
         if (moveResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'moveResources'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveResources'.", id)));
         }
         return this.getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, context);
     }
 
     public OperationStatus deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
+        String moveCollectionName = ResourceManagerUtils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
         }
-        String moveResourceName = Utils.getValueFromIdByName(id, "moveResources");
+        String moveResourceName = ResourceManagerUtils.getValueFromIdByName(id, "moveResources");
         if (moveResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'moveResources'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveResources'.", id)));
         }
         return this.delete(resourceGroupName, moveCollectionName, moveResourceName, Context.NONE);
     }
 
     public OperationStatus deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
+        String moveCollectionName = ResourceManagerUtils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveCollections'.", id)));
         }
-        String moveResourceName = Utils.getValueFromIdByName(id, "moveResources");
+        String moveResourceName = ResourceManagerUtils.getValueFromIdByName(id, "moveResources");
         if (moveResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'moveResources'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'moveResources'.", id)));
         }
         return this.delete(resourceGroupName, moveCollectionName, moveResourceName, context);
     }

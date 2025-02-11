@@ -22,7 +22,7 @@ public final class VirtualEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"rdddtfgxqbawpcb\",\"name\":\"zqcyknap\",\"type\":\"fyuicdh\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"gbdvibidmhmwff\",\"lfmu\",\"apckccrrvw\",\"yoxoy\"],\"virtualEndpoints\":[\"phaimmoi\"]}}";
+            = "{\"id\":\"jqirwrw\",\"name\":\"oxffif\",\"type\":\"wrsnewmozqvbu\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"ycxhxzgaztta\",\"o\",\"dvmfqhppub\"],\"virtualEndpoints\":[\"epdfgkmtdherng\",\"tcjuahokqto\"]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class VirtualEndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualEndpointResource response = manager.virtualEndpoints()
-            .getWithResponse("pmkmlmvevfx", "op", "hbzxli", com.azure.core.util.Context.NONE)
+            .getWithResponse("viauogphua", "tvt", "ukyefchnmnahmnxh", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, response.endpointType());
-        Assertions.assertEquals("gbdvibidmhmwff", response.members().get(0));
+        Assertions.assertEquals("ycxhxzgaztta", response.members().get(0));
     }
 }

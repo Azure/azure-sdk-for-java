@@ -25,15 +25,19 @@ public final class PrivateEndpointConnectionProxiesCreateOrUpdateSamples {
      */
     public static void privateEndpointConnectionProxyCreateOrUpdate(
         com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().define("peexample01").withExistingAccount("test-rg", "contoso")
+        manager.privateEndpointConnectionProxies()
+            .define("peexample01")
+            .withExistingAccount("test-rg", "contoso")
             .withRemotePrivateEndpoint(new RemotePrivateEndpoint().withId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
-                .withLocation("westus2").withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000")
+                .withLocation("westus2")
+                .withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000")
                 .withImmutableResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
-                .withManualPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection()
-                    .withName("{privateEndpointConnectionProxyId}").withGroupIds(Arrays.asList("DeviceUpdate"))
-                    .withRequestMessage("Please approve my connection, thanks.")))
+                .withManualPrivateLinkServiceConnections(
+                    Arrays.asList(new PrivateLinkServiceConnection().withName("{privateEndpointConnectionProxyId}")
+                        .withGroupIds(Arrays.asList("DeviceUpdate"))
+                        .withRequestMessage("Please approve my connection, thanks.")))
                 .withPrivateLinkServiceProxies(Arrays.asList(new PrivateLinkServiceProxy().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}/privateLinkServiceProxies/{privateEndpointConnectionProxyId}")
                     .withGroupConnectivityInformation(Arrays.asList()))))

@@ -22,14 +22,13 @@ public final class ExtractiveSummaryResultCollection extends IterableStream<Extr
         ExtractiveSummaryResultCollectionPropertiesHelper.setAccessor(
             new ExtractiveSummaryResultCollectionPropertiesHelper.ExtractiveSummaryResultCollectionAccessor() {
                 @Override
-                public void setModelVersion(ExtractiveSummaryResultCollection resultCollection,
-                                            String modelVersion) {
+                public void setModelVersion(ExtractiveSummaryResultCollection resultCollection, String modelVersion) {
                     resultCollection.setModelVersion(modelVersion);
                 }
 
                 @Override
                 public void setStatistics(ExtractiveSummaryResultCollection resultCollection,
-                                          TextDocumentBatchStatistics statistics) {
+                    TextDocumentBatchStatistics statistics) {
                     resultCollection.setStatistics(statistics);
                 }
             });

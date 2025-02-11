@@ -11,7 +11,8 @@ import java.time.OffsetDateTime;
 public final class RecognizeCustomEntitiesOperationDetailPropertiesHelper {
     private static RecognizeCustomEntitiesOperationDetailAccessor accessor;
 
-    private RecognizeCustomEntitiesOperationDetailPropertiesHelper() { }
+    private RecognizeCustomEntitiesOperationDetailPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an
@@ -20,11 +21,14 @@ public final class RecognizeCustomEntitiesOperationDetailPropertiesHelper {
      */
     public interface RecognizeCustomEntitiesOperationDetailAccessor {
         void setOperationId(RecognizeCustomEntitiesOperationDetail operationDetail, String operationId);
+
         void setDisplayName(RecognizeCustomEntitiesOperationDetail operationDetail, String name);
+
         void setCreatedAt(RecognizeCustomEntitiesOperationDetail operationDetail, OffsetDateTime createdAt);
+
         void setExpiresAt(RecognizeCustomEntitiesOperationDetail operationDetail, OffsetDateTime expiresAt);
-        void setLastModifiedAt(RecognizeCustomEntitiesOperationDetail operationDetail,
-            OffsetDateTime lastModifiedAt);
+
+        void setLastModifiedAt(RecognizeCustomEntitiesOperationDetail operationDetail, OffsetDateTime lastModifiedAt);
     }
 
     /**
@@ -45,13 +49,11 @@ public final class RecognizeCustomEntitiesOperationDetailPropertiesHelper {
         accessor.setDisplayName(operationDetail, name);
     }
 
-    public static void setCreatedAt(RecognizeCustomEntitiesOperationDetail operationDetail,
-        OffsetDateTime createdAt) {
+    public static void setCreatedAt(RecognizeCustomEntitiesOperationDetail operationDetail, OffsetDateTime createdAt) {
         accessor.setCreatedAt(operationDetail, createdAt);
     }
 
-    public static void setExpiresAt(RecognizeCustomEntitiesOperationDetail operationDetail,
-        OffsetDateTime expiresAt) {
+    public static void setExpiresAt(RecognizeCustomEntitiesOperationDetail operationDetail, OffsetDateTime expiresAt) {
         accessor.setExpiresAt(operationDetail, expiresAt);
     }
 

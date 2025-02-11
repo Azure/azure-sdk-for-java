@@ -23,7 +23,7 @@ public final class SitesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkFunctions\":[{\"id\":\"ptnvw\"},{\"id\":\"rsidqpxlbtpakf\"}]},\"location\":\"gatwmykyu\",\"tags\":{\"hpycvjqdvdwkq\":\"mdwmf\"},\"id\":\"ldrlefgnaavua\",\"name\":\"n\",\"type\":\"etaoutnpdc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkFunctions\":[{\"id\":\"tollh\"},{\"id\":\"idmytzln\"}]},\"location\":\"xpno\",\"tags\":{\"wqagy\":\"anfbc\",\"tpgaeukya\":\"vtxigvjr\",\"csklhsidsjt\":\"ohpmwhqn\",\"gazlsvbz\":\"lpbnin\"},\"id\":\"cpuo\",\"name\":\"e\",\"type\":\"wjcciklhsy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class SitesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Site response = manager.sites()
-            .define("dmkrrb")
-            .withRegion("fict")
-            .withExistingMobileNetwork("vmywhsbrcarycsjj", "yvoaqajuvehzp")
-            .withTags(mapOf("wnphbkgfyrto", "jwg", "dfpdqwtygevg", "mhmjpjs"))
+            .define("mqrud")
+            .withRegion("bcpaqktkrumzued")
+            .withExistingMobileNetwork("ohdkcprgukx", "ztiochluti")
+            .withTags(mapOf("gvqrnhyhlwcj", "bfvxovqkxiuxq", "bxrqrkijp", "qggjhf", "qztvx", "uqlsdx"))
             .create();
 
-        Assertions.assertEquals("gatwmykyu", response.location());
-        Assertions.assertEquals("mdwmf", response.tags().get("hpycvjqdvdwkq"));
+        Assertions.assertEquals("xpno", response.location());
+        Assertions.assertEquals("anfbc", response.tags().get("wqagy"));
     }
 
     // Use "Map.of" if available

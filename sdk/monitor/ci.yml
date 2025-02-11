@@ -13,6 +13,7 @@ trigger:
       - sdk/monitor/azure-monitor-ingestion/pom.xml
       - sdk/monitor/azure-monitor-ingestion-perf/pom.xml
       - sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml
+      - sdk/monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
       - sdk/monitor/azure-monitor-query-perf/pom.xml
 
@@ -30,6 +31,7 @@ pr:
       - sdk/monitor/azure-monitor-ingestion/pom.xml
       - sdk/monitor/azure-monitor-ingestion-perf/pom.xml
       - sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml
+      - sdk/monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
       - sdk/monitor/azure-monitor-query-perf/pom.xml
 
@@ -44,6 +46,10 @@ parameters:
   default: true
 - name: release_azuremonitoropentelemetryexporter
   displayName: 'azure-monitor-opentelemetry-exporter'
+  type: boolean
+  default: true
+- name: release_azuremonitoropentelemetryautoconfigure
+  displayName: 'azure-monitor-opentelemetry-autoconfigure'
   type: boolean
   default: true
 - name: release_azuremonitorquery
@@ -64,6 +70,10 @@ extends:
         groupId: com.azure
         safeName: azuremonitoropentelemetryexporter
         releaseInBatch: ${{ parameters.release_azuremonitoropentelemetryexporter }}
+      - name: azure-monitor-opentelemetry-autoconfigure
+        groupId: com.azure
+        safeName: azuremonitoropentelemetryautoconfigure
+        releaseInBatch: ${{ parameters.release_azuremonitoropentelemetryautoconfigure }}
       - name: azure-monitor-query
         groupId: com.azure
         safeName: azuremonitorquery

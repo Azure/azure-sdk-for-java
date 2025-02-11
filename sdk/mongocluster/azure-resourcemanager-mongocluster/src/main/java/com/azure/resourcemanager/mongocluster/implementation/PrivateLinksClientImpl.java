@@ -42,25 +42,25 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     /**
      * The service client containing this operation class.
      */
-    private final DocumentDBClientImpl client;
+    private final MongoClusterManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinksClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinksClientImpl(DocumentDBClientImpl client) {
+    PrivateLinksClientImpl(MongoClusterManagementClientImpl client) {
         this.service
             = RestProxy.create(PrivateLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DocumentDBClientPrivateLinks to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for MongoClusterManagementClientPrivateLinks to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DocumentDBClientPriv")
+    @ServiceInterface(name = "MongoClusterManageme")
     public interface PrivateLinksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateLinkResources")
@@ -229,8 +229,6 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     }
 
     /**
-     * list private links on the given resource
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -259,8 +257,6 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     }
 
     /**
-     * list private links on the given resource
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

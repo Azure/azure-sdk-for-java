@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ValidationState extends ExpandableStringEnum<ValidationState>
      * @param name a name to look for.
      * @return the corresponding ValidationState.
      */
-    @JsonCreator
     public static ValidationState fromString(String name) {
         return fromString(name, ValidationState.class);
     }

@@ -33,22 +33,28 @@ import com.azure.resourcemanager.advisor.models.ConfigurationListResult;
 import com.azure.resourcemanager.advisor.models.ConfigurationName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConfigurationsClient.
+ */
 public final class ConfigurationsClientImpl implements ConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AdvisorManagementClientImpl client;
 
     /**
      * Initializes an instance of ConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ConfigurationsClientImpl(AdvisorManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,183 +65,132 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AdvisorManagementCli")
     public interface ConfigurationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConfigurationListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations/{configurationName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigDataInner>> createInSubscription(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ConfigDataInner>> createInSubscription(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("configurationName") ConfigurationName configurationName,
-            @BodyParam("application/json") ConfigDataInner configContract,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConfigDataInner configContract, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroup") String resourceGroup,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConfigurationListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroup") String resourceGroup, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations"
-                + "/{configurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations/{configurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigDataInner>> createInResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ConfigDataInner>> createInResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("configurationName") ConfigurationName configurationName,
             @PathParam("resourceGroup") String resourceGroup,
-            @BodyParam("application/json") ConfigDataInner configContract,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConfigDataInner configContract, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
-     * <p>Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
-     *
+     * 
+     * Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigDataInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ConfigDataInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ConfigDataInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
-     * <p>Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
-     *
+     * 
+     * Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigDataInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
-     * <p>Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
-     *
+     * 
+     * Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Advisor configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigDataInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
-     * <p>Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
-     *
+     * 
+     * Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -244,15 +199,15 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigDataInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
-     * <p>Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
-     *
+     * 
+     * Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Advisor configurations as paginated response with {@link PagedIterable}.
@@ -264,9 +219,9 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
-     * <p>Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
-     *
+     * 
+     * Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -280,31 +235,27 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
     /**
      * Create/Overwrite Azure Advisor configuration.
-     *
-     * <p>Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
-     *
+     * 
+     * Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
+     * 
      * @param configurationName Advisor configuration name. Value must be 'default'.
      * @param configContract The Azure Advisor configuration data structure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor configuration data structure along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Advisor configuration data structure along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigDataInner>> createInSubscriptionWithResponseAsync(
-        ConfigurationName configurationName, ConfigDataInner configContract) {
+    private Mono<Response<ConfigDataInner>> createInSubscriptionWithResponseAsync(ConfigurationName configurationName,
+        ConfigDataInner configContract) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (configurationName == null) {
             return Mono
@@ -317,48 +268,35 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createInSubscription(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            configurationName,
-                            configContract,
-                            accept,
-                            context))
+            .withContext(context -> service.createInSubscription(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), configurationName, configContract, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create/Overwrite Azure Advisor configuration.
-     *
-     * <p>Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
-     *
+     * 
+     * Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
+     * 
      * @param configurationName Advisor configuration name. Value must be 'default'.
      * @param configContract The Azure Advisor configuration data structure.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor configuration data structure along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Advisor configuration data structure along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigDataInner>> createInSubscriptionWithResponseAsync(
-        ConfigurationName configurationName, ConfigDataInner configContract, Context context) {
+    private Mono<Response<ConfigDataInner>> createInSubscriptionWithResponseAsync(ConfigurationName configurationName,
+        ConfigDataInner configContract, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (configurationName == null) {
             return Mono
@@ -371,22 +309,15 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createInSubscription(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                configurationName,
-                configContract,
-                accept,
-                context);
+        return service.createInSubscription(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), configurationName, configContract, accept, context);
     }
 
     /**
      * Create/Overwrite Azure Advisor configuration.
-     *
-     * <p>Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
-     *
+     * 
+     * Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
+     * 
      * @param configurationName Advisor configuration name. Value must be 'default'.
      * @param configContract The Azure Advisor configuration data structure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -395,17 +326,17 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the Advisor configuration data structure on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigDataInner> createInSubscriptionAsync(
-        ConfigurationName configurationName, ConfigDataInner configContract) {
+    private Mono<ConfigDataInner> createInSubscriptionAsync(ConfigurationName configurationName,
+        ConfigDataInner configContract) {
         return createInSubscriptionWithResponseAsync(configurationName, configContract)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create/Overwrite Azure Advisor configuration.
-     *
-     * <p>Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
-     *
+     * 
+     * Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
+     * 
      * @param configurationName Advisor configuration name. Value must be 'default'.
      * @param configContract The Azure Advisor configuration data structure.
      * @param context The context to associate with this operation.
@@ -415,16 +346,16 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the Advisor configuration data structure along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigDataInner> createInSubscriptionWithResponse(
-        ConfigurationName configurationName, ConfigDataInner configContract, Context context) {
+    public Response<ConfigDataInner> createInSubscriptionWithResponse(ConfigurationName configurationName,
+        ConfigDataInner configContract, Context context) {
         return createInSubscriptionWithResponseAsync(configurationName, configContract, context).block();
     }
 
     /**
      * Create/Overwrite Azure Advisor configuration.
-     *
-     * <p>Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
-     *
+     * 
+     * Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
+     * 
      * @param configurationName Advisor configuration name. Value must be 'default'.
      * @param configContract The Azure Advisor configuration data structure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -439,75 +370,57 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
+     * 
      * @param resourceGroup The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigDataInner>> listByResourceGroupSinglePageAsync(String resourceGroup) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroup,
-                            accept,
-                            context))
-            .<PagedResponse<ConfigDataInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroup, accept, context))
+            .<PagedResponse<ConfigDataInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
+     * 
      * @param resourceGroup The name of the Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigDataInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroup, Context context) {
+    private Mono<PagedResponse<ConfigDataInner>> listByResourceGroupSinglePageAsync(String resourceGroup,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -515,22 +428,15 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroup,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroup, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
+     * 
      * @param resourceGroup The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -544,7 +450,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
+     * 
      * @param resourceGroup The name of the Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -559,7 +465,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
+     * 
      * @param resourceGroup The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -573,7 +479,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
     /**
      * Retrieve Azure Advisor configurations.
-     *
+     * 
      * @param resourceGroup The name of the Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -588,30 +494,26 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
     /**
      * Create/Overwrite Azure Advisor configuration.
-     *
+     * 
      * @param configurationName Advisor configuration name. Value must be 'default'.
      * @param resourceGroup The name of the Azure resource group.
      * @param configContract The Azure Advisor configuration data structure.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor configuration data structure along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Advisor configuration data structure along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigDataInner>> createInResourceGroupWithResponseAsync(
-        ConfigurationName configurationName, String resourceGroup, ConfigDataInner configContract) {
+    private Mono<Response<ConfigDataInner>> createInResourceGroupWithResponseAsync(ConfigurationName configurationName,
+        String resourceGroup, ConfigDataInner configContract) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (configurationName == null) {
             return Mono
@@ -628,23 +530,14 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createInResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            configurationName,
-                            resourceGroup,
-                            configContract,
-                            accept,
-                            context))
+                context -> service.createInResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), configurationName, resourceGroup, configContract, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create/Overwrite Azure Advisor configuration.
-     *
+     * 
      * @param configurationName Advisor configuration name. Value must be 'default'.
      * @param resourceGroup The name of the Azure resource group.
      * @param configContract The Azure Advisor configuration data structure.
@@ -652,23 +545,19 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor configuration data structure along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Advisor configuration data structure along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigDataInner>> createInResourceGroupWithResponseAsync(
-        ConfigurationName configurationName, String resourceGroup, ConfigDataInner configContract, Context context) {
+    private Mono<Response<ConfigDataInner>> createInResourceGroupWithResponseAsync(ConfigurationName configurationName,
+        String resourceGroup, ConfigDataInner configContract, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (configurationName == null) {
             return Mono
@@ -684,21 +573,13 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createInResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                configurationName,
-                resourceGroup,
-                configContract,
-                accept,
-                context);
+        return service.createInResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), configurationName, resourceGroup, configContract, accept, context);
     }
 
     /**
      * Create/Overwrite Azure Advisor configuration.
-     *
+     * 
      * @param configurationName Advisor configuration name. Value must be 'default'.
      * @param resourceGroup The name of the Azure resource group.
      * @param configContract The Azure Advisor configuration data structure.
@@ -708,15 +589,15 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the Advisor configuration data structure on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigDataInner> createInResourceGroupAsync(
-        ConfigurationName configurationName, String resourceGroup, ConfigDataInner configContract) {
+    private Mono<ConfigDataInner> createInResourceGroupAsync(ConfigurationName configurationName, String resourceGroup,
+        ConfigDataInner configContract) {
         return createInResourceGroupWithResponseAsync(configurationName, resourceGroup, configContract)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create/Overwrite Azure Advisor configuration.
-     *
+     * 
      * @param configurationName Advisor configuration name. Value must be 'default'.
      * @param resourceGroup The name of the Azure resource group.
      * @param configContract The Azure Advisor configuration data structure.
@@ -727,15 +608,15 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the Advisor configuration data structure along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigDataInner> createInResourceGroupWithResponse(
-        ConfigurationName configurationName, String resourceGroup, ConfigDataInner configContract, Context context) {
+    public Response<ConfigDataInner> createInResourceGroupWithResponse(ConfigurationName configurationName,
+        String resourceGroup, ConfigDataInner configContract, Context context) {
         return createInResourceGroupWithResponseAsync(configurationName, resourceGroup, configContract, context)
             .block();
     }
 
     /**
      * Create/Overwrite Azure Advisor configuration.
-     *
+     * 
      * @param configurationName Advisor configuration name. Value must be 'default'.
      * @param resourceGroup The name of the Azure resource group.
      * @param configContract The Azure Advisor configuration data structure.
@@ -745,22 +626,21 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the Advisor configuration data structure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigDataInner createInResourceGroup(
-        ConfigurationName configurationName, String resourceGroup, ConfigDataInner configContract) {
+    public ConfigDataInner createInResourceGroup(ConfigurationName configurationName, String resourceGroup,
+        ConfigDataInner configContract) {
         return createInResourceGroupWithResponse(configurationName, resourceGroup, configContract, Context.NONE)
             .getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigDataInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -768,63 +648,43 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ConfigDataInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ConfigDataInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of Advisor configurations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigDataInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ConfigDataInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

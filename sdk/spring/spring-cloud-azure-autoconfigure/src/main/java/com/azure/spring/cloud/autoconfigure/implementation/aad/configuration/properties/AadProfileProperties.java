@@ -11,15 +11,15 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 public class AadProfileProperties {
     /**
-     * Azure Tenant ID.
+     * Azure Tenant ID. The values allowed for 'tenant-id' are: 'common', 'organizations', 'consumers', or the tenant ID.
      */
     private String tenantId; // tenantId can not set to "common" here, otherwise we can not know whether it's set by customer or it is the default value.
     /**
-     * Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.
+     * Name of the Azure cloud to connect to. Supported types are: 'AZURE', 'AZURE_CHINA', 'AZURE_US_GOVERNMENT', 'OTHER'. The default value is 'AZURE'.
      */
     private AzureProfileOptionsProvider.CloudType cloudType;
     /**
-     * Properties to Azure Active Directory endpoints.
+     * Properties to Microsoft Entra endpoints.
      */
     @NestedConfigurationProperty
     private final AadProfileEnvironmentProperties environment = new AadProfileEnvironmentProperties();

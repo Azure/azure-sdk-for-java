@@ -8,24 +8,21 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkLinkSubResourceProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkLinkSubResourcePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        VirtualNetworkLinkSubResourceProperties model =
-            BinaryData
-                .fromString("{\"virtualNetworkLink\":{\"id\":\"wutttxfvjrbi\"}}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VirtualNetworkLinkSubResourceProperties model
+            = BinaryData.fromString("{\"virtualNetworkLink\":{\"id\":\"fcnj\"}}")
                 .toObject(VirtualNetworkLinkSubResourceProperties.class);
-        Assertions.assertEquals("wutttxfvjrbi", model.virtualNetworkLink().id());
+        Assertions.assertEquals("fcnj", model.virtualNetworkLink().id());
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworkLinkSubResourceProperties model =
-            new VirtualNetworkLinkSubResourceProperties()
-                .withVirtualNetworkLink(new SubResource().withId("wutttxfvjrbi"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkLinkSubResourceProperties model
+            = new VirtualNetworkLinkSubResourceProperties().withVirtualNetworkLink(new SubResource().withId("fcnj"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkLinkSubResourceProperties.class);
-        Assertions.assertEquals("wutttxfvjrbi", model.virtualNetworkLink().id());
+        Assertions.assertEquals("fcnj", model.virtualNetworkLink().id());
     }
 }

@@ -39,7 +39,10 @@ public class DelimitedTextDataset extends Dataset {
     private Object rowDelimiter;
 
     /*
-     * The code page name of the preferred encoding. If miss, the default value is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType string).
+     * The code page name of the preferred encoding. If miss, the default value is UTF-8, unless BOM denotes another
+     * Unicode encoding. Refer to the name column of the table in the following link to set supported values:
+     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
+     * string).
      */
     private Object encodingName;
 
@@ -64,7 +67,8 @@ public class DelimitedTextDataset extends Dataset {
     private Object escapeChar;
 
     /*
-     * When used as input, treat the first row of data as headers. When used as output,write the headers into the output as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
+     * When used as input, treat the first row of data as headers. When used as output,write the headers into the output
+     * as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
     private Object firstRowAsHeader;
 

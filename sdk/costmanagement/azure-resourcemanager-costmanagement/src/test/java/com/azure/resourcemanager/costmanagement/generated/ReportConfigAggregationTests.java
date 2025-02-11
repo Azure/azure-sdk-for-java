@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportConfigAggregationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportConfigAggregation model =
-            BinaryData.fromString("{\"name\":\"ocpcy\",\"function\":\"Sum\"}").toObject(ReportConfigAggregation.class);
-        Assertions.assertEquals("ocpcy", model.name());
+        ReportConfigAggregation model
+            = BinaryData.fromString("{\"name\":\"luu\",\"function\":\"Sum\"}").toObject(ReportConfigAggregation.class);
+        Assertions.assertEquals("luu", model.name());
         Assertions.assertEquals(FunctionType.SUM, model.function());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportConfigAggregation model = new ReportConfigAggregation().withName("ocpcy").withFunction(FunctionType.SUM);
+        ReportConfigAggregation model = new ReportConfigAggregation().withName("luu").withFunction(FunctionType.SUM);
         model = BinaryData.fromObject(model).toObject(ReportConfigAggregation.class);
-        Assertions.assertEquals("ocpcy", model.name());
+        Assertions.assertEquals("luu", model.name());
         Assertions.assertEquals(FunctionType.SUM, model.function());
     }
 }

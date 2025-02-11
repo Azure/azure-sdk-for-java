@@ -83,12 +83,34 @@ public abstract class JsonElement implements JsonSerializable<JsonElement> {
     }
 
     /**
+     * Casts the element to an array.
+     * <p>
+     * If {@link #isArray()} returns false, this will throw a {@link ClassCastException}.
+     *
+     * @return The element as an array.
+     */
+    public JsonArray asArray() {
+        return (JsonArray) this;
+    }
+
+    /**
      * Indicates whether the element is an object.
      *
      * @return Whether the element is an object.
      */
     public boolean isObject() {
         return false;
+    }
+
+    /**
+     * Casts the element to an object.
+     * <p>
+     * If {@link #isObject()} returns false, this will throw a {@link ClassCastException}.
+     *
+     * @return The element as an object.
+     */
+    public JsonObject asObject() {
+        return (JsonObject) this;
     }
 
     /**
@@ -101,12 +123,34 @@ public abstract class JsonElement implements JsonSerializable<JsonElement> {
     }
 
     /**
+     * Casts the element to a boolean.
+     * <p>
+     * If {@link #isBoolean()} returns false, this will throw a {@link ClassCastException}.
+     *
+     * @return The element as a boolean.
+     */
+    public JsonBoolean asBoolean() {
+        return (JsonBoolean) this;
+    }
+
+    /**
      * Indicates whether the element is a null.
      *
      * @return Whether the element is a null.
      */
     public boolean isNull() {
         return false;
+    }
+
+    /**
+     * Casts the element to a null.
+     * <p>
+     * If {@link #isNull()} returns false, this will throw a {@link ClassCastException}.
+     *
+     * @return The element as a null.
+     */
+    public JsonNull asNull() {
+        return (JsonNull) this;
     }
 
     /**
@@ -119,11 +163,33 @@ public abstract class JsonElement implements JsonSerializable<JsonElement> {
     }
 
     /**
+     * Casts the element to a number.
+     * <p>
+     * If {@link #isNumber()} returns false, this will throw a {@link ClassCastException}.
+     *
+     * @return The element as a number.
+     */
+    public JsonNumber asNumber() {
+        return (JsonNumber) this;
+    }
+
+    /**
      * Indicates whether the element is a string.
      *
      * @return Whether the element is a string.
      */
     public boolean isString() {
         return false;
+    }
+
+    /**
+     * Casts the element to a string.
+     * <p>
+     * If {@link #isString()} returns false, this will throw a {@link ClassCastException}.
+     *
+     * @return The element as a string.
+     */
+    public JsonString asString() {
+        return (JsonString) this;
     }
 }

@@ -46,4 +46,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-common-perf%2FREADME.png)
+

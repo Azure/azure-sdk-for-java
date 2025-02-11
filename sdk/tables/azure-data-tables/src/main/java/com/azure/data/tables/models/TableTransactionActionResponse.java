@@ -17,8 +17,8 @@ public final class TableTransactionActionResponse implements Response<Object> {
     private final Object value;
 
     static {
-        TableTransactionActionResponseAccessHelper.setAccessor(
-            new TableTransactionActionResponseAccessHelper.TableTransactionActionResponseAccessor() {
+        TableTransactionActionResponseAccessHelper
+            .setAccessor(new TableTransactionActionResponseAccessHelper.TableTransactionActionResponseAccessor() {
                 @Override
                 public TableTransactionActionResponse createTableTransactionActionResponse(int statusCode,
                     Object value) {

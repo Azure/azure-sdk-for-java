@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -147,7 +146,6 @@ public final class ImageType extends ExpandableStringEnum<ImageType> {
      * @param name a name to look for.
      * @return the corresponding ImageType.
      */
-    @JsonCreator
     public static ImageType fromString(String name) {
         return fromString(name, ImageType.class);
     }

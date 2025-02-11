@@ -23,27 +23,24 @@ public class DownloadBlobTest extends AbstractDownloadTest<BlobPerfStressOptions
         this.buffer = new byte[bufferSize];
     }
 
-
     // Perform the API call to be tested here
     @Override
     public void run() {
         blobClient.download(devNull);
     }
 
-
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.download()
-            .map(b -> {
-                int readCount = 0;
-                int remaining = b.remaining();
-                while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, bufferSize);
-                    b.get(buffer, 0, expectedReadCount);
-                    readCount += expectedReadCount;
-                }
+        return blobAsyncClient.download().map(b -> {
+            int readCount = 0;
+            int remaining = b.remaining();
+            while (readCount < remaining) {
+                int expectedReadCount = Math.min(remaining - readCount, bufferSize);
+                b.get(buffer, 0, expectedReadCount);
+                readCount += expectedReadCount;
+            }
 
-                return 1;
-            }).then();
+            return 1;
+        }).then();
     }
 }

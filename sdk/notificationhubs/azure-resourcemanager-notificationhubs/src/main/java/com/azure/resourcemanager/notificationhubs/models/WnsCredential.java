@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.fluent.models.WnsCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Description of a NotificationHub WnsCredential.
  */
 @Fluent
-public final class WnsCredential {
+public final class WnsCredential implements JsonSerializable<WnsCredential> {
     /*
-     * Description of a NotificationHub WnsCredential.
+     * Properties of NotificationHub WnsCredential.
      */
-    @JsonProperty(value = "properties", required = true)
-    private WnsCredentialProperties innerProperties = new WnsCredentialProperties();
+    private WnsCredentialProperties innerProperties;
 
     /**
      * Creates an instance of WnsCredential class.
@@ -27,7 +29,7 @@ public final class WnsCredential {
     }
 
     /**
-     * Get the innerProperties property: Description of a NotificationHub WnsCredential.
+     * Get the innerProperties property: Properties of NotificationHub WnsCredential.
      * 
      * @return the innerProperties value.
      */
@@ -36,7 +38,7 @@ public final class WnsCredential {
     }
 
     /**
-     * Get the packageSid property: Gets or sets the package ID for this credential.
+     * Get the packageSid property: The package ID for this credential.
      * 
      * @return the packageSid value.
      */
@@ -45,7 +47,7 @@ public final class WnsCredential {
     }
 
     /**
-     * Set the packageSid property: Gets or sets the package ID for this credential.
+     * Set the packageSid property: The package ID for this credential.
      * 
      * @param packageSid the packageSid value to set.
      * @return the WnsCredential object itself.
@@ -59,7 +61,7 @@ public final class WnsCredential {
     }
 
     /**
-     * Get the secretKey property: Gets or sets the secret key.
+     * Get the secretKey property: The secret key.
      * 
      * @return the secretKey value.
      */
@@ -68,7 +70,7 @@ public final class WnsCredential {
     }
 
     /**
-     * Set the secretKey property: Gets or sets the secret key.
+     * Set the secretKey property: The secret key.
      * 
      * @param secretKey the secretKey value to set.
      * @return the WnsCredential object itself.
@@ -82,7 +84,7 @@ public final class WnsCredential {
     }
 
     /**
-     * Get the windowsLiveEndpoint property: Gets or sets the Windows Live endpoint.
+     * Get the windowsLiveEndpoint property: The Windows Live endpoint.
      * 
      * @return the windowsLiveEndpoint value.
      */
@@ -91,7 +93,7 @@ public final class WnsCredential {
     }
 
     /**
-     * Set the windowsLiveEndpoint property: Gets or sets the Windows Live endpoint.
+     * Set the windowsLiveEndpoint property: The Windows Live endpoint.
      * 
      * @param windowsLiveEndpoint the windowsLiveEndpoint value to set.
      * @return the WnsCredential object itself.
@@ -105,64 +107,49 @@ public final class WnsCredential {
     }
 
     /**
-     * Get the certificateKey property: Ges or sets the WNS Certificate Key.
-     * 
-     * @return the certificateKey value.
-     */
-    public String certificateKey() {
-        return this.innerProperties() == null ? null : this.innerProperties().certificateKey();
-    }
-
-    /**
-     * Set the certificateKey property: Ges or sets the WNS Certificate Key.
-     * 
-     * @param certificateKey the certificateKey value to set.
-     * @return the WnsCredential object itself.
-     */
-    public WnsCredential withCertificateKey(String certificateKey) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WnsCredentialProperties();
-        }
-        this.innerProperties().withCertificateKey(certificateKey);
-        return this;
-    }
-
-    /**
-     * Get the wnsCertificate property: Gets or sets the WNS Certificate.
-     * 
-     * @return the wnsCertificate value.
-     */
-    public String wnsCertificate() {
-        return this.innerProperties() == null ? null : this.innerProperties().wnsCertificate();
-    }
-
-    /**
-     * Set the wnsCertificate property: Gets or sets the WNS Certificate.
-     * 
-     * @param wnsCertificate the wnsCertificate value to set.
-     * @return the WnsCredential object itself.
-     */
-    public WnsCredential withWnsCertificate(String wnsCertificate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WnsCredentialProperties();
-        }
-        this.innerProperties().withWnsCertificate(wnsCertificate);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model WnsCredential"));
-        } else {
+        if (innerProperties() != null) {
             innerProperties().validate();
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(WnsCredential.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WnsCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WnsCredential if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WnsCredential.
+     */
+    public static WnsCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WnsCredential deserializedWnsCredential = new WnsCredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedWnsCredential.innerProperties = WnsCredentialProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWnsCredential;
+        });
+    }
 }

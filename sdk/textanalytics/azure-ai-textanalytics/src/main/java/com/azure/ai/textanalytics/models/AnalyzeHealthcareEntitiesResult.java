@@ -17,8 +17,8 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     private IterableStream<HealthcareEntityRelation> entityRelations;
 
     static {
-        AnalyzeHealthcareEntitiesResultPropertiesHelper.setAccessor(
-            new AnalyzeHealthcareEntitiesResultPropertiesHelper.AnalyzeHealthcareEntitiesResultAccessor() {
+        AnalyzeHealthcareEntitiesResultPropertiesHelper
+            .setAccessor(new AnalyzeHealthcareEntitiesResultPropertiesHelper.AnalyzeHealthcareEntitiesResultAccessor() {
                 @Override
                 public void setEntities(AnalyzeHealthcareEntitiesResult entitiesResult,
                     IterableStream<HealthcareEntity> entities) {

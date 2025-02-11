@@ -5,84 +5,81 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Edifact agreement acknowledgement settings. */
+/**
+ * The Edifact agreement acknowledgement settings.
+ */
 @Fluent
-public final class EdifactAcknowledgementSettings {
+public final class EdifactAcknowledgementSettings implements JsonSerializable<EdifactAcknowledgementSettings> {
     /*
      * The value indicating whether technical acknowledgement is needed.
      */
-    @JsonProperty(value = "needTechnicalAcknowledgement", required = true)
     private boolean needTechnicalAcknowledgement;
 
     /*
      * The value indicating whether to batch the technical acknowledgements.
      */
-    @JsonProperty(value = "batchTechnicalAcknowledgements", required = true)
     private boolean batchTechnicalAcknowledgements;
 
     /*
      * The value indicating whether functional acknowledgement is needed.
      */
-    @JsonProperty(value = "needFunctionalAcknowledgement", required = true)
     private boolean needFunctionalAcknowledgement;
 
     /*
      * The value indicating whether to batch functional acknowledgements.
      */
-    @JsonProperty(value = "batchFunctionalAcknowledgements", required = true)
     private boolean batchFunctionalAcknowledgements;
 
     /*
      * The value indicating whether a loop is needed for valid messages.
      */
-    @JsonProperty(value = "needLoopForValidMessages", required = true)
     private boolean needLoopForValidMessages;
 
     /*
      * The value indicating whether to send synchronous acknowledgement.
      */
-    @JsonProperty(value = "sendSynchronousAcknowledgement", required = true)
     private boolean sendSynchronousAcknowledgement;
 
     /*
      * The acknowledgement control number prefix.
      */
-    @JsonProperty(value = "acknowledgementControlNumberPrefix")
     private String acknowledgementControlNumberPrefix;
 
     /*
      * The acknowledgement control number suffix.
      */
-    @JsonProperty(value = "acknowledgementControlNumberSuffix")
     private String acknowledgementControlNumberSuffix;
 
     /*
      * The acknowledgement control number lower bound.
      */
-    @JsonProperty(value = "acknowledgementControlNumberLowerBound", required = true)
     private int acknowledgementControlNumberLowerBound;
 
     /*
      * The acknowledgement control number upper bound.
      */
-    @JsonProperty(value = "acknowledgementControlNumberUpperBound", required = true)
     private int acknowledgementControlNumberUpperBound;
 
     /*
      * The value indicating whether to rollover acknowledgement control number.
      */
-    @JsonProperty(value = "rolloverAcknowledgementControlNumber", required = true)
     private boolean rolloverAcknowledgementControlNumber;
 
-    /** Creates an instance of EdifactAcknowledgementSettings class. */
+    /**
+     * Creates an instance of EdifactAcknowledgementSettings class.
+     */
     public EdifactAcknowledgementSettings() {
     }
 
     /**
      * Get the needTechnicalAcknowledgement property: The value indicating whether technical acknowledgement is needed.
-     *
+     * 
      * @return the needTechnicalAcknowledgement value.
      */
     public boolean needTechnicalAcknowledgement() {
@@ -91,7 +88,7 @@ public final class EdifactAcknowledgementSettings {
 
     /**
      * Set the needTechnicalAcknowledgement property: The value indicating whether technical acknowledgement is needed.
-     *
+     * 
      * @param needTechnicalAcknowledgement the needTechnicalAcknowledgement value to set.
      * @return the EdifactAcknowledgementSettings object itself.
      */
@@ -103,7 +100,7 @@ public final class EdifactAcknowledgementSettings {
     /**
      * Get the batchTechnicalAcknowledgements property: The value indicating whether to batch the technical
      * acknowledgements.
-     *
+     * 
      * @return the batchTechnicalAcknowledgements value.
      */
     public boolean batchTechnicalAcknowledgements() {
@@ -113,7 +110,7 @@ public final class EdifactAcknowledgementSettings {
     /**
      * Set the batchTechnicalAcknowledgements property: The value indicating whether to batch the technical
      * acknowledgements.
-     *
+     * 
      * @param batchTechnicalAcknowledgements the batchTechnicalAcknowledgements value to set.
      * @return the EdifactAcknowledgementSettings object itself.
      */
@@ -125,7 +122,7 @@ public final class EdifactAcknowledgementSettings {
     /**
      * Get the needFunctionalAcknowledgement property: The value indicating whether functional acknowledgement is
      * needed.
-     *
+     * 
      * @return the needFunctionalAcknowledgement value.
      */
     public boolean needFunctionalAcknowledgement() {
@@ -135,7 +132,7 @@ public final class EdifactAcknowledgementSettings {
     /**
      * Set the needFunctionalAcknowledgement property: The value indicating whether functional acknowledgement is
      * needed.
-     *
+     * 
      * @param needFunctionalAcknowledgement the needFunctionalAcknowledgement value to set.
      * @return the EdifactAcknowledgementSettings object itself.
      */
@@ -147,7 +144,7 @@ public final class EdifactAcknowledgementSettings {
     /**
      * Get the batchFunctionalAcknowledgements property: The value indicating whether to batch functional
      * acknowledgements.
-     *
+     * 
      * @return the batchFunctionalAcknowledgements value.
      */
     public boolean batchFunctionalAcknowledgements() {
@@ -157,7 +154,7 @@ public final class EdifactAcknowledgementSettings {
     /**
      * Set the batchFunctionalAcknowledgements property: The value indicating whether to batch functional
      * acknowledgements.
-     *
+     * 
      * @param batchFunctionalAcknowledgements the batchFunctionalAcknowledgements value to set.
      * @return the EdifactAcknowledgementSettings object itself.
      */
@@ -168,7 +165,7 @@ public final class EdifactAcknowledgementSettings {
 
     /**
      * Get the needLoopForValidMessages property: The value indicating whether a loop is needed for valid messages.
-     *
+     * 
      * @return the needLoopForValidMessages value.
      */
     public boolean needLoopForValidMessages() {
@@ -177,7 +174,7 @@ public final class EdifactAcknowledgementSettings {
 
     /**
      * Set the needLoopForValidMessages property: The value indicating whether a loop is needed for valid messages.
-     *
+     * 
      * @param needLoopForValidMessages the needLoopForValidMessages value to set.
      * @return the EdifactAcknowledgementSettings object itself.
      */
@@ -189,7 +186,7 @@ public final class EdifactAcknowledgementSettings {
     /**
      * Get the sendSynchronousAcknowledgement property: The value indicating whether to send synchronous
      * acknowledgement.
-     *
+     * 
      * @return the sendSynchronousAcknowledgement value.
      */
     public boolean sendSynchronousAcknowledgement() {
@@ -199,7 +196,7 @@ public final class EdifactAcknowledgementSettings {
     /**
      * Set the sendSynchronousAcknowledgement property: The value indicating whether to send synchronous
      * acknowledgement.
-     *
+     * 
      * @param sendSynchronousAcknowledgement the sendSynchronousAcknowledgement value to set.
      * @return the EdifactAcknowledgementSettings object itself.
      */
@@ -210,7 +207,7 @@ public final class EdifactAcknowledgementSettings {
 
     /**
      * Get the acknowledgementControlNumberPrefix property: The acknowledgement control number prefix.
-     *
+     * 
      * @return the acknowledgementControlNumberPrefix value.
      */
     public String acknowledgementControlNumberPrefix() {
@@ -219,19 +216,19 @@ public final class EdifactAcknowledgementSettings {
 
     /**
      * Set the acknowledgementControlNumberPrefix property: The acknowledgement control number prefix.
-     *
+     * 
      * @param acknowledgementControlNumberPrefix the acknowledgementControlNumberPrefix value to set.
      * @return the EdifactAcknowledgementSettings object itself.
      */
-    public EdifactAcknowledgementSettings withAcknowledgementControlNumberPrefix(
-        String acknowledgementControlNumberPrefix) {
+    public EdifactAcknowledgementSettings
+        withAcknowledgementControlNumberPrefix(String acknowledgementControlNumberPrefix) {
         this.acknowledgementControlNumberPrefix = acknowledgementControlNumberPrefix;
         return this;
     }
 
     /**
      * Get the acknowledgementControlNumberSuffix property: The acknowledgement control number suffix.
-     *
+     * 
      * @return the acknowledgementControlNumberSuffix value.
      */
     public String acknowledgementControlNumberSuffix() {
@@ -240,19 +237,19 @@ public final class EdifactAcknowledgementSettings {
 
     /**
      * Set the acknowledgementControlNumberSuffix property: The acknowledgement control number suffix.
-     *
+     * 
      * @param acknowledgementControlNumberSuffix the acknowledgementControlNumberSuffix value to set.
      * @return the EdifactAcknowledgementSettings object itself.
      */
-    public EdifactAcknowledgementSettings withAcknowledgementControlNumberSuffix(
-        String acknowledgementControlNumberSuffix) {
+    public EdifactAcknowledgementSettings
+        withAcknowledgementControlNumberSuffix(String acknowledgementControlNumberSuffix) {
         this.acknowledgementControlNumberSuffix = acknowledgementControlNumberSuffix;
         return this;
     }
 
     /**
      * Get the acknowledgementControlNumberLowerBound property: The acknowledgement control number lower bound.
-     *
+     * 
      * @return the acknowledgementControlNumberLowerBound value.
      */
     public int acknowledgementControlNumberLowerBound() {
@@ -261,19 +258,19 @@ public final class EdifactAcknowledgementSettings {
 
     /**
      * Set the acknowledgementControlNumberLowerBound property: The acknowledgement control number lower bound.
-     *
+     * 
      * @param acknowledgementControlNumberLowerBound the acknowledgementControlNumberLowerBound value to set.
      * @return the EdifactAcknowledgementSettings object itself.
      */
-    public EdifactAcknowledgementSettings withAcknowledgementControlNumberLowerBound(
-        int acknowledgementControlNumberLowerBound) {
+    public EdifactAcknowledgementSettings
+        withAcknowledgementControlNumberLowerBound(int acknowledgementControlNumberLowerBound) {
         this.acknowledgementControlNumberLowerBound = acknowledgementControlNumberLowerBound;
         return this;
     }
 
     /**
      * Get the acknowledgementControlNumberUpperBound property: The acknowledgement control number upper bound.
-     *
+     * 
      * @return the acknowledgementControlNumberUpperBound value.
      */
     public int acknowledgementControlNumberUpperBound() {
@@ -282,12 +279,12 @@ public final class EdifactAcknowledgementSettings {
 
     /**
      * Set the acknowledgementControlNumberUpperBound property: The acknowledgement control number upper bound.
-     *
+     * 
      * @param acknowledgementControlNumberUpperBound the acknowledgementControlNumberUpperBound value to set.
      * @return the EdifactAcknowledgementSettings object itself.
      */
-    public EdifactAcknowledgementSettings withAcknowledgementControlNumberUpperBound(
-        int acknowledgementControlNumberUpperBound) {
+    public EdifactAcknowledgementSettings
+        withAcknowledgementControlNumberUpperBound(int acknowledgementControlNumberUpperBound) {
         this.acknowledgementControlNumberUpperBound = acknowledgementControlNumberUpperBound;
         return this;
     }
@@ -295,7 +292,7 @@ public final class EdifactAcknowledgementSettings {
     /**
      * Get the rolloverAcknowledgementControlNumber property: The value indicating whether to rollover acknowledgement
      * control number.
-     *
+     * 
      * @return the rolloverAcknowledgementControlNumber value.
      */
     public boolean rolloverAcknowledgementControlNumber() {
@@ -305,21 +302,90 @@ public final class EdifactAcknowledgementSettings {
     /**
      * Set the rolloverAcknowledgementControlNumber property: The value indicating whether to rollover acknowledgement
      * control number.
-     *
+     * 
      * @param rolloverAcknowledgementControlNumber the rolloverAcknowledgementControlNumber value to set.
      * @return the EdifactAcknowledgementSettings object itself.
      */
-    public EdifactAcknowledgementSettings withRolloverAcknowledgementControlNumber(
-        boolean rolloverAcknowledgementControlNumber) {
+    public EdifactAcknowledgementSettings
+        withRolloverAcknowledgementControlNumber(boolean rolloverAcknowledgementControlNumber) {
         this.rolloverAcknowledgementControlNumber = rolloverAcknowledgementControlNumber;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("needTechnicalAcknowledgement", this.needTechnicalAcknowledgement);
+        jsonWriter.writeBooleanField("batchTechnicalAcknowledgements", this.batchTechnicalAcknowledgements);
+        jsonWriter.writeBooleanField("needFunctionalAcknowledgement", this.needFunctionalAcknowledgement);
+        jsonWriter.writeBooleanField("batchFunctionalAcknowledgements", this.batchFunctionalAcknowledgements);
+        jsonWriter.writeBooleanField("needLoopForValidMessages", this.needLoopForValidMessages);
+        jsonWriter.writeBooleanField("sendSynchronousAcknowledgement", this.sendSynchronousAcknowledgement);
+        jsonWriter.writeIntField("acknowledgementControlNumberLowerBound", this.acknowledgementControlNumberLowerBound);
+        jsonWriter.writeIntField("acknowledgementControlNumberUpperBound", this.acknowledgementControlNumberUpperBound);
+        jsonWriter.writeBooleanField("rolloverAcknowledgementControlNumber", this.rolloverAcknowledgementControlNumber);
+        jsonWriter.writeStringField("acknowledgementControlNumberPrefix", this.acknowledgementControlNumberPrefix);
+        jsonWriter.writeStringField("acknowledgementControlNumberSuffix", this.acknowledgementControlNumberSuffix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdifactAcknowledgementSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdifactAcknowledgementSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdifactAcknowledgementSettings.
+     */
+    public static EdifactAcknowledgementSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdifactAcknowledgementSettings deserializedEdifactAcknowledgementSettings
+                = new EdifactAcknowledgementSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("needTechnicalAcknowledgement".equals(fieldName)) {
+                    deserializedEdifactAcknowledgementSettings.needTechnicalAcknowledgement = reader.getBoolean();
+                } else if ("batchTechnicalAcknowledgements".equals(fieldName)) {
+                    deserializedEdifactAcknowledgementSettings.batchTechnicalAcknowledgements = reader.getBoolean();
+                } else if ("needFunctionalAcknowledgement".equals(fieldName)) {
+                    deserializedEdifactAcknowledgementSettings.needFunctionalAcknowledgement = reader.getBoolean();
+                } else if ("batchFunctionalAcknowledgements".equals(fieldName)) {
+                    deserializedEdifactAcknowledgementSettings.batchFunctionalAcknowledgements = reader.getBoolean();
+                } else if ("needLoopForValidMessages".equals(fieldName)) {
+                    deserializedEdifactAcknowledgementSettings.needLoopForValidMessages = reader.getBoolean();
+                } else if ("sendSynchronousAcknowledgement".equals(fieldName)) {
+                    deserializedEdifactAcknowledgementSettings.sendSynchronousAcknowledgement = reader.getBoolean();
+                } else if ("acknowledgementControlNumberLowerBound".equals(fieldName)) {
+                    deserializedEdifactAcknowledgementSettings.acknowledgementControlNumberLowerBound = reader.getInt();
+                } else if ("acknowledgementControlNumberUpperBound".equals(fieldName)) {
+                    deserializedEdifactAcknowledgementSettings.acknowledgementControlNumberUpperBound = reader.getInt();
+                } else if ("rolloverAcknowledgementControlNumber".equals(fieldName)) {
+                    deserializedEdifactAcknowledgementSettings.rolloverAcknowledgementControlNumber
+                        = reader.getBoolean();
+                } else if ("acknowledgementControlNumberPrefix".equals(fieldName)) {
+                    deserializedEdifactAcknowledgementSettings.acknowledgementControlNumberPrefix = reader.getString();
+                } else if ("acknowledgementControlNumberSuffix".equals(fieldName)) {
+                    deserializedEdifactAcknowledgementSettings.acknowledgementControlNumberSuffix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdifactAcknowledgementSettings;
+        });
     }
 }

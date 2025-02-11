@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LabResourceCostPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabResourceCostProperties model =
-            BinaryData
-                .fromString(
-                    "{\"resourcename\":\"pcirelsfeaen\",\"resourceUId\":\"bfatklddxbjhwu\",\"resourceCost\":20.55939152853852,\"resourceType\":\"jos\",\"resourceOwner\":\"youlp\",\"resourcePricingTier\":\"v\",\"resourceStatus\":\"glrvimjwosytxi\",\"resourceId\":\"skfc\",\"externalResourceId\":\"qumiek\"}")
-                .toObject(LabResourceCostProperties.class);
+        LabResourceCostProperties model = BinaryData.fromString(
+            "{\"resourcename\":\"pcirelsfeaen\",\"resourceUId\":\"bfatklddxbjhwu\",\"resourceCost\":20.55939152853852,\"resourceType\":\"jos\",\"resourceOwner\":\"youlp\",\"resourcePricingTier\":\"v\",\"resourceStatus\":\"glrvimjwosytxi\",\"resourceId\":\"skfc\",\"externalResourceId\":\"qumiek\"}")
+            .toObject(LabResourceCostProperties.class);
         Assertions.assertEquals("pcirelsfeaen", model.resourcename());
         Assertions.assertEquals("bfatklddxbjhwu", model.resourceUId());
         Assertions.assertEquals(20.55939152853852D, model.resourceCost());
@@ -29,17 +27,15 @@ public final class LabResourceCostPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LabResourceCostProperties model =
-            new LabResourceCostProperties()
-                .withResourcename("pcirelsfeaen")
-                .withResourceUId("bfatklddxbjhwu")
-                .withResourceCost(20.55939152853852D)
-                .withResourceType("jos")
-                .withResourceOwner("youlp")
-                .withResourcePricingTier("v")
-                .withResourceStatus("glrvimjwosytxi")
-                .withResourceId("skfc")
-                .withExternalResourceId("qumiek");
+        LabResourceCostProperties model = new LabResourceCostProperties().withResourcename("pcirelsfeaen")
+            .withResourceUId("bfatklddxbjhwu")
+            .withResourceCost(20.55939152853852D)
+            .withResourceType("jos")
+            .withResourceOwner("youlp")
+            .withResourcePricingTier("v")
+            .withResourceStatus("glrvimjwosytxi")
+            .withResourceId("skfc")
+            .withExternalResourceId("qumiek");
         model = BinaryData.fromObject(model).toObject(LabResourceCostProperties.class);
         Assertions.assertEquals("pcirelsfeaen", model.resourcename());
         Assertions.assertEquals("bfatklddxbjhwu", model.resourceUId());

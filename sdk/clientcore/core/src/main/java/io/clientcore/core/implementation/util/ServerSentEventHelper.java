@@ -31,10 +31,15 @@ public final class ServerSentEventHelper {
      */
     public interface ServerSentEventAccessor {
         void setId(ServerSentEvent serverSentEvent, String id);
+
         void setEvent(ServerSentEvent serverSentEvent, String event);
+
         void setData(ServerSentEvent serverSentEvent, List<String> data);
+
         void setComment(ServerSentEvent serverSentEvent, String comment);
+
         void setRetryAfter(ServerSentEvent serverSentEvent, Duration retryAfter);
+
         Duration getRetryAfter(ServerSentEvent serverSentEvent);
     }
 
@@ -62,4 +67,3 @@ public final class ServerSentEventHelper {
         return accessor.getRetryAfter(serverSentEvent);
     }
 }
-

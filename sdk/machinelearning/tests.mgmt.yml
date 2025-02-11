@@ -10,8 +10,6 @@ extends:
       - name: azure-resourcemanager-machinelearning
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermachinelearning
-    Clouds: 'Public'
-    UseFederatedAuth: true
     # Only run tests on Windows to save cost.
     MatrixFilters:
       - pool=.*(win).*

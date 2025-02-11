@@ -37,19 +37,21 @@
 ### Controller_Create
 
 ```java
-/** Samples for Controller Create. */
+/**
+ * Samples for Controller Create.
+ */
 public final class ControllerCreateSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/putController.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/putController.json
      */
     /**
      * Sample code: Create controller.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void createController(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
-        manager
-            .controllers()
+        manager.controllers()
             .define("testcontroller")
             .withRegion("West US")
             .withExistingResourceGroup("TestRG")
@@ -61,14 +63,17 @@ public final class ControllerCreateSamples {
 ### Controller_Delete
 
 ```java
-/** Samples for Controller Delete. */
+/**
+ * Samples for Controller Delete.
+ */
 public final class ControllerDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/deleteController.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/deleteController.json
      */
     /**
      * Sample code: Delete controller.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void deleteController(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
@@ -80,20 +85,22 @@ public final class ControllerDeleteSamples {
 ### Controller_GetByResourceGroup
 
 ```java
-/** Samples for Controller GetByResourceGroup. */
+/**
+ * Samples for Controller GetByResourceGroup.
+ */
 public final class ControllerGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/getController.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/getController.json
      */
     /**
      * Sample code: Get details of a controller.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
-    public static void getDetailsOfAController(
-        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
-        manager
-            .controllers()
+    public static void
+        getDetailsOfAController(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
+        manager.controllers()
             .getByResourceGroupWithResponse("TestRG", "testcontroller", com.azure.core.util.Context.NONE);
     }
 }
@@ -106,25 +113,27 @@ import com.azure.resourcemanager.delegatednetwork.models.DelegatedController;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Controller Patch. */
+/**
+ * Samples for Controller Patch.
+ */
 public final class ControllerPatchSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/patchController.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/patchController.json
      */
     /**
      * Sample code: update controller.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void updateController(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
-        DelegatedController resource =
-            manager
-                .controllers()
-                .getByResourceGroupWithResponse("TestRG", "testcontroller", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key", "value")).apply();
+        DelegatedController resource = manager.controllers()
+            .getByResourceGroupWithResponse("TestRG", "testcontroller", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -141,14 +150,17 @@ public final class ControllerPatchSamples {
 ### DelegatedNetwork_List
 
 ```java
-/** Samples for DelegatedNetwork List. */
+/**
+ * Samples for DelegatedNetwork List.
+ */
 public final class DelegatedNetworkListSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/controllerListBySub.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/controllerListBySub.json
      */
     /**
      * Sample code: Get DelegatedController resources by subscription.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void getDelegatedControllerResourcesBySubscription(
@@ -161,14 +173,17 @@ public final class DelegatedNetworkListSamples {
 ### DelegatedNetwork_ListByResourceGroup
 
 ```java
-/** Samples for DelegatedNetwork ListByResourceGroup. */
+/**
+ * Samples for DelegatedNetwork ListByResourceGroup.
+ */
 public final class DelegatedNetworkListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/controllerListByRG.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/controllerListByRG.json
      */
     /**
      * Sample code: Get DelegatedNetwork resources by resource group.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void getDelegatedNetworkResourcesByResourceGroup(
@@ -181,18 +196,22 @@ public final class DelegatedNetworkListByResourceGroupSamples {
 ### DelegatedSubnetService_Delete
 
 ```java
-/** Samples for DelegatedSubnetService Delete. */
+/**
+ * Samples for DelegatedSubnetService Delete.
+ */
 public final class DelegatedSubnetServiceDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/deleteDelegatedSubnet.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/deleteDelegatedSubnet.
+     * json
      */
     /**
      * Sample code: delete delegated subnet.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
-    public static void deleteDelegatedSubnet(
-        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
+    public static void
+        deleteDelegatedSubnet(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
         manager.delegatedSubnetServices().delete("TestRG", "delegated1", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -201,20 +220,22 @@ public final class DelegatedSubnetServiceDeleteSamples {
 ### DelegatedSubnetService_GetByResourceGroup
 
 ```java
-/** Samples for DelegatedSubnetService GetByResourceGroup. */
+/**
+ * Samples for DelegatedSubnetService GetByResourceGroup.
+ */
 public final class DelegatedSubnetServiceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/getDelegatedSubnet.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/getDelegatedSubnet.json
      */
     /**
      * Sample code: Get details of a delegated subnet.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
-    public static void getDetailsOfADelegatedSubnet(
-        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
-        manager
-            .delegatedSubnetServices()
+    public static void
+        getDetailsOfADelegatedSubnet(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
+        manager.delegatedSubnetServices()
             .getByResourceGroupWithResponse("TestRG", "delegated1", com.azure.core.util.Context.NONE);
     }
 }
@@ -223,14 +244,18 @@ public final class DelegatedSubnetServiceGetByResourceGroupSamples {
 ### DelegatedSubnetService_List
 
 ```java
-/** Samples for DelegatedSubnetService List. */
+/**
+ * Samples for DelegatedSubnetService List.
+ */
 public final class DelegatedSubnetServiceListSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/delegatedSubnetListBySub.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/delegatedSubnetListBySub
+     * .json
      */
     /**
      * Sample code: Get DelegatedSubnets resources by subscription.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void getDelegatedSubnetsResourcesBySubscription(
@@ -243,14 +268,18 @@ public final class DelegatedSubnetServiceListSamples {
 ### DelegatedSubnetService_ListByResourceGroup
 
 ```java
-/** Samples for DelegatedSubnetService ListByResourceGroup. */
+/**
+ * Samples for DelegatedSubnetService ListByResourceGroup.
+ */
 public final class DelegatedSubnetServiceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/delegatedSubnetListByRG.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/delegatedSubnetListByRG.
+     * json
      */
     /**
      * Sample code: Get DelegatedSubnets resources by resource group.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void getDelegatedSubnetsResourcesByResourceGroup(
@@ -267,26 +296,29 @@ import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnet;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DelegatedSubnetService PatchDetails. */
+/**
+ * Samples for DelegatedSubnetService PatchDetails.
+ */
 public final class DelegatedSubnetServicePatchDetailsSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/patchDelegatedSubnet.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/patchDelegatedSubnet.
+     * json
      */
     /**
      * Sample code: patch delegated subnet.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
-    public static void patchDelegatedSubnet(
-        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
-        DelegatedSubnet resource =
-            manager
-                .delegatedSubnetServices()
-                .getByResourceGroupWithResponse("TestRG", "delegated1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key", "value")).apply();
+    public static void
+        patchDelegatedSubnet(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
+        DelegatedSubnet resource = manager.delegatedSubnetServices()
+            .getByResourceGroupWithResponse("TestRG", "delegated1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -306,30 +338,28 @@ public final class DelegatedSubnetServicePatchDetailsSamples {
 import com.azure.resourcemanager.delegatednetwork.models.ControllerDetails;
 import com.azure.resourcemanager.delegatednetwork.models.SubnetDetails;
 
-/** Samples for DelegatedSubnetService PutDetails. */
+/**
+ * Samples for DelegatedSubnetService PutDetails.
+ */
 public final class DelegatedSubnetServicePutDetailsSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/putDelegatedSubnet.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/putDelegatedSubnet.json
      */
     /**
      * Sample code: put delegated subnet.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void putDelegatedSubnet(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
-        manager
-            .delegatedSubnetServices()
+        manager.delegatedSubnetServices()
             .define("delegated1")
             .withRegion("West US")
             .withExistingResourceGroup("TestRG")
-            .withSubnetDetails(
-                new SubnetDetails()
-                    .withId(
-                        "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/testsubnet"))
-            .withControllerDetails(
-                new ControllerDetails()
-                    .withId(
-                        "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.DelegatedNetwork/controller/dnctestcontroller"))
+            .withSubnetDetails(new SubnetDetails().withId(
+                "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/testsubnet"))
+            .withControllerDetails(new ControllerDetails().withId(
+                "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.DelegatedNetwork/controller/dnctestcontroller"))
             .create();
     }
 }
@@ -338,18 +368,21 @@ public final class DelegatedSubnetServicePutDetailsSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/delegatedNetworkOperationsList.json
+     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/
+     * delegatedNetworkOperationsList.json
      */
     /**
      * Sample code: Get available operations.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
-    public static void getAvailableOperations(
-        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
+    public static void
+        getAvailableOperations(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -364,37 +397,36 @@ import com.azure.resourcemanager.delegatednetwork.models.OrchestratorKind;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorResourceProperties;
 import com.azure.resourcemanager.delegatednetwork.models.ResourceIdentityType;
 
-/** Samples for OrchestratorInstanceService Create. */
+/**
+ * Samples for OrchestratorInstanceService Create.
+ */
 public final class OrchestratorInstanceServiceCreateSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/putOrchestrator.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/putOrchestrator.json
      */
     /**
      * Sample code: Create orchestrator instance.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
-    public static void createOrchestratorInstance(
-        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
-        manager
-            .orchestratorInstanceServices()
+    public static void
+        createOrchestratorInstance(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
+        manager.orchestratorInstanceServices()
             .define("testk8s1")
             .withRegion("West US")
             .withExistingResourceGroup("TestRG")
             .withKind(OrchestratorKind.KUBERNETES)
             .withIdentity(new OrchestratorIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-            .withProperties(
-                new OrchestratorResourceProperties()
-                    .withOrchestratorAppId("546192d7-503f-477a-9cfe-4efc3ee2b6e1")
-                    .withOrchestratorTenantId("da6192d7-503f-477a-9cfe-4efc3ee2b6c3")
-                    .withClusterRootCA("ddsadsad344mfdsfdl")
-                    .withApiServerEndpoint("https://testk8s.cloudapp.net")
-                    .withPrivateLinkResourceId(
-                        "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.Network/privateLinkServices/plresource1")
-                    .withControllerDetails(
-                        new ControllerDetails()
-                            .withId(
-                                "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.DelegatedNetwork/controller/testcontroller")))
+            .withProperties(new OrchestratorResourceProperties()
+                .withOrchestratorAppId("546192d7-503f-477a-9cfe-4efc3ee2b6e1")
+                .withOrchestratorTenantId("da6192d7-503f-477a-9cfe-4efc3ee2b6c3")
+                .withClusterRootCA("ddsadsad344mfdsfdl")
+                .withApiServerEndpoint("https://testk8s.cloudapp.net")
+                .withPrivateLinkResourceId(
+                    "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.Network/privateLinkServices/plresource1")
+                .withControllerDetails(new ControllerDetails().withId(
+                    "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.DelegatedNetwork/controller/testcontroller")))
             .create();
     }
 }
@@ -403,18 +435,21 @@ public final class OrchestratorInstanceServiceCreateSamples {
 ### OrchestratorInstanceService_Delete
 
 ```java
-/** Samples for OrchestratorInstanceService Delete. */
+/**
+ * Samples for OrchestratorInstanceService Delete.
+ */
 public final class OrchestratorInstanceServiceDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/deleteOrchestrator.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/deleteOrchestrator.json
      */
     /**
      * Sample code: Delete Orchestrator Instance.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
-    public static void deleteOrchestratorInstance(
-        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
+    public static void
+        deleteOrchestratorInstance(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
         manager.orchestratorInstanceServices().delete("TestRG", "k8stest1", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -423,20 +458,22 @@ public final class OrchestratorInstanceServiceDeleteSamples {
 ### OrchestratorInstanceService_GetByResourceGroup
 
 ```java
-/** Samples for OrchestratorInstanceService GetByResourceGroup. */
+/**
+ * Samples for OrchestratorInstanceService GetByResourceGroup.
+ */
 public final class OrchestratorInstanceServiceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/getOrchestrator.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/getOrchestrator.json
      */
     /**
      * Sample code: Get details of a orchestratorInstance.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
-    public static void getDetailsOfAOrchestratorInstance(
-        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
-        manager
-            .orchestratorInstanceServices()
+    public static void
+        getDetailsOfAOrchestratorInstance(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
+        manager.orchestratorInstanceServices()
             .getByResourceGroupWithResponse("TestRG", "testk8s1", com.azure.core.util.Context.NONE);
     }
 }
@@ -445,14 +482,17 @@ public final class OrchestratorInstanceServiceGetByResourceGroupSamples {
 ### OrchestratorInstanceService_List
 
 ```java
-/** Samples for OrchestratorInstanceService List. */
+/**
+ * Samples for OrchestratorInstanceService List.
+ */
 public final class OrchestratorInstanceServiceListSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/orchestratorInstanceListBySub.json
+     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/
+     * orchestratorInstanceListBySub.json
      */
     /**
      * Sample code: Get orchestratorInstance resources by subscription.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void getOrchestratorInstanceResourcesBySubscription(
@@ -465,14 +505,17 @@ public final class OrchestratorInstanceServiceListSamples {
 ### OrchestratorInstanceService_ListByResourceGroup
 
 ```java
-/** Samples for OrchestratorInstanceService ListByResourceGroup. */
+/**
+ * Samples for OrchestratorInstanceService ListByResourceGroup.
+ */
 public final class OrchestratorInstanceServiceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/orchestratorInstanceListByRG.json
+     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/
+     * orchestratorInstanceListByRG.json
      */
     /**
      * Sample code: Get OrchestratorInstance resources by resource group.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void getOrchestratorInstanceResourcesByResourceGroup(
@@ -489,26 +532,28 @@ import com.azure.resourcemanager.delegatednetwork.models.Orchestrator;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for OrchestratorInstanceService Patch. */
+/**
+ * Samples for OrchestratorInstanceService Patch.
+ */
 public final class OrchestratorInstanceServicePatchSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/patchOrchestrator.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/patchOrchestrator.json
      */
     /**
      * Sample code: update Orchestrator Instance.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
-    public static void updateOrchestratorInstance(
-        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
-        Orchestrator resource =
-            manager
-                .orchestratorInstanceServices()
-                .getByResourceGroupWithResponse("TestRG", "testk8s1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key", "value")).apply();
+    public static void
+        updateOrchestratorInstance(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
+        Orchestrator resource = manager.orchestratorInstanceServices()
+            .getByResourceGroupWithResponse("TestRG", "testk8s1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

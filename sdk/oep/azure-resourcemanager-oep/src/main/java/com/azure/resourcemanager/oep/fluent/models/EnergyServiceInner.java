@@ -8,46 +8,62 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.oep.models.EnergyServiceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The EnergyService model. */
+/**
+ * The EnergyService model.
+ */
 @Fluent
 public final class EnergyServiceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnergyServiceInner.class);
-
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private EnergyServiceProperties properties;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Geo-location where the resource lives.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EnergyServiceInner class.
+     */
+    public EnergyServiceInner() {
+    }
 
     /**
      * Get the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     public EnergyServiceProperties properties() {
@@ -56,7 +72,7 @@ public final class EnergyServiceInner extends ProxyResource {
 
     /**
      * Set the properties property: The properties property.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the EnergyServiceInner object itself.
      */
@@ -67,7 +83,7 @@ public final class EnergyServiceInner extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -76,7 +92,7 @@ public final class EnergyServiceInner extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the EnergyServiceInner object itself.
      */
@@ -87,7 +103,7 @@ public final class EnergyServiceInner extends ProxyResource {
 
     /**
      * Get the location property: Geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -96,7 +112,7 @@ public final class EnergyServiceInner extends ProxyResource {
 
     /**
      * Set the location property: Geo-location where the resource lives.
-     *
+     * 
      * @param location the location value to set.
      * @return the EnergyServiceInner object itself.
      */
@@ -107,7 +123,7 @@ public final class EnergyServiceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -115,8 +131,38 @@ public final class EnergyServiceInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -124,9 +170,62 @@ public final class EnergyServiceInner extends ProxyResource {
             properties().validate();
         }
         if (location() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model EnergyServiceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model EnergyServiceInner"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EnergyServiceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnergyServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnergyServiceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnergyServiceInner.
+     */
+    public static EnergyServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnergyServiceInner deserializedEnergyServiceInner = new EnergyServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEnergyServiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEnergyServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEnergyServiceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedEnergyServiceInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEnergyServiceInner.properties = EnergyServiceProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEnergyServiceInner.tags = tags;
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedEnergyServiceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnergyServiceInner;
+        });
     }
 }

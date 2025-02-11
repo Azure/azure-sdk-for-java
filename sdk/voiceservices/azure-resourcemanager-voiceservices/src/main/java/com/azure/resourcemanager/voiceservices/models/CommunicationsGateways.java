@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of CommunicationsGateways. */
+/**
+ * Resource collection API of CommunicationsGateways.
+ */
 public interface CommunicationsGateways {
     /**
      * List CommunicationsGateway resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface CommunicationsGateways {
 
     /**
      * List CommunicationsGateway resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface CommunicationsGateways {
 
     /**
      * List CommunicationsGateway resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface CommunicationsGateways {
 
     /**
      * List CommunicationsGateway resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +57,7 @@ public interface CommunicationsGateways {
 
     /**
      * Get a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -64,12 +66,12 @@ public interface CommunicationsGateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a CommunicationsGateway along with {@link Response}.
      */
-    Response<CommunicationsGateway> getByResourceGroupWithResponse(
-        String resourceGroupName, String communicationsGatewayName, Context context);
+    Response<CommunicationsGateway> getByResourceGroupWithResponse(String resourceGroupName,
+        String communicationsGatewayName, Context context);
 
     /**
      * Get a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,7 +83,7 @@ public interface CommunicationsGateways {
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +94,7 @@ public interface CommunicationsGateways {
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -104,7 +106,7 @@ public interface CommunicationsGateways {
 
     /**
      * Get a CommunicationsGateway.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,7 +117,7 @@ public interface CommunicationsGateways {
 
     /**
      * Get a CommunicationsGateway.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,7 +129,7 @@ public interface CommunicationsGateways {
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +139,7 @@ public interface CommunicationsGateways {
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +150,7 @@ public interface CommunicationsGateways {
 
     /**
      * Begins definition for a new CommunicationsGateway resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new CommunicationsGateway definition.
      */

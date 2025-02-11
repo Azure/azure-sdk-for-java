@@ -19,11 +19,13 @@ import com.azure.resourcemanager.databox.models.JobResourceUpdateParameter;
 import com.azure.resourcemanager.databox.models.MarkDevicesShippedRequest;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpRequest;
 
-/** An instance of this class provides access to all the operations defined in JobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobsClient.
+ */
 public interface JobsClient {
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job Resource Collection as paginated response with {@link PagedIterable}.
@@ -33,7 +35,7 @@ public interface JobsClient {
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,9 +48,9 @@ public interface JobsClient {
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @param context The context to associate with this operation.
@@ -58,14 +60,14 @@ public interface JobsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> markDevicesShippedWithResponse(
-        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest, Context context);
+    Response<Void> markDevicesShippedWithResponse(String jobName, String resourceGroupName,
+        MarkDevicesShippedRequest markDevicesShippedRequest, Context context);
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,12 +75,12 @@ public interface JobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void markDevicesShipped(
-        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest);
+    void markDevicesShipped(String jobName, String resourceGroupName,
+        MarkDevicesShippedRequest markDevicesShippedRequest);
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,7 +92,7 @@ public interface JobsClient {
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
@@ -104,10 +106,10 @@ public interface JobsClient {
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param expand $expand is supported on details parameter for job, which provides details on the job stages.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,15 +118,15 @@ public interface JobsClient {
      * @return information about the specified job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String jobName, String expand, Context context);
+    Response<JobResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String jobName, String expand,
+        Context context);
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -136,10 +138,10 @@ public interface JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,16 +149,16 @@ public interface JobsClient {
      * @return the {@link SyncPoller} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginCreate(
-        String resourceGroupName, String jobName, JobResourceInner jobResource);
+    SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginCreate(String resourceGroupName, String jobName,
+        JobResourceInner jobResource);
 
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,16 +167,16 @@ public interface JobsClient {
      * @return the {@link SyncPoller} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginCreate(
-        String resourceGroupName, String jobName, JobResourceInner jobResource, Context context);
+    SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginCreate(String resourceGroupName, String jobName,
+        JobResourceInner jobResource, Context context);
 
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -187,10 +189,10 @@ public interface JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,10 +205,10 @@ public interface JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -217,10 +219,10 @@ public interface JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -232,10 +234,10 @@ public interface JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -245,10 +247,10 @@ public interface JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -259,10 +261,10 @@ public interface JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -270,18 +272,18 @@ public interface JobsClient {
      * @return the {@link SyncPoller} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(
-        String resourceGroupName, String jobName, JobResourceUpdateParameter jobResourceUpdateParameter);
+    SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(String resourceGroupName, String jobName,
+        JobResourceUpdateParameter jobResourceUpdateParameter);
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -289,19 +291,15 @@ public interface JobsClient {
      * @return the {@link SyncPoller} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(
-        String resourceGroupName,
-        String jobName,
-        JobResourceUpdateParameter jobResourceUpdateParameter,
-        String ifMatch,
-        Context context);
+    SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(String resourceGroupName, String jobName,
+        JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch, Context context);
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -309,18 +307,18 @@ public interface JobsClient {
      * @return job Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobResourceInner update(
-        String resourceGroupName, String jobName, JobResourceUpdateParameter jobResourceUpdateParameter);
+    JobResourceInner update(String resourceGroupName, String jobName,
+        JobResourceUpdateParameter jobResourceUpdateParameter);
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -328,19 +326,15 @@ public interface JobsClient {
      * @return job Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobResourceInner update(
-        String resourceGroupName,
-        String jobName,
-        JobResourceUpdateParameter jobResourceUpdateParameter,
-        String ifMatch,
-        Context context);
+    JobResourceInner update(String resourceGroupName, String jobName,
+        JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch, Context context);
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,15 +343,15 @@ public interface JobsClient {
      * @return shipment pick up response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ShipmentPickUpResponseInner> bookShipmentPickUpWithResponse(
-        String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest, Context context);
+    Response<ShipmentPickUpResponseInner> bookShipmentPickUpWithResponse(String resourceGroupName, String jobName,
+        ShipmentPickUpRequest shipmentPickUpRequest, Context context);
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -365,15 +359,15 @@ public interface JobsClient {
      * @return shipment pick up response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ShipmentPickUpResponseInner bookShipmentPickUp(
-        String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest);
+    ShipmentPickUpResponseInner bookShipmentPickUp(String resourceGroupName, String jobName,
+        ShipmentPickUpRequest shipmentPickUpRequest);
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,15 +376,15 @@ public interface JobsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> cancelWithResponse(
-        String resourceGroupName, String jobName, CancellationReason cancellationReason, Context context);
+    Response<Void> cancelWithResponse(String resourceGroupName, String jobName, CancellationReason cancellationReason,
+        Context context);
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -401,10 +395,10 @@ public interface JobsClient {
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -415,10 +409,10 @@ public interface JobsClient {
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -426,6 +420,6 @@ public interface JobsClient {
      * @return list of unencrypted credentials for accessing device as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UnencryptedCredentialsInner> listCredentials(
-        String resourceGroupName, String jobName, Context context);
+    PagedIterable<UnencryptedCredentialsInner> listCredentials(String resourceGroupName, String jobName,
+        Context context);
 }

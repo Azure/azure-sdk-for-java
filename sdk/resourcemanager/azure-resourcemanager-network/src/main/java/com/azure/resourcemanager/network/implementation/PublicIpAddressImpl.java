@@ -52,8 +52,7 @@ class PublicIpAddressImpl
 
     @Override
     protected Mono<PublicIpAddressInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getPublicIpAddresses()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -84,8 +83,7 @@ class PublicIpAddressImpl
         if (this.innerModel().dnsSettings() == null) {
             this.innerModel().withDnsSettings(new PublicIpAddressDnsSettings());
         }
-        this
-            .innerModel()
+        this.innerModel()
             .dnsSettings()
             .withDomainNameLabel((dnsName == null) ? null : dnsName.toLowerCase(Locale.ROOT));
         return this;
@@ -126,8 +124,7 @@ class PublicIpAddressImpl
         if (this.innerModel().dnsSettings() == null) {
             this.innerModel().withDnsSettings(new PublicIpAddressDnsSettings());
         }
-        this
-            .innerModel()
+        this.innerModel()
             .dnsSettings()
             .withReverseFqdn(reverseFqdn != null ? reverseFqdn.toLowerCase(Locale.ROOT) : null);
         return this;
@@ -189,29 +186,20 @@ class PublicIpAddressImpl
 
     @Override
     public Accepted<PublicIpAddress> beginCreate() {
-        return AcceptedImpl
-            .newAccepted(
-                logger,
-                this.manager().serviceClient().getHttpPipeline(),
-                this.manager().serviceClient().getDefaultPollInterval(),
-                () ->
-                    this
-                        .manager()
-                        .serviceClient()
-                        .getPublicIpAddresses()
-                        .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
-                        .block(),
-                inner -> new PublicIpAddressImpl(inner.name(), inner, this.manager()),
-                PublicIpAddressInner.class,
-                () -> {
-                    Flux<Indexable> dependencyTasksAsync =
-                        taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
-                    dependencyTasksAsync.blockLast();
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
+            () -> this.manager()
+                .serviceClient()
+                .getPublicIpAddresses()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
+                .block(),
+            inner -> new PublicIpAddressImpl(inner.name(), inner, this.manager()), PublicIpAddressInner.class, () -> {
+                Flux<Indexable> dependencyTasksAsync
+                    = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                dependencyTasksAsync.blockLast();
 
-                    this.cleanupDnsSettings();
-                },
-                this::setInner,
-                Context.NONE);
+                this.cleanupDnsSettings();
+            }, this::setInner, Context.NONE);
     }
 
     // CreateUpdateTaskGroup.ResourceCreator implementation
@@ -219,8 +207,7 @@ class PublicIpAddressImpl
     public Mono<PublicIpAddress> createResourceAsync() {
         this.cleanupDnsSettings();
 
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getPublicIpAddresses()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
@@ -320,16 +307,14 @@ class PublicIpAddressImpl
 
     @Override
     public Mono<PublicIpAddress> applyTagsAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getPublicIpAddresses()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()))
-            .flatMap(
-                inner -> {
-                    setInner(inner);
-                    return Mono.just((PublicIpAddress) PublicIpAddressImpl.this);
-                });
+            .flatMap(inner -> {
+                setInner(inner);
+                return Mono.just((PublicIpAddress) PublicIpAddressImpl.this);
+            });
     }
 
     @Override
@@ -369,9 +354,9 @@ class PublicIpAddressImpl
         return this;
     }
 
-//    @Override
-//    public PublicIpAddressImpl withDeleteOptions(DeleteOptions deleteOptions) {
-//        this.innerModel().withDeleteOption(deleteOptions);
-//        return this;
-//    }
+    //    @Override
+    //    public PublicIpAddressImpl withDeleteOptions(DeleteOptions deleteOptions) {
+    //        this.innerModel().withDeleteOption(deleteOptions);
+    //        return this;
+    //    }
 }

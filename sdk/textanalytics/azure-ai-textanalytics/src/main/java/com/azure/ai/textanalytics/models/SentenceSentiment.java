@@ -33,8 +33,8 @@ public final class SentenceSentiment {
     }
 
     static {
-        SentenceSentimentPropertiesHelper.setAccessor(
-            new SentenceSentimentPropertiesHelper.SentenceSentimentAccessor() {
+        SentenceSentimentPropertiesHelper
+            .setAccessor(new SentenceSentimentPropertiesHelper.SentenceSentimentAccessor() {
                 @Override
                 public void setOpinions(SentenceSentiment sentenceSentiment, IterableStream<SentenceOpinion> opinions) {
                     sentenceSentiment.setOpinions(opinions);

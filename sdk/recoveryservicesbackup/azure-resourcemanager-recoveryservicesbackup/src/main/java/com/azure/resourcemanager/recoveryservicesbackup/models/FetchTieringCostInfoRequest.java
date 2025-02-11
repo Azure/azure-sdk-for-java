@@ -6,61 +6,38 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Base class for tiering cost request.
  * Specific cost request types are derived from this class.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = FetchTieringCostInfoRequest.class,
-    visible = true)
-@JsonTypeName("FetchTieringCostInfoRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "FetchTieringCostInfoForRehydrationRequest",
-        value = FetchTieringCostInfoForRehydrationRequest.class),
-    @JsonSubTypes.Type(
-        name = "FetchTieringCostSavingsInfoForPolicyRequest",
-        value = FetchTieringCostSavingsInfoForPolicyRequest.class),
-    @JsonSubTypes.Type(
-        name = "FetchTieringCostSavingsInfoForProtectedItemRequest",
-        value = FetchTieringCostSavingsInfoForProtectedItemRequest.class),
-    @JsonSubTypes.Type(
-        name = "FetchTieringCostSavingsInfoForVaultRequest",
-        value = FetchTieringCostSavingsInfoForVaultRequest.class) })
 @Fluent
-public class FetchTieringCostInfoRequest {
+public class FetchTieringCostInfoRequest implements JsonSerializable<FetchTieringCostInfoRequest> {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
-    private String objectType;
+    private String objectType = "FetchTieringCostInfoRequest";
 
     /*
      * Source tier for the request
      */
-    @JsonProperty(value = "sourceTierType", required = true)
     private RecoveryPointTierType sourceTierType;
 
     /*
      * target tier for the request
      */
-    @JsonProperty(value = "targetTierType", required = true)
     private RecoveryPointTierType targetTierType;
 
     /**
      * Creates an instance of FetchTieringCostInfoRequest class.
      */
     public FetchTieringCostInfoRequest() {
-        this.objectType = "FetchTieringCostInfoRequest";
     }
 
     /**
@@ -132,4 +109,82 @@ public class FetchTieringCostInfoRequest {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FetchTieringCostInfoRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceTierType",
+            this.sourceTierType == null ? null : this.sourceTierType.toString());
+        jsonWriter.writeStringField("targetTierType",
+            this.targetTierType == null ? null : this.targetTierType.toString());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FetchTieringCostInfoRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FetchTieringCostInfoRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FetchTieringCostInfoRequest.
+     */
+    public static FetchTieringCostInfoRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("FetchTieringCostInfoForRehydrationRequest".equals(discriminatorValue)) {
+                    return FetchTieringCostInfoForRehydrationRequest.fromJson(readerToUse.reset());
+                } else if ("FetchTieringCostSavingsInfoForPolicyRequest".equals(discriminatorValue)) {
+                    return FetchTieringCostSavingsInfoForPolicyRequest.fromJson(readerToUse.reset());
+                } else if ("FetchTieringCostSavingsInfoForProtectedItemRequest".equals(discriminatorValue)) {
+                    return FetchTieringCostSavingsInfoForProtectedItemRequest.fromJson(readerToUse.reset());
+                } else if ("FetchTieringCostSavingsInfoForVaultRequest".equals(discriminatorValue)) {
+                    return FetchTieringCostSavingsInfoForVaultRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static FetchTieringCostInfoRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FetchTieringCostInfoRequest deserializedFetchTieringCostInfoRequest = new FetchTieringCostInfoRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceTierType".equals(fieldName)) {
+                    deserializedFetchTieringCostInfoRequest.sourceTierType
+                        = RecoveryPointTierType.fromString(reader.getString());
+                } else if ("targetTierType".equals(fieldName)) {
+                    deserializedFetchTieringCostInfoRequest.targetTierType
+                        = RecoveryPointTierType.fromString(reader.getString());
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedFetchTieringCostInfoRequest.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFetchTieringCostInfoRequest;
+        });
+    }
 }

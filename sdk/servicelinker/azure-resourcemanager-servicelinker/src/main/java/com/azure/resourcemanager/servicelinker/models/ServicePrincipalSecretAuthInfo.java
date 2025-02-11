@@ -6,36 +6,55 @@ package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The authentication info when authType is servicePrincipal secret. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType")
-@JsonTypeName("servicePrincipalSecret")
+/**
+ * The authentication info when authType is servicePrincipal secret.
+ */
 @Fluent
 public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
     /*
+     * The authentication type.
+     */
+    private AuthType authType = AuthType.SERVICE_PRINCIPAL_SECRET;
+
+    /*
      * ServicePrincipal application clientId for servicePrincipal auth.
      */
-    @JsonProperty(value = "clientId", required = true)
     private String clientId;
 
     /*
      * Principal Id for servicePrincipal auth.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
      * Secret for servicePrincipal auth.
      */
-    @JsonProperty(value = "secret", required = true)
     private String secret;
 
     /**
+     * Creates an instance of ServicePrincipalSecretAuthInfo class.
+     */
+    public ServicePrincipalSecretAuthInfo() {
+    }
+
+    /**
+     * Get the authType property: The authentication type.
+     * 
+     * @return the authType value.
+     */
+    @Override
+    public AuthType authType() {
+        return this.authType;
+    }
+
+    /**
      * Get the clientId property: ServicePrincipal application clientId for servicePrincipal auth.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -44,7 +63,7 @@ public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
 
     /**
      * Set the clientId property: ServicePrincipal application clientId for servicePrincipal auth.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ServicePrincipalSecretAuthInfo object itself.
      */
@@ -55,7 +74,7 @@ public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
 
     /**
      * Get the principalId property: Principal Id for servicePrincipal auth.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -64,7 +83,7 @@ public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
 
     /**
      * Set the principalId property: Principal Id for servicePrincipal auth.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the ServicePrincipalSecretAuthInfo object itself.
      */
@@ -75,7 +94,7 @@ public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
 
     /**
      * Get the secret property: Secret for servicePrincipal auth.
-     *
+     * 
      * @return the secret value.
      */
     public String secret() {
@@ -84,7 +103,7 @@ public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
 
     /**
      * Set the secret property: Secret for servicePrincipal auth.
-     *
+     * 
      * @param secret the secret value to set.
      * @return the ServicePrincipalSecretAuthInfo object itself.
      */
@@ -95,31 +114,74 @@ public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model ServicePrincipalSecretAuthInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientId in model ServicePrincipalSecretAuthInfo"));
         }
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model ServicePrincipalSecretAuthInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model ServicePrincipalSecretAuthInfo"));
         }
         if (secret() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secret in model ServicePrincipalSecretAuthInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secret in model ServicePrincipalSecretAuthInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServicePrincipalSecretAuthInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("secret", this.secret);
+        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicePrincipalSecretAuthInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicePrincipalSecretAuthInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServicePrincipalSecretAuthInfo.
+     */
+    public static ServicePrincipalSecretAuthInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicePrincipalSecretAuthInfo deserializedServicePrincipalSecretAuthInfo
+                = new ServicePrincipalSecretAuthInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientId".equals(fieldName)) {
+                    deserializedServicePrincipalSecretAuthInfo.clientId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedServicePrincipalSecretAuthInfo.principalId = reader.getString();
+                } else if ("secret".equals(fieldName)) {
+                    deserializedServicePrincipalSecretAuthInfo.secret = reader.getString();
+                } else if ("authType".equals(fieldName)) {
+                    deserializedServicePrincipalSecretAuthInfo.authType = AuthType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicePrincipalSecretAuthInfo;
+        });
+    }
 }

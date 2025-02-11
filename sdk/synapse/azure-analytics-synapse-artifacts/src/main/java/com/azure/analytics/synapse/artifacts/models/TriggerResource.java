@@ -20,6 +20,28 @@ public final class TriggerResource extends SubResource {
      */
     private Trigger properties;
 
+    /*
+     * Resource Etag.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
     /**
      * Creates an instance of TriggerResource class.
      */
@@ -44,6 +66,48 @@ public final class TriggerResource extends SubResource {
     public TriggerResource setProperties(Trigger properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -73,13 +137,13 @@ public final class TriggerResource extends SubResource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedTriggerResource.setId(reader.getString());
+                    deserializedTriggerResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedTriggerResource.setName(reader.getString());
+                    deserializedTriggerResource.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedTriggerResource.setType(reader.getString());
+                    deserializedTriggerResource.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedTriggerResource.setEtag(reader.getString());
+                    deserializedTriggerResource.etag = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedTriggerResource.properties = Trigger.fromJson(reader);
                 } else {

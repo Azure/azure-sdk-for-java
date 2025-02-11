@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A response. */
+/**
+ * A response.
+ */
 @Fluent
-public final class Response {
+public final class Response implements JsonSerializable<Response> {
     /*
      * A list of all the headers attached to the response.
      */
-    @JsonProperty(value = "headers")
     private Object headers;
 
     /*
      * The status code of the response.
      */
-    @JsonProperty(value = "statusCode")
     private Integer statusCode;
 
     /*
      * Details on the location of the body content.
      */
-    @JsonProperty(value = "bodyLink")
     private ContentLink bodyLink;
 
-    /** Creates an instance of Response class. */
+    /**
+     * Creates an instance of Response class.
+     */
     public Response() {
     }
 
     /**
      * Get the headers property: A list of all the headers attached to the response.
-     *
+     * 
      * @return the headers value.
      */
     public Object headers() {
@@ -43,7 +48,7 @@ public final class Response {
 
     /**
      * Set the headers property: A list of all the headers attached to the response.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the Response object itself.
      */
@@ -54,7 +59,7 @@ public final class Response {
 
     /**
      * Get the statusCode property: The status code of the response.
-     *
+     * 
      * @return the statusCode value.
      */
     public Integer statusCode() {
@@ -63,7 +68,7 @@ public final class Response {
 
     /**
      * Set the statusCode property: The status code of the response.
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the Response object itself.
      */
@@ -74,7 +79,7 @@ public final class Response {
 
     /**
      * Get the bodyLink property: Details on the location of the body content.
-     *
+     * 
      * @return the bodyLink value.
      */
     public ContentLink bodyLink() {
@@ -83,7 +88,7 @@ public final class Response {
 
     /**
      * Set the bodyLink property: Details on the location of the body content.
-     *
+     * 
      * @param bodyLink the bodyLink value to set.
      * @return the Response object itself.
      */
@@ -94,12 +99,54 @@ public final class Response {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (bodyLink() != null) {
             bodyLink().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("headers", this.headers);
+        jsonWriter.writeNumberField("statusCode", this.statusCode);
+        jsonWriter.writeJsonField("bodyLink", this.bodyLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Response from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Response if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Response.
+     */
+    public static Response fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Response deserializedResponse = new Response();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("headers".equals(fieldName)) {
+                    deserializedResponse.headers = reader.readUntyped();
+                } else if ("statusCode".equals(fieldName)) {
+                    deserializedResponse.statusCode = reader.getNullable(JsonReader::getInt);
+                } else if ("bodyLink".equals(fieldName)) {
+                    deserializedResponse.bodyLink = ContentLink.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResponse;
+        });
     }
 }

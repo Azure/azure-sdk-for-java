@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-/** Samples for Components GetByResourceGroup. */
+/**
+ * Samples for Components GetByResourceGroup.
+ */
 public final class ComponentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsGet.json
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsGet.
+     * json
      */
     /**
      * Sample code: ComponentGet.
-     *
+     * 
      * @param manager Entry point to ApplicationInsightsManager.
      */
     public static void componentGet(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager
-            .components()
+        manager.components()
             .getByResourceGroupWithResponse("my-resource-group", "my-component", com.azure.core.util.Context.NONE);
     }
 }

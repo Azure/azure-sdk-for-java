@@ -103,6 +103,27 @@ public interface Machine {
     ServiceStatuses serviceStatuses();
 
     /**
+     * Gets the hardwareProfile property: Information about the machine's hardware.
+     * 
+     * @return the hardwareProfile value.
+     */
+    HardwareProfile hardwareProfile();
+
+    /**
+     * Gets the storageProfile property: Information about the machine's storage.
+     * 
+     * @return the storageProfile value.
+     */
+    StorageProfile storageProfile();
+
+    /**
+     * Gets the firmwareProfile property: Information about the machine's firmware.
+     * 
+     * @return the firmwareProfile value.
+     */
+    FirmwareProfile firmwareProfile();
+
+    /**
      * Gets the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
      * 
      * @return the cloudMetadata value.

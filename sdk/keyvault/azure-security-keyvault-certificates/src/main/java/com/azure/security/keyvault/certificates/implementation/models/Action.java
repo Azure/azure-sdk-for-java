@@ -11,9 +11,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import java.io.IOException;
-import java.util.Objects;
 
-/** The action that will be executed. */
+/**
+ * The action that will be executed.
+ */
 @Fluent
 public final class Action implements JsonSerializable<Action> {
     /*
@@ -21,12 +22,15 @@ public final class Action implements JsonSerializable<Action> {
      */
     private CertificatePolicyAction actionType;
 
-    /** Creates an instance of Action class. */
-    public Action() {}
+    /**
+     * Creates an instance of Action class.
+     */
+    public Action() {
+    }
 
     /**
      * Get the actionType property: The type of the action.
-     *
+     * 
      * @return the actionType value.
      */
     public CertificatePolicyAction getActionType() {
@@ -35,7 +39,7 @@ public final class Action implements JsonSerializable<Action> {
 
     /**
      * Set the actionType property: The type of the action.
-     *
+     * 
      * @param actionType the actionType value to set.
      * @return the Action object itself.
      */
@@ -44,37 +48,39 @@ public final class Action implements JsonSerializable<Action> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("action_type", Objects.toString(this.actionType, null));
+        jsonWriter.writeStringField("action_type", this.actionType == null ? null : this.actionType.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of Action from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of Action if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
+     * JSON null.
      * @throws IOException If an error occurs while reading the Action.
      */
     public static Action fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Action deserializedAction = new Action();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            Action deserializedAction = new Action();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("action_type".equals(fieldName)) {
-                            deserializedAction.actionType = CertificatePolicyAction.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("action_type".equals(fieldName)) {
+                    deserializedAction.actionType = CertificatePolicyAction.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAction;
-                });
+            return deserializedAction;
+        });
     }
 }

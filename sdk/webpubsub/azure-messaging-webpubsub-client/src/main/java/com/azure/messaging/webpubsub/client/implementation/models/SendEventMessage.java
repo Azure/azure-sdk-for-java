@@ -22,7 +22,6 @@ public final class SendEventMessage extends WebPubSubMessageAck {
 
     private Object data;
 
-
     public String getType() {
         return TYPE;
     }

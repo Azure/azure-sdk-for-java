@@ -42,7 +42,6 @@ public class BlobBatchTestBase extends TestProxyTestBase {
 
     private int entityNo = 0; // Used to generate stable container names for recording tests requiring multiple containers.
 
-
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient versionedBlobServiceClient;
@@ -53,8 +52,8 @@ public class BlobBatchTestBase extends TestProxyTestBase {
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(Collections.singletonList(
-                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
+            interceptorManager.addSanitizers(
+                Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
         }
 
         interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
@@ -77,17 +76,16 @@ public class BlobBatchTestBase extends TestProxyTestBase {
             return;
         }
 
-        BlobServiceClient cleanupServiceClient = new BlobServiceClientBuilder()
-            .connectionString(getPrimaryConnectionString())
-            .buildClient();
+        BlobServiceClient cleanupServiceClient
+            = new BlobServiceClientBuilder().connectionString(getPrimaryConnectionString()).buildClient();
 
         cleanupServiceClient.listBlobContainers(new ListBlobContainersOptions().setPrefix(prefix), null)
             .forEach(containerItem -> cleanupServiceClient.deleteBlobContainer(containerItem.getName()));
     }
 
     protected BlobServiceClient getOAuthServiceClient() {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        BlobServiceClientBuilder builder
+            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
 
@@ -108,14 +106,12 @@ public class BlobBatchTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceAsyncClient getServiceAsyncClient(TestAccount account) {
-        return getServiceClientBuilder(account.getCredential(), account.getBlobEndpoint())
-            .buildAsyncClient();
+        return getServiceClientBuilder(account.getCredential(), account.getBlobEndpoint()).buildAsyncClient();
     }
 
-    protected BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential,
-        String endpoint, HttpPipelinePolicy... policies) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(endpoint);
+    protected BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
+        HttpPipelinePolicy... policies) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -135,8 +131,7 @@ public class BlobBatchTestBase extends TestProxyTestBase {
     }
 
     protected BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
-        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
-            .endpoint(endpoint);
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder().endpoint(endpoint);
 
         instrument(builder);
 
@@ -179,10 +174,7 @@ public class BlobBatchTestBase extends TestProxyTestBase {
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobClientBase blobClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .blobClient(blobClient)
-            .leaseId(leaseId)
-            .buildClient();
+        return new BlobLeaseClientBuilder().blobClient(blobClient).leaseId(leaseId).buildClient();
     }
 
     protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {

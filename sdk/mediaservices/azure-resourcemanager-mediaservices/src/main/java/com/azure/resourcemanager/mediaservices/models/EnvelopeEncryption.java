@@ -5,47 +5,51 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Class for EnvelopeEncryption encryption scheme. */
+/**
+ * Class for EnvelopeEncryption encryption scheme.
+ */
 @Fluent
-public final class EnvelopeEncryption {
+public final class EnvelopeEncryption implements JsonSerializable<EnvelopeEncryption> {
     /*
      * Representing supported protocols
      */
-    @JsonProperty(value = "enabledProtocols")
     private EnabledProtocols enabledProtocols;
 
     /*
      * Representing which tracks should not be encrypted
      */
-    @JsonProperty(value = "clearTracks")
     private List<TrackSelection> clearTracks;
 
     /*
      * Representing default content key for each encryption scheme and separate content keys for specific tracks
      */
-    @JsonProperty(value = "contentKeys")
     private StreamingPolicyContentKeys contentKeys;
 
     /*
-     * Template for the URL of the custom service delivering keys to end user players.  Not required when using Azure
-     * Media Services for issuing keys.  The template supports replaceable tokens that the service will update at
-     * runtime with the value specific to the request.  The currently supported token values are {AlternativeMediaId},
-     * which is replaced with the value of StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced
-     * with the value of identifier of the key being requested.
+     * Template for the URL of the custom service delivering keys to end user players. Not required when using Azure
+     * Media Services for issuing keys. The template supports replaceable tokens that the service will update at runtime
+     * with the value specific to the request. The currently supported token values are {AlternativeMediaId}, which is
+     * replaced with the value of StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the
+     * value of identifier of the key being requested.
      */
-    @JsonProperty(value = "customKeyAcquisitionUrlTemplate")
     private String customKeyAcquisitionUrlTemplate;
 
-    /** Creates an instance of EnvelopeEncryption class. */
+    /**
+     * Creates an instance of EnvelopeEncryption class.
+     */
     public EnvelopeEncryption() {
     }
 
     /**
      * Get the enabledProtocols property: Representing supported protocols.
-     *
+     * 
      * @return the enabledProtocols value.
      */
     public EnabledProtocols enabledProtocols() {
@@ -54,7 +58,7 @@ public final class EnvelopeEncryption {
 
     /**
      * Set the enabledProtocols property: Representing supported protocols.
-     *
+     * 
      * @param enabledProtocols the enabledProtocols value to set.
      * @return the EnvelopeEncryption object itself.
      */
@@ -65,7 +69,7 @@ public final class EnvelopeEncryption {
 
     /**
      * Get the clearTracks property: Representing which tracks should not be encrypted.
-     *
+     * 
      * @return the clearTracks value.
      */
     public List<TrackSelection> clearTracks() {
@@ -74,7 +78,7 @@ public final class EnvelopeEncryption {
 
     /**
      * Set the clearTracks property: Representing which tracks should not be encrypted.
-     *
+     * 
      * @param clearTracks the clearTracks value to set.
      * @return the EnvelopeEncryption object itself.
      */
@@ -86,7 +90,7 @@ public final class EnvelopeEncryption {
     /**
      * Get the contentKeys property: Representing default content key for each encryption scheme and separate content
      * keys for specific tracks.
-     *
+     * 
      * @return the contentKeys value.
      */
     public StreamingPolicyContentKeys contentKeys() {
@@ -96,7 +100,7 @@ public final class EnvelopeEncryption {
     /**
      * Set the contentKeys property: Representing default content key for each encryption scheme and separate content
      * keys for specific tracks.
-     *
+     * 
      * @param contentKeys the contentKeys value to set.
      * @return the EnvelopeEncryption object itself.
      */
@@ -112,7 +116,7 @@ public final class EnvelopeEncryption {
      * supported token values are {AlternativeMediaId}, which is replaced with the value of
      * StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the
      * key being requested.
-     *
+     * 
      * @return the customKeyAcquisitionUrlTemplate value.
      */
     public String customKeyAcquisitionUrlTemplate() {
@@ -126,7 +130,7 @@ public final class EnvelopeEncryption {
      * supported token values are {AlternativeMediaId}, which is replaced with the value of
      * StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the
      * key being requested.
-     *
+     * 
      * @param customKeyAcquisitionUrlTemplate the customKeyAcquisitionUrlTemplate value to set.
      * @return the EnvelopeEncryption object itself.
      */
@@ -137,7 +141,7 @@ public final class EnvelopeEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -150,5 +154,51 @@ public final class EnvelopeEncryption {
         if (contentKeys() != null) {
             contentKeys().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("enabledProtocols", this.enabledProtocols);
+        jsonWriter.writeArrayField("clearTracks", this.clearTracks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("contentKeys", this.contentKeys);
+        jsonWriter.writeStringField("customKeyAcquisitionUrlTemplate", this.customKeyAcquisitionUrlTemplate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvelopeEncryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvelopeEncryption if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvelopeEncryption.
+     */
+    public static EnvelopeEncryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvelopeEncryption deserializedEnvelopeEncryption = new EnvelopeEncryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabledProtocols".equals(fieldName)) {
+                    deserializedEnvelopeEncryption.enabledProtocols = EnabledProtocols.fromJson(reader);
+                } else if ("clearTracks".equals(fieldName)) {
+                    List<TrackSelection> clearTracks = reader.readArray(reader1 -> TrackSelection.fromJson(reader1));
+                    deserializedEnvelopeEncryption.clearTracks = clearTracks;
+                } else if ("contentKeys".equals(fieldName)) {
+                    deserializedEnvelopeEncryption.contentKeys = StreamingPolicyContentKeys.fromJson(reader);
+                } else if ("customKeyAcquisitionUrlTemplate".equals(fieldName)) {
+                    deserializedEnvelopeEncryption.customKeyAcquisitionUrlTemplate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvelopeEncryption;
+        });
     }
 }

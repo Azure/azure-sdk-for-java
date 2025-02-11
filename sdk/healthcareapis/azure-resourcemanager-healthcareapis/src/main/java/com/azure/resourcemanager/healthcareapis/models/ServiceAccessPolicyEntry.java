@@ -6,17 +6,20 @@ package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An access policy entry.
  */
 @Fluent
-public final class ServiceAccessPolicyEntry {
+public final class ServiceAccessPolicyEntry implements JsonSerializable<ServiceAccessPolicyEntry> {
     /*
      * An Azure AD object ID (User or Apps) that is allowed access to the FHIR service.
      */
-    @JsonProperty(value = "objectId", required = true)
     private String objectId;
 
     /**
@@ -59,4 +62,41 @@ public final class ServiceAccessPolicyEntry {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceAccessPolicyEntry.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectId", this.objectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceAccessPolicyEntry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceAccessPolicyEntry if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceAccessPolicyEntry.
+     */
+    public static ServiceAccessPolicyEntry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceAccessPolicyEntry deserializedServiceAccessPolicyEntry = new ServiceAccessPolicyEntry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectId".equals(fieldName)) {
+                    deserializedServiceAccessPolicyEntry.objectId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceAccessPolicyEntry;
+        });
+    }
 }

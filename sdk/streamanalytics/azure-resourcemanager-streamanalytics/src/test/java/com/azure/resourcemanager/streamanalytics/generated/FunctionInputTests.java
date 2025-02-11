@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class FunctionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FunctionInput model = BinaryData.fromString("{\"dataType\":\"psqucmpoyf\",\"isConfigurationParameter\":true}")
+        FunctionInput model = BinaryData.fromString("{\"dataType\":\"rl\",\"isConfigurationParameter\":true}")
             .toObject(FunctionInput.class);
-        Assertions.assertEquals("psqucmpoyf", model.dataType());
+        Assertions.assertEquals("rl", model.dataType());
         Assertions.assertEquals(true, model.isConfigurationParameter());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FunctionInput model = new FunctionInput().withDataType("psqucmpoyf").withIsConfigurationParameter(true);
+        FunctionInput model = new FunctionInput().withDataType("rl").withIsConfigurationParameter(true);
         model = BinaryData.fromObject(model).toObject(FunctionInput.class);
-        Assertions.assertEquals("psqucmpoyf", model.dataType());
+        Assertions.assertEquals("rl", model.dataType());
         Assertions.assertEquals(true, model.isConfigurationParameter());
     }
 }

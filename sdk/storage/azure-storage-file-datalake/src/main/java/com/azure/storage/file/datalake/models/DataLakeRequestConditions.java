@@ -19,6 +19,12 @@ public class DataLakeRequestConditions extends RequestConditions {
     private String leaseId;
 
     /**
+     * Creates a new instance of {@link DataLakeRequestConditions}.
+     */
+    public DataLakeRequestConditions() {
+    }
+
+    /**
      * Optionally limit requests to resources that match the passed ETag.
      *
      * @param ifMatch ETag that resources must match.

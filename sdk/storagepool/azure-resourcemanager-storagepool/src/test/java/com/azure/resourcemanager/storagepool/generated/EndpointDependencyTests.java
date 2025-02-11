@@ -13,51 +13,28 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointDependency model =
-            BinaryData
-                .fromString(
-                    "{\"domainName\":\"hjfbebrjcxe\",\"endpointDetails\":[{\"ipAddress\":\"utttxfvjrbirp\",\"port\":684290279,\"latency\":2.3162545636709053,\"isAccessible\":false},{\"ipAddress\":\"fnljky\",\"port\":197436298,\"latency\":88.18883517379254,\"isAccessible\":true},{\"ipAddress\":\"idokgjlj\",\"port\":1125977089,\"latency\":65.1236532515971,\"isAccessible\":true},{\"ipAddress\":\"gsncghkjeszz\",\"port\":1537141479,\"latency\":96.69349841949034,\"isAccessible\":true}]}")
-                .toObject(EndpointDependency.class);
-        Assertions.assertEquals("hjfbebrjcxe", model.domainName());
-        Assertions.assertEquals("utttxfvjrbirp", model.endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(684290279, model.endpointDetails().get(0).port());
-        Assertions.assertEquals(2.3162545636709053D, model.endpointDetails().get(0).latency());
-        Assertions.assertEquals(false, model.endpointDetails().get(0).isAccessible());
+        EndpointDependency model = BinaryData.fromString(
+            "{\"domainName\":\"sgwbnbbeld\",\"endpointDetails\":[{\"ipAddress\":\"baliourqhakauha\",\"port\":798376166,\"latency\":66.46080652783365,\"isAccessible\":true}]}")
+            .toObject(EndpointDependency.class);
+        Assertions.assertEquals("sgwbnbbeld", model.domainName());
+        Assertions.assertEquals("baliourqhakauha", model.endpointDetails().get(0).ipAddress());
+        Assertions.assertEquals(798376166, model.endpointDetails().get(0).port());
+        Assertions.assertEquals(66.46080652783365D, model.endpointDetails().get(0).latency());
+        Assertions.assertEquals(true, model.endpointDetails().get(0).isAccessible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointDependency model =
-            new EndpointDependency()
-                .withDomainName("hjfbebrjcxe")
-                .withEndpointDetails(
-                    Arrays
-                        .asList(
-                            new EndpointDetail()
-                                .withIpAddress("utttxfvjrbirp")
-                                .withPort(684290279)
-                                .withLatency(2.3162545636709053D)
-                                .withIsAccessible(false),
-                            new EndpointDetail()
-                                .withIpAddress("fnljky")
-                                .withPort(197436298)
-                                .withLatency(88.18883517379254D)
-                                .withIsAccessible(true),
-                            new EndpointDetail()
-                                .withIpAddress("idokgjlj")
-                                .withPort(1125977089)
-                                .withLatency(65.1236532515971D)
-                                .withIsAccessible(true),
-                            new EndpointDetail()
-                                .withIpAddress("gsncghkjeszz")
-                                .withPort(1537141479)
-                                .withLatency(96.69349841949034D)
-                                .withIsAccessible(true)));
+        EndpointDependency model = new EndpointDependency().withDomainName("sgwbnbbeld")
+            .withEndpointDetails(Arrays.asList(new EndpointDetail().withIpAddress("baliourqhakauha")
+                .withPort(798376166)
+                .withLatency(66.46080652783365D)
+                .withIsAccessible(true)));
         model = BinaryData.fromObject(model).toObject(EndpointDependency.class);
-        Assertions.assertEquals("hjfbebrjcxe", model.domainName());
-        Assertions.assertEquals("utttxfvjrbirp", model.endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(684290279, model.endpointDetails().get(0).port());
-        Assertions.assertEquals(2.3162545636709053D, model.endpointDetails().get(0).latency());
-        Assertions.assertEquals(false, model.endpointDetails().get(0).isAccessible());
+        Assertions.assertEquals("sgwbnbbeld", model.domainName());
+        Assertions.assertEquals("baliourqhakauha", model.endpointDetails().get(0).ipAddress());
+        Assertions.assertEquals(798376166, model.endpointDetails().get(0).port());
+        Assertions.assertEquals(66.46080652783365D, model.endpointDetails().get(0).latency());
+        Assertions.assertEquals(true, model.endpointDetails().get(0).isAccessible());
     }
 }

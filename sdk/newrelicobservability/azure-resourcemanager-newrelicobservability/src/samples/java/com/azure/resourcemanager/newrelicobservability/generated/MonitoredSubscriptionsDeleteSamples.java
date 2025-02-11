@@ -21,7 +21,7 @@ public final class MonitoredSubscriptionsDeleteSamples {
      */
     public static void monitorsDeleteMonitoredSubscriptions(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitoredSubscriptions().delete("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT,
-            com.azure.core.util.Context.NONE);
+        manager.monitoredSubscriptions()
+            .delete("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }

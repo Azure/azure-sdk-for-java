@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.resourceconnector.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Appliances operation. */
+/**
+ * Appliances operation.
+ */
 @Immutable
-public final class ApplianceOperationInner {
+public final class ApplianceOperationInner implements JsonSerializable<ApplianceOperationInner> {
     /*
      * Describes the properties of an Appliances Operation Value Display.
      */
-    @JsonProperty(value = "display")
     private ApplianceOperationValueDisplay innerDisplay;
 
     /*
      * Is this Operation a data plane operation
      */
-    @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDataAction;
 
     /*
      * The name of the compute operation.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The origin of the compute operation.
      */
-    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private String origin;
 
-    /** Creates an instance of ApplianceOperationInner class. */
+    /**
+     * Creates an instance of ApplianceOperationInner class.
+     */
     public ApplianceOperationInner() {
     }
 
     /**
      * Get the innerDisplay property: Describes the properties of an Appliances Operation Value Display.
-     *
+     * 
      * @return the innerDisplay value.
      */
     private ApplianceOperationValueDisplay innerDisplay() {
@@ -49,7 +53,7 @@ public final class ApplianceOperationInner {
 
     /**
      * Get the isDataAction property: Is this Operation a data plane operation.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -58,7 +62,7 @@ public final class ApplianceOperationInner {
 
     /**
      * Get the name property: The name of the compute operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -67,7 +71,7 @@ public final class ApplianceOperationInner {
 
     /**
      * Get the origin property: The origin of the compute operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -76,7 +80,7 @@ public final class ApplianceOperationInner {
 
     /**
      * Get the description property: The description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -85,7 +89,7 @@ public final class ApplianceOperationInner {
 
     /**
      * Get the operation property: The display name of the compute operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -94,7 +98,7 @@ public final class ApplianceOperationInner {
 
     /**
      * Get the provider property: The resource provider for the operation.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -103,7 +107,7 @@ public final class ApplianceOperationInner {
 
     /**
      * Get the resource property: The display name of the resource the operation applies to.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -112,12 +116,54 @@ public final class ApplianceOperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerDisplay() != null) {
             innerDisplay().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", this.innerDisplay);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplianceOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplianceOperationInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplianceOperationInner.
+     */
+    public static ApplianceOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplianceOperationInner deserializedApplianceOperationInner = new ApplianceOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("display".equals(fieldName)) {
+                    deserializedApplianceOperationInner.innerDisplay = ApplianceOperationValueDisplay.fromJson(reader);
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedApplianceOperationInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplianceOperationInner.name = reader.getString();
+                } else if ("origin".equals(fieldName)) {
+                    deserializedApplianceOperationInner.origin = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplianceOperationInner;
+        });
     }
 }

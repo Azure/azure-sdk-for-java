@@ -19,35 +19,37 @@ public final class DynamicsEntityDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicsEntityDataset model = BinaryData.fromString(
-            "{\"type\":\"DynamicsEntity\",\"typeProperties\":{\"entityName\":\"datam\"},\"description\":\"bvvcpw\",\"structure\":\"datasuspnhmzy\",\"schema\":\"datafetev\",\"linkedServiceName\":{\"referenceName\":\"ntfknwacycsyo\",\"parameters\":{\"xrmhnmizhvprh\":\"datakhfhfsatvc\",\"lobzgott\":\"dataqwcublehhk\"}},\"parameters\":{\"mtbtdvucfvvra\":{\"type\":\"Object\",\"defaultValue\":\"datazigh\"},\"bwkdwjyjiznioroo\":{\"type\":\"Object\",\"defaultValue\":\"dataurdeewlsuxp\"},\"uftrni\":{\"type\":\"SecureString\",\"defaultValue\":\"datataspmcrei\"}},\"annotations\":[\"datainuwqxungrob\"],\"folder\":{\"name\":\"msxjwdylwxm\"},\"\":{\"ugeerclbltbhpwac\":\"dataow\"}}")
+            "{\"type\":\"DynamicsEntity\",\"typeProperties\":{\"entityName\":\"datab\"},\"description\":\"cjy\",\"structure\":\"datadcizeqqfop\",\"schema\":\"dataopmotdsf\",\"linkedServiceName\":{\"referenceName\":\"o\",\"parameters\":{\"ldzmxojzsvmaigb\":\"datayoazyfbkm\"}},\"parameters\":{\"ihba\":{\"type\":\"String\",\"defaultValue\":\"dataejthgeecbpergwlc\"},\"jixiujzkc\":{\"type\":\"String\",\"defaultValue\":\"datasokknpugzjwdizc\"},\"w\":{\"type\":\"String\",\"defaultValue\":\"datagkr\"},\"okn\":{\"type\":\"Int\",\"defaultValue\":\"datakkbxktxbbwlmnw\"}},\"annotations\":[\"dataddlggb\",\"dataa\"],\"folder\":{\"name\":\"zubak\"},\"\":{\"ffetp\":\"datavggcmfn\",\"wewzlscgsme\":\"datami\",\"thhx\":\"datanqvxgvohd\"}}")
             .toObject(DynamicsEntityDataset.class);
-        Assertions.assertEquals("bvvcpw", model.description());
-        Assertions.assertEquals("ntfknwacycsyo", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("mtbtdvucfvvra").type());
-        Assertions.assertEquals("msxjwdylwxm", model.folder().name());
+        Assertions.assertEquals("cjy", model.description());
+        Assertions.assertEquals("o", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("ihba").type());
+        Assertions.assertEquals("zubak", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicsEntityDataset model = new DynamicsEntityDataset().withDescription("bvvcpw")
-            .withStructure("datasuspnhmzy")
-            .withSchema("datafetev")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ntfknwacycsyo")
-                .withParameters(mapOf("xrmhnmizhvprh", "datakhfhfsatvc", "lobzgott", "dataqwcublehhk")))
-            .withParameters(mapOf("mtbtdvucfvvra",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datazigh"),
-                "bwkdwjyjiznioroo",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataurdeewlsuxp"),
-                "uftrni",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datataspmcrei")))
-            .withAnnotations(Arrays.asList("datainuwqxungrob"))
-            .withFolder(new DatasetFolder().withName("msxjwdylwxm"))
-            .withEntityName("datam");
+        DynamicsEntityDataset model
+            = new DynamicsEntityDataset().withDescription("cjy")
+                .withStructure("datadcizeqqfop")
+                .withSchema("dataopmotdsf")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("o")
+                    .withParameters(mapOf("ldzmxojzsvmaigb", "datayoazyfbkm")))
+                .withParameters(mapOf("ihba",
+                    new ParameterSpecification().withType(ParameterType.STRING)
+                        .withDefaultValue("dataejthgeecbpergwlc"),
+                    "jixiujzkc",
+                    new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datasokknpugzjwdizc"),
+                    "w", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datagkr"), "okn",
+                    new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datakkbxktxbbwlmnw")))
+                .withAnnotations(Arrays.asList("dataddlggb", "dataa"))
+                .withFolder(new DatasetFolder().withName("zubak"))
+                .withEntityName("datab");
         model = BinaryData.fromObject(model).toObject(DynamicsEntityDataset.class);
-        Assertions.assertEquals("bvvcpw", model.description());
-        Assertions.assertEquals("ntfknwacycsyo", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("mtbtdvucfvvra").type());
-        Assertions.assertEquals("msxjwdylwxm", model.folder().name());
+        Assertions.assertEquals("cjy", model.description());
+        Assertions.assertEquals("o", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("ihba").type());
+        Assertions.assertEquals("zubak", model.folder().name());
     }
 
     // Use "Map.of" if available

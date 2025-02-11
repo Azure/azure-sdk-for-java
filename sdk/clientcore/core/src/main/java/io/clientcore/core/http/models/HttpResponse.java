@@ -11,6 +11,8 @@ import java.util.function.Function;
 
 /**
  * The response of an {@link HttpRequest}.
+ *
+ * @param <T> The type of the response value.
  */
 public class HttpResponse<T> implements Response<T> {
     private boolean isValueDeserialized = false;
@@ -29,7 +31,7 @@ public class HttpResponse<T> implements Response<T> {
 
             @Override
             public HttpResponse<?> setBodyDeserializer(HttpResponse<?> httpResponse,
-                                                       Function<BinaryData, Object> bodyDeserializer) {
+                Function<BinaryData, Object> bodyDeserializer) {
                 return httpResponse.setBodyDeserializer(bodyDeserializer);
             }
         });

@@ -6,24 +6,31 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** File source details. */
+/**
+ * File source details.
+ */
 @Fluent
-public final class FileSourceInfo {
+public final class FileSourceInfo implements JsonSerializable<FileSourceInfo> {
     /*
      * File share ID.
      */
-    @JsonProperty(value = "shareId", required = true)
     private String shareId;
 
-    /** Creates an instance of FileSourceInfo class. */
+    /**
+     * Creates an instance of FileSourceInfo class.
+     */
     public FileSourceInfo() {
     }
 
     /**
      * Get the shareId property: File share ID.
-     *
+     * 
      * @return the shareId value.
      */
     public String shareId() {
@@ -32,7 +39,7 @@ public final class FileSourceInfo {
 
     /**
      * Set the shareId property: File share ID.
-     *
+     * 
      * @param shareId the shareId value to set.
      * @return the FileSourceInfo object itself.
      */
@@ -43,16 +50,52 @@ public final class FileSourceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (shareId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property shareId in model FileSourceInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property shareId in model FileSourceInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FileSourceInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("shareId", this.shareId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileSourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileSourceInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileSourceInfo.
+     */
+    public static FileSourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileSourceInfo deserializedFileSourceInfo = new FileSourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("shareId".equals(fieldName)) {
+                    deserializedFileSourceInfo.shareId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileSourceInfo;
+        });
+    }
 }

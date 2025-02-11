@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DefaultKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultKey model =
-            BinaryData.fromString("{\"label\":\"ewgdrjervn\",\"policyName\":\"nqpeh\"}").toObject(DefaultKey.class);
-        Assertions.assertEquals("ewgdrjervn", model.label());
-        Assertions.assertEquals("nqpeh", model.policyName());
+        DefaultKey model = BinaryData.fromString("{\"label\":\"jhkycub\",\"policyName\":\"dgssofwqmzqal\"}")
+            .toObject(DefaultKey.class);
+        Assertions.assertEquals("jhkycub", model.label());
+        Assertions.assertEquals("dgssofwqmzqal", model.policyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefaultKey model = new DefaultKey().withLabel("ewgdrjervn").withPolicyName("nqpeh");
+        DefaultKey model = new DefaultKey().withLabel("jhkycub").withPolicyName("dgssofwqmzqal");
         model = BinaryData.fromObject(model).toObject(DefaultKey.class);
-        Assertions.assertEquals("ewgdrjervn", model.label());
-        Assertions.assertEquals("nqpeh", model.policyName());
+        Assertions.assertEquals("jhkycub", model.label());
+        Assertions.assertEquals("dgssofwqmzqal", model.policyName());
     }
 }

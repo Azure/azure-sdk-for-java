@@ -74,7 +74,7 @@ public class OkHttpHttpClientBuilderJavaDocCodeSnippets {
         // BEGIN: io.clientcore.http.okhttp3.using-existing-okhttp
         // Create an OkHttpClient with connection timeout of 250 seconds.
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(Duration.ofSeconds(250)).build();
-        // Use "okHttpClient" instance to create an azure-core HttpClient "client".
+        // Use "okHttpClient" instance to create a Client Core HttpClient "client".
         // Both "okHttpClient" and "client" share same underlying resources such as
         // connection pool, thread pool.
         // "client" inherits connection timeout settings and add proxy.

@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeVersionResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The list of application type version resources for the specified application type name resource.
  */
 @Fluent
-public final class ApplicationTypeVersionResourceList {
+public final class ApplicationTypeVersionResourceList implements JsonSerializable<ApplicationTypeVersionResourceList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<ApplicationTypeVersionResourceInner> value;
 
     /*
      * URL to get the next set of application type version list results if there are any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,46 @@ public final class ApplicationTypeVersionResourceList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationTypeVersionResourceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationTypeVersionResourceList if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationTypeVersionResourceList.
+     */
+    public static ApplicationTypeVersionResourceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationTypeVersionResourceList deserializedApplicationTypeVersionResourceList
+                = new ApplicationTypeVersionResourceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ApplicationTypeVersionResourceInner> value
+                        = reader.readArray(reader1 -> ApplicationTypeVersionResourceInner.fromJson(reader1));
+                    deserializedApplicationTypeVersionResourceList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationTypeVersionResourceList;
+        });
     }
 }

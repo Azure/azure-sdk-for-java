@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The language name, for example Python. */
+/**
+ * The language name, for example Python.
+ */
 public final class Language extends ExpandableStringEnum<Language> {
-    /** Static value Python for Language. */
+    /**
+     * Static value Python for Language.
+     */
     public static final Language PYTHON = fromString("Python");
 
     /**
      * Creates a new instance of Language value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class Language extends ExpandableStringEnum<Language> {
 
     /**
      * Creates or finds a Language from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Language.
      */
-    @JsonCreator
     public static Language fromString(String name) {
         return fromString(name, Language.class);
     }
 
     /**
      * Gets known Language values.
-     *
+     * 
      * @return known Language values.
      */
     public static Collection<Language> values() {

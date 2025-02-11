@@ -6,24 +6,26 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the client certificate details using thumbprint.
  */
 @Fluent
-public final class ClientCertificateThumbprint {
+public final class ClientCertificateThumbprint implements JsonSerializable<ClientCertificateThumbprint> {
     /*
-     * Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read
-     * only operations on the cluster.
+     * Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read only
+     * operations on the cluster.
      */
-    @JsonProperty(value = "isAdmin", required = true)
     private boolean isAdmin;
 
     /*
      * The thumbprint of the client certificate.
      */
-    @JsonProperty(value = "certificateThumbprint", required = true)
     private String certificateThumbprint;
 
     /**
@@ -81,10 +83,51 @@ public final class ClientCertificateThumbprint {
      */
     public void validate() {
         if (certificateThumbprint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property certificateThumbprint in model ClientCertificateThumbprint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property certificateThumbprint in model ClientCertificateThumbprint"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClientCertificateThumbprint.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isAdmin", this.isAdmin);
+        jsonWriter.writeStringField("certificateThumbprint", this.certificateThumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientCertificateThumbprint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientCertificateThumbprint if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClientCertificateThumbprint.
+     */
+    public static ClientCertificateThumbprint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientCertificateThumbprint deserializedClientCertificateThumbprint = new ClientCertificateThumbprint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isAdmin".equals(fieldName)) {
+                    deserializedClientCertificateThumbprint.isAdmin = reader.getBoolean();
+                } else if ("certificateThumbprint".equals(fieldName)) {
+                    deserializedClientCertificateThumbprint.certificateThumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientCertificateThumbprint;
+        });
+    }
 }

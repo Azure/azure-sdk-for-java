@@ -10,7 +10,7 @@ import com.azure.resourcemanager.mobilenetwork.models.CertificateProvisioning;
 public final class CertificateProvisioningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateProvisioning model = BinaryData.fromString("{\"state\":\"Failed\",\"reason\":\"wgxhn\"}")
+        CertificateProvisioning model = BinaryData.fromString("{\"state\":\"NotProvisioned\",\"reason\":\"fbkp\"}")
             .toObject(CertificateProvisioning.class);
     }
 

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.managednetworkfabric.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
@@ -30,6 +31,10 @@ public final class NetworkInterfaceImpl
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String physicalIdentifier() {
@@ -91,25 +96,21 @@ public final class NetworkInterfaceImpl
     }
 
     public NetworkInterface create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkInterfaces()
-                .create(resourceGroupName, networkDeviceName, networkInterfaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkInterfaces()
+            .create(resourceGroupName, networkDeviceName, networkInterfaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetworkInterface create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkInterfaces()
-                .create(resourceGroupName, networkDeviceName, networkInterfaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkInterfaces()
+            .create(resourceGroupName, networkDeviceName, networkInterfaceName, this.innerModel(), context);
         return this;
     }
 
-    NetworkInterfaceImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    NetworkInterfaceImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new NetworkInterfaceInner();
         this.serviceManager = serviceManager;
         this.networkInterfaceName = name;
@@ -121,63 +122,52 @@ public final class NetworkInterfaceImpl
     }
 
     public NetworkInterface apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkInterfaces()
-                .update(resourceGroupName, networkDeviceName, networkInterfaceName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkInterfaces()
+            .update(resourceGroupName, networkDeviceName, networkInterfaceName, updateBody, Context.NONE);
         return this;
     }
 
     public NetworkInterface apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkInterfaces()
-                .update(resourceGroupName, networkDeviceName, networkInterfaceName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkInterfaces()
+            .update(resourceGroupName, networkDeviceName, networkInterfaceName, updateBody, context);
         return this;
     }
 
-    NetworkInterfaceImpl(
-        NetworkInterfaceInner innerObject,
+    NetworkInterfaceImpl(NetworkInterfaceInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkDeviceName = Utils.getValueFromIdByName(innerObject.id(), "networkDevices");
-        this.networkInterfaceName = Utils.getValueFromIdByName(innerObject.id(), "networkInterfaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkDeviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkDevices");
+        this.networkInterfaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkInterfaces");
     }
 
     public NetworkInterface refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkInterfaces()
-                .getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkInterfaces()
+            .getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkInterface refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkInterfaces()
-                .getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkInterfaces()
+            .getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, context)
+            .getValue();
         return this;
     }
 
     public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body) {
-        return serviceManager
-            .networkInterfaces()
+        return serviceManager.networkInterfaces()
             .updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .networkInterfaces()
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body,
+        Context context) {
+        return serviceManager.networkInterfaces()
             .updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body, context);
     }
 

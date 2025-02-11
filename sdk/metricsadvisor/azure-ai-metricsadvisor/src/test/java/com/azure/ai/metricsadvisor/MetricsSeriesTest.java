@@ -31,8 +31,8 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricDimensionValues(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
-        List<String> actualDimensionValues = client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME)
-            .stream().collect(Collectors.toList());
+        List<String> actualDimensionValues
+            = client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME).stream().collect(Collectors.toList());
         assertEquals(EXPECTED_DIMENSION_VALUES_COUNT, actualDimensionValues.size());
     }
 
@@ -43,8 +43,9 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
-        client.listMetricSeriesData(METRIC_ID, Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
-            TIME_SERIES_START_TIME, TIME_SERIES_END_TIME)
+        client
+            .listMetricSeriesData(METRIC_ID, Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
+                TIME_SERIES_START_TIME, TIME_SERIES_END_TIME)
             .forEach(metricSeriesData -> {
                 assertEquals(METRIC_ID, metricSeriesData.getMetricId());
                 assertNotNull(metricSeriesData.getTimestamps());
@@ -59,8 +60,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricSeriesDefinitions(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
-        client.listMetricSeriesDefinitions(METRIC_ID,
-                TIME_SERIES_START_TIME)
+        client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME)
             .stream()
             .limit(LISTING_SERIES_DEFINITIONS_LIMIT)
             .forEach(metricSeriesDefinition -> {
@@ -77,12 +77,13 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     public void listMetricSeriesDefinitionsDimensionFilter(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
-        List<MetricSeriesDefinition> actualMetricSeriesDefinitions
-            = client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
-                new ListMetricSeriesDefinitionOptions()
-                .setDimensionCombinationToFilter(Collections.singletonMap("Dim1", Collections.singletonList("JPN"))),
+        List<MetricSeriesDefinition> actualMetricSeriesDefinitions = client
+            .listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
+                new ListMetricSeriesDefinitionOptions().setDimensionCombinationToFilter(
+                    Collections.singletonMap("Dim1", Collections.singletonList("JPN"))),
                 Context.NONE)
-            .stream().collect(Collectors.toList());
+            .stream()
+            .collect(Collectors.toList());
 
         actualMetricSeriesDefinitions.forEach(metricSeriesDefinition -> {
             final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("Dim1");
@@ -98,11 +99,11 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricEnrichmentStatus(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
-        List<EnrichmentStatus> enrichmentStatuses =
-            client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
+        List<EnrichmentStatus> enrichmentStatuses = client
+            .listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
                 OffsetDateTime.parse("2021-10-01T00:00:00Z"), OffsetDateTime.parse("2021-10-30T00:00:00Z"))
-                .stream()
-                .collect(Collectors.toList());
+            .stream()
+            .collect(Collectors.toList());
 
         enrichmentStatuses.forEach(MetricsSeriesTestBase::validateEnrichmentStatus);
     }

@@ -5,40 +5,46 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters supplied to the Update Event Source operation. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = EventSourceUpdateParameters.class)
-@JsonTypeName("EventSourceUpdateParameters")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Microsoft.EventHub", value = EventHubEventSourceUpdateParameters.class),
-    @JsonSubTypes.Type(name = "Microsoft.IoTHub", value = IoTHubEventSourceUpdateParameters.class)
-})
+/**
+ * Parameters supplied to the Update Event Source operation.
+ */
 @Fluent
-public class EventSourceUpdateParameters {
+public class EventSourceUpdateParameters implements JsonSerializable<EventSourceUpdateParameters> {
+    /*
+     * The kind of the event source.
+     */
+    private EventSourceKind kind = EventSourceKind.fromString("EventSourceUpdateParameters");
+
     /*
      * Key-value pairs of additional properties for the event source.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of EventSourceUpdateParameters class. */
+    /**
+     * Creates an instance of EventSourceUpdateParameters class.
+     */
     public EventSourceUpdateParameters() {
     }
 
     /**
+     * Get the kind property: The kind of the event source.
+     * 
+     * @return the kind value.
+     */
+    public EventSourceKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the tags property: Key-value pairs of additional properties for the event source.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -47,7 +53,7 @@ public class EventSourceUpdateParameters {
 
     /**
      * Set the tags property: Key-value pairs of additional properties for the event source.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the EventSourceUpdateParameters object itself.
      */
@@ -58,9 +64,76 @@ public class EventSourceUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventSourceUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventSourceUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventSourceUpdateParameters.
+     */
+    public static EventSourceUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Microsoft.EventHub".equals(discriminatorValue)) {
+                    return EventHubEventSourceUpdateParameters.fromJson(readerToUse.reset());
+                } else if ("Microsoft.IoTHub".equals(discriminatorValue)) {
+                    return IoTHubEventSourceUpdateParameters.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EventSourceUpdateParameters fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventSourceUpdateParameters deserializedEventSourceUpdateParameters = new EventSourceUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedEventSourceUpdateParameters.kind = EventSourceKind.fromString(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEventSourceUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventSourceUpdateParameters;
+        });
     }
 }

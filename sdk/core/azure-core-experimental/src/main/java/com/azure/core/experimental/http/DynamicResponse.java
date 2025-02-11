@@ -52,16 +52,17 @@ import com.azure.core.util.BinaryData;
  * DynamicResponse response = dynamicRequest
  *     .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&#47;&#123;petId&#125;&quot;&#41; &#47;&#47; may already be set if request is created from a client
  *     .setPathParam&#40;&quot;petId&quot;, &quot;2343245&quot;&#41;
+ *     .setHttpMethod&#40;HttpMethod.POST&#41;
  *     .send&#40;&#41;; &#47;&#47; makes the service call
  *
  * &#47;&#47; Check the HTTP status
  * int statusCode = response.getStatusCode&#40;&#41;;
  * if &#40;statusCode == 200&#41; &#123;
  *     BinaryData responseBody = response.getBody&#40;&#41;;
- *     String responseBodyStr = responseBody.toString&#40;&#41;;
- *     JsonObject deserialized = Json.createReader&#40;new StringReader&#40;responseBodyStr&#41;&#41;.readObject&#40;&#41;;
- *     int id = deserialized.getInt&#40;&quot;id&quot;&#41;;
- *     String firstTag = deserialized.getJsonArray&#40;&quot;tags&quot;&#41;.get&#40;0&#41;.asJsonObject&#40;&#41;.getString&#40;&quot;name&quot;&#41;;
+ *     JsonObject deserialized = responseBody.toObject&#40;JsonObject.class&#41;;
+ *     int id = &#40;&#40;JsonNumber&#41; deserialized.getProperty&#40;&quot;id&quot;&#41;&#41;.getValue&#40;&#41;.intValue&#40;&#41;;
+ *     JsonArray tags = &#40;&#40;JsonArray&#41; deserialized.getProperty&#40;&quot;tags&quot;&#41;&#41;;
+ *     String firstTag = &#40;&#40;JsonString&#41; &#40;&#40;JsonObject&#41; tags.getElement&#40;0&#41;&#41;.getProperty&#40;&quot;name&quot;&#41;&#41;.getValue&#40;&#41;;
  * &#125;
  * </pre>
  * <!-- end com.azure.core.experimental.http.dynamicresponse.readresponse -->

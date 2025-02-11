@@ -5,78 +5,78 @@
 package com.azure.resourcemanager.billingbenefits.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billingbenefits.models.AppliedScopeProperties;
 import com.azure.resourcemanager.billingbenefits.models.AppliedScopeType;
 import com.azure.resourcemanager.billingbenefits.models.BillingPlan;
 import com.azure.resourcemanager.billingbenefits.models.Commitment;
 import com.azure.resourcemanager.billingbenefits.models.Term;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The PurchaseRequestProperties model. */
+/**
+ * The PurchaseRequestProperties model.
+ */
 @Fluent
-public final class PurchaseRequestProperties {
+public final class PurchaseRequestProperties implements JsonSerializable<PurchaseRequestProperties> {
     /*
      * Friendly name of the savings plan
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Subscription that will be charged for purchasing the benefit
      */
-    @JsonProperty(value = "billingScopeId")
     private String billingScopeId;
 
     /*
      * Represent benefit term in ISO 8601 format.
      */
-    @JsonProperty(value = "term")
     private Term term;
 
     /*
      * Represents the billing plan in ISO 8601 format. Required only for monthly billing plans.
      */
-    @JsonProperty(value = "billingPlan")
     private BillingPlan billingPlan;
 
     /*
      * Type of the Applied Scope.
      */
-    @JsonProperty(value = "appliedScopeType")
     private AppliedScopeType appliedScopeType;
 
     /*
      * Commitment towards the benefit.
      */
-    @JsonProperty(value = "commitment")
     private Commitment commitment;
 
     /*
      * DateTime of the savings plan starts providing benefit from.
      */
-    @JsonProperty(value = "effectiveDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime effectiveDateTime;
 
     /*
      * Setting this to true will automatically purchase a new benefit on the expiration date time.
      */
-    @JsonProperty(value = "renew")
     private Boolean renew;
 
     /*
      * Properties specific to applied scope type. Not required if not applicable.
      */
-    @JsonProperty(value = "appliedScopeProperties")
     private AppliedScopeProperties appliedScopeProperties;
 
-    /** Creates an instance of PurchaseRequestProperties class. */
+    /**
+     * Creates an instance of PurchaseRequestProperties class.
+     */
     public PurchaseRequestProperties() {
     }
 
     /**
      * Get the displayName property: Friendly name of the savings plan.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -85,7 +85,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the displayName property: Friendly name of the savings plan.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -96,7 +96,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Get the billingScopeId property: Subscription that will be charged for purchasing the benefit.
-     *
+     * 
      * @return the billingScopeId value.
      */
     public String billingScopeId() {
@@ -105,7 +105,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the billingScopeId property: Subscription that will be charged for purchasing the benefit.
-     *
+     * 
      * @param billingScopeId the billingScopeId value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -116,7 +116,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Get the term property: Represent benefit term in ISO 8601 format.
-     *
+     * 
      * @return the term value.
      */
     public Term term() {
@@ -125,7 +125,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the term property: Represent benefit term in ISO 8601 format.
-     *
+     * 
      * @param term the term value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -137,7 +137,7 @@ public final class PurchaseRequestProperties {
     /**
      * Get the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     public BillingPlan billingPlan() {
@@ -147,7 +147,7 @@ public final class PurchaseRequestProperties {
     /**
      * Set the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -158,7 +158,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Get the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     public AppliedScopeType appliedScopeType() {
@@ -167,7 +167,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @param appliedScopeType the appliedScopeType value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -178,7 +178,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Get the commitment property: Commitment towards the benefit.
-     *
+     * 
      * @return the commitment value.
      */
     public Commitment commitment() {
@@ -187,7 +187,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the commitment property: Commitment towards the benefit.
-     *
+     * 
      * @param commitment the commitment value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -198,7 +198,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Get the effectiveDateTime property: DateTime of the savings plan starts providing benefit from.
-     *
+     * 
      * @return the effectiveDateTime value.
      */
     public OffsetDateTime effectiveDateTime() {
@@ -208,7 +208,7 @@ public final class PurchaseRequestProperties {
     /**
      * Get the renew property: Setting this to true will automatically purchase a new benefit on the expiration date
      * time.
-     *
+     * 
      * @return the renew value.
      */
     public Boolean renew() {
@@ -218,7 +218,7 @@ public final class PurchaseRequestProperties {
     /**
      * Set the renew property: Setting this to true will automatically purchase a new benefit on the expiration date
      * time.
-     *
+     * 
      * @param renew the renew value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -230,7 +230,7 @@ public final class PurchaseRequestProperties {
     /**
      * Get the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     public AppliedScopeProperties appliedScopeProperties() {
@@ -240,7 +240,7 @@ public final class PurchaseRequestProperties {
     /**
      * Set the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable.
-     *
+     * 
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -251,7 +251,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -261,5 +261,68 @@ public final class PurchaseRequestProperties {
         if (appliedScopeProperties() != null) {
             appliedScopeProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("billingScopeId", this.billingScopeId);
+        jsonWriter.writeStringField("term", this.term == null ? null : this.term.toString());
+        jsonWriter.writeStringField("billingPlan", this.billingPlan == null ? null : this.billingPlan.toString());
+        jsonWriter.writeStringField("appliedScopeType",
+            this.appliedScopeType == null ? null : this.appliedScopeType.toString());
+        jsonWriter.writeJsonField("commitment", this.commitment);
+        jsonWriter.writeBooleanField("renew", this.renew);
+        jsonWriter.writeJsonField("appliedScopeProperties", this.appliedScopeProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PurchaseRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PurchaseRequestProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PurchaseRequestProperties.
+     */
+    public static PurchaseRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PurchaseRequestProperties deserializedPurchaseRequestProperties = new PurchaseRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.displayName = reader.getString();
+                } else if ("billingScopeId".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.billingScopeId = reader.getString();
+                } else if ("term".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.term = Term.fromString(reader.getString());
+                } else if ("billingPlan".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.billingPlan = BillingPlan.fromString(reader.getString());
+                } else if ("appliedScopeType".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.appliedScopeType
+                        = AppliedScopeType.fromString(reader.getString());
+                } else if ("commitment".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.commitment = Commitment.fromJson(reader);
+                } else if ("effectiveDateTime".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.effectiveDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("renew".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.renew = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appliedScopeProperties".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.appliedScopeProperties
+                        = AppliedScopeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPurchaseRequestProperties;
+        });
     }
 }

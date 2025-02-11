@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MarketplaceSaaSInfoMarketplaceSubscriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MarketplaceSaaSInfoMarketplaceSubscription model =
-            BinaryData.fromString("{\"id\":\"xmnteiwaop\"}").toObject(MarketplaceSaaSInfoMarketplaceSubscription.class);
-        Assertions.assertEquals("xmnteiwaop", model.id());
+        MarketplaceSaaSInfoMarketplaceSubscription model = BinaryData.fromString("{\"id\":\"jampmngnzscxaqw\"}")
+            .toObject(MarketplaceSaaSInfoMarketplaceSubscription.class);
+        Assertions.assertEquals("jampmngnzscxaqw", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarketplaceSaaSInfoMarketplaceSubscription model =
-            new MarketplaceSaaSInfoMarketplaceSubscription().withId("xmnteiwaop");
+        MarketplaceSaaSInfoMarketplaceSubscription model
+            = new MarketplaceSaaSInfoMarketplaceSubscription().withId("jampmngnzscxaqw");
         model = BinaryData.fromObject(model).toObject(MarketplaceSaaSInfoMarketplaceSubscription.class);
-        Assertions.assertEquals("xmnteiwaop", model.id());
+        Assertions.assertEquals("jampmngnzscxaqw", model.id());
     }
 }

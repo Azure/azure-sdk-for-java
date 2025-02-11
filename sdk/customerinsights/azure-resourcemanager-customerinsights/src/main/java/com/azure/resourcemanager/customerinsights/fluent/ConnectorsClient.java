@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.models.ConnectorResourceFormatInner;
 
-/** An instance of this class provides access to all the operations defined in ConnectorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConnectorsClient.
+ */
 public interface ConnectorsClient {
     /**
      * Creates a connector or updates an existing connector in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -33,7 +35,7 @@ public interface ConnectorsClient {
 
     /**
      * Creates a connector or updates an existing connector in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -46,15 +48,12 @@ public interface ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectorResourceFormatInner>, ConnectorResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String connectorName,
-        ConnectorResourceFormatInner parameters,
+        String resourceGroupName, String hubName, String connectorName, ConnectorResourceFormatInner parameters,
         Context context);
 
     /**
      * Creates a connector or updates an existing connector in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -65,12 +64,12 @@ public interface ConnectorsClient {
      * @return the connector resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectorResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String connectorName, ConnectorResourceFormatInner parameters);
+    ConnectorResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String connectorName,
+        ConnectorResourceFormatInner parameters);
 
     /**
      * Creates a connector or updates an existing connector in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -82,16 +81,12 @@ public interface ConnectorsClient {
      * @return the connector resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectorResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String connectorName,
-        ConnectorResourceFormatInner parameters,
-        Context context);
+    ConnectorResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String connectorName,
+        ConnectorResourceFormatInner parameters, Context context);
 
     /**
      * Gets a connector in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -102,12 +97,12 @@ public interface ConnectorsClient {
      * @return a connector in the hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectorResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String connectorName, Context context);
+    Response<ConnectorResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String connectorName, Context context);
 
     /**
      * Gets a connector in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -121,7 +116,7 @@ public interface ConnectorsClient {
 
     /**
      * Deletes a connector in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -135,7 +130,7 @@ public interface ConnectorsClient {
 
     /**
      * Deletes a connector in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -146,12 +141,12 @@ public interface ConnectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hubName, String connectorName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, String connectorName,
+        Context context);
 
     /**
      * Deletes a connector in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -164,7 +159,7 @@ public interface ConnectorsClient {
 
     /**
      * Deletes a connector in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -178,7 +173,7 @@ public interface ConnectorsClient {
 
     /**
      * Gets all the connectors in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +186,7 @@ public interface ConnectorsClient {
 
     /**
      * Gets all the connectors in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.

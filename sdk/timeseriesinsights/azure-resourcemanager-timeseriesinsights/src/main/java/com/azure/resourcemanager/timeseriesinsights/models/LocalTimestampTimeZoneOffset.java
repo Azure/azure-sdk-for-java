@@ -5,24 +5,29 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An object that represents the offset information for the local timestamp format specified. Should not be specified
  * for LocalTimestampFormat - Embedded.
  */
 @Fluent
-public final class LocalTimestampTimeZoneOffset {
+public final class LocalTimestampTimeZoneOffset implements JsonSerializable<LocalTimestampTimeZoneOffset> {
     /*
      * The event property that will be contain the offset information to calculate the local timestamp. When the
      * LocalTimestampFormat is Iana, the property name will contain the name of the column which contains IANA Timezone
      * Name (eg: Americas/Los Angeles). When LocalTimestampFormat is Timespan, it contains the name of property which
      * contains values representing the offset (eg: P1D or 1.00:00:00)
      */
-    @JsonProperty(value = "propertyName")
     private String propertyName;
 
-    /** Creates an instance of LocalTimestampTimeZoneOffset class. */
+    /**
+     * Creates an instance of LocalTimestampTimeZoneOffset class.
+     */
     public LocalTimestampTimeZoneOffset() {
     }
 
@@ -31,7 +36,7 @@ public final class LocalTimestampTimeZoneOffset {
      * local timestamp. When the LocalTimestampFormat is Iana, the property name will contain the name of the column
      * which contains IANA Timezone Name (eg: Americas/Los Angeles). When LocalTimestampFormat is Timespan, it contains
      * the name of property which contains values representing the offset (eg: P1D or 1.00:00:00).
-     *
+     * 
      * @return the propertyName value.
      */
     public String propertyName() {
@@ -43,7 +48,7 @@ public final class LocalTimestampTimeZoneOffset {
      * local timestamp. When the LocalTimestampFormat is Iana, the property name will contain the name of the column
      * which contains IANA Timezone Name (eg: Americas/Los Angeles). When LocalTimestampFormat is Timespan, it contains
      * the name of property which contains values representing the offset (eg: P1D or 1.00:00:00).
-     *
+     * 
      * @param propertyName the propertyName value to set.
      * @return the LocalTimestampTimeZoneOffset object itself.
      */
@@ -54,9 +59,45 @@ public final class LocalTimestampTimeZoneOffset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("propertyName", this.propertyName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocalTimestampTimeZoneOffset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocalTimestampTimeZoneOffset if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LocalTimestampTimeZoneOffset.
+     */
+    public static LocalTimestampTimeZoneOffset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocalTimestampTimeZoneOffset deserializedLocalTimestampTimeZoneOffset = new LocalTimestampTimeZoneOffset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("propertyName".equals(fieldName)) {
+                    deserializedLocalTimestampTimeZoneOffset.propertyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocalTimestampTimeZoneOffset;
+        });
     }
 }

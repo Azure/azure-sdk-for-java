@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the selection type of the NIC. */
+/**
+ * Gets or sets the selection type of the NIC.
+ */
 public final class VMNicSelection extends ExpandableStringEnum<VMNicSelection> {
-    /** Static value NotSelected for VMNicSelection. */
+    /**
+     * Static value NotSelected for VMNicSelection.
+     */
     public static final VMNicSelection NOT_SELECTED = fromString("NotSelected");
 
-    /** Static value SelectedByUser for VMNicSelection. */
+    /**
+     * Static value SelectedByUser for VMNicSelection.
+     */
     public static final VMNicSelection SELECTED_BY_USER = fromString("SelectedByUser");
 
-    /** Static value SelectedByDefault for VMNicSelection. */
+    /**
+     * Static value SelectedByDefault for VMNicSelection.
+     */
     public static final VMNicSelection SELECTED_BY_DEFAULT = fromString("SelectedByDefault");
 
-    /** Static value SelectedByUserOverride for VMNicSelection. */
+    /**
+     * Static value SelectedByUserOverride for VMNicSelection.
+     */
     public static final VMNicSelection SELECTED_BY_USER_OVERRIDE = fromString("SelectedByUserOverride");
 
     /**
      * Creates a new instance of VMNicSelection value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class VMNicSelection extends ExpandableStringEnum<VMNicSelection> {
 
     /**
      * Creates or finds a VMNicSelection from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VMNicSelection.
      */
-    @JsonCreator
     public static VMNicSelection fromString(String name) {
         return fromString(name, VMNicSelection.class);
     }
 
     /**
      * Gets known VMNicSelection values.
-     *
+     * 
      * @return known VMNicSelection values.
      */
     public static Collection<VMNicSelection> values() {

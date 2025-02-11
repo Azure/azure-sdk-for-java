@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.iotcentral.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Apps Delete. */
+/**
+ * Samples for Apps Delete.
+ */
 public final class AppsDeleteSamples {
     /*
-     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_Delete.json
+     * x-ms-original-file:
+     * specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_Delete.
+     * json
      */
     /**
      * Sample code: Apps_Delete.
-     *
+     * 
      * @param manager Entry point to IotCentralManager.
      */
     public static void appsDelete(com.azure.resourcemanager.iotcentral.IotCentralManager manager) {
-        manager.apps().delete("resRg", "myIoTCentralApp", Context.NONE);
+        manager.apps().delete("resRg", "myIoTCentralApp", com.azure.core.util.Context.NONE);
     }
 }

@@ -13,26 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyDescriptionCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyDescriptionCollectionInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"hyaaknyukibxiglh\",\"scope\":1653377629293429718},\"id\":\"xqtejpiilhvt\",\"name\":\"z\",\"type\":\"agjjn\"},{\"properties\":{\"description\":\"ylhyyx\",\"scope\":3594124234193418031},\"id\":\"lvqzrwtrdgscnv\",\"name\":\"eonsgnwx\",\"type\":\"wmezyohxp\"},{\"properties\":{\"description\":\"eopvkvtwf\",\"scope\":5815911815845046197},\"id\":\"bpbokhmml\",\"name\":\"dyarnggcjfwblq\",\"type\":\"xka\"},{\"properties\":{\"description\":\"olmugpyvao\",\"scope\":5367117070162435948},\"id\":\"uwzxeygzvtyevjhu\",\"name\":\"nobguqisqsqkpdmi\",\"type\":\"y\"}],\"count\":4857481954406126618}")
-                .toObject(PolicyDescriptionCollectionInner.class);
+        PolicyDescriptionCollectionInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"hyaaknyukibxiglh\",\"scope\":1653377629293429718},\"id\":\"xqtejpiilhvt\",\"name\":\"z\",\"type\":\"agjjn\"},{\"properties\":{\"description\":\"ylhyyx\",\"scope\":3594124234193418031},\"id\":\"lvqzrwtrdgscnv\",\"name\":\"eonsgnwx\",\"type\":\"wmezyohxp\"},{\"properties\":{\"description\":\"eopvkvtwf\",\"scope\":5815911815845046197},\"id\":\"bpbokhmml\",\"name\":\"dyarnggcjfwblq\",\"type\":\"xka\"},{\"properties\":{\"description\":\"olmugpyvao\",\"scope\":5367117070162435948},\"id\":\"uwzxeygzvtyevjhu\",\"name\":\"nobguqisqsqkpdmi\",\"type\":\"y\"}],\"count\":4857481954406126618}")
+            .toObject(PolicyDescriptionCollectionInner.class);
         Assertions.assertEquals(4857481954406126618L, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyDescriptionCollectionInner model =
-            new PolicyDescriptionCollectionInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PolicyDescriptionContract(),
-                            new PolicyDescriptionContract(),
-                            new PolicyDescriptionContract(),
-                            new PolicyDescriptionContract()))
-                .withCount(4857481954406126618L);
+        PolicyDescriptionCollectionInner model = new PolicyDescriptionCollectionInner()
+            .withValue(Arrays.asList(new PolicyDescriptionContract(), new PolicyDescriptionContract(),
+                new PolicyDescriptionContract(), new PolicyDescriptionContract()))
+            .withCount(4857481954406126618L);
         model = BinaryData.fromObject(model).toObject(PolicyDescriptionCollectionInner.class);
         Assertions.assertEquals(4857481954406126618L, model.count());
     }

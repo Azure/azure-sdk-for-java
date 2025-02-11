@@ -21,8 +21,7 @@ public final class WidgetTypesImpl implements WidgetTypes {
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    public WidgetTypesImpl(
-        WidgetTypesClient innerClient,
+    public WidgetTypesImpl(WidgetTypesClient innerClient,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,25 +29,22 @@ public final class WidgetTypesImpl implements WidgetTypes {
 
     public PagedIterable<WidgetTypeResourceFormat> listByHub(String resourceGroupName, String hubName) {
         PagedIterable<WidgetTypeResourceFormatInner> inner = this.serviceClient().listByHub(resourceGroupName, hubName);
-        return Utils.mapPage(inner, inner1 -> new WidgetTypeResourceFormatImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WidgetTypeResourceFormatImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WidgetTypeResourceFormat> listByHub(
-        String resourceGroupName, String hubName, Context context) {
-        PagedIterable<WidgetTypeResourceFormatInner> inner =
-            this.serviceClient().listByHub(resourceGroupName, hubName, context);
-        return Utils.mapPage(inner, inner1 -> new WidgetTypeResourceFormatImpl(inner1, this.manager()));
+    public PagedIterable<WidgetTypeResourceFormat> listByHub(String resourceGroupName, String hubName,
+        Context context) {
+        PagedIterable<WidgetTypeResourceFormatInner> inner
+            = this.serviceClient().listByHub(resourceGroupName, hubName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WidgetTypeResourceFormatImpl(inner1, this.manager()));
     }
 
-    public Response<WidgetTypeResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String widgetTypeName, Context context) {
-        Response<WidgetTypeResourceFormatInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, hubName, widgetTypeName, context);
+    public Response<WidgetTypeResourceFormat> getWithResponse(String resourceGroupName, String hubName,
+        String widgetTypeName, Context context) {
+        Response<WidgetTypeResourceFormatInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, hubName, widgetTypeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WidgetTypeResourceFormatImpl(inner.getValue(), this.manager()));
         } else {
             return null;

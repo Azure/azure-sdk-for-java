@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkInterfaces. */
+/**
+ * Resource collection API of NetworkInterfaces.
+ */
 public interface NetworkInterfaces {
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -24,14 +26,14 @@ public interface NetworkInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Interface resource details along with {@link Response}.
      */
-    Response<NetworkInterface> getWithResponse(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context);
+    Response<NetworkInterface> getWithResponse(String resourceGroupName, String networkDeviceName,
+        String networkInterfaceName, Context context);
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -44,9 +46,9 @@ public interface NetworkInterfaces {
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -58,9 +60,9 @@ public interface NetworkInterfaces {
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -73,9 +75,9 @@ public interface NetworkInterfaces {
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,9 +89,9 @@ public interface NetworkInterfaces {
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -98,14 +100,14 @@ public interface NetworkInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkInterfaces as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NetworkInterface> listByNetworkDevice(
-        String resourceGroupName, String networkDeviceName, Context context);
+    PagedIterable<NetworkInterface> listByNetworkDevice(String resourceGroupName, String networkDeviceName,
+        Context context);
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -115,17 +117,14 @@ public interface NetworkInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkDeviceName,
+        String networkInterfaceName, UpdateAdministrativeState body);
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -136,18 +135,14 @@ public interface NetworkInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkDeviceName,
+        String networkInterfaceName, UpdateAdministrativeState body, Context context);
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,9 +153,9 @@ public interface NetworkInterfaces {
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,9 +167,9 @@ public interface NetworkInterfaces {
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -184,9 +179,9 @@ public interface NetworkInterfaces {
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -197,7 +192,7 @@ public interface NetworkInterfaces {
 
     /**
      * Begins definition for a new NetworkInterface resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetworkInterface definition.
      */

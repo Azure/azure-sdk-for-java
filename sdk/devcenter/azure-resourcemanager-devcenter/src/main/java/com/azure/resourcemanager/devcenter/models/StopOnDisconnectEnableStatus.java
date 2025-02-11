@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class StopOnDisconnectEnableStatus extends ExpandableStringEnum<Sto
      * @param name a name to look for.
      * @return the corresponding StopOnDisconnectEnableStatus.
      */
-    @JsonCreator
     public static StopOnDisconnectEnableStatus fromString(String name) {
         return fromString(name, StopOnDisconnectEnableStatus.class);
     }

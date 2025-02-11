@@ -5,31 +5,36 @@
 package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SKU of the namespace. */
+/**
+ * SKU of the namespace.
+ */
 @Fluent
-public final class Sku {
+public final class Sku implements JsonSerializable<Sku> {
     /*
      * Name of this SKU.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name = "Standard";
+    private final String name = "Standard";
 
     /*
      * The tier of this SKU.
      */
-    @JsonProperty(value = "tier")
     private SkuTier tier;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
-        name = "Standard";
     }
 
     /**
      * Get the name property: Name of this SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,19 +42,8 @@ public final class Sku {
     }
 
     /**
-     * Set the name property: Name of this SKU.
-     *
-     * @param name the name value to set.
-     * @return the Sku object itself.
-     */
-    public Sku withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the tier property: The tier of this SKU.
-     *
+     * 
      * @return the tier value.
      */
     public SkuTier tier() {
@@ -58,7 +52,7 @@ public final class Sku {
 
     /**
      * Set the tier property: The tier of this SKU.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -69,9 +63,47 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Sku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Sku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Sku.
+     */
+    public static Sku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Sku deserializedSku = new Sku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tier".equals(fieldName)) {
+                    deserializedSku.tier = SkuTier.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSku;
+        });
     }
 }

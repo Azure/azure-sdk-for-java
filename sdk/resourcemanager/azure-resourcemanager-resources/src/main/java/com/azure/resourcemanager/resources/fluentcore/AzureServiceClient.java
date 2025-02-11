@@ -39,8 +39,7 @@ public abstract class AzureServiceClient {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure.properties");
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure.properties");
 
     private static final String SDK_VERSION;
     static {
@@ -60,7 +59,7 @@ public abstract class AzureServiceClient {
      * @param environment The AzureEnvironment used by the client.
      */
     protected AzureServiceClient(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-                                 AzureEnvironment environment) {
+        AzureEnvironment environment) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
 
@@ -103,8 +102,7 @@ public abstract class AzureServiceClient {
      * @return the default client context.
      */
     public Context getContext() {
-        return new Context("Sdk-Name", sdkName)
-            .addData("Sdk-Version", SDK_VERSION);
+        return new Context("Sdk-Name", sdkName).addData("Sdk-Version", SDK_VERSION);
     }
 
     /**
@@ -131,18 +129,10 @@ public abstract class AzureServiceClient {
      * @return poller flux for poll result and final result.
      */
     public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> lroInit,
-                                                            HttpPipeline httpPipeline,
-                                                            Type pollResultType, Type finalResultType,
-                                                            Context context) {
-        return PollerFactory.create(
-            getSerializerAdapter(),
-            httpPipeline,
-            pollResultType,
-            finalResultType,
-            ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(this.getDefaultPollInterval()),
-            lroInit,
-            context
-        );
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(getSerializerAdapter(), httpPipeline, pollResultType, finalResultType,
+            ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(this.getDefaultPollInterval()), lroInit,
+            context);
     }
 
     /**
@@ -160,18 +150,16 @@ public abstract class AzureServiceClient {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(),
-                    lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(
-                            errorBody,
-                            ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

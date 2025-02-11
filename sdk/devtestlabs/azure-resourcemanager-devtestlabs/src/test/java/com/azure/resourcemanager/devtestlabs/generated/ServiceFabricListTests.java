@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceFabricListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceFabricList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"externalServiceFabricId\":\"ysi\",\"environmentId\":\"gqcwdhohsdtmc\",\"applicableSchedule\":{\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"location\":\"ufcohdxbz\",\"id\":\"mcmuapc\",\"name\":\"hdbevwqqxeyskon\",\"type\":\"zinkfkbgbzbowxeq\"},\"labVmsStartup\":{\"properties\":{},\"location\":\"ljmygvkzqkjjeokb\",\"id\":\"efezrxcczurtlei\",\"name\":\"q\",\"type\":\"bkwvzg\"}},\"location\":\"zvd\",\"tags\":{\"xzmqpnodawop\":\"d\"},\"id\":\"hewjptmcgsbost\",\"name\":\"eln\",\"type\":\"la\"},\"provisioningState\":\"tmzlbiojlv\",\"uniqueIdentifier\":\"rbbpneqvcwwyy\"},\"location\":\"r\",\"tags\":{\"rsnm\":\"hppr\"},\"id\":\"k\",\"name\":\"yzejnhlbk\",\"type\":\"bzpcpiljhahzvec\"},{\"properties\":{\"externalServiceFabricId\":\"dbn\",\"environmentId\":\"ehol\",\"applicableSchedule\":{\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"location\":\"wiuub\",\"id\":\"efqsfapaqtferrqw\",\"name\":\"x\",\"type\":\"kmfx\"},\"labVmsStartup\":{\"properties\":{},\"location\":\"jwogqqnobpudc\",\"id\":\"abtqwpwyawbzasqb\",\"name\":\"clj\",\"type\":\"kyexaoguyaipi\"}},\"location\":\"sdaultxij\",\"tags\":{\"zqdqxt\":\"fqwazlnqnmcjn\",\"nyfusfzsvtuikzh\":\"jw\"},\"id\":\"jqg\",\"name\":\"cfhmlrqryxyn\",\"type\":\"nzrdpsovwxz\"},\"provisioningState\":\"tgoe\",\"uniqueIdentifier\":\"bbabp\"},\"location\":\"hv\",\"tags\":{\"ovzidsx\":\"kvntjlrigjkskyri\"},\"id\":\"aabzmif\",\"name\":\"ygznmmaxrizk\",\"type\":\"obgop\"}],\"nextLink\":\"hsln\"}")
-                .toObject(ServiceFabricList.class);
+        ServiceFabricList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"externalServiceFabricId\":\"ysi\",\"environmentId\":\"gqcwdhohsdtmc\",\"applicableSchedule\":{\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"location\":\"ufcohdxbz\",\"id\":\"mcmuapc\",\"name\":\"hdbevwqqxeyskon\",\"type\":\"zinkfkbgbzbowxeq\"},\"labVmsStartup\":{\"properties\":{},\"location\":\"ljmygvkzqkjjeokb\",\"id\":\"efezrxcczurtlei\",\"name\":\"q\",\"type\":\"bkwvzg\"}},\"location\":\"zvd\",\"tags\":{\"xzmqpnodawop\":\"d\"},\"id\":\"hewjptmcgsbost\",\"name\":\"eln\",\"type\":\"la\"},\"provisioningState\":\"tmzlbiojlv\",\"uniqueIdentifier\":\"rbbpneqvcwwyy\"},\"location\":\"r\",\"tags\":{\"rsnm\":\"hppr\"},\"id\":\"k\",\"name\":\"yzejnhlbk\",\"type\":\"bzpcpiljhahzvec\"},{\"properties\":{\"externalServiceFabricId\":\"dbn\",\"environmentId\":\"ehol\",\"applicableSchedule\":{\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"location\":\"wiuub\",\"id\":\"efqsfapaqtferrqw\",\"name\":\"x\",\"type\":\"kmfx\"},\"labVmsStartup\":{\"properties\":{},\"location\":\"jwogqqnobpudc\",\"id\":\"abtqwpwyawbzasqb\",\"name\":\"clj\",\"type\":\"kyexaoguyaipi\"}},\"location\":\"sdaultxij\",\"tags\":{\"zqdqxt\":\"fqwazlnqnmcjn\",\"nyfusfzsvtuikzh\":\"jw\"},\"id\":\"jqg\",\"name\":\"cfhmlrqryxyn\",\"type\":\"nzrdpsovwxz\"},\"provisioningState\":\"tgoe\",\"uniqueIdentifier\":\"bbabp\"},\"location\":\"hv\",\"tags\":{\"ovzidsx\":\"kvntjlrigjkskyri\"},\"id\":\"aabzmif\",\"name\":\"ygznmmaxrizk\",\"type\":\"obgop\"}],\"nextLink\":\"hsln\"}")
+            .toObject(ServiceFabricList.class);
         Assertions.assertEquals("r", model.value().get(0).location());
         Assertions.assertEquals("hppr", model.value().get(0).tags().get("rsnm"));
         Assertions.assertEquals("ysi", model.value().get(0).externalServiceFabricId());
@@ -29,22 +27,16 @@ public final class ServiceFabricListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceFabricList model =
-            new ServiceFabricList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ServiceFabricInner()
-                                .withLocation("r")
-                                .withTags(mapOf("rsnm", "hppr"))
-                                .withExternalServiceFabricId("ysi")
-                                .withEnvironmentId("gqcwdhohsdtmc"),
-                            new ServiceFabricInner()
-                                .withLocation("hv")
-                                .withTags(mapOf("ovzidsx", "kvntjlrigjkskyri"))
-                                .withExternalServiceFabricId("dbn")
-                                .withEnvironmentId("ehol")))
-                .withNextLink("hsln");
+        ServiceFabricList model = new ServiceFabricList().withValue(Arrays.asList(
+            new ServiceFabricInner().withLocation("r")
+                .withTags(mapOf("rsnm", "hppr"))
+                .withExternalServiceFabricId("ysi")
+                .withEnvironmentId("gqcwdhohsdtmc"),
+            new ServiceFabricInner().withLocation("hv")
+                .withTags(mapOf("ovzidsx", "kvntjlrigjkskyri"))
+                .withExternalServiceFabricId("dbn")
+                .withEnvironmentId("ehol")))
+            .withNextLink("hsln");
         model = BinaryData.fromObject(model).toObject(ServiceFabricList.class);
         Assertions.assertEquals("r", model.value().get(0).location());
         Assertions.assertEquals("hppr", model.value().get(0).tags().get("rsnm"));

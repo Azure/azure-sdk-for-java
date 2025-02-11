@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateLinkHubInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of privateLinkHubs. */
+/**
+ * List of privateLinkHubs.
+ */
 @Fluent
-public final class PrivateLinkHubInfoListResult {
+public final class PrivateLinkHubInfoListResult implements JsonSerializable<PrivateLinkHubInfoListResult> {
     /*
      * Link to the next page of results
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * List of privateLinkHubs
      */
-    @JsonProperty(value = "value")
     private List<PrivateLinkHubInner> value;
 
-    /** Creates an instance of PrivateLinkHubInfoListResult class. */
+    /**
+     * Creates an instance of PrivateLinkHubInfoListResult class.
+     */
     public PrivateLinkHubInfoListResult() {
     }
 
     /**
      * Get the nextLink property: Link to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class PrivateLinkHubInfoListResult {
 
     /**
      * Set the nextLink property: Link to the next page of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PrivateLinkHubInfoListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class PrivateLinkHubInfoListResult {
 
     /**
      * Get the value property: List of privateLinkHubs.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkHubInner> value() {
@@ -59,7 +65,7 @@ public final class PrivateLinkHubInfoListResult {
 
     /**
      * Set the value property: List of privateLinkHubs.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkHubInfoListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class PrivateLinkHubInfoListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkHubInfoListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkHubInfoListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkHubInfoListResult.
+     */
+    public static PrivateLinkHubInfoListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkHubInfoListResult deserializedPrivateLinkHubInfoListResult = new PrivateLinkHubInfoListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedPrivateLinkHubInfoListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<PrivateLinkHubInner> value
+                        = reader.readArray(reader1 -> PrivateLinkHubInner.fromJson(reader1));
+                    deserializedPrivateLinkHubInfoListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkHubInfoListResult;
+        });
     }
 }

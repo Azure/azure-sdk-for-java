@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Input properties for patching a Linux machine.
  */
 @Fluent
-public final class InputLinuxParameters {
+public final class InputLinuxParameters implements JsonSerializable<InputLinuxParameters> {
     /*
      * Package names to be excluded for patching.
      */
-    @JsonProperty(value = "packageNameMasksToExclude")
     private List<String> packageNameMasksToExclude;
 
     /*
      * Package names to be included for patching.
      */
-    @JsonProperty(value = "packageNameMasksToInclude")
     private List<String> packageNameMasksToInclude;
 
     /*
      * Classification category of patches to be patched
      */
-    @JsonProperty(value = "classificationsToInclude")
     private List<String> classificationsToInclude;
 
     /**
@@ -103,5 +104,53 @@ public final class InputLinuxParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("packageNameMasksToExclude", this.packageNameMasksToExclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("packageNameMasksToInclude", this.packageNameMasksToInclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("classificationsToInclude", this.classificationsToInclude,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InputLinuxParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InputLinuxParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InputLinuxParameters.
+     */
+    public static InputLinuxParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InputLinuxParameters deserializedInputLinuxParameters = new InputLinuxParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packageNameMasksToExclude".equals(fieldName)) {
+                    List<String> packageNameMasksToExclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInputLinuxParameters.packageNameMasksToExclude = packageNameMasksToExclude;
+                } else if ("packageNameMasksToInclude".equals(fieldName)) {
+                    List<String> packageNameMasksToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInputLinuxParameters.packageNameMasksToInclude = packageNameMasksToInclude;
+                } else if ("classificationsToInclude".equals(fieldName)) {
+                    List<String> classificationsToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInputLinuxParameters.classificationsToInclude = classificationsToInclude;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInputLinuxParameters;
+        });
     }
 }

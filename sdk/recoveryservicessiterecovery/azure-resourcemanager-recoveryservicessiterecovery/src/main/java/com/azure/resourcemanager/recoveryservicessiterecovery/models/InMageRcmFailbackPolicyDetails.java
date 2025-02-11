@@ -5,33 +5,45 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * InMageRcm failback specific policy details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcmFailback")
 @Fluent
 public final class InMageRcmFailbackPolicyDetails extends PolicyProviderSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "InMageRcmFailback";
+
+    /*
      * The app consistent snapshot frequency in minutes.
      */
-    @JsonProperty(value = "appConsistentFrequencyInMinutes")
     private Integer appConsistentFrequencyInMinutes;
 
     /*
      * The crash consistent snapshot frequency in minutes.
      */
-    @JsonProperty(value = "crashConsistentFrequencyInMinutes")
     private Integer crashConsistentFrequencyInMinutes;
 
     /**
      * Creates an instance of InMageRcmFailbackPolicyDetails class.
      */
     public InMageRcmFailbackPolicyDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -82,6 +94,50 @@ public final class InMageRcmFailbackPolicyDetails extends PolicyProviderSpecific
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeNumberField("appConsistentFrequencyInMinutes", this.appConsistentFrequencyInMinutes);
+        jsonWriter.writeNumberField("crashConsistentFrequencyInMinutes", this.crashConsistentFrequencyInMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmFailbackPolicyDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmFailbackPolicyDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmFailbackPolicyDetails.
+     */
+    public static InMageRcmFailbackPolicyDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmFailbackPolicyDetails deserializedInMageRcmFailbackPolicyDetails
+                = new InMageRcmFailbackPolicyDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmFailbackPolicyDetails.instanceType = reader.getString();
+                } else if ("appConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedInMageRcmFailbackPolicyDetails.appConsistentFrequencyInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("crashConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedInMageRcmFailbackPolicyDetails.crashConsistentFrequencyInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmFailbackPolicyDetails;
+        });
     }
 }

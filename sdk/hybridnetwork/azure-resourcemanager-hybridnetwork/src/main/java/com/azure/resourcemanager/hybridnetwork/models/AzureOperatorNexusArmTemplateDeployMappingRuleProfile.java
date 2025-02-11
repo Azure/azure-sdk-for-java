@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure Operator Distributed Services template deploy mapping rule profile.
@@ -15,7 +18,6 @@ public final class AzureOperatorNexusArmTemplateDeployMappingRuleProfile extends
     /*
      * The template mapping rule profile.
      */
-    @JsonProperty(value = "templateMappingRuleProfile")
     private ArmTemplateMappingRuleProfile templateMappingRuleProfile;
 
     /**
@@ -62,9 +64,52 @@ public final class AzureOperatorNexusArmTemplateDeployMappingRuleProfile extends
      */
     @Override
     public void validate() {
-        super.validate();
         if (templateMappingRuleProfile() != null) {
             templateMappingRuleProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationEnablement",
+            applicationEnablement() == null ? null : applicationEnablement().toString());
+        jsonWriter.writeJsonField("templateMappingRuleProfile", this.templateMappingRuleProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureOperatorNexusArmTemplateDeployMappingRuleProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureOperatorNexusArmTemplateDeployMappingRuleProfile if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureOperatorNexusArmTemplateDeployMappingRuleProfile.
+     */
+    public static AzureOperatorNexusArmTemplateDeployMappingRuleProfile fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureOperatorNexusArmTemplateDeployMappingRuleProfile deserializedAzureOperatorNexusArmTemplateDeployMappingRuleProfile
+                = new AzureOperatorNexusArmTemplateDeployMappingRuleProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationEnablement".equals(fieldName)) {
+                    deserializedAzureOperatorNexusArmTemplateDeployMappingRuleProfile
+                        .withApplicationEnablement(ApplicationEnablement.fromString(reader.getString()));
+                } else if ("templateMappingRuleProfile".equals(fieldName)) {
+                    deserializedAzureOperatorNexusArmTemplateDeployMappingRuleProfile.templateMappingRuleProfile
+                        = ArmTemplateMappingRuleProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureOperatorNexusArmTemplateDeployMappingRuleProfile;
+        });
     }
 }

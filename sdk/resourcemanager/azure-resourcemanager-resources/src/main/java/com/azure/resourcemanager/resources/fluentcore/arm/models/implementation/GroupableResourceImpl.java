@@ -20,24 +20,15 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
  * @param <FluentModelImplT> the implementation type of the fluent model type
  * @param <ManagerT> the service manager type
  */
-public abstract class GroupableResourceImpl<
-        FluentModelT extends Resource,
-        InnerModelT extends com.azure.core.management.Resource,
-        FluentModelImplT extends GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
-        ManagerT extends Manager<?>>
-        extends
-        ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>
-        implements
-        GroupableResource<ManagerT, InnerModelT> {
+public abstract class GroupableResourceImpl<FluentModelT extends Resource, InnerModelT extends com.azure.core.management.Resource, FluentModelImplT extends GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>, ManagerT extends Manager<?>>
+    extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>
+    implements GroupableResource<ManagerT, InnerModelT> {
 
     protected final ManagerT myManager;
     protected Creatable<ResourceGroup> creatableGroup;
     private String groupName;
 
-    protected GroupableResourceImpl(
-            String name,
-            InnerModelT innerObject,
-            ManagerT manager) {
+    protected GroupableResourceImpl(String name, InnerModelT innerObject, ManagerT manager) {
         super(name, innerObject);
         this.myManager = manager;
     }
@@ -45,10 +36,11 @@ public abstract class GroupableResourceImpl<
     // Helpers
 
     protected String resourceIdBase() {
-        return new StringBuilder()
-                .append("/subscriptions/").append(this.myManager.subscriptionId())
-                .append("/resourceGroups/").append(this.resourceGroupName())
-                .toString();
+        return new StringBuilder().append("/subscriptions/")
+            .append(this.myManager.subscriptionId())
+            .append("/resourceGroups/")
+            .append(this.resourceGroupName())
+            .toString();
     }
 
     /*******************************************
@@ -87,7 +79,7 @@ public abstract class GroupableResourceImpl<
      */
     public final FluentModelImplT withNewResourceGroup(String groupName) {
         return this.withNewResourceGroup(
-                this.myManager.resourceManager().resourceGroups().define(groupName).withRegion(this.regionName()));
+            this.myManager.resourceManager().resourceGroups().define(groupName).withRegion(this.regionName()));
     }
 
     /**
@@ -101,7 +93,7 @@ public abstract class GroupableResourceImpl<
      */
     public final FluentModelImplT withNewResourceGroup(String groupName, Region region) {
         return this.withNewResourceGroup(
-                this.myManager.resourceManager().resourceGroups().define(groupName).withRegion(region));
+            this.myManager.resourceManager().resourceGroups().define(groupName).withRegion(region));
     }
 
     /**

@@ -28,11 +28,11 @@ public class EventGridPublisherClientOnlyTests {
     public void testGenerateSas() throws UnsupportedEncodingException {
         OffsetDateTime time = OffsetDateTime.of(2021, 3, 3, 16, 48, 0, 0, ZoneOffset.UTC);
 
-        String sasToken1 = EventGridPublisherAsyncClient.generateSas(
-            DUMMY_ENDPOINT, new AzureKeyCredential(DUMMY_KEY), time);
+        String sasToken1
+            = EventGridPublisherAsyncClient.generateSas(DUMMY_ENDPOINT, new AzureKeyCredential(DUMMY_KEY), time);
 
-        String sasToken2 = EventGridPublisherClient.generateSas(
-            DUMMY_ENDPOINT, new AzureKeyCredential(DUMMY_KEY), time);
+        String sasToken2
+            = EventGridPublisherClient.generateSas(DUMMY_ENDPOINT, new AzureKeyCredential(DUMMY_KEY), time);
 
         assertEquals(sasToken1, sasToken2);
 
@@ -44,9 +44,8 @@ public class EventGridPublisherClientOnlyTests {
         String fullEndpoint = String.format("%s?%s=%s", DUMMY_ENDPOINT, "api-version",
             EventGridServiceVersion.getLatest().getVersion());
         String encodedResource = URLEncoder.encode(fullEndpoint, charset.name());
-        String encodedExpiration = URLEncoder.encode(time.atZoneSameInstant(ZoneOffset.UTC).format(
-            dateTimeFormatter),
-            charset.name());
+        String encodedExpiration
+            = URLEncoder.encode(time.atZoneSameInstant(ZoneOffset.UTC).format(dateTimeFormatter), charset.name());
         String unsignedSas = String.format("%s=%s&%s=%s", resKey, encodedResource, expKey, encodedExpiration);
 
         assertTrue(sasToken1.contains(unsignedSas));
@@ -58,9 +57,7 @@ public class EventGridPublisherClientOnlyTests {
             EventGridServiceVersion.getLatest().getVersion());
 
         assertThrows(IllegalStateException.class, () -> {
-            new EventGridPublisherClientBuilder()
-                .endpoint(fullEndpoint)
-                .buildCloudEventPublisherClient();
+            new EventGridPublisherClientBuilder().endpoint(fullEndpoint).buildCloudEventPublisherClient();
         });
     }
 
@@ -70,8 +67,7 @@ public class EventGridPublisherClientOnlyTests {
             EventGridServiceVersion.getLatest().getVersion());
 
         assertThrows(IllegalStateException.class, () -> {
-            new EventGridPublisherClientBuilder()
-                .endpoint(fullEndpoint)
+            new EventGridPublisherClientBuilder().endpoint(fullEndpoint)
                 .credential(new AzureKeyCredential("FakeCredential"))
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildCloudEventPublisherClient();

@@ -39,21 +39,42 @@ public final class AccessListUsersSuccessResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AccessListUsersSuccessResponseInner model = new AccessListUsersSuccessResponseInner().withKind("rjb")
-            .withMetadata(new ConfluentListMetadata().withFirst("rcjxvsnbyxqabn").withLast("cpc").withPrev("hurzafblj")
-                .withNext("pbtoqcjmkl").withTotalSize(1217713745))
+            .withMetadata(new ConfluentListMetadata().withFirst("rcjxvsnbyxqabn")
+                .withLast("cpc")
+                .withPrev("hurzafblj")
+                .withNext("pbtoqcjmkl")
+                .withTotalSize(1217713745))
             .withData(Arrays.asList(
-                new UserRecord().withKind("dtqajzyulpkudj").withId("lkhbz")
-                    .withMetadata(new MetadataEntity().withSelf("pgzgq").withResourceName("zloc").withCreatedAt("c")
-                        .withUpdatedAt("ierhhbcsglummaj").withDeletedAt("aodxo"))
-                    .withEmail("bdxkqpxokaj").withFullName("npime").withAuthType("stxgc"),
-                new UserRecord().withKind("dg").withId("ajrmvdjwzrlovmc")
-                    .withMetadata(new MetadataEntity().withSelf("ijcoejctb").withResourceName("qsqsy")
-                        .withCreatedAt("kbfkg").withUpdatedAt("dkexxppofm").withDeletedAt("x"))
-                    .withEmail("jpgd").withFullName("ocjjxhvpmouexh").withAuthType("xibqeojnx"),
-                new UserRecord().withKind("zvddntwndeicbtwn").withId("aoqvuh")
-                    .withMetadata(new MetadataEntity().withSelf("f").withResourceName("yd").withCreatedAt("lmjthjq")
-                        .withUpdatedAt("pyeicxm").withDeletedAt("iwqvhkh"))
-                    .withEmail("uigdtopbobjog").withFullName("e").withAuthType("a")));
+                new UserRecord().withKind("dtqajzyulpkudj")
+                    .withId("lkhbz")
+                    .withMetadata(new MetadataEntity().withSelf("pgzgq")
+                        .withResourceName("zloc")
+                        .withCreatedAt("c")
+                        .withUpdatedAt("ierhhbcsglummaj")
+                        .withDeletedAt("aodxo"))
+                    .withEmail("bdxkqpxokaj")
+                    .withFullName("npime")
+                    .withAuthType("stxgc"),
+                new UserRecord().withKind("dg")
+                    .withId("ajrmvdjwzrlovmc")
+                    .withMetadata(new MetadataEntity().withSelf("ijcoejctb")
+                        .withResourceName("qsqsy")
+                        .withCreatedAt("kbfkg")
+                        .withUpdatedAt("dkexxppofm")
+                        .withDeletedAt("x"))
+                    .withEmail("jpgd")
+                    .withFullName("ocjjxhvpmouexh")
+                    .withAuthType("xibqeojnx"),
+                new UserRecord().withKind("zvddntwndeicbtwn")
+                    .withId("aoqvuh")
+                    .withMetadata(new MetadataEntity().withSelf("f")
+                        .withResourceName("yd")
+                        .withCreatedAt("lmjthjq")
+                        .withUpdatedAt("pyeicxm")
+                        .withDeletedAt("iwqvhkh"))
+                    .withEmail("uigdtopbobjog")
+                    .withFullName("e")
+                    .withAuthType("a")));
         model = BinaryData.fromObject(model).toObject(AccessListUsersSuccessResponseInner.class);
         Assertions.assertEquals("rjb", model.kind());
         Assertions.assertEquals("rcjxvsnbyxqabn", model.metadata().first());

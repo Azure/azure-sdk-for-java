@@ -52,10 +52,24 @@ public class GetLanguagesTests extends TextTranslationClientBase {
         assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getNativeName());
         assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getTargetLanguageScripts());
 
-        assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getTargetLanguageScripts().get(0).getCode());
-        assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getTargetLanguageScripts().get(0).getDirectionality());
-        assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getTargetLanguageScripts().get(0).getName());
-        assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getTargetLanguageScripts().get(0).getNativeName());
+        assertNotNull(
+            response.getTransliteration().get("be").getScripts().get(0).getTargetLanguageScripts().get(0).getCode());
+        assertNotNull(response.getTransliteration()
+            .get("be")
+            .getScripts()
+            .get(0)
+            .getTargetLanguageScripts()
+            .get(0)
+            .getDirectionality());
+        assertNotNull(
+            response.getTransliteration().get("be").getScripts().get(0).getTargetLanguageScripts().get(0).getName());
+        assertNotNull(response.getTransliteration()
+            .get("be")
+            .getScripts()
+            .get(0)
+            .getTargetLanguageScripts()
+            .get(0)
+            .getNativeName());
     }
 
     @Test
@@ -70,8 +84,10 @@ public class GetLanguagesTests extends TextTranslationClientBase {
         assertNotNull(response.getTransliteration().get("zh-Hant").getNativeName());
         assertNotNull(response.getTransliteration().get("zh-Hant").getScripts());
 
-        assertTrue(response.getTransliteration().get("zh-Hant").getScripts().get(0).getTargetLanguageScripts().size() > 1);
-        assertTrue(response.getTransliteration().get("zh-Hant").getScripts().get(1).getTargetLanguageScripts().size() > 1);
+        assertTrue(
+            response.getTransliteration().get("zh-Hant").getScripts().get(0).getTargetLanguageScripts().size() > 1);
+        assertTrue(
+            response.getTransliteration().get("zh-Hant").getScripts().get(1).getTargetLanguageScripts().size() > 1);
     }
 
     @Test

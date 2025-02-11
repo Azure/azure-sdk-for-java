@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for Tables ListByWorkspace. */
+/**
+ * Samples for Tables ListByWorkspace.
+ */
 public final class TablesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/TablesList.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * TablesList.json
      */
     /**
      * Sample code: TablesListByWorkspace.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void tablesListByWorkspace(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {

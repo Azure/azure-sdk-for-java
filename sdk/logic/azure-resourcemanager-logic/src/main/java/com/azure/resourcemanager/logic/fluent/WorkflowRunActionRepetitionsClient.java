@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunActionRepetitionDefinitionInner;
 import com.azure.resourcemanager.logic.models.ExpressionRoot;
 
-/** An instance of this class provides access to all the operations defined in WorkflowRunActionRepetitionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowRunActionRepetitionsClient.
+ */
 public interface WorkflowRunActionRepetitionsClient {
     /**
      * Get all of a workflow run action repetitions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -27,12 +29,12 @@ public interface WorkflowRunActionRepetitionsClient {
      * @return all of a workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(
-        String resourceGroupName, String workflowName, String runName, String actionName);
+    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(String resourceGroupName, String workflowName,
+        String runName, String actionName);
 
     /**
      * Get all of a workflow run action repetitions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -44,12 +46,12 @@ public interface WorkflowRunActionRepetitionsClient {
      * @return all of a workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(
-        String resourceGroupName, String workflowName, String runName, String actionName, Context context);
+    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(String resourceGroupName, String workflowName,
+        String runName, String actionName, Context context);
 
     /**
      * Get a workflow run action repetition.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -62,17 +64,12 @@ public interface WorkflowRunActionRepetitionsClient {
      * @return a workflow run action repetition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowRunActionRepetitionDefinitionInner> getWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context);
+    Response<WorkflowRunActionRepetitionDefinitionInner> getWithResponse(String resourceGroupName, String workflowName,
+        String runName, String actionName, String repetitionName, Context context);
 
     /**
      * Get a workflow run action repetition.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -84,12 +81,12 @@ public interface WorkflowRunActionRepetitionsClient {
      * @return a workflow run action repetition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowRunActionRepetitionDefinitionInner get(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName);
+    WorkflowRunActionRepetitionDefinitionInner get(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName);
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -101,12 +98,12 @@ public interface WorkflowRunActionRepetitionsClient {
      * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressionRoot> listExpressionTraces(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName);
+    PagedIterable<ExpressionRoot> listExpressionTraces(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName);
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -119,11 +116,6 @@ public interface WorkflowRunActionRepetitionsClient {
      * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressionRoot> listExpressionTraces(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context);
+    PagedIterable<ExpressionRoot> listExpressionTraces(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName, Context context);
 }

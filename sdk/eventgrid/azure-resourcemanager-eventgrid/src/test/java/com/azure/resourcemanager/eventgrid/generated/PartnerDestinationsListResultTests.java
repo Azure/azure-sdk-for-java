@@ -19,11 +19,11 @@ public final class PartnerDestinationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerDestinationsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"3b510bab-96ed-47b0-8fb5-f48efa1c2f85\",\"endpointServiceContext\":\"rxvxcjzh\",\"expirationTimeIfNotActivatedUtc\":\"2021-05-06T06:52:32Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"gqscj\",\"messageForActivation\":\"ftjuh\"},\"location\":\"azkmtgguwp\",\"tags\":{\"vmmghfcfiwrxgk\":\"ajc\"},\"id\":\"euvyinzqodfvpgs\",\"name\":\"oxgsgbpfgzdjtx\",\"type\":\"zflbqvg\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"72c1d23a-dfc0-465f-a9b6-c4d4382e6e56\",\"endpointServiceContext\":\"gafcqu\",\"expirationTimeIfNotActivatedUtc\":\"2021-03-05T03:27:21Z\",\"provisioningState\":\"Updating\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"sdtutnwlduyc\",\"messageForActivation\":\"zhyrmewipmve\"},\"location\":\"xukuqgsj\",\"tags\":{\"xgketwz\":\"n\",\"mhv\":\"hzjhf\",\"uneqsxvmhf\":\"muvgp\"},\"id\":\"uzjyihsasbhudypo\",\"name\":\"yue\",\"type\":\"slynsqyrpfoo\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"dd8d9f21-e6d2-4a68-87e7-9a638b40591f\",\"endpointServiceContext\":\"tyms\",\"expirationTimeIfNotActivatedUtc\":\"2021-07-18T21:06:13Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"wqzdzgtilaxhnfhq\",\"messageForActivation\":\"vi\"},\"location\":\"uwivkxoy\",\"tags\":{\"kvcpwpgclr\":\"bixxrt\",\"yefrpmpdnqqska\":\"ivtsoxfrkenxpm\"},\"id\":\"ao\",\"name\":\"vmm\",\"type\":\"npqfrtqlkzmeg\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"a234244a-3a4c-4ee3-ae77-d8c6dd2eac8f\",\"endpointServiceContext\":\"vkxlz\",\"expirationTimeIfNotActivatedUtc\":\"2021-04-18T23:17Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"ealzxwhcansymoyq\",\"messageForActivation\":\"wigdi\"},\"location\":\"kbxgom\",\"tags\":{\"e\":\"uwasqvd\",\"uxakjsqzhzbezk\":\"y\",\"kgfmocwahpq\":\"imsidxasicddyvvj\",\"jhhn\":\"atjeaahh\"},\"id\":\"kzyb\",\"name\":\"jjidjk\",\"type\":\"yxkyxvx\"}],\"nextLink\":\"blbjedn\"}")
+            "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"971904b8-7696-4b27-8218-bedb09d021c9\",\"endpointServiceContext\":\"rxvxcjzh\",\"expirationTimeIfNotActivatedUtc\":\"2021-05-06T06:52:32Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"gqscj\",\"messageForActivation\":\"ftjuh\"},\"location\":\"azkmtgguwp\",\"tags\":{\"vmmghfcfiwrxgk\":\"ajc\"},\"id\":\"euvyinzqodfvpgs\",\"name\":\"oxgsgbpfgzdjtx\",\"type\":\"zflbqvg\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"56ad678a-a3b8-4ebf-9e5c-76c066b1a2e9\",\"endpointServiceContext\":\"gafcqu\",\"expirationTimeIfNotActivatedUtc\":\"2021-03-05T03:27:21Z\",\"provisioningState\":\"Updating\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"sdtutnwlduyc\",\"messageForActivation\":\"zhyrmewipmve\"},\"location\":\"xukuqgsj\",\"tags\":{\"xgketwz\":\"n\",\"mhv\":\"hzjhf\",\"uneqsxvmhf\":\"muvgp\"},\"id\":\"uzjyihsasbhudypo\",\"name\":\"yue\",\"type\":\"slynsqyrpfoo\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"736d2a8a-8abc-47f5-a1f7-04f6704a6464\",\"endpointServiceContext\":\"tyms\",\"expirationTimeIfNotActivatedUtc\":\"2021-07-18T21:06:13Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"wqzdzgtilaxhnfhq\",\"messageForActivation\":\"vi\"},\"location\":\"uwivkxoy\",\"tags\":{\"kvcpwpgclr\":\"bixxrt\",\"yefrpmpdnqqska\":\"ivtsoxfrkenxpm\"},\"id\":\"ao\",\"name\":\"vmm\",\"type\":\"npqfrtqlkzmeg\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"9799ff59-19f8-4e32-b1e3-ce0815ca887c\",\"endpointServiceContext\":\"vkxlz\",\"expirationTimeIfNotActivatedUtc\":\"2021-04-18T23:17Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"ealzxwhcansymoyq\",\"messageForActivation\":\"wigdi\"},\"location\":\"kbxgom\",\"tags\":{\"e\":\"uwasqvd\",\"uxakjsqzhzbezk\":\"y\",\"kgfmocwahpq\":\"imsidxasicddyvvj\",\"jhhn\":\"atjeaahh\"},\"id\":\"kzyb\",\"name\":\"jjidjk\",\"type\":\"yxkyxvx\"}],\"nextLink\":\"blbjedn\"}")
             .toObject(PartnerDestinationsListResult.class);
         Assertions.assertEquals("azkmtgguwp", model.value().get(0).location());
         Assertions.assertEquals("ajc", model.value().get(0).tags().get("vmmghfcfiwrxgk"));
-        Assertions.assertEquals(UUID.fromString("3b510bab-96ed-47b0-8fb5-f48efa1c2f85"),
+        Assertions.assertEquals(UUID.fromString("971904b8-7696-4b27-8218-bedb09d021c9"),
             model.value().get(0).partnerRegistrationImmutableId());
         Assertions.assertEquals("rxvxcjzh", model.value().get(0).endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T06:52:32Z"),
@@ -39,7 +39,7 @@ public final class PartnerDestinationsListResultTests {
         PartnerDestinationsListResult model = new PartnerDestinationsListResult().withValue(Arrays.asList(
             new PartnerDestinationInner().withLocation("azkmtgguwp")
                 .withTags(mapOf("vmmghfcfiwrxgk", "ajc"))
-                .withPartnerRegistrationImmutableId(UUID.fromString("3b510bab-96ed-47b0-8fb5-f48efa1c2f85"))
+                .withPartnerRegistrationImmutableId(UUID.fromString("971904b8-7696-4b27-8218-bedb09d021c9"))
                 .withEndpointServiceContext("rxvxcjzh")
                 .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-05-06T06:52:32Z"))
                 .withActivationState(PartnerDestinationActivationState.ACTIVATED)
@@ -47,7 +47,7 @@ public final class PartnerDestinationsListResultTests {
                 .withMessageForActivation("ftjuh"),
             new PartnerDestinationInner().withLocation("xukuqgsj")
                 .withTags(mapOf("xgketwz", "n", "mhv", "hzjhf", "uneqsxvmhf", "muvgp"))
-                .withPartnerRegistrationImmutableId(UUID.fromString("72c1d23a-dfc0-465f-a9b6-c4d4382e6e56"))
+                .withPartnerRegistrationImmutableId(UUID.fromString("56ad678a-a3b8-4ebf-9e5c-76c066b1a2e9"))
                 .withEndpointServiceContext("gafcqu")
                 .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-03-05T03:27:21Z"))
                 .withActivationState(PartnerDestinationActivationState.ACTIVATED)
@@ -55,7 +55,7 @@ public final class PartnerDestinationsListResultTests {
                 .withMessageForActivation("zhyrmewipmve"),
             new PartnerDestinationInner().withLocation("uwivkxoy")
                 .withTags(mapOf("kvcpwpgclr", "bixxrt", "yefrpmpdnqqska", "ivtsoxfrkenxpm"))
-                .withPartnerRegistrationImmutableId(UUID.fromString("dd8d9f21-e6d2-4a68-87e7-9a638b40591f"))
+                .withPartnerRegistrationImmutableId(UUID.fromString("736d2a8a-8abc-47f5-a1f7-04f6704a6464"))
                 .withEndpointServiceContext("tyms")
                 .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-07-18T21:06:13Z"))
                 .withActivationState(PartnerDestinationActivationState.ACTIVATED)
@@ -64,7 +64,7 @@ public final class PartnerDestinationsListResultTests {
             new PartnerDestinationInner().withLocation("kbxgom")
                 .withTags(
                     mapOf("e", "uwasqvd", "uxakjsqzhzbezk", "y", "kgfmocwahpq", "imsidxasicddyvvj", "jhhn", "atjeaahh"))
-                .withPartnerRegistrationImmutableId(UUID.fromString("a234244a-3a4c-4ee3-ae77-d8c6dd2eac8f"))
+                .withPartnerRegistrationImmutableId(UUID.fromString("9799ff59-19f8-4e32-b1e3-ce0815ca887c"))
                 .withEndpointServiceContext("vkxlz")
                 .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-04-18T23:17Z"))
                 .withActivationState(PartnerDestinationActivationState.ACTIVATED)
@@ -74,7 +74,7 @@ public final class PartnerDestinationsListResultTests {
         model = BinaryData.fromObject(model).toObject(PartnerDestinationsListResult.class);
         Assertions.assertEquals("azkmtgguwp", model.value().get(0).location());
         Assertions.assertEquals("ajc", model.value().get(0).tags().get("vmmghfcfiwrxgk"));
-        Assertions.assertEquals(UUID.fromString("3b510bab-96ed-47b0-8fb5-f48efa1c2f85"),
+        Assertions.assertEquals(UUID.fromString("971904b8-7696-4b27-8218-bedb09d021c9"),
             model.value().get(0).partnerRegistrationImmutableId());
         Assertions.assertEquals("rxvxcjzh", model.value().get(0).endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T06:52:32Z"),

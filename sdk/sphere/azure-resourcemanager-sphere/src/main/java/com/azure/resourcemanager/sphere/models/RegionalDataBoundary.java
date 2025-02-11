@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class RegionalDataBoundary extends ExpandableStringEnum<RegionalDat
      * @param name a name to look for.
      * @return the corresponding RegionalDataBoundary.
      */
-    @JsonCreator
     public static RegionalDataBoundary fromString(String name) {
         return fromString(name, RegionalDataBoundary.class);
     }

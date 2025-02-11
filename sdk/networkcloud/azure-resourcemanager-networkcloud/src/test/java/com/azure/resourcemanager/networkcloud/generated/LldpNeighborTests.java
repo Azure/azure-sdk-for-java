@@ -10,11 +10,9 @@ import com.azure.resourcemanager.networkcloud.models.LldpNeighbor;
 public final class LldpNeighborTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LldpNeighbor model =
-            BinaryData
-                .fromString(
-                    "{\"portDescription\":\"ozwyiftyhxhuro\",\"portName\":\"tyxolniwpwc\",\"systemDescription\":\"jfkgiawxk\",\"systemName\":\"ypl\"}")
-                .toObject(LldpNeighbor.class);
+        LldpNeighbor model = BinaryData.fromString(
+            "{\"portDescription\":\"ozwyiftyhxhuro\",\"portName\":\"tyxolniwpwc\",\"systemDescription\":\"jfkgiawxk\",\"systemName\":\"ypl\"}")
+            .toObject(LldpNeighbor.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class UtcClipTimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UtcClipTime model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.UtcClipTime\",\"time\":\"2021-10-22T01:52:24Z\"}")
-                .toObject(UtcClipTime.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T01:52:24Z"), model.time());
+        UtcClipTime model = BinaryData
+            .fromString("{\"@odata.type\":\"#Microsoft.Media.UtcClipTime\",\"time\":\"2021-02-06T22:16:53Z\"}")
+            .toObject(UtcClipTime.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T22:16:53Z"), model.time());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UtcClipTime model = new UtcClipTime().withTime(OffsetDateTime.parse("2021-10-22T01:52:24Z"));
+        UtcClipTime model = new UtcClipTime().withTime(OffsetDateTime.parse("2021-02-06T22:16:53Z"));
         model = BinaryData.fromObject(model).toObject(UtcClipTime.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T01:52:24Z"), model.time());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T22:16:53Z"), model.time());
     }
 }

@@ -181,19 +181,7 @@ public final class EventRoutesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EventRoute>> getByIdWithResponseAsync(String id,
         EventRoutesGetByIdOptions eventRoutesGetByIdOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (eventRoutesGetByIdOptions != null) {
-            traceparentInternal = eventRoutesGetByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (eventRoutesGetByIdOptions != null) {
-            tracestateInternal = eventRoutesGetByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getById(this.client.getHost(), traceparent, tracestate, id,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getByIdWithResponseAsync(id, eventRoutesGetByIdOptions, context));
     }
 
     /**
@@ -294,19 +282,7 @@ public final class EventRoutesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addWithResponseAsync(String id, EventRoute eventRoute,
         EventRoutesAddOptions eventRoutesAddOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (eventRoutesAddOptions != null) {
-            traceparentInternal = eventRoutesAddOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (eventRoutesAddOptions != null) {
-            tracestateInternal = eventRoutesAddOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.add(this.client.getHost(), traceparent, tracestate, id,
-            this.client.getApiVersion(), eventRoute, accept, context));
+        return FluxUtil.withContext(context -> addWithResponseAsync(id, eventRoute, eventRoutesAddOptions, context));
     }
 
     /**
@@ -410,19 +386,7 @@ public final class EventRoutesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id, EventRoutesDeleteOptions eventRoutesDeleteOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (eventRoutesDeleteOptions != null) {
-            traceparentInternal = eventRoutesDeleteOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (eventRoutesDeleteOptions != null) {
-            tracestateInternal = eventRoutesDeleteOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), traceparent, tracestate, id,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(id, eventRoutesDeleteOptions, context));
     }
 
     /**
@@ -500,9 +464,7 @@ public final class EventRoutesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param eventRoutesListOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

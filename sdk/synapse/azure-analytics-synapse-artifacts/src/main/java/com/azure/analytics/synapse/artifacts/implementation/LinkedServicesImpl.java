@@ -242,10 +242,8 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkedServiceResource>> createOrUpdateLinkedServiceWithResponseAsync(String linkedServiceName,
         LinkedServiceResource linkedService, String ifMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdateLinkedService(this.client.getEndpoint(),
-            linkedServiceName, apiVersion, ifMatch, linkedService, accept, context));
+        return FluxUtil.withContext(context -> createOrUpdateLinkedServiceWithResponseAsync(linkedServiceName,
+            linkedService, ifMatch, context));
     }
 
     /**
@@ -397,10 +395,8 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkedServiceResource>> getLinkedServiceWithResponseAsync(String linkedServiceName,
         String ifNoneMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getLinkedService(this.client.getEndpoint(), linkedServiceName,
-            apiVersion, ifNoneMatch, accept, context));
+        return FluxUtil
+            .withContext(context -> getLinkedServiceWithResponseAsync(linkedServiceName, ifNoneMatch, context));
     }
 
     /**
@@ -536,10 +532,7 @@ public final class LinkedServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteLinkedServiceWithResponseAsync(String linkedServiceName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteLinkedService(this.client.getEndpoint(), linkedServiceName,
-            apiVersion, accept, context));
+        return FluxUtil.withContext(context -> deleteLinkedServiceWithResponseAsync(linkedServiceName, context));
     }
 
     /**
@@ -629,10 +622,8 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameLinkedServiceWithResponseAsync(String linkedServiceName,
         ArtifactRenameRequest request) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.renameLinkedService(this.client.getEndpoint(), linkedServiceName,
-            apiVersion, request, accept, context));
+        return FluxUtil
+            .withContext(context -> renameLinkedServiceWithResponseAsync(linkedServiceName, request, context));
     }
 
     /**
@@ -722,9 +713,7 @@ public final class LinkedServicesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -743,9 +732,7 @@ public final class LinkedServicesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -765,9 +752,7 @@ public final class LinkedServicesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -781,9 +766,7 @@ public final class LinkedServicesImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

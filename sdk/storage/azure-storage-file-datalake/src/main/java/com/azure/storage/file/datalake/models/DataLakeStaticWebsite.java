@@ -26,6 +26,12 @@ public final class DataLakeStaticWebsite {
     private String defaultIndexDocumentPath;
 
     /**
+     * Creates a new instance of {@link DataLakeStaticWebsite}.
+     */
+    public DataLakeStaticWebsite() {
+    }
+
+    /**
      * Get the enabled property: Indicates whether this account is hosting a static website.
      *
      * @return the enabled value.

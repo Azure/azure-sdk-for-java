@@ -21,10 +21,12 @@ public final class AccessCreateRoleBindingSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void accessCreateRoleBinding(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.access().createRoleBindingWithResponse("myResourceGroup", "myOrganization",
-            new AccessCreateRoleBindingRequestModel().withPrincipal("User:u-111aaa").withRoleName("CloudClusterAdmin")
-                .withCrnPattern(
-                    "crn://confluent.cloud/organization=1111aaaa-11aa-11aa-11aa-111111aaaaaa/environment=env-aaa1111/cloud-cluster=lkc-1111aaa"),
-            com.azure.core.util.Context.NONE);
+        manager.access()
+            .createRoleBindingWithResponse("myResourceGroup", "myOrganization",
+                new AccessCreateRoleBindingRequestModel().withPrincipal("User:u-111aaa")
+                    .withRoleName("CloudClusterAdmin")
+                    .withCrnPattern(
+                        "crn://confluent.cloud/organization=1111aaaa-11aa-11aa-11aa-111111aaaaaa/environment=env-aaa1111/cloud-cluster=lkc-1111aaa"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -19,7 +19,7 @@ public final class ServicesGetSamples {
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void getAService(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.services().getWithResponse("resRg", "myCluster", "myApp", "myService",
-            com.azure.core.util.Context.NONE);
+        manager.services()
+            .getWithResponse("resRg", "myCluster", "myApp", "myService", com.azure.core.util.Context.NONE);
     }
 }

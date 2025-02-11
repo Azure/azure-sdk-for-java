@@ -5,45 +5,44 @@
 package com.azure.resourcemanager.deviceupdate.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.deviceupdate.models.DiagnosticStorageProperties;
 import com.azure.resourcemanager.deviceupdate.models.IotHubSettings;
 import com.azure.resourcemanager.deviceupdate.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Device Update instance properties.
  */
 @Fluent
-public final class InstanceProperties {
+public final class InstanceProperties implements JsonSerializable<InstanceProperties> {
     /*
      * Provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Parent Device Update Account name which Instance belongs to.
      */
-    @JsonProperty(value = "accountName", access = JsonProperty.Access.WRITE_ONLY)
     private String accountName;
 
     /*
      * List of IoT Hubs associated with the account.
      */
-    @JsonProperty(value = "iotHubs")
     private List<IotHubSettings> iotHubs;
 
     /*
      * Enables or Disables the diagnostic logs collection
      */
-    @JsonProperty(value = "enableDiagnostics")
     private Boolean enableDiagnostics;
 
     /*
      * Customer-initiated diagnostic log collection storage properties
      */
-    @JsonProperty(value = "diagnosticStorageProperties")
     private DiagnosticStorageProperties diagnosticStorageProperties;
 
     /**
@@ -142,5 +141,53 @@ public final class InstanceProperties {
         if (diagnosticStorageProperties() != null) {
             diagnosticStorageProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("iotHubs", this.iotHubs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enableDiagnostics", this.enableDiagnostics);
+        jsonWriter.writeJsonField("diagnosticStorageProperties", this.diagnosticStorageProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstanceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InstanceProperties.
+     */
+    public static InstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstanceProperties deserializedInstanceProperties = new InstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedInstanceProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("accountName".equals(fieldName)) {
+                    deserializedInstanceProperties.accountName = reader.getString();
+                } else if ("iotHubs".equals(fieldName)) {
+                    List<IotHubSettings> iotHubs = reader.readArray(reader1 -> IotHubSettings.fromJson(reader1));
+                    deserializedInstanceProperties.iotHubs = iotHubs;
+                } else if ("enableDiagnostics".equals(fieldName)) {
+                    deserializedInstanceProperties.enableDiagnostics = reader.getNullable(JsonReader::getBoolean);
+                } else if ("diagnosticStorageProperties".equals(fieldName)) {
+                    deserializedInstanceProperties.diagnosticStorageProperties
+                        = DiagnosticStorageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstanceProperties;
+        });
     }
 }

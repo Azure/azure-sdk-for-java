@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for NetworkTapRules List. */
+/**
+ * Samples for NetworkTapRules List.
+ */
 public final class NetworkTapRulesListSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkTapRules_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkTapRules_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkTapRules_ListBySubscription_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkTapRulesListBySubscriptionMaximumSetGen(

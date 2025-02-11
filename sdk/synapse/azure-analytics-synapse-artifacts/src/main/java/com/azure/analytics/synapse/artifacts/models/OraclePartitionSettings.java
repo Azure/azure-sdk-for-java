@@ -17,22 +17,25 @@ import java.io.IOException;
 @Fluent
 public final class OraclePartitionSettings implements JsonSerializable<OraclePartitionSettings> {
     /*
-     * Names of the physical partitions of Oracle table. 
+     * Names of the physical partitions of Oracle table.
      */
     private Object partitionNames;
 
     /*
-     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or
+     * Expression with resultType string).
      */
     private Object partitionColumnName;
 
     /*
-     * The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning.
+     * Type: string (or Expression with resultType string).
      */
     private Object partitionUpperBound;
 
     /*
-     * The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning.
+     * Type: string (or Expression with resultType string).
      */
     private Object partitionLowerBound;
 

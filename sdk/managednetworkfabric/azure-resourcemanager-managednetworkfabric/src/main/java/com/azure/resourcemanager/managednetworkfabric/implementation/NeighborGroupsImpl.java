@@ -21,22 +21,18 @@ public final class NeighborGroupsImpl implements NeighborGroups {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    public NeighborGroupsImpl(
-        NeighborGroupsClient innerClient,
+    public NeighborGroupsImpl(NeighborGroupsClient innerClient,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<NeighborGroup> getByResourceGroupWithResponse(
-        String resourceGroupName, String neighborGroupName, Context context) {
-        Response<NeighborGroupInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, context);
+    public Response<NeighborGroup> getByResourceGroupWithResponse(String resourceGroupName, String neighborGroupName,
+        Context context) {
+        Response<NeighborGroupInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NeighborGroupImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,100 +58,76 @@ public final class NeighborGroupsImpl implements NeighborGroups {
 
     public PagedIterable<NeighborGroup> listByResourceGroup(String resourceGroupName) {
         PagedIterable<NeighborGroupInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new NeighborGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NeighborGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NeighborGroup> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<NeighborGroupInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new NeighborGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NeighborGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NeighborGroup> list() {
         PagedIterable<NeighborGroupInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new NeighborGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NeighborGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NeighborGroup> list(Context context) {
         PagedIterable<NeighborGroupInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new NeighborGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NeighborGroupImpl(inner1, this.manager()));
     }
 
     public NeighborGroup getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String neighborGroupName = Utils.getValueFromIdByName(id, "neighborGroups");
+        String neighborGroupName = ResourceManagerUtils.getValueFromIdByName(id, "neighborGroups");
         if (neighborGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, Context.NONE).getValue();
     }
 
     public Response<NeighborGroup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String neighborGroupName = Utils.getValueFromIdByName(id, "neighborGroups");
+        String neighborGroupName = ResourceManagerUtils.getValueFromIdByName(id, "neighborGroups");
         if (neighborGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, neighborGroupName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String neighborGroupName = Utils.getValueFromIdByName(id, "neighborGroups");
+        String neighborGroupName = ResourceManagerUtils.getValueFromIdByName(id, "neighborGroups");
         if (neighborGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
         }
         this.delete(resourceGroupName, neighborGroupName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String neighborGroupName = Utils.getValueFromIdByName(id, "neighborGroups");
+        String neighborGroupName = ResourceManagerUtils.getValueFromIdByName(id, "neighborGroups");
         if (neighborGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'neighborGroups'.", id)));
         }
         this.delete(resourceGroupName, neighborGroupName, context);
     }

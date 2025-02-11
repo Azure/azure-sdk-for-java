@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties that define a web test location available to an Application Insights Component. */
+/**
+ * Properties that define a web test location available to an Application Insights Component.
+ */
 @Immutable
-public final class ApplicationInsightsComponentWebTestLocationInner {
+public final class ApplicationInsightsComponentWebTestLocationInner
+    implements JsonSerializable<ApplicationInsightsComponentWebTestLocationInner> {
     /*
      * The display name of the web test location.
      */
-    @JsonProperty(value = "DisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Internally defined geographic location tag.
      */
-    @JsonProperty(value = "Tag", access = JsonProperty.Access.WRITE_ONLY)
     private String tag;
 
-    /** Creates an instance of ApplicationInsightsComponentWebTestLocationInner class. */
+    /**
+     * Creates an instance of ApplicationInsightsComponentWebTestLocationInner class.
+     */
     public ApplicationInsightsComponentWebTestLocationInner() {
     }
 
     /**
      * Get the displayName property: The display name of the web test location.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -37,7 +44,7 @@ public final class ApplicationInsightsComponentWebTestLocationInner {
 
     /**
      * Get the tag property: Internally defined geographic location tag.
-     *
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -46,9 +53,47 @@ public final class ApplicationInsightsComponentWebTestLocationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationInsightsComponentWebTestLocationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationInsightsComponentWebTestLocationInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationInsightsComponentWebTestLocationInner.
+     */
+    public static ApplicationInsightsComponentWebTestLocationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationInsightsComponentWebTestLocationInner deserializedApplicationInsightsComponentWebTestLocationInner
+                = new ApplicationInsightsComponentWebTestLocationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("DisplayName".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentWebTestLocationInner.displayName = reader.getString();
+                } else if ("Tag".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentWebTestLocationInner.tag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationInsightsComponentWebTestLocationInner;
+        });
     }
 }

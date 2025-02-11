@@ -6,37 +6,42 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The locations and zones info for SKU. */
+/**
+ * The locations and zones info for SKU.
+ */
 @Fluent
-public final class SkuLocationInfoItem {
+public final class SkuLocationInfoItem implements JsonSerializable<SkuLocationInfoItem> {
     /*
      * The available location of the SKU.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * The available zone of the SKU.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * Gets details of capabilities available to a SKU in specific zones.
      */
-    @JsonProperty(value = "zoneDetails")
     private List<ResourceSkuZoneDetails> zoneDetails;
 
-    /** Creates an instance of SkuLocationInfoItem class. */
+    /**
+     * Creates an instance of SkuLocationInfoItem class.
+     */
     public SkuLocationInfoItem() {
     }
 
     /**
      * Get the location property: The available location of the SKU.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -45,7 +50,7 @@ public final class SkuLocationInfoItem {
 
     /**
      * Set the location property: The available location of the SKU.
-     *
+     * 
      * @param location the location value to set.
      * @return the SkuLocationInfoItem object itself.
      */
@@ -56,7 +61,7 @@ public final class SkuLocationInfoItem {
 
     /**
      * Get the zones property: The available zone of the SKU.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -65,7 +70,7 @@ public final class SkuLocationInfoItem {
 
     /**
      * Set the zones property: The available zone of the SKU.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the SkuLocationInfoItem object itself.
      */
@@ -76,7 +81,7 @@ public final class SkuLocationInfoItem {
 
     /**
      * Get the zoneDetails property: Gets details of capabilities available to a SKU in specific zones.
-     *
+     * 
      * @return the zoneDetails value.
      */
     public List<ResourceSkuZoneDetails> zoneDetails() {
@@ -85,7 +90,7 @@ public final class SkuLocationInfoItem {
 
     /**
      * Set the zoneDetails property: Gets details of capabilities available to a SKU in specific zones.
-     *
+     * 
      * @param zoneDetails the zoneDetails value to set.
      * @return the SkuLocationInfoItem object itself.
      */
@@ -96,14 +101,13 @@ public final class SkuLocationInfoItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model SkuLocationInfoItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model SkuLocationInfoItem"));
         }
         if (zoneDetails() != null) {
             zoneDetails().forEach(e -> e.validate());
@@ -111,4 +115,50 @@ public final class SkuLocationInfoItem {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SkuLocationInfoItem.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("zoneDetails", this.zoneDetails, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuLocationInfoItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuLocationInfoItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuLocationInfoItem.
+     */
+    public static SkuLocationInfoItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuLocationInfoItem deserializedSkuLocationInfoItem = new SkuLocationInfoItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedSkuLocationInfoItem.location = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuLocationInfoItem.zones = zones;
+                } else if ("zoneDetails".equals(fieldName)) {
+                    List<ResourceSkuZoneDetails> zoneDetails
+                        = reader.readArray(reader1 -> ResourceSkuZoneDetails.fromJson(reader1));
+                    deserializedSkuLocationInfoItem.zoneDetails = zoneDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuLocationInfoItem;
+        });
+    }
 }

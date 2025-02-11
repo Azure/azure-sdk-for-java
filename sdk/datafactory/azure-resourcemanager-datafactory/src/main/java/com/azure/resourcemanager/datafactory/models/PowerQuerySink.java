@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -116,8 +117,28 @@ public final class PowerQuerySink extends DataFlowSink {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model PowerQuerySink"));
+        }
+        if (dataset() != null) {
+            dataset().validate();
+        }
+        if (linkedService() != null) {
+            linkedService().validate();
+        }
+        if (flowlet() != null) {
+            flowlet().validate();
+        }
+        if (schemaLinkedService() != null) {
+            schemaLinkedService().validate();
+        }
+        if (rejectedDataLinkedService() != null) {
+            rejectedDataLinkedService().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PowerQuerySink.class);
 
     /**
      * {@inheritDoc}

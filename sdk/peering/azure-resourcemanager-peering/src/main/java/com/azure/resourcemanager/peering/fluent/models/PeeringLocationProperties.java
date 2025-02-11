@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.models.PeeringLocationPropertiesDirect;
 import com.azure.resourcemanager.peering.models.PeeringLocationPropertiesExchange;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties that define a peering location. */
+/**
+ * The properties that define a peering location.
+ */
 @Fluent
-public final class PeeringLocationProperties {
+public final class PeeringLocationProperties implements JsonSerializable<PeeringLocationProperties> {
     /*
      * The properties that define a direct peering location.
      */
-    @JsonProperty(value = "direct")
     private PeeringLocationPropertiesDirect direct;
 
     /*
      * The properties that define an exchange peering location.
      */
-    @JsonProperty(value = "exchange")
     private PeeringLocationPropertiesExchange exchange;
 
     /*
      * The name of the peering location.
      */
-    @JsonProperty(value = "peeringLocation")
     private String peeringLocation;
 
     /*
      * The country in which the peering location exists.
      */
-    @JsonProperty(value = "country")
     private String country;
 
     /*
      * The Azure region associated with the peering location.
      */
-    @JsonProperty(value = "azureRegion")
     private String azureRegion;
 
-    /** Creates an instance of PeeringLocationProperties class. */
+    /**
+     * Creates an instance of PeeringLocationProperties class.
+     */
     public PeeringLocationProperties() {
     }
 
     /**
      * Get the direct property: The properties that define a direct peering location.
-     *
+     * 
      * @return the direct value.
      */
     public PeeringLocationPropertiesDirect direct() {
@@ -57,7 +60,7 @@ public final class PeeringLocationProperties {
 
     /**
      * Set the direct property: The properties that define a direct peering location.
-     *
+     * 
      * @param direct the direct value to set.
      * @return the PeeringLocationProperties object itself.
      */
@@ -68,7 +71,7 @@ public final class PeeringLocationProperties {
 
     /**
      * Get the exchange property: The properties that define an exchange peering location.
-     *
+     * 
      * @return the exchange value.
      */
     public PeeringLocationPropertiesExchange exchange() {
@@ -77,7 +80,7 @@ public final class PeeringLocationProperties {
 
     /**
      * Set the exchange property: The properties that define an exchange peering location.
-     *
+     * 
      * @param exchange the exchange value to set.
      * @return the PeeringLocationProperties object itself.
      */
@@ -88,7 +91,7 @@ public final class PeeringLocationProperties {
 
     /**
      * Get the peeringLocation property: The name of the peering location.
-     *
+     * 
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -97,7 +100,7 @@ public final class PeeringLocationProperties {
 
     /**
      * Set the peeringLocation property: The name of the peering location.
-     *
+     * 
      * @param peeringLocation the peeringLocation value to set.
      * @return the PeeringLocationProperties object itself.
      */
@@ -108,7 +111,7 @@ public final class PeeringLocationProperties {
 
     /**
      * Get the country property: The country in which the peering location exists.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -117,7 +120,7 @@ public final class PeeringLocationProperties {
 
     /**
      * Set the country property: The country in which the peering location exists.
-     *
+     * 
      * @param country the country value to set.
      * @return the PeeringLocationProperties object itself.
      */
@@ -128,7 +131,7 @@ public final class PeeringLocationProperties {
 
     /**
      * Get the azureRegion property: The Azure region associated with the peering location.
-     *
+     * 
      * @return the azureRegion value.
      */
     public String azureRegion() {
@@ -137,7 +140,7 @@ public final class PeeringLocationProperties {
 
     /**
      * Set the azureRegion property: The Azure region associated with the peering location.
-     *
+     * 
      * @param azureRegion the azureRegion value to set.
      * @return the PeeringLocationProperties object itself.
      */
@@ -148,7 +151,7 @@ public final class PeeringLocationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -158,5 +161,53 @@ public final class PeeringLocationProperties {
         if (exchange() != null) {
             exchange().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("direct", this.direct);
+        jsonWriter.writeJsonField("exchange", this.exchange);
+        jsonWriter.writeStringField("peeringLocation", this.peeringLocation);
+        jsonWriter.writeStringField("country", this.country);
+        jsonWriter.writeStringField("azureRegion", this.azureRegion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringLocationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringLocationProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringLocationProperties.
+     */
+    public static PeeringLocationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringLocationProperties deserializedPeeringLocationProperties = new PeeringLocationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("direct".equals(fieldName)) {
+                    deserializedPeeringLocationProperties.direct = PeeringLocationPropertiesDirect.fromJson(reader);
+                } else if ("exchange".equals(fieldName)) {
+                    deserializedPeeringLocationProperties.exchange = PeeringLocationPropertiesExchange.fromJson(reader);
+                } else if ("peeringLocation".equals(fieldName)) {
+                    deserializedPeeringLocationProperties.peeringLocation = reader.getString();
+                } else if ("country".equals(fieldName)) {
+                    deserializedPeeringLocationProperties.country = reader.getString();
+                } else if ("azureRegion".equals(fieldName)) {
+                    deserializedPeeringLocationProperties.azureRegion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringLocationProperties;
+        });
     }
 }

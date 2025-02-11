@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkToNetworkInterconnects. */
+/**
+ * Resource collection API of NetworkToNetworkInterconnects.
+ */
 public interface NetworkToNetworkInterconnects {
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -24,14 +26,14 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network To Network Interconnect resource definition along with {@link Response}.
      */
-    Response<NetworkToNetworkInterconnect> getWithResponse(
-        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName, Context context);
+    Response<NetworkToNetworkInterconnect> getWithResponse(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, Context context);
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -40,14 +42,14 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network To Network Interconnect resource definition.
      */
-    NetworkToNetworkInterconnect get(
-        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName);
+    NetworkToNetworkInterconnect get(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName);
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -59,9 +61,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -70,14 +72,14 @@ public interface NetworkToNetworkInterconnects {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName, Context context);
+    void delete(String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
+        Context context);
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,9 +91,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -100,14 +102,14 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network To Network Interconnects as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NetworkToNetworkInterconnect> listByNetworkFabric(
-        String resourceGroupName, String networkFabricName, Context context);
+    PagedIterable<NetworkToNetworkInterconnect> listByNetworkFabric(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -117,17 +119,14 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -138,18 +137,15 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body,
+    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body,
         Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -159,17 +155,14 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -180,18 +173,14 @@ public interface NetworkToNetworkInterconnects {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, UpdateAdministrativeState body, Context context);
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -202,9 +191,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,9 +205,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -228,9 +217,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +230,7 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Begins definition for a new NetworkToNetworkInterconnect resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetworkToNetworkInterconnect definition.
      */

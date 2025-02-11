@@ -12,7 +12,7 @@ import com.azure.resourcemanager.redis.models.DefaultName;
 public final class PatchSchedulesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCachePatchSchedulesGet.json
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCachePatchSchedulesGet.json
      */
     /**
      * Sample code: RedisCachePatchSchedulesGet.

@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-/** Dns entity property bag. */
+/**
+ * Dns entity property bag.
+ */
 @Immutable
 public final class DnsEntityProperties extends EntityCommonProperties {
     /*
      * An ip entity id for the dns server resolving the request
      */
-    @JsonProperty(value = "dnsServerIpEntityId", access = JsonProperty.Access.WRITE_ONLY)
     private String dnsServerIpEntityId;
 
     /*
      * The name of the dns record associated with the alert
      */
-    @JsonProperty(value = "domainName", access = JsonProperty.Access.WRITE_ONLY)
     private String domainName;
 
     /*
      * An ip entity id for the dns request client
      */
-    @JsonProperty(value = "hostIpAddressEntityId", access = JsonProperty.Access.WRITE_ONLY)
     private String hostIpAddressEntityId;
 
     /*
      * Ip entity identifiers for the resolved ip address.
      */
-    @JsonProperty(value = "ipAddressEntityIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> ipAddressEntityIds;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of DnsEntityProperties class.
+     */
+    public DnsEntityProperties() {
+    }
 
     /**
      * Get the dnsServerIpEntityId property: An ip entity id for the dns server resolving the request.
-     *
+     * 
      * @return the dnsServerIpEntityId value.
      */
     public String dnsServerIpEntityId() {
@@ -47,7 +66,7 @@ public final class DnsEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the domainName property: The name of the dns record associated with the alert.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -56,7 +75,7 @@ public final class DnsEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the hostIpAddressEntityId property: An ip entity id for the dns request client.
-     *
+     * 
      * @return the hostIpAddressEntityId value.
      */
     public String hostIpAddressEntityId() {
@@ -65,7 +84,7 @@ public final class DnsEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the ipAddressEntityIds property: Ip entity identifiers for the resolved ip address.
-     *
+     * 
      * @return the ipAddressEntityIds value.
      */
     public List<String> ipAddressEntityIds() {
@@ -73,12 +92,80 @@ public final class DnsEntityProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsEntityProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DnsEntityProperties.
+     */
+    public static DnsEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsEntityProperties deserializedDnsEntityProperties = new DnsEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDnsEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedDnsEntityProperties.friendlyName = reader.getString();
+                } else if ("dnsServerIpEntityId".equals(fieldName)) {
+                    deserializedDnsEntityProperties.dnsServerIpEntityId = reader.getString();
+                } else if ("domainName".equals(fieldName)) {
+                    deserializedDnsEntityProperties.domainName = reader.getString();
+                } else if ("hostIpAddressEntityId".equals(fieldName)) {
+                    deserializedDnsEntityProperties.hostIpAddressEntityId = reader.getString();
+                } else if ("ipAddressEntityIds".equals(fieldName)) {
+                    List<String> ipAddressEntityIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDnsEntityProperties.ipAddressEntityIds = ipAddressEntityIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsEntityProperties;
+        });
     }
 }

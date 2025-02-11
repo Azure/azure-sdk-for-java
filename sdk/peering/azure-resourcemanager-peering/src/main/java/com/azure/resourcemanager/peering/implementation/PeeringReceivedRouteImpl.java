@@ -12,8 +12,8 @@ public final class PeeringReceivedRouteImpl implements PeeringReceivedRoute {
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    PeeringReceivedRouteImpl(
-        PeeringReceivedRouteInner innerObject, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    PeeringReceivedRouteImpl(PeeringReceivedRouteInner innerObject,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

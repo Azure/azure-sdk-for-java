@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.voiceservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Available platform types. */
+/**
+ * Available platform types.
+ */
 public final class CommunicationsPlatform extends ExpandableStringEnum<CommunicationsPlatform> {
-    /** Static value OperatorConnect for CommunicationsPlatform. */
+    /**
+     * Static value OperatorConnect for CommunicationsPlatform.
+     */
     public static final CommunicationsPlatform OPERATOR_CONNECT = fromString("OperatorConnect");
 
-    /** Static value TeamsPhoneMobile for CommunicationsPlatform. */
+    /**
+     * Static value TeamsPhoneMobile for CommunicationsPlatform.
+     */
     public static final CommunicationsPlatform TEAMS_PHONE_MOBILE = fromString("TeamsPhoneMobile");
 
     /**
      * Creates a new instance of CommunicationsPlatform value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class CommunicationsPlatform extends ExpandableStringEnum<Communica
 
     /**
      * Creates or finds a CommunicationsPlatform from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CommunicationsPlatform.
      */
-    @JsonCreator
     public static CommunicationsPlatform fromString(String name) {
         return fromString(name, CommunicationsPlatform.class);
     }
 
     /**
      * Gets known CommunicationsPlatform values.
-     *
+     * 
      * @return known CommunicationsPlatform values.
      */
     public static Collection<CommunicationsPlatform> values() {

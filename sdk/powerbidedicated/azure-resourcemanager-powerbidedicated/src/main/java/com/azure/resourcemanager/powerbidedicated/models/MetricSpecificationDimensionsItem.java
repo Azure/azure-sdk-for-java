@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The MetricSpecificationDimensionsItem model. */
+/**
+ * The MetricSpecificationDimensionsItem model.
+ */
 @Fluent
-public final class MetricSpecificationDimensionsItem {
+public final class MetricSpecificationDimensionsItem implements JsonSerializable<MetricSpecificationDimensionsItem> {
     /*
      * Dimension of the metric
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Localizable dimension of the metric
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of MetricSpecificationDimensionsItem class. */
+    /**
+     * Creates an instance of MetricSpecificationDimensionsItem class.
+     */
     public MetricSpecificationDimensionsItem() {
     }
 
     /**
      * Get the name property: Dimension of the metric.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class MetricSpecificationDimensionsItem {
 
     /**
      * Get the displayName property: Localizable dimension of the metric.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -46,7 +52,7 @@ public final class MetricSpecificationDimensionsItem {
 
     /**
      * Set the displayName property: Localizable dimension of the metric.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetricSpecificationDimensionsItem object itself.
      */
@@ -57,9 +63,48 @@ public final class MetricSpecificationDimensionsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricSpecificationDimensionsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricSpecificationDimensionsItem if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricSpecificationDimensionsItem.
+     */
+    public static MetricSpecificationDimensionsItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricSpecificationDimensionsItem deserializedMetricSpecificationDimensionsItem
+                = new MetricSpecificationDimensionsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMetricSpecificationDimensionsItem.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMetricSpecificationDimensionsItem.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricSpecificationDimensionsItem;
+        });
     }
 }

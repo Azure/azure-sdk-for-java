@@ -32,45 +32,33 @@ public final class ServicesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"targetLocation\":\"pnapnyiropuh\",\"targetSubscriptionId\":\"igvpgylg\"},\"location\":\"git\",\"tags\":{\"n\":\"djvcsl\",\"rmgucnap\":\"wwncwzzhxgk\",\"oellwp\":\"t\"},\"id\":\"fdygpfqbuaceopz\",\"name\":\"qrhhu\",\"type\":\"opppcqeq\"}";
+        String responseStr
+            = "{\"properties\":{\"targetLocation\":\"pnapnyiropuh\",\"targetSubscriptionId\":\"igvpgylg\"},\"location\":\"git\",\"tags\":{\"n\":\"djvcsl\",\"rmgucnap\":\"wwncwzzhxgk\",\"oellwp\":\"t\"},\"id\":\"fdygpfqbuaceopz\",\"name\":\"qrhhu\",\"type\":\"opppcqeq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(201);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DeploymentManager manager =
-            DeploymentManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeploymentManager manager = DeploymentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ServiceResource response =
-            manager
-                .services()
-                .define("oekqvk")
-                .withRegion("aalnjixi")
-                .withExistingServiceTopology("bsjyofdx", "uusdttouwa")
-                .withTargetLocation("lns")
-                .withTargetSubscriptionId("vbxwyjsflhh")
-                .withTags(mapOf("iidzyexzne", "awjoyaqcslyjp"))
-                .create();
+        ServiceResource response = manager.services()
+            .define("oekqvk")
+            .withRegion("aalnjixi")
+            .withExistingServiceTopology("bsjyofdx", "uusdttouwa")
+            .withTargetLocation("lns")
+            .withTargetSubscriptionId("vbxwyjsflhh")
+            .withTags(mapOf("iidzyexzne", "awjoyaqcslyjp"))
+            .create();
 
         Assertions.assertEquals("git", response.location());
         Assertions.assertEquals("djvcsl", response.tags().get("n"));

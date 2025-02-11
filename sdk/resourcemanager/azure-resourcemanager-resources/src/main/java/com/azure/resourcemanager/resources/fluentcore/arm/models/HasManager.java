@@ -12,6 +12,8 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public interface HasManager<ManagerT> {
     /**
+     * Gets the manager client of this resource type.
+     *
      * @return the manager client of this resource type
      */
     ManagerT manager();

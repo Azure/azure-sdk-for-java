@@ -81,8 +81,7 @@ public final class ServerDataMessage extends WebPubSubMessage {
             jsonWriter.writeRawField("data", data.toString());
         }
 
-        return jsonWriter.writeNumberField("sequenceId", sequenceId)
-            .writeEndObject();
+        return jsonWriter.writeNumberField("sequenceId", sequenceId).writeEndObject();
     }
 
     /**

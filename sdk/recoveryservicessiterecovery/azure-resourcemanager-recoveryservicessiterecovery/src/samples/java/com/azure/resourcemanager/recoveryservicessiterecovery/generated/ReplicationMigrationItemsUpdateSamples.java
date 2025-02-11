@@ -24,9 +24,13 @@ public final class ReplicationMigrationItemsUpdateSamples {
      */
     public static void
         updatesMigrationItem(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        MigrationItem resource = manager.replicationMigrationItems().getWithResponse("migrationvault", "resourcegroup1",
-            "vmwarefabric1", "vmwareContainer1", "virtualmachine1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withProperties(new UpdateMigrationItemInputProperties()
-            .withProviderSpecificDetails(new VMwareCbtUpdateMigrationItemInput())).apply();
+        MigrationItem resource = manager.replicationMigrationItems()
+            .getWithResponse("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new UpdateMigrationItemInputProperties()
+                .withProviderSpecificDetails(new VMwareCbtUpdateMigrationItemInput()))
+            .apply();
     }
 }

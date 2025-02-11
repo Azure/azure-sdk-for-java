@@ -338,7 +338,6 @@ public final class SqlDWSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
         if (polyBaseSettings() != null) {
             polyBaseSettings().validate();
         }

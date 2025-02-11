@@ -5,51 +5,55 @@
 package com.azure.resourcemanager.reservations.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.models.CalculateExchangeOperationResultStatus;
 import com.azure.resourcemanager.reservations.models.CalculateExchangeResponseProperties;
 import com.azure.resourcemanager.reservations.models.OperationResultError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** CalculateExchange operation result. */
+/**
+ * CalculateExchange operation result.
+ */
 @Fluent
-public final class CalculateExchangeOperationResultResponseInner {
+public final class CalculateExchangeOperationResultResponseInner
+    implements JsonSerializable<CalculateExchangeOperationResultResponseInner> {
     /*
      * It should match what is used to GET the operation result.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * It must match the last segment of the id field, and will typically be a GUID / system generated value.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Status of the operation.
      */
-    @JsonProperty(value = "status")
     private CalculateExchangeOperationResultStatus status;
 
     /*
      * CalculateExchange response properties
      */
-    @JsonProperty(value = "properties")
     private CalculateExchangeResponseProperties properties;
 
     /*
      * Required if status == failed or status == canceled.
      */
-    @JsonProperty(value = "error")
     private OperationResultError error;
 
-    /** Creates an instance of CalculateExchangeOperationResultResponseInner class. */
+    /**
+     * Creates an instance of CalculateExchangeOperationResultResponseInner class.
+     */
     public CalculateExchangeOperationResultResponseInner() {
     }
 
     /**
      * Get the id property: It should match what is used to GET the operation result.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -58,7 +62,7 @@ public final class CalculateExchangeOperationResultResponseInner {
 
     /**
      * Set the id property: It should match what is used to GET the operation result.
-     *
+     * 
      * @param id the id value to set.
      * @return the CalculateExchangeOperationResultResponseInner object itself.
      */
@@ -70,7 +74,7 @@ public final class CalculateExchangeOperationResultResponseInner {
     /**
      * Get the name property: It must match the last segment of the id field, and will typically be a GUID / system
      * generated value.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -80,7 +84,7 @@ public final class CalculateExchangeOperationResultResponseInner {
     /**
      * Set the name property: It must match the last segment of the id field, and will typically be a GUID / system
      * generated value.
-     *
+     * 
      * @param name the name value to set.
      * @return the CalculateExchangeOperationResultResponseInner object itself.
      */
@@ -91,7 +95,7 @@ public final class CalculateExchangeOperationResultResponseInner {
 
     /**
      * Get the status property: Status of the operation.
-     *
+     * 
      * @return the status value.
      */
     public CalculateExchangeOperationResultStatus status() {
@@ -100,7 +104,7 @@ public final class CalculateExchangeOperationResultResponseInner {
 
     /**
      * Set the status property: Status of the operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the CalculateExchangeOperationResultResponseInner object itself.
      */
@@ -111,7 +115,7 @@ public final class CalculateExchangeOperationResultResponseInner {
 
     /**
      * Get the properties property: CalculateExchange response properties.
-     *
+     * 
      * @return the properties value.
      */
     public CalculateExchangeResponseProperties properties() {
@@ -120,19 +124,19 @@ public final class CalculateExchangeOperationResultResponseInner {
 
     /**
      * Set the properties property: CalculateExchange response properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CalculateExchangeOperationResultResponseInner object itself.
      */
-    public CalculateExchangeOperationResultResponseInner withProperties(
-        CalculateExchangeResponseProperties properties) {
+    public CalculateExchangeOperationResultResponseInner
+        withProperties(CalculateExchangeResponseProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Get the error property: Required if status == failed or status == canceled.
-     *
+     * 
      * @return the error value.
      */
     public OperationResultError error() {
@@ -141,7 +145,7 @@ public final class CalculateExchangeOperationResultResponseInner {
 
     /**
      * Set the error property: Required if status == failed or status == canceled.
-     *
+     * 
      * @param error the error value to set.
      * @return the CalculateExchangeOperationResultResponseInner object itself.
      */
@@ -152,7 +156,7 @@ public final class CalculateExchangeOperationResultResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -162,5 +166,57 @@ public final class CalculateExchangeOperationResultResponseInner {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CalculateExchangeOperationResultResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CalculateExchangeOperationResultResponseInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CalculateExchangeOperationResultResponseInner.
+     */
+    public static CalculateExchangeOperationResultResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CalculateExchangeOperationResultResponseInner deserializedCalculateExchangeOperationResultResponseInner
+                = new CalculateExchangeOperationResultResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCalculateExchangeOperationResultResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCalculateExchangeOperationResultResponseInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedCalculateExchangeOperationResultResponseInner.status
+                        = CalculateExchangeOperationResultStatus.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCalculateExchangeOperationResultResponseInner.properties
+                        = CalculateExchangeResponseProperties.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedCalculateExchangeOperationResultResponseInner.error
+                        = OperationResultError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCalculateExchangeOperationResultResponseInner;
+        });
     }
 }

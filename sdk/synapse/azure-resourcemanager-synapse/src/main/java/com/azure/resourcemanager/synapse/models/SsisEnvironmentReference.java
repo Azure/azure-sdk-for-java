@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Ssis environment reference. */
+/**
+ * Ssis environment reference.
+ */
 @Fluent
-public final class SsisEnvironmentReference {
+public final class SsisEnvironmentReference implements JsonSerializable<SsisEnvironmentReference> {
     /*
      * Environment reference id.
      */
-    @JsonProperty(value = "id")
     private Long id;
 
     /*
      * Environment folder name.
      */
-    @JsonProperty(value = "environmentFolderName")
     private String environmentFolderName;
 
     /*
      * Environment name.
      */
-    @JsonProperty(value = "environmentName")
     private String environmentName;
 
     /*
      * Reference type
      */
-    @JsonProperty(value = "referenceType")
     private String referenceType;
 
-    /** Creates an instance of SsisEnvironmentReference class. */
+    /**
+     * Creates an instance of SsisEnvironmentReference class.
+     */
     public SsisEnvironmentReference() {
     }
 
     /**
      * Get the id property: Environment reference id.
-     *
+     * 
      * @return the id value.
      */
     public Long id() {
@@ -49,7 +53,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Set the id property: Environment reference id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SsisEnvironmentReference object itself.
      */
@@ -60,7 +64,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Get the environmentFolderName property: Environment folder name.
-     *
+     * 
      * @return the environmentFolderName value.
      */
     public String environmentFolderName() {
@@ -69,7 +73,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Set the environmentFolderName property: Environment folder name.
-     *
+     * 
      * @param environmentFolderName the environmentFolderName value to set.
      * @return the SsisEnvironmentReference object itself.
      */
@@ -80,7 +84,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Get the environmentName property: Environment name.
-     *
+     * 
      * @return the environmentName value.
      */
     public String environmentName() {
@@ -89,7 +93,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Set the environmentName property: Environment name.
-     *
+     * 
      * @param environmentName the environmentName value to set.
      * @return the SsisEnvironmentReference object itself.
      */
@@ -100,7 +104,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Get the referenceType property: Reference type.
-     *
+     * 
      * @return the referenceType value.
      */
     public String referenceType() {
@@ -109,7 +113,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Set the referenceType property: Reference type.
-     *
+     * 
      * @param referenceType the referenceType value to set.
      * @return the SsisEnvironmentReference object itself.
      */
@@ -120,9 +124,54 @@ public final class SsisEnvironmentReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", this.id);
+        jsonWriter.writeStringField("environmentFolderName", this.environmentFolderName);
+        jsonWriter.writeStringField("environmentName", this.environmentName);
+        jsonWriter.writeStringField("referenceType", this.referenceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisEnvironmentReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisEnvironmentReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisEnvironmentReference.
+     */
+    public static SsisEnvironmentReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisEnvironmentReference deserializedSsisEnvironmentReference = new SsisEnvironmentReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSsisEnvironmentReference.id = reader.getNullable(JsonReader::getLong);
+                } else if ("environmentFolderName".equals(fieldName)) {
+                    deserializedSsisEnvironmentReference.environmentFolderName = reader.getString();
+                } else if ("environmentName".equals(fieldName)) {
+                    deserializedSsisEnvironmentReference.environmentName = reader.getString();
+                } else if ("referenceType".equals(fieldName)) {
+                    deserializedSsisEnvironmentReference.referenceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisEnvironmentReference;
+        });
     }
 }

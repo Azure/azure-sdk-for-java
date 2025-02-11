@@ -12,8 +12,8 @@ public final class MapsAccountKeysImpl implements MapsAccountKeys {
 
     private final com.azure.resourcemanager.maps.AzureMapsManager serviceManager;
 
-    MapsAccountKeysImpl(
-        MapsAccountKeysInner innerObject, com.azure.resourcemanager.maps.AzureMapsManager serviceManager) {
+    MapsAccountKeysImpl(MapsAccountKeysInner innerObject,
+        com.azure.resourcemanager.maps.AzureMapsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

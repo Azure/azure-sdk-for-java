@@ -14,7 +14,10 @@ import java.beans.PropertyDescriptor;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.function.BiFunction;
+
+import static com.azure.spring.cloud.core.implementation.util.ClassUtils.isPrimitiveDefaultValue;
+import static com.azure.spring.cloud.core.implementation.util.ClassUtils.isPrimitiveNonDefaultValue;
 
 /**
  *
@@ -96,7 +99,10 @@ public final class AzurePropertiesUtils {
     }
 
     /**
-     * Copy common properties from source object to target object. Ignore the source value if it is null.
+     * Copy common properties from source object to target object.
+     * Ignore the source value:
+     *   1. if it is null.
+     *   2. if it's a primitive type and value is the default value.
      *
      * @param source The source object.
      * @param target The target object.
@@ -106,7 +112,10 @@ public final class AzurePropertiesUtils {
     }
 
     /**
-     * Copy common properties from source object to target object. Ignore the target value if it is nonnull.
+     * Copy common properties from source object to target object.
+     * Ignore the target value:
+     * 1. if it is nonnull.
+     * 2. it's a primitive type and value is not the default value.
      *
      * @param source The source object.
      * @param target The target object.
@@ -134,7 +143,7 @@ public final class AzurePropertiesUtils {
         }
     }
 
-    private static String[] findPropertyNames(Object source, Predicate<Object> predicate) {
+    private static String[] findPropertyNames(Object source, BiFunction<Class<?>, Object, Boolean> function) {
         final Set<String> emptyNames = new HashSet<>();
 
         final BeanWrapper beanWrapper = new BeanWrapperImpl(source);
@@ -142,18 +151,20 @@ public final class AzurePropertiesUtils {
 
         for (PropertyDescriptor pd : pds) {
             Object srcValue = beanWrapper.getPropertyValue(pd.getName());
-            if (predicate.test(srcValue)) {
+            if (function.apply(pd.getPropertyType(), srcValue)) {
                 emptyNames.add(pd.getName());
             }
         }
         return emptyNames.toArray(new String[0]);
     }
 
-    private static String[] findNullPropertyNames(Object source) {
-        return findPropertyNames(source, Objects::isNull);
+    static String[] findNullPropertyNames(Object source) {
+        return findPropertyNames(source, (propertyType, srcValue) ->
+            Objects.isNull(srcValue) || isPrimitiveDefaultValue(propertyType, srcValue));
     }
 
-    private static String[] findNonNullPropertyNames(Object source) {
-        return findPropertyNames(source, Objects::nonNull);
+    static String[] findNonNullPropertyNames(Object source) {
+        return findPropertyNames(source, (propertyType, srcValue) ->
+            Objects.nonNull(srcValue) && isPrimitiveNonDefaultValue(propertyType, srcValue));
     }
 }

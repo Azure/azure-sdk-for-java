@@ -6,36 +6,41 @@ package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gets or sets the application server configuration. */
+/**
+ * Gets or sets the application server configuration.
+ */
 @Fluent
-public final class ApplicationServerConfiguration {
+public final class ApplicationServerConfiguration implements JsonSerializable<ApplicationServerConfiguration> {
     /*
      * The subnet id.
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
      * Gets or sets the virtual machine configuration.
      */
-    @JsonProperty(value = "virtualMachineConfiguration", required = true)
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /*
      * The number of app server instances.
      */
-    @JsonProperty(value = "instanceCount", required = true)
     private long instanceCount;
 
-    /** Creates an instance of ApplicationServerConfiguration class. */
+    /**
+     * Creates an instance of ApplicationServerConfiguration class.
+     */
     public ApplicationServerConfiguration() {
     }
 
     /**
      * Get the subnetId property: The subnet id.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -44,7 +49,7 @@ public final class ApplicationServerConfiguration {
 
     /**
      * Set the subnetId property: The subnet id.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the ApplicationServerConfiguration object itself.
      */
@@ -55,7 +60,7 @@ public final class ApplicationServerConfiguration {
 
     /**
      * Get the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     *
+     * 
      * @return the virtualMachineConfiguration value.
      */
     public VirtualMachineConfiguration virtualMachineConfiguration() {
@@ -64,19 +69,19 @@ public final class ApplicationServerConfiguration {
 
     /**
      * Set the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     *
+     * 
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the ApplicationServerConfiguration object itself.
      */
-    public ApplicationServerConfiguration withVirtualMachineConfiguration(
-        VirtualMachineConfiguration virtualMachineConfiguration) {
+    public ApplicationServerConfiguration
+        withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
 
     /**
      * Get the instanceCount property: The number of app server instances.
-     *
+     * 
      * @return the instanceCount value.
      */
     public long instanceCount() {
@@ -85,7 +90,7 @@ public final class ApplicationServerConfiguration {
 
     /**
      * Set the instanceCount property: The number of app server instances.
-     *
+     * 
      * @param instanceCount the instanceCount value to set.
      * @return the ApplicationServerConfiguration object itself.
      */
@@ -96,26 +101,68 @@ public final class ApplicationServerConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnetId in model ApplicationServerConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnetId in model ApplicationServerConfiguration"));
         }
         if (virtualMachineConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualMachineConfiguration in model"
-                            + " ApplicationServerConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualMachineConfiguration in model ApplicationServerConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationServerConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeJsonField("virtualMachineConfiguration", this.virtualMachineConfiguration);
+        jsonWriter.writeLongField("instanceCount", this.instanceCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationServerConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationServerConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationServerConfiguration.
+     */
+    public static ApplicationServerConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationServerConfiguration deserializedApplicationServerConfiguration
+                = new ApplicationServerConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedApplicationServerConfiguration.subnetId = reader.getString();
+                } else if ("virtualMachineConfiguration".equals(fieldName)) {
+                    deserializedApplicationServerConfiguration.virtualMachineConfiguration
+                        = VirtualMachineConfiguration.fromJson(reader);
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedApplicationServerConfiguration.instanceCount = reader.getLong();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationServerConfiguration;
+        });
+    }
 }

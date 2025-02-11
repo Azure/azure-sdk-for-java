@@ -6,35 +6,35 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Frontend setting for Firewall.
  */
 @Fluent
-public final class FrontendSetting {
+public final class FrontendSetting implements JsonSerializable<FrontendSetting> {
     /*
      * Settings name
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Protocol Type
      */
-    @JsonProperty(value = "protocol", required = true)
     private ProtocolType protocol;
 
     /*
      * Frontend configurations
      */
-    @JsonProperty(value = "frontendConfiguration", required = true)
     private EndpointConfiguration frontendConfiguration;
 
     /*
      * Backend configurations
      */
-    @JsonProperty(value = "backendConfiguration", required = true)
     private EndpointConfiguration backendConfiguration;
 
     /**
@@ -130,26 +130,74 @@ public final class FrontendSetting {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model FrontendSetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model FrontendSetting"));
         }
         if (protocol() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property protocol in model FrontendSetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property protocol in model FrontendSetting"));
         }
         if (frontendConfiguration() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property frontendConfiguration in model FrontendSetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property frontendConfiguration in model FrontendSetting"));
         } else {
             frontendConfiguration().validate();
         }
         if (backendConfiguration() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property backendConfiguration in model FrontendSetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property backendConfiguration in model FrontendSetting"));
         } else {
             backendConfiguration().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FrontendSetting.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeJsonField("frontendConfiguration", this.frontendConfiguration);
+        jsonWriter.writeJsonField("backendConfiguration", this.backendConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FrontendSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FrontendSetting if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FrontendSetting.
+     */
+    public static FrontendSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FrontendSetting deserializedFrontendSetting = new FrontendSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFrontendSetting.name = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedFrontendSetting.protocol = ProtocolType.fromString(reader.getString());
+                } else if ("frontendConfiguration".equals(fieldName)) {
+                    deserializedFrontendSetting.frontendConfiguration = EndpointConfiguration.fromJson(reader);
+                } else if ("backendConfiguration".equals(fieldName)) {
+                    deserializedFrontendSetting.backendConfiguration = EndpointConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFrontendSetting;
+        });
+    }
 }

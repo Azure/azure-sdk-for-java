@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the Managed Identity. */
+/**
+ * The properties of the Managed Identity.
+ */
 @Fluent
-public final class ManagedIdentityReference {
+public final class ManagedIdentityReference implements JsonSerializable<ManagedIdentityReference> {
     /*
      * The type of managed identity used.
      */
-    @JsonProperty(value = "type")
     private IdentityType type;
 
     /*
      * The user identity ARM resource id if the managed identity type is 'UserAssigned'.
      */
-    @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
-    /** Creates an instance of ManagedIdentityReference class. */
+    /**
+     * Creates an instance of ManagedIdentityReference class.
+     */
     public ManagedIdentityReference() {
     }
 
     /**
      * Get the type property: The type of managed identity used.
-     *
+     * 
      * @return the type value.
      */
     public IdentityType type() {
@@ -37,7 +43,7 @@ public final class ManagedIdentityReference {
 
     /**
      * Set the type property: The type of managed identity used.
-     *
+     * 
      * @param type the type value to set.
      * @return the ManagedIdentityReference object itself.
      */
@@ -49,7 +55,7 @@ public final class ManagedIdentityReference {
     /**
      * Get the userAssignedIdentity property: The user identity ARM resource id if the managed identity type is
      * 'UserAssigned'.
-     *
+     * 
      * @return the userAssignedIdentity value.
      */
     public String userAssignedIdentity() {
@@ -59,7 +65,7 @@ public final class ManagedIdentityReference {
     /**
      * Set the userAssignedIdentity property: The user identity ARM resource id if the managed identity type is
      * 'UserAssigned'.
-     *
+     * 
      * @param userAssignedIdentity the userAssignedIdentity value to set.
      * @return the ManagedIdentityReference object itself.
      */
@@ -70,9 +76,48 @@ public final class ManagedIdentityReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIdentityReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIdentityReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIdentityReference.
+     */
+    public static ManagedIdentityReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIdentityReference deserializedManagedIdentityReference = new ManagedIdentityReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedManagedIdentityReference.type = IdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentity".equals(fieldName)) {
+                    deserializedManagedIdentityReference.userAssignedIdentity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIdentityReference;
+        });
     }
 }

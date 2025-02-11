@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contract to validate if backup can be enabled on the given resource in a given vault and given configuration.
@@ -15,29 +19,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 3. Any VM related configuration passed in properties.
  */
 @Fluent
-public final class PreValidateEnableBackupRequest {
+public final class PreValidateEnableBackupRequest implements JsonSerializable<PreValidateEnableBackupRequest> {
     /*
      * ProtectedItem Type- VM, SqlDataBase, AzureFileShare etc
      */
-    @JsonProperty(value = "resourceType")
     private DataSourceType resourceType;
 
     /*
      * ARM Virtual Machine Id
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * ARM id of the Recovery Services Vault
      */
-    @JsonProperty(value = "vaultId")
     private String vaultId;
 
     /*
      * Configuration of VM if any needs to be validated like OS type etc
      */
-    @JsonProperty(value = "properties")
     private String properties;
 
     /**
@@ -132,5 +132,52 @@ public final class PreValidateEnableBackupRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType == null ? null : this.resourceType.toString());
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("vaultId", this.vaultId);
+        jsonWriter.writeStringField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PreValidateEnableBackupRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PreValidateEnableBackupRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PreValidateEnableBackupRequest.
+     */
+    public static PreValidateEnableBackupRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PreValidateEnableBackupRequest deserializedPreValidateEnableBackupRequest
+                = new PreValidateEnableBackupRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedPreValidateEnableBackupRequest.resourceType
+                        = DataSourceType.fromString(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedPreValidateEnableBackupRequest.resourceId = reader.getString();
+                } else if ("vaultId".equals(fieldName)) {
+                    deserializedPreValidateEnableBackupRequest.vaultId = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPreValidateEnableBackupRequest.properties = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPreValidateEnableBackupRequest;
+        });
     }
 }

@@ -4,14 +4,11 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.HighAvailabilityValidationEstimationInner;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerInner;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,17 +55,17 @@ public interface Server {
      * 
      * @return the identity value.
      */
-    MySqlServerIdentity identity();
+    Identity identity();
 
     /**
      * Gets the sku property: The SKU (pricing tier) of the server.
      * 
      * @return the sku value.
      */
-    MySqlServerSku sku();
+    Sku sku();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Gets the systemData property: The system metadata relating to this resource.
      * 
      * @return the systemData value.
      */
@@ -190,25 +187,11 @@ public interface Server {
     Network network();
 
     /**
-     * Gets the privateEndpointConnections property: PrivateEndpointConnections related properties of a server.
-     * 
-     * @return the privateEndpointConnections value.
-     */
-    List<PrivateEndpointConnection> privateEndpointConnections();
-
-    /**
      * Gets the maintenanceWindow property: Maintenance window of a server.
      * 
      * @return the maintenanceWindow value.
      */
     MaintenanceWindow maintenanceWindow();
-
-    /**
-     * Gets the importSourceProperties property: Source properties for import from storage.
-     * 
-     * @return the importSourceProperties value.
-     */
-    ImportSourceProperties importSourceProperties();
 
     /**
      * Gets the region of the resource.
@@ -298,8 +281,7 @@ public interface Server {
             DefinitionStages.WithVersion, DefinitionStages.WithAvailabilityZone, DefinitionStages.WithCreateMode,
             DefinitionStages.WithSourceServerResourceId, DefinitionStages.WithRestorePointInTime,
             DefinitionStages.WithReplicationRole, DefinitionStages.WithDataEncryption, DefinitionStages.WithStorage,
-            DefinitionStages.WithBackup, DefinitionStages.WithHighAvailability, DefinitionStages.WithNetwork,
-            DefinitionStages.WithImportSourceProperties {
+            DefinitionStages.WithBackup, DefinitionStages.WithHighAvailability, DefinitionStages.WithNetwork {
             /**
              * Executes the create request.
              * 
@@ -339,7 +321,7 @@ public interface Server {
              * @param identity The cmk identity for the server.
              * @return the next definition stage.
              */
-            WithCreate withIdentity(MySqlServerIdentity identity);
+            WithCreate withIdentity(Identity identity);
         }
 
         /**
@@ -352,7 +334,7 @@ public interface Server {
              * @param sku The SKU (pricing tier) of the server.
              * @return the next definition stage.
              */
-            WithCreate withSku(MySqlServerSku sku);
+            WithCreate withSku(Sku sku);
         }
 
         /**
@@ -528,19 +510,6 @@ public interface Server {
              */
             WithCreate withNetwork(Network network);
         }
-
-        /**
-         * The stage of the Server definition allowing to specify importSourceProperties.
-         */
-        interface WithImportSourceProperties {
-            /**
-             * Specifies the importSourceProperties property: Source properties for import from storage..
-             * 
-             * @param importSourceProperties Source properties for import from storage.
-             * @return the next definition stage.
-             */
-            WithCreate withImportSourceProperties(ImportSourceProperties importSourceProperties);
-        }
     }
 
     /**
@@ -554,9 +523,9 @@ public interface Server {
      * The template for Server update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithSku,
-        UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithVersion, UpdateStages.WithStorage,
-        UpdateStages.WithBackup, UpdateStages.WithHighAvailability, UpdateStages.WithMaintenanceWindow,
-        UpdateStages.WithReplicationRole, UpdateStages.WithDataEncryption, UpdateStages.WithNetwork {
+        UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithStorage, UpdateStages.WithBackup,
+        UpdateStages.WithHighAvailability, UpdateStages.WithMaintenanceWindow, UpdateStages.WithReplicationRole,
+        UpdateStages.WithDataEncryption {
         /**
          * Executes the update request.
          * 
@@ -600,7 +569,7 @@ public interface Server {
              * @param identity The cmk identity for the server.
              * @return the next definition stage.
              */
-            Update withIdentity(MySqlServerIdentity identity);
+            Update withIdentity(Identity identity);
         }
 
         /**
@@ -613,7 +582,7 @@ public interface Server {
              * @param sku The SKU (pricing tier) of the server.
              * @return the next definition stage.
              */
-            Update withSku(MySqlServerSku sku);
+            Update withSku(Sku sku);
         }
 
         /**
@@ -627,19 +596,6 @@ public interface Server {
              * @return the next definition stage.
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
-        }
-
-        /**
-         * The stage of the Server update allowing to specify version.
-         */
-        interface WithVersion {
-            /**
-             * Specifies the version property: Server version..
-             * 
-             * @param version Server version.
-             * @return the next definition stage.
-             */
-            Update withVersion(ServerVersion version);
         }
 
         /**
@@ -719,19 +675,6 @@ public interface Server {
              */
             Update withDataEncryption(DataEncryption dataEncryption);
         }
-
-        /**
-         * The stage of the Server update allowing to specify network.
-         */
-        interface WithNetwork {
-            /**
-             * Specifies the network property: Network related properties of a server.
-             * 
-             * @param network Network related properties of a server.
-             * @return the next definition stage.
-             */
-            Update withNetwork(Network network);
-        }
     }
 
     /**
@@ -766,31 +709,6 @@ public interface Server {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void failover(Context context);
-
-    /**
-     * Validate a deployment of high availability.
-     * 
-     * @param parameters The required parameters for validation of high availability deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return high availability validation properties of a server along with {@link Response}.
-     */
-    Response<HighAvailabilityValidationEstimation> validateEstimateHighAvailabilityWithResponse(
-        HighAvailabilityValidationEstimationInner parameters, Context context);
-
-    /**
-     * Validate a deployment of high availability.
-     * 
-     * @param parameters The required parameters for validation of high availability deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return high availability validation properties of a server.
-     */
-    HighAvailabilityValidationEstimation
-        validateEstimateHighAvailability(HighAvailabilityValidationEstimationInner parameters);
 
     /**
      * Restarts a server.
@@ -848,25 +766,4 @@ public interface Server {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void stop(Context context);
-
-    /**
-     * Resets GTID on a server.
-     * 
-     * @param parameters The required parameters for resetting GTID on a server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void resetGtid(ServerGtidSetParameter parameters);
-
-    /**
-     * Resets GTID on a server.
-     * 
-     * @param parameters The required parameters for resetting GTID on a server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void resetGtid(ServerGtidSetParameter parameters, Context context);
 }

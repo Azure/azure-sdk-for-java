@@ -17,8 +17,8 @@ public final class ConfigurationListResultImpl implements ConfigurationListResul
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    ConfigurationListResultImpl(
-        ConfigurationListResultInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    ConfigurationListResultImpl(ConfigurationListResultInner innerObject,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -26,12 +26,9 @@ public final class ConfigurationListResultImpl implements ConfigurationListResul
     public List<Configuration> value() {
         List<ConfigurationInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ConfigurationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ConfigurationImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

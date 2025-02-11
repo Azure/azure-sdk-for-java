@@ -13,8 +13,7 @@ public final class TenantConfigurationSyncStateContractImpl implements TenantCon
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    TenantConfigurationSyncStateContractImpl(
-        TenantConfigurationSyncStateContractInner innerObject,
+    TenantConfigurationSyncStateContractImpl(TenantConfigurationSyncStateContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

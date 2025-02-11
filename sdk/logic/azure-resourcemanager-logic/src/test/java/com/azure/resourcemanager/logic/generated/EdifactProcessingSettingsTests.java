@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class EdifactProcessingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EdifactProcessingSettings model =
-            BinaryData
-                .fromString(
-                    "{\"maskSecurityInfo\":false,\"preserveInterchange\":true,\"suspendInterchangeOnError\":false,\"createEmptyXmlTagsForTrailingSeparators\":true,\"useDotAsDecimalSeparator\":true}")
-                .toObject(EdifactProcessingSettings.class);
+        EdifactProcessingSettings model = BinaryData.fromString(
+            "{\"maskSecurityInfo\":false,\"preserveInterchange\":false,\"suspendInterchangeOnError\":false,\"createEmptyXmlTagsForTrailingSeparators\":false,\"useDotAsDecimalSeparator\":true}")
+            .toObject(EdifactProcessingSettings.class);
         Assertions.assertEquals(false, model.maskSecurityInfo());
-        Assertions.assertEquals(true, model.preserveInterchange());
+        Assertions.assertEquals(false, model.preserveInterchange());
         Assertions.assertEquals(false, model.suspendInterchangeOnError());
-        Assertions.assertEquals(true, model.createEmptyXmlTagsForTrailingSeparators());
+        Assertions.assertEquals(false, model.createEmptyXmlTagsForTrailingSeparators());
         Assertions.assertEquals(true, model.useDotAsDecimalSeparator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EdifactProcessingSettings model =
-            new EdifactProcessingSettings()
-                .withMaskSecurityInfo(false)
-                .withPreserveInterchange(true)
-                .withSuspendInterchangeOnError(false)
-                .withCreateEmptyXmlTagsForTrailingSeparators(true)
-                .withUseDotAsDecimalSeparator(true);
+        EdifactProcessingSettings model = new EdifactProcessingSettings().withMaskSecurityInfo(false)
+            .withPreserveInterchange(false)
+            .withSuspendInterchangeOnError(false)
+            .withCreateEmptyXmlTagsForTrailingSeparators(false)
+            .withUseDotAsDecimalSeparator(true);
         model = BinaryData.fromObject(model).toObject(EdifactProcessingSettings.class);
         Assertions.assertEquals(false, model.maskSecurityInfo());
-        Assertions.assertEquals(true, model.preserveInterchange());
+        Assertions.assertEquals(false, model.preserveInterchange());
         Assertions.assertEquals(false, model.suspendInterchangeOnError());
-        Assertions.assertEquals(true, model.createEmptyXmlTagsForTrailingSeparators());
+        Assertions.assertEquals(false, model.createEmptyXmlTagsForTrailingSeparators());
         Assertions.assertEquals(true, model.useDotAsDecimalSeparator());
     }
 }

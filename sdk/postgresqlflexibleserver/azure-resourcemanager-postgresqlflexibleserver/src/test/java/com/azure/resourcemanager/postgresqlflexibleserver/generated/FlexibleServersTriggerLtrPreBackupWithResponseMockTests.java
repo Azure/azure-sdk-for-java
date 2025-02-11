@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class FlexibleServersTriggerLtrPreBackupWithResponseMockTests {
     @Test
     public void testTriggerLtrPreBackupWithResponse() throws Exception {
-        String responseStr = "{\"properties\":{\"numberOfContainers\":1111352078}}";
+        String responseStr = "{\"properties\":{\"numberOfContainers\":1318617256}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class FlexibleServersTriggerLtrPreBackupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         LtrPreBackupResponse response = manager.flexibleServers()
-            .triggerLtrPreBackupWithResponse("tzxpuamwabzxrv", "cush",
-                new LtrPreBackupRequest().withBackupSettings(new BackupSettings().withBackupName("phai")),
+            .triggerLtrPreBackupWithResponse("mqspkcdqzhlctdd", "nqndyfpchrqbn",
+                new LtrPreBackupRequest().withBackupSettings(new BackupSettings().withBackupName("jrcg")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1111352078, response.numberOfContainers());
+        Assertions.assertEquals(1318617256, response.numberOfContainers());
     }
 }

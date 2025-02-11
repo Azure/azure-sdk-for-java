@@ -22,19 +22,31 @@ public final class DscNodesImpl implements DscNodes {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public DscNodesImpl(
-        DscNodesClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public DscNodesImpl(DscNodesClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String nodeId,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, nodeId, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String nodeId) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, nodeId);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeId, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, nodeId, context);
+    public Response<DscNode> getWithResponse(String resourceGroupName, String automationAccountName, String nodeId,
+        Context context) {
+        Response<DscNodeInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, nodeId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DscNodeImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DscNode get(String resourceGroupName, String automationAccountName, String nodeId) {
@@ -46,28 +58,22 @@ public final class DscNodesImpl implements DscNodes {
         }
     }
 
-    public Response<DscNode> getWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeId, Context context) {
-        Response<DscNodeInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, nodeId, context);
+    public Response<DscNode> updateWithResponse(String resourceGroupName, String automationAccountName, String nodeId,
+        DscNodeUpdateParameters dscNodeUpdateParameters, Context context) {
+        Response<DscNodeInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DscNodeImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DscNode update(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeId,
+    public DscNode update(String resourceGroupName, String automationAccountName, String nodeId,
         DscNodeUpdateParameters dscNodeUpdateParameters) {
-        DscNodeInner inner =
-            this.serviceClient().update(resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters);
+        DscNodeInner inner
+            = this.serviceClient().update(resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters);
         if (inner != null) {
             return new DscNodeImpl(inner, this.manager());
         } else {
@@ -75,47 +81,17 @@ public final class DscNodesImpl implements DscNodes {
         }
     }
 
-    public Response<DscNode> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeId,
-        DscNodeUpdateParameters dscNodeUpdateParameters,
-        Context context) {
-        Response<DscNodeInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DscNodeImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<DscNode> listByAutomationAccount(String resourceGroupName, String automationAccountName) {
-        PagedIterable<DscNodeInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new DscNodeImpl(inner1, this.manager()));
+        PagedIterable<DscNodeInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DscNodeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DscNode> listByAutomationAccount(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount,
-        Context context) {
-        PagedIterable<DscNodeInner> inner =
-            this
-                .serviceClient()
-                .listByAutomationAccount(
-                    resourceGroupName, automationAccountName, filter, skip, top, inlinecount, context);
-        return Utils.mapPage(inner, inner1 -> new DscNodeImpl(inner1, this.manager()));
+    public PagedIterable<DscNode> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Integer skip, Integer top, String inlinecount, Context context) {
+        PagedIterable<DscNodeInner> inner = this.serviceClient()
+            .listByAutomationAccount(resourceGroupName, automationAccountName, filter, skip, top, inlinecount, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DscNodeImpl(inner1, this.manager()));
     }
 
     private DscNodesClient serviceClient() {

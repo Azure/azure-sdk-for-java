@@ -13,7 +13,5 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
  * Entry point for Tanzu Configuration Service API.
  */
 @Fluent
-public interface SpringConfigurationServices
-    extends HasManager<AppPlatformManager>,
-        HasParent<SpringService> {
+public interface SpringConfigurationServices extends HasManager<AppPlatformManager>, HasParent<SpringService> {
 }

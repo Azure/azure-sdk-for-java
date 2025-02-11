@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The PortalConfigPropertiesSignin model. */
+/**
+ * The PortalConfigPropertiesSignin model.
+ */
 @Fluent
-public final class PortalConfigPropertiesSignin {
+public final class PortalConfigPropertiesSignin implements JsonSerializable<PortalConfigPropertiesSignin> {
     /*
      * Redirect anonymous users to the sign-in page.
      */
-    @JsonProperty(value = "require")
     private Boolean require;
 
-    /** Creates an instance of PortalConfigPropertiesSignin class. */
+    /**
+     * Creates an instance of PortalConfigPropertiesSignin class.
+     */
     public PortalConfigPropertiesSignin() {
     }
 
     /**
      * Get the require property: Redirect anonymous users to the sign-in page.
-     *
+     * 
      * @return the require value.
      */
     public Boolean require() {
@@ -31,7 +38,7 @@ public final class PortalConfigPropertiesSignin {
 
     /**
      * Set the require property: Redirect anonymous users to the sign-in page.
-     *
+     * 
      * @param require the require value to set.
      * @return the PortalConfigPropertiesSignin object itself.
      */
@@ -42,9 +49,45 @@ public final class PortalConfigPropertiesSignin {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("require", this.require);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalConfigPropertiesSignin from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalConfigPropertiesSignin if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortalConfigPropertiesSignin.
+     */
+    public static PortalConfigPropertiesSignin fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalConfigPropertiesSignin deserializedPortalConfigPropertiesSignin = new PortalConfigPropertiesSignin();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("require".equals(fieldName)) {
+                    deserializedPortalConfigPropertiesSignin.require = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalConfigPropertiesSignin;
+        });
     }
 }

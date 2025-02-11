@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Network and credential configuration currently applied on terminal server. */
+/**
+ * Network and credential configuration currently applied on terminal server.
+ */
 @Fluent
-public class TerminalServerPatchableProperties {
+public class TerminalServerPatchableProperties implements JsonSerializable<TerminalServerPatchableProperties> {
     /*
      * Username for the terminal server connection.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * Password for the terminal server connection.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Serial Number of Terminal server.
      */
-    @JsonProperty(value = "serialNumber")
     private String serialNumber;
 
-    /** Creates an instance of TerminalServerPatchableProperties class. */
+    /**
+     * Creates an instance of TerminalServerPatchableProperties class.
+     */
     public TerminalServerPatchableProperties() {
     }
 
     /**
      * Get the username property: Username for the terminal server connection.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -43,7 +48,7 @@ public class TerminalServerPatchableProperties {
 
     /**
      * Set the username property: Username for the terminal server connection.
-     *
+     * 
      * @param username the username value to set.
      * @return the TerminalServerPatchableProperties object itself.
      */
@@ -54,7 +59,7 @@ public class TerminalServerPatchableProperties {
 
     /**
      * Get the password property: Password for the terminal server connection.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -63,7 +68,7 @@ public class TerminalServerPatchableProperties {
 
     /**
      * Set the password property: Password for the terminal server connection.
-     *
+     * 
      * @param password the password value to set.
      * @return the TerminalServerPatchableProperties object itself.
      */
@@ -74,7 +79,7 @@ public class TerminalServerPatchableProperties {
 
     /**
      * Get the serialNumber property: Serial Number of Terminal server.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -83,7 +88,7 @@ public class TerminalServerPatchableProperties {
 
     /**
      * Set the serialNumber property: Serial Number of Terminal server.
-     *
+     * 
      * @param serialNumber the serialNumber value to set.
      * @return the TerminalServerPatchableProperties object itself.
      */
@@ -94,9 +99,52 @@ public class TerminalServerPatchableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TerminalServerPatchableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TerminalServerPatchableProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TerminalServerPatchableProperties.
+     */
+    public static TerminalServerPatchableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TerminalServerPatchableProperties deserializedTerminalServerPatchableProperties
+                = new TerminalServerPatchableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedTerminalServerPatchableProperties.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedTerminalServerPatchableProperties.password = reader.getString();
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedTerminalServerPatchableProperties.serialNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTerminalServerPatchableProperties;
+        });
     }
 }

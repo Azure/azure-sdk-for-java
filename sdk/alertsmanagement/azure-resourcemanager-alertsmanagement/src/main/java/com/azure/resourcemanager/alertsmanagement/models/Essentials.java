@@ -5,134 +5,128 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** This object contains consistent fields across different monitor services. */
+/**
+ * This object contains consistent fields across different monitor services.
+ */
 @Fluent
-public final class Essentials {
+public final class Essentials implements JsonSerializable<Essentials> {
     /*
      * Severity of alert Sev0 being highest and Sev4 being lowest.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private Severity severity;
 
     /*
      * The type of signal the alert is based on, which could be metrics, logs or activity logs.
      */
-    @JsonProperty(value = "signalType", access = JsonProperty.Access.WRITE_ONLY)
     private SignalType signalType;
 
     /*
      * Alert object state, which can be modified by the user.
      */
-    @JsonProperty(value = "alertState", access = JsonProperty.Access.WRITE_ONLY)
     private AlertState alertState;
 
     /*
      * Condition of the rule at the monitor service. It represents whether the underlying conditions have crossed the
      * defined alert rule thresholds.
      */
-    @JsonProperty(value = "monitorCondition", access = JsonProperty.Access.WRITE_ONLY)
     private MonitorCondition monitorCondition;
 
     /*
      * Target ARM resource, on which alert got created.
      */
-    @JsonProperty(value = "targetResource")
     private String targetResource;
 
     /*
      * Name of the target ARM resource name, on which alert got created.
      */
-    @JsonProperty(value = "targetResourceName")
     private String targetResourceName;
 
     /*
      * Resource group of target ARM resource, on which alert got created.
      */
-    @JsonProperty(value = "targetResourceGroup")
     private String targetResourceGroup;
 
     /*
      * Resource type of target ARM resource, on which alert got created.
      */
-    @JsonProperty(value = "targetResourceType")
     private String targetResourceType;
 
     /*
      * Monitor service on which the rule(monitor) is set.
      */
-    @JsonProperty(value = "monitorService", access = JsonProperty.Access.WRITE_ONLY)
     private MonitorService monitorService;
 
     /*
-     * Rule(monitor) which fired alert instance. Depending on the monitor service,  this would be ARM id or name of the
+     * Rule(monitor) which fired alert instance. Depending on the monitor service, this would be ARM id or name of the
      * rule.
      */
-    @JsonProperty(value = "alertRule", access = JsonProperty.Access.WRITE_ONLY)
     private String alertRule;
 
     /*
      * Unique Id created by monitor service for each alert instance. This could be used to track the issue at the
      * monitor service, in case of Nagios, Zabbix, SCOM etc.
      */
-    @JsonProperty(value = "sourceCreatedId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceCreatedId;
 
     /*
      * Unique Id of the smart group
      */
-    @JsonProperty(value = "smartGroupId", access = JsonProperty.Access.WRITE_ONLY)
     private String smartGroupId;
 
     /*
      * Verbose reason describing the reason why this alert instance is added to a smart group
      */
-    @JsonProperty(value = "smartGroupingReason", access = JsonProperty.Access.WRITE_ONLY)
     private String smartGroupingReason;
 
     /*
      * Creation time(ISO-8601 format) of alert instance.
      */
-    @JsonProperty(value = "startDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startDateTime;
 
     /*
      * Last modification time(ISO-8601 format) of alert instance.
      */
-    @JsonProperty(value = "lastModifiedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * Resolved time(ISO-8601 format) of alert instance. This will be updated when monitor service resolves the alert
      * instance because the rule condition is no longer met.
      */
-    @JsonProperty(value = "monitorConditionResolvedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime monitorConditionResolvedDateTime;
 
     /*
      * User who last modified the alert, in case of monitor service updates user would be 'system', otherwise name of
      * the user.
      */
-    @JsonProperty(value = "lastModifiedUserName", access = JsonProperty.Access.WRITE_ONLY)
     private String lastModifiedUsername;
 
     /*
      * Action status
      */
-    @JsonProperty(value = "actionStatus")
     private ActionStatus actionStatus;
 
     /*
      * Alert description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of Essentials class.
+     */
+    public Essentials() {
+    }
+
+    /**
      * Get the severity property: Severity of alert Sev0 being highest and Sev4 being lowest.
-     *
+     * 
      * @return the severity value.
      */
     public Severity severity() {
@@ -142,7 +136,7 @@ public final class Essentials {
     /**
      * Get the signalType property: The type of signal the alert is based on, which could be metrics, logs or activity
      * logs.
-     *
+     * 
      * @return the signalType value.
      */
     public SignalType signalType() {
@@ -151,7 +145,7 @@ public final class Essentials {
 
     /**
      * Get the alertState property: Alert object state, which can be modified by the user.
-     *
+     * 
      * @return the alertState value.
      */
     public AlertState alertState() {
@@ -161,7 +155,7 @@ public final class Essentials {
     /**
      * Get the monitorCondition property: Condition of the rule at the monitor service. It represents whether the
      * underlying conditions have crossed the defined alert rule thresholds.
-     *
+     * 
      * @return the monitorCondition value.
      */
     public MonitorCondition monitorCondition() {
@@ -170,7 +164,7 @@ public final class Essentials {
 
     /**
      * Get the targetResource property: Target ARM resource, on which alert got created.
-     *
+     * 
      * @return the targetResource value.
      */
     public String targetResource() {
@@ -179,7 +173,7 @@ public final class Essentials {
 
     /**
      * Set the targetResource property: Target ARM resource, on which alert got created.
-     *
+     * 
      * @param targetResource the targetResource value to set.
      * @return the Essentials object itself.
      */
@@ -190,7 +184,7 @@ public final class Essentials {
 
     /**
      * Get the targetResourceName property: Name of the target ARM resource name, on which alert got created.
-     *
+     * 
      * @return the targetResourceName value.
      */
     public String targetResourceName() {
@@ -199,7 +193,7 @@ public final class Essentials {
 
     /**
      * Set the targetResourceName property: Name of the target ARM resource name, on which alert got created.
-     *
+     * 
      * @param targetResourceName the targetResourceName value to set.
      * @return the Essentials object itself.
      */
@@ -210,7 +204,7 @@ public final class Essentials {
 
     /**
      * Get the targetResourceGroup property: Resource group of target ARM resource, on which alert got created.
-     *
+     * 
      * @return the targetResourceGroup value.
      */
     public String targetResourceGroup() {
@@ -219,7 +213,7 @@ public final class Essentials {
 
     /**
      * Set the targetResourceGroup property: Resource group of target ARM resource, on which alert got created.
-     *
+     * 
      * @param targetResourceGroup the targetResourceGroup value to set.
      * @return the Essentials object itself.
      */
@@ -230,7 +224,7 @@ public final class Essentials {
 
     /**
      * Get the targetResourceType property: Resource type of target ARM resource, on which alert got created.
-     *
+     * 
      * @return the targetResourceType value.
      */
     public String targetResourceType() {
@@ -239,7 +233,7 @@ public final class Essentials {
 
     /**
      * Set the targetResourceType property: Resource type of target ARM resource, on which alert got created.
-     *
+     * 
      * @param targetResourceType the targetResourceType value to set.
      * @return the Essentials object itself.
      */
@@ -250,7 +244,7 @@ public final class Essentials {
 
     /**
      * Get the monitorService property: Monitor service on which the rule(monitor) is set.
-     *
+     * 
      * @return the monitorService value.
      */
     public MonitorService monitorService() {
@@ -260,7 +254,7 @@ public final class Essentials {
     /**
      * Get the alertRule property: Rule(monitor) which fired alert instance. Depending on the monitor service, this
      * would be ARM id or name of the rule.
-     *
+     * 
      * @return the alertRule value.
      */
     public String alertRule() {
@@ -270,7 +264,7 @@ public final class Essentials {
     /**
      * Get the sourceCreatedId property: Unique Id created by monitor service for each alert instance. This could be
      * used to track the issue at the monitor service, in case of Nagios, Zabbix, SCOM etc.
-     *
+     * 
      * @return the sourceCreatedId value.
      */
     public String sourceCreatedId() {
@@ -279,7 +273,7 @@ public final class Essentials {
 
     /**
      * Get the smartGroupId property: Unique Id of the smart group.
-     *
+     * 
      * @return the smartGroupId value.
      */
     public String smartGroupId() {
@@ -289,7 +283,7 @@ public final class Essentials {
     /**
      * Get the smartGroupingReason property: Verbose reason describing the reason why this alert instance is added to a
      * smart group.
-     *
+     * 
      * @return the smartGroupingReason value.
      */
     public String smartGroupingReason() {
@@ -298,7 +292,7 @@ public final class Essentials {
 
     /**
      * Get the startDateTime property: Creation time(ISO-8601 format) of alert instance.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -307,7 +301,7 @@ public final class Essentials {
 
     /**
      * Get the lastModifiedDateTime property: Last modification time(ISO-8601 format) of alert instance.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -317,7 +311,7 @@ public final class Essentials {
     /**
      * Get the monitorConditionResolvedDateTime property: Resolved time(ISO-8601 format) of alert instance. This will be
      * updated when monitor service resolves the alert instance because the rule condition is no longer met.
-     *
+     * 
      * @return the monitorConditionResolvedDateTime value.
      */
     public OffsetDateTime monitorConditionResolvedDateTime() {
@@ -327,7 +321,7 @@ public final class Essentials {
     /**
      * Get the lastModifiedUsername property: User who last modified the alert, in case of monitor service updates user
      * would be 'system', otherwise name of the user.
-     *
+     * 
      * @return the lastModifiedUsername value.
      */
     public String lastModifiedUsername() {
@@ -336,7 +330,7 @@ public final class Essentials {
 
     /**
      * Get the actionStatus property: Action status.
-     *
+     * 
      * @return the actionStatus value.
      */
     public ActionStatus actionStatus() {
@@ -345,7 +339,7 @@ public final class Essentials {
 
     /**
      * Set the actionStatus property: Action status.
-     *
+     * 
      * @param actionStatus the actionStatus value to set.
      * @return the Essentials object itself.
      */
@@ -356,7 +350,7 @@ public final class Essentials {
 
     /**
      * Get the description property: Alert description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -365,7 +359,7 @@ public final class Essentials {
 
     /**
      * Set the description property: Alert description.
-     *
+     * 
      * @param description the description value to set.
      * @return the Essentials object itself.
      */
@@ -376,12 +370,92 @@ public final class Essentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (actionStatus() != null) {
             actionStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResource", this.targetResource);
+        jsonWriter.writeStringField("targetResourceName", this.targetResourceName);
+        jsonWriter.writeStringField("targetResourceGroup", this.targetResourceGroup);
+        jsonWriter.writeStringField("targetResourceType", this.targetResourceType);
+        jsonWriter.writeJsonField("actionStatus", this.actionStatus);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Essentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Essentials if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Essentials.
+     */
+    public static Essentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Essentials deserializedEssentials = new Essentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("severity".equals(fieldName)) {
+                    deserializedEssentials.severity = Severity.fromString(reader.getString());
+                } else if ("signalType".equals(fieldName)) {
+                    deserializedEssentials.signalType = SignalType.fromString(reader.getString());
+                } else if ("alertState".equals(fieldName)) {
+                    deserializedEssentials.alertState = AlertState.fromString(reader.getString());
+                } else if ("monitorCondition".equals(fieldName)) {
+                    deserializedEssentials.monitorCondition = MonitorCondition.fromString(reader.getString());
+                } else if ("targetResource".equals(fieldName)) {
+                    deserializedEssentials.targetResource = reader.getString();
+                } else if ("targetResourceName".equals(fieldName)) {
+                    deserializedEssentials.targetResourceName = reader.getString();
+                } else if ("targetResourceGroup".equals(fieldName)) {
+                    deserializedEssentials.targetResourceGroup = reader.getString();
+                } else if ("targetResourceType".equals(fieldName)) {
+                    deserializedEssentials.targetResourceType = reader.getString();
+                } else if ("monitorService".equals(fieldName)) {
+                    deserializedEssentials.monitorService = MonitorService.fromString(reader.getString());
+                } else if ("alertRule".equals(fieldName)) {
+                    deserializedEssentials.alertRule = reader.getString();
+                } else if ("sourceCreatedId".equals(fieldName)) {
+                    deserializedEssentials.sourceCreatedId = reader.getString();
+                } else if ("smartGroupId".equals(fieldName)) {
+                    deserializedEssentials.smartGroupId = reader.getString();
+                } else if ("smartGroupingReason".equals(fieldName)) {
+                    deserializedEssentials.smartGroupingReason = reader.getString();
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedEssentials.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedEssentials.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("monitorConditionResolvedDateTime".equals(fieldName)) {
+                    deserializedEssentials.monitorConditionResolvedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedUserName".equals(fieldName)) {
+                    deserializedEssentials.lastModifiedUsername = reader.getString();
+                } else if ("actionStatus".equals(fieldName)) {
+                    deserializedEssentials.actionStatus = ActionStatus.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedEssentials.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEssentials;
+        });
     }
 }

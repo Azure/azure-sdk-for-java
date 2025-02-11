@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Scope of the extension. It can be either Cluster or Namespace; but not both. */
+/**
+ * Scope of the extension. It can be either Cluster or Namespace; but not both.
+ */
 @Fluent
-public final class Scope {
+public final class Scope implements JsonSerializable<Scope> {
     /*
      * Specifies that the scope of the extension is Cluster
      */
-    @JsonProperty(value = "cluster")
     private ScopeCluster cluster;
 
     /*
      * Specifies that the scope of the extension is Namespace
      */
-    @JsonProperty(value = "namespace")
     private ScopeNamespace namespace;
 
-    /** Creates an instance of Scope class. */
+    /**
+     * Creates an instance of Scope class.
+     */
     public Scope() {
     }
 
     /**
      * Get the cluster property: Specifies that the scope of the extension is Cluster.
-     *
+     * 
      * @return the cluster value.
      */
     public ScopeCluster cluster() {
@@ -37,7 +43,7 @@ public final class Scope {
 
     /**
      * Set the cluster property: Specifies that the scope of the extension is Cluster.
-     *
+     * 
      * @param cluster the cluster value to set.
      * @return the Scope object itself.
      */
@@ -48,7 +54,7 @@ public final class Scope {
 
     /**
      * Get the namespace property: Specifies that the scope of the extension is Namespace.
-     *
+     * 
      * @return the namespace value.
      */
     public ScopeNamespace namespace() {
@@ -57,7 +63,7 @@ public final class Scope {
 
     /**
      * Set the namespace property: Specifies that the scope of the extension is Namespace.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the Scope object itself.
      */
@@ -68,7 +74,7 @@ public final class Scope {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,5 +84,44 @@ public final class Scope {
         if (namespace() != null) {
             namespace().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("cluster", this.cluster);
+        jsonWriter.writeJsonField("namespace", this.namespace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Scope from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Scope if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Scope.
+     */
+    public static Scope fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Scope deserializedScope = new Scope();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cluster".equals(fieldName)) {
+                    deserializedScope.cluster = ScopeCluster.fromJson(reader);
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedScope.namespace = ScopeNamespace.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScope;
+        });
     }
 }

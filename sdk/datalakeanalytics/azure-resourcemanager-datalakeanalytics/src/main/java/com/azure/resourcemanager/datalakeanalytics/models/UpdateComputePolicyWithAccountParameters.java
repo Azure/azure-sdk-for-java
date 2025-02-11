@@ -6,32 +6,39 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.UpdateComputePolicyProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** The parameters used to update a compute policy while updating a Data Lake Analytics account. */
+/**
+ * The parameters used to update a compute policy while updating a Data Lake Analytics account.
+ */
 @Fluent
-public final class UpdateComputePolicyWithAccountParameters {
+public final class UpdateComputePolicyWithAccountParameters
+    implements JsonSerializable<UpdateComputePolicyWithAccountParameters> {
     /*
      * The unique name of the compute policy to update.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The compute policy properties to use when updating a compute policy.
      */
-    @JsonProperty(value = "properties")
     private UpdateComputePolicyProperties innerProperties;
 
-    /** Creates an instance of UpdateComputePolicyWithAccountParameters class. */
+    /**
+     * Creates an instance of UpdateComputePolicyWithAccountParameters class.
+     */
     public UpdateComputePolicyWithAccountParameters() {
     }
 
     /**
      * Get the name property: The unique name of the compute policy to update.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +47,7 @@ public final class UpdateComputePolicyWithAccountParameters {
 
     /**
      * Set the name property: The unique name of the compute policy to update.
-     *
+     * 
      * @param name the name value to set.
      * @return the UpdateComputePolicyWithAccountParameters object itself.
      */
@@ -51,7 +58,7 @@ public final class UpdateComputePolicyWithAccountParameters {
 
     /**
      * Get the innerProperties property: The compute policy properties to use when updating a compute policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateComputePolicyProperties innerProperties() {
@@ -60,7 +67,7 @@ public final class UpdateComputePolicyWithAccountParameters {
 
     /**
      * Get the objectId property: The AAD object identifier for the entity to create a policy for.
-     *
+     * 
      * @return the objectId value.
      */
     public UUID objectId() {
@@ -69,7 +76,7 @@ public final class UpdateComputePolicyWithAccountParameters {
 
     /**
      * Set the objectId property: The AAD object identifier for the entity to create a policy for.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the UpdateComputePolicyWithAccountParameters object itself.
      */
@@ -83,7 +90,7 @@ public final class UpdateComputePolicyWithAccountParameters {
 
     /**
      * Get the objectType property: The type of AAD object the object identifier refers to.
-     *
+     * 
      * @return the objectType value.
      */
     public AadObjectType objectType() {
@@ -92,7 +99,7 @@ public final class UpdateComputePolicyWithAccountParameters {
 
     /**
      * Set the objectType property: The type of AAD object the object identifier refers to.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the UpdateComputePolicyWithAccountParameters object itself.
      */
@@ -107,7 +114,7 @@ public final class UpdateComputePolicyWithAccountParameters {
     /**
      * Get the maxDegreeOfParallelismPerJob property: The maximum degree of parallelism per job this user can use to
      * submit jobs. This property, the min priority per job property, or both must be passed.
-     *
+     * 
      * @return the maxDegreeOfParallelismPerJob value.
      */
     public Integer maxDegreeOfParallelismPerJob() {
@@ -117,12 +124,12 @@ public final class UpdateComputePolicyWithAccountParameters {
     /**
      * Set the maxDegreeOfParallelismPerJob property: The maximum degree of parallelism per job this user can use to
      * submit jobs. This property, the min priority per job property, or both must be passed.
-     *
+     * 
      * @param maxDegreeOfParallelismPerJob the maxDegreeOfParallelismPerJob value to set.
      * @return the UpdateComputePolicyWithAccountParameters object itself.
      */
-    public UpdateComputePolicyWithAccountParameters withMaxDegreeOfParallelismPerJob(
-        Integer maxDegreeOfParallelismPerJob) {
+    public UpdateComputePolicyWithAccountParameters
+        withMaxDegreeOfParallelismPerJob(Integer maxDegreeOfParallelismPerJob) {
         if (this.innerProperties() == null) {
             this.innerProperties = new UpdateComputePolicyProperties();
         }
@@ -133,7 +140,7 @@ public final class UpdateComputePolicyWithAccountParameters {
     /**
      * Get the minPriorityPerJob property: The minimum priority per job this user can use to submit jobs. This property,
      * the max degree of parallelism per job property, or both must be passed.
-     *
+     * 
      * @return the minPriorityPerJob value.
      */
     public Integer minPriorityPerJob() {
@@ -143,7 +150,7 @@ public final class UpdateComputePolicyWithAccountParameters {
     /**
      * Set the minPriorityPerJob property: The minimum priority per job this user can use to submit jobs. This property,
      * the max degree of parallelism per job property, or both must be passed.
-     *
+     * 
      * @param minPriorityPerJob the minPriorityPerJob value to set.
      * @return the UpdateComputePolicyWithAccountParameters object itself.
      */
@@ -157,15 +164,14 @@ public final class UpdateComputePolicyWithAccountParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model UpdateComputePolicyWithAccountParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model UpdateComputePolicyWithAccountParameters"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -173,4 +179,46 @@ public final class UpdateComputePolicyWithAccountParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpdateComputePolicyWithAccountParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateComputePolicyWithAccountParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateComputePolicyWithAccountParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateComputePolicyWithAccountParameters.
+     */
+    public static UpdateComputePolicyWithAccountParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateComputePolicyWithAccountParameters deserializedUpdateComputePolicyWithAccountParameters
+                = new UpdateComputePolicyWithAccountParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedUpdateComputePolicyWithAccountParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpdateComputePolicyWithAccountParameters.innerProperties
+                        = UpdateComputePolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateComputePolicyWithAccountParameters;
+        });
+    }
 }

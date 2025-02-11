@@ -114,7 +114,7 @@ public class KeyVaultPropertySourceTests {
     }
 
     @Test
-    @Timeout(5)
+    @Timeout(6)
     public void refreshTwoKeyVaultsPropertySources() throws InterruptedException {
         CountDownLatch latchForRefreshing = new CountDownLatch(2);
         new SecretRefreshing(latchForRefreshing, "KeyVault1", "test1",

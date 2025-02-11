@@ -30,14 +30,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class MetadataMonitorThread extends Thread {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataMonitorThread.class);
 
-    // TODO[GA]: using a threadPool with less threads or single thread
-    public static final Scheduler CONTAINERS_MONITORING_SCHEDULER = Schedulers.newBoundedElastic(
-        Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
-        "cosmos-source-metadata-monitoring-bounded-elastic",
-        60,
-        true
-    );
+    public static final Scheduler CONTAINERS_MONITORING_SCHEDULER = Schedulers.single();
 
     private final String connectorName;
     private final CosmosSourceContainersConfig sourceContainersConfig;

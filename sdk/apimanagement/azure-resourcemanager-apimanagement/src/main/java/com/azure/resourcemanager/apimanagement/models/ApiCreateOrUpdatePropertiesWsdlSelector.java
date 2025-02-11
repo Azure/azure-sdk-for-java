@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Criteria to limit import of WSDL to a subset of the document. */
+/**
+ * Criteria to limit import of WSDL to a subset of the document.
+ */
 @Fluent
-public final class ApiCreateOrUpdatePropertiesWsdlSelector {
+public final class ApiCreateOrUpdatePropertiesWsdlSelector
+    implements JsonSerializable<ApiCreateOrUpdatePropertiesWsdlSelector> {
     /*
      * Name of service to import from WSDL
      */
-    @JsonProperty(value = "wsdlServiceName")
     private String wsdlServiceName;
 
     /*
      * Name of endpoint(port) to import from WSDL
      */
-    @JsonProperty(value = "wsdlEndpointName")
     private String wsdlEndpointName;
 
-    /** Creates an instance of ApiCreateOrUpdatePropertiesWsdlSelector class. */
+    /**
+     * Creates an instance of ApiCreateOrUpdatePropertiesWsdlSelector class.
+     */
     public ApiCreateOrUpdatePropertiesWsdlSelector() {
     }
 
     /**
      * Get the wsdlServiceName property: Name of service to import from WSDL.
-     *
+     * 
      * @return the wsdlServiceName value.
      */
     public String wsdlServiceName() {
@@ -37,7 +44,7 @@ public final class ApiCreateOrUpdatePropertiesWsdlSelector {
 
     /**
      * Set the wsdlServiceName property: Name of service to import from WSDL.
-     *
+     * 
      * @param wsdlServiceName the wsdlServiceName value to set.
      * @return the ApiCreateOrUpdatePropertiesWsdlSelector object itself.
      */
@@ -48,7 +55,7 @@ public final class ApiCreateOrUpdatePropertiesWsdlSelector {
 
     /**
      * Get the wsdlEndpointName property: Name of endpoint(port) to import from WSDL.
-     *
+     * 
      * @return the wsdlEndpointName value.
      */
     public String wsdlEndpointName() {
@@ -57,7 +64,7 @@ public final class ApiCreateOrUpdatePropertiesWsdlSelector {
 
     /**
      * Set the wsdlEndpointName property: Name of endpoint(port) to import from WSDL.
-     *
+     * 
      * @param wsdlEndpointName the wsdlEndpointName value to set.
      * @return the ApiCreateOrUpdatePropertiesWsdlSelector object itself.
      */
@@ -68,9 +75,49 @@ public final class ApiCreateOrUpdatePropertiesWsdlSelector {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("wsdlServiceName", this.wsdlServiceName);
+        jsonWriter.writeStringField("wsdlEndpointName", this.wsdlEndpointName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiCreateOrUpdatePropertiesWsdlSelector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiCreateOrUpdatePropertiesWsdlSelector if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiCreateOrUpdatePropertiesWsdlSelector.
+     */
+    public static ApiCreateOrUpdatePropertiesWsdlSelector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiCreateOrUpdatePropertiesWsdlSelector deserializedApiCreateOrUpdatePropertiesWsdlSelector
+                = new ApiCreateOrUpdatePropertiesWsdlSelector();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("wsdlServiceName".equals(fieldName)) {
+                    deserializedApiCreateOrUpdatePropertiesWsdlSelector.wsdlServiceName = reader.getString();
+                } else if ("wsdlEndpointName".equals(fieldName)) {
+                    deserializedApiCreateOrUpdatePropertiesWsdlSelector.wsdlEndpointName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiCreateOrUpdatePropertiesWsdlSelector;
+        });
     }
 }

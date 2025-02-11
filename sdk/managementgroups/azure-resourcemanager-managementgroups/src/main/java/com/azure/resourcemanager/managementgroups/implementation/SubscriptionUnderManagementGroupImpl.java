@@ -13,8 +13,7 @@ public final class SubscriptionUnderManagementGroupImpl implements SubscriptionU
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    SubscriptionUnderManagementGroupImpl(
-        SubscriptionUnderManagementGroupInner innerObject,
+    SubscriptionUnderManagementGroupImpl(SubscriptionUnderManagementGroupInner innerObject,
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

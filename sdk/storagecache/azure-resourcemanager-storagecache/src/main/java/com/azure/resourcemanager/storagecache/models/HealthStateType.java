@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -90,7 +89,6 @@ public final class HealthStateType extends ExpandableStringEnum<HealthStateType>
      * @param name a name to look for.
      * @return the corresponding HealthStateType.
      */
-    @JsonCreator
     public static HealthStateType fromString(String name) {
         return fromString(name, HealthStateType.class);
     }

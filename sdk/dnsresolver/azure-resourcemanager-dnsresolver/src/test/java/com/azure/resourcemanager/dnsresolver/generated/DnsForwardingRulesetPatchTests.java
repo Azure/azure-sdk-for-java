@@ -11,31 +11,29 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DnsForwardingRulesetPatchTests {
-    @Test
-    public void testDeserialize() {
-        DnsForwardingRulesetPatch model =
-            BinaryData
-                .fromString(
-                    "{\"dnsResolverOutboundEndpoints\":[{\"id\":\"pzaoqvuhr\"}],\"tags\":{\"mjthjqkwp\":\"fcyddg\"}}")
-                .toObject(DnsForwardingRulesetPatch.class);
-        Assertions.assertEquals("pzaoqvuhr", model.dnsResolverOutboundEndpoints().get(0).id());
-        Assertions.assertEquals("fcyddg", model.tags().get("mjthjqkwp"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DnsForwardingRulesetPatch model = BinaryData.fromString(
+            "{\"dnsResolverOutboundEndpoints\":[{\"id\":\"krxd\"},{\"id\":\"i\"}],\"tags\":{\"abhjybi\":\"hzrvqd\"}}")
+            .toObject(DnsForwardingRulesetPatch.class);
+        Assertions.assertEquals("krxd", model.dnsResolverOutboundEndpoints().get(0).id());
+        Assertions.assertEquals("hzrvqd", model.tags().get("abhjybi"));
     }
 
-    @Test
-    public void testSerialize() {
-        DnsForwardingRulesetPatch model =
-            new DnsForwardingRulesetPatch()
-                .withDnsResolverOutboundEndpoints(Arrays.asList(new SubResource().withId("pzaoqvuhr")))
-                .withTags(mapOf("mjthjqkwp", "fcyddg"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DnsForwardingRulesetPatch model = new DnsForwardingRulesetPatch()
+            .withDnsResolverOutboundEndpoints(
+                Arrays.asList(new SubResource().withId("krxd"), new SubResource().withId("i")))
+            .withTags(mapOf("abhjybi", "hzrvqd"));
         model = BinaryData.fromObject(model).toObject(DnsForwardingRulesetPatch.class);
-        Assertions.assertEquals("pzaoqvuhr", model.dnsResolverOutboundEndpoints().get(0).id());
-        Assertions.assertEquals("fcyddg", model.tags().get("mjthjqkwp"));
+        Assertions.assertEquals("krxd", model.dnsResolverOutboundEndpoints().get(0).id());
+        Assertions.assertEquals("hzrvqd", model.tags().get("abhjybi"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

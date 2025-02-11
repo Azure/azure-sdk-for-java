@@ -210,7 +210,6 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -18,23 +18,41 @@ import java.util.List;
 
 /** An immutable client-side representation of an Azure Spring App Deployment. */
 @Fluent
-public interface SpringAppDeployment
-    extends ExternalChildResource<SpringAppDeployment, SpringApp>,
-        HasInnerModel<DeploymentResourceInner>,
-        Updatable<SpringAppDeployment.Update> {
-    /** @return the app name of the deployment */
+public interface SpringAppDeployment extends ExternalChildResource<SpringAppDeployment, SpringApp>,
+    HasInnerModel<DeploymentResourceInner>, Updatable<SpringAppDeployment.Update> {
+    /**
+     * Gets the app name of the deployment.
+     *
+     * @return the app name of the deployment
+     */
     String appName();
 
-    /** @return the deploy settings of the deployment */
+    /**
+     * Gets the deploy settings of the deployment.
+     *
+     * @return the deploy settings of the deployment
+     */
     DeploymentSettings settings();
 
-    /** @return the status of the deployment */
+    /**
+     * Gets the status of the deployment.
+     *
+     * @return the status of the deployment
+     */
     DeploymentResourceStatus status();
 
-    /** @return whether the deployment is active */
+    /**
+     * Check whether the deployment is active.
+     *
+     * @return whether the deployment is active
+     */
     boolean isActive();
 
-    /** @return all the instances of the deployment */
+    /**
+     * Gets all the instances of the deployment.
+     *
+     * @return all the instances of the deployment
+     */
     List<DeploymentInstance> instances();
 
     /** Starts the deployment. */
@@ -64,25 +82,52 @@ public interface SpringAppDeployment
      */
     Mono<Void> restartAsync();
 
-    /** @return the log file url of the deployment */
+    /**
+     * Gets the log file url of the deployment.
+     *
+     * @return the log file url of the deployment
+     */
     String getLogFileUrl();
 
-    /** @return the log file url of the deployment */
+    /**
+     * Gets the log file url of the deployment.
+     *
+     * @return the log file url of the deployment
+     */
     Mono<String> getLogFileUrlAsync();
 
-    /** @return (Enterprise Tier Only) config file patterns */
+    /**
+     * Gets config file patterns.
+     *
+     * @return (Enterprise Tier Only) config file patterns
+     */
     List<String> configFilePatterns();
 
-    /** @return cpu count, can be 0.5, 1, 2, etc */
+    /**
+     * Gets CPU count.
+     *
+     * @return CPU count, can be 0.5, 1, 2, etc
+     */
     Double cpu();
 
-    /** @return memory in GB, can be 0.5, 1, 2, etc */
+    /**
+     * Gets memory in GB.
+     *
+     * @return memory in GB, can be 0.5, 1, 2, etc */
     Double memoryInGB();
 
-    /** @return RuntimeVersion of the deployment, only support Basic/Standard Tier, null for Enterprise Tier */
+    /**
+     * Gets runtimeVersion of the deployment.
+     *
+     * @return RuntimeVersion of the deployment, only support Basic/Standard Tier, null for Enterprise Tier
+     */
     RuntimeVersion runtimeVersion();
 
-    /** @return JVM options of the deployment */
+    /**
+     * Gets JVM options of the deployment.
+     *
+     * @return JVM options of the deployment
+     */
     String jvmOptions();
 
     /**
@@ -91,19 +136,23 @@ public interface SpringAppDeployment
      * @param <T> The return type of final stage,
      *            usually {@link DefinitionStages.WithCreate} or {@link DefinitionStages.WithAttach}
      */
-    interface Definition<ParentT, T>
-        extends DefinitionStages.Blank<T>,
-            DefinitionStages.WithSource<T>,
-            DefinitionStages.WithModule<T>,
-            DefinitionStages.WithCreate<T>,
-            DefinitionStages.WithAttach<ParentT, T> { }
+    interface Definition<ParentT, T> extends DefinitionStages.Blank<T>, DefinitionStages.WithSource<T>,
+        DefinitionStages.WithModule<T>, DefinitionStages.WithCreate<T>, DefinitionStages.WithAttach<ParentT, T> {
+    }
 
     /** Grouping of all the deployment definition stages. */
     interface DefinitionStages {
-        /** The first stage of the deployment definition. */
-        interface Blank<T> extends WithSource<T> { }
+        /**
+         * The first stage of the deployment definition.
+         * @param <T> The return type of final stage
+         */
+        interface Blank<T> extends WithSource<T> {
+        }
 
-        /** The stage of a deployment definition allowing to specify the source code or package. */
+        /**
+         * The stage of a deployment definition allowing to specify the source code or package.
+         * @param <T> The return type of final stage
+         */
         interface WithSource<T> {
             /**
              * Specifies the jar package for the deployment.
@@ -160,7 +209,10 @@ public interface SpringAppDeployment
             T withExistingSource(UserSourceType type, String relativePath);
         }
 
-        /** The stage of a deployment definition allowing to specify the module of the source code. */
+        /**
+         * The stage of a deployment definition allowing to specify the module of the source code.
+         * @param <T> The return type of final stage
+         */
         interface WithModule<T> {
             /**
              * Specifies the module of the source code.
@@ -176,7 +228,10 @@ public interface SpringAppDeployment
             T withSingleModule();
         }
 
-        /** The stage of a deployment definition allowing to specify deployment settings. */
+        /**
+         * The stage of a deployment definition allowing to specify deployment settings.
+         * @param <T> The return type of final stage
+         */
         interface WithSettings<T> {
             /**
              * Specifies the instance number of the deployment.
@@ -260,25 +315,31 @@ public interface SpringAppDeployment
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
+         * @param <T> The return type of final stage
          */
-        interface Final<T>
-            extends WithSettings<T> { }
+        interface Final<T> extends WithSettings<T> {
+        }
 
-        /** The final stage of the definition allowing to create a deployment */
-        interface WithCreate<T>
-            extends Creatable<SpringAppDeployment>, Final<T> { }
+        /**
+         * The final stage of the definition allowing to create a deployment
+         * @param <T> The return type of final stage
+         */
+        interface WithCreate<T> extends Creatable<SpringAppDeployment>, Final<T> {
+        }
 
-        /** The final stage of the definition allowing to attach a deployment to its parent */
-        interface WithAttach<ParentT, T>
-            extends Attachable<ParentT>, Final<T> { }
+        /**
+         * The final stage of the definition allowing to attach a deployment to its parent
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         * @param <T> The return type of final stage
+         */
+        interface WithAttach<ParentT, T> extends Attachable<ParentT>, Final<T> {
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<SpringAppDeployment>,
-            UpdateStages.WithSource,
-            UpdateStages.WithModule,
-            UpdateStages.WithSettings { }
+    interface Update extends Appliable<SpringAppDeployment>, UpdateStages.WithSource, UpdateStages.WithModule,
+        UpdateStages.WithSettings {
+    }
 
     /** Grouping of deployment update stages. */
     interface UpdateStages {

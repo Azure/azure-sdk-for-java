@@ -4,26 +4,29 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of the List Namespace operation.
  */
-@Immutable
-public final class SharedAccessAuthorizationRuleListResult {
+@Fluent
+public final class SharedAccessAuthorizationRuleListResult
+    implements JsonSerializable<SharedAccessAuthorizationRuleListResult> {
     /*
-     * Gets or sets result of the List AuthorizationRules operation.
+     * Result of the List AuthorizationRules operation.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SharedAccessAuthorizationRuleResourceInner> value;
 
     /*
-     * Gets or sets link to the next set of results.
+     * Link to the next set of results. Not empty if Value contains incomplete list of AuthorizationRules
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -33,7 +36,7 @@ public final class SharedAccessAuthorizationRuleListResult {
     }
 
     /**
-     * Get the value property: Gets or sets result of the List AuthorizationRules operation.
+     * Get the value property: Result of the List AuthorizationRules operation.
      * 
      * @return the value value.
      */
@@ -42,12 +45,36 @@ public final class SharedAccessAuthorizationRuleListResult {
     }
 
     /**
-     * Get the nextLink property: Gets or sets link to the next set of results.
+     * Set the value property: Result of the List AuthorizationRules operation.
+     * 
+     * @param value the value value to set.
+     * @return the SharedAccessAuthorizationRuleListResult object itself.
+     */
+    public SharedAccessAuthorizationRuleListResult withValue(List<SharedAccessAuthorizationRuleResourceInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
+     * AuthorizationRules.
      * 
      * @return the nextLink value.
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
+     * AuthorizationRules.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the SharedAccessAuthorizationRuleListResult object itself.
+     */
+    public SharedAccessAuthorizationRuleListResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 
     /**
@@ -59,5 +86,47 @@ public final class SharedAccessAuthorizationRuleListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharedAccessAuthorizationRuleListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharedAccessAuthorizationRuleListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SharedAccessAuthorizationRuleListResult.
+     */
+    public static SharedAccessAuthorizationRuleListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharedAccessAuthorizationRuleListResult deserializedSharedAccessAuthorizationRuleListResult
+                = new SharedAccessAuthorizationRuleListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SharedAccessAuthorizationRuleResourceInner> value
+                        = reader.readArray(reader1 -> SharedAccessAuthorizationRuleResourceInner.fromJson(reader1));
+                    deserializedSharedAccessAuthorizationRuleListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharedAccessAuthorizationRuleListResult;
+        });
     }
 }

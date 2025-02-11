@@ -117,7 +117,7 @@ public class HttpHeader {
      */
     String[] getValuesArray() {
         if (value != null) {
-            return new String[] {value};
+            return new String[] { value };
         } else if (!isNullOrEmpty(values)) {
             return values.toArray(new String[0]);
         } else {

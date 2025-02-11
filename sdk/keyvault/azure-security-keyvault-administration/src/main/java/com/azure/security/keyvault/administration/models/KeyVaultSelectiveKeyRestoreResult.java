@@ -6,4 +6,9 @@ package com.azure.security.keyvault.administration.models;
  * A class that represents the result of a SelectiveKeyRestore operation.
  */
 public final class KeyVaultSelectiveKeyRestoreResult {
+    /**
+     * Creates an instance of {@link KeyVaultSelectiveKeyRestoreResult}.
+     */
+    public KeyVaultSelectiveKeyRestoreResult() {
+    }
 }

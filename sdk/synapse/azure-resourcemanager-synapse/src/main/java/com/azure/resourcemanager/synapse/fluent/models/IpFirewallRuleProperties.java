@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** IP firewall rule properties. */
+/**
+ * IP firewall rule properties.
+ */
 @Fluent
-public final class IpFirewallRuleProperties {
+public final class IpFirewallRuleProperties implements JsonSerializable<IpFirewallRuleProperties> {
     /*
      * The end IP address of the firewall rule. Must be IPv4 format. Must be greater than or equal to startIpAddress
      */
-    @JsonProperty(value = "endIpAddress")
     private String endIpAddress;
 
     /*
      * Resource provisioning state
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The start IP address of the firewall rule. Must be IPv4 format
      */
-    @JsonProperty(value = "startIpAddress")
     private String startIpAddress;
 
-    /** Creates an instance of IpFirewallRuleProperties class. */
+    /**
+     * Creates an instance of IpFirewallRuleProperties class.
+     */
     public IpFirewallRuleProperties() {
     }
 
     /**
      * Get the endIpAddress property: The end IP address of the firewall rule. Must be IPv4 format. Must be greater than
      * or equal to startIpAddress.
-     *
+     * 
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
@@ -46,7 +51,7 @@ public final class IpFirewallRuleProperties {
     /**
      * Set the endIpAddress property: The end IP address of the firewall rule. Must be IPv4 format. Must be greater than
      * or equal to startIpAddress.
-     *
+     * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the IpFirewallRuleProperties object itself.
      */
@@ -57,7 +62,7 @@ public final class IpFirewallRuleProperties {
 
     /**
      * Get the provisioningState property: Resource provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -66,7 +71,7 @@ public final class IpFirewallRuleProperties {
 
     /**
      * Get the startIpAddress property: The start IP address of the firewall rule. Must be IPv4 format.
-     *
+     * 
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
@@ -75,7 +80,7 @@ public final class IpFirewallRuleProperties {
 
     /**
      * Set the startIpAddress property: The start IP address of the firewall rule. Must be IPv4 format.
-     *
+     * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the IpFirewallRuleProperties object itself.
      */
@@ -86,9 +91,51 @@ public final class IpFirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endIpAddress", this.endIpAddress);
+        jsonWriter.writeStringField("startIpAddress", this.startIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpFirewallRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpFirewallRuleProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpFirewallRuleProperties.
+     */
+    public static IpFirewallRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpFirewallRuleProperties deserializedIpFirewallRuleProperties = new IpFirewallRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endIpAddress".equals(fieldName)) {
+                    deserializedIpFirewallRuleProperties.endIpAddress = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedIpFirewallRuleProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("startIpAddress".equals(fieldName)) {
+                    deserializedIpFirewallRuleProperties.startIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpFirewallRuleProperties;
+        });
     }
 }

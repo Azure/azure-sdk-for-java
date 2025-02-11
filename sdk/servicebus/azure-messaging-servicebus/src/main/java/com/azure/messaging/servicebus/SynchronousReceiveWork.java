@@ -110,9 +110,8 @@ class SynchronousReceiveWork {
             return;
         }
 
-        this.timeoutSubscriptions.add(
-            Mono.delay(timeout).subscribe(
-                index -> complete("Timeout elapsed for work."),
+        this.timeoutSubscriptions.add(Mono.delay(timeout)
+            .subscribe(index -> complete("Timeout elapsed for work."),
                 error -> complete("Error occurred while waiting for timeout.", error)));
         this.timeoutSubscriptions.add(
             Flux.switchOnNext(downstreamEmitter.asFlux().map(messageContext -> Mono.delay(TIMEOUT_BETWEEN_MESSAGES)))
@@ -152,17 +151,13 @@ class SynchronousReceiveWork {
         final int numberLeft = remaining.decrementAndGet();
 
         if (numberLeft < 0) {
-            logger.atInfo()
-                .addKeyValue("numberLeft", numberLeft)
-                .log("Not emitting downstream.");
+            logger.atInfo().addKeyValue("numberLeft", numberLeft).log("Not emitting downstream.");
             return false;
         }
 
         final Sinks.EmitResult result = downstreamEmitter.tryEmitNext(message);
         if (result != Sinks.EmitResult.OK) {
-            logger.atInfo()
-                .addKeyValue("emitResult", result)
-                .log("Could not emit downstream.");
+            logger.atInfo().addKeyValue("emitResult", result).log("Could not emit downstream.");
             return false;
         }
 

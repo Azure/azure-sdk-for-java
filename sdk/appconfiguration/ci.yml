@@ -51,7 +51,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: appconfiguration
-    JavadocSafeJavaBuildVersion: '1.21'
     Artifacts:
       - name: azure-data-appconfiguration
         groupId: com.azure
@@ -63,6 +62,4 @@ extends:
         releaseInBatch: ${{ parameters.release_azureresourcemanagerappconfiguration }}
     AdditionalModules:
       - name: perf-test-core
-        groupId: com.azure
-      - name: azure-aot-graalvm-perf
         groupId: com.azure

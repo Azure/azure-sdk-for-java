@@ -6,56 +6,56 @@ package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The status of operation. */
+/**
+ * The status of operation.
+ */
 @Fluent
-public final class OperationStatusInner {
+public final class OperationStatusInner implements JsonSerializable<OperationStatusInner> {
     /*
      * The operation Id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The operation name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The start time of the operation.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * The end time of the operation.
      */
-    @JsonProperty(value = "endTime")
     private String endTime;
 
     /*
      * The status of the operation.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
-     * Error response
-     *
      * The error detail of the operation if any.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of OperationStatusInner class. */
+    /**
+     * Creates an instance of OperationStatusInner class.
+     */
     public OperationStatusInner() {
     }
 
     /**
      * Get the id property: The operation Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -64,7 +64,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the id property: The operation Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -75,7 +75,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the name property: The operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -84,7 +84,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the name property: The operation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -95,7 +95,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the startTime property: The start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -104,7 +104,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the startTime property: The start time of the operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -115,7 +115,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the endTime property: The end time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -124,7 +124,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the endTime property: The end time of the operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -135,7 +135,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the status property: The status of the operation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -144,7 +144,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the status property: The status of the operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -154,10 +154,8 @@ public final class OperationStatusInner {
     }
 
     /**
-     * Get the error property: Error response
-     *
-     * <p>The error detail of the operation if any.
-     *
+     * Get the error property: The error detail of the operation if any.
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -165,10 +163,8 @@ public final class OperationStatusInner {
     }
 
     /**
-     * Set the error property: Error response
-     *
-     * <p>The error detail of the operation if any.
-     *
+     * Set the error property: The error detail of the operation if any.
+     * 
      * @param error the error value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -179,9 +175,60 @@ public final class OperationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatusInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationStatusInner.
+     */
+    public static OperationStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatusInner deserializedOperationStatusInner = new OperationStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationStatusInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationStatusInner.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationStatusInner.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationStatusInner.endTime = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationStatusInner.status = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationStatusInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatusInner;
+        });
     }
 }

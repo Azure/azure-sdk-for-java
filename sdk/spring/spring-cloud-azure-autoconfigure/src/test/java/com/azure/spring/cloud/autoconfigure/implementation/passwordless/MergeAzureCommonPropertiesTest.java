@@ -10,6 +10,7 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MergeAzureCommonPropertiesTest {
 
@@ -21,6 +22,7 @@ class MergeAzureCommonPropertiesTest {
         globalProperties.getCredential().setPassword("global-password");
         globalProperties.getCredential().setUsername("global-user-name");
         globalProperties.getCredential().setManagedIdentityEnabled(true);
+        globalProperties.getCredential().setTokenCredentialBeanName("my-token-credential");
         globalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
         globalProperties.getProfile().setSubscriptionId("global-sub");
         globalProperties.getProfile().setTenantId("global-tenant-id");
@@ -35,7 +37,8 @@ class MergeAzureCommonPropertiesTest {
         assertEquals("global-client-secret", result.getCredential().getClientSecret());
         assertEquals("global-password", result.getCredential().getPassword());
         assertEquals("global-user-name", result.getCredential().getUsername());
-        assertEquals(false, result.getCredential().isManagedIdentityEnabled());
+        assertTrue(result.getCredential().isManagedIdentityEnabled());
+        assertEquals("my-token-credential", result.getCredential().getTokenCredentialBeanName());
         assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, result.getProfile().getCloudType());
         assertEquals("global-sub", result.getProfile().getSubscriptionId());
         assertEquals("global-tenant-id", result.getProfile().getTenantId());
@@ -52,6 +55,7 @@ class MergeAzureCommonPropertiesTest {
         passwordlessProperties.getCredential().setPassword("password");
         passwordlessProperties.getCredential().setUsername("user-name");
         passwordlessProperties.getCredential().setManagedIdentityEnabled(true);
+        passwordlessProperties.getCredential().setTokenCredentialBeanName("my-token-credential");
         passwordlessProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
         passwordlessProperties.getProfile().setSubscriptionId("sub");
         passwordlessProperties.getProfile().setTenantId("tenant-id");
@@ -64,7 +68,8 @@ class MergeAzureCommonPropertiesTest {
         assertEquals("client-secret", result.getCredential().getClientSecret());
         assertEquals("password", result.getCredential().getPassword());
         assertEquals("user-name", result.getCredential().getUsername());
-        assertEquals(true, result.getCredential().isManagedIdentityEnabled());
+        assertTrue(result.getCredential().isManagedIdentityEnabled());
+        assertEquals("my-token-credential", result.getCredential().getTokenCredentialBeanName());
         assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, result.getProfile().getCloudType());
         assertEquals("sub", result.getProfile().getSubscriptionId());
         assertEquals("tenant-id", result.getProfile().getTenantId());
@@ -93,7 +98,7 @@ class MergeAzureCommonPropertiesTest {
         passwordlessProperties.setScopes("scope");
         passwordlessProperties.getCredential().setClientSecret("client-secret");
         passwordlessProperties.getCredential().setPassword("password");
-        passwordlessProperties.getCredential().setManagedIdentityEnabled(true);
+        passwordlessProperties.getCredential().setTokenCredentialBeanName("my-token-credential");
         passwordlessProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
         passwordlessProperties.getProfile().setSubscriptionId("sub");
 
@@ -105,7 +110,8 @@ class MergeAzureCommonPropertiesTest {
         assertEquals("client-secret", result.getCredential().getClientSecret());
         assertEquals("password", result.getCredential().getPassword());
         assertEquals("global-user-name", result.getCredential().getUsername());
-        assertEquals(true, result.getCredential().isManagedIdentityEnabled());
+        assertTrue(result.getCredential().isManagedIdentityEnabled());
+        assertEquals("my-token-credential", result.getCredential().getTokenCredentialBeanName());
         assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, result.getProfile().getCloudType());
         assertEquals("sub", result.getProfile().getSubscriptionId());
         assertEquals("global-tenant-id", result.getProfile().getTenantId());

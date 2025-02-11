@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,23 +18,21 @@ import java.util.List;
  * request](https://aka.ms/supportrpquotarequestpayload).
  */
 @Fluent
-public final class QuotaTicketDetails {
+public final class QuotaTicketDetails implements JsonSerializable<QuotaTicketDetails> {
     /*
-     * Required for certain quota types when there is a sub type, such as Batch, for which you are requesting a quota increase.
+     * Required for certain quota types when there is a sub type, such as Batch, for which you are requesting a quota
+     * increase.
      */
-    @JsonProperty(value = "quotaChangeRequestSubType")
     private String quotaChangeRequestSubType;
 
     /*
      * Quota change request version.
      */
-    @JsonProperty(value = "quotaChangeRequestVersion")
     private String quotaChangeRequestVersion;
 
     /*
      * This property is required for providing the region and new quota limits.
      */
-    @JsonProperty(value = "quotaChangeRequests")
     private List<QuotaChangeRequest> quotaChangeRequests;
 
     /**
@@ -110,5 +112,50 @@ public final class QuotaTicketDetails {
         if (quotaChangeRequests() != null) {
             quotaChangeRequests().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("quotaChangeRequestSubType", this.quotaChangeRequestSubType);
+        jsonWriter.writeStringField("quotaChangeRequestVersion", this.quotaChangeRequestVersion);
+        jsonWriter.writeArrayField("quotaChangeRequests", this.quotaChangeRequests,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaTicketDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaTicketDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaTicketDetails.
+     */
+    public static QuotaTicketDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaTicketDetails deserializedQuotaTicketDetails = new QuotaTicketDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("quotaChangeRequestSubType".equals(fieldName)) {
+                    deserializedQuotaTicketDetails.quotaChangeRequestSubType = reader.getString();
+                } else if ("quotaChangeRequestVersion".equals(fieldName)) {
+                    deserializedQuotaTicketDetails.quotaChangeRequestVersion = reader.getString();
+                } else if ("quotaChangeRequests".equals(fieldName)) {
+                    List<QuotaChangeRequest> quotaChangeRequests
+                        = reader.readArray(reader1 -> QuotaChangeRequest.fromJson(reader1));
+                    deserializedQuotaTicketDetails.quotaChangeRequests = quotaChangeRequests;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaTicketDetails;
+        });
     }
 }

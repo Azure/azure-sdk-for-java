@@ -87,7 +87,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         QuickPulseHeaderInfo quickPulseHeaderInfo = pingSender.ping(null);
         QuickPulseDataSender dataSender = new QuickPulseDataSender(
             getHttpPipeline(new ValidationPolicy(postCountDown, expectedPostRequestBody)), sendQueue);
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector();
         QuickPulseDataFetcher dataFetcher
             = new QuickPulseDataFetcher(collector, sendQueue, connectionString::getLiveEndpoint,
                 connectionString::getInstrumentationKey, null, "instance1", "machine1", null);

@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportConfigSortingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportConfigSorting model =
-            BinaryData
-                .fromString("{\"direction\":\"Ascending\",\"name\":\"javbqidtqajz\"}")
-                .toObject(ReportConfigSorting.class);
+        ReportConfigSorting model = BinaryData.fromString("{\"direction\":\"Ascending\",\"name\":\"nsmvbxwyj\"}")
+            .toObject(ReportConfigSorting.class);
         Assertions.assertEquals(ReportConfigSortingType.ASCENDING, model.direction());
-        Assertions.assertEquals("javbqidtqajz", model.name());
+        Assertions.assertEquals("nsmvbxwyj", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportConfigSorting model =
-            new ReportConfigSorting().withDirection(ReportConfigSortingType.ASCENDING).withName("javbqidtqajz");
+        ReportConfigSorting model
+            = new ReportConfigSorting().withDirection(ReportConfigSortingType.ASCENDING).withName("nsmvbxwyj");
         model = BinaryData.fromObject(model).toObject(ReportConfigSorting.class);
         Assertions.assertEquals(ReportConfigSortingType.ASCENDING, model.direction());
-        Assertions.assertEquals("javbqidtqajz", model.name());
+        Assertions.assertEquals("nsmvbxwyj", model.name());
     }
 }

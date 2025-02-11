@@ -5,8 +5,11 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * A text note which also contains information about who made the statement and when
@@ -19,21 +22,18 @@ public final class FhirR4Annotation extends FhirR4Element {
      * Individual responsible for the annotation
      */
     @Generated
-    @JsonProperty(value = "authorString")
     private String authorString;
 
     /*
      * When the annotation was made
      */
     @Generated
-    @JsonProperty(value = "time")
     private String time;
 
     /*
      * The annotation - text content (as markdown)
      */
     @Generated
-    @JsonProperty(value = "text")
     private final String text;
 
     /**
@@ -42,8 +42,7 @@ public final class FhirR4Annotation extends FhirR4Element {
      * @param text the text value to set.
      */
     @Generated
-    @JsonCreator
-    private FhirR4Annotation(@JsonProperty(value = "text") String text) {
+    private FhirR4Annotation(String text) {
         this.text = text;
     }
 
@@ -75,5 +74,63 @@ public final class FhirR4Annotation extends FhirR4Element {
     @Generated
     public String getText() {
         return this.text;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("authorString", this.authorString);
+        jsonWriter.writeStringField("time", this.time);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4Annotation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4Annotation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirR4Annotation.
+     */
+    @Generated
+    public static FhirR4Annotation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            List<FhirR4Extension> extension = null;
+            String text = null;
+            String authorString = null;
+            String time = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else if ("authorString".equals(fieldName)) {
+                    authorString = reader.getString();
+                } else if ("time".equals(fieldName)) {
+                    time = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FhirR4Annotation deserializedFhirR4Annotation = new FhirR4Annotation(text);
+            deserializedFhirR4Annotation.setId(id);
+            deserializedFhirR4Annotation.setExtension(extension);
+            deserializedFhirR4Annotation.authorString = authorString;
+            deserializedFhirR4Annotation.time = time;
+            return deserializedFhirR4Annotation;
+        });
     }
 }

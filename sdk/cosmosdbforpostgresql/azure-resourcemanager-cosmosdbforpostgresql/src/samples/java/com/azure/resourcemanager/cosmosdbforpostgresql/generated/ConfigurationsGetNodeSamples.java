@@ -20,7 +20,7 @@ public final class ConfigurationsGetNodeSamples {
      */
     public static void getConfigurationDetailsForNode(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.configurations().getNodeWithResponse("TestResourceGroup", "testcluster", "array_nulls",
-            com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .getNodeWithResponse("TestResourceGroup", "testcluster", "array_nulls", com.azure.core.util.Context.NONE);
     }
 }

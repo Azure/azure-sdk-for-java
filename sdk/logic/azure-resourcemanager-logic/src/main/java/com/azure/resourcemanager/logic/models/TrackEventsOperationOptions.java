@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The track events operation options. */
+/**
+ * The track events operation options.
+ */
 public final class TrackEventsOperationOptions extends ExpandableStringEnum<TrackEventsOperationOptions> {
-    /** Static value None for TrackEventsOperationOptions. */
+    /**
+     * Static value None for TrackEventsOperationOptions.
+     */
     public static final TrackEventsOperationOptions NONE = fromString("None");
 
-    /** Static value DisableSourceInfoEnrich for TrackEventsOperationOptions. */
+    /**
+     * Static value DisableSourceInfoEnrich for TrackEventsOperationOptions.
+     */
     public static final TrackEventsOperationOptions DISABLE_SOURCE_INFO_ENRICH = fromString("DisableSourceInfoEnrich");
 
     /**
      * Creates a new instance of TrackEventsOperationOptions value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class TrackEventsOperationOptions extends ExpandableStringEnum<Trac
 
     /**
      * Creates or finds a TrackEventsOperationOptions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TrackEventsOperationOptions.
      */
-    @JsonCreator
     public static TrackEventsOperationOptions fromString(String name) {
         return fromString(name, TrackEventsOperationOptions.class);
     }
 
     /**
      * Gets known TrackEventsOperationOptions values.
-     *
+     * 
      * @return known TrackEventsOperationOptions values.
      */
     public static Collection<TrackEventsOperationOptions> values() {

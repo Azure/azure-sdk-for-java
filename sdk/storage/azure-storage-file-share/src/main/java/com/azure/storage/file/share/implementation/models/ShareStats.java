@@ -19,7 +19,8 @@ import javax.xml.stream.XMLStreamException;
 @Fluent
 public final class ShareStats implements XmlSerializable<ShareStats> {
     /*
-     * The approximate size of the data stored in bytes, rounded up to the nearest gigabyte. Note that this value may not include all recently created or recently resized files.
+     * The approximate size of the data stored in bytes, rounded up to the nearest gigabyte. Note that this value may
+     * not include all recently created or recently resized files.
      */
     private long shareUsageBytes;
 
@@ -70,7 +71,6 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of ShareStats if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the ShareStats.
      */
     public static ShareStats fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -85,7 +85,6 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of ShareStats if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the ShareStats.
      */
     public static ShareStats fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

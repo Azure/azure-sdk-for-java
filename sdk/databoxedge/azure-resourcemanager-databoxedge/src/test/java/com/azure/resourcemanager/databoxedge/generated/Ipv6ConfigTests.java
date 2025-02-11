@@ -10,10 +10,9 @@ import com.azure.resourcemanager.databoxedge.models.Ipv6Config;
 public final class Ipv6ConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Ipv6Config model =
-            BinaryData
-                .fromString("{\"ipAddress\":\"ws\",\"prefixLength\":1152812045,\"gateway\":\"lxotogtwrupq\"}")
-                .toObject(Ipv6Config.class);
+        Ipv6Config model = BinaryData
+            .fromString("{\"ipAddress\":\"lcgwxzvlvqh\",\"prefixLength\":1823532721,\"gateway\":\"gibtnm\"}")
+            .toObject(Ipv6Config.class);
     }
 
     @org.junit.jupiter.api.Test

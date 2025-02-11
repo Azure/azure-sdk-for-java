@@ -6,50 +6,53 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.RecoveryPointModelProperties;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.RecoveryPointModelSystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Recovery point model. */
+/**
+ * Recovery point model.
+ */
 @Fluent
-public final class RecoveryPointModelInner {
+public final class RecoveryPointModelInner implements JsonSerializable<RecoveryPointModelInner> {
     /*
      * Recovery point model properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private RecoveryPointModelProperties properties;
 
     /*
      * Gets or sets the Id of the resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Gets or sets the name of the resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Gets or sets the type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The systemData property.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private RecoveryPointModelSystemData systemData;
 
-    /** Creates an instance of RecoveryPointModelInner class. */
+    /**
+     * Creates an instance of RecoveryPointModelInner class.
+     */
     public RecoveryPointModelInner() {
     }
 
     /**
      * Get the properties property: Recovery point model properties.
-     *
+     * 
      * @return the properties value.
      */
     public RecoveryPointModelProperties properties() {
@@ -58,7 +61,7 @@ public final class RecoveryPointModelInner {
 
     /**
      * Set the properties property: Recovery point model properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RecoveryPointModelInner object itself.
      */
@@ -69,7 +72,7 @@ public final class RecoveryPointModelInner {
 
     /**
      * Get the id property: Gets or sets the Id of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -78,7 +81,7 @@ public final class RecoveryPointModelInner {
 
     /**
      * Get the name property: Gets or sets the name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -87,7 +90,7 @@ public final class RecoveryPointModelInner {
 
     /**
      * Get the type property: Gets or sets the type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -96,7 +99,7 @@ public final class RecoveryPointModelInner {
 
     /**
      * Get the systemData property: The systemData property.
-     *
+     * 
      * @return the systemData value.
      */
     public RecoveryPointModelSystemData systemData() {
@@ -105,15 +108,14 @@ public final class RecoveryPointModelInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model RecoveryPointModelInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model RecoveryPointModelInner"));
         } else {
             properties().validate();
         }
@@ -123,4 +125,49 @@ public final class RecoveryPointModelInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPointModelInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPointModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPointModelInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryPointModelInner.
+     */
+    public static RecoveryPointModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPointModelInner deserializedRecoveryPointModelInner = new RecoveryPointModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedRecoveryPointModelInner.properties = RecoveryPointModelProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedRecoveryPointModelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRecoveryPointModelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRecoveryPointModelInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRecoveryPointModelInner.systemData = RecoveryPointModelSystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPointModelInner;
+        });
+    }
 }

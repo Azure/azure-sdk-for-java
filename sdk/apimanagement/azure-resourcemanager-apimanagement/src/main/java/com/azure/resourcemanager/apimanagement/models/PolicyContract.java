@@ -7,83 +7,93 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
 
-/** An immutable client-side representation of PolicyContract. */
+/**
+ * An immutable client-side representation of PolicyContract.
+ */
 public interface PolicyContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the value property: Contents of the Policy as defined by the format.
-     *
+     * 
      * @return the value value.
      */
     String value();
 
     /**
      * Gets the format property: Format of the policyContent.
-     *
+     * 
      * @return the format value.
      */
     PolicyContentFormat format();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     PolicyContractInner innerModel();
 
-    /** The entirety of the PolicyContract definition. */
+    /**
+     * The entirety of the PolicyContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The PolicyContract definition stages. */
+    /**
+     * The PolicyContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the PolicyContract definition. */
+        /**
+         * The first stage of the PolicyContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the PolicyContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the PolicyContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId, operationId.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API revision identifier. Must be unique in the current API Management service instance.
-             *     Non-current revision has ;rev=n as a suffix where n is the revision number.
+             * Non-current revision has ;rev=n as a suffix where n is the revision number.
              * @param operationId Operation identifier within an API. Must be unique in the current API Management
-             *     service instance.
+             * service instance.
              * @return the next definition stage.
              */
-            WithCreate withExistingOperation(
-                String resourceGroupName, String serviceName, String apiId, String operationId);
+            WithCreate withExistingOperation(String resourceGroupName, String serviceName, String apiId,
+                String operationId);
         }
 
         /**
@@ -94,50 +104,56 @@ public interface PolicyContract {
             extends DefinitionStages.WithValue, DefinitionStages.WithFormat, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             PolicyContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             PolicyContract create(Context context);
         }
 
-        /** The stage of the PolicyContract definition allowing to specify value. */
+        /**
+         * The stage of the PolicyContract definition allowing to specify value.
+         */
         interface WithValue {
             /**
              * Specifies the value property: Contents of the Policy as defined by the format..
-             *
+             * 
              * @param value Contents of the Policy as defined by the format.
              * @return the next definition stage.
              */
             WithCreate withValue(String value);
         }
 
-        /** The stage of the PolicyContract definition allowing to specify format. */
+        /**
+         * The stage of the PolicyContract definition allowing to specify format.
+         */
         interface WithFormat {
             /**
              * Specifies the format property: Format of the policyContent..
-             *
+             * 
              * @param format Format of the policyContent.
              * @return the next definition stage.
              */
             WithCreate withFormat(PolicyContentFormat format);
         }
 
-        /** The stage of the PolicyContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the PolicyContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -146,61 +162,71 @@ public interface PolicyContract {
 
     /**
      * Begins update for the PolicyContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     PolicyContract.Update update();
 
-    /** The template for PolicyContract update. */
+    /**
+     * The template for PolicyContract update.
+     */
     interface Update extends UpdateStages.WithValue, UpdateStages.WithFormat, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         PolicyContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         PolicyContract apply(Context context);
     }
 
-    /** The PolicyContract update stages. */
+    /**
+     * The PolicyContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the PolicyContract update allowing to specify value. */
+        /**
+         * The stage of the PolicyContract update allowing to specify value.
+         */
         interface WithValue {
             /**
              * Specifies the value property: Contents of the Policy as defined by the format..
-             *
+             * 
              * @param value Contents of the Policy as defined by the format.
              * @return the next definition stage.
              */
             Update withValue(String value);
         }
 
-        /** The stage of the PolicyContract update allowing to specify format. */
+        /**
+         * The stage of the PolicyContract update allowing to specify format.
+         */
         interface WithFormat {
             /**
              * Specifies the format property: Format of the policyContent..
-             *
+             * 
              * @param format Format of the policyContent.
              * @return the next definition stage.
              */
             Update withFormat(PolicyContentFormat format);
         }
 
-        /** The stage of the PolicyContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the PolicyContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -209,14 +235,14 @@ public interface PolicyContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     PolicyContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

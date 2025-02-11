@@ -12,28 +12,37 @@ import java.util.Map;
 /** An immutable client-side representation of an Azure RegistryEncodedTaskStep registry task. */
 @Fluent()
 public interface RegistryEncodedTaskStep extends RegistryTaskStep {
-    /** @return the encoded task content of this encoded task step */
+    /**
+     * Gets the encoded task content of this encoded task step.
+     *
+     * @return the encoded task content of this encoded task step
+     */
     String encodedTaskContent();
 
-    /** @return the encoded values content of this encoded task step */
+    /**
+     * Gets the encoded values content of this encoded task step.
+     *
+     * @return the encoded values content of this encoded task step
+     */
     String encodedValuesContent();
 
-    /** @return the values of this encoded task step */
+    /**
+     * Gets the values of this encoded task step.
+     *
+     * @return the values of this encoded task step
+     */
     List<SetValue> values();
 
     /** Container interface for all the definitions related to a RegistryEncodedTaskStep. */
-    interface Definition
-        extends RegistryEncodedTaskStep.DefinitionStages.Blank,
-            RegistryEncodedTaskStep.DefinitionStages.EncodedTaskContent,
-            RegistryEncodedTaskStep.DefinitionStages.EncodedTaskStepAttachable {
+    interface Definition extends RegistryEncodedTaskStep.DefinitionStages.Blank,
+        RegistryEncodedTaskStep.DefinitionStages.EncodedTaskContent,
+        RegistryEncodedTaskStep.DefinitionStages.EncodedTaskStepAttachable {
     }
 
     /** Container interface for all the updates related to a RegistryEncodedTaskStep. */
     interface Update
-        extends RegistryEncodedTaskStep.UpdateStages.EncodedTaskContent,
-            RegistryEncodedTaskStep.UpdateStages.ValuePath,
-            RegistryEncodedTaskStep.UpdateStages.OverridingValues,
-            Settable<RegistryTask.Update> {
+        extends RegistryEncodedTaskStep.UpdateStages.EncodedTaskContent, RegistryEncodedTaskStep.UpdateStages.ValuePath,
+        RegistryEncodedTaskStep.UpdateStages.OverridingValues, Settable<RegistryTask.Update> {
     }
 
     /** Grouping of registry encoded task definition stages. */

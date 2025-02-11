@@ -5,39 +5,46 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The DeletedServiceContractProperties model. */
+/**
+ * The DeletedServiceContractProperties model.
+ */
 @Fluent
-public final class DeletedServiceContractProperties {
+public final class DeletedServiceContractProperties implements JsonSerializable<DeletedServiceContractProperties> {
     /*
      * Fully-qualified API Management Service Resource ID
      */
-    @JsonProperty(value = "serviceId")
     private String serviceId;
 
     /*
      * UTC Date and Time when the service will be automatically purged. The date conforms to the following format:
      * yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
      */
-    @JsonProperty(value = "scheduledPurgeDate")
     private OffsetDateTime scheduledPurgeDate;
 
     /*
      * UTC Timestamp when the service was soft-deleted. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
      * as specified by the ISO 8601 standard.
      */
-    @JsonProperty(value = "deletionDate")
     private OffsetDateTime deletionDate;
 
-    /** Creates an instance of DeletedServiceContractProperties class. */
+    /**
+     * Creates an instance of DeletedServiceContractProperties class.
+     */
     public DeletedServiceContractProperties() {
     }
 
     /**
      * Get the serviceId property: Fully-qualified API Management Service Resource ID.
-     *
+     * 
      * @return the serviceId value.
      */
     public String serviceId() {
@@ -46,7 +53,7 @@ public final class DeletedServiceContractProperties {
 
     /**
      * Set the serviceId property: Fully-qualified API Management Service Resource ID.
-     *
+     * 
      * @param serviceId the serviceId value to set.
      * @return the DeletedServiceContractProperties object itself.
      */
@@ -58,7 +65,7 @@ public final class DeletedServiceContractProperties {
     /**
      * Get the scheduledPurgeDate property: UTC Date and Time when the service will be automatically purged. The date
      * conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime scheduledPurgeDate() {
@@ -68,7 +75,7 @@ public final class DeletedServiceContractProperties {
     /**
      * Set the scheduledPurgeDate property: UTC Date and Time when the service will be automatically purged. The date
      * conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @param scheduledPurgeDate the scheduledPurgeDate value to set.
      * @return the DeletedServiceContractProperties object itself.
      */
@@ -80,7 +87,7 @@ public final class DeletedServiceContractProperties {
     /**
      * Get the deletionDate property: UTC Timestamp when the service was soft-deleted. The date conforms to the
      * following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -90,7 +97,7 @@ public final class DeletedServiceContractProperties {
     /**
      * Set the deletionDate property: UTC Timestamp when the service was soft-deleted. The date conforms to the
      * following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @param deletionDate the deletionDate value to set.
      * @return the DeletedServiceContractProperties object itself.
      */
@@ -101,9 +108,58 @@ public final class DeletedServiceContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceId", this.serviceId);
+        jsonWriter.writeStringField("scheduledPurgeDate",
+            this.scheduledPurgeDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduledPurgeDate));
+        jsonWriter.writeStringField("deletionDate",
+            this.deletionDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deletionDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedServiceContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedServiceContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedServiceContractProperties.
+     */
+    public static DeletedServiceContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedServiceContractProperties deserializedDeletedServiceContractProperties
+                = new DeletedServiceContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceId".equals(fieldName)) {
+                    deserializedDeletedServiceContractProperties.serviceId = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedServiceContractProperties.scheduledPurgeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deletionDate".equals(fieldName)) {
+                    deserializedDeletedServiceContractProperties.deletionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedServiceContractProperties;
+        });
     }
 }

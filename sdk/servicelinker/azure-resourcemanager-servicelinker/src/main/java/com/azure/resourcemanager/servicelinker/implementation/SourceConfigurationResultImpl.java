@@ -15,8 +15,7 @@ public final class SourceConfigurationResultImpl implements SourceConfigurationR
 
     private final com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager;
 
-    SourceConfigurationResultImpl(
-        SourceConfigurationResultInner innerObject,
+    SourceConfigurationResultImpl(SourceConfigurationResultInner innerObject,
         com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

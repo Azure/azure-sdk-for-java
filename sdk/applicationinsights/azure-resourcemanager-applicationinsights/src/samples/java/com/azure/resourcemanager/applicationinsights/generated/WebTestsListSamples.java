@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-/** Samples for WebTests List. */
+/**
+ * Samples for WebTests List.
+ */
 public final class WebTestsListSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestList.json
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestList.json
      */
     /**
      * Sample code: webTestList.
-     *
+     * 
      * @param manager Entry point to ApplicationInsightsManager.
      */
     public static void webTestList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {

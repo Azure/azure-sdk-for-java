@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The JIT request metadata. */
+/**
+ * The JIT request metadata.
+ */
 @Fluent
-public final class JitRequestMetadata {
+public final class JitRequestMetadata implements JsonSerializable<JitRequestMetadata> {
     /*
      * The origin request id.
      */
-    @JsonProperty(value = "originRequestId")
     private String originRequestId;
 
     /*
      * The requestor id.
      */
-    @JsonProperty(value = "requestorId")
     private String requestorId;
 
     /*
      * The publisher's tenant name.
      */
-    @JsonProperty(value = "tenantDisplayName")
     private String tenantDisplayName;
 
     /*
      * The subject display name.
      */
-    @JsonProperty(value = "subjectDisplayName")
     private String subjectDisplayName;
 
-    /** Creates an instance of JitRequestMetadata class. */
+    /**
+     * Creates an instance of JitRequestMetadata class.
+     */
     public JitRequestMetadata() {
     }
 
     /**
      * Get the originRequestId property: The origin request id.
-     *
+     * 
      * @return the originRequestId value.
      */
     public String originRequestId() {
@@ -49,7 +53,7 @@ public final class JitRequestMetadata {
 
     /**
      * Set the originRequestId property: The origin request id.
-     *
+     * 
      * @param originRequestId the originRequestId value to set.
      * @return the JitRequestMetadata object itself.
      */
@@ -60,7 +64,7 @@ public final class JitRequestMetadata {
 
     /**
      * Get the requestorId property: The requestor id.
-     *
+     * 
      * @return the requestorId value.
      */
     public String requestorId() {
@@ -69,7 +73,7 @@ public final class JitRequestMetadata {
 
     /**
      * Set the requestorId property: The requestor id.
-     *
+     * 
      * @param requestorId the requestorId value to set.
      * @return the JitRequestMetadata object itself.
      */
@@ -80,7 +84,7 @@ public final class JitRequestMetadata {
 
     /**
      * Get the tenantDisplayName property: The publisher's tenant name.
-     *
+     * 
      * @return the tenantDisplayName value.
      */
     public String tenantDisplayName() {
@@ -89,7 +93,7 @@ public final class JitRequestMetadata {
 
     /**
      * Set the tenantDisplayName property: The publisher's tenant name.
-     *
+     * 
      * @param tenantDisplayName the tenantDisplayName value to set.
      * @return the JitRequestMetadata object itself.
      */
@@ -100,7 +104,7 @@ public final class JitRequestMetadata {
 
     /**
      * Get the subjectDisplayName property: The subject display name.
-     *
+     * 
      * @return the subjectDisplayName value.
      */
     public String subjectDisplayName() {
@@ -109,7 +113,7 @@ public final class JitRequestMetadata {
 
     /**
      * Set the subjectDisplayName property: The subject display name.
-     *
+     * 
      * @param subjectDisplayName the subjectDisplayName value to set.
      * @return the JitRequestMetadata object itself.
      */
@@ -120,9 +124,54 @@ public final class JitRequestMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("originRequestId", this.originRequestId);
+        jsonWriter.writeStringField("requestorId", this.requestorId);
+        jsonWriter.writeStringField("tenantDisplayName", this.tenantDisplayName);
+        jsonWriter.writeStringField("subjectDisplayName", this.subjectDisplayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JitRequestMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JitRequestMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JitRequestMetadata.
+     */
+    public static JitRequestMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JitRequestMetadata deserializedJitRequestMetadata = new JitRequestMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("originRequestId".equals(fieldName)) {
+                    deserializedJitRequestMetadata.originRequestId = reader.getString();
+                } else if ("requestorId".equals(fieldName)) {
+                    deserializedJitRequestMetadata.requestorId = reader.getString();
+                } else if ("tenantDisplayName".equals(fieldName)) {
+                    deserializedJitRequestMetadata.tenantDisplayName = reader.getString();
+                } else if ("subjectDisplayName".equals(fieldName)) {
+                    deserializedJitRequestMetadata.subjectDisplayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJitRequestMetadata;
+        });
     }
 }

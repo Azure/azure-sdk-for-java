@@ -22,17 +22,28 @@ public final class SentinelOnboardingStatesImpl implements SentinelOnboardingSta
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public SentinelOnboardingStatesImpl(
-        SentinelOnboardingStatesClient innerClient,
+    public SentinelOnboardingStatesImpl(SentinelOnboardingStatesClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public SentinelOnboardingState get(
-        String resourceGroupName, String workspaceName, String sentinelOnboardingStateName) {
-        SentinelOnboardingStateInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sentinelOnboardingStateName);
+    public Response<SentinelOnboardingState> getWithResponse(String resourceGroupName, String workspaceName,
+        String sentinelOnboardingStateName, Context context) {
+        Response<SentinelOnboardingStateInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SentinelOnboardingStateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SentinelOnboardingState get(String resourceGroupName, String workspaceName,
+        String sentinelOnboardingStateName) {
+        SentinelOnboardingStateInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, sentinelOnboardingStateName);
         if (inner != null) {
             return new SentinelOnboardingStateImpl(inner, this.manager());
         } else {
@@ -40,32 +51,26 @@ public final class SentinelOnboardingStatesImpl implements SentinelOnboardingSta
         }
     }
 
-    public Response<SentinelOnboardingState> getWithResponse(
-        String resourceGroupName, String workspaceName, String sentinelOnboardingStateName, Context context) {
-        Response<SentinelOnboardingStateInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SentinelOnboardingStateImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName,
+        String sentinelOnboardingStateName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, context);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String sentinelOnboardingStateName) {
         this.serviceClient().delete(resourceGroupName, workspaceName, sentinelOnboardingStateName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String sentinelOnboardingStateName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, context);
+    public Response<SentinelOnboardingStatesList> listWithResponse(String resourceGroupName, String workspaceName,
+        Context context) {
+        Response<SentinelOnboardingStatesListInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, workspaceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SentinelOnboardingStatesListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SentinelOnboardingStatesList list(String resourceGroupName, String workspaceName) {
@@ -77,131 +82,79 @@ public final class SentinelOnboardingStatesImpl implements SentinelOnboardingSta
         }
     }
 
-    public Response<SentinelOnboardingStatesList> listWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        Response<SentinelOnboardingStatesListInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, workspaceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SentinelOnboardingStatesListImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public SentinelOnboardingState getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sentinelOnboardingStateName = Utils.getValueFromIdByName(id, "onboardingStates");
+        String sentinelOnboardingStateName = ResourceManagerUtils.getValueFromIdByName(id, "onboardingStates");
         if (sentinelOnboardingStateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'onboardingStates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'onboardingStates'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, Context.NONE)
             .getValue();
     }
 
     public Response<SentinelOnboardingState> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sentinelOnboardingStateName = Utils.getValueFromIdByName(id, "onboardingStates");
+        String sentinelOnboardingStateName = ResourceManagerUtils.getValueFromIdByName(id, "onboardingStates");
         if (sentinelOnboardingStateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'onboardingStates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'onboardingStates'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sentinelOnboardingStateName = Utils.getValueFromIdByName(id, "onboardingStates");
+        String sentinelOnboardingStateName = ResourceManagerUtils.getValueFromIdByName(id, "onboardingStates");
         if (sentinelOnboardingStateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'onboardingStates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'onboardingStates'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sentinelOnboardingStateName = Utils.getValueFromIdByName(id, "onboardingStates");
+        String sentinelOnboardingStateName = ResourceManagerUtils.getValueFromIdByName(id, "onboardingStates");
         if (sentinelOnboardingStateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'onboardingStates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'onboardingStates'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, workspaceName, sentinelOnboardingStateName, context);
     }

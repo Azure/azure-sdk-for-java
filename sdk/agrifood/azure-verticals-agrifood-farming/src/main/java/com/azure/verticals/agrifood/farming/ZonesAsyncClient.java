@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = ZonesClientBuilder.class, isAsync = true)
 public final class ZonesAsyncClient {
-    @Generated private final ZonesImpl serviceClient;
+    @Generated
+    private final ZonesImpl serviceClient;
 
     /**
      * Initializes an instance of ZonesAsyncClient class.
@@ -203,8 +204,8 @@ public final class ZonesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId, String zoneId, BinaryData zone, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String zoneId, BinaryData zone,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(partyId, zoneId, zone, requestOptions);
     }
 
@@ -323,8 +324,8 @@ public final class ZonesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -362,8 +363,8 @@ public final class ZonesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String zoneId, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId, String zoneId,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, zoneId, requestOptions);
     }
 }

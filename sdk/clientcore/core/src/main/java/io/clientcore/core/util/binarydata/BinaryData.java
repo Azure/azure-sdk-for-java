@@ -3,7 +3,8 @@
 
 package io.clientcore.core.util.binarydata;
 
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
+import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.Closeable;
@@ -93,9 +94,7 @@ import java.util.List;
  * <pre>
  * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
  *
- * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
- * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-jackson or
- * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-gson
+ * &#47;&#47; Provide your custom serializer or use the provided serializers.
  * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
  *
  * System.out.println&#40;binaryData&#41;;
@@ -117,7 +116,7 @@ import java.util.List;
 public abstract class BinaryData implements Closeable {
     private static final BinaryData EMPTY = BinaryData.fromBytes(new byte[0]);
 
-    static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
+    static final ObjectSerializer SERIALIZER = new JsonSerializer();
     static final int STREAM_READ_SIZE = 8192;
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     static final String TOO_LARGE_FOR_BYTE_ARRAY
@@ -300,9 +299,7 @@ public abstract class BinaryData implements Closeable {
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
-     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-gson
+     * &#47;&#47; Provide your custom serializer or use the provided serializers.
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
      * System.out.println&#40;binaryData&#41;;
@@ -331,9 +328,7 @@ public abstract class BinaryData implements Closeable {
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
-     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-gson
+     * &#47;&#47; Provide your custom serializer or use the provided serializers.
      * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
      *
@@ -514,10 +509,7 @@ public abstract class BinaryData implements Closeable {
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; io.clientcore.core.serializer.util.JsonSerializer interface.
-     * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-gson
-     *
+     * &#47;&#47; Or use the provided libraries for this.
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
      * Person person = binaryData.toObject&#40;Person.class&#41;;
@@ -538,11 +530,7 @@ public abstract class BinaryData implements Closeable {
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; io.clientcore.core.serializer.util.JsonSerializer interface.
-     * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-gson
-     *
-     *
+     * &#47;&#47; Or use the provided libraries for this.
      * BinaryData binaryData = BinaryData.fromObject&#40;personList&#41;;
      *
      * &#47;&#47; Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
@@ -596,10 +584,7 @@ public abstract class BinaryData implements Closeable {
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
-     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-gson
-     *
+     * &#47;&#47; Provide your custom serializer or use the provided serializers.
      * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
      *
@@ -712,6 +697,21 @@ public abstract class BinaryData implements Closeable {
             channel.write(buffer);
         }
     }
+
+    /**
+     * Writes the contents of this {@link BinaryData} to the given {@link JsonWriter}.
+     * <p>
+     * This method does not close or flush the {@link JsonWriter}.
+     * <p>
+     * The contents of this {@link BinaryData} will be written without buffering. If the underlying data source isn't
+     * {@link #isReplayable()}, after this method is called the {@link BinaryData} will be consumed and can't be read
+     * again. If it needs to be read again, use {@link #toReplayableBinaryData()} to create a replayable copy.
+     *
+     * @param jsonWriter The {@link JsonWriter} to write the contents of this {@link BinaryData} to.
+     * @throws NullPointerException If {@code jsonWriter} is null.
+     * @throws IOException If an I/O error occurs during writing.
+     */
+    public abstract void writeTo(JsonWriter jsonWriter) throws IOException;
 
     /**
      * Returns a read-only {@link ByteBuffer} representation of this {@link BinaryData}.

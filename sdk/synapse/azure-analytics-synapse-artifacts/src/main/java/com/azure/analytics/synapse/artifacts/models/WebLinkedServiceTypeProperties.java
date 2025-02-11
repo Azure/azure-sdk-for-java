@@ -20,10 +20,12 @@ public class WebLinkedServiceTypeProperties implements JsonSerializable<WebLinke
     /*
      * Type of authentication used to connect to the web table source.
      */
-    private WebAuthenticationType authenticationType;
+    private WebAuthenticationType authenticationType
+        = WebAuthenticationType.fromString("WebLinkedServiceTypeProperties");
 
     /*
-     * The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or Expression with resultType string).
+     * The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or Expression with resultType
+     * string).
      */
     private Object url;
 
@@ -31,7 +33,6 @@ public class WebLinkedServiceTypeProperties implements JsonSerializable<WebLinke
      * Creates an instance of WebLinkedServiceTypeProperties class.
      */
     public WebLinkedServiceTypeProperties() {
-        this.authenticationType = WebAuthenticationType.fromString("WebLinkedServiceTypeProperties");
     }
 
     /**

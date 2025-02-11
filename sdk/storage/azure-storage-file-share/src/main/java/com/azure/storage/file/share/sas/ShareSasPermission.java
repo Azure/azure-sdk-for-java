@@ -16,13 +16,9 @@ import java.util.Locale;
  */
 public final class ShareSasPermission {
     private boolean readPermission;
-
     private boolean createPermission;
-
     private boolean writePermission;
-
     private boolean deletePermission;
-
     private boolean listPermission;
 
     /**
@@ -48,28 +44,34 @@ public final class ShareSasPermission {
                 case 'r':
                     permissions.readPermission = true;
                     break;
+
                 case 'c':
                     permissions.createPermission = true;
                     break;
+
                 case 'w':
                     permissions.writePermission = true;
                     break;
+
                 case 'd':
                     permissions.deletePermission = true;
                     break;
+
                 case 'l':
                     permissions.listPermission = true;
                     break;
+
                 default:
-                    throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permissionString, c));
+                    throw new IllegalArgumentException(String.format(Locale.ROOT,
+                        Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permissionString, c));
             }
         }
         return permissions;
     }
 
     /**
+     * Gets the read permission status.
+     *
      * @return the read permission status
      */
     public boolean hasReadPermission() {
@@ -88,6 +90,8 @@ public final class ShareSasPermission {
     }
 
     /**
+     * Gets the create permission status.
+     *
      * @return the create permission status
      */
     public boolean hasCreatePermission() {
@@ -106,6 +110,8 @@ public final class ShareSasPermission {
     }
 
     /**
+     * Gets the write permission status.
+     *
      * @return the write permission status
      */
     public boolean hasWritePermission() {
@@ -124,6 +130,8 @@ public final class ShareSasPermission {
     }
 
     /**
+     * Gets the delete permission status.
+     *
      * @return the delete permission status
      */
     public boolean hasDeletePermission() {
@@ -142,6 +150,8 @@ public final class ShareSasPermission {
     }
 
     /**
+     * Gets the list permission status.
+     *
      * @return the list permission status
      */
     public boolean hasListPermission() {

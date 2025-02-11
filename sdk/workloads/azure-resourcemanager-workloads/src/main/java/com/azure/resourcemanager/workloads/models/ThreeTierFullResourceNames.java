@@ -5,51 +5,63 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resource name object where the specified values will be full resource names of the corresponding resources in a
  * three tier SAP system.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "namingPatternType")
-@JsonTypeName("FullResourceName")
 @Fluent
 public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNames {
     /*
+     * The pattern type to be used for resource naming.
+     */
+    private NamingPatternType namingPatternType = NamingPatternType.FULL_RESOURCE_NAME;
+
+    /*
      * The full resource names object for central server layer resources.
      */
-    @JsonProperty(value = "centralServer")
     private CentralServerFullResourceNames centralServer;
 
     /*
      * The full resource names object for application layer resources. The number of entries in this list should be
      * equal to the number VMs to be created for application layer.
      */
-    @JsonProperty(value = "applicationServer")
     private ApplicationServerFullResourceNames applicationServer;
 
     /*
      * The full resource names object for database layer resources. The number of entries in this list should be equal
      * to the number VMs to be created for database layer.
      */
-    @JsonProperty(value = "databaseServer")
     private DatabaseServerFullResourceNames databaseServer;
 
     /*
      * The resource names object for shared storage.
      */
-    @JsonProperty(value = "sharedStorage")
     private SharedStorageResourceNames sharedStorage;
 
-    /** Creates an instance of ThreeTierFullResourceNames class. */
+    /**
+     * Creates an instance of ThreeTierFullResourceNames class.
+     */
     public ThreeTierFullResourceNames() {
     }
 
     /**
+     * Get the namingPatternType property: The pattern type to be used for resource naming.
+     * 
+     * @return the namingPatternType value.
+     */
+    @Override
+    public NamingPatternType namingPatternType() {
+        return this.namingPatternType;
+    }
+
+    /**
      * Get the centralServer property: The full resource names object for central server layer resources.
-     *
+     * 
      * @return the centralServer value.
      */
     public CentralServerFullResourceNames centralServer() {
@@ -58,7 +70,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
 
     /**
      * Set the centralServer property: The full resource names object for central server layer resources.
-     *
+     * 
      * @param centralServer the centralServer value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
@@ -70,7 +82,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
     /**
      * Get the applicationServer property: The full resource names object for application layer resources. The number of
      * entries in this list should be equal to the number VMs to be created for application layer.
-     *
+     * 
      * @return the applicationServer value.
      */
     public ApplicationServerFullResourceNames applicationServer() {
@@ -80,7 +92,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
     /**
      * Set the applicationServer property: The full resource names object for application layer resources. The number of
      * entries in this list should be equal to the number VMs to be created for application layer.
-     *
+     * 
      * @param applicationServer the applicationServer value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
@@ -92,7 +104,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
     /**
      * Get the databaseServer property: The full resource names object for database layer resources. The number of
      * entries in this list should be equal to the number VMs to be created for database layer.
-     *
+     * 
      * @return the databaseServer value.
      */
     public DatabaseServerFullResourceNames databaseServer() {
@@ -102,7 +114,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
     /**
      * Set the databaseServer property: The full resource names object for database layer resources. The number of
      * entries in this list should be equal to the number VMs to be created for database layer.
-     *
+     * 
      * @param databaseServer the databaseServer value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
@@ -113,7 +125,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
 
     /**
      * Get the sharedStorage property: The resource names object for shared storage.
-     *
+     * 
      * @return the sharedStorage value.
      */
     public SharedStorageResourceNames sharedStorage() {
@@ -122,7 +134,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
 
     /**
      * Set the sharedStorage property: The resource names object for shared storage.
-     *
+     * 
      * @param sharedStorage the sharedStorage value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
@@ -133,12 +145,11 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (centralServer() != null) {
             centralServer().validate();
         }
@@ -151,5 +162,58 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
         if (sharedStorage() != null) {
             sharedStorage().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("namingPatternType",
+            this.namingPatternType == null ? null : this.namingPatternType.toString());
+        jsonWriter.writeJsonField("centralServer", this.centralServer);
+        jsonWriter.writeJsonField("applicationServer", this.applicationServer);
+        jsonWriter.writeJsonField("databaseServer", this.databaseServer);
+        jsonWriter.writeJsonField("sharedStorage", this.sharedStorage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreeTierFullResourceNames from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreeTierFullResourceNames if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThreeTierFullResourceNames.
+     */
+    public static ThreeTierFullResourceNames fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThreeTierFullResourceNames deserializedThreeTierFullResourceNames = new ThreeTierFullResourceNames();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("namingPatternType".equals(fieldName)) {
+                    deserializedThreeTierFullResourceNames.namingPatternType
+                        = NamingPatternType.fromString(reader.getString());
+                } else if ("centralServer".equals(fieldName)) {
+                    deserializedThreeTierFullResourceNames.centralServer
+                        = CentralServerFullResourceNames.fromJson(reader);
+                } else if ("applicationServer".equals(fieldName)) {
+                    deserializedThreeTierFullResourceNames.applicationServer
+                        = ApplicationServerFullResourceNames.fromJson(reader);
+                } else if ("databaseServer".equals(fieldName)) {
+                    deserializedThreeTierFullResourceNames.databaseServer
+                        = DatabaseServerFullResourceNames.fromJson(reader);
+                } else if ("sharedStorage".equals(fieldName)) {
+                    deserializedThreeTierFullResourceNames.sharedStorage = SharedStorageResourceNames.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThreeTierFullResourceNames;
+        });
     }
 }

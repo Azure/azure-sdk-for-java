@@ -30,12 +30,12 @@ import java.util.TreeMap;
 class ApplicationGatewayBackendHttpConfigurationImpl
     extends ChildResourceImpl<ApplicationGatewayBackendHttpSettings, ApplicationGatewayImpl, ApplicationGateway>
     implements ApplicationGatewayBackendHttpConfiguration,
-        ApplicationGatewayBackendHttpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
-        ApplicationGatewayBackendHttpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayBackendHttpConfiguration.Update {
+    ApplicationGatewayBackendHttpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+    ApplicationGatewayBackendHttpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
+    ApplicationGatewayBackendHttpConfiguration.Update {
 
-    ApplicationGatewayBackendHttpConfigurationImpl(
-        ApplicationGatewayBackendHttpSettings inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayBackendHttpConfigurationImpl(ApplicationGatewayBackendHttpSettings inner,
+        ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 
@@ -48,8 +48,8 @@ class ApplicationGatewayBackendHttpConfigurationImpl
             return Collections.unmodifiableMap(certs);
         } else {
             for (SubResource ref : this.innerModel().authenticationCertificates()) {
-                ApplicationGatewayAuthenticationCertificate cert =
-                    this.parent().authenticationCertificates().get(ResourceUtils.nameFromResourceId(ref.id()));
+                ApplicationGatewayAuthenticationCertificate cert
+                    = this.parent().authenticationCertificates().get(ResourceUtils.nameFromResourceId(ref.id()));
                 if (cert != null) {
                     certs.put(cert.name(), cert);
                 }
@@ -230,8 +230,8 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         if (name == null) {
             return this;
         }
-        SubResource certRef =
-            new SubResource().withId(this.parent().futureResourceId() + "/authenticationCertificates/" + name);
+        SubResource certRef
+            = new SubResource().withId(this.parent().futureResourceId() + "/authenticationCertificates/" + name);
         List<SubResource> refs = this.innerModel().authenticationCertificates();
         if (refs == null) {
             refs = new ArrayList<>();

@@ -6,29 +6,31 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the partner that created the assessment.
  */
 @Fluent
-public final class SecurityAssessmentMetadataPartnerData {
+public final class SecurityAssessmentMetadataPartnerData
+    implements JsonSerializable<SecurityAssessmentMetadataPartnerData> {
     /*
      * Name of the company of the partner
      */
-    @JsonProperty(value = "partnerName", required = true)
     private String partnerName;
 
     /*
      * Name of the product of the partner that created the assessment
      */
-    @JsonProperty(value = "productName")
     private String productName;
 
     /*
      * Secret to authenticate the partner and verify it created the assessment - write only
      */
-    @JsonProperty(value = "secret")
     private String secret;
 
     /**
@@ -116,4 +118,48 @@ public final class SecurityAssessmentMetadataPartnerData {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecurityAssessmentMetadataPartnerData.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("partnerName", this.partnerName);
+        jsonWriter.writeStringField("secret", this.secret);
+        jsonWriter.writeStringField("productName", this.productName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAssessmentMetadataPartnerData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAssessmentMetadataPartnerData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityAssessmentMetadataPartnerData.
+     */
+    public static SecurityAssessmentMetadataPartnerData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAssessmentMetadataPartnerData deserializedSecurityAssessmentMetadataPartnerData
+                = new SecurityAssessmentMetadataPartnerData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partnerName".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPartnerData.partnerName = reader.getString();
+                } else if ("secret".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPartnerData.secret = reader.getString();
+                } else if ("productName".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPartnerData.productName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAssessmentMetadataPartnerData;
+        });
+    }
 }

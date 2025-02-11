@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = PlantTissueAnalysesClientBuilder.class, isAsync = true)
 public final class PlantTissueAnalysesAsyncClient {
-    @Generated private final PlantTissueAnalysesImpl serviceClient;
+    @Generated
+    private final PlantTissueAnalysesImpl serviceClient;
 
     /**
      * Initializes an instance of PlantTissueAnalysesAsyncClient class.
@@ -175,8 +176,8 @@ public final class PlantTissueAnalysesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String partyId, String plantTissueAnalysisId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String plantTissueAnalysisId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(partyId, plantTissueAnalysisId, requestOptions);
     }
 
@@ -278,13 +279,10 @@ public final class PlantTissueAnalysesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId,
-            String plantTissueAnalysisId,
-            BinaryData plantTissueAnalysis,
-            RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(
-                partyId, plantTissueAnalysisId, plantTissueAnalysis, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String plantTissueAnalysisId,
+        BinaryData plantTissueAnalysis, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, plantTissueAnalysisId, plantTissueAnalysis,
+            requestOptions);
     }
 
     /**
@@ -301,8 +299,8 @@ public final class PlantTissueAnalysesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String partyId, String plantTissueAnalysisId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponse(String partyId, String plantTissueAnalysisId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(partyId, plantTissueAnalysisId, requestOptions);
     }
 
@@ -423,10 +421,10 @@ public final class PlantTissueAnalysesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String plantTissueAnalysisId, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateCascadeDeleteJobAsync(
-                jobId, partyId, plantTissueAnalysisId, requestOptions);
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String plantTissueAnalysisId, RequestOptions requestOptions) {
+        return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, plantTissueAnalysisId,
+            requestOptions);
     }
 
     /**
@@ -462,8 +460,8 @@ public final class PlantTissueAnalysesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 }

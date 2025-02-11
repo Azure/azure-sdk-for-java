@@ -13,14 +13,14 @@ public final class TaskSchedulingPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaskSchedulingPolicy model
-            = BinaryData.fromString("{\"nodeFillType\":\"Spread\"}").toObject(TaskSchedulingPolicy.class);
-        Assertions.assertEquals(ComputeNodeFillType.SPREAD, model.nodeFillType());
+            = BinaryData.fromString("{\"nodeFillType\":\"Pack\"}").toObject(TaskSchedulingPolicy.class);
+        Assertions.assertEquals(ComputeNodeFillType.PACK, model.nodeFillType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TaskSchedulingPolicy model = new TaskSchedulingPolicy().withNodeFillType(ComputeNodeFillType.SPREAD);
+        TaskSchedulingPolicy model = new TaskSchedulingPolicy().withNodeFillType(ComputeNodeFillType.PACK);
         model = BinaryData.fromObject(model).toObject(TaskSchedulingPolicy.class);
-        Assertions.assertEquals(ComputeNodeFillType.SPREAD, model.nodeFillType());
+        Assertions.assertEquals(ComputeNodeFillType.PACK, model.nodeFillType());
     }
 }

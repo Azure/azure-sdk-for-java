@@ -59,32 +59,32 @@ public final class SiteNetworkServicesImpl implements SiteNetworkServices {
 
     public PagedIterable<SiteNetworkService> list() {
         PagedIterable<SiteNetworkServiceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SiteNetworkServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteNetworkServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SiteNetworkService> list(Context context) {
         PagedIterable<SiteNetworkServiceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SiteNetworkServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteNetworkServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SiteNetworkService> listByResourceGroup(String resourceGroupName) {
         PagedIterable<SiteNetworkServiceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new SiteNetworkServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteNetworkServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SiteNetworkService> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<SiteNetworkServiceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new SiteNetworkServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteNetworkServiceImpl(inner1, this.manager()));
     }
 
     public SiteNetworkService getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String siteNetworkServiceName = Utils.getValueFromIdByName(id, "siteNetworkServices");
+        String siteNetworkServiceName = ResourceManagerUtils.getValueFromIdByName(id, "siteNetworkServices");
         if (siteNetworkServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'siteNetworkServices'.", id)));
@@ -93,12 +93,12 @@ public final class SiteNetworkServicesImpl implements SiteNetworkServices {
     }
 
     public Response<SiteNetworkService> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String siteNetworkServiceName = Utils.getValueFromIdByName(id, "siteNetworkServices");
+        String siteNetworkServiceName = ResourceManagerUtils.getValueFromIdByName(id, "siteNetworkServices");
         if (siteNetworkServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'siteNetworkServices'.", id)));
@@ -107,12 +107,12 @@ public final class SiteNetworkServicesImpl implements SiteNetworkServices {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String siteNetworkServiceName = Utils.getValueFromIdByName(id, "siteNetworkServices");
+        String siteNetworkServiceName = ResourceManagerUtils.getValueFromIdByName(id, "siteNetworkServices");
         if (siteNetworkServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'siteNetworkServices'.", id)));
@@ -121,12 +121,12 @@ public final class SiteNetworkServicesImpl implements SiteNetworkServices {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String siteNetworkServiceName = Utils.getValueFromIdByName(id, "siteNetworkServices");
+        String siteNetworkServiceName = ResourceManagerUtils.getValueFromIdByName(id, "siteNetworkServices");
         if (siteNetworkServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'siteNetworkServices'.", id)));

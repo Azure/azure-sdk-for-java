@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Resource identifiers for a policy. */
+/**
+ * Resource identifiers for a policy.
+ */
 @Immutable
-public final class PolicyReference {
+public final class PolicyReference implements JsonSerializable<PolicyReference> {
     /*
      * The resource identifier of the policy definition.
      */
-    @JsonProperty(value = "policyDefinitionId", access = JsonProperty.Access.WRITE_ONLY)
     private String policyDefinitionId;
 
     /*
      * The resource identifier of the policy set definition.
      */
-    @JsonProperty(value = "policySetDefinitionId", access = JsonProperty.Access.WRITE_ONLY)
     private String policySetDefinitionId;
 
     /*
      * The reference identifier of a specific policy definition within a policy set definition.
      */
-    @JsonProperty(value = "policyDefinitionReferenceId", access = JsonProperty.Access.WRITE_ONLY)
     private String policyDefinitionReferenceId;
 
     /*
      * The resource identifier of the policy assignment.
      */
-    @JsonProperty(value = "policyAssignmentId", access = JsonProperty.Access.WRITE_ONLY)
     private String policyAssignmentId;
 
-    /** Creates an instance of PolicyReference class. */
+    /**
+     * Creates an instance of PolicyReference class.
+     */
     public PolicyReference() {
     }
 
     /**
      * Get the policyDefinitionId property: The resource identifier of the policy definition.
-     *
+     * 
      * @return the policyDefinitionId value.
      */
     public String policyDefinitionId() {
@@ -49,7 +53,7 @@ public final class PolicyReference {
 
     /**
      * Get the policySetDefinitionId property: The resource identifier of the policy set definition.
-     *
+     * 
      * @return the policySetDefinitionId value.
      */
     public String policySetDefinitionId() {
@@ -59,7 +63,7 @@ public final class PolicyReference {
     /**
      * Get the policyDefinitionReferenceId property: The reference identifier of a specific policy definition within a
      * policy set definition.
-     *
+     * 
      * @return the policyDefinitionReferenceId value.
      */
     public String policyDefinitionReferenceId() {
@@ -68,7 +72,7 @@ public final class PolicyReference {
 
     /**
      * Get the policyAssignmentId property: The resource identifier of the policy assignment.
-     *
+     * 
      * @return the policyAssignmentId value.
      */
     public String policyAssignmentId() {
@@ -77,9 +81,50 @@ public final class PolicyReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyReference.
+     */
+    public static PolicyReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyReference deserializedPolicyReference = new PolicyReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyDefinitionId".equals(fieldName)) {
+                    deserializedPolicyReference.policyDefinitionId = reader.getString();
+                } else if ("policySetDefinitionId".equals(fieldName)) {
+                    deserializedPolicyReference.policySetDefinitionId = reader.getString();
+                } else if ("policyDefinitionReferenceId".equals(fieldName)) {
+                    deserializedPolicyReference.policyDefinitionReferenceId = reader.getString();
+                } else if ("policyAssignmentId".equals(fieldName)) {
+                    deserializedPolicyReference.policyAssignmentId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyReference;
+        });
     }
 }

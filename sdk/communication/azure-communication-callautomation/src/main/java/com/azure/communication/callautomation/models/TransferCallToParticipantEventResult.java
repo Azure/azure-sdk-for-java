@@ -23,7 +23,8 @@ public final class TransferCallToParticipantEventResult {
      * @param successResult the transfer call to participant succeeded event.
      * @param failureResult the transfer call to participant failed event.
      */
-    TransferCallToParticipantEventResult(boolean isSuccess, CallTransferAccepted successResult, CallTransferFailed failureResult) {
+    TransferCallToParticipantEventResult(boolean isSuccess, CallTransferAccepted successResult,
+        CallTransferFailed failureResult) {
         this.isSuccess = isSuccess;
         this.successResult = successResult;
         this.failureResult = failureResult;

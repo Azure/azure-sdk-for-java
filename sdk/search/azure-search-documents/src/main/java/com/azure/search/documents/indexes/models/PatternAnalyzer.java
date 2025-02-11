@@ -10,9 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.Arrays;
 
 /**
  * Flexibly separates text into terms via a regular expression pattern. This analyzer is implemented using Apache

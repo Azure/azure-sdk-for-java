@@ -40,7 +40,7 @@ public final class PreBackupOperationParameters implements JsonSerializable<PreB
 
     /**
      * Get the storageResourceUri property: Azure Blob storage container Uri.
-     *
+     * 
      * @return the storageResourceUri value.
      */
     public String getStorageResourceUri() {
@@ -49,7 +49,7 @@ public final class PreBackupOperationParameters implements JsonSerializable<PreB
 
     /**
      * Set the storageResourceUri property: Azure Blob storage container Uri.
-     *
+     * 
      * @param storageResourceUri the storageResourceUri value to set.
      * @return the PreBackupOperationParameters object itself.
      */
@@ -60,7 +60,7 @@ public final class PreBackupOperationParameters implements JsonSerializable<PreB
 
     /**
      * Get the token property: The SAS token pointing to an Azure Blob storage container.
-     *
+     * 
      * @return the token value.
      */
     public String getToken() {
@@ -69,7 +69,7 @@ public final class PreBackupOperationParameters implements JsonSerializable<PreB
 
     /**
      * Set the token property: The SAS token pointing to an Azure Blob storage container.
-     *
+     * 
      * @param token the token value to set.
      * @return the PreBackupOperationParameters object itself.
      */
@@ -80,9 +80,9 @@ public final class PreBackupOperationParameters implements JsonSerializable<PreB
 
     /**
      * Get the useManagedIdentity property: Indicates which authentication method should be used. If set to true,
-     * Managed HSM will use the configured user-assigned managed identity to authenticate with Azure Storage.
-     * Otherwise, a SAS token has to be specified.
-     *
+     * Managed HSM will use the configured user-assigned managed identity to authenticate with Azure Storage. Otherwise,
+     * a SAS token has to be specified.
+     * 
      * @return the useManagedIdentity value.
      */
     public Boolean isUseManagedIdentity() {
@@ -91,9 +91,9 @@ public final class PreBackupOperationParameters implements JsonSerializable<PreB
 
     /**
      * Set the useManagedIdentity property: Indicates which authentication method should be used. If set to true,
-     * Managed HSM will use the configured user-assigned managed identity to authenticate with Azure Storage.
-     * Otherwise, a SAS token has to be specified.
-     *
+     * Managed HSM will use the configured user-assigned managed identity to authenticate with Azure Storage. Otherwise,
+     * a SAS token has to be specified.
+     * 
      * @param useManagedIdentity the useManagedIdentity value to set.
      * @return the PreBackupOperationParameters object itself.
      */
@@ -102,6 +102,9 @@ public final class PreBackupOperationParameters implements JsonSerializable<PreB
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -113,7 +116,7 @@ public final class PreBackupOperationParameters implements JsonSerializable<PreB
 
     /**
      * Reads an instance of PreBackupOperationParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PreBackupOperationParameters if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

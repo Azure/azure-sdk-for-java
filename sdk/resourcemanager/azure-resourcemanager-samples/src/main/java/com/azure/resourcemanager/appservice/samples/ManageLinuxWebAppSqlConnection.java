@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appservice.samples;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.PricingTier;
@@ -48,18 +48,18 @@ public final class ManageLinuxWebAppSqlConnection {
 
         try {
 
-
             //============================================================
             // Create a sql server
 
             System.out.println("Creating SQL server " + sqlServerName + "...");
 
-            SqlServer server = azureResourceManager.sqlServers().define(sqlServerName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .withAdministratorLogin(admin)
-                    .withAdministratorPassword(password)
-                    .create();
+            SqlServer server = azureResourceManager.sqlServers()
+                .define(sqlServerName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withAdministratorLogin(admin)
+                .withAdministratorPassword(password)
+                .create();
 
             System.out.println("Created SQL server " + server.name());
 
@@ -77,20 +77,21 @@ public final class ManageLinuxWebAppSqlConnection {
 
             System.out.println("Creating web app " + appName + "...");
 
-            WebApp app = azureResourceManager.webApps().define(appName)
-                    .withRegion(Region.US_WEST)
-                    .withExistingResourceGroup(rgName)
-                    .withNewLinuxPlan(PricingTier.STANDARD_S1)
-                    .withBuiltInImage(RuntimeStack.PHP_7_2)
-                    .defineSourceControl()
-                    .withPublicGitRepository("https://github.com/ProjectNami/projectnami")
-                    .withBranch("master")
-                    .attach()
-                    .withAppSetting("ProjectNami.DBHost", server.fullyQualifiedDomainName())
-                    .withAppSetting("ProjectNami.DBName", db.name())
-                    .withAppSetting("ProjectNami.DBUser", admin)
-                    .withAppSetting("ProjectNami.DBPass", password)
-                    .create();
+            WebApp app = azureResourceManager.webApps()
+                .define(appName)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(rgName)
+                .withNewLinuxPlan(PricingTier.STANDARD_S1)
+                .withBuiltInImage(RuntimeStack.PHP_7_2)
+                .defineSourceControl()
+                .withPublicGitRepository("https://github.com/ProjectNami/projectnami")
+                .withBranch("master")
+                .attach()
+                .withAppSetting("ProjectNami.DBHost", server.fullyQualifiedDomainName())
+                .withAppSetting("ProjectNami.DBName", db.name())
+                .withAppSetting("ProjectNami.DBUser", admin)
+                .withAppSetting("ProjectNami.DBPass", password)
+                .create();
 
             System.out.println("Created web app " + app.name());
             Utils.print(app);
@@ -110,7 +111,8 @@ public final class ManageLinuxWebAppSqlConnection {
             Utils.print(server);
 
             System.out.println("Your WordPress app is ready.");
-            System.out.println("Please navigate to http://" + appUrl + " to finish the GUI setup. Press enter to exit.");
+            System.out
+                .println("Please navigate to http://" + appUrl + " to finish the GUI setup. Press enter to exit.");
             System.in.read();
 
             return true;
@@ -138,13 +140,12 @@ public final class ManageLinuxWebAppSqlConnection {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

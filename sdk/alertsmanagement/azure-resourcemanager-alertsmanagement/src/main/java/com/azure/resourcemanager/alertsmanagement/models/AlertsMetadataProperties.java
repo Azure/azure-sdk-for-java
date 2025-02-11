@@ -5,25 +5,105 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** alert meta data property bag. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "metadataIdentifier",
-    defaultImpl = AlertsMetadataProperties.class)
-@JsonTypeName("AlertsMetadataProperties")
-@JsonSubTypes({@JsonSubTypes.Type(name = "MonitorServiceList", value = MonitorServiceList.class)})
+/**
+ * alert meta data property bag.
+ */
 @Immutable
-public class AlertsMetadataProperties {
+public class AlertsMetadataProperties implements JsonSerializable<AlertsMetadataProperties> {
+    /*
+     * Identification of the information to be retrieved by API call
+     */
+    private MetadataIdentifier metadataIdentifier = MetadataIdentifier.fromString("AlertsMetadataProperties");
+
+    /**
+     * Creates an instance of AlertsMetadataProperties class.
+     */
+    public AlertsMetadataProperties() {
+    }
+
+    /**
+     * Get the metadataIdentifier property: Identification of the information to be retrieved by API call.
+     * 
+     * @return the metadataIdentifier value.
+     */
+    public MetadataIdentifier metadataIdentifier() {
+        return this.metadataIdentifier;
+    }
+
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metadataIdentifier",
+            this.metadataIdentifier == null ? null : this.metadataIdentifier.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertsMetadataProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertsMetadataProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertsMetadataProperties.
+     */
+    public static AlertsMetadataProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("metadataIdentifier".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("MonitorServiceList".equals(discriminatorValue)) {
+                    return MonitorServiceList.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AlertsMetadataProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertsMetadataProperties deserializedAlertsMetadataProperties = new AlertsMetadataProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadataIdentifier".equals(fieldName)) {
+                    deserializedAlertsMetadataProperties.metadataIdentifier
+                        = MetadataIdentifier.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertsMetadataProperties;
+        });
     }
 }

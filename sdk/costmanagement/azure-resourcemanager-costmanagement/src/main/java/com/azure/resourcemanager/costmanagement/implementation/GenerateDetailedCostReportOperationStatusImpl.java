@@ -20,22 +20,18 @@ public final class GenerateDetailedCostReportOperationStatusImpl implements Gene
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public GenerateDetailedCostReportOperationStatusImpl(
-        GenerateDetailedCostReportOperationStatusClient innerClient,
+    public GenerateDetailedCostReportOperationStatusImpl(GenerateDetailedCostReportOperationStatusClient innerClient,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<GenerateDetailedCostReportOperationStatuses> getWithResponse(
-        String operationId, String scope, Context context) {
-        Response<GenerateDetailedCostReportOperationStatusesInner> inner =
-            this.serviceClient().getWithResponse(operationId, scope, context);
+    public Response<GenerateDetailedCostReportOperationStatuses> getWithResponse(String operationId, String scope,
+        Context context) {
+        Response<GenerateDetailedCostReportOperationStatusesInner> inner
+            = this.serviceClient().getWithResponse(operationId, scope, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GenerateDetailedCostReportOperationStatusesImpl(inner.getValue(), this.manager()));
         } else {
             return null;

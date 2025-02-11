@@ -8,12 +8,24 @@ import com.azure.core.annotation.Fluent;
 /** A type representing a SKU available for virtual machines in a scale set. */
 @Fluent
 public interface VirtualMachineScaleSetSku {
-    /** @return the type of resource the SKU applies to */
+    /**
+     * Gets the type of resource the SKU applies to.
+     *
+     * @return the type of resource the SKU applies to
+     */
     String resourceType();
 
-    /** @return the SKU type */
+    /**
+     * Gets the SKU type.
+     *
+     * @return the SKU type
+     */
     VirtualMachineScaleSetSkuTypes skuType();
 
-    /** @return available scaling information */
+    /**
+     * Gets available scaling information.
+     *
+     * @return available scaling information
+     */
     VirtualMachineScaleSetSkuCapacity capacity();
 }

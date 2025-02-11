@@ -5,39 +5,47 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.AgentRegistrationKeys;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Definition of the agent registration information type. */
+/**
+ * Definition of the agent registration information type.
+ */
 @Fluent
-public final class AgentRegistrationInner {
+public final class AgentRegistrationInner implements JsonSerializable<AgentRegistrationInner> {
     /*
      * Gets or sets the dsc meta configuration.
      */
-    @JsonProperty(value = "dscMetaConfiguration")
     private String dscMetaConfiguration;
 
     /*
      * Gets or sets the dsc server endpoint.
      */
-    @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /*
      * Gets or sets the agent registration keys.
      */
-    @JsonProperty(value = "keys")
     private AgentRegistrationKeys keys;
 
     /*
      * Gets or sets the id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /**
+     * Creates an instance of AgentRegistrationInner class.
+     */
+    public AgentRegistrationInner() {
+    }
+
+    /**
      * Get the dscMetaConfiguration property: Gets or sets the dsc meta configuration.
-     *
+     * 
      * @return the dscMetaConfiguration value.
      */
     public String dscMetaConfiguration() {
@@ -46,7 +54,7 @@ public final class AgentRegistrationInner {
 
     /**
      * Set the dscMetaConfiguration property: Gets or sets the dsc meta configuration.
-     *
+     * 
      * @param dscMetaConfiguration the dscMetaConfiguration value to set.
      * @return the AgentRegistrationInner object itself.
      */
@@ -57,7 +65,7 @@ public final class AgentRegistrationInner {
 
     /**
      * Get the endpoint property: Gets or sets the dsc server endpoint.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -66,7 +74,7 @@ public final class AgentRegistrationInner {
 
     /**
      * Set the endpoint property: Gets or sets the dsc server endpoint.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the AgentRegistrationInner object itself.
      */
@@ -77,7 +85,7 @@ public final class AgentRegistrationInner {
 
     /**
      * Get the keys property: Gets or sets the agent registration keys.
-     *
+     * 
      * @return the keys value.
      */
     public AgentRegistrationKeys keys() {
@@ -86,7 +94,7 @@ public final class AgentRegistrationInner {
 
     /**
      * Set the keys property: Gets or sets the agent registration keys.
-     *
+     * 
      * @param keys the keys value to set.
      * @return the AgentRegistrationInner object itself.
      */
@@ -97,7 +105,7 @@ public final class AgentRegistrationInner {
 
     /**
      * Get the id property: Gets or sets the id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -106,7 +114,7 @@ public final class AgentRegistrationInner {
 
     /**
      * Set the id property: Gets or sets the id.
-     *
+     * 
      * @param id the id value to set.
      * @return the AgentRegistrationInner object itself.
      */
@@ -117,12 +125,57 @@ public final class AgentRegistrationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keys() != null) {
             keys().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dscMetaConfiguration", this.dscMetaConfiguration);
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeJsonField("keys", this.keys);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentRegistrationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentRegistrationInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentRegistrationInner.
+     */
+    public static AgentRegistrationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentRegistrationInner deserializedAgentRegistrationInner = new AgentRegistrationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dscMetaConfiguration".equals(fieldName)) {
+                    deserializedAgentRegistrationInner.dscMetaConfiguration = reader.getString();
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedAgentRegistrationInner.endpoint = reader.getString();
+                } else if ("keys".equals(fieldName)) {
+                    deserializedAgentRegistrationInner.keys = AgentRegistrationKeys.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedAgentRegistrationInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentRegistrationInner;
+        });
     }
 }

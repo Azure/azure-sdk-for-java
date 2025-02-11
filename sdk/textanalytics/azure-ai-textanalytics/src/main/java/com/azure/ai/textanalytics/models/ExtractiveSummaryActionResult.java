@@ -15,8 +15,8 @@ public final class ExtractiveSummaryActionResult extends TextAnalyticsActionResu
     private ExtractiveSummaryResultCollection documentsResults;
 
     static {
-        ExtractiveSummaryActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        ExtractiveSummaryActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**

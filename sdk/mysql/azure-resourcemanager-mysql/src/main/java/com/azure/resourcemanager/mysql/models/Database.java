@@ -55,11 +55,13 @@ public interface Database {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Database definition stages. */
     interface DefinitionStages {
         /** The first stage of the Database definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Database definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -71,6 +73,7 @@ public interface Database {
              */
             WithCreate withExistingServer(String resourceGroupName, String serverName);
         }
+
         /**
          * The stage of the Database definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -91,6 +94,7 @@ public interface Database {
              */
             Database create(Context context);
         }
+
         /** The stage of the Database definition allowing to specify charset. */
         interface WithCharset {
             /**
@@ -101,6 +105,7 @@ public interface Database {
              */
             WithCreate withCharset(String charset);
         }
+
         /** The stage of the Database definition allowing to specify collation. */
         interface WithCollation {
             /**
@@ -112,6 +117,7 @@ public interface Database {
             WithCreate withCollation(String collation);
         }
     }
+
     /**
      * Begins update for the Database resource.
      *
@@ -136,6 +142,7 @@ public interface Database {
          */
         Database apply(Context context);
     }
+
     /** The Database update stages. */
     interface UpdateStages {
         /** The stage of the Database update allowing to specify charset. */
@@ -148,6 +155,7 @@ public interface Database {
              */
             Update withCharset(String charset);
         }
+
         /** The stage of the Database update allowing to specify collation. */
         interface WithCollation {
             /**
@@ -159,6 +167,7 @@ public interface Database {
             Update withCollation(String collation);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

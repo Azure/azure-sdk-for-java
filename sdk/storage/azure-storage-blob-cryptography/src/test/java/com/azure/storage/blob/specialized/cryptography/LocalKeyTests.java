@@ -30,16 +30,16 @@ public class LocalKeyTests extends BlobCryptographyTestBase {
     protected void beforeTest() {
         super.beforeTest();
         /* Insecurely generate a local key*/
-        JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(getRandomByteArray(256), "AES"),
-                Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
-            .setId("local");
-        AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
-            .serviceVersion(CRYPTOGRAPHY_SERVICE_VERSION)
+        JsonWebKey localKey
+            = JsonWebKey
+                .fromAes(new SecretKeySpec(getRandomByteArray(256), "AES"),
+                    Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
+                .setId("local");
+        AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder().serviceVersion(CRYPTOGRAPHY_SERVICE_VERSION)
             .buildAsyncKeyEncryptionKey(localKey)
             .block();
 
-        cc = getServiceClientBuilder(ENV.getPrimaryAccount())
-            .buildClient()
+        cc = getServiceClientBuilder(ENV.getPrimaryAccount()).buildClient()
             .getBlobContainerClient(generateContainerName());
         cc.create();
 

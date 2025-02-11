@@ -13,8 +13,7 @@ public final class TenantBackfillStatusResultImpl implements TenantBackfillStatu
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    TenantBackfillStatusResultImpl(
-        TenantBackfillStatusResultInner innerObject,
+    TenantBackfillStatusResultImpl(TenantBackfillStatusResultInner innerObject,
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

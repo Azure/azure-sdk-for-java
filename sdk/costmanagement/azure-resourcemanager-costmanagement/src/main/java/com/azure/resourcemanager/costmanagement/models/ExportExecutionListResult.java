@@ -7,18 +7,20 @@ package com.azure.resourcemanager.costmanagement.models;
 import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of ExportExecutionListResult. */
+/**
+ * An immutable client-side representation of ExportExecutionListResult.
+ */
 public interface ExportExecutionListResult {
     /**
      * Gets the value property: A list of export runs.
-     *
+     * 
      * @return the value value.
      */
     List<ExportRun> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     ExportExecutionListResultInner innerModel();

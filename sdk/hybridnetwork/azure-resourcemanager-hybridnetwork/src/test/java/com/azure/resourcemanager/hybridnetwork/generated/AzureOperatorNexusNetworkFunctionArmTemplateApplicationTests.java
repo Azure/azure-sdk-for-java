@@ -42,11 +42,14 @@ public final class AzureOperatorNexusNetworkFunctionArmTemplateApplicationTests 
                 .withDependsOnProfile(new DependsOnProfile().withInstallDependsOn(Arrays.asList("cw", "hohsd"))
                     .withUninstallDependsOn(Arrays.asList("dzsufc", "hdxbzlm"))
                     .withUpdateDependsOn(Arrays.asList("apcvhdbe", "wqqxeysko", "qzinkfkbg", "z")))
-                .withArtifactProfile(new AzureOperatorNexusArmTemplateArtifactProfile()
-                    .withArtifactStore(new ReferencedResource().withId("vopvp")).withTemplateArtifactProfile(
-                        new ArmTemplateArtifactProfile().withTemplateName("mdtzfjltfvnzc").withTemplateVersion("t")))
+                .withArtifactProfile(
+                    new AzureOperatorNexusArmTemplateArtifactProfile()
+                        .withArtifactStore(new ReferencedResource().withId("vopvp"))
+                        .withTemplateArtifactProfile(new ArmTemplateArtifactProfile().withTemplateName("mdtzfjltfvnzc")
+                            .withTemplateVersion("t")))
                 .withDeployParametersMappingRuleProfile(new AzureOperatorNexusArmTemplateDeployMappingRuleProfile()
-                    .withApplicationEnablement(ApplicationEnablement.DISABLED).withTemplateMappingRuleProfile(
+                    .withApplicationEnablement(ApplicationEnablement.DISABLED)
+                    .withTemplateMappingRuleProfile(
                         new ArmTemplateMappingRuleProfile().withTemplateParameters("qgqqihedsvqwthmk")));
         model = BinaryData.fromObject(model).toObject(AzureOperatorNexusNetworkFunctionArmTemplateApplication.class);
         Assertions.assertEquals("ysi", model.name());

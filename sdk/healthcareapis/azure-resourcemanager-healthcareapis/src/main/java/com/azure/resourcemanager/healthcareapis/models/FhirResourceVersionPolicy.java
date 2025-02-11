@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class FhirResourceVersionPolicy extends ExpandableStringEnum<FhirRe
      * @param name a name to look for.
      * @return the corresponding FhirResourceVersionPolicy.
      */
-    @JsonCreator
     public static FhirResourceVersionPolicy fromString(String name) {
         return fromString(name, FhirResourceVersionPolicy.class);
     }

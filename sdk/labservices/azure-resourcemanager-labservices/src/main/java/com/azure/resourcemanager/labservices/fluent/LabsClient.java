@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.labservices.fluent.models.LabInner;
 import com.azure.resourcemanager.labservices.models.LabUpdate;
 
-/** An instance of this class provides access to all the operations defined in LabsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LabsClient.
+ */
 public interface LabsClient {
     /**
      * Get all labs for a subscription.
-     *
-     * <p>Returns a list of all labs for a subscription.
-     *
+     * 
+     * Returns a list of all labs for a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged list of labs as paginated response with {@link PagedIterable}.
@@ -30,9 +32,9 @@ public interface LabsClient {
 
     /**
      * Get all labs for a subscription.
-     *
-     * <p>Returns a list of all labs for a subscription.
-     *
+     * 
+     * Returns a list of all labs for a subscription.
+     * 
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,9 +47,9 @@ public interface LabsClient {
 
     /**
      * Get all labs for a subscription and resource group.
-     *
-     * <p>Returns a list of all labs in a resource group.
-     *
+     * 
+     * Returns a list of all labs in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -59,9 +61,9 @@ public interface LabsClient {
 
     /**
      * Get all labs for a subscription and resource group.
-     *
-     * <p>Returns a list of all labs in a resource group.
-     *
+     * 
+     * Returns a list of all labs in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -74,24 +76,9 @@ public interface LabsClient {
 
     /**
      * Get a lab resource.
-     *
-     * <p>Returns the properties of a lab resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lab resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LabInner getByResourceGroup(String resourceGroupName, String labName);
-
-    /**
-     * Get a lab resource.
-     *
-     * <p>Returns the properties of a lab resource.
-     *
+     * 
+     * Returns the properties of a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param context The context to associate with this operation.
@@ -104,10 +91,25 @@ public interface LabsClient {
     Response<LabInner> getByResourceGroupWithResponse(String resourceGroupName, String labName, Context context);
 
     /**
+     * Get a lab resource.
+     * 
+     * Returns the properties of a lab resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the lab resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LabInner getByResourceGroup(String resourceGroupName, String labName);
+
+    /**
      * Create or update a lab resource.
-     *
-     * <p>Operation to create or update a lab resource.
-     *
+     * 
+     * Operation to create or update a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param body The request body.
@@ -117,14 +119,14 @@ public interface LabsClient {
      * @return the {@link SyncPoller} for polling of the lab resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, LabInner body);
+    SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        LabInner body);
 
     /**
      * Create or update a lab resource.
-     *
-     * <p>Operation to create or update a lab resource.
-     *
+     * 
+     * Operation to create or update a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param body The request body.
@@ -135,14 +137,14 @@ public interface LabsClient {
      * @return the {@link SyncPoller} for polling of the lab resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, LabInner body, Context context);
+    SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        LabInner body, Context context);
 
     /**
      * Create or update a lab resource.
-     *
-     * <p>Operation to create or update a lab resource.
-     *
+     * 
+     * Operation to create or update a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param body The request body.
@@ -156,9 +158,9 @@ public interface LabsClient {
 
     /**
      * Create or update a lab resource.
-     *
-     * <p>Operation to create or update a lab resource.
-     *
+     * 
+     * Operation to create or update a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param body The request body.
@@ -173,9 +175,9 @@ public interface LabsClient {
 
     /**
      * Update a lab resource.
-     *
-     * <p>Operation to update a lab resource.
-     *
+     * 
+     * Operation to update a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param body The request body.
@@ -189,9 +191,9 @@ public interface LabsClient {
 
     /**
      * Update a lab resource.
-     *
-     * <p>Operation to update a lab resource.
-     *
+     * 
+     * Operation to update a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param body The request body.
@@ -202,14 +204,14 @@ public interface LabsClient {
      * @return the {@link SyncPoller} for polling of the lab resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LabInner>, LabInner> beginUpdate(
-        String resourceGroupName, String labName, LabUpdate body, Context context);
+    SyncPoller<PollResult<LabInner>, LabInner> beginUpdate(String resourceGroupName, String labName, LabUpdate body,
+        Context context);
 
     /**
      * Update a lab resource.
-     *
-     * <p>Operation to update a lab resource.
-     *
+     * 
+     * Operation to update a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param body The request body.
@@ -223,9 +225,9 @@ public interface LabsClient {
 
     /**
      * Update a lab resource.
-     *
-     * <p>Operation to update a lab resource.
-     *
+     * 
+     * Operation to update a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param body The request body.
@@ -240,9 +242,9 @@ public interface LabsClient {
 
     /**
      * Deletes a lab resource.
-     *
-     * <p>Operation to delete a lab resource.
-     *
+     * 
+     * Operation to delete a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,9 +257,9 @@ public interface LabsClient {
 
     /**
      * Deletes a lab resource.
-     *
-     * <p>Operation to delete a lab resource.
-     *
+     * 
+     * Operation to delete a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param context The context to associate with this operation.
@@ -271,9 +273,9 @@ public interface LabsClient {
 
     /**
      * Deletes a lab resource.
-     *
-     * <p>Operation to delete a lab resource.
-     *
+     * 
+     * Operation to delete a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,9 +287,9 @@ public interface LabsClient {
 
     /**
      * Deletes a lab resource.
-     *
-     * <p>Operation to delete a lab resource.
-     *
+     * 
+     * Operation to delete a lab resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param context The context to associate with this operation.
@@ -300,9 +302,9 @@ public interface LabsClient {
 
     /**
      * Publish or re-publish a lab.
-     *
-     * <p>Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
-     *
+     * 
+     * Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,9 +317,9 @@ public interface LabsClient {
 
     /**
      * Publish or re-publish a lab.
-     *
-     * <p>Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
-     *
+     * 
+     * Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param context The context to associate with this operation.
@@ -331,9 +333,9 @@ public interface LabsClient {
 
     /**
      * Publish or re-publish a lab.
-     *
-     * <p>Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
-     *
+     * 
+     * Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,9 +347,9 @@ public interface LabsClient {
 
     /**
      * Publish or re-publish a lab.
-     *
-     * <p>Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
-     *
+     * 
+     * Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param context The context to associate with this operation.
@@ -360,9 +362,9 @@ public interface LabsClient {
 
     /**
      * Manually sync the lab group.
-     *
-     * <p>Action used to manually kick off an AAD group sync job.
-     *
+     * 
+     * Action used to manually kick off an AAD group sync job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -375,9 +377,9 @@ public interface LabsClient {
 
     /**
      * Manually sync the lab group.
-     *
-     * <p>Action used to manually kick off an AAD group sync job.
-     *
+     * 
+     * Action used to manually kick off an AAD group sync job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param context The context to associate with this operation.
@@ -391,9 +393,9 @@ public interface LabsClient {
 
     /**
      * Manually sync the lab group.
-     *
-     * <p>Action used to manually kick off an AAD group sync job.
-     *
+     * 
+     * Action used to manually kick off an AAD group sync job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -405,9 +407,9 @@ public interface LabsClient {
 
     /**
      * Manually sync the lab group.
-     *
-     * <p>Action used to manually kick off an AAD group sync job.
-     *
+     * 
+     * Action used to manually kick off an AAD group sync job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param context The context to associate with this operation.

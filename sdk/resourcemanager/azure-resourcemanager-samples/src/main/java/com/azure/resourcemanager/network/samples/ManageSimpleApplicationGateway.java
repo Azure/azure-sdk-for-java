@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
@@ -75,38 +75,39 @@ public final class ManageSimpleApplicationGateway {
             long t1 = System.currentTimeMillis();
 
             final String pipName = Utils.randomResourceName(azureResourceManager, "pip" + "-", 18);
-            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses().define(pipName)
+            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses()
+                .define(pipName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withSku(PublicIPSkuType.STANDARD)
                 .withStaticIP()
                 .create();
 
-            ApplicationGateway applicationGateway = azureResourceManager.applicationGateways().define("myFirstAppGateway")
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
+            ApplicationGateway applicationGateway = azureResourceManager.applicationGateways()
+                .define("myFirstAppGateway")
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
 
-                    // Request routing rule for HTTP from public 80 to public 8080
-                    .defineRequestRoutingRule("HTTP-80-to-8080")
-                    .fromPublicFrontend()
-                    .fromFrontendHttpPort(80)
-                    .toBackendHttpPort(8080)
-                    .toBackendIPAddress("11.1.1.1")
-                    .toBackendIPAddress("11.1.1.2")
-                    .toBackendIPAddress("11.1.1.3")
-                    .toBackendIPAddress("11.1.1.4")
-                    .attach()
+                // Request routing rule for HTTP from public 80 to public 8080
+                .defineRequestRoutingRule("HTTP-80-to-8080")
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .toBackendIPAddress("11.1.1.2")
+                .toBackendIPAddress("11.1.1.3")
+                .toBackendIPAddress("11.1.1.4")
+                .attach()
 
-                    .withTier(ApplicationGatewayTier.WAF_V2)
-                    .withSize(ApplicationGatewaySkuName.WAF_V2)
-                    .withExistingPublicIpAddress(publicIPAddress)
-                    .create();
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                .withExistingPublicIpAddress(publicIPAddress)
+                .create();
 
             long t2 = System.currentTimeMillis();
 
             System.out.println("Application gateway created: (took " + (t2 - t1) / 1000 + " seconds)");
             Utils.print(applicationGateway);
-
 
             //=======================================================================
             // Update an application gateway
@@ -118,21 +119,22 @@ public final class ManageSimpleApplicationGateway {
             t1 = System.currentTimeMillis();
 
             applicationGateway.update()
-                    .withoutRequestRoutingRule("HTTP-80-to-8080")
-                    .defineRequestRoutingRule("HTTPs-1443-to-8080")
-                    .fromPublicFrontend()
-                    .fromFrontendHttpsPort(1443)
-                    .withSslCertificateFromPfxFile(new File(ManageSimpleApplicationGateway.class.getClassLoader().getResource("myTest.pfx").getPath()))
-                    .withSslCertificatePassword("Abc123")
-                    .toBackendHttpPort(8080)
-                    .toBackendIPAddress("11.1.1.1")
-                    .toBackendIPAddress("11.1.1.2")
-                    .toBackendIPAddress("11.1.1.3")
-                    .toBackendIPAddress("11.1.1.4")
-                    .withHostname("www.contoso.com")
-                    .withCookieBasedAffinity()
-                    .attach()
-                    .apply();
+                .withoutRequestRoutingRule("HTTP-80-to-8080")
+                .defineRequestRoutingRule("HTTPs-1443-to-8080")
+                .fromPublicFrontend()
+                .fromFrontendHttpsPort(1443)
+                .withSslCertificateFromPfxFile(
+                    new File(ManageSimpleApplicationGateway.class.getClassLoader().getResource("myTest.pfx").getPath()))
+                .withSslCertificatePassword("Abc123")
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .toBackendIPAddress("11.1.1.2")
+                .toBackendIPAddress("11.1.1.3")
+                .toBackendIPAddress("11.1.1.4")
+                .withHostname("www.contoso.com")
+                .withCookieBasedAffinity()
+                .attach()
+                .apply();
 
             t2 = System.currentTimeMillis();
 
@@ -164,13 +166,12 @@ public final class ManageSimpleApplicationGateway {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -189,4 +190,3 @@ public final class ManageSimpleApplicationGateway {
 
     }
 }
-

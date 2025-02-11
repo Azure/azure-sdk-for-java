@@ -6,36 +6,41 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input for the task that validates MySQL database connection. */
+/**
+ * Input for the task that validates MySQL database connection.
+ */
 @Fluent
-public final class ConnectToSourceMySqlTaskInput {
+public final class ConnectToSourceMySqlTaskInput implements JsonSerializable<ConnectToSourceMySqlTaskInput> {
     /*
      * Information for connecting to MySQL source
      */
-    @JsonProperty(value = "sourceConnectionInfo", required = true)
     private MySqlConnectionInfo sourceConnectionInfo;
 
     /*
      * Target Platform for the migration
      */
-    @JsonProperty(value = "targetPlatform")
     private MySqlTargetPlatformType targetPlatform;
 
     /*
      * Permission group for validations
      */
-    @JsonProperty(value = "checkPermissionsGroup")
     private ServerLevelPermissionsGroup checkPermissionsGroup;
 
-    /** Creates an instance of ConnectToSourceMySqlTaskInput class. */
+    /**
+     * Creates an instance of ConnectToSourceMySqlTaskInput class.
+     */
     public ConnectToSourceMySqlTaskInput() {
     }
 
     /**
      * Get the sourceConnectionInfo property: Information for connecting to MySQL source.
-     *
+     * 
      * @return the sourceConnectionInfo value.
      */
     public MySqlConnectionInfo sourceConnectionInfo() {
@@ -44,7 +49,7 @@ public final class ConnectToSourceMySqlTaskInput {
 
     /**
      * Set the sourceConnectionInfo property: Information for connecting to MySQL source.
-     *
+     * 
      * @param sourceConnectionInfo the sourceConnectionInfo value to set.
      * @return the ConnectToSourceMySqlTaskInput object itself.
      */
@@ -55,7 +60,7 @@ public final class ConnectToSourceMySqlTaskInput {
 
     /**
      * Get the targetPlatform property: Target Platform for the migration.
-     *
+     * 
      * @return the targetPlatform value.
      */
     public MySqlTargetPlatformType targetPlatform() {
@@ -64,7 +69,7 @@ public final class ConnectToSourceMySqlTaskInput {
 
     /**
      * Set the targetPlatform property: Target Platform for the migration.
-     *
+     * 
      * @param targetPlatform the targetPlatform value to set.
      * @return the ConnectToSourceMySqlTaskInput object itself.
      */
@@ -75,7 +80,7 @@ public final class ConnectToSourceMySqlTaskInput {
 
     /**
      * Get the checkPermissionsGroup property: Permission group for validations.
-     *
+     * 
      * @return the checkPermissionsGroup value.
      */
     public ServerLevelPermissionsGroup checkPermissionsGroup() {
@@ -84,7 +89,7 @@ public final class ConnectToSourceMySqlTaskInput {
 
     /**
      * Set the checkPermissionsGroup property: Permission group for validations.
-     *
+     * 
      * @param checkPermissionsGroup the checkPermissionsGroup value to set.
      * @return the ConnectToSourceMySqlTaskInput object itself.
      */
@@ -95,19 +100,67 @@ public final class ConnectToSourceMySqlTaskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceConnectionInfo in model ConnectToSourceMySqlTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceConnectionInfo in model ConnectToSourceMySqlTaskInput"));
         } else {
             sourceConnectionInfo().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectToSourceMySqlTaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceConnectionInfo", this.sourceConnectionInfo);
+        jsonWriter.writeStringField("targetPlatform",
+            this.targetPlatform == null ? null : this.targetPlatform.toString());
+        jsonWriter.writeStringField("checkPermissionsGroup",
+            this.checkPermissionsGroup == null ? null : this.checkPermissionsGroup.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToSourceMySqlTaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToSourceMySqlTaskInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectToSourceMySqlTaskInput.
+     */
+    public static ConnectToSourceMySqlTaskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToSourceMySqlTaskInput deserializedConnectToSourceMySqlTaskInput
+                = new ConnectToSourceMySqlTaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceConnectionInfo".equals(fieldName)) {
+                    deserializedConnectToSourceMySqlTaskInput.sourceConnectionInfo
+                        = MySqlConnectionInfo.fromJson(reader);
+                } else if ("targetPlatform".equals(fieldName)) {
+                    deserializedConnectToSourceMySqlTaskInput.targetPlatform
+                        = MySqlTargetPlatformType.fromString(reader.getString());
+                } else if ("checkPermissionsGroup".equals(fieldName)) {
+                    deserializedConnectToSourceMySqlTaskInput.checkPermissionsGroup
+                        = ServerLevelPermissionsGroup.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToSourceMySqlTaskInput;
+        });
+    }
 }

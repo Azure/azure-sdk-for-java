@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.BareMetalMachineInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** BareMetalMachineList represents a list of bare metal machines. */
+/**
+ * BareMetalMachineList represents a list of bare metal machines.
+ */
 @Fluent
-public final class BareMetalMachineList {
+public final class BareMetalMachineList implements JsonSerializable<BareMetalMachineList> {
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of bare metal machines.
      */
-    @JsonProperty(value = "value")
     private List<BareMetalMachineInner> value;
 
-    /** Creates an instance of BareMetalMachineList class. */
+    /**
+     * Creates an instance of BareMetalMachineList class.
+     */
     public BareMetalMachineList() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class BareMetalMachineList {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BareMetalMachineList object itself.
      */
@@ -50,7 +56,7 @@ public final class BareMetalMachineList {
 
     /**
      * Get the value property: The list of bare metal machines.
-     *
+     * 
      * @return the value value.
      */
     public List<BareMetalMachineInner> value() {
@@ -59,7 +65,7 @@ public final class BareMetalMachineList {
 
     /**
      * Set the value property: The list of bare metal machines.
-     *
+     * 
      * @param value the value value to set.
      * @return the BareMetalMachineList object itself.
      */
@@ -70,12 +76,53 @@ public final class BareMetalMachineList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BareMetalMachineList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BareMetalMachineList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BareMetalMachineList.
+     */
+    public static BareMetalMachineList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BareMetalMachineList deserializedBareMetalMachineList = new BareMetalMachineList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedBareMetalMachineList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<BareMetalMachineInner> value
+                        = reader.readArray(reader1 -> BareMetalMachineInner.fromJson(reader1));
+                    deserializedBareMetalMachineList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBareMetalMachineList;
+        });
     }
 }

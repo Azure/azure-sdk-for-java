@@ -9,7 +9,9 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class StorageTargetOperationSuspendSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/StorageTargets_Suspend.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/
+     * StorageTargets_Suspend.json
      */
     /**
      * Sample code: StorageTargets_Suspend.

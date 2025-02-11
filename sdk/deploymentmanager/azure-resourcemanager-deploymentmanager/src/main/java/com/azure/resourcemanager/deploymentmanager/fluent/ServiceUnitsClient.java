@@ -33,10 +33,7 @@ public interface ServiceUnitsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
+        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName,
         ServiceUnitResourceInner serviceUnitInfo);
 
     /**
@@ -58,12 +55,8 @@ public interface ServiceUnitsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        ServiceUnitResourceInner serviceUnitInfo,
-        Context context);
+        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName,
+        ServiceUnitResourceInner serviceUnitInfo, Context context);
 
     /**
      * Creates or updates a service unit under the service in the service topology.
@@ -82,12 +75,8 @@ public interface ServiceUnitsClient {
      * @return represents the response of a service unit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceUnitResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        ServiceUnitResourceInner serviceUnitInfo);
+    ServiceUnitResourceInner createOrUpdate(String resourceGroupName, String serviceTopologyName, String serviceName,
+        String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo);
 
     /**
      * Creates or updates a service unit under the service in the service topology.
@@ -107,13 +96,8 @@ public interface ServiceUnitsClient {
      * @return represents the response of a service unit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceUnitResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        ServiceUnitResourceInner serviceUnitInfo,
-        Context context);
+    ServiceUnitResourceInner createOrUpdate(String resourceGroupName, String serviceTopologyName, String serviceName,
+        String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo, Context context);
 
     /**
      * Gets the service unit.
@@ -129,12 +113,8 @@ public interface ServiceUnitsClient {
      * @return the service unit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceUnitResourceInner> getWithResponse(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        Context context);
+    Response<ServiceUnitResourceInner> getWithResponse(String resourceGroupName, String serviceTopologyName,
+        String serviceName, String serviceUnitName, Context context);
 
     /**
      * Gets the service unit.
@@ -149,8 +129,8 @@ public interface ServiceUnitsClient {
      * @return the service unit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceUnitResourceInner get(
-        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName);
+    ServiceUnitResourceInner get(String resourceGroupName, String serviceTopologyName, String serviceName,
+        String serviceUnitName);
 
     /**
      * Deletes the service unit.
@@ -166,12 +146,8 @@ public interface ServiceUnitsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceTopologyName, String serviceName,
+        String serviceUnitName, Context context);
 
     /**
      * Deletes the service unit.
@@ -200,8 +176,8 @@ public interface ServiceUnitsClient {
      * @return the list of service units along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<ServiceUnitResourceInner>> listWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
+    Response<List<ServiceUnitResourceInner>> listWithResponse(String resourceGroupName, String serviceTopologyName,
+        String serviceName, Context context);
 
     /**
      * Lists the service units under a service in the service topology.

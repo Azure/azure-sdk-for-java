@@ -36,22 +36,28 @@ import com.azure.resourcemanager.datalakeanalytics.models.FirewallRuleListResult
 import com.azure.resourcemanager.datalakeanalytics.models.UpdateFirewallRuleParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FirewallRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FirewallRulesClient.
+ */
 public final class FirewallRulesClientImpl implements FirewallRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FirewallRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataLakeAnalyticsAccountManagementClientImpl client;
 
     /**
      * Initializes an instance of FirewallRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FirewallRulesClientImpl(DataLakeAnalyticsAccountManagementClientImpl client) {
-        this.service =
-            RestProxy.create(FirewallRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FirewallRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,123 +68,87 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataLakeAnalyticsAcc")
     public interface FirewallRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics"
-                + "/accounts/{accountName}/firewallRules")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/firewallRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FirewallRuleListResult>> listByAccount(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FirewallRuleListResult>> listByAccount(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics"
-                + "/accounts/{accountName}/firewallRules/{firewallRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/firewallRules/{firewallRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FirewallRuleInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FirewallRuleInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("firewallRuleName") String firewallRuleName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("firewallRuleName") String firewallRuleName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CreateOrUpdateFirewallRuleParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics"
-                + "/accounts/{accountName}/firewallRules/{firewallRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/firewallRules/{firewallRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FirewallRuleInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FirewallRuleInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("firewallRuleName") String firewallRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("firewallRuleName") String firewallRuleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics"
-                + "/accounts/{accountName}/firewallRules/{firewallRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/firewallRules/{firewallRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FirewallRuleInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FirewallRuleInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("firewallRuleName") String firewallRuleName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("firewallRuleName") String firewallRuleName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") UpdateFirewallRuleParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics"
-                + "/accounts/{accountName}/firewallRules/{firewallRuleName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/firewallRules/{firewallRuleName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("firewallRuleName") String firewallRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("firewallRuleName") String firewallRuleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FirewallRuleListResult>> listByAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists the Data Lake Analytics firewall rules within the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Analytics firewall rule list information along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FirewallRuleInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<FirewallRuleInner>> listByAccountSinglePageAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -189,32 +159,16 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAccount(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<FirewallRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAccount(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<FirewallRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the Data Lake Analytics firewall rules within the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param context The context to associate with this operation.
@@ -222,22 +176,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Analytics firewall rule list information along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FirewallRuleInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<FirewallRuleInner>> listByAccountSinglePageAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -249,28 +199,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAccount(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAccount(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the Data Lake Analytics firewall rules within the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,14 +217,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FirewallRuleInner> listByAccountAsync(String resourceGroupName, String accountName) {
-        return new PagedFlux<>(
-            () -> listByAccountSinglePageAsync(resourceGroupName, accountName),
+        return new PagedFlux<>(() -> listByAccountSinglePageAsync(resourceGroupName, accountName),
             nextLink -> listByAccountNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the Data Lake Analytics firewall rules within the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param context The context to associate with this operation.
@@ -297,16 +233,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return data Lake Analytics firewall rule list information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FirewallRuleInner> listByAccountAsync(
-        String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(
-            () -> listByAccountSinglePageAsync(resourceGroupName, accountName, context),
+    private PagedFlux<FirewallRuleInner> listByAccountAsync(String resourceGroupName, String accountName,
+        Context context) {
+        return new PagedFlux<>(() -> listByAccountSinglePageAsync(resourceGroupName, accountName, context),
             nextLink -> listByAccountNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the Data Lake Analytics firewall rules within the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -321,7 +256,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Lists the Data Lake Analytics firewall rules within the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param context The context to associate with this operation.
@@ -331,15 +266,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return data Lake Analytics firewall rule list information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FirewallRuleInner> listByAccount(
-        String resourceGroupName, String accountName, Context context) {
+    public PagedIterable<FirewallRuleInner> listByAccount(String resourceGroupName, String accountName,
+        Context context) {
         return new PagedIterable<>(listByAccountAsync(resourceGroupName, accountName, context));
     }
 
     /**
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
      * replaced with this new firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to create or update.
@@ -348,25 +283,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Analytics firewall rule information along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FirewallRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        CreateOrUpdateFirewallRuleParameters parameters) {
+    private Mono<Response<FirewallRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String firewallRuleName, CreateOrUpdateFirewallRuleParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -386,26 +314,16 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            firewallRuleName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, firewallRuleName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
      * replaced with this new firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to create or update.
@@ -415,26 +333,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Analytics firewall rule information along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FirewallRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        CreateOrUpdateFirewallRuleParameters parameters,
-        Context context) {
+    private Mono<Response<FirewallRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String firewallRuleName, CreateOrUpdateFirewallRuleParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -454,23 +364,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                firewallRuleName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, firewallRuleName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
      * replaced with this new firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to create or update.
@@ -481,11 +382,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return data Lake Analytics firewall rule information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FirewallRuleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        CreateOrUpdateFirewallRuleParameters parameters) {
+    private Mono<FirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        String firewallRuleName, CreateOrUpdateFirewallRuleParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -493,7 +391,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
      * replaced with this new firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to create or update.
@@ -505,12 +403,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return data Lake Analytics firewall rule information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FirewallRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        CreateOrUpdateFirewallRuleParameters parameters,
-        Context context) {
+    public Response<FirewallRuleInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String firewallRuleName, CreateOrUpdateFirewallRuleParameters parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters, context)
             .block();
     }
@@ -518,7 +412,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
      * replaced with this new firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to create or update.
@@ -529,10 +423,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return data Lake Analytics firewall rule information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FirewallRuleInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
+    public FirewallRuleInner createOrUpdate(String resourceGroupName, String accountName, String firewallRuleName,
         CreateOrUpdateFirewallRuleParameters parameters) {
         return createOrUpdateWithResponse(resourceGroupName, accountName, firewallRuleName, parameters, Context.NONE)
             .getValue();
@@ -540,7 +431,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Gets the specified Data Lake Analytics firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to retrieve.
@@ -548,22 +439,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Data Lake Analytics firewall rule along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FirewallRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String firewallRuleName) {
+    private Mono<Response<FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String firewallRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -578,24 +465,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            firewallRuleName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, firewallRuleName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified Data Lake Analytics firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to retrieve.
@@ -604,22 +481,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Data Lake Analytics firewall rule along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FirewallRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context) {
+    private Mono<Response<FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String firewallRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -634,21 +507,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                firewallRuleName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            firewallRuleName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the specified Data Lake Analytics firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to retrieve.
@@ -665,7 +530,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Gets the specified Data Lake Analytics firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to retrieve.
@@ -676,14 +541,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the specified Data Lake Analytics firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FirewallRuleInner> getWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context) {
+    public Response<FirewallRuleInner> getWithResponse(String resourceGroupName, String accountName,
+        String firewallRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, firewallRuleName, context).block();
     }
 
     /**
      * Gets the specified Data Lake Analytics firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to retrieve.
@@ -699,7 +564,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Updates the specified firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to update.
@@ -708,25 +573,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Analytics firewall rule information along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FirewallRuleInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        UpdateFirewallRuleParameters parameters) {
+    private Mono<Response<FirewallRuleInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String firewallRuleName, UpdateFirewallRuleParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -745,24 +603,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            firewallRuleName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, firewallRuleName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the specified firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to update.
@@ -772,26 +620,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Analytics firewall rule information along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FirewallRuleInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        UpdateFirewallRuleParameters parameters,
-        Context context) {
+    private Mono<Response<FirewallRuleInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String firewallRuleName, UpdateFirewallRuleParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -809,22 +649,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                firewallRuleName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, firewallRuleName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Updates the specified firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to update.
@@ -842,7 +673,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Updates the specified firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to update.
@@ -854,18 +685,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return data Lake Analytics firewall rule information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FirewallRuleInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        UpdateFirewallRuleParameters parameters,
-        Context context) {
+    public Response<FirewallRuleInner> updateWithResponse(String resourceGroupName, String accountName,
+        String firewallRuleName, UpdateFirewallRuleParameters parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters, context).block();
     }
 
     /**
      * Updates the specified firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to update.
@@ -883,7 +710,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to delete.
@@ -893,19 +720,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String firewallRuleName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String firewallRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -920,24 +743,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            firewallRuleName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, firewallRuleName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to delete.
@@ -948,19 +761,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String firewallRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -975,21 +784,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                firewallRuleName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, firewallRuleName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to delete.
@@ -1006,7 +807,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to delete.
@@ -1017,14 +818,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String firewallRuleName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, firewallRuleName, context).block();
     }
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to delete.
@@ -1039,14 +840,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Analytics firewall rule list information along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallRuleInner>> listByAccountNextSinglePageAsync(String nextLink) {
@@ -1054,37 +854,27 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FirewallRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FirewallRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Analytics firewall rule list information along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallRuleInner>> listByAccountNextSinglePageAsync(String nextLink, Context context) {
@@ -1092,23 +882,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

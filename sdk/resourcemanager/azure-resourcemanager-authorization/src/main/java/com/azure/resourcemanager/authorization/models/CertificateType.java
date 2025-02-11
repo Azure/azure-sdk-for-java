@@ -16,6 +16,15 @@ public final class CertificateType extends ExpandableStringEnum<CertificateType>
     public static final CertificateType SYMMETRIC = CertificateType.fromString("Symmetric");
 
     /**
+     * Creates a new instance of CertificateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificateType() {
+    }
+
+    /**
      * Finds or creates a certificate type instance based on the specified name.
      *
      * @param name a name
@@ -25,7 +34,11 @@ public final class CertificateType extends ExpandableStringEnum<CertificateType>
         return fromString(name, CertificateType.class);
     }
 
-    /** @return known certificate types */
+    /**
+     * Gets known certificate types.
+     *
+     * @return known certificate types
+     */
     public static Collection<CertificateType> values() {
         return values(CertificateType.class);
     }

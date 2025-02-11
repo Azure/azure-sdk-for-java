@@ -19,14 +19,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewAccountClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewAccountClient type.
+ */
 @ServiceClient(builder = CollectionsClientBuilder.class, isAsync = true)
 public final class CollectionsAsyncClient {
-    @Generated private final CollectionsImpl serviceClient;
+    @Generated
+    private final CollectionsImpl serviceClient;
 
     /**
      * Initializes an instance of CollectionsAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -36,10 +39,10 @@ public final class CollectionsAsyncClient {
 
     /**
      * Get a collection.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
      *     description: String (Optional)
@@ -58,8 +61,9 @@ public final class CollectionsAsyncClient {
      *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -76,10 +80,10 @@ public final class CollectionsAsyncClient {
 
     /**
      * Creates or updates a collection entity.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
      *     description: String (Optional)
@@ -98,11 +102,13 @@ public final class CollectionsAsyncClient {
      *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
      *     description: String (Optional)
@@ -121,10 +127,11 @@ public final class CollectionsAsyncClient {
      *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param collectionName The collectionName parameter.
-     * @param collection Collection resource.
+     * @param collection The collection parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -134,14 +141,14 @@ public final class CollectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponse(
-            String collectionName, BinaryData collection, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponse(String collectionName, BinaryData collection,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateCollectionWithResponseAsync(collectionName, collection, requestOptions);
     }
 
     /**
      * Deletes a Collection entity.
-     *
+     * 
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -158,20 +165,17 @@ public final class CollectionsAsyncClient {
 
     /**
      * List the collections in the account.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
      *     description: String (Optional)
@@ -190,8 +194,9 @@ public final class CollectionsAsyncClient {
      *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -207,26 +212,24 @@ public final class CollectionsAsyncClient {
 
     /**
      * Lists the child collections names in the collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     friendlyName: String (Optional)
      *     name: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -243,10 +246,10 @@ public final class CollectionsAsyncClient {
 
     /**
      * Gets the parent name and parent friendly name chains that represent the collection path.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     parentFriendlyNameChain (Optional): [
      *         String (Optional)
@@ -255,21 +258,22 @@ public final class CollectionsAsyncClient {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the parent name and parent friendly name chains that represent the collection path along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the parent name and parent friendly name chains that represent the collection path along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionPathWithResponse(
-            String collectionName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCollectionPathWithResponse(String collectionName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCollectionPathWithResponseAsync(collectionName, requestOptions);
     }
 }

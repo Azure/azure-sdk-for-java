@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Artifacts. */
+/**
+ * Resource collection API of Artifacts.
+ */
 public interface Artifacts {
     /**
      * List artifacts in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -25,7 +27,7 @@ public interface Artifacts {
 
     /**
      * List artifacts in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -39,19 +41,12 @@ public interface Artifacts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Artifact> list(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<Artifact> list(String resourceGroupName, String labName, String artifactSourceName, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -63,17 +58,12 @@ public interface Artifacts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return artifact along with {@link Response}.
      */
-    Response<Artifact> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        String expand,
-        Context context);
+    Response<Artifact> getWithResponse(String resourceGroupName, String labName, String artifactSourceName, String name,
+        String expand, Context context);
 
     /**
      * Get artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -88,7 +78,7 @@ public interface Artifacts {
     /**
      * Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates
      * the generated artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -100,18 +90,13 @@ public interface Artifacts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a generated ARM template along with {@link Response}.
      */
-    Response<ArmTemplateInfo> generateArmTemplateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        GenerateArmTemplateRequest generateArmTemplateRequest,
-        Context context);
+    Response<ArmTemplateInfo> generateArmTemplateWithResponse(String resourceGroupName, String labName,
+        String artifactSourceName, String name, GenerateArmTemplateRequest generateArmTemplateRequest, Context context);
 
     /**
      * Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates
      * the generated artifact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -122,10 +107,6 @@ public interface Artifacts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a generated ARM template.
      */
-    ArmTemplateInfo generateArmTemplate(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        GenerateArmTemplateRequest generateArmTemplateRequest);
+    ArmTemplateInfo generateArmTemplate(String resourceGroupName, String labName, String artifactSourceName,
+        String name, GenerateArmTemplateRequest generateArmTemplateRequest);
 }

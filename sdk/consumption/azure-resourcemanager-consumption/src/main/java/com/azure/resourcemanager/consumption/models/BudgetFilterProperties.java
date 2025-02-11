@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Dimensions or Tags to filter a budget by. */
+/**
+ * The Dimensions or Tags to filter a budget by.
+ */
 @Fluent
-public final class BudgetFilterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BudgetFilterProperties.class);
-
+public final class BudgetFilterProperties implements JsonSerializable<BudgetFilterProperties> {
     /*
      * Has comparison expression for a dimension
      */
-    @JsonProperty(value = "dimensions")
     private BudgetComparisonExpression dimensions;
 
     /*
      * Has comparison expression for a tag
      */
-    @JsonProperty(value = "tags")
     private BudgetComparisonExpression tags;
 
     /**
+     * Creates an instance of BudgetFilterProperties class.
+     */
+    public BudgetFilterProperties() {
+    }
+
+    /**
      * Get the dimensions property: Has comparison expression for a dimension.
-     *
+     * 
      * @return the dimensions value.
      */
     public BudgetComparisonExpression dimensions() {
@@ -37,7 +43,7 @@ public final class BudgetFilterProperties {
 
     /**
      * Set the dimensions property: Has comparison expression for a dimension.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the BudgetFilterProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class BudgetFilterProperties {
 
     /**
      * Get the tags property: Has comparison expression for a tag.
-     *
+     * 
      * @return the tags value.
      */
     public BudgetComparisonExpression tags() {
@@ -57,7 +63,7 @@ public final class BudgetFilterProperties {
 
     /**
      * Set the tags property: Has comparison expression for a tag.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the BudgetFilterProperties object itself.
      */
@@ -68,7 +74,7 @@ public final class BudgetFilterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,5 +84,44 @@ public final class BudgetFilterProperties {
         if (tags() != null) {
             tags().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dimensions", this.dimensions);
+        jsonWriter.writeJsonField("tags", this.tags);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BudgetFilterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BudgetFilterProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BudgetFilterProperties.
+     */
+    public static BudgetFilterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BudgetFilterProperties deserializedBudgetFilterProperties = new BudgetFilterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dimensions".equals(fieldName)) {
+                    deserializedBudgetFilterProperties.dimensions = BudgetComparisonExpression.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    deserializedBudgetFilterProperties.tags = BudgetComparisonExpression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBudgetFilterProperties;
+        });
     }
 }

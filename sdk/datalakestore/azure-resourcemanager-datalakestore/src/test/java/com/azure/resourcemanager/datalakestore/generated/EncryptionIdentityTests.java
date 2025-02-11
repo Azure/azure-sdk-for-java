@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakestore.models.EncryptionIdentity;
 public final class EncryptionIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EncryptionIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"f39d7dac-00ea-4ef7-a22d-0e7e6a494bb8\",\"tenantId\":\"43a64341-4107-4fab-9b04-8b9b597c91af\"}")
-                .toObject(EncryptionIdentity.class);
+        EncryptionIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"aa75138b-68e3-493e-b2b0-04431cfea104\",\"tenantId\":\"b7554702-1dea-4e53-8d80-0e2aa0fa802f\"}")
+            .toObject(EncryptionIdentity.class);
     }
 
     @org.junit.jupiter.api.Test

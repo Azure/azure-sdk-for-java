@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The indicator of whether the bare metal machine is ready to receive workloads. */
+/**
+ * The indicator of whether the bare metal machine is ready to receive workloads.
+ */
 public final class BareMetalMachineReadyState extends ExpandableStringEnum<BareMetalMachineReadyState> {
-    /** Static value True for BareMetalMachineReadyState. */
+    /**
+     * Static value True for BareMetalMachineReadyState.
+     */
     public static final BareMetalMachineReadyState TRUE = fromString("True");
 
-    /** Static value False for BareMetalMachineReadyState. */
+    /**
+     * Static value False for BareMetalMachineReadyState.
+     */
     public static final BareMetalMachineReadyState FALSE = fromString("False");
 
     /**
      * Creates a new instance of BareMetalMachineReadyState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class BareMetalMachineReadyState extends ExpandableStringEnum<BareM
 
     /**
      * Creates or finds a BareMetalMachineReadyState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BareMetalMachineReadyState.
      */
-    @JsonCreator
     public static BareMetalMachineReadyState fromString(String name) {
         return fromString(name, BareMetalMachineReadyState.class);
     }
 
     /**
      * Gets known BareMetalMachineReadyState values.
-     *
+     * 
      * @return known BareMetalMachineReadyState values.
      */
     public static Collection<BareMetalMachineReadyState> values() {

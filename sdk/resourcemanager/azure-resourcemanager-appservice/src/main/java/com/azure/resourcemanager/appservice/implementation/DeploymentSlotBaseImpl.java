@@ -35,24 +35,15 @@ import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for DeploymentSlot. */
-abstract class DeploymentSlotBaseImpl<
-        FluentT extends WebAppBase,
-        FluentImplT extends DeploymentSlotBaseImpl<FluentT, FluentImplT, ParentImplT, FluentWithCreateT, FluentUpdateT>,
-        ParentImplT extends AppServiceBaseImpl<?, ?, ?, ?>,
-        FluentWithCreateT,
-        FluentUpdateT>
+abstract class DeploymentSlotBaseImpl<FluentT extends WebAppBase, FluentImplT extends DeploymentSlotBaseImpl<FluentT, FluentImplT, ParentImplT, FluentWithCreateT, FluentUpdateT>, ParentImplT extends AppServiceBaseImpl<?, ?, ?, ?>, FluentWithCreateT, FluentUpdateT>
     extends WebAppBaseImpl<FluentT, FluentImplT>
     implements DeploymentSlotBase<FluentT>, DeploymentSlotBase.Update<FluentT> {
     private final ParentImplT parent;
     private final String name;
     WebAppBase configurationSource;
 
-    DeploymentSlotBaseImpl(
-        String name,
-        SiteInner innerObject,
-        SiteConfigResourceInner siteConfig,
-        SiteLogsConfigInner logConfig,
-        final ParentImplT parent) {
+    DeploymentSlotBaseImpl(String name, SiteInner innerObject, SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig, final ParentImplT parent) {
         super(name.replaceAll(".*/", ""), innerObject, siteConfig, logConfig, parent.manager());
         this.name = name.replaceAll(".*/", "");
         this.parent = parent;
@@ -73,26 +64,17 @@ abstract class DeploymentSlotBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public Mono<Map<String, HostnameBinding>> getHostnameBindingsAsync() {
-        return PagedConverter.mapPage(this
-            .manager()
-            .serviceClient()
-            .getWebApps()
-            .listHostnameBindingsSlotAsync(resourceGroupName(), parent().name(), name()),
-                hostNameBindingInner ->
-                    new HostnameBindingImpl<FluentT, FluentImplT>(
-                        hostNameBindingInner, (FluentImplT) DeploymentSlotBaseImpl.this))
+        return PagedConverter
+            .mapPage(
+                this.manager()
+                    .serviceClient()
+                    .getWebApps()
+                    .listHostnameBindingsSlotAsync(resourceGroupName(), parent().name(), name()),
+                hostNameBindingInner -> new HostnameBindingImpl<FluentT, FluentImplT>(hostNameBindingInner,
+                    (FluentImplT) DeploymentSlotBaseImpl.this))
             .collectList()
-            .map(
-                hostNameBindings ->
-                    Collections
-                        .<String, HostnameBinding>unmodifiableMap(
-                            hostNameBindings
-                                .stream()
-                                .collect(
-                                    Collectors
-                                        .toMap(
-                                            binding -> binding.name().replace(name() + "/", ""),
-                                            Function.identity()))));
+            .map(hostNameBindings -> Collections.<String, HostnameBinding>unmodifiableMap(hostNameBindings.stream()
+                .collect(Collectors.toMap(binding -> binding.name().replace(name() + "/", ""), Function.identity()))));
     }
 
     @Override
@@ -101,11 +83,10 @@ abstract class DeploymentSlotBaseImpl<
     }
 
     public Mono<PublishingProfile> getPublishingProfileAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
-            .listPublishingProfileXmlWithSecretsSlotAsync(
-                resourceGroupName(), this.parent().name(), name(), new CsmPublishingProfileOptions())
+            .listPublishingProfileXmlWithSecretsSlotAsync(resourceGroupName(), this.parent().name(), name(),
+                new CsmPublishingProfileOptions())
             .map(binaryData -> new PublishingProfileImpl(binaryData.toString(), this));
     }
 
@@ -116,8 +97,7 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     public Mono<Void> startAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .startSlotAsync(resourceGroupName(), this.parent().name(), name())
             .then(refreshAsync())
@@ -131,8 +111,7 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     public Mono<Void> stopAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .stopSlotAsync(resourceGroupName(), this.parent().name(), name())
             .then(refreshAsync())
@@ -146,8 +125,7 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     public Mono<Void> restartAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .restartSlotAsync(resourceGroupName(), this.parent().name(), name())
             .then(refreshAsync())
@@ -168,57 +146,41 @@ abstract class DeploymentSlotBaseImpl<
     }
 
     Mono<Indexable> submitAppSettings() {
-        return Mono
-            .justOrEmpty(configurationSource)
-            .flatMap(
-                webAppBase -> {
-                    if (!isInCreateMode()) {
-                        return DeploymentSlotBaseImpl.super.submitAppSettings();
+        return Mono.justOrEmpty(configurationSource).flatMap(webAppBase -> {
+            if (!isInCreateMode()) {
+                return DeploymentSlotBaseImpl.super.submitAppSettings();
+            }
+            return webAppBase.getAppSettingsAsync().flatMap(stringAppSettingMap -> {
+                for (AppSetting appSetting : stringAppSettingMap.values()) {
+                    if (appSetting.sticky()) {
+                        withStickyAppSetting(appSetting.key(), appSetting.value());
+                    } else {
+                        withAppSetting(appSetting.key(), appSetting.value());
                     }
-                    return webAppBase
-                        .getAppSettingsAsync()
-                        .flatMap(
-                            stringAppSettingMap -> {
-                                for (AppSetting appSetting : stringAppSettingMap.values()) {
-                                    if (appSetting.sticky()) {
-                                        withStickyAppSetting(appSetting.key(), appSetting.value());
-                                    } else {
-                                        withAppSetting(appSetting.key(), appSetting.value());
-                                    }
-                                }
-                                return DeploymentSlotBaseImpl.super.submitAppSettings();
-                            });
-                })
-            .switchIfEmpty(DeploymentSlotBaseImpl.super.submitAppSettings());
+                }
+                return DeploymentSlotBaseImpl.super.submitAppSettings();
+            });
+        }).switchIfEmpty(DeploymentSlotBaseImpl.super.submitAppSettings());
     }
 
     Mono<Indexable> submitConnectionStrings() {
-        return Mono
-            .justOrEmpty(configurationSource)
-            .flatMap(
-                webAppBase -> {
-                    if (!isInCreateMode()) {
-                        return DeploymentSlotBaseImpl.super.submitConnectionStrings();
+        return Mono.justOrEmpty(configurationSource).flatMap(webAppBase -> {
+            if (!isInCreateMode()) {
+                return DeploymentSlotBaseImpl.super.submitConnectionStrings();
+            }
+            return webAppBase.getConnectionStringsAsync().flatMap(stringConnectionStringMap -> {
+                for (ConnectionString connectionString : stringConnectionStringMap.values()) {
+                    if (connectionString.sticky()) {
+                        withStickyConnectionString(connectionString.name(), connectionString.value(),
+                            connectionString.type());
+                    } else {
+                        withConnectionString(connectionString.name(), connectionString.value(),
+                            connectionString.type());
                     }
-                    return webAppBase
-                        .getConnectionStringsAsync()
-                        .flatMap(
-                            stringConnectionStringMap -> {
-                                for (ConnectionString connectionString : stringConnectionStringMap.values()) {
-                                    if (connectionString.sticky()) {
-                                        withStickyConnectionString(
-                                            connectionString.name(), connectionString.value(),
-                                            connectionString.type());
-                                    } else {
-                                        withConnectionString(
-                                            connectionString.name(), connectionString.value(),
-                                            connectionString.type());
-                                    }
-                                }
-                                return DeploymentSlotBaseImpl.super.submitConnectionStrings();
-                            });
-                })
-            .switchIfEmpty(DeploymentSlotBaseImpl.super.submitConnectionStrings());
+                }
+                return DeploymentSlotBaseImpl.super.submitConnectionStrings();
+            });
+        }).switchIfEmpty(DeploymentSlotBaseImpl.super.submitConnectionStrings());
     }
 
     public ParentImplT parent() {
@@ -227,16 +189,14 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     Mono<SiteInner> createOrUpdateInner(SiteInner site) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .createOrUpdateSlotAsync(resourceGroupName(), this.parent().name(), name(), site);
     }
 
     @Override
     Mono<SiteInner> updateInner(SitePatchResourceInner siteUpdate) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .updateSlotAsync(resourceGroupName(), this.parent().name(), name(), siteUpdate);
     }
@@ -248,74 +208,70 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     Mono<SiteConfigResourceInner> getConfigInner() {
-        return manager().serviceClient().getWebApps()
+        return manager().serviceClient()
+            .getWebApps()
             .getConfigurationSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
     Mono<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .createOrUpdateConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name(), siteConfig);
     }
 
     @Override
     Mono<Void> deleteHostnameBinding(String hostname) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .deleteHostnameBindingSlotAsync(resourceGroupName(), parent().name(), name(), hostname);
     }
 
     @Override
     Mono<StringDictionaryInner> listAppSettings() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .listApplicationSettingsSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
     Mono<StringDictionaryInner> updateAppSettings(StringDictionaryInner inner) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .updateApplicationSettingsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
     }
 
     @Override
     Mono<ConnectionStringDictionaryInner> listConnectionStrings() {
-        return manager().serviceClient().getWebApps()
+        return manager().serviceClient()
+            .getWebApps()
             .listConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
     Mono<ConnectionStringDictionaryInner> updateConnectionStrings(ConnectionStringDictionaryInner inner) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .updateConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
     }
 
     @Override
     Mono<SlotConfigNamesResourceInner> listSlotConfigurations() {
-        return manager().serviceClient().getWebApps()
+        return manager().serviceClient()
+            .getWebApps()
             .listSlotConfigurationNamesAsync(resourceGroupName(), parent().name());
     }
 
     @Override
     Mono<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .updateSlotConfigurationNamesAsync(resourceGroupName(), parent().name(), inner);
     }
 
     @Override
     Mono<SiteSourceControlInner> createOrUpdateSourceControl(SiteSourceControlInner inner) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .createOrUpdateSourceControlSlotAsync(resourceGroupName(), parent().name(), name(), inner);
     }
@@ -327,11 +283,10 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     public Mono<Void> swapAsync(String slotName) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
-            .swapSlotAsync(
-                resourceGroupName(), this.parent().name(), name(), new CsmSlotEntity().withTargetSlot(slotName))
+            .swapSlotAsync(resourceGroupName(), this.parent().name(), name(),
+                new CsmSlotEntity().withTargetSlot(slotName))
             .then(refreshAsync())
             .then(Mono.empty());
     }
@@ -343,11 +298,10 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     public Mono<Void> applySlotConfigurationsAsync(String slotName) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
-            .applySlotConfigurationSlotAsync(
-                resourceGroupName(), this.parent().name(), name(), new CsmSlotEntity().withTargetSlot(slotName))
+            .applySlotConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name(),
+                new CsmSlotEntity().withTargetSlot(slotName))
             .then(refreshAsync())
             .then(Mono.empty());
     }
@@ -359,8 +313,7 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     public Mono<Void> resetSlotConfigurationsAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .resetSlotConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name())
             .then(refreshAsync())
@@ -369,8 +322,7 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     Mono<Void> deleteSourceControl() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .deleteSourceControlSlotAsync(resourceGroupName(), parent().name(), name())
             .then(refreshAsync())
@@ -379,22 +331,21 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     Mono<SiteAuthSettingsInner> updateAuthentication(SiteAuthSettingsInner inner) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .updateAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
     }
 
     @Override
     Mono<SiteAuthSettingsInner> getAuthentication() {
-        return manager().serviceClient().getWebApps()
+        return manager().serviceClient()
+            .getWebApps()
             .getAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
     Mono<MSDeployStatusInner> createMSDeploy(MSDeploy msDeployInner) {
-        return parent()
-            .manager()
+        return parent().manager()
             .serviceClient()
             .getWebApps()
             .createMSDeployOperationAsync(parent().resourceGroupName(), parent().name(), msDeployInner);
@@ -407,13 +358,11 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     public Mono<WebAppSourceControl> getSourceControlAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .getSourceControlSlotAsync(resourceGroupName(), parent().name(), name())
-            .map(
-                siteSourceControlInner ->
-                    new WebAppSourceControlImpl<>(siteSourceControlInner, DeploymentSlotBaseImpl.this));
+            .map(siteSourceControlInner -> new WebAppSourceControlImpl<>(siteSourceControlInner,
+                DeploymentSlotBaseImpl.this));
     }
 
     @Override
@@ -423,8 +372,7 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     public Mono<byte[]> getContainerLogsAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .getWebSiteContainerLogsSlotAsync(resourceGroupName(), parent().name(), name())
             .map(BinaryData::toBytes);
@@ -437,15 +385,15 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     public Mono<byte[]> getContainerLogsZipAsync() {
-        return manager().serviceClient().getWebApps()
+        return manager().serviceClient()
+            .getWebApps()
             .getContainerLogsZipSlotAsync(resourceGroupName(), parent().name(), name())
             .map(BinaryData::toBytes);
     }
 
     @Override
     Mono<SiteLogsConfigInner> updateDiagnosticLogsConfig(SiteLogsConfigInner siteLogsConfigInner) {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .updateDiagnosticLogsConfigSlotAsync(resourceGroupName(), parent().name(), name(), siteLogsConfigInner);
     }
@@ -458,11 +406,10 @@ abstract class DeploymentSlotBaseImpl<
     @Override
     public Mono<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
         IdentifierInner identifierInner = new IdentifierInner().withValue(domainVerificationToken);
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
-            .createOrUpdateDomainOwnershipIdentifierSlotAsync(
-                resourceGroupName(), parent().name(), name(), certificateOrderName, identifierInner)
+            .createOrUpdateDomainOwnershipIdentifierSlotAsync(resourceGroupName(), parent().name(), name(),
+                certificateOrderName, identifierInner)
             .then(Mono.empty());
     }
 

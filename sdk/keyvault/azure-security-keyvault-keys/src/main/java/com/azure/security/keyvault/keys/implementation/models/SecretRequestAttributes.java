@@ -155,7 +155,7 @@ public final class SecretRequestAttributes implements JsonSerializable<SecretReq
         if (this.created == null) {
             return null;
         }
-        return  OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.created * 1000L), ZoneOffset.UTC);
+        return OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.created * 1000L), ZoneOffset.UTC);
     }
 
     /**
@@ -167,7 +167,7 @@ public final class SecretRequestAttributes implements JsonSerializable<SecretReq
         if (this.updated == null) {
             return null;
         }
-        return  OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.updated * 1000L), ZoneOffset.UTC);
+        return OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.updated * 1000L), ZoneOffset.UTC);
     }
 
     @Override

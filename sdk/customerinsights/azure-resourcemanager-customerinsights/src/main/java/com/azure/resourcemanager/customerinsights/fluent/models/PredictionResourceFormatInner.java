@@ -6,30 +6,51 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.PredictionGradesItem;
 import com.azure.resourcemanager.customerinsights.models.PredictionMappings;
 import com.azure.resourcemanager.customerinsights.models.PredictionSystemGeneratedEntities;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The prediction resource format. */
+/**
+ * The prediction resource format.
+ */
 @Fluent
 public final class PredictionResourceFormatInner extends ProxyResource {
     /*
      * The prediction definition.
      */
-    @JsonProperty(value = "properties")
     private Prediction innerProperties;
 
-    /** Creates an instance of PredictionResourceFormatInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PredictionResourceFormatInner class.
+     */
     public PredictionResourceFormatInner() {
     }
 
     /**
      * Get the innerProperties property: The prediction definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private Prediction innerProperties() {
@@ -37,8 +58,38 @@ public final class PredictionResourceFormatInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the description property: Description of the prediction.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -47,7 +98,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the description property: Description of the prediction.
-     *
+     * 
      * @param description the description value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -61,7 +112,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the displayName property: Display name of the prediction.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -70,7 +121,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the displayName property: Display name of the prediction.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -84,7 +135,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the involvedInteractionTypes property: Interaction types involved in the prediction.
-     *
+     * 
      * @return the involvedInteractionTypes value.
      */
     public List<String> involvedInteractionTypes() {
@@ -93,7 +144,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the involvedInteractionTypes property: Interaction types involved in the prediction.
-     *
+     * 
      * @param involvedInteractionTypes the involvedInteractionTypes value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -107,7 +158,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the involvedKpiTypes property: KPI types involved in the prediction.
-     *
+     * 
      * @return the involvedKpiTypes value.
      */
     public List<String> involvedKpiTypes() {
@@ -116,7 +167,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the involvedKpiTypes property: KPI types involved in the prediction.
-     *
+     * 
      * @param involvedKpiTypes the involvedKpiTypes value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -130,7 +181,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the involvedRelationships property: Relationships involved in the prediction.
-     *
+     * 
      * @return the involvedRelationships value.
      */
     public List<String> involvedRelationships() {
@@ -139,7 +190,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the involvedRelationships property: Relationships involved in the prediction.
-     *
+     * 
      * @param involvedRelationships the involvedRelationships value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -153,7 +204,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the negativeOutcomeExpression property: Negative outcome expression.
-     *
+     * 
      * @return the negativeOutcomeExpression value.
      */
     public String negativeOutcomeExpression() {
@@ -162,7 +213,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the negativeOutcomeExpression property: Negative outcome expression.
-     *
+     * 
      * @param negativeOutcomeExpression the negativeOutcomeExpression value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -176,7 +227,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the positiveOutcomeExpression property: Positive outcome expression.
-     *
+     * 
      * @return the positiveOutcomeExpression value.
      */
     public String positiveOutcomeExpression() {
@@ -185,7 +236,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the positiveOutcomeExpression property: Positive outcome expression.
-     *
+     * 
      * @param positiveOutcomeExpression the positiveOutcomeExpression value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -199,7 +250,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the primaryProfileType property: Primary profile type.
-     *
+     * 
      * @return the primaryProfileType value.
      */
     public String primaryProfileType() {
@@ -208,7 +259,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the primaryProfileType property: Primary profile type.
-     *
+     * 
      * @param primaryProfileType the primaryProfileType value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -222,7 +273,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -231,7 +282,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the predictionName property: Name of the prediction.
-     *
+     * 
      * @return the predictionName value.
      */
     public String predictionName() {
@@ -240,7 +291,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the predictionName property: Name of the prediction.
-     *
+     * 
      * @param predictionName the predictionName value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -254,7 +305,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the scopeExpression property: Scope expression.
-     *
+     * 
      * @return the scopeExpression value.
      */
     public String scopeExpression() {
@@ -263,7 +314,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the scopeExpression property: Scope expression.
-     *
+     * 
      * @param scopeExpression the scopeExpression value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -277,7 +328,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -286,7 +337,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the autoAnalyze property: Whether do auto analyze.
-     *
+     * 
      * @return the autoAnalyze value.
      */
     public Boolean autoAnalyze() {
@@ -295,7 +346,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the autoAnalyze property: Whether do auto analyze.
-     *
+     * 
      * @param autoAnalyze the autoAnalyze value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -309,7 +360,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the mappings property: Definition of the link mapping of prediction.
-     *
+     * 
      * @return the mappings value.
      */
     public PredictionMappings mappings() {
@@ -318,7 +369,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the mappings property: Definition of the link mapping of prediction.
-     *
+     * 
      * @param mappings the mappings value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -332,7 +383,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the scoreLabel property: Score label.
-     *
+     * 
      * @return the scoreLabel value.
      */
     public String scoreLabel() {
@@ -341,7 +392,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the scoreLabel property: Score label.
-     *
+     * 
      * @param scoreLabel the scoreLabel value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -355,7 +406,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the grades property: The prediction grades.
-     *
+     * 
      * @return the grades value.
      */
     public List<PredictionGradesItem> grades() {
@@ -364,7 +415,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Set the grades property: The prediction grades.
-     *
+     * 
      * @param grades the grades value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
@@ -378,7 +429,7 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Get the systemGeneratedEntities property: System generated entities.
-     *
+     * 
      * @return the systemGeneratedEntities value.
      */
     public PredictionSystemGeneratedEntities systemGeneratedEntities() {
@@ -387,12 +438,56 @@ public final class PredictionResourceFormatInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredictionResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredictionResourceFormatInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PredictionResourceFormatInner.
+     */
+    public static PredictionResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredictionResourceFormatInner deserializedPredictionResourceFormatInner
+                = new PredictionResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPredictionResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPredictionResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPredictionResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPredictionResourceFormatInner.innerProperties = Prediction.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredictionResourceFormatInner;
+        });
     }
 }

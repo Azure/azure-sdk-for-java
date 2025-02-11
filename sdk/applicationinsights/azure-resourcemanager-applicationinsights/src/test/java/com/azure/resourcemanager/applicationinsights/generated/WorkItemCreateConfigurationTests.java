@@ -13,30 +13,27 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkItemCreateConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkItemCreateConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"ConnectorId\":\"wzrlovmclwhij\",\"ConnectorDataConfiguration\":\"ejctbzaqsqsycb\",\"ValidateOnly\":true,\"WorkItemProperties\":{\"c\":\"ukdkexxppofmxa\",\"toc\":\"jpgd\",\"hvpmoue\":\"j\"}}")
-                .toObject(WorkItemCreateConfiguration.class);
-        Assertions.assertEquals("wzrlovmclwhij", model.connectorId());
-        Assertions.assertEquals("ejctbzaqsqsycb", model.connectorDataConfiguration());
-        Assertions.assertEquals(true, model.validateOnly());
-        Assertions.assertEquals("ukdkexxppofmxa", model.workItemProperties().get("c"));
+        WorkItemCreateConfiguration model = BinaryData.fromString(
+            "{\"ConnectorId\":\"njampm\",\"ConnectorDataConfiguration\":\"nzscxa\",\"ValidateOnly\":false,\"WorkItemProperties\":{\"njeaseipheofloke\":\"hcbonqvpkvlr\",\"enjbdlwtgrhp\":\"y\",\"umasxazjpq\":\"jp\",\"ualhbxxhejj\":\"e\"}}")
+            .toObject(WorkItemCreateConfiguration.class);
+        Assertions.assertEquals("njampm", model.connectorId());
+        Assertions.assertEquals("nzscxa", model.connectorDataConfiguration());
+        Assertions.assertEquals(false, model.validateOnly());
+        Assertions.assertEquals("hcbonqvpkvlr", model.workItemProperties().get("njeaseipheofloke"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkItemCreateConfiguration model =
-            new WorkItemCreateConfiguration()
-                .withConnectorId("wzrlovmclwhij")
-                .withConnectorDataConfiguration("ejctbzaqsqsycb")
-                .withValidateOnly(true)
-                .withWorkItemProperties(mapOf("c", "ukdkexxppofmxa", "toc", "jpgd", "hvpmoue", "j"));
+        WorkItemCreateConfiguration model = new WorkItemCreateConfiguration().withConnectorId("njampm")
+            .withConnectorDataConfiguration("nzscxa")
+            .withValidateOnly(false)
+            .withWorkItemProperties(
+                mapOf("njeaseipheofloke", "hcbonqvpkvlr", "enjbdlwtgrhp", "y", "umasxazjpq", "jp", "ualhbxxhejj", "e"));
         model = BinaryData.fromObject(model).toObject(WorkItemCreateConfiguration.class);
-        Assertions.assertEquals("wzrlovmclwhij", model.connectorId());
-        Assertions.assertEquals("ejctbzaqsqsycb", model.connectorDataConfiguration());
-        Assertions.assertEquals(true, model.validateOnly());
-        Assertions.assertEquals("ukdkexxppofmxa", model.workItemProperties().get("c"));
+        Assertions.assertEquals("njampm", model.connectorId());
+        Assertions.assertEquals("nzscxa", model.connectorDataConfiguration());
+        Assertions.assertEquals(false, model.validateOnly());
+        Assertions.assertEquals("hcbonqvpkvlr", model.workItemProperties().get("njeaseipheofloke"));
     }
 
     // Use "Map.of" if available

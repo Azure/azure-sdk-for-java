@@ -10,9 +10,8 @@ import com.azure.resourcemanager.peering.fluent.models.PeeringServiceCountryInne
 public final class PeeringServiceCountryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceCountryInner model =
-            BinaryData
-                .fromString("{\"id\":\"lhrxsbkyvpyc\",\"name\":\"n\",\"type\":\"z\"}")
+        PeeringServiceCountryInner model
+            = BinaryData.fromString("{\"id\":\"sjyofdx\",\"name\":\"uusdttouwa\",\"type\":\"oekqvk\"}")
                 .toObject(PeeringServiceCountryInner.class);
     }
 

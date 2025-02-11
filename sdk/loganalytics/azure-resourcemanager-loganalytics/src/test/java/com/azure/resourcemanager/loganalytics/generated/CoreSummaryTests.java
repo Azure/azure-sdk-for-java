@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class CoreSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CoreSummary model =
-            BinaryData
-                .fromString("{\"status\":\"lkrm\",\"numberOfDocuments\":7402715102127154231}")
+        CoreSummary model
+            = BinaryData.fromString("{\"status\":\"elpcirelsfeaenwa\",\"numberOfDocuments\":6225068900260031070}")
                 .toObject(CoreSummary.class);
-        Assertions.assertEquals("lkrm", model.status());
-        Assertions.assertEquals(7402715102127154231L, model.numberOfDocuments());
+        Assertions.assertEquals("elpcirelsfeaenwa", model.status());
+        Assertions.assertEquals(6225068900260031070L, model.numberOfDocuments());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CoreSummary model = new CoreSummary().withStatus("lkrm").withNumberOfDocuments(7402715102127154231L);
+        CoreSummary model
+            = new CoreSummary().withStatus("elpcirelsfeaenwa").withNumberOfDocuments(6225068900260031070L);
         model = BinaryData.fromObject(model).toObject(CoreSummary.class);
-        Assertions.assertEquals("lkrm", model.status());
-        Assertions.assertEquals(7402715102127154231L, model.numberOfDocuments());
+        Assertions.assertEquals("elpcirelsfeaenwa", model.status());
+        Assertions.assertEquals(6225068900260031070L, model.numberOfDocuments());
     }
 }

@@ -5,28 +5,41 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * NetworkFunction with no secrets.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "configurationType")
-@JsonTypeName("Open")
 @Fluent
 public final class NetworkFunctionValueWithoutSecrets extends NetworkFunctionPropertiesFormat {
     /*
+     * The value which indicates if NF values are secrets
+     */
+    private NetworkFunctionConfigurationType configurationType = NetworkFunctionConfigurationType.OPEN;
+
+    /*
      * The JSON-serialized deployment values from the user.
      */
-    @JsonProperty(value = "deploymentValues")
     private String deploymentValues;
 
     /**
      * Creates an instance of NetworkFunctionValueWithoutSecrets class.
      */
     public NetworkFunctionValueWithoutSecrets() {
+    }
+
+    /**
+     * Get the configurationType property: The value which indicates if NF values are secrets.
+     * 
+     * @return the configurationType value.
+     */
+    @Override
+    public NetworkFunctionConfigurationType configurationType() {
+        return this.configurationType;
     }
 
     /**
@@ -102,6 +115,89 @@ public final class NetworkFunctionValueWithoutSecrets extends NetworkFunctionPro
      */
     @Override
     public void validate() {
-        super.validate();
+        if (networkFunctionDefinitionVersionResourceReference() != null) {
+            networkFunctionDefinitionVersionResourceReference().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("networkFunctionDefinitionVersionResourceReference",
+            networkFunctionDefinitionVersionResourceReference());
+        jsonWriter.writeStringField("nfviType", nfviType() == null ? null : nfviType().toString());
+        jsonWriter.writeStringField("nfviId", nfviId());
+        jsonWriter.writeBooleanField("allowSoftwareUpdate", allowSoftwareUpdate());
+        jsonWriter.writeArrayField("roleOverrideValues", roleOverrideValues(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("configurationType",
+            this.configurationType == null ? null : this.configurationType.toString());
+        jsonWriter.writeStringField("deploymentValues", this.deploymentValues);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkFunctionValueWithoutSecrets from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkFunctionValueWithoutSecrets if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkFunctionValueWithoutSecrets.
+     */
+    public static NetworkFunctionValueWithoutSecrets fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkFunctionValueWithoutSecrets deserializedNetworkFunctionValueWithoutSecrets
+                = new NetworkFunctionValueWithoutSecrets();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("publisherName".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets.withPublisherName(reader.getString());
+                } else if ("publisherScope".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets
+                        .withPublisherScope(PublisherScope.fromString(reader.getString()));
+                } else if ("networkFunctionDefinitionGroupName".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets
+                        .withNetworkFunctionDefinitionGroupName(reader.getString());
+                } else if ("networkFunctionDefinitionVersion".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets
+                        .withNetworkFunctionDefinitionVersion(reader.getString());
+                } else if ("networkFunctionDefinitionOfferingLocation".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets
+                        .withNetworkFunctionDefinitionOfferingLocation(reader.getString());
+                } else if ("networkFunctionDefinitionVersionResourceReference".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets
+                        .withNetworkFunctionDefinitionVersionResourceReference(
+                            DeploymentResourceIdReference.fromJson(reader));
+                } else if ("nfviType".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets
+                        .withNfviType(NfviType.fromString(reader.getString()));
+                } else if ("nfviId".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets.withNfviId(reader.getString());
+                } else if ("allowSoftwareUpdate".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets
+                        .withAllowSoftwareUpdate(reader.getNullable(JsonReader::getBoolean));
+                } else if ("roleOverrideValues".equals(fieldName)) {
+                    List<String> roleOverrideValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkFunctionValueWithoutSecrets.withRoleOverrideValues(roleOverrideValues);
+                } else if ("configurationType".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets.configurationType
+                        = NetworkFunctionConfigurationType.fromString(reader.getString());
+                } else if ("deploymentValues".equals(fieldName)) {
+                    deserializedNetworkFunctionValueWithoutSecrets.deploymentValues = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkFunctionValueWithoutSecrets;
+        });
     }
 }

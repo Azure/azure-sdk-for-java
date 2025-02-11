@@ -7,74 +7,76 @@ package com.azure.resourcemanager.edgeorder.models;
 import com.azure.resourcemanager.edgeorder.fluent.models.ProductFamiliesMetadataDetailsInner;
 import java.util.List;
 
-/** An immutable client-side representation of ProductFamiliesMetadataDetails. */
+/**
+ * An immutable client-side representation of ProductFamiliesMetadataDetails.
+ */
 public interface ProductFamiliesMetadataDetails {
     /**
      * Gets the productLines property: List of product lines supported in the product family.
-     *
+     * 
      * @return the productLines value.
      */
     List<ProductLine> productLines();
 
     /**
      * Gets the resourceProviderDetails property: Contains details related to resource provider.
-     *
+     * 
      * @return the resourceProviderDetails value.
      */
     List<ResourceProviderDetails> resourceProviderDetails();
 
     /**
      * Gets the filterableProperties property: list of filters supported for a product.
-     *
+     * 
      * @return the filterableProperties value.
      */
     List<FilterableProperty> filterableProperties();
 
     /**
      * Gets the displayName property: Display Name for the product system.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the description property: Description related to the product system.
-     *
+     * 
      * @return the description value.
      */
     Description description();
 
     /**
      * Gets the imageInformation property: Image information for the product system.
-     *
+     * 
      * @return the imageInformation value.
      */
     List<ImageInformation> imageInformation();
 
     /**
      * Gets the costInformation property: Cost information for the product system.
-     *
+     * 
      * @return the costInformation value.
      */
     CostInformation costInformation();
 
     /**
      * Gets the availabilityInformation property: Availability information of the product system.
-     *
+     * 
      * @return the availabilityInformation value.
      */
     AvailabilityInformation availabilityInformation();
 
     /**
      * Gets the hierarchyInformation property: Hierarchy information of a product.
-     *
+     * 
      * @return the hierarchyInformation value.
      */
     HierarchyInformation hierarchyInformation();
 
     /**
      * Gets the inner com.azure.resourcemanager.edgeorder.fluent.models.ProductFamiliesMetadataDetailsInner object.
-     *
+     * 
      * @return the inner object.
      */
     ProductFamiliesMetadataDetailsInner innerModel();

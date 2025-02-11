@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -35,7 +36,7 @@ public final class AtlasLineageInfo implements JsonSerializable<AtlasLineageInfo
      * The entity count in specific direction.
      */
     @Generated
-    private Map<String, Map<String, Object>> widthCounts;
+    private Map<String, Map<String, BinaryData>> widthCounts;
 
     /*
      * The depth of lineage.
@@ -106,7 +107,7 @@ public final class AtlasLineageInfo implements JsonSerializable<AtlasLineageInfo
      * @return the widthCounts value.
      */
     @Generated
-    public Map<String, Map<String, Object>> getWidthCounts() {
+    public Map<String, Map<String, BinaryData>> getWidthCounts() {
         return this.widthCounts;
     }
 
@@ -179,8 +180,8 @@ public final class AtlasLineageInfo implements JsonSerializable<AtlasLineageInfo
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("baseEntityGuid", this.baseEntityGuid);
         jsonWriter.writeMapField("guidEntityMap", this.guidEntityMap, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("widthCounts", this.widthCounts,
-            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+        jsonWriter.writeMapField("widthCounts", this.widthCounts, (writer, element) -> writer.writeMap(element,
+            (writer1, element1) -> writer1.writeUntyped(element1 == null ? null : element1.toObject(Object.class))));
         jsonWriter.writeNumberField("lineageDepth", this.lineageDepth);
         jsonWriter.writeNumberField("lineageWidth", this.lineageWidth);
         jsonWriter.writeNumberField("childrenCount", this.childrenCount);
@@ -215,8 +216,9 @@ public final class AtlasLineageInfo implements JsonSerializable<AtlasLineageInfo
                         = reader.readMap(reader1 -> AtlasEntityHeader.fromJson(reader1));
                     deserializedAtlasLineageInfo.guidEntityMap = guidEntityMap;
                 } else if ("widthCounts".equals(fieldName)) {
-                    Map<String, Map<String, Object>> widthCounts
-                        = reader.readMap(reader1 -> reader1.readMap(reader2 -> reader2.readUntyped()));
+                    Map<String, Map<String, BinaryData>> widthCounts
+                        = reader.readMap(reader1 -> reader1.readMap(reader2 -> reader2
+                            .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()))));
                     deserializedAtlasLineageInfo.widthCounts = widthCounts;
                 } else if ("lineageDepth".equals(fieldName)) {
                     deserializedAtlasLineageInfo.lineageDepth = reader.getNullable(JsonReader::getInt);

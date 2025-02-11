@@ -8,18 +8,20 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateLinkResources. */
+/**
+ * Resource collection API of PrivateLinkResources.
+ */
 public interface PrivateLinkResources {
     /**
      * List private link resources
-     *
-     * <p>List private link resources for a given workspace.
-     *
+     * 
+     * List private link resources for a given workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for a workspace as paginated response with {@link PagedIterable}.
      */
@@ -27,15 +29,15 @@ public interface PrivateLinkResources {
 
     /**
      * List private link resources
-     *
-     * <p>List private link resources for a given workspace.
-     *
+     * 
+     * List private link resources for a given workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for a workspace as paginated response with {@link PagedIterable}.
      */
@@ -43,33 +45,33 @@ public interface PrivateLinkResources {
 
     /**
      * Get the specified private link resource
-     *
-     * <p>Get the specified private link resource for the given group id (sub-resource).
-     *
+     * 
+     * Get the specified private link resource for the given group id (sub-resource).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param groupId The name of the private link resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given group id (sub-resource) along with {@link Response}.
      */
-    Response<GroupIdInformation> getWithResponse(
-        String resourceGroupName, String workspaceName, String groupId, Context context);
+    Response<GroupIdInformation> getWithResponse(String resourceGroupName, String workspaceName, String groupId,
+        Context context);
 
     /**
      * Get the specified private link resource
-     *
-     * <p>Get the specified private link resource for the given group id (sub-resource).
-     *
+     * 
+     * Get the specified private link resource for the given group id (sub-resource).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param groupId The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given group id (sub-resource).
      */

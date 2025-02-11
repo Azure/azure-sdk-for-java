@@ -13,28 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedStorageAccountsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedStorageAccountsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"dataSourceType\":\"AzureWatson\",\"storageAccountIds\":[\"vce\",\"vei\",\"ovnotyfjfcnjbkcn\",\"dhbt\"]},\"id\":\"kphywpnvjto\",\"name\":\"nermcl\",\"type\":\"plpho\"},{\"properties\":{\"dataSourceType\":\"AzureWatson\",\"storageAccountIds\":[\"pabgyeps\",\"jta\"]},\"id\":\"qugxywpmueefjzwf\",\"name\":\"kqujidsuyono\",\"type\":\"glaocq\"},{\"properties\":{\"dataSourceType\":\"AzureWatson\",\"storageAccountIds\":[\"g\",\"udxytlmoyrx\",\"wfudwpzntxhdzhl\",\"qj\"]},\"id\":\"hckfrlhrx\",\"name\":\"bkyvp\",\"type\":\"ca\"},{\"properties\":{\"dataSourceType\":\"CustomLogs\",\"storageAccountIds\":[\"zka\"]},\"id\":\"kuwbcrnwb\",\"name\":\"ehhseyvjusrts\",\"type\":\"hspkdeemao\"}]}")
-                .toObject(LinkedStorageAccountsListResult.class);
+        LinkedStorageAccountsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"dataSourceType\":\"AzureWatson\",\"storageAccountIds\":[\"vce\",\"vei\",\"ovnotyfjfcnjbkcn\",\"dhbt\"]},\"id\":\"kphywpnvjto\",\"name\":\"nermcl\",\"type\":\"plpho\"},{\"properties\":{\"dataSourceType\":\"AzureWatson\",\"storageAccountIds\":[\"pabgyeps\",\"jta\"]},\"id\":\"qugxywpmueefjzwf\",\"name\":\"kqujidsuyono\",\"type\":\"glaocq\"},{\"properties\":{\"dataSourceType\":\"AzureWatson\",\"storageAccountIds\":[\"g\",\"udxytlmoyrx\",\"wfudwpzntxhdzhl\",\"qj\"]},\"id\":\"hckfrlhrx\",\"name\":\"bkyvp\",\"type\":\"ca\"},{\"properties\":{\"dataSourceType\":\"CustomLogs\",\"storageAccountIds\":[\"zka\"]},\"id\":\"kuwbcrnwb\",\"name\":\"ehhseyvjusrts\",\"type\":\"hspkdeemao\"}]}")
+            .toObject(LinkedStorageAccountsListResult.class);
         Assertions.assertEquals("vce", model.value().get(0).storageAccountIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedStorageAccountsListResult model =
-            new LinkedStorageAccountsListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LinkedStorageAccountsResourceInner()
-                                .withStorageAccountIds(Arrays.asList("vce", "vei", "ovnotyfjfcnjbkcn", "dhbt")),
-                            new LinkedStorageAccountsResourceInner()
-                                .withStorageAccountIds(Arrays.asList("pabgyeps", "jta")),
-                            new LinkedStorageAccountsResourceInner()
-                                .withStorageAccountIds(Arrays.asList("g", "udxytlmoyrx", "wfudwpzntxhdzhl", "qj")),
-                            new LinkedStorageAccountsResourceInner().withStorageAccountIds(Arrays.asList("zka"))));
+        LinkedStorageAccountsListResult model = new LinkedStorageAccountsListResult().withValue(Arrays.asList(
+            new LinkedStorageAccountsResourceInner()
+                .withStorageAccountIds(Arrays.asList("vce", "vei", "ovnotyfjfcnjbkcn", "dhbt")),
+            new LinkedStorageAccountsResourceInner().withStorageAccountIds(Arrays.asList("pabgyeps", "jta")),
+            new LinkedStorageAccountsResourceInner()
+                .withStorageAccountIds(Arrays.asList("g", "udxytlmoyrx", "wfudwpzntxhdzhl", "qj")),
+            new LinkedStorageAccountsResourceInner().withStorageAccountIds(Arrays.asList("zka"))));
         model = BinaryData.fromObject(model).toObject(LinkedStorageAccountsListResult.class);
         Assertions.assertEquals("vce", model.value().get(0).storageAccountIds().get(0));
     }

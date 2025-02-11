@@ -5,15 +5,26 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ResourceProviderManifestFeaturesRule model. */
+/**
+ * The ResourceProviderManifestFeaturesRule model.
+ */
 @Fluent
 public final class ResourceProviderManifestFeaturesRule extends FeaturesRule {
-    /** Creates an instance of ResourceProviderManifestFeaturesRule class. */
+    /**
+     * Creates an instance of ResourceProviderManifestFeaturesRule class.
+     */
     public ResourceProviderManifestFeaturesRule() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceProviderManifestFeaturesRule withRequiredFeaturesPolicy(FeaturesPolicy requiredFeaturesPolicy) {
         super.withRequiredFeaturesPolicy(requiredFeaturesPolicy);
@@ -22,11 +33,57 @@ public final class ResourceProviderManifestFeaturesRule extends FeaturesRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (requiredFeaturesPolicy() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property requiredFeaturesPolicy in model ResourceProviderManifestFeaturesRule"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProviderManifestFeaturesRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("requiredFeaturesPolicy",
+            requiredFeaturesPolicy() == null ? null : requiredFeaturesPolicy().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderManifestFeaturesRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderManifestFeaturesRule if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceProviderManifestFeaturesRule.
+     */
+    public static ResourceProviderManifestFeaturesRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderManifestFeaturesRule deserializedResourceProviderManifestFeaturesRule
+                = new ResourceProviderManifestFeaturesRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requiredFeaturesPolicy".equals(fieldName)) {
+                    deserializedResourceProviderManifestFeaturesRule
+                        .withRequiredFeaturesPolicy(FeaturesPolicy.fromString(reader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderManifestFeaturesRule;
+        });
     }
 }

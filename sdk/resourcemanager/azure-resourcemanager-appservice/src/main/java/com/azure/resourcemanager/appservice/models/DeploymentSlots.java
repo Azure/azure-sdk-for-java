@@ -16,13 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for Azure web app deployment slot management API. */
 @Fluent
-public interface DeploymentSlots
-    extends SupportsCreating<DeploymentSlot.DefinitionStages.Blank>,
-        SupportsListing<WebDeploymentSlotBasic>,
-        SupportsGettingByName<DeploymentSlot>,
-        SupportsGettingById<DeploymentSlot>,
-        SupportsDeletingById,
-        SupportsDeletingByName,
-        HasManager<AppServiceManager>,
-        HasParent<WebApp> {
+public interface DeploymentSlots extends SupportsCreating<DeploymentSlot.DefinitionStages.Blank>,
+    SupportsListing<WebDeploymentSlotBasic>, SupportsGettingByName<DeploymentSlot>, SupportsGettingById<DeploymentSlot>,
+    SupportsDeletingById, SupportsDeletingByName, HasManager<AppServiceManager>, HasParent<WebApp> {
 }

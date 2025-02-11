@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** OData page of project resources. */
+/**
+ * OData page of project resources.
+ */
 @Fluent
-public final class ProjectList {
+public final class ProjectList implements JsonSerializable<ProjectList> {
     /*
      * List of projects
      */
-    @JsonProperty(value = "value")
     private List<ProjectInner> value;
 
     /*
      * URL to load the next page of projects
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ProjectList class. */
+    /**
+     * Creates an instance of ProjectList class.
+     */
     public ProjectList() {
     }
 
     /**
      * Get the value property: List of projects.
-     *
+     * 
      * @return the value value.
      */
     public List<ProjectInner> value() {
@@ -39,7 +45,7 @@ public final class ProjectList {
 
     /**
      * Set the value property: List of projects.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProjectList object itself.
      */
@@ -50,7 +56,7 @@ public final class ProjectList {
 
     /**
      * Get the nextLink property: URL to load the next page of projects.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ProjectList {
 
     /**
      * Set the nextLink property: URL to load the next page of projects.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProjectList object itself.
      */
@@ -70,12 +76,52 @@ public final class ProjectList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProjectList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProjectList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProjectList.
+     */
+    public static ProjectList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProjectList deserializedProjectList = new ProjectList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ProjectInner> value = reader.readArray(reader1 -> ProjectInner.fromJson(reader1));
+                    deserializedProjectList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedProjectList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProjectList;
+        });
     }
 }

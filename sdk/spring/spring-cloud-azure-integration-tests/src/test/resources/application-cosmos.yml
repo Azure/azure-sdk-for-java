@@ -1,5 +1,7 @@
 spring:
   cloud:
     azure:
+      credential:
+        token-credential-bean-name: integrationTestTokenCredential
       cosmos:
         endpoint: ${AZURE_COSMOS_ENDPOINT}

@@ -3,10 +3,9 @@
 
 package com.azure.resourcemanager.cosmos.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
@@ -48,14 +47,15 @@ public final class CreateCosmosDBWithEventualConsistency {
             // Create a CosmosDB.
 
             System.out.println("Creating a CosmosDB...");
-            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(docDBName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
-                    .withEventualConsistency()
-                    .withWriteReplication(Region.US_EAST)
-                    .withReadReplication(Region.US_WEST3)
-                    .create();
+            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts()
+                .define(docDBName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_WEST3)
+                .create();
 
             System.out.println("Created CosmosDB");
             Utils.print(cosmosDBAccount);
@@ -100,8 +100,7 @@ public final class CreateCosmosDBWithEventualConsistency {
 
     private static void createDBAndAddCollection(String masterKey, String endPoint) {
         try {
-            CosmosClient cosmosClient = new CosmosClientBuilder()
-                .endpoint(endPoint)
+            CosmosClient cosmosClient = new CosmosClientBuilder().endpoint(endPoint)
                 .key(masterKey)
                 .directMode(DirectConnectionConfig.getDefaultConfig())
                 .consistencyLevel(ConsistencyLevel.SESSION)
@@ -131,13 +130,12 @@ public final class CreateCosmosDBWithEventualConsistency {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

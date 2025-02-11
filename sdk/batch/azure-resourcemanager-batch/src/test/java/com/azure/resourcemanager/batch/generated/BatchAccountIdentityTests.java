@@ -23,8 +23,8 @@ public final class BatchAccountIdentityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BatchAccountIdentity model
-            = new BatchAccountIdentity().withType(ResourceIdentityType.USER_ASSIGNED).withUserAssignedIdentities(
+        BatchAccountIdentity model = new BatchAccountIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(
                 mapOf("kohdbiha", new UserAssignedIdentities(), "git", new UserAssignedIdentities(), "n",
                     new UserAssignedIdentities(), "grtfwvu", new UserAssignedIdentities()));
         model = BinaryData.fromObject(model).toObject(BatchAccountIdentity.class);

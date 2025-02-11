@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.fluent.models.SapVirtualInstanceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the collection of Virtual Instance for SAP solutions resources. */
+/**
+ * Defines the collection of Virtual Instance for SAP solutions resources.
+ */
 @Fluent
-public final class SapVirtualInstanceList {
+public final class SapVirtualInstanceList implements JsonSerializable<SapVirtualInstanceList> {
     /*
      * Gets the list of Virtual Instances for SAP solutions resources.
      */
-    @JsonProperty(value = "value")
     private List<SapVirtualInstanceInner> value;
 
     /*
      * Gets the value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SapVirtualInstanceList class. */
+    /**
+     * Creates an instance of SapVirtualInstanceList class.
+     */
     public SapVirtualInstanceList() {
     }
 
     /**
      * Get the value property: Gets the list of Virtual Instances for SAP solutions resources.
-     *
+     * 
      * @return the value value.
      */
     public List<SapVirtualInstanceInner> value() {
@@ -39,7 +45,7 @@ public final class SapVirtualInstanceList {
 
     /**
      * Set the value property: Gets the list of Virtual Instances for SAP solutions resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the SapVirtualInstanceList object itself.
      */
@@ -50,7 +56,7 @@ public final class SapVirtualInstanceList {
 
     /**
      * Get the nextLink property: Gets the value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class SapVirtualInstanceList {
 
     /**
      * Set the nextLink property: Gets the value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SapVirtualInstanceList object itself.
      */
@@ -70,12 +76,53 @@ public final class SapVirtualInstanceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapVirtualInstanceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapVirtualInstanceList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapVirtualInstanceList.
+     */
+    public static SapVirtualInstanceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapVirtualInstanceList deserializedSapVirtualInstanceList = new SapVirtualInstanceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SapVirtualInstanceInner> value
+                        = reader.readArray(reader1 -> SapVirtualInstanceInner.fromJson(reader1));
+                    deserializedSapVirtualInstanceList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSapVirtualInstanceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapVirtualInstanceList;
+        });
     }
 }

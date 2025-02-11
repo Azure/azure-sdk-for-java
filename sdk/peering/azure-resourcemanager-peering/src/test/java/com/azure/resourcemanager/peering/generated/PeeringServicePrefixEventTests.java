@@ -10,11 +10,9 @@ import com.azure.resourcemanager.peering.models.PeeringServicePrefixEvent;
 public final class PeeringServicePrefixEventTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServicePrefixEvent model =
-            BinaryData
-                .fromString(
-                    "{\"eventTimestamp\":\"2021-01-14T03:20:45Z\",\"eventType\":\"kzbbtd\",\"eventSummary\":\"mv\",\"eventLevel\":\"kgpwoz\",\"eventDescription\":\"kfpbs\"}")
-                .toObject(PeeringServicePrefixEvent.class);
+        PeeringServicePrefixEvent model = BinaryData.fromString(
+            "{\"eventTimestamp\":\"2021-10-13T06:47:40Z\",\"eventType\":\"lbg\",\"eventSummary\":\"duiertgcc\",\"eventLevel\":\"vaolpsslqlf\",\"eventDescription\":\"dnbbglzps\"}")
+            .toObject(PeeringServicePrefixEvent.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -14,61 +14,47 @@ import com.azure.resourcemanager.dynatrace.models.SendingMetricsStatus;
 import com.azure.resourcemanager.dynatrace.models.TagAction;
 import java.util.Arrays;
 
-/** Samples for TagRules CreateOrUpdate. */
+/**
+ * Samples for TagRules CreateOrUpdate.
+ */
 public final class TagRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/TagRules_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * TagRules_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
-    public static void tagRulesCreateOrUpdateMaximumSetGen(
-        com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager
-            .tagRules()
+    public static void
+        tagRulesCreateOrUpdateMaximumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
+        manager.tagRules()
             .define("default")
             .withExistingMonitor("myResourceGroup", "myMonitor")
-            .withLogRules(
-                new LogRules()
-                    .withSendAadLogs(SendAadLogsStatus.ENABLED)
-                    .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
-                    .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
-                    .withFilteringTags(
-                        Arrays
-                            .asList(
-                                new FilteringTag()
-                                    .withName("Environment")
-                                    .withValue("Prod")
-                                    .withAction(TagAction.INCLUDE),
-                                new FilteringTag()
-                                    .withName("Environment")
-                                    .withValue("Dev")
-                                    .withAction(TagAction.EXCLUDE))))
-            .withMetricRules(
-                new MetricRules()
-                    .withSendingMetrics(SendingMetricsStatus.ENABLED)
-                    .withFilteringTags(
-                        Arrays
-                            .asList(
-                                new FilteringTag()
-                                    .withName("Environment")
-                                    .withValue("Prod")
-                                    .withAction(TagAction.INCLUDE))))
+            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
+                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
+                .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
+                .withFilteringTags(Arrays.asList(
+                    new FilteringTag().withName("Environment").withValue("Prod").withAction(TagAction.INCLUDE),
+                    new FilteringTag().withName("Environment").withValue("Dev").withAction(TagAction.EXCLUDE))))
+            .withMetricRules(new MetricRules().withSendingMetrics(SendingMetricsStatus.ENABLED)
+                .withFilteringTags(Arrays.asList(
+                    new FilteringTag().withName("Environment").withValue("Prod").withAction(TagAction.INCLUDE))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/TagRules_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * TagRules_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
-    public static void tagRulesCreateOrUpdateMinimumSetGen(
-        com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
+    public static void
+        tagRulesCreateOrUpdateMinimumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
         manager.tagRules().define("default").withExistingMonitor("myResourceGroup", "myMonitor").create();
     }
 }

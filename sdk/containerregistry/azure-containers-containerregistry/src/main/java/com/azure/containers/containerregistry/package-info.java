@@ -200,7 +200,7 @@
  * GetManifestResult manifestResult = contentClient.getManifest&#40;&quot;latest&quot;&#41;;
  *
  * OciImageManifest manifest = manifestResult.getManifest&#40;&#41;.toObject&#40;OciImageManifest.class&#41;;
- * System.out.printf&#40;&quot;Got manifest:&#92;n%s&#92;n&quot;, PRETTY_PRINT.writeValueAsString&#40;manifest&#41;&#41;;
+ * System.out.printf&#40;&quot;Got manifest:&#92;n%s&#92;n&quot;, manifest.toJsonString&#40;&#41;&#41;;
  *
  * String configFileName = manifest.getConfiguration&#40;&#41;.getDigest&#40;&#41; + &quot;.json&quot;;
  * contentClient.downloadStream&#40;manifest.getConfiguration&#40;&#41;.getDigest&#40;&#41;, createFileChannel&#40;configFileName&#41;&#41;;

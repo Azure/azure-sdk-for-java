@@ -34,7 +34,8 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
     private GoogleBigQueryV2AuthenticationType authenticationType;
 
     /*
-     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with resultType string).
+     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with
+     * resultType string).
      */
     private Object clientId;
 
@@ -54,7 +55,8 @@ public class GoogleBigQueryV2LinkedService extends LinkedService {
     private SecretBase keyFileContent;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private String encryptedCredential;
 

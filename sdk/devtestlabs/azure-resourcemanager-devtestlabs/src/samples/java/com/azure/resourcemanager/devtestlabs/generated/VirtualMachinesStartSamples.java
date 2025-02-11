@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.devtestlabs.generated;
 
-/** Samples for VirtualMachines Start. */
+/**
+ * Samples for VirtualMachines Start.
+ */
 public final class VirtualMachinesStartSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Start.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Start.
+     * json
      */
     /**
      * Sample code: VirtualMachines_Start.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesStart(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {

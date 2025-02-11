@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contract defining the Tag property in the Tag Resource Contract. */
+/**
+ * Contract defining the Tag property in the Tag Resource Contract.
+ */
 @Fluent
-public final class TagResourceContractProperties {
+public final class TagResourceContractProperties implements JsonSerializable<TagResourceContractProperties> {
     /*
      * Tag identifier
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Tag Name
      */
-    @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of TagResourceContractProperties class. */
+    /**
+     * Creates an instance of TagResourceContractProperties class.
+     */
     public TagResourceContractProperties() {
     }
 
     /**
      * Get the id property: Tag identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +43,7 @@ public final class TagResourceContractProperties {
 
     /**
      * Set the id property: Tag identifier.
-     *
+     * 
      * @param id the id value to set.
      * @return the TagResourceContractProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class TagResourceContractProperties {
 
     /**
      * Get the name property: Tag Name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +63,7 @@ public final class TagResourceContractProperties {
 
     /**
      * Set the name property: Tag Name.
-     *
+     * 
      * @param name the name value to set.
      * @return the TagResourceContractProperties object itself.
      */
@@ -68,9 +74,49 @@ public final class TagResourceContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagResourceContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagResourceContractProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagResourceContractProperties.
+     */
+    public static TagResourceContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagResourceContractProperties deserializedTagResourceContractProperties
+                = new TagResourceContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTagResourceContractProperties.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTagResourceContractProperties.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagResourceContractProperties;
+        });
     }
 }

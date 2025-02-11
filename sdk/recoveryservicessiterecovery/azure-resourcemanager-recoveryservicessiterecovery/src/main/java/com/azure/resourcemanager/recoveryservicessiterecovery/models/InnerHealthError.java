@@ -5,99 +5,91 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Implements InnerHealthError class. HealthError object has a list of InnerHealthErrors as child errors.
  * InnerHealthError is used because this will prevent an infinite loop of structures when Hydra tries to auto-generate
- * the contract. We are exposing the related health errors as inner health errors and all API consumers can utilize
- * this in the same fashion as Exception -&amp;gt; InnerException.
+ * the contract. We are exposing the related health errors as inner health errors and all API consumers can utilize this
+ * in the same fashion as Exception -&amp;gt; InnerException.
  */
 @Fluent
-public final class InnerHealthError {
+public final class InnerHealthError implements JsonSerializable<InnerHealthError> {
     /*
      * Source of error.
      */
-    @JsonProperty(value = "errorSource")
     private String errorSource;
 
     /*
      * Type of error.
      */
-    @JsonProperty(value = "errorType")
     private String errorType;
 
     /*
      * Level of error.
      */
-    @JsonProperty(value = "errorLevel")
     private String errorLevel;
 
     /*
      * Category of error.
      */
-    @JsonProperty(value = "errorCategory")
     private String errorCategory;
 
     /*
      * Error code.
      */
-    @JsonProperty(value = "errorCode")
     private String errorCode;
 
     /*
      * Summary message of the entity.
      */
-    @JsonProperty(value = "summaryMessage")
     private String summaryMessage;
 
     /*
      * Error message.
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /*
      * Possible causes of error.
      */
-    @JsonProperty(value = "possibleCauses")
     private String possibleCauses;
 
     /*
      * Recommended action to resolve error.
      */
-    @JsonProperty(value = "recommendedAction")
     private String recommendedAction;
 
     /*
      * Error creation time (UTC).
      */
-    @JsonProperty(value = "creationTimeUtc")
     private OffsetDateTime creationTimeUtc;
 
     /*
      * DRA error message.
      */
-    @JsonProperty(value = "recoveryProviderErrorMessage")
     private String recoveryProviderErrorMessage;
 
     /*
      * ID of the entity.
      */
-    @JsonProperty(value = "entityId")
     private String entityId;
 
     /*
      * The health error unique id.
      */
-    @JsonProperty(value = "errorId")
     private String errorId;
 
     /*
      * Value indicating whether the health error is customer resolvable.
      */
-    @JsonProperty(value = "customerResolvability")
     private HealthErrorCustomerResolvability customerResolvability;
 
     /**
@@ -392,5 +384,84 @@ public final class InnerHealthError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("errorSource", this.errorSource);
+        jsonWriter.writeStringField("errorType", this.errorType);
+        jsonWriter.writeStringField("errorLevel", this.errorLevel);
+        jsonWriter.writeStringField("errorCategory", this.errorCategory);
+        jsonWriter.writeStringField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("summaryMessage", this.summaryMessage);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeStringField("possibleCauses", this.possibleCauses);
+        jsonWriter.writeStringField("recommendedAction", this.recommendedAction);
+        jsonWriter.writeStringField("creationTimeUtc",
+            this.creationTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTimeUtc));
+        jsonWriter.writeStringField("recoveryProviderErrorMessage", this.recoveryProviderErrorMessage);
+        jsonWriter.writeStringField("entityId", this.entityId);
+        jsonWriter.writeStringField("errorId", this.errorId);
+        jsonWriter.writeStringField("customerResolvability",
+            this.customerResolvability == null ? null : this.customerResolvability.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InnerHealthError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InnerHealthError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InnerHealthError.
+     */
+    public static InnerHealthError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InnerHealthError deserializedInnerHealthError = new InnerHealthError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorSource".equals(fieldName)) {
+                    deserializedInnerHealthError.errorSource = reader.getString();
+                } else if ("errorType".equals(fieldName)) {
+                    deserializedInnerHealthError.errorType = reader.getString();
+                } else if ("errorLevel".equals(fieldName)) {
+                    deserializedInnerHealthError.errorLevel = reader.getString();
+                } else if ("errorCategory".equals(fieldName)) {
+                    deserializedInnerHealthError.errorCategory = reader.getString();
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedInnerHealthError.errorCode = reader.getString();
+                } else if ("summaryMessage".equals(fieldName)) {
+                    deserializedInnerHealthError.summaryMessage = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedInnerHealthError.errorMessage = reader.getString();
+                } else if ("possibleCauses".equals(fieldName)) {
+                    deserializedInnerHealthError.possibleCauses = reader.getString();
+                } else if ("recommendedAction".equals(fieldName)) {
+                    deserializedInnerHealthError.recommendedAction = reader.getString();
+                } else if ("creationTimeUtc".equals(fieldName)) {
+                    deserializedInnerHealthError.creationTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveryProviderErrorMessage".equals(fieldName)) {
+                    deserializedInnerHealthError.recoveryProviderErrorMessage = reader.getString();
+                } else if ("entityId".equals(fieldName)) {
+                    deserializedInnerHealthError.entityId = reader.getString();
+                } else if ("errorId".equals(fieldName)) {
+                    deserializedInnerHealthError.errorId = reader.getString();
+                } else if ("customerResolvability".equals(fieldName)) {
+                    deserializedInnerHealthError.customerResolvability
+                        = HealthErrorCustomerResolvability.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInnerHealthError;
+        });
     }
 }

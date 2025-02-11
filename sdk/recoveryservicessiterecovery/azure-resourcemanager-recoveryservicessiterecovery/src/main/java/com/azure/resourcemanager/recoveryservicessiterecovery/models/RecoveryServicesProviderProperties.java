@@ -5,133 +5,119 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Recovery services provider properties.
  */
 @Fluent
-public final class RecoveryServicesProviderProperties {
+public final class RecoveryServicesProviderProperties implements JsonSerializable<RecoveryServicesProviderProperties> {
     /*
      * Type of the site.
      */
-    @JsonProperty(value = "fabricType")
     private String fabricType;
 
     /*
      * Friendly name of the DRA.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The provider version.
      */
-    @JsonProperty(value = "providerVersion")
     private String providerVersion;
 
     /*
      * The fabric provider.
      */
-    @JsonProperty(value = "serverVersion")
     private String serverVersion;
 
     /*
      * DRA version status.
      */
-    @JsonProperty(value = "providerVersionState")
     private String providerVersionState;
 
     /*
      * Expiry date of the version.
      */
-    @JsonProperty(value = "providerVersionExpiryDate")
     private OffsetDateTime providerVersionExpiryDate;
 
     /*
      * The fabric friendly name.
      */
-    @JsonProperty(value = "fabricFriendlyName")
     private String fabricFriendlyName;
 
     /*
      * Time when last heartbeat was sent by the DRA.
      */
-    @JsonProperty(value = "lastHeartBeat")
     private OffsetDateTime lastHeartBeat;
 
     /*
      * A value indicating whether DRA is responsive.
      */
-    @JsonProperty(value = "connectionStatus")
     private String connectionStatus;
 
     /*
      * Number of protected VMs currently managed by the DRA.
      */
-    @JsonProperty(value = "protectedItemCount")
     private Integer protectedItemCount;
 
     /*
      * The scenarios allowed on this provider.
      */
-    @JsonProperty(value = "allowedScenarios")
     private List<String> allowedScenarios;
 
     /*
      * The recovery services provider health error details.
      */
-    @JsonProperty(value = "healthErrorDetails")
     private List<HealthError> healthErrorDetails;
 
     /*
      * The DRA Id.
      */
-    @JsonProperty(value = "draIdentifier")
     private String draIdentifier;
 
     /*
      * The machine Id.
      */
-    @JsonProperty(value = "machineId")
     private String machineId;
 
     /*
      * The machine name.
      */
-    @JsonProperty(value = "machineName")
     private String machineName;
 
     /*
      * The Bios Id.
      */
-    @JsonProperty(value = "biosId")
     private String biosId;
 
     /*
      * The authentication identity details.
      */
-    @JsonProperty(value = "authenticationIdentityDetails")
     private IdentityProviderDetails authenticationIdentityDetails;
 
     /*
      * The resource access identity details.
      */
-    @JsonProperty(value = "resourceAccessIdentityDetails")
     private IdentityProviderDetails resourceAccessIdentityDetails;
 
     /*
      * The data plane authentication identity details.
      */
-    @JsonProperty(value = "dataPlaneAuthenticationIdentityDetails")
     private IdentityProviderDetails dataPlaneAuthenticationIdentityDetails;
 
     /*
      * The provider version details.
      */
-    @JsonProperty(value = "providerVersionDetails")
     private VersionDetails providerVersionDetails;
 
     /**
@@ -564,5 +550,115 @@ public final class RecoveryServicesProviderProperties {
         if (providerVersionDetails() != null) {
             providerVersionDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fabricType", this.fabricType);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("providerVersion", this.providerVersion);
+        jsonWriter.writeStringField("serverVersion", this.serverVersion);
+        jsonWriter.writeStringField("providerVersionState", this.providerVersionState);
+        jsonWriter.writeStringField("providerVersionExpiryDate",
+            this.providerVersionExpiryDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.providerVersionExpiryDate));
+        jsonWriter.writeStringField("fabricFriendlyName", this.fabricFriendlyName);
+        jsonWriter.writeStringField("lastHeartBeat",
+            this.lastHeartBeat == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastHeartBeat));
+        jsonWriter.writeStringField("connectionStatus", this.connectionStatus);
+        jsonWriter.writeNumberField("protectedItemCount", this.protectedItemCount);
+        jsonWriter.writeArrayField("allowedScenarios", this.allowedScenarios,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("healthErrorDetails", this.healthErrorDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("draIdentifier", this.draIdentifier);
+        jsonWriter.writeStringField("machineId", this.machineId);
+        jsonWriter.writeStringField("machineName", this.machineName);
+        jsonWriter.writeStringField("biosId", this.biosId);
+        jsonWriter.writeJsonField("authenticationIdentityDetails", this.authenticationIdentityDetails);
+        jsonWriter.writeJsonField("resourceAccessIdentityDetails", this.resourceAccessIdentityDetails);
+        jsonWriter.writeJsonField("dataPlaneAuthenticationIdentityDetails",
+            this.dataPlaneAuthenticationIdentityDetails);
+        jsonWriter.writeJsonField("providerVersionDetails", this.providerVersionDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryServicesProviderProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryServicesProviderProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryServicesProviderProperties.
+     */
+    public static RecoveryServicesProviderProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryServicesProviderProperties deserializedRecoveryServicesProviderProperties
+                = new RecoveryServicesProviderProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fabricType".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.fabricType = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.friendlyName = reader.getString();
+                } else if ("providerVersion".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.providerVersion = reader.getString();
+                } else if ("serverVersion".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.serverVersion = reader.getString();
+                } else if ("providerVersionState".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.providerVersionState = reader.getString();
+                } else if ("providerVersionExpiryDate".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.providerVersionExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fabricFriendlyName".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.fabricFriendlyName = reader.getString();
+                } else if ("lastHeartBeat".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.lastHeartBeat = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("connectionStatus".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.connectionStatus = reader.getString();
+                } else if ("protectedItemCount".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.protectedItemCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("allowedScenarios".equals(fieldName)) {
+                    List<String> allowedScenarios = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRecoveryServicesProviderProperties.allowedScenarios = allowedScenarios;
+                } else if ("healthErrorDetails".equals(fieldName)) {
+                    List<HealthError> healthErrorDetails = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedRecoveryServicesProviderProperties.healthErrorDetails = healthErrorDetails;
+                } else if ("draIdentifier".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.draIdentifier = reader.getString();
+                } else if ("machineId".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.machineId = reader.getString();
+                } else if ("machineName".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.machineName = reader.getString();
+                } else if ("biosId".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.biosId = reader.getString();
+                } else if ("authenticationIdentityDetails".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.authenticationIdentityDetails
+                        = IdentityProviderDetails.fromJson(reader);
+                } else if ("resourceAccessIdentityDetails".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.resourceAccessIdentityDetails
+                        = IdentityProviderDetails.fromJson(reader);
+                } else if ("dataPlaneAuthenticationIdentityDetails".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.dataPlaneAuthenticationIdentityDetails
+                        = IdentityProviderDetails.fromJson(reader);
+                } else if ("providerVersionDetails".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderProperties.providerVersionDetails
+                        = VersionDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryServicesProviderProperties;
+        });
     }
 }

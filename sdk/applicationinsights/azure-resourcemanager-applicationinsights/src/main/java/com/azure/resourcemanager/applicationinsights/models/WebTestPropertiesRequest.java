@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The collection of request properties. */
+/**
+ * The collection of request properties.
+ */
 @Fluent
-public final class WebTestPropertiesRequest {
+public final class WebTestPropertiesRequest implements JsonSerializable<WebTestPropertiesRequest> {
     /*
      * Url location to test.
      */
-    @JsonProperty(value = "RequestUrl")
     private String requestUrl;
 
     /*
      * List of headers and their values to add to the WebTest call.
      */
-    @JsonProperty(value = "Headers")
     private List<HeaderField> headers;
 
     /*
      * Http verb to use for this web test.
      */
-    @JsonProperty(value = "HttpVerb")
     private String httpVerb;
 
     /*
      * Base64 encoded string body to send with this web test.
      */
-    @JsonProperty(value = "RequestBody")
     private String requestBody;
 
     /*
      * Parse Dependent request for this WebTest.
      */
-    @JsonProperty(value = "ParseDependentRequests")
     private Boolean parseDependentRequests;
 
     /*
      * Follow redirects for this web test.
      */
-    @JsonProperty(value = "FollowRedirects")
     private Boolean followRedirects;
 
-    /** Creates an instance of WebTestPropertiesRequest class. */
+    /**
+     * Creates an instance of WebTestPropertiesRequest class.
+     */
     public WebTestPropertiesRequest() {
     }
 
     /**
      * Get the requestUrl property: Url location to test.
-     *
+     * 
      * @return the requestUrl value.
      */
     public String requestUrl() {
@@ -62,7 +64,7 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Set the requestUrl property: Url location to test.
-     *
+     * 
      * @param requestUrl the requestUrl value to set.
      * @return the WebTestPropertiesRequest object itself.
      */
@@ -73,7 +75,7 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Get the headers property: List of headers and their values to add to the WebTest call.
-     *
+     * 
      * @return the headers value.
      */
     public List<HeaderField> headers() {
@@ -82,7 +84,7 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Set the headers property: List of headers and their values to add to the WebTest call.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the WebTestPropertiesRequest object itself.
      */
@@ -93,7 +95,7 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Get the httpVerb property: Http verb to use for this web test.
-     *
+     * 
      * @return the httpVerb value.
      */
     public String httpVerb() {
@@ -102,7 +104,7 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Set the httpVerb property: Http verb to use for this web test.
-     *
+     * 
      * @param httpVerb the httpVerb value to set.
      * @return the WebTestPropertiesRequest object itself.
      */
@@ -113,7 +115,7 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Get the requestBody property: Base64 encoded string body to send with this web test.
-     *
+     * 
      * @return the requestBody value.
      */
     public String requestBody() {
@@ -122,7 +124,7 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Set the requestBody property: Base64 encoded string body to send with this web test.
-     *
+     * 
      * @param requestBody the requestBody value to set.
      * @return the WebTestPropertiesRequest object itself.
      */
@@ -133,7 +135,7 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Get the parseDependentRequests property: Parse Dependent request for this WebTest.
-     *
+     * 
      * @return the parseDependentRequests value.
      */
     public Boolean parseDependentRequests() {
@@ -142,7 +144,7 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Set the parseDependentRequests property: Parse Dependent request for this WebTest.
-     *
+     * 
      * @param parseDependentRequests the parseDependentRequests value to set.
      * @return the WebTestPropertiesRequest object itself.
      */
@@ -153,7 +155,7 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Get the followRedirects property: Follow redirects for this web test.
-     *
+     * 
      * @return the followRedirects value.
      */
     public Boolean followRedirects() {
@@ -162,7 +164,7 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Set the followRedirects property: Follow redirects for this web test.
-     *
+     * 
      * @param followRedirects the followRedirects value to set.
      * @return the WebTestPropertiesRequest object itself.
      */
@@ -173,12 +175,65 @@ public final class WebTestPropertiesRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (headers() != null) {
             headers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("RequestUrl", this.requestUrl);
+        jsonWriter.writeArrayField("Headers", this.headers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("HttpVerb", this.httpVerb);
+        jsonWriter.writeStringField("RequestBody", this.requestBody);
+        jsonWriter.writeBooleanField("ParseDependentRequests", this.parseDependentRequests);
+        jsonWriter.writeBooleanField("FollowRedirects", this.followRedirects);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebTestPropertiesRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebTestPropertiesRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebTestPropertiesRequest.
+     */
+    public static WebTestPropertiesRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebTestPropertiesRequest deserializedWebTestPropertiesRequest = new WebTestPropertiesRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("RequestUrl".equals(fieldName)) {
+                    deserializedWebTestPropertiesRequest.requestUrl = reader.getString();
+                } else if ("Headers".equals(fieldName)) {
+                    List<HeaderField> headers = reader.readArray(reader1 -> HeaderField.fromJson(reader1));
+                    deserializedWebTestPropertiesRequest.headers = headers;
+                } else if ("HttpVerb".equals(fieldName)) {
+                    deserializedWebTestPropertiesRequest.httpVerb = reader.getString();
+                } else if ("RequestBody".equals(fieldName)) {
+                    deserializedWebTestPropertiesRequest.requestBody = reader.getString();
+                } else if ("ParseDependentRequests".equals(fieldName)) {
+                    deserializedWebTestPropertiesRequest.parseDependentRequests
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("FollowRedirects".equals(fieldName)) {
+                    deserializedWebTestPropertiesRequest.followRedirects = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebTestPropertiesRequest;
+        });
     }
 }

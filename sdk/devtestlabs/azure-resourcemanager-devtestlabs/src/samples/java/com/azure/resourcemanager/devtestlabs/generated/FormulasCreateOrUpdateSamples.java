@@ -13,59 +13,46 @@ import com.azure.resourcemanager.devtestlabs.models.SharedPublicIpAddressConfigu
 import com.azure.resourcemanager.devtestlabs.models.TransportProtocol;
 import java.util.Arrays;
 
-/** Samples for Formulas CreateOrUpdate. */
+/**
+ * Samples for Formulas CreateOrUpdate.
+ */
 public final class FormulasCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Formulas_CreateOrUpdate.json
      */
     /**
      * Sample code: Formulas_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void formulasCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .formulas()
+        manager.formulas()
             .define("{formulaName}")
             .withRegion("{location}")
             .withExistingLab("resourceGroupName", "{labName}")
             .withDescription("Formula using a Linux base")
-            .withFormulaContent(
-                new LabVirtualMachineCreationParameter()
-                    .withLocation("{location}")
-                    .withNotes("Ubuntu Server 20.10")
-                    .withSize("Standard_B1ms")
-                    .withUsername("user")
-                    .withIsAuthenticationWithSshKey(false)
-                    .withLabSubnetName("Dtl{labName}Subnet")
-                    .withLabVirtualNetworkId("/virtualnetworks/dtl{labName}")
-                    .withDisallowPublicIpAddress(true)
-                    .withArtifacts(
-                        Arrays
-                            .asList(
-                                new ArtifactInstallProperties()
-                                    .withArtifactId(
-                                        "/artifactsources/{artifactSourceName}/artifacts/linux-install-nodejs")
-                                    .withParameters(Arrays.asList())))
-                    .withGalleryImageReference(
-                        new GalleryImageReference()
-                            .withOffer("0001-com-ubuntu-server-groovy")
-                            .withPublisher("canonical")
-                            .withSku("20_10")
-                            .withOsType("Linux")
-                            .withVersion("latest"))
-                    .withNetworkInterface(
-                        new NetworkInterfaceProperties()
-                            .withSharedPublicIpAddressConfiguration(
-                                new SharedPublicIpAddressConfiguration()
-                                    .withInboundNatRules(
-                                        Arrays
-                                            .asList(
-                                                new InboundNatRule()
-                                                    .withTransportProtocol(TransportProtocol.TCP)
-                                                    .withBackendPort(22)))))
-                    .withAllowClaim(false)
-                    .withStorageType("Standard"))
+            .withFormulaContent(new LabVirtualMachineCreationParameter().withLocation("{location}")
+                .withNotes("Ubuntu Server 20.10")
+                .withSize("Standard_B1ms")
+                .withUsername("user")
+                .withIsAuthenticationWithSshKey(false)
+                .withLabSubnetName("Dtl{labName}Subnet")
+                .withLabVirtualNetworkId("/virtualnetworks/dtl{labName}")
+                .withDisallowPublicIpAddress(true)
+                .withArtifacts(Arrays.asList(new ArtifactInstallProperties()
+                    .withArtifactId("/artifactsources/{artifactSourceName}/artifacts/linux-install-nodejs")
+                    .withParameters(Arrays.asList())))
+                .withGalleryImageReference(new GalleryImageReference().withOffer("0001-com-ubuntu-server-groovy")
+                    .withPublisher("canonical")
+                    .withSku("20_10")
+                    .withOsType("Linux")
+                    .withVersion("latest"))
+                .withNetworkInterface(new NetworkInterfaceProperties().withSharedPublicIpAddressConfiguration(
+                    new SharedPublicIpAddressConfiguration().withInboundNatRules(Arrays.asList(
+                        new InboundNatRule().withTransportProtocol(TransportProtocol.TCP).withBackendPort(22)))))
+                .withAllowClaim(false)
+                .withStorageType("Standard"))
             .create();
     }
 }

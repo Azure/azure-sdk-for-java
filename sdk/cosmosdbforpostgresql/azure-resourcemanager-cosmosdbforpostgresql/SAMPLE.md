@@ -80,8 +80,9 @@ public final class ClustersCheckNameAvailabilitySamples {
      */
     public static void
         checkNameAvailability(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.clusters().checkNameAvailabilityWithResponse(new NameAvailabilityRequest().withName("name1"),
-            com.azure.core.util.Context.NONE);
+        manager.clusters()
+            .checkNameAvailabilityWithResponse(new NameAvailabilityRequest().withName("name1"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -89,6 +90,11 @@ public final class ClustersCheckNameAvailabilitySamples {
 ### Clusters_Create
 
 ```java
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.DataEncryption;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.DataEncryptionType;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.IdentityProperties;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.IdentityType;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.UserAssignedIdentity;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -109,11 +115,55 @@ public final class ClustersCreateSamples {
      */
     public static void createANewSingleNodeCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.clusters().define("testcluster-singlenode").withRegion("westus").withExistingResourceGroup("TestGroup")
-            .withTags(mapOf("owner", "JohnDoe")).withAdministratorLoginPassword("password").withPostgresqlVersion("15")
-            .withCitusVersion("11.3").withPreferredPrimaryZone("1").withEnableShardsOnCoordinator(true)
-            .withEnableHa(true).withCoordinatorServerEdition("GeneralPurpose").withCoordinatorStorageQuotaInMb(131072)
-            .withCoordinatorVCores(8).withCoordinatorEnablePublicIpAccess(true).withNodeCount(0).create();
+        manager.clusters()
+            .define("testcluster-singlenode")
+            .withRegion("westus")
+            .withExistingResourceGroup("TestGroup")
+            .withTags(mapOf("owner", "JohnDoe"))
+            .withAdministratorLoginPassword("password")
+            .withPostgresqlVersion("15")
+            .withCitusVersion("11.3")
+            .withPreferredPrimaryZone("1")
+            .withEnableShardsOnCoordinator(true)
+            .withEnableHa(true)
+            .withCoordinatorServerEdition("GeneralPurpose")
+            .withCoordinatorStorageQuotaInMb(131072)
+            .withCoordinatorVCores(8)
+            .withCoordinatorEnablePublicIpAccess(true)
+            .withNodeCount(0)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * ClusterCreateCustomDatabaseName.json
+     */
+    /**
+     * Sample code: Create a new cluster with custom database name.
+     * 
+     * @param manager Entry point to CosmosDBForPostgreSqlManager.
+     */
+    public static void createANewClusterWithCustomDatabaseName(
+        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
+        manager.clusters()
+            .define("testcluster-custom-db-name")
+            .withRegion("westus")
+            .withExistingResourceGroup("TestGroup")
+            .withTags(mapOf("owner", "JohnDoe"))
+            .withAdministratorLoginPassword("password")
+            .withPostgresqlVersion("15")
+            .withCitusVersion("11.3")
+            .withPreferredPrimaryZone("1")
+            .withEnableShardsOnCoordinator(true)
+            .withEnableHa(true)
+            .withCoordinatorServerEdition("GeneralPurpose")
+            .withCoordinatorStorageQuotaInMb(131072)
+            .withCoordinatorVCores(8)
+            .withCoordinatorEnablePublicIpAccess(true)
+            .withNodeCount(0)
+            .withDatabaseName("testdbname")
+            .create();
     }
 
     /*
@@ -128,12 +178,23 @@ public final class ClustersCreateSamples {
      */
     public static void createANewSingleNodeBurstable1VCoreCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.clusters().define("testcluster-burstablev1").withRegion("westus").withExistingResourceGroup("TestGroup")
-            .withTags(mapOf("owner", "JohnDoe")).withAdministratorLoginPassword("password").withPostgresqlVersion("15")
-            .withCitusVersion("11.3").withPreferredPrimaryZone("1").withEnableShardsOnCoordinator(true)
-            .withEnableHa(false).withCoordinatorServerEdition("BurstableMemoryOptimized")
-            .withCoordinatorStorageQuotaInMb(131072).withCoordinatorVCores(1).withCoordinatorEnablePublicIpAccess(true)
-            .withNodeCount(0).create();
+        manager.clusters()
+            .define("testcluster-burstablev1")
+            .withRegion("westus")
+            .withExistingResourceGroup("TestGroup")
+            .withTags(mapOf("owner", "JohnDoe"))
+            .withAdministratorLoginPassword("password")
+            .withPostgresqlVersion("15")
+            .withCitusVersion("11.3")
+            .withPreferredPrimaryZone("1")
+            .withEnableShardsOnCoordinator(true)
+            .withEnableHa(false)
+            .withCoordinatorServerEdition("BurstableMemoryOptimized")
+            .withCoordinatorStorageQuotaInMb(131072)
+            .withCoordinatorVCores(1)
+            .withCoordinatorEnablePublicIpAccess(true)
+            .withNodeCount(0)
+            .create();
     }
 
     /*
@@ -148,12 +209,67 @@ public final class ClustersCreateSamples {
      */
     public static void createANewSingleNodeBurstable2VCoresCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.clusters().define("testcluster-burstablev2").withRegion("westus").withExistingResourceGroup("TestGroup")
-            .withTags(mapOf("owner", "JohnDoe")).withAdministratorLoginPassword("password").withPostgresqlVersion("15")
-            .withCitusVersion("11.3").withPreferredPrimaryZone("1").withEnableShardsOnCoordinator(true)
-            .withEnableHa(false).withCoordinatorServerEdition("BurstableGeneralPurpose")
-            .withCoordinatorStorageQuotaInMb(131072).withCoordinatorVCores(2).withCoordinatorEnablePublicIpAccess(true)
-            .withNodeCount(0).create();
+        manager.clusters()
+            .define("testcluster-burstablev2")
+            .withRegion("westus")
+            .withExistingResourceGroup("TestGroup")
+            .withTags(mapOf("owner", "JohnDoe"))
+            .withAdministratorLoginPassword("password")
+            .withPostgresqlVersion("15")
+            .withCitusVersion("11.3")
+            .withPreferredPrimaryZone("1")
+            .withEnableShardsOnCoordinator(true)
+            .withEnableHa(false)
+            .withCoordinatorServerEdition("BurstableGeneralPurpose")
+            .withCoordinatorStorageQuotaInMb(131072)
+            .withCoordinatorVCores(2)
+            .withCoordinatorEnablePublicIpAccess(true)
+            .withNodeCount(0)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * ClusterCreateWithCMK.json
+     */
+    /**
+     * Sample code: Create a new cluster with Customer Managed Key - CMK data encryption.
+     * 
+     * @param manager Entry point to CosmosDBForPostgreSqlManager.
+     */
+    public static void createANewClusterWithCustomerManagedKeyCMKDataEncryption(
+        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
+        manager.clusters()
+            .define("testcluster-cmk")
+            .withRegion("westus")
+            .withExistingResourceGroup("TestGroup")
+            .withTags(mapOf())
+            .withIdentity(new IdentityProperties().withType(IdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity",
+                    new UserAssignedIdentity())))
+            .withAdministratorLoginPassword("password")
+            .withDataEncryption(new DataEncryption().withPrimaryKeyUri("fakeTokenPlaceholder")
+                .withPrimaryUserAssignedIdentityId(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity")
+                .withType(DataEncryptionType.AZURE_KEY_VAULT))
+            .withPostgresqlVersion("15")
+            .withCitusVersion("12.1")
+            .withPreferredPrimaryZone("1")
+            .withEnableShardsOnCoordinator(false)
+            .withEnableHa(false)
+            .withCoordinatorServerEdition("GeneralPurpose")
+            .withCoordinatorStorageQuotaInMb(524288)
+            .withCoordinatorVCores(4)
+            .withCoordinatorEnablePublicIpAccess(true)
+            .withNodeServerEdition("MemoryOptimized")
+            .withNodeCount(3)
+            .withNodeStorageQuotaInMb(524288)
+            .withNodeVCores(8)
+            .withNodeEnablePublicIpAccess(false)
+            .withDatabaseName("citus")
+            .create();
     }
 
     /*
@@ -168,12 +284,26 @@ public final class ClustersCreateSamples {
      */
     public static void createANewMultiNodeCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.clusters().define("testcluster-multinode").withRegion("westus").withExistingResourceGroup("TestGroup")
-            .withTags(mapOf()).withAdministratorLoginPassword("password").withPostgresqlVersion("15")
-            .withCitusVersion("11.1").withPreferredPrimaryZone("1").withEnableShardsOnCoordinator(false)
-            .withEnableHa(true).withCoordinatorServerEdition("GeneralPurpose").withCoordinatorStorageQuotaInMb(524288)
-            .withCoordinatorVCores(4).withCoordinatorEnablePublicIpAccess(true).withNodeServerEdition("MemoryOptimized")
-            .withNodeCount(3).withNodeStorageQuotaInMb(524288).withNodeVCores(8).withNodeEnablePublicIpAccess(false)
+        manager.clusters()
+            .define("testcluster-multinode")
+            .withRegion("westus")
+            .withExistingResourceGroup("TestGroup")
+            .withTags(mapOf())
+            .withAdministratorLoginPassword("password")
+            .withPostgresqlVersion("15")
+            .withCitusVersion("11.1")
+            .withPreferredPrimaryZone("1")
+            .withEnableShardsOnCoordinator(false)
+            .withEnableHa(true)
+            .withCoordinatorServerEdition("GeneralPurpose")
+            .withCoordinatorStorageQuotaInMb(524288)
+            .withCoordinatorVCores(4)
+            .withCoordinatorEnablePublicIpAccess(true)
+            .withNodeServerEdition("MemoryOptimized")
+            .withNodeCount(3)
+            .withNodeStorageQuotaInMb(524288)
+            .withNodeVCores(8)
+            .withNodeEnablePublicIpAccess(false)
             .create();
     }
 
@@ -189,10 +319,14 @@ public final class ClustersCreateSamples {
      */
     public static void createANewClusterAsAReadReplica(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.clusters().define("testcluster").withRegion("westus").withExistingResourceGroup("TestGroup")
+        manager.clusters()
+            .define("testcluster")
+            .withRegion("westus")
+            .withExistingResourceGroup("TestGroup")
             .withSourceResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/sourcecluster")
-            .withSourceLocation("westus").create();
+            .withSourceLocation("westus")
+            .create();
     }
 
     /*
@@ -207,10 +341,59 @@ public final class ClustersCreateSamples {
      */
     public static void createANewClusterAsAPointInTimeRestore(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.clusters().define("testcluster").withRegion("westus").withExistingResourceGroup("TestGroup")
+        manager.clusters()
+            .define("testcluster")
+            .withRegion("westus")
+            .withExistingResourceGroup("TestGroup")
             .withSourceResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/source-cluster")
-            .withSourceLocation("westus").withPointInTimeUtc(OffsetDateTime.parse("2017-12-14T00:00:37.467Z")).create();
+            .withSourceLocation("westus")
+            .withPointInTimeUtc(OffsetDateTime.parse("2017-12-14T00:00:37.467Z"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * ClusterCreateWithAAD.json
+     */
+    /**
+     * Sample code: Create a new cluster with Azure Active Directory Authentication.
+     * 
+     * @param manager Entry point to CosmosDBForPostgreSqlManager.
+     */
+    public static void createANewClusterWithAzureActiveDirectoryAuthentication(
+        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
+        manager.clusters()
+            .define("testcluster-cmk")
+            .withRegion("westus")
+            .withExistingResourceGroup("TestGroup")
+            .withTags(mapOf())
+            .withIdentity(new IdentityProperties().withType(IdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity",
+                    new UserAssignedIdentity())))
+            .withAdministratorLoginPassword("password")
+            .withDataEncryption(new DataEncryption().withPrimaryKeyUri("fakeTokenPlaceholder")
+                .withPrimaryUserAssignedIdentityId(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity")
+                .withType(DataEncryptionType.AZURE_KEY_VAULT))
+            .withPostgresqlVersion("15")
+            .withCitusVersion("12.1")
+            .withPreferredPrimaryZone("1")
+            .withEnableShardsOnCoordinator(false)
+            .withEnableHa(false)
+            .withCoordinatorServerEdition("GeneralPurpose")
+            .withCoordinatorStorageQuotaInMb(524288)
+            .withCoordinatorVCores(4)
+            .withCoordinatorEnablePublicIpAccess(true)
+            .withNodeServerEdition("MemoryOptimized")
+            .withNodeCount(3)
+            .withNodeStorageQuotaInMb(524288)
+            .withNodeVCores(8)
+            .withNodeEnablePublicIpAccess(false)
+            .withDatabaseName("citus")
+            .create();
     }
 
     // Use "Map.of" if available
@@ -270,8 +453,8 @@ public final class ClustersGetByResourceGroupSamples {
      */
     public static void
         getTheCluster(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.clusters().getByResourceGroupWithResponse("TestGroup", "testcluster1",
-            com.azure.core.util.Context.NONE);
+        manager.clusters()
+            .getByResourceGroupWithResponse("TestGroup", "testcluster1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -444,7 +627,8 @@ public final class ClustersUpdateSamples {
     public static void
         scaleUpStorage(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withNodeStorageQuotaInMb(2097152).apply();
     }
 
@@ -461,9 +645,14 @@ public final class ClustersUpdateSamples {
     public static void updateMultipleConfigurationSettingsOfTheCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withAdministratorLoginPassword("newpassword").withCoordinatorVCores(16).withNodeCount(4)
-            .withNodeVCores(16).apply();
+            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withAdministratorLoginPassword("newpassword")
+            .withCoordinatorVCores(16)
+            .withNodeCount(4)
+            .withNodeVCores(16)
+            .apply();
     }
 
     /*
@@ -479,7 +668,8 @@ public final class ClustersUpdateSamples {
     public static void
         scaleComputeUpOrDown(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withNodeVCores(16).apply();
     }
 
@@ -496,7 +686,8 @@ public final class ClustersUpdateSamples {
     public static void scaleOutAddNewWorkerNodes(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withNodeCount(2).apply();
     }
 
@@ -513,9 +704,13 @@ public final class ClustersUpdateSamples {
     public static void updateOrDefineMaintenanceWindow(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withMaintenanceWindow(
-            new MaintenanceWindow().withCustomWindow("Enabled").withStartHour(8).withStartMinute(0).withDayOfWeek(0))
+            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withMaintenanceWindow(new MaintenanceWindow().withCustomWindow("Enabled")
+                .withStartHour(8)
+                .withStartMinute(0)
+                .withDayOfWeek(0))
             .apply();
     }
 }
@@ -540,8 +735,8 @@ public final class ConfigurationsGetSamples {
      */
     public static void
         getConfigurationDetails(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.configurations().getWithResponse("TestResourceGroup", "testcluster", "client_encoding",
-            com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .getWithResponse("TestResourceGroup", "testcluster", "client_encoding", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -565,8 +760,9 @@ public final class ConfigurationsGetCoordinatorSamples {
      */
     public static void getConfigurationDetailsForCoordinator(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.configurations().getCoordinatorWithResponse("TestResourceGroup", "testcluster", "array_nulls",
-            com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .getCoordinatorWithResponse("TestResourceGroup", "testcluster", "array_nulls",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -590,8 +786,8 @@ public final class ConfigurationsGetNodeSamples {
      */
     public static void getConfigurationDetailsForNode(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.configurations().getNodeWithResponse("TestResourceGroup", "testcluster", "array_nulls",
-            com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .getNodeWithResponse("TestResourceGroup", "testcluster", "array_nulls", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -639,8 +835,8 @@ public final class ConfigurationsListByServerSamples {
      */
     public static void listConfigurationsOfTheServerThatInTheCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.configurations().listByServer("TestResourceGroup", "testcluster", "testserver",
-            com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .listByServer("TestResourceGroup", "testcluster", "testserver", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -666,8 +862,9 @@ public final class ConfigurationsUpdateOnCoordinatorSamples {
      */
     public static void updateSingleConfigurationOfCoordinator(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.configurations().updateOnCoordinator("TestResourceGroup", "testcluster", "array_nulls",
-            new ServerConfigurationInner().withValue("on"), com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .updateOnCoordinator("TestResourceGroup", "testcluster", "array_nulls",
+                new ServerConfigurationInner().withValue("on"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -693,8 +890,9 @@ public final class ConfigurationsUpdateOnNodeSamples {
      */
     public static void updateSingleConfigurationOfNodes(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.configurations().updateOnNode("TestResourceGroup", "testcluster", "array_nulls",
-            new ServerConfigurationInner().withValue("off"), com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .updateOnNode("TestResourceGroup", "testcluster", "array_nulls",
+                new ServerConfigurationInner().withValue("off"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -718,8 +916,12 @@ public final class FirewallRulesCreateOrUpdateSamples {
      */
     public static void createAFirewallRuleOfTheCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.firewallRules().define("rule1").withExistingServerGroupsv2("TestGroup", "pgtestsvc4")
-            .withStartIpAddress("0.0.0.0").withEndIpAddress("255.255.255.255").create();
+        manager.firewallRules()
+            .define("rule1")
+            .withExistingServerGroupsv2("TestGroup", "pgtestsvc4")
+            .withStartIpAddress("0.0.0.0")
+            .withEndIpAddress("255.255.255.255")
+            .create();
     }
 }
 ```
@@ -842,7 +1044,8 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
      */
     public static void approvesOrRejectsAPrivateEndpointConnectionWithAGivenName(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.privateEndpointConnections().define("private-endpoint-connection-name")
+        manager.privateEndpointConnections()
+            .define("private-endpoint-connection-name")
             .withExistingServerGroupsv2("TestGroup", "testcluster")
             .withPrivateLinkServiceConnectionState(
                 new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
@@ -871,8 +1074,8 @@ public final class PrivateEndpointConnectionsDeleteSamples {
      */
     public static void deletesAPrivateEndpointConnectionWithAGivenName(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.privateEndpointConnections().delete("TestGroup", "testcluster", "private-endpoint-connection-name",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .delete("TestGroup", "testcluster", "private-endpoint-connection-name", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -896,8 +1099,9 @@ public final class PrivateEndpointConnectionsGetSamples {
      */
     public static void getsPrivateEndpointConnection(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.privateEndpointConnections().getWithResponse("TestGroup", "testcluster",
-            "private-endpoint-connection-name", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("TestGroup", "testcluster", "private-endpoint-connection-name",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -921,8 +1125,8 @@ public final class PrivateEndpointConnectionsListByClusterSamples {
      */
     public static void getsListOfPrivateEndpointConnectionsOnACluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.privateEndpointConnections().listByCluster("TestResourceGroup", "testcluster",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .listByCluster("TestResourceGroup", "testcluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -946,8 +1150,8 @@ public final class PrivateLinkResourcesGetSamples {
      */
     public static void getsAPrivateLinkResourceForCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.privateLinkResources().getWithResponse("TestGroup", "testcluster", "plr",
-            com.azure.core.util.Context.NONE);
+        manager.privateLinkResources()
+            .getWithResponse("TestGroup", "testcluster", "plr", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -971,8 +1175,8 @@ public final class PrivateLinkResourcesListByClusterSamples {
      */
     public static void getsThePrivateLinkResourcesForCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.privateLinkResources().listByCluster("TestResourceGroup", "testcluster",
-            com.azure.core.util.Context.NONE);
+        manager.privateLinkResources()
+            .listByCluster("TestResourceGroup", "testcluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -996,7 +1200,10 @@ public final class RolesCreateSamples {
      */
     public static void
         roleCreate(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.roles().define("role1").withExistingServerGroupsv2("TestGroup", "pgtestsvc4").withPassword("password")
+        manager.roles()
+            .define("role1")
+            .withExistingServerGroupsv2("TestGroup", "pgtestsvc4")
+            .withPassword("password")
             .create();
     }
 }
@@ -1092,8 +1299,8 @@ public final class ServersGetSamples {
      */
     public static void
         getTheServerOfCluster(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.servers().getWithResponse("TestGroup", "testcluster1", "testcluster1-c",
-            com.azure.core.util.Context.NONE);
+        manager.servers()
+            .getWithResponse("TestGroup", "testcluster1", "testcluster1-c", com.azure.core.util.Context.NONE);
     }
 }
 ```

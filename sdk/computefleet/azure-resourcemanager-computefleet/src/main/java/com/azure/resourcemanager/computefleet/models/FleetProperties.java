@@ -41,6 +41,16 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
     private List<VmSizeProfile> vmSizesProfile;
 
     /*
+     * Attribute based Fleet.
+     */
+    private VMAttributes vmAttributes;
+
+    /*
+     * Represents the configuration for additional locations where Fleet resources may be deployed.
+     */
+    private AdditionalLocationsProfile additionalLocationsProfile;
+
+    /*
      * Compute Profile to use for running user's workloads.
      */
     private ComputeProfile computeProfile;
@@ -131,6 +141,48 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
     }
 
     /**
+     * Get the vmAttributes property: Attribute based Fleet.
+     * 
+     * @return the vmAttributes value.
+     */
+    public VMAttributes vmAttributes() {
+        return this.vmAttributes;
+    }
+
+    /**
+     * Set the vmAttributes property: Attribute based Fleet.
+     * 
+     * @param vmAttributes the vmAttributes value to set.
+     * @return the FleetProperties object itself.
+     */
+    public FleetProperties withVmAttributes(VMAttributes vmAttributes) {
+        this.vmAttributes = vmAttributes;
+        return this;
+    }
+
+    /**
+     * Get the additionalLocationsProfile property: Represents the configuration for additional locations where Fleet
+     * resources may be deployed.
+     * 
+     * @return the additionalLocationsProfile value.
+     */
+    public AdditionalLocationsProfile additionalLocationsProfile() {
+        return this.additionalLocationsProfile;
+    }
+
+    /**
+     * Set the additionalLocationsProfile property: Represents the configuration for additional locations where Fleet
+     * resources may be deployed.
+     * 
+     * @param additionalLocationsProfile the additionalLocationsProfile value to set.
+     * @return the FleetProperties object itself.
+     */
+    public FleetProperties withAdditionalLocationsProfile(AdditionalLocationsProfile additionalLocationsProfile) {
+        this.additionalLocationsProfile = additionalLocationsProfile;
+        return this;
+    }
+
+    /**
      * Get the computeProfile property: Compute Profile to use for running user's workloads.
      * 
      * @return the computeProfile value.
@@ -186,6 +238,12 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
         } else {
             vmSizesProfile().forEach(e -> e.validate());
         }
+        if (vmAttributes() != null) {
+            vmAttributes().validate();
+        }
+        if (additionalLocationsProfile() != null) {
+            additionalLocationsProfile().validate();
+        }
         if (computeProfile() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property computeProfile in model FleetProperties"));
@@ -207,6 +265,8 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
         jsonWriter.writeJsonField("computeProfile", this.computeProfile);
         jsonWriter.writeJsonField("spotPriorityProfile", this.spotPriorityProfile);
         jsonWriter.writeJsonField("regularPriorityProfile", this.regularPriorityProfile);
+        jsonWriter.writeJsonField("vmAttributes", this.vmAttributes);
+        jsonWriter.writeJsonField("additionalLocationsProfile", this.additionalLocationsProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -237,6 +297,11 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
                     deserializedFleetProperties.spotPriorityProfile = SpotPriorityProfile.fromJson(reader);
                 } else if ("regularPriorityProfile".equals(fieldName)) {
                     deserializedFleetProperties.regularPriorityProfile = RegularPriorityProfile.fromJson(reader);
+                } else if ("vmAttributes".equals(fieldName)) {
+                    deserializedFleetProperties.vmAttributes = VMAttributes.fromJson(reader);
+                } else if ("additionalLocationsProfile".equals(fieldName)) {
+                    deserializedFleetProperties.additionalLocationsProfile
+                        = AdditionalLocationsProfile.fromJson(reader);
                 } else if ("timeCreated".equals(fieldName)) {
                     deserializedFleetProperties.timeCreated = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

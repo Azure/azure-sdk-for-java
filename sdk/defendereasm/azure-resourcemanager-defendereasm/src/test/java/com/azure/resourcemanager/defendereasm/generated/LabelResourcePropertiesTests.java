@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class LabelResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabelResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"olniwpwcukjf\",\"color\":\"iawxklry\",\"provisioningState\":\"CreatingArtifacts\"}")
-                .toObject(LabelResourceProperties.class);
+        LabelResourceProperties model = BinaryData
+            .fromString(
+                "{\"displayName\":\"olniwpwcukjf\",\"color\":\"iawxklry\",\"provisioningState\":\"CreatingArtifacts\"}")
+            .toObject(LabelResourceProperties.class);
         Assertions.assertEquals("olniwpwcukjf", model.displayName());
         Assertions.assertEquals("iawxklry", model.color());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LabelResourceProperties model =
-            new LabelResourceProperties().withDisplayName("olniwpwcukjf").withColor("iawxklry");
+        LabelResourceProperties model
+            = new LabelResourceProperties().withDisplayName("olniwpwcukjf").withColor("iawxklry");
         model = BinaryData.fromObject(model).toObject(LabelResourceProperties.class);
         Assertions.assertEquals("olniwpwcukjf", model.displayName());
         Assertions.assertEquals("iawxklry", model.color());

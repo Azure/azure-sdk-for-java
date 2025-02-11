@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkLinkInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response to an enumeration operation on virtual network links. */
+/**
+ * The response to an enumeration operation on virtual network links.
+ */
 @Fluent
-public final class VirtualNetworkLinkListResult {
+public final class VirtualNetworkLinkListResult implements JsonSerializable<VirtualNetworkLinkListResult> {
     /*
      * Enumeration of the virtual network links.
      */
-    @JsonProperty(value = "value")
     private List<VirtualNetworkLinkInner> value;
 
     /*
      * The continuation token for the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of VirtualNetworkLinkListResult class.
+     */
+    public VirtualNetworkLinkListResult() {
+    }
+
+    /**
      * Get the value property: Enumeration of the virtual network links.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualNetworkLinkInner> value() {
@@ -35,7 +45,7 @@ public final class VirtualNetworkLinkListResult {
 
     /**
      * Set the value property: Enumeration of the virtual network links.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualNetworkLinkListResult object itself.
      */
@@ -46,7 +56,7 @@ public final class VirtualNetworkLinkListResult {
 
     /**
      * Get the nextLink property: The continuation token for the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,12 +65,52 @@ public final class VirtualNetworkLinkListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkLinkListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkLinkListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkLinkListResult.
+     */
+    public static VirtualNetworkLinkListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkLinkListResult deserializedVirtualNetworkLinkListResult = new VirtualNetworkLinkListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualNetworkLinkInner> value
+                        = reader.readArray(reader1 -> VirtualNetworkLinkInner.fromJson(reader1));
+                    deserializedVirtualNetworkLinkListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkLinkListResult;
+        });
     }
 }

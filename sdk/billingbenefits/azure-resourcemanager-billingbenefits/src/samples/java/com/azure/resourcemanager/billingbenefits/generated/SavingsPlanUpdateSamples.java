@@ -16,52 +16,43 @@ import com.azure.resourcemanager.billingbenefits.models.SavingsPlanUpdateRequest
 import com.azure.resourcemanager.billingbenefits.models.Sku;
 import com.azure.resourcemanager.billingbenefits.models.Term;
 
-/** Samples for SavingsPlan Update. */
+/**
+ * Samples for SavingsPlan Update.
+ */
 public final class SavingsPlanUpdateSamples {
     /*
-     * x-ms-original-file: specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/SavingsPlanUpdate.json
+     * x-ms-original-file:
+     * specification/billingbenefits/resource-manager/Microsoft.BillingBenefits/stable/2022-11-01/examples/
+     * SavingsPlanUpdate.json
      */
     /**
      * Sample code: SavingsPlanUpdate.
-     *
+     * 
      * @param manager Entry point to BillingBenefitsManager.
      */
     public static void savingsPlanUpdate(com.azure.resourcemanager.billingbenefits.BillingBenefitsManager manager) {
-        manager
-            .savingsPlans()
-            .updateWithResponse(
-                "20000000-0000-0000-0000-000000000000",
-                "30000000-0000-0000-0000-000000000000",
+        manager.savingsPlans()
+            .updateWithResponse("20000000-0000-0000-0000-000000000000", "30000000-0000-0000-0000-000000000000",
                 new SavingsPlanUpdateRequest()
                     .withProperties(
-                        new SavingsPlanUpdateRequestProperties()
-                            .withDisplayName("TestDisplayName")
+                        new SavingsPlanUpdateRequestProperties().withDisplayName("TestDisplayName")
                             .withAppliedScopeType(AppliedScopeType.SINGLE)
-                            .withAppliedScopeProperties(
-                                new AppliedScopeProperties()
-                                    .withResourceGroupId(
-                                        "/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"))
+                            .withAppliedScopeProperties(new AppliedScopeProperties().withResourceGroupId(
+                                "/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"))
                             .withRenew(true)
-                            .withRenewProperties(
-                                new RenewProperties()
-                                    .withPurchaseProperties(
-                                        new PurchaseRequest()
-                                            .withSku(new Sku().withName("Compute_Savings_Plan"))
-                                            .withDisplayName("TestDisplayName_renewed")
-                                            .withBillingScopeId("/subscriptions/10000000-0000-0000-0000-000000000000")
-                                            .withTerm(Term.P1Y)
-                                            .withBillingPlan(BillingPlan.P1M)
-                                            .withAppliedScopeType(AppliedScopeType.SINGLE)
-                                            .withCommitment(
-                                                new Commitment()
-                                                    .withCurrencyCode("fakeTokenPlaceholder")
-                                                    .withAmount(15.23D)
-                                                    .withGrain(CommitmentGrain.HOURLY))
-                                            .withRenew(false)
-                                            .withAppliedScopeProperties(
-                                                new AppliedScopeProperties()
-                                                    .withResourceGroupId(
-                                                        "/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"))))),
+                            .withRenewProperties(new RenewProperties().withPurchaseProperties(new PurchaseRequest()
+                                .withSku(new Sku().withName("Compute_Savings_Plan"))
+                                .withDisplayName("TestDisplayName_renewed")
+                                .withBillingScopeId("/subscriptions/10000000-0000-0000-0000-000000000000")
+                                .withTerm(Term.P1Y)
+                                .withBillingPlan(BillingPlan.P1M)
+                                .withAppliedScopeType(AppliedScopeType.SINGLE)
+                                .withCommitment(new Commitment().withCurrencyCode("fakeTokenPlaceholder")
+                                    .withAmount(15.23D)
+                                    .withGrain(CommitmentGrain.HOURLY))
+                                .withRenew(false)
+                                .withAppliedScopeProperties(new AppliedScopeProperties().withResourceGroupId(
+                                    "/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/testrg"))))),
                 com.azure.core.util.Context.NONE);
     }
 }

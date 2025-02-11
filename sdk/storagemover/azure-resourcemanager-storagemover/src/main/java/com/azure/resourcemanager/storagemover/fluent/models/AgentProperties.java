@@ -5,83 +5,77 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.AgentPropertiesErrorDetails;
 import com.azure.resourcemanager.storagemover.models.AgentStatus;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
 import com.azure.resourcemanager.storagemover.models.UploadLimitSchedule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The AgentProperties model.
  */
 @Fluent
-public final class AgentProperties {
+public final class AgentProperties implements JsonSerializable<AgentProperties> {
     /*
      * A description for the Agent.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The Agent version.
      */
-    @JsonProperty(value = "agentVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String agentVersion;
 
     /*
      * The fully qualified resource ID of the Hybrid Compute resource for the Agent.
      */
-    @JsonProperty(value = "arcResourceId", required = true)
     private String arcResourceId;
 
     /*
      * The VM UUID of the Hybrid Compute resource for the Agent.
      */
-    @JsonProperty(value = "arcVmUuid", required = true)
     private String arcVmUuid;
 
     /*
      * The Agent status.
      */
-    @JsonProperty(value = "agentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private AgentStatus agentStatus;
 
     /*
      * The last updated time of the Agent status.
      */
-    @JsonProperty(value = "lastStatusUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastStatusUpdate;
 
     /*
      * Local IP address reported by the Agent.
      */
-    @JsonProperty(value = "localIPAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String localIpAddress;
 
     /*
      * Available memory reported by the Agent, in MB.
      */
-    @JsonProperty(value = "memoryInMB", access = JsonProperty.Access.WRITE_ONLY)
     private Long memoryInMB;
 
     /*
      * Available compute cores reported by the Agent.
      */
-    @JsonProperty(value = "numberOfCores", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfCores;
 
     /*
      * Uptime of the Agent in seconds.
      */
-    @JsonProperty(value = "uptimeInSeconds", access = JsonProperty.Access.WRITE_ONLY)
     private Long uptimeInSeconds;
 
     /*
      * The agent's local time zone represented in Windows format.
      */
-    @JsonProperty(value = "timeZone", access = JsonProperty.Access.WRITE_ONLY)
     private String timeZone;
 
     /*
@@ -89,19 +83,16 @@ public final class AgentProperties {
      * (migrating files) are affected. Control plane operations ensure seamless migration functionality and are not
      * limited by this schedule. The schedule is interpreted with the agent's local time.
      */
-    @JsonProperty(value = "uploadLimitSchedule")
     private UploadLimitSchedule uploadLimitSchedule;
 
     /*
      * The errorDetails property.
      */
-    @JsonProperty(value = "errorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private AgentPropertiesErrorDetails errorDetails;
 
     /*
      * The provisioning state of this resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -309,4 +300,71 @@ public final class AgentProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("arcResourceId", this.arcResourceId);
+        jsonWriter.writeStringField("arcVmUuid", this.arcVmUuid);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("uploadLimitSchedule", this.uploadLimitSchedule);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AgentProperties.
+     */
+    public static AgentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentProperties deserializedAgentProperties = new AgentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("arcResourceId".equals(fieldName)) {
+                    deserializedAgentProperties.arcResourceId = reader.getString();
+                } else if ("arcVmUuid".equals(fieldName)) {
+                    deserializedAgentProperties.arcVmUuid = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAgentProperties.description = reader.getString();
+                } else if ("agentVersion".equals(fieldName)) {
+                    deserializedAgentProperties.agentVersion = reader.getString();
+                } else if ("agentStatus".equals(fieldName)) {
+                    deserializedAgentProperties.agentStatus = AgentStatus.fromString(reader.getString());
+                } else if ("lastStatusUpdate".equals(fieldName)) {
+                    deserializedAgentProperties.lastStatusUpdate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("localIPAddress".equals(fieldName)) {
+                    deserializedAgentProperties.localIpAddress = reader.getString();
+                } else if ("memoryInMB".equals(fieldName)) {
+                    deserializedAgentProperties.memoryInMB = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfCores".equals(fieldName)) {
+                    deserializedAgentProperties.numberOfCores = reader.getNullable(JsonReader::getLong);
+                } else if ("uptimeInSeconds".equals(fieldName)) {
+                    deserializedAgentProperties.uptimeInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedAgentProperties.timeZone = reader.getString();
+                } else if ("uploadLimitSchedule".equals(fieldName)) {
+                    deserializedAgentProperties.uploadLimitSchedule = UploadLimitSchedule.fromJson(reader);
+                } else if ("errorDetails".equals(fieldName)) {
+                    deserializedAgentProperties.errorDetails = AgentPropertiesErrorDetails.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAgentProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentProperties;
+        });
+    }
 }

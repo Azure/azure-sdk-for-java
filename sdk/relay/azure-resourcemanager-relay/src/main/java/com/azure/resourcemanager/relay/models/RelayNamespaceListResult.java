@@ -5,29 +5,38 @@
 package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.relay.fluent.models.RelayNamespaceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response from the list namespace operation. */
+/**
+ * The response from the list namespace operation.
+ */
 @Fluent
-public final class RelayNamespaceListResult {
+public final class RelayNamespaceListResult implements JsonSerializable<RelayNamespaceListResult> {
     /*
      * Result of the list namespace operation.
      */
-    @JsonProperty(value = "value")
     private List<RelayNamespaceInner> value;
 
     /*
-     * Link to the next set of results. Not empty if value contains incomplete
-     * list of namespaces.
+     * Link to the next set of results. Not empty if value contains incomplete list of namespaces.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of RelayNamespaceListResult class.
+     */
+    public RelayNamespaceListResult() {
+    }
+
+    /**
      * Get the value property: Result of the list namespace operation.
-     *
+     * 
      * @return the value value.
      */
     public List<RelayNamespaceInner> value() {
@@ -36,7 +45,7 @@ public final class RelayNamespaceListResult {
 
     /**
      * Set the value property: Result of the list namespace operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the RelayNamespaceListResult object itself.
      */
@@ -48,7 +57,7 @@ public final class RelayNamespaceListResult {
     /**
      * Get the nextLink property: Link to the next set of results. Not empty if value contains incomplete list of
      * namespaces.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -58,7 +67,7 @@ public final class RelayNamespaceListResult {
     /**
      * Set the nextLink property: Link to the next set of results. Not empty if value contains incomplete list of
      * namespaces.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RelayNamespaceListResult object itself.
      */
@@ -69,12 +78,53 @@ public final class RelayNamespaceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelayNamespaceListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelayNamespaceListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RelayNamespaceListResult.
+     */
+    public static RelayNamespaceListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelayNamespaceListResult deserializedRelayNamespaceListResult = new RelayNamespaceListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RelayNamespaceInner> value
+                        = reader.readArray(reader1 -> RelayNamespaceInner.fromJson(reader1));
+                    deserializedRelayNamespaceListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRelayNamespaceListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelayNamespaceListResult;
+        });
     }
 }

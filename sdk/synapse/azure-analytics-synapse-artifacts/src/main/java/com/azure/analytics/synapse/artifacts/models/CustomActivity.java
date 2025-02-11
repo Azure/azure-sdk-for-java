@@ -44,17 +44,20 @@ public class CustomActivity extends ExecutionActivity {
     private CustomActivityReferenceObject referenceObjects;
 
     /*
-     * User defined property bag. There is no restriction on the keys or values that can be used. The user specified custom activity has the full responsibility to consume and interpret the content defined.
+     * User defined property bag. There is no restriction on the keys or values that can be used. The user specified
+     * custom activity has the full responsibility to consume and interpret the content defined.
      */
     private Map<String, Object> extendedProperties;
 
     /*
-     * The retention time for the files submitted for custom activity. Type: double (or Expression with resultType double).
+     * The retention time for the files submitted for custom activity. Type: double (or Expression with resultType
+     * double).
      */
     private Object retentionTimeInDays;
 
     /*
-     * Elevation level and scope for the user, default is nonadmin task. Type: string (or Expression with resultType double).
+     * Elevation level and scope for the user, default is nonadmin task. Type: string (or Expression with resultType
+     * double).
      */
     private Object autoUserSpecification;
 

@@ -13,7 +13,8 @@ import java.util.UUID;
 /** Azure Active Directory identity configuration for a resource. */
 @Fluent
 public class ResourceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
 
     /*
      * The Azure Active Directory principal id.

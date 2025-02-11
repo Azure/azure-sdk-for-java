@@ -5,61 +5,72 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Defines the public IP address resource settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Microsoft.Network/publicIPAddresses")
+/**
+ * Defines the public IP address resource settings.
+ */
 @Fluent
 public final class PublicIpAddressResourceSettings extends ResourceSettings {
     /*
+     * The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+     */
+    private String resourceType = "Microsoft.Network/publicIPAddresses";
+
+    /*
      * Gets or sets the Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Gets or sets the domain name label.
      */
-    @JsonProperty(value = "domainNameLabel")
     private String domainNameLabel;
 
     /*
      * Gets or sets the fully qualified domain name.
      */
-    @JsonProperty(value = "fqdn")
     private String fqdn;
 
     /*
      * Gets or sets public IP allocation method.
      */
-    @JsonProperty(value = "publicIpAllocationMethod")
     private String publicIpAllocationMethod;
 
     /*
      * Gets or sets public IP sku.
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
      * Gets or sets public IP zones.
      */
-    @JsonProperty(value = "zones")
     private String zones;
 
-    /** Creates an instance of PublicIpAddressResourceSettings class. */
+    /**
+     * Creates an instance of PublicIpAddressResourceSettings class.
+     */
     public PublicIpAddressResourceSettings() {
     }
 
     /**
+     * Get the resourceType property: The resource type. For example, the value can be
+     * Microsoft.Compute/virtualMachines.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
      * Get the tags property: Gets or sets the Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -68,7 +79,7 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Set the tags property: Gets or sets the Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PublicIpAddressResourceSettings object itself.
      */
@@ -79,7 +90,7 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Get the domainNameLabel property: Gets or sets the domain name label.
-     *
+     * 
      * @return the domainNameLabel value.
      */
     public String domainNameLabel() {
@@ -88,7 +99,7 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Set the domainNameLabel property: Gets or sets the domain name label.
-     *
+     * 
      * @param domainNameLabel the domainNameLabel value to set.
      * @return the PublicIpAddressResourceSettings object itself.
      */
@@ -99,7 +110,7 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Get the fqdn property: Gets or sets the fully qualified domain name.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -108,7 +119,7 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Set the fqdn property: Gets or sets the fully qualified domain name.
-     *
+     * 
      * @param fqdn the fqdn value to set.
      * @return the PublicIpAddressResourceSettings object itself.
      */
@@ -119,7 +130,7 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Get the publicIpAllocationMethod property: Gets or sets public IP allocation method.
-     *
+     * 
      * @return the publicIpAllocationMethod value.
      */
     public String publicIpAllocationMethod() {
@@ -128,7 +139,7 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Set the publicIpAllocationMethod property: Gets or sets public IP allocation method.
-     *
+     * 
      * @param publicIpAllocationMethod the publicIpAllocationMethod value to set.
      * @return the PublicIpAddressResourceSettings object itself.
      */
@@ -139,7 +150,7 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Get the sku property: Gets or sets public IP sku.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -148,7 +159,7 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Set the sku property: Gets or sets public IP sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PublicIpAddressResourceSettings object itself.
      */
@@ -159,7 +170,7 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Get the zones property: Gets or sets public IP zones.
-     *
+     * 
      * @return the zones value.
      */
     public String zones() {
@@ -168,7 +179,7 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Set the zones property: Gets or sets public IP zones.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the PublicIpAddressResourceSettings object itself.
      */
@@ -177,14 +188,18 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PublicIpAddressResourceSettings withTargetResourceName(String targetResourceName) {
         super.withTargetResourceName(targetResourceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PublicIpAddressResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
         super.withTargetResourceGroupName(targetResourceGroupName);
@@ -193,11 +208,72 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceName", targetResourceName());
+        jsonWriter.writeStringField("targetResourceGroupName", targetResourceGroupName());
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("domainNameLabel", this.domainNameLabel);
+        jsonWriter.writeStringField("fqdn", this.fqdn);
+        jsonWriter.writeStringField("publicIpAllocationMethod", this.publicIpAllocationMethod);
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeStringField("zones", this.zones);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PublicIpAddressResourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PublicIpAddressResourceSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PublicIpAddressResourceSettings.
+     */
+    public static PublicIpAddressResourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PublicIpAddressResourceSettings deserializedPublicIpAddressResourceSettings
+                = new PublicIpAddressResourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceName".equals(fieldName)) {
+                    deserializedPublicIpAddressResourceSettings.withTargetResourceName(reader.getString());
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedPublicIpAddressResourceSettings.withTargetResourceGroupName(reader.getString());
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedPublicIpAddressResourceSettings.resourceType = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPublicIpAddressResourceSettings.tags = tags;
+                } else if ("domainNameLabel".equals(fieldName)) {
+                    deserializedPublicIpAddressResourceSettings.domainNameLabel = reader.getString();
+                } else if ("fqdn".equals(fieldName)) {
+                    deserializedPublicIpAddressResourceSettings.fqdn = reader.getString();
+                } else if ("publicIpAllocationMethod".equals(fieldName)) {
+                    deserializedPublicIpAddressResourceSettings.publicIpAllocationMethod = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedPublicIpAddressResourceSettings.sku = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    deserializedPublicIpAddressResourceSettings.zones = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPublicIpAddressResourceSettings;
+        });
     }
 }

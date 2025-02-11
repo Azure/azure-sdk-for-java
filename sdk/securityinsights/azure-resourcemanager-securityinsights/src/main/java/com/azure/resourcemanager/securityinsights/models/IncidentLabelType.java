@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the label. */
+/**
+ * The type of the label.
+ */
 public final class IncidentLabelType extends ExpandableStringEnum<IncidentLabelType> {
-    /** Static value User for IncidentLabelType. */
+    /**
+     * Static value User for IncidentLabelType.
+     */
     public static final IncidentLabelType USER = fromString("User");
 
-    /** Static value AutoAssigned for IncidentLabelType. */
+    /**
+     * Static value AutoAssigned for IncidentLabelType.
+     */
     public static final IncidentLabelType AUTO_ASSIGNED = fromString("AutoAssigned");
 
     /**
+     * Creates a new instance of IncidentLabelType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IncidentLabelType() {
+    }
+
+    /**
      * Creates or finds a IncidentLabelType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IncidentLabelType.
      */
-    @JsonCreator
     public static IncidentLabelType fromString(String name) {
         return fromString(name, IncidentLabelType.class);
     }
 
     /**
      * Gets known IncidentLabelType values.
-     *
+     * 
      * @return known IncidentLabelType values.
      */
     public static Collection<IncidentLabelType> values() {

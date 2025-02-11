@@ -28,11 +28,9 @@ public class DownloadContentUnitTests {
 
     @BeforeEach
     public void setUp() {
-        CallAutomationClient callAutomationClient = CallAutomationUnitTestBase.getCallAutomationClient(
-            new ArrayList<>(
-                Collections.singletonList(
-                    new SimpleEntry<>(CallAutomationUnitTestBase.generateDownloadResult(CONTENT), 200)
-                )));
+        CallAutomationClient callAutomationClient
+            = CallAutomationUnitTestBase.getCallAutomationClient(new ArrayList<>(Collections
+                .singletonList(new SimpleEntry<>(CallAutomationUnitTestBase.generateDownloadResult(CONTENT), 200))));
         callRecording = callAutomationClient.getCallRecording();
     }
 

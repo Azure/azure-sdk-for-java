@@ -21,8 +21,7 @@ public final class NetworkDeviceSkusImpl implements NetworkDeviceSkus {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    public NetworkDeviceSkusImpl(
-        NetworkDeviceSkusClient innerClient,
+    public NetworkDeviceSkusImpl(NetworkDeviceSkusClient innerClient,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,10 +30,7 @@ public final class NetworkDeviceSkusImpl implements NetworkDeviceSkus {
     public Response<NetworkDeviceSku> getWithResponse(String networkDeviceSkuName, Context context) {
         Response<NetworkDeviceSkuInner> inner = this.serviceClient().getWithResponse(networkDeviceSkuName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkDeviceSkuImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,12 +48,12 @@ public final class NetworkDeviceSkusImpl implements NetworkDeviceSkus {
 
     public PagedIterable<NetworkDeviceSku> list() {
         PagedIterable<NetworkDeviceSkuInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new NetworkDeviceSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkDeviceSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkDeviceSku> list(Context context) {
         PagedIterable<NetworkDeviceSkuInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new NetworkDeviceSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkDeviceSkuImpl(inner1, this.manager()));
     }
 
     private NetworkDeviceSkusClient serviceClient() {

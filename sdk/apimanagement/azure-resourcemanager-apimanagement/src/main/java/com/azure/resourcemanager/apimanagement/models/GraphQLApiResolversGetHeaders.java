@@ -7,21 +7,21 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GraphQLApiResolversGetHeaders model. */
+/**
+ * The GraphQLApiResolversGetHeaders model.
+ */
 @Fluent
 public final class GraphQLApiResolversGetHeaders {
     /*
      * The Etag property.
      */
-    @JsonProperty(value = "Etag")
     private String etag;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of GraphQLApiResolversGetHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public GraphQLApiResolversGetHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +30,7 @@ public final class GraphQLApiResolversGetHeaders {
 
     /**
      * Get the etag property: The Etag property.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -39,7 +39,7 @@ public final class GraphQLApiResolversGetHeaders {
 
     /**
      * Set the etag property: The Etag property.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the GraphQLApiResolversGetHeaders object itself.
      */
@@ -50,7 +50,7 @@ public final class GraphQLApiResolversGetHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

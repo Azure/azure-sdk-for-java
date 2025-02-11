@@ -7,19 +7,21 @@ package com.azure.resourcemanager.automation.generated;
 import com.azure.resourcemanager.automation.models.Sku;
 import com.azure.resourcemanager.automation.models.SkuNameEnum;
 
-/** Samples for AutomationAccount CreateOrUpdate. */
+/**
+ * Samples for AutomationAccount CreateOrUpdate.
+ */
 public final class AutomationAccountCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/createOrUpdateAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/
+     * createOrUpdateAutomationAccount.json
      */
     /**
      * Sample code: Create or update automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .automationAccounts()
+        manager.automationAccounts()
             .define("myAutomationAccount9")
             .withExistingResourceGroup("rg")
             .withRegion("East US 2")

@@ -94,7 +94,6 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
      */
     @Override
     public void validate() {
-        super.validate();
         if (resourceId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

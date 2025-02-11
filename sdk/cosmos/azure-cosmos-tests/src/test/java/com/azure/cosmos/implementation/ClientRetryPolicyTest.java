@@ -34,8 +34,9 @@ public class ClientRetryPolicyTest {
         return new Object[][]{
             // OperationType, ResourceType, isAddressRequest, RequestFullPath, ShouldRetryCrossRegion
             { OperationType.Read, ResourceType.Document, Boolean.FALSE, TEST_DOCUMENT_PATH, Boolean.TRUE },
-            { OperationType.Read, ResourceType.Document, Boolean.TRUE, TEST_DOCUMENT_PATH, Boolean.FALSE },
+            { OperationType.Read, ResourceType.Document, Boolean.TRUE, TEST_DOCUMENT_PATH, Boolean.TRUE },
             { OperationType.Create, ResourceType.Document, Boolean.FALSE, TEST_DOCUMENT_PATH, Boolean.FALSE },
+            { OperationType.Create, ResourceType.Document, Boolean.TRUE, TEST_DOCUMENT_PATH, Boolean.FALSE },
             { OperationType.Read, ResourceType.Database, Boolean.FALSE, TEST_DATABASE_PATH, Boolean.TRUE },
             { OperationType.Create, ResourceType.Database, Boolean.FALSE, TEST_DATABASE_PATH, Boolean.FALSE },
             { OperationType.QueryPlan, ResourceType.Document, Boolean.FALSE, TEST_DOCUMENT_PATH, Boolean.TRUE }

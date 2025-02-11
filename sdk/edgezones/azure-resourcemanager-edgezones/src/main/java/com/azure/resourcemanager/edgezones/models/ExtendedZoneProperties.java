@@ -5,77 +5,70 @@
 package com.azure.resourcemanager.edgezones.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties of an Extended Zone resource.
  */
 @Immutable
-public final class ExtendedZoneProperties {
+public final class ExtendedZoneProperties implements JsonSerializable<ExtendedZoneProperties> {
     /*
      * Status of the last operation performed by the subscription on the Edge Zone resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Indicates the Azure Extended Zone registration’s approval status.
      */
-    @JsonProperty(value = "registrationState", access = JsonProperty.Access.WRITE_ONLY)
     private RegistrationState registrationState;
 
     /*
      * Display name of the Azure Extended Zone.
      */
-    @JsonProperty(value = "displayName", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Regional display name of the Azure Extended Zone.
      */
-    @JsonProperty(value = "regionalDisplayName", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String regionalDisplayName;
 
     /*
      * Type of region for the Azure Extended Zone.
      */
-    @JsonProperty(value = "regionType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String regionType;
 
     /*
      * Category of region for the Azure Extended Zone.
      */
-    @JsonProperty(value = "regionCategory", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String regionCategory;
 
     /*
      * Geography of the Azure Extended Zone.
      */
-    @JsonProperty(value = "geography", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String geography;
 
     /*
      * The Geography Group of the Azure Extended Zone.
      */
-    @JsonProperty(value = "geographyGroup", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String geographyGroup;
 
     /*
      * The Longitude of the Azure Extended Zone.
      */
-    @JsonProperty(value = "longitude", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String longitude;
 
     /*
      * The Latitude of the Azure Extended Zone.
      */
-    @JsonProperty(value = "latitude", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String latitude;
 
     /*
      * The Home Location of the Azure Extended Zone.
      */
-    @JsonProperty(value = "homeLocation", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String homeLocation;
 
     /**
@@ -190,5 +183,63 @@ public final class ExtendedZoneProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtendedZoneProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtendedZoneProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExtendedZoneProperties.
+     */
+    public static ExtendedZoneProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtendedZoneProperties deserializedExtendedZoneProperties = new ExtendedZoneProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedExtendedZoneProperties.displayName = reader.getString();
+                } else if ("regionalDisplayName".equals(fieldName)) {
+                    deserializedExtendedZoneProperties.regionalDisplayName = reader.getString();
+                } else if ("regionType".equals(fieldName)) {
+                    deserializedExtendedZoneProperties.regionType = reader.getString();
+                } else if ("regionCategory".equals(fieldName)) {
+                    deserializedExtendedZoneProperties.regionCategory = reader.getString();
+                } else if ("geography".equals(fieldName)) {
+                    deserializedExtendedZoneProperties.geography = reader.getString();
+                } else if ("geographyGroup".equals(fieldName)) {
+                    deserializedExtendedZoneProperties.geographyGroup = reader.getString();
+                } else if ("longitude".equals(fieldName)) {
+                    deserializedExtendedZoneProperties.longitude = reader.getString();
+                } else if ("latitude".equals(fieldName)) {
+                    deserializedExtendedZoneProperties.latitude = reader.getString();
+                } else if ("homeLocation".equals(fieldName)) {
+                    deserializedExtendedZoneProperties.homeLocation = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExtendedZoneProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("registrationState".equals(fieldName)) {
+                    deserializedExtendedZoneProperties.registrationState
+                        = RegistrationState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtendedZoneProperties;
+        });
     }
 }

@@ -3,8 +3,10 @@
 
 package com.azure.messaging.eventhubs.stress.scenarios;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerClientBuilder;
@@ -47,7 +49,8 @@ public class EventSenderBuffered extends EventHubsScenario {
     @Override
     public void run() {
         sender = toClose(getBuilder()
-            .onSendBatchFailed(context -> telemetryHelper.recordError(context.getThrowable(), "sendBuffed", context.getPartitionId()))
+            .onSendBatchFailed(
+                context -> telemetryHelper.recordError(context.getThrowable(), "sendBuffed", context.getPartitionId()))
             .onSendBatchSucceeded(context -> LOGGER.verbose("Send success."))
             .buildAsyncClient());
 
@@ -63,13 +66,11 @@ public class EventSenderBuffered extends EventHubsScenario {
     }
 
     private Mono<Void> singleRun() {
-        return createEvent().flatMap(event ->
-                Mono.usingWhen(rateLimiter.acquire(),
-                    i -> sender.enqueueEvent(event),
-                    i -> {
-                        rateLimiter.release();
-                        return Mono.empty();
-                    }))
+        return createEvent()
+            .flatMap(event -> Mono.usingWhen(rateLimiter.acquire(), i -> sender.enqueueEvent(event), i -> {
+                rateLimiter.release();
+                return Mono.empty();
+            }))
             .then();
     }
 
@@ -89,8 +90,10 @@ public class EventSenderBuffered extends EventHubsScenario {
     }
 
     private EventHubBufferedProducerClientBuilder getBuilder() {
-        EventHubBufferedProducerClientBuilder builder = new EventHubBufferedProducerClientBuilder()
-            .connectionString(options.getEventHubsConnectionString(), options.getEventHubsEventHubName());
+        final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        final EventHubBufferedProducerClientBuilder builder = new EventHubBufferedProducerClientBuilder()
+            .credential(options.getEventHubsFullyQualifiedNamespace(), options.getEventHubsEventHubName(),
+                tokenCredential);
 
         if (maxEventBufferLengthPerPartition > 0) {
             builder.maxEventBufferLengthPerPartition(maxEventBufferLengthPerPartition);

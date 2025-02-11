@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceUnitResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceUnitResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"targetResourceGroup\":\"hiv\",\"deploymentMode\":\"Complete\",\"artifacts\":{\"templateUri\":\"wby\",\"parametersUri\":\"k\",\"templateArtifactSourceRelativePath\":\"dumjgrtfwvuk\",\"parametersArtifactSourceRelativePath\":\"audccsnhs\"}}")
-                .toObject(ServiceUnitResourceProperties.class);
+        ServiceUnitResourceProperties model = BinaryData.fromString(
+            "{\"targetResourceGroup\":\"hiv\",\"deploymentMode\":\"Complete\",\"artifacts\":{\"templateUri\":\"wby\",\"parametersUri\":\"k\",\"templateArtifactSourceRelativePath\":\"dumjgrtfwvuk\",\"parametersArtifactSourceRelativePath\":\"audccsnhs\"}}")
+            .toObject(ServiceUnitResourceProperties.class);
         Assertions.assertEquals("hiv", model.targetResourceGroup());
         Assertions.assertEquals(DeploymentMode.COMPLETE, model.deploymentMode());
         Assertions.assertEquals("wby", model.artifacts().templateUri());
@@ -28,16 +26,12 @@ public final class ServiceUnitResourcePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceUnitResourceProperties model =
-            new ServiceUnitResourceProperties()
-                .withTargetResourceGroup("hiv")
-                .withDeploymentMode(DeploymentMode.COMPLETE)
-                .withArtifacts(
-                    new ServiceUnitArtifacts()
-                        .withTemplateUri("wby")
-                        .withParametersUri("k")
-                        .withTemplateArtifactSourceRelativePath("dumjgrtfwvuk")
-                        .withParametersArtifactSourceRelativePath("audccsnhs"));
+        ServiceUnitResourceProperties model = new ServiceUnitResourceProperties().withTargetResourceGroup("hiv")
+            .withDeploymentMode(DeploymentMode.COMPLETE)
+            .withArtifacts(new ServiceUnitArtifacts().withTemplateUri("wby")
+                .withParametersUri("k")
+                .withTemplateArtifactSourceRelativePath("dumjgrtfwvuk")
+                .withParametersArtifactSourceRelativePath("audccsnhs"));
         model = BinaryData.fromObject(model).toObject(ServiceUnitResourceProperties.class);
         Assertions.assertEquals("hiv", model.targetResourceGroup());
         Assertions.assertEquals(DeploymentMode.COMPLETE, model.deploymentMode());

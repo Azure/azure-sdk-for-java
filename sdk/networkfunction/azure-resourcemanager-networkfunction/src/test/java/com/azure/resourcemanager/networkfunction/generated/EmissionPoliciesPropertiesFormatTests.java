@@ -11,30 +11,24 @@ import com.azure.resourcemanager.networkfunction.models.EmissionPolicyDestinatio
 import com.azure.resourcemanager.networkfunction.models.EmissionType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EmissionPoliciesPropertiesFormatTests {
-    @Test
-    public void testDeserialize() {
-        EmissionPoliciesPropertiesFormat model =
-            BinaryData
-                .fromString(
-                    "{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{\"destinationType\":\"AzureMonitor\"},{\"destinationType\":\"AzureMonitor\"}]}")
-                .toObject(EmissionPoliciesPropertiesFormat.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EmissionPoliciesPropertiesFormat model = BinaryData.fromString(
+            "{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{\"destinationType\":\"AzureMonitor\"},{\"destinationType\":\"AzureMonitor\"}]}")
+            .toObject(EmissionPoliciesPropertiesFormat.class);
         Assertions.assertEquals(EmissionType.IPFIX, model.emissionType());
         Assertions.assertEquals(DestinationType.AZURE_MONITOR, model.emissionDestinations().get(0).destinationType());
     }
 
-    @Test
-    public void testSerialize() {
-        EmissionPoliciesPropertiesFormat model =
-            new EmissionPoliciesPropertiesFormat()
-                .withEmissionType(EmissionType.IPFIX)
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EmissionPoliciesPropertiesFormat model
+            = new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
                 .withEmissionDestinations(
-                    Arrays
-                        .asList(
-                            new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR),
-                            new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR)));
+                    Arrays.asList(new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR),
+                        new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR)));
         model = BinaryData.fromObject(model).toObject(EmissionPoliciesPropertiesFormat.class);
         Assertions.assertEquals(EmissionType.IPFIX, model.emissionType());
         Assertions.assertEquals(DestinationType.AZURE_MONITOR, model.emissionDestinations().get(0).destinationType());

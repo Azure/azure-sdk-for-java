@@ -108,22 +108,18 @@ public final class MapsAccountImpl implements MapsAccount, MapsAccount.Definitio
     }
 
     public MapsAccount create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public MapsAccount create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -139,56 +135,47 @@ public final class MapsAccountImpl implements MapsAccount, MapsAccount.Definitio
     }
 
     public MapsAccount apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .updateWithResponse(resourceGroupName, accountName, updateMapsAccountUpdateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .updateWithResponse(resourceGroupName, accountName, updateMapsAccountUpdateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MapsAccount apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .updateWithResponse(resourceGroupName, accountName, updateMapsAccountUpdateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .updateWithResponse(resourceGroupName, accountName, updateMapsAccountUpdateParameters, context)
+            .getValue();
         return this;
     }
 
     MapsAccountImpl(MapsAccountInner innerObject, com.azure.resourcemanager.maps.AzureMapsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
     }
 
     public MapsAccount refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MapsAccount refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
+            .getValue();
         return this;
     }
 
-    public Response<MapsAccountSasToken> listSasWithResponse(
-        AccountSasParameters mapsAccountSasParameters, Context context) {
-        return serviceManager
-            .accounts()
+    public Response<MapsAccountSasToken> listSasWithResponse(AccountSasParameters mapsAccountSasParameters,
+        Context context) {
+        return serviceManager.accounts()
             .listSasWithResponse(resourceGroupName, accountName, mapsAccountSasParameters, context);
     }
 
@@ -204,10 +191,9 @@ public final class MapsAccountImpl implements MapsAccount, MapsAccount.Definitio
         return serviceManager.accounts().listKeys(resourceGroupName, accountName);
     }
 
-    public Response<MapsAccountKeys> regenerateKeysWithResponse(
-        MapsKeySpecification keySpecification, Context context) {
-        return serviceManager
-            .accounts()
+    public Response<MapsAccountKeys> regenerateKeysWithResponse(MapsKeySpecification keySpecification,
+        Context context) {
+        return serviceManager.accounts()
             .regenerateKeysWithResponse(resourceGroupName, accountName, keySpecification, context);
     }
 

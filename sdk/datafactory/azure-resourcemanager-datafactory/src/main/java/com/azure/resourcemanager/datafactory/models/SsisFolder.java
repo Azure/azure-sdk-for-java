@@ -70,7 +70,6 @@ public final class SsisFolder extends SsisObjectMetadata {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

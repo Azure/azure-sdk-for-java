@@ -13,26 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class UeSessionInfo4GTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UeSessionInfo4G model = BinaryData
-            .fromString(
-                "{\"ebi\":67001708,\"apn\":\"eytu\",\"ueIpAddress\":{\"ipV4Addr\":\"bfjkw\"},\"pdnType\":\"IPV4\"}")
+        UeSessionInfo4G model = BinaryData.fromString(
+            "{\"ebi\":1412186545,\"apn\":\"jbsahrtdtpde\",\"ueIpAddress\":{\"ipV4Addr\":\"ac\"},\"pdnType\":\"IPV4\"}")
             .toObject(UeSessionInfo4G.class);
-        Assertions.assertEquals(67001708, model.ebi());
-        Assertions.assertEquals("eytu", model.apn());
-        Assertions.assertEquals("bfjkw", model.ueIpAddress().ipV4Addr());
+        Assertions.assertEquals(1412186545, model.ebi());
+        Assertions.assertEquals("jbsahrtdtpde", model.apn());
+        Assertions.assertEquals("ac", model.ueIpAddress().ipV4Addr());
         Assertions.assertEquals(PdnType.IPV4, model.pdnType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UeSessionInfo4G model = new UeSessionInfo4G().withEbi(67001708)
-            .withApn("eytu")
-            .withUeIpAddress(new UeIpAddress().withIpV4Addr("bfjkw"))
+        UeSessionInfo4G model = new UeSessionInfo4G().withEbi(1412186545)
+            .withApn("jbsahrtdtpde")
+            .withUeIpAddress(new UeIpAddress().withIpV4Addr("ac"))
             .withPdnType(PdnType.IPV4);
         model = BinaryData.fromObject(model).toObject(UeSessionInfo4G.class);
-        Assertions.assertEquals(67001708, model.ebi());
-        Assertions.assertEquals("eytu", model.apn());
-        Assertions.assertEquals("bfjkw", model.ueIpAddress().ipV4Addr());
+        Assertions.assertEquals(1412186545, model.ebi());
+        Assertions.assertEquals("jbsahrtdtpde", model.apn());
+        Assertions.assertEquals("ac", model.ueIpAddress().ipV4Addr());
         Assertions.assertEquals(PdnType.IPV4, model.pdnType());
     }
 }

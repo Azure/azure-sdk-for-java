@@ -137,6 +137,10 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServerInner innerModel() {
         return this.innerObject;
     }
@@ -159,20 +163,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .create(resourceGroupName, serverName, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .create(resourceGroupName, serverName, createParameters, Context.NONE);
         return this;
     }
 
     public Server create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .create(resourceGroupName, serverName, createParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .create(resourceGroupName, serverName, createParameters, context);
         return this;
     }
 
@@ -189,47 +189,39 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .update(resourceGroupName, serverName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .update(resourceGroupName, serverName, updateParameters, Context.NONE);
         return this;
     }
 
     public Server apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .update(resourceGroupName, serverName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .update(resourceGroupName, serverName, updateParameters, context);
         return this;
     }
 
     ServerImpl(ServerInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servers");
     }
 
     public Server refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Server refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .getByResourceGroupWithResponse(resourceGroupName, serverName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .getByResourceGroupWithResponse(resourceGroupName, serverName, context)
+            .getValue();
         return this;
     }
 

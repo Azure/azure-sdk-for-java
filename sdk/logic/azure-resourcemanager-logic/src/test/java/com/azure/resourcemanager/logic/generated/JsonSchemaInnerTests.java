@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class JsonSchemaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JsonSchemaInner model =
-            BinaryData.fromString("{\"title\":\"t\",\"content\":\"twwrqp\"}").toObject(JsonSchemaInner.class);
-        Assertions.assertEquals("t", model.title());
-        Assertions.assertEquals("twwrqp", model.content());
+        JsonSchemaInner model
+            = BinaryData.fromString("{\"title\":\"bjj\",\"content\":\"nvxbvt\"}").toObject(JsonSchemaInner.class);
+        Assertions.assertEquals("bjj", model.title());
+        Assertions.assertEquals("nvxbvt", model.content());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonSchemaInner model = new JsonSchemaInner().withTitle("t").withContent("twwrqp");
+        JsonSchemaInner model = new JsonSchemaInner().withTitle("bjj").withContent("nvxbvt");
         model = BinaryData.fromObject(model).toObject(JsonSchemaInner.class);
-        Assertions.assertEquals("t", model.title());
-        Assertions.assertEquals("twwrqp", model.content());
+        Assertions.assertEquals("bjj", model.title());
+        Assertions.assertEquals("nvxbvt", model.content());
     }
 }

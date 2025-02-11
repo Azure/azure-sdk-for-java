@@ -7,11 +7,13 @@ package com.azure.resourcemanager.databox.models;
 import com.azure.resourcemanager.databox.fluent.models.ShipmentPickUpResponseInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of ShipmentPickUpResponse. */
+/**
+ * An immutable client-side representation of ShipmentPickUpResponse.
+ */
 public interface ShipmentPickUpResponse {
     /**
      * Gets the confirmationNumber property: Confirmation number for the pick up request.
-     *
+     * 
      * @return the confirmationNumber value.
      */
     String confirmationNumber();
@@ -19,14 +21,14 @@ public interface ShipmentPickUpResponse {
     /**
      * Gets the readyByTime property: Time by which shipment should be ready for pick up, this is in local time of pick
      * up area.
-     *
+     * 
      * @return the readyByTime value.
      */
     OffsetDateTime readyByTime();
 
     /**
      * Gets the inner com.azure.resourcemanager.databox.fluent.models.ShipmentPickUpResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ShipmentPickUpResponseInner innerModel();

@@ -73,6 +73,9 @@ public final class SchemaVersions implements JsonSerializable<SchemaVersions> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -12,8 +12,7 @@ public final class GenerateSsoUrlResultImpl implements GenerateSsoUrlResult {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    GenerateSsoUrlResultImpl(
-        GenerateSsoUrlResultInner innerObject,
+    GenerateSsoUrlResultImpl(GenerateSsoUrlResultInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

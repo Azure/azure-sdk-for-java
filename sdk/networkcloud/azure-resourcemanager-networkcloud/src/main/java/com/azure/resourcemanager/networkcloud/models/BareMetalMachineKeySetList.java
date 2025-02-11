@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.BareMetalMachineKeySetInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** BareMetalMachineKeySetList represents a list of bare metal machine key sets. */
+/**
+ * BareMetalMachineKeySetList represents a list of bare metal machine key sets.
+ */
 @Fluent
-public final class BareMetalMachineKeySetList {
+public final class BareMetalMachineKeySetList implements JsonSerializable<BareMetalMachineKeySetList> {
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of bare metal machine key sets.
      */
-    @JsonProperty(value = "value")
     private List<BareMetalMachineKeySetInner> value;
 
-    /** Creates an instance of BareMetalMachineKeySetList class. */
+    /**
+     * Creates an instance of BareMetalMachineKeySetList class.
+     */
     public BareMetalMachineKeySetList() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class BareMetalMachineKeySetList {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BareMetalMachineKeySetList object itself.
      */
@@ -50,7 +56,7 @@ public final class BareMetalMachineKeySetList {
 
     /**
      * Get the value property: The list of bare metal machine key sets.
-     *
+     * 
      * @return the value value.
      */
     public List<BareMetalMachineKeySetInner> value() {
@@ -59,7 +65,7 @@ public final class BareMetalMachineKeySetList {
 
     /**
      * Set the value property: The list of bare metal machine key sets.
-     *
+     * 
      * @param value the value value to set.
      * @return the BareMetalMachineKeySetList object itself.
      */
@@ -70,12 +76,53 @@ public final class BareMetalMachineKeySetList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BareMetalMachineKeySetList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BareMetalMachineKeySetList if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BareMetalMachineKeySetList.
+     */
+    public static BareMetalMachineKeySetList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BareMetalMachineKeySetList deserializedBareMetalMachineKeySetList = new BareMetalMachineKeySetList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedBareMetalMachineKeySetList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<BareMetalMachineKeySetInner> value
+                        = reader.readArray(reader1 -> BareMetalMachineKeySetInner.fromJson(reader1));
+                    deserializedBareMetalMachineKeySetList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBareMetalMachineKeySetList;
+        });
     }
 }

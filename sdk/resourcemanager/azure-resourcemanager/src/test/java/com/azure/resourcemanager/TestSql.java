@@ -12,22 +12,27 @@ import reactor.core.publisher.Mono;
 public class TestSql extends TestTemplate<SqlServer, SqlServers> {
     @Override
     public SqlServer createResource(SqlServers resources) throws Exception {
-        final String sqlServerName = resources.manager().resourceManager().internalContext().randomResourceName("sql", 10);
+        final String sqlServerName
+            = resources.manager().resourceManager().internalContext().randomResourceName("sql", 10);
         final SqlServer[] sqlServers = new SqlServer[1];
-        Mono<SqlServer> resourceStream =
-            resources
-                .define(sqlServerName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup()
-                .withAdministratorLogin("admin32")
-                .withAdministratorPassword("Password~1")
-                .defineDatabase("database1").attach()
-                .defineElasticPool("elasticPool1").withStandardPool().attach()
-                .defineDatabase("databaseInEP").withExistingElasticPool("elasticPool1").attach()
-                .defineFirewallRule("firewallRule1").withIpAddress("10.10.10.10").attach()
-                .withTag("mytag", "testtag")
-                .createAsync();
-
+        Mono<SqlServer> resourceStream = resources.define(sqlServerName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup()
+            .withAdministratorLogin("admin32")
+            .withAdministratorPassword("Password~1")
+            .defineDatabase("database1")
+            .attach()
+            .defineElasticPool("elasticPool1")
+            .withStandardPool()
+            .attach()
+            .defineDatabase("databaseInEP")
+            .withExistingElasticPool("elasticPool1")
+            .attach()
+            .defineFirewallRule("firewallRule1")
+            .withIpAddress("10.10.10.10")
+            .attach()
+            .withTag("mytag", "testtag")
+            .createAsync();
 
         sqlServers[0] = resourceStream.block();
 
@@ -44,13 +49,11 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
 
     @Override
     public SqlServer updateResource(SqlServer sqlServer) throws Exception {
-        sqlServer =
-            sqlServer
-                .update()
-                .withoutDatabase("database1")
-                .withoutDatabase("databaseInEP")
-                .withoutElasticPool("elasticPool1")
-                .apply();
+        sqlServer = sqlServer.update()
+            .withoutDatabase("database1")
+            .withoutDatabase("databaseInEP")
+            .withoutElasticPool("elasticPool1")
+            .apply();
 
         Assertions.assertNotNull(sqlServer.innerModel());
         // Just master database
@@ -63,28 +66,16 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
 
     @Override
     public void print(SqlServer sqlServer) {
-        System
-            .out
-            .println(
-                new StringBuilder()
-                    .append("SqlServer : ")
-                    .append(sqlServer.id())
-                    .append(", Name: ")
-                    .append(sqlServer.name())
-                    .toString());
-        System
-            .out
-            .println(
-                new StringBuilder()
-                    .append("Number of databases : ")
-                    .append(sqlServer.databases().list().size())
-                    .toString());
-        System
-            .out
-            .println(
-                new StringBuilder()
-                    .append("Number of elastic pools : ")
-                    .append(sqlServer.elasticPools().list().size())
-                    .toString());
+        System.out.println(new StringBuilder().append("SqlServer : ")
+            .append(sqlServer.id())
+            .append(", Name: ")
+            .append(sqlServer.name())
+            .toString());
+        System.out.println(new StringBuilder().append("Number of databases : ")
+            .append(sqlServer.databases().list().size())
+            .toString());
+        System.out.println(new StringBuilder().append("Number of elastic pools : ")
+            .append(sqlServer.elasticPools().list().size())
+            .toString());
     }
 }

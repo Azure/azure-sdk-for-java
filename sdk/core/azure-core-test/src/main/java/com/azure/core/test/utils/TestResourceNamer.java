@@ -61,7 +61,7 @@ public class TestResourceNamer extends ResourceNamer {
     }
 
     /**
-     * Constrctor of TestResourceNamer
+     * Constructor of TestResourceNamer
      *
      * @param testContextManager Contextual information about the test being run, such as test name, {@link TestMode},
      * and others.

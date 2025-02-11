@@ -10,6 +10,41 @@
 
 ### Other Changes
 
+## 1.15.8 (2025-02-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
+
+## 1.15.7 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+- Upgraded Netty dependencies from `4.1.112.Final` to `4.1.115.Final` to resolve a CVE.
+
+## 1.15.6 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+- Upgraded `reactor-netty-http` from `1.0.45` to `1.0.48`.
+- Upgraded Netty dependencies from `4.1.110.Final` to `4.1.112.Final`.
+
+## 1.15.5 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
 ## 1.15.4 (2024-09-12)
 
 ### Bugs Fixed

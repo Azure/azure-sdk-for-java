@@ -6,29 +6,30 @@ package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * API definition properties entity.
  */
 @Fluent
-public final class ApiDefinitionProperties {
+public final class ApiDefinitionProperties implements JsonSerializable<ApiDefinitionProperties> {
     /*
      * API definition title.
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /*
      * API definition description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * API specification details.
      */
-    @JsonProperty(value = "specification", access = JsonProperty.Access.WRITE_ONLY)
     private ApiDefinitionPropertiesSpecification specification;
 
     /**
@@ -93,8 +94,8 @@ public final class ApiDefinitionProperties {
      */
     public void validate() {
         if (title() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property title in model ApiDefinitionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property title in model ApiDefinitionProperties"));
         }
         if (specification() != null) {
             specification().validate();
@@ -102,4 +103,47 @@ public final class ApiDefinitionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApiDefinitionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiDefinitionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiDefinitionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApiDefinitionProperties.
+     */
+    public static ApiDefinitionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiDefinitionProperties deserializedApiDefinitionProperties = new ApiDefinitionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedApiDefinitionProperties.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedApiDefinitionProperties.description = reader.getString();
+                } else if ("specification".equals(fieldName)) {
+                    deserializedApiDefinitionProperties.specification
+                        = ApiDefinitionPropertiesSpecification.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiDefinitionProperties;
+        });
+    }
 }

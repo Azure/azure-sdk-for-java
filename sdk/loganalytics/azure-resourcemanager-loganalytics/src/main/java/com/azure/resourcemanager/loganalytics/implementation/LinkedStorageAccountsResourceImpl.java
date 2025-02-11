@@ -11,10 +11,8 @@ import com.azure.resourcemanager.loganalytics.models.LinkedStorageAccountsResour
 import java.util.Collections;
 import java.util.List;
 
-public final class LinkedStorageAccountsResourceImpl
-    implements LinkedStorageAccountsResource,
-        LinkedStorageAccountsResource.Definition,
-        LinkedStorageAccountsResource.Update {
+public final class LinkedStorageAccountsResourceImpl implements LinkedStorageAccountsResource,
+    LinkedStorageAccountsResource.Definition, LinkedStorageAccountsResource.Update {
     private LinkedStorageAccountsResourceInner innerObject;
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
@@ -69,29 +67,24 @@ public final class LinkedStorageAccountsResourceImpl
     }
 
     public LinkedStorageAccountsResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedStorageAccounts()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, dataSourceType, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLinkedStorageAccounts()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceType, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public LinkedStorageAccountsResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedStorageAccounts()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, dataSourceType, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLinkedStorageAccounts()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceType, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    LinkedStorageAccountsResourceImpl(
-        DataSourceType name, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
+    LinkedStorageAccountsResourceImpl(DataSourceType name,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = new LinkedStorageAccountsResourceInner();
         this.serviceManager = serviceManager;
         this.dataSourceType = name;
@@ -102,55 +95,45 @@ public final class LinkedStorageAccountsResourceImpl
     }
 
     public LinkedStorageAccountsResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedStorageAccounts()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, dataSourceType, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLinkedStorageAccounts()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceType, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public LinkedStorageAccountsResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedStorageAccounts()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, dataSourceType, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLinkedStorageAccounts()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceType, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    LinkedStorageAccountsResourceImpl(
-        LinkedStorageAccountsResourceInner innerObject,
+    LinkedStorageAccountsResourceImpl(LinkedStorageAccountsResourceInner innerObject,
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.dataSourceType =
-            DataSourceType.fromString(Utils.getValueFromIdByName(innerObject.id(), "linkedStorageAccounts"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.dataSourceType = DataSourceType
+            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "linkedStorageAccounts"));
     }
 
     public LinkedStorageAccountsResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedStorageAccounts()
-                .getWithResponse(resourceGroupName, workspaceName, dataSourceType, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLinkedStorageAccounts()
+            .getWithResponse(resourceGroupName, workspaceName, dataSourceType, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LinkedStorageAccountsResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedStorageAccounts()
-                .getWithResponse(resourceGroupName, workspaceName, dataSourceType, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLinkedStorageAccounts()
+            .getWithResponse(resourceGroupName, workspaceName, dataSourceType, context)
+            .getValue();
         return this;
     }
 

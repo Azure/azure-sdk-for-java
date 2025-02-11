@@ -206,7 +206,8 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
     private Boolean isSealed;
 
     /*
-     * If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values are High and Standard.
+     * If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values
+     * are High and Standard.
      */
     private RehydratePriority rehydratePriority;
 
@@ -1157,7 +1158,6 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobItemPropertiesInternal if the XmlReader was pointing to an instance of it, or null if
      * it was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobItemPropertiesInternal.
      */
     public static BlobItemPropertiesInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -1172,7 +1172,6 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * cases where the model can deserialize from different root element names.
      * @return An instance of BlobItemPropertiesInternal if the XmlReader was pointing to an instance of it, or null if
      * it was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobItemPropertiesInternal.
      */
     public static BlobItemPropertiesInternal fromXml(XmlReader xmlReader, String rootElementName)

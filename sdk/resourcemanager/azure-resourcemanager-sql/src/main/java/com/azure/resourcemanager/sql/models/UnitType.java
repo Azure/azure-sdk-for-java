@@ -27,6 +27,15 @@ public final class UnitType extends ExpandableStringEnum<UnitType> {
     public static final UnitType BYTES_PER_SECOND = fromString("bytesPerSecond");
 
     /**
+     * Creates a new instance of UnitType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UnitType() {
+    }
+
+    /**
      * Creates or finds a UnitType from its string representation.
      *
      * @param name a name to look for.

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the cost summary. */
+/**
+ * The properties of the cost summary.
+ */
 @Fluent
-public final class LabCostSummaryProperties {
+public final class LabCostSummaryProperties implements JsonSerializable<LabCostSummaryProperties> {
     /*
      * The cost component of the cost item.
      */
-    @JsonProperty(value = "estimatedLabCost")
     private Double estimatedLabCost;
 
-    /** Creates an instance of LabCostSummaryProperties class. */
+    /**
+     * Creates an instance of LabCostSummaryProperties class.
+     */
     public LabCostSummaryProperties() {
     }
 
     /**
      * Get the estimatedLabCost property: The cost component of the cost item.
-     *
+     * 
      * @return the estimatedLabCost value.
      */
     public Double estimatedLabCost() {
@@ -31,7 +38,7 @@ public final class LabCostSummaryProperties {
 
     /**
      * Set the estimatedLabCost property: The cost component of the cost item.
-     *
+     * 
      * @param estimatedLabCost the estimatedLabCost value to set.
      * @return the LabCostSummaryProperties object itself.
      */
@@ -42,9 +49,45 @@ public final class LabCostSummaryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("estimatedLabCost", this.estimatedLabCost);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabCostSummaryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabCostSummaryProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabCostSummaryProperties.
+     */
+    public static LabCostSummaryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabCostSummaryProperties deserializedLabCostSummaryProperties = new LabCostSummaryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("estimatedLabCost".equals(fieldName)) {
+                    deserializedLabCostSummaryProperties.estimatedLabCost = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabCostSummaryProperties;
+        });
     }
 }

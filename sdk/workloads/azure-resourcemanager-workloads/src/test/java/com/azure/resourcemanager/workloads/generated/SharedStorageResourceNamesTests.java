@@ -11,23 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class SharedStorageResourceNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SharedStorageResourceNames model =
-            BinaryData
-                .fromString(
-                    "{\"sharedStorageAccountName\":\"mwctondzjluudfd\",\"sharedStorageAccountPrivateEndPointName\":\"gg\"}")
-                .toObject(SharedStorageResourceNames.class);
-        Assertions.assertEquals("mwctondzjluudfd", model.sharedStorageAccountName());
-        Assertions.assertEquals("gg", model.sharedStorageAccountPrivateEndPointName());
+        SharedStorageResourceNames model = BinaryData
+            .fromString(
+                "{\"sharedStorageAccountName\":\"svfycxzbfv\",\"sharedStorageAccountPrivateEndPointName\":\"wvrvmtg\"}")
+            .toObject(SharedStorageResourceNames.class);
+        Assertions.assertEquals("svfycxzbfv", model.sharedStorageAccountName());
+        Assertions.assertEquals("wvrvmtg", model.sharedStorageAccountPrivateEndPointName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SharedStorageResourceNames model =
-            new SharedStorageResourceNames()
-                .withSharedStorageAccountName("mwctondzjluudfd")
-                .withSharedStorageAccountPrivateEndPointName("gg");
+        SharedStorageResourceNames model = new SharedStorageResourceNames().withSharedStorageAccountName("svfycxzbfv")
+            .withSharedStorageAccountPrivateEndPointName("wvrvmtg");
         model = BinaryData.fromObject(model).toObject(SharedStorageResourceNames.class);
-        Assertions.assertEquals("mwctondzjluudfd", model.sharedStorageAccountName());
-        Assertions.assertEquals("gg", model.sharedStorageAccountPrivateEndPointName());
+        Assertions.assertEquals("svfycxzbfv", model.sharedStorageAccountName());
+        Assertions.assertEquals("wvrvmtg", model.sharedStorageAccountPrivateEndPointName());
     }
 }

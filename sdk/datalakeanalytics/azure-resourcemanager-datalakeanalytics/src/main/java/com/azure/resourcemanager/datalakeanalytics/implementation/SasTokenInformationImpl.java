@@ -12,8 +12,7 @@ public final class SasTokenInformationImpl implements SasTokenInformation {
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    SasTokenInformationImpl(
-        SasTokenInformationInner innerObject,
+    SasTokenInformationImpl(SasTokenInformationInner innerObject,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

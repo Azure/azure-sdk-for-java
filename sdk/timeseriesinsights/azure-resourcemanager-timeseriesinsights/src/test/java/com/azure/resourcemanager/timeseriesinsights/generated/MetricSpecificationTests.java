@@ -14,54 +14,44 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"wjzrnfygxgisp\",\"displayName\":\"vtz\",\"displayDescription\":\"ufubl\",\"unit\":\"fxqeof\",\"dimensions\":[{\"name\":\"jhqjbasvmsmjqul\",\"displayName\":\"sntnbybkzgcw\"}],\"aggregationType\":\"clxxwrljdo\",\"availabilities\":[{\"timeGrain\":\"qvkoc\",\"blobDuration\":\"jdkwtnhxbnjb\"},{\"timeGrain\":\"sqrglssainq\",\"blobDuration\":\"wnzlljfmppeeb\"},{\"timeGrain\":\"gxsabkyq\",\"blobDuration\":\"ujitcjcz\"}],\"category\":\"evndh\",\"resourceIdDimensionNameOverride\":\"wpdappdsbdkv\"}")
-                .toObject(MetricSpecification.class);
-        Assertions.assertEquals("wjzrnfygxgisp", model.name());
-        Assertions.assertEquals("vtz", model.displayName());
-        Assertions.assertEquals("ufubl", model.displayDescription());
-        Assertions.assertEquals("fxqeof", model.unit());
-        Assertions.assertEquals("jhqjbasvmsmjqul", model.dimensions().get(0).name());
-        Assertions.assertEquals("sntnbybkzgcw", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("clxxwrljdo", model.aggregationType());
-        Assertions.assertEquals("qvkoc", model.availabilities().get(0).timeGrain());
-        Assertions.assertEquals("jdkwtnhxbnjb", model.availabilities().get(0).blobDuration());
-        Assertions.assertEquals("evndh", model.category());
-        Assertions.assertEquals("wpdappdsbdkv", model.resourceIdDimensionNameOverride());
+        MetricSpecification model = BinaryData.fromString(
+            "{\"name\":\"eic\",\"displayName\":\"w\",\"displayDescription\":\"zao\",\"unit\":\"uhrhcffcyddgl\",\"dimensions\":[{\"name\":\"jqkwpyeicx\",\"displayName\":\"ciwqvhk\"}],\"aggregationType\":\"xuigdtopbobj\",\"availabilities\":[{\"timeGrain\":\"e\",\"blobDuration\":\"a\"}],\"category\":\"uhrzayvvt\",\"resourceIdDimensionNameOverride\":\"vdfgiotk\"}")
+            .toObject(MetricSpecification.class);
+        Assertions.assertEquals("eic", model.name());
+        Assertions.assertEquals("w", model.displayName());
+        Assertions.assertEquals("zao", model.displayDescription());
+        Assertions.assertEquals("uhrhcffcyddgl", model.unit());
+        Assertions.assertEquals("jqkwpyeicx", model.dimensions().get(0).name());
+        Assertions.assertEquals("ciwqvhk", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("xuigdtopbobj", model.aggregationType());
+        Assertions.assertEquals("e", model.availabilities().get(0).timeGrain());
+        Assertions.assertEquals("a", model.availabilities().get(0).blobDuration());
+        Assertions.assertEquals("uhrzayvvt", model.category());
+        Assertions.assertEquals("vdfgiotk", model.resourceIdDimensionNameOverride());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecification model =
-            new MetricSpecification()
-                .withName("wjzrnfygxgisp")
-                .withDisplayName("vtz")
-                .withDisplayDescription("ufubl")
-                .withUnit("fxqeof")
-                .withDimensions(
-                    Arrays.asList(new Dimension().withName("jhqjbasvmsmjqul").withDisplayName("sntnbybkzgcw")))
-                .withAggregationType("clxxwrljdo")
-                .withAvailabilities(
-                    Arrays
-                        .asList(
-                            new MetricAvailability().withTimeGrain("qvkoc").withBlobDuration("jdkwtnhxbnjb"),
-                            new MetricAvailability().withTimeGrain("sqrglssainq").withBlobDuration("wnzlljfmppeeb"),
-                            new MetricAvailability().withTimeGrain("gxsabkyq").withBlobDuration("ujitcjcz")))
-                .withCategory("evndh")
-                .withResourceIdDimensionNameOverride("wpdappdsbdkv");
+        MetricSpecification model = new MetricSpecification().withName("eic")
+            .withDisplayName("w")
+            .withDisplayDescription("zao")
+            .withUnit("uhrhcffcyddgl")
+            .withDimensions(Arrays.asList(new Dimension().withName("jqkwpyeicx").withDisplayName("ciwqvhk")))
+            .withAggregationType("xuigdtopbobj")
+            .withAvailabilities(Arrays.asList(new MetricAvailability().withTimeGrain("e").withBlobDuration("a")))
+            .withCategory("uhrzayvvt")
+            .withResourceIdDimensionNameOverride("vdfgiotk");
         model = BinaryData.fromObject(model).toObject(MetricSpecification.class);
-        Assertions.assertEquals("wjzrnfygxgisp", model.name());
-        Assertions.assertEquals("vtz", model.displayName());
-        Assertions.assertEquals("ufubl", model.displayDescription());
-        Assertions.assertEquals("fxqeof", model.unit());
-        Assertions.assertEquals("jhqjbasvmsmjqul", model.dimensions().get(0).name());
-        Assertions.assertEquals("sntnbybkzgcw", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("clxxwrljdo", model.aggregationType());
-        Assertions.assertEquals("qvkoc", model.availabilities().get(0).timeGrain());
-        Assertions.assertEquals("jdkwtnhxbnjb", model.availabilities().get(0).blobDuration());
-        Assertions.assertEquals("evndh", model.category());
-        Assertions.assertEquals("wpdappdsbdkv", model.resourceIdDimensionNameOverride());
+        Assertions.assertEquals("eic", model.name());
+        Assertions.assertEquals("w", model.displayName());
+        Assertions.assertEquals("zao", model.displayDescription());
+        Assertions.assertEquals("uhrhcffcyddgl", model.unit());
+        Assertions.assertEquals("jqkwpyeicx", model.dimensions().get(0).name());
+        Assertions.assertEquals("ciwqvhk", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("xuigdtopbobj", model.aggregationType());
+        Assertions.assertEquals("e", model.availabilities().get(0).timeGrain());
+        Assertions.assertEquals("a", model.availabilities().get(0).blobDuration());
+        Assertions.assertEquals("uhrzayvvt", model.category());
+        Assertions.assertEquals("vdfgiotk", model.resourceIdDimensionNameOverride());
     }
 }

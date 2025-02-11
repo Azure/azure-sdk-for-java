@@ -6,32 +6,38 @@ package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.OrchestratorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** An array of OrchestratorInstance resources. */
+/**
+ * An array of OrchestratorInstance resources.
+ */
 @Fluent
-public final class Orchestrators {
+public final class Orchestrators implements JsonSerializable<Orchestrators> {
     /*
      * An array of OrchestratorInstance resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<OrchestratorInner> value;
 
     /*
      * The URL to get the next set of orchestrators.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of Orchestrators class. */
+    /**
+     * Creates an instance of Orchestrators class.
+     */
     public Orchestrators() {
     }
 
     /**
      * Get the value property: An array of OrchestratorInstance resources.
-     *
+     * 
      * @return the value value.
      */
     public List<OrchestratorInner> value() {
@@ -40,7 +46,7 @@ public final class Orchestrators {
 
     /**
      * Set the value property: An array of OrchestratorInstance resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the Orchestrators object itself.
      */
@@ -51,7 +57,7 @@ public final class Orchestrators {
 
     /**
      * Get the nextLink property: The URL to get the next set of orchestrators.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,18 +66,57 @@ public final class Orchestrators {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model Orchestrators"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model Orchestrators"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Orchestrators.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Orchestrators from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Orchestrators if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Orchestrators.
+     */
+    public static Orchestrators fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Orchestrators deserializedOrchestrators = new Orchestrators();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<OrchestratorInner> value = reader.readArray(reader1 -> OrchestratorInner.fromJson(reader1));
+                    deserializedOrchestrators.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOrchestrators.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrchestrators;
+        });
+    }
 }

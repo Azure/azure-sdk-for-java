@@ -4,6 +4,7 @@
 package io.clientcore.core.util;
 
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.File;
 import java.io.IOException;

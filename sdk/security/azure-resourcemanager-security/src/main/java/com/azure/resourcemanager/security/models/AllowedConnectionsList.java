@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.AllowedConnectionsResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of all possible traffic between Azure resources.
  */
 @Immutable
-public final class AllowedConnectionsList {
+public final class AllowedConnectionsList implements JsonSerializable<AllowedConnectionsList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AllowedConnectionsResourceInner> value;
 
     /*
      * The URI to fetch the next page.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -59,5 +61,44 @@ public final class AllowedConnectionsList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AllowedConnectionsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AllowedConnectionsList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AllowedConnectionsList.
+     */
+    public static AllowedConnectionsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AllowedConnectionsList deserializedAllowedConnectionsList = new AllowedConnectionsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AllowedConnectionsResourceInner> value
+                        = reader.readArray(reader1 -> AllowedConnectionsResourceInner.fromJson(reader1));
+                    deserializedAllowedConnectionsList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAllowedConnectionsList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAllowedConnectionsList;
+        });
     }
 }

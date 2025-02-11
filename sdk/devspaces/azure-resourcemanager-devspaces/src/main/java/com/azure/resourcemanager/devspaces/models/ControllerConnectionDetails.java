@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.devspaces.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ControllerConnectionDetails model. */
+/**
+ * The ControllerConnectionDetails model.
+ */
 @Fluent
-public final class ControllerConnectionDetails {
+public final class ControllerConnectionDetails implements JsonSerializable<ControllerConnectionDetails> {
     /*
      * Base class for types that supply values used to connect to container orchestrators
      */
-    @JsonProperty(value = "orchestratorSpecificConnectionDetails")
     private OrchestratorSpecificConnectionDetails orchestratorSpecificConnectionDetails;
 
-    /** Creates an instance of ControllerConnectionDetails class. */
+    /**
+     * Creates an instance of ControllerConnectionDetails class.
+     */
     public ControllerConnectionDetails() {
     }
 
     /**
      * Get the orchestratorSpecificConnectionDetails property: Base class for types that supply values used to connect
      * to container orchestrators.
-     *
+     * 
      * @return the orchestratorSpecificConnectionDetails value.
      */
     public OrchestratorSpecificConnectionDetails orchestratorSpecificConnectionDetails() {
@@ -33,7 +40,7 @@ public final class ControllerConnectionDetails {
     /**
      * Set the orchestratorSpecificConnectionDetails property: Base class for types that supply values used to connect
      * to container orchestrators.
-     *
+     * 
      * @param orchestratorSpecificConnectionDetails the orchestratorSpecificConnectionDetails value to set.
      * @return the ControllerConnectionDetails object itself.
      */
@@ -45,12 +52,49 @@ public final class ControllerConnectionDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (orchestratorSpecificConnectionDetails() != null) {
             orchestratorSpecificConnectionDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("orchestratorSpecificConnectionDetails", this.orchestratorSpecificConnectionDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControllerConnectionDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControllerConnectionDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ControllerConnectionDetails.
+     */
+    public static ControllerConnectionDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControllerConnectionDetails deserializedControllerConnectionDetails = new ControllerConnectionDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("orchestratorSpecificConnectionDetails".equals(fieldName)) {
+                    deserializedControllerConnectionDetails.orchestratorSpecificConnectionDetails
+                        = OrchestratorSpecificConnectionDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControllerConnectionDetails;
+        });
     }
 }

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ConnectorMappings. */
+/**
+ * Resource collection API of ConnectorMappings.
+ */
 public interface ConnectorMappings {
     /**
      * Gets a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -23,12 +25,12 @@ public interface ConnectorMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a connector mapping in the connector along with {@link Response}.
      */
-    Response<ConnectorMappingResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context);
+    Response<ConnectorMappingResourceFormat> getWithResponse(String resourceGroupName, String hubName,
+        String connectorName, String mappingName, Context context);
 
     /**
      * Gets a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -38,12 +40,12 @@ public interface ConnectorMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a connector mapping in the connector.
      */
-    ConnectorMappingResourceFormat get(
-        String resourceGroupName, String hubName, String connectorName, String mappingName);
+    ConnectorMappingResourceFormat get(String resourceGroupName, String hubName, String connectorName,
+        String mappingName);
 
     /**
      * Deletes a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -54,12 +56,12 @@ public interface ConnectorMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String connectorName,
+        String mappingName, Context context);
 
     /**
      * Deletes a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -72,7 +74,7 @@ public interface ConnectorMappings {
 
     /**
      * Gets all the connector mappings in the specified connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -81,12 +83,12 @@ public interface ConnectorMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the connector mappings in the specified connector as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ConnectorMappingResourceFormat> listByConnector(
-        String resourceGroupName, String hubName, String connectorName);
+    PagedIterable<ConnectorMappingResourceFormat> listByConnector(String resourceGroupName, String hubName,
+        String connectorName);
 
     /**
      * Gets all the connector mappings in the specified connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -96,12 +98,12 @@ public interface ConnectorMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the connector mappings in the specified connector as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ConnectorMappingResourceFormat> listByConnector(
-        String resourceGroupName, String hubName, String connectorName, Context context);
+    PagedIterable<ConnectorMappingResourceFormat> listByConnector(String resourceGroupName, String hubName,
+        String connectorName, Context context);
 
     /**
      * Gets a connector mapping in the connector.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -112,7 +114,7 @@ public interface ConnectorMappings {
 
     /**
      * Gets a connector mapping in the connector.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +126,7 @@ public interface ConnectorMappings {
 
     /**
      * Deletes a connector mapping in the connector.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,7 +136,7 @@ public interface ConnectorMappings {
 
     /**
      * Deletes a connector mapping in the connector.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,7 +148,7 @@ public interface ConnectorMappings {
 
     /**
      * Begins definition for a new ConnectorMappingResourceFormat resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ConnectorMappingResourceFormat definition.
      */

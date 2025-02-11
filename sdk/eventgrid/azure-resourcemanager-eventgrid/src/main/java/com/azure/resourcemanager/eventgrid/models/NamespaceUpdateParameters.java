@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,30 +18,25 @@ import java.util.Map;
  * Properties to update namespace.
  */
 @Fluent
-public final class NamespaceUpdateParameters {
+public final class NamespaceUpdateParameters implements JsonSerializable<NamespaceUpdateParameters> {
     /*
      * Tags of the namespace resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Namespace resource identity information.
      */
-    @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
     /*
      * Represents available Sku pricing tiers.
      */
-    @JsonProperty(value = "sku")
     private NamespaceSku sku;
 
     /*
      * Properties of the namespace resource.
      */
-    @JsonProperty(value = "properties")
     private NamespaceUpdateParameterProperties innerProperties;
 
     /**
@@ -234,5 +232,52 @@ public final class NamespaceUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamespaceUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamespaceUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NamespaceUpdateParameters.
+     */
+    public static NamespaceUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamespaceUpdateParameters deserializedNamespaceUpdateParameters = new NamespaceUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNamespaceUpdateParameters.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedNamespaceUpdateParameters.identity = IdentityInfo.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedNamespaceUpdateParameters.sku = NamespaceSku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNamespaceUpdateParameters.innerProperties
+                        = NamespaceUpdateParameterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamespaceUpdateParameters;
+        });
     }
 }

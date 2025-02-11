@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakestore.models.FirewallRuleListResult;
 public final class FirewallRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FirewallRuleListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"startIpAddress\":\"qkwpyeicxmqc\",\"endIpAddress\":\"q\"},\"name\":\"khixuigdtopbo\",\"type\":\"og\",\"id\":\"e\"}],\"nextLink\":\"a\"}")
-                .toObject(FirewallRuleListResult.class);
+        FirewallRuleListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"startIpAddress\":\"jvtbvpyss\",\"endIpAddress\":\"nruj\"},\"name\":\"uhmuouqfprwzwbn\",\"type\":\"itnwuizgazxufi\",\"id\":\"ckyfih\"}],\"nextLink\":\"idf\"}")
+            .toObject(FirewallRuleListResult.class);
     }
 
     @org.junit.jupiter.api.Test

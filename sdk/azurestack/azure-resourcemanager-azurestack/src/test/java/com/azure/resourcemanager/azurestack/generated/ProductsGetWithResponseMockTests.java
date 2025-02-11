@@ -6,85 +6,62 @@ package com.azure.resourcemanager.azurestack.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.azurestack.AzureStackManager;
+import com.azure.resourcemanager.azurestack.models.CompatibilityIssue;
 import com.azure.resourcemanager.azurestack.models.Product;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ProductsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"postmgrcfbunrm\",\"description\":\"jhhkxbp\",\"publisherDisplayName\":\"ymjhxxjyngudivkr\",\"publisherIdentifier\":\"wbxqzvszjfau\",\"offer\":\"fdxxivetvtcqaqtd\",\"offerVersion\":\"mcbxvwvxysl\",\"sku\":\"hsfxoblytkb\",\"billingPartNumber\":\"pe\",\"vmExtensionType\":\"wfbkrvrns\",\"galleryItemIdentity\":\"hqjohxcrsbfova\",\"iconUris\":{\"large\":\"uvwbhsqfs\",\"wide\":\"cgjbirxbp\",\"medium\":\"srfbjfdtwss\",\"small\":\"ftpvjzbexil\",\"hero\":\"nfqqnvwp\"},\"links\":[{\"displayName\":\"ruoujmk\",\"uri\":\"hwqytj\"},{\"displayName\":\"bnw\",\"uri\":\"wgdrjervnaenqp\"},{\"displayName\":\"indoygmifthnzd\",\"uri\":\"sl\"}],\"legalTerms\":\"ayqigynduhav\",\"privacyPolicy\":\"lkthu\",\"payloadLength\":7354376095357948005,\"productKind\":\"bgycduiertgccym\",\"productProperties\":{\"version\":\"l\"},\"compatibility\":{\"isCompatible\":false,\"message\":\"lfmmdnbbglzpswi\",\"description\":\"mcwyhzdxssadb\",\"issues\":[\"DisconnectedEnvironmentRequired\",\"PayAsYouGoBillingModelRequired\",\"DisconnectedEnvironmentRequired\"]}},\"etag\":\"n\",\"id\":\"daodvxzbncblyl\",\"name\":\"stdbhhxsrzdzu\",\"type\":\"erscdntne\"}";
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"jawgqwg\",\"description\":\"ni\",\"publisherDisplayName\":\"x\",\"publisherIdentifier\":\"kpycgklwndnhjd\",\"offer\":\"whvylw\",\"offerVersion\":\"tdhxujznbmpowuwp\",\"sku\":\"qlveualupjmkh\",\"billingPartNumber\":\"obbc\",\"vmExtensionType\":\"s\",\"galleryItemIdentity\":\"jriplrbpbewtghf\",\"iconUris\":{\"large\":\"c\",\"wide\":\"xzvlvqhjkbegib\",\"medium\":\"mxiebw\",\"small\":\"loayqcgw\",\"hero\":\"zjuzgwyz\"},\"links\":[],\"legalTerms\":\"ongmtsa\",\"privacyPolicy\":\"cbpwxqpsrknft\",\"payloadLength\":5398442768208830839,\"productKind\":\"uhprwmdyvxqt\",\"productProperties\":{\"version\":\"iwwroyqbexrmc\"},\"compatibility\":{\"isCompatible\":true,\"message\":\"nojvknmefqsg\",\"description\":\"ah\",\"issues\":[]}},\"etag\":\"y\",\"id\":\"hpvgqz\",\"name\":\"j\",\"type\":\"vxdjzlmwlxkvugf\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AzureStackManager manager = AzureStackManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Product response = manager.products()
+            .getWithResponse("pfqbuaceopzf", "rhhuaopppcqeqx", "lzdahzxctobgbkdm", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        AzureStackManager manager =
-            AzureStackManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Product response =
-            manager.products().getWithResponse("otwmcdyt", "x", "it", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("y", response.etag());
-        Assertions.assertEquals("jawgqwg", response.displayName());
-        Assertions.assertEquals("ni", response.description());
-        Assertions.assertEquals("x", response.publisherDisplayName());
-        Assertions.assertEquals("kpycgklwndnhjd", response.publisherIdentifier());
-        Assertions.assertEquals("whvylw", response.offer());
-        Assertions.assertEquals("tdhxujznbmpowuwp", response.offerVersion());
-        Assertions.assertEquals("qlveualupjmkh", response.sku());
-        Assertions.assertEquals("obbc", response.billingPartNumber());
-        Assertions.assertEquals("s", response.vmExtensionType());
-        Assertions.assertEquals("jriplrbpbewtghf", response.galleryItemIdentity());
-        Assertions.assertEquals("c", response.iconUris().large());
-        Assertions.assertEquals("xzvlvqhjkbegib", response.iconUris().wide());
-        Assertions.assertEquals("mxiebw", response.iconUris().medium());
-        Assertions.assertEquals("loayqcgw", response.iconUris().small());
-        Assertions.assertEquals("zjuzgwyz", response.iconUris().hero());
-        Assertions.assertEquals("ongmtsa", response.legalTerms());
-        Assertions.assertEquals("cbpwxqpsrknft", response.privacyPolicy());
-        Assertions.assertEquals(5398442768208830839L, response.payloadLength());
-        Assertions.assertEquals("uhprwmdyvxqt", response.productKind());
-        Assertions.assertEquals("iwwroyqbexrmc", response.productProperties().version());
-        Assertions.assertEquals(true, response.compatibility().isCompatible());
-        Assertions.assertEquals("nojvknmefqsg", response.compatibility().message());
-        Assertions.assertEquals("ah", response.compatibility().description());
+        Assertions.assertEquals("n", response.etag());
+        Assertions.assertEquals("postmgrcfbunrm", response.displayName());
+        Assertions.assertEquals("jhhkxbp", response.description());
+        Assertions.assertEquals("ymjhxxjyngudivkr", response.publisherDisplayName());
+        Assertions.assertEquals("wbxqzvszjfau", response.publisherIdentifier());
+        Assertions.assertEquals("fdxxivetvtcqaqtd", response.offer());
+        Assertions.assertEquals("mcbxvwvxysl", response.offerVersion());
+        Assertions.assertEquals("hsfxoblytkb", response.sku());
+        Assertions.assertEquals("pe", response.billingPartNumber());
+        Assertions.assertEquals("wfbkrvrns", response.vmExtensionType());
+        Assertions.assertEquals("hqjohxcrsbfova", response.galleryItemIdentity());
+        Assertions.assertEquals("uvwbhsqfs", response.iconUris().large());
+        Assertions.assertEquals("cgjbirxbp", response.iconUris().wide());
+        Assertions.assertEquals("srfbjfdtwss", response.iconUris().medium());
+        Assertions.assertEquals("ftpvjzbexil", response.iconUris().small());
+        Assertions.assertEquals("nfqqnvwp", response.iconUris().hero());
+        Assertions.assertEquals("ruoujmk", response.links().get(0).displayName());
+        Assertions.assertEquals("hwqytj", response.links().get(0).uri());
+        Assertions.assertEquals("ayqigynduhav", response.legalTerms());
+        Assertions.assertEquals("lkthu", response.privacyPolicy());
+        Assertions.assertEquals(7354376095357948005L, response.payloadLength());
+        Assertions.assertEquals("bgycduiertgccym", response.productKind());
+        Assertions.assertEquals("l", response.productProperties().version());
+        Assertions.assertEquals(false, response.compatibility().isCompatible());
+        Assertions.assertEquals("lfmmdnbbglzpswi", response.compatibility().message());
+        Assertions.assertEquals("mcwyhzdxssadb", response.compatibility().description());
+        Assertions.assertEquals(CompatibilityIssue.DISCONNECTED_ENVIRONMENT_REQUIRED,
+            response.compatibility().issues().get(0));
     }
 }

@@ -6,34 +6,50 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request to validate preference of transport and data center. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "validationType")
-@JsonTypeName("ValidatePreferences")
+/**
+ * Request to validate preference of transport and data center.
+ */
 @Fluent
 public final class PreferencesValidationRequest extends ValidationInputRequest {
     /*
+     * Identifies the type of validation request.
+     */
+    private ValidationInputDiscriminator validationType = ValidationInputDiscriminator.VALIDATE_PREFERENCES;
+
+    /*
      * Preference of transport and data center.
      */
-    @JsonProperty(value = "preference")
     private Preferences preference;
 
     /*
      * Device type to be used for the job.
      */
-    @JsonProperty(value = "deviceType", required = true)
     private SkuName deviceType;
 
-    /** Creates an instance of PreferencesValidationRequest class. */
+    /**
+     * Creates an instance of PreferencesValidationRequest class.
+     */
     public PreferencesValidationRequest() {
     }
 
     /**
+     * Get the validationType property: Identifies the type of validation request.
+     * 
+     * @return the validationType value.
+     */
+    @Override
+    public ValidationInputDiscriminator validationType() {
+        return this.validationType;
+    }
+
+    /**
      * Get the preference property: Preference of transport and data center.
-     *
+     * 
      * @return the preference value.
      */
     public Preferences preference() {
@@ -42,7 +58,7 @@ public final class PreferencesValidationRequest extends ValidationInputRequest {
 
     /**
      * Set the preference property: Preference of transport and data center.
-     *
+     * 
      * @param preference the preference value to set.
      * @return the PreferencesValidationRequest object itself.
      */
@@ -53,7 +69,7 @@ public final class PreferencesValidationRequest extends ValidationInputRequest {
 
     /**
      * Get the deviceType property: Device type to be used for the job.
-     *
+     * 
      * @return the deviceType value.
      */
     public SkuName deviceType() {
@@ -62,7 +78,7 @@ public final class PreferencesValidationRequest extends ValidationInputRequest {
 
     /**
      * Set the deviceType property: Device type to be used for the job.
-     *
+     * 
      * @param deviceType the deviceType value to set.
      * @return the PreferencesValidationRequest object itself.
      */
@@ -73,22 +89,65 @@ public final class PreferencesValidationRequest extends ValidationInputRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (preference() != null) {
             preference().validate();
         }
         if (deviceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deviceType in model PreferencesValidationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property deviceType in model PreferencesValidationRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PreferencesValidationRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceType", this.deviceType == null ? null : this.deviceType.toString());
+        jsonWriter.writeStringField("validationType",
+            this.validationType == null ? null : this.validationType.toString());
+        jsonWriter.writeJsonField("preference", this.preference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PreferencesValidationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PreferencesValidationRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PreferencesValidationRequest.
+     */
+    public static PreferencesValidationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PreferencesValidationRequest deserializedPreferencesValidationRequest = new PreferencesValidationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceType".equals(fieldName)) {
+                    deserializedPreferencesValidationRequest.deviceType = SkuName.fromString(reader.getString());
+                } else if ("validationType".equals(fieldName)) {
+                    deserializedPreferencesValidationRequest.validationType
+                        = ValidationInputDiscriminator.fromString(reader.getString());
+                } else if ("preference".equals(fieldName)) {
+                    deserializedPreferencesValidationRequest.preference = Preferences.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPreferencesValidationRequest;
+        });
+    }
 }

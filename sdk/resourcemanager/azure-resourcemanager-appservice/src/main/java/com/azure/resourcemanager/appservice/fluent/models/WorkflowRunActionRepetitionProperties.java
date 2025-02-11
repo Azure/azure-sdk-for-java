@@ -31,24 +31,9 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
     private List<RepetitionIndex> repetitionIndexes;
 
     /*
-     * Gets the tracking id.
+     * Gets the tracked properties.
      */
-    private String trackingId;
-
-    /*
-     * Gets the inputs.
-     */
-    private Object inputs;
-
-    /*
-     * Gets the link to inputs.
-     */
-    private ContentLink inputsLink;
-
-    /*
-     * Gets the outputs.
-     */
-    private Object outputs;
+    private Object trackedProperties;
 
     /*
      * Gets the link to outputs.
@@ -56,9 +41,24 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
     private ContentLink outputsLink;
 
     /*
-     * Gets the tracked properties.
+     * Gets the outputs.
      */
-    private Object trackedProperties;
+    private Object outputs;
+
+    /*
+     * Gets the link to inputs.
+     */
+    private ContentLink inputsLink;
+
+    /*
+     * Gets the inputs.
+     */
+    private Object inputs;
+
+    /*
+     * Gets the tracking id.
+     */
+    private String trackingId;
 
     /**
      * Creates an instance of WorkflowRunActionRepetitionProperties class.
@@ -87,43 +87,13 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
     }
 
     /**
-     * Get the trackingId property: Gets the tracking id.
+     * Get the trackedProperties property: Gets the tracked properties.
      * 
-     * @return the trackingId value.
+     * @return the trackedProperties value.
      */
     @Override
-    public String trackingId() {
-        return this.trackingId;
-    }
-
-    /**
-     * Get the inputs property: Gets the inputs.
-     * 
-     * @return the inputs value.
-     */
-    @Override
-    public Object inputs() {
-        return this.inputs;
-    }
-
-    /**
-     * Get the inputsLink property: Gets the link to inputs.
-     * 
-     * @return the inputsLink value.
-     */
-    @Override
-    public ContentLink inputsLink() {
-        return this.inputsLink;
-    }
-
-    /**
-     * Get the outputs property: Gets the outputs.
-     * 
-     * @return the outputs value.
-     */
-    @Override
-    public Object outputs() {
-        return this.outputs;
+    public Object trackedProperties() {
+        return this.trackedProperties;
     }
 
     /**
@@ -137,13 +107,43 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
     }
 
     /**
-     * Get the trackedProperties property: Gets the tracked properties.
+     * Get the outputs property: Gets the outputs.
      * 
-     * @return the trackedProperties value.
+     * @return the outputs value.
      */
     @Override
-    public Object trackedProperties() {
-        return this.trackedProperties;
+    public Object outputs() {
+        return this.outputs;
+    }
+
+    /**
+     * Get the inputsLink property: Gets the link to inputs.
+     * 
+     * @return the inputsLink value.
+     */
+    @Override
+    public ContentLink inputsLink() {
+        return this.inputsLink;
+    }
+
+    /**
+     * Get the inputs property: Gets the inputs.
+     * 
+     * @return the inputs value.
+     */
+    @Override
+    public Object inputs() {
+        return this.inputs;
+    }
+
+    /**
+     * Get the trackingId property: Gets the tracking id.
+     * 
+     * @return the trackingId value.
+     */
+    @Override
+    public String trackingId() {
+        return this.trackingId;
     }
 
     /**
@@ -225,9 +225,20 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
      */
     @Override
     public void validate() {
-        super.validate();
         if (repetitionIndexes() != null) {
             repetitionIndexes().forEach(e -> e.validate());
+        }
+        if (correlation() != null) {
+            correlation().validate();
+        }
+        if (inputsLink() != null) {
+            inputsLink().validate();
+        }
+        if (outputsLink() != null) {
+            outputsLink().validate();
+        }
+        if (retryHistory() != null) {
+            retryHistory().forEach(e -> e.validate());
         }
     }
 

@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-/** Samples for PrivateEndpointConnections List. */
+/**
+ * Samples for PrivateEndpointConnections List.
+ */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/private-endpoint-connection-list.json
+     * x-ms-original-file:
+     * specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/private-endpoint
+     * -connection-list.json
      */
     /**
      * Sample code: Get all private endpoint connections.
-     *
+     * 
      * @param manager Entry point to MediaServicesManager.
      */
-    public static void getAllPrivateEndpointConnections(
-        com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager
-            .privateEndpointConnections()
+    public static void
+        getAllPrivateEndpointConnections(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
+        manager.privateEndpointConnections()
             .listWithResponse("contosorg", "contososports", com.azure.core.util.Context.NONE);
     }
 }

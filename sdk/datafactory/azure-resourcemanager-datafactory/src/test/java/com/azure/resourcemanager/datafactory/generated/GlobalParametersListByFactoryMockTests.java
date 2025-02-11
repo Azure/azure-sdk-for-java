@@ -23,7 +23,7 @@ public final class GlobalParametersListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"cwngg\":{\"type\":\"Int\",\"value\":\"datamjxxov\"},\"papzb\":{\"type\":\"Int\",\"value\":\"datajbgy\"},\"izoamttxyddkvi\":{\"type\":\"Float\",\"value\":\"datafuac\"}},\"name\":\"bbn\",\"type\":\"gzlicytfpy\",\"etag\":\"ednous\",\"id\":\"ljl\"}]}";
+            = "{\"value\":[{\"properties\":{\"gjkzulihdhfcc\":{\"type\":\"Float\",\"value\":\"datas\"},\"ilhcca\":{\"type\":\"Float\",\"value\":\"datahztqiaydmblpdjtl\"},\"ydcslyd\":{\"type\":\"Int\",\"value\":\"dataiifvindcakansjrz\"},\"iyngupphvo\":{\"type\":\"Array\",\"value\":\"datawtkce\"}},\"name\":\"ocjsadbuvvpdj\",\"type\":\"nndvvgs\",\"etag\":\"vz\",\"id\":\"dfikduwqkhmabgzc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,10 @@ public final class GlobalParametersListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GlobalParameterResource> response
-            = manager.globalParameters().listByFactory("ukveknwldqjlgzc", "rh", com.azure.core.util.Context.NONE);
+            = manager.globalParameters().listByFactory("tbflechgiqxknjr", "rvnq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ljl", response.iterator().next().id());
-        Assertions.assertEquals(GlobalParameterType.INT, response.iterator().next().properties().get("cwngg").type());
+        Assertions.assertEquals("dfikduwqkhmabgzc", response.iterator().next().id());
+        Assertions.assertEquals(GlobalParameterType.FLOAT,
+            response.iterator().next().properties().get("gjkzulihdhfcc").type());
     }
 }

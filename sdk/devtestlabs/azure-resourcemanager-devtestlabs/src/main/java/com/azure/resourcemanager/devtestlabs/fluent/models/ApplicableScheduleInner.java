@@ -7,39 +7,94 @@ package com.azure.resourcemanager.devtestlabs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Schedules applicable to a virtual machine. The schedules may have been defined on a VM or on lab level. */
+/**
+ * Schedules applicable to a virtual machine. The schedules may have been defined on a VM or on lab level.
+ */
 @Fluent
 public final class ApplicableScheduleInner extends Resource {
     /*
      * The properties of the resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private ApplicableSchedulePropertiesInner innerProperties = new ApplicableSchedulePropertiesInner();
 
-    /** Creates an instance of ApplicableScheduleInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ApplicableScheduleInner class.
+     */
     public ApplicableScheduleInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicableSchedulePropertiesInner innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicableScheduleInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicableScheduleInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -49,7 +104,7 @@ public final class ApplicableScheduleInner extends Resource {
     /**
      * Get the labVmsShutdown property: The auto-shutdown schedule, if one has been set at the lab or lab resource
      * level.
-     *
+     * 
      * @return the labVmsShutdown value.
      */
     public ScheduleInner labVmsShutdown() {
@@ -59,7 +114,7 @@ public final class ApplicableScheduleInner extends Resource {
     /**
      * Set the labVmsShutdown property: The auto-shutdown schedule, if one has been set at the lab or lab resource
      * level.
-     *
+     * 
      * @param labVmsShutdown the labVmsShutdown value to set.
      * @return the ApplicableScheduleInner object itself.
      */
@@ -73,7 +128,7 @@ public final class ApplicableScheduleInner extends Resource {
 
     /**
      * Get the labVmsStartup property: The auto-startup schedule, if one has been set at the lab or lab resource level.
-     *
+     * 
      * @return the labVmsStartup value.
      */
     public ScheduleInner labVmsStartup() {
@@ -82,7 +137,7 @@ public final class ApplicableScheduleInner extends Resource {
 
     /**
      * Set the labVmsStartup property: The auto-startup schedule, if one has been set at the lab or lab resource level.
-     *
+     * 
      * @param labVmsStartup the labVmsStartup value to set.
      * @return the ApplicableScheduleInner object itself.
      */
@@ -96,19 +151,69 @@ public final class ApplicableScheduleInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ApplicableScheduleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ApplicableScheduleInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicableScheduleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicableScheduleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicableScheduleInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicableScheduleInner.
+     */
+    public static ApplicableScheduleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicableScheduleInner deserializedApplicableScheduleInner = new ApplicableScheduleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicableScheduleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicableScheduleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicableScheduleInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicableScheduleInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicableScheduleInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicableScheduleInner.innerProperties
+                        = ApplicableSchedulePropertiesInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicableScheduleInner;
+        });
+    }
 }

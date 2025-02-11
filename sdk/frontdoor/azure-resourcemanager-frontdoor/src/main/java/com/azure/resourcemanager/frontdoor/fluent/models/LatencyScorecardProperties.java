@@ -5,8 +5,13 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.LatencyMetric;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -14,59 +19,51 @@ import java.util.List;
  * Defines a the properties of a Latency Scorecard.
  */
 @Fluent
-public final class LatencyScorecardProperties {
+public final class LatencyScorecardProperties implements JsonSerializable<LatencyScorecardProperties> {
     /*
      * The unique identifier of the Latency Scorecard
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the Latency Scorecard
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The description of the Latency Scorecard
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The A endpoint in the scorecard
      */
-    @JsonProperty(value = "endpointA", access = JsonProperty.Access.WRITE_ONLY)
     private String endpointA;
 
     /*
      * The B endpoint in the scorecard
      */
-    @JsonProperty(value = "endpointB", access = JsonProperty.Access.WRITE_ONLY)
     private String endpointB;
 
     /*
      * The start time of the Latency Scorecard in UTC
      */
-    @JsonProperty(value = "startDateTimeUTC", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startDateTimeUtc;
 
     /*
      * The end time of the Latency Scorecard in UTC
      */
-    @JsonProperty(value = "endDateTimeUTC", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endDateTimeUtc;
 
     /*
-     * The country associated with the Latency Scorecard. Values are country ISO codes as specified here- https://www.iso.org/iso-3166-country-codes.html
+     * The country associated with the Latency Scorecard. Values are country ISO codes as specified here-
+     * https://www.iso.org/iso-3166-country-codes.html
      */
-    @JsonProperty(value = "country", access = JsonProperty.Access.WRITE_ONLY)
     private String country;
 
     /*
      * The latency metrics of the Latency Scorecard
      */
-    @JsonProperty(value = "latencyMetrics")
     private List<LatencyMetric> latencyMetrics;
 
     /**
@@ -177,5 +174,61 @@ public final class LatencyScorecardProperties {
         if (latencyMetrics() != null) {
             latencyMetrics().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("latencyMetrics", this.latencyMetrics,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LatencyScorecardProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LatencyScorecardProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LatencyScorecardProperties.
+     */
+    public static LatencyScorecardProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LatencyScorecardProperties deserializedLatencyScorecardProperties = new LatencyScorecardProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLatencyScorecardProperties.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLatencyScorecardProperties.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedLatencyScorecardProperties.description = reader.getString();
+                } else if ("endpointA".equals(fieldName)) {
+                    deserializedLatencyScorecardProperties.endpointA = reader.getString();
+                } else if ("endpointB".equals(fieldName)) {
+                    deserializedLatencyScorecardProperties.endpointB = reader.getString();
+                } else if ("startDateTimeUTC".equals(fieldName)) {
+                    deserializedLatencyScorecardProperties.startDateTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endDateTimeUTC".equals(fieldName)) {
+                    deserializedLatencyScorecardProperties.endDateTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("country".equals(fieldName)) {
+                    deserializedLatencyScorecardProperties.country = reader.getString();
+                } else if ("latencyMetrics".equals(fieldName)) {
+                    List<LatencyMetric> latencyMetrics = reader.readArray(reader1 -> LatencyMetric.fromJson(reader1));
+                    deserializedLatencyScorecardProperties.latencyMetrics = latencyMetrics;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLatencyScorecardProperties;
+        });
     }
 }

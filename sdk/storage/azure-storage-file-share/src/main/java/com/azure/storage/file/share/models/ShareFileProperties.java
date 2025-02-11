@@ -6,6 +6,7 @@ package com.azure.storage.file.share.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareFilePropertiesHelper;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -36,6 +37,7 @@ public final class ShareFileProperties {
     private final CopyStatusType copyStatus;
     private final Boolean isServerEncrypted;
     private final FileSmbProperties smbProperties;
+    private final FilePosixProperties posixProperties;
 
     /**
      * Creates an instance of property information about a specific File.
@@ -151,6 +153,42 @@ public final class ShareFileProperties {
         this.copyStatus = copyStatus;
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
+        this.posixProperties = null;
+    }
+
+    //Internal constructor to support FilePosixProperties class.
+    private ShareFileProperties(String eTag, OffsetDateTime lastModified, Map<String, String> metadata, String fileType,
+        Long contentLength, String contentType, byte[] contentMd5, String contentEncoding, String cacheControl,
+        String contentDisposition, LeaseStatusType leaseStatusType, LeaseStateType leaseStateType,
+        LeaseDurationType leaseDurationType, OffsetDateTime copyCompletionTime, String copyStatusDescription,
+        String copyId, String copyProgress, String copySource, CopyStatusType copyStatus, Boolean isServerEncrypted,
+        FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.metadata = metadata;
+        this.fileType = fileType;
+        this.contentLength = contentLength;
+        this.contentType = contentType;
+        this.contentMd5 = CoreUtils.clone(contentMd5);
+        this.contentEncoding = contentEncoding;
+        this.cacheControl = cacheControl;
+        this.contentDisposition = contentDisposition;
+        this.leaseStatus = leaseStatusType;
+        this.leaseState = leaseStateType;
+        this.leaseDuration = leaseDurationType;
+        this.copyCompletionTime = copyCompletionTime;
+        this.copyStatusDescription = copyStatusDescription;
+        this.copyId = copyId;
+        this.copyProgress = copyProgress;
+        this.copySource = copySource;
+        this.copyStatus = copyStatus;
+        this.isServerEncrypted = isServerEncrypted;
+        this.smbProperties = smbProperties;
+        this.posixProperties = posixProperties;
+    }
+
+    static {
+        ShareFilePropertiesHelper.setAccessor(ShareFileProperties::new);
     }
 
     /**
@@ -349,5 +387,15 @@ public final class ShareFileProperties {
      */
     public FileSmbProperties getSmbProperties() {
         return smbProperties;
+    }
+
+    /**
+     * Gets the file's NFS properties.
+     * Only applicable to files in a NFS share.
+     *
+     * @return The NFS Properties of the file.
+     */
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
     }
 }

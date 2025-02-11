@@ -132,7 +132,6 @@ public final class ImageTemplateShellCustomizer extends ImageTemplateCustomizer 
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

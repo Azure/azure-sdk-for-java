@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.peering.generated;
 
-/** Samples for RegisteredPrefixes CreateOrUpdate. */
+/**
+ * Samples for RegisteredPrefixes CreateOrUpdate.
+ */
 public final class RegisteredPrefixesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/stable/2021-01-01/examples/CreateRegisteredPrefix.json
+     * x-ms-original-file:
+     * specification/peering/resource-manager/Microsoft.Peering/stable/2021-01-01/examples/CreateRegisteredPrefix.json
      */
     /**
      * Sample code: Create or update a registered prefix for the peering.
-     *
+     * 
      * @param manager Entry point to PeeringManager.
      */
-    public static void createOrUpdateARegisteredPrefixForThePeering(
-        com.azure.resourcemanager.peering.PeeringManager manager) {
-        manager
-            .registeredPrefixes()
+    public static void
+        createOrUpdateARegisteredPrefixForThePeering(com.azure.resourcemanager.peering.PeeringManager manager) {
+        manager.registeredPrefixes()
             .define("registeredPrefixName")
             .withExistingPeering("rgName", "peeringName")
             .withPrefix("10.22.20.0/24")

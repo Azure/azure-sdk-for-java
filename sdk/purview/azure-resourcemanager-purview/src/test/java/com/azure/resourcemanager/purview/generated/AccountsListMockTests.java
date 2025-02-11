@@ -6,68 +6,39 @@ package com.azure.resourcemanager.purview.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.purview.PurviewManager;
 import com.azure.resourcemanager.purview.models.Account;
 import com.azure.resourcemanager.purview.models.PublicNetworkAccess;
 import com.azure.resourcemanager.purview.models.Type;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccountsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"fpubjibwwi\"},\"createdAt\":\"2021-06-04T20:33:13Z\",\"createdBy\":\"qkvpuvksgplsakn\",\"createdByObjectId\":\"fsynljphuop\",\"endpoints\":{\"catalog\":\"lqiyntorzihl\",\"guardian\":\"sjswsrms\",\"scan\":\"zrpzb\"},\"friendlyName\":\"ckqqzqioxiysui\",\"managedResourceGroupName\":\"ynkedyatrwyhqmib\",\"managedResources\":{\"eventHubNamespace\":\"wit\",\"resourceGroup\":\"ypyynpcdpumnzg\",\"storageAccount\":\"z\"},\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"sorgj\"},\"id\":\"xbldtlwwrlkdmtn\",\"name\":\"vokotllxdyh\",\"type\":\"syocogjltdtbnnha\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"kvci\"},\"id\":\"hnvpamqgxq\",\"name\":\"u\",\"type\":\"zikywgg\"}],\"provisioningState\":\"Deleting\",\"publicNetworkAccess\":\"NotSpecified\"},\"sku\":{\"capacity\":825727567,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"ipicc\",\"tenantId\":\"kzivgvvcnayrh\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"tchealmf\":{\"clientId\":\"ueedndrdvs\",\"principalId\":\"wq\"},\"piohgwxrtfu\":{\"clientId\":\"d\",\"principalId\":\"ygdvwv\"}}},\"location\":\"epxgyqagvr\",\"tags\":{\"dblx\":\"pkukghi\",\"fnjhfjxwmszkkfo\":\"wi\",\"kzikfjawneaivxwc\":\"rey\",\"fatkld\":\"elpcirelsfeaenwa\"},\"id\":\"xbjhwuaanozjosph\",\"name\":\"oulpjrv\",\"type\":\"ag\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"guvriuhprwmd\"},\"createdAt\":\"2021-01-30T20:43:49Z\",\"createdBy\":\"tayriwwroyqbex\",\"createdByObjectId\":\"cqibycnojv\",\"endpoints\":{\"catalog\":\"e\",\"guardian\":\"sgzvahapjyzhpv\",\"scan\":\"zcjrvxdjzlmwlx\"},\"friendlyName\":\"ug\",\"managedResourceGroupName\":\"zovawjvz\",\"managedResources\":{\"eventHubNamespace\":\"uthnnprnxipeilpj\",\"resourceGroup\":\"aejxd\",\"storageAccount\":\"tskzbbtdzumveek\"},\"privateEndpointConnections\":[],\"provisioningState\":\"SoftDeleted\",\"publicNetworkAccess\":\"NotSpecified\"},\"sku\":{\"capacity\":102600378,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"ofd\",\"tenantId\":\"uusdttouwa\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"kelnsmvbxwyjsf\",\"tags\":{\"oyaqcslyjpkiid\":\"caalnjixisxyaw\",\"eli\":\"yexz\",\"bnxknalaulppg\":\"hnrztfol\"},\"id\":\"dtpnapnyiropuhp\",\"name\":\"gvpgy\",\"type\":\"gqgitxmedjvcsl\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PurviewManager manager = PurviewManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Account> response = manager.accounts().list("e", com.azure.core.util.Context.NONE);
 
-        PurviewManager manager =
-            PurviewManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Account> response = manager.accounts().list("gmtsavjcbpwxqpsr", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("kelnsmvbxwyjsf", response.iterator().next().location());
-        Assertions.assertEquals("caalnjixisxyaw", response.iterator().next().tags().get("oyaqcslyjpkiid"));
-        Assertions.assertEquals(Type.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("zovawjvz", response.iterator().next().managedResourceGroupName());
+        Assertions.assertEquals("epxgyqagvr", response.iterator().next().location());
+        Assertions.assertEquals("pkukghi", response.iterator().next().tags().get("dblx"));
+        Assertions.assertEquals(Type.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("ynkedyatrwyhqmib", response.iterator().next().managedResourceGroupName());
         Assertions.assertEquals(PublicNetworkAccess.NOT_SPECIFIED, response.iterator().next().publicNetworkAccess());
     }
 }

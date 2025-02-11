@@ -5,147 +5,135 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the properties of a Resource Pool. */
+/**
+ * Describes the properties of a Resource Pool.
+ */
 @Fluent
-public final class ResourcePoolProperties {
+public final class ResourcePoolProperties implements JsonSerializable<ResourcePoolProperties> {
     /*
      * Gets or sets a unique identifier for this resource.
      */
-    @JsonProperty(value = "uuid", access = JsonProperty.Access.WRITE_ONLY)
     private String uuid;
 
     /*
      * Gets or sets the ARM Id of the vCenter resource in which this resource pool resides.
      */
-    @JsonProperty(value = "vCenterId")
     private String vCenterId;
 
     /*
      * Gets or sets the vCenter MoRef (Managed Object Reference) ID for the resource pool.
      */
-    @JsonProperty(value = "moRefId")
     private String moRefId;
 
     /*
      * Gets or sets the inventory Item ID for the resource pool.
      */
-    @JsonProperty(value = "inventoryItemId")
     private String inventoryItemId;
 
     /*
      * Gets or sets the vCenter Managed Object name for the resource pool.
      */
-    @JsonProperty(value = "moName", access = JsonProperty.Access.WRITE_ONLY)
     private String moName;
 
     /*
      * Gets or sets CPUSharesLevel which specifies the CPU allocation level for this pool.
      * This property is used in relative allocation between resource consumers.
      */
-    @JsonProperty(value = "cpuSharesLevel", access = JsonProperty.Access.WRITE_ONLY)
     private String cpuSharesLevel;
 
     /*
      * Gets or sets CPUReservationMHz which specifies the CPU size in MHz that is guaranteed
      * to be available.
      */
-    @JsonProperty(value = "cpuReservationMHz", access = JsonProperty.Access.WRITE_ONLY)
     private Long cpuReservationMHz;
 
     /*
      * Gets or sets CPULimitMHz which specifies a CPU usage limit in MHz.
      * Utilization will not exceed this limit even if there are available resources.
      */
-    @JsonProperty(value = "cpuLimitMHz", access = JsonProperty.Access.WRITE_ONLY)
     private Long cpuLimitMHz;
 
     /*
      * Gets or sets CPUSharesLevel which specifies the memory allocation level for this pool.
      * This property is used in relative allocation between resource consumers.
      */
-    @JsonProperty(value = "memSharesLevel", access = JsonProperty.Access.WRITE_ONLY)
     private String memSharesLevel;
 
     /*
      * Gets or sets MemReservationMB which specifies the guaranteed available memory in
      * megabytes.
      */
-    @JsonProperty(value = "memReservationMB", access = JsonProperty.Access.WRITE_ONLY)
     private Long memReservationMB;
 
     /*
      * Gets or sets MemLimitMB specifies a memory usage limit in megabytes.
      * Utilization will not exceed the specified limit even if there are available resources.
      */
-    @JsonProperty(value = "memLimitMB", access = JsonProperty.Access.WRITE_ONLY)
     private Long memLimitMB;
 
     /*
      * Gets the used physical memory on the pool in GB.
      */
-    @JsonProperty(value = "memOverallUsageGB", access = JsonProperty.Access.WRITE_ONLY)
     private Long memOverallUsageGB;
 
     /*
      * Gets the total amount of physical memory on the pool in GB.
      */
-    @JsonProperty(value = "memCapacityGB", access = JsonProperty.Access.WRITE_ONLY)
     private Long memCapacityGB;
 
     /*
      * Gets the used CPU usage across all cores on the pool in MHz.
      */
-    @JsonProperty(value = "cpuOverallUsageMHz", access = JsonProperty.Access.WRITE_ONLY)
     private Long cpuOverallUsageMHz;
 
     /*
      * Gets the max CPU usage across all cores on the pool in MHz.
      */
-    @JsonProperty(value = "cpuCapacityMHz", access = JsonProperty.Access.WRITE_ONLY)
     private Long cpuCapacityMHz;
 
     /*
      * Gets the name of the corresponding resource in Kubernetes.
      */
-    @JsonProperty(value = "customResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String customResourceName;
 
     /*
      * Gets the datastore ARM ids.
      */
-    @JsonProperty(value = "datastoreIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> datastoreIds;
 
     /*
      * Gets the network ARM ids.
      */
-    @JsonProperty(value = "networkIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> networkIds;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceStatus> statuses;
 
     /*
      * Gets the provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ResourcePoolProperties class. */
+    /**
+     * Creates an instance of ResourcePoolProperties class.
+     */
     public ResourcePoolProperties() {
     }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
-     *
+     * 
      * @return the uuid value.
      */
     public String uuid() {
@@ -154,7 +142,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this resource pool resides.
-     *
+     * 
      * @return the vCenterId value.
      */
     public String vCenterId() {
@@ -163,7 +151,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Set the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this resource pool resides.
-     *
+     * 
      * @param vCenterId the vCenterId value to set.
      * @return the ResourcePoolProperties object itself.
      */
@@ -174,7 +162,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the resource pool.
-     *
+     * 
      * @return the moRefId value.
      */
     public String moRefId() {
@@ -183,7 +171,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Set the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the resource pool.
-     *
+     * 
      * @param moRefId the moRefId value to set.
      * @return the ResourcePoolProperties object itself.
      */
@@ -194,7 +182,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the resource pool.
-     *
+     * 
      * @return the inventoryItemId value.
      */
     public String inventoryItemId() {
@@ -203,7 +191,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Set the inventoryItemId property: Gets or sets the inventory Item ID for the resource pool.
-     *
+     * 
      * @param inventoryItemId the inventoryItemId value to set.
      * @return the ResourcePoolProperties object itself.
      */
@@ -214,7 +202,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the moName property: Gets or sets the vCenter Managed Object name for the resource pool.
-     *
+     * 
      * @return the moName value.
      */
     public String moName() {
@@ -223,8 +211,9 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the cpuSharesLevel property: Gets or sets CPUSharesLevel which specifies the CPU allocation level for this
-     * pool. This property is used in relative allocation between resource consumers.
-     *
+     * pool.
+     * This property is used in relative allocation between resource consumers.
+     * 
      * @return the cpuSharesLevel value.
      */
     public String cpuSharesLevel() {
@@ -233,8 +222,9 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the cpuReservationMHz property: Gets or sets CPUReservationMHz which specifies the CPU size in MHz that is
-     * guaranteed to be available.
-     *
+     * guaranteed
+     * to be available.
+     * 
      * @return the cpuReservationMHz value.
      */
     public Long cpuReservationMHz() {
@@ -242,9 +232,9 @@ public final class ResourcePoolProperties {
     }
 
     /**
-     * Get the cpuLimitMHz property: Gets or sets CPULimitMHz which specifies a CPU usage limit in MHz. Utilization will
-     * not exceed this limit even if there are available resources.
-     *
+     * Get the cpuLimitMHz property: Gets or sets CPULimitMHz which specifies a CPU usage limit in MHz.
+     * Utilization will not exceed this limit even if there are available resources.
+     * 
      * @return the cpuLimitMHz value.
      */
     public Long cpuLimitMHz() {
@@ -253,8 +243,9 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the memSharesLevel property: Gets or sets CPUSharesLevel which specifies the memory allocation level for this
-     * pool. This property is used in relative allocation between resource consumers.
-     *
+     * pool.
+     * This property is used in relative allocation between resource consumers.
+     * 
      * @return the memSharesLevel value.
      */
     public String memSharesLevel() {
@@ -263,8 +254,9 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the memReservationMB property: Gets or sets MemReservationMB which specifies the guaranteed available memory
-     * in megabytes.
-     *
+     * in
+     * megabytes.
+     * 
      * @return the memReservationMB value.
      */
     public Long memReservationMB() {
@@ -272,9 +264,9 @@ public final class ResourcePoolProperties {
     }
 
     /**
-     * Get the memLimitMB property: Gets or sets MemLimitMB specifies a memory usage limit in megabytes. Utilization
-     * will not exceed the specified limit even if there are available resources.
-     *
+     * Get the memLimitMB property: Gets or sets MemLimitMB specifies a memory usage limit in megabytes.
+     * Utilization will not exceed the specified limit even if there are available resources.
+     * 
      * @return the memLimitMB value.
      */
     public Long memLimitMB() {
@@ -283,7 +275,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the memOverallUsageGB property: Gets the used physical memory on the pool in GB.
-     *
+     * 
      * @return the memOverallUsageGB value.
      */
     public Long memOverallUsageGB() {
@@ -292,7 +284,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the memCapacityGB property: Gets the total amount of physical memory on the pool in GB.
-     *
+     * 
      * @return the memCapacityGB value.
      */
     public Long memCapacityGB() {
@@ -301,7 +293,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the cpuOverallUsageMHz property: Gets the used CPU usage across all cores on the pool in MHz.
-     *
+     * 
      * @return the cpuOverallUsageMHz value.
      */
     public Long cpuOverallUsageMHz() {
@@ -310,7 +302,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the cpuCapacityMHz property: Gets the max CPU usage across all cores on the pool in MHz.
-     *
+     * 
      * @return the cpuCapacityMHz value.
      */
     public Long cpuCapacityMHz() {
@@ -319,7 +311,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
-     *
+     * 
      * @return the customResourceName value.
      */
     public String customResourceName() {
@@ -328,7 +320,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the datastoreIds property: Gets the datastore ARM ids.
-     *
+     * 
      * @return the datastoreIds value.
      */
     public List<String> datastoreIds() {
@@ -337,7 +329,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the networkIds property: Gets the network ARM ids.
-     *
+     * 
      * @return the networkIds value.
      */
     public List<String> networkIds() {
@@ -346,7 +338,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceStatus> statuses() {
@@ -355,7 +347,7 @@ public final class ResourcePoolProperties {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -364,12 +356,92 @@ public final class ResourcePoolProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vCenterId", this.vCenterId);
+        jsonWriter.writeStringField("moRefId", this.moRefId);
+        jsonWriter.writeStringField("inventoryItemId", this.inventoryItemId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourcePoolProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourcePoolProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourcePoolProperties.
+     */
+    public static ResourcePoolProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourcePoolProperties deserializedResourcePoolProperties = new ResourcePoolProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uuid".equals(fieldName)) {
+                    deserializedResourcePoolProperties.uuid = reader.getString();
+                } else if ("vCenterId".equals(fieldName)) {
+                    deserializedResourcePoolProperties.vCenterId = reader.getString();
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedResourcePoolProperties.moRefId = reader.getString();
+                } else if ("inventoryItemId".equals(fieldName)) {
+                    deserializedResourcePoolProperties.inventoryItemId = reader.getString();
+                } else if ("moName".equals(fieldName)) {
+                    deserializedResourcePoolProperties.moName = reader.getString();
+                } else if ("cpuSharesLevel".equals(fieldName)) {
+                    deserializedResourcePoolProperties.cpuSharesLevel = reader.getString();
+                } else if ("cpuReservationMHz".equals(fieldName)) {
+                    deserializedResourcePoolProperties.cpuReservationMHz = reader.getNullable(JsonReader::getLong);
+                } else if ("cpuLimitMHz".equals(fieldName)) {
+                    deserializedResourcePoolProperties.cpuLimitMHz = reader.getNullable(JsonReader::getLong);
+                } else if ("memSharesLevel".equals(fieldName)) {
+                    deserializedResourcePoolProperties.memSharesLevel = reader.getString();
+                } else if ("memReservationMB".equals(fieldName)) {
+                    deserializedResourcePoolProperties.memReservationMB = reader.getNullable(JsonReader::getLong);
+                } else if ("memLimitMB".equals(fieldName)) {
+                    deserializedResourcePoolProperties.memLimitMB = reader.getNullable(JsonReader::getLong);
+                } else if ("memOverallUsageGB".equals(fieldName)) {
+                    deserializedResourcePoolProperties.memOverallUsageGB = reader.getNullable(JsonReader::getLong);
+                } else if ("memCapacityGB".equals(fieldName)) {
+                    deserializedResourcePoolProperties.memCapacityGB = reader.getNullable(JsonReader::getLong);
+                } else if ("cpuOverallUsageMHz".equals(fieldName)) {
+                    deserializedResourcePoolProperties.cpuOverallUsageMHz = reader.getNullable(JsonReader::getLong);
+                } else if ("cpuCapacityMHz".equals(fieldName)) {
+                    deserializedResourcePoolProperties.cpuCapacityMHz = reader.getNullable(JsonReader::getLong);
+                } else if ("customResourceName".equals(fieldName)) {
+                    deserializedResourcePoolProperties.customResourceName = reader.getString();
+                } else if ("datastoreIds".equals(fieldName)) {
+                    List<String> datastoreIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourcePoolProperties.datastoreIds = datastoreIds;
+                } else if ("networkIds".equals(fieldName)) {
+                    List<String> networkIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourcePoolProperties.networkIds = networkIds;
+                } else if ("statuses".equals(fieldName)) {
+                    List<ResourceStatus> statuses = reader.readArray(reader1 -> ResourceStatus.fromJson(reader1));
+                    deserializedResourcePoolProperties.statuses = statuses;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedResourcePoolProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourcePoolProperties;
+        });
     }
 }

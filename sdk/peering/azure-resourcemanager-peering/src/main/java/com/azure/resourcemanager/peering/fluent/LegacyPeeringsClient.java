@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringInner;
 import com.azure.resourcemanager.peering.models.LegacyPeeringsKind;
 
-/** An instance of this class provides access to all the operations defined in LegacyPeeringsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LegacyPeeringsClient.
+ */
 public interface LegacyPeeringsClient {
     /**
      * Lists all of the legacy peerings under the given subscription matching the specified kind and location.
-     *
+     * 
      * @param peeringLocation The location of the peering.
      * @param kind The kind of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface LegacyPeeringsClient {
 
     /**
      * Lists all of the legacy peerings under the given subscription matching the specified kind and location.
-     *
+     * 
      * @param peeringLocation The location of the peering.
      * @param kind The kind of the peering.
      * @param asn The ASN number associated with a legacy peering.

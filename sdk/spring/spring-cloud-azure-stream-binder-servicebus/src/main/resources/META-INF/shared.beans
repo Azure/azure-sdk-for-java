@@ -1,0 +1,2 @@
+com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProcessorFactoryCustomizer
+com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProducerFactoryCustomizer

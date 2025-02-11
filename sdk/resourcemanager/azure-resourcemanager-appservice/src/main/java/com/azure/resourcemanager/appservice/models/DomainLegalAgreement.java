@@ -10,15 +10,30 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 /** An immutable client-side representation of an Azure domain legal agreement. */
 @Fluent
 public interface DomainLegalAgreement extends HasInnerModel<TldLegalAgreementInner> {
-    /** @return unique identifier for the agreement */
+    /**
+     * Gets unique identifier for the agreement.
+     *
+     * @return unique identifier for the agreement
+     */
     String agreementKey();
 
-    /** @return agreement title */
+    /**
+     * Gets agreement title.
+     *
+     * @return agreement title
+     */
     String title();
 
-    /** @return agreement details */
+    /**
+     * Gets agreement details.
+     *
+     * @return agreement details
+     */
     String content();
 
-    /** @return url where a copy of the agreement details is hosted */
+    /**
+     * Gets url where a copy of the agreement details is hosted.
+     *
+     * @return url where a copy of the agreement details is hosted */
     String url();
 }

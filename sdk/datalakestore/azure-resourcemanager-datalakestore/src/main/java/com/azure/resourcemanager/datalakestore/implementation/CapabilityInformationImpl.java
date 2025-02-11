@@ -14,8 +14,7 @@ public final class CapabilityInformationImpl implements CapabilityInformation {
 
     private final com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager;
 
-    CapabilityInformationImpl(
-        CapabilityInformationInner innerObject,
+    CapabilityInformationImpl(CapabilityInformationInner innerObject,
         com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

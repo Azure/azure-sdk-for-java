@@ -5,24 +5,24 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** The kubernetes resource limits and requests used to restrict or reserve resource usage. */
+/**
+ * The kubernetes resource limits and requests used to restrict or reserve resource usage.
+ */
 @Fluent
-public final class K8SResourceRequirements {
+public final class K8SResourceRequirements implements JsonSerializable<K8SResourceRequirements> {
     /*
      * Requests for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must be less than or equal to
      * 'cpu' limit. Default 'cpu' is 2, minimum is 1. Default 'memory' is '4Gi', minimum is '2Gi. If sku.tier is
      * GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
      */
-    @JsonProperty(value = "requests")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> requests;
 
     /*
@@ -30,16 +30,16 @@ public final class K8SResourceRequirements {
      * 'cpu' limit. Default 'cpu' is 2, minimum is 1. Default 'memory' is '4Gi', minimum is '2Gi. If sku.tier is
      * GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
      */
-    @JsonProperty(value = "limits")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> limits;
 
     /*
      * The kubernetes resource limits and requests used to restrict or reserve resource usage.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of K8SResourceRequirements class. */
+    /**
+     * Creates an instance of K8SResourceRequirements class.
+     */
     public K8SResourceRequirements() {
     }
 
@@ -47,7 +47,7 @@ public final class K8SResourceRequirements {
      * Get the requests property: Requests for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must
      * be less than or equal to 'cpu' limit. Default 'cpu' is 2, minimum is 1. Default 'memory' is '4Gi', minimum is
      * '2Gi. If sku.tier is GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
-     *
+     * 
      * @return the requests value.
      */
     public Map<String, String> requests() {
@@ -58,7 +58,7 @@ public final class K8SResourceRequirements {
      * Set the requests property: Requests for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must
      * be less than or equal to 'cpu' limit. Default 'cpu' is 2, minimum is 1. Default 'memory' is '4Gi', minimum is
      * '2Gi. If sku.tier is GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
-     *
+     * 
      * @param requests the requests value to set.
      * @return the K8SResourceRequirements object itself.
      */
@@ -71,7 +71,7 @@ public final class K8SResourceRequirements {
      * Get the limits property: Limits for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must be
      * less than or equal to 'cpu' limit. Default 'cpu' is 2, minimum is 1. Default 'memory' is '4Gi', minimum is '2Gi.
      * If sku.tier is GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
-     *
+     * 
      * @return the limits value.
      */
     public Map<String, String> limits() {
@@ -82,7 +82,7 @@ public final class K8SResourceRequirements {
      * Set the limits property: Limits for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must be
      * less than or equal to 'cpu' limit. Default 'cpu' is 2, minimum is 1. Default 'memory' is '4Gi', minimum is '2Gi.
      * If sku.tier is GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
-     *
+     * 
      * @param limits the limits value to set.
      * @return the K8SResourceRequirements object itself.
      */
@@ -94,10 +94,9 @@ public final class K8SResourceRequirements {
     /**
      * Get the additionalProperties property: The kubernetes resource limits and requests used to restrict or reserve
      * resource usage.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -105,7 +104,7 @@ public final class K8SResourceRequirements {
     /**
      * Set the additionalProperties property: The kubernetes resource limits and requests used to restrict or reserve
      * resource usage.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the K8SResourceRequirements object itself.
      */
@@ -114,19 +113,63 @@ public final class K8SResourceRequirements {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("requests", this.requests, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("limits", this.limits, (writer, element) -> writer.writeString(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of K8SResourceRequirements from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of K8SResourceRequirements if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the K8SResourceRequirements.
+     */
+    public static K8SResourceRequirements fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            K8SResourceRequirements deserializedK8SResourceRequirements = new K8SResourceRequirements();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requests".equals(fieldName)) {
+                    Map<String, String> requests = reader.readMap(reader1 -> reader1.getString());
+                    deserializedK8SResourceRequirements.requests = requests;
+                } else if ("limits".equals(fieldName)) {
+                    Map<String, String> limits = reader.readMap(reader1 -> reader1.getString());
+                    deserializedK8SResourceRequirements.limits = limits;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedK8SResourceRequirements.additionalProperties = additionalProperties;
+
+            return deserializedK8SResourceRequirements;
+        });
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Storage mapping input.
  */
 @Fluent
-public final class StorageClassificationMappingInput {
+public final class StorageClassificationMappingInput implements JsonSerializable<StorageClassificationMappingInput> {
     /*
      * Storage mapping input properties.
      */
-    @JsonProperty(value = "properties")
     private StorageMappingInputProperties properties;
 
     /**
@@ -53,5 +56,43 @@ public final class StorageClassificationMappingInput {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageClassificationMappingInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageClassificationMappingInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageClassificationMappingInput.
+     */
+    public static StorageClassificationMappingInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageClassificationMappingInput deserializedStorageClassificationMappingInput
+                = new StorageClassificationMappingInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedStorageClassificationMappingInput.properties
+                        = StorageMappingInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageClassificationMappingInput;
+        });
     }
 }

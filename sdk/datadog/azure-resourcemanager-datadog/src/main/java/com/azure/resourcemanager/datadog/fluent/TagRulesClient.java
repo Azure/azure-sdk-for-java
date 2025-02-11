@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datadog.fluent.models.MonitoringTagRulesInner;
 
-/** An instance of this class provides access to all the operations defined in TagRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TagRulesClient.
+ */
 public interface TagRulesClient {
     /**
      * List the tag rules for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface TagRulesClient {
 
     /**
      * List the tag rules for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -42,11 +44,11 @@ public interface TagRulesClient {
 
     /**
      * Create or update a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
-     * @param body Capture logs and metrics of Azure resources based on ARM tags.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,16 +56,12 @@ public interface TagRulesClient {
      * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MonitoringTagRulesInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        String ruleSetName,
-        MonitoringTagRulesInner body,
-        Context context);
+    Response<MonitoringTagRulesInner> createOrUpdateWithResponse(String resourceGroupName, String monitorName,
+        String ruleSetName, MonitoringTagRulesInner body, Context context);
 
     /**
      * Create or update a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
@@ -77,7 +75,7 @@ public interface TagRulesClient {
 
     /**
      * Get a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
@@ -88,12 +86,12 @@ public interface TagRulesClient {
      * @return a tag rule set for a given monitor resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MonitoringTagRulesInner> getWithResponse(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context);
+    Response<MonitoringTagRulesInner> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
+        Context context);
 
     /**
      * Get a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.

@@ -38,7 +38,6 @@ public final class ProximityPlacementGroupUpdate extends UpdateResource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

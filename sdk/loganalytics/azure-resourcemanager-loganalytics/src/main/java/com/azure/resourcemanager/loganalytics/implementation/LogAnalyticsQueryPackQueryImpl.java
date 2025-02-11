@@ -106,27 +106,23 @@ public final class LogAnalyticsQueryPackQueryImpl
     }
 
     public LogAnalyticsQueryPackQuery create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQueries()
-                .putWithResponse(resourceGroupName, queryPackName, id, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getQueries()
+            .putWithResponse(resourceGroupName, queryPackName, id, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public LogAnalyticsQueryPackQuery create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQueries()
-                .putWithResponse(resourceGroupName, queryPackName, id, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getQueries()
+            .putWithResponse(resourceGroupName, queryPackName, id, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    LogAnalyticsQueryPackQueryImpl(
-        String name, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
+    LogAnalyticsQueryPackQueryImpl(String name,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = new LogAnalyticsQueryPackQueryInner();
         this.serviceManager = serviceManager;
         this.id = name;
@@ -137,52 +133,43 @@ public final class LogAnalyticsQueryPackQueryImpl
     }
 
     public LogAnalyticsQueryPackQuery apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQueries()
-                .updateWithResponse(resourceGroupName, queryPackName, id, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getQueries()
+            .updateWithResponse(resourceGroupName, queryPackName, id, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public LogAnalyticsQueryPackQuery apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQueries()
-                .updateWithResponse(resourceGroupName, queryPackName, id, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getQueries()
+            .updateWithResponse(resourceGroupName, queryPackName, id, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    LogAnalyticsQueryPackQueryImpl(
-        LogAnalyticsQueryPackQueryInner innerObject,
+    LogAnalyticsQueryPackQueryImpl(LogAnalyticsQueryPackQueryInner innerObject,
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.queryPackName = Utils.getValueFromIdByName(innerObject.id(), "queryPacks");
-        this.id = Utils.getValueFromIdByName(innerObject.id(), "queries");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.queryPackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "queryPacks");
+        this.id = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "queries");
     }
 
     public LogAnalyticsQueryPackQuery refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQueries()
-                .getWithResponse(resourceGroupName, queryPackName, id, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getQueries()
+            .getWithResponse(resourceGroupName, queryPackName, id, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LogAnalyticsQueryPackQuery refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQueries()
-                .getWithResponse(resourceGroupName, queryPackName, id, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getQueries()
+            .getWithResponse(resourceGroupName, queryPackName, id, context)
+            .getValue();
         return this;
     }
 

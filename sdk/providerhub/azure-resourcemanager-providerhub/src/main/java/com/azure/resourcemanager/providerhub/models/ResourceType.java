@@ -5,163 +5,147 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ResourceType model. */
+/**
+ * The ResourceType model.
+ */
 @Fluent
-public final class ResourceType {
+public final class ResourceType implements JsonSerializable<ResourceType> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The routingType property.
      */
-    @JsonProperty(value = "routingType")
     private RoutingType routingType;
 
     /*
      * The resourceValidation property.
      */
-    @JsonProperty(value = "resourceValidation")
     private ResourceValidation resourceValidation;
 
     /*
      * The allowedUnauthorizedActions property.
      */
-    @JsonProperty(value = "allowedUnauthorizedActions")
     private List<String> allowedUnauthorizedActions;
 
     /*
      * The authorizationActionMappings property.
      */
-    @JsonProperty(value = "authorizationActionMappings")
     private List<AuthorizationActionMapping> authorizationActionMappings;
 
     /*
      * The linkedAccessChecks property.
      */
-    @JsonProperty(value = "linkedAccessChecks")
     private List<LinkedAccessCheck> linkedAccessChecks;
 
     /*
      * The defaultApiVersion property.
      */
-    @JsonProperty(value = "defaultApiVersion")
     private String defaultApiVersion;
 
     /*
      * The loggingRules property.
      */
-    @JsonProperty(value = "loggingRules")
     private List<LoggingRule> loggingRules;
 
     /*
      * The throttlingRules property.
      */
-    @JsonProperty(value = "throttlingRules")
     private List<ThrottlingRule> throttlingRules;
 
     /*
      * The endpoints property.
      */
-    @JsonProperty(value = "endpoints")
     private List<ResourceProviderEndpoint> endpoints;
 
     /*
      * The marketplaceType property.
      */
-    @JsonProperty(value = "marketplaceType")
     private MarketplaceType marketplaceType;
 
     /*
      * The identityManagement property.
      */
-    @JsonProperty(value = "identityManagement")
     private ResourceTypeIdentityManagement identityManagement;
 
     /*
      * Anything
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The requiredFeatures property.
      */
-    @JsonProperty(value = "requiredFeatures")
     private List<String> requiredFeatures;
 
     /*
      * The featuresRule property.
      */
-    @JsonProperty(value = "featuresRule")
     private ResourceTypeFeaturesRule featuresRule;
 
     /*
      * The subscriptionStateRules property.
      */
-    @JsonProperty(value = "subscriptionStateRules")
     private List<SubscriptionStateRule> subscriptionStateRules;
 
     /*
      * The serviceTreeInfos property.
      */
-    @JsonProperty(value = "serviceTreeInfos")
     private List<ServiceTreeInfo> serviceTreeInfos;
 
     /*
      * The requestHeaderOptions property.
      */
-    @JsonProperty(value = "requestHeaderOptions")
     private ResourceTypeRequestHeaderOptions requestHeaderOptions;
 
     /*
      * The skuLink property.
      */
-    @JsonProperty(value = "skuLink")
     private String skuLink;
 
     /*
      * The disallowedActionVerbs property.
      */
-    @JsonProperty(value = "disallowedActionVerbs")
     private List<String> disallowedActionVerbs;
 
     /*
      * The templateDeploymentPolicy property.
      */
-    @JsonProperty(value = "templateDeploymentPolicy")
     private ResourceTypeTemplateDeploymentPolicy templateDeploymentPolicy;
 
     /*
      * The extendedLocations property.
      */
-    @JsonProperty(value = "extendedLocations")
     private List<ExtendedLocationOptions> extendedLocations;
 
     /*
      * The linkedOperationRules property.
      */
-    @JsonProperty(value = "linkedOperationRules")
     private List<LinkedOperationRule> linkedOperationRules;
 
     /*
      * The resourceDeletionPolicy property.
      */
-    @JsonProperty(value = "resourceDeletionPolicy")
     private ManifestResourceDeletionPolicy resourceDeletionPolicy;
 
-    /** Creates an instance of ResourceType class. */
+    /**
+     * Creates an instance of ResourceType class.
+     */
     public ResourceType() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -170,7 +154,7 @@ public final class ResourceType {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceType object itself.
      */
@@ -181,7 +165,7 @@ public final class ResourceType {
 
     /**
      * Get the routingType property: The routingType property.
-     *
+     * 
      * @return the routingType value.
      */
     public RoutingType routingType() {
@@ -190,7 +174,7 @@ public final class ResourceType {
 
     /**
      * Set the routingType property: The routingType property.
-     *
+     * 
      * @param routingType the routingType value to set.
      * @return the ResourceType object itself.
      */
@@ -201,7 +185,7 @@ public final class ResourceType {
 
     /**
      * Get the resourceValidation property: The resourceValidation property.
-     *
+     * 
      * @return the resourceValidation value.
      */
     public ResourceValidation resourceValidation() {
@@ -210,7 +194,7 @@ public final class ResourceType {
 
     /**
      * Set the resourceValidation property: The resourceValidation property.
-     *
+     * 
      * @param resourceValidation the resourceValidation value to set.
      * @return the ResourceType object itself.
      */
@@ -221,7 +205,7 @@ public final class ResourceType {
 
     /**
      * Get the allowedUnauthorizedActions property: The allowedUnauthorizedActions property.
-     *
+     * 
      * @return the allowedUnauthorizedActions value.
      */
     public List<String> allowedUnauthorizedActions() {
@@ -230,7 +214,7 @@ public final class ResourceType {
 
     /**
      * Set the allowedUnauthorizedActions property: The allowedUnauthorizedActions property.
-     *
+     * 
      * @param allowedUnauthorizedActions the allowedUnauthorizedActions value to set.
      * @return the ResourceType object itself.
      */
@@ -241,7 +225,7 @@ public final class ResourceType {
 
     /**
      * Get the authorizationActionMappings property: The authorizationActionMappings property.
-     *
+     * 
      * @return the authorizationActionMappings value.
      */
     public List<AuthorizationActionMapping> authorizationActionMappings() {
@@ -250,7 +234,7 @@ public final class ResourceType {
 
     /**
      * Set the authorizationActionMappings property: The authorizationActionMappings property.
-     *
+     * 
      * @param authorizationActionMappings the authorizationActionMappings value to set.
      * @return the ResourceType object itself.
      */
@@ -261,7 +245,7 @@ public final class ResourceType {
 
     /**
      * Get the linkedAccessChecks property: The linkedAccessChecks property.
-     *
+     * 
      * @return the linkedAccessChecks value.
      */
     public List<LinkedAccessCheck> linkedAccessChecks() {
@@ -270,7 +254,7 @@ public final class ResourceType {
 
     /**
      * Set the linkedAccessChecks property: The linkedAccessChecks property.
-     *
+     * 
      * @param linkedAccessChecks the linkedAccessChecks value to set.
      * @return the ResourceType object itself.
      */
@@ -281,7 +265,7 @@ public final class ResourceType {
 
     /**
      * Get the defaultApiVersion property: The defaultApiVersion property.
-     *
+     * 
      * @return the defaultApiVersion value.
      */
     public String defaultApiVersion() {
@@ -290,7 +274,7 @@ public final class ResourceType {
 
     /**
      * Set the defaultApiVersion property: The defaultApiVersion property.
-     *
+     * 
      * @param defaultApiVersion the defaultApiVersion value to set.
      * @return the ResourceType object itself.
      */
@@ -301,7 +285,7 @@ public final class ResourceType {
 
     /**
      * Get the loggingRules property: The loggingRules property.
-     *
+     * 
      * @return the loggingRules value.
      */
     public List<LoggingRule> loggingRules() {
@@ -310,7 +294,7 @@ public final class ResourceType {
 
     /**
      * Set the loggingRules property: The loggingRules property.
-     *
+     * 
      * @param loggingRules the loggingRules value to set.
      * @return the ResourceType object itself.
      */
@@ -321,7 +305,7 @@ public final class ResourceType {
 
     /**
      * Get the throttlingRules property: The throttlingRules property.
-     *
+     * 
      * @return the throttlingRules value.
      */
     public List<ThrottlingRule> throttlingRules() {
@@ -330,7 +314,7 @@ public final class ResourceType {
 
     /**
      * Set the throttlingRules property: The throttlingRules property.
-     *
+     * 
      * @param throttlingRules the throttlingRules value to set.
      * @return the ResourceType object itself.
      */
@@ -341,7 +325,7 @@ public final class ResourceType {
 
     /**
      * Get the endpoints property: The endpoints property.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<ResourceProviderEndpoint> endpoints() {
@@ -350,7 +334,7 @@ public final class ResourceType {
 
     /**
      * Set the endpoints property: The endpoints property.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the ResourceType object itself.
      */
@@ -361,7 +345,7 @@ public final class ResourceType {
 
     /**
      * Get the marketplaceType property: The marketplaceType property.
-     *
+     * 
      * @return the marketplaceType value.
      */
     public MarketplaceType marketplaceType() {
@@ -370,7 +354,7 @@ public final class ResourceType {
 
     /**
      * Set the marketplaceType property: The marketplaceType property.
-     *
+     * 
      * @param marketplaceType the marketplaceType value to set.
      * @return the ResourceType object itself.
      */
@@ -381,7 +365,7 @@ public final class ResourceType {
 
     /**
      * Get the identityManagement property: The identityManagement property.
-     *
+     * 
      * @return the identityManagement value.
      */
     public ResourceTypeIdentityManagement identityManagement() {
@@ -390,7 +374,7 @@ public final class ResourceType {
 
     /**
      * Set the identityManagement property: The identityManagement property.
-     *
+     * 
      * @param identityManagement the identityManagement value to set.
      * @return the ResourceType object itself.
      */
@@ -401,7 +385,7 @@ public final class ResourceType {
 
     /**
      * Get the metadata property: Anything.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -410,7 +394,7 @@ public final class ResourceType {
 
     /**
      * Set the metadata property: Anything.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ResourceType object itself.
      */
@@ -421,7 +405,7 @@ public final class ResourceType {
 
     /**
      * Get the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @return the requiredFeatures value.
      */
     public List<String> requiredFeatures() {
@@ -430,7 +414,7 @@ public final class ResourceType {
 
     /**
      * Set the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceType object itself.
      */
@@ -441,7 +425,7 @@ public final class ResourceType {
 
     /**
      * Get the featuresRule property: The featuresRule property.
-     *
+     * 
      * @return the featuresRule value.
      */
     public ResourceTypeFeaturesRule featuresRule() {
@@ -450,7 +434,7 @@ public final class ResourceType {
 
     /**
      * Set the featuresRule property: The featuresRule property.
-     *
+     * 
      * @param featuresRule the featuresRule value to set.
      * @return the ResourceType object itself.
      */
@@ -461,7 +445,7 @@ public final class ResourceType {
 
     /**
      * Get the subscriptionStateRules property: The subscriptionStateRules property.
-     *
+     * 
      * @return the subscriptionStateRules value.
      */
     public List<SubscriptionStateRule> subscriptionStateRules() {
@@ -470,7 +454,7 @@ public final class ResourceType {
 
     /**
      * Set the subscriptionStateRules property: The subscriptionStateRules property.
-     *
+     * 
      * @param subscriptionStateRules the subscriptionStateRules value to set.
      * @return the ResourceType object itself.
      */
@@ -481,7 +465,7 @@ public final class ResourceType {
 
     /**
      * Get the serviceTreeInfos property: The serviceTreeInfos property.
-     *
+     * 
      * @return the serviceTreeInfos value.
      */
     public List<ServiceTreeInfo> serviceTreeInfos() {
@@ -490,7 +474,7 @@ public final class ResourceType {
 
     /**
      * Set the serviceTreeInfos property: The serviceTreeInfos property.
-     *
+     * 
      * @param serviceTreeInfos the serviceTreeInfos value to set.
      * @return the ResourceType object itself.
      */
@@ -501,7 +485,7 @@ public final class ResourceType {
 
     /**
      * Get the requestHeaderOptions property: The requestHeaderOptions property.
-     *
+     * 
      * @return the requestHeaderOptions value.
      */
     public ResourceTypeRequestHeaderOptions requestHeaderOptions() {
@@ -510,7 +494,7 @@ public final class ResourceType {
 
     /**
      * Set the requestHeaderOptions property: The requestHeaderOptions property.
-     *
+     * 
      * @param requestHeaderOptions the requestHeaderOptions value to set.
      * @return the ResourceType object itself.
      */
@@ -521,7 +505,7 @@ public final class ResourceType {
 
     /**
      * Get the skuLink property: The skuLink property.
-     *
+     * 
      * @return the skuLink value.
      */
     public String skuLink() {
@@ -530,7 +514,7 @@ public final class ResourceType {
 
     /**
      * Set the skuLink property: The skuLink property.
-     *
+     * 
      * @param skuLink the skuLink value to set.
      * @return the ResourceType object itself.
      */
@@ -541,7 +525,7 @@ public final class ResourceType {
 
     /**
      * Get the disallowedActionVerbs property: The disallowedActionVerbs property.
-     *
+     * 
      * @return the disallowedActionVerbs value.
      */
     public List<String> disallowedActionVerbs() {
@@ -550,7 +534,7 @@ public final class ResourceType {
 
     /**
      * Set the disallowedActionVerbs property: The disallowedActionVerbs property.
-     *
+     * 
      * @param disallowedActionVerbs the disallowedActionVerbs value to set.
      * @return the ResourceType object itself.
      */
@@ -561,7 +545,7 @@ public final class ResourceType {
 
     /**
      * Get the templateDeploymentPolicy property: The templateDeploymentPolicy property.
-     *
+     * 
      * @return the templateDeploymentPolicy value.
      */
     public ResourceTypeTemplateDeploymentPolicy templateDeploymentPolicy() {
@@ -570,7 +554,7 @@ public final class ResourceType {
 
     /**
      * Set the templateDeploymentPolicy property: The templateDeploymentPolicy property.
-     *
+     * 
      * @param templateDeploymentPolicy the templateDeploymentPolicy value to set.
      * @return the ResourceType object itself.
      */
@@ -581,7 +565,7 @@ public final class ResourceType {
 
     /**
      * Get the extendedLocations property: The extendedLocations property.
-     *
+     * 
      * @return the extendedLocations value.
      */
     public List<ExtendedLocationOptions> extendedLocations() {
@@ -590,7 +574,7 @@ public final class ResourceType {
 
     /**
      * Set the extendedLocations property: The extendedLocations property.
-     *
+     * 
      * @param extendedLocations the extendedLocations value to set.
      * @return the ResourceType object itself.
      */
@@ -601,7 +585,7 @@ public final class ResourceType {
 
     /**
      * Get the linkedOperationRules property: The linkedOperationRules property.
-     *
+     * 
      * @return the linkedOperationRules value.
      */
     public List<LinkedOperationRule> linkedOperationRules() {
@@ -610,7 +594,7 @@ public final class ResourceType {
 
     /**
      * Set the linkedOperationRules property: The linkedOperationRules property.
-     *
+     * 
      * @param linkedOperationRules the linkedOperationRules value to set.
      * @return the ResourceType object itself.
      */
@@ -621,7 +605,7 @@ public final class ResourceType {
 
     /**
      * Get the resourceDeletionPolicy property: The resourceDeletionPolicy property.
-     *
+     * 
      * @return the resourceDeletionPolicy value.
      */
     public ManifestResourceDeletionPolicy resourceDeletionPolicy() {
@@ -630,7 +614,7 @@ public final class ResourceType {
 
     /**
      * Set the resourceDeletionPolicy property: The resourceDeletionPolicy property.
-     *
+     * 
      * @param resourceDeletionPolicy the resourceDeletionPolicy value to set.
      * @return the ResourceType object itself.
      */
@@ -641,7 +625,7 @@ public final class ResourceType {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -684,5 +668,145 @@ public final class ResourceType {
         if (linkedOperationRules() != null) {
             linkedOperationRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("routingType", this.routingType == null ? null : this.routingType.toString());
+        jsonWriter.writeStringField("resourceValidation",
+            this.resourceValidation == null ? null : this.resourceValidation.toString());
+        jsonWriter.writeArrayField("allowedUnauthorizedActions", this.allowedUnauthorizedActions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("authorizationActionMappings", this.authorizationActionMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("linkedAccessChecks", this.linkedAccessChecks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("defaultApiVersion", this.defaultApiVersion);
+        jsonWriter.writeArrayField("loggingRules", this.loggingRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("throttlingRules", this.throttlingRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("marketplaceType",
+            this.marketplaceType == null ? null : this.marketplaceType.toString());
+        jsonWriter.writeJsonField("identityManagement", this.identityManagement);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("featuresRule", this.featuresRule);
+        jsonWriter.writeArrayField("subscriptionStateRules", this.subscriptionStateRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceTreeInfos", this.serviceTreeInfos,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("requestHeaderOptions", this.requestHeaderOptions);
+        jsonWriter.writeStringField("skuLink", this.skuLink);
+        jsonWriter.writeArrayField("disallowedActionVerbs", this.disallowedActionVerbs,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("templateDeploymentPolicy", this.templateDeploymentPolicy);
+        jsonWriter.writeArrayField("extendedLocations", this.extendedLocations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("linkedOperationRules", this.linkedOperationRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("resourceDeletionPolicy",
+            this.resourceDeletionPolicy == null ? null : this.resourceDeletionPolicy.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceType if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceType.
+     */
+    public static ResourceType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceType deserializedResourceType = new ResourceType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedResourceType.name = reader.getString();
+                } else if ("routingType".equals(fieldName)) {
+                    deserializedResourceType.routingType = RoutingType.fromString(reader.getString());
+                } else if ("resourceValidation".equals(fieldName)) {
+                    deserializedResourceType.resourceValidation = ResourceValidation.fromString(reader.getString());
+                } else if ("allowedUnauthorizedActions".equals(fieldName)) {
+                    List<String> allowedUnauthorizedActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceType.allowedUnauthorizedActions = allowedUnauthorizedActions;
+                } else if ("authorizationActionMappings".equals(fieldName)) {
+                    List<AuthorizationActionMapping> authorizationActionMappings
+                        = reader.readArray(reader1 -> AuthorizationActionMapping.fromJson(reader1));
+                    deserializedResourceType.authorizationActionMappings = authorizationActionMappings;
+                } else if ("linkedAccessChecks".equals(fieldName)) {
+                    List<LinkedAccessCheck> linkedAccessChecks
+                        = reader.readArray(reader1 -> LinkedAccessCheck.fromJson(reader1));
+                    deserializedResourceType.linkedAccessChecks = linkedAccessChecks;
+                } else if ("defaultApiVersion".equals(fieldName)) {
+                    deserializedResourceType.defaultApiVersion = reader.getString();
+                } else if ("loggingRules".equals(fieldName)) {
+                    List<LoggingRule> loggingRules = reader.readArray(reader1 -> LoggingRule.fromJson(reader1));
+                    deserializedResourceType.loggingRules = loggingRules;
+                } else if ("throttlingRules".equals(fieldName)) {
+                    List<ThrottlingRule> throttlingRules
+                        = reader.readArray(reader1 -> ThrottlingRule.fromJson(reader1));
+                    deserializedResourceType.throttlingRules = throttlingRules;
+                } else if ("endpoints".equals(fieldName)) {
+                    List<ResourceProviderEndpoint> endpoints
+                        = reader.readArray(reader1 -> ResourceProviderEndpoint.fromJson(reader1));
+                    deserializedResourceType.endpoints = endpoints;
+                } else if ("marketplaceType".equals(fieldName)) {
+                    deserializedResourceType.marketplaceType = MarketplaceType.fromString(reader.getString());
+                } else if ("identityManagement".equals(fieldName)) {
+                    deserializedResourceType.identityManagement = ResourceTypeIdentityManagement.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedResourceType.metadata = reader.readUntyped();
+                } else if ("requiredFeatures".equals(fieldName)) {
+                    List<String> requiredFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceType.requiredFeatures = requiredFeatures;
+                } else if ("featuresRule".equals(fieldName)) {
+                    deserializedResourceType.featuresRule = ResourceTypeFeaturesRule.fromJson(reader);
+                } else if ("subscriptionStateRules".equals(fieldName)) {
+                    List<SubscriptionStateRule> subscriptionStateRules
+                        = reader.readArray(reader1 -> SubscriptionStateRule.fromJson(reader1));
+                    deserializedResourceType.subscriptionStateRules = subscriptionStateRules;
+                } else if ("serviceTreeInfos".equals(fieldName)) {
+                    List<ServiceTreeInfo> serviceTreeInfos
+                        = reader.readArray(reader1 -> ServiceTreeInfo.fromJson(reader1));
+                    deserializedResourceType.serviceTreeInfos = serviceTreeInfos;
+                } else if ("requestHeaderOptions".equals(fieldName)) {
+                    deserializedResourceType.requestHeaderOptions = ResourceTypeRequestHeaderOptions.fromJson(reader);
+                } else if ("skuLink".equals(fieldName)) {
+                    deserializedResourceType.skuLink = reader.getString();
+                } else if ("disallowedActionVerbs".equals(fieldName)) {
+                    List<String> disallowedActionVerbs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceType.disallowedActionVerbs = disallowedActionVerbs;
+                } else if ("templateDeploymentPolicy".equals(fieldName)) {
+                    deserializedResourceType.templateDeploymentPolicy
+                        = ResourceTypeTemplateDeploymentPolicy.fromJson(reader);
+                } else if ("extendedLocations".equals(fieldName)) {
+                    List<ExtendedLocationOptions> extendedLocations
+                        = reader.readArray(reader1 -> ExtendedLocationOptions.fromJson(reader1));
+                    deserializedResourceType.extendedLocations = extendedLocations;
+                } else if ("linkedOperationRules".equals(fieldName)) {
+                    List<LinkedOperationRule> linkedOperationRules
+                        = reader.readArray(reader1 -> LinkedOperationRule.fromJson(reader1));
+                    deserializedResourceType.linkedOperationRules = linkedOperationRules;
+                } else if ("resourceDeletionPolicy".equals(fieldName)) {
+                    deserializedResourceType.resourceDeletionPolicy
+                        = ManifestResourceDeletionPolicy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceType;
+        });
     }
 }

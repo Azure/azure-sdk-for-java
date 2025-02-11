@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databox.models.ExportDiskDetails;
 public final class ExportDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportDiskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"manifestFile\":\"hsd\",\"manifestHash\":\"t\",\"backupManifestCloudPath\":\"fikdowwqu\"}")
-                .toObject(ExportDiskDetails.class);
+        ExportDiskDetails model = BinaryData
+            .fromString("{\"manifestFile\":\"la\",\"manifestHash\":\"elwuipi\",\"backupManifestCloudPath\":\"jzkzi\"}")
+            .toObject(ExportDiskDetails.class);
     }
 
     @org.junit.jupiter.api.Test

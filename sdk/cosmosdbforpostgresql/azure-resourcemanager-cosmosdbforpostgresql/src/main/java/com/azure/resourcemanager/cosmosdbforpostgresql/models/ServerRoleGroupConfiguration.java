@@ -6,35 +6,35 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents server role group configuration value.
  */
 @Fluent
-public final class ServerRoleGroupConfiguration {
+public final class ServerRoleGroupConfiguration implements JsonSerializable<ServerRoleGroupConfiguration> {
     /*
      * The role of servers in the server role group.
      */
-    @JsonProperty(value = "role", required = true)
     private ServerRole role;
 
     /*
      * Value of the configuration.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
      * Default value of the configuration.
      */
-    @JsonProperty(value = "defaultValue", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultValue;
 
     /*
      * Source of the configuration.
      */
-    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY)
     private String source;
 
     /**
@@ -108,14 +108,60 @@ public final class ServerRoleGroupConfiguration {
      */
     public void validate() {
         if (role() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property role in model ServerRoleGroupConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property role in model ServerRoleGroupConfiguration"));
         }
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model ServerRoleGroupConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model ServerRoleGroupConfiguration"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServerRoleGroupConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerRoleGroupConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerRoleGroupConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerRoleGroupConfiguration.
+     */
+    public static ServerRoleGroupConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerRoleGroupConfiguration deserializedServerRoleGroupConfiguration = new ServerRoleGroupConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("role".equals(fieldName)) {
+                    deserializedServerRoleGroupConfiguration.role = ServerRole.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedServerRoleGroupConfiguration.value = reader.getString();
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedServerRoleGroupConfiguration.defaultValue = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedServerRoleGroupConfiguration.source = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerRoleGroupConfiguration;
+        });
+    }
 }

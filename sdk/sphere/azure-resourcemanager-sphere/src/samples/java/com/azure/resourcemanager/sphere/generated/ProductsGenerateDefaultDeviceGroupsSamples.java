@@ -19,7 +19,8 @@ public final class ProductsGenerateDefaultDeviceGroupsSamples {
      */
     public static void
         productsGenerateDefaultDeviceGroups(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.products().generateDefaultDeviceGroups("MyResourceGroup1", "MyCatalog1", "MyProduct1",
-            com.azure.core.util.Context.NONE);
+        manager.products()
+            .generateDefaultDeviceGroups("MyResourceGroup1", "MyCatalog1", "MyProduct1",
+                com.azure.core.util.Context.NONE);
     }
 }

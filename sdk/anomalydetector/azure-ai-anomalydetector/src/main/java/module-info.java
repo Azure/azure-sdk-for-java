@@ -4,7 +4,9 @@
 
 module com.azure.ai.anomalydetector {
     requires transitive com.azure.core;
+
     exports com.azure.ai.anomalydetector;
     exports com.azure.ai.anomalydetector.models;
+
     opens com.azure.ai.anomalydetector.models to com.azure.core;
 }

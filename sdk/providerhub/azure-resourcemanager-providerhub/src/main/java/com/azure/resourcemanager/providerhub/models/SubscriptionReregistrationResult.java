@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SubscriptionReregistrationResult. */
+/**
+ * Defines values for SubscriptionReregistrationResult.
+ */
 public final class SubscriptionReregistrationResult extends ExpandableStringEnum<SubscriptionReregistrationResult> {
-    /** Static value NotApplicable for SubscriptionReregistrationResult. */
+    /**
+     * Static value NotApplicable for SubscriptionReregistrationResult.
+     */
     public static final SubscriptionReregistrationResult NOT_APPLICABLE = fromString("NotApplicable");
 
-    /** Static value ConditionalUpdate for SubscriptionReregistrationResult. */
+    /**
+     * Static value ConditionalUpdate for SubscriptionReregistrationResult.
+     */
     public static final SubscriptionReregistrationResult CONDITIONAL_UPDATE = fromString("ConditionalUpdate");
 
-    /** Static value ForcedUpdate for SubscriptionReregistrationResult. */
+    /**
+     * Static value ForcedUpdate for SubscriptionReregistrationResult.
+     */
     public static final SubscriptionReregistrationResult FORCED_UPDATE = fromString("ForcedUpdate");
 
-    /** Static value Failed for SubscriptionReregistrationResult. */
+    /**
+     * Static value Failed for SubscriptionReregistrationResult.
+     */
     public static final SubscriptionReregistrationResult FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of SubscriptionReregistrationResult value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class SubscriptionReregistrationResult extends ExpandableStringEnum
 
     /**
      * Creates or finds a SubscriptionReregistrationResult from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SubscriptionReregistrationResult.
      */
-    @JsonCreator
     public static SubscriptionReregistrationResult fromString(String name) {
         return fromString(name, SubscriptionReregistrationResult.class);
     }
 
     /**
      * Gets known SubscriptionReregistrationResult values.
-     *
+     * 
      * @return known SubscriptionReregistrationResult values.
      */
     public static Collection<SubscriptionReregistrationResult> values() {

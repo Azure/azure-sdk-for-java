@@ -18,7 +18,9 @@ public final class DeploymentsCreateOrUpdateSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void deploymentsCreateOrUpdate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.deployments().define("production")
-            .withExistingApi("contoso-resources", "contoso", "default", "echo-api").create();
+        manager.deployments()
+            .define("production")
+            .withExistingApi("contoso-resources", "contoso", "default", "echo-api")
+            .create();
     }
 }

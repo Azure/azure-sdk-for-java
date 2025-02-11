@@ -19,16 +19,10 @@ import com.azure.resourcemanager.resources.ResourceManager;
  * Entry point to template deployment in Azure.
  */
 @Fluent
-public interface Deployments extends
-        SupportsCreating<Deployment.DefinitionStages.Blank>,
-        SupportsListing<Deployment>,
-        SupportsListingByResourceGroup<Deployment>,
-        SupportsGettingByName<Deployment>,
-        SupportsGettingByResourceGroup<Deployment>,
-        SupportsGettingById<Deployment>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        HasManager<ResourceManager> {
+public interface Deployments extends SupportsCreating<Deployment.DefinitionStages.Blank>, SupportsListing<Deployment>,
+    SupportsListingByResourceGroup<Deployment>, SupportsGettingByName<Deployment>,
+    SupportsGettingByResourceGroup<Deployment>, SupportsGettingById<Deployment>, SupportsDeletingById,
+    SupportsDeletingByResourceGroup, HasManager<ResourceManager> {
     /**
      * Checks if a deployment exists in a resource group.
      *

@@ -6,6 +6,10 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
@@ -17,96 +21,88 @@ import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInt
 import com.azure.resourcemanager.managednetworkfabric.models.NniType;
 import com.azure.resourcemanager.managednetworkfabric.models.NpbStaticRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Configuration used to setup CE-PE connectivity. */
+/**
+ * Configuration used to setup CE-PE connectivity.
+ */
 @Fluent
-public final class NetworkToNetworkInterconnectProperties {
+public final class NetworkToNetworkInterconnectProperties
+    implements JsonSerializable<NetworkToNetworkInterconnectProperties> {
     /*
      * Type of NNI used. Example: CE | NPB
      */
-    @JsonProperty(value = "nniType")
     private NniType nniType;
 
     /*
      * Configuration to use NNI for Infrastructure Management. Example: True/False.
      */
-    @JsonProperty(value = "isManagementType")
     private IsManagementType isManagementType;
 
     /*
      * Based on this option layer3 parameters are mandatory. Example: True/False
      */
-    @JsonProperty(value = "useOptionB", required = true)
     private BooleanEnumProperty useOptionB;
 
     /*
      * Common properties for Layer2 Configuration.
      */
-    @JsonProperty(value = "layer2Configuration")
     private Layer2Configuration layer2Configuration;
 
     /*
      * Common properties for Layer3Configuration.
      */
-    @JsonProperty(value = "optionBLayer3Configuration")
     private NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration optionBLayer3Configuration;
 
     /*
      * NPB Static Route Configuration properties.
      */
-    @JsonProperty(value = "npbStaticRouteConfiguration")
     private NpbStaticRouteConfiguration npbStaticRouteConfiguration;
 
     /*
      * Import Route Policy configuration.
      */
-    @JsonProperty(value = "importRoutePolicy")
     private ImportRoutePolicyInformation importRoutePolicy;
 
     /*
      * Export Route Policy configuration.
      */
-    @JsonProperty(value = "exportRoutePolicy")
     private ExportRoutePolicyInformation exportRoutePolicy;
 
     /*
      * Egress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "egressAclId")
     private String egressAclId;
 
     /*
      * Ingress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "ingressAclId")
     private String ingressAclId;
 
     /*
      * Configuration state of the resource.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Administrative state of the resource.
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private AdministrativeState administrativeState;
 
-    /** Creates an instance of NetworkToNetworkInterconnectProperties class. */
+    /**
+     * Creates an instance of NetworkToNetworkInterconnectProperties class.
+     */
     public NetworkToNetworkInterconnectProperties() {
     }
 
     /**
      * Get the nniType property: Type of NNI used. Example: CE | NPB.
-     *
+     * 
      * @return the nniType value.
      */
     public NniType nniType() {
@@ -115,7 +111,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Set the nniType property: Type of NNI used. Example: CE | NPB.
-     *
+     * 
      * @param nniType the nniType value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
@@ -126,7 +122,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Get the isManagementType property: Configuration to use NNI for Infrastructure Management. Example: True/False.
-     *
+     * 
      * @return the isManagementType value.
      */
     public IsManagementType isManagementType() {
@@ -135,7 +131,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Set the isManagementType property: Configuration to use NNI for Infrastructure Management. Example: True/False.
-     *
+     * 
      * @param isManagementType the isManagementType value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
@@ -146,7 +142,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Get the useOptionB property: Based on this option layer3 parameters are mandatory. Example: True/False.
-     *
+     * 
      * @return the useOptionB value.
      */
     public BooleanEnumProperty useOptionB() {
@@ -155,7 +151,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Set the useOptionB property: Based on this option layer3 parameters are mandatory. Example: True/False.
-     *
+     * 
      * @param useOptionB the useOptionB value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
@@ -166,7 +162,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Get the layer2Configuration property: Common properties for Layer2 Configuration.
-     *
+     * 
      * @return the layer2Configuration value.
      */
     public Layer2Configuration layer2Configuration() {
@@ -175,7 +171,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Set the layer2Configuration property: Common properties for Layer2 Configuration.
-     *
+     * 
      * @param layer2Configuration the layer2Configuration value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
@@ -186,7 +182,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Get the optionBLayer3Configuration property: Common properties for Layer3Configuration.
-     *
+     * 
      * @return the optionBLayer3Configuration value.
      */
     public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration optionBLayer3Configuration() {
@@ -195,7 +191,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Set the optionBLayer3Configuration property: Common properties for Layer3Configuration.
-     *
+     * 
      * @param optionBLayer3Configuration the optionBLayer3Configuration value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
@@ -207,7 +203,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Get the npbStaticRouteConfiguration property: NPB Static Route Configuration properties.
-     *
+     * 
      * @return the npbStaticRouteConfiguration value.
      */
     public NpbStaticRouteConfiguration npbStaticRouteConfiguration() {
@@ -216,19 +212,19 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Set the npbStaticRouteConfiguration property: NPB Static Route Configuration properties.
-     *
+     * 
      * @param npbStaticRouteConfiguration the npbStaticRouteConfiguration value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
-    public NetworkToNetworkInterconnectProperties withNpbStaticRouteConfiguration(
-        NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
+    public NetworkToNetworkInterconnectProperties
+        withNpbStaticRouteConfiguration(NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
         this.npbStaticRouteConfiguration = npbStaticRouteConfiguration;
         return this;
     }
 
     /**
      * Get the importRoutePolicy property: Import Route Policy configuration.
-     *
+     * 
      * @return the importRoutePolicy value.
      */
     public ImportRoutePolicyInformation importRoutePolicy() {
@@ -237,19 +233,19 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Set the importRoutePolicy property: Import Route Policy configuration.
-     *
+     * 
      * @param importRoutePolicy the importRoutePolicy value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
-    public NetworkToNetworkInterconnectProperties withImportRoutePolicy(
-        ImportRoutePolicyInformation importRoutePolicy) {
+    public NetworkToNetworkInterconnectProperties
+        withImportRoutePolicy(ImportRoutePolicyInformation importRoutePolicy) {
         this.importRoutePolicy = importRoutePolicy;
         return this;
     }
 
     /**
      * Get the exportRoutePolicy property: Export Route Policy configuration.
-     *
+     * 
      * @return the exportRoutePolicy value.
      */
     public ExportRoutePolicyInformation exportRoutePolicy() {
@@ -258,19 +254,19 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Set the exportRoutePolicy property: Export Route Policy configuration.
-     *
+     * 
      * @param exportRoutePolicy the exportRoutePolicy value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
-    public NetworkToNetworkInterconnectProperties withExportRoutePolicy(
-        ExportRoutePolicyInformation exportRoutePolicy) {
+    public NetworkToNetworkInterconnectProperties
+        withExportRoutePolicy(ExportRoutePolicyInformation exportRoutePolicy) {
         this.exportRoutePolicy = exportRoutePolicy;
         return this;
     }
 
     /**
      * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the egressAclId value.
      */
     public String egressAclId() {
@@ -279,7 +275,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param egressAclId the egressAclId value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
@@ -290,7 +286,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the ingressAclId value.
      */
     public String ingressAclId() {
@@ -299,7 +295,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param ingressAclId the ingressAclId value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
@@ -310,7 +306,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Get the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -319,7 +315,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -328,7 +324,7 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -337,15 +333,14 @@ public final class NetworkToNetworkInterconnectProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (useOptionB() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property useOptionB in model NetworkToNetworkInterconnectProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property useOptionB in model NetworkToNetworkInterconnectProperties"));
         }
         if (layer2Configuration() != null) {
             layer2Configuration().validate();
@@ -365,4 +360,86 @@ public final class NetworkToNetworkInterconnectProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkToNetworkInterconnectProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("useOptionB", this.useOptionB == null ? null : this.useOptionB.toString());
+        jsonWriter.writeStringField("nniType", this.nniType == null ? null : this.nniType.toString());
+        jsonWriter.writeStringField("isManagementType",
+            this.isManagementType == null ? null : this.isManagementType.toString());
+        jsonWriter.writeJsonField("layer2Configuration", this.layer2Configuration);
+        jsonWriter.writeJsonField("optionBLayer3Configuration", this.optionBLayer3Configuration);
+        jsonWriter.writeJsonField("npbStaticRouteConfiguration", this.npbStaticRouteConfiguration);
+        jsonWriter.writeJsonField("importRoutePolicy", this.importRoutePolicy);
+        jsonWriter.writeJsonField("exportRoutePolicy", this.exportRoutePolicy);
+        jsonWriter.writeStringField("egressAclId", this.egressAclId);
+        jsonWriter.writeStringField("ingressAclId", this.ingressAclId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkToNetworkInterconnectProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkToNetworkInterconnectProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkToNetworkInterconnectProperties.
+     */
+    public static NetworkToNetworkInterconnectProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkToNetworkInterconnectProperties deserializedNetworkToNetworkInterconnectProperties
+                = new NetworkToNetworkInterconnectProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("useOptionB".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.useOptionB
+                        = BooleanEnumProperty.fromString(reader.getString());
+                } else if ("nniType".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.nniType = NniType.fromString(reader.getString());
+                } else if ("isManagementType".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.isManagementType
+                        = IsManagementType.fromString(reader.getString());
+                } else if ("layer2Configuration".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.layer2Configuration
+                        = Layer2Configuration.fromJson(reader);
+                } else if ("optionBLayer3Configuration".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.optionBLayer3Configuration
+                        = NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration.fromJson(reader);
+                } else if ("npbStaticRouteConfiguration".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.npbStaticRouteConfiguration
+                        = NpbStaticRouteConfiguration.fromJson(reader);
+                } else if ("importRoutePolicy".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.importRoutePolicy
+                        = ImportRoutePolicyInformation.fromJson(reader);
+                } else if ("exportRoutePolicy".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.exportRoutePolicy
+                        = ExportRoutePolicyInformation.fromJson(reader);
+                } else if ("egressAclId".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.egressAclId = reader.getString();
+                } else if ("ingressAclId".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.ingressAclId = reader.getString();
+                } else if ("configurationState".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkToNetworkInterconnectProperties;
+        });
+    }
 }

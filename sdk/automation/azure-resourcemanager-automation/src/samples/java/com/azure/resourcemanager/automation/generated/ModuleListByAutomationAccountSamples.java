@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Module ListByAutomationAccount. */
+/**
+ * Samples for Module ListByAutomationAccount.
+ */
 public final class ModuleListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listModulesByAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listModulesByAutomationAccount.json
      */
     /**
      * Sample code: List modules by automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listModulesByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.modules().listByAutomationAccount("rg", "myAutomationAccount33", Context.NONE);
+        manager.modules().listByAutomationAccount("rg", "myAutomationAccount33", com.azure.core.util.Context.NONE);
     }
 }

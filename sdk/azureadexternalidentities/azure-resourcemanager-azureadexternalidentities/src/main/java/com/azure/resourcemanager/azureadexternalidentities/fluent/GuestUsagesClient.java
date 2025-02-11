@@ -42,8 +42,8 @@ public interface GuestUsagesClient {
      * @return guest Usages Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GuestUsagesResourceInner> createWithResponse(
-        String resourceGroupName, String resourceName, GuestUsagesResourceInner resource, Context context);
+    Response<GuestUsagesResourceInner> createWithResponse(String resourceGroupName, String resourceName,
+        GuestUsagesResourceInner resource, Context context);
 
     /**
      * Updates a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider.
@@ -71,8 +71,8 @@ public interface GuestUsagesClient {
      * @return guest Usages Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GuestUsagesResourceInner> updateWithResponse(
-        String resourceGroupName, String resourceName, GuestUsagesResourcePatch resourcePatch, Context context);
+    Response<GuestUsagesResourceInner> updateWithResponse(String resourceGroupName, String resourceName,
+        GuestUsagesResourcePatch resourcePatch, Context context);
 
     /**
      * Deletes a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider.
@@ -126,8 +126,8 @@ public interface GuestUsagesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GuestUsagesResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<GuestUsagesResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets Guest Usages resources under a subscription for the Microsoft.AzureActiveDirectory resource provider.

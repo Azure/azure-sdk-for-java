@@ -100,20 +100,16 @@ public final class UserImpl implements User, User.Definition, User.Update {
     }
 
     public User create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public User create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), context);
         return this;
     }
 
@@ -129,52 +125,44 @@ public final class UserImpl implements User, User.Definition, User.Update {
     }
 
     public User apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .updateWithResponse(resourceGroupName, labName, name, updateUser, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .updateWithResponse(resourceGroupName, labName, name, updateUser, Context.NONE)
+            .getValue();
         return this;
     }
 
     public User apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .updateWithResponse(resourceGroupName, labName, name, updateUser, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .updateWithResponse(resourceGroupName, labName, name, updateUser, context)
+            .getValue();
         return this;
     }
 
     UserImpl(UserInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "users");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "users");
     }
 
     public User refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public User refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, context)
+            .getValue();
         return this;
     }
 

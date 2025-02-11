@@ -87,6 +87,12 @@ public final class CosmosDiagnosticsContext {
     private final Integer sequenceNumber;
 
     private String queryStatement;
+
+    private Long opCountPerEvaluation;
+    private Long opRetriedCountPerEvaluation;
+    private Long globalOpCount;
+    private Integer targetMaxMicroBatchSize;
+
     private OverridableRequestOptions requestOptions;
 
     CosmosDiagnosticsContext(
@@ -524,16 +530,20 @@ public final class CosmosDiagnosticsContext {
     }
 
     boolean endOperation(int statusCode,
-                                      int subStatusCode,
-                                      Integer actualItemCount,
-                                      Double requestCharge,
-                                      CosmosDiagnostics diagnostics,
-                                      Throwable finalError) {
+                         int subStatusCode,
+                         Integer actualItemCount,
+                         Double requestCharge,
+                         Long opCountPerEvaluation,
+                         Long opRetriedCountPerEvaluation,
+                         Long globalOpCount,
+                         Integer targetMaxMicroBatchSize,
+                         CosmosDiagnostics diagnostics,
+                         Throwable finalError) {
         synchronized (this.spanName) {
             boolean hasCompletedOperation = this.isCompleted.compareAndSet(false, true);
             if (hasCompletedOperation) {
                 this.recordOperation(
-                    statusCode, subStatusCode, actualItemCount, requestCharge, diagnostics, finalError);
+                    statusCode, subStatusCode, actualItemCount, requestCharge, opCountPerEvaluation, opRetriedCountPerEvaluation, globalOpCount, targetMaxMicroBatchSize, diagnostics, finalError);
             }
 
             return hasCompletedOperation;
@@ -541,11 +551,15 @@ public final class CosmosDiagnosticsContext {
     }
 
     void recordOperation(int statusCode,
-                                      int subStatusCode,
-                                      Integer actualItemCount,
-                                      Double requestCharge,
-                                      CosmosDiagnostics diagnostics,
-                                      Throwable finalError) {
+                         int subStatusCode,
+                         Integer actualItemCount,
+                         Double requestCharge,
+                         Long opCountPerEvaluation,
+                         Long opRetriedCountPerEvaluation,
+                         Long globalOpCount,
+                         Integer targetMaxMicroBatchSize,
+                         CosmosDiagnostics diagnostics,
+                         Throwable finalError) {
 
         synchronized (this.spanName) {
             this.statusCode = statusCode;
@@ -570,6 +584,11 @@ public final class CosmosDiagnosticsContext {
             if (requestCharge != null) {
                 this.addRequestCharge(requestCharge.floatValue());
             }
+
+            this.opCountPerEvaluation = opCountPerEvaluation;
+            this.opRetriedCountPerEvaluation = opRetriedCountPerEvaluation;
+            this.globalOpCount = globalOpCount;
+            this.targetMaxMicroBatchSize = targetMaxMicroBatchSize;
 
             this.cachedRequestDiagnostics = null;
         }
@@ -1007,15 +1026,29 @@ public final class CosmosDiagnosticsContext {
                     public void recordOperation(CosmosDiagnosticsContext ctx, int statusCode, int subStatusCode,
                                                 Integer actualItemCount, Double requestCharge,
                                                 CosmosDiagnostics diagnostics, Throwable finalError) {
-                        ctx.recordOperation(statusCode, subStatusCode, actualItemCount, requestCharge, diagnostics, finalError);
+                        ctx.recordOperation(statusCode, subStatusCode, actualItemCount, requestCharge, 0L, 0L, 0L, 0, diagnostics, finalError);
                     }
 
                     @Override
-                    public boolean endOperation(CosmosDiagnosticsContext ctx, int statusCode, int subStatusCode,
-                                             Integer actualItemCount, Double requestCharge,
-                                             CosmosDiagnostics diagnostics, Throwable finalError) {
+                    public boolean endOperation(CosmosDiagnosticsContext ctx, int statusCode, int subStatusCode, Integer actualItemCount, Double requestCharge, CosmosDiagnostics diagnostics, Throwable finalError) {
+                        return ctx.endOperation(statusCode, subStatusCode, actualItemCount, requestCharge, 0L, 0L, 0L, 0, diagnostics, finalError);
+                    }
 
-                        return ctx.endOperation(statusCode, subStatusCode, actualItemCount, requestCharge, diagnostics, finalError);
+                    @Override
+                    public boolean endOperation(
+                        CosmosDiagnosticsContext ctx,
+                        int statusCode,
+                        int subStatusCode,
+                        Integer actualItemCount,
+                        Double requestCharge,
+                        Long opCountPerEvaluation,
+                        Long opRetriedCountPerEvaluation,
+                        Long globalOpCount,
+                        Integer targetMaxMicroBatchSize,
+                        CosmosDiagnostics diagnostics,
+                        Throwable finalError) {
+
+                        return ctx.endOperation(statusCode, subStatusCode, actualItemCount, requestCharge, opCountPerEvaluation, opRetriedCountPerEvaluation, globalOpCount, targetMaxMicroBatchSize, diagnostics, finalError);
                     }
 
                     @Override
@@ -1106,6 +1139,26 @@ public final class CosmosDiagnosticsContext {
                     public String getQueryStatement(CosmosDiagnosticsContext ctx) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         return ctx.getQueryStatement();
+                    }
+
+                    @Override
+                    public Long getOpCountPerEvaluation(CosmosDiagnosticsContext ctx) {
+                        return ctx.opCountPerEvaluation;
+                    }
+
+                    @Override
+                    public Long getRetriedOpCountPerEvaluation(CosmosDiagnosticsContext ctx) {
+                        return ctx.opRetriedCountPerEvaluation;
+                    }
+
+                    @Override
+                    public Long getGlobalOpCount(CosmosDiagnosticsContext ctx) {
+                        return ctx.globalOpCount;
+                    }
+
+                    @Override
+                    public Integer getTargetMaxMicroBatchSize(CosmosDiagnosticsContext ctx) {
+                        return ctx.targetMaxMicroBatchSize;
                     }
                 });
     }

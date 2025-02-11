@@ -4,11 +4,10 @@
 
 package com.azure.resourcemanager.synapse.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolOperationResultsClient;
-import com.azure.resourcemanager.synapse.fluent.models.SqlPoolInner;
-import com.azure.resourcemanager.synapse.models.SqlPool;
 import com.azure.resourcemanager.synapse.models.SqlPoolOperationResults;
 
 public final class SqlPoolOperationResultsImpl implements SqlPoolOperationResults {
@@ -18,34 +17,21 @@ public final class SqlPoolOperationResultsImpl implements SqlPoolOperationResult
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SqlPoolOperationResultsImpl(
-        SqlPoolOperationResultsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public SqlPoolOperationResultsImpl(SqlPoolOperationResultsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public SqlPool getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId) {
-        SqlPoolInner inner =
-            this.serviceClient().getLocationHeaderResult(resourceGroupName, workspaceName, sqlPoolName, operationId);
-        if (inner != null) {
-            return new SqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public Response<Object> getLocationHeaderResultWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String operationId, Context context) {
+        return this.serviceClient()
+            .getLocationHeaderResultWithResponse(resourceGroupName, workspaceName, sqlPoolName, operationId, context);
     }
 
-    public SqlPool getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context) {
-        SqlPoolInner inner =
-            this
-                .serviceClient()
-                .getLocationHeaderResult(resourceGroupName, workspaceName, sqlPoolName, operationId, context);
-        if (inner != null) {
-            return new SqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public Object getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId) {
+        return this.serviceClient().getLocationHeaderResult(resourceGroupName, workspaceName, sqlPoolName, operationId);
     }
 
     private SqlPoolOperationResultsClient serviceClient() {

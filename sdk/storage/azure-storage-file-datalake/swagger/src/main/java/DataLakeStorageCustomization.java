@@ -3,9 +3,9 @@
 
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.JavadocCustomization;
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.NodeList;
@@ -30,61 +30,6 @@ public class DataLakeStorageCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization models  = customization.getPackage("com.azure.storage.file.datalake.implementation.models");
-
-        //customizing BlobHierarchyListSegment
-        ClassCustomization blobHierarchy = models.getClass("BlobHierarchyListSegment");
-        blobHierarchy.customizeAst(ast -> {
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(blobHierarchy.getClassName()).get();
-
-            replaceMethodToXml(clazz,
-                "{\n" +
-                "rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;\n" +
-                    "        xmlWriter.writeStartElement(rootElementName);\n" +
-                    "        if (this.blobPrefixes != null) {\n" +
-                    "            for (BlobPrefix element : this.blobPrefixes) {\n" +
-                    "                xmlWriter.writeXml(element, \"BlobPrefix\");\n" +
-                    "            }\n" +
-                    "        }\n" +
-                    "        if (this.blobItems != null) {\n" +
-                    "            for (BlobItemInternal element : this.blobItems) {\n" +
-                    "                xmlWriter.writeXml(element, \"Blob\");\n" +
-                    "            }\n" +
-                    "        }\n" +
-                    "        return xmlWriter.writeEndElement();\n" +
-                "}"
-            );
-
-            replaceMethodFromXml(clazz,
-                "{\n" +
-                "String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;\n" +
-                    "        return xmlReader.readObject(finalRootElementName, reader -> {\n" +
-                    "            BlobHierarchyListSegment deserializedBlobHierarchyListSegment = new BlobHierarchyListSegment();\n" +
-                    "            while (reader.nextElement() != XmlToken.END_ELEMENT) {\n" +
-                    "                QName elementName = reader.getElementName();\n" +
-                    "\n" +
-                    "                if (\"BlobPrefix\".equals(elementName.getLocalPart())) {\n" +
-                    "                    if (deserializedBlobHierarchyListSegment.blobPrefixes == null) {\n" +
-                    "                        deserializedBlobHierarchyListSegment.blobPrefixes = new ArrayList<>();\n" +
-                    "                    }\n" +
-                    "                    deserializedBlobHierarchyListSegment.blobPrefixes\n" +
-                    "                        .add(BlobPrefix.fromXml(reader, \"BlobPrefix\"));\n" +
-                    "                } else if (\"Blob\".equals(elementName.getLocalPart())) {\n" +
-                    "                    if (deserializedBlobHierarchyListSegment.blobItems == null) {\n" +
-                    "                        deserializedBlobHierarchyListSegment.blobItems = new ArrayList<>();\n" +
-                    "                    }\n" +
-                    "                    deserializedBlobHierarchyListSegment.blobItems\n" +
-                    "                        .add(BlobItemInternal.fromXml(reader, \"Blob\"));\n" +
-                    "                } else {\n" +
-                    "                    reader.skipElement();\n" +
-                    "                }\n" +
-                    "            }\n" +
-                    "\n" +
-                    "            return deserializedBlobHierarchyListSegment;\n" +
-                    "        });\n" +
-                    "}"
-
-            );
-        });
 
         //customizing Path
         ClassCustomization path = models.getClass("Path");
@@ -291,10 +236,8 @@ public class DataLakeStorageCustomization extends Customization {
     }
 
     private static void addErrorMappingToSyncMethod(MethodDeclaration method) {
-        BlockStmt body = method.getBody().get();
-
-        // Turn the last statement into a BlockStmt that will be used as the try block.
-        BlockStmt tryBlock = new BlockStmt(new NodeList<>(body.getStatement(body.getStatements().size() - 1)));
+        // Turn the entire method into a BlockStmt that will be used as the try block.
+        BlockStmt tryBlock = method.getBody().get();
         BlockStmt catchBlock = new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement(
             "throw ModelHelper.mapToDataLakeStorageException(internalException);")));
         Parameter catchParameter = new Parameter().setType("DataLakeStorageExceptionInternal")
@@ -303,6 +246,6 @@ public class DataLakeStorageCustomization extends Customization {
         TryStmt tryCatchMap = new TryStmt(tryBlock, new NodeList<>(catchClause), null);
 
         // Replace the last statement with the try-catch block.
-        body.getStatements().set(body.getStatements().size() - 1, tryCatchMap);
+        method.setBody(new BlockStmt(new NodeList<>(tryCatchMap)));
     }
 }

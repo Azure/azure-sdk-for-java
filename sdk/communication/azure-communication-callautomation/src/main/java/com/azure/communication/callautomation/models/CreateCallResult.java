@@ -27,7 +27,8 @@ public final class CreateCallResult extends CallResult {
      * @param callConnection The callConnection
      * @param callConnectionAsync The callConnectionAsync
      */
-    public CreateCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
+    public CreateCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection,
+        CallConnectionAsync callConnectionAsync) {
         super(callConnectionProperties, callConnection, callConnectionAsync);
     }
 
@@ -70,13 +71,18 @@ public final class CreateCallResult extends CallResult {
             return Mono.empty();
         }
 
-        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallConnected.class || event.getClass() == CreateCallFailed.class))
-            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallConnected.class || event.getClass() == CreateCallFailed.class), timeout)
-        ).flatMap(event -> Mono.just(getReturnedEvent(event)));
+        return (timeout == null
+            ? eventProcessor
+                .waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                        || operationContextFromRequest == null)
+                    && (event.getClass() == CallConnected.class || event.getClass() == CreateCallFailed.class))
+            : eventProcessor.waitForEventProcessorAsync(
+                event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                        || operationContextFromRequest == null)
+                    && (event.getClass() == CallConnected.class || event.getClass() == CreateCallFailed.class),
+                timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
     /**
@@ -93,7 +99,7 @@ public final class CreateCallResult extends CallResult {
         if (event.getClass() == CreateCallFailed.class) {
             return new CreateCallEventResult(false, null, (CreateCallFailed) event);
         }
-        
+
         return null;
     }
 }

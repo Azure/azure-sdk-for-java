@@ -60,6 +60,10 @@ public final class EnergyServiceImpl implements EnergyService, EnergyService.Def
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public EnergyServiceInner innerModel() {
         return this.innerObject;
     }
@@ -80,20 +84,16 @@ public final class EnergyServiceImpl implements EnergyService, EnergyService.Def
     }
 
     public EnergyService create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnergyServices()
-                .create(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getEnergyServices()
+            .create(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public EnergyService create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnergyServices()
-                .create(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getEnergyServices()
+            .create(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
@@ -109,49 +109,41 @@ public final class EnergyServiceImpl implements EnergyService, EnergyService.Def
     }
 
     public EnergyService apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnergyServices()
-                .updateWithResponse(resourceGroupName, resourceName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnergyServices()
+            .updateWithResponse(resourceGroupName, resourceName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EnergyService apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnergyServices()
-                .updateWithResponse(resourceGroupName, resourceName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnergyServices()
+            .updateWithResponse(resourceGroupName, resourceName, updateBody, context)
+            .getValue();
         return this;
     }
 
     EnergyServiceImpl(EnergyServiceInner innerObject, com.azure.resourcemanager.oep.OepManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "energyServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "energyServices");
     }
 
     public EnergyService refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnergyServices()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnergyServices()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EnergyService refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnergyServices()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnergyServices()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

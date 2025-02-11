@@ -14,29 +14,26 @@ import org.junit.jupiter.api.Assertions;
 public final class DimensionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DimensionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"hxsrzdzucersc\",\"filterEnabled\":false,\"groupingEnabled\":true,\"data\":[\"iwjmygtdssls\",\"tmweriofzpyq\",\"emwabnet\",\"hhszh\"],\"total\":1422875618,\"category\":\"vwiwubmwmbesld\",\"usageStart\":\"2021-06-09T22:01:08Z\",\"usageEnd\":\"2021-08-18T07:41:10Z\",\"nextLink\":\"pjflcxogao\"},\"sku\":\"nzmnsikvm\",\"eTag\":\"ze\",\"location\":\"qkdltfz\",\"tags\":{\"wobdagxtibqdx\":\"hvhgureod\"},\"id\":\"xwak\",\"name\":\"ogqxndlkzgxhuri\",\"type\":\"lbpodxunk\"}")
-                .toObject(DimensionInner.class);
-        Assertions.assertEquals("qkdltfz", model.location());
-        Assertions.assertEquals("hvhgureod", model.tags().get("wobdagxtibqdx"));
-        Assertions.assertEquals("iwjmygtdssls", model.data().get(0));
+        DimensionInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"bb\",\"filterEnabled\":true,\"groupingEnabled\":true,\"data\":[\"chzyvlixqnrk\"],\"total\":2002873882,\"category\":\"ibn\",\"usageStart\":\"2021-01-19T00:22Z\",\"usageEnd\":\"2021-10-29T13:36:36Z\",\"nextLink\":\"swqrntvlwijp\"},\"sku\":\"texoqqpwc\",\"eTag\":\"ufmhrunc\",\"location\":\"wmqs\",\"tags\":{\"ctddun\":\"dqzh\",\"pchrqbn\":\"ndy\",\"gydcw\":\"jrcg\"},\"id\":\"oxjumvqqo\",\"name\":\"ihrraiouaub\",\"type\":\"jtlo\"}")
+            .toObject(DimensionInner.class);
+        Assertions.assertEquals("wmqs", model.location());
+        Assertions.assertEquals("dqzh", model.tags().get("ctddun"));
+        Assertions.assertEquals("chzyvlixqnrk", model.data().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DimensionInner model =
-            new DimensionInner()
-                .withLocation("qkdltfz")
-                .withTags(mapOf("wobdagxtibqdx", "hvhgureod"))
-                .withData(Arrays.asList("iwjmygtdssls", "tmweriofzpyq", "emwabnet", "hhszh"));
+        DimensionInner model = new DimensionInner().withLocation("wmqs")
+            .withTags(mapOf("ctddun", "dqzh", "pchrqbn", "ndy", "gydcw", "jrcg"))
+            .withData(Arrays.asList("chzyvlixqnrk"));
         model = BinaryData.fromObject(model).toObject(DimensionInner.class);
-        Assertions.assertEquals("qkdltfz", model.location());
-        Assertions.assertEquals("hvhgureod", model.tags().get("wobdagxtibqdx"));
-        Assertions.assertEquals("iwjmygtdssls", model.data().get(0));
+        Assertions.assertEquals("wmqs", model.location());
+        Assertions.assertEquals("dqzh", model.tags().get("ctddun"));
+        Assertions.assertEquals("chzyvlixqnrk", model.data().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

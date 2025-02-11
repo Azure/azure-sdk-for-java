@@ -9,30 +9,28 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.IdentityProviderContractInner;
 
-/** Contains all response data for the update operation. */
+/**
+ * Contains all response data for the update operation.
+ */
 public final class IdentityProvidersUpdateResponse
     extends ResponseBase<IdentityProvidersUpdateHeaders, IdentityProviderContractInner> {
     /**
      * Creates an instance of IdentityProvidersUpdateResponse.
-     *
+     * 
      * @param request the request which resulted in this IdentityProvidersUpdateResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public IdentityProvidersUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        IdentityProviderContractInner value,
-        IdentityProvidersUpdateHeaders headers) {
+    public IdentityProvidersUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        IdentityProviderContractInner value, IdentityProvidersUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

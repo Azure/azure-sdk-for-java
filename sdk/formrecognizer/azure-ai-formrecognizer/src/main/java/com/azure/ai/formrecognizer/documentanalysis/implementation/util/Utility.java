@@ -70,15 +70,12 @@ public final class Utility {
     }
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
-                                                 Configuration configuration, RetryPolicy retryPolicy,
-                                                 RetryOptions retryOptions, AzureKeyCredential azureKeyCredential,
-                                                 TokenCredential tokenCredential, DocumentAnalysisAudience audience,
-                                                 List<HttpPipelinePolicy> perCallPolicies,
-                                                 List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
+        Configuration configuration, RetryPolicy retryPolicy, RetryOptions retryOptions,
+        AzureKeyCredential azureKeyCredential, TokenCredential tokenCredential, DocumentAnalysisAudience audience,
+        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
 
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         ClientOptions buildClientOptions = (clientOptions == null) ? Constants.DEFAULT_CLIENT_OPTIONS : clientOptions;
         HttpLogOptions buildLogOptions = (logOptions == null) ? Constants.DEFAULT_LOG_OPTIONS : logOptions;
@@ -103,11 +100,10 @@ public final class Utility {
             if (audience == null) {
                 audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
             }
-            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                audience + DEFAULT_SCOPE));
+            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience + DEFAULT_SCOPE));
         } else if (azureKeyCredential != null) {
-            httpPipelinePolicies.add(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY,
-                azureKeyCredential));
+            httpPipelinePolicies
+                .add(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY, azureKeyCredential));
         } else {
             // Throw exception that azureKeyCredential and tokenCredential cannot be null
             throw LOGGER.logExceptionAsError(
@@ -127,8 +123,7 @@ public final class Utility {
         TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, COGNITIVE_TRACING_NAMESPACE_VALUE, tracingOptions);
-        return new HttpPipelineBuilder()
-            .clientOptions(buildClientOptions)
+        return new HttpPipelineBuilder().clientOptions(buildClientOptions)
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .tracer(tracer)
@@ -160,9 +155,7 @@ public final class Utility {
      * Poller's ACTIVATION operation that takes URL as input.
      */
     public static Function<PollingContext<OperationResult>, Mono<OperationResult>>
-        activationOperation(
-        Supplier<Mono<OperationResult>> activationOperation,
-        ClientLogger logger) {
+        activationOperation(Supplier<Mono<OperationResult>> activationOperation, ClientLogger logger) {
         return pollingContext -> {
             try {
                 return activationOperation.get().onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
@@ -180,17 +173,17 @@ public final class Utility {
         return CoreUtils.randomUuid().toString();
     }
 
-    public static BuildDocumentModelOptions getBuildDocumentModelOptions(
-        BuildDocumentModelOptions buildDocumentModelOptions) {
-        buildDocumentModelOptions =  buildDocumentModelOptions == null
-            ? new BuildDocumentModelOptions() : buildDocumentModelOptions;
+    public static BuildDocumentModelOptions
+        getBuildDocumentModelOptions(BuildDocumentModelOptions buildDocumentModelOptions) {
+        buildDocumentModelOptions
+            = buildDocumentModelOptions == null ? new BuildDocumentModelOptions() : buildDocumentModelOptions;
         return buildDocumentModelOptions;
     }
 
-    public static CopyAuthorizationOptions getCopyAuthorizationOptions(
-        CopyAuthorizationOptions copyAuthorizationOptions) {
-        copyAuthorizationOptions = copyAuthorizationOptions == null
-            ? new CopyAuthorizationOptions() : copyAuthorizationOptions;
+    public static CopyAuthorizationOptions
+        getCopyAuthorizationOptions(CopyAuthorizationOptions copyAuthorizationOptions) {
+        copyAuthorizationOptions
+            = copyAuthorizationOptions == null ? new CopyAuthorizationOptions() : copyAuthorizationOptions;
         return copyAuthorizationOptions;
     }
 

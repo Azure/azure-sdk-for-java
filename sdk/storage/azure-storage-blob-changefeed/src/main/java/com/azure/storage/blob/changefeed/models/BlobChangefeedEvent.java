@@ -11,41 +11,57 @@ import java.time.OffsetDateTime;
 public interface BlobChangefeedEvent {
 
     /**
+     * Gets the topic.
+     *
      * @return the topic.
      */
     String getTopic();
 
     /**
+     * Gets the subject.
+     *
      * @return the subject.
      */
     String getSubject();
 
     /**
+     * Gets the {@link BlobChangefeedEventType}.
+     *
      * @return {@link BlobChangefeedEventType}
      */
     BlobChangefeedEventType getEventType();
 
     /**
+     * Gets the {@link OffsetDateTime event time}.
+     *
      * @return The {@link OffsetDateTime event time}.
      */
     OffsetDateTime getEventTime();
 
     /**
+     * Gets the identifier.
+     *
      * @return the identifier.
      */
     String getId();
 
     /**
+     * Gets the {@link BlobChangefeedEventData}.
+     *
      * @return {@link BlobChangefeedEventData}.
      */
     BlobChangefeedEventData getData();
 
     /**
+     * Gets the data version.
+     *
      * @return the data version.
      */
     Long getDataVersion();
 
     /**
+     * Gets the metadata version.
+     *
      * @return the metadata version.
      */
     String getMetadataVersion();

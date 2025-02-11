@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data connector properties. */
+/**
+ * Data connector properties.
+ */
 @Fluent
-public class DataConnectorWithAlertsProperties {
+public class DataConnectorWithAlertsProperties implements JsonSerializable<DataConnectorWithAlertsProperties> {
     /*
      * The available data types for the connector.
      */
-    @JsonProperty(value = "dataTypes")
     private AlertsDataTypeOfDataConnector dataTypes;
 
     /**
+     * Creates an instance of DataConnectorWithAlertsProperties class.
+     */
+    public DataConnectorWithAlertsProperties() {
+    }
+
+    /**
      * Get the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @return the dataTypes value.
      */
     public AlertsDataTypeOfDataConnector dataTypes() {
@@ -27,7 +38,7 @@ public class DataConnectorWithAlertsProperties {
 
     /**
      * Set the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the DataConnectorWithAlertsProperties object itself.
      */
@@ -38,12 +49,50 @@ public class DataConnectorWithAlertsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataTypes() != null) {
             dataTypes().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dataTypes", this.dataTypes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataConnectorWithAlertsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataConnectorWithAlertsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataConnectorWithAlertsProperties.
+     */
+    public static DataConnectorWithAlertsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataConnectorWithAlertsProperties deserializedDataConnectorWithAlertsProperties
+                = new DataConnectorWithAlertsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataTypes".equals(fieldName)) {
+                    deserializedDataConnectorWithAlertsProperties.dataTypes
+                        = AlertsDataTypeOfDataConnector.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataConnectorWithAlertsProperties;
+        });
     }
 }

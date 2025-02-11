@@ -100,7 +100,7 @@ public final class CosmosDiagnostics {
     }
 
     void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
-        checkNotNull("ctx", "Argument 'ctx' must not be null.");
+        checkNotNull(ctx, "Argument 'ctx' must not be null.");
         this.diagnosticsContext = ctx;
     }
 

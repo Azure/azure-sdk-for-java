@@ -16,13 +16,15 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkToNet
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnectPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
-/** An instance of this class provides access to all the operations defined in NetworkToNetworkInterconnectsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkToNetworkInterconnectsClient.
+ */
 public interface NetworkToNetworkInterconnectsClient {
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -34,16 +36,14 @@ public interface NetworkToNetworkInterconnectsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginCreate(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
+        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
         NetworkToNetworkInterconnectInner body);
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -56,17 +56,14 @@ public interface NetworkToNetworkInterconnectsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginCreate(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        NetworkToNetworkInterconnectInner body,
-        Context context);
+        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectInner body, Context context);
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -77,17 +74,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkToNetworkInterconnectInner create(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        NetworkToNetworkInterconnectInner body);
+    NetworkToNetworkInterconnectInner create(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, NetworkToNetworkInterconnectInner body);
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -99,18 +93,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkToNetworkInterconnectInner create(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        NetworkToNetworkInterconnectInner body,
-        Context context);
+    NetworkToNetworkInterconnectInner create(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, NetworkToNetworkInterconnectInner body, Context context);
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -121,14 +111,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return the Network To Network Interconnect resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkToNetworkInterconnectInner> getWithResponse(
-        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName, Context context);
+    Response<NetworkToNetworkInterconnectInner> getWithResponse(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, Context context);
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -138,14 +128,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkToNetworkInterconnectInner get(
-        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName);
+    NetworkToNetworkInterconnectInner get(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName);
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -157,16 +147,14 @@ public interface NetworkToNetworkInterconnectsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginUpdate(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
+        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
         NetworkToNetworkInterconnectPatch body);
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -179,17 +167,14 @@ public interface NetworkToNetworkInterconnectsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginUpdate(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        NetworkToNetworkInterconnectPatch body,
-        Context context);
+        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body, Context context);
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -200,17 +185,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkToNetworkInterconnectInner update(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        NetworkToNetworkInterconnectPatch body);
+    NetworkToNetworkInterconnectInner update(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, NetworkToNetworkInterconnectPatch body);
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -222,18 +204,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkToNetworkInterconnectInner update(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        NetworkToNetworkInterconnectPatch body,
-        Context context);
+    NetworkToNetworkInterconnectInner update(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, NetworkToNetworkInterconnectPatch body, Context context);
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -243,14 +221,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName);
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -261,14 +239,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFabricName,
+        String networkToNetworkInterconnectName, Context context);
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -281,9 +259,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -293,14 +271,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName, Context context);
+    void delete(String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName,
+        Context context);
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,14 +287,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return list of Network To Network Interconnects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkToNetworkInterconnectInner> listByNetworkFabric(
-        String resourceGroupName, String networkFabricName);
+    PagedIterable<NetworkToNetworkInterconnectInner> listByNetworkFabric(String resourceGroupName,
+        String networkFabricName);
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -326,14 +304,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return list of Network To Network Interconnects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkToNetworkInterconnectInner> listByNetworkFabric(
-        String resourceGroupName, String networkFabricName, Context context);
+    PagedIterable<NetworkToNetworkInterconnectInner> listByNetworkFabric(String resourceGroupName,
+        String networkFabricName, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -345,17 +323,14 @@ public interface NetworkToNetworkInterconnectsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateNpbStaticRouteBfdAdministrativeState(
-            String resourceGroupName,
-            String networkFabricName,
-            String networkToNetworkInterconnectName,
-            UpdateAdministrativeState body);
+        beginUpdateNpbStaticRouteBfdAdministrativeState(String resourceGroupName, String networkFabricName,
+            String networkToNetworkInterconnectName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -368,18 +343,14 @@ public interface NetworkToNetworkInterconnectsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateNpbStaticRouteBfdAdministrativeState(
-            String resourceGroupName,
-            String networkFabricName,
-            String networkToNetworkInterconnectName,
-            UpdateAdministrativeState body,
-            Context context);
+        beginUpdateNpbStaticRouteBfdAdministrativeState(String resourceGroupName, String networkFabricName,
+            String networkToNetworkInterconnectName, UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -390,17 +361,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateNpbStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateNpbStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -412,18 +380,15 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateNpbStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body,
+    CommonPostActionResponseForStateUpdateInner updateNpbStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body,
         Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -435,17 +400,14 @@ public interface NetworkToNetworkInterconnectsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName,
-            String networkFabricName,
-            String networkToNetworkInterconnectName,
-            UpdateAdministrativeState body);
+        beginUpdateAdministrativeState(String resourceGroupName, String networkFabricName,
+            String networkToNetworkInterconnectName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -458,18 +420,14 @@ public interface NetworkToNetworkInterconnectsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName,
-            String networkFabricName,
-            String networkToNetworkInterconnectName,
-            UpdateAdministrativeState body,
-            Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String networkFabricName,
+            String networkToNetworkInterconnectName, UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -480,17 +438,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -502,10 +457,7 @@ public interface NetworkToNetworkInterconnectsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName,
-        String networkFabricName,
-        String networkToNetworkInterconnectName,
-        UpdateAdministrativeState body,
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkFabricName, String networkToNetworkInterconnectName, UpdateAdministrativeState body,
         Context context);
 }

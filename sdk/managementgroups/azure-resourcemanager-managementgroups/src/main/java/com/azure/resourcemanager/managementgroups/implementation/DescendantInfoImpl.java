@@ -13,8 +13,7 @@ public final class DescendantInfoImpl implements DescendantInfo {
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    DescendantInfoImpl(
-        DescendantInfoInner innerObject,
+    DescendantInfoImpl(DescendantInfoInner innerObject,
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -147,20 +147,16 @@ public final class DiskPoolImpl implements DiskPool, DiskPool.Definition, DiskPo
     }
 
     public DiskPool create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDiskPools()
-                .createOrUpdate(resourceGroupName, diskPoolName, createDiskPoolCreatePayload, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDiskPools()
+            .createOrUpdate(resourceGroupName, diskPoolName, createDiskPoolCreatePayload, Context.NONE);
         return this;
     }
 
     public DiskPool create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDiskPools()
-                .createOrUpdate(resourceGroupName, diskPoolName, createDiskPoolCreatePayload, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDiskPools()
+            .createOrUpdate(resourceGroupName, diskPoolName, createDiskPoolCreatePayload, context);
         return this;
     }
 
@@ -177,47 +173,39 @@ public final class DiskPoolImpl implements DiskPool, DiskPool.Definition, DiskPo
     }
 
     public DiskPool apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDiskPools()
-                .update(resourceGroupName, diskPoolName, updateDiskPoolUpdatePayload, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDiskPools()
+            .update(resourceGroupName, diskPoolName, updateDiskPoolUpdatePayload, Context.NONE);
         return this;
     }
 
     public DiskPool apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDiskPools()
-                .update(resourceGroupName, diskPoolName, updateDiskPoolUpdatePayload, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDiskPools()
+            .update(resourceGroupName, diskPoolName, updateDiskPoolUpdatePayload, context);
         return this;
     }
 
     DiskPoolImpl(DiskPoolInner innerObject, com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.diskPoolName = Utils.getValueFromIdByName(innerObject.id(), "diskPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.diskPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "diskPools");
     }
 
     public DiskPool refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDiskPools()
-                .getByResourceGroupWithResponse(resourceGroupName, diskPoolName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDiskPools()
+            .getByResourceGroupWithResponse(resourceGroupName, diskPoolName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DiskPool refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDiskPools()
-                .getByResourceGroupWithResponse(resourceGroupName, diskPoolName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDiskPools()
+            .getByResourceGroupWithResponse(resourceGroupName, diskPoolName, context)
+            .getValue();
         return this;
     }
 

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolTableInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of Sql pool tables. */
+/**
+ * A list of Sql pool tables.
+ */
 @Immutable
-public final class SqlPoolTableListResult {
+public final class SqlPoolTableListResult implements JsonSerializable<SqlPoolTableListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlPoolTableInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SqlPoolTableListResult class. */
+    /**
+     * Creates an instance of SqlPoolTableListResult class.
+     */
     public SqlPoolTableListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<SqlPoolTableInner> value() {
@@ -39,7 +45,7 @@ public final class SqlPoolTableListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,50 @@ public final class SqlPoolTableListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlPoolTableListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlPoolTableListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlPoolTableListResult.
+     */
+    public static SqlPoolTableListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlPoolTableListResult deserializedSqlPoolTableListResult = new SqlPoolTableListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SqlPoolTableInner> value = reader.readArray(reader1 -> SqlPoolTableInner.fromJson(reader1));
+                    deserializedSqlPoolTableListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSqlPoolTableListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlPoolTableListResult;
+        });
     }
 }

@@ -19,92 +19,67 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkTapInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkTapInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"networkPacketBrokerId\":\"czmrjgobe\",\"sourceTapRuleId\":\"eheow\",\"destinations\":[{\"name\":\"afdrz\",\"destinationType\":\"Direct\",\"destinationId\":\"i\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"bmseesacuicnvq\"]},\"destinationTapRuleId\":\"suivmrf\"},{\"name\":\"tnd\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"lh\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"kekc\",\"aviiebeqrfz\"]},\"destinationTapRuleId\":\"qymcwt\"},{\"name\":\"uceplbrzgkuorwp\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"weobptscr\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"layynoyjy\",\"l\",\"msbnlyoifg\",\"fzjqthy\"]},\"destinationTapRuleId\":\"voevcwfzo\"},{\"name\":\"xxlwwooxgbsdz\",\"destinationType\":\"Direct\",\"destinationId\":\"ypjh\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"bxehujcqgzwvx\",\"iuaoibmjklqrljd\",\"uky\"]},\"destinationTapRuleId\":\"xrjiqoqovqhg\"}],\"pollingType\":\"Push\",\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"MAT\",\"annotation\":\"yqruvumryddnqiva\"},\"location\":\"cqwnjz\",\"tags\":{\"spwwibpybq\":\"icciyoypoed\",\"ffnhcgnaqsrmrfqd\":\"igxuyxsxteuikhzn\",\"b\":\"rkrgsdc\"},\"id\":\"mgqlwyqznbbyzpo\",\"name\":\"zfutgpbygbnb\",\"type\":\"moiqg\"}")
-                .toObject(NetworkTapInner.class);
-        Assertions.assertEquals("cqwnjz", model.location());
-        Assertions.assertEquals("icciyoypoed", model.tags().get("spwwibpybq"));
-        Assertions.assertEquals("czmrjgobe", model.networkPacketBrokerId());
-        Assertions.assertEquals("afdrz", model.destinations().get(0).name());
-        Assertions.assertEquals(DestinationType.DIRECT, model.destinations().get(0).destinationType());
-        Assertions.assertEquals("i", model.destinations().get(0).destinationId());
-        Assertions
-            .assertEquals(Encapsulation.NONE, model.destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions
-            .assertEquals(
-                "bmseesacuicnvq", model.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("suivmrf", model.destinations().get(0).destinationTapRuleId());
-        Assertions.assertEquals(PollingType.PUSH, model.pollingType());
-        Assertions.assertEquals("yqruvumryddnqiva", model.annotation());
+        NetworkTapInner model = BinaryData.fromString(
+            "{\"properties\":{\"networkPacketBrokerId\":\"gage\",\"sourceTapRuleId\":\"qbugihcdv\",\"destinations\":[{\"name\":\"zorbloejzsax\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"wvdeppjnaphifkf\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"bpebrmj\",\"nfpgh\"]},\"destinationTapRuleId\":\"ttpkims\"},{\"name\":\"nkkhbykr\",\"destinationType\":\"Direct\",\"destinationId\":\"cmelycpgokut\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"zbnv\",\"sh\"]},\"destinationTapRuleId\":\"zzlapyixlvzc\"},{\"name\":\"laebxiau\",\"destinationType\":\"Direct\",\"destinationId\":\"tessjlwjta\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"kx\",\"xqayg\",\"slkvcvwp\"]},\"destinationTapRuleId\":\"cj\"}],\"pollingType\":\"Pull\",\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"Enabled\",\"annotation\":\"onbwhi\"},\"location\":\"yozvrcwfpucw\",\"tags\":{\"oarx\":\"gqefgzjvbxqcb\"},\"id\":\"uuciagvkdlhu\",\"name\":\"u\",\"type\":\"lbjo\"}")
+            .toObject(NetworkTapInner.class);
+        Assertions.assertEquals("yozvrcwfpucw", model.location());
+        Assertions.assertEquals("gqefgzjvbxqcb", model.tags().get("oarx"));
+        Assertions.assertEquals("gage", model.networkPacketBrokerId());
+        Assertions.assertEquals("zorbloejzsax", model.destinations().get(0).name());
+        Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinations().get(0).destinationType());
+        Assertions.assertEquals("wvdeppjnaphifkf", model.destinations().get(0).destinationId());
+        Assertions.assertEquals(Encapsulation.NONE,
+            model.destinations().get(0).isolationDomainProperties().encapsulation());
+        Assertions.assertEquals("bpebrmj",
+            model.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
+        Assertions.assertEquals("ttpkims", model.destinations().get(0).destinationTapRuleId());
+        Assertions.assertEquals(PollingType.PULL, model.pollingType());
+        Assertions.assertEquals("onbwhi", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkTapInner model =
-            new NetworkTapInner()
-                .withLocation("cqwnjz")
-                .withTags(mapOf("spwwibpybq", "icciyoypoed", "ffnhcgnaqsrmrfqd", "igxuyxsxteuikhzn", "b", "rkrgsdc"))
-                .withNetworkPacketBrokerId("czmrjgobe")
-                .withDestinations(
-                    Arrays
-                        .asList(
-                            new NetworkTapPropertiesDestinationsItem()
-                                .withName("afdrz")
-                                .withDestinationType(DestinationType.DIRECT)
-                                .withDestinationId("i")
-                                .withIsolationDomainProperties(
-                                    new IsolationDomainProperties()
-                                        .withEncapsulation(Encapsulation.NONE)
-                                        .withNeighborGroupIds(Arrays.asList("bmseesacuicnvq")))
-                                .withDestinationTapRuleId("suivmrf"),
-                            new NetworkTapPropertiesDestinationsItem()
-                                .withName("tnd")
-                                .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                                .withDestinationId("lh")
-                                .withIsolationDomainProperties(
-                                    new IsolationDomainProperties()
-                                        .withEncapsulation(Encapsulation.GRE)
-                                        .withNeighborGroupIds(Arrays.asList("kekc", "aviiebeqrfz")))
-                                .withDestinationTapRuleId("qymcwt"),
-                            new NetworkTapPropertiesDestinationsItem()
-                                .withName("uceplbrzgkuorwp")
-                                .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                                .withDestinationId("weobptscr")
-                                .withIsolationDomainProperties(
-                                    new IsolationDomainProperties()
-                                        .withEncapsulation(Encapsulation.NONE)
-                                        .withNeighborGroupIds(Arrays.asList("layynoyjy", "l", "msbnlyoifg", "fzjqthy")))
-                                .withDestinationTapRuleId("voevcwfzo"),
-                            new NetworkTapPropertiesDestinationsItem()
-                                .withName("xxlwwooxgbsdz")
-                                .withDestinationType(DestinationType.DIRECT)
-                                .withDestinationId("ypjh")
-                                .withIsolationDomainProperties(
-                                    new IsolationDomainProperties()
-                                        .withEncapsulation(Encapsulation.GRE)
-                                        .withNeighborGroupIds(Arrays.asList("bxehujcqgzwvx", "iuaoibmjklqrljd", "uky")))
-                                .withDestinationTapRuleId("xrjiqoqovqhg")))
-                .withPollingType(PollingType.PUSH)
-                .withAnnotation("yqruvumryddnqiva");
+        NetworkTapInner model = new NetworkTapInner().withLocation("yozvrcwfpucw")
+            .withTags(mapOf("oarx", "gqefgzjvbxqcb"))
+            .withNetworkPacketBrokerId("gage")
+            .withDestinations(Arrays.asList(
+                new NetworkTapPropertiesDestinationsItem().withName("zorbloejzsax")
+                    .withDestinationType(DestinationType.ISOLATION_DOMAIN)
+                    .withDestinationId("wvdeppjnaphifkf")
+                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
+                        .withNeighborGroupIds(Arrays.asList("bpebrmj", "nfpgh")))
+                    .withDestinationTapRuleId("ttpkims"),
+                new NetworkTapPropertiesDestinationsItem().withName("nkkhbykr")
+                    .withDestinationType(DestinationType.DIRECT)
+                    .withDestinationId("cmelycpgokut")
+                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.GRE)
+                        .withNeighborGroupIds(Arrays.asList("zbnv", "sh")))
+                    .withDestinationTapRuleId("zzlapyixlvzc"),
+                new NetworkTapPropertiesDestinationsItem().withName("laebxiau")
+                    .withDestinationType(DestinationType.DIRECT)
+                    .withDestinationId("tessjlwjta")
+                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.GRE)
+                        .withNeighborGroupIds(Arrays.asList("kx", "xqayg", "slkvcvwp")))
+                    .withDestinationTapRuleId("cj")))
+            .withPollingType(PollingType.PULL)
+            .withAnnotation("onbwhi");
         model = BinaryData.fromObject(model).toObject(NetworkTapInner.class);
-        Assertions.assertEquals("cqwnjz", model.location());
-        Assertions.assertEquals("icciyoypoed", model.tags().get("spwwibpybq"));
-        Assertions.assertEquals("czmrjgobe", model.networkPacketBrokerId());
-        Assertions.assertEquals("afdrz", model.destinations().get(0).name());
-        Assertions.assertEquals(DestinationType.DIRECT, model.destinations().get(0).destinationType());
-        Assertions.assertEquals("i", model.destinations().get(0).destinationId());
-        Assertions
-            .assertEquals(Encapsulation.NONE, model.destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions
-            .assertEquals(
-                "bmseesacuicnvq", model.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("suivmrf", model.destinations().get(0).destinationTapRuleId());
-        Assertions.assertEquals(PollingType.PUSH, model.pollingType());
-        Assertions.assertEquals("yqruvumryddnqiva", model.annotation());
+        Assertions.assertEquals("yozvrcwfpucw", model.location());
+        Assertions.assertEquals("gqefgzjvbxqcb", model.tags().get("oarx"));
+        Assertions.assertEquals("gage", model.networkPacketBrokerId());
+        Assertions.assertEquals("zorbloejzsax", model.destinations().get(0).name());
+        Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinations().get(0).destinationType());
+        Assertions.assertEquals("wvdeppjnaphifkf", model.destinations().get(0).destinationId());
+        Assertions.assertEquals(Encapsulation.NONE,
+            model.destinations().get(0).isolationDomainProperties().encapsulation());
+        Assertions.assertEquals("bpebrmj",
+            model.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
+        Assertions.assertEquals("ttpkims", model.destinations().get(0).destinationTapRuleId());
+        Assertions.assertEquals(PollingType.PULL, model.pollingType());
+        Assertions.assertEquals("onbwhi", model.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

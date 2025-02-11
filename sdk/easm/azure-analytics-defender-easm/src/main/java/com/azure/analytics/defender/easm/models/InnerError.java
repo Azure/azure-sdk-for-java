@@ -5,6 +5,7 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -27,7 +28,7 @@ public final class InnerError implements JsonSerializable<InnerError> {
      * This is an additional field representing the value that caused the error to help with debugging.
      */
     @Generated
-    private Object value;
+    private BinaryData value;
 
     /**
      * Creates an instance of InnerError class.
@@ -53,7 +54,7 @@ public final class InnerError implements JsonSerializable<InnerError> {
      * @return the value value.
      */
     @Generated
-    public Object getValue() {
+    public BinaryData getValue() {
         return this.value;
     }
 
@@ -65,7 +66,10 @@ public final class InnerError implements JsonSerializable<InnerError> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeFieldName("value");
+            this.value.writeTo(jsonWriter);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -87,7 +91,8 @@ public final class InnerError implements JsonSerializable<InnerError> {
                 if ("code".equals(fieldName)) {
                     deserializedInnerError.code = reader.getString();
                 } else if ("value".equals(fieldName)) {
-                    deserializedInnerError.value = reader.readUntyped();
+                    deserializedInnerError.value
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }

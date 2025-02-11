@@ -15,21 +15,21 @@ import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateLinkResour
  */
 public interface PrivateLinkResourcesClient {
     /**
-     * Gets the private link resources that need to be created for a RedisEnterprise cluster.
+     * Gets the private link resources that need to be created for a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a RedisEnterprise cluster as paginated response
+     * @return the private link resources that need to be created for a Redis Enterprise cluster as paginated response
      * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateLinkResourceInner> listByCluster(String resourceGroupName, String clusterName);
 
     /**
-     * Gets the private link resources that need to be created for a RedisEnterprise cluster.
+     * Gets the private link resources that need to be created for a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -37,7 +37,7 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a RedisEnterprise cluster as paginated response
+     * @return the private link resources that need to be created for a Redis Enterprise cluster as paginated response
      * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

@@ -736,10 +736,10 @@ public final class TextAnalyticsAsyncClient {
         this.recognizeEntityUtilClient = new RecognizeEntityUtilClient(service, serviceVersion);
         this.recognizePiiEntityUtilClient = new RecognizePiiEntityUtilClient(service, serviceVersion);
         this.recognizeLinkedEntityUtilClient = new RecognizeLinkedEntityUtilClient(service, serviceVersion);
-        this.recognizeCustomEntitiesUtilClient = new RecognizeCustomEntitiesUtilClient(
-            service.getAnalyzeTexts(), serviceVersion);
-        this.analyzeHealthcareEntityUtilClient = new AnalyzeHealthcareEntityUtilClient(service.getAnalyzeTexts(),
-            serviceVersion);
+        this.recognizeCustomEntitiesUtilClient
+            = new RecognizeCustomEntitiesUtilClient(service.getAnalyzeTexts(), serviceVersion);
+        this.analyzeHealthcareEntityUtilClient
+            = new AnalyzeHealthcareEntityUtilClient(service.getAnalyzeTexts(), serviceVersion);
         this.analyzeActionsUtilClient = new AnalyzeActionsUtilClient(service.getAnalyzeTexts(), serviceVersion);
         this.labelClassifyUtilClient = new LabelClassifyUtilClient(service.getAnalyzeTexts(), serviceVersion);
         this.abstractiveSummaryUtilClient = new AbstractiveSummaryUtilClient(service.getAnalyzeTexts(), serviceVersion);
@@ -834,7 +834,7 @@ public final class TextAnalyticsAsyncClient {
         try {
             Objects.requireNonNull(document, "'document' cannot be null.");
             return detectLanguageBatch(Collections.singletonList(document), countryHint, null)
-                .map(detectLanguageResultCollection ->  {
+                .map(detectLanguageResultCollection -> {
                     DetectedLanguage detectedLanguage = null;
                     for (DetectLanguageResult detectLanguageResult : detectLanguageResultCollection) {
                         if (detectLanguageResult.isError()) {
@@ -899,8 +899,8 @@ public final class TextAnalyticsAsyncClient {
      *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectLanguageResultCollection> detectLanguageBatch(
-        Iterable<String> documents, String countryHint, TextAnalyticsRequestOptions options) {
+    public Mono<DetectLanguageResultCollection> detectLanguageBatch(Iterable<String> documents, String countryHint,
+        TextAnalyticsRequestOptions options) {
 
         if (countryHint != null && "none".equalsIgnoreCase(countryHint)) {
             countryHint = "";
@@ -966,8 +966,8 @@ public final class TextAnalyticsAsyncClient {
      *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DetectLanguageResultCollection>> detectLanguageBatchWithResponse(
-        Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options) {
+    public Mono<Response<DetectLanguageResultCollection>>
+        detectLanguageBatchWithResponse(Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options) {
         return detectLanguageUtilClient.detectLanguageBatch(documents, options);
     }
 
@@ -1095,15 +1095,14 @@ public final class TextAnalyticsAsyncClient {
      *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizeEntitiesResultCollection> recognizeEntitiesBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+    public Mono<RecognizeEntitiesResultCollection> recognizeEntitiesBatch(Iterable<String> documents, String language,
+        TextAnalyticsRequestOptions options) {
         try {
-            return recognizeEntitiesBatchWithResponse(
-                mapByIndex(documents, (index, value) -> {
-                    final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                    textDocumentInput.setLanguage(language);
-                    return textDocumentInput;
-                }), options).flatMap(FluxUtil::toMono);
+            return recognizeEntitiesBatchWithResponse(mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1160,8 +1159,8 @@ public final class TextAnalyticsAsyncClient {
      *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+    public Mono<Response<RecognizeEntitiesResultCollection>>
+        recognizeEntitiesBatchWithResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         return recognizeEntityUtilClient.recognizeEntitiesBatch(documents, options);
     }
 
@@ -1355,16 +1354,15 @@ public final class TextAnalyticsAsyncClient {
      *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatch(
-        Iterable<String> documents, String language, RecognizePiiEntitiesOptions options) {
+    public Mono<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatch(Iterable<String> documents,
+        String language, RecognizePiiEntitiesOptions options) {
         try {
             inputDocumentsValidation(documents);
-            return recognizePiiEntitiesBatchWithResponse(
-                mapByIndex(documents, (index, value) -> {
-                    final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                    textDocumentInput.setLanguage(language);
-                    return textDocumentInput;
-                }), options).flatMap(FluxUtil::toMono);
+            return recognizePiiEntitiesBatchWithResponse(mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1564,8 +1562,8 @@ public final class TextAnalyticsAsyncClient {
      *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+    public Mono<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatch(Iterable<String> documents,
+        String language, TextAnalyticsRequestOptions options) {
         try {
             return recognizeLinkedEntitiesBatchWithResponse(mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
@@ -1751,15 +1749,14 @@ public final class TextAnalyticsAsyncClient {
      *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+    public Mono<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatch(Iterable<String> documents, String language,
+        TextAnalyticsRequestOptions options) {
         try {
-            return extractKeyPhrasesBatchWithResponse(
-                mapByIndex(documents, (index, value) -> {
-                    final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                    textDocumentInput.setLanguage(language);
-                    return textDocumentInput;
-                }), options).flatMap(FluxUtil::toMono);
+            return extractKeyPhrasesBatchWithResponse(mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1816,8 +1813,8 @@ public final class TextAnalyticsAsyncClient {
      *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesBatchWithResponse(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+    public Mono<Response<ExtractKeyPhrasesResultCollection>>
+        extractKeyPhrasesBatchWithResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         return extractKeyPhraseUtilClient.extractKeyPhrasesWithResponse(documents, options);
     }
 
@@ -2038,11 +2035,11 @@ public final class TextAnalyticsAsyncClient {
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        return analyzeSentimentBatch(documents, language, new AnalyzeSentimentOptions()
-            .setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
-            .setModelVersion(options == null ? null : options.getModelVersion()));
+    public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(Iterable<String> documents, String language,
+        TextAnalyticsRequestOptions options) {
+        return analyzeSentimentBatch(documents, language,
+            new AnalyzeSentimentOptions().setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
+                .setModelVersion(options == null ? null : options.getModelVersion()));
     }
 
     /**
@@ -2121,15 +2118,14 @@ public final class TextAnalyticsAsyncClient {
      *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(Iterable<String> documents,
-        String language, AnalyzeSentimentOptions options) {
+    public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(Iterable<String> documents, String language,
+        AnalyzeSentimentOptions options) {
         try {
-            return analyzeSentimentBatchWithResponse(
-                mapByIndex(documents, (index, value) -> {
-                    final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                    textDocumentInput.setLanguage(language);
-                    return textDocumentInput;
-                }), options).flatMap(FluxUtil::toMono);
+            return analyzeSentimentBatchWithResponse(mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -2193,11 +2189,11 @@ public final class TextAnalyticsAsyncClient {
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        return analyzeSentimentUtilClient.analyzeSentimentBatch(documents, new AnalyzeSentimentOptions()
-            .setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
-            .setModelVersion(options == null ? null : options.getModelVersion()));
+    public Mono<Response<AnalyzeSentimentResultCollection>>
+        analyzeSentimentBatchWithResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        return analyzeSentimentUtilClient.analyzeSentimentBatch(documents,
+            new AnalyzeSentimentOptions().setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
+                .setModelVersion(options == null ? null : options.getModelVersion()));
     }
 
     /**
@@ -2270,8 +2266,8 @@ public final class TextAnalyticsAsyncClient {
      *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
-        Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
+    public Mono<Response<AnalyzeSentimentResultCollection>>
+        analyzeSentimentBatchWithResponse(Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         return analyzeSentimentUtilClient.analyzeSentimentBatch(documents, options);
     }
 
@@ -2446,12 +2442,11 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
         beginAnalyzeHealthcareEntities(Iterable<String> documents, String language,
             AnalyzeHealthcareEntitiesOptions options) {
-        return beginAnalyzeHealthcareEntities(
-            mapByIndex(documents, (index, value) -> {
-                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                textDocumentInput.setLanguage(language);
-                return textDocumentInput;
-            }), options);
+        return beginAnalyzeHealthcareEntities(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), options);
     }
 
     /**
@@ -2708,12 +2703,11 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux>
         beginRecognizeCustomEntities(Iterable<String> documents, String projectName, String deploymentName,
             String language, RecognizeCustomEntitiesOptions options) {
-        return beginRecognizeCustomEntities(
-            mapByIndex(documents, (index, value) -> {
-                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                textDocumentInput.setLanguage(language);
-                return textDocumentInput;
-            }), projectName, deploymentName, options);
+        return beginRecognizeCustomEntities(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), projectName, deploymentName, options);
     }
 
     /**
@@ -2864,8 +2858,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginSingleLabelClassify(
-        Iterable<String> documents, String projectName, String deploymentName) {
+    public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux>
+        beginSingleLabelClassify(Iterable<String> documents, String projectName, String deploymentName) {
         return beginSingleLabelClassify(documents, projectName, deploymentName, defaultLanguage, null);
     }
 
@@ -2947,12 +2941,11 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginSingleLabelClassify(
         Iterable<String> documents, String projectName, String deploymentName, String language,
         SingleLabelClassifyOptions options) {
-        return beginSingleLabelClassify(
-            mapByIndex(documents, (index, value) -> {
-                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                textDocumentInput.setLanguage(language);
-                return textDocumentInput;
-            }), projectName, deploymentName, options);
+        return beginSingleLabelClassify(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), projectName, deploymentName, options);
     }
 
     /**
@@ -3028,8 +3021,8 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginSingleLabelClassify(
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         SingleLabelClassifyOptions options) {
-        return labelClassifyUtilClient.singleLabelClassify(documents, projectName, deploymentName,
-            options, Context.NONE);
+        return labelClassifyUtilClient.singleLabelClassify(documents, projectName, deploymentName, options,
+            Context.NONE);
     }
 
     // Multi-label Classification
@@ -3098,8 +3091,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginMultiLabelClassify(
-        Iterable<String> documents, String projectName, String deploymentName) {
+    public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux>
+        beginMultiLabelClassify(Iterable<String> documents, String projectName, String deploymentName) {
         return beginMultiLabelClassify(documents, projectName, deploymentName, defaultLanguage, null);
     }
 
@@ -3176,12 +3169,11 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginMultiLabelClassify(
         Iterable<String> documents, String projectName, String deploymentName, String language,
         MultiLabelClassifyOptions options) {
-        return beginMultiLabelClassify(
-            mapByIndex(documents, (index, value) -> {
-                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                textDocumentInput.setLanguage(language);
-                return textDocumentInput;
-            }), projectName, deploymentName, options);
+        return beginMultiLabelClassify(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), projectName, deploymentName, options);
     }
 
     /**
@@ -3253,8 +3245,8 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginMultiLabelClassify(
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         MultiLabelClassifyOptions options) {
-        return labelClassifyUtilClient.multiLabelClassify(documents, projectName, deploymentName,
-            options, Context.NONE);
+        return labelClassifyUtilClient.multiLabelClassify(documents, projectName, deploymentName, options,
+            Context.NONE);
     }
 
     // Abstractive Summarization
@@ -3336,8 +3328,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux> beginAbstractSummary(
-        Iterable<String> documents) {
+    public PollerFlux<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux>
+        beginAbstractSummary(Iterable<String> documents) {
         return beginAbstractSummary(documents, defaultLanguage, null);
     }
 
@@ -3422,14 +3414,13 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux> beginAbstractSummary(
-        Iterable<String> documents, String language, AbstractiveSummaryOptions options) {
-        return beginAbstractSummary(
-            mapByIndex(documents, (index, value) -> {
-                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                textDocumentInput.setLanguage(language);
-                return textDocumentInput;
-            }), options);
+    public PollerFlux<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux>
+        beginAbstractSummary(Iterable<String> documents, String language, AbstractiveSummaryOptions options) {
+        return beginAbstractSummary(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), options);
     }
 
     /**
@@ -3509,8 +3500,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux> beginAbstractSummary(
-        Iterable<TextDocumentInput> documents, AbstractiveSummaryOptions options) {
+    public PollerFlux<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux>
+        beginAbstractSummary(Iterable<TextDocumentInput> documents, AbstractiveSummaryOptions options) {
         return abstractiveSummaryUtilClient.abstractiveSummaryAsync(documents, options, Context.NONE);
     }
 
@@ -3591,8 +3582,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> beginExtractSummary(
-        Iterable<String> documents) {
+    public PollerFlux<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux>
+        beginExtractSummary(Iterable<String> documents) {
         return beginExtractSummary(documents, defaultLanguage, null);
     }
 
@@ -3676,14 +3667,13 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> beginExtractSummary(
-        Iterable<String> documents, String language, ExtractiveSummaryOptions options) {
-        return beginExtractSummary(
-            mapByIndex(documents, (index, value) -> {
-                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                textDocumentInput.setLanguage(language);
-                return textDocumentInput;
-            }), options);
+    public PollerFlux<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux>
+        beginExtractSummary(Iterable<String> documents, String language, ExtractiveSummaryOptions options) {
+        return beginExtractSummary(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), options);
     }
 
     /**
@@ -3762,8 +3752,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> beginExtractSummary(
-        Iterable<TextDocumentInput> documents, ExtractiveSummaryOptions options) {
+    public PollerFlux<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux>
+        beginExtractSummary(Iterable<TextDocumentInput> documents, ExtractiveSummaryOptions options) {
         return extractiveSummaryUtilClient.extractiveSummaryAsync(documents, options, Context.NONE);
     }
 
@@ -3839,8 +3829,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> beginAnalyzeActions(
-        Iterable<String> documents, TextAnalyticsActions actions) {
+    public PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux>
+        beginAnalyzeActions(Iterable<String> documents, TextAnalyticsActions actions) {
         return beginAnalyzeActions(documents, actions, defaultLanguage, null);
     }
 
@@ -3922,12 +3912,11 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> beginAnalyzeActions(
         Iterable<String> documents, TextAnalyticsActions actions, String language, AnalyzeActionsOptions options) {
-        return beginAnalyzeActions(
-            mapByIndex(documents, (index, value) -> {
-                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                textDocumentInput.setLanguage(language);
-                return textDocumentInput;
-            }), actions, options);
+        return beginAnalyzeActions(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), actions, options);
     }
 
     /**

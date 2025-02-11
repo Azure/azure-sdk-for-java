@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetadataDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetadataDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"lx\",\"resource\":\"kuksjtxukcdm\",\"operation\":\"rcryuanzwuxzdxta\",\"description\":\"lhmwhfpmrqobm\"}")
-                .toObject(OperationMetadataDisplay.class);
+        OperationMetadataDisplay model = BinaryData.fromString(
+            "{\"provider\":\"lx\",\"resource\":\"kuksjtxukcdm\",\"operation\":\"rcryuanzwuxzdxta\",\"description\":\"lhmwhfpmrqobm\"}")
+            .toObject(OperationMetadataDisplay.class);
         Assertions.assertEquals("lx", model.provider());
         Assertions.assertEquals("kuksjtxukcdm", model.resource());
         Assertions.assertEquals("rcryuanzwuxzdxta", model.operation());
@@ -24,12 +22,10 @@ public final class OperationMetadataDisplayTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetadataDisplay model =
-            new OperationMetadataDisplay()
-                .withProvider("lx")
-                .withResource("kuksjtxukcdm")
-                .withOperation("rcryuanzwuxzdxta")
-                .withDescription("lhmwhfpmrqobm");
+        OperationMetadataDisplay model = new OperationMetadataDisplay().withProvider("lx")
+            .withResource("kuksjtxukcdm")
+            .withOperation("rcryuanzwuxzdxta")
+            .withDescription("lhmwhfpmrqobm");
         model = BinaryData.fromObject(model).toObject(OperationMetadataDisplay.class);
         Assertions.assertEquals("lx", model.provider());
         Assertions.assertEquals("kuksjtxukcdm", model.resource());

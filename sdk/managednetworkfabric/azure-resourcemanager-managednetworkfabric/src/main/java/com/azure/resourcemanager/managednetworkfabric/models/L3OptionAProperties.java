@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Peering optionA properties. */
+/**
+ * Peering optionA properties.
+ */
 @Fluent
-public class L3OptionAProperties {
+public class L3OptionAProperties implements JsonSerializable<L3OptionAProperties> {
     /*
      * MTU to use for option A peering.
      */
-    @JsonProperty(value = "mtu")
     private Integer mtu;
 
     /*
      * Vlan identifier. Example : 501
      */
-    @JsonProperty(value = "vlanId")
     private Integer vlanId;
 
     /*
      * Fabric ASN number. Example 65001
      */
-    @JsonProperty(value = "fabricASN", access = JsonProperty.Access.WRITE_ONLY)
     private Long fabricAsn;
 
     /*
      * Peer ASN number.Example : 28
      */
-    @JsonProperty(value = "peerASN")
     private Long peerAsn;
 
     /*
      * BFD configuration properties
      */
-    @JsonProperty(value = "bfdConfiguration")
     private BfdConfiguration bfdConfiguration;
 
     /*
      * Ingress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "ingressAclId")
     private String ingressAclId;
 
     /*
      * Egress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "egressAclId")
     private String egressAclId;
 
-    /** Creates an instance of L3OptionAProperties class. */
+    /**
+     * Creates an instance of L3OptionAProperties class.
+     */
     public L3OptionAProperties() {
     }
 
     /**
      * Get the mtu property: MTU to use for option A peering.
-     *
+     * 
      * @return the mtu value.
      */
     public Integer mtu() {
@@ -67,7 +68,7 @@ public class L3OptionAProperties {
 
     /**
      * Set the mtu property: MTU to use for option A peering.
-     *
+     * 
      * @param mtu the mtu value to set.
      * @return the L3OptionAProperties object itself.
      */
@@ -78,7 +79,7 @@ public class L3OptionAProperties {
 
     /**
      * Get the vlanId property: Vlan identifier. Example : 501.
-     *
+     * 
      * @return the vlanId value.
      */
     public Integer vlanId() {
@@ -87,7 +88,7 @@ public class L3OptionAProperties {
 
     /**
      * Set the vlanId property: Vlan identifier. Example : 501.
-     *
+     * 
      * @param vlanId the vlanId value to set.
      * @return the L3OptionAProperties object itself.
      */
@@ -98,7 +99,7 @@ public class L3OptionAProperties {
 
     /**
      * Get the fabricAsn property: Fabric ASN number. Example 65001.
-     *
+     * 
      * @return the fabricAsn value.
      */
     public Long fabricAsn() {
@@ -106,8 +107,19 @@ public class L3OptionAProperties {
     }
 
     /**
+     * Set the fabricAsn property: Fabric ASN number. Example 65001.
+     * 
+     * @param fabricAsn the fabricAsn value to set.
+     * @return the L3OptionAProperties object itself.
+     */
+    L3OptionAProperties withFabricAsn(Long fabricAsn) {
+        this.fabricAsn = fabricAsn;
+        return this;
+    }
+
+    /**
      * Get the peerAsn property: Peer ASN number.Example : 28.
-     *
+     * 
      * @return the peerAsn value.
      */
     public Long peerAsn() {
@@ -116,7 +128,7 @@ public class L3OptionAProperties {
 
     /**
      * Set the peerAsn property: Peer ASN number.Example : 28.
-     *
+     * 
      * @param peerAsn the peerAsn value to set.
      * @return the L3OptionAProperties object itself.
      */
@@ -127,7 +139,7 @@ public class L3OptionAProperties {
 
     /**
      * Get the bfdConfiguration property: BFD configuration properties.
-     *
+     * 
      * @return the bfdConfiguration value.
      */
     public BfdConfiguration bfdConfiguration() {
@@ -136,7 +148,7 @@ public class L3OptionAProperties {
 
     /**
      * Set the bfdConfiguration property: BFD configuration properties.
-     *
+     * 
      * @param bfdConfiguration the bfdConfiguration value to set.
      * @return the L3OptionAProperties object itself.
      */
@@ -147,7 +159,7 @@ public class L3OptionAProperties {
 
     /**
      * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the ingressAclId value.
      */
     public String ingressAclId() {
@@ -156,7 +168,7 @@ public class L3OptionAProperties {
 
     /**
      * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param ingressAclId the ingressAclId value to set.
      * @return the L3OptionAProperties object itself.
      */
@@ -167,7 +179,7 @@ public class L3OptionAProperties {
 
     /**
      * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the egressAclId value.
      */
     public String egressAclId() {
@@ -176,7 +188,7 @@ public class L3OptionAProperties {
 
     /**
      * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param egressAclId the egressAclId value to set.
      * @return the L3OptionAProperties object itself.
      */
@@ -187,12 +199,65 @@ public class L3OptionAProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (bfdConfiguration() != null) {
             bfdConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("mtu", this.mtu);
+        jsonWriter.writeNumberField("vlanId", this.vlanId);
+        jsonWriter.writeNumberField("peerASN", this.peerAsn);
+        jsonWriter.writeJsonField("bfdConfiguration", this.bfdConfiguration);
+        jsonWriter.writeStringField("ingressAclId", this.ingressAclId);
+        jsonWriter.writeStringField("egressAclId", this.egressAclId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of L3OptionAProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of L3OptionAProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the L3OptionAProperties.
+     */
+    public static L3OptionAProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            L3OptionAProperties deserializedL3OptionAProperties = new L3OptionAProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mtu".equals(fieldName)) {
+                    deserializedL3OptionAProperties.mtu = reader.getNullable(JsonReader::getInt);
+                } else if ("vlanId".equals(fieldName)) {
+                    deserializedL3OptionAProperties.vlanId = reader.getNullable(JsonReader::getInt);
+                } else if ("fabricASN".equals(fieldName)) {
+                    deserializedL3OptionAProperties.fabricAsn = reader.getNullable(JsonReader::getLong);
+                } else if ("peerASN".equals(fieldName)) {
+                    deserializedL3OptionAProperties.peerAsn = reader.getNullable(JsonReader::getLong);
+                } else if ("bfdConfiguration".equals(fieldName)) {
+                    deserializedL3OptionAProperties.bfdConfiguration = BfdConfiguration.fromJson(reader);
+                } else if ("ingressAclId".equals(fieldName)) {
+                    deserializedL3OptionAProperties.ingressAclId = reader.getString();
+                } else if ("egressAclId".equals(fieldName)) {
+                    deserializedL3OptionAProperties.egressAclId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedL3OptionAProperties;
+        });
     }
 }

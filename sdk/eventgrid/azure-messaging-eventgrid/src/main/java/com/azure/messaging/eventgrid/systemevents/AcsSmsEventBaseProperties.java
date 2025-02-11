@@ -97,6 +97,9 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

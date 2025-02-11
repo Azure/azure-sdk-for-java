@@ -18,7 +18,8 @@ public final class OrganizationGetEnvironmentByIdSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationGetEnvironmentById(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().getEnvironmentByIdWithResponse("myResourceGroup", "myOrganization", "dlz-f3a90de",
-            com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .getEnvironmentByIdWithResponse("myResourceGroup", "myOrganization", "dlz-f3a90de",
+                com.azure.core.util.Context.NONE);
     }
 }

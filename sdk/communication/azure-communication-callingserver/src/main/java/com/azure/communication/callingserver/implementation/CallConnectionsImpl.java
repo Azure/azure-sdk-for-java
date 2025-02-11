@@ -48,8 +48,8 @@ public final class CallConnectionsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     CallConnectionsImpl(AzureCommunicationCallingServerServiceImpl client) {
-        this.service =
-                RestProxy.create(CallConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CallConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,86 +61,63 @@ public final class CallConnectionsImpl {
     @ServiceInterface(name = "AzureCommunicationCa")
     public interface CallConnectionsService {
         @Get("/calling/callConnections/{callConnectionId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<CallConnectionPropertiesInternal>> getCall(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<CallConnectionPropertiesInternal>> getCall(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/calling/callConnections/{callConnectionId}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> hangupCall(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
+        Mono<Response<Void>> hangupCall(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:terminate")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> terminateCall(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
+        Mono<Response<Void>> terminateCall(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:transferToParticipant")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<TransferCallResponseInternal>> transferToParticipant(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") TransferToParticipantRequestInternal transferToParticipantRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<TransferCallResponseInternal>> transferToParticipant(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TransferToParticipantRequestInternal transferToParticipantRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/calling/callConnections/{callConnectionId}/participants")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<GetParticipantsResponseInternal>> getParticipants(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<GetParticipantsResponseInternal>> getParticipants(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/calling/callConnections/{callConnectionId}/participants:add")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<AddParticipantsResponseInternal>> addParticipant(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AddParticipantsRequestInternal addParticipantsRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<AddParticipantsResponseInternal>> addParticipant(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AddParticipantsRequestInternal addParticipantsRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/calling/callConnections/{callConnectionId}/participants:remove")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<RemoveParticipantsResponseInternal>> removeParticipants(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") RemoveParticipantsRequestInternal removeParticipantsRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<RemoveParticipantsResponseInternal>> removeParticipants(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RemoveParticipantsRequestInternal removeParticipantsRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/calling/callConnections/{callConnectionId}/participants/{participantMri}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<AcsCallParticipantInternal>> getParticipant(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @PathParam("participantMri") String participantMri,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<AcsCallParticipantInternal>> getParticipant(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @PathParam("participantMri") String participantMri,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -155,14 +132,8 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionPropertiesInternal>> getCallWithResponseAsync(String callConnectionId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getCall(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.getCall(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -176,11 +147,11 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>> getCallWithResponseAsync(
-            String callConnectionId, Context context) {
+    public Mono<Response<CallConnectionPropertiesInternal>> getCallWithResponseAsync(String callConnectionId,
+        Context context) {
         final String accept = "application/json";
-        return service.getCall(
-                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept, context);
+        return service.getCall(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -194,15 +165,13 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> getCallAsync(String callConnectionId) {
-        return getCallWithResponseAsync(callConnectionId)
-                .flatMap(
-                        (Response<CallConnectionPropertiesInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getCallWithResponseAsync(callConnectionId).flatMap((Response<CallConnectionPropertiesInternal> res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -218,14 +187,13 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> getCallAsync(String callConnectionId, Context context) {
         return getCallWithResponseAsync(callConnectionId, context)
-                .flatMap(
-                        (Response<CallConnectionPropertiesInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<CallConnectionPropertiesInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -268,10 +236,8 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hangupCallWithResponseAsync(String callConnectionId) {
-        return FluxUtil.withContext(
-                context ->
-                        service.hangupCall(
-                                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), context));
+        return FluxUtil.withContext(context -> service.hangupCall(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), context));
     }
 
     /**
@@ -357,10 +323,8 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateCallWithResponseAsync(String callConnectionId) {
-        return FluxUtil.withContext(
-                context ->
-                        service.terminateCall(
-                                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), context));
+        return FluxUtil.withContext(context -> service.terminateCall(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), context));
     }
 
     /**
@@ -446,18 +410,11 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TransferCallResponseInternal>> transferToParticipantWithResponseAsync(
-            String callConnectionId, TransferToParticipantRequestInternal transferToParticipantRequest) {
+    public Mono<Response<TransferCallResponseInternal>> transferToParticipantWithResponseAsync(String callConnectionId,
+        TransferToParticipantRequestInternal transferToParticipantRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.transferToParticipant(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                this.client.getApiVersion(),
-                                transferToParticipantRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.transferToParticipant(this.client.getEndpoint(),
+            callConnectionId, this.client.getApiVersion(), transferToParticipantRequest, accept, context));
     }
 
     /**
@@ -472,18 +429,11 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TransferCallResponseInternal>> transferToParticipantWithResponseAsync(
-            String callConnectionId,
-            TransferToParticipantRequestInternal transferToParticipantRequest,
-            Context context) {
+    public Mono<Response<TransferCallResponseInternal>> transferToParticipantWithResponseAsync(String callConnectionId,
+        TransferToParticipantRequestInternal transferToParticipantRequest, Context context) {
         final String accept = "application/json";
-        return service.transferToParticipant(
-                this.client.getEndpoint(),
-                callConnectionId,
-                this.client.getApiVersion(),
-                transferToParticipantRequest,
-                accept,
-                context);
+        return service.transferToParticipant(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+            transferToParticipantRequest, accept, context);
     }
 
     /**
@@ -497,17 +447,16 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResponseInternal> transferToParticipantAsync(
-            String callConnectionId, TransferToParticipantRequestInternal transferToParticipantRequest) {
+    public Mono<TransferCallResponseInternal> transferToParticipantAsync(String callConnectionId,
+        TransferToParticipantRequestInternal transferToParticipantRequest) {
         return transferToParticipantWithResponseAsync(callConnectionId, transferToParticipantRequest)
-                .flatMap(
-                        (Response<TransferCallResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<TransferCallResponseInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -522,19 +471,16 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResponseInternal> transferToParticipantAsync(
-            String callConnectionId,
-            TransferToParticipantRequestInternal transferToParticipantRequest,
-            Context context) {
+    public Mono<TransferCallResponseInternal> transferToParticipantAsync(String callConnectionId,
+        TransferToParticipantRequestInternal transferToParticipantRequest, Context context) {
         return transferToParticipantWithResponseAsync(callConnectionId, transferToParticipantRequest, context)
-                .flatMap(
-                        (Response<TransferCallResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<TransferCallResponseInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -548,8 +494,8 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResponseInternal transferToParticipant(
-            String callConnectionId, TransferToParticipantRequestInternal transferToParticipantRequest) {
+    public TransferCallResponseInternal transferToParticipant(String callConnectionId,
+        TransferToParticipantRequestInternal transferToParticipantRequest) {
         return transferToParticipantAsync(callConnectionId, transferToParticipantRequest).block();
     }
 
@@ -565,10 +511,8 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TransferCallResponseInternal> transferToParticipantWithResponse(
-            String callConnectionId,
-            TransferToParticipantRequestInternal transferToParticipantRequest,
-            Context context) {
+    public Response<TransferCallResponseInternal> transferToParticipantWithResponse(String callConnectionId,
+        TransferToParticipantRequestInternal transferToParticipantRequest, Context context) {
         return transferToParticipantWithResponseAsync(callConnectionId, transferToParticipantRequest, context).block();
     }
 
@@ -584,14 +528,8 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GetParticipantsResponseInternal>> getParticipantsWithResponseAsync(String callConnectionId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getParticipants(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.getParticipants(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -605,11 +543,11 @@ public final class CallConnectionsImpl {
      * @return participants from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetParticipantsResponseInternal>> getParticipantsWithResponseAsync(
-            String callConnectionId, Context context) {
+    public Mono<Response<GetParticipantsResponseInternal>> getParticipantsWithResponseAsync(String callConnectionId,
+        Context context) {
         final String accept = "application/json";
-        return service.getParticipants(
-                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept, context);
+        return service.getParticipants(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -624,14 +562,13 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetParticipantsResponseInternal> getParticipantsAsync(String callConnectionId) {
         return getParticipantsWithResponseAsync(callConnectionId)
-                .flatMap(
-                        (Response<GetParticipantsResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<GetParticipantsResponseInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -647,14 +584,13 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetParticipantsResponseInternal> getParticipantsAsync(String callConnectionId, Context context) {
         return getParticipantsWithResponseAsync(callConnectionId, context)
-                .flatMap(
-                        (Response<GetParticipantsResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<GetParticipantsResponseInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -682,8 +618,8 @@ public final class CallConnectionsImpl {
      * @return participants from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GetParticipantsResponseInternal> getParticipantsWithResponse(
-            String callConnectionId, Context context) {
+    public Response<GetParticipantsResponseInternal> getParticipantsWithResponse(String callConnectionId,
+        Context context) {
         return getParticipantsWithResponseAsync(callConnectionId, context).block();
     }
 
@@ -698,18 +634,11 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddParticipantsResponseInternal>> addParticipantWithResponseAsync(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest) {
+    public Mono<Response<AddParticipantsResponseInternal>> addParticipantWithResponseAsync(String callConnectionId,
+        AddParticipantsRequestInternal addParticipantsRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.addParticipant(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                this.client.getApiVersion(),
-                                addParticipantsRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.addParticipant(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), addParticipantsRequest, accept, context));
     }
 
     /**
@@ -724,16 +653,11 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddParticipantsResponseInternal>> addParticipantWithResponseAsync(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest, Context context) {
+    public Mono<Response<AddParticipantsResponseInternal>> addParticipantWithResponseAsync(String callConnectionId,
+        AddParticipantsRequestInternal addParticipantsRequest, Context context) {
         final String accept = "application/json";
-        return service.addParticipant(
-                this.client.getEndpoint(),
-                callConnectionId,
-                this.client.getApiVersion(),
-                addParticipantsRequest,
-                accept,
-                context);
+        return service.addParticipant(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+            addParticipantsRequest, accept, context);
     }
 
     /**
@@ -747,17 +671,16 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AddParticipantsResponseInternal> addParticipantAsync(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest) {
+    public Mono<AddParticipantsResponseInternal> addParticipantAsync(String callConnectionId,
+        AddParticipantsRequestInternal addParticipantsRequest) {
         return addParticipantWithResponseAsync(callConnectionId, addParticipantsRequest)
-                .flatMap(
-                        (Response<AddParticipantsResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<AddParticipantsResponseInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -772,17 +695,16 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AddParticipantsResponseInternal> addParticipantAsync(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest, Context context) {
+    public Mono<AddParticipantsResponseInternal> addParticipantAsync(String callConnectionId,
+        AddParticipantsRequestInternal addParticipantsRequest, Context context) {
         return addParticipantWithResponseAsync(callConnectionId, addParticipantsRequest, context)
-                .flatMap(
-                        (Response<AddParticipantsResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<AddParticipantsResponseInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -796,8 +718,8 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddParticipantsResponseInternal addParticipant(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest) {
+    public AddParticipantsResponseInternal addParticipant(String callConnectionId,
+        AddParticipantsRequestInternal addParticipantsRequest) {
         return addParticipantAsync(callConnectionId, addParticipantsRequest).block();
     }
 
@@ -813,8 +735,8 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddParticipantsResponseInternal> addParticipantWithResponse(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest, Context context) {
+    public Response<AddParticipantsResponseInternal> addParticipantWithResponse(String callConnectionId,
+        AddParticipantsRequestInternal addParticipantsRequest, Context context) {
         return addParticipantWithResponseAsync(callConnectionId, addParticipantsRequest, context).block();
     }
 
@@ -830,17 +752,10 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RemoveParticipantsResponseInternal>> removeParticipantsWithResponseAsync(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest) {
+        String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.removeParticipants(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                this.client.getApiVersion(),
-                                removeParticipantsRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.removeParticipants(this.client.getEndpoint(), callConnectionId,
+            this.client.getApiVersion(), removeParticipantsRequest, accept, context));
     }
 
     /**
@@ -856,15 +771,10 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RemoveParticipantsResponseInternal>> removeParticipantsWithResponseAsync(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest, Context context) {
+        String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest, Context context) {
         final String accept = "application/json";
-        return service.removeParticipants(
-                this.client.getEndpoint(),
-                callConnectionId,
-                this.client.getApiVersion(),
-                removeParticipantsRequest,
-                accept,
-                context);
+        return service.removeParticipants(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+            removeParticipantsRequest, accept, context);
     }
 
     /**
@@ -878,17 +788,16 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoveParticipantsResponseInternal> removeParticipantsAsync(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest) {
+    public Mono<RemoveParticipantsResponseInternal> removeParticipantsAsync(String callConnectionId,
+        RemoveParticipantsRequestInternal removeParticipantsRequest) {
         return removeParticipantsWithResponseAsync(callConnectionId, removeParticipantsRequest)
-                .flatMap(
-                        (Response<RemoveParticipantsResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<RemoveParticipantsResponseInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -903,17 +812,16 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoveParticipantsResponseInternal> removeParticipantsAsync(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest, Context context) {
+    public Mono<RemoveParticipantsResponseInternal> removeParticipantsAsync(String callConnectionId,
+        RemoveParticipantsRequestInternal removeParticipantsRequest, Context context) {
         return removeParticipantsWithResponseAsync(callConnectionId, removeParticipantsRequest, context)
-                .flatMap(
-                        (Response<RemoveParticipantsResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<RemoveParticipantsResponseInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -927,8 +835,8 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RemoveParticipantsResponseInternal removeParticipants(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest) {
+    public RemoveParticipantsResponseInternal removeParticipants(String callConnectionId,
+        RemoveParticipantsRequestInternal removeParticipantsRequest) {
         return removeParticipantsAsync(callConnectionId, removeParticipantsRequest).block();
     }
 
@@ -944,8 +852,8 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoveParticipantsResponseInternal> removeParticipantsWithResponse(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest, Context context) {
+    public Response<RemoveParticipantsResponseInternal> removeParticipantsWithResponse(String callConnectionId,
+        RemoveParticipantsRequestInternal removeParticipantsRequest, Context context) {
         return removeParticipantsWithResponseAsync(callConnectionId, removeParticipantsRequest, context).block();
     }
 
@@ -960,18 +868,11 @@ public final class CallConnectionsImpl {
      * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcsCallParticipantInternal>> getParticipantWithResponseAsync(
-            String callConnectionId, String participantMri) {
+    public Mono<Response<AcsCallParticipantInternal>> getParticipantWithResponseAsync(String callConnectionId,
+        String participantMri) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getParticipant(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                participantMri,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.getParticipant(this.client.getEndpoint(), callConnectionId,
+            participantMri, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -986,16 +887,11 @@ public final class CallConnectionsImpl {
      * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcsCallParticipantInternal>> getParticipantWithResponseAsync(
-            String callConnectionId, String participantMri, Context context) {
+    public Mono<Response<AcsCallParticipantInternal>> getParticipantWithResponseAsync(String callConnectionId,
+        String participantMri, Context context) {
         final String accept = "application/json";
-        return service.getParticipant(
-                this.client.getEndpoint(),
-                callConnectionId,
-                participantMri,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getParticipant(this.client.getEndpoint(), callConnectionId, participantMri,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1011,14 +907,13 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcsCallParticipantInternal> getParticipantAsync(String callConnectionId, String participantMri) {
         return getParticipantWithResponseAsync(callConnectionId, participantMri)
-                .flatMap(
-                        (Response<AcsCallParticipantInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<AcsCallParticipantInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1033,17 +928,16 @@ public final class CallConnectionsImpl {
      * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcsCallParticipantInternal> getParticipantAsync(
-            String callConnectionId, String participantMri, Context context) {
+    public Mono<AcsCallParticipantInternal> getParticipantAsync(String callConnectionId, String participantMri,
+        Context context) {
         return getParticipantWithResponseAsync(callConnectionId, participantMri, context)
-                .flatMap(
-                        (Response<AcsCallParticipantInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((Response<AcsCallParticipantInternal> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1073,8 +967,8 @@ public final class CallConnectionsImpl {
      * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcsCallParticipantInternal> getParticipantWithResponse(
-            String callConnectionId, String participantMri, Context context) {
+    public Response<AcsCallParticipantInternal> getParticipantWithResponse(String callConnectionId,
+        String participantMri, Context context) {
         return getParticipantWithResponseAsync(callConnectionId, participantMri, context).block();
     }
 }

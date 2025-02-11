@@ -37,6 +37,7 @@ import com.azure.spring.data.cosmos.domain.PersonWithTransientEtag;
 import com.azure.spring.data.cosmos.domain.PersonWithTransientId;
 import com.azure.spring.data.cosmos.domain.PersonWithTransientPartitionKey;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosBadRequestException;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -87,7 +88,6 @@ import static com.azure.spring.data.cosmos.common.TestConstants.ID_4;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_LAST_NAME;
-import static com.azure.spring.data.cosmos.common.TestConstants.TRANSIENT_PROPERTY;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_PASSPORT_IDS_BY_COUNTRY;
 import static com.azure.spring.data.cosmos.common.TestConstants.NOT_EXIST_ID;
 import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_1;
@@ -99,6 +99,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_AGE_INCREM
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBY1;
+import static com.azure.spring.data.cosmos.common.TestConstants.TRANSIENT_PROPERTY;
 import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -268,7 +269,7 @@ public class CosmosTemplateIT {
     }
 
 
-    @Test(expected = CosmosAccessException.class)
+    @Test(expected = CosmosBadRequestException.class)
     public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
         final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
         cosmosTemplate.insert(Person.class.getSimpleName(), person, new PartitionKey(person.getLastName()));

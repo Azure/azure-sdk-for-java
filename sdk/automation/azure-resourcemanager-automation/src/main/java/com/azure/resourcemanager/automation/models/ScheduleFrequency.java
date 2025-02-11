@@ -5,43 +5,64 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the frequency of the schedule. */
+/**
+ * Gets or sets the frequency of the schedule.
+ */
 public final class ScheduleFrequency extends ExpandableStringEnum<ScheduleFrequency> {
-    /** Static value OneTime for ScheduleFrequency. */
+    /**
+     * Static value OneTime for ScheduleFrequency.
+     */
     public static final ScheduleFrequency ONE_TIME = fromString("OneTime");
 
-    /** Static value Day for ScheduleFrequency. */
+    /**
+     * Static value Day for ScheduleFrequency.
+     */
     public static final ScheduleFrequency DAY = fromString("Day");
 
-    /** Static value Hour for ScheduleFrequency. */
+    /**
+     * Static value Hour for ScheduleFrequency.
+     */
     public static final ScheduleFrequency HOUR = fromString("Hour");
 
-    /** Static value Week for ScheduleFrequency. */
+    /**
+     * Static value Week for ScheduleFrequency.
+     */
     public static final ScheduleFrequency WEEK = fromString("Week");
 
-    /** Static value Month for ScheduleFrequency. */
+    /**
+     * Static value Month for ScheduleFrequency.
+     */
     public static final ScheduleFrequency MONTH = fromString("Month");
 
-    /** Static value Minute for ScheduleFrequency. */
+    /**
+     * Static value Minute for ScheduleFrequency.
+     */
     public static final ScheduleFrequency MINUTE = fromString("Minute");
 
     /**
+     * Creates a new instance of ScheduleFrequency value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScheduleFrequency() {
+    }
+
+    /**
      * Creates or finds a ScheduleFrequency from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScheduleFrequency.
      */
-    @JsonCreator
     public static ScheduleFrequency fromString(String name) {
         return fromString(name, ScheduleFrequency.class);
     }
 
     /**
      * Gets known ScheduleFrequency values.
-     *
+     * 
      * @return known ScheduleFrequency values.
      */
     public static Collection<ScheduleFrequency> values() {

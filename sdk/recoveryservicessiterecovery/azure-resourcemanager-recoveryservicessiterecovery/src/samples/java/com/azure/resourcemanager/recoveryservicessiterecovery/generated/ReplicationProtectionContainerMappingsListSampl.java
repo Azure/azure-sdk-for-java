@@ -20,7 +20,7 @@ public final class ReplicationProtectionContainerMappingsListSampl {
      */
     public static void getsTheListOfAllProtectionContainerMappingsInAVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionContainerMappings().list("vault1", "resourceGroupPS1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationProtectionContainerMappings()
+            .list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }

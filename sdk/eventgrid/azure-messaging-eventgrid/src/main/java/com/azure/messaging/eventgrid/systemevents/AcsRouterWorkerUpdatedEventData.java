@@ -201,6 +201,9 @@ public final class AcsRouterWorkerUpdatedEventData implements JsonSerializable<A
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

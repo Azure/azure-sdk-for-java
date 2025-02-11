@@ -52,24 +52,24 @@ public final class AgentsClientImpl implements AgentsClient {
     /**
      * The service client containing this operation class.
      */
-    private final StorageMoverClientImpl client;
+    private final StorageMoverManagementClientImpl client;
 
     /**
      * Initializes an instance of AgentsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AgentsClientImpl(StorageMoverClientImpl client) {
+    AgentsClientImpl(StorageMoverManagementClientImpl client) {
         this.service = RestProxy.create(AgentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StorageMoverClientAgents to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for StorageMoverManagementClientAgents to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageMoverClientAg")
+    @ServiceInterface(name = "StorageMoverManageme")
     public interface AgentsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents")

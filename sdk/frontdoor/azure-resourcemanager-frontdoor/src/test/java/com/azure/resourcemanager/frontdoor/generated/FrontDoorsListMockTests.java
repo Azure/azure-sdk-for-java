@@ -29,7 +29,7 @@ public final class FrontDoorsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceState\":\"Disabling\",\"provisioningState\":\"hibetnluankrr\",\"cname\":\"eeebtijvacv\",\"frontdoorId\":\"qzbqqxlajrnwxa\",\"rulesEngines\":[{\"properties\":{\"resourceState\":\"Deleting\",\"rules\":[{\"name\":\"yxoaf\",\"priority\":168622521,\"action\":{}},{\"name\":\"oqltfae\",\"priority\":1809533021,\"action\":{}}]},\"id\":\"inmfgvxirp\",\"name\":\"hriypoqeyhlqhy\",\"type\":\"prlpy\"}],\"extendedProperties\":{\"iitdfuxt\":\"ciqdsme\",\"nlj\":\"asiibmiybnnust\"},\"friendlyName\":\"mgixhcmavmqfou\",\"routingRules\":[{\"properties\":{\"resourceState\":\"Disabled\",\"frontendEndpoints\":[{},{}],\"acceptedProtocols\":[\"Https\",\"Https\",\"Http\",\"Https\"],\"patternsToMatch\":[\"ndm\",\"xhugcm\"],\"enabledState\":\"Enabled\",\"routeConfiguration\":{\"@odata.type\":\"RouteConfiguration\"},\"rulesEngine\":{},\"webApplicationFirewallPolicyLink\":{}},\"name\":\"rb\",\"type\":\"tp\",\"id\":\"tzfjltf\"}],\"loadBalancingSettings\":[{\"properties\":{\"resourceState\":\"Deleting\",\"sampleSize\":572136902,\"successfulSamplesRequired\":79994758,\"additionalLatencyMilliseconds\":634005206},\"name\":\"vpbdbzqgq\",\"type\":\"hedsvqwthmkyib\",\"id\":\"sihsgqcwdhohsd\"},{\"properties\":{\"resourceState\":\"Enabled\",\"sampleSize\":1235671059,\"successfulSamplesRequired\":1121231141,\"additionalLatencyMilliseconds\":757345037},\"name\":\"dxbzlmcmuap\",\"type\":\"hdbevwqqxeyskon\",\"id\":\"inkfkbgbz\"}],\"healthProbeSettings\":[{\"properties\":{\"resourceState\":\"Enabling\",\"path\":\"clj\",\"protocol\":\"Https\",\"intervalInSeconds\":600854114,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Enabled\"},\"name\":\"eokbze\",\"type\":\"zrxcczurt\",\"id\":\"ipqxbkwvzgnzv\"},{\"properties\":{\"resourceState\":\"Enabling\",\"path\":\"ixz\",\"protocol\":\"Https\",\"intervalInSeconds\":1928163279,\"healthProbeMethod\":\"GET\",\"enabledState\":\"Disabled\"},\"name\":\"qhewj\",\"type\":\"mcgsbostzelnd\",\"id\":\"tutmzl\"},{\"properties\":{\"resourceState\":\"Migrating\",\"path\":\"vfhrbbpneqvc\",\"protocol\":\"Https\",\"intervalInSeconds\":1045870045,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Enabled\"},\"name\":\"ppr\",\"type\":\"snmokayzej\",\"id\":\"lbkpb\"},{\"properties\":{\"resourceState\":\"Deleting\",\"path\":\"ljhah\",\"protocol\":\"Https\",\"intervalInSeconds\":66417421,\"healthProbeMethod\":\"GET\",\"enabledState\":\"Disabled\"},\"name\":\"ieholewjwi\",\"type\":\"bwefqsfapaqtfer\",\"id\":\"wexjkmfxapjwogq\"}],\"backendPools\":[{\"properties\":{\"resourceState\":\"Migrated\",\"backends\":[{},{},{}],\"loadBalancingSettings\":{},\"healthProbeSettings\":{}},\"name\":\"tqwpwya\",\"type\":\"zasqbucljgkyexao\",\"id\":\"yaipidsda\"}],\"frontendEndpoints\":[{\"properties\":{\"resourceState\":\"Enabling\",\"customHttpsProvisioningState\":\"Failed\",\"customHttpsProvisioningSubstate\":\"SubmittingDomainControlValidationRequest\",\"customHttpsConfiguration\":{\"certificateSource\":\"AzureKeyVault\",\"protocolType\":\"ServerNameIndication\",\"minimumTlsVersion\":\"1.0\"},\"hostName\":\"nqnm\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":1485575169,\"webApplicationFirewallPolicyLink\":{}},\"name\":\"qxtbjwgnyf\",\"type\":\"fzsvtuikzh\",\"id\":\"qglcfhmlrqryxynq\"}],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Disabled\",\"sendRecvTimeoutSeconds\":1655994607},\"enabledState\":\"Enabled\"},\"location\":\"wxznptgoei\",\"tags\":{\"kvntjlrigjkskyri\":\"abpfhvfs\"},\"id\":\"ovzidsx\",\"name\":\"aabzmif\",\"type\":\"ygznmmaxrizk\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceState\":\"Disabling\",\"provisioningState\":\"clafzvaylpt\",\"cname\":\"qqwzt\",\"frontdoorId\":\"w\",\"rulesEngines\":[{\"properties\":{\"resourceState\":\"Deleting\",\"rules\":[{\"name\":\"xfe\",\"priority\":754983653,\"action\":{}}]},\"id\":\"jkjexf\",\"name\":\"eqvhpsylkk\",\"type\":\"hkbffmbm\"},{\"properties\":{\"resourceState\":\"Enabled\",\"rules\":[{\"name\":\"wwp\",\"priority\":461847321,\"action\":{}},{\"name\":\"xs\",\"priority\":1849178398,\"action\":{}},{\"name\":\"tf\",\"priority\":1964991484,\"action\":{}},{\"name\":\"gicgaaoepttaq\",\"priority\":1296917092,\"action\":{}}]},\"id\":\"dewemxswv\",\"name\":\"uun\",\"type\":\"zjgehkfkim\"},{\"properties\":{\"resourceState\":\"Disabled\",\"rules\":[{\"name\":\"ffqyinlj\",\"priority\":980930736,\"action\":{}},{\"name\":\"pqwhixmonst\",\"priority\":1440167521,\"action\":{}},{\"name\":\"i\",\"priority\":2112276373,\"action\":{}},{\"name\":\"gvelfc\",\"priority\":341924514,\"action\":{}}]},\"id\":\"uccbirdsvuw\",\"name\":\"o\",\"type\":\"iegstm\"}],\"extendedProperties\":{\"jjtbxqmuluxlxqz\":\"wjizcilnghgsh\",\"cucrwnamikze\":\"nersb\",\"fuhok\":\"rqbsmswziq\",\"czznvfbycjsxj\":\"ruswhv\"},\"friendlyName\":\"i\",\"routingRules\":[{\"properties\":{\"resourceState\":\"Migrated\",\"frontendEndpoints\":[{},{},{},{}],\"acceptedProtocols\":[\"Http\",\"Https\",\"Https\",\"Https\"],\"patternsToMatch\":[\"mldsehaohdj\",\"hflzokxco\"],\"enabledState\":\"Enabled\",\"routeConfiguration\":{\"@odata.type\":\"RouteConfiguration\"},\"rulesEngine\":{},\"webApplicationFirewallPolicyLink\":{}},\"name\":\"tag\",\"type\":\"sxoa\",\"id\":\"tgzpnpb\"},{\"properties\":{\"resourceState\":\"Creating\",\"frontendEndpoints\":[{},{},{}],\"acceptedProtocols\":[\"Http\",\"Https\",\"Https\",\"Http\"],\"patternsToMatch\":[\"ihmipgawtxxpk\",\"jcxcjxgrytfmpcyc\",\"lrmcaykg\",\"noxuztrksx\"],\"enabledState\":\"Enabled\",\"routeConfiguration\":{\"@odata.type\":\"RouteConfiguration\"},\"rulesEngine\":{},\"webApplicationFirewallPolicyLink\":{}},\"name\":\"fnznth\",\"type\":\"wkjaos\",\"id\":\"uzvoamktcqiosm\"}],\"loadBalancingSettings\":[{\"properties\":{\"resourceState\":\"Enabling\",\"sampleSize\":1781662163,\"successfulSamplesRequired\":945214435,\"additionalLatencyMilliseconds\":1464165713},\"name\":\"ltlaprltzkatbhj\",\"type\":\"nnbsoqeqa\",\"id\":\"rvlagunbtgfebwln\"}],\"healthProbeSettings\":[{\"properties\":{\"resourceState\":\"Creating\",\"path\":\"udzqavbp\",\"protocol\":\"Https\",\"intervalInSeconds\":341201739,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Enabled\"},\"name\":\"lgouwtlmjj\",\"type\":\"ojqtobaxk\",\"id\":\"ytunlbfjkwr\"},{\"properties\":{\"resourceState\":\"Enabling\",\"path\":\"bhsy\",\"protocol\":\"Http\",\"intervalInSeconds\":1414461023,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Enabled\"},\"name\":\"xaulkpakdkifmjnn\",\"type\":\"tqabpxuckpgg\",\"id\":\"wey\"}],\"backendPools\":[{\"properties\":{\"resourceState\":\"Migrated\",\"backends\":[{},{},{},{}],\"loadBalancingSettings\":{},\"healthProbeSettings\":{}},\"name\":\"lqqmpiz\",\"type\":\"w\",\"id\":\"qxpxiwfcngjsaa\"},{\"properties\":{\"resourceState\":\"Deleting\",\"backends\":[{},{},{}],\"loadBalancingSettings\":{},\"healthProbeSettings\":{}},\"name\":\"vkviirhgfg\",\"type\":\"sdp\",\"id\":\"atzv\"},{\"properties\":{\"resourceState\":\"Migrated\",\"backends\":[{}],\"loadBalancingSettings\":{},\"healthProbeSettings\":{}},\"name\":\"tctbrxkjzwrgxffm\",\"type\":\"kwfbkgo\",\"id\":\"wopdbydpiz\"},{\"properties\":{\"resourceState\":\"Disabled\",\"backends\":[{},{}],\"loadBalancingSettings\":{},\"healthProbeSettings\":{}},\"name\":\"iygnugjknfsmfctt\",\"type\":\"uuyilfl\",\"id\":\"iquvrehm\"}],\"frontendEndpoints\":[{\"properties\":{\"resourceState\":\"Enabling\",\"customHttpsProvisioningState\":\"Failed\",\"customHttpsProvisioningSubstate\":\"PendingDomainControlValidationREquestApproval\",\"customHttpsConfiguration\":{\"certificateSource\":\"FrontDoor\",\"protocolType\":\"ServerNameIndication\",\"minimumTlsVersion\":\"1.2\"},\"hostName\":\"jtwhauunf\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":1321099955,\"webApplicationFirewallPolicyLink\":{}},\"name\":\"lxsmrpddouifamow\",\"type\":\"iynknlq\",\"id\":\"dvpiwh\"},{\"properties\":{\"resourceState\":\"Migrated\",\"customHttpsProvisioningState\":\"Disabling\",\"customHttpsProvisioningSubstate\":\"DomainControlValidationRequestTimedOut\",\"customHttpsConfiguration\":{\"certificateSource\":\"FrontDoor\",\"protocolType\":\"ServerNameIndication\",\"minimumTlsVersion\":\"1.2\"},\"hostName\":\"uxylrjvmtygjbm\",\"sessionAffinityEnabledState\":\"Disabled\",\"sessionAffinityTtlSeconds\":438034725,\"webApplicationFirewallPolicyLink\":{}},\"name\":\"shck\",\"type\":\"yjpmspbpssdfppyo\",\"id\":\"ieyujtvc\"},{\"properties\":{\"resourceState\":\"Creating\",\"customHttpsProvisioningState\":\"Disabling\",\"customHttpsProvisioningSubstate\":\"CertificateDeployed\",\"customHttpsConfiguration\":{\"certificateSource\":\"AzureKeyVault\",\"protocolType\":\"ServerNameIndication\",\"minimumTlsVersion\":\"1.2\"},\"hostName\":\"xvglnkvxlxp\",\"sessionAffinityEnabledState\":\"Disabled\",\"sessionAffinityTtlSeconds\":1806194501,\"webApplicationFirewallPolicyLink\":{}},\"name\":\"gkcvkhpzvuq\",\"type\":\"lvoniy\",\"id\":\"pubcpzgpxtivhjk\"}],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Enabled\",\"sendRecvTimeoutSeconds\":1731512826},\"enabledState\":\"Disabled\"},\"location\":\"xgpnr\",\"tags\":{\"vuporqzdfuydzv\":\"vfgpikqmhhaowjrm\"},\"id\":\"fvxcnqmxqpswo\",\"name\":\"mvkhlggd\",\"type\":\"bemzqkzszuwi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,45 +40,46 @@ public final class FrontDoorsListMockTests {
 
         PagedIterable<FrontDoor> response = manager.frontDoors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wxznptgoei", response.iterator().next().location());
-        Assertions.assertEquals("abpfhvfs", response.iterator().next().tags().get("kvntjlrigjkskyri"));
-        Assertions.assertEquals("mgixhcmavmqfou", response.iterator().next().friendlyName());
-        Assertions.assertEquals("tzfjltf", response.iterator().next().routingRules().get(0).id());
-        Assertions.assertEquals("rb", response.iterator().next().routingRules().get(0).name());
-        Assertions.assertEquals(FrontDoorProtocol.HTTPS,
+        Assertions.assertEquals("xgpnr", response.iterator().next().location());
+        Assertions.assertEquals("vfgpikqmhhaowjrm", response.iterator().next().tags().get("vuporqzdfuydzv"));
+        Assertions.assertEquals("i", response.iterator().next().friendlyName());
+        Assertions.assertEquals("tgzpnpb", response.iterator().next().routingRules().get(0).id());
+        Assertions.assertEquals("tag", response.iterator().next().routingRules().get(0).name());
+        Assertions.assertEquals(FrontDoorProtocol.HTTP,
             response.iterator().next().routingRules().get(0).acceptedProtocols().get(0));
-        Assertions.assertEquals("ndm", response.iterator().next().routingRules().get(0).patternsToMatch().get(0));
+        Assertions.assertEquals("mldsehaohdj",
+            response.iterator().next().routingRules().get(0).patternsToMatch().get(0));
         Assertions.assertEquals(RoutingRuleEnabledState.ENABLED,
             response.iterator().next().routingRules().get(0).enabledState());
-        Assertions.assertEquals("sihsgqcwdhohsd", response.iterator().next().loadBalancingSettings().get(0).id());
-        Assertions.assertEquals("vpbdbzqgq", response.iterator().next().loadBalancingSettings().get(0).name());
-        Assertions.assertEquals(572136902, response.iterator().next().loadBalancingSettings().get(0).sampleSize());
-        Assertions.assertEquals(79994758,
+        Assertions.assertEquals("rvlagunbtgfebwln", response.iterator().next().loadBalancingSettings().get(0).id());
+        Assertions.assertEquals("ltlaprltzkatbhj", response.iterator().next().loadBalancingSettings().get(0).name());
+        Assertions.assertEquals(1781662163, response.iterator().next().loadBalancingSettings().get(0).sampleSize());
+        Assertions.assertEquals(945214435,
             response.iterator().next().loadBalancingSettings().get(0).successfulSamplesRequired());
-        Assertions.assertEquals(634005206,
+        Assertions.assertEquals(1464165713,
             response.iterator().next().loadBalancingSettings().get(0).additionalLatencyMilliseconds());
-        Assertions.assertEquals("ipqxbkwvzgnzv", response.iterator().next().healthProbeSettings().get(0).id());
-        Assertions.assertEquals("eokbze", response.iterator().next().healthProbeSettings().get(0).name());
-        Assertions.assertEquals("clj", response.iterator().next().healthProbeSettings().get(0).path());
+        Assertions.assertEquals("ytunlbfjkwr", response.iterator().next().healthProbeSettings().get(0).id());
+        Assertions.assertEquals("lgouwtlmjj", response.iterator().next().healthProbeSettings().get(0).name());
+        Assertions.assertEquals("udzqavbp", response.iterator().next().healthProbeSettings().get(0).path());
         Assertions.assertEquals(FrontDoorProtocol.HTTPS,
             response.iterator().next().healthProbeSettings().get(0).protocol());
-        Assertions.assertEquals(600854114, response.iterator().next().healthProbeSettings().get(0).intervalInSeconds());
+        Assertions.assertEquals(341201739, response.iterator().next().healthProbeSettings().get(0).intervalInSeconds());
         Assertions.assertEquals(FrontDoorHealthProbeMethod.HEAD,
             response.iterator().next().healthProbeSettings().get(0).healthProbeMethod());
         Assertions.assertEquals(HealthProbeEnabled.ENABLED,
             response.iterator().next().healthProbeSettings().get(0).enabledState());
-        Assertions.assertEquals("yaipidsda", response.iterator().next().backendPools().get(0).id());
-        Assertions.assertEquals("tqwpwya", response.iterator().next().backendPools().get(0).name());
-        Assertions.assertEquals("qglcfhmlrqryxynq", response.iterator().next().frontendEndpoints().get(0).id());
-        Assertions.assertEquals("qxtbjwgnyf", response.iterator().next().frontendEndpoints().get(0).name());
-        Assertions.assertEquals("nqnm", response.iterator().next().frontendEndpoints().get(0).hostname());
+        Assertions.assertEquals("qxpxiwfcngjsaa", response.iterator().next().backendPools().get(0).id());
+        Assertions.assertEquals("lqqmpiz", response.iterator().next().backendPools().get(0).name());
+        Assertions.assertEquals("dvpiwh", response.iterator().next().frontendEndpoints().get(0).id());
+        Assertions.assertEquals("lxsmrpddouifamow", response.iterator().next().frontendEndpoints().get(0).name());
+        Assertions.assertEquals("jtwhauunf", response.iterator().next().frontendEndpoints().get(0).hostname());
         Assertions.assertEquals(SessionAffinityEnabledState.ENABLED,
             response.iterator().next().frontendEndpoints().get(0).sessionAffinityEnabledState());
-        Assertions.assertEquals(1485575169,
+        Assertions.assertEquals(1321099955,
             response.iterator().next().frontendEndpoints().get(0).sessionAffinityTtlSeconds());
-        Assertions.assertEquals(EnforceCertificateNameCheckEnabledState.DISABLED,
+        Assertions.assertEquals(EnforceCertificateNameCheckEnabledState.ENABLED,
             response.iterator().next().backendPoolsSettings().enforceCertificateNameCheck());
-        Assertions.assertEquals(1655994607, response.iterator().next().backendPoolsSettings().sendRecvTimeoutSeconds());
-        Assertions.assertEquals(FrontDoorEnabledState.ENABLED, response.iterator().next().enabledState());
+        Assertions.assertEquals(1731512826, response.iterator().next().backendPoolsSettings().sendRecvTimeoutSeconds());
+        Assertions.assertEquals(FrontDoorEnabledState.DISABLED, response.iterator().next().enabledState());
     }
 }

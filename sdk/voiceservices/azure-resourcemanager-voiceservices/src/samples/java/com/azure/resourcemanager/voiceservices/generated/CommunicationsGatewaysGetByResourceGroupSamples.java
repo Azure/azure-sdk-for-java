@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.voiceservices.generated;
 
-/** Samples for CommunicationsGateways GetByResourceGroup. */
+/**
+ * Samples for CommunicationsGateways GetByResourceGroup.
+ */
 public final class CommunicationsGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/CommunicationsGateways_Get.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/
+     * CommunicationsGateways_Get.json
      */
     /**
      * Sample code: GetCommunicationsGatewayResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
-    public static void getCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
-        manager
-            .communicationsGateways()
+    public static void
+        getCommunicationsGatewayResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
+        manager.communicationsGateways()
             .getByResourceGroupWithResponse("testrg", "myname", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.servicelinker.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicelinker.models.SourceConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Configurations for source resource, include appSettings, connectionString and serviceBindings. */
+/**
+ * Configurations for source resource, include appSettings, connectionString and serviceBindings.
+ */
 @Fluent
-public final class SourceConfigurationResultInner {
+public final class SourceConfigurationResultInner implements JsonSerializable<SourceConfigurationResultInner> {
     /*
      * The configuration properties for source resource.
      */
-    @JsonProperty(value = "configurations")
     private List<SourceConfiguration> configurations;
 
     /**
+     * Creates an instance of SourceConfigurationResultInner class.
+     */
+    public SourceConfigurationResultInner() {
+    }
+
+    /**
      * Get the configurations property: The configuration properties for source resource.
-     *
+     * 
      * @return the configurations value.
      */
     public List<SourceConfiguration> configurations() {
@@ -29,7 +40,7 @@ public final class SourceConfigurationResultInner {
 
     /**
      * Set the configurations property: The configuration properties for source resource.
-     *
+     * 
      * @param configurations the configurations value to set.
      * @return the SourceConfigurationResultInner object itself.
      */
@@ -40,12 +51,52 @@ public final class SourceConfigurationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (configurations() != null) {
             configurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("configurations", this.configurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceConfigurationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceConfigurationResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceConfigurationResultInner.
+     */
+    public static SourceConfigurationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceConfigurationResultInner deserializedSourceConfigurationResultInner
+                = new SourceConfigurationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurations".equals(fieldName)) {
+                    List<SourceConfiguration> configurations
+                        = reader.readArray(reader1 -> SourceConfiguration.fromJson(reader1));
+                    deserializedSourceConfigurationResultInner.configurations = configurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceConfigurationResultInner;
+        });
     }
 }

@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The actions required for private link service connection. */
+/**
+ * The actions required for private link service connection.
+ */
 public final class PrivateLinkServiceConnectionStateActionsRequire
     extends ExpandableStringEnum<PrivateLinkServiceConnectionStateActionsRequire> {
-    /** Static value None for PrivateLinkServiceConnectionStateActionsRequire. */
+    /**
+     * Static value None for PrivateLinkServiceConnectionStateActionsRequire.
+     */
     public static final PrivateLinkServiceConnectionStateActionsRequire NONE = fromString("None");
 
     /**
      * Creates a new instance of PrivateLinkServiceConnectionStateActionsRequire value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -25,18 +28,17 @@ public final class PrivateLinkServiceConnectionStateActionsRequire
 
     /**
      * Creates or finds a PrivateLinkServiceConnectionStateActionsRequire from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrivateLinkServiceConnectionStateActionsRequire.
      */
-    @JsonCreator
     public static PrivateLinkServiceConnectionStateActionsRequire fromString(String name) {
         return fromString(name, PrivateLinkServiceConnectionStateActionsRequire.class);
     }
 
     /**
      * Gets known PrivateLinkServiceConnectionStateActionsRequire values.
-     *
+     * 
      * @return known PrivateLinkServiceConnectionStateActionsRequire values.
      */
     public static Collection<PrivateLinkServiceConnectionStateActionsRequire> values() {

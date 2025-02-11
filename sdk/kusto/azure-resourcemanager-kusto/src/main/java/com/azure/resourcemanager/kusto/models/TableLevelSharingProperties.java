@@ -5,67 +5,67 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Tables that will be included and excluded in the follower database. */
+/**
+ * Tables that will be included and excluded in the follower database.
+ */
 @Fluent
-public final class TableLevelSharingProperties {
+public final class TableLevelSharingProperties implements JsonSerializable<TableLevelSharingProperties> {
     /*
      * List of tables to include in the follower database
      */
-    @JsonProperty(value = "tablesToInclude")
     private List<String> tablesToInclude;
 
     /*
      * List of tables to exclude from the follower database
      */
-    @JsonProperty(value = "tablesToExclude")
     private List<String> tablesToExclude;
 
     /*
      * List of external tables to include in the follower database
      */
-    @JsonProperty(value = "externalTablesToInclude")
     private List<String> externalTablesToInclude;
 
     /*
      * List of external tables to exclude from the follower database
      */
-    @JsonProperty(value = "externalTablesToExclude")
     private List<String> externalTablesToExclude;
 
     /*
      * List of materialized views to include in the follower database
      */
-    @JsonProperty(value = "materializedViewsToInclude")
     private List<String> materializedViewsToInclude;
 
     /*
      * List of materialized views to exclude from the follower database
      */
-    @JsonProperty(value = "materializedViewsToExclude")
     private List<String> materializedViewsToExclude;
 
     /*
      * List of functions to include in the follower database
      */
-    @JsonProperty(value = "functionsToInclude")
     private List<String> functionsToInclude;
 
     /*
      * List of functions to exclude from the follower database
      */
-    @JsonProperty(value = "functionsToExclude")
     private List<String> functionsToExclude;
 
-    /** Creates an instance of TableLevelSharingProperties class. */
+    /**
+     * Creates an instance of TableLevelSharingProperties class.
+     */
     public TableLevelSharingProperties() {
     }
 
     /**
      * Get the tablesToInclude property: List of tables to include in the follower database.
-     *
+     * 
      * @return the tablesToInclude value.
      */
     public List<String> tablesToInclude() {
@@ -74,7 +74,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Set the tablesToInclude property: List of tables to include in the follower database.
-     *
+     * 
      * @param tablesToInclude the tablesToInclude value to set.
      * @return the TableLevelSharingProperties object itself.
      */
@@ -85,7 +85,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Get the tablesToExclude property: List of tables to exclude from the follower database.
-     *
+     * 
      * @return the tablesToExclude value.
      */
     public List<String> tablesToExclude() {
@@ -94,7 +94,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Set the tablesToExclude property: List of tables to exclude from the follower database.
-     *
+     * 
      * @param tablesToExclude the tablesToExclude value to set.
      * @return the TableLevelSharingProperties object itself.
      */
@@ -105,7 +105,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Get the externalTablesToInclude property: List of external tables to include in the follower database.
-     *
+     * 
      * @return the externalTablesToInclude value.
      */
     public List<String> externalTablesToInclude() {
@@ -114,7 +114,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Set the externalTablesToInclude property: List of external tables to include in the follower database.
-     *
+     * 
      * @param externalTablesToInclude the externalTablesToInclude value to set.
      * @return the TableLevelSharingProperties object itself.
      */
@@ -125,7 +125,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Get the externalTablesToExclude property: List of external tables to exclude from the follower database.
-     *
+     * 
      * @return the externalTablesToExclude value.
      */
     public List<String> externalTablesToExclude() {
@@ -134,7 +134,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Set the externalTablesToExclude property: List of external tables to exclude from the follower database.
-     *
+     * 
      * @param externalTablesToExclude the externalTablesToExclude value to set.
      * @return the TableLevelSharingProperties object itself.
      */
@@ -145,7 +145,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Get the materializedViewsToInclude property: List of materialized views to include in the follower database.
-     *
+     * 
      * @return the materializedViewsToInclude value.
      */
     public List<String> materializedViewsToInclude() {
@@ -154,7 +154,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Set the materializedViewsToInclude property: List of materialized views to include in the follower database.
-     *
+     * 
      * @param materializedViewsToInclude the materializedViewsToInclude value to set.
      * @return the TableLevelSharingProperties object itself.
      */
@@ -165,7 +165,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Get the materializedViewsToExclude property: List of materialized views to exclude from the follower database.
-     *
+     * 
      * @return the materializedViewsToExclude value.
      */
     public List<String> materializedViewsToExclude() {
@@ -174,7 +174,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Set the materializedViewsToExclude property: List of materialized views to exclude from the follower database.
-     *
+     * 
      * @param materializedViewsToExclude the materializedViewsToExclude value to set.
      * @return the TableLevelSharingProperties object itself.
      */
@@ -185,7 +185,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Get the functionsToInclude property: List of functions to include in the follower database.
-     *
+     * 
      * @return the functionsToInclude value.
      */
     public List<String> functionsToInclude() {
@@ -194,7 +194,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Set the functionsToInclude property: List of functions to include in the follower database.
-     *
+     * 
      * @param functionsToInclude the functionsToInclude value to set.
      * @return the TableLevelSharingProperties object itself.
      */
@@ -205,7 +205,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Get the functionsToExclude property: List of functions to exclude from the follower database.
-     *
+     * 
      * @return the functionsToExclude value.
      */
     public List<String> functionsToExclude() {
@@ -214,7 +214,7 @@ public final class TableLevelSharingProperties {
 
     /**
      * Set the functionsToExclude property: List of functions to exclude from the follower database.
-     *
+     * 
      * @param functionsToExclude the functionsToExclude value to set.
      * @return the TableLevelSharingProperties object itself.
      */
@@ -225,9 +225,82 @@ public final class TableLevelSharingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tablesToInclude", this.tablesToInclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("tablesToExclude", this.tablesToExclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("externalTablesToInclude", this.externalTablesToInclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("externalTablesToExclude", this.externalTablesToExclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("materializedViewsToInclude", this.materializedViewsToInclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("materializedViewsToExclude", this.materializedViewsToExclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("functionsToInclude", this.functionsToInclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("functionsToExclude", this.functionsToExclude,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TableLevelSharingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TableLevelSharingProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TableLevelSharingProperties.
+     */
+    public static TableLevelSharingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TableLevelSharingProperties deserializedTableLevelSharingProperties = new TableLevelSharingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tablesToInclude".equals(fieldName)) {
+                    List<String> tablesToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTableLevelSharingProperties.tablesToInclude = tablesToInclude;
+                } else if ("tablesToExclude".equals(fieldName)) {
+                    List<String> tablesToExclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTableLevelSharingProperties.tablesToExclude = tablesToExclude;
+                } else if ("externalTablesToInclude".equals(fieldName)) {
+                    List<String> externalTablesToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTableLevelSharingProperties.externalTablesToInclude = externalTablesToInclude;
+                } else if ("externalTablesToExclude".equals(fieldName)) {
+                    List<String> externalTablesToExclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTableLevelSharingProperties.externalTablesToExclude = externalTablesToExclude;
+                } else if ("materializedViewsToInclude".equals(fieldName)) {
+                    List<String> materializedViewsToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTableLevelSharingProperties.materializedViewsToInclude = materializedViewsToInclude;
+                } else if ("materializedViewsToExclude".equals(fieldName)) {
+                    List<String> materializedViewsToExclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTableLevelSharingProperties.materializedViewsToExclude = materializedViewsToExclude;
+                } else if ("functionsToInclude".equals(fieldName)) {
+                    List<String> functionsToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTableLevelSharingProperties.functionsToInclude = functionsToInclude;
+                } else if ("functionsToExclude".equals(fieldName)) {
+                    List<String> functionsToExclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTableLevelSharingProperties.functionsToExclude = functionsToExclude;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTableLevelSharingProperties;
+        });
     }
 }

@@ -6,25 +6,27 @@ package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.resourcemanager.dynatrace.fluent.models.MarketplaceSaaSResourceDetailsResponseInner;
 
-/** An immutable client-side representation of MarketplaceSaaSResourceDetailsResponse. */
+/**
+ * An immutable client-side representation of MarketplaceSaaSResourceDetailsResponse.
+ */
 public interface MarketplaceSaaSResourceDetailsResponse {
     /**
      * Gets the marketplaceSaaSResourceId property: Id of the Marketplace SaaS Resource.
-     *
+     * 
      * @return the marketplaceSaaSResourceId value.
      */
     String marketplaceSaaSResourceId();
 
     /**
      * Gets the planId property: Id of the plan.
-     *
+     * 
      * @return the planId value.
      */
     String planId();
 
     /**
      * Gets the marketplaceSubscriptionStatus property: Marketplace subscription status.
-     *
+     * 
      * @return the marketplaceSubscriptionStatus value.
      */
     MarketplaceSubscriptionStatus marketplaceSubscriptionStatus();
@@ -32,7 +34,7 @@ public interface MarketplaceSaaSResourceDetailsResponse {
     /**
      * Gets the inner com.azure.resourcemanager.dynatrace.fluent.models.MarketplaceSaaSResourceDetailsResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     MarketplaceSaaSResourceDetailsResponseInner innerModel();

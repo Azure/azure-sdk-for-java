@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = ScenesClientBuilder.class)
 public final class ScenesClient {
-    @Generated private final ScenesAsyncClient client;
+    @Generated
+    private final ScenesAsyncClient client;
 
     /**
      * Initializes an instance of ScenesClient class.
@@ -95,8 +96,8 @@ public final class ScenesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(
-            String provider, String partyId, String boundaryId, String source, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> list(String provider, String partyId, String boundaryId, String source,
+        RequestOptions requestOptions) {
         return new PagedIterable<>(this.client.list(provider, partyId, boundaryId, source, requestOptions));
     }
 
@@ -217,8 +218,8 @@ public final class ScenesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateSatelliteDataIngestionJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateSatelliteDataIngestionJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.client.beginCreateSatelliteDataIngestionJob(jobId, job, requestOptions).getSyncPoller();
     }
 
@@ -275,8 +276,8 @@ public final class ScenesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSatelliteDataIngestionJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Response<BinaryData> getSatelliteDataIngestionJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.client.getSatelliteDataIngestionJobDetailsWithResponse(jobId, requestOptions).block();
     }
 
@@ -366,8 +367,8 @@ public final class ScenesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> searchFeaturesWithResponse(
-            String collectionId, BinaryData searchFeaturesQuery, RequestOptions requestOptions) {
+    public Response<BinaryData> searchFeaturesWithResponse(String collectionId, BinaryData searchFeaturesQuery,
+        RequestOptions requestOptions) {
         return this.client.searchFeaturesWithResponse(collectionId, searchFeaturesQuery, requestOptions).block();
     }
 
@@ -424,8 +425,8 @@ public final class ScenesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStacFeatureWithResponse(
-            String collectionId, String featureId, RequestOptions requestOptions) {
+    public Response<BinaryData> getStacFeatureWithResponse(String collectionId, String featureId,
+        RequestOptions requestOptions) {
         return this.client.getStacFeatureWithResponse(collectionId, featureId, requestOptions).block();
     }
 }

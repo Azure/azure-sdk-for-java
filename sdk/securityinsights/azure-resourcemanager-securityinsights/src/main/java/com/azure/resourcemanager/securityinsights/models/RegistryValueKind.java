@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,44 +12,68 @@ import java.util.Collection;
  * registry.
  */
 public final class RegistryValueKind extends ExpandableStringEnum<RegistryValueKind> {
-    /** Static value None for RegistryValueKind. */
+    /**
+     * Static value None for RegistryValueKind.
+     */
     public static final RegistryValueKind NONE = fromString("None");
 
-    /** Static value Unknown for RegistryValueKind. */
+    /**
+     * Static value Unknown for RegistryValueKind.
+     */
     public static final RegistryValueKind UNKNOWN = fromString("Unknown");
 
-    /** Static value String for RegistryValueKind. */
+    /**
+     * Static value String for RegistryValueKind.
+     */
     public static final RegistryValueKind STRING = fromString("String");
 
-    /** Static value ExpandString for RegistryValueKind. */
+    /**
+     * Static value ExpandString for RegistryValueKind.
+     */
     public static final RegistryValueKind EXPAND_STRING = fromString("ExpandString");
 
-    /** Static value Binary for RegistryValueKind. */
+    /**
+     * Static value Binary for RegistryValueKind.
+     */
     public static final RegistryValueKind BINARY = fromString("Binary");
 
-    /** Static value DWord for RegistryValueKind. */
+    /**
+     * Static value DWord for RegistryValueKind.
+     */
     public static final RegistryValueKind DWORD = fromString("DWord");
 
-    /** Static value MultiString for RegistryValueKind. */
+    /**
+     * Static value MultiString for RegistryValueKind.
+     */
     public static final RegistryValueKind MULTI_STRING = fromString("MultiString");
 
-    /** Static value QWord for RegistryValueKind. */
+    /**
+     * Static value QWord for RegistryValueKind.
+     */
     public static final RegistryValueKind QWORD = fromString("QWord");
 
     /**
+     * Creates a new instance of RegistryValueKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RegistryValueKind() {
+    }
+
+    /**
      * Creates or finds a RegistryValueKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RegistryValueKind.
      */
-    @JsonCreator
     public static RegistryValueKind fromString(String name) {
         return fromString(name, RegistryValueKind.class);
     }
 
     /**
      * Gets known RegistryValueKind values.
-     *
+     * 
      * @return known RegistryValueKind values.
      */
     public static Collection<RegistryValueKind> values() {

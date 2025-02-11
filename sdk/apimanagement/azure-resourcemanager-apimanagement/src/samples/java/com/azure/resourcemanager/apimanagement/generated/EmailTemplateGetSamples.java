@@ -6,20 +6,23 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.resourcemanager.apimanagement.models.TemplateName;
 
-/** Samples for EmailTemplate Get. */
+/**
+ * Samples for EmailTemplate Get.
+ */
 public final class EmailTemplateGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetTemplate.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetTemplate.json
      */
     /**
      * Sample code: ApiManagementGetTemplate.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementGetTemplate(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .emailTemplates()
-            .getWithResponse(
-                "rg1", "apimService1", TemplateName.NEW_ISSUE_NOTIFICATION_MESSAGE, com.azure.core.util.Context.NONE);
+        manager.emailTemplates()
+            .getWithResponse("rg1", "apimService1", TemplateName.NEW_ISSUE_NOTIFICATION_MESSAGE,
+                com.azure.core.util.Context.NONE);
     }
 }

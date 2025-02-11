@@ -20,7 +20,8 @@ public final class UserConsent implements JsonSerializable<UserConsent> {
     private Integer recording;
 
     /** Creates an instance of UserConsent class. */
-    public UserConsent() {}
+    public UserConsent() {
+    }
 
     /**
      * Get the recording property: The recording property.

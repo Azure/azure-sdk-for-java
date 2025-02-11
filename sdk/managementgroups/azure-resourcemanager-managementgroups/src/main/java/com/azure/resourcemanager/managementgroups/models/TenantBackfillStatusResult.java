@@ -6,26 +6,28 @@ package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.resourcemanager.managementgroups.fluent.models.TenantBackfillStatusResultInner;
 
-/** An immutable client-side representation of TenantBackfillStatusResult. */
+/**
+ * An immutable client-side representation of TenantBackfillStatusResult.
+ */
 public interface TenantBackfillStatusResult {
     /**
      * Gets the tenantId property: The AAD Tenant ID associated with the management group. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the tenantId value.
      */
     String tenantId();
 
     /**
      * Gets the status property: The status of the Tenant Backfill.
-     *
+     * 
      * @return the status value.
      */
     Status status();
 
     /**
      * Gets the inner com.azure.resourcemanager.managementgroups.fluent.models.TenantBackfillStatusResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     TenantBackfillStatusResultInner innerModel();

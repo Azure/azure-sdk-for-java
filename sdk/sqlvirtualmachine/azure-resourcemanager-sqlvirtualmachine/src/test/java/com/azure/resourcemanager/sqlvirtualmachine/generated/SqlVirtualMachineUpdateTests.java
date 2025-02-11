@@ -13,18 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlVirtualMachineUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlVirtualMachineUpdate model =
-            BinaryData.fromString("{\"tags\":{\"e\":\"aos\"}}").toObject(SqlVirtualMachineUpdate.class);
-        Assertions.assertEquals("aos", model.tags().get("e"));
+        SqlVirtualMachineUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"hrk\":\"obpxjmflbvvn\",\"ajiwkuo\":\"ciwwzjuqkhr\",\"sauuimj\":\"oskg\",\"rfbyaosvexcso\":\"vxieduugidyj\"}}")
+            .toObject(SqlVirtualMachineUpdate.class);
+        Assertions.assertEquals("obpxjmflbvvn", model.tags().get("hrk"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlVirtualMachineUpdate model = new SqlVirtualMachineUpdate().withTags(mapOf("e", "aos"));
+        SqlVirtualMachineUpdate model = new SqlVirtualMachineUpdate().withTags(
+            mapOf("hrk", "obpxjmflbvvn", "ajiwkuo", "ciwwzjuqkhr", "sauuimj", "oskg", "rfbyaosvexcso", "vxieduugidyj"));
         model = BinaryData.fromObject(model).toObject(SqlVirtualMachineUpdate.class);
-        Assertions.assertEquals("aos", model.tags().get("e"));
+        Assertions.assertEquals("obpxjmflbvvn", model.tags().get("hrk"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

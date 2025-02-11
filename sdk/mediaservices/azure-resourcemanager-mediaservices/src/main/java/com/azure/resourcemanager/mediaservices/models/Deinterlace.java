@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the de-interlacing settings. */
+/**
+ * Describes the de-interlacing settings.
+ */
 @Fluent
-public final class Deinterlace {
+public final class Deinterlace implements JsonSerializable<Deinterlace> {
     /*
      * The field parity for de-interlacing, defaults to Auto.
      */
-    @JsonProperty(value = "parity")
     private DeinterlaceParity parity;
 
     /*
      * The deinterlacing mode. Defaults to AutoPixelAdaptive.
      */
-    @JsonProperty(value = "mode")
     private DeinterlaceMode mode;
 
-    /** Creates an instance of Deinterlace class. */
+    /**
+     * Creates an instance of Deinterlace class.
+     */
     public Deinterlace() {
     }
 
     /**
      * Get the parity property: The field parity for de-interlacing, defaults to Auto.
-     *
+     * 
      * @return the parity value.
      */
     public DeinterlaceParity parity() {
@@ -37,7 +43,7 @@ public final class Deinterlace {
 
     /**
      * Set the parity property: The field parity for de-interlacing, defaults to Auto.
-     *
+     * 
      * @param parity the parity value to set.
      * @return the Deinterlace object itself.
      */
@@ -48,7 +54,7 @@ public final class Deinterlace {
 
     /**
      * Get the mode property: The deinterlacing mode. Defaults to AutoPixelAdaptive.
-     *
+     * 
      * @return the mode value.
      */
     public DeinterlaceMode mode() {
@@ -57,7 +63,7 @@ public final class Deinterlace {
 
     /**
      * Set the mode property: The deinterlacing mode. Defaults to AutoPixelAdaptive.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the Deinterlace object itself.
      */
@@ -68,9 +74,48 @@ public final class Deinterlace {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("parity", this.parity == null ? null : this.parity.toString());
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Deinterlace from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Deinterlace if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Deinterlace.
+     */
+    public static Deinterlace fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Deinterlace deserializedDeinterlace = new Deinterlace();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("parity".equals(fieldName)) {
+                    deserializedDeinterlace.parity = DeinterlaceParity.fromString(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedDeinterlace.mode = DeinterlaceMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeinterlace;
+        });
     }
 }

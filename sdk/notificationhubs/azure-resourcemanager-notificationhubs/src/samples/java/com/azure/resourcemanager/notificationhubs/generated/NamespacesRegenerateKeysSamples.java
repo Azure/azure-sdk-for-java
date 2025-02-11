@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.notificationhubs.generated;
 
-import com.azure.resourcemanager.notificationhubs.models.PolicyKeyResource;
-import com.azure.resourcemanager.notificationhubs.models.PolicyKeyType;
+import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
 
 /**
  * Samples for Namespaces RegenerateKeys.
@@ -13,17 +12,18 @@ import com.azure.resourcemanager.notificationhubs.models.PolicyKeyType;
 public final class NamespacesRegenerateKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * Namespaces/AuthorizationRuleRegenerateKey.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/Namespaces/
+     * NHNameSpaceAuthorizationRuleRegenrateKey.json
      */
     /**
-     * Sample code: Namespaces_RegenerateKeys.
+     * Sample code: NameSpaceAuthorizationRuleRegenerateKey.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void
-        namespacesRegenerateKeys(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().regenerateKeysWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
-            new PolicyKeyResource().withPolicyKey(PolicyKeyType.PRIMARY_KEY), com.azure.core.util.Context.NONE);
+    public static void nameSpaceAuthorizationRuleRegenerateKey(
+        com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        manager.namespaces()
+            .regenerateKeysWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
+                new PolicykeyResource().withPolicyKey("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
     }
 }

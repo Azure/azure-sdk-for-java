@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.fluidrelay.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for CmkIdentityType. */
+/**
+ * Values can be SystemAssigned or UserAssigned.
+ */
 public enum CmkIdentityType {
-    /** Enum value SystemAssigned. */
+    /**
+     * Enum value SystemAssigned.
+     */
     SYSTEM_ASSIGNED("SystemAssigned"),
 
-    /** Enum value UserAssigned. */
+    /**
+     * Enum value UserAssigned.
+     */
     USER_ASSIGNED("UserAssigned");
 
-    /** The actual serialized value for a CmkIdentityType instance. */
+    /**
+     * The actual serialized value for a CmkIdentityType instance.
+     */
     private final String value;
 
     CmkIdentityType(String value) {
@@ -24,11 +29,10 @@ public enum CmkIdentityType {
 
     /**
      * Parses a serialized value to a CmkIdentityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CmkIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static CmkIdentityType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,7 +46,9 @@ public enum CmkIdentityType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

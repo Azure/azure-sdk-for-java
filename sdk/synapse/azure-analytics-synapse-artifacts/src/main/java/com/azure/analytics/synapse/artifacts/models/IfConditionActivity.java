@@ -25,17 +25,20 @@ public class IfConditionActivity extends ControlActivity {
     private String type = "IfCondition";
 
     /*
-     * An expression that would evaluate to Boolean. This is used to determine the block of activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     * An expression that would evaluate to Boolean. This is used to determine the block of activities (ifTrueActivities
+     * or ifFalseActivities) that will be executed.
      */
     private Expression expression;
 
     /*
-     * List of activities to execute if expression is evaluated to true. This is an optional property and if not provided, the activity will exit without any action.
+     * List of activities to execute if expression is evaluated to true. This is an optional property and if not
+     * provided, the activity will exit without any action.
      */
     private List<Activity> ifTrueActivities;
 
     /*
-     * List of activities to execute if expression is evaluated to false. This is an optional property and if not provided, the activity will exit without any action.
+     * List of activities to execute if expression is evaluated to false. This is an optional property and if not
+     * provided, the activity will exit without any action.
      */
     private List<Activity> ifFalseActivities;
 

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ParameterContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ParameterContract model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"rqttbajlkatnw\",\"description\":\"iopid\",\"type\":\"qqfkuv\",\"defaultValue\":\"xkdmligo\",\"required\":false,\"values\":[\"kpmloa\"],\"schemaId\":\"ruocbgo\",\"typeName\":\"bteoybf\",\"examples\":{\"xccybvpa\":{\"summary\":\"kvvjgslordilmyww\",\"description\":\"gkxnyedabg\",\"value\":\"dataudtjuewbc\",\"externalValue\":\"xuuwhcj\"},\"ogsjkmnwqjno\":{\"summary\":\"kkudzp\",\"description\":\"wjplma\",\"value\":\"datatcyohpfkyrk\",\"externalValue\":\"dg\"},\"evwrdnhfuk\":{\"summary\":\"iyhddvi\",\"description\":\"egfnmntfpmvmemfn\",\"value\":\"datadwvvba\",\"externalValue\":\"lllchpodb\"}}}")
-                .toObject(ParameterContract.class);
+        ParameterContract model = BinaryData.fromString(
+            "{\"name\":\"rqttbajlkatnw\",\"description\":\"iopid\",\"type\":\"qqfkuv\",\"defaultValue\":\"xkdmligo\",\"required\":false,\"values\":[\"kpmloa\"],\"schemaId\":\"ruocbgo\",\"typeName\":\"bteoybf\",\"examples\":{\"xccybvpa\":{\"summary\":\"kvvjgslordilmyww\",\"description\":\"gkxnyedabg\",\"value\":\"dataudtjuewbc\",\"externalValue\":\"xuuwhcj\"},\"ogsjkmnwqjno\":{\"summary\":\"kkudzp\",\"description\":\"wjplma\",\"value\":\"datatcyohpfkyrk\",\"externalValue\":\"dg\"},\"evwrdnhfuk\":{\"summary\":\"iyhddvi\",\"description\":\"egfnmntfpmvmemfn\",\"value\":\"datadwvvba\",\"externalValue\":\"lllchpodb\"}}}")
+            .toObject(ParameterContract.class);
         Assertions.assertEquals("rqttbajlkatnw", model.name());
         Assertions.assertEquals("iopid", model.description());
         Assertions.assertEquals("qqfkuv", model.type());
@@ -35,36 +33,29 @@ public final class ParameterContractTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParameterContract model =
-            new ParameterContract()
-                .withName("rqttbajlkatnw")
-                .withDescription("iopid")
-                .withType("qqfkuv")
-                .withDefaultValue("xkdmligo")
-                .withRequired(false)
-                .withValues(Arrays.asList("kpmloa"))
-                .withSchemaId("ruocbgo")
-                .withTypeName("bteoybf")
-                .withExamples(
-                    mapOf(
-                        "xccybvpa",
-                        new ParameterExampleContract()
-                            .withSummary("kvvjgslordilmyww")
-                            .withDescription("gkxnyedabg")
-                            .withValue("dataudtjuewbc")
-                            .withExternalValue("xuuwhcj"),
-                        "ogsjkmnwqjno",
-                        new ParameterExampleContract()
-                            .withSummary("kkudzp")
-                            .withDescription("wjplma")
-                            .withValue("datatcyohpfkyrk")
-                            .withExternalValue("dg"),
-                        "evwrdnhfuk",
-                        new ParameterExampleContract()
-                            .withSummary("iyhddvi")
-                            .withDescription("egfnmntfpmvmemfn")
-                            .withValue("datadwvvba")
-                            .withExternalValue("lllchpodb")));
+        ParameterContract model = new ParameterContract().withName("rqttbajlkatnw")
+            .withDescription("iopid")
+            .withType("qqfkuv")
+            .withDefaultValue("xkdmligo")
+            .withRequired(false)
+            .withValues(Arrays.asList("kpmloa"))
+            .withSchemaId("ruocbgo")
+            .withTypeName("bteoybf")
+            .withExamples(mapOf("xccybvpa",
+                new ParameterExampleContract().withSummary("kvvjgslordilmyww")
+                    .withDescription("gkxnyedabg")
+                    .withValue("dataudtjuewbc")
+                    .withExternalValue("xuuwhcj"),
+                "ogsjkmnwqjno",
+                new ParameterExampleContract().withSummary("kkudzp")
+                    .withDescription("wjplma")
+                    .withValue("datatcyohpfkyrk")
+                    .withExternalValue("dg"),
+                "evwrdnhfuk",
+                new ParameterExampleContract().withSummary("iyhddvi")
+                    .withDescription("egfnmntfpmvmemfn")
+                    .withValue("datadwvvba")
+                    .withExternalValue("lllchpodb")));
         model = BinaryData.fromObject(model).toObject(ParameterContract.class);
         Assertions.assertEquals("rqttbajlkatnw", model.name());
         Assertions.assertEquals("iopid", model.description());

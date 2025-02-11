@@ -3,10 +3,9 @@
 
 package com.azure.resourcemanager.resources.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
@@ -47,7 +46,8 @@ public final class DeployUsingARMTemplateAsync {
         try {
             // Use the Simple VM Template with SSH Key auth from GH quickstarts
 
-            final String templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.json";
+            final String templateUri
+                = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.json";
             final String templateContentVersion = "1.0.0.0";
 
             // Template only needs an SSH Key parameter
@@ -68,38 +68,32 @@ public final class DeployUsingARMTemplateAsync {
             final List<String> succeeded = new ArrayList<>();
             final CountDownLatch latch = new CountDownLatch(1);
 
-            Flux.range(1, numDeployments)
-                    .flatMap(integer -> {
-                        try {
-                            String params;
-                            if (integer == numDeployments) {
-                                params = "{\"adminPublicKey\":{\"value\":\"bad content\"}}"; // Invalid parameters as a negative path
-                            } else {
-                                params = parameters;
-                            }
-                            String deploymentName = deploymentPrefix + "-" + integer;
-                            deploymentList.add(deploymentName);
-                            return azureResourceManager.deployments()
-                                    .define(deploymentName)
-                                    .withNewResourceGroup(rgPrefix + "-" + integer, Region.US_SOUTH_CENTRAL)
-                                    .withTemplateLink(templateUri, templateContentVersion)
-                                    .withParameters(params)
-                                    .withMode(DeploymentMode.COMPLETE)
-                                    .createAsync();
-                        } catch (IOException e) {
-                            return Flux.error(e);
-                        }
-                    })
-                    .map(indexable -> indexable)
-                    .doOnNext(deployment -> {
-                        if (deployment != null) {
-                            System.out.println("Deployment finished: " + deployment.name());
-                            succeeded.add(deployment.name());
-                        }
-                    })
-                    .onErrorResume(e -> Mono.empty())
-                    .doOnComplete(() -> latch.countDown())
-                    .subscribe();
+            Flux.range(1, numDeployments).flatMap(integer -> {
+                try {
+                    String params;
+                    if (integer == numDeployments) {
+                        params = "{\"adminPublicKey\":{\"value\":\"bad content\"}}"; // Invalid parameters as a negative path
+                    } else {
+                        params = parameters;
+                    }
+                    String deploymentName = deploymentPrefix + "-" + integer;
+                    deploymentList.add(deploymentName);
+                    return azureResourceManager.deployments()
+                        .define(deploymentName)
+                        .withNewResourceGroup(rgPrefix + "-" + integer, Region.US_SOUTH_CENTRAL)
+                        .withTemplateLink(templateUri, templateContentVersion)
+                        .withParameters(params)
+                        .withMode(DeploymentMode.COMPLETE)
+                        .createAsync();
+                } catch (IOException e) {
+                    return Flux.error(e);
+                }
+            }).map(indexable -> indexable).doOnNext(deployment -> {
+                if (deployment != null) {
+                    System.out.println("Deployment finished: " + deployment.name());
+                    succeeded.add(deployment.name());
+                }
+            }).onErrorResume(e -> Mono.empty()).doOnComplete(() -> latch.countDown()).subscribe();
 
             latch.await();
 
@@ -111,8 +105,8 @@ public final class DeployUsingARMTemplateAsync {
                     failed.add(deployment);
                 }
             }
-            System.out.println(String.format("Deployments %s succeeded. %s failed.",
-                    String.join(", ", succeeded), String.join(", ", failed)));
+            System.out.println(String.format("Deployments %s succeeded. %s failed.", String.join(", ", succeeded),
+                String.join(", ", failed)));
 
             return true;
         } finally {
@@ -142,13 +136,12 @@ public final class DeployUsingARMTemplateAsync {
             //=================================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

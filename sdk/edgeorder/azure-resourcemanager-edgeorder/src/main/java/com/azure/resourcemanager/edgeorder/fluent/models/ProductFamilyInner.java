@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.edgeorder.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.edgeorder.models.AvailabilityInformation;
 import com.azure.resourcemanager.edgeorder.models.CostInformation;
 import com.azure.resourcemanager.edgeorder.models.Description;
@@ -14,24 +17,28 @@ import com.azure.resourcemanager.edgeorder.models.HierarchyInformation;
 import com.azure.resourcemanager.edgeorder.models.ImageInformation;
 import com.azure.resourcemanager.edgeorder.models.ProductLine;
 import com.azure.resourcemanager.edgeorder.models.ResourceProviderDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Product Family. */
+/**
+ * Product Family.
+ */
 @Immutable
-public final class ProductFamilyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductFamilyInner.class);
-
+public final class ProductFamilyInner implements JsonSerializable<ProductFamilyInner> {
     /*
      * Properties of product family
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ProductFamilyProperties innerProperties;
 
     /**
+     * Creates an instance of ProductFamilyInner class.
+     */
+    public ProductFamilyInner() {
+    }
+
+    /**
      * Get the innerProperties property: Properties of product family.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProductFamilyProperties innerProperties() {
@@ -40,7 +47,7 @@ public final class ProductFamilyInner {
 
     /**
      * Get the productLines property: List of product lines supported in the product family.
-     *
+     * 
      * @return the productLines value.
      */
     public List<ProductLine> productLines() {
@@ -49,7 +56,7 @@ public final class ProductFamilyInner {
 
     /**
      * Get the resourceProviderDetails property: Contains details related to resource provider.
-     *
+     * 
      * @return the resourceProviderDetails value.
      */
     public List<ResourceProviderDetails> resourceProviderDetails() {
@@ -58,7 +65,7 @@ public final class ProductFamilyInner {
 
     /**
      * Set the resourceProviderDetails property: Contains details related to resource provider.
-     *
+     * 
      * @param resourceProviderDetails the resourceProviderDetails value to set.
      * @return the ProductFamilyInner object itself.
      */
@@ -72,7 +79,7 @@ public final class ProductFamilyInner {
 
     /**
      * Get the filterableProperties property: list of filters supported for a product.
-     *
+     * 
      * @return the filterableProperties value.
      */
     public List<FilterableProperty> filterableProperties() {
@@ -81,7 +88,7 @@ public final class ProductFamilyInner {
 
     /**
      * Get the displayName property: Display Name for the product system.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -90,7 +97,7 @@ public final class ProductFamilyInner {
 
     /**
      * Get the description property: Description related to the product system.
-     *
+     * 
      * @return the description value.
      */
     public Description description() {
@@ -99,7 +106,7 @@ public final class ProductFamilyInner {
 
     /**
      * Get the imageInformation property: Image information for the product system.
-     *
+     * 
      * @return the imageInformation value.
      */
     public List<ImageInformation> imageInformation() {
@@ -108,7 +115,7 @@ public final class ProductFamilyInner {
 
     /**
      * Get the costInformation property: Cost information for the product system.
-     *
+     * 
      * @return the costInformation value.
      */
     public CostInformation costInformation() {
@@ -117,7 +124,7 @@ public final class ProductFamilyInner {
 
     /**
      * Get the availabilityInformation property: Availability information of the product system.
-     *
+     * 
      * @return the availabilityInformation value.
      */
     public AvailabilityInformation availabilityInformation() {
@@ -126,7 +133,7 @@ public final class ProductFamilyInner {
 
     /**
      * Get the hierarchyInformation property: Hierarchy information of a product.
-     *
+     * 
      * @return the hierarchyInformation value.
      */
     public HierarchyInformation hierarchyInformation() {
@@ -135,12 +142,47 @@ public final class ProductFamilyInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductFamilyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductFamilyInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProductFamilyInner.
+     */
+    public static ProductFamilyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductFamilyInner deserializedProductFamilyInner = new ProductFamilyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedProductFamilyInner.innerProperties = ProductFamilyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductFamilyInner;
+        });
     }
 }

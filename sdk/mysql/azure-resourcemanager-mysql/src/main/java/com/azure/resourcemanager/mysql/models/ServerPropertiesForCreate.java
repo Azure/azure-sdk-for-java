@@ -23,11 +23,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "Default", value = ServerPropertiesForDefaultCreate.class),
     @JsonSubTypes.Type(name = "PointInTimeRestore", value = ServerPropertiesForRestore.class),
     @JsonSubTypes.Type(name = "GeoRestore", value = ServerPropertiesForGeoRestore.class),
-    @JsonSubTypes.Type(name = "Replica", value = ServerPropertiesForReplica.class)
-})
+    @JsonSubTypes.Type(name = "Replica", value = ServerPropertiesForReplica.class) })
 @Fluent
 public class ServerPropertiesForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPropertiesForCreate.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerPropertiesForCreate.class);
 
     /*
      * Server version.

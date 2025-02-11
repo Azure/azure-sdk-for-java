@@ -5,37 +5,44 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The properties of a lab cost item. */
+/**
+ * The properties of a lab cost item.
+ */
 @Fluent
-public final class LabCostDetailsProperties {
+public final class LabCostDetailsProperties implements JsonSerializable<LabCostDetailsProperties> {
     /*
      * The date of the cost item.
      */
-    @JsonProperty(value = "date")
     private OffsetDateTime date;
 
     /*
      * The cost component of the cost item.
      */
-    @JsonProperty(value = "cost")
     private Double cost;
 
     /*
      * The type of the cost.
      */
-    @JsonProperty(value = "costType")
     private CostType costType;
 
-    /** Creates an instance of LabCostDetailsProperties class. */
+    /**
+     * Creates an instance of LabCostDetailsProperties class.
+     */
     public LabCostDetailsProperties() {
     }
 
     /**
      * Get the date property: The date of the cost item.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime date() {
@@ -44,7 +51,7 @@ public final class LabCostDetailsProperties {
 
     /**
      * Set the date property: The date of the cost item.
-     *
+     * 
      * @param date the date value to set.
      * @return the LabCostDetailsProperties object itself.
      */
@@ -55,7 +62,7 @@ public final class LabCostDetailsProperties {
 
     /**
      * Get the cost property: The cost component of the cost item.
-     *
+     * 
      * @return the cost value.
      */
     public Double cost() {
@@ -64,7 +71,7 @@ public final class LabCostDetailsProperties {
 
     /**
      * Set the cost property: The cost component of the cost item.
-     *
+     * 
      * @param cost the cost value to set.
      * @return the LabCostDetailsProperties object itself.
      */
@@ -75,7 +82,7 @@ public final class LabCostDetailsProperties {
 
     /**
      * Get the costType property: The type of the cost.
-     *
+     * 
      * @return the costType value.
      */
     public CostType costType() {
@@ -84,7 +91,7 @@ public final class LabCostDetailsProperties {
 
     /**
      * Set the costType property: The type of the cost.
-     *
+     * 
      * @param costType the costType value to set.
      * @return the LabCostDetailsProperties object itself.
      */
@@ -95,9 +102,53 @@ public final class LabCostDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("date",
+            this.date == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.date));
+        jsonWriter.writeNumberField("cost", this.cost);
+        jsonWriter.writeStringField("costType", this.costType == null ? null : this.costType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabCostDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabCostDetailsProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabCostDetailsProperties.
+     */
+    public static LabCostDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabCostDetailsProperties deserializedLabCostDetailsProperties = new LabCostDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("date".equals(fieldName)) {
+                    deserializedLabCostDetailsProperties.date = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("cost".equals(fieldName)) {
+                    deserializedLabCostDetailsProperties.cost = reader.getNullable(JsonReader::getDouble);
+                } else if ("costType".equals(fieldName)) {
+                    deserializedLabCostDetailsProperties.costType = CostType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabCostDetailsProperties;
+        });
     }
 }

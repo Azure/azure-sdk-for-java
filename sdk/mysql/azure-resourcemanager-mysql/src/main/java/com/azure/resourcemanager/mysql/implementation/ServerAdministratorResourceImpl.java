@@ -14,8 +14,8 @@ public final class ServerAdministratorResourceImpl implements ServerAdministrato
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    ServerAdministratorResourceImpl(
-        ServerAdministratorResourceInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    ServerAdministratorResourceImpl(ServerAdministratorResourceInner innerObject,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

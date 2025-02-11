@@ -6,31 +6,31 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.FunctionProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
- * A function object, containing all information associated with the named function. All functions are contained under
- * a streaming job.
+ * A function object, containing all information associated with the named function. All functions are contained under a
+ * streaming job.
  */
 @Fluent
 public final class FunctionInner extends SubResource {
     /*
      * The properties that are associated with a function.
      */
-    @JsonProperty(value = "properties")
     private FunctionProperties properties;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -106,5 +106,49 @@ public final class FunctionInner extends SubResource {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FunctionInner.
+     */
+    public static FunctionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FunctionInner deserializedFunctionInner = new FunctionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFunctionInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFunctionInner.properties = FunctionProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedFunctionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFunctionInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFunctionInner;
+        });
     }
 }

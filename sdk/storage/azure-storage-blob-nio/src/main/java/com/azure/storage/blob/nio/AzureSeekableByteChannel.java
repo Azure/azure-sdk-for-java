@@ -165,7 +165,7 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         the next read. StorageInputStream doesn't allow this, but we can get around that by modifying the
         position variable and skipping the actual read (when read is called next); we'll check in read if we've seeked
         past the end and short circuit there as well.
-
+        
         Because we are in read mode this will always give us the size from properties.
          */
         if (newPosition > this.size()) {

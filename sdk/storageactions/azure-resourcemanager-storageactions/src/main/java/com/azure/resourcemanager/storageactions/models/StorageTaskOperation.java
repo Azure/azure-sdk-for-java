@@ -6,38 +6,36 @@ package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Represents an operation to be performed on the object.
  */
 @Fluent
-public final class StorageTaskOperation {
+public final class StorageTaskOperation implements JsonSerializable<StorageTaskOperation> {
     /*
      * The operation to be performed on the object.
      */
-    @JsonProperty(value = "name", required = true)
     private StorageTaskOperationName name;
 
     /*
      * Key-value parameters for the operation.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * Action to be taken when the operation is successful for a object.
      */
-    @JsonProperty(value = "onSuccess")
     private OnSuccess onSuccess;
 
     /*
      * Action to be taken when the operation fails for a object.
      */
-    @JsonProperty(value = "onFailure")
     private OnFailure onFailure;
 
     /**
@@ -133,10 +131,57 @@ public final class StorageTaskOperation {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model StorageTaskOperation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model StorageTaskOperation"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageTaskOperation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("onSuccess", this.onSuccess == null ? null : this.onSuccess.toString());
+        jsonWriter.writeStringField("onFailure", this.onFailure == null ? null : this.onFailure.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskOperation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageTaskOperation.
+     */
+    public static StorageTaskOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskOperation deserializedStorageTaskOperation = new StorageTaskOperation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedStorageTaskOperation.name = StorageTaskOperationName.fromString(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStorageTaskOperation.parameters = parameters;
+                } else if ("onSuccess".equals(fieldName)) {
+                    deserializedStorageTaskOperation.onSuccess = OnSuccess.fromString(reader.getString());
+                } else if ("onFailure".equals(fieldName)) {
+                    deserializedStorageTaskOperation.onFailure = OnFailure.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskOperation;
+        });
+    }
 }

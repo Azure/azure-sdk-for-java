@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Represents a token response message from the STS service. */
+/**
+ * Represents a token response message from the STS service.
+ */
 @Fluent
 public final class StsTokenResponseMessage implements JsonSerializable<StsTokenResponseMessage> {
     /*
@@ -19,12 +21,15 @@ public final class StsTokenResponseMessage implements JsonSerializable<StsTokenR
      */
     private String accessToken;
 
-    /** Creates an instance of StsTokenResponseMessage class. */
-    public StsTokenResponseMessage() {}
+    /**
+     * Creates an instance of StsTokenResponseMessage class.
+     */
+    public StsTokenResponseMessage() {
+    }
 
     /**
      * Get the accessToken property: An access token for the account.
-     *
+     * 
      * @return the accessToken value.
      */
     public String getAccessToken() {
@@ -33,7 +38,7 @@ public final class StsTokenResponseMessage implements JsonSerializable<StsTokenR
 
     /**
      * Set the accessToken property: An access token for the account.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the StsTokenResponseMessage object itself.
      */
@@ -42,6 +47,9 @@ public final class StsTokenResponseMessage implements JsonSerializable<StsTokenR
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -51,29 +59,28 @@ public final class StsTokenResponseMessage implements JsonSerializable<StsTokenR
 
     /**
      * Reads an instance of StsTokenResponseMessage from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of StsTokenResponseMessage if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StsTokenResponseMessage.
      */
     public static StsTokenResponseMessage fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    StsTokenResponseMessage deserializedStsTokenResponseMessage = new StsTokenResponseMessage();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            StsTokenResponseMessage deserializedStsTokenResponseMessage = new StsTokenResponseMessage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("AccessToken".equals(fieldName)) {
-                            deserializedStsTokenResponseMessage.accessToken = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("AccessToken".equals(fieldName)) {
+                    deserializedStsTokenResponseMessage.accessToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedStsTokenResponseMessage;
-                });
+            return deserializedStsTokenResponseMessage;
+        });
     }
 }

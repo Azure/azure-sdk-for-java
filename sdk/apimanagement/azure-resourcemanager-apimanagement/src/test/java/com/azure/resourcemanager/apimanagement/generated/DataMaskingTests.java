@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataMaskingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataMasking model =
-            BinaryData
-                .fromString(
-                    "{\"queryParams\":[{\"value\":\"bqlj\",\"mode\":\"Hide\"}],\"headers\":[{\"value\":\"h\",\"mode\":\"Hide\"},{\"value\":\"ulehurqlr\",\"mode\":\"Mask\"},{\"value\":\"weyurkphyjd\",\"mode\":\"Mask\"}]}")
-                .toObject(DataMasking.class);
+        DataMasking model = BinaryData.fromString(
+            "{\"queryParams\":[{\"value\":\"bqlj\",\"mode\":\"Hide\"}],\"headers\":[{\"value\":\"h\",\"mode\":\"Hide\"},{\"value\":\"ulehurqlr\",\"mode\":\"Mask\"},{\"value\":\"weyurkphyjd\",\"mode\":\"Mask\"}]}")
+            .toObject(DataMasking.class);
         Assertions.assertEquals("bqlj", model.queryParams().get(0).value());
         Assertions.assertEquals(DataMaskingMode.HIDE, model.queryParams().get(0).mode());
         Assertions.assertEquals("h", model.headers().get(0).value());
@@ -27,16 +25,11 @@ public final class DataMaskingTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataMasking model =
-            new DataMasking()
-                .withQueryParams(
-                    Arrays.asList(new DataMaskingEntity().withValue("bqlj").withMode(DataMaskingMode.HIDE)))
-                .withHeaders(
-                    Arrays
-                        .asList(
-                            new DataMaskingEntity().withValue("h").withMode(DataMaskingMode.HIDE),
-                            new DataMaskingEntity().withValue("ulehurqlr").withMode(DataMaskingMode.MASK),
-                            new DataMaskingEntity().withValue("weyurkphyjd").withMode(DataMaskingMode.MASK)));
+        DataMasking model = new DataMasking()
+            .withQueryParams(Arrays.asList(new DataMaskingEntity().withValue("bqlj").withMode(DataMaskingMode.HIDE)))
+            .withHeaders(Arrays.asList(new DataMaskingEntity().withValue("h").withMode(DataMaskingMode.HIDE),
+                new DataMaskingEntity().withValue("ulehurqlr").withMode(DataMaskingMode.MASK),
+                new DataMaskingEntity().withValue("weyurkphyjd").withMode(DataMaskingMode.MASK)));
         model = BinaryData.fromObject(model).toObject(DataMasking.class);
         Assertions.assertEquals("bqlj", model.queryParams().get(0).value());
         Assertions.assertEquals(DataMaskingMode.HIDE, model.queryParams().get(0).mode());

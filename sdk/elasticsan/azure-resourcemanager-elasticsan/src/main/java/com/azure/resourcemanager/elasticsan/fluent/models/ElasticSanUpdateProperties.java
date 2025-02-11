@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.elasticsan.models.AutoScaleProperties;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import java.io.IOException;
 
@@ -32,6 +33,11 @@ public final class ElasticSanUpdateProperties implements JsonSerializable<Elasti
      * 'Enabled' or 'Disabled'.
      */
     private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Auto Scale Properties for Elastic San Appliance.
+     */
+    private AutoScaleProperties autoScaleProperties;
 
     /**
      * Creates an instance of ElasticSanUpdateProperties class.
@@ -102,11 +108,34 @@ public final class ElasticSanUpdateProperties implements JsonSerializable<Elasti
     }
 
     /**
+     * Get the autoScaleProperties property: Auto Scale Properties for Elastic San Appliance.
+     * 
+     * @return the autoScaleProperties value.
+     */
+    public AutoScaleProperties autoScaleProperties() {
+        return this.autoScaleProperties;
+    }
+
+    /**
+     * Set the autoScaleProperties property: Auto Scale Properties for Elastic San Appliance.
+     * 
+     * @param autoScaleProperties the autoScaleProperties value to set.
+     * @return the ElasticSanUpdateProperties object itself.
+     */
+    public ElasticSanUpdateProperties withAutoScaleProperties(AutoScaleProperties autoScaleProperties) {
+        this.autoScaleProperties = autoScaleProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (autoScaleProperties() != null) {
+            autoScaleProperties().validate();
+        }
     }
 
     /**
@@ -119,6 +148,7 @@ public final class ElasticSanUpdateProperties implements JsonSerializable<Elasti
         jsonWriter.writeNumberField("extendedCapacitySizeTiB", this.extendedCapacitySizeTiB);
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("autoScaleProperties", this.autoScaleProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -145,6 +175,8 @@ public final class ElasticSanUpdateProperties implements JsonSerializable<Elasti
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedElasticSanUpdateProperties.publicNetworkAccess
                         = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("autoScaleProperties".equals(fieldName)) {
+                    deserializedElasticSanUpdateProperties.autoScaleProperties = AutoScaleProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

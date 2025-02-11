@@ -6,11 +6,13 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.PlannedFailoverModelInner;
 
-/** An immutable client-side representation of PlannedFailoverModel. */
+/**
+ * An immutable client-side representation of PlannedFailoverModel.
+ */
 public interface PlannedFailoverModel {
     /**
      * Gets the properties property: Planned failover model properties.
-     *
+     * 
      * @return the properties value.
      */
     PlannedFailoverModelProperties properties();
@@ -18,7 +20,7 @@ public interface PlannedFailoverModel {
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.PlannedFailoverModelInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     PlannedFailoverModelInner innerModel();

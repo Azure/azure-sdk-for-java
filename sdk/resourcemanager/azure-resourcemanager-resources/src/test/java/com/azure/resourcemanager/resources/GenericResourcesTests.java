@@ -53,12 +53,8 @@ public class GenericResourcesTests extends ResourceManagementTest {
         super.initializeClients(httpPipeline, profile);
         resourceGroups = resourceClient.resourceGroups();
         genericResources = resourceClient.genericResources();
-        resourceGroups.define(rgName)
-                .withRegion(Region.US_EAST)
-                .create();
-        resourceGroups.define(newRgName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .create();
+        resourceGroups.define(rgName).withRegion(Region.US_EAST).create();
+        resourceGroups.define(newRgName).withRegion(Region.US_SOUTH_CENTRAL).create();
     }
 
     @Override
@@ -72,14 +68,15 @@ public class GenericResourcesTests extends ResourceManagementTest {
         final String resourceName = "rs" + testId;
         // Create
         GenericResource resource = genericResources.define(resourceName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .withExistingResourceGroup(rgName)
-                .withResourceType("sites")
-                .withProviderNamespace("Microsoft.Web")
-                .withoutPlan()
-                .withParentResourcePath("")
-                .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}", Object.class, SerializerEncoding.JSON))
-                .create();
+            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withExistingResourceGroup(rgName)
+            .withResourceType("sites")
+            .withProviderNamespace("Microsoft.Web")
+            .withoutPlan()
+            .withParentResourcePath("")
+            .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}",
+                Object.class, SerializerEncoding.JSON))
+            .create();
         //List
         PagedIterable<GenericResource> resourceList = genericResources.listByResourceGroup(rgName);
         boolean found = false;
@@ -92,19 +89,24 @@ public class GenericResourcesTests extends ResourceManagementTest {
         }
         Assertions.assertTrue(found);
         // Get
-        Assertions.assertNotNull(genericResources.get(rgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
+        Assertions.assertNotNull(genericResources.get(rgName, resource.resourceProviderNamespace(),
+            resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
         // Move
         genericResources.moveResources(rgName, resourceGroups.getByName(newRgName), Arrays.asList(resource.id()));
-        Assertions.assertFalse(genericResources.checkExistence(rgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
-        resource = genericResources.get(newRgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion());
+        Assertions.assertFalse(genericResources.checkExistence(rgName, resource.resourceProviderNamespace(),
+            resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
+        resource = genericResources.get(newRgName, resource.resourceProviderNamespace(), resource.parentResourcePath(),
+            resource.resourceType(), resource.name(), resource.apiVersion());
         Assertions.assertNotNull(resource);
         // Update
         resource.update()
-                .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Dynamic\"}", Object.class, SerializerEncoding.JSON))
-                .apply();
+            .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Dynamic\"}",
+                Object.class, SerializerEncoding.JSON))
+            .apply();
         // Delete
         genericResources.deleteById(resource.id());
-        Assertions.assertFalse(genericResources.checkExistence(newRgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
+        Assertions.assertFalse(genericResources.checkExistence(newRgName, resource.resourceProviderNamespace(),
+            resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
         Assertions.assertFalse(genericResources.checkExistenceById(resource.id()));
     }
 
@@ -139,7 +141,8 @@ public class GenericResourcesTests extends ResourceManagementTest {
 
         // validate fail as name conflict
         Assertions.assertThrows(ManagementException.class, () -> {
-            genericResources.validateMoveResources(rgName, targetResourceGroup, Collections.singletonList(resource.id()));
+            genericResources.validateMoveResources(rgName, targetResourceGroup,
+                Collections.singletonList(resource.id()));
         });
 
         final String resourceName3 = "rs2" + testId;
@@ -153,7 +156,8 @@ public class GenericResourcesTests extends ResourceManagementTest {
 
         // validate fail as managed identity does not support move
         Assertions.assertThrows(ManagementException.class, () -> {
-            genericResources.validateMoveResources(rgName, targetResourceGroup, Collections.singletonList(resource3.id()));
+            genericResources.validateMoveResources(rgName, targetResourceGroup,
+                Collections.singletonList(resource3.id()));
         });
     }
 
@@ -170,7 +174,8 @@ public class GenericResourcesTests extends ResourceManagementTest {
             .withProviderNamespace("Microsoft.Web")
             .withoutPlan()
             .withParentResourcePath("")
-            .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}", Object.class, SerializerEncoding.JSON))
+            .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}",
+                Object.class, SerializerEncoding.JSON))
             .beginCreate();
 
         LongRunningOperationStatus pollStatus = acceptedResource.getActivationResponse().getStatus();
@@ -182,18 +187,18 @@ public class GenericResourcesTests extends ResourceManagementTest {
 
             PollResponse<?> pollResponse = acceptedResource.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
-            delayInMills = pollResponse.getRetryAfter() == null
-                ? defaultDelayInMillis
-                : pollResponse.getRetryAfter().toMillis();
+            delayInMills
+                = pollResponse.getRetryAfter() == null ? defaultDelayInMillis : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         GenericResource resource = acceptedResource.getFinalResult();
         Assertions.assertNotNull(resource.id());
         Assertions.assertEquals(resourceName, ResourceUtils.nameFromResourceId(resource.id()));
 
-        PagedIterable<GenericResourceExpandedInner> resources =
-            genericResources.manager().serviceClient().getResources()
-                .listByResourceGroup(rgName, null, "provisioningState", null, Context.NONE);
+        PagedIterable<GenericResourceExpandedInner> resources = genericResources.manager()
+            .serviceClient()
+            .getResources()
+            .listByResourceGroup(rgName, null, "provisioningState", null, Context.NONE);
         Optional<GenericResourceExpandedInner> resourceOpt
             = resources.stream().filter(r -> resourceName.equals(r.name())).findFirst();
         Assertions.assertTrue(resourceOpt.isPresent());
@@ -211,18 +216,22 @@ public class GenericResourcesTests extends ResourceManagementTest {
         final String resourceName = "rs" + testId;
         final String apiVersion = "2021-01-01";
 
-        GenericResource storageResource = resourceClient.genericResources().define(resourceName)
-            .withRegion(Region.US_WEST)
-            .withExistingResourceGroup(rgName)
-            .withResourceType("storageAccounts")
-            .withProviderNamespace("Microsoft.Storage")
-            .withoutPlan()
-            .withKind("Storage")
-            .withSku(new Sku().withName("Standard_LRS"))
-            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-            .withProperties(serializerAdapter.deserialize("{\"minimumTlsVersion\": \"TLS1_2\", \"supportsHttpsTrafficOnly\": true}", Object.class, SerializerEncoding.JSON))
-            .withApiVersion(apiVersion)
-            .create();
+        GenericResource storageResource
+            = resourceClient.genericResources()
+                .define(resourceName)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(rgName)
+                .withResourceType("storageAccounts")
+                .withProviderNamespace("Microsoft.Storage")
+                .withoutPlan()
+                .withKind("Storage")
+                .withSku(new Sku().withName("Standard_LRS"))
+                .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+                .withProperties(serializerAdapter.deserialize(
+                    "{\"minimumTlsVersion\": \"TLS1_2\", \"supportsHttpsTrafficOnly\": true}", Object.class,
+                    SerializerEncoding.JSON))
+                .withApiVersion(apiVersion)
+                .create();
         Assertions.assertEquals("Storage", storageResource.kind());
         Assertions.assertEquals("Standard_LRS", storageResource.sku().name());
         Assertions.assertNotNull(storageResource.identity());
@@ -230,18 +239,11 @@ public class GenericResourcesTests extends ResourceManagementTest {
         Assertions.assertNotNull(storageResource.identity().principalId());
         Assertions.assertNotNull(storageResource.identity().tenantId());
 
-        storageResource.update()
-            .withKind("StorageV2")
-            .withoutIdentity()
-            .withApiVersion(apiVersion)
-            .apply();
+        storageResource.update().withKind("StorageV2").withoutIdentity().withApiVersion(apiVersion).apply();
         Assertions.assertEquals("StorageV2", storageResource.kind());
         Assertions.assertEquals(ResourceIdentityType.NONE, storageResource.identity().type());
 
-        storageResource.update()
-            .withSku(new Sku().withName("Standard_RAGRS"))
-            .withApiVersion(apiVersion)
-            .apply();
+        storageResource.update().withSku(new Sku().withName("Standard_RAGRS")).withApiVersion(apiVersion).apply();
         Assertions.assertEquals("Standard_RAGRS", storageResource.sku().name());
     }
 }

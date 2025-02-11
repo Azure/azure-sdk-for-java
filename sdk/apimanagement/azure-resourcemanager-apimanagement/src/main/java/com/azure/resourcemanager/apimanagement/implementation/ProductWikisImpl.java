@@ -25,14 +25,14 @@ public final class ProductWikisImpl implements ProductWikis {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ProductWikisImpl(
-        ProductWikisClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public ProductWikisImpl(ProductWikisClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public ProductWikisGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context) {
+    public ProductWikisGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String productId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, productId, context);
     }
 
@@ -40,15 +40,12 @@ public final class ProductWikisImpl implements ProductWikis {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, productId);
     }
 
-    public Response<WikiContract> getWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context) {
-        ProductWikisGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, productId, context);
+    public Response<WikiContract> getWithResponse(String resourceGroupName, String serviceName, String productId,
+        Context context) {
+        ProductWikisGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, productId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WikiContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -64,32 +61,22 @@ public final class ProductWikisImpl implements ProductWikis {
         }
     }
 
-    public Response<WikiContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        WikiContractInner parameters,
-        String ifMatch,
-        Context context) {
-        ProductWikisCreateOrUpdateResponse inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(resourceGroupName, serviceName, productId, parameters, ifMatch, context);
+    public Response<WikiContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String productId, WikiContractInner parameters, String ifMatch, Context context) {
+        ProductWikisCreateOrUpdateResponse inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, productId, parameters, ifMatch, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WikiContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public WikiContract createOrUpdate(
-        String resourceGroupName, String serviceName, String productId, WikiContractInner parameters) {
-        WikiContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, productId, parameters);
+    public WikiContract createOrUpdate(String resourceGroupName, String serviceName, String productId,
+        WikiContractInner parameters) {
+        WikiContractInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, productId, parameters);
         if (inner != null) {
             return new WikiContractImpl(inner, this.manager());
         } else {
@@ -97,32 +84,22 @@ public final class ProductWikisImpl implements ProductWikis {
         }
     }
 
-    public Response<WikiContract> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String ifMatch,
-        WikiUpdateContract parameters,
-        Context context) {
-        ProductWikisUpdateResponse inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, serviceName, productId, ifMatch, parameters, context);
+    public Response<WikiContract> updateWithResponse(String resourceGroupName, String serviceName, String productId,
+        String ifMatch, WikiUpdateContract parameters, Context context) {
+        ProductWikisUpdateResponse inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, serviceName, productId, ifMatch, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WikiContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public WikiContract update(
-        String resourceGroupName, String serviceName, String productId, String ifMatch, WikiUpdateContract parameters) {
-        WikiContractInner inner =
-            this.serviceClient().update(resourceGroupName, serviceName, productId, ifMatch, parameters);
+    public WikiContract update(String resourceGroupName, String serviceName, String productId, String ifMatch,
+        WikiUpdateContract parameters) {
+        WikiContractInner inner
+            = this.serviceClient().update(resourceGroupName, serviceName, productId, ifMatch, parameters);
         if (inner != null) {
             return new WikiContractImpl(inner, this.manager());
         } else {
@@ -130,8 +107,8 @@ public final class ProductWikisImpl implements ProductWikis {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String productId, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId,
+        String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, productId, ifMatch, context);
     }
 

@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RebootPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RebootProperties model =
-            BinaryData.fromString("{\"rebootType\":\"GracefulRebootWithoutZTP\"}").toObject(RebootProperties.class);
+        RebootProperties model
+            = BinaryData.fromString("{\"rebootType\":\"GracefulRebootWithoutZTP\"}").toObject(RebootProperties.class);
         Assertions.assertEquals(RebootType.GRACEFUL_REBOOT_WITHOUT_ZTP, model.rebootType());
     }
 

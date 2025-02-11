@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RestHealthCheckStepAttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestHealthCheckStepAttributes model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"REST\",\"properties\":{\"healthChecks\":[{\"name\":\"eun\"}]},\"waitDuration\":\"hgyxzkonoc\",\"maxElasticDuration\":\"oklyaxuconuq\",\"healthyStateDuration\":\"zf\"}")
-                .toObject(RestHealthCheckStepAttributes.class);
+        RestHealthCheckStepAttributes model = BinaryData.fromString(
+            "{\"type\":\"REST\",\"properties\":{\"healthChecks\":[{\"name\":\"eun\"}]},\"waitDuration\":\"hgyxzkonoc\",\"maxElasticDuration\":\"oklyaxuconuq\",\"healthyStateDuration\":\"zf\"}")
+            .toObject(RestHealthCheckStepAttributes.class);
         Assertions.assertEquals("hgyxzkonoc", model.waitDuration());
         Assertions.assertEquals("oklyaxuconuq", model.maxElasticDuration());
         Assertions.assertEquals("zf", model.healthyStateDuration());
@@ -26,12 +24,10 @@ public final class RestHealthCheckStepAttributesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestHealthCheckStepAttributes model =
-            new RestHealthCheckStepAttributes()
-                .withWaitDuration("hgyxzkonoc")
-                .withMaxElasticDuration("oklyaxuconuq")
-                .withHealthyStateDuration("zf")
-                .withHealthChecks(Arrays.asList(new RestHealthCheck().withName("eun")));
+        RestHealthCheckStepAttributes model = new RestHealthCheckStepAttributes().withWaitDuration("hgyxzkonoc")
+            .withMaxElasticDuration("oklyaxuconuq")
+            .withHealthyStateDuration("zf")
+            .withHealthChecks(Arrays.asList(new RestHealthCheck().withName("eun")));
         model = BinaryData.fromObject(model).toObject(RestHealthCheckStepAttributes.class);
         Assertions.assertEquals("hgyxzkonoc", model.waitDuration());
         Assertions.assertEquals("oklyaxuconuq", model.maxElasticDuration());

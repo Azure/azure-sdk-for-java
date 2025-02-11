@@ -6,40 +6,55 @@ package com.azure.resourcemanager.resourcegraph.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Successfully executed facet containing additional statistics on the response of a query. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("FacetResult")
+/**
+ * Successfully executed facet containing additional statistics on the response of a query.
+ */
 @Fluent
 public final class FacetResult extends Facet {
     /*
+     * Result type
+     */
+    private String resultType = "FacetResult";
+
+    /*
      * Number of total records in the facet results.
      */
-    @JsonProperty(value = "totalRecords", required = true)
     private long totalRecords;
 
     /*
      * Number of records returned in the facet response.
      */
-    @JsonProperty(value = "count", required = true)
     private int count;
 
     /*
      * A JObject array or Table containing the desired facets. Only present if the facet is valid.
      */
-    @JsonProperty(value = "data", required = true)
     private Object data;
 
-    /** Creates an instance of FacetResult class. */
+    /**
+     * Creates an instance of FacetResult class.
+     */
     public FacetResult() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the totalRecords property: Number of total records in the facet results.
-     *
+     * 
      * @return the totalRecords value.
      */
     public long totalRecords() {
@@ -48,7 +63,7 @@ public final class FacetResult extends Facet {
 
     /**
      * Set the totalRecords property: Number of total records in the facet results.
-     *
+     * 
      * @param totalRecords the totalRecords value to set.
      * @return the FacetResult object itself.
      */
@@ -59,7 +74,7 @@ public final class FacetResult extends Facet {
 
     /**
      * Get the count property: Number of records returned in the facet response.
-     *
+     * 
      * @return the count value.
      */
     public int count() {
@@ -68,7 +83,7 @@ public final class FacetResult extends Facet {
 
     /**
      * Set the count property: Number of records returned in the facet response.
-     *
+     * 
      * @param count the count value to set.
      * @return the FacetResult object itself.
      */
@@ -80,7 +95,7 @@ public final class FacetResult extends Facet {
     /**
      * Get the data property: A JObject array or Table containing the desired facets. Only present if the facet is
      * valid.
-     *
+     * 
      * @return the data value.
      */
     public Object data() {
@@ -90,7 +105,7 @@ public final class FacetResult extends Facet {
     /**
      * Set the data property: A JObject array or Table containing the desired facets. Only present if the facet is
      * valid.
-     *
+     * 
      * @param data the data value to set.
      * @return the FacetResult object itself.
      */
@@ -99,7 +114,9 @@ public final class FacetResult extends Facet {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FacetResult withExpression(String expression) {
         super.withExpression(expression);
@@ -108,18 +125,69 @@ public final class FacetResult extends Facet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (data() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property data in model FacetResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property data in model FacetResult"));
+        }
+        if (expression() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property expression in model FacetResult"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FacetResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("expression", expression());
+        jsonWriter.writeLongField("totalRecords", this.totalRecords);
+        jsonWriter.writeIntField("count", this.count);
+        jsonWriter.writeUntypedField("data", this.data);
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FacetResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FacetResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FacetResult.
+     */
+    public static FacetResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FacetResult deserializedFacetResult = new FacetResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expression".equals(fieldName)) {
+                    deserializedFacetResult.withExpression(reader.getString());
+                } else if ("totalRecords".equals(fieldName)) {
+                    deserializedFacetResult.totalRecords = reader.getLong();
+                } else if ("count".equals(fieldName)) {
+                    deserializedFacetResult.count = reader.getInt();
+                } else if ("data".equals(fieldName)) {
+                    deserializedFacetResult.data = reader.readUntyped();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedFacetResult.resultType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFacetResult;
+        });
+    }
 }

@@ -20,7 +20,8 @@ public final class AzureLargeStorageInstanceGetByResourceGroupSamples {
      */
     public static void
         azureLargeStorageInstanceGet(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeStorageInstances().getByResourceGroupWithResponse("myResourceGroup",
-            "myAzureLargeStorageInstance", com.azure.core.util.Context.NONE);
+        manager.azureLargeStorageInstances()
+            .getByResourceGroupWithResponse("myResourceGroup", "myAzureLargeStorageInstance",
+                com.azure.core.util.Context.NONE);
     }
 }

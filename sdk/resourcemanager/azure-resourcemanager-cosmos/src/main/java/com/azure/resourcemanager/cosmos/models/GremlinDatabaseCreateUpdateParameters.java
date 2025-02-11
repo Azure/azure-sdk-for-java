@@ -163,11 +163,6 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
         } else {
             innerProperties().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property location in model GremlinDatabaseCreateUpdateParameters"));
-        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GremlinDatabaseCreateUpdateParameters.class);

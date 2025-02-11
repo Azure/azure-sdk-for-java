@@ -85,15 +85,14 @@ public class ServiceBusRuleManagerAsyncClientTest {
 
         ruleOptions = new CreateRuleOptions(ruleFilter);
 
-        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
-            .thenReturn(Mono.just(managementNode));
+        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
 
-        connectionProcessor =
-            Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
-                .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                    connectionOptions.getRetry()));
+        connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
+            .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
 
-        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE, new ConnectionCacheWrapper(connectionProcessor), onClientClose);
+        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE,
+            new ConnectionCacheWrapper(connectionProcessor), onClientClose);
 
     }
 
@@ -115,18 +114,18 @@ public class ServiceBusRuleManagerAsyncClientTest {
         when(managementNode.createRule(RULE_NAME, ruleOptions)).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(ruleManager.createRule(RULE_NAME, ruleOptions))
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(ruleManager.createRule(RULE_NAME, ruleOptions)).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     void getRules() {
         // Arrange
-        when(managementNode.listRules()).thenReturn(Flux.fromArray(new RuleProperties[]{ruleProperties1, ruleProperties2}));
+        when(managementNode.listRules())
+            .thenReturn(Flux.fromArray(new RuleProperties[] { ruleProperties1, ruleProperties2 }));
 
         // Act & Assert
-        StepVerifier.create(ruleManager.listRules()).expectNext(ruleProperties1, ruleProperties2)
+        StepVerifier.create(ruleManager.listRules())
+            .expectNext(ruleProperties1, ruleProperties2)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -137,8 +136,6 @@ public class ServiceBusRuleManagerAsyncClientTest {
         when(managementNode.deleteRule(RULE_NAME)).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(ruleManager.deleteRule(RULE_NAME))
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(ruleManager.deleteRule(RULE_NAME)).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 }

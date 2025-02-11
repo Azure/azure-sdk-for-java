@@ -14,9 +14,7 @@ import java.time.Duration;
 /**
  * Implementation of {@link ISandwich}
  */
-public class SandwichImpl
-        extends CreatableUpdatableImpl<ISandwich, SandwichInner, SandwichImpl>
-        implements ISandwich {
+public class SandwichImpl extends CreatableUpdatableImpl<ISandwich, SandwichInner, SandwichImpl> implements ISandwich {
     private static final ClientLogger LOGGER = new ClientLogger(SandwichImpl.class);
 
     /**
@@ -29,7 +27,6 @@ public class SandwichImpl
         super(name, name, innerObject);
     }
 
-
     @Override
     public ISandwich withBreadSliceFromStore(Executable<IBreadSlice> breadFetcher) {
         this.addDependency(breadFetcher);
@@ -39,9 +36,7 @@ public class SandwichImpl
     @Override
     public Mono<ISandwich> createResourceAsync() {
         LOGGER.log(LogLevel.VERBOSE, () -> "Sandwich(" + this.name() + ")::createResourceAsync() [Creating sandwich]");
-        return Mono.just(this)
-                .delayElement(Duration.ofMillis(250))
-                .map(sandwich -> sandwich);
+        return Mono.just(this).delayElement(Duration.ofMillis(250)).map(sandwich -> sandwich);
     }
 
     @Override

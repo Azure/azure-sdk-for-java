@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DefaultRollouts. */
+/**
+ * Resource collection API of DefaultRollouts.
+ */
 public interface DefaultRollouts {
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -25,7 +27,7 @@ public interface DefaultRollouts {
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface DefaultRollouts {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -50,7 +52,7 @@ public interface DefaultRollouts {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,7 +63,7 @@ public interface DefaultRollouts {
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,7 +74,7 @@ public interface DefaultRollouts {
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,7 +86,7 @@ public interface DefaultRollouts {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -97,7 +99,7 @@ public interface DefaultRollouts {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,7 +110,7 @@ public interface DefaultRollouts {
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -119,7 +121,7 @@ public interface DefaultRollouts {
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +133,7 @@ public interface DefaultRollouts {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,7 +143,7 @@ public interface DefaultRollouts {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +155,7 @@ public interface DefaultRollouts {
 
     /**
      * Begins definition for a new DefaultRollout resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DefaultRollout definition.
      */

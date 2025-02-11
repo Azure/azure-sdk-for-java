@@ -21,7 +21,7 @@ public final class AllowedConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-08-28T02:56:51Z\",\"connectableResources\":[{\"id\":\"lqcw\",\"inboundConnectedResources\":[{}],\"outboundConnectedResources\":[{},{},{},{}]},{\"id\":\"kzstzpzecdlc\",\"inboundConnectedResources\":[{}],\"outboundConnectedResources\":[{}]},{\"id\":\"tuwcimtcaumv\",\"inboundConnectedResources\":[{},{},{}],\"outboundConnectedResources\":[{},{}]},{\"id\":\"jqrmlujmtunl\",\"inboundConnectedResources\":[{},{},{}],\"outboundConnectedResources\":[{},{},{},{}]}]},\"location\":\"bfqvmpjbhzye\",\"id\":\"fsp\",\"name\":\"txeudw\",\"type\":\"hdlckdoxocjc\"}]}";
+            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-04-26T05:57:56Z\",\"connectableResources\":[{\"id\":\"izhceumoqodkadp\",\"inboundConnectedResources\":[{},{},{}],\"outboundConnectedResources\":[{},{},{}]},{\"id\":\"qladywrxwhydtlu\",\"inboundConnectedResources\":[{},{}],\"outboundConnectedResources\":[{},{},{},{}]}]},\"location\":\"zsn\",\"id\":\"yemlowuowhlxln\",\"name\":\"y\",\"type\":\"mouvbl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

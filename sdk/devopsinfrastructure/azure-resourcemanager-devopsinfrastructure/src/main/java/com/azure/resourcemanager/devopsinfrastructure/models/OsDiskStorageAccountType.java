@@ -12,17 +12,17 @@ import java.util.Collection;
  */
 public final class OsDiskStorageAccountType extends ExpandableStringEnum<OsDiskStorageAccountType> {
     /**
-     * Static value Standard for OsDiskStorageAccountType.
+     * Standard OS disk type.
      */
     public static final OsDiskStorageAccountType STANDARD = fromString("Standard");
 
     /**
-     * Static value Premium for OsDiskStorageAccountType.
+     * Premium OS disk type.
      */
     public static final OsDiskStorageAccountType PREMIUM = fromString("Premium");
 
     /**
-     * Static value StandardSSD for OsDiskStorageAccountType.
+     * Standard SSD OS disk type.
      */
     public static final OsDiskStorageAccountType STANDARD_SSD = fromString("StandardSSD");
 

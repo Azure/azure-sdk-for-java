@@ -12,13 +12,15 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 public final class HealthcareEntityRelationRolePropertiesHelper {
     private static HealthcareEntityRelationRoleAccessor accessor;
 
-    private HealthcareEntityRelationRolePropertiesHelper() { }
+    private HealthcareEntityRelationRolePropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link HealthcareEntityRelationRole} instance.
      */
     public interface HealthcareEntityRelationRoleAccessor {
         void setName(HealthcareEntityRelationRole healthcareEntityRelationRole, String name);
+
         void setEntity(HealthcareEntityRelationRole healthcareEntityRelationRole, HealthcareEntity entity);
     }
 

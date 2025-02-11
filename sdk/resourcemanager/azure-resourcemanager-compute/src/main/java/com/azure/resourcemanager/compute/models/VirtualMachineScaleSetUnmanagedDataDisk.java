@@ -108,10 +108,8 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface DefinitionWithNewVhd<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithDiskSource<ParentT>,
-            DefinitionStages.WithNewVhdDiskSettings<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+        extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithDiskSource<ParentT>,
+        DefinitionStages.WithNewVhdDiskSettings<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /**
@@ -120,10 +118,8 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface DefinitionWithImage<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithDiskSource<ParentT>,
-            DefinitionStages.WithFromImageDiskSettings<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+        extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithDiskSource<ParentT>,
+        DefinitionStages.WithFromImageDiskSettings<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of unamanged data disk definition stages applicable as part of a virtual machine scale set update. */
@@ -189,10 +185,8 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk
      * @param <ParentT> the stage of the parent update to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithDiskSource<ParentT>,
-            UpdateDefinitionStages.WithNewVhdDiskSettings<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithDiskSource<ParentT>,
+        UpdateDefinitionStages.WithNewVhdDiskSettings<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of unmanaged data disk update stages. */
@@ -232,10 +226,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk
     }
 
     /** The entirety of a unmanaged data disk update as part of a virtual machine scale set update. */
-    interface Update
-        extends UpdateStages.WithDiskSize,
-            UpdateStages.WithDiskLun,
-            UpdateStages.WithDiskCaching,
-            Settable<VirtualMachineScaleSet.Update> {
+    interface Update extends UpdateStages.WithDiskSize, UpdateStages.WithDiskLun, UpdateStages.WithDiskCaching,
+        Settable<VirtualMachineScaleSet.Update> {
     }
 }

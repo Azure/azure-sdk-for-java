@@ -90,9 +90,7 @@ import java.util.Map;
  * @see KeyClient
  */
 @ServiceClientBuilder(serviceClients = KeyClient.class)
-public final class KeyClientBuilder implements
-    TokenCredentialTrait<KeyClientBuilder>,
-    HttpTrait<KeyClientBuilder>,
+public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBuilder>, HttpTrait<KeyClientBuilder>,
     ConfigurationTrait<KeyClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(KeyClientBuilder.class);
 
@@ -178,13 +176,13 @@ public final class KeyClientBuilder implements
     }
 
     private KeyClientImpl buildInnerClient() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
@@ -230,8 +228,7 @@ public final class KeyClientBuilder implements
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .clientOptions(localClientOptions)
@@ -263,8 +260,7 @@ public final class KeyClientBuilder implements
             URL url = new URL(vaultUrl);
             this.vaultUrl = url.toString();
         } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "The Azure Key Vault url is malformed.", ex));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault url is malformed.", ex));
         }
         return this;
     }
@@ -506,7 +502,7 @@ public final class KeyClientBuilder implements
         }
 
         try {
-            URL url =  new URL(configEndpoint);
+            URL url = new URL(configEndpoint);
             return url.toString();
         } catch (MalformedURLException ex) {
             return null;

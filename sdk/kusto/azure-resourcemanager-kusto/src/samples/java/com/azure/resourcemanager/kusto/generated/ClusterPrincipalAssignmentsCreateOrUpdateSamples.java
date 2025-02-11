@@ -7,20 +7,22 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 
-/** Samples for ClusterPrincipalAssignments CreateOrUpdate. */
+/**
+ * Samples for ClusterPrincipalAssignments CreateOrUpdate.
+ */
 public final class ClusterPrincipalAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterPrincipalAssignmentsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterPrincipalAssignmentsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoClusterPrincipalAssignmentsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoClusterPrincipalAssignmentsCreateOrUpdate(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusterPrincipalAssignments()
+    public static void
+        kustoClusterPrincipalAssignmentsCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.clusterPrincipalAssignments()
             .define("kustoprincipal1")
             .withExistingCluster("kustorptest", "kustoCluster")
             .withPrincipalId("87654321-1234-1234-1234-123456789123")

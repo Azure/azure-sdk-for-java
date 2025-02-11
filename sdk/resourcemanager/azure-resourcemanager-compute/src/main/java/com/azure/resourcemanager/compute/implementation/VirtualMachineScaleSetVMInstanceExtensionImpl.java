@@ -20,8 +20,8 @@ class VirtualMachineScaleSetVMInstanceExtensionImpl
     private HashMap<String, Object> publicSettings;
     private HashMap<String, Object> protectedSettings;
 
-    VirtualMachineScaleSetVMInstanceExtensionImpl(
-        VirtualMachineExtensionInner inner, VirtualMachineScaleSetVMImpl parent) {
+    VirtualMachineScaleSetVMInstanceExtensionImpl(VirtualMachineExtensionInner inner,
+        VirtualMachineScaleSetVMImpl parent) {
         super(inner, parent);
         initializeSettings();
     }

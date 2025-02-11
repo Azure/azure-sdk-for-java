@@ -6,36 +6,41 @@ package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The application package contact information. */
+/**
+ * The application package contact information.
+ */
 @Fluent
-public final class ApplicationPackageContact {
+public final class ApplicationPackageContact implements JsonSerializable<ApplicationPackageContact> {
     /*
      * The contact name.
      */
-    @JsonProperty(value = "contactName")
     private String contactName;
 
     /*
      * The contact email.
      */
-    @JsonProperty(value = "email", required = true)
     private String email;
 
     /*
      * The contact phone number.
      */
-    @JsonProperty(value = "phone", required = true)
     private String phone;
 
-    /** Creates an instance of ApplicationPackageContact class. */
+    /**
+     * Creates an instance of ApplicationPackageContact class.
+     */
     public ApplicationPackageContact() {
     }
 
     /**
      * Get the contactName property: The contact name.
-     *
+     * 
      * @return the contactName value.
      */
     public String contactName() {
@@ -44,7 +49,7 @@ public final class ApplicationPackageContact {
 
     /**
      * Set the contactName property: The contact name.
-     *
+     * 
      * @param contactName the contactName value to set.
      * @return the ApplicationPackageContact object itself.
      */
@@ -55,7 +60,7 @@ public final class ApplicationPackageContact {
 
     /**
      * Get the email property: The contact email.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -64,7 +69,7 @@ public final class ApplicationPackageContact {
 
     /**
      * Set the email property: The contact email.
-     *
+     * 
      * @param email the email value to set.
      * @return the ApplicationPackageContact object itself.
      */
@@ -75,7 +80,7 @@ public final class ApplicationPackageContact {
 
     /**
      * Get the phone property: The contact phone number.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -84,7 +89,7 @@ public final class ApplicationPackageContact {
 
     /**
      * Set the phone property: The contact phone number.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the ApplicationPackageContact object itself.
      */
@@ -95,21 +100,64 @@ public final class ApplicationPackageContact {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (email() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property email in model ApplicationPackageContact"));
         }
         if (phone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property phone in model ApplicationPackageContact"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationPackageContact.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("phone", this.phone);
+        jsonWriter.writeStringField("contactName", this.contactName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationPackageContact from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationPackageContact if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationPackageContact.
+     */
+    public static ApplicationPackageContact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationPackageContact deserializedApplicationPackageContact = new ApplicationPackageContact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("email".equals(fieldName)) {
+                    deserializedApplicationPackageContact.email = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedApplicationPackageContact.phone = reader.getString();
+                } else if ("contactName".equals(fieldName)) {
+                    deserializedApplicationPackageContact.contactName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationPackageContact;
+        });
+    }
 }

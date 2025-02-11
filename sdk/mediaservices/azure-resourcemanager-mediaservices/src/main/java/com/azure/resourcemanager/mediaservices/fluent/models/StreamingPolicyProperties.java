@@ -5,59 +5,62 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCbcs;
 import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCenc;
 import com.azure.resourcemanager.mediaservices.models.EnvelopeEncryption;
 import com.azure.resourcemanager.mediaservices.models.NoEncryption;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Class to specify properties of Streaming Policy. */
+/**
+ * Class to specify properties of Streaming Policy.
+ */
 @Fluent
-public final class StreamingPolicyProperties {
+public final class StreamingPolicyProperties implements JsonSerializable<StreamingPolicyProperties> {
     /*
      * Creation time of Streaming Policy
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
 
     /*
      * Default ContentKey used by current Streaming Policy
      */
-    @JsonProperty(value = "defaultContentKeyPolicyName")
     private String defaultContentKeyPolicyName;
 
     /*
      * Configuration of EnvelopeEncryption
      */
-    @JsonProperty(value = "envelopeEncryption")
     private EnvelopeEncryption envelopeEncryption;
 
     /*
      * Configuration of CommonEncryptionCenc
      */
-    @JsonProperty(value = "commonEncryptionCenc")
     private CommonEncryptionCenc commonEncryptionCenc;
 
     /*
      * Configuration of CommonEncryptionCbcs
      */
-    @JsonProperty(value = "commonEncryptionCbcs")
     private CommonEncryptionCbcs commonEncryptionCbcs;
 
     /*
      * Configurations of NoEncryption
      */
-    @JsonProperty(value = "noEncryption")
     private NoEncryption noEncryption;
 
-    /** Creates an instance of StreamingPolicyProperties class. */
+    /**
+     * Creates an instance of StreamingPolicyProperties class.
+     */
     public StreamingPolicyProperties() {
     }
 
     /**
      * Get the created property: Creation time of Streaming Policy.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -66,7 +69,7 @@ public final class StreamingPolicyProperties {
 
     /**
      * Get the defaultContentKeyPolicyName property: Default ContentKey used by current Streaming Policy.
-     *
+     * 
      * @return the defaultContentKeyPolicyName value.
      */
     public String defaultContentKeyPolicyName() {
@@ -75,7 +78,7 @@ public final class StreamingPolicyProperties {
 
     /**
      * Set the defaultContentKeyPolicyName property: Default ContentKey used by current Streaming Policy.
-     *
+     * 
      * @param defaultContentKeyPolicyName the defaultContentKeyPolicyName value to set.
      * @return the StreamingPolicyProperties object itself.
      */
@@ -86,7 +89,7 @@ public final class StreamingPolicyProperties {
 
     /**
      * Get the envelopeEncryption property: Configuration of EnvelopeEncryption.
-     *
+     * 
      * @return the envelopeEncryption value.
      */
     public EnvelopeEncryption envelopeEncryption() {
@@ -95,7 +98,7 @@ public final class StreamingPolicyProperties {
 
     /**
      * Set the envelopeEncryption property: Configuration of EnvelopeEncryption.
-     *
+     * 
      * @param envelopeEncryption the envelopeEncryption value to set.
      * @return the StreamingPolicyProperties object itself.
      */
@@ -106,7 +109,7 @@ public final class StreamingPolicyProperties {
 
     /**
      * Get the commonEncryptionCenc property: Configuration of CommonEncryptionCenc.
-     *
+     * 
      * @return the commonEncryptionCenc value.
      */
     public CommonEncryptionCenc commonEncryptionCenc() {
@@ -115,7 +118,7 @@ public final class StreamingPolicyProperties {
 
     /**
      * Set the commonEncryptionCenc property: Configuration of CommonEncryptionCenc.
-     *
+     * 
      * @param commonEncryptionCenc the commonEncryptionCenc value to set.
      * @return the StreamingPolicyProperties object itself.
      */
@@ -126,7 +129,7 @@ public final class StreamingPolicyProperties {
 
     /**
      * Get the commonEncryptionCbcs property: Configuration of CommonEncryptionCbcs.
-     *
+     * 
      * @return the commonEncryptionCbcs value.
      */
     public CommonEncryptionCbcs commonEncryptionCbcs() {
@@ -135,7 +138,7 @@ public final class StreamingPolicyProperties {
 
     /**
      * Set the commonEncryptionCbcs property: Configuration of CommonEncryptionCbcs.
-     *
+     * 
      * @param commonEncryptionCbcs the commonEncryptionCbcs value to set.
      * @return the StreamingPolicyProperties object itself.
      */
@@ -146,7 +149,7 @@ public final class StreamingPolicyProperties {
 
     /**
      * Get the noEncryption property: Configurations of NoEncryption.
-     *
+     * 
      * @return the noEncryption value.
      */
     public NoEncryption noEncryption() {
@@ -155,7 +158,7 @@ public final class StreamingPolicyProperties {
 
     /**
      * Set the noEncryption property: Configurations of NoEncryption.
-     *
+     * 
      * @param noEncryption the noEncryption value to set.
      * @return the StreamingPolicyProperties object itself.
      */
@@ -166,7 +169,7 @@ public final class StreamingPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -182,5 +185,56 @@ public final class StreamingPolicyProperties {
         if (noEncryption() != null) {
             noEncryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("defaultContentKeyPolicyName", this.defaultContentKeyPolicyName);
+        jsonWriter.writeJsonField("envelopeEncryption", this.envelopeEncryption);
+        jsonWriter.writeJsonField("commonEncryptionCenc", this.commonEncryptionCenc);
+        jsonWriter.writeJsonField("commonEncryptionCbcs", this.commonEncryptionCbcs);
+        jsonWriter.writeJsonField("noEncryption", this.noEncryption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StreamingPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StreamingPolicyProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StreamingPolicyProperties.
+     */
+    public static StreamingPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StreamingPolicyProperties deserializedStreamingPolicyProperties = new StreamingPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("created".equals(fieldName)) {
+                    deserializedStreamingPolicyProperties.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("defaultContentKeyPolicyName".equals(fieldName)) {
+                    deserializedStreamingPolicyProperties.defaultContentKeyPolicyName = reader.getString();
+                } else if ("envelopeEncryption".equals(fieldName)) {
+                    deserializedStreamingPolicyProperties.envelopeEncryption = EnvelopeEncryption.fromJson(reader);
+                } else if ("commonEncryptionCenc".equals(fieldName)) {
+                    deserializedStreamingPolicyProperties.commonEncryptionCenc = CommonEncryptionCenc.fromJson(reader);
+                } else if ("commonEncryptionCbcs".equals(fieldName)) {
+                    deserializedStreamingPolicyProperties.commonEncryptionCbcs = CommonEncryptionCbcs.fromJson(reader);
+                } else if ("noEncryption".equals(fieldName)) {
+                    deserializedStreamingPolicyProperties.noEncryption = NoEncryption.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStreamingPolicyProperties;
+        });
     }
 }

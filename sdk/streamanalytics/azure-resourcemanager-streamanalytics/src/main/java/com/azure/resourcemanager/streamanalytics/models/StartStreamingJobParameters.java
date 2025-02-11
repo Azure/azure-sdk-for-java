@@ -5,28 +5,32 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Parameters supplied to the Start Streaming Job operation.
  */
 @Fluent
-public final class StartStreamingJobParameters {
+public final class StartStreamingJobParameters implements JsonSerializable<StartStreamingJobParameters> {
     /*
      * Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the
-     * output event stream should start whenever the job is started, start at a custom user time stamp specified via
-     * the outputStartTime property, or start from the last event output time.
+     * output event stream should start whenever the job is started, start at a custom user time stamp specified via the
+     * outputStartTime property, or start from the last event output time.
      */
-    @JsonProperty(value = "outputStartMode")
     private OutputStartMode outputStartMode;
 
     /*
-     * Value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream,
-     * or null to indicate that the output event stream will start whenever the streaming job is started. This property
+     * Value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or
+     * null to indicate that the output event stream will start whenever the streaming job is started. This property
      * must have a value if outputStartMode is set to CustomTime.
      */
-    @JsonProperty(value = "outputStartTime")
     private OffsetDateTime outputStartTime;
 
     /**
@@ -37,8 +41,8 @@ public final class StartStreamingJobParameters {
 
     /**
      * Get the outputStartMode property: Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate
-     * whether the starting point of the output event stream should start whenever the job is started, start at a
-     * custom user time stamp specified via the outputStartTime property, or start from the last event output time.
+     * whether the starting point of the output event stream should start whenever the job is started, start at a custom
+     * user time stamp specified via the outputStartTime property, or start from the last event output time.
      * 
      * @return the outputStartMode value.
      */
@@ -48,8 +52,8 @@ public final class StartStreamingJobParameters {
 
     /**
      * Set the outputStartMode property: Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate
-     * whether the starting point of the output event stream should start whenever the job is started, start at a
-     * custom user time stamp specified via the outputStartTime property, or start from the last event output time.
+     * whether the starting point of the output event stream should start whenever the job is started, start at a custom
+     * user time stamp specified via the outputStartTime property, or start from the last event output time.
      * 
      * @param outputStartMode the outputStartMode value to set.
      * @return the StartStreamingJobParameters object itself.
@@ -89,5 +93,48 @@ public final class StartStreamingJobParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("outputStartMode",
+            this.outputStartMode == null ? null : this.outputStartMode.toString());
+        jsonWriter.writeStringField("outputStartTime",
+            this.outputStartTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.outputStartTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StartStreamingJobParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StartStreamingJobParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StartStreamingJobParameters.
+     */
+    public static StartStreamingJobParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StartStreamingJobParameters deserializedStartStreamingJobParameters = new StartStreamingJobParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("outputStartMode".equals(fieldName)) {
+                    deserializedStartStreamingJobParameters.outputStartMode
+                        = OutputStartMode.fromString(reader.getString());
+                } else if ("outputStartTime".equals(fieldName)) {
+                    deserializedStartStreamingJobParameters.outputStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStartStreamingJobParameters;
+        });
     }
 }

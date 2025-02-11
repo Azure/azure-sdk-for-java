@@ -95,7 +95,8 @@ public final class RemoteRenderingAsyncClient {
         return beginSessionInternal(sessionId, options, Context.NONE);
     }
 
-    PollerFlux<RenderingSession, RenderingSession> beginSessionInternal(String sessionId, BeginSessionOptions options, Context context) {
+    PollerFlux<RenderingSession, RenderingSession> beginSessionInternal(String sessionId, BeginSessionOptions options,
+        Context context) {
         Objects.requireNonNull(sessionId, "'sessionId' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
@@ -105,10 +106,16 @@ public final class RemoteRenderingAsyncClient {
         }
 
         return new PollerFlux<>(
-            (options.getSize() == RenderingSessionSize.STANDARD) ? STANDARD_SESSION_POLLING_INTERVAL : DEFAULT_SESSION_POLLING_INTERVAL,
-            pollingContext -> impl.getRemoteRenderings().createSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), context).map(r -> ModelTranslator.fromGenerated(r.getValue())),
+            (options.getSize() == RenderingSessionSize.STANDARD)
+                ? STANDARD_SESSION_POLLING_INTERVAL
+                : DEFAULT_SESSION_POLLING_INTERVAL,
+            pollingContext -> impl.getRemoteRenderings()
+                .createSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), context)
+                .map(r -> ModelTranslator.fromGenerated(r.getValue())),
             pollingContext -> {
-                Mono<RenderingSession> response = impl.getRemoteRenderings().getSessionWithResponseAsync(accountId, sessionId, context).map(r -> ModelTranslator.fromGenerated(r.getValue()));
+                Mono<RenderingSession> response = impl.getRemoteRenderings()
+                    .getSessionWithResponseAsync(accountId, sessionId, context)
+                    .map(r -> ModelTranslator.fromGenerated(r.getValue()));
                 return response.map(session -> {
                     final RenderingSessionStatus sessionStatus = session.getStatus();
                     LongRunningOperationStatus lroStatus;
@@ -126,9 +133,10 @@ public final class RemoteRenderingAsyncClient {
                     return new PollResponse<>(lroStatus, session);
                 });
             },
-            (pollingContext, pollResponse) -> impl.getRemoteRenderings().stopSessionWithResponseAsync(accountId, sessionId, context).then(Mono.just(pollingContext.getLatestResponse().getValue())),
-            pollingContext -> Mono.just(pollingContext.getLatestResponse().getValue())
-        );
+            (pollingContext, pollResponse) -> impl.getRemoteRenderings()
+                .stopSessionWithResponseAsync(accountId, sessionId, context)
+                .then(Mono.just(pollingContext.getLatestResponse().getValue())),
+            pollingContext -> Mono.just(pollingContext.getLatestResponse().getValue()));
     }
 
     /**
@@ -175,7 +183,9 @@ public final class RemoteRenderingAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sessionId' cannot be an empty string."));
         }
 
-        return impl.getRemoteRenderings().getSessionWithResponseAsync(accountId, sessionId, context).map(ModelTranslator::fromGenerated);
+        return impl.getRemoteRenderings()
+            .getSessionWithResponseAsync(accountId, sessionId, context)
+            .map(ModelTranslator::fromGenerated);
     }
 
     /**
@@ -216,7 +226,8 @@ public final class RemoteRenderingAsyncClient {
         }
     }
 
-    Mono<Response<RenderingSession>> updateSessionInternal(String sessionId, UpdateSessionOptions options, Context context) {
+    Mono<Response<RenderingSession>> updateSessionInternal(String sessionId, UpdateSessionOptions options,
+        Context context) {
         Objects.requireNonNull(sessionId, "'sessionId' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
@@ -225,7 +236,9 @@ public final class RemoteRenderingAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sessionId' cannot be an empty string."));
         }
 
-        return impl.getRemoteRenderings().updateSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), context).map(ModelTranslator::fromGenerated);
+        return impl.getRemoteRenderings()
+            .updateSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), context)
+            .map(ModelTranslator::fromGenerated);
     }
 
     /**
@@ -291,21 +304,17 @@ public final class RemoteRenderingAsyncClient {
     PagedFlux<RenderingSession> listSessionsInternal(Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
 
-        return new PagedFlux<>(
-            () -> impl.getRemoteRenderings().listSessionsSinglePageAsync(accountId, context).map(p ->
-                new PagedResponseBase<HttpRequest, RenderingSession>(p.getRequest(),
-                    p.getStatusCode(),
+        return new PagedFlux<>(() -> impl.getRemoteRenderings()
+            .listSessionsSinglePageAsync(accountId, context)
+            .map(p -> new PagedResponseBase<HttpRequest, RenderingSession>(p.getRequest(), p.getStatusCode(),
+                p.getHeaders(), p.getValue().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()),
+                p.getContinuationToken(), null)),
+            continuationToken -> impl.getRemoteRenderings()
+                .listSessionsNextSinglePageAsync(continuationToken, context)
+                .map(p -> new PagedResponseBase<HttpRequest, RenderingSession>(p.getRequest(), p.getStatusCode(),
                     p.getHeaders(),
                     p.getValue().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()),
-                    p.getContinuationToken(),
-                    null)),
-            continuationToken -> impl.getRemoteRenderings().listSessionsNextSinglePageAsync(continuationToken, context).map(p ->
-                new PagedResponseBase<HttpRequest, RenderingSession>(p.getRequest(),
-                    p.getStatusCode(),
-                    p.getHeaders(),
-                    p.getValue().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()),
-                    p.getContinuationToken(),
-                    null)));
+                    p.getContinuationToken(), null)));
     }
 
     /**
@@ -328,22 +337,29 @@ public final class RemoteRenderingAsyncClient {
      * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AssetConversion, AssetConversion> beginConversion(String conversionId, AssetConversionOptions options) {
+    public PollerFlux<AssetConversion, AssetConversion> beginConversion(String conversionId,
+        AssetConversionOptions options) {
         return beginConversionInternal(conversionId, options, Context.NONE);
     }
 
-    PollerFlux<AssetConversion, AssetConversion> beginConversionInternal(String conversionId, AssetConversionOptions options, Context context) {
+    PollerFlux<AssetConversion, AssetConversion> beginConversionInternal(String conversionId,
+        AssetConversionOptions options, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
 
-        return new PollerFlux<>(
-            CONVERSION_POLLING_INTERVAL,
-            pollingContext -> impl.getRemoteRenderings().createConversionWithResponseAsync(accountId, conversionId, new CreateConversionSettings(ModelTranslator.toGenerated(options)), context).map(c -> ModelTranslator.fromGenerated(c.getValue())),
+        return new PollerFlux<>(CONVERSION_POLLING_INTERVAL,
+            pollingContext -> impl.getRemoteRenderings()
+                .createConversionWithResponseAsync(accountId, conversionId,
+                    new CreateConversionSettings(ModelTranslator.toGenerated(options)), context)
+                .map(c -> ModelTranslator.fromGenerated(c.getValue())),
             pollingContext -> {
-                Mono<AssetConversion> response = impl.getRemoteRenderings().getConversionWithResponseAsync(accountId, conversionId, context).map(c -> ModelTranslator.fromGenerated(c.getValue()));
+                Mono<AssetConversion> response = impl.getRemoteRenderings()
+                    .getConversionWithResponseAsync(accountId, conversionId, context)
+                    .map(c -> ModelTranslator.fromGenerated(c.getValue()));
                 return response.map(conversion -> {
                     final AssetConversionStatus conversionStatus = conversion.getStatus();
                     LongRunningOperationStatus lroStatus;
-                    if ((conversionStatus == AssetConversionStatus.RUNNING) || (conversionStatus == AssetConversionStatus.NOT_STARTED)) {
+                    if ((conversionStatus == AssetConversionStatus.RUNNING)
+                        || (conversionStatus == AssetConversionStatus.NOT_STARTED)) {
                         lroStatus = LongRunningOperationStatus.IN_PROGRESS;
                     } else if (conversionStatus == AssetConversionStatus.FAILED) {
                         lroStatus = LongRunningOperationStatus.FAILED;
@@ -356,12 +372,9 @@ public final class RemoteRenderingAsyncClient {
                     }
                     return new PollResponse<>(lroStatus, conversion);
                 });
-            },
-            (pollingContext, pollResponse) -> Mono.error(new RuntimeException("Cancellation is not supported.")),
-            pollingContext -> Mono.just(pollingContext.getLatestResponse().getValue())
-        );
+            }, (pollingContext, pollResponse) -> Mono.error(new RuntimeException("Cancellation is not supported.")),
+            pollingContext -> Mono.just(pollingContext.getLatestResponse().getValue()));
     }
-
 
     /**
      * Gets the status of a previously created asset conversion.
@@ -407,7 +420,9 @@ public final class RemoteRenderingAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'conversionId' cannot be an empty string."));
         }
 
-        return impl.getRemoteRenderings().getConversionWithResponseAsync(accountId, conversionId, context).map(ModelTranslator::fromGenerated);
+        return impl.getRemoteRenderings()
+            .getConversionWithResponseAsync(accountId, conversionId, context)
+            .map(ModelTranslator::fromGenerated);
     }
 
     /**
@@ -426,25 +441,18 @@ public final class RemoteRenderingAsyncClient {
     PagedFlux<AssetConversion> listConversionsInternal(Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
 
-        return new PagedFlux<>(
-            () -> impl.getRemoteRenderings().listConversionsSinglePageAsync(accountId, context).map(p ->
-                new PagedResponseBase<HttpRequest, AssetConversion>(p.getRequest(),
-                    p.getStatusCode(),
+        return new PagedFlux<>(() -> impl.getRemoteRenderings()
+            .listConversionsSinglePageAsync(accountId, context)
+            .map(p -> new PagedResponseBase<HttpRequest, AssetConversion>(p.getRequest(), p.getStatusCode(),
+                p.getHeaders(), p.getValue().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()),
+                p.getContinuationToken(), null)),
+            continuationToken -> impl.getRemoteRenderings()
+                .listConversionsNextSinglePageAsync(continuationToken, context)
+                .map(p -> new PagedResponseBase<HttpRequest, AssetConversion>(p.getRequest(), p.getStatusCode(),
                     p.getHeaders(),
                     p.getValue().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()),
-                    p.getContinuationToken(),
-                    null)),
-            continuationToken -> impl.getRemoteRenderings().listConversionsNextSinglePageAsync(continuationToken, context).map(p ->
-                new PagedResponseBase<HttpRequest, AssetConversion>(p.getRequest(),
-                    p.getStatusCode(),
-                    p.getHeaders(),
-                    p.getValue().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()),
-                    p.getContinuationToken(),
-                    null)));
+                    p.getContinuationToken(), null)));
     }
-
-
-
 
     private static class ModelTranslator {
 
@@ -483,38 +491,37 @@ public final class RemoteRenderingAsyncClient {
             if (value == null) {
                 return null;
             } else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.Conversion) {
-                return (T) fromGenerated((com.azure.mixedreality.remoterendering.implementation.models.Conversion) value);
+                return (T) fromGenerated(
+                    (com.azure.mixedreality.remoterendering.implementation.models.Conversion) value);
             } else if (value instanceof SessionProperties) {
                 return (T) fromGenerated((SessionProperties) value);
             } else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.Error) {
                 return (T) fromGenerated((com.azure.mixedreality.remoterendering.implementation.models.Error) value);
             } else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings) {
-                return (T) fromGenerated((com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings) value);
+                return (T) fromGenerated(
+                    (com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings) value);
             } else {
                 // throw?
                 return null;
             }
         }
 
-        private static AssetConversion fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.Conversion conversion) {
+        private static AssetConversion
+            fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.Conversion conversion) {
             if (conversion == null) {
                 return null;
             }
-            return new AssetConversion(
-                conversion.getId(),
-                fromGenerated(conversion.getSettings()),
+            return new AssetConversion(conversion.getId(), fromGenerated(conversion.getSettings()),
                 conversion.getOutput() != null ? conversion.getOutput().getOutputAssetUri() : null,
                 fromGenerated(conversion.getError()),
-                AssetConversionStatus.fromString(conversion.getStatus().toString()),
-                conversion.getCreationTime());
+                AssetConversionStatus.fromString(conversion.getStatus().toString()), conversion.getCreationTime());
         }
 
         private static RenderingSession fromGenerated(SessionProperties sessionProperties) {
             if (sessionProperties == null) {
                 return null;
             }
-            return new RenderingSession(
-                sessionProperties.getId(),
+            return new RenderingSession(sessionProperties.getId(),
                 Optional.ofNullable(sessionProperties.getArrInspectorPort()).orElse(0),
                 Optional.ofNullable(sessionProperties.getHandshakePort()).orElse(0),
                 Duration.ofMinutes(Optional.ofNullable(sessionProperties.getElapsedTimeMinutes()).orElse(0)),
@@ -523,28 +530,27 @@ public final class RemoteRenderingAsyncClient {
                 RenderingSessionSize.fromString(sessionProperties.getSize().toString()),
                 RenderingSessionStatus.fromString(sessionProperties.getStatus().toString()),
                 Optional.ofNullable(sessionProperties.getTeraflops()).orElse(0.0f),
-                fromGenerated(sessionProperties.getError()),
-                sessionProperties.getCreationTime());
+                fromGenerated(sessionProperties.getError()), sessionProperties.getCreationTime());
         }
 
-        private static RemoteRenderingServiceError fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.Error error) {
+        private static RemoteRenderingServiceError
+            fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.Error error) {
             if (error == null) {
                 return null;
             }
-            return new RemoteRenderingServiceError(
-                error.getCode(),
-                error.getMessage(),
-                error.getTarget(),
+            return new RemoteRenderingServiceError(error.getCode(), error.getMessage(), error.getTarget(),
                 fromGenerated(error.getInnerError()),
-                (error.getDetails() != null) ? error.getDetails().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList()) : null);
+                (error.getDetails() != null)
+                    ? error.getDetails().stream().map(ModelTranslator::fromGenerated).collect(Collectors.toList())
+                    : null);
         }
 
-        private static AssetConversionOptions fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings settings) {
+        private static AssetConversionOptions
+            fromGenerated(com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings settings) {
             if (settings == null) {
                 return null;
             }
-            return new AssetConversionOptions()
-                .setInputBlobPrefix(settings.getInputLocation().getBlobPrefix())
+            return new AssetConversionOptions().setInputBlobPrefix(settings.getInputLocation().getBlobPrefix())
                 .setInputRelativeAssetPath(settings.getInputLocation().getRelativeInputAssetPath())
                 .setInputStorageContainerReadListSas(settings.getInputLocation().getStorageContainerReadListSas())
                 .setInputStorageContainerUrl(settings.getInputLocation().getStorageContainerUri())
@@ -560,16 +566,14 @@ public final class RemoteRenderingAsyncClient {
                 return null;
             }
             return new ConversionSettings(
-                new ConversionInputSettings(
-                    conversionOptions.getInputStorageContainerUrl(),
+                new ConversionInputSettings(conversionOptions.getInputStorageContainerUrl(),
                     conversionOptions.getInputRelativeAssetPath())
-                    .setStorageContainerReadListSas(conversionOptions.getInputStorageContainerReadListSas())
-                    .setBlobPrefix(conversionOptions.getInputBlobPrefix()),
+                        .setStorageContainerReadListSas(conversionOptions.getInputStorageContainerReadListSas())
+                        .setBlobPrefix(conversionOptions.getInputBlobPrefix()),
                 new ConversionOutputSettings(conversionOptions.getOutputStorageContainerUrl())
                     .setStorageContainerWriteSas(conversionOptions.getOutputStorageContainerWriteSas())
                     .setBlobPrefix(conversionOptions.getOutputBlobPrefix())
-                    .setOutputAssetFilename(conversionOptions.getOutputAssetFilename())
-            );
+                    .setOutputAssetFilename(conversionOptions.getOutputAssetFilename()));
         }
 
         private static UpdateSessionSettings toGenerated(UpdateSessionOptions options) {
@@ -583,7 +587,9 @@ public final class RemoteRenderingAsyncClient {
             if (options == null) {
                 return null;
             }
-            return new CreateSessionSettings((int) options.getMaxLeaseTime().toMinutes(), com.azure.mixedreality.remoterendering.implementation.models.SessionSize.fromString(options.getSize().toString()));
+            return new CreateSessionSettings((int) options.getMaxLeaseTime().toMinutes(),
+                com.azure.mixedreality.remoterendering.implementation.models.SessionSize
+                    .fromString(options.getSize().toString()));
         }
     }
 }

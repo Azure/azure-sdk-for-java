@@ -5,22 +5,24 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Radiology code with types : used in imaging procedure recommendation for contrast and view.
  */
 @Immutable
-public final class RadiologyCodeWithTypes {
+public final class RadiologyCodeWithTypes implements JsonSerializable<RadiologyCodeWithTypes> {
 
     /*
      * The SNOMED CT code indicates whether imaging was conducted with or without contrast in the case of contrast, and
      * in the case of views, it denotes the number of views.
      */
     @Generated
-    @JsonProperty(value = "code")
     private final FhirR4CodeableConcept code;
 
     /*
@@ -28,7 +30,6 @@ public final class RadiologyCodeWithTypes {
      * views, it will specify the types of views, such as lateral and frontal, etc.
      */
     @Generated
-    @JsonProperty(value = "types")
     private final List<FhirR4CodeableConcept> types;
 
     /**
@@ -38,9 +39,7 @@ public final class RadiologyCodeWithTypes {
      * @param types the types value to set.
      */
     @Generated
-    @JsonCreator
-    private RadiologyCodeWithTypes(@JsonProperty(value = "code") FhirR4CodeableConcept code,
-        @JsonProperty(value = "types") List<FhirR4CodeableConcept> types) {
+    private RadiologyCodeWithTypes(FhirR4CodeableConcept code, List<FhirR4CodeableConcept> types) {
         this.code = code;
         this.types = types;
     }
@@ -65,5 +64,46 @@ public final class RadiologyCodeWithTypes {
     @Generated
     public List<FhirR4CodeableConcept> getTypes() {
         return this.types;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("code", this.code);
+        jsonWriter.writeArrayField("types", this.types, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RadiologyCodeWithTypes from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RadiologyCodeWithTypes if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RadiologyCodeWithTypes.
+     */
+    @Generated
+    public static RadiologyCodeWithTypes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirR4CodeableConcept code = null;
+            List<FhirR4CodeableConcept> types = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("code".equals(fieldName)) {
+                    code = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("types".equals(fieldName)) {
+                    types = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new RadiologyCodeWithTypes(code, types);
+        });
     }
 }

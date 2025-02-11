@@ -85,16 +85,14 @@ public class NextHopImpl extends ExecutableImpl<NextHop> implements NextHop, Nex
 
     @Override
     public Mono<NextHop> executeWorkAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getNetworkWatchers()
             .getNextHopAsync(parent.resourceGroupName(), parent.name(), parameters)
-            .map(
-                nextHopResultInner -> {
-                    NextHopImpl.this.result = nextHopResultInner;
-                    return NextHopImpl.this;
-                });
+            .map(nextHopResultInner -> {
+                NextHopImpl.this.result = nextHopResultInner;
+                return NextHopImpl.this;
+            });
     }
 }

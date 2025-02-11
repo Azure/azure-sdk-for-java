@@ -5,59 +5,55 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Query parameter to enumerate jobs.
  */
 @Fluent
-public final class JobQueryParameter {
+public final class JobQueryParameter implements JsonSerializable<JobQueryParameter> {
     /*
      * Date time to get jobs from.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * Date time to get jobs upto.
      */
-    @JsonProperty(value = "endTime")
     private String endTime;
 
     /*
      * The Id of the fabric to search jobs under.
      */
-    @JsonProperty(value = "fabricId")
     private String fabricId;
 
     /*
      * The type of objects.
      */
-    @JsonProperty(value = "affectedObjectTypes")
     private String affectedObjectTypes;
 
     /*
      * The states of the job to be filtered can be in.
      */
-    @JsonProperty(value = "jobStatus")
     private String jobStatus;
 
     /*
      * The output type of the jobs.
      */
-    @JsonProperty(value = "jobOutputType")
     private ExportJobOutputSerializationType jobOutputType;
 
     /*
      * The job Name.
      */
-    @JsonProperty(value = "jobName")
     private String jobName;
 
     /*
      * The timezone offset for the location of the request (in minutes).
      */
-    @JsonProperty(value = "timezoneOffset")
     private Double timezoneOffset;
 
     /**
@@ -232,5 +228,63 @@ public final class JobQueryParameter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeStringField("fabricId", this.fabricId);
+        jsonWriter.writeStringField("affectedObjectTypes", this.affectedObjectTypes);
+        jsonWriter.writeStringField("jobStatus", this.jobStatus);
+        jsonWriter.writeStringField("jobOutputType", this.jobOutputType == null ? null : this.jobOutputType.toString());
+        jsonWriter.writeStringField("jobName", this.jobName);
+        jsonWriter.writeNumberField("timezoneOffset", this.timezoneOffset);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobQueryParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobQueryParameter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobQueryParameter.
+     */
+    public static JobQueryParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobQueryParameter deserializedJobQueryParameter = new JobQueryParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedJobQueryParameter.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedJobQueryParameter.endTime = reader.getString();
+                } else if ("fabricId".equals(fieldName)) {
+                    deserializedJobQueryParameter.fabricId = reader.getString();
+                } else if ("affectedObjectTypes".equals(fieldName)) {
+                    deserializedJobQueryParameter.affectedObjectTypes = reader.getString();
+                } else if ("jobStatus".equals(fieldName)) {
+                    deserializedJobQueryParameter.jobStatus = reader.getString();
+                } else if ("jobOutputType".equals(fieldName)) {
+                    deserializedJobQueryParameter.jobOutputType
+                        = ExportJobOutputSerializationType.fromString(reader.getString());
+                } else if ("jobName".equals(fieldName)) {
+                    deserializedJobQueryParameter.jobName = reader.getString();
+                } else if ("timezoneOffset".equals(fieldName)) {
+                    deserializedJobQueryParameter.timezoneOffset = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobQueryParameter;
+        });
     }
 }

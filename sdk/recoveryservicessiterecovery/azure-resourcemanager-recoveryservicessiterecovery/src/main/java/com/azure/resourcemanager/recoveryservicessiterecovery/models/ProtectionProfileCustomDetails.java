@@ -5,28 +5,35 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Protection Profile custom input.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "resourceType",
-    defaultImpl = ProtectionProfileCustomDetails.class)
-@JsonTypeName("ProtectionProfileCustomDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Existing", value = ExistingProtectionProfile.class),
-    @JsonSubTypes.Type(name = "New", value = NewProtectionProfile.class) })
 @Immutable
-public class ProtectionProfileCustomDetails {
+public class ProtectionProfileCustomDetails implements JsonSerializable<ProtectionProfileCustomDetails> {
+    /*
+     * The class type.
+     */
+    private String resourceType = "ProtectionProfileCustomDetails";
+
     /**
      * Creates an instance of ProtectionProfileCustomDetails class.
      */
     public ProtectionProfileCustomDetails() {
+    }
+
+    /**
+     * Get the resourceType property: The class type.
+     * 
+     * @return the resourceType value.
+     */
+    public String resourceType() {
+        return this.resourceType;
     }
 
     /**
@@ -35,5 +42,69 @@ public class ProtectionProfileCustomDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectionProfileCustomDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectionProfileCustomDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtectionProfileCustomDetails.
+     */
+    public static ProtectionProfileCustomDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("resourceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Existing".equals(discriminatorValue)) {
+                    return ExistingProtectionProfile.fromJson(readerToUse.reset());
+                } else if ("New".equals(discriminatorValue)) {
+                    return NewProtectionProfile.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ProtectionProfileCustomDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectionProfileCustomDetails deserializedProtectionProfileCustomDetails
+                = new ProtectionProfileCustomDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedProtectionProfileCustomDetails.resourceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectionProfileCustomDetails;
+        });
     }
 }

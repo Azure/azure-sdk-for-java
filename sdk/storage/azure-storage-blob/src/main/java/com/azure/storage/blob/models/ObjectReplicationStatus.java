@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.storage.blob.models;
 
 import com.azure.core.util.ExpandableStringEnum;
@@ -23,6 +22,15 @@ public final class ObjectReplicationStatus extends ExpandableStringEnum<ObjectRe
     public static final ObjectReplicationStatus FAILED = fromString("failed");
 
     /**
+     * Creates a new instance of {@link ObjectReplicationStatus} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} instead.
+     */
+    @Deprecated
+    public ObjectReplicationStatus() {
+    }
+
+    /**
      * Creates or finds a ObjectReplicationStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,6 +41,8 @@ public final class ObjectReplicationStatus extends ExpandableStringEnum<ObjectRe
     }
 
     /**
+     * Gets known ObjectReplicationStatus values.
+     *
      * @return known ObjectReplicationStatus values.
      */
     public static Collection<ObjectReplicationStatus> values() {

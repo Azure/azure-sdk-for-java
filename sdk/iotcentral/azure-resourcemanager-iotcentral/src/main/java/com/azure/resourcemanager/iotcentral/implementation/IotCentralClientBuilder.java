@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the IotCentralClientImpl type. */
-@ServiceClientBuilder(serviceClients = {IotCentralClientImpl.class})
+/**
+ * A builder for creating a new instance of the IotCentralClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { IotCentralClientImpl.class })
 public final class IotCentralClientBuilder {
     /*
      * The subscription identifier.
@@ -24,7 +26,7 @@ public final class IotCentralClientBuilder {
 
     /**
      * Sets The subscription identifier.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the IotCentralClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class IotCentralClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the IotCentralClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class IotCentralClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the IotCentralClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class IotCentralClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the IotCentralClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class IotCentralClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the IotCentralClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class IotCentralClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the IotCentralClientBuilder.
      */
@@ -115,31 +117,22 @@ public final class IotCentralClientBuilder {
 
     /**
      * Builds an instance of IotCentralClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of IotCentralClientImpl.
      */
     public IotCentralClientImpl buildClient() {
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
-        if (endpoint == null) {
-            this.endpoint = "https://management.azure.com";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
-        IotCentralClientImpl client =
-            new IotCentralClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        IotCentralClientImpl client = new IotCentralClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

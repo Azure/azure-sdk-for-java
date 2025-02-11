@@ -17,6 +17,7 @@ import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.redis.models.UpdateChannel;
+import com.azure.resourcemanager.redis.models.ZonalAllocationPolicy;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -273,10 +274,20 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RedisPropertiesInner withZonalAllocationPolicy(ZonalAllocationPolicy zonalAllocationPolicy) {
+        super.withZonalAllocationPolicy(zonalAllocationPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (accessKeys() != null) {
             accessKeys().validate();
@@ -323,6 +334,8 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
             publicNetworkAccess() == null ? null : publicNetworkAccess().toString());
         jsonWriter.writeStringField("updateChannel", updateChannel() == null ? null : updateChannel().toString());
         jsonWriter.writeBooleanField("disableAccessKeyAuthentication", disableAccessKeyAuthentication());
+        jsonWriter.writeStringField("zonalAllocationPolicy",
+            zonalAllocationPolicy() == null ? null : zonalAllocationPolicy().toString());
         jsonWriter.writeStringField("subnetId", subnetId());
         jsonWriter.writeStringField("staticIP", staticIp());
         return jsonWriter.writeEndObject();
@@ -371,6 +384,9 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
                 } else if ("disableAccessKeyAuthentication".equals(fieldName)) {
                     deserializedRedisPropertiesInner
                         .withDisableAccessKeyAuthentication(reader.getNullable(JsonReader::getBoolean));
+                } else if ("zonalAllocationPolicy".equals(fieldName)) {
+                    deserializedRedisPropertiesInner
+                        .withZonalAllocationPolicy(ZonalAllocationPolicy.fromString(reader.getString()));
                 } else if ("subnetId".equals(fieldName)) {
                     deserializedRedisPropertiesInner.withSubnetId(reader.getString());
                 } else if ("staticIP".equals(fieldName)) {

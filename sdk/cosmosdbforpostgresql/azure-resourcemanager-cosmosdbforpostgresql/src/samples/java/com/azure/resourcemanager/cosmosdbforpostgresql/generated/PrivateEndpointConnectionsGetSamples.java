@@ -20,7 +20,8 @@ public final class PrivateEndpointConnectionsGetSamples {
      */
     public static void getsPrivateEndpointConnection(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.privateEndpointConnections().getWithResponse("TestGroup", "testcluster",
-            "private-endpoint-connection-name", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("TestGroup", "testcluster", "private-endpoint-connection-name",
+                com.azure.core.util.Context.NONE);
     }
 }

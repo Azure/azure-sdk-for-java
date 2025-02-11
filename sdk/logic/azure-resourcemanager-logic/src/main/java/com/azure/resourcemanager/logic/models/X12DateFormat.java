@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The x12 date format. */
+/**
+ * The x12 date format.
+ */
 public final class X12DateFormat extends ExpandableStringEnum<X12DateFormat> {
-    /** Static value NotSpecified for X12DateFormat. */
+    /**
+     * Static value NotSpecified for X12DateFormat.
+     */
     public static final X12DateFormat NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value CCYYMMDD for X12DateFormat. */
+    /**
+     * Static value CCYYMMDD for X12DateFormat.
+     */
     public static final X12DateFormat CCYYMMDD = fromString("CCYYMMDD");
 
-    /** Static value YYMMDD for X12DateFormat. */
+    /**
+     * Static value YYMMDD for X12DateFormat.
+     */
     public static final X12DateFormat YYMMDD = fromString("YYMMDD");
 
     /**
      * Creates a new instance of X12DateFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class X12DateFormat extends ExpandableStringEnum<X12DateFormat> {
 
     /**
      * Creates or finds a X12DateFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding X12DateFormat.
      */
-    @JsonCreator
     public static X12DateFormat fromString(String name) {
         return fromString(name, X12DateFormat.class);
     }
 
     /**
      * Gets known X12DateFormat values.
-     *
+     * 
      * @return known X12DateFormat values.
      */
     public static Collection<X12DateFormat> values() {

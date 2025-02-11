@@ -6,38 +6,43 @@ package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.purview.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paged list of private endpoint connections. */
+/**
+ * Paged list of private endpoint connections.
+ */
 @Fluent
-public final class PrivateEndpointConnectionList {
+public final class PrivateEndpointConnectionList implements JsonSerializable<PrivateEndpointConnectionList> {
     /*
      * Total item count.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The Url of next result page.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Collection of items of type results.
      */
-    @JsonProperty(value = "value", required = true)
     private List<PrivateEndpointConnectionInner> value;
 
-    /** Creates an instance of PrivateEndpointConnectionList class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionList class.
+     */
     public PrivateEndpointConnectionList() {
     }
 
     /**
      * Get the count property: Total item count.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -46,7 +51,7 @@ public final class PrivateEndpointConnectionList {
 
     /**
      * Set the count property: Total item count.
-     *
+     * 
      * @param count the count value to set.
      * @return the PrivateEndpointConnectionList object itself.
      */
@@ -57,7 +62,7 @@ public final class PrivateEndpointConnectionList {
 
     /**
      * Get the nextLink property: The Url of next result page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -66,7 +71,7 @@ public final class PrivateEndpointConnectionList {
 
     /**
      * Set the nextLink property: The Url of next result page.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PrivateEndpointConnectionList object itself.
      */
@@ -77,7 +82,7 @@ public final class PrivateEndpointConnectionList {
 
     /**
      * Get the value property: Collection of items of type results.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionInner> value() {
@@ -86,7 +91,7 @@ public final class PrivateEndpointConnectionList {
 
     /**
      * Set the value property: Collection of items of type results.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionList object itself.
      */
@@ -97,19 +102,64 @@ public final class PrivateEndpointConnectionList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model PrivateEndpointConnectionList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model PrivateEndpointConnectionList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionList if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionList.
+     */
+    public static PrivateEndpointConnectionList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionList deserializedPrivateEndpointConnectionList
+                = new PrivateEndpointConnectionList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> value
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedPrivateEndpointConnectionList.value = value;
+                } else if ("count".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionList.count = reader.getNullable(JsonReader::getLong);
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionList;
+        });
+    }
 }

@@ -13,7 +13,8 @@ import java.time.OffsetDateTime;
 /** The properties of a log file. */
 @Fluent
 public final class LogFileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogFileProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LogFileProperties.class);
 
     /*
      * Size of the log file.

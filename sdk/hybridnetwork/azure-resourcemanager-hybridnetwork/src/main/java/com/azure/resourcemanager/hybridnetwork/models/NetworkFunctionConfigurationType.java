@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class NetworkFunctionConfigurationType extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding NetworkFunctionConfigurationType.
      */
-    @JsonCreator
     public static NetworkFunctionConfigurationType fromString(String name) {
         return fromString(name, NetworkFunctionConfigurationType.class);
     }

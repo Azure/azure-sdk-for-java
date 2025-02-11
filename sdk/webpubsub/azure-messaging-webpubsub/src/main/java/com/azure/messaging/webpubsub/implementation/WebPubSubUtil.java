@@ -20,6 +20,7 @@ public final class WebPubSubUtil {
 
     /**
      * Extracts the token from BinaryData response of generateClientToken API.
+     *
      * @param binaryData The response BinaryData.
      * @return The token extracted from the JSON payload of the generateClientToken API.
      */
@@ -46,10 +47,10 @@ public final class WebPubSubUtil {
     /**
      * Creates a new instance of {@link WebPubSubClientAccessToken}.
      *
-     * @param token    The JWT token.
+     * @param token The JWT token.
      * @param endpoint The Web PubSub endpoint.
-     * @param hub      The name of the hub.
-     * @param path
+     * @param hub The name of the hub.
+     * @param path The path of the hub.
      * @return A new instance of {@link WebPubSubClientAccessToken}.
      */
     public static WebPubSubClientAccessToken createToken(String token, String endpoint, String hub, String path) {

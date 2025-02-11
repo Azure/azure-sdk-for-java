@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -49,7 +50,9 @@ public final class LinkConnectionDetailedStatus implements JsonSerializable<Link
     private Object stopTime;
 
     /*
-     * Link connection status, please refer to this [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring) for details.
+     * Link connection status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      */
     private String status;
 
@@ -366,8 +369,8 @@ public final class LinkConnectionDetailedStatus implements JsonSerializable<Link
                     deserializedLinkConnectionDetailedStatus.refreshStatus
                         = LinkConnectionRefreshStatus.fromJson(reader);
                 } else if ("landingZoneCredentialExpireTime".equals(fieldName)) {
-                    deserializedLinkConnectionDetailedStatus.landingZoneCredentialExpireTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedLinkConnectionDetailedStatus.landingZoneCredentialExpireTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

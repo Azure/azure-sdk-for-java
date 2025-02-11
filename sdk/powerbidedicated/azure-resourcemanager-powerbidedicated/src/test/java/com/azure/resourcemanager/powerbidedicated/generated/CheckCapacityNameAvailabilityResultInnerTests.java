@@ -11,25 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckCapacityNameAvailabilityResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckCapacityNameAvailabilityResultInner model =
-            BinaryData
-                .fromString("{\"nameAvailable\":true,\"reason\":\"nysounqe\",\"message\":\"noae\"}")
+        CheckCapacityNameAvailabilityResultInner model
+            = BinaryData.fromString("{\"nameAvailable\":true,\"reason\":\"x\",\"message\":\"feiithlvmez\"}")
                 .toObject(CheckCapacityNameAvailabilityResultInner.class);
         Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("nysounqe", model.reason());
-        Assertions.assertEquals("noae", model.message());
+        Assertions.assertEquals("x", model.reason());
+        Assertions.assertEquals("feiithlvmez", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckCapacityNameAvailabilityResultInner model =
-            new CheckCapacityNameAvailabilityResultInner()
-                .withNameAvailable(true)
-                .withReason("nysounqe")
-                .withMessage("noae");
+        CheckCapacityNameAvailabilityResultInner model
+            = new CheckCapacityNameAvailabilityResultInner().withNameAvailable(true)
+                .withReason("x")
+                .withMessage("feiithlvmez");
         model = BinaryData.fromObject(model).toObject(CheckCapacityNameAvailabilityResultInner.class);
         Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("nysounqe", model.reason());
-        Assertions.assertEquals("noae", model.message());
+        Assertions.assertEquals("x", model.reason());
+        Assertions.assertEquals("feiithlvmez", model.message());
     }
 }

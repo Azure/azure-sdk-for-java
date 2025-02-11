@@ -22,6 +22,7 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Opera
 class EventHubsProducerInstrumentation {
     private final EventHubsTracer tracer;
     private final EventHubsMetricsProvider meter;
+
     EventHubsProducerInstrumentation(Tracer tracer, Meter meter, String fullyQualifiedName, String entityName) {
         this.tracer = new EventHubsTracer(tracer, fullyQualifiedName, entityName, null);
         this.meter = new EventHubsMetricsProvider(meter, fullyQualifiedName, entityName, null);
@@ -33,13 +34,10 @@ class EventHubsProducerInstrumentation {
         }
 
         return Mono.using(
-                () -> new InstrumentationScope(tracer, meter,
-                            (m, s) -> m.reportBatchSend(batch.getCount(), batch.getPartitionId(), s))
-                        .setSpan(startPublishSpanWithLinks(batch)),
-                scope -> publisher
-                    .doOnError(scope::setError)
-                    .doOnCancel(scope::setCancelled),
-                InstrumentationScope::close);
+            () -> new InstrumentationScope(tracer, meter,
+                (m, s) -> m.reportBatchSend(batch.getCount(), batch.getPartitionId(), s))
+                    .setSpan(startPublishSpanWithLinks(batch)),
+            scope -> publisher.doOnError(scope::setError).doOnCancel(scope::setCancelled), InstrumentationScope::close);
     }
 
     public EventHubsTracer getTracer() {
@@ -52,10 +50,10 @@ class EventHubsProducerInstrumentation {
         }
 
         return Mono.using(
-            () -> new InstrumentationScope(tracer, meter, (m, s) -> m.reportGenericOperationDuration(operationName, partitionId, s))
-                .setSpan(tracer.startGenericOperationSpan(operationName, partitionId, Context.NONE)),
-            scope -> publisher
-                .doOnError(scope::setError)
+            () -> new InstrumentationScope(tracer, meter,
+                (m, s) -> m.reportGenericOperationDuration(operationName, partitionId, s))
+                    .setSpan(tracer.startGenericOperationSpan(operationName, partitionId, Context.NONE)),
+            scope -> publisher.doOnError(scope::setError)
                 .doOnCancel(scope::setCancelled)
                 .contextWrite(c -> c.put(PARENT_TRACE_CONTEXT_KEY, scope.getSpan())),
             InstrumentationScope::close);

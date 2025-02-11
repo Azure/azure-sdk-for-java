@@ -14,8 +14,8 @@ import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -51,7 +51,8 @@ class AzureServiceBusClientBuilderConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty("spring.cloud.azure.servicebus.connection-string")
+    @ConditionalOnExpression("'${spring.cloud.azure.servicebus.connection-string:}' != ''")
+    @ConditionalOnMissingBean(value = AzureServiceType.ServiceBus.class, parameterizedContainer = ServiceConnectionStringProvider.class)
     StaticConnectionStringProvider<AzureServiceType.ServiceBus> staticServiceBusConnectionStringProvider() {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,

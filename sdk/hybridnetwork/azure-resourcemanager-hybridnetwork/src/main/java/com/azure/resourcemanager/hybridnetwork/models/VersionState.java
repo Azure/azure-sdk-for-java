@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class VersionState extends ExpandableStringEnum<VersionState> {
      * @param name a name to look for.
      * @return the corresponding VersionState.
      */
-    @JsonCreator
     public static VersionState fromString(String name) {
         return fromString(name, VersionState.class);
     }

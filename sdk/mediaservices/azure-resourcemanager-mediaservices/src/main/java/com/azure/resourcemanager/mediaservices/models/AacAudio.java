@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes Advanced Audio Codec (AAC) audio encoding settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.AacAudio")
+/**
+ * Describes Advanced Audio Codec (AAC) audio encoding settings.
+ */
 @Fluent
 public final class AacAudio extends Audio {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.AacAudio";
+
+    /*
      * The encoding profile to be used when encoding audio with AAC.
      */
-    @JsonProperty(value = "profile")
     private AacAudioProfile profile;
 
-    /** Creates an instance of AacAudio class. */
+    /**
+     * Creates an instance of AacAudio class.
+     */
     public AacAudio() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the profile property: The encoding profile to be used when encoding audio with AAC.
-     *
+     * 
      * @return the profile value.
      */
     public AacAudioProfile profile() {
@@ -35,7 +52,7 @@ public final class AacAudio extends Audio {
 
     /**
      * Set the profile property: The encoding profile to be used when encoding audio with AAC.
-     *
+     * 
      * @param profile the profile value to set.
      * @return the AacAudio object itself.
      */
@@ -44,28 +61,36 @@ public final class AacAudio extends Audio {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AacAudio withChannels(Integer channels) {
         super.withChannels(channels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AacAudio withSamplingRate(Integer samplingRate) {
         super.withSamplingRate(samplingRate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AacAudio withBitrate(Integer bitrate) {
         super.withBitrate(bitrate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AacAudio withLabel(String label) {
         super.withLabel(label);
@@ -74,11 +99,61 @@ public final class AacAudio extends Audio {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("label", label());
+        jsonWriter.writeNumberField("channels", channels());
+        jsonWriter.writeNumberField("samplingRate", samplingRate());
+        jsonWriter.writeNumberField("bitrate", bitrate());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("profile", this.profile == null ? null : this.profile.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AacAudio from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AacAudio if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the AacAudio.
+     */
+    public static AacAudio fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AacAudio deserializedAacAudio = new AacAudio();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("label".equals(fieldName)) {
+                    deserializedAacAudio.withLabel(reader.getString());
+                } else if ("channels".equals(fieldName)) {
+                    deserializedAacAudio.withChannels(reader.getNullable(JsonReader::getInt));
+                } else if ("samplingRate".equals(fieldName)) {
+                    deserializedAacAudio.withSamplingRate(reader.getNullable(JsonReader::getInt));
+                } else if ("bitrate".equals(fieldName)) {
+                    deserializedAacAudio.withBitrate(reader.getNullable(JsonReader::getInt));
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedAacAudio.odataType = reader.getString();
+                } else if ("profile".equals(fieldName)) {
+                    deserializedAacAudio.profile = AacAudioProfile.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAacAudio;
+        });
     }
 }

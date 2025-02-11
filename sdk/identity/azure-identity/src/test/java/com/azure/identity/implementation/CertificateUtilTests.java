@@ -39,7 +39,6 @@ public class CertificateUtilTests {
             () -> x509CertificateList.get(0).checkValidity(Date.from(Instant.parse("4025-12-25T00:00:00z"))));
     }
 
-
     @Test
     public void testPrivateKey() throws Exception {
         String pemPath = getPath("key.pem");
@@ -50,7 +49,7 @@ public class CertificateUtilTests {
 
     private String getPath(String filename) {
 
-        String path =  getClass().getClassLoader().getResource(filename).getPath();
+        String path = getClass().getClassLoader().getResource(filename).getPath();
         if (path.contains(":")) {
             path = path.substring(1);
         }

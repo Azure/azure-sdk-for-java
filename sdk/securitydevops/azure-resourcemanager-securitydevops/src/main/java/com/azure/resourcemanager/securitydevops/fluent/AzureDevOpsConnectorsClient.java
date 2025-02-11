@@ -52,8 +52,8 @@ public interface AzureDevOpsConnectorsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureDevOpsConnectorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context);
+    Response<AzureDevOpsConnectorInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureDevOpsConnectorName, Context context);
 
     /**
      * Returns a monitored AzureDevOps Connector resource for a given ID.
@@ -97,9 +97,7 @@ public interface AzureDevOpsConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
+        String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector,
         Context context);
 
     /**
@@ -114,8 +112,8 @@ public interface AzureDevOpsConnectorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureDevOpsConnectorInner createOrUpdate(
-        String resourceGroupName, String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector);
+    AzureDevOpsConnectorInner createOrUpdate(String resourceGroupName, String azureDevOpsConnectorName,
+        AzureDevOpsConnectorInner azureDevOpsConnector);
 
     /**
      * Creates or updates an Azure DevOps Connector.
@@ -130,11 +128,8 @@ public interface AzureDevOpsConnectorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureDevOpsConnectorInner createOrUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
-        Context context);
+    AzureDevOpsConnectorInner createOrUpdate(String resourceGroupName, String azureDevOpsConnectorName,
+        AzureDevOpsConnectorInner azureDevOpsConnector, Context context);
 
     /**
      * Update monitored AzureDevOps Connector details.
@@ -147,8 +142,8 @@ public interface AzureDevOpsConnectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginUpdate(
-        String resourceGroupName, String azureDevOpsConnectorName);
+    SyncPoller<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginUpdate(String resourceGroupName,
+        String azureDevOpsConnectorName);
 
     /**
      * Update monitored AzureDevOps Connector details.
@@ -163,11 +158,8 @@ public interface AzureDevOpsConnectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginUpdate(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
-        Context context);
+    SyncPoller<PollResult<AzureDevOpsConnectorInner>, AzureDevOpsConnectorInner> beginUpdate(String resourceGroupName,
+        String azureDevOpsConnectorName, AzureDevOpsConnectorInner azureDevOpsConnector, Context context);
 
     /**
      * Update monitored AzureDevOps Connector details.
@@ -195,11 +187,8 @@ public interface AzureDevOpsConnectorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureDevOpsConnectorInner update(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        AzureDevOpsConnectorInner azureDevOpsConnector,
-        Context context);
+    AzureDevOpsConnectorInner update(String resourceGroupName, String azureDevOpsConnectorName,
+        AzureDevOpsConnectorInner azureDevOpsConnector, Context context);
 
     /**
      * Delete monitored AzureDevOps Connector details.
@@ -226,8 +215,8 @@ public interface AzureDevOpsConnectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureDevOpsConnectorName,
+        Context context);
 
     /**
      * Delete monitored AzureDevOps Connector details.

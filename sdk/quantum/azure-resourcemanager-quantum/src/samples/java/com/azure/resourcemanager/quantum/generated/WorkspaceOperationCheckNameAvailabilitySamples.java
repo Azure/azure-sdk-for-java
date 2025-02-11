@@ -22,8 +22,9 @@ public final class WorkspaceOperationCheckNameAvailabilitySamples {
     public static void
         quantumWorkspacesCheckNameAvailability(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
         manager.workspaceOperations()
-            .checkNameAvailabilityWithResponse("westus2", new CheckNameAvailabilityParameters()
-                .withName("sample-workspace-name").withType("Microsoft.Quantum/Workspaces"),
+            .checkNameAvailabilityWithResponse("westus2",
+                new CheckNameAvailabilityParameters().withName("sample-workspace-name")
+                    .withType("Microsoft.Quantum/Workspaces"),
                 com.azure.core.util.Context.NONE);
     }
 }

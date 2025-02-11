@@ -38,31 +38,28 @@ public class ChatResponseMocker {
         return generateMockResponse(body, request, 200);
     }
 
-    public static HttpResponse createChatThreadInvalidParticipantResponse(HttpRequest request, CreateChatThreadOptions options, CommunicationUserIdentifier invalidUser) {
+    public static HttpResponse createChatThreadInvalidParticipantResponse(HttpRequest request,
+        CreateChatThreadOptions options, CommunicationUserIdentifier invalidUser) {
         List<MockCommunicationError> invalidParticipants = new ArrayList<>();
-        invalidParticipants.add(new MockCommunicationError()
-            .setTarget(invalidUser.getId()));
+        invalidParticipants.add(new MockCommunicationError().setTarget(invalidUser.getId()));
 
-        MockCreateChatThreadResult result = new MockCreateChatThreadResult()
-            .setChatThread(new ChatThreadProperties()
-                .setTopic(options.getTopic())
+        MockCreateChatThreadResult result
+            = new MockCreateChatThreadResult().setChatThread(new ChatThreadProperties().setTopic(options.getTopic())
                 .setCreatedByCommunicationIdentifier(new CommunicationIdentifierModel()
-                    .setCommunicationUser(new CommunicationUserIdentifierModel()
-                        .setId("8:acs:000")))
-                .setId("000"))
-            .setInvalidParticipants(invalidParticipants);
+                    .setCommunicationUser(new CommunicationUserIdentifierModel().setId("8:acs:000")))
+                .setId("000")).setInvalidParticipants(invalidParticipants);
 
         final String body = serializeObject(result);
         return generateMockResponse(body, request, 201);
     }
 
-    public static HttpResponse addParticipantsInvalidParticipantResponse(HttpRequest request, CommunicationUserIdentifier invalidUser) {
+    public static HttpResponse addParticipantsInvalidParticipantResponse(HttpRequest request,
+        CommunicationUserIdentifier invalidUser) {
         List<MockCommunicationError> invalidParticipants = new ArrayList<>();
-        invalidParticipants.add(new MockCommunicationError()
-            .setTarget(invalidUser.getId()));
+        invalidParticipants.add(new MockCommunicationError().setTarget(invalidUser.getId()));
 
-        MockAddChatParticipantsResult result = new MockAddChatParticipantsResult()
-            .setInvalidParticipants(invalidParticipants);
+        MockAddChatParticipantsResult result
+            = new MockAddChatParticipantsResult().setInvalidParticipants(invalidParticipants);
 
         final String body = serializeObject(result);
         return generateMockResponse(body, request, 201);
@@ -146,7 +143,8 @@ public class ChatResponseMocker {
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject();
             jsonWriter.writeJsonField("chatThread", chatThread);
-            jsonWriter.writeArrayField("invalidParticipants", invalidParticipants, (writer, error) -> error.toJson(writer));
+            jsonWriter.writeArrayField("invalidParticipants", invalidParticipants,
+                (writer, error) -> error.toJson(writer));
             return jsonWriter.writeEndObject();
         }
 
@@ -196,7 +194,8 @@ public class ChatResponseMocker {
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject();
-            jsonWriter.writeArrayField("invalidParticipants", invalidParticipants, (writer, error) -> error.toJson(writer));
+            jsonWriter.writeArrayField("invalidParticipants", invalidParticipants,
+                (writer, error) -> error.toJson(writer));
             return jsonWriter.writeEndObject();
         }
 
@@ -295,7 +294,7 @@ public class ChatResponseMocker {
 
     private static String serializeObject(JsonSerializable<?> o) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            JsonWriter writer = JsonProviders.createWriter(outputStream)) {
             o.toJson(writer);
             writer.flush();
             return outputStream.toString();

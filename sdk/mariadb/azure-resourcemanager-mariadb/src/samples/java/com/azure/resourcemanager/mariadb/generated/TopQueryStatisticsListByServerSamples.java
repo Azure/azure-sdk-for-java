@@ -7,24 +7,23 @@ package com.azure.resourcemanager.mariadb.generated;
 import com.azure.resourcemanager.mariadb.models.TopQueryStatisticsInput;
 import java.time.OffsetDateTime;
 
-/** Samples for TopQueryStatistics ListByServer. */
+/**
+ * Samples for TopQueryStatistics ListByServer.
+ */
 public final class TopQueryStatisticsListByServerSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/TopQueryStatisticsListByServer.json
+     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/
+     * TopQueryStatisticsListByServer.json
      */
     /**
      * Sample code: TopQueryStatisticsListByServer.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void topQueryStatisticsListByServer(com.azure.resourcemanager.mariadb.MariaDBManager manager) {
-        manager
-            .topQueryStatistics()
-            .listByServer(
-                "testResourceGroupName",
-                "testServerName",
-                new TopQueryStatisticsInput()
-                    .withNumberOfTopQueries(5)
+        manager.topQueryStatistics()
+            .listByServer("testResourceGroupName", "testServerName",
+                new TopQueryStatisticsInput().withNumberOfTopQueries(5)
                     .withAggregationFunction("avg")
                     .withObservedMetric("duration")
                     .withObservationStartTime(OffsetDateTime.parse("2019-05-01T20:00:00.000Z"))

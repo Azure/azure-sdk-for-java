@@ -11,11 +11,9 @@ import com.azure.resourcemanager.datalakestore.models.OperationDisplay;
 public final class OperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Operation model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"qsl\",\"display\":{\"provider\":\"vxyqjpkcattpngjc\",\"resource\":\"czsqpjhvm\",\"operation\":\"jvnysounqe\",\"description\":\"noae\"},\"origin\":\"user,system\"}")
-                .toObject(Operation.class);
+        Operation model = BinaryData.fromString(
+            "{\"name\":\"hvpmoue\",\"display\":{\"provider\":\"zxibqeoj\",\"resource\":\"qbzvddntwnd\",\"operation\":\"cbtwnpzaoqvuh\",\"description\":\"cffcyddglmj\"},\"origin\":\"user\"}")
+            .toObject(Operation.class);
     }
 
     @org.junit.jupiter.api.Test

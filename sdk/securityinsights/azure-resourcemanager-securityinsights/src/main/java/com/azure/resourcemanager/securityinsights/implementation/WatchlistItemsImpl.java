@@ -21,30 +21,41 @@ public final class WatchlistItemsImpl implements WatchlistItems {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public WatchlistItemsImpl(
-        WatchlistItemsClient innerClient,
+    public WatchlistItemsImpl(WatchlistItemsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<WatchlistItem> list(String resourceGroupName, String workspaceName, String watchlistAlias) {
-        PagedIterable<WatchlistItemInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, watchlistAlias);
-        return Utils.mapPage(inner, inner1 -> new WatchlistItemImpl(inner1, this.manager()));
+        PagedIterable<WatchlistItemInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, watchlistAlias);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WatchlistItemImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WatchlistItem> list(
-        String resourceGroupName, String workspaceName, String watchlistAlias, String skipToken, Context context) {
-        PagedIterable<WatchlistItemInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, watchlistAlias, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new WatchlistItemImpl(inner1, this.manager()));
+    public PagedIterable<WatchlistItem> list(String resourceGroupName, String workspaceName, String watchlistAlias,
+        String skipToken, Context context) {
+        PagedIterable<WatchlistItemInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, watchlistAlias, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WatchlistItemImpl(inner1, this.manager()));
     }
 
-    public WatchlistItem get(
-        String resourceGroupName, String workspaceName, String watchlistAlias, String watchlistItemId) {
-        WatchlistItemInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId);
+    public Response<WatchlistItem> getWithResponse(String resourceGroupName, String workspaceName,
+        String watchlistAlias, String watchlistItemId, Context context) {
+        Response<WatchlistItemInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WatchlistItemImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WatchlistItem get(String resourceGroupName, String workspaceName, String watchlistAlias,
+        String watchlistItemId) {
+        WatchlistItemInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId);
         if (inner != null) {
             return new WatchlistItemImpl(inner, this.manager());
         } else {
@@ -52,176 +63,109 @@ public final class WatchlistItemsImpl implements WatchlistItems {
         }
     }
 
-    public Response<WatchlistItem> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String watchlistAlias,
-        String watchlistItemId,
-        Context context) {
-        Response<WatchlistItemInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new WatchlistItemImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String watchlistAlias,
+        String watchlistItemId, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, context);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String watchlistAlias, String watchlistItemId) {
         this.serviceClient().delete(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String watchlistAlias,
-        String watchlistItemId,
-        Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, context);
-    }
-
     public WatchlistItem getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String watchlistAlias = Utils.getValueFromIdByName(id, "watchlists");
+        String watchlistAlias = ResourceManagerUtils.getValueFromIdByName(id, "watchlists");
         if (watchlistAlias == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));
         }
-        String watchlistItemId = Utils.getValueFromIdByName(id, "watchlistItems");
+        String watchlistItemId = ResourceManagerUtils.getValueFromIdByName(id, "watchlistItems");
         if (watchlistItemId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'watchlistItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchlistItems'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, Context.NONE)
+        return this.getWithResponse(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, Context.NONE)
             .getValue();
     }
 
     public Response<WatchlistItem> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String watchlistAlias = Utils.getValueFromIdByName(id, "watchlists");
+        String watchlistAlias = ResourceManagerUtils.getValueFromIdByName(id, "watchlists");
         if (watchlistAlias == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));
         }
-        String watchlistItemId = Utils.getValueFromIdByName(id, "watchlistItems");
+        String watchlistItemId = ResourceManagerUtils.getValueFromIdByName(id, "watchlistItems");
         if (watchlistItemId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'watchlistItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchlistItems'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String watchlistAlias = Utils.getValueFromIdByName(id, "watchlists");
+        String watchlistAlias = ResourceManagerUtils.getValueFromIdByName(id, "watchlists");
         if (watchlistAlias == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));
         }
-        String watchlistItemId = Utils.getValueFromIdByName(id, "watchlistItems");
+        String watchlistItemId = ResourceManagerUtils.getValueFromIdByName(id, "watchlistItems");
         if (watchlistItemId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'watchlistItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchlistItems'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String watchlistAlias = Utils.getValueFromIdByName(id, "watchlists");
+        String watchlistAlias = ResourceManagerUtils.getValueFromIdByName(id, "watchlists");
         if (watchlistAlias == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));
         }
-        String watchlistItemId = Utils.getValueFromIdByName(id, "watchlistItems");
+        String watchlistItemId = ResourceManagerUtils.getValueFromIdByName(id, "watchlistItems");
         if (watchlistItemId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'watchlistItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchlistItems'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, context);
     }

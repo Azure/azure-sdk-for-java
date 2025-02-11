@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the SAP Gateway Server properties. */
+/**
+ * Defines the SAP Gateway Server properties.
+ */
 @Immutable
-public final class GatewayServerProperties {
+public final class GatewayServerProperties implements JsonSerializable<GatewayServerProperties> {
     /*
      * Gateway Port.
      */
-    @JsonProperty(value = "port", access = JsonProperty.Access.WRITE_ONLY)
     private Long port;
 
     /*
      * Defines the health of SAP Instances.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
 
-    /** Creates an instance of GatewayServerProperties class. */
+    /**
+     * Creates an instance of GatewayServerProperties class.
+     */
     public GatewayServerProperties() {
     }
 
     /**
      * Get the port property: Gateway Port.
-     *
+     * 
      * @return the port value.
      */
     public Long port() {
@@ -37,7 +43,7 @@ public final class GatewayServerProperties {
 
     /**
      * Get the health property: Defines the health of SAP Instances.
-     *
+     * 
      * @return the health value.
      */
     public SapHealthState health() {
@@ -46,9 +52,46 @@ public final class GatewayServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayServerProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayServerProperties.
+     */
+    public static GatewayServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayServerProperties deserializedGatewayServerProperties = new GatewayServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("port".equals(fieldName)) {
+                    deserializedGatewayServerProperties.port = reader.getNullable(JsonReader::getLong);
+                } else if ("health".equals(fieldName)) {
+                    deserializedGatewayServerProperties.health = SapHealthState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayServerProperties;
+        });
     }
 }

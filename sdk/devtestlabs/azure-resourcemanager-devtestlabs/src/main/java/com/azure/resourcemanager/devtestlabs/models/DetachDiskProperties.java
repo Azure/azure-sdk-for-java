@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the disk to detach. */
+/**
+ * Properties of the disk to detach.
+ */
 @Fluent
-public final class DetachDiskProperties {
+public final class DetachDiskProperties implements JsonSerializable<DetachDiskProperties> {
     /*
      * The resource ID of the Lab VM to which the disk is attached.
      */
-    @JsonProperty(value = "leasedByLabVmId")
     private String leasedByLabVmId;
 
-    /** Creates an instance of DetachDiskProperties class. */
+    /**
+     * Creates an instance of DetachDiskProperties class.
+     */
     public DetachDiskProperties() {
     }
 
     /**
      * Get the leasedByLabVmId property: The resource ID of the Lab VM to which the disk is attached.
-     *
+     * 
      * @return the leasedByLabVmId value.
      */
     public String leasedByLabVmId() {
@@ -31,7 +38,7 @@ public final class DetachDiskProperties {
 
     /**
      * Set the leasedByLabVmId property: The resource ID of the Lab VM to which the disk is attached.
-     *
+     * 
      * @param leasedByLabVmId the leasedByLabVmId value to set.
      * @return the DetachDiskProperties object itself.
      */
@@ -42,9 +49,45 @@ public final class DetachDiskProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("leasedByLabVmId", this.leasedByLabVmId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetachDiskProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetachDiskProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DetachDiskProperties.
+     */
+    public static DetachDiskProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DetachDiskProperties deserializedDetachDiskProperties = new DetachDiskProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("leasedByLabVmId".equals(fieldName)) {
+                    deserializedDetachDiskProperties.leasedByLabVmId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDetachDiskProperties;
+        });
     }
 }

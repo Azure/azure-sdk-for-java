@@ -30,6 +30,7 @@ public class HttpLogOptionsTest {
         assertEquals(expected, new HttpLogOptions().setApplicationId(expected).getApplicationId());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testSetPrettyPrintBody() {
         assertTrue(new HttpLogOptions().setPrettyPrintBody(true).isPrettyPrintBody());

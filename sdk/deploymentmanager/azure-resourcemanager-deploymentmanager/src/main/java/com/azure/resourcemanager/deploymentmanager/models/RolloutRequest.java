@@ -114,21 +114,17 @@ public interface RolloutRequest {
     RolloutRequestInner innerModel();
 
     /** The entirety of the RolloutRequest definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithIdentity,
-            DefinitionStages.WithBuildVersion,
-            DefinitionStages.WithTargetServiceTopologyId,
-            DefinitionStages.WithStepGroups,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithIdentity, DefinitionStages.WithBuildVersion,
+        DefinitionStages.WithTargetServiceTopologyId, DefinitionStages.WithStepGroups, DefinitionStages.WithCreate {
     }
+
     /** The RolloutRequest definition stages. */
     interface DefinitionStages {
         /** The first stage of the RolloutRequest definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the RolloutRequest definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -147,6 +143,7 @@ public interface RolloutRequest {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the RolloutRequest definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -157,6 +154,7 @@ public interface RolloutRequest {
              */
             WithIdentity withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the RolloutRequest definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -167,6 +165,7 @@ public interface RolloutRequest {
              */
             WithBuildVersion withIdentity(Identity identity);
         }
+
         /** The stage of the RolloutRequest definition allowing to specify buildVersion. */
         interface WithBuildVersion {
             /**
@@ -177,6 +176,7 @@ public interface RolloutRequest {
              */
             WithTargetServiceTopologyId withBuildVersion(String buildVersion);
         }
+
         /** The stage of the RolloutRequest definition allowing to specify targetServiceTopologyId. */
         interface WithTargetServiceTopologyId {
             /**
@@ -189,6 +189,7 @@ public interface RolloutRequest {
              */
             WithStepGroups withTargetServiceTopologyId(String targetServiceTopologyId);
         }
+
         /** The stage of the RolloutRequest definition allowing to specify stepGroups. */
         interface WithStepGroups {
             /**
@@ -199,6 +200,7 @@ public interface RolloutRequest {
              */
             WithCreate withStepGroups(List<StepGroup> stepGroups);
         }
+
         /**
          * The stage of the RolloutRequest definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -219,6 +221,7 @@ public interface RolloutRequest {
              */
             RolloutRequest create(Context context);
         }
+
         /** The stage of the RolloutRequest definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -229,6 +232,7 @@ public interface RolloutRequest {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the RolloutRequest definition allowing to specify artifactSourceId. */
         interface WithArtifactSourceId {
             /**
@@ -241,6 +245,7 @@ public interface RolloutRequest {
             WithCreate withArtifactSourceId(String artifactSourceId);
         }
     }
+
     /**
      * Begins update for the RolloutRequest resource.
      *
@@ -249,13 +254,8 @@ public interface RolloutRequest {
     RolloutRequest.Update update();
 
     /** The template for RolloutRequest update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithBuildVersion,
-            UpdateStages.WithArtifactSourceId,
-            UpdateStages.WithTargetServiceTopologyId,
-            UpdateStages.WithStepGroups {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithBuildVersion,
+        UpdateStages.WithArtifactSourceId, UpdateStages.WithTargetServiceTopologyId, UpdateStages.WithStepGroups {
         /**
          * Executes the update request.
          *
@@ -271,6 +271,7 @@ public interface RolloutRequest {
          */
         RolloutRequest apply(Context context);
     }
+
     /** The RolloutRequest update stages. */
     interface UpdateStages {
         /** The stage of the RolloutRequest update allowing to specify tags. */
@@ -283,6 +284,7 @@ public interface RolloutRequest {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the RolloutRequest update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -293,6 +295,7 @@ public interface RolloutRequest {
              */
             Update withIdentity(Identity identity);
         }
+
         /** The stage of the RolloutRequest update allowing to specify buildVersion. */
         interface WithBuildVersion {
             /**
@@ -303,6 +306,7 @@ public interface RolloutRequest {
              */
             Update withBuildVersion(String buildVersion);
         }
+
         /** The stage of the RolloutRequest update allowing to specify artifactSourceId. */
         interface WithArtifactSourceId {
             /**
@@ -314,6 +318,7 @@ public interface RolloutRequest {
              */
             Update withArtifactSourceId(String artifactSourceId);
         }
+
         /** The stage of the RolloutRequest update allowing to specify targetServiceTopologyId. */
         interface WithTargetServiceTopologyId {
             /**
@@ -326,6 +331,7 @@ public interface RolloutRequest {
              */
             Update withTargetServiceTopologyId(String targetServiceTopologyId);
         }
+
         /** The stage of the RolloutRequest update allowing to specify stepGroups. */
         interface WithStepGroups {
             /**
@@ -337,6 +343,7 @@ public interface RolloutRequest {
             Update withStepGroups(List<StepGroup> stepGroups);
         }
     }
+
     /**
      * Stops a running rollout.
      *

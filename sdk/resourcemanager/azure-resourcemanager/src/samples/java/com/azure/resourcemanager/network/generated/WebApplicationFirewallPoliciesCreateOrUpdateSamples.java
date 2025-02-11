@@ -20,8 +20,8 @@ import com.azure.resourcemanager.network.models.GroupByVariable;
 import com.azure.resourcemanager.network.models.ManagedRuleEnabledState;
 import com.azure.resourcemanager.network.models.ManagedRuleGroupOverride;
 import com.azure.resourcemanager.network.models.ManagedRuleOverride;
-import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
 import com.azure.resourcemanager.network.models.ManagedRuleSet;
+import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
 import com.azure.resourcemanager.network.models.MatchCondition;
 import com.azure.resourcemanager.network.models.MatchVariable;
 import com.azure.resourcemanager.network.models.OwaspCrsExclusionEntry;
@@ -48,7 +48,7 @@ import java.util.Arrays;
 public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/WafPolicyCreateOrUpdate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/WafPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates a WAF policy within a resource group.

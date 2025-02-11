@@ -6,18 +6,20 @@ package com.azure.resourcemanager.elastic.models;
 
 import com.azure.resourcemanager.elastic.fluent.models.ExternalUserCreationResponseInner;
 
-/** An immutable client-side representation of ExternalUserCreationResponse. */
+/**
+ * An immutable client-side representation of ExternalUserCreationResponse.
+ */
 public interface ExternalUserCreationResponse {
     /**
      * Gets the created property: Shows if user is created or updated.
-     *
+     * 
      * @return the created value.
      */
     Boolean created();
 
     /**
      * Gets the inner com.azure.resourcemanager.elastic.fluent.models.ExternalUserCreationResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ExternalUserCreationResponseInner innerModel();

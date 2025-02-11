@@ -36,15 +36,15 @@ public final class ReplicationNetworkMappingsImpl implements ReplicationNetworkM
 
     public PagedIterable<NetworkMapping> listByReplicationNetworks(String resourceName, String resourceGroupName,
         String fabricName, String networkName, Context context) {
-        PagedIterable<NetworkMappingInner> inner = this.serviceClient().listByReplicationNetworks(resourceName,
-            resourceGroupName, fabricName, networkName, context);
+        PagedIterable<NetworkMappingInner> inner = this.serviceClient()
+            .listByReplicationNetworks(resourceName, resourceGroupName, fabricName, networkName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkMappingImpl(inner1, this.manager()));
     }
 
     public Response<NetworkMapping> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
         String networkName, String networkMappingName, Context context) {
-        Response<NetworkMappingInner> inner = this.serviceClient().getWithResponse(resourceName, resourceGroupName,
-            fabricName, networkName, networkMappingName, context);
+        Response<NetworkMappingInner> inner = this.serviceClient()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkMappingImpl(inner.getValue(), this.manager()));
@@ -71,8 +71,8 @@ public final class ReplicationNetworkMappingsImpl implements ReplicationNetworkM
 
     public void delete(String resourceName, String resourceGroupName, String fabricName, String networkName,
         String networkMappingName, Context context) {
-        this.serviceClient().delete(resourceName, resourceGroupName, fabricName, networkName, networkMappingName,
-            context);
+        this.serviceClient()
+            .delete(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context);
     }
 
     public PagedIterable<NetworkMapping> list(String resourceName, String resourceGroupName) {

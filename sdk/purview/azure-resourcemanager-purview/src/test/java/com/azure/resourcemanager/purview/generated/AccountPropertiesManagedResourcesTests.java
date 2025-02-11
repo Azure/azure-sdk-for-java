@@ -10,11 +10,9 @@ import com.azure.resourcemanager.purview.models.AccountPropertiesManagedResource
 public final class AccountPropertiesManagedResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountPropertiesManagedResources model =
-            BinaryData
-                .fromString(
-                    "{\"eventHubNamespace\":\"ufizuckyf\",\"resourceGroup\":\"rfidfvzwdz\",\"storageAccount\":\"tymw\"}")
-                .toObject(AccountPropertiesManagedResources.class);
+        AccountPropertiesManagedResources model = BinaryData.fromString(
+            "{\"eventHubNamespace\":\"ujjugwdkcglh\",\"resourceGroup\":\"azjdyggd\",\"storageAccount\":\"ixhbkuofqweykhm\"}")
+            .toObject(AccountPropertiesManagedResources.class);
     }
 
     @org.junit.jupiter.api.Test

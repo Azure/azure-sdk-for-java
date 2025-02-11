@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.sharing.generated;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -18,16 +19,17 @@ public final class ShareResourcesListTests extends PurviewShareClientTestBase {
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = shareResourcesClient.listShareResources(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                "Wed, 12 July 2022 18:04:32 GMT",
-                response.iterableByPage().iterator().next().getHeaders().get("Date").getValue());
-        Assertions.assertEquals(
-                "25c78f97-0b0a-4fe9-ad39-883a482265cd",
-                response.iterableByPage().iterator().next().getHeaders().get("x-ms-correlation-request-id").getValue());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"type\":\"ShareResource\",\"id\":\"cb817140-a0cf-464f-8a82-0a9627a026ab\",\"receivedSharesCount\":1,\"sentSharesCount\":1,\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/sender-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage\"}}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+        Assertions.assertEquals("Wed, 12 July 2022 18:04:32 GMT",
+            response.iterableByPage().iterator().next().getHeaders().get(HttpHeaderName.fromString("Date")).getValue());
+        Assertions.assertEquals("25c78f97-0b0a-4fe9-ad39-883a482265cd",
+            response.iterableByPage()
+                .iterator()
+                .next()
+                .getHeaders()
+                .get(HttpHeaderName.fromString("x-ms-correlation-request-id"))
+                .getValue());
+        Assertions.assertEquals(BinaryData.fromString(
+            "{\"type\":\"ShareResource\",\"id\":\"cb817140-a0cf-464f-8a82-0a9627a026ab\",\"receivedSharesCount\":1,\"sentSharesCount\":1,\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/sender-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage\"}}")
+            .toObject(Object.class), response.iterator().next().toObject(Object.class));
     }
 }

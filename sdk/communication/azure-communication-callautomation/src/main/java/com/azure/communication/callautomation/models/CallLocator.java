@@ -12,16 +12,12 @@ public abstract class CallLocator {
     private final CallLocatorKind kind;
 
     /**
-     * The constructor
+     * Creates an instance of CallLocator class.
      *
-     * @param kind Specify the call locator kind.
-     */
+     * @param kind a kind of the call locator.
+    */
     CallLocator(CallLocatorKind kind) {
-        if (kind == CallLocatorKind.GROUP_CALL_LOCATOR || kind == CallLocatorKind.SERVER_CALL_LOCATOR) {
-            this.kind = kind;
-        } else {
-            throw new IllegalArgumentException("Illegal callLocator kind");
-        }
+        this.kind = kind;
     }
 
     /**

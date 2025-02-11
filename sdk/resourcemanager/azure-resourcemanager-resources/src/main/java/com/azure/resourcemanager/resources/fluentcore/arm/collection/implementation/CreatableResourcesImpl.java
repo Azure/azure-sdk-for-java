@@ -31,9 +31,7 @@ import java.util.Set;
  * @param <InnerT> the wrapper inner type
  */
 public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends T, InnerT>
-        extends CreatableWrappersImpl<T, ImplT, InnerT>
-        implements
-        SupportsBatchCreation<T> {
+    extends CreatableWrappersImpl<T, ImplT, InnerT> implements SupportsBatchCreation<T> {
 
     protected CreatableResourcesImpl() {
     }
@@ -41,14 +39,12 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     @Override
     @SafeVarargs
     public final CreatedResources<T> create(Creatable<T>... creatables) {
-        return createAsyncNonStream(creatables)
-            .block();
+        return createAsyncNonStream(creatables).block();
     }
 
     @Override
     public final CreatedResources<T> create(List<? extends Creatable<T>> creatables) {
-        return createAsyncNonStream(creatables)
-                .block();
+        return createAsyncNonStream(creatables).block();
     }
 
     @Override
@@ -68,8 +64,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
 
     @SuppressWarnings("unchecked")
     private Mono<CreatedResources<T>> createAsyncNonStream(List<? extends Creatable<T>> creatables) {
-        return createWithRootResourceAsync(creatables)
-                .map(CreatedResourcesImpl::new);
+        return createWithRootResourceAsync(creatables).map(CreatedResourcesImpl::new);
     }
 
     @SuppressWarnings("unchecked")
@@ -77,8 +72,8 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
         return createAsyncNonStream(Arrays.asList(creatables));
     }
 
-    private Mono<CreatableUpdatableResourcesRoot<T>> createWithRootResourceAsync(
-        List<? extends Creatable<T>> creatables) {
+    private Mono<CreatableUpdatableResourcesRoot<T>>
+        createWithRootResourceAsync(List<? extends Creatable<T>> creatables) {
         CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
         return rootResource.createAsync();
@@ -89,8 +84,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class CreatedResourcesImpl<ResourceT extends Indexable>
-            implements CreatedResources<ResourceT> {
+    private class CreatedResourcesImpl<ResourceT extends Indexable> implements CreatedResources<ResourceT> {
         private final ClientLogger logger = new ClientLogger(this.getClass());
         private CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
         private Map<String, ResourceT> resources = new HashMap<>();
@@ -185,11 +179,9 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class CreatableUpdatableResourcesRootImpl<ResourceT extends Indexable>
-            extends CreatableUpdatableImpl<CreatableUpdatableResourcesRoot<ResourceT>,
-                                           Object,
-                                           CreatableUpdatableResourcesRootImpl<ResourceT>>
-            implements CreatableUpdatableResourcesRoot<ResourceT> {
+    private class CreatableUpdatableResourcesRootImpl<ResourceT extends Indexable> extends
+        CreatableUpdatableImpl<CreatableUpdatableResourcesRoot<ResourceT>, Object, CreatableUpdatableResourcesRootImpl<ResourceT>>
+        implements CreatableUpdatableResourcesRoot<ResourceT> {
         /**
          * Collection of keys of top level resources in this batch.
          */
